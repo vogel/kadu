@@ -29,8 +29,8 @@ extern "C" int nas_sound_init()
 
 	slotsObj=new NASPlayerSlots();
 
-	QObject::connect(sound_manager, SIGNAL(playOnTestSound(const QString &, bool, double)),
-					 slotsObj, SLOT(playTestSound(const QString &, bool, double)));
+	QObject::connect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
+					 slotsObj, SLOT(playSound(const QString &, bool, double)));
 	QObject::connect(sound_manager, SIGNAL(playOnMessage(UinsList, const QString &, const QString &, bool, double)),
 					 slotsObj, SLOT(playMessage(UinsList, const QString &, const QString &, bool, double)));
 	QObject::connect(sound_manager, SIGNAL(playOnChat(UinsList, const QString &, const QString &, bool, double)),
@@ -44,8 +44,8 @@ extern "C" void nas_sound_close()
 {
 	kdebugf();
 
-	QObject::disconnect(sound_manager, SIGNAL(playOnTestSound(const QString &, bool, double)),
-						slotsObj, SLOT(playTestSound(const QString &, bool, double)));
+	QObject::disconnect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
+						slotsObj, SLOT(playSound(const QString &, bool, double)));
 	QObject::disconnect(sound_manager, SIGNAL(playOnMessage(UinsList, const QString &, const QString &, bool, double)),
 						slotsObj, SLOT(playMessage(UinsList, const QString &, const QString &, bool, double)));
 	QObject::disconnect(sound_manager, SIGNAL(playOnChat(UinsList, const QString &, const QString &, bool, double)),
@@ -60,7 +60,7 @@ NASPlayerSlots::NASPlayerSlots()
 {
 }
 
-void NASPlayerSlots::playTestSound(const QString &s, bool volCntrl, double vol)
+void NASPlayerSlots::playSound(const QString &s, bool volCntrl, double vol)
 {
 	kdebugf();
 	QSound::play(s);

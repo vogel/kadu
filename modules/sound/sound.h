@@ -44,16 +44,17 @@ class SoundManager : public Themes
 		void messageSound(UinsList senders,const QString& msg,time_t time);
 		void notifySound(const uin_t uin, const unsigned int oldstatus, const unsigned int status);
 
+	public slots:
+		void play(const QString &path, bool force=false);
 
 	public:
 		SoundManager(const QString& name, const QString& configname);
 		bool isMuted();
 		void setMute(const bool& enable);
 		int timeAfterLastSound();		
-		void playTestSound(const QString &);
 
 	signals:
-		void playOnTestSound(const QString &sound, bool volCntrl, double vol);
+		void playSound(const QString &sound, bool volCntrl, double vol);
 		void playOnMessage(UinsList senders, const QString &sound, const QString &msg, bool volCntrl, double vol);
 		void playOnChat(UinsList senders, const QString &sound, const QString &msg, bool volCntrl, double vol);
 		void playOnNotify(const uin_t uin, const QString &sound, bool volCntrl, double vol);

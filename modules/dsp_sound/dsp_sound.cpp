@@ -39,8 +39,8 @@ extern "C" int dsp_sound_init()
 
 	slotsObj=new DirectPlayerSlots();
 
-	QObject::connect(sound_manager, SIGNAL(playOnTestSound(const QString &, bool, double)),
-					 slotsObj, SLOT(playTestSound(const QString &, bool, double)));
+	QObject::connect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
+					 slotsObj, SLOT(playSound(const QString &, bool, double)));
 	QObject::connect(sound_manager, SIGNAL(playOnMessage(UinsList, const QString &, const QString &, bool, double)),
 					 slotsObj, SLOT(playMessage(UinsList, const QString &, const QString &, bool, double)));
 	QObject::connect(sound_manager, SIGNAL(playOnChat(UinsList, const QString &, const QString &, bool, double)),
@@ -57,8 +57,8 @@ extern "C" void dsp_sound_close()
 {
 	kdebugf();
 
-	QObject::disconnect(sound_manager, SIGNAL(playOnTestSound(const QString &, bool, double)),
-						slotsObj, SLOT(playTestSound(const QString &, bool, double)));
+	QObject::disconnect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
+						slotsObj, SLOT(playSound(const QString &, bool, double)));
 	QObject::disconnect(sound_manager, SIGNAL(playOnMessage(UinsList, const QString &, const QString &, bool, double)),
 						slotsObj, SLOT(playMessage(UinsList, const QString &, const QString &, bool, double)));
 	QObject::disconnect(sound_manager, SIGNAL(playOnChat(UinsList, const QString &, const QString &, bool, double)),
@@ -116,11 +116,16 @@ void DirectPlayerSlots::play(const QString &s, bool volCntrl, double vol, const 
 	}
 }
 
-void DirectPlayerSlots::playTestSound(const QString &s, bool volCntrl, double vol)
+void DirectPlayerSlots::playSound(const QString &s, bool volCntrl, double vol)
 {
 	kdebugf();
-	QLineEdit *e_sounddev= ConfigDialog::getLineEdit("Sounds", "Path:", "device_path");
-	play(s, volCntrl, vol, e_sounddev->text());
+	QString dev=QString::null;
+	if (ConfigDialog::dialogOpened())
+	{
+		QLineEdit *e_sounddev= ConfigDialog::getLineEdit("Sounds", "Path:", "device_path");
+		dev=e_sounddev->text();
+	}
+	play(s, volCntrl, vol, dev);
 }
 
 void DirectPlayerSlots::playMessage(UinsList senders, const QString &sound, const QString &msg, bool volCntrl, double vol)

@@ -31,8 +31,8 @@ extern "C" int ext_sound_init()
 		return 1;
 	slotsObj=new ExternalPlayerSlots();
 
-	QObject::connect(sound_manager, SIGNAL(playOnTestSound(const QString &, bool, double)),
-					 slotsObj, SLOT(playTestSound(const QString &, bool, double)));
+	QObject::connect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
+					 slotsObj, SLOT(playSound(const QString &, bool, double)));
 	QObject::connect(sound_manager, SIGNAL(playOnMessage(UinsList, const QString &, const QString &, bool, double)),
 					 slotsObj, SLOT(playMessage(UinsList, const QString &, const QString &, bool, double)));
 	QObject::connect(sound_manager, SIGNAL(playOnChat(UinsList, const QString &, const QString &, bool, double)),
@@ -52,8 +52,8 @@ extern "C" void ext_sound_close()
 	kdebugf();
 
 	ConfigDialog::disconnectSlot("Sounds", "", SIGNAL(clicked()), slotsObj, SLOT(choosePlayerFile()), "soundplayer_fileopen");
-	QObject::disconnect(sound_manager, SIGNAL(playOnTestSound(const QString &, bool, double)),
-						slotsObj, SLOT(playTestSound(const QString &, bool, double)));
+	QObject::disconnect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
+						slotsObj, SLOT(playSound(const QString &, bool, double)));
 	QObject::disconnect(sound_manager, SIGNAL(playOnMessage(UinsList, const QString &, const QString &, bool, double)),
 						slotsObj, SLOT(playMessage(UinsList, const QString &, const QString &, bool, double)));
 	QObject::disconnect(sound_manager, SIGNAL(playOnChat(UinsList, const QString &, const QString &, bool, double)),
@@ -89,11 +89,16 @@ void ExternalPlayerSlots::play(const QString &s, bool volCntrl, double vol, QStr
 	system(t.ascii());
 }
 
-void ExternalPlayerSlots::playTestSound(const QString &s, bool volCntrl, double vol)
+void ExternalPlayerSlots::playSound(const QString &s, bool volCntrl, double vol)
 {
 	kdebugf();
-	QLineEdit *e_soundprog= ConfigDialog::getLineEdit("Sounds", "Path:", "soundplayer_path");
-	play(s, volCntrl, vol, e_soundprog->text());
+	QString player=QString::null;
+	if (ConfigDialog::dialogOpened())
+	{
+		QLineEdit *e_soundprog= ConfigDialog::getLineEdit("Sounds", "Path:", "soundplayer_path");
+		player=e_soundprog->text();
+	}
+	play(s, volCntrl, vol, player);
 }
 
 void ExternalPlayerSlots::playMessage(UinsList senders, const QString &sound, const QString &msg, bool volCntrl, double vol)

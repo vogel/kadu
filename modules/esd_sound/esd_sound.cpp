@@ -35,8 +35,8 @@ extern "C" int esd_sound_init()
 		return -1;
 	}
 
-	QObject::connect(sound_manager, SIGNAL(playOnTestSound(const QString &, bool, double)),
-					 slotsObj, SLOT(playTestSound(const QString &, bool, double)));
+	QObject::connect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
+					 slotsObj, SLOT(playSound(const QString &, bool, double)));
 	QObject::connect(sound_manager, SIGNAL(playOnMessage(UinsList, const QString &, const QString &, bool, double)),
 					 slotsObj, SLOT(playMessage(UinsList, const QString &, const QString &, bool, double)));
 	QObject::connect(sound_manager, SIGNAL(playOnChat(UinsList, const QString &, const QString &, bool, double)),
@@ -50,8 +50,8 @@ extern "C" void esd_sound_close()
 {
 	kdebugf();
 
-	QObject::disconnect(sound_manager, SIGNAL(playOnTestSound(const QString &, bool, double)),
-						slotsObj, SLOT(playTestSound(const QString &, bool, double)));
+	QObject::disconnect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
+						slotsObj, SLOT(playSound(const QString &, bool, double)));
 	QObject::disconnect(sound_manager, SIGNAL(playOnMessage(UinsList, const QString &, const QString &, bool, double)),
 						slotsObj, SLOT(playMessage(UinsList, const QString &, const QString &, bool, double)));
 	QObject::disconnect(sound_manager, SIGNAL(playOnChat(UinsList, const QString &, const QString &, bool, double)),
@@ -90,7 +90,7 @@ void ESDPlayerSlots::play(const QString &s, bool volCntrl, double vol)
 	esd_sample_free(sock, id);
 }
 
-void ESDPlayerSlots::playTestSound(const QString &s, bool volCntrl, double vol)
+void ESDPlayerSlots::playSound(const QString &s, bool volCntrl, double vol)
 {
 	kdebugf();
 	play(s, volCntrl, vol);

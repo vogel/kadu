@@ -245,13 +245,15 @@ void SoundManager::notifySound(const uin_t uin, const unsigned int oldstatus, co
 			}
 }
 
-void SoundManager::playTestSound(const QString &path)
+void SoundManager::play(const QString &path, bool force)
 {
 	kdebugf();
+	if (isMuted() && !force)
+		return;
 	QCheckBox *b_volumectrl= ConfigDialog::getCheckBox("Sounds", "Enable volume control (player must support it)");
 	QSlider *s_volume=ConfigDialog::getSlider("Sounds", "slider");
 	if (QFile::exists(path))
-		emit playOnTestSound(path, b_volumectrl->isChecked(), 1.0*s_volume->value()/100);
+		emit playSound(path, b_volumectrl->isChecked(), 1.0*s_volume->value()/100);
 }
 
 int SoundManager::timeAfterLastSound()
@@ -442,7 +444,7 @@ void SoundSlots::testSoundFile()
 	QListViewItem *item= lv_soundfiles->currentItem();
 	if (!item->isSelected())
 		return;
-	sound_manager->playTestSound(item->text(1));
+	sound_manager->play(item->text(1), true);
 }
 
 void SoundSlots::chooseSoundTheme(const QString& string)

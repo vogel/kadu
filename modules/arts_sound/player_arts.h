@@ -18,7 +18,7 @@ class ArtsPlayerSlots : public QObject
 	private slots:
 		void play(const QString &s, bool volCntrl=false, double vol=1);
 		
-		void playTestSound(const QString &s, bool volCntrl, double vol);
+		void playSound(const QString &s, bool volCntrl, double vol);
 		void playMessage(UinsList senders, const QString &sound, const QString &msg, bool volCntrl, double vol);
 		void playChat(UinsList senders, const QString &sound, const QString &msg, bool volCntrl, double vol);
 		void playNotify(const uin_t uin, const QString &sound, bool volCntrl, double vol);
