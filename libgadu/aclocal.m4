@@ -15,7 +15,7 @@ dnl Based on AC_NEED_STDINT_H by Guido Draheim <guidod@gmx.de> that can be
 dnl found at http://www.gnu.org/software/ac-archive/. Do not complain him
 dnl about this macro.
 dnl
-dnl $Id: aclocal.m4,v 1.3 2002/10/24 11:03:57 adrian Exp $
+dnl $Id: aclocal.m4,v 1.4 2002/11/15 00:24:41 adrian Exp $
 
 AC_DEFUN([AC_NEED_STDINT_H],
  [AC_MSG_CHECKING([for uintXX_t types])
@@ -65,7 +65,7 @@ EOF
 
 
 dnl Rewritten from scratch. --wojtekka
-dnl $Id: aclocal.m4,v 1.3 2002/10/24 11:03:57 adrian Exp $
+dnl $Id: aclocal.m4,v 1.4 2002/11/15 00:24:41 adrian Exp $
 
 AC_DEFUN(AC_CHECK_NCURSES,[
   AC_SUBST(CURSES_LIBS)
@@ -126,7 +126,7 @@ AC_DEFUN(AC_CHECK_NCURSES,[
 
 
 dnl Rewritten from scratch. --wojtekka
-dnl $Id: aclocal.m4,v 1.3 2002/10/24 11:03:57 adrian Exp $
+dnl $Id: aclocal.m4,v 1.4 2002/11/15 00:24:41 adrian Exp $
 
 AC_DEFUN(AC_CHECK_READLINE,[
   AC_SUBST(READLINE_LIBS)
@@ -184,7 +184,7 @@ AC_DEFUN(AC_CHECK_READLINE,[
 
 
 dnl Rewritten from scratch. --speedy 
-dnl $Id: aclocal.m4,v 1.3 2002/10/24 11:03:57 adrian Exp $
+dnl $Id: aclocal.m4,v 1.4 2002/11/15 00:24:41 adrian Exp $
 
 PYTHON=
 PYTHON_VERSION=

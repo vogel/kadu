@@ -1,1 +1,144 @@
-/* config.h.in.  Generated automatically from configure.in by autoheader.  */
+/* config.h.in.  Generated from configure.in by autoheader.  */
+/* $Id: config.h.in,v 1.7 2002/11/15 00:24:41 adrian Exp $ */
+
+/* define if you want "wap" support */
+#undef WITH_WAP
+
+/* define if you have ncurses */
+#undef HAVE_NCURSES
+
+/* define if you have readline */
+#undef HAVE_READLINE
+
+/* define if you have C99-compatible vsnprintf() */
+#undef HAVE_C99_VSNPRINTF
+
+/* define if you have python */
+#undef WITH_PYTHON
+
+/* define if you want ui_ncurses */
+#undef WITH_UI_NCURSES
+
+/* define if you want ui_readline */
+#undef WITH_UI_READLINE
+
+/* define if you want default ui_readline */
+#undef WITH_FORCE_READLINE
+
+/* define if you want VOIP support */
+#undef HAVE_VOIP
+
+/* define if you have zlib for compressed logs */
+#undef HAVE_ZLIB
+
+/* define if you have C99-aware vsnprintf */
+#undef HAVE_C99_VSNPRINTF
+
+/* Define to 1 if you have the <gsm/gsm.h> header file. */
+#undef HAVE_GSM_GSM_H
+
+/* Define to 1 if you have the <gsm.h> header file. */
+#undef HAVE_GSM_H
+
+/* Define to 1 if you have the <inttypes.h> header file. */
+#undef HAVE_INTTYPES_H
+
+/* Define to 1 if you have the <libgen.h> header file. */
+#undef HAVE_LIBGEN_H
+
+/* Define to 1 if you have the <linux/kd.h> header file. */
+#undef HAVE_LINUX_KD_H
+
+/* Define to 1 if you have the <linux/soundcard.h> header file. */
+#undef HAVE_LINUX_SOUNDCARD_H
+
+/* Define to 1 if you have the <memory.h> header file. */
+#undef HAVE_MEMORY_H
+
+/* define if You want ncurses */
+#undef HAVE_NCURSES
+
+/* define if You want readline */
+#undef HAVE_READLINE
+
+/* Define to 1 if you have the `rl_bind_key_in_map' function. */
+#undef HAVE_RL_BIND_KEY_IN_MAP
+
+/* Define to 1 if you have the `rl_filename_completion_function' function. */
+#undef HAVE_RL_FILENAME_COMPLETION_FUNCTION
+
+/* Define to 1 if you have the `rl_get_screen_size' function. */
+#undef HAVE_RL_GET_SCREEN_SIZE
+
+/* Define to 1 if you have the `rl_set_key' function. */
+#undef HAVE_RL_SET_KEY
+
+/* Define to 1 if you have the `rl_set_prompt' function. */
+#undef HAVE_RL_SET_PROMPT
+
+/* Define to 1 if you have the <stdint.h> header file. */
+#undef HAVE_STDINT_H
+
+/* Define to 1 if you have the <stdlib.h> header file. */
+#undef HAVE_STDLIB_H
+
+/* Define to 1 if you have the <strings.h> header file. */
+#undef HAVE_STRINGS_H
+
+/* Define to 1 if you have the <string.h> header file. */
+#undef HAVE_STRING_H
+
+/* Define to 1 if you have the <sys/stat.h> header file. */
+#undef HAVE_SYS_STAT_H
+
+/* Define to 1 if you have the <sys/types.h> header file. */
+#undef HAVE_SYS_TYPES_H
+
+/* Define to 1 if you have the <unistd.h> header file. */
+#undef HAVE_UNISTD_H
+
+/* define if you want VOIP support */
+#undef HAVE_VOIP
+
+/* define if you want compressed logs */
+#undef HAVE_ZLIB
+
+/* Define to 1 if you have the <zlib.h> header file. */
+#undef HAVE_ZLIB_H
+
+/* Define to the address where bug reports for this package should be sent. */
+#undef PACKAGE_BUGREPORT
+
+/* Define to the full name of this package. */
+#undef PACKAGE_NAME
+
+/* Define to the full name and version of this package. */
+#undef PACKAGE_STRING
+
+/* Define to the one symbol short name of this package. */
+#undef PACKAGE_TARNAME
+
+/* Define to the version of this package. */
+#undef PACKAGE_VERSION
+
+/* Define to 1 if you have the ANSI C header files. */
+#undef STDC_HEADERS
+
+/* define if you want ui-ncurses as default */
+#undef WITH_FORCE_NCURSES
+
+/* define if You want python */
+#undef WITH_PYTHON
+
+/* define if you want ui-ncurses */
+#undef WITH_UI_NCURSES
+
+/* define if you want ui-readline */
+#undef WITH_UI_READLINE
+
+/* define if you want "WAP" support */
+#undef WITH_WAP
+
+/* Define to 1 if your processor stores words with the most significant byte
+   first (like Motorola and SPARC, unlike Intel and VAX). */
+#undef WORDS_BIGENDIAN
