@@ -121,6 +121,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * libgadu z 03.11.2003 (chilek)
 * gdy mamy pust± listê kontaktów to sendUserlist() przekazuje NULL do
   gg_notify*() (chilek)
+* poprawiono wybieranie zestawu emotek (zmiany nie byly wprowadzane w zycie) (pawel_p)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci
