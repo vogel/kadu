@@ -20,6 +20,7 @@
 //
 #include "kadu.h"
 #include "userbox.h"
+#include "pixmaps.h"
 //
 
 UserBox::UserBox(QWidget* parent,const char* name,WFlags f)
@@ -37,7 +38,7 @@ UserBox::~UserBox()
 
 void UserBox::maybeTip(const QPoint &c)
 {
-	QListBoxItem* item = static_cast<QListBoxItem*>(itemAt(c));
+/*	QListBoxItem* item = static_cast<QListBoxItem*>(itemAt(c));
 
 	if(item)
 	{
@@ -79,17 +80,17 @@ void UserBox::maybeTip(const QPoint &c)
 			s += QString(*userlist[descriptionForUser(item)].description);
 		};
 		tip(r, s);
-	};
+	};*/
 }
 
 int UserBox::descriptionForUser(QListBoxItem * s)
 {
-	int i = FindCommentInUserlist(s->text());
-	if(userlist[i].description==0)
+/*	int i = FindCommentInUserlist(s->text());
+	if(userlist[i].description==0)*/
 		return -1;
-	if(userlist[i].description->length()<=0)
+/*	if(userlist[i].description->length()<=0)
 		return -1;
-	return i;
+	return i;*/
 };
 
 int UserBox::findUinInUserlist(uin_t uin)
@@ -227,9 +228,9 @@ int UserBox::findCommentInUserlist(QString& comment)
     mylist->setSelected(item_selected, true);
 }
 */
-void Userbox::refresh()
+void UserBox::refresh()
 {
-	clear();	
+/*	clear();	
 	for(int i=0; i<Uins.count(); i++)
 	{
 		int u=FindUinInUserlist(Uins[i]);
@@ -269,7 +270,7 @@ void Userbox::refresh()
 		    			insertItem(QPixmap((const char **)gg_inact_xpm), __c2q(userlist[u].nickname));			
 			};
 		};
-	};	
+	};	*/
 };
 
 void UserBox::addUin(uin_t uin)
@@ -285,10 +286,10 @@ void UserBox::removeUin(uin_t uin)
 
 void UserBox::removeUser(QString& username)
 {
-	removeUin(userlist[FindCommentInUserlist(username)].uin);
+/*	removeUin(userlist[FindCommentInUserlist(username)].uin);*/
 };
 
-void ChangeUserStatus (unsigned int uin, int new_status) {
+/*void ChangeUserStatus (unsigned int uin, int new_status) {
     int num = mylist->numItemsVisible();
     QString tmpstr;
 
@@ -331,33 +332,108 @@ void ChangeUserStatus (unsigned int uin, int new_status) {
 	    delete gg_st;
 	    }
 	}
-}
+}*/
 
 void UserBox::changeAllToInactive()
 {
-	QPixmap qp_inact((const char **)gg_inact_xpm);
+/*	QPixmap qp_inact((const char **)gg_inact_xpm);
 	for(int i=0; i<count(); i++)
-		changeItem(qp_inact,item(i).text,i);
+		changeItem(qp_inact,item(i).text,i);*/
 };
 
 /////////////////////////////////////////////////////////
 
-void Userbox::all_refresh()
+void UserBox::all_refresh()
 {
-	for(int i=0; i<Userboxes.size(); i++)
-		Userboxes[i]->refresh();
+	for(int i=0; i<UserBoxes.size(); i++)
+		UserBoxes[i]->refresh();
 };
 
 void UserBox::all_removeUser(QString& username)
 {
-	for(int i=0; i<Userboxes.size(); i++)
-		Userboxes[i]->removeUser(username);
+	for(int i=0; i<UserBoxes.size(); i++)
+		UserBoxes[i]->removeUser(username);
 };
 
 void UserBox::all_changeAllToInactive()
 {
-	for(int i=0; i<Userboxes.size(); i++)
-		Userboxes[i]->changeAllToInactive();	
+	for(int i=0; i<UserBoxes.size(); i++)
+		UserBoxes[i]->changeAllToInactive();	
 };
+
+// The code below will be removed soon
+
+MyListBox::MyListBox ( QWidget * parent, const char * name, WFlags f ) : QListBox(parent, name),
+    QToolTip(viewport()) {
+    setSelectionMode(QListBox::Extended);
+}
+
+void MyListBox::maybeTip(const QPoint &c) {
+    QListBoxItem* item = static_cast<QListBoxItem*>(itemAt(c));
+
+    if (item) {
+        QRect r(itemRect(item));
+        QString s,t;
+
+        int i;
+        i = 0;
+        while (i < userlist.size() && userlist[i].uin != UserToUin(&(t = item->text())))
+            i++;
+
+        switch (userlist[i].status) {
+            case GG_STATUS_AVAIL:
+                s += i18n("<I>Available</I>");
+                break;
+            case GG_STATUS_BUSY:
+                s += i18n("<I>Busy</I>");
+                break;
+            case GG_STATUS_NOT_AVAIL:
+                s += i18n("<nobr><I>Not available</I></nobr>");
+                break;
+            case GG_STATUS_INVISIBLE2:
+                s += i18n("<I>Invisible</I>");
+                break;
+            case GG_STATUS_BUSY_DESCR:
+                s += i18n("<nobr><I>Busy <B>(d.)</B></I></nobr>");
+                break;
+            case GG_STATUS_NOT_AVAIL_DESCR:
+                s += i18n("<nobr><I>Not available <B>(d.)</B></I></nobr>");
+                break;
+            case GG_STATUS_AVAIL_DESCR:
+                s += i18n("<nobr><I>Available <B>(d.)</B></I></nobr>");
+                break;
+            default:
+                s += i18n("<nobr><I>Unknown status</I></nobr>");
+                break;
+            }
+
+        if (descriptionForUser(item) != -1) {
+            s += "<BR><BR>";
+            s += i18n("<B>Description:</B><BR>");
+            s += QString(*userlist[descriptionForUser(item)].description);
+            }
+        
+        tip(r, s);
+        }
+}
+
+int MyListBox::descriptionForUser(QListBoxItem * s) {
+    int i;
+    QString t;
+
+    i = 0;      
+    while (i < userlist.size() && userlist[i].uin != UserToUin(&(t = s->text())))
+        i++;
+
+    if (userlist[i].description)
+        if (userlist[i].description->length() > 0)
+            return i;
+        else
+            return -1;
+    else
+        return -1;
+}
+
+QValueList<UserBox*> UserBox::UserBoxes;
 
 #include "userbox.moc"
