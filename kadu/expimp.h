@@ -24,59 +24,60 @@
 #include "../libgadu/lib/libgadu.h"
 
 class UserlistImport : public QDialog {
-    Q_OBJECT
-    public:
-	UserlistImport(QDialog *parent=0, const char *name=0);
+	Q_OBJECT
+	public:
+		UserlistImport(QDialog *parent=0, const char *name=0);
 
-    private:
-	struct gg_http *gg_http;
-	struct gg_event *e;
-	int ret;
-	QArray<struct userlist> importedusers;
-	QPushButton *fetchbtn;
-	QSocketNotifier *snr;
-	QSocketNotifier *snw;
-	
-	void deleteSocketNotifiers();
-			
-    protected:
-	QListView *results;
+	private:
+		struct gg_http *gg_http;
+		struct gg_event *e;
+		int ret;
+		QArray<struct userlist> importedusers;
+		QPushButton *fetchbtn;
+		QSocketNotifier *snr;
+		QSocketNotifier *snw;
+		UserList importedUserlist;
+		
+		void deleteSocketNotifiers();
 
-    private slots:
-	void socketEvent(void);
-	void startTransfer(void);
-	void updateUserlist(void);
-	void dataReceived(void);
-	void dataSent(void);
-	
-    protected:
-	void closeEvent(QCloseEvent *e);
+	protected:
+		QListView *results;
+
+	private slots:
+		void socketEvent(void);
+		void startTransfer(void);
+		void updateUserlist(void);
+		void dataReceived(void);
+		void dataSent(void);
+
+	protected:
+		void closeEvent(QCloseEvent *e);
 };
 
 class UserlistExport : public QDialog {
-    Q_OBJECT
-    public:
-	UserlistExport(QDialog *parent=0, const char *name=0);
+	Q_OBJECT
+	public:
+		UserlistExport(QDialog *parent=0, const char *name=0);
 
-    private:
-	struct gg_http *gg_http;
-	struct gg_event *e;
-	int ret;
-	QPushButton * sendbtn;
+	private:
+		struct gg_http *gg_http;
+		struct gg_event *e;
+		int ret;
+		QPushButton * sendbtn;
 
-	QSocketNotifier *snr;
-	QSocketNotifier *snw;
-	
-	void deleteSocketNotifiers();			
+		QSocketNotifier *snr;
+		QSocketNotifier *snw;
 
-    private slots:
-	void socketEvent(void);
-	void startTransfer(void);
-	void dataReceived(void);
-	void dataSent(void);
-    
-    protected:
-	void closeEvent(QCloseEvent * e);
+		void deleteSocketNotifiers();			
+
+	private slots:
+		void socketEvent(void);
+		void startTransfer(void);
+		void dataReceived(void);
+		void dataSent(void);
+
+	protected:
+		void closeEvent(QCloseEvent * e);
 };
 
 #endif
