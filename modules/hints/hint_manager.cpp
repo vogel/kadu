@@ -219,6 +219,17 @@ void HintManager::setHint(void)
 	}
 	else
 	{
+		//takie "dziwne" przypadki mog± wyst±piæ przy automatycznym chowaniu panelu
+		if (trayPosition.x()<0)
+			trayPosition.setX(0);
+		else if (trayPosition.x()>desktopSize.width())
+			trayPosition.setX(desktopSize.width()-2);
+		if (trayPosition.y()<0)
+			trayPosition.setY(0);
+		else if (trayPosition.y()>desktopSize.height())
+			trayPosition.setY(desktopSize.height()-2);
+
+
 		if (trayPosition.x() < desktopSize.width()/2) // gdy tray jest z lewej
 			newPosition.setX(trayPosition.x()+32);
 		else //gdy tray jest z prawej
