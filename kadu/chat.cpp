@@ -141,8 +141,6 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	}
 	
 	connect(encryption, SIGNAL(clicked()), this, SLOT(regEncryptSend()));
-	
-	encrypt_enabled=false;
 #endif
 	
 	QPushButton *clearchat= new QPushButton(buttontray);
