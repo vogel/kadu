@@ -12,6 +12,8 @@
 #include <qfile.h>
 #include <qtextstream.h>
 
+AutoAwayTimer* AutoAwayTimer::autoaway_object=NULL;
+
 int gg_statuses[] = {GG_STATUS_AVAIL, GG_STATUS_AVAIL_DESCR, GG_STATUS_BUSY, GG_STATUS_BUSY_DESCR,
 	GG_STATUS_INVISIBLE, GG_STATUS_INVISIBLE_DESCR, GG_STATUS_NOT_AVAIL, GG_STATUS_NOT_AVAIL_DESCR,
 	GG_STATUS_BLOCKED};
@@ -80,18 +82,18 @@ void AutoStatusTimer::onTimeout()
 	start(1000, TRUE);
 }
 
-AutoAwayTimer::AutoAwayTimer(QObject* parent) : QTimer(parent,"AutoStatus") {
+AutoAwayTimer::AutoAwayTimer(QObject* parent) : QTimer(parent,"AutoAway") {
 	autoawayed = false;
 	a->installEventFilter(this);
 	connect(this, SIGNAL(timeout()), SLOT(onTimeout()));
+	start(config.autoawaytime * 1000,TRUE);
 }
 
 bool AutoAwayTimer::eventFilter(QObject *o,QEvent *e)
 {
 	if (e->type() == QEvent::KeyPress || e->type() == QEvent::Enter) {
 		stop();
-		if (config.autoaway)
-			start(config.autoawaytime * 1000, TRUE);
+		start(config.autoawaytime * 1000, TRUE);
 		if (autoawayed && kadu->returnVar(1) && kadu->returnVar(2)) {
 			fprintf(stderr, "KK Kadu::enterEvent(): auto away cancelled\n");
 			autoawayed = false;
@@ -121,7 +123,6 @@ void AutoAwayTimer::onTimeout()
 	fprintf(stderr, "KK Kadu::autoAway(): I am away!\n");
 	kadu->returnVar(5);
 	autoawayed = true;
-//	start(config.autoawaytime * 1000, TRUE);
 }
 
 #include "status.moc"

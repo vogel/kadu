@@ -32,7 +32,7 @@ class AutoStatusTimer : public QTimer
 		AutoStatusTimer(QObject *parent = 0);
 };
 
-class AutoAwayTimer : public QTimer
+class AutoAwayTimer : private QTimer
 {
 	Q_OBJECT
 
@@ -40,12 +40,23 @@ class AutoAwayTimer : public QTimer
 		void onTimeout();
 
 	public:
-		AutoAwayTimer(QObject *parent = 0);
+		static void on(){
+			if(autoaway_object==NULL)
+				autoaway_object=new AutoAwayTimer();
+		};
+		static void off(){
+			if(autoaway_object!=NULL){
+				delete autoaway_object;
+				autoaway_object=NULL;
+			}
+			};
 
 	protected:
 		bool eventFilter(QObject *, QEvent *);
 
 	private:
+    AutoAwayTimer(QObject *parent = 0);
+    static AutoAwayTimer* autoaway_object;
 		bool autoawayed;
 		int beforeAutoAway;
 };

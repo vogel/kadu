@@ -231,7 +231,7 @@ ConfigDialog::ConfigDialog(QWidget *parent, const char *name) : QTabDialog(paren
 	setCancelButton(i18n("Cancel"));
 	connect(this, SIGNAL(cancelButtonPressed()), this, SLOT(close()));
 	setCaption(i18n("Kadu configuration"));
-	resize(560,440);
+	resize(480,440);
 }
 
 void ConfigDialog::setupTab1(void) {
@@ -1085,8 +1085,10 @@ void ConfigDialog::updateConfig(void) {
 	config.soundvolctrl = b_soundvolctrl->isChecked();
 	config.autoaway = b_autoaway->isChecked();
 	config.autoawaytime = atoi(e_autoawaytime->text().latin1());
-//	kadu->autoaway_timer->stop();
-//	kadu->autoaway_timer->start(config.autoawaytime * 1000, TRUE);
+	if (config.autoaway)
+		AutoAwayTimer::on();
+	else
+		AutoAwayTimer::off();
 	config.dock = b_dock->isChecked();
 	config.defaultstatus = gg_statuses[cb_defstatus->currentItem()];
 

@@ -122,7 +122,6 @@ class Kadu : public QMainWindow
 	Q_OBJECT
 	 
 	public:
-//		QTimer * autoaway;
 		Kadu(QWidget* parent=0, const char *name=0);
 		~Kadu();
 		bool autohammer;
@@ -153,7 +152,6 @@ class Kadu : public QMainWindow
 		bool doBlink;
 
 		AutoStatusTimer* autostatus_timer;
-		AutoAwayTimer* autoaway_timer;
 
 	public slots:
 		void blink();

@@ -516,7 +516,9 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		show();
 
 	autostatus_timer = new AutoStatusTimer(this);
-	autoaway_timer = new AutoAwayTimer(this);
+
+	if (config.autoaway)
+		AutoAwayTimer::on();
 
 	ut = new UpdatesThread(config.uin, actversion);
 	if (config.checkupdates)
@@ -1178,9 +1180,6 @@ void Kadu::setStatus(int status) {
 	
 		setCurrentStatus(status);
 
-		if (config.autoaway)
-			autoaway_timer->start(config.autoawaytime * 1000, TRUE);
-
 		fprintf(stderr, "KK Kadu::setStatus(): actual status: %d\n", sess->status);
 
 		return;
@@ -1539,7 +1538,8 @@ void Kadu::disconnectNetwork() {
 	doBlink = false;
 	fprintf(stderr, "KK Kadu::disconnectNetwork(): calling offline routines\n");
 
-	autoaway_timer->stop();
+	if (config.autoaway)
+		AutoAwayTimer::off();
 	if (pingtimer) {
 		pingtimer->stop();
 		delete pingtimer;
