@@ -21,9 +21,7 @@
 extern "C" int dsp_sound_init()
 {
 	kdebugf();
-	QT_TRANSLATE_NOOP("@default","Output device");
-	QT_TRANSLATE_NOOP("@default","Path:");
-
+		
 	directPlayerObj=new DirectPlayerSlots();
 
 	QObject::connect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
@@ -35,8 +33,10 @@ extern "C" int dsp_sound_init()
 	QObject::connect(sound_manager, SIGNAL(playOnNotify(const uin_t, const QString &, bool, double)),
 					 directPlayerObj, SLOT(playNotify(const uin_t, const QString &, bool, double)));
 
-	ConfigDialog::addHGroupBox("Sounds", "Sounds", "Output device");
-	ConfigDialog::addLineEdit("Sounds", "Output device", "Path:", "OutputDevice","/dev/dsp","","device_path");
+	ConfigDialog::addHGroupBox("Sounds", "Sounds",
+			QT_TRANSLATE_NOOP("@default","Output device"));
+	ConfigDialog::addLineEdit("Sounds", "Output device", 
+			QT_TRANSLATE_NOOP("@default","Path:"), "OutputDevice","/dev/dsp","","device_path");
 
 	return 0;
 }

@@ -28,16 +28,15 @@ extern "C" void encryption_close()
 }
 
 EncryptionManager::EncryptionManager()
-{
-	QT_TRANSLATE_NOOP("@default", "Use encryption");
-	QT_TRANSLATE_NOOP("@default", "Encryption properties");
-	QT_TRANSLATE_NOOP("@default", "Keys length");
-	QT_TRANSLATE_NOOP("@default", "Generate keys");
-
-	ConfigDialog::addCheckBox("Chat", "Chat", "Use encryption", "Encryption", false);	
-	ConfigDialog::addHGroupBox("Chat", "Chat", "Encryption properties");
-	ConfigDialog::addComboBox("Chat", "Encryption properties", "Keys length");
-	ConfigDialog::addPushButton("Chat", "Encryption properties", "Generate keys");
+{			
+	ConfigDialog::addCheckBox("Chat", "Chat",
+			QT_TRANSLATE_NOOP("@default", "Use encryption"), "Encryption", false);	
+	ConfigDialog::addHGroupBox("Chat", "Chat", 
+			QT_TRANSLATE_NOOP("@default", "Encryption properties"));
+	ConfigDialog::addComboBox("Chat", "Encryption properties",
+			QT_TRANSLATE_NOOP("@default", "Keys length"));
+	ConfigDialog::addPushButton("Chat", "Encryption properties",
+			QT_TRANSLATE_NOOP("@default", "Generate keys"));
 
 	ConfigDialog::registerSlotOnCreate(this,SLOT(createConfigDialogSlot()));
 	ConfigDialog::connectSlot("Chat", "Generate keys", SIGNAL(clicked()), this, SLOT(generateMyKeys()));
