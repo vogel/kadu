@@ -594,10 +594,12 @@ void Chat::insertEmoticon(void) {
 
 /* adds an emoticon code to the edit window */
 void Chat::addEmoticon(QString string) {
-	edit->setText(edit->text() + string);
-	edit->end();
-	edit->setFocus();
-//	iconsel_ptr = NULL;
+	if (string.length()) {
+		edit->setText(edit->text() + string);
+		edit->end();
+		edit->setFocus();
+		}
+	iconsel_ptr = NULL;
 //	iconsel->setOn(false);
 }
 
@@ -637,6 +639,11 @@ IconSelector::IconSelector(QWidget *parent, const char *name, Chat * caller) : Q
 	move(callingwidget->pos().x()+callingwidget->buttontray->x() - sizeHint().width() + btn_width,
 		callingwidget->pos().y()+callingwidget->buttontray->y() + callingwidget->buttontray->height()/2 - sizeHint().height()/2 );
 };
+
+void IconSelector::closeEvent(QCloseEvent *e) {
+	callingwidget->addEmoticon("");
+	QWidget::closeEvent(e);
+}
 
 void IconSelector::iconClicked(const QString& emoticon_string)
 {

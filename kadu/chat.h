@@ -110,7 +110,7 @@ class IconSelectorButton : public QToolButton
 	
 	private slots:
 		void buttonClicked();
-	
+
 	public:
 		IconSelectorButton(QWidget* parent,const QString& emoticon_string);	
 	
@@ -125,6 +125,9 @@ class IconSelector : public QWidget {
 
 	private:
 		Chat *callingwidget;
+
+	protected:
+		void closeEvent(QCloseEvent *e);
 
 	private slots:
 		void iconClicked(const QString& emoticon_string);
