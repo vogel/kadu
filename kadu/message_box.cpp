@@ -125,17 +125,23 @@ void MessageBox::status(const QString& message)
 	qApp->processEvents();
 }
 
-void MessageBox::msg(const QString& message)
+void MessageBox::msg(const QString& message,bool modal)
 {
-	MessageBox* m=new MessageBox(message,OK);
-	m->show();
+	MessageBox* m=new MessageBox(message,OK,modal);
+	if (modal)
+		m->exec();
+	else
+		m->show();
 }
 
-void MessageBox::wrn(const QString& message)
+void MessageBox::wrn(const QString& message,bool modal)
 {
-	MessageBox* m=new MessageBox(message,OK);
+	MessageBox* m=new MessageBox(message,OK,modal);
 	m->setIcon(icons_manager.loadIcon("Warning"));
-	m->show();
+	if (modal)
+		m->exec();
+	else
+		m->show();
 }
 
 bool MessageBox::ask(const QString& message)

@@ -66,11 +66,11 @@ class MessageBox : public QDialog
 			dialog z przyciskiem: "OK" zamykaj±cy okno.
 			Nie blokuje wykonywania programu.
 		**/
-		static void msg(const QString& message);
+		static void msg(const QString& message,bool modal=false);
 		/**
 			Jak wy¿ej, ale w formie ostrze¿enia
 		**/
-		static void wrn(const QString& message);
+		static void wrn(const QString& message,bool modal=false);
 		/**
 			Informuje u¿ytkownika o postêpie wykonywanej
 			przez program czynno¶ci. Tworzy dialog zawieraj±cy
