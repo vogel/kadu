@@ -417,7 +417,7 @@ QString Chat::convertCharacters(QString edit, bool me) {
 	edit.replace( QRegExp("\n"), "<BR>" );
 
 	// detekcja adresow url
-	QRegExp url_regexp("(http://|www\\.|ftp://)[a-zA-Z0-9\\-\\._/~?=&#]+");
+	QRegExp url_regexp("(http://|www\\.|ftp://)[a-zA-Z0-9\\-\\._/~?=&#\\+%:]+");
 	for (int s=0; s<edit.length(); s++)
 	{
 		int p=url_regexp.search(edit,s);
@@ -427,7 +427,7 @@ QString Chat::convertCharacters(QString edit, bool me) {
 		QString link="<a href=\""+edit.mid(p,l)+"\">"+
 			edit.mid(p,l)+"</a>";
 		edit=edit.left(p)+link+edit.mid(p+l);
-		s+=link.length();
+		s=p+link.length();
 	};
 
 	return edit;
