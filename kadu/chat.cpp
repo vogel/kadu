@@ -372,9 +372,11 @@ void Chat::scrollMessages(QString &toadd) {
 
 	body->viewport()->setUpdatesEnabled(false);
 	if (!config.scrolldown)
-		body->setText(toadd + body->text());
+//		body->setText(toadd + body->text());
+		body->insertAt(toadd, 0, 0);
 	else {
-		body->setText(body->text() + toadd);
+//		body->setText(body->text() + toadd);
+		body->append(toadd);
 		body->scrollToBottom();
 		}
 	body->viewport()->setUpdatesEnabled(true);
