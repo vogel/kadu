@@ -41,7 +41,8 @@ class EventManager : public QObject
 		void disconnectedSlot();
 		void userStatusChangedSlot(struct gg_event*);
 		void userlistReceivedSlot(struct gg_event *);
-		void messageReceivedSlot(int, UinsList,unsigned char* msg,time_t,int,struct gg_msg_format*);
+		void messageReceivedSlot(int, UinsList,unsigned char *msg,time_t,
+			int formats_length, void *formats);
 		void chatReceivedSlot(UinsList senders,const QString& msg,time_t time);
 		void ackReceivedSlot(int seq);
 		void dccConnectionReceivedSlot(const UserListElement& sender);
@@ -79,7 +80,8 @@ class EventManager : public QObject
 		/**
 			Otrzymano jak±¶ wiadomo¶æ z serwera GG
 		**/
-		void messageReceived(int,UinsList,unsigned char* msg,time_t,int,struct gg_msg_format*);
+		void messageReceived(int,UinsList,unsigned char* msg,time_t,
+			int formats_length, void *formats);
 		/**
 			Otrzymano wiadomo¶æ, któr± trzeba pokazaæ (klasa chat lub msg,
 			nadawca nie jest ignorowany, itp)

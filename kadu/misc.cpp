@@ -101,6 +101,70 @@ QString pwHash(const QString tekst) {
 	return nowytekst;
 }
 
+QString formatGGMessage(const QString &msg, int formats_length, void *formats) {
+	QString mesg;
+	bool bold, italic, underline, color;
+	char *cformats = (char *)formats;
+	struct gg_msg_richtext_format *actformat;
+	struct gg_msg_richtext_color *actcolor;
+	int pos;
+	bold = italic = underline = color = false;
+	pos = 0;
+	if (formats_length) {
+		while (formats_length) {
+			actformat = (struct gg_msg_richtext_format *)cformats;
+			if (actformat->position > pos) {
+				mesg.append(msg.mid(pos, actformat->position - pos));
+				pos += actformat->position;
+				}
+			else {
+				if (actformat->font & GG_FONT_BOLD) {
+					if (!bold) {
+						mesg.append("<B>");
+						bold = true;
+						}
+					}
+				else
+					if (bold) {
+						mesg.append("</B>");
+						bold = false;
+						}
+				if (actformat->font & GG_FONT_ITALIC) {
+					if (!italic) {
+						mesg.append("<I>");
+						italic = true;
+						}
+					}
+				else
+					if (italic) {
+						mesg.append("</I>");
+						italic = false;
+						}
+				if (actformat->font & GG_FONT_UNDERLINE) {
+					if (!underline) {
+						mesg.append("<U>");
+						underline = true;
+						}
+					}
+				else
+					if (underline) {
+						mesg.append("</U>");
+						underline = false;
+						}
+				cformats += sizeof(gg_msg_richtext_format);
+				formats_length -= sizeof(gg_msg_richtext_format);
+				cformats += sizeof(gg_msg_richtext_color) * (actformat->font & GG_FONT_COLOR);
+				formats_length -= sizeof(gg_msg_richtext_color) * (actformat->font & GG_FONT_COLOR);
+				}
+			}
+		if (pos < msg.length())
+			mesg.append(msg.mid(pos, msg.length() - pos));
+		}
+	else
+		mesg = msg;
+	return mesg;
+}
+
 QString parse_symbols(QString s, int i, UserListElement &ule, bool escape) {
 	QString r,d;
 	int j;

@@ -132,7 +132,7 @@ EventManager::EventManager()
 	connect(this,SIGNAL(disconnected()),this,SLOT(disconnectedSlot()));
 	connect(this,SIGNAL(userStatusChanged(struct gg_event*)),this,SLOT(userStatusChangedSlot(struct gg_event*)));
 	connect(this,SIGNAL(userlistReceived(struct gg_event*)),this,SLOT(userlistReceivedSlot(struct gg_event*)));
-	connect(this,SIGNAL(messageReceived(int,UinsList,unsigned char*,time_t,int,struct gg_msg_format*)),this,SLOT(messageReceivedSlot(int,UinsList,unsigned char*,time_t,int,struct gg_msg_format*)));
+	connect(this,SIGNAL(messageReceived(int,UinsList,unsigned char*,time_t, int, void *)),this,SLOT(messageReceivedSlot(int,UinsList,unsigned char*,time_t, int, void *)));
 	connect(this,SIGNAL(chatReceived(UinsList,const QString&,time_t)),
 		this,SLOT(chatReceivedSlot(UinsList,const QString&,time_t)));
 	connect(this,SIGNAL(ackReceived(int)),this,SLOT(ackReceivedSlot(int)));
@@ -196,7 +196,8 @@ void EventManager::disconnectedSlot()
 	kadu->autohammer = false;
 };
 
-void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned char* msg, time_t time,int formats_count,struct gg_msg_format * formats)
+void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned char* msg, time_t time,
+	int formats_length, void *formats)
 {
 	// ignorujemy, jesli nick na liscie ignorowanych
 	// PYTANIE CZY IGNORUJEMY CALA KONFERENCJE
@@ -253,6 +254,8 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 		mesg = cp2unicode(msg);
 		}
 #endif
+
+	mesg = formatGGMessage(mesg, formats_length, formats);
 
 	QString nick;
 	if (userlist.containsUin(senders[0])) {
@@ -650,7 +653,8 @@ void EventManager::eventHandler(gg_session* sess)
 				}
 			else
 				uins.append(e->event.msg.sender);				
-			emit event_manager.messageReceived(e->event.msg.msgclass, uins, e->event.msg.message, e->event.msg.time, 0, NULL);
+			emit event_manager.messageReceived(e->event.msg.msgclass, uins, e->event.msg.message,
+				e->event.msg.time, e->event.msg.formats_length, e->event.msg.formats);
 		}
 	};
 
