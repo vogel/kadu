@@ -15,6 +15,8 @@
   miêdzy innymi pod GNOME
 * okno informacji o u¿ytkowniku: zmiana pola "Wy¶wietl" aktualizuje
   okna rozmów które maj± w tytule star± nazwê u¿ytkownika
+* okno wyboru statusu (pojawiaj±ce siê po klikniêciu pola z naszym
+  statusem) zawsze pokazuje siê we w³a¶ciwym miejscu
 
 +++ wersja 0.3.3-pre5
 * wszystkie? wiadomo¶ci od u¿ytkowników powinny wpadaæ do okna rozmowy

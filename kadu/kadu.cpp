@@ -1272,7 +1272,7 @@ void Kadu::setCurrentStatus(int status) {
 
 void Kadu::slotShowStatusMenu() {
 	QPoint point = statuslabeltxt->mapToGlobal(QPoint(0, 0));
-	point.setY(point.y()-statusppm->height());
+	point.setY(point.y() - statusppm->sizeHint().height());
 	statusppm->popup(point);
 }
 
