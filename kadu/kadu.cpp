@@ -1261,6 +1261,7 @@ void Kadu::setCurrentStatus(int status) {
 }
 
 void Kadu::setStatus(int status) {
+	unsigned char *descr;
 	QHostAddress ip;
 
 	kdebug("Kadu::setStatus(): setting status: %d\n",
@@ -1287,7 +1288,6 @@ void Kadu::setStatus(int status) {
 	if (socket_active) {
 		doBlink = false;
 		if (with_description) {
-			unsigned char *descr;
 			descr = (unsigned char *)strdup(unicode2cp(own_description).data());
 			if (status == GG_STATUS_NOT_AVAIL_DESCR)
 				gg_change_status_descr(sess, status, (const char *)descr);
@@ -1316,6 +1316,8 @@ void Kadu::setStatus(int status) {
 		return;
 		}
 
+	memset(&loginparams, 0, sizeof(loginparams));
+	loginparams.async = 1;
 
 	if (config_file.readBoolEntry("Network", "AllowDCC"))
 		prepareDcc();
@@ -1344,15 +1346,17 @@ void Kadu::setStatus(int status) {
 		gg_proxy_enabled = 0;
 
 	loginparams.status = status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General", "PrivateStatus"));
+	if (with_description)
+		loginparams.status_descr = strdup((const char *)unicode2cp(own_description));
         loginparams.password =
-		strdup(unicode2cp(pwHash(config_file.readEntry("General", "Password"))).data());
+		strdup((const char *)unicode2cp(pwHash(config_file.readEntry("General", "Password"))));
 	char *tmp =
-		strdup(unicode2latin(pwHash(config_file.readEntry("General", "Password"))).data());
+		strdup((const char *)unicode2latin(pwHash(config_file.readEntry("General", "Password"))));
 	kdebug("Kadu::setStatus(): password = %s\n", tmp);
 	free(tmp);
 	loginparams.uin = config_file.readNumEntry("General", "UIN");
-	loginparams.client_version = GG_DEFAULT_CLIENT_VERSION;
 	loginparams.has_audio = config_file.readBoolEntry("Network", "AllowDCC");
+	loginparams.last_sysmsg = config_file.readNumEntry("Global", "SystemMsgIndex");
 
 	if (config_file.readBoolEntry("Network", "AllowDCC") && config_extip.ip4Addr() && config_file.readNumEntry("Network", "ExternalPort") > 1023) {
 		loginparams.external_addr = htonl(config_extip.ip4Addr());
@@ -1381,12 +1385,12 @@ void Kadu::setStatus(int status) {
 		server_nr++;
 		if (server_nr > gg_servers.count())
 			server_nr = 0;
-	}
+		}
 //	polaczenia TLS z serwerami GG na razie nie dzialaja
 //	loginparams.tls = config_file.readBoolEntry("Network", "UseTLS");
 	loginparams.tls = 0;
-	loginparams.protocol_version = 0x20;
-	loginparams.client_version = strdup("6, 0, 0, 132");
+	loginparams.client_version = GG_DEFAULT_CLIENT_VERSION;
+	loginparams.protocol_version = GG_DEFAULT_PROTOCOL_VERSION;
 	if (loginparams.tls) {
 		kdebug("Kadu::setStatus(): using TLS\n");
 		loginparams.server_port = 0;
@@ -1401,6 +1405,8 @@ void Kadu::setStatus(int status) {
 	sess = gg_login(&loginparams);
 	free(loginparams.client_version);
 	free(loginparams.password);
+	if (loginparams.status_descr)
+		free(loginparams.status_descr);
 
 	AutoConnectionTimer::off();
 

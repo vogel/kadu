@@ -154,6 +154,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * zale¿no¶æ kompilacji modu³ów od kadu-config.h i kadu/*.h (adrian)
 * podczas przeszukiwania listy kontaktow za pomoca klawiatury jest
   uaktualniany panel informacyjny (michal)
+* dalsze porz±dki w przekazywaniu parametrów funkcji gg_login(...) (chilek)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
