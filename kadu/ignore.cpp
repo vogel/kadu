@@ -60,25 +60,18 @@ void Ignored::add() {
 }
 
 void Ignored::getList() {
-	int i,j,k;
-	char buf[50];
-	bool userlist_entry = false;
+	int i, j, k;
+	QString buf;
 	list->clear();
 	for (i = 0; i < ignored.count(); i++) {
-		for (j = 0; j < userlist.size(); j++) {
-			if (ignored[i] == userlist[j].uin) {
-				userlist_entry = true;
-				k = j;
-				}
-			}
-		if (userlist[k].uin) {
-			if (userlist_entry)
-				snprintf(buf, sizeof(buf), "%d (%s)", userlist[k].uin, (const char *)userlist[k].altnick.local8Bit());	
-			else
-				snprintf(buf, sizeof(buf), "%d (?)", ignored[i]);			
-			list->insertItem(buf);
-			}
-		userlist_entry = false;
+		j = 0;
+		while (j < userlist.count() && ignored[i] != userlist[j].uin)
+			j++;
+		if (j < userlist.count())
+			buf = QString("%1 (%2)").arg(QString::number(userlist[j].uin)).arg(userlist[j].altnick);
+		else
+			buf = QString("%1 (?)").arg(QString::number(ignored[i]));
+		list->insertItem(buf);
 		}
 	list->sort();
 }
@@ -87,7 +80,7 @@ void Ignored::remove() {
 	if (list->currentText().latin1() == NULL)
 		return;
 
-	delIgnored(atoi(list->currentText().latin1()));
+	delIgnored(list->currentText().toUInt());
 	getList();
 	writeIgnored(NULL);
 }
@@ -120,7 +113,7 @@ int writeIgnored(QString filename)
 
 	for (int i = 0; i < ignored.count(); i++)
 		if (ignored[i])
-			tmp = QString::number(ignored[i]) + "\n";
+			tmp = QString("%1\n").arg(QString::number(ignored[i]));
 
 	file.writeBlock(tmp, tmp.length());
 	file.close();
