@@ -195,7 +195,7 @@ void ChooseDescription::okbtnPressed() {
 
 void ChooseDescription::cancelbtnPressed() {
 	reject();
-	close();
+//	close();
 }
 
 #include "misc.moc"

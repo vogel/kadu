@@ -1209,7 +1209,6 @@ void Kadu::slotHandleState(int command) {
 		case 1:
 			cd = new ChooseDescription(1);
 			if (cd->exec() == QDialog::Accepted) {
-				cd->close();
 				autohammer = true;
 				setStatus(GG_STATUS_AVAIL_DESCR);
 				}
@@ -1221,7 +1220,6 @@ void Kadu::slotHandleState(int command) {
 		case 3:
 			cd = new ChooseDescription(3);
 			if (cd->exec() == QDialog::Accepted) {
-				cd->close();
 				autohammer = true;
 				setStatus(GG_STATUS_BUSY_DESCR);
 				}
@@ -1233,7 +1231,6 @@ void Kadu::slotHandleState(int command) {
 		case 5:
 			cd = new ChooseDescription(5);
 			if (cd->exec() == QDialog::Accepted) {
-				cd->close();
 				autohammer = true;
 				setStatus(GG_STATUS_INVISIBLE_DESCR);
 				}
@@ -1246,7 +1243,6 @@ void Kadu::slotHandleState(int command) {
 		case 7:
 			cd = new ChooseDescription(7);
 			if (cd->exec() == QDialog::Accepted) {
-				cd->close();
 				setStatus(GG_STATUS_NOT_AVAIL_DESCR);
 				statusppm->setItemEnabled(7, false);
 				autohammer = false;
