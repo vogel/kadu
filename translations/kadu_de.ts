@@ -546,6 +546,22 @@ Es ist ein sehr hohes Risiko!</translation>
         <translation>Optionen des Browsers</translation>
     </message>
     <message>
+        <source>Debugging mask</source>
+        <translation>Dabug-Maske</translation>
+    </message>
+    <message>
+        <source>Receive images during invisibility</source>
+        <translation>Empfange Bilder während der Unsichtbarkeit</translation>
+    </message>
+    <message>
+        <source>Block window close on new message</source>
+        <translation>Blockiere Fensterschliessen bei neuen Nachrichten</translation>
+    </message>
+    <message>
+        <source>Max time to block window close</source>
+        <translation>Längste Zeit bis zum Blockieren des Fensterschliessens</translation>
+    </message>
+    <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
 %r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
 %v - revDNS, %p - port %e - email %x - max image size
@@ -553,19 +569,7 @@ Es ist ein sehr hohes Risiko!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Debugging mask</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Receive images during invisibility</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Block window close on new message</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Max time to block window close</source>
+        <source>French</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -684,23 +688,23 @@ Es ist ein sehr hohes Risiko!</translation>
     </message>
     <message>
         <source>Your message has been blocked by server. Message has not been delivered.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ihre Nachricht wurde vom Sever blockiert. Nachricht wurde nicht zugestellt.</translation>
     </message>
     <message>
         <source>User&apos;s message box is full. Message has not been delivered.</source>
-        <translation type="unfinished"></translation>
+        <translation>Die Nachrichtenbox ist voll. Ihre Nachricht wurde nicht zugestellt.</translation>
     </message>
     <message>
         <source>Message has not been delivered.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nachricht wurde nicht zugestellt.</translation>
     </message>
     <message>
         <source>Chat window will be cleared. Continue?</source>
-        <translation type="unfinished"></translation>
+        <translation>Chat-Fenster wird geleert. Fortfahren?</translation>
     </message>
     <message>
         <source>New message received, close window anyway?</source>
-        <translation type="unfinished"></translation>
+        <translation>Neue Nachricht empfangen, trotzdem schliessen?</translation>
     </message>
 </context>
 <context>

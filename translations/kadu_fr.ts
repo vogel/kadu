@@ -566,6 +566,10 @@ It&apos;s a high security risk!</source>
         <source>Show tooltip on userbox</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>French</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>

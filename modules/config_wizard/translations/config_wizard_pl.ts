@@ -452,6 +452,10 @@ Hasło powinno w obu polach być takie same!</translation>
         <source>Registration was successful.</source>
         <translation>Rejestracja zakończona sukcesem.</translation>
     </message>
+    <message>
+        <source>French</source>
+        <translation>Francuski</translation>
+    </message>
 </context>
 <context>
     <name>WizardStarter</name>

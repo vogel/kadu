@@ -453,6 +453,10 @@ Password in entrambi campi deve essere la stessa!</translation>
         <source>Registration was successful.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>French</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>WizardStarter</name>

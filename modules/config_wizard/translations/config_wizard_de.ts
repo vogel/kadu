@@ -453,6 +453,10 @@ Kennwörter in beiden Feldern (&quot;Kennwort&quot; und &quot;Kennwort erneut ei
         <source>Registration was successful.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>French</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>WizardStarter</name>

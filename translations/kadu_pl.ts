@@ -571,6 +571,10 @@ Jest to wysoce ryzykowne!</translation>
         <source>Max time to block window close</source>
         <translation>Maksymalny czas blokowania okna</translation>
     </message>
+    <message>
+        <source>French</source>
+        <translation>Francuski</translation>
+    </message>
 </context>
 <context>
     <name>About</name>

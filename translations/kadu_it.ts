@@ -568,6 +568,10 @@ E un rischio per la sicurezza!</translation>
         <source>Max time to block window close</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>French</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
