@@ -450,7 +450,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	group_bar = new KaduTabBar(hbox1, "groupbar");
 	group_bar->setShape(QTabBar::RoundedBelow);
 	group_bar->addTab(new QTab(i18n("All")));
-	group_bar->setMinimumWidth(group_bar->sizeHint().width());
+//	group_bar->setMinimumWidth(group_bar->sizeHint().width());
 	connect(group_bar, SIGNAL(selected(int)), this, SLOT(groupTabSelected(int)));
 
 //	QHBox *hbox2 = new QHBox(vbox1);

@@ -29,6 +29,13 @@ KaduTabBar::KaduTabBar(QWidget *parent, const char *name)
 	fprintf(stderr, "KK KaduTabBar::KaduTabBar()\n");
 	setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred));
 	lstatic2 = new QPtrList<QTab>;
+	vertscrolls = FALSE;
+	upB = new QToolButton(UpArrow, this, "qt_up_btn");
+	connect(upB, SIGNAL(clicked()), this, SLOT(scrollTabsVert()));
+	upB->hide();
+	downB = new QToolButton(DownArrow, this, "qt_down_btn");
+	connect(downB, SIGNAL(clicked()), this, SLOT(scrollTabsVert()));
+	downB->hide();
 }
 
 KaduTabBar::~KaduTabBar() {
@@ -84,7 +91,7 @@ void KaduTabBar::layoutTabs() {
 		t->setRect(QRect(t->rect().left(), t->rect().top(), r.width(), t->rect().height()));
 }
 
-QSize KaduTabBar::sizeHint() {
+QSize KaduTabBar::sizeHint() const {
 	fprintf(stderr, "KK KaduTabBar::sizeHint()\n");
 	QTab *t = lstatic2->first();
 	if (t) {
@@ -96,6 +103,11 @@ QSize KaduTabBar::sizeHint() {
 	else {
 		return QSize(0, 0).expandedTo(QApplication::globalStrut());
 		}
+}
+
+QSize KaduTabBar::minimumSizeHint() const {
+	fprintf(stderr, "KK KaduTabBar::minimumsizeHint()\n");
+	return QSize(sizeHint().width(), downB->sizeHint().height() * 2 + 75);
 }
 
 void KaduTabBar::paint(QPainter *p, QTab *t, bool selected) const {
@@ -148,6 +160,8 @@ int KaduTabBar::insertTab(QTab *newTab, int index)
 	else
 		lstatic2->insert(index, newTab);
 	int id = QTabBar::insertTab(newTab, index);
+	updateArrowButtonsVert();
+	makeVisibleVert(tab(currentTab()));
 
 	return id;
 }
@@ -157,4 +171,88 @@ void KaduTabBar::removeTab(QTab *t)
 	fprintf(stderr, "KK KaduTabBar::removeTab()\n");
 	lstatic2->remove(t);
 	QTabBar::removeTab(t);
+	updateArrowButtonsVert();
+	makeVisibleVert(tab(currentTab()));
+	update();
+}
+
+void KaduTabBar::setCurrentTab(QTab *tab) {
+	if (tab && lstatic2)
+		makeVisibleVert(tab);
+	QTabBar::setCurrentTab(tab);
+}
+
+void KaduTabBar::resizeEvent(QResizeEvent *e) {
+	fprintf(stderr, "KK KaduTabBar::resizeEvent()\n");
+	const int arrowHeight = 16;
+	downB->setGeometry(0, height() - arrowHeight, width(), arrowHeight);
+	upB->setGeometry(0, height() - 2 * arrowHeight, width(), arrowHeight);
+	QTabBar::resizeEvent(e);
+	updateArrowButtonsVert();
+	makeVisibleVert(tab(currentTab()));
+}
+
+void KaduTabBar::makeVisibleVert(QTab *tab) {
+	fprintf(stderr, "KK KaduTabBar::makeVisibleVert()\n");
+	bool tooFarUp = (tab && tab->rect().top() < 0);
+	bool tooFarDown = (tab && tab->rect().bottom() >= upB->y());
+	if (!vertscrolls || (!tooFarUp && !tooFarDown))
+		return;
+	
+	layoutTabs();
+	
+	int offset = 0;
+	if (tooFarUp)
+		offset = tab == lstatic2->first() ? 0 : tab->rect().top() - 8;
+	else
+		if (tooFarDown)
+			offset = tab->rect().bottom() - upB->y() + 1;
+	for (QTab *t = lstatic2->first(); t; t = lstatic2->next()) {
+		QRect r = t->rect();
+		r.moveBy(0, -offset);
+		t->setRect(r);
+		}
+
+	upB->setEnabled(offset != 0);
+	downB->setEnabled(lstatic2->last()->rect().bottom() >= upB->y());
+
+	if (!upB->isEnabled() && upB->isDown())
+		upB->setDown(FALSE);
+	if (!downB->isEnabled() && downB->isDown())
+		downB->setDown(FALSE);
+
+	update();
+}
+
+void KaduTabBar::updateArrowButtonsVert() {
+	fprintf(stderr, "KK KaduTabBar::updateArrowButtonsVert()\n");
+	bool b = lstatic2->last() && (lstatic2->last()->rect().bottom() > height());
+	vertscrolls = b;
+	if (vertscrolls) {
+		upB->setEnabled(FALSE);
+		downB->setEnabled(TRUE);
+		upB->show();
+		downB->show();
+		}
+	else {
+		upB->hide();
+		downB->hide();
+		}
+}
+
+void KaduTabBar::scrollTabsVert() {
+	fprintf(stderr, "KK KaduTabBar::scrollTabsVert()\n");
+	QTab *up = 0;
+	QTab *down = 0;
+	for (QTab *t = lstatic2->first(); t; t = lstatic2->next()) {
+		if (t->rect().top() < 0 && t->rect().bottom() > 0)
+			up = t;
+		if (t->rect().top() < upB->y() + 2)
+			down = t;
+		}
+	if (sender() == upB)
+		makeVisibleVert(up);
+	else
+		if (sender() == downB)
+			makeVisibleVert(down);
 }

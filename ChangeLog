@@ -9,6 +9,7 @@
   haczyków (chilek)
 * poprawiony mechanizm zmiany wielko¶ci komponentów w oknie chat. Teraz mo¿na
   ju¿ naprawdê dowolnie, co do pixela ustawiaæ wielko¶æ (adrian)
+* dodanie guzików przewijania zak³adek grup (chilek)
 
 +++ wersja 0.3.3-rc3
 * sensowne potwierdzenie usuniêcia kontaktu (adrian)
