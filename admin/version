@@ -1,0 +1,12 @@
+#!/bin/bash
+if [ -n $2 ]; then
+cat configure.ac |sed -e "s/$1/$2/g" > configure.ac
+else
+cat configure.ac |sed -e "s/cvs/$2/g" > configure.ac
+fi
+echo "autoconf..."
+autoconf
+echo "automake..."
+automake
+echo "admin/am_edit..."
+admin/am_edit
