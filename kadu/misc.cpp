@@ -513,7 +513,8 @@ struct richtext_formant {
 	struct gg_msg_richtext_image image;
 };
 
-QString unformatGGMessage(const QString &msg, int &formats_length, void *&formats) {
+QString unformatGGMessage(const QString &msg, int &formats_length, void *&formats)
+{
 	kdebugf();
 	QString mesg, tmp;
 	QStringList attribs;
@@ -552,7 +553,8 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 	inspan = -1;
 	pos = idx = formats_length = 0;
 
-	while (uint(pos) < mesg.length()) {
+	while (uint(pos) < mesg.length())
+	{
 		int image_idx    = mesg.find("[IMAGE ", pos);
 		int span_idx     = mesg.find("<span style=", pos);
 		int span_end_idx = mesg.find("</span>", pos);
@@ -578,17 +580,20 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 				+ sizeof(struct gg_msg_richtext_image);
 			pos = image_idx;
 		}
-		else if (inspan == -1) {
+		else if (inspan == -1)
+		{
 			idx = span_idx;
-			if (idx != -1) {
+			if (idx != -1)
+			{
 				kdebugm(KDEBUG_INFO, "unformatGGMessage(): idx=%d\n", idx);
 				inspan = idx;
-				if (pos && idx > pos) {
+				if (pos && idx > pos)
+				{
 					actformant.format.position = pos;
 					actformant.format.font = 0;
 					formants.append(actformant);
 					formats_length += sizeof(struct gg_msg_richtext_format);
-					}
+				}
 				pos = idx;
 				idx = mesg.find("\">", pos);
 				tmp = mesg.mid(pos, idx - pos);
@@ -597,14 +602,16 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 				tmp = tmp.section("\"", 1, 1);
 				attribs = QStringList::split(";", tmp);
 				formantattribs.clear();
-				for (i = 0; i < attribs.count(); i++) {
+				for (i = 0; i < attribs.count(); i++)
+				{
 					actattrib.name = attribs[i].section(":", 0, 0);
 					actattrib.value = attribs[i].section(":", 1, 1);
 					formantattribs.append(actattrib);
-					}
+				}
 				actformant.format.position = pos;
 				actformant.format.font = 0;
-				for (i = 0; i < formantattribs.count(); i++) {
+				for (i = 0; i < formantattribs.count(); i++)
+				{
 					actattrib = formantattribs[i];
 					if (actattrib.name == "font-style" && actattrib.value == "italic")
 						actformant.format.font |= GG_FONT_ITALIC;
@@ -612,41 +619,46 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 						actformant.format.font |= GG_FONT_UNDERLINE;
 					if (actattrib.name == "font-weight" && actattrib.value == "600")
 						actformant.format.font |= GG_FONT_BOLD;
-					if (actattrib.name == "color") {
+					if (actattrib.name == "color")
+					{
 						actformant.format.font |= GG_FONT_COLOR;
 						QColor color(actattrib.value);
 						actformant.color.red = color.red();
 						actformant.color.green = color.green();
 						actformant.color.blue = color.blue();
-						}
 					}
+				}
 				formants.append(actformant);
 				formats_length += sizeof(struct gg_msg_richtext_format)
 					+ sizeof(struct gg_msg_richtext_color)
 					* ((actformant.format.font & GG_FONT_COLOR) != 0);
-				}
+			}
 			else
 				break;
-			}
-		else {
+		}
+		else
+		{
 			idx = span_end_idx;
-			if (idx != -1) {
+			if (idx != -1)
+			{
 				kdebugm(KDEBUG_INFO, "unformatGGMessage(): idx=%d\n", idx);
 				pos = idx;
 				mesg.remove(pos, 7);
 				inspan = -1;
-				}
+			}
 			else
 				break;
-			}
 		}
-	if (pos && idx == -1) {
+	}
+	if (pos && idx == -1)
+	{
 		actformant.format.position = pos;
 		actformant.format.font = 0;
 		formants.append(actformant);
 		formats_length += sizeof(struct gg_msg_richtext_format);
-		}
-	if (formats_length) {
+	}
+	if (formats_length)
+	{
 		richtext_header.flag = 2;
 		richtext_header.length = formats_length;
 		formats_length += sizeof(struct gg_msg_richtext);
@@ -654,23 +666,26 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 		tmpformats = cformats;
 		memcpy(tmpformats, &richtext_header, sizeof(struct gg_msg_richtext));
 		tmpformats += sizeof(struct gg_msg_richtext);
-		for (QValueList<struct richtext_formant>::iterator it = formants.begin(); it != formants.end(); it++) {
+		for (QValueList<struct richtext_formant>::iterator it = formants.begin(); it != formants.end(); it++)
+		{
 			actformant = (*it);
 			memcpy(tmpformats, &actformant, sizeof(gg_msg_richtext_format));
 			tmpformats += sizeof(gg_msg_richtext_format);
-			if (actformant.format.font & GG_FONT_COLOR) {
+			if (actformant.format.font & GG_FONT_COLOR)
+			{
 				memcpy(tmpformats, &actformant.color, sizeof(gg_msg_richtext_color));
 				tmpformats += sizeof(gg_msg_richtext_color);
-				}
-			if (actformant.format.font & GG_FONT_IMAGE) {
+			}
+			if (actformant.format.font & GG_FONT_IMAGE)
+			{
 				memcpy(tmpformats, &actformant.image, sizeof(gg_msg_richtext_image));
 				tmpformats += sizeof(gg_msg_richtext_image);
-				}
 			}
+		}
 		kdebugm(KDEBUG_INFO, "unformatGGMessage(): formats_length=%d, tmpformats-cformats=%d\n",
 			formats_length, tmpformats - cformats);
 		formats = (void *)cformats;
-		}
+	}
 	else
 		formats = NULL;
 
