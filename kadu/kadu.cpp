@@ -13,7 +13,9 @@
 #include <qlistbox.h>
 #include <qstring.h>
 #include <qtextstream.h>
+#include <qtextcodec.h>
 #include <qpoint.h>
+#include <qdir.h>
 #include <qfile.h>
 #include <qfileinfo.h>
 #include <qhbox.h>
@@ -26,6 +28,7 @@
 #include <qmenubar.h>
 #include <qsplitter.h>
 #include <qtoolbar.h>
+#include <qtranslator.h>
 
 #include <netinet/in.h>
 #include <time.h>
@@ -238,7 +241,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	config_file.addVariable("Sounds", "PlaySoundChatInvisible", config_file.readBoolEntry("Global", "PlaySoundChatInvisible", true));
 	config_file.addVariable("Sounds", "SoundPlayer", config_file.readEntry("Global", "SoundPlayer"));
 	config_file.addVariable("Sounds", "PlaySound", config_file.readEntry("Global", "PlaySound"));
-	config_file.addVariable("Sounds", "PlaySoundArtsDsp", config_file.readEntry("Global", "PlaySoundArtsDsp", false));
+	config_file.addVariable("Sounds", "PlaySoundArtsDsp", config_file.readBoolEntry("Global", "PlaySoundArtsDsp", false));
 	config_file.addVariable("Sounds", "SoundVolume", config_file.readDoubleNumEntry("Global", "SoundVolume")*100);
 	config_file.addVariable("Sounds", "VolumeControl", config_file.readBoolEntry("Global", "VolumeControl", false));
 	config_file.addVariable("General", "AutoAway", config_file.readBoolEntry("Global", "AutoAway", false));
@@ -281,9 +284,9 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	config_file.addVariable("Chat", "WebBrowser", config_file.readEntry("WWW", "WebBrowser"));
 	config_file.addVariable("Look", "PanelContents", 
 	config_file.readEntry("Other", "PanelContents", "[#%u][, %f] %r [- %d] [ (%i)]"));
-	config_file.addVariable("Chat", "ConferenceContents", config_file.readEntry("Other", "ConferenceContents", "%a (%s[: %d])"));
-	config_file.addVariable("Chat", "ChatContents", config_file.readEntry("Other", "ChatContents"));
-	config_file.addVariable("Chat", "ConferencePrefix", config_file.readEntry("Other", "ConferencePrefix"));
+	config_file.addVariable("Look", "ConferenceContents", config_file.readEntry("Other", "ConferenceContents", "%a (%s[: %d])"));
+	config_file.addVariable("Look", "ChatContents", config_file.readEntry("Other", "ChatContents"));
+	config_file.addVariable("Look", "ConferencePrefix", config_file.readEntry("Other", "ConferencePrefix"));
 
 	QColor color;
 	color=QColor("#FFFFFF");
@@ -320,6 +323,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	QT_TRANSLATE_NOOP("@default", "Log messages");
 	QT_TRANSLATE_NOOP("@default", "Restore window geometry");
 	QT_TRANSLATE_NOOP("@default", "Check for updates");
+	QT_TRANSLATE_NOOP("@default", "Set language:");
 
 	KaduSlots *kaduslots=new KaduSlots();
 	
@@ -328,11 +332,11 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	ConfigDialog::addLineEdit("General", "User data", "Uin", "UIN", "0");
 	ConfigDialog::addLineEdit("General", "User data", "Password", "Password", "");
 	ConfigDialog::addLineEdit("General", "User data", "Nick", "Nick", tr("Me"));
+	ConfigDialog::addComboBox("General", "General", "Set language:");
 	ConfigDialog::addGrid("General", "General", "grid", 3);
 	ConfigDialog::addCheckBox("General", "grid", "Log messages", "Logging", true);
 	ConfigDialog::addCheckBox("General", "grid", "Restore window geometry", "SaveGeometry", true);
 	ConfigDialog::addCheckBox("General", "grid", "Check for updates", "CheckUpdates", true);
-
 
 	Sms::initModule();
 	Chat::initModule();
@@ -372,7 +376,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Send file", "kadu_sendfile", "F8");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Configuration", "kadu_configure", "F2");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Add user", "kadu_adduser", "Ctrl+N");
-
 
 
 	//zaladowanie wartosci domyslnych (pierwsze uruchomienie)
@@ -2106,7 +2109,18 @@ void KaduSlots::onCreateConfigDialog()
 	QLineEdit *e_password=ConfigDialog::getLineEdit("General", "Password");
 	e_password->setEchoMode(QLineEdit::Password);
 	e_password->setText(pwHash(config_file.readEntry("General", "Password", "")));
-	
+	QComboBox *cb_language= ConfigDialog::getComboBox("General", "Set language:");
+
+	QString language;
+	language= config_file.readEntry("General", "Language", QTextCodec::locale());
+	QDir locale(QString(DATADIR)+"/locale/", "kadu_*.qm");
+	QStringList files=locale.entryList();
+
+	  for ( QStringList::Iterator it = files.begin(); it != files.end(); ++it ) {
+	         *it=translateLanguage((*it).mid(5, (*it).length()-8), true);
+		      }
+	cb_language->insertStringList(files);
+	cb_language->setCurrentText(translateLanguage(language,true));
 }
 
 void KaduSlots::onDestroyConfigDialog()
@@ -2161,5 +2175,9 @@ void KaduSlots::onDestroyConfigDialog()
 	kadu->refreshGroupTabBar();
 
 	kadu->setCaption(tr("Kadu: %1").arg(config_file.readNumEntry("General", "UIN")));
-	
+
+
+	QComboBox *cb_language= ConfigDialog::getComboBox("General", "Set language:");
+	config_file.writeEntry("General", "Language", translateLanguage(cb_language->currentText(),false));
+
 };

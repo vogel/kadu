@@ -50,10 +50,10 @@ int main(int argc, char *argv[])
 
 	// ladowanie tlumaczenia
 	QTranslator qt_qm(0);
-	qt_qm.load(QString(DATADIR) + QString("/locale/qt_") + QTextCodec::locale(), ".");
+	qt_qm.load(QString(DATADIR) + QString("/locale/qt_") + config_file.readEntry("General", "Language", QTextCodec::locale()), ".");
 	a->installTranslator(&qt_qm);
 	QTranslator kadu_qm(0);
-	kadu_qm.load(QString(DATADIR) + QString("/locale/kadu_") + QTextCodec::locale(), ".");
+	kadu_qm.load(QString(DATADIR) + QString("/locale/kadu_") + config_file.readEntry("General", "Language", QTextCodec::locale()), ".");
 	a->installTranslator(&kadu_qm);
 
 	QString dir;

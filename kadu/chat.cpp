@@ -447,23 +447,23 @@ void Chat::setTitle() {
 
 	if (uins.size() > 1) {
 		kdebug("Chat::setTitle(): uins.size() > 1\n");
-		if (config_file.readEntry("Chat","ConferencePrefix").isEmpty())
+		if (config_file.readEntry("Look","ConferencePrefix").isEmpty())
 			title = tr("Conference with ");
 		else
-			title = config_file.readEntry("Chat","ConferencePrefix");
+			title = config_file.readEntry("Look","ConferencePrefix");
 		for (int k = 0; k < uins.size(); k++) {
 			if (k)
 				title.append(", ");
-			title.append(parse(config_file.readEntry("Chat","ConferenceContents"),userlist.byUinValue(uins[k]),false));
+			title.append(parse(config_file.readEntry("Look","ConferenceContents"),userlist.byUinValue(uins[k]),false));
 		}
 		setIcon(*icons->loadIcon("online"));
 	}
 	else {
 		kdebug("Chat::setTitle()\n");
-		if (config_file.readEntry("Chat","ChatContents").isEmpty())
+		if (config_file.readEntry("Look","ChatContents").isEmpty())
 			title = parse(tr("Chat with ")+"%a (%s[: %d])",userlist.byUinValue(uins[0]),false);
 		else
-			title = parse(config_file.readEntry("Chat","ChatContents"),userlist.byUinValue(uins[0]),false);
+			title = parse(config_file.readEntry("Look","ChatContents"),userlist.byUinValue(uins[0]),false);
 		setIcon(*icons->loadIcon(gg_icons[statusGGToStatusNr(userlist.byUinValue(uins[0]).status)]));
 	}
 
