@@ -165,6 +165,7 @@ class Kadu : public QMainWindow
 		void closeEvent(QCloseEvent *);	
 		bool event(QEvent *e);
 		void watchDcc(void);
+		void keyPressEvent(QKeyEvent *e);
 		struct gg_event *dcc_e;
 		int dcc_ret;
 

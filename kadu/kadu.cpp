@@ -336,23 +336,32 @@ void sendUserlist() {
 	free(uins);
 }
 
-void Kadu::gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op) {	
+void Kadu::gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op) {
 	char buf[32];
 	int i;
 	QString newestversion;
-	
+
 	for (i = 0; i < data.size(); i++)
 		buf[i] = data[i];
 	buf[data.size()] = 0;
 	newestversion = buf;
 
 	fprintf(stderr, "KK Kadu::gotUpdatesInfo(): %s\n", buf);
-	
+
 	if (uc->ifNewerVersion(newestversion)) {
 		QMessageBox::information(this, i18n("Update information"),
 			i18n("The newest Kadu version is %1").arg(newestversion), QMessageBox::Ok);
 		}
 	delete uc;
+}
+
+
+void Kadu::keyPressEvent(QKeyEvent *e) {
+	if (e->key() == Key_Escape) {
+			close_permitted = false;
+			close(true);
+			}
+	QWidget::keyPressEvent(e);
 }
 
 /* a monstrous constructor so Kadu would take longer to start up */
@@ -984,14 +993,14 @@ void Kadu::commandParser (int command) {
 			close(true);
 			break;
 		case KADU_CMD_SEND_FILE:
-			struct gg_dcc *dcc_new;		
+			struct gg_dcc *dcc_new;
 			user = userlist.byAltNick(userbox->currentText());
-			
+
 			dccSocketClass *dcc;
 			if (user.port >= 10) {
 				if ((dcc_new = gg_dcc_send_file(user.ip, user.port, config.uin, user.uin)) != NULL) {
 					dcc = new dccSocketClass(dcc_new);
-					connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), this, SLOT(dccFinished(dccSocketClass *)));		    
+					connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), this, SLOT(dccFinished(dccSocketClass *)));
 					dcc->initializeNotifiers();
 					}
 				}
