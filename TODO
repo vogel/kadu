@@ -37,6 +37,8 @@
  ? rozbudowa opcji ignorowania o blokowanie
  ? autostatus (zmiana z listy co jaki¶ czas)
  ! dodaæ do pliku AUTHORS sekcjê "Byli autorzy"
+ + Umozliwic edycje UIN kontaktu poprzez wywolanie z menu 
+   "Pokaz/zmien informacje o kontakcie"
 
  
  TODO dla wersji pó¼niejszych
