@@ -1,4 +1,4 @@
-/** TODO, stan na 16/06/2003. **/
+/** TODO, stan na 03/07/2003. **/
 (TODO mo¿e byæ nieaktualne... zapraszamy na kadu.net/forum)
 
 
@@ -18,7 +18,9 @@
  ! dopracowaæ animowane emotikony na ile siê da
  ! dopracowaæ ob³ugê historii
  ! dopracowaæ wysy³anie SMS'ów do ERY
- ! wyja¶niæ problemy z autoaway'em
+ ! wyja¶niæ problemy z autoaway'em albo przynajmniej umo¿liwiæ
+   u¿ywanie poprzedniej metody
+ ! poprawiæ escapowanie znaków specjalnych, m.in. ¼le escape'uje <<
 
  TODO dla wersji 0.3.5 lub pó¼niejszych
 ----------------------------------------
@@ -44,7 +46,7 @@
    odpowiednia opcja w oknie rozmowy jest w³±czona)
  + mo¿liwo¶æ wy³±czenia pokazywania siê zmian statusu u¿ytkowników
    w oknie rozmowy i historii
-
+ + obs³uga /img wstawiaj±ca obrazek z podanego url
  
  TODO dla wersji 0.4.0
 -----------------------
