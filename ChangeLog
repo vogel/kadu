@@ -135,7 +135,10 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawki zwi±zane z popup menu listy kontaktów (joi)
 * patch Googiego dot. sygna³u emitowanego przy naci¶niêciu przycisku w oknie
   chat + drobna przeróbka (joi)
-* dana mo¿liwo¶æ odrywania dodatkowych d¼wiêków innym modu³om (joi)
+* dana mo¿liwo¶æ odgrywania dodatkowych d¼wiêków innym modu³om (joi)
+* nowy, szybszy i czytelniejszy parser - `komenda` zamienione na `komenda',
+  {plik tekst} - je¿eli plik istnieje, to jest wstawiany "tekst",
+  {~plik tekst} - je¿eli plik nie istnieje, to jest wstawiany "tekst" (joi)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

@@ -29,7 +29,7 @@
 QTextCodec *codec_cp1250 = QTextCodec::codecForName("CP1250");
 QTextCodec *codec_latin2 = QTextCodec::codecForName("ISO8859-2");
 
-QString ggPath(QString subpath)
+QString ggPath(const QString &subpath)
 {
 	QString path;
 	char *home;
@@ -118,7 +118,7 @@ QDateTime currentDateTime(void) {
 	return date;
 }
 
-QString pwHash(const QString tekst) {
+QString pwHash(const QString &tekst) {
 	QString nowytekst;
 	int ile;
 	unsigned short znak;
@@ -165,7 +165,7 @@ void openWebBrowser(const QString &link) {
 	if (config_file.readBoolEntry("Chat","DefaultWebBrowser"))
 		cmd = QString("konqueror %1").arg(link);
 	else {
-                if (config_file.readEntry("Chat","WebBrowser") == "") {
+		if (config_file.readEntry("Chat","WebBrowser") == "") {
 			QMessageBox::warning(0, qApp->translate("@default", QT_TR_NOOP("WWW error")),
 				qApp->translate("@default", QT_TR_NOOP("Web browser was not specified. Visit the configuration section")));
 			kdebug("openWebBrowser(): Web browser NOT specified.\n");
@@ -236,8 +236,7 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats) {
 				formats_length -= sizeof(gg_msg_richtext_format);
 				if (actformat->font & GG_FONT_IMAGE) {
 					idx = int((unsigned char)cformats[0]);
-					kdebug("formatGGMessage(): I got image probably: header_length = %d\n",
-						idx);
+					kdebug("formatGGMessage(): I got image probably: header_length = %d\n", idx);
 					cformats += idx + 1;
 					formats_length -= idx + 1;
 					}
@@ -410,201 +409,231 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 	return mesg;
 }
 
-/* szuka c w s, zwraca podci±g do c (bez c), przesuwa ind na c lub je¶li nie znalaz³ za koniec s */
-inline QString findCharAndMove(const QString &s, char c, int &ind, int len)
+struct ParseElem
 {
-	int pos=s.find(c, ind);
-	if (pos==-1)
-		pos=len;
-	QString f=s.mid(ind, pos-ind);
-	ind=pos;
-	return f;
-}
+	enum {PE_STRING, PE_CHECK_NULL, PE_CHECK_FILE, PE_EXECUTE} type;
+	QString str;
+};
 
-QString parse_symbols(const QString &s, UserListElement &ule, bool escape) {
-	QString r,d;
-	int j;
-	int i=0;
-	int len=s.length();
-	while (i < len)
+QString parse(const QString &s, const UserListElement &ule, bool escape)
+{
+	kdebug("parse(): %s escape=%i\n",(const char *)s.local8Bit(), escape);
+	int index=0, i, j, len=s.length();
+	QValueList<ParseElem> parseStack;
+
+	static bool searchChars[256]={false};
+	searchChars['%']=true;
+	searchChars['`']=true;
+	searchChars['[']=true;
+	searchChars['{']=true;
+	searchChars['\'']=true;
+	searchChars['}']=true;
+	searchChars[']']=true;
+	
+	while (index<len)
 	{
-		r+=findCharAndMove(s, '%', i, len);
-
-		if (s[i]=='%') {
+		ParseElem pe1, pe;
+		
+		for(i=index; i<len; i++)
+			if (searchChars[(unsigned char)s[i].latin1()])
+				break;
+		if (i==len)
+			i=-1;
+		
+//		to jest dok³adnie to samo, tyle ¿e to co wy¿ej jest duuuuu¿o szybsze
+//		i=s.find(QRegExp("%|`|\\{|\\[|'|\\}|\\]"), index);
+		
+		if (i==-1)
+		{
+			pe1.type=ParseElem::PE_STRING;
+			pe1.str=s.mid(index);
+			parseStack.push_back(pe1);
+			break;
+		}
+		if (i!=index)
+		{
+			pe1.type=ParseElem::PE_STRING;
+			pe1.str=s.mid(index, i-index);
+			parseStack.push_back(pe1);
+		}
+		
+		QChar c=s[i];
+		if (c=='%')
+		{
 			i++;
+			if (i==len)
+				break;
+			pe.type=ParseElem::PE_STRING;
+			
 			switch(s[i].latin1()) {
 				case 's':
 					i++;
 					if (!ule.uin)
 						break;
 					j=statusGGToStatusNr(ule.status);
-					if (j == 1 || j == 3 || j == 5 || j == 7)
-						r += qApp->translate("@default", statustext[j-1]);
-					else
-						r += qApp->translate("@default", statustext[j]);
+					if (j%2)
+						j--;
+					pe.str= qApp->translate("@default", statustext[j]);
 					break;
 				case 'd':
 					i++;
+					pe.str=ule.description;
+				 	if (escape)
+			 			escapeSpecialCharacters(pe.str);
 					if(config_file.readBoolEntry("Look", "ShowMultilineDecs")) {
-						d=ule.description;
-						if (escape)
-							escapeSpecialCharacters(d);
-						d=d.replace(QRegExp("\n"), QString("<br>"));
-						d=d.replace(QRegExp("\\s\\s"), QString(" &nbsp;"));
-						r+=d;
-					} else {
-					 	if (!escape)
-					 		r+=ule.description;
-					 	else {
-					 		d=ule.description;
-				 			escapeSpecialCharacters(d);
-				 			r+=d;
-					 	}
+						pe.str.replace(QRegExp("\n"), QString("<br>"));
+						pe.str.replace(QRegExp("\\s\\s"), QString(" &nbsp;"));
 					}
 					break;
-				case 'i':
-					i++;
-					if (ule.ip.ip4Addr())
-						r += ule.ip.toString();
-					break;
-				case 'v':
-					i++;
-					if (ule.ip.ip4Addr())
-						r+=ule.dnsname;
-					break;
-				case 'n':
-					i++;
-					r+=ule.nickname;
-					break;
-				case 'a':
-					i++;
-					r+=ule.altnick;
-					break;
-				case 'f':
-					i++;
-					r+=ule.first_name;
-					break;
-				case 'r':
-					i++;
-					r+=ule.last_name;
-					break;
-				case 'm':
-					i++;
-					r+=ule.mobile;
-					break;
-				case 'u':
-					i++;
-					if (ule.uin)
-						r+=QString::number(ule.uin);
-					break;
-				case 'g':
-					i++;
-					r+=ule.group();
-					break;
-				case 'o':
-					i++;
-					if (ule.port==2)
-						r+=" ";
-					break;
-				case 'p':
-					i++;
-					if (ule.port)
-						r+=QString::number(ule.port);
-					break;
-				case 'e':
-					i++;
-						r+=ule.email;
-					break;
+				case 'i': i++; if (ule.ip.ip4Addr()) pe.str=ule.ip.toString();         break;
+				case 'v': i++; if (ule.ip.ip4Addr()) pe.str=ule.dnsname;               break;
+				case 'o': i++; if (ule.port==2)      pe.str=" ";                       break;
+				case 'p': i++; if (ule.port)         pe.str=QString::number(ule.port); break;
+				case 'u': i++; if (ule.uin)          pe.str=QString::number(ule.uin);  break;
+				case 'n': i++; pe.str=ule.nickname;		break;
+				case 'a': i++; pe.str=ule.altnick;		break;
+				case 'f': i++; pe.str=ule.first_name;	break;
+				case 'r': i++; pe.str=ule.last_name;	break;
+				case 'm': i++; pe.str=ule.mobile;		break;
+				case 'g': i++; pe.str=ule.group();		break;
+				case 'e': i++; pe.str=ule.email;		break;
+				case '%': i++;
 				default:
-					r += "%";
+					pe.str="%";
 			}
+			parseStack.push_back(pe);
 		}
-	}
-	return r;
-}
-
-QString parse_only_text(const QString &s) {
-	QString r;
-	int i=0;
-	int len=s.length();
-	while (i<len)
-	{
-		r+=findCharAndMove(s, '%', i, len);
-		if(s[i]=='%')
-			i+=2;
-	}
-	return r;
-}
-
-QString parse_expression(const QString &s, UserListElement &ule, bool escape) {
-	QString r;
-	int i=0;
-	int len=s.length();
-	while (i < len)
-	{
-		QString p,f;
-		
-		f=findCharAndMove(s, '[', i, len);
-		
-		r+=parse_symbols(f,ule,escape);
-
-		if(s[i]=='['){
+		else if (c=='[')
+		{
 			i++;
-			p=findCharAndMove(s, ']', i, len);
-
-			if(s[i]==']') {
-				i++; //eat ]
-				QString ps=parse_symbols(p,ule,escape);
-				if(parse_only_text(p)!=ps)
-					r+=ps;
-			}
+			pe.type=ParseElem::PE_CHECK_NULL;
+			parseStack.push_back(pe);
 		}
-	}
-	return r;
-}
-
-QString parse_expression_and_execute(const QString &s, UserListElement &ule, bool escape) {
-	QString r;
-	int len=s.length();
-	int i=0;
-	while (i < len)
-	{
-		QString p;
-		
-		r+=findCharAndMove(s, '`', i, len);
-		
-		if(s[i]=='`'){
+		else if (c==']')
+		{
 			i++;
-			p=findCharAndMove(s, '`', i, len);
-
-			if(s[i]=='`') {
-				i++; //eat `
-				QString pe=parse_expression(p,ule,escape).replace(QRegExp("`"), "");
-				pe.append(" >");
-				pe.append(ggPath("execoutput"));
-				
-				system(pe.local8Bit());
-				QFile *f=new QFile(ggPath("execoutput"));
-				if (f->open(IO_ReadOnly))
+			bool anyNull=false;
+			while (!parseStack.empty())
+			{
+				ParseElem &pe2=parseStack.last();
+				if (pe2.type==ParseElem::PE_STRING)
 				{
-					r+=QString(f->readAll());
-					f->close();
-					QFile::remove(ggPath("execoutput"));
+					if (pe2.str=="" || anyNull)
+						anyNull=true;
+					else
+						pe.str.prepend(pe2.str);
+					parseStack.pop_back();
 				}
-
-				delete f;
+				else if (pe2.type==ParseElem::PE_CHECK_NULL)
+				{
+					parseStack.pop_back();
+					if (!anyNull)
+					{
+						pe.type=ParseElem::PE_STRING;
+						parseStack.push_back(pe);
+					}
+					break;
+				}
 			}
 		}
+		else if (c=='{')
+		{
+			i++;
+			pe.type=ParseElem::PE_CHECK_FILE;
+			parseStack.push_back(pe);
+		}
+		else if (c=='}')
+		{
+			i++;
+			while (!parseStack.empty())
+			{
+				ParseElem &pe2=parseStack.last();
+				if (pe2.type==ParseElem::PE_STRING)
+				{
+					pe.str.prepend(pe2.str);
+					parseStack.pop_back();
+				}
+				else if (pe2.type==ParseElem::PE_CHECK_FILE)
+				{
+					int f=pe.str.find(' ', 0);
+					bool findexist=true;
+					parseStack.pop_back();
+					QString file;
+					if (f==-1)
+						file=pe.str;
+					else
+						file=pe.str.left(f);
+					if (file.length()>0)
+						if (file[0]=='~')
+						{
+							file=file.mid(1);
+							findexist=false;
+						}
+					pe.str=pe.str.mid(f+1);
+					if (QFile::exists(file)==findexist)
+					{
+						pe.type=ParseElem::PE_STRING;
+						parseStack.push_back(pe);
+					}
+					break;
+				}
+			}
+		}
+		else if (c=='`')
+		{
+			i++;
+			pe.type=ParseElem::PE_EXECUTE;
+			parseStack.push_back(pe);
+		}
+		else if (c=='\'')
+		{
+			i++;
+			while (!parseStack.empty())
+			{
+				ParseElem pe2=parseStack.last();
+				if (pe2.type==ParseElem::PE_STRING)
+				{
+					pe.str.prepend(pe2.str);
+					parseStack.pop_back();
+				}
+				else if (pe2.type==ParseElem::PE_EXECUTE)
+				{
+					parseStack.pop_back();
+					pe.str.replace(QRegExp("`|>|<"), "");
+					pe.str.append(" >");
+					pe.str.append(ggPath("execoutput"));
+				
+					system(pe.str.local8Bit());
+					QFile *f=new QFile(ggPath("execoutput"));
+					if (f->open(IO_ReadOnly))
+					{
+						pe.type=ParseElem::PE_STRING;
+						pe.str=QString(f->readAll());
+						parseStack.push_back(pe);
+						f->close();
+						QFile::remove(ggPath("execoutput"));
+					}
+					delete f;
+					break;
+				}
+			}
+		}
+		else
+			kdebug("shit happens? %d %c %d\n", i, (char)c, (char)c);
+		index=i;
 	}
-	return r;
-}
-
-QString parse(QString s, UserListElement ule, bool escape) {
-	kdebug("parse() :%s escape=%i\n",(const char *)s.local8Bit(),escape);
-	QString res1=parse_expression_and_execute(s,ule,escape);
-	QString res2=parse_expression(res1.replace(QRegExp("`"), ""),ule,escape);
-	kdebug("result: %s\n", (const char *)res2.local8Bit());
-	return res2;
+	QString ret;
+	while (!parseStack.empty())
+	{
+		ParseElem &last=parseStack.last();
+		if (last.type==ParseElem::PE_STRING)
+			ret.prepend(last.str);
+		else
+			kdebug("Incorrect parse string! %d\n", last.type);
+		parseStack.pop_back();
+	}
+	kdebug("%s\n", (const char *)ret.local8Bit());
+	return ret;
 }
 
 //internal usage
@@ -740,9 +769,7 @@ void ChooseDescription::okbtnPressed() {
 			defaultdescriptions.remove(defaultdescriptions.last());
 	}
 	else 
-	{
 		defaultdescriptions.remove(desc->currentText());
-	}
 	defaultdescriptions.prepend(desc->currentText());
 	own_description=defaultdescriptions.first();
 	accept();
@@ -764,7 +791,7 @@ IconsManager::IconsManager(const QString& name, const QString& configname)
 }
 
 
-QPixmap IconsManager::loadIcon(QString name)
+QPixmap IconsManager::loadIcon(const QString &name)
 {
 	for (int i = 0; i < icons.count(); i++)
 		if (icons[i].name == name)
@@ -785,7 +812,7 @@ QPixmap IconsManager::loadIcon(QString name)
 
 void IconsManager::onDestroyConfigDialog()
 {
-	kdebug("IconsManager::onDestroyConfigDialog()\n");
+	kdebugf();
 	QComboBox *cb_icontheme= ConfigDialog::getComboBox("Look", "Icon theme");
 	QString theme;
 	if (cb_icontheme->currentText() == tr("Default"))
@@ -799,7 +826,7 @@ void IconsManager::onDestroyConfigDialog()
 
 void IconsManager::chooseIconTheme(const QString& string)
 {
-	kdebug("IconsManager::chooseIconTheme()\n");
+	kdebugf();
 	QString str=string;
 	if (string == tr("Default"))
 	    str= "default";
@@ -809,7 +836,7 @@ void IconsManager::chooseIconTheme(const QString& string)
 
 void IconsManager::onCreateConfigDialog()
 {
-	kdebug("IconsManager::onCreateConfigDialog()\n");
+	kdebugf();
 	QComboBox *cb_icontheme= ConfigDialog::getComboBox("Look", "Icon theme");
 	cb_icontheme->insertStringList(icons_manager.themes());
 	cb_icontheme->setCurrentText(config_file.readEntry("Look", "IconTheme"));
@@ -826,10 +853,10 @@ void IconsManager::initModule()
 	QT_TRANSLATE_NOOP("@default","Icon theme");
 	QT_TRANSLATE_NOOP("@default","Icon paths");
 
-	kdebug("IconsManager::initModule()\n");
+	kdebugf();
 	config_file.addVariable("Look", "IconsPaths", icons_manager.defaultKaduPathsWithThemes().join(";"));
-
-    	config_file.addVariable("Look", "IconTheme", "default");
+	config_file.addVariable("Look", "IconTheme", "default");
+	
 	icons_manager.setPaths(QStringList::split(";", config_file.readEntry("Look", "IconsPaths")));
 	icons_manager.setTheme(config_file.readEntry("Look","IconTheme"));
 
@@ -1029,7 +1056,7 @@ HtmlDocument GGMessageToHtmlDocument(const QString &msg, int formats_length, voi
 	int pos, idx;
 	HtmlDocument htmldoc;
 
-	kdebug("GGMessageToHtmlDocument()\n");
+	kdebugf();
 	inspan = false;
 	pos = 0;
 	if (formats_length) {
@@ -1103,7 +1130,7 @@ void HtmlDocumentToGGMessage(HtmlDocument &htmldoc, QString &msg, int &formats_l
 	QValueList<struct richtext_formant> formants;
 	char *cformats, *tmpformats;
 
-	kdebug("HtmlDocumentToGGMessage()\n");
+	kdebugf();
 
 	for (it = 0, pos = 0, formats_length = 0, inspan = -1; it < htmldoc.countElements(); it++) {
 		tmp = htmldoc.elementText(it);
@@ -1193,7 +1220,7 @@ ImageWidget::ImageWidget(QWidget *parent)
 ImageWidget::ImageWidget(QWidget *parent,const QByteArray &image)
         : QWidget(parent, "ImageWidget"), Image(image)
 {
-        setMinimumSize(Image.width(), Image.height());
+	setMinimumSize(Image.width(), Image.height());
 }
 
 void ImageWidget::setImage(const QByteArray &image)
@@ -1224,7 +1251,7 @@ token::~token() {
 }
 
 void token::getToken() {
-	kdebug("token::getToken()\n");
+	kdebugf();
 	if (!(h = gg_token(1))) {
 		emit tokenError();
 		return;
@@ -1233,7 +1260,7 @@ void token::getToken() {
 }
 
 void token::createSocketNotifiers() {
-	kdebug("token::createSocketNotifiers()\n");
+	kdebugf();
 
 	snr = new QSocketNotifier(h->fd, QSocketNotifier::Read, qApp->mainWidget());
 	QObject::connect(snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
@@ -1243,7 +1270,7 @@ void token::createSocketNotifiers() {
 }
 
 void token::deleteSocketNotifiers() {
-	kdebug("token::deleteSocketNotifiers()\n");
+	kdebugf();
 	if (snr) {
 		snr->setEnabled(false);
 		snr->deleteLater();
@@ -1257,20 +1284,20 @@ void token::deleteSocketNotifiers() {
 }
 
 void token::dataReceived() {
-	kdebug("token::dataReceived()\n");
+	kdebugf();
 	if (h->check && GG_CHECK_READ)
 		socketEvent();
 }
 
 void token::dataSent() {
-	kdebug("token::dataSent()\n");
+	kdebugf();
 	snw->setEnabled(false);
 	if (h->check && GG_CHECK_WRITE)
 		socketEvent();
 }
 
 void token::socketEvent() {
-	kdebug("token::socketEvent()\n");
+	kdebugf();
 	if (gg_token_watch_fd(h) == -1) {
 		deleteSocketNotifiers();
 		emit tokenError();
@@ -1352,7 +1379,7 @@ void TokenDialog::getToken(QString &Tokenid, QString &Tokenval) {
 }
 
 void TokenDialog::gotTokenReceived(struct gg_http *h) {
-	kdebug("TokenDialog::gotTokenReceived()\n");
+	kdebugf();
 	struct gg_token *t = (struct gg_token *)h->data;
 	tokenid = cp2unicode((unsigned char *)t->tokenid);
 
@@ -1367,7 +1394,7 @@ void TokenDialog::gotTokenReceived(struct gg_http *h) {
 }
 
 void TokenDialog::tokenErrorReceived() {
-	kdebug("TokenDialog::tokenErrorReceived()\n");
+	kdebugf();
 	setEnabled(true);
 	done(-1);
 }

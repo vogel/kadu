@@ -25,7 +25,7 @@
 	na sciezke bezwzgledna uwzgledniajac zmienne srodowiskowe
 	$HOME i $CONFIG_DIR
 */
-QString ggPath(QString subpath);
+QString ggPath(const QString &subpath);
 
 //#define i18n(String) __c2q(gettext(String))
 
@@ -36,13 +36,13 @@ QCString unicode2latin(const QString &);
 QString printDateTime(const QDateTime &datetime);
 QString timestamp(time_t = 0);
 QDateTime currentDateTime();
-QString pwHash(const QString tekst);
+QString pwHash(const QString &tekst);
 QString translateLanguage(const QApplication *application, const QString &locale, const bool l2n);
 void openWebBrowser(const QString &link);
 void escapeSpecialCharacters(QString &msg);
 QString formatGGMessage(const QString &msg, int formats_length, void *formats);
 QString unformatGGMessage(const QString &msg, int &formats_length, void *&formats);
-QString parse(QString s, UserListElement ule, bool escape = true);
+QString parse(const QString &s, const UserListElement &ule, bool escape = true);
 void stringHeapSort(QStringList &c);
 
 class UinsList : public QValueList<uin_t>
@@ -264,7 +264,7 @@ class IconsManager :public Themes
 			(jesli zawiera znak '/' to jest interpretowana jako
 			sciezka).
 		**/
-		QPixmap loadIcon(QString name);
+		QPixmap loadIcon(const QString &name);
 		static void initModule();
 
 	private:
