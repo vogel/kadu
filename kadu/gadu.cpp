@@ -2272,7 +2272,6 @@ void GaduProtocol::userStatusChanged(const struct gg_event *e)
 
 	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventUserStatusChange(): User %d went %d (%s)\n", uin,
 		status.toStatusNumber(), status.name().local8Bit().data());
-	UserListElement &user = userlist.byUin(uin);
 
 	if (!userlist.containsUin(uin))
 	{
@@ -2281,6 +2280,8 @@ void GaduProtocol::userStatusChanged(const struct gg_event *e)
 		gg_remove_notify(Sess, uin);
 		return;
 	}
+
+	UserListElement &user = userlist.byUin(uin);
 
 	if (status.isOffline())
 	{
