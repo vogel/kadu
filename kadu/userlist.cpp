@@ -240,7 +240,7 @@ bool UserList::readFromFile()
 		(const char *)path.local8Bit());
 	QFile fa(path);
 	if (!fa.open(IO_ReadOnly)) {
-		fprintf(stderr, "KK UserList::readFromFile(): Error opening userattribs file");
+		fprintf(stderr, "KK UserList::readFromFile(): Error opening userattribs file\n");
 		}
 	else {
 		QTextStream s(&fa);
