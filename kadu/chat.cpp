@@ -77,11 +77,11 @@ Chat::Chat(UinsList uins, QWidget *parent)
 	QAccel *acc = new QAccel( this );
 	acc->connectItem(acc->insertItem(Key_Return+CTRL), this, SLOT(sendMessage()));
 
-	QPushButton *closebtn = new QPushButton(this);
-	closebtn->setText(i18n("&Close"));
-	closebtn->setGeometry(245, 375, 70, 20);
-	closebtn->setIconSet(QIconSet(loader->loadIcon("stop", KIcon::Small)));
-	connect(closebtn, SIGNAL(clicked()), this, SLOT(cleanUp()));
+	cancelbtn = new QPushButton(this);
+	cancelbtn->setText(i18n("&Cancel"));
+	cancelbtn->setGeometry(245, 375, 70, 20);
+	cancelbtn->setIconSet(QIconSet(loader->loadIcon("stop", KIcon::Small)));
+	connect(cancelbtn, SIGNAL(clicked()), this, SLOT(cancelMessage()));
 
 	QLabel *edt = new QLabel(this);
 	edt->setText(i18n("Edit window:"));
@@ -138,7 +138,7 @@ Chat::Chat(UinsList uins, QWidget *parent)
 	grid->addWidget(buttontray, 2,3,Qt::AlignRight);
 	grid->addMultiCellWidget(edt, 2, 2, 0, 2, Qt::AlignLeft);
 	grid->addMultiCellWidget(edit, 3, 3, 0, 3);
-	grid->addWidget(closebtn, 4, 2);
+	grid->addWidget(cancelbtn, 4, 2);
 	grid->addWidget(sendbtn, 4, 3);
 	grid->addRowSpacing(1, 5);
 	grid->setRowStretch(0,2);
@@ -337,12 +337,6 @@ void Chat::userWhois(void) {
 	sd->doSearch();
 }
 
-/* clean us up */
-void Chat::cleanUp(void) {
-	fprintf(stderr, "KK Chat::cleanUp: chat destroying: %d\n", index);
-	close();
-}
-
 void Chat::formatMessage(bool me, QString &altnick, QString &msg, const char *time, QString &toadd) {
 	QString editext = convertCharacters(msg);
 
@@ -403,18 +397,10 @@ void Chat::writeMyMessage() {
 	QString toadd;
 
 	formatMessage(true, config.nick, myLastMessage, timestamp(), toadd);
-
 	scrollMessages(toadd);
-
-	if (!edit->isEnabled()) {
-		edit->clear();
-		edit->setReadOnly(false);
-		edit->setEnabled(true);
-		edit->setFocus();
-		sendbtn->setText(i18n("&Send"));
-		}
-  else
-    edit->clear();
+	if (!edit->isEnabled())
+		cancelMessage();
+	edit->clear();
 }
 
 void Chat::addMyMessageToHistory() {
@@ -433,18 +419,17 @@ void Chat::clearChatWindow(void) {
 	totaloccurences = 0;
 }
 
+void Chat::cancelMessage(void) {
+	edit->setReadOnly(false);
+	edit->setEnabled(true);
+	edit->setFocus();
+	sendbtn->setEnabled(true);
+}
+
 /* sends the message typed */
 void Chat::sendMessage(void) {
 	int i,j;
 	uin_t *users;
-
-	if (!edit->isEnabled()) {
-		edit->setReadOnly(false);
-		edit->setEnabled(true);
-		edit->setFocus();
-		sendbtn->setText(i18n("&Send"));
-		return;
-		}
 
 	if (!QString::compare(edit->text().local8Bit(),""))
 		return;
@@ -457,7 +442,7 @@ void Chat::sendMessage(void) {
 	if (config.msgacks) {
 		edit->setReadOnly(true);	
 		edit->setEnabled(false);
-		sendbtn->setText(i18n("&Cancel"));
+		sendbtn->setEnabled(false);
 		}
 
 	addMyMessageToHistory();

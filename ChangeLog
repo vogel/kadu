@@ -7,6 +7,8 @@
   jej wys³ania
 * wyszukiwanie u¿ytkowników: pierwszy znaleziony u¿ytkownik staje siê wybranym
   - teraz nie mo¿na ju¿ dodaæ drugi raz tego samego u¿ytkownika
+* w oknie rozmowy: zast±pienie guzika "Zamknij" guzikiem "Anuluj"
+  - guzik "Anuluj" powoduje anulowanie wysy³ania wiadomo¶ci
 
 +++ wersja 0.3.3-pre1
 * automatyczna kompilacja programu sms

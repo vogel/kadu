@@ -36,6 +36,7 @@ class Chat : public QDialog {
 		QPushButton *autosend;
 		QAccel *acc;
 		QPushButton *sendbtn;
+		QPushButton *cancelbtn;
 		UserBox *userbox;
 		QString myLastMessage;
 
@@ -59,7 +60,7 @@ class Chat : public QDialog {
 	public slots:
 		void HistoryBox(void);
 		void sendMessage(void);
-		void cleanUp(void);
+		void cancelMessage(void);
 		void writeMyMessage(void);
 		void changeTitle(void);
 
