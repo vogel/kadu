@@ -1,4 +1,4 @@
-/* $Id: dcc.c,v 1.19 2003/03/26 15:49:20 chilek Exp $ */
+/* $Id: dcc.c,v 1.20 2003/04/28 20:28:52 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -455,7 +455,9 @@ int gg_dcc_voice_send(struct gg_dcc *d, char *buf, int length)
 	int tmp = read(fd, buf, size); \
 	if (tmp < size) { \
 		if (tmp == -1) { \
-			gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() read() failed (%d:%s)\n", errno, strerror(errno)); \
+			gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() read() failed (errno=%d, %s)\n", errno, strerror(errno)); \
+		} else if (tmp == 0) { \
+			gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() read() failed, connection broken\n"); \
 		} else { \
 			gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() read() failed (%d bytes, %d needed)\n", tmp, size); \
 		} \
@@ -473,7 +475,7 @@ int gg_dcc_voice_send(struct gg_dcc *d, char *buf, int length)
 	tmp = write(fd, buf, size); \
 	if (tmp < size) { \
 		if (tmp == -1) { \
-			gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() write() failed (%d:%s)\n", errno, strerror(errno)); \
+			gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() write() failed (errno=%d, %s)\n", errno, strerror(errno)); \
 		} else { \
 			gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() write() failed (%d needed, %d done)\n", size, tmp); \
 		} \
@@ -518,7 +520,7 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 		int fd, sin_len = sizeof(sin), one = 1;
 		
 		if ((fd = accept(h->fd, (struct sockaddr*) &sin, &sin_len)) == -1) {
-			gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() can't accept() new connection. ignoring.\n");
+			gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() can't accept() new connection (errno=%d, %s)\n", errno, strerror(errno));
 			return e;
 		}
 
@@ -529,7 +531,7 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 #else
 		if (fcntl(fd, F_SETFL, O_NONBLOCK) == -1) {
 #endif
-			gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() can't set nonblocking (%s)\n", strerror(errno));
+			gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() can't set nonblocking (errno=%d, %s)\n", errno, strerror(errno));
 			close(fd);
 			e->type = GG_EVENT_DCC_ERROR;
 			e->event.dcc_error = GG_ERROR_DCC_HANDSHAKE;
@@ -572,7 +574,8 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 
 		switch (h->state) {
 			case GG_STATE_READING_UIN_1:
-			case GG_STATE_READING_UIN_2: {
+			case GG_STATE_READING_UIN_2:
+			{
 				uin_t uin;
 
 				gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() GG_READING_UIN_%d\n", (h->state == GG_STATE_READING_UIN_1) ? 1 : 2);
@@ -698,7 +701,7 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 				gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() GG_STATE_SENDING_FILE_ACK\n");
 				
 				big.type = gg_fix32(0x0006);	/* XXX */
-				big.dunno1 = 0;
+				big.dunno1 = gg_fix32(h->offset);
 				big.dunno2 = 0;
 
 				gg_write(h->fd, &big, sizeof(big));
@@ -714,8 +717,6 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 				h->check = GG_CHECK_READ;
 				h->timeout = GG_DEFAULT_TIMEOUT;
 
-				h->offset = 0;
-				
 				return e;
 				
 			case GG_STATE_SENDING_VOICE_ACK:
@@ -739,7 +740,7 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 				tmp = read(h->fd, h->chunk_buf + h->chunk_offset, h->chunk_size - h->chunk_offset);
 
 				if (tmp == -1) {
-					gg_debug(GG_DEBUG_MISC, "// gg_watch_fd() read() failed (%d:%s)\n", errno, strerror(errno));
+					gg_debug(GG_DEBUG_MISC, "// gg_watch_fd() read() failed (errno=%d, %s)\n", errno, strerror(errno));
 					e->type = GG_EVENT_DCC_ERROR;
 					e->event.dcc_error = GG_ERROR_DCC_NET;
 					return e;
@@ -838,7 +839,7 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 				tmp = read(h->fd, h->voice_buf + h->chunk_offset, h->chunk_size - h->chunk_offset);
 				if (tmp < 1) {
 					if (tmp == -1) {
-						gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() read() failed (%d:%s)\n", errno, strerror(errno));
+						gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() read() failed (errno=%d, %s)\n", errno, strerror(errno));
 					} else {
 						gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() read() failed, connection broken\n");
 					}
@@ -993,12 +994,11 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 				gg_read(h->fd, &big, sizeof(big));
 
 				/* XXX sprawdzaæ wynik */
+				h->offset = gg_fix32(big.dunno1);
 				
 				h->state = GG_STATE_SENDING_FILE_HEADER;
 				h->check = GG_CHECK_WRITE;
 				h->timeout = GG_DEFAULT_TIMEOUT;
-
-				h->offset = 0;
 
 				return e;
 
@@ -1056,7 +1056,7 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 
 				/* b³±d */
 				if (size == -1) {
-					gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() read() failed. (%s)\n", strerror(errno));
+					gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() read() failed. (errno=%d, %s)\n", errno, strerror(errno));
 
 					e->type = GG_EVENT_DCC_ERROR;
 					e->event.dcc_error = GG_ERROR_DCC_FILE;
@@ -1128,7 +1128,7 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 				
 				/* b³±d */
 				if (size == -1) {
-					gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() read() failed. (%s)\n", strerror(errno));
+					gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() read() failed. (errno=%d, %s)\n", errno, strerror(errno));
 
 					e->type = GG_EVENT_DCC_ERROR;
 					e->event.dcc_error = GG_ERROR_DCC_NET;

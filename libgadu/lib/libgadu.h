@@ -1,4 +1,4 @@
-/* $Id: libgadu.h,v 1.31 2003/04/01 22:44:26 chilek Exp $ */
+/* $Id: libgadu.h,v 1.32 2003/04/28 20:28:52 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -589,6 +589,8 @@ void gg_pubdir50_free(gg_pubdir50_t res);
 #define GG_PUBDIR50_GENDER "gender"
 #define GG_PUBDIR50_GENDER_FEMALE "1"
 #define GG_PUBDIR50_GENDER_MALE "2"
+#define GG_PUBDIR50_GENDER_SET_FEMALE "2"
+#define GG_PUBDIR50_GENDER_SET_MALE "1"
 #define GG_PUBDIR50_ACTIVE "ActiveOnly"
 #define GG_PUBDIR50_ACTIVE_TRUE "1"
 #define GG_PUBDIR50_START "fmstart"
@@ -810,7 +812,7 @@ char *gg_base64_decode(const char *buf);
 #define GG_DEFAULT_PROTOCOL_VERSION 0x1b
 #define GG_DEFAULT_TIMEOUT 30
 #define GG_HAS_AUDIO_MASK 0x40000000
-#define GG_LIBGADU_VERSION "20030401"
+#define GG_LIBGADU_VERSION "CVS"
 
 #define GG_DEFAULT_DCC_PORT 1550
 

@@ -1,4 +1,4 @@
-/* $Id: libgadu.c,v 1.20 2003/03/22 08:56:13 chilek Exp $ */
+/* $Id: libgadu.c,v 1.21 2003/04/28 20:28:52 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -65,7 +65,7 @@ static char rcsid[]
 #ifdef __GNUC__
 __attribute__ ((unused))
 #endif
-= "$Id: libgadu.c,v 1.20 2003/03/22 08:56:13 chilek Exp $";
+= "$Id: libgadu.c,v 1.21 2003/04/28 20:28:52 chilek Exp $";
 #endif 
 
 /*
@@ -312,7 +312,7 @@ int gg_resolve_pthread(int *fd, void **resolver, const char *hostname)
 
 	d->fd = pipes[1];
 
-	if (pthread_create(tmp, NULL, gg_resolve_pthread_thread, d) == -1) {
+	if (pthread_create(tmp, NULL, gg_resolve_pthread_thread, d)) {
 		gg_debug(GG_DEBUG_MISC, "// gg_resolve_phread() unable to create thread\n");
 		close(pipes[0]);
 		close(pipes[1]);
@@ -1068,7 +1068,7 @@ int gg_send_message_confer_richtext(struct gg_session *sess, int msgclass, int r
 		s.recipient = gg_fix32(recipients[i]);
 		
 		for (j = 0, k = 0; j < recipients_count; j++)
-			if (recipients[j] != s.recipient) {
+			if (recipients[j] != recipients[i]) {
 				recps[k] = gg_fix32(recipients[j]);
 				k++;
 			}
