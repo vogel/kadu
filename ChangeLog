@@ -21,6 +21,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * porz±dki w libgadu: wywali³em katalog win32 - narazie nie jest potrzebny,
   oraz katalog z cache'm od m4. Usun±³em równie¿ historyczny ChangeLog.1,
   bo to ponad 100kb a nikt nie bêdzie i tak tego czyta³ (adrian)
+* configure: libgadu nie obs³uguje ju¿ --disable-debug. Po konsultacji
+  z Wojtkiem rozwi±za³em w inny sposób wy³±czanie debugów libgadu (adrian)
 
 +++ wersja 0.3.4-rc1
 * wiêkszo¶æ kodu dotycz±cego obs³ugi zdarzeñ sieciowych przeniesiona z

@@ -364,9 +364,10 @@ fi
 if test "$enable_debug" = "yes"; then
 	AC_DEFINE(DEBUG_ENABLED,1,[Define if you want console debug output])
 	CXXFLAGS="$CXXFLAGS -ggdb"
+	libgadu_CFLAGS="-ggdb"
 else
-	ac_configure_args="$ac_configure_args --disable-debug"
 	CXXFLAGS="$CXXFLAGS -s"
+	libgadu_CFLAGS="-DGG_DEBUG_DISABLE -s"
 fi
 
 # dist-info support
@@ -410,7 +411,7 @@ echo " ******************************************"
 echo
 
 if test "$with_existing_libgadu" = "no"; then
-	ac_configure_args="$ac_configure_args --disable-static --enable-shared"
+	ac_configure_args="$ac_configure_args 'CFLAGS_LIBGADU=$libgadu_CFLAGS' --disable-static --enable-shared"
 	AC_CONFIG_SUBDIRS([libgadu])
 fi
 
