@@ -1,4 +1,4 @@
-/* $Id: libgadu.h,v 1.47 2003/10/16 21:30:11 chilek Exp $ */
+/* $Id: libgadu.h,v 1.48 2003/11/03 18:30:06 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -365,6 +365,7 @@ int gg_send_message_ctcp(struct gg_session *sess, int msgclass, uin_t recipient,
 int gg_ping(struct gg_session *sess);
 int gg_userlist_request(struct gg_session *sess, char type, const char *request);
 int gg_image_request(struct gg_session *sess, uin_t recipient, int size, uint32_t crc32);
+int gg_image_reply(struct gg_session *sess, uin_t recipient, const char *filename, const char *image, int size);
 
 uint32_t gg_crc32(uint32_t crc, const unsigned char *buf, int len);
 
@@ -933,7 +934,7 @@ int gg_image_queue_remove(struct gg_session *s, struct gg_image_queue *q, int fr
 #define GG_DEFAULT_PROTOCOL_VERSION 0x20
 #define GG_DEFAULT_TIMEOUT 30
 #define GG_HAS_AUDIO_MASK 0x40000000
-#define GG_LIBGADU_VERSION "20031016"
+#define GG_LIBGADU_VERSION "CVS"
 
 #define GG_DEFAULT_DCC_PORT 1550
 
@@ -1070,6 +1071,8 @@ struct gg_notify {
 #define GG_USER_OFFLINE 0x01	/* bêdziemy niewidoczni dla u¿ytkownika */
 #define GG_USER_NORMAL 0x03	/* zwyk³y u¿ytkownik */
 #define GG_USER_BLOCKED 0x04	/* zablokowany u¿ytkownik */
+
+#define GG_LIST_EMPTY 0x0012
 	
 #define GG_NOTIFY_REPLY 0x000c	/* tak, to samo co GG_LOGIN */
 	

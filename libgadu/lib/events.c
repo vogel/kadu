@@ -1,4 +1,4 @@
-/* $Id: events.c,v 1.33 2003/10/16 21:30:11 chilek Exp $ */
+/* $Id: events.c,v 1.34 2003/11/03 18:30:06 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -178,6 +178,8 @@ static void gg_image_queue_parse(struct gg_event *e, char *p, int len, struct gg
 	if (p[0] == 0x05) {
 		int i, ok = 0;
 		
+		q->done = 0;
+
 		len -= sizeof(struct gg_msg_image_reply);
 		p += sizeof(struct gg_msg_image_reply);
 
@@ -738,7 +740,7 @@ fail:
  * funkcja, któr± nale¿y wywo³aæ, gdy co¶ siê stanie z obserwowanym
  * deskryptorem. zwraca klientowi informacjê o tym, co siê dzieje.
  *
- *  - sess - identyfikator sesji
+ *  - sess - opis sesji
  *
  * wska¼nik do struktury gg_event, któr± trzeba zwolniæ pó¼niej
  * za pomoc± gg_event_free(). jesli rodzaj zdarzenia jest równy
@@ -770,22 +772,21 @@ struct gg_event *gg_watch_fd(struct gg_session *sess)
 		case GG_STATE_RESOLVING:
 		{
 			struct in_addr addr;
+			int failed = 0;
 
 			gg_debug(GG_DEBUG_MISC, "// gg_watch_fd() GG_STATE_RESOLVING\n");
 
 			if (read(sess->fd, &addr, sizeof(addr)) < (signed)sizeof(addr) || addr.s_addr == INADDR_NONE) {
 				gg_debug(GG_DEBUG_MISC, "// gg_watch_fd() resolving failed\n");
-
-				close(sess->fd);
-				sess->fd = -1;
-
-				goto fail_resolving;
+				failed = 1;
 			}
 			
 			close(sess->fd);
+			sess->fd = -1;
 
 #ifndef __GG_LIBGADU_HAVE_PTHREAD
 			waitpid(sess->pid, NULL, 0);
+			sess->pid = -1;
 #else
 			if (sess->resolver) {
 				pthread_cancel(*((pthread_t*) sess->resolver));
@@ -793,6 +794,9 @@ struct gg_event *gg_watch_fd(struct gg_session *sess)
 				sess->resolver = NULL;
 			}
 #endif
+
+			if (failed)
+				goto fail_resolving;
 
 			/* je¶li jeste¶my w resolverze i mamy ustawiony port
 			 * proxy, znaczy, ¿e resolvowali¶my proxy. zatem
@@ -1108,7 +1112,7 @@ struct gg_event *gg_watch_fd(struct gg_session *sess)
 				 * SSL i SSL_CTX. */
 
 				if (sess->ssl) {
-					gg_debug(GG_DEBUG_MISC, "// gg_watch_fd() connection failed (errno=%d, %s)\n", errno, strerror(errno));
+					gg_debug(GG_DEBUG_MISC, "// gg_watch_fd() connection failed (errno=%d, %s)\n", res, strerror(res));
 					goto fail_connecting;
 				}
 #endif

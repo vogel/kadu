@@ -1,4 +1,4 @@
-/* $Id: libgadu.c,v 1.34 2003/10/16 21:30:11 chilek Exp $ */
+/* $Id: libgadu.c,v 1.35 2003/11/03 18:30:06 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -21,6 +21,7 @@
  */
 
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -69,7 +70,7 @@ static char rcsid[]
 #ifdef __GNUC__
 __attribute__ ((unused))
 #endif
-= "$Id: libgadu.c,v 1.34 2003/10/16 21:30:11 chilek Exp $";
+= "$Id: libgadu.c,v 1.35 2003/11/03 18:30:06 chilek Exp $";
 #endif 
 
 /*
@@ -525,7 +526,7 @@ void *gg_recv_packet(struct gg_session *sess)
 	if ((gg_debug_level & GG_DEBUG_DUMP)) {
 		unsigned int i;
 
-		gg_debug(GG_DEBUG_DUMP, "// gg_recv_packet()", h.type);
+		gg_debug(GG_DEBUG_DUMP, "// gg_recv_packet(%.2x)", h.type);
 		for (i = 0; i < sizeof(h) + h.length; i++) 
 			gg_debug(GG_DEBUG_DUMP, " %.2x", (unsigned char) buf[i]);
 		gg_debug(GG_DEBUG_DUMP, "\n");
@@ -537,7 +538,7 @@ void *gg_recv_packet(struct gg_session *sess)
 /*
  * gg_send_packet() // funkcja wewnêtrzna
  *
- * konstruuje pakiet i wysy³a go w do serwera.
+ * konstruuje pakiet i wysy³a go do serwera.
  *
  *  - sock - deskryptor gniazda
  *  - type - typ pakietu
@@ -590,6 +591,7 @@ int gg_send_packet(struct gg_session *sess, int type, ...)
 		if (!(tmp2 = realloc(tmp, sizeof(struct gg_header) + tmp_length + payload_length))) {
                         gg_debug(GG_DEBUG_MISC, "// gg_send_packet() not enough memory for payload\n");
 			free(tmp);
+			va_end(ap);
                         return -1;
                 }
 
@@ -609,7 +611,7 @@ int gg_send_packet(struct gg_session *sess, int type, ...)
 	if ((gg_debug_level & GG_DEBUG_DUMP)) {
                 unsigned int i;
 		
-                gg_debug(GG_DEBUG_DUMP, "// gg_send_packet()", gg_fix32(h->type));
+                gg_debug(GG_DEBUG_DUMP, "// gg_send_packet(0x%.2x)", gg_fix32(h->type));
                 for (i = 0; i < sizeof(struct gg_header) + gg_fix32(h->length); i++)
                         gg_debug(GG_DEBUG_DUMP, " %.2x", (unsigned char) tmp[i]);
                 gg_debug(GG_DEBUG_DUMP, "\n");
@@ -714,6 +716,7 @@ struct gg_session *gg_login(const struct gg_login_params *p)
 	sess->client_version = (p->client_version) ? strdup(p->client_version) : NULL;
 	sess->last_sysmsg = p->last_sysmsg;
 	sess->image_size = p->image_size;
+	sess->pid = -1;
 
 	if (p->tls == 1) {
 #ifdef __GG_LIBGADU_HAVE_OPENSSL
@@ -890,6 +893,9 @@ void gg_free_session(struct gg_session *sess)
 		free(sess->resolver);
 		sess->resolver = NULL;
 	}
+#else
+	if (sess->pid != -1)
+		waitpid(sess->pid, NULL, 0);
 #endif
 
 	if (sess->fd != -1)
@@ -1003,7 +1009,6 @@ int gg_change_status_descr_time(struct gg_session *sess, int status, const char 
 
 	newtime = gg_fix32(time);
 
-
 	return gg_send_packet(sess, GG_NEW_STATUS, &p, sizeof(p), descr, (strlen(descr) > GG_STATUS_DESCR_MAXSIZE) ? GG_STATUS_DESCR_MAXSIZE : strlen(descr), &newtime, sizeof(newtime), NULL);
 }
 
@@ -1034,6 +1039,11 @@ void gg_logoff(struct gg_session *sess)
 		pthread_cancel(*((pthread_t*) sess->resolver));
 		free(sess->resolver);
 		sess->resolver = NULL;
+	}
+#else
+	if (sess->pid != -1) {
+		waitpid(sess->pid, NULL, WNOHANG);
+		sess->pid = -1;
 	}
 #endif
 	
@@ -1091,7 +1101,6 @@ int gg_image_request(struct gg_session *sess, uin_t recipient, int size, uint32_
 
 		if (!q) {
 			gg_debug(GG_DEBUG_MISC, "// gg_image_request() not enough memory for image queue\n");
-			free(q);
 			free(buf);
 			errno = ENOMEM;
 			return -1;
@@ -1114,6 +1123,88 @@ int gg_image_request(struct gg_session *sess, uin_t recipient, int size, uint32_
 
 			qq->next = q;
 		}
+	}
+
+	return res;
+}
+
+/*
+ * gg_image_reply()
+ *
+ * wysy³a ¿±dany obrazek.
+ *
+ *  - sess - opis sesji
+ *  - recipient - numer adresata
+ *  - filename - nazwa pliku
+ *  - image - bufor z obrazkiem
+ *  - size - rozmiar obrazka
+ *
+ * 0/-1
+ */
+int gg_image_reply(struct gg_session *sess, uin_t recipient, const char *filename, const char *image, int size)
+{
+	struct gg_msg_image_reply *r;
+	struct gg_send_msg s;
+	const char *tmp;
+	char buf[1910];
+	int res;
+
+	gg_debug(GG_DEBUG_FUNCTION, "** gg_image_reply(%p, %d, \"%s\", %p, %d);\n", sess, recipient, filename, image, size);
+
+	if (!sess || !filename || !image) {
+		errno = EFAULT;
+		return -1;
+	}
+
+	/* wytnij ¶cie¿ki, zostaw tylko nazwê pliku */
+	while ((tmp = rindex(filename, '/')) || (tmp = rindex(filename, '\\')))
+		filename = tmp + 1;
+
+	if (strlen(filename) < 1 || strlen(filename) > 1024) {
+		errno = EINVAL;
+		return -1;
+	}
+	
+	if (sess->state != GG_STATE_CONNECTED) {
+		errno = ENOTCONN;
+		return -1;
+	}
+
+	s.recipient = gg_fix32(recipient);
+	s.seq = gg_fix32(0);
+	s.msgclass = gg_fix32(GG_CLASS_MSG);
+
+	buf[0] = 0;
+	r = (void*) &buf[1];
+
+	r->flag = 0x05;
+	r->size = gg_fix32(size);
+	r->crc32 = gg_fix32(gg_crc32(0, image, size));
+
+	while (size > 0) {
+		int buflen, chunklen;
+		
+		/* \0 + struct gg_msg_image_reply */
+		buflen = sizeof(struct gg_msg_image_reply) + 1;
+
+		/* w pierwszym kawa³ku jest nazwa pliku */
+		if (r->flag == 0x05) {
+			strcpy(buf + buflen, filename);
+			buflen += strlen(filename) + 1;
+		}
+
+		chunklen = (size >= sizeof(buf) - buflen) ? (sizeof(buf) - buflen) : size;
+
+		memcpy(buf + buflen, image, chunklen);
+		size -= chunklen;
+		image += chunklen;
+		
+		res = gg_send_packet(sess, GG_SEND_MSG, &s, sizeof(s), buf, buflen + chunklen, NULL);
+
+		if (res == -1)
+			break;
+
+		r->flag = 0x06;
 	}
 
 	return res;
@@ -1342,7 +1433,7 @@ int gg_ping(struct gg_session *sess)
  * wysy³a serwerowi listê kontaktów (wraz z odpowiadaj±cymi im typami userów),
  * dziêki czemu wie, czyj stan nas interesuje.
  *
- *  - sess - identyfikator sesji
+ *  - sess - opis sesji
  *  - userlist - wska¼nik do tablicy numerów
  *  - types - wska¼nik do tablicy typów u¿ytkowników
  *  - count - ilo¶æ numerków
@@ -1369,7 +1460,7 @@ int gg_notify_ex(struct gg_session *sess, uin_t *userlist, char *types, int coun
 	}
 
 	if (!userlist || !count)
-		return 0;
+		return gg_send_packet(sess, GG_LIST_EMPTY, NULL);
 	
 	if (!(n = (struct gg_notify*) malloc(sizeof(*n) * count)))
 		return -1;
@@ -1393,7 +1484,7 @@ int gg_notify_ex(struct gg_session *sess, uin_t *userlist, char *types, int coun
  * wysy³a serwerowi listê kontaktów, dziêki czemu wie, czyj stan nas
  * interesuje.
  *
- *  - sess - identyfikator sesji
+ *  - sess - opis sesji
  *  - userlist - wska¼nik do tablicy numerów
  *  - count - ilo¶æ numerków
  *
@@ -1425,7 +1516,7 @@ int gg_notify(struct gg_session *sess, uin_t *userlist, int count)
 	
 	for (u = userlist, i = 0; i < count; u++, i++) { 
 		n[i].uin = gg_fix32(*u);
-		n[i].dunno1 = 3;
+		n[i].dunno1 = GG_USER_NORMAL;
 	}
 	
 	if (gg_send_packet(sess, GG_NOTIFY, n, sizeof(*n) * count, NULL) == -1)
@@ -1442,7 +1533,7 @@ int gg_notify(struct gg_session *sess, uin_t *userlist, int count)
  * dodaje do listy kontaktów dany numer w trakcie po³±czenia.
  * dodawanemu u¿ytkownikowi okre¶lamy jego typ (patrz protocol.html)
  *
- *  - sess - identyfikator sesji
+ *  - sess - opis sesji
  *  - uin - numer
  *  - type - typ
  *
@@ -1475,14 +1566,14 @@ int gg_add_notify_ex(struct gg_session *sess, uin_t uin, char type)
  *
  * dodaje do listy kontaktów dany numer w trakcie po³±czenia.
  *
- *  - sess - identyfikator sesji
+ *  - sess - opis sesji
  *  - uin - numer
  *
  * 0, -1.
  */
 int gg_add_notify(struct gg_session *sess, uin_t uin)
 {
-	return gg_add_notify_ex(sess, uin, 3);
+	return gg_add_notify_ex(sess, uin, GG_USER_NORMAL);
 }
 
 /*
@@ -1491,7 +1582,7 @@ int gg_add_notify(struct gg_session *sess, uin_t uin)
  * usuwa z listy kontaktów w trakcie po³±czenia.
  * usuwanemu u¿ytkownikowi okre¶lamy jego typ (patrz protocol.html)
  *
- *  - sess - identyfikator sesji
+ *  - sess - opis sesji
  *  - uin - numer
  *  - type - typ
  *
@@ -1524,14 +1615,14 @@ int gg_remove_notify_ex(struct gg_session *sess, uin_t uin, char type)
  *
  * usuwa z listy kontaktów w trakcie po³±czenia.
  *
- *  - sess - identyfikator sesji
+ *  - sess - opis sesji
  *  - uin - numer
  *
  * 0, -1.
  */
 int gg_remove_notify(struct gg_session *sess, uin_t uin)
 {
-	return gg_remove_notify_ex(sess, uin, 3);
+	return gg_remove_notify_ex(sess, uin, GG_USER_NORMAL);
 }
 
 /*
@@ -1539,7 +1630,7 @@ int gg_remove_notify(struct gg_session *sess, uin_t uin)
  *
  * wysy³a ¿±danie/zapytanie listy kontaktów na serwerze.
  *
- *  - sess - identyfikator sesji
+ *  - sess - opis sesji
  *  - type - rodzaj zapytania/¿±dania
  *  - request - tre¶æ zapytania/¿±dania (mo¿e byæ NULL)
  *

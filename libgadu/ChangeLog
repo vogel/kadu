@@ -4,6 +4,47 @@ oznacza, ¿e ,,nick'' jest pomys³odawc± lub podes³a³ patcha, a zrobi³
 to kto¶ oznaczony przez ,,x'' (w - wojtekka, s - speedy, a - arekm,
 d - drg, sz - szalik).
 
+// 2003-11-03
+
+- zmiany stanu bez opisów nie bêd± logowane przy ,,log_status'' równym 2
+  (brat.lukasz/w)
+- libgadu: gg_notify*() z pust± list± kontaktów wy¶le pakiet GG_LIST_EMPTY
+  (grzegorz.sowa/w)
+
+// 2003-10-30
+
+- ,,/last user'' te¿ dzia³a (joshua/sz)
+
+// 2003-10-27
+
+- ocr tokenu (acze/w)
+
+// 2003-10-26
+
+- libgadu: poprawka blokowania libgadu przy roz³±czeniu (FIG/w)
+
+// 2003-10-21
+
+- poprawka obs³ugi segfaultów (porridge/w)
+- poprawka czyszczenia okna i ,,(more)'' (theKnight/w)
+
+// 2003-10-20
+
+- zmiana '\n' w opisach stanów na '|' (s_wilk/w)
+- libgadu: porz±dki z w±tkowanym resolverem (sz/w)
+
+// 2003-10-19
+
+- libgadu: wy¶wietla prawid³owy powód b³êdu przy nieudanym po³±czeniu SSL (w)
+
+// 2003-10-17
+
+- libgadu: dodanie funkcji gg_image_reply() (w)
+- libgadu: drobne poprawki kodu (w)
+- dodanie komend testowych /_imagemsg (wysy³a wiadomo¶æ zawieraj±c± tylko
+  obrazek), /_imagereq (wysy³a ¿±danie obrazka), /_imagesend (wysy³a
+  obrazek) (w)
+
 // 2003-10-15
 
 - libgadu: poprawka api odbierania obrazków (w)
@@ -377,4 +418,4 @@ d - drg, sz - szalik).
 - poprawka zachowania trybu wielolinijkowego (theKnight/w)
 
 
-$Id: ChangeLog,v 1.27 2003/10/16 21:30:11 chilek Exp $
+$Id: ChangeLog,v 1.28 2003/11/03 18:30:06 chilek Exp $
