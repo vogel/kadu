@@ -1596,9 +1596,11 @@ void Kadu::eventHandler(int state) {
 			user = userlist.byUin(e->event.msg.sender);
 			dccSocketClass *dcc;
 			dcc_new = gg_dcc_get_file(user.ip, user.port, config.uin, e->event.msg.sender);
-			dcc = new dccSocketClass(dcc_new);
-			connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), this, SLOT(dccFinished(dccSocketClass *)));		    
-			dcc->initializeNotifiers();
+			if (dcc_new) {
+				dcc = new dccSocketClass(dcc_new);
+				connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), this, SLOT(dccFinished(dccSocketClass *)));		    
+				dcc->initializeNotifiers();
+				}
 			}
 		else {
 			UinsList uins;
