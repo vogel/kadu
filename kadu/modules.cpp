@@ -409,7 +409,8 @@ QStringList ModulesManager::installedModules() const
 	QDir dir(dataPath("kadu/modules"),"*.so");
 	dir.setFilter(QDir::Files);
 	QStringList installed;
-	CONST_FOREACH(entry, dir.entryList())
+	QStringList entries = dir.entryList();
+	CONST_FOREACH(entry, entries)
 		installed.append((*entry).left((*entry).length()-3));
 	return installed;
 }
