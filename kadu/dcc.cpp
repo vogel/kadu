@@ -278,6 +278,7 @@ void dccSocketClass::askAccept(void) {
 		}
 }
 
+#ifdef VOICE_ENABLED
 void dccSocketClass::askAcceptVoiceChat() {
 	QString str;
 
@@ -298,6 +299,7 @@ void dccSocketClass::askAcceptVoiceChat() {
 			break;
 		}
 }
+#endif
 
 QString dccSocketClass::selectFile(void) {
 	QString f;

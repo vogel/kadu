@@ -74,7 +74,9 @@ class dccSocketClass : public QObject {
 
 	protected:
 		void askAccept();
+#ifdef VOICE_ENABLED
 		void askAcceptVoiceChat();
+#endif
 		QString selectFile();
 
 		QSocketNotifier *snr;
