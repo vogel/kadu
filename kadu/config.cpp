@@ -34,6 +34,7 @@
 
 //
 #include "kadu.h"
+#include "misc.h"
 #include "config.h"
 //
 

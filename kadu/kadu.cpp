@@ -98,6 +98,7 @@
 #include "../libgadu/lib/libgadu.h"
 
 //
+#include "misc.h"
 #include "kadu.h"
 #include "pixmaps.h"
 #include "userbox.h"

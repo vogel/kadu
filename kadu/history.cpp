@@ -36,6 +36,7 @@
 
 //
 #include "kadu.h"
+#include "misc.h"
 #include "history.h"
 //
 

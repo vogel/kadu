@@ -23,6 +23,7 @@
 
 //
 #include "kadu.h"
+#include "misc.h"
 #include "ignore.h"
 //
 
