@@ -68,7 +68,7 @@ void AutoStatusTimer::onTimeout()
 		QString new_description;
 		new_description = s.readLine();
 		f.close();
-		if (new_description!=own_description) {
+		if (new_description != own_description) {
 			fprintf(stderr, "AutoStatus: changing to \"%s\"\n", new_description.local8Bit().data());
 			own_description = new_description;
 			kadu->setStatus(sess->status);
