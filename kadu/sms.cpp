@@ -90,24 +90,33 @@ int Sms::sendSms(void) {
 	b_send->setEnabled(false);
 	body->setEnabled(false);
 
-	if (QString::compare(config.smsapp,"")) {
-		smsProcess = new QProcess(this);
-		if (config.smscustomconf) {
-			QString jakisstring;
-			jakisstring.sprintf(config.smsconf, config.smsapp, recipient->text().toInt(), (const char *)body->text().local8Bit());
-			smsProcess->addArgument(jakisstring);
-			}
-		else {
-			smsProcess->addArgument(config.smsapp);
-			smsProcess->addArgument(recipient->text());
-			smsProcess->addArgument(body->text());
-			}
-		}
-	else {
-		QMessageBox::warning(this, i18n("SMS error"), i18n("Sms application was not specified. Visit the configuration section") );
-		fprintf(stderr,"KK SMS application NOT specified. Exit.\n");
-		return -1;
-		}
+	QString SmsAppPath;
+	if(config.smsbuildin)
+		SmsAppPath=QString(BINDIR)+"/kadusms";
+	else
+	{
+		if(config.smsapp=="")
+		{
+			QMessageBox::warning(this, i18n("SMS error"), i18n("Sms application was not specified. Visit the configuration section") );
+			fprintf(stderr,"KK SMS application NOT specified. Exit.\n");
+			return -1;
+		};
+		SmsAppPath=config.smsapp;
+	};
+		
+	smsProcess = new QProcess(this);
+	if(config.smscustomconf&&(!config.smsbuildin))
+	{
+		QString jakisstring;
+		jakisstring.sprintf(config.smsconf, (const char*)SmsAppPath.local8Bit(), recipient->text().toInt(), (const char *)body->text().local8Bit());
+		smsProcess->addArgument(jakisstring);
+	}
+	else
+	{
+		smsProcess->addArgument(SmsAppPath);
+		smsProcess->addArgument(recipient->text());
+		smsProcess->addArgument(body->text());
+	};
 
 	if (!smsProcess->start())
 		QMessageBox::critical(this, i18n("SMS error"), i18n("Could not spawn child process. Check if the program is functional") );

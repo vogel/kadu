@@ -24,6 +24,7 @@
 #include <qlineedit.h>
 #include <qslider.h>
 #include <qvgroupbox.h>
+#include <qhbox.h>
 #include "../libgadu/lib/libgadu.h"
 
 void loadKaduConfig(void);
@@ -49,6 +50,9 @@ class ConfigDialog : public QTabDialog	{
 		QLineEdit *e_password;
 		QLineEdit *e_uin;
 		QLineEdit *e_nick;
+		QHBox     *smshbox1;
+		QHBox     *smshbox2;
+		QCheckBox *b_smsbuildin;
 		QLineEdit *e_smsapp;
 		QLineEdit *e_smsconf;
 		QCheckBox *b_smscustomconf;
@@ -130,11 +134,12 @@ class ConfigDialog : public QTabDialog	{
 		void chooseUserboxBgColorGet();
 		void chooseUserboxFgColorGet();
 		void chooseChatFontGet(int index);
-    void chooseUserboxFontGet(int index);
+		void chooseUserboxFontGet(int index);
 		void emoticonsEnabled(bool);
 		void ifDccEnabled(bool);
 		void ifDccIpEnabled(bool);
 		void ifDefServerEnabled(bool);
+		void onSmsBuildInCheckToogle(bool);
 };
 
 #endif

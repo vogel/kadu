@@ -72,6 +72,7 @@ struct config {
 	bool grouptabs;
 	QRect geometry;
 
+	bool smsbuildin;
 	char * smsapp;
 	bool smscustomconf;
 	char * smsconf;

@@ -20,7 +20,6 @@
 #include <qfontdatabase.h>
 #include <qfiledialog.h>
 #include <math.h>
-#include <qvgroupbox.h>
 #include <qvbox.h>
 #include <qhgroupbox.h>
 #include <kglobal.h>
@@ -91,6 +90,7 @@ void loadKaduConfig(void) {
 		config.geometry = konf->readRectEntry("Geometry");
 
 	konf->setGroup("SMS");
+	config.smsbuildin = konf->readBoolEntry("BuildInApp",true);
 	config.smsapp = strdup(konf->readEntry("SmsApp",""));
 	config.smscustomconf = konf->readBoolEntry("UseCustomString",false);
 	config.smsconf = strdup(konf->readEntry("SmsString",""));
@@ -170,6 +170,7 @@ void saveKaduConfig(void) {
 	konf->writeEntry("DisplayGroupTabs",config.grouptabs);
 
 	konf->setGroup("SMS");
+	konf->writeEntry("BuildInApp",config.smsbuildin);	
 	konf->writeEntry("SmsApp",config.smsapp);
 	konf->writeEntry("SmsString",config.smsconf);
 	konf->writeEntry("UseCustomString",config.smscustomconf);
@@ -262,30 +263,39 @@ void ConfigDialog::setupTab1(void) {
 	QVGroupBox *smsvgrp = new QVGroupBox(box);
 	smsvgrp->setTitle(i18n("SMS options"));
 
-	QHBox *smshbox1 = new QHBox(smsvgrp);
+	b_smsbuildin = new QCheckBox(smsvgrp);
+	b_smsbuildin->setText(i18n("Use build-in SMS application"));
+
+	smshbox1 = new QHBox(smsvgrp);
 	smshbox1->setSpacing(5);
 	QLabel *l_smsapp = new QLabel(smshbox1);
-	l_smsapp->setText(i18n("SMS application"));
+	l_smsapp->setText(i18n("Custom SMS application"));
 	e_smsapp = new QLineEdit(smshbox1);
 	e_smsapp->setText(config.smsapp);
 
-	b_smscustomconf = new QCheckBox(smsvgrp);
-	b_smscustomconf->setText(i18n("Enable custom string formatting"));
+	smshbox2 = new QHBox(smsvgrp);
+	smshbox2->setSpacing(5);
+	b_smscustomconf = new QCheckBox(smshbox2);
+	b_smscustomconf->setText(i18n("SMS custom string"));
 	QToolTip::add(b_smscustomconf,i18n("Check this box if your sms application doesn't understand sms number \"message\"\nThe string formatting is %s for app, %d for number and %s for message\nand the order is %s %d %s"));
 
-	QHBox *smshbox2 = new QHBox(smsvgrp);
-	smshbox2->setSpacing(5);
-	QLabel *l_smsconf = new QLabel(smshbox2);
-	l_smsconf->setText(i18n("SMS custom string"));
 	e_smsconf = new QLineEdit(smshbox2);
 	e_smsconf->setText(config.smsconf);
 
-	if (config.smscustomconf)
-		b_smscustomconf->setEnabled(true);
-	else
+	if (config.smsbuildin)
+	{
+		b_smsbuildin->setChecked(true);
+		smshbox1->setEnabled(false);
 		smshbox2->setEnabled(false);
+	};
+		
+	if (config.smscustomconf)
+		b_smscustomconf->setChecked(true);
+	else
+		e_smsconf->setEnabled(false);
 
-	QObject::connect(b_smscustomconf, SIGNAL(toggled(bool)), smshbox2, SLOT(setEnabled(bool)));
+	QObject::connect(b_smsbuildin, SIGNAL(toggled(bool)), this, SLOT(onSmsBuildInCheckToogle(bool)));
+	QObject::connect(b_smscustomconf, SIGNAL(toggled(bool)), e_smsconf, SLOT(setEnabled(bool)));
 	/* SMS end */
 
 	b_autoaway = new QCheckBox(box);
@@ -831,7 +841,14 @@ void ConfigDialog::setupTab6(void) {
   cb_userboxfontsize->setCurrentText(QString::number(config.userboxFontSize));
 
 	addTab(box6, i18n("Look"));
-}
+};
+
+void ConfigDialog::onSmsBuildInCheckToogle(bool toggled)
+{
+	smshbox1->setEnabled(!toggled);
+	smshbox2->setEnabled(!toggled);
+};
+
 void ConfigDialog::ifDccEnabled(bool toggled) {
 	b_dccip->setEnabled(toggled);
 	b_dccfwd->setEnabled(toggled);
@@ -1018,6 +1035,7 @@ void ConfigDialog::updateConfig(void) {
 	config.rundocked=b_rdocked->isChecked();
 	config.grouptabs=b_grptabs->isChecked();
 
+	config.smsbuildin = b_smsbuildin->isChecked();
 	config.smsapp = strdup(e_smsapp->text().latin1());
 	config.smsconf = strdup(e_smsconf->text().latin1());
 	config.smscustomconf = b_smscustomconf->isChecked();
