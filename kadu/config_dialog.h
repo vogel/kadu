@@ -905,6 +905,7 @@ class ConfigDialog : public QVBox {
 		QPushButton* applyButton;
 		QPushButton* cancelButton;
 		static QString acttab;
+		virtual void keyPressEvent(QKeyEvent *e);
 
 	signals:
 		/**

@@ -70,6 +70,17 @@ void ConfigDialog::closeDialog()
 	kdebugf2();
 }
 
+void ConfigDialog::keyPressEvent(QKeyEvent *e)
+{
+	if (e->key() == Key_Escape)
+	{
+		e->accept();
+		closeDialog();
+	}
+	else
+		QVBox::keyPressEvent(e);
+}
+
 ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const char *name) : QVBox(parent, name)
 {
 	kdebugf();
