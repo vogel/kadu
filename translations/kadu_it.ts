@@ -302,10 +302,6 @@ e scrivi la stringa corretta. I parametri devono essere separati da spazio. Il p
         <translation>cambia a &quot;Torno subito&quot; dopo</translation>
     </message>
     <message>
-        <source> seconds</source>
-        <translation>secondi</translation>
-    </message>
-    <message>
         <source>On shutdown, set description:</source>
         <translation>Quando chiudi Kadu, lascia questa descrizione:</translation>
     </message>
@@ -657,6 +653,26 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
         <source>Don&apos;t save status changes</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Lock file in profile directory exists. Another Kadu probably running.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Force running Kadu (not recommended).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Quit.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check idle every </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show status button</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -869,6 +885,10 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
     <message>
         <source>Ok</source>
         <translation>Ok</translation>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

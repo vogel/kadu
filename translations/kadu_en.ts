@@ -568,10 +568,6 @@ Arguments should be separated with spaces. %n argument is converted to number, %
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source> seconds</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Default status</source>
         <translation type="unfinished"></translation>
     </message>
@@ -649,6 +645,26 @@ Arguments should be separated with spaces. %n argument is converted to number, %
     </message>
     <message>
         <source>Don&apos;t save status changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lock file in profile directory exists. Another Kadu probably running.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Force running Kadu (not recommended).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Quit.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check idle every </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show status button</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -862,6 +878,10 @@ Arguments should be separated with spaces. %n argument is converted to number, %
     </message>
     <message>
         <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

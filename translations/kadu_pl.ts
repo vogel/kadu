@@ -125,15 +125,15 @@ Wybierz jedną z poniższych opcji:</translation>
     </message>
     <message>
         <source>Uin</source>
-        <translation>Numer GG</translation>
+        <translation>Numer GG: </translation>
     </message>
     <message>
         <source>Password</source>
-        <translation>Hasło</translation>
+        <translation>Hasło: </translation>
     </message>
     <message>
         <source>Nick</source>
-        <translation>Pseudonim</translation>
+        <translation>Pseudonim: </translation>
     </message>
     <message>
         <source>Log messages</source>
@@ -177,11 +177,11 @@ Wybierz jedną z poniższych opcji:</translation>
     </message>
     <message>
         <source>External IP address:</source>
-        <translation>Zewnętrzny adres IP:</translation>
+        <translation>Zewnętrzny adres IP: </translation>
     </message>
     <message>
         <source>External TCP port:</source>
-        <translation>Zewnętrzny port TCP:</translation>
+        <translation>Zewnętrzny port TCP: </translation>
     </message>
     <message>
         <source>Servers properties</source>
@@ -213,7 +213,7 @@ Wybierz jedną z poniższych opcji:</translation>
     </message>
     <message>
         <source>IP addresses:</source>
-        <translation>Adresy IP:</translation>
+        <translation>Adresy IP: </translation>
     </message>
     <message>
         <source>Username:</source>
@@ -295,7 +295,7 @@ Zaznacz i wpisz w to pole poprawny ciąg. Argumenty oddziel spacjami. Argument %
     </message>
     <message>
         <source>User ID</source>
-        <translation>ID Użytkownika</translation>
+        <translation>ID Użytkownika: </translation>
     </message>
     <message>
         <source>Enable autoaway</source>
@@ -304,10 +304,6 @@ Zaznacz i wpisz w to pole poprawny ciąg. Argumenty oddziel spacjami. Argument %
     <message>
         <source>Set status to away after </source>
         <translation>Zmień status po</translation>
-    </message>
-    <message>
-        <source> seconds</source>
-        <translation> sekundach</translation>
     </message>
     <message>
         <source>Default status</source>
@@ -435,7 +431,7 @@ Zaznacz i wpisz w to pole poprawny ciąg. Argumenty oddziel spacjami. Argument %
     </message>
     <message>
         <source>Reduce the number of visible messages to</source>
-        <translation>Zmniejsz ilość widocznych wiadomości do</translation>
+        <translation>Zmniejsz ilość widocznych wiadomości do: </translation>
     </message>
     <message>
         <source>Scroll chat window downward, not upward</source>
@@ -479,11 +475,11 @@ Zaznacz i wpisz w to pole poprawny ciąg. Argumenty oddziel spacjami. Argument %
     </message>
     <message>
         <source>Chat window title syntax:</source>
-        <translation>Składnia tytułu okna rozmowy:</translation>
+        <translation>Składnia tytułu okna rozmowy: </translation>
     </message>
     <message>
         <source>Conference window title prefix:</source>
-        <translation>Prefix tytułu okna konferencji:</translation>
+        <translation>Prefix tytułu okna konferencji: </translation>
     </message>
     <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - frist name
@@ -507,7 +503,7 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     </message>
     <message>
         <source>syntax:</source>
-        <translation> składnia:</translation>
+        <translation> składnia: </translation>
     </message>
     <message>
         <source>Preview chat</source>
@@ -651,11 +647,31 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     </message>
     <message>
         <source>Local TCP port:</source>
-        <translation>Lokalny port TCP:</translation>
+        <translation>Lokalny port TCP: </translation>
     </message>
     <message>
         <source>Don&apos;t save status changes</source>
         <translation>Nie zapisuj zmian statusu</translation>
+    </message>
+    <message>
+        <source>Lock file in profile directory exists. Another Kadu probably running.</source>
+        <translation>Znaleziono plik blokujący. Kadu prawdopodobnie jest już uruchomione.</translation>
+    </message>
+    <message>
+        <source>Force running Kadu (not recommended).</source>
+        <translation>Uruchom mimo to (nie zalecane).</translation>
+    </message>
+    <message>
+        <source>Quit.</source>
+        <translation>Porzuć</translation>
+    </message>
+    <message>
+        <source>Check idle every </source>
+        <translation> Sprawdź bezczynność co:</translation>
+    </message>
+    <message>
+        <source>Show status button</source>
+        <translation>Pokaż przycisk statusów</translation>
     </message>
 </context>
 <context>
@@ -869,6 +885,10 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     <message>
         <source>Ok</source>
         <translation>OK</translation>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation>Zastosuj</translation>
     </message>
 </context>
 <context>

@@ -302,10 +302,6 @@ nicht versteht. Gib hier die Argumente ein, getrennt mit Komma. %n=Tel.; %m=Nach
         <translation>Ändere den Status nach</translation>
     </message>
     <message>
-        <source> seconds</source>
-        <translation>Sekunden</translation>
-    </message>
-    <message>
         <source>On shutdown, set description:</source>
         <translation>Beim Ausschalten setze Beschreibung:</translation>
     </message>
@@ -657,6 +653,26 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
         <source>Don&apos;t save status changes</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Lock file in profile directory exists. Another Kadu probably running.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Force running Kadu (not recommended).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Quit.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check idle every </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show status button</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -869,6 +885,10 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     <message>
         <source>Ok</source>
         <translation>Ok</translation>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
