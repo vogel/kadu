@@ -229,6 +229,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   pozbycie siê publicznych zmiennych z klasy Kadu (adrian)
 * porz±dki w wewnêtrznym nazewnictwie obiektów (joi)
 * poprawione zwijanie linków (joi)
+* mo¿liwo¶æ automat. pobierania i instalacji modu³u spellchecker (adrian)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
