@@ -98,7 +98,7 @@ class UserBoxSlots : public QObject
 	public slots:
 		void onCreateConfigDialog();
 		void onDestroyConfigDialog();
-		void chooseColorGet();
+		void chooseColorGet(const QColor& color);
 		void chooseColorGet(const QString& text);
 		void chooseUserBoxSelect(int nr);
 		void chooseUserBoxFont(int nr);

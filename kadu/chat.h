@@ -241,7 +241,7 @@ class ChatSlots :public QObject
 		void onUseEncryption(bool toggled);
 		void onPruneChat(bool toggled);
 		void generateMyKeys(void);
-		void chooseColorGet();
+		void chooseColorGet(const QColor& color);
 		void chooseColorGet(const QString& text);
 		void chooseChatSelect(int nr);
 		void chooseChatFont(int nr);

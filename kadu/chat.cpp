@@ -280,7 +280,7 @@ CustomInput::CustomInput(QWidget *parent, const char *name) : QMultiLineEdit(par
 
 void CustomInput::keyPressEvent(QKeyEvent * e) {
 	kdebug("CustomInput::keyPressEvent()\n");
-	if (autosend_enabled && ((HotKey::shortCut(e,"chat_newline")) || e->key()==Key_Enter)&& !(e->state() & ShiftButton)) {
+	if (autosend_enabled && ((HotKey::shortCut(e,"ShortCuts", "chat_newline")) || e->key()==Key_Enter)&& !(e->state() & ShiftButton)) {
 		kdebug("CustomInput::keyPressEvent(): emit enterPressed()\n");
 		emit sendMessage();
 		}
@@ -295,17 +295,17 @@ void CustomInput::keyPressEvent(QKeyEvent * e) {
 			insert("*");
 			return;
 			}
-		if (HotKey::shortCut(e,"chat_bold"))	
+		if (HotKey::shortCut(e,"ShortCuts", "chat_bold"))	
 			{
 				emit specialKeyPressed(CustomInput::KEY_BOLD);
 				return;
 			}
-		else if (HotKey::shortCut(e,"chat_italic"))
+		else if (HotKey::shortCut(e,"ShortCuts", "chat_italic"))
 			{
 				emit specialKeyPressed(CustomInput::KEY_ITALIC);
 				return;
 			}
-		else if (HotKey::shortCut(e,"chat_underline"))
+		else if (HotKey::shortCut(e,"ShortCuts", "chat_underline"))
 				emit specialKeyPressed(CustomInput::KEY_UNDERLINE);
 		QMultiLineEdit::keyPressEvent(e);
 		}
@@ -690,16 +690,16 @@ void Chat::windowActivationChange(bool oldActive) {
 }
 
 void Chat::keyPressEvent(QKeyEvent *e) {
-	if (HotKey::shortCut(e,"chat_clear"))
+	if (HotKey::shortCut(e,"ShortCuts", "chat_clear"))
 		clearChatWindow();
 	else
-	if (HotKey::shortCut(e,"chat_close"))
+	if (HotKey::shortCut(e,"ShortCuts", "chat_close"))
 		close();
 	else
-	if (HotKey::shortCut(e,"kadu_viewhistory"))
+	if (HotKey::shortCut(e,"ShortCuts", "kadu_viewhistory"))
 		HistoryBox();
 	else
-	if (HotKey::shortCut(e,"kadu_searchuser"))
+	if (HotKey::shortCut(e,"ShortCuts", "kadu_searchuser"))
 		userWhois();
 	QWidget::keyPressEvent(e);
 }
@@ -1260,7 +1260,7 @@ void Chat::initModule()
 
 	ConfigDialog::connectSlot("Chat", "Automatically prune chat messages", SIGNAL(toggled(bool)), chatslots, SLOT(onPruneChat(bool)));
 	
-	ConfigDialog::connectSlot("Look", "ColorButton1", SIGNAL(changed()), chatslots, SLOT(chooseColorGet()));
+	ConfigDialog::connectSlot("Look", "ColorButton1", SIGNAL(changed(const QColor&)), chatslots, SLOT(chooseColorGet(const QColor&)));
 	ConfigDialog::connectSlot("Look", "", SIGNAL(textChanged(const QString&)), chatslots, SLOT(chooseColorGet(const QString&)), "line1");
 	ConfigDialog::connectSlot("Look", "", SIGNAL(activated(int)), chatslots, SLOT(chooseChatSelect(int)), "combobox1");
 	
@@ -1619,21 +1619,20 @@ void ChatSlots::chooseColorGet(const QString &text)
 		QLineEdit *l_color= ConfigDialog::getLineEdit("Look", "", "line1");
 		colorbutton->setColor(QColor(text));
 		int pos=l_color->cursorPosition();
-		chooseColorGet();
+		chooseColorGet(QColor(text));
 		l_color->setCursorPosition(pos);
 		updatePreview();
 	    }
 }
 
-void ChatSlots::chooseColorGet()
+void ChatSlots::chooseColorGet(const QColor& color)
 {
 	kdebug("ChatSlots::chooseColorGet()\n");
-	ColorButton *colorbutton= ConfigDialog::getColorButton("Look", "ColorButton1");
 	QLineEdit *l_color= ConfigDialog::getLineEdit("Look", "", "line1");
 	QComboBox *cb_chatselect= ConfigDialog::getComboBox("Look", "","combobox1");
 	
-	l_color->setText(colorbutton->color().name());
-	vl_chatcolor[cb_chatselect->currentItem()]=colorbutton->color();
+	l_color->setText(color.name());
+	vl_chatcolor[cb_chatselect->currentItem()]=color;
 	updatePreview();
 }
 

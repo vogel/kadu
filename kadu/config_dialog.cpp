@@ -31,8 +31,12 @@ void ConfigDialog::showConfigDialog(QApplication* application) {
 	ConfigDialog *cd;
 	
 	if (configdialog)
+		{
 		configdialog->setActiveWindow();
-	else {
+		configdialog->raise();
+		}
+	else 	
+		{
 		cd = new ConfigDialog(application);
 		cd->show();
 		}
@@ -101,9 +105,6 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 			case CONFIG_COLORBUTTON:
 			{
 				ColorButton* colorbutton=new ColorButton(QColor((*i).defaultS), parent, (*i).name);
-				QPixmap pm(35,10);
-				pm.fill(QColor((*i).defaultS));
-				colorbutton->setPixmap(pm);
 				colorbutton->setMaximumSize(QSize(50,25));
 				(*i).widget=colorbutton;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
@@ -112,7 +113,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 			case CONFIG_COMBOBOX:
 			{
 				QHBox* hbox=new QHBox(parent);
-				QLabel* label=new QLabel(appHandle->translate("@default",(*i).caption), hbox);
+				new QLabel(appHandle->translate("@default",(*i).caption), hbox);
 				QComboBox* combo=new QComboBox(hbox, (*i).name);
 				(*i).widget=combo;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
@@ -141,9 +142,9 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 			case CONFIG_HOTKEYEDIT:
 			{
 				QHBox* hbox=new QHBox(parent);
-				QLabel* label=new QLabel(appHandle->translate("@default",(*i).caption), hbox);
+				new QLabel(appHandle->translate("@default",(*i).caption), hbox);
 				HotKey* hotkey=new HotKey(hbox, (*i).name);
-				hotkey->setText(config_file.readEntry((*i).group, (*i).entry, (*i).defaultS));
+				hotkey->setShortCut(config_file.readEntry((*i).group, (*i).entry, (*i).defaultS));
 				(*i).widget=hotkey;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				break;
@@ -157,7 +158,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 			case CONFIG_LINEEDIT:
 			{
 				QHBox* hbox=new QHBox(parent);
-				QLabel* label=new QLabel(appHandle->translate("@default",(*i).caption), hbox);
+				new QLabel(appHandle->translate("@default",(*i).caption), hbox);
 				QLineEdit* line=new QLineEdit(hbox, (*i).name);
 				line->setText(config_file.readEntry((*i).group, (*i).entry, (*i).defaultS));
 				(*i).widget=line;
@@ -167,7 +168,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 			case CONFIG_LINEEDIT2:
 			{
 				QHBox* hbox=new QHBox(parent);
-				QLabel* label=new QLabel(appHandle->translate("@default",(*i).caption), hbox);
+				new QLabel(appHandle->translate("@default",(*i).caption), hbox);
 				QLineEdit* line=new QLineEdit(hbox, (*i).name);
 				line->setText((*i).defaultS);
 				(*i).widget=line;
@@ -214,7 +215,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				int pageStep;
 				int value;
 				QStringList values= QStringList::split(",", (*i).defaultS);
-				
+
 				minVal=values[0].toInt();
 				maxVal=values[1].toInt();
 				pageStep=values[2].toInt();
@@ -229,7 +230,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 			case CONFIG_SPINBOX:
 			{	
 				QHBox* hbox=new QHBox(parent);
-				QLabel* label=new QLabel(appHandle->translate("@default",(*i).caption), hbox);	
+				new QLabel(appHandle->translate("@default",(*i).caption), hbox);
 				QStringList values= QStringList::split(",", (*i).defaultS);
 				int minVal=values[0].toInt();
 				int maxVal=values[1].toInt();
@@ -244,8 +245,9 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 			}
 			case CONFIG_TAB:
 			{
-				listBox->insertItem(appHandle->translate("@default",(*i).caption));
-				(*i).widget=box;
+				listBox->insertItem(QPixmap(QString(DATADIR)+ "/kadu/icons/" + (*i).defaultS), appHandle->translate("@default",(*i).caption));
+				QVBox *subbox= new QVBox(box);
+				(*i).widget=subbox;
 				break;
 			}
 			case CONFIG_VBOX:
@@ -270,7 +272,6 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				    kdebug("unable to connect signal: "+(*k).signal+" slot: "+(*k).slot+"\n");
 			}
 		
-		(*i).visible=true;
 	};
 
 		for(QValueList<ElementConnections>::iterator a=SlotsOnCreate.begin(); a!=SlotsOnCreate.end(); a++)
@@ -297,24 +298,6 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 	configdialog = this;
 	emit create();
 
-	for(QValueList<RegisteredControl>::iterator i=RegisteredControls.begin(); i!=RegisteredControls.end(); i++)
-	if ((*i).type != CONFIG_TAB)
-	{
-	    switch((*i).type)
-	    {
-	      case 	CONFIG_COMBOBOX:
-	      case	CONFIG_HOTKEYEDIT:
-	      case	CONFIG_LINEEDIT:
-	      case	CONFIG_LINEEDIT2:
-	      case 	CONFIG_SPINBOX:
-		    (*i).visible= !((QHBox*)(*i).widget->parent())->isHidden();
-		break;
-	      default:
-		    (*i).visible= !(*i).widget->isHidden();
-	      break;
-	    } 
-	}
-
 	changeTab(appHandle->translate("@default",acttab));
 
 }
@@ -326,60 +309,20 @@ ConfigDialog::~ConfigDialog() {
 void ConfigDialog::changeTab(const QString& name)
 {
     kdebug("ConfigDialog::changeTab()\n");
-	for(QValueList<RegisteredControl>::iterator i=RegisteredControls.begin(); i!=RegisteredControls.end(); i++)
-	if (acttab == (*i).group)
-	if ((*i).type != CONFIG_TAB)
-	    switch((*i).type)
-	    {
-	      case 	CONFIG_COMBOBOX:
-	      case	CONFIG_HOTKEYEDIT:
-	      case	CONFIG_LINEEDIT:
-	      case	CONFIG_LINEEDIT2:
-	      case 	CONFIG_SPINBOX:
-		    (*i).visible= !((QHBox*)(*i).widget->parent())->isHidden();
-		break;
-	      default:
-		    (*i).visible= !(*i).widget->isHidden();
-	      break;
-	    }  	
-
-	for(QValueList<RegisteredControl>::iterator i=RegisteredControls.begin(); i!=RegisteredControls.end(); i++)
+    
+    int tab=0;
+    while (tab != -1)
+    {
+    if (appHandle->translate("@default",RegisteredControls[tab].caption) == name)
 	{
-	if ((*i).type != CONFIG_TAB)
-	    switch((*i).type)
-	    {
-	      case 	CONFIG_COMBOBOX:
-	      case	CONFIG_HOTKEYEDIT:
-	      case	CONFIG_LINEEDIT:
-	      case	CONFIG_LINEEDIT2:
-	      case 	CONFIG_SPINBOX:
-	    	((QHBox*)(*i).widget->parent())->hide();
-		break;
-	      default:
-	      (*i).widget->hide();
-	      break;
-	    }  	
-	else 
-		if (listBox->currentText() == appHandle->translate("@default",(*i).caption))
-			acttab= (*i).caption;
-
-	    if (appHandle->translate("@default",(*i).group) == name)
-	    switch((*i).type)
-	    {
-	      case 	CONFIG_COMBOBOX:
-	      case	CONFIG_HOTKEYEDIT:
-	      case	CONFIG_LINEEDIT:
-	      case	CONFIG_LINEEDIT2:
-	      case 	CONFIG_SPINBOX:
-	      if ((*i).visible)
-	    	((QHBox*)(*i).widget->parent())->show();
-		break;
-	      default:
-	      if ((*i).visible)
-	        (*i).widget->show();
-	      break;
-	    }
+	    RegisteredControls[tab].widget->show();
+	    acttab= RegisteredControls[tab].caption;
 	}
+    else 
+	RegisteredControls[tab].widget->hide();
+
+    tab=findTab(tab+1);
+    }
 	kdebug("active Tab: "+acttab+"\n");
 }
 
@@ -397,7 +340,7 @@ void ConfigDialog::updateConfig(void)
 			}
 			case CONFIG_HOTKEYEDIT:
 			{
-				config_file.writeEntry((*i).group, (*i).entry, ((HotKey*)((*i).widget))->text());
+				config_file.writeEntry((*i).group, (*i).entry, ((HotKey*)((*i).widget))->getShortCutString());
 				break;
 			}
 			case CONFIG_LINEEDIT:
@@ -733,13 +676,14 @@ void ConfigDialog::addSpinBox(const QString& groupname,
 
 };
 
-void ConfigDialog::addTab(const QString& caption)
+void ConfigDialog::addTab(const QString& caption, const QString& iconFileName)
 {
 		if (findTab(caption) == -1)
 		    {
 			RegisteredControl c;
 			c.type=CONFIG_TAB;
 			c.caption=caption;
+			c.defaultS=iconFileName;
 			c.nrOfControls=0;
 			RegisteredControls.append(c);
 		    }	
@@ -827,7 +771,7 @@ int ConfigDialog::findPreviousTab(const int startpos)
 		    position--;
 		    }
     return -1;
-// -1 oznacza ze nie ma listy
+// -1 oznacza ze nie ma Tab'a
 }
 
 int ConfigDialog::findTab(const int startpos)
@@ -1052,14 +996,14 @@ int ConfigDialog::existControl(const QString& groupname, const QString& caption,
 
 
 
-QKeySequence HotKey::shortCutFromFile(const QString &name)
+QKeySequence HotKey::shortCutFromFile(const QString& groupname, const QString &name)
 {
-	return QKeySequence(config_file.readEntry("ShortCuts", name));
+	return QKeySequence(config_file.readEntry(groupname, name));
 }
 
-bool HotKey::shortCut(QKeyEvent *e, const QString &name)
+bool HotKey::shortCut(QKeyEvent *e,const QString& groupname, const QString &name)
 {
-	return (shortCutFromFile(name)==QKeySequence(keyEventToString(e)));
+	return (shortCutFromFile(groupname, name)==QKeySequence(keyEventToString(e)));
 }
 
 HotKey::HotKey(QWidget *parent, const char* name): QLineEdit(parent, name)
@@ -1108,6 +1052,31 @@ void HotKey::keyReleaseEvent(QKeyEvent *e)
 		setText("");
 }
 
+QKeySequence HotKey::getShortCut()
+{
+    return QKeySequence(text());
+}
+
+QString HotKey::getShortCutString()
+{
+    return text();
+}
+
+void HotKey::setShortCut(const QString& shortcut)
+{
+    QKeySequence str(shortcut);
+    if (str.isEmpty())
+	setText("");
+    else
+	setText(shortcut);
+}
+
+void HotKey::setShortCut(const QKeySequence& shortcut)
+{
+    return setText(shortcut);
+}
+
+
 
 ColorButton::ColorButton(const QColor &color, QWidget *parent, const char* name): QPushButton(parent, name)
 {
@@ -1118,14 +1087,9 @@ ColorButton::ColorButton(const QColor &color, QWidget *parent, const char* name)
 void ColorButton::onClick()
 {
 	QColor color = QColorDialog::getColor(this->color(), this, tr("Color dialog"));
-	if ( color.isValid() ) {
-		QPixmap pm(35,10);
-		pm.fill(QColor(color.name()));
-		setPixmap(pm);
-		actualcolor=color;
-		emit changed();
-			      }
-			      
+	setColor(color);
+	    if (color.isValid())
+		emit changed(color);			      
 }
 
 QColor ColorButton::color()
@@ -1133,7 +1097,7 @@ QColor ColorButton::color()
     return actualcolor;
 }
 
-void ColorButton::setColor(const QColor &color )
+void ColorButton::setColor(const QColor &color)
 {
 
     if (color.isValid())
@@ -1183,6 +1147,7 @@ SelectPaths::SelectPaths(QWidget *parent, const char* name): QDialog(parent, nam
 	connect(add, SIGNAL(released()), this, SLOT(addPath()));
 	connect(remove, SIGNAL(released()), this, SLOT(deletePath()));
 	connect(findPath, SIGNAL(released()), this, SLOT(choosePath()));
+	connect(pathEdit, SIGNAL(returnPressed()), this, SLOT(addPath()));
 	resize(330,330);
 }
 
@@ -1265,6 +1230,8 @@ void SelectPaths::okButton()
     releaseList.clear();
     for (unsigned int i=0; i<pathListBox->count(); i++)
 	releaseList.append(pathListBox->text(i));
+    
+    pathEdit->setText("");
     hide();
     emit changed(releaseList);
 }
@@ -1274,6 +1241,7 @@ void SelectPaths::cancelButton()
     kdebug("SelectPaths::cancelButton()\n");
     pathListBox->clear();
     pathListBox->insertStringList(releaseList);
+    pathEdit->setText("");
     hide();
 }
 
@@ -1285,8 +1253,15 @@ void SelectPaths::closeEvent(QCloseEvent *e)
 
 void SelectPaths::keyPressEvent(QKeyEvent *e)
 {
+    if (e->key() == Qt::Key_Delete)
+        if (pathListBox->isSelected(pathListBox->currentItem()))
+	    {
+	    pathListBox->removeItem(pathListBox->currentItem());
+	    pathListBox->setSelected(pathListBox->currentItem(), true);
+	    }
+
     if (e->key() == Qt::Key_Escape)
-	cancelButton();
+	    cancelButton();
 }
 
 

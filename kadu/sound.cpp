@@ -85,20 +85,23 @@ QString SoundManager::fixFileName(const QString& path,const QString& fn)
 
 void SoundManager::setSoundPaths(const QStringList& paths)
 {
-    QStringList add=paths;
+    QStringList add, temp=paths;
 	ThemesPaths=getSubDirs(QString(DATADIR)+"/kadu/themes/sounds");
 	ThemesList=ThemesPaths;
 	
 	for (QStringList::Iterator it= ThemesPaths.begin(); it!=ThemesPaths.end(); it++)
 		(*it)=QString(DATADIR)+"/kadu/themes/sounds/"+(*it)+"/";
 		
-	for (QStringList::Iterator it= add.begin(); it!=add.end(); it++)
+		
+	QFile s;
+	for (QStringList::Iterator it= temp.begin(); it!=temp.end(); it++)
 		{
-		QFile s((*it)+"/sound.conf");
-		if (!s.exists())
-		    add.remove((*it));
-		else ThemesList.append((*it).section("/", -2));
-		if (add.isEmpty()) break;
+		s.setName((*it)+"/sound.conf");
+		if (s.exists())
+		  {
+		    add.append(*it);
+		    ThemesList.append((*it).section("/", -2));
+		  }
 		}
 	ThemesPaths+=add;
 };

@@ -112,40 +112,40 @@ void Kadu::keyPressEvent(QKeyEvent *e) {
 		kdebug("Kadu::keyPressEvent(Key_Escape): Kadu hide\n");
 		hide();
 	}
-	else if (HotKey::shortCut(e,"kadu_deleteuser"))
+	else if (HotKey::shortCut(e,"ShortCuts", "kadu_deleteuser"))
 	{
 	if (Userbox->getSelectedAltNicks().count())
 		deleteUsers();
 	}
-	else if (HotKey::shortCut(e,"kadu_persinfo"))
+	else if (HotKey::shortCut(e,"ShortCuts", "kadu_persinfo"))
 	{
 	if (Userbox->getSelectedAltNicks().count() == 1)
 	        showUserInfo();
 	}	
-	else if (HotKey::shortCut(e,"kadu_sendsms"))
+	else if (HotKey::shortCut(e,"ShortCuts", "kadu_sendsms"))
 	{
 		sendSmsToUser();
 	}
-	else if (HotKey::shortCut(e,"kadu_viewhistory"))
+	else if (HotKey::shortCut(e,"ShortCuts", "kadu_viewhistory"))
 	{
 		viewHistory();
 	}	
-	else if (HotKey::shortCut(e,"kadu_searchuser"))
+	else if (HotKey::shortCut(e,"ShortCuts", "kadu_searchuser"))
 	{
 		lookupInDirectory();
 	}	
-	else if (HotKey::shortCut(e,"kadu_showinactive"))
+	else if (HotKey::shortCut(e,"ShortCuts", "kadu_showinactive"))
 	{
 		Userbox->showHideInactive();
 	}
-	else if (HotKey::shortCut(e, "kadu_voicechat")) {
+	else if (HotKey::shortCut(e,"ShortCuts", "kadu_voicechat")) {
 		makeVoiceChat();
 		}
-	else if (HotKey::shortCut(e,"kadu_sendfile"))
+	else if (HotKey::shortCut(e,"ShortCuts", "kadu_sendfile"))
 	{
 		sendFile();
 	}		
-	else if (HotKey::shortCut(e,"kadu_configure"))
+	else if (HotKey::shortCut(e,"ShortCuts", "kadu_configure"))
 	{
 		configure();
 	}	
@@ -319,13 +319,13 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	// popupmenu
 	UserBox::userboxmenu->addItem(tr("Open chat window") ,this, SLOT(openChat()));
 	UserBox::userboxmenu->addItem("mobile.png", tr("Send SMS"), this, SLOT(sendSmsToUser()),
-		HotKey::shortCutFromFile("kadu_sendsms"));
+		HotKey::shortCutFromFile("ShortCuts", "kadu_sendsms"));
 
 
 	UserBox::userboxmenu->addItem("filesave.png", tr("Send file"), this,
-		SLOT(sendFile()), HotKey::shortCutFromFile("kadu_sendfile"));
+		SLOT(sendFile()), HotKey::shortCutFromFile("ShortCuts", "kadu_sendfile"));
 	UserBox::userboxmenu->addItem(tr("Voice chat"), this,
-		SLOT(makeVoiceChat()), HotKey::shortCutFromFile("kadu_voicechat"));
+		SLOT(makeVoiceChat()), HotKey::shortCutFromFile("ShortCuts", "kadu_voicechat"));
 
 #ifdef HAVE_OPENSSL
 	UserBox::userboxmenu->addItem("encrypted.png", tr("Send my public key"), this, SLOT(sendKey()));
@@ -338,11 +338,11 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	UserBox::userboxmenu->addItem(tr("Offline to user"), this, SLOT(offlineToUser()));
 
 	UserBox::userboxmenu->insertSeparator();
-	UserBox::userboxmenu->addItem("remove.png", tr("Remove from userlist"), this, SLOT(deleteUsers()),HotKey::shortCutFromFile("kadu_deleteuser"));
+	UserBox::userboxmenu->addItem("remove.png", tr("Remove from userlist"), this, SLOT(deleteUsers()),HotKey::shortCutFromFile("ShortCuts", "kadu_deleteuser"));
 	UserBox::userboxmenu->addItem("eraser.png", tr("Clear history"), this, SLOT(deleteHistory()));
-	UserBox::userboxmenu->addItem("history.png", tr("View history"),this,SLOT(viewHistory()),HotKey::shortCutFromFile("kadu_viewhistory"));
-	UserBox::userboxmenu->addItem("identity.png", tr("View/edit user info"), this, SLOT(showUserInfo()),HotKey::shortCutFromFile("kadu_persinfo"));
-	UserBox::userboxmenu->addItem("viewmag.png", tr("Lookup in directory"), this, SLOT(lookupInDirectory()),HotKey::shortCutFromFile("kadu_searchuser"));
+	UserBox::userboxmenu->addItem("history.png", tr("View history"),this,SLOT(viewHistory()),HotKey::shortCutFromFile("ShortCuts", "kadu_viewhistory"));
+	UserBox::userboxmenu->addItem("identity.png", tr("View/edit user info"), this, SLOT(showUserInfo()),HotKey::shortCutFromFile("ShortCuts", "kadu_persinfo"));
+	UserBox::userboxmenu->addItem("viewmag.png", tr("Lookup in directory"), this, SLOT(lookupInDirectory()),HotKey::shortCutFromFile("ShortCuts", "kadu_searchuser"));
 	UserBox::userboxmenu->insertSeparator();
 	UserBox::userboxmenu->addItem(tr("About..."), this, SLOT(about()));
 
@@ -1611,7 +1611,7 @@ void Kadu::createMenu() {
 
 	MainMenu = new QPopupMenu(this, "MainMenu");
 	MainMenu->insertItem(tr("Manage &ignored"), this, SLOT(manageIgnored()));
-	MainMenu->insertItem(loadIcon("configure.png"), tr("&Configuration"), this, SLOT(configure()),HotKey::shortCutFromFile("kadu_configure"));
+	MainMenu->insertItem(loadIcon("configure.png"), tr("&Configuration"), this, SLOT(configure()),HotKey::shortCutFromFile("ShortCuts", "kadu_configure"));
 	MainMenu->insertItem(loadIcon("reload.png"), tr("Resend &userlist"), gadu, SLOT(sendUserList()));
 	if (soundmanager.mute) {
 		muteitem= MainMenu->insertItem(loadIcon("mute.png"), tr("Unmute sounds"), this, SLOT(muteUnmuteSounds()));
@@ -1632,7 +1632,7 @@ void Kadu::createMenu() {
 	MainMenu->insertItem(find, tr("&Search for users"), this, SLOT(searchInDirectory()));
 	MainMenu->insertItem(tr("I&mport userlist"), this, SLOT(importUserlist()));
 	MainMenu->insertItem(tr("E&xport userlist"), this, SLOT(exportUserlist()));
-	MainMenu->insertItem(*icons->loadIcon("online"), tr("&Add user"), this, SLOT(addUserAction()),HotKey::shortCutFromFile("kadu_adduser"));
+	MainMenu->insertItem(*icons->loadIcon("online"), tr("&Add user"), this, SLOT(addUserAction()),HotKey::shortCutFromFile("ShortCuts", "kadu_adduser"));
 	MainMenu->insertItem(tr("Send SMS"), this,SLOT(sendSms()));
 	MainMenu->insertSeparator();	
 	MainMenu->insertItem(tr("H&elp"), this, SLOT(help()));	

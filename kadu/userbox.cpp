@@ -545,7 +545,7 @@ void UserBox::initModule()
 	UserBoxSlots *userboxslots= new UserBoxSlots();
 	ConfigDialog::registerSlotOnCreate(userboxslots, SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnDestroy(userboxslots, SLOT(onDestroyConfigDialog()));
-	ConfigDialog::connectSlot("Look", "ColorButton0", SIGNAL(changed()), userboxslots, SLOT(chooseColorGet()));
+	ConfigDialog::connectSlot("Look", "ColorButton0", SIGNAL(changed(const QColor&)), userboxslots, SLOT(chooseColorGet(const QColor&)));
 	ConfigDialog::connectSlot("Look", "", SIGNAL(textChanged(const QString&)), userboxslots, SLOT(chooseColorGet(const QString&)), "line0");
 	ConfigDialog::connectSlot("Look", "", SIGNAL(activated(int)), userboxslots, SLOT(chooseUserBoxSelect(int)), "combobox0");
 };
@@ -761,20 +761,19 @@ void UserBoxSlots::chooseColorGet(const QString &text)
 		QLineEdit *l_color= ConfigDialog::getLineEdit("Look", "", "line0");
 		colorbutton->setColor(QColor(text));
 		int pos=l_color->cursorPosition();
-		chooseColorGet();
+		chooseColorGet(QColor(text));
 		l_color->setCursorPosition(pos);
 	    }
 }
 
-void UserBoxSlots::chooseColorGet()
+void UserBoxSlots::chooseColorGet(const QColor& color)
 {
 	kdebug("UserBoxSlots::chooseColorGet()\n");
-	ColorButton *colorbutton= ConfigDialog::getColorButton("Look", "ColorButton0");
 	QLineEdit *l_color= ConfigDialog::getLineEdit("Look", "", "line0");
 	QComboBox *cb_userboxselect= ConfigDialog::getComboBox("Look", "","combobox0");
 	
-	l_color->setText(colorbutton->color().name());
-	vl_userboxcolor[cb_userboxselect->currentItem()]=colorbutton->color();
+	l_color->setText(color.name());
+	vl_userboxcolor[cb_userboxselect->currentItem()]=color;
 	QLabel *preview= ConfigDialog::getLabel("Look", "<b>Text</b> preview", "userbox");
 	preview->setPaletteForegroundColor(vl_userboxcolor[2]);
 	preview->setPaletteBackgroundColor(vl_userboxcolor[0]);
