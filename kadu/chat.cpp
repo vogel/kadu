@@ -14,6 +14,7 @@
 #include <qlayout.h>
 #include <qaccel.h>
 #include <qtimer.h>
+#include <qcursor.h>
 #include <math.h>
 
 //
@@ -45,8 +46,11 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 
 	body = new KTextBrowser(this);
 	body->setFont(QFont(config.fonts.chatFont, config.fonts.chatFontSize));
+	
+	QPoint pos = QCursor::pos();
+	
 	if (uins.count() > 1) {
-		resize(550,400);
+		setGeometry(pos.x(),pos.y(),550,400);
 		userbox = new UserBox(this);
 
 		userbox->setPaletteBackgroundColor(QColor(config.colors.userboxBgColor));
@@ -58,7 +62,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 		userbox->refresh();
 		}
 	else {
-		resize(400,400);
+		setGeometry(pos.x(),pos.y(),400,400);
 		userbox = NULL;
 		}
 		
