@@ -1,4 +1,4 @@
-/* $Id: libgadu.h,v 1.49 2003/11/17 23:46:56 chilek Exp $ */
+/* $Id: libgadu.h,v 1.50 2003/11/22 18:14:54 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -430,14 +430,12 @@ enum gg_failure_t {
 	GG_FAILURE_RESOLVING = 1,	/* nie znaleziono serwera */
 	GG_FAILURE_CONNECTING,		/* nie mo¿na siê po³±czyæ */
 	GG_FAILURE_INVALID,		/* serwer zwróci³ nieprawid³owe dane */
-	GG_FAILURE_NEED_EMAIL,		/* serwer roz³±czy³ nas z pro¶b± o zmianê emaila */
 	GG_FAILURE_READING,		/* zerwano po³±czenie podczas odczytu */
 	GG_FAILURE_WRITING,		/* zerwano po³±czenie podczas zapisu */
 	GG_FAILURE_PASSWORD,		/* nieprawid³owe has³o */
-
 	GG_FAILURE_404, 		/* XXX nieu¿ywane */
-
-	GG_FAILURE_TLS			/* b³±d negocjacji TLS */
+	GG_FAILURE_TLS,			/* b³±d negocjacji TLS */
+	GG_FAILURE_NEED_EMAIL 		/* serwer roz³±czy³ nas z pro¶b± o zmianê emaila */
 };
 
 /*
