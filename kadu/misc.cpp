@@ -63,6 +63,23 @@ QPixmap loadIcon(const QString &filename) {
 	return icon;
 }
 
+QString printDateTime(const QDateTime &datetime) {
+	QString tmp;
+	time_t t;
+	QDateTime dt2;
+	int delta;
+
+	t = time(NULL);
+	dt2.setTime_t(t);
+	dt2.setTime(QTime(0, 0));
+	tmp = datetime.toString("hh:mm:ss");
+	delta = dt2.secsTo(datetime);
+	kdebug("printDateTime(): %d\n", delta);
+	if (delta < 0 || delta >= 3600 * 24)
+		tmp.append(datetime.toString(" (dd.MM.yyyy)"));
+	return tmp;
+}
+
 QString timestamp(time_t customtime)
 {
 	QString buf;
@@ -72,11 +89,11 @@ QString timestamp(time_t customtime)
 	t = time(NULL);
 
 	date.setTime_t(t);
-	buf.append(date.toString(":: hh:mm:ss (dd.MM.yyyy)"));
+	buf.append(printDateTime(date));
 
 	if (customtime) {
 		date.setTime_t(customtime);
-		buf.append(date.toString(" / hh:mm:ss (dd.MM.yyyy)"));
+		buf.append(QString(" / ") + printDateTime(date));
 		}
 
 	return buf;

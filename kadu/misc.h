@@ -28,6 +28,7 @@ QString ggPath(QString subpath);
 QString cp2unicode(unsigned char *);
 QCString unicode2cp(const QString &);
 QPixmap loadIcon(const QString &filename);
+QString printDateTime(const QDateTime &datetime);
 QString timestamp(time_t = 0);
 QDateTime currentDateTime();
 QString pwHash(const QString tekst);

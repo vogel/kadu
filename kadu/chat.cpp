@@ -692,11 +692,11 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time) {
 			if (entries[i].type == HISTORYMANAGER_ENTRY_MSGSEND
 				|| entries[i].type == HISTORYMANAGER_ENTRY_CHATSEND)
 				formatMessage(true, config.nick, entries[i].message,
-					entries[i].date.toString(":: hh:mm:ss (dd.MM.yyyy)"), toadd);
+					QString(":: ") + printDateTime(entries[i].date), toadd);
 			else
 				formatMessage(false, entries[i].nick, entries[i].message,
-					entries[i].date.toString(":: hh:mm:ss (dd.MM.yyyy) / ")
-					+ entries[i].sdate.toString("hh:mm:ss (dd.MM.yyyy)"), toadd);
+					QString(":: ") + printDateTime(entries[i].date) + QString(" / S ")
+					+ printDateTime(entries[i].sdate), toadd);
 	if (toadd.length())
 		scrollMessages(toadd);
 }
