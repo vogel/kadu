@@ -93,7 +93,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 	for(QValueList<RegisteredControl>::iterator i=RegisteredControls.begin(); i!=RegisteredControls.end(); i++, num++)
 	{
 // wyswietla cala liste 
-//		kdebug("%d: (%d) "+(*i).group+"->"+(*i).parent+"->"+(*i).caption+"->"+(*i).name+"\n", num, (*i).nrOfControls);
+//		kdebugm(KDEBUG_DUMP, "%d: (%d) "+(*i).group+"->"+(*i).parent+"->"+(*i).caption+"->"+(*i).name+"\n", num, (*i).nrOfControls);
 		
 		QWidget* parent=NULL;
 		if((*i).type!=CONFIG_TAB)
@@ -312,13 +312,13 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				break;
 			}
 			case CONFIG_DELETED:
-				kdebug("CONFIG_DELETED found!\n");
+				kdebugm(KDEBUG_ERROR, "CONFIG_DELETED found!\n");
 				break;
 		}
 
 		for(QValueList<ElementConnections>::iterator k=(*i).ConnectedSlots.begin(); k!=(*i).ConnectedSlots.end(); k++)
 			if (!connect((*i).widget, (*k).signal, (*k).receiver, (*k).slot))
-				kdebug("unable to connect signal: "+(*k).signal+" slot: "+(*k).slot+"\n");
+				kdebugm(KDEBUG_ERROR, "unable to connect signal: "+(*k).signal+" slot: "+(*k).slot+"\n");
 	}
 
 	for(QValueList<ElementConnections>::iterator a=SlotsOnCreate.begin(); a!=SlotsOnCreate.end(); a++)
@@ -380,7 +380,7 @@ void ConfigDialog::changeTab(const QString& name)
 
 		tab=findNextTab(tab+1);
 	}
-	kdebug("active Tab: "+acttab+"\n");
+	kdebugm(KDEBUG_FUNCTION_END, "ConfigDialog::changeTab(): active Tab=%d\n", acttab);
 }
 
 void ConfigDialog::updateConfig(void) 
@@ -440,8 +440,8 @@ void ConfigDialog::updateConfig(void)
 
 	emit apply();
 
-	kdebug("ConfigDialog: Configuration saved\n");
 	config_file.sync();
+	kdebugf2();
 }
 
 void ConfigDialog::updateAndCloseConfig()
@@ -804,7 +804,7 @@ void ConfigDialog::connectSlot(const QString& groupname, const QString& caption,
 			c.receiver=(QObject *)receiver;
 			c.slot=slot;
 			(*j).ConnectedSlots.append(c);
-			kdebug("Slot connected:: %s\n",slot);
+			kdebugm(KDEBUG_INFO, "Slot connected:: %s\n",slot);
 			break;
 		}
 }
@@ -819,7 +819,7 @@ void ConfigDialog::disconnectSlot(const QString& groupname, const QString& capti
 			c.receiver=(QObject *)receiver;
 			c.slot=slot;
 			(*j).ConnectedSlots.remove((*j).ConnectedSlots.find(c));
-			kdebug("Slot disconnected:: %s\n",slot);
+			kdebugm(KDEBUG_INFO, "Slot disconnected:: %s\n",slot);
 			break;
 		}
 }
@@ -933,24 +933,24 @@ void ConfigDialog::removeControl(const QString& groupname, const QString& captio
 {
 	int i=existControl(groupname, caption, name);
 	
-	//kdebug("nrOfControls=%i "+groupname+"\\"+caption+"\\"+name+"\n", RegisteredControls[i].nrOfControls);
+	//kdebugm(KDEBUG_INFO, "nrOfControls=%i "+groupname+"\\"+caption+"\\"+name+"\n", RegisteredControls[i].nrOfControls);
 	//
 	if(i<0)
 	{
-		kdebug("No such control %s %s %s\n", groupname.ascii(), caption.ascii(), name.ascii());
+		kdebugm(KDEBUG_ERROR, "No such control %s %s %s\n", groupname.ascii(), caption.ascii(), name.ascii());
 		return;
 	}
  	
 	if(RegisteredControls[i].nrOfControls!=0)
 	{
-		kdebug("Container not empty: %d %s %s %s\n", RegisteredControls[i].nrOfControls, groupname.ascii(), caption.ascii(), name.ascii());
+		kdebugm(KDEBUG_INFO, "Container not empty: %d %s %s %s\n", RegisteredControls[i].nrOfControls, groupname.ascii(), caption.ascii(), name.ascii());
 		return;
 	}
 
 	decreaseNrOfControls(i);
 
 	RegisteredControls[i].type=CONFIG_DELETED;
-	kdebug("control deleted "+groupname+"\\"+caption+"\\"+name+"\n");
+	kdebugm(KDEBUG_INFO, "control deleted "+groupname+"\\"+caption+"\\"+name+"\n");
 }
 
 void ConfigDialog::removeTab(const QString& caption)
@@ -959,16 +959,16 @@ void ConfigDialog::removeTab(const QString& caption)
 	
 	if(pos<0)
 	{
-		kdebug("Tab %s not found\n", caption.ascii());
+		kdebugm(KDEBUG_WARNING, "Tab %s not found\n", caption.ascii());
 		return;
 	}
 
-	kdebug("removeTab: nrOfControls=%i\n", RegisteredControls[pos].nrOfControls);
+	kdebugm(KDEBUG_INFO, "removeTab: nrOfControls=%i\n", RegisteredControls[pos].nrOfControls);
 	
 	if(RegisteredControls[pos].nrOfControls==0)
 		RegisteredControls[pos].type=CONFIG_DELETED;
 	else
-		kdebug("can't remove tab!!!!\n");
+		kdebugm(KDEBUG_INFO, "can't remove tab!\n");
 }
 
 void ConfigDialog::decreaseNrOfControls(int control)
@@ -1006,7 +1006,7 @@ int ConfigDialog::addControl(const QString& groupname, const ConfigDialog::Regis
 	int position= findTab(groupname);
 	if (position == -1) 
 	{
-		kdebug("There is no Tab: "+groupname+"\n");
+		kdebugm(KDEBUG_ERROR, "There is no Tab: "+groupname+"\n");
 		return -1;
 	}
 	int nexttab= findNextTab(position+1);
@@ -1039,7 +1039,7 @@ QWidget* ConfigDialog::getWidget(const QString& groupname, const QString& captio
 	int nr=existControl(groupname,caption,name);
 	if (nr!=-1)
 		return (RegisteredControls[nr].widget);
-	kdebug("Warning there is no \\" +groupname+ "\\"+ caption+ "\\"+ name+ "\\ control\n");
+	kdebugm(KDEBUG_PANIC, "Warning there is no \\" +groupname+ "\\"+ caption+ "\\"+ name+ "\\ control\n");
 	return NULL;
 }
 

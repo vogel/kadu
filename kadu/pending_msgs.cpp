@@ -14,10 +14,10 @@ PendingMsgs::PendingMsgs(): QObject()
 
 void PendingMsgs::deleteMsg(int index)
 {
-	kdebug("PendingMsgs::(pre)deleteMsg(%d), count=%d\n", index, count());
+	kdebugm(KDEBUG_INFO, "PendingMsgs::(pre)deleteMsg(%d), count=%d\n", index, count());
 	msgs.remove(msgs.at(index));
 	writeToFile();
-	kdebug("PendingMsgs::deleteMsg(%d), count=%d\n", index, count());
+	kdebugm(KDEBUG_INFO, "PendingMsgs::deleteMsg(%d), count=%d\n", index, count());
 	emit messageDeleted();
 }
 
@@ -64,7 +64,7 @@ void PendingMsgs::writeToFile()
 	QFile f(path);
 	if(!f.open(IO_WriteOnly))
 	{
-		kdebug("PendingMsgs::saveToFile(): Cannot open file kadu.msgs\n");
+		kdebugm(KDEBUG_ERROR, "PendingMsgs::saveToFile(): Cannot open file kadu.msgs\n");
 		return;
 	}
 	// Najpierw zapisujemy ilosc wiadomosci
@@ -99,13 +99,13 @@ bool PendingMsgs::loadFromFile()
 	QString path = ggPath("kadu.msgs");
 	QFile f(path);
 	if (!f.open(IO_ReadOnly)) {
-		kdebug("PendingMsgs::loadFromFile(): Cannot open file kadu.msgs\n");
+		kdebugm(KDEBUG_WARNING, "PendingMsgs::loadFromFile(): Cannot open file kadu.msgs\n");
 		return false;
 		}
 	// Najpierw wczytujemy ilosc wiadomosci
 	int msgs_size;
 	if (f.readBlock((char*)&msgs_size,sizeof(int)) <= 0) {
-		kdebug("PendingMsgs::loadFromFile(): kadu.msgs is corrupted\n");
+		kdebugm(KDEBUG_ERROR, "PendingMsgs::loadFromFile(): kadu.msgs is corrupted\n");
 		return false;
 		}
 	// Teraz w petli dla kazdej wiadomosci

@@ -32,46 +32,46 @@ void VoiceDsp::setup() {
 	kdebugf();
 	int value;
 	
-	kdebugm(KADU_DEBUG_INFO, "Opening /dev/dsp\n");
+	kdebugm(KDEBUG_INFO, "Opening /dev/dsp\n");
 	fd = open("/dev/dsp", O_RDWR);
 	if(fd<0)
 	{
-		kdebugm(KADU_DEBUG_ERROR, "Error opening /dev/dsp\n");
+		kdebugm(KDEBUG_ERROR, "Error opening /dev/dsp\n");
 		return;
 	}
 
-	kdebugm(KADU_DEBUG_INFO, "Setting speed for /dev/dsp\n");
+	kdebugm(KDEBUG_INFO, "Setting speed for /dev/dsp\n");
 	value = 8000;
 	if(ioctl(fd, SNDCTL_DSP_SPEED, &value)<0)
 	{
-		kdebugm(KADU_DEBUG_ERROR, "Error setting speed for /dev/dsp\n");
+		kdebugm(KDEBUG_ERROR, "Error setting speed for /dev/dsp\n");
 		return;
 	}
 
-	kdebugm(KADU_DEBUG_INFO, "Setting sample size for /dev/dsp\n");
+	kdebugm(KDEBUG_INFO, "Setting sample size for /dev/dsp\n");
 	value = 16;
 	if(ioctl(fd, SNDCTL_DSP_SAMPLESIZE, &value)<0)
 	{
-		kdebugm(KADU_DEBUG_ERROR, "Error setting sample size for /dev/dsp\n");
+		kdebugm(KDEBUG_ERROR, "Error setting sample size for /dev/dsp\n");
 		return;
 	}
 
-	kdebug("Setting channels for /dev/dsp\n");
+	kdebugm(KDEBUG_INFO, "Setting channels for /dev/dsp\n");
 	value = 1;
 	if(ioctl(fd, SNDCTL_DSP_CHANNELS, &value)<0)
 	{
-		kdebug("Error setting channels for /dev/dsp\n");
+		kdebugm(KDEBUG_ERROR, "Error setting channels for /dev/dsp\n");
 		return;
 	}
 	
-	kdebugm(KADU_DEBUG_INFO, "Setting ftm for /dev/dsp\n");
+	kdebugm(KDEBUG_INFO, "Setting ftm for /dev/dsp\n");
 	value = AFMT_S16_LE;
 	if(ioctl(fd, SNDCTL_DSP_SETFMT, &value)<0)
 	{
-		kdebugm(KADU_DEBUG_ERROR, "Error setting ftm for /dev/dsp\n");
+		kdebugm(KDEBUG_ERROR, "Error setting ftm for /dev/dsp\n");
 		return;
 	}
-	kdebugm(KADU_DEBUG_FUNCTION_END, "Setup successful, fd=%d\n", fd);
+	kdebugm(KDEBUG_FUNCTION_END, "Setup successful, fd=%d\n", fd);
 }
 
 void VoiceDsp::free() {

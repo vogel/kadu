@@ -61,10 +61,10 @@ void ArtsPlayerSlots::play(const QString &s, bool volCntrl, double vol)
 	//warunku server.isNull() i server.audioMethod()=="" nie mo¿na sprawdzaæ
 	//jednocze¶nie, bo je¿eli najpierw zostanie sprawdzony drugi, a pierwszy
 	//jest prawd±, to program siê wywróci
-	kdebugm(KADU_DEBUG_INFO, "ArtsPlayerSlots::play(): null: %d\n",server.isNull());
+	kdebugm(KDEBUG_INFO, "ArtsPlayerSlots::play(): null: %d\n",server.isNull());
 
 	if (!server.isNull())
-		kdebugm(KADU_DEBUG_INFO, "audioMethod: %s audioDevice: %s\n", server.audioMethod().c_str(), server.audioDevice().c_str());
+		kdebugm(KDEBUG_INFO, "audioMethod: %s audioDevice: %s\n", server.audioMethod().c_str(), server.audioDevice().c_str());
 
 	if (server.isNull())
 		server=Arts::Reference("global:Arts_SoundServerV2");

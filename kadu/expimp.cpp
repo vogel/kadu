@@ -188,7 +188,7 @@ void UserlistImportExport::makeUserlist() {
 			gg_add_notify(sess, userlist[i].uin);
 
 	userlist.writeToFile();
-	kdebug("UserlistImport::makeUserlist(): Wrote userlist\n");
+	kdebugf2();
 }
 
 void UserlistImportExport::updateUserlist() {
@@ -214,7 +214,7 @@ void UserlistImportExport::updateUserlist() {
 			gg_add_notify(sess, userlist[i].uin);
 
 	userlist.writeToFile();
-	kdebug("UserlistImport::updateUserlist(): Wrote userlist\n");
+	kdebugf2();
 }
 
 void UserlistImportExport::userListImported(bool ok, UserList& userList)

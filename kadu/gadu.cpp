@@ -254,7 +254,7 @@ void PubdirSocketNotifiers::socketEvent()
 	switch (H->state)
 	{
 		case GG_STATE_CONNECTING:
-			kdebug("PubdirSocketNotifiers::socketEvent(): changing QSocketNotifiers\n");
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "PubdirSocketNotifiers::socketEvent(): changing QSocketNotifiers\n");
 			recreateSocketNotifiers();
 
 			if (H->check & GG_CHECK_WRITE)
@@ -263,7 +263,7 @@ void PubdirSocketNotifiers::socketEvent()
 			break;
 
 		case GG_STATE_ERROR:
-			kdebug("PubdirSocketNotifiers::socketEvent(): error!\n");
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "PubdirSocketNotifiers::socketEvent(): error!\n");
 			deleteSocketNotifiers();
 			emit done(false, H);
 			gg_pubdir_free(H);
@@ -271,14 +271,14 @@ void PubdirSocketNotifiers::socketEvent()
 			break;
 
 		case GG_STATE_DONE:
-			kdebug("PubdirSocketNotifiers::socketEvent(): success!\n");
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "PubdirSocketNotifiers::socketEvent(): success!\n");
 			deleteSocketNotifiers();
 
 			if (p->success)
 				emit done(true, H);
 			else
 			{
-				kdebug("PubdirSocketNotifiers::socketEvent(): error!\n");
+				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "PubdirSocketNotifiers::socketEvent(): error!\n");
 				emit done(false, H);
 			}
 			gg_pubdir_free(H);
@@ -323,7 +323,7 @@ void DccSocketNotifiers::dataSent()
 void DccSocketNotifiers::socketEvent()
 {
 	kdebugf();
-	kdebug("FIXME: DccSocketNotifiers::socketEvent(): add some code here\n");
+	kdebugm(KDEBUG_NETWORK|KDEBUG_WARNING, "FIXME: DccSocketNotifiers::socketEvent(): add some code here\n");
 }
 
 /* GaduSocketNotifiers */
@@ -523,7 +523,7 @@ void GaduProtocol::errorSlot(GaduError err)
 void GaduProtocol::setStatus(int status)
 {
 	kdebugf();
-	kdebug("GaduProtocol::setStatus(): setting status: %d\n",
+	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::setStatus(): setting status: %d\n",
 		status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General", "PrivateStatus")));
 
 	status &= ~GG_STATUS_FRIENDS_MASK;
@@ -606,7 +606,7 @@ void GaduProtocol::login(int status)
 
 	loginparams.password = strdup((const char *)unicode2cp(pwHash(config_file.readEntry("General", "Password"))));
 	char *tmp = strdup((const char *)unicode2latin(pwHash(config_file.readEntry("General", "Password"))));
-	kdebug("GaduProtocol::connect(): password = %s\n", tmp);
+	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::connect(): password = %s\n", tmp);
 	free(tmp);
 
 	loginparams.uin = (UinType)config_file.readNumEntry("General", "UIN");
@@ -656,7 +656,7 @@ void GaduProtocol::login(int status)
 	loginparams.protocol_version = GG_DEFAULT_PROTOCOL_VERSION;
 	if (loginparams.tls)
 	{
-		kdebug("GaduProtocol::login((): using TLS\n");
+		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::login((): using TLS\n");
 		loginparams.server_port = 0;
 		if (config_file.readBoolEntry("Network", "isDefServers"))
 			loginparams.server_addr = 0;
@@ -725,8 +725,8 @@ void GaduProtocol::setupProxy()
 		gg_proxy_host = strdup((char *)unicode2latin(config_file.readEntry("Network", "ProxyHost")).data());
 		gg_proxy_port = config_file.readNumEntry("Network", "ProxyPort");
 
-		kdebug("GaduProtocol::setupProxy(): gg_proxy_host = %s\n", gg_proxy_host);
-		kdebug("GaduProtocol::setupProxy(): gg_proxy_port = %d\n", gg_proxy_port);
+		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::setupProxy(): gg_proxy_host = %s\n", gg_proxy_host);
+		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::setupProxy(): gg_proxy_port = %d\n", gg_proxy_port);
 
 		if (config_file.readEntry("Network", "ProxyUser").length())
 		{
@@ -753,7 +753,7 @@ void GaduProtocol::setupDcc()
 
 	if (!dccsock)
 	{
-		kdebug("GaduProtocol::setupDcc(): Couldn't bind DCC socket.\n");
+		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::setupDcc(): Couldn't bind DCC socket.\n");
 		gg_dcc_free(dccsock);
 
 		emit dccSetupFailed();
@@ -763,7 +763,7 @@ void GaduProtocol::setupDcc()
 	gg_dcc_ip = htonl(dccIp.ip4Addr());
 	gg_dcc_port = dccsock->port;
 
-	kdebug("GaduProtocol:setupDcc() DCC_IP=%s DCC_PORT=%d\n", dccIp.toString().latin1(), dccsock->port);
+	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol:setupDcc() DCC_IP=%s DCC_PORT=%d\n", dccIp.toString().latin1(), dccsock->port);
 
 	dccsnr = new QSocketNotifier(dccsock->fd, QSocketNotifier::Read, kadu);
 	QObject::connect(dccsnr, SIGNAL(activated(int)), kadu, SLOT(dccReceived()));
@@ -831,7 +831,7 @@ void GaduProtocol::sendUserList()
 
 	if (!j) {
 		gg_notify_ex(sess, NULL, NULL, 0);
-		kdebug("send_userlist(): Userlist is empty\n");
+		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "send_userlist(): Userlist is empty\n");
 		return;
 		}
 
@@ -856,7 +856,7 @@ void GaduProtocol::sendUserList()
 		gg_change_status(sess, GG_STATUS_INVISIBLE);
 
 	gg_notify_ex(sess, uins, types, j);
-	kdebug("send_userlist(): Userlist sent\n");
+	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "send_userlist(): Userlist sent\n");
 
 	free(uins);
 	free(types);
@@ -937,7 +937,7 @@ void GaduProtocol::newResults(gg_pubdir50_t res)
 
 	count = gg_pubdir50_count(res);
 
-	kdebug("GaduProtocol::newResults(): found %d results\n", count);
+	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::newResults(): found %d results\n", count);
 
 	for (int i = 0; i < count; i++)
 	{
@@ -1185,7 +1185,7 @@ bool GaduProtocol::doExportUserList(const UserList& userList)
 	QString contacts = userListToString(userList);
 	char *dup = strdup(unicode2latin(contacts));
 
-	kdebug("GaduProtocol::exportUserList():\n%s\n", dup);
+	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::exportUserList():\n%s\n", dup);
 	free(dup);
 
 	userListClear = false;
@@ -1194,7 +1194,7 @@ bool GaduProtocol::doExportUserList(const UserList& userList)
 	if (gg_userlist_request(sess, GG_USERLIST_PUT, dup) == -1)
 	{
 		free(dup);
-		kdebug("GaduProtocol:: gg_userlist_put() failed\n");
+		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol:: gg_userlist_put() failed\n");
 		emit userListExported(false);
 		return false;
 	}
@@ -1214,7 +1214,7 @@ bool GaduProtocol::doClearUserList()
 	char *dup = "";
 	if (gg_userlist_request(sess, GG_USERLIST_PUT, dup) == -1)
 	{
-		kdebug("GaduProtocol:: gg_userlist_out() failed\n");
+		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol:: gg_userlist_out() failed\n");
 		emit userListCleared(false);
 		return false;
 	}
@@ -1244,8 +1244,8 @@ void GaduProtocol::userListReplyReceived(char type, char *reply)
 
 	if (type == GG_USERLIST_PUT_REPLY)
 	{
-		kdebug("GaduProtocol::userlistReplyReceived(): put\n");
-		kdebug("GaduProtocol::userlistReplyReceived(): Done\n");
+//		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::userlistReplyReceived(): put\n");
+		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::userlistReplyReceived(): Done\n");
 
 		if (userListClear)
 			emit userListCleared(true);
@@ -1255,11 +1255,11 @@ void GaduProtocol::userListReplyReceived(char type, char *reply)
 	}
 	else if ((type == GG_USERLIST_GET_REPLY) || (type == GG_USERLIST_GET_MORE_REPLY))
 	{
-		kdebug("GaduProtocol::userlistReplyReceived(): get\n");
+		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::userlistReplyReceived(): get\n");
 
 		if (!reply)
 		{
-			kdebug("GaduProtocol::userlistReplyReceived(): error!\n");
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::userlistReplyReceived(): error!\n");
 
 			UserList empty;
 			emit userListImported(false, empty);
@@ -1271,12 +1271,12 @@ void GaduProtocol::userListReplyReceived(char type, char *reply)
 
 		if (type == GG_USERLIST_GET_MORE_REPLY)
 		{
-			kdebug("GaduProtocol::userListReplyReceived(): next portion\n");
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::userListReplyReceived(): next portion\n");
 			return;
 		}
 
-		kdebug("GaduProtocol::userListReplyReceived(): Done.\n");
-		kdebug("GaduProtocol::userListReplyReceived()\n%s\n",
+//		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::userListReplyReceived(): Done.\n");
+		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::userListReplyReceived()\n%s\n",
 			unicode2latin(importReply).data());
 
 		UserList importedUserList;

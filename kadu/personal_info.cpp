@@ -201,7 +201,7 @@ void PersonalInfoDialog::fillFields(SearchResults& searchResults, int seq, int)
 	{
 
 		case READING:
-			kdebug("PersonalInfoDialog::fillFields(): Done reading info,\n");
+			kdebugm(KDEBUG_INFO, "PersonalInfoDialog::fillFields(): Done reading info,\n");
 			if (searchResults.count() == 0)
 			{
 				State = READY;
@@ -221,7 +221,7 @@ void PersonalInfoDialog::fillFields(SearchResults& searchResults, int seq, int)
 			break;
 
 		case WRITING:
-			kdebug("PersonalInfoDialog::fillFields(): Done writing info.\n");
+			kdebugm(KDEBUG_INFO, "PersonalInfoDialog::fillFields(): Done writing info.\n");
 			State = READY;
 			break;
 

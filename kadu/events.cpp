@@ -120,7 +120,7 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,QCString& 
 	jezeli warunek jest spelniony przerywamy dzialanie funkcji.
 */
 	if (userlist.byUinValue(senders[0]).anonymous && config_file.readBoolEntry("Chat","IgnoreAnonymousUsers")) {
-		kdebug("EventManager::messageReceivedSlot(): Ignored anonymous. %d is ignored\n",senders[0]);
+		kdebugm(KDEBUG_INFO, "EventManager::messageReceivedSlot(): Ignored anonymous. %d is ignored\n",senders[0]);
 		return;
 		}
 
@@ -149,11 +149,11 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,QCString& 
 	// FIX ME!!!
 	if (senders[0] == 0) {
 		if (msgclass <= config_file.readNumEntry("General", "SystemMsgIndex", 0)) {
-			kdebug("Already had this message, ignoring\n");
+			kdebugm(KDEBUG_INFO, "Already had this message, ignoring\n");
 			return;
 			}
 		config_file.writeEntry("General", "SystemMsgIndex", msgclass);
-		kdebug("System message index %d\n", msgclass);
+		kdebugm(KDEBUG_INFO, "System message index %d\n", msgclass);
 		
 		emit systemMessageReceived(mesg, datetime, formats.size(), formats.data());
 		return;
@@ -164,7 +164,7 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,QCString& 
 	if(!userlist.containsUin(senders[0]))
 		userlist.addAnonymous(senders[0]);
 
-	kdebug("eventRecvMsg(): Got message from %d saying \"%s\"\n",
+	kdebugm(KDEBUG_INFO, "eventRecvMsg(): Got message from %d saying \"%s\"\n",
 			senders[0], (const char *)mesg.local8Bit());
 
 	emit chatMsgReceived1(senders,mesg,time,grab);
@@ -193,13 +193,13 @@ void EventManager::chatMsgReceived2Slot(UinsList senders,const QString& msg,time
 
 void EventManager::imageRequestReceivedSlot(UinType sender,uint32_t size,uint32_t crc32)
 {
-	kdebug(QString("Received image request. sender: %1, size: %2, crc32: %3\n").arg(sender).arg(size).arg(crc32).local8Bit().data());
+	kdebugm(KDEBUG_INFO, QString("Received image request. sender: %1, size: %2, crc32: %3\n").arg(sender).arg(size).arg(crc32).local8Bit().data());
 	gadu_images_manager.sendImage(sender,size,crc32);
 }	
 
 void EventManager::imageReceivedSlot(UinType sender,uint32_t size,uint32_t crc32,const QString& filename,const char* data)
 {
-	kdebug(QString("Received image. sender: %1, size: %2, crc32: %3,filename: %4\n").arg(sender).arg(size).arg(crc32).arg(filename).local8Bit().data());
+	kdebugm(KDEBUG_INFO, QString("Received image. sender: %1, size: %2, crc32: %3,filename: %4\n").arg(sender).arg(size).arg(crc32).arg(filename).local8Bit().data());
 	QString full_path = gadu_images_manager.saveImage(sender,size,crc32,filename,data);
 	emit imageReceivedAndSaved(sender,size,crc32,full_path);
 }	
@@ -235,7 +235,7 @@ void ifNotify(UinType uin, unsigned int status, unsigned int oldstatus)
 		|| status == GG_STATUS_BLOCKED) &&
 		(oldstatus == GG_STATUS_NOT_AVAIL || oldstatus == GG_STATUS_NOT_AVAIL_DESCR || oldstatus == GG_STATUS_INVISIBLE ||
 		oldstatus == GG_STATUS_INVISIBLE_DESCR || oldstatus == GG_STATUS_INVISIBLE2)) {
-		kdebug("Notify about user\n");
+		kdebugm(KDEBUG_INFO, "Notify about user\n");
 
 		if (config_file.readBoolEntry("Notify","NotifyWithDialogBox")) {
 			// FIXME convert into a regular QMessageBox
@@ -259,7 +259,7 @@ void EventManager::userlistReceivedSlot(struct gg_event *e) {
 		UserListElement &user = userlist.byUin(e->event.notify60[nr].uin);
 
 		if (!userlist.containsUin(e->event.notify60[nr].uin)) {
-			kdebug("eventGotUserlist(): buddy %d not in list. Damned server!\n",
+			kdebugm(KDEBUG_INFO, "eventGotUserlist(): buddy %d not in list. Damned server!\n",
 				e->event.notify60[nr].uin);
 			gg_remove_notify(sess, e->event.notify60[nr].uin);
 			nr++;
@@ -282,39 +282,39 @@ void EventManager::userlistReceivedSlot(struct gg_event *e) {
 
 		switch (e->event.notify60[nr].status) {
 			case GG_STATUS_AVAIL:
-				kdebug("eventGotUserlist(): User %d went online\n",
+				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventGotUserlist(): User %d went online\n",
 					e->event.notify60[nr].uin);
 				break;
 			case GG_STATUS_BUSY:
-				kdebug("eventGotUserlist(): User %d went busy\n",
+				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventGotUserlist(): User %d went busy\n",
 					e->event.notify60[nr].uin);
 				break;
 			case GG_STATUS_NOT_AVAIL:
-				kdebug("eventGotUserlist(): User %d went offline\n",
+				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventGotUserlist(): User %d went offline\n",
 					e->event.notify60[nr].uin);
 				break;
 			case GG_STATUS_BLOCKED:
-				kdebug("eventGotUserlist(): User %d has blocked us\n",
+				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventGotUserlist(): User %d has blocked us\n",
 					e->event.notify60[nr].uin);
 				break;
 			case GG_STATUS_BUSY_DESCR:
-				kdebug("eventGotUserlist(): User %d went busy with descr.\n",
+				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventGotUserlist(): User %d went busy with descr.\n",
 					e->event.notify60[nr].uin);
 				break;
 			case GG_STATUS_NOT_AVAIL_DESCR:
-				kdebug("eventGotUserlist(): User %d went offline with descr.\n",
+				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventGotUserlist(): User %d went offline with descr.\n",
 					e->event.notify60[nr].uin);
 				break;
 			case GG_STATUS_AVAIL_DESCR:
-				kdebug("eventGotUserlist(): User %d went online with descr.\n",
+				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventGotUserlist(): User %d went online with descr.\n",
 					e->event.notify60[nr].uin);
 				break;
 			case GG_STATUS_INVISIBLE_DESCR:
-				kdebug("eventGotUserlist(): User %d went invisible with descr.\n",
+				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventGotUserlist(): User %d went invisible with descr.\n",
 					e->event.notify60[nr].uin);
 				break;
 			default:
-				kdebug("eventGotUserlist(): Unknown status for user %d: %d\n",
+				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventGotUserlist(): Unknown status for user %d: %d\n",
 					e->event.notify60[nr].uin, e->event.notify60[nr].status);
 				break;
 			}
@@ -359,12 +359,12 @@ void EventManager::userStatusChangedSlot(struct gg_event * e) {
 		image_size = 0;
 		}
 
-	kdebug("eventStatusChange(): User %d went %d\n", uin, status);
+	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventStatusChange(): User %d went %d\n", uin, status);
 	UserListElement &user = userlist.byUin(uin);
 
 	if (!userlist.containsUin(uin)) {
 		// ignore!
-		kdebug("eventStatusChange(): buddy %d not in list. Damned server!\n", uin);
+		kdebugm(KDEBUG_INFO, "eventStatusChange(): buddy %d not in list. Damned server!\n", uin);
 		gg_remove_notify(sess, uin);
 		return;
 		}
@@ -403,7 +403,7 @@ void EventManager::userStatusChangedSlot(struct gg_event * e) {
 
 void EventManager::ackReceivedSlot(int seq)
 {
-	kdebug("EventManager::ackReceivedSlot(): got msg ack.\n");
+	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "EventManager::ackReceivedSlot(): got msg ack.\n");
 }
 
 void EventManager::dccConnectionReceivedSlot(const UserListElement& sender)
@@ -449,7 +449,7 @@ void EventManager::eventHandler(gg_session* sess)
 	kdebugf();
 	calls++;
 	if (calls > 1)
-		kdebug("************* EventManager::eventHandler(): Recursive eventHandler calls detected!\n");
+		kdebugm(KDEBUG_WARNING, "************* EventManager::eventHandler(): Recursive eventHandler calls detected!\n");
 
 	gg_event* e;
 	if (!(e = gg_watch_fd(sess))) {
@@ -461,7 +461,7 @@ void EventManager::eventHandler(gg_session* sess)
 
 	if (sess->state == GG_STATE_CONNECTING_HUB || sess->state == GG_STATE_CONNECTING_GG)
 	{
-		kdebug("EventManager::eventHandler(): changing QSocketNotifiers.\n");
+		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "EventManager::eventHandler(): changing QSocketNotifiers.\n");
 
 		kadusnw->setEnabled(false);
 		delete kadusnw;
@@ -479,23 +479,23 @@ void EventManager::eventHandler(gg_session* sess)
 	switch (sess->state)
 	{
 		case GG_STATE_RESOLVING:
-			kdebug("EventManager::eventHandler(): Resolving address\n");
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "EventManager::eventHandler(): Resolving address\n");
 			break;
 		case GG_STATE_CONNECTING_HUB:
-			kdebug("EventManager::eventHandler(): Connecting to hub\n");
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "EventManager::eventHandler(): Connecting to hub\n");
 			break;
 		case GG_STATE_READING_DATA:
-			kdebug("EventManager::eventHandler(): Fetching data from hub\n");
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "EventManager::eventHandler(): Fetching data from hub\n");
 			break;
 		case GG_STATE_CONNECTING_GG:
-			kdebug("EventManager::eventHandler(): Connecting to server\n");
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "EventManager::eventHandler(): Connecting to server\n");
 			break;
 		case GG_STATE_READING_KEY:
-			kdebug("EventManager::eventHandler(): Waiting for hash key\n");
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "EventManager::eventHandler(): Waiting for hash key\n");
 			ConnectionTimeoutTimer::off();
 			break;
 		case GG_STATE_READING_REPLY:
-			kdebug("EventManager::eventHandler(): Sending key\n");
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "EventManager::eventHandler(): Sending key\n");
 			ConnectionTimeoutTimer::off();
 			break;
 		case GG_STATE_CONNECTED:
@@ -517,7 +517,7 @@ void EventManager::eventHandler(gg_session* sess)
 				emit dccConnectionReceived(userlist.byUin(e->event.msg.sender));
 			}
 		else {
-			kdebug("eventHandler(): %d\n", e->event.msg.recipients_count);
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventHandler(): %d\n", e->event.msg.recipients_count);
 			if ((e->event.msg.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT) {
 				uins.append(e->event.msg.sender);
 				for (int i = 0; i < e->event.msg.recipients_count; i++)
@@ -535,7 +535,7 @@ void EventManager::eventHandler(gg_session* sess)
 
 	if (e->type == GG_EVENT_IMAGE_REQUEST)
 	{
-		kdebug("Image request received\n");
+		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "Image request received\n");
 		emit imageRequestReceived(
 			e->event.image_request.sender,
 			e->event.image_request.size,
@@ -544,7 +544,7 @@ void EventManager::eventHandler(gg_session* sess)
 
 	if (e->type == GG_EVENT_IMAGE_REPLY)
 	{
-		kdebug("Image reply received\n");
+		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "Image reply received\n");
 		emit imageReceived(
 			e->event.image_reply.sender,
 			e->event.image_reply.size,
@@ -557,7 +557,7 @@ void EventManager::eventHandler(gg_session* sess)
 		emit userStatusChanged(e);
 
 	if (e->type == GG_EVENT_ACK) {
-		kdebug("EventManager::eventHandler(): message reached %d (seq %d)\n",
+		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "EventManager::eventHandler(): message reached %d (seq %d)\n",
 			e->event.ack.recipient, e->event.ack.seq);
 		emit ackReceived(e->event.ack.seq);
 		}

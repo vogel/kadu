@@ -167,16 +167,16 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 }
 
 SearchDialog::~SearchDialog() {
-	kdebug("SearchDialog::~SearchDialog()\n");
+	kdebugf();
 
 	disconnect(gadu, SIGNAL(newSearchResults(SearchResults&, int, int)), this, SLOT(newSearchResults(SearchResults&, int, int)));
 	delete searchRecord;
 }
 
 void SearchDialog::selectionChanged(QListViewItem *item) {
-	UinType uin;
+	kdebugf();
 
-	kdebug("SearchDialog::selectionChanged()\n");
+	UinType uin;
 
 	disconnect(b_addbtn, SIGNAL(clicked()), 0, 0);
 	if (item) {
@@ -252,7 +252,7 @@ void SearchDialog::firstSearch(void) {
 	b_nextbtn->setEnabled(false);
 
 	progress->setText(tr("Searching..."));
-	kdebug("SearchDialog::doSearch(): let the search begin\n");
+	kdebugf2();
 
 }
 
@@ -266,7 +266,7 @@ void SearchDialog::nextSearch(void) {
 	gadu->searchNextInPubdir(*searchRecord);
 
 	progress->setText(tr("Searching..."));
-	kdebug("SearchDialog::doSearch(): let the search begin\n");
+	kdebugf2();
 }
 
 void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int fromUin) {
@@ -330,7 +330,7 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 	b_nextbtn->setEnabled(true);
 
 	if (!searchResults.count()) {
-		kdebug("SearchDialog::newSearchResults(): No results. Exit.\n");
+		kdebugm(KDEBUG_INFO, "SearchDialog::newSearchResults(): No results. Exit.\n");
 		QMessageBox::information(this, tr("No results"),
 			tr("There were no results of your search"));
 //		searchhidden = false;

@@ -203,8 +203,8 @@ QString dataPath(const QString &p, const char *argv0)
 		}
 	}
 	if (path=="")
-		kdebug("dataPath() called _BEFORE_ initial dataPath(\"\",argv[0]) (static object uses dataPath()?) !!!\n");
-	kdebug("%s%s\n", (const char *)path.local8Bit(), (const char *)p.local8Bit());
+		kdebugm(KDEBUG_PANIC, "dataPath() called _BEFORE_ initial dataPath(\"\",argv[0]) (static object uses dataPath()?) !!!\n");
+	kdebugm(KDEBUG_INFO, "%s%s\n", (const char *)path.local8Bit(), (const char *)p.local8Bit());
 	return path+p;
 }
 
@@ -269,7 +269,7 @@ QString printDateTime(const QDateTime &datetime) {
 	dt2.setTime(QTime(0, 0));
 	tmp = datetime.toString("hh:mm:ss");
 	delta = dt2.secsTo(datetime);
-//	kdebug("printDateTime(): %d\n", delta);
+//	kdebugm(KDEBUG_INFO, "printDateTime(): %d\n", delta);
 	if (delta < 0 || delta >= 3600 * 24)
 		tmp.append(datetime.toString(" (dd.MM.yyyy)"));
 	return tmp;
@@ -353,14 +353,14 @@ void openWebBrowser(const QString &link) {
 		if (config_file.readEntry("Chat","WebBrowser") == "") {
 			QMessageBox::warning(0, qApp->translate("@default", QT_TR_NOOP("WWW error")),
 				qApp->translate("@default", QT_TR_NOOP("Web browser was not specified. Visit the configuration section")));
-			kdebug("openWebBrowser(): Web browser NOT specified.\n");
+			kdebugm(KDEBUG_INFO, "openWebBrowser(): Web browser NOT specified.\n");
 			return;
 			}
 		cmd = QString(config_file.readEntry("Chat","WebBrowser")).arg(link);
 		}
 	args = QStringList::split(" ", cmd);
 	for (QStringList::iterator i = args.begin(); i != args.end(); i++)
-		kdebug("openWebBrowser(): %s\n", unicode2latin(*i).data());
+		kdebugm(KDEBUG_INFO, "openWebBrowser(): %s\n", unicode2latin(*i).data());
 	browser = new QProcess();
 	browser->setArguments(args);
 	if (!browser->start())
@@ -377,6 +377,7 @@ void escapeSpecialCharacters(QString &msg) {
 
 QString formatGGMessage(const QString &msg, int formats_length, void *formats, UinType sender)
 {
+	kdebugf();
 	QString mesg, tmp;
 	bool bold, italic, underline, color, inspan;
 	char *cformats = (char *)formats;
@@ -384,7 +385,6 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, U
 	struct gg_msg_richtext_color *actcolor;
 	struct gg_msg_richtext_image* actimage;
 
-	kdebug("formatGGMessage()\n");
 	bold = italic = underline = color = inspan = false;
 	unsigned int pos = 0;
 	if (formats_length)
@@ -428,19 +428,19 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, U
 				formats_length -= sizeof(gg_msg_richtext_format);
 				if (actformat->font & GG_FONT_IMAGE)
 				{
-					kdebug("formatGGMessage(): I got image probably\n");
+					kdebugm(KDEBUG_INFO, "formatGGMessage(): I got image probably\n");
 					actimage = (struct gg_msg_richtext_image*)(cformats);
-					kdebug(QString("Image size: %1, crc32: %2\n").arg(actimage->size).arg(actimage->crc32).local8Bit().data());
+					kdebugm(KDEBUG_INFO, QString("Image size: %1, crc32: %2\n").arg(actimage->size).arg(actimage->crc32).local8Bit().data());
 					if (sender!=0)
 					{
-						kdebug("Someone sends us an image\n");
+						kdebugm(KDEBUG_INFO, "Someone sends us an image\n");
 						QString file_name =
 							gadu_images_manager.getSavedImageFileName(
 								actimage->size,
 								actimage->crc32);
 						if(file_name != "")
 						{
-							kdebug("This image was already saved\n");
+							kdebugm(KDEBUG_INFO, "This image was already saved\n");
 							mesg.append(GaduImagesManager::imageHtml(file_name));
 						}
 						else
@@ -454,7 +454,7 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, U
 					}
 					else
 					{
-						kdebug("It is my message and my image\n");
+						kdebugm(KDEBUG_INFO, "This is my message and my image\n");
 						QString file_name =
 							gadu_images_manager.getImageToSendFileName(
 								actimage->size,
@@ -485,7 +485,7 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, U
 		mesg = msg;
 		escapeSpecialCharacters(mesg);
 	}
-	kdebug("formatGGMessage(): finished\n");
+	kdebugf2();
 	return mesg;
 }
 
@@ -513,7 +513,7 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 	QValueList<struct richtext_formant> formants;
 	char *cformats, *tmpformats;
 
-//	kdebug("unformatGGMessage():\n%s\n", msg.latin1());
+//	kdebugm(KDEBUG_INFO, "unformatGGMessage():\n%s\n", msg.latin1());
 	mesg = msg;
 //	mesg.replace(QRegExp("^<html><head><meta\\sname=\"qrichtext\"\\s*\\s/></head>"), "");
 	mesg.replace(QRegExp("^<html><head>.*<body\\s.*\">\\r\\n"), "");
@@ -533,7 +533,7 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 //	mesg.replace(QRegExp("&lt;"), "#");
 //	mesg.replace(QRegExp("&gt;"), "#");
 
-	kdebug("unformatGGMessage():\n%s\n", mesg.latin1());
+	kdebugm(KDEBUG_INFO, "unformatGGMessage():\n%s\n", mesg.latin1());
 
 	inspan = -1;
 	pos = idx = formats_length = 0;
@@ -568,7 +568,7 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 		else if (inspan == -1) {
 			idx = span_idx;
 			if (idx != -1) {
-				kdebug("unformatGGMessage(): idx=%d\n", idx);
+				kdebugm(KDEBUG_INFO, "unformatGGMessage(): idx=%d\n", idx);
 				inspan = idx;
 				if (pos && idx > pos) {
 					actformant.format.position = pos;
@@ -618,7 +618,7 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 		else {
 			idx = span_end_idx;
 			if (idx != -1) {
-				kdebug("unformatGGMessage(): idx=%d\n", idx);
+				kdebugm(KDEBUG_INFO, "unformatGGMessage(): idx=%d\n", idx);
 				pos = idx;
 				mesg.remove(pos, 7);
 				inspan = -1;
@@ -654,7 +654,7 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 				tmpformats += sizeof(gg_msg_richtext_image);
 				}
 			}
-		kdebug("unformatGGMessage(): formats_length=%d, tmpformats-cformats=%d\n",
+		kdebugm(KDEBUG_INFO, "unformatGGMessage(): formats_length=%d, tmpformats-cformats=%d\n",
 			formats_length, tmpformats - cformats);
 		formats = (void *)cformats;
 		}
@@ -666,7 +666,7 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 //	mesg.replace(QRegExp("#"), "<");
 //	mesg.replace(QRegExp("#"), ">");
 
-	kdebug("unformatGGMessage():\n%s\n", unicode2latin(mesg).data());
+	kdebugm(KDEBUG_INFO, "unformatGGMessage():\n%s\n", unicode2latin(mesg).data());
 	return mesg;
 }
 
@@ -678,7 +678,7 @@ struct ParseElem
 
 QString parse(const QString &s, const UserListElement &ule, bool escape)
 {
-	kdebug("parse(): %s escape=%i\n",(const char *)s.local8Bit(), escape);
+	kdebugm(KDEBUG_INFO, "parse(): %s escape=%i\n",(const char *)s.local8Bit(), escape);
 	int index=0, i, j, len=s.length();
 	QValueList<ParseElem> parseStack;
 
@@ -887,7 +887,7 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 			}
 		}
 		else
-			kdebug("shit happens? %d %c %d\n", i, (char)c, (char)c);
+			kdebugm(KDEBUG_ERROR, "shit happens? %d %c %d\n", i, (char)c, (char)c);
 		index=i;
 	}
 	QString ret;
@@ -897,10 +897,10 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 		if (last.type==ParseElem::PE_STRING)
 			ret.prepend(last.str);
 		else
-			kdebug("Incorrect parse string! %d\n", last.type);
+			kdebugm(KDEBUG_WARNING, "Incorrect parse string! %d\n", last.type);
 		parseStack.pop_back();
 	}
-	kdebug("%s\n", (const char *)ret.local8Bit());
+	kdebugm(KDEBUG_INFO, "%s\n", (const char *)ret.local8Bit());
 	return ret;
 }
 
@@ -1218,19 +1218,19 @@ void HttpClient::onConnected()
 	query+="\r\n";
 	if (PostData.size() > 0)
 		query += QString(PostData);
-	kdebug("HttpClient: Sending query:\n%s\n", query.local8Bit().data());
+	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Sending query:\n%s\n", query.local8Bit().data());
 	Socket.writeBlock(query.local8Bit().data(), query.length());
 }
 
 void HttpClient::onReadyRead()
 {
 	int size=Socket.bytesAvailable();
-	kdebug("HttpClient: Data Block Retreived: %i bytes\n",size);
+	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Data Block Retreived: %i bytes\n",size);
 	// Dodaj nowe dane do starych
 	char buf[size];
 	Socket.readBlock(buf,size);
 	//
-//	kdebug("%s\n",buf);
+//	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "%s\n",buf);
 	//
 	int old_size=Data.size();
 	Data.resize(old_size+size);
@@ -1239,14 +1239,14 @@ void HttpClient::onReadyRead()
 	// Jesli nie mamy jeszcze naglowka
 	if(!HeaderParsed)
 	{	
-		kdebug("HttpClient: Trying to parse header\n");
+		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Trying to parse header\n");
 		// Kontynuuj odczyt jesli naglowek niekompletny
 		QString s=QString(Data);
 		int p=s.find("\r\n\r\n");
 		if(p<0)
 			return;
 		// Dostalismy naglowek, 
-		kdebug("HttpClient: Http header found:\n%s\n",s.local8Bit().data());		
+		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Http header found:\n%s\n",s.local8Bit().data());		
 		HeaderParsed=true;
 		// Wyci±gamy status
 		QRegExp status_regexp("HTTP/1\\.[01] (\\d+)");
@@ -1257,7 +1257,7 @@ void HttpClient::onReadyRead()
 			return;
 		}
 		Status=status_regexp.cap(1).toInt();
-		kdebug("HttpClient: Status: %i\n",Status);
+		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Status: %i\n",Status);
 		// Status 302 oznacza przekierowanie.
 		if(Status==302)
 		{
@@ -1269,7 +1269,7 @@ void HttpClient::onReadyRead()
 				return;
 			}
 			QString location=location_regexp.cap(1);
-			kdebug("Jumping to %s\n",location.local8Bit().data());
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "Jumping to %s\n",location.local8Bit().data());
 			// czekamy. zbyt szybkie przekierowanie konczy sie
 			// czasem petla. nie wiem dlaczego.
 			QTime* t=new QTime();
@@ -1287,12 +1287,12 @@ void HttpClient::onReadyRead()
 		if(ContentLengthNotFound)
 		{
 			ContentLength=0;
-			kdebug("HttpClient: Content-Length not found. We will wait for connection to close.");
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Content-Length not found. We will wait for connection to close.");
 		}
 		else
 		{
 			ContentLength=cl_regexp.cap(1).toUInt();
-			kdebug("HttpClient: Content-Length: %i bytes\n",ContentLength);			
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Content-Length: %i bytes\n",ContentLength);			
 		}
 		
 		// Wyciagamy ewentualne cookie (dla uproszczenia tylko jedno)
@@ -1302,7 +1302,7 @@ void HttpClient::onReadyRead()
 			QString cookie_name=cookie_regexp.cap(1);
 			QString cookie_val=cookie_regexp.cap(2);
 			Cookies.insert(cookie_name,cookie_val);
-			kdebug("HttpClient: Cookie retreived: %s=%s\n",cookie_name.local8Bit().data(),cookie_val.local8Bit().data());
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Cookie retreived: %s=%s\n",cookie_name.local8Bit().data(),cookie_val.local8Bit().data());
 		}
 		// Wytnij naglowek z Data
 		int header_size=p+4;
@@ -1310,9 +1310,9 @@ void HttpClient::onReadyRead()
 		for(int i=0; i<new_data_size; i++)
 			Data[i]=Data[header_size+i];
 		Data.resize(new_data_size);
-		kdebug("HttpClient: Header parsed and cutted off from data\n");
-		kdebug("HttpClient: Header size: %i bytes\n",header_size);
-		kdebug("HttpClient: New data block size: %i bytes\n",new_data_size);
+		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Header parsed and cutted off from data\n");
+		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Header size: %i bytes\n",header_size);
+		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: New data block size: %i bytes\n",new_data_size);
 		// Je¶li status jest 100 - Continue to czekamy na dalsze dane
 		// (uniewa¿niamy ten nag³owek i czekamy na nastêpny)
 		if(Status==100)
@@ -1326,7 +1326,7 @@ void HttpClient::onReadyRead()
 	if(ContentLength>Data.size()||ContentLengthNotFound)
 		return;
 	// Mamy cale dane
-	kdebug("HttpClient: All Data Retreived: %i bytes\n",Data.size());
+	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: All Data Retreived: %i bytes\n",Data.size());
 	Socket.close();
 	emit finished();
 }
@@ -1616,7 +1616,7 @@ HtmlDocument GGMessageToHtmlDocument(const QString &msg, int formats_length, voi
 				formats_length -= sizeof(gg_msg_richtext_format);
 				if (actformat->font & GG_FONT_IMAGE) {
 					idx = int((unsigned char)cformats[0]);
-					kdebug("formatGGMessage(): I got image probably: header_length = %d\n",
+					kdebugm(KDEBUG_INFO, "formatGGMessage(): I got image probably: header_length = %d\n",
 						idx);
 					cformats += idx + 1;
 					formats_length -= idx + 1;
@@ -1636,7 +1636,7 @@ HtmlDocument GGMessageToHtmlDocument(const QString &msg, int formats_length, voi
 		}
 	else
 		htmldoc.addText(msg);
-	kdebug("GGMessageToHtmlDocument(): finished\n");
+	kdebugf2();
 	return htmldoc;
 }
 
@@ -1658,7 +1658,7 @@ void HtmlDocumentToGGMessage(HtmlDocument &htmldoc, QString &msg, int &formats_l
 	for (it = 0, pos = 0, formats_length = 0, inspan = -1; it < htmldoc.countElements(); it++) {
 		tmp = htmldoc.elementText(it);
 		if (htmldoc.isTagElement(it)) {
-			kdebug("HtmlDocumentToGGMessage(): pos = %d\n", pos);
+			kdebugm(KDEBUG_INFO, "HtmlDocumentToGGMessage(): pos = %d\n", pos);
 			if (tmp == "</span>")
 				inspan = -1;
 			else {
@@ -1725,14 +1725,14 @@ void HtmlDocumentToGGMessage(HtmlDocument &htmldoc, QString &msg, int &formats_l
 				tmpformats += sizeof(gg_msg_richtext_format);
 				}
 			}
-		kdebug("HtmlDocumentToGGMessage(): formats_length = %d, tmpformats-cformats = %d\n",
+		kdebugm(KDEBUG_INFO, "HtmlDocumentToGGMessage(): formats_length = %d, tmpformats-cformats = %d\n",
 			formats_length, tmpformats - cformats);
 		formats = (void *)cformats;
 		}
 	else
 		formats = NULL;
 
-	kdebug("HtmlDocumentToGGMessage():\n%s\n", unicode2latin(msg).data());
+	kdebugm(KDEBUG_INFO, "HtmlDocumentToGGMessage():\n%s\n", unicode2latin(msg).data());
 }
 */
 ImageWidget::ImageWidget(QWidget *parent)
@@ -1826,14 +1826,14 @@ void token::socketEvent() {
 		emit tokenError();
 		gg_token_free(h);
 		h = NULL;
-		kdebug("token::socketEvent(): getting token error\n");
+		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "token::socketEvent(): getting token error\n");
 		return;
 	}
 
 	struct gg_pubdir *p = (struct gg_pubdir *)h->data;
 	switch (h->state) {
 		case GG_STATE_CONNECTING:
-			kdebug("Register::socketEvent(): changing QSocketNotifiers.\n");
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "Register::socketEvent(): changing QSocketNotifiers.\n");
 			deleteSocketNotifiers();
 			createSocketNotifiers();
 			if (h->check & GG_CHECK_WRITE)
@@ -1844,16 +1844,16 @@ void token::socketEvent() {
 			emit tokenError();
 			gg_token_free(h);
 			h = NULL;
-			kdebug("token::socketEvent(): getting token error\n");
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "token::socketEvent(): getting token error\n");
 			break;
 		case GG_STATE_DONE:
 			deleteSocketNotifiers();
 			if (p->success) {
-				kdebug("token::socketEvent(): success\n");
+				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "token::socketEvent(): success\n");
 				emit gotToken(h);
 			}
 			else {
-				kdebug("token::socketEvent(): getting token error\n");
+				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "token::socketEvent(): getting token error\n");
 				emit tokenError();
 			}
 			gg_token_free(h);
@@ -1963,7 +1963,7 @@ void Themes::setTheme(const QString& theme)
 		}
 		emit themeChanged(ActualTheme);
 	}
-	kdebug("Theme: "+ActualTheme+"\n");
+	kdebugm(KDEBUG_INFO, "Theme: %s\n", ActualTheme.local8Bit().data());
 }
 
 QString Themes::theme()
@@ -2076,19 +2076,19 @@ void GaduImagesManager::addImageToSend(const QString& file_name,uint32_t& size,u
 	kdebugf();
 	ImageToSend img;
 	QFile f(file_name);
-	kdebug("Opening file \"%s\"\n",file_name.local8Bit().data());
+	kdebugm(KDEBUG_INFO, "Opening file \"%s\"\n",file_name.local8Bit().data());
 	if(!f.open(IO_ReadOnly))
 	{
-		kdebug("Error opening file\n");
+		kdebugm(KDEBUG_ERROR, "Error opening file\n");
 		return;
 	}
 	img.size = f.size();
 	img.file_name=file_name;
 	img.data = new char[img.size];
-	kdebug("Reading file\n");
+	kdebugm(KDEBUG_INFO, "Reading file\n");
 	f.readBlock(img.data,img.size);
 	img.crc32 = gg_crc32(0,(const unsigned char*)img.data,img.size);
-	kdebug("Inserting into images to send: filename=%s, size=%i, crc32=%i\n\n",img.file_name.local8Bit().data(),img.size,img.crc32);
+	kdebugm(KDEBUG_INFO, "Inserting into images to send: filename=%s, size=%i, crc32=%i\n\n",img.file_name.local8Bit().data(),img.size,img.crc32);
 	ImagesToSend.append(img);
 	size = img.size;
 	crc32 = img.crc32;
@@ -2097,30 +2097,30 @@ void GaduImagesManager::addImageToSend(const QString& file_name,uint32_t& size,u
 void GaduImagesManager::sendImage(UinType uin,uint32_t size,uint32_t crc32)
 {
 	kdebugf();
-	kdebug("Searching images to send: size=%u, crc32=%u\n",size,crc32);
+	kdebugm(KDEBUG_INFO, "Searching images to send: size=%u, crc32=%u\n",size,crc32);
 	for(QValueList<ImageToSend>::Iterator i=ImagesToSend.begin(); i!=ImagesToSend.end(); i++)
 	{
 		if ((*i).size==size && (*i).crc32==crc32)
 		{
-			kdebug("Image data found\n");
+			kdebugm(KDEBUG_INFO, "Image data found\n");
 			gadu->sendImage(uin,(*i).file_name,(*i).size,(*i).data);
 			delete[] (*i).data;
-			kdebug("Removing from images queue\n");	
+			kdebugm(KDEBUG_INFO, "Removing from images queue\n");	
 			ImagesToSend.remove(i);
 			return;
 		}
 	}
-	kdebug("Image data not found\n");
+	kdebugm(KDEBUG_WARNING, "Image data not found\n");
 }
 
 QString GaduImagesManager::saveImage(UinType sender,uint32_t size,uint32_t crc32,const QString& filename,const char* data)
 {
 	kdebugf();
 	QString path = ggPath("images");
-	kdebug("Creating directory: %s\n",path.local8Bit().data());
+	kdebugm(KDEBUG_INFO, "Creating directory: %s\n",path.local8Bit().data());
 	QDir().mkdir(path);
 	QString file_name = QString("%1-%2-%3-%4").arg(sender).arg(size).arg(crc32).arg(filename);
-	kdebug("Saving image as file: %s\n",file_name.local8Bit().data());
+	kdebugm(KDEBUG_INFO, "Saving image as file: %s\n",file_name.local8Bit().data());
 	SavedImage img;
 	img.size = size;
 	img.crc32 = crc32;
@@ -2137,32 +2137,32 @@ QString GaduImagesManager::saveImage(UinType sender,uint32_t size,uint32_t crc32
 QString GaduImagesManager::getImageToSendFileName(uint32_t size,uint32_t crc32)
 {
 	kdebugf();
-	kdebug("Searching images to send: size=%u, crc32=%u\n",size,crc32);
+	kdebugm(KDEBUG_INFO, "Searching images to send: size=%u, crc32=%u\n",size,crc32);
 	for(QValueList<ImageToSend>::Iterator i=ImagesToSend.begin(); i!=ImagesToSend.end(); i++)
 	{
 		if ((*i).size==size && (*i).crc32==crc32)
 		{
-			kdebug("Image data found\n");
+			kdebugm(KDEBUG_INFO, "Image data found\n");
 			return (*i).file_name;
 		}
 	}
-	kdebug("Image data not found\n");
+	kdebugm(KDEBUG_WARNING, "Image data not found\n");
 	return "";
 }
 
 QString GaduImagesManager::getSavedImageFileName(uint32_t size,uint32_t crc32)
 {
 	kdebugf();
-	kdebug("Searching saved images: size=%u, crc32=%u\n",size,crc32);
+	kdebugm(KDEBUG_INFO, "Searching saved images: size=%u, crc32=%u\n",size,crc32);
 	for(QValueList<SavedImage>::Iterator i=SavedImages.begin(); i!=SavedImages.end(); i++)
 	{
 		if ((*i).size==size && (*i).crc32==crc32)
 		{
-			kdebug("Image data found\n");
+			kdebugm(KDEBUG_INFO, "Image data found\n");
 			return (*i).file_name;
 		}
 	}
-	kdebug("Image data not found\n");
+	kdebugm(KDEBUG_WARNING, "Image data not found\n");
 	return "";
 }
 
@@ -2175,7 +2175,7 @@ QString GaduImagesManager::replaceLoadingImages(const QString& text, UinType sen
 	int pos;
 	while ((pos = new_text.find(loading_string)) != -1)
 	{
-		kdebug("Found coresponding loading image at pos %i, replacing\n",pos);
+		kdebugm(KDEBUG_INFO, "Found coresponding loading image at pos %i, replacing\n",pos);
 		new_text = new_text.replace(pos, loading_string.length(), image_string);
 	}
 	kdebugf2();
@@ -2228,7 +2228,7 @@ void KaduTextBrowser::setSource(const QString &name)
 
 void KaduTextBrowser::copyLinkLocation()
 {
-	kdebug("KaduTextBrowser::copyLinkLocation(): anchor = %s\n", anchor.local8Bit().data());
+	kdebugm(KDEBUG_FUNCTION_START, "KaduTextBrowser::copyLinkLocation(): anchor = %s\n", anchor.local8Bit().data());
 	QApplication::clipboard()->setText(anchor);
 }
 
@@ -2253,7 +2253,7 @@ void KaduTextBrowser::drawContents(QPainter * p, int clipx, int clipy, int clipw
 			QPaintDevice: Cannot destroy paint device that is being painted
 		oraz zawieszenie Kadu (http://www.kadu.net/forum/viewtopic.php?t=2486)
 	*/
-//	kdebug("KaduTextBrowser::drawContents(): level: %d\n", level);
+//	kdebugm(KDEBUG_INFO, "KaduTextBrowser::drawContents(): level: %d\n", level);
 	level++;
 	if (level==1)
 		QTextBrowser::drawContents(p, clipx, clipy, clipw, cliph);

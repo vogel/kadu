@@ -3,19 +3,40 @@
 
 #include "kadu-config.h"
 
-#define KADU_DEBUG_FUNCTION_START (1<<8)
-#define KADU_DEBUG_FUNCTION_END   (1<<9)
+/* pierwsze 8 bitow zarezerwowane jest dla libgadu */
 
-#define KADU_DEBUG_INFO           (1<<10)
-#define KADU_DEBUG_WARNING        (1<<11)
-#define KADU_DEBUG_ERROR          (1<<12)
-#define KADU_DEBUG_PANIC          (1<<13)
+/* start funkcji */
+#define KDEBUG_FUNCTION_START (1<<8)
+/* koniec funkcji */
+#define KDEBUG_FUNCTION_END   (1<<9)
 
-#define KADU_DEBUG_DUMP           (1<<14)
-#define KADU_DEBUG_NETWORK        (1<<15)
+/* zwykle inforamcje */
+#define KDEBUG_INFO           (1<<10)
+/* niegrozne ostrzezenie */
+#define KDEBUG_WARNING        (1<<11)
+/* powazny blad, ale sytuacja jest do obejscia */
+#define KDEBUG_ERROR          (1<<12)
+/* blad fatalny, mozliwe ze program sie wywroci */
+#define KDEBUG_PANIC          (1<<13)
 
-#define KADU_DEBUG_ALL 2147483647
+/* duzo danych do wypisania */
+#define KDEBUG_DUMP           (1<<14)
+/* informacja dotyczaca obslugi sieci */
+#define KDEBUG_NETWORK        (1<<15)
 
+/* 2^31-1 - wszystkie komunikaty */
+#define KDEBUG_ALL 2147483647
+
+/* stare-dluzsze wersje tych stalych */
+#define KADU_DEBUG_FUNTION_START KDEBUG_FUNCTION_START
+#define KADU_DEBUG_FUNTION_END KDEBUG_FUNCTION_END
+#define KADU_DEBUG_INFO KDEBUG_INFO
+#define KADU_DEBUG_WARNING KDEBUG_WARNING
+#define KADU_DEBUG_ERROR KDEBUG_ERROR
+#define KADU_DEBUG_PANIC KDEBUG_PANIC
+#define KADU_DEBUG_DUMP KDEBUG_DUMP
+#define KADU_DEBUG_NETWORK KDEBUG_NETWORK
+#define KADU_DEBUG_ALL KDEBUG_ALL
 
 /*
 	<<< kdebug >>>
@@ -24,7 +45,7 @@
 */
 #ifdef DEBUG_ENABLED
 #define kdebug(format,args...) \
-	_kdebug_with_mask(KADU_DEBUG_ALL,__FILE__,__LINE__,format,##args)
+	_kdebug_with_mask(KDEBUG_ALL,__FILE__,__LINE__,format,##args)
 #define kdebugm(mask,format,args...) \
 	_kdebug_with_mask(mask,__FILE__,__LINE__,format,##args)
 #else
@@ -43,10 +64,10 @@
 	dzia³anie programu.
 */	
 #define kdebugf() \
-	kdebugm(KADU_DEBUG_FUNCTION_START, "%s\n",__PRETTY_FUNCTION__)
+	kdebugm(KDEBUG_FUNCTION_START, "%s\n",__PRETTY_FUNCTION__)
 
 #define kdebugf2() \
-	kdebugm(KADU_DEBUG_FUNCTION_END, "%s end\n",__PRETTY_FUNCTION__)
+	kdebugm(KDEBUG_FUNCTION_END, "%s end\n",__PRETTY_FUNCTION__)
 
 /*
 	Funkcja pomocnicza. Nie u¿ywaæ.

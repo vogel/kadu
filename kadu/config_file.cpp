@@ -21,7 +21,7 @@ ConfigFile::ConfigFile(const QString &filename) : filename(filename),activeGroup
 }
 
 void ConfigFile::read() {
-	kdebug("ConfigFile::read(): %s\n", (const char *)filename.local8Bit());
+	kdebugm(KDEBUG_FUNCTION_START, "ConfigFile::read(): %s\n", (const char *)filename.local8Bit());
 	QFile file(filename);
 	QString line;
 
@@ -65,25 +65,25 @@ void ConfigFile::write(const QString &f) {
 	QString line;
 
 	if (file.open(IO_WriteOnly | IO_Truncate)) {
-		kdebug("file opened '%s'\n", (const char *)file.name().local8Bit());
+		kdebugm(KDEBUG_INFO, "file opened '%s'\n", (const char *)file.name().local8Bit());
 		QTextStream stream(&file);
 		stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
 		for(QMap<QString, QMap<QString, QString> >::const_iterator i=groups.begin(); i!=groups.end(); i++)
 		{
-//			kdebug(">> %s\n", (const char*)i.key().local8Bit());
+//			kdebugm(KDEBUG_DUMP, ">> %s\n", (const char*)i.key().local8Bit());
 			stream << '[' << i.key() << "]\n";
 			for(QMap<QString, QString>::const_iterator j=i.data().begin(); j!=i.data().end(); j++)
 			{
 				QString q=j.data();
 				stream << j.key() << '=' << q.replace(QRegExp("\n"), "\\n") << '\n';
-//				kdebug(">>>>> %s %s\n", (const char*)j.key().local8Bit(), (const char*)q.local8Bit());
+//				kdebugm(KDEBUG_DUMP, ">>>>> %s %s\n", (const char*)j.key().local8Bit(), (const char*)q.local8Bit());
 			}
 			stream << '\n';
 		}
 		file.close();
 	}
 	else
-		kdebug("can't open '%s'\n", (const char *)file.name().local8Bit());
+		kdebugm(KDEBUG_ERROR, "can't open '%s'\n", (const char *)file.name().local8Bit());
 	kdebugf2();
 }
 
@@ -103,7 +103,7 @@ QMap<QString, QString>& ConfigFile::getGroupSection(const QString& name)
 }
 
 bool ConfigFile::changeEntry(const QString &group, const QString &name, const QString &value) {
-//	kdebug("ConfigFile::changeEntry(%s, %s, %s) %p\n", (const char *)group.local8Bit(), (const char *)name.local8Bit(), (const char *)value.local8Bit(), this);
+//	kdebugm(KDEBUG_FUNCTION_START, "ConfigFile::changeEntry(%s, %s, %s) %p\n", (const char *)group.local8Bit(), (const char *)name.local8Bit(), (const char *)value.local8Bit(), this);
 	if (activeGroupName!=group)
 	{
 		activeGroupName=group;
@@ -115,7 +115,7 @@ bool ConfigFile::changeEntry(const QString &group, const QString &name, const QS
 }
 
 QString ConfigFile::getEntry(const QString &group, const QString &name, bool *ok) const {
-//	kdebug("ConfigFile::getEntry(%s, %s) %p\n", (const char *)group.local8Bit(), (const char *)name.local8Bit(), this);
+//	kdebugm(KDEBUG_FUNCTION_START, "ConfigFile::getEntry(%s, %s) %p\n", (const char *)group.local8Bit(), (const char *)name.local8Bit(), this);
 	if (activeGroupName!=group)
 	{
 		if (!groups.contains(group))

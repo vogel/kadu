@@ -72,7 +72,7 @@ void SmsIdeaGateway::httpFinished()
 	if(State==SMS_LOADING_PAGE)
 	{
 		QString Page=Http.data();
-		kdebugm(KADU_DEBUG_INFO, "SMS Provider Page:\n%s\n",Page.local8Bit().data());
+		kdebugm(KDEBUG_INFO, "SMS Provider Page:\n%s\n",Page.local8Bit().data());
 		QRegExp pic_regexp("rotate_token\\.aspx\\?token=([^\"]+)");
 		int pic_pos=pic_regexp.search(Page);
 		if(pic_pos<0)
@@ -83,14 +83,14 @@ void SmsIdeaGateway::httpFinished()
 		};
 		QString pic_path=Page.mid(pic_pos,pic_regexp.matchedLength());
 		Token=pic_regexp.cap(1);
-		kdebugm(KADU_DEBUG_INFO, "SMS Idea Token: %s\n",Token.local8Bit().data());
-		kdebugm(KADU_DEBUG_INFO, "SMS Idea Picture: %s\n",pic_path.local8Bit().data());
+		kdebugm(KDEBUG_INFO, "SMS Idea Token: %s\n",Token.local8Bit().data());
+		kdebugm(KDEBUG_INFO, "SMS Idea Picture: %s\n",pic_path.local8Bit().data());
 		State=SMS_LOADING_PICTURE;
 		Http.get(pic_path);
 	}
 	else if(State==SMS_LOADING_PICTURE)
 	{
-		kdebugm(KADU_DEBUG_INFO, "SMS Idea Picture Loaded: %i bytes\n",Http.data().size());
+		kdebugm(KDEBUG_INFO, "SMS Idea Picture Loaded: %i bytes\n",Http.data().size());
 		SmsImageDialog* d=new SmsImageDialog(p,Http.data());
 		connect(d,SIGNAL(codeEntered(const QString&)),this,SLOT(onCodeEntered(const QString&)));
 		d->show();
@@ -98,39 +98,39 @@ void SmsIdeaGateway::httpFinished()
 	else if(State==SMS_LOADING_RESULTS)
 	{
 		QString Page=Http.data();
-		kdebugm(KADU_DEBUG_INFO, "SMS Provider Results Page:\n%s\n",Page.local8Bit().data());	
+		kdebugm(KDEBUG_INFO, "SMS Provider Results Page:\n%s\n",Page.local8Bit().data());	
 		if(Page.find("wyczerpany")>=0)
 		{
-			kdebugm(KADU_DEBUG_INFO, "You exceeded your daily limit\n");
+			kdebugm(KDEBUG_INFO, "You exceeded your daily limit\n");
 			QMessageBox::critical(p,"SMS",tr("You exceeded your daily limit"));
 			emit finished(false);
 		}
 		else if(Page.find("Podano b³êdne has³o")>=0)
 		{
-			kdebugm(KADU_DEBUG_INFO, "Text from the picture is incorrect\n");
+			kdebugm(KDEBUG_INFO, "Text from the picture is incorrect\n");
 			QMessageBox::critical(p,"SMS",tr("Text from the picture is incorrect"));
 			emit finished(false);				
 		}
 		else if(Page.find("Odbiorca nie ma aktywnej uslugi")>=0)
 		{
-			kdebugm(KADU_DEBUG_INFO, "The receiver has to enable SMS STANDARD service\n");
+			kdebugm(KDEBUG_INFO, "The receiver has to enable SMS STANDARD service\n");
 			QMessageBox::critical(p,"SMS",tr("The receiver has to enable SMS STANDARD service"));
 			emit finished(false);				
 		}			
 		else if(Page.find("Twój SMS zosta³ wys³any")>=0)
 		{
-			kdebugm(KADU_DEBUG_INFO, "SMS was sent succesfully\n");
+			kdebugm(KDEBUG_INFO, "SMS was sent succesfully\n");
 			emit finished(true);
 		}
 		else
 		{
-			kdebugm(KADU_DEBUG_INFO, "Provider gateway results page looks strange. SMS was probably NOT sent.\n");
+			kdebugm(KDEBUG_INFO, "Provider gateway results page looks strange. SMS was probably NOT sent.\n");
 			QMessageBox::critical(p,"SMS",tr("Provider gateway results page looks strange. SMS was probably NOT sent."));
 			emit finished(false);
 		};
 	}
 	else
-		kdebugm(KADU_DEBUG_PANIC, "SMS Panic! Unknown state\n");
+		kdebugm(KDEBUG_PANIC, "SMS Panic! Unknown state\n");
 	kdebugf2();
 }
 
@@ -142,7 +142,7 @@ void SmsIdeaGateway::onCodeEntered(const QString& code)
 		emit finished(false);
 		return;
 	}
-	kdebugm(KADU_DEBUG_INFO, "SMS User entered the code\n");
+	kdebugm(KDEBUG_INFO, "SMS User entered the code\n");
 	State=SMS_LOADING_RESULTS;
 	QString post_data=QString("token=")+Token+"&SENDER="+Signature+"&RECIPIENT="+Number+"&SHORT_MESSAGE="+Http.encode(Message)+"&pass="+code+"&CHK_RESP=FALSE"+"&respInfo=1";
 	Http.post("sendsms.aspx",post_data);
@@ -190,7 +190,7 @@ void SmsPlusGateway::httpFinished()
 	if(State==SMS_LOADING_PAGE)
 	{
 		QString Page=Http.data();
-		kdebugm(KADU_DEBUG_INFO, "SMS Provider Page:\n%s\n",Page.local8Bit().data());
+		kdebugm(KDEBUG_INFO, "SMS Provider Page:\n%s\n",Page.local8Bit().data());
 		QRegExp code_regexp("name=\\\"kod\\\" value=\\\"(\\d+)\\\"");
 		QRegExp code_regexp2("name=\\\"Kod(\\d+)\\\" value=\\\"(\\d+)\\\"");
 		if(code_regexp.search(Page) < 0) {
@@ -213,7 +213,7 @@ void SmsPlusGateway::httpFinished()
 	else if(State==SMS_LOADING_RESULTS)
 	{
 		QString Page=Http.data();
-		kdebugm(KADU_DEBUG_INFO, "SMS Provider Results Page:\n%s\n",Page.local8Bit().data());	
+		kdebugm(KDEBUG_INFO, "SMS Provider Results Page:\n%s\n",Page.local8Bit().data());	
 		if(Page.find("SMS zosta³ wys³any")>=0)
 		{
 			emit finished(true);
@@ -225,7 +225,7 @@ void SmsPlusGateway::httpFinished()
 		};				
 	}
 	else
-		kdebugm(KADU_DEBUG_PANIC, "SMS Panic! Unknown state\n");	
+		kdebugm(KDEBUG_PANIC, "SMS Panic! Unknown state\n");	
 	kdebugf2();
 }
 

@@ -28,13 +28,13 @@ DnsHandler::DnsHandler(UinType uin) : uin(uin) {
 	dnsresolver.setRecordType(QDns::Ptr);
 	dnsresolver.setLabel(ule.ip);
 	counter++;
-	kdebugm(KADU_DEBUG_INFO, "DnsHandler::DnsHandler(): counter = %d\n", counter);
+	kdebugm(KDEBUG_FUNCTION_END, "DnsHandler::DnsHandler(): counter = %d\n", counter);
 }
 
 DnsHandler::~DnsHandler() {
 	counter--;
 /* patrz ~Userlist()
-	kdebug("DnsHandler::~DnsHandler(): counter = %d\n", counter);
+	kdebugm(KDEBUG_INFO, "DnsHandler::~DnsHandler(): counter = %d\n", counter);
 */
 }
 
@@ -114,7 +114,7 @@ UserList::~UserList()
 	/* Ciekawa zagadka... ten kdebug przy zamykaniu powodowa³ naruszenie
 		pamiêci obojêtnie, co mia³ w parametrach, debugowanie tego nie jest
 		konieczne wiêc zakomentowa³em.
-		kdebug("UserList::~UserList(): dnslookups.count() = %d\n", dnslookups.count());
+		kdebugm(KDEBUG_INFO, "UserList::~UserList(): dnslookups.count() = %d\n", dnslookups.count());
 	*/
 	/* chilek: Mysle, ze nie jest to takie mocno ciekawe, zwazywszy na to, ze pare linii
 		wyzej mamy w konstruktorze dnslookups ustawiony na autoDelete ;)
@@ -153,7 +153,7 @@ void UserList::setDnsName(UinType  uin, const QString &name) {
 	UserListElement &ule = byUin(uin);
 	if (ule.dnsname != name) {
 		ule.dnsname = name;
-		kdebugm(KADU_DEBUG_INFO, "UserList::setDnsName(): dnsname for uin %d: %s\n", uin, name.latin1());
+		kdebugm(KDEBUG_INFO, "UserList::setDnsName(): dnsname for uin %d: %s\n", uin, name.latin1());
 		emit dnsNameReady(uin);
 	}
 }
@@ -163,7 +163,7 @@ UserListElement& UserList::byUin(UinType  uin)
 	for(iterator i=begin(); i!=end(); i++)
 		if((*i).uin==uin)
 			return (*i);
-	kdebugm(KADU_DEBUG_PANIC, "UserList::byUin(): Panic!\n");
+	kdebugm(KDEBUG_PANIC, "UserList::byUin(): Panic!\n");
 	return *((UserListElement*)NULL);
 }
 
@@ -172,7 +172,7 @@ UserListElement& UserList::byNick(const QString& nickname)
 	for (iterator i = begin(); i != end(); i++)
 		if ((*i).nickname.lower() == nickname.lower())
 			return (*i);
-	kdebugm(KADU_DEBUG_PANIC, "UserList::byNick(): Panic! %s not exists\n",
+	kdebugm(KDEBUG_PANIC, "UserList::byNick(): Panic! %s not exists\n",
 		(const char*)nickname.lower().local8Bit());
 	return *((UserListElement*)NULL);
 }
@@ -182,7 +182,7 @@ UserListElement& UserList::byAltNick(const QString& altnick)
 	for (iterator i = begin(); i != end(); i++)
 		if ((*i).altnick.lower() == altnick.lower())
 			return (*i);
-	kdebugm(KADU_DEBUG_PANIC, "UserList::byAltNick(): Panic! %s not exists\n",
+	kdebugm(KDEBUG_PANIC, "UserList::byAltNick(): Panic! %s not exists\n",
 		(const char*)altnick.lower().local8Bit());
 	return *((UserListElement*)NULL);
 }
@@ -205,7 +205,7 @@ bool UserList::containsUin(UinType  uin) const {
 	for (const_iterator i = begin(); i != end(); i++)
 		if ((*i).uin == uin)
 			return true;
-	kdebugm(KADU_DEBUG_INFO, "UserList::containsUin(): userlist doesn't contain %d\n", uin);
+	kdebugm(KDEBUG_INFO, "UserList::containsUin(): userlist doesn't contain %d\n", uin);
 	return false;
 }
 
@@ -213,7 +213,7 @@ bool UserList::containsAltNick(const QString &altnick) const {
 	for (const_iterator i = begin(); i != end(); i++)
 		if ((*i).altnick.lower() == altnick.lower())
 			return true;
-	kdebugm(KADU_DEBUG_INFO, "UserList::containsAltNick(): userlist doesn't contain %s\n",
+	kdebugm(KDEBUG_INFO, "UserList::containsAltNick(): userlist doesn't contain %s\n",
 		(const char *)altnick.lower().local8Bit());
 	return false;
 }
@@ -336,12 +336,12 @@ bool UserList::writeToFile(QString filename)
 
 	faname = ggPath("userattribs");
 
-	kdebugm(KADU_DEBUG_INFO, "UserList::writeToFile(): %s\n", (const char *)filename.local8Bit());
+	kdebugm(KDEBUG_INFO, "UserList::writeToFile(): %s\n", (const char *)filename.local8Bit());
 
 	QFile f(filename);
 
 	if (!f.open(IO_WriteOnly)) {
-		kdebugm(KADU_DEBUG_ERROR, "UserList::writeToFile(): Error opening file :(\n");
+		kdebugm(KDEBUG_ERROR, "UserList::writeToFile(): Error opening file :(\n");
 		return false;
 	}
 
@@ -370,7 +370,7 @@ bool UserList::writeToFile(QString filename)
 		s.append(QString("\r\n"));
 		
 		if (!(*i).anonymous) {
-			kdebug(s.local8Bit());
+			kdebugm(KDEBUG_INFO, "%s", s.local8Bit().data());
 			str = QTextCodec::codecForName("ISO 8859-2")->fromUnicode(s);
 			f.writeBlock(str, str.length());
 			}
@@ -380,7 +380,7 @@ bool UserList::writeToFile(QString filename)
 	QFile fa(faname);
 
 	if (!fa.open(IO_WriteOnly)) {
-		kdebugm(KADU_DEBUG_ERROR, "UserList::writeToFile(): Error opening file :(\n");
+		kdebugm(KDEBUG_ERROR, "UserList::writeToFile(): Error opening file :(\n");
 		return false;
 	}
 
@@ -396,7 +396,7 @@ bool UserList::writeToFile(QString filename)
 		s.append(QString("\r\n"));
 		
 		if (!(*i).anonymous && (*i).uin) {
-			kdebug(s.local8Bit());
+			kdebugm(KDEBUG_INFO, "%s", s.local8Bit().data());
 			str = QTextCodec::codecForName("ISO 8859-2")->fromUnicode(s);
 			fa.writeBlock(str, str.length());
 			}
@@ -419,11 +419,11 @@ bool UserList::readFromFile()
 	bool ok;
 
 	path = ggPath("userattribs");
-	kdebugm(KADU_DEBUG_INFO, "UserList::readFromFile(): Opening userattribs file: %s\n",
+	kdebugm(KDEBUG_INFO, "UserList::readFromFile(): Opening userattribs file: %s\n",
 		(const char *)path.local8Bit());
 	QFile fa(path);
 	if (!fa.open(IO_ReadOnly)) {
-		kdebugm(KADU_DEBUG_ERROR, "UserList::readFromFile(): Error opening userattribs file\n");
+		kdebugm(KDEBUG_ERROR, "UserList::readFromFile(): Error opening userattribs file\n");
 	}
 	else {
 		QTextStream s(&fa);
@@ -437,15 +437,15 @@ bool UserList::readFromFile()
 		}
 
 	path = ggPath("userlist");
-	kdebugm(KADU_DEBUG_INFO, "UserList::readFromFile(): Opening userlist file: %s\n",
+	kdebugm(KDEBUG_INFO, "UserList::readFromFile(): Opening userlist file: %s\n",
 		(const char *)path.local8Bit());
 	QFile f(path);
 	if (!f.open(IO_ReadOnly)) {
-		kdebugm(KADU_DEBUG_ERROR, "UserList::readFromFile(): Error opening userlist file");
+		kdebugm(KDEBUG_ERROR, "UserList::readFromFile(): Error opening userlist file");
 		return false;
 		}
 
-	kdebugm(KADU_DEBUG_INFO, "UserList::readFromFile(): File opened successfuly\n");
+	kdebugm(KDEBUG_INFO, "UserList::readFromFile(): File opened successfuly\n");
 
 	clear();
 
@@ -478,7 +478,7 @@ bool UserList::readFromFile()
 			}
 		else {
 			userattribs = QStringList::split(";", line, TRUE);
-			kdebugm(KADU_DEBUG_INFO, "UserList::readFromFile(): userattribs = %d\n", userattribs.count());
+			kdebugm(KDEBUG_INFO, "UserList::readFromFile(): userattribs = %d\n", userattribs.count());
 			if (userattribs.count() >= 12)
 				groups = userattribs.count() - 11;
 			else

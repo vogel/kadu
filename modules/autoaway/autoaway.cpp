@@ -141,7 +141,7 @@ void AutoAwayTimer::checkIdleTime()
 //	czy mamy stac sie "zajeci" po config.autoawaytime sekund nieaktywnosci
 	if (idletime >= autoAwayTime && !autoawayed) {
 		beforeAutoAway = getCurrentStatus() & (~GG_STATUS_FRIENDS_MASK);;
-		kdebugm(KADU_DEBUG_INFO, "AutoAwayTimer::checkIdleTime(): checking whether to go auto away, beforeAutoAway = %d\n", beforeAutoAway);
+		kdebugm(KDEBUG_INFO, "AutoAwayTimer::checkIdleTime(): checking whether to go auto away, beforeAutoAway = %d\n", beforeAutoAway);
 		switch (beforeAutoAway) {
 			case GG_STATUS_AVAIL_DESCR:
 				kadu->setStatus(GG_STATUS_BUSY_DESCR);
@@ -155,12 +155,12 @@ void AutoAwayTimer::checkIdleTime()
 				start(autoAwayCheckTime*1000, TRUE);
 				return;
 		}
-		kdebugm(KADU_DEBUG_INFO, "AutoAwayTimer::checkIdleTime(): I am away!\n");
+		kdebugm(KDEBUG_INFO, "AutoAwayTimer::checkIdleTime(): I am away!\n");
 	}
 	else
 //		jesli bylismy "zajeci" to stajemy sie z powrotem "dostepni"
 		if (idletime < autoAwayTime && autoawayed) {
-			kdebugm(KADU_DEBUG_INFO, "AutoAwayTimer::checkIdleTime(): auto away cancelled\n");
+			kdebugm(KDEBUG_INFO, "AutoAwayTimer::checkIdleTime(): auto away cancelled\n");
 			autoawayed = false;
 			kadu->setStatus(beforeAutoAway);
 		}

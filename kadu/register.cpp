@@ -27,11 +27,11 @@
 #include "register.h"
 
 void createConfig() {
-	kdebug("createConfig()\n");
+	kdebugf();
 	char *home = getenv("HOME");
 	struct passwd *pw;
 
-	kdebug("createConfig(): $HOME=%s\n", home);
+	kdebugm(KDEBUG_INFO, "createConfig(): $HOME=%s\n", home);
 	if (!home) {
 		if (!(pw = getpwuid(getuid())))
 			return;
@@ -42,16 +42,16 @@ void createConfig() {
 	QString ggpath = ggPath("");
 	stat(ggpath.local8Bit(), &buf);
 	if (S_ISDIR(buf.st_mode))
-		kdebug("createConfig(): Directory %s exists\n", (const char *)ggpath.local8Bit());
+		kdebugm(KDEBUG_INFO, "createConfig(): Directory %s exists\n", (const char *)ggpath.local8Bit());
 	else {
-		kdebug("createConfig(): Creating directory\n");
+		kdebugm(KDEBUG_INFO, "createConfig(): Creating directory\n");
 		if (mkdir(ggpath.local8Bit(), 0700) != 0 ) {
 			perror("mkdir");
 			return;
 			}
 		}
 
-	kdebug("createConfig(): Writing config files...\n");
+	kdebugm(KDEBUG_INFO, "createConfig(): Writing config files...\n");
 //	hmm wydaje mi sie ze przy obecnym config_file nie potrzebne jest to 
 //	config_file.setGroup("General");
 //	config_file.writeEntry("UIN", int(config.uin));
@@ -60,7 +60,7 @@ void createConfig() {
 
 	qApp->mainWidget()->setCaption(QString("Kadu: %1").arg((UinType)config_file.readNumEntry("General","UIN")));
 
-	kdebug("createConfig(): Config file created\n");
+	kdebugf2();
 }
 
 Register::Register(QDialog *parent, const char *name)
@@ -144,7 +144,7 @@ void Register::keyPressEvent(QKeyEvent *ke_event)
 }
 
 void Register::doRegister() {
-	kdebug("Register::doRegister()\n");
+	kdebugf();
 	
 	if (pwd->text() != pwd2->text()) 
 	{
@@ -198,7 +198,7 @@ void Register::registered(bool ok, UinType uin)
 
 
 void Register::ask() {
-	kdebug("Register::ask()\n");
+	kdebugf();
 	if (cb_updateconfig->isChecked()) {
 		config_file.writeEntry("General","UIN",(int)uin);
 		config_file.writeEntry("General","Password",pwHash(pwd->text()));
@@ -278,7 +278,7 @@ void Unregister::keyPressEvent(QKeyEvent *ke_event)
 }
 
 void Unregister::doUnregister() {
-	kdebug("Unregister::doUnregister()\n");
+	kdebugf();
 
 	if (!uin->text().toUInt() || !pwd->text().length()) 
 	{
@@ -319,14 +319,13 @@ void Unregister::unregistered(bool ok)
 }
 
 void Unregister::deleteConfig() {
-	kdebug("Unregister::deleteConfig()\n");
+	kdebugf();
 
-	kdebug("Unregister::deleteConfig(): Deleting config file...\n");
 	QFile::remove(ggPath("kadu.conf"));
 	config_file.writeEntry("General","UIN",0);
 
 	qApp->mainWidget()->setCaption(tr("No user"));
 
-	kdebug("Unregister::deleteConfig(): Config file deleted\n");
+	kdebugf2();
 }
 

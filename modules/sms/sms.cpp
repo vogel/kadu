@@ -332,7 +332,7 @@ void Sms::sendSms(void)
 		
 		{
 			QMessageBox::warning(this, tr("SMS error"), tr("Sms application was not specified. Visit the configuration section") );
-			kdebugm(KADU_DEBUG_WARNING, "SMS application NOT specified. Exit.\n");
+			kdebugm(KDEBUG_WARNING, "SMS application NOT specified. Exit.\n");
 			return;
 		}
 		QString SmsAppPath=config_file.readEntry("SMS","SmsApp");
@@ -571,7 +571,7 @@ SmsGateway* SmsSlots::getGateway(QString& number)
 		}
 	}
 
-	kdebugm(KADU_DEBUG_INFO, "SmsSlots::getGateway(): NULL\n");
+	kdebugm(KDEBUG_INFO, "SmsSlots::getGateway(): NULL\n");
 	return NULL;
 }
 

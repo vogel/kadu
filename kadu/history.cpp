@@ -100,7 +100,7 @@ void HistoryManager::appendMessage(UinsList uins, UinType uin, const QString &ms
 
 	f.setName(fname);
 	if (!(f.open(IO_WriteOnly | IO_Append))) {
-		kdebug("HistoryManager::appendMessage(): Error opening history file %s\n", (const char *)fname.local8Bit());
+		kdebugm(KDEBUG_ERROR, "HistoryManager::appendMessage(): Error opening history file %s\n", (const char *)fname.local8Bit());
 		return;
 		}
 
@@ -128,7 +128,7 @@ void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 	UinType uin = 0;
 	int offs;
 
-	kdebug("HistoryManager::appendSms(): appending sms to history (%s)\n", mobile.local8Bit().data());
+	kdebugm(KDEBUG_INFO, "HistoryManager::appendSms(): appending sms to history (%s)\n", mobile.local8Bit().data());
 	
 	convSms2ekgForm();
 
@@ -155,7 +155,7 @@ void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 
 	f.setName(ggPath("history/sms"));
 	if (!(f.open(IO_WriteOnly | IO_Append))) {
-		kdebug("HistoryManager::appendSms(): Error opening sms history file\n");
+		kdebugm(KDEBUG_ERROR, "HistoryManager::appendSms(): Error opening sms history file\n");
 		return;
 		}
 
@@ -177,7 +177,7 @@ void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 		fname = fname + QString::number(uin);
 		f.setName(fname);
 		if (!(f.open(IO_WriteOnly | IO_Append))) {
-			kdebug("HistoryManager::appendSms(): Error opening sms history\n");
+			kdebugm(KDEBUG_ERROR, "HistoryManager::appendSms(): Error opening sms history\n");
 			return;
 			}
 
@@ -196,6 +196,8 @@ void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 }
 
 void HistoryManager::appendStatus(UinType uin, unsigned int status, QString description) {
+	kdebugf();
+
 	QFile f, fidx;
 	QString fname = ggPath("history/");
 	QString line, nick, addr;
@@ -205,10 +207,9 @@ void HistoryManager::appendStatus(UinType uin, unsigned int status, QString desc
 	unsigned short port;
 //	struct in_addr in;
 
-	kdebug("HistoryManager::appendStatus()\n");
 	if (config_file.readBoolEntry("History", "DontSaveStatusChanges"))
 	{
-		kdebug("not appending...\n");
+		kdebugm(KDEBUG_INFO|KDEBUG_FUNCTION_END, "not appending\n");
 		return;
 	}
 
@@ -259,7 +260,7 @@ void HistoryManager::appendStatus(UinType uin, unsigned int status, QString desc
 	fname = fname + QString::number(uin);
 	f.setName(fname);
 	if (!(f.open(IO_WriteOnly | IO_Append))) {
-		kdebug("HistoryManager::appendStatus(): Error opening history file %s\n", (const char *)fname.local8Bit());
+		kdebugm(KDEBUG_ERROR, "HistoryManager::appendStatus(): Error opening history file %s\n", (const char *)fname.local8Bit());
 		return;
 		}
 
@@ -279,7 +280,7 @@ void HistoryManager::appendStatus(UinType uin, unsigned int status, QString desc
 }
 
 void HistoryManager::removeHistory(UinsList uins) {
-	kdebug("HistoryManager::removeHistory()\n");
+	kdebugf();
 
 	QString fname;
 	switch (QMessageBox::information(kadu, "Kadu", qApp->translate("@default",QT_TR_NOOP("Clear history?")),
@@ -287,7 +288,7 @@ void HistoryManager::removeHistory(UinsList uins) {
 		case 0:
 			fname = ggPath("history/");
 			fname.append(getFileNameByUinsList(uins));
-			kdebug("HistoryManager::removeHistory(): deleting %s\n", (const char *)fname.local8Bit());
+			kdebugm(KDEBUG_INFO, "HistoryManager::removeHistory(): deleting %s\n", (const char *)fname.local8Bit());
 			QFile::remove(fname);
 			QFile::remove(fname + ".idx");
 			break;
@@ -297,7 +298,7 @@ void HistoryManager::removeHistory(UinsList uins) {
 }
 
 void HistoryManager::convHist2ekgForm(UinsList uins) {
-	kdebug("HistoryManager::convHist2ekgForm()\n");
+	kdebugf();
 
 	QFile f, fout;
 	QString path = ggPath("history/");
@@ -309,14 +310,14 @@ void HistoryManager::convHist2ekgForm(UinsList uins) {
 	
 	f.setName(path + fname);
 	if (!(f.open(IO_ReadWrite))) {
-		kdebug("HistoryManager::convHist2ekgForm(): Error opening history file %s\n", (const char *)fname.local8Bit());
+		kdebugm(KDEBUG_ERROR, "HistoryManager::convHist2ekgForm(): Error opening history file %s\n", (const char *)fname.local8Bit());
 		return;
 		}
 
 	fnameout = fname + ".new";
 	fout.setName(path + fnameout);
 	if (!(fout.open(IO_WriteOnly | IO_Truncate))) {
-		kdebug("HistoryManager::convHist2ekgForm(): Error opening new history file %s\n", (const char *)fnameout.local8Bit());
+		kdebugm(KDEBUG_ERROR, "HistoryManager::convHist2ekgForm(): Error opening new history file %s\n", (const char *)fnameout.local8Bit());
 		f.close();
 		return;
 		}
@@ -430,7 +431,7 @@ void HistoryManager::convHist2ekgForm(UinsList uins) {
 }
 
 void HistoryManager::convSms2ekgForm() {
-	kdebug("HistoryManager::convSms2ekgForm()\n");
+	kdebugf();
 
 	QFile f, fout;
 	QString path = ggPath("history/");
@@ -442,13 +443,13 @@ void HistoryManager::convSms2ekgForm() {
 	fname = "sms";
 	f.setName(path + fname);
 	if (!(f.open(IO_ReadWrite))) {
-		kdebug("HistoryManager::convSms2ekgForm(): Error opening sms history file %s\n", (const char *)fname.local8Bit());
+		kdebugm(KDEBUG_ERROR, "HistoryManager::convSms2ekgForm(): Error opening sms history file %s\n", (const char *)fname.local8Bit());
 		return;
 		}
 	fnameout = fname + ".new";
 	fout.setName(path + fnameout);
 	if (!(fout.open(IO_WriteOnly | IO_Truncate))) {
-		kdebug("HistoryManager::convSms2EkgForm: Error opening new sms history file %s\n", (const char *)fnameout.local8Bit());
+		kdebugm(KDEBUG_ERROR, "HistoryManager::convSms2EkgForm: Error opening new sms history file %s\n", (const char *)fnameout.local8Bit());
 		f.close();
 		return;
 		}
@@ -534,7 +535,7 @@ void HistoryManager::convSms2ekgForm() {
 }
 
 int HistoryManager::getHistoryEntriesCountPrivate(const QString &filename) {
-	kdebug("HistoryManager::getHistoryEntriesCountPrivate(const QString &filename)\n");
+	kdebugf();
 
 	int lines;
 	QFile f;
@@ -543,7 +544,7 @@ int HistoryManager::getHistoryEntriesCountPrivate(const QString &filename) {
 
 	f.setName(path + filename + ".idx");
 	if (!(f.open(IO_ReadOnly))) {
-		kdebug("HistoryManager::getHistoryEntriesCountPrivate(const QString &filename): Error opening history file %s\n", (const char *)filename.local8Bit());
+		kdebugm(KDEBUG_ERROR, "HistoryManager::getHistoryEntriesCountPrivate(): Error opening history file %s\n", (const char *)filename.local8Bit());
 		return 0;
 		}
 	lines = f.size() / sizeof(int);
@@ -551,7 +552,7 @@ int HistoryManager::getHistoryEntriesCountPrivate(const QString &filename) {
 	f.close();
 //	lines = buffer.contains('\n');
 	
-	kdebug("HistoryManager::getHistoryEntriesCountPrivate(const QString &filename): %d lines\n", lines);
+	kdebugm(KDEBUG_INFO, "HistoryManager::getHistoryEntriesCountPrivate(): %d lines\n", lines);
 	return lines;
 }
 
@@ -571,7 +572,7 @@ int HistoryManager::getHistoryEntriesCount(QString mobile) {
 }
 
 QValueList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int from, int count, int mask) {
-	kdebug("HistoryManager::getHistoryEntries(UinsList uins, int from, int count)\n");
+	kdebugf();
 
 	QValueList<HistoryEntry> entries;
 	QStringList tokens;
@@ -586,7 +587,7 @@ QValueList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int fr
 		filename = "sms";
 	f.setName(path + filename);
 	if (!(f.open(IO_ReadOnly))) {
-		kdebug("HistoryManager::getHistoryEntries(UinsList uins, int from, int count): Error opening history file %s\n", (const char *)filename.local8Bit());
+		kdebugm(KDEBUG_ERROR, "HistoryManager::getHistoryEntries(): Error opening history file %s\n", (const char *)filename.local8Bit());
 		return entries;
 		}
 
@@ -736,7 +737,7 @@ uint HistoryManager::getHistoryDate(QTextStream &stream) {
 }
 
 QValueList<HistoryDate> HistoryManager::getHistoryDates(UinsList uins) {
-	kdebug("HistoryManager::getHistoryDates(UinsList uins)\n");
+	kdebugf();
 
 	QValueList<HistoryDate> entries;
 	HistoryDate newdate;
@@ -755,7 +756,7 @@ QValueList<HistoryDate> HistoryManager::getHistoryDates(UinsList uins) {
 	filename = getFileNameByUinsList(uins);
 	f.setName(path + filename);
 	if (!(f.open(IO_ReadOnly))) {
-		kdebug("HistoryManager::getHistoryDates(UinsList uins): Error opening history file %s\n", (const char *)filename.local8Bit());
+		kdebugm(KDEBUG_ERROR, "HistoryManager::getHistoryDates(): Error opening history file %s\n", (const char *)filename.local8Bit());
 		return entries;
 		}
 	QTextStream stream(&f);
@@ -767,7 +768,7 @@ QValueList<HistoryDate> HistoryManager::getHistoryDates(UinsList uins) {
 
 	oldidx = actidx = 0;
 	olddate = actdate = getHistoryDate(stream);
-	kdebug("HistoryManager::getHistoryDates(): actdate = %d\n", actdate);
+	kdebugm(KDEBUG_INFO, "HistoryManager::getHistoryDates(): actdate = %d\n", actdate);
 	newdate.idx = 0;
 	newdate.date.setTime_t(actdate * 86400);
 	entries.append(newdate);
@@ -844,7 +845,7 @@ QValueList<UinsList> HistoryManager::getUinsLists() {
 }
 
 void HistoryManager::buildIndexPrivate(const QString &filename) {
-	kdebug("HistoryManager::buildIndexPrivate()\n");
+	kdebugf();
 	QString fnameout = filename + ".idx";
 	char *inbuf;
 	int *outbuf;
@@ -857,11 +858,11 @@ void HistoryManager::buildIndexPrivate(const QString &filename) {
 	QFile fin(filename);
 	QFile fout(fnameout);
 	if (!fin.open(IO_ReadOnly)) {
-		kdebug("HistoryManager::buildIndexPrivate(): Error opening history file: %s\n", (const char *)fin.name().local8Bit());
+		kdebugm(KDEBUG_ERROR, "HistoryManager::buildIndexPrivate(): Error opening history file: %s\n", (const char *)fin.name().local8Bit());
 		return;
 		}
 	if (!fout.open(IO_WriteOnly | IO_Truncate)) {
-		kdebug("HistoryManager::buildIndexPrivate(): Error creating history index file: %s\n", (const char *)fout.name().local8Bit());
+		kdebugm(KDEBUG_ERROR, "HistoryManager::buildIndexPrivate(): Error creating history index file: %s\n", (const char *)fout.name().local8Bit());
 		fin.close();
 		return;
 		}
@@ -986,7 +987,7 @@ QStringList HistoryManager::mySplit(const QChar &sep, const QString &str) {
 
 int HistoryManager::getHistoryEntryIndexByDate(UinsList uins, QDateTime &date, bool enddate)
 {
-	kdebug("HistoryManager::getHistoryEntryIndexByDate()\n");
+	kdebugf();
 
 	QValueList<HistoryEntry> entries;
 	int count = getHistoryEntriesCount(uins);
@@ -995,7 +996,7 @@ int HistoryManager::getHistoryEntryIndexByDate(UinsList uins, QDateTime &date, b
 	start = 0;
 	end = count - 1;
 	while (end - start >= 0) {
-		kdebug("HistoryManager::getHistoryEntryIndexByDate(): start = %d, end = %d\n", start, end);
+		kdebugm(KDEBUG_INFO, "HistoryManager::getHistoryEntryIndexByDate(): start = %d, end = %d\n", start, end);
 		entries = getHistoryEntries(uins, start + ((end - start) / 2), 1);
 		if (entries.count())
 			if (date < entries[0].date)
@@ -1007,11 +1008,11 @@ int HistoryManager::getHistoryEntryIndexByDate(UinsList uins, QDateTime &date, b
 					return start + ((end - start) / 2);
 		}
 	if (end < 0) {
-		kdebug("HistoryManager::getHistoryEntryIndexByDate(): return zero\n");
+		kdebugm(KDEBUG_FUNCTION_END, "HistoryManager::getHistoryEntryIndexByDate(): return 0\n");
 		return 0;		
 		}
 	if (start >= count) {
-		kdebug("HistoryManager::getHistoryEntryIndexByDate(): return count\n");
+		kdebugm(KDEBUG_FUNCTION_END, "HistoryManager::getHistoryEntryIndexByDate(): return count\n");
 		return count;
 		}
 	if (enddate) {
@@ -1019,7 +1020,7 @@ int HistoryManager::getHistoryEntryIndexByDate(UinsList uins, QDateTime &date, b
 		if (entries.count() && date < entries[0].date)
 			start--;
 		}
-	kdebug("HistoryManager::getHistoryEntryIndexByDate(): return %d\n", start);
+	kdebugm(KDEBUG_FUNCTION_END, "HistoryManager::getHistoryEntryIndexByDate(): return %d\n", start);
 	return start;
 }
 
@@ -1136,7 +1137,7 @@ History::History(UinsList uins): uins(uins), closeDemand(false), finding(false) 
 }
 
 void History::uinsChanged(QListViewItem *item) {
-	kdebug("History::uinsChanged()\n");
+	kdebugf();
 	QValueList<HistoryDate> dateentries;
 	if (item->depth() == 0) {
 		uins = ((UinsListViewText *)item)->getUinsList();
@@ -1236,6 +1237,7 @@ void History::formatHistoryEntry(QString &text, const HistoryEntry &entry) {
 }
 
 void History::showHistoryEntries(int from, int count) {
+	kdebugf();
 	QString text;
 
 	bool noStatus = config_file.readBoolEntry("History", "DontShowStatusChanges");
@@ -1246,10 +1248,11 @@ void History::showHistoryEntries(int from, int count) {
 		if ( ! (noStatus && entries[i].type & HISTORYMANAGER_ENTRY_STATUS))
 			formatHistoryEntry(text, entries[i]);
 	body->setText(text);
+	kdebugf2();
 }
 
 void History::searchBtnClicked() {
-	kdebug("History::searchBtnClicked()\n");
+	kdebugf();
 
 	HistorySearch *hs;
 	hs = new HistorySearch(this, uins);
@@ -1264,13 +1267,13 @@ void History::searchBtnClicked() {
 }
 
 void History::searchNextBtnClicked() {
-	kdebug("History::searchNextBtnClicked()\n");
+	kdebugf();
 	findrec.reverse = false;
 	searchHistory();
 }
 
 void History::searchPrevBtnClicked() {
-	kdebug("History::searchPrevBtnClicked()\n");
+	kdebugf();
 	findrec.reverse = true;
 	searchHistory();
 }
@@ -1292,7 +1295,7 @@ QString History::gaduStatus2symbol(unsigned int status) {
 }
 
 void History::searchHistory() {
-	kdebug("History::searchHistory()\n");
+	kdebugf();
 	int start, end, count, total, len;
 	unsigned int i;
 	QDateTime fromdate, todate;
@@ -1308,7 +1311,7 @@ void History::searchHistory() {
 		end = count - 1;
 	else
 		end = history.getHistoryEntryIndexByDate(uins, findrec.todate, true);
-	kdebug("History::searchHistory(): start = %d, end = %d\n", start, end);
+	kdebugm(KDEBUG_INFO, "History::searchHistory(): start = %d, end = %d\n", start, end);
 	if (start > end || (start == end && (start == -1 || start == count)))
 		return;
 	if (start == -1)
@@ -1319,7 +1322,7 @@ void History::searchHistory() {
 	fromdate = entries[0].date;
 	entries = history.getHistoryEntries(uins, end, 1);
 	todate = entries[0].date;	
-	kdebug("History::searchHistory(): start = %s, end = %s\n",
+	kdebugm(KDEBUG_INFO, "History::searchHistory(): start = %s, end = %s\n",
 		fromdate.toString("dd.MM.yyyy hh:mm:ss").latin1(),
 		todate.toString("dd.MM.yyyy hh:mm:ss").latin1());
 	if (findrec.actualrecord == -1)
@@ -1331,7 +1334,7 @@ void History::searchHistory() {
 		total = findrec.actualrecord - start + 1;
 	else
 		total = end - findrec.actualrecord + 1;
-	kdebug("History::searchHistory(): findrec.type = %d\n", findrec.type);
+	kdebugm(KDEBUG_INFO, "History::searchHistory(): findrec.type = %d\n", findrec.type);
 	rxp.setPattern(findrec.data);
 	setEnabled(false);
 	finding = true;
@@ -1346,7 +1349,6 @@ void History::searchHistory() {
 					(findrec.type == 2 &&
 					(entries[entries.count() - i - 1].type & HISTORYMANAGER_ENTRY_STATUS)
 					&& findrec.data == gaduStatus2symbol(entries[entries.count() - i - 1].status))) {
-					kdebug("History::searchHistory(): showHistoryEntries()\n");
 					showHistoryEntries(findrec.actualrecord - i,
 						findrec.actualrecord - i + 99 < count ? 100
 						: count - findrec.actualrecord + i);
@@ -1355,7 +1357,7 @@ void History::searchHistory() {
 					}
 			findrec.actualrecord -= i + (i < entries.count());
 			total -= i + (i < entries.count());
-			kdebug("History::searchHistory(): actualrecord = %d, i = %d, total = %d\n",
+			kdebugm(KDEBUG_INFO, "History::searchHistory(): actualrecord = %d, i = %d, total = %d\n",
 				findrec.actualrecord, i, total);
 			qApp->processEvents();
 		} while (total > 0 && i == entries.count() && !closeDemand);
@@ -1369,7 +1371,6 @@ void History::searchHistory() {
 					(findrec.type == 2 &&
 					(entries[i].type & HISTORYMANAGER_ENTRY_STATUS) &&
 					findrec.data == gaduStatus2symbol(entries[i].status))) {
-					kdebug("History::searchHistory(): showHistoryEntries()\n");
 					showHistoryEntries(findrec.actualrecord + i,
 						findrec.actualrecord + 99 < count ? 100
 						: count - findrec.actualrecord - i);
@@ -1378,7 +1379,7 @@ void History::searchHistory() {
 					}
 			findrec.actualrecord += i + (i < entries.count());
 			total -= i + (i < entries.count());
-			kdebug("History::searchHistory(): actualrecord = %d, i = %d, total = %d\n",
+			kdebugm(KDEBUG_INFO, "History::searchHistory(): actualrecord = %d, i = %d, total = %d\n",
 				findrec.actualrecord, i, total);
 			qApp->processEvents();
 		} while (total > 0 && i == entries.count() && !closeDemand);
@@ -1716,7 +1717,7 @@ HistoryFindRec HistorySearch::getDialogValues() {
 
 void HistorySlots::onCreateConfigDialog()
 {
-	kdebug("HistorySlots::onCreateConfigDialog() \n");
+	kdebugf();
 	QLabel *l_qtimeinfo=(QLabel*)(ConfigDialog::getWidget("History", "", "dayhour"));
 	l_qtimeinfo->setAlignment(Qt::AlignHCenter);
 	updateQuoteTimeLabel(config_file.readNumEntry("History", "ChatHistoryQuotationTime"));
@@ -1725,13 +1726,13 @@ void HistorySlots::onCreateConfigDialog()
 
 void HistorySlots::onDestroyConfigDialog()
 {
-	kdebug("HistorySlots::onDestroyConfigDialog() \n");
+	kdebugf();
 
 }
 
 void HistorySlots::updateQuoteTimeLabel(int value)
 {
-	kdebug("HistorySlots::updateQuoteTimeLabel() \n");
+	kdebugf();
 	QLabel *l_qtimeinfo= ConfigDialog::getLabel("History", "", "dayhour");
 	l_qtimeinfo->setText(QString(tr("%1 day(s) %2 hour(s)")).arg(-value / 24).arg((-value) % 24));
 }

@@ -19,7 +19,7 @@ RemindPassword::~RemindPassword() {
 }
 
 void RemindPassword::start() {
-	kdebug("RemindPassword::start()\n");
+	kdebugf();
 
 	TokenDialog *tokendialog = new TokenDialog();
 	if (tokendialog->exec() != QDialog::Accepted)
@@ -125,7 +125,7 @@ void ChangePassword::keyPressEvent(QKeyEvent *ke_event)
 
 void ChangePassword::start() 
 {
-	kdebug("ChangePassword::start()\n");
+	kdebugf();
 
 	if (newpwd->text() != newpwd2->text())
 	{

@@ -52,12 +52,12 @@ void PlayThread::run()
 	struct gsm_sample gsmsample;
 	while (true)
 	{
-		kdebugm(KADU_DEBUG_INFO, "PlayThread::run(): rsem = %d\n", rsem.available());
+		kdebugm(KDEBUG_INFO, "PlayThread::run(): rsem = %d\n", rsem.available());
 		if (!rsem.available())
 			break;
 		wsem++;
 		mutex.lock();
-		kdebugm(KADU_DEBUG_INFO, "PlayThread::run(): wokenUp\n");
+		kdebugm(KDEBUG_INFO, "PlayThread::run(): wokenUp\n");
 		if (queue.empty())
 		{
 			mutex.unlock();
@@ -197,14 +197,14 @@ void VoiceManager::playGsmSampleReceived(char *data, int length) {
 	{
 		if (gsm_decode(voice_dec, (gsm_byte *) pos, output))
 		{
-			kdebugm(KADU_DEBUG_ERROR, "VoiceManager::playGsmSampleReceived(): gsm_decode() error\n");
+			kdebugm(KDEBUG_ERROR, "VoiceManager::playGsmSampleReceived(): gsm_decode() error\n");
 			return;
 		}
 		pos += 33;
 		emit playSample((char *) output, outlen);
 		if (gsm_decode(voice_dec, (gsm_byte *) pos, output))
 		{
-			kdebugm(KADU_DEBUG_ERROR, "VoiceManager::playGsmSampleReceived(): gsm_decode() error\n");
+			kdebugm(KDEBUG_ERROR, "VoiceManager::playGsmSampleReceived(): gsm_decode() error\n");
 			return;
 		}
 		pos += 32;
@@ -392,7 +392,7 @@ void VoiceSocket::dccEvent()
 	switch(dccevent->type)
 	{
 		case GG_EVENT_DCC_NEED_VOICE_ACK:
-			kdebugm(KADU_DEBUG_INFO, "VoiceSocket::dccEvent():  GG_EVENT_DCC_NEED_VOICE_ACK! %d %d\n",
+			kdebugm(KDEBUG_INFO, "VoiceSocket::dccEvent():  GG_EVENT_DCC_NEED_VOICE_ACK! %d %d\n",
 				dccsock->uin, dccsock->peer_uin);
 			askAcceptVoiceChat();
 			break;
@@ -422,13 +422,13 @@ void VoiceSocket::askAcceptVoiceChat()
 	switch (QMessageBox::information(0, tr("Incoming voice chat"), str, tr("Yes"), tr("No"),
 		QString::null, 0, 1)) {
 		case 0: // Yes?
-			kdebugm(KADU_DEBUG_INFO, "VoiceSocket::askAcceptVoiceChat(): accepted\n");
+			kdebugm(KDEBUG_INFO, "VoiceSocket::askAcceptVoiceChat(): accepted\n");
 			voicedialog = new DccVoiceDialog();
 			connect(voicedialog, SIGNAL(cancelVoiceChat()), this, SLOT(cancelVoiceChatReceived()));
 			voice_manager->setup();
 			break;
 		case 1:
-			kdebugm(KADU_DEBUG_INFO, "VoiceSocket::::askAcceptVoiceChat(): discarded\n");
+			kdebugm(KDEBUG_INFO, "VoiceSocket::::askAcceptVoiceChat(): discarded\n");
 			setState(DCC_SOCKET_VOICECHAT_DISCARDED);
 			break;
 		}

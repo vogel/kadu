@@ -107,7 +107,7 @@ bool EmoticonsManager::loadGGEmoticonThemePart(QString subdir)
 	QFile theme_file(path+"emots.txt");
 	if(!theme_file.open(IO_ReadOnly))
 	{
-		kdebug("Error opening emots.txt file\n");
+		kdebugm(KDEBUG_ERROR, "Error opening emots.txt file\n");
 		return false;
 	}
 	QTextStream theme_stream(&theme_file);
@@ -194,7 +194,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc,const QColor& bgcolor)
 	// check in config if user wants animated emots
 	bool animated = (EmoticonsStyle) config_file.readNumEntry("Chat", "EmoticonsStyle") == EMOTS_ANIMATED;
 
-	kdebug("Expanding emoticons...\n");
+	kdebugm(KDEBUG_INFO, "Expanding emoticons...\n");
 	// iterate through parsed html parts of message
 	for(int e_i = 0; e_i < doc.countElements(); e_i++)
 	{
@@ -259,7 +259,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc,const QColor& bgcolor)
 			doc.setElementValue( e_i, new_text, true );
 		}
 	}
-	kdebug("Emoticons expanded, html is below:\n%s\n",doc.generateHtml().local8Bit().data());
+	kdebugm(KDEBUG_INFO, "Emoticons expanded, html is below:\n%s\n",doc.generateHtml().local8Bit().data());
 	kdebugf2();
 }
 
@@ -411,7 +411,7 @@ AnimTextItem::AnimTextItem(
 	if(Movies->contains(filename))
 	{
 		md=(*Movies)[filename];
-		kdebug("Movie %s loaded from cache\n",filename.local8Bit().data());
+		kdebugm(KDEBUG_INFO, "Movie %s loaded from cache\n",filename.local8Bit().data());
 	}
 	else
 	{
@@ -421,7 +421,7 @@ AnimTextItem::AnimTextItem(
 		SizeCheckImage->load(filename);
 		md.size=SizeCheckImage->size();
 		Movies->insert(filename,md);
-		kdebug("Movie %s loaded from file and cached\n",filename.local8Bit().data());
+		kdebugm(KDEBUG_INFO, "Movie %s loaded from file and cached\n",filename.local8Bit().data());
 	}
 	//
 	Label->setMovie(md.movie);

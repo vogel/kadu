@@ -113,7 +113,7 @@ void NASPlayerSlots::playSound(const QString &s, bool volCntrl, double vol)
 #endif
 	}
 	else
-		kdebugm(KADU_DEBUG_WARNING, "not connected\n");
+		kdebugm(KDEBUG_WARNING, "not connected\n");
 	kdebugf2();
 }
 

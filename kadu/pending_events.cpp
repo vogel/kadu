@@ -83,12 +83,12 @@ void PendingEvents::activateEvent(int index)
 {
 	kassert(index>=0);
 	kassert(index<Events.count());
-	kdebug("PendingEvents::(pre)activateEvent(%d), count=%d\n", index, Events.count());
+	kdebugm(KDEBUG_INFO, "PendingEvents::(pre)activateEvent(%d), count=%d\n", index, Events.count());
 	PendingEvent* event=Events.at(index);
 	event->activate();
 	Events.remove(index);
 //	writeToFile();
-	kdebug("PendingEvents::activateEvent(%d), count=%d\n", index, Events.count());
+	kdebugm(KDEBUG_INFO, "PendingEvents::activateEvent(%d), count=%d\n", index, Events.count());
 	emit eventActivated(event);
 	delete event;
 }

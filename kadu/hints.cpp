@@ -62,7 +62,7 @@ bool Hint::nextSecond(void)
 
 void Hint::setShown(bool show)
 {
-	kdebug("Hint::setShown() show=%d\n", show);
+	kdebugm(KDEBUG_FUNCTION_START, "Hint::setShown() show=%d\n", show);
 
 	if (show)
 	{
@@ -151,7 +151,7 @@ void Hint::leave(void)
 
 Hint::~Hint(void)
 {
-	kdebug("Hint::~Hint() id=%d\n", ident);
+	kdebugm(KDEBUG_FUNCTION_START, "Hint::~Hint() id=%d\n", ident);
 
 	if (icon != NULL)
 	{
@@ -169,7 +169,7 @@ Hint::~Hint(void)
 HintManager::HintManager()
 	: QFrame(0, "HintManager", WStyle_NoBorder | WStyle_StaysOnTop | WStyle_Tool | WX11BypassWM | WWinOwnDC)
 {
-	kdebug("HintManager::HintManager\n");
+	kdebugf();
 
 	setFrameStyle(QFrame::Box | QFrame::Plain);
 	setLineWidth(FRAME_WIDTH);
@@ -186,7 +186,7 @@ HintManager::HintManager()
 }
 
 void HintManager::setHint(void) {
-	kdebug("HintManager::setHint()\n");
+	kdebugf();
 	QPoint detected_pos;
 	emit searchingForPosition(detected_pos);
 	if (useposition || detected_pos.isNull())
@@ -211,7 +211,7 @@ void HintManager::setHint(void) {
 
 void HintManager::deleteHint(unsigned int id)
 {
-	kdebug("HintManager::deleteHint() id=%d\n", id);
+	kdebugm(KDEBUG_FUNCTION_START, "HintManager::deleteHint() id=%d\n", id);
 #if QT_VERSION >= 0x030100
 	grid->removeItem(hints.at(id));
 #endif
@@ -229,7 +229,7 @@ void HintManager::deleteHint(unsigned int id)
 
 void HintManager::oneSecond(void)
 {
-	kdebug("HintManager::oneSecond()\n");
+	kdebugf();
 
 	for (unsigned int i = 0; i < hints.count(); i++)
 		if (!(hints.at(i)->nextSecond()))
@@ -241,7 +241,7 @@ void HintManager::oneSecond(void)
 
 void HintManager::leftButtonSlot(unsigned int id)
 {
-	kdebug("HintManager::leftButtonSlot() %d\n", id);
+	kdebugm(KDEBUG_FUNCTION_START, "HintManager::leftButtonSlot() %d\n", id);
 	switch(config_file.readNumEntry("Hints", "LeftButton")){
 		case 1:
 			openChat(id);
@@ -257,7 +257,7 @@ void HintManager::leftButtonSlot(unsigned int id)
 
 void HintManager::rightButtonSlot(unsigned int id)
 {
-	kdebug("HintManager::rightButtonSlot() %d\n", id);
+	kdebugm(KDEBUG_FUNCTION_START, "HintManager::rightButtonSlot() %d\n", id);
 	switch(config_file.readNumEntry("Hints", "RightButton")){
 		case 1:
 			openChat(id);
@@ -273,7 +273,7 @@ void HintManager::rightButtonSlot(unsigned int id)
 
 void HintManager::midButtonSlot(unsigned int id)
 {
-	kdebug("HintManager::midButtonSlot() %d\n", id);
+	kdebugm(KDEBUG_FUNCTION_START, "HintManager::midButtonSlot() %d\n", id);
 	switch(config_file.readNumEntry("Hints", "MiddleButton")){
 		case 1:
 			openChat(id);
@@ -311,7 +311,7 @@ void HintManager::deleteAllHints()
 
 void HintManager::addHint(const QString& text, const QPixmap& pixmap,  const QFont &font, const QColor &color, const QColor &bgcolor, unsigned int timeout, UinsList* senders)
 {
-	kdebug("HintManager::addHint()\n");
+	kdebugf();
 	hints.append(new Hint(this, text, pixmap, timeout));
 	int i = hints.count()-1;
 	setGridOrigin();
@@ -537,7 +537,7 @@ void HintManager::initModule(void)
 
 void HintManagerSlots::onCreateConfigDialog()
 {
-	kdebug("HintManagerSlots::onCreateConfigDialog()\n");
+	kdebugf();
 	newhintunder = config_file.readNumEntry("Hints","NewHintUnder");
 	useposition = config_file.readBoolEntry("Hints","UseUserPosition");
 	hintsposition = config_file.readPointEntry("Hints","HintsPosition");
@@ -674,7 +674,7 @@ void HintManagerSlots::onCreateConfigDialog()
 
 void HintManagerSlots::onDestroyConfigDialog()
 {
-	kdebug("HintManagerSlots::onDestroyConfigDialog()\n");
+	kdebugf();
 	config_file.writeEntry("Hints", "NewHintUnder", combobox2->currentItem());
 	config_file.writeEntry("Hints", "UseUserPosition", b_useposition->isChecked());
 	config_file.writeEntry("Hints", "HintsPosition", QPoint(e_posx->text().toInt(),e_posy->text().toInt()));

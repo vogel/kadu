@@ -120,7 +120,7 @@ void KaduListBoxPixmap::paint(QPainter *painter) {
 		if (bold)
 			painter->setFont(oldFont);
 
-//		kdebug("KaduListBoxPixmap::paint(): isOurUin = %d, own_description = %s\n",
+//		kdebugm(KDEBUG_INFO, "KaduListBoxPixmap::paint(): isOurUin = %d, own_description = %s\n",
 //			isOurUin, (const char *)unicode2latin(own_description));
 		if (showDesc && hasDescription) {
 			yPos += fm.height() - fm.descent();
@@ -240,7 +240,7 @@ void KaduListBoxPixmap::calculateSize(const QString &text, int width, QStringLis
 
 /*	}
 	gettimeofday(&t2, NULL);
-	kdebug("czas: %ld\n", (t2.tv_usec-t1.tv_usec)+(t2.tv_sec*1000000)-(t1.tv_sec*1000000));
+	kdebugm(KDEBUG_INFO, "czas: %ld\n", (t2.tv_usec-t1.tv_usec)+(t2.tv_sec*1000000)-(t1.tv_sec*1000000));
 */
 	height*=descriptionFontMetrics->lineSpacing();
 	
@@ -248,9 +248,9 @@ void KaduListBoxPixmap::calculateSize(const QString &text, int width, QStringLis
 	buf_width=width;
 	buf_out=out;
 	buf_height=height;
-//	kdebug("h:%d txt:%s\n", height, text.local8Bit().data());
+//	kdebugm(KDEBUG_INFO, "h:%d txt:%s\n", height, text.local8Bit().data());
 //	for(QStringList::Iterator it = out.begin(); it != out.end(); ++it )
-//		kdebug(">>%s\n", (*it).local8Bit().data());
+//		kdebugm(KDEBUG_INFO, ">>%s\n", (*it).local8Bit().data());
 }
 
 UserBoxMenu *UserBox::userboxmenu = NULL;
@@ -594,7 +594,7 @@ void UserBox::renameUser(const QString &oldaltnick, const QString &newaltnick)
 	if (it != Users.end())
 		(*it) = newaltnick;
 	else
-		kdebugm(KADU_DEBUG_WARNING, "Userbox::renameUser(): userbox doesnt contain: %s\n", (const char *)oldaltnick.local8Bit());
+		kdebugm(KDEBUG_WARNING, "Userbox::renameUser(): userbox doesnt contain: %s\n", (const char *)oldaltnick.local8Bit());
 }
 
 bool UserBox::containsAltNick(const QString &altnick)
@@ -602,7 +602,7 @@ bool UserBox::containsAltNick(const QString &altnick)
 	for (QStringList::iterator it = Users.begin(); it != Users.end(); it++)
 		if ((*it).lower() == altnick.lower())
 			return true;
-	kdebugm(KADU_DEBUG_INFO, "UserBox::containsAltNick(): userbox doesnt contain: %s\n", (const char *)altnick.lower().local8Bit());
+	kdebugm(KDEBUG_INFO, "UserBox::containsAltNick(): userbox doesnt contain: %s\n", (const char *)altnick.lower().local8Bit());
 	return false;
 }
 
@@ -659,7 +659,7 @@ UserBox* UserBox::getActiveUserBox()
 			return box;
 		}
 	}
-	kdebugm(KADU_DEBUG_PANIC, "return NULL!\n");
+	kdebugm(KDEBUG_PANIC, "return NULL!\n");
 	return NULL;
 }
 
@@ -818,7 +818,7 @@ void UserBoxSlots::chooseColor(const char *name, const QColor &color)
 	else if (QString(name)=="userbox_font_color")
 		preview->setPaletteBackgroundColor(color);
 	else
-		kdebugm(KADU_DEBUG_ERROR, "chooseColor: ups!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! '%s'\n", name);
+		kdebugm(KDEBUG_ERROR, "chooseColor: label '%s' not known\n", name);
 	kdebugf2();
 }
 

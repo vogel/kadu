@@ -150,7 +150,7 @@ void KaduTabBar::paint(QPainter *p, QTab *t, bool selected) const {
 		v.top() + (v.height() - h) / 2,
 		w, h), t, t->identifier() == keyboardFocusTab());
 	p->restore();
-	kdebug("KaduTabBar::paint() exit\n");
+	kdebugf2();
 }
 
 int KaduTabBar::insertTab(QTab *newTab, int index)

@@ -232,7 +232,7 @@ void SpeechSlots::say(const QString &s, const QString &path,
 						int freq, int tempo, int basefreq)
 {
 	kdebugf();
-//	kdebugm(KADU_DEBUG_INFO, "%s\n", (const char *)s.local8Bit());
+//	kdebugm(KDEBUG_INFO, "%s\n", (const char *)s.local8Bit());
 	QString t,dev;
 	QStringList list;
 
@@ -276,7 +276,7 @@ void SpeechSlots::say(const QString &s, const QString &path,
 	list.append("-f");
 	list.append(QString::number(basefreq));
 
-	kdebugm(KADU_DEBUG_INFO, "%s\n", (const char *)list.join(" ").local8Bit());
+	kdebugm(KDEBUG_INFO, "%s\n", (const char *)list.join(" ").local8Bit());
 	QProcess *p=new QProcess(list);
 	p->launch(s.local8Bit());
 //	delete p;
@@ -297,7 +297,7 @@ void SpeechSlots::testSpeech()
 	bool esd=ConfigDialog::getCheckBox("Speech", "Use Esd", "useesd")->isChecked();
 	bool dsp=ConfigDialog::getCheckBox("Speech", "Use Dsp", "usedsp")->isChecked();
 	
-	kdebugm(KADU_DEBUG_INFO, "flags: %d %d %d %d %d\n", mel, klatt, arts, esd, dsp);
+	kdebugm(KDEBUG_INFO, "flags: %d %d %d %d %d\n", mel, klatt, arts, esd, dsp);
 	
 	int freq=ConfigDialog::getSlider("Speech", "slider1")->value();
 	int tempo=ConfigDialog::getSlider("Speech", "slider2")->value();
@@ -307,7 +307,7 @@ void SpeechSlots::testSpeech()
 	if (i>0) i--;
 	UserListElement ule=userlist[i];
 
-	kdebugm(KADU_DEBUG_INFO, "%d %d %d %d\n", freq, tempo, basefreq, i);
+	kdebugm(KDEBUG_INFO, "%d %d %d %d\n", freq, tempo, basefreq, i);
 	
 	if (isFemale(ule.first_name))
 		say(parse(formatF, ule).arg("Test"), program, klatt, mel, arts, esd, dsp, device, freq, tempo, basefreq);

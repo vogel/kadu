@@ -189,10 +189,10 @@ void EncryptionManager::receivedMessageFilter(const UinsList& senders,QCString& 
 		}
 	}
 
-	kdebugm(KADU_DEBUG_INFO, "Decrypting encrypted message...\n");
+	kdebugm(KDEBUG_INFO, "Decrypting encrypted message...\n");
 	const char* msg_c = msg;
 	char* decoded = sim_message_decrypt((const unsigned char*)msg_c, senders[0]);
-	kdebugm(KADU_DEBUG_DUMP, "Decrypted message is: %s\n", decoded);
+	kdebugm(KDEBUG_DUMP, "Decrypted message is: %s\n", decoded);
 	if (decoded != NULL)
 	{
 		msg=decoded;
@@ -336,7 +336,7 @@ void SavePublicKey::yesClicked() {
 	if (!(keyfile.open(IO_WriteOnly)))
 	{
 		QMessageBox::critical(this, tr("Error"), tr("Error writting the key"), tr("OK"), QString::null, 0);
-		kdebugm(KADU_DEBUG_ERROR, "SavePublicKey::yesClicked(): Error opening key file %s\n", (const char *)keyfile_path.local8Bit());
+		kdebugm(KDEBUG_ERROR, "SavePublicKey::yesClicked(): Error opening key file %s\n", (const char *)keyfile_path.local8Bit());
 		return;
 	}
 	else

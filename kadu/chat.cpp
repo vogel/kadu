@@ -130,7 +130,7 @@ Chat* ChatManager::findChatByUins(UinsList uins)
 	for(unsigned int i=0; i<Chats.count(); i++)
 		if(Chats[i]->uins().equals(uins))
 			return Chats[i];
-	kdebug("return NULL\n");
+	kdebugm(KDEBUG_WARNING, "return NULL\n");
 	return NULL;
 }
 
@@ -247,10 +247,11 @@ void ChatManager::openPendingMsgs()
 	}
 	if(stop)
 	{
-		kdebug("ChatManager::openPendingMsgs() end\n");
+		kdebugm(KDEBUG_INFO, "ChatManager::openPendingMsgs() stopped\n");
 		Chats[k]->scrollMessages(toadd);
 		UserBox::all_refresh();
 	}
+	kdebugf2();
 }
 
 void ChatManager::sendMessage(UinType uin,UinsList selected_uins)
@@ -317,11 +318,11 @@ CustomInput::CustomInput(QWidget *parent, const char *name) : QMultiLineEdit(par
 }
 
 void CustomInput::keyPressEvent(QKeyEvent * e) {
-	kdebugf();
+//	kdebugf();
 	emit keyPressed(e, this);
 	if (autosend_enabled && ((HotKey::shortCut(e,"ShortCuts", "chat_newline")) || e->key()==Key_Enter)&& !(e->state() & ShiftButton))
 	{
-		kdebug("CustomInput::keyPressEvent(): emit enterPressed()\n");
+		kdebugm(KDEBUG_INFO, "CustomInput::keyPressEvent(): emit sendMessage()\n");
 		emit sendMessage();
 	}
 	else
@@ -379,7 +380,7 @@ void KaduSplitter::drawContents(QPainter *p)
 	kdebugf();
 	for (QValueList<KaduTextBrowser *>::iterator i=list.begin(); i!=list.end(); i++)
 		(*i)->viewport()->repaint();
-//	kdebug("drawContents(): exit\n");
+//	kdebugf2();
 }
 
 void KaduSplitter::childEvent(QChildEvent *c)
@@ -394,7 +395,7 @@ void KaduSplitter::childEvent(QChildEvent *c)
 		else 
 			list.remove((KaduTextBrowser*)o);
 	}
-//	kdebug("%d %d %p %p %s %s\n", c->inserted(), c->removed(), this, o, o->className(), o->name());
+//	kdebugm(KDEBUG_INFO, "%d %d %p %p %s %s\n", c->inserted(), c->removed(), this, o, o->className(), o->name());
 }
 
 Chat::Chat(UinsList uins, QWidget *parent, const char *name)
@@ -604,6 +605,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 }
 
 Chat::~Chat() {
+	kdebugf();
 	chat_manager->unregisterChat(this);
 
 	disconnect(&event_manager, SIGNAL(ackReceived(int)),
@@ -614,7 +616,7 @@ Chat::~Chat() {
 	if (userbox)
 		delete userbox;
 		
-	kdebug("Chat::~Chat: chat destroyed: index %d\n", index);
+	kdebugm(KDEBUG_FUNCTION_END, "Chat::~Chat: chat destroyed: index %d\n", index);
 }
 
 void Chat::registerButton(const QString& name,QObject* receiver,const QString& slot)
@@ -650,7 +652,7 @@ QPushButton* Chat::button(const QString& name)
 	if(Buttons.contains(name))
 		return Buttons[name];
 
-	kdebug("return NULL\n");
+	kdebugm(KDEBUG_WARNING, "return NULL\n");
 	return NULL;
 }
 
@@ -753,7 +755,7 @@ void Chat::setTitle() {
 	QString title;
 
 	if (Uins.size() > 1) {
-		kdebug("Chat::setTitle(): Uins.size() > 1\n");
+		kdebugm(KDEBUG_INFO, "Chat::setTitle(): Uins.size() > 1\n");
 		if (config_file.readEntry("Look","ConferencePrefix").isEmpty())
 			title = tr("Conference with ");
 		else
@@ -766,7 +768,7 @@ void Chat::setTitle() {
 		setIcon(icons_manager.loadIcon("Online"));
 	}
 	else {
-		kdebug("Chat::setTitle()\n");
+		kdebugm(KDEBUG_INFO, "Chat::setTitle()\n");
 		if (config_file.readEntry("Look","ChatContents").isEmpty())
 			title = parse(tr("Chat with ")+"%a (%s[: %d])",userlist.byUinValue(Uins[0]),false);
 		else
@@ -914,13 +916,13 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time)
 		from = (end < config_file.readUnsignedNumEntry("History", "ChatHistoryCitation")) ? 0 : end - config_file.readUnsignedNumEntry("History","ChatHistoryCitation") + 1;
 		entriestmp = history.getHistoryEntries(senders, from, end - from + 1, HISTORYMANAGER_ENTRY_CHATSEND
 			| HISTORYMANAGER_ENTRY_MSGSEND | HISTORYMANAGER_ENTRY_CHATRCV | HISTORYMANAGER_ENTRY_MSGRCV);
-		kdebug("Chat::writeMessageFromHistory(): temp entries = %d\n", entriestmp.count());
+		kdebugm(KDEBUG_INFO, "Chat::writeMessageFromHistory(): temp entries = %d\n", entriestmp.count());
 		if (time) {
 			QValueList<HistoryEntry>::iterator it = entriestmp.begin();
 			while (it != entriestmp.end()) {
 				if ((*it).type == HISTORYMANAGER_ENTRY_CHATRCV
 					|| (*it).type == HISTORYMANAGER_ENTRY_MSGRCV) {
-						kdebug("Chat::writeMessageFromHistory(): %s %s\n",
+						kdebugm(KDEBUG_INFO, "Chat::writeMessageFromHistory(): %s %s\n",
 							(const char *)date.toString("dd.MM.yyyy hh:mm:ss").local8Bit(),
 							(const char *)(*it).sdate.toString("dd.MM.yyyy hh:mm:ss").local8Bit());
 						if (date <= (*it).sdate)
@@ -934,7 +936,7 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time)
 			}
 		if (entriestmp.count())
 			entries = entriestmp + entries;
-		kdebug("Chat::writeMessageFromHistory(): entries = %d\n", entries.count());
+		kdebugm(KDEBUG_INFO, "Chat::writeMessageFromHistory(): entries = %d\n", entries.count());
 		end = from - 1;
 		}
 	from = (entries.count() < config_file.readUnsignedNumEntry("History","ChatHistoryCitation")) ? 0 : entries.count() - config_file.readUnsignedNumEntry("History","ChatHistoryCitation");
@@ -1011,7 +1013,7 @@ void Chat::ackReceivedSlot(int Seq) {
 	kdebugf();
 	if (seq != Seq)
 		return;
-	kdebug("Chat::ackReceivedSlot(): This is my ack.\n");
+	kdebugm(KDEBUG_INFO, "Chat::ackReceivedSlot(): This is my ack.\n");
 	writeMyMessage();
 	seq = 0;
 	disconnect(&event_manager, SIGNAL(ackReceived(int)),
@@ -1045,7 +1047,7 @@ void Chat::sendMessage(void) {
 			(void *)((char *)(myLastFormats) + sizeof(struct gg_msg_richtext)),0);
 	else
 		escapeSpecialCharacters(myLastMessage);
-	kdebug("Chat::sendMessage():\n%s\n", myLastMessage.latin1());
+	kdebugm(KDEBUG_INFO, "Chat::sendMessage():\n%s\n", myLastMessage.latin1());
 	// zmieniamy unixowe \n na windowsowe \r\n
 	myLastMessage.replace(QRegExp("\r\n"), "\n");
 
@@ -1468,7 +1470,7 @@ void ChatSlots::chooseColor(const char *name, const QColor &color)
 	else if (QString(name)=="his_font_color")
 		preview2->setPaletteForegroundColor(color);
 	else
-		kdebug("chooseColor: ups!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! '%s'\n", name);
+		kdebugm(KDEBUG_ERROR, "chooseColor: label '%s' not known!\n", name);
 }
 
 void ChatSlots::chooseFont(const char *name, const QFont &font)

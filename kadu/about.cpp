@@ -124,7 +124,7 @@ QString About::loadFile(const QString &name)
 	QFile file(dataPath("kadu/" + name));
 	if (!file.open(IO_ReadOnly))
 	{
-		kdebugm(KADU_DEBUG_ERROR, "About::loadFile(%s) cannot open file\n", name.local8Bit().data());
+		kdebugm(KDEBUG_ERROR, "About::loadFile(%s) cannot open file\n", name.local8Bit().data());
 		return QString::null;
 	}
 	QTextStream str(&file);

@@ -273,7 +273,7 @@ ModulesManager::~ModulesManager()
 	QStringList active=activeModules();
 	for(QStringList::ConstIterator i=active.begin(); i!=active.end(); i++)
 	{
-		kdebug("WARNING! Could not deactivate module %s, killing\n",(*i).local8Bit().data());
+		kdebugm(KDEBUG_PANIC, "WARNING! Could not deactivate module %s, killing\n",(*i).local8Bit().data());
 		deactivateModule(*i,true);
 	}
 }
@@ -468,7 +468,7 @@ bool ModulesManager::conflictsWithLoaded(const QString &module_name, const Modul
 bool ModulesManager::activateModule(const QString& module_name)
 {
 	Module m;
-	kdebug(QString("activateModule %1\n").arg(module_name));
+	kdebugm(KDEBUG_INFO, QString("activateModule %1\n").arg(module_name));
 	
 	if(moduleIsActive(module_name))
 	{
@@ -533,7 +533,7 @@ bool ModulesManager::activateModule(const QString& module_name)
 bool ModulesManager::deactivateModule(const QString& module_name, bool force)
 {
 	Module m=Modules[module_name];
-	kdebug("ModulesManager::deactivateModule(%s,%d) usage:%d\n", (const char *)module_name.local8Bit(), force, m.usage_counter);
+	kdebugm(KDEBUG_INFO, "ModulesManager::deactivateModule(%s,%d) usage:%d\n", (const char *)module_name.local8Bit(), force, m.usage_counter);
 
 	if(m.usage_counter>0 && !force)
 	{

@@ -159,7 +159,7 @@ void SoundManager::messageSound(UinsList senders,const QString& msg,time_t time)
 	kdebugf();
 	if (isMuted())
 	{
-		kdebugm(KADU_DEBUG_FUNCTION_END, "muted\n");
+		kdebugm(KDEBUG_FUNCTION_END, "muted\n");
 		return;
 	}
 	UserListElement ule = userlist.byUinValue(senders[0]);
@@ -179,7 +179,7 @@ void SoundManager::chatSound(UinsList senders,const QString& msg,time_t time, bo
 	kdebugf();
 	if (isMuted())
 	{
-		kdebugm(KADU_DEBUG_FUNCTION_END, "muted\n");
+		kdebugm(KDEBUG_FUNCTION_END, "muted\n");
 		return;
 	}
 
@@ -207,7 +207,7 @@ void SoundManager::notifySound(const UinType uin, const unsigned int oldstatus, 
 	kdebugf();
 	if (isMuted())
 	{
-		kdebugm(KADU_DEBUG_FUNCTION_END, "muted\n");
+		kdebugm(KDEBUG_FUNCTION_END, "muted\n");
 		return;
 	}
 	UserListElement &user = userlist.byUin(uin);
@@ -251,7 +251,7 @@ void SoundManager::play(const QString &path, bool force)
 	
 	if (isMuted() && !force)
 	{
-		kdebugm(KADU_DEBUG_FUNCTION_END, "muted\n");
+		kdebugm(KDEBUG_FUNCTION_END, "muted\n");
 		return;
 	}
 	if (ConfigDialog::dialogOpened())

@@ -157,7 +157,7 @@ void DirectPlayThread::run()
 	{
 		(*semaphore)++;
 		mutex.lock();
-		kdebugm(KADU_DEBUG_INFO, "locked\n");
+		kdebugm(KDEBUG_INFO, "locked\n");
 		if (end)
 		{
 			mutex.unlock();
@@ -232,7 +232,7 @@ void DirectPlayThread::run()
 			close(fd);
 		}//end if (sound->isOk())
 		mutex.unlock();
-		kdebugm(KADU_DEBUG_INFO, "unlocked\n");
+		kdebugm(KDEBUG_INFO, "unlocked\n");
 	}//end while(!end)
 	kdebugf2();
 }

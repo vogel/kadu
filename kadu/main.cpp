@@ -40,28 +40,28 @@ Kadu *kadu;
 #endif
 void kadu_signal_handler(int s)
 {
-	kdebugm(KADU_DEBUG_INFO, "kadu_signal_handler: %d\n", s);
+	kdebugm(KDEBUG_PANIC, "kadu_signal_handler: %d\n", s);
 	if(lockFile){ // moze sie wywalic praktycznie po wylaczeniu i to tez trzeba uwzglednic	
 		flock(lockFileHandle, LOCK_UN);
-		kdebugm(KADU_DEBUG_INFO, "lock released\n");
+		kdebugm(KDEBUG_PANIC, "lock released\n");
 		lockFile->close();
-		kdebugm(KADU_DEBUG_INFO, "lockfile closed\n");
+		kdebugm(KDEBUG_PANIC, "lockfile closed\n");
 	}
 	
 	QString f=QString("kadu.conf.backup.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
 	if (s==SIGSEGV)
 	{
-		kdebugm(KADU_DEBUG_PANIC, "Kadu crashed :(\n");
+		kdebugm(KDEBUG_PANIC, "Kadu crashed :(\n");
 #ifdef HAVE_EXECINFO
 		void *bt_array[100];
 		char **bt_strings;
 		int num_entries;
 		if ((num_entries = backtrace(bt_array, 100)) < 0) {
-			kdebugm(KADU_DEBUG_ERROR, "could not generate backtrace\n");
+			kdebugm(KDEBUG_PANIC, "could not generate backtrace\n");
 			return;
 		}
 		if ((bt_strings = backtrace_symbols(bt_array, num_entries)) == NULL) {
-			kdebugm(KADU_DEBUG_ERROR, "could not get symbol names for backtrace\n");
+			kdebugm(KDEBUG_PANIC, "could not get symbol names for backtrace\n");
 			return;
 		}
 		fprintf(stderr, "\n======= BEGIN OF BACKTRACE =====\n");
@@ -71,7 +71,7 @@ void kadu_signal_handler(int s)
 		fprintf(stderr, "======= END OF BACKTRACE  ======\n");
 		free(bt_strings);
 #else
-		kdebugm(KADU_DEBUG_WARNING, "backtrace not available\n");		
+		kdebugm(KDEBUG_PANIC, "backtrace not available\n");		
 #endif
 		config_file.saveTo(ggPath(f.latin1()));
 		abort();
@@ -85,7 +85,7 @@ void kadu_signal_handler(int s)
 int main(int argc, char *argv[])
 {
 	gg_debug_level = 255;
-	debug_mask=KADU_DEBUG_ALL & ~KADU_DEBUG_FUNCTION_END;
+	debug_mask=KDEBUG_ALL & ~KDEBUG_FUNCTION_END;
 	char *d = getenv("DEBUG_MASK");
 	if (d)
 	{
@@ -119,7 +119,7 @@ int main(int argc, char *argv[])
 		lockFileHandle=lockFile->handle();
 		if (flock(lockFileHandle, LOCK_EX|LOCK_NB)!=0)
 		{
-			kdebug("flock: %s\n", strerror(errno));
+			kdebugm(KDEBUG_WARNING, "flock: %s\n", strerror(errno));
 			if (QMessageBox::warning(NULL, "Kadu lock",
 				qApp->translate("@default", QT_TR_NOOP("Lock file in profile directory exists. Another Kadu probably running.")),
 				qApp->translate("@default", QT_TR_NOOP("Force running Kadu (not recommended).")),

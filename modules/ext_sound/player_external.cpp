@@ -76,7 +76,7 @@ void ExternalPlayerSlots::play(const QString &s, bool volCntrl, double vol, QStr
 	if (volCntrl)
 		t.append(" -v "+QString::number(vol, 'g', 2));
 	t.append(" "+s+" >/dev/null &");
-	kdebug("%s\n", t.ascii());
+	kdebugm(KDEBUG_INFO, "%s\n", t.ascii());
 	system(t.ascii());
 	kdebugf2();
 }

@@ -180,7 +180,7 @@ QToolButton* ToolBar::getButton(const char* name)
 	for(QValueList<ToolButton>::iterator j=RegisteredToolButtons.begin(); j!=RegisteredToolButtons.end(); j++)
 		if ((*j).name == name)
 			return (*j).button;
-	kdebug("return NULL\n");
+	kdebugm(KDEBUG_WARNING, "return NULL\n");
 	return NULL;
 }
 
@@ -192,7 +192,7 @@ void Kadu::gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op) {
 	if (config_file.readBoolEntry("General", "CheckUpdates"))
 	{
 		if (data.size() > 31) {
-			kdebug("Kadu::gotUpdatesInfo(): cannot obtain update info\n");
+			kdebugm(KDEBUG_WARNING, "Kadu::gotUpdatesInfo(): cannot obtain update info\n");
 			delete uc;
 			return;
 		}
@@ -201,7 +201,7 @@ void Kadu::gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op) {
 		buf[data.size()] = 0;
 		newestversion = buf;
 
-		kdebug("Kadu::gotUpdatesInfo(): %s\n", buf);
+		kdebugm(KDEBUG_INFO, "Kadu::gotUpdatesInfo(): %s\n", buf);
 
 		if (uc->ifNewerVersion(newestversion))
 			QMessageBox::information(this, tr("Update information"),
@@ -213,7 +213,7 @@ void Kadu::gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op) {
 
 void Kadu::keyPressEvent(QKeyEvent *e) {
 	if (e->key() == Key_Escape && Docked) {
-		kdebug("Kadu::keyPressEvent(Key_Escape): Kadu hide\n");
+		kdebugm(KDEBUG_INFO, "Kadu::keyPressEvent(Key_Escape): Kadu hide\n");
 		hide();
 	}
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_deleteuser"))
@@ -827,7 +827,7 @@ void Kadu::currentChanged(QListBoxItem *item) {
 	if (!item || !item->isSelected())
 		return;
 
-	kdebug("Kadu::currentChanged(): %s\n", (const char *)item->text().local8Bit());
+	kdebugm(KDEBUG_INFO, "Kadu::currentChanged(): %s\n", (const char *)item->text().local8Bit());
 
 	if (config_file.readBoolEntry("Look", "ShowInfoPanel"))
 	{
@@ -861,7 +861,7 @@ void Kadu::refreshGroupTabBar()
 			if(!group_list.contains(group))
 				group_list.append(group);
 	}
-	kdebug("%i groups found\n",group_list.count());
+	kdebugm(KDEBUG_INFO, "%i groups found\n",group_list.count());
 	//
 	if (group_list.count() == 0)
 	{
@@ -884,7 +884,7 @@ void Kadu::refreshGroupTabBar()
 		if(createNewTab)
 			GroupBar->addTab(new QTab(group_list[i]));
 		}
-	kdebug("%i group tabs\n", GroupBar->count());
+	kdebugm(KDEBUG_INFO, "%i group tabs\n", GroupBar->count());
 	GroupBar->show();
 	/* odswiezamy - dziala tylko jesli jest widoczny */
 	GroupBar->update();
@@ -928,7 +928,7 @@ void Kadu::userListModified()
 
 void Kadu::userListStatusModified(UserListElement *user)
 {
-	kdebug("Kadu::userListStatusModified(): %d\n", user->uin);
+	kdebugm(KDEBUG_FUNCTION_START, "Kadu::userListStatusModified(): %d\n", user->uin);
 	if ((user->status == GG_STATUS_NOT_AVAIL)
 		|| (user->status == GG_STATUS_NOT_AVAIL_DESCR))
 		descrtb->setText("");
@@ -1020,7 +1020,7 @@ void Kadu::userListUserAdded(const UserListElement& user)
 }
 
 void Kadu::mouseButtonClicked(int button, QListBoxItem *item) {
-	kdebug("Kadu::mouseButtonClicked(): button=%d\n", button);
+	kdebugm(KDEBUG_FUNCTION_START, "Kadu::mouseButtonClicked(): button=%d\n", button);
 	if (!item)
 		descrtb->setText("");
 
@@ -1231,15 +1231,15 @@ void Kadu::error(GaduError err)
 			break;
 
 		case ConnectionUnknow:
-			kdebug("Connection broken unexpectedly!\nUnscheduled connection termination\n");
+			kdebugm(KDEBUG_INFO, "Connection broken unexpectedly!\nUnscheduled connection termination\n");
 			break;
 
 		case ConnectionTimeout:
-			kdebug("Connection timeout!\nUnscheduled connection termination\n");
+			kdebugm(KDEBUG_INFO, "Connection timeout!\nUnscheduled connection termination\n");
 			break;
 
 		case Disconnected:
-			kdebug("Disconnection!");
+			kdebugm(KDEBUG_INFO, "Disconnection!\n");
 			msg = QString(tr("Disconnection has occured"));
 			break;
 
@@ -1250,7 +1250,7 @@ void Kadu::error(GaduError err)
 
 	if (msg != QString::null)
 	{
-		kdebug("%s\n", unicode2latin(msg).data());
+		kdebugm(KDEBUG_INFO, "%s\n", unicode2latin(msg).data());
 		hintmanager->addHintError(msg);
 	}
 
@@ -1265,7 +1265,7 @@ void Kadu::systemMessageReceived(QString &msg)
 }
 
 void Kadu::dataReceived(void) {
-	kdebug("Kadu::dataReceived()\n");
+	kdebugf();
 	if (sess->check && GG_CHECK_READ)
 		event_manager.eventHandler(sess);
 }
@@ -1285,8 +1285,7 @@ void Kadu::pingNetwork(void) {
 
 void Kadu::disconnected()
 {
-	kdebugf();
-	kdebug("Disconnection has occured\n");
+	kdebugm(KDEBUG_FUNCTION_START, "Kadu::disconnected(): Disconnection has occured\n");
 
 	doBlink = false;
 
@@ -1312,7 +1311,7 @@ bool Kadu::event(QEvent *e) {
 	dccSocketClass **data;
 
 	if (e->type() == QEvent::User) {
-		kdebug("Kadu::event()\n");
+		kdebugf();
 		ce = (QCustomEvent *)e;
 		data = (dccSocketClass **)ce->data();
 		dcc = *data;
@@ -1351,9 +1350,9 @@ void Kadu::dccSent(void) {
 }
 
 void Kadu::watchDcc(void) {
-	kdebug("Kadu::watchDcc(): data on socket\n");
+	kdebugf();
 	if (!(dcc_e = gg_dcc_watch_fd(dccsock))) {
-		kdebug("Kadu::watchDcc(): Connection broken unexpectedly!\n");
+		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "Kadu::watchDcc(): Connection broken unexpectedly!\n");
 		config_file.writeEntry("Network", "AllowDCC", false);
 		delete dccsnr;
 		dccsnr = NULL;
@@ -1366,7 +1365,7 @@ void Kadu::watchDcc(void) {
 		case GG_EVENT_NONE:
 			break;
 		case GG_EVENT_DCC_ERROR:
-			kdebug("Kadu::watchDcc(): GG_EVENT_DCC_ERROR\n");
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "Kadu::watchDcc(): GG_EVENT_DCC_ERROR\n");
 			break;
 		case GG_EVENT_DCC_NEW:
 			if (dccSocketClass::count < 8) {
@@ -1374,7 +1373,7 @@ void Kadu::watchDcc(void) {
 				dcc = new dccSocketClass(dcc_e->event.dcc_new);
 				connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), this, SLOT(dccFinished(dccSocketClass *)));
 				dcc->initializeNotifiers();
-				kdebug("Kadu::watchDcc(): GG_EVENT_DCC_NEW: spawning object\n");
+				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "Kadu::watchDcc(): GG_EVENT_DCC_NEW: spawning object\n");
 				}
 			else {
 				if (dcc_e->event.dcc_new->file_fd > 0)
@@ -1394,7 +1393,7 @@ void Kadu::watchDcc(void) {
 
 bool Kadu::close(bool quit) {
 	if (!quit && Docked) {
-		kdebug("Kadu::close(): Kadu hide\n");
+		kdebugm(KDEBUG_INFO, "Kadu::close(): Kadu hide\n");
 		hide();
 		return false;
 	}
@@ -1434,19 +1433,19 @@ bool Kadu::close(bool quit) {
 		pending.writeToFile();
 		writeIgnored();
 		if (config_file.readBoolEntry("General", "DisconnectWithDescription") && getCurrentStatus() != GG_STATUS_NOT_AVAIL) {
-			kdebug("Kadu::close(): Set status NOT_AVAIL_DESCR with disconnect description(%s)\n",(const char *)config_file.readEntry("General", "DisconnectDescription").local8Bit());
+			kdebugm(KDEBUG_INFO, "Kadu::close(): Set status NOT_AVAIL_DESCR with disconnect description(%s)\n",(const char *)config_file.readEntry("General", "DisconnectDescription").local8Bit());
 			own_description = config_file.readEntry("General", "DisconnectDescription");
 			setStatus(GG_STATUS_NOT_AVAIL_DESCR);
 		}
 //		disconnectNetwork();
 		gadu->logout();
-		kdebug("Kadu::close(): Saved config, disconnect and ignored\n");
+		kdebugm(KDEBUG_INFO, "Kadu::close(): Saved config, disconnect and ignored\n");
 		QWidget::close(true);
 		flock(lockFileHandle, LOCK_UN);
 		lockFile->close();
 		delete lockFile;
 		lockFile=NULL;
-		kdebug("Kadu::close(): Graceful shutdown...\n");
+		kdebugm(KDEBUG_INFO, "Kadu::close(): Graceful shutdown...\n");
 		return true;
 	}
 }
@@ -1545,7 +1544,7 @@ void Kadu::showdesc(bool show) {
 void Kadu::infopanelUpdate(UinType uin) {
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		return;
-	kdebug("Kadu::infopanelUpdate(%d)\n", uin);
+	kdebugm(KDEBUG_INFO, "Kadu::infopanelUpdate(%d)\n", uin);
 	if (Userbox->currentItem() != -1 && uin == userlist.byAltNick(Userbox->currentText()).uin)
 	{
 		HtmlDocument doc;
@@ -1700,7 +1699,7 @@ void KaduSlots::chooseColor(const char *name, const QColor& color)
 	else if (QString(name)=="panel_font_color")
 		preview->setPaletteBackgroundColor(color);
 	else
-		kdebug("chooseColor: ups!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! '%s'\n", name);
+		kdebugm(KDEBUG_ERROR, "chooseColor: label '%s' not known\n", name);
 }
 
 void KaduSlots::chooseFont(const char *name, const QFont& font)
@@ -1728,6 +1727,6 @@ void Kadu::resizeEvent(QResizeEvent *)
 
 /*void Kadu::moveEvent(QMoveEvent *e)
 {
-//	kdebug("kadu::moveEvent: %d %d %d %d\n", x(), y(), width(), height());
+//	kdebugm(KDEBUG_INFO, "kadu::moveEvent: %d %d %d %d\n", x(), y(), width(), height());
 	QWidget::moveEvent(e);
 }*/
