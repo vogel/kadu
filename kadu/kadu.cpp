@@ -430,12 +430,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	buf.append("Kadu: ");
 	buf.append(QString::number(config.uin));
 
-	/* use proxy? */
-	if (config.useproxy) {
-		gg_proxy_host = config.proxyaddr;
-		gg_proxy_port = config.proxyport;
-		gg_proxy_enabled = 1;
-		}
 
 	/* a newbie? */
 	if (!config.uin) {
@@ -465,7 +459,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		setCaption(i18n("Kadu: %1").arg(config.uin));
 
 	pending.loadFromFile();
-
 
 	QFrame *centralFrame = new QFrame(this);
 	setCentralWidget(centralFrame);
@@ -1245,10 +1238,19 @@ void Kadu::setStatus(int status) {
 	if (config.allowdcc)
 		prepareDcc();
 
+	/* use proxy? */
+	if (config.useproxy) {
+		gg_proxy_host = (char *)config.proxyaddr.latin1();
+		gg_proxy_port = config.proxyport;
+		gg_proxy_enabled = 1;
+		}
+	else
+		gg_proxy_enabled = 0;
+
 	socket_active = TRUE;
 	last_ping = time(NULL);
 	loginparams.status = status | (GG_STATUS_FRIENDS_MASK * config.privatestatus);
-	loginparams.password = config.password;
+	loginparams.password = (char *)config.password.latin1();
 	loginparams.uin = config.uin;
 	loginparams.client_version = GG_DEFAULT_CLIENT_VERSION;
 	loginparams.has_audio = 1;

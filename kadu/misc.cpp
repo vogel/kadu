@@ -94,15 +94,15 @@ char *timestamp(time_t customtime)
 	return buf;
 }
 
-char *pwHash(const char *tekst) {
-    char *nowytekst;
-    nowytekst = strdup(tekst);
-    int ile, znak;
-    for (ile = 0; ile < strlen(tekst); ile++) {
-	znak = nowytekst[ile]^ile^1;
-	nowytekst[ile] = znak;
-	}
-    return nowytekst;
+QString pwHash(const QString tekst) {
+	QString nowytekst;
+	int ile, znak;
+	nowytekst = tekst;
+	for (ile = 0; ile < tekst.length(); ile++) {
+		znak = nowytekst[ile].latin1() ^ ile ^ 1;
+		nowytekst[ile] = znak;
+		}
+	return nowytekst;
 }
 
 bool UinsList::equals(UinsList &uins) {

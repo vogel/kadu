@@ -100,6 +100,12 @@ class ConfigDialog : public QTabDialog	{
 		QCheckBox *b_defserver;
 		QVGroupBox *g_server;
 		QLineEdit *e_server;
+		QVGroupBox *g_proxy;
+		QCheckBox *b_useproxy;
+		QLineEdit *e_proxyserver;
+		QLineEdit *e_proxyport;
+		QLineEdit *e_proxyuser;
+		QLineEdit *e_proxypassword;
 
 		QVGroupBox *bgcolor;
 		QLineEdit *e_chatusrbgcolor;
@@ -107,7 +113,7 @@ class ConfigDialog : public QTabDialog	{
 		QLineEdit *e_userboxbgcolor;
 		QLineEdit *e_userboxfgcolor;
 		QLineEdit *e_chatusrfontcolor;
-    QLineEdit *e_chatmyfontcolor;
+		QLineEdit *e_chatmyfontcolor;
 		QPushButton *pb_chatmybgcolor;
 		QPushButton *pb_chatusrbgcolor;
 		QPushButton *pb_chatmyfontcolor;
@@ -139,6 +145,7 @@ class ConfigDialog : public QTabDialog	{
 		void ifDccEnabled(bool);
 		void ifDccIpEnabled(bool);
 		void ifDefServerEnabled(bool);
+		void ifUseProxyEnabled(bool);
 		void onSmsBuildInCheckToogle(bool);
 };
 

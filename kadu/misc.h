@@ -11,7 +11,7 @@ char* preparePath(char* filename);
 void cp_to_iso(unsigned char *);
 void iso_to_cp(unsigned char *);
 char *timestamp(time_t = 0);
-char *pwHash(const char *tekst);
+QString pwHash(const QString tekst);
 
 class UinsList : public QValueList<uin_t>
 {

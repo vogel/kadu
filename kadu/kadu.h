@@ -45,7 +45,7 @@ struct colors {
 
 struct config {
 	uin_t uin;
-	char *password;
+	QString password;
 	QString nick;
 	char *soundmsg;
 	char *soundchat;
@@ -95,8 +95,10 @@ struct config {
 	bool notifysound;
 
 	bool useproxy;
-	char * proxyaddr;
+	QString proxyaddr;
 	unsigned short proxyport;
+	QString proxyuser;
+	QString proxypassword;
 
 	bool raise;
 
@@ -280,7 +282,7 @@ void kadu_debug(int, char*);
 void playSound(char *);
 
 void readConfig(void);
-char *pwHash(const char *);
+QString pwHash(const QString);
 void confirmHistoryDeletion(const char *);
 void remindPassword();
 

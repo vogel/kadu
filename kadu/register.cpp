@@ -159,7 +159,7 @@ void Register::watchSocket() {
 		}
 }
 
-void createKonfig(char * password, uin_t uin) {
+void createKonfig() {
 	FILE *f;
 	char *home = getenv("HOME");
 	struct passwd *pw;
@@ -203,9 +203,9 @@ void Register::ask() {
 //  	printf("is checked\n");
 //		createKonfig();
 		config.uin = uin;
-		config.password = strdup(pwd->text().latin1());
+		config.password = pwd->text();
 		kadu->setCaption(i18n("Kadu: new user"));
-		createKonfig(config.password, config.uin);
+		createKonfig();
 		}
 }
 

@@ -53,7 +53,7 @@ void loadKaduConfig(void) {
 	konf->setGroup("Global");
 	config.uin = konf->readNumEntry("UIN",0);
 	config.password = pwHash(konf->readEntry("Password",""));
-	fprintf(stderr,"KK Read user data: uin %d password :-P\n",config.uin);
+	fprintf(stderr,"KK Read user data: uin %d password :-P\n", config.uin);
 	config.soundprog = strdup(konf->readEntry("SoundPlayer",""));
 	config.soundmsg = strdup(konf->readEntry("Message_sound",""));
 	config.soundvolctrl = konf->readBoolEntry("VolumeControl",false);
@@ -114,10 +114,12 @@ void loadKaduConfig(void) {
 	config.notifies = konf->readListEntry("NotifyUsers");
 
 	konf->setGroup("Proxy");
-	config.useproxy = konf->readBoolEntry("UseProxy",false);
-	config.proxyaddr = strdup(konf->readEntry("ProxyHost",""));
-	config.proxyport = konf->readNumEntry("ProxyPort",0);
-
+	config.useproxy = konf->readBoolEntry("UseProxy", false);
+	config.proxyaddr = konf->readEntry("ProxyHost", "");
+	config.proxyport = konf->readNumEntry("ProxyPort", 0);
+	config.proxyuser = pwHash(konf->readEntry("ProxyUser", ""));
+	config.proxypassword = pwHash(konf->readEntry("ProxyPassword", ""));
+	
 	konf->setGroup("Colors");
 	config.colors.userboxBgColor = konf->readEntry("UserboxBgColor","#FFFFFF");
 	config.colors.userboxFgColor = konf->readEntry("UserboxFgColor","#000000");
@@ -144,7 +146,7 @@ void saveKaduConfig(void) {
 
 	konf->setGroup("Global");
 	konf->writeEntry("UIN",config.uin);
-	konf->writeEntry("Password",pwHash(config.password));
+	konf->writeEntry("Password", pwHash(config.password));
 	konf->writeEntry("Nick", config.nick);
 	konf->writeEntry("Geometry",kadu->geometry());
 	konf->writeEntry("Message_sound",config.soundmsg);
@@ -193,6 +195,8 @@ void saveKaduConfig(void) {
 	konf->writeEntry("UseProxy",config.useproxy);
 	konf->writeEntry("ProxyHost",config.proxyaddr);
 	konf->writeEntry("ProxyPort",config.proxyport);
+	konf->writeEntry("ProxyUser", pwHash(config.proxyuser));
+	konf->writeEntry("ProxyPassword", pwHash(config.proxypassword));
 
 	konf->setGroup("Notify");
 	konf->writeEntry("NotifyUsers",config.notifies);
@@ -231,7 +235,7 @@ ConfigDialog::ConfigDialog(QWidget *parent, const char *name) : QTabDialog(paren
 	setCancelButton(i18n("Cancel"));
 	connect(this, SIGNAL(cancelButtonPressed()), this, SLOT(close()));
 	setCaption(i18n("Kadu configuration"));
-	resize(380,420);
+	resize(380,440);
 }
 
 void ConfigDialog::setupTab1(void) {
@@ -670,6 +674,31 @@ void ConfigDialog::setupTab5(void) {
 	l3->setText(i18n("IP addresses:"));
 	e_server = new QLineEdit(serverbox);
 
+	b_useproxy = new QCheckBox(box5);
+	b_useproxy->setText(i18n("Use proxy server"));
+
+	g_proxy = new QVGroupBox(box5);
+	g_proxy->setTitle(i18n("Proxy server"));
+
+	QHBox *proxyserverbox = new QHBox(g_proxy);
+	proxyserverbox->setSpacing(5);
+	QLabel *l5 = new QLabel(proxyserverbox);
+	l5->setText(i18n("IP address:"));
+	e_proxyserver = new QLineEdit(proxyserverbox);
+	QLabel *l6 = new QLabel(proxyserverbox);
+	l6->setText(i18n("Port:"));
+	e_proxyport = new QLineEdit(proxyserverbox);
+
+	QHBox *proxyuserbox = new QHBox(g_proxy);
+	proxyuserbox->setSpacing(5);
+	QLabel *l7 = new QLabel(proxyuserbox);
+	l7->setText(i18n("Username:"));
+	e_proxyuser = new QLineEdit(proxyuserbox);
+	QLabel *l8 = new QLabel(proxyuserbox);
+	l8->setText(i18n("Password:"));
+	e_proxypassword = new QLineEdit(proxyuserbox);
+	e_proxypassword->setEchoMode(QLineEdit::Password);
+
 	g_fwdprop->setEnabled(inet_addr(config.extip) && config.extport > 1023);    
 	if (g_fwdprop->isEnabled()) {
 		b_dccfwd->setChecked(true);
@@ -681,11 +710,20 @@ void ConfigDialog::setupTab5(void) {
 		b_defserver->setChecked(true);
 	else
 		e_server->setText(config.servers.join(";"));
+	g_proxy->setEnabled(inet_addr(config.proxyaddr) && config.proxyport > 1023 && config.useproxy);
+	b_useproxy->setChecked(g_proxy->isEnabled());
+	if (g_proxy->isEnabled()) {
+		e_proxyserver->setText(config.proxyaddr);
+		e_proxyport->setText(QString::number(config.proxyport));
+		e_proxyuser->setText(config.proxyuser);
+		e_proxypassword->setText(config.proxypassword);
+		}
 
 	QObject::connect(b_dccenabled, SIGNAL(toggled(bool)), this, SLOT(ifDccEnabled(bool)));
 	QObject::connect(b_dccip, SIGNAL(toggled(bool)), this, SLOT(ifDccIpEnabled(bool)));
 	QObject::connect(b_dccfwd, SIGNAL(toggled(bool)), g_fwdprop, SLOT(setEnabled(bool)));
 	QObject::connect(b_defserver, SIGNAL(toggled(bool)), this, SLOT(ifDefServerEnabled(bool)));
+	QObject::connect(b_useproxy, SIGNAL(toggled(bool)), this, SLOT(ifUseProxyEnabled(bool)));
 
 	addTab(box5, i18n("Network"));
 }
@@ -876,6 +914,10 @@ void ConfigDialog::ifDefServerEnabled(bool toggled) {
 	g_server->setEnabled(!toggled);
 }
 
+void ConfigDialog::ifUseProxyEnabled(bool toggled) {
+	g_proxy->setEnabled(toggled);
+}
+
 void ConfigDialog::_Left(void) {
 	if (e_notifies->currentItem() != -1) {
 		e_availusers->insertItem(e_notifies->text(e_notifies->currentItem()));
@@ -998,8 +1040,7 @@ void ConfigDialog::updateConfig(void) {
 	int i;
 
 	config.uin = atoi(e_uin->text().latin1());
-	free(config.password);
-	config.password = strdup(e_password->text().local8Bit());
+	config.password = e_password->text();
 	if (e_nick->text().length())
 		config.nick = e_nick->text();
 	else
@@ -1095,6 +1136,24 @@ void ConfigDialog::updateConfig(void) {
 	else
 		config.servers = QStringList::split(";", "0.0.0.0");
 	server_nr = 0;
+
+	config.useproxy = b_useproxy->isChecked() && inet_addr(e_proxyserver->text().latin1()) != INADDR_NONE
+		&& atoi(e_proxyport->text().latin1()) > 1023;
+	if (config.useproxy) {
+		config.proxyaddr = e_proxyserver->text();
+		config.proxyport = (unsigned short)atoi(e_proxyport->text().latin1());
+		config.proxyuser = e_proxyuser->text();
+		if (config.proxyuser.length())
+			config.proxypassword = e_proxypassword->text();
+		else
+			config.proxypassword.truncate(0);
+		}
+	else {
+		config.proxyaddr.truncate(0);
+		config.proxyport = 0;
+		config.proxyuser.truncate(0);
+		config.proxypassword.truncate(0);
+		}
 
 	/* and now, save it */
 	saveKaduConfig();
