@@ -51,7 +51,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * ³atka vogela usuwaj±ca wiêkszo¶æ zmiennych globalnych z gadu.h (adrian)
 * modu³y dcc i voice nie korzystaj± ju¿ z funkcji libgadu, jedynie z metod
   klasy GaduProtocol, wywalone zbêdne zmienne globalne z modu³u dcc (adrian)
-* gdy za³adowaniu modu³u nie jest mo¿liwe w komunikacie jest pokazywana 
+* gdy za³adowaniu modu³u nie jest mo¿liwe w komunikacie jest pokazywana
   nazwa modu³u (michal)
 * ³atka dorregaray'a dodaj±ca do modu³u autorespondera opcjê jednokrotnej
   tylko odpowiedzi na czyj±¶ wiadomo¶æ (adrian)
@@ -62,7 +62,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   altnickach zawieraj±cych znaki specjalne html, np. znak mniejszo¶ci (adrian)
 * w konfiguracji wygl±dów dymków, w pozycji wyboru powiadomienia dodana
   pozycja "Set for all" (mast3r)
-* w konfiguracji mo¿na wybraæ jaki styl Qt ma zostaæ u¿yty (michal) 
+* w konfiguracji mo¿na wybraæ jaki styl Qt ma zostaæ u¿yty (michal)
 * patch dorregaray'a dodaj±ca do modu³u autoaway opcjê automatycznej
   zmiany opisu, ew. doklejenia czego¶ do poprzedniego (adrian)
 * wydzielenie do modu³u rejestracji/wyrejestrowania konta,
@@ -284,7 +284,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * okno chat je¿eli jest zminimalizowane, to przy dwukliku na li¶cie kontaktów
   siê odminimalizuje ;) (w Qt>=3.3) (joi)
 * libgadu: b³êdnie liczone sumy kontrolne obrazków (joi)
-* libgadu: wysy³anie du¿ych pakietów nie "zawiesza" po³±czenia - obrazki 
+* libgadu: wysy³anie du¿ych pakietów nie "zawiesza" po³±czenia - obrazki
   powinny ju¿ zawsze dochodziæ (joi)
 * prze³±czanie focusu w oknie chat jednak wy³±czone - czasem
   powodowa³o to problemy (joi)
@@ -317,7 +317,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * config_wizard: ³ata Dorregaraya - wybór modu³u d¼wiêkowego,
   czyszczenie kodu, czê¶æ pierwsza (joi)
 * poprawiona kompatybilno¶æ z Qt 3.0 (joi)
-* dodana mo¿liwo¶æ ignorowania obrazków gdy jeste¶my ukryci 
+* dodana mo¿liwo¶æ ignorowania obrazków gdy jeste¶my ukryci
   + wspó³praca z modu³em "spy" (joi)
 * ³ata mig21 + drobne poprawki: je¿eli w ci±gu kilku sekund (domy¶lnie 2) od przyj¶cia
   wiadomo¶ci spróbujemy zamkn±æ okno chatu, to kadu zapyta siê o potwierdzenie (joi)
@@ -327,7 +327,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * drobne optymalizacje w wy¶wietlaniu opisów pod kontaktami (joi)
 * optymalizacje formatowania wiadomo¶ci w chacie (joi)
 * poprawione kopiowanie tekstu z chatu do schowka przy zaznaczeniu myszk± (joi)
-* zmodyfikowana sk³adnia panelu informacyjnego dla zestawu RonK2 
+* zmodyfikowana sk³adnia panelu informacyjnego dla zestawu RonK2
   (problemy na systemach, gdzie kodowanie by³o inne ni¿ latin2) (joi)
 * usuwany z grupy kontakt nie jest z powrotem dodawany do bie¿±cego userboksa (joi)
 * encryption: je¿eli nie uda siê zakodowaæ wiadomo¶ci, to wy¶wietlany jest
@@ -465,11 +465,12 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   to nie wysy³amy jeszcze raz naszego statusu (joi)
 * prawid³owa akcja przy wybraniu opcji Powiadom o kontakcie/Blokuj/Niedostêpny
   dla kontaktu przy zaznaczonej grupie osób (joi)
+* make install instaluje ikony 22x22 i 24x24 (adrian)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
   gdy tak rzeczywi¶cie jest (joi)
-* Skrypt Instaluj -> naprawiony b³±d cudzys³owów w prefix i opcjach 
+* Skrypt Instaluj -> naprawiony b³±d cudzys³owów w prefix i opcjach
   kompilacji, dodana pêtla na okno konfiguracji, prefix domy¶lny to /usr,
   <cancel> nie powoduje pustego prefixu zachowana jest opcja wy¶wietlana,
   przy ponownej próbie edycji prefixu pamiêtana jest wersja wcze¶niej
@@ -498,7 +499,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   oznaczaj±ca kompilacjê dodatkowych ¼róde³ w podanym podkatalogu
   przed kompilacj± modu³u (adrian)
 * dodana funkcja kdebugf2() analogiczna do kdebugf(), aby móc zaznaczyæ
-  w debugu koniec funkcji (joi)  
+  w debugu koniec funkcji (joi)
 * plik spec modu³ów mo¿e u¿ywaæ zmiennej MODULE_DIR - wzglêdna ¶cie¿ka do
   katalogu z modu³em, poprawna dla komp. stat. i dynam., mo¿na u¿yæ np. w
   MODULE_LDFLAGS, bo modu³ mo¿e siê linkowaæ w katalogu kadu lub modules (adrian)
@@ -542,7 +543,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * pokazywanie odebranych obrazków w oknie rozmowy (adrian)
 * obrazek klepsydry zanim otrzymamy ten w³a¶ciwy, klepsydra by tomee (adrian)
 * klasa MessageBox ma now± metodê statyczn± wrn() (ostrze¿enia) z ikonk±.
-  metoda wrn() i msg() jako drugi argument przyjmuje bool modal=false. 
+  metoda wrn() i msg() jako drugi argument przyjmuje bool modal=false.
   Swoj± drog± w kodzie przyda³oby siê poprzerabiaæ wszystkie QMessageBox
   na wrn(), msg() lub ask()... (tomee)
 * nowe okienko wyboru obrazka do wys³ania z podgl±dem (adrian)
@@ -605,10 +606,10 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * patch Kida: poprawione okno mened¿era modu³ów - od¶wie¿anie przy ³adowaniu
   zale¿no¶ci + poprawka wygl±du (joi)
 * poprawienie wybierania sciezek do zestawow (dzwieki / ikonki)
-  nalezy skasowac sobie wszystkie wpisy z "sciezki do ikon" 
-  oraz "sciezki do dzwiekow" - od tej pory sa to tylko dodatkowe sciezki 
+  nalezy skasowac sobie wszystkie wpisy z "sciezki do ikon"
+  oraz "sciezki do dzwiekow" - od tej pory sa to tylko dodatkowe sciezki
   a nie wszystkie (pawel_p)
-* ³atka Kida poprawiaj±ca wygl±d okna importu/eksportu listy 
+* ³atka Kida poprawiaj±ca wygl±d okna importu/eksportu listy
   kontaków (KID/michal)
 * ³atka Kida poprawiaj±ca od¶wie¿anie listy modu³ów gdy ¿±dany modu³ nie uda³o
   siê za³adowaæ, ale za³adowany zosta³ modu³ zale¿ny (joi)
@@ -882,7 +883,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   uaktualniany panel informacyjny (michal)
 * dalsze porz±dki w przekazywaniu parametrów funkcji gg_login(...) (chilek)
 * nie wysy³amy dwóch zmian statusu przy statusie opisowym (chilek)
-* nie wy¶wietla siê ju¿ pusty wiersz w oknie chatu przy przechodzeniu 
+* nie wy¶wietla siê ju¿ pusty wiersz w oknie chatu przy przechodzeniu
   do nowej linii (joi)
 * drobne porz±dki przy htmlu (joi)
 * dodano opcje konfiguracji modu³ów do skryptu Instaluj z wykorzystaniem
@@ -967,7 +968,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawna deaktywacja modu³ów przy zamykaniu kadu (adrian)
 * poprawki przy statycznych modu³ach (joi)
 * sprawdzanie uaktualnieñ dopiero przy pierwszym zalogowaniu (joi)
-* drobna poprawka przy zamykaniu okna konfiguracji (michal) 
+* drobna poprawka przy zamykaniu okna konfiguracji (michal)
 * dodany skrót klawiszowy dla zarz±dcy modu³ów (joi)
 * klikniêcie ¶rodkowym przyciskem myszy na kontakt który ma podany numer
   telefonu znowu powoduje otwarcie okna wysy³ania smsa (michal)
@@ -1056,7 +1057,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawka ladowania modulow na niektorych systemach (adrian)
 * poprawka dodawania uzytkownikow do listy (adrian)
 * usuniete zostaly niepotrzebne zmienne
-  dodano mozliwosc wybierania zestawow dzwiekow (katalogi z dzwiekami 
+  dodano mozliwosc wybierania zestawow dzwiekow (katalogi z dzwiekami
   musza zawierac plik "sound.conf" aby zestaw zostal wykryty)
   mozna dodawac katalogi niestandardowe (czyli nie $PREFIX/kadu/themes/)
   zmieniony wyglad zakladki "sounds" (pawel_p)
@@ -1077,8 +1078,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * uporzadkowanie kodu dotyczacego dzwiekow (znajduje sie juz tylko w sound.cpp)
 * dodano mozliwosc wykonywania operacji na pasku narzedziowym
   (API: addToolButton, addToolButtonSeparator, getToolButton, toolBar) (pawel_p)
-* zestawy dzwiekowe sa szukane katalogach "$PREFIX/kadu/themes/sounds" 
-  i ".gg/sounds" oraz dodanych przez uzytkownika, domyslnym zestawem dzwiekowym 
+* zestawy dzwiekowe sa szukane katalogach "$PREFIX/kadu/themes/sounds"
+  i ".gg/sounds" oraz dodanych przez uzytkownika, domyslnym zestawem dzwiekowym
   jest "default" (pawel_p)
 * opcja "zarzadca modulow" nie otwiera drugiego okna, jesli jedno juz jest
   otwarte, tylko uaktywnie to poprzednie (adrian)
@@ -1088,7 +1089,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   prawidlowo dziala przy "tylko dla znajomych" i czyta plik autoresponder.conf.
   od dzisiaj Daniel "uto" jest oficjalnym opiekunem tego modulu (adrian)
 * drobne poprawki przy Makefile do modulow (adrian)
-* poprawiony segfault, przy starcie kadu, zwiazany z zestawami 
+* poprawiony segfault, przy starcie kadu, zwiazany z zestawami
   dzwiekowymi (mAR/pawel_p)
 * poprawka modulu autorespondera (uto)
 * poprawki przy Makefile do modulow - prawidlowo dziala "make clean"
@@ -1125,14 +1126,14 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * ogolny mechanizm informowania o powstawaniu nowych instancji klas
   - klasa CreateNotifier - i jej zastosowanie w klasie UserInfo na
   potrzeby modulow (adrian)
-* nie mozna zmienic altNick'a (wyswietl) oraz UIN'u uzytkownika na juz 
-  istniejacy na liscie dodano funkcje getActiveUserBox() oraz poprawiono 
+* nie mozna zmienic altNick'a (wyswietl) oraz UIN'u uzytkownika na juz
+  istniejacy na liscie dodano funkcje getActiveUserBox() oraz poprawiono
   funkcje getSelected.. w klasie UserBox (pawel_p)
 * zamiana cudzyslowia na "&quot;" i odwrotnie w HtmlDocument (nazgul/adrian)
 * poprawka segfaulta przy zmianie altnicka uczestnika konferencji (adrian)
 * poprawka problemu z dodaniem do listy anonimowego uzytkownika
   z ktorym prowadzimy rozmowe (adrian)
-* poprawka "tylko dla znajomych" z okna konfiguracji. kadu juz sie nie laczy 
+* poprawka "tylko dla znajomych" z okna konfiguracji. kadu juz sie nie laczy
   przy wcisnieciu "ok" (pawel_p)
 * przed zakonczeniem kadu wyladowuje poprawnie wszystkie moduly,
   pozwalajac im zapisac konfiguracje itp (adrian)
@@ -1207,7 +1208,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * Hinty: poprawka - w³asna s³adnia jest teraz zawsze u¿ywana
   gdy jest w³±czona nie tylko gdy status jest z opisem (ciuciu/mast3r)
 * Hinty: przy zmianie statusu powinno dzia³aæ ju¿ t³umaczenie, ma³a
-  przeróbka estetyczna w zak³adce konfiguracji (mast3r) 
+  przeróbka estetyczna w zak³adce konfiguracji (mast3r)
 * rejestracja zgodna z GG6 (chilek)
 * zmiana has³a zgodna z GG6 (chilek)
 * udoskonalenie dialogow rejestracji i zmiany hasla (chilek)
@@ -1235,7 +1236,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * rozmowy g³osowe - nowa dzia³aj±ca wersja! - faza alfa (chilek)
 * configure: wstêp do obs³ugi rozmów g³osowych, narazie opcja
   jest na sta³e wy³±czona i kadu kompiluje siê poprawnie bez
-  libgsm i rozmów g³osowych (adrian) 
+  libgsm i rozmów g³osowych (adrian)
 * okno potwierdzania nadchodz±cej rozmowy g³osowej (chilek)
 * kadu wch³onê³o bibliotekê libgsm 1.0.10 ;) (adrian)
 * konfiguracja: zak³adki Chat i Notify wed³ug nowego mechanizmu.
@@ -1275,14 +1276,14 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   a przy ³±czeniu nie jest czyszczona (chilek)
 * na 3.0.x niestety zostawa³y puste pola po usunietych dymkach - teraz
   powinno byæ ju¿ dobrze (mast3r)
-* dodano menu podreczne do konferencji 
+* dodano menu podreczne do konferencji
   (przystosowanie menu do modularnosci) (pawel_p)
 * wy³±czenie ikonki w panelu dokuj±cym nie powoduje wywalenia
   Kadu poprzez dymki (mast3r)
 * poprawiono zapamietywanie wybranego jezyka (pawel_p)
 * dokumentacja opu¶ci³a ¼ród³a kadu i przenios³a siê do repozytorium kadu-doc.
   opcja Pomoc zawsze otwiera dokumentacjê z kadu.net (adrian)
-* emotki sa niewrazliwe na wielkosc liter 
+* emotki sa niewrazliwe na wielkosc liter
   (<ok>, <oK>, <OK> to ta sama ikonka) (pawel_p)
 * make install kopiuje do $PREFIX/share/kadu pliki AUTHORS, ChangeLog,
   COPYING, HISTORY, README, THANKS na potrzeby nowego okna About (adrian)
@@ -1309,7 +1310,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawne wy¶wietlanie wersji protoko³u, ip u¿ytkownika
   i jego portu (chilek)
 * getMyIP() zbêdne. dzia³a mechanizm systemowy przydzia³u gniazdek dcc
-  wykorzystywany w libgadu (wcze¶niej te¿ dzia³a³ tyle, ¿e nie ustawia³em 
+  wykorzystywany w libgadu (wcze¶niej te¿ dzia³a³ tyle, ¿e nie ustawia³em
   gg_dcc_ip na 255.255.255.255) (chilek)
 * poprawka wy¶wietlania roku urodzenia w danych osobistych (pawel_p/mast3r)
 * poprawka wy¶wietlania opisu z spacjami w tipach userboxu i panelu
@@ -1558,7 +1559,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawka, polskie literki powinny ju¿ siê wy¶wietlaæ poprawnie w
   panelu infomacyjnym i tytule okna rozmowy, konferencji przy
   wlasnej konfiguracji (mast3r)
-* parsowanie sie¿ki do pliku odtwarzanego przy powiadomieniu 
+* parsowanie sie¿ki do pliku odtwarzanego przy powiadomieniu
   o dostêpno¶ci u¿ytkownika (mast3r)
 * rozbudowa klasy MessageBox o obs³ugê wska¼ników postêpu (adrian)
 * poprawki przy parsowaniu - mam nadzieje, ¿e teraz nie bedzie
@@ -1620,7 +1621,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   serwerami ustawienie portu jest uwzglêdniane. Przy w³asnych wpisach ip serwerów,
   kadu ³±czy siê odrazu z danym ip na ustawiony port (mast3r)
 * poprawka w konfiguracji: wybór "brak" emotikon - deaktywuje
-  mo¿liwo¶æ wyboru themes-u, stary kod byl niepoprawny i wywala³ 
+  mo¿liwo¶æ wyboru themes-u, stary kod byl niepoprawny i wywala³
   bl±d na standardowe wyj¶cie (mast3r)
 * okno rozmowy: nie czekamy na potwierdzenie dostarczenia wiadomo¶ci
   do osoby niedostêpnej lub ukrytej (chilek)
@@ -1705,9 +1706,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * próba nowego "porz±dnego" autoaway'a (chilek)
 * autodetekcja adresu IP dla DCC jest robiona przy ka¿dym po³±czeniu o ile
   nie wpiszemy adresu IP jawnie (chilek)
-* poprawka dotycz±ca tytu³u okna rozmowy - nie ma juz napisu 
+* poprawka dotycz±ca tytu³u okna rozmowy - nie ma juz napisu
   "opis" przy nazwie statusu rozmówcy (mast3r)
-* mo¿liwo¶æ ustawienia wygl±du tray hinta w oknie konfiguracji 
+* mo¿liwo¶æ ustawienia wygl±du tray hinta w oknie konfiguracji
   i kilka poprawek (mast3r)
 * pozbycie siê snprintf - zamiast tego jest QString::number (mast3r)
 * make clean kasuje pliki *_moc.cpp (adrian)
@@ -1867,7 +1868,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   (innych nie obs³uguje protokó³) (adrian)
 * szyfrowanie: poprawki kosmetyczne interfejsu u¿ytkownika
   i samego kodu (adrian)
-* dodanie opcji usuwania userlisty z serwera, import/export userlisty z 
+* dodanie opcji usuwania userlisty z serwera, import/export userlisty z
   pliku (pawel/canter)
 
 +++ wersja 0.3.3-pre3
@@ -1879,7 +1880,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   z hubem, dostaje ip serwera z którym sie próbuje po³±czyæ.
   Je¿eli to siê nie uda, ³±czy siê z 217.17.41.85, pó¼niej .84 i .83
   na porcie 8074.
-  Natomiast gdy uda siê po³±czyæ i z jakiej¶ przyczyny po³±czenie zostanie 
+  Natomiast gdy uda siê po³±czyæ i z jakiej¶ przyczyny po³±czenie zostanie
   zerwane lub po prostu osoba sama siê roz³±czy (status: niedostêpny)
   - cykl ³±czenia siê z serwerami GG zaczyna siê od pocz±tku czyli jw.
   (mast3r)
@@ -1906,7 +1907,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * wyszukiwanie u¿ytkowników: pierwszy znaleziony u¿ytkownik staje siê wybranym
   - teraz nie mo¿na ju¿ dodaæ drugi raz tego samego u¿ytkownika (chilek)
 * w oknie rozmowy: zast±pienie guzika "Zamknij" guzikiem "Anuluj"
-  - guzik "Anuluj" powoduje anulowanie oczekiwania na potwierdzenie 
+  - guzik "Anuluj" powoduje anulowanie oczekiwania na potwierdzenie
   dostarczenia wiadomosci (chilek)
 * okno rozmowy: KTextBrowser -> QTextBrowser (chilek)
 * przycisk "Testuj" w oknie konfiguracji powoduj±cy przetestowanie ustawieñ
@@ -2030,7 +2031,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * naprawa SIGSEGVa przy wysy³aniu SMSów
 * kolejne drobne poprawki
 * mo¿liwo¶æ u¿ycia proxy (sekcja Proxy w kadu.conf)
-* dodanie migaj±cej ikonki przy ³±czeniu, obs³uga aktywnego i 
+* dodanie migaj±cej ikonki przy ³±czeniu, obs³uga aktywnego i
   (hipotetycznie) niewidocznego opisowego
 * uaktualnienie do nowego API libgadu
 * kolejne drobne poprawki, m.in. obs³uga polskich liter w userli¶cie
@@ -2157,7 +2158,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * wpisanie czego¶ innego ni¿ dane personalne w okienku wyszukiwania
   powinno automagicznie zmieniæ rodzaj wyszukiwania
 * poprawi³em polskie znaczki w czat'cie. to mi zajê³o ze 2 minuty. uff.
-* ci±g dalszy gwa³cenia sieci... 
+* ci±g dalszy gwa³cenia sieci...
 * dopóki nie wymy¶lê czego¶ lepszego, sieæ leci po QTimer i select().
   teraz przynajmniej zachowuje siê bardziej przewidywalnie...
 * naprawione gg_debug_level, wywalone stare fix32(), libgg.h

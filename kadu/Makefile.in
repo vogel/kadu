@@ -158,7 +158,7 @@ $(PTHREAD_LDFLAGS) -rdynamic $(OPENSSL_LIBS)
 
 AM_CPPFLAGS = $(PTHREAD_CPPFLAGS) -DQT_THREAD_SUPPORT -D_REENTRANT
 
-EXTRA_DIST = hi16-app-kadu.png hi32-app-kadu.png hi48-app-kadu.png kadu.desktop
+EXTRA_DIST = hi16-app-kadu.png hi22-app-kadu.png hi24-app-kadu.png hi32-app-kadu.png hi48-app-kadu.png kadu.desktop
 CLEANFILES = *_moc.cpp $(PHEADERS_CLEANFILES)
 subdir = kadu
 mkinstalldirs = $(SHELL) $(top_srcdir)/admin/mkinstalldirs
@@ -522,6 +522,8 @@ install-data-local:
 		$(mkinstalldirs) "$(DESTDIR)/usr/share/pixmaps/"; \
 		$(INSTALL_DATA) hi48-app-kadu.png "$(DESTDIR)/usr/share/pixmaps/kadu-48.png"; \
 		$(INSTALL_DATA) hi32-app-kadu.png "$(DESTDIR)/usr/share/pixmaps/kadu.png"; \
+		$(INSTALL_DATA) hi24-app-kadu.png "$(DESTDIR)/usr/share/pixmaps/kadu-24.png"; \
+		$(INSTALL_DATA) hi22-app-kadu.png "$(DESTDIR)/usr/share/pixmaps/kadu-22.png"; \
 		$(INSTALL_DATA) hi16-app-kadu.png "$(DESTDIR)/usr/share/pixmaps/kadu-16.png"; \
 		echo ""; \
 		echo "Icons installed to $(DESTDIR)/usr/share/pixmaps"; \
