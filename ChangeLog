@@ -95,6 +95,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   otwarte, tylko uaktywnie to poprzednie (adrian)
 * poprawione zapisywanie sciezek do zestawow (nie dubluja sie)
   aby odczytac plik z konfiguracja wystarczy "r" a nie "rw"  (pawel_p)
+* poprawki/rozbudowa modulu autoresponder przyslane przez Daniela Rode.
+  prawidlowo dziala przy "tylko dla znajomych" i czyta plik autoresponder.conf.
+  od dzisiaj Daniel jest oficjalnym opiekunem tego modulu (adrian)
 
 +++ wersja 0.3.6 (22.11.2003)
 * je¶li klikniemy na jaki¶ kontakt w userboxie, od którego otrzymali¶my jak±¶

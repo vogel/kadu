@@ -13,6 +13,7 @@
 #include "message_box.h"
 #include "gadu.h"
 #include "status.h"
+#include "config_file.h"
 
 extern "C" void init_module()
 {
@@ -40,9 +41,19 @@ AutoResponder::~AutoResponder()
 
 void AutoResponder::chatReceived(UinsList senders,const QString& msg,time_t time)
 {
-	int status=getActualStatus();
-	if(status==GG_STATUS_BUSY||status==GG_STATUS_BUSY_DESCR)
-		gadu->sendMessage(senders,"KADU AUTORESPONDER: Thanks for your message. User is not currently available.");
+	int status = getActualStatus();
+
+	if(status == GG_STATUS_FRIENDS_MASK | GG_STATUS_BUSY 
+			|| status == GG_STATUS_FRIENDS_MASK | GG_STATUS_BUSY_DESCR 
+			|| status == GG_STATUS_BUSY 
+			|| status == GG_STATUS_BUSY_DESCR) {
+		
+		ConfigFile config(ggPath(QString("autoresponder.conf")));
+		QString message = config.readEntry("General", "Response", 
+				"KADU AUTORESPONDER: Thanks for your message. User is not currently available.");
+		
+		gadu->sendMessage(senders, message);
+	}
 }
 
 AutoResponder* autoresponder;
