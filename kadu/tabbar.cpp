@@ -26,11 +26,20 @@ struct QTabPrivate;
 
 KaduTabBar::KaduTabBar(QWidget *parent, const char *name)
 	: QTabBar(parent, name) {
+	fprintf(stderr, "KK KaduTabBar::KaduTabBar()\n");
 	setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred));
+	lstatic2 = new QPtrList<QTab>;
+}
+
+KaduTabBar::~KaduTabBar() {
+	fprintf(stderr, "KK KaduTabBar::~KaduTabBar()\n");
+	delete lstatic2;
+	lstatic2 = 0;
 }
 
 void KaduTabBar::layoutTabs() {
-	if (tabList()->isEmpty())
+	fprintf(stderr, "KK KaduTabBar::layoutTabs()\n");
+	if (lstatic2->isEmpty())
 		return;
 
 	int hframe, vframe, overlap;
@@ -44,9 +53,9 @@ void KaduTabBar::layoutTabs() {
 	QTab *t;
 	bool reverse = QApplication::reverseLayout();
 	if (reverse)
-		t = tabList()->last();
+		t = lstatic2->last();
 	else
-		t = tabList()->first();
+		t = lstatic2->first();
 	while (t) {
 		int lw = fm.width(t->text());
 		lw -= t->text().contains('&') * fm.width('&');
@@ -67,21 +76,21 @@ void KaduTabBar::layoutTabs() {
 		x += t->rect().height() - overlap;
 		r = r.unite(t->rect());
 		if (reverse)
-			t = tabList()->prev();
+			t = lstatic2->prev();
 		else
-			t = tabList()->next();
+			t = lstatic2->next();
 		}
-	for (t = tabList()->first(); t; t = tabList()->next())
+	for (t = lstatic2->first(); t; t = lstatic2->next())
 		t->setRect(QRect(t->rect().left(), t->rect().top(), r.width(), t->rect().height()));
 }
 
 QSize KaduTabBar::sizeHint() {
-	QTab *t = tabList()->first();
+	fprintf(stderr, "KK KaduTabBar::sizeHint()\n");
+	QTab *t = lstatic2->first();
 	if (t) {
 		QRect r(t->rect());
-		while ((t = tabList()->next()) != 0)
+		while ((t = lstatic2->next()) != 0)
 			r = r.unite(t->rect());
-		r.setHeight(1000);
 		return r.size().expandedTo(QApplication::globalStrut());
 		}
 	else {
@@ -90,6 +99,7 @@ QSize KaduTabBar::sizeHint() {
 }
 
 void KaduTabBar::paint(QPainter *p, QTab *t, bool selected) const {
+	fprintf(stderr, "KK KaduTabBar::paint()\n");
 	QStyle::SFlags flags = QStyle::Style_Default;
 
 	if (isEnabled() && t->isEnabled())
@@ -130,6 +140,21 @@ void KaduTabBar::paint(QPainter *p, QTab *t, bool selected) const {
 	p->restore();
 }
 
-void KaduTabBar::paintLabel(QPainter *p, const QRect &r, QTab *t, bool selected) const {
-	QTabBar::paintLabel(p, r, t, selected);
+int KaduTabBar::insertTab(QTab *newTab, int index)
+{
+	fprintf(stderr, "KK KaduTabBar::insertTab()\n");
+	if (index < 0 || index > int(lstatic2->count()))
+		lstatic2->append(newTab);
+	else
+		lstatic2->insert(index, newTab);
+	int id = QTabBar::insertTab(newTab, index);
+
+	return id;
+}
+
+void KaduTabBar::removeTab(QTab *t)
+{
+	fprintf(stderr, "KK KaduTabBar::removeTab()\n");
+	lstatic2->remove(t);
+	QTabBar::removeTab(t);
 }
