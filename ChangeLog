@@ -26,6 +26,8 @@
 * configure: kolejne poprawki dla FreeBSD (adrian)
 * je¶li usuniemy ostatniego u¿ytkownika z ostatniej grupy innej ni¿ domy¶lna
   lista u¿ytkowników prze³±cza siê na listê wszystkich u¿ytkowników (chilek)
+* okno konfiguracja -> zak³adka powiadom: listy u¿ytkowników posortowane,
+  a ponadto nie wy¶wietlaj± siê tam osoby, które nie maj± numerów GG (chilek)
 
 +++ wersja 0.3.3-rc2
 * sporo poprawek dla FreeBSD (adrian)

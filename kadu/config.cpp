@@ -755,10 +755,11 @@ void ConfigDialog::setupTab4(void) {
 
 	i = 0;
 	while (i < userlist.count()) {
-		if (!userlist[i].notify)
-			e_availusers->insertItem(userlist[i].altnick);
-		else
-			e_notifies->insertItem(userlist[i].altnick);
+		if (userlist[i].uin)
+			if (!userlist[i].notify)
+				e_availusers->insertItem(userlist[i].altnick);
+			else
+				e_notifies->insertItem(userlist[i].altnick);
 		i++;
 		}
 
