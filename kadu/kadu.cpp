@@ -1492,7 +1492,7 @@ void Kadu::setStatus(int status) {
 		}	
 	if (config.servers.count() && !config.default_servers && inet_addr(config.servers[server_nr].latin1()) != INADDR_NONE) {
 		loginparams.server_addr = inet_addr(config.servers[server_nr].latin1());
-		loginparams.server_port = 8074;
+		loginparams.server_port = config.default_port;
 		server_nr++;
 		if (server_nr >= config.servers.count())
 			server_nr = 0;
@@ -1500,7 +1500,7 @@ void Kadu::setStatus(int status) {
 	else {
 		if (server_nr) {
 			loginparams.server_addr = inet_addr(gg_servers[server_nr - 1]);
-			loginparams.server_port = 8074;
+			loginparams.server_port = config.default_port;
 			}
 		else {
 			loginparams.server_addr = 0;

@@ -109,7 +109,7 @@ class ConfigDialog : public QTabDialog	{
 		QLineEdit *e_extip;
 		QLineEdit *e_extport;
 		QCheckBox *b_defserver;
-		QVGroupBox *g_server;
+		QHBox	*serverbox;
 		QLineEdit *e_server;
 		QVGroupBox *g_proxy;
 		QCheckBox *b_useproxy;
@@ -117,6 +117,7 @@ class ConfigDialog : public QTabDialog	{
 		QLineEdit *e_proxyport;
 		QLineEdit *e_proxyuser;
 		QLineEdit *e_proxypassword;
+		QComboBox *cb_portselect;
 
 		QComboBox *cb_chatfont;
 		QComboBox *cb_chatfontsize;
@@ -240,6 +241,7 @@ struct config {
 	int extport;
 	QStringList servers;
 	bool default_servers;
+	int default_port;
 
 	bool dock;
 	bool rundocked;

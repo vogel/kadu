@@ -83,6 +83,7 @@ void loadKaduConfig(void) {
 	config.extport = konf->readNumEntry("ExternalPort", 0);
 	config.servers = QStringList::split(";", konf->readEntry("Server", ""));
 	config.default_servers = konf->readBoolEntry("isDefServers",true);
+	config.default_port = konf->readNumEntry("DefaultPort", 8074);
 	server_nr = 0;
 
 	config.dock = konf->readBoolEntry("UseDocking",true);
@@ -220,6 +221,7 @@ void saveKaduConfig(void) {
 	konf->writeEntry("ExternalPort", config.extport);
 	konf->writeEntry("isDefServers",config.default_servers);
 	konf->writeEntry("Server", config.servers.join(";"));
+	konf->writeEntry("DefaultPort",config.default_port);
 
 	konf->writeEntry("UseDocking",config.dock);
 	konf->writeEntry("RunDocked",config.rundocked);	
@@ -806,20 +808,31 @@ void ConfigDialog::setupTab5(void) {
 	QLabel *l2 = new QLabel(i18n("External TCP port:"),extportbox);
 	e_extport = new QLineEdit(extportbox);
 
-	b_defserver = new QCheckBox(i18n("Use default servers"),box5);
-	b_defserver->setChecked(config.default_servers);
-
-	g_server = new QVGroupBox(box5);
-	g_server->setTitle(i18n("Servers"));
+	QVGroupBox *g_server = new QVGroupBox(box5);
+	g_server->setTitle(i18n("Servers properties"));
 	g_server->setMargin(2);
-	g_server->setEnabled(!config.default_servers && config.servers.count() && inet_addr(config.servers[0].latin1()) != INADDR_NONE);
+//	g_server->setEnabled(!config.default_servers && config.servers.count() && inet_addr(config.servers[0].latin1()) != INADDR_NONE);
 
-	QHBox *serverbox = new QHBox(g_server);
+	b_defserver = new QCheckBox(i18n("Use default servers"),g_server);
+	b_defserver->setChecked(config.default_servers);
+	       
+	serverbox = new QHBox(g_server);
 	serverbox->setSpacing(5);
+	serverbox->setEnabled(!config.default_servers && config.servers.count() && inet_addr(config.servers[0].latin1()) != INADDR_NONE);
+	
 	QLabel *l3 = new QLabel(i18n("IP addresses:"),serverbox);
 	e_server = new QLineEdit(serverbox);
 	e_server->setText(config.servers.join(";"));
 	
+	QHBox *portserverbox = new QHBox(g_server);
+	serverbox->setSpacing(5);
+	QLabel *lserverport = new QLabel(i18n("Default port to connect servers"),portserverbox);
+	
+	cb_portselect = new QComboBox(portserverbox);
+        cb_portselect->insertItem("8074");
+	cb_portselect->insertItem("443");
+        cb_portselect->setCurrentText(QString::number(config.default_port));
+						
 	b_useproxy = new QCheckBox(i18n("Use proxy server"),box5);
 
 	g_proxy = new QVGroupBox(box5);
@@ -1095,9 +1108,7 @@ void ConfigDialog::ifDccIpEnabled(bool toggled) {
 }
 
 void ConfigDialog::ifDefServerEnabled(bool toggled) {
-	g_server->setEnabled(!toggled);
-//	if (!toggled)
-//	    e_server->setText(config.servers.join(";"));
+	serverbox->setEnabled(!toggled);
 }
 
 void ConfigDialog::ifUseProxyEnabled(bool toggled) {
@@ -1527,9 +1538,9 @@ void ConfigDialog::updateConfig(void) {
 	if (!b_defserver->isChecked() && i == tmpservers.count())
 		config.servers = QStringList::split(";", e_server->text());
 	config.default_servers = b_defserver->isChecked();
-//	else
-//		config.servers = "";
 	server_nr = 0;
+
+	config.default_port = atoi(cb_portselect->currentText().latin1());
 
 	config.useproxy = b_useproxy->isChecked() && inet_addr(e_proxyserver->text().latin1()) != INADDR_NONE
 		&& atoi(e_proxyport->text().latin1()) > 1023;

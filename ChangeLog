@@ -43,9 +43,14 @@
   ale wykorzystuje ju¿ nowy format plików historii (chilek)
 * porz±dki z czasami zdarzeñ (chilek)
 * okno rozmowy: gdy otwieramy pojawia siê w nim 10 ostatnich wypowiedzi
-  z historii rozmowy (chilek)
+   z historii rozmowy (chilek)
 * historie rozmów: optymalizacja obs³ugi historii rozmów - wprowadzenie plików
   z indeksami wpisów historii (chilek)
+* mozliwo¶æ ustawienia domy¶lnego portu na który kadu ma siê ³±czyæ z serwerami
+  gg. Przy ustawieniu serwery domy¶lne, kadu ³±cz±c siê z hubem - dostaje dane
+  i ustawienie portu nie jest brane pod uwagê. Dopiero przy ³±czeniu siê z pozosta³ymi
+  serwerami, ustawienie portu jest uwzglêdniane. Przy w³asnych wpisach ip serwerów,
+  kadu siê ³±czu odrazu z danym ip na ustawiony port (mast3r)
 
 +++ wersja 0.3.3-final
 * ikonka wiadomo¶ci i ikon statusu "ukryty" z telefonikiem
