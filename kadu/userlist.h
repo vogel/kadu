@@ -27,7 +27,7 @@ struct UserListElement
 	QString first_name;
 	QString last_name;
 	QString nickname;
-	QString comment;
+	QString altnick;
 	QString mobile;
 	QString group;
 	QString description;
@@ -46,7 +46,7 @@ class UserList : public QValueList<UserListElement>
 		UserList();
 		UserListElement& byUin(uin_t uin);
 		UserListElement& byNick(QString nickname);
-		UserListElement& byComment(QString comment);
+		UserListElement& byAltNick(QString altnick);
 		bool containsUin(uin_t uin);
 		void addUser(const QString FirstName,const QString LastName,
 			const QString NickName,const QString AltNick,

@@ -44,10 +44,10 @@ UserListElement& UserList::byNick(QString nickname)
 	// Kadu Panic :) What we should do here???
 };
 
-UserListElement& UserList::byComment(QString comment)
+UserListElement& UserList::byAltNick(QString altnick)
 {
 	for(iterator i=begin(); i!=end(); i++)
-		if((*i).comment==comment)
+		if((*i).altnick==altnick)
 			return (*i);
 	fprintf(stderr, "KK UserList::byComment(): Panic! %s not exists\n",(const char*)comment.local8Bit());
 	// Kadu Panic :) What we should do here???
@@ -70,7 +70,7 @@ void UserList::addUser(const QString FirstName,const QString LastName,
 	e.first_name = FirstName;
 	e.last_name = LastName;
 	e.nickname = NickName;
-	e.comment = AltNick;
+	e.altnick = AltNick;
 	e.mobile = Mobile;
 	e.uin = atoi(Uin.local8Bit());
 	e.status = Status;
@@ -111,7 +111,7 @@ bool UserList::writeToFile(char *filename)
 	if (!f.open(IO_WriteOnly))
 	{
 		fprintf(stderr,"KK UserList::writeToFile(): Error opening file :(\n");
-		return FALSE;
+		return false;
 	};
 
 //	fchmod(fileno(f), 0600);
@@ -123,9 +123,9 @@ bool UserList::writeToFile(char *filename)
 		s.append(QString(";"));
 		s.append((*i).last_name);
 		s.append(QString(";"));
-		s.append((*i).comment);
-		s.append(QString(";"));
 		s.append((*i).nickname);
+		s.append(QString(";"));
+		s.append((*i).altnick);
 		s.append(QString(";"));
 		s.append((*i).mobile);
 		s.append(QString(";"));
@@ -137,7 +137,7 @@ bool UserList::writeToFile(char *filename)
 		f.writeBlock(s.local8Bit(),s.length());
 	}	    
 	f.close();
-	return TRUE;
+	return true;
 }
 
 bool UserList::readFromFile()
@@ -149,7 +149,7 @@ bool UserList::readFromFile()
 	if(!f.open(IO_ReadOnly))
 	{
 		fprintf(stderr, "KK UserList::readFromFile(): Error opening userlist file");
-		return FALSE;
+		return false;
 	}
 
 	fprintf(stderr, "KK UserList::readFromFile(): File opened successfuly\n");
@@ -164,19 +164,19 @@ bool UserList::readFromFile()
 
 		if (line.find(';')<0)
 		{
-			QString comment=comment.section(' ',0,0);
-			QString uin=comment.section(' ',1,1);
+			QString nickname=line.section(' ',0,0);
+			QString uin=line.section(' ',1,1);
 			if(uin=="")
 				continue;
-			addUser("","","",comment,
+			addUser("","",nickname,nickname,
 				"",uin,GG_STATUS_NOT_AVAIL,"","");
 		}
 		else
 		{	    
 			QString first_name = line.section(';',0,0);
 			QString last_name = line.section(';',1,1);
-			QString comment = line.section(';',2,2);
-			QString nickname = line.section(';',3,3);
+			QString nickname = line.section(';',2,2);
+			QString altnick = line.section(';',3,3);
 			QString mobile = line.section(';',4,4);
 			QString group = line.section(';',5,5);
 			QString uin = line.section(';',6,6);
@@ -204,15 +204,15 @@ bool UserList::readFromFile()
 			if(uin=="")
 				continue;
 				
-			if(nickname=="")
+			if(altnick=="")
 			{
-				if(comment=="")
-					nickname=first_name;
+				if(nickname=="")
+					altnick=first_name;
 				else
-					nickname=comment;
+					altnick=nickname;
 			};
 
-			addUser(first_name,last_name,nickname,comment,
+			addUser(first_name,last_name,nickname,altnick,
 				mobile,uin,GG_STATUS_NOT_AVAIL,group,"");
 
 		};
@@ -229,7 +229,7 @@ bool UserList::readFromFile()
 	};
 
 	f.close();
-    	return TRUE;
+    	return true;
 }
 
 //#include "userlist.moc"
