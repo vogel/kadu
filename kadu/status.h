@@ -42,7 +42,7 @@ class AutoAwayTimer : private QTimer
 	Q_OBJECT
 
 	private slots:
-		void onTimeout();
+		void checkIdleTime();
 
 	public:
 		static void on();
@@ -53,9 +53,10 @@ class AutoAwayTimer : private QTimer
 
 	private:
 		AutoAwayTimer(QObject *parent = 0);
-		static AutoAwayTimer* autoaway_object;
+		static AutoAwayTimer *autoaway_object;
 		bool autoawayed;
 		int beforeAutoAway;
+		int idletime;
 };
 
 #endif

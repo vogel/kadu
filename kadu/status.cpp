@@ -11,6 +11,9 @@
 #include <qfile.h>
 #include <qtextstream.h>
 #include <qdesktopwidget.h>
+#include <qtextstream.h>
+#include <qfile.h>
+#include <qregexp.h>
 
 #include "status.h"
 #include "config_dialog.h"
@@ -98,71 +101,93 @@ void AutoStatusTimer::onTimeout()
 	start(1000, TRUE);
 }
 
-AutoAwayTimer::AutoAwayTimer(QObject* parent) : QTimer(parent,"AutoAwayTimer") {
+AutoAwayTimer::AutoAwayTimer(QObject* parent) : QTimer(parent,"AutoAwayTimer"), idletime(0) {
 	autoawayed = false;
-//	QApplication::desktop()->installEventFilter(this);
-//	QApplication::desktop()->grabMouse();
 	a->installEventFilter(this);
-	connect(this, SIGNAL(timeout()), SLOT(onTimeout()));
-	start(config.autoawaytime * 1000,TRUE);
+	connect(this, SIGNAL(timeout()), SLOT(checkIdleTime()));
+	start(1000, TRUE);
 }
 
+// jesli wciskamy klawisze lub poruszamy myszka w obrebie programu to zerujemy czas nieaktywnosci
 bool AutoAwayTimer::eventFilter(QObject *o,QEvent *e)
 {
-//	kdebug("AutoAwayTimer::eventFilter()\n");
-	if (e->type() == QEvent::KeyPress || e->type() == QEvent::Enter || e->type() == QEvent::MouseMove) {
-		stop();
-		start(config.autoawaytime * 1000, TRUE);
-		if (autoawayed) {
-			kdebug("AutoAwayTimer::eventFilter(type = QEvent::KeyPress or QEvent::Enter): auto away cancelled\n");
-			autoawayed = false;
-			kadu->setStatus(beforeAutoAway);
-//			QApplication::desktop()->releaseMouse();
-//			QApplication::desktop()->releaseKeyboard();
-//			a->sendEvent(o, e);
-			}
-		}
+	if (e->type() == QEvent::KeyPress || e->type() == QEvent::Enter || e->type() == QEvent::MouseMove)
+		idletime = 0;
 	return QObject::eventFilter(o, e);
 }
 
-void AutoAwayTimer::onTimeout()
+//metoda wywolywana co sekunde w celu sprawdzenia czy mamy stac sie "zajeci"
+void AutoAwayTimer::checkIdleTime()
 {
-	if (!autoawayed) {
+	static int kbdirqs = 0;
+	static int mouseirqs = 0;
+	int actkbdirqs, actmouseirqs;
+
+//	sprawdzenie czy wzrosla liczba obsluzonych przerwan klawiatury lub myszki
+	QFile f("/proc/interrupts");
+	if (f.open(IO_ReadOnly)) {
+		QTextStream stream(&f);
+		QString line;
+		QStringList strlist;
+		while (!stream.atEnd() && (line = stream.readLine()) != QString::null) {
+			if (line.contains(QRegExp("keyboard"))) {
+				strlist = QStringList::split(" ", line);
+				actkbdirqs = strlist[1].toUInt();
+				}
+			if (line.contains(QRegExp("(M|m)ouse"))) {
+				strlist = QStringList::split(" ", line);
+				actmouseirqs = strlist[1].toUInt();
+				}
+			}
+		f.close();
+		if (actkbdirqs == kbdirqs && actmouseirqs == mouseirqs)
+			idletime++;
+		else
+			idletime = 0;
+		kbdirqs = actkbdirqs;
+		mouseirqs = actmouseirqs;
+		}
+	else
+		idletime++;
+
+//	czy mamy stac sie "zajeci" po config.autoawaytime sekund nieaktywnosci
+	if (idletime >= config.autoawaytime && !autoawayed) {
 		beforeAutoAway = getActualStatus() & (~GG_STATUS_FRIENDS_MASK);;
-		kdebug("AutoAwayTimer::onTimeout(): checking whether to go auto away, beforeAutoAway = %d\n", beforeAutoAway);
+		kdebug("AutoAwayTimer::checkIdleTime(): checking whether to go auto away, beforeAutoAway = %d\n", beforeAutoAway);
 		switch (beforeAutoAway) {
 			case GG_STATUS_AVAIL_DESCR:
 				kadu->setStatus(GG_STATUS_BUSY_DESCR);
-//				QApplication::desktop()->grabMouse();
-//				QApplication::desktop()->grabKeyboard();
 				autoawayed = true;
 				break;
 			case GG_STATUS_AVAIL:
 				kadu->setStatus(GG_STATUS_BUSY);
-//				QApplication::desktop()->grabMouse();
-//				QApplication::desktop()->grabKeyboard();
 				autoawayed = true;
 				break;
 			default:
-				start(config.autoawaytime * 1000, TRUE);
+				start(1000, TRUE);
 				return;
 			}
-		kdebug("AutoAwayTimer::onTimeout(): I am away!\n");
+		kdebug("AutoAwayTimer::checkIdleTime(): I am away!\n");
 		}
+	else
+//		jesli bylismy "zajeci" to stajemy sie z powrotem "dostepni"
+		if (idletime < config.autoawaytime && autoawayed) {
+			kdebug("AutoAwayTimer::checkIdleTime(): auto away cancelled\n");
+			autoawayed = false;
+			kadu->setStatus(beforeAutoAway);
+			}
+
 //potrzebne na wypadek zerwania polaczenia i ponownego polaczenia sie z statusem innym niz busy*
-	start(config.autoawaytime * 1000, TRUE);
+	start(1000, TRUE);
 }
 
 void AutoAwayTimer::on() {
-	if (autoaway_object == NULL) {
+	if (!autoaway_object)
 		autoaway_object = new AutoAwayTimer();
-		autoaway_object->stop();
-		autoaway_object->start(config.autoawaytime * 1000, TRUE);
-		}
 }
 
-void AutoAwayTimer::off(){
-	if (autoaway_object != NULL){
+void AutoAwayTimer::off() {
+	if (autoaway_object) {
 		delete autoaway_object;
 		autoaway_object = NULL;
 		}

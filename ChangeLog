@@ -34,10 +34,11 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * gdy zrezygnujemy z transmisji pliku nie pojawia siê komunikat o b³êdzie
   transmisji (jz/chilek)
 * obs³uga dns-lookupów w klasie UserList (chilek)
-* pozby³em siê segfaulta przy zamykaniu kadu? (chilek)
 * dodatkowa zmienna do parsowania %v - zwraca revdns gdy ip jest znane (mast3r)
-* poprawka:tytu³ okna rozmowy powinien wyswietlaæ siê poprawnie < i > (kiemlo/mast3r)
-* oczyszczenie kadu.h i kadu.cpp z smieci (mast3r)
+* poprawka: tytu³ okna rozmowy powinien wyswietlaæ siê poprawnie < i > (kiemlo/mast3r)
+* oczyszczenie kadu.h i kadu.cpp ze ¶mieci (mast3r)
+* udoskonalony autoaway - dodatkowo zliczaj±cy przerwania klawiatury i myszki
+  na linuksie (chilek)
 
 +++ wersja 0.3.4-pre2
 * graficzny instalator - instaluj.tcl (googie)
