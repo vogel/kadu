@@ -140,6 +140,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   bardziej ogólne --with-includes, with-libs, with-apps umo¿liwiaj±ce podanie
   ¶cie¿ek, nawet kilku, do wyszukiwania. wp³ywa równie¿ na wyszukiwanie
   bibliotek wymaganych przez modu³y (adrian)
+* drobna poprawka micha³a w configure do ./config.status --recheck (adrian)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,

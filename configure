@@ -6926,7 +6926,7 @@ cat >>confdefs.h <<_ACEOF
 _ACEOF
 
 
-                                                                      ac_config_files="$ac_config_files ./Makefile kadu/Makefile translations/Makefile varia/Makefile modules/Makefile varia/scripts/kadu-config kadu/modules_static.cpp"
+                                                                      ac_config_files="$ac_config_files Makefile kadu/Makefile translations/Makefile varia/Makefile modules/Makefile varia/scripts/kadu-config kadu/modules_static.cpp"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -7477,7 +7477,7 @@ for ac_config_target in $ac_config_targets
 do
   case "$ac_config_target" in
   # Handling of arguments.
-  "./Makefile" ) CONFIG_FILES="$CONFIG_FILES ./Makefile" ;;
+  "Makefile" ) CONFIG_FILES="$CONFIG_FILES Makefile" ;;
   "kadu/Makefile" ) CONFIG_FILES="$CONFIG_FILES kadu/Makefile" ;;
   "translations/Makefile" ) CONFIG_FILES="$CONFIG_FILES translations/Makefile" ;;
   "varia/Makefile" ) CONFIG_FILES="$CONFIG_FILES varia/Makefile" ;;

@@ -591,7 +591,7 @@ fi
 AC_DEFINE_UNQUOTED(BINDIR,"$prefix/bin",[Executable files prefix])
 AC_DEFINE_UNQUOTED(DATADIR,"$prefix/share",[Data files prefix])
 
-AC_CONFIG_FILES([./Makefile kadu/Makefile translations/Makefile varia/Makefile modules/Makefile varia/scripts/kadu-config kadu/modules_static.cpp])
+AC_CONFIG_FILES([Makefile kadu/Makefile translations/Makefile varia/Makefile modules/Makefile varia/scripts/kadu-config kadu/modules_static.cpp])
 AC_OUTPUT
 
 echo
