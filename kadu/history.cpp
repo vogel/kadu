@@ -1090,12 +1090,12 @@ HistorySearch::HistorySearch(QWidget *parent, UinsList uins) : QDialog(parent), 
 	QToolTip::add(to_min_cob, i18n("minute"));
 
 	criteria_bg = new QVButtonGroup(i18n("Find Criteria"), this);
-	phrase_rb = new QRadioButton(i18n("&Phrase"), criteria_bg);
+	phrase_rb = new QRadioButton(i18n("&Pattern"), criteria_bg);
 	status_rb = new QRadioButton(i18n("&Status"), criteria_bg);
 	criteria_bg->insert(phrase_rb, 1);
 	criteria_bg->insert(status_rb, 2);
 
-	phrase_hgb = new QHGroupBox(i18n("Phrase"), this);
+	phrase_hgb = new QHGroupBox(i18n("Pattern"), this);
 	phrase_edit = new QLineEdit(phrase_hgb);
 	status_hgb = new QHGroupBox(i18n("Status"), this);
 	status_cob = new QComboBox(status_hgb);
