@@ -75,6 +75,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * nalozona latka sajmona dodajaca kilka mozliwych sciezek do plikow Arts-a (adrian)
 * zaaplikowany patch michala umozliwiajacy ogladanie
   wielolinijkowych opisow (adrian)
+* zaaplikowany patch uto poprawiajacy wylaczanie wielolinijkowych opisow (adrian)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

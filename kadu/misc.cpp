@@ -437,12 +437,22 @@ QString parse_symbols(QString s, int i, UserListElement &ule, bool escape) {
 				break;
 			case 'd':
 				i++;
-				d=ule.description;
-				if (escape)
-					escapeSpecialCharacters(d);
-				d=d.replace(QRegExp("\n"), QString("<br>"));
-				d=d.replace(QRegExp(" "), QString("&nbsp;"));
-				r+=d;
+				if(config_file.readBoolEntry("Look", "ShowMultilineDecs")) {
+					d=ule.description;
+					if (escape)
+						escapeSpecialCharacters(d);
+					d=d.replace(QRegExp("\n"), QString("<br>"));
+					d=d.replace(QRegExp(" "), QString("&nbsp;"));
+					r+=d;
+				} else {
+				 	if (!escape)
+				 		r+=ule.description;
+				 	else {
+				 		d=ule.description;
+			 			escapeSpecialCharacters(d);
+			 			r+=d;
+				 	}
+				}
 				break;
 			case 'i':
 				i++;
