@@ -1150,9 +1150,11 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 	pm->insertItem(msg, i18n("Send message"), KADU_CMD_SEND_MESSAGE);
 	pm->insertItem(i18n("Open chat window"), KADU_CMD_OPEN_CHAT);
 	pm->insertItem(i18n("Send SMS"), KADU_CMD_SMS);
-	if(user.mobile=="")
+	if (!user.mobile.length())
 		pm->setItemEnabled(KADU_CMD_SMS,false);
 	pm->insertItem(loadIcon("filesave.png"), i18n("Send file"), KADU_CMD_SEND_FILE);
+	if (dccSocketClass::count >= 8)
+		pm->setItemEnabled(KADU_CMD_SEND_FILE, false);
 	if (user.status == GG_STATUS_AVAIL || user.status == GG_STATUS_AVAIL_DESCR ||
 		user.status == GG_STATUS_BUSY || user.status == GG_STATUS_BUSY_DESCR)
 		pm->setItemEnabled(KADU_CMD_SEND_FILE, true);
@@ -1739,11 +1741,13 @@ void Kadu::eventHandler(int state) {
 			UserListElement user;
 			user = userlist.byUin(e->event.msg.sender);
 			dccSocketClass *dcc;
-			dcc_new = gg_dcc_get_file(user.ip, user.port, config.uin, e->event.msg.sender);
-			if (dcc_new) {
-				dcc = new dccSocketClass(dcc_new);
-				connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), this, SLOT(dccFinished(dccSocketClass *)));		    
-				dcc->initializeNotifiers();
+			if (dccSocketClass::count < 8) {
+				dcc_new = gg_dcc_get_file(user.ip, user.port, config.uin, e->event.msg.sender);
+				if (dcc_new) {
+					dcc = new dccSocketClass(dcc_new);
+					connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), this, SLOT(dccFinished(dccSocketClass *)));		    
+					dcc->initializeNotifiers();
+					}
 				}
 			}
 		else {
