@@ -33,6 +33,7 @@
 #define	HISTORYMANAGER_ENTRY_STATUS	0x00000010
 #define	HISTORYMANAGER_ENTRY_SMSSEND	0x00000020
 #define HISTORYMANAGER_ENTRY_ALL	0x0000003f
+#define HISTORYMANAGER_ENTRY_ALL_MSGS	0x0000002f
 
 struct HistoryEntry {
 	int type;
@@ -65,10 +66,13 @@ class History : public QDialog {
 		void prevBtnClicked();
 		void nextBtnClicked();
 		void searchBtnClicked();
+		void searchNextBtnClicked();
 
 	protected:
 		void formatHistoryEntry(QString &text, const HistoryEntry &entry);
 		void showHistoryEntries(int from, int count);
+		void searchHistory();
+		QString gaduStatus2symbol(unsigned int status);
 
 		QTextBrowser *body;
 		UinsList uins;
@@ -123,7 +127,7 @@ class HistoryManager {
 		int getHistoryEntriesCount(UinsList uins);
 		int getHistoryEntriesCount(QString mobile = QString::null);
 		QValueList<HistoryEntry> getHistoryEntries(UinsList uins, int from, int count, int mask = HISTORYMANAGER_ENTRY_ALL);
-
+		int getHistoryEntryIndexByDate(UinsList uins, QDateTime &date, bool endate = false);
 		static QString getFileNameByUinsList(UinsList &uins);
 		static QStringList mySplit(const QChar &sep, const QString &str);
 

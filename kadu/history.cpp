@@ -869,6 +869,45 @@ QStringList HistoryManager::mySplit(const QChar &sep, const QString &str) {
 	return strlist;
 }
 
+int HistoryManager::getHistoryEntryIndexByDate(UinsList uins, QDateTime &date, bool enddate)
+{
+	kdebug("HistoryManager::getHistoryEntryIndexByDate()\n");
+
+	QValueList<HistoryEntry> entries;
+	int count = getHistoryEntriesCount(uins);
+	int start, end;
+	
+	start = 0;
+	end = count - 1;
+	while (end - start >= 0) {
+		kdebug("HistoryManager::getHistoryEntryIndexByDate(): start = %d, end = %d\n", start, end);
+		entries = getHistoryEntries(uins, start + ((end - start) / 2), 1);
+		if (entries.count())
+			if (date < entries[0].date)
+				end -= ((end - start) / 2) + 1;
+			else
+				if (date > entries[0].date)
+					start += ((end - start) / 2) + 1;
+				else
+					return start + ((end - start) / 2);
+		}
+	if (end < 0) {
+		kdebug("HistoryManager::getHistoryEntryIndexByDate(): return minus one\n");
+		return -1;
+		}
+	if (start >= count) {
+		kdebug("HistoryManager::getHistoryEntryIndexByDate(): return count\n");
+		return count;
+		}
+	if (enddate) {
+		entries = getHistoryEntries(uins, start, 1);
+		if (entries.count() && date < entries[0].date)
+			start--;
+		}
+	kdebug("HistoryManager::getHistoryEntryIndexByDate(): return %d\n", start);
+	return start;
+}
+
 History::History(UinsList uins): uins(uins) {
 	int i;
 	
@@ -905,6 +944,7 @@ History::History(UinsList uins): uins(uins) {
 	connect(prevbtn, SIGNAL(clicked()), this, SLOT(prevBtnClicked()));
 	connect(nextbtn, SIGNAL(clicked()), this, SLOT(nextBtnClicked()));
 	connect(searchbtn, SIGNAL(clicked()), this, SLOT(searchBtnClicked()));
+	connect(searchnextbtn, SIGNAL(clicked()), this, SLOT(searchNextBtnClicked()));
 //	connect(closebtn, SIGNAL(clicked()), this, SLOT(close()));
 
 	resize(500,400);
@@ -1019,9 +1059,125 @@ void History::searchBtnClicked() {
 	hs = new HistorySearch(this, uins);
 //	hs->resetBtnClicked();
 	hs->setDialogValues(findrec);
-	if (hs->exec() == QDialog::Accepted)
+	if (hs->exec() == QDialog::Accepted) {
 		findrec = hs->getDialogValues();
+		findrec.actualrecord = -1;
+		searchHistory();
+		}
 	delete hs;
+}
+
+void History::searchNextBtnClicked() {
+	kdebug("History::searchNextBtnClicked()\n");
+	searchHistory();
+}
+
+QString History::gaduStatus2symbol(unsigned int status) {
+	switch (status) {
+		case GG_STATUS_AVAIL:
+		case GG_STATUS_AVAIL_DESCR:
+			return QString("avail");
+		case GG_STATUS_BUSY:
+		case GG_STATUS_BUSY_DESCR:
+			return QString("busy");
+		case GG_STATUS_INVISIBLE:
+		case GG_STATUS_INVISIBLE_DESCR:
+			return QString("invisible");
+		default:
+			return QString("notavail");
+		}
+}
+
+void History::searchHistory() {
+	kdebug("History::searchHistory()\n");
+	int start, end, count, total, i, len;
+	QDateTime fromdate, todate;
+	QValueList<HistoryEntry> entries;
+	QRegExp rxp;
+
+	count = history.getHistoryEntriesCount(uins);
+	if (findrec.fromdate.isNull())
+		start = 0;
+	else
+		start = history.getHistoryEntryIndexByDate(uins, findrec.fromdate);
+	if (findrec.todate.isNull())
+		end = count - 1;
+	else
+		end = history.getHistoryEntryIndexByDate(uins, findrec.todate, true);
+	kdebug("History::searchHistory(): start = %d, end = %d\n", start, end);
+	if (start > end || (start == end && (start == -1 || start == count)))
+		return;
+	if (start == -1)
+		start = 0;
+	if (end == count)
+		end--;
+	entries = history.getHistoryEntries(uins, start, 1);
+	fromdate = entries[0].date;
+	entries = history.getHistoryEntries(uins, end, 1);
+	todate = entries[0].date;	
+	kdebug("History::searchHistory(): start = %s, end = %s\n",
+		fromdate.toString("dd.MM.yyyy hh:mm:ss").latin1(),
+		todate.toString("dd.MM.yyyy hh:mm:ss").latin1());
+	if (findrec.actualrecord == -1)
+		findrec.actualrecord = findrec.reverse ? end : start;
+	if ((findrec.actualrecord >= end && !findrec.reverse)
+		|| (findrec.actualrecord <= start && findrec.reverse))
+		return;
+	if (findrec.reverse)
+		total = findrec.actualrecord - start + 1;
+	else
+		total = end - findrec.actualrecord + 1;
+	kdebug("History::searchHistory(): findrec.type = %d\n", findrec.type);
+	rxp.setPattern(findrec.data);
+	setEnabled(false);
+	if (findrec.reverse)
+		do {
+			len = total > 100 ? 100 : total;
+			entries = history.getHistoryEntries(uins, findrec.actualrecord - len + 1, len);
+			for (i = 0; i < entries.count(); i++)
+				if ((findrec.type == 1 &&
+					(entries[entries.count() - i - 1].type & HISTORYMANAGER_ENTRY_ALL_MSGS)
+					&& entries[entries.count() - i - 1].message.contains(rxp)) ||
+					(findrec.type == 2 &&
+					(entries[entries.count() - i - 1].type & HISTORYMANAGER_ENTRY_STATUS)
+					&& findrec.data == gaduStatus2symbol(entries[entries.count() - i - 1].status))) {
+					kdebug("History::searchHistory(): showHistoryEntries()\n");
+					showHistoryEntries(findrec.actualrecord - i,
+						findrec.actualrecord - i + 99 < count ? 100
+						: count - findrec.actualrecord + i);
+					break;
+					}
+			findrec.actualrecord -= i + (i < entries.count());
+			total -= i + (i < entries.count());
+			kdebug("History::searchHistory(): actualrecord = %d, i = %d, total = %d\n",
+				findrec.actualrecord, i, total);
+			a->processEvents();
+		} while (total > 0 && i == entries.count());
+	else
+		do {
+			len = total > 100 ? 100 : total;
+			entries = history.getHistoryEntries(uins, findrec.actualrecord, len);
+			for (i = 0; i < entries.count(); i++)
+				if ((findrec.type == 1 && (entries[i].type & HISTORYMANAGER_ENTRY_ALL_MSGS)
+					&& entries[i].message.contains(rxp)) ||
+					(findrec.type == 2 &&
+					(entries[i].type & HISTORYMANAGER_ENTRY_STATUS) &&
+					findrec.data == gaduStatus2symbol(entries[i].status))) {
+					kdebug("History::searchHistory(): showHistoryEntries()\n");
+					showHistoryEntries(findrec.actualrecord + i,
+						findrec.actualrecord + 99 < count ? 100
+						: count - findrec.actualrecord - i);
+					break;
+					}
+			findrec.actualrecord += i + (i < entries.count());
+			total -= i + (i < entries.count());
+			kdebug("History::searchHistory(): actualrecord = %d, i = %d, total = %d\n",
+				findrec.actualrecord, i, total);
+			a->processEvents();
+		} while (total > 0 && i == entries.count());
+	if (findrec.actualrecord < 0)
+		findrec.actualrecord = 0;
+	setEnabled(true);
 }
 
 HistorySearch::HistorySearch(QWidget *parent, UinsList uins) : QDialog(parent), uins(uins) {
