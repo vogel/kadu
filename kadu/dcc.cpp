@@ -239,8 +239,10 @@ void dccSocketClass::askAccept(void) {
 
 			fi.setFile(f);
 			if (fi.exists() && fi.size() < dccsock->file_info.size) {
+				str.truncate(0);
+				str = QString(i18n("File %1 already exists.")).arg(f);
 				switch (QMessageBox::information(0, i18n("save file"),
-					i18n("File exists."), i18n("Overwrite"), i18n("Resume"),
+					str, i18n("Overwrite"), i18n("Resume"),
 					i18n("Cancel"), 0, 2)) {
 					case 0:
 						kdebug("dccSocketClass::askAccept(): truncating file %s\n", f.latin1());
