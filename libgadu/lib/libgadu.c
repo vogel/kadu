@@ -1,4 +1,4 @@
-/* $Id: libgadu.c,v 1.38 2004/10/02 02:53:46 joi Exp $ */
+/* $Id: libgadu.c,v 1.39 2004/10/15 15:07:52 joi Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -71,7 +71,7 @@ static char rcsid[]
 #ifdef __GNUC__
 __attribute__ ((unused))
 #endif
-= "$Id: libgadu.c,v 1.38 2004/10/02 02:53:46 joi Exp $";
+= "$Id: libgadu.c,v 1.39 2004/10/15 15:07:52 joi Exp $";
 #endif 
 
 /*
@@ -416,7 +416,23 @@ int gg_write(struct gg_session *sess, const char *buf, int length)
 		}
 	} else
 #endif
-		res = write(sess->fd, buf, length);
+	{
+		int written = 0;
+
+		while (written<length) {
+			res = write(sess->fd, buf+written, length-written);
+
+			if (res==-1) {
+				if (errno==EAGAIN)
+					continue;
+				else
+					break;
+			} else {
+				written+=res;
+				res=written;
+			}
+		}
+	}
 
 	return res;
 }
