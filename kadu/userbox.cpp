@@ -183,7 +183,7 @@ void KaduListBoxPixmap::calculateSize(const QString &text, int width, QStringLis
 		return;
 	}
 
-	int len, tmplen;
+	int tmplen;
 	
 	out.clear();
 	height=0;
@@ -505,7 +505,7 @@ void UserBox::refresh()
 					if (has_mobile)
 						pix = icons_manager.loadIcon("InvisibleWithDescriptionMobile");
 					else
-						pix = icons_manager.loadIcon("OnlineWithDescription");
+						pix = icons_manager.loadIcon("InvisibleWithDescription");
 					break;
 				case GG_STATUS_INVISIBLE:
 				case GG_STATUS_INVISIBLE2:

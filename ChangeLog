@@ -170,6 +170,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * KID - okno danych osobistych (KID/michal)
 * pi±ty patch porz±dkuj±cy vogela: edycja danych osobistych (adrian)
 * szybki fix Vogela na wyszukiwanie w katalogu tylko aktywnych (vogel/michal)
+* jesli sie ma ustawiony status niewidoczny z opisem to jest to prawid³owo
+  wy¶wietlane (michal)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
