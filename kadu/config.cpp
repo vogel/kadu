@@ -1504,11 +1504,15 @@ void ConfigDialog::updateConfig(void) {
 	if (!config.addtodescription)
 		kadu->autostatus_timer->stop();
 
-	config.trayhint = b_trayhint->isChecked();
 //potrzebne aby zmiany weszly w "zycie" kadu ;)
-	trayicon->reconfigHint();
-	config.hinterror = b_hinterror->isChecked();
-	config.hinttime = atoi(e_hinttime->text().latin1());
+	if (trayicon) {
+		config.trayhint = b_trayhint->isChecked();
+		trayicon->reconfigHint();
+		config.hinterror = b_hinterror->isChecked();
+		config.hinttime = atoi(e_hinttime->text().latin1());
+		}
+	else
+		config.trayhint = config.hinterror = false;	
 
 	if (!b_showdesc->isChecked() && config.showdesc) {
 		kadu->hidedesc();
