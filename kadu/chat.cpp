@@ -74,6 +74,11 @@ void CustomInput::keyPressEvent(QKeyEvent * e) {
 			else if (e->key() == Key_U)
 				emit specialKeyPressed(CustomInput::KEY_UNDERLINE);
 			}
+		else
+			if (e->key() == Key_Minus) {
+				insert("-");
+				return;
+				}
 		QMultiLineEdit::keyPressEvent(e);
 		}
 }

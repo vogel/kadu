@@ -27,8 +27,6 @@ extern QValueList<UinsList> wasFirstMsgs;
 
 class EmoticonSelector;
 
-class Chat;
-
 class CustomInput : public QMultiLineEdit {
 	Q_OBJECT
 	public:
