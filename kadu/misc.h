@@ -468,7 +468,7 @@ class KaduTextBrowser : public QTextBrowser, QToolTip
 			oddzielane od boków okna i od siebie
 			separatorami w kolorze t³a.
 		**/
-		void setParagraphSeparators(bool enabled, int width=3);
+		void setParagraphSeparators(bool enabled, int width=2);
 		/**
 			Nadpisane dla wyja¶nienia wieloznaczno¶ci
 		**/
