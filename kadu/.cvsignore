@@ -1,0 +1,6 @@
+.cvsignore
+Makefile
+*_moc.cpp
+.deps
+kadu
+modules_static.cpp

@@ -1,0 +1,5 @@
+cxxflags
+ldflags
+*.d
+*_moc.cpp
+.cvsignore

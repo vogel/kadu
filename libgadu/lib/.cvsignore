@@ -1,0 +1,5 @@
+.depend
+.cvsignore
+Makefile
+libgadu-config.h
+libgadu.pc
