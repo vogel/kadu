@@ -1563,7 +1563,7 @@ Być może nie jest to moduł kompatybilny z Kadu</translation>
     </message>
     <message>
         <source>Required module %1 was not found</source>
-        <translation>Wynagany moduł %1 nie został znaleziony</translation>
+        <translation>Wymagany moduł %1 nie został znaleziony</translation>
     </message>
     <message>
         <source>Module %1 is already active</source>
