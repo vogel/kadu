@@ -1,22 +1,21 @@
 #!/bin/bash
 #################################################################
-#    Application Setup Script v0.1.0   (c) 2002 A.Smarzewski    #
-# This program is free software. You can redistribute it and/or #
-#  modify it under the terms of the GNU General Public License  #
-#                Polish vesion (c) 2002 R. Krzystyniak          #
+#    Application Setup Script v0.1.1   (c) 2002 A.Smarzewski  R.Krzystyniak   #
+#            This program is free software. You can redistribute it and/or #
+#           modify it under the terms of the GNU General Public License  #
+#                        Polish vesion (c) 2002 R. Krzystyniak          #
 #################################################################
 
 
-#################################################################
+#   Definicja domy¶lnych warto¶ci dla zmiennych
 
 APP_NAME=KADU
 APP_VER=0.3.3
 APP_DEF_DIR=/usr/local
-#################################################################
+# $1 - nazwy katalogów, $2 - Wartosci domy¶lne
 
+#  Deklaracja funkcji
 
-# $1 - directory name, $2 - default val
-# Response is stored in $REPLY
 function AskForPath()
 {
 	echo -n "Proszê, podaæ ¶cie¿kê do $1 : "
@@ -26,7 +25,7 @@ function AskForPath()
 	fi;
 }
 
-# $1 - path, $2 - file to check, $3 - correct string, $4 - incorrect string
+# $1 - scie¿ka, $2 - plik sprawdzany, $3 - prawid³owy string, $4 - nieprawid³owy string
 function CheckPath()
 {
 	if [ -e $1/$2 ]; then
@@ -40,7 +39,9 @@ function Configure()
 {
 	QTDIR="$QT_DIR"
 	LD_LIBRARY_PATH="$QT_DIR/lib:$LD_LIBRARY_PATH"
+	export QTDIR PATH
 	KDEDIR="$KDE_DIR"
+	export KDE_DIR PATH
 	OPER="Configure"
 	./configure "--prefix=$APP_DIR"
 	WYK=$?
@@ -49,6 +50,7 @@ function Configure()
 	exit
  fi;
 }
+
 function Make()
 {
 	OPER="Kompiluj"
@@ -86,6 +88,7 @@ function Odinstaluj()
         exit
  fi;
 }
+
 function Gratulacje()
 {
 	clear
@@ -132,11 +135,45 @@ function ShowInfo()
 	echo " |		Naci¶nij   I	aby rozpocz±æ instalacjê		      |"
 	echo " |		Naci¶nij   U	aby odinstalowaæ $APP_NAME.			      |"
 	echo " |		Naci¶nij   P	aby uzyskaæ Pomoc za pomoc± programu Links.   |"
-	echo " |		Naci¶nij   E	aby zakoñczyæ program instalacyjny.	      |"	
+	echo " |		Naci¶nij   E	aby zakoñczyæ program instalacyjny.	      |"
 	echo " =============================================================================="
         echo "	UWAGA!!! Je¿eli instalujesz lub odinstalowywujesz $APP_NAME do innego"
 	echo "	katalogu ni¿ domowego musisz mieæ uprawnienia do zapisu w tym katalogu."
 }
+
+function Szuk_kadu
+{
+APP_DIR=`find $HOME -path */bin/kadu -type f | sed -e 's/\/bin\/kadu$//' -e q`
+if [ "$APP_DIR" == "" ]; then
+APP_DIR=`find /usr -path */bin/kadu -type f | sed -e 's/\/bin\/kadu$//' -e q`
+fi;
+if [ "$APP_DIR" == "" ]; then
+APP_DIR=`find /opt -path */bin/kadu -type f | sed -e 's/\/bin\/kadu$//' -e q`
+fi;
+if [ "$APP_DIR" == "" ]; then
+APP_DIR="$APP_DEF_DIR"
+fi;
+}
+
+function Szuk_QT
+{
+QT_DIR=`find /usr -path */include/qapplication.h -type f | sed -e 's/\/include\/qapplication.h$//' -e q`
+if [ "$QT_DIR" == "" ]; then
+QT_DIR=`find /opt -path */include/qapplication.h -type f | sed -e 's/\/include\/qapplication.h$//' -e q`
+fi;
+}
+
+function Szuk_KDE
+{
+KDE_DIR=`find /usr -path */include/kapp.h -type f | sed -e 's/\/include\/kapp.h$//' -e q`
+if [ "$KDE_DIR" == "" ]; then
+KDE_DIR=`find /opt -path */include/kapp.h -type f | sed -e 's/\/include\/kapp.h$//' -e q`
+fi;
+}
+
+#########################################################################################
+#                                                       START PROGRAMU                                                                     #
+#########################################################################################
 clear
 echo
 	echo " =============================================================================="
@@ -150,20 +187,18 @@ echo
 	echo
         echo " =============================================================================="
         echo
-        echo " Konfigurujê program instalacyjny to mo¿e chwilê potrwaæ b±d¼ cierpliwy"
-echo
-echo "Szukam  $APP_NAME..."
-APP_DIR=`find / -path */bin/kadu -type f | sed -e 's/\/bin\/kadu$//' -e q`
-if [ "$APP_DIR" == "" ]; then
-	APP_DIR="$APP_DEF_DIR"
-fi;
+        echo " Konfigurujê program instalacyjny to mo¿e chwilê potrwaæ bd¼ cierpliwy"
+	echo
+	echo "Szukam  KADU..."
+		Szuk_kadu
+	echo "Szukam  QT..."
+		Szuk_QT
+	echo "Szukam KDE..."
+		Szuk_KDE
 
-echo "Szukam  QT..."
-QT_DIR=`find / -path */include/qapplication.h -type f | sed -e 's/\/include\/qapplication.h$//' -e q`
-
-echo "Szukam KDE..."
-KDE_DIR=`find / -path */include/kapp.h -type f | sed -e 's/\/include\/kapp.h$//' -e q`
-
+########################################################################################
+#					SEKCJA WYBORU MENU										#
+########################################################################################
 while [ 1 ]; do
 	ShowInfo
 	while [ 1 ]; do
@@ -207,3 +242,6 @@ while [ 1 ]; do
 		fi;
 	done
 done
+########################################################################################
+#					KONIEC													 #
+########################################################################################
