@@ -5,6 +5,7 @@
   wlasnej konfiguracji (mast3r)
 * parsowanie sie¿ki do pliku odtwarzanego przy powiadomieniu 
   o dostêpno¶ci u¿ytkownika (mast3r)
+* rozbudowa klasy MessageBox o obs³ugê wska¼ników postêpu (adrian)
 
 +++ wersja 0.3.4-pre1
 * ¶rodkowy guzik myszki wci¶niêty na u¿ytkowniku

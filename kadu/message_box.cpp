@@ -4,6 +4,7 @@
 #include <qhbox.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
+#include <qapplication.h>
 #include "misc.h"
 
 const int MessageBox::OK       = 1;  // 00001
@@ -31,6 +32,10 @@ MessageBox::MessageBox(const QString& message,int components,bool modal)
 	}
 	else
 		Progress=NULL;
+
+	if(!(components&(~PROGRESS)))
+		return;
+
 	QHBoxLayout* hbox=new QHBoxLayout(vbox);
 	QHBox* buttons=new QHBox(this);
 	buttons->setSpacing(20);
@@ -102,14 +107,41 @@ void MessageBox::status(const QString& message)
 {
 	MessageBox* m=new MessageBox(message);
 	m->show();
-	m->repaint();
 	Boxes.insert(message,m);
+	qApp->processEvents();
 };
 
 bool MessageBox::ask(const QString& message)
 {
 	MessageBox* m=new MessageBox(message,YES|NO,true);
 	return (m->exec()==Accepted);
+};
+
+void MessageBox::progress(const QString& message, const QObject* receiver,
+	const char* slot, int total_steps)
+{
+	MessageBox* m;
+	if(receiver!=0&&slot!=0)
+	{
+		m=new MessageBox(message,PROGRESS|CANCEL);
+		connect(m,SIGNAL(cancelPressed()),receiver,slot);
+	}
+	else
+		m=new MessageBox(message,PROGRESS);
+	m->setTotalSteps(total_steps);
+	m->show();
+	Boxes.insert(message,m);	
+	qApp->processEvents();
+};
+
+void MessageBox::progress(const QString& message,int progress)
+{
+	if(Boxes.contains(message))
+	{
+		MessageBox* m=Boxes[message];
+		m->setProgress(progress);
+		qApp->processEvents();
+	};
 };
 
 void MessageBox::close(const QString& message)
