@@ -52,7 +52,7 @@ extern "C" int autoaway_init()
 extern "C" void autoaway_close()
 {
 	kdebugf();
-//	autoawayslots->off();
+	autoawayslots->off();
 	QObject::disconnect(kadu, SIGNAL(disconnectingNetwork()), autoawayslots, SLOT(off()));
 	QObject::disconnect(&event_manager, SIGNAL(connected()), autoawayslots, SLOT(on()));
 	ConfigDialog::unregisterSlotOnCreate(autoawayslots, SLOT(onCreateConfigDialog()));
