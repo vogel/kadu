@@ -143,7 +143,7 @@ bool UserList::writeToFile(char *filename)
 bool UserList::readFromFile()
 {
 	char * path = preparePath("userlist");
-	printf("KK UserList::readFromFile(): Opening userlist file: %s\n",path);
+	fprintf(stderr, "KK UserList::readFromFile(): Opening userlist file: %s\n",path);
 
 	QFile f(path);
 	if(!f.open(IO_ReadOnly))
@@ -152,7 +152,7 @@ bool UserList::readFromFile()
 		return FALSE;
 	}
 
-	printf("KK UserList::readFromFile(): File opened successfuly\n");
+	fprintf(stderr, "KK UserList::readFromFile(): File opened successfuly\n");
 	    
 	clear();
 
