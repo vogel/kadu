@@ -80,6 +80,7 @@ void loadKaduConfig(void) {
 	config.rundocked = konf->readBoolEntry("RunDocked", false);
 	config.grouptabs = konf->readBoolEntry("DisplayGroupTabs", true);
 	config.checkupdates = konf->readBoolEntry("CheckUpdates", true);
+	config.addtodescription = konf->readBoolEntry("AddToDescription", false);
 
 	if (config.savegeometry)
 		config.geometry = konf->readRectEntry("Geometry");
@@ -171,6 +172,7 @@ void saveKaduConfig(void) {
 	konf->writeEntry("RunDocked",config.rundocked);
 	konf->writeEntry("CheckUpdates", config.checkupdates);
 	konf->writeEntry("DisplayGroupTabs",config.grouptabs);
+	konf->writeEntry("AddToDescription",config.addtodescription);
 
 	konf->setGroup("SMS");
 	konf->writeEntry("BuiltInApp",config.smsbuildin);	
@@ -374,6 +376,12 @@ void ConfigDialog::setupTab1(void) {
 	b_checkupdates->setText(i18n("Check for updates"));
 	if (config.checkupdates)
 		b_checkupdates->setChecked(true);
+		
+	b_addtodescription = new QCheckBox(grid);
+	b_addtodescription->setText(i18n("Add to description"));
+	if (config.addtodescription)
+		b_addtodescription->setChecked(true);		
+	QToolTip::add(b_addtodescription,i18n("If a file ~/.gg/description is present, its contents will be added\nto the status description and then the file will be deleted."));
 
 	addTab(box, i18n("General"));
 }
@@ -381,7 +389,7 @@ void ConfigDialog::setupTab1(void) {
 void ConfigDialog::setupTab2(void) {
 	KIconLoader *loader = KGlobal::iconLoader();
 	QVBox *box2 = new QVBox(this);
-	box2->setMargin(5);	
+	box2->setMargin(5);
 
 	b_playsound = new QCheckBox(box2);
 	b_playsound->setText(i18n("Play sounds"));
@@ -1108,6 +1116,7 @@ void ConfigDialog::updateConfig(void) {
 	config.rundocked = b_rdocked->isChecked();
 	config.grouptabs = b_grptabs->isChecked();
 	config.checkupdates = b_checkupdates->isChecked();
+	config.addtodescription = b_addtodescription->isChecked();
 
 	config.smsbuildin = b_smsbuildin->isChecked();
 	config.smsapp = strdup(e_smsapp->text().latin1());

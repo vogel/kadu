@@ -62,7 +62,7 @@ AutoStatusTimer::AutoStatusTimer(QObject* parent)
 
 void AutoStatusTimer::onTimeout()
 {
-	if (sess && ifStatusWithDescription(sess->status)) {
+	if (sess && ifStatusWithDescription(sess->status) && config.addtodescription) {
 		QFile f(preparePath("description"));
 		if (!f.open(IO_ReadOnly)) {
 			start(1000, TRUE);
@@ -73,11 +73,13 @@ void AutoStatusTimer::onTimeout()
 		new_description = s.readLine();
 		f.close();
 		f.remove(preparePath("description"));
-		if (new_description != own_description) {
-			fprintf(stderr, "AutoStatus: changing to \"%s\"\n", new_description.local8Bit().data());
-			own_description = new_description;
+		//if (new_description != own_description) {
+			fprintf(stderr, "AutoStatus: adding \"%s\" to description\n", new_description.local8Bit().data());
+			//own_description = new_description;
+			own_description += new_description;
 			kadu->setStatus(sess->status);
-			}
+			own_description.truncate(own_description.length() - new_description.length());
+			//}
 		}
 	start(1000, TRUE);
 }

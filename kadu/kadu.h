@@ -70,6 +70,7 @@ struct config {
 	bool rundocked;
 	bool grouptabs;
 	bool checkupdates;
+	bool addtodescription;
 	QRect geometry;
 
 	bool smsbuildin;
