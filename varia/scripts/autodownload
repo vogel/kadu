@@ -29,7 +29,7 @@ fi
 
 ITEM_HREF=
 for ITEM_WEBSITE in $ITEM_WEBSITES; do
-	if wget -N $ITEM_WEBSITE/kadu-$KADU_VERSION-$1.href; then
+	if wget -T 20 -t 2 -N $ITEM_WEBSITE/kadu-$KADU_VERSION-$1.href; then
 		ITEM_HREF=`cat kadu-$KADU_VERSION-$1.href`
 		break
 	fi
@@ -40,7 +40,7 @@ if test -z $ITEM_HREF; then
 	exit 1
 fi
 
-if ! wget -N $ITEM_HREF; then
+if ! wget -T 30 -t 2 -N $ITEM_HREF; then
 	echo -e "\033[31m!!!\033[0m ERROR: Downloading of $1 $2 package failed"
 	echo
 	exit 1
