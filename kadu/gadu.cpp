@@ -404,7 +404,7 @@ GaduProtocol::GaduProtocol() : QObject()
 	ActiveServer = NULL;
 
 	connect(SocketNotifiers, SIGNAL(connected()), this, SLOT(connectedSlot()));
-	connect(SocketNotifiers, SIGNAL(disconnected()), this, SIGNAL(disconnected()));
+	connect(SocketNotifiers, SIGNAL(disconnected()), this, SLOT(disconnectedSlot()));
 	connect(SocketNotifiers, SIGNAL(error(GaduError)), this, SLOT(errorSlot(GaduError)));
 	connect(SocketNotifiers, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)), this, SLOT(newResults(gg_pubdir50_t)));
 	connect(SocketNotifiers, SIGNAL(systemMessageReceived(QString &)), this, SIGNAL(systemMessageReceived(QString &)));
@@ -449,7 +449,6 @@ void GaduProtocol::disconnectedSlot()
 		delete pingtimer;
 		pingtimer = NULL;
 	}
-
 
 	if (kadusnw)
 	{
@@ -532,7 +531,8 @@ void GaduProtocol::errorSlot(GaduError err)
 
 	disconnectedSlot();
 	emit error(err);
-	login(RequestedStatusForLogin);
+	if(err != Disconnected)
+		login(RequestedStatusForLogin);
 }
 
 void GaduProtocol::setStatus(int status)
