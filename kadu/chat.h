@@ -49,23 +49,24 @@ class Chat : public QDialog {
 		void checkPresence(UinsList, QString &, time_t, QString &);
 		void addEmoticon(QString);
 		void scrollMessages(QString &);
-
+    void alertNewMessage(void);
+      
 		KTextBrowser *body;
 		CustomInput *edit;
 		QHBox *buttontray;
 		bool autosend_enabled;
-
+    
 	public slots:
 		void HistoryBox(void);
 		void sendMessage(void);
 		void cleanUp(void);
-		void playChatSound(void);
 		void writeMyMessage(void);
+		void changeTitle(void);
 
 	protected:
 		void closeEvent(QCloseEvent *);
-		void alertNewMessage(void);
 		QString convertCharacters(QString);
+		virtual void windowActivationChange(bool oldActive);
 
 	private slots:
 		void resetAutoAway(void);
@@ -73,6 +74,11 @@ class Chat : public QDialog {
 		void insertEmoticon(void);
 		void regAutosend(void);
 		void addMyMessageToHistory(void);
+
+  private:
+    bool isrun_changetitle;
+    QString title_buffer;
+    QTimer *title_timer;  
 };
 
 class CustomInput : public QMultiLineEdit {

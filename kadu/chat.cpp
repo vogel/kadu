@@ -33,7 +33,11 @@ Chat::Chat(UinsList uins, QWidget *parent)
 
 	iconsel_ptr = NULL;
 	autosend_enabled = false;
+  isrun_changetitle = false;
 
+  title_timer = new QTimer(this);
+  connect(title_timer,SIGNAL(timeout()),this,SLOT(changeTitle()));
+  
 	/* register us in the chats registry... */
 	chat.uins = uins;
 	chat.ptr = this;
@@ -201,6 +205,33 @@ void Chat::setTitle() {
 	setCaption(title);
 }
 
+void Chat::changeTitle() {
+  if(!isActiveWindow()){
+    if (caption() == "  "){
+      setCaption(title_buffer);
+      title_timer->start(1000,TRUE);
+    }
+    else{    
+      title_buffer = caption();
+      setCaption("  ");
+      title_timer->start(1000,TRUE);
+    }
+  }
+}
+
+void Chat::windowActivationChange(bool oldActive) {
+  if (isActiveWindow()){
+    if (isrun_changetitle){
+      title_timer->stop();
+      isrun_changetitle=false;
+      }
+    if (title_buffer.isNull())
+      setTitle();
+    else
+      setCaption(title_buffer);
+  }
+}
+
 /* register/unregister sending with Return key */
 void Chat::regAutosend(void) {
 	autosend_enabled = !autosend_enabled;
@@ -345,19 +376,19 @@ void Chat::checkPresence(UinsList senders, QString &msg, time_t time, QString &t
 	scrollMessages(toadd);
 }
 
-void Chat::playChatSound() {
-	if (config.playsoundchatinvisible && config.playsoundchat) {
-		if (!isActiveWindow())
-			alertNewMessage();
-		return;
-		}
-	else
-		if (config.playsoundchat)
-			alertNewMessage();
-}
-
 void Chat::alertNewMessage(void) {
-	playSound(config.soundchat);
+  if (config.playsoundchatinvisible){
+    if (!isActiveWindow())
+      playSound(config.soundchat);
+    }
+  else
+  if (config.playsoundchat)
+    playSound(config.soundchat);
+
+  if (!isActiveWindow() && !isrun_changetitle){
+    isrun_changetitle=true;
+    changeTitle();
+  }
 }
 
 void Chat::writeMyMessage() {

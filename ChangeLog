@@ -34,6 +34,8 @@
 * opcja Pomoc w menu - otwiera Konqueror'a z zainstalowan± dokumentacj±
 * usuneli¶my z kodów ¼ród³owych poszczególnych modu³ów informacje
   o autorach - wystarczy plik AUTHORS
+* mrugaj±cy tytu³ okna chat (zminimalizowanego te¿)
+  przy doj¶ciu nowej wiadomo¶ci (Mast3r)
 
 
 +++ wersja 0.3.2
