@@ -83,15 +83,15 @@ void UserBox::maybeTip(const QPoint &c)
 	};
 }
 
-void UserBox::sortUinsByAltNick(QValueList<uin_t> &uins) {
+void UserBox::sortUsersByAltNick(QStringList &users) {
 	int i, j;
 	uin_t uin;
 	bool stop;
 
-	if (uins.count() < 2)
+	if (users.count() < 2)
 		return;
 
-	do {
+/*	do {
 		stop = true;
 		for (i = 0; i < uins.count() - 1; i++)
 			if (userlist.byUin(uins[i]).altnick > userlist.byUin(uins[i+1]).altnick) {
@@ -100,7 +100,8 @@ void UserBox::sortUinsByAltNick(QValueList<uin_t> &uins) {
 				uins[i+1] = uin;
 				stop = false;
 				}	
-	} while (!stop);
+	} while (!stop);*/
+	users.sort();
 }
 
 void UserBox::refresh()
@@ -108,9 +109,9 @@ void UserBox::refresh()
 	fprintf(stderr, "KK UserBox::refresh()\n");
 	
 	// Najpierw dzielimy uzytkownikow na trzy grupy
-	QValueList<uin_t> a_users;
-	QValueList<uin_t> i_users;
-	QValueList<uin_t> n_users;
+	QStringList a_users;
+	QStringList i_users;
+	QStringList n_users;
 	for (int i = 0; i < Users.count(); i++)
 	{
 		UserListElement &user = userlist.byAltNick(Users[i]);
@@ -120,25 +121,25 @@ void UserBox::refresh()
 			case GG_STATUS_AVAIL_DESCR:
 			case GG_STATUS_BUSY:
 			case GG_STATUS_BUSY_DESCR:
-				a_users.append(user.uin);
+				a_users.append(user.altnick);
 				break;
 			case GG_STATUS_INVISIBLE_DESCR:
 			case GG_STATUS_INVISIBLE2:
-				i_users.append(user.uin);
+				i_users.append(user.altnick);
 				break;
 			default:
-				n_users.append(user.uin);
+				n_users.append(user.altnick);
 		};
 	};
-	sortUinsByAltNick(a_users);
-	sortUinsByAltNick(i_users);
-	sortUinsByAltNick(n_users);
+	sortUsersByAltNick(a_users);
+	sortUsersByAltNick(i_users);
+	sortUsersByAltNick(n_users);
 	// Czyscimy liste
 	clear();
 	// Dodajemy aktywnych
 	for (int i = 0; i < a_users.count(); i++)
 	{
-		UserListElement &user = userlist.byUin(a_users[i]);
+		UserListElement &user = userlist.byAltNick(a_users[i]);
 		if (pending.pendingMsgs(user.uin))
 		{
 	    		insertItem(QPixmap((const char **)gg_msg_xpm), user.altnick);
@@ -165,7 +166,7 @@ void UserBox::refresh()
 	// Dodajemy niewidocznych
 	for (int i = 0; i < i_users.count(); i++)
 	{
-		UserListElement &user = userlist.byUin(i_users[i]);
+		UserListElement &user = userlist.byAltNick(i_users[i]);
 		if (pending.pendingMsgs(user.uin))
 		{
 	    		insertItem(QPixmap((const char **)gg_msg_xpm), user.altnick);
@@ -186,7 +187,7 @@ void UserBox::refresh()
 	// Dodajemy nieaktywnych
 	for (int i = 0; i < n_users.count(); i++)
 	{
-		UserListElement &user = userlist.byUin(n_users[i]);
+		UserListElement &user = userlist.byAltNick(n_users[i]);
 		if (pending.pendingMsgs(user.uin))
 		{
 	    		insertItem(QPixmap((const char **)gg_msg_xpm), user.altnick);

@@ -28,9 +28,9 @@
 #include "userinfo.h"
 //
 
-UserInfo::UserInfo (const QString & name, QDialog* parent , unsigned int uin) : QDialog (parent, name) {
+UserInfo::UserInfo (const QString & name, QDialog* parent , const QString &altnick) : QDialog (parent, name) {
 	resize(240,200);
-	setCaption(i18n("User info on %1").arg(userlist.byUin(uin).altnick));
+	setCaption(i18n("User info on %1").arg(altnick));
 	setWFlags(Qt::WDestructiveClose);
 
 	QLineEdit *e_status = new QLineEdit(this);
@@ -78,7 +78,7 @@ UserInfo::UserInfo (const QString & name, QDialog* parent , unsigned int uin) : 
 
 	int i;
 	i = 0;
- 	while (i < userlist.size() && userlist[i].uin != uin)
+ 	while (i < userlist.size() && userlist[i].altnick != altnick)
 		i++;
 	this_index = i;
 

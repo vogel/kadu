@@ -796,7 +796,7 @@ void Kadu::commandParser (int command) {
 			break;
 		case KADU_CMD_USERINFO:
 			UserInfo *ui;
-			ui = new UserInfo("user info", 0, userlist.byAltNick(userbox->currentText()).uin);
+			ui = new UserInfo("user info", 0, userbox->currentText());
 			ui->show();
 			break;
 		case KADU_CMD_SEARCH:

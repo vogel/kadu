@@ -30,7 +30,7 @@ class UserBox : public QListBox , QToolTip
 		static QValueList<UserBox*> UserBoxes;
 		QStringList Users;
 
-		void sortUinsByAltNick(QValueList<uin_t> &);
+		void sortUsersByAltNick(QStringList &);
 			
 	protected:
 		virtual void maybeTip(const QPoint&);

@@ -25,7 +25,7 @@
 class UserInfo : public QDialog {
 	Q_OBJECT
 	public:
-		UserInfo(const QString &, QDialog* parent=0, unsigned int uin = 0);
+		UserInfo(const QString &, QDialog* parent, const QString &altnick);
 
 	private:
 		unsigned int this_index;
