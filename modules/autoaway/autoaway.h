@@ -8,12 +8,12 @@
 
 #include "gadu.h"
 
-class AutoAwaySlots :public QObject
+class AutoAwaySlots : public QObject
 {
 	Q_OBJECT
 	public:
-	AutoAwaySlots();
-	~AutoAwaySlots();
+		AutoAwaySlots(QObject *parent=0, const char *name=0);
+		~AutoAwaySlots();
 
 	public slots:
 		void onCreateConfigDialog();
@@ -39,14 +39,30 @@ class AutoAwayTimer : private QTimer
 		bool eventFilter(QObject *, QEvent *);
 
 	private:
-		AutoAwayTimer(QObject *parent = 0);
-		bool autoawayed;
-		bool autoinvisibled;		/* zapamietuje czy przeszedl na autoinvisible - potrzebne do autodisconnect */
-		bool autodisconnected;		/* zapamietuje czy rozlaczylismy sie juz */
-		bool autodescription;		/* zapamietuje czy juz zmienil opis */
-		GaduStatus beforeAutoAway;
-		int idletime;
 		friend class AutoAwaySlots;
+			
+		AutoAwayTimer(QObject *parent = 0, const char *name=0);
+		QString changeDescription(const QString &oldDescription);
+		
+		bool didChangeStatus;	
+		bool didChangeDescription;
+
+		enum DescAction {NOTHING=0, REPLACE=1, PREPEND=2, APPEND=3} action;
+		QString actionText;
+		int checkInterval;
+
+		int autoAwayTime;
+		int autoDisconnectTime;
+		int autoInvisibleTime;
+
+		bool autoAwayEnabled;
+		bool autoInvisibleEnabled;
+		bool autoDisconnectEnabled;
+		
+		bool restoreStatus;
+
+		GaduStatus oldStatus;
+		int idleTime;
 };
 
 #endif
