@@ -3,7 +3,7 @@ lub rozbudowy. Postaæ (x/y) oznacza, ¿e x jest pomys³odawc± lub
 podes³a³ patcha, a zrobi³ to kto¶ oznaczony przez y. Je¶li jest
 w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
-+++ wersja 0.3.8-cvs
++++ wersja 0.3.8
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
   moze powinnismy zmienic nazwe projektu na FastKadu? ;) (adrian)
 * zaaplikowany patch nazgula powodujacy zapamietywanie przez Kadu
@@ -226,6 +226,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * jednak wy³±czamy obs³ugê SIGPIPE, bo okazuje siê, ¿e nie pomaga,
   a stwarza dodatkowe problemy (joi)
 * estetyczna poprawka okna transferu pliku (michal)
+* zunifikowany sposób inicjowania i rozwi±zywania zale¿no¶ci dla
+  modu³ów statycznych i zewnêtrznych, ³adowalnych (adrian)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

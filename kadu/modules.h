@@ -87,6 +87,7 @@ class ModulesManager : public QObject
 		/**
 			Informacje o aktywnym module
 			statycznym b±d¼ zewnêtrznym.
+			Dla modu³u statycznego lib==NULL.
 		**/
 		struct Module
 		{
@@ -101,17 +102,14 @@ class ModulesManager : public QObject
 			statycznych b±d¼ zewnêtrznych.
 		**/
 		QMap<QString,Module> Modules;	
+		/**
+		**/
 		ModulesDialog* Dialog;
 		/**
 			£aduje plik z t³umaczeniem. Zwraca NULL je¶li wyst±pi³
 			b³±d.
 		**/
 		QTranslator* loadModuleTranslation(const QString& module_name);
-		/**
-			£aduje pliki t³umaczeñ dla wszystkich wkompilowanych
-			modu³ów.
-		**/
-		void loadStaticModulesTranslations();
 		/**
 			Sprawdza czy dostêpne s± modu³y z listy
 			zale¿no¶ci danego modu³u. W razie czego
@@ -137,10 +135,6 @@ class ModulesManager : public QObject
 			generowany przez configure.
 		**/
 		void registerStaticModules();
-		
-		//
-		void initStaticModules();
-		void closeStaticModules();
 
 	private slots:
 		void dialogDestroyed();
@@ -172,18 +166,16 @@ class ModulesManager : public QObject
 		**/		
 		QStringList unloadedModules();
 		/**
+			Zwraca listê aktywnych modu³ów.
+			Uwzglêdniane s± zarówno aktywne modu³y
+			statyczne jak i zewnêtrzne.
+		**/
+		QStringList activeModules();
+		/**
 			Pobiera do info informacje o module module_name jesli
 			sie to udalo zwraca true w przeciwnym wypadku false		 
 		**/		
 		bool moduleInfo(const QString& module_name, ModuleInfo& info);
-		/**
-			£aduje modu³ do pamiêci i inicjalizuje go
-		**/
-		bool loadModule(const QString& module_name);
-		/**
-			Zamyka modu³ i usuwa go z pamiêci
-		**/		
-		bool unloadModule(const QString& module_name, bool force=false);
 		/**
 			Sprawdza czy podany modu³ jest wkompilowany statycznie.
 			@param module_name nazwa modulu
@@ -222,6 +214,18 @@ class ModulesManager : public QObject
 			modu³ów.
 		**/
 		void saveLoadedModules();
+		/**
+			Aktywuje modu³ statyczny je¶li jest dostêpny
+			lub ³aduje do pamiêci i aktywuje modu³ zewnêtrzny.
+			@param module_name nazwa modulu
+		**/
+		bool activateModule(const QString& module_name);
+		/**
+			Deaktywuje modu³ statyczny lub
+			deaktywuje i usuwa z pamiêci modu³ zewnêtrzny.
+			@param module_name nazwa modulu
+		**/		
+		bool deactivateModule(const QString& module_name, bool force=false);
 		
 	public slots:
 		void showDialog();

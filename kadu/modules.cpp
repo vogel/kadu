@@ -121,7 +121,7 @@ ModulesDialog::ModulesDialog()
 void ModulesDialog::loadItem(QListBoxItem* item)
 {
 	QString mod_name=item->text();
-	if(modules_manager->loadModule(mod_name))
+	if(modules_manager->activateModule(mod_name))
 	{
 		refreshLists();
 		modules_manager->saveLoadedModules();
@@ -131,7 +131,7 @@ void ModulesDialog::loadItem(QListBoxItem* item)
 void ModulesDialog::unloadItem(QListBoxItem* item)
 {
 	QString mod_name=item->text();
-	modules_manager->unloadModule(mod_name);
+	modules_manager->deactivateModule(mod_name);
 	refreshLists();
 	modules_manager->saveLoadedModules();
 }
@@ -214,15 +214,17 @@ ModulesManager::ModulesManager() : QObject()
 	Dialog=NULL;
 	//
 	registerStaticModules();
-	loadStaticModulesTranslations();
-	initStaticModules();
+	QStringList static_list=staticModules();
+	for (QStringList::ConstIterator i=static_list.begin(); i!=static_list.end(); i++)
+		if(!moduleIsActive(*i))
+			activateModule(*i);
 	//
 	QString loaded_str=config_file.readEntry("General", "LoadedModules");
 	QStringList loaded_list=QStringList::split(',',loaded_str);
 	bool all_loaded=true;
-	for(int i=0; i<loaded_list.count(); i++)
-		if(!Modules.contains(loaded_list[i]))
-			if(!loadModule(loaded_list[i]))
+	for(QStringList::ConstIterator i=loaded_list.begin(); i!=loaded_list.end(); i++)
+		if(!moduleIsActive(*i))
+			if(!activateModule(*i))
 				all_loaded=false;
 	// jesli nie wszystkie moduly zostaly przy starcie prawidlowo
 	// zaladowane to zapisz nowa liste zaladowanych modulow
@@ -232,11 +234,9 @@ ModulesManager::ModulesManager() : QObject()
 
 ModulesManager::~ModulesManager()
 {
-	QStringList loaded=loadedModules();
-	for(int i=0; i<loaded.size(); i++)
-		unloadModule(loaded[i], true);
-	//
-	closeStaticModules();
+	QStringList active=activeModules();
+	for(QStringList::ConstIterator i=active.begin(); i!=active.end(); i++)
+		deactivateModule(*i, true);
 }
 
 QTranslator* ModulesManager::loadModuleTranslation(const QString& module_name)
@@ -254,13 +254,6 @@ QTranslator* ModulesManager::loadModuleTranslation(const QString& module_name)
 	}
 }
 
-void ModulesManager::loadStaticModulesTranslations()
-{
-	QStringList modules=staticModules();
-	for(QStringList::const_iterator i=modules.begin(); i!=modules.end(); i++)
-		loadModuleTranslation(*i);
-}
-
 bool ModulesManager::satisfyModuleDependencies(const ModuleInfo& module_info)
 {
 	for (QStringList::ConstIterator it = module_info.depends.begin(); it != module_info.depends.end(); ++it)
@@ -269,7 +262,7 @@ bool ModulesManager::satisfyModuleDependencies(const ModuleInfo& module_info)
 		{
 			if(moduleIsInstalled(*it))
 			{
-				if(!loadModule(*it))
+				if(!activateModule(*it))
 					return false;
 			}			
 			else
@@ -298,21 +291,12 @@ void ModulesManager::registerStaticModule(const QString& module_name,
 	StaticModules.insert(module_name,m);
 }
 
-void ModulesManager::initStaticModules()
-{
-	for (QMap<QString,StaticModule>::const_iterator i=StaticModules.begin(); i!=StaticModules.end(); i++)
-		(*i).init();
-}
-
-void ModulesManager::closeStaticModules()
-{
-	for (QMap<QString,StaticModule>::const_iterator i=StaticModules.begin(); i!=StaticModules.end(); i++)
-		(*i).close();
-}
-
 QStringList ModulesManager::staticModules()
 {
-	return QStringList::split(" ",STATIC_MODULES);
+	QStringList static_modules;
+	for (QMap<QString,StaticModule>::const_iterator i=StaticModules.begin(); i!=StaticModules.end(); i++)
+		static_modules.append(i.key());
+	return static_modules;
 }
 
 QStringList ModulesManager::installedModules()
@@ -331,22 +315,32 @@ QStringList ModulesManager::installedModules()
 QStringList ModulesManager::loadedModules()
 {
 	QStringList loaded;
-	for (QMap<QString,Module>::const_iterator it=Modules.begin(); it!=Modules.end(); it++)
-		loaded.append(it.key());
+	for (QMap<QString,Module>::const_iterator i=Modules.begin(); i!=Modules.end(); i++)
+		if(i.data().lib!=NULL)
+			loaded.append(i.key());
 	return loaded;
 }
 
 QStringList ModulesManager::unloadedModules()
 {
 	QStringList installed=installedModules();
+	QStringList loaded=loadedModules();
 	QStringList unloaded;
 	for(int i=0; i<installed.size(); i++)
 	{
 		QString name=installed[i];
-		if(!Modules.contains(name))
+		if(!loaded.contains(name))
 			unloaded.append(name);
 	}
 	return unloaded;
+}
+
+QStringList ModulesManager::activeModules()
+{
+	QStringList active;
+	for (QMap<QString,Module>::const_iterator i=Modules.begin(); i!=Modules.end(); i++)
+		active.append(i.key());
+	return active;
 }
 
 bool ModulesManager::moduleInfo(const QString& module_name, ModuleInfo& info)
@@ -373,84 +367,6 @@ bool ModulesManager::moduleInfo(const QString& module_name, ModuleInfo& info)
 	return true;
 }
 
-bool ModulesManager::loadModule(const QString& module_name)
-{
-	Module m;
-	kdebug(QString("loadModule %1\n").arg(module_name));
-	
-	if(moduleIsActive(module_name))
-	{
-		MessageBox::msg(tr("Module %1 is already active").arg(module_name));
-		return false;
-	}
-
-	if(moduleInfo(module_name,m.info))
-	{	
-		if(!satisfyModuleDependencies(m.info))
-		{
-			delete m.lib;
-			return false;
-		}
-	}
-
-	m.lib=new Library(QString(DATADIR)+"/kadu/modules/"+module_name+".so");
-	if(!m.lib->load())
-	{
-		MessageBox::msg(tr("Cannot load %1 module library.:\n%2").arg(module_name).arg(m.lib->error()));
-		return false;
-	}
-		
-	typedef int InitModuleFunc();
-	InitModuleFunc* init=(InitModuleFunc*)m.lib->resolve(module_name+"_init");
-	m.close=(CloseModuleFunc*)m.lib->resolve(module_name+"_close");
-
-	if(init==NULL||m.close==NULL)
-	{
-		MessageBox::msg(tr("Cannot find required functions.\nMaybe it's not Kadu-compatible Module."));
-		delete m.lib;
-		return false;
-	}
-
-	m.translator = loadModuleTranslation(module_name);
-
-	int res=init();
-	if(res!=0)
-	{
-		MessageBox::msg(tr("Module initialization routine failed."));
-		delete m.lib;
-		return false;		
-	}
-	
-	incDependenciesUsageCount(m.info);
-	
-	m.usage_counter=0;
-	Modules.insert(module_name,m);
-	return true;
-}
-
-bool ModulesManager::unloadModule(const QString& module_name, bool force)
-{
-	Module m=Modules[module_name];
-
-	if(m.usage_counter>0 && !force)
-	{
-		MessageBox::msg(tr("Module %1 cannot be unloaded because it is used by another module").arg(module_name));
-		return false;
-	}
-	
-	for (QStringList::Iterator it = m.info.depends.begin(); it != m.info.depends.end(); ++it)
-		moduleDecUsageCount(*it);
-	
-	m.close();
-	if(m.translator!=NULL)
-	{
-		qApp->removeTranslator(m.translator);
-		delete m.translator;
-	}
-	delete m.lib;
-	Modules.remove(module_name);
-}
-
 bool ModulesManager::moduleIsStatic(const QString& module_name)
 {
 	return staticModules().contains(module_name);
@@ -463,18 +379,104 @@ bool ModulesManager::moduleIsInstalled(const QString& module_name)
 
 bool ModulesManager::moduleIsLoaded(const QString& module_name)
 {
-	return Modules.contains(module_name);
+	return loadedModules().contains(module_name);
 }
 
 bool ModulesManager::moduleIsActive(const QString& module_name)
 {
-	return (moduleIsStatic(module_name) || moduleIsLoaded(module_name));
+	return Modules.contains(module_name);
 }
 
 void ModulesManager::saveLoadedModules()
 {
 	config_file.writeEntry("General", "LoadedModules",loadedModules().join(","));
 	config_file.sync();
+}
+
+bool ModulesManager::activateModule(const QString& module_name)
+{
+	Module m;
+	kdebug(QString("activateModule %1\n").arg(module_name));
+	
+	if(moduleIsActive(module_name))
+	{
+		MessageBox::msg(tr("Module %1 is already active").arg(module_name));
+		return false;
+	}
+
+	if(moduleInfo(module_name,m.info))
+		if(!satisfyModuleDependencies(m.info))
+			return false;
+
+	typedef int InitModuleFunc();
+	InitModuleFunc* init;
+	
+	if(moduleIsStatic(module_name))
+	{
+		m.lib=NULL;
+		StaticModule sm=StaticModules[module_name];
+		init=sm.init;
+		m.close=sm.close;
+	}
+	else
+	{
+		m.lib=new Library(QString(DATADIR)+"/kadu/modules/"+module_name+".so");
+		if(!m.lib->load())
+		{
+			MessageBox::msg(tr("Cannot load %1 module library.:\n%2").arg(module_name).arg(m.lib->error()));
+			return false;
+		}	
+		init=(InitModuleFunc*)m.lib->resolve(module_name+"_init");
+		m.close=(CloseModuleFunc*)m.lib->resolve(module_name+"_close");
+		if(init==NULL||m.close==NULL)
+		{
+			MessageBox::msg(tr("Cannot find required functions.\nMaybe it's not Kadu-compatible Module."));
+			delete m.lib;
+			return false;
+		}
+	}
+	
+	m.translator = loadModuleTranslation(module_name);
+
+	int res=init();
+	if(res!=0)
+	{
+		MessageBox::msg(tr("Module initialization routine failed."));
+		if(m.lib!=NULL)
+			delete m.lib;
+		return false;		
+	}
+	
+	incDependenciesUsageCount(m.info);
+	
+	m.usage_counter=0;
+	Modules.insert(module_name,m);
+	return true;
+}
+
+bool ModulesManager::deactivateModule(const QString& module_name, bool force)
+{
+	Module m=Modules[module_name];
+
+	if(m.usage_counter>0 && !force)
+	{
+		MessageBox::msg(tr("Module %1 cannot be deactivated because it is used now").arg(module_name));
+		return false;
+	}
+	
+	for (QStringList::Iterator i = m.info.depends.begin(); i != m.info.depends.end(); i++)
+		moduleDecUsageCount(*i);
+	
+	m.close();
+	if(m.translator!=NULL)
+	{
+		qApp->removeTranslator(m.translator);
+		delete m.translator;
+	}
+	
+	if(m.lib!=NULL)
+		delete m.lib;
+	Modules.remove(module_name);
 }
 
 void ModulesManager::showDialog()
