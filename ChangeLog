@@ -90,6 +90,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   ConfigDialog: dodane ulepszone addComboBox (automatycznie zapisuj±ce swój stan),
       dodana nowa kontrolka poprzez addVRadioGroup, addHRadioGroup
   (joi)
+* ³atka SadMephisto dodaj±ca do modu³u mo¿liwo¶æ wyboru koloru szyfrowanych wiadomo¶ci (joi)
+* usuwanie kontrolek z konfiguracji przy wy³adowywaniu modu³u encryption
+  skrócenie kodu dodaj±cego ColorButtony do konfiguracji (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,

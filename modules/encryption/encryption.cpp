@@ -23,6 +23,7 @@ extern "C" int encryption_init()
 extern "C" void encryption_close()
 {
 	delete encryption_manager;
+	encryption_manager=NULL;
 }
 
 EncryptionManager::EncryptionManager()
@@ -36,6 +37,8 @@ EncryptionManager::EncryptionManager()
 			QT_TRANSLATE_NOOP("@default", "Keys length"));
 	ConfigDialog::addPushButton("Chat", "Encryption properties",
 			QT_TRANSLATE_NOOP("@default", "Generate keys"));
+	ConfigDialog::addColorButton("Chat", "Encryption properties", 
+			QT_TRANSLATE_NOOP("@default", "Color of encrypted messages"), "EncryptionColor", QColor("#0000FF"));
 
 	ConfigDialog::registerSlotOnCreate(this,SLOT(createConfigDialogSlot()));
 	ConfigDialog::connectSlot("Chat", "Generate keys", SIGNAL(clicked()), this, SLOT(generateMyKeys()));
@@ -55,17 +58,23 @@ EncryptionManager::EncryptionManager()
 EncryptionManager::~EncryptionManager()
 {
 	kdebugf();
-	ConfigDialog::unregisterSlotOnCreate(this,SLOT(createConfigDialogSlot()));
-	ConfigDialog::disconnectSlot("Chat", "Generate keys", SIGNAL(clicked()), this, SLOT(generateMyKeys()));
-	ConfigDialog::disconnectSlot("Chat", "Use encryption", SIGNAL(toggled(bool)), this, SLOT(onUseEncryption(bool)));
+	int sendkeyitem = UserBox::userboxmenu->getItem(tr("Send my public key"));
+	UserBox::userboxmenu->removeItem(sendkeyitem);
+	Chat::unregisterButton("encryption_button");
 
 	disconnect(chat_manager,SIGNAL(chatCreated(const UinsList&)),this,SLOT(chatCreated(const UinsList&)));
 	disconnect(gadu,SIGNAL(messageFiltering(const UinsList&,QCString&,QByteArray&,bool&)),this,SLOT(receivedMessageFilter(const UinsList&,QCString&,QByteArray&,bool&)));
 	disconnect(UserBox::userboxmenu,SIGNAL(popup()),this,SLOT(userBoxMenuPopup()));
 
-	Chat::unregisterButton("encryption_button");
-	int sendkeyitem = UserBox::userboxmenu->getItem(tr("Send my public key"));
-	UserBox::userboxmenu->removeItem(sendkeyitem);
+	ConfigDialog::disconnectSlot("Chat", "Generate keys", SIGNAL(clicked()), this, SLOT(generateMyKeys()));
+	ConfigDialog::disconnectSlot("Chat", "Use encryption", SIGNAL(toggled(bool)), this, SLOT(onUseEncryption(bool)));
+	ConfigDialog::unregisterSlotOnCreate(this,SLOT(createConfigDialogSlot()));
+
+	ConfigDialog::removeControl("Chat", "Color of encrypted messages");
+	ConfigDialog::removeControl("Chat", "Generate keys");
+	ConfigDialog::removeControl("Chat", "Keys length");
+	ConfigDialog::removeControl("Chat", "Encryption properties");
+	ConfigDialog::removeControl("Chat", "Use encryption");
 	kdebugf2();
 }
 
@@ -75,9 +84,8 @@ void EncryptionManager::createConfigDialogSlot()
 	QComboBox* cb_keylength= ConfigDialog::getComboBox("Chat", "Keys length");
 	cb_keylength->insertItem("1024");
 
-	QCheckBox *c_useencryption= ConfigDialog::getCheckBox("Chat", "Use encryption");
-	QHGroupBox *h_encryption= ConfigDialog::getHGroupBox("Chat", "Encryption properties");
-	h_encryption->setEnabled(c_useencryption->isChecked());
+	ConfigDialog::getHGroupBox("Chat", "Encryption properties")
+			->setEnabled(ConfigDialog::getCheckBox("Chat", "Use encryption")->isChecked());
 	kdebugf2();
 }
 
@@ -113,8 +121,7 @@ void EncryptionManager::generateMyKeys()
 
 void EncryptionManager::onUseEncryption(bool toggled)
 {
-	QHGroupBox *h_encryption = ConfigDialog::getHGroupBox("Chat", "Encryption properties");
-	h_encryption->setEnabled(toggled);
+	ConfigDialog::getHGroupBox("Chat", "Encryption properties")->setEnabled(toggled);
 }
 
 void EncryptionManager::chatCreated(const UinsList& uins)
@@ -201,10 +208,12 @@ void EncryptionManager::receivedMessageFilter(const UinsList& senders,QCString& 
 		format.position = 0;
 		format.font = GG_FONT_COLOR;
 		gg_msg_richtext_color color;
-		color.red = 0;
-		color.green = 0;
-		color.blue = 255;
-		
+
+		QColor new_color= config_file.readColorEntry("Chat", "EncryptionColor"); 
+		color.red = new_color.red();
+		color.green = new_color.green();
+		color.blue = new_color.blue();
+
 		QByteArray new_formats(
 			formats.size()+sizeof(format)+sizeof(color));
 		char* dst = new_formats.data();
@@ -221,7 +230,7 @@ void EncryptionManager::receivedMessageFilter(const UinsList& senders,QCString& 
 void EncryptionManager::enableEncryptionBtnForUins(UinsList uins)
 {
 	Chat* chat=chat_manager->findChatByUins(uins);
-	if(chat==NULL)
+	if (chat==NULL)
 		return;
 	QPushButton* encryption_btn=chat->button("encryption_button");	
 	encryption_btn->setEnabled(true);
