@@ -2340,6 +2340,10 @@ The import was unsuccessful</source>
         <translation>The application encountered an internal error
 The import was unsuccessful</translation>
     </message>
+    <message>
+        <source>&amp;Merge results</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>changePassword</name>

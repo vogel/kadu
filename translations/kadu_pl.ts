@@ -1463,7 +1463,7 @@ Sprawdź swoje połączenie internetowe.</translation>
     </message>
     <message>
         <source>&amp;Kadu</source>
-        <translation>&amp;Kadu</translation>
+        <translation>&amp;Menu</translation>
     </message>
     <message>
         <source>Private</source>
@@ -1783,6 +1783,10 @@ Teraz możesz dodać znajomych do listy kontaktów.</translation>
     <message>
         <source>Select user first</source>
         <translation>Zaznacz użytkownika</translation>
+    </message>
+    <message>
+        <source> </source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2341,6 +2345,10 @@ niepowodzeniem z powodu wewnętrznego błędu.</translation>
 The import was unsuccessful</source>
         <translation>Import listy kontaktów został
 zakończony niepowodzeniem.</translation>
+    </message>
+    <message>
+        <source>&amp;Merge results</source>
+        <translation>&amp;Dołącz wyniki</translation>
     </message>
 </context>
 <context>

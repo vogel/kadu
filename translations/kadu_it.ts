@@ -527,139 +527,143 @@ Le discussioni dovrebbero essere separate con gli spazi. la discussione di %n è
     </message>
     <message>
         <source>Font</source>
-        <translation type="unfinished"></translation>
+        <translation>Carattere</translation>
     </message>
     <message>
         <source>Font size</source>
-        <translation type="unfinished"></translation>
+        <translation>Dimensione carattere</translation>
     </message>
     <message>
         <source>Other</source>
-        <translation type="unfinished"></translation>
+        <translation>Altro</translation>
     </message>
     <message>
         <source>Information panel syntax:</source>
-        <translation type="unfinished"></translation>
+        <translation>Sintassi del pannello di informazion:</translation>
     </message>
     <message>
         <source>Chat window title syntax:</source>
-        <translation type="unfinished"></translation>
+        <translation>Sintassi di titolo della finestra di chiacchierata:</translation>
     </message>
     <message>
         <source>Conference window title prefix:</source>
-        <translation type="unfinished"></translation>
+        <translation>Prefisso di titolo della finestra di congresso:</translation>
     </message>
     <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - frist name
 %r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
 %v - revDNS, %p - port %e - email
 If you leave blank, default settings will be used</source>
-        <translation type="unfinished"></translation>
+        <translation>Sintassi: %s - condizione, %d - descrizione, %i - IP, %n - scalfittura, %a - altnick, %f - nome di frist
+%r - cognome, %m - mobile, %u - uin, %g - gruppo, %o - restituisca _ lo spazio _ se l&apos;utente non li ha in userlist
+%v - revDNS, %p - port, %e - email
+Se lasciate lo spazio in bianco, le regolazioni di difetto saranno usate</translation>
     </message>
     <message>
         <source>This text will be before syntax.
 If you leave blank, default settings will be used.</source>
-        <translation type="unfinished"></translation>
+        <translation>Questo testo sarà prima di sintassi.
+Se lasciate lo spazio in bianco, le regolazioni di difetto saranno usate.</translation>
     </message>
     <message>
         <source>Conference window title prefix</source>
-        <translation type="unfinished"></translation>
+        <translation>Prefisso di titolo della finestra di congresso</translation>
     </message>
     <message>
         <source>syntax:</source>
-        <translation type="unfinished"></translation>
+        <translation>sintassi:</translation>
     </message>
     <message>
         <source>Preview chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Chiacchierata di previsione</translation>
     </message>
     <message>
         <source>Notify</source>
-        <translation type="unfinished"></translation>
+        <translation>Informi</translation>
     </message>
     <message>
         <source>Notify when users become available</source>
-        <translation type="unfinished"></translation>
+        <translation>Informi quando gli utenti diventano disponibili</translation>
     </message>
     <message>
         <source>Notify about all users</source>
-        <translation type="unfinished"></translation>
+        <translation>Informi circa tutti gli utenti</translation>
     </message>
     <message>
         <source>Available</source>
-        <translation type="unfinished"></translation>
+        <translation>Disponibile</translation>
     </message>
     <message>
         <source>Tracked</source>
-        <translation type="unfinished"></translation>
+        <translation>Rintracciato</translation>
     </message>
     <message>
         <source>Notify options</source>
-        <translation type="unfinished"></translation>
+        <translation>Informi le opzioni</translation>
     </message>
     <message>
         <source>Notify by sound</source>
-        <translation type="unfinished"></translation>
+        <translation>Informi dal suono</translation>
     </message>
     <message>
         <source>Notify by dialog box</source>
-        <translation type="unfinished"></translation>
+        <translation>Informi dalla finestra di dialogo</translation>
     </message>
     <message>
         <source>Notify sound</source>
-        <translation type="unfinished"></translation>
+        <translation>Informi il suono</translation>
     </message>
     <message>
         <source>Set language:</source>
-        <translation type="unfinished"></translation>
+        <translation>Regoli la lingua:</translation>
     </message>
     <message>
         <source>English</source>
-        <translation type="unfinished"></translation>
+        <translation>Inglese</translation>
     </message>
     <message>
         <source>Italian</source>
-        <translation type="unfinished"></translation>
+        <translation>Italiano</translation>
     </message>
     <message>
         <source>Polish</source>
-        <translation type="unfinished"></translation>
+        <translation>Polacco</translation>
     </message>
     <message>
         <source>Userbox properties</source>
-        <translation type="unfinished"></translation>
+        <translation>Proprietà di Userbox</translation>
     </message>
     <message>
         <source>Preview userbox</source>
-        <translation type="unfinished"></translation>
+        <translation>Userbox di previsione</translation>
     </message>
     <message>
         <source>Preview desc.</source>
-        <translation type="unfinished"></translation>
+        <translation>Descrizione di previsione</translation>
     </message>
     <message>
         <source>Show userbox-desc.</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostri il pannello di informazioni.</translation>
     </message>
     <message>
         <source>Display group tabs</source>
-        <translation type="unfinished"></translation>
+        <translation>Linguette del gruppo di esposizione</translation>
     </message>
     <message>
         <source>Multicolumn userbox</source>
-        <translation type="unfinished"></translation>
+        <translation>Userbox multicolumn</translation>
     </message>
     <message>
         <source>Message content in hint</source>
-        <translation type="unfinished"></translation>
+        <translation>Soddisfare del messaggio nel suggerimento</translation>
     </message>
     <message>
         <source>Notify about user becoming available</source>
-        <translation type="unfinished"></translation>
+        <translation>Informi circa l&apos;utente che diventa disponibile</translation>
     </message>
     <message>
         <source>Notify about user becoming unavailable</source>
-        <translation type="unfinished"></translation>
+        <translation>Informi circa l&apos;utente che diventa non disponibile</translation>
     </message>
 </context>
 <context>
@@ -744,67 +748,67 @@ If you leave blank, default settings will be used.</source>
     <name>ChatSlots</name>
     <message>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation>Nessuno</translation>
     </message>
     <message>
         <source>Static</source>
-        <translation type="unfinished"></translation>
+        <translation>Statico</translation>
     </message>
     <message>
         <source>Animated</source>
-        <translation type="unfinished"></translation>
+        <translation>Animato</translation>
     </message>
     <message>
         <source>Your background color</source>
-        <translation type="unfinished"></translation>
+        <translation>Il vostro colore della priorità bassa</translation>
     </message>
     <message>
         <source>Your font color</source>
-        <translation type="unfinished"></translation>
+        <translation>Il vostro colore della serie completa di caratteri</translation>
     </message>
     <message>
         <source>User background color</source>
-        <translation type="unfinished"></translation>
+        <translation>Colore della priorità bassa dell&apos;utente</translation>
     </message>
     <message>
         <source>User font color</source>
-        <translation type="unfinished"></translation>
+        <translation>Colore della serie completa di caratteri dell&apos;utente</translation>
     </message>
     <message>
         <source>Font in chat window</source>
-        <translation type="unfinished"></translation>
+        <translation>Serie completa di caratteri nella finestra di chiacchierata</translation>
     </message>
     <message>
         <source>Chat with </source>
-        <translation type="unfinished">Chiacchierata con </translation>
+        <translation>Chiacchierata con  </translation>
     </message>
     <message>
         <source>Conference with </source>
-        <translation type="unfinished">Congresso con </translation>
+        <translation>Congresso con  </translation>
     </message>
     <message>
         <source>Keys exist. Do you want to overwrite them?</source>
-        <translation type="unfinished">Le chiavi esistono. Desiderate scriverli sopra?</translation>
+        <translation>Le chiavi esistono. Desiderate scriverli sopra?</translation>
     </message>
     <message>
         <source>Yes</source>
-        <translation type="unfinished">Sì</translation>
+        <translation>Sì</translation>
     </message>
     <message>
         <source>No</source>
-        <translation type="unfinished">No</translation>
+        <translation>No</translation>
     </message>
     <message>
         <source>Error generating keys</source>
-        <translation type="unfinished">Errore che genera le chiavi</translation>
+        <translation>Errore che genera le chiavi</translation>
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <source>Keys have been generated and written</source>
-        <translation type="unfinished">Le chiavi sono state generate e scritto state</translation>
+        <translation>Le chiavi sono state generate e scritto state</translation>
     </message>
 </context>
 <context>
@@ -897,86 +901,87 @@ If you leave blank, default settings will be used.</source>
     <name>EventManager</name>
     <message>
         <source>Unable to connect, server has not been found</source>
-        <translation type="unfinished"></translation>
+        <translation>Incapace collegare, l&apos;assistente non è stato trovato</translation>
     </message>
     <message>
         <source>Unable to connect</source>
-        <translation type="unfinished"></translation>
+        <translation>Incapace collegare</translation>
     </message>
     <message>
         <source>Unable to connect, server has returned unknown data</source>
-        <translation type="unfinished"></translation>
+        <translation>Incapace collegare, l&apos;assistente ha restituito i dati sconosciuti</translation>
     </message>
     <message>
         <source>Unable to connect, connection break during reading</source>
-        <translation type="unfinished"></translation>
+        <translation>Incapace collegare, rottura del collegamento durante la lettura</translation>
     </message>
     <message>
         <source>Unable to connect, connection break during writing</source>
-        <translation type="unfinished"></translation>
+        <translation>Incapace collegare, rottura del collegamento durante la scrittura</translation>
     </message>
     <message>
         <source>Unable to connect, incorrect password</source>
-        <translation type="unfinished"></translation>
+        <translation>Incapace collegare, parola d&apos;accesso errata</translation>
     </message>
     <message>
         <source>Incorrect password</source>
-        <translation type="unfinished"></translation>
+        <translation>Parola d&apos;accesso errata</translation>
     </message>
     <message>
         <source>Connection will be stoped
 Your password is incorrect !!!</source>
-        <translation type="unfinished"></translation>
+        <translation>Il collegamento stoped.
+La vostra parola d&apos;accesso è errata!!!</translation>
     </message>
     <message>
         <source>Unable to connect, error of negotiation TLS</source>
-        <translation type="unfinished"></translation>
+        <translation>Incapace collegare, errore della trattativa TLS</translation>
     </message>
     <message>
         <source>Disconnection has occured</source>
-        <translation type="unfinished"></translation>
+        <translation>La sconnessione ha accaduto</translation>
     </message>
 </context>
 <context>
     <name>HintManager</name>
     <message>
         <source>Error:</source>
-        <translation type="unfinished"></translation>
+        <translation>Errore:</translation>
     </message>
     <message>
         <source>New message from</source>
-        <translation type="unfinished"></translation>
+        <translation>Nuovo messaggio da</translation>
     </message>
     <message>
         <source>Chat with</source>
-        <translation type="unfinished"></translation>
+        <translation>Chiacchierata con </translation>
     </message>
     <message>
         <source>is available</source>
-        <translation type="unfinished"></translation>
+        <translation> è disponibile</translation>
     </message>
     <message>
         <source>changed status to</source>
-        <translation type="unfinished"></translation>
+        <translation> condizione cambiata a</translation>
     </message>
     <message>
         <source>is unavailable</source>
-        <translation type="unfinished"></translation>
+        <translation> è non disponibile</translation>
     </message>
 </context>
 <context>
     <name>HintManagerSlots</name>
     <message>
         <source>New hints add to hint</source>
-        <translation type="unfinished"></translation>
+        <translation>I nuovi suggerimenti aggiungono al suggerimento</translation>
     </message>
     <message>
         <source>Auto</source>
-        <translation type="unfinished"></translation>
+        <translation>Auto</translation>
     </message>
     <message>
         <source>Hints position</source>
-        <translation type="unfinished"></translation>
+        <translation>Posizione di suggerimenti</translation>
     </message>
     <message>
         <source>Online</source>
@@ -1016,11 +1021,11 @@ Your password is incorrect !!!</source>
     </message>
     <message>
         <source>New chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Nuova chiacchierata</translation>
     </message>
     <message>
         <source>New message in chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Nuovo messaggio nella chiacchierata</translation>
     </message>
     <message>
         <source>Error</source>
@@ -1028,47 +1033,47 @@ Your password is incorrect !!!</source>
     </message>
     <message>
         <source>Preview</source>
-        <translation type="unfinished"></translation>
+        <translation>Previsione</translation>
     </message>
     <message>
         <source>Change font color</source>
-        <translation type="unfinished"></translation>
+        <translation>Cambi il colore della serie completa di caratteri</translation>
     </message>
     <message>
         <source>Change background color</source>
-        <translation type="unfinished"></translation>
+        <translation>Cambi il colore della priorità bassa</translation>
     </message>
     <message>
         <source>Change font</source>
-        <translation type="unfinished"></translation>
+        <translation>Cambi la serie completa di caratteri</translation>
     </message>
     <message>
         <source>Color dialog</source>
-        <translation type="unfinished">Dialogo di colore</translation>
+        <translation>Dialogo di colore</translation>
     </message>
     <message>
         <source>Number of quoted characters</source>
-        <translation type="unfinished"></translation>
+        <translation>Numero di caratteri citati</translation>
     </message>
     <message>
         <source>Use custom hints position</source>
-        <translation type="unfinished"></translation>
+        <translation>Use custom hints position</translation>
     </message>
     <message>
         <source>&lt;b&gt;Text&lt;/b&gt; preview</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Previsione&lt;/b&gt; del testo</translation>
     </message>
     <message>
         <source>Hint timeout (in seconds)</source>
-        <translation type="unfinished"></translation>
+        <translation>Prespegnimento di suggerimento (nei secondi)</translation>
     </message>
     <message>
         <source>In top</source>
-        <translation type="unfinished"></translation>
+        <translation>Nella parte superiore</translation>
     </message>
     <message>
         <source>In bottom</source>
-        <translation type="unfinished"></translation>
+        <translation>Nella parte inferiore</translation>
     </message>
 </context>
 <context>
@@ -1196,7 +1201,7 @@ Your password is incorrect !!!</source>
     <name>HistorySlots</name>
     <message>
         <source>%1 day(s) %2 hour(s)</source>
-        <translation>%1 giorno?(i) %2 ora(e)</translation>
+        <translation>%1 giorno(i) %2 ora(e)</translation>
     </message>
 </context>
 <context>
@@ -1779,10 +1784,6 @@ Ora aggiunga i vostri amici al lista del contatto.</translation>
         <source>Select user first</source>
         <translation>Selezioni l&apos;utente primo</translation>
     </message>
-    <message>
-        <source> </source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>Sms</name>
@@ -2033,19 +2034,19 @@ Messaggio seguente di scatto di sinistra o di scatto centrale</translation>
     <name>UserBoxSlots</name>
     <message>
         <source>Userbox background color</source>
-        <translation type="unfinished"></translation>
+        <translation>Colore della priorità bassa dell&apos;utente</translation>
     </message>
     <message>
         <source>Desc. background color</source>
-        <translation type="unfinished"></translation>
+        <translation>Colore della priorità bassa di descrizione</translation>
     </message>
     <message>
         <source>Font in userbox window</source>
-        <translation type="unfinished"></translation>
+        <translation>Serie completa di caratteri nella finestra del userbox</translation>
     </message>
     <message>
         <source>Font in desc.</source>
-        <translation type="unfinished"></translation>
+        <translation>Serie completa di caratteri nella descrizione</translation>
     </message>
 </context>
 <context>
@@ -2339,6 +2340,10 @@ Il userlist dell&apos;importazione dalla lima era infruttuoso</translation>
 The import was unsuccessful</source>
         <translation>L&apos;applicazione ha incontrato un errore interno
 L&apos;importazione era infruttuosa</translation>
+    </message>
+    <message>
+        <source>&amp;Merge results</source>
+        <translation>&amp;Risultati di fusione</translation>
     </message>
 </context>
 <context>
