@@ -192,7 +192,7 @@ void SoundManager::initModule()
 	
 	ConfigDialog::addHGroupBox("Sounds", "Sounds", "Sound player");
 	ConfigDialog::addLineEdit("Sounds", "Sound player", "Path:", "SoundPlayer","","","soundplayer_path");
-	ConfigDialog::addPushButton("Sounds", "Sound player", "", "fileopen.png","","soundplayer_fileopen");
+	ConfigDialog::addPushButton("Sounds", "Sound player", "", "OpenFile","","soundplayer_fileopen");
 	
 	ConfigDialog::addCheckBox("Sounds", "Sounds", "Enable volume control (player must support it)", "VolumeControl", false);
 	ConfigDialog::addGrid("Sounds", "Sounds", "volume", 2);

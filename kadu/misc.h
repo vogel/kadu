@@ -257,6 +257,12 @@ class IconsManager :public Themes
 	Q_OBJECT
 	public:
 		IconsManager(const QString& name, const QString& configname);
+		/**
+			Laduje ikone z aktualnego zestawu lub z podanego pliku.
+			@param name nazwa ikony z zestawu lub sciezka do pliku
+			(jesli zawiera znak '/' to jest interpretowana jako
+			sciezka).
+		**/
 		QPixmap loadIcon(QString name);
 		static void initModule();
 

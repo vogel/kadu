@@ -17,6 +17,7 @@
 
 #include "config_dialog.h"
 #include "config_file.h"
+#include "misc.h"
 #include "debug.h"
 
 QString ConfigDialog::acttab = QT_TRANSLATE_NOOP("@default", "General");
@@ -192,7 +193,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 			case CONFIG_PUSHBUTTON:
 			{
 				QPushButton *button =new QPushButton(appHandle->translate("@default",(*i).caption), parent, (*i).name);
-				button->setIconSet(QPixmap(QString(DATADIR)+ "/kadu/icons/" + (*i).defaultS));
+				button->setIconSet(icons_manager.loadIcon((*i).defaultS));
 				(*i).widget=button;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				break;
@@ -245,7 +246,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 			}
 			case CONFIG_TAB:
 			{
-				listBox->insertItem(QPixmap(QString(DATADIR)+ "/kadu/icons/" + (*i).defaultS), appHandle->translate("@default",(*i).caption));
+				listBox->insertItem(icons_manager.loadIcon((*i).defaultS), appHandle->translate("@default",(*i).caption));
 				QVBox *subbox= new QVBox(box);
 				(*i).widget=subbox;
 				break;

@@ -766,8 +766,8 @@ void EventConfigSlots::initModule()
 	ConfigDialog::addListBox("Notify", "listbox1","available");
 	
 	ConfigDialog::addGrid("Notify", "listboxy", "listbox2", 1);
-	ConfigDialog::addPushButton("Notify", "listbox2", "", "forward.png","","forward");
-	ConfigDialog::addPushButton("Notify", "listbox2", "", "back.png","","back");
+	ConfigDialog::addPushButton("Notify", "listbox2", "", "AddToNotifyList","","forward");
+	ConfigDialog::addPushButton("Notify", "listbox2", "", "RemoveFromNotifyList","","back");
 	
 	ConfigDialog::addGrid("Notify", "listboxy", "listbox3", 1);
 	ConfigDialog::addLabel("Notify", "listbox3", "Tracked");

@@ -674,25 +674,23 @@ IconsManager::IconsManager(const QString& name, const QString& configname)
 };
 
 
-QPixmap IconsManager::loadIcon(QString name) {
-	int i;
-	QString fname;
-
-	for (i = 0; i < icons.count(); i++)
+QPixmap IconsManager::loadIcon(QString name)
+{
+	for (int i = 0; i < icons.count(); i++)
 		if (icons[i].name == name)
-			break;
-	if (i < icons.count()) {
-		return icons[i].picture.pixmap();
-		}
-	else {
-		iconhandle icon;
-		icon.name = name;
-		QPixmap p;
-		p.load(themePath() + getThemeEntry(name));
-		icon.picture = QIconSet(p);
-		icons.append(icon);
-		return icons[i].picture.pixmap();
-		}		
+			return icons[i].picture.pixmap();
+	QString fname;	
+	if(name.contains('/'))
+		fname = name;
+	else
+		fname = themePath() + getThemeEntry(name);
+	iconhandle icon;
+	icon.name = name;
+	QPixmap p;
+	p.load(fname);
+	icon.picture = QIconSet(p);
+	icons.append(icon);
+	return icons[icons.count()-1].picture.pixmap();
 }
 
 

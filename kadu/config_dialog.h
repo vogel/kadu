@@ -411,10 +411,9 @@ class ConfigDialog : public QDialog	{
 		    Dodaje kontrolke do zakladki "groupname", 
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
-			Ustawiona ikonka na przycisku ma nazwe "iconFileName" 
-			i jest ona umieszczona w katalogu "$PREFIX/kadu/icons"
 			Podpowiedz kontrolki ustawiona jest na "tip".
 			Nazwa kontrolki ustawiona jest na "name".
+			@param iconname nazwa ikony z zestawu lub sciezka do pliku
 		**/		
 
 		static void addPushButton(const QString& groupname, 
@@ -479,8 +478,8 @@ class ConfigDialog : public QDialog	{
 			    const int value=50, const QString& tip="", const QString& name="");
 
 		/**
-		    Dodaje zakladke o nazwie "caption" wraz z ikonka o nazwie "iconFileName"
-			i jest ona umieszczona w katalogu "$PREFIX/kadu/icons"
+		    Dodaje zakladke o nazwie "caption"
+		    @param iconname nazwa ikony z zestawu lub sciezka do pliku
 		**/
 		static void addTab(const QString& caption, const QString& iconFileName="");
 		

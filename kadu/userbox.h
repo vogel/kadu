@@ -37,6 +37,9 @@ class UserBoxMenu : public QPopupMenu
 	    UserBoxMenu(QWidget *parent=0, const char* name=0);
 	    int getItem(const QString &caption);
 	    int addItem(const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1);
+	    /**
+	    	@param iconname nazwa ikony z zestawu lub sciezka do pliku
+	    **/
 	    int addItem(const QString &iconname, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1);
     private slots:
 	    void restoreLook();

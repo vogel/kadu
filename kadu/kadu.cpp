@@ -336,17 +336,17 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	// popupmenu
 	UserBox::userboxmenu->addItem(tr("Open chat window") ,this, SLOT(openChat()));
-	UserBox::userboxmenu->addItem("mobile.png", tr("Send SMS"), this, SLOT(sendSmsToUser()),
+	UserBox::userboxmenu->addItem("SendSms", tr("Send SMS"), this, SLOT(sendSmsToUser()),
 		HotKey::shortCutFromFile("ShortCuts", "kadu_sendsms"));
 
 
-	UserBox::userboxmenu->addItem("filesave.png", tr("Send file"), this,
+	UserBox::userboxmenu->addItem("SendFile", tr("Send file"), this,
 		SLOT(sendFile()), HotKey::shortCutFromFile("ShortCuts", "kadu_sendfile"));
 	UserBox::userboxmenu->addItem(tr("Voice chat"), this,
 		SLOT(makeVoiceChat()), HotKey::shortCutFromFile("ShortCuts", "kadu_voicechat"));
 
 #ifdef HAVE_OPENSSL
-	UserBox::userboxmenu->addItem("encrypted.png", tr("Send my public key"), this, SLOT(sendKey()));
+	UserBox::userboxmenu->addItem("SendPublicKey", tr("Send my public key"), this, SLOT(sendKey()));
 #endif
 
 	UserBox::userboxmenu->insertSeparator();
@@ -356,11 +356,11 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	UserBox::userboxmenu->addItem(tr("Offline to user"), this, SLOT(offlineToUser()));
 
 	UserBox::userboxmenu->insertSeparator();
-	UserBox::userboxmenu->addItem("remove.png", tr("Remove from userlist"), this, SLOT(deleteUsers()),HotKey::shortCutFromFile("ShortCuts", "kadu_deleteuser"));
-	UserBox::userboxmenu->addItem("eraser.png", tr("Clear history"), this, SLOT(deleteHistory()));
-	UserBox::userboxmenu->addItem("history.png", tr("View history"),this,SLOT(viewHistory()),HotKey::shortCutFromFile("ShortCuts", "kadu_viewhistory"));
-	UserBox::userboxmenu->addItem("identity.png", tr("View/edit user info"), this, SLOT(showUserInfo()),HotKey::shortCutFromFile("ShortCuts", "kadu_persinfo"));
-	UserBox::userboxmenu->addItem("viewmag.png", tr("Lookup in directory"), this, SLOT(lookupInDirectory()),HotKey::shortCutFromFile("ShortCuts", "kadu_searchuser"));
+	UserBox::userboxmenu->addItem("RemoveFromUserlist", tr("Remove from userlist"), this, SLOT(deleteUsers()),HotKey::shortCutFromFile("ShortCuts", "kadu_deleteuser"));
+	UserBox::userboxmenu->addItem("ClearHistory", tr("Clear history"), this, SLOT(deleteHistory()));
+	UserBox::userboxmenu->addItem("History", tr("View history"),this,SLOT(viewHistory()),HotKey::shortCutFromFile("ShortCuts", "kadu_viewhistory"));
+	UserBox::userboxmenu->addItem("EditUserInfo", tr("View/edit user info"), this, SLOT(showUserInfo()),HotKey::shortCutFromFile("ShortCuts", "kadu_persinfo"));
+	UserBox::userboxmenu->addItem("LookupUserInfo", tr("Lookup in directory"), this, SLOT(lookupInDirectory()),HotKey::shortCutFromFile("ShortCuts", "kadu_searchuser"));
 	UserBox::userboxmenu->insertSeparator();
 	UserBox::userboxmenu->addItem(tr("About..."), this, SLOT(about()));
 

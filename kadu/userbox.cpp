@@ -652,7 +652,7 @@ int UserBoxMenu::addItem(const QString &text, const QObject* receiver, const cha
 
 int UserBoxMenu::addItem(const QString &iconname, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel, int id)
 {
-	insertItem( QIconSet(QPixmap(QString(DATADIR)+ "/kadu/icons/"+iconname)) , text, receiver, member, accel, id);
+	insertItem( QIconSet(icons_manager.loadIcon(iconname)) , text, receiver, member, accel, id);
 }
 
 
