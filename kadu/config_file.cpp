@@ -16,16 +16,19 @@
 #include "debug.h"
 #include "config_file.h"
 
-ConfigFile::ConfigFile(const QString &filename) : filename(filename),activeGroup(NULL) {
+ConfigFile::ConfigFile(const QString &filename) : filename(filename),activeGroup(NULL)
+{
 	read();
 }
 
-void ConfigFile::read() {
+void ConfigFile::read()
+{
 	kdebugm(KDEBUG_FUNCTION_START, "ConfigFile::read(): %s\n", (const char *)filename.local8Bit());
 	QFile file(filename);
 	QString line;
 
-	if (file.open(IO_ReadOnly)) {
+	if (file.open(IO_ReadOnly))
+	{
 		QTextStream stream(&file);
 		stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
 		while (!stream.atEnd())
@@ -55,7 +58,8 @@ void ConfigFile::read() {
 	kdebugf2();
 }
 
-void ConfigFile::write(const QString &f) {
+void ConfigFile::write(const QString &f)
+{
 	kdebugf();
 	QFile file;
 	if (f==QString::null)
@@ -64,7 +68,8 @@ void ConfigFile::write(const QString &f) {
 		file.setName(f);
 	QString line;
 
-	if (file.open(IO_WriteOnly | IO_Truncate)) {
+	if (file.open(IO_WriteOnly | IO_Truncate))
+	{
 		kdebugm(KDEBUG_INFO, "file opened '%s'\n", (const char *)file.name().local8Bit());
 		QTextStream stream(&file);
 		stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
@@ -87,7 +92,8 @@ void ConfigFile::write(const QString &f) {
 	kdebugf2();
 }
 
-void ConfigFile::sync() {
+void ConfigFile::sync()
+{
 	write();
 }
 
@@ -102,7 +108,8 @@ QMap<QString, QString>& ConfigFile::getGroupSection(const QString& name)
 	return groups[name];
 }
 
-bool ConfigFile::changeEntry(const QString &group, const QString &name, const QString &value) {
+bool ConfigFile::changeEntry(const QString &group, const QString &name, const QString &value)
+{
 //	kdebugm(KDEBUG_FUNCTION_START, "ConfigFile::changeEntry(%s, %s, %s) %p\n", (const char *)group.local8Bit(), (const char *)name.local8Bit(), (const char *)value.local8Bit(), this);
 	if (activeGroupName!=group)
 	{
@@ -114,7 +121,8 @@ bool ConfigFile::changeEntry(const QString &group, const QString &name, const QS
 	return ret;
 }
 
-QString ConfigFile::getEntry(const QString &group, const QString &name, bool *ok) const {
+QString ConfigFile::getEntry(const QString &group, const QString &name, bool *ok) const
+{
 //	kdebugm(KDEBUG_FUNCTION_START, "ConfigFile::getEntry(%s, %s) %p\n", (const char *)group.local8Bit(), (const char *)name.local8Bit(), this);
 	if (activeGroupName!=group)
 	{
@@ -135,44 +143,54 @@ QString ConfigFile::getEntry(const QString &group, const QString &name, bool *ok
 		return QString::null;
 }
 
-void ConfigFile::writeEntry(const QString &group,const QString &name, const QString &value) {
+void ConfigFile::writeEntry(const QString &group,const QString &name, const QString &value)
+{
 	changeEntry(group, name, value);
 }
 
-void ConfigFile::writeEntry(const QString &group,const QString &name, const char *value) {
+void ConfigFile::writeEntry(const QString &group,const QString &name, const char *value)
+{
 	changeEntry(group, name, QString::fromLocal8Bit(value));
 }
 
-void ConfigFile::writeEntry(const QString &group,const QString &name, const int value) {
+void ConfigFile::writeEntry(const QString &group,const QString &name, const int value)
+{
 	changeEntry(group, name, QString::number(value));
 }
 
-void ConfigFile::writeEntry(const QString &group,const QString &name, const double value) {
+void ConfigFile::writeEntry(const QString &group,const QString &name, const double value)
+{
 	changeEntry(group, name, QString::number(value, 'f'));
 }
 
-void ConfigFile::writeEntry(const QString &group,const QString &name, const bool value) {
+void ConfigFile::writeEntry(const QString &group,const QString &name, const bool value)
+{
 	changeEntry(group, name, value ? "true" : "false");
 }
 
-void ConfigFile::writeEntry(const QString &group,const QString &name, const QRect &value) {
+void ConfigFile::writeEntry(const QString &group,const QString &name, const QRect &value)
+{
 	changeEntry(group, name, QString("%1,%2,%3,%4").arg(value.left()).arg(value.top()).
 				arg(value.width()).arg(value.height()));
 }
 
-void ConfigFile::writeEntry(const QString &group,const QString &name, const QSize &value) {
+void ConfigFile::writeEntry(const QString &group,const QString &name, const QSize &value)
+{
 	changeEntry(group, name, QString("%1,%2").arg(value.width()).arg(value.height()));
 }
 
-void ConfigFile::writeEntry(const QString &group,const QString &name, const QColor &value) {
+void ConfigFile::writeEntry(const QString &group,const QString &name, const QColor &value)
+{
 	changeEntry(group, name, value.name());
 }
 
-void ConfigFile::writeEntry(const QString &group,const QString &name, const QFont &value) {
+void ConfigFile::writeEntry(const QString &group,const QString &name, const QFont &value)
+{
 	changeEntry(group, name, value.family()+","+QString::number(value.pointSize()));
 }
 
-void ConfigFile::writeEntry(const QString &group,const QString &name, const QPoint &value) {
+void ConfigFile::writeEntry(const QString &group,const QString &name, const QPoint &value)
+{
 	changeEntry(group, name, QString("%1,%2").arg(value.x()).arg(value.y()));
 }
 
