@@ -46,6 +46,7 @@
 #include "history.h"
 #include "misc.h"
 #include "vuser.h"
+#include "pending_msgs.h"
 
 void sigchldHndl (int whatever) {
 	while ((wait3(NULL, WNOHANG, NULL)) > 0);
@@ -99,21 +100,10 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 
 	playSound(config.soundmsg);
 
-	for (i = 0; i < pending.count(); i++)
-		if (!pending[i].uins.count())
-			break;
+//	fprintf(stderr, "KK eventRecvMsg(): New buffer size: %d\n",pending.size());
 
-	if (i == pending.count())
-		fprintf(stderr, "KK eventRecvMsg(): New buffer size: %d\n",pending.size());
-
-	struct pending pend;
-	pend.uins = senders;
-	pend.msgclass = msgclass;
-	pend.msg = new QString;
-	pend.msg->append(__c2q((const char *)msg));
-	pend.time = time;
-	pending.append(pend);
-
+	pending.addMsg(senders, __c2q((const char*)msg), msgclass, time);
+	
 	fprintf(stderr, "KK eventRecvMsg(): Message allocated to slot %d\n", i);
 	fprintf(stderr, "KK eventRecvMsg(): Got message from %d (%s) saying \"%s\"\n",
 		senders[0], (const char *)nick.local8Bit(), msg);
@@ -180,10 +170,12 @@ void ChangeUserStatus(uin_t uin, unsigned int new_status) {
 
 	for (int i = 0; i < num; i++) {
 		tmpstr = kadu->userbox->text(i);
-	
-		for (int j = 0; j < pending.count(); j++)
-			if (pending[j].uins[0] == uin)
-				return;
+
+		if (pending.pendingMsgs(uin))
+			return;
+//		for (int j = 0; j < pending.count(); j++)
+//			if (pending[j].uins[0] == uin)
+//				return;
 
 	if (!tmpstr.compare(userlist.byUin(uin).altnick)) {
 	    QPixmap * gg_st;
