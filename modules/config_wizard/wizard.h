@@ -13,13 +13,14 @@
 
 #include "../account_management/register.h"
 #include "chat.h"
+#include "misc.h"
 
 class Wizard : public QWizard
 {
     Q_OBJECT
 
 	public:
-		Wizard(QWidget *parent = 0, const char *name = 0);
+		Wizard(QWidget *parent = 0, const char *name = 0, bool modal = false);
 		~Wizard();
 
 	public slots:
@@ -52,8 +53,9 @@ class Wizard : public QWizard
 			*c_logMessages, *c_logStatusChanges, *c_privateStatus, *c_showBlocked, *c_showBlocking, *c_startDocked, *c_enableSounds, *c_playWhilstChatting,
 			*c_playWhenInvisible, *c_showInfoPanel, *c_showScrolls;
 		QComboBox *cb_browser, *cb_browserOptions, *cb_hintsTheme, *cb_hintsType, *cb_colorTheme, *cb_iconTheme, *cb_qtTheme, *cb_panelTheme, *cb_soundModule;
-		QLabel *preview, *preview2, *preview4, *iconPreview, *iconPreview2, *iconPreview3, *iconPreview4, *infoPreview, *moduleInfo;
+		QLabel *preview, *preview2, *preview4, *iconPreview, *iconPreview2, *iconPreview3, *iconPreview4, *moduleInfo;
 		QString customHint, customPanel;
+		KaduTextBrowser *infoPreview;
 
 		/* zapisuj± konfiguracjê */
 		void tryImport();
@@ -80,7 +82,7 @@ class Wizard : public QWizard
 		void previewIconTheme(int);
 		void previewQtTheme(int);
 		void previewPanelTheme(int);
-		//void addScrolls(bool);
+		void addScrolls(bool);
 
 		void finishClicked();
 		void nextClicked();

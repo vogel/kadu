@@ -18,16 +18,18 @@
 #include "wizard.h"
 #include "debug.h"
 #include "config_file.h"
-#include "misc.h"
 #include "gadu.h"
 #include "kadu.h"
 #include "modules.h"
 #include "addons.h"
+#include "message_box.h"
 
 unsigned int informationPanelCount=sizeof(informationPanelSyntax)/sizeof(informationPanelSyntax[0]);
 unsigned int hintCount=sizeof(hintSyntax)/sizeof(hintSyntax[0]);
 unsigned int hintColorCount=sizeof(hintColors)/sizeof(hintColors[0]);
 unsigned int kaduColorCount=sizeof(kaduColors)/sizeof(kaduColors[0]);
+QString currentColors[8];	//tu przechowujemy aktualny zestaw kolorow
+QString currentHints[13][2]; //a tu aktualne kolorki hintow
 
 extern "C" int config_wizard_init()
 {
@@ -52,7 +54,8 @@ extern "C" void config_wizard_close()
 	kdebugf2();
 }
 
-WizardStarter::WizardStarter(QObject *parent, const char *name) : QObject(parent, name)
+WizardStarter::WizardStarter(QObject *parent, const char *name)
+	: QObject(parent, name)
 {
 	menuPos=kadu->mainMenu()->insertItem(icons_manager.loadIcon("ConfigurationWizard"),
 		tr("Configuration Wizard"), this, SLOT(start()), 0, -1, 0);
@@ -76,7 +79,8 @@ void WizardStarter::start()
 	kdebugf2();
 }
 
-Wizard::Wizard(QWidget *parent, const char *name) : QWizard(parent, name)
+Wizard::Wizard(QWidget *parent, const char *name, bool modal)
+	: QWizard(parent, name, modal)
 {
 	kdebugf();
 	setCaption(tr("Kadu Wizard"));
@@ -114,12 +118,15 @@ Wizard::Wizard(QWidget *parent, const char *name) : QWizard(parent, name)
 	
 	helpButton()->hide();
 	noNewAccount=false;
+	
 	kdebugf2();
 }
 
 Wizard::~Wizard()
 {
 	kdebugf();
+	disconnect(cb_panelTheme, SIGNAL(activated (int)), this, SLOT(previewPanelTheme(int)));
+	disconnect(c_showScrolls, SIGNAL(toggled(bool)), this, SLOT(addScrolls(bool)));
 	kdebugf2();
 }
 
@@ -216,11 +223,8 @@ void Wizard::backClicked()
 void Wizard::wizardStart()
 {
 	kdebugf();
-/*	noNewAccount=true;
-	QWizard::showPage(languagePage);
-	setBackEnabled(languagePage, false);
-*/	exec();
-//	noNewAccount=false;
+	//exec();	//exec otwiera modalnie Wizarda
+	show();		//otwiera Wizarda ale nie modalnie
 	kdebugf2();
 }
 
@@ -251,8 +255,8 @@ void Wizard::userListImported(bool /*ok*/, UserList& userList)
 void Wizard::connected()
 {
 	if (!gadu->doImportUserList()) 
-		QMessageBox::information(0, tr("Kadu Wizard"),
-			tr("User list wasn't imported because of some error"), tr("OK"), 0, 0, 1);
+	MessageBox::msg(tr("User list wasn't imported because of some error"));	
+
 	disconnect(gadu, SIGNAL(connected()), this, SLOT(connected()));
 }
 
@@ -272,14 +276,14 @@ void Wizard::setGaduAccount()
 		bool isOk=true;
 		if (l_ggNewPasssword->text() != l_ggNewPassswordRetyped->text())
 		{
-			QMessageBox::information(0, tr("Kadu Wizard"), tr("Error data typed in required fields.\n\n"
+			MessageBox::msg(tr("Error data typed in required fields.\n\n"
 				"Passwords typed in both fields (\"New password\" and \"Retype new password\") "
-				"should be the same!"), tr("OK"), 0, 0, 1);
+				"should be the same!"));
 			isOk=false;
 		}
 		if (!l_ggNewPasssword->text().length())
 		{
-			QMessageBox::warning(this, "Kadu Wizard", tr("Please fill all fields"), tr("OK"), 0, 0, 1);
+			MessageBox::wrn(tr("Please fill all fields"));
 			isOk=false;
 		}
 		if (isOk)
@@ -300,10 +304,10 @@ void Wizard::registeredAccount(bool ok, UinType uin)
 		config_file.writeEntry("General", "UIN", (int)uin);
 		config_file.writeEntry("General", "Password", pwHash(l_ggNewPasssword->text()));
 		gadu->status().setOnline();	//jak zarejestrowal to od razu sie laczy
+		MessageBox::msg(tr("Registration was successful."));
 	}
 	else
-		QMessageBox::warning(0, tr("Register user"),
-				tr("An error has occured while registration. Please try again later."), tr("OK"), 0, 0, 1);
+		MessageBox::wrn(tr("An error has occured while registration. Please try again later."));
 	disconnect(gadu, SIGNAL(registered(bool, UinType)), this, SLOT(registeredAccount(bool, UinType)));
 	kdebugf2();
 }
@@ -323,8 +327,7 @@ void Wizard::tryImport()
 			connect(gadu, SIGNAL(connected()), this, SLOT(connected()));
 		}	//jak polaczony to bez cyrkow robi import
 		else if (!gadu->doImportUserList())
-			QMessageBox::information(0, tr("Kadu Wizard"),
-				tr("User list wasn't imported because of some error"), tr("OK"), 0, 0, 1);
+			MessageBox::msg(tr("User list wasn't imported because of some error"));
 	}
 	kdebugf2();
 }
@@ -675,15 +678,47 @@ void Wizard::createHintsOptionsPage()
 
 	new QLabel(tr("Please choose hints design"), grp_hintsOptions);
 	cb_hintsTheme = new QComboBox(grp_hintsOptions);
-	for (unsigned int i=0; i<hintColorCount; ++i)
+	unsigned int i;
+	for (i=0; i<hintColorCount; ++i)
 		cb_hintsTheme->insertItem(tr(hintColorsNames[i]));
+	
+	cb_hintsTheme->insertItem(tr("Current")); //wlasne ustawienie
+	cb_hintsTheme->setCurrentItem(i);
+	//teraz musimy je zapamietac
+	currentHints[0][0] = config_file.readEntry("Hints", "HintBlocking_bgcolor");
+	currentHints[1][0] = config_file.readEntry("Hints", "HintBusyD_bgcolor");
+	currentHints[2][0] = config_file.readEntry("Hints", "HintBusy_bgcolor");
+	currentHints[3][0] = config_file.readEntry("Hints", "HintError_bgcolor");
+	currentHints[4][0] = config_file.readEntry("Hints", "HintInvisibleD_bgcolor");
+	currentHints[5][0] = config_file.readEntry("Hints", "HintInvisible_bgcolor");
+	currentHints[6][0] = config_file.readEntry("Hints", "HintMessage_bgcolor");
+	currentHints[7][0] = config_file.readEntry("Hints", "HintNewChat_bgcolor");
+	currentHints[8][0] = config_file.readEntry("Hints", "HintNewMessage_bgcolor");
+	currentHints[9][0] = config_file.readEntry("Hints", "HintOfflineD_bgcolor");
+	currentHints[10][0] = config_file.readEntry("Hints", "HintOffline_bgcolor");
+	currentHints[11][0] = config_file.readEntry("Hints", "HintOnlineD_bgcolor");
+	currentHints[12][0] = config_file.readEntry("Hints", "HintOnline_bgcolor");
+	currentHints[0][1] = config_file.readEntry("Hints", "HintBlocking_fgcolor");
+	currentHints[1][1] = config_file.readEntry("Hints", "HintBusyD_fgcolor");
+	currentHints[2][1] = config_file.readEntry("Hints", "HintBusy_fgcolor");
+	currentHints[3][1] = config_file.readEntry("Hints", "HintError_fgcolor");
+	currentHints[4][1] = config_file.readEntry("Hints", "HintInvisibleD_fgcolor");
+	currentHints[5][1] = config_file.readEntry("Hints", "HintInvisible_fgcolor");
+	currentHints[6][1] = config_file.readEntry("Hints", "HintMessage_fgcolor");
+	currentHints[7][1] = config_file.readEntry("Hints", "HintNewChat_fgcolor");
+	currentHints[8][1] = config_file.readEntry("Hints", "HintNewMessage_fgcolor");
+	currentHints[9][1] = config_file.readEntry("Hints", "HintOfflineD_fgcolor");
+	currentHints[10][1] = config_file.readEntry("Hints", "HintOffline_fgcolor");
+	currentHints[11][1] = config_file.readEntry("Hints", "HintOnlineD_fgcolor");
+	currentHints[12][1] = config_file.readEntry("Hints", "HintOnline_fgcolor");
+
 
 	new QLabel(tr("Preview"), grp_hintsOptions);
 
-	preview = new QLabel (tr("<b>User</b> changed status to <b>Busy</b>"), grp_hintsOptions);
+	preview = new QLabel (toDisplay(tr("<b>User</b> changed status to <b>Busy</b>")), grp_hintsOptions);
 	preview->setFont(QFont("sans", 10));	//<-----------------------------------
-	preview->setPaletteForegroundColor(hintColors[0][1]);
-	preview->setPaletteBackgroundColor(hintColors[0][0]);
+	preview->setPaletteForegroundColor(currentHints[2][1]);
+	preview->setPaletteBackgroundColor(currentHints[2][0]);
 	preview->setAlignment(Qt::AlignCenter);
 	preview->setFixedWidth(260);
 	preview->setAutoResize(true);
@@ -692,8 +727,8 @@ void Wizard::createHintsOptionsPage()
 	
 	preview2 = new QLabel (tr("<b>Error</b>: (192.168.0.1) Disconnection has occured"), grp_hintsOptions);
 	preview2->setFont(QFont("sans", 10));	//<-----------------------------------
-	preview2->setPaletteForegroundColor(hintColors[0][1]);
-	preview2->setPaletteBackgroundColor(hintColors[0][0]);
+	preview2->setPaletteForegroundColor(currentHints[3][1]);
+	preview2->setPaletteBackgroundColor(currentHints[3][0]);
 	preview2->setAlignment(Qt::AlignCenter);
 	preview2->setFixedWidth(260);
 	preview2->setAutoResize(true);
@@ -711,10 +746,10 @@ void Wizard::createHintsOptionsPage()
 	new QLabel(tr("Preview"), grp_hintsOptions2);
 	preview4 = new QLabel (toDisplay(hintSyntax[0]), grp_hintsOptions2);
 	preview4->setFont(QFont("sans", 10));	//<----------------------------------
-	preview4->setPaletteForegroundColor(hintColors[0][1]);
-	preview4->setPaletteBackgroundColor(hintColors[0][0]);
+	preview2->setPaletteForegroundColor(currentHints[2][1]);
+	preview2->setPaletteBackgroundColor(currentHints[2][0]);
 	preview4->setAlignment(Qt::AlignCenter);
-	preview4->setFixedWidth(200);
+	preview4->setFixedWidth(260);
 	preview4->setAutoResize(true);
 
 	connect(cb_hintsTheme, SIGNAL(activated(int)), this, SLOT(previewHintsTheme(int)));
@@ -762,10 +797,22 @@ void Wizard::createColorsPage()
 	
 	new QLabel(tr("Please choose Kadu design"), grp_colorOptions);
 	cb_colorTheme = new QComboBox(grp_colorOptions);
-
-	for (unsigned int i=0; i<kaduColorCount; ++i)
+	unsigned int i;
+	for (i=0; i<kaduColorCount; ++i)
 		cb_colorTheme->insertItem(tr(kaduColorNames[i]));
-
+	
+	cb_colorTheme->insertItem(tr("Current"));	//zeby nie stracic wlasnego ustawienia kolorow przez zabawe combo
+	cb_colorTheme->setCurrentItem(i);
+	//zapamietujemy ustawienia kolorkow:
+	currentColors[0] = config_file.readEntry("Look", "ChatMyBgColor");
+	currentColors[1] = config_file.readEntry("Look", "ChatMyFontColor");
+	currentColors[2] = config_file.readEntry("Look", "ChatUsrBgColor");
+	currentColors[3] = config_file.readEntry("Look", "ChatUsrFontColor");
+	currentColors[4] = config_file.readEntry("Look", "InfoPanelBgColor");
+	currentColors[5] = config_file.readEntry("Look", "InfoPanelFgColor");
+	currentColors[6] = config_file.readEntry("Look", "UserboxBgColor");
+	currentColors[7] = config_file.readEntry("Look", "UserboxFgColor");
+	
 	QGroupBox *grp_iconsOptions = new QGroupBox(tr("Icons"),  colorsPage);
 	grp_iconsOptions->setInsideMargin(10);
 	grp_iconsOptions->setColumns(2);
@@ -825,30 +872,32 @@ void Wizard::createInfoPanelPage()
 
 	new QLabel(tr("Preview"), grp_infoPanelOptions);
 	
-	//infoPreview = new KaduTextBrowser (grp_infoPanelOptions);	//-- przymiarka pod zmiane podgladu
-	infoPreview = new QLabel (toDisplay(informationPanelSyntax[0]), grp_infoPanelOptions);
+	infoPreview = new KaduTextBrowser (grp_infoPanelOptions);	//-- przymiarka pod zmiane podgladu
+	infoPreview->setPaletteBackgroundColor(config_file.readColorEntry("Look", "InfoPanelBgColor"));
+	infoPreview->setPaletteForegroundColor(config_file.readColorEntry("Look", "InfoPanelFgColor"));
 	infoPreview->setFrameStyle(QFrame::Box | QFrame::Plain);
-    	infoPreview->setLineWidth(1);
+    infoPreview->setLineWidth(1);
 	infoPreview->setAlignment(Qt::AlignVCenter | Qt::WordBreak | Qt::DontClip);
-	infoPreview->setAutoResize(true);
-	infoPreview->setMaximumWidth(230);
-	/*	//--przymiarka pod j.w.
+	infoPreview->setMaximumWidth(230);	
+	
 	if (c_showScrolls->isChecked())
-		infoPreview->setVScrollBarMode(QScrollView::Auto);
-	else 	infoPreview->setVScrollBarMode(QScrollView::AlwaysOff);
-	*/
+		infoPreview->setVScrollBarMode(QScrollView::AlwaysOn); //zeby bylo je widac nawet przy krotkich panelach
+	else 	
+		infoPreview->setVScrollBarMode(QScrollView::AlwaysOff);
+	
 	connect(cb_panelTheme, SIGNAL(activated (int)), this, SLOT(previewPanelTheme(int)));
-	//connect(c_showScrolls, SIGNAL(toggled(bool)), this, SLOT(addScrolls(bool)));	//--j.w.
+	connect(c_showScrolls, SIGNAL(toggled(bool)), this, SLOT(addScrolls(bool)));	//--j.w.
 	
 	QString panelConstruction=config_file.readEntry("Look", "PanelContents", "");
 	if (panelConstruction != "")
-	{
+	{	
+		UserListElement el;		
 		unsigned int i;
 		for (i=0; i<informationPanelCount; ++i)
 			if (panelConstruction==toSave(informationPanelSyntax[i]))
 			{
 				cb_panelTheme->setCurrentItem(i);
-				infoPreview->setText(toDisplay(informationPanelSyntax[i]));
+				infoPreview->setText(parse(toDisplay(informationPanelSyntax[i]), el));
 				break;
 			}
 		if (i==informationPanelCount)
@@ -856,7 +905,7 @@ void Wizard::createInfoPanelPage()
 			cb_panelTheme->insertItem(tr("Custom"));
 			cb_panelTheme->setCurrentItem(i);
 			customPanel=panelConstruction;
-			infoPreview->setText(toDisplay(panelConstruction));
+			infoPreview->setText(parse(toDisplay(panelConstruction), el));
 		}	
 	}
 	addPage(infoPanelPage, tr("Information panel look"));
@@ -1004,8 +1053,6 @@ void Wizard::setBrowser()
 void Wizard::findAndSetWebBrowser(int selectedBrowser)
 {
 	ChatSlots::findBrowser(selectedBrowser, cb_browser, cb_browserOptions, l_customBrowser);
-	//if (selectedBrowser!=0)
-	//	l_customBrowser->setEnabled(false);
 	l_customBrowser->setEnabled(!selectedBrowser);
 }
 
@@ -1022,12 +1069,24 @@ void Wizard::findAndSetBrowserOption(int selectedOption)
 **/
 void Wizard::previewHintsTheme(int hintsThemeID)
 {
-	preview->setPaletteForegroundColor(QColor(hintColors[hintsThemeID][1]));
-	preview->setPaletteBackgroundColor(QColor(hintColors[hintsThemeID][0]));
-	preview2->setPaletteForegroundColor(QColor(hintColors[hintsThemeID][1]));
-	preview2->setPaletteBackgroundColor(QColor(hintColors[hintsThemeID][0]));
-	preview4->setPaletteForegroundColor(QColor(hintColors[hintsThemeID][1]));
-	preview4->setPaletteBackgroundColor(QColor(hintColors[hintsThemeID][0]));
+	if (cb_hintsTheme->currentText() == tr("Current"))
+	{
+		preview->setPaletteForegroundColor(QColor(currentHints[2][1]));
+		preview->setPaletteBackgroundColor(QColor(currentHints[2][0]));
+		preview2->setPaletteForegroundColor(QColor(currentHints[3][1]));
+		preview2->setPaletteBackgroundColor(QColor(currentHints[3][0]));
+		preview4->setPaletteForegroundColor(QColor(currentHints[2][1]));
+		preview4->setPaletteBackgroundColor(QColor(currentHints[2][0]));
+	}
+	else 
+	{
+		preview->setPaletteForegroundColor(QColor(hintColors[hintsThemeID][1]));
+		preview->setPaletteBackgroundColor(QColor(hintColors[hintsThemeID][0]));
+		preview2->setPaletteForegroundColor(QColor(hintColors[hintsThemeID][1]));
+		preview2->setPaletteBackgroundColor(QColor(hintColors[hintsThemeID][0]));
+		preview4->setPaletteForegroundColor(QColor(hintColors[hintsThemeID][1]));
+		preview4->setPaletteBackgroundColor(QColor(hintColors[hintsThemeID][0]));
+	}
 }
 
 /**
@@ -1047,38 +1106,71 @@ void Wizard::previewHintsType(int hintsTypeID)
 void Wizard::setHints()
 {
 	kdebugf();
-	QColor bg_color, fg_color;
-	bg_color=preview->paletteBackgroundColor();
-	fg_color=preview->paletteForegroundColor();
-
-	config_file.writeEntry("Hints", "HintBlocking_bgcolor", bg_color);
-	config_file.writeEntry("Hints", "HintBusyD_bgcolor", bg_color);
-	config_file.writeEntry("Hints", "HintBusy_bgcolor", bg_color);
-	config_file.writeEntry("Hints", "HintError_bgcolor", bg_color);
-	config_file.writeEntry("Hints", "HintInvisibleD_bgcolor", bg_color);
-	config_file.writeEntry("Hints", "HintInvisible_bgcolor", bg_color);
-	config_file.writeEntry("Hints", "HintMessage_bgcolor", bg_color);
-	config_file.writeEntry("Hints", "HintNewChat_bgcolor", bg_color);
-	config_file.writeEntry("Hints", "HintNewMessage_bgcolor", bg_color);
-	config_file.writeEntry("Hints", "HintOfflineD_bgcolor", bg_color);
-	config_file.writeEntry("Hints", "HintOffline_bgcolor", bg_color);
-	config_file.writeEntry("Hints", "HintOnlineD_bgcolor", bg_color);
-	config_file.writeEntry("Hints", "HintOnline_bgcolor", bg_color);
 	
-	config_file.writeEntry("Hints", "HintBlocking_fgcolor", fg_color);
-	config_file.writeEntry("Hints", "HintBusyD_fgcolor", fg_color);
-	config_file.writeEntry("Hints", "HintBusy_fgcolor", fg_color);
-	config_file.writeEntry("Hints", "HintError_fgcolor", fg_color);
-	config_file.writeEntry("Hints", "HintInvisibleD_fgcolor", fg_color);
-	config_file.writeEntry("Hints", "HintInvisible_fgcolor", fg_color);
-	config_file.writeEntry("Hints", "HintMessage_fgcolor", fg_color);
-	config_file.writeEntry("Hints", "HintNewChat_fgcolor", fg_color);
-	config_file.writeEntry("Hints", "HintNewMessage_fgcolor", fg_color);
-	config_file.writeEntry("Hints", "HintOfflineD_fgcolor", fg_color);
-	config_file.writeEntry("Hints", "HintOffline_fgcolor", fg_color);
-	config_file.writeEntry("Hints", "HintOnlineD_fgcolor", fg_color);
-	config_file.writeEntry("Hints", "HintOnline_fgcolor", fg_color);
+	if (cb_hintsTheme->currentText() == tr("Current"))
+	{
+		config_file.writeEntry("Hints", "HintBlocking_bgcolor", currentHints[0][0]);
+		config_file.writeEntry("Hints", "HintBusyD_bgcolor", currentHints[1][0]);
+		config_file.writeEntry("Hints", "HintBusy_bgcolor", currentHints[2][0]);
+		config_file.writeEntry("Hints", "HintError_bgcolor", currentHints[3][0]);
+		config_file.writeEntry("Hints", "HintInvisibleD_bgcolor", currentHints[4][0]);
+		config_file.writeEntry("Hints", "HintInvisible_bgcolor", currentHints[5][0]);
+		config_file.writeEntry("Hints", "HintMessage_bgcolor", currentHints[6][0]);
+		config_file.writeEntry("Hints", "HintNewChat_bgcolor", currentHints[7][0]);
+		config_file.writeEntry("Hints", "HintNewMessage_bgcolor", currentHints[8][0]);
+		config_file.writeEntry("Hints", "HintOfflineD_bgcolor", currentHints[9][0]);
+		config_file.writeEntry("Hints", "HintOffline_bgcolor", currentHints[10][0]);
+		config_file.writeEntry("Hints", "HintOnlineD_bgcolor", currentHints[11][0]);
+		config_file.writeEntry("Hints", "HintOnline_bgcolor", currentHints[12][0]);
+	
+		config_file.writeEntry("Hints", "HintBlocking_fgcolor", currentHints[0][1]);
+		config_file.writeEntry("Hints", "HintBusyD_fgcolor", currentHints[1][1]);
+		config_file.writeEntry("Hints", "HintBusy_fgcolor", currentHints[2][1]);
+		config_file.writeEntry("Hints", "HintError_fgcolor", currentHints[3][1]);
+		config_file.writeEntry("Hints", "HintInvisibleD_fgcolor", currentHints[4][1]);
+		config_file.writeEntry("Hints", "HintInvisible_fgcolor", currentHints[5][1]);
+		config_file.writeEntry("Hints", "HintMessage_fgcolor", currentHints[6][1]);
+		config_file.writeEntry("Hints", "HintNewChat_fgcolor", currentHints[7][1]);
+		config_file.writeEntry("Hints", "HintNewMessage_fgcolor", currentHints[8][1]);
+		config_file.writeEntry("Hints", "HintOfflineD_fgcolor", currentHints[9][1]);
+		config_file.writeEntry("Hints", "HintOffline_fgcolor", currentHints[10][1]);
+		config_file.writeEntry("Hints", "HintOnlineD_fgcolor", currentHints[11][1]);
+		config_file.writeEntry("Hints", "HintOnline_fgcolor", currentHints[12][1]);
+	}
+	else 
+	{
+		QColor bg_color, fg_color;
+		bg_color=preview->paletteBackgroundColor();
+		fg_color=preview->paletteForegroundColor();
 
+		config_file.writeEntry("Hints", "HintBlocking_bgcolor", bg_color);
+		config_file.writeEntry("Hints", "HintBusyD_bgcolor", bg_color);
+		config_file.writeEntry("Hints", "HintBusy_bgcolor", bg_color);
+		config_file.writeEntry("Hints", "HintError_bgcolor", bg_color);
+		config_file.writeEntry("Hints", "HintInvisibleD_bgcolor", bg_color);
+		config_file.writeEntry("Hints", "HintInvisible_bgcolor", bg_color);
+		config_file.writeEntry("Hints", "HintMessage_bgcolor", bg_color);
+		config_file.writeEntry("Hints", "HintNewChat_bgcolor", bg_color);
+		config_file.writeEntry("Hints", "HintNewMessage_bgcolor", bg_color);
+		config_file.writeEntry("Hints", "HintOfflineD_bgcolor", bg_color);
+		config_file.writeEntry("Hints", "HintOffline_bgcolor", bg_color);
+		config_file.writeEntry("Hints", "HintOnlineD_bgcolor", bg_color);
+		config_file.writeEntry("Hints", "HintOnline_bgcolor", bg_color);
+	
+		config_file.writeEntry("Hints", "HintBlocking_fgcolor", fg_color);
+		config_file.writeEntry("Hints", "HintBusyD_fgcolor", fg_color);
+		config_file.writeEntry("Hints", "HintBusy_fgcolor", fg_color);
+		config_file.writeEntry("Hints", "HintError_fgcolor", fg_color);
+		config_file.writeEntry("Hints", "HintInvisibleD_fgcolor", fg_color);
+		config_file.writeEntry("Hints", "HintInvisible_fgcolor", fg_color);
+		config_file.writeEntry("Hints", "HintMessage_fgcolor", fg_color);
+		config_file.writeEntry("Hints", "HintNewChat_fgcolor", fg_color);
+		config_file.writeEntry("Hints", "HintNewMessage_fgcolor", fg_color);
+		config_file.writeEntry("Hints", "HintOfflineD_fgcolor", fg_color);
+		config_file.writeEntry("Hints", "HintOffline_fgcolor", fg_color);
+		config_file.writeEntry("Hints", "HintOnlineD_fgcolor", fg_color);
+		config_file.writeEntry("Hints", "HintOnline_fgcolor", fg_color);
+	}
 	config_file.writeEntry("Hints", "NotifyHintUseSyntax", true);
 	
 	if (cb_hintsType->currentItem()==0)
@@ -1102,15 +1194,29 @@ void Wizard::setHints()
 void Wizard::previewColorTheme(int colorThemeID)
 {
 	kdebugf();
-	config_file.writeEntry("Look", "ChatMyBgColor", kaduColors[colorThemeID][0]);
-	config_file.writeEntry("Look", "ChatMyFontColor", kaduColors[colorThemeID][1]);
-	config_file.writeEntry("Look", "ChatUsrBgColor", kaduColors[colorThemeID][2]);
-	config_file.writeEntry("Look", "ChatUsrFontColor", kaduColors[colorThemeID][3]);
-	config_file.writeEntry("Look", "InfoPanelBgColor", kaduColors[colorThemeID][4]);
-	config_file.writeEntry("Look", "InfoPanelFgColor", kaduColors[colorThemeID][5]);
-	config_file.writeEntry("Look", "UserboxBgColor", kaduColors[colorThemeID][6]);
-	config_file.writeEntry("Look", "UserboxFgColor", kaduColors[colorThemeID][7]);
 	
+	if (cb_colorTheme->currentText() == tr("Current"))
+	{
+		config_file.writeEntry("Look", "ChatMyBgColor", currentColors[0]);
+		config_file.writeEntry("Look", "ChatMyFontColor", currentColors[1]);
+		config_file.writeEntry("Look", "ChatUsrBgColor", currentColors[2]);
+		config_file.writeEntry("Look", "ChatUsrFontColor", currentColors[3]);
+		config_file.writeEntry("Look", "InfoPanelBgColor", currentColors[4]);
+		config_file.writeEntry("Look", "InfoPanelFgColor", currentColors[5]);
+		config_file.writeEntry("Look", "UserboxBgColor", currentColors[6]);
+		config_file.writeEntry("Look", "UserboxFgColor", currentColors[7]);
+	}
+	else
+	{
+		config_file.writeEntry("Look", "ChatMyBgColor", kaduColors[colorThemeID][0]);
+		config_file.writeEntry("Look", "ChatMyFontColor", kaduColors[colorThemeID][1]);
+		config_file.writeEntry("Look", "ChatUsrBgColor", kaduColors[colorThemeID][2]);
+		config_file.writeEntry("Look", "ChatUsrFontColor", kaduColors[colorThemeID][3]);
+		config_file.writeEntry("Look", "InfoPanelBgColor", kaduColors[colorThemeID][4]);
+		config_file.writeEntry("Look", "InfoPanelFgColor", kaduColors[colorThemeID][5]);
+		config_file.writeEntry("Look", "UserboxBgColor", kaduColors[colorThemeID][6]);
+		config_file.writeEntry("Look", "UserboxFgColor", kaduColors[colorThemeID][7]);
+	}
 	kadu->changeAppearance();
 	kdebugf2();
 }
@@ -1169,10 +1275,12 @@ void Wizard::setColorsAndIcons()
 **/
 void Wizard::previewPanelTheme(int panelThemeID)
 {
+	infoPreview->clearParagraphBackground(0);
+	UserListElement el;
 	if (panelThemeID==int(informationPanelCount))
-		infoPreview->setText(toDisplay(customPanel));
+			infoPreview->setText(parse(toDisplay(customPanel), el));
 	else 
-		infoPreview->setText(toDisplay(informationPanelSyntax[cb_panelTheme->currentItem()]));
+		infoPreview->setText(parse(toDisplay(informationPanelSyntax[cb_panelTheme->currentItem()]), el));
 }
 
 /**
@@ -1181,6 +1289,7 @@ void Wizard::previewPanelTheme(int panelThemeID)
 void Wizard::setPanelTheme()
 {
 	kdebugf();
+	UserListElement el;
 	config_file.writeEntry("Look", "ShowInfoPanel", c_showInfoPanel->isChecked());
 	config_file.writeEntry("Look", "PanelVerticalScrollbar", c_showScrolls->isChecked());
 	if (cb_panelTheme->currentItem()==int(informationPanelCount))
@@ -1210,6 +1319,8 @@ void Wizard::previewQtTheme(int themeID)
 QString Wizard::toDisplay(QString s)
 {
 	kdebugf();
+	s = toSave(s);		//wpierw zamieniam sciezki, potem ustawiam przykladowe dane
+	s.replace(QRegExp("%t.png"), "Busy.png");	//to obrazek do RonK2 - nie tlumaczymy
 	s.replace(QRegExp("%s"), tr("Busy"));
 	s.replace(QRegExp("%d"), tr("My description"));
 	s.replace(QRegExp("%i"), "192.168.0.1");
@@ -1227,8 +1338,6 @@ QString Wizard::toDisplay(QString s)
 	s.replace(QRegExp("\\["), "");
 	s.replace(QRegExp("\\]"), "");
 	s.replace(QRegExp("changed status to"), tr("changed status to"));
-
-	s=toSave(s);
 	
 	kdebugf2();
 	return s;
@@ -1291,6 +1400,19 @@ void Wizard::setSoundModule(int comboPos)
 	}
 	else
 		setNextEnabled(soundOptionsPage, true);
+}
+
+/**
+	wlaczenie/wylaczenie Scroolli w podgladzie panelu informacyjnego
+**/
+void Wizard::addScrolls(bool enableScrolls)
+{	
+	kdebugf();
+	if (enableScrolls)
+		infoPreview->setVScrollBarMode(QScrollView::AlwaysOn);	//zeby bylo widac nawet przy krotkich panelach
+	else
+		infoPreview->setVScrollBarMode(QScrollView::AlwaysOff);
+	kdebugf2();
 }
 
 Wizard *startWizardObj = NULL;

@@ -270,20 +270,11 @@
         <translation>Gratulacje</translation>
     </message>
     <message>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-    <message>
         <source>Error data typed in required fields.
 
 Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new password&quot;) should be the same!</source>
-        <translation>Błędnie wprowadzone dane.(new line)
-(new line)
+        <translation>Błędnie wprowadzone dane.
 Hasło powinno w obu polach być takie same!</translation>
-    </message>
-    <message>
-        <source>Register user</source>
-        <translation>Rejestracja użytkownika</translation>
     </message>
     <message>
         <source>An error has occured while registration. Please try again later.</source>
@@ -443,7 +434,7 @@ Hasło powinno w obu polach być takie same!</translation>
     </message>
     <message>
         <source>&lt;h2&gt;Congratulations&lt;/h2&gt;&lt;h3&gt;You have just configured Kadu&lt;/h3&gt;You can adjust settings using the configuration icon on toolbar or simply by pressing F2. It&apos;s recomended to read the documentation before changing some advanced settings. If you have questions or problems with Kadu look at &lt;b&gt;www.kadu.net/forum&lt;/b&gt; and be our guest.&lt;br&gt;&lt;h3&gt;Enjoy using Kadu ;)&lt;br&gt;Kadu Team&lt;/h3&gt;</source>
-        <translation>&lt;h2&gt;Gratulacje&lt;/h2&gt;&lt;h3&gt;Kadu jest zkonfigurowane&lt;/h3&gt;Jeżeli będziesz mieć ochote zmieć ustawienia będziesz mieć do nich dostęp poprzez ikone konfiguracji na pasku narżedziowym lub poprzez skrut klawiaturowt F2. Rekomendujemy przeczytanie dokumentacji online &lt;b&gt;www.kadu.net/doc.php&lt;/b&gt; przed dokonywaniem zmian w zaawanowanych ustawieniach. Jeśli masz jakieś pytania lub problemy z Kadu zajrzyj na &lt;b&gt;www.kadu.net/forum&lt;/b&gt;&lt;br&gt;&lt;h3&gt;Cieszymy się że używasz Kadu ;)&lt;br&gt;Kadu Team&lt;/h3&gt;</translation>
+        <translation>&lt;h2&gt;Gratulacje&lt;/h2&gt;&lt;h3&gt;Kadu jest zkonfigurowane&lt;/h3&gt;Jeżeli będziesz mieć ochotę zmienić ustawienia będziesz mieć do nich dostęp poprzez ikonę konfiguracji na pasku narzędziowym lub poprzez skrót klawiaturowy F2. Rekomendujemy przeczytanie dokumentacji online &lt;b&gt;www.kadu.net/doc.php&lt;/b&gt; przed dokonywaniem zmian w zaawanowanych ustawieniach. Jeśli masz jakieś pytania lub problemy z Kadu zajrzyj na &lt;b&gt;www.kadu.net/forum&lt;/b&gt;&lt;br&gt;&lt;h3&gt;Cieszymy się że używasz Kadu ;)&lt;br&gt;Kadu Team&lt;/h3&gt;</translation>
     </message>
     <message>
         <source>There will be no sounds in Kadu</source>
@@ -452,6 +443,14 @@ Hasło powinno w obu polach być takie same!</translation>
     <message>
         <source>&lt;font color=red&gt;Module is not installed! If you want to use it download and install it first.&lt;/font&gt;&lt;br&gt;</source>
         <translation>&lt;font color=red&gt;Moduł nie jest zainstalowany! Jeśli chcesz go użyć pobierz go z sieci i zainstaluj.&lt;/font&gt;&lt;br&gt;</translation>
+    </message>
+    <message>
+        <source>Current</source>
+        <translation>Bieżący</translation>
+    </message>
+    <message>
+        <source>Registration was successful.</source>
+        <translation>Rejestracja zakończona sukcesem.</translation>
     </message>
 </context>
 <context>

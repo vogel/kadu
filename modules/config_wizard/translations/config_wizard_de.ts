@@ -314,14 +314,6 @@ Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new pa
 Kennwörter in beiden Feldern (&quot;Kennwort&quot; und &quot;Kennwort erneut eingeben&quot;) sollten gleich sein!</translation>
     </message>
     <message>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-    <message>
-        <source>Register user</source>
-        <translation>Benutzer Registrieren</translation>
-    </message>
-    <message>
         <source>An error has occured while registration. Please try again later.</source>
         <translation>Bei der Registrierung des neuen Benutzers ist ein Fehler eingetreten. Versuchen Sie erneut.</translation>
     </message>
@@ -451,6 +443,14 @@ Kennwörter in beiden Feldern (&quot;Kennwort&quot; und &quot;Kennwort erneut ei
     </message>
     <message>
         <source>&lt;font color=red&gt;Module is not installed! If you want to use it download and install it first.&lt;/font&gt;&lt;br&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Current</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Registration was successful.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

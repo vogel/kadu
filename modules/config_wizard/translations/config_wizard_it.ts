@@ -314,14 +314,6 @@ Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new pa
 Password in entrambi campi deve essere la stessa!</translation>
     </message>
     <message>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-    <message>
-        <source>Register user</source>
-        <translation>Registrazione utente</translation>
-    </message>
-    <message>
         <source>An error has occured while registration. Please try again later.</source>
         <translation>Errore durante la registrazione. Riprova più tardi.</translation>
     </message>
@@ -451,6 +443,14 @@ Password in entrambi campi deve essere la stessa!</translation>
     </message>
     <message>
         <source>&lt;font color=red&gt;Module is not installed! If you want to use it download and install it first.&lt;/font&gt;&lt;br&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Current</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Registration was successful.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

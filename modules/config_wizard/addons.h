@@ -88,7 +88,7 @@ QString informationPanelSyntax[]=
 		"[<hr width=\"100%\"><table width=\"160px\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">"
 		"<tr><td width=\"160px\"><div align=\"justify\"><font color=\"blue\">%d</font></div></td></tr></table>]"
 		"[<hr width=\"100%\"><table width=\"160px\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr valign=\"middle\">"
-		"<td width=\"5px\"><img valign=\"middle\" src=\"$KADU_SHARE/modules/data/config_wizard/ronk2/Blokuje.png\"></td>"
+		"<td width=\"5px\"><img valign=\"middle\" src=\"$KADU_SHARE/modules/data/config_wizard/ronk2/Blocking.png\"></td>"
 		"<td widht=\"155px\" align=\"left\"><font size=\"-1\" color=red><i>You are not on the list%o</i></font></td></tr></table>]"
 		"</td></tr></table></body>",
 
