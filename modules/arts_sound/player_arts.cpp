@@ -70,13 +70,26 @@ ArtsPlayerSlots::ArtsPlayerSlots()
 
 void ArtsPlayerSlots::play(const QString &s, bool volCntrl, double vol)
 {
-	kdebugf();
+	//warunku server.isNull() i server.audioMethod()=="" nie mo¿na sprawdzaæ
+	//jednocze¶nie, bo je¿eli najpierw zostanie sprawdzony drugi, a pierwszy
+	//jest prawd±, to program siê wywróci
+	kdebug("ArtsPlayerSlots::play(): null: %d\n",server.isNull());
+
 	if (!server.isNull())
-	{
-		if (volCntrl)
-			server.outVolume().scaleFactor(vol);
-		server.play(std::string(s.ascii()));
-	}
+		kdebug("audioMethod: %s audioDevice: %s\n", server.audioMethod().c_str(), server.audioDevice().c_str());
+
+	if (server.isNull())
+		server=Arts::Reference("global:Arts_SoundServerV2");
+	else if (server.audioMethod()=="")
+		server=Arts::Reference("global:Arts_SoundServerV2");
+	
+	if (!server.isNull())
+		if (server.audioMethod()!="")
+		{
+			if (volCntrl)
+				server.outVolume().scaleFactor(vol);
+			server.play(std::string(s.ascii()));
+		}
 }
 
 void ArtsPlayerSlots::playSound(const QString &s, bool volCntrl, double vol)

@@ -177,6 +177,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * instalacja i u¿ycie plików translacji statycznych modu³ów (adrian)
 * kadu podpina sie pod sygnaly tylko gdy jest skompilowane bez debuga (michal)
 * dodana kontrola g³o¶no¶ci w module nas_sound (joi)
+* je¿eli wywróci siê demon arts to Kadu siê tym nie przejmie ;) (joi)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
