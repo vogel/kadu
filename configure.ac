@@ -183,6 +183,20 @@ AC_DEFUN(PROCESS_MODULE_SPEC_FILES,[
 	done
 ])
 
+AC_DEFUN(GENERATE_STATIC_MODULES_CODE,[
+	echo
+	echo ">>> Generating kernel code for static modules ..."
+	echo
+	STATIC_MODULES_DECLS=
+	STATIC_MODULES_INITS=
+	STATIC_MODULES_CLOSES=
+	for mod in $static_modules; do \
+		STATIC_MODULES_DECLS="$STATIC_MODULES_DECLS extern \"C\" int ${mod}_init(); extern \"C\" void ${mod}_close();"; \
+		STATIC_MODULES_INITS="$STATIC_MODULES_INITS ${mod}_init();"; \
+		STATIC_MODULES_CLOSES="$STATIC_MODULES_CLOSES ${mod}_close();"; \
+	done	
+])
+
 ########################################################################
 
 AC_INIT([Kadu],[])
@@ -397,12 +411,16 @@ if test "$enable_modules" = "yes"; then
 	CHECK_MODULES_CONFIGURATION()
 	AC_DEFINE_UNQUOTED(STATIC_MODULES,"$static_modules",[List of modules compiled-in into Kadu binary])
 	PROCESS_MODULE_SPEC_FILES()
+	GENERATE_STATIC_MODULES_CODE()
 fi
 AM_CONDITIONAL(MODULES,[test "$enable_modules" = "yes"])
 AC_SUBST(MODULES_LDFLAGS)
 AC_SUBST(shared_modules)
 AC_SUBST(static_modules)
 AC_SUBST(static_modules_ldflags)
+AC_SUBST(STATIC_MODULES_DECLS)
+AC_SUBST(STATIC_MODULES_INITS)
+AC_SUBST(STATIC_MODULES_CLOSES)
 
 MY_SUBDIRS="$MY_SUBDIRS kadu translations varia"
 AC_SUBST(MY_SUBDIRS)
@@ -434,7 +452,7 @@ fi
 AC_DEFINE_UNQUOTED(BINDIR,"$prefix/bin",[Executable files prefix])
 AC_DEFINE_UNQUOTED(DATADIR,"$prefix/share",[Data files prefix])
 
-AC_CONFIG_FILES([./Makefile kadu/Makefile translations/Makefile varia/Makefile modules/Makefile varia/scripts/kadu-config])
+AC_CONFIG_FILES([./Makefile kadu/Makefile translations/Makefile varia/Makefile modules/Makefile varia/scripts/kadu-config kadu/modules_static.cpp])
 AC_OUTPUT
 
 echo

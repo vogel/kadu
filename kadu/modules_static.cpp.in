@@ -1,0 +1,15 @@
+
+#include "modules.h"
+#include "message_box.h"
+
+@STATIC_MODULES_DECLS@
+
+void ModulesManager::initStaticModules()
+{
+@STATIC_MODULES_INITS@
+}
+
+void ModulesManager::closeStaticModules()
+{
+@STATIC_MODULES_CLOSES@
+}

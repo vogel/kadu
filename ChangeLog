@@ -168,6 +168,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * indeksowane pliki ".a" statycznych modu³ów (adrian)
 * sprawdzanie zale¿no¶ci od plików nag³ówkowych przy kompilacji modu³ów (adrian)
 * zapis informacji o grupach zgodny z gg (chilek)
+* lista modu³ów statycznych w menad¿erze modu³ów (adrian)
+* obs³uga funkcji init i close modu³ów statycznych (adrian)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

@@ -92,6 +92,9 @@ PTHREAD_LIBS = @PTHREAD_LIBS@
 QT_INCLUDES = @QT_INCLUDES@
 QT_LIBS = @QT_LIBS@
 QT_MOC_DIR = @QT_MOC_DIR@
+STATIC_MODULES_CLOSES = @STATIC_MODULES_CLOSES@
+STATIC_MODULES_DECLS = @STATIC_MODULES_DECLS@
+STATIC_MODULES_INITS = @STATIC_MODULES_INITS@
 STRIP = @STRIP@
 VERSION = @VERSION@
 XFREE_INCLUDES = @XFREE_INCLUDES@
@@ -276,7 +279,7 @@ distcleancheck_listfiles = find . -type f -print
 distdir: $(DISTFILES)
 	$(am__remove_distdir)
 	mkdir $(distdir)
-	$(mkinstalldirs) $(distdir)/admin $(distdir)/varia/scripts
+	$(mkinstalldirs) $(distdir)/admin $(distdir)/kadu $(distdir)/varia/scripts
 	@list='$(DISTFILES)'; for file in $$list; do \
 	  if test -f $$file || test -d $$file; then d=.; else d=$(srcdir); fi; \
 	  dir=`echo "$$file" | sed -e 's,/[^/]*$$,,'`; \

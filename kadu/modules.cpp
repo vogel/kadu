@@ -20,17 +20,29 @@
 #include <qpushbutton.h>
 #include <qtextcodec.h>
 
+#include "modules_static.cpp"
+
 ModulesDialog::ModulesDialog()
 	: QDialog(NULL,NULL)
 {
 	setWFlags(Qt::WDestructiveClose);
-	resize(300,200);
+	resize(400,200);
 	setCaption(tr("Manage Modules"));
 	
-	QHBoxLayout* layout= new QHBoxLayout(this);
+	QHBoxLayout* layout=new QHBoxLayout(this);
+	QVBoxLayout* static_layout=new QVBoxLayout(layout);
 	QVBoxLayout* installed_layout=new QVBoxLayout(layout);
 	QVBoxLayout* loaded_layout=new QVBoxLayout(layout);	
 	QVBoxLayout* buttons_layout=new QVBoxLayout(layout);
+
+	QLabel* StaticLabel = new QLabel(this);
+	StaticLabel->setText(QString("<b>")+tr("Static modules")+"</b>");
+	
+	QListBox* StaticListBox = new QListBox(this);
+	StaticListBox->insertStringList(modules_manager->staticModules());
+
+	static_layout->addWidget(StaticLabel);
+	static_layout->addWidget(StaticListBox);
 		
 	QLabel* InstalledLabel = new QLabel(this);
 	InstalledLabel->setText(QString("<b>")+tr("Installed modules")+"</b>");
@@ -168,6 +180,9 @@ ModulesManager::ModulesManager() : QObject()
 	kadu->mainMenu()->insertItem(icons_manager.loadIcon("ManageModules"), tr("&Manage Modules"), this, SLOT(showDialog()), QKeySequence(), -1, 2);
 	//
 	Dialog=NULL;
+	//
+	initStaticModules();
+	//
 	QString loaded_str=config_file.readEntry("General", "LoadedModules");
 	QStringList loaded_list=QStringList::split(',',loaded_str);
 	bool all_loaded=true;
@@ -186,6 +201,13 @@ ModulesManager::~ModulesManager()
 	QStringList loaded=loadedModules();
 	for(int i=0; i<loaded.size(); i++)
 		unloadModule(loaded[i], true);
+	//
+	closeStaticModules();
+}
+
+QStringList ModulesManager::staticModules()
+{
+	return QStringList::split(" ",STATIC_MODULES);
 }
 
 QStringList ModulesManager::installedModules()

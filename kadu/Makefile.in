@@ -92,6 +92,9 @@ PTHREAD_LIBS = @PTHREAD_LIBS@
 QT_INCLUDES = @QT_INCLUDES@
 QT_LIBS = @QT_LIBS@
 QT_MOC_DIR = @QT_MOC_DIR@
+STATIC_MODULES_CLOSES = @STATIC_MODULES_CLOSES@
+STATIC_MODULES_DECLS = @STATIC_MODULES_DECLS@
+STATIC_MODULES_INITS = @STATIC_MODULES_INITS@
 STRIP = @STRIP@
 VERSION = @VERSION@
 XFREE_INCLUDES = @XFREE_INCLUDES@
@@ -176,7 +179,7 @@ CLEANFILES = *_moc.cpp
 subdir = kadu
 mkinstalldirs = $(SHELL) $(top_srcdir)/admin/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/kadu-config.h
-CONFIG_CLEAN_FILES =
+CONFIG_CLEAN_FILES = modules_static.cpp
 bin_PROGRAMS = kadu$(EXEEXT)
 PROGRAMS = $(bin_PROGRAMS)
 
@@ -260,7 +263,7 @@ COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 CCLD = $(CC)
 LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 DIST_SOURCES = $(kadu_SOURCES) $(EXTRA_kadu_SOURCES)
-DIST_COMMON = Makefile.am Makefile.in
+DIST_COMMON = Makefile.am Makefile.in modules_static.cpp.in
 SOURCES = $(kadu_SOURCES) $(EXTRA_kadu_SOURCES)
 
 all: all-am
@@ -272,6 +275,8 @@ $(srcdir)/Makefile.in:  Makefile.am  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
 	  $(AUTOMAKE) --gnu  kadu/Makefile
 Makefile:  $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe)
+modules_static.cpp: $(top_builddir)/config.status modules_static.cpp.in
+	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 install-binPROGRAMS: $(bin_PROGRAMS)
 	@$(NORMAL_INSTALL)
