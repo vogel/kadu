@@ -67,6 +67,7 @@ void NotifySlots::onApplyConfigDialog()
 	count = e_availusers->count();
 	for (i = 0; i < count; ++i)
 		userlist.byAltNick(e_availusers->text(i)).setNotify(false);
+	userlist.writeToFile();
 	kdebugf2();
 }
 

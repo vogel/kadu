@@ -2571,9 +2571,6 @@ void GaduProtocol::onDestroyConfigDialog()
 	ConfigServers = servers;
 	ServerNr = 0;
 
-	/* and now, save it */
-	userlist.writeToFile();
-	//
 	kdebugf2();
 }
 
