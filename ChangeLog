@@ -65,6 +65,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * male przeróbki w dymkach i dodano funkcje klikniecia na poszczegolnym
   dymku powoduje jego znikniêcie (mast3r)
 * poprawiony b³±d - dymki nie kompilowa³y siê na qt 3.0.x (mast3r)
+* rozmowy g³osowe - nowa dzia³aj±ca wersja! - faza alfa (chilek)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci
