@@ -1219,11 +1219,12 @@ void GaduProtocol::messageReceived(int msgclass, UinsList senders, QCString &msg
 	QByteArray &formats)
 {
 /*
-	sprawdzamy czy user jest na naszej liscie, jezeli nie to anonymous zwroci true
+	najpierw sprawdzamy czy nie jest to wiadomosc systemowa (senders[0] rowne 0)
+	potem sprawdzamy czy user jest na naszej liscie, jezeli nie to anonymous zwroci true
 	i czy jest wlaczona opcja ignorowania nieznajomych
 	jezeli warunek jest spelniony przerywamy dzialanie funkcji.
 */
-	if (userlist.byUinValue(senders[0]).isAnonymous() && config_file.readBoolEntry("Chat","IgnoreAnonymousUsers"))
+	if (senders[0] && userlist.byUinValue(senders[0]).isAnonymous() && config_file.readBoolEntry("Chat","IgnoreAnonymousUsers"))
 	{
 		kdebugmf(KDEBUG_INFO, "Ignored anonymous. %d is ignored\n", senders[0]);
 		return;
