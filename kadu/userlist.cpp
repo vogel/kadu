@@ -46,6 +46,14 @@ UserListElement& UserList::byComment(QString comment)
 //	return;
 };
 
+bool UserList::containsUin(uin_t uin)
+{
+	for(iterator i=begin(); i!=end(); i++)
+		if((*i).uin==uin)
+			return true;
+	return false;
+};
+
 void UserList::addUser(const QString FirstName,const QString LastName,
 	const QString NickName,const QString AltNick,
 	const QString Mobile,const QString Uin,const int Status,
