@@ -208,10 +208,12 @@ AC_DEFUN(PROCESS_MODULE_SPEC_FILES,[
 			for tool in $MODULE_TOOLS; do \
 				FIND_TOOL([$tool]) \
 			done; \
-			if eval "$MODULE_CONFIGURE_CMD"; then \
-				echo "Additional module configuration command successed."; \
-			else \
-				AC_MSG_ERROR([Additional module configuration command failed!]); \
+			if test -n "$MODULE_CONFIGURE_CMD"; then \
+				if eval "$MODULE_CONFIGURE_CMD"; then \
+					echo "Additional module configuration command successed."; \
+				else \
+					AC_MSG_ERROR([Additional module configuration command failed!]); \
+				fi; \
 			fi; \
 			echo -n "$MODULE_CXXFLAGS" > modules/$mod/cxxflags; \
 			if test -z `expr " $shared_modules " : ".* \($mod\) "`; then \

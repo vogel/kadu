@@ -6279,12 +6279,14 @@ echo "$as_me: error: $tool not found!" >&2;}
 	fi
  \
 			done; \
-			if eval "$MODULE_CONFIGURE_CMD"; then \
-				echo "Additional module configuration command successed."; \
-			else \
-				{ { echo "$as_me:$LINENO: error: Additional module configuration command failed!" >&5
+			if test -n "$MODULE_CONFIGURE_CMD"; then \
+				if eval "$MODULE_CONFIGURE_CMD"; then \
+					echo "Additional module configuration command successed."; \
+				else \
+					{ { echo "$as_me:$LINENO: error: Additional module configuration command failed!" >&5
 echo "$as_me: error: Additional module configuration command failed!" >&2;}
    { (exit 1); exit 1; }; }; \
+				fi; \
 			fi; \
 			echo -n "$MODULE_CXXFLAGS" > modules/$mod/cxxflags; \
 			if test -z `expr " $shared_modules " : ".* \($mod\) "`; then \
