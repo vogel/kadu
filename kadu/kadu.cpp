@@ -967,6 +967,11 @@ void Kadu::sendMessage(QListBoxItem *item) {
 			if (pending[i].msgclass == GG_CLASS_CHAT) {
 				if (!uins.count())
 					uins = pending[i].uins;
+				for (j = 0; j < pending[i].uins.count(); j++)
+					if (!userlist.containsUin(pending[i].uins[j])) {
+						tmp = QString::number(pending[i].uins[j]);
+						addUser("", "", tmp, tmp, "", tmp, GG_STATUS_NOT_AVAIL, "", "", true);
+						}
 				j = openChat(pending[i].uins);
 				chats[j].ptr->checkPresence(pending[i].uins, pending[i].msg, pending[i].time);	    
 				deletePendingMessage(i);
@@ -1584,7 +1589,8 @@ void DockWidget::dockletChange(int id)
 void DockWidget::mousePressEvent(QMouseEvent * e) {
 	bool message = false;
 	int i,j;
-
+	QString tmp;
+	
 	if (!config.dock)
 		return;
 
@@ -1597,6 +1603,11 @@ void DockWidget::mousePressEvent(QMouseEvent * e) {
 				if (pending[i].msgclass == GG_CLASS_CHAT) {
 					if (!uins.count())
 						uins = pending[i].uins;
+					for (j = 0; j < pending[i].uins.count(); j++)
+						if (!userlist.containsUin(pending[i].uins[j])) {
+							tmp = QString::number(pending[i].uins[j]);
+							kadu->addUser("", "", tmp, tmp, "", tmp, GG_STATUS_NOT_AVAIL, "", "", true);
+							}
 					j = kadu->openChat(pending[i].uins);
 					chats[j].ptr->checkPresence(pending[i].uins,
 						pending[i].msg, pending[i].time);	    
