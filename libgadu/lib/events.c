@@ -1,4 +1,4 @@
-/* $Id: events.c,v 1.27 2003/09/12 12:08:44 chilek Exp $ */
+/* $Id: events.c,v 1.28 2003/09/13 22:28:02 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -509,7 +509,7 @@ static int gg_watch_fd_connected(struct gg_session *sess, struct gg_event *e)
 			e->event.userlist.reply = NULL;
 
 			if (h->length > 1) {
-				if (!(e->event.userlist.reply = malloc(h->length))) {
+				if (!(e->event.userlist.reply = malloc(h->length + 1))) {
 					gg_debug(GG_DEBUG_MISC, "// gg_watch_fd_connected() not enough memory for userlist reply\n");
 					goto fail;
 				}

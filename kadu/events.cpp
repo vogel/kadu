@@ -567,28 +567,6 @@ void EventManager::userStatusChangedSlot(struct gg_event * e) {
 void EventManager::ackReceivedSlot(int seq)
 {
 	kdebug("EventManager::ackReceivedSlot(): got msg ack.\n");
-/*	int i,j,k;
-	for (i = 0; i < acks.size(); i++)
-		if (acks[i].seq == seq && acks[i].ptr) {
-//			if (acks[i].type < 2)
-//				((Message *)acks[i].ptr)->gotAck();
-			if (acks[i].type > 1) {
-				acks[i].ack--;
-				j = 0;
-				while (j < chats.count() && chats[j].ptr != acks[i].ptr)
-					j++;		
-				if (j < chats.size() && !acks[i].ack)
-					((Chat *)acks[i].ptr)->writeMyMessage();
-				if (j == chats.count() || !acks[i].ack) {
-					for (k = i + 1; k < acks.size(); k++) {
-						acks[i-1].seq = acks[i].seq;
-						acks[i-1].type = acks[i].type;
-						acks[i-1].ptr = acks[i].ptr;
-						}
-					acks.resize(acks.size() - 1);
-				}
-			}
-		}*/
 };
 
 void EventManager::dccConnectionReceivedSlot(const UserListElement& sender)
@@ -627,14 +605,13 @@ void EventManager::eventHandler(gg_session* sess)
 		kdebug("************* EventManager::eventHandler(): Recursive eventHandler calls detected!\n");
 
 	gg_event* e;
-	if (!(e = gg_watch_fd(sess)))
-	{
+	if (!(e = gg_watch_fd(sess))) {
 		emit connectionBroken();
 		gg_free_event(e);
 		calls--;
-		return;	
-	};
-	
+		return;
+		}
+
 	if (sess->state == GG_STATE_CONNECTING_HUB || sess->state == GG_STATE_CONNECTING_GG)
 	{
 		kdebug("EventManager::eventHandler(): changing QSocketNotifiers.\n");

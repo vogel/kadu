@@ -35,6 +35,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * malutka optymalizacja i wywalenie juz niepotrzebnego debuga w parserze (mast3r)
 * w oknie rozmowy kadu nie ucina spacji sprzed tekstu (mast3r)
 * potwierdzanie wiadomo¶ci dzia³a na slotach (chilek)
+* poprawka drobnego buga w libgadu (chilek)
 
 +++ wersja 0.3.4-rc4
 * kadu nie pokazuje fa³szywych statusów ukrytych w userboksie (chilek)
