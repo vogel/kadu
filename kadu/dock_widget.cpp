@@ -25,7 +25,7 @@ DockWidget::DockWidget(QWidget *parent, const char *name ) : KSystemTray( parent
 		return;
 
 	setPixmap( QPixmap((const char**)gg_inact_xpm) );
-	QToolTip::add(this, i18n("Left click - hide/show window\nMiddle click - next message"));
+	QToolTip::add(this, i18n("Left click - hide/show window\nMiddle click or CTRL+any click- next message"));
 	icon_timer = new QTimer(this);
 	blink = FALSE;
 	connect(icon_timer,SIGNAL(timeout()),this,SLOT(changeIcon()));
@@ -79,7 +79,7 @@ void DockWidget::mousePressEvent(QMouseEvent * e) {
 	if (!config.dock)
 		return;
 
-	if (e->button() == MidButton) {
+	if (e->button() == MidButton || e->state() & ControlButton) {
 		bool stop = false;
 	
 		UinsList uins;
@@ -121,8 +121,8 @@ void DockWidget::mousePressEvent(QMouseEvent * e) {
 			chats[k].ptr->scrollMessages(toadd);
 	    		UserBox::all_refresh();
 			return;
-			}
 		}
+	}
 
 	if (e->button() == LeftButton)
 		{
