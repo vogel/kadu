@@ -48,6 +48,11 @@ class TrayIcon : public QLabel
 		void dockletChange(int id);
 		//Funkcja do migania koperty
 		void changeIcon();
+
+	signals:
+		void mousePressMidButton();
+		void mousePressLeftButton();
+		void mousePressRightButton();
 };
 
 class TrayHint : public QWidget

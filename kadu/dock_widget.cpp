@@ -152,6 +152,8 @@ TrayIcon::TrayIcon(QWidget *parent, const char *name)
 	hints->flags |= WindowGroupHint | IconWindowHint;
 	XSetWMHints(dsp, w_id, hints);
 	XFree( hints );
+
+	connect(this, SIGNAL(mousePressMidButton()), &pending, SLOT(openMessages()));
 };
 
 TrayIcon::~TrayIcon()
@@ -250,79 +252,16 @@ void TrayIcon::enterEvent(QEvent* e)
 	QWidget::enterEvent(e);
 };
 
-void TrayIcon::mousePressEvent(QMouseEvent * e)
-{
-	int i,j, k = -1;
-	QString tmp;
-	PendingMsgs::Element elem;
-	QString toadd;
-	bool msgsFromHist = false;
+void TrayIcon::mousePressEvent(QMouseEvent * e) {
 
 	if (!config.dock)
 		return;
 
-	if (e->button() == MidButton || e->state() & ControlButton) {
-		bool stop = false;
-	
-		UinsList uins;
-		for (i = 0; i < pending.count(); i++) {
-			elem = pending[i];
-			if (!uins.count() || elem.uins.equals(uins))
-				if ((elem.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT
-					|| (elem.msgclass & GG_CLASS_MSG) == GG_CLASS_MSG) {
-					if (!uins.count())
-						uins = elem.uins;
-					for (j = 0; j < elem.uins.count(); j++)
-						if (!userlist.containsUin(elem.uins[j])) {
-							tmp = QString::number(elem.uins[j]);
-							if (config.dock)
-								userlist.addUser("", "", tmp, tmp, "", tmp, GG_STATUS_NOT_AVAIL,
-									false, false, true, "", "", true);
-							else
-								kadu->addUser("", "", tmp, tmp, "", tmp, GG_STATUS_NOT_AVAIL,
-									"", "", true);
-							}
-					k = kadu->openChat(elem.uins);
-					QValueList<UinsList>::iterator it = wasFirstMsgs.begin();
-					while (it != wasFirstMsgs.end() && !elem.uins.equals(*it))
-						it++;
-					if (it != wasFirstMsgs.end())
-						wasFirstMsgs.remove(*it);
-					if (!msgsFromHist) {
-						msgsFromHist = true;
-						chats[k].ptr->writeMessagesFromHistory(elem.uins, elem.time);
-						}
-					chats[k].ptr->formatMessage(false, userlist.byUin(elem.uins[0]).altnick,
-						elem.msg, timestamp(elem.time), toadd);
-					deletePendingMessage(i);
-					i--;
-					stop = true;
-					}
-				/*else {
-					if (!stop) {
-						rMessage *rmsg;
-						rmsg = new rMessage(userlist.byUin(elem.uins[0]).altnick,
-							elem.msgclass, elem.uins, elem.msg);
-						deletePendingMessage(i);
-						UserBox::all_refresh();
-						rmsg->init();
-						rmsg->show();
-						}
-					else
-						chats[k].ptr->scrollMessages(toadd);
+	if (e->button() == MidButton || e->state() & ControlButton)
+		emit mousePressMidButton();
 
-					return;
-					}*/
-			}
-		if (stop) {
-			chats[k].ptr->scrollMessages(toadd);
-	    		UserBox::all_refresh();
-			return;
-		}
-	}
-
-	if (e->button() == LeftButton)
-		{
+	if (e->button() == LeftButton) {
+		emit mousePressLeftButton();
 		switch (kadu->isVisible()) {
 			case 0:
 				kadu->show();
@@ -336,6 +275,7 @@ void TrayIcon::mousePressEvent(QMouseEvent * e)
 		}
 
 	if (e->button() == RightButton) {
+		emit mousePressRightButton();
 		dockppm->exec(QCursor::pos());
 		return;
 		}

@@ -53,6 +53,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * pocz±tki gruntownych porz±dków w events.cpp/h - stworzenie klasy
   EventManager, sygna³y messageReceived, chatReceived, userlistReceived,
   userStatusChanged. Wiêcej porz±dków wkrótce (adrian)
+* oczyszczanie, porz±dki, optymalizacja kodu, poprawki starych funkcji,
+  krok ku przejsciu na sygna³'y (mast3r)
 
 +++ wersja 0.3.4-pre2
 * graficzny instalator - instaluj.tcl (googie)

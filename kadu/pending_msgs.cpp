@@ -3,17 +3,24 @@
 #include <qtextcodec.h>
 
 #include "pending_msgs.h"
-#include "misc.h"
 #include "debug.h"
+#include "dock_widget.h"
+#include "kadu.h"
+#include "config_dialog.h"
+#include "chat.h"
 
-PendingMsgs::PendingMsgs()
+PendingMsgs::PendingMsgs(): QObject()
 {
 };
 
 void PendingMsgs::deleteMsg(int index)
 {
-	msgs.remove(msgs.at(index));	
+	kdebug("PendingMsgs::(pre)deleteMsg(%d), count=%d\n", index, count());
+	msgs.remove(msgs.at(index));
 	writeToFile();
+	kdebug("PendingMsgs::deleteMsg(%d), count=%d\n", index, count());
+	if (!pendingMsgs() && trayicon)
+		trayicon->setType(*icons->loadIcon(gg_icons[statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]));
 };
 
 bool PendingMsgs::pendingMsgs(uin_t uin)
@@ -157,5 +164,55 @@ bool PendingMsgs::loadFromFile()
 	f.close();
 	return true;
 };
+
+void PendingMsgs::openMessages() {
+
+	UinsList uins;
+	int i, j, k = -1;
+	QString tmp;
+	PendingMsgs::Element elem;
+	QString toadd;
+	bool msgsFromHist = false;
+	bool stop = false;
+
+	kdebug("PendingMsgs::openMessages()\n");
+
+	for(i = 0; i<count(); i++) {
+		elem = (*this)[i];
+		if (!uins.count() || elem.uins.equals(uins))
+			if ((elem.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT || (elem.msgclass & GG_CLASS_MSG) == GG_CLASS_MSG) {
+				if (!uins.count())
+					uins = elem.uins;
+				for (j = 0; j < elem.uins.count(); j++)
+					if (!userlist.containsUin(elem.uins[j])) {
+						tmp = QString::number(elem.uins[j]);
+						if (config.dock)
+							userlist.addUser("", "", tmp, tmp, "", tmp, GG_STATUS_NOT_AVAIL,false, false, true, "", "", true);
+						else
+							kadu->addUser("", "", tmp, tmp, "", tmp, GG_STATUS_NOT_AVAIL,"", "", true);
+					}
+				k = kadu->openChat(elem.uins);
+				QValueList<UinsList>::iterator it = wasFirstMsgs.begin();
+				while (it != wasFirstMsgs.end() && !elem.uins.equals(*it))
+					it++;
+				if (it != wasFirstMsgs.end())
+					wasFirstMsgs.remove(*it);
+				if (!msgsFromHist) {
+					msgsFromHist = true;
+					chats[k].ptr->writeMessagesFromHistory(elem.uins, elem.time);
+				}
+				chats[k].ptr->formatMessage(false, userlist.byUin(elem.uins[0]).altnick,elem.msg, timestamp(elem.time), toadd);
+				deleteMsg(i);
+				i--;
+				stop = true;
+			}
+		}
+
+	if(stop) {
+		kdebug("PendingMsgs::openMessages()end\n");
+		chats[k].ptr->scrollMessages(toadd);
+		UserBox::all_refresh();
+	}
+}
 
 PendingMsgs pending;

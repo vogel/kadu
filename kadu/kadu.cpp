@@ -260,7 +260,7 @@ QHostAddress getMyIP(void) {
 	return ip;
 }
 
-void deletePendingMessage(int nr) {
+/*void deletePendingMessage(int nr) {
 	kdebug("predeletePendingMessage(), counts: %d\n",pending.count());
 	pending.deleteMsg(nr);
 	kdebug("deletePendingMessage(%d), counts: %d\n",nr,pending.count());
@@ -269,7 +269,7 @@ void deletePendingMessage(int nr) {
 		if (trayicon)
 			trayicon->setType(*icons->loadIcon(gg_icons[statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]));
 		}
-}
+}*/
 
 /* sends the userlist. ripped off EKG, actually, but works */
 void sendUserlist() {
@@ -917,7 +917,7 @@ void Kadu::commandParser (int command) {
 						chats[k].ptr->formatMessage(false,
 							userlist.byUin(elem.uins[0]).altnick, elem.msg,
 							timestamp(elem.time), toadd);
-						deletePendingMessage(i);
+						pending.deleteMsg(i);
 						i--;
 						stop = true;
 						}
@@ -1313,7 +1313,7 @@ void Kadu::sendMessage(QListBoxItem *item) {
 				chats[k].ptr->formatMessage(false,
 					userlist.byUin(elem.uins[0]).altnick, elem.msg,
 					timestamp(elem.time), toadd);	    
-				deletePendingMessage(i);
+				pending.deleteMsg(i);
 				kdebug("Kadu::sendMessage(): k=%d\n", k);
 				i--;
 				stop = true;

@@ -5,8 +5,10 @@
 #include <qvaluelist.h>
 #include "misc.h"
 
-class PendingMsgs
+class PendingMsgs : public QObject
 {
+	Q_OBJECT
+
 	public:
 		struct Element
 		{
@@ -30,6 +32,9 @@ class PendingMsgs
 		void addMsg(UinsList uins, QString msg, int msgclass, time_t time);
 		bool loadFromFile();
 		void writeToFile();
+
+	public slots:
+		void openMessages();
 };
 
 extern PendingMsgs pending;

@@ -174,7 +174,7 @@ extern QSocketNotifier *kadusnw;
 extern QSocketNotifier *dccsnr;
 extern QSocketNotifier *dccsnw;
 
-void deletePendingMessage(int nr);
+//void deletePendingMessage(int nr);
 void sendUserlist(void);
 
 void *watch_socket(void *);
