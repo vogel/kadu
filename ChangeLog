@@ -37,13 +37,16 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawka dzialania przy podwojnym kliku na osobe bez numeru gg -
   teraz otwiera okno sms zamiast chat z dziwnym numerem (adrian)
 * ChatManager::openChat() jednak publiczny + sygnal chatCreated()
-  a wszystko to na potrzeby modulow oczywiscie (adrian)
+  a wszystko to na potrzeby modulow oczywiscie (googie/adrian)
 * Chat::uins() zwracajacy liste rozmowcow, ChatManager::chats() zwracajacy
   liste okien Chat, skutkiem tego Chat::ChatsItem przestalo byc potrzebne,
-  wiec porzadki w kodzie (adrian)
+  wiec porzadki w kodzie (googie/adrian)
 * make kompiluje wszystkie moduly z katalogu modules, a nie tylko te znajdujace
   sie standardowo w kadu. modul x.cpp moze miec odpowiadajacy mu plik
-  x.so.flags z wyrazeniem np. MODULE_LDFLAGS=-lxyz (adrian)
+  x.so.flags z wyrazeniem np. MODULE_LDFLAGS=-lxyz (googie/adrian)
+* enigmatyczne Kadu::mmb i ppm zmienione na Kadu::MenuBar i Kadu::MainMenu.
+  publiczne metody Kadu::menuBar() i Kadu::mainMenu() daja modulom mozliwosc
+  tworzenia nowych menu w oknie i nowych opcji w menu "Kadu" (googie/adrian)
 
 +++ wersja 0.3.6 (22.11.2003)
 * je¶li klikniemy na jaki¶ kontakt w userboxie, od którego otrzymali¶my jak±¶

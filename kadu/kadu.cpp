@@ -718,10 +718,10 @@ void Kadu::muteUnmuteSounds()
 	if (mute) {
 		mutebtn->setIconSet(loadIcon("mute.png"));
 		mutebtn->setTextLabel(tr("Unmute sounds"));
-		mmb->changeItem(muteitem, loadIcon("mute.png"), tr("Unmute sounds"));
+		MenuBar->changeItem(muteitem, loadIcon("mute.png"), tr("Unmute sounds"));
 		}
 	else {
-		mmb->changeItem(muteitem, loadIcon("unmute.png"), tr("Mute sounds"));
+		MenuBar->changeItem(muteitem, loadIcon("unmute.png"), tr("Mute sounds"));
 		mutebtn->setTextLabel(tr("Mute sounds"));
 		mutebtn->setIconSet(loadIcon("unmute.png"));
 		}
@@ -1770,48 +1770,48 @@ Kadu::~Kadu(void) {
 
 void Kadu::createMenu() {
 
-	mmb = new QMenuBar(this, "mmb");
+	MenuBar = new QMenuBar(this, "MenuBar");
 
-	QPopupMenu *ppm = new QPopupMenu(this, "ppm");
-	ppm->insertItem(tr("Manage &ignored"), this, SLOT(manageIgnored()));
-	ppm->insertItem(loadIcon("configure.png"), tr("&Configuration"), this, SLOT(configure()),HotKey::shortCutFromFile("kadu_configure"));
+	MainMenu = new QPopupMenu(this, "MainMenu");
+	MainMenu->insertItem(tr("Manage &ignored"), this, SLOT(manageIgnored()));
+	MainMenu->insertItem(loadIcon("configure.png"), tr("&Configuration"), this, SLOT(configure()),HotKey::shortCutFromFile("kadu_configure"));
 #ifdef MODULES_ENABLED
-	ppm->insertItem(loadIcon("configure.png"), tr("&Manage Modules"), modules_manager, SLOT(showDialog()));
+	MainMenu->insertItem(loadIcon("configure.png"), tr("&Manage Modules"), modules_manager, SLOT(showDialog()));
 #endif
-	ppm->insertItem(loadIcon("reload.png"), tr("Resend &userlist"), gadu, SLOT(sendUserList()));
+	MainMenu->insertItem(loadIcon("reload.png"), tr("Resend &userlist"), gadu, SLOT(sendUserList()));
 	if (mute) {
-		muteitem= ppm->insertItem(loadIcon("mute.png"), tr("Unmute sounds"), this, SLOT(muteUnmuteSounds()));
+		muteitem= MainMenu->insertItem(loadIcon("mute.png"), tr("Unmute sounds"), this, SLOT(muteUnmuteSounds()));
 		}
 	else {
-		muteitem= ppm->insertItem(loadIcon("unmute.png"), tr("Mute sounds"), this, SLOT(muteUnmuteSounds()));
+		muteitem= MainMenu->insertItem(loadIcon("unmute.png"), tr("Mute sounds"), this, SLOT(muteUnmuteSounds()));
 		}
-	ppm->insertSeparator();
+	MainMenu->insertSeparator();
 
 	grpmenu = new QPopupMenu(this);
 	grpmenu->insertItem(tr("All"), 600);
 	grpmenu->insertSeparator();
 
-	ppm->insertItem(tr("Remind &password"), this, SLOT(remindPassword1()));
-	ppm->insertItem(tr("&Change password/email"), this, SLOT(changePassword1()));
-	ppm->insertItem(loadIcon("newuser.png"),tr("Register &new user"), this, SLOT(registerUser()));
-	ppm->insertItem(tr("Unregister user"), this, SLOT(unregisterUser()));
-	ppm->insertItem(tr("Personal information"), this,SLOT(personalInfo()));
-	ppm->insertSeparator();
+	MainMenu->insertItem(tr("Remind &password"), this, SLOT(remindPassword1()));
+	MainMenu->insertItem(tr("&Change password/email"), this, SLOT(changePassword1()));
+	MainMenu->insertItem(loadIcon("newuser.png"),tr("Register &new user"), this, SLOT(registerUser()));
+	MainMenu->insertItem(tr("Unregister user"), this, SLOT(unregisterUser()));
+	MainMenu->insertItem(tr("Personal information"), this,SLOT(personalInfo()));
+	MainMenu->insertSeparator();
 	QPixmap find;
 	find = loadIcon("viewmag.png");
-	ppm->insertItem(find, tr("&Search for users"), this, SLOT(searchInDirectory()));
-	ppm->insertItem(tr("I&mport userlist"), this, SLOT(importUserlist()));
-	ppm->insertItem(tr("E&xport userlist"), this, SLOT(exportUserlist()));
-	ppm->insertItem(*icons->loadIcon("online"), tr("&Add user"), this, SLOT(addUserAction()),HotKey::shortCutFromFile("kadu_adduser"));
-	ppm->insertItem(tr("Send SMS"), this,SLOT(sendSms()));
-	ppm->insertSeparator();	
-	ppm->insertItem(tr("H&elp"), this, SLOT(help()));	
-	ppm->insertItem(tr("A&bout..."), this, SLOT(about()));
-	ppm->insertSeparator();
-	ppm->insertItem(tr("&Hide Kadu"), this, SLOT(hideKadu()));
-	ppm->insertItem(loadIcon("exit.png"), tr("&Exit Kadu"), this, SLOT(quit()));
+	MainMenu->insertItem(find, tr("&Search for users"), this, SLOT(searchInDirectory()));
+	MainMenu->insertItem(tr("I&mport userlist"), this, SLOT(importUserlist()));
+	MainMenu->insertItem(tr("E&xport userlist"), this, SLOT(exportUserlist()));
+	MainMenu->insertItem(*icons->loadIcon("online"), tr("&Add user"), this, SLOT(addUserAction()),HotKey::shortCutFromFile("kadu_adduser"));
+	MainMenu->insertItem(tr("Send SMS"), this,SLOT(sendSms()));
+	MainMenu->insertSeparator();	
+	MainMenu->insertItem(tr("H&elp"), this, SLOT(help()));	
+	MainMenu->insertItem(tr("A&bout..."), this, SLOT(about()));
+	MainMenu->insertSeparator();
+	MainMenu->insertItem(tr("&Hide Kadu"), this, SLOT(hideKadu()));
+	MainMenu->insertItem(loadIcon("exit.png"), tr("&Exit Kadu"), this, SLOT(quit()));
 
-	mmb->insertItem(tr("&Kadu"), ppm);
+	MenuBar->insertItem(tr("&Kadu"), MainMenu);
 }
 
 void Kadu::statusMenuAboutToHide() {
@@ -1875,6 +1875,16 @@ void Kadu::infopanelUpdate(uin_t uin) {
 	kdebug("Kadu::infopanelUpdate(%d)\n", uin);
 	if (Userbox->currentItem() != -1 && uin == userlist.byAltNick(Userbox->currentText()).uin)
 		descrtb->setText(parse(config_file.readEntry("Look", "PanelContents"),userlist.byUin(uin)));
+}
+
+QMenuBar* Kadu::menuBar()
+{
+	return MenuBar;
+}
+
+QPopupMenu* Kadu::mainMenu()
+{
+	return MainMenu;
 }
 
 KaduTabBar* Kadu::groupBar()

@@ -33,9 +33,10 @@ class Kadu : public QMainWindow
 	private:
 		QFrame* centralFrame;
 		QGridLayout* grid;
-		QMenuBar* mmb;
 		QTextBrowser* descrtb;
 		QToolButton* mutebtn;
+		QMenuBar* MenuBar;
+		QPopupMenu* MainMenu;		
 		KaduTabBar* GroupBar;
 		UserBox* Userbox;
 
@@ -70,7 +71,21 @@ class Kadu : public QMainWindow
 		void addUser(UserListElement &ule);
 		void removeUser(QStringList &, bool);
 		void refreshGroupTabBar();
+		/**
+			Zwraca wskaznik do belki menu glownego okna.
+		**/
+		QMenuBar* menuBar();
+		/**
+			Zwraca wskaznik do glownego menu programu.
+		**/
+		QPopupMenu* mainMenu();
+		/**
+			Zwraca wskaznik do zakladek z nazwami grup.
+		**/		
     		KaduTabBar* groupBar();
+		/**
+			Zwraca wskaznik do userbox-a w glownym oknie.
+		**/				
 		UserBox* userbox();
     
 		// te zmienne s± tylko chwilowo publiczne.
