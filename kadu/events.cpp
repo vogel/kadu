@@ -282,8 +282,9 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 	podejrzewam ze to juz nie jest potrzebne(ale na wszelki wypadek zostawie), gdyz kiedys to
 	sluzylo co oznaczania wiadomosci systemowych,ktore obecnie sa ignorowane, w dalszej czesci kodu.
 */
-	if (senders[0] == config_file.readNumEntry("General","UIN"))
-		return;
+	if (senders[0] == config_file.readNumEntry("General", "UIN")) {
+//		return;
+		}
 
 	// ignorujemy, jesli nick na liscie ignorowanych
 	// PYTANIE CZY IGNORUJEMY CALA KONFERENCJE
@@ -292,17 +293,15 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 		return;
 
 	// ignorujemy wiadomosci systemowe
-	if (senders[0] == 0)
-	{
-		if (msgclass <= config_file.readNumEntry("General","SystemMsgIndex",0))
-		{
+	if (senders[0] == config_file.readNumEntry("General","UIN")) {
+		if (msgclass <= config_file.readNumEntry("General", "SystemMsgIndex", 0)) {
 			kdebug("Already had this message, ignoring\n");
 			return;
-		}
-		config_file.writeEntry("General","SystemMsgIndex",msgclass);
+			}
+		config_file.writeEntry("General", "SystemMsgIndex", msgclass);
 		kdebug("System message index %d\n", msgclass);
 		return;
-	}
+		}
 
 	QString mesg = cp2unicode(msg);
 
