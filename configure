@@ -1728,7 +1728,7 @@ INSTALL_STRIP_PROGRAM="\${SHELL} \$(install_sh) -c -s"
 ########################################################################
 
 user_cxxflags="$CXXFLAGS"
-CXXFLAGS="-O2 $user_cxxflags"
+CXXFLAGS="-Os -fno-rtti -fno-exceptions -pipe $user_cxxflags"
 
 # Checks for programs.
 ac_ext=cc
@@ -7346,6 +7346,7 @@ _ACEOF
 	CXXFLAGS="$CXXFLAGS -ggdb"
 else
 	ac_configure_args="$ac_configure_args --disable-debug"
+	CXXFLAGS="$CXXFLAGS -s"
 fi
 
 # dist-info support

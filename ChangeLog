@@ -1,3 +1,9 @@
+Teksty w nawiasach na koñcu wpisu mówi± o tym, kto dokona³ poprawki
+lub rozbudowy. Postaæ (x/y) oznacza, ¿e x jest pomys³odawc± lub
+podes³a³ patcha, a zrobi³ to kto¶ oznaczony przez y. Je¶li jest
+w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
+
+
 +++ wersja 0.3.4-pre3
 * dodane przeszukiwanie historii (chilek)
 * w oknie konfiguracji pola puste zamieniane s± na faktyczne
@@ -17,6 +23,9 @@
 * wszystkie adresy IP przechowywane s± w obiektach klasy QHostAddress (chilek)
 * kadu po otrzymianiu pakietu GG_DISCONNECTING nie podejmuje kolejnych prób
   ³±czenia siê z sieci± GG automatycznie (chilek)
+* domy¶lna kompilacja z flagami -Os -fno-rtti -fno-exceptions
+  -pipe i je¶li nie w³±czymy debuga to dodatkowo -s. Kadu jest
+  teraz o po³owê mniejsze (mast3r/adrian)
 
 +++ wersja 0.3.4-pre2
 * graficzny instalator - instaluj.tcl (googie)

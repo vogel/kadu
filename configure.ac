@@ -203,7 +203,7 @@ AM_INIT_AUTOMAKE([kadu-0.3.4-pre2],[0.3.4-pre2])
 ########################################################################
 
 user_cxxflags="$CXXFLAGS"
-CXXFLAGS="-O2 $user_cxxflags"
+CXXFLAGS="-Os -fno-rtti -fno-exceptions -pipe $user_cxxflags"
 
 # Checks for programs.
 AC_PROG_CXX
@@ -366,6 +366,7 @@ if test "$enable_debug" = "yes"; then
 	CXXFLAGS="$CXXFLAGS -ggdb"
 else
 	ac_configure_args="$ac_configure_args --disable-debug"
+	CXXFLAGS="$CXXFLAGS -s"
 fi
 
 # dist-info support
