@@ -286,8 +286,7 @@ class GaduSocketNotifiers : public SocketNotifiers
 // ------------------------------------
 
 /**
-	@class GaduProtocol
-	@short Klasa do obs³ugi protoko³u Gadu-Gadu
+	Klasa do obs³ugi protoko³u Gadu-Gadu
  **/
 class GaduProtocol : public QObject
 {
@@ -321,42 +320,42 @@ class GaduProtocol : public QObject
 			i ustalaj± warto¶æ pola Mode. Pobieranie obrazka realizowane jest przez klasê
 			TokenSocketNotifiers. Po pobraniu wywo³ywany jest slot gotToken, który na podstawie warto¶ci
 			pola Mode wywo³uje jedn± z funkjci doRegister, doUnregister, doRemindPassword i doChangePassword.
-		 **/
+		**/
 		enum
 		{
-			//! Rejestrowanie nowego u¿ytkownika
+			/** Rejestrowanie nowego u¿ytkownika **/
 			Register,
-			//! Wyrejestrowywanie istniej±cego u¿ytkownika
+			/** Wyrejestrowywanie istniej±cego u¿ytkownika **/
 			Unregister,
-			//! Przypominanie has³a
+			/** Przypominanie has³a **/
 			RemindPassword,
-			//! Zmienianie has³a
+			/** Zmienianie has³a **/
 			ChangePassword
 		} Mode;
 
-		//! Identyfikator u¿ytkownika
+		/** Identyfikator u¿ytkownika **/
 		UinType DataUin;
-		//! e-mail u¿ytkownika
+		/** e-mail u¿ytkownika **/
 		QString DataEmail;
-		//! stare has³o u¿ytkownika
+		/** stare has³o u¿ytkownika **/
 		QString DataPassword;
-		//! nowe has³o u¿ytkownika
+		/** nowe has³o u¿ytkownika **/
 		QString DataNewPassword;
-		//! identyfikator tokena
+		/** identyfikator tokena **/
 		QString TokenId;
-		//! warto¶æ tokena
+		/** warto¶æ tokena **/
 		QString TokenValue;
 
-		//! Serwery, z którymi ³aczy siê obiekt.
+		/** Serwery, z którymi ³aczy siê obiekt. **/
 		static QValueList<QHostAddress> ConfigServers;
-		//! Numer serwera, do którego obiekt ostatnio próbowa³ siê pod³±czyæ.
+		/** Numer serwera, do którego obiekt ostatnio próbowa³ siê pod³±czyæ. **/
 		unsigned int ServerNr;
-		//! Adres serwera, do którego obiekt jest pod³±czony.
+		/** Adres serwera, do którego obiekt jest pod³±czony. **/
 		QHostAddress* ActiveServer;
 
-		//! Parametry logowania - wymagane przez bibliotekê libgg
+		/** Parametry logowania - wymagane przez bibliotekê libgadu **/
 		struct gg_login_params LoginParams;
-		//! Sesja po³±czenia - wymagane przez bibliotekê libgg
+		/** Sesja po³±czenia - wymagane przez bibliotekê libgadu **/
 		gg_session* Sess;
 
 		/**
@@ -389,7 +388,7 @@ class GaduProtocol : public QObject
 			@see CurrentStatus
 			@see UserStatus
 			@see status
-		 **/
+		**/
 		GaduStatus* NextStatus;
 
 		/**
@@ -397,19 +396,19 @@ class GaduProtocol : public QObject
 			(po³±czenie, zerwanie po³±czenia, nowa wiadomo¶æ).
 
 			@see GaduSocketNotifiers
-		 **/
+		**/
 		GaduSocketNotifiers *SocketNotifiers;
 
 		/**
 			Zegar pinguj±cy serwer.
-		 **/
+		**/
 		QTimer* PingTimer;
 
 		/**
 			Okre¶la, czy lista u¿ytkowników zosta³a ju¿ wys³ana.
 
 			@todo Wywaliæ, zamieniæ na connected
-		 **/
+		**/
 		bool UserListSent;
 		/**
 			Zmienna ustawiana w zale¿no¶ci od tego, czy wysy³amy listê kontaktów na serwer
@@ -420,7 +419,7 @@ class GaduProtocol : public QObject
 			@see userListReplyReceived
 			@see userListCleared
 			@see userListExported
-		 **/
+		**/
 		bool UserListClear;
 
 		/**
@@ -428,14 +427,14 @@ class GaduProtocol : public QObject
 			userListReplyReceived.
 
 			@see userListReplyReceived
-		 **/
+		**/
 		QString ImportReply;
 
 		/**
 			Ustawianie parametrów po³±czenia proxy. Metoda wywo³ywana podczas logowania.
 
 			@see login
-		 **/
+		**/
 		void setupProxy();
 
 		/**
@@ -461,7 +460,7 @@ class GaduProtocol : public QObject
 			@see ConfigServers
 			@see ServerNr
 			@see AutoConnectionTimer
-		 **/
+		**/
 		void login();
 		/**
 			Metoda wywo³ywana w razie roz³±czenie siê z serwerem. Wywo³ywana przez iWantGoOffline
@@ -473,7 +472,7 @@ class GaduProtocol : public QObject
 			@see connectionTimeoutTimerSlot
 			@see iWantGoOffline
 			@todo Wywaliæ i zast±piæ wywo³aniami disconnectedSlot?
-		 **/
+		**/
 		void logout();
 
 		/**
@@ -490,7 +489,7 @@ class GaduProtocol : public QObject
 			@see doRemindPassword
 			@see doChangePassword
 			@see Mode
-		 **/
+		**/
 		void getToken();
 
 		/**
@@ -502,7 +501,7 @@ class GaduProtocol : public QObject
 			@see registered
 			@see registerDone
 			@see gotToken
-		 **/
+		**/
 		void doRegisterAccount();
 		/**
 			Wyrejestrowuje konto. Wywo³ywane przez gotToken (które jest wywo³ane po¶rednio przez
@@ -513,7 +512,7 @@ class GaduProtocol : public QObject
 			@see unregistered
 			@see unregisterDone
 			@see gotToken
-		 **/
+		**/
 		void doUnregisterAccount();
 		/**
 			Przypomina has³o. Wywo³ywane przez gotToken (które jest wywo³ane po¶rednio przez
@@ -524,7 +523,7 @@ class GaduProtocol : public QObject
 			@see reminded
 			@see remindDone
 			@see gotToken
-		 **/
+		**/
 		void doRemindPassword();
 		/**
 			Zmienia has³o. Wywo³ywane przez gotToken (które jest wywo³ane po¶rednio przez
@@ -535,7 +534,7 @@ class GaduProtocol : public QObject
 			@see passwordChanged
 			@see changePasswordDone
 			@see gotToken
-		 **/
+		**/
 		void doChangePassword();
 
 	private slots:
@@ -545,7 +544,7 @@ class GaduProtocol : public QObject
 			@see registerAccount
 			@see doRegisterAccount
 			@see registered
-		 **/
+		**/
 		void registerDone(bool ok, struct gg_http *);
 		/**
 			Wywo³ywany po wyrejestrowaniu konta. Emituje unregistered.
@@ -553,7 +552,7 @@ class GaduProtocol : public QObject
 			@see unregisterAccount
 			@see doUnregisterAccount
 			@see unregistered
-		 **/
+		**/
 		void unregisterDone(bool ok, struct gg_http *);
 		/**
 			Wywo³ywany po przypomnieniu has³a. Emituje reminded.
@@ -561,7 +560,7 @@ class GaduProtocol : public QObject
 			@see remindPassword
 			@see doRemindPassword
 			@see reminded
-		 **/
+		**/
 		void remindDone(bool ok, struct gg_http *);
 		/**
 			Wywo³ywany po zmianie has³a. Emituje passwordChanged.
@@ -569,7 +568,7 @@ class GaduProtocol : public QObject
 			@see changePassword
 			@see doChangePassword
 			@see passwordChanged
-		 **/
+		**/
 		void changePasswordDone(bool ok, struct gg_http *);
 
 		/**
@@ -583,7 +582,7 @@ class GaduProtocol : public QObject
 
 			@see getToken
 			@see needTokenValue
-		 **/
+		**/
 		void gotToken(QString, QPixmap);
 
 		/**
@@ -591,56 +590,56 @@ class GaduProtocol : public QObject
 			serwera.
 
 			@see connected
-		 **/
+		**/
 		void connectedSlot();
 		/**
 			Slot wywo³ywany po roz³±czeniu z serwerem. Emituje disconnected i wy³±cza pingowanie
 			serwera.
 
 			@see disconnected
-		 **/
+		**/
 		void disconnectedSlot();
 		/**
 			Slot wywo³ywany po przekroczeniu czasu po³±czenia. Próbuje po³aczyæ ponownie.
-		 **/
+		**/
 		void connectionTimeoutTimerSlot();
 		/**
 			Slot wywo³ywane po wyst±pieniu b³êdu po³±czenia. Emituje disconnected i error.
 
 			@see error
 			@see disconnected
-		 **/
+		**/
 		void errorSlot(GaduError);
 		/**
 			Slot wywo³ywany po otrzymaniu obrazka od serwera. Emituje imageReceivedAndSaved
 
 			@see imageReceivedAndSaved
-		 **/
+		**/
 		void imageReceived(UinType sender, uint32_t size, uint32_t crc32,
 			const QString &filename, const char *data);
 		/**
 			Slot wywo³ywany po otrzymaniu pro¶by o obrazek od serwera. Wysy³a obrazek.
-		 **/
+		**/
 		void imageRequestReceived(UinType, uint32_t, uint32_t);
 		/**
 			Slot wywo³ywany po otrzymaniu wiadomo¶ci od serwera.
-		 **/
+		**/
 		void messageReceived(int, UinsList, QCString& msg, time_t, QByteArray &formats);
 		/**
 			Co pewien czas pinguje serwer.
-		 **/
+		**/
 		void pingNetwork();
 		/**
 			Obs³uguje otrzymanie nowych wyników wyszukiwania z serwera. Emituje newSearchResults.
 
 			@see newSearchResults
-		 **/
+		**/
 		void newResults(gg_pubdir50_t res);
 		/**
 			Nowa wiadomo¶æ od serwera. Emituje systemMessageReceived
 
 			@see systemMessageReceived
-		 **/
+		**/
 		void systemMessageReceived(QString &, QDateTime &, int, void *);
 		/**
 			Pobrano listê u¿ytkowników z serwera. Emituje userStatusChanged dla ka¿dego
@@ -648,7 +647,7 @@ class GaduProtocol : public QObject
 
 			@see userStatusChanged
 			@see userListChanged
-		 **/
+		**/
 		void userListReceived(const struct gg_event *);
 		/**
 			Odpowied¼ od serwera na temat operacji na li¶cie u¿ytkowników. Emituje, w zale¿no¶ci
@@ -657,14 +656,14 @@ class GaduProtocol : public QObject
 			@see userListCleared
 			@see userListExported
 			@see userListImported
-		 **/
+		**/
 		void userListReplyReceived(char, char *);
 		/**
 			Informacja o zmianie statusu kontaktu. Emituje userStatusChanged oraz userListChanged.
 
 			@see userStatusChanged
 			@see userListChanged
-		 **/
+		**/
 		void userStatusChanged(const struct gg_event *);
 
 		/**
@@ -674,7 +673,7 @@ class GaduProtocol : public QObject
 			@see CurrentStatus
 			@see NextStatus
 			@see login
-		 **/
+		**/
 		void iWantGoOnline(const QString &);
 		/**
 			Kto¶ wykona³ gadu.status().setBusy(). £±czymy z serwerem, je¿eli jeszcze tego nie
@@ -683,7 +682,7 @@ class GaduProtocol : public QObject
 			@see CurrentStatus
 			@see NextStatus
 			@see login
-		 **/
+		**/
 		void iWantGoBusy(const QString &);
 		/**
 			Kto¶ wykona³ gadu.status().setInvisible(). £±czymy z serwerem, je¿eli jeszcze tego nie
@@ -692,7 +691,7 @@ class GaduProtocol : public QObject
 			@see CurrentStatus
 			@see NextStatus
 			@see login
-		 **/
+		**/
 		void iWantGoInvisible(const QString &);
 		/**
 			Kto¶ wykona³ gadu.status().setOffline(). Roz³±czamy siê z serwerem i ustawiamy opis (je¿eli
@@ -701,7 +700,7 @@ class GaduProtocol : public QObject
 			@see CurrentStatus
 			@see NextStatus
 			@see logout
-		 **/
+		**/
 		void iWantGoOffline(const QString &);
 		
 		/**
@@ -775,7 +774,7 @@ class GaduProtocol : public QObject
 			</code>
 
 			@see currentStatus
-		 **/
+		**/
 		UserStatus & status();
 
 		/**
@@ -783,7 +782,7 @@ class GaduProtocol : public QObject
 			ikony, nazwy, sprawdzenie rzeczywistego stanu po³aczenia).
 
 			@see status
-		 **/
+		**/
 		const UserStatus & currentStatus();
 
 		/**
@@ -817,7 +816,7 @@ class GaduProtocol : public QObject
 			@return ³añcuch reprezentuj±cy listê u¿ytkowników
 			@see stringToUserList
 			@see streamToUserList
-		 **/
+		**/
 		QString userListToString(const UserList &userList) const;
 		/**
 			Konwertujê ³añcuch do listy u¿ytkowników.
@@ -829,7 +828,7 @@ class GaduProtocol : public QObject
 			@param userList lista u¿ytkowników, do której zapisany zostanie wynik konwersji
 			@see userListToString
 			@see streamToUserList
-		 **/
+		**/
 		void stringToUserList(QString &source, UserList &userList) const;
 		/**
 			Odczytuje ze strumienia ³añcuch reprezentuj±cy listê u¿ytkowników i konwertuje
@@ -842,23 +841,23 @@ class GaduProtocol : public QObject
 			@param userList lista u¿ytkowników, do której zapisany zostanie wynik konwersji
 			@see userListToString
 			@see stringToUserList
-		 **/
+		**/
 		void streamToUserList(QTextStream &source, UserList &userList) const;
 
 		/**
 			W³±cza próby automatycznego ³±czenia w razie niepowodzenia.
-		 **/
+		**/
 		void enableAutoConnection();
 		/**
 			Wy³±cza próby automatycznego ³±czenia w razie niepowodzenia.
-		 **/
+		**/
 		void disableAutoConnection();
 
 		/**
 			Zwraca true, je¿eli jeste¶my po³±czenie z serwerem.
 
 			@todo zmieniæ nazwê na connected
-		 **/
+		**/
 		bool userListSent();
 
 	public slots:
@@ -896,7 +895,7 @@ class GaduProtocol : public QObject
 			@param size rozmiar obrazka w bajtach
 			@param crc32 crc32 pliku
 			@todo powinno byæ sendImageRequest(uniqId uint32_t) - info o obrazku zapisywaæ gdzie¶ w ¶rodku
-		 **/
+		**/
 		bool sendImageRequest(UinType uin, int size, uint32_t crc32);
 		/**
 			Wywy³a obrazek o podanych parametrach.
@@ -906,7 +905,7 @@ class GaduProtocol : public QObject
 			@param size rozmiar obrazka w bajtach
 			@param data zawarto¶æ pliku
 			@toto usun±æ parametry size i data - mo¿emy to chyba sami wyznaczyæ
-		 **/
+		**/
 		bool sendImage(UinType uin, const QString &file_name, uint32_t size, char *data);
 
 		/**
@@ -927,7 +926,7 @@ class GaduProtocol : public QObject
 			@param uin nasz uin
 			@param password nasze has³o
 			@toto parametr uin naprawdê potrzebny?
-		 **/
+		**/
 		void unregisterAccount(UinType uin, const QString &password);
 		/**
 			Wysy³a has³o na email. Odpowied¼ przychodzi poprzez sygna³ reminded. Mo¿e
@@ -935,7 +934,7 @@ class GaduProtocol : public QObject
 
 			@param uin nasz uin
 			@toto parametr uin naprawdê potrzebny?
-		 **/
+		**/
 		void remindPassword(UinType uin);
 		/**
 			Zmienia nasze has³o. Odpowied¼ przychodzi poprzez sygna³ passwordChanged. Mo¿e
@@ -946,7 +945,7 @@ class GaduProtocol : public QObject
 			@param password stare has³o
 			@param newPassword nowe has³o
 			@toto parametr uin naprawdê potrzebny?
-		 **/
+		**/
 		void changePassword(UinType uin, const QString &mail, const QString &password,
 			const QString &newPassword);
 
@@ -980,7 +979,7 @@ class GaduProtocol : public QObject
 
 		/**
 			Wysy³a nasz± listê u¿ytkowników na serwer. Uwaga: nie ma to nic wspólnego z importem/eksportem.
-		 **/
+		**/
 		void sendUserList();
 
 		/**
@@ -1019,7 +1018,7 @@ class GaduProtocol : public QObject
 
 			 @todo usun±æ
 			 @todo niech Adrian zrobi porzadek z tym dcc...
-		 **/
+		**/
 		void freeEvent(struct gg_event* e);
 
 		// --------------------
@@ -1081,7 +1080,7 @@ class GaduProtocol : public QObject
 
 			@param oldData wska¼nik do starych danych kontatku
 			@param newData wska¼nik do nowych danych konaktu
-		 **/
+		**/
 		void userDataChanged(const UserListElement* const oldData, const UserListElement* const newData);
 
 	signals:
