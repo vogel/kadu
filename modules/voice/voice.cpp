@@ -109,7 +109,7 @@ VoiceManager::VoiceManager()
 VoiceManager::~VoiceManager()
 {
 	kdebugf();
-	ConfigDialog::removeControl("Define keys", "Voice chat");
+	ConfigDialog::removeControl("ShortCuts", "Voice chat");
 	int voice_chat_item = UserBox::userboxmenu->getItem(tr("Voice chat"));
 	UserBox::userboxmenu->removeItem(voice_chat_item);
 	disconnect(UserBox::userboxmenu,SIGNAL(popup()),this,SLOT(userBoxMenuPopup()));
