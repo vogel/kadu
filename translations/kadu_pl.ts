@@ -197,7 +197,7 @@ Wybierz jedną z poniższych opcji:</translation>
     </message>
     <message>
         <source>Proxy server</source>
-        <translation>Serwer Proxy</translation>
+        <translation>Serwer proxy</translation>
     </message>
     <message>
         <source>Port:</source>
@@ -385,7 +385,7 @@ Wybierz jedną z poniższych opcji:</translation>
     </message>
     <message>
         <source>Information panel syntax:</source>
-        <translation>Składnia panela informacyjnego:</translation>
+        <translation>Składnia panelu informacyjnego:</translation>
     </message>
     <message>
         <source>Chat window title syntax:</source>
@@ -549,7 +549,7 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     </message>
     <message>
         <source>Max image size</source>
-        <translation>Max rozmiar obrazu</translation>
+        <translation>Maksymalny rozmiar obrazu</translation>
     </message>
     <message>
         <source>Mouse buttons</source>
@@ -625,7 +625,7 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     </message>
     <message>
         <source>Panel background color</source>
-        <translation>Kolor tła panela informacyjnego</translation>
+        <translation>Kolor tła panelu informacyjnego</translation>
     </message>
     <message>
         <source>Panel font color</source>
@@ -657,7 +657,7 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     </message>
     <message>
         <source>Preview panel</source>
-        <translation>Podgląd panela informacyjnego</translation>
+        <translation>Podgląd panelu informacyjnego</translation>
     </message>
     <message>
         <source>Message citation in chat window</source>
@@ -689,7 +689,7 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     </message>
     <message>
         <source>Show available users in bold</source>
-        <translation>Pokaż dostępne kontakty pogrubiną czcionką</translation>
+        <translation>Pokaż dostępne kontakty pogrubioną czcionką</translation>
     </message>
     <message>
         <source>Displays users that are not offline using a bold font</source>
@@ -775,7 +775,7 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     </message>
     <message>
         <source>Email</source>
-        <translation>e-mail</translation>
+        <translation>E-mail</translation>
     </message>
     <message>
         <source>Password</source>
@@ -888,7 +888,7 @@ Hasła  muszą być identyczne w obu polach!</translation>
     <name>ChatSlots</name>
     <message>
         <source>None</source>
-        <translation>Bez emotów</translation>
+        <translation>Bez emotikon</translation>
     </message>
     <message>
         <source>Static</source>
@@ -1522,7 +1522,7 @@ Połączenia bezpośrednie wyłączone.</translation>
     </message>
     <message>
         <source>I&amp;mport / Export userlist</source>
-        <translation>I&amp;mport / Eksport listy kontaktów</translation>
+        <translation>I&amp;mport / eksport listy kontaktów</translation>
     </message>
     <message>
         <source>Unable to connect, server has not been found</source>
@@ -1640,7 +1640,7 @@ Przekroczenie czasu połączenia!</translation>
     </message>
     <message>
         <source>This dialog box allows you to manage installed modules. Modules are responsible for numerous vital features like playing sounds or message encryption. You can load (or unload) them by double-clicking on their names.</source>
-        <translation>To okno dialogowe daje możliwość zarządzania zainstalowanymi modułami. Moduły są odpowiedzialne za wiele funkcji takich jak odtwarzanie dźwięków lub szyfrowanie wiadomości. Jeśli zechcesz włączyć (lub wyłączyć) któryś z nich wystarczy dwukrotnie kliknąć na jego nazwie. Modułu statycznego nie można wyłączyć.</translation>
+        <translation>To okno dialogowe daje możliwość zarządzania zainstalowanymi modułami. Moduły są odpowiedzialne za wiele funkcji takich jak odtwarzanie dźwięków lub szyfrowanie wiadomości. Jeśli zechcesz włączyć (lub wyłączyć) któryś z nich, wystarczy dwukrotnie kliknąć na jego nazwie. Modułu statycznego nie można wyłączyć.</translation>
     </message>
     <message>
         <source>Module name</source>
@@ -1782,7 +1782,7 @@ Być może nie jest to moduł kompatybilny z Kadu</translation>
     </message>
     <message>
         <source>This dialog box allows you to manage your personal information, for example your name, surname or age.</source>
-        <translation>To okno dialogowe daje możliwość zarzadzania twoimi danymi personalnymi takimi jaki imie, nazwisko, wiek, płeć.</translation>
+        <translation>To okno dialogowe daje możliwość zarządzania Twoimi danymi personalnymi takimi jak imi�, nazwisko, wiek, płeć.</translation>
     </message>
     <message>
         <source>Your personal information</source>
@@ -1854,7 +1854,7 @@ Teraz możesz dodać znajomych do listy kontaktów.</translation>
     </message>
     <message>
         <source>Email</source>
-        <translation>e-mail</translation>
+        <translation>E-mail</translation>
     </message>
     <message>
         <source>New email:</source>
@@ -2261,7 +2261,7 @@ Teraz już nie masz numeru GG :(</translation>
     </message>
     <message>
         <source>Email</source>
-        <translation>e-mail</translation>
+        <translation>E-mail</translation>
     </message>
     <message>
         <source>(Unknown)</source>
@@ -2418,7 +2418,7 @@ Teraz już nie masz numeru GG :(</translation>
     </message>
     <message>
         <source>Email</source>
-        <translation>e-mail</translation>
+        <translation>E-mail</translation>
     </message>
     <message>
         <source>&amp;Fetch userlist</source>
