@@ -180,6 +180,7 @@ void Chat::setTitle() {
 	title.append(i18n(": %1)").arg(*userlist[i].description));
     else
 	title.append(")");
+  title.replace(QRegExp("\n"), " ");
     setCaption(title);
 }
 
