@@ -115,7 +115,7 @@ bool PendingMsgs::loadFromFile()
 		char* buf=new char[msg_size+1];
 		f.readBlock(buf,msg_size);
 		buf[msg_size]=0;
-		e.msg=buf;
+		e.msg = __c2q(buf);
 		delete[] buf;
 		// na koniec jeszcze klase wiadomosci
 		f.readBlock((char*)&e.msgclass,sizeof(int));

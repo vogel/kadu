@@ -42,8 +42,6 @@
 
 #define GG_STATUS_INVISIBLE2 0x0009 /* g³upy... */
 
-#define __c2q(__char_pointer__) QString::fromLocal8Bit(__char_pointer__)
-
 struct colors {
     int userboxBgR;
     int userboxBgG;
