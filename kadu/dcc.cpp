@@ -374,8 +374,9 @@ void dccSocketClass::setState(int pstate) {
 
 DccFileDialog::DccFileDialog(dccSocketClass *dccsocket, int type, QDialog *parent, const char *name)
 	: QDialog (parent, name), type(type), dccsocket(dccsocket) {
-	vbox1 = new QVBox(this);
-	vbox1->setMargin(5);
+	vlayout1 = new QVBoxLayout(this);
+	vlayout1->setAutoAdd(true);
+	vlayout1->setMargin(5);
 	setWFlags(Qt::WDestructiveClose);
 	prevPercent = 0;
 	dccFinished = false;
@@ -397,7 +398,7 @@ void DccFileDialog::printFileInfo(struct gg_dcc *dccsock) {
 	long long int percent;
  	long double fpercent;
 
-	QLabel *l_sender = new QLabel(vbox1);
+	QLabel *l_sender = new QLabel(this);
 
 	QString sender;
 
@@ -408,14 +409,14 @@ void DccFileDialog::printFileInfo(struct gg_dcc *dccsock) {
 	sender.append(userlist.byUin(dccsock->peer_uin).altnick);
 	l_sender->setText(sender);
 
-	QLabel *l_filename = new QLabel(vbox1);
+	QLabel *l_filename = new QLabel(this);
 	sender.truncate(0);
 
 	sender.append(tr("Filename: "));
 	sender.append((char *)dccsock->file_info.filename);
 	l_filename->setText(sender);
 
-	QLabel *l_filesize = new QLabel(vbox1);
+	QLabel *l_filesize = new QLabel(this);
 	sender.truncate(0);
 
 	sender.append(tr("File size: "));
@@ -424,9 +425,9 @@ void DccFileDialog::printFileInfo(struct gg_dcc *dccsock) {
 
 	l_filesize->setText(sender);
 
-	l_offset = new QLabel(tr("Speed: 0KB/s (not started)  "),vbox1);
+	l_offset = new QLabel(tr("Speed: 0KB/s (not started)  "),this);
 
-	p_progress = new QProgressBar(100, vbox1);
+	p_progress = new QProgressBar(100, this);
 	p_progress->setProgress(0);
 
 	time = new QTime();
@@ -442,8 +443,9 @@ void DccFileDialog::printFileInfo(struct gg_dcc *dccsock) {
 	else
 		p_progress->setProgress(0);
 
-	vbox1->resize(vbox1->sizeHint());
-	resize(vbox1->sizeHint().width() + 15, vbox1->sizeHint().height() + 15);
+	resize(vlayout1->sizeHint());
+	setMinimumSize(vlayout1->sizeHint());
+	setFixedHeight(vlayout1->sizeHint().height());
 
 	setCaption(tr("File transfered %1%").arg((int)percent));
 	show();

@@ -2,7 +2,7 @@
 #define DCC_H
 
 #include <qdialog.h>
-#include <qvbox.h>
+#include <qlayout.h> 
 #include <qprogressbar.h>
 #include <qlabel.h>
 #include <qsocketnotifier.h>
@@ -45,7 +45,7 @@ class DccFileDialog : public QDialog {
 		dccSocketClass *dccsocket;
 		QLabel *l_offset;
 		QProgressBar *p_progress;
-		QVBox *vbox1;
+		QVBoxLayout* vlayout1;
 		long long int prevPercent;
 		QTime *time;
 		int prevOffset;
