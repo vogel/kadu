@@ -152,6 +152,10 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 		for (i = 0; i < uins.count(); i++)
 			userbox->addUser(userlist.byUin(uins[i]).altnick);
 		userbox->refresh();
+
+		connect(userbox, SIGNAL(rightButtonClicked(QListBoxItem *, const QPoint &)),
+		UserBox::userboxmenu, SLOT(show(QListBoxItem *)));
+
 		sizes.append(3);
 		sizes.append(1);
 		split2->setSizes(sizes);
@@ -681,6 +685,11 @@ void Chat::checkPresence(UinsList senders, QString &msg, time_t time, QString &t
 
 void Chat::alertNewMessage(void) {
 
+	if (config_file.readBoolEntry("Chat","BlinkChatTitle"))
+		if (!isActiveWindow() && !title_timer->isActive())
+			changeTitle();
+
+
 	if (config_file.readBoolEntry("Sounds","PlaySoundChat"))
 		{
 		    if (config_file.readBoolEntry("Sounds","PlaySoundChatInvisible")){
@@ -690,11 +699,6 @@ void Chat::alertNewMessage(void) {
 		playSound(config_file.readEntry("Sounds","Chat_sound"));
 			
 		}
-
-	if (config_file.readBoolEntry("Chat","BlinkChatTitle"))
-		if (!isActiveWindow() && !title_timer->isActive())
-			changeTitle();
-
 }
 
 void Chat::writeMyMessage() {
