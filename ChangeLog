@@ -230,6 +230,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   sygna³ UserList::userAdded i slot Kadu::userlistUserAdded (adrian)
 * obs³uga blokowania przez serwer wiadomo¶ci oraz zape³nienia skrzynki przy
   w³±czonej opcji "Potwierdzenie wys³ania wiadomo¶ci (czekaj na dostarczenie)" (joi)
+* ³apanie do linków '(' ')' (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
