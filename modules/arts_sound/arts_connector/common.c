@@ -4,7 +4,7 @@ int read_all(int fd, char *buffer, int count)
 	kdebugf();
 	if (fd < 0)
 		return -1;
-	while (offset < count)
+/*	while (offset < count)
 	{
 		c = read(fd, buffer + offset, count - offset);
 		if (c == -1)
@@ -13,8 +13,10 @@ int read_all(int fd, char *buffer, int count)
 			return -1;
 		}
 		offset += c;
-	}
-	return offset;
+	}*/
+	c = recv(fd, buffer, count, MSG_WAITALL);
+	return c;
+//	return offset;
 }
 
 int write_all(int fd, const char *data, int length, int chunksize)
@@ -53,7 +55,8 @@ int read_line(int fd, char *data, int length)
 		return -1;
 	while (offset < length)
 	{
-		if (read(fd, data + offset, 1) == -1)
+//		if (read(fd, data + offset, 1) == -1)
+		if (recv(fd, data + offset, 1, MSG_WAITALL) < 1)
 		{
 			kdebugmf(KDEBUG_WARNING, "%s (%d)\n", strerror(errno), errno);
 			return -1;

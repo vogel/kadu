@@ -55,6 +55,8 @@ struct aRtsSoundDevice
 {
 	arts_stream_t player;
 	arts_stream_t recorder;
+	int rate;
+	int channels;
 };
 
 struct aRtsSoundDevice *devices[MAXDEV];
@@ -71,6 +73,8 @@ int openDevice(int rate, int channels, int type)
 				devices[i]->player = arts_play_stream(rate, 16, channels, "kadu_player");
 			if (type == 2 || type == 3)
 				devices[i]->recorder = arts_record_stream(rate, 16, channels, "kadu_recorder");
+			devices[i]->rate = rate;
+			devices[i]->channels = channels;
 			return i;
 		}
 	return -1;
@@ -107,14 +111,14 @@ void setFlushing(int devno, int enabled)
 			if (enabled)
 				arts_stream_set(dev->player, ARTS_P_BUFFER_SIZE, 0);
 			else
-				arts_stream_set(dev->player, ARTS_P_BUFFER_SIZE, 65536);
+				arts_stream_set(dev->player, ARTS_P_BUFFER_SIZE, 1 << 16);
 		}
 		if (dev->recorder)
 		{
 			if (enabled)
 				arts_stream_set(dev->recorder, ARTS_P_BUFFER_SIZE, 0);
 			else
-				arts_stream_set(dev->recorder, ARTS_P_BUFFER_SIZE, 65536);
+				arts_stream_set(dev->recorder, ARTS_P_BUFFER_SIZE, 1 << 16);
 		}
 	}
 }
@@ -159,7 +163,7 @@ int main()
 	int lsock, err, sock, end, buflen, i;
 	int uin, channels, rate, enabled, length, offset, num, type;
 
-	memset(devices, 0, MAXDEV*sizeof(struct aRtsSoundDevice));
+	memset(devices, 0, MAXDEV*sizeof(struct aRtsSoundDevice *));
 	scanf("%d %llu %d", &uin, &pass, &num);
 //sock=1;
 	lsock = socket(PF_LOCAL, SOCK_STREAM, 0);
@@ -245,8 +249,8 @@ int main()
 	err = arts_init();
 	if (err != 0)
 	{
-		snprintf(buffer, BUFSIZE-1, "cannot initialize artsc: errorcode=%d description:%s\n", err, arts_error_text(err));
-		buffer[BUFSIZE-1] = 0;
+		snprintf(buffer, BUFSIZE - 1, "cannot initialize artsc: errorcode=%d description:%s\n", err, arts_error_text(err));
+		buffer[BUFSIZE - 1] = 0;
 		write(sock, buffer, strlen(buffer));
 		close(sock);
 		return -6;
@@ -255,12 +259,12 @@ int main()
 	while (!end)
 	{
 		struct aRtsSoundDevice *tmpdev; int devno;
-		alarm(60*60); //po godzinie siê wy³±czamy
+		alarm(60 * 60); //po godzinie siê wy³±czamy
 		buflen = read_line(sock, buffer, BUFSIZE);
 		end = (buflen == -1);
 		if (!end)
 		{
-			switch(buffer[0])
+			switch (buffer[0])
 			{
 				case 'O': //OPEN RATE CHANNELS TYPE
 //					printf(">>>%d\n", sscanf(buffer, "OPEN %d %d", &rate, &channels));fflush(stdout);
@@ -298,7 +302,10 @@ int main()
 							endApp(sock);
 						offset += c;
 						if (devno >= 0 && devno <= MAXDEV && devices[devno] && devices[devno]->player)
+						{
+							alarm(c/(2*devices[devno]->rate*devices[devno]->channels)+1);
 							arts_write(devices[devno]->player, buffer, c);
+						}
 						else
 							err = 1;
 					}
@@ -315,7 +322,10 @@ int main()
 					{
 						int c;
 						if (devno >= 0 && devno <= MAXDEV && devices[devno] && devices[devno]->recorder)
+						{
+							alarm(c/(2*devices[devno]->rate*devices[devno]->channels)+1);
 							c = arts_read(devices[devno]->recorder, buffer, min(BUFSIZE, length - offset));
+						}
 						else
 						{
 							//udajemy ¿e siê uda³o
