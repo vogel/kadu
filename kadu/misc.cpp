@@ -2438,7 +2438,7 @@ void KaduTextBrowser::setParagraphSeparators(bool enabled, int width)
 
 void KaduTextBrowser::drawSeparators(QPainter *p, QPoint offset)
 {
-	kdebugf();
+//	kdebugf();
 	if (ParagraphSeparators)
 	{
 		int paraFrom, paraTo;
@@ -2457,10 +2457,10 @@ void KaduTextBrowser::drawSeparators(QPainter *p, QPoint offset)
 		{
 			QRect pr = paragraphRect(i);
 			pr.moveBy(offset.x(), offset.y());
-			p->drawRect(pr.left(), pr.bottom()-separatorWidth+1, pr.width(), separatorWidth);
+			p->drawRect(pr.left(), pr.bottom()-(separatorWidth/2), pr.width(), separatorWidth);
 		}
 	}
-	kdebugf2();
+//	kdebugf2();
 }
 
 void KaduTextBrowser::selectionChangedSlot()
