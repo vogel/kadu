@@ -879,14 +879,14 @@ History::History(UinsList uins): uins(uins) {
 //	QPushButton *closebtn = new QPushButton(this);
 //	closebtn->setText(i18n("&Close"));
 	QPushButton *prevbtn = new QPushButton(this);
-	prevbtn->setText(i18n("<<"));
+	prevbtn->setPixmap(loadIcon("back.png"));
 	QPushButton *nextbtn = new QPushButton(this);
-	nextbtn->setText(i18n(">>"));
+	nextbtn->setPixmap(loadIcon("forward.png"));
 	QPushButton *searchbtn = new QPushButton(this);
 	searchbtn->setText(i18n("&Search"));
 	QPushButton *searchnextbtn = new QPushButton(this);
 	searchnextbtn->setText(i18n("Search &next"));
-	
+
 	grid->addMultiCellWidget(body, 0, 0, 0, 3);
 	grid->addWidget(prevbtn, 1, 0);
 	grid->addWidget(nextbtn, 1, 1);
