@@ -403,7 +403,7 @@ SmsSlots::SmsSlots()
 	UserBox::userboxmenu->addItemAtPos(2, "SendSms", tr("Send SMS"), this, SLOT(onSendSmsToUser()),		
                 HotKey::shortCutFromFile("ShortCuts", "kadu_sendsms"));
 	
-	menuid=kadu->mainMenu()->insertItem(tr("Send SMS"), this, SLOT(onSendSms()), 0, -1, 16);
+	menuid=kadu->mainMenu()->insertItem(icons_manager.loadIcon("SendSms"), tr("Send SMS"), this, SLOT(onSendSms()), 0, -1, 16);
 	kdebugf2();
 }
 
