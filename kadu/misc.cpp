@@ -131,29 +131,29 @@ QString pwHash(const QString tekst) {
 	return nowytekst;
 }
 
-QString translateLanguage(const QString &locale, const bool l2n)
+QString translateLanguage(const QApplication *application, const QString &locale, const bool l2n)
 {
 	const char* local[]= { "en",
 			       "it",
 			       "pl", 0};
 
-	const char* name[]= { QT_TR_NOOP("English"), 
-				QT_TR_NOOP("Italian"), 
+	const char* name[]= { QT_TR_NOOP("English"),
+				QT_TR_NOOP("Italian"),
 				QT_TR_NOOP("Polish"), 0};
 
 	for (int i=0; local[i]; i++)
 	    {
 	    if (l2n) {
 		if (locale.mid(0,2) == local[i])
-			return name[i];
+			return application->translate("@default", name[i]);
 		     }	
 	    else 
-	    	if (locale == name[i])
-			return local[i];	     
+	    	if (locale == application->translate("@default", name[i]))
+			return local[i];
 	    
 	    }
 	if (l2n) 
-	    return QT_TR_NOOP("English");
+	    return application->translate("@default", QT_TR_NOOP("English"));
 	else 
 	    return "en";
 }
