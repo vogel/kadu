@@ -44,12 +44,12 @@
 #define GG_STATUS_INVISIBLE2 0x0009 /* g³upy... */
 
 struct colors {
-    int userboxBgR;
-    int userboxBgG;
-    int userboxBgB;
-    int userboxFgR;
-    int userboxFgG;
-    int userboxFgB;
+	QString userboxBgColor;
+	QString userboxFgColor;
+	QString chatMyBgColor;
+	QString chatUsrBgColor;
+	QString chatMyFontColor;
+	QString chatUsrFontColor;
 };
 
 

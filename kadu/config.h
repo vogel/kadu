@@ -41,6 +41,7 @@ class ConfigDialog : public QTabDialog	{
 		void setupTab3();
 		void setupTab4();
 		void setupTab5();
+		void setupTab6();
 
 		QComboBox *cb_defstatus;
 		QCheckBox *b_geometry;
@@ -95,6 +96,20 @@ class ConfigDialog : public QTabDialog	{
 		QVGroupBox *g_server;
 		QLineEdit *e_server;
 
+		QVGroupBox *bgcolor;
+		QLineEdit *e_chatusrbgcolor;
+		QLineEdit *e_chatmybgcolor;
+		QLineEdit *e_userboxbgcolor;
+		QLineEdit *e_userboxfgcolor;
+		QLineEdit *e_chatusrfontcolor;
+    QLineEdit *e_chatmyfontcolor;
+		QPushButton *pb_chatmybgcolor;
+		QPushButton *pb_chatusrbgcolor;
+		QPushButton *pb_chatmyfontcolor;
+		QPushButton *pb_chatusrfontcolor;
+		QPushButton *pb_userboxbgcolor;
+		QPushButton *pb_userboxfgcolor;
+
 	protected slots:
 		void _Left();
 		void _Right();
@@ -104,6 +119,12 @@ class ConfigDialog : public QTabDialog	{
 		void choosePlayerFile();
 		void chooseNotifyFile();
 		void chooseEmoticonsPath();
+		void chooseChatMyBgColorGet();
+		void chooseChatUsrBgColorGet();
+		void chooseChatMyFontColorGet();
+		void chooseChatUsrFontColorGet();
+		void chooseUserboxBgColorGet();
+		void chooseUserboxFgColorGet();
 		void emoticonsEnabled(bool);
 		void ifDccEnabled(bool);
 		void ifDccIpEnabled(bool);

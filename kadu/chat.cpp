@@ -53,8 +53,8 @@ Chat::Chat(UinsList uins, QWidget *parent)
 		resize(550,400);
 		userbox = new UserBox(this);
 
-		userbox->setPaletteBackgroundColor(QColor(config.colors.userboxBgR,config.colors.userboxBgG,config.colors.userboxBgB));
-		userbox->setPaletteForegroundColor(QColor(config.colors.userboxFgR,config.colors.userboxFgG,config.colors.userboxFgB));
+		userbox->setPaletteBackgroundColor(QColor(config.colors.userboxBgColor));
+		userbox->setPaletteForegroundColor(QColor(config.colors.userboxFgColor));
 		userbox->QListBox::setFont(QFont(config.userboxFont, config.userboxFontSize));
 
 		for (i = 0; i < uins.count(); i++)
@@ -341,16 +341,22 @@ void Chat::formatMessage(bool me, QString &altnick, QString &msg, const char *ti
 
 	toadd.append("<TABLE width=\"100%\"><TR><TD bgcolor=\"");
 	if (me)
-		toadd.append("#E0E0E0");
+	    	toadd.append(config.colors.chatMyBgColor);
 	else
-		toadd.append("#F0F0F0");
+	    	toadd.append(config.colors.chatUsrBgColor);
+	toadd.append("\">");
+	toadd.append("<FONT color=\"");
+	if (me)
+		toadd.append(config.colors.chatMyFontColor);
+	else
+		toadd.append(config.colors.chatUsrFontColor);
 	toadd.append("\"><B>");
 	toadd.append(altnick);
 	toadd.append(" ");
 	toadd.append(__c2q(time));
 	toadd.append("</B><BR>");
 	toadd.append(editext);
-	toadd.append("</TD></TR></TABLE>");
+	toadd.append("</TD></TR></TABLE></FONT>");
 }
 
 void Chat::scrollMessages(QString &toadd) {
