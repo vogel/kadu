@@ -34,6 +34,7 @@ struct UserListElement
 	uin_t uin;
 	unsigned int status;
 	bool anonymous;
+	bool foreign;
 	int ip;
 	short port;
 };

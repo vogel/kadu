@@ -74,9 +74,10 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 	QString nick;
 	if(userlist.containsUin(senders[0]))
 		nick = userlist.byUin(senders[0]).altnick;
-	else
+	else {
 		nick = QString::number(senders[0]);
-
+		kadu->userbox->addUin(senders[0]);
+		}
 	if (config.logmessages && senders[0] != config.uin)
 		appendHistory(senders[0], msg, FALSE, time);
 

@@ -112,6 +112,7 @@ void UserlistImport::updateUserlist() {
 	importedUserlist.clear();
 	
 	kadu->userbox->clear();
+	kadu->userbox->clearUins();
 	for (i = 0; i < userlist.count(); i++)
 		kadu->userbox->addUin(userlist[i].uin);
 		

@@ -37,6 +37,7 @@ class UserBox : public QListBox , QToolTip
 		UserBox(QWidget* parent=0,const char* name=0,WFlags f=0);
 		~UserBox();
 		virtual void clear() { QListBox::clear(); };
+		void clearUins() { Uins.clear(); };
 		void refresh();
 		void addUin(uin_t uin);
 		void removeUin(uin_t uin);
