@@ -240,7 +240,7 @@ Sms::Sms(const QString& altnick, QDialog* parent) : QDialog (parent, "Sms")
 	strlist.insert(strlist.begin(), QString::null);
 	list->insertStringList(strlist);
 	list->setCurrentText(altnick);
-	QObject::connect(list, SIGNAL(activated(const QString&)), this, SLOT(updateRecipient(const QString &)));
+	connect(list, SIGNAL(activated(const QString&)), this, SLOT(updateRecipient(const QString &)));
 	grid->addWidget(list, 0, 3);
 
 	QLabel *recilabel = new QLabel(tr("Recipient"),this);
@@ -263,14 +263,16 @@ Sms::Sms(const QString& altnick, QDialog* parent) : QDialog (parent, "Sms")
 	grid->addWidget(l_signature, 5, 0);
 	e_signature= new QLineEdit(config_file.readEntry("General", "Nick"), this);
 	grid->addWidget(e_signature, 5, 1);
-	
-	QObject::connect(b_send, SIGNAL(clicked()), this, SLOT(sendSms()));
 
+	if (altnick == "")
+		recipient->setFocus();
 
 	resize(400,250);
 	setCaption(tr("Send SMS"));
-
+	
+	connect(b_send, SIGNAL(clicked()), this, SLOT(sendSms()));
 	connect(&Sender,SIGNAL(finished(bool)),this,SLOT(onSmsSenderFinished(bool)));
+
 	modules_manager->moduleIncUsageCount("sms");
 	kdebugf2();
 }
@@ -399,7 +401,7 @@ SmsSlots::SmsSlots()
 	UserBox::userboxmenu->addItemAtPos(2, "SendSms", tr("Send SMS"), this, SLOT(onSendSmsToUser()),		
                 HotKey::shortCutFromFile("ShortCuts", "kadu_sendsms"));
 	
-	menuid=kadu->mainMenu()->insertItem(icons_manager.loadIcon("SendSms"), tr("Send SMS"), this, SLOT(onSendSms()), 0, -1, 16);
+	menuid=kadu->mainMenu()->insertItem(icons_manager.loadIcon("SendSms"), tr("Send SMS"), this, SLOT(onSendSms()), 0, -1, 10);
 	kdebugf2();
 }
 
