@@ -224,27 +224,31 @@ void UserBox::refresh()
 		};
 	};	
 	// Dodajemy niewidocznych
-	for (i = 0; i < i_users.count(); i++)
-	{
+	for (i = 0; i < i_users.count(); i++) {
 		UserListElement &user = userlist.byAltNick(i_users[i]);
-		if (pending.pendingMsgs(user.uin))
-		{
+		bool has_mobile = user.mobile.length();
+		if (pending.pendingMsgs(user.uin)) {
 	    		insertItem(QPixmap((const char **)gg_msg_xpm), user.altnick);
-		}
-		else
-		{
+			}
+		else {
 			QPixmap *pix = NULL;
 			switch (user.status) {
 				case GG_STATUS_INVISIBLE_DESCR:
-		    			pix = icons->loadIcon("invisible_d");
+					if (has_mobile)
+						pix = icons->loadIcon("invisible_d_m");
+					else
+						pix = icons->loadIcon("invisible_d");
     		    			break;
 				case GG_STATUS_INVISIBLE2:
-					pix = icons->loadIcon("invisible");
+					if (has_mobile)
+						pix = icons->loadIcon("invisible_m");
+					else
+						pix = icons->loadIcon("invisible");
 		    			break;
-				};
+				}
 			insertItem(*pix, user.altnick);			
-		};
-	};	
+			}
+		}
 	// Dodajemy nieaktywnych
 	for (i = 0; i < n_users.count(); i++)
 	{
