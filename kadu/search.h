@@ -98,7 +98,6 @@ class SearchDialog : public QDialog {
 
 	private slots:
 		void clearResults(void);
-		void prepareMessage(QListViewItem *);
 		void uinTyped(void);
 		void personalDataTyped(void);
 		void AddButtonClicked();

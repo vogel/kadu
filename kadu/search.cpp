@@ -113,7 +113,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	progress = new QLabel(this);
 
 	results = new QListView(this);
-	connect(results, SIGNAL(doubleClicked(QListViewItem *)), this, SLOT(prepareMessage(QListViewItem *)));
+	connect(results, SIGNAL(doubleClicked(QListViewItem *)), this, SLOT(openChat()));
 
 	QHButtonGroup * btngrp = new QHButtonGroup(this);
 	btngrp->setTitle(tr("Search criteria"));
@@ -215,22 +215,6 @@ void SearchDialog::selectionChanged(QListViewItem *item)
 		connect(b_addbtn, SIGNAL(clicked()), this, SLOT(AddButtonClicked()));
 	}
 	kdebugf2();
-}
-
-void SearchDialog::prepareMessage(QListViewItem * /*item*/)
-{
-//Tu trzeba dodaæ kod który otwiera³by okno rozmowy.
-/*	Message *msg;
-
-	if (!userlist.containsUin(atoi(item->text(1).local8Bit())))
-		AddButtonClicked();
-	else {
-		msg = new Message(userlist.byUin(atoi(item->text(1).local8Bit())).altnick);
-		msg->init();
-		msg->show();
-		}
-*/
-
 }
 
 void SearchDialog::clearResults(void)
