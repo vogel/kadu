@@ -17,6 +17,8 @@
 * uzupe³nienie i uporz±dkowanie listy domy¶lnych serwerów GG (chilek)
 * je¿eli nie mamy dokumentacji to jest ona otwierana
   z http://www.kadu.net/index_doc.html (mast3r)
+* configure: prawid³owa obs³uga przekazywanych przez u¿ytkownika CXXFLAGS
+  oraz domy¶lna kompilacja z -O2 (adrian)
 
 +++ wersja 0.3.3-rc2
 * sporo poprawek dla FreeBSD (adrian)

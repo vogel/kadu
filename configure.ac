@@ -88,16 +88,16 @@ AC_DEFUN(FIND_HEADER,[
 # $4 - action if not found (default is error message)
 AC_DEFUN(FIND_LIBRARY,[
 	AC_MSG_CHECKING([if lib$1.so library is in system directories])
-	save_CPPFLAGS="$CPPFLAGS"
-	CPPFLAGS="$CXXFLAGS -l$1"
+	save_CXXFLAGS="$CXXFLAGS"
+	CXXFLAGS="$CXXFLAGS -l$1"
 	AC_TRY_LINK([],
 	[
 		return 0;
 	],[
-		CPPFLAGS="$save_CPPFLAGS"
+		CXXFLAGS="$save_CXXFLAGS"
 		AC_MSG_RESULT([yes])
 	],[
-		CPPFLAGS="$save_CPPFLAGS"
+		CXXFLAGS="$save_CXXFLAGS"
 		AC_MSG_RESULT([no])
 		FIND_FILE([lib$1.so],[$2],[$3],[$4])
 	])
@@ -202,7 +202,8 @@ AM_INIT_AUTOMAKE([kadu-0.3.3-rc2],[0.3.3-rc2])
 # check for programs, libraries and functions
 ########################################################################
 
-CXXFLAGS=""
+user_cxxflags="$CXXFLAGS"
+CXXFLAGS="-O2 $user_cxxflags"
 
 # Checks for programs.
 AC_PROG_CXX
@@ -435,6 +436,7 @@ echo "   Compile with debug symbols:         $enable_debug"
 echo "   Link with existing libgadu:         $with_existing_libgadu"
 echo "   OpenSSL encryption support:         $with_openssl"
 echo "   Distribution type information:      $enable_dist_info"
+echo "   Additional c++ compiler flags:      $user_cxxflags"
 echo
 echo " Run make now (Linux) or gmake (FreeBSD and others) to compile Kadu."
 echo
