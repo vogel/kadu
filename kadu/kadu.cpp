@@ -1685,8 +1685,6 @@ void Kadu::disconnectNetwork() {
 	disconnect_planned = true;
 	if (sess) {
 		gg_logoff(sess);
-		if (sess->password)
-			free(sess->password);
 		gg_free_session(sess);
 		sess = NULL;
 		}
@@ -1817,9 +1815,6 @@ void DockWidget::mousePressEvent(QMouseEvent * e) {
 }
 
 void Kadu::cleanUp(void) {
-	// may be of use
-	if (sess && sess->password)
-		free(sess->password);
 	writeIgnored(NULL);
 }
 
