@@ -22,7 +22,9 @@
 #include <qmessagebox.h>
 #include <unistd.h>
 #include <qprocess.h>
-
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <sys/un.h>
 //
 #include "kadu.h"
 #include "dcc.h"
@@ -50,11 +52,13 @@ dccSocketClass::~dccSocketClass() {
 		}
 	if (recordprocess)
 		{
+		recordprocess->kill();
 		delete recordprocess;
 		recordprocess = NULL;
 		}
 	if (playprocess)
 		{
+		playprocess->kill();
 		delete playprocess;
 		playprocess = NULL;
 		}
@@ -103,7 +107,10 @@ void dccSocketClass::dccDataSent() {
 
 void dccSocketClass::watchDcc(int check) {
 	QString f;
-	QByteArray buf;
+	struct sockaddr_un addr;
+	int sock;
+	int len;
+	char buf[195];
 
 	fprintf(stderr, "KK dccSocketClass::watchDcc()\n");			
 	if (!(dccevent = gg_dcc_watch_fd(dccsock))) {
@@ -139,22 +146,37 @@ void dccSocketClass::watchDcc(int check) {
 			dialog->printFileInfo(dccsock);
 			break;	    
 		case GG_EVENT_DCC_NEED_VOICE_ACK:
+			unlink("/home/chilek/.gg/kaduplayvoice");			
 			playprocess = new QProcess(QString("kaduplayvoice"));
 			playprocess->start();
+			fprintf(stderr, "KK accept playsocket\n");
+			sock = socket(PF_UNIX, SOCK_STREAM, 0);
+			addr.sun_family = AF_UNIX;
+			strcpy(addr.sun_path, "/home/chilek/.gg/kaduplayvoice");
+			bind(sock, (const sockaddr *)&addr, sizeof(addr));
+			listen(sock, 5);
+			playsocket = accept(sock, NULL, 0);
+
+			unlink("/home/chilek/.gg/kadurecordvoice");			
+			recordprocess = new QProcess(QString("kadurecordvoice"));
+			recordprocess->start();
+			fprintf(stderr, "KK accept recordsocket\n");
+			sock = socket(PF_UNIX, SOCK_STREAM, 0);
+			addr.sun_family = AF_UNIX;
+			strcpy(addr.sun_path, "/home/chilek/.gg/kadurecordvoice");
+			bind(sock, (const sockaddr *)&addr, sizeof(addr));
+			listen(sock, 5);
+			recordsocket = accept(sock, NULL, 0);
 			break;
 		case GG_EVENT_DCC_VOICE_DATA:
-//			if (!playprocess->isRunning())
-//				break;
-			fprintf(stderr,"KK dccSocketClass::watchDcc: buf.setRawData() 1\n");
-			buf.setRawData((const char *)&dccevent->event.dcc_voice_data.length,
-				sizeof(int));
-			fprintf(stderr,"KK dccSocketClass::watchDcc: playprocess->writeToStdin() 1\n");
-			playprocess->writeToStdin(buf);
-			fprintf(stderr,"KK dccSocketClass::watchDcc: buf.setRawData() 2\n");
-			buf.setRawData((const char *)dccevent->event.dcc_voice_data.data,
+			if (!playprocess->isRunning())
+				break;
+			write(playsocket, &dccevent->event.dcc_voice_data.length, sizeof(int));
+			write(playsocket, dccevent->event.dcc_voice_data.data,
 				dccevent->event.dcc_voice_data.length);
-			fprintf(stderr,"KK dccSocketClass::watchDcc: playprocess->writeToStdin() 2\n");
-			playprocess->writeToStdin(buf);
+			read(recordsocket, &len, sizeof(int));
+			read(recordsocket, buf, len);
+			gg_dcc_voice_send(dccsock, buf, len);
 			break;
 		case GG_EVENT_DCC_ERROR:
 			fprintf(stderr, "KK dccSocketClass::watchDcc: GG_EVENT_DCC_ERROR\n");
@@ -173,8 +195,10 @@ void dccSocketClass::watchDcc(int check) {
 	if (dccsock->check & GG_CHECK_WRITE)
 		snw->setEnabled(true);
 
-	gg_free_event(dccevent);
-	dccevent = NULL;
+	if (dccevent) {
+		gg_free_event(dccevent);
+		dccevent = NULL;
+		}
 }
 
 void dccSocketClass::askAccept(void) {
