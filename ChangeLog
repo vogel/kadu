@@ -71,6 +71,9 @@
 * na razie zablokowa³em poprzedni feature (chilek)
 * poprawki w konwersji historii - nick mo¿e zawieraæ spacje i nie tylko (chilek)
 * mo¿na ignorowaæ grupy u¿ytkowników (chilek)
+* próba optymalizacji animowanych emotikonów - konkretna animacja/emotikon
+  ³aduje siê z dysku tylko raz w ci±gu danej sesji kadu i jest dzielona
+  miêdzy wszyskie te same emotikony we wszystkich oknach chat (adrian)
 
 +++ wersja 0.3.3-final
 * ikonka wiadomo¶ci i ikon statusu "ukryty" z telefonikiem

@@ -330,13 +330,30 @@ AnimTextItem::AnimTextItem(
 	Edit=edit;
 	Label=new QLabel(Edit->viewport());
 	Edit->addChild(Label);
-	Label->setMovie(QMovie(filename));
-	if(SizeCheckImage==NULL)
-		SizeCheckImage=new QImage();
-	SizeCheckImage->load(filename);
-	width=SizeCheckImage->width();
-	height=SizeCheckImage->height();
-	Label->resize(SizeCheckImage->size());
+	//
+	MovieCacheData md;
+	if(Movies==NULL)
+		Movies=new MoviesCache();
+	if(Movies->contains(filename))
+	{
+		md=(*Movies)[filename];
+		kdebug("Movie %s loaded from cache\n",filename.local8Bit().data());
+	}
+	else
+	{
+		md.movie=QMovie(filename);
+		if(SizeCheckImage==NULL)
+			SizeCheckImage=new QImage();
+		SizeCheckImage->load(filename);
+		md.size=SizeCheckImage->size();
+		Movies->insert(filename,md);
+		kdebug("Movie %s loaded from file and cached\n",filename.local8Bit().data());
+	};
+	//
+	Label->setMovie(md.movie);
+	width=md.size.width();
+	height=md.size.height();
+	Label->resize(md.size);
 	Label->setPaletteBackgroundColor(bgcolor);
 };
 
@@ -362,6 +379,7 @@ void AnimTextItem::draw(
 };
 
 QImage* AnimTextItem::SizeCheckImage=NULL;
+AnimTextItem::MoviesCache* AnimTextItem::Movies=NULL;
 
 AnimStyleSheet::AnimStyleSheet(
 	QTextEdit* parent, const QString& path, const char* name )

@@ -19,6 +19,7 @@
 #include <qimage.h>
 #include <qtoolbutton.h>
 #include <qmovie.h>
+#include <qmap.h>
 
 #include "chat.h"
 
@@ -93,6 +94,13 @@ class AnimTextItem : public QTextCustomItem
 {
 	private:
 		static QImage* SizeCheckImage;
+		struct MovieCacheData
+		{
+			QMovie movie;
+			QSize size;
+		};
+		typedef QMap<QString,MovieCacheData> MoviesCache;
+		static MoviesCache* Movies;
 		QTextEdit* Edit;
 		QLabel* Label;
 		QSize EditSize;
