@@ -11,9 +11,3 @@ Depends: ${shlibs:Depends}
 Description: Gadu Gadu client for X11
  Gadu Gadu is a Windows insant messenger, very popular in Poland.
  Kadu is a QT3 version for *nix systems.
-
-Package: kadu-doc
-Section: doc
-Architecture: any
-Description: Documentation for Kadu
- Kadu html documentation.

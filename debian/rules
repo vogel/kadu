@@ -24,8 +24,7 @@ config.status: configure
 	--build=$(DEB_BUILD_GNU_TYPE) \
 	--prefix=/usr \
 	--mandir=\$${prefix}/share/man \
-	--infodir=\$${prefix}/share/info \
-	--enable-doc=/usr/share/doc/kadu
+	--infodir=\$${prefix}/share/info
 
 build: build-stamp
 build-stamp:  config.status
@@ -68,7 +67,6 @@ binary-arch: build install
 	dh_installmenu
 	dh_installman
 	dh_installchangelogs ChangeLog
-	rm -rf $(CURDIR)/debian/kadu-doc/usr/share/doc/kadu-doc
 	dh_link
 	dh_strip
 	dh_compress

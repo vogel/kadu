@@ -1,4 +1,4 @@
-kadu (<wersja>) unstable; urgency=low
+kadu (<wersja>-0) unstable; urgency=low
 
   * Pierwsza wersja plikow
   * 04.07.2003 - Wersja paczki kadu jest pobierana z pliku VERSION.
@@ -10,5 +10,6 @@ kadu (<wersja>) unstable; urgency=low
 		 libgadu w kadu.
   * 23.10.2003 - Poprawki dotyczace nowej translacji i miejsca instalacji
 		 plikow kadu.
+  * 02.11.2003 - Nie ma juz paczki kadu-doc
 
  -- Dariusz Jagodzik <mast3r@kadu.net>  Tue, 25 Feb 2003 10:06:51 +0100
