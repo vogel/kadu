@@ -428,6 +428,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	UserBox::userboxmenu->insertSeparator();
 	UserBox::userboxmenu->addItem(tr("About..."), this, SLOT(about()));
 
+
 	connect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(popupMenu()));
 	connect(Userbox, SIGNAL(rightButtonClicked(QListBoxItem *, const QPoint &)),
 		UserBox::userboxmenu, SLOT(show(QListBoxItem *)));
@@ -517,7 +518,7 @@ void Kadu::popupMenu()
 	if (activeUserBox==NULL)//to siê zdarza...
 		return;
 	users = activeUserBox->getSelectedUsers();
-	UserListElement user = (*users.begin());
+	UserListElement user = users.first();
 
 	bool isOurUin=users.containsUin(config_file.readNumEntry("General", "UIN"));
 	
@@ -605,7 +606,7 @@ void Kadu::sendFile()
 			users= activeUserBox->getSelectedUsers();
 			if (users.count() != 1)
 				return;
-			UserListElement user = (*users.begin());
+			UserListElement user = users.first();
 			if (user.port >= 10) {
 				if ((dcc_new = gg_dcc_send_file(htonl(user.ip.ip4Addr()), user.port,
 					config_file.readNumEntry("General", "UIN"), user.uin)) != NULL) {
@@ -628,7 +629,7 @@ void Kadu::lookupInDirectory() {
 		return;
 	users = activeUserBox->getSelectedUsers();
 	if (users.count() == 1) {
-		sd = new SearchDialog(0, tr("User info"), userlist.byAltNick((*users.begin()).altnick).uin);
+		sd = new SearchDialog(0, tr("User info"), userlist.byAltNick(users.first().altnick).uin);
 		sd->show();
 		sd->firstSearch();
 	}
@@ -646,7 +647,7 @@ void Kadu::showUserInfo() {
 	users = activeUserBox->getSelectedUsers();
 	if (users.count() == 1)
 	{
-		UserInfo *ui = new UserInfo("user info", 0, (*users.begin()).altnick);
+		UserInfo *ui = new UserInfo("user info", 0, users.first().altnick);
 		ui->show();
 	}
 }
@@ -772,7 +773,7 @@ void Kadu::blockUser()
 	UserBox *activeUserBox=UserBox::getActiveUserBox();
 	if (activeUserBox==NULL)
 		return;
-	UserListElement *puser = &userlist.byAltNick((*activeUserBox->getSelectedUsers().begin()).altnick);
+	UserListElement *puser = &userlist.byAltNick(activeUserBox->getSelectedUsers().first().altnick);
 	puser->blocking = !puser->blocking;
 	gg_remove_notify_ex(sess, puser->uin, puser->blocking ? GG_USER_NORMAL : GG_USER_BLOCKED);
 	gg_add_notify_ex(sess, puser->uin, puser->blocking ? GG_USER_BLOCKED : GG_USER_NORMAL);
@@ -784,7 +785,7 @@ void Kadu::notifyUser()
 	UserBox *activeUserBox=UserBox::getActiveUserBox();
 	if (activeUserBox==NULL)
 		return;
-	UserListElement *puser = &userlist.byAltNick((*activeUserBox->getSelectedUsers().begin()).altnick);
+	UserListElement *puser = &userlist.byAltNick(activeUserBox->getSelectedUsers().first().altnick);
 	puser->notify = !puser->notify;
 	userlist.writeToFile();
 }
@@ -794,7 +795,7 @@ void Kadu::offlineToUser()
 	UserBox *activeUserBox=UserBox::getActiveUserBox();
 	if (activeUserBox==NULL)
 		return;
-	UserListElement *puser = &userlist.byAltNick((*activeUserBox->getSelectedUsers().begin()).altnick);
+	UserListElement *puser = &userlist.byAltNick(activeUserBox->getSelectedUsers().first().altnick);
 	puser->offline_to_user = !puser->offline_to_user;
 	gg_remove_notify_ex(sess, puser->uin, puser->offline_to_user ? GG_USER_NORMAL : GG_USER_OFFLINE);
 	gg_add_notify_ex(sess, puser->uin, puser->offline_to_user ? GG_USER_OFFLINE : GG_USER_NORMAL);
@@ -852,9 +853,9 @@ void Kadu::refreshGroupTabBar()
 	}
 	/* budujemy listê grup */
 	QValueList<QString> group_list;
-	for (UserList::ConstIterator i = userlist.begin(); i != userlist.end(); i++)
+	for (unsigned int i = 0; i < userlist.count(); i++)
 	{
-		QString groups = (*i).group();
+		QString groups = userlist[i].group();
 		QString group;
 		for (int g = 0; (group = groups.section(',' ,g ,g)) != ""; g++)
 			if(!group_list.contains(group))
@@ -892,7 +893,7 @@ void Kadu::refreshGroupTabBar()
 void Kadu::setActiveGroup(const QString& group)
 {
 	Userbox->clearUsers();
-	for (UserList::ConstIterator i = userlist.begin(); i != userlist.end(); i++)
+	for (unsigned int i = 0; i < userlist.count(); i++)
 	{
 		bool belongsToGroup;
 		if (group == "")
@@ -900,14 +901,14 @@ void Kadu::setActiveGroup(const QString& group)
 		else
 		{
 			belongsToGroup = false;
-			QString user_groups = (*i).group();
+			QString user_groups = userlist[i].group();
 			QString user_group;
 			for (int g = 0; (user_group = user_groups.section(',',g,g)) != ""; g++)
 				if (user_group == group)
 					belongsToGroup = true;
 		}
-		if (belongsToGroup && (!(*i).anonymous || !Docked))
-			Userbox->addUser((*i).altnick);
+		if (belongsToGroup && (!userlist[i].anonymous || !Docked))
+			Userbox->addUser(userlist[i].altnick);
 	}
 	UserBox::all_refresh();
 }
