@@ -39,9 +39,9 @@ function Configure()
 {
 	QTDIR="$QT_DIR"
 	LD_LIBRARY_PATH="$QT_DIR/lib:$LD_LIBRARY_PATH"
-	export QTDIR PATH
+	export QTDIR
 	KDEDIR="$KDE_DIR"
-	export KDE_DIR PATH
+	export KDEDIR
 	OPER="Configure"
 	./configure "--prefix=$APP_DIR"
 	WYK=$?
@@ -187,7 +187,7 @@ echo
 	echo
         echo " =============================================================================="
         echo
-        echo " Konfigurujê program instalacyjny to mo¿e chwilê potrwaæ bd¼ cierpliwy"
+        echo " Konfigurujê program instalacyjny to mo¿e chwilê potrwaæ b±d¼ cierpliwy"
 	echo
 	echo "Szukam  KADU..."
 		Szuk_kadu
