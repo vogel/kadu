@@ -841,9 +841,9 @@ void UserBox::initModule()
 	kdebugf();
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "General"), "GeneralTab");
 	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show inactive contacts"), "ShowHideInactive", true, QT_TRANSLATE_NOOP("@default", "Display contacts who are offline"));
-	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show contacts with description"), "ShowOnlyDescriptionUsers", false, QT_TRANSLATE_NOOP("@default", "Display contacts who has a desciption"));
-	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show contacts who you are blocking"), "ShowBlocked", true);
-	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show contacts who are blocking you"), "ShowBlocking", true);
+	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show contacts with description"), "ShowOnlyDescriptionUsers", false, QT_TRANSLATE_NOOP("@default", "Display contacts that have a desciption"));
+	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show contacts that you are blocking"), "ShowBlocked", true);
+	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show contacts that are blocking you"), "ShowBlocking", true);
 
 	// dodanie wpisow do konfiga (pierwsze uruchomienie)
 	QWidget w;
