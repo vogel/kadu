@@ -24,6 +24,7 @@
 #include <qmultilineedit.h>
 #include <qarray.h>
 #include "../libgadu/lib/libgadu.h"
+#include "misc.h"
 
 class IconSelector;
 
@@ -35,7 +36,7 @@ class Chat : public QDialog {
 		int totaloccurences;
 		QString nick;
 		QDialog *chatdlg;
-		QArray<uin_t> uins;
+		UinsList uins;
 		IconSelector *iconsel_ptr;
 		QPushButton *iconsel;
 		QPushButton *autosend;
@@ -44,12 +45,12 @@ class Chat : public QDialog {
 		void pruneWindow(void);
 
 	public:
-		Chat(QArray<uin_t> uins, QDialog *parent = 0);
+		Chat(UinsList uins, QDialog *parent = 0);
 		~Chat();
 		void setTitle(void);
 
 		KTextBrowser *body;
-		int checkPresence(QArray<uin_t>, QString *, time_t);
+		int checkPresence(UinsList, QString *, time_t);
 		void addEmoticon(QString);
 		CustomInput *edit;
 		QHBox *buttontray;

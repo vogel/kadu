@@ -150,8 +150,8 @@ DockWidget * dw;
 QPopupMenu * grpmenu;
 
 UserList userlist;
-QArray<struct pending> pending(0);
-QArray<struct chats> chats(0);
+QValueList<struct pending> pending;
+QValueList<struct chats> chats;
 struct gg_session sess;
 struct sigaction sigact;
 struct config config;
@@ -251,31 +251,16 @@ int statusGGToStatusNr(int status) {
 }
 
 void deletePendingMessage(int nr) {
-    int j;
-    
-    delete pending[nr].uins;
-    if (nr != pending.size() - 1) {
-	for (j = nr; j < pending.size() - 1; j++) {
-	    pending[j].uins->duplicate(*pending[j+1].uins);
-	    pending[j].msg = pending[j+1].msg;
-	    pending[j].msgclass = pending[j+1].msgclass;
-	    pending[j].time = pending[j+1].time;
-	    }
-	}
-    else {
+
 	delete pending[nr].msg;
-	pending[nr].time = 0;
-	pending[nr].msgclass = 0;
-	}
-    pending.resize(pending.size()-1);
+	pending.remove(pending.at(nr));
 
-//    kadu->sortUsers();
-//    kadu->syncUserlist();
+	fprintf(stderr, "KK deletePendingMessage()\n");
 
-    if (ifPendingMessages())
-        dw->setType((char **)gg_msg_xpm);
-    else	
-        dw->setType((char **)gg_xpm[statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]);
+	if (ifPendingMessages())
+		dw->setType((char **)gg_msg_xpm);
+	else	
+		dw->setType((char **)gg_xpm[statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]);
 }
 
 /* zwraca nasz aktualny status 
@@ -303,11 +288,11 @@ bool ifPendingMessages(int uin) {
     
     switch (uin) {
 	case -1:
-	    pendings = pending.size();
+	    pendings = pending.count();
 	    break;
 	default:
 	    for (i = 0; i < pending.size(); i++)
-    		if ((*pending[i].uins)[0] == uin)
+    		if (pending[i].uins[0] == uin)
 		    pendings = true;
 	}
     return pendings;
@@ -719,21 +704,17 @@ void Kadu::autoAway(void) {
 	autoaway->start(config.autoawaytime * 1000, TRUE);
 }
 
-int Kadu::openChat(QArray<uin_t> senders) {
+int Kadu::openChat(UinsList senders) {
 	int i,j;
-	QArray<uin_t> uins;
+	UinsList uins;
 
 	i = 0;
-	while (i < chats.size() && (*chats[i].uins) != senders)
+	while (i < chats.count() && chats[i].uins != senders)
 		i++;
 
-	if (i == chats.size()) {
-//        j = 0;
-//	while (j < userlist.size() && userlist[j].uin != uin)
-//	    j++;
+	if (i == chats.count()) {
 		Chat *chat;
-		uins.duplicate(senders);
-//	uins[0] = userlist[j].uin;
+		uins = senders;
 		chat = new Chat(uins, 0);
 		chat->show();
 		}
@@ -743,7 +724,7 @@ int Kadu::openChat(QArray<uin_t> senders) {
 		}
 
 	i = 0;
-	while (i < chats.size() && (*chats[i].uins) != senders)
+	while (i < chats.count() && chats[i].uins != senders)
 		i++;
 
 	return i;
@@ -755,7 +736,7 @@ void Kadu::commandParser (int command) {
 	char buf1[255];
 	uin_t uin;
 	SearchDialog *sd;
-	QArray<uin_t> uins;
+	UinsList uins;
 	UserListElement user;
 	QString tmp;
 		
@@ -767,8 +748,7 @@ void Kadu::commandParser (int command) {
 			break;
 		case 2:
 			uin = userlist.byAltNick(userbox->currentText()).uin;
-			uins.resize(1);
-			uins[0] = uin;
+			uins.append(uin);
 			openChat(uins);
 			break;
 		case 3:
@@ -952,14 +932,15 @@ void Kadu::sendMessage(QListBoxItem *item) {
 	bool stop = false;
 	rMessage *rmsg;
 	Message *msg;
-    
+
 	uin_t uin = userlist.byAltNick(item->text()).uin;
-	for (i = 0; i < pending.size(); i++)
-		if ((*pending[i].uins)[0] == uin)
+	for (i = 0; i < pending.count(); i++)
+		if (pending[i].uins[0] == uin)
 			if (pending[i].msgclass == GG_CLASS_CHAT) {
-				j = openChat(*pending[i].uins);
-				chats[j].ptr->checkPresence(*pending[i].uins, pending[i].msg, pending[i].time);	    
+				j = openChat(pending[i].uins);
+				chats[j].ptr->checkPresence(pending[i].uins, pending[i].msg, pending[i].time);	    
 				deletePendingMessage(i);
+				fprintf(stderr, "KK Kadu::sendMessage(): j=%d\n", j);
 				i--;
 				stop = true;
 				}
@@ -977,8 +958,8 @@ void Kadu::sendMessage(QListBoxItem *item) {
 		}
 
 	if (GetStatusFromUserlist(uin) != GG_STATUS_NOT_AVAIL && GetStatusFromUserlist(uin) != GG_STATUS_NOT_AVAIL_DESCR) {
-		QArray<uin_t> uins(1);
-		uins[0] = uin;
+		UinsList uins;
+		uins.append(uin);
 		openChat(uins);
 		}	
 	else {
@@ -1364,18 +1345,15 @@ void Kadu::eventHandler(int state) {
 			dcc->initializeNotifiers();
 			}
 		else {
-			QArray<uin_t> uins;
+			UinsList uins;
 			fprintf(stderr, "KK eventHandler(): %d\n", e->event.msg.recipients_count);
 			if (e->event.msg.msgclass == GG_CLASS_CHAT) {
-				uins.resize(e->event.msg.recipients_count + 1);
-				uins[0] = e->event.msg.sender;
-				for (i = 1; i < e->event.msg.recipients_count + 1; i++)
-					uins[i] = e->event.msg.recipients[i - 1];
+				uins.append(e->event.msg.sender);	
+				for (i = 0; i < e->event.msg.recipients_count; i++)
+					uins.append(e->event.msg.recipients[i]);
 				}
-			else {
-				uins.resize(1);
-				uins[0] = e->event.msg.sender;
-				}
+			else
+				uins.append(e->event.msg.sender);
 			eventRecvMsg(e->event.msg.msgclass, uins, e->event.msg.message, e->event.msg.time, 0, NULL);
 			}
 		}
@@ -1527,7 +1505,7 @@ void Kadu::disconnectNetwork() {
 		}
 
 	i = 0;
-	while (i < chats.size()) {
+	while (i < chats.count()) {
 		chats[i].ptr->setTitle();
 		i++;
 		}
@@ -1579,12 +1557,12 @@ void DockWidget::mousePressEvent(QMouseEvent * e) {
 		bool stop = false;
 	
 		uin_t uin = 0;
-		for (i = 0; i < pending.size(); i++) {
-			if (!uin || (*pending[i].uins)[0] == uin)
+		for (i = 0; i < pending.count(); i++) {
+			if (!uin || pending[i].uins[0] == uin)
 				if (pending[i].msgclass == GG_CLASS_CHAT) {
-					uin = (*pending[i].uins)[0];
-					j = kadu->openChat(*pending[i].uins);
-					chats[j].ptr->checkPresence(*pending[i].uins,
+					uin = pending[i].uins[0];
+					j = kadu->openChat(pending[i].uins);
+					chats[j].ptr->checkPresence(pending[i].uins,
 						pending[i].msg, pending[i].time);	    
 					deletePendingMessage(i);
 					i--;
@@ -1594,7 +1572,7 @@ void DockWidget::mousePressEvent(QMouseEvent * e) {
 					if (!stop) {
 						rMessage *rmsg;
 						rmsg = new rMessage(
-							userlist.byUin((*pending[i].uins)[0]).altnick, i);
+							userlist.byUin(pending[i].uins[0]).altnick, i);
 						rmsg->show();
 						}
 					return;

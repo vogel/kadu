@@ -35,14 +35,15 @@
 #include <qarray.h>
 #include "userlist.h"
 #include "userbox.h"
+#include "misc.h"
 
 #define GG_STATUS_INVISIBLE2 0x0009 /* g³upy... */
 
 #define __c2q(__char_pointer__) QString::fromLocal8Bit(__char_pointer__)
 
 struct pending {
-    QArray<uin_t> *uins;
-    QString * msg;
+    UinsList uins;
+    QString *msg;
     int msgclass;
     time_t time;
 };
@@ -179,7 +180,7 @@ class Kadu : public QWidget
 		void setStatus(int);
 		void disconnectNetwork(void);
 		void changeGroup(int);
-		int openChat(QArray<uin_t>);
+		int openChat(UinsList);
 	
 	private:
 		KMenuBar *mmb;
@@ -262,7 +263,7 @@ class MyLabel : public QLabel {
 class Chat;
 
 struct chats {
-    QArray<uin_t> *uins;
+    UinsList uins;
     Chat *ptr;
 };
 
@@ -273,10 +274,10 @@ extern KApplication *a;
 extern Kadu *kadu;
 extern struct gg_session sess;
 extern struct config config;
-extern QArray<chats> chats;
+extern QValueList<struct chats> chats;
 extern UserList userlist;
 extern QArray<uin_t> ignored;
-extern QArray<pending> pending;
+extern QValueList<struct pending> pending;
 extern QArray<groups> grouplist;
 extern DockWidget *dw;
 extern bool mute;

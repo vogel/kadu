@@ -23,6 +23,7 @@
 #include <kiconloader.h>
 
 //
+#include "misc.h"
 #include "kadu.h"
 #include "pixmaps.h"
 #include "message.h"
@@ -78,7 +79,7 @@ rMessage::rMessage(const QString & nick, int i, QDialog* parent , const char *na
 			tchat = true;
 			}
 		else
-			if ((*pending[i].uins)[0] == config.uin)
+			if (pending[i].uins[0] == config.uin)
 				msgclasse->setText(i18n("System"));
 			else
 				if (pending[i].msgclass == GG_CLASS_OFFLINE)
@@ -148,7 +149,10 @@ void rMessage::cleanUp(void) {
 /* let's chat some more */
 void rMessage::openChat(void) {
 	QString tmp = __c2q(tmprcvr);    
-	kadu->openChat(userlist.byAltNick(tmp).uin);
+	UinsList uins;
+
+	uins.append(userlist.byAltNick(tmp).uin);
+	kadu->openChat(uins);
 	close(true);
 }
 

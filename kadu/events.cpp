@@ -44,12 +44,13 @@
 #include "chat.h"
 #include "message.h"
 #include "history.h"
+#include "misc.h"
 
 void sigchldHndl (int whatever) {
 	while ((wait3(NULL, WNOHANG, NULL)) > 0);
 }
 
-void eventRecvMsg(int msgclass, QArray<uin_t> senders, unsigned char * msg, time_t time,int formats_count=0,struct gg_msg_format * formats=NULL) {
+void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t time,int formats_count=0,struct gg_msg_format * formats=NULL) {
 	QString tmp;
 
 	fprintf(stderr, "KK eventRecvMsg()\n");
@@ -81,10 +82,10 @@ void eventRecvMsg(int msgclass, QArray<uin_t> senders, unsigned char * msg, time
 
 	int i; bool yup = false;
 	i = 0;
-	while (i < chats.size() && (*chats[i].uins) != senders)
+	while (i < chats.count() && chats[i].uins != senders)
 		i++;
 
-	if (msgclass == GG_CLASS_CHAT && i < chats.size()) {
+	if (msgclass == GG_CLASS_CHAT && i < chats.count()) {
 		tmp = __c2q((const char *)msg);
 		chats[i].ptr->checkPresence(senders, &tmp, time);
 		chats[i].ptr->playChatSound();
@@ -94,22 +95,20 @@ void eventRecvMsg(int msgclass, QArray<uin_t> senders, unsigned char * msg, time
 
 	playSound(config.soundmsg);
 
-	for (i = 0; i < pending.size(); i++)
-		if (!pending[i].uins->size())
+	for (i = 0; i < pending.count(); i++)
+		if (!pending[i].uins.count())
 			break;
 
-	if (i == pending.size()) {
-		pending.resize(pending.size() + 1);
+	if (i == pending.count())
 		fprintf(stderr, "KK eventRecvMsg(): New buffer size: %d\n",pending.size());
-		i = pending.size()-1;
-		}
 
-	pending[i].uins = new QArray<uin_t>;
-	pending[i].uins->duplicate(senders);
-	pending[i].msgclass = msgclass;
-	pending[i].msg = new QString;
-	pending[i].msg->append(__c2q((const char *)msg));
-	pending[i].time = time;
+	struct pending pend;
+	pend.uins = senders;
+	pend.msgclass = msgclass;
+	pend.msg = new QString;
+	pend.msg->append(__c2q((const char *)msg));
+	pend.time = time;
+	pending.append(pend);
 
 	fprintf(stderr, "KK eventRecvMsg(): Message allocated to slot %d\n", i);
 	fprintf(stderr, "KK eventRecvMsg(): Got message from %d (%s) saying \"%s\"\n",
@@ -177,8 +176,8 @@ void ChangeUserStatus(uin_t uin, unsigned int new_status) {
 	for (int i = 0; i < num; i++) {
 		tmpstr = kadu->userbox->text(i);
 	
-		for (int j = 0; j < pending.size(); j++)
-			if ((*pending[j].uins)[0] == uin)
+		for (int j = 0; j < pending.count(); j++)
+			if (pending[j].uins[0] == uin)
 				return;
 
 	if (!tmpstr.compare(userlist.byUin(uin).altnick)) {
@@ -280,7 +279,7 @@ void eventGotUserlist(struct gg_event * e) {
 				user.status = GG_STATUS_NOT_AVAIL;
 
 		for (i = 0; i < chats.count(); i++)
-			if ((*chats[i].uins).contains(n->uin))
+			if (chats[i].uins.contains(n->uin))
 				chats[i].ptr->setTitle();
 
 		ifNotify(n->uin, n->status, oldstatus);
@@ -335,7 +334,7 @@ void eventGotUserlistWithDescription(struct gg_event *e) {
 						fprintf(stderr, "KK eventGotUserlistWithDescription(): User %d went invisible with descr.\n", n->uin);
 
 		for (i = 0; i < chats.count(); i++)
-			if ((*chats[i].uins).contains(n->uin))
+			if (chats[i].uins.contains(n->uin))
 				chats[i].ptr->setTitle();
 
 		ifNotify(n->uin, n->status, oldstatus);
@@ -376,7 +375,7 @@ void eventStatusChange(struct gg_event * e) {
 		}
 
 	for (i = 0; i < chats.count(); i++)
-		if ((*chats[i].uins).contains(e->event.status.uin))
+		if (chats[i].uins.contains(e->event.status.uin))
 			chats[i].ptr->setTitle();
 
 	ifNotify(e->event.status.uin, e->event.status.status, oldstatus);
@@ -395,11 +394,11 @@ void ackHandler(int seq) {
 			else {
 				acks[i].ack--;
 				j = 0;
-				while (j < chats.size() && chats[j].ptr != acks[i].ptr)
+				while (j < chats.count() && chats[j].ptr != acks[i].ptr)
 					j++;		
 				if (j < chats.size() && !acks[i].ack)
 					((Chat *)acks[i].ptr)->writeMyMessage();
-				if (j == chats.size() || !acks[i].ack) {
+				if (j == chats.count() || !acks[i].ack) {
 					for (k = i + 1; k < acks.size(); k++) {
 						acks[i-1].seq = acks[i].seq;
 						acks[i-1].type = acks[i].type;

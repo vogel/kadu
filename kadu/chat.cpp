@@ -1,4 +1,4 @@
-/***************************************************************************
+/**************OC*************************************************************
                           chat.cpp  -  description
                              -------------------
     begin                : Sat Sep 8 2001
@@ -30,22 +30,19 @@
 #include "chat.h"
 #include "search.h"
 #include "history.h"
+#include "misc.h"
 //
 
-Chat::Chat(QArray<uin_t> _uins, QDialog *parent) : QDialog (parent) {
+Chat::Chat(UinsList uins, QDialog *parent) : QDialog (parent), uins(uins) {
 	int i;
+	struct chats chat;
 
-	uins.duplicate(_uins);
 	setWFlags(Qt::WDestructiveClose);
 	iconsel_ptr = NULL;
 	autosend_enabled = false;
 
 	/* register us in the chats registry... */
-	chats.resize(chats.size() + 1);
-	i = chats.size() - 1;
-	chats[i].uins = new QArray<uin_t>;
-	chats[i].uins->duplicate(_uins);
-	chats[i].ptr = this;
+	chats.append(chat);
 	index = i;
 
 	resize(400,400);
@@ -140,12 +137,8 @@ Chat::Chat(QArray<uin_t> _uins, QDialog *parent) : QDialog (parent) {
 
 Chat::~Chat() {
 	int i,j;
-	for (i = index + 1; i < chats.size(); i++) {
-		chats[i-1].uins->duplicate(*chats[i].uins);
-		chats[i-1].ptr = chats[i].ptr;
-		}
-	delete chats[chats.size()-1].uins;	
-	chats.resize(chats.size() - 1);	
+	chats.remove(chats.at(index));
+
 	i = 0;
 	while (i < acks.size() && acks[i].ptr != this)
 		i++;
@@ -308,7 +301,7 @@ void Chat::timerReset(void) {
 }	
 
 /* invoked from outside when new message arrives, this is the window to the world */
-int Chat::checkPresence(QArray<uin_t> senders, QString *msg, time_t time) {
+int Chat::checkPresence(UinsList senders, QString *msg, time_t time) {
 	kadu->autoaway->stop();
 	kadu->autoaway->start(config.autoawaytime * 1000, TRUE);
 
@@ -384,7 +377,7 @@ void Chat::addMyMessageToHistory() {
 
 	uin = uins[0];
 	if (config.logmessages)
-	appendHistory(uin, (unsigned char *)utmp, true);
+		appendHistory(uin, (unsigned char *)utmp, true);
 }
 
 /* sends the message typed */
@@ -414,12 +407,12 @@ void Chat::sendMessage(void) {
 	acks.resize(acks.size() + 1);
 	i = acks.size() - 1;
 	uin_t users[32];
-	if (uins.size() > 1) {
-		for (j = 0; j < uins.size(); j++)
+	if (uins.count() > 1) {
+		for (j = 0; j < uins.count(); j++)
 			users[j] = uins[j];
 		acks[i].seq = gg_send_message_to_users(&sess, GG_CLASS_CHAT,
-			uins.size(), users, (unsigned char *)utmp);    
-		acks[i].ack = uins.size();
+			uins.count(), users, (unsigned char *)utmp);    
+		acks[i].ack = uins.count();
 		}
 	else {
 		acks[i].seq = gg_send_message(&sess, GG_CLASS_CHAT, uins[0], (unsigned char *)utmp);
