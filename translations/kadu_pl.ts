@@ -909,8 +909,8 @@ Hasła  muszą być identyczne w obu polach!</translation>
     <message>
         <source>This will show a long URL as http://www.start...end.com/
 to protect the chat window from a mess</source>
-        <translation>Bedzie pokazywać długie adresy URL jako http://www.start..end.com/
-zabezpieczając format okna rozmowy przed deformacją</translation>
+        <translation>Będzie pokazywać długie adresy URL jako http://www.start...end.com/
+aby uchronić okno rozmowy przed bałaganem</translation>
     </message>
 </context>
 <context>
@@ -1568,7 +1568,8 @@ Twoje hasło jest nieprawidłowe!!!</translation>
     </message>
     <message>
         <source>Connection timeout!</source>
-        <translation>Połączenie przerwane!</translation>
+        <translation>
+Przekroczenie czasu połączenia!</translation>
     </message>
 </context>
 <context>
