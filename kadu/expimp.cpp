@@ -23,6 +23,7 @@
 #include <kiconloader.h>
 #include <qmessagebox.h>
 #include <qregexp.h>
+#include <stdlib.h>
 
 #include "kadu.h"
 #include "expimp.h"

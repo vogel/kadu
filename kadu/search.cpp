@@ -22,6 +22,7 @@
 #include <qlayout.h>
 #include <klocale.h>
 #include <qhbuttongroup.h>
+#include <stdlib.h>
 
 //
 #include "kadu.h"

@@ -33,6 +33,7 @@
 #include <qlayout.h>
 #include <klocale.h>
 #include <qfile.h>
+#include <time.h>
 
 //
 #include "kadu.h"

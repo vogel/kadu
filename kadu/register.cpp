@@ -25,6 +25,7 @@
 #include <pwd.h>
 #include <errno.h>
 #include <kconfig.h>
+#include <stdlib.h>
 
 // to mam nadzieje kiedys usuniemy
 #include "kadu.h"

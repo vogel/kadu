@@ -20,6 +20,7 @@
 #include <qlayout.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <stdlib.h>
 
 //
 #include "kadu.h"
