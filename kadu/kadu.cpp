@@ -81,7 +81,8 @@
 #include <sys/time.h>
 #include <time.h>
 #include <iostream>
-#include <net/route.h>
+// #include <net/route.h>
+#define RTF_GATEWAY 0x2
 
 #include <pthread.h>
 #include <ctype.h>
@@ -531,7 +532,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	/* connect userlist modified signal */
 	connect(&userlist,SIGNAL(modified()),this,SLOT(userListModified()));
-		
+
 	/* initialize and configure userbox */
 	userbox = new UserBox(centralFrame, "userbox");
 	userbox->setPaletteBackgroundColor(QColor(config.colors.userboxBgR,config.colors.userboxBgG,config.colors.userboxBgB));
@@ -540,7 +541,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	/* add all users to userbox */
 	setActiveGroup("");
-	
+
 	/* start auto away. yes, even if it's disabled. this way enabling it will work at run-time */
 	autoaway = new QTimer(this);
 	autoaway->start(config.autoawaytime * 1000, TRUE);
@@ -575,13 +576,13 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	dockppm->insertItem(loader->loadIcon("exit",KIcon::Small), i18n("&Exit Kadu"), 9);
 	connect(dockppm, SIGNAL(activated(int)), dw, SLOT(dockletChange(int)));
-	
-	QGridLayout * grid = new QGridLayout(centralFrame, 4, 3);
-	grid->setMenuBar(mmb);
-	grid->addMultiCellWidget(group_bar,1,1,0,2);
-	grid->addMultiCellWidget(userbox,2,2,0,2);
-	grid->addWidget(statuslabeltxt,3,0,Qt::AlignLeft);
-	grid->addWidget(statuslabel,3,2,Qt::AlignCenter);
+
+	QGridLayout * grid = new QGridLayout(centralFrame, 3, 3);
+	//grid->setMenuBar(mmb);
+	grid->addMultiCellWidget(group_bar,0,0,0,2);
+	grid->addMultiCellWidget(userbox,1,1,0,2);
+	grid->addWidget(statuslabeltxt,2,0,Qt::AlignLeft);
+	grid->addWidget(statuslabel,2,2,Qt::AlignCenter);
 	grid->setColStretch(0, 3);
 	grid->setColStretch(1, 1);
 	grid->setColStretch(2, 1);
