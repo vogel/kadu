@@ -114,31 +114,34 @@ OSSPlayerSlots::~OSSPlayerSlots()
 void OSSPlayerSlots::openDevice(int sample_rate, int channels, SoundDevice& device)
 {
 	kdebugf();
+	int maxbufsize = 0, caps = 0, value;
 	device = NULL;
 
-	QString sdev=config_file.readEntry("Sounds","OutputDevice", "/dev/dsp");
+	QString sdev = config_file.readEntry("Sounds","OutputDevice", "/dev/dsp");
 	kdebugm(KDEBUG_INFO, "Opening %s\n", sdev.local8Bit().data());
 
 	int fd = open(sdev.local8Bit().data(), O_RDWR);
 	if (fd<0)
 	{
-		kdebugm(KDEBUG_ERROR, "Error opening device\n");
+		kdebugm(KDEBUG_ERROR, "Error opening device (%s, %d)\n", strerror(errno), errno);
 		return;
 	}
 
 	kdebugm(KDEBUG_INFO, "Resetting\n");
-	if (ioctl(fd, SNDCTL_DSP_RESET)<0)
+	if (ioctl(fd, SNDCTL_DSP_RESET, 0)<0)
 	{
-		kdebugm(KDEBUG_ERROR, "Error resetting\n");
+		kdebugm(KDEBUG_ERROR, "Error resetting (%s, %d)\n", strerror(errno), errno);
 		close(fd);
 		return;
 	}
 
-	kdebugm(KDEBUG_INFO, "Setting speed\n");
-	int value = sample_rate;
-	if(ioctl(fd, SNDCTL_DSP_SPEED, &value)<0)
+	//UWAGA: parametry FORMAT, CHANNELS i SPEED musz± byæ ustawianie w takiej
+	//kolejno¶ci ze wzglêdu na kompatybilno¶æ z niektórymi (starymi) kartami
+	kdebugm(KDEBUG_INFO, "Setting format\n");
+	value = AFMT_S16_LE;
+	if(ioctl(fd, SNDCTL_DSP_SETFMT, &value)<0)
 	{
-		kdebugm(KDEBUG_ERROR, "Error setting speed\n");
+		kdebugm(KDEBUG_ERROR, "Error setting format (%s, %d)\n", strerror(errno), errno);
 		close(fd);
 		return;
 	}
@@ -147,32 +150,32 @@ void OSSPlayerSlots::openDevice(int sample_rate, int channels, SoundDevice& devi
 	value = channels;
 	if(ioctl(fd, SNDCTL_DSP_CHANNELS, &value)<0)
 	{
-		kdebugm(KDEBUG_ERROR, "Error setting channels\n");
+		kdebugm(KDEBUG_ERROR, "Error setting channels (%s, %d)\n", strerror(errno), errno);
 		close(fd);
 		return;
 	}
 
-	kdebugm(KDEBUG_INFO, "Setting format\n");
-	value = AFMT_S16_LE;
-	if(ioctl(fd, SNDCTL_DSP_SETFMT, &value)<0)
+	kdebugm(KDEBUG_INFO, "Setting speed\n");
+	value = sample_rate;
+	if(ioctl(fd, SNDCTL_DSP_SPEED, &value)<0)
 	{
-		kdebugm(KDEBUG_ERROR, "Error setting format\n");
+		kdebugm(KDEBUG_ERROR, "Error setting speed (%s, %d)\n", strerror(errno), errno);
 		close(fd);
 		return;
 	}
 
-	int maxbufsize;
+	kdebugm(KDEBUG_INFO, "getting buffer size\n");
 	if (ioctl(fd, SNDCTL_DSP_GETBLKSIZE, &maxbufsize)<0)
 	{
-		kdebugm(KDEBUG_ERROR, "Error getting max buffer size\n");
+		kdebugm(KDEBUG_ERROR, "Error getting max buffer size (%s, %d)\n", strerror(errno), errno);
 		close(fd);
 		return;
 	}
 
-	int caps;
+	kdebugm(KDEBUG_INFO, "checking capabilities\n");
 	if (ioctl(fd, SNDCTL_DSP_GETCAPS, &caps)<0)
 	{
-		kdebugm(KDEBUG_ERROR, "Error getting capabilities\n");
+		kdebugm(KDEBUG_ERROR, "Error getting capabilities (%s, %d)\n", strerror(errno), errno);
 		close(fd);
 		return;
 	}
@@ -193,6 +196,7 @@ void OSSPlayerSlots::openDevice(int sample_rate, int channels, SoundDevice& devi
 	dev->max_buf_size = maxbufsize;
 	dev->sample_rate = sample_rate;
 	dev->channels = channels;
+	dev->flushing = false;
 	device = (SoundDevice) dev;
 }
 
@@ -233,7 +237,7 @@ void OSSPlayerSlots::playSample(SoundDevice device, const int16_t* data, int len
 		// czekaj na zakoñczenie odtwarzania
 		if (ioctl(dev->fd, SNDCTL_DSP_SYNC, 0) < 0)
 		{
-			kdebugm(KDEBUG_ERROR, "SNDCTL_DSP_SYNC error\n");
+			kdebugm(KDEBUG_ERROR, "SNDCTL_DSP_SYNC error (%s, %d)\n", strerror(errno), errno);
 			result = false;	
 		}
 	}
