@@ -11,6 +11,7 @@
 #include <qpushbutton.h>
 #include <qhbuttongroup.h>
 #include <qlayout.h>
+#include <qregexp.h>
 #include <kicontheme.h>
 #include <qaccel.h>
 #include <kiconloader.h>
@@ -268,6 +269,8 @@ void Message::commitSend(void) {
 	if ((text.compare("") == 0) || (text.compare(" ") == 0))
 		return;
 
+	// zmieniamy unixowe \n na windowsowe \r\n
+	text.replace(QRegExp("\n"), "\r\n");
 	QCString tmp(text.local8Bit());
 	unsigned char *utmp = (unsigned char *) tmp.data();	
 

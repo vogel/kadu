@@ -255,6 +255,8 @@ QString Chat::convertCharacters(QString edit) {
 	// przywracamy http://
 	edit.replace(QRegExp("___dupabiskupa___"),"http://");
 	
+	// zmieniamy windowsowe \r\n na unixowe \n
+	edit.replace( QRegExp("\r\n"), "\n" );
 	edit.replace( QRegExp("<"), "&lt;" );
 	edit.replace( QRegExp(">"), "&gt;" );
 	edit.replace( QRegExp("__escaped_lt__"), "<");
@@ -421,6 +423,8 @@ void Chat::sendMessage(void) {
 		}
 
 	addMyMessageToHistory();
+	// zmieniamy unixowe \n na windowsowe \r\n
+	myLastMessage.replace(QRegExp("\n"), "\r\n");
 			
 	QCString tmp(myLastMessage.local8Bit());
 	unsigned char *utmp = (unsigned char *) tmp.data();
