@@ -99,6 +99,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * wydzielenie dokowania dla WindowMakera do oddzielnego modu³u (joi)
 * drugi patch porz±dkuj±cy vogela: szukanie i (wy)rejestrowanie (adrian)
 * patch kida - blokada wysy³ania pustych wiadomo¶ci (adrian)
+* Instalator - dodano wybór nowych modu³ów (Ron_K)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

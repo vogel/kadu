@@ -18,7 +18,7 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 #!/bin/bash
-# $Id: Instaluj,v 1.30 2004/04/22 12:41:35 joi Exp $
+# $Id: Instaluj,v 1.31 2004/05/04 22:17:51 romek Exp $
 # KaduInstaller - Copyright (C) 2004 Sad Mephisto <sad@antisocial.com>
 
 export LC_ALL=pl_PL
@@ -52,8 +52,8 @@ odinstaluj()
 wybierzmoduly()
 {
 	CONFIGMENUCHOICE=`dialog --stdout --backtitle "Instalator Kadu" --menu "Menu konfiguracji" 10 75 4 \
-	Statyczne	"Moduly beda kompilowane statycznie" \
-	Dynamiczne	"Moduly beda kompilowane dynamicznie" \
+	Statyczne	"Modu³y bêda kompilowane statycznie" \
+	Dynamiczne	"Modu³y bêda kompilowane dynamicznie" \
 	Wróæ		"Powrót do menu g³ównego"`
 	
 	if [ $CONFIGMENUCHOICE == "Statyczne" ]; then
@@ -63,7 +63,7 @@ wybierzmoduly()
 	elif [ $CONFIGMENUCHOICE == "Wróæ" ]; then
 		mainmenu
 	fi;
-	
+
 }
 
 statyczne()
@@ -71,21 +71,27 @@ statyczne()
 	rm -fr log_selectedmodule
 	dialog --separate-output --checklist "Wybierz modu³y do zainstalowania" 0 75 0 \
     		encryption "Obs³uga szyfrowania SSL" on \
-    		speech "Obs³uga syntezatora mowy" 0 \
-    		sound "Ogolne wsparcie dla d¼wiêku" on \
-    		ext_sound "Obs³uga zewnêtrznego programu obs³ugujacego d¼wiêk" on \
+		docking "Modu³ obs³ugi ikony w tray'u" on \
+		x11_docking "Modu³ dokuj±cy ikonê w tray'u u¿ywaj±cy XLib" on \
+		wmaker_docking "Obs³uga dokowania ikony dla WindowMakera" 0 \
+    		speech "Obs³uga syntezatora mowy" on \
+    		sound "Ogólne wsparcie dla d¼wiêku" on \
+    		ext_sound "Obs³uga d¿wiêku przez zewnêtrzny program" on \
     		dsp_sound "Wsparcie DSP dla d¼wiêku" 0 \
-    		arts_sound "Wsparcie aRts! dla d¼wiêku" 0 \
+    		arts_sound "Wsparcie aRts! dla d¼wiêku" on \
     		esd_sound "Wsparcie ESD dla d¼wiêku" 0 \
     		nas_sound "Wsparcie Network Audio System dla d¼wiêku" 0 \
-		sms "Obs³uga wsys³ania SMS" on \
-		default_sms "Obs³uga standardowych bramek SMS" on \
-    		"echo" "Przyk³adowy modu³ Echo" 0 \
+    		echo "Przyk³adowy modu³ Echo" 0 \
 		autoaway "Obs³uga automatycznej zmiany statusu" on \
-    		autoresponder "Przyk³adowy modu³ Autoresponder" 0 2>log_selectedmodule
+    		autoresponder "Modu³ Autoodpowiedzi" on \
+		voice "Rozmowy g³osowe" on \
+		sms "Wsparcie dla SMS" on \
+		default_sms "Domy¶lne bramki SMS (Plus,Era,Idea)" on \
+		tcl_scripting "Modu³ TCL" 0 \
+		xmms "Modu³ XMMS" 0  2>log_selectedmodule
 
 		rm -f .config
-	MODULY="encryption speech sound ext_sound dsp_sound arts_sound esd_sound nas_sound echo autoresponder sms default_sms autoaway"
+	MODULY="encryption docking x11_docking wmaker_docking speech sound ext_sound dsp_sound arts_sound esd_sound nas_sound echo autoaway autoresponder voice sms default_sms tcl_scripting xmms"
 	for MODUL in $MODULY; do
 		if [[ `cat log_selectedmodule |grep $MODUL` != "" ]]; then
 			echo "module_$MODUL=y" >> .config
@@ -99,20 +105,27 @@ dynamiczne()
 	rm -fr log_selectedmodule
 	dialog --separate-output --checklist "Wybierz modu³y do zainstalowania" 0 75 0 \
     		encryption "Obs³uga szyfrowania SSL" on \
-    		speech "Obs³uga syntezatora mowy" 0 \
-    		sound "Ogolne wsparcie dla d¼wiêku" on \
-    		ext_sound "Obs³uga zewnêtrznego programu obs³ugujacego d¼wiêk" on \
+		docking "Modu³ obs³ugi ikony w tray'u" on \
+		x11_docking "Modu³ dokuj±cy ikonê w tray'u u¿ywaj±cy XLib" on \
+		wmaker_docking "Obs³uga dokowania ikony dla WindowMakera" 0 \
+    		speech "Obs³uga syntezatora mowy" on \
+    		sound "Ogólne wsparcie dla d¼wiêku" on \
+    		ext_sound "Obs³uga d¿wiêku przez zewnêtrzny program" on \
     		dsp_sound "Wsparcie DSP dla d¼wiêku" 0 \
-    		arts_sound "Wsparcie aRts! dla d¼wiêku" 0 \
+    		arts_sound "Wsparcie aRts! dla d¼wiêku" on \
     		esd_sound "Wsparcie ESD dla d¼wiêku" 0 \
     		nas_sound "Wsparcie Network Audio System dla d¼wiêku" 0 \
-		sms "Obs³uga wsys³ania SMS" on \
-		default_sms "Obs³uga standardowych bramek SMS" on \
-    		"echo" "Przyk³adowy modu³ Echo" 0 \
+    		echo "Przyk³adowy modu³ Echo" 0 \
 		autoaway "Obs³uga automatycznej zmiany statusu" on \
-    		autoresponder "Przyk³adowy modu³ Autoresponder" 0 2>log_selectedmodule
-	rm -f .config
-	MODULY="encryption speech sound ext_sound dsp_sound arts_sound esd_sound nas_sound echo autoresponder sms default_sms autoaway"
+    		autoresponder "Modu³ Autoodpowiedzi" on \
+		voice "Rozmowy g³osowe" on \
+		sms "Wsparcie dla SMS" on \
+		default_sms "Domy¶lne bramki SMS (Plus.Era,Idea)" on \
+		tcl_scripting "Modu³ TCL" 0 \
+		xmms "Modu³ XMMS" 0  2>log_selectedmodule
+
+		rm -f .config
+	MODULY="encryption docking x11_docking wmaker_docking speech sound ext_sound dsp_sound arts_sound esd_sound nas_sound echo autoaway autoresponder voice sms default_sms tcl_scripting xmms"
 	for MODUL in $MODULY; do
 		if [[ `cat log_selectedmodule |grep $MODUL` != "" ]]; then
 			echo "module_$MODUL=m" >> .config
@@ -129,7 +142,7 @@ dodatkoweopcje()
 	dialog --separate-output --checklist "Wybierz modu³y do zainstalowania" 0 75 0 \
     		--enable-debug 	"W³±cza tryb debug" 0 \
     		--disable-modules	"Wy³±cza obs³ugê modu³ów" 0 \
-		--disable-voice		"Wy³±cza obs³ugê rozmów g³osowych" 0 \
+#		--disable-voice		"Wy³±cza obs³ugê rozmów g³osowych" 0 \
 		--with-existing-libgadu "Linkuje z istniej±cym libgadu" 0 \
     		 2>log_configureoptions
 
