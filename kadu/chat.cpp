@@ -406,6 +406,7 @@ void Chat::writeMyMessage() {
 	edit->clear();
 	edit->setReadOnly(false);
 	edit->setEnabled(true);
+	edit->setFocus();
 }
 
 void Chat::addMyMessageToHistory() {
@@ -483,7 +484,7 @@ void Chat::sendMessage(void) {
 	delete users;
 
 	if (sess->check & GG_CHECK_WRITE)
-		kadusnw->setEnabled(true);
+		kadusnw->setEnabled(true);		
 }
 
 /* prunes messages */
