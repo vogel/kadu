@@ -31,6 +31,14 @@
 #include <qvaluelist.h>
 #include <qstringlist.h>
 #include <qmessagebox.h>
+#include <qlayout.h>
+#include <qhbox.h>
+#include <qcheckbox.h>
+#include <qhgroupbox.h>
+#include <qradiobutton.h>
+#include <qvbuttongroup.h>
+#include <qlineedit.h>
+#include <qtooltip.h>
 
 #include <time.h>
 #include <sys/socket.h>
@@ -883,9 +891,9 @@ History::History(UinsList uins): uins(uins) {
 	QPushButton *nextbtn = new QPushButton(this);
 	nextbtn->setPixmap(loadIcon("forward.png"));
 	QPushButton *searchbtn = new QPushButton(this);
-	searchbtn->setText(i18n("&Search"));
+	searchbtn->setText(i18n("&Find"));
 	QPushButton *searchnextbtn = new QPushButton(this);
-	searchnextbtn->setText(i18n("Search &next"));
+	searchnextbtn->setText(i18n("Find &next"));
 
 	grid->addMultiCellWidget(body, 0, 0, 0, 3);
 	grid->addWidget(prevbtn, 1, 0);
@@ -896,6 +904,7 @@ History::History(UinsList uins): uins(uins) {
 
 	connect(prevbtn, SIGNAL(clicked()), this, SLOT(prevBtnClicked()));
 	connect(nextbtn, SIGNAL(clicked()), this, SLOT(nextBtnClicked()));
+	connect(searchbtn, SIGNAL(clicked()), this, SLOT(searchBtnClicked()));
 //	connect(closebtn, SIGNAL(clicked()), this, SLOT(close()));
 
 	resize(500,400);
@@ -997,6 +1006,174 @@ void History::showHistoryEntries(int from, int count) {
 	for (i = 0; i < entries.count(); i++)
 		formatHistoryEntry(text, entries[i]);
 	body->setText(text);
+}
+
+void History::searchBtnClicked() {
+	kdebug("History::searchBtnClicked()\n");
+
+	HistorySearch *hs;
+	hs = new HistorySearch(this, uins);
+	hs->exec();
+	delete hs;
+}
+
+HistorySearch::HistorySearch(QWidget *parent, UinsList uins) : QDialog(parent) {
+	setCaption(i18n("Search history"));
+
+	int i;
+	char buf[128];
+
+	for (i = 0; i <= 59; i++) {
+		sprintf(buf, "%02d", i);
+		numslist.append(QString(buf));
+		}
+	
+	QStringList yearslist;
+	for (i = 2000; i <= 2020; i++)
+		yearslist.append(QString::number(i));
+	QStringList dayslist;
+	for (i = 1; i <= 31; i++)
+		dayslist.append(numslist[i]);
+	QStringList monthslist;
+	for (i = 1; i <= 12; i++)
+		monthslist.append(numslist[i]);
+	QStringList hourslist;
+	for (i = 0; i <= 23; i++)
+		hourslist.append(numslist[i]);
+	QStringList minslist;
+	for (i = 0; i <= 59; i++)
+		minslist.append(numslist[i]);
+	
+	QHBox *from_hb = new QHBox(this);
+	from_chb = new QCheckBox(i18n("&From:") ,from_hb);
+	from_hgb = new QHGroupBox(from_hb);
+	from_day_cob = new QComboBox(from_hgb);
+	from_day_cob->insertStringList(dayslist);
+	QToolTip::add(from_day_cob, i18n("day"));
+	from_month_cob = new QComboBox(from_hgb);
+	from_month_cob->insertStringList(monthslist);
+	QToolTip::add(from_month_cob, i18n("month"));
+	from_year_cob = new QComboBox(from_hgb);
+	from_year_cob->insertStringList(yearslist);
+	QToolTip::add(from_year_cob, i18n("year"));
+	from_hour_cob = new QComboBox(from_hgb);
+	from_hour_cob->insertStringList(hourslist);
+	QToolTip::add(from_hour_cob, i18n("hour"));
+	from_min_cob = new QComboBox(from_hgb);
+	from_min_cob->insertStringList(minslist);
+	QToolTip::add(from_min_cob, i18n("minute"));
+
+	QHBox *to_hb = new QHBox(this);
+	to_chb = new QCheckBox(i18n("&To:") ,to_hb);
+	to_hgb = new QHGroupBox(to_hb);
+	to_day_cob = new QComboBox(to_hgb);
+	to_day_cob->insertStringList(dayslist);
+	QToolTip::add(to_day_cob, i18n("day"));
+	to_month_cob = new QComboBox(to_hgb);
+	to_month_cob->insertStringList(monthslist);
+	QToolTip::add(to_month_cob, i18n("month"));
+	to_year_cob = new QComboBox(to_hgb);
+	to_year_cob->insertStringList(yearslist);
+	QToolTip::add(to_year_cob, i18n("year"));
+	to_hour_cob = new QComboBox(to_hgb);
+	to_hour_cob->insertStringList(hourslist);
+	QToolTip::add(to_hour_cob, i18n("hour"));
+	to_min_cob = new QComboBox(to_hgb);
+	to_min_cob->insertStringList(minslist);
+	QToolTip::add(to_min_cob, i18n("minute"));
+
+	QVButtonGroup *criteria_bg = new QVButtonGroup(i18n("Find Criteria"), this);
+	phrase_rb = new QRadioButton(i18n("&Phrase"), criteria_bg);
+	status_rb = new QRadioButton(i18n("&Status"), criteria_bg);
+	criteria_bg->insert(phrase_rb, 1);
+	criteria_bg->insert(status_rb, 2);
+
+	phrase_hgb = new QHGroupBox(i18n("Phrase"), this);
+	phrase_edit = new QLineEdit(phrase_hgb);
+	status_hgb = new QHGroupBox(i18n("Status"), this);
+	status_cob = new QComboBox(status_hgb);
+	for (i = 0; i < 4; i++)
+		status_cob->insertItem(i18n(statustext[i * 2]));
+
+	reverse_chb = new QCheckBox(i18n("&Reverse find"), this);
+
+	QPushButton *find_btn = new QPushButton(i18n("&Find"), this);
+	QPushButton *reset_btn = new QPushButton(i18n("Reset"), this);
+	QPushButton *cancel_btn = new QPushButton(i18n("&Cancel"), this);
+
+	connect(from_chb, SIGNAL(toggled(bool)), this, SLOT(fromToggled(bool)));
+	connect(from_month_cob, SIGNAL(activated(int)), this, SLOT(correctFromDays(int)));
+	connect(to_chb, SIGNAL(toggled(bool)), this, SLOT(toToggled(bool)));
+	connect(to_month_cob, SIGNAL(activated(int)), this, SLOT(correctToDays(int)));
+	connect(criteria_bg, SIGNAL(clicked(int)), this, SLOT(criteriaChanged(int)));
+	connect(find_btn, SIGNAL(clicked()), this, SLOT(findBtnClicked()));
+	connect(reset_btn, SIGNAL(clicked()), this, SLOT(resetBtnClicked()));
+	connect(cancel_btn, SIGNAL(clicked()), this, SLOT(cancelBtnClicked()));
+
+	QGridLayout *grid = new QGridLayout(this, 6, 4, 5, 5);
+	grid->addMultiCellWidget(from_hb, 0, 0, 0, 3);
+	grid->addMultiCellWidget(to_hb, 1, 1, 0, 3);
+	grid->addMultiCellWidget(criteria_bg, 2, 3, 0, 1);
+	grid->addMultiCellWidget(phrase_hgb, 2, 2, 2, 3);
+	grid->addMultiCellWidget(status_hgb, 3, 3, 2, 3);	
+	grid->addMultiCellWidget(reverse_chb, 4, 4, 0, 3, Qt::AlignLeft);
+	grid->addWidget(find_btn, 5, 1);
+	grid->addWidget(reset_btn, 5, 2);
+	grid->addWidget(cancel_btn, 5, 3);
+
+	phrase_edit->setFocus();
+}
+
+int daysForMonth[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+void HistorySearch::correctFromDays(int index) {
+	if (daysForMonth[index] != from_day_cob->count()) {
+		QStringList dayslist;
+		for (int i = 1; i <= daysForMonth[index]; i++)
+			dayslist.append(numslist[i]);
+		int current_day = from_day_cob->currentItem();
+		from_day_cob->clear();
+		from_day_cob->insertStringList(dayslist);
+		if (current_day <= from_day_cob->count())
+			from_day_cob->setCurrentItem(current_day);
+		}
+}
+
+void HistorySearch::correctToDays(int index) {
+	if (daysForMonth[index] != to_day_cob->count()) {
+		QStringList dayslist;
+		for (int i = 1; i <= daysForMonth[index]; i++)
+			dayslist.append(numslist[i]);
+		int current_day = to_day_cob->currentItem();
+		to_day_cob->clear();
+		to_day_cob->insertStringList(dayslist);
+		if (current_day <= to_day_cob->count())
+			to_day_cob->setCurrentItem(current_day);
+		}
+}
+
+void HistorySearch::fromToggled(bool on) {
+	from_hgb->setEnabled(on);
+}
+
+void HistorySearch::toToggled(bool on) {
+	to_hgb->setEnabled(on);
+}
+
+void HistorySearch::criteriaChanged(int id) {
+	phrase_hgb->setEnabled(id == 1);
+	status_hgb->setEnabled(id != 1);
+}
+
+void HistorySearch::findBtnClicked() {
+	accept();
+}
+
+void HistorySearch::cancelBtnClicked() {
+	reject();
+}
+
+void HistorySearch::resetBtnClicked() {
 }
 
 HistoryManager history;

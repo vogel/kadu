@@ -16,6 +16,11 @@
 #include <qdatetime.h>
 #include <qvaluelist.h>
 #include <qstringlist.h>
+#include <qcombobox.h>
+#include <qcheckbox.h>
+#include <qhgroupbox.h>
+#include <qradiobutton.h>
+#include <qlineedit.h>
 
 #include "libgadu.h"
 #include "misc.h"
@@ -49,6 +54,7 @@ class History : public QDialog {
 	public slots:
 		void prevBtnClicked();
 		void nextBtnClicked();
+		void searchBtnClicked();
 
 	protected:
 		void formatHistoryEntry(QString &text, const HistoryEntry &entry);
@@ -57,6 +63,32 @@ class History : public QDialog {
 		QTextBrowser *body;
 		UinsList uins;
 		int start;
+};
+
+class HistorySearch : public QDialog {
+	Q_OBJECT
+	public:
+		HistorySearch(QWidget *parent, UinsList uins);
+
+	public slots:
+		void correctFromDays(int index);
+		void correctToDays(int index);
+		void fromToggled(bool on);
+		void toToggled(bool on);
+		void criteriaChanged(int id);
+		void findBtnClicked();
+		void cancelBtnClicked();
+		void resetBtnClicked();
+
+	protected:
+		QHGroupBox *from_hgb, *to_hgb, *phrase_hgb, *status_hgb;
+		QCheckBox *from_chb, *to_chb, *reverse_chb;
+		QComboBox *from_day_cob, *from_month_cob, *from_year_cob, *from_hour_cob, *from_min_cob;
+		QComboBox *to_day_cob, *to_month_cob, *to_year_cob, *to_hour_cob, *to_min_cob;
+		QComboBox *status_cob;
+		QLineEdit *phrase_edit;
+		QRadioButton *phrase_rb, *status_rb;
+		QStringList numslist;
 };
 
 class HistoryManager {
