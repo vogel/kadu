@@ -1,4 +1,4 @@
-/* $Id: pubdir50.c,v 1.14 2004/11/01 13:51:45 adrian Exp $ */
+/* $Id: pubdir50.c,v 1.15 2005/01/27 00:34:30 joi Exp $ */
 
 /*
  *  (C) Copyright 2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -40,6 +40,7 @@ gg_pubdir50_t gg_pubdir50_new(int type)
 
 	if (!res) {
 		gg_debug(GG_DEBUG_MISC, "// gg_pubdir50_new() out of memory\n");
+		errno = ENOMEM;
 		return NULL;
 	}
 
@@ -72,6 +73,7 @@ int gg_pubdir50_add_n(gg_pubdir50_t req, int num, const char *field, const char 
 
 	if (!(dupvalue = strdup(value))) {
 		gg_debug(GG_DEBUG_MISC, "// gg_pubdir50_add_n() out of memory\n");
+		errno = ENOMEM;
 		return -1;
 	}
 
@@ -88,6 +90,7 @@ int gg_pubdir50_add_n(gg_pubdir50_t req, int num, const char *field, const char 
 	if (!(dupfield = strdup(field))) {
 		gg_debug(GG_DEBUG_MISC, "// gg_pubdir50_add_n() out of memory\n");
 		free(dupvalue);
+		errno = ENOMEM;
 		return -1;
 	}
 
@@ -95,6 +98,7 @@ int gg_pubdir50_add_n(gg_pubdir50_t req, int num, const char *field, const char 
 		gg_debug(GG_DEBUG_MISC, "// gg_pubdir50_add_n() out of memory\n");
 		free(dupfield);
 		free(dupvalue);
+		errno = ENOMEM;
 		return -1;
 	}
 
@@ -216,6 +220,7 @@ uint32_t gg_pubdir50(struct gg_session *sess, gg_pubdir50_t req)
 
 	if (!(buf = malloc(size))) {
 		gg_debug(GG_DEBUG_MISC, "// gg_pubdir50() out of memory (%d bytes)\n", size);
+		errno = ENOMEM;
 		return 0;
 	}
 
@@ -385,7 +390,7 @@ const char *gg_pubdir50_get(gg_pubdir50_t res, int num, const char *field)
 
 	if (!res || num < 0 || !field) {
 		gg_debug(GG_DEBUG_MISC, "// gg_pubdir50_get() invalid arguments\n");
-		errno = EINVAL;
+		errno = EFAULT;
 		return NULL;
 	}
 

@@ -1,4 +1,4 @@
-/* $Id: events.c,v 1.41 2005/01/06 23:12:13 joi Exp $ */
+/* $Id: events.c,v 1.42 2005/01/27 00:34:29 joi Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -133,7 +133,7 @@ void gg_event_free(struct gg_event *e)
 int gg_image_queue_remove(struct gg_session *s, struct gg_image_queue *q, int freeq)
 {
 	if (!s || !q) {
-		errno = EINVAL;
+		errno = EFAULT;
 		return -1;
 	}
 
@@ -173,7 +173,10 @@ static void gg_image_queue_parse(struct gg_event *e, char *p, int len, struct gg
 	struct gg_image_queue *q, *qq;
 
 	if (!p || !sess || !e)
+	{
+		errno = EFAULT;
 		return;
+	}
 
 	/* znajd¼ dany obrazek w kolejce danej sesji */
 	
@@ -213,6 +216,7 @@ static void gg_image_queue_parse(struct gg_event *e, char *p, int len, struct gg
 
 		if (!(q->filename = strdup(p))) {
 			gg_debug(GG_DEBUG_MISC, "// gg_image_queue_parse() not enough memory for filename\n");
+			errno = ENOMEM;
 			return;
 		}
 
@@ -553,6 +557,7 @@ static int gg_watch_fd_connected(struct gg_session *sess, struct gg_event *e)
 
 			if (!e->event.notify60) {
 				gg_debug(GG_DEBUG_MISC, "// gg_watch_fd_connected() not enough memory for notify data\n");
+				errno = ENOMEM;
 				goto fail;
 			}
 
@@ -577,6 +582,7 @@ static int gg_watch_fd_connected(struct gg_session *sess, struct gg_event *e)
 					if (descr_len < length) {
 						if (!(e->event.notify60[i].descr = malloc(descr_len + 1))) {
 							gg_debug(GG_DEBUG_MISC, "// gg_watch_fd_connected() not enough memory for notify data\n");
+							errno = ENOMEM;
 							goto fail;
 						}
 
@@ -596,6 +602,7 @@ static int gg_watch_fd_connected(struct gg_session *sess, struct gg_event *e)
 				if (!(tmp = realloc(e->event.notify60, (i + 2) * sizeof(*e->event.notify60)))) {
 					gg_debug(GG_DEBUG_MISC, "// gg_watch_fd_connected() not enough memory for notify data\n");
 					free(e->event.notify60);
+					errno = ENOMEM;
 					goto fail;
 				}
 
@@ -717,6 +724,7 @@ static int gg_watch_fd_connected(struct gg_session *sess, struct gg_event *e)
 					gg_debug(GG_DEBUG_MISC, "// gg_watch_fd_connected() not enough memory for userlist reply\n");
 					free(sess->userlist_reply);
 					sess->userlist_reply = NULL;
+					errno = ENOMEM;
 					goto fail;
 				}
 
@@ -767,6 +775,7 @@ struct gg_event *gg_watch_fd(struct gg_session *sess)
 	struct gg_event *e;
 	int res = 0;
 	int port = 0;
+	int errno2;
 
 	gg_debug(GG_DEBUG_FUNCTION, "** gg_watch_fd(%p);\n", sess);
 	
@@ -776,6 +785,7 @@ struct gg_event *gg_watch_fd(struct gg_session *sess)
 	}
 
 	if (!(e = (void*) calloc(1, sizeof(*e)))) {
+		errno = ENOMEM;
 		gg_debug(GG_DEBUG_MISC, "// gg_watch_fd() not enough memory for event data\n");
 		return NULL;
 	}
@@ -793,6 +803,7 @@ struct gg_event *gg_watch_fd(struct gg_session *sess)
 			if (read(sess->fd, &addr, sizeof(addr)) < (signed)sizeof(addr) || addr.s_addr == INADDR_NONE) {
 				gg_debug(GG_DEBUG_MISC, "// gg_watch_fd() resolving failed\n");
 				failed = 1;
+				errno2 = errno;
 			}
 			
 			close(sess->fd);
@@ -810,7 +821,10 @@ struct gg_event *gg_watch_fd(struct gg_session *sess)
 #endif
 
 			if (failed)
+			{
+				errno = errno2;
 				goto fail_resolving;
+			}
 
 			/* je¶li jeste¶my w resolverze i mamy ustawiony port
 			 * proxy, znaczy, ¿e resolvowali¶my proxy. zatem
@@ -925,7 +939,7 @@ struct gg_event *gg_watch_fd(struct gg_session *sess)
 				sess->client_version = NULL;
 			}
 
-    			gg_debug(GG_DEBUG_MISC, "=> -----BEGIN-HTTP-QUERY-----\n%s\n=> -----END-HTTP-QUERY-----\n", buf);
+			gg_debug(GG_DEBUG_MISC, "=> -----BEGIN-HTTP-QUERY-----\n%s\n=> -----END-HTTP-QUERY-----\n", buf);
 	 
 			/* zapytanie jest krótkie, wiêc zawsze zmie¶ci siê
 			 * do bufora gniazda. je¶li write() zwróci mniej,
@@ -1333,7 +1347,9 @@ struct gg_event *gg_watch_fd(struct gg_session *sess)
 				e->type = GG_EVENT_CONN_FAILED;
 				e->event.failure = GG_FAILURE_READING;
 				sess->state = GG_STATE_IDLE;
+				errno2 = errno;
 				close(sess->fd);
+				errno = errno2;
 				sess->fd = -1;
 				break;
 			}
@@ -1400,8 +1416,9 @@ struct gg_event *gg_watch_fd(struct gg_session *sess)
 
 			if (ret == -1) {
 				gg_debug(GG_DEBUG_TRAFFIC, "// gg_watch_fd() sending packet failed. (errno=%d, %s)\n", errno, strerror(errno));
-
+				errno2 = errno;
 				close(sess->fd);
+				errno = errno2;
 				sess->fd = -1;
 				e->type = GG_EVENT_CONN_FAILED;
 				e->event.failure = GG_FAILURE_WRITING;
@@ -1425,7 +1442,9 @@ struct gg_event *gg_watch_fd(struct gg_session *sess)
 				e->type = GG_EVENT_CONN_FAILED;
 				e->event.failure = GG_FAILURE_READING;
 				sess->state = GG_STATE_IDLE;
+				errno2 = errno;
 				close(sess->fd);
+				errno = errno2;
 				sess->fd = -1;
 				break;
 			}
@@ -1456,7 +1475,9 @@ struct gg_event *gg_watch_fd(struct gg_session *sess)
 
 			e->type = GG_EVENT_CONN_FAILED;
 			sess->state = GG_STATE_IDLE;
+			errno2 = errno;
 			close(sess->fd);
+			errno = errno2;
 			sess->fd = -1;
 			free(h);
 
@@ -1493,7 +1514,9 @@ done:
 	
 fail_connecting:
 	if (sess->fd != -1) {
+		errno2 = errno;
 		close(sess->fd);
+		errno = errno2;
 		sess->fd = -1;
 	}
 	e->type = GG_EVENT_CONN_FAILED;

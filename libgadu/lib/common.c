@@ -1,4 +1,4 @@
-/* $Id: common.c,v 1.34 2004/11/01 13:51:44 adrian Exp $ */
+/* $Id: common.c,v 1.35 2005/01/27 00:34:29 joi Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -227,10 +227,10 @@ char *gg_get_line(char **ptr)
  */
 int gg_connect(void *addr, int port, int async)
 {
-	int sock, one = 1;
+	int sock, one = 1, errno2;
 	struct sockaddr_in sin;
 	struct in_addr *a = addr;
-        struct sockaddr_in myaddr;
+	struct sockaddr_in myaddr;
 
 	gg_debug(GG_DEBUG_FUNCTION, "** gg_connect(%s, %d, %d);\n", inet_ntoa(*a), port, async);
 	
@@ -239,15 +239,15 @@ int gg_connect(void *addr, int port, int async)
 		return -1;
 	}
 
-        memset(&myaddr, 0, sizeof(myaddr));
-        myaddr.sin_family = AF_INET;
+	memset(&myaddr, 0, sizeof(myaddr));
+	myaddr.sin_family = AF_INET;
 
-        myaddr.sin_addr.s_addr = gg_local_ip;
-        
-        if(bind(sock, (struct sockaddr *) &myaddr, sizeof(myaddr)) == -1) {
-                gg_debug(GG_DEBUG_MISC, "// gg_connect() bind() failed (errno=%d, %s)\n", errno, strerror(errno));
-                return -1;
-        }
+	myaddr.sin_addr.s_addr = gg_local_ip;
+
+	if (bind(sock, (struct sockaddr *) &myaddr, sizeof(myaddr)) == -1) {
+		gg_debug(GG_DEBUG_MISC, "// gg_connect() bind() failed (errno=%d, %s)\n", errno, strerror(errno));
+		return -1;
+	}
 
 #ifdef ASSIGN_SOCKETS_TO_THREADS
 	gg_win32_thread_socket(0, sock);
@@ -260,7 +260,9 @@ int gg_connect(void *addr, int port, int async)
 		if (fcntl(sock, F_SETFL, O_NONBLOCK) == -1) {
 #endif
 			gg_debug(GG_DEBUG_MISC, "// gg_connect() ioctl() failed (errno=%d, %s)\n", errno, strerror(errno));
+			errno2 = errno;
 			close(sock);
+			errno = errno2;
 			return -1;
 		}
 	}
@@ -272,7 +274,9 @@ int gg_connect(void *addr, int port, int async)
 	if (connect(sock, (struct sockaddr*) &sin, sizeof(sin)) == -1) {
 		if (errno && (!async || errno != EINPROGRESS)) {
 			gg_debug(GG_DEBUG_MISC, "// gg_connect() connect() failed (errno=%d, %s)\n", errno, strerror(errno));
+			errno2 = errno;
 			close(sock);
+			errno = errno2;
 			return -1;
 		}
 		gg_debug(GG_DEBUG_MISC, "// gg_connect() connect() in progress\n");
@@ -328,13 +332,15 @@ char *gg_read_line(int sock, char *buf, int length)
  */
 void gg_chomp(char *line)
 {
-	if (!line || strlen(line) < 1)
+	int len;
+	if (!line)
 		return;
+	len = strlen(line);
 
-	if (line[strlen(line) - 1] == '\n')
-		line[strlen(line) - 1] = 0;
-	if (line[strlen(line) - 1] == '\r')
-		line[strlen(line) - 1] = 0;
+	if (len > 0 && line[len - 1] == '\n')
+		line[(len--) - 1] = 0;
+	if (len > 0 && line[len - 1] == '\r')
+		line[(len--) - 1] = 0;
 }
 
 /*
@@ -354,8 +360,8 @@ char *gg_urlencode(const char *str)
 	const char *p;
 	int size = 0;
 
-	if (!str && !(str = strdup("")))
-		return NULL;
+	if (!str)
+		str = hex + 16; //ustawiamy siê na napis o zerowej d³ugo¶ci
 
 	for (p = str; *p; p++, size++) {
 		if (!((*p >= 'a' && *p <= 'z') || (*p >= 'A' && *p <= 'Z') || (*p >= '0' && *p <= '9') || *p == ' ') || (*p == '@') || (*p == '.') || (*p == '-'))
@@ -363,7 +369,10 @@ char *gg_urlencode(const char *str)
 	}
 
 	if (!(buf = malloc(size + 1)))
+	{
+		errno = ENOMEM;
 		return NULL;
+	}
 
 	for (p = str, q = buf; *p; p++, q++) {
 		if ((*p >= 'a' && *p <= 'z') || (*p >= 'A' && *p <= 'Z') || (*p >= '0' && *p <= '9') || (*p == '@') || (*p == '.') || (*p == '-'))
@@ -557,37 +566,36 @@ int gg_win32_thread_socket(int thread_id, int socket)
 		if ((thread_id == -1 && wsk->socket == socket) || wsk->id == thread_id) {
 			if (close) {
 				/* socket zostaje usuniety */
-                        	closesocket(wsk->socket);
-         			*p_wsk = wsk->next;
-         			free(wsk);
-         			return 1;
-                        } else if (!socket) {
+				closesocket(wsk->socket);
+				*p_wsk = wsk->next;
+				free(wsk);
+				return 1;
+			} else if (!socket) {
 				/* socket zostaje zwrocony */
 				return wsk->socket;
-                        } else {
+			} else {
 				/* socket zostaje ustawiony */
 				wsk->socket = socket;
 				return socket;
 			}
-               }
-		
-               p_wsk = &(wsk->next);
-               wsk = wsk->next;
-        }
-	
-        if (close && socket != -1)
+		}
+		p_wsk = &(wsk->next);
+		wsk = wsk->next;
+	}
+
+	if (close && socket != -1)
 		closesocket(socket);
-        if (close || !socket)
+	if (close || !socket)
 		return 0;
 	
-        /* Dodaje nowy element */
-        wsk = malloc(sizeof(gg_win32_thread));
-        wsk->id = thread_id;
-        wsk->socket = socket;
-        wsk->next = 0;
-        *p_wsk = wsk;
-	
-        return socket;
+	/* Dodaje nowy element */
+	wsk = malloc(sizeof(gg_win32_thread));
+	wsk->id = thread_id;
+	wsk->socket = socket;
+	wsk->next = 0;
+	*p_wsk = wsk;
+
+	return socket;
 }
 
 #endif /* ASSIGN_SOCKETS_TO_THREADS */

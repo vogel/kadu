@@ -1,4 +1,4 @@
-/* $Id: dcc.c,v 1.32 2004/12/28 22:16:38 joi Exp $ */
+/* $Id: dcc.c,v 1.33 2005/01/27 00:34:29 joi Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -232,6 +232,7 @@ static struct gg_dcc *gg_dcc_transfer(uint32_t ip, uint16_t port, uin_t my_uin, 
 
 	if (!(d = (void*) calloc(1, sizeof(*d)))) {
 		gg_debug(GG_DEBUG_MISC, "// gg_dcc_transfer() not enough memory\n");
+		errno = ENOMEM;
 		return NULL;
 	}
 
@@ -361,7 +362,7 @@ struct gg_dcc *gg_dcc_socket_create(uin_t uin, uint16_t port)
 {
 	struct gg_dcc *c;
 	struct sockaddr_in sin;
-	int sock, bound = 0;
+	int sock, bound = 0, errno2;
 	
 	gg_debug(GG_DEBUG_FUNCTION, "** gg_create_dcc_socket(%d, %d);\n", uin, port);
 	
@@ -398,7 +399,9 @@ struct gg_dcc *gg_dcc_socket_create(uin_t uin, uint16_t port)
 
 	if (listen(sock, 10)) {
 		gg_debug(GG_DEBUG_MISC, "// gg_create_dcc_socket() unable to listen (%s)\n", strerror(errno));
+		errno2 = errno;
 		close(sock);
+		errno = errno2;
 		return NULL;
 	}
 	
@@ -407,6 +410,7 @@ struct gg_dcc *gg_dcc_socket_create(uin_t uin, uint16_t port)
 	if (!(c = malloc(sizeof(*c)))) {
 		gg_debug(GG_DEBUG_MISC, "// gg_create_dcc_socket() not enough memory for struct\n");
 		close(sock);
+		errno = ENOMEM;
 		return NULL;
 	}
 	memset(c, 0, sizeof(*c));
@@ -446,6 +450,7 @@ int gg_dcc_voice_send(struct gg_dcc *d, char *buf, int length)
 	gg_debug(GG_DEBUG_FUNCTION, "++ gg_dcc_voice_send(%p, %p, %d);\n", d, buf, length);
 	if (!d || !buf || length < 0 || d->type != GG_SESSION_DCC_VOICE) {
 		gg_debug(GG_DEBUG_MISC, "// gg_dcc_voice_send() invalid argument\n");
+		errno = EINVAL;
 		return -1;
 	}
 
@@ -527,6 +532,7 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 
 	if (!(e = (void*) calloc(1, sizeof(*e)))) {
 		gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() not enough memory\n");
+		errno = ENOMEM;
 		return NULL;
 	}
 
@@ -561,6 +567,7 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 
 			free(e);
 			close(fd);
+			errno = ENOMEM;
 			return NULL;
 		}
 
@@ -731,6 +738,7 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 				if (!(h->chunk_buf = malloc(sizeof(big)))) {
 					gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() out of memory\n");
 					free(e);
+					errno = ENOMEM;
 					return NULL;
 				}
 				h->check = GG_CHECK_READ;
@@ -843,6 +851,7 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 
 				if (!(h->voice_buf = malloc(h->chunk_size))) {
 					gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() out of memory for voice frame\n");
+					errno = ENOMEM;
 					return NULL;
 				}
 
@@ -877,7 +886,6 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 					e->event.dcc_voice_data.length = h->chunk_size;
 					h->state = GG_STATE_READING_VOICE_HEADER;
 					h->voice_buf = NULL;
-				
 				}
 
 				h->check = GG_CHECK_READ;
@@ -1204,6 +1212,7 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 					if (!(h->chunk_buf = malloc(sizeof(big)))) {
 						gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() out of memory\n");
 						free(e);
+						errno = ENOMEM;
 						return NULL;
 					}
 				} else {
@@ -1239,7 +1248,7 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
  */
 void gg_dcc_free(struct gg_dcc *d)
 {
-        gg_debug(GG_DEBUG_FUNCTION, "** gg_dcc_free(%p);\n", d);
+	gg_debug(GG_DEBUG_FUNCTION, "** gg_dcc_free(%p);\n", d);
 	
 	if (!d)
 		return;
