@@ -127,7 +127,9 @@ tabbar.cpp tabbar.h tabbar_moc.cpp \
 userbox.cpp userbox.h userbox_moc.cpp \
 userinfo.cpp userinfo.h userinfo_moc.cpp \
 userlist.cpp userlist.h userlist_moc.cpp \
-updates.cpp updates.h
+updates.cpp updates.h \
+voice.cpp voice.h \
+sound_dsp.cpp sound_dsp.h
 
 
 EXTRA_kadu_SOURCES = simlite.c simlite.h
@@ -138,7 +140,7 @@ EXTRA_kadu_SOURCES = simlite.c simlite.h
 
 #kadu_METASOURCES = AUTO
 INCLUDES = $(QTINCDIR) $(OPENSSL_INCLUDES)
-kadu_LDADD = $(SIM) $(PTHREAD_LIBS) $(PNG_LIBS) $(QTLIBDIR) -l$(QTMT) $(LIBINTL) -lgadu
+kadu_LDADD = $(SIM) $(PTHREAD_LIBS) $(PNG_LIBS) $(QTLIBDIR) -l$(QTMT) $(LIBINTL) -lgadu -lgsm
 kadu_LDFLAGS = $(PTHREAD_LDFLAGS) $(OPENSSL_LIBS)
 kadu_DEPENDENCIES = $(SIM)
 
@@ -175,7 +177,9 @@ am_kadu_OBJECTS = about.$(OBJEXT) about_moc.$(OBJEXT) chat.$(OBJEXT) \
 	status_moc.$(OBJEXT) tabbar.$(OBJEXT) tabbar_moc.$(OBJEXT) \
 	userbox.$(OBJEXT) userbox_moc.$(OBJEXT) userinfo.$(OBJEXT) \
 	userinfo_moc.$(OBJEXT) userlist.$(OBJEXT) \
-	userlist_moc.$(OBJEXT) updates.$(OBJEXT)
+	userlist_moc.$(OBJEXT) updates.$(OBJEXT) \
+	voice.$(OBJEXT) voice_moc.$(OBJEXT) \
+	sound_dsp.$(OBJEXT) sound_dsp_moc.$(OBJEXT)
 kadu_OBJECTS = $(am_kadu_OBJECTS)
 
 DEFS = @DEFS@
@@ -218,7 +222,9 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/tabbar_moc.Po ./$(DEPDIR)/updates.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/userbox.Po ./$(DEPDIR)/userbox_moc.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/userinfo.Po ./$(DEPDIR)/userinfo_moc.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/userlist.Po ./$(DEPDIR)/userlist_moc.Po
+@AMDEP_TRUE@	./$(DEPDIR)/userlist.Po ./$(DEPDIR)/userlist_moc.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/voice.Po ./$(DEPDIR)/voice_moc.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/sound_dsp.Po ./$(DEPDIR)/sound_dsp_moc.Po
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
@@ -334,6 +340,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/userinfo_moc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/userlist.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/userlist_moc.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/voice.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/voice_moc.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sound_dsp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sound_dsp_moc.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)

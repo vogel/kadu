@@ -20,6 +20,7 @@
 //
 #include "dcc.h"
 #include "debug.h"
+#include "voice.h"
 
 int dccSocketClass::count = 0;
 
@@ -29,7 +30,6 @@ dccSocketClass::dccSocketClass(struct gg_dcc *dcc_sock) : QObject() {
 	snr = snw = NULL;
 	state = DCC_SOCKET_TRANSFERRING;
 	dialog = NULL;
-	recordprocess = playprocess = NULL;
 	in_watchDcc = false;
 	count++;
 	kdebug("dccSocketClass::dccSocketClass(): dcc sockets count = %d\n", count);
@@ -45,18 +45,6 @@ dccSocketClass::~dccSocketClass() {
 				delete dialog;    
 			dialog = NULL;
 			}
-		}
-	if (recordprocess)
-		{
-		recordprocess->kill();
-		delete recordprocess;
-		recordprocess = NULL;
-		}
-	if (playprocess)
-		{
-		playprocess->kill();
-		delete playprocess;
-		playprocess = NULL;
 		}
 	if (snr) {
 		snr->setEnabled(false);
@@ -89,11 +77,17 @@ void dccSocketClass::initializeNotifiers() {
 
 	snw = new QSocketNotifier(dccsock->fd, QSocketNotifier::Write, this);
 	QObject::connect(snw, SIGNAL(activated(int)), this, SLOT(dccDataSent()));
+
+	connect(voice_manager, SIGNAL(gsmSampleRecorded(char *, int)), this, SLOT(voiceDataRecorded(char *, int)));
+}
+
+void dccSocketClass::voiceDataRecorded(char *data, int length) {
+	kdebug("dccSocketClass::voiceDataRecorded()\n");
+	gg_dcc_voice_send(dccsock, data, length);
 }
 
 void dccSocketClass::dccDataReceived() {
 	if (!in_watchDcc) {
-		kdebug("dccSocketClass::dccDataReceived()\n");
 		watchDcc(GG_CHECK_READ);
 		}
 }
@@ -111,14 +105,16 @@ void dccSocketClass::watchDcc(int check) {
 	int sock;
 	int len;
 	char buf[195];
+	char *voice_buf;
 
 	in_watchDcc = true;
 
 	kdebug("dccSocketClass::watchDcc()\n");			
 	if (!(dccevent = gg_dcc_watch_fd(dccsock))) {
 		kdebug("dccSocketClass::watchDcc(): Connection broken unexpectedly!\n");
+		voice_manager->free();
 		setState(dialog ? DCC_SOCKET_TRANSFER_ERROR : DCC_SOCKET_CONNECTION_BROKEN);
-    		return;
+		return;
 		}
 
 	switch (dccevent->type) {
@@ -148,40 +144,18 @@ void dccSocketClass::watchDcc(int check) {
 			dialog->printFileInfo(dccsock);
 			break;
 		case GG_EVENT_DCC_NEED_VOICE_ACK:
-			unlink("/home/chilek/.gg/kaduplayvoice");			
-			playprocess = new QProcess(QString("kaduplayvoice"));
-			playprocess->start();
-			kdebug("accept playsocket\n");
-			sock = socket(PF_UNIX, SOCK_STREAM, 0);
-			addr.sun_family = AF_UNIX;
-			strcpy(addr.sun_path, "/home/chilek/.gg/kaduplayvoice");
-			bind(sock, (const sockaddr *)&addr, sizeof(addr));
-			listen(sock, 5);
-			playsocket = accept(sock, NULL, 0);
-
-			unlink("/home/chilek/.gg/kadurecordvoice");			
-			recordprocess = new QProcess(QString("kadurecordvoice"));
-			recordprocess->start();
-			kdebug("accept recordsocket\n");
-			sock = socket(PF_UNIX, SOCK_STREAM, 0);
-			addr.sun_family = AF_UNIX;
-			strcpy(addr.sun_path, "/home/chilek/.gg/kadurecordvoice");
-			bind(sock, (const sockaddr *)&addr, sizeof(addr));
-			listen(sock, 5);
-			recordsocket = accept(sock, NULL, 0);
 			break;
 		case GG_EVENT_DCC_VOICE_DATA:
-			if (!playprocess->isRunning())
-				break;
-			write(playsocket, &dccevent->event.dcc_voice_data.length, sizeof(int));
-			write(playsocket, dccevent->event.dcc_voice_data.data,
+			voice_manager->setup();
+			voice_buf = new char[dccevent->event.dcc_voice_data.length];
+			memcpy(voice_buf, dccevent->event.dcc_voice_data.data,
 				dccevent->event.dcc_voice_data.length);
-			read(recordsocket, &len, sizeof(int));
-			read(recordsocket, buf, len);
-			gg_dcc_voice_send(dccsock, buf, len);
+			voice_manager->addGsmSample(voice_buf,
+				dccevent->event.dcc_voice_data.length);
 			break;
 		case GG_EVENT_DCC_ERROR:
 			kdebug("dccSocketClass::watchDcc(): GG_EVENT_DCC_ERROR\n");
+			voice_manager->free();
 			setState(dialog ? DCC_SOCKET_TRANSFER_ERROR : DCC_SOCKET_CONNECTION_BROKEN);
 			return;
 		case GG_EVENT_DCC_DONE:

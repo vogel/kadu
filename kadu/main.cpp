@@ -16,6 +16,8 @@
 //#include <locale.h>
 
 #include "kadu.h"
+#include "voice.h"
+#include "sound_dsp.h"
 #include "config_file.h"
 #include "config_dialog.h"
 #include "register.h"
@@ -36,6 +38,9 @@ int main(int argc, char *argv[])
 //	textdomain("kadu");
 
 	a = new QApplication(argc, argv);
+
+	voice_manager = new VoiceManager();
+	sound_dsp = new SoundDsp();
 
 	// ladowanie tlumaczenia
 	QTranslator qt_qm(0);

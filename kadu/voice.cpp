@@ -19,8 +19,9 @@ void PlayThread::run() {
 	struct gsm_sample gsmsample;
 	kdebug("PlayThread::run()\n");
 	while (true) {
+		kdebug("PlayThread(): rsem = %d\n", rsem.available());
 		if (!rsem.available())
-			return;
+			break;
 		wsem++;
 		kdebug("PlayThread::run(): wokenUp\n");
 		mutex.lock();
@@ -46,7 +47,7 @@ void RecordThread::run() {
 	int length = GG_DCC_VOICE_FRAME_LENGTH_505;
 	while (true) {
 		if (!rsem.available())
-			return;
+			break;
 		emit recordSample(data, length);
 		}
 	kdebug("RecordThread::run(): exiting ...\n");
@@ -65,7 +66,7 @@ void VoiceManager::setup() {
 	kdebug("VoiceManager::setup()\n");
 	if (!pt->running()) {
 		emit setupSoundDevice();
-		rt->rsem--;
+		pt->rsem--;
 		pt->start();
 		}
 	if (!rt->running()) {
@@ -80,6 +81,7 @@ void VoiceManager::free() {
 	if (rt->running())
 		rt->rsem++;
 	if (pt->running()) {
+		pt->wsem--;
 		pt->rsem++;
 		pt->mutex.lock();
 		while (!pt->queue.empty()) {
