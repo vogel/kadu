@@ -533,7 +533,7 @@ uninstall-am: uninstall-binPROGRAMS uninstall-info-am uninstall-local
 	$(QTMOCDIR)/moc -o $@ $<
 
 install-data-local:
-	@if test -w "$(DESTDIR)/usr/share"; then \
+	@if test -w "/usr/share"; then \
 		$(mkinstalldirs) "$(DESTDIR)/usr/share/applnk/Internet/"; \
 		echo "[Desktop Entry]" > "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop"; \
 		echo "Type=Application" >> "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop"; \
@@ -558,7 +558,7 @@ install-data-local:
 		echo "         *          Icons and link(kadu.desktop) won't be installed        *"; \
 		echo "         *                                                                 *"; \
 		echo "         *******************************************************************"; \
-		echo "";\
+		echo $(DESTDIR)"";\
 	fi;
 uninstall-local:
 	rm -f "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop"
