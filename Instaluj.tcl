@@ -1,11 +1,63 @@
+Return-Path: <boogie@eris.rpg.pl>
+Delivered-To: adrian@kadu.net
+Received: (qmail 32105 invoked by uid 0); 19 Jun 2003 14:54:34 -0000
+Received: from unknown (HELO srv1.arkada.pl) (80.48.121.1)
+  by inet1.chilan.net with SMTP; 19 Jun 2003 14:54:34 -0000
+Received: from amee.one.pl (unknown [10.3.0.96])
+	by srv1.arkada.pl (Postfix) with ESMTP id 8AF4611C075
+	for <adrian@kadu.net>; Thu, 19 Jun 2003 16:52:29 +0200 (CEST)
+From: =?iso-8859-2?q?Pawe=B3=20Salawa?= <boogie@eris.rpg.pl>
+Organization: Arkada.pl
+To: "adrian@kadu.net" <adrian@kadu.net>
+Subject: Instaluj.tcl
+Date: Thu, 19 Jun 2003 16:56:58 +0200
+User-Agent: KMail/1.5.1
+MIME-Version: 1.0
+Content-Type: Multipart/Mixed;
+  boundary="Boundary-00=_68c8+AGJk1x7Q3b"
+Message-Id: <200306191656.59155.boogie@eris.rpg.pl>
+Status:   
+
+
+--Boundary-00=_68c8+AGJk1x7Q3b
+Content-Type: text/plain;
+  charset="iso-8859-2"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+Hej.
+Sprawdzalem w wyslanych i zalacznik powinien byc. Nie wiem co sie stalo. Ni=
+e=20
+wazne, przysylam jeszcze ciut zmieniona wersje. Niejaki AndyF24 znalazl=20
+przyczyne, dlaczego niektorym osobom instalator nie wyswietlal przyciskow=20
+dalej i wstecz. Juz powinno byc ok :)
+
+Pozdrawiam.
+=2D-=20
+Pawe=B3 Salawa (Googie)
+boogie@eris.rpg.pl
+--Boundary-00=_68c8+AGJk1x7Q3b
+Content-Type: text/x-tcl;
+  charset="us-ascii";
+  name="Instaluj.tcl"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: attachment; filename="Instaluj.tcl"
+
 #!/bin/bash
-################################################################################
-# Ten program jest wolnym oprogramowaniem. Mo¿na go rozprowadzaæ i modyfikowaæ #
-# zgodnie z licencj± GNU General Public License opublikowan± przez             #
-# Free Software Foundation w wersji 2 z pó¼niejszymi zmianami.                 #
-#                                                                              #
-#                                       Pawe³ Salawa (Googie) boogie@arkada.pl #
-################################################################################
+###########################################################################=
+#####
+# Ten program jest wolnym oprogramowaniem. Mo=BFna go rozprowadza=E6 i mody=
+fikowa=E6 #
+# zgodnie z licencj=B1 GNU General Public License opublikowan=B1 przez     =
+        #
+# Free Software Foundation w wersji 2 z p=F3=BCniejszymi zmianami.         =
+        #
+#                                                                          =
+    #
+#                                       Pawe=B3 Salawa (Googie) boogie@arka=
+da.pl #
+###########################################################################=
+#####
 
 # Na wstepie, bash sprawdzi czy mamy pakiet TK:
 #\
@@ -31,7 +83,7 @@ fi
 exec wish "$0" "$@"
 
 ### I teraz juz TCL/TK :)
-set scriptversion 1.0.1
+set scriptversion 1.0.2
 
 ### Sprawdzanie kompatybilnosci TCL/TK:
 if {$tk_version < 8.3} {
@@ -44,7 +96,9 @@ if {$tk_version < 8.3} {
     wm minsize .err $winwidth $winheight
     wm geometry .err +$geomx+$geomy
     wm title .err "Uwaga!"
-    label .err.txt -text "Wersja TCL/TK: $tk_patchLevel\nWymagana >= 8.3\nMozliwe jest niestabilne zachowanie instalatora." -font "Helvetica -12 bold"
+    label .err.txt -text "Wersja TCL/TK: $tk_patchLevel\nWymagana >=3D 8.3\=
+nMozliwe jest niestabilne zachowanie instalatora." -font "Helvetica -12 bol=
+d"
     button .err.bt -text "OK" -bd 1 -command {destroy .err; set ok 1}
     pack .err.txt .err.bt -side top
     vwait ok
@@ -93,7 +147,7 @@ Bh4aBj46Bv//////////////////////////////////////////////////
 /////////////////////yH5BAEKAP8ALAAAAABkAEkAAAj+AP8JHEiwoMGD
 CBMqXMiwocOHECNKnEixosWLGDNOBABAo8ePEul0BEmy5EGOIzNqMcmyoBYA
 KzFybEnz38uZF1/SqdkS5UWYAHbyZAm0IsqYQ00WpYgyZVKSHJFGhPnyaUKq
-FnFKPGoV4U2fW50+bNpVIVCtNcmWvRoVrVK1a71q0SJSakm4cdmC9Xp2btOm
+=46nFKPGoV4U2fW50+bNpVIVCtNcmWvRoVrVK1a71q0SJSakm4cdmC9Xp2btOm
 dgW+9JuXIdCqLr/6jeChceMUsfwiJri08EKqKQdzXIJAVYgwYczkGE1aQhgI
 jxIhQXtTpluQHCn8jdBkxBjSuHPnptKERcrXU/ey/ArARYopupMrz9GFE/CI
 msXejdpmh4Pl2HVLelFB+tijgWH+z60QagcE3Hog1KkTRE925ZUqCIV4GC/J
@@ -107,9 +161,9 @@ pbo5B0Cs2cXRIQASZIdEeGvlYAaeACzya26hCEICtdnBwVG2y2HCArdlkYHD
 S50gqock7GYBAwCsZFgGRxgql0KjVknC0RHGkhYJAIdg4m0qAEiSoboABJzc
 wPB2RbEpuWUCkw0OT4DBmu8JeUiry03qYVkcvSIxbm4AdUWSo0kygh/YSSIG
 rnmhlF9uHDzCUSzs0pydGYNZJhhHiOJ2iSccPfIygGFwUkp2mhD81EuaoKwb
-Fae8ZEgDZGQ3gSXOGYIdFf+u3FJdPP4DExPYBQ3UIg4nN0H+JR6/ROhyNXA0
+=46ae8ZEgDZGQ3gSXOGYIdFf+u3FJdPP4DExPYBQ3UIg4nN0H+JR6/ROhyNXA0
 aloFdlRUdhxAEhQAX5ByySU7XGLCBp9oiRIkJOsGcdw81QeY3Lpm5wAjZ7V1
-FEeoLHLBche0IRxNgxHnk08AZt1XWy89UkiYy23R9kqEtfQmz3KvBGAhg5VA
+=46EeoLHLBche0IRxNgxHnk08AZt1XWy89UkiYy23R9kqEtfQmz3KvBGAhg5VA
 gBSNHOAIAQRAYUF2otBBmJOcgzRYEdlT1hGADrTC0SBA9GH++TSssNwEhPj1
 m4hQRaXBQiJlkqEdQDFwvvk9iBCxckITDma0NhU6YO8yMMlbdi7hpAOcrwU+
 +IEWluC1mvmhE+4zCFVaoxGUyCZjA+EIJdzzHkNwJAMt6EMLZsCRTzRtO6/4
@@ -118,7 +172,7 @@ iRFQ8gg0dIAIRfgCDRsCmBpepipePAlHQrGIKVQQNxxwxSe+UoROWK5A9IFS
 GGc4R73QixKQiEQhBFKIStiBEKSLCgi0GCLiEQiEZkEkFxlVyJsE4gONJCBD
 OLgVRdrwL9g7zL7qqDQccrKT8ZMkKO/zOeh8cpQEcZ8hDTMXVG5kgBNJmiuX
 GLxXWnKWAjlLVl6HSzp2Lzi/7OWHVglMYSLwlGK8pSuDGRZRonJwuwyKMWf4
-kUIic5rAJCY2O1jLbXpzIQEBADs=
+kUIic5rAJCY2O1jLbXpzIQEBADs=3D
 }}
 
 ### Lokalizacja przegladarki www
@@ -126,7 +180,7 @@ if {![info exists IIK]} {
     # ^^^ to samo co ze slonkiem.
     foreach browser {konqueror galeon mozilla netscape} {
         catch {exec which $browser} res
-        if {[llength $res] == 1} {
+        if {[llength $res] =3D=3D 1} {
             set webbrowser $res
             break
         }
@@ -134,8 +188,9 @@ if {![info exists IIK]} {
     if {![info exists webbrowser]} {
         foreach browser {links lynx} {
             catch {exec which $browser} res
-            if {[llength $res] == 1} {
-                set webbrowser "[exec which xterm] -fg grey -bg black -e $res"
+            if {[llength $res] =3D=3D 1} {
+                set webbrowser "[exec which xterm] -fg grey -bg black -e $r=
+es"
                 break
             }
         }
@@ -143,7 +198,8 @@ if {![info exists IIK]} {
 }
 
 ### Kolorystyka
-set themeopts "-background grey87 -activebackground white -foreground black -activeforeground black"
+set themeopts "-background grey87 -activebackground white -foreground black=
+ -activeforeground black"
 
 ###########
 ### Zmienne
@@ -183,10 +239,11 @@ proc tips_aux {w msg} {
     catch {destroy $t}
     toplevel $t
     wm overrideredirect $t 1
-    if {$::tcl_platform(platform) == "macintosh"} {
+    if {$::tcl_platform(platform) =3D=3D "macintosh"} {
      unsupported1 style $t floating sideTitlebar
     }
-    pack [label $t.l -text $msg -relief raised -bd 1 -bg lightyellow] -fill both
+    pack [label $t.l -text $msg -relief raised -bd 1 -bg lightyellow] -fill=
+ both
     set x [expr [winfo rootx $w]+6+[winfo width $w]/2]
     set y [expr [winfo rooty $w]+6+[winfo height $w]/2]
     wm geometry $t +$x\+$y
@@ -203,7 +260,9 @@ frame .r
 frame .r.u
 frame .r.d
 frame .l.c
-eval button .l.c.img -image kadu -bd 0 -command {"catch {exec $webbrowser http://kadu.net &}"} $themeopts
+eval button .l.c.img -image kadu -bd 0 -command {"catch {exec $webbrowser h=
+ttp://kadu.net &}"} $themeopts
+tips .l.c.img "Kliknij aby otworzyc strone Kadu."
 label .l.c.txt -text "Kadu\nv$kadu_ver"
 
 pack .r -side right -fill both -expand yes
@@ -215,10 +274,14 @@ pack .r.u -side top -fill both -expand yes
 pack .r.d -side bottom -fill x
 
 label .r.d.status -padx 0.5c
-tips .r.d.status "Liczba bierzacego kroku,\nw stosunku do wszystkich krokow."
-eval button .r.d.close -text "Zaniechaj" -borderwidth 1 -command exit $themeopts
-eval button .r.d.next -text {"Dalej >>"} -borderwidth 1 -command next $themeopts
-eval button .r.d.prev -text {"<< Wstecz"} -borderwidth 1 -command prev -state disabled $themeopts
+tips .r.d.status "Liczba bierzacego kroku,\nw stosunku do wszystkich krokow=
+=2E"
+eval button .r.d.close -text "Zaniechaj" -borderwidth 1 -command exit $them=
+eopts
+eval button .r.d.next -text {"Dalej >>"} -borderwidth 1 -command next $them=
+eopts
+eval button .r.d.prev -text {"<< Wstecz"} -borderwidth 1 -command prev -sta=
+te disabled $themeopts
 
 pack .r.d.next .r.d.prev .r.d.status -side right
 pack .r.d.close -side left
@@ -229,34 +292,40 @@ bind . <Escape> exit
 
 ### Okno 1 (Instalacja domyslna lub reczna)
 set w .r.u.$maxwins
-set pad($w) 3c
+set pad($w) 0.4
 frame $w
 frame $w.1
 frame $w.2
-radiobutton $w.1.def -text "Zainstaluj Kadu z domyslnymi parametrami." -variable var(default) -value 1 -bd 1 -selectcolor "blue"
-radiobutton $w.2.def -text "Sam wybiore potrzebne opcje." -variable var(default) -value 0 -bd 1 -selectcolor "blue"
+radiobutton $w.1.def -text "Zainstaluj Kadu z domyslnymi parametrami." -var=
+iable var(default) -value 1 -bd 1 -selectcolor "blue"
+radiobutton $w.2.def -text "Sam wybiore potrzebne opcje." -variable var(def=
+ault) -value 0 -bd 1 -selectcolor "blue"
 foreach b "$w.1.def $w.2.def" {
     eval $b configure $themeopts
 }
 pack $w.1 $w.2 -side top -fill x
 pack $w.1.def -side left
 pack $w.2.def -side left
-tips $w.1.def "Wszystkie ustawienia beda\nwybrane domyslnie. Przejdziesz\nautomatycznie do ostatniego kroku."
-tips $w.2.def "Bedziesz mogl wybrac opcje,\nktore najbardziej Ci odpowiadaja\nw kolejnych krokach instalacji."
+tips $w.1.def "Wszystkie ustawienia beda\nwybrane domyslnie. Przejdziesz\na=
+utomatycznie do ostatniego kroku."
+tips $w.2.def "Bedziesz mogl wybrac opcje,\nktore najbardziej Ci odpowiadaj=
+a\nw kolejnych krokach instalacji."
 
 
 
 ### Okno 2 (Sciezka do katalogu QT)
 incr maxwins
 set w .r.u.$maxwins
-set pad($w) 2.5c
+set pad($w) 0.4
+set pad(x_$w) 0.05
 frame $w
 label $w.l -text "Katalog QT:"
 frame $w.o
 entry $w.o.e -width 24 -textvariable qtdir
 button $w.o.b -text "Przegladaj" -borderwidth 1 -command {
-    set qt_dir [tk_chooseDirectory -initialdir $qtdir -title {Wybierz katalog QT} -mustexist 1]
-    if {"$qt_dir" != ""} {
+    set qt_dir [tk_chooseDirectory -initialdir $qtdir -title {Wybierz katal=
+og QT} -mustexist 1]
+    if {"$qt_dir" !=3D ""} {
         set qtdir $qt_dir
     }
 }
@@ -264,7 +333,7 @@ eval $w.o.b configure $themeopts
 frame $w.f
 button $w.f.find -text "Znajdz automatycznie" -bd 1 -command {
     set tmp [findQT /usr]
-    if {"$tmp" != "" && "$tmp" != "$qtdir"} {
+    if {"$tmp" !=3D "" && "$tmp" !=3D "$qtdir"} {
         set qtdir $tmp
     }
 }
@@ -277,12 +346,14 @@ tips $w.o.b "Kliknij aby znalezc i wybrac\nodpowiedni katalog"
 ### Okno 3 (Sciezka do katalogu KDE)
 incr maxwins
 set w .r.u.$maxwins
-set pad($w) 1.5c
+set pad($w) 0.3
+set pad(x_$w) 0.05
 frame $w
 
 set ww $w.check
 frame $ww
-checkbutton $ww.c -variable var(makekde) -selectcolor blue -text "Mam zainstalowane KDE" -command {EnDisKde $var(makekde)}
+checkbutton $ww.c -variable var(makekde) -selectcolor blue -text "Mam zains=
+talowane KDE" -command {EnDisKde $var(makekde)}
 pack $ww.c
 eval $ww.c configure $themeopts
 
@@ -292,8 +363,9 @@ label $ww.l -text "Katalog KDE:"
 frame $ww.o
 entry $ww.o.e -width 24 -textvariable kdedir
 button $ww.o.b -text "Przegladaj" -borderwidth 1 -command {
-    set kde_dir [tk_chooseDirectory -initialdir $kdedir -title {Wybierz katalog KDE} -mustexist 1]
-    if {"$kde_dir" != ""} {
+    set kde_dir [tk_chooseDirectory -initialdir $kdedir -title {Wybierz kat=
+alog KDE} -mustexist 1]
+    if {"$kde_dir" !=3D ""} {
         set kdedir $kde_dir
     }
 }
@@ -320,14 +392,16 @@ proc EnDisKde {sw} {
 ### Okno 4 (Katalog instalacji)
 incr maxwins
 set w .r.u.$maxwins
-set pad($w) 2.5c
+set pad($w) 0.4
+set pad(x_$w) 0.05
 frame $w
 label $w.l -text "Katalog instalacji:"
 frame $w.o
-entry $w.o.e -width 14 -textvariable installdir
+entry $w.o.e -width 24 -textvariable installdir
 button $w.o.b -text "Przegladaj" -borderwidth 1 -command {
-    set install_dir [tk_chooseDirectory -initialdir $installdir -title {Wybierz katalog instalacji} -mustexist 1]
-    if {"$install_dir" != ""} {
+    set install_dir [tk_chooseDirectory -initialdir $installdir -title {Wyb=
+ierz katalog instalacji} -mustexist 1]
+    if {"$install_dir" !=3D ""} {
         set installdir $install_dir
     }
 }
@@ -341,21 +415,29 @@ tips $w.o.b "Kliknij aby znalezc i wybrac\nodpowiedni katalog"
 ### Okno 5 (Dodatkowe opcje)
 incr maxwins
 set w .r.u.$maxwins
-set pad($w) 1c
+set pad($w) 0.2
+set pad(x_$w) 0.2
 frame $w
-foreach {path varname text} {deb makedeb "Kompiluj z debugowaniem" doc makedoc "Zainstaluj dokumentacje" \
-ssl makessl "Obsluga szyfrowania SSL" lib libgadu "Zlinkuj z istniejaca\nbiblioteka libgadu"} {
+foreach {path varname text} {deb makedeb "Kompiluj z debugowaniem" doc make=
+doc "Zainstaluj dokumentacje" \
+ssl makessl "Obsluga szyfrowania SSL" lib libgadu "Zlinkuj z istniejaca\nbi=
+blioteka libgadu"} {
     set ww $w.$path
     frame $ww
-    checkbutton $ww.c -variable var($varname) -selectcolor blue -text "$text"
+    checkbutton $ww.c -variable var($varname) -selectcolor blue -text "$tex=
+t"
     eval $ww.c configure $themeopts
     pack $ww.c -side left
     pack $w.$path -side top -fill x -pady 2
 }
-tips $w.deb "Jesli Kadu napotka krytyczny blad\ni nieoczekiwanie zakonczy dzialanie,\nto ta opcja spowoduje, ze bedzien\nmozna latwo zlokalizowac usterke\ni wyslac raport do autorow."
-tips $w.doc "Zainstaluje dokumentacje Kadu,\naby byla ona dostepna w kazdym momencie."
+tips $w.deb "Jesli Kadu napotka krytyczny blad\ni nieoczekiwanie zakonczy d=
+zialanie,\nto ta opcja spowoduje, ze bedzien\nmozna latwo zlokalizowac uste=
+rke\ni wyslac raport do autorow."
+tips $w.doc "Zainstaluje dokumentacje Kadu,\naby byla ona dostepna w kazdym=
+ momencie."
 tips $w.ssl "Dzieki tej opcji bedzie\nmozliwe szyfrowanie rozmow."
-tips $w.lib "Instalator nie bedzie kompilowal biblioteki\nlibgadu od nowa, lecz wykozysta isteniejaca\n(musisz byc pewien, ze masz juz te biblioteke)."
+tips $w.lib "Instalator nie bedzie kompilowal biblioteki\nlibgadu od nowa, =
+lecz wykozysta isteniejaca\n(musisz byc pewien, ze masz juz te biblioteke)."
 
 
 
@@ -363,8 +445,10 @@ tips $w.lib "Instalator nie bedzie kompilowal biblioteki\nlibgadu od nowa, lecz 
 incr maxwins
 set w .r.u.$maxwins
 frame $w
+set pad($w) 0
+set pad(x_$w) 0.01
 scrollbar $w.s -command "$w.txt yview" -bd 1
-text $w.txt -wrap word -width 37 -height 12 -yscrollcommand "$w.s set"
+text $w.txt -wrap word -width 37 -height 11 -yscrollcommand "$w.s set"
 $w.txt tag configure smallfont -font "helvetica 8"
 pack $w.txt -fill both -side left
 pack $w.s -side right -fill y
@@ -373,12 +457,13 @@ pack $w.s -side right -fill y
 
 ### Procedury instalacyjne
 proc install {} {
-    upvar #0 kdedir kdedir qtdir qtdir installdir installdir var var maxwins mw env env
+    global kdedir qtdir installdir var env
+    upvar #0 maxwins mw
     .r.d.next configure -state disabled
     .r.d.prev configure -state disabled
     set p .r.u.progress
     label $p
-    pack $p -pady 6 -side top
+    place $p -relx 0.1 -rely 0.65
     set args ""
     if {!$var(makedoc)} {
         lappend args --disable-doc
@@ -395,28 +480,31 @@ proc install {} {
     set env(KDEDIR) "$kdedir"
     set env(QTDIR) "$qtdir"
     append env(LD_LIBRARY_PATH) ":$qtdir/lib"
-    
-    $p configure -text "Status:\nKonfiguracja: ./configure --prefix=$installdir\n$args"
-    set fd [open "|./configure --prefix=$installdir $args" r]
+   =20
+    $p configure -text "Status:\nKonfiguracja: ./configure --prefix=3D$inst=
+alldir\n$args"
+    set fd [open "|./configure --prefix=3D$installdir $args" r]
     fileevent $fd readable "Install $fd"
     vwait var(ins)
-    if {[string match {*Run make now*} $var(ins)]} {
-        $p configure -text "Status:\nBlad krytyczny!\nSprawdz ostatnie informacje\nz okna powyzej."
+    if {$var(ins)} {
+        $p configure -text "Status:\nBlad krytyczny!\nSprawdz ostatnie info=
+rmacje\nz okna powyzej."
         vwait forever
     }
     unset var(ins)
-    
+   =20
     $p configure -text "Status:\nKompilacja... (make)"
     set fd [open "|make" r]
     fileevent $fd readable "Install $fd"
     vwait var(ins)
-    if {[string match {make[1]: * * `*`} $var(ins)]} {
-        $p configure -text "Status:\nBlad krytyczny!\nSprawdz ostatnie informacje\nz okna powyzej."
+    if {$var(ins)} {
+        $p configure -text "Status:\nBlad krytyczny!\nSprawdz ostatnie info=
+rmacje\nz okna powyzej."
         vwait forever
     }
     unset var(ins)
-    
-    if {"$env(USER)" == "root"} {
+   =20
+    if {"$env(USER)" =3D=3D "root"} {
         $p configure -text "Status:\nKopiowanie plikow... (make install)"
         wm title . "Kopiowanie plikow... $scriptversion"
         set fd [open "|make install" r]
@@ -432,7 +520,8 @@ proc install {} {
         wm geometry .info +$geomx+$geomy
         wm title .info "Instalacja"
         if {$var(libgadu)} {
-            label .info.txt -text "Nie masz uprawnien administratora. Zaloguj sie jako
+            label .info.txt -text "Nie masz uprawnien administratora. Zalog=
+uj sie jako
 administrator (komenda: su), wejdz do katalogu
 kadu ([pwd]) i wykonaj komende
 'make install'."
@@ -443,7 +532,8 @@ kadu ([pwd]) i wykonaj komende
             wm minsize .info $winwidth $winheight
             wm geometry .info +$geomx+$geomy
         } else {
-            label .info.txt -text "Nie masz uprawnien administratora. Zaloguj sie jako
+            label .info.txt -text "Nie masz uprawnien administratora. Zalog=
+uj sie jako
 administrator (komenda: su), wejdz do katalogu
 kadu ([pwd]) i wykonaj komende
 'make install'. Nastepnie edytuj plik /etc/ld.so.conf
@@ -451,7 +541,8 @@ i dodaj do niego linie (o ile takiej nie zawiera):
 $installdir/lib
 i na koniec wykonaj komende: ldconfig" -justify left
         }
-        button .info.bt -text "  OK  " -bd 1 -command {set ok 1; destroy .info}
+        button .info.bt -text "  OK  " -bd 1 -command {set ok 1; destroy .i=
+nfo}
         pack .info.txt .info.bt -side top
         bind .info <Return> {set ok 1; destroy .info}
         vwait ok
@@ -461,45 +552,60 @@ i na koniec wykonaj komende: ldconfig" -justify left
 }
 
 proc Install {fd} {
-    upvar #0 maxwins mw var var
-    if {[gets $fd data] != -1} {
+    upvar #0 maxwins mw
+    global var
+    if {[gets $fd data] !=3D -1} {
         .r.u.$mw.txt insert end "$data\n" smallfont
-        if {"$data" != ""} {
-            set var(lastdata) "$data"
-        }
-        if {"[.r.u.$mw.s activate]" == ""} {
+        if {"[.r.u.$mw.s activate]" =3D=3D ""} {
             .r.u.$mw.txt see end
         }
     } else {
         if {[eof $fd]} {
             fileevent $fd readable {}
-            catch {close $fd}
-            set var(ins) $var(lastdata)
+            if {[catch {close $fd}] !=3D 0} {
+                global errorCode
+                if {"CHILDSTATUS" =3D=3D [lindex $errorCode 0]} {
+                    set var(ins) 1
+                } else {
+                    set var(ins) 0
+                }
+            } else {
+                set var(ins) 0
+            }
         }
     }
 }
 proc next {} {
-    upvar #0 cwin cwin var var installdir installdir kdedir kdedir qtdir qtdir maxwins mw pad pad
-    pack forget .r.u.$cwin
-    if {$cwin == 1 && $var(default)} {
+    global cwin var installdir kdedir qtdir pad
+    upvar #0 maxwins mw
+    place forget .r.u.$cwin
+    if {$cwin =3D=3D 1 && $var(default)} {
         set cwin $mw
     } else {
         incr cwin
     }
     if {[info exists pad(.r.u.$cwin)]} {
-        eval pack .r.u.$cwin -pady $pad(.r.u.$cwin)
+        if {[info exists pad(x_.r.u.$cwin)]} {
+            eval place .r.u.$cwin -rely $pad(.r.u.$cwin) -relx $pad(x_.r.u.=
+$cwin)
+        } else {
+            eval place .r.u.$cwin -rely $pad(.r.u.$cwin)
+        }
     } else {
-        pack .r.u.$cwin
+        place .r.u.$cwin -rely 0 -relx 0
     }
     update
-    if {$cwin == $mw} {
-        .r.d.next configure -text Instaluj -command {install; .r.d.prev configure -state disabled}
+    if {$cwin =3D=3D $mw} {
+        .r.d.next configure -text Instaluj -command {install; .r.d.prev con=
+figure -state disabled}
         .r.u.$mw.txt delete 0.0 end
-        .r.u.$mw.txt insert end "Kadu zostanie zainstalowane w: $installdir\n\nKatalog QTDIR: $qtdir\n\n"
+        .r.u.$mw.txt insert end "Kadu zostanie zainstalowane w: $installdir=
+\n\nKatalog QTDIR: $qtdir\n\n"
         if {$var(makekde)} {
             .r.u.$mw.txt insert end "Katalog KDE: $kdedir\n\n"
         } else {
-            .r.u.$mw.txt insert end "Elementy KDE nie zostana zainstalowane.\n\n"
+            .r.u.$mw.txt insert end "Elementy KDE nie zostana zainstalowane=
+=2E\n\n"
         }
         set args ""
         if {!$var(makedoc)} {
@@ -526,30 +632,38 @@ proc next {} {
     .r.d.status configure -text "\[$cwin/$mw\]"
 }
 proc prev {} {
-    upvar #0 cwin cwin var var maxwins mw pad pad
-    pack forget .r.u.$cwin
-    if {$cwin == $mw && $var(default)} {
+    global cwin var pad
+    upvar #0 maxwins mw
+    place forget .r.u.$cwin
+    if {$cwin =3D=3D $mw && $var(default)} {
         set cwin 1
     } else {
         incr cwin -1
     }
     if {[info exists pad(.r.u.$cwin)]} {
-        eval pack .r.u.$cwin -pady $pad(.r.u.$cwin)
+        if {[info exists pad(x_.r.u.$cwin)]} {
+            eval place .r.u.$cwin -rely $pad(.r.u.$cwin) -relx $pad(x_.r.u.=
+$cwin)
+        } else {
+            eval place .r.u.$cwin -rely $pad(.r.u.$cwin)
+        }
     } else {
-        pack .r.u.$cwin
+        place .r.u.$cwin -rely 0 -relx 0
     }
     if {$cwin < $mw} {
         .r.d.next configure -text "Dalej >>" -command next
     }
-    if {$cwin == 1} {
+    if {$cwin =3D=3D 1} {
         .r.d.prev configure -state disabled
     }
     .r.d.status configure -text "\[$cwin/$mw\]"
 }
-eval pack .r.u.1 -pady $pad(.r.u.1)
-.r.d.status configure -text "\[$cwin/$maxwins\]"
+eval place .r.u.1 -rely $pad(.r.u.1)
+=2Er.d.status configure -text "\[$cwin/$maxwins\]"
 
 ### KDE 3.x tego potrzebuje do sprawnego dzialania :)
 pack propagate . false
 
+
+--Boundary-00=_68c8+AGJk1x7Q3b--
 
