@@ -471,7 +471,7 @@ FIND_LIBRARY([qt-mt],[$QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt 
 	QT_LIBS="$QT_LIBS -L$FILE_DIR"
 ],[
 	AC_MSG_ERROR([libqt-mt not found - please install libqt3])
-],[$PNG_LIBS])
+],[$PNG_LIBS $PTHREAD_LDFLAGS $PTHREAD_LIBS])
 AC_SUBST(QT_LIBS)
 
 #################

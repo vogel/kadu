@@ -522,6 +522,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * ostatnio otwarta "zak³adka" w konfiguracji jest zapamiêtywana pomiêdzy
   uruchomieniami programu (joi)
 * nie pozwalamy na wys³anie obrazków wiêkszych ni¿ limit rozmówcy (joi)
+* poprawne wykrywanie Qt na FreeBSD (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
