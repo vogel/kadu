@@ -104,7 +104,7 @@ rMessage::rMessage(const QString & nick, int msgclass, UinsList uins, QString &m
 	body->setGeometry(5,20,305,170);
 #ifdef HAVE_OPENSSL
 	if (decrypted != NULL) {
-		body->setText(cp2native((unsigned char *)decrypted));
+		body->setText(cp2unicode((unsigned char *)decrypted));
 		free(decrypted);
 		}
 	else
@@ -312,7 +312,7 @@ void Message::commitSend(void) {
 	uins.append(uin);
 	if (config.logmessages)
 		appendHistory(uins, uin, text, TRUE);
-	utmp = (unsigned char *)strdup(native2cp(text).data());
+	utmp = (unsigned char *)strdup(unicode2cp(text).data());
 
 #ifdef HAVE_OPENSSL
 	char* encrypted = sim_message_encrypt((unsigned char *)utmp, uin);

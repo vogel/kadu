@@ -597,7 +597,7 @@ void Chat::sendMessage(void) {
 	// zmieniamy unixowe \n na windowsowe \r\n
 	myLastMessage.replace(QRegExp("\n"), "\r\n");
 			
-	unsigned char *utmp = (unsigned char *)strdup(native2cp(myLastMessage).data());
+	unsigned char *utmp = (unsigned char *)strdup(unicode2cp(myLastMessage).data());
 
 	users = new (uin_t)[uins.count()];
 	if (config.msgacks) {

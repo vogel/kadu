@@ -103,13 +103,13 @@ void PersonalInfoDialog::OkButtonClicked()
 
 	char *nick, *first, *last, *city, *born, *family_name, *family_city;
 
-	nick = strdup(native2cp(NicknameEdit->text()).data());
-	first = strdup(native2cp(NameEdit->text()).data());
-	last = strdup(native2cp(SurnameEdit->text()).data());
-	city = strdup(native2cp(CityEdit->text()).data());
-	born = strdup(native2cp(BirthyearEdit->text()).data());
-	family_name = strdup(native2cp(FamilyNameEdit->text()).data());
-	family_city = strdup(native2cp(FamilyCityEdit->text()).data());
+	nick = strdup(unicode2cp(NicknameEdit->text()).data());
+	first = strdup(unicode2cp(NameEdit->text()).data());
+	last = strdup(unicode2cp(SurnameEdit->text()).data());
+	city = strdup(unicode2cp(CityEdit->text()).data());
+	born = strdup(unicode2cp(BirthyearEdit->text()).data());
+	family_name = strdup(unicode2cp(FamilyNameEdit->text()).data());
+	family_city = strdup(unicode2cp(FamilyCityEdit->text()).data());
 
 	struct SearchIdStruct sid;
 	gg_pubdir50_t req;
@@ -171,17 +171,17 @@ void PersonalInfoDialog::fillFields(gg_pubdir50_t res)
 			family_name = gg_pubdir50_get(res, 0, GG_PUBDIR50_FAMILYNAME);
 			family_city = gg_pubdir50_get(res, 0, GG_PUBDIR50_FAMILYCITY);
 			if (first)
-				NameEdit->setText(cp2native((unsigned char *)first));
+				NameEdit->setText(cp2unicode((unsigned char *)first));
 			if (last)
-				SurnameEdit->setText(cp2native((unsigned char *)last));
+				SurnameEdit->setText(cp2unicode((unsigned char *)last));
 			if (nick)
-				NicknameEdit->setText(cp2native((unsigned char *)nick));
+				NicknameEdit->setText(cp2unicode((unsigned char *)nick));
 			if (city)
-				CityEdit->setText(cp2native((unsigned char *)city));
+				CityEdit->setText(cp2unicode((unsigned char *)city));
 			if (family_name)
-				FamilyNameEdit->setText(cp2native((unsigned char *)family_name));
+				FamilyNameEdit->setText(cp2unicode((unsigned char *)family_name));
 			if (family_city)
-				FamilyCityEdit->setText(cp2native((unsigned char *)family_city));
+				FamilyCityEdit->setText(cp2unicode((unsigned char *)family_city));
 			GenderCombo->setCurrentItem(gender ? atoi(gender) : 0);
 			break;
 		case WRITTING:

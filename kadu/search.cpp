@@ -218,16 +218,16 @@ void SearchDialog::nextSearch(void) {
 
 	if (r_pers->isChecked()) {
 		if (e_name->text().length())
-			gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)native2cp(e_name->text()).data());
+			gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)unicode2cp(e_name->text()).data());
 		if (e_surname->text().length())
-			gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, (const char *)native2cp(e_surname->text()).data());
+			gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, (const char *)unicode2cp(e_surname->text()).data());
 		if (e_nick->text().length())
-			gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)native2cp(e_nick->text()).data());
+			gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)unicode2cp(e_nick->text()).data());
 		if (e_city->text().length())
-			gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)native2cp(e_city->text()).data());
+			gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)unicode2cp(e_city->text()).data());
 		if (e_byr->text().length()) {
 			bufyear = e_byr->text() + " " + e_byr->text();
-			gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)native2cp(bufyear).data());
+			gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)unicode2cp(bufyear).data());
 			}
 		switch (c_gender->currentItem()) {
 			case 1:
@@ -241,7 +241,7 @@ void SearchDialog::nextSearch(void) {
 	else
 		if (r_uin->isChecked()) {
 			if (e_uin->text().length())
-				gg_pubdir50_add(req, GG_PUBDIR50_UIN, (const char *)native2cp(e_uin->text()).data());
+				gg_pubdir50_add(req, GG_PUBDIR50_UIN, (const char *)unicode2cp(e_uin->text()).data());
 			}
 
 	if (only_active->isChecked())
@@ -296,9 +296,9 @@ void SearchDialog::showResults(gg_pubdir50_t res) {
 			pix = icons->loadIcon(gg_icons[statusGGToStatusNr(atoi(status) & 127)]);
 		else
 			pix = icons->loadIcon("offline");
-		qlv = new QListViewItem(results, QString::null, cp2native((unsigned char *)uin),
-			cp2native((unsigned char *)first), cp2native((unsigned char *)city),
-			cp2native((unsigned char *)nick), cp2native((unsigned char *)born));
+		qlv = new QListViewItem(results, QString::null, cp2unicode((unsigned char *)uin),
+			cp2unicode((unsigned char *)first), cp2unicode((unsigned char *)city),
+			cp2unicode((unsigned char *)nick), cp2unicode((unsigned char *)born));
 		qlv->setPixmap(0, *pix);
 		}
 

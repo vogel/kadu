@@ -128,7 +128,7 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char *msg, time_t tim
 	if (isIgnored(senders[0]))
 		return;
 
-	QString mesg = cp2native(msg);
+	QString mesg = cp2unicode(msg);
 	// ignorujemy wiadomosci systemowe (tylko na konsole)
 	if (senders[0] == 0)
 	{
@@ -172,7 +172,7 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char *msg, time_t tim
 		kdebug("Decrypted message is: %s\n",decoded);
 		if (decoded != NULL)
 			strcpy((char *)msg, decoded);
-		mesg = cp2native(msg);
+		mesg = cp2unicode(msg);
 		}
 #endif
 
@@ -342,7 +342,7 @@ void eventGotUserlist(struct gg_event *e) {
 			user.description.truncate(0);
 
 		if (e->type == GG_EVENT_NOTIFY_DESCR) {
-			user.description.append(cp2native((unsigned char *)e->event.notify_descr.descr));
+			user.description.append(cp2unicode((unsigned char *)e->event.notify_descr.descr));
 			}
 
 		switch (n->status) {
@@ -424,7 +424,7 @@ void eventStatusChange(struct gg_event * e) {
 	if (user.description)
 		user.description.truncate(0);
 	if (ifStatusWithDescription(e->event.status.status)) {
-		user.description.append(cp2native((unsigned char *)e->event.status.descr));
+		user.description.append(cp2unicode((unsigned char *)e->event.status.descr));
 		}
 	userlist.changeUserStatus(e->event.status.uin, e->event.status.status);
 	

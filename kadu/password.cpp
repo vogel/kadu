@@ -185,10 +185,10 @@ void changePassword::start() {
 		return;
 		}
 	char *actpasswd, *newpasswd, *actmail, *newmail;
-	actpasswd = strdup(native2cp(actpwd->text()).data());
-	newpasswd = strdup(native2cp(newpwd->text()).data());
-	actmail = strdup(native2cp(actemail->text()).data());
-	newmail = strdup(native2cp(newemail->text()).data());
+	actpasswd = strdup(unicode2cp(actpwd->text()).data());
+	newpasswd = strdup(unicode2cp(newpwd->text()).data());
+	actmail = strdup(unicode2cp(actemail->text()).data());
+	newmail = strdup(unicode2cp(newemail->text()).data());
 	if (!(h = gg_change_passwd2(config.uin, actpasswd, newpasswd, actmail, newmail, 1))) {
 		status->setText(i18n("Error"));
 		free(actpasswd);
