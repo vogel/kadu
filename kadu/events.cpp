@@ -199,7 +199,8 @@ void EventManager::connectionFailedSlot()
 void EventManager::connectionBrokenSlot()
 {
 	kdebug("Connection broken unexpectedly!\nUnscheduled connection termination\n");
-	kadu->setCurrentStatus(GG_STATUS_NOT_AVAIL);
+	kadu->disconnectNetwork();
+//	kadu->setCurrentStatus(GG_STATUS_NOT_AVAIL);
 	if (kadu->autohammer)
 		AutoConnectionTimer::on();
 };

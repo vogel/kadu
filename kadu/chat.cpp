@@ -387,9 +387,11 @@ void Chat::curPosChanged(int para, int pos) {
 			if (edit->color() == QColor(colors[i]))
 				break;
 		QPixmap p(16, 16);
+		if (i >= 16)
+			i = 15;
 		p.fill(colors[i]);
-		colorbtn->setPixmap(p);
 		actcolor = colors[i];
+		colorbtn->setPixmap(p);
 		}
 	
 }

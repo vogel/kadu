@@ -43,6 +43,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * porz±dki w sms.cpp/h - obs³uga ka¿dej bramki w oddzielnej klasie. Wszystkie
   dziedzicz± z podstawowej SmsGateway. Mo¿na bêdzie ³atwo dok³adaæ nowe bramki.
   Przymiarki do nowej ERY (adrian)
+* okno rozmowy: ustawianie koloru z poza tablicy nie jest mo¿liwe (chilek)
+* roz³±czenie z serwerem GG zawsze powinno wy³±czaæ pingowanie serwera GG (chilek)
 
 +++ wersja 0.3.4-pre3
 * dodane przeszukiwanie historii (chilek)
