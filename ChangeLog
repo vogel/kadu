@@ -141,6 +141,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   funkcje getSelected.. w klasie UserBox (pawel_p)
 * zamiana cudzyslowia na "&quot;" i odwrotnie w HtmlDocument (nazgul/adrian)
 * poprawka segfaulta przy zmianie altnicka uczestnika konferencji (adrian)
+* hack w zakladkach - preferuje bitmapowe czcionki, oszczedza miejsce (tomee)
 
 +++ wersja 0.3.6 (22.11.2003)
 * je¶li klikniemy na jaki¶ kontakt w userboxie, od którego otrzymali¶my jak±¶
