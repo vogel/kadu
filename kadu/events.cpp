@@ -37,6 +37,7 @@
 #include <pwd.h>
 #include <netinet/in.h>
 #include <errno.h>
+#include <time.h>
 
 #include "kadu.h"
 #include "ignore.h"
