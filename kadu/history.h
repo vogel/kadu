@@ -49,6 +49,12 @@ struct HistoryFindRec {
 	int actualrecord;
 };
 
+struct HistoryDate {
+	QDateTime date;
+	uint idx;
+};
+
+
 /**
 	Okno historii rozmowy
 **/
@@ -58,8 +64,7 @@ class History : public QDialog {
 		History(UinsList uins);
 		static void initModule();
 	public slots:
-		void prevBtnClicked();
-		void nextBtnClicked();
+		void dateClicked(int index);
 		void searchBtnClicked();
 		void searchNextBtnClicked();
 		void searchPrevBtnClicked();
@@ -71,12 +76,14 @@ class History : public QDialog {
 		QString gaduStatus2symbol(unsigned int status);
 		void closeEvent(QCloseEvent *e);
 
+		QListBox *dates;
 		QTextBrowser *body;
 		UinsList uins;
 		int start;
 		HistoryFindRec findrec;
 		bool closeDemand;
 		bool finding;
+		QValueList<HistoryDate> dateentries;
 };
 
 class HistorySearch : public QDialog {
@@ -115,11 +122,6 @@ class HistorySearch : public QDialog {
 /**
 	Menad¿er historii
 **/
-struct HistoryDate {
-	QDateTime date;
-	uint idx;
-};
-
 class HistoryManager : public QObject
 {
 	Q_OBJECT

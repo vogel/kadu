@@ -724,7 +724,7 @@ uint HistoryManager::getHistoryDate(QTextStream &stream) {
 }
 
 QValueList<HistoryDate> HistoryManager::getHistoryDates(UinsList uins) {
-	kdebug("HistoryManager::getHistoryEntries(UinsList uins)\n");
+	kdebug("HistoryManager::getHistoryDates(UinsList uins)\n");
 
 	QValueList<HistoryDate> entries;
 	HistoryDate newdate;
@@ -752,8 +752,9 @@ QValueList<HistoryDate> HistoryManager::getHistoryDates(UinsList uins) {
 
 	oldidx = actidx = 0;
 	olddate = actdate = getHistoryDate(stream);
+	kdebug("HistoryManager::getHistoryDates(): actdate = %d\n", actdate);
 	newdate.idx = 0;
-	newdate.date.setTime_t(actdate);
+	newdate.date.setTime_t(actdate * 86400);
 	entries.append(newdate);
 
 	while (actidx < count - 1) {
@@ -796,7 +797,7 @@ QValueList<HistoryDate> HistoryManager::getHistoryDates(UinsList uins) {
 				f.at(offs);
 				actdate = getHistoryDate(stream);
 				}
-			newdate.date.setTime_t(actdate);
+			newdate.date.setTime_t(actdate * 86400);
 			entries.append(newdate);
 			olddate = actdate;
 			}
@@ -1004,16 +1005,12 @@ History::History(UinsList uins): uins(uins), closeDemand(false), finding(false) 
 
 	QGridLayout *grid = new QGridLayout(this, 2, 4, 3, 3);
 
+	dates = new QListBox(this, "History dates");
+
 	body = new QTextBrowser(this, "History browser");
 	body->setReadOnly(true);
 	body->setFont(config_file.readFontEntry("Look","ChatFont"));
 
-//	QPushButton *closebtn = new QPushButton(this);
-//	closebtn->setText(tr("&Close"));
-	QPushButton *prevbtn = new QPushButton(this);
-	prevbtn->setPixmap(icons_manager.loadIcon("PreviousPageHistory"));
-	QPushButton *nextbtn = new QPushButton(this);
-	nextbtn->setPixmap(icons_manager.loadIcon("NextPageHistory"));
 	QPushButton *searchbtn = new QPushButton(this);
 	searchbtn->setText(tr("&Find"));
 	QPushButton *searchnextbtn = new QPushButton(this);
@@ -1021,20 +1018,20 @@ History::History(UinsList uins): uins(uins), closeDemand(false), finding(false) 
 	QPushButton *searchprevbtn = new QPushButton(this);
 	searchprevbtn->setText(tr("Find &previous"));
 
-	grid->addMultiCellWidget(body, 0, 0, 0, 4);
-	grid->addWidget(prevbtn, 1, 0);
-	grid->addWidget(nextbtn, 1, 1);
-	grid->addWidget(searchbtn, 1, 2);
-	grid->addWidget(searchnextbtn, 1, 3);
-	grid->addWidget(searchprevbtn, 1, 4);
-//	grid->addWidget(closebtn, 1, 5, Qt::AlignRight);
+	grid->addMultiCellWidget(dates, 0, 0, 0, 0);
+	grid->addMultiCellWidget(body, 0, 0, 1, 3);
+	grid->addWidget(searchbtn, 1, 1);
+	grid->addWidget(searchnextbtn, 1, 2);
+	grid->addWidget(searchprevbtn, 1, 3);
+	grid->setColStretch(0, 1);
+	grid->setColStretch(1, 100);
+	grid->setColStretch(2, 100);
+	grid->setColStretch(3, 100);
 
-	connect(prevbtn, SIGNAL(clicked()), this, SLOT(prevBtnClicked()));
-	connect(nextbtn, SIGNAL(clicked()), this, SLOT(nextBtnClicked()));
+	connect(dates, SIGNAL(highlighted(int)), this, SLOT(dateClicked(int)));
 	connect(searchbtn, SIGNAL(clicked()), this, SLOT(searchBtnClicked()));
 	connect(searchnextbtn, SIGNAL(clicked()), this, SLOT(searchNextBtnClicked()));
 	connect(searchprevbtn, SIGNAL(clicked()), this, SLOT(searchPrevBtnClicked()));
-//	connect(closebtn, SIGNAL(clicked()), this, SLOT(close()));
 
 	resize(500,400);
 
@@ -1042,32 +1039,31 @@ History::History(UinsList uins): uins(uins), closeDemand(false), finding(false) 
 	findrec.reverse = 0;
 	findrec.actualrecord = -1;
 
-	QValueList<HistoryDate> entries = history.getHistoryDates(uins);
-	kdebug("History::History(): dates = %d\n", entries.count());
 	int count = history.getHistoryEntriesCount(uins);
-	start = count - 100 < 0 ? 0 : count - 100;
-	count -= start;
-	showHistoryEntries(start, count);
+	if (count) {
+		dateentries = history.getHistoryDates(uins);
+		for (int i = 0; i < dateentries.count(); i++)
+			dates->insertItem(dateentries[i].date.toString("dd.MM.yyyy"));
+		dates->setCurrentItem(dateentries.count() - 1);
+		dates->setSelected(dateentries.count() - 1, TRUE);
+		QValueList<HistoryDate>::iterator it = dateentries.end();
+		it--;
+		if (it != dateentries.end())
+			start = (*it).idx;
+		else
+			start = 0;
+		count -= start;
+		showHistoryEntries(start, count);
+		}
 }
 
-void History::prevBtnClicked() {
-	int count = history.getHistoryEntriesCount(uins) - start;
-	start -= 100;
-	if (start < 0)
-		start = 0;
-	if (count > 100)
-		count = 100;
-	showHistoryEntries(start, count);
-}
-
-void History::nextBtnClicked() {
+void History::dateClicked(int index) {
 	int count = history.getHistoryEntriesCount(uins);
-	start += 100;
-	if (start > count - 100)
-		start = count - 100;
-	if (start < 0)
-		start = 0;
-	count = count - start > 100 ? 100 : count - start;
+	start = dateentries[index].idx;
+	if (index < dateentries.count() - 1)
+		count = dateentries[index + 1].idx - start;
+	else
+		count -= start;
 	showHistoryEntries(start, count);
 }
 
