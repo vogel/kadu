@@ -75,7 +75,7 @@ void Hint::setLookHint(const QFont &font, const QColor &color, const QColor &bgc
 Hint::~Hint(void)
 {
 	kdebug("Hint::~Hint()\n");
-	if (icon)
+	if (icon != NULL)
 		delete icon;
 	delete label;
 }
@@ -202,10 +202,8 @@ void HintManager::addHintStatus(const UserListElement &ule, unsigned int status,
 	{
 		if (ifStatusWithDescription(status) && config_file.readBoolEntry("Hints","NotifyHintDescription"))
 		{
-			kdebug("z opisem\n");
 			if (config_file.readBoolEntry("Hints","NotifyHintUseSyntax"))
 			{
-				kdebug("z skladnia\n");
 				addHint(parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true), *icons->loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
 				return;
 			}
