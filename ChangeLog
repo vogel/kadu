@@ -282,7 +282,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * porz±dki, poprawki przy tworzeniu i niszczeniu dialogów FileTransferDialog
   i VoiceChatDialog (adrian)
 * okno chat je¿eli jest zminimalizowane, to przy dwukliku na li¶cie kontaktów
-  siê odminimalizuje ;) (joi)
+  siê odminimalizuje ;) (w Qt>=3.3) (joi)
 * libgadu: b³êdnie liczone sumy kontrolne obrazków (joi)
 * libgadu: wysy³anie du¿ych pakietów nie "zawiesza" po³±czenia - obrazki 
   powinny ju¿ zawsze dochodziæ (joi)

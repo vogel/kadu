@@ -134,7 +134,9 @@ int ChatManager::openChat(UinsList senders,time_t time)
 	for (unsigned int i = 0; i < Chats.count(); ++i)
 		if (Chats[i]->uins().equals(senders))
 		{
+#if QT_VERSION >= 0x030300
 			Chats[i]->setWindowState(Chats[i]->windowState() & ~WindowMinimized);
+#endif
 			Chats[i]->raise();
 			Chats[i]->setActiveWindow();
 			return i;
