@@ -11,6 +11,7 @@
 #include <qtextstream.h>
 #include <qdir.h>
 #include <qtextcodec.h>
+#include <qmovie.h>
 
 #include "emoticons.h"
 #include "debug.h"
@@ -143,23 +144,22 @@ QString EmoticonsManager::emoticonPicPath(int emot_num)
 				
 EmoticonsManager emoticons;
 
-#include <qimage.h>
-
 AnimTextItem::AnimTextItem(
-	QTextDocument *p, QTextEdit* editor,
+	QTextDocument *p, QTextEdit* edit,
 	const QString& filename, const QColor& bgcolor )
 	: QTextCustomItem(p)
 {
-	Editor=editor;
-	Label=new QLabel(Editor->viewport());
-	Editor->addChild(Label);
+	Edit=edit;
+	Label=new QLabel(Edit->viewport());
+	Edit->addChild(Label);
 	Label->setMovie(QMovie(filename));
-	QImage* i=new QImage(filename);
-	width=i->width();
-	height=i->height();
-	Label->resize(i->size());
+	if(SizeCheckImage==NULL)
+		SizeCheckImage=new QImage();
+	SizeCheckImage->load(filename);
+	width=SizeCheckImage->width();
+	height=SizeCheckImage->height();
+	Label->resize(SizeCheckImage->size());
 	Label->setPaletteBackgroundColor(bgcolor);
-	delete i;
 };
 
 AnimTextItem::~AnimTextItem()
@@ -172,16 +172,19 @@ void AnimTextItem::draw(
 	int cw, int ch, const QColorGroup& cg,
 	bool selected )
 {
-	p->fillRect(x,y,width,height,Qt::blue);
-	if(Label->isVisible())
+//	p->fillRect(x,y,width,height,Qt::blue);
+	if(Label->isVisible()&&EditSize==Edit->size())
 		return;
+	EditSize=Edit->size();
 	QPoint u=p->xForm(QPoint(x,y));
-	fprintf(stderr,"%i\n",Editor->contentsY());
-	if(Editor->contentsY()==0)
-		u+=Editor->paragraphRect(0).topLeft();
+	fprintf(stderr,"%i\n",Edit->contentsY());
+	if(Edit->contentsY()==0)
+		u+=Edit->paragraphRect(0).topLeft();
 	Label->move(u);
 	Label->show();
 };
+
+QImage* AnimTextItem::SizeCheckImage=NULL;
 
 AnimStyleSheet::AnimStyleSheet(
 	QTextEdit* parent, const QString& path, const char* name )

@@ -13,6 +13,10 @@
 #include <qvaluelist.h>
 #include <qstringlist.h>
 #include <qregexp.h>
+#include <qtextedit.h>
+#include <private/qrichtext_p.h>
+#include <qlabel.h>
+#include <qimage.h>
 
 class EmoticonsManager
 {
@@ -45,16 +49,13 @@ class EmoticonsManager
 
 extern EmoticonsManager emoticons;
 
-#include <qtextedit.h>
-#include <private/qrichtext_p.h>
-#include <qmovie.h>
-#include <qlabel.h>
-
 class AnimTextItem : public QTextCustomItem
 {
 	private:
-		QTextEdit* Editor;
+		static QImage* SizeCheckImage;
+		QTextEdit* Edit;
 		QLabel* Label;
+		QSize EditSize;
 	public:
 		AnimTextItem(
 			QTextDocument *p, QTextEdit* edit,
