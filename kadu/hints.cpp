@@ -231,7 +231,7 @@ void HintManager::leftButtonSlot(unsigned int id)
 
 void HintManager::rightButtonSlot(void)
 {
-	kdebug("HintManager::rightButtonSlot()\n);
+	kdebug("HintManager::rightButtonSlot()\n");
 
 	hint_timer->stop();
 	for (int i = hints.count(); i > 0; i--)
