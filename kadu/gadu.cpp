@@ -13,6 +13,8 @@
 #include "events.h"
 #include "kadu.h"
 
+#include <netinet/in.h>
+
 #include <qregexp.h>
 #include <qsocketnotifier.h>
 #include <qtextcodec.h>
