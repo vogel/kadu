@@ -85,7 +85,6 @@ void loadKaduConfig(void) {
 
 	config.dock = konf->readBoolEntry("UseDocking",true);
 	config.rundocked = konf->readBoolEntry("RunDocked", false);
-	config.dock_wmaker = konf->readBoolEntry("UseWMakerStyleDocking", false);
 
 	config.raise = konf->readBoolEntry("AutoRaise",false);
 	config.privatestatus = konf->readBoolEntry("PrivateStatus", false);
@@ -221,7 +220,6 @@ void saveKaduConfig(void) {
 
 	konf->writeEntry("UseDocking",config.dock);
 	konf->writeEntry("RunDocked",config.rundocked);	
-	konf->writeEntry("UseWMakerStyleDocking",config.dock_wmaker);
 
 	konf->writeEntry("AutoRaise",config.raise);
 	konf->writeEntry("PrivateStatus",config.privatestatus);

@@ -82,7 +82,6 @@ struct config {
 
 	bool dock;
 	bool rundocked;
-	bool dock_wmaker;
 	
 	bool privatestatus;
 	bool grouptabs;

@@ -15,26 +15,28 @@
 #include <qstringlist.h>
 #include <qpixmap.h>
 
-class TrayIcon : protected QLabel
+class TrayIcon : public QWidget
 {
 	Q_OBJECT
 
 	private:
 		friend class TrayHint;
+		QLabel* icon;
 		TrayHint *hint;
-		QWidget* WMakerMasterWidget;
 		QTimer *icon_timer;
 		bool blink;
 
 	protected:
 		void setPixmap(const QPixmap& pixmap);
-		void mousePressEvent(QMouseEvent*);
+		virtual void resizeEvent(QResizeEvent* e);
+		virtual void enterEvent(QEvent* e);
+		virtual void mousePressEvent(QMouseEvent*);
 
 	public:
 		TrayIcon(QWidget *parent = 0, const char *name = 0);
 		~TrayIcon();
+		QPoint trayPosition();
 		void setType(QPixmap &pixmap);
-		void show();
 		void connectSignals();
 		void showHint(const QString&, const QString&, int index);
 		void showErrorHint(const QString&);

@@ -1,5 +1,13 @@
 +++ wersja 0.3.3-final
-* ikonka wiadomo¶ci i ikon statusu "ukryty" z telefonikiem do oddzielnych plików (chilek)
+* ikonka wiadomo¶ci i ikon statusu "ukryty" z telefonikiem
+  do oddzielnych plików (chilek)
+* tray: przepisany kod dokowania w tray'u. Kadu powinno siê ju¿ ³adnie dokowaæ
+  zarówno w KDE jak i w GNOME 1.x i 2.x oraz pod Window Maker'em (adrian)
+* tray: usuniêta opcja UseWMakerStyleDocking z kadu.conf. Kadu dokuje siê
+  automatycznie bez potrzeby ustawiania typu dokowania (adrian)
+* tray: po najechaniu mysz± na ikonkê automatycznie dostaje ona focus.
+  Rozwi±zuje to problem braku podpowiedzi (hint) z opisem guzików gdy
+  Kadu nie jest aktywne (adrian)
 
 +++ wersja 0.3.3-rc4
 * dodatkowe opcje dostêpne w menu podrêcznym u¿ytkownika (blokowanie, ignorowanie,

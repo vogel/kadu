@@ -27,113 +27,150 @@
 #include <X11/Xutil.h>
 #include <X11/Xatom.h>
 
-void send_manager_message (	Display* d,
-				    long         message,
-				    Window       window,
-				    long         data1,
-				    long         data2,
-				    long         data3)
-{
-  XClientMessageEvent ev;
-  
-  ev.type = ClientMessage;
-  ev.window = window;
-  ev.message_type = XInternAtom(d,"_NET_SYSTEM_TRAY_OPCODE",False); //icon->system_tray_opcode_atom;
-  ev.format = 32;
-  ev.data.l[0] = CurrentTime; //time(NULL); //gdk_x11_get_server_time (GTK_WIDGET (icon)->window);
-  ev.data.l[1] = message;
-  ev.data.l[2] = data1;
-  ev.data.l[3] = data2;
-  ev.data.l[4] = data3;
+extern Time qt_x_time;
 
-  
-  //gdk_error_trap_push ();
-  XSendEvent (d,window
-	      /*icon->manager_window*/, False, NoEventMask, (XEvent *)&ev);
-  XSync (d, False);
-  //gdk_error_trap_pop ();
+static XErrorHandler old_handler = 0;
+static int dock_xerror = 0;
+
+static int dock_xerrhandler(Display* dpy, XErrorEvent* err)
+{
+    dock_xerror = err->error_code;
+    return old_handler(dpy, err);
 }
 
-void send_dock_request (Display* d,QWidget *widget)
+static void trap_errors()
 {
-  send_manager_message (/*icon,*/d,
-				      /*SYSTEM_TRAY_REQUEST_DOCK*/0,
-				      widget->winId()/*icon->manager_window*/,
-				      widget->winId()/*gtk_plug_get_id (GTK_PLUG (icon))*/,
-				      0, 0);
+    dock_xerror = 0;
+    old_handler = XSetErrorHandler(dock_xerrhandler);
 }
 
+static bool untrap_errors()
+{
+    XSetErrorHandler(old_handler);
+    return (dock_xerror == 0);
+}
+
+static bool send_message(
+    Display* dpy, /* display */
+    Window w,     /* sender (tray icon window) */
+    long message, /* message opcode */
+    long data1,   /* message data 1 */
+    long data2,   /* message data 2 */
+    long data3    /* message data 3 */
+)
+{
+    XEvent ev;
+
+    memset(&ev, 0, sizeof(ev));
+    ev.xclient.type = ClientMessage;
+    ev.xclient.window = w;
+    ev.xclient.message_type = XInternAtom (dpy, "_NET_SYSTEM_TRAY_OPCODE", False );
+    ev.xclient.format = 32;
+    ev.xclient.data.l[0] = CurrentTime;
+    ev.xclient.data.l[1] = message;
+    ev.xclient.data.l[2] = data1;
+    ev.xclient.data.l[3] = data2;
+    ev.xclient.data.l[4] = data3;
+
+    trap_errors();
+    XSendEvent(dpy, w, False, NoEventMask, &ev);
+    XSync(dpy, False);
+    return untrap_errors();
+};
+
+#define SYSTEM_TRAY_REQUEST_DOCK    0
+#define SYSTEM_TRAY_BEGIN_MESSAGE   1
+#define SYSTEM_TRAY_CANCEL_MESSAGE  2
 
 TrayIcon::TrayIcon(QWidget *parent, const char *name)
-	: QLabel(0,"TrayIcon",WMouseNoMask)
+	: QWidget(NULL,"TrayIcon",WMouseNoMask | WType_TopLevel | WStyle_Customize | WStyle_NoBorder | WStyle_StaysOnTop)
 {
 	if (!config.dock)
 		return;
+
 	QPixmap pix = *icons->loadIcon("offline");
-	QLabel::setPixmap(pix);
-	QToolTip::add(this, i18n("Left click - hide/show window\nMiddle click or CTRL+any click- next message"));
-	// WindowMaker
-	if(config.dock_wmaker)
-	{
-		resize(64,64);
-		setAlignment(Qt::AlignHCenter|Qt::AlignVCenter);
-		update();
 
-		WMakerMasterWidget = new QWidget(0,"WMakerMasterWidget");
-		WMakerMasterWidget->setGeometry(-10,-10,0,0);
-
-		Display* dsp = x11Display();
-		WId win = WMakerMasterWidget->winId();
-		XWMHints* hints = XGetWMHints(dsp, win);
-		hints->window_group = win;
-		hints->icon_window = winId();
-		hints->flags |= WindowGroupHint | IconWindowHint;
-		XSetWMHints(dsp, win, hints);
-		XFree( hints );		
-	}
-	// KDE/GNOME
-	else
-	{
-		setWFlags(WRepaintNoErase);
-		resize(22,22);
-		update();
-//		send_dock_request(x11Display(),this);
-		Display *dsp = x11Display();
-		WId win = winId();
-		int r;
-		int data = 1;
-		r = XInternAtom(dsp, "KWM_DOCKWINDOW", false);
-		XChangeProperty(dsp, win, r, r, 32, 0, (uchar *)&data, 1);
-		data = 0;
-		r = XInternAtom(dsp, "_KDE_NET_WM_SYSTEM_TRAY_WINDOW_FOR", false);
-		XChangeProperty(dsp, win, r, XA_WINDOW, 32, 0, (uchar *)&data, 1);
-	};
-	//
+	setMinimumSize(pix.size());
+	resize(pix.size());
 	setBackgroundMode(X11ParentRelative);
+	setMouseTracking(true);
+	setWFlags(WRepaintNoErase);
+
+	icon=new QLabel(this);
+	icon->setBackgroundMode(X11ParentRelative);
+	icon->setAlignment(Qt::AlignVCenter);
+	icon->setPixmap(pix);
+	QToolTip::add(icon, i18n("Left click - hide/show window\nMiddle click or CTRL+any click- next message"));
+	icon->show();
+
+	// Aby zapobiec pozostaj±cej "klepsydrze" pod KDE
+	// pokazujemy okno przed zadokowaniem, aby KDE wiedzia³o,
+	// ¿e aplikacja uruchomi³a siê prawid³owo
+	show();
+
 	icon_timer = new QTimer(this);
 	blink = FALSE;
 	QObject::connect(icon_timer, SIGNAL(timeout()), this, SLOT(changeIcon()));
 
 	hint = new TrayHint(0);
-}
+
+	Display *dsp = x11Display();
+	WId win = winId();
+
+	// SPOSÓB PIERWSZY
+	// System Tray Protocol Specification
+	// Dzia³a pod KDE 3.x (przynajmniej pod 3.1) i GNOME 2.x
+	Screen *screen = XDefaultScreenOfDisplay(dsp);
+	int screen_id = XScreenNumberOfScreen(screen);
+	char buf[32];
+	snprintf(buf, sizeof(buf), "_NET_SYSTEM_TRAY_S%d", screen_id);
+	Atom selection_atom = XInternAtom(dsp, buf, false);
+	XGrabServer(dsp);
+	Window manager_window = XGetSelectionOwner(dsp, selection_atom);
+	if (manager_window != None)
+		XSelectInput(dsp, manager_window, StructureNotifyMask);
+	XUngrabServer(dsp);
+	XFlush(dsp);
+	if (manager_window != None)
+		send_message(dsp, manager_window, SYSTEM_TRAY_REQUEST_DOCK, win, 0, 0);
+
+	// SPOSÓB DRUGI
+	// Dzia³a na KDE 3.x i pewnie na starszych
+	// oraz pod GNOME 1.x
+	Atom kde_net_system_tray_window_for_atom = XInternAtom(dsp, "_KDE_NET_WM_SYSTEM_TRAY_WINDOW_FOR", false);
+	long data[1];
+	data[0] = 0;
+	XChangeProperty(dsp, win, kde_net_system_tray_window_for_atom, XA_WINDOW,
+		32, PropModeReplace,(unsigned char*)data, 1);
+
+	// SPOSÓB TRZECI
+	// Dzia³a pod Window Maker'em
+	XWMHints *hints;
+	hints = XGetWMHints(dsp, win);
+	hints->initial_state = WithdrawnState;
+	hints->icon_window = icon->winId();
+	hints->window_group = win;
+	hints->flags = WindowGroupHint | IconWindowHint | StateHint;
+	XSetWMHints(dsp, win, hints);
+	XFree( hints );
+};
 
 TrayIcon::~TrayIcon()
 {
-	if(config.dock_wmaker)
-		delete WMakerMasterWidget;
-	
+	delete icon;	
 	delete hint;
-	
 	kdebug("TrayIcon::~TrayIcon()\n");
 }
 
+QPoint TrayIcon::trayPosition()
+{
+	return icon->mapToGlobal(QPoint(0,0));
+};
+
 void TrayIcon::setPixmap(const QPixmap& pixmap)
 {
-	QLabel::setPixmap(pixmap);
-	if(config.dock_wmaker)
-		WMakerMasterWidget->setIcon(pixmap);
-	else
-		repaint();
+	icon->setPixmap(pixmap);
+	repaint();
 };
 
 void TrayIcon::setType(QPixmap &pixmap)
@@ -173,16 +210,33 @@ void TrayIcon::dockletChange(int id)
 		}
 }
 
-void TrayIcon::show() {
-	if(config.dock_wmaker)
-		WMakerMasterWidget->show();
-	else
-		QLabel::show();
-}
-
 void TrayIcon::connectSignals() {
 	QObject::connect(dockppm, SIGNAL(activated(int)), this, SLOT(dockletChange(int)));
 }
+
+void TrayIcon::resizeEvent(QResizeEvent* e)
+{
+	icon->resize(size());
+};
+
+void TrayIcon::enterEvent(QEvent* e)
+{
+	if (!qApp->focusWidget())
+	{
+		XEvent ev;
+		memset(&ev, 0, sizeof(ev));
+		ev.xfocus.display = qt_xdisplay();
+		ev.xfocus.type = FocusIn;
+		ev.xfocus.window = winId();
+		ev.xfocus.mode = NotifyNormal;
+		ev.xfocus.detail = NotifyAncestor;
+		Time time = qt_x_time;
+		qt_x_time = 1;
+		qApp->x11ProcessEvent( &ev );
+		qt_x_time = time;
+	};
+	QWidget::enterEvent(e);
+};
 
 void TrayIcon::mousePressEvent(QMouseEvent * e)
 {
@@ -305,7 +359,7 @@ TrayHint::TrayHint(QWidget *parent, const char *name)
 void TrayHint::set_hint(void) {
 	QPoint pos_hint;
 	QSize size_hint;
-	QPoint pos_tray = trayicon->mapToGlobal(QPoint(0, 0));
+	QPoint pos_tray = trayicon->trayPosition();
 	QString text_hint; 
 	for (QStringList::Iterator points = hint_list.begin(); points != hint_list.end(); ++points)
 		text_hint.append(*points);
