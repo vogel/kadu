@@ -18,7 +18,7 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 #!/bin/bash
-# $Id: Instaluj,v 1.35 2004/06/20 14:50:58 romek Exp $
+# $Id: Instaluj,v 1.36 2004/06/21 14:18:31 romek Exp $
 # KaduInstaller - Copyright (C) 2004 Sad Mephisto <sad@antisocial.com>
 
 export LC_ALL=pl_PL
@@ -83,10 +83,11 @@ statyczne()
 		amarok "Pobiera opisy z Amarok - autopobór z http://" 0 \
 		mail "Obs³uga skrzynek e-mail - autopobór z http://" 0 \
 		filedesc "Pobiera opisy z pliku - autopobór z http://" 0 \
-		spellchecker "Zaznacza b³êdy - autopobór z http://" 0 2>log_selectedmodule
+		spellchecker "Zaznacza b³êdy - autopobór z http://" 0 \
+		pcspeaker "Obs³uga g³osnika systemowego" 0 2>log_selectedmodule
 
 		rm -f .config
-	MODULY="wmaker_docking speech dsp_sound arts_sound esd_sound nas_sound echo autoresponder tcl_scripting xmms amarok filedesc mail spellchecker"
+	MODULY="wmaker_docking speech dsp_sound arts_sound esd_sound nas_sound echo autoresponder tcl_scripting xmms amarok filedesc mail spellchecker pcspeaker"
 	for MODUL in $MODULY; do
 		if [[ `cat log_selectedmodule |grep $MODUL` != "" ]]; then
 			echo "module_$MODUL=y" >> .config
@@ -122,10 +123,11 @@ dynamiczne()
 		amarok "Pobiera opisy z Amarok - autopobór z http://" 0 \
 		mail "Obs³uga skrzynek e-mail - autopobór z http://" 0 \
 		filedesc "Pobiera opisy z pliku - autopobór z http://" 0 \
-		spellchecker "Zaznacza b³êdy - autopobór z http://" 0 2>log_selectedmodule
+		spellchecker "Zaznacza b³êdy - autopobór z http://" 0 \
+		pcspeaker "Obs³uga g³osnika systemowego" 0 2>log_selectedmodule
 
 		rm -f .config
-	MODULY="wmaker_docking speech dsp_sound arts_sound esd_sound nas_sound echo autoresponder tcl_scripting xmms amarok filedesc mail spellchecker"
+	MODULY="wmaker_docking speech dsp_sound arts_sound esd_sound nas_sound echo autoresponder tcl_scripting xmms amarok filedesc mail spellchecker pcspeaker"
 	for MODUL in $MODULY; do
 		if [[ `cat log_selectedmodule |grep $MODUL` != "" ]]; then
 			echo "module_$MODUL=m" >> .config
