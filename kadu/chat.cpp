@@ -522,6 +522,12 @@ void Chat::cancelMessage(void) {
 void Chat::sendMessage(void) {
 	int i,j;
 	uin_t *users;
+	
+	if (getActualStatus() == GG_STATUS_NOT_AVAIL) {
+		QMessageBox::critical(this, i18n("Send message error"),
+			i18n("Application encountered network error."));
+		return;
+		}
 #ifdef HAVE_OPENSSL
 	int enclen;
 	char encoded[4096];

@@ -16,6 +16,7 @@
 #include <qcstring.h>
 #include <kicontheme.h>
 #include <qaccel.h>
+#include <qmessagebox.h>
 #include <kiconloader.h>
 
 //
@@ -311,6 +312,12 @@ void Message::init(void) {
 
 /* the actual send */
 void Message::commitSend(void) {
+	if (getActualStatus() == GG_STATUS_NOT_AVAIL) {
+		QMessageBox::critical(this, i18n("Send message error"),
+			i18n("Application encountered network error."));
+		return;
+		}
+
 	sendbtn->setDisabled(true);
 
 	int uin;
