@@ -55,9 +55,6 @@ bool DnsHandler::isCompleted() {
 
 UserList::UserList() : QObject(), QValueList<UserListElement>()
 {
-	invisibleTimer = new QTimer;
-	connect(invisibleTimer, SIGNAL(timeout()), this, SLOT(timeout()));
-	invisibleTimer->start(1000, TRUE);
 	dnslookups.setAutoDelete(true);
 };
 
@@ -68,8 +65,6 @@ UserList::~UserList()
 		konieczne wiêc zakomentowa³em.
 		kdebug("UserList::~UserList(): dnslookups.count() = %d\n", dnslookups.count());
 	*/
-	invisibleTimer->stop();
-	delete invisibleTimer;
 }
 
 void UserList::addDnsLookup(uin_t uin, const QHostAddress &ip) {
@@ -99,23 +94,6 @@ void UserList::setDnsName(uin_t uin, const QString &name) {
 		kdebug("UserList::setDnsName(): dnsname for uin %d: %s\n", uin, name.latin1());
 		emit dnsNameReady(uin);
 		}
-}
-
-void UserList::timeout()
-{
-	for (iterator i = begin(); i != end(); i++) {
-		UserListElement &ule = *i;
-		if (ule.status == GG_STATUS_INVISIBLE || ule.status == GG_STATUS_INVISIBLE_DESCR ||
-			ule.status == GG_STATUS_INVISIBLE2) {
-			ule.time_to_death--;
-			if (!ule.time_to_death)
-				changeUserStatus(ule.uin, GG_STATUS_NOT_AVAIL);
-			else
-				if (ule.time_to_death < 0)
-					ule.time_to_death = 0;
-			}
-		}
-	invisibleTimer->start(1000, TRUE);
 }
 
 UserListElement& UserList::byUin(uin_t uin)
@@ -196,7 +174,6 @@ void UserList::addUser(const QString& FirstName,const QString& LastName,
 	e.description = Description;
 	e.anonymous = Anonymous;
 	e.port = 0;
-	e.time_to_death = 300;
 	append(e);
 	emit modified();
 };

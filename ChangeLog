@@ -66,6 +66,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * status do autoconnecta jest statusem ostatnio ustawionym w Kadu (mast3r)
 * checkConnection i QTimer readevent - zakomentowane bo do niczego nie potrzebne (mast3r)
 * w oknie wyszukiwania pokazuj± siê statusy "ukryte" (chilek)
+* wywalenie z kodu starej-niedzia³aj±cej metody wykrywania "ukrytych" (chilek)
 
 +++ wersja 0.3.4-pre3
 * dodane przeszukiwanie historii (chilek)

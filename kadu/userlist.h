@@ -56,7 +56,6 @@ struct UserListElement
 	QHostAddress ip;
 	QString dnsname;
 	short port;
-	int time_to_death;
 	bool blocking;
 	bool offline_to_user;
 	bool notify;
@@ -96,11 +95,7 @@ class UserList : public QObject, public QValueList<UserListElement>
 		void addDnsLookup(uin_t uin, const QHostAddress &ip);
 
 	protected:
-		QTimer *invisibleTimer;
 		DnsLookups dnslookups;
-
-	private slots:
-		void timeout();
 
 	signals:
 		void modified();

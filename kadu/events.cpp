@@ -452,14 +452,7 @@ void EventManager::userlistReceivedSlot(struct gg_event *e) {
 				kdebug("eventGotUserlist(): User %d went busy\n", n->uin);
 				break;
 			case GG_STATUS_NOT_AVAIL:
-				if (user.status == GG_STATUS_NOT_AVAIL
-					|| user.status == GG_STATUS_INVISIBLE2) {
-		    			kdebug("eventGotUserlist(): User %d went offline (probably invisible ;))\n", n->uin);
-					user.time_to_death = 300;
-					}
-				else
-					if (userlist.byUin(n->uin).status != GG_STATUS_NOT_AVAIL)
-						kdebug("eventGotUserlist(): User %d went offline\n", n->uin);
+				kdebug("eventGotUserlist(): User %d went offline\n", n->uin);
 				break;
 			case GG_STATUS_BLOCKED:
 				kdebug("eventGotUserlist(): User %d has blocked us\n", n->uin);
