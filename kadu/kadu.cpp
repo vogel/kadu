@@ -249,22 +249,6 @@ int statusGGToStatusNr(int status) {
     return -1;
 }
 
-char *preparePath(char *filename)
-{
-    static char path[1023];
-    char *home = getenv("HOME");
-    struct passwd *pw;
-
-    if (!home) {
-	if (!(pw = getpwuid(getuid())))
-	    return NULL;
-	home = pw->pw_dir;
-	}
-    snprintf(path, sizeof(path), "%s/.gg/%s", home, filename);
-
-    return path;
-}
-
 void deletePendingMessage(int nr) {
     int j;
     

@@ -294,7 +294,6 @@ extern QSocketNotifier *dccsnw;
 void cp_to_iso(unsigned char *);
 void iso_to_cp(unsigned char *);
 int statusGGToStatusNr(int);
-char *preparePath(char *);
 int getActualStatus();
 bool ifStatusWithDescription(int status);
 void deletePendingMessage(int nr);
