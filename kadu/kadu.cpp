@@ -1731,10 +1731,8 @@ void Kadu::startupProcedure()
 	status.setFriendsOnly(config_file.readBoolEntry("General", "PrivateStatus"));
 
 	if (!status.isOffline())
-	{
 		Autohammer = true;
-		gadu->status().setStatus(status);
-	}
+	gadu->status().setStatus(status);
 
 	kdebugf2();
 }
