@@ -258,7 +258,6 @@ void ChatManager::openPendingMsgs()
 	int i, k = -1;
 	PendingMsgs::Element elem;
 	bool stop = false;
-	UserListElement e;
 	QValueList<ChatMessage *> messages;
 
 	for(i = 0; i<pending.count(); ++i)
