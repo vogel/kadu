@@ -201,7 +201,7 @@ struct acks {
     int ack;
     int seq;
     int type;
-    QDialog *ptr;
+    QWidget *ptr;
 };
 
 class Operation : public QProgressDialog {
