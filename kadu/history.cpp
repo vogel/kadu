@@ -704,6 +704,110 @@ QValueList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int fr
 	return entries;
 }
 
+uint HistoryManager::getHistoryDate(QTextStream &stream) {
+	QString line;
+	static QStringList types = QStringList::split(" ", "smssend chatrcv chatsend msgrcv msgsend status");
+	QStringList tokens;
+	int type, pos;
+
+	line = stream.readLine();
+	tokens = QStringList::split(",", line);
+	type = types.findIndex(tokens[0]);
+	if (!type)
+		pos = 2;
+	else
+		if (type < 5)
+			pos = 3;
+		else
+			pos = 4;
+	return (tokens[pos].toUInt() / 86400);
+}
+
+QValueList<HistoryDate> HistoryManager::getHistoryDates(UinsList uins) {
+	kdebug("HistoryManager::getHistoryEntries(UinsList uins)\n");
+
+	QValueList<HistoryDate> entries;
+	HistoryDate newdate;
+	QFile f, fidx;
+	QString path = ggPath("history/");
+	QString filename, line;
+	uint offs, count, oldidx, actidx, leftidx, rightidx, mididx, olddate, actdate, jmp;
+
+	count = getHistoryEntriesCount(uins);
+	if (!count)
+		return entries;
+
+	filename = getFileNameByUinsList(uins);
+	f.setName(path + filename);
+	if (!(f.open(IO_ReadOnly))) {
+		kdebug("HistoryManager::getHistoryDates(UinsList uins): Error opening history file %s\n", (const char *)filename.local8Bit());
+		return entries;
+		}
+	QTextStream stream(&f);
+	stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
+
+	fidx.setName(f.name() + ".idx");
+	if (!fidx.open(IO_ReadOnly))
+		return entries;
+
+	oldidx = actidx = 0;
+	olddate = actdate = getHistoryDate(stream);
+	newdate.idx = 0;
+	newdate.date.setTime_t(actdate);
+	entries.append(newdate);
+
+	while (actidx < count - 1) {
+		jmp = 1;
+		do {
+			oldidx = actidx;
+			actidx += jmp;
+			jmp <<= 1;
+			if (jmp > 128)
+				jmp = 128;
+			if (actidx >= count)
+				actidx = count - 1;
+			if (actidx == oldidx)
+				break;
+			fidx.at(actidx * sizeof(int));
+			fidx.readBlock((char *)&offs, (Q_LONG)sizeof(int));
+			f.at(offs);
+			actdate = getHistoryDate(stream);
+			} while (actdate == olddate);
+		if (actidx == oldidx)
+			break;
+		if (actdate > olddate) {
+			leftidx = oldidx;
+			rightidx = actidx;
+			while (rightidx - leftidx > 1) {
+				actidx = (leftidx + rightidx) / 2;
+				fidx.at(actidx * sizeof(int));
+				fidx.readBlock((char *)&offs, (Q_LONG)sizeof(int));
+				f.at(offs);
+				actdate = getHistoryDate(stream);
+				if (actdate > olddate)
+					rightidx = actidx;
+				else
+					leftidx = actidx;
+				}
+			newdate.idx = actidx = rightidx;
+			if (actdate == olddate) {
+				fidx.at(actidx * sizeof(int));
+				fidx.readBlock((char *)&offs, (Q_LONG)sizeof(int));
+				f.at(offs);
+				actdate = getHistoryDate(stream);
+				}
+			newdate.date.setTime_t(actdate);
+			entries.append(newdate);
+			olddate = actdate;
+			}
+		}
+
+	fidx.close();
+	f.close();
+
+	return entries;
+}
+
 void HistoryManager::buildIndexPrivate(const QString &filename) {
 	kdebug("HistoryManager::buildIndexPrivate()\n");
 	QString fnameout = filename + ".idx";
@@ -938,6 +1042,8 @@ History::History(UinsList uins): uins(uins), closeDemand(false), finding(false) 
 	findrec.reverse = 0;
 	findrec.actualrecord = -1;
 
+	QValueList<HistoryDate> entries = history.getHistoryDates(uins);
+	kdebug("History::History(): dates = %d\n", entries.count());
 	int count = history.getHistoryEntriesCount(uins);
 	start = count - 100 < 0 ? 0 : count - 100;
 	count -= start;

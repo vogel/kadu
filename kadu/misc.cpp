@@ -83,7 +83,7 @@ QString printDateTime(const QDateTime &datetime) {
 	dt2.setTime(QTime(0, 0));
 	tmp = datetime.toString("hh:mm:ss");
 	delta = dt2.secsTo(datetime);
-	kdebug("printDateTime(): %d\n", delta);
+//	kdebug("printDateTime(): %d\n", delta);
 	if (delta < 0 || delta >= 3600 * 24)
 		tmp.append(datetime.toString(" (dd.MM.yyyy)"));
 	return tmp;

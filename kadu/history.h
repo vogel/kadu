@@ -115,6 +115,11 @@ class HistorySearch : public QDialog {
 /**
 	Menad¿er historii
 **/
+struct HistoryDate {
+	QDateTime date;
+	uint idx;
+};
+
 class HistoryManager : public QObject
 {
 	Q_OBJECT
@@ -132,6 +137,7 @@ class HistoryManager : public QObject
 		int getHistoryEntriesCount(UinsList uins);
 		int getHistoryEntriesCount(QString mobile = QString::null);
 		QValueList<HistoryEntry> getHistoryEntries(UinsList uins, int from, int count, int mask = HISTORYMANAGER_ENTRY_ALL);
+		QValueList<HistoryDate> getHistoryDates(UinsList uins);
 		int getHistoryEntryIndexByDate(UinsList uins, QDateTime &date, bool endate = false);
 		static QString getFileNameByUinsList(UinsList &uins);
 		static QStringList mySplit(const QChar &sep, const QString &str);
@@ -139,6 +145,7 @@ class HistoryManager : public QObject
 	private:
 		QString text2csv(const QString &text);
 		int getHistoryEntriesCountPrivate(const QString &filename);
+		uint getHistoryDate(QTextStream &stream);
 		void buildIndexPrivate(const QString &filename);
 		
 	public slots:
