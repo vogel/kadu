@@ -1133,10 +1133,13 @@ void Kadu::setStatus(int status) {
 			else
 				gg_change_status_descr(&sess,
 					status | (GG_STATUS_FRIENDS_MASK * config.privatestatus), (const char *)descr);
+			QToolTip::add(dw, i18n("Left click - hide/show window\nMiddle click - next message\n<B>Description</B>:\n%1").arg(own_description));
 			delete descr;
 			}
-		else
+		else {
 			gg_change_status(&sess, status | (GG_STATUS_FRIENDS_MASK * config.privatestatus));
+			QToolTip::add(dw, i18n("Left click - hide/show window\nMiddle click - next message"));
+			}
 		if (sess.check & GG_CHECK_WRITE)
 			kadusnw->setEnabled(true);
 	
