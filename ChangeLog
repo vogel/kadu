@@ -128,6 +128,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * make clean nie kasuje plikow cxxflags i ldflags w modulach (adrian)
 * zaaplikowana latka googiego dodajaca sygnal emitowany przy nacisnieciu
   klawisza w oknie chat (adrian)
+* zaaplikowana latka michala dodajaca w autoaway uniwersalna metode wykrywania
+  ruchu myszy (adrian)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

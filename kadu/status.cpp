@@ -11,6 +11,7 @@
 #include <qtextstream.h>
 #include <qregexp.h>
 #include <qhgroupbox.h>
+#include <qcursor.h> 
 
 #include "gadu.h"
 #include "config_file.h"
@@ -101,9 +102,21 @@ void AutoAwayTimer::checkIdleTime()
 	static int kbdirqs = 0;
 	static int mouseirqs = 0;
 	static int i8042irqs = 0;
+	static QPoint mousepos(0, 0);
+	
 	int actkbdirqs   = 0;
 	int actmouseirqs = 0;
 	int acti8042irqs = 0;
+	bool inactive = true;
+	QPoint actmousepos;
+
+	actmousepos=QCursor::pos();
+	if(actmousepos==mousepos)
+		inactive = true;
+	else
+		idletime = 0;
+
+	mousepos=actmousepos;
 
 //	sprawdzenie czy wzrosla liczba obsluzonych przerwan klawiatury lub myszki
 	QFile f("/proc/interrupts");
@@ -127,14 +140,15 @@ void AutoAwayTimer::checkIdleTime()
 			}
 		f.close();
 		if (actkbdirqs == kbdirqs && actmouseirqs == mouseirqs && acti8042irqs == i8042irqs)
-			idletime++;
+			inactive=true;
 		else
 			idletime = 0;
 		kbdirqs = actkbdirqs;
 		mouseirqs = actmouseirqs;
 		i8042irqs = acti8042irqs;
 		}
-	else
+	
+	if(inactive)
 		idletime++;
 
 //	czy mamy stac sie "zajeci" po config.autoawaytime sekund nieaktywnosci
