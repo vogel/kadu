@@ -55,6 +55,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   dwie funkcje zamiast jednej (mast3r)
 * znowu dobrze zapamiêtuje blokowanych itd. itp. (chilek)
 * libgadu z 09.10.2003 (chilek)
+* wydzielenie funkcji openWebBrowser() - pomoc te¿ otwiera siê w zdefiniowanej
+  przez u¿ytkownika przegl±darce WWW (chilek)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci

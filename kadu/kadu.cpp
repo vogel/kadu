@@ -1138,14 +1138,12 @@ void Kadu::searchInDirectory()
 
 void Kadu::help()
 {
-	QProcess *help = new QProcess();
-	help->addArgument("konqueror");
-	if (QFile::exists(QString(DOCDIR)+"/index_doc.html"))
-		help->addArgument(QString(DOCDIR)+"/index_doc.html");
+	QString link;
+	if (QFile::exists(QString(DOCDIR) + "/index_doc.html"))
+		link = QString(DOCDIR) + "/index_doc.html";
 	else
-		help->addArgument("http://kadu.net/index_doc.html");
-	help->start();
-	delete help;
+		link = "http://kadu.net/index_doc.html";
+	openWebBrowser(link);
 }
 
 void Kadu::about()

@@ -35,6 +35,7 @@ QString printDateTime(const QDateTime &datetime);
 QString timestamp(time_t = 0);
 QDateTime currentDateTime();
 QString pwHash(const QString tekst);
+void openWebBrowser(const QString &link);
 void escapeSpecialCharacters(QString &msg);
 QString formatGGMessage(const QString &msg, int formats_length, void *formats);
 QString unformatGGMessage(const QString &msg, int &formats_length, void *&formats);

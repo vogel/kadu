@@ -576,31 +576,7 @@ void Chat::userWhois(void) {
 }
 
 void Chat::hyperlinkClicked(const QString &link) {
-	QProcess *browser;
-	QString cmd;
-	QStringList args;
-
-	if (config_file.readBoolEntry("WWW","DefaultWebBrowser"))
-		cmd = QString("konqueror %1").arg(link);
-	else {
-                if (config_file.readEntry("WWW","WebBrowser") == "") {
-			QMessageBox::warning(this, tr("WWW error"),
-				tr("Web browser was not specified. Visit the configuration section"));
-			kdebug("Chat::hyperlinkClicked(): Web browser NOT specified.\n");
-			return;
-			}
-		cmd = QString(config_file.readEntry("WWW","WebBrowser")).arg(link);
-		}
-	args = QStringList::split(" ", cmd);
-	for (QStringList::iterator i = args.begin(); i != args.end(); i++)
-		kdebug("Chat::hyperlinkClicked(): %s\n", (*i).latin1());
-	browser = new QProcess(this);
-	browser->setArguments(args);
-	if (!browser->start())
-		QMessageBox::critical(this, tr("WWW error"),
-			tr("Could not spawn Web browser process. Check if the Web browser is functional"));
-//	QObject::connect(smsProcess, SIGNAL(processExited()), this, SLOT(smsSigHandler()));
-	delete browser;
+	openWebBrowser(link);
 }
 
 void Chat::formatMessage(bool me, const QString &altnick, const QString &msg, const QString &time, QString &toadd) {

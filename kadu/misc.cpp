@@ -1,4 +1,5 @@
 #include <qapplication.h>
+#include <qmessagebox.h>
 #include <qpushbutton.h>
 #include <qlayout.h>
 #include <qstring.h>
@@ -9,6 +10,7 @@
 #include <qcolor.h>
 #include <qpainter.h>
 #include <qaccel.h>
+#include <qprocess.h>
 
 #include <pwd.h>
 #include <unistd.h>
@@ -125,6 +127,33 @@ QString pwHash(const QString tekst) {
 		nowytekst[ile] = QChar(znak);
 		}
 	return nowytekst;
+}
+
+void openWebBrowser(const QString &link) {
+	QProcess *browser;
+	QString cmd;
+	QStringList args;
+
+	if (config_file.readBoolEntry("WWW","DefaultWebBrowser"))
+		cmd = QString("konqueror %1").arg(link);
+	else {
+                if (config_file.readEntry("WWW","WebBrowser") == "") {
+			QMessageBox::warning(0, qApp->translate("@default", QT_TR_NOOP("WWW error")),
+				qApp->translate("@default", QT_TR_NOOP("Web browser was not specified. Visit the configuration section")));
+			kdebug("openWebBrowser(): Web browser NOT specified.\n");
+			return;
+			}
+		cmd = QString(config_file.readEntry("WWW","WebBrowser")).arg(link);
+		}
+	args = QStringList::split(" ", cmd);
+	for (QStringList::iterator i = args.begin(); i != args.end(); i++)
+		kdebug("openWebBrowser(): %s\n", unicode2latin(*i).data());
+	browser = new QProcess();
+	browser->setArguments(args);
+	if (!browser->start())
+		QMessageBox::critical(0, qApp->translate("@default", QT_TR_NOOP("WWW error")),
+			qApp->translate("@default", QT_TR_NOOP("Could not spawn Web browser process. Check if the Web browser is functional")));
+	delete browser;
 }
 
 void escapeSpecialCharacters(QString &msg) {
