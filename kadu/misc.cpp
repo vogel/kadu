@@ -437,6 +437,10 @@ QString parse_symbols(QString s, int i, UserListElement &ule, bool escape) {
 				if (ule.port)
 					r+=QString::number(ule.port);
 				break;
+			case 'e':
+				i++;
+					r+=ule.email;
+				break;
 		}
 	}
 
