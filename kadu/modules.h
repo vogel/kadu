@@ -3,15 +3,34 @@
 
 #include <qstring.h>
 #include <qobject.h>
-#include <qlibrary.h>
 #include <qstringlist.h>
 #include <qdialog.h>
 #include <qlistbox.h>
 #include <qtranslator.h>
+
+#include <dlfcn.h>
+
+/**
+	Zastêpuje klasê QLibrary na specyficzne potrzeby Kadu
+**/
+class Library
+{
+	private:
+		QString FileName;
+		void* Handle;
+		
+	public:
+		Library(const QString& file_name);
+		~Library();
+		bool load();
+		void* resolve(const QString& symbol_name);
+};
+
 /**
  informacje o module
 **/
-struct ModuleInfo{
+struct ModuleInfo
+{
 	/**
 	 jakie inne moduly sa wymagane przez ten modul
 	**/
@@ -54,7 +73,7 @@ class ModulesManager : public QObject
 		typedef void CloseModuleFunc();
 		struct Module
 		{
-			QLibrary* lib;
+			Library* lib;
 			CloseModuleFunc* close;
 			QTranslator* translator;
 			ModuleInfo info;

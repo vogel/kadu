@@ -22,6 +22,31 @@
 
 #include "modules_static.cpp"
 
+Library::Library(const QString& file_name)
+{
+	FileName = file_name;
+	Handle = NULL;
+}
+
+Library::~Library()
+{
+	if (Handle != NULL)
+		dlclose(Handle);
+}
+
+bool Library::load()
+{
+	Handle = dlopen(FileName.local8Bit().data(), RTLD_NOW | RTLD_GLOBAL);
+	return (Handle != NULL);
+}
+
+void* Library::resolve(const QString& symbol_name)
+{
+	if (Handle == NULL)
+		return NULL;
+	return dlsym(Handle, symbol_name.local8Bit().data());
+}
+
 ModulesDialog::ModulesDialog()
 	: QDialog(NULL,NULL)
 {
@@ -274,7 +299,7 @@ bool ModulesManager::moduleInfo(const QString& module_name, ModuleInfo& info)
 		info=Modules[module_name].info;
 		return true;
 	}
-	QLibrary* lib=new QLibrary(QString(DATADIR)+"/kadu/modules/"+module_name+".so");
+	Library* lib=new Library(QString(DATADIR)+"/kadu/modules/"+module_name+".so");
 
 	if(!lib->load())
 	{
@@ -309,7 +334,7 @@ bool ModulesManager::loadModule(const QString& module_name)
 		return false;
 	}
 
-	m.lib=new QLibrary(QString(DATADIR)+"/kadu/modules/"+module_name+".so");
+	m.lib=new Library(QString(DATADIR)+"/kadu/modules/"+module_name+".so");
 	if(!m.lib->load())
 	{
 		MessageBox::msg(tr("Cannot load %1 module library.\nMaybe it's incorrecty compiled.").arg(module_name));

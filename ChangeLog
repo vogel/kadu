@@ -192,6 +192,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   chat z osoba ktora ja rozpoczela (michal)
 * usuniety blad pozwalajacy na konferencje z samym soba jesli pierwsza osoba w
   konferencji jest na liscie ponad wlasnym numerem w userbox-ie (michal)
+* w³asna klasa Library zamiast QLibrary ³aduj±ca modu³y z RTLD_GLOBAL (adrian)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
