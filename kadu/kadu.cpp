@@ -333,7 +333,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	config_file.addVariable("General", "Geometry", def_rect);
 	config_file.addVariable("General", "UserBoxHeight", 300);
 	config_file.addVariable("General", "DescriptionHeight", 60);
-	config_file.addVariable("General", "StatusButtonHeight", 30);
 
 	QFontInfo info(qApp->font());
 	QFont def_font(info.family(),info.pointSize());
@@ -389,6 +388,9 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	if (config_file.readBoolEntry("General", "UseDocking"))
 		trayicon->changeIcon();
+	
+        QVBoxLayout *layout = new QVBoxLayout(this);
+        layout->setAutoAdd(true);
 
 	QSplitter *split = new QSplitter(Qt::Vertical, this);
 	setCentralWidget(split);
@@ -497,16 +499,18 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		descrtb->hide();
 	QObject::connect(&userlist, SIGNAL(dnsNameReady(uin_t)), this, SLOT(infopanelUpdate(uin_t)));
 
-	statusbutton = new QPushButton(QIconSet(icons_manager.loadIcon("Offline")), tr("Offline"), split, "statusbutton");
+	statusbutton = new QPushButton(QIconSet(icons_manager.loadIcon("Offline")), tr("Offline"), this, "statusbutton");
 	statusbutton->setPopup(statusppm);
+	
 	if (!config_file.readBoolEntry("Look", "ShowStatusButton"))
 		statusbutton->hide();
+
 
 	QValueList<int> splitsizes;
 
 	splitsizes.append(config_file.readNumEntry("General", "UserBoxHeight"));
 	splitsizes.append(config_file.readNumEntry("General", "DescriptionHeight"));
-	splitsizes.append(config_file.readNumEntry("General", "StatusButtonHeight"));
+
 	split->setSizes(splitsizes);
 
 //	tworzymy pasek narzedziowy
@@ -1569,7 +1573,6 @@ bool Kadu::close(bool quit) {
 		if (config_file.readBoolEntry("Look", "ShowStatusButton"))
 		{
 			config_file.writeEntry("General", "UserBoxHeight", Userbox->size().height());
-			config_file.writeEntry("General", "StatusButtonHeight", statusbutton->size().height());
 		    }
 		QRect geom;
 		    geom.setX(pos().x());

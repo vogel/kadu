@@ -78,6 +78,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * zaaplikowany patch uto poprawiajacy wylaczanie wielolinijkowych opisow (adrian)
 * zaaplikowany patch joi'a na modul sound poprawiajacy zachowywanie
   minimalnych odstepow miedzy dzwiekami powiadamiajacymi (adrian)
+* zaaplikowany patch michala usuwajacy splitter przy guziku ze statusem
+  w oknie kadu i poprawiajacy tym samym jego wyglad (adrian)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
