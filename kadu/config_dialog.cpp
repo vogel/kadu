@@ -342,6 +342,7 @@ kdebug("ConfigDialog::changeTab()\n");
 	      case	CONFIG_HOTKEYEDIT:
 	      case	CONFIG_LINEEDIT:
 	      case	CONFIG_LINEEDIT2:
+	      case 	CONFIG_SPINBOX:
 	    	((QHBox*)(*i).widget->parent())->hide();
 		break;
 	      default:
@@ -358,6 +359,7 @@ kdebug("ConfigDialog::changeTab()\n");
 	      case	CONFIG_HOTKEYEDIT:
 	      case	CONFIG_LINEEDIT:
 	      case	CONFIG_LINEEDIT2:
+	      case 	CONFIG_SPINBOX:
 	    	((QHBox*)(*i).widget->parent())->show();
 		break;
 	      default:
