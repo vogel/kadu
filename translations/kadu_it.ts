@@ -944,7 +944,7 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
     </message>
     <message>
         <source>File transfered %1%</source>
-        <translation type="unfinished"></translation>
+        <translation>File trasferito %1%</translation>
     </message>
 </context>
 <context>
@@ -1551,7 +1551,7 @@ Controllare connessione a Internet.</translation>
     </message>
     <message>
         <source>&amp;Manage Modules</source>
-        <translation type="unfinished"></translation>
+        <translation>Gestione &amp;Moduli</translation>
     </message>
 </context>
 <context>
@@ -1595,23 +1595,23 @@ Controllare connessione a Internet.</translation>
     <name>ModulesDialog</name>
     <message>
         <source>Manage Modules</source>
-        <translation type="unfinished"></translation>
+        <translation>Gestione Moduli</translation>
     </message>
     <message>
         <source>Installed modules</source>
-        <translation type="unfinished"></translation>
+        <translation>Moduli installati</translation>
     </message>
     <message>
         <source>Load</source>
-        <translation type="unfinished"></translation>
+        <translation>Caricamento</translation>
     </message>
     <message>
         <source>Loaded modules</source>
-        <translation type="unfinished"></translation>
+        <translation>Moduli caricati</translation>
     </message>
     <message>
         <source>Unload</source>
-        <translation type="unfinished"></translation>
+        <translation>Scaricamento</translation>
     </message>
 </context>
 <context>
@@ -1619,12 +1619,14 @@ Controllare connessione a Internet.</translation>
     <message>
         <source>Cannot find init_module() or close_module().
 Maybe it&apos;s not Kadu-compatible Module.</source>
-        <translation type="unfinished"></translation>
+        <translation>init_module() o close_module() non è stato trovato.
+Probabilmente il modulo non è conmpatibile con Kadu.</translation>
     </message>
     <message>
         <source>Cannot load module library.
 Maybe it&apos;s incorrecty compiled.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile caricare libreria del modulo.
+Propbabilmente è stata compilata male.</translation>
     </message>
 </context>
 <context>
@@ -1895,10 +1897,6 @@ Ora è possibile aggiungere i vostri amici alla lista dei contatti.</translation
     <message>
         <source>Select user first</source>
         <translation>Prima scegli l&apos;utente</translation>
-    </message>
-    <message>
-        <source> </source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
