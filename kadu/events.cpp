@@ -156,8 +156,8 @@ EventManager::EventManager()
 	connect(this,SIGNAL(userStatusChanged(struct gg_event*)),this,SLOT(userStatusChangedSlot(struct gg_event*)));
 	connect(this,SIGNAL(userlistReceived(struct gg_event*)),this,SLOT(userlistReceivedSlot(struct gg_event*)));
 	connect(this,SIGNAL(messageReceived(int,UinsList,unsigned char*,time_t, int, void *)),this,SLOT(messageReceivedSlot(int,UinsList,unsigned char*,time_t, int, void *)));
-	connect(this,SIGNAL(systemMessageReceived(QString &, time_t, int, void *)),
-		this, SLOT(systemMessageReceivedSlot(QString &, time_t, int, void *)));
+	connect(this,SIGNAL(systemMessageReceived(QString &, QDateTime &, int, void *)),
+		this, SLOT(systemMessageReceivedSlot(QString &, QDateTime &, int, void *)));
 	connect(this,SIGNAL(chatMsgReceived2(UinsList,const QString&,time_t)),
 		this,SLOT(chatMsgReceived2Slot(UinsList,const QString&,time_t)));
 	connect(this,SIGNAL(ackReceived(int)),this,SLOT(ackReceivedSlot(int)));
@@ -259,7 +259,7 @@ void EventManager::disconnectedSlot()
 	AutoConnectionTimer::off();
 };
 
-void EventManager::systemMessageReceivedSlot(QString &msg, time_t time,
+void EventManager::systemMessageReceivedSlot(QString &msg, QDateTime &time,
 	int formats_length, void *formats)
 {
 	kdebug("EventManager::systemMessageReceivedSlot()\n");
@@ -286,6 +286,8 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 		return;
 
 	QString mesg = cp2unicode(msg);
+	QDateTime datetime;
+	datetime.setTime_t(time);
 
 	// wiadomosci systemowe maja sensers[0] = 0
 	// FIX ME!!!
@@ -296,7 +298,8 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 			}
 		config_file.writeEntry("General", "SystemMsgIndex", msgclass);
 		kdebug("System message index %d\n", msgclass);
-		emit systemMessageReceived(mesg, time, formats_length, formats);
+		
+		emit systemMessageReceived(mesg, datetime, formats_length, formats);
 		return;
 		}
 

@@ -5,6 +5,7 @@
 #include <qstring.h>
 #include <qtimer.h>
 #include <qlistbox.h>
+#include <qdatetime.h>
 
 #include "libgadu.h"
 #include "misc.h"
@@ -71,7 +72,7 @@ class EventManager : public QObject
 		void userlistReceivedSlot(struct gg_event *);
 		void messageReceivedSlot(int, UinsList,unsigned char *msg,time_t,
 			int formats_length, void *formats);
-		void systemMessageReceivedSlot(QString &msg, time_t,
+		void systemMessageReceivedSlot(QString &msg, QDateTime &time,
 			int formats_length, void *formats);
 		void chatMsgReceived2Slot(UinsList senders,const QString& msg,time_t time);
 		void ackReceivedSlot(int seq);
@@ -116,7 +117,7 @@ class EventManager : public QObject
 		/**
 			Otrzymano jak±¶ wiadomo¶æ od serwera GG
 		**/
-		void systemMessageReceived(QString &msg, time_t, int formats_length, void *formats);
+		void systemMessageReceived(QString &msg, QDateTime &, int formats_length, void *formats);
 		/**
 			Otrzymano wiadomo¶æ systemowa od serwera GG
 		**/
