@@ -1310,9 +1310,15 @@ void Kadu::setStatus(int status) {
 			server_nr = 0;
 		}
 	else {
-		loginparams.server_addr = 0;
-		loginparams.server_port = 0;
-		server_nr = 0;
+		switch (server_nr) {
+			case 0: loginparams.server_addr = 0;loginparams.server_port = 0; break;
+			case 1: loginparams.server_addr = inet_addr("217.17.41.85");loginparams.server_port = 8074; break;
+			case 2: loginparams.server_addr = inet_addr("217.17.41.84");loginparams.server_port = 8074; break;
+			case 3: loginparams.server_addr = inet_addr("217.17.41.83");loginparams.server_port = 8074; break;
+			}
+		server_nr++;
+		if (server_nr > 3)
+			server_nr=0;
 		}
 	sess = gg_login(&loginparams);
 
@@ -1556,10 +1562,11 @@ void Kadu::eventHandler(int state) {
 		if (ifStatusWithDescription(loginparams.status))
 			setStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
 			
-//uruchamiamy autoawaya(jezeli wlaczony) po wyslaniu userlisty i ustawieniu statusu.
+/* uruchamiamy autoawaya(jezeli wlaczony) po wyslaniu userlisty i ustawieniu statusu */
 		if (config.autoaway)
 			AutoAwayTimer::on();
-
+/* jezeli sie rozlaczymy albo stracimy polaczenie, proces laczenia sie z serwerami zaczyna sie od poczatku */
+		server_nr=0;
 		pingtimer = new QTimer;
 		QObject::connect(pingtimer, SIGNAL(timeout()), kadu, SLOT(pingNetwork()));
 		pingtimer->start(60000, TRUE);
