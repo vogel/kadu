@@ -54,18 +54,18 @@
         <translation>Inna wiadomość</translation>
     </message>
     <message>
-        <source>Ignore changes on connection to server</source>
-        <translation>Nie pokazuj dymków ze statusem po połączeniu z serwerem</translation>
-    </message>
-    <message>
         <source>This option will supersede tooltips with users&apos; status
  changes upon establishing connection to the server</source>
         <translation>Ta opcja wyłączy ukazywanie się dymków ze statusem kontaktów
 przy pierwszym połaczeniu sie Kadu z serwerem</translation>
     </message>
     <message>
-        <source>Ignore status change if old status is available/busy (and new is available/busy also)</source>
-        <translation>Ignoruj zmianę statusów z dostępny/ zajęty na dostępny/ zajęty</translation>
+        <source>Ignore changes right after connection to the server</source>
+        <translation>Ignoruj zmiany zaraz po połączeniu z serwerem</translation>
+    </message>
+    <message>
+        <source>Ignore status changes from available/busy to available/busy</source>
+        <translation>Ignoruj zmianę statusów z dostępny/zajęty na dostępny/zajęty</translation>
     </message>
 </context>
 </TS>

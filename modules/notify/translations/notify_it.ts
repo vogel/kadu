@@ -54,12 +54,16 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Ignore changes on connection to server</source>
+        <source>This option will supersede tooltips with users&apos; status
+ changes upon establishing connection to the server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>This option will supersede tooltips with users&apos; status
- changes upon establishing connection to the server</source>
+        <source>Ignore changes right after connection to the server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ignore status changes from available/busy to available/busy</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
