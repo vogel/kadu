@@ -2112,7 +2112,7 @@ void GaduProtocol::streamToUserList(QTextStream& stream, UserList& userList) con
 		sections = QStringList::split(";", line, true);
 		secCount = sections.count();
 
-		if (sections.count() < 8)
+		if (sections.count() < 7)
 			continue;
 
 		e.setFirstName(sections[0]);
