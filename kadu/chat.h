@@ -30,7 +30,6 @@ class ChatManager : public QObject
 			};
 		};
 		QValueList<ChatsItem> Chats;
-		int openChat(UinsList senders,time_t time);
 		int openPendingMsg(int index,QString& to_add);	
 
 	public:	
@@ -42,12 +41,21 @@ class ChatManager : public QObject
 		void changeAppearance();
 		void enableEncryptionBtnForUins(UinsList uins);
 		Chat* findChatByUins(UinsList uins);
+		/**
+			Otwiera nowe okno Chat z wymienionymi rozmowcami.
+			Parametr time sluzy do sprawdzenia ile wiadomosci
+			z historii ma sie pojawic w oknie.
+		**/
+		int openChat(UinsList senders,time_t time=0);		
 		void openPendingMsgs(UinsList uins);
 		void openPendingMsgs();
 		void sendMessage(uin_t uin,UinsList selected_uins);
 		
 	public slots:
 		void chatMsgReceived(UinsList senders,const QString& msg,time_t time,bool& grab);
+		
+	signals:
+		void chatCreated(const UinsList& senders);
 };
 
 extern ChatManager* chat_manager;

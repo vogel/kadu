@@ -121,6 +121,7 @@ int ChatManager::openChat(UinsList senders,time_t time)
 	chat->setTitle();
 	chat->show();
 	chat->writeMessagesFromHistory(senders, time);
+	emit chatCreated(senders);
 	return Chats.count()-1;
 }
 

@@ -36,6 +36,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   zaczyna sensownie dzialac ;) (adrian)
 * poprawka dzialania przy podwojnym kliku na osobe bez numeru gg -
   teraz otwiera okno sms zamiast chat z dziwnym numerem (adrian)
+* ChatManager::openChat() jednak publiczny + sygnal chatCreated()
+  a wszystko to na potrzeby modulow oczywiscie (adrian)
 
 +++ wersja 0.3.6 (22.11.2003)
 * je¶li klikniemy na jaki¶ kontakt w userboxie, od którego otrzymali¶my jak±¶
