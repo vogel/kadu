@@ -715,15 +715,15 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>Show info-panel</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Info-Panel</translation>
     </message>
     <message>
         <source>Show description in userbox</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige  Beschreibung in der Kontaktliste</translation>
     </message>
     <message>
         <source>Show avaliable in bold</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige erreichbare fett gedruckt</translation>
     </message>
 </context>
 <context>
@@ -762,7 +762,7 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>&lt;br&gt;(c) 2001-2004 Kadu Team&lt;/span&gt;</source>
-        <translation type="unfinished">&lt;br&gt;(c) 2001-2004 Kadu Team&lt;/span&gt;</translation>
+        <translation>&lt;br&gt;(c) 2001-2004 Kadu Team&lt;/span&gt;</translation>
     </message>
 </context>
 <context>
@@ -1665,8 +1665,8 @@ Check your internet connection.</source>
     <message>
         <source>Cannot load module library.
 Maybe it&apos;s incorrecty compiled.</source>
-        <translation type="unfinished">Module Bibliothek kann nich geladen werden.
-Möglicherweise ist falsch kompiliert</translation>
+        <translation>Modul-Bibliothek kann nich geladen werden.
+Möglicherweise ist sie falsch kompiliert.</translation>
     </message>
     <message>
         <source>&amp;Manage Modules</source>
@@ -1674,12 +1674,13 @@ Möglicherweise ist falsch kompiliert</translation>
     </message>
     <message>
         <source>Module initialization routine failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Die Initialisation ist fehlgeschlagen.</translation>
     </message>
     <message>
         <source>Cannot find required functions.
 Maybe it&apos;s not Kadu-compatible Module.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ich kann die notwendigen Funktionen nicht finden.
+Vielleicht ist es kein Kadu-kompatibles Modul.</translation>
     </message>
 </context>
 <context>
@@ -1965,10 +1966,6 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
     <message>
         <source>Select user first</source>
         <translation>Markiere zuerst Benutzer</translation>
-    </message>
-    <message>
-        <source> </source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
