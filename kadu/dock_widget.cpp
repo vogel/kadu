@@ -96,7 +96,7 @@ TrayIcon::TrayIcon(QWidget *parent, const char *name)
 	QLabel::setPixmap(pix);
 	resize(pix.size());
 	setMouseTracking(true);
-	QToolTip::add(this, i18n("Left click - hide/show window\nMiddle click or CTRL+any click- next message"));
+	QToolTip::add(this, i18n("Left click - hide/show window\nMiddle click or Left click- next message"));
 	update();
 
 	icon_timer = new QTimer(this);
@@ -253,13 +253,17 @@ void TrayIcon::mousePressEvent(QMouseEvent * e) {
 	if (!config.dock)
 		return;
 
-	if (e->button() == MidButton || e->state() & ControlButton) {
+	if (e->button() == MidButton) {
 		emit mousePressMidButton();
 		return;
 	}
 
 	if (e->button() == LeftButton) {
 		emit mousePressLeftButton();
+		if (pending.pendingMsgs()) {
+			pending.openMessages();
+			return;
+			}
 		switch (kadu->isVisible()) {
 			case 0:
 				kadu->show();
