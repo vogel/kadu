@@ -30,7 +30,7 @@ About::About() {
 	// set window properties and flags
 	setWFlags(Qt::WDestructiveClose);
 	setCaption(tr("About"));
-	setMinimumSize(400, c00);
+	setMinimumSize(400, 300);
 	// end set window properties and flags
 	
 	// create main QLabel widgets (icon and app info)
