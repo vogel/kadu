@@ -262,8 +262,10 @@ void EventManager::disconnectedSlot()
 void EventManager::systemMessageReceivedSlot(QString &msg, QDateTime &time,
 	int formats_length, void *formats)
 {
+	QString mesg;
 	kdebug("EventManager::systemMessageReceivedSlot()\n");
-	MessageBox::msg(msg);
+	mesg = time.toString("hh:mm:ss (dd.MM.yyyy): ") + msg;
+	MessageBox::msg(mesg);
 }
 
 void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned char* msg, time_t time,
