@@ -915,8 +915,8 @@ You may add it to $PATH or specify location using Specify path option.</source>
         <translation>Icone</translation>
     </message>
     <message>
-        <source>Please restart kadu to apply new icon theme</source>
-        <translation>Per applicare cambiamenti devi chiudere e riaprire Kadu</translation>
+        <source>Please close all (except main) Kadu windows</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1674,11 +1674,15 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
 <context>
     <name>UserBox</name>
     <message>
-        <source>&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;</source>
-        <translation>&lt;b&gt;Descrizione:&lt;/b&gt;&lt;br/&gt;</translation>
+        <source>&lt;i&gt;Mobile:&lt;/i&gt; &lt;b&gt;%1&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;i&gt;Mobile:&lt;/i&gt;&lt;b&gt; </source>
+        <source>&lt;nobr&gt;&lt;i&gt;%1&lt;/i&gt;&lt;/nobr&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;nobr&gt;&lt;i&gt;%1&lt;/i&gt; &lt;b&gt;(d.)&lt;/b&gt;&lt;/nobr&gt;&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;%2</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

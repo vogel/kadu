@@ -922,9 +922,8 @@ Podałeś nazwę hosta zamiast adresu IP?</translation>
         <translation>Ikony</translation>
     </message>
     <message>
-        <source>Please restart kadu to apply new icon theme</source>
-        <translation>Proszę zrestartować Kadu
-by zmiany odniosły skutek</translation>
+        <source>Please close all (except main) Kadu windows</source>
+        <translation>Prosze zamknąć wszystkie (oprócz głównego) okna Kadu</translation>
     </message>
 </context>
 <context>
@@ -1685,12 +1684,16 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
 <context>
     <name>UserBox</name>
     <message>
-        <source>&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;</source>
-        <translation>&lt;b&gt;Opis:&lt;/b&gt;&lt;br/&gt;</translation>
+        <source>&lt;i&gt;Mobile:&lt;/i&gt; &lt;b&gt;%1&lt;/b&gt;</source>
+        <translation>&lt;i&gt;Telefon:&lt;/i&gt; &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
-        <source>&lt;i&gt;Mobile:&lt;/i&gt;&lt;b&gt; </source>
-        <translation>&lt;i&gt;Telefon:&lt;/i&gt;&lt;b&gt; </translation>
+        <source>&lt;nobr&gt;&lt;i&gt;%1&lt;/i&gt;&lt;/nobr&gt;</source>
+        <translation>&lt;nobr&gt;&lt;i&gt;%1&lt;/i&gt;&lt;/nobr&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;nobr&gt;&lt;i&gt;%1&lt;/i&gt; &lt;b&gt;(d.)&lt;/b&gt;&lt;/nobr&gt;&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;%2</source>
+        <translation>&lt;nobr&gt;&lt;i&gt;%1&lt;/i&gt; &lt;b&gt;(d.)&lt;/b&gt;&lt;/nobr&gt;&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Opis:&lt;/b&gt;&lt;br/&gt;%2</translation>
     </message>
 </context>
 <context>

@@ -14,10 +14,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;b&gt;%1&lt;/b&gt; is changing status from &lt;i&gt;%2&lt;/i&gt; to &lt;i&gt;%3&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&lt;b&gt;%1&lt;/b&gt; changed status to &lt;i&gt;%2&lt;/i&gt;&lt;br/&gt; &lt;small&gt;%3&lt;/small&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -27,6 +23,10 @@
     </message>
     <message>
         <source>&lt;b&gt;From %1: %2&lt;/b&gt; changed status to &lt;i&gt;%3&lt;/i&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;%1&lt;/b&gt; changed status from &lt;i&gt;%2&lt;/i&gt; to &lt;i&gt;%3&lt;/i&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
