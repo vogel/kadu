@@ -424,7 +424,7 @@ void DccManager::setupDcc()
 
 	QHostAddress dccIp;
 
-	if (ConfigDccIp.isNull())
+	if (ConfigDccIp == QHostAddress())
 		dccIp.setAddress("255.255.255.255");
 	else
 		dccIp = ConfigDccIp;
