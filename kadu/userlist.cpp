@@ -543,7 +543,7 @@ UserListElement& UserList::byNick(const QString& nickname)
 UserListElement& UserList::byAltNick(const QString& altnick)
 {
 	QString altnick_norm = altnick.lower();
-	if(contains(altnick_norm))
+	if (contains(altnick_norm))
 		return (*this)[altnick_norm];
 	kdebugmf(KDEBUG_PANIC, "Panic! %s not exists\n",
 		altnick_norm.local8Bit().data());
@@ -574,7 +574,7 @@ bool UserList::containsUin(UinType uin) const
 bool UserList::containsAltNick(const QString &altnick) const
 {
 	QString altnick_norm = altnick.lower();
-	if(contains(altnick_norm))
+	if (contains(altnick_norm))
 		return true;
 	kdebugmf(KDEBUG_INFO, "userlist doesn't contain %s\n",
 		altnick_norm.local8Bit().data());
@@ -622,8 +622,8 @@ void UserList::removeUser(const QString &altnick)
 {
 	kdebugf();
 	QString altnick_norm = altnick.lower();
-	Iterator elem=find(altnick_norm);
-	if (elem!=end())
+	Iterator elem = find(altnick_norm);
+	if (elem != end())
 	{
 		emit userDataChanged(&(*elem), NULL);
 		remove(elem);

@@ -32,15 +32,15 @@ UserInfo::UserInfo(const QString &altnick, bool addUser, QDialog* parent, const 
 	setWFlags(Qt::WDestructiveClose|Qt::WShowModal);
 
 	// create main QLabel widgets (icon and app info)
-	QVBox *left=new QVBox(this);
+	QVBox *left = new QVBox(this);
 	left->setMargin(10);
 	left->setSpacing(10);
 
 	QLabel *l_icon = new QLabel(left);
-	QWidget *w_icoblankwidget=new QWidget(left);
+	QWidget *w_icoblankwidget = new QWidget(left);
 	w_icoblankwidget->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
 
-	QVBox *center=new QVBox(this);
+	QVBox *center = new QVBox(this);
 	center->setMargin(10);
 	center->setSpacing(10);
 
@@ -77,8 +77,8 @@ UserInfo::UserInfo(const QString &altnick, bool addUser, QDialog* parent, const 
 	setupTab3();
 
 	// buttons
-	QHBox *bottom=new QHBox(center);
-	QWidget *w_blankwidget=new QWidget(bottom);
+	QHBox *bottom = new QHBox(center);
+	QWidget *w_blankwidget = new QWidget(bottom);
 	bottom->setSpacing(5);
 	w_blankwidget->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 	if (addUser)
@@ -279,14 +279,14 @@ void UserInfo::setupTab2()
 
 	QStringList groupsList;
 	if (!addUser)
-		groupsList=QStringList::split(",", puser->group());
+		groupsList = QStringList::split(",", puser->group());
 
 	groupsBox = new QVBox(groupsTab);
 	groupsBox->setSpacing(3);
 
 	CONST_FOREACH(it, list)
 	{
-		QCheckBox *checkBox=new QCheckBox(*it, groupsBox);
+		QCheckBox *checkBox = new QCheckBox(*it, groupsBox);
 		checkBox->setChecked(groupsList.contains(*it));
 		groups.append(checkBox);
 	}
@@ -294,13 +294,13 @@ void UserInfo::setupTab2()
 	//zobacz komentarz w newGroupClicked()
 	for (int i=0; i<10; ++i)
 	{
-		QCheckBox *box=new QCheckBox(groupsBox);
+		QCheckBox *box = new QCheckBox(groupsBox);
 		box->setChecked(true);
 		box->hide();
 		hiddenCheckBoxes.append(box);
 	}
 
-	newGroup=new QLineEdit(groupsTab);
+	newGroup = new QLineEdit(groupsTab);
 	QPushButton *addNewGroup=new QPushButton(tr("Add new group"), groupsTab);
 	connect(addNewGroup, SIGNAL(clicked()), this, SLOT(newGroupClicked()));
 	connect(newGroup, SIGNAL(returnPressed()), this, SLOT(newGroupClicked()));
@@ -311,7 +311,7 @@ void UserInfo::setupTab2()
 void UserInfo::newGroupClicked()
 {
 	kdebugf();
-	QString groupName=newGroup->text();
+	QString groupName = newGroup->text();
 	if (groupName.isEmpty())
 		return;
 	if (groupName.contains(","))
@@ -331,13 +331,13 @@ void UserInfo::newGroupClicked()
 		MessageBox::msg(tr("Numbers are prohibited"), true);//ze wzglêdu na format listy kontaktów...
 		return;
 	}
-	if (groupName==tr("All"))
+	if (groupName == tr("All"))
 	{
 		MessageBox::msg(tr("This group already exists!"), true);
 		return;
 	}
 	CONST_FOREACH(checkbox, groups)
-		if ((*checkbox)->text()==groupName)
+		if ((*checkbox)->text() == groupName)
 		{
 			MessageBox::wrn(tr("This group already exists!"), true);
 			return;
@@ -348,12 +348,12 @@ void UserInfo::newGroupClicked()
 //	QCheckBox *box=new QCheckBox(groupName, groupsBox);
 //	box->setChecked(true);
 
-	if (hiddenCheckBoxes.size()==0)
+	if (hiddenCheckBoxes.size() == 0)
 	{
 		MessageBox::msg(tr("You can't add so many groups at one stroke. Close this dialog and open one more time."), true);
 		return;
 	}
-	QCheckBox *box=hiddenCheckBoxes.first();
+	QCheckBox *box = hiddenCheckBoxes.first();
 	hiddenCheckBoxes.pop_front();
 	box->setText(groupName);
 	box->show();
