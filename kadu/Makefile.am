@@ -82,7 +82,7 @@ install-data-local:
 		echo "         *******************************************************************"; \
 		echo "         *                                                                 *"; \
 		echo "         *          You don't have permission to write /usr/share          *"; \
-		echo "         *          Icons and link(kadu.desktop) not be installed          *"; \
+		echo "         *          Icons and link(kadu.desktop) won't be installed          *"; \
 		echo "         *                                                                 *"; \
 		echo "         *******************************************************************"; \
 		echo "";\
