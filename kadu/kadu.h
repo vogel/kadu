@@ -2,12 +2,8 @@
 #define KADU_H
 
 #include <qapplication.h>
-#include <qprogressdialog.h>
-#include <qmultilineedit.h>
-#include <qsocketnotifier.h>
 #include <qmainwindow.h>
 #include <qpopupmenu.h>
-#include <qnetworkprotocol.h>
 #include <qstringlist.h>
 #include <qstring.h>
 #include <qframe.h>
@@ -17,7 +13,6 @@
 #include <qmenubar.h>
 #include <qvaluelist.h>
 #include <qfile.h>
-#include <qhbox.h>
 
 #include "misc.h"
 #include "userbox.h"
@@ -78,7 +73,6 @@ class Kadu : public QMainWindow
 		bool Autohammer;
 		bool DoBlink;
 		bool BlinkOn;
-		bool UpdateChecked;
 		bool Docked;
 
 		void createMenu();
@@ -170,7 +164,6 @@ class Kadu : public QMainWindow
 			wiedzialo, ze jest zadokowane.
 		**/
 		void setDocked(bool docked);
-		void gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op);
 
 		void about();
 		void addUserAction();

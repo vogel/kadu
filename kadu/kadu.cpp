@@ -72,7 +72,6 @@ QTime closestatusppmtime;
 QTimer* blinktimer;
 QPopupMenu* dockMenu;
 
-UpdatesClass* uc;
 int lockFileHandle;
 QFile *lockFile;
 
@@ -220,35 +219,6 @@ void ToolBar::refreshIcons(const QString &caption, const QString &newIconName, c
 	kdebugf2();
 }
 
-void Kadu::gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op)
-{
-	char buf[32];
-//	int i;
-	QString newestversion;
-
-	if (config_file.readBoolEntry("General", "CheckUpdates"))
-	{
-		if (data.size() > 31)
-		{
-			kdebugm(KDEBUG_WARNING, "Kadu::gotUpdatesInfo(): cannot obtain update info\n");
-			delete uc;
-			return;
-		}
-		for (unsigned i = 0; i < data.size(); ++i)
-			buf[i] = data[i];
-		buf[data.size()] = 0;
-		newestversion = buf;
-
-		kdebugm(KDEBUG_INFO, "Kadu::gotUpdatesInfo(): %s\n", buf);
-
-		if (uc->ifNewerVersion(newestversion))
-			QMessageBox::information(this, tr("Update information"),
-				tr("The newest Kadu version is %1").arg(newestversion), QMessageBox::Ok);
-	}
-	UpdateChecked=true;
-	delete uc;
-}
-
 void Kadu::keyPressEvent(QKeyEvent *e)
 {
 	if (e->key() == Key_Escape && Docked)
@@ -288,7 +258,6 @@ void Kadu::keyPressEvent(QKeyEvent *e)
 Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 {
 	kdebugf();
-	UpdateChecked = false;
 	Docked = false;
 	Autohammer = false;
 	ShowMainWindowOnStart = true;
@@ -1347,6 +1316,7 @@ bool Kadu::close(bool quit)
 		chat_manager->closeAllWindows();
 		ConfigDialog::closeDialog();
 		ModulesManager::closeModule();
+		Updates::deactivateModule();
 
 		if (config_file.readBoolEntry("General", "SaveGeometry"))
 		{
@@ -1752,6 +1722,7 @@ void Kadu::startupProcedure()
 		}
 		setCaption(tr("Kadu: new user"));
 	}
+	Updates::initModule();
 
 	QString descr = defaultdescriptions.first();
 	int statusIndex = config_file.readNumEntry("General", "DefaultStatusIndex", -1);

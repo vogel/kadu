@@ -125,7 +125,7 @@ tabbar.cpp tabbar.h tabbar_moc.cpp \
 userbox.cpp userbox.h userbox_moc.cpp \
 userinfo.cpp userinfo.h userinfo_moc.cpp \
 userlist.cpp userlist.h userlist_moc.cpp \
-updates.cpp updates.h
+updates.cpp updates.h updates_moc.cpp
 
 
 
@@ -176,7 +176,8 @@ am_kadu_OBJECTS = about.$(OBJEXT) about_moc.$(OBJEXT) chat.$(OBJEXT) \
 	search_moc.$(OBJEXT) status.$(OBJEXT) status_moc.$(OBJEXT) \
 	tabbar.$(OBJEXT) tabbar_moc.$(OBJEXT) userbox.$(OBJEXT) \
 	userbox_moc.$(OBJEXT) userinfo.$(OBJEXT) userinfo_moc.$(OBJEXT) \
-	userlist.$(OBJEXT) userlist_moc.$(OBJEXT) updates.$(OBJEXT)
+	userlist.$(OBJEXT) userlist_moc.$(OBJEXT) updates.$(OBJEXT) \
+	updates_moc.$(OBJEXT)
 kadu_OBJECTS = $(am_kadu_OBJECTS)
 kadu_DEPENDENCIES = $(foreach mod,$(basename \
 	$(static_modules)),../modules/$(mod)/$(mod).a)
@@ -211,10 +212,10 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/search.Po ./$(DEPDIR)/search_moc.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/status.Po ./$(DEPDIR)/status_moc.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/tabbar.Po ./$(DEPDIR)/tabbar_moc.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/updates.Po ./$(DEPDIR)/userbox.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/userbox_moc.Po ./$(DEPDIR)/userinfo.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/userinfo_moc.Po ./$(DEPDIR)/userlist.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/userlist_moc.Po
+@AMDEP_TRUE@	./$(DEPDIR)/updates.Po ./$(DEPDIR)/updates_moc.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/userbox.Po ./$(DEPDIR)/userbox_moc.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/userinfo.Po ./$(DEPDIR)/userinfo_moc.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/userlist.Po ./$(DEPDIR)/userlist_moc.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 CXXLD = $(CXX)
@@ -313,6 +314,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tabbar.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tabbar_moc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/updates.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/updates_moc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/userbox.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/userbox_moc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/userinfo.Po@am__quote@

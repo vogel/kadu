@@ -1,4 +1,3 @@
-
 #ifndef UPDATES_H
 #define UPDATES_H
 
@@ -7,18 +6,27 @@
 
 #include "gadu.h"
 
-class UpdatesClass
+class Updates : public QObject
 {
-
+	Q_OBJECT
 	public:
-		UpdatesClass(UinType uin);
-		bool ifNewerVersion(QString &newestversion);
+		static void initModule();
+		static void deactivateModule();
+
+	private slots:
+		void gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op);
 		void run();
 
+	private:
+		static bool UpdateChecked;
+		static Updates *instance;
+		
+		QString query;
 		QUrlOperator *op;
 
-	private:
-		QString query;
+		Updates(UinType uin);
+		virtual ~Updates();
+		static bool ifNewerVersion(const QString &newestversion);
 };
 
 #endif

@@ -25,7 +25,7 @@ tabbar.cpp tabbar.h tabbar_moc.cpp \
 userbox.cpp userbox.h userbox_moc.cpp \
 userinfo.cpp userinfo.h userinfo_moc.cpp \
 userlist.cpp userlist.h userlist_moc.cpp \
-updates.cpp updates.h
+updates.cpp updates.h updates_moc.cpp
 
 ###########################################################################
 # Precompiled headers support
