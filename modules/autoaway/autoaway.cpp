@@ -376,9 +376,6 @@ void AutoAwaySlots::onCreateConfigDialog()
 	connect(b_autoinvisible, SIGNAL(toggled(bool)), invisibleSpin, SLOT(setEnabled(bool)));
 	connect(b_autodisconnect, SIGNAL(toggled(bool)), disconnectSpin, SLOT(setEnabled(bool)));
 	/* podpinanie sie pod zmiane SpinBoxow */
-	connect(autoawaySpin, SIGNAL(valueChanged(int)), invisibleSpin, SLOT(setMinValue(int)));
-	connect(autoawaySpin, SIGNAL(valueChanged(int)), disconnectSpin, SLOT(setMinValue(int)));
-	connect(invisibleSpin, SIGNAL(valueChanged(int)), disconnectSpin, SLOT(setMinValue(int)));
 	connect(autoawaySpin, SIGNAL(valueChanged(int)), this, SLOT(changeAutoInvisibleTime(int)));
 	connect(invisibleSpin, SIGNAL(valueChanged(int)), this, SLOT(changeAutoDisconnectTime(int)));
 	connect(disconnectSpin, SIGNAL(valueChanged(int)), this, SLOT(correctAutoDisconnectTime(int)));
