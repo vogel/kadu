@@ -14,6 +14,7 @@
 #include "chat.h"
 #include "ignore.h"
 #include "config_dialog.h"
+#include "message_box.h"
 
 #include <netinet/in.h>
 
@@ -2305,11 +2306,11 @@ void GaduProtocol::onDestroyConfigDialog()
 	ConfigServers = servers;
 	ServerNr = 0;
 
-	if (!ip.setAddress(config_file.readEntry("Network","ProxyHost")))
+	if (!ip.setAddress(config_file.readEntry("Network", "ProxyHost")))
+	{
+		MessageBox::msg(tr("Cannot set proxy IP address. Did you put hostname instead of IP address?"));
 		config_file.writeEntry("Network","ProxyHost","0.0.0.0");
-
-	if (config_file.readNumEntry("Network","ProxyPort")<=1023)
-		config_file.writeEntry("Network","ProxyPort",0);
+	}
 
 	/* and now, save it */
 	userlist.writeToFile();
