@@ -1533,7 +1533,7 @@ Sprawdź swoje połączenie internetowe.</translation>
     </message>
     <message>
         <source>Remind &amp;password</source>
-        <translation>Przypomnij h&amp;asło</translation>
+        <translation>Przypomnij ha&amp;sło</translation>
     </message>
     <message>
         <source>Register &amp;new user</source>
