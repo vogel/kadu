@@ -86,6 +86,7 @@ binary-arch: build install
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb
+	cat debian/changelog |sed -e "s/`cat VERSION`/<wersja>/g" > debian/changelog
 
 binary: binary-indep binary-arch
 .PHONY: build clean binary-indep binary-arch binary install 

@@ -4,3 +4,6 @@ usr/share/icons/*
 usr/share/locale/pl/LC_MESSAGES/kadu.mo
 usr/share/man/pl/man1/kadu.1
 usr/share/applnk/Internet/kadu.desktop
+usr/share/pixmaps/kadu.png
+usr/share/pixmaps/kadu-16.png
+usr/share/pixmaps/kadu-48.png

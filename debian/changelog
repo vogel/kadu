@@ -1,6 +1,9 @@
 kadu (<wersja>) unstable; urgency=low
 
   * Pierwsza wersja plikow
-  * 04.07.2003 - Wersja paczki kadu jest pobierana z pliku VERSION
+  * 04.07.2003 - Wersja paczki kadu jest pobierana z pliku VERSION.
+  * 01.09.2003 - Poprawka, do paczki nie wchodzily ikonki, teraz juz jest OK.
+  * 01.09.2003 - Poprawka, skrypt powinien juz reagowac na zmiany w pliku 
+                 VERSION.
 
  -- Dariusz Jagodzik <mast3r@kadu.net>  Tue, 25 Feb 2003 10:06:51 +0100
