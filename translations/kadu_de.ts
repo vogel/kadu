@@ -2,10 +2,6 @@
 <context>
     <name>@default</name>
     <message>
-        <source>User notify</source>
-        <translation>Benutzerbenachrichtigung</translation>
-    </message>
-    <message>
         <source>Online</source>
         <translation>Online</translation>
     </message>
@@ -118,38 +114,6 @@
         <translation>Netzwerk</translation>
     </message>
     <message>
-        <source>DCC enabled</source>
-        <translation>DCC eingeschaltet (Direktverbindungen)</translation>
-    </message>
-    <message>
-        <source>DCC IP autodetection</source>
-        <translation>Finde die IP-Adresse für DCC heraus</translation>
-    </message>
-    <message>
-        <source>DCC IP</source>
-        <translation>IP-Adresse für DCC</translation>
-    </message>
-    <message>
-        <source>IP address:</source>
-        <translation>IP-Adressen:</translation>
-    </message>
-    <message>
-        <source>DCC forwarding enabled</source>
-        <translation>Port-Weiterleitung bei DCC</translation>
-    </message>
-    <message>
-        <source>DCC forwarding properties</source>
-        <translation>Einstellungen der Weiterleitung bei DCC</translation>
-    </message>
-    <message>
-        <source>External IP address:</source>
-        <translation>Externe IP-Adresse:</translation>
-    </message>
-    <message>
-        <source>External TCP port:</source>
-        <translation>Externer TCP-Port:</translation>
-    </message>
-    <message>
         <source>Servers properties</source>
         <translation>Server Einstellungen</translation>
     </message>
@@ -212,10 +176,6 @@
     <message>
         <source>Show / hide inactive users</source>
         <translation>Zeige / verstecke die Unerreichbaren</translation>
-    </message>
-    <message>
-        <source>Send file</source>
-        <translation>Sende Datei</translation>
     </message>
     <message>
         <source>Configuration</source>
@@ -482,10 +442,6 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
         <translation>Keine Zustandsänderungen anzeigen</translation>
     </message>
     <message>
-        <source>User %1 is available</source>
-        <translation>Benutzer %1 ist erreichbar</translation>
-    </message>
-    <message>
         <source>Show description in userbox</source>
         <translation>Zeige  Beschreibung in der Kontaktliste</translation>
     </message>
@@ -500,10 +456,6 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     <message>
         <source>Multiline description in userbox</source>
         <translation>Multilinebeschreibung in userbox</translation>
-    </message>
-    <message>
-        <source>Local TCP port:</source>
-        <translation>Locale TCP port:</translation>
     </message>
     <message>
         <source>Don&apos;t save status changes</source>
@@ -705,6 +657,31 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
         <source>Columns</source>
         <translation>Zeilen</translation>
     </message>
+    <message>
+        <source>Force use of paragraphs (VERY experimental)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show / hide users without description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Qt Theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please do not run Kadu as a root!
+It&apos;s a high security risk!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display only users that have desciption</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align icon next to contact name</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -735,57 +712,6 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     <message>
         <source>&lt;br&gt;(c) 2001-2004 Kadu Team&lt;/span&gt;</source>
         <translation>&lt;br&gt;(c) 2001-2004 Kadu Team&lt;/span&gt;</translation>
-    </message>
-</context>
-<context>
-    <name>ChangePassword</name>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-    <message>
-        <source>Change password/email</source>
-        <translation>Passwort/Email ändern</translation>
-    </message>
-    <message>
-        <source>This dialog box allows you to change your current password or e-mail.</source>
-        <translation>Dieses Fenster ermöglicht die Änderung Ihres jetzigen Passwortes.</translation>
-    </message>
-    <message>
-        <source>Email</source>
-        <translation>Email</translation>
-    </message>
-    <message>
-        <source>Password</source>
-        <translation>Passwort</translation>
-    </message>
-    <message>
-        <source>New email:</source>
-        <translation>Neue Email:</translation>
-    </message>
-    <message>
-        <source>New password:</source>
-        <translation>Neues Passwort:</translation>
-    </message>
-    <message>
-        <source>Retype new password:</source>
-        <translation>Neues Passwort wiederholen:</translation>
-    </message>
-    <message>
-        <source>&amp;Close</source>
-        <translation>&amp;Schliessen</translation>
-    </message>
-    <message>
-        <source>Change password</source>
-        <translation>Passwort ändern</translation>
-    </message>
-    <message>
-        <source>Error data typed in required fields.
-
-Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new password&quot;) should be the same!</source>
-        <translation>Fehler in den eingegebenen Daten der Felder.
-
-Das Passwort, das Sie angegeben haben, sollte in beiden Feldern (&quot;Neues Passwort&quot; und &quot;Neues Passwort wiederholen&quot;) sollte gleich sein!</translation>
     </message>
 </context>
 <context>
@@ -938,45 +864,10 @@ um das Chatfenster vor einer unordnung zu schützen</translation>
     </message>
 </context>
 <context>
-    <name>DccFileDialog</name>
-    <message>
-        <source>Sender: </source>
-        <translation>Absender: </translation>
-    </message>
-    <message>
-        <source>Receiver: </source>
-        <translation>Empfänger: </translation>
-    </message>
-    <message>
-        <source>Filename: </source>
-        <translation>Dateiname: </translation>
-    </message>
-    <message>
-        <source>File size: </source>
-        <translation>Dateigröße: </translation>
-    </message>
-    <message>
-        <source>Speed: 0KB/s (not started)  </source>
-        <translation>Geschwindigkeit: 0KB/s (nicht gestartet)</translation>
-    </message>
-    <message>
-        <source>Speed: </source>
-        <translation>Geschwindigkeit: </translation>
-    </message>
-    <message>
-        <source>(stalled)</source>
-        <translation>(gestoppt)</translation>
-    </message>
-    <message>
-        <source>File transfered %1%</source>
-        <translation>Datei transferiert %1%</translation>
-    </message>
-</context>
-<context>
-    <name>EventConfigSlots</name>
+    <name>GaduProtocol</name>
     <message>
         <source>I am busy.</source>
-        <translation>Ich bin beschäftigt.</translation>
+        <translation type="unfinished">Ich bin beschäftigt.</translation>
     </message>
 </context>
 <context>
@@ -1127,6 +1018,10 @@ um das Chatfenster vor einer unordnung zu schützen</translation>
     <message>
         <source>Hint timeout</source>
         <translation>Timeout für Sprechblasen</translation>
+    </message>
+    <message>
+        <source>Set for all</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1353,10 +1248,6 @@ um das Chatfenster vor einer unordnung zu schützen</translation>
         <translation>Zeige / verstecke die Unerreichbaren</translation>
     </message>
     <message>
-        <source>Send file</source>
-        <translation>Sende Datei</translation>
-    </message>
-    <message>
         <source>Configuration</source>
         <translation>Konfiguration</translation>
     </message>
@@ -1397,12 +1288,6 @@ um das Chatfenster vor einer unordnung zu schützen</translation>
         <translation>&amp;Nein</translation>
     </message>
     <message>
-        <source>Couldn&apos;t create DCC socket.
-Direct connections disabled.</source>
-        <translation>Problem mit dem Öffnen des DCC-Sockets.
-Direkte Verbindungen ausgeschaltet.</translation>
-    </message>
-    <message>
         <source>Open chat window</source>
         <translation>Öffne ein Chat-Fenster</translation>
     </message>
@@ -1431,36 +1316,12 @@ Direkte Verbindungen ausgeschaltet.</translation>
         <translation>Über...</translation>
     </message>
     <message>
-        <source>File has been transferred sucessfully.</source>
-        <translation>Transfer der Datei gelungen.</translation>
-    </message>
-    <message>
-        <source>File transfer error!</source>
-        <translation>Fehler beim Senden der Datei!</translation>
-    </message>
-    <message>
-        <source>Couldn&apos;t open file!</source>
-        <translation>Konnte die Datei nicht öffnen!</translation>
-    </message>
-    <message>
         <source>Manage &amp;ignored</source>
         <translation>Verwalte die &amp;Ignoriertenliste</translation>
     </message>
     <message>
         <source>&amp;Configuration</source>
         <translation>&amp;Konfiguration</translation>
-    </message>
-    <message>
-        <source>Remind &amp;password</source>
-        <translation>An &amp;Passwort erinnern</translation>
-    </message>
-    <message>
-        <source>Register &amp;new user</source>
-        <translation>&amp;Neuen Benutzer registrieren</translation>
-    </message>
-    <message>
-        <source>Unregister user</source>
-        <translation>Benutzer Unregistrieren</translation>
     </message>
     <message>
         <source>Personal information</source>
@@ -1493,10 +1354,6 @@ Direkte Verbindungen ausgeschaltet.</translation>
     <message>
         <source>Private</source>
         <translation>Nur für Bekannte</translation>
-    </message>
-    <message>
-        <source>&amp;Change password/email</source>
-        <translation>Passwort/Email &amp;ändern</translation>
     </message>
     <message>
         <source>I&amp;mport / Export userlist</source>
@@ -1574,12 +1431,28 @@ Was wollen sie nun tun?</translation>
         <source>Kadu: new user</source>
         <translation>Kadu: neuer Benutzer</translation>
     </message>
+    <message>
+        <source>Show / hide users without description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User %1 is available</source>
+        <translation type="unfinished">Benutzer %1 ist erreichbar</translation>
+    </message>
+    <message>
+        <source>User notify</source>
+        <translation type="unfinished">Benutzerbenachrichtigung</translation>
+    </message>
 </context>
 <context>
     <name>KaduSlots</name>
     <message>
         <source>Kadu: %1</source>
         <translation>Kadu: %1</translation>
+    </message>
+    <message>
+        <source>Unknown</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1701,16 +1574,6 @@ Was wollen sie nun tun?</translation>
         <translation>&amp;Manage Module</translation>
     </message>
     <message>
-        <source>Module initialization routine failed.</source>
-        <translation>Die Initialisation ist fehlgeschlagen.</translation>
-    </message>
-    <message>
-        <source>Cannot find required functions.
-Maybe it&apos;s not Kadu-compatible Module.</source>
-        <translation>Ich kann die notwendigen Funktionen nicht finden.
-Vielleicht ist es kein Kadu-kompatibles Modul.</translation>
-    </message>
-    <message>
         <source>Required module %1 was not found</source>
         <translation>Erforderliches Modul %1 wurde nicht gefunden</translation>
     </message>
@@ -1731,6 +1594,15 @@ Vielleicht ist es kein Kadu-kompatibles Modul.</translation>
     <message>
         <source>Module %1 conflicts with: %2</source>
         <translation>Modul %1 widerspricht mit: %2</translation>
+    </message>
+    <message>
+        <source>Cannot find required functions in module %1.
+Maybe it&apos;s not Kadu-compatible Module.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Module initialization routine for %1 failed.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1805,102 +1677,6 @@ Vielleicht ist es kein Kadu-kompatibles Modul.</translation>
     <message>
         <source>This is not an image</source>
         <translation>Dieses ist keine image datei</translation>
-    </message>
-</context>
-<context>
-    <name>Register</name>
-    <message>
-        <source>Password</source>
-        <translation>Passwort</translation>
-    </message>
-    <message>
-        <source>Register</source>
-        <translation>Registriere</translation>
-    </message>
-    <message>
-        <source>Create config file</source>
-        <translation>Öffne die Konfigurationsdatei</translation>
-    </message>
-    <message>
-        <source>Write the newly obtained UIN and password into a clean configuration file
-This will erase your current config file contents if you have one</source>
-        <translation>Die Neue Nummer GG (UIN) und Passwort werden in die 
-Konfigurationsdatei geschrieben. Alte Datei wird überschrieben</translation>
-    </message>
-    <message>
-        <source>Register user</source>
-        <translation>Registriere neuen Benutzer</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-    <message>
-        <source>Please fill out all fields</source>
-        <translation>Fülle alle Felder aus</translation>
-    </message>
-    <message>
-        <source>Registration was successful. Your new number is %1.
-Store it in a safe place along with the password.
-Now add your friends to the userlist.</source>
-        <translation>Registrierung beendet. Seine Nummer lautet: %1.
-Bewahre sie zusammen mit deinem Passwort auf einem sicheren Ort.
-Jetzt kannst du Kontakte hinzufügen.</translation>
-    </message>
-    <message>
-        <source>This dialog box allows you to register a new account.</source>
-        <translation>Dieses Fenster ermöglicht Ihnen das Registrieren eines neuen Zugangs (UIN).</translation>
-    </message>
-    <message>
-        <source>Email</source>
-        <translation>Email</translation>
-    </message>
-    <message>
-        <source>New email:</source>
-        <translation>Neue Email:</translation>
-    </message>
-    <message>
-        <source>New password:</source>
-        <translation>Neues Passwort:</translation>
-    </message>
-    <message>
-        <source>Retype new password:</source>
-        <translation>Neues Passwort wiederholen:</translation>
-    </message>
-    <message>
-        <source>&amp;Close</source>
-        <translation>&amp;Schliessen</translation>
-    </message>
-    <message>
-        <source>Error data typed in required fields.
-
-Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new password&quot;) should be the same!</source>
-        <translation>Fehler in den eingegebenen Daten der Felder.
-
-Das Passwort, das Sie angegeben haben, sollte in beiden Feldern (&quot;Neues Passwort&quot; und &quot;Neues Passwort wiederholen&quot;) sollte gleich sein!</translation>
-    </message>
-    <message>
-        <source>An error has occured while registration. Please try again later.</source>
-        <translation>Ein Fehler ist während der Registrierung aufgetreten. Versuchen Sie, bitte, später noch einmal.</translation>
-    </message>
-</context>
-<context>
-    <name>RemindPassword</name>
-    <message>
-        <source>Remind password</source>
-        <translation>Erinnere an Passwort</translation>
-    </message>
-    <message>
-        <source>Error during remind password</source>
-        <translation>Fehler beim Erinnern des Passworts</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-    <message>
-        <source>Password reminded</source>
-        <translation>Passwort erinnert</translation>
     </message>
 </context>
 <context>
@@ -2052,10 +1828,6 @@ Das Passwort, das Sie angegeben haben, sollte in beiden Feldern (&quot;Neues Pas
         <translation>Füge hinzu</translation>
     </message>
     <message>
-        <source>Replace</source>
-        <translation>Ersetzen</translation>
-    </message>
-    <message>
         <source>Remove</source>
         <translation>Entfernen</translation>
     </message>
@@ -2064,16 +1836,32 @@ Das Passwort, das Sie angegeben haben, sollte in beiden Feldern (&quot;Neues Pas
         <translation>Wählen Sie</translation>
     </message>
     <message>
-        <source>Ok</source>
-        <translation>Ok</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Abbrechen</translation>
-    </message>
-    <message>
         <source>Choose a directory</source>
         <translation>Wählen Sie ein Verzeichnis</translation>
+    </message>
+    <message>
+        <source>This dialog box allows you to choose directories in which kadu will look for icons or sounds.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paths</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Path to add</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2107,57 +1895,6 @@ Das Passwort, das Sie angegeben haben, sollte in beiden Feldern (&quot;Neues Pas
     <message>
         <source>Main toolbar</source>
         <translation>Mein Toolbar</translation>
-    </message>
-</context>
-<context>
-    <name>Unregister</name>
-    <message>
-        <source>Unregister</source>
-        <translation>Deregistrieren</translation>
-    </message>
-    <message>
-        <source>Unregister user</source>
-        <translation>Deregistriere Benutzer</translation>
-    </message>
-    <message>
-        <source>Please fill out all fields</source>
-        <translation>Fülle alle Felder aus</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-    <message>
-        <source>No user</source>
-        <translation>Kein Benutzer</translation>
-    </message>
-    <message>
-        <source>Unregistation was successful. Now you don&apos;t have any GG number :(</source>
-        <translation>Unregistation war erfolgreich. Jetzt haben Sie keine GG Nummer mehr :(</translation>
-    </message>
-    <message>
-        <source>This dialog box allows you to unregister your account. Be aware of using this option. It will permanently delete your UIN and you will not be able to use it later!</source>
-        <translation>Dieses Fenster ermöglicht Ihnen das Entfernen Ihres Zugangs. Seien Sie bitte vorsichtig bei dieser Option. Sie löschen damit Ihre UIN und Sie werden es später nicht mehr nutzen können!</translation>
-    </message>
-    <message>
-        <source>UIN and password</source>
-        <translation>UIN und Passwort</translation>
-    </message>
-    <message>
-        <source>UIN:</source>
-        <translation>UIN:</translation>
-    </message>
-    <message>
-        <source>Password:</source>
-        <translation>Passwort:</translation>
-    </message>
-    <message>
-        <source>&amp;Close</source>
-        <translation>&amp;Schliessen</translation>
-    </message>
-    <message>
-        <source>An error has occured while unregistration. Please try again later.</source>
-        <translation>Ein Fehler ist während des Entfernens Ihres Zugans aufgetreten. Versuchen Sie, bitte, später noch einmal.</translation>
     </message>
 </context>
 <context>
@@ -2514,71 +2251,6 @@ Die Anwendung hat einen Fehler zurückgemeldet</translation>
     <message>
         <source>Cannot clear user list on server in offline mode</source>
         <translation>Kann die Benutzerliste auf dem Server nicht löschen, solange Sie offline sind</translation>
-    </message>
-</context>
-<context>
-    <name>dccSocketClass</name>
-    <message>
-        <source>User </source>
-        <translation>Benutzer</translation>
-    </message>
-    <message>
-        <source> wants to send us a file </source>
-        <translation>will uns Datei senden</translation>
-    </message>
-    <message>
-        <source>
-of size </source>
-        <translation>
-mit Größe</translation>
-    </message>
-    <message>
-        <source>. Accept transfer?</source>
-        <translation>. Erlauben?</translation>
-    </message>
-    <message>
-        <source>Incoming transfer</source>
-        <translation>Ankommender Transfer</translation>
-    </message>
-    <message>
-        <source>Yes</source>
-        <translation>Ja</translation>
-    </message>
-    <message>
-        <source>No</source>
-        <translation>Nein</translation>
-    </message>
-    <message>
-        <source>save file</source>
-        <translation>Datei Speichern</translation>
-    </message>
-    <message>
-        <source>Select file location</source>
-        <translation>Wohin</translation>
-    </message>
-    <message>
-        <source>File %1 already exists.</source>
-        <translation>Datei %1 existiert bereits.</translation>
-    </message>
-    <message>
-        <source>Overwrite</source>
-        <translation>Überschreiben</translation>
-    </message>
-    <message>
-        <source>Resume</source>
-        <translation>Wiederhole</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Abbruch</translation>
-    </message>
-    <message>
-        <source>Could not open file</source>
-        <translation>Problem beim Öffnen der Datei</translation>
-    </message>
-    <message>
-        <source>open file</source>
-        <translation>Öffne Datei</translation>
     </message>
 </context>
 </TS>

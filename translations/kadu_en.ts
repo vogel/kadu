@@ -146,14 +146,6 @@ If you leave blank, default settings will be used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>User %1 is available</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>User notify</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Notify</source>
         <translation type="unfinished"></translation>
     </message>
@@ -183,38 +175,6 @@ If you leave blank, default settings will be used.</source>
     </message>
     <message>
         <source>Network</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>DCC enabled</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>DCC IP autodetection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>DCC IP</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>IP address:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>DCC forwarding enabled</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>DCC forwarding properties</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>External IP address:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>External TCP port:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -382,10 +342,6 @@ If you leave blank, default settings will be used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Send file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Configuration</source>
         <translation type="unfinished"></translation>
     </message>
@@ -495,10 +451,6 @@ If you leave blank, default settings will be used.</source>
     </message>
     <message>
         <source>Multiline description in userbox</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Local TCP port:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -701,6 +653,31 @@ If you leave blank, default settings will be used.</source>
         <source>Columns</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Force use of paragraphs (VERY experimental)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show / hide users without description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Qt Theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please do not run Kadu as a root!
+It&apos;s a high security risk!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display only users that have desciption</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align icon next to contact name</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -730,55 +707,6 @@ If you leave blank, default settings will be used.</source>
     </message>
     <message>
         <source>&lt;br&gt;(c) 2001-2004 Kadu Team&lt;/span&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>ChangePassword</name>
-    <message>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Change password/email</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>This dialog box allows you to change your current password or e-mail.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Email</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>New email:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>New password:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Retype new password:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Change password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error data typed in required fields.
-
-Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new password&quot;) should be the same!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -931,42 +859,7 @@ to protect the chat window from a mess</source>
     </message>
 </context>
 <context>
-    <name>DccFileDialog</name>
-    <message>
-        <source>Sender: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Receiver: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Filename: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>File size: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Speed: 0KB/s (not started)  </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Speed: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>(stalled)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>File transfered %1%</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>EventConfigSlots</name>
+    <name>GaduProtocol</name>
     <message>
         <source>I am busy.</source>
         <translation type="unfinished"></translation>
@@ -1119,6 +1012,10 @@ to protect the chat window from a mess</source>
     </message>
     <message>
         <source>Hint timeout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set for all</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1338,10 +1235,6 @@ to protect the chat window from a mess</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Send file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Ignore user</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1418,44 +1311,11 @@ to protect the chat window from a mess</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Couldn&apos;t create DCC socket.
-Direct connections disabled.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>File has been transferred sucessfully.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>File transfer error!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Couldn&apos;t open file!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Manage &amp;ignored</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Configuration</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remind &amp;password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Change password/email</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Register &amp;new user</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unregister user</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1564,11 +1424,27 @@ What would you like to do?</source>
         <source>Kadu: new user</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Show / hide users without description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User %1 is available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User notify</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>KaduSlots</name>
     <message>
         <source>Kadu: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1691,15 +1567,6 @@ What would you like to do?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Module initialization routine failed.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cannot find required functions.
-Maybe it&apos;s not Kadu-compatible Module.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Required module %1 was not found</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1718,6 +1585,15 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     </message>
     <message>
         <source>Module %1 conflicts with: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot find required functions in module %1.
+Maybe it&apos;s not Kadu-compatible Module.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Module initialization routine for %1 failed.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1792,97 +1668,6 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     <name>PixmapPreview</name>
     <message>
         <source>This is not an image</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>Register</name>
-    <message>
-        <source>Password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Register</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Create config file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Write the newly obtained UIN and password into a clean configuration file
-This will erase your current config file contents if you have one</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Register user</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Please fill out all fields</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Registration was successful. Your new number is %1.
-Store it in a safe place along with the password.
-Now add your friends to the userlist.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>This dialog box allows you to register a new account.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Email</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>New email:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>New password:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Retype new password:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error data typed in required fields.
-
-Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new password&quot;) should be the same!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>An error has occured while registration. Please try again later.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>RemindPassword</name>
-    <message>
-        <source>Remind password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error during remind password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Password reminded</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2035,10 +1820,6 @@ Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new pa
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Replace</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2047,15 +1828,31 @@ Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new pa
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Ok</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Choose a directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This dialog box allows you to choose directories in which kadu will look for icons or sounds.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paths</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Path to add</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2089,57 +1886,6 @@ Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new pa
     <name>ToolBar</name>
     <message>
         <source>Main toolbar</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>Unregister</name>
-    <message>
-        <source>Unregister</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unregister user</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Please fill out all fields</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No user</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unregistation was successful. Now you don&apos;t have any GG number :(</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>This dialog box allows you to unregister your account. Be aware of using this option. It will permanently delete your UIN and you will not be able to use it later!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>UIN and password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>UIN:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Password:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>An error has occured while unregistration. Please try again later.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2495,70 +2241,6 @@ The delete userlist on server was unsuccessful</source>
     </message>
     <message>
         <source>Cannot clear user list on server in offline mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>dccSocketClass</name>
-    <message>
-        <source>User </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source> wants to send us a file </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>
-of size </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>. Accept transfer?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Incoming transfer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Yes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>save file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Select file location</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>File %1 already exists.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Overwrite</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Resume</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Could not open file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>open file</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -2,10 +2,6 @@
 <context>
     <name>@default</name>
     <message>
-        <source>User notify</source>
-        <translation>Powiadomienie</translation>
-    </message>
-    <message>
         <source>Online</source>
         <translation>Dostępny</translation>
     </message>
@@ -122,38 +118,6 @@
         <translation>Sieć</translation>
     </message>
     <message>
-        <source>DCC enabled</source>
-        <translation>DCC włączone (Połączenia bezpośrednie)</translation>
-    </message>
-    <message>
-        <source>DCC IP autodetection</source>
-        <translation>Wykrywanie adresu IP dla DCC</translation>
-    </message>
-    <message>
-        <source>DCC IP</source>
-        <translation>Adres IP dla DCC</translation>
-    </message>
-    <message>
-        <source>IP address:</source>
-        <translation>Adresy IP:</translation>
-    </message>
-    <message>
-        <source>DCC forwarding enabled</source>
-        <translation>Przekierowywanie portów przy DCC</translation>
-    </message>
-    <message>
-        <source>DCC forwarding properties</source>
-        <translation>Ustawienia przekierowań DCC</translation>
-    </message>
-    <message>
-        <source>External IP address:</source>
-        <translation>Zewnętrzny adres IP: </translation>
-    </message>
-    <message>
-        <source>External TCP port:</source>
-        <translation>Zewnętrzny port TCP: </translation>
-    </message>
-    <message>
         <source>Servers properties</source>
         <translation>Ustawienia serwerów</translation>
     </message>
@@ -216,10 +180,6 @@
     <message>
         <source>Show / hide inactive users</source>
         <translation>Pokaż / ukryj niedostępnych</translation>
-    </message>
-    <message>
-        <source>Send file</source>
-        <translation>Wyślij plik</translation>
     </message>
     <message>
         <source>Configuration</source>
@@ -482,14 +442,10 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <translation>Niemiecki</translation>
     </message>
     <message>
-        <source>User %1 is available</source>
-        <translation>Kontakt %1 jest dostępny</translation>
-    </message>
-    <message>
         <source>Show description in userbox</source>
         <translation>Pokaż opis w liście kontaktów</translation>
     </message>
-     <message>
+    <message>
         <source>Align icon next to contact name</source>
         <translation>Umięść ikonę na wysokości nazwy kontaktu</translation>
     </message>
@@ -504,10 +460,6 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     <message>
         <source>Multiline description in userbox</source>
         <translation>Wielolinijkowy opis w liście kontaktów</translation>
-    </message>
-    <message>
-        <source>Local TCP port:</source>
-        <translation>Lokalny port TCP: </translation>
     </message>
     <message>
         <source>Don&apos;t save status changes</source>
@@ -717,6 +669,20 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <source>Display only users that have desciption</source>
         <translation>Wyświtl tylko kontakty, które mają opisy</translation>
     </message>
+    <message>
+        <source>Force use of paragraphs (VERY experimental)</source>
+        <translation>Używaj paragrafów (BARDZO EKSPERYMENTALNE)</translation>
+    </message>
+    <message>
+        <source>Qt Theme</source>
+        <translation>Style QT</translation>
+    </message>
+    <message>
+        <source>Please do not run Kadu as a root!
+It&apos;s a high security risk!</source>
+        <translation>Proszę nie uruchamiać Kadu jako root!
+Jest to wysoce ryzykowne!</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -747,56 +713,6 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     <message>
         <source>&lt;br&gt;(c) 2001-2004 Kadu Team&lt;/span&gt;</source>
         <translation>&lt;br&gt;(c) 2001-2004 Kadu Team&lt;/span&gt;</translation>
-    </message>
-</context>
-<context>
-    <name>ChangePassword</name>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-    <message>
-        <source>Change password/email</source>
-        <translation>Zmień hasło/email</translation>
-    </message>
-    <message>
-        <source>This dialog box allows you to change your current password or e-mail.</source>
-        <translation>To okno dialogowe pozwala zmienić bieżące hasło lub e-mail.</translation>
-    </message>
-    <message>
-        <source>Email</source>
-        <translation>E-mail</translation>
-    </message>
-    <message>
-        <source>Password</source>
-        <translation>Hasło</translation>
-    </message>
-    <message>
-        <source>New email:</source>
-        <translation>Nowy e-mail:</translation>
-    </message>
-    <message>
-        <source>New password:</source>
-        <translation>Nowe hasło:</translation>
-    </message>
-    <message>
-        <source>Retype new password:</source>
-        <translation>Powtórz hasło:</translation>
-    </message>
-    <message>
-        <source>&amp;Close</source>
-        <translation>&amp;Zamknij</translation>
-    </message>
-    <message>
-        <source>Change password</source>
-        <translation>Zmień hasło</translation>
-    </message>
-    <message>
-        <source>Error data typed in required fields.
-
-Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new password&quot;) should be the same!</source>
-        <translation>Błędne dane w  wymaganych polach.
-Hasła  muszą być identyczne w obu polach!</translation>
     </message>
 </context>
 <context>
@@ -949,42 +865,7 @@ aby uchronić okno rozmowy przed bałaganem</translation>
     </message>
 </context>
 <context>
-    <name>DccFileDialog</name>
-    <message>
-        <source>Sender: </source>
-        <translation>Nadawca: </translation>
-    </message>
-    <message>
-        <source>Receiver: </source>
-        <translation>Odbiorca: </translation>
-    </message>
-    <message>
-        <source>Filename: </source>
-        <translation>Nazwa pliku: </translation>
-    </message>
-    <message>
-        <source>File size: </source>
-        <translation>Rozmiar pliku: </translation>
-    </message>
-    <message>
-        <source>Speed: 0KB/s (not started)  </source>
-        <translation>Prędkość: 0KB/s (nie rozpoczęto)</translation>
-    </message>
-    <message>
-        <source>Speed: </source>
-        <translation>Prędkość: </translation>
-    </message>
-    <message>
-        <source>(stalled)</source>
-        <translation>(zatrzymana)</translation>
-    </message>
-    <message>
-        <source>File transfered %1%</source>
-        <translation>Transmisja pliku %1%</translation>
-    </message>
-</context>
-<context>
-    <name>EventConfigSlots</name>
+    <name>GaduProtocol</name>
     <message>
         <source>I am busy.</source>
         <translation>Jestem zajęty.</translation>
@@ -1138,6 +1019,10 @@ aby uchronić okno rozmowy przed bałaganem</translation>
     <message>
         <source>Hint timeout</source>
         <translation>Dymek zniknie po: </translation>
+    </message>
+    <message>
+        <source>Set for all</source>
+        <translation>Ustaw wszystkie</translation>
     </message>
 </context>
 <context>
@@ -1365,10 +1250,6 @@ by zmiany odniosły skutek</translation>
         <translation>Pokaż / ukryj niedostępnych</translation>
     </message>
     <message>
-        <source>Send file</source>
-        <translation>Wyślij plik</translation>
-    </message>
-    <message>
         <source>Configuration</source>
         <translation>Konfiguracja</translation>
     </message>
@@ -1409,12 +1290,6 @@ by zmiany odniosły skutek</translation>
         <translation>&amp;Nie</translation>
     </message>
     <message>
-        <source>Couldn&apos;t create DCC socket.
-Direct connections disabled.</source>
-        <translation>Problem z utworzeniem gniazdka DCC.
-Połączenia bezpośrednie wyłączone.</translation>
-    </message>
-    <message>
         <source>Open chat window</source>
         <translation>Rozpocznij rozmowę</translation>
     </message>
@@ -1443,36 +1318,12 @@ Połączenia bezpośrednie wyłączone.</translation>
         <translation>O programie...</translation>
     </message>
     <message>
-        <source>File has been transferred sucessfully.</source>
-        <translation>Transfer pliku zakończony pomyślnie.</translation>
-    </message>
-    <message>
-        <source>File transfer error!</source>
-        <translation>Błąd podczas transmisji pliku!</translation>
-    </message>
-    <message>
-        <source>Couldn&apos;t open file!</source>
-        <translation>Problem z otworzeniem pliku!</translation>
-    </message>
-    <message>
         <source>Manage &amp;ignored</source>
         <translation>Zarządzaj i&amp;gnorowanymi</translation>
     </message>
     <message>
         <source>&amp;Configuration</source>
         <translation>&amp;Konfiguracja</translation>
-    </message>
-    <message>
-        <source>Remind &amp;password</source>
-        <translation>Przypomnij ha&amp;sło</translation>
-    </message>
-    <message>
-        <source>Register &amp;new user</source>
-        <translation>Zarejestruj &amp;nowego użytkownika</translation>
-    </message>
-    <message>
-        <source>Unregister user</source>
-        <translation>Wyrejestruj użytkownika</translation>
     </message>
     <message>
         <source>Personal information</source>
@@ -1505,10 +1356,6 @@ Połączenia bezpośrednie wyłączone.</translation>
     <message>
         <source>Private</source>
         <translation>Tylko dla znajomych</translation>
-    </message>
-    <message>
-        <source>&amp;Change password/email</source>
-        <translation>Zmień &amp;hasło/email</translation>
     </message>
     <message>
         <source>I&amp;mport / Export userlist</source>
@@ -1587,12 +1434,28 @@ Wybierz jedną z poniższych opcji:</translation>
         <source>Kadu: new user</source>
         <translation>Kadu: nowy użytkownik</translation>
     </message>
+    <message>
+        <source>Show / hide users without description</source>
+        <translation>Filtruj kontakty z opisami</translation>
+    </message>
+    <message>
+        <source>User %1 is available</source>
+        <translation>Kontakt %1 jest dostępny</translation>
+    </message>
+    <message>
+        <source>User notify</source>
+        <translation>Powiadomienie</translation>
+    </message>
 </context>
 <context>
     <name>KaduSlots</name>
     <message>
         <source>Kadu: %1</source>
         <translation>Kadu: %1</translation>
+    </message>
+    <message>
+        <source>Unknown</source>
+        <translation>Nieznany</translation>
     </message>
 </context>
 <context>
@@ -1714,16 +1577,6 @@ Wybierz jedną z poniższych opcji:</translation>
         <translation>Z&amp;arządca modułów</translation>
     </message>
     <message>
-        <source>Module initialization routine failed.</source>
-        <translation>Inicjalizacja modulu nie powiodła się.</translation>
-    </message>
-    <message>
-        <source>Cannot find required functions.
-Maybe it&apos;s not Kadu-compatible Module.</source>
-        <translation>Nie znaleziono wymaganej funkcji.
-Być może nie jest to moduł kompatybilny z Kadu</translation>
-    </message>
-    <message>
         <source>Required module %1 was not found</source>
         <translation>Wymagany moduł %1 nie został znaleziony</translation>
     </message>
@@ -1744,6 +1597,16 @@ Być może nie jest to moduł kompatybilny z Kadu</translation>
     <message>
         <source>Module %1 conflicts with: %2</source>
         <translation>Moduł %1 koliduje z: %2</translation>
+    </message>
+    <message>
+        <source>Cannot find required functions in module %1.
+Maybe it&apos;s not Kadu-compatible Module.</source>
+        <translation>Nie znaleziono wymaganych funkcji w module %1.
+Być może nie jest to moduł kompatybilny z Kadu.</translation>
+    </message>
+    <message>
+        <source>Module initialization routine for %1 failed.</source>
+        <translation>Inicjacja modułu dla %1 nieudana.</translation>
     </message>
 </context>
 <context>
@@ -1818,101 +1681,6 @@ Być może nie jest to moduł kompatybilny z Kadu</translation>
     <message>
         <source>This is not an image</source>
         <translation>To nie jest obrazek</translation>
-    </message>
-</context>
-<context>
-    <name>Register</name>
-    <message>
-        <source>Password</source>
-        <translation>Hasło</translation>
-    </message>
-    <message>
-        <source>Register</source>
-        <translation>Zarejestruj</translation>
-    </message>
-    <message>
-        <source>Create config file</source>
-        <translation>Utwórz plik konfiguracyjny</translation>
-    </message>
-    <message>
-        <source>Write the newly obtained UIN and password into a clean configuration file
-This will erase your current config file contents if you have one</source>
-        <translation>Nowy numer GG oraz hasło zostaną zapisane do pliku
-konfiguracyjnego. Stary plik zostanie nadpisany.</translation>
-    </message>
-    <message>
-        <source>Register user</source>
-        <translation>Zarejestruj nowego użytkownika</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-    <message>
-        <source>Please fill out all fields</source>
-        <translation>Wypełnij wszystkie pola</translation>
-    </message>
-    <message>
-        <source>Registration was successful. Your new number is %1.
-Store it in a safe place along with the password.
-Now add your friends to the userlist.</source>
-        <translation>Rejestracja zakończona. Twój nowy numer to: %1.
-Zapisz go wraz z hasłem w bezpiecznym miejscu.
-Teraz możesz dodać znajomych do listy kontaktów.</translation>
-    </message>
-    <message>
-        <source>This dialog box allows you to register a new account.</source>
-        <translation>To okno dialogowe pozwala zarejestrowac nowe konto.</translation>
-    </message>
-    <message>
-        <source>Email</source>
-        <translation>E-mail</translation>
-    </message>
-    <message>
-        <source>New email:</source>
-        <translation>Nowy e-mail:</translation>
-    </message>
-    <message>
-        <source>New password:</source>
-        <translation>Nowe hasło:</translation>
-    </message>
-    <message>
-        <source>Retype new password:</source>
-        <translation>Powtórz hasło:</translation>
-    </message>
-    <message>
-        <source>&amp;Close</source>
-        <translation>&amp;Zamknij</translation>
-    </message>
-    <message>
-        <source>Error data typed in required fields.
-
-Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new password&quot;) should be the same!</source>
-        <translation>Błędne dane w  wymaganych polach.
-Hasła  muszą być identyczne w obu polach!</translation>
-    </message>
-    <message>
-        <source>An error has occured while registration. Please try again later.</source>
-        <translation>Wystąpił błąd podczas rejestracji. Proszę spróbowac później.</translation>
-    </message>
-</context>
-<context>
-    <name>RemindPassword</name>
-    <message>
-        <source>Remind password</source>
-        <translation>Przypomnij hasło</translation>
-    </message>
-    <message>
-        <source>Error during remind password</source>
-        <translation>Błąd podczas przypominania hasła</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-    <message>
-        <source>Password reminded</source>
-        <translation>Przypomnij hasło</translation>
     </message>
 </context>
 <context>
@@ -2064,10 +1832,6 @@ Hasła  muszą być identyczne w obu polach!</translation>
         <translation>Dodaj</translation>
     </message>
     <message>
-        <source>Replace</source>
-        <translation>Zastąp</translation>
-    </message>
-    <message>
         <source>Remove</source>
         <translation>Usuń</translation>
     </message>
@@ -2076,16 +1840,32 @@ Hasła  muszą być identyczne w obu polach!</translation>
         <translation>Wybierz</translation>
     </message>
     <message>
-        <source>Ok</source>
+        <source>Choose a directory</source>
+        <translation>Wybierz katalog</translation>
+    </message>
+    <message>
+        <source>This dialog box allows you to choose directories in which kadu will look for icons or sounds.</source>
+        <translation>To okno dialogowe pozwala wam wybierać katalogi w których Kadu będzie szukać ikon albo dźwięków.</translation>
+    </message>
+    <message>
+        <source>Paths</source>
+        <translation>Ścieżki</translation>
+    </message>
+    <message>
+        <source>Path to add</source>
+        <translation>Ścieżki do dodania</translation>
+    </message>
+    <message>
+        <source>Change</source>
+        <translation>Zmień</translation>
+    </message>
+    <message>
+        <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation>Anuluj</translation>
-    </message>
-    <message>
-        <source>Choose a directory</source>
-        <translation>Wybierz katalog</translation>
+        <source>&amp;Cancel</source>
+        <translation>&amp;Anuluj</translation>
     </message>
 </context>
 <context>
@@ -2119,58 +1899,6 @@ Hasła  muszą być identyczne w obu polach!</translation>
     <message>
         <source>Main toolbar</source>
         <translation>Mój pasek narzędziowy</translation>
-    </message>
-</context>
-<context>
-    <name>Unregister</name>
-    <message>
-        <source>Unregister</source>
-        <translation>Wyrejestruj użytkownika</translation>
-    </message>
-    <message>
-        <source>Unregister user</source>
-        <translation>Wyrejestruj użytkownika</translation>
-    </message>
-    <message>
-        <source>Please fill out all fields</source>
-        <translation>Wypełnij wszystkie pola</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-    <message>
-        <source>No user</source>
-        <translation>Brak użytkownika</translation>
-    </message>
-    <message>
-        <source>Unregistation was successful. Now you don&apos;t have any GG number :(</source>
-        <translation>Wyrejestrowanie przebiegło prawidłowo.
-Teraz już nie masz numeru GG :(</translation>
-    </message>
-    <message>
-        <source>This dialog box allows you to unregister your account. Be aware of using this option. It will permanently delete your UIN and you will not be able to use it later!</source>
-        <translation>To okno dialogowe daje możliwość wyrejestrowania twojego konta. Musisz zdawać sobie sprawę z tego co robisz. Zostanie usunięty twój nr GG i nie będziesz już mógł go więcej używać!</translation>
-    </message>
-    <message>
-        <source>UIN and password</source>
-        <translation>Numer GG i hasło</translation>
-    </message>
-    <message>
-        <source>UIN:</source>
-        <translation>Numer GG: </translation>
-    </message>
-    <message>
-        <source>Password:</source>
-        <translation>Hasło:</translation>
-    </message>
-    <message>
-        <source>&amp;Close</source>
-        <translation>&amp;Zamknij</translation>
-    </message>
-    <message>
-        <source>An error has occured while unregistration. Please try again later.</source>
-        <translation>Wystąpił błąd podczas wyrejestrowywania. Proszę spróbowac później.</translation>
     </message>
 </context>
 <context>
@@ -2531,71 +2259,6 @@ Jesteś pewny że tego chcesz?</translation>
     <message>
         <source>Cannot clear user list on server in offline mode</source>
         <translation>Nie można usunąć listy kontaktów z serwera bez połączenia z nim</translation>
-    </message>
-</context>
-<context>
-    <name>dccSocketClass</name>
-    <message>
-        <source>User </source>
-        <translation>Użytkownik </translation>
-    </message>
-    <message>
-        <source> wants to send us a file </source>
-        <translation> chce wysłać nam plik </translation>
-    </message>
-    <message>
-        <source>
-of size </source>
-        <translation>
-o rozmiarze </translation>
-    </message>
-    <message>
-        <source>. Accept transfer?</source>
-        <translation>. Akceptujesz?</translation>
-    </message>
-    <message>
-        <source>Incoming transfer</source>
-        <translation>Transfer przychodzący</translation>
-    </message>
-    <message>
-        <source>Yes</source>
-        <translation>Tak</translation>
-    </message>
-    <message>
-        <source>No</source>
-        <translation>Nie</translation>
-    </message>
-    <message>
-        <source>save file</source>
-        <translation>zapisz plik</translation>
-    </message>
-    <message>
-        <source>Select file location</source>
-        <translation>Wybierz lokalizację pliku</translation>
-    </message>
-    <message>
-        <source>File %1 already exists.</source>
-        <translation>Plik %1 już istnieje.</translation>
-    </message>
-    <message>
-        <source>Overwrite</source>
-        <translation>Nadpisz</translation>
-    </message>
-    <message>
-        <source>Resume</source>
-        <translation>Wznów</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Anuluj</translation>
-    </message>
-    <message>
-        <source>Could not open file</source>
-        <translation>Problem z otwarciem pliku</translation>
-    </message>
-    <message>
-        <source>open file</source>
-        <translation>otwórz plik</translation>
     </message>
 </context>
 </TS>
