@@ -71,7 +71,10 @@ void eventRecvMsg(int msgclass, QArray<uin_t> senders, unsigned char * msg, time
 	cp_to_iso(msg);
 
 	QString nick;
-	nick = userlist.byUin(senders[0]).altnick;
+	if(userlist.containsUin(senders[0]))
+		nick = userlist.byUin(senders[0]).altnick;
+	else
+		nick = QString::number(senders[0]);
 
 	if (config.logmessages && senders[0] != config.uin)
 		appendHistory(senders[0], msg, FALSE, time);
