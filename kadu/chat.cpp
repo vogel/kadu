@@ -973,10 +973,13 @@ void Chat::formatMessage(ChatMessage &msg)
 	if (!msg.sdate.isNull())
 		date.append(" / S "+printDateTime(msg.sdate));
 
+	QString nick = msg.nick;
+	HtmlDocument::escapeText(nick);
+	
 	msg.message=formatString
 			.arg(msg.backgroundColor.name())
 			.arg(msg.textColor.name())
-			.arg(msg.nick)
+			.arg(nick)
 			.arg(date)
 			.arg(convertCharacters(msg.unformattedMessage, msg.isMyMessage));
 

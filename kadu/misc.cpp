@@ -772,10 +772,30 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 				case 'o': i++; if (ule.port==2)      pe.str=" ";                       break;
 				case 'p': i++; if (ule.port)         pe.str=QString::number(ule.port); break;
 				case 'u': i++; if (ule.uin)          pe.str=QString::number(ule.uin);  break;
-				case 'n': i++; pe.str=ule.nickname;		break;
-				case 'a': i++; pe.str=ule.altnick;		break;
-				case 'f': i++; pe.str=ule.first_name;	break;
-				case 'r': i++; pe.str=ule.last_name;	break;
+				case 'n':
+					i++;
+					pe.str=ule.nickname;
+					if(escape)
+						HtmlDocument::escapeText(pe.str);
+					break;
+				case 'a':
+					i++;
+					pe.str=ule.altnick;
+					if(escape)
+						HtmlDocument::escapeText(pe.str);
+					break;
+				case 'f':
+					i++;
+					pe.str=ule.first_name;
+					if(escape)
+						HtmlDocument::escapeText(pe.str);
+					break;
+				case 'r':
+					i++;
+					pe.str=ule.last_name;
+					if(escape)
+						HtmlDocument::escapeText(pe.str);
+					break;
 				case 'm': i++; pe.str=ule.mobile;		break;
 				case 'g': i++; pe.str=ule.group();		break;
 				case 'e': i++; pe.str=ule.email;		break;

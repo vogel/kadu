@@ -58,6 +58,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * ³atka dorregaray'a dodaj±ca do modu³u autoaway opcje automatycznej zmiany
   na status ukryty oraz automatycznego roz³±czania siê siê (adrian)
 * drobna poprawka mania dla dla gcc 2.95.2 (adrian)
+* poprawka zachowania okna czat, historii, panela informacyjnego przy
+  altnickach zawieraj±cych znaki specjalne html, np. znak mniejszo¶ci (adrian)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,

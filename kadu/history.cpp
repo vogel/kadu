@@ -1206,10 +1206,16 @@ void History::formatHistoryEntry(QString &text, const HistoryEntry &entry, QStri
 
 	if (entry.type == HISTORYMANAGER_ENTRY_SMSSEND)
 		text.append(entry.mobile + " SMS");
-	else if (entry.type & (HISTORYMANAGER_ENTRY_CHATSEND | HISTORYMANAGER_ENTRY_MSGSEND))
-		text.append(config_file.readEntry("General","Nick"));
 	else
-		text.append(entry.nick);
+	{
+		QString nick;
+		if (entry.type & (HISTORYMANAGER_ENTRY_CHATSEND | HISTORYMANAGER_ENTRY_MSGSEND))
+			nick = config_file.readEntry("General","Nick");
+		else
+			nick = entry.nick;
+		HtmlDocument::escapeText(nick);
+		text.append(nick);
+	}
 
 	text.append(QString(" :: ") + printDateTime(entry.date));
 	if (entry.type & (HISTORYMANAGER_ENTRY_CHATRCV | HISTORYMANAGER_ENTRY_MSGRCV))
