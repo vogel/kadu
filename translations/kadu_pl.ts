@@ -667,7 +667,7 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     </message>
     <message>
         <source>Content message in hint</source>
-        <translation type="unfinished"></translation>
+        <translation>Treść wiadowmości w dymku</translation>
     </message>
 </context>
 <context>
@@ -1787,10 +1787,6 @@ Teraz możesz dodać znajomych do listy kontaktów.</translation>
     <message>
         <source>Select user first</source>
         <translation>Zaznacz użytkownika</translation>
-    </message>
-    <message>
-        <source> </source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

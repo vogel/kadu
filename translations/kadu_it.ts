@@ -830,7 +830,7 @@ If you leave blank, default settings will be used.</source>
     <name>ColorButton</name>
     <message>
         <source>Color dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Dialogo di colore</translation>
     </message>
 </context>
 <context>
@@ -848,35 +848,35 @@ If you leave blank, default settings will be used.</source>
     <name>DccFileDialog</name>
     <message>
         <source>Sender: </source>
-        <translation type="unfinished">Mittente: </translation>
+        <translation>Mittente: </translation>
     </message>
     <message>
         <source>Receiver: </source>
-        <translation type="unfinished">Ricevente: </translation>
+        <translation>Ricevente: </translation>
     </message>
     <message>
         <source>Filename: </source>
-        <translation type="unfinished">Nome di schedario: </translation>
+        <translation>Nome di schedario: </translation>
     </message>
     <message>
         <source>File size: </source>
-        <translation type="unfinished">Formato di lima: </translation>
+        <translation>Formato di lima: </translation>
     </message>
     <message>
         <source>Speed: 0KB/s (not started)  </source>
-        <translation type="unfinished">Velocità: 0KB/s (non iniziato) </translation>
+        <translation>Velocità: 0KB/s (non iniziato) </translation>
     </message>
     <message>
         <source>File transfer</source>
-        <translation type="unfinished">Trasferimento di file</translation>
+        <translation>Trasferimento di file</translation>
     </message>
     <message>
         <source>Speed: </source>
-        <translation type="unfinished">Velocità: </translation>
+        <translation>Velocità: </translation>
     </message>
     <message>
         <source>(stalled)</source>
-        <translation type="unfinished">(arrestato)</translation>
+        <translation>(arrestato)</translation>
     </message>
 </context>
 <context>
@@ -894,7 +894,7 @@ If you leave blank, default settings will be used.</source>
     <name>EventConfigSlots</name>
     <message>
         <source>I am busy.</source>
-        <translation type="unfinished">Sono occupato.</translation>
+        <translation>Sono occupato.</translation>
     </message>
 </context>
 <context>
@@ -984,39 +984,39 @@ Your password is incorrect !!!</source>
     </message>
     <message>
         <source>Online</source>
-        <translation type="unfinished">In linea</translation>
+        <translation>In linea</translation>
     </message>
     <message>
         <source>Online (d.)</source>
-        <translation type="unfinished">In linea (d.)</translation>
+        <translation>In linea (d.)</translation>
     </message>
     <message>
         <source>Busy</source>
-        <translation type="unfinished">Occupato</translation>
+        <translation>Occupato</translation>
     </message>
     <message>
         <source>Busy (d.)</source>
-        <translation type="unfinished">Occupato (d.)</translation>
+        <translation>Occupato (d.)</translation>
     </message>
     <message>
         <source>Invisible</source>
-        <translation type="unfinished">Invisibile</translation>
+        <translation>Invisibile</translation>
     </message>
     <message>
         <source>Invisible (d.)</source>
-        <translation type="unfinished">Invisibile (d.)</translation>
+        <translation>Invisibile (d.)</translation>
     </message>
     <message>
         <source>Offline</source>
-        <translation type="unfinished">Fuori linea</translation>
+        <translation>Fuori linea</translation>
     </message>
     <message>
         <source>Offline (d.)</source>
-        <translation type="unfinished">Fuori linea (d.)</translation>
+        <translation>Fuori linea (d.)</translation>
     </message>
     <message>
         <source>Blocking</source>
-        <translation type="unfinished">Ostruire</translation>
+        <translation>Ostruire</translation>
     </message>
     <message>
         <source>New chat</source>
@@ -1028,7 +1028,7 @@ Your password is incorrect !!!</source>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished">Errore</translation>
+        <translation>Errore</translation>
     </message>
     <message>
         <source>Preview</source>
@@ -1474,14 +1474,14 @@ Controlli il vostro collegamento del Internet.</translation>
     </message>
     <message>
         <source>Voice chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Chiacchierata di voce</translation>
     </message>
 </context>
 <context>
     <name>KaduSlots</name>
     <message>
         <source>Kadu: %1</source>
-        <translation type="unfinished">Kadu: %1</translation>
+        <translation>Kadu: %1</translation>
     </message>
 </context>
 <context>
@@ -1783,10 +1783,6 @@ Ora aggiunga i vostri amici al lista del contatto.</translation>
         <source>Select user first</source>
         <translation>Selezioni l&apos;utente primo</translation>
     </message>
-    <message>
-        <source> </source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>Sms</name>
@@ -1915,19 +1911,19 @@ or has beed changed too much to parse it correctly.</source>
     <name>TokenDialog</name>
     <message>
         <source>Read this code ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Legga questo codice ...</translation>
     </message>
     <message>
         <source>and type here</source>
-        <translation type="unfinished"></translation>
+        <translation>e tipo qui</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation>&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Annulla</translation>
+        <translation>&amp;Annulla</translation>
     </message>
 </context>
 <context>
@@ -2373,7 +2369,7 @@ L&apos;importazione era infruttuosa</translation>
     </message>
     <message>
         <source>New email</source>
-        <translation type="unfinished"></translation>
+        <translation>Nuovo E-mail</translation>
     </message>
 </context>
 <context>
@@ -2446,11 +2442,11 @@ del formato </translation>
     </message>
     <message>
         <source> wants to talk with you. Do you accept it?</source>
-        <translation type="unfinished"></translation>
+        <translation> desidera comunicare con voi. Lo accettate?</translation>
     </message>
     <message>
         <source>Incoming voice chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Chiacchierata ricevuta di voce</translation>
     </message>
 </context>
 <context>
