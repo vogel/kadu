@@ -1,4 +1,4 @@
-/* $Id: libgadu.h,v 1.40 2003/09/12 12:08:44 chilek Exp $ */
+/* $Id: libgadu.h,v 1.41 2003/09/12 17:27:22 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -1133,6 +1133,7 @@ struct gg_recv_msg {
 #define GG_USERLIST_REQUEST 0x0016
 
 #define GG_USERLIST_PUT 0x00
+#define GG_USERLIST_PUT2 0x01
 #define GG_USERLIST_GET 0x02
 
 struct gg_userlist_request {

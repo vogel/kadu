@@ -1,4 +1,4 @@
-/* $Id: libgadu.c,v 1.27 2003/09/12 12:08:44 chilek Exp $ */
+/* $Id: libgadu.c,v 1.28 2003/09/12 17:27:22 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -69,7 +69,7 @@ static char rcsid[]
 #ifdef __GNUC__
 __attribute__ ((unused))
 #endif
-= "$Id: libgadu.c,v 1.27 2003/09/12 12:08:44 chilek Exp $";
+= "$Id: libgadu.c,v 1.28 2003/09/12 17:27:22 chilek Exp $";
 #endif 
 
 /*
@@ -1474,7 +1474,25 @@ int gg_remove_notify(struct gg_session *sess, uin_t uin)
  */
 int gg_userlist_request(struct gg_session *sess, char type, const char *request)
 {
-	return gg_send_packet(sess, GG_USERLIST_REQUEST, &type, sizeof(type), request, (request) ? strlen(request) : 0, NULL);
+	int len;
+
+	if (!request)
+		return gg_send_packet(sess, GG_USERLIST_REQUEST, &type, sizeof(type), NULL);
+	
+	len = strlen(request);
+
+	while (len > 2047) {
+		if (gg_send_packet(sess, GG_USERLIST_REQUEST, &type, sizeof(type), request, 2047, NULL) == -1)
+			return -1;
+
+		if (type == GG_USERLIST_PUT)
+			type = GG_USERLIST_PUT2;
+
+		request += 2047;
+		len -= 2047;
+	}
+		
+	return gg_send_packet(sess, GG_USERLIST_REQUEST, &type, sizeof(type), request, len, NULL);
 }
 
 /*
