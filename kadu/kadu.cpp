@@ -1015,6 +1015,7 @@ void Kadu::commandParser (int command) {
 				keyfile.close();
 				QCString tmp(mykey.local8Bit());
 				gg_send_message(sess, GG_CLASS_MSG, user.uin, (unsigned char *)tmp.data());
+				QMessageBox::information(this, "Kadu", i18n("Your public key has been sent"), i18n("OK"), QString::null, 0);
 			}
 
 			break;
