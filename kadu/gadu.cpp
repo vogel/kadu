@@ -23,7 +23,7 @@ QSocketNotifier* kadusnw = NULL;
 bool userlist_sent = false;
 bool socket_active = false;
 int last_read_event = -1;
-int server_nr = 0;
+unsigned int server_nr = 0;
 bool timeout_connected = true;
 QTimer* pingtimer;
 QValueList<QHostAddress> config_servers;
@@ -45,7 +45,7 @@ int GaduProtocol::sendMessage(const UinsList& uins,const char* msg)
 	if(uins.count()>1)
 	{
 		uin_t* users = new uin_t[uins.count()];
-		for (int i = 0; i < uins.count(); i++)
+		for (unsigned int i = 0; i < uins.count(); i++)
 			users[i] = uins[i];
 		seq=gg_send_message_confer(sess, GG_CLASS_CHAT,
 			uins.count(), users, (unsigned char*)msg);
@@ -63,7 +63,7 @@ int GaduProtocol::sendMessageRichText(const UinsList& uins,const char* msg,unsig
 	if(uins.count()>1)
 	{
 		uin_t* users = new uin_t[uins.count()];
-		for (int i = 0; i < uins.count(); i++)
+		for (unsigned int i = 0; i < uins.count(); i++)
 			users[i] = uins[i];
 		seq = gg_send_message_confer_richtext(sess, GG_CLASS_CHAT,
 				uins.count(), users, (unsigned char*)msg,
@@ -81,7 +81,7 @@ void GaduProtocol::sendUserList()
 {
 	uin_t *uins;
 	char *types;
-	int i, j;
+	unsigned int i, j;
 
 	for (i = 0, j = 0; i < userlist.count(); i++)
 		if (userlist[i].uin)

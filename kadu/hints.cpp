@@ -221,7 +221,7 @@ void HintManager::deleteHint(unsigned int id)
 		hide();
 		return;
 	}
-	for (int i = id; i < hints.count(); i++)
+	for (unsigned int i = id; i < hints.count(); i++)
 		hints.at(i)->setId(i);
 	setHint();
 }
@@ -230,7 +230,7 @@ void HintManager::oneSecond(void)
 {
 	kdebug("HintManager::oneSecond()\n");
 
-	for (int i = 0; i < hints.count(); i++)
+	for (unsigned int i = 0; i < hints.count(); i++)
 		if (!(hints.at(i)->nextSecond()))
 		{
 			deleteHint(i);
@@ -300,7 +300,7 @@ void HintManager::deleteAllHints()
 {
 	hint_timer->stop();
 #if QT_VERSION >= 0x030100
-	for (int i = 0; i < hints.count(); i++)
+	for (unsigned int i = 0; i < hints.count(); i++)
 		grid->removeItem(hints.at(i));
 #endif
 	hints.clear();
@@ -344,11 +344,12 @@ void HintManager::addHintNewMsg(const QString &nick, const QString &msg)
 
 	if (config_file.readBoolEntry("Hints","ShowContentMessage"))
 	{
+		unsigned int citeSign=config_file.readNumEntry("Hints","CiteSign");
 		QString cite;
-		if (msg.length() <= config_file.readNumEntry("Hints","CiteSign"))
+		if (msg.length() <= citeSign)
 			cite = msg;
 		else
-			cite = msg.left(config_file.readNumEntry("Hints","CiteSign"))+"...";
+			cite = msg.left(citeSign)+"...";
 		addHint(tr("New message from")+" <b>"+nick+"<br></b> <small>"+cite+"</small>", icons_manager.loadIcon("Message"), QFont(config[10][0], config[10][1].toInt()), QColor(config[10][2]), QColor(config[10][3]), config[10][4].toInt());
 	}
 	else
@@ -364,11 +365,12 @@ void HintManager::addHintNewChat(UinsList& senders, const QString &msg)
 	
 	if (config_file.readBoolEntry("Hints","ShowContentMessage"))
 	{
+		unsigned int citeSign=config_file.readNumEntry("Hints","CiteSign");
 		QString cite;
-		if (msg.length() <= config_file.readNumEntry("Hints","CiteSign"))
+		if (msg.length() <= citeSign)
 			cite = msg;
 		else
-			cite = msg.left(config_file.readNumEntry("Hints","CiteSign"))+"...";
+			cite = msg.left(citeSign)+"...";
 		addHint(tr("Chat with")+" <b>"+nick+"<br></b> <small>"+cite+"</small>",icons_manager.loadIcon("Message"), QFont(config[9][0], config[9][1].toInt()), QColor(config[9][2]), QColor(config[9][3]), config[9][4].toInt(), &senders);
 	}
 	else
@@ -589,7 +591,7 @@ void HintManagerSlots::onCreateConfigDialog()
 	QHBox *h_msg = new QHBox(messagegrp);
 	h_msg->setSpacing(2);
 	
-	QLabel *l_citesign = new QLabel(tr("Number of quoted characters"),h_msg);
+	/*QLabel *l_citesign = */new QLabel(tr("Number of quoted characters"),h_msg);
 
 	sb_citesign = new QSpinBox(10, 1000, 1, h_msg);
 	sb_citesign->setValue(config_file.readNumEntry("Hints","CiteSign"));
@@ -611,10 +613,10 @@ void HintManagerSlots::onCreateConfigDialog()
 	QVGroupBox *vboxgrp2 = new QVGroupBox(tr("Hints position"), vbox);
 	vboxgrp2->setEnabled(useposition);
 	QHBox *hxybox = new QHBox(vboxgrp2);
-	QLabel *labelx = new QLabel("x = ",hxybox);
+	/*QLabel *labelx = */new QLabel("x = ",hxybox);
 	e_posx = new QLineEdit(hxybox);
 	e_posx->setText(QString::number(hintsposition.x()));
-	QLabel *labely = new QLabel("y = ",hxybox);
+	/*QLabel *labely = */new QLabel("y = ",hxybox);
 	e_posy = new QLineEdit(hxybox);
 	e_posy->setText(QString::number(hintsposition.y()));
 	
@@ -639,7 +641,7 @@ void HintManagerSlots::onCreateConfigDialog()
 	cb_notify->insertItem(tr("New message in chat"));
 	cb_notify->insertItem(tr("Error"));
 
-	QLabel *l_timeout = new QLabel(tr("Hint timeout (in seconds)"), hb_0);
+	/*QLabel *l_timeout = */new QLabel(tr("Hint timeout (in seconds)"), hb_0);
 
 	sb_timeout = new QSpinBox(1,600,1,hb_0);
 	sb_timeout->setValue(hint[cb_notify->currentItem()][4].toInt());

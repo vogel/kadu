@@ -27,7 +27,7 @@ UserInfo::UserInfo(const QString &name, QDialog *parent, const QString &altnick,
 	resize(350,200);
 	setWFlags(Qt::WDestructiveClose);
 	
-	int i = 0;
+	unsigned int i = 0;
 	if (fAddUser) {
 		puser = NULL;
 		setCaption(tr("Add user"));
@@ -76,37 +76,37 @@ void UserInfo::setupTab1() {
 	QHBox *hbox1 = new QHBox(box);
 	hbox1->setSpacing(10);
 	QVBox *vbox11 = new QVBox(hbox1);
-	QLabel *l_uin = new QLabel(tr("Uin"), vbox11);
+	/*QLabel *l_uin =*/ new QLabel(tr("Uin"), vbox11);
 	e_uin = new QLineEdit(vbox11);
 	QVBox *vbox12 = new QVBox(hbox1);
-	QLabel *l_status = new QLabel(tr("Status"), vbox12);
+	/*QLabel *l_status =*/ new QLabel(tr("Status"), vbox12);
 	QLineEdit *e_status = new QLineEdit(vbox12);
 
 	QHBox *hbox2 = new QHBox(box);
 	hbox2->setSpacing(10);
 	QVBox *vbox21 = new QVBox(hbox2);
-	QLabel *l_nickname = new QLabel(tr("Nickname"), vbox21);
+	/*QLabel *l_nickname =*/ new QLabel(tr("Nickname"), vbox21);
 	e_nickname = new QLineEdit(vbox21);
 	QVBox *vbox22 = new QVBox(hbox2);
-	QLabel *l_altnick = new QLabel(tr("AltNick"), vbox22);
+	/*QLabel *l_altnick =*/ new QLabel(tr("AltNick"), vbox22);
 	e_altnick = new QLineEdit(vbox22);
 
 	QHBox *hbox3 = new QHBox(box);
 	hbox3->setSpacing(10);
 	QVBox *vbox31 = new QVBox(hbox3);
-	QLabel *l_firstname = new QLabel(tr("First name"), vbox31);
+	/*QLabel *l_firstname =*/ new QLabel(tr("First name"), vbox31);
 	e_firstname = new QLineEdit(vbox31);
 	QVBox *vbox32 = new QVBox(hbox3);
-	QLabel *l_lastname = new QLabel(tr("Surname"), vbox32);
+	/*QLabel *l_lastname =*/ new QLabel(tr("Surname"), vbox32);
 	e_lastname = new QLineEdit(vbox32);
 
 	QHBox *hbox4 = new QHBox(box);
 	hbox4->setSpacing(10);
 	QVBox *vbox41 = new QVBox(hbox4);
-	QLabel *l_mobile = new QLabel(tr("Mobile"), vbox41);
+	/*QLabel *l_mobile =*/ new QLabel(tr("Mobile"), vbox41);
 	e_mobile = new QLineEdit(vbox41);
 	QVBox *vbox42 = new QVBox(hbox4);
-	QLabel *l_group = new QLabel(tr("Group"), vbox42);
+	/*QLabel *l_group =*/ new QLabel(tr("Group"), vbox42);
 	cb_group = new QComboBox(vbox42);
 	cb_group->insertStringList(list);
 	cb_group->setEditable(true);
@@ -117,19 +117,19 @@ void UserInfo::setupTab1() {
 	QHBox *hbox5 = new QHBox(box);
 	hbox5->setSpacing(10);
 	QVBox *vbox51 = new QVBox(hbox5);
-	QLabel *l_addr = new QLabel(tr("Address IP and Port"), vbox51);
+	/*QLabel *l_addr =*/ new QLabel(tr("Address IP and Port"), vbox51);
 	e_addr = new QLineEdit(vbox51);
 	QVBox *vbox52 = new QVBox(hbox5);
-	QLabel *l_ver = new QLabel(tr("Protocol version"), vbox52);
+	/*QLabel *l_ver =*/ new QLabel(tr("Protocol version"), vbox52);
 	e_ver = new QLineEdit(vbox52);
 	
 	QHBox *hbox6 = new QHBox(box);
 	hbox6->setSpacing(10);
 	QVBox *vbox61 = new QVBox(hbox6);
-	QLabel *l_dnsname = new QLabel(tr("DNS name"), vbox61);
+	/*QLabel *l_dnsname =*/ new QLabel(tr("DNS name"), vbox61);
 	e_dnsname = new QLineEdit(vbox61);
 	QVBox *vbox62 = new QVBox(hbox6);
-	QLabel *l_email = new QLabel(tr("Email"), vbox62);
+	/*QLabel *l_email =*/ new QLabel(tr("Email"), vbox62);
 	e_email = new QLineEdit(vbox62);
 
 	if (!userlist_sent)

@@ -132,10 +132,10 @@ void dccSocketClass::dccDataSent() {
 
 void dccSocketClass::watchDcc(int check) {
 	QString f;
-	struct sockaddr_un addr;
-	int sock;
-	int len;
-	char buf[195];
+//	struct sockaddr_un addr;
+//	int sock;
+//	int len;
+//	char buf[195];
 	char *voice_buf;
 	UinsList uins;
 
@@ -373,7 +373,7 @@ void dccSocketClass::setState(int pstate) {
 }
 
 DccFileDialog::DccFileDialog(dccSocketClass *dccsocket, int type, QDialog *parent, const char *name)
-	: QDialog (parent, name), type(type), dccsocket(dccsocket) {
+	: QDialog (parent, name), dccsocket(dccsocket), type(type) {
 	vlayout1 = new QVBoxLayout(this);
 	vlayout1->setAutoAdd(true);
 	vlayout1->setMargin(5);

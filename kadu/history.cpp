@@ -50,7 +50,7 @@ QString HistoryManager::text2csv(const QString &text) {
 }
 
 QString HistoryManager::getFileNameByUinsList(UinsList &uins) {
-	int i;
+	unsigned int i;
 	QString fname;
 	if (uins.count()) {
 		uins.sort();
@@ -136,7 +136,7 @@ void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 	linelist.append(QString::number(time(NULL)));
 	linelist.append(text2csv(msg));
 
-	for (int i = 0; i < userlist.count(); i++)
+	for (unsigned int i = 0; i < userlist.count(); i++)
 		if (userlist[i].mobile == mobile) {
 			altnick = userlist[i].altnick;
 			uin = userlist[i].uin;
@@ -330,7 +330,7 @@ void HistoryManager::convHist2ekgForm(UinsList uins) {
 	QDateTime datetime, sdatetime;
 	QRegExp sep("\\s"), sep2("::");
 	our = foreign = false;
-	int myUin=config_file.readNumEntry("General","UIN");
+	uin_t myUin=config_file.readNumEntry("General","UIN");
 	while ((line = stream.readLine()) != QString::null) {
 //		our = !line.find(QRegExp("^\\S+\\s::\\s\\d{2,2}\\s\\d{2,2}\\s\\d{4,4},\\s\\(\\d{2,2}:\\d{2,2}:\\d{2,2}\\)$"));
 		our = !line.find(QRegExp("^(\\S|\\s)+\\s::\\s\\d{2,2}\\s\\d{2,2}\\s\\d{4,4},\\s\\(\\d{2,2}:\\d{2,2}:\\d{2,2}\\)$"));
@@ -373,25 +373,21 @@ void HistoryManager::convHist2ekgForm(UinsList uins) {
 
 				if (uins.count() > 1)
 					uin = 0;
+				else if (myUin != uins[0])
+					uin = uins[0];
 				else
-					if (myUin != uins[0])
-						uin = uins[0];
-					else
-						uin = uins[1];
+					uin = uins[1];
 				}
+			else if (userlist.containsAltNick(nick)) {
+				UserListElement &user = userlist.byAltNick(nick);
+				uin = user.uin;
+			}
+			else if (uins.count() > 1)
+				uin = 0;
+			else if (myUin != uins[0])
+				uin = uins[0];
 			else
-				if (userlist.containsAltNick(nick)) {
-					UserListElement &user = userlist.byAltNick(nick);
-					uin = user.uin;
-					}
-				else
-					if (uins.count() > 1)
-						uin = 0;
-					else
-						if (myUin != uins[0])
-							uin = uins[0];
-						else
-							uin = uins[1];
+				uin = uins[1];
 			linelist.append(QString::number(uin));
 			if (our)
 				if (userlist.containsUin(uin))
@@ -440,7 +436,7 @@ void HistoryManager::convSms2ekgForm() {
 	QString fname, fnameout, line, nick;
 	QStringList linelist;
 	uin_t uin;
-	int i;
+	unsigned int i;
 
 	fname = "sms";
 	f.setName(path + fname);
@@ -746,7 +742,7 @@ QValueList<HistoryDate> HistoryManager::getHistoryDates(UinsList uins) {
 	QFile f, fidx;
 	QString path = ggPath("history/");
 	QString filename, line;
-	uint offs, count, oldidx, actidx, leftidx, rightidx, mididx, olddate, actdate, jmp;
+	uint offs, count, oldidx, actidx, leftidx, rightidx, /*mididx,*/ olddate, actdate, jmp;
 
 	if (uins.count())
 		count = getHistoryEntriesCount(uins);
@@ -833,11 +829,11 @@ QValueList<UinsList> HistoryManager::getUinsLists() {
 	QStringList struins;
 	UinsList uins;
 
-	for (int i = 0; i < dir.count(); i++) {
+	for (unsigned int i = 0; i < dir.count(); i++) {
 		struins = QStringList::split("_", dir[i].replace(QRegExp(".idx$"), ""));
 		uins.clear();
 		if (struins[0] != "sms") {
-			for (int j = 0; j < struins.count(); j++)
+			for (unsigned int j = 0; j < struins.count(); j++)
 				uins.append(struins[j].toUInt());
 			}
 		entries.append(uins);
@@ -920,7 +916,7 @@ QStringList HistoryManager::mySplit(const QChar &sep, const QString &str) {
 
 	QString token;
 	QChar letter;
-	int idx = 0, state = 0;
+	unsigned int idx = 0, state = 0;
 	while (idx < str.length()) {
 		letter = str[idx];
 		switch (state) {
@@ -1040,7 +1036,7 @@ UinsListViewText::UinsListViewText(QListView *parent, UinsList &uins)
 	if (!uins.count())
 		setText(0, "SMS");
 	else {
-		for (int i = 0; i < uins.count(); i++) {
+		for (unsigned int i = 0; i < uins.count(); i++) {
 			if (userlist.containsUin(uins[i]))
 				name.append(userlist.byUin(uins[i]).altnick);
 			else
@@ -1123,9 +1119,9 @@ History::History(UinsList uins): uins(uins), closeDemand(false), finding(false) 
 
 	UinsListViewText *uinslvt, *selecteduinslvt = NULL;
 	QListViewItem *datelvt;
-	int i;
+
 	QValueList<UinsList> uinsentries = history.getUinsLists();
-	for (i = 0; i < uinsentries.count(); i++) {
+	for (unsigned int i = 0; i < uinsentries.count(); i++) {
 		uinslvt = new UinsListViewText(uinslv, uinsentries[i]);
 		uinslvt->setExpandable(TRUE);
 		if (uinsentries[i].equals(uins))
@@ -1152,7 +1148,7 @@ void History::uinsChanged(QListViewItem *item) {
 		uins = ((UinsListViewText *)item)->getUinsList();
 		if (!item->childCount()) {
 			dateentries = history.getHistoryDates(uins);
-			for (int i = 0; i < dateentries.count(); i++)
+			for (unsigned int i = 0; i < dateentries.count(); i++)
 				(new DateListViewText(item, dateentries[i]))->setExpandable(FALSE);
 			}
 		}
@@ -1234,14 +1230,13 @@ void History::formatHistoryEntry(QString &text, const HistoryEntry &entry) {
 }
 
 void History::showHistoryEntries(int from, int count) {
-	int i;
 	QString text;
 
 	bool noStatus = config_file.readBoolEntry("History", "DontShowStatusChanges");
 
 	QValueList<HistoryEntry> entries;
 	entries = history.getHistoryEntries(uins, from, count);
-	for (i = 0; i < entries.count(); i++)
+	for (unsigned int i = 0; i < entries.count(); i++)
 		if ( ! (noStatus && entries[i].type & HISTORYMANAGER_ENTRY_STATUS))
 			formatHistoryEntry(text, entries[i]);
 	body->setText(text);
@@ -1292,7 +1287,8 @@ QString History::gaduStatus2symbol(unsigned int status) {
 
 void History::searchHistory() {
 	kdebug("History::searchHistory()\n");
-	int start, end, count, total, i, len;
+	int start, end, count, total, len;
+	unsigned int i;
 	QDateTime fromdate, todate;
 	QValueList<HistoryEntry> entries;
 	QRegExp rxp;

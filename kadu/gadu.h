@@ -16,7 +16,7 @@ extern QSocketNotifier* kadusnw;
 extern bool userlist_sent;
 extern bool socket_active;
 extern int last_read_event;
-extern int server_nr;
+extern unsigned int server_nr;
 extern bool timeout_connected;
 extern QTimer* pingtimer;
 extern QValueList<QHostAddress> config_servers;

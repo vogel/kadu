@@ -211,7 +211,7 @@ void SearchDialog::firstSearch(void) {
 }
 
 void SearchDialog::nextSearch(void) {
-	int i;
+//	int i;
 	gg_pubdir50_t req;
 	QString bufyear;
 
@@ -271,7 +271,7 @@ void SearchDialog::nextSearch(void) {
 }
 
 void SearchDialog::showResults(gg_pubdir50_t res) {
-	int i, j, count, statuscode;
+	int i, count, statuscode;
 	const char *uin, *first, *nick, *born, *city, *status;
 	
 	if (res->seq != seq)

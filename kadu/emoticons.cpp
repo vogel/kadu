@@ -68,7 +68,7 @@ void EmoticonsManager::setEmoticonsTheme(const QString& theme)
 		}
 }
 
-QString EmoticonsManager::getQuoted(const QString& s,int& pos)
+QString EmoticonsManager::getQuoted(const QString& s, unsigned int& pos)
 {
 	QString r;
 	pos++; // eat '"'
@@ -116,7 +116,7 @@ bool EmoticonsManager::loadGGEmoticonThemePart(QString subdir)
 	{
 		EmoticonsListItem item;
 		QString line=theme_stream.readLine();
-		int i=0;
+		unsigned int i=0;
 		bool multi=false;
 		QStringList aliases;
 		if(line[i]=='*')
@@ -144,7 +144,7 @@ bool EmoticonsManager::loadGGEmoticonThemePart(QString subdir)
 		}
 		else
 			item.stat=item.anim;
-		for(int i=0; i<aliases.size(); i++)
+		for(i=0; i<aliases.size(); i++)
 		{
 			item.alias=aliases[i];
 			Aliases.push_back(item);
@@ -205,11 +205,12 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc,const QColor& bgcolor)
 		QString text = doc.elementText(e_i);
 		// variables storing position of last occurrence
 		// of emot matching current emots dictionary
-		int lastBegin = 10000, lastEmot = -1;
+		unsigned int lastBegin = 10000;
+		int lastEmot = -1;
 		// intitialize automata for checking occurrences
 		// of emots in text
 		walker -> initWalking();
-		for(int j = 0; j < text.length(); j++)
+		for(unsigned int j = 0; j < text.length(); j++)
 		{
 			// find out if there is some emot occurence when we
 			// add current character

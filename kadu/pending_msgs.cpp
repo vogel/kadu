@@ -23,7 +23,7 @@ void PendingMsgs::deleteMsg(int index)
 
 bool PendingMsgs::pendingMsgs(uin_t uin)
 {
-	if(uin==-1)
+	if(uin==0)
 		return pendingMsgs();
 	for(PendingMsgsList::iterator i=msgs.begin(); i!=msgs.end(); i++)
 		if((*i).uins[0]==uin)

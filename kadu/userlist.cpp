@@ -137,7 +137,7 @@ void UserList::addDnsLookup(uin_t uin, const QHostAddress &ip) {
 		}
 	if (!containsUin(uin))
 		return;
-	UserListElement &ule = byUin(uin);
+	//UserListElement &ule = byUin(uin);
 	dnshandler = new DnsHandler(uin);
 	dnslookups.append(dnshandler);
 }
@@ -159,7 +159,8 @@ UserListElement& UserList::byUin(uin_t uin)
 		if((*i).uin==uin)
 			return (*i);
 	kdebug("UserList::byUin(): Panic!\n");
-};
+	return *((UserListElement*)NULL);
+}
 
 UserListElement& UserList::byNick(const QString& nickname)
 {
@@ -168,7 +169,8 @@ UserListElement& UserList::byNick(const QString& nickname)
 			return (*i);
 	kdebug("UserList::byNick(): Panic! %s not exists\n",
 		(const char*)nickname.lower().local8Bit());
-};
+	return *((UserListElement*)NULL);
+}
 
 UserListElement& UserList::byAltNick(const QString& altnick)
 {
@@ -177,7 +179,8 @@ UserListElement& UserList::byAltNick(const QString& altnick)
 			return (*i);
 	kdebug("UserList::byAltNick(): Panic! %s not exists\n",
 		(const char*)altnick.lower().local8Bit());
-};
+	return *((UserListElement*)NULL);
+}
 
 //Zwraca elementy userlisty, jezeli nie mamy danego
 //uin na liscie, zwracany jest UserListElement tylko z uin i altnick == uin
@@ -191,7 +194,7 @@ UserListElement UserList::byUinValue(uin_t uin)
 	ule.altnick = QString::number(uin);
 	ule.anonymous = true;
 	return ule;
-};
+}
 
 bool UserList::containsUin(uin_t uin) const {
 	for (const_iterator i = begin(); i != end(); i++)
@@ -269,7 +272,7 @@ void UserList::changeUserInfo(const QString oldaltnick, UserListElement &ule)
 	e.mobile = ule.mobile;
 	e.email = ule.email;
 	e.uin = ule.uin;
-	bool wasAnonymous = e.anonymous;
+//	bool wasAnonymous = e.anonymous;
 	e.anonymous = false;
 	e.status = ule.status;
 	e.image_size = ule.image_size;

@@ -34,7 +34,7 @@ class EmoticonsManager
 		EmotsWalker *walker;
 
 		QStringList getSubDirs(const QString& path);
-		QString getQuoted(const QString& s,int& pos);
+		QString getQuoted(const QString& s, unsigned int& pos);
 		QString fixFileName(const QString& path,const QString& fn);
 		bool loadGGEmoticonThemePart(QString subdir);
 		bool loadGGEmoticonTheme();

@@ -28,7 +28,7 @@ extern "C" int docking_init()
 	return 0;
 }
 
-extern "C" int docking_close()
+extern "C" void docking_close()
 {
 	delete docking_manager;
 	docking_manager = NULL;

@@ -70,16 +70,16 @@ ModulesDialog::ModulesDialog()
 	QVBox* installed_box=new QVBox(this);
 	QVBox* loaded_box=new QVBox(this);	
 
-	QLabel* StaticLabel = new QLabel(tr("Static"), static_box);
+	/*QLabel* StaticLabel =*/ new QLabel(tr("Static"), static_box);
 	StaticListBox = new QListBox(static_box);
 	StaticListBox->insertStringList(modules_manager->staticModules());
 
-	QLabel* InstalledLabel = new QLabel(tr("Installed"), installed_box);
+	/*QLabel* InstalledLabel = */new QLabel(tr("Installed"), installed_box);
 	InstalledListBox = new QListBox(installed_box);
 	connect(InstalledListBox,SIGNAL(doubleClicked(QListBoxItem*)),
 		this,SLOT(loadItem(QListBoxItem*)));
 	
-	QLabel* LoadedLabel = new QLabel(tr("Loaded"), loaded_box);
+	/*QLabel* LoadedLabel =*/ new QLabel(tr("Loaded"), loaded_box);
 	LoadedListBox = new QListBox(loaded_box);
 	connect(LoadedListBox,SIGNAL(doubleClicked(QListBoxItem*)),
 		this,SLOT(unloadItem(QListBoxItem*)));
@@ -337,7 +337,7 @@ QStringList ModulesManager::installedModules() const
 	QDir dir(dataPath("kadu/modules"),"*.so");
 	dir.setFilter(QDir::Files);
 	QStringList installed;
-	for(int i=0; i<dir.count(); i++)
+	for(unsigned int i=0; i<dir.count(); i++)
 	{
 		QString name=dir[i];
 		installed.append(name.left(name.length()-3));
@@ -359,7 +359,7 @@ QStringList ModulesManager::unloadedModules() const
 	QStringList installed=installedModules();
 	QStringList loaded=loadedModules();
 	QStringList unloaded;
-	for(int i=0; i<installed.size(); i++)
+	for(unsigned int i=0; i<installed.size(); i++)
 	{
 		QString name=installed[i];
 		if(!loaded.contains(name))

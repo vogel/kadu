@@ -31,7 +31,7 @@
 class HotKey : public QLineEdit
 {
 	public:
-		HotKey::HotKey(QWidget *parent =0, const char* name =0);
+		HotKey(QWidget *parent =0, const char* name =0);
 		/**
 		  Pobiera skrót klawiszowy
 		**/

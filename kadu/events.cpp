@@ -824,15 +824,12 @@ void EventConfigSlots::onCreateConfigDialog()
 
 	QListBox *e_availusers= ConfigDialog::getListBox("Notify", "available");
 	QListBox *e_notifies= ConfigDialog::getListBox("Notify", "track");
-	int i;
-	i = 0;
-	while (i < userlist.count()) {
+	for (unsigned int i=0; i < userlist.count(); i++) {
 		if (userlist[i].uin)
 			if (!userlist[i].notify)
 				e_availusers->insertItem(userlist[i].altnick);
 			else
 				e_notifies->insertItem(userlist[i].altnick);
-		i++;
 		}
 
 	e_availusers->sort();
@@ -874,7 +871,7 @@ void EventConfigSlots::onDestroyConfigDialog()
 	QValueList<QHostAddress> servers;
 	QHostAddress ip;
 	bool ipok;
-	int i;
+	unsigned int i;
 	
 	tmpservers = QStringList::split(";", e_servers->text());
 	for (i = 0; i < tmpservers.count(); i++) 
@@ -959,7 +956,7 @@ void EventConfigSlots::_Left(void) {
 	QListBox *e_availusers= ConfigDialog::getListBox("Notify", "available");
 	QListBox *e_notifies= ConfigDialog::getListBox("Notify", "track");
 	QStringList tomove;
-	int i;
+	unsigned int i;
 
 	for(i=0;i<e_notifies->count();i++){
 		if (e_notifies->isSelected(i))
@@ -979,7 +976,7 @@ void EventConfigSlots::_Right(void) {
 	QListBox *e_availusers= ConfigDialog::getListBox("Notify", "available");
 	QListBox *e_notifies= ConfigDialog::getListBox("Notify", "track");
 	QStringList tomove;
-	int i;
+	unsigned int i;
 
 	for(i=0;i<e_availusers->count();i++){
 		if (e_availusers->isSelected(i))

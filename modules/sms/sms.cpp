@@ -230,7 +230,7 @@ Sms::Sms(const QString& altnick, QDialog* parent) : QDialog (parent, "Sms")
 
 	QStringList strlist;
 	list = new QComboBox(this);
-	for (int i = 0; i < userlist.count(); i++)
+	for (unsigned int i = 0; i < userlist.count(); i++)
 		if (userlist[i].mobile.length())
 		 	strlist.append(userlist[i].altnick);
 	strlist.sort();
@@ -282,18 +282,18 @@ void Sms::updateRecipient(const QString &newtext)
 	{
 		recipient->setText("");
 		return;
-	};
-	for(int i=0; i<userlist.count(); i++)
+	}
+	for(unsigned int i=0; i<userlist.count(); i++)
 		if(userlist[i].altnick==newtext)
 		{
 			recipient->setText(userlist[i].mobile);
 			break;
-		};
+		}
 }
 
 void Sms::updateList(const QString &newnumber)
 {
-	for(int i=0; i<userlist.count(); i++)
+	for(unsigned int i=0; i<userlist.count(); i++)
 		if(userlist[i].mobile==newnumber)
 		{
 			list->setCurrentText(userlist[i].altnick);
@@ -569,7 +569,7 @@ void SmsSlots::onDownButton()
 {
 	kdebugf();
 	QListBox* list=ConfigDialog::getListBox("SMS", "gateways");
-	int index=list->currentItem();
+	unsigned int index=list->currentItem();
 	if(index==list->count())
 		return;
 	QString text=list->text(index);

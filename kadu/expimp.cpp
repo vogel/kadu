@@ -150,16 +150,13 @@ void UserlistImport::closeEvent(QCloseEvent * e) {
 }
 
 void UserlistImport::makeUserlist() {
-	int i;
+	unsigned int i;
 	
 	kdebugf();
 	
-	i = 0;
-	while (i < userlist.count()) {
+	for (i=0; i < userlist.count(); i++)
 		if (userlist[i].uin)
 			gg_remove_notify(sess, userlist[i].uin);
-		i++;
-		}
 
 	userlist = importedUserlist;
 	
@@ -180,16 +177,13 @@ void UserlistImport::makeUserlist() {
 }
 
 void UserlistImport::updateUserlist() {
-	int i;
+	unsigned int i;
 	
 	kdebugf();
 	
-	i = 0;
-	while (i < userlist.count()) {
+	for (i=0; i < userlist.count(); i++)
 		if (userlist[i].uin)
 			gg_remove_notify(sess, userlist[i].uin);
-		i++;
-		}
 
 	userlist.merge(importedUserlist);
 	
@@ -277,9 +271,8 @@ UserlistExport::UserlistExport(QWidget *parent, const char *name)
 QString UserlistExport::saveContacts(){
 	kdebugf();
 	QString contacts, tmp;
-	int i = 0;
 	contacts="";
-	while (i < userlist.count())
+	for (unsigned int i=0; i < userlist.count(); i++)
 		if (!userlist[i].anonymous) {
 			contacts += userlist[i].first_name;
 			contacts += ";";
@@ -301,7 +294,6 @@ QString UserlistExport::saveContacts(){
 			contacts += userlist[i].email;
 			contacts += ";0;;0;";
 			contacts += "\r\n";
-			i++;
 			}
 	contacts.replace(QRegExp("(null)"), "");
 	

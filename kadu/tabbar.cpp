@@ -285,7 +285,7 @@ void KaduTabBar::dropEvent(QDropEvent* e)
 			group=text;		
 		}
 		QStringList altnick_list=QStringList::split("\n",altnicks);
-		for(int i=0; i<altnick_list.count(); i++)
+		for(unsigned int i=0; i<altnick_list.count(); i++)
 			userlist.byAltNick(altnick_list[i]).setGroup(group);
 		// bardzo niewygodne, trzeba poprawiæ writeToFile !! ta funkcja jest za wolna
 		// trzeba dodaæ mozliwo¶æ zmiany danych tylko jednego user !!

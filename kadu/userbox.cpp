@@ -42,7 +42,7 @@ KaduListBoxPixmap::KaduListBoxPixmap(const QPixmap &pix, const QString &text, co
 
 void KaduListBoxPixmap::paint(QPainter *painter) {
 	UserListElement &user = userlist.byAltNick(text());
-	bool isOurUin=(config_file.readNumEntry("General", "UIN") == user.uin);
+	bool isOurUin=((uin_t)config_file.readNumEntry("General", "UIN") == user.uin);
 	if (user.uin) {
 		UinsList uins;
 		uins.append(user.uin);
@@ -125,7 +125,7 @@ void KaduListBoxPixmap::paint(QPainter *painter) {
 int KaduListBoxPixmap::height(const QListBox* lb) const
 {
 	UserListElement &user = userlist.byAltNick(text());
-	bool isOurUin=(config_file.readNumEntry("General", "UIN") == user.uin);
+	bool isOurUin=((uin_t)config_file.readNumEntry("General", "UIN") == user.uin);
 	QString descr=isOurUin ? own_description : description();
 	bool hasDescription=isOurUin ? ifStatusWithDescription(getActualStatus()) : !descr.isEmpty();
 	int h, lh;
@@ -247,7 +247,7 @@ void UserBox::mousePressEvent(QMouseEvent *e) {
 		if (item) {
 			if (!item->isSelected())
 				if (!(e->state() & Qt::ControlButton))
-					for (int i = 0; i < count(); i++)
+					for (unsigned int i = 0; i < count(); i++)
 						setSelected(i, FALSE);
 			setSelected(item, TRUE);
 			setCurrentItem(item);
@@ -261,7 +261,7 @@ void UserBox::mouseMoveEvent(QMouseEvent* e)
 	if ((e->state() & LeftButton)&&itemAt(e->pos()))
 	{
 		QString drag_text;
-		for(int i=0; i<count(); i++)
+		for(unsigned int i=0; i<count(); i++)
 			if(isSelected(i))
 			{
 				if(drag_text!="")
@@ -289,7 +289,7 @@ void UserBox::sortUsersByAltNick(QStringList &users) {
 
 void UserBox::refresh()
 {
-	int i;
+	unsigned int i;
 	KaduListBoxPixmap *lbp;
 
 	kdebugf();
@@ -309,7 +309,7 @@ void UserBox::refresh()
 	QStringList n_users;
 	QStringList b_users;
 	
-	int myUin=config_file.readNumEntry("General", "UIN");
+	uin_t myUin=config_file.readNumEntry("General", "UIN");
 	for (i = 0; i < Users.count(); i++) {
 		UserListElement &user = userlist.byAltNick(Users[i]);
 		if (user.uin) {
@@ -508,7 +508,7 @@ bool UserBox::containsAltNick(const QString &altnick)
 void UserBox::changeAllToInactive()
 {
 	QPixmap qp_inact = icons_manager.loadIcon("Offline");
-	for(int i=0; i<count(); i++)
+	for(unsigned int i=0; i<count(); i++)
 		changeItem(qp_inact,item(i)->text(),i);
 }
 
@@ -522,20 +522,20 @@ void UserBox::showHideInactive()
 UinsList UserBox::getSelectedUins()
 {
 	UinsList uins;
-			for (int i = 0; i < count(); i++)
-				if (isSelected(i))
-				{
-					UserListElement user = userlist.byAltNick(text(i));
-					if (user.uin)
-						uins.append(user.uin);
-				}
+	for (unsigned int i = 0; i < count(); i++)
+		if (isSelected(i))
+		{
+			UserListElement user = userlist.byAltNick(text(i));
+			if (user.uin)
+				uins.append(user.uin);
+		}
 	return uins;
 }
 
 UserList UserBox::getSelectedUsers()
 {
 	UserList users;
-	for (int i=0; i< count(); i++)
+	for (unsigned int i=0; i< count(); i++)
 		if (isSelected(i))
 			users.addUser(userlist.byAltNick(text(i)));
 	return users;
@@ -543,7 +543,7 @@ UserList UserBox::getSelectedUsers()
 
 UserBox* UserBox::getActiveUserBox()
 {
-	for (int i=0; i<UserBoxes.size(); i++)
+	for (unsigned int i=0; i<UserBoxes.size(); i++)
 	{
 		UserBox *box=UserBoxes[i];
 		if (box->isActiveWindow())
@@ -556,7 +556,7 @@ UserBox* UserBox::getActiveUserBox()
 QStringList UserBox::getSelectedAltNicks()
 {
 	QStringList nicks;
-	for (int i=0; i< count(); i++)
+	for (unsigned int i=0; i< count(); i++)
 		if (isSelected(i))
 			nicks.append(text(i));
 	return nicks;
@@ -565,25 +565,25 @@ QStringList UserBox::getSelectedAltNicks()
 
 void UserBox::all_refresh()
 {
-	for(int i=0; i<UserBoxes.size(); i++)
+	for(unsigned int i=0; i<UserBoxes.size(); i++)
 		UserBoxes[i]->refresh();
 }
 
 void UserBox::all_removeUser(QString &altnick)
 {
-	for(int i=0; i<UserBoxes.size(); i++)
+	for(unsigned int i=0; i<UserBoxes.size(); i++)
 		UserBoxes[i]->removeUser(altnick);
 }
 
 void UserBox::all_changeAllToInactive()
 {
-	for(int i=0; i<UserBoxes.size(); i++)
+	for(unsigned int i=0; i<UserBoxes.size(); i++)
 		UserBoxes[i]->changeAllToInactive();
 }
 
 void UserBox::all_renameUser(const QString &oldaltnick, const QString &newaltnick)
 {
-	for(int i = 0; i < UserBoxes.size(); i++)
+	for(unsigned int i = 0; i < UserBoxes.size(); i++)
 		UserBoxes[i]->renameUser(oldaltnick, newaltnick);
 }
 
@@ -665,22 +665,22 @@ UserBoxMenu::UserBoxMenu(QWidget *parent, const char *name): QPopupMenu(parent, 
 
 int UserBoxMenu::addItem(const QString &text, const QObject* receiver, const char* member, const QKeySequence accel, int id)
 {
-	insertItem(text, receiver, member, accel, id);
+	return insertItem(text, receiver, member, accel, id);
 }
 
 int UserBoxMenu::addItem(const QString &iconname, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel, int id)
 {
-	insertItem( QIconSet(icons_manager.loadIcon(iconname)) , text, receiver, member, accel, id);
+	return insertItem( QIconSet(icons_manager.loadIcon(iconname)) , text, receiver, member, accel, id);
 }
 
 int UserBoxMenu::addItemAtPos(int index,const QString &iconname, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel, int id)
 {
-	insertItem( QIconSet(icons_manager.loadIcon(iconname)) , text, receiver, member, accel, id, index);
+	return insertItem( QIconSet(icons_manager.loadIcon(iconname)) , text, receiver, member, accel, id, index);
 }
 
 int UserBoxMenu::getItem(const QString &caption)
 {
-	for (int i=0; i<=count(); i++)
+	for (unsigned int i=0; i<count(); i++)
 		if (!QString::localeAwareCompare(caption,text(idAt(i)).left(caption.length())))
 			return idAt(i);
 	return -1;
@@ -688,7 +688,7 @@ int UserBoxMenu::getItem(const QString &caption)
 
 void UserBoxMenu::restoreLook()
 {
-	for (int i=0; i<=count(); i++)
+	for (unsigned int i=0; i<count(); i++)
 	{
 		setItemEnabled(idAt(i),true);
 		setItemChecked(idAt(i),false);

@@ -198,7 +198,7 @@ void Kadu::gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op) {
 			delete uc;
 			return;
 		}
-		for (i = 0; i < data.size(); i++)
+		for (unsigned i = 0; i < data.size(); i++)
 			buf[i] = data[i];
 		buf[data.size()] = 0;
 		newestversion = buf;
@@ -889,7 +889,7 @@ void Kadu::refreshGroupTabBar()
 	}
 	/* budujemy listê grup */
 	QValueList<QString> group_list;
-	for (int i = 0; i < userlist.count(); i++)
+	for (unsigned int i = 0; i < userlist.count(); i++)
 	{
 		QString groups = userlist[i].group();
 		QString group;
@@ -911,7 +911,7 @@ void Kadu::refreshGroupTabBar()
 		if(!group_list.contains(GroupBar->tabAt(i)->text()))
 			GroupBar->removeTab(GroupBar->tabAt(i));
 	/* dodajemy nowe zakladki */
-	for (int i = 0; i < group_list.count(); i++)
+	for (unsigned int i = 0; i < group_list.count(); i++)
 		{
 		bool createNewTab = true;
 		for (int j = 0; j < GroupBar->count(); j++)
@@ -929,7 +929,7 @@ void Kadu::refreshGroupTabBar()
 void Kadu::setActiveGroup(const QString& group)
 {
 	Userbox->clearUsers();
-	for (int i = 0; i < userlist.count(); i++)
+	for (unsigned int i = 0; i < userlist.count(); i++)
 		{
 		bool belongsToGroup;
 		if (group == "")
@@ -978,7 +978,7 @@ void Kadu::removeUser(QStringList &users, bool permanently = false)
 		tr("&Yes"),tr("&No"))!=0)
 		return;
 
-	int i;
+	unsigned int i;
 
 	for (i = 0; i < users.count(); i++)
 		UserBox::all_removeUser(users[i]);

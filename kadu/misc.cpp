@@ -35,7 +35,7 @@ QString ggPath(const QString &subpath)
 	QString path;
 	char *home;
 	struct passwd *pw;
-	if (pw = getpwuid(getuid()))
+	if ((pw = getpwuid(getuid())))
 		home = pw->pw_dir;
 	else
 		home = getenv("HOME");
@@ -149,7 +149,7 @@ QDateTime currentDateTime(void) {
 
 QString pwHash(const QString &tekst) {
 	QString nowytekst;
-	int ile;
+	unsigned int ile;
 	unsigned short znak;
 	nowytekst = tekst;
 	for (ile = 0; ile < tekst.length(); ile++) {
@@ -307,7 +307,8 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 	QRegExp regexp;
 	struct attrib_formant actattrib;
 	QValueList<attrib_formant> formantattribs;
-	int pos, idx, inspan, i;
+	int pos, idx, inspan;
+	unsigned int i;
 	struct gg_msg_richtext richtext_header;
 	struct richtext_formant actformant;
 	QValueList<struct richtext_formant> formants;
@@ -454,15 +455,15 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 	QValueList<ParseElem> parseStack;
 
 	static bool searchChars[256]={false};
-	searchChars['%']=true;
-	searchChars['`']=true;
-	searchChars['[']=true;
-	searchChars['{']=true;
-	searchChars['\'']=true;
-	searchChars['}']=true;
-	searchChars[']']=true;
+	searchChars[(unsigned char)'%']=true;
+	searchChars[(unsigned char)'`']=true;
+	searchChars[(unsigned char)'[']=true;
+	searchChars[(unsigned char)'{']=true;
+	searchChars[(unsigned char)'\'']=true;
+	searchChars[(unsigned char)'}']=true;
+	searchChars[(unsigned char)']']=true;
 	
-	int myUin=config_file.readNumEntry("General", "UIN");
+	uin_t myUin=config_file.readNumEntry("General", "UIN");
 	while (index<len)
 	{
 		ParseElem pe1, pe;
@@ -832,7 +833,7 @@ IconsManager::IconsManager(const QString& name, const QString& configname)
 
 QPixmap IconsManager::loadIcon(const QString &name)
 {
-	for (int i = 0; i < icons.count(); i++)
+	for (unsigned int i = 0; i < icons.count(); i++)
 		if (icons[i].name == name)
 			return icons[i].picture.pixmap();
 	QString fname;	
@@ -967,7 +968,7 @@ void HttpClient::onConnected()
 //		wywolanie Cookies.keys() zostaje na lepsze czasu jak juz
 //		wszyscy beda mieli Qt >= 3.0.5		
 //    		for(int i=0; i<Cookies.keys().size(); i++)
-		for (int i = 0; i < keys.size(); i++) {
+		for (unsigned int i = 0; i < keys.size(); i++) {
 			if (i > 0)
 				query+="; ";
 //			query+=Cookies.keys()[i]+"="+Cookies[Cookies.keys()[i]];
@@ -984,7 +985,7 @@ void HttpClient::onConnected()
 		query += QString(PostData);
 	kdebug("HttpClient: Sending query:\n%s\n", query.local8Bit().data());
 	Socket.writeBlock(query.local8Bit().data(), query.length());
-};
+}
 
 void HttpClient::onReadyRead()
 {
@@ -1019,7 +1020,7 @@ void HttpClient::onReadyRead()
 			Socket.close();
 			emit error();
 			return;
-		};
+		}
 		Status=status_regexp.cap(1).toInt();
 		kdebug("HttpClient: Status: %i\n",Status);
 		// Status 302 oznacza przekierowanie.
@@ -1031,7 +1032,7 @@ void HttpClient::onReadyRead()
 				Socket.close();
 				emit error();
 				return;
-			};
+			}
 			QString location=location_regexp.cap(1);
 			kdebug("Jumping to %s\n",location.local8Bit().data());
 			// czekamy. zbyt szybkie przekierowanie konczy sie
@@ -1044,7 +1045,7 @@ void HttpClient::onReadyRead()
 			emit redirected(location);
 			get(location);
 			return;
-		};
+		}
 		// Wyci±gamy Content-Length
 		QRegExp cl_regexp("Content-Length: (\\d+)");
 		if(cl_regexp.search(s)<0)
@@ -1056,7 +1057,7 @@ void HttpClient::onReadyRead()
 		{
 			ContentLength=cl_regexp.cap(1).toInt();
 			kdebug("HttpClient: Content-Length: %i bytes\n",ContentLength);			
-		};
+		}
 		
 		// Wyciagamy ewentualne cookie (dla uproszczenia tylko jedno)
 		QRegExp cookie_regexp("Set-Cookie: ([^=]+)=([^;]+);");
@@ -1066,7 +1067,7 @@ void HttpClient::onReadyRead()
 			QString cookie_val=cookie_regexp.cap(2);
 			Cookies.insert(cookie_name,cookie_val);
 			kdebug("HttpClient: Cookie retreived: %s=%s\n",cookie_name.local8Bit().data(),cookie_val.local8Bit().data());
-		};
+		}
 		// Wytnij naglowek z Data
 		int header_size=p+4;
 		int new_data_size=Data.size()-header_size;
@@ -1082,8 +1083,8 @@ void HttpClient::onReadyRead()
 		{
 			HeaderParsed=false;
 			return;
-		};
-	};
+		}
+	}
 	// Kontynuuj odczyt jesli dane niekompletne
 	// lub je¶li mamy czekaæ na connection close
 	if(ContentLength>Data.size()||ContentLength<0)
@@ -1092,7 +1093,7 @@ void HttpClient::onReadyRead()
 	kdebug("HttpClient: All Data Retreived: %i bytes\n",Data.size());
 	Socket.close();
 	emit finished();
-};
+}
 
 void HttpClient::onConnectionClosed()
 {
@@ -1211,7 +1212,7 @@ void HtmlDocument::parseHtml(const QString& html)
 {
 	Element e;
 	e.tag=false;
-	for(int i=0; i<html.length(); i++)
+	for(unsigned int i=0; i<html.length(); i++)
 	{
 		QChar ch=html[i];
 		switch(ch)
@@ -1245,7 +1246,7 @@ void HtmlDocument::parseHtml(const QString& html)
 QString HtmlDocument::generateHtml()
 {
 	QString html;
-	for(int i=0; i<Elements.size(); i++)
+	for(unsigned int i=0; i<Elements.size(); i++)
 	{
 		Element e=Elements[i];
 		if(!e.tag)
@@ -1379,7 +1380,8 @@ void HtmlDocumentToGGMessage(HtmlDocument &htmldoc, QString &msg, int &formats_l
 	QStringList attribs;
 	struct attrib_formant actattrib;
 	QValueList<attrib_formant> formantattribs;
-	int pos, inspan, i, it;
+	int pos, inspan, it;
+	unsigned int i;
 	struct gg_msg_richtext richtext_header;
 	struct richtext_formant actformant;
 	QValueList<struct richtext_formant> formants;
@@ -1640,7 +1642,7 @@ void TokenDialog::gotTokenReceived(struct gg_http *h) {
 
 	//nie optymalizowac!!!
 	QByteArray buf(h->body_size);
-	for (int i = 0; i < h->body_size; i++)
+	for (unsigned int i = 0; i < h->body_size; i++)
 		buf[i] = h->body[i];
 
 	tokenimage->setImage(buf);

@@ -53,7 +53,7 @@ void Ignored::add() {
 	strlist = QStringList::split(";", e_uin->text());
 	bool ok;
 	UinsList uins;
-	for (int i = 0; i < strlist.count(); i++) {
+	for (unsigned int i = 0; i < strlist.count(); i++) {
 		uin_t uin = strlist[i].toUInt(&ok);
 		if (ok)
 			uins.append(uin);
@@ -67,7 +67,7 @@ void Ignored::add() {
 }
 
 void Ignored::getList() {
-	int i, j, k;
+	unsigned int i, j, k;
 	list->clear();
 	for (i = 0; i < ignored.count(); i++) {
 		QStringList strlist;
@@ -90,7 +90,7 @@ void Ignored::remove() {
 	QStringList strlist;
 	strlist = QStringList::split(";", list->currentText());
 	UinsList uins;
-	for (int i = 0; i < strlist.count(); i++) {
+	for (unsigned int i = 0; i < strlist.count(); i++) {
 		QString str;
 		str = strlist[i].section(' ', 0, 0);
 		uins.append(str.toUInt());
@@ -134,7 +134,7 @@ int writeIgnored(QString filename)
 //	fchmod(fileno(f), 0600);
 
 	QString buf;
-	for (int i = 0; i < ignored.count(); i++) {
+	for (unsigned int i = 0; i < ignored.count(); i++) {
 		QStringList list;
 		for (int j = 0; j < ignored[i].count(); j++)
 			list.append(QString::number(ignored[i][j]));
@@ -162,7 +162,7 @@ int readIgnored() {
 	while ((line = stream.readLine()) != QString::null) {
 		list = QStringList::split(";", line);
 		UinsList uins;
-		for (int i = 0; i < list.count(); i++)
+		for (unsigned int i = 0; i < list.count(); i++)
 			uins.append(list[i].toUInt());
 		ignored.append(uins);
 		}

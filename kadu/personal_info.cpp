@@ -33,22 +33,22 @@ PersonalInfoDialog::PersonalInfoDialog(QDialog *parent, const char *name)
 	QGridLayout *GridLayout = new QGridLayout(this, 8, 3, 10, 10);
 
 	QVBox *NicknameBox = new QVBox(this);
-	QLabel *NicknameLabel = new QLabel(tr("Nickname"), NicknameBox);
+	/*QLabel *NicknameLabel =*/ new QLabel(tr("Nickname"), NicknameBox);
 	NicknameEdit = new QLineEdit(NicknameBox);
 	GridLayout->addMultiCellWidget(NicknameBox, 0, 1, 0, 0);
 
 	QVBox *NameBox = new QVBox(this);
-	QLabel *NameLabel = new QLabel(tr("Name"), NameBox);
+	/*QLabel *NameLabel =*/ new QLabel(tr("Name"), NameBox);
 	NameEdit = new QLineEdit(NameBox);
 	GridLayout->addMultiCellWidget(NameBox, 0, 1, 1, 1);
 	
 	QVBox *SurnameBox = new QVBox(this);
-	QLabel *SurnameLabel = new QLabel(tr("Surname"), SurnameBox);
+	/*QLabel *SurnameLabel =*/ new QLabel(tr("Surname"), SurnameBox);
 	SurnameEdit = new QLineEdit(SurnameBox);
 	GridLayout->addMultiCellWidget(SurnameBox, 0, 1, 2, 2);
 
 	QVBox *GenderBox = new QVBox(this);
-	QLabel *GenderLabel = new QLabel(tr("Gender"), GenderBox);
+	/*QLabel *GenderLabel =*/ new QLabel(tr("Gender"), GenderBox);
 	GenderCombo = new QComboBox(GenderBox);
 	GenderCombo->insertItem("");	
 	GenderCombo->insertItem(tr("Male"));
@@ -56,22 +56,22 @@ PersonalInfoDialog::PersonalInfoDialog(QDialog *parent, const char *name)
 	GridLayout->addMultiCellWidget(GenderBox, 2, 3, 0, 0);
 
 	QVBox *BirthyearBox = new QVBox(this);
-	QLabel *BirthyearLabel = new QLabel(tr("Birthyear"), BirthyearBox);
+	/*QLabel *BirthyearLabel =*/ new QLabel(tr("Birthyear"), BirthyearBox);
 	BirthyearEdit = new QLineEdit(BirthyearBox);
 	GridLayout->addMultiCellWidget(BirthyearBox, 2, 3, 1, 1);
 
 	QVBox *CityBox = new QVBox(this);
-	QLabel *CityLabel = new QLabel(tr("City"), CityBox);
+	/*QLabel *CityLabel =*/ new QLabel(tr("City"), CityBox);
 	CityEdit = new QLineEdit(CityBox);
 	GridLayout->addMultiCellWidget(CityBox, 2, 3, 2, 2);
 
 	QVBox *FamilyNameBox = new QVBox(this);
-	QLabel *FamilyNameLabel = new QLabel(tr("Family Name"), FamilyNameBox);
+	/*QLabel *FamilyNameLabel =*/ new QLabel(tr("Family Name"), FamilyNameBox);
 	FamilyNameEdit = new QLineEdit(FamilyNameBox);
 	GridLayout->addMultiCellWidget(FamilyNameBox, 4, 5, 0, 0);
 
 	QVBox *FamilyCityBox = new QVBox(this);
-	QLabel *FamilyCityLabel = new QLabel(tr("Family City"), FamilyCityBox);
+	/*QLabel *FamilyCityLabel =*/ new QLabel(tr("Family City"), FamilyCityBox);
 	FamilyCityEdit = new QLineEdit(FamilyCityBox);
 	GridLayout->addMultiCellWidget(FamilyCityBox, 4, 5, 1, 1);
 
@@ -153,7 +153,7 @@ void PersonalInfoDialog::OkButtonClicked()
 
 void PersonalInfoDialog::fillFields(gg_pubdir50_t res)
 {
-	int count;
+//	int count;
 	const char *first, *last, *nick, *born, *city,
 		*gender, *family_name, *family_city;
 

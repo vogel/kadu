@@ -305,6 +305,9 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				box->setSizePolicy(QSizePolicy(QSizePolicy::Minimum,QSizePolicy::Maximum));
 				break;
 			}
+			case CONFIG_DELETED:
+				kdebug("CONFIG_DELETED found!\n");
+				break;
 		}
 
 		for(QValueList<ElementConnections>::iterator k=(*i).ConnectedSlots.begin(); k!=(*i).ConnectedSlots.end(); k++)

@@ -74,7 +74,7 @@ int ChatManager::registerChat(Chat* chat)
 
 void ChatManager::unregisterChat(Chat* chat)
 {
-	for(int i=0; i<Chats.count(); i++)
+	for(unsigned int i=0; i<Chats.count(); i++)
 		if(Chats[i]==chat)
 		{
 			ChatInfo info;
@@ -107,26 +107,26 @@ void ChatManager::unregisterChat(Chat* chat)
 
 void ChatManager::refreshTitles()
 {
-	for (int i = 0; i < Chats.count(); i++)
+	for (unsigned int i = 0; i < Chats.count(); i++)
 		Chats[i]->setTitle();
 }
 
 void ChatManager::refreshTitlesForUin(uin_t uin)
 {
-	for (int i = 0; i < Chats.count(); i++)
+	for (unsigned int i = 0; i < Chats.count(); i++)
 		if (Chats[i]->uins().contains(uin))
 			Chats[i]->setTitle();
 }
 
 void ChatManager::changeAppearance()
 {
-	for (int i = 0; i < Chats.count(); i++)
+	for (unsigned int i = 0; i < Chats.count(); i++)
 		Chats[i]->changeAppearance();
 }
 
 Chat* ChatManager::findChatByUins(UinsList uins)
 {
-	for(int i=0; i<Chats.count(); i++)
+	for(unsigned int i=0; i<Chats.count(); i++)
 		if(Chats[i]->uins().equals(uins))
 			return Chats[i];
 	kdebug("return NULL\n");
@@ -135,7 +135,7 @@ Chat* ChatManager::findChatByUins(UinsList uins)
 
 int ChatManager::openChat(UinsList senders,time_t time)
 {
-	for (int i = 0; i < Chats.count(); i++)
+	for (unsigned int i = 0; i < Chats.count(); i++)
 		if (Chats[i]->uins().equals(senders))
 		{
 			Chats[i]->raise();
@@ -176,7 +176,7 @@ int ChatManager::openPendingMsg(int index,QString& to_add)
 	PendingMsgs::Element p = pending[index];
 	// jesli ktoregos z nadawcow nie mamy na liscie to dodajemy
 	// go tam jako anonymous
-	for (int j = 0; j < p.uins.count(); j++)
+	for (unsigned int j = 0; j < p.uins.count(); j++)
 		if (!userlist.containsUin(p.uins[j]))
 			userlist.addAnonymous(p.uins[j]);
 	// otwieramy chat (jesli nie istnieje)
@@ -438,7 +438,7 @@ void KaduSplitter::childEvent(QChildEvent *c)
 Chat::Chat(UinsList uins, QWidget *parent, const char *name)
  : QWidget(parent, name, Qt::WDestructiveClose), Uins(uins)
 {
-	int i;
+//	int i;
 	QValueList<int> sizes;
 
 	emoticon_selector = NULL;
@@ -479,7 +479,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 		userbox->setPaletteForegroundColor(config_file.readColorEntry("Look","UserboxFgColor"));
 		userbox->QListBox::setFont(config_file.readFontEntry("Look","UserboxFont"));
 
-		for (i = 0; i < uins.count(); i++)
+		for (unsigned i = 0; i < uins.count(); i++)
 			userbox->addUser(userlist.byUin(uins[i]).altnick);
 		userbox->refresh();
 
@@ -512,7 +512,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	lockscroll->setToggleButton(true);
 	QToolTip::add(lockscroll, tr("Blocks scrolling"));
 
-	for(int i=0; i<RegisteredButtons.size(); i++)
+	for(unsigned int i=0; i<RegisteredButtons.size(); i++)
 	{
 		RegisteredButton& b=RegisteredButtons[i];
 		QPushButton* btn=new QPushButton(buttontray,b.name.local8Bit().data());
@@ -656,13 +656,13 @@ void Chat::registerButton(const QString& name,QObject* receiver,const QString& s
 
 void Chat::unregisterButton(const QString& name)
 {
-	for(int i=0; i<RegisteredButtons.size(); i++)
+	for(unsigned int i=0; i<RegisteredButtons.size(); i++)
 		if(RegisteredButtons[i].name==name)
 		{
 			RegisteredButtons.remove(RegisteredButtons.at(i));
 			break;
 		}
-	for(int i=0; i<chat_manager->chats().size(); i++)
+	for(unsigned int i=0; i<chat_manager->chats().size(); i++)
 	{
 		Chat* chat=chat_manager->chats()[i];
 		if(chat->Buttons.contains(name))
@@ -768,7 +768,7 @@ void Chat::setTitle() {
 		else
 			title = config_file.readEntry("Look","ConferencePrefix");
 		title.append(parse(config_file.readEntry("Look","ConferenceContents"),userlist.byUinValue(Uins[0]),false));
-		for (int k = 1; k < Uins.size(); k++) {
+		for (unsigned int k = 1; k < Uins.size(); k++) {
 			title.append(", ");
 			title.append(parse(config_file.readEntry("Look","ConferenceContents"),userlist.byUinValue(Uins[k]),false));
 		}
@@ -924,7 +924,7 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time) {
 	QValueList<HistoryEntry> entries;
 	QValueList<HistoryEntry> entriestmp;
 	QDateTime date;
-	int i, from, end, count;
+	int from, end, count;
 	
 	kdebugf();
 
@@ -960,7 +960,7 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time) {
 		end = from - 1;
 		}
 	from = (entries.count() < config_file.readNumEntry("History","ChatHistoryCitation")) ? 0 : entries.count() - config_file.readNumEntry("History","ChatHistoryCitation");
-	for (i = from; i < entries.count(); i++)
+	for (unsigned int i = from; i < entries.count(); i++)
 		if (entries[i].date.secsTo(QDateTime::currentDateTime()) <= -config_file.readNumEntry("History","ChatHistoryQuotationTime") * 3600)
 			if (entries[i].type == HISTORYMANAGER_ENTRY_MSGSEND
 				|| entries[i].type == HISTORYMANAGER_ENTRY_CHATSEND)
