@@ -234,8 +234,7 @@ void HintManager::rightButtonSlot(void)
 	kdebug("HintManager::rightButtonSlot()\n");
 
 	hint_timer->stop();
-	for (int i = hints.count(); i > 0; i--)
-		hints.remove(i-1);
+	hints.clear();
 	hide();
 }
 
