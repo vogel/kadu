@@ -798,8 +798,9 @@ void Kadu::commandParser (int command) {
 			break;
 		case KADU_CMD_SHOW_HISTORY:
 			History *hb;
-			uin = userlist.byAltNick(userbox->currentText()).uin;
-			uins.append(uin);
+			for (i = 0; i < userbox->count(); i++)
+				if (userbox->isSelected(i))
+					uins.append(userlist.byAltNick(userbox->text(i)).uin);
 			hb = new History(uins);
 			hb->show();
 			break;
