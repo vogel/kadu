@@ -571,14 +571,14 @@ int HistoryManager::getHistoryEntriesCountPrivate(const QString &filename) {
 }
 
 int HistoryManager::getHistoryEntriesCount(UinsList uins) {
-	return getHistoryEntriesCountPrivate(ggPath("history/") + getFileNameByUinsList(uins));
+	return getHistoryEntriesCountPrivate(getFileNameByUinsList(uins));
 }
 
 int HistoryManager::getHistoryEntriesCount(QString mobile) {
 	if (mobile == QString::null)
-		return getHistoryEntriesCountPrivate(ggPath("history/") + "sms");
+		return getHistoryEntriesCountPrivate("sms");
 	else
-		return getHistoryEntriesCountPrivate(ggPath("history/") + mobile);
+		return getHistoryEntriesCountPrivate(mobile);
 }
 
 QValueList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int from, int count, int mask) {
