@@ -25,9 +25,11 @@ class AutoConnectionTimer : private QTimer {
 		static void on();
 		static void off();
 
+	public slots:
+		void doConnect();
+	
 	private:
 		AutoConnectionTimer(QObject *parent = 0);
-		void doConnect();
 
 		static AutoConnectionTimer *autoconnection_object;
 };
