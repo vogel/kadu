@@ -391,10 +391,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	BlinkOn = false;
 	DoBlink = false;
 
-	/* another API change, another hack */
-	memset(&loginparams, 0, sizeof(loginparams));
-	loginparams.async = 1;
-
 	loadGeometry(this, "General", "Geometry", 0, 0, 145, 465);
 
 	if (config_file.readBoolEntry("Hints", "Hints"))
