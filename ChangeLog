@@ -438,6 +438,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dodana mo¿liwo¶æ ustawienia koloru jakim pisany jest opis na li¶cie kontaktów (joi)
 * optymalizacje: otwarcie i zapis pliku konfiguracyjnego, ekspansja emotikon,
   wy¶wietlanie opisów pod kontaktami (joi)
+* okno wyboru pliku w konfiguracji modu³ów sound, ext_sound, speech nie powoduje
+  wyzucenie na wierzch g³ównego okna kadu (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,

@@ -99,7 +99,7 @@ void ExternalPlayerSlots::choosePlayerFile()
 	kdebugf();
 	QLineEdit *playerPath= ConfigDialog::getLineEdit("Sounds", "Path:", "soundplayer_path");
 
-	QString s(QFileDialog::getOpenFileName( playerPath->text(), "All Files (*)"));
+	QString s(QFileDialog::getOpenFileName( playerPath->text(), "All Files (*)", ConfigDialog::configdialog));
 	if (s.length())
 		playerPath->setText(s);
 	kdebugf2();
