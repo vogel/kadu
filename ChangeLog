@@ -3,7 +3,7 @@ lub rozbudowy. Postaæ (x/y) oznacza, ¿e x jest pomys³odawc± lub
 podes³a³ patcha, a zrobi³ to kto¶ oznaczony przez y. Je¶li jest
 w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
-+++ wersja 0.3.4-final
++++ wersja 0.3.4-rc4
 * kadu nie pokazuje fa³szywych statusów ukrytych w userboksie (chilek)
 * Monisia wysy³a wiadomo¶ci klasy "0", a my jeste¶my na to odporni (chilek)
 * optymalizacja w funkcji Chat::convertCharacters (Vogel/mast3r)
@@ -12,6 +12,10 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   s± teraz (disabled) (mast3r)
 * klawisz delete usuwa kontakt z listy (pawel_p/adrian)
 * wycofana optymalizacja Chat::convertCharacters - nie dzia³a na QT 3.0.x (adrian)
+* poprawka wczytywania konfiguracji - QT 3.2 (arekm/adrian)
+* pamiêtanie czterech ostatnich opisów (pawel_p/adrian)
+* poprawka okna chat - QT 3.2 (pawel_p/adrian)
+* klawisz insert w userbox'ie pokazuje info o kontakcie (pawel_p/adrian)
 
 +++ wersja 0.3.4-rc3
 * je¶li u¿ywamy po³±czenia TLSv1 i wpisujemy jawnie serwery GG to domy¶lnym
