@@ -31,8 +31,6 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   w dialogu danych osobistych pozostaje puste (chilek)
 * okno userinfo: nie informujemy serwera GG o zmianach w informacji o
   kontakcie, je¶li nie ma takiej potrzeby (chilek)
-* w konstruktorze kopiuj±cym UserList nie by³y uaktualniane pola Parent
-  w UserListElementach (chilek)
 * Hinty: <, > i & s± wy¶wietlane poprawnie w cytowanej wiadomo¶ci (mast3r)
 * Hinty: poprawienie angielskiego w konfiguracji+ma³a przebudowa (mast3r)
 * Hinty: zmiana domy¶lnej warto¶ci cytownych znaków na 50 (mast3r)
@@ -98,6 +96,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   niektórych plików kadu (mast3r)
 * ma³e poprawki w kodzie dymków i kodzie korzystaj±cym z dymków (mast3r)
 * opcja Voice w instalatorze Instaluj
+* w konstruktorze kopiuj±cym UserList nie by³y uaktualniane pola Parent
+  w UserListElementach (chilek)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci

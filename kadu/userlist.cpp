@@ -464,6 +464,8 @@ bool UserList::readFromFile()
 UserList& UserList::operator=(const UserList& userlist)
 {
 	QValueList<UserListElement>::operator=(userlist);
+	for (Iterator i = begin(); i != end(); i++)
+		(*i).Parent = this;
 	emit modified();
 	return *this;
 };
