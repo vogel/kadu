@@ -1,12 +1,4 @@
 /***************************************************************************
-                          message.h  -  description
-                             -------------------
-    begin                : sro lip 03 09:06:00 CEST 2002
-    copyright            : (C) 2002 by chilek
-    email                : chilek@chilan.com
- ***************************************************************************/
-
-/***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *

@@ -1,12 +1,4 @@
 /***************************************************************************
-                        userlist.cpp  -  description
-                             -------------------
-    begin                : 15.07.2002
-    copyright            : (C) 2002 by A.Smarzewski
-    email                : adrians@aska.com.pl
- ***************************************************************************/
-
-/***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
