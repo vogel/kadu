@@ -30,7 +30,7 @@
 
 UserInfo::UserInfo (const QString & name, QDialog* parent , unsigned int uin) : QDialog (parent, name) {
     resize(240,200);
-    setCaption(i18n("User info on %1").arg(__c2q(UinToUser(uin))));
+    setCaption(i18n("User info on %1").arg(userlist.byUin(uin).comment));
     setWFlags(Qt::WDestructiveClose);
 
     QLineEdit *e_status = new QLineEdit(this);
@@ -74,7 +74,7 @@ UserInfo::UserInfo (const QString & name, QDialog* parent , unsigned int uin) : 
 
     QPushButton * update = new QPushButton(this);
     update->setText(i18n("Write userlist"));
-    connect(update, SIGNAL( clicked() ), this, SLOT( writeUserlist() ));
+    connect(update, SIGNAL( clicked() ), this, SLOT(writeUserlist()));
 
     int i;
     i = 0;
@@ -169,7 +169,7 @@ void UserInfo::writeUserlist() {
 		userlist[this_index].comment = "";
 	    if (!userlist[this_index].anonymous)
 		userlist[this_index].mobile = strdup(e_mobile->text().local8Bit());
-	    ::writeUserlist(NULL);
+	    userlist.writeToFile();
 	    
 	    for (int i = 0; i < grouplist.size(); i++) {
 		if (QString::compare(__c2q(grouplist[i].name), __c2q(userlist[this_index].group)) == 0) {
@@ -187,7 +187,7 @@ void UserInfo::writeUserlist() {
 		grouplist[grouplist.size()-1].name = strdup(userlist[this_index].group);
 		}
 
-	    kadu->syncUserlist();
+	    kadu->userbox->refresh();
 	    break;
 	case 1:
 	    return;	
