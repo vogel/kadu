@@ -37,10 +37,14 @@ void EmoticonsManager::setEmoticonsTheme(const QString& theme)
 
 void EmoticonsManager::loadEmoticonsRegexpList()
 {
-	QFile emoticons_file(themePath()+"/emoticons_regexp");
-	emoticons_file.open(IO_ReadOnly);
-	QTextStream emoticons_stream(&emoticons_file);
 	EmoticonsRegexpList.clear();
+	QFile emoticons_file(themePath()+"/emoticons_regexp");
+	if(!emoticons_file.open(IO_ReadOnly))
+	{
+		fprintf(stderr,"KK Error opening emoticons_regexp file\n");
+		return;
+	};
+	QTextStream emoticons_stream(&emoticons_file);
 	QString regexp;
 	while(!emoticons_stream.atEnd())
 	{
@@ -66,10 +70,14 @@ void EmoticonsManager::loadEmoticonsRegexpList()
 
 void EmoticonsManager::loadEmoticonsSelectorList()
 {
-	QFile emoticons_file(themePath()+"/emoticons_selector");
-	emoticons_file.open(IO_ReadOnly);
-	QTextStream emoticons_stream(&emoticons_file);
 	EmoticonsSelectorList.clear();
+	QFile emoticons_file(themePath()+"/emoticons_selector");
+	if(!emoticons_file.open(IO_ReadOnly))
+	{
+		fprintf(stderr,"KK Error opening emoticons_selector file\n");
+		return;
+	};
+	QTextStream emoticons_stream(&emoticons_file);
 	QString string;
 	while(!emoticons_stream.atEnd())
 	{

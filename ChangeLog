@@ -8,6 +8,7 @@
 * mo¿liwo¶æ usuniêcia z listy wielu u¿ytkowników na raz
 * okno dodawania u¿ytkownika: nie mo¿na dodaæ do listy u¿ytkownika, który
   ma puste pole "altnick"
+* emotikony: kadu nie zapêtla siê jesli mamy ustawiony nie istniej±cy juz zestaw
 
 +++ wersja 0.3.3-pre4
 * przy imporcie listy u¿ytkowników ustawiamy domy¶lne atrybuty u¿ytkowników
