@@ -173,7 +173,7 @@ Message::Message (const QString & nick, bool tchat, QWidget *parent, const char 
 	acks[index].ptr = NULL;
 
 	nicknamelab = new QLabel(this);
-	nicknamelab->setText("Recipient");
+	nicknamelab->setText(i18n("Recipient"));
 	nicknamelab->setGeometry(5,5,65,20);
 
 	nickedit = new QLineEdit(this);
@@ -256,7 +256,7 @@ Message::Message (const QString & nick, bool tchat, QWidget *parent, const char 
 
 void Message::init(void) {
 	resize(355,235);
-	setCaption("Message for " + nicksnd);
+	setCaption(i18n("Message for " + nicksnd));
 }
 
 /* the actual send */
