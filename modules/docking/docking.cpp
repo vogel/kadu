@@ -136,7 +136,7 @@ void DockingManager::defaultToolTip()
 void DockingManager::showCurrentStatus(int status)
 {
 	kdebugf();
-	int statusnr = statusGGToStatusNr(status);
+	int statusnr = statusGGToStatusNr(status & (~GG_STATUS_FRIENDS_MASK));
 	QPixmap pix = icons_manager.loadIcon(gg_icons[statusnr]);
 	QString tiptext=tr("Left click - hide/show window\nMiddle click or Left click- open message");
 		
