@@ -1,6 +1,12 @@
 
 bin_PROGRAMS = kadu
 
+if OPENSSL
+SIM = sim.cpp sim.h
+else
+SIM =
+endif
+
 kadu_SOURCES = \
 about.cpp about.h \
 adduser.cpp adduser.h \
@@ -29,20 +35,16 @@ vuser.cpp vuser.h \
 dock_widget.cpp dock_widget.h \
 emoticons.cpp emoticons.h \
 status.cpp status.h \
-updates.cpp updates.h
+updates.cpp updates.h \
+$(SIM)
 
 METASOURCES = AUTO
 
 INCLUDES = $(all_includes)
 kadu_LDADD = $(all_libraries) $(LIB_QT) $(LIB_KDECORE) $(LIB_KDEUI) -lgadu
-#kadu_DEPENDENCIES = ../libgadu/lib/libgadu.a
 AM_CPPFLAGS = -DBINDIR="\"$(bindir)\"" -DDATADIR="\"$(datadir)\""
-#AM_CXXFLAGS = -I../libgadu/lib
 
 EXTRA_DIST = hi16-app-kadu.png hi32-app-kadu.png hi48-app-kadu.png kadu.desktop
-
-#../libgadu/lib/libgadu.a:
-#	cd ../libgadu && $(MAKE)
 
 install-data-local:
 	if test ! -z "$(KDEDIR)"; then \

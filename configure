@@ -876,6 +876,7 @@ Optional Features:
   --disable-doc           do not install Kadu documentation
   --disable-sms           do not compile and install built-in sms application
   --enable-dist-info=DIST enable distribution type information, default: sources
+  --with-openssl          enable OpenSSL encryption support
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -6901,7 +6902,7 @@ test x"$pic_mode" = xno && libtool_flags="$libtool_flags --prefer-non-pic"
 case $host in
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 6904 "configure"' > conftest.$ac_ext
+  echo '#line 6905 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -11887,7 +11888,7 @@ for i in $jpeg_incdirs;
 do
   for j in jpeglib.h;
   do
-    echo "configure: 11890: $i/$j" >&5
+    echo "configure: 11891: $i/$j" >&5
     if test -r "$i/$j"; then
       echo "taking that" >&5
       jpeg_incdir=$i
@@ -12122,7 +12123,7 @@ for i in $qt_incdirs;
 do
   for j in $kde_qt_header;
   do
-    echo "configure: 12125: $i/$j" >&5
+    echo "configure: 12126: $i/$j" >&5
     if test -r "$i/$j"; then
       echo "taking that" >&5
       qt_incdir=$i
@@ -12738,7 +12739,7 @@ for i in $kde_incdirs;
 do
   for j in $kde_check_header;
   do
-    echo "configure: 12741: $i/$j" >&5
+    echo "configure: 12742: $i/$j" >&5
     if test -r "$i/$j"; then
       echo "taking that" >&5
       kde_incdir=$i
@@ -12768,7 +12769,7 @@ for i in $kde_libdirs;
 do
   for j in $kde_check_lib;
   do
-    echo "configure: 12771: $i/$j" >&5
+    echo "configure: 12772: $i/$j" >&5
     if test -r "$i/$j"; then
       echo "taking that" >&5
       kde_libdir=$i
@@ -13851,7 +13852,7 @@ for i in $kde_sharedirs;
 do
   for j in apps/ksgmltools2/customization/kde-chunk.xsl;
   do
-    echo "configure: 13854: $i/$j" >&5
+    echo "configure: 13855: $i/$j" >&5
     if test -r "$i/$j"; then
       echo "taking that" >&5
       KDE_XSL_STYLESHEET=$i
@@ -16006,6 +16007,183 @@ cat >>confdefs.h <<_ACEOF
 _ACEOF
 
 
+# OpenSSL support
+# Check whether --enable-openssl or --disable-openssl was given.
+if test "${enable_openssl+set}" = set; then
+  enableval="$enable_openssl"
+
+fi;
+if test -z "$with_openssl"; then
+	with_openssl=no
+fi
+if test "$with_openssl" = "yes"; then
+#	AC_CHECK_HEADER(openssl.h,[
+
+echo "$as_me:$LINENO: checking for RSA_public_encrypt in -lcrypto" >&5
+echo $ECHO_N "checking for RSA_public_encrypt in -lcrypto... $ECHO_C" >&6
+if test "${ac_cv_lib_crypto_RSA_public_encrypt+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lcrypto  $LIBS"
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+#include "confdefs.h"
+
+/* Override any gcc2 internal prototype to avoid an error.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+/* We use char because int might match the return type of a gcc2
+   builtin and then its argument prototype would still apply.  */
+char RSA_public_encrypt ();
+#ifdef F77_DUMMY_MAIN
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+#endif
+int
+main ()
+{
+RSA_public_encrypt ();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_cv_lib_crypto_RSA_public_encrypt=yes
+else
+  echo "$as_me: failed program was:" >&5
+cat conftest.$ac_ext >&5
+ac_cv_lib_crypto_RSA_public_encrypt=no
+fi
+rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+echo "$as_me:$LINENO: result: $ac_cv_lib_crypto_RSA_public_encrypt" >&5
+echo "${ECHO_T}$ac_cv_lib_crypto_RSA_public_encrypt" >&6
+if test $ac_cv_lib_crypto_RSA_public_encrypt = yes; then
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBCRYPTO 1
+_ACEOF
+
+  LIBS="-lcrypto $LIBS"
+
+else
+
+			{ { echo "$as_me:$LINENO: error: libcrypto was not found!" >&5
+echo "$as_me: error: libcrypto was not found!" >&2;}
+   { (exit 1); exit 1; }; }
+
+fi
+
+#	],[
+#		AC_MSG_ERROR([existing libgadu was not found!])
+#	])
+#	AC_CHECK_HEADER(openssl.h,[
+
+echo "$as_me:$LINENO: checking for BIO_new in -lssl" >&5
+echo $ECHO_N "checking for BIO_new in -lssl... $ECHO_C" >&6
+if test "${ac_cv_lib_ssl_BIO_new+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lssl  $LIBS"
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+#include "confdefs.h"
+
+/* Override any gcc2 internal prototype to avoid an error.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+/* We use char because int might match the return type of a gcc2
+   builtin and then its argument prototype would still apply.  */
+char BIO_new ();
+#ifdef F77_DUMMY_MAIN
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+#endif
+int
+main ()
+{
+BIO_new ();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_cv_lib_ssl_BIO_new=yes
+else
+  echo "$as_me: failed program was:" >&5
+cat conftest.$ac_ext >&5
+ac_cv_lib_ssl_BIO_new=no
+fi
+rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+echo "$as_me:$LINENO: result: $ac_cv_lib_ssl_BIO_new" >&5
+echo "${ECHO_T}$ac_cv_lib_ssl_BIO_new" >&6
+if test $ac_cv_lib_ssl_BIO_new = yes; then
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBSSL 1
+_ACEOF
+
+  LIBS="-lssl $LIBS"
+
+else
+
+			{ { echo "$as_me:$LINENO: error: libssl was not found!" >&5
+echo "$as_me: error: libssl was not found!" >&2;}
+   { (exit 1); exit 1; }; }
+
+fi
+
+#	],[
+#		AC_MSG_ERROR([existing libgadu was not found!])
+#	])
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_OPENSSL 1
+_ACEOF
+
+fi
+
+
+if test "$with_openssl" = "yes"; then
+  OPENSSL_TRUE=
+  OPENSSL_FALSE='#'
+else
+  OPENSSL_TRUE='#'
+  OPENSSL_FALSE=
+fi
+
+
 
 
 
@@ -16166,6 +16344,13 @@ if test -z "${AMDEP_TRUE}" && test -z "${AMDEP_FALSE}"; then
   { { echo "$as_me:$LINENO: error: conditional \"AMDEP\" was never defined.
 Usually this means the macro was only invoked conditionally." >&5
 echo "$as_me: error: conditional \"AMDEP\" was never defined.
+Usually this means the macro was only invoked conditionally." >&2;}
+   { (exit 1); exit 1; }; }
+fi
+if test -z "${OPENSSL_TRUE}" && test -z "${OPENSSL_FALSE}"; then
+  { { echo "$as_me:$LINENO: error: conditional \"OPENSSL\" was never defined.
+Usually this means the macro was only invoked conditionally." >&5
+echo "$as_me: error: conditional \"OPENSSL\" was never defined.
 Usually this means the macro was only invoked conditionally." >&2;}
    { (exit 1); exit 1; }; }
 fi
@@ -16817,6 +17002,8 @@ s,@LIB_KSYCOCA@,$LIB_KSYCOCA,;t t
 s,@LIB_KFILE@,$LIB_KFILE,;t t
 s,@LIB_KFM@,$LIB_KFM,;t t
 s,@LIBOBJS@,$LIBOBJS,;t t
+s,@OPENSSL_TRUE@,$OPENSSL_TRUE,;t t
+s,@OPENSSL_FALSE@,$OPENSSL_FALSE,;t t
 s,@MY_SUBDIRS@,$MY_SUBDIRS,;t t
 s,@subdirs@,$subdirs,;t t
 s,@TOPSUBDIRS@,$TOPSUBDIRS,;t t
@@ -17568,6 +17755,7 @@ echo "    Compile and install built-in sms application: $enable_sms"
 echo "    Use pthread resolving in libgadu:             $with_pthread"
 echo "    Compile with debug symbols:                   $enable_debug"
 echo "    Link with existing libgadu:                   $with_existing_libgadu"
+echo "    OpenSSL encryption support:                   $with_openssl"
 echo "    Distribution type information:                $enable_dist_info"
 echo
 echo " Run make now (gmake on FreeBSD) to compile Kadu."
