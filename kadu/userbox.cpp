@@ -589,12 +589,8 @@ void UserBox::all_renameUser(const QString &oldaltnick, const QString &newaltnic
 
 void UserBox::initModule()
 {
-	QT_TRANSLATE_NOOP("@default", "General");
-	QT_TRANSLATE_NOOP("@default", "Show Inactive users");
-
-
-	ConfigDialog::addTab("General");
-	ConfigDialog::addCheckBox("General", "grid", "Show Inactive users", "ShowHideInactive", true);
+	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "General"));
+	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show inactive users"), "ShowHideInactive", true);
 
 // dodanie wpisow do konfiga (pierwsze uruchomienie)
 	QWidget w;
@@ -607,48 +603,32 @@ void UserBox::initModule()
 	QFont def_font0(info0.family(),info0.pointSize());
 	config_file.addVariable("Look", "UserboxFont", def_font0);
 	config_file.addVariable("Look", "UserboxDescFont", def_font0);
-//
 
-	QT_TRANSLATE_NOOP("@default", "Look");
-	QT_TRANSLATE_NOOP("@default", "Userbox properties");
-	QT_TRANSLATE_NOOP("@default", "Preview userbox");
-	QT_TRANSLATE_NOOP("@default", "Preview desc.");
-	QT_TRANSLATE_NOOP("@default", "Font");
-	QT_TRANSLATE_NOOP("@default", "Font size");
-	QT_TRANSLATE_NOOP("@default", "Other");
-	QT_TRANSLATE_NOOP("@default", "Show info-panel");
-	QT_TRANSLATE_NOOP("@default", "Show description in userbox");
-	QT_TRANSLATE_NOOP("@default", "Multiline description in userbox");
-	QT_TRANSLATE_NOOP("@default", "Show avaliable in bold");
-	QT_TRANSLATE_NOOP("@default", "Display group tabs");
-	QT_TRANSLATE_NOOP("@default", "Multicolumn userbox");
-	QT_TRANSLATE_NOOP("@default", "Show status button");
-
-	ConfigDialog::addTab("Look");
-	ConfigDialog::addVGroupBox("Look","Look","Userbox properties");
+	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Look"));
+	ConfigDialog::addVGroupBox("Look","Look",QT_TRANSLATE_NOOP("@default", "Userbox properties"));
 	ConfigDialog::addGrid("Look", "Userbox properties", "previewgrid", 2);
-	ConfigDialog::addHGroupBox("Look","previewgrid","Preview userbox");
+	ConfigDialog::addHGroupBox("Look","previewgrid",QT_TRANSLATE_NOOP("@default", "Preview userbox"));
 	ConfigDialog::addLabel("Look","Preview userbox", "<b>Text</b> preview", "userbox");
-	ConfigDialog::addHGroupBox("Look","previewgrid","Preview desc.");
+	ConfigDialog::addHGroupBox("Look","previewgrid",QT_TRANSLATE_NOOP("@default", "Preview desc."));
 	ConfigDialog::addLabel("Look","Preview desc.", "<b>Text</b> preview", "desc");
 	ConfigDialog::addHBox("Look", "Userbox properties", "-");
 	ConfigDialog::addComboBox("Look", "-", "", "", "combobox0");
 	ConfigDialog::addLineEdit2("Look", "-", "", "", "", "line0");
 	ConfigDialog::addColorButton("Look", "-","ColorButton0", QColor(config_file.readEntry("Look","UserboxBgColor")));
 	ConfigDialog::addHBox("Look", "Userbox properties", "font&size");
-	ConfigDialog::addComboBox("Look", "font&size", "Font");
-	ConfigDialog::addComboBox("Look", "font&size", "Font size");
+	ConfigDialog::addComboBox("Look", "font&size", QT_TRANSLATE_NOOP("@default", "Font"));
+	ConfigDialog::addComboBox("Look", "font&size", QT_TRANSLATE_NOOP("@default", "Font size"));
 
 
-	ConfigDialog::addVGroupBox("Look", "Look", "Other");
+	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Other"));
 	ConfigDialog::addGrid("Look", "Other", "grid", 2);
-	ConfigDialog::addCheckBox("Look", "grid", "Show info-panel", "ShowInfoPanel", true);
-	ConfigDialog::addCheckBox("Look", "grid", "Show status button", "ShowStatusButton", true);
-	ConfigDialog::addCheckBox("Look", "grid", "Display group tabs", "DisplayGroupTabs", true);
-	ConfigDialog::addCheckBox("Look", "grid", "Multicolumn userbox", "MultiColumnUserbox", true);
-	ConfigDialog::addCheckBox("Look", "grid", "Show description in userbox", "ShowDesc", true);
-	ConfigDialog::addCheckBox("Look", "grid", "Multiline description in userbox", "ShowMultilineDecs", true);
-	ConfigDialog::addCheckBox("Look", "grid", "Show avaliable in bold", "ShowBold", true);
+	ConfigDialog::addCheckBox("Look", "grid", QT_TRANSLATE_NOOP("@default", "Show info-panel"), "ShowInfoPanel", true);
+	ConfigDialog::addCheckBox("Look", "grid", QT_TRANSLATE_NOOP("@default", "Show status button"), "ShowStatusButton", true);
+	ConfigDialog::addCheckBox("Look", "grid", QT_TRANSLATE_NOOP("@default", "Display group tabs"), "DisplayGroupTabs", true);
+	ConfigDialog::addCheckBox("Look", "grid", QT_TRANSLATE_NOOP("@default", "Multicolumn userbox"), "MultiColumnUserbox", true);
+	ConfigDialog::addCheckBox("Look", "grid", QT_TRANSLATE_NOOP("@default", "Show description in userbox"), "ShowDesc", true);
+	ConfigDialog::addCheckBox("Look", "grid", QT_TRANSLATE_NOOP("@default", "Multiline description in userbox"), "ShowMultilineDecs", true);
+	ConfigDialog::addCheckBox("Look", "grid", QT_TRANSLATE_NOOP("@default", "Show avaliable in bold"), "ShowBold", true);
 
 	UserBoxSlots *userboxslots= new UserBoxSlots();
 	ConfigDialog::registerSlotOnCreate(userboxslots, SLOT(onCreateConfigDialog()));

@@ -1195,66 +1195,35 @@ void Chat::addEmoticon(QString string) {
 	emoticon_selector = NULL;
 }
 
-
 void Chat::initModule()
 {
 	kdebugf();
-	QT_TRANSLATE_NOOP("@default", "General");
-	QT_TRANSLATE_NOOP("@default", "Open chat window on new message");
-	QT_TRANSLATE_NOOP("@default", "Define keys");
-	QT_TRANSLATE_NOOP("@default", "New line / send message:");
-	QT_TRANSLATE_NOOP("@default", "Clear Chat:");
-	QT_TRANSLATE_NOOP("@default", "Close Chat:");
-	QT_TRANSLATE_NOOP("@default", "Bold text:");
-	QT_TRANSLATE_NOOP("@default", "Italic text:");
-	QT_TRANSLATE_NOOP("@default", "Underline text:");
-	QT_TRANSLATE_NOOP("@default", "Emoticons");
-	QT_TRANSLATE_NOOP("@default", "Emoticons:");
-	QT_TRANSLATE_NOOP("@default", "Emoticons theme");
-	QT_TRANSLATE_NOOP("@default", "WWW options");
-	QT_TRANSLATE_NOOP("@default", "Use default Web browser");
-	QT_TRANSLATE_NOOP("@default", "Custom Web browser");
-	QT_TRANSLATE_NOOP("@default", "Automatically prune chat messages");
-	QT_TRANSLATE_NOOP("@default", "Message pruning");
-	QT_TRANSLATE_NOOP("@default", "Reduce the number of visible messages to");
-	QT_TRANSLATE_NOOP("@default", "Open chat window on new message");
-	QT_TRANSLATE_NOOP("@default", "Scroll chat window downward, not upward");
-	QT_TRANSLATE_NOOP("@default", "\"Enter\" key in chat sends message by default");
-	QT_TRANSLATE_NOOP("@default", "Message acknowledgements (wait for delivery)");
-	QT_TRANSLATE_NOOP("@default", "Flash chat title on new message");
-	QT_TRANSLATE_NOOP("@default", "Ignore messages from anonymous users");
-	QT_TRANSLATE_NOOP("@default", "Syntax the same as in information panel.");
-	QT_TRANSLATE_NOOP("@default", "%1 - Url clicked in chat window");
-	QT_TRANSLATE_NOOP("@default", "<b>Me</b> 00:00:00");
-	QT_TRANSLATE_NOOP("@default", "<b>Other party</b> 00:00:02");
 
 	ConfigDialog::addTab("ShortCuts");
-	ConfigDialog::addVGroupBox("ShortCuts", "ShortCuts", "Define keys");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "New line / send message:", "chat_newline", "Return");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Clear Chat:", "chat_clear", "F9");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Close Chat:", "chat_close", "Esc");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Bold text:", "chat_bold", "Ctrl+B");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Italic text:", "chat_italic", "Ctrl+I");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Underline text:", "chat_underline", "Ctrl+U");
+	ConfigDialog::addVGroupBox("ShortCuts", "ShortCuts", QT_TRANSLATE_NOOP("@default", "Define keys"));
+	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "New line / send message:"), "chat_newline", "Return");
+	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Clear Chat:"), "chat_clear", "F9");
+	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Close Chat:"), "chat_close", "Esc");
+	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Bold text:"), "chat_bold", "Ctrl+B");
+	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Italic text:"), "chat_italic", "Ctrl+I");
+	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Underline text:"), "chat_underline", "Ctrl+U");
 	
-
 	ConfigDialog::addTab("Chat");
-	ConfigDialog::addVGroupBox("Chat", "Chat", "Emoticons");
-	ConfigDialog::addComboBox("Chat", "Emoticons", "Emoticons:");
-	ConfigDialog::addComboBox("Chat", "Emoticons", "Emoticons theme");
-	ConfigDialog::addVGroupBox("Chat", "Chat", "WWW options");
-	ConfigDialog::addCheckBox("Chat", "WWW options", "Use default Web browser", "DefaultWebBrowser", true);
-	ConfigDialog::addLineEdit("Chat", "WWW options", "Custom Web browser", "WebBrowser", "", "%1 - Url clicked in chat window");
-	ConfigDialog::addCheckBox("Chat", "Chat", "Automatically prune chat messages", "ChatPrune", true);
-	ConfigDialog::addHGroupBox("Chat", "Chat", "Message pruning");
-	ConfigDialog::addLineEdit("Chat", "Message pruning", "Reduce the number of visible messages to", "ChatPruneLen", "20");
-	ConfigDialog::addCheckBox("Chat", "Chat", "Open chat window on new message", "OpenChatOnMessage");
-	ConfigDialog::addCheckBox("Chat", "Chat", "Scroll chat window downward, not upward", "ScrollDown", true);
-	ConfigDialog::addCheckBox("Chat", "Chat", "\"Enter\" key in chat sends message by default", "AutoSend", true);
-	ConfigDialog::addCheckBox("Chat", "Chat", "Message acknowledgements (wait for delivery)", "MessageAcks", true);
-	ConfigDialog::addCheckBox("Chat", "Chat", "Flash chat title on new message", "BlinkChatTitle", true);
-	ConfigDialog::addCheckBox("Chat", "Chat", "Ignore messages from anonymous users", "IgnoreAnonymousUsers", false);
-
+	ConfigDialog::addVGroupBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Emoticons"));
+	ConfigDialog::addComboBox("Chat", "Emoticons", QT_TRANSLATE_NOOP("@default", "Emoticons:"));
+	ConfigDialog::addComboBox("Chat", "Emoticons", QT_TRANSLATE_NOOP("@default", "Emoticons theme"));
+	ConfigDialog::addVGroupBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "WWW options"));
+	ConfigDialog::addCheckBox("Chat", "WWW options", QT_TRANSLATE_NOOP("@default", "Use default Web browser"), "DefaultWebBrowser", true);
+	ConfigDialog::addLineEdit("Chat", "WWW options", QT_TRANSLATE_NOOP("@default", "Custom Web browser"), "WebBrowser", "", QT_TRANSLATE_NOOP("@default", "%1 - Url clicked in chat window"));
+	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Automatically prune chat messages"), "ChatPrune", true);
+	ConfigDialog::addHGroupBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Message pruning"));
+	ConfigDialog::addLineEdit("Chat", "Message pruning", QT_TRANSLATE_NOOP("@default", "Reduce the number of visible messages to"), "ChatPruneLen", "20");
+	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Open chat window on new message"), "OpenChatOnMessage");
+	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Scroll chat window downward, not upward"), "ScrollDown", true);
+	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "\"Enter\" key in chat sends message by default"), "AutoSend", true);
+	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Message acknowledgements (wait for delivery)"), "MessageAcks", true);
+	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Flash chat title on new message"), "BlinkChatTitle", true);
+	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Ignore messages from anonymous users"), "IgnoreAnonymousUsers", false);
 
 // pierwsze uruchomienie kadu
 	QColor color;
@@ -1272,40 +1241,26 @@ void Chat::initModule()
 	config_file.addVariable("Look", "ChatFont", &def_font);
 //
 
-	QT_TRANSLATE_NOOP("@default", "Look");
-	QT_TRANSLATE_NOOP("@default", "Chat properties");
-	QT_TRANSLATE_NOOP("@default", "Font");
-	QT_TRANSLATE_NOOP("@default", "Font size");
-	QT_TRANSLATE_NOOP("@default", "Other");
-	QT_TRANSLATE_NOOP("@default", "Information panel syntax:");
-	QT_TRANSLATE_NOOP("@default", "Chat window title syntax:");
-	QT_TRANSLATE_NOOP("@default", "Conference window title prefix:");
-	QT_TRANSLATE_NOOP("@default", "Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - frist name\n%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist\n%v - revDNS, %p - port %e - email\nIf you leave blank, default settings will be used");
-	QT_TRANSLATE_NOOP("@default", "This text will be before syntax.\nIf you leave blank, default settings will be used.");
-	QT_TRANSLATE_NOOP("@default", "Conference window title prefix");
-	QT_TRANSLATE_NOOP("@default", "syntax:");
-	QT_TRANSLATE_NOOP("@default", "Preview chat");
-
-	ConfigDialog::addTab("Look");
-	ConfigDialog::addVGroupBox("Look","Look","Chat properties");
+	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Look"));
+	ConfigDialog::addVGroupBox("Look","Look",QT_TRANSLATE_NOOP("@default", "Chat properties"));
 	ConfigDialog::addGrid("Look", "Chat properties", "previewgrid2", 2);
-	ConfigDialog::addVGroupBox("Look","previewgrid2","Preview chat");
-	ConfigDialog::addLabel("Look","Preview chat", "<b>Me</b> 00:00:00", "chat");
-	ConfigDialog::addLabel("Look","Preview chat", "<b>Other party</b> 00:00:02", "chat2");
+	ConfigDialog::addVGroupBox("Look","previewgrid2",QT_TRANSLATE_NOOP("@default", "Preview chat"));
+	ConfigDialog::addLabel("Look","Preview chat", QT_TRANSLATE_NOOP("@default", "<b>Me</b> 00:00:00"), "chat");
+	ConfigDialog::addLabel("Look","Preview chat", QT_TRANSLATE_NOOP("@default", "<b>Other party</b> 00:00:02"), "chat2");
 	ConfigDialog::addHBox("Look", "Chat properties", "--");
 	ConfigDialog::addComboBox("Look", "--", "", "", "combobox1");
 	ConfigDialog::addLineEdit2("Look", "--", "", "", "", "line1");
 	ConfigDialog::addColorButton("Look", "--","ColorButton1", QColor(config_file.readEntry("Look","ChatMyBgColor")));
 	ConfigDialog::addHBox("Look", "Chat properties", "font&size2");
-	ConfigDialog::addComboBox("Look", "font&size2", "Font", "", "font");
-	ConfigDialog::addComboBox("Look", "font&size2", "Font size", "", "size");
-	ConfigDialog::addVGroupBox("Look", "Look", "Other");
+	ConfigDialog::addComboBox("Look", "font&size2", QT_TRANSLATE_NOOP("@default", "Font"), "", "font");
+	ConfigDialog::addComboBox("Look", "font&size2", QT_TRANSLATE_NOOP("@default", "Font size"), "", "size");
+	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Other"));
 	ConfigDialog::addVBox("Look", "Other", "syntax");
-	ConfigDialog::addTextEdit("Look", "syntax", "Information panel syntax:", "PanelContents", "[#%u][, %f] %r [- %d] [ (%i)]", "Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - frist name\n%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist\n%v - revDNS, %p - port %e - email\nIf you leave blank, default settings will be used");
-	ConfigDialog::addLineEdit("Look", "syntax", "Chat window title syntax:", "ChatContents", "", "Syntax the same as in information panel.");
+	ConfigDialog::addTextEdit("Look", "syntax", QT_TRANSLATE_NOOP("@default", "Information panel syntax:"), "PanelContents", "[#%u][, %f] %r [- %d] [ (%i)]", QT_TRANSLATE_NOOP("@default", "Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - frist name\n%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist\n%v - revDNS, %p - port %e - email\nIf you leave blank, default settings will be used"));
+	ConfigDialog::addLineEdit("Look", "syntax", QT_TRANSLATE_NOOP("@default", "Chat window title syntax:"), "ChatContents", "", "Syntax the same as in information panel.");
 	ConfigDialog::addHBox("Look", "syntax", "conference");
-	ConfigDialog::addLineEdit("Look", "conference", "Conference window title prefix:", "ConferencePrefix", "", "This text will be before syntax.\nIf you leave blank, default settings will be used.");
-	ConfigDialog::addLineEdit("Look", "conference", "syntax:", "ConferenceContents", "%a (%s[: %d])", "Syntax the same as in information panel.");
+	ConfigDialog::addLineEdit("Look", "conference", QT_TRANSLATE_NOOP("@default", "Conference window title prefix:"), "ConferencePrefix", "", QT_TRANSLATE_NOOP("@default", "This text will be before syntax.\nIf you leave blank, default settings will be used."));
+	ConfigDialog::addLineEdit("Look", "conference", QT_TRANSLATE_NOOP("@default", "syntax:"), "ConferenceContents", "%a (%s[: %d])", QT_TRANSLATE_NOOP("@default", "Syntax the same as in information panel."));
 
 	config_file.addVariable("Chat", "EmoticonsStyle", EMOTS_ANIMATED);
 	emoticons.setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
@@ -1327,7 +1282,6 @@ void Chat::initModule()
 	connect(&event_manager,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
 		chat_manager,SLOT(chatMsgReceived(UinsList,const QString&,time_t,bool&)));
 }
-
 
 const UinsList& Chat::uins()
 {

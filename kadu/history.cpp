@@ -1405,24 +1405,16 @@ void History::closeEvent(QCloseEvent *e) {
 
 void History::initModule()
 {
-
-	QT_TRANSLATE_NOOP("@default", "History");
-	QT_TRANSLATE_NOOP("@default", "Quoted phrases during chat open");
-	QT_TRANSLATE_NOOP("@default", "Count:");
-	QT_TRANSLATE_NOOP("@default", "Don't quote phrases older than:");
-	QT_TRANSLATE_NOOP("@default", "Don't show status changes");
-	QT_TRANSLATE_NOOP("@default", "Don't save status changes");
-
-	kdebug("History::initModule() \n");
+	kdebugf();
 	HistorySlots *historyslots=new HistorySlots();
-	ConfigDialog::addTab("History");
-	ConfigDialog::addVGroupBox("History", "History", "Quoted phrases during chat open");
-	ConfigDialog::addSpinBox("History", "Quoted phrases during chat open", "Count:", "ChatHistoryCitation", 0, 200, 1, 10);
-	ConfigDialog::addLabel("History", "Quoted phrases during chat open", "Don't quote phrases older than:");
+	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "History"));
+	ConfigDialog::addVGroupBox("History", "History", QT_TRANSLATE_NOOP("@default", "Quoted phrases during chat open"));
+	ConfigDialog::addSpinBox("History", "Quoted phrases during chat open", QT_TRANSLATE_NOOP("@default", "Count:"), "ChatHistoryCitation", 0, 200, 1, 10);
+	ConfigDialog::addLabel("History", "Quoted phrases during chat open", QT_TRANSLATE_NOOP("@default", "Don't quote phrases older than:"));
 	ConfigDialog::addSlider("History", "Quoted phrases during chat open", "historyslider", "ChatHistoryQuotationTime", -744, -1, 24, -336);
 	ConfigDialog::addLabel("History", "Quoted phrases during chat open", "", "dayhour");
-	ConfigDialog::addCheckBox("History", "History", "Don't show status changes", "DontShowStatusChanges", false);
-	ConfigDialog::addCheckBox("History", "History", "Don't save status changes", "DontSaveStatusChanges", true);
+	ConfigDialog::addCheckBox("History", "History", QT_TRANSLATE_NOOP("@default", "Don't show status changes"), "DontShowStatusChanges", false);
+	ConfigDialog::addCheckBox("History", "History", QT_TRANSLATE_NOOP("@default", "Don't save status changes"), "DontSaveStatusChanges", true);
 
 	ConfigDialog::registerSlotOnCreate(historyslots, SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnApply(historyslots, SLOT(onDestroyConfigDialog()));

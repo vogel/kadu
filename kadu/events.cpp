@@ -687,25 +687,15 @@ void EventConfigSlots::initModule()
 	kdebug("EventConfigSlots::initModule()\n");
 	
 	EventConfigSlots *eventconfigslots = new EventConfigSlots();
-	
-
-
-	QT_TRANSLATE_NOOP("@default", "Notify");
-	QT_TRANSLATE_NOOP("@default", "Notify when users become available");
-	QT_TRANSLATE_NOOP("@default", "Notify about all users");
-	QT_TRANSLATE_NOOP("@default", "Available");
-	QT_TRANSLATE_NOOP("@default", "Tracked");
-	QT_TRANSLATE_NOOP("@default", "Notify options");
-	QT_TRANSLATE_NOOP("@default", "Notify by dialog box");
 
 // zakladka "powiadom"
-	ConfigDialog::addTab("Notify");
-	ConfigDialog::addCheckBox("Notify", "Notify", "Notify when users become available", "NotifyStatusChange", false);
-	ConfigDialog::addCheckBox("Notify", "Notify", "Notify about all users", "NotifyAboutAll", false);
+	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Notify"));
+	ConfigDialog::addCheckBox("Notify", "Notify", QT_TRANSLATE_NOOP("@default", "Notify when users become available"), "NotifyStatusChange", false);
+	ConfigDialog::addCheckBox("Notify", "Notify", QT_TRANSLATE_NOOP("@default", "Notify about all users"), "NotifyAboutAll", false);
 	ConfigDialog::addGrid("Notify", "Notify" ,"listboxy",3);
 	
 	ConfigDialog::addGrid("Notify", "listboxy", "listbox1", 1);
-	ConfigDialog::addLabel("Notify", "listbox1", "Available");
+	ConfigDialog::addLabel("Notify", "listbox1", QT_TRANSLATE_NOOP("@default", "Available"));
 	ConfigDialog::addListBox("Notify", "listbox1","available");
 	
 	ConfigDialog::addGrid("Notify", "listboxy", "listbox2", 1);
@@ -713,68 +703,44 @@ void EventConfigSlots::initModule()
 	ConfigDialog::addPushButton("Notify", "listbox2", "", "RemoveFromNotifyList","","back");
 	
 	ConfigDialog::addGrid("Notify", "listboxy", "listbox3", 1);
-	ConfigDialog::addLabel("Notify", "listbox3", "Tracked");
+	ConfigDialog::addLabel("Notify", "listbox3", QT_TRANSLATE_NOOP("@default", "Tracked"));
 	ConfigDialog::addListBox("Notify", "listbox3", "track");
 	
-	ConfigDialog::addVGroupBox("Notify", "Notify", "Notify options");
-	ConfigDialog::addCheckBox("Notify", "Notify options", "Notify by dialog box", "NotifyWithDialogBox", false);
-	
+	ConfigDialog::addVGroupBox("Notify", "Notify", QT_TRANSLATE_NOOP("@default", "Notify options"));
+	ConfigDialog::addCheckBox("Notify", "Notify options", QT_TRANSLATE_NOOP("@default", "Notify by dialog box"), "NotifyWithDialogBox", false);
 
 //zakladka "siec"
-	//potrzebne do translacji
-	QT_TRANSLATE_NOOP("@default", "Network");
-	QT_TRANSLATE_NOOP("@default", "DCC enabled");
-	QT_TRANSLATE_NOOP("@default", "DCC IP autodetection");
-	QT_TRANSLATE_NOOP("@default", "DCC IP");
-	QT_TRANSLATE_NOOP("@default", "IP address:");
-	QT_TRANSLATE_NOOP("@default", "DCC forwarding enabled");
-	QT_TRANSLATE_NOOP("@default", "DCC forwarding properties");
-	QT_TRANSLATE_NOOP("@default", "External IP address:");
-	QT_TRANSLATE_NOOP("@default", "External TCP port:");
-	QT_TRANSLATE_NOOP("@default", "Local TCP port:");
-	QT_TRANSLATE_NOOP("@default", "Servers properties");
-	QT_TRANSLATE_NOOP("@default", "Use default servers");
-	QT_TRANSLATE_NOOP("@default", "Use TLSv1");
-	QT_TRANSLATE_NOOP("@default", "Default port to connect to servers");
-	QT_TRANSLATE_NOOP("@default", "Use proxy server");
-	QT_TRANSLATE_NOOP("@default", "Proxy server");
-	QT_TRANSLATE_NOOP("@default", "Port:");
-	QT_TRANSLATE_NOOP("@default", "IP addresses:");
-	QT_TRANSLATE_NOOP("@default", "Username:");
-	QT_TRANSLATE_NOOP("@default", "Password:");
-
-
-	ConfigDialog::addTab("Network");
-	ConfigDialog::addCheckBox("Network", "Network", "DCC enabled", "AllowDCC", false);
-	ConfigDialog::addCheckBox("Network", "Network", "DCC IP autodetection", "DccIpDetect", false);
+	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Network"));
+	ConfigDialog::addCheckBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "DCC enabled"), "AllowDCC", false);
+	ConfigDialog::addCheckBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "DCC IP autodetection"), "DccIpDetect", false);
 	
-	ConfigDialog::addVGroupBox("Network", "Network", "DCC IP");
-	ConfigDialog::addLineEdit("Network", "DCC IP", "IP address:","DccIP");
-	ConfigDialog::addCheckBox("Network", "Network", "DCC forwarding enabled", "DccForwarding", false);
+	ConfigDialog::addVGroupBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "DCC IP"));
+	ConfigDialog::addLineEdit("Network", "DCC IP", QT_TRANSLATE_NOOP("@default", "IP address:"),"DccIP");
+	ConfigDialog::addCheckBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "DCC forwarding enabled"), "DccForwarding", false);
 	
-	ConfigDialog::addVGroupBox("Network", "Network", "DCC forwarding properties");
-	ConfigDialog::addLineEdit("Network", "DCC forwarding properties", "External IP address:", "ExternalIP");
-	ConfigDialog::addLineEdit("Network", "DCC forwarding properties", "External TCP port:", "ExternalPort", "0");
-	ConfigDialog::addLineEdit("Network", "DCC forwarding properties", "Local TCP port:", "LocalPort", "1550");
+	ConfigDialog::addVGroupBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "DCC forwarding properties"));
+	ConfigDialog::addLineEdit("Network", "DCC forwarding properties", QT_TRANSLATE_NOOP("@default", "External IP address:"), "ExternalIP");
+	ConfigDialog::addLineEdit("Network", "DCC forwarding properties", QT_TRANSLATE_NOOP("@default", "External TCP port:"), "ExternalPort", "0");
+	ConfigDialog::addLineEdit("Network", "DCC forwarding properties", QT_TRANSLATE_NOOP("@default", "Local TCP port:"), "LocalPort", "1550");
 
-	ConfigDialog::addVGroupBox("Network", "Network", "Servers properties");
+	ConfigDialog::addVGroupBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "Servers properties"));
 	ConfigDialog::addGrid("Network", "Servers properties", "servergrid", 2);
-	ConfigDialog::addCheckBox("Network", "servergrid", "Use default servers", "isDefServers", true);
+	ConfigDialog::addCheckBox("Network", "servergrid", QT_TRANSLATE_NOOP("@default", "Use default servers"), "isDefServers", true);
 #ifdef HAVE_OPENSSL
-	ConfigDialog::addCheckBox("Network", "servergrid", "Use TLSv1", "UseTLS", false);
+	ConfigDialog::addCheckBox("Network", "servergrid", QT_TRANSLATE_NOOP("@default", "Use TLSv1"), "UseTLS", false);
 #endif
-	ConfigDialog::addLineEdit("Network", "Servers properties", "IP addresses:", "Server","","","server");
+	ConfigDialog::addLineEdit("Network", "Servers properties", QT_TRANSLATE_NOOP("@default", "IP addresses:"), "Server","","","server");
 #ifdef HAVE_OPENSSL
-	ConfigDialog::addComboBox("Network", "Servers properties", "Default port to connect to servers");
+	ConfigDialog::addComboBox("Network", "Servers properties", QT_TRANSLATE_NOOP("@default", "Default port to connect to servers"));
 #endif
-	ConfigDialog::addCheckBox("Network", "Network", "Use proxy server", "UseProxy", false);
+	ConfigDialog::addCheckBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "Use proxy server"), "UseProxy", false);
 
-	ConfigDialog::addVGroupBox("Network", "Network", "Proxy server");
+	ConfigDialog::addVGroupBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "Proxy server"));
 	ConfigDialog::addGrid("Network", "Proxy server", "proxygrid", 2);
 	ConfigDialog::addLineEdit("Network", "proxygrid", "IP address:", "ProxyHost", "","","proxyhost");
-	ConfigDialog::addLineEdit("Network", "proxygrid", "Port:", "ProxyPort", "0");
-	ConfigDialog::addLineEdit("Network", "proxygrid", "Username:", "ProxyUser");
-	ConfigDialog::addLineEdit("Network", "proxygrid", "Password:", "ProxyPassword");
+	ConfigDialog::addLineEdit("Network", "proxygrid", QT_TRANSLATE_NOOP("@default", "Port:"), "ProxyPort", "0");
+	ConfigDialog::addLineEdit("Network", "proxygrid", QT_TRANSLATE_NOOP("@default", "Username:"), "ProxyUser");
+	ConfigDialog::addLineEdit("Network", "proxygrid", QT_TRANSLATE_NOOP("@default", "Password:"), "ProxyPassword");
 	
 	ConfigDialog::registerSlotOnCreate(eventconfigslots, SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnApply(eventconfigslots, SLOT(onDestroyConfigDialog()));

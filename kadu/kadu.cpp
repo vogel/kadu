@@ -188,7 +188,7 @@ QToolButton* ToolBar::getButton(const char* name)
 
 void Kadu::gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op) {
 	char buf[32];
-	int i;
+//	int i;
 	QString newestversion;
 
 	if (config_file.readBoolEntry("General", "CheckUpdates"))
@@ -249,71 +249,44 @@ void Kadu::keyPressEvent(QKeyEvent *e) {
 /* a monstrous constructor so Kadu would take longer to start up */
 Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 {
-	//potrzebne do translacji
-	QT_TRANSLATE_NOOP("@default", "General");
-	QT_TRANSLATE_NOOP("@default", "User data");
-	QT_TRANSLATE_NOOP("@default", "Uin");
-	QT_TRANSLATE_NOOP("@default", "Password");
-	QT_TRANSLATE_NOOP("@default", "Nick");
-	QT_TRANSLATE_NOOP("@default", "Log messages");
-	QT_TRANSLATE_NOOP("@default", "Restore window geometry");
-	QT_TRANSLATE_NOOP("@default", "Check for updates");
-	QT_TRANSLATE_NOOP("@default", "Set language:");
-	QT_TRANSLATE_NOOP("@default", "Private status");
-
-	QT_TRANSLATE_NOOP("@default", "Default status");
-	QT_TRANSLATE_NOOP("@default", "On shutdown, set description:");
-
 	updateChecked=false;
 	Docked=false;
 
 	KaduSlots *kaduslots=new KaduSlots();
 	int myUin=config_file.readNumEntry("General", "UIN");
 
-	ConfigDialog::addTab("General");
-	ConfigDialog::addHGroupBox("General", "General", "User data");
-	ConfigDialog::addLineEdit("General", "User data", "Uin", "UIN", "0");
-	ConfigDialog::addLineEdit("General", "User data", "Password", "Password", "");
-	ConfigDialog::addLineEdit("General", "User data", "Nick", "Nick", tr("Me"));
-	ConfigDialog::addComboBox("General", "General", "Set language:");
+	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "General"));
+	ConfigDialog::addHGroupBox("General", "General", QT_TRANSLATE_NOOP("@default", "User data"));
+	ConfigDialog::addLineEdit("General", "User data", QT_TRANSLATE_NOOP("@default", "Uin"), "UIN", "0");
+	ConfigDialog::addLineEdit("General", "User data", QT_TRANSLATE_NOOP("@default", "Password"), "Password", "");
+	ConfigDialog::addLineEdit("General", "User data", QT_TRANSLATE_NOOP("@default", "Nick"), "Nick", tr("Me"));
+	ConfigDialog::addComboBox("General", "General", QT_TRANSLATE_NOOP("@default", "Set language:"));
 	ConfigDialog::addGrid("General", "General", "grid", 2);
-	ConfigDialog::addCheckBox("General", "grid", "Log messages", "Logging", true);
-	ConfigDialog::addCheckBox("General", "grid", "Restore window geometry", "SaveGeometry", true);
-	ConfigDialog::addCheckBox("General", "grid", "Check for updates", "CheckUpdates", true);
+	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Log messages"), "Logging", true);
+	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Restore window geometry"), "SaveGeometry", true);
+	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Check for updates"), "CheckUpdates", true);
 
-	ConfigDialog::addCheckBox("General", "grid", "Private status", "PrivateStatus", false);
+	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Private status"), "PrivateStatus", false);
 
 	ConfigDialog::addVGroupBox("General", "General", "Status");
-	ConfigDialog::addComboBox("General", "Status", "Default status", "", "cb_defstatus");
+	ConfigDialog::addComboBox("General", "Status", QT_TRANSLATE_NOOP("@default", "Default status"), "", "cb_defstatus");
 	ConfigDialog::addHBox("General", "Status", "discstatus");
-	ConfigDialog::addCheckBox("General", "discstatus", "On shutdown, set description:", "DisconnectWithDescription", false);
+	ConfigDialog::addCheckBox("General", "discstatus", QT_TRANSLATE_NOOP("@default", "On shutdown, set description:"), "DisconnectWithDescription", false);
 	ConfigDialog::addLineEdit("General", "discstatus", "", "DisconnectDescription", "", "", "e_defaultstatus");
 
 	ConfigDialog::registerSlotOnCreate(kaduslots, SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnApply(kaduslots, SLOT(onDestroyConfigDialog()));
 
-	//potrzebne do translacji
-	QT_TRANSLATE_NOOP("@default", "ShortCuts");
-	QT_TRANSLATE_NOOP("@default", "Define keys");
-	QT_TRANSLATE_NOOP("@default", "Remove from userlist");
-	QT_TRANSLATE_NOOP("@default", "View/edit user info");
-	QT_TRANSLATE_NOOP("@default", "View history");
-	QT_TRANSLATE_NOOP("@default", "Lookup in directory");
-	QT_TRANSLATE_NOOP("@default", "Show / hide inactive users");
-	QT_TRANSLATE_NOOP("@default", "Send file");
-	QT_TRANSLATE_NOOP("@default", "Configuration");
-	QT_TRANSLATE_NOOP("@default", "Add user");
-
-	ConfigDialog::addTab("ShortCuts");
-	ConfigDialog::addVGroupBox("ShortCuts", "ShortCuts", "Define keys");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Remove from userlist", "kadu_deleteuser", "Del");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "View/edit user info", "kadu_persinfo", "Ins");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "View history", "kadu_viewhistory", "Ctrl+H");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Lookup in directory", "kadu_searchuser", "Ctrl+F");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Show / hide inactive users", "kadu_showinactive", "F9");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Send file", "kadu_sendfile", "F8");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Configuration", "kadu_configure", "F2");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Add user", "kadu_adduser", "Ctrl+N");
+	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "ShortCuts"));
+	ConfigDialog::addVGroupBox("ShortCuts", "ShortCuts", QT_TRANSLATE_NOOP("@default", "Define keys"));
+	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Remove from userlist"), "kadu_deleteuser", "Del");
+	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "View/edit user info"), "kadu_persinfo", "Ins");
+	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "View history"), "kadu_viewhistory", "Ctrl+H");
+	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Lookup in directory"), "kadu_searchuser", "Ctrl+F");
+	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Show / hide inactive users"), "kadu_showinactive", "F9");
+	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Send file"), "kadu_sendfile", "F8");
+	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Configuration"), "kadu_configure", "F2");
+	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Add user"), "kadu_adduser", "Ctrl+N");
 
 	Chat::initModule();
 	UserBox::initModule();
@@ -1358,7 +1331,7 @@ void Kadu::pingNetwork(void) {
 }
 
 void Kadu::disconnectNetwork() {
-	int i;
+	unsigned int i;
 	doBlink = false;
 
 	kdebug("Kadu::disconnectNetwork(): calling offline routines\n");

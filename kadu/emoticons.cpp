@@ -164,7 +164,7 @@ bool EmoticonsManager::loadGGEmoticonTheme()
 	if(loadGGEmoticonThemePart(""))
 		something_loaded=true;
 	QStringList subdirs=getSubDirs(themePath());
-	for(int i=0; i<subdirs.size(); i++)
+	for(unsigned int i=0; i<subdirs.size(); i++)
 		if(loadGGEmoticonThemePart(subdirs[i]))
 			something_loaded=true;
 

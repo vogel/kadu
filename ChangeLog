@@ -46,6 +46,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   za wsparcie z platformy win32 ;) (adrian)
 * lekka przebudowa odbierania i filtrowania wiadomo¶ci, teraz dopuszczamy
   równie¿ wiadomo¶ci z pust± tre¶ci± - np same obrazki (adrian)
+* usuniêcie ponad 160 ostrze¿eñ od kompilatora (zosta³o ju¿ tylko ko³o 20) (michal/joi)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

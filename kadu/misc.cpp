@@ -900,9 +900,6 @@ void IconsManager::onCreateConfigDialog()
 
 void IconsManager::initModule()
 {
-	QT_TRANSLATE_NOOP("@default","Icon theme");
-	QT_TRANSLATE_NOOP("@default","Icon paths");
-
 	kdebugf();
 	config_file.addVariable("Look", "IconsPaths", icons_manager.defaultKaduPathsWithThemes().join(";"));
 	config_file.addVariable("Look", "IconTheme", "default");
@@ -915,8 +912,8 @@ void IconsManager::initModule()
 	ConfigDialog::addTab("Chat");
 	ConfigDialog::addTab("Look");
 	ConfigDialog::addHBox("Look", "Look", "icon_theme");
-	ConfigDialog::addComboBox("Look", "icon_theme", "Icon theme");
-	ConfigDialog::addSelectPaths("Look", "icon_theme", "Icon paths");
+	ConfigDialog::addComboBox("Look", "icon_theme", QT_TRANSLATE_NOOP("@default","Icon theme"));
+	ConfigDialog::addSelectPaths("Look", "icon_theme", QT_TRANSLATE_NOOP("@default","Icon paths"));
 	
 	ConfigDialog::registerSlotOnCreate(&icons_manager, SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnApply(&icons_manager, SLOT(onDestroyConfigDialog()));
@@ -1111,13 +1108,13 @@ void HttpClient::onConnectionClosed()
 		emit finished();
 	else
 		emit error();
-};
+}
 
 void HttpClient::setHost(QString host)
 {
 	Host=host;
 	Cookies.clear();
-};
+}
 
 void HttpClient::get(QString path)
 {
@@ -1127,7 +1124,7 @@ void HttpClient::get(QString path)
 	PostData.resize(0);
 	HeaderParsed=false;
 	Socket.connectToHost(Host,80);
-};
+}
 
 void HttpClient::post(QString path,const QByteArray& data)
 {
@@ -1137,31 +1134,31 @@ void HttpClient::post(QString path,const QByteArray& data)
 	PostData.duplicate(data);
 	HeaderParsed=false;
 	Socket.connectToHost(Host,80);
-};
+}
 
 void HttpClient::post(QString path,const QString& data)
 {
 	QByteArray PostData;
 	PostData.duplicate(data.local8Bit().data(),data.length());
 	post(path,PostData);
-};
+}
 
 int HttpClient::status()
 {
 	return Status;
-};
+}
 
 const QByteArray& HttpClient::data()
 {
 	return Data;
-};
+}
 
 QString HttpClient::encode(const QString& text)
 {
 	QString encoded=text;
 	QUrl::encode(encoded);
 	return encoded;
-};
+}
 
 void HtmlDocument::escapeText(QString& text)
 {

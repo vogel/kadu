@@ -477,57 +477,34 @@ void HintManager::setGridOrigin()
 
 void HintManager::initModule(void)
 {
-	kdebug("HintManager::initModule()\n");
-
-/* T³umaczenia */
-	QT_TRANSLATE_NOOP("@default", "Hints");
-	QT_TRANSLATE_NOOP("@default", "Enable hints");
-	QT_TRANSLATE_NOOP("@default", "Hints options");
-	QT_TRANSLATE_NOOP("@default", "Enable icons in hints");
-	QT_TRANSLATE_NOOP("@default", "Show connection errors in hints");
-	QT_TRANSLATE_NOOP("@default", "Notify about new message");
-	QT_TRANSLATE_NOOP("@default", "Notify about new chat");
-	QT_TRANSLATE_NOOP("@default", "Show message content in hint");
-	QT_TRANSLATE_NOOP("@default", "Message content in hint");
-	QT_TRANSLATE_NOOP("@default", "Enable status notification by hint");
-	QT_TRANSLATE_NOOP("@default", "Notification options");
-	QT_TRANSLATE_NOOP("@default", "Notify about user status change");
-	QT_TRANSLATE_NOOP("@default", "Notify about user becoming available");
-	QT_TRANSLATE_NOOP("@default", "Notify about user becoming unavailable");
-	QT_TRANSLATE_NOOP("@default", "Add description to hint if exists");
-	QT_TRANSLATE_NOOP("@default", "Use custom syntax");
-	QT_TRANSLATE_NOOP("@default", "Hint syntax");
-	QT_TRANSLATE_NOOP("@default", "Mouse buttons");
-	QT_TRANSLATE_NOOP("@default", "Left");
-	QT_TRANSLATE_NOOP("@default", "Right");
-	QT_TRANSLATE_NOOP("@default", "Middle");
+	kdebugf();
 
 /* Zak³adka konfiguracyjna */
-	ConfigDialog::addTab("Hints");
-	ConfigDialog::addCheckBox("Hints", "Hints", "Enable hints", "Hints", true);
-	ConfigDialog::addVGroupBox("Hints", "Hints", "Hints options");
+	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Hints"));
+	ConfigDialog::addCheckBox("Hints", "Hints", QT_TRANSLATE_NOOP("@default", "Enable hints"), "Hints", true);
+	ConfigDialog::addVGroupBox("Hints", "Hints", QT_TRANSLATE_NOOP("@default", "Hints options"));
 	ConfigDialog::addGrid("Hints", "Hints options", "grid-options", 1);
-	ConfigDialog::addCheckBox("Hints", "grid-options", "Enable icons in hints", "Icons", true);
-	ConfigDialog::addCheckBox("Hints", "grid-options", "Show connection errors in hints" ,"Errors", true);
-	ConfigDialog::addCheckBox("Hints", "grid-options", "Notify about new chat", "NotifyNewChat", true);
-	ConfigDialog::addCheckBox("Hints", "grid-options", "Notify about new message", "NotifyNewMessage", false);
-	ConfigDialog::addCheckBox("Hints", "grid-options", "Show message content in hint", "ShowContentMessage", false);
-	ConfigDialog::addVGroupBox("Hints", "Hints options", "Message content in hint");
-	ConfigDialog::addCheckBox("Hints", "Hints options", "Enable status notification by hint", "NotifyHint", true);
-	ConfigDialog::addVGroupBox("Hints", "Hints options", "Notification options");
+	ConfigDialog::addCheckBox("Hints", "grid-options", QT_TRANSLATE_NOOP("@default", "Enable icons in hints"), "Icons", true);
+	ConfigDialog::addCheckBox("Hints", "grid-options", QT_TRANSLATE_NOOP("@default", "Show connection errors in hints"),"Errors", true);
+	ConfigDialog::addCheckBox("Hints", "grid-options", QT_TRANSLATE_NOOP("@default", "Notify about new chat"), "NotifyNewChat", true);
+	ConfigDialog::addCheckBox("Hints", "grid-options", QT_TRANSLATE_NOOP("@default", "Notify about new message"), "NotifyNewMessage", false);
+	ConfigDialog::addCheckBox("Hints", "grid-options", QT_TRANSLATE_NOOP("@default", "Show message content in hint"), "ShowContentMessage", false);
+	ConfigDialog::addVGroupBox("Hints", "Hints options", QT_TRANSLATE_NOOP("@default", "Message content in hint"));
+	ConfigDialog::addCheckBox("Hints", "Hints options", QT_TRANSLATE_NOOP("@default", "Enable status notification by hint"), "NotifyHint", true);
+	ConfigDialog::addVGroupBox("Hints", "Hints options", QT_TRANSLATE_NOOP("@default", "Notification options"));
 	ConfigDialog::addGrid("Hints", "Notification options", "grid-notify-status", 1);
-	ConfigDialog::addCheckBox("Hints", "grid-notify-status", "Notify about user status change", "NotifyHintChange", false);
-	ConfigDialog::addCheckBox("Hints", "grid-notify-status", "Notify about user becoming available", "NotifyHintAvailable", true);
-	ConfigDialog::addCheckBox("Hints", "grid-notify-status", "Notify about user becoming unavailable", "NotifyHintUnavailable", false);
+	ConfigDialog::addCheckBox("Hints", "grid-notify-status", QT_TRANSLATE_NOOP("@default", "Notify about user status change"), "NotifyHintChange", false);
+	ConfigDialog::addCheckBox("Hints", "grid-notify-status", QT_TRANSLATE_NOOP("@default", "Notify about user becoming available"), "NotifyHintAvailable", true);
+	ConfigDialog::addCheckBox("Hints", "grid-notify-status", QT_TRANSLATE_NOOP("@default", "Notify about user becoming unavailable"), "NotifyHintUnavailable", false);
 	//ConfigDialog::addCheckBox("grid-notify-status", "Prevent autoaway notify",  "NotifyHintPreventAutoaway", true);
-	ConfigDialog::addCheckBox("Hints", "grid-notify-status", "Add description to hint if exists", "NotifyHintDescription", false);
-	ConfigDialog::addCheckBox("Hints", "grid-notify-status", "Use custom syntax", "NotifyHintUseSyntax", false);
-	ConfigDialog::addLineEdit("Hints",  "Notification options", "Hint syntax", "NotifyHintSyntax", "");
+	ConfigDialog::addCheckBox("Hints", "grid-notify-status", QT_TRANSLATE_NOOP("@default", "Add description to hint if exists"), "NotifyHintDescription", false);
+	ConfigDialog::addCheckBox("Hints", "grid-notify-status", QT_TRANSLATE_NOOP("@default", "Use custom syntax"), "NotifyHintUseSyntax", false);
+	ConfigDialog::addLineEdit("Hints",  "Notification options", QT_TRANSLATE_NOOP("@default", "Hint syntax"), "NotifyHintSyntax", "");
 	
-	ConfigDialog::addVGroupBox("Hints", "Hints options", "Mouse buttons");
-	ConfigDialog::addComboBox("Hints", "Mouse buttons", "Left");
-	ConfigDialog::addComboBox("Hints", "Mouse buttons", "Right");
-	ConfigDialog::addComboBox("Hints", "Mouse buttons", "Middle");
+	ConfigDialog::addVGroupBox("Hints", "Hints options", QT_TRANSLATE_NOOP("@default", "Mouse buttons"));
+	ConfigDialog::addComboBox("Hints", "Mouse buttons", QT_TRANSLATE_NOOP("@default", "Left button"));
+	ConfigDialog::addComboBox("Hints", "Mouse buttons", QT_TRANSLATE_NOOP("@default", "Middle button"));
+	ConfigDialog::addComboBox("Hints", "Mouse buttons", QT_TRANSLATE_NOOP("@default", "Right button"));
 
 	config_file.addVariable("Hints","NewHintUnder",0);
 	config_file.addVariable("Hints","UseUserPosition",false);
