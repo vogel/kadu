@@ -1,4 +1,4 @@
-/* $Id: search50.c,v 1.1 2003/01/12 22:59:09 chilek Exp $ */
+/* $Id: search50.c,v 1.2 2003/01/14 23:44:01 chilek Exp $ */
 
 /*
  *  (C) Copyright 2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -19,6 +19,7 @@
 
 #include <stdlib.h>
 #include <errno.h>
+#include <time.h>
 #ifndef _AIX
 #  include <string.h>
 #endif
@@ -181,9 +182,9 @@ uint32_t gg_search50(struct gg_session *sess, gg_search50_t req)
 	}
 
 	r = (struct gg_search50_request*) buf;
-	res = (random() & 0xffffff00);
-	r->dunno1 = gg_fix32(res | 0x03);
-	r->dunno2 = '>';
+	res = time(NULL);
+	r->type = 0x03;
+	r->seq = fix32(time(NULL));
 
 	for (i = 0, p = buf + 5; i < req->entries_count; i++) {
 		if (req->entries[i].num)
@@ -245,8 +246,7 @@ int gg_search50_handle_reply(struct gg_event *e, const char *packet, int length)
 	e->event.search50 = res;
 
 	r = (struct gg_search50_reply*) packet;
-
-	res->seq = (fix32(r->dunno1) & 0xffffff00);
+	res->seq = fix32(r->seq);
 
 	/* pomiñ pocz±tek odpowiedzi */
 	p = packet + 5;

@@ -6,6 +6,42 @@ d - drg, sz - szalik). ,,p/nick'' oznacza patch lub ¼ród³o podes³ane
 przez ,,nick'', ,,i/nick'' oznacza czyj¶ pomys³, ,,b/nick'' mówi, kto
 zg³osi³ b³±d.
 
+// 2003-01-14
+
+- poprawione zachowanie zmiennych ui-ncurses przy w³±czonym ui-readline
+  (kbns/w)
+- prowizoryczne dope³nianie nicków ze spacj± w ¶rodku. dzia³a tylko w
+  obrêbie pierwszego wyrazu (pirat/w)
+- kosmetyka /list, nie wy¶wietla w³asnego IP przy braku po³aczenia (sz)
+- kosmetyka /conference, nazwa przy tworzeniu konferencji jest opcjonalna,
+  mo¿na usuwaæ od razu wszystkie konferencje (sz)
+- poprawka mo¿liwego segfaulta przy /timer -d * (sz)
+- mo¿na ignorowaæ samego siebie. wtedy nie jeste¶my pokazywani na li¶cie
+  kontaktów (gozda/sz)
+- nowe pytanie w FAQ (sz)
+- ignorowanie podanego potoku przy uruchomieniu, je¶li to zwyk³y plik (*/sz)
+- poprawka opcji --private przy uruchomieniu (sz)
+- libgadu: poprawione wysy³anie roku urodzenia w gg_change_info() (Chilek/w)
+- /change nie wymaga ju¿ wszystkich parametrów (w)
+- /find pokazuje stan niewidoczny (gozda/w)
+- kolorki statusów dla /find takie same jak w /list (sz)
+- /find pokazuje poprawnie niektóre (private, descr) stany (sz)
+- poprawka zjadania 100% procesora przy -c z plikiem (*/w)
+- poprawka zachowania ,,make_window 1'' (rmrmg/w)
+
+// 2003-01-13
+
+- poprawka /private (cukier/sz)
+- kilka mozliwych segfaultow (w/sz)
+- kosmetyka w msg_queue_write() (fig/sz)
+- segfault przy batch-mode (sz)
+- uaktualnienie arim.theme (Arim/w)
+- wiêcej szczegó³ów o F3 i zabawie z ,,contacts'' i ,,display_notify''
+  w dokumentacji (tokugawa/w)
+- poprawki themów helpa (sz/w)
+- poprawka usuwania /on (pmb/w)
+- libgadu: poprawka szukania z GG 5.0, same wnêtrzno¶ci. API nietkniête (w)
+
 // 2003-01-12
 
 - poprawka /alias (kbns/sz)
@@ -2617,4 +2653,4 @@ i BUGS.
 - eleet niebieskie t³o mesgów (wiem, dalekie od idea³u).
 
 
-$Id: ChangeLog,v 1.11 2003/01/12 22:56:42 chilek Exp $
+$Id: ChangeLog,v 1.12 2003/01/14 23:44:00 chilek Exp $

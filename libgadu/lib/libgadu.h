@@ -1,4 +1,4 @@
-/* $Id: libgadu.h,v 1.21 2003/01/12 22:56:42 chilek Exp $ */
+/* $Id: libgadu.h,v 1.22 2003/01/14 23:44:00 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -744,7 +744,7 @@ char *gg_base64_decode(const char *buf);
 #define GG_DEFAULT_PROTOCOL_VERSION 0x18
 #define GG_DEFAULT_TIMEOUT 30
 #define GG_HAS_AUDIO_MASK 0x40000000
-#define GG_LIBGADU_VERSION "20030112"
+#define GG_LIBGADU_VERSION "20030114"
 
 #define GG_DEFAULT_DCC_PORT 1550
 
@@ -796,15 +796,15 @@ struct gg_login_ext {
 #define GG_SEARCH50_REQUEST 0x0014
 
 struct gg_search50_request {
-	uint32_t dunno1;		/* 0xXXXXXX03 */
-	uint8_t dunno2;			/* '>' */
+	uint8_t type;			/* 0x03 */
+	uint32_t seq;			/* czas wys³ania zapytania */
 } GG_PACKED;
 
 #define GG_SEARCH50_REPLY 0x000e
 
 struct gg_search50_reply {
-	uint32_t dunno1;		/* 0xXXXXXX05 */
-	uint8_t dunno2;			/* '>' */
+	uint8_t type;			/* 0x05 */
+	uint32_t seq;			/* czas wys³ania zapytania */
 } GG_PACKED;
 
 #define GG_NEW_STATUS 0x0002
