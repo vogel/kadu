@@ -39,6 +39,9 @@ void addIgnored(UinsList uins);
 void delIgnored(UinsList uins);
 bool isIgnored(UinsList uins);
 
+// Ominiecie bledu w gcc 3.2
+static QValueList<UinsList> ignored_gcc32_bug;
+////////////////////////////
 extern QValueList<UinsList> ignored;
 
 #endif
