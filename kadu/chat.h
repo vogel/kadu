@@ -334,7 +334,6 @@ class ChatSlots :public QObject
 
 	private:
 		void updatePreview();
-		int chosenBrowser;
 	public:
 		ChatSlots(QObject* parent=0, const char* name=0);
 
@@ -352,7 +351,7 @@ class ChatSlots :public QObject
 
 		void initBrowserOptions(QComboBox *browserCombo, QComboBox *browserOptionsCombo, QLineEdit *browserPath);
 		void findBrowser(int selectedBrowser, QComboBox *browserCombo, QComboBox *browserOptionsCombo, QLineEdit *browserPath);
-		void setBrowserOption(int selectedOption, QLineEdit *browserPathEdit);
+		void setBrowserOption(int selectedOption, QLineEdit *browserPathEdit, int chosenBrowser);
 };
 
 #endif

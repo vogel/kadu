@@ -1663,8 +1663,7 @@ void ChatSlots::initBrowserOptions(QComboBox *browserCombo, QComboBox *browserOp
 			break;
 		}
 	}
-	chosenBrowser=browserNumber;
-
+	browserPath->setText(config_file.readEntry("Chat", "WebBrowser"));//potrzebne dla modu³u start_wizard
 	browserPath->setReadOnly(browserCombo->currentItem()!=0);
 	kdebugf2();
 }
@@ -1811,7 +1810,6 @@ void ChatSlots::findBrowser(int selectedBrowser, QComboBox *browserCombo, QCombo
 		UWAGA2: w tej funkcji NIE WOLNO korzystaæ z klasy ConfigDialog
 	*/
 	QString prevBrowser=browserPath->text();
-	chosenBrowser=selectedBrowser;	//to bedzie potrzebne przy wyborze dodatkowych opcji w drugim combo
 	browserOptionsCombo->setEnabled(false);	//blokujemy combo
 
 	if (selectedBrowser==0)
@@ -1987,7 +1985,7 @@ void ChatSlots::findAndSetWebBrowser(int selectedBrowser)
 	kdebugf2();
 }
 
-void ChatSlots::setBrowserOption(int selectedOption, QLineEdit *browserPathEdit)
+void ChatSlots::setBrowserOption(int selectedOption, QLineEdit *browserPathEdit, int chosenBrowser)
 {
 	kdebugf();
 	/*
@@ -2036,6 +2034,8 @@ void ChatSlots::setBrowserOption(int selectedOption, QLineEdit *browserPathEdit)
 void ChatSlots::findAndSetBrowserOption(int selectedOption)
 {
 	kdebugf();
-	setBrowserOption(selectedOption, ConfigDialog::getLineEdit("Chat", "Custom Web browser"));
+	setBrowserOption(selectedOption,
+		ConfigDialog::getLineEdit("Chat", "Custom Web browser"),
+		ConfigDialog::getComboBox("Chat", "Choose your browser")->currentItem());
 	kdebugf2();
 }
