@@ -1,4 +1,4 @@
-/* $Id: libgadu.h,v 1.25 2003/02/02 01:07:35 adrian Exp $ */
+/* $Id: libgadu.h,v 1.26 2003/02/02 01:38:53 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -748,8 +748,8 @@ char *gg_base64_decode(const char *buf);
 #define GG_HTTPS_PORT 443
 #define GG_HTTP_USERAGENT "Mozilla/4.7 [en] (Win98; I)"
 
-#define GG_DEFAULT_CLIENT_VERSION "4.9.3.62"
-#define GG_DEFAULT_PROTOCOL_VERSION 0x18
+#define GG_DEFAULT_CLIENT_VERSION "5.0.3.100"
+#define GG_DEFAULT_PROTOCOL_VERSION 0x19
 #define GG_DEFAULT_TIMEOUT 30
 #define GG_HAS_AUDIO_MASK 0x40000000
 #define GG_LIBGADU_VERSION "20030201"
