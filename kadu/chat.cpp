@@ -552,7 +552,7 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 	body->setMargin(ParagraphSeparator);
 	body->setMinimumSize(QSize(100,100));
 	body->setFont(config_file.readFontEntry("Look","ChatFont"));
-	
+
 	// background color of chat
 	body->setPaper(QBrush(config_file.readColorEntry("Look","ChatBgColor")));
 
@@ -1155,7 +1155,7 @@ void Chat::repaintMessages()
 		for(; it!=ChatMessages.end(); ++it)
 			text=(*it)->message+text;
 		body->setText(text);
-		
+
 		i=ChatMessages.size()-1;
 		CONST_FOREACH(msg, ChatMessages)
 			body->setParagraphBackgroundColor(i--, (*msg)->backgroundColor);
@@ -1879,7 +1879,7 @@ void ChatSlots::onCreateConfigDialog()
 	QToolTip::add(h_fold, tr("URLs longer than this value will be shown truncated to this length"));
 	QToolTip::add(c_foldlink, tr("This will show a long URL as http://www.start...end.com/\nto protect the chat window from a mess"));
 	ConfigDialog::getSpinBox("Chat", "Max image size")->setSuffix(" kB");
-	
+
 	QSpinBox *blockCloseTime=ConfigDialog::getSpinBox("Chat", "Max time to block window close");
 	blockCloseTime->setEnabled(config_file.readBoolEntry("Chat", "ChatCloseTimer"));
 	blockCloseTime->setSuffix(" s");
@@ -2079,6 +2079,7 @@ void ChatSlots::findBrowser(int selectedBrowser, QComboBox *browserCombo, QCombo
 			searchPath.append("/usr/lib/MozillaFirefox");
 			searchPath.append("/usr/local/Firefox");
 			searchPath.append("/usr/local/firefox");
+			searchPath.append("/opt/firefox");
 			searchPath.append(homePath+"/Firefox");
 			searchPath.append(homePath+"/firefox");
 
