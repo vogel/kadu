@@ -3,15 +3,15 @@
     <name>@default</name>
     <message>
         <source>Sounds</source>
-        <translation>Dźwięki</translation>
+        <translation>Sons</translation>
     </message>
     <message>
         <source>Play sounds</source>
-        <translation>Odtwarzaj dźwięki</translation>
+        <translation>Jouez les sons</translation>
     </message>
     <message>
         <source>Enable volume control (player must support it)</source>
-        <translation>Regulacja głośności (gdy odtwarzacz obsługuje)</translation>
+        <translation>Volume du son( si dispositif est prêt)</translation>
     </message>
     <message>
         <source>Test</source>
@@ -19,140 +19,139 @@
     </message>
     <message>
         <source>Play sounds from a person whilst chatting</source>
-        <translation>Dźwięki w trakcie rozmowy</translation>
+        <translation>Son lors de la conversation</translation>
     </message>
     <message>
         <source>Play chat sounds only when window is invisible</source>
-        <translation>Odtwórz dźwięk rozmowy tylko gdy okno nieaktywne</translation>
+        <translation>Joue le son du chat uniquement si la fenêtre est inactive</translation>
     </message>
     <message>
         <source>Volume</source>
-        <translation>Głośność</translation>
+        <translation>Volume</translation>
     </message>
     <message>
         <source>Choose</source>
-        <translation>Wybierz</translation>
+        <translation>Choisis</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation>Wyczyść</translation>
+        <translation>Supprime</translation>
     </message>
     <message>
         <source>Sound paths</source>
-        <translation>Ścieżki do dźwięków</translation>
+        <translation>Chemins de sons</translation>
     </message>
     <message>
         <source>Sound theme</source>
-        <translation>Zestawy dźwiękowe</translation>
+        <translation>Bibliothèque des sons</translation>
     </message>
     <message>
         <source>Samples</source>
-        <translation>Nagrywanie dźwięków</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Test sample playing</source>
-        <translation>Test odtwarzania dźwięku</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Test sample recording</source>
-        <translation>Test nagrywania dźwięku</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Test full duplex</source>
-        <translation>Test full duplex</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Sound</source>
-        <translation>Dźwięk</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>SoundSlots</name>
     <message>
         <source>Unmute sounds</source>
-        <translation>Przywróć dźwięki</translation>
+        <translation>Retour du son</translation>
     </message>
     <message>
         <source>Mute sounds</source>
-        <translation>Wyłącz dźwięki</translation>
+        <translation>Desactive le son</translation>
     </message>
     <message>
         <source>Custom</source>
-        <translation>Własne</translation>
+        <translation>A moi</translation>
     </message>
     <message>
         <source>default</source>
-        <translation>domyślny</translation>
+        <translation>par default</translation>
     </message>
     <message>
         <source>Event</source>
-        <translation>Zdarzenie</translation>
+        <translation>Événement</translation>
     </message>
     <message>
         <source>Sound file</source>
-        <translation>Plik dźwiękowy</translation>
+        <translation>Fichier son</translation>
     </message>
     <message>
         <source>Chat sound</source>
-        <translation>Dźwięk rozmowy</translation>
+        <translation>Son du chat</translation>
     </message>
     <message>
         <source>Message sound</source>
-        <translation>Dźwięk wiadomości</translation>
+        <translation>Son du message</translation>
     </message>
     <message>
         <source>Status available sound</source>
-        <translation>Dźwięk status dostępny</translation>
+        <translation>Si statut disponible son</translation>
     </message>
     <message>
         <source>Status busy sound</source>
-        <translation>Dźwięk status zajęty</translation>
+        <translation>Si statut occoupé son</translation>
     </message>
     <message>
         <source>Status not available sound</source>
-        <translation>Dźwięk status niedostępny</translation>
+        <translation>Son statut inaccessible</translation>
     </message>
     <message>
         <source>Conection error sound</source>
-        <translation>Dźwięk błąd połączenia</translation>
+        <translation>Son erreur de connexion</translation>
     </message>
     <message>
         <source>Other message</source>
-        <translation>Inna wiadomość</translation>
+        <translation>Autre message</translation>
     </message>
     <message>
         <source>Status invisible sound</source>
-        <translation>Dźwięk statusu ukrytego</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Opening test sample file failed.</source>
-        <translation>Otwarcie pliku testowego nieudane.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Reading test sample file failed.</source>
-        <translation>Czytanie pliku testowego nieudane.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Opening sound device failed.</source>
-        <translation>Otwarcie urządzenia dźwięku nieudane.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Testing sample playing. You should hear some sound now.</source>
-        <translation>Test odtwarzania. Powinien być teraz słyszalny.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Testing sample recording. Please talk now (3 seconds).</source>
-        <translation>Test nagrywania. Proszę mówić przez 3 sekundy.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>You should hear your recorded sample now.</source>
-        <translation>Nagrany dźwięk powinien być teraz słyszalny.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Testing fullduplex. Please talk now.
 You should here it with one second delay.</source>
-        <translation>Test FullDuplex. Proszę teraz mówić. Dźwięk powinien
-być słyszalny z 1 sekundowym opuźnieniem.</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

@@ -7,14 +7,14 @@
     </message>
     <message>
         <source>Test GSM Encoding</source>
-        <translation>Test kodowania GSM</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>VoiceChatDialog</name>
     <message>
         <source>Voice chat</source>
-        <translation>Rozmowa głosowa</translation>
+        <translation>Discussion par voix</translation>
     </message>
     <message>
         <source>&amp;Stop</source>
@@ -25,40 +25,39 @@
     <name>VoiceManager</name>
     <message>
         <source>Voice chat</source>
-        <translation>Rozmowa głosowa</translation>
+        <translation>Discussion par voix</translation>
     </message>
     <message>
         <source>User %1 wants to talk with you. Do you accept it?</source>
-        <translation>Użytkownik %1 chce prowadzić 
-rozmowę głosową. Akceptujesz?</translation>
+        <translation>Utilisateur %1 demande de disscuter par voix. Acceptez vous?</translation>
     </message>
     <message>
         <source>Incoming voice chat</source>
-        <translation>Przychodzaca rozmowa głosowa</translation>
+        <translation>Message arrivant par voix</translation>
     </message>
     <message>
         <source>Yes</source>
-        <translation>Tak</translation>
+        <translation>Oui</translation>
     </message>
     <message>
         <source>No</source>
-        <translation>Nie</translation>
+        <translation>Non</translation>
     </message>
     <message>
         <source>Opening DSP Encoder failed.</source>
-        <translation>Otwarcie kodera DSP nie udane.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Opening sound device failed.</source>
-        <translation>Otwarcie urządzenia dźwięku nie udane.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Testing GSM Encoding. Please talk now (3 seconds).</source>
-        <translation>Test kodowania GSM. Proszę mówić przez 3 sekundy.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>You should hear your recorded sample now.</source>
-        <translation>Zapisany dźwięk powinien być teraz słyszalny.</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

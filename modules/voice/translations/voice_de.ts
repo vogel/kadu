@@ -5,6 +5,10 @@
         <source>Voice chat</source>
         <translation>Telephonat</translation>
     </message>
+    <message>
+        <source>Test GSM Encoding</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>VoiceChatDialog</name>
@@ -38,6 +42,22 @@
     <message>
         <source>No</source>
         <translation>Nein</translation>
+    </message>
+    <message>
+        <source>Opening DSP Encoder failed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Opening sound device failed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Testing GSM Encoding. Please talk now (3 seconds).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You should hear your recorded sample now.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

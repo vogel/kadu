@@ -133,7 +133,24 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Playing test sample failed.</source>
+        <source>Opening sound device failed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Testing sample playing. You should hear some sound now.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Testing sample recording. Please talk now (3 seconds).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You should hear your recorded sample now.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Testing fullduplex. Please talk now.
+You should here it with one second delay.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
