@@ -6,6 +6,7 @@
 #include <qstring.h>
 #include <qtimer.h>
 #include <qvaluelist.h>
+#include <qdatetime.h>
 
 #include "libgadu.h"
 
@@ -147,12 +148,48 @@ class DccSocketNotifiers : public SocketNotifiers
 };
 
 typedef uin_t UinType;
+typedef enum
+{
+	ServerNotFound,
+	CannotConnect,
+	NeedEmail,
+	InvalidData,
+	CannotRead,
+	CannotWrite,
+	IncorrectPassword,
+	TlsError,
+	Unknow,
+	Timeout
+} GaduConnectionError;
+
+class GaduSocketNotifiers : public QObject //SocketNotifiers
+{
+	Q_OBJECT
+
+	private slots:
+		void proteza_connectionFailed(int);
+		void proteza_connectionBroken();
+		void proteza_connectionTimeout();
+		void proteza_systemMessageReceived(QString &, QDateTime &, int, void *);
+
+	public:
+		GaduSocketNotifiers();
+		virtual ~GaduSocketNotifiers();
+
+	signals:
+		void connected();
+		void connectionError(GaduConnectionError);
+		void disconnected();
+		void systemMessageReceived(QString &);
+};
 
 class GaduProtocol : public QObject
 {
 	Q_OBJECT
 
 	private:
+		GaduSocketNotifiers *SocketNotifiers;
+		
 		bool userListClear;
 		QString importReply;
 
@@ -166,6 +203,8 @@ class GaduProtocol : public QObject
 		void unregisterDone(bool ok, struct gg_http *);
 		void remindDone(bool ok, struct gg_http *);
 		void changePasswordDone(bool ok, struct gg_http *);
+
+		void connectedSlot();
 
 	public:	
 		static void initModule();
@@ -265,7 +304,12 @@ class GaduProtocol : public QObject
 		void sendUserList();
 
 	signals:
+		void connected();
 		void connecting();
+		void connectionError(GaduConnectionError);
+		void disconnected();
+		void systemMessageReceived(QString &);
+
 		void dccSetupFailed();
 		void statusChanged(int);
 		void disconnectNetwork();

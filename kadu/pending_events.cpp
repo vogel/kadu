@@ -18,6 +18,10 @@ PendingMessage::PendingMessage(const UinsList uins,const QString& msg,
 	Time=time;
 }
 
+PendingMessage::~PendingMessage()
+{
+}
+
 bool PendingMessage::sendBy(UinType uin)
 {
 	for(UinsList::iterator i=Uins.begin(); i!=Uins.end(); i++)

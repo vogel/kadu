@@ -33,6 +33,7 @@ class PendingMessage : public PendingEvent
 	public:
 		PendingMessage(const UinsList uins,const QString& msg,
 			const int msg_class,const time_t time);
+		virtual ~PendingMessage();
 		/**
 			Sprawdza czy zdarzenie dotyczy podanego numeru uin.
 			Jest to prawda jesli podany uin jest jednym z

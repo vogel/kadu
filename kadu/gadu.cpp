@@ -325,6 +325,63 @@ void DccSocketNotifiers::socketEvent()
 	kdebug("FIXME: DccSocketNotifiers::socketEvent(): add some code here\n");
 }
 
+/* GaduSocketNotifiers */
+
+GaduSocketNotifiers::GaduSocketNotifiers()
+{
+	kdebugf();
+
+	connect(&event_manager, SIGNAL(connected()), this, SIGNAL(connected()));
+	connect(&event_manager, SIGNAL(connectionFailed(int)), this, SLOT(proteza_connectionFailed(int)));
+	connect(&event_manager, SIGNAL(connectionBroken()), this, SLOT(proteza_connectionBroken()));
+	connect(&event_manager, SIGNAL(connectionTimeout()), this, SLOT(proteza_connectionTimeout()));
+	connect(&event_manager, SIGNAL(disconnected()), this, SIGNAL(disconnected()));
+	connect(&event_manager, SIGNAL(systemMessageReceived(QString &, QDateTime &, int, void *)), this,
+		SLOT(proteza_systemMessageReceived(QString &, QDateTime &, int, void *)));
+}
+
+GaduSocketNotifiers::~GaduSocketNotifiers()
+{
+}
+
+void GaduSocketNotifiers::proteza_connectionFailed(int failure)
+{
+	GaduConnectionError error;
+
+	switch (failure)
+	{
+		case GG_FAILURE_RESOLVING:	error = ServerNotFound; break;
+		case GG_FAILURE_CONNECTING:	error = CannotConnect; break;
+		case GG_FAILURE_NEED_EMAIL:	error = NeedEmail; break;
+		case GG_FAILURE_INVALID:	error = InvalidData; break;
+		case GG_FAILURE_READING:	error = CannotRead; break;
+		case GG_FAILURE_WRITING:	error = CannotWrite; break;
+		case GG_FAILURE_PASSWORD:	error = IncorrectPassword; break;
+		case GG_FAILURE_TLS:		error = TlsError;
+	}
+
+	kadu->disconnectNetwork();
+	emit connectionError(error);
+}
+
+void GaduSocketNotifiers::proteza_connectionBroken()
+{
+	kadu->disconnectNetwork();
+	emit connectionError(Unknow);
+}
+
+void GaduSocketNotifiers::proteza_connectionTimeout()
+{
+	kadu->disconnectNetwork();
+	emit connectionError(Timeout);
+}
+
+void GaduSocketNotifiers::proteza_systemMessageReceived(QString &message, QDateTime &time, int formats_length, void *formats)
+{
+	QString mesg = time.toString("hh:mm:ss (dd.MM.yyyy): ") + message;
+	emit systemMessageReceived(mesg);
+}
+
 /* GaduProtocol */
 
 void GaduProtocol::initModule()
@@ -348,6 +405,14 @@ void GaduProtocol::initModule()
 GaduProtocol::GaduProtocol() : QObject()
 {
 	kdebugf();
+	
+	SocketNotifiers = new GaduSocketNotifiers();
+
+	connect(SocketNotifiers, SIGNAL(connected()), this, SLOT(connectedSlot()));
+	connect(SocketNotifiers, SIGNAL(connectionError(GaduConnectionError)), this, SIGNAL(connectionError(GaduConnectionError)));
+	connect(SocketNotifiers, SIGNAL(disconnected()), this, SIGNAL(disconnected()));
+	connect(SocketNotifiers, SIGNAL(systemMessageReceived(QString &)), this, SIGNAL(systemMessageReceived(QString &)));
+
 	connect(&event_manager, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)),
 		this, SLOT(newResults(gg_pubdir50_t)));
 	connect(&event_manager, SIGNAL(userlistReplyReceived(char, char *)),
@@ -357,10 +422,24 @@ GaduProtocol::GaduProtocol() : QObject()
 GaduProtocol::~GaduProtocol()
 {
 	kdebugf();
-	disconnect(&event_manager, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)),
-		this, SLOT(newResults(gg_pubdir50_t)));
-	disconnect(&event_manager, SIGNAL(userlistReplyReceived(char, char *)),
-		this, SLOT(userListReplyReceived(char, char *)));
+
+	delete SocketNotifiers;
+}
+
+void GaduProtocol::connectedSlot()
+{
+	kdebugf();
+
+	sendUserList();
+
+	/* jezeli sie rozlaczymy albo stracimy polaczenie, proces laczenia sie z serwerami zaczyna sie od poczatku */
+	server_nr = 0;
+	pingtimer = new QTimer;
+	connect(pingtimer, SIGNAL(timeout()), kadu, SLOT(pingNetwork()));
+	pingtimer->start(60000, TRUE);
+
+	emit connected();
+	emit statusChanged(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
 }
 
 void GaduProtocol::setStatus(int status)
@@ -427,6 +506,8 @@ void GaduProtocol::changeStatus(int status)
 void GaduProtocol::login(int status)
 {
 	kdebugf();
+
+	emit connecting();
 
 	bool with_description = ifStatusWithDescription(status);
 
@@ -653,6 +734,8 @@ void GaduProtocol::sendUserList()
 	UinType *uins;
 	char *types;
 	unsigned int i, j;
+
+	userlist_sent = true;
 
 	for (i = 0, j = 0; i < userlist.count(); i++)
 		if (userlist[i].uin)

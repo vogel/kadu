@@ -137,6 +137,14 @@ class Kadu : public QMainWindow
 		//potrzebne dla modu³u dokuj±cego ¿eby g³ówne okno nie miga³o przy starcie...
 		bool showMainWindowOnStart;
 
+	private slots:
+		void connected();
+		void connecting();
+		void connectionError(GaduConnectionError);
+		void dccSetupFailed();
+		void disconnected();
+		void systemMessageReceived(QString &);
+	
 	public slots:
 		void blink();
 		void dccFinished(dccSocketClass *dcc);
@@ -147,7 +155,6 @@ class Kadu : public QMainWindow
 		void dataSent();
 		void dccReceived();
 		void dccSent();
-		void dccSetupFailed();
 		void pingNetwork(void);
 		void setStatus(int);
 		void disconnectNetwork(void);

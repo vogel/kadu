@@ -48,12 +48,7 @@ class EventManager : public QObject
 	Q_OBJECT
 	
 	private slots:
-		void connectedSlot();
-		void connectionFailedSlot(int);
-		void connectionBrokenSlot();
-		void connectionTimeoutSlot();
 		void connectionTimeoutTimerSlot();
-		void disconnectedSlot();
 		void userStatusChangedSlot(struct gg_event*);
 		void userlistReceivedSlot(struct gg_event *);
 		void messageReceivedSlot(int, UinsList,QCString& msg,time_t,

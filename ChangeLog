@@ -176,6 +176,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * obsluga klawisza esc w przerabianych przez kida oknach (KID/michal)
 * siódmy patch porz±dkuj±cy vogela: inicjalizacja proxy i dcc (adrian)
 * patch KID-a poprawiaj±cy wygl±d okna zmianu has³o/adresu email (KID/michal)
+* ósmy patch porz±dkuj±cy vogela: czê¶æ sygna³ów z EventManager przeniesiona
+  do GaduProtocol (adrian)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

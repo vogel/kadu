@@ -86,11 +86,6 @@ void ConnectionTimeoutTimer::off() {
 
 EventManager::EventManager()
 {
-	connect(this,SIGNAL(connected()),this,SLOT(connectedSlot()));
-	connect(this,SIGNAL(connectionFailed(int)),this,SLOT(connectionFailedSlot(int)));
-	connect(this,SIGNAL(connectionBroken()),this,SLOT(connectionBrokenSlot()));
-	connect(this,SIGNAL(connectionTimeout()),this,SLOT(connectionTimeoutSlot()));
-	connect(this,SIGNAL(disconnected()),this,SLOT(disconnectedSlot()));
 	connect(this,SIGNAL(userStatusChanged(struct gg_event*)),this,SLOT(userStatusChangedSlot(struct gg_event*)));
 	connect(this,SIGNAL(userlistReceived(struct gg_event*)),this,SLOT(userlistReceivedSlot(struct gg_event*)));
 	connect(this,SIGNAL(messageReceived(int,UinsList,QCString&,time_t, QByteArray&)),this,SLOT(messageReceivedSlot(int,UinsList,QCString&,time_t, QByteArray&)));
@@ -111,98 +106,6 @@ EventManager::EventManager()
 		this,SLOT(pubdirReplyReceivedSlot(gg_pubdir50_t)));
 	connect(this,SIGNAL(userlistReplyReceived(char, char *)),
 		this,SLOT(userlistReplyReceivedSlot(char, char *)));
-}
-
-void EventManager::connectedSlot()
-{
-	kadu->doBlink = false;
-	gadu->sendUserList();
-	kadu->setCurrentStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
-	userlist_sent = true;
-
-	if ((loginparams.status & (~GG_STATUS_FRIENDS_MASK)) == GG_STATUS_INVISIBLE_DESCR)
-		kadu->setStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
-
-	/* jezeli sie rozlaczymy albo stracimy polaczenie, proces laczenia sie z serwerami zaczyna sie od poczatku */
-	server_nr = 0;
-	pingtimer = new QTimer;
-	QObject::connect(pingtimer, SIGNAL(timeout()), kadu, SLOT(pingNetwork()));
-	pingtimer->start(60000, TRUE);
-}
-
-void EventManager::connectionFailedSlot(int failure)
-{
-	QString msg = QString::null;
-
-	kadu->disconnectNetwork(); /* FIXME 1/2 */
-	switch (failure) {
-		case GG_FAILURE_RESOLVING:
-			msg = QString(tr("Unable to connect, server has not been found"));
-			break;
-		case GG_FAILURE_CONNECTING:
-			msg = QString(tr("Unable to connect"));
-			break;
-		case GG_FAILURE_NEED_EMAIL:
-			msg = QString(tr("Please change your email in \"Change password/email\" window. "
-				"Leave new password field blank."));
-			kadu->autohammer = false; /* FIXME 2/2*/
-			AutoConnectionTimer::off();
-			hintmanager->addHintError(msg);
-			MessageBox::msg(msg);
-			break;
-		case GG_FAILURE_INVALID:
-			msg = QString(tr("Unable to connect, server has returned unknown data"));
-			break;
-		case GG_FAILURE_READING:
-			msg = QString(tr("Unable to connect, connection break during reading"));
-			break;
-		case GG_FAILURE_WRITING:
-			msg = QString(tr("Unable to connect, connection break during writing"));
-			break;
-		case GG_FAILURE_PASSWORD:
-			msg = QString(tr("Unable to connect, incorrect password"));
-			kadu->autohammer = false; /* FIXME 2/2*/
-			AutoConnectionTimer::off();
-			hintmanager->addHintError(msg);
-			QMessageBox::critical(0, tr("Incorrect password"), tr("Connection will be stoped\nYour password is incorrect !!!"), QMessageBox::Ok, 0);
-			return;
-		case GG_FAILURE_TLS:
-			msg = QString(tr("Unable to connect, error of negotiation TLS"));
-			break;
-		}
-	if (msg != QString::null) {
-		kdebug("%s\n", unicode2latin(msg).data());
-		hintmanager->addHintError(msg);
-		}
-	kadu->disconnectNetwork();
-	if (kadu->autohammer)
-		AutoConnectionTimer::on();
-}
-
-void EventManager::connectionBrokenSlot()
-{
-	kdebug("Connection broken unexpectedly!\nUnscheduled connection termination\n");
-	kadu->disconnectNetwork();
-	if (kadu->autohammer)
-		AutoConnectionTimer::on();
-}
-
-void EventManager::connectionTimeoutSlot()
-{
-	kdebug("Connection timeout!\nUnscheduled connection termination\n");
-	kadu->disconnectNetwork();
-	if (kadu->autohammer)
-		AutoConnectionTimer::on();
-}
-
-void EventManager::disconnectedSlot()
-{
-	if (hintmanager != NULL)
-		hintmanager->addHintError(tr("Disconnection has occured"));
-	kdebug("Disconnection has occured\n");
-	kadu->autohammer = false;
-	kadu->disconnectNetwork();
-	AutoConnectionTimer::off();
 }
 
 void EventManager::systemMessageReceivedSlot(QString &msg, QDateTime &time,

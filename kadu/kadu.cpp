@@ -497,7 +497,11 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	connect(gadu, SIGNAL(statusChanged(int)), this, SLOT(proteza_statusChanged(int)));
 	connect(gadu, SIGNAL(disconnectNetwork()), this, SLOT(proteza_disconnectNetwork()));
 
+	connect(gadu, SIGNAL(connecting()), this, SLOT(connecting()));
+	connect(gadu, SIGNAL(connected()), this, SLOT(connected()));
+	connect(gadu, SIGNAL(connectionError(GaduConnectionError)), this, SLOT(connectionError(GaduConnectionError)));
 	connect(gadu, SIGNAL(dccSetupFailed()), this, SLOT(dccSetupFailed()));
+	connect(gadu, SIGNAL(disconnected()), this, SLOT(disconnected()));
 
 	dccsock = NULL;
 	/* dirty workaround for multiple showEvents */
@@ -1164,7 +1168,7 @@ void Kadu::setStatus(int status) {
 			updateChecked=true;
 		}
 	}
-
+/*
 	if (!userlist_sent)
 	{
 		doBlink = true;
@@ -1175,8 +1179,123 @@ void Kadu::setStatus(int status) {
 		}
 		blinktimer->start(1000, true);
 	}
-
+*/
 	gadu->setStatus(status);
+}
+
+void Kadu::connecting()
+{
+	kdebugf();
+
+	doBlink = true;
+
+	if (!blinktimer)
+	{
+		blinktimer = new QTimer;
+		QObject::connect(blinktimer, SIGNAL(timeout()), kadu, SLOT(blink()));
+	}
+
+	blinktimer->start(1000, true);
+}
+
+void Kadu::connected()
+{
+	kdebugf();
+
+	doBlink = false;
+
+	kadu->setCurrentStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
+	if ((loginparams.status & (~GG_STATUS_FRIENDS_MASK)) == GG_STATUS_INVISIBLE_DESCR)
+		kadu->setStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
+}
+
+void Kadu::connectionError(GaduConnectionError error)
+{
+	kdebugf();
+
+	QString msg = QString::null;
+
+	switch (error)
+	{
+		case ServerNotFound:
+			msg = QString(tr("Unable to connect, server has not been found"));
+			break;
+
+		case CannotConnect:
+			msg = QString(tr("Unable to connect"));
+			break;
+
+		case NeedEmail:
+			msg = QString(tr("Please change your email in \"Change password/email\" window. "
+				"Leave new password field blank."));
+			autohammer = false; /* FIXME 2/2*/
+			AutoConnectionTimer::off();
+			hintmanager->addHintError(msg);
+			MessageBox::msg(msg);
+			break;
+
+		case InvalidData:
+			msg = QString(tr("Unable to connect, server has returned unknown data"));
+			break;
+			
+		case CannotRead:
+			msg = QString(tr("Unable to connect, connection break during reading"));
+			break;
+
+		case CannotWrite:
+			msg = QString(tr("Unable to connect, connection break during writing"));
+			break;
+
+		case IncorrectPassword:
+			msg = QString(tr("Unable to connect, incorrect password"));
+			autohammer = false; /* FIXME 2/2*/
+			AutoConnectionTimer::off();
+			hintmanager->addHintError(msg);
+			QMessageBox::critical(0, tr("Incorrect password"), tr("Connection will be stoped\nYour password is incorrect !!!"), QMessageBox::Ok, 0);
+			return;
+
+		case TlsError:
+			msg = QString(tr("Unable to connect, error of negotiation TLS"));
+			break;
+
+		case Unknow:
+			kdebug("Connection broken unexpectedly!\nUnscheduled connection termination\n");
+			break;
+
+		case Timeout:
+			kdebug("Connection timeout!\nUnscheduled connection termination\n");
+			break;
+	
+	}
+
+	if (msg != QString::null)
+	{
+		kdebug("%s\n", unicode2latin(msg).data());
+		hintmanager->addHintError(msg);
+	}
+
+	kadu->disconnectNetwork();	// ??
+	if (kadu->autohammer)
+		AutoConnectionTimer::on();
+
+}
+
+void Kadu::disconnected()
+{	
+	kdebugf();
+	kdebug("Disconnection has occured\n");
+
+	if (hintmanager)
+		hintmanager->addHintError(tr("Disconnection has occured"));
+	
+	autohammer = false;
+	disconnectNetwork();
+	AutoConnectionTimer::off();
+}
+
+void Kadu::systemMessageReceived(QString &msg)
+{
+	MessageBox::msg(msg);
 }
 
 void Kadu::dataReceived(void) {
