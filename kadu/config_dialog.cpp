@@ -34,7 +34,7 @@
 #include "misc.h"
 #include "debug.h"
 
-QString ConfigDialog::currentTab = QT_TRANSLATE_NOOP("@default", "General");
+QString ConfigDialog::currentTab;
 ConfigDialog *ConfigDialog::configdialog = NULL;
 QApplication *ConfigDialog::appHandle = NULL;
 
@@ -409,9 +409,6 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 	kdebugm(KDEBUG_INFO, "connecting SlotsOnClose\n");
 	CONST_FOREACH(conn, SlotsOnClose)
 		connect(this, SIGNAL(destroy()), (*conn).receiver, (*conn).slot);
-
-
-	listBox->setCurrentItem(listBox->findItem(appHandle->translate("@default",currentTab)));
 	
 	// buttons
 	QHBox *bottom = new QHBox(this, "buttons");
@@ -430,10 +427,15 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 
 	// end buttons
 	
+	if (currentTab.isEmpty())
+		currentTab = config_file.readEntry("General", "ConfigDialogLastTab", QT_TRANSLATE_NOOP("@default", "General"));
+	if (TabNames.contains(currentTab))
+		changeTab(appHandle->translate("@default", currentTab));
+	else
+		changeTab(appHandle->translate("@default", "General"));
+	listBox->setCurrentItem(listBox->findItem(appHandle->translate("@default", currentTab)));
 	connect(listBox, SIGNAL(highlighted(const QString&)), this, SLOT(changeTab(const QString&)));
 	
-	changeTab(appHandle->translate("@default",currentTab));
- 
 	configdialog = this;
 	emit create();
 
@@ -444,13 +446,15 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 ConfigDialog::~ConfigDialog()
 {
 	saveGeometry(this, "General", "ConfigGeometry");
+	config_file.writeEntry("General", "ConfigDialogLastTab", currentTab);
 	emit destroy();
 	configdialog = NULL;
+	config_file.sync();
 }
 
 void ConfigDialog::changeTab(const QString& name)
 {
-	kdebugf();
+	kdebugmf(KDEBUG_FUNCTION_START, "current tab:%s changeTo:%s\n", currentTab.local8Bit().data(), name.local8Bit().data());
 
 	CONST_FOREACH(tab, Tabs)
 	{
@@ -466,7 +470,7 @@ void ConfigDialog::changeTab(const QString& name)
 				tabControl.widget->hide();
 	}
 
-	kdebugmf(KDEBUG_FUNCTION_END, "active Tab=%s\n", currentTab.local8Bit().data());
+	kdebugmf(KDEBUG_FUNCTION_END, "current tab:%s\n", currentTab.local8Bit().data());
 }
 
 void ConfigDialog::updateConfig(void) 
@@ -534,7 +538,6 @@ void ConfigDialog::updateConfig(void)
 
 	emit apply();
 
-	config_file.sync();
 	kdebugf2();
 }
 
