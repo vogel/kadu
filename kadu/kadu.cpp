@@ -719,7 +719,8 @@ void Kadu::prepareDcc(void) {
 			fprintf(stderr, "KK Cannot determine IP address!\n");
 			return;
 			}
-		config.dccip = inet_ntoa(in);
+		delete config.dccip;
+		config.dccip = strdup(inet_ntoa(in));
 		fprintf(stderr, "KK My IP address: %s\n", inet_ntoa(in));
 		}
 
@@ -1321,8 +1322,6 @@ void Kadu::setStatus(int status) {
 
 	kadusnr = new QSocketNotifier(sess.fd, QSocketNotifier::Read, this); 
 	QObject::connect(kadusnr, SIGNAL(activated(int)), kadu, SLOT(dataReceived()));    
-
-	fprintf(stderr, "KK Kadu::setStatus(): config.dccip = %s\n", config.dccip);
 }
 
 void Kadu::checkConnection(void) {
@@ -1442,14 +1441,12 @@ void Kadu::watchDcc(void) {
 }
 
 void Kadu::dataReceived(void) {
-	fprintf(stderr, "KK Kadu::dataReceived(): config.dccip = %s\n", config.dccip);
 	fprintf(stderr, "KK Kadu::dataReceived()\n");
 	if (sess.check && GG_CHECK_READ)
 		eventHandler(GG_CHECK_READ);
 }
 
 void Kadu::dataSent(void) {
-	fprintf(stderr, "KK Kadu::dataSent(): config.dccip = %s\n", config.dccip);
 	fprintf(stderr, "KK Kadu::dataSent()\n");
 	kadusnw->setEnabled(false);
 	if (sess.check & GG_CHECK_WRITE)
@@ -1465,7 +1462,6 @@ void Kadu::eventHandler(int state) {
 	calls++;
 	if (calls > 1)
 		fprintf(stderr, "************* KK Kadu::eventHandler(): Recursive eventHandler calls detected!\n");
-	fprintf(stderr, "KK Kadu::eventHandler() before gg_watch_fd(): config.dccip = %s\n", config.dccip);	
 	if (!(e = gg_watch_fd(&sess))) {
 		fprintf(stderr,"KK Kadu::eventHandler(): Connection broken unexpectedly!\n");
 		char error[512];
@@ -1480,7 +1476,6 @@ void Kadu::eventHandler(int state) {
 		calls--;
 		return;	
 		}
-	fprintf(stderr, "KK Kadu::eventHandler() after gg_watch_fd(): config.dccip = %s\n", config.dccip);
 	switch (sess.state) {
 		case GG_STATE_RESOLVING:
 			fprintf(stderr, "KK Kadu::eventHandler(): Resolving address\n");

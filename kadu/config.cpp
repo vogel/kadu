@@ -598,6 +598,22 @@ void ConfigDialog::setupTab5(void) {
 	b_dccenabled->setText(i18n("DCC enabled"));
 	b_dccenabled->setChecked(config.allowdcc);
 
+	b_dccip = new QCheckBox(box5);
+	b_dccip->setText(i18n("DCC IP autodetection"));
+	b_dccip->setChecked(!inet_addr(config.dccip));
+
+	g_dccip = new QVGroupBox(box5);
+	g_dccip->setTitle(i18n("DCC IP"));
+	g_dccip->setEnabled(!b_dccip->isChecked());
+
+	QHBox *dccipbox = new QHBox(g_dccip);
+	dccipbox->setSpacing(5);
+	QLabel *l4 = new QLabel(dccipbox);
+	l4->setText(i18n("IP address:"));
+	e_dccip = new QLineEdit(dccipbox);
+	if (g_dccip->isEnabled())
+		e_dccip->setText(config.dccip);
+
 	b_dccfwd = new QCheckBox(box5);
 	b_dccfwd->setText(i18n("DCC forwarding enabled"));
 	b_dccfwd->setEnabled(config.allowdcc);
@@ -644,6 +660,7 @@ void ConfigDialog::setupTab5(void) {
 		e_server->setText(config.server);
 
 	QObject::connect(b_dccenabled, SIGNAL(toggled(bool)), this, SLOT(ifDccEnabled(bool)));
+	QObject::connect(b_dccip, SIGNAL(toggled(bool)), this, SLOT(ifDccIpEnabled(bool)));
 	QObject::connect(b_dccfwd, SIGNAL(toggled(bool)), g_fwdprop, SLOT(setEnabled(bool)));
 	QObject::connect(b_defserver, SIGNAL(toggled(bool)), this, SLOT(ifDefServerEnabled(bool)));
 
@@ -651,12 +668,22 @@ void ConfigDialog::setupTab5(void) {
 }
 
 void ConfigDialog::ifDccEnabled(bool toggled) {
+	b_dccip->setEnabled(toggled);
 	b_dccfwd->setEnabled(toggled);
-	if (!toggled)
+	if (!toggled) {
+		g_dccip->setEnabled(false);
 		g_fwdprop->setEnabled(false);
-	else
+		}
+	else	{
+		if (!b_dccip->isChecked())
+			g_dccip->setEnabled(toggled);
 		if (b_dccfwd->isChecked())
 			g_fwdprop->setEnabled(toggled);
+		}
+}
+
+void ConfigDialog::ifDccIpEnabled(bool toggled) {
+	g_dccip->setEnabled(!toggled);
 }
 
 void ConfigDialog::ifDefServerEnabled(bool toggled) {
@@ -771,8 +798,13 @@ void ConfigDialog::updateConfig(void) {
 		config.notifies.append(QString::number(userlist.byAltNick(tmp).uin));
 		}
 
+	delete config.dccip;
 	delete config.extip;
 	config.allowdcc = b_dccenabled->isChecked();
+	if (config.allowdcc && !b_dccip->isChecked() && inet_addr(e_dccip->text().latin1()) != INADDR_NONE)
+		config.dccip = strdup(e_dccip->text().latin1());
+	else
+		config.dccip = strdup("0.0.0.0");
 	if (config.allowdcc && b_dccfwd->isChecked() && inet_addr(e_extip->text().latin1()) != INADDR_NONE
 		&& atoi(e_extport->text().latin1()) > 1023) {
 		config.extip = strdup(e_extip->text().latin1());

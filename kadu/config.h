@@ -84,6 +84,9 @@ class ConfigDialog : public QTabDialog	{
 		QLineEdit *e_soundnotify;
 
 		QCheckBox *b_dccenabled;
+		QCheckBox *b_dccip;
+		QVGroupBox *g_dccip;
+		QLineEdit *e_dccip;
 		QCheckBox *b_dccfwd;
 		QVGroupBox *g_fwdprop;
 		QLineEdit *e_extip;
@@ -103,6 +106,7 @@ class ConfigDialog : public QTabDialog	{
 		void chooseEmoticonsPath();
 		void emoticonsEnabled(bool);
 		void ifDccEnabled(bool);
+		void ifDccIpEnabled(bool);
 		void ifDefServerEnabled(bool);
 };
 
