@@ -29,7 +29,10 @@ A: Tak. Spójrz do konfiguracji. UWAGA: to nie jest stabilny kod.
 
 Q: Zamiast obrazków pojawiaj± mi siê kwadraciki. Co jest ¼le?
 A: Nie masz ustawionej ¶cie¿ki do obrazków lub brakuje tam niektórych
-   (lub wszystkich) z nich. W kadu.conf jest to pozycja EmoticonsPath
+   (lub wszystkich) z nich. W kadu.conf jest to pozycja EmoticonsPath.
+   Je¶li ¶cie¿ka jest napewno prawid³owa to znaczy, ¿e masz ¼le
+   skompilowane QT. Przekompiluj upewniaj±c siê, ¿e u¿ywasz w configure
+   opcji --system-png
 
 Q: Kadu w ogóle nie chce siê kompilowaæ. Co robiæ?
 A: Mo¿esz np. spróbowaæ ¶ci±gn±æ RPMa. Szczegó³y na stronie.
@@ -45,3 +48,6 @@ A: W katalogu kadu/kadu w pliku Makefile dodaj na koñcu:
 
    Pamiêtaj, ¿e odstêpy to tabulatory, nie spacje! Teraz make powinien
    grzecznie znale¼æ libgadu.a i siê z nim zlinkowaæ.
+
+Q: Podczas kompilacji mam komunikaty, ¿e brakuje plików *.moc
+A: Na systemie FreeBSD pomaga u¿ywanie gmake zamiast make
