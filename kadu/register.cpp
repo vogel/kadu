@@ -165,18 +165,15 @@ void Register::doRegister() {
 	mail = strdup(unicode2cp(mailedit->text()).data());
 	token_id = strdup(unicode2cp(tokenid).data());
 	token_value = strdup(unicode2cp(tokenedit->text()).data());
-	if (!(h = gg_register3(mail, passwd, token_id, token_value, 1))) {
-		status->setText(tr("Error"));
-		free(passwd);
-		free(mail);
-		free(token_id);
-		free(token_value);
-		return;
-		}
+	h = gg_register3(mail, passwd, token_id, token_value, 1);
 	free(passwd);
 	free(mail);
 	free(token_id);
 	free(token_value);
+	if (!h) {
+		status->setText(tr("Error"));
+		return;
+		}
 
 	status->setText(tr("Registering"));
 
@@ -300,7 +297,7 @@ void Register::ask() {
 Unregister::Unregister(QDialog *parent, const char *name) : QDialog (parent, name, FALSE, Qt::WDestructiveClose) {
 	kdebug("Unregister::Unregister()\n");
 
-	QGridLayout *grid = new QGridLayout(this, 4, 2, 6, 5);
+	QGridLayout *grid = new QGridLayout(this, 5, 2, 6, 5);
 
 	QLabel *l_uin = new QLabel(tr("UIN"),this);
 	uin = new QLineEdit(this);
@@ -309,8 +306,11 @@ Unregister::Unregister(QDialog *parent, const char *name) : QDialog (parent, nam
 	pwd = new QLineEdit(this);
 	pwd->setEchoMode(QLineEdit::Password);
 
-	QLabel *l_mail = new QLabel(tr("E-mail"),this);
-	mail = new QLineEdit(this);
+	QLabel *l_tokenimage = new QLabel(tr("Read this code ..."), this);
+	tokenimage = new ImageWidget(this);
+
+	QLabel *l_token = new QLabel(tr("and type here"), this);
+	tokenedit = new QLineEdit(this);
 
 	QPushButton *snd = new QPushButton(this);
 	snd->setText(tr("Unregister"));
@@ -322,10 +322,12 @@ Unregister::Unregister(QDialog *parent, const char *name) : QDialog (parent, nam
 	grid->addWidget(uin, 0, 1);
 	grid->addWidget(l_pwd, 1, 0);
 	grid->addWidget(pwd, 1, 1);
-	grid->addWidget(l_mail, 2, 0);
-	grid->addWidget(mail, 2, 1);
-	grid->addWidget(status, 3, 0);
-	grid->addWidget(snd, 3, 1);
+	grid->addWidget(l_tokenimage, 2, 0);
+	grid->addWidget(tokenimage, 2, 1);
+	grid->addWidget(l_token, 3, 0);
+	grid->addWidget(tokenedit, 3, 1);
+	grid->addWidget(status, 4, 0);
+	grid->addWidget(snd, 4, 1);
 	grid->addRowSpacing(3, 20);
 
 	setCaption(tr("Unregister user"));
@@ -333,6 +335,40 @@ Unregister::Unregister(QDialog *parent, const char *name) : QDialog (parent, nam
 
 	snr = snw = NULL;
 	h = NULL;
+
+	doGetToken();
+}
+
+void Unregister::doGetToken() {
+	setEnabled(false);
+	status->setText(tr("Getting token"));
+	connect(&token_handle, SIGNAL(gotToken(struct gg_http *)),
+		this, SLOT(gotTokenReceived(struct gg_http *)));
+	connect(&token_handle, SIGNAL(tokenError()),
+		this, SLOT(tokenErrorReceived()));
+	token_handle.getToken();
+}
+
+void Unregister::gotTokenReceived(struct gg_http *h) {
+	kdebug("Unregister::gotTokenReceived()\n");
+	struct gg_token *t = (struct gg_token *)h->data;
+	tokenid = cp2unicode((unsigned char *)t->tokenid);
+
+	// nie optymalizowac !!!
+	QByteArray buf(h->body_size);
+	for (int i = 0; i < h->body_size; i++)
+		buf[i] = h->body[i];
+
+	tokenimage->setImage(buf);
+	status->setText(tr("token received"));
+	setEnabled(true);
+	kdebug("Unregister::gotTokenReceived(): finished\n");
+}
+
+void Unregister::tokenErrorReceived() {
+	kdebug("Unregister::tokenErrorReceived()\n");
+	status->setText(tr("Couldn't get token"));
+	setEnabled(true);
 }
 
 void Unregister::doUnregister() {
@@ -343,17 +379,18 @@ void Unregister::doUnregister() {
 		return;
 		}
 
-	char *passwd, *email;
+	char *passwd, *token_id, *token_val;
 	passwd = strdup(unicode2cp(pwd->text()).data());
-	email = strdup(unicode2cp(mail->text()).data());
-	if (!(h = gg_unregister(uin->text().toUInt(), passwd, email, 1))) {
+	token_id = strdup(unicode2cp(tokenid).data());
+	token_val = strdup(unicode2cp(tokenedit->text()).data());
+	h = gg_unregister3(uin->text().toUInt(), passwd, token_id, token_val, 1);
+	free(passwd);
+	free(token_id);
+	free(token_val);
+	if (!h) {
 		status->setText(tr("Error"));
-		free(passwd);
-		free(email);
 		return;
 		}
-	free(passwd);
-	free(email);
 
 	status->setText(tr("Unregistering"));
 
@@ -441,13 +478,11 @@ void Unregister::socketEvent() {
 			deleteSocketNotifiers();
 			kdebug("Unregister::socketEvent(): success\n");
 			if (p->success) {
+				gg_free_register(h);
+				h = NULL;
 				status->setText(tr("Success!"));
-//				uin = p->uin;
-//				QMessageBox::information(this, "Kadu", tr("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(uin),
-//					tr("OK"), 0, 0, 1);
-//				ask();
 				deleteConfig();
-				kdebug("Unregister::socketEvent() before close()\n");
+				kdebug("Unregister::socketEvent(): before close()\n");
 				close();
 				}
 			else {

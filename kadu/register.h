@@ -59,12 +59,16 @@ class Unregister : public QDialog {
 	private:
 		struct gg_http *h;
 		struct gg_pubdir *p;
-		QLineEdit *uin, *pwd, *mail;
+		ImageWidget *tokenimage;
+		QLineEdit *uin, *pwd, *tokenedit;
 		QLabel *status;
 		QCheckBox *updateconfig;
 		QSocketNotifier *snr;
 		QSocketNotifier *snw;
+		QString tokenid;
+		token token_handle;
 
+		void doGetToken();
 		void deleteSocketNotifiers();
 		void createSocketNotifiers();
 		void deleteConfig();
@@ -74,6 +78,8 @@ class Unregister : public QDialog {
 		void socketEvent();
 		void dataReceived();
 		void dataSent();
+		void gotTokenReceived(struct gg_http *h);
+		void tokenErrorReceived();
 
 	protected:
 		void closeEvent(QCloseEvent *e);
