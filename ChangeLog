@@ -246,6 +246,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * wziêta pod uwagê grubo¶æ czcionki przy obliczaniu szeroko¶ci listy kontaktów (joi)
 * porz±dki w chacie (joi)
 * poprawka b³êdu uniemo¿liwiaj±cego zobaczenie informacji o statycznych modu³ach (joi)
+* modu³y autoresponder i echo nie otwieraj± ju¿ okna przy rozpczêciu
+  i zakoñczeniu dzia³ania (joi)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
