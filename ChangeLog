@@ -167,6 +167,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * przyspieszenie oko³o 2,5 raza prêdko¶ci zawijania opisów (joi)
 * eksperymentalna obs³uga prekompilowanych nag³ówków gcc 3.4 dla kadu-core,
   domy¶lnie wy³±czona, wszak mamy feature freeze ;) (adrian)
+* KID - okno danych osobistych (KID/michal)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
