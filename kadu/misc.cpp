@@ -829,8 +829,8 @@ void HtmlDocument::splitElement(int& index,int start,int length)
 		Element post;
 		post.tag=e.tag;
 		post.text=e.text.right(e.text.length()-(start+length));
-		if(index<Elements.size())
-			Elements.insert(Elements.at(index),post);
+		if(index+1<Elements.size())
+			Elements.insert(Elements.at(index+1),post);
 		else
 			Elements.append(post);
 	};

@@ -112,9 +112,7 @@ bool EmoticonsManager::loadGGEmoticonThemePart(QString subdir)
 		};
 		for(;;)
 		{
-			QString tmp = getQuoted(line, i);
-			escapeSpecialCharacters(tmp);
-			aliases.append(tmp);
+			aliases.append(getQuoted(line, i));
 			if((!multi)||line[i]==')')
 				break;
 			i++; // eat ','
@@ -186,6 +184,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc,const QColor& bgcolor)
 				new_text+="\" bgcolor="+bgcolor.name()+">";
 				doc.splitElement(e_i,j,(*e).alias.length());
 				doc.setElementValue(e_i,new_text,true);
+				break;
 			}
 		};
 	};
