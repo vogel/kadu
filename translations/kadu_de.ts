@@ -840,6 +840,14 @@ Das Passwort, das Sie angegeben haben, sollte in beiden Feldern (&quot;Neues Pas
         <source>Insert image</source>
         <translation>Bild einfügen</translation>
     </message>
+    <message>
+        <source>Message too long (%1&gt;=%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Filtered message too long (%1&gt;=%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ChatSlots</name>
@@ -1397,16 +1405,6 @@ Direkte Verbindungen ausgeschaltet.</translation>
     <message>
         <source>About...</source>
         <translation>Über...</translation>
-    </message>
-    <message>
-        <source>Connection problem</source>
-        <translation>Problem mit Verbindung</translation>
-    </message>
-    <message>
-        <source>Couldn&apos;t connect.
-Check your internet connection.</source>
-        <translation>Verbindung mit GG-Server nicht möglich.
-Überprüfe deine Internet-Verbindung.</translation>
     </message>
     <message>
         <source>File has been transferred sucessfully.</source>

@@ -833,6 +833,14 @@ Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new pa
         <source>Insert image</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Message too long (%1&gt;=%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Filtered message too long (%1&gt;=%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ChatSlots</name>
@@ -1388,15 +1396,6 @@ Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new pa
     <message>
         <source>Couldn&apos;t create DCC socket.
 Direct connections disabled.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Connection problem</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Couldn&apos;t connect.
-Check your internet connection.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

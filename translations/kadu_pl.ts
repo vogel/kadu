@@ -839,6 +839,14 @@ Hasła  muszą być identyczne w obu polach!</translation>
         <source>Insert image</source>
         <translation>Wstaw obraz</translation>
     </message>
+    <message>
+        <source>Message too long (%1&gt;=%2)</source>
+        <translation>Wiadomość zbyt długa (%1&gt;=%2)</translation>
+    </message>
+    <message>
+        <source>Filtered message too long (%1&gt;=%2)</source>
+        <translation>Filtrowana  wiadomość zbyt długa (%1&gt;=%2)</translation>
+    </message>
 </context>
 <context>
     <name>ChatSlots</name>
@@ -1397,16 +1405,6 @@ Połączenia bezpośrednie wyłączone.</translation>
     <message>
         <source>About...</source>
         <translation>O programie...</translation>
-    </message>
-    <message>
-        <source>Connection problem</source>
-        <translation>Problem z połączeniem</translation>
-    </message>
-    <message>
-        <source>Couldn&apos;t connect.
-Check your internet connection.</source>
-        <translation>Nie można połączyć się z serwerem GG.
-Sprawdź swoje połączenie internetowe.</translation>
     </message>
     <message>
         <source>File has been transferred sucessfully.</source>
