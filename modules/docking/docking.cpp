@@ -136,7 +136,7 @@ void DockingManager::showStatus(int status)
 
 void DockingManager::defaultToolTip()
 {
-	showCurrentStatus(getActualStatus());
+	showCurrentStatus(getCurrentStatus());
 }
 
 void DockingManager::showCurrentStatus(int status)
