@@ -199,6 +199,7 @@ class Kadu : public QMainWindow
 		void currentChanged(QListBoxItem *item);
 		void showdesc(void);
 		void hidedesc(void);
+		void statusMenuAboutToHide(void);
 
 	private:
 		QMenuBar *mmb;

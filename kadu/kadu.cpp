@@ -54,6 +54,7 @@
 #include <qnetworkprotocol.h>
 #include <qstringlist.h>
 #include <qsplitter.h>
+#include <qdatetime.h>
 #include <arpa/inet.h>
 #include <libintl.h>
 #include <stdio.h>
@@ -135,14 +136,15 @@ struct gg_event *e;
 fd_set rd, wd;
 int ret;
 
-QTimer * blinktimer;
-QTimer * pingtimer;
-QTimer * readevent;
+QTime closestatusppmtime;
+QTimer *blinktimer;
+QTimer *pingtimer;
+QTimer *readevent;
 QPopupMenu *statusppm;
 QPopupMenu *dockppm;
-QLabel * statuslabel;
-QLabel * statuslabeltxt;
-QPopupMenu * grpmenu;
+QLabel *statuslabel;
+QLabel *statuslabeltxt;
+QPopupMenu *grpmenu;
 
 UserList userlist;
 PendingMsgs pending;
@@ -356,6 +358,8 @@ void Kadu::gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op) {
 /* a monstrous constructor so Kadu would take longer to start up */
 Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 {
+	closestatusppmtime.start();
+
 	/* timers, cause event loops and QSocketNotifiers suck. */
 	pingtimer = blinktimer = readevent = NULL;
 
@@ -471,8 +475,9 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	createMenu();
 	createStatusPopupMenu();
 
-	dockppm->insertSeparator();
+	connect(statusppm, SIGNAL(aboutToHide()), this, SLOT(statusMenuAboutToHide()));
 
+	dockppm->insertSeparator();
 	dockppm->insertItem(loadIcon("exit.png"), i18n("&Exit Kadu"), 9);
 	if (config.dock)
 		trayicon->connectSignals();
@@ -1852,6 +1857,10 @@ void Kadu::createMenu() {
 	connect(ppm, SIGNAL(activated(int)), this, SLOT(commandParser(int)));
 }
 
+void Kadu::statusMenuAboutToHide() {
+	closestatusppmtime.restart();
+}
+
 void Kadu::createStatusPopupMenu() {
 
 	QPixmap pixmap;
@@ -1902,7 +1911,7 @@ void Kadu::setClosePermitted(bool permitted)
 };
 
 void MyLabel::mousePressEvent (QMouseEvent * e) {
-	if (e->button() == Qt::LeftButton)
+	if (e->button() == Qt::LeftButton && closestatusppmtime.elapsed() >= 100)
 		kadu->slotShowStatusMenu();
 }
 
