@@ -366,7 +366,7 @@ DccFileDialog::~DccFileDialog() {
 }
 
 void DccFileDialog::closeEvent(QCloseEvent *e) {
-	QWidget::closeEvent(e);
+	QDialog::closeEvent(e);
 	if (!dccFinished) {
 		kdebug("DccFileDialog::closeEvent(): DCC transfer has not finished yet!\n");
 		delete dccsocket;
@@ -471,5 +471,5 @@ DccVoiceDialog::DccVoiceDialog(QDialog *parent, const char *name)
 void DccVoiceDialog::closeEvent(QCloseEvent *e) {
 	kdebug("DccVoiceDialog::closeEvent()\n");
 	emit cancelVoiceChat();
-	QWidget::closeEvent(e);
+	QDialog::closeEvent(e);
 }
