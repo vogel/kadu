@@ -1664,10 +1664,14 @@ void Chat::initModule()
 	ConfigDialog::connectSlot("Chat", "Automatically fold links", SIGNAL(toggled(bool)), chatslots, SLOT(onFoldLink(bool)));
 	ConfigDialog::connectSlot("Chat", "Block window close on new message", SIGNAL(toggled(bool)), chatslots, SLOT(onBlockClose(bool)));
 
-	ConfigDialog::connectSlot("Look", "", SIGNAL(changed(const char *, const QColor&)), chatslots, SLOT(chooseColor(const char *, const QColor&)), "own_bg_color");
-	ConfigDialog::connectSlot("Look", "", SIGNAL(changed(const char *, const QColor&)), chatslots, SLOT(chooseColor(const char *, const QColor&)), "his_bg_color");
-	ConfigDialog::connectSlot("Look", "", SIGNAL(changed(const char *, const QColor&)), chatslots, SLOT(chooseColor(const char *, const QColor&)), "own_font_color");
-	ConfigDialog::connectSlot("Look", "", SIGNAL(changed(const char *, const QColor&)), chatslots, SLOT(chooseColor(const char *, const QColor&)), "his_font_color");
+	ConfigDialog::connectSlot("Look", "Your background color", SIGNAL(changed(const char *, const QColor&)),
+		chatslots, SLOT(chooseColor(const char *, const QColor&)), "own_bg_color");
+	ConfigDialog::connectSlot("Look", "User background color", SIGNAL(changed(const char *, const QColor&)),
+		chatslots, SLOT(chooseColor(const char *, const QColor&)), "his_bg_color");
+	ConfigDialog::connectSlot("Look", "Your font color", SIGNAL(changed(const char *, const QColor&)),
+		chatslots, SLOT(chooseColor(const char *, const QColor&)), "own_font_color");
+	ConfigDialog::connectSlot("Look", "User font color", SIGNAL(changed(const char *, const QColor&)),
+		chatslots, SLOT(chooseColor(const char *, const QColor&)), "his_font_color");
 
 	ConfigDialog::connectSlot("Look", "Font in chat window", SIGNAL(changed(const char *, const QFont&)), chatslots, SLOT(chooseFont(const char *, const QFont&)), "chat_font_box");
 

@@ -509,6 +509,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   powoduje otwarcie okna rozmowy (pan_wojtas/joi)
 * poprawny eksport listy kontaktów zawieraj±cej polskie znaki (joi)
 * poprawiony g³upi segfault w voice (joi)
+* w konfiguracji przy zmianie kolorów nie od¶wie¿a³y siê podgl±dy (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
