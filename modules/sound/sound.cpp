@@ -127,7 +127,7 @@ SoundManager::SoundManager(const QString& name, const QString& configname)
 	config_file.addVariable("Notify", "toNotAvailable_Sound", false);
 	config_file.addVariable("Notify", "Message_Sound", true);
 
-	notify->registerNotifier("Sound", this, s);
+	notify->registerNotifier(QT_TRANSLATE_NOOP("@default","Sound"), this, s);
 }
 
 SoundManager::~SoundManager()

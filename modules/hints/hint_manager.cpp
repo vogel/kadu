@@ -124,7 +124,7 @@ HintManager::HintManager(QWidget *parent, const char *name)
 	s["toBusy"]=SLOT(userChangedStatusToBusy(const UserListElement &));
 	s["toNotAvailable"]=SLOT(userChangedStatusToNotAvailable(const UserListElement &));
 	s["Message"]=SLOT(message(const QString &, const QString &, const QMap<QString, QVariant> *, const UserListElement *));
-	notify->registerNotifier("Hints", this, s);
+	notify->registerNotifier(QT_TRANSLATE_NOOP("@default","Hints"), this, s);
 
 	kdebugf2();
 }

@@ -188,7 +188,7 @@ SpeechSlots::SpeechSlots(QObject *parent, const char *name) : QObject(parent, na
 	config_file.addVariable("Notify", "toNotAvailable_Speech", false);
 	config_file.addVariable("Notify", "Message_Speech", true);
 
-	notify->registerNotifier("Speech", this, s);
+	notify->registerNotifier(QT_TRANSLATE_NOOP("@default","Speech"), this, s);
 
 	kdebugf2();
 }

@@ -58,7 +58,7 @@ WindowNotify::WindowNotify(QObject *parent, const char *name) : QObject(parent, 
 	config_file.addVariable("Notify", "toNotAvailable_Window", false);
 	config_file.addVariable("Notify", "Message_Window", false);
 
-	notify->registerNotifier("Window", this, s);
+	notify->registerNotifier(QT_TRANSLATE_NOOP("@default", "Window"), this, s);
 	kdebugf2();
 }
 
