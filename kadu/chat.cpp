@@ -48,9 +48,6 @@ QValueList<UinsList> wasFirstMsgs;
 const char *colors[16] = {"#FF0000", "#A00000", "#00FF00", "#00A000", "#0000FF", "#0000A0", "#FFFF00",
 	"#A0A000", "#FF00FF", "#A000A0", "#00FFFF", "#00A0A0", "#FFFFFF", "#A0A0A0", "#808080", "#000000"};
 
-// detekcja adresow url
-const QRegExp url_regexp("(http://|www\\.|ftp://)[a-zA-Z0-9\\-\\._/~?=&#\\+%:;,!]+");
-
 KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
 	: QTextBrowser(parent, name) {
 
@@ -510,8 +507,8 @@ void Chat::regEncryptSend(void) {
 QString Chat::convertCharacters(QString edit, bool me) {
 
 	// escape'ujemy http:// i ftp:// zeby emotikony nie bruzdzily
-	edit.replace("http://", "___escaped_http___");
-	edit.replace("ftp://", "___escaped_ftp___");
+	edit.replace(QRegExp("http://"),"___escaped_http___");
+	edit.replace(QRegExp("ftp://"),"___escaped_ftp___");
 	
 	if(config.emoticons_style!=EMOTS_NONE)
 	{
@@ -523,19 +520,20 @@ QString Chat::convertCharacters(QString edit, bool me) {
 	};
 	
 	// przywracamy http:// i ftp://
-	edit.replace("___escaped_http___", "http://");
-	edit.replace("___escaped_ftp___", "ftp://");
+	edit.replace(QRegExp("___escaped_http___"),"http://");
+	edit.replace(QRegExp("___escaped_ftp___"),"ftp://");
 	
 	// zmieniamy windowsowe \r\n na unixowe \n
-	edit.replace("\r\n", "\n" );
+	edit.replace( QRegExp("\r\n"), "\n" );
 //	edit.replace( QRegExp("<"), "&lt;" );
 //	edit.replace( QRegExp(">"), "&gt;" );
-	edit.replace("__escaped_lt__", "<");
-	edit.replace("__escaped_gt__", ">");
-	edit.replace("  ", " &nbsp;" );
-	edit.replace("\n", "<BR>" );
+	edit.replace( QRegExp("__escaped_lt__"), "<");
+	edit.replace( QRegExp("__escaped_gt__"), ">");
+	edit.replace( QRegExp("  "), " &nbsp;" );
+	edit.replace( QRegExp("\n"), "<BR>" );
 
 	// detekcja adresow url
+	QRegExp url_regexp("(http://|www\\.|ftp://)[a-zA-Z0-9\\-\\._/~?=&#\\+%:;,!]+");
 	for (int s=0; s<edit.length(); s++)
 	{
 		int p=url_regexp.search(edit,s);
