@@ -64,7 +64,10 @@ class DccManager : public QObject
 		gg_dcc* DccSock;
 		QSocketNotifier* DccSnr;
 		QSocketNotifier* DccSnw;
+		
 		QHostAddress ConfigDccIp;
+		short int ConfigDccPort;
+		
 		QTimer TimeoutTimer;
 		void watchDcc();
 

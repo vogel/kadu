@@ -279,7 +279,10 @@ DccManager::DccManager(QObject *parent, const char *name) : QObject(parent, name
 	QHostAddress ext_ip;
 	if (config_file.readBoolEntry("Network","DccForwarding"))
 		if (ext_ip.setAddress(config_file.readEntry("Network","ExternalIP", "")))
+		{
 			gadu->setDccExternalIP(ext_ip);
+			ConfigDccPort=config_file.readNumEntry("Network", "ExternalPort", 1550);
+		}
 
 	connect(&TimeoutTimer, SIGNAL(timeout()), this, SLOT(timeout()));
 
@@ -423,11 +426,7 @@ void DccManager::setupDcc()
 	}
 
 	QHostAddress dccIp;
-
-	if (ConfigDccIp == QHostAddress())
-		dccIp.setAddress("255.255.255.255");
-	else
-		dccIp = ConfigDccIp;
+	short int dccPort;
 
 	DccSock = gadu->dccSocketCreate(config_file.readNumEntry("General", "UIN"), config_file.readNumEntry("Network", "LocalPort", 1550));
 
@@ -441,9 +440,20 @@ void DccManager::setupDcc()
 		return;
 	}
 
-	gadu->setDccIpAndPort(htonl(dccIp.ip4Addr()), DccSock->port);
+	if (ConfigDccIp == QHostAddress())
+	{
+		dccIp.setAddress("255.255.255.255");
+		dccPort = DccSock->port;
+	}
+	else
+	{
+		dccIp = ConfigDccIp;
+		dccPort = ConfigDccPort;
+	}
 
-	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "DCC_IP=%s DCC_PORT=%d\n", dccIp.toString().latin1(), DccSock->port);
+	gadu->setDccIpAndPort(htonl(dccIp.ip4Addr()), dccPort);
+
+	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "DCC_IP=%s DCC_PORT=%d\n", dccIp.toString().latin1(), dccPort);
 
 	DccSnr = new QSocketNotifier(DccSock->fd, QSocketNotifier::Read, kadu);
 	connect(DccSnr, SIGNAL(activated(int)), this, SLOT(dccReceived()));
