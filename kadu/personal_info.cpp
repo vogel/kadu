@@ -25,7 +25,7 @@ PersonalInfoDialog::PersonalInfoDialog(QDialog *parent, const char *name)
 {
 	fprintf(stderr,"PersonalInfoDialog::PersonalInfoDialog()\n");
 
-	resize(450, 150);
+	resize(400, 150);
 	setCaption(i18n("Personal Information"));	
 	setWFlags(Qt::WDestructiveClose);
 	
