@@ -2148,7 +2148,7 @@ HistorySlots::HistorySlots(QObject *parent, const char *name) : QObject(parent, 
 void HistorySlots::onCreateConfigDialog()
 {
 	kdebugf();
-	QLabel *l_qtimeinfo=(QLabel*)(ConfigDialog::widget("History", "", "dayhour"));
+	QLabel *l_qtimeinfo=(QLabel*)(ConfigDialog::getWidget("History", "", "dayhour"));
 	l_qtimeinfo->setAlignment(Qt::AlignHCenter);
 	updateQuoteTimeLabel(config_file.readNumEntry("History", "ChatHistoryQuotationTime"));
 	kdebugf2();

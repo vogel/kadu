@@ -34,17 +34,14 @@
 #include "misc.h"
 #include "debug.h"
 
-QString ConfigDialog::currentTab = QT_TRANSLATE_NOOP("@default", "General");
+QString ConfigDialog::acttab = QT_TRANSLATE_NOOP("@default", "General");
 ConfigDialog *ConfigDialog::configdialog = NULL;
 QApplication *ConfigDialog::appHandle = NULL;
 
+QValueList<ConfigDialog::RegisteredControl> ConfigDialog::RegisteredControls;
 QValueList<ConfigDialog::ElementConnections> ConfigDialog::SlotsOnCreate;
 QValueList<ConfigDialog::ElementConnections> ConfigDialog::SlotsOnClose;
 QValueList<ConfigDialog::ElementConnections> ConfigDialog::SlotsOnApply;
-
-QMap<QString, QValueList <ConfigDialog::RegisteredControl> > ConfigDialog::Tabs;
-QStringList ConfigDialog::TabNames;
-QMap<QString, int> ConfigDialog::TabSizes;
 
 ConfigDialog::ElementConnections::ElementConnections()
 	: signal(QString::null), receiver(NULL), slot(QString::null)
@@ -128,17 +125,48 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 	box->setFrameStyle(QFrame::NoFrame);
 	view->addChild(box);
 	
-//	int num = 0;
+	int actualtab = 0;
+	int nexttab = 0;
+	int actualparent = 0;
+	QString actualparentname = "";
+	int num = 0;
 
-	CONST_FOREACH(tabName, TabNames)
-	FOREACH(i, Tabs[*tabName])
+	QValueList<RegisteredControl>::iterator i = RegisteredControls.begin();
+	while (i != RegisteredControls.end())
+	{
+		if((*i).type == CONFIG_DELETED)
+			i = RegisteredControls.remove(i);
+		else
+			++i;
+	}
+
+	FOREACH(i, RegisteredControls)
 	{
 // wyswietla cala liste 
 //		kdebugm(KDEBUG_DUMP, "%d: (%d) "+(*i).group+"->"+(*i).parent+"->"+(*i).caption+"->"+(*i).name+"\n", num, (*i).nrOfControls);
 		
-		QWidget* parent = NULL;
-		if ((*i).type != CONFIG_TAB)
-		    parent = (*(*i).parentControl).widget;
+		QWidget* parent=NULL;
+		if((*i).type!=CONFIG_TAB)
+		{
+			actualtab= findTab((*i).group,actualtab);
+			nexttab= findNextTab(actualtab+1);
+
+			if (nexttab == -1) 
+				nexttab= RegisteredControls.count()-1;
+			
+			int z;
+			if ((*i).parent == actualparentname)
+				parent=RegisteredControls[actualparent].widget;
+			else
+				for (z=actualtab; z<nexttab; ++z)
+					if ((*i).parent == RegisteredControls[z].caption && RegisteredControls[z].type!=CONFIG_DELETED)
+					{
+						parent= RegisteredControls[z].widget;
+						actualparent=z;
+						actualparentname=(*i).parent;
+						break;
+					}
+		}
 //		kdebugm(KDEBUG_DUMP, "creating widget\n");
 
 		switch((*i).type)
@@ -148,8 +176,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				QCheckBox* check=new QCheckBox(appHandle->translate("@default",(*i).caption), parent, (*i).name);
 				check->setChecked((*i).config->readBoolEntry((*i).group, (*i).entry, (*i).defaultS));
 				(*i).widget=check;
-				if (!(*i).tip.isEmpty())
-					QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
+				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				break;
 			}
 			case CONFIG_COLORBUTTON:
@@ -160,8 +187,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				ColorButton* colorbutton=new ColorButton((*i).config->readColorEntry((*i).group, (*i).entry, &col), hbox, (*i).name);
 				colorbutton->setMaximumSize(QSize(50,25));
 				(*i).widget=colorbutton;
-				if (!(*i).tip.isEmpty())
-					QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
+				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				break;
 			}
 			case CONFIG_COMBOBOX:
@@ -170,7 +196,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				new QLabel(appHandle->translate("@default",(*i).caption), hbox);
 				QComboBox* combo=new QComboBox(hbox, (*i).name);
 				(*i).widget=combo;
-				if (!(*i).tip.isEmpty())
+				if ((*i).tip.length())
 					QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				if ((*i).additionalParams.size()>=2)
 				{
@@ -233,7 +259,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 
 				QStringList options=(*i).additionalParams[0].toStringList();
 				QStringList values=(*i).additionalParams[1].toStringList();
-				CONST_FOREACH(option, options)
+				FOREACH(option, options)
 					new QRadioButton(*option, group, (*i).name+(*option));
 				group->setButton(values.findIndex((*i).config->readEntry((*i).group, (*i).entry, (*i).defaultS)));
 
@@ -250,8 +276,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				static int hotwidth=int(hotkey->fontMetrics().width("Ctrl+Alt+Shift+F12")*1.5);
 				hotkey->setFixedWidth(hotwidth);
 				(*i).widget=hotkey;
-				if (!(*i).tip.isEmpty())
-					QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
+				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				break;
 			}
 			case CONFIG_LABEL:
@@ -267,8 +292,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				QLineEdit* line=new QLineEdit(hbox, (*i).name);
 				line->setText((*i).config->readEntry((*i).group, (*i).entry, (*i).defaultS));
 				(*i).widget=line;
-				if (!(*i).tip.isEmpty())
-					QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
+				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				break;
 			}
 			case CONFIG_LINEEDIT2:
@@ -278,8 +302,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				QLineEdit* line=new QLineEdit(hbox, (*i).name);
 				line->setText((*i).defaultS);
 				(*i).widget=line;
-				if (!(*i).tip.isEmpty())
-					QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
+				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				break;
 			}
 			case CONFIG_TEXTEDIT:
@@ -290,34 +313,30 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				line->setTextFormat(Qt::PlainText);
 				line->setText((*i).config->readEntry((*i).group, (*i).entry, (*i).defaultS));
 				(*i).widget=line;
-				if (!(*i).tip.isEmpty())
-					QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
+				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				break;
 			}
 			case CONFIG_LISTBOX:
 			{
 				QListBox* listbox= new QListBox(parent, (*i).caption);
 				(*i).widget=listbox;
-				if (!(*i).tip.isEmpty())
-					QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
+				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				break;
 			}
 			case CONFIG_LISTVIEW:
 			{
 				QListView* listview= new QListView(parent, (*i).caption);
 				(*i).widget=listview;
-				if (!(*i).tip.isEmpty())
-					QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
+				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				break;
 			}
 			case CONFIG_PUSHBUTTON:
 			{
 				QPushButton *button =new QPushButton(appHandle->translate("@default",(*i).caption), parent, (*i).name);
-				if (!(*i).defaultS.isEmpty())
+				if ((*i).defaultS!="")
 					button->setIconSet(icons_manager.loadIcon((*i).defaultS));
 				(*i).widget=button;
-				if (!(*i).tip.isEmpty())
-					QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
+				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				break;
 			}
 			case CONFIG_SELECTFONT:
@@ -333,25 +352,27 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				insertChild(paths);//musimy go wstawiæ na listê dzieci, bo inaczej wycieknie nam...
 				button->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum));
 				(*i).widget=paths;
-				if (!(*i).tip.isEmpty())
-					QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
+				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				connect(button, SIGNAL(clicked()), paths, SLOT(show()));
 				break;
 			}
 			case CONFIG_SLIDER:
 			{
+				int minVal;
+				int maxVal;
+				int pageStep;
+				int value;
 				QStringList values= QStringList::split(",", (*i).defaultS);
 
-				int minVal = values[0].toInt();
-				int maxVal = values[1].toInt();
-				int pageStep = values[2].toInt();
-				int value = values[3].toInt();
+				minVal=values[0].toInt();
+				maxVal=values[1].toInt();
+				pageStep=values[2].toInt();
+				value=values[3].toInt();
 				QSlider *slider=new QSlider(minVal, maxVal, pageStep, value, Qt::Horizontal, parent, (*i).caption);
 				slider->setValue((*i).config->readNumEntry((*i).group, (*i).entry,value));
 				slider->setTickmarks(QSlider::Below);
 				(*i).widget=slider;
-				if (!(*i).tip.isEmpty())
-					QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
+				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				break;
 			}
 			case CONFIG_SPINBOX:
@@ -367,27 +388,27 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				int val=(*i).config->readNumEntry((*i).group, (*i).entry,value);
 				spinbox->setValue(val);
 				(*i).widget=spinbox;
-				if (!(*i).tip.isEmpty())
-					QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
+				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				break;
 			}
 			case CONFIG_TAB:
 			{
-				if (!(*i).defaultS.isEmpty())
+				if ((*i).defaultS!="")
 					listBox->insertItem(icons_manager.loadIcon((*i).defaultS), appHandle->translate("@default",(*i).caption));
 				else
 					listBox->insertItem(appHandle->translate("@default",(*i).caption));
 				QVBox *subbox= new QVBox(box);
 				(*i).widget=subbox;
-				(*i).widget->hide();
 				break;
 			}
-			case CONFIG_NULL:
+			case CONFIG_DELETED:
+			{
+				kdebugm(KDEBUG_ERROR, "CONFIG_DELETED found!\n");
 				break;
-
+			}
 		}
 
-		CONST_FOREACH(connection, (*i).ConnectedSlots)
+		FOREACH(connection, (*i).ConnectedSlots)
 		{
 //			kdebugm(KDEBUG_DUMP, "connecting %p %s to %p %s\n", (*i).widget, (*connection).signal.local8Bit().data(),
 //								(*connection).receiver, (*connection).slot.local8Bit().data());
@@ -395,23 +416,23 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				kdebugm(KDEBUG_ERROR, "unable to connect signal: %s to slot: %s\n",
 					(*connection).signal.local8Bit().data(), (*connection).slot.local8Bit().data());
 		}
-//		++num;
+		++num;
 	}
 
 	kdebugm(KDEBUG_INFO, "connecting SlotsOnCreate\n");
-	CONST_FOREACH(conn, SlotsOnCreate)
+	FOREACH(conn, SlotsOnCreate)
 		connect(this, SIGNAL(create()), (*conn).receiver, (*conn).slot);
 	
 	kdebugm(KDEBUG_INFO, "connecting SlotsOnApply\n");
-	CONST_FOREACH(conn, SlotsOnApply)
+	FOREACH(conn, SlotsOnApply)
 		connect(this, SIGNAL(apply()), (*conn).receiver, (*conn).slot);
 
 	kdebugm(KDEBUG_INFO, "connecting SlotsOnClose\n");
-	CONST_FOREACH(conn, SlotsOnClose)
+	FOREACH(conn, SlotsOnClose)
 		connect(this, SIGNAL(destroy()), (*conn).receiver, (*conn).slot);
 
 
-	listBox->setCurrentItem(listBox->findItem(appHandle->translate("@default",currentTab)));
+	listBox->setCurrentItem(listBox->findItem(appHandle->translate("@default",acttab)));
 	
 	// buttons
 	QHBox *bottom = new QHBox(this, "buttons");
@@ -432,7 +453,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 	
 	connect(listBox, SIGNAL(highlighted(const QString&)), this, SLOT(changeTab(const QString&)));
 	
-	changeTab(appHandle->translate("@default",currentTab));
+	changeTab(appHandle->translate("@default",acttab));
  
 	configdialog = this;
 	emit create();
@@ -452,26 +473,26 @@ void ConfigDialog::changeTab(const QString& name)
 {
 	kdebugf();
 
-	CONST_FOREACH(tab, Tabs)
+	int tab=0;
+	while (tab != -1)
 	{
-		const RegisteredControl &tabControl = (*tab).front();
-		if (appHandle->translate("@default", tabControl.caption) == name)
+		if (appHandle->translate("@default",RegisteredControls[tab].caption) == name)
 		{
-			tabControl.widget->show();
-			currentTab = tabControl.caption;
+			RegisteredControls[tab].widget->show();
+			acttab= RegisteredControls[tab].caption;
 		}
 		else 
-			tabControl.widget->hide();
-	}
+			RegisteredControls[tab].widget->hide();
 
-	kdebugmf(KDEBUG_FUNCTION_END, "active Tab=%s\n", currentTab.local8Bit().data());
+		tab=findNextTab(tab+1);
+	}
+	kdebugmf(KDEBUG_FUNCTION_END, "active Tab=%s\n", acttab.local8Bit().data());
 }
 
 void ConfigDialog::updateConfig(void) 
 {
 	kdebugf();
-	CONST_FOREACH(tab, Tabs)
-	CONST_FOREACH(i, *tab)
+	FOREACH(i, RegisteredControls)
 	{
 		if (!(*i).widget)
 			continue;
@@ -524,7 +545,6 @@ void ConfigDialog::updateConfig(void)
 					(*i).config->writeEntry((*i).group, (*i).entry, values[selectedId]);
 				break;
 			}
-			case CONFIG_NULL:
 			default:
 				break;
 		}
@@ -554,14 +574,14 @@ void ConfigDialog::addCheckBox(ConfigFile* config, const QString& groupname,
 			const QString& parent, const QString& caption,
 			const QString& entry, const bool defaultS, const QString& tip, const QString& name)
 {
-	if (!controlExists(groupname, caption, name))
+	if (existControl(groupname, caption, name) == -1)
 	{
 		RegisteredControl c(CONFIG_CHECKBOX, groupname, parent, caption, name);
 		c.config=config;
 		c.entry=entry;
 		c.defaultS=QString::number(defaultS);
 		c.tip=tip;
-		if (addControl(groupname,c))
+		if (addControl(groupname,c) == 0)
 			c.config->addVariable(groupname, entry, defaultS);
 	}
 }
@@ -571,7 +591,7 @@ void ConfigDialog::addColorButton(ConfigFile *config, const QString& groupname,
 				const QString& parent, const QString& caption, const QString &entry,
 				const QColor& color, const QString& tip, const QString& name)
 {
-	if (!controlExists(groupname, caption, name))
+	if (existControl(groupname, caption, name) == -1)
 	{
 		RegisteredControl c(CONFIG_COLORBUTTON, groupname, parent, caption, name);
 		c.config=config;
@@ -594,7 +614,7 @@ void ConfigDialog::addComboBox(const QString& groupname,
 			const QString& parent, const QString& caption,
 			const QString& tip, const QString& name)
 {
-	if (!controlExists(groupname, caption, name))
+	if (existControl(groupname, caption, name) == -1)
 	{
 		RegisteredControl c(CONFIG_COMBOBOX, groupname, parent, caption, name);
 		c.tip=tip;
@@ -615,7 +635,7 @@ void ConfigDialog::addComboBox(ConfigFile* config, const QString& groupname,
 				const QString &entry, const QStringList &options, const QStringList &values,
 				const QString &defaultS, const QString& tip, const QString& name)
 {
-	if (!controlExists(groupname, caption, name))
+	if (existControl(groupname, caption, name) == -1)
 	{
 		RegisteredControl c(CONFIG_COMBOBOX, groupname, parent, caption, name);
 		c.tip=tip;
@@ -632,7 +652,7 @@ void ConfigDialog::addComboBox(ConfigFile* config, const QString& groupname,
 void ConfigDialog::addGrid(const QString& groupname,
 			const QString& parent, const QString& caption, const int nrColumns, const QString& name)
 {
-	if (!controlExists(groupname, caption, name))
+	if (existControl(groupname, caption, name) == -1)
 	{
 		RegisteredControl c(CONFIG_GRID, groupname, parent, caption, name);
 		c.defaultS=QString::number(nrColumns);
@@ -643,7 +663,7 @@ void ConfigDialog::addGrid(const QString& groupname,
 void ConfigDialog::addHBox(const QString& groupname,
 	const QString& parent, const QString& caption, const QString& name)
 {
-	if (!controlExists(groupname, caption, name))
+	if (existControl(groupname, caption, name) == -1)
 	{
 		RegisteredControl c(CONFIG_HBOX, groupname, parent, caption, name);
 		addControl(groupname,c);
@@ -654,7 +674,7 @@ void ConfigDialog::addHBox(const QString& groupname,
 void ConfigDialog::addHGroupBox(const QString& groupname,
 	const QString& parent, const QString& caption, const QString& name)
 {
-	if (!controlExists(groupname, caption, name))
+	if (existControl(groupname, caption, name) == -1)
 	{
 		RegisteredControl c(CONFIG_HGROUPBOX, groupname, parent, caption, name);
 		addControl(groupname,c);
@@ -674,7 +694,7 @@ void ConfigDialog::addHRadioGroup(ConfigFile* config,
 	const QString &entry, const QStringList &options, const QStringList &values,
 	const QString &defaultS, const QString& tip, const QString& name)
 {
-	if (!controlExists(groupname, caption, name))
+	if (existControl(groupname, caption, name) == -1)
 	{
 		RegisteredControl c(CONFIG_HRADIOGROUP, groupname, parent, caption, name);
 		c.tip=tip;
@@ -698,7 +718,7 @@ void ConfigDialog::addHotKeyEdit(ConfigFile* config, const QString& groupname,
 			const QString& parent, const QString& caption,
 			const QString& entry, const QString& defaultS, const QString& tip, const QString& name)
 {
-	if (!controlExists(groupname, caption, name))
+	if (existControl(groupname, caption, name) == -1)
 	{
 		RegisteredControl c(CONFIG_HOTKEYEDIT, groupname, parent, caption, name);
 		c.config=config;
@@ -706,7 +726,7 @@ void ConfigDialog::addHotKeyEdit(ConfigFile* config, const QString& groupname,
 		c.defaultS=defaultS;
 		c.tip=tip;
 		
-		if (addControl(groupname,c))
+		if (addControl(groupname,c) == 0)
 		// zapisujemy warto¶æ domy¶ln±, aby ju¿ wiêcej nie musieæ
 		// jej podawaæ przy czytaniu z pliku conf		
 			config->addVariable(groupname, entry, defaultS);	
@@ -717,7 +737,7 @@ void ConfigDialog::addLineEdit2(const QString& groupname,
 			const QString& parent, const QString& caption,
 			const QString& defaultS, const QString& tip, const QString& name)
 {
-	if (!controlExists(groupname, caption, name))
+	if (existControl(groupname, caption, name) == -1)
 	{
 		RegisteredControl c(CONFIG_LINEEDIT2, groupname, parent, caption, name);
 		c.defaultS=defaultS;
@@ -738,7 +758,7 @@ void ConfigDialog::addLineEdit(ConfigFile* config, const QString& groupname,
 			const QString& parent, const QString& caption,
 			const QString& entry, const QString& defaultS, const QString& tip, const QString& name)
 {
-	if (!controlExists(groupname, caption, name))
+	if (existControl(groupname, caption, name) == -1)
 	{
 		RegisteredControl c(CONFIG_LINEEDIT, groupname, parent, caption, name);
 		c.config=config;
@@ -746,7 +766,7 @@ void ConfigDialog::addLineEdit(ConfigFile* config, const QString& groupname,
 		c.defaultS=defaultS;
 		c.tip=tip;
 
-		if (addControl(groupname,c))
+		if (addControl(groupname,c) == 0)
 			c.config->addVariable(groupname, entry, defaultS);	
 	}
 }
@@ -767,7 +787,7 @@ void ConfigDialog::addRadioGroup(ConfigFile* config,
 				int strips, Orientation orientation,
 				const QString &defaultS, const QString& tip, const QString& name)
 {
-	if (!controlExists(groupname, caption, name))
+	if (existControl(groupname, caption, name) == -1)
 	{
 		RegisteredControl c(CONFIG_RADIOGROUP, groupname, parent, caption, name);
 		c.tip=tip;
@@ -793,7 +813,7 @@ void ConfigDialog::addTextEdit(ConfigFile* config, const QString& groupname,
 			const QString& parent, const QString& caption,
 			const QString& entry, const QString& defaultS, const QString& tip, const QString& name)
 {
-	if (!controlExists(groupname, caption, name))
+	if (existControl(groupname, caption, name) == -1)
 	{
 		RegisteredControl c(CONFIG_TEXTEDIT, groupname, parent, caption, name);
 		c.config=config;
@@ -801,7 +821,7 @@ void ConfigDialog::addTextEdit(ConfigFile* config, const QString& groupname,
 		c.defaultS=defaultS;
 		c.tip=tip;
 
-		if (addControl(groupname,c))
+		if (addControl(groupname,c) == 0)
 			c.config->addVariable(groupname, entry, defaultS);	
 	}
 }
@@ -809,7 +829,7 @@ void ConfigDialog::addTextEdit(ConfigFile* config, const QString& groupname,
 void ConfigDialog::addLabel(const QString& groupname,
 			const QString& parent, const QString& caption, const QString& name)
 {
-	if (!controlExists(groupname, caption, name))
+	if (existControl(groupname, caption, name) == -1)
 	{
 		RegisteredControl c(CONFIG_LABEL, groupname, parent, caption, name);
 		addControl(groupname,c);
@@ -820,7 +840,7 @@ void ConfigDialog::addLabel(const QString& groupname,
 void ConfigDialog::addListBox(const QString& groupname,
 			const QString& parent, const QString& caption, const QString& tip, const QString& name)
 {
-	if (!controlExists(groupname, caption, name))
+	if (existControl(groupname, caption, name) == -1)
 	{
 		RegisteredControl c(CONFIG_LISTBOX, groupname, parent, caption, name);
 		c.tip=tip;
@@ -831,7 +851,7 @@ void ConfigDialog::addListBox(const QString& groupname,
 void ConfigDialog::addListView(const QString& groupname,
 			const QString& parent, const QString& caption, const QString& tip, const QString& name)
 {
-	if (!controlExists(groupname, caption, name))
+	if (existControl(groupname, caption, name) == -1)
 	{
 		RegisteredControl c(CONFIG_LISTVIEW, groupname, parent, caption, name);
 		c.tip=tip;
@@ -843,7 +863,7 @@ void ConfigDialog::addPushButton(const QString& groupname,
 			const QString& parent, const QString& caption,
 			const QString &iconFileName, const QString& tip, const QString& name)
 {
-	if (!controlExists(groupname, caption, name))
+	if (existControl(groupname, caption, name) == -1)
 	{
 		RegisteredControl c(CONFIG_PUSHBUTTON, groupname, parent, caption, name);
 		c.defaultS=iconFileName;
@@ -855,7 +875,7 @@ void ConfigDialog::addPushButton(const QString& groupname,
 void ConfigDialog::addSelectPaths(const QString& groupname,
 			const QString& parent, const QString& caption, const QString& name)
 {
-	if (!controlExists(groupname, caption, name))
+	if (existControl(groupname, caption, name) == -1)
 	{
 		RegisteredControl c(CONFIG_SELECTPATHS, groupname, parent, caption, name);
 		addControl(groupname,c);
@@ -878,7 +898,7 @@ void ConfigDialog::addSlider(ConfigFile* config, const QString& groupname,
 			const int minValue, const int maxValue,
 			const int pageStep, const int value, const QString& tip, const QString& name)
 {
-	if (!controlExists(groupname, caption, name))
+	if (existControl(groupname, caption, name) == -1)
 	{
 		RegisteredControl c(CONFIG_SLIDER, groupname, parent, caption, name);
 		c.config=config;
@@ -886,7 +906,7 @@ void ConfigDialog::addSlider(ConfigFile* config, const QString& groupname,
 		c.tip=tip;
 		c.defaultS=QString::number(minValue)+","+QString::number(maxValue)+","+QString::number(pageStep)+","+QString::number(value);
 
-		if (addControl(groupname,c))
+		if (addControl(groupname,c) == 0)
 			c.config->addVariable(groupname, entry, value);
 	}
 }
@@ -907,7 +927,7 @@ void ConfigDialog::addSpinBox(ConfigFile* config, const QString& groupname,
 			const int minValue, const int maxValue, const int step, const int value, const QString& tip, const QString& name)
 {
 
-	if (!controlExists(groupname, caption, name))
+	if (existControl(groupname, caption, name) == -1)
 	{
 		RegisteredControl c(CONFIG_SPINBOX, groupname, parent, caption, name);
 		c.config=config;
@@ -915,15 +935,25 @@ void ConfigDialog::addSpinBox(ConfigFile* config, const QString& groupname,
 		c.tip=tip;
 		c.defaultS=QString::number(minValue)+","+QString::number(maxValue)+","+QString::number(step)+","+QString::number(value);
 		
-		if (addControl(groupname,c))
+		if (addControl(groupname,c) == 0)
 			c.config->addVariable(groupname, entry, value);
 	}
+}
+
+void ConfigDialog::addTab(const QString& caption, const QString& iconFileName)
+{
+	if (findTab(caption) == -1)
+	{
+		RegisteredControl c(CONFIG_TAB, QString::null, QString::null, caption);
+		c.defaultS=iconFileName;
+		RegisteredControls.append(c);
+	}	
 }
 
 void ConfigDialog::addVBox(const QString& groupname,
 	const QString& parent, const QString& caption, const QString& name)
 {
-	if (!controlExists(groupname, caption, name))
+	if (existControl(groupname, caption, name) == -1)
 	{
 		RegisteredControl c(CONFIG_VBOX, groupname, parent, caption, name);
 		addControl(groupname,c);
@@ -933,7 +963,7 @@ void ConfigDialog::addVBox(const QString& groupname,
 void ConfigDialog::addVGroupBox(const QString& groupname,
 	const QString& parent, const QString& caption, const QString& name)
 {
-	if (!controlExists(groupname, caption, name))
+	if (existControl(groupname, caption, name) == -1)
 	{
 		RegisteredControl c(CONFIG_VGROUPBOX, groupname, parent, caption, name);
 		addControl(groupname,c);
@@ -953,7 +983,7 @@ void ConfigDialog::addVRadioGroup(ConfigFile* config,
 	const QString &entry, const QStringList &options, const QStringList &values,
 	const QString &defaultS, const QString& tip, const QString& name)
 {
-	if (!controlExists(groupname, caption, name))
+	if (existControl(groupname, caption, name) == -1)
 	{
 		RegisteredControl c(CONFIG_VRADIOGROUP, groupname, parent, caption, name);
 		c.tip=tip;
@@ -977,7 +1007,7 @@ void ConfigDialog::addSelectFont(ConfigFile *config, const QString& groupname, c
 				const QString& caption, const QString& entry, const QString& defaultS,
 				const QString &tip, const QString& name)
 {
-	if (!controlExists(groupname, caption, name))
+	if (existControl(groupname, caption, name) == -1)
 	{
 		RegisteredControl c(CONFIG_SELECTFONT, groupname, parent, caption, name);
 		c.config=config;
@@ -985,7 +1015,7 @@ void ConfigDialog::addSelectFont(ConfigFile *config, const QString& groupname, c
 		c.defaultS=defaultS;
 		c.tip=tip;
 
-		if (addControl(groupname,c))
+		if (addControl(groupname,c) == 0)
 			c.config->addVariable(groupname, entry, defaultS);	
 	}
 }
@@ -996,21 +1026,21 @@ ConfigDialog::RegisteredControl::RegisteredControl(RegisteredControlType t,
 	const QString &caption,
 	const QString &name)
 {
-	this->type = t;
-	this->group = groupname;
-	this->parent = parent;
-	this->caption = caption;
-	this->name = name;
-	this->widget = 0;
-	this->nrOfControls = 0;
-	this->config = 0;
+	type=t;
+	this->group=groupname;
+	this->parent=parent;
+	this->caption=caption;
+	this->name=name;
+	widget=NULL;
+	nrOfControls=0;
+	this->config=NULL;
 }
 
 void ConfigDialog::connectSlot(const QString& groupname, const QString& caption, const char* signal, const QObject* receiver, const char* slot,const QString& name)
 {
 	kdebugf();
-	FOREACH(j, Tabs[groupname])
-		if ((*j).caption == caption && (*j).name == name)
+	FOREACH(j, RegisteredControls)
+		if(((*j).group == groupname) && ((*j).caption == caption) && ((*j).name == name) && (*j).type!=CONFIG_DELETED)
 		{
 			ElementConnections c(signal, receiver, slot);
 			(*j).ConnectedSlots.append(c);
@@ -1023,8 +1053,8 @@ void ConfigDialog::connectSlot(const QString& groupname, const QString& caption,
 void ConfigDialog::disconnectSlot(const QString& groupname, const QString& caption, const char* signal, const QObject* receiver, const char* slot,const QString& name)
 {
 	kdebugf();
-	FOREACH(j, Tabs[groupname])
-		if(((*j).group == groupname) && ((*j).caption == caption) && ((*j).name == name))
+	FOREACH(j, RegisteredControls)
+		if(((*j).group == groupname) && ((*j).caption == caption) && ((*j).name == name) && (*j).type!=CONFIG_DELETED)
 		{
 			ElementConnections c(signal, receiver, slot);
 			(*j).ConnectedSlots.remove((*j).ConnectedSlots.find(c));
@@ -1037,235 +1067,226 @@ void ConfigDialog::disconnectSlot(const QString& groupname, const QString& capti
 
 void ConfigDialog::registerSlotOnCreate(const QObject* receiver, const char* name)
 {
-	SlotsOnCreate.append(ElementConnections(QString::null, receiver, name));
+	ElementConnections c(QString::null, receiver, name);
+	SlotsOnCreate.append(c);
 }
 
 void ConfigDialog::unregisterSlotOnCreate(const QObject* receiver, const char* name)
 {
-	SlotsOnCreate.remove(SlotsOnCreate.find(ElementConnections(QString::null, receiver, name)));
+	ElementConnections c(QString::null, receiver, name);
+	SlotsOnCreate.remove(SlotsOnCreate.find(c));
 }
 
 void ConfigDialog::registerSlotOnClose(const QObject* receiver, const char* name)
 {
-	SlotsOnClose.append(ElementConnections(QString::null, receiver, name));
+	ElementConnections c(QString::null, receiver, name);
+	SlotsOnClose.append(c);
 }
 
 void ConfigDialog::unregisterSlotOnClose(const QObject* receiver, const char* name)
 {
-	SlotsOnClose.remove(SlotsOnClose.find(ElementConnections(QString::null, receiver, name)));
+	ElementConnections c(QString::null, receiver, name);
+	SlotsOnClose.remove(SlotsOnClose.find(c));
 }
 
 void ConfigDialog::registerSlotOnApply(const QObject* receiver, const char* name)
 {
-	SlotsOnApply.append(ElementConnections(QString::null, receiver, name));
+	ElementConnections c(QString::null, receiver, name);
+	SlotsOnApply.append(c);
 }
 
 void ConfigDialog::unregisterSlotOnApply(const QObject* receiver, const char* name)
 {
-	SlotsOnApply.remove(SlotsOnApply.find(ElementConnections(QString::null, receiver, name)));
+	ElementConnections c(QString::null, receiver, name);
+	SlotsOnApply.remove(SlotsOnApply.find(c));
 }
 
-void ConfigDialog::addTab(const QString& caption, const QString& iconFileName)
+int ConfigDialog::findPreviousTab(int pos)
 {
-	if (!Tabs.contains(caption))
-	{
-		TabNames.append(caption);
-
-		QValueList<RegisteredControl> l;
-		RegisteredControl c(CONFIG_TAB, QString::null, QString::null, caption);
-		c.defaultS = iconFileName;
-		l.append(c);
-		
-		Tabs[caption] = l;
-		TabSizes[caption] = 1;
-	}
+//	kdebugf();
+	if (RegisteredControls.isEmpty())
+		return -1;
+	if (pos<0)
+		pos=0;
+	if ((uint)(pos+1)>RegisteredControls.count())
+		pos=RegisteredControls.count()-1;
+	for(; pos>=0; --pos)
+		if (RegisteredControls[pos].type == CONFIG_TAB)
+			return pos;
+	return -1;
+// -1 oznacza ze nie ma Tab'a
 }
 
-void ConfigDialog::tab(const QString &name, QValueListIterator<RegisteredControl> &ret, bool *found)
+int ConfigDialog::findNextTab(int pos)
 {
-	bool f = Tabs.contains(name);
-	if (found)
-		*found = f;
-	if (f)
-		ret = Tabs[name].begin();
-	else
-	{
-		kdebugmf(KDEBUG_ERROR, "tab %s not found!\n", name.local8Bit().data());
-		ret = Tabs["null"].begin();
-	}
+//	kdebugf();
+	if (RegisteredControls.isEmpty())
+		return -1;
+	if (pos<0)
+		pos=0;
+
+	int count=RegisteredControls.count();
+
+	if (pos>=count)
+		pos=count;
+
+	for(; pos<count; ++pos)
+		if (RegisteredControls[pos].type == CONFIG_TAB)
+			return pos;
+	return -1;
+//	zwraca miejsce znalezienia TAB'a
+//	jesli nie znajdzie to zwraca -1	
 }
 
-void ConfigDialog::tab(const QString &name, QValueListConstIterator<RegisteredControl> &ret, bool *found)
+int ConfigDialog::findTab(const QString& groupname, int pos)
 {
-	bool f = Tabs.contains(name);
-	if (found)
-		*found = f;
-	if (f)
-		ret = Tabs[name].begin();
-	else
-	{
-		kdebugmf(KDEBUG_ERROR, "tab %s not found!\n", name.local8Bit().data());
-		ret = Tabs["null"].begin();
-	}
-}
+//	kdebugf();
+	if (RegisteredControls.isEmpty())
+		return -1;
+	if (pos<0)
+		pos=0;
+	int count=RegisteredControls.count();
+	if (pos>=count)
+		pos=count;
 
-bool ConfigDialog::controlExists(const QString& groupname, const QString& caption, const QString& name, QValueListIterator<RegisteredControl> *control)
-{
-	bool ok;
-	QValueListIterator<RegisteredControl> curControl;
-	tab(groupname, curControl, &ok);
-	
-	if (!ok)
-	{
-		kdebugm(KDEBUG_ERROR,"Tab "+groupname+" not found\n");
-		return false;
-	}
-
-	int lastItem = TabSizes[groupname];
-	for (int j = 1; j <= lastItem; ++j, ++curControl)
-		if ((*curControl).caption == caption && (*curControl).name == name)
-		{
-			if (control)
-				*control = curControl;
-			return true;
-		}
-	return false;
-}
-
-bool ConfigDialog::controlExists(const QString& groupname, const QString& caption, const QString& name, QValueListConstIterator<RegisteredControl> *control)
-{
-	bool ok;
-	QValueListConstIterator<RegisteredControl> curControl;
-	tab(groupname, curControl, &ok);
-	
-	if (!ok)
-	{
-		kdebugm(KDEBUG_ERROR,"Tab "+groupname+" not found\n");
-		return false;
-	}
-
-	int lastItem = TabSizes[groupname];
-	for (int j = 1; j <= lastItem; ++j, ++curControl)
-		if ((*curControl).caption == caption && (*curControl).name == name)
-		{
-			if (control)
-				*control = curControl;
-			return true;
-		}
-	return false;
+	pos=findPreviousTab(pos);
+	if (pos<0)
+		pos=0;
+	for(; pos<count; ++pos)
+		if(RegisteredControls[pos].type==CONFIG_TAB && RegisteredControls[pos].caption == groupname)
+			return pos;
+	return -1;
+// jesli znajdzie odpowiedni TAB to wzraca miejsce znalezienia 
+// jesli nie znajdzie to zwraca -1
 }
 
 void ConfigDialog::removeControl(const QString& groupname, const QString& caption, const QString& name)
 {
-	QValueListIterator<RegisteredControl> control;
+	int i=existControl(groupname, caption, name);
 	
 	//kdebugm(KDEBUG_INFO, "nrOfControls=%i "+groupname+"\\"+caption+"\\"+name+"\n", RegisteredControls[i].nrOfControls);
 	//
-	if (!controlExists(groupname, caption, name, &control))
+	if(i<0)
 	{
 		kdebugm(KDEBUG_ERROR, "No such control %s %s %s\n", groupname.ascii(), caption.ascii(), name.ascii());
 		return;
 	}
  	
-	if ((*control).nrOfControls != 0)
+	if(RegisteredControls[i].nrOfControls!=0)
 	{
-		kdebugm(KDEBUG_ERROR, "Container not empty: %d %s %s %s\n", (*control).nrOfControls, groupname.ascii(), caption.ascii(), name.ascii());
+		kdebugm(KDEBUG_INFO, "Container not empty: %d %s %s %s\n", RegisteredControls[i].nrOfControls, groupname.ascii(), caption.ascii(), name.ascii());
 		return;
 	}
 
-	--(*(*control).parentControl).nrOfControls;
+	decreaseNrOfControls(i);
 
-	Tabs[groupname].remove(control);
-	--TabSizes[groupname];
+	RegisteredControls[i].type=CONFIG_DELETED;
 	kdebugm(KDEBUG_INFO, "control deleted "+groupname+"\\"+caption+"\\"+name+"\n");
 }
 
-bool ConfigDialog::removeTab(const QString& caption)
+void ConfigDialog::removeTab(const QString& caption)
 {
 //	kdebugf();
-	bool ok;
-	QValueListConstIterator<RegisteredControl> curControl;
-	tab(caption, curControl, &ok);
-	if (!ok)
+	int pos=findTab(caption);
+	
+	if(pos<0)
 	{
-		kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "Tab %s not found\n", caption.ascii());
-		return false;
+		kdebugm(KDEBUG_WARNING, "Tab %s not found\n", caption.ascii());
+		return;
 	}
 
-	if ((*curControl).nrOfControls == 0)
-	{
-		Tabs.remove(caption);
-		TabNames.remove(caption);
-		TabSizes.remove(caption);
-//		kdebugf2();
-		return true;
-	}
+	kdebugmf(KDEBUG_INFO, "nrOfControls=%i\n", RegisteredControls[pos].nrOfControls);
+	
+	if(RegisteredControls[pos].nrOfControls==0)
+		RegisteredControls[pos].type=CONFIG_DELETED;
 	else
+		kdebugm(KDEBUG_INFO, "can't remove tab!\n");
+//	kdebugf2();
+}
+
+void ConfigDialog::decreaseNrOfControls(int control)
+{
+//	kdebugf();
+	int j;
+	QString localparent=RegisteredControls[control].parent;
+	for (j=control; j>=0; --j)
+		if(RegisteredControls[j].type!=CONFIG_DELETED)
+			if (RegisteredControls[j].caption==localparent)
+			{
+				--RegisteredControls[j].nrOfControls;
+				localparent= RegisteredControls[j].parent;
+				if (RegisteredControls[j].type == CONFIG_TAB)
+					break;
+			}
+//	kdebugf2();
+}
+
+void ConfigDialog::increaseNrOfControls(const int startpos, const int endpos, const QString& parent)
+{
+//	kdebugf();
+	int j;
+	QString localparent=parent;
+	for (j=endpos; j>=startpos; --j)
+		if(RegisteredControls[j].type!=CONFIG_DELETED)
+			if (RegisteredControls[j].caption==localparent)
+			{
+				++RegisteredControls[j].nrOfControls;
+				localparent= RegisteredControls[j].parent;
+				if (RegisteredControls[j].type == CONFIG_TAB)
+					break;
+			}
+//	kdebugf2();
+}
+
+int ConfigDialog::addControl(const QString& groupname, const ConfigDialog::RegisteredControl& control)
+{
+//	kdebugf();
+	int position= findTab(groupname);
+	if (position == -1) 
 	{
-		kdebugm(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "can't remove tab %s (ctrls: %d)!\n", caption.local8Bit().data(), (*curControl).nrOfControls);
-		CONST_FOREACH(i, Tabs[caption])
-			kdebugm(KDEBUG_WARNING, ">>> %s\n", (*i).caption.local8Bit().data());
-		return false;
+		kdebugm(KDEBUG_ERROR, "There is no Tab: "+groupname+"\n");
+		return -1;
 	}
+	int nexttab= findNextTab(position+1);
+	if (nexttab == -1)
+		nexttab= RegisteredControls.count()-1;
+
+	int j;
+	for (j=position; j<=nexttab; ++j)
+		if(RegisteredControls[j].type!=CONFIG_DELETED)
+			if (RegisteredControls[j].caption == control.parent)
+			{
+				int nrOfControls=RegisteredControls[j].nrOfControls;
+				increaseNrOfControls(position,j,control.parent);
+				if (RegisteredControls[j].caption == RegisteredControls.last().caption)
+					RegisteredControls.append(control);
+				else
+					RegisteredControls.insert(RegisteredControls.at(j+nrOfControls+1),control);
+//				kdebugf2();
+				return 0;
+			}	
+
+//	kdebugf2();
+	return -2;
+
+// je¶li warto¶æ zwrócona jest -1 to nie znaleziono takiego TAB'a
+// je¶li warto¶æ zwrócona jest -2 to nie znaleziono takiego parent'a
+// je¶li warto¶æ zwrócona jest 0 to wszystko jest w porz±dku
 }
 
-bool ConfigDialog::tabExists(const QString& caption)
+QWidget* ConfigDialog::getWidget(const QString& groupname, const QString& caption, const QString& name)
 {
-	return Tabs.contains(caption);
-}
-
-QWidget* ConfigDialog::widget(const QString& groupname, const QString& caption, const QString& name)
-{
-	if (configdialog == NULL)
+	if (configdialog==NULL)
 	{
 		kdebugm(KDEBUG_PANIC, "ConfigDialog is closed! Can't get widget! (%s,%s,%s)\n",
 			groupname.local8Bit().data(), caption.local8Bit().data(), name.local8Bit().data());
 		return NULL;
 	}
-	QValueListConstIterator<RegisteredControl> control;
-	if (controlExists(groupname, caption, name, &control))
-		return (*control).widget;
+	int nr=existControl(groupname,caption,name);
+	if (nr!=-1)
+		return (RegisteredControls[nr].widget);
 	kdebugm(KDEBUG_PANIC, "Warning: there is no \\" +groupname+ "\\"+ caption+ "\\"+ name+ "\\ control\n");
 	return NULL;
-}
-
-bool ConfigDialog::addControl(const QString& groupname, ConfigDialog::RegisteredControl& control)
-{
-//	kdebugf();
-	bool ok;
-	QValueListIterator<RegisteredControl> curControl, tabControl, end, parent;
-	tab(groupname, tabControl, &ok);
-	if (!ok) 
-	{
-		kdebugm(KDEBUG_FUNCTION_END|KDEBUG_ERROR, "There is no Tab: "+groupname+"\n");
-		return false;
-	}
-	end = Tabs[groupname].end();
-
-	int counter = 0;
-	for (curControl = tabControl; curControl != end; ++curControl)
-		if ((*curControl).caption == control.parent)
-			if (counter == 0)
-			{
-				parent = curControl;
-				control.parentControl = curControl;
-				++counter;
-			}
-			else
-				break;
-	if (counter == 1)
-	{
-		++(*parent).nrOfControls;
-		Tabs[groupname].insert(curControl, control);
-		++TabSizes[groupname];
-//		kdebugf2();
-		return true;
-	}
-	else
-	{
-//		kdebugf2();
-		return false;
-	}
 }
 
 bool ConfigDialog::dialogOpened()
@@ -1275,112 +1296,131 @@ bool ConfigDialog::dialogOpened()
 
 QButtonGroup* ConfigDialog::getButtonGroup(const QString& groupname, const QString& caption, const QString& name)
 {
-	return dynamic_cast<QButtonGroup*>(widget(groupname,caption,name));
+	return dynamic_cast<QButtonGroup*>(getWidget(groupname,caption,name));
 }
 
 QCheckBox* ConfigDialog::getCheckBox(const QString& groupname, const QString& caption, const QString& name)
 {
-	return dynamic_cast<QCheckBox*>(widget(groupname,caption,name));
+	return dynamic_cast<QCheckBox*>(getWidget(groupname,caption,name));
 }
 
 ColorButton* ConfigDialog::getColorButton(const QString& groupname, const QString& caption, const QString& name)
 {
-	return dynamic_cast<ColorButton*>(widget(groupname,caption,name));
+	return dynamic_cast<ColorButton*>(getWidget(groupname,caption,name));
 }
 
 QComboBox* ConfigDialog::getComboBox(const QString& groupname, const QString& caption, const QString& name)
 {
-	return dynamic_cast<QComboBox*>(widget(groupname,caption,name));
+	return dynamic_cast<QComboBox*>(getWidget(groupname,caption,name));
 }
 
 QGrid* ConfigDialog::getGrid(const QString& groupname, const QString& caption, const QString& name)
 {
-	return dynamic_cast<QGrid*>(widget(groupname,caption,name));
+	return dynamic_cast<QGrid*>(getWidget(groupname,caption,name));
 }
 
 QHBox* ConfigDialog::getHBox(const QString& groupname, const QString& caption, const QString& name)
 {
-	return dynamic_cast<QHBox*>(widget(groupname,caption,name));
+	return dynamic_cast<QHBox*>(getWidget(groupname,caption,name));
 }
 
 QHGroupBox* ConfigDialog::getHGroupBox(const QString& groupname, const QString& caption, const QString& name)
 {
-	return dynamic_cast<QHGroupBox*>(widget(groupname,caption,name));
+	return dynamic_cast<QHGroupBox*>(getWidget(groupname,caption,name));
 }
 
 QHButtonGroup* ConfigDialog::getHButtonGroup(const QString& groupname, const QString& caption, const QString& name)
 {
-	return dynamic_cast<QHButtonGroup*>(widget(groupname,caption,name));
+	return dynamic_cast<QHButtonGroup*>(getWidget(groupname,caption,name));
 }
 
 HotKey* ConfigDialog::getHotKeyEdit(const QString& groupname, const QString& caption, const QString& name)
 {
-	return dynamic_cast<HotKey*>(widget(groupname,caption,name));
+	return dynamic_cast<HotKey*>(getWidget(groupname,caption,name));
 }
 
 QLineEdit* ConfigDialog::getLineEdit(const QString& groupname, const QString& caption, const QString& name)
 {
-	return dynamic_cast<QLineEdit*>(widget(groupname,caption,name));
+	return dynamic_cast<QLineEdit*>(getWidget(groupname,caption,name));
 }
 
 QTextEdit* ConfigDialog::getTextEdit(const QString& groupname, const QString& caption, const QString& name)
 {
-	return dynamic_cast<QTextEdit*>(widget(groupname,caption,name));
+	return dynamic_cast<QTextEdit*>(getWidget(groupname,caption,name));
 }
 
 QLabel* ConfigDialog::getLabel(const QString& groupname, const QString& caption, const QString& name)
 {
-	return dynamic_cast<QLabel*>(widget(groupname,caption,name));
+	return dynamic_cast<QLabel*>(getWidget(groupname,caption,name));
 }
 
 QListBox* ConfigDialog::getListBox(const QString& groupname, const QString& caption, const QString& name)
 {
-	return dynamic_cast<QListBox*>(widget(groupname,caption,name));
+	return dynamic_cast<QListBox*>(getWidget(groupname,caption,name));
 }
 
 QListView* ConfigDialog::getListView(const QString& groupname, const QString& caption, const QString& name)
 {
-	return dynamic_cast<QListView*>(widget(groupname,caption,name));
+	return dynamic_cast<QListView*>(getWidget(groupname,caption,name));
 }
 
 QPushButton* ConfigDialog::getPushButton(const QString& groupname, const QString& caption, const QString& name)
 {
-	return dynamic_cast<QPushButton*>(widget(groupname,caption,name));
+	return dynamic_cast<QPushButton*>(getWidget(groupname,caption,name));
 }
 
 SelectFont* ConfigDialog::getSelectFont(const QString& groupname, const QString& caption, const QString& name)
 {
-	return dynamic_cast<SelectFont*>(widget(groupname,caption,name));
+	return dynamic_cast<SelectFont*>(getWidget(groupname,caption,name));
 }
 
 SelectPaths* ConfigDialog::getSelectPaths(const QString& groupname, const QString& caption, const QString& name)
 {
-	return dynamic_cast<SelectPaths*>(widget(groupname,caption,name));
+	return dynamic_cast<SelectPaths*>(getWidget(groupname,caption,name));
 }
 
 QSlider* ConfigDialog::getSlider(const QString& groupname, const QString& caption, const QString& name)
 {
-	return dynamic_cast<QSlider*>(widget(groupname,caption,name));
+	return dynamic_cast<QSlider*>(getWidget(groupname,caption,name));
 }
 
 QSpinBox* ConfigDialog::getSpinBox(const QString& groupname, const QString& caption, const QString& name)
 {
-	return dynamic_cast<QSpinBox*>(widget(groupname,caption,name));
+	return dynamic_cast<QSpinBox*>(getWidget(groupname,caption,name));
 }
 
 QVBox* ConfigDialog::getVBox(const QString& groupname, const QString& caption, const QString& name)
 {
-	return dynamic_cast<QVBox*>(widget(groupname,caption,name));
+	return dynamic_cast<QVBox*>(getWidget(groupname,caption,name));
 }
 
 QVGroupBox* ConfigDialog::getVGroupBox(const QString& groupname, const QString& caption, const QString& name)
 {
-	return dynamic_cast<QVGroupBox*>(widget(groupname,caption,name));
+	return dynamic_cast<QVGroupBox*>(getWidget(groupname,caption,name));
 }
 
 QVButtonGroup* ConfigDialog::getVButtonGroup(const QString& groupname, const QString& caption, const QString& name)
 {
-	return dynamic_cast<QVButtonGroup*>(widget(groupname,caption,name));
+	return dynamic_cast<QVButtonGroup*>(getWidget(groupname,caption,name));
+}
+
+int ConfigDialog::existControl(const QString& groupname, const QString& caption, const QString& name)
+{
+	int position= findTab(groupname);
+	if (position == -1)
+		return -1;
+
+	int j;
+	int count;
+	for(j=position, count=0; count <= RegisteredControls[position].nrOfControls; ++j)
+		if(RegisteredControls[j].type!=CONFIG_DELETED)
+		{
+			++count;
+			if (RegisteredControls[j].caption == caption)
+				if (RegisteredControls[j].name == name)
+					return j;
+		}
+	return -1;
 }
 
 QKeySequence HotKey::shortCutFromFile(const QString& groupname, const QString &name)
@@ -1405,8 +1445,7 @@ QString HotKey::keyEventToString(QKeyEvent *e)
 		
 	if ((e->state()& Qt::MetaButton) || (e->key() == Qt::Key_Meta))
 		result+= "Shift+Alt+";
-	else
-	{
+	else {
 		if ((e->state()& Qt::ShiftButton) || (e->key() == Qt::Key_Shift))
 			result+= "Shift+";
 		if ((e->state()& Qt::AltButton) || (e->key() == Qt::Key_Alt))
@@ -1417,10 +1456,11 @@ QString HotKey::keyEventToString(QKeyEvent *e)
 		||(e->key() == Qt::Key_Shift)
 		||(e->key() == Qt::Key_Alt)
 		||(e->key() == Qt::Key_Meta)))
-			result += QAccel::keyToString(QKeySequence(e->key()));
+			result+= QAccel::keyToString(QKeySequence(e->key()));
 
 	return result;
 }
+
 
 void HotKey::keyPressEvent(QKeyEvent *e)
 {
@@ -1623,7 +1663,7 @@ void SelectPaths::addPath()
 	kdebugf();
 	QString dirtoadd=pathEdit->text();
 	QDir dir;
-	if (!dirtoadd.isEmpty())
+	if (dirtoadd!= "")
 		if (dir.cd(dirtoadd))
 		{
 			if (dirtoadd.right(1) != "/")
@@ -1642,7 +1682,7 @@ void SelectPaths::replacePath()
 	QString dirtochange=pathEdit->text();
 
 	QDir dir;
-	if (!dirtochange.isEmpty())
+	if (dirtochange!= "")
 		if (dir.cd(dirtochange))
 			if (pathListBox->isSelected(pathListBox->currentItem()))
 			{
@@ -1672,10 +1712,10 @@ void SelectPaths::choosePath()
 
 	QDir dir;
 	QString startdir="/";
-	if (dir.cd(pathEdit->text()) && (!pathEdit->text().isEmpty()))
+	if (dir.cd(pathEdit->text()) && (pathEdit->text()!= ""))
 		startdir=pathEdit->text();
 	QString s= QFileDialog::getExistingDirectory(startdir, this, "getDirectory", tr("Choose a directory"));
-	if (!s.isEmpty())
+	if (s!="")
 		pathEdit->setText(s);
 	kdebugf2();
 }
@@ -1684,7 +1724,7 @@ void SelectPaths::okButton()
 {
 	kdebugf();
 	releaseList.clear();
-	for (unsigned int i = 0, count = pathListBox->count(); i < count; ++i)
+	for (unsigned int i=0; i<pathListBox->count(); ++i)
 		releaseList.append(pathListBox->text(i));
 
 	pathEdit->setText("");

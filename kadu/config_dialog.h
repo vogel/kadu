@@ -73,6 +73,7 @@ class HotKey : public QLineEdit
 	protected:
 		virtual void keyPressEvent(QKeyEvent *e);
 		virtual void keyReleaseEvent(QKeyEvent *e);
+
 };
 /**
     Kontrolka do wyboru koloru
@@ -170,11 +171,11 @@ class SelectPaths : public QHBox
 		void changed(const QStringList& paths);
 };
 
+
 /**
 	Okno z konfiguracj± Kadu
 **/
-class ConfigDialog : public QVBox
-{
+class ConfigDialog : public QVBox {
 	Q_OBJECT
 
 	private:
@@ -205,7 +206,7 @@ class ConfigDialog : public QVBox
 			CONFIG_VGROUPBOX,
 			CONFIG_VRADIOGROUP,
 			CONFIG_SELECTFONT,
-			CONFIG_NULL
+			CONFIG_DELETED
 		};
 
 		struct ElementConnections
@@ -217,10 +218,11 @@ class ConfigDialog : public QVBox
 			QString slot;
 			bool operator== (const ElementConnections& r) const;
 		};
+
 		struct RegisteredControl
 		{
 			RegisteredControlType type;
-			RegisteredControl(RegisteredControlType t=CONFIG_NULL,
+			RegisteredControl(RegisteredControlType t=CONFIG_DELETED,
 				const QString &groupname=QString::null,
 				const QString &parent=QString::null,
 				const QString &caption=QString::null,
@@ -235,28 +237,28 @@ class ConfigDialog : public QVBox
 			
 			//dodatkowe dane
 			QValueList<QVariant> additionalParams;
-			QValueListIterator<RegisteredControl> parentControl;
+			
 			QWidget* widget;
 			int nrOfControls;
-			
 			ConfigFile* config;
 			QValueList <ElementConnections> ConnectedSlots;
 		};
 
+		static QValueList <RegisteredControl> RegisteredControls;
 		static QValueList <ElementConnections> SlotsOnCreate;
 		static QValueList <ElementConnections> SlotsOnClose;
 		static QValueList <ElementConnections> SlotsOnApply;
 		static QApplication* appHandle;
-
-		static QMap<QString, QValueList <RegisteredControl> > Tabs;
-		static QStringList TabNames;
-		static QMap<QString, int> TabSizes;
-
 		
 		/**
-		    Dodaje kontrolkê do listy
+		    Dodaje kontrolkê do listy RegisteredControls 
 		**/
-		static bool addControl(const QString& groupname, ConfigDialog::RegisteredControl& control);
+		static int addControl(const QString& groupname,const RegisteredControl& control);
+		/**
+		    Uaktualnia liczbê kontrolek bêd±cych dzieæmi kontrolki "parent"
+		**/
+		static void increaseNrOfControls(const int startpos, const int endpos, const QString& parent);
+		static void decreaseNrOfControls(int control);
 
 	public:
 		/**
@@ -711,168 +713,6 @@ class ConfigDialog : public QVBox
 				const QString &defaultS="", const QString& tip="", const QString& name="");
 
 		/**
-		    Pobiera wska¼nik do kontrolki ButtonGroup(groupname, caption, name)
-			je¿eli okno konfiguracji jest zamkniête zwraca NULL
-		**/
-		static QButtonGroup* getButtonGroup(const QString& groupname, const QString& caption, const QString& name="");
-
-		/**
-		    Pobiera wska¼nik do kontrolki CheckBox(groupname, caption, name)
-			je¿eli okno konfiguracji jest zamkniête zwraca NULL
-		**/
-		static QCheckBox*   getCheckBox(const QString& groupname, const QString& caption, const QString& name="");
-
-		/**
-		    Pobiera wska¼nik do kontrolki ColorButton(groupname, caption, name)
-			je¿eli okno konfiguracji jest zamkniête zwraca NULL
-		**/
-		static ColorButton* getColorButton(const QString& groupname, const QString& caption, const QString& name="");
-
-		/**
-		    Pobiera wska¼nik do kontrolki ComboBox(groupname, caption, name)
-			je¿eli okno konfiguracji jest zamkniête zwraca NULL
-		**/
-		static QComboBox*   getComboBox(const QString& groupname, const QString& caption, const QString& name="");
-
-		/**
-		    Pobiera wska¼nik do kontrolki Grid(groupname, caption, name)
-			je¿eli okno konfiguracji jest zamkniête zwraca NULL
-		**/
-		static QGrid*       getGrid(const QString& groupname, const QString& caption, const QString& name="");
-
-		/**
-		    Pobiera wska¼nik do kontrolki HBox(groupname, caption, name)
-			je¿eli okno konfiguracji jest zamkniête zwraca NULL
-		**/
-		static QHBox* 	    getHBox(const QString& groupname, const QString& caption, const QString& name="");
-
-		/**
-		    Pobiera wska¼nik do kontrolki HGroupBox(groupname, caption, name)
-			je¿eli okno konfiguracji jest zamkniête zwraca NULL
-		**/
-		static QHGroupBox*  getHGroupBox(const QString& groupname, const QString& caption, const QString& name="");
-
-		/**
-		    Pobiera wska¼nik do kontrolki HButtonGroup(groupname, caption, name)
-			je¿eli okno konfiguracji jest zamkniête zwraca NULL
-		**/
-		static QHButtonGroup* getHButtonGroup(const QString& groupname, const QString& caption, const QString& name="");
-
-		/**
-		    Pobiera wska¼nik do kontrolki HotKeyEdit(groupname, caption, name)
-			je¿eli okno konfiguracji jest zamkniête zwraca NULL
-		**/
-		static HotKey* 	    getHotKeyEdit(const QString& groupname, const QString& caption, const QString& name="");
-
-		/**
-		    Pobiera wska¼nik do kontrolki LineEdit(groupname, caption, name)
-			je¿eli okno konfiguracji jest zamkniête zwraca NULL
-		**/
-		static QLineEdit*   getLineEdit(const QString& groupname, const QString& caption, const QString& name="");
-
-		/**
-		    Pobiera wska¼nik do kontrolki TextEdit(groupname, caption, name)
-			je¿eli okno konfiguracji jest zamkniête zwraca NULL
-		**/
-		static QTextEdit*   getTextEdit(const QString& groupname, const QString& caption, const QString& name="");
-
-		/**
-		    Pobiera wska¼nik do kontrolki Label(groupname, caption, name)
-			je¿eli okno konfiguracji jest zamkniête zwraca NULL
-		**/
-		static QLabel*      getLabel(const QString& groupname, const QString& caption, const QString& name="");
-
-		/**
-		    Pobiera wska¼nik do kontrolki ListBox(groupname, caption, name)
-			je¿eli okno konfiguracji jest zamkniête zwraca NULL
-		**/
-		static QListBox*    getListBox(const QString& groupname, const QString& caption, const QString& name="");
-
-		/**
-		    Pobiera wska¼nik do kontrolki ListView(groupname, caption, name)
-			je¿eli okno konfiguracji jest zamkniête zwraca NULL
-		**/
-		static QListView*   getListView(const QString& groupname, const QString& caption, const QString& name="");
-
-		/**
-		    Pobiera wska¼nik do kontrolki PushButton(groupname, caption, name)
-			je¿eli okno konfiguracji jest zamkniête zwraca NULL
-		**/
-		static QPushButton* getPushButton(const QString& groupname, const QString& caption, const QString& name="");
-
-		/**
-		    Pobiera wska¼nik do kontrolki SelectFont(groupname, caption, name)
-			je¿eli okno konfiguracji jest zamkniête zwraca NULL
-		**/
-		static SelectFont* getSelectFont(const QString& groupname, const QString& caption, const QString& name="");
-
-		/**
-		    Pobiera wska¼nik do kontrolki SelectPaths(groupname, caption, name)
-			je¿eli okno konfiguracji jest zamkniête zwraca NULL
-		**/
-		static SelectPaths* getSelectPaths(const QString& groupname, const QString& caption, const QString& name="");
-
-		/**
-		    Pobiera wska¼nik do kontrolki Slider(groupname, caption, name)
-			je¿eli okno konfiguracji jest zamkniête zwraca NULL
-		**/
-		static QSlider*     getSlider(const QString& groupname, const QString& caption, const QString& name="");
-
-		/**
-		    Pobiera wska¼nik do kontrolki SpinBox(groupname, caption, name)
-			je¿eli okno konfiguracji jest zamkniête zwraca NULL
-		**/
-		static QSpinBox*    getSpinBox(const QString& groupname, const QString& caption, const QString& name="");
-
-		/**
-		    Pobiera wska¼nik do kontrolki VBox(groupname, caption, name)
-			je¿eli okno konfiguracji jest zamkniête zwraca NULL
-		**/
-		static QVBox*  	    getVBox(const QString& groupname, const QString& caption, const QString& name="");
-
-		/**
-		    Pobiera wska¼nik do kontrolki VGroupBox(groupname, caption, name)
-			je¿eli okno konfiguracji jest zamkniête zwraca NULL
-		**/
-		static QVGroupBox*  getVGroupBox(const QString& groupname, const QString& caption, const QString& name="");
-
-		/**
-		    Pobiera wska¼nik do kontrolki VButtonGroup(groupname, caption, name)
-			je¿eli okno konfiguracji jest zamkniête zwraca NULL
-		**/
-		static QVButtonGroup* getVButtonGroup(const QString& groupname, const QString& caption, const QString& name="");
-
-		/**
-		    Pobiera wska¼nik do kontrolki Widget(groupname, caption, name)
-			je¿eli okno konfiguracji jest zamkniête zwraca NULL
-		**/
-		static QWidget* widget(const QString& groupname, const QString& caption, const QString& name = "");
-
-		/**
-			zwraca informacjê czy kontrolka (groupname, caption, name) jest w konfiguracji
-			przy okazji przekazuj±c jej iterator je¿eli control != 0
-		**/
-		static bool controlExists(const QString& groupname, const QString& caption, const QString& name = "", QValueListConstIterator<RegisteredControl> *control = 0);
-
-		/**
-			zwraca informacjê czy kontrolka (groupname, caption, name) jest w konfiguracji
-			przy okazji przekazuj±c jej iterator je¿eli control != 0
-		**/
-		static bool controlExists(const QString& groupname, const QString& caption, const QString& name, QValueListIterator<RegisteredControl> *control);
-
-		/**
-		    Wyszukuje pozycjê zak³adki "name",
-			zwraca przez parametry jej iterator oraz informacjê o znalezieniu je¿eli found != 0
-		**/
-		static void tab(const QString &name, QValueListConstIterator<RegisteredControl> &ret, bool *found = 0);
-
-		/**
-		    Wyszukuje pozycjê zak³adki "name",
-			zwraca przez parametry jej iterator oraz informacjê o znalezieniu je¿eli found != 0
-		**/
-		static void tab(const QString &name, QValueListIterator<RegisteredControl> &ret, bool *found = 0);
-
-		/**
 			Pod³±cza slot "slot" obiektu "receiver"
 			pod sygna³ "signal" kontrolki (groupname, caption, name) 
 		**/
@@ -925,31 +765,168 @@ class ConfigDialog : public QVBox
 		/**
 		    Usuwa kontrolkê z zak³adki "groupname", o etykiecie "caption" i nazwie "name".
 		**/
-		static void removeControl(const QString& groupname, const QString& caption, const QString& name = "");
+		static void removeControl(const QString& groupname, const QString& caption, const QString& name="");
 
 		/**
 		    Usuwa zak³adkê o nazwie caption
 		**/
-		static bool removeTab(const QString& caption);
-		
-		/**
-			Zwraca prawdê je¿eli zak³adka znajduje siê w konfiguracji
-		**/
-		static bool tabExists(const QString& caption);
+		static void removeTab(const QString& caption);
 
+		/**
+		    Pobiera wska¼nik do kontrolki ButtonGroup(groupname, caption, name)
+			je¿eli okno konfiguracji jest zamkniête zwraca NULL
+		**/
+		static QButtonGroup* getButtonGroup(const QString& groupname, const QString& caption, const QString& name="");
+		/**
+		    Pobiera wska¼nik do kontrolki CheckBox(groupname, caption, name)
+			je¿eli okno konfiguracji jest zamkniête zwraca NULL
+		**/
+		static QCheckBox*   getCheckBox(const QString& groupname, const QString& caption, const QString& name="");
+		/**
+		    Pobiera wska¼nik do kontrolki ColorButton(groupname, caption, name)
+			je¿eli okno konfiguracji jest zamkniête zwraca NULL
+		**/
+		static ColorButton* getColorButton(const QString& groupname, const QString& caption, const QString& name="");
+		/**
+		    Pobiera wska¼nik do kontrolki ComboBox(groupname, caption, name)
+			je¿eli okno konfiguracji jest zamkniête zwraca NULL
+		**/
+		static QComboBox*   getComboBox(const QString& groupname, const QString& caption, const QString& name="");
+		/**
+		    Pobiera wska¼nik do kontrolki Grid(groupname, caption, name)
+			je¿eli okno konfiguracji jest zamkniête zwraca NULL
+		**/
+		static QGrid*       getGrid(const QString& groupname, const QString& caption, const QString& name="");
+		/**
+		    Pobiera wska¼nik do kontrolki HBox(groupname, caption, name)
+			je¿eli okno konfiguracji jest zamkniête zwraca NULL
+		**/
+		static QHBox* 	    getHBox(const QString& groupname, const QString& caption, const QString& name="");
+		/**
+		    Pobiera wska¼nik do kontrolki HGroupBox(groupname, caption, name)
+			je¿eli okno konfiguracji jest zamkniête zwraca NULL
+		**/
+		static QHGroupBox*  getHGroupBox(const QString& groupname, const QString& caption, const QString& name="");
+		/**
+		    Pobiera wska¼nik do kontrolki HButtonGroup(groupname, caption, name)
+			je¿eli okno konfiguracji jest zamkniête zwraca NULL
+		**/
+		static QHButtonGroup* getHButtonGroup(const QString& groupname, const QString& caption, const QString& name="");
+		/**
+		    Pobiera wska¼nik do kontrolki HotKeyEdit(groupname, caption, name)
+			je¿eli okno konfiguracji jest zamkniête zwraca NULL
+		**/
+		static HotKey* 	    getHotKeyEdit(const QString& groupname, const QString& caption, const QString& name="");
+		/**
+		    Pobiera wska¼nik do kontrolki LineEdit(groupname, caption, name)
+			je¿eli okno konfiguracji jest zamkniête zwraca NULL
+		**/
+		static QLineEdit*   getLineEdit(const QString& groupname, const QString& caption, const QString& name="");
+		/**
+		    Pobiera wska¼nik do kontrolki TextEdit(groupname, caption, name)
+			je¿eli okno konfiguracji jest zamkniête zwraca NULL
+		**/
+		static QTextEdit*   getTextEdit(const QString& groupname, const QString& caption, const QString& name="");
+		/**
+		    Pobiera wska¼nik do kontrolki Label(groupname, caption, name)
+			je¿eli okno konfiguracji jest zamkniête zwraca NULL
+		**/
+		static QLabel*      getLabel(const QString& groupname, const QString& caption, const QString& name="");
+		/**
+		    Pobiera wska¼nik do kontrolki ListBox(groupname, caption, name)
+			je¿eli okno konfiguracji jest zamkniête zwraca NULL
+		**/
+		static QListBox*    getListBox(const QString& groupname, const QString& caption, const QString& name="");
+		/**
+		    Pobiera wska¼nik do kontrolki ListView(groupname, caption, name)
+			je¿eli okno konfiguracji jest zamkniête zwraca NULL
+		**/
+		static QListView*   getListView(const QString& groupname, const QString& caption, const QString& name="");
+		/**
+		    Pobiera wska¼nik do kontrolki PushButton(groupname, caption, name)
+			je¿eli okno konfiguracji jest zamkniête zwraca NULL
+		**/
+		static QPushButton* getPushButton(const QString& groupname, const QString& caption, const QString& name="");
+		/**
+		    Pobiera wska¼nik do kontrolki SelectFont(groupname, caption, name)
+			je¿eli okno konfiguracji jest zamkniête zwraca NULL
+		**/
+		static SelectFont* getSelectFont(const QString& groupname, const QString& caption, const QString& name="");
+		/**
+		    Pobiera wska¼nik do kontrolki SelectPaths(groupname, caption, name)
+			je¿eli okno konfiguracji jest zamkniête zwraca NULL
+		**/
+		static SelectPaths* getSelectPaths(const QString& groupname, const QString& caption, const QString& name="");
+		/**
+		    Pobiera wska¼nik do kontrolki Slider(groupname, caption, name)
+			je¿eli okno konfiguracji jest zamkniête zwraca NULL
+		**/
+		static QSlider*     getSlider(const QString& groupname, const QString& caption, const QString& name="");
+		/**
+		    Pobiera wska¼nik do kontrolki SpinBox(groupname, caption, name)
+			je¿eli okno konfiguracji jest zamkniête zwraca NULL
+		**/
+		static QSpinBox*    getSpinBox(const QString& groupname, const QString& caption, const QString& name="");
+		/**
+		    Pobiera wska¼nik do kontrolki VBox(groupname, caption, name)
+			je¿eli okno konfiguracji jest zamkniête zwraca NULL
+		**/
+		static QVBox*  	    getVBox(const QString& groupname, const QString& caption, const QString& name="");
+		/**
+		    Pobiera wska¼nik do kontrolki VGroupBox(groupname, caption, name)
+			je¿eli okno konfiguracji jest zamkniête zwraca NULL
+		**/
+		static QVGroupBox*  getVGroupBox(const QString& groupname, const QString& caption, const QString& name="");
+		/**
+		    Pobiera wska¼nik do kontrolki VButtonGroup(groupname, caption, name)
+			je¿eli okno konfiguracji jest zamkniête zwraca NULL
+		**/
+		static QVButtonGroup* getVButtonGroup(const QString& groupname, const QString& caption, const QString& name="");
+		/**
+		    Pobiera wska¼nik do kontrolki Widget(groupname, caption, name)
+			je¿eli okno konfiguracji jest zamkniête zwraca NULL
+		**/
+		static QWidget*     getWidget(const QString& groupname, const QString& caption, const QString& name="");
+		/**
+		    Zwraca pozycjê kontrolki Widget(groupname, caption, name) w li¶cie RegisteredControls
+		    je¶li nie istnieje taka kontrolka to zwracana jest warto¶æ -1
+		**/
+		static int existControl(const QString& groupname, const QString& caption, const QString& name="");
+		/**
+		    Wyszukuje pozycjê dowolnej zak³adki w li¶cie RegisteredControls 
+			poczynaj±c od pozycji "startpos"
+			
+		    Je¶li nie znajdzie zak³adki to zwraca warto¶æ "-1"
+		**/
+		static int findNextTab(int startpos);
+		/**
+		    Wyszukuje pozycjê zak³adki "groupname" w li¶cie RegisteredControls 
+			poczynaj±c od pozycji "startpos"
+
+		    Je¶li nie znajdzie zak³adki to zwraca warto¶æ "-1"
+		**/
+		static int findTab(const QString& groupname, int startpos=0);
+		/**
+		    Wyszukuje pozycjê poprzedniej zak³adki w li¶cie RegisteredControls 
+			poczynaj±c od pozycji "startpos"
+
+		    Je¶li nie znajdzie zak³adki to zwraca warto¶æ "-1"
+		**/
+		static int findPreviousTab(int startpos);
 		static bool dialogOpened();
 		static void closeDialog();
 		
 		//u¿ywaæ tylko w wyj±tkowych sytuacjach
 		static ConfigDialog *configdialog;
 		
+		//
 	protected:
 		QListBox* listBox;
 		QScrollView* view;
 		QPushButton* okButton;
 		QPushButton* applyButton;
 		QPushButton* cancelButton;
-		static QString currentTab;
+		static QString acttab;
 		virtual void keyPressEvent(QKeyEvent *e);
 
 	signals:
