@@ -95,7 +95,8 @@ void loadKaduConfig(void) {
 	config.geometry = konf->readRectEntry("Geometry",&def_rect);
 	QSize def_size(340,60);
 	config.splitsize = konf->readSizeEntry("SplitSize",&def_size);
-
+	config.showdesc = konf->readBoolEntry("ShowDesc",true);
+	
 	konf->setGroup("WWW");
 	config.defaultwebbrowser = konf->readBoolEntry("DefaultWebBrowser", true);
 	config.webbrowser = konf->readEntry("WebBrowser", "");
@@ -211,7 +212,8 @@ void saveKaduConfig(void) {
 	konf->writeEntry("DisplayGroupTabs",config.grouptabs);
 	konf->writeEntry("AddToDescription",config.addtodescription);
 	konf->writeEntry("ShowHint",config.showhint);
-	
+	konf->writeEntry("ShowDesc",config.showdesc);
+
 	if (config.savegeometry) {
 		konf->writeEntry("SplitSize",config.splitsize);
 		konf->writeEntry("Geometry",config.geometry);
@@ -440,8 +442,11 @@ void ConfigDialog::setupTab1(void) {
 
 	b_showhint = new QCheckBox(grid);
 	b_showhint->setText(i18n("Dock hint(experimental)"));
-	if (config.showhint)
-		b_showhint->setChecked(true);		
+	b_showhint->setChecked(config.showhint);
+	
+	b_showdesc = new QCheckBox(grid);
+	b_showdesc->setText(i18n("Show userbox-desc."));
+	b_showdesc->setChecked(config.showdesc);
 
 	addTab(box, i18n("General"));
 }
@@ -1309,9 +1314,19 @@ void ConfigDialog::updateConfig(void) {
 	if (!config.addtodescription)
 		kadu->autostatus_timer->stop();
 		
-	if (!b_showhint->isChecked() && config.showhint);
+	if (!b_showhint->isChecked() && config.showhint)
 		tip = NULL;
 	config.showhint = b_showhint->isChecked();
+	
+	if (!b_showdesc->isChecked() && config.showdesc) {
+		kadu->hidedesc();
+		config.showdesc = b_showdesc->isChecked();
+		}
+	else
+		if(b_showdesc->isChecked() && !config.showdesc) {
+			kadu->showdesc();
+			config.showdesc = b_showdesc->isChecked();
+		}
 
 	config.smsbuildin = b_smsbuildin->isChecked();
 	config.smsapp = strdup(e_smsapp->text().latin1());

@@ -57,6 +57,7 @@ class ConfigDialog : public QTabDialog	{
 		QCheckBox *b_checkupdates;
 		QCheckBox *b_addtodescription;
 		QCheckBox *b_showhint;
+		QCheckBox *b_showdesc;
 
 		QLineEdit *e_soundprog;
 		QCheckBox *b_playsound;

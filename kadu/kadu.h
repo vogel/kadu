@@ -80,6 +80,8 @@ struct config {
 	bool checkupdates;
 	bool addtodescription;
 	bool showhint;
+	bool showdesc;
+
 	QRect geometry;
 	QSize splitsize;
 	
@@ -193,6 +195,8 @@ class Kadu : public QMainWindow
 		int openChat(UinsList);
 		void gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op);
 		void currentChanged(QListBoxItem *item);
+		void showdesc(void);
+		void hidedesc(void);
 
 	private:
 		QMenuBar *mmb;

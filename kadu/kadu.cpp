@@ -498,6 +498,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	descrtb->setPaletteBackgroundColor(config.colors.userboxDescBg);
 	descrtb->setPaletteForegroundColor(config.colors.userboxDescText);
 	descrtb->setFont(config.fonts.userboxDesc);
+	if (!config.showdesc)
+		descrtb->hide();
 
 	QValueList<int> splitsizes;
 	
@@ -1867,6 +1869,14 @@ void Kadu::setClosePermitted(bool permitted)
 void MyLabel::mousePressEvent (QMouseEvent * e) {
 	if (e->button() == Qt::LeftButton)
 		kadu->slotShowStatusMenu();
+}
+
+void Kadu::showdesc(void) {
+	descrtb->show();
+}
+
+void Kadu::hidedesc(void) {
+	descrtb->hide();
 }
 
 #include "kadu.moc"
