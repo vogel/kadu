@@ -63,5 +63,9 @@
         <translation>Ta opcja wyłączy ukazywanie się dymków ze statusem kontaktów
 przy pierwszym połaczeniu sie Kadu z serwerem</translation>
     </message>
+    <message>
+        <source>Ignore status change if old status is available/busy (and new is available/busy also)</source>
+        <translation>Ignoruj zmianę statusów z dostępny/ zajęty na dostępny/ zajęty</translation>
+    </message>
 </context>
 </TS>

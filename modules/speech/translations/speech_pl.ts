@@ -85,17 +85,21 @@
         <source>Connection error:</source>
         <translation>Błąd połączenia: </translation>
     </message>
+    <message>
+        <source>Maximum number of spoken letters</source>
+        <translation>Maksymalna liczba czytanych liter</translation>
+    </message>
+    <message>
+        <source>Message too long (male):</source>
+        <translation>Zadługa wiadomość (mężczyzna): </translation>
+    </message>
+    <message>
+        <source>Message too long (female):</source>
+        <translation>Zadługa wiadomość (kobieta): </translation>
+    </message>
 </context>
 <context>
     <name>SpeechSlots</name>
-    <message>
-        <source>man %a said %1</source>
-        <translation>%a napisał %1</translation>
-    </message>
-    <message>
-        <source>woman %a said %1</source>
-        <translation>%a napisała %1</translation>
-    </message>
     <message>
         <source>man %a changed status to %s %d</source>
         <translation>%a zmienił status na %s %d</translation>
@@ -107,6 +111,18 @@
     <message>
         <source>Connection error - %1</source>
         <translation>Błąd połączenia - %1</translation>
+    </message>
+    <message>
+        <source>man %a wrote %1</source>
+        <translation>%a napisał %1</translation>
+    </message>
+    <message>
+        <source>woman %a wrote %1</source>
+        <translation>%a napisała %1</translation>
+    </message>
+    <message>
+        <source>%a wrote long message</source>
+        <translation>%a napisał długą wiadomość</translation>
     </message>
 </context>
 </TS>

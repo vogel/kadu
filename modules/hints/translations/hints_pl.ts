@@ -97,6 +97,10 @@
         <source>Hint timeout</source>
         <translation>Dymek zniknie po: </translation>
     </message>
+    <message>
+        <source>Open chat on click</source>
+        <translation>Kliknięcie otwiera okno rozmowy</translation>
+    </message>
 </context>
 <context>
     <name>HintManager</name>
