@@ -106,37 +106,20 @@ Chat* ChatManager::findChatByUins(UinsList uins)
 	return NULL;
 }
 
-int ChatManager::openChat(UinsList senders)
+int ChatManager::openChat(UinsList senders,time_t time)
 {
-	int i;
-	UinsList uins;
-
-	i = 0;
-	while (i < Chats.count() && !Chats[i].uins.equals(senders))
-		i++;
-
-	if (i == Chats.count())
-	{
-		Chat *chat;
-		uins = senders;
-		chat = new Chat(uins, 0);
-		chat->setTitle();
-		chat->show();
-	}
-	else
-	{
-		Chats[i].ptr->raise();
-		Chats[i].ptr->setActiveWindow();
-		return i;
-	}
-
-	i = 0;
-	while (i < Chats.count() && !Chats[i].uins.equals(senders))
-		i++;
-
-	kdebug("ChatManager::openChat(): return %d\n", i);
-
-	return i;
+	for (int i = 0; i < Chats.count(); i++)
+		if (Chats[i].uins.equals(senders))
+		{
+			Chats[i].ptr->raise();
+			Chats[i].ptr->setActiveWindow();
+			return i;	
+		}
+	Chat* chat = new Chat(senders, 0);
+	chat->setTitle();
+	chat->show();
+	chat->writeMessagesFromHistory(senders, time);
+	return Chats.count()-1;
 }
 
 int ChatManager::openPendingMsg(int index,QString& to_add)
@@ -165,11 +148,7 @@ int ChatManager::openPendingMsg(int index,QString& to_add)
 				kadu->addUser(e);
 		}
 	// otwieramy chat (jesli nie istnieje)
-	int l = Chats.count();
-	int k = openChat(p.uins);
-	// jesli chat zostal utworzony wpisujemy historie
-	if (l < Chats.count())
-		Chats[k].ptr->writeMessagesFromHistory(p.uins, p.time);
+	int k = openChat(p.uins,p.time);
 	// dopisujemy nowa wiadomosc do to_add
 	Chats[k].ptr->formatMessage(false, userlist.byUin(p.uins[0]).altnick,p.msg, timestamp(p.time), to_add);
 	// kasujemy wiadomosc z pending
@@ -205,8 +184,7 @@ void ChatManager::openPendingMsgs(UinsList uins)
 	}
 	else
 	{
-		k = openChat(uins);
-		Chats[k].ptr->writeMessagesFromHistory(uins, 0);
+		k = openChat(uins,0);
 	}
 }
 
@@ -277,10 +255,7 @@ void ChatManager::sendMessage(uin_t uin,UinsList selected_uins)
 	{
 		// zawsze otwieraja sie czaty
 		uins = selected_uins;
-		l = Chats.count();
-		k = openChat(uins);
-		if (l < Chats.count())
-			Chats[k].ptr->writeMessagesFromHistory(uins, 0);
+		k = openChat(uins,0);
 	}
 }
 
@@ -844,15 +819,6 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time) {
 	
 	kdebug("Chat::writeMessageFromHistory()\n");
 
-//	QValueList<UinsList>::iterator uinsit = wasFirstMsgs.begin();
-//	while (uinsit != wasFirstMsgs.end() && !senders.equals(*uinsit))
-//		uinsit++;
-
-//	if (uinsit != wasFirstMsgs.end())
-//		return;
-//	else
-//		wasFirstMsgs.append(senders);
-
 	date.setTime_t(time);
 	count = history.getHistoryEntriesCount(senders);
 	end = count - 1;
@@ -1031,8 +997,6 @@ void Chat::sendMessage(void) {
 		}
 	online = uins.count();
  	if (config_file.readBoolEntry("Chat","MessageAcks") && online) {
-//		acks.resize(acks.size() + 1);
-//		i = acks.size() - 1;
 		if (uins.count() > 1) {
 			for (j = 0; j < uins.count(); j++)
 				users[j] = uins[j];
@@ -1074,8 +1038,6 @@ void Chat::sendMessage(void) {
 				}
 #endif
 			}
-//		acks[i].type = 2;
-//		acks[i].ptr = this;
 		connect(&event_manager, SIGNAL(ackReceived(int)),
 			this, SLOT(ackReceivedSlot(int)));
 		}

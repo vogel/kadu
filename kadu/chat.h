@@ -30,7 +30,7 @@ class ChatManager : public QObject
 			};
 		};
 		QValueList<ChatsItem> Chats;
-		int openChat(UinsList senders);
+		int openChat(UinsList senders,time_t time);
 		int openPendingMsg(int index,QString& to_add);	
 
 	public:	
