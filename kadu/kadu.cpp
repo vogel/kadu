@@ -3,7 +3,7 @@
                              -------------------
     begin                : pia lip 06 00:16:52 CEST 2002
     copyright            : (C) 2002 by tomee, chilek, adrian
-    email                : tomee@cpi.pl, chilek@chilan.com, arians@aska.com.pl
+    email                : tomee@cpi.pl, chilek@chilan.com, adrians@aska.com.pl
  ***************************************************************************/
 
 /*                                                                         *
@@ -1685,6 +1685,8 @@ void Kadu::disconnectNetwork() {
 	disconnect_planned = true;
 	if (sess) {
 		gg_logoff(sess);
+		if (sess->password)
+			free(sess->password);
 		gg_free_session(sess);
 		sess = NULL;
 		}
