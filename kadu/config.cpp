@@ -453,10 +453,12 @@ void ConfigDialog::setupTab3(void) {
 
 void ConfigDialog::setupTab4(void) {
 	int i;
+	uin_t uin;
+
 	KIconLoader *loader = KGlobal::iconLoader();
 	QVBox *box4 = new QVBox(this);
 	box4->setMargin(2);	
-
+	
 	b_notifyglobal = new QCheckBox(box4);
 	b_notifyglobal->setText(i18n("Notify when users become available"));
 
@@ -492,10 +494,13 @@ void ConfigDialog::setupTab4(void) {
 	QStringList::Iterator it;
 	for (it = config.notifies.begin(); it != config.notifies.end(); ++it) {
 		QString nick;
-		if (userlist.containsUin(atoi((const char *)(*it).local8Bit()))) {
-			nick = userlist.byUin(atoi((const char *)(*it).local8Bit())).altnick;
+		uin = atoi((const char *)(*it).local8Bit());
+		if (userlist.containsUin(uin)) {
+			nick = userlist.byUin(uin).altnick;
 			e_notifies->insertItem(nick);
 			}
+		else
+			it = config.notifies.remove(it);
 		}
 	/* end two panes */
 
