@@ -3,11 +3,11 @@
     <name>@default</name>
     <message>
         <source>Sound player</source>
-        <translation type="unfinished"></translation>
+        <translation>Riproduttore suoni</translation>
     </message>
     <message>
         <source>Path:</source>
-        <translation type="unfinished"></translation>
+        <translation>Percorso:</translation>
     </message>
 </context>
 </TS>
