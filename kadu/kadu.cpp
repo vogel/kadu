@@ -709,7 +709,7 @@ int Kadu::openChat(UinsList senders) {
 	UinsList uins;
 
 	i = 0;
-	while (i < chats.count() && chats[i].uins != senders)
+	while (i < chats.count() && !chats[i].uins.equals(senders))
 		i++;
 
 	if (i == chats.count()) {
@@ -724,8 +724,10 @@ int Kadu::openChat(UinsList senders) {
 		}
 
 	i = 0;
-	while (i < chats.count() && chats[i].uins != senders)
+	while (i < chats.count() && !chats[i].uins.equals(senders))
 		i++;
+
+	fprintf(stderr, "KK Kadu::openChat(): return %d\n", i);
 
 	return i;
 }

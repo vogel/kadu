@@ -82,7 +82,7 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 
 	int i; bool yup = false;
 	i = 0;
-	while (i < chats.count() && chats[i].uins != senders)
+	while (i < chats.count() && !chats[i].uins.equals(senders))
 		i++;
 
 	if (msgclass == GG_CLASS_CHAT && i < chats.count()) {

@@ -19,3 +19,15 @@ char* preparePath(char* filename)
 	snprintf(path, sizeof(path), "%s/.gg/%s", home, filename);
 	return path;
 };
+
+UinsList::UinsList() {
+}
+
+bool UinsList::equals(UinsList &uins) {
+	if (count() != uins.count())
+		return false;
+	for (UinsList::iterator i = begin(); i != end(); i++)
+		if(!uins.contains(*i))
+			return false;
+	return true;
+}
