@@ -102,6 +102,8 @@ class Kadu : public QMainWindow
 		void viewHistory();
 		void lookupInDirectory();
 		void showUserInfo();
+		void addUserAction();
+
 	private:
 		QFrame *centralFrame;
 		QGridLayout *grid;
