@@ -674,6 +674,10 @@ Chat::~Chat()
 	disconnect(&event_manager, SIGNAL(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)),
 		this, SLOT(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)));
 
+	for(QValueList<ChatMessage *>::iterator it=chatMessages.begin(); it!=chatMessages.end(); it++)
+		delete *it;
+	chatMessages.clear();
+
 	if (userbox)
 		delete userbox;
 
@@ -1144,6 +1148,9 @@ void Chat::addMyMessageToHistory()
 
 void Chat::clearChatWindow()
 {
+	for(QValueList<ChatMessage *>::iterator it=chatMessages.begin(); it!=chatMessages.end(); it++)
+		delete *it;
+	chatMessages.clear();
 	body->clear();
 	totaloccurences = 0;
 }
