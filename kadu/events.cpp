@@ -116,8 +116,8 @@ void EventManager::connectedSlot()
 	kadu->setCurrentStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
 	userlist_sent = true;
 
-//	if (ifStatusWithDescription(loginparams.status))
-//		kadu->setStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
+	if ((loginparams.status & (~GG_STATUS_FRIENDS_MASK)) == GG_STATUS_INVISIBLE_DESCR)
+		kadu->setStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
 
 	/* jezeli sie rozlaczymy albo stracimy polaczenie, proces laczenia sie z serwerami zaczyna sie od poczatku */
 	server_nr = 0;
