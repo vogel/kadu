@@ -244,6 +244,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * historia rozmowy: aktualna data przesuwa siê wraz ze znalezionym wzorcem
   (brakuje zaznaczania paragrafu w którym znaleziono wzorzec) (chilek)
 * Skrypt Instaluj - usuniêta petla while teraz Cancel z konfiguracji dzia³a (Ron_K)
+* mo¿liwo¶æ automat. pobierania i instalacji modu³u pcspeaker (adrian)
+
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
   moze powinnismy zmienic nazwe projektu na FastKadu? ;) (adrian)
