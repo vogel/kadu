@@ -124,8 +124,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   to modu³ nie startowa³ prawid³owo - poprawione (joi)
 * wybór przegl±darki do otwierania linków - patch Dorregaraya i moje spoore zmiany (joi)
 * poprawka Vogela na status "Tylko dla znajomych" (odznaczanie siê checkboksa przy po³±czeniu) (joi)
-* poprawione 2 b³êdy: wy¶wietlanie statusu niedostêpny z opisem i przy przechodzeniu
-  z niedostêpnego na zaraz wracam/dostêpny pokazuje siê tylko raz zmiana statusu (joi)
+* poprawiony b³±d wy¶wietlania statusu "niedostêpny z opisem" (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
