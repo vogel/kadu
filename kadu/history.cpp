@@ -325,6 +325,8 @@ void HistoryManager::convHist2ekgForm(UinsList uins) {
 		if (our || foreign) {
 			if (linelist.count()) {
 				text.truncate(text.length() - 1);
+				if (text[text.length() - 1] == '\n')
+					text.truncate(text.length() - 1);
 				linelist.append(text2csv(text));
 				lineout = linelist.join(",");
 				streamout << lineout << '\n';
@@ -398,6 +400,8 @@ void HistoryManager::convHist2ekgForm(UinsList uins) {
 		}
 	if (linelist.count()) {
 		text.truncate(text.length() - 1);
+		if (text[text.length() - 1] == '\n')
+			text.truncate(text.length() - 1);
 		linelist.append(text2csv(text));
 		lineout = linelist.join(",");
 		streamout << lineout << '\n';
@@ -452,6 +456,8 @@ void HistoryManager::convSms2ekgForm() {
 		if (header) {
 			if (linelist.count()) {
 				text.truncate(text.length() - 1);
+				if (text[text.length() - 1] == '\n')
+					text.truncate(text.length() - 1);
 				linelist.append(text2csv(text));
 				if (uin) {
 					linelist.append(nick);
@@ -494,6 +500,8 @@ void HistoryManager::convSms2ekgForm() {
 		}
 	if (linelist.count()) {
 		text.truncate(text.length() - 1);
+		if (text[text.length() - 1] == '\n')
+			text.truncate(text.length() - 1);
 		linelist.append(text2csv(text));
 		if (uin) {
 			linelist.append(nick);
