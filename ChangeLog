@@ -30,7 +30,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * gdy w danych osobistych otrzymamy rok urodzenia równy 0 pole rok urodzenia
   w dialogu danych osobistych pozostaje puste (chilek)
 * okno userinfo: nie informujemy serwera GG o zmianach w informacji o
-  kontakcie, jesli nie ma takiej potrzeby (chilek)
+  kontakcie, je¶li nie ma takiej potrzeby (chilek)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci
