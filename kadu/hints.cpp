@@ -409,7 +409,6 @@ void HintManager::initModule(void)
 	QT_TRANSLATE_NOOP("@default", "Notify about new message");
 	QT_TRANSLATE_NOOP("@default", "Notify about new chat");
 	QT_TRANSLATE_NOOP("@default", "Show message contents in hint");
-	QT_TRANSLATE_NOOP("@default", "Show message contents in hint");
 	QT_TRANSLATE_NOOP("@default", "Message content in hint");
 	QT_TRANSLATE_NOOP("@default", "Enable status notification by hint");
 	QT_TRANSLATE_NOOP("@default", "Notification options");
@@ -489,8 +488,8 @@ void HintManagerSlots::onCreateConfigDialog()
 	QCheckBox *b_syntax = ConfigDialog::getCheckBox("Hints", "Use custom syntax");
 	QVGroupBox *notifygrp = ConfigDialog::getVGroupBox("Hints", "Notification options");
 	QLineEdit *e_syntax = ConfigDialog::getLineEdit("Hints", "Hint syntax");
-	QCheckBox *b_showcontent = ConfigDialog::getCheckBox("Hints", "Show in notify content message");
-	QVGroupBox *messagegrp = ConfigDialog::getVGroupBox("Hints", "Content message in hint");
+	QCheckBox *b_showcontent = ConfigDialog::getCheckBox("Hints", "Show message content in hint");
+	QVGroupBox *messagegrp = ConfigDialog::getVGroupBox("Hints", "Message content in hint");
 
 	messagegrp->setEnabled(b_showcontent->isChecked());
 	QHBox *h_msg = new QHBox(messagegrp);
