@@ -22,7 +22,8 @@
 DnsHandler::DnsHandler(UinType uin) : uin(uin) {
 	kdebugf();
 	UserListElement &ule = userlist.byUin(uin);
-	if (ule.ip.isNull())
+//	if (ule.ip.isNull()) //od Qt 3.2
+	if (ule.ip==QHostAddress())
 		kdebugm(KDEBUG_WARNING, "DnsHandler::DnsHandler(): NULL ip address!\n");
 	completed = false;
 	connect(&dnsresolver, SIGNAL(resultsReady()), this, SLOT(resultsReady()));
@@ -130,7 +131,8 @@ UserList::~UserList()
 
 void UserList::addDnsLookup(UinType  uin, const QHostAddress &ip) {
 	kdebugf();
-	if (ip.isNull())
+//	if (ip.isNull()) //od Qt 3.2
+	if (ip==QHostAddress())
 	{
 		kdebugm(KDEBUG_FUNCTION_END, "UserList::addDnsLookup: No IP\n");
 		return;
