@@ -489,6 +489,10 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <source>Show description in userbox</source>
         <translation>Pokaż opis w liście kontaktów</translation>
     </message>
+     <message>
+        <source>Align icon next to contact name</source>
+        <translation>Umięść ikonę na wysokości nazwy kontaktu</translation>
+    </message>
     <message>
         <source>Icon theme</source>
         <translation>Zestaw ikon</translation>

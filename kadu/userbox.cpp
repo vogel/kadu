@@ -84,7 +84,8 @@ void KaduListBoxPixmap::paint(QPainter *painter) {
 		}
 	}
 
-	int itemHeight = height(listBox());
+	bool alignIconTop = config_file.readBoolEntry("Look", "AlignUserboxIconsTop");
+	int itemHeight = alignIconTop ? lineHeight(listBox()):height(listBox());
 	int yPos;
 	QString descr=isOurUin ? own_description : description();
 	bool hasDescription=isOurUin ? ifStatusWithDescription(getCurrentStatus()) : !descr.isEmpty();
@@ -164,6 +165,13 @@ int KaduListBoxPixmap::height(const QListBox* lb) const
 //	kdebugf2();
 	return QMAX(pm.height(), height);
 }
+
+int KaduListBoxPixmap::lineHeight(const QListBox* lb) const
+{
+	int height=lb->fontMetrics().lineSpacing()+3;
+	return QMAX(pm.height(), height);
+}
+
 
 int KaduListBoxPixmap::width(const QListBox* lb) const
 {
@@ -793,6 +801,7 @@ void UserBox::initModule()
 	config_file.addVariable("Look", "InfoPanelFgColor", w.paletteForegroundColor());
 	config_file.addVariable("Look", "UserboxBgColor", w.paletteBackgroundColor());
 	config_file.addVariable("Look", "UserboxFgColor", w.paletteForegroundColor());
+	config_file.addVariable("Look", "AlignUserboxIconsTop", false);
 
 	QFontInfo info(qApp->font());
 	QFont def_font(info.family(),info.pointSize());
@@ -800,7 +809,9 @@ void UserBox::initModule()
 	int defUserboxWidth=int(QFontMetrics(def_font).width("Imie i Nazwisko")*1.5);
 
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Look"));
-
+	
+	ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Align icon next to contact name"), "AlignUserboxIconsTop", config_file.readBoolEntry("Look", "AlignUserboxIconsTop"));
+	
 	ConfigDialog::addVGroupBox("Look", "varOpts2", QT_TRANSLATE_NOOP("@default", "Columns"));
 	ConfigDialog::addCheckBox("Look", "Columns", QT_TRANSLATE_NOOP("@default", "Multicolumn userbox"), "MultiColumnUserbox", false);
 	ConfigDialog::addSpinBox("Look", "Columns", QT_TRANSLATE_NOOP("@default", "Userbox width when multi column"), "MultiColumnUserboxWidth", 1, 1000, 1, defUserboxWidth);

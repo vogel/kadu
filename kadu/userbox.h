@@ -24,6 +24,7 @@ class KaduListBoxPixmap : public QListBoxItem {
 		
 
 	protected:
+		int lineHeight(const QListBox *lb) const;
 		void paint(QPainter *painter);
 		void setDescription(const QString &d) { descr = d; }
 		void setBold(bool b) { bold = b; }
