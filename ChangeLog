@@ -106,6 +106,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   a przy ³±czeniu nie jest czyszczona (chilek)
 * na 3.0.x niestety zostawa³y puste pola po usunietych dymkach - teraz
   powinno byæ ju¿ dobrze (mast3r)
+* dodano menu podrecznego do konferencji (przystosowanie menu do modularnosci)
+  
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci
