@@ -331,7 +331,7 @@ nicht versteht. Gib hier die Argumente ein, getrennt mit Komma. %n=Tel.; %m=Nach
     </message>
     <message>
         <source>Play chat sounds only when window is invisible</source>
-        <translation>Töne nur, wenn das cht-Fenster innaktiv</translation>
+        <translation>Töne nur, wenn das chat-Fenster innaktiv</translation>
     </message>
     <message>
         <source>Chat sound</source>
@@ -703,19 +703,19 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>Choose</source>
-        <translation type="unfinished"></translation>
+        <translation>Wählen</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation type="unfinished"></translation>
+        <translation>Löschen</translation>
     </message>
     <message>
         <source>Sound paths</source>
-        <translation type="unfinished"></translation>
+        <translation>Sound path</translation>
     </message>
     <message>
         <source>Sound theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Sound thema</translation>
     </message>
 </context>
 <context>
@@ -761,31 +761,31 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     <name>ChangePassword</name>
     <message>
         <source>New email</source>
-        <translation type="unfinished">Neue Email</translation>
+        <translation>Neue Email</translation>
     </message>
     <message>
         <source>New password</source>
-        <translation type="unfinished">Neues Passwort</translation>
+        <translation>Neues Passwort</translation>
     </message>
     <message>
         <source>Retype new password</source>
-        <translation type="unfinished">Neues Passwort erneut</translation>
+        <translation>Neues Passwort erneut</translation>
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <source>Change password/email</source>
-        <translation type="unfinished">Passwort/Email ändern</translation>
+        <translation>Passwort/Email ändern</translation>
     </message>
     <message>
         <source>Bad data</source>
-        <translation type="unfinished">Falsche Daten</translation>
+        <translation>Falsche Daten</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished">Fehler</translation>
+        <translation>Fehler</translation>
     </message>
 </context>
 <context>
@@ -960,7 +960,7 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation>Ok</translation>
     </message>
 </context>
 <context>
@@ -995,7 +995,7 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>File transfered %1%</source>
-        <translation type="unfinished"></translation>
+        <translation>Datei transferiert %1%</translation>
     </message>
 </context>
 <context>
@@ -1069,7 +1069,7 @@ Dein Passwort ist falsch!!!</translation>
     <name>GaduProtocol</name>
     <message>
         <source>Resend &amp;userlist</source>
-        <translation type="unfinished">&amp;Kontakt-Liste senden</translation>
+        <translation>&amp;Kontakt-Liste senden</translation>
     </message>
 </context>
 <context>
@@ -1633,23 +1633,23 @@ Check your internet connection.</source>
     <name>ModulesDialog</name>
     <message>
         <source>Manage Modules</source>
-        <translation type="unfinished"></translation>
+        <translation>Manage Module</translation>
     </message>
     <message>
         <source>Installed modules</source>
-        <translation type="unfinished"></translation>
+        <translation>Installierte module</translation>
     </message>
     <message>
         <source>Load</source>
-        <translation type="unfinished"></translation>
+        <translation>Laden</translation>
     </message>
     <message>
         <source>Loaded modules</source>
-        <translation type="unfinished"></translation>
+        <translation>geladen</translation>
     </message>
     <message>
         <source>Unload</source>
-        <translation type="unfinished"></translation>
+        <translation>Leeren</translation>
     </message>
 </context>
 <context>
@@ -1657,16 +1657,18 @@ Check your internet connection.</source>
     <message>
         <source>Cannot find init_module() or close_module().
 Maybe it&apos;s not Kadu-compatible Module.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kann nicht init_module() finden, oder close_module()
+Möglicherweise ist es nicht Kadu-kompatibles Modul</translation>
     </message>
     <message>
         <source>Cannot load module library.
 Maybe it&apos;s incorrecty compiled.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Module Bibliothek kann nich geladen werden.
+Möglicherweise ist falsch kompiliert</translation>
     </message>
     <message>
         <source>&amp;Manage Modules</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Manage Module</translation>
     </message>
 </context>
 <context>
@@ -1793,15 +1795,15 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
     <name>RemindPassword</name>
     <message>
         <source>Remind password</source>
-        <translation type="unfinished">Erinnere an Passwort</translation>
+        <translation>Erinnere an Passwort</translation>
     </message>
     <message>
         <source>Error during remind password</source>
-        <translation type="unfinished">Fehler beim Erinnern des Passworts</translation>
+        <translation>Fehler beim Erinnern des Passworts</translation>
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
@@ -1953,44 +1955,40 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
         <source>Select user first</source>
         <translation>Markiere zuerst Benutzer</translation>
     </message>
-    <message>
-        <source> </source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>SelectPaths</name>
     <message>
         <source>Select paths</source>
-        <translation type="unfinished"></translation>
+        <translation>Path wählen</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished">Füge hinzu</translation>
+        <translation>Füge hinzu</translation>
     </message>
     <message>
         <source>Replace</source>
-        <translation type="unfinished"></translation>
+        <translation>Ersetzen</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Entfernen</translation>
     </message>
     <message>
         <source>Choose</source>
-        <translation type="unfinished"></translation>
+        <translation>Wählen Sie</translation>
     </message>
     <message>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation>Ok</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Abbrechen</translation>
     </message>
     <message>
         <source>Choose a directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Wählen Sie ein Verzeichnis</translation>
     </message>
 </context>
 <context>
@@ -2158,39 +2156,39 @@ oder änderte die Zugangserlaubnis.</translation>
     <name>SoundSlots</name>
     <message>
         <source>Custom</source>
-        <translation type="unfinished"></translation>
+        <translation>Eigene</translation>
     </message>
     <message>
         <source>Event</source>
-        <translation type="unfinished"></translation>
+        <translation>Ereignis</translation>
     </message>
     <message>
         <source>Sound file</source>
-        <translation type="unfinished"></translation>
+        <translation>Sound datei</translation>
     </message>
     <message>
         <source>Chat sound</source>
-        <translation type="unfinished">Chat-Ton</translation>
+        <translation>Chat-Ton</translation>
     </message>
     <message>
         <source>Message sound</source>
-        <translation type="unfinished">Ton-Benachrichtigung</translation>
+        <translation>Ton-Benachrichtigung</translation>
     </message>
     <message>
         <source>Notify sound</source>
-        <translation type="unfinished">Benachrichtigungston</translation>
+        <translation>Benachrichtigungston</translation>
     </message>
     <message>
         <source>Unmute sounds</source>
-        <translation type="unfinished">Töne einschalten</translation>
+        <translation>Töne einschalten</translation>
     </message>
     <message>
         <source>Mute sounds</source>
-        <translation type="unfinished">Töne ausschalten</translation>
+        <translation>Töne ausschalten</translation>
     </message>
     <message>
         <source>default</source>
-        <translation type="unfinished"></translation>
+        <translation>default</translation>
     </message>
 </context>
 <context>

@@ -1955,6 +1955,10 @@ Ora è possibile aggiungere i vostri amici alla lista dei contatti.</translation
         <source>Select user first</source>
         <translation>Prima scegli l&apos;utente</translation>
     </message>
+    <message>
+        <source> </source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SelectPaths</name>
