@@ -4,6 +4,9 @@
  *  the Free Software Foundation; either version 2 of the License, or
  *  (at your option) any later version.
  */
+#include <qbitmap.h>
+#include <qtooltip.h>
+
 #include "desktopdock.h"
 #include "config_file.h"
 #include "config_dialog.h"
