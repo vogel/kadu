@@ -664,6 +664,7 @@ void Chat::sendMessage(void) {
 		return;
 
 	myLastMessage = edit->text();
+	escapeSpecialCharacters(myLastMessage);
 
 	if (edit->length() >= 2000)
 		return;
