@@ -307,6 +307,10 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 	for(QValueList<ElementConnections>::iterator a=SlotsOnApply.begin(); a!=SlotsOnApply.end(); a++)
 		connect(this, SIGNAL(apply()), (*a).receiver, (*a).slot);
 
+	for(QValueList<ElementConnections>::iterator a=SlotsOnClose.begin(); a!=SlotsOnClose.end(); a++)
+		connect(this, SIGNAL(destroy()), (*a).receiver, (*a).slot);
+
+
 	listBox->setCurrentItem(listBox->findItem(appHandle->translate("@default",acttab)));
 
 	listBox->setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)0, (QSizePolicy::SizeType)7, 0, 0, listBox->sizePolicy().hasHeightForWidth()));
@@ -346,6 +350,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 }
 
 ConfigDialog::~ConfigDialog() {
+	emit destroy();
 	configdialog = NULL;
 }
 
@@ -427,11 +432,6 @@ void ConfigDialog::updateAndCloseConfig()
 {
 	updateConfig();
 	
-	for(QValueList<ElementConnections>::iterator a=SlotsOnClose.begin(); a!=SlotsOnClose.end(); a++)
-		connect(this, SIGNAL(destroy()), (*a).receiver, (*a).slot);
-
-	emit  destroy();
-
 	close();
 }
 

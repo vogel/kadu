@@ -745,7 +745,7 @@ class ConfigDialog : public QDialog	{
 		**/
 
 		void updateAndCloseConfig();
-		
+
 		/**
 		    Zmienia zak³adkê na "name"
 		**/

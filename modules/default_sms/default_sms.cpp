@@ -378,12 +378,13 @@ void SmsGatewaySlots::onApplyConfigDialog()
 
 void SmsGatewaySlots::onCloseConfigDialog()
 {
+	kdebugf();
 	modules_manager->moduleDecUsageCount("default_sms");
 }
 
 void SmsGatewaySlots::onCreateConfigDialog()
 {
-	kdebug("SmsGatewaySlots::onCreateConfigDialog \n");
+	kdebugf();
 	
 	QComboBox *cb_typegateway= ConfigDialog::getComboBox("SMS","Type of gateway");
 	cb_typegateway->insertItem("Basic");
