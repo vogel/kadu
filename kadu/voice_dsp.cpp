@@ -57,29 +57,3 @@ void VoiceDsp::recordSample(char *data, int length) {
 }
 
 VoiceDsp *voice_dsp;
-
-/*ArtsSoundDevice::ArtsSoundDevice(const int freq, const int bits, const int chans, QObject *parent, const char *name)
-	: SoundDevice(freq, bits, chans, parent, name) {
-	arts_init();
-	playstream = arts_play_stream(freq, bits, chans, "kaduplayvoice");
-	kdebug("ArtsSoundDevice::ArtsSoundDevice(): playstream=%d\n", playstream);
-	arts_stream_set(playstream, ARTS_P_BUFFER_SIZE, 1024);
-	recstream = arts_record_stream(freq, bits, chans, "kadurecordvoice");
-	kdebug("ArtsSoundDevice::ArtsSoundDevice(): recstream=%d\n", recstream);
-}
-
-ArtsSoundDevice::~ArtsSoundDevice() {
-	arts_close_stream(playstream);
-	arts_close_stream(recstream);
-	arts_free();
-}
-
-void ArtsSoundDevice::doPlaying() {
-	kdebug("ArtsSoundDevice::doPlaying(): playstream=%d\n", playstream);
-	arts_write(playstream, playbuf, playbufsize);
-}
-
-void ArtsSoundDevice::doRecording() {
-	kdebug("ArtsSoundDevice::doRecording(): recstream=%d\n", recstream);
-	arts_read(recstream, recbuf, recbufsize);
-}*/
