@@ -45,6 +45,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   przy otwieraniu okna rozmowy (chilek)
 * guzik "Konfiguracja" na pasku narzêdziowym (chilek)
 * okno historii: escape'owanie znaków < i > (chilek)
+* pod *bsd powinno sie ju¿ kompilowaæ (pawe³/mast3r)
 
 +++ wersja 0.3.4-pre2
 * graficzny instalator - instaluj.tcl (googie)

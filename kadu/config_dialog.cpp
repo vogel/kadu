@@ -26,11 +26,11 @@
 #include <qspinbox.h>
 #include <qslider.h>
 
-#include <netinet/in.h>
 #include <math.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <stdlib.h>
+#include <netinet/in.h>
 //
 #include "kadu.h"
 #include "misc.h"

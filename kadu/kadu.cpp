@@ -58,7 +58,6 @@
 #include <qtoolbar.h>
 #include <qtoolbutton.h>
 
-#include <netinet/in.h>
 #include <arpa/inet.h>
 #include <libintl.h>
 #include <stdio.h>
