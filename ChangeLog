@@ -28,6 +28,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * zaaplikowany patch michala dodajacy przycisk rozpoczecia rozmowy
   w oknie dialogowym "szukaj w katalogu" (adrian)
 * poprawka arcisza kilku blednie wyswietlanych emotikonow (adrian)
+* poprawka i rozbudowa skryptu kadu-config (michal/adrian)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

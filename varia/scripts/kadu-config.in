@@ -22,6 +22,7 @@ kadu_include_dir="@includedir@/kadu"
 lib_dir="@libdir@"
 
 modules_dir="@datadir@/kadu/modules"
+qt_moc_dir="@QT_MOC_DIR@"
 
 cflags="@QT_INCLUDES@ -DQT_THREAD_SUPPORT -D_REENTRANT"
 
@@ -37,6 +38,7 @@ Options:
     [--cflags]
     [--data-dir]
     [--modules-dir]
+    [--qt-moc-dir]
 
 EOF
     exit $1
@@ -94,6 +96,10 @@ while test $# -gt 0; do
 	    echo_modules_dir=yes
 	    ;;
 
+	--qt-moc-dir)
+	    echo_qt_moc_dir=yes
+	    ;;
+
 	*)
 	    usage 1 1>&2
 	    ;;
@@ -133,6 +139,10 @@ if test "$echo_data_dir" = "yes"; then
     echo $data_dir
 fi
 
-if test "$echo_plugin_dir" = "yes"; then
+if test "$echo_modules_dir" = "yes"; then
     echo $modules_dir
+fi
+
+if test "$echo_qt_moc_dir" = "yes"; then
+    echo $qt_moc_dir
 fi
