@@ -223,6 +223,8 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 	mesg.replace(QRegExp("\\r\\n</body></html>\\r\\n$"), "");
 	mesg.replace(QRegExp("<p>"), "");
 	mesg.replace(QRegExp("</p>"), "");
+	mesg.replace(QRegExp("<font size=\"\\d{1,2}\" style=\"font-size:\\d{1,2}pt\">"), "");
+	mesg.replace(QRegExp("</font>"), "");
 	mesg.replace(QRegExp("&quot;"), "\"");
 	mesg.replace(QRegExp("&amp;"), "&");
 	mesg.replace(QRegExp("&lt;"), "\a");
