@@ -2106,7 +2106,7 @@ void Kadu::showdesc(bool show) {
 void Kadu::infopanelUpdate(uin_t uin) {
 	if (!config.showdesc)
 		return;
-	kdebug("Kadu::infopanelUpdate(%d)\n",uin);
-	if (uin == userlist.byAltNick(userbox->currentText()).uin)
+	kdebug("Kadu::infopanelUpdate(%d)\n", uin);
+	if (userbox->currentItem() != -1 && uin == userlist.byAltNick(userbox->currentText()).uin)
 		descrtb->setText(parse(config.panelsyntax,userlist.byUin(uin)));
 }
