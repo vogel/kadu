@@ -106,9 +106,15 @@ void UserlistImport::closeEvent(QCloseEvent * e) {
 void UserlistImport::updateUserlist() {
 	int i;
 	
+	fprintf(stderr, "KK UserlistImport::updateUserlist()\n");
+	
 	userlist = importedUserlist;
 	importedUserlist.clear();
 	
+	kadu->userbox->clear();
+	for (i = 0; i < userlist.count(); i++)
+		kadu->userbox->addUin(userlist[i].uin);
+		
 	kadu->userbox->refresh();
 
 	uin_t *uins;
@@ -118,10 +124,10 @@ void UserlistImport::updateUserlist() {
 		uins[i] = userlist[i].uin;
 
 	gg_notify(&sess, uins, userlist.count());
-	fprintf(stderr, "KK updateUserlist(): Userlist sent\n");
+	fprintf(stderr, "KK UserlistImport::updateUserlist(): Userlist sent\n");
 
 	userlist.writeToFile();
-	fprintf(stderr, "KK Wrote userlist\n");
+	fprintf(stderr, "KK UserlistImport::updateUserlist(): Wrote userlist\n");
 
 	free(uins);			
 }
@@ -187,13 +193,13 @@ void UserlistImport::socketEvent() {
 		int i, j;
 		QStringList::Iterator it, it2;
 
+		importedUserlist.clear();
 		for ((it = strlist.begin()), (i = 1); it != strlist.end(), i < strlist.count(); ++it, i++ ) {
 			fieldlist = QStringList::split(";",*it,true);
 			for ((it2 = fieldlist.begin()), (j = 1); it2 != fieldlist.end(), j < fieldlist.count(); ++it2, j++) {
 				fprintf(stderr, "%s ",(*it2).latin1());
 				tmparray[j-1] = (*it2);
 				}
-			importedUserlist.clear();
 			importedUserlist.addUser(tmparray[0], tmparray[1], tmparray[2],
 				tmparray[3], tmparray[4], tmparray[6], GG_STATUS_NOT_AVAIL,
 				tmparray[5]);
