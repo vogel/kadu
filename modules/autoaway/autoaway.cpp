@@ -29,17 +29,17 @@ AutoAwaySlots *autoawayslots=NULL;
 extern "C" int autoaway_init()
 {
 	kdebugf();
-	QT_TRANSLATE_NOOP("@default", "General");
-	QT_TRANSLATE_NOOP("@default", "Enable autoaway");
-	QT_TRANSLATE_NOOP("@default", "Set status to away after ");
-	QT_TRANSLATE_NOOP("@default", "Check idle every ");
-
-	ConfigDialog::addTab("General");
+	
+	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "General"));
 	ConfigDialog::addVGroupBox("General", "General", "Status");
-	ConfigDialog::addCheckBox("General", "Status", "Enable autoaway", "AutoAway", false);
+	ConfigDialog::addCheckBox("General", "Status",
+			QT_TRANSLATE_NOOP("@default", "Enable autoaway"), "AutoAway", false);
 	ConfigDialog::addHBox("General", "Status", "times");
-	ConfigDialog::addSpinBox("General", "times", "Set status to away after ", "AutoAwayTime", 1, 10000, 1, 300);
-	ConfigDialog::addSpinBox("General", "times", "Check idle every ", "AutoAwayCheckTime", 1, 10000, 1, 1);
+	ConfigDialog::addSpinBox("General", "times",
+			QT_TRANSLATE_NOOP("@default", "Set status to away after "), "AutoAwayTime", 1, 10000, 1, 300);
+	ConfigDialog::addSpinBox("General", "times",
+			QT_TRANSLATE_NOOP("@default", "Check idle every "), "AutoAwayCheckTime", 1, 10000, 1, 1);
+
 	autoawayslots= new AutoAwaySlots();
 	ConfigDialog::registerSlotOnCreate(autoawayslots, SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnApply(autoawayslots, SLOT(onApplyConfigDialog()));
