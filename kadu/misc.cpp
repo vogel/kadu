@@ -2383,7 +2383,8 @@ QString GaduImagesManager::replaceLoadingImages(const QString& text, UinType sen
 
 	QString file_name = getSavedImageFileName(size,crc32);
 	if (file_name.right(4).lower()==".gif")
-		image_string = narg(QString("<img bgcolor=\"\" animated=\"1\" src=\"%1\" title=\"%2\"/>"), file_name, file_name);
+		image_string = narg(QString("<img bgcolor=\"%1\" animated=\"1\" src=\"%2\" title=\"%3\"/>"),
+			config_file.readColorEntry("Look","ChatUsrBgColor").name(), file_name, file_name);
 	else
 		image_string = QString("<img src=\"%1\"/>").arg(file_name);
 
