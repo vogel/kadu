@@ -59,8 +59,10 @@ int main(int argc, char *argv[])
 	QPixmap px((const char **)gg_inact_xpm);
 	kadu->setIcon(px);
 	a->setMainWidget(kadu);
-
-	kadu->show();
+	
+	// pokazanie okna przeniesione do konstruktora z powodu RunDocked
+	//kadu->show();
+	
 	if (config.defaultstatus != GG_STATUS_NOT_AVAIL && config.defaultstatus != GG_STATUS_NOT_AVAIL_DESCR) {
 		kadu->autohammer = true;
 		own_description = config.defaultdescription;

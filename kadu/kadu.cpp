@@ -472,7 +472,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	if (config.dock) {
 		dw = new DockWidget(this);
 		dw->show();
-		}
+	}
 	
 	/* read the userlist */
 	userlist.readFromFile();
@@ -581,6 +581,10 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	dccsock = NULL;
 	/* dirty workaround for multiple showEvents */
 	commencing_startup = true;
+
+	/* pokaz okno jesli RunDocked jest wylaczone lub dock wylaczone */
+	if((!config.rundocked)||(!config.dock))
+		show();
 }
 
 void Kadu::removeUser(QString &username, bool permanently = false) {

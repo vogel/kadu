@@ -87,6 +87,7 @@ struct config {
 	char *server;
 	bool dock;
 	bool privatestatus;
+	bool rundocked;
 	QRect geometry;
 
 	char * smsapp;

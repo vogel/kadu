@@ -26,6 +26,7 @@
 #include <kiconloader.h>
 #include <qmessagebox.h>
 #include <qtimer.h>
+#include <qgrid.h>
 #include <klocale.h>
 #include <kconfig.h>
 #include <sys/socket.h>
@@ -78,6 +79,7 @@ void loadKaduConfig(void) {
 	config.dock = konf->readBoolEntry("UseDocking",true);
 	config.raise = konf->readBoolEntry("AutoRaise",false);
 	config.privatestatus = konf->readBoolEntry("PrivateStatus", false);
+	config.rundocked = konf->readBoolEntry("RunDocked", false);
 
 	if (config.savegeometry)
 		config.geometry = konf->readRectEntry("Geometry");
@@ -155,6 +157,7 @@ void saveKaduConfig(void) {
 	konf->writeEntry("UseDocking",config.dock);
 	konf->writeEntry("AutoRaise",config.raise);
 	konf->writeEntry("PrivateStatus",config.privatestatus);
+	konf->writeEntry("RunDocked",config.rundocked);
 
 	konf->setGroup("SMS");
 	konf->writeEntry("SmsApp",config.smsapp);
@@ -305,25 +308,32 @@ void ConfigDialog::setupTab1(void) {
 		i++;
 	cb_defstatus->setCurrentItem(i);
 
-	b_logging = new QCheckBox(box);
+	QGrid* grid=new QGrid(2,box);
+
+	b_logging = new QCheckBox(grid);
 	b_logging->setText(i18n("Log messages"));
 	if (config.logmessages)
 		b_logging->setChecked(true);
 
-	b_geometry = new QCheckBox(box);
+	b_geometry = new QCheckBox(grid);
 	b_geometry->setText(i18n("Restore window geometry"));
 	if (config.savegeometry)
 		b_geometry->setChecked(true);
 
-	b_dock = new QCheckBox(box);
+	b_dock = new QCheckBox(grid);
 	b_dock->setText(i18n("Enable dock icon"));
 	if (config.dock)
 		b_dock->setChecked(true);
 
-	b_private = new QCheckBox(box);
+	b_private = new QCheckBox(grid);
 	b_private->setText(i18n("Private status"));
 	if (config.privatestatus)
 		b_private->setChecked(true);
+
+	b_rdocked = new QCheckBox(grid);
+	b_rdocked->setText(i18n("Run docked"));
+	if (config.rundocked)
+		b_rdocked->setChecked(true);
 
 	addTab(box, i18n("General"));
 }
@@ -726,6 +736,7 @@ void ConfigDialog::updateConfig(void) {
 		statusppm->setItemChecked(8, config.privatestatus);
 		kadu->setStatus(sess.status & (~GG_STATUS_FRIENDS_MASK));
 		}
+	config.rundocked=b_rdocked->isChecked();
 
 	config.smsapp = strdup(e_smsapp->text().latin1());
 	config.smsconf = strdup(e_smsconf->text().latin1());
