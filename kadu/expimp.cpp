@@ -68,29 +68,31 @@ UserlistImport::UserlistImport(QWidget *parent, const char *name)
 
 void UserlistImport::fromfile(){
 
-    QStringList lines,userlist;
-    QListViewItem * qlv;
-    QString line;    
-    QString fname = QFileDialog::getOpenFileName("/", QString::null,this);
+	QStringList lines,userlist;
+	QListViewItem * qlv;
+	QString line;    
+	QString fname = QFileDialog::getOpenFileName("/", QString::null, this);
 	if (fname.length()){
-    QFile file(fname);
-      if ( file.open( IO_ReadOnly ) ) {
-            QTextStream stream( &file );
-	results->clear();
-            while ( !stream.eof() ) {
-                line = stream.readLine();
-		lines=QStringList::split(";",line,true);
-		importedUserlist.addUser(lines[0], lines[1], lines[2],
-				lines[3], lines[4], lines[6], GG_STATUS_NOT_AVAIL,
-				false, false, true, lines[5]);
-		qlv = new QListViewItem(results, lines[6], lines[2], lines[3],
-				lines[0], lines[1], lines[4], lines[5]);				
-  			            }
-	        file.close();
-		}
+		QFile file(fname);
+ 		if (file.open(IO_ReadOnly)) {
+			QTextStream stream(&file);
+			importedUserlist.clear();
+			results->clear();
+			while ( !stream.eof() ) {
+				line = stream.readLine();
+				lines = QStringList::split(";",line,true);
+				importedUserlist.addUser(lines[0], lines[1], lines[2],
+					lines[3], lines[4], lines[6], GG_STATUS_NOT_AVAIL,
+					false, false, true, lines[5]);
+				qlv = new QListViewItem(results, lines[6], lines[2], lines[3],
+					lines[0], lines[1], lines[4], lines[5]);				
+	  			}
+			file.close();
+			}
 		else
-		QMessageBox::critical(this, "Import error", i18n("The application encountered an internal error\nThe import userlist from file was unsuccessful") );
-    }
+			QMessageBox::critical(this, i18n("Import error"),
+				i18n("The application encountered an internal error\nThe import userlist from file was unsuccessful"));
+		}
 }
 
 void UserlistImport::init() {

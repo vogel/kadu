@@ -3,6 +3,8 @@
 * je¶li nie mamy po³±czenia z internetem, a tym samym gg_login() zwróci NULL
   to kadu nie wywala siê?
 * mo¿na dodawaæ wielu u¿ytkowników, którzy nie maj± swojego uina
+* dodane czyszczenie listy u¿ytkowników w oknie importu, gdy importujemy listê
+  u¿ytkowników z pliku
 
 +++ wersja 0.3.3-pre4
 * przy imporcie listy u¿ytkowników ustawiamy domy¶lne atrybuty u¿ytkowników
