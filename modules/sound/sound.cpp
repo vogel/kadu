@@ -174,13 +174,8 @@ void SoundManager::newChat(UinsList senders, const QString& msg, time_t time)
 		return;
 	}
 
-	Chat* chat= chat_manager->findChatByUins(senders);
 	if (config_file.readBoolEntry("Sounds","PlaySoundChat"))
 	{
-		if (config_file.readBoolEntry("Sounds","PlaySoundChatInvisible"))
-			if (chat->isActiveWindow())
-				return;
-
 		QString chatsound;
 		if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
 			chatsound=config_file.readEntry("Sounds", "Chat_sound");
@@ -207,6 +202,10 @@ void SoundManager::newMessage(UinsList senders, const QString& msg, time_t time,
 		return;
 	}
 
+	Chat* chat= chat_manager->findChatByUins(senders);
+	if (config_file.readBoolEntry("Sounds","PlaySoundChatInvisible") && chat->isActiveWindow())
+		return;
+	
 	UserListElement ule = userlist.byUinValue(senders[0]);
 	QString messagesound;
 	if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
