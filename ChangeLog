@@ -385,7 +385,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * test fulldupleksu i kosmetyka w pozosta³ych testach (adrian)
 * lista kontaktów z gg 6.1 importuje sie poprawnie (michal)
 * mo¿liwo¶æ zmiany koloru t³a/okna edycji w oknie chat-u (michal)
-
+* test kodowania/dekodowania gsm w module rozmów g³osowych (adrian)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,

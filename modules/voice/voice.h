@@ -42,6 +42,12 @@ class VoiceManager : public QObject
 	Q_OBJECT
 
 	private:
+		MessageBox* GsmEncodingTestMsgBox;
+		SoundDevice GsmEncodingTestDevice;
+		gsm GsmEncodingTestHandle;
+		int16_t* GsmEncodingTestSample;
+		gsm_frame* GsmEncodingTestFrames;
+		int GsmEncodingTestCurrFrame;
 		friend class PlayThread;
 		friend class RecordThread;
 		SoundDevice device;
@@ -56,6 +62,9 @@ class VoiceManager : public QObject
 		void askAcceptVoiceChat(DccSocket* socket);
 
 	private slots:
+		void testGsmEncoding();
+		void gsmEncodingTestSampleRecorded(SoundDevice device);
+		void gsmEncodingTestSamplePlayed(SoundDevice device);
 		void playGsmSampleReceived(char *data, int length);
 		void recordSampleReceived(char *data, int length);
 		void mainDialogKeyPressed(QKeyEvent* e);

@@ -145,6 +145,13 @@ VoiceManager::VoiceManager(QObject *parent, const char *name) : QObject(parent, 
 	kdebugf();
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys",
 			QT_TRANSLATE_NOOP("@default", "Voice chat"), "kadu_voicechat", "F7");
+	ConfigDialog::addHGroupBox("Sounds", "Sounds", QT_TRANSLATE_NOOP("@default","Voice chat"));
+	ConfigDialog::addPushButton("Sounds", "Voice chat", QT_TRANSLATE_NOOP("@default","Test GSM Encoding"));
+	ConfigDialog::connectSlot("Sounds", "Test GSM Encoding", SIGNAL(clicked()), this, SLOT(testGsmEncoding()));
+
+	GsmEncodingTestMsgBox = NULL;
+	GsmEncodingTestDevice = NULL;
+	GsmEncodingTestSample = NULL;
 
 	voice_enc = voice_dec = NULL;
 	pt = new PlayThread();
@@ -169,6 +176,9 @@ VoiceManager::VoiceManager(QObject *parent, const char *name) : QObject(parent, 
 VoiceManager::~VoiceManager()
 {
 	kdebugf();
+	ConfigDialog::disconnectSlot("Sounds", "Test GSM Encoding", SIGNAL(clicked()), this, SLOT(testGsmEncoding()));
+	ConfigDialog::removeControl("Sounds", "Test GSM Encoding");
+	ConfigDialog::removeControl("Sounds", "Voice chat");
 	ConfigDialog::removeControl("ShortCuts", "Voice chat");
 	int voice_chat_item = UserBox::userboxmenu->getItem(tr("Voice chat"));
 	UserBox::userboxmenu->removeItem(voice_chat_item);
@@ -183,6 +193,95 @@ VoiceManager::~VoiceManager()
 	disconnect(dcc_manager, SIGNAL(socketDestroying(DccSocket*)),
 		this, SLOT(socketDestroying(DccSocket*)));
 	VoiceChatDialog::destroyAll();
+	kdebugf2();
+}
+
+void VoiceManager::testGsmEncoding()
+{
+	kdebugf();
+	if (GsmEncodingTestMsgBox != NULL)
+		return;
+		
+	GsmEncodingTestHandle = gsm_create();
+	if (GsmEncodingTestHandle == 0)
+	{
+		MessageBox::wrn(tr("Opening DSP Encoder failed."));
+		return;
+	}
+		
+	GsmEncodingTestDevice = sound_manager->openDevice(8000);
+	if (GsmEncodingTestDevice == NULL)
+	{
+		MessageBox::wrn(tr("Opening sound device failed."));
+		return;
+	}
+	GsmEncodingTestSample = new int16_t[160];
+	GsmEncodingTestFrames = new gsm_frame[8000 * 3 / 160]; // = 150
+	GsmEncodingTestCurrFrame = 0;
+
+	sound_manager->enableThreading(GsmEncodingTestDevice);
+	connect(sound_manager, SIGNAL(sampleRecorded(SoundDevice)), this, SLOT(gsmEncodingTestSampleRecorded(SoundDevice)));
+	connect(sound_manager, SIGNAL(samplePlayed(SoundDevice)), this, SLOT(gsmEncodingTestSamplePlayed(SoundDevice)));
+
+	GsmEncodingTestMsgBox = new MessageBox(tr("Testing GSM Encoding. Please talk now (3 seconds)."));
+	GsmEncodingTestMsgBox->show();
+
+	sound_manager->recordSample(GsmEncodingTestDevice, GsmEncodingTestSample, sizeof(int16_t) * 160);
+	kdebugf2();
+}
+
+void VoiceManager::gsmEncodingTestSampleRecorded(SoundDevice device)
+{
+	kdebugf();
+	if (device == GsmEncodingTestDevice)
+	{
+		if (GsmEncodingTestCurrFrame < 150)
+		{
+			kdebugmf(KDEBUG_INFO, "Encoding gsm frame no %i\n", GsmEncodingTestCurrFrame);
+			gsm_encode(GsmEncodingTestHandle, GsmEncodingTestSample, GsmEncodingTestFrames[GsmEncodingTestCurrFrame]);
+			GsmEncodingTestCurrFrame++;
+			sound_manager->recordSample(GsmEncodingTestDevice, GsmEncodingTestSample, sizeof(int16_t) * 160);
+		}
+		else
+		{
+			delete GsmEncodingTestMsgBox;
+			GsmEncodingTestMsgBox = new MessageBox(tr("You should hear your recorded sample now."));
+			GsmEncodingTestMsgBox->show();
+			GsmEncodingTestCurrFrame = 0;
+			kdebugmf(KDEBUG_INFO, "Decoding gsm frame no %i\n", GsmEncodingTestCurrFrame);
+			gsm_decode(GsmEncodingTestHandle, GsmEncodingTestFrames[GsmEncodingTestCurrFrame], GsmEncodingTestSample);
+			sound_manager->playSample(device, GsmEncodingTestSample, sizeof(int16_t) * 160);
+			GsmEncodingTestCurrFrame++;
+		}
+	}
+	kdebugf2();
+}
+
+void VoiceManager::gsmEncodingTestSamplePlayed(SoundDevice device)
+{
+	kdebugf();
+	if (device == GsmEncodingTestDevice)
+	{
+		if (GsmEncodingTestCurrFrame < 150)
+		{
+			kdebugmf(KDEBUG_INFO, "Decoding gsm frame no %i\n", GsmEncodingTestCurrFrame);
+			gsm_decode(GsmEncodingTestHandle, GsmEncodingTestFrames[GsmEncodingTestCurrFrame], GsmEncodingTestSample);
+			sound_manager->playSample(device, GsmEncodingTestSample, sizeof(int16_t) * 160);
+			GsmEncodingTestCurrFrame++;
+		}
+		else
+		{
+			disconnect(sound_manager, SIGNAL(sampleRecorded(SoundDevice)), this, SLOT(gsmEncodingTestSampleRecorded(SoundDevice)));
+			disconnect(sound_manager, SIGNAL(samplePlayed(SoundDevice)), this, SLOT(gsmEncodingTestSamplePlayed(SoundDevice)));
+			sound_manager->closeDevice(device);
+			delete[] GsmEncodingTestSample;
+			GsmEncodingTestSample = NULL;
+			GsmEncodingTestMsgBox->deleteLater();
+			GsmEncodingTestMsgBox = NULL;
+			delete[] GsmEncodingTestFrames;
+			gsm_destroy(GsmEncodingTestHandle);
+		}
+	}
 	kdebugf2();
 }
 
