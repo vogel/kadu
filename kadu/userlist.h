@@ -242,15 +242,6 @@ class UserList : public QObject, public QMap<QString,UserListElement>
 			kontaktów.
 		**/
 		void modified();
-		/**
-			Sygna³ generowany po dodaniu kontaktu do listy
-			kontaktów.
-			UWAGA! Sygna³ jest w zasadzie martwy (nie jest
-			nigdy generowany). Je¶li chcesz dostaæ odpowiedni±
-			informacjê musisz skorzystaæ z sygna³u userDataChanged().
-			Ten prawdopodobnie zostanie usuniêty.
-		**/
-		void userAdded(const UserListElement& user);
 		void dnsNameReady(UinType);
 		/**
 			Sygna³ jest generowany je¶li cokolwiek zmieni³o

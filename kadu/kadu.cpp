@@ -410,7 +410,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	/* connect userlist signals */
 	connect(&userlist, SIGNAL(modified()), this, SLOT(userListModified()));
-	connect(&userlist, SIGNAL(userAdded(const UserListElement&)),this,SLOT(userListUserAdded(const UserListElement&)));
 
 	/* add all users to userbox */
 	setActiveGroup("");
@@ -1009,25 +1008,6 @@ void Kadu::blink()
 	BlinkOn=!BlinkOn;
 
 	blinktimer->start(1000, TRUE);
-}
-
-void Kadu::userListUserAdded(const UserListElement& user)
-{
-	// jesli dodany do listy uzyszkodnik jest uzyszkodnikiem anonimowym
-	// (odezwal sie do nas) i mamy wlaczone dokowanie (mozemy kliknac
-	// na kopertce w trayu, zeby odebrac wiadomosc) to nie dodajemy
-	// go do userboxa itp bo po co.
-	if (user.isAnonymous() && Docked)
-		return;
-	userlist.writeToFile();
-
-	Userbox->addUser(user.altNick());
-	UserBox::all_refresh();
-
-	refreshGroupTabBar();
-
-//	if (user.uin)
-//		gadu->addNotify(user.uin);
 }
 
 void Kadu::mouseButtonClicked(int button, QListBoxItem *item)

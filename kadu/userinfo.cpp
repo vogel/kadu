@@ -420,6 +420,7 @@ void UserInfo::addNewUser(UserListElement& e)
 		return;
 	}
 	userlist.addUser(e);
+	userlist.writeToFile();
 	close(true);
 	kdebugf2();
 }

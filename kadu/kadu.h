@@ -93,7 +93,6 @@ class Kadu : public QMainWindow
 	private slots:
 		void userListModified();
 		void openChat();
-		void userListUserAdded(const UserListElement& user);
 		void chatMsgReceived(UinsList senders, const QString &msg, time_t time);
 		void userListChanged();
 

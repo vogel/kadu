@@ -516,7 +516,6 @@ void UserList::addUser(UserListElement& ule)
 		e.setGroup("");
 
 	insert(e.altNick().lower(), e);
-	//emit userAdded(e);
 
 	emit userDataChanged(NULL, &e);
 	emit modified();

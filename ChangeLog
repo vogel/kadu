@@ -226,6 +226,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * ³ata Vogela: ikona w trayu znowu miga i dzia³aj± timeouty na po³±czenia
   z serwerami (joi)
 * t³o pod animowanymi obrazkami jest ju¿ odpowiedniego koloru (joi)
+* przywrócone zapisywanie nowych kontaktów [#333], usuniêty martwy
+  sygna³ UserList::userAdded i slot Kadu::userlistUserAdded (adrian)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
