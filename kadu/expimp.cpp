@@ -124,7 +124,7 @@ UserlistImportExport::UserlistImportExport()
 	connect(gadu, SIGNAL(userListImported(bool, UserList&)), this, SLOT(userListImported(bool, UserList&)));
 	// end connect
 	
- 	loadGeometry(this, "General", "ImportExportDialogGeometry", 0, 0, 450, 400);
+ 	loadGeometry(this, "General", "ImportExportDialogGeometry", 0, 0, 560, 450);
 }
 
 UserlistImportExport::~UserlistImportExport() 

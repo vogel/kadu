@@ -132,7 +132,7 @@ PersonalInfoDialog::PersonalInfoDialog(QDialog *parent, const char *name)
 	reloadInfo();
 	
 	kdebugf2();
- 	loadGeometry(this, "General", "PersonalInfoDialogGeometry", 0, 0, 450, 400);
+ 	loadGeometry(this, "General", "PersonalInfoDialogGeometry", 0, 0, 440, 255);
 }
 
 PersonalInfoDialog::~PersonalInfoDialog()

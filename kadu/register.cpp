@@ -128,7 +128,7 @@ Register::Register(QDialog *parent, const char *name)
 	connect(pb_register, SIGNAL(clicked()), this, SLOT(doRegister()));
 	connect(gadu, SIGNAL(registered(bool, UinType)), this, SLOT(registered(bool, UinType)));
 	
- 	loadGeometry(this, "General", "RegisterDialogGeometry", 0, 0, 240, 150);
+ 	loadGeometry(this, "General", "RegisterDialogGeometry", 0, 0, 345, 310);
 }
 
 Register::~Register()
@@ -262,7 +262,7 @@ Unregister::Unregister(QDialog *parent, const char *name)
 	connect(pb_unregister, SIGNAL(clicked()), this, SLOT(doUnregister()));
 	connect(gadu, SIGNAL(unregistered(bool)), this, SLOT(unregistered(bool)));
 	
- 	loadGeometry(this, "General", "UnregisterDialogGeometry", 0, 0, 240, 150);
+ 	loadGeometry(this, "General", "UnregisterDialogGeometry", 0, 0, 355, 230);
 }
 
 Unregister::~Unregister()
