@@ -240,10 +240,11 @@ unsigned long getMyIP(void) {
 
 void deletePendingMessage(int nr) {
 	pending.deleteMsg(nr);
-
-	fprintf(stderr, "KK deletePendingMessage()\n");
-  if (!pending.pendingMsgs())
+	fprintf(stderr, "KK deletePendingMessage(%d)\n",nr);
+  if (!pending.pendingMsgs()) {
+		fprintf(stderr, "KK pendingMessage is false\n");
 		dw->setType((char **)gg_xpm[statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]);
+	}
 }
 
 void readIgnore(void)

@@ -51,6 +51,9 @@ void DockWidget::changeIcon() {
 			blink = false;
 			}
 	}
+	else {
+		fprintf(stderr,"KK DockWidget::changeIcon OFF\n");
+	}
 }
 
 void DockWidget::dockletChange(int id)
