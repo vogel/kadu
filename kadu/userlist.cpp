@@ -81,6 +81,7 @@ UserListElement::UserListElement(const UserListElement &copyMe)
 
 UserListElement::UserListElement()
 {
+	kdebugf();
 	Parent = NULL;
 	Version = 0;
 	MaxImageSize = 0;
@@ -107,10 +108,15 @@ QString UserListElement::group() const
 
 void UserListElement::setGroup(const QString& group)
 {
+	//gdzie¶ tu siê sypie :|
+	//ale jak na z³o¶æ po dodaniu debuga nie udaje siê powtórzyæ segfaulta
+	kdebugf();
+	kdebugm(KDEBUG_INFO, "group: '%s' Parent:%p\n", group.local8Bit().data(), Parent);
 	UserListElement old = *this;
 	Group = (group == QT_TR_NOOP("All")) ? "" : group;
 	if (Parent)
 		emit Parent->userDataChanged(&old, this);
+	kdebugf2();
 }
 
 QString UserListElement::firstName() const
@@ -504,7 +510,7 @@ bool UserList::containsAltNick(const QString &altnick) const
 	return false;
 }
 
-void UserList::addUser(UserListElement& ule)
+void UserList::addUser(const UserListElement& ule)
 {
 	kdebugf();
 	UserListElement e(this);
@@ -811,7 +817,7 @@ UserList& UserList::operator=(const UserList& userlist)
 	return *this;
 }
 
-void UserList::merge(UserList &userlist)
+void UserList::merge(const UserList &userlist)
 {
 	kdebugf();
 	UserListElement e(this);
@@ -819,7 +825,7 @@ void UserList::merge(UserList &userlist)
 	for (const_iterator i = begin(); i != end(); ++i)
 		emit userDataChanged(&(i.data()), NULL);
 
-	for (Iterator i = userlist.begin(); i != userlist.end(); ++i)
+	for (ConstIterator i = userlist.begin(); i != userlist.end(); ++i)
 	{
 		Iterator j=begin();
 		if ((*i).uin())

@@ -184,7 +184,7 @@ class UserList : public QObject, public QMap<QString,UserListElement>
 			Generuje nastêpnie sygna³y userDataChanged()
 			i modified().
 		**/
-		void addUser(UserListElement& ule);
+		void addUser(const UserListElement& ule);
 		/**
 			Dodaje do listy "anonimowy" kontakt o podanym
 			numerze uin. Numer ten wykorzystywany jest jako
@@ -234,7 +234,7 @@ class UserList : public QObject, public QMap<QString,UserListElement>
 			danych zapisanych za pomoc± writeToFile().
 		**/		
 		bool readFromFile();
-		void merge(UserList &userlist);
+		void merge(const UserList &userlist);
 
 	signals:
 		/**
