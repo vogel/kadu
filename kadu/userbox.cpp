@@ -120,32 +120,35 @@ void UserBox::refresh()
 		if (isSelected(i))
 			s_users.append(item(i)->text());
 	QString s_user = currentText();
-	// Najpierw dzielimy uzytkownikow na trzy grupy
+	// Najpierw dzielimy uzytkownikow na cztery grupy
 	QStringList a_users;
 	QStringList i_users;
 	QStringList n_users;
-	for (i = 0; i < Users.count(); i++)
-	{
+	QStringList b_users;
+	for (i = 0; i < Users.count(); i++) {
 		UserListElement &user = userlist.byAltNick(Users[i]);
-		switch (user.status)
-		{
-			case GG_STATUS_AVAIL:
-			case GG_STATUS_AVAIL_DESCR:
-			case GG_STATUS_BUSY:
-			case GG_STATUS_BUSY_DESCR:
-				a_users.append(user.altnick);
-				break;
-			case GG_STATUS_INVISIBLE_DESCR:
-			case GG_STATUS_INVISIBLE2:
-				i_users.append(user.altnick);
-				break;
-			default:
-				n_users.append(user.altnick);
-		};
-	};
+		if (user.uin)
+			switch (user.status) {
+				case GG_STATUS_AVAIL:
+				case GG_STATUS_AVAIL_DESCR:
+				case GG_STATUS_BUSY:
+				case GG_STATUS_BUSY_DESCR:
+					a_users.append(user.altnick);
+					break;
+				case GG_STATUS_INVISIBLE_DESCR:
+				case GG_STATUS_INVISIBLE2:
+					i_users.append(user.altnick);
+					break;
+				default:
+					n_users.append(user.altnick);
+				}
+		else
+			b_users.append(user.altnick);
+		}
 	sortUsersByAltNick(a_users);
 	sortUsersByAltNick(i_users);
 	sortUsersByAltNick(n_users);
+	sortUsersByAltNick(b_users);
 	// Czyscimy liste
 	clear();
 	// Dodajemy aktywnych
@@ -172,10 +175,7 @@ void UserBox::refresh()
 					gg_xpm = gg_busydescr_xpm;
 		    			break;
 				};
-			if (user.uin)
-				insertItem(QPixmap((const char **)gg_xpm), user.altnick);			
-			else
-				insertItem(user.altnick);
+			insertItem(QPixmap((const char **)gg_xpm), user.altnick);			
 		};
 	};	
 	// Dodajemy niewidocznych
@@ -196,10 +196,7 @@ void UserBox::refresh()
 					gg_xpm = gg_invi_xpm;
 		    			break;
 				};
-			if (user.uin)
-				insertItem(QPixmap((const char **)gg_xpm), user.altnick);			
-			else
-				insertItem(user.altnick);
+			insertItem(QPixmap((const char **)gg_xpm), user.altnick);			
 		};
 	};	
 	// Dodajemy nieaktywnych
@@ -220,12 +217,14 @@ void UserBox::refresh()
 		    			gg_xpm = gg_inact_xpm;			
 		    			break;
 				};
-			if (user.uin)
-				insertItem(QPixmap((const char **)gg_xpm), user.altnick);			
-			else
-				insertItem(user.altnick);
+			insertItem(QPixmap((const char **)gg_xpm), user.altnick);			
 		};
 	};
+	// Dodajemy uzytkownikow bez numerow GG
+	for (i = 0; i < b_users.count(); i++) {
+		UserListElement &user = userlist.byAltNick(b_users[i]);
+		insertItem(user.altnick);
+		}
 	// Przywracamy zaznaczenie wczesniej zaznaczonych uzytkownikow
 	for (i = 0; i < s_users.count(); i++)
 		setSelected(findItem(s_users[i]), true);
