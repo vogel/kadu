@@ -215,6 +215,8 @@ void VoiceManager::testGsmEncoding()
 		MessageBox::wrn(tr("Opening sound device failed."));
 		return;
 	}
+	sound_manager->setFlushingEnabled(GsmEncodingTestDevice, false);
+
 	GsmEncodingTestSample = new int16_t[160];
 	GsmEncodingTestFrames = new gsm_frame[8000 * 3 / 160]; // = 150
 	GsmEncodingTestCurrFrame = 0;

@@ -279,11 +279,14 @@ void OSSPlayerSlots::playSample(SoundDevice device, const int16_t* data, int len
 		}
 		c += dev->max_buf_size;
 	}
-	// czekaj na zakoñczenie odtwarzania
-	if (ioctl(dev->fd, SOUND_PCM_SYNC, 0) < 0)
+	if (sound_manager->flushingEnabled(device))
 	{
-		kdebugm(KDEBUG_ERROR, "Sync error\n");
-		result = false;
+		// czekaj na zakoñczenie odtwarzania
+		if (ioctl(dev->fd, SOUND_PCM_SYNC, 0) < 0)
+		{
+			kdebugm(KDEBUG_ERROR, "SOUND_PCM_SYNC error\n");
+			result = false;	
+		}
 	}
 	kdebugf2();
 }

@@ -130,6 +130,7 @@ class SoundManager : public Themes
 		bool mute;
 		QMap<SoundDevice, SoundPlayThread*> PlayingThreads;
 		QMap<SoundDevice, SoundRecordThread*> RecordingThreads;
+		QMap<SoundDevice, bool> FlushingEnabled;
 
 	private slots:
 		void newChat(const UinsList &senders, const QString& msg, time_t time);
@@ -195,6 +196,8 @@ class SoundManager : public Themes
 			@param device uogólniony deskryptor urz±dzenia.
 		**/
 		void enableThreading(SoundDevice device);
+		void setFlushingEnabled(SoundDevice device, bool enabled);
+		bool flushingEnabled(SoundDevice device);
 		/**
 			Odtwarza próbkê d¼wiêkow±. Standardowo jest to
 			operacja blokuj±ca. Mo¿e byæ wywo³ana z innego

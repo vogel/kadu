@@ -643,6 +643,19 @@ void SoundManager::enableThreading(SoundDevice device)
 	kdebugf2();
 }
 
+void SoundManager::setFlushingEnabled(SoundDevice device, bool enabled)
+{
+	FlushingEnabled[device] = enabled;
+}
+
+bool SoundManager::flushingEnabled(SoundDevice device)
+{
+	if (FlushingEnabled.contains(device))
+		return FlushingEnabled[device];
+	else
+		return true;
+}
+
 bool SoundManager::playSample(SoundDevice device, const int16_t* data, int length)
 {
 	kdebugf();
