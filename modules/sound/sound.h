@@ -86,6 +86,9 @@ class SoundSlots : public QObject
 		QMap<QString, QString> soundfiles;
 		QStringList soundNames;
 		QStringList soundTexts;
+		SoundDevice SamplePlayingTestDevice;
+		int16_t* SamplePlayingTestSample;
+		int SamplePlayingTestSampleLen;
 		SoundDevice SampleRecordingTestDevice;
 		int16_t* SampleRecordingTestSample;
 		int SampleRecordingTestSampleLen;
@@ -105,6 +108,7 @@ class SoundSlots : public QObject
 		void selectedPaths(const QStringList& paths);
 		void muteUnmuteSounds();
 		void testSamplePlaying();
+		void samplePlayingTestSamplePlayed(SoundDevice device);
 		void testSampleRecording();
 		void sampleRecordingTestSampleRecorded(SoundDevice device);
 		void sampleRecordingTestSamplePlayed(SoundDevice device);

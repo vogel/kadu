@@ -976,35 +976,42 @@ void SoundSlots::testSamplePlaying()
 	}
 	// alokujemy jeden int16_t wiêcej w razie gdyby file.size() nie
 	// by³o wielokrotno¶ci± sizeof(int16_t)
-	int16_t* buf = new int16_t[file.size() / sizeof(int16_t) + 1];
-	if (file.readBlock((char*)buf, file.size()) != file.size())
+	SamplePlayingTestSample = new int16_t[file.size() / sizeof(int16_t) + 1];
+	SamplePlayingTestSampleLen = file.size();
+	if (file.readBlock((char*)SamplePlayingTestSample, file.size()) != file.size())
 	{
 		MessageBox::wrn(tr("Reading test sample file failed."));
 		file.close();
-		delete[] buf;
+		delete[] SamplePlayingTestSample;
+		SamplePlayingTestSample = NULL;
 		return;	
 	}
 	file.close();
-
+	
 	SoundDevice device = sound_manager->openDevice(11025);
 	if (device == NULL)
 	{
 		MessageBox::wrn(tr("Opening sound device failed."));
-		delete[] buf;
+		delete[] SamplePlayingTestSample;
+		SamplePlayingTestSample = NULL;
 		return;
 	}
-//	MessageBox::status(tr("Playing test sample, you should hear it now"));
-	if (!sound_manager->playSample(device, buf, file.size()))
+	
+	sound_manager->enableThreading(device);
+	connect(sound_manager, SIGNAL(samplePlayed(SoundDevice)), this, SLOT(samplePlayingTestSamplePlayed(SoundDevice)));
+
+	SamplePlayingTestDevice = device;
+	sound_manager->playSample(device, SamplePlayingTestSample, SamplePlayingTestSampleLen);
+}
+
+void SoundSlots::samplePlayingTestSamplePlayed(SoundDevice device)
+{
+	if (device == SamplePlayingTestDevice)
 	{
-//		MessageBox::close(tr("Playing test sample, you should hear it now"));
-		MessageBox::wrn(tr("Playing test sample failed."));
+		disconnect(sound_manager, SIGNAL(samplePlayed(SoundDevice)), this, SLOT(samplePlayingTestSamplePlayed(SoundDevice)));
 		sound_manager->closeDevice(device);
-		delete[] buf;
-		return;	
+		delete[] SamplePlayingTestSample;
 	}
-	sound_manager->closeDevice(device);
-//	MessageBox::close(tr("Playing test sample, you should hear it now"));
-	delete[] buf;
 }
 
 void SoundSlots::testSampleRecording()
