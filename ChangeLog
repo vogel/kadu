@@ -33,6 +33,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * okna wyszukiwania u¿ytkowników i danych osobistych u¿ywaj± sygna³u generowanego
   przez event_managera (chilek)
 * malutka optymalizacja i wywalenie juz niepotrzebnego debuga w parserze (mast3r)
+* w oknie rozmowy kadu nie ucina spacji sprzed tekstu (mast3r)
 
 +++ wersja 0.3.4-rc4
 * kadu nie pokazuje fa³szywych statusów ukrytych w userboksie (chilek)
