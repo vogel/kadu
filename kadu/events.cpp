@@ -227,9 +227,9 @@ void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)
 		fprintf(stderr, "KK Notify about user\n");
 
 		if (config.notifydialog) {		
-			char mes[512];
-			snprintf(mes, sizeof(mes), i18n("User %s is available"), (const char *)userlist.byUin(uin).altnick.local8Bit());
-			QMessageBox::information(0, i18n("User notify"), mes);		
+			QString msg;
+			msg = i18n("User %1 is available").arg(userlist.byUin(uin).altnick);
+			QMessageBox::information(0, i18n("User notify"), msg);		
 			}
 
 		if (config.notifysound)
