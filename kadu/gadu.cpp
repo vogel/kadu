@@ -797,7 +797,7 @@ void GaduProtocol::initModule()
 
 	ConfigDialog::addVGroupBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "Proxy server"));
 	ConfigDialog::addGrid("Network", "Proxy server", "proxygrid", 2);
-	ConfigDialog::addLineEdit("Network", "proxygrid", QT_TRANSLATE_NOOP("@default", "IP address: "), "ProxyHost", "","","proxyhost");
+	ConfigDialog::addLineEdit("Network", "proxygrid", QT_TRANSLATE_NOOP("@default", "IP address: "), "ProxyHost", "0.0.0.0","","proxyhost");
 	ConfigDialog::addLineEdit("Network", "proxygrid",
 		QT_TRANSLATE_NOOP("@default", " Port: "), "ProxyPort", "0");
 	ConfigDialog::addLineEdit("Network", "proxygrid",
