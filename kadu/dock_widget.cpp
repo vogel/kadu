@@ -26,9 +26,9 @@ DockWidget::DockWidget(QWidget *parent, const char *name ) : KSystemTray( parent
 
 	setPixmap( QPixmap((const char**)gg_inact_xpm) );
 	QToolTip::add(this, i18n("Left click - hide/show window\nMiddle click - next message"));
-  icon_timer = new QTimer(this);
-  blink = FALSE;
-  connect(icon_timer,SIGNAL(timeout()),this,SLOT(changeIcon()));
+	icon_timer = new QTimer(this);
+	blink = FALSE;
+	connect(icon_timer,SIGNAL(timeout()),this,SLOT(changeIcon()));
 }
 
 void DockWidget::setType(char **gg_xpm) {
@@ -39,18 +39,18 @@ void DockWidget::setType(char **gg_xpm) {
 }
 
 void DockWidget::changeIcon() {
-  if (pending.pendingMsgs() && config.dock && !icon_timer->isActive()) {
-    if (!blink) {
-      setPixmap(QPixmap((const char**)gg_msg_xpm));
-      icon_timer->start(500,TRUE);
-      blink = true;
-      }
-    else {
-      setPixmap(QPixmap((const char**)gg_xpm[statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]));
-      icon_timer->start(500,TRUE);
-      blink = false;
-      }
-  }
+	if (pending.pendingMsgs() && config.dock && !icon_timer->isActive()) {
+		if (!blink) {
+			setPixmap(QPixmap((const char**)gg_msg_xpm));
+			icon_timer->start(500,TRUE);
+			blink = true;
+			}
+		else {
+			setPixmap(QPixmap((const char**)gg_xpm[statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]));
+			icon_timer->start(500,TRUE);
+			blink = false;
+			}
+	}
 }
 
 void DockWidget::dockletChange(int id)
@@ -141,6 +141,101 @@ void DockWidget::mousePressEvent(QMouseEvent * e) {
 		}
 }
 
-DockWidget* dw;
+DockHint::DockHint(QWidget *parent) : QLabel(parent,"docktip",WStyle_Splash)
+{
+	fprintf(stderr,"KK DockHint::DockHint\n");
+	remove_timer = new QTimer(this);
+	setAlignment(Qt::AlignCenter);
+	setPaletteBackgroundColor(QColor(255,255,230));
+	setFrameStyle(QFrame::Box|QFrame::Plain);
+	setLineWidth(1);
+//	setMargin(2);
+	
+	connect(remove_timer,SIGNAL(timeout()),this,SLOT(remove_hint()));
+}
 
+void DockHint::Show(QString Text) {
+	fprintf(stderr,"KK DockHint::Show(%s)\n",Text.latin1());
+	if (text()=="")
+		setText(Text);
+	else
+		setText(text()+"\n"+Text);
+	
+//Zamotany kod, nie probowac nawet go zrozumiec ;)
+	QPoint p=dw->mapToGlobal(QPoint(0,0));
+	QSize size=QFontMetrics(QFont(config.fonts.userboxFont,config.fonts.userboxFontSize)).size(Qt::ExpandTabs,text());
+//trzeba dodac kilka pixeli bo to gowno wyzej nie dziala jak trzeba, na przyszlosc trzeba bedzie cos lepszego wymyslec
+	size=QSize(size.width()+5,size.height()+5);
+	fprintf(stderr,"w:%d,h:%d\n",size.width(),size.height());
+	resize(size.width(),size.height());
+	QSize desksize=QApplication::desktop()->size();
+
+	if (p.x()+size.width() > desksize.width()) {
+		if(p.x()-size.width() <0)
+			p.setX(p.x()+dw->rect().width());
+		else
+			p.setX(p.x()-size.width());
+	}
+	else {
+		if(p.x()-size.width() <0)
+			p.setX(p.x()+dw->rect().width());
+		else
+			p.setX(p.x()-size.width());
+	}
+	if (p.y()-size.height()-dw->rect().height() < 0)
+		p.setY(p.y()+dw->rect().height()/2+size.height());
+	else
+		p.setY(p.y()-dw->rect().height()/2-size.height());
+//Koniec zamotanego kodu, otrzymalismy calkiem dobre wspolrzedne na docktip
+	
+	move(p);
+	show();
+	if (!remove_timer->isActive())
+		remove_timer->start(5000);
+}
+
+void DockHint::remove_hint() {
+	fprintf(stderr,"DockWidget::remove_hint()\n");
+	int len = text().find('\n');
+	fprintf(stderr,"len=%d\n",len);
+	if (len > 0)
+		setText(text().remove(0,len+1));
+	else {
+		hide();
+		clear();
+		remove_timer->stop();
+		return;
+	}
+//zamotany kod
+	QPoint p=dw->mapToGlobal(QPoint(0,0));
+	QSize size=QFontMetrics(QFont(config.fonts.userboxFont,config.fonts.userboxFontSize)).size(Qt::ExpandTabs,text());
+//trzeba dodac kilka pixeli bo to gowno wyzej nie dziala jak trzeba, na przyszlosc trzeba bedzie cos lepszego wymyslec
+	size=QSize(size.width()+5,size.height()+5);
+	fprintf(stderr,"w:%d,h:%d\n",size.width(),size.height());
+	resize(size.width(),size.height());
+	QSize desksize=QApplication::desktop()->size();
+
+	if (p.x()+size.width() > desksize.width()) {
+		if(p.x()-size.width() <0)
+			p.setX(p.x()+dw->rect().width());
+		else
+			p.setX(p.x()-size.width());
+	}
+	else {
+		if(p.x()-size.width() <0)
+			p.setX(p.x()+dw->rect().width());
+		else
+			p.setX(p.x()-size.width());
+	}
+	if (p.y()-size.height()-dw->rect().height() < 0)
+		p.setY(p.y()+dw->rect().height()/2+size.height());
+	else
+		p.setY(p.y()-dw->rect().height()/2-size.height());
+//Koniec zamotanego kodu, otrzymalismy calkiem dobre wspolrzedne na docktip
+	
+	move(p);
+}
+
+DockWidget* dw;
+DockHint *tip;
 #include "dock_widget.moc"

@@ -22,17 +22,30 @@ class DockWidget : public KSystemTray
 	public:
 		DockWidget(QWidget *parent=0, const char *name=0);
 		void DockWidget::setType(char **gg_xpm);
-
 	public slots:
 		// Status change slots
 		void dockletChange(int id);
-    //Funkcja do migania koperty
-    void changeIcon(void);
+		//Funkcja do migania koperty
+		void changeIcon(void);
   private:
-    QTimer *icon_timer;
-    bool blink;   
+		QTimer *icon_timer;
+		bool blink;
+};
+
+class DockHint : public QLabel
+{
+	Q_OBJECT
+	
+	private:
+		QTimer *remove_timer;
+	public:
+		DockHint(QWidget *parent=0);
+		void Show(QString Text);
+	public slots:
+		void remove_hint(void);
 };
 
 extern DockWidget* dw;
+extern DockHint* tip;
 
 #endif

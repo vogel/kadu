@@ -111,6 +111,15 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 		kadu->setFocus();
 		}
 
+	if (config.showhint) {
+		if (!tip)
+			tip = new DockHint(0);
+		if (msgclass == GG_CLASS_CHAT)
+			tip->Show(i18n("Chat with: ")+nick.latin1());
+		if (msgclass == GG_CLASS_MSG)
+			tip->Show(i18n("Message from: ")+nick.latin1());
+	}
+
 	PendingMsgs::Element elem;
 
 	if (senders[0] == config.uin) {

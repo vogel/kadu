@@ -411,6 +411,12 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		dw->show();
 	}
 	
+	/* use dock hint? */
+	if (config.showhint)
+		tip = new DockHint(0);
+	else
+		tip = NULL;
+	
 	/* read the userlist */
 	userlist.readFromFile();
 

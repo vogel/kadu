@@ -77,6 +77,7 @@ struct config {
 	bool grouptabs;
 	bool checkupdates;
 	bool addtodescription;
+	bool showhint;
 	QRect geometry;
 
 	bool defaultwebbrowser;

@@ -34,6 +34,7 @@
 #include "misc.h"
 #include "emoticons.h"
 #include "config.h"
+#include "dock_widget.h"
 //
 
 void loadKaduConfig(void) {  	
@@ -81,6 +82,7 @@ void loadKaduConfig(void) {
 	config.grouptabs = konf->readBoolEntry("DisplayGroupTabs", true);
 	config.checkupdates = konf->readBoolEntry("CheckUpdates", true);
 	config.addtodescription = konf->readBoolEntry("AddToDescription", false);
+	config.showhint = konf->readBoolEntry("ShowHint",false);
 
 	if (config.savegeometry)
 		config.geometry = konf->readRectEntry("Geometry");
@@ -177,6 +179,7 @@ void saveKaduConfig(void) {
 	konf->writeEntry("CheckUpdates", config.checkupdates);
 	konf->writeEntry("DisplayGroupTabs",config.grouptabs);
 	konf->writeEntry("AddToDescription",config.addtodescription);
+	konf->writeEntry("ShowHint",config.showhint);
 
 	konf->setGroup("WWW");
 	konf->writeEntry("DefaultWebBrowser", config.defaultwebbrowser);	
@@ -392,6 +395,11 @@ void ConfigDialog::setupTab1(void) {
 	if (config.addtodescription)
 		b_addtodescription->setChecked(true);		
 	QToolTip::add(b_addtodescription,i18n("If a file ~/.gg/description is present, its contents will be added\nto the status description and then the file will be deleted."));
+
+	b_showhint = new QCheckBox(grid);
+	b_showhint->setText(i18n("Show hint(experymental)"));
+	if (config.showhint)
+		b_showhint->setChecked(true);		
 
 	addTab(box, i18n("General"));
 }
@@ -1174,7 +1182,11 @@ void ConfigDialog::updateConfig(void) {
 		kadu->autostatus_timer->start(1000,TRUE);
 	config.addtodescription = b_addtodescription->isChecked();
 	if (!config.addtodescription)
-		kadu->autostatus_timer->stop();	
+		kadu->autostatus_timer->stop();
+		
+	if (!b_showhint->isChecked() && config.showhint);
+		tip = NULL;
+	config.showhint = b_showhint->isChecked();
 
 	config.smsbuildin = b_smsbuildin->isChecked();
 	config.smsapp = strdup(e_smsapp->text().latin1());
