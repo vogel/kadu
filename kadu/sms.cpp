@@ -755,8 +755,8 @@ void Sms::initModule()
 	kdebug("Sms::initModule \n");	
 
 	SmsSlots *smsslots=new SmsSlots();
-	ConfigDialog::registerTab(i18n("General"));
-	ConfigDialog::registerVGroupBox(i18n("General"),i18n("SMS options"));
+	ConfigDialog::registerTab(i18n("SMS"));
+	ConfigDialog::registerVGroupBox(i18n("SMS"),i18n("SMS options"));
 	ConfigDialog::registerCheckBox(i18n("SMS options"),i18n("Use built-in SMS application"),"SMS","BuiltInApp",true);
 	ConfigDialog::registerLineEdit(i18n("SMS options"),i18n("Custom SMS application"),"SMS","SmsApp","");
 	ConfigDialog::registerGrid(i18n("SMS options"),"sms",2);
@@ -765,12 +765,9 @@ void Sms::initModule()
 	ConfigDialog::registerLineEdit("sms","","SMS","SmsString","");
     	ConfigDialog::connectSlot(i18n("Use built-in SMS application"), SIGNAL(toggled(bool)), smsslots, SLOT(onSmsBuildInCheckToggle(bool)));
 	ConfigDialog::registerSlotOnCreate(smsslots,SLOT(onCreateConfigDialog()));
-	
-	ConfigDialog::registerTab(i18n("Other"));
-	ConfigDialog::registerVGroupBox(i18n("Other"),i18n("SMS Era Gateway"));
+	ConfigDialog::registerVGroupBox(i18n("SMS"),i18n("SMS Era Gateway"));
 	ConfigDialog::registerLineEdit(i18n("SMS Era Gateway"),i18n("User ID"),"SMS","EraGatewayUser","");
 	ConfigDialog::registerLineEdit(i18n("SMS Era Gateway"),i18n("Password"),"SMS","EraGatewayPassword","");
-	
 };
 
 void SmsSlots::onSmsBuildInCheckToggle(bool value)
@@ -781,10 +778,9 @@ void SmsSlots::onSmsBuildInCheckToggle(bool value)
 	QCheckBox *b_smscustomconf=((QCheckBox*)ConfigDialog::getWidget("sms",i18n("SMS custom string")));
 	QLineEdit *e_smsconf=((QLineEdit*)ConfigDialog::getWidget("sms",""));
 
-		((QHBox*)(e_smsapp->parent()))->setEnabled(!value);
-		b_smscustomconf->setEnabled(!value);
-		e_smsconf->setEnabled(b_smscustomconf->isChecked()&& !value);
-
+	((QHBox*)(e_smsapp->parent()))->setEnabled(!value);
+	b_smscustomconf->setEnabled(!value);
+	e_smsconf->setEnabled(b_smscustomconf->isChecked()&& !value);
 };
 
 void SmsSlots::onCreateConfigDialog()
@@ -796,15 +792,15 @@ void SmsSlots::onCreateConfigDialog()
 	QCheckBox *b_smscustomconf=((QCheckBox*)ConfigDialog::getWidget("sms",i18n("SMS custom string")));
 	QLineEdit *e_smsconf=((QLineEdit*)ConfigDialog::getWidget("sms",""));
 	
-		if (b_smsbuildin->isChecked())
-			{
-			((QHBox*)(e_smsapp->parent()))->setEnabled(false);
-			b_smscustomconf->setEnabled(false);
-			e_smsconf->setEnabled(false);
-			}	
+	if (b_smsbuildin->isChecked())
+	{
+		((QHBox*)(e_smsapp->parent()))->setEnabled(false);
+		b_smscustomconf->setEnabled(false);
+		e_smsconf->setEnabled(false);
+	}	
 			
-		if (!b_smscustomconf->isChecked())
-			e_smsconf->setEnabled(false);
+	if (!b_smscustomconf->isChecked())
+		e_smsconf->setEnabled(false);
 			    
 	connect(b_smscustomconf,SIGNAL(toggled(bool)),e_smsconf,SLOT(setEnabled(bool)));
 };

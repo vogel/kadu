@@ -429,8 +429,8 @@ void UserBox::all_renameUser(const QString &oldaltnick, const QString &newaltnic
 
 void UserBox::initModule()
 {
-	ConfigDialog::registerTab(i18n("Other"));
-	ConfigDialog::registerCheckBox(i18n("Other"),i18n("Show Inactive users"),"Other","ShowHideInactive",true);
+	ConfigDialog::registerTab(i18n("General"));
+	ConfigDialog::registerCheckBox(i18n("General"),i18n("Show Inactive users"),"Other","ShowHideInactive",true);
 };
 
 QValueList<UserBox *> UserBox::UserBoxes;

@@ -1018,8 +1018,8 @@ void Chat::addEmoticon(QString string) {
 
 void Chat::initModule()
 {
-	ConfigDialog::registerTab(i18n("Other"));
-	ConfigDialog::registerCheckBox(i18n("Other"),i18n("Open chat window on new message"),"Other","OpenChatOnMessage");
+	ConfigDialog::registerTab(i18n("General"));
+	ConfigDialog::registerCheckBox(i18n("General"),i18n("Open chat window on new message"),"Other","OpenChatOnMessage");
 	ConfigDialog::registerTab(i18n("ShortCuts"));
 	ConfigDialog::registerVGroupBox(i18n("ShortCuts"),i18n("Define keys"));
 	ConfigDialog::registerHotKeyEdit(i18n("Define keys"),i18n("New line / send message:"),"ShortCuts","chat_newline","Return");
@@ -1028,8 +1028,6 @@ void Chat::initModule()
 	ConfigDialog::registerHotKeyEdit(i18n("Define keys"),i18n("Bold text:"),"ShortCuts","chat_bold","Ctrl+B");
 	ConfigDialog::registerHotKeyEdit(i18n("Define keys"),i18n("Italic text:"),"ShortCuts","chat_italic","Ctrl+I");
 	ConfigDialog::registerHotKeyEdit(i18n("Define keys"),i18n("Underline text:"),"ShortCuts","chat_underline","Ctrl+U");
-	
-	
 };
 
 ColorSelectorButton::ColorSelectorButton(QWidget* parent, const QColor& qcolor) : QToolButton(parent)
