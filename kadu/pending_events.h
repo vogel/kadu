@@ -5,10 +5,19 @@
 #include <qptrlist.h>
 #include "misc.h"
 
+/**
+	Klasa bazowa dla wszystkich kolejkowanych zdarzen.
+**/
 class PendingEvent
 {
 	public:
+		/**
+			Sprawdza czy zdarzenie dotyczy podanego numeru uin.
+		**/
 		virtual bool sendBy(uin_t uin)=0;
+		/**
+			Aktywuje zdarzenie.
+		**/
 		virtual void activate()=0;
 };
 
@@ -23,7 +32,15 @@ class PendingMessage : public PendingEvent
 	public:
 		PendingMessage(const UinsList uins,const QString& msg,
 			const int msg_class,const time_t time);
+		/**
+			Sprawdza czy zdarzenie dotyczy podanego numeru uin.
+			Jest to prawda jesli podany uin jest jednym z
+			nadawcow wiadomosci.
+		**/
 		virtual bool sendBy(uin_t uin);
+		/**
+			Aktywuje zdarzenie. Wyswietla wiadomosc w oknie Chat.
+		**/		
 		virtual void activate();
 };
 
@@ -37,16 +54,48 @@ class PendingEvents : public QObject
 		
 	public:
 		PendingEvents();
+		/**
+			Kolejkuje zdarzenie. Obiekt do ktorego wskaznik
+			przekazujemy jest usuwany przez PendingEvents
+			podczas aktywacji zdarzenia.
+		**/
 		void queueEvent(PendingEvent* event);
+		/**
+			Aktywuje zakolejkowane zdarzenie o podanym indeksie
+			i usuwa je z kolejki.
+		**/				
 		void activateEvent(int index);
+		/**
+			Aktywuje i usuwa z kolejki pierwsze zakolejkowane
+			zdarzenie.
+		**/				
+		void activateEvent();
+		/**
+			Zwraca zakolejkowane zdarzenie o podanym indeksie.
+		**/						
 		PendingEvent* operator[](int index);
+		/**
+			Sprawdza czy istnieja zakolejkowane zdarzenia
+			dotyczace podanego numeru uin.
+		**/		
 		bool pendingEvents(uin_t uin);
+		/**
+			Sprawdza czy istnieja zakolejkowane zdarzenia.
+		**/				
 		bool pendingEvents();
 //		bool loadFromFile();
 //		void writeToFile();
 
 	signals:
+		/**
+			Sygnal emitowany po zakolejkowaniu zdarzenia.
+		**/					
 		void eventQueued(PendingEvent* event);
+		/**
+			Sygnal emitowany po aktywacji zdarzenia i usunieciu
+			go z kolejki. Po obsluzeniu sygnalu obiekt jest
+			usuwany.
+		**/							
 		void eventActivated(PendingEvent* event);
 };
 

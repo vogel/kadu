@@ -77,6 +77,8 @@ void PendingEvents::queueEvent(PendingEvent* event)
 
 void PendingEvents::activateEvent(int index)
 {
+	kassert(index>=0);
+	kassert(index<Events.count());
 	kdebug("PendingEvents::(pre)activateEvent(%d), count=%d\n", index, Events.count());
 	PendingEvent* event=Events.at(index);
 	event->activate();
@@ -86,6 +88,11 @@ void PendingEvents::activateEvent(int index)
 	emit eventActivated(event);
 	delete event;
 };
+
+void activateEvent()
+{
+	activateEvent(0);
+}
 
 PendingEvent* PendingEvents::operator[](int index)
 {
