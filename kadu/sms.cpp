@@ -277,7 +277,8 @@ SmsGateway::SmsGateway(QObject* parent)
 
 void SmsGateway::httpError()
 {
-	QMessageBox::critical((QWidget*)parent(),"SMS",tr("Network error. Provider gateway page is probably unavailable"));
+	kdebug("SmsGateway::httpError()\n");
+	QMessageBox::critical((QDialog*)(parent()->parent()), "SMS",tr("Network error. Provider gateway page is probably unavailable"));
 	emit finished(false);
 };
 

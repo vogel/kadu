@@ -236,7 +236,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	config_file.addVariable("Network", "UseTLS", config_file.readBoolEntry("Network", "UseTLS", false));
 	config_file.addVariable("Network", "DefaultPort", config_file.readNumEntry("Global", "DefaultPort",8074));
 	config_file.addVariable("History", "ChatHistoryQuotationTime",-config_file.readNumEntry("Other", "ChatHistoryQuotationTime",336));
-	config_file.addVariable("History", "ChatHistoryQuotation", config_file.readNumEntry("Other", "ChatHistoryQuotation", 10));
+	config_file.addVariable("History", "ChatHistoryCitation", config_file.readNumEntry("Other", "ChatHistoryQuotation", 10));
 	config_file.addVariable("Chat", "ChatPrune", config_file.readBoolEntry("Other", "ChatPrune", false));
 	config_file.addVariable("Chat", "ChatPruneLen", config_file.readNumEntry("Other", "ChatPruneLen", 20));
 	config_file.addVariable("Chat", "EmoticonsStyle", config_file.readNumEntry("Other", "ChatEmoticonsStyle", EMOTS_ANIMATED));

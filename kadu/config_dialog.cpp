@@ -246,8 +246,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				int value=values[3].toInt();
 				QSpinBox *spinbox=new QSpinBox(minVal, maxVal, step, hbox);
 				int val=config_file.readNumEntry((*i).group, (*i).entry,value);
-				if (val) value=val;
-				spinbox->setValue(value);
+				spinbox->setValue(val);
 				(*i).widget=spinbox;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				    if ((*i).group != acttab)
