@@ -4997,10 +4997,10 @@ sed 's/^/| /' conftest.$ac_ext >&5
 		echo "$as_me:$LINENO: result: no" >&5
 echo "${ECHO_T}no" >&6
 
-		echo "$as_me:$LINENO: checking if libqt-mt is in specified directories: $with_libs $QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib /usr/lib/qt3/lib64 /sw/lib /usr/share/qt3/lib" >&5
-echo $ECHO_N "checking if libqt-mt is in specified directories: $with_libs $QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib /usr/lib/qt3/lib64 /sw/lib /usr/share/qt3/lib... $ECHO_C" >&6
+		echo "$as_me:$LINENO: checking if libqt-mt is in specified directories: $with_libs $QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib/qt/lib /usr/lib /usr/local/lib /usr/X11R6/lib /usr/lib/qt3/lib64 /sw/lib /usr/share/qt3/lib" >&5
+echo $ECHO_N "checking if libqt-mt is in specified directories: $with_libs $QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib/qt/lib /usr/lib /usr/local/lib /usr/X11R6/lib /usr/lib/qt3/lib64 /sw/lib /usr/share/qt3/lib... $ECHO_C" >&6
 		FILE_DIR=
-		for dir in $with_libs $QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib /usr/lib/qt3/lib64 /sw/lib /usr/share/qt3/lib
+		for dir in $with_libs $QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib/qt/lib /usr/lib /usr/local/lib /usr/X11R6/lib /usr/lib/qt3/lib64 /sw/lib /usr/share/qt3/lib
 		do
 			CFLAGS="$save_CFLAGS $PNG_LIBS -L $dir -lqt-mt"
 			cat >conftest.$ac_ext <<_ACEOF

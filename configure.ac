@@ -466,7 +466,7 @@ AC_SUBST(QT_INCLUDES)
 
 
 QT_LIBS="-lqt-mt"
-FIND_LIBRARY([qt-mt],[$QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib /usr/lib/qt3/lib64 /sw/lib /usr/share/qt3/lib],
+FIND_LIBRARY([qt-mt],[$QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib/qt/lib /usr/lib /usr/local/lib /usr/X11R6/lib /usr/lib/qt3/lib64 /sw/lib /usr/share/qt3/lib],
 [
 	QT_LIBS="$QT_LIBS -L$FILE_DIR"
 ],[
