@@ -18,6 +18,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * informacje o proxy nie powinny ju¿ znikaæ po ponownej aktywacji (lol/mast3r)
 * porz±dki w kodzie, zoptymalizowano commandParser (mast3r)
 * poprawka z zwalnianiem pamieci w chat.cpp (nazgul/mast3r)
+* porz±dki w libgadu: wywali³em katalog win32 - narazie nie jest potrzebny,
+  oraz katalog z cache'm od m4. Usun±³em równie¿ historyczny ChangeLog.1,
+  bo to ponad 100kb a nikt nie bêdzie i tak tego czyta³ (adrian)
 
 +++ wersja 0.3.4-rc1
 * wiêkszo¶æ kodu dotycz±cego obs³ugi zdarzeñ sieciowych przeniesiona z
