@@ -1,4 +1,4 @@
-/* $Id: libgadu.h,v 1.1 2002/07/09 22:22:02 chilek Exp $ */
+/* $Id: libgadu.h,v 1.2 2002/07/14 15:31:50 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>,
@@ -279,6 +279,7 @@ void gg_logoff(struct gg_session *sess);
 int gg_change_status(struct gg_session *sess, int status);
 int gg_change_status_descr(struct gg_session *sess, int status, const char *descr);
 int gg_send_message(struct gg_session *sess, int msgclass, uin_t recipient, const unsigned char *message);
+int gg_send_message_to_users(struct gg_session *sess, int msgclass, int recipients_count, uin_t *recipients, const unsigned char *message);
 int gg_send_message_ctcp(struct gg_session *sess, int msgclass, uin_t recipient, const unsigned char *message, int message_len);
 int gg_ping(struct gg_session *sess);
 
