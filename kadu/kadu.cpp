@@ -497,13 +497,13 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	connect(gadu, SIGNAL(userStatusChanged(const UserListElement&, const UserStatus &, bool)),
 		this, SLOT(userStatusChanged(const UserListElement&, const UserStatus &, bool)));
 
-	connect(&(gadu->status()), SIGNAL(goOnline(const QString &)),
+	connect(&(gadu->currentStatus()), SIGNAL(goOnline(const QString &)),
 		this, SLOT(wentOnline(const QString &)));
-	connect(&(gadu->status()), SIGNAL(goBusy(const QString &)),
+	connect(&(gadu->currentStatus()), SIGNAL(goBusy(const QString &)),
 		this, SLOT(wentBusy(const QString &)));
-	connect(&(gadu->status()), SIGNAL(goInvisible(const QString &)),
+	connect(&(gadu->currentStatus()), SIGNAL(goInvisible(const QString &)),
 		this, SLOT(wentInvisible(const QString &)));
-	connect(&(gadu->status()), SIGNAL(goOffline(const QString &)),
+	connect(&(gadu->currentStatus()), SIGNAL(goOffline(const QString &)),
 		this, SLOT(wentOffline(const QString &)));
 
 	kdebugf2();
@@ -988,9 +988,9 @@ void Kadu::blink()
 
 	kdebugf();
 
-	if (!DoBlink && !gadu->status().isOffline())
+	if (!DoBlink && !gadu->currentStatus().isOffline())
 		return;
-	else if (!DoBlink && gadu->status().isOffline())
+	else if (!DoBlink && gadu->currentStatus().isOffline())
 	{
 		pix = gadu->status().pixmap(Offline, false);
 		statusButton->setIconSet(QIconSet(pix));
@@ -1196,6 +1196,7 @@ void Kadu::error(GaduError err)
 	kdebugf();
 	QString msg = QString::null;
 
+	Autohammer = true;
 	switch (err)
 	{
 		case ConnectionServerNotFound:
@@ -1640,15 +1641,15 @@ void KaduSlots::onDestroyConfigDialog()
 	kadu->changeAppearance();
 	chat_manager->changeAppearance();
 	kadu->refreshGroupTabBar();
-	
+
 	if (!config_file.readBoolEntry("Look", "DisplayGroupTabs"))
 	{
-		
+
 		kadu->groupBar()->setCurrentTab(kadu->groupBar()->tabAt(0));
 		config_file.writeEntry("Look", "CurrentGroupTab", 0);
 		kadu->setActiveGroup("");
 	}
-	
+
 	kadu->setCaption(tr("Kadu: %1").arg((UinType)config_file.readNumEntry("General", "UIN")));
 
 	QComboBox *cb_language= ConfigDialog::getComboBox("General", "Set language:");

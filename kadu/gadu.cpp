@@ -64,7 +64,8 @@ AutoConnectionTimer::AutoConnectionTimer(QObject *parent, const char *name) : QT
 void AutoConnectionTimer::doConnect()
 {
 	kdebugf();
-	gadu->login();
+	if (!gadu->userListSent())
+		gadu->login();
 }
 
 void AutoConnectionTimer::on()
@@ -1159,8 +1160,8 @@ void GaduProtocol::connectionTimeoutTimerSlot()
 	{
 		kdebug("Timeout, breaking connection\n");
 		emit error(ConnectionTimeout);
-		logout();
-		login();
+		//logout();
+		//login();
 	}
 	kdebugf2();
 }

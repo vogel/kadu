@@ -90,14 +90,16 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   ConfigDialog: dodane ulepszone addComboBox (automatycznie zapisuj±ce swój stan),
       dodana nowa kontrolka poprzez addVRadioGroup, addHRadioGroup
   (joi)
-* ³atka SadMephisto dodaj±ca do modu³u mo¿liwo¶æ wyboru koloru szyfrowanych wiadomo¶ci (joi)
+* ³atka SadMephisto dodaj±ca do modu³u mo¿liwo¶æ wyboru koloru szyfrowanych
+  wiadomo¶ci (joi)
 * usuwanie kontrolek z konfiguracji przy wy³adowywaniu modu³u encryption
   skrócenie kodu dodaj±cego ColorButtony do konfiguracji (joi)
 * ³atka Vogela ustawiaj±ca w³a¶ciw± ikonê statusu przy ³±czeniu siê z serwerem (joi)
 * wy¶wietlanie w³asnego statusu na li¶cie kontaktów znowu dzia³a (na razie ;)) (joi)
 * usuniêty b³±d powoduj±cy otwarcie okna rozmowy przy naci¶niêciu entera
   na li¶cie kontaków mimo braku zaznaczenia (joi)
-* mo¿liwo¶æ wy³±czenia dymka w trayu (tego z w³asnym statusem i opisem co który klawisz myszki robi) (joi)
+* mo¿liwo¶æ wy³±czenia dymka w trayu (tego z w³asnym statusem i opisem co który
+  klawisz myszki robi) (joi)
 * usuniêty segfault w module encryption przy odbiorze klucza (joi)
 * drobna przebudowa powiadamiania z usuniêciem kilku b³êdów
   opcja ignorowania zmian statusów zaraz po po³±czeniu z serwerem
@@ -115,15 +117,18 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * porz±dki i poprawiona kompatybilno¶æ z Qt < 3.2 (joi)
 * poprawa b³êdu powiadomieñ - funkcja dzia³a³a tylko przy w³±czonej
   opcji powiadamiania o wszystkich kontaktach (joi)
-* poprawa g³upiego b³êdu w hintach - domy¶lne warto¶ci ustalane by³y dla modu³u window_notify (joi)
+* poprawa g³upiego b³êdu w hintach - domy¶lne warto¶ci ustalane by³y dla
+  modu³u window_notify (joi)
 * zak³adki w konfiguracji mog± mieæ ikonki (o ile bêd± w zestawie) (joi)
 * poprawki w hintach dla modu³u tcl_scripting (joi)
 * w konfiguracji kolejny pseudo widget - "RadioGroup" (joi)
-* ³ata Vogela na obs³ugê statusów + moje zmiany, co by to dzia³a³o ;) + drobne optymalizacje (joi)
+* ³ata Vogela na obs³ugê statusów + moje zmiany, co by to dzia³a³o ;) + drobne
+  optymalizacje (joi)
 * je¿eli w trakcie ³adowania modu³u autoaway ustawiony by³ status dostêpny,
   to modu³ nie startowa³ prawid³owo - poprawione (joi)
 * wybór przegl±darki do otwierania linków - patch Dorregaraya i moje spoore zmiany (joi)
-* poprawka Vogela na status "Tylko dla znajomych" (odznaczanie siê checkboksa przy po³±czeniu) (joi)
+* poprawka Vogela na status "Tylko dla znajomych" (odznaczanie siê checkboksa
+  przy po³±czeniu) (joi)
 * poprawiony b³±d wy¶wietlania statusu "niedostêpny z opisem" (joi)
 * autodownload obs³uguje archiwa w formacie tar.gz i tar.bz2 (adrian)
 * autodownload potrafi obs³u¿yæ archiwum zawieraj±ce katalog zgodny z nazw±
@@ -218,6 +223,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * animowane emotikony/obrazki s± usuwane z pamiêci po zamkniêciu okna chatu (joi)
 * usprawnienie mechanizmu mirrorów w autodownload: w pliku .href mo¿emy
   podawaæ kilka adresów w kolejnych wierszach (adrian)
+* ³ata Vogela: ikona w trayu znowu miga i dzia³aj± timeouty na po³±czenia
+  z serwerami (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
