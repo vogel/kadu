@@ -240,8 +240,9 @@ TrayHint::TrayHint(QWidget *parent, const char *name)
 	hint = new QTextBrowser(this);
 	hint->setVScrollBarMode(QScrollView::AlwaysOff);
 	hint->setHScrollBarMode(QScrollView::AlwaysOff);
-	hint->setFont(config.fonts.userbox);
-//	hint->setPaletteBackgroundColor("#FF00AA");
+	hint->setFont(config.fonts.trayhint);
+	hint->setPaletteBackgroundColor(config.colors.trayhintBg);
+	hint->setPaletteForegroundColor(config.colors.trayhintText);
 
 	hint_timer = new QTimer();
 	
@@ -277,9 +278,6 @@ void TrayHint::show_hint(const QString &str, const QString &nick, int index) {
 	if (hint_list.last() == str+nick || hint_list.last() == "\n"+str+nick)
 		return;
 	QString text;
-	text.append("<FONT color=\"");
-	text.append(config.colors.mychatText.name());
-	text.append("\">");
 	text.append("<CENTER>");
 	switch(index) {
 		case 0:
@@ -304,14 +302,13 @@ void TrayHint::show_hint(const QString &str, const QString &nick, int index) {
 		hint_list.append(str+nick);
 		}
 	else {
-		fprintf(stderr,"last=%s\n",hint_list.last().latin1());
 		hint->setText(hint->text()+"\n"+text);
 		hint_list.append("\n"+str+nick);
 		}
 	set_hint();
 	show();
 	if (!hint_timer->isActive())
-		hint_timer->start(5000);
+		hint_timer->start(config.timeouthint * 1000);
 }
 
 void TrayHint::remove_hint() {

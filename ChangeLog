@@ -27,6 +27,9 @@
 * drobne porz±dki z polem statusu (powinno zmniejszaæ siê przy zmianie rozmiaru
   okna kadu) (chilek)
 * wyrzucony pusty pasek pod menu (chilek)
+* poprawiony blad ktory mogl powodowac wywalanie siê kadu przy reconnecie (mast3r)
+* przygotowania do zrobienia konfiguralono¶ci trayhinta, narazie tylko w
+  pliku konfiguracyjnym (mast3r)
 
 +++ wersja 0.3.3-rc1
 * sms.cpp ma szansê kompilowaæ siê na Qt < 3.0.5 (chilek)

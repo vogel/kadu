@@ -1706,13 +1706,13 @@ void Kadu::eventHandler(int state) {
 			socket_active = false;
 			UserBox::all_changeAllToInactive();
 			snprintf(error, sizeof(error), "KK Kadu::eventHandler(): Unscheduled connection termination\n");
-			trayicon->showHint(i18n("Unscheduled connection termination"),i18n("Error: "),1);
 			fprintf(stderr, error);
 			disconnectNetwork();			
 			setCurrentStatus(GG_STATUS_NOT_AVAIL);
-			if (autohammer)
+			if (autohammer) {
 				setStatus(config.defaultstatus & (~GG_STATUS_FRIENDS_MASK));
 				trayicon->showHint(i18n("Trying reconnect"),"Kadu: ",1);
+				}
 			}
 		else
 			if (sess->check & GG_CHECK_WRITE)

@@ -44,12 +44,15 @@ struct colors {
 	QColor mychatText;
 	QColor usrchatBg;
 	QColor usrchatText;
+	QColor trayhintBg;
+	QColor trayhintText;
 };
 
 struct fonts {
 	QFont userbox;
 	QFont userboxDesc;
 	QFont chat;
+	QFont trayhint;
 };
 
 struct config {
@@ -110,6 +113,7 @@ struct config {
 
 	bool autoaway;
 	int autoawaytime;
+	int timeouthint;
 
 	QStringList notifies;
 	char *soundnotify;

@@ -92,6 +92,7 @@ void loadKaduConfig(void) {
 	config.checkupdates = konf->readBoolEntry("CheckUpdates", true);
 	config.addtodescription = konf->readBoolEntry("AddToDescription", false);
 	config.showhint = konf->readBoolEntry("ShowHint",false);
+	config.timeouthint = konf->readNumEntry("TimeoutHint",5);
 	QRect def_rect(0,0,145,465);
 	config.geometry = konf->readRectEntry("Geometry",&def_rect);
 	QSize def_size(340,60);
@@ -165,12 +166,20 @@ void loadKaduConfig(void) {
 	def_color.setNamedColor("#000000");
 	config.colors.userboxDescText = konf->readColorEntry("UserboxDescTextColor",&def_color);
 
+	def_color.setNamedColor("#F0F0F0");
+	config.colors.trayhintBg = konf->readColorEntry("TrayHintBgColor",&def_color);
+
+	def_color.setNamedColor("#000000");
+	config.colors.trayhintText = konf->readColorEntry("TrayHintTextColor",&def_color);
+
 	konf->setGroup("Fonts");
 	QFontInfo info(a->font());
 	QFont def_font(info.family(),info.pointSize());
 	config.fonts.userbox = konf->readFontEntry("UserboxFont", &def_font);
 	config.fonts.chat = konf->readFontEntry("ChatFont", &def_font);
 	config.fonts.userboxDesc = konf->readFontEntry("UserboxDescFont", &def_font);
+	config.fonts.trayhint = konf->readFontEntry("TrayHintFont", &def_font);
+
 	/* no need for it anymore */
 	delete konf;
 }
@@ -217,6 +226,7 @@ void saveKaduConfig(void) {
 	konf->writeEntry("DisplayGroupTabs",config.grouptabs);
 	konf->writeEntry("AddToDescription",config.addtodescription);
 	konf->writeEntry("ShowHint",config.showhint);
+	konf->writeEntry("TimeoutHint",config.timeouthint);
 	konf->writeEntry("ShowDesc",config.showdesc);
 
 	if (config.savegeometry) {
@@ -274,11 +284,14 @@ void saveKaduConfig(void) {
 	konf->writeEntry("ChatUsrFontColor", config.colors.usrchatText);
 	konf->writeEntry("UserboxDescBgColor", config.colors.userboxDescBg);
 	konf->writeEntry("UserboxDescTextColor", config.colors.userboxDescText);
+	konf->writeEntry("TrayHintBgColor", config.colors.trayhintBg);
+	konf->writeEntry("TrayHintTextColor", config.colors.trayhintText);
 
 	konf->setGroup("Fonts");
 	konf->writeEntry("UserboxFont", config.fonts.userbox);
 	konf->writeEntry("ChatFont", config.fonts.chat);
 	konf->writeEntry("UserboxDescFont", config.fonts.userboxDesc);
+	konf->writeEntry("TrayHintFont", config.fonts.trayhint);
 	
 	konf->sync();
 	delete konf;
@@ -1021,6 +1034,10 @@ void ConfigDialog::setupTab6(void) {
 	connect(cb_userboxfontsize, SIGNAL(activated(int)), this, SLOT(chooseUserboxFontSizeGet(int)));
 
 	userboxselectfont->hide();
+
+	QVGroupBox *otherprop = new QVGroupBox(box6);
+	otherprop->setTitle(i18n("Other properties"));
+
 
 	addTab(box6, i18n("Look"));
 };
