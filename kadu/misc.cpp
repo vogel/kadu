@@ -1887,3 +1887,33 @@ void ImageQueue::sendImage(uin_t uin,uint32_t size,uint32_t crc32)
 }
 
 ImageQueue image_queue;
+
+PixmapPreview::PixmapPreview() : QLabel(NULL)
+{
+	setFrameStyle(QFrame::Raised|QFrame::Box);
+	setLineWidth(1);
+	setMidLineWidth(1);
+	setFixedSize(120,75);
+	setScaledContents(true);
+}
+
+void PixmapPreview::previewUrl(const QUrl& url)
+{
+	QString path = url.path();
+	QPixmap pix( path );
+	if (pix.isNull())
+		setText(tr("This is not an image"));
+	else
+		setPixmap(pix);
+	resize(120,75); 
+}
+
+QSize PixmapPreview::minimumSizeHint()
+{
+	return QSize(120,75);
+}
+
+QSize PixmapPreview::sizeHint()
+{
+	return QSize(120,75);
+}

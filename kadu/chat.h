@@ -185,6 +185,7 @@ class Chat : public QWidget
 		void clearChatWindow(void);
 		void pageUp();
 		void pageDown();
+		void insertImage();
 
 	protected:
 		void closeEvent(QCloseEvent *);

@@ -22,6 +22,7 @@
 #include <qvbox.h>
 #include <qvaluelist.h>
 #include <qclipboard.h>
+#include <qfiledialog.h>
 
 #include <math.h>
 #include <sys/stat.h>
@@ -542,6 +543,10 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	whois->setPixmap(icons_manager.loadIcon("LookupUserInfo"));
 	QToolTip::add(whois, tr("Lookup user info"));
 
+	QPushButton* insertimage = new QPushButton(buttontray);
+	insertimage->setPixmap(icons_manager.loadIcon("ChooseEmoticons"));
+	QToolTip::add(insertimage, tr("Insert image"));
+
 	edtbuttontray->setStretchFactor(edt, 50);
 	edtbuttontray->setStretchFactor(buttontray, 1);
 
@@ -619,6 +624,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	connect(history, SIGNAL(clicked()), this, SLOT(HistoryBox()));
 	connect(iconsel, SIGNAL(clicked()), this, SLOT(emoticonSelectorClicked()));
 	connect(whois, SIGNAL(clicked()), this, SLOT(userWhois()));
+	connect(insertimage, SIGNAL(clicked()), this, SLOT(insertImage()));
 	connect(clearchat, SIGNAL(clicked()), this, SLOT(clearChatWindow()));
 	connect(boldbtn, SIGNAL(toggled(bool)), this, SLOT(toggledBold(bool)));
 	connect(italicbtn, SIGNAL(toggled(bool)), this, SLOT(toggledItalic(bool)));
@@ -745,6 +751,21 @@ void Chat::pageUp() {
 
 void Chat::pageDown() {
 	body->scrollBy(0, (body->height() * 2) / 3);
+}
+
+void Chat::insertImage()
+{
+	QFileDialog* fd = new QFileDialog(this,"insert image dialog",true);
+//	PixmapPreview* pp = new PixmapPreview();
+	fd->setCaption(tr("Insert image"));
+	fd->setFilter(tr("Images")+" (*.png *.PNG *.jpg *.JPG *.gif *.GIF *.bmp *.BMP)");
+//	fd->setContentsPreviewEnabled(true);
+//	fd->setContentsPreview(pp, pp);
+//	fd->setPreviewMode(QFileDialog::Contents);
+	if(fd->exec() == QDialog::Accepted)
+		edit->insert(QString("[IMAGE ")+fd->selectedFile()+"]");
+	delete fd;
+	edit->setFocus();
 }
 
 void Chat::changeAppearance() {

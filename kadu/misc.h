@@ -14,6 +14,7 @@
 #include <qimage.h>
 #include <qstringlist.h>
 #include <qsocket.h>
+#include <qfiledialog.h>
 
 #include "libgadu.h"
 #include "userlist.h"
@@ -357,5 +358,15 @@ class ImageQueue
 };
 
 extern ImageQueue image_queue;
+
+class PixmapPreview : public QLabel, public QFilePreview
+{
+	protected:
+		virtual QSize minimumSizeHint();
+		virtual QSize sizeHint();
+	public:
+		PixmapPreview();
+		void previewUrl(const QUrl& url);
+};
 
 #endif

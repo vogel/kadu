@@ -54,6 +54,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * prymitywna obs³uga wysy³anie obrazków: wstawiamy w wiadomo¶ci
   [IMAGE ¶cie¿ka/do/pliku] i obrazek jest wstawiany u odbiorcy,
   narazie trzeba te¿ napisaæ jeszcze jaki¶ tekst, ¿eby zadzia³a³o (adrian)
+* przycisk do wstawiania obrazków w oknie chat, dialog wyboru obrazka (adrian)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
