@@ -1867,6 +1867,11 @@ void KaduSlots::updatePreview()
 	preview->setAlignment(Qt::AlignLeft);
 }
 
+void Kadu::resizeEvent(QResizeEvent *)
+{
+	Userbox->all_refresh();
+}
+
 /*void Kadu::moveEvent(QMoveEvent *e)
 {
 //	kdebug("kadu::moveEvent: %d %d %d %d\n", x(), y(), width(), height());

@@ -24,9 +24,27 @@
 #include "config_file.h"
 #include "misc.h"
 
+QFontMetrics* KaduListBoxPixmap::descriptionFontMetrics=NULL;
+int KaduListBoxPixmap::scrollWidth;
+
+void KaduListBoxPixmap::setFont(const QFont &f)
+{
+	QFont newFont = QFont(f);
+	newFont.setPointSize(f.pointSize() - 2);
+	if (descriptionFontMetrics)
+		delete descriptionFontMetrics;
+	descriptionFontMetrics= new QFontMetrics(newFont);
+}
+
+void KaduListBoxPixmap::setVerticalScrollWidth(int w)
+{
+	scrollWidth=w;
+}
+
 KaduListBoxPixmap::KaduListBoxPixmap(const QPixmap &pix, const QString &text)
 	: QListBoxItem()
 {
+	buf_width=-1;
 	pm = pix;
 	setText(text);
 }
@@ -34,6 +52,7 @@ KaduListBoxPixmap::KaduListBoxPixmap(const QPixmap &pix, const QString &text)
 KaduListBoxPixmap::KaduListBoxPixmap(const QPixmap &pix, const QString &text, const QString &descr, bool bold)
 	: QListBoxItem()
 {
+	buf_width=-1;
 	pm = pix;
 	setText(text);
 	setDescription(descr);
@@ -108,16 +127,17 @@ void KaduListBoxPixmap::paint(QPainter *painter) {
 			newFont.setPointSize(oldFont.pointSize() - 2);
 			painter->setFont(newFont);
 
-			if(config_file.readBoolEntry("Look", "ShowMultilineDesc")) {
-				QStringList lines=QStringList::split("\n", descr);
-				
-				for(QStringList::Iterator it = lines.begin(); it != lines.end(); ++it ){
-					painter->drawText(pm.width() + 5, yPos, *it);
-					yPos += fm.lineSpacing();
-				}
+			if (!config_file.readBoolEntry("Look", "ShowMultilineDesc"))
+				descr.replace(QRegExp("\n"), " ");
+
+			int h;
+			QStringList out;
+			calculateSize(descr, width(listBox())-5-pm.width(), out, h);
+			for(QStringList::Iterator it = out.begin(); it != out.end(); ++it )
+			{
+				painter->drawText(pm.width() + 5, yPos, *it);
+				yPos += descriptionFontMetrics->lineSpacing();
 			}
-			else
-				painter->drawText(pm.width() + 5, yPos, descr);
 
 			painter->setFont(oldFont);
 		}
@@ -130,36 +150,81 @@ int KaduListBoxPixmap::height(const QListBox* lb) const
 	bool isOurUin=((UinType)config_file.readNumEntry("General", "UIN") == user.uin);
 	QString descr=isOurUin ? own_description : description();
 	bool hasDescription=isOurUin ? ifStatusWithDescription(getCurrentStatus()) : !descr.isEmpty();
-	int h, lh;
 
-	if (!hasDescription || !config_file.readBoolEntry("Look", "ShowDesc"))
-		lh = lb->fontMetrics().lineSpacing() + 2;
-	else{
-		if(config_file.readBoolEntry("Look", "ShowMultilineDesc"))
-			lh = lb->fontMetrics().lineSpacing() * (2 + descr.contains('\n'));
-		else
-			lh = lb->fontMetrics().lineSpacing() * 2;
+	int height=lb->fontMetrics().lineSpacing()+2;
+	if (hasDescription && config_file.readBoolEntry("Look", "ShowDesc"))
+	{
+		if (!config_file.readBoolEntry("Look", "ShowMultilineDesc"))
+			descr.replace(QRegExp("\n"), " ");
+		QStringList out;
+		int h;
+		calculateSize(descr, width(lb)-5-pm.width(), out, h);
+		height+=h;
 	}
-
-	if (text().isEmpty())
-		h = pm.height();
-	else
-		h = QMAX(pm.height(), lh);
-
-	return QMAX(h, QApplication::globalStrut().height());
+	return height;
 }
 
 int KaduListBoxPixmap::width(const QListBox* lb) const
 {
-	if (text().isEmpty())
-		return QMAX(pm.width() + 6, QApplication::globalStrut().width());
+	if (config_file.readBoolEntry("Look", "MultiColumnUserbox"))
+		return config_file.readNumEntry("Look", "MultiColumnUserboxWidth", 230);
+	else
+		return lb->width()-5-scrollWidth;
+}
 
-	QFont font = lb->font();
-	if (bold)
-		font.setWeight(QFont::Bold);
-	QFontMetrics fm(font);
+void KaduListBoxPixmap::calculateSize(const QString &text, int width, QStringList &out, int &height) const
+{
+//	kdebugf();
+	if (text==buf_text && width==buf_width)	
+	{
+		out=buf_out;
+		height=buf_height;
+		return;
+	}
 
-	return QMAX(pm.width() + fm.width(text()) + 6, QApplication::globalStrut().width());
+	int textlen=text.length();
+	int start=0, len, tmplen;
+	
+	out.clear();
+	height=0;
+	
+	while (start<textlen)
+	{
+		len=0;
+		bool tooWide=false;
+		while (1)
+		{
+			tooWide=(descriptionFontMetrics->width(text.mid(start, len))>=width);
+			if (!tooWide && text[start+len]!='\n' && start+len<textlen)
+				len++;
+			else
+				break;
+		}
+		
+		if (tooWide)
+		{
+			tmplen=len;
+			while (len>0 && !text[start+len-1].isSpace())
+				len--;
+			if (len==0)
+				len=tmplen-1;
+		}
+
+		out.push_back(text.mid(start, len));
+		height++;
+		start+=len;
+		if (text[start].isSpace())
+			start++;
+	}
+	height*=descriptionFontMetrics->lineSpacing();
+	
+	buf_text=text;
+	buf_width=width;
+	buf_out=out;
+	buf_height=height;
+//	kdebug("h:%d txt:%s\n", height, text.local8Bit().data());
+//	for(QStringList::Iterator it = out.begin(); it != out.end(); ++it )
+//		kdebug(">>%s\n", (*it).local8Bit().data());
 }
 
 UserBoxMenu *UserBox::userboxmenu = NULL;
@@ -173,6 +238,7 @@ UserBox::UserBox(QWidget* parent,const char* name,WFlags f)
 
 	UserBoxes.append(this);
 	setSelectionMode(QListBox::Extended);
+	KaduListBoxPixmap::setVerticalScrollWidth(verticalScrollBar()->sliderRect().width());
 }
 
 UserBox::~UserBox()
@@ -298,6 +364,7 @@ void UserBox::refresh()
 	this->setPaletteBackgroundColor(config_file.readColorEntry("Look","UserboxBgColor"));
 	this->setPaletteForegroundColor(config_file.readColorEntry("Look","UserboxFgColor"));
 	this->QListBox::setFont(config_file.readFontEntry("Look","UserboxFont"));
+	KaduListBoxPixmap::setFont(config_file.readFontEntry("Look","UserboxFont"));
 
 	// Zapamietujemy zaznaczonych uzytkownikow
 	QStringList s_users;
@@ -606,6 +673,8 @@ void UserBox::initModule()
 	QFont def_font(info.family(),info.pointSize());
 
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Look"));
+
+	ConfigDialog::addSpinBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Userbox width when multi column"), "MultiColumnUserboxWidth", 1, 1000, 1, 230);
 
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Colors"));
 		ConfigDialog::addVGroupBox("Look", "Colors", QT_TRANSLATE_NOOP("@default", "Main window"));

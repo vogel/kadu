@@ -88,6 +88,7 @@ class Kadu : public QMainWindow
 		bool event(QEvent *e);
 		void watchDcc(void);
 		void keyPressEvent(QKeyEvent *e);
+		virtual void resizeEvent(QResizeEvent *);
 //		virtual void moveEvent(QMoveEvent *);
 
 		struct gg_event *dcc_e;

@@ -6,6 +6,7 @@
 #include <qstringlist.h>
 #include <qpainter.h>
 #include <qpopupmenu.h>
+#include <qfontmetrics.h>
 
 #include "userlist.h"
 #include "misc.h"
@@ -19,16 +20,26 @@ class KaduListBoxPixmap : public QListBoxItem {
 		bool isBold() const { return bold; }
 		int height(const QListBox *lb) const;
 		int width(const QListBox *lb) const;
+		static void setFont(const QFont &f);
+		static void setVerticalScrollWidth(int);
 
 	protected:
 		void paint(QPainter *painter);
 		void setDescription(const QString &d) { descr = d; }
 		void setBold(bool b) { bold = b; }
+		void calculateSize(const QString &text, int width, QStringList &out, int &height) const;
 
 	private:
 		QPixmap pm;
 		QString descr;
 		bool bold;
+		static QFontMetrics *descriptionFontMetrics;
+		static int scrollWidth;
+		
+		mutable QString buf_text;
+		mutable int buf_width;
+		mutable QStringList buf_out;
+		mutable int buf_height;
 };
 
 class UserBoxMenu : public QPopupMenu
@@ -89,34 +100,10 @@ class UserBox : public QListBox , QToolTip
 		UserBox(QWidget* parent=0,const char* name=0,WFlags f=0);
 		~UserBox();
 		static UserBoxMenu *userboxmenu;
-		virtual void clear() { QListBox::clear(); };
-		/**
-			Funkcja czy¶ci ca³± listê u¿ytkowników w UserBox
-		**/
-		void clearUsers() { Users.clear(); };
-		void refresh();
-		/**
-			Funkcja dodaje u¿ytkownika o podanym altnick do listy w UserBox
-		**/
-		void addUser(const QString &altnick);
-		/**
-			Funkcja usuwa u¿ytkownika o podanym altnick z listy w UserBox
-		**/
-		void removeUser(const QString &altnick);
-		/**
-			Funkcja zmienia nazwe altnick z podanej na inna w liscie UserBox
-		**/
-		void renameUser(const QString &oldaltnick, const QString &newaltnick);
 		/**
 			Funkcja sprawdza czy dany altnick, znajduje siê na liscie w UserBox
 		**/
 		bool containsAltNick(const QString &altnick);
-		void changeAllToInactive();
-		// Functions below works on all created userboxes
-		static void all_refresh();
-		static void all_removeUser(QString &altnick);		
-		static void all_changeAllToInactive();
-		static void all_renameUser(const QString &oldaltnick, const QString &newaltnick);		
 		static void initModule();
 		/**
 			Funkcja zwraca liste zaznaczonych uzytkownikow 
@@ -144,7 +131,30 @@ class UserBox : public QListBox , QToolTip
 		static UserBox* getActiveUserBox();
 	public slots:	
 		void showHideInactive();
-
+		virtual void clear() { QListBox::clear(); };
+		/**
+			Funkcja czy¶ci ca³± listê u¿ytkowników w UserBox
+		**/
+		void clearUsers() { Users.clear(); };
+		void refresh();
+		/**
+			Funkcja dodaje u¿ytkownika o podanym altnick do listy w UserBox
+		**/
+		void addUser(const QString &altnick);
+		/**
+			Funkcja usuwa u¿ytkownika o podanym altnick z listy w UserBox
+		**/
+		void removeUser(const QString &altnick);
+		/**
+			Funkcja zmienia nazwe altnick z podanej na inna w liscie UserBox
+		**/
+		void renameUser(const QString &oldaltnick, const QString &newaltnick);
+		void changeAllToInactive();
+		// Functions below works on all created userboxes
+		static void all_refresh();
+		static void all_removeUser(QString &altnick);
+		static void all_changeAllToInactive();
+		static void all_renameUser(const QString &oldaltnick, const QString &newaltnick);
 };
 
 
