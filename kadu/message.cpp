@@ -275,8 +275,10 @@ void Message::commitSend(void) {
 	uin = userlist.byAltNick(nicksnd).uin;
 
 	int seq;
+	UinsList uins;
+	uins.append(uin);
 	if (config.logmessages)
-		appendHistory(uin,utmp,TRUE);
+		appendHistory(uins, uin, utmp, TRUE);
 	iso_to_cp(utmp);
 	if (b_chat->isChecked()) {
 		seq = gg_send_message(&sess, GG_CLASS_CHAT, uin, utmp);
@@ -326,7 +328,10 @@ void Message::reject() {
 
 void Message::HistoryBox (void) {
 	History *hb;
-	hb = new History(userlist.byAltNick(nicksnd).uin);
+	UinsList uins;
+
+	uins.append(userlist.byAltNick(nicksnd).uin);
+	hb = new History(uins);
 	hb->show();
 }
 

@@ -25,13 +25,13 @@
 class History : public QDialog {
 	Q_OBJECT
 	public:
-		History(uin_t);
+		History(UinsList uins);
 
 	protected:
 		QMultiLineEdit *body;
 };
 
 char *timestamp(time_t = 0);
-void appendHistory(unsigned int uin, unsigned char * msg, bool, time_t = 0);
+void appendHistory(UinsList uins, uin_t uin, unsigned char * msg, bool, time_t = 0);
 
 #endif

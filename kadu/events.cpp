@@ -80,7 +80,7 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 		kadu->addUser("", "", nick, nick, "", nick, GG_STATUS_NOT_AVAIL, "", "", true);
 		}
 	if (config.logmessages && senders[0] != config.uin)
-		appendHistory(senders[0], msg, FALSE, time);
+		appendHistory(senders, senders[0], msg, FALSE, time);
 
 	script.eventMsg(senders[0],msgclass,(char*)msg);
 

@@ -31,3 +31,23 @@ bool UinsList::equals(UinsList &uins) {
 			return false;
 	return true;
 }
+
+void UinsList::sort() {
+	bool stop;
+	int i;
+	uin_t uin;
+	
+	if (count() < 2)
+		return;
+
+	do {
+		stop = true;
+		for (i = 0; i < count() - 1; i++)
+			if (this->operator[](i) > this->operator[](i+1)) {
+				uin = this->operator[](i);
+				this->operator[](i) = this->operator[](i+1);
+				this->operator[](i+1) = uin;
+				stop = false;
+				}
+	} while (!stop);	
+}

@@ -11,6 +11,7 @@ class UinsList : public QValueList<uin_t>
 	public:
 		UinsList();
 		bool equals(UinsList &uins);
+		void sort();
 };
 
 char* preparePath(char* filename);

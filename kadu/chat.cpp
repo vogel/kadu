@@ -63,9 +63,9 @@ Chat::Chat(UinsList uins, QDialog *parent) : QDialog (parent), uins(uins) {
 		userbox->refresh();
 		}
 	else {
-  	resize(400,400);
+		resize(400,400);
 		userbox = NULL;
-    }
+		}
 		
 	edit = new CustomInput(this);
 	edit->setGeometry(5,215, 390, 150);
@@ -414,7 +414,7 @@ void Chat::addMyMessageToHistory() {
 
 	uin = uins[0];
 	if (config.logmessages)
-		appendHistory(uin, (unsigned char *)utmp, true);
+		appendHistory(uins, uin, (unsigned char *)utmp, true);
 }
 
 /* sends the message typed */
@@ -516,7 +516,7 @@ void Chat::pruneWindow(void) {
 void Chat::HistoryBox(void) {
 	History *hb;
 
-	hb = new History(uins[0]);
+	hb = new History(uins);
 	hb->show();
 }
 

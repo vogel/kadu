@@ -77,66 +77,65 @@ char *timestamp(time_t customtime)
 	return buf;
 }
 
-void appendHistory(unsigned int uin, unsigned char * msg, bool own, time_t time) {
-	FILE *f;
-
-/*	char * path = getenv("HOME");
-	char * path2 = "/.gg/history/"; */
+void appendHistory(UinsList uins, uin_t uin, unsigned char * msg, bool own, time_t time) {
+	int i;
+	
+	QFile f;
 
 	char * path2 = preparePath("history/");
 
-//  struct stat * boof;
-//  cout << path2 << endl;
-
-//  stat(path2, boof);
-//	if (!S_ISDIR(boof->st_mode)) {
-//			printf("KK appendHistory(): Creating directory\n");
-//			if (mkdir(path2, 0700) != 0 ) {
-//				perror("mkdir");
-//				return;
-//				}
-//			}
-
-	char buffer[512];
-	snprintf(buffer,255,"%s%d",path2,uin);
-//	char path3[255];
-//	snprintf(path3,255,"%s%d",path2,uin);
-//	char buffer[511];
-//	snprintf(buffer,511,"%s%s",path,path3);
-
-	if (!(f = fopen(buffer, "a"))) {
-		fprintf(stderr, "appendHistory(): Error opening history file %s\n", buffer);
+	QString fname;
+	
+	fname = path2;
+	
+	uins.sort();
+	for (i = 0; i < uins.count(); i++) {
+		fname.append(QString::number(uins[i]));
+		if (i < uins.count() - 1)
+			fname.append("_");
+		}
+		
+	f.setName(fname);
+	
+	if (!(f.open(IO_WriteOnly | IO_Append))) {
+		fprintf(stderr, "appendHistory(): Error opening history file %s\n", (const char *)fname.local8Bit());
 		return;
 		}
 
-	char nick[255];
+	QString nick;
 	
 	if (!own) {
 		if (userlist.containsUin(uin))
-			strncpy(nick, userlist.byUin(uin).altnick, 255);
+			nick = userlist.byUin(uin).altnick;
 		else
-			snprintf(nick, 255, "%d", uin); 
-		fputs(nick,f);
+			nick = QString::number(uin); 
+		f.writeBlock(nick.local8Bit(), nick.length());
 		}
 	else
-		fputs(config.nick, f);
+		f.writeBlock(config.nick.local8Bit(), config.nick.length());
 
-	fputs(" ", f);
+	f.putch(' ');
 
+	char *ctime;	
 	if (!time)
-		fputs(timestamp(), f);
+		ctime = timestamp();
 	else
-		fputs(timestamp(time), f);
+		ctime = timestamp(time);
+	f.writeBlock(ctime, strlen(ctime));
 
-	fputs("\n", f);
+	f.putch('\n');
+	
+	QString mesg;
+	mesg.append(__c2q((const char *)msg));
+	mesg.append("\n\n");
+	f.writeBlock(mesg.local8Bit(), mesg.length());
 
-	fputs((const char*)msg, f);
-	fputs("\n\n",f);
-
-	fclose(f);
+	f.close();
 }
 
-History::History(uin_t uin) {
+History::History(UinsList uins) {
+	int i;
+	
 	setCaption(i18n("History"));
 	setWFlags(Qt::WDestructiveClose);
 
@@ -149,22 +148,23 @@ History::History(uin_t uin) {
 	QPushButton *closebtn = new QPushButton(this);
 	closebtn->setText(i18n("&Close"));
 
-	char *path = getenv("HOME");
-	char *path2 = "/.gg/history/";
-	char path3[255];
-	snprintf(path3,255,"%s%d",path2,uin);
-	char buffer[511];
-	snprintf(buffer,511,"%s%s",path,path3);
-
-	QFile f(buffer);
+	QString fname;
+	fname.append(getenv("HOME"));
+	fname.append("/.gg/history/");
+	uins.sort();
+	for (i = 0; i < uins.count(); i++) {
+		fname.append(QString::number(uins[i]));	
+		if (i < uins.count() - 1)
+			fname.append("_");
+		}
+		
+	QFile f(fname);
 	if (f.open(IO_ReadOnly)) {
-		char *cbody = (char *) malloc(f.size()+1);
-		f.readBlock(cbody, f.size());
-		cbody[f.size()] = 0;
-		body->setText(__c2q(cbody));
+		QTextStream t(&f);
+		body->setText(t.read());
 		}
 	else {
-		fprintf(stderr, "KK History(): Error opening history file %s\n", buffer);
+		fprintf(stderr, "KK History(): Error opening history file %s\n", (const char *)fname.local8Bit());
 		body->setText(i18n("Error opening history file"));
 		}
 	grid->addWidget(body,0,0);
