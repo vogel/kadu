@@ -131,14 +131,13 @@ PersonalInfoDialog::PersonalInfoDialog(QDialog *parent, const char *name)
 	data = new SearchRecord();
 	reloadInfo();
 	
-	kdebugf2();
  	loadGeometry(this, "General", "PersonalInfoDialogGeometry", 0, 0, 440, 255);
+	kdebugf2();
 }
 
 PersonalInfoDialog::~PersonalInfoDialog()
 {
 	kdebugf();
-
 
 // @todo: ten fragment kodu powoduje zwieche, sprawdic co z nime
 	delete data;
@@ -156,6 +155,7 @@ void PersonalInfoDialog::keyPressEvent(QKeyEvent *ke_event)
 
 void PersonalInfoDialog::reloadInfo()
 {
+	kdebugf();
 	if (getCurrentStatus() != GG_STATUS_NOT_AVAIL) 
 	{
 		State = READING;
@@ -163,6 +163,7 @@ void PersonalInfoDialog::reloadInfo()
 	}
 	else
 		pb_save->setEnabled(false);
+	kdebugf2();
 }
 
 void PersonalInfoDialog::saveButtonClicked()

@@ -129,12 +129,14 @@ Register::Register(QDialog *parent, const char *name)
 	connect(gadu, SIGNAL(registered(bool, UinType)), this, SLOT(registered(bool, UinType)));
 	
  	loadGeometry(this, "General", "RegisterDialogGeometry", 0, 0, 345, 310);
+	kdebugf2();
 }
 
 Register::~Register()
 {
 	kdebugf();
 	saveGeometry(this, "General", "RegisterDialogGeometry");
+	kdebugf2();
 }
 
 void Register::keyPressEvent(QKeyEvent *ke_event)
@@ -177,10 +179,12 @@ void Register::doRegister() {
 
 	if (gadu->doRegister(Password, Email, Tokenid, Tokenval))
 		setEnabled(false);
+	kdebugf2();
 }
 
 void Register::registered(bool ok, UinType uin)
 {
+	kdebugf();
 	if (ok)
 	{	
 		this->uin = uin;
@@ -194,6 +198,7 @@ void Register::registered(bool ok, UinType uin)
 				tr("An error has occured while registration. Please try again later."), tr("OK"), 0, 0, 1);
 		setEnabled(true);
 	}
+	kdebugf2();
 }
 
 
@@ -204,6 +209,7 @@ void Register::ask() {
 		config_file.writeEntry("General","Password",pwHash(pwd->text()));
 		createConfig();
 		}
+	kdebugf2();
 }
 
 Unregister::Unregister(QDialog *parent, const char *name)
@@ -263,12 +269,14 @@ Unregister::Unregister(QDialog *parent, const char *name)
 	connect(gadu, SIGNAL(unregistered(bool)), this, SLOT(unregistered(bool)));
 	
  	loadGeometry(this, "General", "UnregisterDialogGeometry", 0, 0, 355, 230);
+	kdebugf2();
 }
 
 Unregister::~Unregister()
 {
 	kdebugf();
 	saveGeometry(this, "General", "UnregisterDialogGeometry");
+	kdebugf2();
 }
 
 void Unregister::keyPressEvent(QKeyEvent *ke_event)
@@ -301,10 +309,12 @@ void Unregister::doUnregister() {
 
 	if (gadu->doUnregister(uin->text().toUInt(), Password, Tokenid, Tokenval))
 		setEnabled(false);
+	kdebugf2();
 }
 
 void Unregister::unregistered(bool ok)
 {
+	kdebugf();
 	if (ok)
 	{
 		QMessageBox::information(this, "Kadu", tr("Unregistation was successful. Now you don't have any GG number :("));
@@ -316,6 +326,7 @@ void Unregister::unregistered(bool ok)
 				tr("An error has occured while unregistration. Please try again later."), tr("OK"), 0, 0, 1);
 		setEnabled(true);
 	}
+	kdebugf2();
 }
 
 void Unregister::deleteConfig() {

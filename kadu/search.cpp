@@ -27,6 +27,7 @@
 
 SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearchUin)
 : QDialog (parent, name, FALSE, Qt::WDestructiveClose) {
+	kdebugf();
 
 	_whoisSearchUin = whoisSearchUin;
 
@@ -165,6 +166,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 
 	searchRecord = new SearchRecord;
 	connect(gadu, SIGNAL(newSearchResults(SearchResults &, int, int)), this, SLOT(newSearchResults(SearchResults &, int, int)));
+	kdebugf2();
 }
 
 SearchDialog::~SearchDialog() {
@@ -172,6 +174,7 @@ SearchDialog::~SearchDialog() {
 
 	disconnect(gadu, SIGNAL(newSearchResults(SearchResults&, int, int)), this, SLOT(newSearchResults(SearchResults&, int, int)));
 	delete searchRecord;
+	kdebugf2();
 }
 
 void SearchDialog::selectionChanged(QListViewItem *item) {
@@ -196,6 +199,7 @@ void SearchDialog::selectionChanged(QListViewItem *item) {
 		b_addbtn->setText(tr("&Add User"));
 		connect(b_addbtn, SIGNAL(clicked()), this, SLOT(AddButtonClicked()));
 		}
+	kdebugf2();
 }
 
 void SearchDialog::prepareMessage(QListViewItem *item) {
@@ -218,6 +222,7 @@ void SearchDialog::clearResults(void) {
 }
 
 void SearchDialog::firstSearch(void) {
+	kdebugf();
 	if (results->childCount())
 		clearResults();
 
@@ -254,12 +259,12 @@ void SearchDialog::firstSearch(void) {
 
 	progress->setText(tr("Searching..."));
 	kdebugf2();
-
 }
 
 void SearchDialog::nextSearch(void) {
 	if (getCurrentStatus() == GG_STATUS_NOT_AVAIL)
 		return;
+	kdebugf();
 
 	b_sendbtn->setEnabled(false);
 	b_nextbtn->setEnabled(false);
@@ -271,6 +276,7 @@ void SearchDialog::nextSearch(void) {
 }
 
 void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int fromUin) {
+	kdebugf();
 
 	QListViewItem *qlv = NULL;
 	QPixmap pix;
@@ -336,6 +342,7 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 			tr("There were no results of your search"));
 //		searchhidden = false;
 	}
+	kdebugf2();
 }
 
 void SearchDialog::closeEvent(QCloseEvent * e) {
@@ -352,6 +359,7 @@ void SearchDialog::personalDataTyped(void) {
 
 void SearchDialog::AddButtonClicked()
 {
+	kdebugf();
 	QListViewItem *selected = results->selectedItem();
 	if (!selected && results->childCount() == 1)
 		selected = results->firstChild();
@@ -403,10 +411,12 @@ void SearchDialog::AddButtonClicked()
 	gdy dodamy nowego usera i siê pod ten sygna³ podpi±æ i wywo³aæ t± funkcje
 	
 	*/
+	kdebugf2();
 }
 
 void SearchDialog::updateInfoClicked()
 {
+	kdebugf();
 	QListViewItem *selected = results->selectedItem();
 	if (!selected && results->childCount() == 1)
 		selected = results->firstChild();
@@ -451,15 +461,20 @@ void SearchDialog::updateInfoClicked()
 	UserInfo *ui = new UserInfo("user info", 0, ule.altnick);
 	ui->setUserInfo(e);
 	ui->show();
+	kdebugf2();
 }
 
 void SearchDialog::openChat()
 {
+	kdebugf();
 	QListViewItem *selected = results->selectedItem();
 	if (!selected && results->childCount() == 1)
 		selected = results->firstChild();
 	if (!selected)
+	{
+		kdebugf2();
 		return;
+	}
 
 	QString uin = selected->text(1);
 	UinsList uins;
@@ -468,4 +483,5 @@ void SearchDialog::openChat()
 
 	if (uins.findIndex(config_file.readNumEntry("General", "UIN")) == -1)
 		chat_manager->openChat(uins);
+	kdebugf2();
 }
