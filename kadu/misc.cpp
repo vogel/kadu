@@ -437,13 +437,12 @@ QString parse_symbols(QString s, int i, UserListElement &ule, bool escape) {
 				break;
 			case 'd':
 				i++;
-				if (!escape)
-					r+=ule.description;
-				else {
-					d=ule.description;
+				d=ule.description;
+				if (escape)
 					escapeSpecialCharacters(d);
-					r+=d;
-				}
+				d=d.replace(QRegExp("\n"), QString("<br>"));
+				d=d.replace(QRegExp(" "), QString("&nbsp;"));
+				r+=d;
 				break;
 			case 'i':
 				i++;

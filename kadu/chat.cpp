@@ -654,7 +654,8 @@ void Chat::setTitle() {
 		setIcon(icons_manager.loadIcon(gg_icons[statusGGToStatusNr(userlist.byUinValue(Uins[0]).status)]));
 	}
 
-	title.replace(QRegExp("\n"), " ");
+	title.replace(QRegExp("<br>"), " ");
+	title.replace(QRegExp("&nbsp;"), " ");
 
 	setCaption(title);
 	title_buffer = title;

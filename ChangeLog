@@ -73,6 +73,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * wydzielenie szyfrowania przez ssl do modulu "encryption" oraz zwiazane
   z tym nowe mechanizmy dla modulow (adrian)
 * nalozona latka sajmona dodajaca kilka mozliwych sciezek do plikow Arts-a (adrian)
+* zaaplikowany patch michala umozliwiajacy ogladanie
+  wielolinijkowych opisow (adrian)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

@@ -106,7 +106,16 @@ void KaduListBoxPixmap::paint(QPainter *painter) {
 			newFont.setPointSize(oldFont.pointSize() - 2);
 			painter->setFont(newFont);
 
-			painter->drawText(pm.width() + 5, yPos, isOurUin ? own_description : description());
+			if(config_file.readBoolEntry("Look", "ShowMultilineDecs")) {
+				QStringList lines=QStringList::split("\n", isOurUin ? own_description : description());
+				
+				for(QStringList::Iterator it = lines.begin(); it != lines.end(); ++it ){
+					painter->drawText(pm.width() + 5, yPos, *it);
+					yPos += fm.lineSpacing();
+				}
+			}
+				else
+					painter->drawText(pm.width() + 5, yPos, isOurUin ? own_description : description());
 
 			painter->setFont(oldFont);
 		}
@@ -119,8 +128,12 @@ int KaduListBoxPixmap::height(const QListBox* lb) const
 
 	if (description().isEmpty() || !config_file.readBoolEntry("Look", "ShowDesc"))
 		lh = lb->fontMetrics().lineSpacing() + 2;
-	else
-		lh = lb->fontMetrics().lineSpacing() * 2 - 2;
+	else{
+		if(config_file.readBoolEntry("Look", "ShowMultilineDecs"))
+			lh = lb->fontMetrics().lineSpacing() * (2 + description().contains('\n')) -2;
+		else
+			lh = lb->fontMetrics().lineSpacing() * 2 - 2;
+	}
 
 	if (text().isEmpty())
 		h = pm.height();
@@ -209,6 +222,7 @@ void UserBox::maybeTip(const QPoint &c)
 			s += tr("<B>Description:</B><BR>");
 			escapeSpecialCharacters(desc);
 			desc.replace(QRegExp(" "), "&nbsp;");
+			desc.replace(QRegExp("\n"), "<br>");
 			s += desc;
 		};
 		tip(r, s);
@@ -591,6 +605,7 @@ void UserBox::initModule()
 	QT_TRANSLATE_NOOP("@default", "Other");
 	QT_TRANSLATE_NOOP("@default", "Show info-panel");
 	QT_TRANSLATE_NOOP("@default", "Show description in userbox");
+	QT_TRANSLATE_NOOP("@default", "Multiline description in userbox");
 	QT_TRANSLATE_NOOP("@default", "Show avaliable in bold");
 	QT_TRANSLATE_NOOP("@default", "Display group tabs");
 	QT_TRANSLATE_NOOP("@default", "Multicolumn userbox");
@@ -619,6 +634,7 @@ void UserBox::initModule()
 	ConfigDialog::addCheckBox("Look", "grid", "Display group tabs", "DisplayGroupTabs", true);
 	ConfigDialog::addCheckBox("Look", "grid", "Multicolumn userbox", "MultiColumnUserbox", true);
 	ConfigDialog::addCheckBox("Look", "grid", "Show description in userbox", "ShowDesc", true);
+	ConfigDialog::addCheckBox("Look", "grid", "Multiline description in userbox", "ShowMultilineDecs", true);
 	ConfigDialog::addCheckBox("Look", "grid", "Show avaliable in bold", "ShowBold", true);
 
 	UserBoxSlots *userboxslots= new UserBoxSlots();
