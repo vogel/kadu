@@ -621,7 +621,7 @@
     </message>
     <message>
         <source>&amp;Yes</source>
-        <translation>&amp;S�</translation>
+        <translation>&amp;Sì</translation>
     </message>
     <message>
         <source>&amp;No</source>
@@ -1227,7 +1227,7 @@ to
     </message>
     <message>
         <source>&amp;Yes</source>
-        <translation type="unfinished">&amp;S�</translation>
+        <translation type="unfinished">&amp;Sì</translation>
     </message>
     <message>
         <source>&amp;No</source>
@@ -1554,7 +1554,7 @@ to
     </message>
     <message>
         <source>Yes</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Sì</translation>
     </message>
     <message>
         <source>No</source>
