@@ -51,7 +51,7 @@ class EmoticonsManager
 		QString selectorStaticPath(int emot_num);
 };
 
-extern EmoticonsManager emoticons;
+extern EmoticonsManager *emoticons;
 
 class EmoticonSelectorButton : public QToolButton
 {

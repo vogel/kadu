@@ -27,7 +27,22 @@
 */
 QString ggPath(const QString &subpath="");
 
-QString dataPath(const QString &path="");
+/*
+	zwraca ¶cie¿kê do pliku f
+	je¿eli drugi parametr nie jest == 0, to funkcja próbuje najpierw ustaliæ
+	¶cie¿kê na podstawie argv0, które ma byæ równe argv[0] oraz zmiennej PATH
+*/
+QString dataPath(const QString &f="", const char *argv0=0);
+ 
+/*
+	funkcja poszukuje binarki programu na podstawie argv[0] oraz zmiennej PATH
+	je¿eli j± znajdzie, to zapisuje ¶cie¿kê pod adres wskazany przez path
+	(o maksymalnej d³ugo¶ci len) oraz zwraca path, który zakañczany jest znakiem '/'
+	je¿eli binarka nie zostanie znaleziona, to zwracany jest NULL
+	w obu przypadkach gwarantowane jest, ¿e path koñczy siê znakiem 0
+	(len musi byæ > 2)
+*/
+char *findMe(const char *argv0, char *path, int len);
 
 QString cp2unicode(const unsigned char *);
 QCString unicode2cp(const QString &);

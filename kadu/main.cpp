@@ -27,6 +27,7 @@
 #include "misc.h"
 #include "debug.h"
 #include "modules.h"
+#include "emoticons.h"
 
 Kadu *kadu;	
 
@@ -93,6 +94,9 @@ int main(int argc, char *argv[])
 	signal(SIGINT, kadu_signal_handler);
 	signal(SIGTERM, kadu_signal_handler);
 #endif
+
+	dataPath("", argv[0]);
+	emoticons=new EmoticonsManager();
 
 	new QApplication(argc, argv);
 

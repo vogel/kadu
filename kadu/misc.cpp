@@ -51,9 +51,121 @@ QString ggPath(const QString &subpath)
 	return path+subpath;
 }
 
-QString dataPath(const QString &p)
+//stat,getcwd
+#include <unistd.h>
+#include <sys/stat.h>
+//getenv
+#include <stdlib.h>
+//memcpy,strcat,strchr
+#include <string.h>
+char *findMe(const char *argv0, char *path, int len)
 {
-	return QString(DATADIR)+"/"+p;
+	struct stat buf;
+	char *lastslash;
+
+	char *current;
+	char *previous;
+	int l;
+
+	if (argv0[0]=='.' && argv0[1]=='/') //¶cie¿ka wzglêdem bie¿±cego katalogu
+	{
+		if (getcwd(path, len-2)==NULL)
+		{
+			path[0]=0;
+			return NULL;
+		}
+		strncat(path, argv0+1, len-1);
+		path[len-1]=0;
+		lastslash=strrchr(path, '/');
+		lastslash[1]=0;
+		return path;
+	}
+	
+	if (argv0[0]=='/') //¶cie¿ka bezwzglêdna
+	{
+		strncpy(path, argv0, len-1);
+		path[len-1]=0;
+		lastslash=strrchr(path, '/');
+		lastslash[1]=0;
+		return path;
+	}
+
+	previous=getenv("PATH"); //szukamy we wszystkich katalogach, które s± w PATH
+	while((current=strchr(previous, ':')))
+	{
+		l=current-previous;
+		if (l>len-2)
+		{
+			path[0]=0;
+			return NULL;
+		}
+		
+		memcpy(path, previous, l);
+		path[l]='/';
+		path[l+1]=0;
+		strncat(path, argv0, len);
+		path[len-1]=0;
+		if (stat(path, &buf)!=-1)
+		{
+			if (path[l-1]=='/')
+				path[l]=0;
+			else
+				path[l+1]=0;
+			return path;
+		}
+		previous=current+1;
+	}
+	//nie znale¼li¶my dot±d (bo szukali¶my ':'), wiêc mo¿e w pozosta³ej czê¶ci co¶ siê znajdzie?
+	strncpy(path, previous, len-2);
+	path[len-2]=0;
+	
+	l=strlen(path);
+	path[l]='/';
+	path[l+1]=0;
+	strncat(path, argv0, len);
+	path[len-1]=0;
+	if (stat(path, &buf)!=-1)
+	{
+		if (path[l-1]=='/')
+			path[l]=0;
+		else
+			path[l+1]=0;
+		return path;
+	}
+	else
+	{
+		path[0]=0;
+		return NULL;
+	}
+}
+
+QString dataPath(const QString &p, const char *argv0)
+{
+	static QString path;
+
+	if (argv0!=0)
+	{
+		QString datadir(DATADIR);
+		QString bindir(BINDIR);
+		
+		//je¿eli ¶cie¿ki nie koñcz± siê na /share i /bin oraz gdy bez tych koñcówek
+		//¶cie¿ki siê nie pokrywaj±, to znaczy ¿e kto¶ ustawi³ rêcznie DATADIR lub BINDIR
+		if (!datadir.endsWith("/share") || !bindir.endsWith("/bin") || 
+			(datadir.left(datadir.length()-6)!=bindir.left(bindir.length()-4)))
+			path=datadir+"/";
+		else
+		{
+			char cpath[1024];
+			if (findMe(argv0, cpath, 1024)==NULL)
+				path=datadir+"/";
+			else
+				path=QString(cpath)+"../share/";
+		}
+	}
+	if (path=="")
+		kdebug("dataPath() called _BEFORE_ initial dataPath(\"\",argv[0]) (static object uses dataPath()?) !!!\n");
+	kdebug("%s%s\n", (const char *)path.local8Bit(), (const char *)p.local8Bit());
+	return path+p;
 }
 
 QString cp2unicode(const unsigned char *buf)

@@ -465,7 +465,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	}
 		
 	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")==EMOTS_ANIMATED)
-		body->setStyleSheet(new AnimStyleSheet(body,emoticons.themePath()));
+		body->setStyleSheet(new AnimStyleSheet(body,emoticons->themePath()));
 	
 	body->setMinimumSize(QSize(100,100));
 	body->setFont(config_file.readFontEntry("Look","ChatFont"));
@@ -868,11 +868,11 @@ QString Chat::convertCharacters(QString edit, bool me) {
 
 	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")!=EMOTS_NONE)
 	{
-		body->mimeSourceFactory()->addFilePath(emoticons.themePath());
+		body->mimeSourceFactory()->addFilePath(emoticons->themePath());
 		if (me)
-			emoticons.expandEmoticons(doc,config_file.readColorEntry("Look","ChatMyBgColor"));
+			emoticons->expandEmoticons(doc,config_file.readColorEntry("Look","ChatMyBgColor"));
 		else
-			emoticons.expandEmoticons(doc,config_file.readColorEntry("Look","ChatUsrBgColor"));
+			emoticons->expandEmoticons(doc,config_file.readColorEntry("Look","ChatUsrBgColor"));
 	}
 	
 	edit=doc.generateHtml();
@@ -1287,7 +1287,7 @@ void Chat::initModule()
 	ConfigDialog::addLineEdit("Look", "conference", QT_TRANSLATE_NOOP("@default", "syntax:"), "ConferenceContents", "%a (%s[: %d])", QT_TRANSLATE_NOOP("@default", "Syntax the same as in information panel."));
 
 	config_file.addVariable("Chat", "EmoticonsStyle", EMOTS_ANIMATED);
-	emoticons.setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
+	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
 	
 	ChatSlots *chatslots =new ChatSlots();
 	ConfigDialog::registerSlotOnCreate(chatslots,SLOT(onCreateConfigDialog()));
@@ -1403,7 +1403,7 @@ void ChatSlots::onCreateConfigDialog()
 	cb_emoticons_style->setCurrentItem(config_file.readNumEntry("Chat", "EmoticonsStyle"));
 
 	QComboBox* cb_emoticons_theme= ConfigDialog::getComboBox("Chat", "Emoticons theme");
-	cb_emoticons_theme->insertStringList(emoticons.themes());
+	cb_emoticons_theme->insertStringList(emoticons->themes());
 	cb_emoticons_theme->setCurrentText(config_file.readEntry("Chat", "EmoticonsTheme"));
 
 	if ((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") == EMOTS_NONE)
@@ -1484,7 +1484,7 @@ void ChatSlots::onDestroyConfigDialog()
 	
 	QComboBox* cb_emoticons_theme= ConfigDialog::getComboBox("Chat", "Emoticons theme");
 	config_file.writeEntry("Chat", "EmoticonsTheme",cb_emoticons_theme->currentText());
-	emoticons.setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
+	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
 	QComboBox *cb_emoticons_style= ConfigDialog::getComboBox("Chat", "Emoticons:");
 	config_file.writeEntry("Chat", "EmoticonsStyle", cb_emoticons_style->currentItem());
 

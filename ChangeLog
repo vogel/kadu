@@ -67,6 +67,10 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   mo¿e siê dorobi do tego konfiguracjê. konieczna by³a kolejna przebudowa
   filtrów przychodz±cych wiadomo¶ci (adrian)
 * konfiguracja statusów w autoresponderze (mkey/joi)
+* wzglêdne ¶cie¿ki do plików danych je¿eli u¿ytkownik przy konfiguracji ¼róde³
+  nie majstrowa³ za bardzo przy DATADIR i BINDIR (UWAGA dla developerów: je¿eli
+  w konstruktorze obiektu u¿ywacie funkcji dataPath(), to obiekty tej klasy nie
+  mog± byæ statyczne, bo wewnêtrzne dane funkcji dataPath nie zostan± zainicjowane) (joi)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

@@ -283,7 +283,7 @@ QString EmoticonsManager::selectorStaticPath(int emot_num)
 	return themePath()+"/"+Selector[emot_num].stat;
 }
 				
-EmoticonsManager emoticons;
+EmoticonsManager *emoticons;
 
 EmoticonSelectorButton::EmoticonSelectorButton(
 	QWidget* parent,const QString& emoticon_string,
@@ -338,7 +338,7 @@ EmoticonSelector::EmoticonSelector(QWidget *parent, const char *name, Chat * cal
 {
 	callingwidget = caller;
 	
-	int selector_count=emoticons.selectorCount();
+	int selector_count=emoticons->selectorCount();
 	int selector_width=(int)sqrt((double)selector_count);
 	int btn_width=0;
 	QGridLayout *grid = new QGridLayout(this, 0, selector_width, 0, 0);
@@ -346,9 +346,9 @@ EmoticonSelector::EmoticonSelector(QWidget *parent, const char *name, Chat * cal
 	for(int i=0; i<selector_count; i++)
 	{
 		EmoticonSelectorButton* btn = new EmoticonSelectorButton(
-			this,emoticons.selectorString(i),
-			emoticons.selectorAnimPath(i),
-			emoticons.selectorStaticPath(i));
+			this,emoticons->selectorString(i),
+			emoticons->selectorAnimPath(i),
+			emoticons->selectorStaticPath(i));
 		btn_width=btn->sizeHint().width();
 		grid->addWidget(btn, i/selector_width, i%selector_width);
 		connect(btn,SIGNAL(clicked(const QString&)),this,SLOT(iconClicked(const QString&)));
