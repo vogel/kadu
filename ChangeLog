@@ -75,6 +75,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   Notify ju¿ jest, ale jeszcze nie dzia³a (pawel_p/adrian)
 * configure: nowa opcja --enable-voice w³±czaj±ca eksperymentaln±
   obs³ugê rozmów g³osowych (adrian)
+* mo¿liwo¶æ przerwania rozmowy g³osowej (chilek)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci
