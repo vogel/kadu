@@ -1,9 +1,9 @@
-/* $Id: events.c,v 1.14 2002/12/26 16:18:40 chilek Exp $ */
+/* $Id: events.c,v 1.15 2003/01/12 22:56:42 chilek Exp $ */
 
 /*
- *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>,
- *                          Robert J. Wo¼ny <speedy@ziew.org>,
- *                          Arkadiusz Mi¶kiewicz <misiek@pld.ORG.PL>
+ *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
+ *                          Robert J. Wo¼ny <speedy@ziew.org>
+ *                          Arkadiusz Mi¶kiewicz <misiek@pld.org.pl>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License Version
@@ -71,6 +71,9 @@ void gg_event_free(struct gg_event *e)
 
 	if (e->type == GG_EVENT_DCC_VOICE_DATA)
 		free(e->event.dcc_voice_data.data);
+
+	if (e->type == GG_EVENT_SEARCH50_REPLY)
+		gg_search50_free(e->event.search50);
 	
 	free(e);
 }
@@ -355,6 +358,15 @@ static int gg_watch_fd_connected(struct gg_session *sess, struct gg_event *e)
 		{
 			gg_debug(GG_DEBUG_MISC, "// gg_watch_fd_connected() received disconnection warning\n");
 			e->type = GG_EVENT_DISCONNECT;
+			break;
+		}
+
+		case GG_SEARCH50_REPLY:
+		{
+			gg_debug(GG_DEBUG_MISC, "// gg_watch_fd_connected() received search reply\n");
+			e->type = GG_EVENT_SEARCH50_REPLY;
+			if (gg_search50_handle_reply(e, p, h->length) == -1)
+				goto fail;
 			break;
 		}
 
@@ -843,25 +855,29 @@ struct gg_event *gg_watch_fd(struct gg_session *sess)
 
 			free(sess->password);
 			sess->password = NULL;
-			
-#if 0
-			if (!getsockname(sess->fd, (struct sockaddr*) &sin, &sin_len))
-				sess_ip = sin.sin_addr.s_addr;	
 
-			if (gg_dcc_ip) {
-				sess->client_addr = (sess_ip) ? (sess_ip) : INADDR_NONE;
-				sess->client_port = gg_dcc_port;
-			} else {
-				sess->client_ip = 0;
-				sess->client_port = 0;
-			};
-#endif
+			gg_debug(GG_DEBUG_MISC, "// gg_watch_fd() gg_dcc_ip = %s\n", inet_ntoa(*((struct in_addr*) &gg_dcc_ip)));
 			
+			if (gg_dcc_ip == (unsigned long) inet_addr("255.255.255.255")) {
+				struct sockaddr_in sin;
+				int sin_len = sizeof(sin);
+
+				gg_debug(GG_DEBUG_MISC, "// gg_watch_fd() detecting address\n");
+
+				if (!getsockname(sess->fd, (struct sockaddr*) &sin, &sin_len)) {
+					gg_debug(GG_DEBUG_MISC, "// gg_watch_fd() detected address to %s\n", inet_ntoa(sin.sin_addr));
+					l.local_ip = sin.sin_addr.s_addr;
+				} else {
+					gg_debug(GG_DEBUG_MISC, "// gg_watch_fd() unable to detect address\n");
+					l.local_ip = 0;
+				}
+			} else 
+				l.local_ip = gg_dcc_ip;
+		
 			l.uin = fix32(sess->uin);
 			l.hash = fix32(hash);
 			l.status = fix32(sess->initial_status ? sess->initial_status : GG_STATUS_AVAIL);
 			l.version = fix32(sess->protocol_version);
-			l.local_ip = gg_dcc_ip;
 			l.local_port = fix16(gg_dcc_port);
 			
 			if (sess->external_addr && sess->external_port > 1023) {

@@ -1,7 +1,7 @@
-/* $Id: common.c,v 1.15 2002/12/26 16:18:40 chilek Exp $ */
+/* $Id: common.c,v 1.16 2003/01/12 22:56:42 chilek Exp $ */
 
 /*
- *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>,
+ *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
  *                          Robert J. Wo¼ny <speedy@ziew.org>
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -81,6 +81,18 @@ char *gg_vsaprintf(const char *format, va_list ap)
         int size = 0;
 	const char *start;
 	char *buf = NULL;
+	
+#ifdef __GG_LIBGADU_HAVE_VA_COPY
+	va_list aq;
+
+	va_copy(aq, ap);
+#else
+#  ifdef __GG_LIBGADU_HAVE___VA_COPY
+	va_list aq;
+
+	__va_copy(aq, ap);
+#  endif
+#endif
 
 	start = format; 
 
@@ -114,7 +126,17 @@ char *gg_vsaprintf(const char *format, va_list ap)
 
 	format = start;
 	
+#ifdef __GG_LIBGADU_HAVE_VA_COPY
+	vsnprintf(buf, size + 1, format, aq);
+	va_end(aq);
+#else
+#  ifdef __GG_LIBGADU_HAVE___VA_COPY
+	vsnprintf(buf, size + 1, format, aq);
+	va_end(aq);
+#  else
 	vsnprintf(buf, size + 1, format, ap);
+#  endif
+#endif
 	
 	return buf;
 }
@@ -170,7 +192,7 @@ char *gg_get_line(char **ptr)
         else {
                 *ptr = foo + 1;
                 *foo = 0;
-                if (res[strlen(res) - 1] == '\r')
+                if (strlen(res) > 1 && res[strlen(res) - 1] == '\r')
                         res[strlen(res) - 1] = 0;
         }
 

@@ -1,4 +1,4 @@
-dnl $Id: configure.in,v 1.12 2002/12/26 16:30:59 chilek Exp $
+dnl $Id: configure.in,v 1.13 2003/01/12 22:56:42 chilek Exp $
 
 AC_INIT(lib/libgadu.h)
 AC_PREREQ(2.50)
@@ -44,6 +44,7 @@ AC_SUBST(shared, "")
 AC_SUBST(install_shared, "")
 
 AC_SUBST(lgadu, "")
+AC_SUBST(libgadu_a, "")
 
 AC_SUBST(static, "static")
 AC_SUBST(install_static, "install-static")
@@ -53,6 +54,7 @@ AC_SUBST(install_ekg, "")
 AC_SUBST(clean_ekg, "")
 AC_SUBST(distclean_ekg, "")
 AC_SUBST(uninstall_ekg, "")
+AC_SUBST(dep_ekg, "")
 
 AC_SUBST(make_ekgwap, "")
 AC_SUBST(install_ekgwap, "")
@@ -99,6 +101,30 @@ AC_CHECK_LIB(socket, socket, LIBS="$LIBS -lsocket")
 
 AC_CHECK_FUNCS([gethostbyname_r])
 
+AC_MSG_CHECKING([for va_copy])
+AC_TRY_LINK([#include <stdarg.h>], [va_list a, b; va_copy(a, b);], 
+[
+  AC_MSG_RESULT([yes])
+  sed 's/#undef __GG_LIBGADU_HAVE_VA_COPY/#define __GG_LIBGADU_HAVE_VA_COPY/' < lib/libgadu-config.h > lib/libgadu-config.h-
+  mv -f lib/libgadu-config.h- lib/libgadu-config.h
+], [
+  AC_MSG_RESULT([no])
+  sed 's/#undef __GG_LIBGADU_HAVE_VA_COPY.*/\/* & *\//' < lib/libgadu-config.h > lib/libgadu-config.h-
+  mv -f lib/libgadu-config.h- lib/libgadu-config.h
+])
+
+AC_MSG_CHECKING([for __va_copy])
+AC_TRY_LINK([#include <stdarg.h>], [va_list a, b; __va_copy(a, b);], 
+[
+  AC_MSG_RESULT([yes])
+  sed 's/#undef __GG_LIBGADU_HAVE___VA_COPY/#define __GG_LIBGADU_HAVE___VA_COPY/' < lib/libgadu-config.h > lib/libgadu-config.h-
+  mv -f lib/libgadu-config.h- lib/libgadu-config.h
+], [
+  AC_MSG_RESULT([no])
+  sed 's/#undef __GG_LIBGADU_HAVE___VA_COPY.*/\/* & *\//' < lib/libgadu-config.h > lib/libgadu-config.h-
+  mv -f lib/libgadu-config.h- lib/libgadu-config.h
+])
+
 # jak± wersjê libgadu kompilujemy?
 
 AC_ARG_ENABLE(shared,
@@ -140,8 +166,16 @@ AC_TRY_RUN(
   {
     char tmp;
     return (snprintf(&tmp, sizeof(tmp), "test") != 4);
-  }], [AC_DEFINE(HAVE_C99_VSNPRINTF, 1, [define if you have C99-aware vsnprintf])
-  AC_MSG_RESULT([yes])], [AC_MSG_RESULT([no])])
+  }], [
+	AC_DEFINE(HAVE_C99_VSNPRINTF, 1, [define if you have C99-aware vsnprintf])
+	AC_MSG_RESULT([yes])
+      	sed 's/#undef __GG_LIBGADU_HAVE_C99_VSNPRINTF/#define __GG_LIBGADU_HAVE_C99_VSNPRINTF/' < lib/libgadu-config.h > lib/libgadu-config.h-
+        mv -f lib/libgadu-config.h- lib/libgadu-config.h
+  ], [
+	AC_MSG_RESULT([no])
+        sed 's/#undef __GG_LIBGADU_HAVE_C99_VSNPRINTF/\/* & *\//' < lib/libgadu-config.h > lib/libgadu-config.h-
+        mv -f lib/libgadu-config.h- lib/libgadu-config.h
+  ])
 
 AC_ARG_WITH(pthread,
   [  --with-pthread          Use pthread in resolver])

@@ -1,4 +1,4 @@
-/* $Id: dcc.c,v 1.14 2002/12/26 16:18:40 chilek Exp $ */
+/* $Id: dcc.c,v 1.15 2003/01/12 22:56:42 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>

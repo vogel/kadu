@@ -6,6 +6,169 @@ d - drg, sz - szalik). ,,p/nick'' oznacza patch lub ¼ród³o podes³ane
 przez ,,nick'', ,,i/nick'' oznacza czyj¶ pomys³, ,,b/nick'' mówi, kto
 zg³osi³ b³±d.
 
+// 2003-01-12
+
+- poprawka /alias (kbns/sz)
+- porz±dki kosmetyczno-funkcjonalne w kodzie timerów (sz)
+- pamietajmy o czyszczeniu adresu IP i portu usera tak, ¿eby np. w nag³ówku
+  query nie by³o kosmicznych adresów (sz)
+
+// 2003-01-11
+
+- zmienna ,,display_transparent'' (MP/sz)
+- poprawki /on, aby by³o bardziej userfriendly. dodanie przekazywania
+  nowego opisu w parametrach %3 i %4 (sz)
+- ,,*'' w nazwie timera i at usuwa wszystkie (ale nie timery UI) (sz)
+- dok³adniejsze sprawdzanie argumentów w kilku funkcjach (mati/w)
+- poprawka dope³niania zmiennych przy w³±czonej li¶cie kontaktów (*/w)
+- libgadu: eksperymentalny kod wyszukiwania zgodny z GG 5.0. API mo¿e siê
+  zmieniæ. na pewno siê zmieni. trzeba uzgodniæ z ekip± Kadu (w)
+- /find wysy³a zapytania zgodne z GG 5.0 (w)
+- wyszukiwanie dzia³a (w)
+- lekka poprawka themów wyszukiwania, ze wzglêdu na brak informacji o p³ci
+  w wynikach (w)
+- poprawka zale¿no¶ci w Makefile'ach (FIG/w)
+- poprawka b³êdu autoconfa w m4/stdint.m4 (Brzezi/w)
+- poprawiona kompilacja przy braku openssl (boncur/w)
+- poprawka gg_saprintf() dla PPC (mmazur/w)
+
+// 2003-01-10
+
+- timery (oraz at) u¿ytkownika s± zapisywane przy /save (sz)
+- dodanie komendy /at (sz)
+- zmiana timestamp'u /last i /queue na dzieñ-miesi±c-rok (sz)
+- uproszczenie kodu ,,last'' (sz)
+- przepisanie kodu wy¶wietlaj±cego pasek stanu od nowa. mo¿na zagnie¿d¿aæ,
+  dodano nowe formaty (w)
+- nag³ówek okna mo¿na opisaæ formatami ,,header<n>'', podobnie jak pasek
+  stanu (w)
+- dodanie eksperymentalnego zamiennika sim.c. podczas testów wypada
+  trochê lepiej ni¿ orygina³, ze wzglêdu na brak zaawansowanych
+  algorytmów cache'owania kluczy. po prostu za ka¿dym razem generuje
+  nowy. kodu jest znacznie mniej i jest bardziej przejrzysty.
+  w³±czany przez ,,/set encryption 2'' (w)
+- poprawka zachowania kontaktów przy mieszaniu paskiem stanu i nag³ówkiem
+  (sz/w)
+- dodatki do pythona: mo¿na pisaæ w nag³ówku i statusie funkcjami
+  ekg.print_header() i ekg.print_statusbar. zdarzenie handle_keypress (w)
+
+// 2003-01-09
+
+- dodanie komendy ukrytej _queue dla tych, którzy czasami chc± wiedzieæ,
+  co siê dok³adnie dzieje w kolejce wiadomo¶ci (sz)
+- poprawka segfaulta (cukier/sz)
+- libgadu: makra GG_S_*() nie zwracaj± uwagi na stan tylko dla znajomych (w)
+- libgadu: dodanie makra GG_S_F() sprawdzaj±cego stan tylko dla znajomych (w)
+- libgadu: podbicie wersji API (w)
+- uporz±dkowanie kodu timerów, timeoutów itp. (w)
+- wyrzucenie zmiennych away i private_mode, bo tylko komplikowa³y sprawy (w)
+- ró¿ne porz±dki w kodzie (w)
+- libgadu: poprawka b³êdu w gg_get_line() wyje¿d¿aj±cego w pustych
+  liniach 1 bajt przed bufor (w)
+- optymalizacja dodawania linii do backlogu, dziêki czemu mamy O(1) i
+  ekg nie chodzi tym wolniej, im d³u¿ej dzia³a i wiêcej siedzi w 
+  backlogu (w)
+- /list na siebie pokazuje prawid³owy port (FIG/w)
+- poprawki configure.in (FIG/w)
+- mo¿liwo¶æ rozszerzania pasku statusu zmienn± ,,statusbar_size''.
+  kolejne linie s± opisane formatami ,,statusbar2'', ,,statusbar3'' itd. (w)
+- mo¿liwo¶æ stworzenia nag³ówka okna zmienn± ,,header_size''. póki co,
+  nie ma mo¿liwo¶ci wy¶wietlania w nim czegokolwiek (w)
+
+// 2003-01-08
+
+- poprawka ostrze¿eñ przy kompilacji gcc 3.x (MuchaR/w)
+- kosmetyka komunikatów o b³êdach niektórych komend (sz)
+- rozszerzenie mo¿liwo¶ci /timer (sz)
+- poprawka themów dla bia³ych terminali (MP/w)
+- libgadu: poprawka pkgconfig (w)
+
+// 2003-01-07
+
+- dodanie portu do /list (sz)
+- drobne poprawki w configure.in (w)
+
+// 2003-01-06
+
+- drobna kosmetyka komendy /sms (sz)
+- poprawka timerów, które czasami potrafi³y siê zapêtliæ (fig/sz)
+- ,,/list user'' pokazuje te¿ adres IP (*/sz)
+
+// 2003-01-05
+
+- kosmetyczne poprawki przy ,,help set zmienna'' (sz)
+- je¶li utworzymy alias do jakiej¶ komendy (tylko jednej), to bêdzie przy
+  nim dzia³a³o dope³nianie tak, jak przy oryginalnej komendzie (sz)
+
+// 2003-01-04
+
+- g³upia ja, zepsu³em ,,del'' (sz)
+- ³adne od¶wie¿anie listy kontaktów po ,,list --get'' (sz)
+- nie pozwalajmy na zmianê nazwy/uin kogo¶ poprzez /list, je¶li
+  kto¶ ju¿ taka nazwê/uin posiada na naszej li¶cie (sz)
+- poprawka wy¶wietlania formatowanych wiadomo¶ci (sz/w)
+- dodanie formatu %|, szczegó³y w docs/themes.txt (w)
+- dodanie ,,/help set <zmienna>'' (w)
+- instalowanie vars.txt do ${prefix}/share/ekg/ (w)
+- poprawki helpa /list (FIG/w)
+- informowanie o zapisie lub odczycie konfiguracji z serwera (FIG/w)
+- poprawki helpów, ¿eby u¿ywa³y %| i wygl±da³y ³adnie po zmianie
+  rozmiaru okna (w)
+- libgadu: dodanie makra GG_S_BL() (w)
+- libgadu: podbicie wersji API do 2.9 (w)
+- dokoñczenie kilku zapomnianych rzeczy w /list (sz/w)
+- eksperymentalne wprowadzenie ,,make dep''. mam nadziejê, ¿e na egzotycznych
+  systemach nie bêdzie sprawiaæ problemów (w)
+- reorganizacja timerów, dziêki czemu maj± teraz odpowiedni± dok³adno¶æ,
+  a nie +/- 1s. jest mo¿liwe zrobienie sta³ych timerów (w)
+- czytanie globalnego pliku konfiguracyjnego /etc/ekg.conf,
+  /usr/local/etc/ekg.conf itp. po konfiguracji u¿ytkownika, ¿eby móc
+  na przyk³ad wymusiæ jakie¶ konkretne serwery (w)
+- dodanie opcji -N (w)
+
+// 2003-01-03
+
+- ekg nie pozwala dodaæ kogo¶ m.in. z '@' lub '#' na pocz±tku w nazwie,
+  ¿eby unikn±æ dziwnych problemów (sz)
+- kosmetyka, m.in. rzeczy zwi±zanych z obs³uga uin/nick w komendach (sz)
+- ignore/unignore powoduje, odpowiednio, wyczyszczenie/uaktualnienie stanu
+  danego u¿ytkownika. w ogóle, to trzeba bêdzie nied³ugo zrobiæ ró¿ne
+  stopnie ignorowania... (sz)
+- poprawka wy¶wietlania nieznanych u¿ytkowników w /ignore (Arim/w)
+- dok³adniejsze informacje o b³êdach us³ug http (FIG/w)
+- poprawna reakcja na PageDown po /window clear (theKnight/w)
+
+// 2003-01-02
+
+- czyszczenie stanów ludzi z listy kontaktów po timeout'cie (pmb/sz)
+- zmienna ,,display_pl_chars'' pozwalaj±ca maskowaæ polskie literki
+  dla tych, którym nie chce siê (nie mog±) skonfigurowaæ terminala (sz)
+- je¶li komu¶ siê nudzi i nadaje ludziom aliasy w postaci liczb, to
+  nie powinien ju¿ mieæ z tym problemów ;> (sz)
+
+// 2002-12-31
+
+- poprawka ,,del'', które nie potrafi³o usun±æ kogo¶, którego alias
+  sk³ada³ siê tylko z liczby (sz)
+
+// 2002-12-30
+
+- bardziej zrozumia³e opisy b³êdów przy ,,add'' (Sero/sz)
+- ekg nie gubi ju¿ informacji o formatowaniu wiadomo¶ci (bold, italic, etc.)
+  podczas kolejkowania (sz)
+- niech systemy bez utimes() korzystaj± z utime() (sz)
+
+// 2002-12-29
+
+- check_mail nie zalicza plików zaczynaj±cych siê od kropki do poczty
+  w przypadku u¿ywania Maildir/ (rmrmg/sz)
+- kosmetyka kodu (Sero/sz)
+- kosmetyka w³asnego IP w ,,list'' (sz)
+
+// 2002-12-27
+
+- dodanie zdarzenia ,,new_mail'' do ,,on'' (scooty/sz)
+
 // 2002-12-26
 
 - ekg pokazuje ju¿, ¿e kto¶ nas ,,zablokowa³'' (w)
@@ -15,6 +178,17 @@ zg³osi³ b³±d.
   opisu protoko³u (Chilek/w)
 - dodanie komend /block i /unblock (w)
 - dodanie opcji --offline i --online do /list (w)
+- libgadu: poprawka ³±czenia synchronicznego (sCoOtY/w)
+- usuniêcie warningów przy kompilacji przyk³adów (w)
+- libgadu: gdy gg_dcc_ip bêdzie równe 0xffffffff, adres bêdzie ustalany
+  automatycznie na podstawie getsockname() (w)
+- zmienna dcc_ip mo¿e przyj±æ warto¶æ ,,auto'' (w)
+- dodanie docs/userlista.txt z opisem formatu listy kontaktów i zapisu
+  konfiguracji na serwerze (w)
+- dodanie mo¿liwo¶ci zapisu konfiguracji ekg na serwerze (opcje
+  --put-config i --get-config komendy /list) (w)
+- zmienna sms_max_length przy warto¶ci 0 usuwa limit (rmrmg/w)
+- poprawka wysy³ania wielolinijkowych (pmb/w)
 
 // 2002-12-24
 
@@ -2443,4 +2617,4 @@ i BUGS.
 - eleet niebieskie t³o mesgów (wiem, dalekie od idea³u).
 
 
-$Id: ChangeLog,v 1.10 2002/12/26 16:19:24 chilek Exp $
+$Id: ChangeLog,v 1.11 2003/01/12 22:56:42 chilek Exp $

@@ -1,4 +1,4 @@
-/* $Id: search.c,v 1.6 2002/12/16 22:51:50 adrian Exp $ */
+/* $Id: search.c,v 1.7 2003/01/12 22:56:42 chilek Exp $ */
 
 #include <stdio.h>
 #include "libgadu.h"
@@ -22,7 +22,7 @@ int main()
 {
 	struct gg_http *h;
 	struct gg_search *s;
-	struct gg_search_request *r = gg_search_request_mode_0(NULL, "Ania", NULL, NULL, GG_GENDER_NONE, 0, 0, 0, 0);
+	const struct gg_search_request *r = gg_search_request_mode_0(NULL, "Ania", NULL, NULL, GG_GENDER_NONE, 0, 0, 0, 0);
 	
 	int i;
 

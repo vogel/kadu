@@ -1,10 +1,10 @@
-/* $Id: libgadu.h,v 1.20 2002/12/26 16:18:40 chilek Exp $ */
+/* $Id: libgadu.h,v 1.21 2003/01/12 22:56:42 chilek Exp $ */
 
 /*
- *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>,
- *                          Robert J. Wo¼ny <speedy@ziew.org>,
- *                          Arkadiusz Mi¶kiewicz <misiek@pld.org.pl>,
- *                          Tomasz Chiliñski <chilek@chilan.com>,
+ *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
+ *                          Robert J. Wo¼ny <speedy@ziew.org>
+ *                          Arkadiusz Mi¶kiewicz <misiek@pld.org.pl>
+ *                          Tomasz Chiliñski <chilek@chilan.com>
  *                          Piotr Wysocki <wysek@linux.bydg.org>
  *                          Dawid Jarosz <dawjar@poczta.onet.pl>
  *
@@ -333,7 +333,9 @@ enum gg_event_t {
 	GG_EVENT_DCC_NEED_FILE_INFO,	/* nale¿y wype³niæ file_info */
 	GG_EVENT_DCC_NEED_FILE_ACK,	/* czeka na potwierdzenie pliku */
 	GG_EVENT_DCC_NEED_VOICE_ACK,	/* czeka na potwierdzenie rozmowy */
-	GG_EVENT_DCC_VOICE_DATA 	/* ramka danych rozmowy g³osowej */
+	GG_EVENT_DCC_VOICE_DATA, 	/* ramka danych rozmowy g³osowej */
+
+	GG_EVENT_SEARCH50_REPLY		/* odpowiedz wyszukiwania GG 5.0 */
 };
 
 /*
@@ -372,6 +374,26 @@ enum gg_error_t {
 	GG_ERROR_DCC_NET,		/* b³±d wysy³ania/odbierania */
 	GG_ERROR_DCC_REFUSED 		/* po³±czenie odrzucone przez usera */
 };
+
+/*
+ * struktury dotycz±ce wyszukiwania w GG 5.0. NIE NALE¯Y SIÊ DO NICH
+ * ODWO£YWAÆ BEZPO¦REDNIO! do dostêpu do nich s³u¿± funkcje gg_search50_*()
+ */
+struct gg_search50_entry {
+	int num;
+	char *field;
+	char *value;
+};
+
+struct gg_search50_s {
+	int count;
+	int next;
+	uint32_t seq;
+	struct gg_search50_entry *entries;
+	int entries_count;
+};
+
+typedef struct gg_search50_s *gg_search50_t;
 
 /*
  * struktura opisuj±ca rodzaj zdarzenia. wychodzi z gg_watch_fd() lub
@@ -417,6 +439,8 @@ struct gg_event {
 			uint8_t *data;
 			int length;
 		} dcc_voice_data;
+
+		gg_search50_t search50;
         } event;
 };
 
@@ -509,6 +533,38 @@ const struct gg_search_request *gg_search_request_mode_1(char *email, int active
 const struct gg_search_request *gg_search_request_mode_2(char *phone, int active, int start);
 const struct gg_search_request *gg_search_request_mode_3(uin_t uin, int active, int start);
 void gg_search_request_free(struct gg_search_request *r);
+
+/*
+ * funkcje wyszukiwania dla GG 5.0. tym razem funkcje zachowuj± pewien
+ * poziom abstrakcji, ¿eby unikn±æ zmian ABI przy zmianach w protokole.
+ *
+ * NIE NALE¯Y SIÊ ODWO£YWAÆ DO PÓL gg_search50_t BEZPO¦REDNIO!
+ */
+uint32_t gg_search50(struct gg_session *sess, gg_search50_t req);
+gg_search50_t gg_search50_new();
+int gg_search50_add(gg_search50_t req, const char *field, const char *value);
+const char *gg_search50_get(gg_search50_t res, int num, const char *field);
+int gg_search50_count(gg_search50_t res);
+uin_t gg_search50_next(gg_search50_t res);
+uint32_t gg_search50_seq(gg_search50_t res);
+void gg_search50_free(gg_search50_t res);
+
+#define GG_SEARCH50_UIN "FmNumber"
+#define GG_SEARCH50_STATUS "FmStatus"
+#define GG_SEARCH50_FIRSTNAME "firstname"
+#define GG_SEARCH50_LASTNAME "lastname"
+#define GG_SEARCH50_NICKNAME "nickname"
+#define GG_SEARCH50_BIRTHYEAR "birthyear"
+#define GG_SEARCH50_CITY "city"
+#define GG_SEARCH50_GENDER "gender"
+#define GG_SEARCH50_GENDER_FEMALE "1"
+#define GG_SEARCH50_GENDER_MALE "2"
+#define GG_SEARCH50_ACTIVE "ActiveOnly"
+#define GG_SEARCH50_ACTIVE_TRUE "1"
+#define GG_SEARCH50_ACTIVE_FALSE "0"
+#define GG_SEARCH50_START "fmstart"
+
+int gg_search50_handle_reply(struct gg_event *e, const char *packet, int length);
 
 /*
  * operacje na katalogu publicznym.
@@ -688,7 +744,7 @@ char *gg_base64_decode(const char *buf);
 #define GG_DEFAULT_PROTOCOL_VERSION 0x18
 #define GG_DEFAULT_TIMEOUT 30
 #define GG_HAS_AUDIO_MASK 0x40000000
-#define GG_LIBGADU_VERSION "CVS"
+#define GG_LIBGADU_VERSION "20030112"
 
 #define GG_DEFAULT_DCC_PORT 1550
 
@@ -737,6 +793,20 @@ struct gg_login_ext {
 
 #define GG_LOGIN_FAILED 0x0009
 
+#define GG_SEARCH50_REQUEST 0x0014
+
+struct gg_search50_request {
+	uint32_t dunno1;		/* 0xXXXXXX03 */
+	uint8_t dunno2;			/* '>' */
+} GG_PACKED;
+
+#define GG_SEARCH50_REPLY 0x000e
+
+struct gg_search50_reply {
+	uint32_t dunno1;		/* 0xXXXXXX05 */
+	uint8_t dunno2;			/* '>' */
+} GG_PACKED;
+
 #define GG_NEW_STATUS 0x0002
 
 #define GG_STATUS_NOT_AVAIL 0x0001		/* niedostêpny */
@@ -754,13 +824,32 @@ struct gg_login_ext {
 #define GG_STATUS_DESCR_MAXSIZE 45
 
 /*
- * makra do szybkiego sprawdzania stanu. ich znaczenie powinno byæ jasne.
+ * makra do ³atwego i szybkiego sprawdzania stanu.
  */
-#define GG_S_A(x) ((x) == GG_STATUS_AVAIL || (x) == GG_STATUS_AVAIL_DESCR)
-#define GG_S_NA(x) ((x) == GG_STATUS_NOT_AVAIL || (x) == GG_STATUS_NOT_AVAIL_DESCR)
-#define GG_S_B(x) ((x) == GG_STATUS_BUSY || (x) == GG_STATUS_BUSY_DESCR)
-#define GG_S_I(x) ((x) == GG_STATUS_INVISIBLE || (x) == GG_STATUS_INVISIBLE_DESCR)
-#define GG_S_D(x) ((x) == GG_STATUS_NOT_AVAIL_DESCR || (x) == GG_STATUS_AVAIL_DESCR || (x) == GG_STATUS_BUSY_DESCR || (x) == GG_STATUS_INVISIBLE_DESCR)
+
+/* GG_S_F() tryb tylko dla znajomych */
+#define GG_S_F(x) (((x) & GG_STATUS_FRIENDS_MASK) != 0)
+
+/* GG_S() stan bez uwzglêdnienia trybu tylko dla znajomych */
+#define GG_S(x) ((x) & ~GG_STATUS_FRIENDS_MASK)
+
+/* GG_S_A() dostêpny */
+#define GG_S_A(x) (GG_S(x) == GG_STATUS_AVAIL || GG_S(x) == GG_STATUS_AVAIL_DESCR)
+
+/* GG_S_NA() niedostêpny */
+#define GG_S_NA(x) (GG_S(x) == GG_STATUS_NOT_AVAIL || GG_S(x) == GG_STATUS_NOT_AVAIL_DESCR)
+
+/* GG_S_B() zajêty */
+#define GG_S_B(x) (GG_S(x) == GG_STATUS_BUSY || GG_S(x) == GG_STATUS_BUSY_DESCR)
+
+/* GG_S_I() niewidoczny */
+#define GG_S_I(x) (GG_S(x) == GG_STATUS_INVISIBLE || GG_S(x) == GG_STATUS_INVISIBLE_DESCR)
+
+/* GG_S_D() stan opisowy */
+#define GG_S_D(x) (GG_S(x) == GG_STATUS_NOT_AVAIL_DESCR || GG_S(x) == GG_STATUS_AVAIL_DESCR || GG_S(x) == GG_STATUS_BUSY_DESCR || GG_S(x) == GG_STATUS_INVISIBLE_DESCR)
+
+/* GG_S_BL() blokowany lub blokuj±cy */
+#define GG_S_BL(x) (GG_S(x) == GG_STATUS_BLOCKED)
 
 struct gg_new_status {
 	uint32_t status;			/* na jaki zmieniæ? */

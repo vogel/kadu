@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.14 2002/12/26 16:18:40 chilek Exp $
+# $Id: Makefile.in,v 1.15 2003/01/12 22:56:42 chilek Exp $
 
 prefix = @prefix@
 exec_prefix = @exec_prefix@
@@ -8,7 +8,7 @@ includedir = @includedir@
 # increased with ABI changes
 VERSION_MAJOR=2
 # increased with API changes
-VERSION_MINOR=7
+VERSION_MINOR=10
 
 CC = @CC@ 
 CFLAGS = @CFLAGS_LIBGADU@ -I. -I.. -Wall
@@ -21,8 +21,9 @@ RANLIB = @RANLIB@
 STRIP = @STRIP@
 LN_S = @LN_S@
 
-OBJS = common.o libgadu.o search.o pubdir.o http.o dcc.o userlist.o events.o
-LOBJS = common.lo libgadu.lo search.lo pubdir.lo http.lo dcc.lo userlist.lo events.lo
+OBJS = common.o libgadu.o search.o pubdir.o http.o dcc.o userlist.o events.o search50.o
+LOBJS = common.lo libgadu.lo search.lo pubdir.lo http.lo dcc.lo userlist.lo events.lo search50.lo
+SRCS = $(OBJS:.o=.c)
 
 SHAREDMM = libgadu.so
 SHAREDM = $(SHAREDMM).$(VERSION_MAJOR)
@@ -34,14 +35,14 @@ all:	@static@ @shared@
 #
 
 clean:
-	rm -f *.o *.lo *.a *.so *.so.* *~ core
+	rm -f *.o *.lo *.a *.so *.so.* *~ core .depend
 
 distclean:	clean
 	rm -f Makefile libgadu-config.h libgadu.pc
 
 #
 
-static: $(STATIC)
+static: dep $(STATIC)
 
 $(STATIC): $(OBJS)
 	$(AR) r $(STATIC) $(OBJS) 
@@ -52,12 +53,19 @@ $(STATIC): $(OBJS)
 %.lo:	%.c
 	$(CC) -c $(CPPFLAGS) $(CFLAGS) -fPIC $< -o $@
 
-shared:	$(SHARED)
+shared:	dep $(SHARED)
 
 $(SHARED): $(LOBJS)
 	$(CC) -shared -Wl,-soname=libgadu.so.$(VERSION_MAJOR) -o $(SHARED) $(LOBJS) $(LIBS) -lc
 	$(LN_S) -f $(SHARED) $(SHAREDM)
 	$(LN_S) -f $(SHARED) $(SHAREDMM)
+
+#
+
+dep:	.depend
+
+.depend:	$(SRCS)
+	$(CC) -MM $(CFLAGS) $(SRCS) 1> .depend
 
 #
 
@@ -81,4 +89,10 @@ install-static:	install-common
 
 strip-libgadu-so:
 	$(STRIP) $(SHARED)
+
+#
+
+ifneq ($(wildcard .depend),)
+include .depend
+endif
 
