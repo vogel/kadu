@@ -361,20 +361,27 @@ char *pwHash(const char *tekst) {
     return nowytekst;
 }
 
-void confirmHistoryDeletion (const char *user) {
-    char buf1[1023];
-    QString s;
-    	
-    switch(QMessageBox::information( kadu, "Kadu",i18n("Clear history?"), i18n("Yes"), i18n("No"), QString::null, 1, 1)) {
-	case 1: // Yes?
-	    s = __c2q(user);
-	    snprintf(buf1, sizeof(buf1), "%s/.gg/history/%d",getenv("HOME"), userlist.byAltNick(s).uin);
-	    fprintf(stderr, "KK History(): unlinking %s\n", buf1);
-	    unlink(buf1);
-	    break;
-	case 0: // Nope?
-	    return;
-	}
+void confirmHistoryDeletion(UinsList &uins) {
+	QString fname;
+	QString s;
+	int i;
+
+	switch(QMessageBox::information( kadu, "Kadu",i18n("Clear history?"), i18n("Yes"), i18n("No"), QString::null, 1, 1)) {
+		case 0: // Yes?
+			fname = getenv("HOME");
+			fname.append("/.gg/history/");
+			uins.sort();
+			for (i = 0; i < uins.count(); i++) {
+				fname.append(QString::number(uins[i]));
+				if (i < uins.count() - 1)
+					fname.append("_");
+				}
+			fprintf(stderr, "KK confirmHistoryDeletion(): deleting %s\n", (const char *)fname.local8Bit());
+			unlink((const char *)fname.local8Bit());
+			break;
+		case 1: // Nope?
+			return;
+		}
 }
 
 void remindPassword() {
@@ -784,7 +791,10 @@ void Kadu::commandParser (int command) {
 			removeUser(tmp);
 			break;
 		case KADU_CMD_DELETE_HISTORY:
-			confirmHistoryDeletion(userbox->currentText().local8Bit());
+			for (i = 0; i < userbox->count(); i++)
+				if (userbox->isSelected(i))
+					uins.append(userlist.byAltNick(userbox->text(i)).uin);
+			confirmHistoryDeletion(uins);
 			break;
 		case KADU_CMD_SHOW_HISTORY:
 			History *hb;
