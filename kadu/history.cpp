@@ -731,6 +731,7 @@ void HistoryManager::buildIndex(const QString &filename) {
 	int *outbuf;
 	int inbufoffs, outbufoffs, inoffs;
 	Q_LONG read, written;
+	bool saved = false;
 
 	if (QFile::exists(fnameout))
 		return;
@@ -752,17 +753,21 @@ void HistoryManager::buildIndex(const QString &filename) {
 	while ((read = fin.readBlock(inbuf, 65536)) > 0) {
 		inbufoffs = 0;
 		while (inbufoffs < read) {
-			outbuf[outbufoffs++] = inoffs + inbufoffs;
+			if (saved)
+				saved = false;
+			else
+				outbuf[outbufoffs++] = inoffs + inbufoffs;
 			if (outbufoffs == 4096) {
 				written = fout.writeBlock((char *)outbuf, 4096 * sizeof(int));
 				outbufoffs = 0;
 				}
 			while (inbufoffs < read && inbuf[inbufoffs] != '\n')
 				inbufoffs++;
-			if (inbufoffs < read) {
+			if (inbufoffs < read)
 				inbufoffs++;
-				if (inbufoffs == read)
-					inoffs += read;
+			if (inbufoffs == read) {
+				inoffs += read;
+				saved = true;
 				}
 			}
 		}

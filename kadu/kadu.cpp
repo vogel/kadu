@@ -1300,7 +1300,9 @@ void Kadu::sendMessage(QListBoxItem *item) {
 		msg->show();
 		}*/
 //	zawsze otwieraja sie czaty
-	openChat(uins);
+	k = openChat(uins);
+	if (!msgsFromHist)
+		chats[k].ptr->writeMessagesFromHistory(elem.uins, elem.time);
 }
 
 /* when we want to change the status */

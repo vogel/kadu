@@ -538,9 +538,10 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time) {
 		from = (end < ilosc) ? 0 : end - ilosc + 1;
 		entriestmp = history.getHistoryEntries(senders, from, end - from + 1, HISTORYMANAGER_ENTRY_CHATSEND
 			| HISTORYMANAGER_ENTRY_MSGSEND | HISTORYMANAGER_ENTRY_CHATRCV | HISTORYMANAGER_ENTRY_MSGRCV);
+		kdebug("Chat::writeMessageFromHistory(): temp entries = %d\n", entriestmp.count());
 		for (QValueList<HistoryEntry>::iterator it = entriestmp.begin(); it != entriestmp.end(); it++)
 			if (date <= (*it).date)
-				entriestmp.remove(it);
+				it = entriestmp.remove(it);
 		if (entriestmp.count())
 			entries = entriestmp + entries;
 		kdebug("Chat::writeMessageFromHistory(): entries = %d\n", entries.count());
