@@ -198,6 +198,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   ni± kompatybilne - modu³opisarze mog± szykowaæ finalne wersje modu³ów (adrian)
 * wszystkie pliki przerobione na nowy mechanizm debugowania (joi)
 * poprawka segfaulta w ConfigDialog::changeTab() (chilek)
+* usuniêcie paru ostrze¿eñ przy kompilacji zwi±zanych z porównywaniem liczb ca³kowitych
+  ze znakiem i bez znaku (chilek)
+* po co u¿ywacie QString::latin1()?! (chilek)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

@@ -533,12 +533,12 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 //	mesg.replace(QRegExp("&lt;"), "#");
 //	mesg.replace(QRegExp("&gt;"), "#");
 
-	kdebugm(KDEBUG_INFO, "unformatGGMessage():\n%s\n", mesg.latin1());
+	kdebugm(KDEBUG_INFO, "unformatGGMessage():\n%s\n", (const char *)unicode2latin(mesg));
 
 	inspan = -1;
 	pos = idx = formats_length = 0;
 	
-	while (pos < mesg.length()) {
+	while (uint(pos) < mesg.length()) {
 		int image_idx    = mesg.find("[IMAGE ", pos);
 		int span_idx     = mesg.find("<span style=", pos);
 		int span_end_idx = mesg.find("</span>", pos);
@@ -697,7 +697,7 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 		ParseElem pe1, pe;
 		
 		for(i=index; i<len; i++)
-			if (searchChars[(unsigned char)s[i].latin1()])
+			if (searchChars[(unsigned char)unicode2latin(s)[i]])
 				break;
 		if (i==len)
 			i=-1;
@@ -727,7 +727,7 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 				break;
 			pe.type=ParseElem::PE_STRING;
 			
-			switch(s[i].latin1()) {
+			switch(unicode2latin(s)[i]) {
 				case 's':
 					i++;
 					if (!ule.uin)
@@ -1532,12 +1532,12 @@ void HtmlDocument::splitElement(int& index,int start,int length)
 		Elements.insert(Elements.at(index),pre);
 		index++;
 	}
-	if(start+length<e.text.length())
+	if(uint(start+length)<e.text.length())
 	{
 		Element post;
 		post.tag=e.tag;
 		post.text=e.text.right(e.text.length()-(start+length));
-		if(index+1<Elements.size())
+		if(uint(index+1)<Elements.size())
 			Elements.insert(Elements.at(index+1),post);
 		else
 			Elements.append(post);
