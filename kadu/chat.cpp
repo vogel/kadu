@@ -284,7 +284,7 @@ CustomInput::CustomInput(QWidget *parent, const char *name) : QMultiLineEdit(par
 
 void CustomInput::keyPressEvent(QKeyEvent * e) {
 	kdebug("CustomInput::keyPressEvent()\n");
-	emit keyPressed(e);
+	emit keyPressed(e, this);
 	if (autosend_enabled && ((HotKey::shortCut(e,"ShortCuts", "chat_newline")) || e->key()==Key_Enter)&& !(e->state() & ShiftButton)) {
 		kdebug("CustomInput::keyPressEvent(): emit enterPressed()\n");
 		emit sendMessage();

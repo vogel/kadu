@@ -133,6 +133,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * zapamiêtywanie rozmiaru okien: konfiguracji i historii (joi)
 * poprawka w³±czania/wy³±czania d¼wiêków (joi)
 * poprawki zwi±zane z popup menu listy kontaktów (joi)
+* patch Googiego dot. sygna³u emitowanego przy naci¶niêciu przycisku w oknie
+  chat + drobna przeróbka (joi)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
