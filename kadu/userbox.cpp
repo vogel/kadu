@@ -41,10 +41,9 @@ KaduListBoxPixmap::KaduListBoxPixmap(const QPixmap &pix, const QString &text, co
 }
 
 void KaduListBoxPixmap::paint(QPainter *painter) {
-	bool isOurUin;
 	UserListElement &user = userlist.byAltNick(text());
+	bool isOurUin=(config_file.readNumEntry("General", "UIN") == user.uin);
 	if (user.uin) {
-		isOurUin = (config_file.readNumEntry("General", "UIN") == user.uin);
 		UinsList uins;
 		uins.append(user.uin);
 		if (user.blocking) {

@@ -117,6 +117,7 @@ void GaduProtocol::sendUserList()
 	kdebug("send_userlist(): Userlist sent\n");
 
 	free(uins);
+	free(types);
 }
 
 

@@ -199,6 +199,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * opis modu³ów w plikach desc zamiast w funkcjach *_info (adrian)
 * jesli wystapi blad przy ladowaniu modulu to zostana pokazane informacje o
   bledzie (michal)
+* usuniêty wyciek pamiêci z modu³u encryption, usuniêty wyciek przy wysy³aniu listy
+  kontaktów, poprawiony b³±d wy¶wietlania w³asnego opisu dla kontaktów tylko z komórk± (joi)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
