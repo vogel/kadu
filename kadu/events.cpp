@@ -47,10 +47,6 @@
 #include "sim.h"
 #endif
 
-void sigchldHndl (int whatever) {
-	while ((wait3(NULL, WNOHANG, NULL)) > 0);
-}
-
 void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t time,int formats_count=0,struct gg_msg_format * formats=NULL) {
 	QString tmp;
 #ifdef HAVE_OPENSSL
