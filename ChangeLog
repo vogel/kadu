@@ -94,6 +94,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * na³o¿ona ³ata joi-a pokazuj±ca w oknach rozmowy opisy emotikonek (chilek)
 * zaaplikowany patch michala rozbudowujacy autoaway o obsluge klawiatury
   i myszki PS/2 pod linuxem 2.6.x (adrian)
+* na³o¿ona ³ata joi-a przyspieszaj±ca parsera i dodaj±ca w nim mo¿liwo¶æ wstawiania
+  wyj¶cia zewnêtrznych poleceñ pow³oki (chilek)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

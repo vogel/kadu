@@ -409,167 +409,201 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 	return mesg;
 }
 
-QString parse_symbols(QString s, int i, UserListElement &ule, bool escape) {
+/* szuka c w s, zwraca podci±g do c (bez c), przesuwa ind na c lub je¶li nie znalaz³ za koniec s */
+inline QString findCharAndMove(const QString &s, char c, int &ind, int len)
+{
+	int pos=s.find(c, ind);
+	if (pos==-1)
+		pos=len;
+	QString f=s.mid(ind, pos-ind);
+	ind=pos;
+	return f;
+}
+
+QString parse_symbols(const QString &s, UserListElement &ule, bool escape) {
 	QString r,d;
 	int j;
-#if QT_VERSION >= 0x030200
-	r.reserve(s.length());
-#else
-#warning OUTDATED QT COMPATIBILITY USED
-#endif
-	while(s[i]!='%' && i != s.length()) {
-		r+=s[i];
-		i++;
-	}
+	int i=0;
+	int len=s.length();
+	while (i < len)
+	{
+		r+=findCharAndMove(s, '%', i, len);
 
-	if (s[i]=='%') {
-		i++;
-		switch(s[i].latin1()) {
-			case 's':
-				i++;
-				if (!ule.uin)
-					break;
-				j=statusGGToStatusNr(ule.status);
-				if (j == 1 || j == 3 || j == 5 || j == 7)
-					r += qApp->translate("@default", statustext[j-1]);
-				else
-					r += qApp->translate("@default", statustext[j]);
-				break;
-			case 'd':
-				i++;
-				if(config_file.readBoolEntry("Look", "ShowMultilineDecs")) {
-					d=ule.description;
-					if (escape)
-						escapeSpecialCharacters(d);
-					d=d.replace(QRegExp("\n"), QString("<br>"));
-					d=d.replace(QRegExp("\\s\\s"), QString(" &nbsp;"));
-					r+=d;
-				} else {
-				 	if (!escape)
-				 		r+=ule.description;
-				 	else {
-				 		d=ule.description;
-			 			escapeSpecialCharacters(d);
-			 			r+=d;
-				 	}
-				}
-				break;
-			case 'i':
-				i++;
-				if (ule.ip.ip4Addr())
-					r += ule.ip.toString();
-				break;
-			case 'v':
-				i++;
-				if (ule.ip.ip4Addr())
-					r+=ule.dnsname;
-				break;
-			case 'n':
-				i++;
-				r+=ule.nickname;
-				break;
-			case 'a':
-				i++;
-				r+=ule.altnick;
-				break;
-			case 'f':
-				i++;
-				r+=ule.first_name;
-				break;
-			case 'r':
-				i++;
-				r+=ule.last_name;
-				break;
-			case 'm':
-				i++;
-				r+=ule.mobile;
-				break;
-			case 'u':
-				i++;
-				if (ule.uin)
-					r+=QString::number(ule.uin);
-				break;
-			case 'g':
-				i++;
-				r+=ule.group();
-				break;
-			case 'o':
-				i++;
-				if (ule.port==2)
-					r+=" ";
-				break;
-			case 'p':
-				i++;
-				if (ule.port)
-					r+=QString::number(ule.port);
-				break;
-			case 'e':
-				i++;
-					r+=ule.email;
-				break;
-			default:
-				r += "%";
-		}
-	}
-
-	if (i != s.length())
-		r+=parse_symbols(s,i,ule,escape);
-	return r;
-}
-
-QString parse_only_text(QString s, int i) {
-	QString r;
-
-	while(s[i]!='%' && i != s.length()) {
-	r+=s[i];
-	i++;
-	}
-
-	if(s[i]=='%')
-		i+=2;
-
-	if(i!=s.length())
-		r+=parse_only_text(s,i);
-	return r;
-}
-
-QString parse_expression(QString s, int& i, UserListElement &ule, bool escape) {
-	QString p,r,f;
-
-	while(s[i]!='[' && i != s.length()) {
-		f+=s[i];
-		i++;
-	}
-
-	r+=parse_symbols(f,0,ule,escape);
-
-	if(s[i]=='['){
-		i++;
-		while(s[i]!=']' && i != s.length()) {
-			p+=s[i];
+		if (s[i]=='%') {
 			i++;
-		}
-
-		if(s[i]==']') {
-			i++; //eat ]
-			if(parse_only_text(p,0)!=parse_symbols(p,0,ule,escape))
-				r+=parse_symbols(p,0,ule,escape);
-			if(i == s.length())
-				return r;
-			else
-				r+=parse_expression(s,i,ule,escape);
+			switch(s[i].latin1()) {
+				case 's':
+					i++;
+					if (!ule.uin)
+						break;
+					j=statusGGToStatusNr(ule.status);
+					if (j == 1 || j == 3 || j == 5 || j == 7)
+						r += qApp->translate("@default", statustext[j-1]);
+					else
+						r += qApp->translate("@default", statustext[j]);
+					break;
+				case 'd':
+					i++;
+					if(config_file.readBoolEntry("Look", "ShowMultilineDecs")) {
+						d=ule.description;
+						if (escape)
+							escapeSpecialCharacters(d);
+						d=d.replace(QRegExp("\n"), QString("<br>"));
+						d=d.replace(QRegExp("\\s\\s"), QString(" &nbsp;"));
+						r+=d;
+					} else {
+					 	if (!escape)
+					 		r+=ule.description;
+					 	else {
+					 		d=ule.description;
+				 			escapeSpecialCharacters(d);
+				 			r+=d;
+					 	}
+					}
+					break;
+				case 'i':
+					i++;
+					if (ule.ip.ip4Addr())
+						r += ule.ip.toString();
+					break;
+				case 'v':
+					i++;
+					if (ule.ip.ip4Addr())
+						r+=ule.dnsname;
+					break;
+				case 'n':
+					i++;
+					r+=ule.nickname;
+					break;
+				case 'a':
+					i++;
+					r+=ule.altnick;
+					break;
+				case 'f':
+					i++;
+					r+=ule.first_name;
+					break;
+				case 'r':
+					i++;
+					r+=ule.last_name;
+					break;
+				case 'm':
+					i++;
+					r+=ule.mobile;
+					break;
+				case 'u':
+					i++;
+					if (ule.uin)
+						r+=QString::number(ule.uin);
+					break;
+				case 'g':
+					i++;
+					r+=ule.group();
+					break;
+				case 'o':
+					i++;
+					if (ule.port==2)
+						r+=" ";
+					break;
+				case 'p':
+					i++;
+					if (ule.port)
+						r+=QString::number(ule.port);
+					break;
+				case 'e':
+					i++;
+						r+=ule.email;
+					break;
+				default:
+					r += "%";
+			}
 		}
 	}
-	
-	if(i != s.length())
-		r+=parse_expression(s,i,ule,escape);
+	return r;
+}
+
+QString parse_only_text(const QString &s) {
+	QString r;
+	int i=0;
+	int len=s.length();
+	while (i<len)
+	{
+		r+=findCharAndMove(s, '%', i, len);
+		if(s[i]=='%')
+			i+=2;
+	}
+	return r;
+}
+
+QString parse_expression(const QString &s, UserListElement &ule, bool escape) {
+	QString r;
+	int i=0;
+	int len=s.length();
+	while (i < len)
+	{
+		QString p,f;
+		
+		f=findCharAndMove(s, '[', i, len);
+		
+		r+=parse_symbols(f,ule,escape);
+
+		if(s[i]=='['){
+			i++;
+			p=findCharAndMove(s, ']', i, len);
+
+			if(s[i]==']') {
+				i++; //eat ]
+				QString ps=parse_symbols(p,ule,escape);
+				if(parse_only_text(p)!=ps)
+					r+=ps;
+			}
+		}
+	}
+	return r;
+}
+
+QString parse_expression_and_execute(const QString &s, UserListElement &ule, bool escape) {
+	QString r;
+	int len=s.length();
+	int i=0;
+	while (i < len)
+	{
+		QString p;
+		
+		r+=findCharAndMove(s, '`', i, len);
+		
+		if(s[i]=='`'){
+			i++;
+			p=findCharAndMove(s, '`', i, len);
+
+			if(s[i]=='`') {
+				i++; //eat `
+				QString pe=parse_expression(p,ule,escape).replace(QRegExp("`"), "");
+				pe.append(" >");
+				pe.append(ggPath("execoutput"));
+				
+				system(pe.local8Bit());
+				QFile *f=new QFile(ggPath("execoutput"));
+				if (f->open(IO_ReadOnly))
+				{
+					r+=QString(f->readAll());
+					f->close();
+					QFile::remove(ggPath("execoutput"));
+				}
+
+				delete f;
+			}
+		}
+	}
 	return r;
 }
 
 QString parse(QString s, UserListElement ule, bool escape) {
-	int i=0;
 	kdebug("parse() :%s escape=%i\n",(const char *)s.local8Bit(),escape);
-	return parse_expression(s,i,ule,escape);
+	QString res1=parse_expression_and_execute(s,ule,escape);
+	QString res2=parse_expression(res1.replace(QRegExp("`"), ""),ule,escape);
+	kdebug("result: %s\n", (const char *)res2.local8Bit());
+	return res2;
 }
 
 //internal usage
@@ -699,18 +733,17 @@ ChooseDescription::ChooseDescription ( int nr, QWidget * parent, const char * na
 }
 
 void ChooseDescription::okbtnPressed() {
-
-    if (defaultdescriptions.contains(desc->currentText())==0)
-{
-if (defaultdescriptions.count()==4) defaultdescriptions.remove(defaultdescriptions.last());
-
-}
-else 
-{
-defaultdescriptions.remove(desc->currentText());
-}
-defaultdescriptions.prepend(desc->currentText());
-own_description=defaultdescriptions.first();
+	if (defaultdescriptions.contains(desc->currentText())==0)
+	{
+		if (defaultdescriptions.count()==4)
+			defaultdescriptions.remove(defaultdescriptions.last());
+	}
+	else 
+	{
+		defaultdescriptions.remove(desc->currentText());
+	}
+	defaultdescriptions.prepend(desc->currentText());
+	own_description=defaultdescriptions.first();
 	accept();
 }
 
@@ -727,7 +760,7 @@ IconsManager::IconsManager(const QString& name, const QString& configname)
 	:Themes(name, configname)
 {
     connect(this, SIGNAL(themeChanged(const QString&)), this, SLOT(changed(const QString&)));
-};
+}
 
 
 QPixmap IconsManager::loadIcon(QString name)
@@ -749,7 +782,6 @@ QPixmap IconsManager::loadIcon(QString name)
 	return icons[icons.count()-1].picture.pixmap();
 }
 
-
 void IconsManager::onDestroyConfigDialog()
 {
 	kdebug("IconsManager::onDestroyConfigDialog()\n");
@@ -762,7 +794,7 @@ void IconsManager::onDestroyConfigDialog()
 
 	config_file.writeEntry("Look", "IconsPaths", icons_manager.paths().join(";"));
 	config_file.writeEntry("Look", "IconTheme", theme);
-};
+}
 
 void IconsManager::chooseIconTheme(const QString& string)
 {
@@ -772,8 +804,7 @@ void IconsManager::chooseIconTheme(const QString& string)
 	    str= "default";
 	icons_manager.setTheme(str);
 	QMessageBox::information(0, tr("Icons"), tr("Please restart kadu to apply new icon theme"));
-};
-
+}
 
 void IconsManager::onCreateConfigDialog()
 {
@@ -787,7 +818,7 @@ void IconsManager::onCreateConfigDialog()
 	SelectPaths *selpaths= ConfigDialog::getSelectPaths("Look", "Icon paths");
 	QStringList pl(QStringList::split(";", config_file.readEntry("Look", "IconsPaths")));
 	selpaths->setPathList(pl);	
-};
+}
 
 void IconsManager::initModule()
 {
@@ -829,9 +860,7 @@ void IconsManager::selectedPaths(const QStringList& paths)
 
 	if (paths.contains("default"))
 	cb_icontheme->changeItem(tr("Default"), paths.findIndex("default"));
-
-};
-
+}
 
 void IconsManager::changed(const QString& theme)
 {
@@ -846,7 +875,7 @@ void HtmlDocument::escapeText(QString& text)
 	text.replace(QRegExp("<"), "&lt;");
 	text.replace(QRegExp(">"), "&gt;");
 	text.replace(QRegExp("\""), "&quot;");
-};
+}
 
 void HtmlDocument::unescapeText(QString& text)
 {
@@ -854,13 +883,13 @@ void HtmlDocument::unescapeText(QString& text)
 	text.replace(QRegExp("&lt;"), "<");
 	text.replace(QRegExp("&gt;"), ">");
 	text.replace(QRegExp("&quot;"), "\"");
-};
+}
 
 void HtmlDocument::addElement(Element e)
 {
 	unescapeText(e.text);
 	Elements.append(e);
-};
+}
 
 void HtmlDocument::addTag(const QString &text)
 {
@@ -924,11 +953,11 @@ void HtmlDocument::parseHtml(const QString& html)
 				break;
 			default:
 				e.text+=ch;
-		};
-	};
+		}
+	}
 	if(e.text!="")
 		addElement(e);
-};
+}
 
 QString HtmlDocument::generateHtml()
 {
@@ -939,31 +968,31 @@ QString HtmlDocument::generateHtml()
 		if(!e.tag)
 			escapeText(e.text);
 		html+=e.text;
-	};
+	}
 	return html;
-};
+}
 
 int HtmlDocument::countElements()
 {
 	return Elements.size();
-};
+}
 
 bool HtmlDocument::isTagElement(int index)
 {
 	return Elements[index].tag;
-};
+}
 
 QString HtmlDocument::elementText(int index)
 {
 	return Elements[index].text;
-};
+}
 
 void HtmlDocument::setElementValue(int index,const QString& text,bool tag)
 {
 	Element& e=Elements[index];
 	e.text=text;
 	e.tag=tag;
-};
+}
 
 void HtmlDocument::splitElement(int& index,int start,int length)
 {
@@ -975,7 +1004,7 @@ void HtmlDocument::splitElement(int& index,int start,int length)
 		pre.text=e.text.left(start);
 		Elements.insert(Elements.at(index),pre);
 		index++;
-	};
+	}
 	if(start+length<e.text.length())
 	{
 		Element post;
@@ -985,9 +1014,9 @@ void HtmlDocument::splitElement(int& index,int start,int length)
 			Elements.insert(Elements.at(index+1),post);
 		else
 			Elements.append(post);
-	};
+	}
 	e.text=e.text.mid(start,length);
-};
+}
 
 HtmlDocument GGMessageToHtmlDocument(const QString &msg, int formats_length, void *formats)
 {
@@ -1175,113 +1204,114 @@ void ImageWidget::setImage(const QByteArray &image)
 void ImageWidget::paintEvent(QPaintEvent *e)
 {
 	if (!Image.isNull()) {
-	        QPainter p(this);
-	        p.drawImage(0,0,Image);
-		}
-};
+		QPainter p(this);
+		p.drawImage(0,0,Image);
+	}
+}
 
 token::token() : QObject() {
-        h = NULL;
-        snr = snw = NULL;
+	h = NULL;
+	snr = snw = NULL;
 }
 
 token::~token() {
-        deleteSocketNotifiers();
-        if (h) {
-                gg_token_free(h);
-                h = NULL;
-                }
+	deleteSocketNotifiers();
+	if (h) {
+		gg_token_free(h);
+		h = NULL;
+	}
 }
 
 void token::getToken() {
-        kdebug("token::getToken()\n");
-        if (!(h = gg_token(1))) {
-                emit tokenError();
-                return;
-                }
-        createSocketNotifiers();
+	kdebug("token::getToken()\n");
+	if (!(h = gg_token(1))) {
+		emit tokenError();
+		return;
+	}
+	createSocketNotifiers();
 }
 
 void token::createSocketNotifiers() {
-        kdebug("token::createSocketNotifiers()\n");
+	kdebug("token::createSocketNotifiers()\n");
 
-        snr = new QSocketNotifier(h->fd, QSocketNotifier::Read, qApp->mainWidget());
-        QObject::connect(snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
+	snr = new QSocketNotifier(h->fd, QSocketNotifier::Read, qApp->mainWidget());
+	QObject::connect(snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
 
-        snw = new QSocketNotifier(h->fd, QSocketNotifier::Write, qApp->mainWidget());
-        QObject::connect(snw, SIGNAL(activated(int)), this, SLOT(dataSent()));
+	snw = new QSocketNotifier(h->fd, QSocketNotifier::Write, qApp->mainWidget());
+	QObject::connect(snw, SIGNAL(activated(int)), this, SLOT(dataSent()));
 }
 
 void token::deleteSocketNotifiers() {
-        kdebug("token::deleteSocketNotifiers()\n");
-        if (snr) {
-                snr->setEnabled(false);
-                snr->deleteLater();
-                snr = NULL;
-                }
-        if (snw) {
-                snw->setEnabled(false);
-                snw->deleteLater();
-                snw = NULL;
-                }
+	kdebug("token::deleteSocketNotifiers()\n");
+	if (snr) {
+		snr->setEnabled(false);
+		snr->deleteLater();
+		snr = NULL;
+	}
+	if (snw) {
+		snw->setEnabled(false);
+		snw->deleteLater();
+		snw = NULL;
+	}
 }
 
 void token::dataReceived() {
-        kdebug("token::dataReceived()\n");
-        if (h->check && GG_CHECK_READ)
-                socketEvent();
+	kdebug("token::dataReceived()\n");
+	if (h->check && GG_CHECK_READ)
+		socketEvent();
 }
 
 void token::dataSent() {
-        kdebug("token::dataSent()\n");
-        snw->setEnabled(false);
-        if (h->check && GG_CHECK_WRITE)
-                socketEvent();
+	kdebug("token::dataSent()\n");
+	snw->setEnabled(false);
+	if (h->check && GG_CHECK_WRITE)
+		socketEvent();
 }
 
 void token::socketEvent() {
-        kdebug("token::socketEvent()\n");
-        if (gg_token_watch_fd(h) == -1) {
-                deleteSocketNotifiers();
-                emit tokenError();
-                gg_token_free(h);
-                h = NULL;
-                kdebug("token::socketEvent(): getting token error\n");
-                return;
-                }
-        struct gg_pubdir *p = (struct gg_pubdir *)h->data;
-        switch (h->state) {
-                case GG_STATE_CONNECTING:
-                        kdebug("Register::socketEvent(): changing QSocketNotifiers.\n");
-                        deleteSocketNotifiers();
-                        createSocketNotifiers();
-                        if (h->check & GG_CHECK_WRITE)
-                                snw->setEnabled(true);
-                        break;
-                case GG_STATE_ERROR:
-                        deleteSocketNotifiers();
-                        emit tokenError();
-                        gg_token_free(h);
-                        h = NULL;
-                        kdebug("token::socketEvent(): getting token error\n");
-                        break;
-                case GG_STATE_DONE:
-                        deleteSocketNotifiers();
-                        if (p->success) {
-                                kdebug("token::socketEvent(): success\n");
-                                emit gotToken(h);
-                                }
-                        else {
-                                kdebug("token::socketEvent(): getting token error\n");
-                                emit tokenError();
-                                }
-                        gg_token_free(h);
-                        h = NULL;
-                        break;
-                default:
-                        if (h->check & GG_CHECK_WRITE)
-                                snw->setEnabled(true);
-                }
+	kdebug("token::socketEvent()\n");
+	if (gg_token_watch_fd(h) == -1) {
+		deleteSocketNotifiers();
+		emit tokenError();
+		gg_token_free(h);
+		h = NULL;
+		kdebug("token::socketEvent(): getting token error\n");
+		return;
+	}
+
+	struct gg_pubdir *p = (struct gg_pubdir *)h->data;
+	switch (h->state) {
+		case GG_STATE_CONNECTING:
+			kdebug("Register::socketEvent(): changing QSocketNotifiers.\n");
+			deleteSocketNotifiers();
+			createSocketNotifiers();
+			if (h->check & GG_CHECK_WRITE)
+				snw->setEnabled(true);
+			break;
+		case GG_STATE_ERROR:
+			deleteSocketNotifiers();
+			emit tokenError();
+			gg_token_free(h);
+			h = NULL;
+			kdebug("token::socketEvent(): getting token error\n");
+			break;
+		case GG_STATE_DONE:
+			deleteSocketNotifiers();
+			if (p->success) {
+				kdebug("token::socketEvent(): success\n");
+				emit gotToken(h);
+			}
+			else {
+				kdebug("token::socketEvent(): getting token error\n");
+				emit tokenError();
+			}
+			gg_token_free(h);
+			h = NULL;
+			break;
+		default:
+			if (h->check & GG_CHECK_WRITE)
+				snw->setEnabled(true);
+	}
 }
 
 TokenDialog::TokenDialog(QDialog *parent, const char *name)
@@ -1343,10 +1373,10 @@ void TokenDialog::tokenErrorReceived() {
 
 Themes::Themes(const QString& name, const QString& configname)
 {
-    Name= name;
-    ConfigName= configname;
-    ActualTheme="Custom";
-};
+	Name= name;
+	ConfigName= configname;
+	ActualTheme="Custom";
+}
 
 QStringList Themes::getSubDirs(const QString& path)
 {
@@ -1359,15 +1389,15 @@ QStringList Themes::getSubDirs(const QString& path)
 		{
 		QFile s(path+"/"+(*it)+"/"+ConfigName);
 		if (s.exists())
-		    subdirs.append((*it));
+			subdirs.append((*it));
 		}
 	return subdirs;
-};
+}
 
 const QStringList Themes::themes()
 {
 	return ThemesList;
-};
+}
 
 void Themes::setTheme(const QString& theme)
 {
@@ -1377,19 +1407,18 @@ void Themes::setTheme(const QString& theme)
 		ActualTheme= theme;
 		if (theme != "Custom")
 		{
-		    ConfigFile theme_file(themePath()+fixFileName(themePath(),ConfigName));
-		    entries=theme_file.getGroupSection(Name);
+			ConfigFile theme_file(themePath()+fixFileName(themePath(),ConfigName));
+			entries=theme_file.getGroupSection(Name);
 		}
 		emit themeChanged(ActualTheme);
 	}
 	kdebug("Theme: "+ActualTheme+"\n");
-};
+}
 
 QString Themes::theme()
 {
-    return ActualTheme;
+	return ActualTheme;
 }
-
 
 QString Themes::fixFileName(const QString& path,const QString& fn)
 {
@@ -1407,26 +1436,26 @@ QString Themes::fixFileName(const QString& path,const QString& fn)
 		return name+"."+ext.upper();
 	// nie umiemy poprawiæ, zwracamy oryginaln±
 	return fn;
-};
+}
 
 void Themes::setPaths(const QStringList& paths)
 {
-    ThemesList.clear();
-    ThemesPaths.clear();
-    QStringList add, temp=paths;
+	ThemesList.clear();
+	ThemesPaths.clear();
+	QStringList add, temp=paths;
 	QFile s;
 	for (QStringList::Iterator it= temp.begin(); it!=temp.end(); it++)
 		{
 		s.setName((*it)+"/"+ConfigName);
 		if (s.exists())
-		  {
-		    add.append(*it);
-		    ThemesList.append((*it).section("/", -2));
-		  }
+			{
+			add.append(*it);
+			ThemesList.append((*it).section("/", -2));
+			}
 		}
 	ThemesPaths+=add;
 	emit pathsChanged(ThemesPaths);
-};
+}
 
 QStringList Themes::defaultKaduPathsWithThemes()
 {
@@ -1440,7 +1469,7 @@ QStringList Themes::defaultKaduPathsWithThemes()
 	for (QStringList::Iterator it= default2.begin(); it!=default2.end(); it++)
 		(*it)=ggPath(Name)+"/"+(*it)+"/";
 
-return default1+default2;    
+	return default1+default2;    
 }
 
 QStringList Themes::paths()
@@ -1450,26 +1479,22 @@ QStringList Themes::paths()
 
 QString Themes::themePath(const QString& theme)
 {
-    QString t=theme;
-    if (theme == "")
-	t= ActualTheme;
-    if (theme == "Custom")
-	return "";    
-    if (ThemesPaths.isEmpty())
-	return "Custom";
-
-    return ThemesPaths.grep(t).first();
-	
-};
+	QString t=theme;
+	if (theme == "")
+		t= ActualTheme;
+	if (theme == "Custom")
+		return "";    
+	if (ThemesPaths.isEmpty())
+		return "Custom";
+	return ThemesPaths.grep(t).first();
+}
 
 QString Themes::getThemeEntry(const QString& name)
 {
-    for (unsigned int i=0;i<entries.count();i++)
-    {
-        if (entries[i].name == name)
-		return entries[i].value;
-    }
-return QString("");
+	for (unsigned int i=0;i<entries.count();i++)
+		if (entries[i].name == name)
+			return entries[i].value;
+	return QString("");
 }
 
 void CreateNotifier::notify(QObject* new_object)
