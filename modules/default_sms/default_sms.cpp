@@ -261,7 +261,7 @@ void SmsEraGateway::send(const QString& number,const QString& message, const QSt
 
 bool SmsEraGateway::isNumberCorrect(const QString& number)
 {
-	return (number[0]=='6'&&((QChar(number[2])-'0')%2)==0);
+	return ((number[0]=='6'&&((QChar(number[2])-'0')%2)==0) || (number[0]=='8' && number[1]=='8' && number[2]=='8'));
 };
 
 void SmsEraGateway::httpRedirected(QString link)
