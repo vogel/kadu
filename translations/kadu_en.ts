@@ -607,6 +607,43 @@ Arguments should be separated with spaces. %n argument is converted to number, %
         <source>Disconnection been occured</source>
         <translation>Disconnection been occured</translation>
     </message>
+    <message>
+        <source>Unable to connect, server has not been found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to connect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to connect, server has returned unknown data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to connect, connection break during reading</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to connect, connection break during writing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to connect, incorrect password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Incorrect password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection will be stoped
+Your password is incorrect !!!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to connect, error of negotiation TLS</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>HintManager</name>

@@ -608,6 +608,44 @@ wiadomości</translation>
         <source>Disconnection been occured</source>
         <translation>Wystapiło rozłaczenie</translation>
     </message>
+    <message>
+        <source>Unable to connect, server has not been found</source>
+        <translation>Połączenie niemożliwe, serwer  nie znaleziony</translation>
+    </message>
+    <message>
+        <source>Unable to connect</source>
+        <translation>Połączenie niemożliwe</translation>
+    </message>
+    <message>
+        <source>Unable to connect, server has returned unknown data</source>
+        <translation>Połączenie niemożliwe, serwer odpowiedział nieznane dane</translation>
+    </message>
+    <message>
+        <source>Unable to connect, connection break during reading</source>
+        <translation>Połączenie niemożliwe, połączenie przerwane w czasie odczytu</translation>
+    </message>
+    <message>
+        <source>Unable to connect, connection break during writing</source>
+        <translation>Połączenie niemożliwe, połączenie przerwane w czasie zapisu</translation>
+    </message>
+    <message>
+        <source>Unable to connect, incorrect password</source>
+        <translation>Połączenia niemożliwe, nieprawidłowe hasło</translation>
+    </message>
+    <message>
+        <source>Incorrect password</source>
+        <translation>Niepoprawne hasło</translation>
+    </message>
+    <message>
+        <source>Connection will be stoped
+Your password is incorrect !!!</source>
+        <translation>Połączenie zostało zatrzymane
+Twoje hasło jest nieprawidłowe!!!</translation>
+    </message>
+    <message>
+        <source>Unable to connect, error of negotiation TLS</source>
+        <translation>Połączenie niemożliwe, błąd negocjacji TLS</translation>
+    </message>
 </context>
 <context>
     <name>HintManager</name>
