@@ -67,6 +67,7 @@ class Wizard : public QWizard
 		void setHints();
 		void setColorsAndIcons();
 		void setPanelTheme();
+		void setOldGaduAccount();
 
 		/* funkcje pomocnicze */
 		QString toDisplay(QString);

@@ -11,6 +11,7 @@
 #include <qregexp.h>
 #include <qstyle.h>
 #include <qstylefactory.h>
+#include <qpopupmenu.h>
 
 #include <stdlib.h>
 #include <unistd.h>
@@ -89,7 +90,7 @@ Wizard::Wizard(QWidget *parent, const char *name, bool modal)
 
 	createWelcomePage();		/* powitanie */
 	createLanguagePage();		/* ustawienie jezyka */
-  	createGGNumberSelect();		/* wyswietla okno ustawien numerka */
+	createGGNumberSelect();		/* wyswietla okno ustawien numerka */
 	createGGCurrentNumberPage();
 	createGGNewNumberPage();
 	createGeneralOptionsPage(); /* inne */
@@ -137,6 +138,7 @@ Wizard::~Wizard()
 void Wizard::finishClicked()
 {
 	kdebugf();
+	setOldGaduAccount();
 	setGeneralOptions();
 	setChatOptions();
 	setColorsAndIcons();
@@ -193,8 +195,8 @@ void Wizard::nextClicked()
 	else if (currentPage()==ggNewNumberPage && rb_haveNumber->isChecked())
 		QWizard::showPage(generalOptionsPage);
 	
-	//if (currentPage()==generalOptionsPage && gadu->status().isOffline())		//jesli przeszedl jedno pole dalej niz konf. konta i nie polaczony
-	//	setGaduAccount();	//to zapisuje ustawienia konta
+	if (currentPage()==generalOptionsPage && rb_haveNumber->isChecked())		//jesli przeszedl jedno pole dalej niz konf. konta
+		setOldGaduAccount();	//to zapisuje ustawienia konta
 	kdebugf2();
 }
 
@@ -264,6 +266,12 @@ void Wizard::connected()
 	disconnect(gadu, SIGNAL(connected()), this, SLOT(connected()));
 }
 
+void Wizard::setOldGaduAccount()
+{
+	config_file.writeEntry("General", "UIN", l_ggNumber->text());
+	config_file.writeEntry("General", "Password", pwHash(l_ggPassword->text()));
+}
+
 /**
 	Ustawienie konta GG
 **/
@@ -272,31 +280,23 @@ void Wizard::setGaduAccount()
 	kdebugf();
 	//registerAccount->setEnabled(false);	//blokuje przycisk Register
 	//disconnect(registerAccount, SIGNAL(clicked()), this, SLOT(setGaduAccount()));
-	if (rb_haveNumber->isChecked())
+	bool isOk=true;
+	if (l_ggNewPasssword->text() != l_ggNewPassswordRetyped->text())
 	{
-		config_file.writeEntry("General", "UIN", l_ggNumber->text());
-		config_file.writeEntry("General", "Password", pwHash(l_ggPassword->text()));
+		MessageBox::msg(tr("Error data typed in required fields.\n\n"
+			"Passwords typed in both fields (\"New password\" and \"Retype new password\") "
+			"should be the same!"));
+		isOk=false;
 	}
-	else
+	if (!l_ggNewPasssword->text().length())
 	{
-		bool isOk=true;
-		if (l_ggNewPasssword->text() != l_ggNewPassswordRetyped->text())
-		{
-			MessageBox::msg(tr("Error data typed in required fields.\n\n"
-				"Passwords typed in both fields (\"New password\" and \"Retype new password\") "
-				"should be the same!"));
-			isOk=false;
-		}
-		if (!l_ggNewPasssword->text().length())
-		{
-			MessageBox::wrn(tr("Please fill all fields"));
-			isOk=false;
-		}
-		if (isOk)
-		{	
-			gadu->registerAccount(l_email->text(), l_ggNewPasssword->text());
-			registerAccount->setEnabled(false);
-		}
+		MessageBox::wrn(tr("Please fill all fields"));
+		isOk=false;
+	}
+	if (isOk)
+	{	
+		gadu->registerAccount(l_email->text(), l_ggNewPasssword->text());
+		registerAccount->setEnabled(false);
 		connect(gadu, SIGNAL(registered(bool, UinType)), this, SLOT(registeredAccount(bool, UinType)));
 	}
 	kdebugf2();
@@ -710,32 +710,32 @@ void Wizard::createHintsOptionsPage()
 	cb_hintsTheme->insertItem(tr("Current")); //wlasne ustawienie
 	cb_hintsTheme->setCurrentItem(i);
 	//teraz musimy je zapamietac
-	currentHints[0][0] = config_file.readEntry("Hints", "HintBlocking_bgcolor");
-	currentHints[1][0] = config_file.readEntry("Hints", "HintBusyD_bgcolor");
-	currentHints[2][0] = config_file.readEntry("Hints", "HintBusy_bgcolor");
-	currentHints[3][0] = config_file.readEntry("Hints", "HintError_bgcolor");
-	currentHints[4][0] = config_file.readEntry("Hints", "HintInvisibleD_bgcolor");
-	currentHints[5][0] = config_file.readEntry("Hints", "HintInvisible_bgcolor");
-	currentHints[6][0] = config_file.readEntry("Hints", "HintMessage_bgcolor");
-	currentHints[7][0] = config_file.readEntry("Hints", "HintNewChat_bgcolor");
-	currentHints[8][0] = config_file.readEntry("Hints", "HintNewMessage_bgcolor");
-	currentHints[9][0] = config_file.readEntry("Hints", "HintOfflineD_bgcolor");
-	currentHints[10][0] = config_file.readEntry("Hints", "HintOffline_bgcolor");
-	currentHints[11][0] = config_file.readEntry("Hints", "HintOnlineD_bgcolor");
-	currentHints[12][0] = config_file.readEntry("Hints", "HintOnline_bgcolor");
-	currentHints[0][1] = config_file.readEntry("Hints", "HintBlocking_fgcolor");
-	currentHints[1][1] = config_file.readEntry("Hints", "HintBusyD_fgcolor");
-	currentHints[2][1] = config_file.readEntry("Hints", "HintBusy_fgcolor");
-	currentHints[3][1] = config_file.readEntry("Hints", "HintError_fgcolor");
-	currentHints[4][1] = config_file.readEntry("Hints", "HintInvisibleD_fgcolor");
-	currentHints[5][1] = config_file.readEntry("Hints", "HintInvisible_fgcolor");
-	currentHints[6][1] = config_file.readEntry("Hints", "HintMessage_fgcolor");
-	currentHints[7][1] = config_file.readEntry("Hints", "HintNewChat_fgcolor");
-	currentHints[8][1] = config_file.readEntry("Hints", "HintNewMessage_fgcolor");
-	currentHints[9][1] = config_file.readEntry("Hints", "HintOfflineD_fgcolor");
-	currentHints[10][1] = config_file.readEntry("Hints", "HintOffline_fgcolor");
-	currentHints[11][1] = config_file.readEntry("Hints", "HintOnlineD_fgcolor");
-	currentHints[12][1] = config_file.readEntry("Hints", "HintOnline_fgcolor");
+	currentHints[0][0] = config_file.readEntry("Hints", "HintBlocking_bgcolor", "#f0f0f0");
+	currentHints[1][0] = config_file.readEntry("Hints", "HintBusyD_bgcolor", "#f0f0f0");
+	currentHints[2][0] = config_file.readEntry("Hints", "HintBusy_bgcolor", "#f0f0f0");
+	currentHints[3][0] = config_file.readEntry("Hints", "HintError_bgcolor", "#f0f0f0");
+	currentHints[4][0] = config_file.readEntry("Hints", "HintInvisibleD_bgcolor", "#f0f0f0");
+	currentHints[5][0] = config_file.readEntry("Hints", "HintInvisible_bgcolor", "#f0f0f0");
+	currentHints[6][0] = config_file.readEntry("Hints", "HintMessage_bgcolor", "#f0f0f0");
+	currentHints[7][0] = config_file.readEntry("Hints", "HintNewChat_bgcolor", "#f0f0f0");
+	currentHints[8][0] = config_file.readEntry("Hints", "HintNewMessage_bgcolor", "#f0f0f0");
+	currentHints[9][0] = config_file.readEntry("Hints", "HintOfflineD_bgcolor", "#f0f0f0");
+	currentHints[10][0] = config_file.readEntry("Hints", "HintOffline_bgcolor", "#f0f0f0");
+	currentHints[11][0] = config_file.readEntry("Hints", "HintOnlineD_bgcolor", "#f0f0f0");
+	currentHints[12][0] = config_file.readEntry("Hints", "HintOnline_bgcolor", "#f0f0f0");
+	currentHints[0][1] = config_file.readEntry("Hints", "HintBlocking_fgcolor", "#000000");
+	currentHints[1][1] = config_file.readEntry("Hints", "HintBusyD_fgcolor", "#000000");
+	currentHints[2][1] = config_file.readEntry("Hints", "HintBusy_fgcolor", "#000000");
+	currentHints[3][1] = config_file.readEntry("Hints", "HintError_fgcolor", "#000000");
+	currentHints[4][1] = config_file.readEntry("Hints", "HintInvisibleD_fgcolor", "#000000");
+	currentHints[5][1] = config_file.readEntry("Hints", "HintInvisible_fgcolor", "#000000");
+	currentHints[6][1] = config_file.readEntry("Hints", "HintMessage_fgcolor", "#000000");
+	currentHints[7][1] = config_file.readEntry("Hints", "HintNewChat_fgcolor", "#000000");
+	currentHints[8][1] = config_file.readEntry("Hints", "HintNewMessage_fgcolor", "#000000");
+	currentHints[9][1] = config_file.readEntry("Hints", "HintOfflineD_fgcolor", "#000000");
+	currentHints[10][1] = config_file.readEntry("Hints", "HintOffline_fgcolor", "#000000");
+	currentHints[11][1] = config_file.readEntry("Hints", "HintOnlineD_fgcolor", "#000000");
+	currentHints[12][1] = config_file.readEntry("Hints", "HintOnline_fgcolor", "#000000"); 
 
 
 	new QLabel(tr("Preview"), grp_hintsOptions);
@@ -815,7 +815,7 @@ void Wizard::createColorsPage()
 
 	new QLabel(tr("<h3>Choose color theme and icons for Kadu</h3>"), colorsPage);
 
-	QGroupBox *grp_colorOptions = new QGroupBox(tr("Colors"),  colorsPage);
+	QGroupBox *grp_colorOptions = new QGroupBox(tr("Colors"), colorsPage);
 	grp_colorOptions->setInsideMargin(10);
 	grp_colorOptions->setColumns(2);
 	grp_colorOptions->setInsideSpacing(4);
@@ -838,7 +838,7 @@ void Wizard::createColorsPage()
 	currentColors[6] = config_file.readEntry("Look", "UserboxBgColor");
 	currentColors[7] = config_file.readEntry("Look", "UserboxFgColor");
 	
-	QGroupBox *grp_iconsOptions = new QGroupBox(tr("Icons"),  colorsPage);
+	QGroupBox *grp_iconsOptions = new QGroupBox(tr("Icons"), colorsPage);
 	grp_iconsOptions->setInsideMargin(10);
 	grp_iconsOptions->setColumns(2);
 	grp_iconsOptions->setInsideSpacing(4);
@@ -879,7 +879,7 @@ void Wizard::createInfoPanelPage()
 
 	new QLabel(tr("<h3>Choose your information panel look</h3>"), infoPanelPage);
 
-	QGroupBox *grp_infoPanelOptions = new QGroupBox(tr("Information panel theme"),  infoPanelPage);
+	QGroupBox *grp_infoPanelOptions = new QGroupBox(tr("Information panel theme"), infoPanelPage);
 	grp_infoPanelOptions->setInsideMargin(10);
 	grp_infoPanelOptions->setColumns(2);
 	grp_infoPanelOptions->setInsideSpacing(4);
@@ -901,7 +901,7 @@ void Wizard::createInfoPanelPage()
 	infoPreview->setPaletteBackgroundColor(config_file.readColorEntry("Look", "InfoPanelBgColor"));
 	infoPreview->setPaletteForegroundColor(config_file.readColorEntry("Look", "InfoPanelFgColor"));
 	infoPreview->setFrameStyle(QFrame::Box | QFrame::Plain);
-    infoPreview->setLineWidth(1);
+	infoPreview->setLineWidth(1);
 	infoPreview->setAlignment(Qt::AlignVCenter | Qt::WordBreak | Qt::DontClip);
 	infoPreview->setMaximumWidth(240);	
 	
@@ -948,7 +948,7 @@ void Wizard::createQtStylePage()
 
 	new QLabel(tr("<h3>Choose Qt theme for Kadu</h3>"), qtStylePage);
 
-	QGroupBox *grp_qtOptions = new QGroupBox(tr("Qt theme"),  qtStylePage);
+	QGroupBox *grp_qtOptions = new QGroupBox(tr("Qt theme"), qtStylePage);
 	grp_qtOptions->setInsideMargin(10);
 	grp_qtOptions->setColumns(2);
 	grp_qtOptions->setInsideSpacing(4);
@@ -1254,7 +1254,7 @@ void Wizard::previewIconTheme(int iconThemeID)
 {
 	QString iconName=cb_iconTheme->currentText();
 	if (iconName == tr("Default"))
-	    iconName= "default";
+		iconName= "default";
 	
 	icons_manager.clear();
 	icons_manager.setTheme(iconName);
