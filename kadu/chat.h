@@ -30,7 +30,9 @@ class ChatManager : public QObject
 			};
 		};
 		QValueList<ChatsItem> Chats;
+		int openChat(UinsList senders);
 		int openPendingMsg(int index,QString& to_add);	
+
 	public:	
 		ChatManager();
 		int registerChat(Chat* chat,UinsList uins);
@@ -40,7 +42,6 @@ class ChatManager : public QObject
 		void changeAppearance();
 		void enableEncryptionBtnForUins(UinsList uins);
 		Chat* findChatByUins(UinsList uins);
-		int openChat(UinsList senders);
 		void openPendingMsgs(UinsList uins);
 		void openPendingMsgs();
 		void sendMessage(uin_t uin,UinsList selected_uins);

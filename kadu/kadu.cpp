@@ -1301,10 +1301,6 @@ void Kadu::addUser(UserListElement &ule)
 		gg_add_notify(sess, ule.uin);
 };
 
-int Kadu::openChat(UinsList senders) {
-	return chat_manager->openChat(senders);
-}
-
 /* changes the active group */
 void Kadu::changeGroup(int group) {
 	activegrpno = group;

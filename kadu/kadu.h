@@ -31,29 +31,24 @@ class KaduTabBar;
 class Kadu : public QMainWindow
 {
 	Q_OBJECT
-	 
-	public:
-		Kadu(QWidget* parent=0, const char *name=0);
-		void changeAppearance();
-		~Kadu();
-		bool userInActiveGroup(uin_t uin);
-		void addUser(UserListElement &ule);
-//			const QString &FirstName,const QString &LastName,
-//			const QString &NickName,const QString &AltNick,
-//			const QString &Mobile,const QString &Uin,const int Status,
-//			const int Image_size,
-//			const QString &Group,const QString &Description, const QString &Email,
-//			const bool Anonymous = false);
-		void removeUser(QStringList &, bool);
-		void refreshGroupTabBar();
-    
-		// te zmienne s± tylko chwilowo publiczne.
-		// trzeba to uporz±dkowaæ
-		bool autohammer;
-		bool doBlink;
-		UserBox *userbox;
-		AutoStatusTimer* autostatus_timer;
-		KaduTabBar *group_bar;    
+
+	private:
+		QFrame *centralFrame;
+		QGridLayout *grid;
+		QMenuBar *mmb;
+		QTextBrowser *descrtb;
+		QToolButton *mutebtn;
+		int commencing_startup;
+		
+		void createMenu();
+		void createStatusPopupMenu();
+		void setActiveGroup(const QString& group);
+
+	private slots:
+		void groupTabSelected(int id);
+		void userListModified();
+		void userListStatusModified(UserListElement *);
+		void openChat();
 
 	protected:
 		bool event(QEvent *e);
@@ -65,6 +60,23 @@ class Kadu : public QMainWindow
 		int dcc_ret;
 		int activegrpno;
 		bool blinkOn;
+	 
+	public:
+		Kadu(QWidget* parent=0, const char *name=0);
+		void changeAppearance();
+		~Kadu();
+		bool userInActiveGroup(uin_t uin);
+		void addUser(UserListElement &ule);
+		void removeUser(QStringList &, bool);
+		void refreshGroupTabBar();
+    
+		// te zmienne s± tylko chwilowo publiczne.
+		// trzeba to uporz±dkowaæ
+		bool autohammer;
+		bool doBlink;
+		UserBox *userbox;
+		AutoStatusTimer* autostatus_timer;
+		KaduTabBar *group_bar;    
 
 	public slots:
 		void blink();
@@ -79,11 +91,9 @@ class Kadu : public QMainWindow
 		void dccSent();
 		void prepareDcc(void);
 		void pingNetwork(void);
-//		void checkConnection(void); - patrz plik events.cpp
 		void setStatus(int);
 		void disconnectNetwork(void);
 		void changeGroup(int);
-		int openChat(UinsList);
 		void gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op);
 		void currentChanged(QListBoxItem *item);
 		void showdesc(bool show = true);
@@ -109,7 +119,6 @@ class Kadu : public QMainWindow
 		void manageIgnored();
 		void muteUnmuteSounds();
 		void notifyUser();
-		void openChat();
 		void offlineToUser();
 		void personalInfo();
 		void quit();
@@ -125,24 +134,7 @@ class Kadu : public QMainWindow
 		void showUserInfo();
 		void unregisterUser();
 		void viewHistory();
-		void popupMenu();
-		
-	private:
-		QFrame *centralFrame;
-		QGridLayout *grid;
-		QMenuBar *mmb;
-		QTextBrowser *descrtb;
-		QToolButton *mutebtn;
-		int commencing_startup;
-		
-		void createMenu();
-		void createStatusPopupMenu();
-		void setActiveGroup(const QString& group);
-
-	private slots:
-		void groupTabSelected(int id);
-		void userListModified();
-		void userListStatusModified(UserListElement *);
+		void popupMenu();		
 };
 
 class MyLabel : public QLabel {
@@ -180,7 +172,6 @@ extern QSocketNotifier *kadusnw;
 extern QSocketNotifier *dccsnr;
 extern QSocketNotifier *dccsnw;
 
-//void deletePendingMessage(int nr);
 void sendUserlist(void);
 
 void *watch_socket(void *);
@@ -197,8 +188,6 @@ extern int server_nr;
 extern bool timeout_connected;
 extern struct gg_login_params loginparams;
 extern QTimer *pingtimer;
-//extern QTimer *readevent; - patrz plik events.cpp
-
 
 extern QHostAddress config_dccip;
 extern QHostAddress config_extip;

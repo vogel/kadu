@@ -166,7 +166,7 @@ int ChatManager::openPendingMsg(int index,QString& to_add)
 		}
 	// otwieramy chat (jesli nie istnieje)
 	int l = Chats.count();
-	int k = kadu->openChat(p.uins);
+	int k = openChat(p.uins);
 	// jesli chat zostal utworzony wpisujemy historie
 	if (l < Chats.count())
 		Chats[k].ptr->writeMessagesFromHistory(p.uins, p.time);
