@@ -124,6 +124,7 @@ bool disconnect_planned = FALSE;
 int userlist_count = 0;
 int last_ping;
 int last_read_event = -1;
+int server_nr = 0;
 bool timeout_connected = true;
 bool i_wanna_be_invisible = true;
 bool i_am_busy = false;
@@ -1260,13 +1261,17 @@ void Kadu::setStatus(int status) {
 		loginparams.external_addr = 0;
 		loginparams.external_port = 0;
 		}	
-	if (inet_addr(config.server) != INADDR_NONE) {
-		loginparams.server_addr = inet_addr(config.server);
+	if (inet_addr(config.servers[server_nr].latin1()) != INADDR_NONE) {
+		loginparams.server_addr = inet_addr(config.servers[server_nr].latin1());
 		loginparams.server_port = 8074;
+		server_nr++;
+		if (server_nr >= config.servers.count())
+			server_nr = 0;
 		}
 	else {
 		loginparams.server_addr = 0;
 		loginparams.server_port = 0;
+		server_nr = 0;
 		}
 	sess = gg_login(&loginparams);
 

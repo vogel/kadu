@@ -65,7 +65,7 @@ struct config {
 	char *dccip;
 	char *extip;
 	int extport;
-	char *server;
+	QStringList servers;
 	bool dock;
 	bool privatestatus;
 	bool rundocked;
@@ -264,6 +264,7 @@ static QArray<groups> grouplist_gcc32_bug;
 extern QArray<groups> grouplist;
 extern bool mute;
 extern bool userlist_sent;
+extern int server_nr;
 // Ominiecie bledu w gcc 3.2
 static QArray<acks> acks_gcc32_bug;
 ////////////////////////////
