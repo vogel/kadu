@@ -55,6 +55,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawione ustawianie statusu "tylko dla znajomych w oknie konfiguracji (pawel_p)
 * przy zmianie czcionki w oknie rozmowy, rozmiar czcionki zostaje taki jaki byl
   wybrany w poprzedniej czcionce (pawel_p)
+* dodany % sciagnietego pliku (na pasku zadan), poprawiony segfault przy zamknieciu
+  okna (transferu pliku) poprzez "ESC" (pawel_p)
 
 +++ wersja 0.3.6 (22.11.2003)
 * je¶li klikniemy na jaki¶ kontakt w userboxie, od którego otrzymali¶my jak±¶
