@@ -563,7 +563,7 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 			userbox->addUser(userlist.byUin(uins[i]).altNick());
 		userbox->refresh();
 
-		connect(userbox, SIGNAL(rightButtonClicked(QListBoxItem *, const QPoint &)),
+		connect(userbox, SIGNAL(rightButtonPressed(QListBoxItem *, const QPoint &)),
 		UserBox::userboxmenu, SLOT(show(QListBoxItem *)));
 
 		sizes.append(3);

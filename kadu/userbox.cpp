@@ -413,7 +413,7 @@ void UserBox::mousePressEvent(QMouseEvent *e)
 						setSelected(i, FALSE);
 			setSelected(item, TRUE);
 			setCurrentItem(item);
-			emit rightButtonClicked(item, e->globalPos());
+			emit rightButtonPressed(item, e->globalPos());
 		}
 	}
 	kdebugf2();

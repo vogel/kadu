@@ -362,7 +362,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	Userbox = new UserBox(hbox1, "userbox");
 	hbox1->setStretchFactor(Userbox, 100);
 	connect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(popupMenu()));
-	connect(Userbox, SIGNAL(rightButtonClicked(QListBoxItem *, const QPoint &)),
+	connect(Userbox, SIGNAL(rightButtonPressed(QListBoxItem *, const QPoint &)),
 		UserBox::userboxmenu, SLOT(show(QListBoxItem *)));
 	connect(Userbox, SIGNAL(doubleClicked(const QString &)), this, SLOT(sendMessage(const QString &)));
 	connect(Userbox, SIGNAL(returnPressed(const QString &)), this, SLOT(sendMessage(const QString &)));
