@@ -213,7 +213,7 @@ class SoundManager : public Themes
 			zakoñczy.
 			@param device uogólniony deskryptor urz±dzenia
 			@data wska¼nik do danych sampla
-			@length d³ugo¶æ danych sampla
+			@length d³ugo¶æ danych sampla (w bajtach)
 			@return true je¶li odtwarzanie zakoñczy³o siê powodzeniem.
 		**/
 		bool playSample(SoundDevice device, const int16_t* data, int length);
@@ -232,7 +232,7 @@ class SoundManager : public Themes
 			zakoñczy.			
 			@param device uogólniony deskryptor urz±dzenia
 			@data wska¼nik na bufor dla danych sampla
-			@length d³ugo¶æ sampla do nagrania (wielko¶æ bufora)
+			@length d³ugo¶æ sampla do nagrania (wielko¶æ bufora w bajtach)
 			@return true je¶li nagrywanie zakoñczy³o siê powodzeniem.
 		**/
 		bool recordSample(SoundDevice device, int16_t* data, int length);
@@ -285,7 +285,7 @@ class SoundManager : public Themes
 			w±tku i slot musi byæ do tego przystosowany.
 			@param device uogólniony deskryptor urz±dzenia
 			@data wska¼nik do danych sampla
-			@length d³ugo¶æ danych sampla
+			@length d³ugo¶æ danych sampla (w bajtach)
 			@result zwrócony rezultat operacji - true je¶li odtwarzanie zakoñczy³o siê powodzeniem.
 		**/
 		void playSampleImpl(SoundDevice device, const int16_t* data, int length, bool& result);
@@ -301,7 +301,7 @@ class SoundManager : public Themes
 			w±tku i slot musi byæ do tego przystosowany.
 			@param device uogólniony deskryptor urz±dzenia
 			@data wska¼nik na bufor dla danych sampla
-			@length d³ugo¶æ sampla do nagrania (wielko¶æ bufora)
+			@length d³ugo¶æ sampla do nagrania (wielko¶æ bufora w bajtach)
 			@result zwrócony rezultat operacji - true je¶li nagrywanie zakoñczy³o siê powodzeniem.
 		**/
 		void recordSampleImpl(SoundDevice device, int16_t* data, int length, bool& result);		
