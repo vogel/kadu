@@ -1309,6 +1309,26 @@ Now add your friends to the userlist.</source>
 Store it in a safe place along with the password.
 Now add your friends to the userlist.</translation>
     </message>
+    <message>
+        <source>Read this code ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>and type here</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Getting token</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>token received</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t get token</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SavePublicKey</name>
@@ -1565,13 +1585,6 @@ or has beed changed too much to parse it correctly.</translation>
     <message>
         <source>Enter text from the picture:</source>
         <translation>Enter text from the picture:</translation>
-    </message>
-</context>
-<context>
-    <name>SmsImageWidget</name>
-    <message>
-        <source>Send SMS</source>
-        <translation>Send SMS</translation>
     </message>
 </context>
 <context>
@@ -1997,24 +2010,12 @@ The import was unsuccessful</translation>
 <context>
     <name>changePassword</name>
     <message>
-        <source>Actual password</source>
-        <translation>Actual password</translation>
-    </message>
-    <message>
-        <source>Actual email</source>
-        <translation>Actual email</translation>
-    </message>
-    <message>
         <source>New password</source>
         <translation>New password</translation>
     </message>
     <message>
         <source>Retype new password</source>
         <translation>Retype new password</translation>
-    </message>
-    <message>
-        <source>New email</source>
-        <translation>New email</translation>
     </message>
     <message>
         <source>OK</source>
@@ -2031,6 +2032,30 @@ The import was unsuccessful</translation>
     <message>
         <source>Error</source>
         <translation>Error</translation>
+    </message>
+    <message>
+        <source>E-email</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Read this code ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>and type here</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Getting token</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>token received</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t get token</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

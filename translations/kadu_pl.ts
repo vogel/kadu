@@ -1310,6 +1310,26 @@ Now add your friends to the userlist.</source>
 Zapisz go wraz z hasłem w bezpiecznym miejscu.
 Teraz możesz dodać znajomych do listy kontaktów.</translation>
     </message>
+    <message>
+        <source>Read this code ...</source>
+        <translation>Odczytaj kod...</translation>
+    </message>
+    <message>
+        <source>and type here</source>
+        <translation>i wpisz go tutaj</translation>
+    </message>
+    <message>
+        <source>Getting token</source>
+        <translation>Pobieranie Tokena</translation>
+    </message>
+    <message>
+        <source>token received</source>
+        <translation>Token odebrany</translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t get token</source>
+        <translation>Nie można pobrać Tokena</translation>
+    </message>
 </context>
 <context>
     <name>SavePublicKey</name>
@@ -1562,13 +1582,6 @@ czasowo wyłączona lub zmieniła zasady dostępu.</translation>
     <message>
         <source>Enter text from the picture:</source>
         <translation>Wpisz tekst z obrazka:</translation>
-    </message>
-</context>
-<context>
-    <name>SmsImageWidget</name>
-    <message>
-        <source>Send SMS</source>
-        <translation>Wyślij SMS</translation>
     </message>
 </context>
 <context>
@@ -1995,24 +2008,12 @@ zakończony niepowodzeniem.</translation>
 <context>
     <name>changePassword</name>
     <message>
-        <source>Actual password</source>
-        <translation>Aktualne hasło</translation>
-    </message>
-    <message>
-        <source>Actual email</source>
-        <translation>Aktualny e-mail</translation>
-    </message>
-    <message>
         <source>New password</source>
         <translation>Nowe hasło</translation>
     </message>
     <message>
         <source>Retype new password</source>
         <translation>Powtórz nowe hasło</translation>
-    </message>
-    <message>
-        <source>New email</source>
-        <translation>Nowy e-mail</translation>
     </message>
     <message>
         <source>OK</source>
@@ -2029,6 +2030,30 @@ zakończony niepowodzeniem.</translation>
     <message>
         <source>Error</source>
         <translation>Błąd</translation>
+    </message>
+    <message>
+        <source>E-email</source>
+        <translation>e-mail</translation>
+    </message>
+    <message>
+        <source>Read this code ...</source>
+        <translation>Odczytaj kod...</translation>
+    </message>
+    <message>
+        <source>and type here</source>
+        <translation>i wpisz go tutaj</translation>
+    </message>
+    <message>
+        <source>Getting token</source>
+        <translation>Pobieranie Tokena</translation>
+    </message>
+    <message>
+        <source>token received</source>
+        <translation>Token odebrany</translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t get token</source>
+        <translation>Nie można pobrać Tokena</translation>
     </message>
 </context>
 <context>
