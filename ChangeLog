@@ -16,6 +16,11 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * debian/rules dodane do configure --enable-voice i --enable-modules (mast3r)
 * jesli przy starcie kadu wystapi blad w ladowaniu ktoregos z modulow
   to drugi raz nie bedzie ladowany (adrian)
+* configure: domyslnie kompilowana obsluga modulow i rozmow glosowych,
+  i tak wszystkie binarki sa z tym robione, opcje --disable-modules i
+  --disable-voice (adrian)
+* configure: aktualizacja listy szukanych naglowkow i bibliotek
+  do nowych zrodel programu (adrian)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
