@@ -794,7 +794,7 @@ void GaduProtocol::initModule()
 
 	ConfigDialog::addVGroupBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "Proxy server"));
 	ConfigDialog::addGrid("Network", "Proxy server", "proxygrid", 2);
-	ConfigDialog::addLineEdit("Network", "proxygrid", QT_TRANSLATE_NOOP("@default", "IP address: "), "ProxyHost", "0.0.0.0","","proxyhost");
+	ConfigDialog::addLineEdit("Network", "proxygrid", QT_TRANSLATE_NOOP("@default", "Host: "), "ProxyHost", "0.0.0.0","","proxyhost");
 	ConfigDialog::addLineEdit("Network", "proxygrid",
 		QT_TRANSLATE_NOOP("@default", " Port: "), "ProxyPort", "0");
 	ConfigDialog::addLineEdit("Network", "proxygrid",
@@ -2388,12 +2388,6 @@ void GaduProtocol::onDestroyConfigDialog()
 	config_file.writeEntry("Network","Server",server.join(";"));
 	ConfigServers = servers;
 	ServerNr = 0;
-
-	if (!ip.setAddress(config_file.readEntry("Network", "ProxyHost")))
-	{
-		MessageBox::msg(tr("Cannot set proxy IP address. Did you put hostname instead of IP address?"));
-		config_file.writeEntry("Network","ProxyHost","0.0.0.0");
-	}
 
 	/* and now, save it */
 	userlist.writeToFile();
