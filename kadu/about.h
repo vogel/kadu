@@ -18,6 +18,7 @@ private:
 	void addTab3();
 	void addTab4();
 	void addTab5();
+	void addTab6();
 
 	QString loadFile(const QString &name);
 };

@@ -197,6 +197,7 @@ About::About() : QTabDialog(0) {
 	addTab3();
 	addTab4();
 	addTab5();
+	addTab6();
 
 	setOkButton(tr("&Close"));
 	resize(300, 200);
@@ -244,6 +245,15 @@ void About::addTab4() {
 }
 
 void About::addTab5() {
+	QVBox *box = new QVBox(this);
+	box->setSpacing(10);
+	QTextBrowser *tb_changelog = new QTextBrowser(box);
+	tb_changelog->setTextFormat(Qt::PlainText);
+	tb_changelog->setText(loadFile("ChangeLog"));
+	addTab(box, tr("&ChangeLog"));
+}
+
+void About::addTab6() {
 	QVBox *box = new QVBox(this);
 	box->setSpacing(10);
 	QTextBrowser *tb_license = new QTextBrowser(box);
