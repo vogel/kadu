@@ -27,6 +27,7 @@ class VoiceManager : public QObject {
 		void free();
 		void resetCodec();
 		void addGsmSample(char *data, int length);
+		static void initModule();
 
 	signals:
 		void setupSoundDevice();

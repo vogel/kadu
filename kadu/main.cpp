@@ -23,7 +23,6 @@
 
 #ifdef VOICE_ENABLED
 #include "voice.h"
-#include "voice_dsp.h"
 #endif
 
 #include "config_file.h"
@@ -73,8 +72,7 @@ int main(int argc, char *argv[])
 	new QApplication(argc, argv);
 
 #ifdef VOICE_ENABLED
-	voice_manager = new VoiceManager();
-	voice_dsp = new VoiceDsp();
+	VoiceManager::initModule();
 #endif
 
 	// ladowanie tlumaczenia

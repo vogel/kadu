@@ -7,9 +7,11 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "voice.h"
+
+#include "voice_dsp.h"
 #include "debug.h"
 #include "libgadu.h"
-#include "voice.h"
 
 PlayThread::PlayThread(): wsem(32), rsem(1) {
 	wsem += 32;
@@ -179,4 +181,10 @@ void VoiceManager::addGsmSample(char *data, int length) {
 	pt->wsem--;
 }
 
-VoiceManager *voice_manager;
+void VoiceManager::initModule()
+{
+	voice_manager = new VoiceManager();
+	voice_dsp = new VoiceDsp();
+}
+
+VoiceManager* voice_manager=NULL;
