@@ -136,8 +136,8 @@ class SmsSlots: public QObject
 		void onSendSms();
 		void onUserDblClicked(UserListElement user);		
 		void onSendSmsToUser();
-		void onUpButton();
-		void onDownButton();
+//		void onUpButton();
+//		void onDownButton();
 };
 
 extern SmsSlots *smsslots;

@@ -9,7 +9,7 @@
 #include "modules.h"
 
 
-extern "C" int sms_gateways_init()
+extern "C" int default_sms_init()
 {
 	kdebugf();
 	smsslots->registerGateway("idea", &SmsGatewaySlots::isValidIdea);
@@ -19,7 +19,7 @@ extern "C" int sms_gateways_init()
 	return 0;
 }
 
-extern "C" void sms_gateways_close()
+extern "C" void default_sms_close()
 {
 	kdebugf();
 	smsslots->unregisterGateway("idea");
