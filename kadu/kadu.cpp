@@ -2113,7 +2113,7 @@ void KaduSlots::onCreateConfigDialog()
 
 	QString language;
 	language= config_file.readEntry("General", "Language", QTextCodec::locale());
-	QDir locale(QString(DATADIR)+"/locale/", "kadu_*.qm");
+	QDir locale(QString(DATADIR)+"/kadu/translations/", "kadu_*.qm");
 	QStringList files=locale.entryList();
 
 	  for ( QStringList::Iterator it = files.begin(); it != files.end(); ++it ) {
