@@ -21,6 +21,7 @@
 #include <klocale.h>
 #include <qmessagebox.h>
 #include <unistd.h>
+#include <qprocess.h>
 
 //
 #include "kadu.h"
@@ -33,6 +34,7 @@ dccSocketClass::dccSocketClass(struct gg_dcc *dcc_sock) : QObject() {
 	snr = snw = NULL;
 	state = DCC_SOCKET_TRANSFERRING;
 	dialog = NULL;
+	recordprocess = playprocess = NULL;
 }
 
 dccSocketClass::~dccSocketClass() {
@@ -45,6 +47,16 @@ dccSocketClass::~dccSocketClass() {
 				delete dialog;    
 			dialog = NULL;
 			}
+		}
+	if (recordprocess)
+		{
+		delete recordprocess;
+		recordprocess = NULL;
+		}
+	if (playprocess)
+		{
+		delete playprocess;
+		playprocess = NULL;
 		}
 	if (snr) {
 		snr->setEnabled(false);
@@ -91,6 +103,7 @@ void dccSocketClass::dccDataSent() {
 
 void dccSocketClass::watchDcc(int check) {
 	QString f;
+	QByteArray buf;
 
 	fprintf(stderr, "KK dccSocketClass::watchDcc()\n");			
 	if (!(dccevent = gg_dcc_watch_fd(dccsock))) {
@@ -125,6 +138,17 @@ void dccSocketClass::watchDcc(int check) {
 			dialog = new DccGet(this, DCC_TYPE_SEND);
 			dialog->printFileInfo(dccsock);
 			break;	    
+		case GG_EVENT_DCC_NEED_VOICE_ACK:
+			playprocess = new QProcess(QString("kaduplayvoice"));
+			playprocess->start();
+			break;
+		case GG_EVENT_DCC_VOICE_DATA:
+			if (!playprocess->isRunning())
+				break;
+			buf.setRawData((const char *)dccevent->event.dcc_voice_data.data,
+				dccevent->event.dcc_voice_data.length);
+			playprocess->writeToStdin(buf);
+			break;
 		case GG_EVENT_DCC_ERROR:
 			fprintf(stderr, "KK dccSocketClass::watchDcc: GG_EVENT_DCC_ERROR\n");
 			setState(DCC_SOCKET_TRANSFER_ERROR);

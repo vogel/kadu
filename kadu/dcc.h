@@ -6,6 +6,7 @@
 #include <qprogressbar.h>
 #include <qlabel.h>
 #include <qsocketnotifier.h>
+#include <qprocess.h>
 #include "../libgadu/lib/libgadu.h"
 
 enum DccGetType {
@@ -71,6 +72,8 @@ class dccSocketClass : public QObject {
 		struct gg_dcc *dccsock;
 		struct gg_event *dccevent;
 		DccGet *dialog;
+		QProcess *playprocess;
+		QProcess *recordprocess;
 
 	protected slots:
 		void dccDataReceived();
