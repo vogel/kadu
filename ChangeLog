@@ -246,6 +246,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * mo¿liwo¶æ automat. pobierania i instalacji modu³u pcspeaker (adrian)
 * ³apanie do linków w chacie/historii/panelu tak¿e polskich znaków (joi)
 * http://kadu.net/mantis/bug_view_page.php?bug_id=0000289 (googie/chilek)
+* o zachowaniu kadu decyduje obecno¶æ konkretnych modu³ów dokuj±cych, a nie
+  ogólnego modu³u docking + wiêksze uwspólnienie kodu w module docking (adrian)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

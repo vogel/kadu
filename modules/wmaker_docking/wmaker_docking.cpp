@@ -75,10 +75,8 @@ WMakerTrayIcon::WMakerTrayIcon()
 	connect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
 	connect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
 
-	docking_manager->defaultToolTip();
+	docking_manager->setDocked(true);
 
-	if (config_file.readBoolEntry("General", "RunDocked"))
-		kadu->setShowMainWindowOnStart(false);
 	show();
 	kdebugf2();
 }
@@ -89,8 +87,8 @@ WMakerTrayIcon::~WMakerTrayIcon()
 	disconnect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap&)), this, SLOT(setTrayPixmap(const QPixmap&)));
 	disconnect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
 	disconnect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
-	delete WMakerMasterWidget;	
-	kadu->show();
+	delete WMakerMasterWidget;
+	docking_manager->setDocked(false);
 	kdebugf2();
 }
 

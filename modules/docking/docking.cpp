@@ -41,14 +41,7 @@ DockingManager::DockingManager() : QObject(NULL, "docking_manager")
 	icon_timer = new QTimer(this);
 	blink = false;
 	QObject::connect(icon_timer, SIGNAL(timeout()), this, SLOT(changeIcon()));
-	changeIcon();
-	
-	// i tak to nic nie daje bo nic nie ma za³adowanego do obs³ugi tego/
-	//emit trayTooltipChanged(tr("Left click - hide/show window\nMiddle click or Left click- next message"));
-	
-	ConfigDialog::addCheckBox("General", "grid", 
-			QT_TRANSLATE_NOOP("@default", "Start docked"), "RunDocked", false);
-	
+		
 	connect(kadu, SIGNAL(connectingBlinkShowOffline()), this, SLOT(showOffline()));
 	connect(kadu, SIGNAL(connectingBlinkShowStatus(int)), this, SLOT(showStatus(int)));
 	connect(kadu, SIGNAL(currentStatusChanged(int)), this, SLOT(showCurrentStatus(int)));
@@ -58,15 +51,12 @@ DockingManager::DockingManager() : QObject(NULL, "docking_manager")
 	connect(dockppm, SIGNAL(activated(int)), this, SLOT(dockletChange(int)));
 	connect(this, SIGNAL(mousePressMidButton()), &pending, SLOT(openMessages()));
 
-	kadu->setDocked(true);	
 	kdebugf2();
 }
 
 DockingManager::~DockingManager()
 {
 	kdebugf();
-
-	ConfigDialog::removeControl("General", "Start docked");
 
 	disconnect(kadu, SIGNAL(connectingBlinkShowOffline()), this, SLOT(showOffline()));
 	disconnect(kadu, SIGNAL(connectingBlinkShowStatus(int)), this, SLOT(showStatus(int)));
@@ -77,7 +67,6 @@ DockingManager::~DockingManager()
 	disconnect(dockppm, SIGNAL(activated(int)), this, SLOT(dockletChange(int)));
 	disconnect(icon_timer, SIGNAL(timeout()), this, SLOT(changeIcon()));
 
-	kadu->setDocked(false);
 	delete icon_timer;
 	icon_timer=NULL;
 	kdebugf2();
@@ -210,6 +199,27 @@ QPixmap DockingManager::defaultPixmap()
 {
 	return icons_manager.loadIcon(gg_icons[
 		statusGGToStatusNr(getCurrentStatus() & (~GG_STATUS_FRIENDS_MASK))]);
+}
+
+void DockingManager::setDocked(bool docked)
+{
+	kdebugf();
+	if(docked)
+	{
+		changeIcon();
+		defaultToolTip();
+		ConfigDialog::addCheckBox("General", "grid", 
+			QT_TRANSLATE_NOOP("@default", "Start docked"), "RunDocked", false);
+		if (config_file.readBoolEntry("General", "RunDocked"))
+			kadu->setShowMainWindowOnStart(false);
+	}
+	else
+	{
+		ConfigDialog::removeControl("General", "Start docked");
+		kadu->show();
+	}
+	kadu->setDocked(docked);
+	kdebugf2();
 }
 
 DockingManager* docking_manager = NULL;

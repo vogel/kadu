@@ -11,6 +11,7 @@ class DockingManager : public QObject
 	private:
 		QTimer *icon_timer;
 		bool blink;
+		void defaultToolTip();
 
 	private slots:
 		void changeIcon();
@@ -27,7 +28,12 @@ class DockingManager : public QObject
 		~DockingManager();
 		void trayMousePressEvent(QMouseEvent * e);
 		QPixmap defaultPixmap();
-		void defaultToolTip();
+		/**
+			Modu³ implementuj±cy dokowanie powinien to ustawic
+			na true przy starcie i false przy zamknieciu, aby
+			kadu wiedzialo, ze jest zadokowane.
+		**/
+		void setDocked(bool docked);
 
 	signals:
 		void trayPixmapChanged(const QPixmap& pixmap);
