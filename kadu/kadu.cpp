@@ -440,6 +440,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	dockMenu->insertSeparator();
 	dockMenu->insertItem(icons_manager.loadIcon("Exit"), tr("&Exit Kadu"), 9);
+	icons_manager.registerMenuItem(dockMenu, tr("&Exit Kadu"), "Exit");
 
 	InfoPanel = new KaduTextBrowser(split, "InfoPanel");
 	InfoPanel->setFrameStyle(QFrame::NoFrame);

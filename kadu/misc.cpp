@@ -1301,7 +1301,9 @@ void IconsManager::refreshMenus()
 			QValueList<QPair<QString, QString> >::const_iterator end2=(*it).second.end();
 
 			for (;it2!=end2; it2++)
-				if (t.startsWith((*it2).first))
+				//startsWith jest potrzebne, bo je¿eli opcja w menu ma skrót klawiszowy,
+				//to menu->text(id) zwraca napis "Nazwa opcji\tskrót klawiszowy"
+				if (t==(*it2).first || t.startsWith((*it2).first+"\t")) 
 				{
 					bool enabled=menu->isItemEnabled(id);
 					bool checked=menu->isItemChecked(id);

@@ -268,6 +268,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   dostêpny zestaw (joi)
 * debug: dodana funkcja kdebugmf o identycznej sk³adni co kdebugm, ale wypisuj±ca
   dodatkowo nazwê funkcji (joi)
+* ikony w dockmenu poprawnie od¶wie¿aj± siê przy zmianie zestawu ikon (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
