@@ -60,7 +60,7 @@ AutoStatusTimer::AutoStatusTimer(QObject* parent)
 
 void AutoStatusTimer::onTimeout()
 {
-	if (ifStatusWithDescription(sess->status)) {
+	if (sess && ifStatusWithDescription(sess->status)) {
 		QFile f(preparePath("description"));
 		if (!f.open(IO_ReadOnly))
 			return;
