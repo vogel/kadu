@@ -6,28 +6,6 @@
         <translation>Informazione</translation>
     </message>
     <message>
-        <source>You don&apos;t have a config file.
-What would you like to do?</source>
-        <translation>Manca file di configurazione.
-Cosa vogliamo fare?</translation>
-    </message>
-    <message>
-        <source>New UIN</source>
-        <translation>Nuovo no GG</translation>
-    </message>
-    <message>
-        <source>Configure</source>
-        <translation>Ho già numero GG</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Annulla</translation>
-    </message>
-    <message>
-        <source>Kadu: new user</source>
-        <translation>Kadu: nuovo utente</translation>
-    </message>
-    <message>
         <source>Online</source>
         <translation>Accessibile</translation>
     </message>
@@ -725,7 +703,7 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
     </message>
     <message>
         <source>Columns</source>
-        <translation type="unfinished"></translation>
+        <translation>Colonne</translation>
     </message>
 </context>
 <context>
@@ -1147,7 +1125,7 @@ per salvare finestra di chat da disordine</translation>
     </message>
     <message>
         <source>Hint timeout</source>
-        <translation type="unfinished"></translation>
+        <translation>Scomparsa fumetto dopo </translation>
     </message>
 </context>
 <context>
@@ -1572,6 +1550,28 @@ La password è errata!!!</translation>
     <message>
         <source>Connection timeout!</source>
         <translation>Tempo di connessione superato!</translation>
+    </message>
+    <message>
+        <source>You don&apos;t have a config file.
+What would you like to do?</source>
+        <translation>Manca file di configurazione.
+Cosa vogliamo fare?</translation>
+    </message>
+    <message>
+        <source>New UIN</source>
+        <translation>Nuovo no GG</translation>
+    </message>
+    <message>
+        <source>Configure</source>
+        <translation>Ho già numero GG</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Annulla</translation>
+    </message>
+    <message>
+        <source>Kadu: new user</source>
+        <translation>Kadu: nuovo utente</translation>
     </message>
 </context>
 <context>

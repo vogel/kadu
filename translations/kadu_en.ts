@@ -394,27 +394,6 @@ If you leave blank, default settings will be used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>You don&apos;t have a config file.
-What would you like to do?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>New UIN</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Configure</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Kadu: new user</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>English</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1562,6 +1541,27 @@ Your password is incorrect !!!</source>
     </message>
     <message>
         <source>Connection timeout!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You don&apos;t have a config file.
+What would you like to do?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New UIN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Configure</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kadu: new user</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -6,28 +6,6 @@
         <translation>Powiadomienie</translation>
     </message>
     <message>
-        <source>You don&apos;t have a config file.
-What would you like to do?</source>
-        <translation>Brak pliku konfiguracyjnego.
-Wybierz jedną z poniższych opcji:</translation>
-    </message>
-    <message>
-        <source>New UIN</source>
-        <translation>Nowy nr GG</translation>
-    </message>
-    <message>
-        <source>Configure</source>
-        <translation>Mam już nr GG</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Anuluj</translation>
-    </message>
-    <message>
-        <source>Kadu: new user</source>
-        <translation>Kadu: nowy użytkownik</translation>
-    </message>
-    <message>
         <source>Online</source>
         <translation>Dostępny</translation>
     </message>
@@ -1575,6 +1553,28 @@ Twoje hasło jest nieprawidłowe!!!</translation>
         <translation>
 Przekroczenie czasu połączenia!</translation>
     </message>
+    <message>
+        <source>You don&apos;t have a config file.
+What would you like to do?</source>
+        <translation>Brak pliku konfiguracyjnego.
+Wybierz jedną z poniższych opcji:</translation>
+    </message>
+    <message>
+        <source>New UIN</source>
+        <translation>Nowy nr GG</translation>
+    </message>
+    <message>
+        <source>Configure</source>
+        <translation>Mam już nr GG</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Anuluj</translation>
+    </message>
+    <message>
+        <source>Kadu: new user</source>
+        <translation>Kadu: nowy użytkownik</translation>
+    </message>
 </context>
 <context>
     <name>KaduSlots</name>
@@ -1782,7 +1782,7 @@ Być może nie jest to moduł kompatybilny z Kadu</translation>
     </message>
     <message>
         <source>This dialog box allows you to manage your personal information, for example your name, surname or age.</source>
-        <translation>To okno dialogowe daje możliwość zarządzania Twoimi danymi personalnymi takimi jak imi�, nazwisko, wiek, płeć.</translation>
+        <translation>To okno dialogowe daje możliwość zarządzania Twoimi danymi personalnymi takimi jak imi� nazwisko, wiek, płeć.</translation>
     </message>
     <message>
         <source>Your personal information</source>

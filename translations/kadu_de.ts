@@ -6,28 +6,6 @@
         <translation>Benutzerbenachrichtigung</translation>
     </message>
     <message>
-        <source>You don&apos;t have a config file.
-What would you like to do?</source>
-        <translation>Es fehlt die Konfigurationsdatei.
-Was wollen sie nun tun?</translation>
-    </message>
-    <message>
-        <source>New UIN</source>
-        <translation>Neue Nr. GG</translation>
-    </message>
-    <message>
-        <source>Configure</source>
-        <translation>Konfigurieren</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Abbrechen</translation>
-    </message>
-    <message>
-        <source>Kadu: new user</source>
-        <translation>Kadu: neuer Benutzer</translation>
-    </message>
-    <message>
         <source>Online</source>
         <translation>Online</translation>
     </message>
@@ -685,27 +663,27 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>Automatically fold links longer than</source>
-        <translation>Falten Sie automatisch links die länger sind als</translation>
+        <translation>Falte Links automatisch, die länger sind als</translation>
     </message>
     <message>
         <source>Show available users in bold</source>
-        <translation>Zeigen Sie erreichbaren Benutzer in bold</translation>
+        <translation>Zeige erreibare Benuter fett an</translation>
     </message>
     <message>
         <source>Displays users that are not offline using a bold font</source>
-        <translation>Displays users that are not offline using a bold font</translation>
+        <translation>Zeige Benutzer, die nicht offline sind fett an</translation>
     </message>
     <message>
         <source>Notify about users&apos; status changes</source>
-        <translation>Teile über Statusänderungen der Benutzer mit</translation>
+        <translation>Benachrichtige über Status-Änderungen der Benutzer</translation>
     </message>
     <message>
         <source>Notify about users becoming available</source>
-        <translation>Teile über die Benutzer mit, die erreichbar sind</translation>
+        <translation>Benachrichtige über Benutzer, welche auf erreichbar umschalten</translation>
     </message>
     <message>
         <source>Notify about users becoming unavailable</source>
-        <translation>Teile über die Benutzer mit, die nicht erreichbar sind</translation>
+        <translation>Benachrichtigen über Benutzer, die auf unerreichbar umschalten</translation>
     </message>
     <message>
         <source>Remember window size and position between startups</source>
@@ -717,7 +695,7 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>When enabled, you&apos;re visible only to users on your list</source>
-        <translation>Wenn es ermöglicht wird, sind Sie nur zu den Benutzern auf Ihrer kontaktliste sichtbar</translation>
+        <translation>Wenn eingeschaltet, sind Sie nur für die sichtbar, die in Ihrer Kontaktliste eingetragen sind</translation>
     </message>
     <message>
         <source>Display users that are offline</source>
@@ -725,7 +703,7 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>Columns</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeilen</translation>
     </message>
 </context>
 <context>
@@ -1148,7 +1126,7 @@ um das Chatfenster vor einer unordnung zu schützen</translation>
     </message>
     <message>
         <source>Hint timeout</source>
-        <translation type="unfinished"></translation>
+        <translation>Timeout für Sprechblasen</translation>
     </message>
 </context>
 <context>
@@ -1572,7 +1550,29 @@ Dein Passwort ist falsch!!!</translation>
     </message>
     <message>
         <source>Connection timeout!</source>
-        <translation>Verbindung timeout!</translation>
+        <translation>Verbindungs-Timeout!</translation>
+    </message>
+    <message>
+        <source>You don&apos;t have a config file.
+What would you like to do?</source>
+        <translation>Es fehlt die Konfigurationsdatei.
+Was wollen sie nun tun?</translation>
+    </message>
+    <message>
+        <source>New UIN</source>
+        <translation>Neue Nr. GG</translation>
+    </message>
+    <message>
+        <source>Configure</source>
+        <translation>Konfigurieren</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Kadu: new user</source>
+        <translation>Kadu: neuer Benutzer</translation>
     </message>
 </context>
 <context>
