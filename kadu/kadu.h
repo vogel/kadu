@@ -296,7 +296,7 @@ bool isIgnored(uin_t);
 int writeIgnored(QString filename = "");
 void *watch_socket(void *);
 void kadu_debug(int, char*);
-void playSound(char *);
+void playSound(const char *);
 void readConfig(void);
 QString pwHash(const QString);
 void confirmHistoryDeletion(const char *);

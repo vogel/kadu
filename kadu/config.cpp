@@ -1221,11 +1221,11 @@ void ConfigDialog::chooseUserboxLine(const QString& text) {
 }
 
 void ConfigDialog::chooseMsgTest(void) {
-	playSound(config.soundmsg);
+	playSound(e_msgfile->text().local8Bit());
 }
 
 void ConfigDialog::chooseChatTest(void) {
-	playSound(config.soundchat);
+	playSound(e_chatfile->text().local8Bit());
 }
 
 void ConfigDialog::generateMyKeys(void) {

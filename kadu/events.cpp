@@ -163,7 +163,7 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 		return;
 		}
 
-	playSound(config.soundmsg);
+	playSound((const char *)config.soundmsg);
 
 //	fprintf(stderr, "KK eventRecvMsg(): New buffer size: %d\n",pending.size());
 
@@ -202,7 +202,7 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 		}*/
 }
 
-void playSound(char *sound) {
+void playSound(const char *sound) {
 	if (!config.playsound || mute)
 		return;
 
@@ -265,7 +265,7 @@ void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)
 			}
 
 		if (config.notifysound)
-	    		playSound(config.soundnotify);
+	    		playSound((const char *)config.soundnotify);
 
 		}
 }
