@@ -24,7 +24,8 @@
 struct QTabPrivate;
 
 KaduTabBar::KaduTabBar(QWidget *parent, const char *name)
-	: QTabBar(parent, name) {
+	: QTabBar(parent, name)
+{
 	kdebugf();
 	setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred));
 	lstatic2 = new QPtrList<QTab>;
@@ -38,13 +39,15 @@ KaduTabBar::KaduTabBar(QWidget *parent, const char *name)
 	setAcceptDrops(true);
 }
 
-KaduTabBar::~KaduTabBar() {
+KaduTabBar::~KaduTabBar()
+{
 	kdebugf();
 	delete lstatic2;
 	lstatic2 = 0;
 }
 
-void KaduTabBar::layoutTabs() {
+void KaduTabBar::layoutTabs()
+{
 	kdebugf();
 	if (lstatic2->isEmpty())
 		return;
@@ -63,16 +66,18 @@ void KaduTabBar::layoutTabs() {
 		t = lstatic2->last();
 	else
 		t = lstatic2->first();
-	while (t) {
+	while (t)
+	{
 		int lw = fm.width(t->text());
 		lw -= t->text().contains('&') * fm.width('&');
 		lw += t->text().contains("&&") * fm.width('&');
 		int iw = 0;
 		int ih = 0;
-		if (t->iconSet() != 0) {
+		if (t->iconSet() != 0)
+		{
 			iw = t->iconSet()->pixmap(QIconSet::Small, QIconSet::Normal).width() + 4;
 			ih = t->iconSet()->pixmap(QIconSet::Small, QIconSet::Normal).height();
-			}
+		}
 		int h = QMAX(fm.height(), ih);
 		h = QMAX(h, QApplication::globalStrut().height());
 
@@ -86,31 +91,36 @@ void KaduTabBar::layoutTabs() {
 			t = lstatic2->prev();
 		else
 			t = lstatic2->next();
-		}
+	}
 	for (t = lstatic2->first(); t; t = lstatic2->next())
 		t->setRect(QRect(t->rect().left(), t->rect().top(), r.width(), t->rect().height()));
 }
 
-QSize KaduTabBar::sizeHint() const {
+QSize KaduTabBar::sizeHint() const
+{
 	kdebugf();
 	QTab *t = lstatic2->first();
-	if (t) {
+	if (t)
+	{
 		QRect r(t->rect());
 		while ((t = lstatic2->next()) != 0)
 			r = r.unite(t->rect());
 		return r.size().expandedTo(QApplication::globalStrut());
-		}
-	else {
+	}
+	else
+	{
 		return QSize(0, 0).expandedTo(QApplication::globalStrut());
-		}
+	}
 }
 
-QSize KaduTabBar::minimumSizeHint() const {
+QSize KaduTabBar::minimumSizeHint() const
+{
 	kdebugf();
 	return QSize(sizeHint().width(), downB->sizeHint().height() * 2 + 75);
 }
 
-void KaduTabBar::paint(QPainter *p, QTab *t, bool selected) const {
+void KaduTabBar::paint(QPainter *p, QTab *t, bool selected) const
+{
 	kdebugf();
 	QStyle::SFlags flags = QStyle::Style_Default;
 
@@ -136,10 +146,11 @@ void KaduTabBar::paint(QPainter *p, QTab *t, bool selected) const {
 
 	int iw = 0;
 	int ih = 0;
-	if (t->iconSet() != 0) {
+	if (t->iconSet() != 0)
+	{
 		iw = t->iconSet()->pixmap(QIconSet::Small, QIconSet::Normal).width() + 4;
 		ih = t->iconSet()->pixmap(QIconSet::Small, QIconSet::Normal).height();
-		}
+	}
 	QFontMetrics fm = p->fontMetrics();
 	int fw = fm.width(t->text());
 	fw -= t->text().contains('&') * fm.width('&');
@@ -177,13 +188,15 @@ void KaduTabBar::removeTab(QTab *t)
 	update();
 }
 
-void KaduTabBar::setCurrentTab(QTab *tab) {
+void KaduTabBar::setCurrentTab(QTab *tab)
+{
 	if (tab && lstatic2)
 		makeVisibleVert(tab);
 	QTabBar::setCurrentTab(tab);
 }
 
-void KaduTabBar::resizeEvent(QResizeEvent *e) {
+void KaduTabBar::resizeEvent(QResizeEvent *e)
+{
 	kdebugf();
 	const int arrowHeight = 16;
 	downB->setGeometry(0, height() - arrowHeight, width(), arrowHeight);
@@ -193,7 +206,8 @@ void KaduTabBar::resizeEvent(QResizeEvent *e) {
 	makeVisibleVert(tab(currentTab()));
 }
 
-void KaduTabBar::makeVisibleVert(QTab *tab) {
+void KaduTabBar::makeVisibleVert(QTab *tab)
+{
 	kdebugf();
 	bool tooFarUp = (tab && tab->rect().top() < 0);
 	bool tooFarDown = (tab && tab->rect().bottom() >= upB->y());
@@ -208,11 +222,12 @@ void KaduTabBar::makeVisibleVert(QTab *tab) {
 	else
 		if (tooFarDown)
 			offset = tab->rect().bottom() - upB->y() + 1;
-	for (QTab *t = lstatic2->first(); t; t = lstatic2->next()) {
+	for (QTab *t = lstatic2->first(); t; t = lstatic2->next())
+	{
 		QRect r = t->rect();
 		r.moveBy(0, -offset);
 		t->setRect(r);
-		}
+	}
 
 	upB->setEnabled(offset != 0);
 	downB->setEnabled(lstatic2->last()->rect().bottom() >= upB->y());
@@ -225,32 +240,37 @@ void KaduTabBar::makeVisibleVert(QTab *tab) {
 	update();
 }
 
-void KaduTabBar::updateArrowButtonsVert() {
+void KaduTabBar::updateArrowButtonsVert()
+{
 	kdebugf();
 	bool b = lstatic2->last() && (lstatic2->last()->rect().bottom() > height());
 	vertscrolls = b;
-	if (vertscrolls) {
+	if (vertscrolls)
+	{
 		upB->setEnabled(FALSE);
 		downB->setEnabled(TRUE);
 		upB->show();
 		downB->show();
-		}
-	else {
+	}
+	else
+	{
 		upB->hide();
 		downB->hide();
-		}
+	}
 }
 
-void KaduTabBar::scrollTabsVert() {
+void KaduTabBar::scrollTabsVert()
+{
 	kdebugf();
 	QTab *up = 0;
 	QTab *down = 0;
-	for (QTab *t = lstatic2->first(); t; t = lstatic2->next()) {
+	for (QTab *t = lstatic2->first(); t; t = lstatic2->next())
+	{
 		if (t->rect().top() < 0 && t->rect().bottom() > 0)
 			up = t;
 		if (t->rect().top() < upB->y() + 2)
 			down = t;
-		}
+	}
 	if (sender() == upB)
 		makeVisibleVert(up);
 	else
@@ -269,24 +289,26 @@ void KaduTabBar::dropEvent(QDropEvent* e)
 {
 	kdebugf();
 	QString altnicks;
-	if(dynamic_cast<UserBox*>(e->source()) && QTextDrag::decode(e,altnicks)) {
+	if (dynamic_cast<UserBox*>(e->source()) && QTextDrag::decode(e,altnicks))
+	{
 		QString group;
-		if(selectTab(e->pos()))
-			group=selectTab(e->pos())->text();
-		else {
+		if (selectTab(e->pos()))
+			group = selectTab(e->pos())->text();
+		else
+		{
 			bool ok;
 			QStringList list;
-			for (int i=0; i < count(); ++i)
+			for (int i = 0; i < count(); ++i)
 				list << tabAt(i)->text();
 			QString text = QInputDialog::getItem(tr("Add new group"), tr("Name of new group:"),
 				list, 0, true, &ok, 0);
-			if ((!ok) || text.isEmpty())
+			if (!ok || text.isEmpty())
 				return;
-			group=text;		
+			group = text;		
 		}
-		QStringList altnick_list=QStringList::split("\n",altnicks);
-		for(unsigned int i=0; i<altnick_list.count(); ++i)
-			userlist.byAltNick(altnick_list[i]).setGroup(group);
+		QStringList altnick_list = QStringList::split("\n", altnicks);
+		CONST_FOREACH(altnick, altnick_list)
+			userlist.byAltNick(*altnick).setGroup(group);
 		// bardzo niewygodne, trzeba poprawiæ writeToFile !! ta funkcja jest za wolna
 		// trzeba dodaæ mozliwo¶æ zmiany danych tylko jednego user !!
 		userlist.writeToFile();
