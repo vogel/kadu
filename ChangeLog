@@ -3,6 +3,8 @@
   powiadamianie i niedostêpny przy tylko dla znajomych) (chilek)
 * ignored: QArray -> QValueList, FILE -> QFile (chilek)
 * userinfo: mo¿liwo¶æ zmiany uinu u¿ytkownika (chilek)
+* userinfo: mo¿na u¿ytkownikowi usuwaæ i dodawaæ UIN, poza tym je¶li np. usuniemy UIN
+  to nie s± wysy³ane bezsensowne powiadomienia do serwera GG (chilek)
 
 +++ wersja 0.3.3-rc3
 * sensowne potwierdzenie usuniêcia kontaktu (adrian)

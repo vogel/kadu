@@ -156,48 +156,60 @@ void UserInfo::writeUserlist() {
 		case 0: // Yes?
 			fprintf(stderr, "KK UserInfo::writeUserlist() \n");
 			uin = e_uin->text().toUInt(&ok);
-			if (!ok) {
+			if (!ok && e_uin->text().length()) {
 				QMessageBox::information(this, "Kadu", i18n("Bad UIN"), QMessageBox::Ok);
 				close();
 				break;
 				}
-			if (uin != puser->uin && userlist.containsUin(uin)) {
+			if (uin && uin != puser->uin && userlist.containsUin(uin)) {
 				QMessageBox::information(this, "Kadu", i18n("User is already in userlist"), QMessageBox::Ok);
 				close();
 				break;
 				}
 			if (sess && sess->status != GG_STATUS_NOT_AVAIL) {
 				if (c_offtouser->isChecked() && !puser->offline_to_user) {
-					gg_remove_notify_ex(sess, puser->uin, GG_USER_NORMAL);
-					gg_add_notify_ex(sess, uin, GG_USER_OFFLINE);
+					if (puser->uin)
+						gg_remove_notify_ex(sess, puser->uin, GG_USER_NORMAL);
+					if (uin)
+						gg_add_notify_ex(sess, uin, GG_USER_OFFLINE);
 					}
 				else
 					if (!c_offtouser->isChecked() && puser->offline_to_user) {
-						gg_remove_notify_ex(sess, puser->uin, GG_USER_OFFLINE);
-						gg_add_notify_ex(sess, uin, GG_USER_NORMAL);
+						if (puser->uin)
+							gg_remove_notify_ex(sess, puser->uin, GG_USER_OFFLINE);
+						if (uin)
+							gg_add_notify_ex(sess, uin, GG_USER_NORMAL);
 						}
 					else
 						if (c_blocking->isChecked() && !puser->blocking) {
-							gg_remove_notify_ex(sess, puser->uin, GG_USER_NORMAL);
-							gg_add_notify_ex(sess, uin, GG_USER_BLOCKED);
+							if (puser->uin)
+								gg_remove_notify_ex(sess, puser->uin, GG_USER_NORMAL);
+							if (uin)
+								gg_add_notify_ex(sess, uin, GG_USER_BLOCKED);
 							}
 						else
 							if (!c_blocking->isChecked() && puser->blocking) {
-								gg_remove_notify_ex(sess, puser->uin, GG_USER_BLOCKED);
-								gg_add_notify_ex(sess, uin, GG_USER_NORMAL);
+								if (puser->uin)
+									gg_remove_notify_ex(sess, puser->uin, GG_USER_BLOCKED);
+								if (uin)
+									gg_add_notify_ex(sess, uin, GG_USER_NORMAL);
 								}
 							else
-								if (puser->anonymous)
-									gg_add_notify(sess, uin);
+								if (puser->anonymous) {
+									if (uin)
+										gg_add_notify(sess, uin);
+									}
 								else {
-									gg_remove_notify(sess, puser->uin);
-									gg_add_notify(sess, uin);
+									if (puser->uin)
+										gg_remove_notify(sess, puser->uin);
+									if (uin)
+										gg_add_notify(sess, uin);
 									}
 				}
 			userlist.changeUserInfo(puser->altnick,
 				e_firstname->text(),e_lastname->text(),
 				e_nickname->text(),e_altnick->text(),
-				e_mobile->text(), e_uin->text(),
+				e_mobile->text(), e_uin->text().length() ? e_uin->text() : QString("0"),
 				uin != puser->uin ? GG_STATUS_NOT_AVAIL : puser->status,
 				c_blocking->isChecked(), c_offtouser->isChecked(),
 				c_notify->isChecked(), e_group->text());
