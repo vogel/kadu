@@ -403,13 +403,18 @@ void UserInfo::resultsReady() {
 void UserInfo::addNewUser(UserListElement& e)
 {
 	kdebugf();
-	bool uin_exist = e.uin() && (userlist.containsUin(e.uin()));
+	bool uin_exist = e.uin() && userlist.containsUin(e.uin());
 	if (uin_exist)
 	{
 		puser = &userlist.byUin(e.uin());
 		if (puser->isAnonymous())
 		{
 			changeUserData(e);
+			if (!config_file.readBoolEntry("Look", "DisplayGroupTabs"))
+			{
+				kadu->userbox()->addUser(e.altNick());
+				kadu->userbox()->refresh();
+			}
 			kdebugf2();
 			return;
 		}
