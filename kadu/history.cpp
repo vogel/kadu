@@ -1217,7 +1217,8 @@ History::History(UinsList uins) : QDialog(NULL, "HistoryDialog"), uins(uins), cl
 	else
 		body->setStyleSheet(new StaticStyleSheet(body,emoticons->themePath()));
 	ParagraphSeparator=config_file.readNumEntry("General", "ParagraphSeparator");
-	body->setMargin(ParagraphSeparator);
+	if (config_file.readBoolEntry("General", "UseParagraphs"))
+		body->setMargin(ParagraphSeparator);
 
 	QHBox *btnbox = new QHBox(vbox, "btnbox");
 	QPushButton *searchbtn = new QPushButton(tr("&Find"), btnbox, "searchbtn");
