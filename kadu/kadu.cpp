@@ -1692,7 +1692,9 @@ void Kadu::setStatus(int status) {
 		if (server_nr > 7)
 			server_nr = 0;
 		}
-	loginparams.tls = config_file.readBoolEntry("Network", "UseTLS");
+//	polaczenia TLS z serwerami GG na razie nie dzialaja
+//	loginparams.tls = config_file.readBoolEntry("Network", "UseTLS");
+	loginparams.tls = 0;
 	loginparams.protocol_version = 0x21;
 	loginparams.client_version = strdup("6, 0, 0, 135");
 	if (loginparams.tls) {
