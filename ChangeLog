@@ -64,6 +64,8 @@
 * poprawka b³êdu, który powodowa³ wywalanie siê kadu, nie mo¿na wybraæ ju¿
   statusu niedostepny z opisem, przy uruchomionym kadu z domyslnym statusem
   niedostêpny i poprawka w menu z docku- domyslny status nie byl checkniêty (mast3r)
+* przy otwieraniu okna rozmowy wiadomo¶ci nie powinny siê ju¿ dublowaæ (chilek)
+* pocz±tki porz±dków z oknem historii (chilek)
 
 +++ wersja 0.3.3-final
 * ikonka wiadomo¶ci i ikon statusu "ukryty" z telefonikiem
