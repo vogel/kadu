@@ -1512,16 +1512,8 @@ Check your internet connection.</source>
         <translation>Manage Module</translation>
     </message>
     <message>
-        <source>Installed modules</source>
-        <translation>Installierte module</translation>
-    </message>
-    <message>
         <source>Load</source>
         <translation>Laden</translation>
-    </message>
-    <message>
-        <source>Loaded modules</source>
-        <translation>geladen</translation>
     </message>
     <message>
         <source>Unload</source>
@@ -1540,7 +1532,15 @@ Check your internet connection.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Static modules</source>
+        <source>Static</source>
+        <translation type="unfinished">statische</translation>
+    </message>
+    <message>
+        <source>Installed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loaded</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

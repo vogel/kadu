@@ -1504,15 +1504,7 @@ Check your internet connection.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Installed modules</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Load</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Loaded modules</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1532,7 +1524,15 @@ Check your internet connection.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Static modules</source>
+        <source>Static</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Installed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loaded</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

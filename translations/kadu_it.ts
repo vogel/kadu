@@ -1512,16 +1512,8 @@ Controllare connessione a Internet.</translation>
         <translation>Gestione Moduli</translation>
     </message>
     <message>
-        <source>Installed modules</source>
-        <translation>Moduli installati</translation>
-    </message>
-    <message>
         <source>Load</source>
         <translation>Caricamento</translation>
-    </message>
-    <message>
-        <source>Loaded modules</source>
-        <translation>Moduli caricati</translation>
     </message>
     <message>
         <source>Unload</source>
@@ -1540,7 +1532,15 @@ Controllare connessione a Internet.</translation>
         <translation>&lt;br&gt;&lt;b&gt;Autore:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;b&gt;Descrizione&lt;/b&gt;:&lt;br&gt;%2</translation>
     </message>
     <message>
-        <source>Static modules</source>
+        <source>Static</source>
+        <translation type="unfinished">Statico</translation>
+    </message>
+    <message>
+        <source>Installed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loaded</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

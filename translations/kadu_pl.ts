@@ -1513,16 +1513,8 @@ Sprawdź swoje połączenie internetowe.</translation>
         <translation>Zarządca modułów</translation>
     </message>
     <message>
-        <source>Installed modules</source>
-        <translation>Zainstalowane moduły</translation>
-    </message>
-    <message>
         <source>Load</source>
         <translation>Uruchom</translation>
-    </message>
-    <message>
-        <source>Loaded modules</source>
-        <translation>Uruchomione moduły</translation>
     </message>
     <message>
         <source>Unload</source>
@@ -1541,8 +1533,16 @@ Sprawdź swoje połączenie internetowe.</translation>
         <translation>&lt;br&gt;&lt;b&gt;Autor:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;b&gt;Opis:&lt;/b&gt;&lt;br&gt;%2</translation>
     </message>
     <message>
-        <source>Static modules</source>
-        <translation>Moduły statyczne</translation>
+        <source>Static</source>
+        <translation>Statyczne</translation>
+    </message>
+    <message>
+        <source>Installed</source>
+        <translation>Zainstalowane</translation>
+    </message>
+    <message>
+        <source>Loaded</source>
+        <translation>Załadowane</translation>
     </message>
 </context>
 <context>
