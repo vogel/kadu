@@ -53,6 +53,9 @@ install-data-local:
 
 uninstall-local:
 	rm -f "$(DESTDIR)/$(includedir)/kadu/kadu-config.h"
-	rm -f "$(DESTDIR)/$(datadir)/kadu/*"
-	rm -f "$(DESTDIR)/$(datadir)/kadu/themes/emoticons/gadu-gadu/1"/*
-	rm -f "$(DESTDIR)/$(datadir)/kadu/themes/emoticons/gadu-gadu/2"/*
+	rm -f "$(DESTDIR)/$(datadir)/kadu/AUTHORS"
+	rm -f "$(DESTDIR)/$(datadir)/kadu/ChangeLog"
+	rm -f "$(DESTDIR)/$(datadir)/kadu/COPYING"
+	rm -f "$(DESTDIR)/$(datadir)/kadu/HISTORY"
+	rm -f "$(DESTDIR)/$(datadir)/kadu/README"
+	rm -f "$(DESTDIR)/$(datadir)/kadu/THANKS"

@@ -345,11 +345,11 @@ install-data-local: uninstall-local
 	done
 
 uninstall-local:
-	rm -f "$(DESTDIR)/$(includedir)/kadu/modules/*.h"
-	rm -f $(DESTDIR)/$(datadir)/kadu/modules/*.desc
-	rm -f $(DESTDIR)/$(datadir)/kadu/modules/*.so
-	rm -f $(DESTDIR)/$(datadir)/kadu/modules/translations/*.qm
-	rm -rf $(DESTDIR)/$(datadir)/kadu/modules/data/*
+	rm -f "$(DESTDIR)/$(includedir)/kadu/modules"/*.h
+	rm -f "$(DESTDIR)/$(datadir)/kadu/modules"/*.desc
+	rm -f "$(DESTDIR)/$(datadir)/kadu/modules"/*.so
+	rm -f "$(DESTDIR)/$(datadir)/kadu/modules/translations"/*.qm
+	rm -rf "$(DESTDIR)/$(datadir)/kadu/modules/data"/*
 
 clean-local:
 	@for dir in $(static_modules) $(shared_modules); do \
