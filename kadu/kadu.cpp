@@ -304,7 +304,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	QFontInfo info(qApp->font());
 	QFont def_font(info.family(),info.pointSize());
 	config_file.addVariable("Look", "UserboxFont", &def_font);
-	config_file.addVariable("Look", "UserboxDescFont", &def_font);
 
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Look"), "LookTab");
 
