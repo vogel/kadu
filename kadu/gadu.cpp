@@ -2136,16 +2136,16 @@ void GaduProtocol::userStatusChanged(const struct gg_event *e)
 	else
 	{
 		uin = e->event.status.uin;
-		status.fromStatusNumber(e->event.status60.status,
-			cp2unicode((unsigned char *)e->event.status60.descr));
+		status.fromStatusNumber(e->event.status.status,
+			cp2unicode((unsigned char *)e->event.status.descr));
 		remote_ip = 0;
 		remote_port = 0;
 		version = 0;
 		image_size = 0;
 	}
 
-	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventStatusChange(): User %d went %d\n", uin,
-		status.toStatusNumber());
+	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventStatusChange(): User %d went %d (%s)\n", uin,
+		status.toStatusNumber(), status.name().local8Bit().data());
 	UserListElement &user = userlist.byUin(uin);
 
 	if (!userlist.containsUin(uin))
