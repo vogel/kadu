@@ -1615,9 +1615,20 @@ void ChatSlots::onCreateConfigDialog()
 	cb_browser_options->clear();
 	switch (browserNumber)
 	{
+		case 1: 	//konqueror
+		{
+			cb_browser_options->insertItem(tr("Open in new window"));
+			cb_browser_options->insertItem(tr("Open in new tab"));
+			if (browserCommandLine.find("newTab", 0, true) != -1)
+				cb_browser_options->setCurrentItem(1);
+			else
+				cb_browser_options->setCurrentItem(0);
+			cb_browser_options->setEnabled(true);
+			break;
+		}
 		case 2: 	//opera
 		{
-			cb_browser_options->insertItem(tr("Open in new window"));		//dodajemy pozycje w combo
+			cb_browser_options->insertItem(tr("Open in new window"));
 			cb_browser_options->insertItem(tr("Open in new tab"));
 			cb_browser_options->insertItem(tr("Open in background tab"));
 			if (browserCommandLine.find("-newpage", 0, true) != -1)	//jak znajdzie ta opcje to podswietla odpowiedni wpis w combo
@@ -1911,7 +1922,7 @@ void ChatSlots::findAndSetWebBrowser(int selectedBrowser)
 					path=path+testPath+" %1";
 				else
 				{
-					path=testPath+" -a firefox \"openURL(%1,new-window)\" || ";
+					path=testPath+" \"openURL(%1,new-window)\" || ";
 					browserName="firefox";
 					dir=searchPath.begin();
 					continue;
