@@ -592,8 +592,10 @@ void EventManager::eventHandler(gg_session* sess)
 		}
 
 	if (e->type == GG_EVENT_MSG) {
-		if (e->event.msg.msgclass == GG_CLASS_CTCP)
-			emit dccConnectionReceived(userlist.byUin(e->event.msg.sender));
+		if (e->event.msg.msgclass == GG_CLASS_CTCP) {
+			if (config_file.readBoolEntry("Network", "AllowDCC"))
+				emit dccConnectionReceived(userlist.byUin(e->event.msg.sender));
+			}
 		else {
 			UinsList uins;
 			kdebug("eventHandler(): %d\n", e->event.msg.recipients_count);

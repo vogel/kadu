@@ -102,6 +102,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * nie znika nam opis przy problemach z po³±czeniem? (chilek)
 * mo¿liwo¶æ regulacji szeroko¶ci listy rozmówców w oknie historii (chilek)
 * historia rozmowy: hop na drzewko ;) (chilek)
+* je¶li mamy wy³±czone dcc to otrzymanie wiadomo¶ci klasy CTCP nie powoduje
+  rozpoczêcia tranmisji dcc (chilek)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
