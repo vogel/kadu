@@ -31,6 +31,8 @@ extern "C" int autoaway_init()
 	kdebugf();
 
 	autoawayslots= new AutoAwaySlots();
+	if (!gadu->status().isOffline())
+		autoawayslots->on();
 
 	ConfigDialog::registerSlotOnCreate(autoawayslots, SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnApply(autoawayslots, SLOT(onApplyConfigDialog()));
