@@ -582,6 +582,8 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 	QToolTip::add(edt, tr("This is where you type in the text to be sent"));
 
 	buttontray = new QHBox(edtbuttontray, "buttontrayBox");
+	buttontray->setMargin(2);
+	buttontray->setSpacing(1);
 
 	autosend = new QPushButton(buttontray, "autoSendButton");
 	autosend->setPixmap(icons_manager.loadIcon("AutoSendMessage"));
@@ -643,6 +645,8 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 	edit->setAutosend(config_file.readBoolEntry("Chat","AutoSend"));
 
 	QHBox *btnpart = new QHBox(downpart, "buttonpartBox");
+	btnpart->setMargin(2);
+	btnpart->setSpacing(1);
 
 	QFont afont = QApplication::font();
 	QSize s=QFontMetrics(afont).size(0, "B")*6;
