@@ -54,294 +54,285 @@ void loadKaduConfig(void) {
 	QStringList servers;
 	/* first read our own config file... */
 	kdebug("loadKaduConfig(): Reading config file...\n");
-	ConfigFile * konf;
-	konf = new ConfigFile(ggPath(QString("kadu.conf")));
 
-	konf->setGroup("Global");
-	config.uin = konf->readNumEntry("UIN",0);
-	config.password = pwHash(konf->readEntry("Password",""));
+	config_file.setGroup("Global");
+	config.uin = config_file.readNumEntry("UIN",0);
+	config.password = pwHash(config_file.readEntry("Password",""));
 	kdebug("Read user data: uin %d password :-P\n", config.uin);
-	config.soundprog = konf->readEntry("SoundPlayer","");
-	config.soundmsg = konf->readEntry("Message_sound","");
-	config.soundvolctrl = konf->readBoolEntry("VolumeControl",false);
-	config.soundvol = konf->readDoubleNumEntry("SoundVolume",1.0);
-	config.soundchat = konf->readEntry("Chat_sound","");
-	config.nick = konf->readEntry("Nick", i18n("Me"));
+	config.soundprog = config_file.readEntry("SoundPlayer","");
+	config.soundmsg = config_file.readEntry("Message_sound","");
+	config.soundvolctrl = config_file.readBoolEntry("VolumeControl",false);
+	config.soundvol = config_file.readDoubleNumEntry("SoundVolume",1.0);
+	config.soundchat = config_file.readEntry("Chat_sound","");
+	config.nick = config_file.readEntry("Nick", i18n("Me"));
 	
-	config.defaultstatus = konf->readNumEntry("DefaultStatus", GG_STATUS_NOT_AVAIL);
+	config.defaultstatus = config_file.readNumEntry("DefaultStatus", GG_STATUS_NOT_AVAIL);
 
 	if (!config.defaultstatus)
 		config.defaultstatus = GG_STATUS_NOT_AVAIL;
-	config.defaultdescription = konf->readEntry("DefaultDescription", i18n("I am busy."));
+	config.defaultdescription = config_file.readEntry("DefaultDescription", i18n("I am busy."));
 
-	config.logmessages = konf->readBoolEntry("Logging",true);
-	config.savegeometry = konf->readBoolEntry("SaveGeometry",true);
-	config.playsoundchat = konf->readBoolEntry("PlaySoundChat",true);
-	config.playsoundchatinvisible = konf->readBoolEntry("PlaySoundChatInvisible",true);
-	config.playsound = konf->readBoolEntry("PlaySound",false);
-	config.playartsdsp = konf->readBoolEntry("PlaySoundArtsDsp",false);
-	config.sysmsgidx = konf->readNumEntry("SystemMsgIndex",0);
-	config.autoaway = konf->readBoolEntry("AutoAway", false);
-	config.autoawaytime = konf->readNumEntry("AutoAwayTime", 300);
-	config.allowdcc = konf->readBoolEntry("AllowDCC",false);
-	if (!config.dccip.setAddress(konf->readEntry("DccIP", "0.0.0.0")))
+	config.logmessages = config_file.readBoolEntry("Logging",true);
+	config.savegeometry = config_file.readBoolEntry("SaveGeometry",true);
+	config.playsoundchat = config_file.readBoolEntry("PlaySoundChat",true);
+	config.playsoundchatinvisible = config_file.readBoolEntry("PlaySoundChatInvisible",true);
+	config.playsound = config_file.readBoolEntry("PlaySound",false);
+	config.playartsdsp = config_file.readBoolEntry("PlaySoundArtsDsp",false);
+	config.sysmsgidx = config_file.readNumEntry("SystemMsgIndex",0);
+	config.autoaway = config_file.readBoolEntry("AutoAway", false);
+	config.autoawaytime = config_file.readNumEntry("AutoAwayTime", 300);
+	config.allowdcc = config_file.readBoolEntry("AllowDCC",false);
+	if (!config.dccip.setAddress(config_file.readEntry("DccIP", "0.0.0.0")))
 		config.dccip.setAddress((unsigned int)0);
-	if (!config.extip.setAddress(konf->readEntry("ExternalIP", "0.0.0.0")))
+	if (!config.extip.setAddress(config_file.readEntry("ExternalIP", "0.0.0.0")))
 		config.extip.setAddress((unsigned int)0);
-	config.extport = konf->readNumEntry("ExternalPort", 0);
-	servers = QStringList::split(";", konf->readEntry("Server", ""));
+	config.extport = config_file.readNumEntry("ExternalPort", 0);
+	servers = QStringList::split(";", config_file.readEntry("Server", ""));
 	config.servers.clear();
 	for (int i = 0; i < servers.count(); i++) {
 		if (ip.setAddress(servers[i]))
 			config.servers.append(ip);
 		}
-	config.default_servers = konf->readBoolEntry("isDefServers",true);
-	config.default_port = konf->readNumEntry("DefaultPort", 8074);
+	config.default_servers = config_file.readBoolEntry("isDefServers",true);
+	config.default_port = config_file.readNumEntry("DefaultPort", 8074);
 	server_nr = 0;
 
-	config.dock = konf->readBoolEntry("UseDocking",true);
-	config.rundocked = konf->readBoolEntry("RunDocked", false);
+	config.dock = config_file.readBoolEntry("UseDocking",true);
+	config.rundocked = config_file.readBoolEntry("RunDocked", false);
 
-	config.raise = konf->readBoolEntry("AutoRaise",false);
-	config.privatestatus = konf->readBoolEntry("PrivateStatus", false);
-	config.grouptabs = konf->readBoolEntry("DisplayGroupTabs", true);
-	config.checkupdates = konf->readBoolEntry("CheckUpdates", true);
-	config.addtodescription = konf->readBoolEntry("AddToDescription", false);
-	config.trayhint = konf->readBoolEntry("TrayHint",true);
-	config.hinterror = konf->readBoolEntry("HintError",true);
-	config.hinttime = konf->readNumEntry("TimeoutHint",5);
+	config.raise = config_file.readBoolEntry("AutoRaise",false);
+	config.privatestatus = config_file.readBoolEntry("PrivateStatus", false);
+	config.grouptabs = config_file.readBoolEntry("DisplayGroupTabs", true);
+	config.checkupdates = config_file.readBoolEntry("CheckUpdates", true);
+	config.addtodescription = config_file.readBoolEntry("AddToDescription", false);
+	config.trayhint = config_file.readBoolEntry("TrayHint",true);
+	config.hinterror = config_file.readBoolEntry("HintError",true);
+	config.hinttime = config_file.readNumEntry("TimeoutHint",5);
 	QRect def_rect(0, 0, 145, 465);
-	config.geometry = konf->readRectEntry("Geometry", &def_rect);
-	config.dockwindows = konf->readEntry("DockWindows", QString::null);
+	config.geometry = config_file.readRectEntry("Geometry", &def_rect);
+	config.dockwindows = config_file.readEntry("DockWindows", QString::null);
 	QSize def_size(340, 60);
-	config.splitsize = konf->readSizeEntry("SplitSize", &def_size);
-	config.showdesc = konf->readBoolEntry("ShowDesc", true);
-	config.multicoluserbox = konf->readBoolEntry("MultiColumnUserbox", true);
+	config.splitsize = config_file.readSizeEntry("SplitSize", &def_size);
+	config.showdesc = config_file.readBoolEntry("ShowDesc", true);
+	config.multicoluserbox = config_file.readBoolEntry("MultiColumnUserbox", true);
 	
-	konf->setGroup("WWW");
-	config.defaultwebbrowser = konf->readBoolEntry("DefaultWebBrowser", true);
-	config.webbrowser = konf->readEntry("WebBrowser", "");
+	config_file.setGroup("WWW");
+	config.defaultwebbrowser = config_file.readBoolEntry("DefaultWebBrowser", true);
+	config.webbrowser = config_file.readEntry("WebBrowser", "");
 	
-	konf->setGroup("SMS");
-	config.smsbuildin = konf->readBoolEntry("BuiltInApp",true);
-	config.smsapp = strdup(konf->readEntry("SmsApp",""));
-	config.smscustomconf = konf->readBoolEntry("UseCustomString",false);
-	config.smsconf = strdup(konf->readEntry("SmsString",""));
+	config_file.setGroup("SMS");
+	config.smsbuildin = config_file.readBoolEntry("BuiltInApp",true);
+	config.smsapp = strdup(config_file.readEntry("SmsApp",""));
+	config.smscustomconf = config_file.readBoolEntry("UseCustomString",false);
+	config.smsconf = strdup(config_file.readEntry("SmsString",""));
 
-	konf->setGroup("Other");
-	config.emoticons_style = (EmoticonsStyle)konf->readNumEntry("EmoticonsStyle",EMOTS_ANIMATED);
-	emoticons.setEmoticonsTheme(konf->readEntry("EmoticonsTheme",""));
-	config.autosend = konf->readBoolEntry("AutoSend",false);
-	config.scrolldown = konf->readBoolEntry("ScrollDown",true);
-	config.chatprune = konf->readBoolEntry("ChatPrune",false);
-	config.chatprunelen = konf->readNumEntry("ChatPruneLen",20);
-	config.chathistorycitation = konf->readNumEntry("ChatHistoryCitation", 10);
-	config.chathistorycitation = konf->readNumEntry("ChatHistoryQuotation", config.chathistorycitation);
-	config.chathistorycitationtime = konf->readNumEntry("ChatHistoryQuotationTime", 336);
-	config.msgacks = konf->readBoolEntry("MessageAcks", true);
-	config.blinkchattitle = konf->readBoolEntry("BlinkChatTitle", true);
-	config.hintalert = konf->readBoolEntry("HintAlert", false);
-	config.ignoreanonusers = konf->readBoolEntry("IgnoreAnonymousUsers", false);
+	config_file.setGroup("Other");
+	config.emoticons_style = (EmoticonsStyle)config_file.readNumEntry("EmoticonsStyle",EMOTS_ANIMATED);
+	emoticons.setEmoticonsTheme(config_file.readEntry("EmoticonsTheme",""));
+	config.autosend = config_file.readBoolEntry("AutoSend",false);
+	config.scrolldown = config_file.readBoolEntry("ScrollDown",true);
+	config.chatprune = config_file.readBoolEntry("ChatPrune",false);
+	config.chatprunelen = config_file.readNumEntry("ChatPruneLen",20);
+	config.chathistorycitation = config_file.readNumEntry("ChatHistoryCitation", 10);
+	config.chathistorycitation = config_file.readNumEntry("ChatHistoryQuotation", config.chathistorycitation);
+	config.chathistorycitationtime = config_file.readNumEntry("ChatHistoryQuotationTime", 336);
+	config.msgacks = config_file.readBoolEntry("MessageAcks", true);
+	config.blinkchattitle = config_file.readBoolEntry("BlinkChatTitle", true);
+	config.hintalert = config_file.readBoolEntry("HintAlert", false);
+	config.ignoreanonusers = config_file.readBoolEntry("IgnoreAnonymousUsers", false);
 #ifdef HAVE_OPENSSL
-	config.encryption = konf->readBoolEntry("Encryption", false);
-//	config.keyslen = konf->readNumEntry("KeysLength", 1024);
+	config.encryption = config_file.readBoolEntry("Encryption", false);
+//	config.keyslen = config_file.readNumEntry("KeysLength", 1024);
 #endif
-	config.panelsyntax = konf->readEntry("PanelContents", "[#%u][, %f] %r [- %d] [ (%i)]");
-	config.chatsyntax = konf->readEntry("ChatContents", "");
-	config.conferenceprefix = konf->readEntry("ConferencePrefix", "");
-	config.conferencesyntax = konf->readEntry("ConferenceContents", "%a (%s[: %d])");
+	config.panelsyntax = config_file.readEntry("PanelContents", "[#%u][, %f] %r [- %d] [ (%i)]");
+	config.chatsyntax = config_file.readEntry("ChatContents", "");
+	config.conferenceprefix = config_file.readEntry("ConferencePrefix", "");
+	config.conferencesyntax = config_file.readEntry("ConferenceContents", "%a (%s[: %d])");
 
-	konf->setGroup("Notify");
-	config.soundnotify = strdup(konf->readEntry("NotifySound", ""));
-	config.notifyglobal = konf->readBoolEntry("NotifyStatusChange", false);
-	config.notifyall = konf->readBoolEntry("NotifyAboutAll", false);
-	config.notifydialog = konf->readBoolEntry("NotifyWithDialogBox", false);
-	config.notifysound = konf->readBoolEntry("NotifyWithSound", false);
-	config.notifyhint = konf->readBoolEntry("NotifyWithHint",true);
-//	config.notifies = konf->readListEntry("NotifyUsers");
+	config_file.setGroup("Notify");
+	config.soundnotify = strdup(config_file.readEntry("NotifySound", ""));
+	config.notifyglobal = config_file.readBoolEntry("NotifyStatusChange", false);
+	config.notifyall = config_file.readBoolEntry("NotifyAboutAll", false);
+	config.notifydialog = config_file.readBoolEntry("NotifyWithDialogBox", false);
+	config.notifysound = config_file.readBoolEntry("NotifyWithSound", false);
+	config.notifyhint = config_file.readBoolEntry("NotifyWithHint",true);
+//	config.notifies = config_file.readListEntry("NotifyUsers");
 
-	konf->setGroup("Proxy");
-	config.useproxy = konf->readBoolEntry("UseProxy", false);
-	if (!config.proxyaddr.setAddress(konf->readEntry("ProxyHost", "")))
+	config_file.setGroup("Proxy");
+	config.useproxy = config_file.readBoolEntry("UseProxy", false);
+	if (!config.proxyaddr.setAddress(config_file.readEntry("ProxyHost", "")))
 		config.proxyaddr.setAddress((unsigned int)0);
-	config.proxyport = konf->readNumEntry("ProxyPort", 0);
-	config.proxyuser = pwHash(konf->readEntry("ProxyUser", ""));
-	config.proxypassword = pwHash(konf->readEntry("ProxyPassword", ""));
+	config.proxyport = config_file.readNumEntry("ProxyPort", 0);
+	config.proxyuser = pwHash(config_file.readEntry("ProxyUser", ""));
+	config.proxypassword = pwHash(config_file.readEntry("ProxyPassword", ""));
 
-	konf->setGroup("Colors");
+	config_file.setGroup("Colors");
 	
 	QColor def_color("#FFFFFF");
-	config.colors.userboxBg = konf->readColorEntry("UserboxBgColor",&def_color);
+	config.colors.userboxBg = config_file.readColorEntry("UserboxBgColor",&def_color);
 	
 	def_color.setNamedColor("#000000");
-	config.colors.userboxFg = konf->readColorEntry("UserboxFgColor",&def_color);
+	config.colors.userboxFg = config_file.readColorEntry("UserboxFgColor",&def_color);
 	
 	def_color.setNamedColor("#E0E0E0");
-	config.colors.mychatBg = konf->readColorEntry("ChatMyBgColor",&def_color);
+	config.colors.mychatBg = config_file.readColorEntry("ChatMyBgColor",&def_color);
 	
 	def_color.setNamedColor("#F0F0F0");
-	config.colors.usrchatBg = konf->readColorEntry("ChatUsrBgColor",&def_color);
+	config.colors.usrchatBg = config_file.readColorEntry("ChatUsrBgColor",&def_color);
 	
 	def_color.setNamedColor("#000000");
-	config.colors.mychatText = konf->readColorEntry("ChatMyFontColor",&def_color);
+	config.colors.mychatText = config_file.readColorEntry("ChatMyFontColor",&def_color);
 	
 	def_color.setNamedColor("#000000");
-	config.colors.usrchatText = konf->readColorEntry("ChatUsrFontColor",&def_color);
+	config.colors.usrchatText = config_file.readColorEntry("ChatUsrFontColor",&def_color);
 	
 	def_color.setNamedColor("#C0C0C0");
-	config.colors.userboxDescBg = konf->readColorEntry("UserboxDescBgColor",&def_color);
+	config.colors.userboxDescBg = config_file.readColorEntry("UserboxDescBgColor",&def_color);
 	
 	def_color.setNamedColor("#000000");
-	config.colors.userboxDescText = konf->readColorEntry("UserboxDescTextColor",&def_color);
+	config.colors.userboxDescText = config_file.readColorEntry("UserboxDescTextColor",&def_color);
 
 	def_color.setNamedColor("#F0F0F0");
-	config.colors.trayhintBg = konf->readColorEntry("TrayHintBgColor",&def_color);
+	config.colors.trayhintBg = config_file.readColorEntry("TrayHintBgColor",&def_color);
 
 	def_color.setNamedColor("#000000");
-	config.colors.trayhintText = konf->readColorEntry("TrayHintTextColor",&def_color);
+	config.colors.trayhintText = config_file.readColorEntry("TrayHintTextColor",&def_color);
 
-	konf->setGroup("Fonts");
+	config_file.setGroup("Fonts");
 	QFontInfo info(a->font());
 	QFont def_font(info.family(),info.pointSize());
-	config.fonts.userbox = konf->readFontEntry("UserboxFont", &def_font);
-	config.fonts.chat = konf->readFontEntry("ChatFont", &def_font);
-	config.fonts.userboxDesc = konf->readFontEntry("UserboxDescFont", &def_font);
-	config.fonts.trayhint = konf->readFontEntry("TrayHintFont", &def_font);
-
-	/* no need for it anymore */
-	delete konf;
+	config.fonts.userbox = config_file.readFontEntry("UserboxFont", &def_font);
+	config.fonts.chat = config_file.readFontEntry("ChatFont", &def_font);
+	config.fonts.userboxDesc = config_file.readFontEntry("UserboxDescFont", &def_font);
+	config.fonts.trayhint = config_file.readFontEntry("TrayHintFont", &def_font);
 }
 
 void saveKaduConfig(void) {
 	QStringList servers;
 
 	kdebug("saveKaduConfig(): Writing config files...\n");
-	ConfigFile * konf;
-	konf = new ConfigFile(ggPath(QString("kadu.conf")));
-
-	konf->setGroup("Global");
-	konf->writeEntry("UIN", int(config.uin));
-	konf->writeEntry("Password", pwHash(config.password));
-	konf->writeEntry("Nick", config.nick);
-	konf->writeEntry("Geometry",kadu->geometry());
-	konf->writeEntry("Message_sound",config.soundmsg);
-	konf->writeEntry("Chat_sound",config.soundchat);
-	konf->writeEntry("Logging",config.logmessages);
-	konf->writeEntry("DefaultStatus",config.defaultstatus);
-	konf->writeEntry("DefaultDescription", config.defaultdescription);
-	konf->writeEntry("SystemMsgIndex",config.sysmsgidx);
-	konf->writeEntry("SaveGeometry",config.savegeometry);
-	konf->writeEntry("PlaySoundChat",config.playsoundchat);
-	konf->writeEntry("PlaySoundChatInvisible",config.playsoundchatinvisible);
-	konf->writeEntry("SoundPlayer",config.soundprog);
-	konf->writeEntry("PlaySound",config.playsound);
-	konf->writeEntry("PlaySoundArtsDsp",config.playartsdsp);
-	konf->writeEntry("SoundVolume",config.soundvol);
-	konf->writeEntry("VolumeControl",config.soundvolctrl);
-	konf->writeEntry("AutoAway",config.autoaway);
-	konf->writeEntry("AutoAwayTime",config.autoawaytime);
-	konf->writeEntry("AllowDCC",config.allowdcc);
-	konf->writeEntry("DccIP", config.dccip.toString());
-	konf->writeEntry("ExternalIP", config.extip.toString());
-	konf->writeEntry("ExternalPort", config.extport);
-	konf->writeEntry("isDefServers",config.default_servers);
+	config_file.setGroup("Global");
+	config_file.writeEntry("UIN", int(config.uin));
+	config_file.writeEntry("Password", pwHash(config.password));
+	config_file.writeEntry("Nick", config.nick);
+	config_file.writeEntry("Geometry",kadu->geometry());
+	config_file.writeEntry("Message_sound",config.soundmsg);
+	config_file.writeEntry("Chat_sound",config.soundchat);
+	config_file.writeEntry("Logging",config.logmessages);
+	config_file.writeEntry("DefaultStatus",config.defaultstatus);
+	config_file.writeEntry("DefaultDescription", config.defaultdescription);
+	config_file.writeEntry("SystemMsgIndex",config.sysmsgidx);
+	config_file.writeEntry("SaveGeometry",config.savegeometry);
+	config_file.writeEntry("PlaySoundChat",config.playsoundchat);
+	config_file.writeEntry("PlaySoundChatInvisible",config.playsoundchatinvisible);
+	config_file.writeEntry("SoundPlayer",config.soundprog);
+	config_file.writeEntry("PlaySound",config.playsound);
+	config_file.writeEntry("PlaySoundArtsDsp",config.playartsdsp);
+	config_file.writeEntry("SoundVolume",config.soundvol);
+	config_file.writeEntry("VolumeControl",config.soundvolctrl);
+	config_file.writeEntry("AutoAway",config.autoaway);
+	config_file.writeEntry("AutoAwayTime",config.autoawaytime);
+	config_file.writeEntry("AllowDCC",config.allowdcc);
+	config_file.writeEntry("DccIP", config.dccip.toString());
+	config_file.writeEntry("ExternalIP", config.extip.toString());
+	config_file.writeEntry("ExternalPort", config.extport);
+	config_file.writeEntry("isDefServers",config.default_servers);
 	for (int i = 0; i < config.servers.count(); i++)
 		servers.append(config.servers[i].toString());
-	konf->writeEntry("Server", servers.join(";"));
-	konf->writeEntry("DefaultPort",config.default_port);
+	config_file.writeEntry("Server", servers.join(";"));
+	config_file.writeEntry("DefaultPort",config.default_port);
 
-	konf->writeEntry("UseDocking",config.dock);
-	konf->writeEntry("RunDocked",config.rundocked);	
+	config_file.writeEntry("UseDocking",config.dock);
+	config_file.writeEntry("RunDocked",config.rundocked);	
 
-	konf->writeEntry("AutoRaise", config.raise);
-	konf->writeEntry("PrivateStatus", config.privatestatus);
-	konf->writeEntry("CheckUpdates", config.checkupdates);
-	konf->writeEntry("DisplayGroupTabs", config.grouptabs);
-	konf->writeEntry("AddToDescription", config.addtodescription);
-	konf->writeEntry("TrayHint", config.trayhint);
-	konf->writeEntry("HintError", config.hinterror);
-	konf->writeEntry("TimeoutHint", config.hinttime);
-	konf->writeEntry("ShowDesc", config.showdesc);
-	konf->writeEntry("MultiColumnUserbox", config.multicoluserbox);
+	config_file.writeEntry("AutoRaise", config.raise);
+	config_file.writeEntry("PrivateStatus", config.privatestatus);
+	config_file.writeEntry("CheckUpdates", config.checkupdates);
+	config_file.writeEntry("DisplayGroupTabs", config.grouptabs);
+	config_file.writeEntry("AddToDescription", config.addtodescription);
+	config_file.writeEntry("TrayHint", config.trayhint);
+	config_file.writeEntry("HintError", config.hinterror);
+	config_file.writeEntry("TimeoutHint", config.hinttime);
+	config_file.writeEntry("ShowDesc", config.showdesc);
+	config_file.writeEntry("MultiColumnUserbox", config.multicoluserbox);
 
 	if (config.savegeometry) {
-		konf->writeEntry("SplitSize", config.splitsize);
-		konf->writeEntry("Geometry", config.geometry);
+		config_file.writeEntry("SplitSize", config.splitsize);
+		config_file.writeEntry("Geometry", config.geometry);
 		}
 
 	QTextStream stream(&config.dockwindows, IO_WriteOnly);
 	stream << *kadu;
 	config.dockwindows.replace(QRegExp("\\n"), "\\n");
-	konf->writeEntry("DockWindows", config.dockwindows);
+	config_file.writeEntry("DockWindows", config.dockwindows);
 
-	konf->setGroup("WWW");
-	konf->writeEntry("DefaultWebBrowser", config.defaultwebbrowser);	
-	konf->writeEntry("WebBrowser", config.webbrowser);
+	config_file.setGroup("WWW");
+	config_file.writeEntry("DefaultWebBrowser", config.defaultwebbrowser);	
+	config_file.writeEntry("WebBrowser", config.webbrowser);
 
-	konf->setGroup("SMS");
-	konf->writeEntry("BuiltInApp",config.smsbuildin);	
-	konf->writeEntry("SmsApp",config.smsapp);
-	konf->writeEntry("SmsString",config.smsconf);
-	konf->writeEntry("UseCustomString",config.smscustomconf);
+	config_file.setGroup("SMS");
+	config_file.writeEntry("BuiltInApp",config.smsbuildin);	
+	config_file.writeEntry("SmsApp",config.smsapp);
+	config_file.writeEntry("SmsString",config.smsconf);
+	config_file.writeEntry("UseCustomString",config.smscustomconf);
 
-	konf->setGroup("Other");
-	konf->writeEntry("EmoticonsStyle",config.emoticons_style);
-	konf->writeEntry("EmoticonsTheme",config.emoticons_theme);
-	konf->writeEntry("AutoSend",config.autosend);
-	konf->writeEntry("ScrollDown",config.scrolldown);
-	konf->writeEntry("ChatPrune",config.chatprune);
-	konf->writeEntry("ChatPruneLen",config.chatprunelen);
-	konf->writeEntry("ChatHistoryQuotation", config.chathistorycitation);
-	konf->writeEntry("ChatHistoryQuotationTime", config.chathistorycitationtime);
-	konf->writeEntry("MessageAcks", config.msgacks);
-	konf->writeEntry("BlinkChatTitle", config.blinkchattitle);
-	konf->writeEntry("HintAlert", config.hintalert);
-	konf->writeEntry("IgnoreAnonymousUsers", config.ignoreanonusers);
+	config_file.setGroup("Other");
+	config_file.writeEntry("EmoticonsStyle",config.emoticons_style);
+	config_file.writeEntry("EmoticonsTheme",config.emoticons_theme);
+	config_file.writeEntry("AutoSend",config.autosend);
+	config_file.writeEntry("ScrollDown",config.scrolldown);
+	config_file.writeEntry("ChatPrune",config.chatprune);
+	config_file.writeEntry("ChatPruneLen",config.chatprunelen);
+	config_file.writeEntry("ChatHistoryQuotation", config.chathistorycitation);
+	config_file.writeEntry("ChatHistoryQuotationTime", config.chathistorycitationtime);
+	config_file.writeEntry("MessageAcks", config.msgacks);
+	config_file.writeEntry("BlinkChatTitle", config.blinkchattitle);
+	config_file.writeEntry("HintAlert", config.hintalert);
+	config_file.writeEntry("IgnoreAnonymousUsers", config.ignoreanonusers);
 #ifdef HAVE_OPENSSL
-        konf->writeEntry("Encryption", config.encryption);
-        //konf->writeEntry("KeysLength", config.keyslen);
+        config_file.writeEntry("Encryption", config.encryption);
+        //config_file.writeEntry("KeysLength", config.keyslen);
 #endif
-	konf->writeEntry("PanelContents", config.panelsyntax);
-	konf->writeEntry("ChatContents", config.chatsyntax);
-	konf->writeEntry("ConferencePrefix", config.conferenceprefix);
-	konf->writeEntry("ConferenceContents", config.conferencesyntax);
+	config_file.writeEntry("PanelContents", config.panelsyntax);
+	config_file.writeEntry("ChatContents", config.chatsyntax);
+	config_file.writeEntry("ConferencePrefix", config.conferenceprefix);
+	config_file.writeEntry("ConferenceContents", config.conferencesyntax);
 
-	konf->setGroup("Proxy");
-	konf->writeEntry("UseProxy",config.useproxy);
-	konf->writeEntry("ProxyHost",config.proxyaddr.toString());
-	konf->writeEntry("ProxyPort",config.proxyport);
-	konf->writeEntry("ProxyUser", pwHash(config.proxyuser));
-	konf->writeEntry("ProxyPassword", pwHash(config.proxypassword));
+	config_file.setGroup("Proxy");
+	config_file.writeEntry("UseProxy",config.useproxy);
+	config_file.writeEntry("ProxyHost",config.proxyaddr.toString());
+	config_file.writeEntry("ProxyPort",config.proxyport);
+	config_file.writeEntry("ProxyUser", pwHash(config.proxyuser));
+	config_file.writeEntry("ProxyPassword", pwHash(config.proxypassword));
 
-	konf->setGroup("Notify");
-//	konf->writeEntry("NotifyUsers", config.notifies);
-	konf->writeEntry("NotifySound", config.soundnotify);
-	konf->writeEntry("NotifyStatusChange", config.notifyglobal);
-	konf->writeEntry("NotifyAboutAll", config.notifyall);
-	konf->writeEntry("NotifyWithDialogBox", config.notifydialog);
-	konf->writeEntry("NotifyWithSound", config.notifysound);
-	konf->writeEntry("NotifyWithHint", config.notifyhint);
+	config_file.setGroup("Notify");
+//	config_file.writeEntry("NotifyUsers", config.notifies);
+	config_file.writeEntry("NotifySound", config.soundnotify);
+	config_file.writeEntry("NotifyStatusChange", config.notifyglobal);
+	config_file.writeEntry("NotifyAboutAll", config.notifyall);
+	config_file.writeEntry("NotifyWithDialogBox", config.notifydialog);
+	config_file.writeEntry("NotifyWithSound", config.notifysound);
+	config_file.writeEntry("NotifyWithHint", config.notifyhint);
 
-	konf->setGroup("Colors");
-	konf->writeEntry("UserboxBgColor", config.colors.userboxBg);
-	konf->writeEntry("UserboxFgColor", config.colors.userboxFg);
-	konf->writeEntry("ChatMyBgColor", config.colors.mychatBg);
-	konf->writeEntry("ChatUsrBgColor", config.colors.usrchatBg);
-	konf->writeEntry("ChatMyFontColor", config.colors.mychatText);
-	konf->writeEntry("ChatUsrFontColor", config.colors.usrchatText);
-	konf->writeEntry("UserboxDescBgColor", config.colors.userboxDescBg);
-	konf->writeEntry("UserboxDescTextColor", config.colors.userboxDescText);
-	konf->writeEntry("TrayHintBgColor", config.colors.trayhintBg);
-	konf->writeEntry("TrayHintTextColor", config.colors.trayhintText);
+	config_file.setGroup("Colors");
+	config_file.writeEntry("UserboxBgColor", config.colors.userboxBg);
+	config_file.writeEntry("UserboxFgColor", config.colors.userboxFg);
+	config_file.writeEntry("ChatMyBgColor", config.colors.mychatBg);
+	config_file.writeEntry("ChatUsrBgColor", config.colors.usrchatBg);
+	config_file.writeEntry("ChatMyFontColor", config.colors.mychatText);
+	config_file.writeEntry("ChatUsrFontColor", config.colors.usrchatText);
+	config_file.writeEntry("UserboxDescBgColor", config.colors.userboxDescBg);
+	config_file.writeEntry("UserboxDescTextColor", config.colors.userboxDescText);
+	config_file.writeEntry("TrayHintBgColor", config.colors.trayhintBg);
+	config_file.writeEntry("TrayHintTextColor", config.colors.trayhintText);
 
-	konf->setGroup("Fonts");
-	konf->writeEntry("UserboxFont", config.fonts.userbox);
-	konf->writeEntry("ChatFont", config.fonts.chat);
-	konf->writeEntry("UserboxDescFont", config.fonts.userboxDesc);
-	konf->writeEntry("TrayHintFont", config.fonts.trayhint);
+	config_file.setGroup("Fonts");
+	config_file.writeEntry("UserboxFont", config.fonts.userbox);
+	config_file.writeEntry("ChatFont", config.fonts.chat);
+	config_file.writeEntry("UserboxDescFont", config.fonts.userboxDesc);
+	config_file.writeEntry("TrayHintFont", config.fonts.trayhint);
 	
-	konf->sync();
-	delete konf;
+	config_file.sync();
 }
 
 QString ConfigDialog::acttab = "tab1";
@@ -370,6 +361,24 @@ ConfigDialog::ConfigDialog(QWidget *parent, const char *name) : QTabDialog(paren
 	setupTab6();
 	setupTab7();
 
+	// nowy mechanizm	
+	QMap<QString,QVBox*> Tabs;
+	for(QValueList<RegisteredControl>::iterator i=RegisteredControls.begin(); i!=RegisteredControls.end(); i++)
+	{
+		if(!Tabs.contains((*i).tab_name))
+		{
+			QVBox* box = new QVBox(this);
+			box->setMargin(2);
+			addTab(box,(*i).tab_name);
+			Tabs.insert((*i).tab_name,box);
+		};
+		QCheckBox* check=new QCheckBox((*i).caption,Tabs[(*i).tab_name]);
+		config_file.setGroup((*i).group);
+		check->setChecked(config_file.readBoolEntry((*i).entry));
+		(*i).widget=check;
+	};
+	//
+
 	connect(this, SIGNAL(applyButtonPressed()), this, SLOT(updateConfig()));
 	setCancelButton(i18n("Cancel"));
 	connect(this, SIGNAL(cancelButtonPressed()), this, SLOT(close()));
@@ -387,6 +396,18 @@ ConfigDialog::ConfigDialog(QWidget *parent, const char *name) : QTabDialog(paren
 ConfigDialog::~ConfigDialog() {
 	configdialog = NULL;
 	acttab = QString(currentPage()->name());
+};
+
+void ConfigDialog::registerCheckbox(
+			const QString& tab,const QString& caption,
+			const QString& group,const QString& entry)
+{
+	RegisteredControl c;
+	c.tab_name=tab;
+	c.caption=caption;
+	c.group=group;
+	c.entry=entry;
+	RegisteredControls.append(c);
 };
 
 void ConfigDialog::setupTab1(void) {
@@ -1754,6 +1775,15 @@ void ConfigDialog::updateConfig(void) {
 	saveKaduConfig();
 	userlist.writeToFile();
 
+	// nowy mechanizm
+	for(QValueList<RegisteredControl>::iterator i=RegisteredControls.begin(); i!=RegisteredControls.end(); i++)
+	{
+		config_file.setGroup((*i).group);
+		config_file.writeEntry((*i).entry,(*i).widget->isChecked());
+	};
+	config_file.sync();
+	//
+
 	/* I odswiez okno Kadu */
 	kadu->changeAppearance();
 	for (i = 0; i < chats.count(); i++)
@@ -1762,3 +1792,5 @@ void ConfigDialog::updateConfig(void) {
 }
 
 struct config config;
+
+QValueList<ConfigDialog::RegisteredControl> ConfigDialog::RegisteredControls;

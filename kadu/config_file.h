@@ -63,4 +63,6 @@ class ConfigFile {
 		struct ConfigFileGroup *activegroup;
 };
 
+extern ConfigFile config_file;
+
 #endif

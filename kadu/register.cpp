@@ -51,13 +51,10 @@ void createConfig() {
 		}
 
 	kdebug("createConfig(): Writing config files...\n");
-	ConfigFile *konf;
-	konf = new ConfigFile(ggPath("kadu.conf"));
-	konf->setGroup("Global");
-	konf->writeEntry("UIN", int(config.uin));
-	konf->writeEntry("Password", pwHash(config.password));
-	konf->sync();
-	delete konf;
+	config_file.setGroup("Global");
+	config_file.writeEntry("UIN", int(config.uin));
+	config_file.writeEntry("Password", pwHash(config.password));
+	config_file.sync();
 
 	kadu->setCaption(QString("Kadu: %1").arg(config.uin));
 

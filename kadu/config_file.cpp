@@ -328,3 +328,4 @@ QFont ConfigFile::readFontEntry(const QString &name, const QFont *def) const {
 	return font;
 }
 
+ConfigFile config_file(ggPath(QString("kadu.conf")));
