@@ -1334,7 +1334,7 @@ void Kadu::setStatus(int status) {
 	loginparams.status = status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General", "PrivateStatus"));
 	if (with_description)
 		loginparams.status_descr = strdup((const char *)unicode2cp(own_description));
-		loginparams.password = strdup((const char *)unicode2cp(pwHash(config_file.readEntry("General", "Password"))));
+	loginparams.password = strdup((const char *)unicode2cp(pwHash(config_file.readEntry("General", "Password"))));
 	char *tmp = strdup((const char *)unicode2latin(pwHash(config_file.readEntry("General", "Password"))));
 	kdebug("Kadu::setStatus(): password = %s\n", tmp);
 	free(tmp);
@@ -1387,7 +1387,7 @@ void Kadu::setStatus(int status) {
 	ConnectionTimeoutTimer::on();
 	ConnectionTimeoutTimer::connectTimeoutRoutine(&event_manager, SLOT(connectionTimeoutTimerSlot()));
 	sess = gg_login(&loginparams);
-	free(loginparams.client_version);
+//	free(loginparams.client_version);
 	free(loginparams.password);
 	if (loginparams.status_descr)
 		free(loginparams.status_descr);
