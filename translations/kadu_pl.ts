@@ -103,7 +103,7 @@
     </message>
     <message>
         <source>Log messages</source>
-        <translation>Przechowuj wiadomości</translation>
+        <translation>Zapisuj wiadomości</translation>
     </message>
     <message>
         <source>Restore window geometry</source>
@@ -447,7 +447,7 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     </message>
     <message>
         <source>Align icon next to contact name</source>
-        <translation>Umięść ikonę na wysokości nazwy kontaktu</translation>
+        <translation>Umieść ikonę na wysokości nazwy kontaktu</translation>
     </message>
     <message>
         <source>Icon theme</source>
@@ -671,11 +671,11 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     </message>
     <message>
         <source>Force use of paragraphs (VERY experimental)</source>
-        <translation>Używaj paragrafów (BARDZO EKSPERYMENTALNE)</translation>
+        <translation>Wymuś użycie paragrafów (BARDZO EKSPERYMENTALNE)</translation>
     </message>
     <message>
         <source>Qt Theme</source>
-        <translation>Style QT</translation>
+        <translation>Style Qt</translation>
     </message>
     <message>
         <source>Please do not run Kadu as a root!
