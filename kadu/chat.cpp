@@ -617,7 +617,7 @@ void Chat::formatMessage(bool me, const QString &altnick, const QString &msg, co
 		toadd.append(config.colors.usrchatText.name());
 	toadd.append("\"><B>");
 	toadd.append(altnick);
-	toadd.append(" ");
+	toadd.append(" :: ");
 	toadd.append(time + "</B><BR>" + editext + "</TD></TR></TABLE></FONT>");
 }
 
@@ -692,10 +692,10 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time) {
 			if (entries[i].type == HISTORYMANAGER_ENTRY_MSGSEND
 				|| entries[i].type == HISTORYMANAGER_ENTRY_CHATSEND)
 				formatMessage(true, config.nick, entries[i].message,
-					QString(":: ") + printDateTime(entries[i].date), toadd);
+					printDateTime(entries[i].date), toadd);
 			else
 				formatMessage(false, entries[i].nick, entries[i].message,
-					QString(":: ") + printDateTime(entries[i].date) + QString(" / S ")
+					printDateTime(entries[i].date) + QString(" / S ")
 					+ printDateTime(entries[i].sdate), toadd);
 	if (toadd.length())
 		scrollMessages(toadd);
