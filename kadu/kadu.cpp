@@ -1352,7 +1352,7 @@ void Kadu::setStatus(int status) {
 	free(tmp);
 	loginparams.uin = config_file.readNumEntry("General", "UIN");
 	loginparams.client_version = GG_DEFAULT_CLIENT_VERSION;
-	loginparams.has_audio = 1;
+	loginparams.has_audio = config_file.readBoolEntry("Network", "AllowDCC");
 
 	if (config_file.readBoolEntry("Network", "AllowDCC") && config_extip.ip4Addr() && config_file.readNumEntry("Network", "ExternalPort") > 1023) {
 		loginparams.external_addr = htonl(config_extip.ip4Addr());
@@ -1385,8 +1385,8 @@ void Kadu::setStatus(int status) {
 //	polaczenia TLS z serwerami GG na razie nie dzialaja
 //	loginparams.tls = config_file.readBoolEntry("Network", "UseTLS");
 	loginparams.tls = 0;
-	loginparams.protocol_version = 0x21;
-	loginparams.client_version = strdup("6, 0, 0, 135");
+	loginparams.protocol_version = 0x20;
+	loginparams.client_version = strdup("6, 0, 0, 132");
 	if (loginparams.tls) {
 		kdebug("Kadu::setStatus(): using TLS\n");
 		loginparams.server_port = 0;

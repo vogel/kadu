@@ -143,7 +143,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * instalacja pliku kadu-config.h do $PREFIX/include/kadu (adrian)
 * w oknie konfiguracyjnym opcje moze byc zapisywane do alternatywnych
   plikow (michal)
- 
+* loginparams.has_audio = 1, gdy mamy DCC w³±czone; przedstawiamy siê jako wersja
+  gg 6.0.0.132 (chilek)
+
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
 * okno konfiguracji: mo¿liwo¶æ wy³±czenia zmian statusu w historii (demsik/chilek)
