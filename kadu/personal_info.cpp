@@ -98,32 +98,46 @@ void PersonalInfoDialog::OkButtonClicked()
 
 	char *nick, *first, *last, *city, *born, *family_name, *family_city;
 
-	nick = strdup(unicode2cp(NicknameEdit->text()).data());
-	first = strdup(unicode2cp(NameEdit->text()).data());
-	last = strdup(unicode2cp(SurnameEdit->text()).data());
-	city = strdup(unicode2cp(CityEdit->text()).data());
-	born = strdup(unicode2cp(BirthyearEdit->text()).data());
-	family_name = strdup(unicode2cp(FamilyNameEdit->text()).data());
-	family_city = strdup(unicode2cp(FamilyCityEdit->text()).data());
+	nick = NicknameEdit->text().length() ? strdup(unicode2cp(NicknameEdit->text()).data()) : NULL;
+	first = NameEdit->text().length() ? strdup(unicode2cp(NameEdit->text()).data()) : NULL;
+	last = SurnameEdit->text().length() ? strdup(unicode2cp(SurnameEdit->text()).data()) : NULL;
+	city = CityEdit->text().length() ? strdup(unicode2cp(CityEdit->text()).data()) : NULL;
+	born = BirthyearEdit->text().length() ? strdup(unicode2cp(BirthyearEdit->text()).data()) : NULL;
+	family_name = FamilyNameEdit->text().length() ? strdup(unicode2cp(FamilyNameEdit->text()).data()) : NULL;
+	family_city = FamilyCityEdit->text().length() ? strdup(unicode2cp(FamilyCityEdit->text()).data()) : NULL;
 
 	gg_pubdir50_t req;
 	req = gg_pubdir50_new(GG_PUBDIR50_WRITE);
-	if (strlen(first))
+	if (first) {
 		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)first);
-	if (strlen(last))
+		free(first);
+		}
+	if (last) {
 		gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, (const char *)last);
-	if (strlen(nick))
+		free(last);
+		}
+	if (nick) {
 		gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)nick);
-	if (strlen(city))
+		free(nick);
+		}
+	if (city) {
 		gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)city);
+		free(city);
+		}
 	if (GenderCombo->currentItem())
 		gg_pubdir50_add(req, GG_PUBDIR50_GENDER, QString::number(GenderCombo->currentItem()).latin1());
-	if (strlen(born))
+	if (born) {
 		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)born);
-	if (strlen(family_name))
+		free(born);
+		}
+	if (family_name) {
 		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYNAME, (const char *)family_name);
-	if (strlen(family_city))
+		free(family_name);
+		}
+	if (family_city) {
 		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYCITY, (const char *)family_city);
+		free(family_city);
+		}
 
 	seq = gg_pubdir50(sess, req);
 	gg_pubdir50_free(req);
@@ -132,15 +146,7 @@ void PersonalInfoDialog::OkButtonClicked()
 	State = WRITTING;
 
 	setEnabled(false);
-
-	free(nick);
-	free(first);
-	free(last);
-	free(city);
-	free(born);
-	free(family_name);
-	free(family_city);
-};
+}
 
 void PersonalInfoDialog::fillFields(gg_pubdir50_t res)
 {
@@ -172,7 +178,7 @@ void PersonalInfoDialog::fillFields(gg_pubdir50_t res)
 				SurnameEdit->setText(cp2unicode((unsigned char *)last));
 			if (nick)
 				NicknameEdit->setText(cp2unicode((unsigned char *)nick));
-			if (born)
+			if (born && strcmp(born, "0"))
 				BirthyearEdit->setText(cp2unicode((unsigned char *)born));
 			if (city)
 				CityEdit->setText(cp2unicode((unsigned char *)city));

@@ -27,7 +27,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   kompatybilna z now±(zadzia³aj± ustawienia domy¶lne, które to mog± ulec
   zmianie jak i inne nazwy zmiennych w pliku konfiguracyjnym) trzeba jeszcze
   zrobiæ porz±dki w konfiguracji, wywaliæ nieaktualne kontrolki (mast3r)
-  
+* gdy w danych osobistych otrzymamy rok urodzenia równy 0 pole rok urodzenia
+  w dialogu danych osobistych pozostaje puste (chilek)
+
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci
   (klasa HtmlDocument) i wy³awiania emotów i url-i. Naprawione
