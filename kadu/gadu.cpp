@@ -2388,6 +2388,7 @@ void GaduProtocol::userStatusChanged(const struct gg_event *e)
 		// ignore!
 		kdebugmf(KDEBUG_INFO, "buddy %d not in list. Damned server!\n", uin);
 		gg_remove_notify(Sess, uin);
+		emit userStatusChangeIgnored(uin);
 		return;
 	}
 

@@ -391,6 +391,7 @@ class GaduProtocol : public QObject
 			@todo Wywaliæ, zamieniæ na connected
 		**/
 		bool UserListSent;
+
 		/**
 			Zmienna ustawiana w zale¿no¶ci od tego, czy wysy³amy listê kontaktów na serwer
 			czy te¿ usuwamy j± z tego serwera. Zakoñczenie obydwu tych czynno¶ci wywo³uje
@@ -459,6 +460,7 @@ class GaduProtocol : public QObject
 			@see gotToken
 		**/
 		void doRegisterAccount();
+
 		/**
 			Wyrejestrowuje konto. Wywo³ywane przez gotToken (które jest wywo³ane po¶rednio przez
 			unregisterAccount). Korzysta z pomocy PubdirSocketNotifiers oraz slotu unregisterDone,
@@ -470,6 +472,7 @@ class GaduProtocol : public QObject
 			@see gotToken
 		**/
 		void doUnregisterAccount();
+
 		/**
 			Przypomina has³o. Wywo³ywane przez gotToken (które jest wywo³ane po¶rednio przez
 			remindPassword). Korzysta z pomocy PubdirSocketNotifiers oraz slotu remindDone,
@@ -481,6 +484,7 @@ class GaduProtocol : public QObject
 			@see gotToken
 		**/
 		void doRemindPassword();
+
 		/**
 			Zmienia has³o. Wywo³ywane przez gotToken (które jest wywo³ane po¶rednio przez
 			changePassword). Korzysta z pomocy PubdirSocketNotifiers oraz slotu changePasswordDone,
@@ -516,6 +520,7 @@ class GaduProtocol : public QObject
 			@see ServerNr
 		**/
 		void login();
+
 		/**
 			Wywo³ywany po zarejestrowaniu konta. Emituje registered/
 
@@ -524,6 +529,7 @@ class GaduProtocol : public QObject
 			@see registered
 		**/
 		void registerDone(bool ok, struct gg_http *);
+
 		/**
 			Wywo³ywany po wyrejestrowaniu konta. Emituje unregistered.
 
@@ -532,6 +538,7 @@ class GaduProtocol : public QObject
 			@see unregistered
 		**/
 		void unregisterDone(bool ok, struct gg_http *);
+
 		/**
 			Wywo³ywany po przypomnieniu has³a. Emituje reminded.
 
@@ -540,6 +547,7 @@ class GaduProtocol : public QObject
 			@see reminded
 		**/
 		void remindDone(bool ok, struct gg_http *);
+
 		/**
 			Wywo³ywany po zmianie has³a. Emituje passwordChanged.
 
@@ -570,6 +578,7 @@ class GaduProtocol : public QObject
 			@see connected
 		**/
 		void connectedSlot();
+
 		/**
 			Slot wywo³ywany po roz³±czeniu z serwerem. Emituje disconnected i wy³±cza pingowanie
 			serwera.
@@ -577,10 +586,12 @@ class GaduProtocol : public QObject
 			@see disconnected
 		**/
 		void disconnectedSlot();
+
 		/**
 			Slot wywo³ywany po przekroczeniu czasu po³±czenia. Próbuje po³aczyæ ponownie.
 		**/
 		void connectionTimeoutTimerSlot();
+
 		/**
 			Slot wywo³ywane po wyst±pieniu b³êdu po³±czenia. Emituje disconnected i error.
 
@@ -588,6 +599,7 @@ class GaduProtocol : public QObject
 			@see disconnected
 		**/
 		void errorSlot(GaduError);
+
 		/**
 			Slot wywo³ywany po otrzymaniu obrazka od serwera. Emituje imageReceivedAndSaved
 
@@ -595,30 +607,36 @@ class GaduProtocol : public QObject
 		**/
 		void imageReceived(UinType sender, uint32_t size, uint32_t crc32,
 			const QString &filename, const char *data);
+
 		/**
 			Slot wywo³ywany po otrzymaniu pro¶by o obrazek od serwera. Wysy³a obrazek.
 		**/
 		void imageRequestReceivedSlot(UinType, uint32_t, uint32_t);
+
 		/**
 			Slot wywo³ywany po otrzymaniu wiadomo¶ci od serwera.
 		**/
 		void messageReceived(int, UinsList, QCString& msg, time_t, QByteArray &formats);
+
 		/**
 			Co pewien czas pinguje serwer.
 		**/
 		void pingNetwork();
+
 		/**
 			Obs³uguje otrzymanie nowych wyników wyszukiwania z serwera. Emituje newSearchResults.
 
 			@see newSearchResults
 		**/
 		void newResults(gg_pubdir50_t res);
+
 		/**
 			Nowa wiadomo¶æ od serwera. Emituje systemMessageReceived
 
 			@see systemMessageReceived
 		**/
 		void systemMessageReceived(QString &, QDateTime &, int, void *);
+
 		/**
 			Pobrano listê u¿ytkowników z serwera. Emituje userStatusChanged dla ka¿dego
 			otrzymanego kontaktu oraz userListChanged przed zakoñczeniem dzia³ania.
@@ -627,6 +645,7 @@ class GaduProtocol : public QObject
 			@see userListChanged
 		**/
 		void userListReceived(const struct gg_event *);
+
 		/**
 			Odpowied¼ od serwera na temat operacji na li¶cie u¿ytkowników. Emituje, w zale¿no¶ci
 			od trybu dzia³ania: userListCleared, userListExported, userListImported.
@@ -636,6 +655,7 @@ class GaduProtocol : public QObject
 			@see userListImported
 		**/
 		void userListReplyReceived(char, char *);
+
 		/**
 			Informacja o zmianie statusu kontaktu. Emituje userStatusChanged oraz userListChanged.
 
@@ -653,6 +673,7 @@ class GaduProtocol : public QObject
 			@see login
 		**/
 		void iWantGoOnline(const QString &);
+
 		/**
 			Kto¶ wykona³ gadu.status().setBusy(). £±czymy z serwerem, je¿eli jeszcze tego nie
 			zrobili¶my, i zmieniamy status.
@@ -662,6 +683,7 @@ class GaduProtocol : public QObject
 			@see login
 		**/
 		void iWantGoBusy(const QString &);
+
 		/**
 			Kto¶ wykona³ gadu.status().setInvisible(). £±czymy z serwerem, je¿eli jeszcze tego nie
 			zrobili¶my, i zmieniamy status.
@@ -671,6 +693,7 @@ class GaduProtocol : public QObject
 			@see login
 		**/
 		void iWantGoInvisible(const QString &);
+
 		/**
 			Kto¶ wykona³ gadu.status().setOffline(). Roz³±czamy siê z serwerem i ustawiamy opis (je¿eli
 			byli¶my po³±czeni).
@@ -697,7 +720,7 @@ class GaduProtocol : public QObject
 		
 	public:
 		static void initModule();
-		GaduProtocol(QObject *parent=NULL, const char *name=NULL);
+		GaduProtocol(QObject *parent = NULL, const char *name = NULL);
 		virtual ~GaduProtocol();
 
 		/**
@@ -796,6 +819,7 @@ class GaduProtocol : public QObject
 			@see streamToUserList
 		**/
 		QString userListToString(const UserList &userList) const;
+
 		/**
 			Konwertujê ³añcuch do listy u¿ytkowników.
 
@@ -808,6 +832,7 @@ class GaduProtocol : public QObject
 			@see streamToUserList
 		**/
 		void stringToUserList(QString &source, UserList &userList) const;
+
 		/**
 			Odczytuje ze strumienia ³añcuch reprezentuj±cy listê u¿ytkowników i konwertuje
 			go go postaci obiektu UserList.
@@ -833,6 +858,7 @@ class GaduProtocol : public QObject
 			@todo zmieniæ nazwê na connected
 		**/
 		bool userListSent();
+
 		/**
 			Ustawia adres IP który ma byæ przekazany do serwera GG
 			jako adres komputera, który przekierowuje do nas port DCC.
@@ -1019,9 +1045,24 @@ class GaduProtocol : public QObject
 		void setDccIpAndPort(unsigned long dcc_ip, int dcc_port);
 
 		// przeniesione z events.h
+		/**
+			@todo uprywatniæ
+		**/
 		void onCreateConfigDialog();
+
+		/**
+			@todo uprywatniæ
+		**/
 		void onDestroyConfigDialog();
+
+		/**
+			@todo uprywatniæ
+		**/
 		void ifDefServerEnabled(bool value);
+
+		/**
+			@todo uprywatniæ
+		**/
 		void useTlsEnabled(bool value);
 
 		/**
@@ -1102,37 +1143,161 @@ class GaduProtocol : public QObject
 		/**
 			otrzymano informacjê o potwierdzeniu wiadomo¶ci
 			
-			wkrótce ten sygna³ zostanie usuniêty
-			proszê u¿ywaæ messageAccepted() i messageRejected() lub szczegó³owych odpowiedników
+			@todo usun±æ
+			@see messageAccepted
+			@see messageRejected
+
+			@see messageBlocked
+			@see messageDelivered
+			@see messageQueued
+			@see messageBoxFull
+			@see messageNotDelivered
 		**/
 		void ackReceived(int seq);
-		
+
+		/**
+			uda³o siê zalogowaæ
+		**/
 		void connected();
+
+		/**
+			rozpoczynamy procedurê logowania siê
+		**/
 		void connecting();
+
+		/**
+			roz³±czyli¶my siê z serwerem
+		**/
 		void disconnected();
-		void error(GaduError);
+
 		/**
 			wyst±pi³ b³±d po³±czenia
+			@param err przyczyna
+			@see connectionError
+		**/
+		void error(GaduError err);
+
+		/**
+			wyst±pi³ b³±d po³±czenia
+			@param reason napis do wy¶wietlenia dla u¿ytkownika
 		**/
 		void connectionError(const QString &reason);
-		void imageRequestReceived(UinType, uint32_t, uint32_t);
+
+		/**
+			dostali¶my pro¶bê o przys³anie obrazka
+			@param sender od kogo
+			@param size rozmiar pliku
+			@param crc32 jego suma kontrolna obliczana przy pomocy crc32
+		**/
+		void imageRequestReceived(UinType sender, uint32_t size, uint32_t crc32);
+
 		/**
 			Otrzymano dane obrazka i zapisano go do pliku.
+			@param sender od kogo
+			@param size rozmiar pliku
+			@param crc32 jego suma kontrolna obliczana przy pomocy crc32
+			@param path ¶cie¿ka do zapisanego pliku
 		**/
 		void imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &path);
+
+		/**
+			lista kontaktów zosta³a zmodyfikowana
+		**/
 		void userListChanged();
-		void userStatusChanged(const UserListElement &, const UserStatus &oldStatus, bool onConnection = false);
-		void systemMessageReceived(QString &);
-		void dccConnectionReceived(const UserListElement&);
+
+		/**
+			dostali¶my od serwera informacjê o zmianie statusu
+			@param user kontakt, który w³a¶nie zmieni³ status
+			@param oldStatus stary startus
+			@param onConnection czy zmiana zwi±zana jest z pod³±czeniem siê do serwera
+		**/
+		void userStatusChanged(const UserListElement &user, const UserStatus &oldStatus, bool onConnection = false);
+
+		/**
+			dostali¶my od serwera informacjê o zmianie statusu dla kontaktu,
+			którego nie mamy na li¶cie
+		**/
+		void userStatusChangeIgnored(UinType uin);
+
+		/**
+			otrzymana wiadomo¶æ systemow±
+			@param message tre¶æ wiadomo¶ci wraz z dat±
+		**/
+		void systemMessageReceived(const QString &message);
+
+		/**
+			Otrzymano wiadomo¶æ CTCP.
+			Kto¶ nas prosi o po³±czenie dcc, poniewa¿
+			jeste¶my za NAT-em
+			@param user wywo³uj±cy
+			@todo zmieniæ nazwê
+		**/
+		void dccConnectionReceived(const UserListElement &user);
+
+		/**
+			martwy sygna³
+			@todo usun±æ
+		**/
 		void disconnectNetwork();
+
+		/**
+			otrzymano nowe wyniki wyszukiwania w katalogu publicznym
+			@param searchResults wyniki
+			@param seq numer sekwencyjny
+			@param lastUin ?
+		**/
 		void newSearchResults(SearchResults& searchResults, int seq, int lastUin);
+
+		/**
+			operacja rejestracji nowego konta zosta³a zakoñczona
+			@param ok powodzenie operacji
+			@param uin nowy numer
+			@see doRegisterAccount
+		**/
 		void registered(bool ok, UinType uin);
+
+		/**
+			operacja wyrejestrowania konta zosta³a zakoñczona
+			@param ok powodzenie operacji
+			@see doUnregisterAccount
+		**/
 		void unregistered(bool ok);
+
+		/**
+			operacja przypomnienia has³a zosta³a zakoñczona
+			@param ok powodzenie operacji
+			@see doRemindPassword
+		**/
 		void reminded(bool ok);
+
+		/**
+			operacja zmiany has³a zosta³a zakoñczona
+			@param ok powodzenie operacji
+			@see doChangePassword
+		**/
 		void passwordChanged(bool ok);
+
+		/**
+			operacja eksportu listy kontaktów na serwer zosta³a zakoñczona
+			@param ok powodzenie operacji
+			@see doExportUserList
+		**/
 		void userListExported(bool ok);
+
+		/**
+			operacja usuniêcia listy kontaktów z serwera zosta³a zakoñczona
+			@param ok powodzenie operacji
+			@see doClearUserList
+		**/
 		void userListCleared(bool ok);
-		void userListImported(bool ok, UserList&);
+
+		/**
+			operacja importu listy kontaktów z serwera zosta³a zakoñczona
+			@param ok powodzenie operacji
+			@param list je¿eli operacja siê powiod³a, to zaimportowana lista
+			@see doImportUserList
+		**/
+		void userListImported(bool ok, UserList &list);
 
 		/**
 			Sygna³ daje mozliwo¶æ operowania na wiadomo¶ci
