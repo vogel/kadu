@@ -1,4 +1,5 @@
 [Module]
 Description=Network Audio System sound module
+Description[pl]=Modu³ obs³ugi d¼wieku przez NAS
 Author=Kadu Team
 Dependencies=sound

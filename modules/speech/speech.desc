@@ -1,3 +1,4 @@
 [Module]
 Description="Speech" module
+Description[pl]=Modu³ obs³ugi "G³o¶nego czytania" przez zewnetrzny program "Powiedz"
 Author=Kadu Team

@@ -1,4 +1,5 @@
 [Module]
 Description=External application sound module
+Description[pl]=Modu³ obs³ugi d¼wiêku przez zewnêtrzn± aplikacjê
 Author=Kadu Team
 Dependencies=sound

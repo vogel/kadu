@@ -1,4 +1,5 @@
 [Module]
 Description=SMS Gateway for idea, plus and eragsm module
+Description[pl]=Modu³ obs³ugi bramek Idea, Plus, Era
 Author=Kadu Team
 Dependencies=sms

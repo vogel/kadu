@@ -1,4 +1,5 @@
 [Module]
 Description=ESD sound module
+Description[pl]=Modu³ obs³ugi d¼wiêku przez ESD
 Author=Kadu Team
 Dependencies=sound

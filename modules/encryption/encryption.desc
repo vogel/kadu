@@ -1,3 +1,4 @@
 [Module]
 Description=OpenSSL chat encryption module
+Description[pl]=Modu³ obs³ugi szyfrowania rozmów w OpenSSL
 Author=Kadu Team
