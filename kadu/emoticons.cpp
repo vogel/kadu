@@ -46,7 +46,7 @@ void EmoticonsManager::loadEmoticonsRegexpList()
 	while(!emoticons_stream.atEnd())
 	{
 		regexp=emoticons_stream.readLine();
-		if(regexp=="") continue;
+		if(regexp==""||regexp[0]=='#') continue;
 		QString picname=emoticons_stream.readLine();
 		EmoticonsRegexpListItem item;
 		item.regexp=regexp;
@@ -66,7 +66,7 @@ void EmoticonsManager::loadEmoticonsSelectorList()
 	while(!emoticons_stream.atEnd())
 	{
 		string=emoticons_stream.readLine();
-		if(string=="") continue;	
+		if(string==""||string[0]=='#') continue;	
 		QString picname=emoticons_stream.readLine();
 		EmoticonsSelectorListItem item;
 		item.string=string;
