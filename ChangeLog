@@ -75,6 +75,7 @@
   ³aduje siê z dysku tylko raz w ci±gu danej sesji kadu i jest dzielona
   miêdzy wszyskie te same emotikony we wszystkich oknach chat (adrian)
 * ograniczenie liczby jednocze¶nie akceptowanych po³±czeñ DCC do o¶miu (chilek)
+* obs³uga wznawiania zerwanych transmisji plików poprzez DCC (chilek)
 
 +++ wersja 0.3.3-final
 * ikonka wiadomo¶ci i ikon statusu "ukryty" z telefonikiem
