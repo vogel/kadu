@@ -33,8 +33,8 @@ bool PendingMsgs::pendingMsgs(UinType uin)
 {
 	if(uin==0)
 		return pendingMsgs();
-	for(PendingMsgsList::iterator i=msgs.begin(); i!=msgs.end(); ++i)
-		if((*i).uins[0]==uin)
+	FOREACH(msg, msgs)
+		if((*msg).uins[0]==uin)
 			return true;
 	return false;
 }
@@ -79,13 +79,13 @@ void PendingMsgs::writeToFile()
 	int t=msgs.count();
 	f.writeBlock((char*)&t,sizeof(int));
 	// Teraz w petli dla kazdej wiadomosci
-	for(PendingMsgsList::iterator i=msgs.begin(); i!=msgs.end(); ++i)
+	FOREACH(i, msgs)
 	{
 		// zapisujemy uiny - najpierw ilosc
 		t=(*i).uins.size();
 		f.writeBlock((char*)&t,sizeof(int));
 		// teraz dane
-		for(UinsList::iterator j=(*i).uins.begin(); j!=(*i).uins.end(); ++j)
+		FOREACH(j, (*i).uins)
 			f.writeBlock((char*)&(*j),sizeof(UinType));
 		// nastepnie wiadomosc - dlugosc
 		t=(*i).msg.length();

@@ -309,8 +309,7 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 
 	// ??	if ((status && atoi(status) <= 1 && only_active->isChecked()) || !status)
 
-	SearchResults::const_iterator end=searchResults.end();
-	for (SearchResults::const_iterator searchIterator = searchResults.begin(); searchIterator != end; ++searchIterator)
+	FOREACH(searchIterator, searchResults)
 	{
 		qlv = results->findItem((*searchIterator).Uin, 1);
 

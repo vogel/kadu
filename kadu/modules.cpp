@@ -295,7 +295,7 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager")
 	ConfigDialog::addVGroupBox("ShortCuts", "ShortCuts", "Define keys");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QString("&Manage Modules").replace(QRegExp("&"), ""), "kadu_modulesmanager", "F4");
 
-	for(QMap<QString, Module>::const_iterator it=Modules.begin(); it!=Modules.end(); ++it)
+	FOREACH(it, Modules)
 		kdebugm(KDEBUG_INFO, "module: %s, usage: %d\n", it.key().local8Bit().data(), it.data().usage_counter);
 
 	kdebugf2();
@@ -305,7 +305,7 @@ ModulesManager::~ModulesManager()
 {
 	kdebugf();
 
-	for(QMap<QString, Module>::const_iterator it=Modules.begin(); it!=Modules.end(); ++it)
+	FOREACH(it, Modules)
 		kdebugm(KDEBUG_INFO, "module: %s, usage: %d\n", it.key().local8Bit().data(), it.data().usage_counter);
 
 	// Wyladowujemy wszystkie nieu¿ywane modu³y
@@ -399,7 +399,7 @@ void ModulesManager::registerStaticModule(const QString& module_name,
 QStringList ModulesManager::staticModules() const
 {
 	QStringList static_modules;
-	for (QMap<QString,StaticModule>::const_iterator i=StaticModules.begin(); i!=StaticModules.end(); ++i)
+	FOREACH(i, StaticModules)
 		static_modules.append(i.key());
 	return static_modules;
 }
@@ -420,7 +420,7 @@ QStringList ModulesManager::installedModules() const
 QStringList ModulesManager::loadedModules() const
 {
 	QStringList loaded;
-	for (QMap<QString,Module>::const_iterator i=Modules.begin(); i!=Modules.end(); ++i)
+	FOREACH(i, Modules)
 		if (i.data().lib!=NULL)
 			loaded.append(i.key());
 	return loaded;
@@ -443,7 +443,7 @@ QStringList ModulesManager::unloadedModules() const
 QStringList ModulesManager::activeModules() const
 {
 	QStringList active;
-	for (QMap<QString,Module>::const_iterator i=Modules.begin(); i!=Modules.end(); ++i)
+	FOREACH(i, Modules)
 		active.append(i.key());
 	return active;
 }
@@ -518,8 +518,8 @@ bool ModulesManager::conflictsWithLoaded(const QString &module_name, const Modul
 			kdebugf2();
 			return true;
 		}
-		for (QMap<QString, Module>::const_iterator mit=Modules.begin(); mit!=Modules.end(); ++mit)
-			for (QStringList::const_iterator sit=(*mit).info.provides.begin(); sit!=(*mit).info.provides.end(); ++sit)
+		FOREACH(mit, Modules)
+			FOREACH(sit, (*mit).info.provides)
 				if ((*it)==(*sit))
 				{
 					MessageBox::msg(narg(tr("Module %1 conflicts with: %2"), module_name, mit.key()));
@@ -527,8 +527,8 @@ bool ModulesManager::conflictsWithLoaded(const QString &module_name, const Modul
 					return true;
 				}
 	}
-	for (QMap<QString, Module>::const_iterator it=Modules.begin(); it!=Modules.end(); ++it)
-		for (QStringList::const_iterator sit=(*it).info.conflicts.begin(); sit!=(*it).info.conflicts.end(); ++sit)
+	FOREACH(it, Modules)
+		FOREACH(sit, (*it).info.conflicts)
 			if ((*sit)==module_name)
 			{
 				MessageBox::msg(narg(tr("Module %1 conflicts with: %2"), module_name, it.key()));

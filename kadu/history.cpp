@@ -1266,10 +1266,8 @@ void HistoryManager::checkImagesTimeouts()
 	kdebugf();
 	QValueList<UinType> uins=keys(bufferedMessages);
 	
-	for (QValueList<UinType>::iterator it=uins.begin();
-		it!=uins.end();
-		it++)
-		checkImageTimeout(*it);
+	FOREACH(uin, uins)
+		checkImageTimeout(*uin);
 	kdebugf2();
 }
 

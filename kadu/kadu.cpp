@@ -98,7 +98,7 @@ ToolBar::~ToolBar()
 void ToolBar::createControls()
 {
 	kdebugf();
-	for(QValueList<ToolButton>::iterator j=RegisteredToolButtons.begin(); j!=RegisteredToolButtons.end(); ++j)
+	FOREACH(j, RegisteredToolButtons)
 		if ((*j).caption== "--separator--")
 			addSeparator();
 		else
@@ -160,7 +160,7 @@ void ToolBar::unregisterButton(const char* name)
 	if(instance!=NULL)
 		instance->clear();
 
-	for(QValueList<ToolButton>::iterator j=RegisteredToolButtons.begin(); j!=RegisteredToolButtons.end(); ++j)
+	FOREACH(j, RegisteredToolButtons)
 		if ((*j).name == name)
 		{
 			RegisteredToolButtons.remove(j);
@@ -174,7 +174,7 @@ void ToolBar::unregisterButton(const char* name)
 
 QToolButton* ToolBar::getButton(const char* name)
 {
-	for(QValueList<ToolButton>::iterator j=RegisteredToolButtons.begin(); j!=RegisteredToolButtons.end(); ++j)
+	FOREACH(j, RegisteredToolButtons)
 		if ((*j).name == name)
 			return (*j).button;
 	kdebugmf(KDEBUG_WARNING, "'%s' return NULL\n", name?name:"[null]");
@@ -186,7 +186,7 @@ void ToolBar::refreshIcons(const QString &caption, const QString &newIconName, c
 	kdebugf();
 	if (caption==QString::null) //wszystkie siê od¶wie¿aj±
 	{
-		for(QValueList<ToolButton>::iterator j=RegisteredToolButtons.begin(); j!=RegisteredToolButtons.end(); ++j)
+		FOREACH(j, RegisteredToolButtons)
 			if ((*j).caption!="--separator--")
 				(*j).button->setIconSet(icons_manager.loadIcon((*j).iconname));
 		if (kadu->isVisible())
@@ -196,7 +196,7 @@ void ToolBar::refreshIcons(const QString &caption, const QString &newIconName, c
 		}
 	}
 	else
-		for(QValueList<ToolButton>::iterator j=RegisteredToolButtons.begin(); j!=RegisteredToolButtons.end(); ++j)
+		FOREACH(j, RegisteredToolButtons)
 			if ((*j).caption == caption)
 			{
 				if (newIconName!=QString::null)

@@ -654,8 +654,8 @@ void UserBox::renameUser(const QString &oldaltnick, const QString &newaltnick)
 bool UserBox::containsAltNick(const QString &altnick)
 {
 	kdebugf();
-	for (QStringList::iterator it = Users.begin(); it != Users.end(); ++it)
-		if ((*it).lower() == altnick.lower())
+	FOREACH(username, Users)
+		if ((*username).lower() == altnick.lower())
 			return true;
 	kdebugmf(KDEBUG_INFO, "userbox does not contain: %s\n", altnick.lower().local8Bit().data());
 	return false;
@@ -906,10 +906,7 @@ void UserBoxMenu::refreshIcons()
 		int id=idAt(i);
 		QString t=text(id);
 
-		QValueList<QPair<QString, QString> >::const_iterator it=iconNames.begin();
-		QValueList<QPair<QString, QString> >::const_iterator end=iconNames.end();
-
-		for (;it!=end; it++)
+		FOREACH(it, iconNames)
 			if (t.startsWith((*it).first))
 			{
 				bool enabled=isItemEnabled(id);

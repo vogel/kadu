@@ -86,7 +86,7 @@ bool UinsList::equals(const UinsList &uins) const
 {
 	if (count() != uins.count())
 		return false;
-	for (UinsList::const_iterator i = begin(); i != end(); ++i)
+	FOREACH(i, *this)
 		if(!uins.contains(*i))
 			return false;
 	return true;
@@ -99,13 +99,13 @@ UinsList::UinsList()
 UinsList::UinsList (const QString &uins)
 {
 	QStringList list = QStringList::split (",", uins);
-	for (QStringList::const_iterator it = list.begin (); it != list.end (); it++)
+	FOREACH(it, list)
 		append ((*it).toUInt ());
 }
 
 UinsList::UinsList (const QStringList &list)
 {
-	for (QStringList::const_iterator it = list.begin (); it != list.end (); it++)
+	FOREACH(it, list)
 		append ((*it).toUInt ());
 }
 
@@ -117,8 +117,8 @@ void UinsList::sort()
 QStringList UinsList::toStringList() const
 {
 	QStringList list;
-	for (UinsList::const_iterator i = begin(); i != end(); ++i)
-		list.append(QString::number(*i));
+	FOREACH(uin, *this)
+		list.append(QString::number(*uin));
 	return list;
 }
 

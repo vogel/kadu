@@ -179,7 +179,7 @@ class CustomInput : public QMultiLineEdit
 class KaduSplitter : public QSplitter
 {
 	protected:
-		QValueList<KaduTextBrowser*> list;
+		QValueList<KaduTextBrowser*> textbrowsers;
 		void drawContents(QPainter* p);
 		void childEvent(QChildEvent* c);
 

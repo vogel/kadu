@@ -140,7 +140,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 			++i;
 	}
 
-	for(QValueList<RegisteredControl>::iterator i = RegisteredControls.begin(); i != RegisteredControls.end(); ++i, ++num)
+	FOREACH(i, RegisteredControls)
 	{
 // wyswietla cala liste 
 //		kdebugm(KDEBUG_DUMP, "%d: (%d) "+(*i).group+"->"+(*i).parent+"->"+(*i).caption+"->"+(*i).name+"\n", num, (*i).nrOfControls);
@@ -258,8 +258,8 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 
 				QStringList options=(*i).additionalParams[0].toStringList();
 				QStringList values=(*i).additionalParams[1].toStringList();
-				for(QStringList::iterator it=options.begin(); it!=options.end(); ++it)
-					new QRadioButton(*it, group, (*i).name+(*it));
+				FOREACH(option, options)
+					new QRadioButton(*option, group, (*i).name+(*option));
 				group->setButton(values.findIndex((*i).config->readEntry((*i).group, (*i).entry, (*i).defaultS)));
 
 				break;
@@ -407,19 +407,25 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 			}
 		}
 
-		for(QValueList<ElementConnections>::iterator k=(*i).ConnectedSlots.begin(); k!=(*i).ConnectedSlots.end(); ++k)
-			if (!connect((*i).widget, (*k).signal, (*k).receiver, (*k).slot))
-				kdebugm(KDEBUG_ERROR, "unable to connect signal: %s to slot: %s\n",(*k).signal.local8Bit().data(),(*k).slot.local8Bit().data());
+		FOREACH(connection, (*i).ConnectedSlots)
+		{
+//			kdebugm(KDEBUG_DUMP, "connecting %p %s to %p %s\n", (*i).widget, (*connection).signal.local8Bit().data(),
+//								(*connection).receiver, (*connection).slot.local8Bit().data());
+			if (!connect((*i).widget, (*connection).signal, (*connection).receiver, (*connection).slot))
+				kdebugm(KDEBUG_ERROR, "unable to connect signal: %s to slot: %s\n",
+					(*connection).signal.local8Bit().data(), (*connection).slot.local8Bit().data());
+		}
+		++num;
 	}
 
-	for(QValueList<ElementConnections>::iterator a=SlotsOnCreate.begin(); a!=SlotsOnCreate.end(); ++a)
-		connect(this, SIGNAL(create()), (*a).receiver, (*a).slot);
+	FOREACH(conn, SlotsOnCreate)
+		connect(this, SIGNAL(create()), (*conn).receiver, (*conn).slot);
 	
-	for(QValueList<ElementConnections>::iterator a=SlotsOnApply.begin(); a!=SlotsOnApply.end(); ++a)
-		connect(this, SIGNAL(apply()), (*a).receiver, (*a).slot);
+	FOREACH(conn, SlotsOnApply)
+		connect(this, SIGNAL(apply()), (*conn).receiver, (*conn).slot);
 
-	for(QValueList<ElementConnections>::iterator a=SlotsOnClose.begin(); a!=SlotsOnClose.end(); ++a)
-		connect(this, SIGNAL(destroy()), (*a).receiver, (*a).slot);
+	FOREACH(conn, SlotsOnClose)
+		connect(this, SIGNAL(destroy()), (*conn).receiver, (*conn).slot);
 
 
 	listBox->setCurrentItem(listBox->findItem(appHandle->translate("@default",acttab)));
@@ -481,7 +487,7 @@ void ConfigDialog::changeTab(const QString& name)
 void ConfigDialog::updateConfig(void) 
 {
 	kdebugf();
-	for(QValueList<RegisteredControl>::iterator i=RegisteredControls.begin(); i!=RegisteredControls.end(); ++i)
+	FOREACH(i, RegisteredControls)
 	{
 		if (!(*i).widget)
 			continue;
@@ -1030,7 +1036,7 @@ ConfigDialog::RegisteredControl::RegisteredControl(RegisteredControlType t,
 void ConfigDialog::connectSlot(const QString& groupname, const QString& caption, const char* signal, const QObject* receiver, const char* slot,const QString& name)
 {
 	kdebugf();
-	for(QValueList<RegisteredControl>::iterator j=RegisteredControls.begin(); j!=RegisteredControls.end(); ++j)
+	FOREACH(j, RegisteredControls)
 		if(((*j).group == groupname) && ((*j).caption == caption) && ((*j).name == name) && (*j).type!=CONFIG_DELETED)
 		{
 			ElementConnections c(signal, receiver, slot);
@@ -1044,7 +1050,7 @@ void ConfigDialog::connectSlot(const QString& groupname, const QString& caption,
 void ConfigDialog::disconnectSlot(const QString& groupname, const QString& caption, const char* signal, const QObject* receiver, const char* slot,const QString& name)
 {
 	kdebugf();
-	for(QValueList<RegisteredControl>::iterator j=RegisteredControls.begin(); j!=RegisteredControls.end(); ++j)
+	FOREACH(j, RegisteredControls)
 		if(((*j).group == groupname) && ((*j).caption == caption) && ((*j).name == name) && (*j).type!=CONFIG_DELETED)
 		{
 			ElementConnections c(signal, receiver, slot);

@@ -283,7 +283,7 @@ void UserInfo::setupTab2()
 	groupsBox = new QVBox(groupsTab);
 	groupsBox->setSpacing(3);
 
-	for (QStringList::iterator it=list.begin(); it!=list.end(); ++it)
+	FOREACH(it, list)
 	{
 		QCheckBox *checkBox=new QCheckBox(*it, groupsBox);
 		checkBox->setChecked(groupsList.contains(*it));
@@ -328,8 +328,8 @@ void UserInfo::newGroupClicked()
 		MessageBox::msg(tr("This group already exists!"), true);
 		return;
 	}
-	for (QValueList<QCheckBox *>::iterator it=groups.begin(); it!=groups.end(); ++it)
-		if ((*it)->text()==groupName)
+	FOREACH(checkbox, groups)
+		if ((*checkbox)->text()==groupName)
 		{
 			MessageBox::wrn(tr("This group already exists!"), true);
 			return;
@@ -507,9 +507,9 @@ void UserInfo::updateUserlist()
 		e.setUin(0);
 
 	QStringList l;
-	for (QValueList<QCheckBox *>::iterator it=groups.begin(); it!=groups.end(); ++it)
-		if ((*it)->isChecked())
-			l.append((*it)->text());
+	FOREACH(checkbox, groups)
+		if ((*checkbox)->isChecked())
+			l.append((*checkbox)->text());
 	e.setGroup(l.join(","));
 
 	e.setEmail(e_email->text());

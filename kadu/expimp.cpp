@@ -154,7 +154,7 @@ void UserlistImportExport::fromfile()
 			gadu->streamToUserList(stream, importedUserlist);
 			file.close();
 
-			for (UserList::const_iterator i = importedUserlist.begin(); i != importedUserlist.end(); ++i)
+			FOREACH(i, importedUserlist)
 				new QListViewItem(lv_userlist, QString::number((*i).uin()),
 					(*i).nickName(),  (*i).altNick(),
 					(*i).firstName(), (*i).lastName(),
@@ -193,8 +193,8 @@ void UserlistImportExport::makeUserlist()
 	clearIgnored();
 	kadu->userbox()->clear();
 	kadu->userbox()->clearUsers();
-	for (UserList::const_iterator i = userlist.begin(); i != userlist.end(); ++i)
-		kadu->userbox()->addUser((*i).altNick());
+	FOREACH(user, userlist)
+		kadu->userbox()->addUser((*user).altNick());
 
 	UserBox::all_refresh();
 
@@ -211,8 +211,9 @@ void UserlistImportExport::updateUserlist()
 
 	kadu->userbox()->clear();
 	kadu->userbox()->clearUsers();
-	for (UserList::const_iterator i = userlist.begin(); i != userlist.end(); ++i)
-		kadu->userbox()->addUser((*i).altNick());
+
+	FOREACH(user, userlist)
+		kadu->userbox()->addUser((*user).altNick());
 
 	UserBox::all_refresh();
 
@@ -231,9 +232,9 @@ void UserlistImportExport::userListImported(bool ok, UserList& userList)
 	pb_fetch->setEnabled(true);
 
 	if (ok)
-		for (UserList::const_iterator i = userList.begin(); i != userList.end(); ++i)
-			new QListViewItem(lv_userlist, (*i).uin() ? QString::number((*i).uin()) : QString(), (*i).nickName(),
-				(*i).altNick(), (*i).firstName(), (*i).lastName(), (*i).mobile(), (*i).group(), (*i).email());
+		FOREACH(user, userlist)
+			new QListViewItem(lv_userlist, (*user).uin() ? QString::number((*user).uin()) : QString(), (*user).nickName(),
+				(*user).altNick(), (*user).firstName(), (*user).lastName(), (*user).mobile(), (*user).group(), (*user).email());
 	kdebugf2();
 }
 

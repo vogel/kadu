@@ -24,12 +24,6 @@
 #include "emoticons.h"
 #include "kadu-config.h"
 
-// general purpose macros to make things shorter /////////////////
-#define VAR(v,x)	__typeof(x) v=x
-#define FOREACH(i,c) for(VAR(i, (c).begin()); i!=(c).end(); ++i)
-//////////////////////////////////////////////////////////////////
-
-
 EmoticonsManager::EmoticonsManager()
 {
 	ThemesList=getSubDirs(dataPath("kadu/themes/emoticons"));

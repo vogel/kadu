@@ -416,7 +416,7 @@ void UserListElement::operator = (const UserListElement &copyMe)
 
 UserList::UserList(const UserList &source) : QObject(NULL, "userlist"), QMap<QString,UserListElement>()
 {
-	for(const_iterator i = source.begin(); i != source.end(); ++i)
+	FOREACH(i, source)
 	{
 		insert(i.key(),i.data());
 		emit userDataChanged(NULL, &(i.data()));
@@ -452,7 +452,7 @@ UserList::~UserList()
 
 UserListElement& UserList::byUin(UinType uin)
 {
-	for(iterator i=begin(); i!=end(); ++i)
+	FOREACH(i, *this)
 		if((*i).uin() == uin)
 			return (*i);
 	kdebugmf(KDEBUG_PANIC, "Panic! uin:%d not found\n", uin);
@@ -461,7 +461,7 @@ UserListElement& UserList::byUin(UinType uin)
 
 UserListElement& UserList::byNick(const QString& nickname)
 {
-	for (iterator i = begin(); i != end(); ++i)
+	FOREACH(i, *this)
 		if ((*i).nickName().lower() == nickname.lower())
 			return (*i);
 	kdebugmf(KDEBUG_PANIC, "Panic! %s not exists\n",
@@ -481,7 +481,7 @@ UserListElement& UserList::byAltNick(const QString& altnick)
 
 UserListElement UserList::byUinValue(UinType uin)
 {
-	for (iterator i = begin(); i != end(); ++i)
+	FOREACH(i, *this)
 		if ((*i).uin() == uin)
 			return (*i);
 	UserListElement ule;
@@ -493,7 +493,7 @@ UserListElement UserList::byUinValue(UinType uin)
 
 bool UserList::containsUin(UinType uin) const
 {
-	for (const_iterator i = begin(); i != end(); ++i)
+	FOREACH(i, *this)
 		if ((*i).uin() == uin)
 			return true;
 	kdebugmf(KDEBUG_INFO, "userlist doesn't contain %d\n", uin);
@@ -802,14 +802,14 @@ bool UserList::readFromFile()
 UserList& UserList::operator=(const UserList& userlist)
 {
 	kdebugf();
-	for (const_iterator i = begin(); i != end(); ++i)
+	FOREACH(i, *this)
 		emit userDataChanged(&(i.data()), NULL);
 
 	QMap<QString,UserListElement>::operator=(userlist);
-	for (Iterator i = begin(); i != end(); ++i)
+	FOREACH(i, *this)
 		(*i).Parent = this;
 
-	for (const_iterator i = begin(); i != end(); ++i)
+	FOREACH(i, *this)
 		emit userDataChanged(NULL, &(i.data()));
 
 	emit modified();
@@ -822,7 +822,7 @@ void UserList::merge(const UserList &userlist)
 	kdebugf();
 	UserListElement e(this);
 
-	for (const_iterator i = begin(); i != end(); ++i)
+	FOREACH(i, *this)
 		emit userDataChanged(&(i.data()), NULL);
 
 	for (ConstIterator i = userlist.begin(); i != userlist.end(); ++i)
@@ -842,7 +842,7 @@ void UserList::merge(const UserList &userlist)
 		insert(e.altNick().lower(), e);
 	}
 
-	for (const_iterator i = begin(); i != end(); ++i)
+	FOREACH(i, *this)
 		emit userDataChanged(NULL, &(i.data()));
 
 	emit modified();

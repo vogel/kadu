@@ -350,11 +350,11 @@ void ChatManager::chatMsgReceived(UinsList senders, const QString& msg, time_t t
 QVariant& ChatManager::getChatProperty(const UinsList &uins, const QString &name)
 {
 	kdebugf();
-	for (QValueList<ChatInfo>::iterator it=addons.begin(); it!=addons.end(); it++)
-		if ((*it).uins.equals(uins))
+	FOREACH(addon, addons)
+		if ((*addon).uins.equals(uins))
 		{
 			kdebugf2();
-			return (*it).map[name];
+			return (*addon).map[name];
 		}
 	ChatInfo info;
 	info.uins=uins;
@@ -368,10 +368,10 @@ QVariant& ChatManager::getChatProperty(const UinsList &uins, const QString &name
 void ChatManager::setChatProperty(const UinsList &uins, const QString &name, const QVariant &value)
 {
 	kdebugf();
-	for (QValueList<ChatInfo>::iterator it=addons.begin(); it!=addons.end(); it++)
-		if ((*it).uins.equals(uins))
+	FOREACH(addon, addons)
+		if ((*addon).uins.equals(uins))
 		{
-			(*it).map[name]=value;
+			(*addon).map[name]=value;
 			kdebugf2();
 			return;
 		}
@@ -474,8 +474,8 @@ void KaduSplitter::drawContents(QPainter *p)
 {
 	QSplitter::drawContents(p);
 	kdebugf();
-	for (QValueList<KaduTextBrowser *>::iterator i=list.begin(); i!=list.end(); ++i)
-		(*i)->viewport()->repaint();
+	FOREACH(browser, textbrowsers)
+		(*browser)->viewport()->repaint();
 //	kdebugf2();
 }
 
@@ -487,9 +487,9 @@ void KaduSplitter::childEvent(QChildEvent *c)
 	if (o->inherits("KaduTextBrowser"))
 	{
 		if (c->inserted())
-			list.append((KaduTextBrowser*)o);
+			textbrowsers.append((KaduTextBrowser*)o);
 		else
-			list.remove((KaduTextBrowser*)o);
+			textbrowsers.remove((KaduTextBrowser*)o);
 	}
 //	kdebugm(KDEBUG_INFO, "%d %d %p %p %s %s\n", c->inserted(), c->removed(), this, o, o->className(), o->name());
 }
@@ -743,8 +743,8 @@ Chat::~Chat()
 	disconnect(gadu, SIGNAL(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)),
 		this, SLOT(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)));
 
-	for(QValueList<ChatMessage *>::iterator it=ChatMessages.begin(); it!=ChatMessages.end(); ++it)
-		delete *it;
+	FOREACH(msg, ChatMessages)
+		delete *msg;
 	ChatMessages.clear();
 
 	if (userbox)
@@ -890,10 +890,10 @@ void Chat::insertImage()
 void Chat::imageReceivedAndSaved(UinType sender,uint32_t size,uint32_t crc32,const QString& /*path*/)
 {
 	kdebugf();
-	for (QValueList<ChatMessage*>::const_iterator i = ChatMessages.begin(); i != ChatMessages.end(); i++)
-		(*i)->message =
+	FOREACH(msg, ChatMessages)
+		(*msg)->message =
 			gadu_images_manager.replaceLoadingImages(
-				(*i)->message,sender,size,crc32);
+				(*msg)->message,sender,size,crc32);
 	repaintMessages();
 	kdebugf2();
 }
@@ -1061,8 +1061,8 @@ void Chat::formatMessages(QValueList<ChatMessage *> &msgs)
 	QColor myFontColor=config_file.readColorEntry("Look", "ChatMyFontColor");
 	QColor usrFontColor=config_file.readColorEntry("Look", "ChatUsrFontColor");
 	EmoticonsStyle style=(EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle");
-	for (QValueList<ChatMessage *>::iterator it=msgs.begin(); it!=msgs.end(); ++it)
-		formatMessage(**it, myBgColor, usrBgColor, myFontColor, usrFontColor, style);
+	FOREACH(msg, msgs)
+		formatMessage(**msg, myBgColor, usrBgColor, myFontColor, usrFontColor, style);
 }
 
 void Chat::formatMessage(ChatMessage &msg, QColor myBgColor, QColor usrBgColor, QColor myFontColor, QColor usrFontColor, EmoticonsStyle style)
@@ -1135,8 +1135,8 @@ void Chat::repaintMessages()
 		body->setText(text);
 
 		i=0;
-		for(QValueList<ChatMessage *>::const_iterator it=ChatMessages.begin(); it!=ChatMessages.end(); ++it, ++i)
-			body->setParagraphBackgroundColor(i, (*it)->backgroundColor);
+		FOREACH(msg, ChatMessages)
+			body->setParagraphBackgroundColor(i++, (*msg)->backgroundColor);
 
 		if (!lockscroll->isOn())
 			body->scrollToBottom();
@@ -1156,8 +1156,8 @@ void Chat::repaintMessages()
 		body->setText(text);
 		
 		i=ChatMessages.size()-1;
-		for(QValueList<ChatMessage *>::const_iterator it=ChatMessages.begin(); it!=ChatMessages.end(); ++it, --i)
-			body->setParagraphBackgroundColor(i, (*it)->backgroundColor);
+		FOREACH(msg, ChatMessages)
+			body->setParagraphBackgroundColor(i--, (*msg)->backgroundColor);
 	}
 
 	body->viewport()->setUpdatesEnabled(true);
@@ -1300,9 +1300,9 @@ void Chat::clearChatWindow()
 {
 	kdebugf();
 	if (MessageBox::ask(tr("Chat window will be cleared. Continue?")))
-	{		
-		for(QValueList<ChatMessage *>::iterator it=ChatMessages.begin(); it!=ChatMessages.end(); ++it)
-			delete *it;
+	{
+		FOREACH(msg, ChatMessages)
+			delete *msg;
 		ChatMessages.clear();
 		body->clear();
 	}
@@ -2049,8 +2049,8 @@ void ChatSlots::findBrowser(int selectedBrowser, QComboBox *browserCombo, QCombo
 			browserName="mozilla-xremote-client";
 
 			QStringList dirList=QDir("/usr/lib").entryList("mozilla*", QDir::All, QDir::Name|QDir::Reversed);
-			for (QStringList::iterator it=dirList.begin(); it!=dirList.end(); it++)
-				searchPath.append("/usr/lib/"+(*it));
+			FOREACH(dir, dirList)
+				searchPath.append("/usr/lib/"+(*dir));
 
 			searchPath.append("/usr/local/Mozilla");
 			searchPath.append("/usr/local/mozilla");
@@ -2068,12 +2068,12 @@ void ChatSlots::findBrowser(int selectedBrowser, QComboBox *browserCombo, QCombo
 			browserName="mozilla-xremote-client";
 
 			QStringList dirList=QDir("/usr/lib").entryList("firefox*", QDir::All, QDir::Name|QDir::Reversed);
-			for (QStringList::iterator it=dirList.begin(); it!=dirList.end(); it++)
-				searchPath.append("/usr/lib/"+(*it));
+			FOREACH(dir, dirList)
+				searchPath.append("/usr/lib/"+(*dir));
 
 			dirList=QDir("/usr/lib").entryList("mozilla-firefox*", QDir::All, QDir::Name|QDir::Reversed);
-			for (QStringList::iterator it=dirList.begin(); it!=dirList.end(); it++)
-				searchPath.append("/usr/lib/"+(*it));
+			FOREACH(dir, dirList)
+				searchPath.append("/usr/lib/"+(*dir));
 			if (!dirList.empty())//jeste¶my na debianie, gdzie zmienili nazwê skryptu, grrr :|
 				browserName="mozilla-firefox-xremote-client";
 
@@ -2083,8 +2083,8 @@ void ChatSlots::findBrowser(int selectedBrowser, QComboBox *browserCombo, QCombo
 			searchPath.append(homePath+"/firefox:");
 
 			dirList=QDir("/usr/lib").entryList("mozilla*", QDir::All, QDir::Name|QDir::Reversed);
-			for (QStringList::iterator it=dirList.begin(); it!=dirList.end(); it++)
-				searchPath.append("/usr/lib/"+(*it));
+			FOREACH(dir, dirList)
+				searchPath.append("/usr/lib/"+(*dir));
 
 			browserOptionsCombo->clear();
 			browserOptionsCombo->insertItem(tr("Open in new window"));

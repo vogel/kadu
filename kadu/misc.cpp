@@ -467,7 +467,7 @@ void openWebBrowser(const QString &link)
 	
 	args=toStringList("sh", "-c", webBrowser);
 
-	for (QStringList::iterator i = args.begin(); i != args.end(); ++i)
+	FOREACH(i, args)
 		kdebugmf(KDEBUG_INFO, "%s\n", (*i).local8Bit().data());
 	browser = new QProcess();
 	browser->setArguments(args);
@@ -1260,70 +1260,48 @@ void IconsManager::registerMenu(QMenuData *menu)
 void IconsManager::unregisterMenu(QMenuData *menu)
 {
 	kdebugf();
-	QValueList<QPair<QMenuData *, QValueList<QPair<QString, QString> > > >::iterator it=menus.begin();
-	QValueList<QPair<QMenuData *, QValueList<QPair<QString, QString> > > >::iterator end=menus.end();
-	while (it!=end)
-	{
+	FOREACH(it, menus)
 		if ((*it).first==menu)
 		{
 			menus.remove(it);
 			break;
 		}
-		it++;
-	}
 	kdebugf2();
 }
 
 void IconsManager::registerMenuItem(QMenuData *menu, const QString &caption, const QString &iconName)
 {
 	kdebugf();
-	QValueList<QPair<QMenuData *, QValueList<QPair<QString, QString> > > >::iterator it=menus.begin();
-	QValueList<QPair<QMenuData *, QValueList<QPair<QString, QString> > > >::iterator end=menus.end();
-	while (it!=end)
-	{
+	FOREACH(it, menus)
 		if ((*it).first==menu)
 		{
 			(*it).second.push_front(qMakePair(caption, iconName));
 			break;
 		}
-		it++;
-	}
 	kdebugf2();
 }
 
 void IconsManager::unregisterMenuItem(QMenuData *menu, const QString &caption)
 {
 	kdebugf();
-	QValueList<QPair<QMenuData *, QValueList<QPair<QString, QString> > > >::iterator it=menus.begin();
-	QValueList<QPair<QMenuData *, QValueList<QPair<QString, QString> > > >::iterator end=menus.end();
-	while (it!=end)
-	{
+	FOREACH(it, menus)
 		if ((*it).first==menu)
 		{
-			QValueList<QPair<QString, QString> >::iterator it2=(*it).second.begin();
-			QValueList<QPair<QString, QString> >::iterator end2=(*it).second.end();
-			while (it2!=end2)
-			{
+			FOREACH(it2, (*it).second)
 				if ((*it2).first==caption)
 				{
 					(*it).second.remove(*it2);
 					break;
 				}
-				it2++;
-			}
 			break;
 		}
-		it++;
-	}
 	kdebugf2();
 }
 
 void IconsManager::refreshMenus()
 {
 	kdebugf();
-	QValueList<QPair<QMenuData *, QValueList<QPair<QString, QString> > > >::const_iterator it=menus.begin();
-	QValueList<QPair<QMenuData *, QValueList<QPair<QString, QString> > > >::const_iterator end=menus.end();
-	while (it!=end)
+	FOREACH(it, menus)
 	{
 		QMenuData *menu=(*it).first;
 		for (unsigned int i=0; i<menu->count(); i++)
@@ -1331,10 +1309,7 @@ void IconsManager::refreshMenus()
 			int id=menu->idAt(i);
 			QString t=menu->text(id);
 
-			QValueList<QPair<QString, QString> >::const_iterator it2=(*it).second.begin();
-			QValueList<QPair<QString, QString> >::const_iterator end2=(*it).second.end();
-
-			for (;it2!=end2; it2++)
+			FOREACH(it2, (*it).second)
 				//startsWith jest potrzebne, bo je¿eli opcja w menu ma skrót klawiszowy,
 				//to menu->text(id) zwraca napis "Nazwa opcji\tskrót klawiszowy"
 				if (t==(*it2).first || t.startsWith((*it2).first+"\t")) 
@@ -1346,8 +1321,6 @@ void IconsManager::refreshMenus()
 					menu->setItemChecked(id, checked);
 				}
 		}
-
-		it++;
 	}
 	kdebugf2();
 }
@@ -1479,7 +1452,7 @@ void HttpClient::onConnected()
 	if (Cookies.size() > 0)
 	{
 		query += "Cookie: ";
-		for (QMap<QString, QString>::const_iterator it=Cookies.begin(); it!=Cookies.end();)
+		FOREACH(it, Cookies)
 		{
 			query += it.key() + "=" +it.data();
 			it++;
@@ -2612,8 +2585,7 @@ void KaduTextBrowser::contentsMouseReleaseEvent(QMouseEvent *e)
 QValueList<int> toIntList(const QValueList<QVariant> &in)
 {
 	QValueList<int> out;
-	QValueList<QVariant>::const_iterator end=in.end();
-	for (QValueList<QVariant>::const_iterator it=in.begin(); it!=end; it++)
+	FOREACH(it, in)
 		out.append((*it).toInt());
 	return out;
 }
@@ -2621,8 +2593,7 @@ QValueList<int> toIntList(const QValueList<QVariant> &in)
 QValueList<QVariant> toVariantList(const QValueList<int> &in)
 {
 	QValueList<QVariant> out;
-	QValueList<int>::const_iterator end=in.end();
-	for (QValueList<int>::const_iterator it=in.begin(); it!=end; it++)
+	FOREACH(it, in)
 		out.append(QVariant(*it));
 	return out;
 }
