@@ -1,4 +1,4 @@
-/* $Id: libgadu.h,v 1.12 2002/11/14 17:13:15 chilek Exp $ */
+/* $Id: libgadu.h,v 1.13 2002/11/16 17:37:27 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>,
@@ -617,6 +617,8 @@ const char *gg_libgadu_version();
 extern int gg_proxy_enabled;
 extern char *gg_proxy_host;
 extern int gg_proxy_port;
+extern char *gg_proxy_username;
+extern char *gg_proxy_password;
 extern int gg_proxy_http_only;
 
 /*
@@ -648,6 +650,9 @@ uint32_t gg_fix32(uint32_t x);
 uint16_t gg_fix16(uint16_t x);
 #define fix32 gg_fix32
 #define fix16 gg_fix16
+char *gg_proxy_auth();
+char *gg_base64_encode(const char *buf);
+char *gg_base64_decode(const char *buf);
 
 #define GG_APPMSG_HOST "appmsg.gadu-gadu.pl"
 #define GG_APPMSG_PORT 80

@@ -1,4 +1,4 @@
-/* $Id: libgadu.c,v 1.11 2002/11/14 17:13:15 chilek Exp $ */
+/* $Id: libgadu.c,v 1.12 2002/11/16 17:37:27 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>,
@@ -51,13 +51,15 @@ char *gg_proxy_host = NULL;
 int gg_proxy_port = 0;
 int gg_proxy_enabled = 0;
 int gg_proxy_http_only = 0;
+char *gg_proxy_username = NULL;
+char *gg_proxy_password = NULL;
 
 #ifndef lint 
 static char rcsid[]
 #ifdef __GNUC__
 __attribute__ ((unused))
 #endif
-= "$Id: libgadu.c,v 1.11 2002/11/14 17:13:15 chilek Exp $";
+= "$Id: libgadu.c,v 1.12 2002/11/16 17:37:27 chilek Exp $";
 #endif 
 
 /*
