@@ -294,12 +294,20 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager")
 	ConfigDialog::addTab("ShortCuts", "ShortCutsTab");
 	ConfigDialog::addVGroupBox("ShortCuts", "ShortCuts", "Define keys");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QString("&Manage Modules").replace(QRegExp("&"), ""), "kadu_modulesmanager", "F4");
+
+	for(QMap<QString, Module>::const_iterator it=Modules.begin(); it!=Modules.end(); ++it)
+		kdebugm(KDEBUG_INFO, "module: %s, usage: %d\n", it.key().local8Bit().data(), it.data().usage_counter);
+
 	kdebugf2();
 }
 
 ModulesManager::~ModulesManager()
 {
 	kdebugf();
+
+	for(QMap<QString, Module>::const_iterator it=Modules.begin(); it!=Modules.end(); ++it)
+		kdebugm(KDEBUG_INFO, "module: %s, usage: %d\n", it.key().local8Bit().data(), it.data().usage_counter);
+
 	// Wyladowujemy wszystkie nieu¿ywane modu³y
 	// w pêtli iteruj±c dopóki jakikolwiek udaje
 	// siê wy³adowaæ
@@ -370,8 +378,13 @@ bool ModulesManager::satisfyModuleDependencies(const ModuleInfo& module_info)
 
 void ModulesManager::incDependenciesUsageCount(const ModuleInfo& module_info)
 {
+	kdebugmf(KDEBUG_FUNCTION_START, "%s\n", module_info.description.local8Bit().data());
 	for (QStringList::ConstIterator it = module_info.depends.begin(); it != module_info.depends.end(); ++it)
+	{
+		kdebugm(KDEBUG_INFO, "incUsage: %s\n", (*it).local8Bit().data());
 		moduleIncUsageCount(*it);
+	}
+	kdebugf2();
 }
 
 void ModulesManager::registerStaticModule(const QString& module_name,
