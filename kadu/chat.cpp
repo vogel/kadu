@@ -61,7 +61,7 @@ CustomInput::CustomInput(QWidget *parent, const char *name) : QMultiLineEdit(par
 
 void CustomInput::keyPressEvent(QKeyEvent * e) {
 	kdebug("CustomInput::keyPressEvent()\n");
-	if (autosend_enabled && e->key() == Key_Return && !(e->state() & ShiftButton)) {
+	if (autosend_enabled && (e->key() == Key_Enter || e->key() == Key_Return) && !(e->state() & ShiftButton)) {
 		kdebug("CustomInput::keyPressEvent(): emit enterPressed()\n");
 		emit sendMessage();
 		}
