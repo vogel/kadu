@@ -23,8 +23,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * wszystkie adresy IP przechowywane s± w obiektach klasy QHostAddress (chilek)
 * kadu po otrzymianiu pakietu GG_DISCONNECTING nie podejmuje kolejnych prób
   ³±czenia siê z sieci± GG automatycznie (chilek)
-* domy¶lna kompilacja z flagami -Os -fno-rtti -fno-exceptions
-  -pipe i je¶li nie w³±czymy debuga to dodatkowo -s. Kadu jest
+* domy¶lna kompilacja z flagami -Os -fno-exceptions -pipe i
+  je¶li nie w³±czymy debuga to dodatkowo -s. Kadu jest
   teraz o po³owê mniejsze (mast3r/adrian)
 
 +++ wersja 0.3.4-pre2
