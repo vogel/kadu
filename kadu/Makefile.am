@@ -1,12 +1,6 @@
 
 bin_PROGRAMS = kadu
 
-if OPENSSL
-SIM = sim.cpp sim.h
-else
-SIM =
-endif
-
 kadu_SOURCES = \
 about.cpp about.h \
 adduser.cpp adduser.h \
@@ -35,13 +29,21 @@ vuser.cpp vuser.h \
 dock_widget.cpp dock_widget.h \
 emoticons.cpp emoticons.h \
 status.cpp status.h \
-updates.cpp updates.h \
-$(SIM)
+updates.cpp updates.h
 
-METASOURCES = AUTO
+EXTRA_kadu_SOURCES = sim.cpp sim.h
+
+if OPENSSL
+SIM = sim.$(OBJEXT)
+else
+SIM =
+endif
+
+kadu_METASOURCES = AUTO
 
 INCLUDES = $(all_includes)
-kadu_LDADD = $(all_libraries) $(LIB_QT) $(LIB_KDECORE) $(LIB_KDEUI) -lgadu
+kadu_LDADD = $(SIM) $(all_libraries) $(LIB_QT) $(LIB_KDECORE) $(LIB_KDEUI) -lgadu
+kadu_DEPENDENCIES = $(SIM)
 AM_CPPFLAGS = -DBINDIR="\"$(bindir)\"" -DDATADIR="\"$(datadir)\""
 
 EXTRA_DIST = hi16-app-kadu.png hi32-app-kadu.png hi48-app-kadu.png kadu.desktop
