@@ -357,6 +357,7 @@ void UserBox::maybeTip(const QPoint &c)
 		}
 		tip(r, s);
 	}
+	kdebugf2();
 }
 
 void UserBox::mousePressEvent(QMouseEvent *e) {
@@ -376,6 +377,7 @@ void UserBox::mousePressEvent(QMouseEvent *e) {
 			emit rightButtonClicked(item, e->globalPos());
 			}
 		}
+	kdebugf2();
 }
 
 void UserBox::mouseMoveEvent(QMouseEvent* e)
@@ -396,6 +398,7 @@ void UserBox::mouseMoveEvent(QMouseEvent* e)
 	}
 	else
 		QListBox::mouseMoveEvent(e);
+//	kdebugf2();
 }
 
 void UserBox::keyPressEvent(QKeyEvent *e)
@@ -404,6 +407,7 @@ void UserBox::keyPressEvent(QKeyEvent *e)
 	QListBox::keyPressEvent(e);
 	QWidget::keyPressEvent(e);
 	emit currentChanged(item(currentItem()));
+//	kdebugf2();
 }
 
 void UserBox::sortUsersByAltNick(QStringList &users) {
@@ -638,6 +642,7 @@ void UserBox::renameUser(const QString &oldaltnick, const QString &newaltnick)
 	}
 	else
 		kdebugm(KDEBUG_WARNING, "Userbox::renameUser(): userbox doesnt contain: %s\n", (const char *)oldaltnick.local8Bit());
+	kdebugf2();
 }
 
 bool UserBox::containsAltNick(const QString &altnick)
@@ -664,6 +669,7 @@ void UserBox::showHideInactive()
 	kdebugf();
 	config_file.writeEntry("General","ShowHideInactive",!config_file.readBoolEntry("General","ShowHideInactive"));
 	all_refresh();
+	kdebugf2();
 }
 
 UinsList UserBox::getSelectedUins()
@@ -732,6 +738,7 @@ void UserBox::all_removeUser(QString &altnick)
 	kdebugf();
 	for(unsigned int i=0; i<UserBoxes.size(); i++)
 		UserBoxes[i]->removeUser(altnick);
+	kdebugf2();
 }
 
 void UserBox::all_changeAllToInactive()
@@ -739,6 +746,7 @@ void UserBox::all_changeAllToInactive()
 	kdebugf();
 	for(unsigned int i=0; i<UserBoxes.size(); i++)
 		UserBoxes[i]->changeAllToInactive();
+	kdebugf2();
 }
 
 void UserBox::all_renameUser(const QString &oldaltnick, const QString &newaltnick)
@@ -746,6 +754,7 @@ void UserBox::all_renameUser(const QString &oldaltnick, const QString &newaltnic
 	kdebugf();
 	for(unsigned int i = 0; i < UserBoxes.size(); i++)
 		UserBoxes[i]->renameUser(oldaltnick, newaltnick);
+	kdebugf2();
 }
 
 void UserBox::initModule()
@@ -868,12 +877,14 @@ void UserBoxSlots::onCreateConfigDialog()
 	multi->setEnabled(config_file.readBoolEntry("Look", "MultiColumnUserbox"));
 
 	updatePreview();
+	kdebugf2();
 }
 
 void UserBoxSlots::onDestroyConfigDialog()
 {
 	kdebugf();
 	UserBox::all_refresh();
+	kdebugf2();
 }
 
 void UserBoxSlots::chooseColor(const char *name, const QColor &color)
