@@ -10,6 +10,7 @@
 #include <qvaluelist.h>
 #include <qsplitter.h>
 #include <qrect.h>
+#include <qcolor.h>
 
 #include "misc.h"
 #include "userbox.h"
@@ -18,13 +19,46 @@ class Chat;
 
 typedef QValueList<Chat*> ChatList;
 
+/**
+	Klasa przechowuj±ca informacje o wiadomo¶ci,
+	która ma siê pojawiæ w oknie Chat
+**/
+class ChatMessage
+{
+	public:
+	QString nick;
+	QDateTime date;
+	QDateTime sdate;
+	QString unformattedMessage;
+	bool isMyMessage;
+	QColor backgroundColor;
+	QColor textColor;
+	
+	//mo¿e s³u¿yæ do przechowywania informacji o tym
+	//czy wiadomo¶æ by³a potwierdzona, szyfrowana, ...
+	//w zamy¶le ma s³u¿yæ do okre¶lania czy jaki¶ obrazek ma byæ dodawany
+	//do wiadomo¶ci czy nie - jaki obrazek - ta informacja bêdzie gdzie indziej
+	QMap<QString, bool> attributes; 
+	
+	//inne atrybuty?
+	//QMap<QString, QString> stringAttributes;
+	
+	bool needsToBeFormatted;
+	
+	//sformatowana wiadomo¶æ (razem z <p> lub <table>)
+	QString message;
+
+	ChatMessage(const QString &nick, const QString &unformattedMessage, bool myMessage, QDateTime date, QDateTime sdate=QDateTime());
+	ChatMessage(const QString &formattedMessage, const QColor &bgColor=Qt::white, const QColor &textColor=Qt::black);
+};
+
 class ChatManager : public QObject
 {
 	Q_OBJECT
 
 	private:
 		ChatList Chats;
-		int openPendingMsg(int index,QString& to_add);	
+		int openPendingMsg(int index, ChatMessage &msg);
 		
 		struct ChatInfo
 		{
@@ -137,6 +171,8 @@ class Chat : public QWidget
 		};
 		static QValueList<RegisteredButton> RegisteredButtons;
 		QMap<QString,QPushButton*> Buttons;
+		
+		QValueList<ChatMessage *> chatMessages;
 	
 		UinsList Uins;
 		int index;
@@ -193,11 +229,11 @@ class Chat : public QWidget
 		static void initModule();
 		Chat(UinsList uins, QWidget* parent = 0, const char* name = 0);
 		~Chat();
-		static void registerButton(const QString& name,QObject* receiver,const QString& slot);
+		static void registerButton(const QString& name, QObject* receiver, const QString& slot);
 		static void unregisterButton(const QString& name);
 		QPushButton* button(const QString& name);
-		void formatMessage(bool, const QString&, const QString&, const QString&, QString&);
-		void checkPresence(UinsList, const QString&, time_t, QString&);
+		void formatMessage(ChatMessage &message);
+		void checkPresence(UinsList, const QString&, time_t, QValueList<ChatMessage *> &messages);
 		void writeMessagesFromHistory(UinsList, time_t);
 		/**
 			Zwraca liste numerow rozmowcow.
@@ -208,7 +244,7 @@ class Chat : public QWidget
 		void changeAppearance();
 		void setTitle();
 		void addEmoticon(QString);
-		void scrollMessages(QString&);
+		void scrollMessages(const QValueList<ChatMessage *> &);
 		void alertNewMessage();
 
 		void HistoryBox();
@@ -240,7 +276,7 @@ class Chat : public QWidget
 			Mozna tez przerwac dalsza jej obrobke ustawiajac
 			wskaznik stop na true.
 		**/
-		void messageFiltering(const UinsList& uins,QCString& msg,bool& stop);
+		void messageFiltering(const UinsList& uins, QCString& msg, bool& stop);
 		/**
 			Sygnal jest emitowany gdy zakonczy sie proces
 			wysylania wiadomosci i zwiazanych z tym czynnosci.

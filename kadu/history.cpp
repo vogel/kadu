@@ -1189,13 +1189,20 @@ void History::formatHistoryEntry(QString &text, const HistoryEntry &entry, QStri
 		| HISTORYMANAGER_ENTRY_SMSSEND)) {
 		bgcolor = config_file.readColorEntry("Look","ChatMyBgColor").name();
 		textcolor = config_file.readColorEntry("Look","ChatMyFontColor").name();
-		}
+	}
 	else {
 		bgcolor = config_file.readColorEntry("Look","ChatUsrBgColor").name();
 		textcolor = config_file.readColorEntry("Look","ChatUsrFontColor").name();
-		}
-	text.append(QString("<table width=\"100%\"><tr><td bgcolor=\"") + bgcolor + "\"><font color=\"" + textcolor + "\"><b>");
-//	text.append(QString("<p style=\"color:") + textcolor + "\"><b>");
+	}
+	
+	bool useParagraphs=(config_file.readBoolEntry("General", "ForceUseParagraphs") ||
+		((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") != EMOTS_ANIMATED)||
+		!config_file.readBoolEntry("General", "ShowEmotHist"));
+	
+	if (useParagraphs)
+		text.append(QString("<p style=\"color:") + textcolor + "\"><b>");
+	else
+		text.append(QString("<table width=\"100%\"><tr><td bgcolor=\"") + bgcolor + "\"><font color=\"" + textcolor + "\"><b>");
 	paracolors.append(bgcolor);
 
 	if (entry.type == HISTORYMANAGER_ENTRY_SMSSEND)
@@ -1246,8 +1253,10 @@ void History::formatHistoryEntry(QString &text, const HistoryEntry &entry, QStri
 
 		text.append(doc.generateHtml());
 	}
-	text.append("</font></td></tr></table>");
-//	text.append("</p>");
+	if (useParagraphs)
+		text.append("</p>");
+	else
+		text.append("</font></td></tr></table>");
 }
 
 void History::showHistoryEntries(int from, int count) {
@@ -1264,15 +1273,23 @@ void History::showHistoryEntries(int from, int count) {
 		if ( ! (noStatus && entries[i].type & HISTORYMANAGER_ENTRY_STATUS))
 			formatHistoryEntry(text, entries[i], paracolors);
 	body->setText(text);
-//	for (i = 0; i < paracolors.count(); i++)
-//		body->setParagraphBackgroundColor(i, paracolors[i]);
 
-	//obej¶cie buga w qt - dziêki zeskrolowaniu okna animowane emotikony l±duj± tam gdzie trzeba
-	if (config_file.readBoolEntry("General", "ShowEmotHist"))
-		body->scrollToBottom();
-	//poni¿sze 2 linie to zastêpstwo dla scrollToTop(), ale niestety po nich emotikony siê rozje¿d¿aj± :/
-//	body->sync();
-//	body->setContentsPos(0,0);
+	if (config_file.readBoolEntry("General", "ForceUseParagraphs") ||
+		((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") != EMOTS_ANIMATED) ||
+		!config_file.readBoolEntry("General", "ShowEmotHist"))
+	{
+		for (i = 0; i < paracolors.count(); i++)
+			body->setParagraphBackgroundColor(i, paracolors[i]);
+	}
+	else
+	{
+		//obej¶cie buga w qt - dziêki zeskrolowaniu okna animowane emotikony l±duj± tam gdzie trzeba
+		if (config_file.readBoolEntry("General", "ShowEmotHist"))
+			body->scrollToBottom();
+		//poni¿sze 2 linie to zastêpstwo dla scrollToTop(), ale niestety po nich emotikony siê rozje¿d¿aj± :/
+//		body->sync();
+//		body->setContentsPos(0,0);
+	}
 
 	kdebugf2();
 }

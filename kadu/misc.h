@@ -473,7 +473,8 @@ class KaduTextBrowser : public QTextBrowser, QToolTip
 	public:
 		KaduTextBrowser(QWidget *parent = 0, const char *name = 0);
 		void setSource(const QString &name);
+	public slots:
+		virtual void copy();
 };
 
 #endif
-

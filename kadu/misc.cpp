@@ -30,6 +30,7 @@
 #include "userlist.h"
 #include "message_box.h"
 #include "kadu-config.h"
+#include "emoticons.h"
 
 #define GG_FONT_IMAGE	0x80
 
@@ -2266,11 +2267,12 @@ KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
 {
 	connect(this, SIGNAL(linkClicked(const QString&)), this, SLOT(hyperlinkClicked(const QString&)));
 	connect(this, SIGNAL(highlighted(const QString&)), this, SLOT(linkHighlighted(const QString &)));
-	//QString s("Hello");
-	//linkHighlighted(s);
 #if QT_VERSION >= 0x030100
 	setWrapPolicy(QTextEdit::AtWordOrDocumentBoundary);
 #endif
+	if (config_file.readBoolEntry("General", "ForceUseParagraphs") ||
+		((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") != EMOTS_NONE))
+		setTextFormat(Qt::RichText);
 }
 
 void KaduTextBrowser::maybeTip(const QPoint &c) {
@@ -2325,4 +2327,37 @@ void KaduTextBrowser::drawContents(QPainter * p, int clipx, int clipy, int clipw
 void KaduTextBrowser::hyperlinkClicked(const QString &link)
 {
 	openWebBrowser(link);
+}
+
+void KaduTextBrowser::copy()
+{
+	kdebugf();
+	if (config_file.readBoolEntry("General", "ForceUseParagraphs") ||
+		((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") != EMOTS_NONE))
+	{
+		int paraFrom, indexFrom, paraTo, indexTo;
+		getSelection(&paraFrom, &indexFrom, &paraTo, &indexTo);
+//		kdebugm(KDEBUG_DUMP, "selection: %d %d %d %d\n", paraFrom, indexFrom, paraTo, indexTo);
+		if (paraFrom==paraTo && indexFrom==indexTo)
+			return;
+
+		QString txt=selectedText();
+//		kdebugm(KDEBUG_DUMP, "%d    plain:%d rich:%d auto:%d log:%d\n", textFormat(), Qt::PlainText, Qt::RichText, Qt::AutoText, Qt::LogText);
+//		kdebugm(KDEBUG_DUMP, "\n%s\n----------------------\n", txt.local8Bit().data());
+	
+		txt.replace(QRegExp("<br>"), "\n");
+		txt.replace(QRegExp("<br/>"), "\n");
+		txt.replace(QRegExp("<br />"), "\n");
+		txt.replace(QRegExp("<[^>]+>"), "");
+	
+		txt.replace(QRegExp("&lt;"), "<");
+		txt.replace(QRegExp("&gt;"), ">");
+		txt.replace(QRegExp("&amp;"), "&");
+	
+//		kdebugm(KDEBUG_DUMP, "result: \n%s\n\n", txt.local8Bit().data());
+		QApplication::clipboard()->setText(txt, QClipboard::Clipboard);
+	}
+	else
+		return QTextBrowser::copy();
+	kdebugf2();
 }

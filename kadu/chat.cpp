@@ -179,7 +179,7 @@ int ChatManager::openChat(UinsList senders,time_t time)
 	return Chats.count()-1;
 }
 
-int ChatManager::openPendingMsg(int index,QString& to_add)
+int ChatManager::openPendingMsg(int index, ChatMessage &msg)
 {
 	kdebugf();
 	PendingMsgs::Element p = pending[index];
@@ -191,7 +191,13 @@ int ChatManager::openPendingMsg(int index,QString& to_add)
 	// otwieramy chat (jesli nie istnieje)
 	int k = openChat(p.uins,p.time);
 	// dopisujemy nowa wiadomosc do to_add
-	Chats[k]->formatMessage(false, userlist.byUin(p.uins[0]).altnick,p.msg, timestamp(p.time), to_add);
+	
+	QDateTime date;
+	date.setTime_t(p.time);
+	
+	msg=ChatMessage(userlist.byUin(p.uins[0]).altnick, p.msg, false, QDateTime::currentDateTime(), date);
+	Chats[k]->formatMessage(msg);
+	
 	// kasujemy wiadomosc z pending
 	pending.deleteMsg(index);
 	// zwracamy indeks okna chat
@@ -205,7 +211,8 @@ void ChatManager::openPendingMsgs(UinsList uins)
 	PendingMsgs::Element elem;
 	int k;
 	bool stop = false;
-	QString toadd;
+	
+	QValueList<ChatMessage *> messages;
 	for (int i = 0; i < pending.count(); i++)
 	{
 		elem = pending[i];
@@ -214,7 +221,10 @@ void ChatManager::openPendingMsgs(UinsList uins)
 				|| (elem.msgclass & GG_CLASS_MSG) == GG_CLASS_MSG
 				|| !elem.msgclass)
 			{
-				k=openPendingMsg(i,toadd);
+				ChatMessage *msg=new ChatMessage("");
+				k=openPendingMsg(i, *msg);
+				messages.append(msg);
+
 				i--;
 				uins = elem.uins;
 				stop = true;
@@ -222,11 +232,11 @@ void ChatManager::openPendingMsgs(UinsList uins)
 	}
 	if (stop)
 	{
-		Chats[k]->scrollMessages(toadd);
+		Chats[k]->scrollMessages(messages);
 		UserBox::all_refresh();
 	}
 	else
-		k = openChat(uins,0);
+		k = openChat(uins, 0);
 	kdebugf2();
 }
 
@@ -236,11 +246,9 @@ void ChatManager::openPendingMsgs()
 	UinsList uins;
 	int i, k = -1;
 	PendingMsgs::Element elem;
-	QString toadd;
 	bool stop = false;
 	UserListElement e;
-
-	kdebugf();
+	QValueList<ChatMessage *> messages;
 
 	for(i = 0; i<pending.count(); i++)
 	{
@@ -252,15 +260,19 @@ void ChatManager::openPendingMsgs()
 			{
 				if (!uins.count())
 					uins = elem.uins;
-				k=openPendingMsg(i,toadd);
+				
+				ChatMessage *msg=new ChatMessage("");
+				k=openPendingMsg(i, *msg);
+				messages.append(msg);
+
 				i--;
 				stop = true;
 			}
 	}
-	if(stop)
+	if (stop)
 	{
 		kdebugm(KDEBUG_INFO, "ChatManager::openPendingMsgs() stopped\n");
-		Chats[k]->scrollMessages(toadd);
+		Chats[k]->scrollMessages(messages);
 		UserBox::all_refresh();
 	}
 	kdebugf2();
@@ -274,7 +286,7 @@ void ChatManager::sendMessage(UinType uin,UinsList selected_uins)
 	bool stop = false;
 	PendingMsgs::Element elem;
 	UinsList uins;
-	QString toadd;
+	QValueList<ChatMessage *> messages;
 
 	for (i = 0; i < pending.count(); i++)
 	{
@@ -286,32 +298,36 @@ void ChatManager::sendMessage(UinType uin,UinsList selected_uins)
 			{
 				if (!uins.count())
 					uins = elem.uins;
-				k=openPendingMsg(i,toadd);
+				
+				ChatMessage *msg=new ChatMessage("");
+				k=openPendingMsg(i, *msg);
+				messages.append(msg);
+
 				i--;
 				stop = true;
 			}
 	}
 	if (stop)
 	{
-		Chats[k]->scrollMessages(toadd);
+		Chats[k]->scrollMessages(messages);
 		UserBox::all_refresh();
 	}
 	else
 	{
 		// zawsze otwieraja sie czaty
 		uins = selected_uins;
-		k = openChat(uins,0);
+		k = openChat(uins, 0);
 	}
 	kdebugf2();
 }
 
-void ChatManager::chatMsgReceived(UinsList senders,const QString& msg,time_t time,bool& grab)
+void ChatManager::chatMsgReceived(UinsList senders, const QString& msg, time_t time, bool& grab)
 {
 	Chat* chat=findChatByUins(senders);
 	if(chat!=NULL)
 	{
-		QString toadd;
-		chat->checkPresence(senders, msg, time, toadd);
+		QValueList<ChatMessage *> messages;
+		chat->checkPresence(senders, msg, time, messages);
 		chat->alertNewMessage();
 		if (!chat->isActiveWindow() && config_file.readBoolEntry("Hints","NotifyNewMessage"))
 			hintmanager->addHintNewMsg(userlist.byUinValue(senders[0]).altnick, msg);
@@ -421,6 +437,25 @@ void KaduSplitter::childEvent(QChildEvent *c)
 	}
 //	kdebugm(KDEBUG_INFO, "%d %d %p %p %s %s\n", c->inserted(), c->removed(), this, o, o->className(), o->name());
 }
+
+ChatMessage::ChatMessage(const QString &nick, const QString &unformattedMessage, bool myMessage, QDateTime date, QDateTime sdate)
+{
+	needsToBeFormatted=true;
+	this->nick=nick;
+	this->unformattedMessage=unformattedMessage;
+	this->isMyMessage=myMessage;
+	this->date=date;
+	this->sdate=sdate;
+}
+
+ChatMessage::ChatMessage(const QString &formattedMessage, const QColor &bgColor, const QColor &txtColor)
+{
+	needsToBeFormatted=false;
+	message=formattedMessage;
+	backgroundColor=bgColor;
+	textColor=txtColor;
+}
+
 
 Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 	: QWidget(parent, name, Qt::WDestructiveClose), Uins(uins)
@@ -913,39 +948,79 @@ void Chat::userWhois()
 	sd->firstSearch();
 }
 
-void Chat::formatMessage(bool me, const QString &altnick, const QString &msg, const QString &time, QString &toadd)
+void Chat::formatMessage(ChatMessage &msg)
 {
-	QString editext = convertCharacters(msg,me);
+	bool useParagraphs=(config_file.readBoolEntry("General", "ForceUseParagraphs") ||
+		((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") != EMOTS_ANIMATED));
+	
+	QString formatString;
+	if (useParagraphs)
+		formatString="<p style=\"background-color: %1\"><font color=\"%2\"><b>%3 :: %4</b><br/>%5</font></p>";
+	else
+		formatString="<table width=\"100%\"><tr><td bgcolor=\"%1\"><font color=\"%2\"><b>%3 :: %4</b><br/>%5</font></td></tr></table>";
 
-	toadd.append("<table width=\"100%\"><tr><td bgcolor=\"");
-	if (me)
-		toadd.append(config_file.readColorEntry("Look","ChatMyBgColor").name());
+	if (msg.isMyMessage)
+		msg.backgroundColor=config_file.readColorEntry("Look","ChatMyBgColor");
 	else
-		toadd.append(config_file.readColorEntry("Look","ChatUsrBgColor").name());
-	toadd.append("\"><font color=\"");
-	if (me)
-		toadd.append(config_file.readColorEntry("Look","ChatMyFontColor").name());
+		msg.backgroundColor=config_file.readColorEntry("Look","ChatUsrBgColor");
+	if (msg.isMyMessage)
+		msg.textColor=config_file.readColorEntry("Look","ChatMyFontColor");
 	else
-		toadd.append(config_file.readColorEntry("Look","ChatUsrFontColor").name());
-	toadd.append("\"><b>");
-	toadd.append(altnick);
-	toadd.append(" :: ");
-	toadd.append(time + "</b><br/>" + editext + "</font></td></tr></table>");
+		msg.textColor=config_file.readColorEntry("Look","ChatUsrFontColor");
+
+	QString date=printDateTime(msg.date);
+	if (!msg.sdate.isNull())
+		date.append(" / S "+printDateTime(msg.sdate));
+
+	msg.message=formatString
+			.arg(msg.backgroundColor.name())
+			.arg(msg.textColor.name())
+			.arg(msg.nick)
+			.arg(date)
+			.arg(convertCharacters(msg.unformattedMessage, msg.isMyMessage));
+	
+	msg.needsToBeFormatted=false;
 }
 
-void Chat::scrollMessages(QString &toadd)
+void Chat::scrollMessages(const QValueList<ChatMessage *> &messages)
 {
 	if (config_file.readBoolEntry("Chat","ChatPrune"))
 		pruneWindow();
 
 	body->viewport()->setUpdatesEnabled(false);
-	if (!config_file.readBoolEntry("Chat","ScrollDown"))
-		body->setText(toadd + body->text());
-	else
+	chatMessages+=messages;
+	
+	QString text;
+	int i;
+	if (config_file.readBoolEntry("Chat","ScrollDown"))
 	{
-		body->setText(body->text() + toadd);
+		for(QValueList<ChatMessage *>::const_iterator it=chatMessages.begin(); it!=chatMessages.end(); it++)
+			text+=(*it)->message;
+		body->setText(text);
+		
+		if (config_file.readBoolEntry("General", "ForceUseParagraphs") ||
+			((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") != EMOTS_ANIMATED))
+		{
+			i=0;
+			for(QValueList<ChatMessage *>::const_iterator it=chatMessages.begin(); it!=chatMessages.end(); it++, i++)
+				body->setParagraphBackgroundColor(i, (*it)->backgroundColor);
+		}
+
 		if (!lockscroll->isOn())
 			body->scrollToBottom();
+	}
+	else
+	{
+		for(QValueList<ChatMessage *>::const_iterator it=chatMessages.begin(); it!=chatMessages.end(); it++)
+			text=(*it)->message+text;
+		body->setText(text);
+		if (config_file.readBoolEntry("General", "ForceUseParagraphs") ||
+			((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") != EMOTS_ANIMATED))
+		{
+			i=chatMessages.size()-1;
+			for(QValueList<ChatMessage *>::const_iterator it=chatMessages.begin(); it!=chatMessages.end(); it++, i--)
+				body->setParagraphBackgroundColor(i, (*it)->backgroundColor);
+		}
 	}
 	body->viewport()->setUpdatesEnabled(true);
 	body->viewport()->repaint();
@@ -953,68 +1028,86 @@ void Chat::scrollMessages(QString &toadd)
 
 void Chat::writeMessagesFromHistory(UinsList senders, time_t time)
 {
-	QString toadd;
+	kdebugf();
 	QValueList<HistoryEntry> entries;
 	QValueList<HistoryEntry> entriestmp;
 	QDateTime date;
 	unsigned int from, end, count;
-
-	kdebugf();
 
 	date.setTime_t(time);
 	count = history.getHistoryEntriesCount(senders);
 	end = count - 1;
 
 	from = count;
-	while (from >= 1 && entries.count() < config_file.readUnsignedNumEntry("History","ChatHistoryCitation")) {
-		from = (end < config_file.readUnsignedNumEntry("History", "ChatHistoryCitation")) ? 0 : end - config_file.readUnsignedNumEntry("History","ChatHistoryCitation") + 1;
+	while (from >= 1 && entries.count() < config_file.readUnsignedNumEntry("History","ChatHistoryCitation"))
+	{
+		if (end < config_file.readUnsignedNumEntry("History", "ChatHistoryCitation"))
+			from = 0;
+		else
+			from = end - config_file.readUnsignedNumEntry("History","ChatHistoryCitation") + 1;
+		
 		entriestmp = history.getHistoryEntries(senders, from, end - from + 1, HISTORYMANAGER_ENTRY_CHATSEND
 			| HISTORYMANAGER_ENTRY_MSGSEND | HISTORYMANAGER_ENTRY_CHATRCV | HISTORYMANAGER_ENTRY_MSGRCV);
 		kdebugm(KDEBUG_INFO, "Chat::writeMessageFromHistory(): temp entries = %d\n", entriestmp.count());
-		if (time) {
+		if (time)
+		{
 			QValueList<HistoryEntry>::iterator it = entriestmp.begin();
-			while (it != entriestmp.end()) {
+			while (it != entriestmp.end())
+			{
 				if ((*it).type == HISTORYMANAGER_ENTRY_CHATRCV
-					|| (*it).type == HISTORYMANAGER_ENTRY_MSGRCV) {
-						kdebugm(KDEBUG_INFO, "Chat::writeMessageFromHistory(): %s %s\n",
-							(const char *)date.toString("dd.MM.yyyy hh:mm:ss").local8Bit(),
-							(const char *)(*it).sdate.toString("dd.MM.yyyy hh:mm:ss").local8Bit());
-						if (date <= (*it).sdate)
-							it = entriestmp.remove(it);
-						else
-							it++;
-						}
+					|| (*it).type == HISTORYMANAGER_ENTRY_MSGRCV)
+				{
+					kdebugm(KDEBUG_INFO, "Chat::writeMessageFromHistory(): %s %s\n",
+						(const char *)date.toString("dd.MM.yyyy hh:mm:ss").local8Bit(),
+						(const char *)(*it).sdate.toString("dd.MM.yyyy hh:mm:ss").local8Bit());
+					if (date <= (*it).sdate)
+						it = entriestmp.remove(it);
+					else
+						it++;
+				}
 				else
 					it++;
-				}
 			}
+		}
 		if (entriestmp.count())
 			entries = entriestmp + entries;
 		kdebugm(KDEBUG_INFO, "Chat::writeMessageFromHistory(): entries = %d\n", entries.count());
 		end = from - 1;
-		}
-	from = (entries.count() < config_file.readUnsignedNumEntry("History","ChatHistoryCitation")) ? 0 : entries.count() - config_file.readUnsignedNumEntry("History","ChatHistoryCitation");
+	}
+	if (entries.count() < config_file.readUnsignedNumEntry("History","ChatHistoryCitation"))
+		from = 0;
+	else
+		from = entries.count() - config_file.readUnsignedNumEntry("History","ChatHistoryCitation");
+	
+	QValueList<ChatMessage *> messages;
+
 	for (unsigned int i = from; i < entries.count(); i++)
 		if (entries[i].date.secsTo(QDateTime::currentDateTime()) <= -config_file.readNumEntry("History","ChatHistoryQuotationTime") * 3600)
-			if (entries[i].type == HISTORYMANAGER_ENTRY_MSGSEND
-				|| entries[i].type == HISTORYMANAGER_ENTRY_CHATSEND)
-				formatMessage(true, config_file.readEntry("General","Nick"), entries[i].message,
-					printDateTime(entries[i].date), toadd);
+		{
+			ChatMessage *msg;
+			if (entries[i].type == HISTORYMANAGER_ENTRY_MSGSEND	|| entries[i].type == HISTORYMANAGER_ENTRY_CHATSEND)
+				msg=new ChatMessage(config_file.readEntry("General","Nick"), entries[i].message, true, entries[i].date);
 			else
-				formatMessage(false, entries[i].nick, entries[i].message,
-					printDateTime(entries[i].date) + QString(" / S ")
-					+ printDateTime(entries[i].sdate), toadd);
-	if (toadd.length())
-		scrollMessages(toadd);
+				msg=new ChatMessage(entries[i].nick, entries[i].message, false, entries[i].date, entries[i].sdate);
+			formatMessage(*msg);
+			messages.append(msg);
+		}
+	if (!messages.empty())
+		scrollMessages(messages);
 	kdebugf2();
 }
 
 /* invoked from outside when new message arrives, this is the window to the world */
-void Chat::checkPresence(UinsList senders, const QString &msg, time_t time, QString &toadd)
+void Chat::checkPresence(UinsList senders, const QString &msg, time_t time, QValueList<ChatMessage *> &messages)
 {
-	formatMessage(false, userlist.byUin(senders[0]).altnick, msg, timestamp(time), toadd);
+	QDateTime date;
+	date.setTime_t(time);
+	
+	ChatMessage *message=new ChatMessage(userlist.byUin(senders[0]).altnick, msg, false, QDateTime::currentDateTime(), date);
+	formatMessage(*message);
+	messages.append(message);
 
-	scrollMessages(toadd);
+	scrollMessages(messages);
 }
 
 void Chat::alertNewMessage()
@@ -1026,9 +1119,12 @@ void Chat::alertNewMessage()
 
 void Chat::writeMyMessage()
 {
-	QString toadd;
-	formatMessage(true,config_file.readEntry("General","Nick"), myLastMessage, timestamp(), toadd);
-	scrollMessages(toadd);
+	QValueList<ChatMessage *> messages;
+	ChatMessage *msg=new ChatMessage(config_file.readEntry("General","Nick"), myLastMessage, true, QDateTime::currentDateTime());
+	formatMessage(*msg);
+	messages.append(msg);
+	scrollMessages(messages);
+
 	if (!edit->isEnabled())
 		cancelMessage();
 	edit->clear();
@@ -1175,35 +1271,21 @@ void Chat::sendMessage()
 /* prunes messages */
 void Chat::pruneWindow()
 {
-	int index,occurences;
-
-	occurences = 0;
-	int chatPruneLen=config_file.readNumEntry("Chat","ChatPruneLen");
-	if (config_file.readBoolEntry("Chat","ScrollDown")) {
-		index = -1;
-		while (occurences !=chatPruneLen  && totaloccurences > chatPruneLen - 1) {
-			index = body->text().findRev(QString("<table"), index - 8);
-			occurences++;
-			}
-		totaloccurences++;
-
-		body->setText(body->text().right(body->text().length() - index));
-		}
-	else {
-		index = 0;
-		while (occurences != chatPruneLen && totaloccurences > chatPruneLen ) {
-			if (occurences == 0)
-				index = body->text().find(QString("<table"), 0);
-			else
-				index = body->text().find(QString("<table"), index + 8);
-
-			occurences++;
-			}
-		totaloccurences++;
-
-		if (totaloccurences > chatPruneLen && index != -1 && index != 0)
-			body->setText(body->text().left(index));
-		}
+	kdebugf();
+	unsigned int chatPruneLen=config_file.readUnsignedNumEntry("Chat","ChatPruneLen");
+	
+	if (chatMessages.size()<chatPruneLen)
+	{
+		kdebugm(KDEBUG_FUNCTION_END, "void Chat::pruneWindow() end: nothing to do\n");
+		return;
+	}
+	QValueList<ChatMessage *>::iterator start=chatMessages.begin();
+	QValueList<ChatMessage *>::iterator stop=chatMessages.at(chatMessages.size()-chatPruneLen+1);
+	for(QValueList<ChatMessage *>::iterator it=start; it!=stop; it++)
+		delete *it;
+	chatMessages.erase(start, stop);
+	
+	kdebugf2();
 }
 
 /* opens messages history */

@@ -17,6 +17,10 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * tytu³ g³ównego paska narzêdziowego t³umaczy siê (chilek)
 * kolejny porz±dkuj±cy patch vogela - sloty z EventManagera (adrian)
 * ³atka bugiego dodaj±ca opcjê pokazywania tylko kontaktów z opisami (adrian)
+* paragrafy zamiast tabelek w historii i chacie wed³ug pomys³u chilka, gdy _wy³±czone_
+  s± animowane emotikony; przy w³±czonych animowanych emotikonach kopiowanie tekstu
+  wraz z odpowiadaj±cym tekstem; usuniêcie wariowania pionowego suwaka w chacie przy
+  kopiowaniu,  BUG_ID=285, BUG_ID=34, BUG_ID=203, topic=27166 (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,

@@ -451,6 +451,8 @@ void AnimTextItem::draw(
 	int cw, int ch, const QColorGroup& cg,
 	bool selected )
 {
+	if (config_file.readBoolEntry("General", "ForceUseParagraphs"))
+		p->fillRect(x, y, width, height, QColor(0,0,0));
 //	p->fillRect(x,y,width,height,Label->paletteBackgroundColor());
 	if(Label->isVisible()&&EditSize==Edit->size())
 		return;
@@ -458,6 +460,10 @@ void AnimTextItem::draw(
 	QPoint u=p->xForm(QPoint(x,y));
 	if(Edit->contentsY()==0)
 		u+=Edit->paragraphRect(0).topLeft();
+	else
+		if (config_file.readBoolEntry("General", "ForceUseParagraphs"))
+			u=p->xForm(Edit->paragraphRect(Edit->paragraphAt(p->xFormDev(parag->rect().topLeft()+QPoint(5,5)))).topLeft())+QPoint(x,y);
+
 	Label->move(u);
 	Label->show();
 }
