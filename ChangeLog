@@ -11,6 +11,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   connectionFailed, disconnected i ackReceived (adrian)
 * nie mo¿na otwieraæ wielu okien konfiguracji (chilek)
 * zapamiêtywanie ostatnio wybranej zak³adki z okna konfiguracji (chilek)
+* dodane do parsera %p - port (mast3r)
 
 +++ wersja 0.3.4-pre3
 * dodane przeszukiwanie historii (chilek)

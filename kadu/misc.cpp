@@ -180,6 +180,11 @@ QString parse_symbols(QString s, int i, UserListElement &ule, bool escape) {
 				if (ule.port==2)
 					r+=" ";
 				break;
+			case 'p':
+				i++;
+				if (ule.port)
+					r+=QString::number(ule.port);
+				break;
 		}
 	}
 
