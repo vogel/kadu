@@ -9,8 +9,10 @@
 
 #include <qmap.h>
 #include <qregexp.h>
+#include <qdragobject.h>
 #include <qpainter.h>
 #include <qpen.h>
+
 //
 #include "kadu.h"
 //
@@ -133,6 +135,17 @@ void UserBox::mousePressEvent(QMouseEvent *e) {
 			}
 		}
 }
+
+void UserBox::mouseMoveEvent(QMouseEvent* e)
+{
+    if ((e->state() & LeftButton)&&itemAt(e->pos()))
+    {
+        QDragObject* d = new QTextDrag(itemAt(e->pos())->text(),this);
+	d->dragCopy();
+    }
+    else
+	QListBox::mouseMoveEvent(e);
+};
 
 void UserBox::sortUsersByAltNick(QStringList &users) {
 	int i, count;
