@@ -27,8 +27,8 @@
 #define GG_STATUS_INVISIBLE2 0x0009 /* g³upy... */
 
 QValueList<QHostAddress> gg_servers;
-const char *gg_servers_ip[7] = {"217.17.41.82", "217.17.41.83", "217.17.41.84", "217.17.41.85",
-	"217.17.41.86", "217.17.41.87", "217.17.41.88"};
+const char *gg_servers_ip[9] = {"217.17.41.82", "217.17.41.83", "217.17.41.84", "217.17.41.85",
+	"217.17.41.86", "217.17.41.87", "217.17.41.88", "217.17.41.92", "217.17.41.93"};
 
 QHostAddress config_extip;
 
@@ -801,7 +801,7 @@ void GaduProtocol::initModule()
 	gadu = new GaduProtocol(kadu, "gadu");
 
 	QHostAddress ip;
-	for (int i = 0; i < 7; ++i)
+	for (int i = 0; i < 9; ++i)
 	{
 		ip.setAddress(QString(gg_servers_ip[i]));
 		gg_servers.append(ip);
