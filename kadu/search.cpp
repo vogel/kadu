@@ -262,11 +262,14 @@ void SearchDialog::nextSearch(void) {
 			free(reqbuf);
 			gg_search50_add(req, GG_SEARCH50_BIRTHYEAR, (const char *)bufyear);
 			}
-		if (!strcmp(c_gender->currentText().latin1(), "Male"))
-			gg_search50_add(req, GG_SEARCH50_GENDER, GG_SEARCH50_GENDER_MALE);
-		else
-			if (!strcmp(c_gender->currentText().latin1(), "Female"))
+		switch (c_gender->currentItem()) {
+			case 1:
+				gg_search50_add(req, GG_SEARCH50_GENDER, GG_SEARCH50_GENDER_MALE);
+				break;
+			case 2:
 				gg_search50_add(req, GG_SEARCH50_GENDER, GG_SEARCH50_GENDER_FEMALE);
+				break;
+			}
 		}
 	else
 		if (r_uin->isChecked()) {
@@ -309,7 +312,7 @@ void SearchDialog::showResults(gg_search50_t res) {
 		return;
 		}
 
-	fprintf(stderr, "KK SearchDialog::showResults(): Done searching\n");
+	fprintf(stderr, "KK SearchDialog::showResults(): Done searching. count=%d\n", count);
 	progress->setText(i18n("Done searching"));
 	QListViewItem * qlv;
 	QPixmap * qpx;
@@ -322,7 +325,7 @@ void SearchDialog::showResults(gg_search50_t res) {
 		born = gg_search50_get(res, i, GG_SEARCH50_BIRTHYEAR);
 		city = gg_search50_get(res, i, GG_SEARCH50_CITY);
 		status = gg_search50_get(res, i, GG_SEARCH50_STATUS);
-		if (atoi(status) <= 1 && only_active->isChecked())
+		if ((status && atoi(status) <= 1 && only_active->isChecked()) || !status)
 			continue;
 		qpx = new QPixmap((const char **)gg_xpm[statusGGToStatusNr(atoi(status) & 127)]);
 		if (first)
