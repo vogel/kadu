@@ -124,16 +124,17 @@ AC_DEFUN(FIND_LIBRARY,[
 # $2 - action if not found (default is error message)
 AC_DEFUN(FIND_TOOL,[
 	AC_MSG_CHECKING([if $1 tool is available])
-	FILE_DIR=
+	tmp_TOOL_DIR=
 	for dir in $with_apps `echo $PATH | sed "s/:/ /g"` 
 	do
 		if test -x $dir/$1; then
-			FILE_DIR=$dir
-			AC_MSG_RESULT([found in $FILE_DIR])
+			tmp_TOOL_DIR=$dir
+			TOOL_DIRS="$TOOL_DIRS $tmp_TOOL_DIR"
+			AC_MSG_RESULT([found in $tmp_TOOL_DIR])
 			break
 		fi
 	done
-	if test -z "$FILE_DIR"; then
+	if test -z "$tmp_TOOL_DIR"; then
 		AC_MSG_RESULT([not found])
 		m4_if($2,,AC_MSG_ERROR([$1 not found!]))
 		$2
@@ -405,7 +406,7 @@ AC_SUBST(PNG_LIBS)
 # QT Headers
 #################
 
-FIND_HEADER([qwidget.h],[$QTDIR/include /usr/lib/qt/include /usr/lib/qt3/include /usr/local/qt/include /usr/include /usr/include/qt /usr/include/qt3 /usr/local/include /usr/X11R6/include /usr/X11R6/include/qt /usr/X11R6/include/qt3 /sw/include/qt],
+FIND_HEADER([qwidget.h],[$QTDIR/include /usr/lib/qt/include /usr/lib/qt3/include /usr/local/qt/include /usr/include /usr/include/qt /usr/include/qt3 /usr/local/include /usr/X11R6/include /usr/X11R6/include/qt /usr/X11R6/include/qt3 /sw/include/qt /usr/share/qt3/include],
 [
 	QT_INCLUDES="-I$FILE_DIR"
 ])
@@ -417,7 +418,7 @@ AC_SUBST(QT_INCLUDES)
 
 
 QT_LIBS="-lqt-mt"
-FIND_LIBRARY([qt-mt],[$QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib /usr/lib/qt3/lib64 /sw/lib],
+FIND_LIBRARY([qt-mt],[$QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib /usr/lib/qt3/lib64 /sw/lib /usr/share/qt3/lib],
 [
 	QT_LIBS="$QT_LIBS -L$FILE_DIR"
 ])
@@ -427,7 +428,7 @@ AC_SUBST(QT_LIBS)
 # QT MOC
 #################
 
-FIND_FILE([moc],[$with_apps $QTDIR/bin /usr/lib/qt3/bin /usr/local/qt/bin /usr/lib/qt/bin /usr/bin /bin /usr/local/bin /usr/X11R6/bin],
+FIND_FILE([moc],[$with_apps $QTDIR/bin /usr/lib/qt3/bin /usr/local/qt/bin /usr/lib/qt/bin /usr/bin /bin /usr/local/bin /usr/X11R6/bin /usr/share/qt3/bin],
 [
 	QT_MOC_DIR="$FILE_DIR"
 ])

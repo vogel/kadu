@@ -205,6 +205,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * obrazki w oknie rozmowy ju¿ nie zmieniaj± siê znowu w klepsydrê po
   przyj¶ciu nowej wiadomo¶ci (adrian)
 * w autodownloadzie dodany limit czasu dla pobrañ modu³ów (joi)
+* configure i spece modu³ów: poprawione wykrywanie dodatkowych narzêdzi,
+  dodane ¶cie¿ki dla qt (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
