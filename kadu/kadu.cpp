@@ -278,8 +278,7 @@ bool ifStatusWithDescription(int status) {
 	status == GG_STATUS_BUSY_DESCR || status == GG_STATUS_INVISIBLE_DESCR);
 }
 
-/* reading only ignore file right now */
-void readConfig(void)
+void readIgnore(void)
 {
 	FILE *f;
 	const int BUF_SIZE=256;
@@ -289,7 +288,7 @@ void readConfig(void)
 
 	if(!(f=fopen(buf,"r")))
 	{
-		fprintf(stderr,"readConfig(): Failed to open ignore file. Ignore list empty. Need to read manual?\n");
+		fprintf(stderr,"readIgnore(): Failed to open ignore file. Ignore list empty. Need to read manual?\n");
 		return;
 	};
 
@@ -304,17 +303,6 @@ void readConfig(void)
 	
 	fclose(f);
 };
-
-char *pwHash(const char *tekst) {
-    char *nowytekst;
-    nowytekst = strdup(tekst);
-    int ile, znak;
-    for (ile = 0; ile < strlen(tekst); ile++) {
-	znak = nowytekst[ile]^ile^1;
-	nowytekst[ile] = znak;
-	}
-    return nowytekst;
-}
 
 void confirmHistoryDeletion(UinsList &uins) {
 	QString fname;
@@ -351,12 +339,6 @@ void remindPassword() {
 	fprintf(stderr,"KK remindPassword(): Problem!\n");
 
     gg_free_remind_passwd(h);
-}
-
-unsigned int GetStatusFromUserlist(uin_t uin) {
-	UserListElement user;
-	user = userlist.byUin(uin);
-	return user.status;
 }
 
 /* sends the userlist. ripped off EKG, actually, but works */
@@ -438,15 +420,11 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	
 	/* read the userlist */
 	userlist.readFromFile();
-	/* read config, ignores actually, don't wanna rename it */
-	readConfig();
+
+	readIgnore();
 
 	/* DCC */
 
-	/*char buf[255];
-	char buf2[255];
-	strncpy(buf,"Kadu:",255);
-	snprintf(buf2,255,"%s %d",buf,config.uin);*/
 	QString buf;
 	buf.append("Kadu: ");
 	buf.append(QString::number(config.uin));
@@ -726,33 +704,6 @@ void Kadu::prepareDcc(void) {
 	dccsnw = new QSocketNotifier(dccsock->fd, QSocketNotifier::Write, kadu);
 	QObject::connect(dccsnw, SIGNAL(activated(int)), kadu, SLOT(dccSent()));
 }
-
-/*bool Kadu::userInActiveGroup(uin_t uin) {
-  int i, j;
-
-  if (grouplist.size() == 0)
-    return true;
-
-  for (i = 0; i < grouplist.size(); i++)
-    if (grouplist[i].number == activegrpno)
-       break;
-
-  for (j = 0; j < userlist.size(); j++)
-    if (userlist[j].uin == uin)
-       break;
-
-  if (userlist[j].group == NULL && activegrpno == 600)
-    return true;
-  else if (userlist[j].group == NULL && activegrpno != 600)
-    return false;
-  else if (strcmp(userlist[j].group, grouplist[i].name) == 0)
-     return true;
-  else if (activegrpno == 600)
-     return true;
-  else
-    return false;
-
-}*/
 
 // code for addUser has been moved from adduser.cpp
 // for sharing with search.cpp
@@ -1135,8 +1086,8 @@ void Kadu::sendMessage(QListBoxItem *item) {
 	if (!uins.count())
 		uins.append(userlist.byAltNick(item->text()).uin);
 
-	if (uins.count() > 1 || (GetStatusFromUserlist(uins[0]) != GG_STATUS_NOT_AVAIL
-		&& GetStatusFromUserlist(uins[0]) != GG_STATUS_NOT_AVAIL_DESCR))
+	if (uins.count() > 1 || (userlist.byUin(uins[0]).status != GG_STATUS_NOT_AVAIL
+		&& userlist.byUin(uins[0]).status != GG_STATUS_NOT_AVAIL_DESCR))
 		openChat(uins);
 	else {
 		msg = new Message(item->text());
@@ -1329,29 +1280,7 @@ void Kadu::setStatus(int status) {
 void Kadu::checkConnection(void) {
 	// Since it doesn't work anymore...
 	readevent->start(10000, TRUE);
-
 	return;	
-
-/*	if ((last_read_event < time(NULL) - 90) && timeout_connected && socket_active) {
-		timeout_connected = false;
-		int i = 0;
-		QPixmap qp_inact((const char **)gg_inact_xpm);
-		while (userlist[i].uin != 0) {
-			mylist->changeItem(qp_inact, userlist[i].nickname, i);
-			i++;
-			}
-		char error[1023];
-		QMessageBox * msgb;
-
-		snprintf(error, sizeof(error), "nConnect(): Timeout after 90 seconds.\nDisconnecting.\n");
-		fprintf(stderr, error);
-		disconnectNetwork();			
-		socket_active = false;
-		mycombo->setCurrentItem(3);
-		last_read_event = time(NULL);
-		msgb = new QMessageBox(this);
-		msgb->warning(kadu, "Connect error", error );
-	} */
 }
 
 void Kadu::dccFinished(dccSocketClass *dcc) {
