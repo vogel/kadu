@@ -133,7 +133,7 @@ Notify::~Notify()
 		ConfigDialog::removeControl("Notify", "listbox1");
 	ConfigDialog::removeControl("Notify", "listboxy");
 
-	ConfigDialog::removeControl("Notify", "Ignore status change if old status is online/busy (and new is online/busy also)");
+	ConfigDialog::removeControl("Notify", "Ignore status change if old status is available/busy (and new is available/busy also)");
 	ConfigDialog::removeControl("Notify", "Notify about all users");
 	ConfigDialog::removeControl("Notify", "Ignore changes on connection to server");
 
