@@ -1396,14 +1396,16 @@ QString HttpClient::encode(const QString& text)
 
 void HtmlDocument::escapeText(QString& text)
 {
-	text.replace(QRegExp("&[^nbsp;]"), "&amp;");
+	text.replace(QRegExp("&"), "&amp;");
 	text.replace(QRegExp("<"), "&lt;");
 	text.replace(QRegExp(">"), "&gt;");
 	text.replace(QRegExp("\""), "&quot;");
+	text.replace(QRegExp("  "), "&nbsp; ");
 }
 
 void HtmlDocument::unescapeText(QString& text)
 {
+	text.replace(QRegExp("&nbsp;"), " ");
 	text.replace(QRegExp("&amp;"), "&");
 	text.replace(QRegExp("&lt;"), "<");
 	text.replace(QRegExp("&gt;"), ">");
@@ -1497,17 +1499,17 @@ QString HtmlDocument::generateHtml()
 	return html;
 }
 
-int HtmlDocument::countElements()
+int HtmlDocument::countElements() const
 {
 	return Elements.size();
 }
 
-bool HtmlDocument::isTagElement(int index)
+bool HtmlDocument::isTagElement(int index) const
 {
 	return Elements[index].tag;
 }
 
-QString HtmlDocument::elementText(int index)
+QString HtmlDocument::elementText(int index) const
 {
 	return Elements[index].text;
 }
