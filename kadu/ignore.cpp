@@ -27,49 +27,49 @@ Ignored::Ignored(QDialog *parent, const char *name)
 	kdebugf();
 	setWFlags(Qt::WDestructiveClose);
 	setCaption(tr("Manage ignored users"));
-	
+
 	// create main QLabel widgets (icon and app info)
 	QVBox *left=new QVBox(this);
 	left->setMargin(10);
 	left->setSpacing(10);
-	
+
 	QLabel *l_icon = new QLabel(left);
 	QWidget *blank=new QWidget(left);
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
-	
+
 	QVBox *center=new QVBox(this);
 	center->setMargin(10);
 	center->setSpacing(10);
-	
+
 	QLabel *l_info = new QLabel(center);
 	l_icon->setPixmap(icons_manager.loadIcon("ManageIgnoredWindowIcon"));
 	l_info->setText(tr("This dialog box allows you to manage your ignored contacts."));
 	l_info->setAlignment(Qt::WordBreak);
 	// end create main QLabel widgets (icon and app info)
-	
+
 	// our QListBox
 	lb_list = new QListBox(center);
 	getList();
 	// end our QListBox
-	
+
 	//our QVGroupBox
 	QVGroupBox *vgb_uin = new QVGroupBox(center);
 	vgb_uin->setTitle(tr("Uin"));
 	//end our QGroupBox
-	
+
 	QLabel *l_uin = new QLabel(tr("Type here the UIN of the person you want to ignore."), vgb_uin);
 	l_uin->setAlignment(Qt::WordBreak);
-	
+
 	QHBox *hb_uin = new QHBox(vgb_uin);
 	hb_uin->setMargin(5);
 	hb_uin->setSpacing(3);
-	
+
 	QLabel *l_uinlabel = new QLabel(tr("Uin:"), hb_uin);
 	// chyba tylko po to zeby nie pokazywal sie warning kompilatora ;)
 	l_uinlabel->setAlignment(Qt::WordBreak);
 	e_uin = new QLineEdit(hb_uin);
 	hb_uin->setStretchFactor(e_uin, 1);
-	
+
 	// buttons
 	QHBox *bottom=new QHBox(center);
 	QWidget *blank2=new QWidget(bottom);
@@ -79,11 +79,11 @@ Ignored::Ignored(QDialog *parent, const char *name)
 	QPushButton *pb_add = new QPushButton(icons_manager.loadIcon("AddIgnoredButton"), tr("Add"), bottom);
 	QPushButton *pb_close = new QPushButton(icons_manager.loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
 	// end buttons
-	
+
 	connect(pb_add, SIGNAL(clicked()), this, SLOT(add()));
 	connect(pb_del, SIGNAL(clicked()), this, SLOT(remove()));
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
-	
+
  	loadGeometry(this, "General", "IgnoredDialogGeometry", 0, 0, 330, 350);
 	kdebugf2();
 }
@@ -100,7 +100,7 @@ void Ignored::keyPressEvent(QKeyEvent *ke_event)
 	if (ke_event->key() == Qt::Key_Escape)
 		close();
 	if ((ke_event->key() == Qt::Key_Return || ke_event->key() == Qt::Key_Enter) && e_uin->hasFocus())
-		add(); 
+		add();
 }
 
 void Ignored::add()
@@ -138,7 +138,7 @@ void Ignored::getList()
 			if (userlist.containsUin(ignored[i][j]))
 			{
 				UserListElement& e = userlist.byUin(ignored[i][j]);
-				strlist.append(QString("%1 (%2)").arg(QString::number(e.uin)).arg(e.altnick));
+				strlist.append(QString("%1 (%2)").arg(QString::number(e.uin())).arg(e.altNick()));
 			}
 			else
 				strlist.append(QString("%1").arg(QString::number(ignored[i][j])));

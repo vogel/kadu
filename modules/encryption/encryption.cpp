@@ -30,14 +30,14 @@ EncryptionManager::EncryptionManager()
 {
 	kdebugf();
 	ConfigDialog::addCheckBox("Chat", "Chat",
-			QT_TRANSLATE_NOOP("@default", "Use encryption"), "Encryption", false);	
-	ConfigDialog::addHGroupBox("Chat", "Chat", 
+			QT_TRANSLATE_NOOP("@default", "Use encryption"), "Encryption", false);
+	ConfigDialog::addHGroupBox("Chat", "Chat",
 			QT_TRANSLATE_NOOP("@default", "Encryption properties"));
 	ConfigDialog::addComboBox("Chat", "Encryption properties",
 			QT_TRANSLATE_NOOP("@default", "Keys length"), "EncryptionKeyLength", QStringList("1024"), QStringList("1024"));
 	ConfigDialog::addPushButton("Chat", "Encryption properties",
 			QT_TRANSLATE_NOOP("@default", "Generate keys"));
-	ConfigDialog::addColorButton("Chat", "Encryption properties", 
+	ConfigDialog::addColorButton("Chat", "Encryption properties",
 			QT_TRANSLATE_NOOP("@default", "Color of encrypted messages"), "EncryptionColor", QColor("#0000FF"));
 
 	ConfigDialog::registerSlotOnCreate(this,SLOT(createConfigDialogSlot()));
@@ -47,7 +47,7 @@ EncryptionManager::EncryptionManager()
 	connect(chat_manager,SIGNAL(chatCreated(const UinsList&)),this,SLOT(chatCreated(const UinsList&)));
 	connect(gadu,SIGNAL(messageFiltering(const UinsList&,QCString&,QByteArray&,bool&)),this,SLOT(receivedMessageFilter(const UinsList&,QCString&,QByteArray&,bool&)));
 	connect(UserBox::userboxmenu,SIGNAL(popup()),this,SLOT(userBoxMenuPopup()));
-	
+
 	Chat::registerButton("encryption_button",this,SLOT(encryptionButtonClicked()));
 	UserBox::userboxmenu->addItemAtPos(2,"SendPublicKey", tr("Send my public key"), this, SLOT(sendPublicKey()));
 
@@ -90,12 +90,12 @@ void EncryptionManager::generateMyKeys()
 {
 	kdebugf();
 	int myUin=config_file.readNumEntry("General","UIN");
-	QString keyfile_path;	
+	QString keyfile_path;
 	keyfile_path.append(ggPath("keys/"));
 	keyfile_path.append(QString::number(myUin));
 	keyfile_path.append(".pem");
 	QFileInfo keyfile(keyfile_path);
-	
+
 	if (keyfile.permission(QFileInfo::WriteUser))
 		if(QMessageBox::warning(0, "Kadu",
 			tr("Keys exist. Do you want to overwrite them?"),
@@ -145,7 +145,7 @@ void EncryptionManager::chatCreated(const UinsList& uins)
 		else
 			encrypt=config_file.readBoolEntry("Chat", "Encryption");
 	}
-	
+
 	setupEncryptButton(chat, encrypt);
 	encryption_btn->setEnabled(encryption_possible);
 
@@ -157,7 +157,7 @@ void EncryptionManager::setupEncryptButton(Chat* chat,bool enabled)
 {
 	kdebugf();
 	EncryptionEnabled[chat] = enabled;
-	QPushButton* encryption_btn=chat->button("encryption_button");		
+	QPushButton* encryption_btn=chat->button("encryption_button");
 	QToolTip::remove(encryption_btn);
 	if (enabled)
 	{
@@ -219,7 +219,7 @@ void EncryptionManager::receivedMessageFilter(const UinsList& senders,QCString& 
 		format.font = GG_FONT_COLOR;
 		gg_msg_richtext_color color;
 
-		QColor new_color= config_file.readColorEntry("Chat", "EncryptionColor"); 
+		QColor new_color= config_file.readColorEntry("Chat", "EncryptionColor");
 		color.red = new_color.red();
 		color.green = new_color.green();
 		color.blue = new_color.blue();
@@ -274,16 +274,16 @@ void EncryptionManager::userBoxMenuPopup()
 	UserBox *activeUserBox=UserBox::getActiveUserBox();
 	if (activeUserBox==NULL)
 		return;
-	
+
 	QString keyfile_path;
 	keyfile_path.append(ggPath("keys/"));
 	keyfile_path.append(QString::number(config_file.readNumEntry("General", "UIN")));
 	keyfile_path.append(".pem");
 	QFileInfo keyfile(keyfile_path);
-	
+
 	const UinsList& uins = activeUserBox->getSelectedUins();
 	UinType uin = uins.first();
-	
+
 	if ((keyfile.permission(QFileInfo::ReadUser) && uin) && (uins.count() == 1))
 		UserBox::userboxmenu->setItemEnabled(sendkeyitem, true);
 	else
@@ -325,14 +325,14 @@ void EncryptionManager::sendPublicKey()
 
 SavePublicKey::SavePublicKey(UinType uin, QString keyData, QWidget *parent, const char *name) :
 	QDialog(parent, name, Qt::WDestructiveClose), uin(uin), keyData(keyData) {
-	
+
 	kdebugf();
 
 	setCaption(tr("Save public key"));
 	resize(200, 80);
-	
+
 	QLabel *l_info = new QLabel(
-		tr("User %1 is sending you his public key. Do you want to save it?").arg(userlist.byUin(uin).altnick),
+		tr("User %1 is sending you his public key. Do you want to save it?").arg(userlist.byUin(uin).altNick()),
 		this);
 
 	QPushButton *yesbtn = new QPushButton(tr("Yes"), this);

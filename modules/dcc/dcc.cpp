@@ -309,7 +309,7 @@ void DccFileDialog::printFileInfo(struct gg_dcc* dccsock)
 		sender=tr("Sender: %1");
 	else
 		sender=tr("Receiver: %1");
-	new QLabel(sender.arg(userlist.byUin(dccsock->peer_uin).altnick), this);
+	new QLabel(sender.arg(userlist.byUin(dccsock->peer_uin).altNick()), this);
 
 	new QLabel(tr("Filename: %1").arg((char *)dccsock->file_info.filename), this);
 
@@ -453,7 +453,7 @@ void FileDccSocket::needFileAccept()
 	snprintf(fsize, sizeof(fsize), "%.1f", (float) dccsock->file_info.size / 1024);
 
 	str=tr("User %1 wants to send us a file %2\nof size %3kB. Accept transfer?")
-		.arg(userlist.byUin(dccsock->peer_uin).altnick)
+		.arg(userlist.byUin(dccsock->peer_uin).altNick())
 		.arg((char *)dccsock->file_info.filename)
 		.arg(fsize);
 
@@ -819,10 +819,10 @@ void DccManager::sendFile()
 				return;
 			}
 			UserListElement user = (*users.begin());
-			if (user.port >= 10)
+			if (user.port() >= 10)
 			{
-				if ((dcc_new = gadu->dccSendFile(htonl(user.ip.ip4Addr()), user.port,
-					config_file.readNumEntry("General", "UIN"), user.uin)) != NULL)
+				if ((dcc_new = gadu->dccSendFile(htonl(user.ip().ip4Addr()), user.port(),
+					config_file.readNumEntry("General", "UIN"), user.uin())) != NULL)
 				{
 					FileDccSocket* dcc = new FileDccSocket(dcc_new);
 					connect(dcc, SIGNAL(dccFinished(DccSocket*)), dcc_manager,
@@ -833,7 +833,7 @@ void DccManager::sendFile()
 			else
 			{
 				TimeoutTimer.start(15000, TRUE);
-				gadu->dccRequest(user.uin);
+				gadu->dccRequest(user.uin());
 			}
 		}
 	kdebugf2();
@@ -853,7 +853,7 @@ void DccManager::userboxMenuPopup()
 	UserListElement user = (*users.begin());
 
 	bool containsOurUin=users.containsUin(config_file.readNumEntry("General", "UIN"));
-	bool userIsOnline = user.status->isOnline() || user.status->isBusy();
+	bool userIsOnline = user.status().isOnline() || user.status().isBusy();
 	bool dccEnabled = (users.count() == 1 &&
 		config_file.readBoolEntry("Network", "AllowDCC") &&
 		!containsOurUin &&
@@ -934,7 +934,7 @@ void DccManager::dccConnectionReceived(const UserListElement& sender)
 	struct gg_dcc* dcc_new;
 	if (DccSocket::count() < 8)
 	{
-		dcc_new = gadu->dccGetFile(htonl(sender.ip.ip4Addr()), sender.port, config_file.readNumEntry("General","UIN"), sender.uin);
+		dcc_new = gadu->dccGetFile(htonl(sender.ip().ip4Addr()), sender.port(), config_file.readNumEntry("General","UIN"), sender.uin());
 		if (dcc_new)
 		{
 			FileDccSocket* dcc = new FileDccSocket(dcc_new);

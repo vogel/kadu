@@ -54,7 +54,7 @@ UserInfo::UserInfo(const QString &altnick, bool addUser, QDialog* parent, const 
 	else
 	{
 		for (UserList::Iterator i = userlist.begin(); i != userlist.end(); ++i)
-			if ((*i).altnick == altnick)
+			if ((*i).altNick() == altnick)
 			{
 				puser = &(*i);
 				break;
@@ -96,14 +96,14 @@ UserInfo::UserInfo(const QString &altnick, bool addUser, QDialog* parent, const 
 }
 
 void UserInfo::setUserInfo(UserListElement &ule) {
-	e_firstname->setText(ule.first_name);
-	e_lastname->setText(ule.last_name);
-	e_nickname->setText(ule.nickname);
-	e_altnick->setText(ule.altnick);
-	e_mobile->setText(ule.mobile);
-	if (ule.uin)
-		e_uin->setText(QString::number(ule.uin));
-	e_email->setText(ule.email);
+	e_firstname->setText(ule.firstName());
+	e_lastname->setText(ule.lastName());
+	e_nickname->setText(ule.nickName());
+	e_altnick->setText(ule.altNick());
+	e_mobile->setText(ule.mobile());
+	if (ule.uin())
+		e_uin->setText(QString::number(ule.uin()));
+	e_email->setText(ule.email());
 }
 
 void UserInfo::setupTab1()
@@ -221,36 +221,36 @@ void UserInfo::setupTab1()
 	}
 	else
 	{
-		if (puser->uin)
-			e_uin->setText(QString::number(puser->uin));
-		e_nickname->setText(puser->nickname);
-		e_altnick->setText(puser->altnick);
-		e_firstname->setText(puser->first_name);
-		e_lastname->setText(puser->last_name);
-		e_mobile->setText(puser->mobile);
-		e_email->setText(puser->email);
-		if (puser->ip.ip4Addr())
-			e_addr->setText(puser->ip.toString());
+		if (puser->uin())
+			e_uin->setText(QString::number(puser->uin()));
+		e_nickname->setText(puser->nickName());
+		e_altnick->setText(puser->altNick());
+		e_firstname->setText(puser->firstName());
+		e_lastname->setText(puser->lastName());
+		e_mobile->setText(puser->mobile());
+		e_email->setText(puser->email());
+		if (puser->ip().ip4Addr())
+			e_addr->setText(puser->ip().toString());
 		else
 			e_addr->setText(tr("(Unknown)"));
-		if (puser->port)
-			e_addr->setText(e_addr->text()+":"+QString::number(puser->port));
+		if (puser->port())
+			e_addr->setText(e_addr->text()+":"+QString::number(puser->port()));
 		else
 			e_addr->setText(e_addr->text()+":"+tr("(Unknown)"));
 
-		if (puser->version)
+		if (puser->version())
 		{
-			s_temp.sprintf("0x%02x", puser->version & 0x0000ffff);
+			s_temp.sprintf("0x%02x", puser->version() & 0x0000ffff);
 			e_ver->setText(s_temp);
 		}
 		else
 			e_ver->setText(tr("(Unknown)"));
 
-		e_status->setText(tr(puser->status->name()));
-		tw_main->setTabIconSet(vgb_general, puser->status->pixmap());
-		if (!(puser->ip==QHostAddress()))
+		e_status->setText(tr(puser->status().name()));
+		tw_main->setTabIconSet(vgb_general, puser->status().pixmap());
+		if (!(puser->ip() == QHostAddress()))
 		{
-			dns->setLabel(puser->ip);
+			dns->setLabel(puser->ip());
 			dns->setRecordType(QDns::Ptr);
 			connect(dns, SIGNAL(resultsReady()), this, SLOT(resultsReady()));
 		}
@@ -368,9 +368,9 @@ void UserInfo::setupTab3()
 		c_notify->setChecked(true);
 	else
 	{
-		c_blocking->setChecked(puser->blocking);
-		c_offtouser->setChecked(puser->offline_to_user);
-		c_notify->setChecked(puser->notify);
+		c_blocking->setChecked(puser->blocking());
+		c_offtouser->setChecked(puser->offlineTo());
+		c_notify->setChecked(puser->notify());
 	}
 	// end Misc options
 	kdebugf2();
@@ -397,11 +397,11 @@ void UserInfo::resultsReady() {
 void UserInfo::addNewUser(UserListElement& e)
 {
 	kdebugf();
-	bool uin_exist = e.uin && (userlist.containsUin(e.uin));
+	bool uin_exist = e.uin() && (userlist.containsUin(e.uin()));
 	if (uin_exist)
 	{
-		puser = &userlist.byUin(e.uin);
-		if (puser->anonymous)
+		puser = &userlist.byUin(e.uin());
+		if (puser->anonymous())
 		{
 			changeUserData(e);
 			return;
@@ -427,7 +427,7 @@ void UserInfo::addNewUser(UserListElement& e)
 void UserInfo::changeUserData(UserListElement& e)
 {
 	kdebugf();
-	if (e_uin->text().length() && !e.uin)
+	if (e_uin->text().length() && !e.uin())
 	{
 		QMessageBox::information(this, "Kadu", tr("Bad UIN"), QMessageBox::Ok);
 		close();
@@ -441,72 +441,30 @@ void UserInfo::changeUserData(UserListElement& e)
 		return;
 	}
 
-	if ((e.uin && e.uin != puser->uin && userlist.containsUin(e.uin)) ||
-		(e.altnick.lower() != puser->altnick.lower() && userlist.containsAltNick(e.altnick)))
+	if ((e.uin() && e.uin() != puser->uin() && userlist.containsUin(e.uin())) ||
+		(e.altNick().lower() != puser->altNick().lower() && userlist.containsAltNick(e.altNick())))
 	{
 		QMessageBox::information(this, "Kadu", tr("User is already in userlist"), QMessageBox::Ok);
 		close();
 		return;
 	}
 
-	if (!gadu->status().isOffline())
-	{
-		if (c_offtouser->isChecked() && !puser->offline_to_user)
-		{
-			if (puser->uin)
-				gadu->removeNotifyEx(puser->uin, false, false);
-			if (e.uin)
-				gadu->addNotifyEx(e.uin, false, true);
-		}
-		else if (!c_offtouser->isChecked() && puser->offline_to_user)
-		{
-			if (puser->uin)
-				gadu->removeNotifyEx(puser->uin, false, true);
-			if (e.uin)
-				gadu->addNotifyEx(e.uin, false, false);
-		}
-		else if (c_blocking->isChecked() && !puser->blocking)
-		{
-			if (puser->uin)
-				gadu->removeNotifyEx(puser->uin, false, false);
-			if (e.uin)
-				gadu->addNotifyEx(e.uin, true, false);
-		}
-		else if (!c_blocking->isChecked() && puser->blocking)
-		{
-			if (puser->uin)
-				gadu->removeNotifyEx(puser->uin, true, false);
-			if (e.uin)
-				gadu->removeNotifyEx(e.uin, false, false);
-		}
-		else if (puser->anonymous)
-		{
-			if (e.uin)
-				gadu->addNotify(e.uin);
-		}
-		else if (e.uin != puser->uin)
-		{
-			if (puser->uin)
-				gadu->removeNotify(puser->uin);
-			if (e.uin)
-				gadu->addNotify(e.uin);
-		}
-	}
 
-	if (e.uin == puser->uin)
-		e.status->setStatus(*(puser->status));
-	e.image_size = puser->image_size;
-	e.blocking = c_blocking->isChecked();
-	e.offline_to_user = c_offtouser->isChecked();
-	e.notify = c_notify->isChecked();
-	userlist.changeUserInfo(puser->altnick, e);
+	if (e.uin() == puser->uin())
+		e.status().setStatus(puser->status());
+	e.setMaxImageSize(puser->maxImageSize());
+	e.setNotify(c_notify->isChecked());
+	e.setOfflineTo(c_offtouser->isChecked());
+	e.setBlocking(c_blocking->isChecked());
+
+	userlist.changeUserInfo(puser->altNick(), e);
 	userlist.writeToFile();
-	if (!kadu->userbox()->containsAltNick(e.altnick))
+	if (!kadu->userbox()->containsAltNick(e.altNick()))
 	{
-		kadu->userbox()->addUser(e.altnick);
+		kadu->userbox()->addUser(e.altNick());
 		UserBox::all_refresh();
 	}
-	chat_manager->refreshTitlesForUin(puser->uin);
+	chat_manager->refreshTitlesForUin(puser->uin());
 	close(true);
 	kdebugf2();
 }
@@ -517,14 +475,14 @@ void UserInfo::updateUserlist()
 	UserListElement e;
 
 	kdebugf();
-	e.first_name = e_firstname->text();
-	e.last_name = e_lastname->text();
-	e.nickname = e_nickname->text();
-	e.altnick = e_altnick->text();
-	e.mobile = e_mobile->text();
-	e.uin = e_uin->text().toUInt(&ok);
+	e.setFirstName(e_firstname->text());
+	e.setLastName(e_lastname->text());
+	e.setNickName(e_nickname->text());
+	e.setAltNick(e_altnick->text());
+	e.setMobile(e_mobile->text());
+	e.setUin(e_uin->text().toUInt(&ok));
 	if (!ok)
-		e.uin = 0;
+		e.setUin(0);
 
 	QStringList l;
 	for (QValueList<QCheckBox *>::iterator it=groups.begin(); it!=groups.end(); ++it)
@@ -532,7 +490,7 @@ void UserInfo::updateUserlist()
 			l.append((*it)->text());
 	e.setGroup(l.join(","));
 
-	e.email = e_email->text();
+	e.setEmail(e_email->text());
 	if (addUser)
 		addNewUser(e);
 	else

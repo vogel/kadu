@@ -71,14 +71,14 @@ WindowNotify::~WindowNotify()
 void WindowNotify::newChat(const UinsList &senders, const QString& msg, time_t time)
 {
 	kdebugf();
-	MessageBox::msg(tr("Chat with <b>%1</b><br/> <small>%2</small>").arg(userlist.byUinValue(senders[0]).altnick).arg(msg));
+	MessageBox::msg(tr("Chat with <b>%1</b><br/> <small>%2</small>").arg(userlist.byUinValue(senders[0]).altNick()).arg(msg));
 	kdebugf2();
 }
 
 void WindowNotify::newMessage(const UinsList &senders, const QString& msg, time_t time, bool &grab)
 {
 	kdebugf();
-	MessageBox::msg(tr("New message from <b>%1</b><br/> <small>%2</small>").arg(userlist.byUinValue(senders[0]).altnick).arg(msg));
+	MessageBox::msg(tr("New message from <b>%1</b><br/> <small>%2</small>").arg(userlist.byUinValue(senders[0]).altNick()).arg(msg));
 	kdebugf2();
 }
 
@@ -94,9 +94,9 @@ void WindowNotify::userStatusChanged(const UserListElement &ule, const Status &o
 	kdebugf();
 
 	MessageBox::msg(tr("<b>%1</b> changed status from <i>%2</i> to <i>%3</i>")
-					.arg(ule.altnick)
+					.arg(ule.altNick())
 					.arg(qApp->translate("@default", oldStatus.name()))
-					.arg(qApp->translate("@default", ule.status->name())));
+					.arg(qApp->translate("@default", ule.status().name())));
 	kdebugf2();
 }
 
@@ -105,9 +105,9 @@ void WindowNotify::userChangedStatusToAvailable(const UserListElement &ule)
 	kdebugf();
 
 	MessageBox::msg(tr("<b>%1</b> changed status to <i>%2</i><br/> <small>%3</small>")
-					.arg(ule.altnick)
-					.arg(qApp->translate("@default", ule.status->name()))
-					.arg(QStyleSheet::escape(ule.status->description())));
+					.arg(ule.altNick())
+					.arg(qApp->translate("@default", ule.status().name()))
+					.arg(QStyleSheet::escape(ule.status().description())));
 	kdebugf2();
 }
 
@@ -134,8 +134,8 @@ void WindowNotify::message(const QString &from, const QString &message, const QM
 	{
 		MessageBox::msg(tr("<b>From %1: %2</b> changed status to <i>%3</i>")
 						.arg(from)
-						.arg(ule->altnick)
-						.arg(qApp->translate("@default", ule->status->name())));
+						.arg(ule->altNick())
+						.arg(qApp->translate("@default", ule->status().name())));
 	}
 	kdebugf2();
 }

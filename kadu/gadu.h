@@ -374,13 +374,6 @@ class GaduProtocol : public QObject
 		void enableAutoConnection();
 		void disableAutoConnection();
 
-		void blockUser(const UinType&, bool);
-		void offlineToUser(const UinType&, bool);
-		void addNotify(const UinType&);
-		void removeNotify(const UinType&);
-		void addNotifyEx(const UinType&, bool blocked, bool offline);
-		void removeNotifyEx(const UinType &, bool blocked, bool offline);
-
 		bool userListSent();
 
 	public slots:
@@ -472,6 +465,9 @@ class GaduProtocol : public QObject
 		void onDestroyConfigDialog();
 		void ifDefServerEnabled(bool value);
 		void useTlsEnabled(bool value);
+
+		// userlist
+		void userDataChanged(const UserListElement* const oldData, const UserListElement* const newData);
 
 	signals:
 		void ackReceived(int);

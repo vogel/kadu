@@ -176,7 +176,7 @@ void Notify::userStatusChanged(const UserListElement &ule, const Status &oldStat
 		return;
 	}
 
-	if (!ule.notify && !config_file.readBoolEntry("Notify","NotifyAboutAll"))
+	if (!ule.notify() && !config_file.readBoolEntry("Notify","NotifyAboutAll"))
 	{
 		kdebugm(KDEBUG_FUNCTION_END,
 			"Notify::changedStatus() end: not notifying user AND not notifying all users\n");
@@ -185,7 +185,7 @@ void Notify::userStatusChanged(const UserListElement &ule, const Status &oldStat
 
 	emit userStatusChanged(ule, oldStatus);
 
-	switch (ule.status->status())
+	switch (ule.status().status())
 	{
 		case Online: emit userChangedStatusToAvailable(ule); break;
 		case Busy:   emit userChangedStatusToBusy(ule); break;

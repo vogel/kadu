@@ -761,6 +761,7 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 	QValueList<ParseElem> parseStack;
 
 	static bool searchChars[256]={false};
+	QCString slatin = unicode2latin(s);
 	searchChars[(unsigned char)'%']=true;
 	searchChars[(unsigned char)'`']=true;
 	searchChars[(unsigned char)'[']=true;
@@ -775,7 +776,7 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 		ParseElem pe1, pe;
 
 		for(i=index; i<len; ++i)
-			if (searchChars[(unsigned char)unicode2latin(s)[i]])
+			if (searchChars[(unsigned char)slatin[i]])
 				break;
 		if (i==len)
 			i=-1;
@@ -805,19 +806,19 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 				break;
 			pe.type=ParseElem::PE_STRING;
 
-			switch(unicode2latin(s)[i]) {
+			switch(slatin[i]) {
 				case 's':
 					++i;
-					if (!ule.uin)
+					if (!ule.uin())
 						break;
-					pe.str = qApp->translate("@default", ule.status->name());
+					pe.str = qApp->translate("@default", ule.status().name());
 					break;
 				case 'd':
 					++i;
-					if (myUin == ule.uin)
+					if (myUin == ule.uin())
 						pe.str = gadu->status().description();
 					else
-						pe.str = ule.status->description();
+						pe.str = ule.status().description();
 
 				 	if (escape)
 			 			HtmlDocument::escapeText(pe.str);
@@ -826,38 +827,38 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 						pe.str.replace(QRegExp("\\s\\s"), QString(" &nbsp;"));
 					}
 					break;
-				case 'i': ++i; if (ule.ip.ip4Addr()) pe.str=ule.ip.toString();         break;
-				case 'v': ++i; if (ule.ip.ip4Addr()) pe.str=ule.dnsname;               break;
-				case 'o': ++i; if (ule.port==2)      pe.str=" ";                       break;
-				case 'p': ++i; if (ule.port)         pe.str=QString::number(ule.port); break;
-				case 'u': ++i; if (ule.uin)          pe.str=QString::number(ule.uin);  break;
+				case 'i': ++i; if (ule.ip().ip4Addr()) pe.str=ule.ip().toString();         break;
+				case 'v': ++i; if (ule.ip().ip4Addr()) pe.str=ule.dnsName();               break;
+				case 'o': ++i; if (ule.port()==2)      pe.str=" ";                         break;
+				case 'p': ++i; if (ule.port())         pe.str=QString::number(ule.port()); break;
+				case 'u': ++i; if (ule.uin())          pe.str=QString::number(ule.uin());  break;
 				case 'n':
 					++i;
-					pe.str=ule.nickname;
+					pe.str=ule.nickName();
 					if(escape)
 						HtmlDocument::escapeText(pe.str);
 					break;
 				case 'a':
 					++i;
-					pe.str=ule.altnick;
+					pe.str=ule.altNick();
 					if(escape)
 						HtmlDocument::escapeText(pe.str);
 					break;
 				case 'f':
 					++i;
-					pe.str=ule.first_name;
+					pe.str=ule.firstName();
 					if(escape)
 						HtmlDocument::escapeText(pe.str);
 					break;
 				case 'r':
 					++i;
-					pe.str=ule.last_name;
+					pe.str=ule.lastName();
 					if(escape)
 						HtmlDocument::escapeText(pe.str);
 					break;
-				case 'm': ++i; pe.str=ule.mobile;		break;
+				case 'm': ++i; pe.str=ule.mobile();		break;
 				case 'g': ++i; pe.str=ule.group();		break;
-				case 'e': ++i; pe.str=ule.email;		break;
+				case 'e': ++i; pe.str=ule.email();		break;
 				case '%': ++i;
 				default:
 					pe.str="%";
@@ -1270,7 +1271,7 @@ void IconsManager::refreshMenus()
 
 			QValueList<QPair<QString, QString> >::const_iterator it2=(*it).second.begin();
 			QValueList<QPair<QString, QString> >::const_iterator end2=(*it).second.end();
-		
+
 			for (;it2!=end2; it2++)
 				if (t.startsWith((*it2).first))
 				{

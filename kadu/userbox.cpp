@@ -59,12 +59,12 @@ void KaduListBoxPixmap::paint(QPainter *painter) {
 //	kdebugf();
 	UserListElement &user = userlist.byAltNick(text());
 //	kdebugm(KDEBUG_INFO, "%d\n", (int)&user);
-	bool isOurUin=((UinType)config_file.readNumEntry("General", "UIN") == user.uin);
-	if (user.uin)
+	bool isOurUin=((UinType)config_file.readNumEntry("General", "UIN") == user.uin());
+	if (user.uin())
 	{
 		UinsList uins;
-		uins.append(user.uin);
-		if (user.blocking)
+		uins.append(user.uin());
+		if (user.blocking())
 		{
 			QPen &pen = (QPen &)painter->pen();
 			pen.setColor(QColor(255, 0, 0));
@@ -76,7 +76,7 @@ void KaduListBoxPixmap::paint(QPainter *painter) {
 			pen.setColor(QColor(192, 192, 0));
 			painter->setPen(pen);
 		}
-		else if (user.offline_to_user)
+		else if (user.offlineTo())
 		{
 			QPen &pen = (QPen &)painter->pen();
 			pen.setColor(QColor(128, 128, 128));
@@ -148,7 +148,7 @@ int KaduListBoxPixmap::height(const QListBox* lb) const
 {
 //	kdebugf();
 	UserListElement &user = userlist.byAltNick(text());
-	bool isOurUin=((UinType)config_file.readNumEntry("General", "UIN") == user.uin);
+	bool isOurUin=((UinType)config_file.readNumEntry("General", "UIN") == user.uin());
 	QString descr=isOurUin ? gadu->status().description() : description();
 	bool hasDescription=isOurUin ? gadu->status().hasDescription() : !descr.isEmpty();
 
@@ -325,14 +325,14 @@ void UserBox::maybeTip(const QPoint &c)
 	{
 		QRect r(itemRect(item));
 		QString s;
-		Status *status = userlist.byAltNick(item->text()).status;
-		QString description = status->description();
-		QString name = qApp->translate("@default", Status::name(Status::index(status->status(), false)));
+		const Status & status = userlist.byAltNick(item->text()).status();
+		QString description = status.description();
+		QString name = qApp->translate("@default", Status::name(Status::index(status.status(), false)));
 
 		if (description.isEmpty())
 		{
-			if (status->isOffline() && !userlist.byAltNick(item->text()).uin)
-				s = tr("<i>Mobile:</i> <b>%1</b>").arg(userlist.byAltNick(item->text()).mobile);
+			if (status.isOffline() && !userlist.byAltNick(item->text()).uin())
+				s = tr("<i>Mobile:</i> <b>%1</b>").arg(userlist.byAltNick(item->text()).mobile());
 			else
 				s = tr("<nobr><i>%1</i></nobr>").arg(name);
 		}
@@ -436,20 +436,24 @@ void UserBox::refresh()
 	for (i = 0; i < Users.count(); ++i)
 	{
 		UserListElement &user = userlist.byAltNick(Users[i]);
-		if (user.uin)
+		if (user.uin())
 		{
-			if (user.uin == myUin)
-				user.status->setStatus(gadu->status());
-			if (!user.status->isInvisible())
-				if (!user.status->isOffline())
-					a_users.append(user.altnick);//online,busy,blocking
-				else
-					n_users.append(user.altnick);//offline
-			else
-				i_users.append(user.altnick);//invisible
+			if (user.uin() == myUin)
+				user.status().setStatus(gadu->status());
+			switch (user.status().status())
+			{
+				case Offline:
+					n_users.append(user.altNick());
+					break;
+				case Invisible:
+					n_users.append(user.altNick());
+					break;
+				default:
+					a_users.append(user.altNick());
+			}
 		}
 		else
-			b_users.append(user.altnick);//bez uinów
+			b_users.append(user.altNick());//bez uinów
 	}
 	sortUsersByAltNick(a_users);
 	sortUsersByAltNick(i_users);
@@ -465,26 +469,26 @@ void UserBox::refresh()
 	for (i = 0; i < a_users.count(); ++i)
 	{
 		UserListElement &user = userlist.byAltNick(a_users[i]);
-		if (user.blocking && !config_file.readBoolEntry("General", "ShowBlocked"))
+		if (user.blocking() && !config_file.readBoolEntry("General", "ShowBlocked"))
 			continue;
-		if (user.status->isBlocking() && !config_file.readBoolEntry("General", "ShowBlocking"))
+		if (user.status().isBlocking() && !config_file.readBoolEntry("General", "ShowBlocking"))
 			continue;
 
-		if (!showOnlyDesc || user.status->hasDescription())
+		if (!showOnlyDesc || user.status().hasDescription())
 		{
-			bool has_mobile = user.mobile.length();
-			bool bold = showBold ? (user.status->isOnline() || user.status->isBusy()) : false;
-			if (pending.pendingMsgs(user.uin))
-				lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Message"), user.altnick,
-					user.status->description(), bold);
+			bool has_mobile = user.mobile().length();
+			bool bold = showBold ? (user.status().isOnline() || user.status().isBusy()) : false;
+			if (pending.pendingMsgs(user.uin()))
+				lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Message"), user.altNick(),
+					user.status().description(), bold);
 			else
 			{
-				QPixmap pix = user.status->pixmap(has_mobile);
+				QPixmap pix = user.status().pixmap(has_mobile);
 				if (!pix.isNull())
-					lbp = new KaduListBoxPixmap(pix, user.altnick, user.status->description(), bold);
+					lbp = new KaduListBoxPixmap(pix, user.altNick(), user.status().description(), bold);
 				else
-					lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Online"), user.altnick,
-						user.status->description(), bold);
+					lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Online"), user.altNick(),
+						user.status().description(), bold);
 			}
 			insertItem(lbp);
 		}
@@ -494,19 +498,19 @@ void UserBox::refresh()
 	for (i = 0; i < i_users.count(); ++i)
 	{
 		UserListElement &user = userlist.byAltNick(i_users[i]);
-		if (user.blocking && !config_file.readBoolEntry("General", "ShowBlocked"))
+		if (user.blocking() && !config_file.readBoolEntry("General", "ShowBlocked"))
 			continue;
 
-		if (!showOnlyDesc || user.status->hasDescription())
+		if (!showOnlyDesc || user.status().hasDescription())
 		{
-			bool has_mobile = user.mobile.length();
-			if (pending.pendingMsgs(user.uin))
-				lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Message"), user.altnick,
-					user.status->description(), 0);
+			bool has_mobile = user.mobile().length();
+			if (pending.pendingMsgs(user.uin()))
+				lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Message"), user.altNick(),
+					user.status().description(), 0);
 			else
 			{
-				QPixmap pix = user.status->pixmap(has_mobile);
-				lbp = new KaduListBoxPixmap(pix, user.altnick, user.status->description(), 0);
+				QPixmap pix = user.status().pixmap(has_mobile);
+				lbp = new KaduListBoxPixmap(pix, user.altNick(), user.status().description(), 0);
 			}
 			insertItem(lbp);
 		}
@@ -517,24 +521,24 @@ void UserBox::refresh()
 	for (i = 0; i < n_users.count(); ++i)
 	{
 		UserListElement &user = userlist.byAltNick(n_users[i]);
-		if (user.blocking && !config_file.readBoolEntry("General", "ShowBlocked"))
+		if (user.blocking() && !config_file.readBoolEntry("General", "ShowBlocked"))
 			continue;
 
-		if (!showOnlyDesc || user.status->hasDescription())
+		if (!showOnlyDesc || user.status().hasDescription())
 		{
 
-			bool has_mobile = user.mobile.length();
-			if (pending.pendingMsgs(user.uin))
-				lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Message"), user.altnick,
-					user.status->description(), 0);
+			bool has_mobile = user.mobile().length();
+			if (pending.pendingMsgs(user.uin()))
+				lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Message"), user.altNick(),
+					user.status().description(), 0);
 			else
 			{
-				QPixmap pix = user.status->pixmap(has_mobile);
+				QPixmap pix = user.status().pixmap(has_mobile);
 				if (!pix.isNull())
-					lbp = new KaduListBoxPixmap(pix, user.altnick, user.status->description(), 0);
+					lbp = new KaduListBoxPixmap(pix, user.altNick(), user.status().description(), 0);
 				else
-					lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Online"), user.altnick,
-						user.status->description(), 0);
+					lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Online"), user.altNick(),
+						user.status().description(), 0);
 			}
 			insertItem(lbp);
 		}
@@ -545,8 +549,8 @@ void UserBox::refresh()
 		for (i = 0; i < b_users.count(); ++i)
 		{
 			UserListElement &user = userlist.byAltNick(b_users[i]);
-			lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Mobile"), user.altnick,
-				user.status->description(), 0);
+			lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Mobile"), user.altNick(),
+				user.status().description(), 0);
 			insertItem(lbp);
 		}
 
@@ -629,8 +633,8 @@ UinsList UserBox::getSelectedUins()
 		if (isSelected(i))
 		{
 			UserListElement user = userlist.byAltNick(text(i));
-			if (user.uin)
-				uins.append(user.uin);
+			if (user.uin())
+				uins.append(user.uin());
 		}
 	kdebugf2();
 	return uins;
@@ -834,7 +838,7 @@ void UserBoxMenu::refreshIcons()
 
 		QValueList<QPair<QString, QString> >::const_iterator it=iconNames.begin();
 		QValueList<QPair<QString, QString> >::const_iterator end=iconNames.end();
-		
+
 		for (;it!=end; it++)
 			if (t.startsWith((*it).first))
 			{

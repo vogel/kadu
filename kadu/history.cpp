@@ -95,7 +95,7 @@ void HistoryManager::appendMessage(UinsList uins, UinType uin, const QString &ms
 			linelist.append("msgrcv");
 	linelist.append(QString::number(uin));
 	if (userlist.containsUin(uin))
-		nick = userlist.byUin(uin).altnick;
+		nick = userlist.byUin(uin).altNick();
 	else
 		nick = QString::number(uin);
 	linelist.append(text2csv(nick));
@@ -147,10 +147,10 @@ void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 	linelist.append(text2csv(msg));
 
 	for (UserList::ConstIterator i = userlist.begin(); i != userlist.end(); ++i)
-		if ((*i).mobile == mobile)
+		if ((*i).mobile() == mobile)
 		{
-			altnick = (*i).altnick;
-			uin = (*i).uin;
+			altnick = (*i).altNick();
+			uin = (*i).uin();
 			break;
 		}
 	if (uin)
@@ -237,9 +237,9 @@ void HistoryManager::appendStatus(UinType uin, const Status &status)
 	linelist.append(QString::number(uin));
 	if (userlist.containsUin(uin))
 	{
-		nick = userlist.byUin(uin).altnick;
-		ip = userlist.byUin(uin).ip;
-		port = userlist.byUin(uin).port;
+		nick = userlist.byUin(uin).altNick();
+		ip = userlist.byUin(uin).ip();
+		port = userlist.byUin(uin).port();
 	}
 	else
 	{
@@ -415,7 +415,7 @@ void HistoryManager::convHist2ekgForm(UinsList uins)
 			else if (userlist.containsAltNick(nick))
 			{
 				UserListElement &user = userlist.byAltNick(nick);
-				uin = user.uin;
+				uin = user.uin();
 			}
 			else if (uins.count() > 1)
 				uin = 0;
@@ -426,7 +426,7 @@ void HistoryManager::convHist2ekgForm(UinsList uins)
 			linelist.append(QString::number(uin));
 			if (our)
 				if (userlist.containsUin(uin))
-					nick = userlist.byUin(uin).altnick;
+					nick = userlist.byUin(uin).altNick();
 				else
 					nick = QString::number(uin);
 			linelist.append(nick);
@@ -542,8 +542,8 @@ void HistoryManager::convSms2ekgForm()
 			linelist.append(QString::number(-datetime.secsTo(
 				QDateTime(QDate(1970, 1, 1), QTime(0 ,0)))));
 			for (UserList::ConstIterator i = userlist.begin(); i != userlist.end(); ++i)
-				if ((*i).mobile == mobile)
-					uin = (*i).uin;
+				if ((*i).mobile() == mobile)
+					uin = (*i).uin();
 			header = false;
 		}
 		else
@@ -1135,7 +1135,7 @@ UinsListViewText::UinsListViewText(QListView *parent, UinsList &uins)
 		for (unsigned int i = 0; i < uins.count(); ++i)
 		{
 			if (userlist.containsUin(uins[i]))
-				name.append(userlist.byUin(uins[i]).altnick);
+				name.append(userlist.byUin(uins[i]).altNick());
 			else
 				name.append(QString::number(uins[i]));
 			if (i < uins.count() - 1)

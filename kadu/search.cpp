@@ -184,7 +184,7 @@ void SearchDialog::selectionChanged(QListViewItem *item) {
 	disconnect(b_addbtn, SIGNAL(clicked()), 0, 0);
 	if (item) {
 		uin = item->text(1).toUInt();
-		if ((userlist.containsUin(uin) && !userlist.byUin(uin).anonymous)
+		if ((userlist.containsUin(uin) && !userlist.byUin(uin).anonymous())
 			|| (userlist.containsUin(uin) && !kadu->docked())) {
 			b_addbtn->setText(tr("&Update Info"));
 			connect(b_addbtn, SIGNAL(clicked()), this, SLOT(updateInfoClicked()));
@@ -292,7 +292,7 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 	{
 		qlv = results->findItem((*searchIterator).Uin, 1);
 
-		pix = static_cast<Status>((*searchIterator).Stat).pixmap();
+		pix = ((*searchIterator).Stat).pixmap((*searchIterator).Stat.status(), false, false);
 
 		if (qlv) {
 //			if (!searchhidden) {
@@ -385,16 +385,15 @@ void SearchDialog::AddButtonClicked()
 	UserInfo *ui = new UserInfo(QString::null, true, 0, "user info");
 	UserListElement e;
 	bool ok;
-	e.first_name = firstname;
-	e.last_name = "";
-	e.nickname = nickname;
-	e.altnick = altnick;
-	e.mobile = "";
-	e.uin = uin.toUInt(&ok);
+	e.setFirstName(firstname);
+	e.setLastName("");
+	e.setNickName(nickname);
+	e.setAltNick(altnick);
+	e.setUin(uin.toUInt(&ok));
 	if (!ok)
-		e.uin = 0;
+		e.setUin(0);
 	e.setGroup("");
-	e.email = "";
+	e.setEmail("");
 	ui->setUserInfo(e);
 	ui->show();
 	/*
@@ -440,10 +439,10 @@ void SearchDialog::updateInfoClicked()
 		altnick = uin;
 
 	UserListElement e;
-	e=ule;
-	e.first_name = firstname;
-	e.nickname = nickname;
-	UserInfo *ui = new UserInfo(ule.altnick, false, 0, "user info");
+	e = ule;
+	e.setFirstName(firstname);
+	e.setNickName(nickname);
+	UserInfo *ui = new UserInfo(ule.altNick(), false, 0, "user info");
 	ui->setUserInfo(e);
 	ui->show();
 	kdebugf2();

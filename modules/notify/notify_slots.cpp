@@ -24,11 +24,11 @@ void NotifySlots::onCreateConfigDialog()
 	QListBox *e_notifies= ConfigDialog::getListBox("Notify", "track");
 	for (UserList::ConstIterator i = userlist.begin(); i != userlist.end(); ++i)
 	{
-		if ((*i).uin)
-			if (!(*i).notify)
-				e_availusers->insertItem((*i).altnick);
+		if ((*i).uin())
+			if (!(*i).notify())
+				e_availusers->insertItem((*i).altNick());
 			else
-				e_notifies->insertItem((*i).altnick);
+				e_notifies->insertItem((*i).altNick());
 	}
 
 	e_availusers->sort();
@@ -43,13 +43,13 @@ void NotifySlots::onCreateConfigDialog()
 		panebox->setEnabled(false);
 
 	connect(b_notifyall, SIGNAL(toggled(bool)), this, SLOT(ifNotifyAll(bool)));
-	
+
 	for (QStringList::iterator it=disabledControls.begin(); it!=disabledControls.end(); ++it)
 	{
 		ConfigDialog::getCheckBox("Notify", " ", *it)->setDisabled(true);
 		ConfigDialog::getCheckBox("Notify", " ", *it)->setDown(true);
 	}
-	
+
 	kdebugf2();
 }
 
@@ -61,9 +61,9 @@ void NotifySlots::onApplyConfigDialog()
 	QListBox *e_notifies= ConfigDialog::getListBox("Notify", "track");
 
 	for (i = 0; i < e_notifies->count(); ++i)
-		userlist.byAltNick(e_notifies->text(i)).notify = true;
+		userlist.byAltNick(e_notifies->text(i)).setNotify(true);
 	for (i = 0; i < e_availusers->count(); ++i)
-		userlist.byAltNick(e_availusers->text(i)).notify = false;
+		userlist.byAltNick(e_availusers->text(i)).setNotify(false);
 	kdebugf2();
 }
 

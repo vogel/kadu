@@ -38,7 +38,25 @@ struct UserListElement
 {
 	private:
 		QString Group;
-		UserList* Parent;
+		QString FirstName;
+		QString LastName;
+		QString NickName;
+		QString AltNick;
+		QString Mobile;
+		QString Email;
+		UinType Uin;
+		Status *Stat;
+		int MaxImageSize;
+		bool Anonymous;
+		QHostAddress Ip;
+		QString DnsName;
+		short Port;
+		int Version;
+		bool Blocking;
+		bool OfflineTo;
+		bool Notify;
+
+		UserList *Parent;
 		friend class UserList;
 
 	public:
@@ -52,25 +70,56 @@ struct UserListElement
 		QString group() const;
 		void setGroup(const QString& group);
 
-		// te trzeba kiedys trzeba tak uporzadkowac
-		// jak Group
-		QString first_name;
-		QString last_name;
-		QString nickname;
-		QString altnick;
-		QString mobile;
-		QString email;
-		UinType uin;
-		Status *status;
-		int image_size;
-		bool anonymous;
-		QHostAddress ip;
-		QString dnsname;
-		short port;
-		int version;
-		bool blocking;
-		bool offline_to_user;
-		bool notify;
+		QString firstName() const;
+		void setFirstName(const QString &firstName);
+
+		QString lastName() const;
+		void setLastName(const QString &lastName);
+
+		QString nickName() const;
+		void setNickName(const QString &nickName);
+
+		QString altNick() const;
+		void setAltNick(const QString &altNick);
+
+		QString mobile() const;
+		void setMobile(const QString &mobile);
+
+		QString email() const;
+		void setEmail(const QString &email);
+
+		UinType uin() const;
+		void setUin(const UinType &uin);
+
+		const Status & status() const;
+		Status & status();
+
+		int maxImageSize() const;
+		void setMaxImageSize(const int maxImageSize);
+
+		bool anonymous() const;
+		void setAnonymous(const bool anonymous);
+
+		const QHostAddress & ip() const;
+		QHostAddress & ip();
+
+		QString dnsName() const;
+		void setDnsName(const QString &dnsName);
+
+		short port() const;
+		void setPort(short port);
+
+		int version() const;
+		void setVersion(const int version);
+
+		bool blocking() const;
+		void setBlocking(const bool blocking);
+
+		bool offlineTo() const;
+		void setOfflineTo(const bool offlineTo);
+
+		bool notify() const;
+		void setNotify(const bool notify);
 };
 
 /**
@@ -114,6 +163,8 @@ class UserList : public QObject, public QMap<QString,UserListElement>
 		void modified();
 		void userAdded(const UserListElement& user);
 		void dnsNameReady(UinType);
+
+		void userDataChanged(const UserListElement* const oldData, const UserListElement* const newData);
 };
 
 extern UserList userlist;

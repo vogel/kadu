@@ -151,11 +151,11 @@ void UserlistImportExport::fromfile() {
 			file.close();
 
 			for (UserList::const_iterator i = importedUserlist.begin(); i != importedUserlist.end(); ++i)
-				new QListViewItem(lv_userlist, QString::number((*i).uin),
-					(*i).nickname,   (*i).altnick,
-					(*i).first_name, (*i).last_name,
-					(*i).mobile,     (*i).group(),
-					(*i).email);
+				new QListViewItem(lv_userlist, QString::number((*i).uin()),
+					(*i).nickName(),  (*i).altNick(),
+					(*i).firstName(), (*i).lastName(),
+					(*i).mobile(),    (*i).group(),
+					(*i).email());
 		}
 		else
 			MessageBox::wrn(tr("The application encountered an internal error\nThe import userlist from file was unsuccessful"));
@@ -183,9 +183,7 @@ void UserlistImportExport::makeUserlist()
 	if (!MessageBox::ask(tr("This operation will delete your current user list. Are you sure you want this?")))
 		return;
 
-	for (UserList::const_iterator i = userlist.begin(); i != userlist.end(); ++i)
-		if ((*i).uin)
-			gadu->removeNotify((*i).uin);
+
 
 	userlist = importedUserlist;
 
@@ -193,13 +191,9 @@ void UserlistImportExport::makeUserlist()
 	kadu->userbox()->clear();
 	kadu->userbox()->clearUsers();
 	for (UserList::const_iterator i = userlist.begin(); i != userlist.end(); ++i)
-		kadu->userbox()->addUser((*i).altnick);
+		kadu->userbox()->addUser((*i).altNick());
 
 	UserBox::all_refresh();
-
-	for (UserList::const_iterator i = userlist.begin(); i != userlist.end(); ++i)
-		if ((*i).uin)
-			gadu->addNotify((*i).uin);
 
 	userlist.writeToFile();
 	l_itemscount->setText(tr("%1 entries will be exported").arg(userlist.count()));
@@ -210,22 +204,14 @@ void UserlistImportExport::updateUserlist()
 {
 	kdebugf();
 
-	for (UserList::const_iterator i = userlist.begin(); i != userlist.end(); ++i)
-		if ((*i).uin)
-			gadu->removeNotify((*i).uin);
-
 	userlist.merge(importedUserlist);
 
 	kadu->userbox()->clear();
 	kadu->userbox()->clearUsers();
 	for (UserList::const_iterator i = userlist.begin(); i != userlist.end(); ++i)
-		kadu->userbox()->addUser((*i).altnick);
+		kadu->userbox()->addUser((*i).altNick());
 
 	UserBox::all_refresh();
-
-	for (UserList::const_iterator i = userlist.begin(); i != userlist.end(); ++i)
-		if ((*i).uin)
-			gadu->addNotify((*i).uin);
 
 	userlist.writeToFile();
 	l_itemscount->setText(tr("%1 entries will be exported").arg(userlist.count()));
@@ -243,8 +229,8 @@ void UserlistImportExport::userListImported(bool ok, UserList& userList)
 
 	if (ok)
 		for (UserList::const_iterator i = userList.begin(); i != userList.end(); ++i)
-			new QListViewItem(lv_userlist, (*i).uin ? QString::number((*i).uin) : QString(), (*i).nickname, (*i).altnick, (*i).first_name,
-				(*i).last_name, (*i).mobile, (*i).group(), (*i).email);
+			new QListViewItem(lv_userlist, (*i).uin() ? QString::number((*i).uin()) : QString(), (*i).nickName(),
+				(*i).altNick(), (*i).firstName(), (*i).lastName(), (*i).mobile(), (*i).group(), (*i).email());
 	kdebugf2();
 }
 

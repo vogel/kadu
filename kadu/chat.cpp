@@ -143,7 +143,7 @@ int ChatManager::openChat(UinsList senders,time_t time)
 		x=pos.x()+50;
 		y=pos.y()+50;
 		height=400;
-		
+
 		if (senders.count()>1)
 			width=550;
 		else
@@ -164,14 +164,14 @@ int ChatManager::openChat(UinsList senders,time_t time)
 	QValueList<int> vertSizes=toIntList(getChatProperty(senders, "VerticalSizes").toList());
 	if (!vertSizes.empty())
 		chat->vertSplit->setSizes(vertSizes);
-	
+
 	if (chat->horizSplit)
 	{
 		QValueList<int> horizSizes=toIntList(getChatProperty(senders, "HorizontalSizes").toList());
 		if (!horizSizes.empty())
 			chat->horizSplit->setSizes(horizSizes);
 	}
-	
+
 	chat->show();
 	chat->writeMessagesFromHistory(senders, time);
 	emit chatCreated(senders);
@@ -195,7 +195,7 @@ int ChatManager::openPendingMsg(int index, ChatMessage &msg)
 	QDateTime date;
 	date.setTime_t(p.time);
 
-	msg=ChatMessage(userlist.byUin(p.uins[0]).altnick, p.msg, false, QDateTime::currentDateTime(), date);
+	msg=ChatMessage(userlist.byUin(p.uins[0]).altNick(), p.msg, false, QDateTime::currentDateTime(), date);
 	Chats[k]->formatMessage(msg);
 
 	// kasujemy wiadomosc z pending
@@ -529,7 +529,7 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 		userbox->QListBox::setFont(config_file.readFontEntry("Look","UserboxFont"));
 
 		for (unsigned i = 0; i < uins.count(); ++i)
-			userbox->addUser(userlist.byUin(uins[i]).altnick);
+			userbox->addUser(userlist.byUin(uins[i]).altNick());
 		userbox->refresh();
 
 		connect(userbox, SIGNAL(rightButtonClicked(QListBoxItem *, const QPoint &)),
@@ -888,7 +888,7 @@ void Chat::setTitle()
 			title = parse(tr("Chat with ")+"%a (%s[: %d])",userlist.byUinValue(Uins[0]),false);
 		else
 			title = parse(config_file.readEntry("Look","ChatContents"),userlist.byUinValue(Uins[0]),false);
-		setIcon(userlist.byUinValue(Uins[0]).status->pixmap());
+		setIcon(userlist.byUinValue(Uins[0]).status().pixmap());
 	}
 
 	title.replace(QRegExp("<br/>"), " ");
@@ -978,7 +978,7 @@ void Chat::userWhois()
 		if (userbox->currentItem() == -1)
 			uin = Uins[0];
 		else
-			uin = userlist.byAltNick(userbox->currentText()).uin;
+			uin = userlist.byAltNick(userbox->currentText()).uin();
 	SearchDialog *sd = new SearchDialog(0, "User info", uin);
 	sd->show();
 	sd->firstSearch();
@@ -1145,7 +1145,7 @@ void Chat::checkPresence(UinsList senders, const QString &msg, time_t time, QVal
 	QDateTime date;
 	date.setTime_t(time);
 
-	ChatMessage *message=new ChatMessage(userlist.byUin(senders[0]).altnick, msg, false, QDateTime::currentDateTime(), date);
+	ChatMessage *message=new ChatMessage(userlist.byUin(senders[0]).altNick(), msg, false, QDateTime::currentDateTime(), date);
 	formatMessage(*message);
 	messages.append(message);
 
@@ -1413,7 +1413,7 @@ void Chat::initModule()
 
 	ConfigDialog::addComboBox("Chat", "Emoticons", QT_TRANSLATE_NOOP("@default", "Emoticons theme"));
 	ConfigDialog::addVGroupBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "WWW options"));
-	
+
 	ConfigDialog::addComboBox("Chat", "WWW options", QT_TRANSLATE_NOOP("@default", "Choose your browser"));
 	ConfigDialog::addComboBox("Chat", "WWW options", QT_TRANSLATE_NOOP("@default", "Browser options"));
 	ConfigDialog::addLineEdit("Chat", "WWW options", QT_TRANSLATE_NOOP("@default", "Custom Web browser"), "WebBrowser", "", QT_TRANSLATE_NOOP("@default", "%1 - Url clicked in chat window"));
@@ -1654,7 +1654,7 @@ void ChatSlots::initBrowserOptions(QComboBox *browserCombo, QComboBox *browserOp
 		case 4: 	//firefox
 		{
 			browserOptionsCombo->insertItem(tr("Open in new window"));		//dodajemy pozycje combo
-			browserOptionsCombo->insertItem(tr("Open in new tab"));	
+			browserOptionsCombo->insertItem(tr("Open in new tab"));
 			if (browserCommandLine.find("new-tab", 0, true) != -1)	//i wyszukujemy ktora opcje zaznaczyc
 				browserOptionsCombo->setCurrentItem(1);
 			else
@@ -1683,11 +1683,11 @@ void ChatSlots::onCreateConfigDialog()
 	QComboBox *browserOptionsCombo=ConfigDialog::getComboBox("Chat", "Browser options");
 	QLineEdit *browserPath= ConfigDialog::getLineEdit("Chat", "Custom Web browser");
 	initBrowserOptions(browserCombo, browserOptionsCombo, browserPath);
-	
+
 	//podpiecie pod zmiane w combo
 	connect(browserCombo, SIGNAL(activated (int)), this, SLOT(findAndSetWebBrowser(int)));
 	connect(browserOptionsCombo, SIGNAL(activated (int)), this, SLOT(findAndSetBrowserOption(int)));
-	
+
 	QCheckBox *c_prunechat= ConfigDialog::getCheckBox("Chat", "Automatically prune chat messages");
 	QHGroupBox *h_prune= ConfigDialog::getHGroupBox("Chat", "Message pruning");
 
@@ -1806,7 +1806,7 @@ void ChatSlots::findBrowser(int selectedBrowser, QComboBox *browserCombo, QCombo
 	/*
 		UWAGA1: obs³uga mozilli i firefoksa jest dosyæ skomplikowana, wiêc przy rozbudowie tej funkcji
 		nale¿y najpierw zrozumieæ jej dzia³anie dla tych dwóch przegl±darek, bo mo¿na siê naci±æ...
-		
+
 		UWAGA2: w tej funkcji NIE WOLNO korzystaæ z klasy ConfigDialog
 	*/
 	QString prevBrowser=browserPath->text();
@@ -1822,9 +1822,9 @@ void ChatSlots::findBrowser(int selectedBrowser, QComboBox *browserCombo, QCombo
 
 	QString homePath=getenv("HOME");
 	QString browserName;
-	
+
 	QStringList searchPath=QStringList::split(":", QString(getenv("PATH")));
-	
+
 	switch (selectedBrowser)
 	{
 		case 1: //konqueror
@@ -1832,7 +1832,7 @@ void ChatSlots::findBrowser(int selectedBrowser, QComboBox *browserCombo, QCombo
 			browserName="dcop";
 			searchPath.append("/opt/kde/bin");
 			searchPath.append("/opt/kde3/bin");
-			browserOptionsCombo->clear();	
+			browserOptionsCombo->clear();
 			browserOptionsCombo->insertItem(tr("Open in new window"));
 			browserOptionsCombo->insertItem(tr("Open in new tab"));
 			browserOptionsCombo->setCurrentItem(0);
@@ -1841,9 +1841,9 @@ void ChatSlots::findBrowser(int selectedBrowser, QComboBox *browserCombo, QCombo
 		}
 		case 2://opera
 		{
-			browserName="opera"; 
+			browserName="opera";
 			searchPath.append("/opt/opera");
-			browserOptionsCombo->clear();	
+			browserOptionsCombo->clear();
 			browserOptionsCombo->insertItem(tr("Open in new window"));
 			browserOptionsCombo->insertItem(tr("Open in new tab"));
 			browserOptionsCombo->insertItem(tr("Open in background tab"));
@@ -1854,7 +1854,7 @@ void ChatSlots::findBrowser(int selectedBrowser, QComboBox *browserCombo, QCombo
 		case 3: //mozilla
 		{
 			browserName="mozilla-xremote-client";
-			
+
 			QStringList dirList=QDir("/usr/lib").entryList("mozilla*", QDir::All, QDir::Name|QDir::Reversed);
 			for (QStringList::iterator it=dirList.begin(); it!=dirList.end(); it++)
 				searchPath.append("/usr/lib/"+(*it));
@@ -1863,7 +1863,7 @@ void ChatSlots::findBrowser(int selectedBrowser, QComboBox *browserCombo, QCombo
 			searchPath.append("/usr/local/mozilla");
 			searchPath.append(homePath+"/Mozilla");
 			searchPath.append(homePath+"/mozilla");
-			browserOptionsCombo->clear();	
+			browserOptionsCombo->clear();
 			browserOptionsCombo->insertItem(tr("Open in new window"));
 			browserOptionsCombo->insertItem(tr("Open in new tab"));
 			browserOptionsCombo->setCurrentItem(0);
@@ -1893,7 +1893,7 @@ void ChatSlots::findBrowser(int selectedBrowser, QComboBox *browserCombo, QCombo
 			for (QStringList::iterator it=dirList.begin(); it!=dirList.end(); it++)
 				searchPath.append("/usr/lib/"+(*it));
 
-			browserOptionsCombo->clear();	
+			browserOptionsCombo->clear();
 			browserOptionsCombo->insertItem(tr("Open in new window"));
 			browserOptionsCombo->insertItem(tr("Open in new tab"));
 			browserOptionsCombo->setCurrentItem(0);
@@ -1906,11 +1906,11 @@ void ChatSlots::findBrowser(int selectedBrowser, QComboBox *browserCombo, QCombo
 	}
 	QFile browserFile;
 	QString path, testPath;
-	
+
 	bool browserFound=false;
 	QStringList::iterator dir=searchPath.begin();
 	QStringList::iterator endDir=searchPath.end();
-	
+
 	kdebugm(KDEBUG_INFO, "search path: %s\n", searchPath.join(" ").local8Bit().data());
 	while (!browserFound && dir!=endDir)
 	{
@@ -1976,12 +1976,12 @@ void ChatSlots::findBrowser(int selectedBrowser, QComboBox *browserCombo, QCombo
 void ChatSlots::findAndSetWebBrowser(int selectedBrowser)
 {
 	kdebugf();
-	
+
 	QComboBox *browserCombo=ConfigDialog::getComboBox("Chat", "Choose your browser");
 	QComboBox *browserOptionsCombo=ConfigDialog::getComboBox("Chat", "Browser options");
 	QLineEdit *browserPath= ConfigDialog::getLineEdit("Chat", "Custom Web browser");
 	findBrowser(selectedBrowser, browserCombo, browserOptionsCombo, browserPath);
-	
+
 	kdebugf2();
 }
 
@@ -2003,7 +2003,7 @@ void ChatSlots::setBrowserOption(int selectedOption, QLineEdit *browserPathEdit,
 			browserPathEdit->setText(browserPath);
 			break;
 		}
-		case 2:		//Opera 
+		case 2:		//Opera
 		{
 			browserPath.remove(" -newwindow");
 			browserPath.remove(" -newpage");

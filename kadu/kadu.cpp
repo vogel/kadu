@@ -506,6 +506,9 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	if ( configTab >= 0 && configTab < GroupBar -> count() )
 		((QTabBar*) GroupBar) -> setCurrentTab( configTab );
 
+	connect(&userlist, SIGNAL(userDataChanged(const UserListElement * const, const UserListElement * const)),
+		gadu, SLOT(userDataChanged(const UserListElement * const, const UserListElement * const)));
+
 	connect(gadu, SIGNAL(chatMsgReceived2(UinsList, const QString &, time_t)),
 		this, SLOT(chatMsgReceived(UinsList, const QString &, time_t)));
 	connect(gadu, SIGNAL(connecting()), this, SLOT(connecting()));
@@ -563,7 +566,7 @@ void Kadu::popupMenu()
 	int notifyuseritem= UserBox::userboxmenu->getItem(tr("Notify about user"));
 	int offlinetouseritem= UserBox::userboxmenu->getItem(tr("Offline to user"));
 
-	if (!user.uin || isOurUin)
+	if (!user.uin() || isOurUin)
 	{
 		UserBox::userboxmenu->setItemEnabled(ignoreuseritem, false);
 		UserBox::userboxmenu->setItemEnabled(blockuseritem, false);
@@ -576,29 +579,29 @@ void Kadu::popupMenu()
 		uins = activeUserBox->getSelectedUins();
 		if (isIgnored(uins))
 			UserBox::userboxmenu->setItemChecked(ignoreuseritem, true);
-		if (user.blocking)
+		if (user.blocking())
 			UserBox::userboxmenu->setItemChecked(blockuseritem, true);
 		UserBox::userboxmenu->setItemEnabled(offlinetouseritem, config_file.readBoolEntry("General", "PrivateStatus"));
-		if (user.offline_to_user)
+		if (user.offlineTo())
 			UserBox::userboxmenu->setItemChecked(offlinetouseritem, true);
 		UserBox::userboxmenu->setItemEnabled(notifyuseritem, config_file.readBoolEntry("Notify", "NotifyStatusChange") && !config_file.readBoolEntry("Notify", "NotifyAboutAll"));
-		if (user.notify)
+		if (user.notify())
 			UserBox::userboxmenu->setItemChecked(notifyuseritem, true);
 	}
 
 	int deletehistoryitem = UserBox::userboxmenu->getItem(tr("Clear history"));
 	int historyitem = UserBox::userboxmenu->getItem(tr("View history"));
 	int searchuser = UserBox::userboxmenu->getItem(tr("Lookup in directory"));
-	if (!user.uin || isOurUin)
+	if (!user.uin() || isOurUin)
 	{
 		UserBox::userboxmenu->setItemEnabled(deletehistoryitem, false);
 		UserBox::userboxmenu->setItemEnabled(historyitem, false);
 	}
-	if (users.count() != 1 || !user.uin)
+	if (users.count() != 1 || !user.uin())
 		UserBox::userboxmenu->setItemEnabled(searchuser, false);
 	if (users.count() != 1)
 		UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("View/edit user info")), false);
-	if (!user.uin || isOurUin)
+	if (!user.uin() || isOurUin)
 		UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("Open chat window")), false);
 	kdebugf2();
 }
@@ -637,7 +640,7 @@ void Kadu::lookupInDirectory()
 	UserList users = activeUserBox->getSelectedUsers();
 	if (users.count() == 1)
 	{
-		sd = new SearchDialog(0, tr("User info"), (*(users.begin())).uin);
+		sd = new SearchDialog(0, tr("User info"), (*(users.begin())).uin());
 		sd->show();
 		sd->firstSearch();
 	}
@@ -660,7 +663,7 @@ void Kadu::showUserInfo()
 	}
 	UserList users = activeUserBox->getSelectedUsers();
 	if (users.count() == 1)
-		(new UserInfo((*users.begin()).altnick, false, 0, "user info"))->show();
+		(new UserInfo((*users.begin()).altNick(), false, 0, "user info"))->show();
 	kdebugf2();
 }
 
@@ -771,6 +774,7 @@ void Kadu::ignoreUser()
 	kdebugf2();
 }
 
+// ca³y ten szmelc do optymalizacji
 void Kadu::blockUser()
 {
 	kdebugf();
@@ -780,10 +784,9 @@ void Kadu::blockUser()
 		kdebugf2();
 		return;
 	}
-	UserListElement *puser = &userlist.byAltNick((*activeUserBox->getSelectedUsers().begin()).altnick);
-	puser->blocking = !puser->blocking;
 
-	gadu->blockUser(puser->uin, puser->blocking);
+	UserListElement &puser = userlist.byAltNick((*activeUserBox->getSelectedUsers().begin()).altNick());
+	puser.setBlocking(!puser.blocking());
 
 	userlist.writeToFile();
 	kdebugf2();
@@ -798,8 +801,8 @@ void Kadu::notifyUser()
 		kdebugf2();
 		return;
 	}
-	UserListElement *puser = &userlist.byAltNick((*activeUserBox->getSelectedUsers().begin()).altnick);
-	puser->notify = !puser->notify;
+	UserListElement &puser = userlist.byAltNick((*activeUserBox->getSelectedUsers().begin()).altNick());
+	puser.setNotify(!puser.notify());
 	userlist.writeToFile();
 	kdebugf2();
 }
@@ -813,10 +816,10 @@ void Kadu::offlineToUser()
 		kdebugf2();
 		return;
 	}
-	UserListElement *puser = &userlist.byAltNick((*activeUserBox->getSelectedUsers().begin()).altnick);
-	puser->offline_to_user = !puser->offline_to_user;
+	UserListElement &puser = userlist.byAltNick((*activeUserBox->getSelectedUsers().begin()).altNick());
+	puser.setOfflineTo(!puser.offlineTo());
 
-	gadu->offlineToUser(puser->uin, puser->offline_to_user);
+	userlist.changeUserInfo((*activeUserBox->getSelectedUsers().begin()).altNick(), puser);
 
 	userlist.writeToFile();
 	kdebugf2();
@@ -938,8 +941,8 @@ void Kadu::setActiveGroup(const QString& group)
 				if (user_group == group)
 					belongsToGroup = true;
 		}
-		if (belongsToGroup && (!(*i).anonymous || !Docked))
-			Userbox->addUser((*i).altnick);
+		if (belongsToGroup && (!(*i).anonymous() || !Docked))
+			Userbox->addUser((*i).altNick());
 	}
 	UserBox::all_refresh();
 	kdebugf2();
@@ -969,9 +972,9 @@ void Kadu::userStatusChanged(const UserListElement &user, const Status &oldstatu
 {
 	kdebugf();
 
-	history.appendStatus(user.uin, *(user.status));
-	chat_manager->refreshTitlesForUin(user.uin);
-	if (user.status->isOffline())
+	history.appendStatus(user.uin(), user.status());
+	chat_manager->refreshTitlesForUin(user.uin());
+	if (user.status().isOffline())
 		InfoPanel->setText("");
 	if (!onConnection)//refresh zrobimy jak ju¿ ca³± listê przetworzymy, czyli w userListChanged()
 		UserBox::all_refresh();
@@ -996,9 +999,7 @@ void Kadu::removeUser(QStringList &users, bool permanently = false)
 	for (i = 0; i < users.count(); ++i)
 	{
 		UserListElement user = userlist.byAltNick(users[i]);
-		if (!user.anonymous && user.uin)
-			gadu->removeNotify(user.uin);
-		userlist.removeUser(user.altnick);
+		userlist.removeUser(user.altNick());
 	}
 
 	userlist.writeToFile();
@@ -1041,17 +1042,17 @@ void Kadu::userListUserAdded(const UserListElement& user)
 	// (odezwal sie do nas) i mamy wlaczone dokowanie (mozemy kliknac
 	// na kopertce w trayu, zeby odebrac wiadomosc) to nie dodajemy
 	// go do userboxa itp bo po co.
-	if (user.anonymous && Docked)
+	if (user.anonymous() && Docked)
 		return;
 	userlist.writeToFile();
 
-	Userbox->addUser(user.altnick);
+	Userbox->addUser(user.altNick());
 	UserBox::all_refresh();
 
 	refreshGroupTabBar();
 
-	if (user.uin)
-		gadu->addNotify(user.uin);
+//	if (user.uin)
+//		gadu->addNotify(user.uin);
 }
 
 void Kadu::mouseButtonClicked(int button, QListBoxItem *item)
@@ -1072,7 +1073,7 @@ void Kadu::sendMessage(QListBoxItem *item)
 		kdebugf2();
 		return;
 	}
-	UinType uin = userlist.byAltNick(item->text()).uin;
+	UinType uin = userlist.byAltNick(item->text()).uin();
 	if (uin)
 	{
 		UinsList uins = activeUserBox->getSelectedUins();
@@ -1425,7 +1426,7 @@ void Kadu::createMenu()
 	MainMenu->insertItem(icons_manager.loadIcon("Exit"), tr("&Exit Kadu"), this, SLOT(quit()));
 
 	MenuBar->insertItem(tr("&Kadu"), MainMenu);
-	
+
 	icons_manager.registerMenu(MainMenu);
 	icons_manager.registerMenuItem(MainMenu, tr("Manage &ignored"), "ManageIgnored");
 	icons_manager.registerMenuItem(MainMenu, tr("&Configuration"), "Configuration");
@@ -1509,7 +1510,7 @@ void Kadu::infopanelUpdate(UinType uin)
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		return;
 	kdebugm(KDEBUG_INFO, "Kadu::infopanelUpdate(%d)\n", uin);
-	if (Userbox->currentItem() != -1 && uin == userlist.byAltNick(Userbox->currentText()).uin)
+	if (Userbox->currentItem() != -1 && uin == userlist.byAltNick(Userbox->currentText()).uin())
 	{
 		HtmlDocument doc;
 		doc.parseHtml(parse(config_file.readEntry("Look", "PanelContents"), userlist.byUin(uin)));

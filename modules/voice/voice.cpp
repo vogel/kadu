@@ -272,10 +272,10 @@ void VoiceManager::makeVoiceChat()
 			if (users.count() != 1)
 				return;
 			UserListElement user = (*users.begin());
-			if (user.port >= 10)
+			if (user.port() >= 10)
 			{
-				if ((dcc_new = gadu->dccVoiceChat(htonl(user.ip.ip4Addr()), user.port,
-					config_file.readNumEntry("General", "UIN"), user.uin)) != NULL) {
+				if ((dcc_new = gadu->dccVoiceChat(htonl(user.ip().ip4Addr()), user.port(),
+					config_file.readNumEntry("General", "UIN"), user.uin())) != NULL) {
 					VoiceSocket* dcc = new VoiceSocket(dcc_new);
 					connect(dcc, SIGNAL(dccFinished(DccSocket *)), this,
 						SLOT(dccFinished(DccSocket *)));
@@ -283,7 +283,7 @@ void VoiceManager::makeVoiceChat()
 				}
 			}
 			else
-				gadu->dccRequest(user.uin);
+				gadu->dccRequest(user.uin());
 		}
 	kdebugf2();
 }
@@ -317,7 +317,7 @@ void VoiceManager::userBoxMenuPopup()
 		users.count() == 1 &&
 		!isOurUin &&
 		config_file.readBoolEntry("Network", "AllowDCC") &&
-		(user.status->isOnline() || user.status->isBusy())
+		(user.status().isOnline() || user.status().isBusy())
 	   )
 
 		UserBox::userboxmenu->setItemEnabled(voicechat, true);
@@ -416,7 +416,7 @@ void VoiceSocket::dccEvent()
 void VoiceSocket::askAcceptVoiceChat()
 {
 	kdebugf();
-	QString str=tr("User %1 wants to talk with you. Do you accept it?").arg(userlist.byUin(dccsock->peer_uin).altnick);
+	QString str=tr("User %1 wants to talk with you. Do you accept it?").arg(userlist.byUin(dccsock->peer_uin).altNick());
 
 	switch (QMessageBox::information(0, tr("Incoming voice chat"), str, tr("Yes"), tr("No"),
 		QString::null, 0, 1))
