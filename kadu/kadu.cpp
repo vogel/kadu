@@ -512,24 +512,23 @@ void Kadu::createToolBar()
 void Kadu::popupMenu()
 {
 	kdebugf();
-	UserList users;
 	UserBox *activeUserBox=UserBox::getActiveUserBox();
 	if (activeUserBox==NULL)//to siê zdarza...
 	{
 		kdebugf2();
 		return;
 	}
-	users = activeUserBox->getSelectedUsers();
-	UserListElement user = (*users.begin());
+	UserList users = activeUserBox->getSelectedUsers();
+	UserListElement firstUser = (*users.begin());
 
-	bool isOurUin=users.containsUin(config_file.readNumEntry("General", "UIN"));
+	bool isOurUin = users.containsUin(config_file.readNumEntry("General", "UIN"));
 
-	int ignoreuseritem= UserBox::userboxmenu->getItem(tr("Ignore user"));
-	int blockuseritem= UserBox::userboxmenu->getItem(tr("Block user"));
-	int notifyuseritem= UserBox::userboxmenu->getItem(tr("Notify about user"));
-	int offlinetouseritem= UserBox::userboxmenu->getItem(tr("Offline to user"));
+	int ignoreuseritem = UserBox::userboxmenu->getItem(tr("Ignore user"));
+	int blockuseritem = UserBox::userboxmenu->getItem(tr("Block user"));
+	int notifyuseritem = UserBox::userboxmenu->getItem(tr("Notify about user"));
+	int offlinetouseritem = UserBox::userboxmenu->getItem(tr("Offline to user"));
 
-	if (!user.uin() || isOurUin)
+	if (!firstUser.uin() || isOurUin)
 	{
 		UserBox::userboxmenu->setItemEnabled(ignoreuseritem, false);
 		UserBox::userboxmenu->setItemEnabled(blockuseritem, false);
@@ -538,33 +537,54 @@ void Kadu::popupMenu()
 	}
 	else
 	{
-		UinsList uins;
-		uins = activeUserBox->getSelectedUins();
+		bool on;
+		UinsList uins = activeUserBox->getSelectedUins();
 		if (isIgnored(uins))
 			UserBox::userboxmenu->setItemChecked(ignoreuseritem, true);
-		if (user.blocking())
-			UserBox::userboxmenu->setItemChecked(blockuseritem, true);
+
+		on = true;
+		CONST_FOREACH(user, users)
+			if (!(*user).blocking())
+			{
+				on = false;
+				break;
+			}
+		UserBox::userboxmenu->setItemChecked(blockuseritem, on);
+
+		on = true;
+		CONST_FOREACH(user, users)
+			if (!(*user).offlineTo())
+			{
+				on = false;
+				break;
+			}
 		UserBox::userboxmenu->setItemEnabled(offlinetouseritem, config_file.readBoolEntry("General", "PrivateStatus"));
-		if (user.offlineTo())
-			UserBox::userboxmenu->setItemChecked(offlinetouseritem, true);
+		UserBox::userboxmenu->setItemChecked(offlinetouseritem, on);
+
+		on = true;
+		CONST_FOREACH(user, users)
+			if (!(*user).notify())
+			{
+				on = false;
+				break;
+			}
 		UserBox::userboxmenu->setItemEnabled(notifyuseritem, !config_file.readBoolEntry("Notify", "NotifyAboutAll"));
-		if (user.notify())
-			UserBox::userboxmenu->setItemChecked(notifyuseritem, true);
+		UserBox::userboxmenu->setItemChecked(notifyuseritem, on);
 	}
 
 	int deletehistoryitem = UserBox::userboxmenu->getItem(tr("Clear history"));
 	int historyitem = UserBox::userboxmenu->getItem(tr("View history"));
 	int searchuser = UserBox::userboxmenu->getItem(tr("Lookup in directory"));
-	if (!user.uin() || isOurUin)
+	if (!firstUser.uin() || isOurUin)
 	{
 		UserBox::userboxmenu->setItemEnabled(deletehistoryitem, false);
 		UserBox::userboxmenu->setItemEnabled(historyitem, false);
 	}
-	if (users.count() != 1 || !user.uin())
+	if (users.count() != 1 || !firstUser.uin())
 		UserBox::userboxmenu->setItemEnabled(searchuser, false);
 	if (users.count() != 1)
 		UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("View/edit user info")), false);
-	if (!user.uin() || isOurUin)
+	if (!firstUser.uin() || isOurUin)
 		UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("Open chat window")), false);
 	kdebugf2();
 }
@@ -722,8 +742,8 @@ void Kadu::hideKadu()
 void Kadu::ignoreUser()
 {
 	kdebugf();
-	UserBox *activeUserBox=UserBox::getActiveUserBox();
-	if (activeUserBox==NULL)
+	UserBox *activeUserBox = UserBox::getActiveUserBox();
+	if (activeUserBox == NULL)
 	{
 		kdebugf2();
 		return;
@@ -737,21 +757,33 @@ void Kadu::ignoreUser()
 	kdebugf2();
 }
 
-// ca³y ten szmelc do optymalizacji
 void Kadu::blockUser()
 {
 	kdebugf();
-	UserBox *activeUserBox=UserBox::getActiveUserBox();
-	if (activeUserBox==NULL)
+	UserBox *activeUserBox = UserBox::getActiveUserBox();
+	if (activeUserBox == NULL)
 	{
 		kdebugf2();
 		return;
 	}
 
-	UserListElement puser = userlist.byAltNick((*activeUserBox->getSelectedUsers().begin()).altNick());
-	puser.setBlocking(!puser.blocking());
+	UserList users = activeUserBox->getSelectedUsers();
+	bool on = true;
+	CONST_FOREACH(user, users)
+		if (!(*user).blocking())
+		{
+			on = false;
+			break;
+		}
 
-	userlist.changeUserInfo(puser.altNick(), puser);
+	FOREACH(user, users)
+	{
+		if ((*user).blocking()!=!on)
+		{
+			(*user).setBlocking(!on);
+			userlist.changeUserInfo((*user).altNick(), *user);
+		}
+	}
 	userlist.writeToFile();
 	kdebugf2();
 }
@@ -759,16 +791,31 @@ void Kadu::blockUser()
 void Kadu::notifyUser()
 {
 	kdebugf();
-	UserBox *activeUserBox=UserBox::getActiveUserBox();
-	if (activeUserBox==NULL)
+	UserBox *activeUserBox = UserBox::getActiveUserBox();
+	if (activeUserBox == NULL)
 	{
 		kdebugf2();
 		return;
 	}
-	UserListElement puser = userlist.byAltNick((*activeUserBox->getSelectedUsers().begin()).altNick());
-	puser.setNotify(!puser.notify());
 
-	userlist.changeUserInfo(puser.altNick(), puser);
+	UserList users = activeUserBox->getSelectedUsers();
+	bool on = true;
+	CONST_FOREACH(user, users)
+		if (!(*user).notify())
+		{
+			on = false;
+			break;
+		}
+
+	FOREACH(user, users)
+	{
+		if ((*user).notify()!=!on)
+		{
+			(*user).setNotify(!on);
+			userlist.changeUserInfo((*user).altNick(), *user);
+		}
+	}
+
 	userlist.writeToFile();
 	kdebugf2();
 }
@@ -776,16 +823,31 @@ void Kadu::notifyUser()
 void Kadu::offlineToUser()
 {
 	kdebugf();
-	UserBox *activeUserBox=UserBox::getActiveUserBox();
-	if (activeUserBox==NULL)
+	UserBox *activeUserBox = UserBox::getActiveUserBox();
+	if (activeUserBox == NULL)
 	{
 		kdebugf2();
 		return;
 	}
-	UserListElement puser = userlist.byAltNick((*activeUserBox->getSelectedUsers().begin()).altNick());
-	puser.setOfflineTo(!puser.offlineTo());
 
-	userlist.changeUserInfo(puser.altNick(), puser);
+	UserList users = activeUserBox->getSelectedUsers();
+	bool on = true;
+	CONST_FOREACH(user, users)
+		if (!(*user).offlineTo())
+		{
+			on = false;
+			break;
+		}
+
+	FOREACH(user, users)
+	{
+		if ((*user).offlineTo()!=!on)
+		{
+			(*user).setOfflineTo(!on);
+			userlist.changeUserInfo((*user).altNick(), *user);
+		}
+	}
+
 	userlist.writeToFile();
 	kdebugf2();
 }
