@@ -1,4 +1,4 @@
-/* $Id: dcc.c,v 1.17 2003/02/20 13:57:50 chilek Exp $ */
+/* $Id: dcc.c,v 1.18 2003/03/22 08:56:13 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -18,24 +18,25 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/ioctl.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include <sys/stat.h>
-#include <fcntl.h>		/* XXX fixy na inne systemy */
-#include <sys/ioctl.h>		/* XXX j.w. */
-#include <errno.h>
-#ifndef _AIX
-#  include <string.h>
-#endif
 #ifdef sun
 #  include <sys/filio.h>
 #endif
-#include <stdarg.h>
+
 #include <ctype.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <stdarg.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
 #include "compat.h"
 #include "libgadu.h"
 
@@ -560,7 +561,7 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 		struct gg_dcc_tiny_packet tiny;
 		struct gg_dcc_small_packet small;
 		struct gg_dcc_big_packet big;
-		int size, tmp, res, res_size;
+		int size, tmp, res, res_size = sizeof(res);
 		char buf[1024], ack[] = "UDAG";
 
 		struct gg_dcc_file_info_packet {
@@ -582,12 +583,12 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 					h->state = GG_STATE_READING_UIN_2;
 					h->check = GG_CHECK_READ;
 					h->timeout = GG_DEFAULT_TIMEOUT;
-					h->peer_uin = uin;
+					h->peer_uin = gg_fix32(uin);
 				} else {
 					h->state = GG_STATE_SENDING_ACK;
 					h->check = GG_CHECK_WRITE;
 					h->timeout = GG_DEFAULT_TIMEOUT;
-					h->uin = uin;
+					h->uin = gg_fix32(uin);
 					e->type = GG_EVENT_DCC_CLIENT_ACCEPT;
 				}
 
@@ -681,6 +682,9 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 				gg_read(h->fd, &file_info_packet, sizeof(file_info_packet));
 
 				memcpy(&h->file_info, &file_info_packet.file_info, sizeof(h->file_info));
+		
+				h->file_info.mode = gg_fix32(h->file_info.mode);
+				h->file_info.size = gg_fix32(h->file_info.size);
 
 				h->state = GG_STATE_SENDING_FILE_ACK;
 				h->check = GG_CHECK_WRITE;
@@ -755,13 +759,19 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 				big.type = gg_fix32(big.type);
 				h->chunk_size = gg_fix32(big.dunno1);
 				h->chunk_offset = 0;
-				
+
 				if (big.type == 0x0005)	{ /* XXX */
+					gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() transfer refused\n");
 					e->type = GG_EVENT_DCC_ERROR;
 					e->event.dcc_error = GG_ERROR_DCC_REFUSED;
 					return e;
 				}
-				
+
+				if (h->chunk_size == 0) { 
+					gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() empty chunk, EOF\n");
+					e->type = GG_EVENT_DCC_DONE;
+					return e;
+				}
 
 				h->state = GG_STATE_GETTING_FILE;
 				h->check = GG_CHECK_READ;
@@ -964,6 +974,10 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 				file_info_packet.big.dunno2 = 0;
 
 				memcpy(&file_info_packet.file_info, &h->file_info, sizeof(h->file_info));
+
+				/* zostaj± teraz u nas, wiêc odwracamy z powrotem */
+				h->file_info.size = gg_fix32(h->file_info.size);
+				h->file_info.mode = gg_fix32(h->file_info.mode);
 				
 				gg_write(h->fd, &file_info_packet, sizeof(file_info_packet));
 
@@ -1099,6 +1113,21 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 				h->check = GG_CHECK_WRITE;
 
 				return e;
+
+			case 1000:
+				gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() GG_STATE_AFTERLIFE\n");
+
+				size = read(h->fd, buf, sizeof(buf));
+
+				gg_dcc_debug_data("read", h->fd, buf, size);
+
+				if (size == 0) {
+					e->type = GG_EVENT_DCC_DONE;
+					return e;
+				}
+
+				break;
+				
 				
 			case GG_STATE_GETTING_FILE:
 				gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() GG_STATE_GETTING_FILE\n");
@@ -1141,7 +1170,12 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 				h->offset += size;
 				
 				if (h->offset >= h->file_info.size) {
+#if 0
 					e->type = GG_EVENT_DCC_DONE;
+					return e;
+#endif
+					h->state = 1000;
+					h->check = GG_CHECK_READ;
 					return e;
 				}
 

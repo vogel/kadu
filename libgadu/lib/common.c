@@ -1,4 +1,4 @@
-/* $Id: common.c,v 1.19 2003/02/20 13:57:50 chilek Exp $ */
+/* $Id: common.c,v 1.20 2003/03/22 08:56:13 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -18,24 +18,24 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdarg.h>
-#include <unistd.h>
+#include <sys/types.h>
+#include <sys/ioctl.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include <sys/ioctl.h>
-#include <netdb.h>
-#include <errno.h>
-#ifndef _AIX
-#  include <string.h>
-#endif
-#include <stdarg.h>
 #ifdef sun
-  #include <sys/filio.h>
+#  include <sys/filio.h>
 #endif
+
+#include <errno.h>
 #include <fcntl.h>
+#include <netdb.h>
+#include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
 #include "libgadu.h"
 
 FILE *gg_debug_file = NULL;
@@ -53,12 +53,24 @@ FILE *gg_debug_file = NULL;
 void gg_debug(int level, const char *format, ...)
 {
 	va_list ap;
+	int old_errno = errno;
+	
+	if (gg_debug_handler) {
+		va_start(ap, format);
+		(*gg_debug_handler)(level, format, ap);
+		va_end(ap);
+
+		goto cleanup;
+	}
 	
 	if ((gg_debug_level & level)) {
 		va_start(ap, format);
 		vfprintf((gg_debug_file) ? gg_debug_file : stderr, format, ap);
 		va_end(ap);
 	}
+
+cleanup:
+	errno = old_errno;
 }
 
 #endif
@@ -309,7 +321,6 @@ void gg_chomp(char *line)
 		line[strlen(line) - 1] = 0;
 }
 
-
 /*
  * gg_urlencode() // funkcja wewnêtrzna
  *
@@ -331,7 +342,7 @@ char *gg_urlencode(const char *str)
 		str = strdup("");
 
 	for (p = str; *p; p++, size++) {
-		if (!((*p >= 'a' && *p <= 'z') || (*p >= 'A' && *p <= 'Z') || (*p >= '0' && *p <= '9')))
+		if (!((*p >= 'a' && *p <= 'z') || (*p >= 'A' && *p <= 'Z') || (*p >= '0' && *p <= '9') || *p == ' '))
 			size += 2;
 	}
 
@@ -342,9 +353,13 @@ char *gg_urlencode(const char *str)
 		if ((*p >= 'a' && *p <= 'z') || (*p >= 'A' && *p <= 'Z') || (*p >= '0' && *p <= '9'))
 			*q = *p;
 		else {
-			*q++ = '%';
-			*q++ = hex[*p >> 4 & 15];
-			*q = hex[*p & 15];
+			if (*p == ' ')
+				*q = '+';
+			else {
+				*q++ = '%';
+				*q++ = hex[*p >> 4 & 15];
+				*q = hex[*p & 15];
+			}
 		}
 	}
 
@@ -591,7 +606,7 @@ char *gg_base64_decode(const char *buf)
 		}
 		if (!(foo = strchr(gg_base64_charset, *buf)))
 			foo = gg_base64_charset;
-		val = (int)foo - (int)gg_base64_charset;
+		val = (int)(foo - gg_base64_charset);
 		buf++;
 		switch (index) {
 			case 0:

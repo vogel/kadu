@@ -1,4 +1,4 @@
-/* $Id: libgadu.c,v 1.19 2003/02/20 13:57:51 chilek Exp $ */
+/* $Id: libgadu.c,v 1.20 2003/03/22 08:56:13 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -20,28 +20,32 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
+#include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include <netdb.h>
-#include <errno.h>
-#ifndef _AIX
-#  include <string.h>
-#endif
-#include <stdarg.h>
 #ifdef sun
 #  include <sys/filio.h>
 #endif
-#include "compat.h"
-#include "libgadu.h"
+
+#include "libgadu-config.h"
+
+#include <errno.h>
+#include <netdb.h>
 #ifdef __GG_LIBGADU_HAVE_PTHREAD
 #  include <pthread.h>
 #endif
+#include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+#include "compat.h"
+#include "libgadu.h"
 
 int gg_debug_level = 0;
+void (*gg_debug_handler)(int level, const char *format, va_list ap) = NULL;
 
 int gg_dcc_port = 0;
 unsigned long gg_dcc_ip = 0;
@@ -61,7 +65,7 @@ static char rcsid[]
 #ifdef __GNUC__
 __attribute__ ((unused))
 #endif
-= "$Id: libgadu.c,v 1.19 2003/02/20 13:57:51 chilek Exp $";
+= "$Id: libgadu.c,v 1.20 2003/03/22 08:56:13 chilek Exp $";
 #endif 
 
 /*
@@ -394,14 +398,14 @@ void *gg_recv_packet(struct gg_session *sess)
 			}
 
 			sess->header_done += ret;
+
 		}
 
 		h.type = gg_fix32(h.type);
 		h.length = gg_fix32(h.length);
-	} else {
+	} else
 		memcpy(&h, sess->recv_buf, sizeof(h));
-	}
-
+	
 	/* jakie¶ sensowne limity na rozmiar pakietu */
 	if (h.length < 0 || h.length > 65535) {
 		gg_debug(GG_DEBUG_MISC, "// gg_recv_packet() invalid packet length (%d)\n", h.length);
@@ -635,6 +639,7 @@ struct gg_session *gg_login(const struct gg_login_params *p)
 	if (p->has_audio)
 		sess->protocol_version |= GG_HAS_AUDIO_MASK;
 	sess->client_version = (p->client_version) ? strdup(p->client_version) : NULL;
+	sess->last_sysmsg = p->last_sysmsg;
 	
 	if (gg_proxy_enabled) {
 		hostname = gg_proxy_host;

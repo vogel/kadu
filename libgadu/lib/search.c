@@ -1,4 +1,4 @@
-/* $Id: search.c,v 1.18 2003/02/20 13:57:51 chilek Exp $ */
+/* $Id: search.c,v 1.19 2003/03/22 08:56:13 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -17,12 +17,11 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#include <stdlib.h>
-#include <stdio.h>
 #include <errno.h>
-#ifndef _AIX
-#  include <string.h>
-#endif
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "libgadu.h"
 
 /*

@@ -15,12 +15,9 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#include <stdio.h>
-#ifndef _AIX
-#  include <string.h>
-#endif
-#include <limits.h>
 #include <errno.h>
+#include <limits.h>
+#include <string.h>
 
 #ifndef PATH_MAX
 #  define PATH_MAX _POSIX_PATH_MAX

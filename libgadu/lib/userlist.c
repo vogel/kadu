@@ -1,4 +1,4 @@
-/* $Id: userlist.c,v 1.17 2003/02/20 13:57:51 chilek Exp $ */
+/* $Id: userlist.c,v 1.18 2003/03/22 08:56:13 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -17,15 +17,14 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#include <stdlib.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <errno.h>
-#ifndef _AIX
-#  include <string.h>
-#endif
-#include <stdarg.h>
 #include <ctype.h>
+#include <errno.h>
+#include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
 #include "libgadu.h"
 
 /*
@@ -77,7 +76,7 @@ struct gg_http *gg_userlist_get(uin_t uin, const char *passwd, int async)
                 "Pragma: no-cache\r\n"
                 "\r\n"
                 "%s",
-                strlen(form), form);
+                (int) strlen(form), form);
 
 	free(form);
 
@@ -219,7 +218,7 @@ struct gg_http *gg_userlist_put(uin_t uin, const char *passwd, const char *conta
                 "Pragma: no-cache\r\n"
                 "\r\n"
                 "%s",
-                strlen(form), form);
+                (int) strlen(form), form);
 
 	free(form);
 
@@ -301,6 +300,141 @@ int gg_userlist_put_watch_fd(struct gg_http *h)
  *  - h - zwalniana struktura
  */
 void gg_userlist_put_free(struct gg_http *h)
+{
+	gg_http_free(h);
+}
+
+/*
+ * gg_userlist_remove()
+ *
+ * usuwa listê kontaktów z serwera.
+ *
+ *  - uin - numerek
+ *  - passwd - has³o
+ *  - async - ma byæ asynchronicznie
+ *
+ * zaalokowana struct gg_http, któr± po¼niej nale¿y zwolniæ
+ * funkcj± gg_userlist_send(), albo NULL je¶li wyst±pi³ b³±d.
+ */
+struct gg_http *gg_userlist_remove(uin_t uin, const char *passwd, int async)
+{
+	struct gg_http *h;
+	char *form, *query, *__passwd;
+
+	if (!passwd) {
+		gg_debug(GG_DEBUG_MISC, "=> userlist_remove, NULL parameter\n");
+		errno = EINVAL;
+		return NULL;
+	}
+
+	if (!(__passwd = gg_urlencode(passwd))) {
+		gg_debug(GG_DEBUG_MISC, "=> userlist_remove, not enough memory for form fields\n");
+		free(__passwd);
+		errno = ENOMEM;
+		return NULL;
+	}
+	
+	if (!(form = gg_saprintf("FmNum=%d&Pass=%s&Delete=1", uin, __passwd))) {
+		gg_debug(GG_DEBUG_MISC, "=> userlist_remove, not enough memory for form fields\n");
+		free(__passwd);
+		errno = ENOMEM;
+		return NULL;
+	}
+	
+	free(__passwd);
+	
+	gg_debug(GG_DEBUG_MISC, "=> userlist_remove, %s\n", form);
+
+        query = gg_saprintf(
+		"Host: " GG_PUBDIR_HOST "\r\n"
+                "Content-Type: application/x-www-form-urlencoded\r\n"
+                "User-Agent: " GG_HTTP_USERAGENT "\r\n"
+                "Content-Length: %d\r\n"
+                "Pragma: no-cache\r\n"
+                "\r\n"
+                "%s",
+                (int) strlen(form), form);
+
+	free(form);
+
+	if (!(h = gg_http_connect(GG_PUBDIR_HOST, GG_PUBDIR_PORT, async, "POST", "/appsvc/fmcontactsput.asp", query))) {
+		gg_debug(GG_DEBUG_MISC, "=> userlist_remove, gg_http_connect() failed mysteriously\n");
+                free(query);
+		return NULL;
+	}
+
+	h->type = GG_SESSION_USERLIST_REMOVE;
+
+	free(query);
+
+	h->callback = gg_userlist_remove_watch_fd;
+	h->destroy = gg_userlist_remove_free;
+	
+	if (!async)
+		gg_userlist_remove_watch_fd(h);
+
+	return h;
+}
+
+/*
+ * gg_userlist_remove_watch_fd()
+ *
+ * przy asynchronicznym usuwaniu userlisty nale¿y wywo³aæ t± funkcjê
+ * po zauwa¿eniu zmian na obserwowanym deskryptorze
+ *
+ *  - h - struktura opisuj±ca po³±czenie
+ *
+ * je¶li wszystko posz³o dobrze to 0, inaczej -1. operacja bêdzie
+ * zakoñczona, je¶li h->state == GG_STATE_DONE. je¶li wyst±pi jaki¶
+ * b³±d, to bêdzie tam GG_STATE_ERROR i odpowiedni kod b³êdu w h->error.
+ */
+int gg_userlist_remove_watch_fd(struct gg_http *h)
+{
+	if (!h) {
+		errno = EINVAL;
+		return -1;
+	}
+
+        if (h->state == GG_STATE_ERROR) {
+                gg_debug(GG_DEBUG_MISC, "=> userlist_remove, watch_fd issued on failed session\n");
+                errno = EINVAL;
+                return -1;
+        }
+	
+	if (h->state != GG_STATE_PARSING) {
+		if (gg_http_watch_fd(h) == -1) {
+			gg_debug(GG_DEBUG_MISC, "=> userlist_remove, http failure\n");
+                        errno = EINVAL;
+			return -1;
+		}
+	}
+
+	if (h->state != GG_STATE_PARSING)
+		return 0;
+
+        h->state = GG_STATE_DONE;
+	h->data = NULL;
+
+	gg_debug(GG_DEBUG_MISC, "=> userlist_remove, let's parse \"%s\"\n", h->body);
+
+	if (!h->body || strncmp(h->body, "put_success:", 12)) {
+		gg_debug(GG_DEBUG_MISC, "=> userlist_remove, error.\n");
+		return 0;
+	}
+
+	h->data = (char*) 1;
+	
+	return 0;
+}
+
+/*
+ * gg_userlist_remove_free()
+ *
+ * zwalnia pamiêæ po usuwaniu listy kontaktów z serwera.
+ *
+ *  - h - zwalniana struktura
+ */
+void gg_userlist_remove_free(struct gg_http *h)
 {
 	gg_http_free(h);
 }

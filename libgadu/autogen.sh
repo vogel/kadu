@@ -9,5 +9,4 @@ fi
 aclocal -I m4
 autoheader
 autoconf
-echo "Running ./configure $ARGS"
-test x$NOCONFIGURE = x && ./configure $ARGS
+test x$NOCONFIGURE = x && echo "Running ./configure $ARGS" && ./configure $ARGS

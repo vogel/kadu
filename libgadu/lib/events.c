@@ -1,4 +1,4 @@
-/* $Id: events.c,v 1.19 2003/02/20 13:57:50 chilek Exp $ */
+/* $Id: events.c,v 1.20 2003/03/22 08:56:13 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -19,24 +19,27 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <sys/ioctl.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include <sys/ioctl.h>
-#include <sys/wait.h>
+
+#include "libgadu-config.h"
+
 #include <errno.h>
-#ifndef _AIX
-#  include <string.h>
-#endif
-#include <time.h>
-#include "compat.h"
-#include "libgadu.h"
 #ifdef __GG_LIBGADU_HAVE_PTHREAD
 #  include <pthread.h>
 #endif
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <time.h>
+#include <unistd.h>
+
+#include "compat.h"
+#include "libgadu.h"
 
 /*
  * gg_event_free()
@@ -79,7 +82,7 @@ void gg_event_free(struct gg_event *e)
 }
 
 /*
- * gg_handle_message() // funkcja wewnêtrzna
+ * gg_handle_recv_msg() // funkcja wewnêtrzna
  *
  * obs³uguje pakiet z przychodz±c± wiadomo¶ci±, rozbijaj±c go na dodatkowe
  * struktury (konferencje, kolorki) w razie potrzeby.
@@ -153,7 +156,7 @@ static int gg_handle_recv_msg(struct gg_header *h, struct gg_event *e)
 
 		} else if (*p == 2) {		/* richtext */
 
-			unsigned short *len;
+			unsigned short len;
 			void *tmp;
 			
 			if (p + 3 > packet_end) {
@@ -162,29 +165,28 @@ static int gg_handle_recv_msg(struct gg_header *h, struct gg_event *e)
 				goto fail;
 			}
 
-			len = (unsigned short*) (p + 1);
-			*len = gg_fix16(*len);
-			gg_debug(GG_DEBUG_MISC, "// gg_handle_recv_msg() p = %p, packetend = %p, len = %d\n", p, packet_end, *len);
+			len = gg_fix16(*((unsigned short*) (p + 1)));
+			gg_debug(GG_DEBUG_MISC, "// gg_handle_recv_msg() p = %p, packetend = %p, len = %d\n", p, packet_end, len);
 
-			if (!(tmp = malloc(*len))) {
+			if (!(tmp = malloc(len))) {
 				gg_debug(GG_DEBUG_MISC, "// gg_handle_recv_msg() not enough memory for richtext data\n");
 				goto fail;
 			}
 
 			p += 3;
 
-			if (p + *len > packet_end) {
+			if (p + len > packet_end) {
 				gg_debug(GG_DEBUG_MISC, "// gg_handle_recv_msg() packet out of bounds (3)\n");
 				errno = EINVAL;
 				goto fail;
 			}
 				
-			memcpy(tmp, p, *len);
+			memcpy(tmp, p, len);
 
 			e->event.msg.formats = tmp;
-			e->event.msg.formats_length = *len;
+			e->event.msg.formats_length = len;
 
-			p += *len;
+			p += len;
 
 		} else {				/* nieznana opcja */
 			gg_debug(GG_DEBUG_MISC, "// gg_handle_recv_msg() unknown payload 0x%.2x\n", *p);
@@ -485,6 +487,7 @@ struct gg_event *gg_watch_fd(struct gg_session *sess)
 		{
 			char buf[1024];
 			int res = 0, res_size = sizeof(res);
+			char *client;
 
 			gg_debug(GG_DEBUG_MISC, "// gg_watch_fd() GG_STATE_CONNECTING_HUB\n");
 
@@ -518,21 +521,28 @@ struct gg_event *gg_watch_fd(struct gg_session *sess)
 			
 			gg_debug(GG_DEBUG_MISC, "// gg_watch_fd() connected to hub, sending query\n");
 
+			if (!(client = gg_urlencode((sess->client_version) ? sess->client_version : GG_DEFAULT_CLIENT_VERSION))) {
+				gg_debug(GG_DEBUG_MISC, "// gg_watch_fd() out of memory for client version\n");
+				goto fail_connecting;
+			}
+
 			if (!gg_proxy_http_only && sess->proxy_addr && sess->proxy_port) {
 				snprintf(buf, sizeof(buf) - 1,
 					"GET http://" GG_APPMSG_HOST "/appsvc/appmsg2.asp?fmnumber=%u&version=%s&lastmsg=%d HTTP/1.0\r\n"
 					"Host: " GG_APPMSG_HOST "\r\n"
 					"User-Agent: " GG_HTTP_USERAGENT "\r\n"
 					"Pragma: no-cache\r\n"
-					"\r\n", sess->uin, (sess->client_version) ? sess->client_version : GG_DEFAULT_CLIENT_VERSION, sess->last_sysmsg);
+					"\r\n", sess->uin, client, sess->last_sysmsg);
 			} else {
 				snprintf(buf, sizeof(buf) - 1,
 					"GET /appsvc/appmsg2.asp?fmnumber=%u&version=%s&lastmsg=%d HTTP/1.0\r\n"
 					"Host: " GG_APPMSG_HOST "\r\n"
 					"User-Agent: " GG_HTTP_USERAGENT "\r\n"
 					"Pragma: no-cache\r\n"
-					"\r\n", sess->uin, (sess->client_version) ? sess->client_version : GG_DEFAULT_CLIENT_VERSION, sess->last_sysmsg);
+					"\r\n", sess->uin, client, sess->last_sysmsg);
 			};
+
+			free(client);
 
 			/* zwolnij pamiêæ po wersji klienta. */
 			if (sess->client_version) {

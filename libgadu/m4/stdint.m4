@@ -2,7 +2,7 @@ dnl Based on AC_NEED_STDINT_H by Guido Draheim <guidod@gmx.de> that can be
 dnl found at http://www.gnu.org/software/ac-archive/. Do not complain him
 dnl about this macro.
 dnl
-dnl $Id: stdint.m4,v 1.12 2003/02/20 14:13:50 chilek Exp $
+dnl $Id: stdint.m4,v 1.13 2003/03/22 08:56:13 chilek Exp $
 
 AC_DEFUN([AC_NEED_STDINT_H],
  [AC_MSG_CHECKING([for uintXX_t types])
@@ -44,17 +44,18 @@ AC_DEFUN([AC_NEED_STDINT_H],
 
 /* ISO C 9X: 7.18 Integer types <stdint.h> */
 
+typedef unsigned char   uint8_t;
+typedef unsigned short uint16_t;
+typedef unsigned int   uint32_t;
+
+#ifndef __CYGWIN__
 #define __int8_t_defined
 typedef   signed char    int8_t;
-typedef unsigned char   uint8_t;
 typedef   signed short  int16_t;
-typedef unsigned short uint16_t;
 typedef   signed int    int32_t;
-typedef unsigned int   uint32_t;
+#endif
 
 #endif /* __AC_STDINT_H */
 EOF
   fi
 ])
-
-

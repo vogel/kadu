@@ -1,4 +1,4 @@
-/* $Id: libgadu.h,v 1.28 2003/02/20 13:57:51 chilek Exp $ */
+/* $Id: libgadu.h,v 1.29 2003/03/22 08:56:13 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -34,9 +34,11 @@ extern "C" {
 
 #include <libgadu-config.h>
 #include <sys/types.h>
+#include <stdio.h>
+#include <stdarg.h>
 
 /*
- * uin_t
+ * typedef uin_t
  *
  * typ reprezentuj±cy numer osoby.
  */
@@ -69,7 +71,7 @@ struct gg_common {
 struct gg_session {
 	gg_common_head(struct gg_session)
 
-        int async;      	/* czy po³±czenie jest asynchroniczne */
+	int async;      	/* czy po³±czenie jest asynchroniczne */
 	int pid;        	/* pid procesu resolvera */
 	int port;       	/* port, z którym siê ³±czymy */
 	int seq;        	/* numer sekwencyjny ostatniej wiadomo¶ci */
@@ -115,7 +117,7 @@ struct gg_session {
 /*
  * struct gg_http
  * 
- * ogólna struktura opisuj±ca stan wszystkich operacji http. tworzona
+ * ogólna struktura opisuj±ca stan wszystkich operacji HTTP. tworzona
  * przez gg_http_connect(), zwalniana przez gg_http_free().
  */
 struct gg_http {
@@ -195,11 +197,11 @@ struct gg_dcc {
 };
 
 /*
- * enum gg_session_enum
+ * enum gg_session_t
  *
  * rodzaje sesji.
  */
-enum gg_session_enum {
+enum gg_session_t {
 	GG_SESSION_GG = 1,	/* po³±czenie z serwerem gg */
 	GG_SESSION_HTTP,	/* ogólna sesja http */
 	GG_SESSION_SEARCH,	/* szukanie */
@@ -215,6 +217,7 @@ enum gg_session_enum {
 	GG_SESSION_USERLIST_GET,	/* pobieranie userlisty */
 	GG_SESSION_USERLIST_PUT,	/* wysy³anie userlisty */
 	GG_SESSION_UNREGISTER,	/* usuwanie konta */
+	GG_SESSION_USERLIST_REMOVE,	/* usuwanie userlisty */
 	
 	GG_SESSION_USER0 = 256,	/* zdefiniowana dla u¿ytkownika */
 	GG_SESSION_USER1,	/* j.w. */
@@ -226,12 +229,14 @@ enum gg_session_enum {
 	GG_SESSION_USER7	/* j.w. */
 };
 
+#define gg_session_enum gg_session_t
+
 /*
- * enum gg_state_enum
+ * enum gg_state_t
  *
- * ró¿ne stany asynchronicznej maszynki.
+ * opisuje stan asynchronicznej maszyny.
  */
-enum gg_state_enum {
+enum gg_state_t {
         /* wspólne */
         GG_STATE_IDLE = 0,		/* nie powinno wyst±piæ. */
         GG_STATE_RESOLVING,             /* wywo³a³ gethostbyname() */
@@ -278,6 +283,8 @@ enum gg_state_enum {
 	GG_STATE_READING_TYPE		/* czeka na typ po³±czenia */
 };
 
+#define gg_state_enum gg_state_t
+
 /*
  * dla zachowania kompatybilno¶ci wstecz. w wersji 1.0 bêdzie usuniête. oby.
  */
@@ -305,7 +312,7 @@ enum gg_check_t {
  * struct gg_login_params
  *
  * parametry gg_login(). przeniesiono do struktury, ¿eby unikn±æ problemów
- * z ci±g³ymi zmianami api, gdy dodano co¶ nowego do protoko³u.
+ * z ci±g³ymi zmianami API, gdy dodano co¶ nowego do protoko³u.
  */
 struct gg_login_params {
 	uin_t uin;			/* numerek */
@@ -428,6 +435,13 @@ struct gg_pubdir50_s {
 	int entries_count;
 };
 
+/*
+ * typedef gg_pubdir_50_t
+ *
+ * typ opisuj±cy zapytanie lub wynik zapytania katalogu publicznego
+ * z protoko³u GG 5.0. nie nale¿y siê odwo³ywaæ bezpo¶rednio do jego
+ * pól -- s³u¿± do tego funkcje gg_pubdir50_*()
+ */
 typedef struct gg_pubdir50_s *gg_pubdir50_t;
 
 /*
@@ -437,48 +451,53 @@ typedef struct gg_pubdir50_s *gg_pubdir50_t;
  * z gg_dcc_watch_fd()
  */
 struct gg_event {
-        int type;
-        union {
-		/* dotycz±ce gg_session */
-		struct {
-                        uin_t sender;
-			int msgclass;
-			time_t time;
-                        unsigned char *message;
-			/* konferencyjne */
-			int recipients_count;
-			uin_t *recipients;
-			/* kolorki */
-			int formats_length;
-			void *formats;
+	int type;	/* rodzaj zdarzenia -- gg_event_t */
+        union {		/* @event */
+                struct gg_notify_reply *notify;	/* informacje o li¶cie kontaktów -- GG_EVENT_NOTIFY */
+
+		int failure;			/* b³±d po³±czenia -- GG_EVENT_FAILURE */
+
+		struct gg_dcc *dcc_new;		/* nowe po³±czenie bezpo¶rednie -- GG_EVENT_DCC_NEW */
+		
+		int dcc_error;			/* b³±d po³±czenia bezpo¶redniego -- GG_EVENT_DCC_ERROR */
+
+		gg_pubdir50_t pubdir50;		/* wynik operacji zwi±zanej z katalogiem publicznym -- GG_EVENT_PUBDIR50_* */
+	
+		struct {			/* @msg odebrano wiadomo¶æ -- GG_EVENT_MSG */
+			uin_t sender;		/* numer nadawcy */
+			int msgclass;		/* klasa wiadomo¶ci */
+			time_t time;		/* czas nadania */
+			unsigned char *message;	/* tre¶æ wiadomo¶ci */
+
+			int recipients_count;	/* ilo¶æ odbiorców konferencji */
+			uin_t *recipients;	/* odbiorcy konferencji */
+			
+			int formats_length;	/* d³ugo¶æ informacji o formatowaniu tekstu */
+			void *formats;		/* informacje o formatowaniu tekstu */
                 } msg;
-                struct gg_notify_reply *notify;
-		struct {
-			struct gg_notify_reply *notify;
-			char *descr;
+		
+		struct {			/* @notify_descr informacje o li¶cie kontaktów z opisami stanu -- GG_EVENT_NOTIFY_DESCR */
+			struct gg_notify_reply *notify;	/* informacje o li¶cie kontaktów */
+			char *descr;		/* opis stanu */
 		} notify_descr;
-                struct {
-			uin_t uin;
-			uint32_t status;
-			char *descr;
+		
+                struct {			/* @status zmiana stanu -- GG_EVENT_STATUS */
+			uin_t uin;		/* numer */
+			uint32_t status;	/* nowy stan */
+			char *descr;		/* opis stanu */
 		} status;
-                struct {
-                        uin_t recipient;
-                        int status;
-                        int seq;
-                } ack;
-		int failure;
+		
+		struct {			/* @ack potwierdzenie wiadomo¶ci -- GG_EVENT_ACK */
+			uin_t recipient;	/* numer odbiorcy */
+			int status;		/* stan dorêczenia wiadomo¶ci */
+			int seq;		/* numer sekwencyjny wiadomo¶ci */
+		} ack;
 
-		/* dotycz±ce gg_dcc */
-		struct gg_dcc *dcc_new;
-		int dcc_error;
-		struct {
-			uint8_t *data;
-			int length;
+		struct {			/* @dcc_voice_data otrzymano dane d¼wiêkowe -- GG_EVENT_DCC_VOICE_DATA */
+			uint8_t *data;		/* dane d¼wiêkowe */
+			int length;		/* ilo¶æ danych d¼wiêkowych */
 		} dcc_voice_data;
-
-		gg_pubdir50_t pubdir50;
-        } event;
+	} event;
 };
 
 struct gg_event *gg_watch_fd(struct gg_session *sess);
@@ -610,10 +629,15 @@ void gg_pubdir_free(struct gg_http *f);
 
 /* rejestracja nowego numerka */
 struct gg_http *gg_register(const char *email, const char *password, int async);
-struct gg_http *gg_unregister(uin_t uin, const char *password, const char *email, int async);
+struct gg_http *gg_register2(const char *email, const char *password, const char *qa, int async);
 #define gg_register_watch_fd gg_pubdir_watch_fd
 #define gg_register_free gg_pubdir_free
 #define gg_free_register gg_pubdir_free
+
+struct gg_http *gg_unregister(uin_t uin, const char *password, const char *email, int async);
+struct gg_http *gg_unregister2(uin_t uin, const char *password, const char *qa, int async);
+#define gg_unregister_watch_fd gg_pubdir_watch_fd
+#define gg_unregister_free gg_pubdir_free
 
 /* przypomnienie has³a e-mailem */
 struct gg_http *gg_remind_passwd(uin_t uin, int async);
@@ -624,6 +648,7 @@ struct gg_http *gg_remind_passwd(uin_t uin, int async);
 /* zmiana has³a */
 struct gg_http *gg_change_passwd(uin_t uin, const char *passwd, const char *newpasswd, const char *newemail, int async);
 struct gg_http *gg_change_passwd2(uin_t uin, const char *passwd, const char *newpasswd, const char *email, const char *newemail, int async);
+struct gg_http *gg_change_passwd3(uin_t uin, const char *passwd, const char *newpasswd, const char *qa, int async);
 #define gg_change_passwd_free gg_pubdir_free
 #define gg_free_change_passwd gg_pubdir_free
 
@@ -661,6 +686,10 @@ struct gg_http *gg_userlist_put(uin_t uin, const char *password, const char *con
 int gg_userlist_put_watch_fd(struct gg_http *f);
 void gg_userlist_put_free(struct gg_http *f);
 
+struct gg_http *gg_userlist_remove(uin_t uin, const char *password, int async);
+int gg_userlist_remove_watch_fd(struct gg_http *f);
+void gg_userlist_remove_free(struct gg_http *f);
+
 /*
  * funkcje dotycz±ce komunikacji miêdzy klientami.
  */
@@ -693,6 +722,18 @@ void gg_dcc_free(struct gg_dcc *c);
  * siê ustawiaæ odpowiednich leveli, wiêc wiêkszo¶æ sz³a do _MISC.
  */
 extern int gg_debug_level;	/* poziom debugowania. mapa bitowa sta³ych GG_DEBUG_* */
+
+/*
+ * mo¿na podaæ wska¼nik do funkcji obs³uguj±cej wywo³ania gg_debug().
+ * nieoficjalne, nieudokumentowane, mo¿e siê zmieniæ. je¶li kto¶ jest 
+ * zainteresowany, niech da znaæ na ekg-devel.
+ */
+extern void (*gg_debug_handler)(int level, const char *format, va_list ap);
+
+/*
+ * mo¿na podaæ plik, do którego bêd± zapisywane teksty z gg_debug().
+ */
+extern FILE *gg_debug_file;
 
 #define GG_DEBUG_NET 1
 #define GG_DEBUG_TRAFFIC 2
@@ -743,6 +784,8 @@ char *gg_saprintf(const char *format, ...) __attribute__ ((format (printf, 1, 2)
 char *gg_saprintf(const char *format, ...);
 #endif
 
+char *gg_vsaprintf(const char *format, va_list ap);
+
 #define gg_alloc_sprintf gg_saprintf
 
 char *gg_get_line(char **ptr);
@@ -777,11 +820,11 @@ char *gg_base64_decode(const char *buf);
 #define GG_HTTPS_PORT 443
 #define GG_HTTP_USERAGENT "Mozilla/4.7 [en] (Win98; I)"
 
-#define GG_DEFAULT_CLIENT_VERSION "4.9.3.62"
-#define GG_DEFAULT_PROTOCOL_VERSION 0x18
+#define GG_DEFAULT_CLIENT_VERSION "5, 0, 5, 107"
+#define GG_DEFAULT_PROTOCOL_VERSION 0x1b
 #define GG_DEFAULT_TIMEOUT 30
 #define GG_HAS_AUDIO_MASK 0x40000000
-#define GG_LIBGADU_VERSION "20030219"
+#define GG_LIBGADU_VERSION "20030321"
 
 #define GG_DEFAULT_DCC_PORT 1550
 
@@ -858,7 +901,7 @@ struct gg_pubdir50_reply {
 
 #define GG_STATUS_FRIENDS_MASK 0x8000		/* tylko dla znajomych (4.6) */
 
-#define GG_STATUS_DESCR_MAXSIZE 45
+#define GG_STATUS_DESCR_MAXSIZE 70
 
 /*
  * makra do ³atwego i szybkiego sprawdzania stanu.

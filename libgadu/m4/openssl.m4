@@ -1,5 +1,5 @@
 dnl based on curses.m4 
-dnl $Id: openssl.m4,v 1.7 2003/02/20 14:13:50 chilek Exp $
+dnl $Id: openssl.m4,v 1.8 2003/03/22 08:56:13 chilek Exp $
 
 AC_DEFUN(AC_CHECK_OPENSSL,[
   AC_SUBST(OPENSSL_LIBS)
@@ -15,7 +15,6 @@ AC_DEFUN(AC_CHECK_OPENSSL,[
 
   if test "x$without_openssl" != "xyes" ; then
     AC_MSG_CHECKING(for ssl.h)
-
 
     for i in $with_arg \
     		/usr/include: \
@@ -34,6 +33,8 @@ AC_DEFUN(AC_CHECK_OPENSSL,[
         AC_MSG_RESULT($incl/openssl/ssl.h)
 	ldflags_old="$LDFLAGS"
 	LDFLAGS="$lib -lcrypto"
+	save_LIBS="$LIBS"
+	LIBS="-lcrypto $LIBS"
 	AC_CHECK_LIB(ssl, RSA_new, [
 	  AC_DEFINE(HAVE_OPENSSL, 1, [define if you have OpenSSL])
 	  have_openssl=yes
@@ -42,14 +43,14 @@ AC_DEFUN(AC_CHECK_OPENSSL,[
     	    OPENSSL_INCLUDES="-I$incl"
 	  fi
 	])
+	LIBS="$save_LIBS"
 	LDFLAGS="$ldflags_old"
 	break
       fi
     done
-  fi
 
-  if test "x$have_openssl" != "xyes"; then
-    AC_MSG_RESULT(not found)
+    if test "x$have_openssl" != "xyes"; then
+      AC_MSG_RESULT(not found)
+    fi
   fi
 ])
-

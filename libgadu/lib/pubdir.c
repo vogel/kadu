@@ -1,4 +1,4 @@
-/* $Id: pubdir.c,v 1.18 2003/02/20 13:57:51 chilek Exp $ */
+/* $Id: pubdir.c,v 1.19 2003/03/22 08:56:13 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -18,15 +18,14 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+#include <ctype.h>
+#include <errno.h>
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
-#include <errno.h>
-#ifndef _AIX
-#  include <string.h>
-#endif
-#include <stdarg.h>
-#include <ctype.h>
+
 #include "libgadu.h"
 
 /*
@@ -85,11 +84,94 @@ struct gg_http *gg_register(const char *email, const char *password, int async)
 		"Pragma: no-cache\r\n"
 		"\r\n"
 		"%s",
-		strlen(form), form);
+		(int) strlen(form), form);
 
 	free(form);
 
 	if (!(h = gg_http_connect(GG_REGISTER_HOST, GG_REGISTER_PORT, async, "POST", "/appsvc/fmregister.asp", query))) {
+		gg_debug(GG_DEBUG_MISC, "=> register, gg_http_connect() failed mysteriously\n");
+		free(query);
+                return NULL;
+	}
+
+	h->type = GG_SESSION_REGISTER;
+
+	free(query);
+
+	h->callback = gg_pubdir_watch_fd;
+	h->destroy = gg_pubdir_free;
+	
+	if (!async)
+		gg_pubdir_watch_fd(h);
+	
+	return h;
+}
+
+/*
+ * gg_register2()
+ *
+ * rozpoczyna rejestracjê u¿ytkownika protoko³em GG 5.0.
+ *
+ *  - email - adres e-mail klienta
+ *  - password - has³o klienta
+ *  - qa - has³o pomocnicze i odpowied¼, oddzielone tyld±
+ *  - async - po³±czenie asynchroniczne
+ *
+ * zaalokowana struct gg_http, któr± po¼niej nale¿y zwolniæ
+ * funkcj± gg_register_free(), albo NULL je¶li wyst±pi³ b³±d.
+ */
+struct gg_http *gg_register2(const char *email, const char *password, const char *qa, int async)
+{
+        struct gg_http *h;
+	char *__pwd, *__email, *__qa, *form, *query;
+
+	if (!email | !password) {
+		gg_debug(GG_DEBUG_MISC, "=> register, NULL parameter\n");
+		errno = EINVAL;
+		return NULL;
+	}
+
+	__pwd = gg_urlencode(password);
+	__email = gg_urlencode(email);
+	__qa = gg_urlencode(qa);
+
+	if (!__pwd || !__email) {
+		gg_debug(GG_DEBUG_MISC, "=> register, not enough memory for form fields\n");
+		free(__pwd);
+		free(__email);
+		free(__qa);
+                errno = ENOMEM;
+		return NULL;
+	}
+
+	form = gg_saprintf("pwd=%s&email=%s&qa=%s&code=%u", __pwd, __email,
+			__qa, gg_http_hash("ss", email, password));
+
+	free(__pwd);
+	free(__email);
+	free(__qa);
+
+	if (!form) {
+		gg_debug(GG_DEBUG_MISC, "=> register, not enough memory for form query\n");
+                errno = ENOMEM;
+		return NULL;
+	}
+
+	gg_debug(GG_DEBUG_MISC, "=> register, %s\n", form);
+
+	query = gg_saprintf(
+		"Host: " GG_REGISTER_HOST "\r\n"
+		"Content-Type: application/x-www-form-urlencoded\r\n"
+		"User-Agent: " GG_HTTP_USERAGENT "\r\n"
+		"Content-Length: %d\r\n"
+		"Pragma: no-cache\r\n"
+		"\r\n"
+		"%s",
+		(int) strlen(form), form);
+
+	free(form);
+
+	if (!(h = gg_http_connect(GG_REGISTER_HOST, GG_REGISTER_PORT, async, "POST", "/appsvc/fmregister2.asp", query))) {
 		gg_debug(GG_DEBUG_MISC, "=> register, gg_http_connect() failed mysteriously\n");
 		free(query);
                 return NULL;
@@ -119,7 +201,7 @@ struct gg_http *gg_register(const char *email, const char *password, int async)
  *  - async - po³±czenie asynchroniczne
  *
  * zaalokowana struct gg_http, któr± po¼niej nale¿y zwolniæ
- * funkcj± gg_pubdir_unregister(), albo NULL je¶li wyst±pi³ b³±d.
+ * funkcj± gg_unregister_free(), albo NULL je¶li wyst±pi³ b³±d.
  */
 struct gg_http *gg_unregister(uin_t uin, const char *password, const char *email, int async)
 {
@@ -133,7 +215,7 @@ struct gg_http *gg_unregister(uin_t uin, const char *password, const char *email
 		return NULL;
 	}
     
-	__pwd = gg_saprintf("%ld", random());
+	__pwd = gg_saprintf("%ld", (long) random());
 	__fmpwd = gg_urlencode(password);
 	__fmemail = gg_urlencode(email);
 	__email = gg_urlencode(email0);
@@ -174,11 +256,93 @@ struct gg_http *gg_unregister(uin_t uin, const char *password, const char *email
 		"Pragma: no-cache\r\n"
 		"\r\n"
 		"%s",
-		strlen(form), form);
+		(int) strlen(form), form);
 
 	free(form);
 
 	if (!(h = gg_http_connect(GG_REGISTER_HOST, GG_REGISTER_PORT, async, "POST", "/appsvc/fmregister.asp", query))) {
+		gg_debug(GG_DEBUG_MISC, "=> unregister, gg_http_connect() failed mysteriously\n");
+		free(query);
+		return NULL;
+	}
+
+	h->type = GG_SESSION_UNREGISTER;
+
+	free(query);
+
+	h->callback = gg_pubdir_watch_fd;
+	h->destroy = gg_pubdir_free;
+	
+	if (!async)
+		gg_pubdir_watch_fd(h);
+	
+	return h;
+}
+
+/*
+ * gg_unregister2()
+ *
+ * usuwa konto u¿ytkownika z serwera protoko³em GG 5.0
+ *
+ *  - uin - numerek GG
+ *  - password - has³o klienta
+ *  - qa - pytanie pomocnicze i odpowied¼, oddzielone tyld±
+ *  - async - po³±czenie asynchroniczne
+ *
+ * zaalokowana struct gg_http, któr± po¼niej nale¿y zwolniæ
+ * funkcj± gg_unregister_free(), albo NULL je¶li wyst±pi³ b³±d.
+ */
+struct gg_http *gg_unregister2(uin_t uin, const char *password, const char *qa, int async)
+{
+	struct gg_http *h;
+	char *__fmpwd, *__qa, *__pwd, *form, *query;
+
+	if (!password || !qa) {
+		gg_debug(GG_DEBUG_MISC, "=> unregister, NULL parameter\n");
+		errno = EINVAL;
+		return NULL;
+	}
+    
+	__pwd = gg_saprintf("%ld", random());
+	__fmpwd = gg_urlencode(password);
+	__qa = gg_urlencode(qa);
+
+	if (!__fmpwd || !__pwd || !__qa) {
+		gg_debug(GG_DEBUG_MISC, "=> unregister, not enough memory for form fields\n");
+		free(__pwd);
+		free(__fmpwd);
+		free(__qa);
+                errno = ENOMEM;
+		return NULL;
+	}
+
+	form = gg_saprintf("fmnumber=%d&fmpwd=%s&delete=1&pwd=%s&qa=%s&code=%u", uin, __fmpwd, __pwd, __qa, gg_http_hash("s", __pwd));
+
+	free(__fmpwd);
+	free(__pwd);
+	free(__qa);
+
+	if (!form) {
+		gg_debug(GG_DEBUG_MISC, "=> unregister, not enough memory for form query\n");
+		errno = ENOMEM;
+		return NULL;
+	}
+
+	gg_debug(GG_DEBUG_MISC, "=> unregister, %s\n", form);
+
+	query = gg_saprintf(
+		"Host: " GG_REGISTER_HOST "\r\n"
+		"Content-Type: application/x-www-form-urlencoded\r\n"
+		"User-Agent: " GG_HTTP_USERAGENT "\r\n"
+		"Content-Length: %d\r\n"
+		"Pragma: no-cache\r\n"
+		"\r\n"
+		"%s",
+		(int) strlen(form), form);
+
+	free(form);
+
+	if (!(h = gg_http_connect(GG_REGISTER_HOST, GG_REGISTER_PORT, async, "POST", "/appsvc/fmregister2.asp", query))) {
 		gg_debug(GG_DEBUG_MISC, "=> unregister, gg_http_connect() failed mysteriously\n");
 		free(query);
 		return NULL;
@@ -260,7 +424,7 @@ struct gg_http *gg_change_passwd(uin_t uin, const char *passwd, const char *newp
                 "Pragma: no-cache\r\n"
                 "\r\n"
                 "%s",
-                strlen(form), form);
+                (int) strlen(form), form);
 
 	free(form);
 
@@ -350,11 +514,96 @@ struct gg_http *gg_change_passwd2(uin_t uin, const char *passwd, const char *new
                 "Pragma: no-cache\r\n"
                 "\r\n"
                 "%s",
-                strlen(form), form);
+                (int) strlen(form), form);
 
 	free(form);
 
 	if (!(h = gg_http_connect(GG_REGISTER_HOST, GG_REGISTER_PORT, async, "POST", "/appsvc/fmregister.asp", query))) {
+		gg_debug(GG_DEBUG_MISC, "=> change, gg_http_connect() failed mysteriously\n");
+                free(query);
+		return NULL;
+	}
+
+	h->type = GG_SESSION_PASSWD;
+
+	free(query);
+
+	h->callback = gg_pubdir_watch_fd;
+	h->destroy = gg_pubdir_free;
+
+	if (!async)
+		gg_pubdir_watch_fd(h);
+
+	return h;
+}
+
+/*
+ * gg_change_passwd3()
+ *
+ * wysy³a ¿±danie zmiany has³a zgodnie z protoko³em GG 5.0.4
+ *
+ *  - uin - numer
+ *  - passwd - stare has³o
+ *  - newpasswd - nowe has³o
+ *  - qa - pytanie pomocnicze i odpowied¼ oddzielone tyld±
+ *  - async - po³±czenie asynchroniczne
+ *
+ * zaalokowana struct gg_http, któr± po¼niej nale¿y zwolniæ
+ * funkcj± gg_change_passwd_free(), albo NULL je¶li wyst±pi³ b³±d.
+ */
+struct gg_http *gg_change_passwd3(uin_t uin, const char *passwd, const char *newpasswd, const char *qa, int async)
+{
+	struct gg_http *h;
+	char *form, *query, *__fmpwd, *__pwd, *__qa;
+
+	if (!passwd || !newpasswd) {
+		gg_debug(GG_DEBUG_MISC, "=> change, NULL parameter\n");
+		errno = EINVAL;
+		return NULL;
+	}
+	
+	__fmpwd = gg_urlencode(passwd);
+	__pwd = gg_urlencode(newpasswd);
+	__qa = gg_urlencode(qa);
+
+	if (!__fmpwd || !__pwd) {
+		gg_debug(GG_DEBUG_MISC, "=> change, not enough memory for form fields\n");
+		free(__fmpwd);
+		free(__pwd);
+		free(__qa);
+		errno = ENOMEM;
+		return NULL;
+	}
+	
+	if (!(form = gg_saprintf("fmnumber=%d&fmpwd=%s&pwd=%s&qa=&code=%u", uin, __fmpwd, __pwd, gg_http_hash("s", newpasswd)))) {
+		gg_debug(GG_DEBUG_MISC, "=> change, not enough memory for form fields\n");
+		free(__fmpwd);
+		free(__pwd);
+		free(__qa);
+
+		errno = ENOMEM;
+		return NULL;
+	}
+	
+	free(__fmpwd);
+	free(__pwd);
+	free(__qa);
+	
+	gg_debug(GG_DEBUG_MISC, "=> change, %s\n", form);
+
+        query = gg_saprintf(
+		"Host: " GG_REGISTER_HOST "\r\n"
+                "Content-Type: application/x-www-form-urlencoded\r\n"
+                "User-Agent: " GG_HTTP_USERAGENT "\r\n"
+                "Content-Length: %d\r\n"
+                "Pragma: no-cache\r\n"
+                "\r\n"
+                "%s",
+                (int) strlen(form), form);
+
+	free(form);
+
+	if (!(h = gg_http_connect(GG_REGISTER_HOST, GG_REGISTER_PORT, async, "POST", "/appsvc/fmregister2.asp", query))) {
 		gg_debug(GG_DEBUG_MISC, "=> change, gg_http_connect() failed mysteriously\n");
                 free(query);
 		return NULL;
@@ -405,7 +654,7 @@ struct gg_http *gg_remind_passwd(uin_t uin, int async)
                 "Pragma: no-cache\r\n"
                 "\r\n"
                 "%s",
-                strlen(form), form);
+                (int) strlen(form), form);
 
 	free(form);
 
@@ -501,7 +750,7 @@ struct gg_http *gg_change_info(uin_t uin, const char *passwd, const struct gg_ch
                 "Pragma: no-cache\r\n"
                 "\r\n"
                 "%s",
-                strlen(form), form);
+                (int) strlen(form), form);
 
 	free(form);
 

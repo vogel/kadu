@@ -1,5 +1,6 @@
 /*
  *  Copyright (c) 2002-2003 Wojtek Kaniewski <wojtekka@irc.pl>
+ *                          Piotr Domagalski <szalik@szalik.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License Version
@@ -15,12 +16,14 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#include <stdlib.h>
-#include <dirent.h>
-#ifndef _AIX
-#  include <string.h>
-#endif
+#include <sys/types.h>
+
 #include <errno.h>
+#include <dirent.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define __DIRENT_SIZE(d) (sizeof(struct dirent) - sizeof(((struct dirent *) 0)->d_name) + strlen((d)->d_name) + 1)
 
 int alphasort(const void *__a, const void *__b)
 {
@@ -67,14 +70,14 @@ int scandir(const char *path, struct dirent ***namelist, int (*select)(const str
 		if (select && !(*select)(tmp))
 			continue;
 
-		res[i] = malloc(sizeof(struct dirent));
+		res[i] = malloc(__DIRENT_SIZE(tmp));
 
 		if (!res[i]) {
 			my_errno = ENOMEM;
 			goto cleanup;
 		}
 
-		memcpy(res[i], tmp, sizeof(struct dirent));
+		memcpy(res[i], tmp, __DIRENT_SIZE(tmp));
 
 		i++;
 	}

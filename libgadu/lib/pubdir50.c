@@ -1,4 +1,4 @@
-/* $Id: pubdir50.c,v 1.4 2003/02/20 13:57:51 chilek Exp $ */
+/* $Id: pubdir50.c,v 1.5 2003/03/22 08:56:13 chilek Exp $ */
 
 /*
  *  (C) Copyright 2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -17,13 +17,11 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#include <stdlib.h>
 #include <errno.h>
+#include <stdlib.h>
+#include <string.h>
 #include <time.h>
-#ifndef _AIX
-#  include <string.h>
-#endif
-#include "compat.h"
+
 #include "libgadu.h"
 
 /*

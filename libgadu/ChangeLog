@@ -6,6 +6,201 @@ d - drg, sz - szalik). ,,p/nick'' oznacza patch lub ¼ród³o podes³ane
 przez ,,nick'', ,,i/nick'' oznacza czyj¶ pomys³, ,,b/nick'' mówi, kto
 zg³osi³ b³±d.
 
+// 2003-03-21
+
+- drobne literówki (FIG/sz)
+
+// 2003-03-20
+
+- zmiana domy¶lnych warto¶ci zmiennych: contacts = 2, display_ack = 3,
+  display_sent = 1, make_window = 2 (sz/w)
+- dodanie podstawowych informacji o obs³udze klienta przy pierwszym
+  uruchomieniu (sz/w)
+
+// 2003-03-18
+
+- ,,/_descr -'' prawid³owo wy³±cza stan opisowy (sz)
+- poprawki dokumentacji (w)
+- poprawki literówek w dokumentacji (FIG/w)
+- poprawka obs³ugi kolorowych wiadomo¶ci (sz/w)
+
+// 2003-03-17
+
+- docs/protocol.html zgodne z XHTML 1.0 Transitional (w)
+- zmiana nazwy komendy /_status na bardziej intuicyjn± /_descr (sz/w)
+
+// 2003-03-16
+
+- libgadu: kolejna poprawka kompilacji na bigendianach (speedy/w)
+- dodanie komendy /_status zmieniaj±cej tylko opis stanu (mkanski/w)
+
+// 2003-03-15
+
+- poprawka kompilacji ui-readline (charvel/sz)
+- kosmetyka kilku rzeczy, ¿eby nie tworzyæ nowych katalogów w ~/.gg
+  przy pomy³ce w parametrze ,,-u'' podczas startu (sz)
+- poprawka zapisywania konfiguracji z profili (pirat/sz)
+
+// 2003-03-14
+
+- kosmetyka w³asnego stanu (gozda/sz)
+- prostsza obs³uga ¶cie¿ki ,,config_dir'' w przypadku profili.
+  mamy prawdziwe ¶ciezki po segfault/oom (sz)
+- kosmetyka i uproszczenie zachowania widzianego przez usera w 
+  przypadku segfault/oom (sz)
+
+// 2003-03-12
+
+- mówimy papa sim, zostaje simlite (w/sz)
+- poprawka zachowania /window last (khhh/sz)
+- libgadu: poprawki dla bigendianowych maszyn (gs/w)
+- poprawki leaków (w)
+- poprawne wy¶wietlanie tabów w ui-ncurses (w)
+
+// 2003-03-11
+
+- libgadu: poprawki dokumentacji (w)
+
+// 2003-03-10
+
+- poprawiona kompilacja ui-readline (Charvel/w)
+- dodanie /window last (cowboy/w)
+- usuniêcie informacji o p³ywaj±cych oknach z pomocy. bez sensu siê
+  w nie bawiæ przed 1.0. wiêcej z nimi k³opotów, ni¿ po¿ytku. je¶li
+  kto¶ chce to s±, ale nieudokumentowane (sz?/w)
+- libgadu: uaktualnienie skryptu generuj±cego dokumentacjê o typedefy i
+  enumeracje (w)
+- libgadu: poprawka wiadomo¶ci systemowych (sz/w)
+
+// 2003-03-09
+
+- zmienna ,,mesg'' zamiast ,,mesg_allow'' i jej poprawki (sz)
+- kosmetyka kilku drobiazgów zwi±zanych z ,,$'' (sz)
+- poprawka kompilacji pythona (sz,embe/w)
+- kosmetyka configure.in, prosimy zapi±æ pasy (w)
+
+// 2003-03-08
+
+- ,,$'' w miejscu ,,numer/alias'' bêdzie zast±pione w ka¿dej komendzie
+  aktualnym rozmówc± (sz)
+- libgadu: poprawki kompilacji z pthreadami (w)
+- porz±dki w kodzie, wydzielenie ¶mieci ze stuff.c (w)
+
+// 2003-03-07
+
+- uporz±dkowanie #include'owanych plików, dodanie potrzebnych, usuniêcie
+  zbêdnych. inne kosmetyczne zmiany. pozbycie siê warningów na
+  niektórych systemach (sz)
+- libgadu: maksymalna d³ugo¶æ opisu (GG_STATUS_DESCR_MAXSIZE) to 70
+  znaków (*/sz)
+- usuniêcie ,,fade_in'' (w/sz)
+- libgadu: dodanie zmiennej ,,gg_debug_handler'' pozwalaj±cej przej±æ
+  wywo³ania gg_debug() (hao/w)
+- libgadu: wyeksportowanie funkcji gg_vsaprintf() i zmiennej gg_debug_file (w)
+- libgadu: dodanie funkcji gg_register2(), gg_unregister2() i
+  gg_change_passwd3() obs³uguj±cych protokó³ GG 5.0 (w)
+- uaktualnienie opisu protoko³u (w)
+- komenda /passwd nie wymaga adresu e-mail (wojtu¶/w)
+- komenda /unregister wymaga podania numeru i has³a, ¿eby zabezpieczyæ siê
+  przed przypadkowym usuniêciem konta (w)
+- komenda /change ju¿ dzia³a (w)
+
+// 2003-03-06
+
+- libgadu: dodanie funkcji usuwania listy kontaktów z serwera (wysek?/w)
+
+// 2003-03-04
+
+- poprawka /find bez parametrów w oknie z rozmówc± (embe/sz)
+
+// 2003-03-03
+
+- poprawka /python exec bez parametru (sz)
+- poprawka np. /exec -b $ w przypadku bindowania (krzyk/sz)
+- bezpieczniejsze wywo³ywanie timerów, gdyby czasem mia³ on sam siebie
+  usuwaæ... tak na wszelki wypadek ;> (sz)
+
+// 2003-03-02
+
+- nowe man'y dla ekl2 (porridge/sz)
+- generowanie kluczy dla SIM na maszynach bez /dev/urandom (sz)
+- zabezpieczenie podczas wykonywania aliasu na wypadek, gdyby alias
+  sam siebie usuwa³ (sz)
+
+// 2003-03-01
+
+- poprawka ,,odszyfrowywania'' wiadomo¶ci systemowych w sim.c (pmb/sz)
+
+// 2003-02-28
+
+- /last -n (joshua/sz)
+
+// 2003-02-27
+
+- poprawka przewijania okna (FIG/w)
+- poprawka segfault'a przy /reconnect po usuniêciu zmiennej ,,proxy'' (sz)
+
+// 2003-02-26
+
+- poprawka kompilacji pod Cygwin'em (Sydney/sz)
+- update krzyk.theme (krzyk/sz)
+- poprawki zachowania niektórych formatów w statusbarze (krzyk/sz)
+- poprawka odczytu z listy kontaktów blokowanych/ignorowanych niewidocznych
+  jawnie na li¶cie (FIG/sz)
+- libgadu: poprawka przesy³ania plików na bigendianach (sz)
+
+// 2003-02-25
+
+- mo¿liwy segfault, gdy ignorujemy kogo¶, kogo nie mamy na li¶cie (FIG/sz)
+- poprawka compat/scandir.c, ¿eby dzia³a³o dobrze na SunOS 5.8, gdzie
+  w ,,struct dirent'' mamy d_name[1] (sz)
+- nasz adres i port dla dcc zmienia siê na li¶cie dopiero po /reconnect,
+  co bardziej odpowiada rzeczywisto¶ci (sz)
+- mea culpa - przez kilka dni nie dzia³a³o dobrze odczytywanie listy
+  kontaktów eksportowanej z gg 4.6.3 i nowszego (sz)
+- segfault przy /dcc close (sz)
+- poprawka wysy³ania konfiguracji na serwer (zmienne VAR_MAP) (sz)
+- poprawki sim oraz simlite: ¿eby dzia³a³y dobrze na maszynach
+  bigendianowych oraz tam, gdzie nie ma /dev/urandom (sz)
+
+// 2003-02-24
+
+- pozbycie siê kosmicznych warningów (sz)
+- bardziej zrozumia³e zachowanie przy make_window = 1 (sz)
+- poprawka segfault'a przy /list -G (sz)
+- /list <user> poka¿e te¿, ¿e kto¶ jest za firewall'em lub nie ma nas
+  w kontaktach. trochê zbêdne, bo mo¿na ten fakt stwierdziæ i bez
+  tego... (spaceman/sz)
+
+// 2003-02-23
+
+- /window active (sz)
+- kosmetyczne poprawki /dcc (sz)
+- odszyfrowywanie wiadomo¶ci od ignorowanych przy ,,log_ignored = 1'' (sz)
+- poprawka wy¶wietlania w³asnego stanu przy w³±czonym trybie
+  ,,tylko dla znajomych'' (sz)
+
+// 2003-02-22
+
+- w aliasach mog± wystêpowaæ formaty %1...%9, dziêki czemu mo¿na dowolnie
+  ustawiaæ sobie przekazywane parametry (sz)
+- delikatna normalizacja promptów w standardowym temacie (sz)
+
+// 2003-02-21
+
+- szyfrowanie dzia³a tak¿e wtedy, gdy wysy³amy do wielu osób za pomoc± 
+  /msg (sz)
+- /msg oraz /chat z adresatem wiadomo¶ci w postaci ,,*'' roze¶le do
+  wszystkich aktualnych rozmówców (rmrmg/sz)
+- drobne korekty dokumentacji (sz)
+
+// 2003-02-20
+
+- poprawka segfault'a przy braku niektórych zmiennych w pliku
+  konfiguracyjnym (a.latanski/sz)
+- ma³a poprawka /quit, ¿eby zachowywa³o siê _dok³adnie_ tak jak komendy
+  zmiany stanu, w zale¿no¶ci od zmiennej ,,keep_reason'' (sz)
+
 // 2003-02-19
 
 - dope³nianie uin'ów z listy kontaktów (sz)
@@ -276,7 +471,7 @@ zg³osi³ b³±d.
 - drobna reorganizacja kolorów w ui-ncurses (w)
 - zmienna ,,display_color = 2'' wy¶wietla kolory wszêdzie oprócz pasku
   stanu i nag³ówka okna (Charvel/w)
-- nowy rodzaj okna ,,w->doodle = 1'' przeznaczony dla skryptów pythonowy.
+- nowy rodzaj okna ,,w->doodle = 1'' przeznaczony dla skryptów pythonowych.
   mog± rysowaæ po nim co tylko chc±, gdzie tylko chc± i jak tylko chc±.
   wszystko dziêki funkcjom ekg.window_printat() i ekg.window_commit().
   nie ma przewijania, nie ma bajerów. po dodaniu kilku mi³ych funkcji do
@@ -3110,4 +3305,4 @@ i BUGS.
 - eleet niebieskie t³o mesgów (wiem, dalekie od idea³u).
 
 
-$Id: ChangeLog,v 1.16 2003/02/20 13:59:23 chilek Exp $
+$Id: ChangeLog,v 1.17 2003/03/22 08:56:12 chilek Exp $
