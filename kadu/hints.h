@@ -21,15 +21,25 @@ class Hint : public QHBoxLayout
 		QLabel *icon;
 		QLabel *label;
 		unsigned int secs;
+		unsigned int ident;
 
 	public:
 		Hint(QWidget *parent, const QString &text, const QPixmap &pixmap, unsigned int timeout);
 		~Hint();
+		void setId(unsigned int id) {ident = id;}
+		unsigned int id() const {return ident;}
+
+
+	protected:
+		bool eventFilter(QObject *obj, QEvent *ev);
 
 	public slots:
 		bool nextSecond();
 		void show();
 		void setLookHint(const QFont &, const QColor &, const QColor &);
+
+	signals:
+		void clicked(unsigned int);
 };
 
 class HintManager : public QFrame
@@ -39,7 +49,7 @@ class HintManager : public QFrame
 	private:
 		QTimer *hint_timer;
 		QGridLayout *grid;
-		QValueList<Hint*> hints;
+		QPtrList<Hint> hints;
 		bool useposition;
 		QPoint position;
 		QValueList<QStringList> config;
@@ -59,6 +69,7 @@ class HintManager : public QFrame
 	private slots:
 		void deleteHint();
 		void setHint();
+		void clickedHint(unsigned int);
 };
 
 class HintManagerSlots: public QObject

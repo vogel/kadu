@@ -29,12 +29,14 @@ Hint::Hint(QWidget *parent, const QString& text, const QPixmap& pixmap, unsigned
 	kdebug("Hint::Hint\n");
 
 	secs = timeout;
+	ident = 0;
 	setResizeMode(QLayout::Fixed);
 	if (!pixmap.isNull() && config_file.readBoolEntry("Hints","Icons"))
 	{
 		icon = new QLabel(parent, "Icon");
 		icon->setPixmap(pixmap);
 		icon->hide();
+		icon->installEventFilter(this);
 		addWidget(icon);
 	}
 	else
@@ -43,6 +45,7 @@ Hint::Hint(QWidget *parent, const QString& text, const QPixmap& pixmap, unsigned
 	label = new QLabel(" "+QString(text).replace(QRegExp(" "), "&nbsp;"), parent, "Label");
 	label->setAlignment(AlignVCenter | Qt::AlignLeft);
 	label->hide();
+	label->installEventFilter(this);
 	addWidget(label, 1);
 }
 
@@ -70,6 +73,22 @@ void Hint::setLookHint(const QFont &font, const QColor &color, const QColor &bgc
 	label->setPaletteBackgroundColor(bgcolor);
 }
 
+bool Hint::eventFilter(QObject *obj, QEvent *ev)
+{
+//	if (obj == icon || obj == label)
+//	{
+		if (ev->type() == QEvent::MouseButtonPress)
+		{
+			emit clicked(ident);
+			return true;
+		}
+		else
+			return false;
+//	}
+//	else
+//		return QHBoxLayout::eventFilter(obj, ev);
+}
+
 Hint::~Hint(void)
 {
 	kdebug("Hint::~Hint()\n");
@@ -88,6 +107,8 @@ HintManager::HintManager()
 
 	grid = new QGridLayout(this, 0, 0, 1, 0, "QGridLayout");
 	grid->setResizeMode(QLayout::Fixed);
+
+	hints.setAutoDelete(true);
 
 	loadConfig();
 
@@ -124,10 +145,9 @@ void HintManager::deleteHint(void)
 
 	for ( int i = 0; i < hints.count(); i++ )
 	{
-		if (!(hints[i]->nextSecond()))
+		if (!(hints.at(i)->nextSecond()))
 		{
-			grid->removeItem(hints[i]);
-			delete hints[i];
+			grid->removeItem(hints.at(i));
 			hints.remove(hints.at(i));
 			i--;
 			if (!hints.count())
@@ -145,12 +165,13 @@ void HintManager::deleteHint(void)
 void HintManager::addHint(const QString& text, const QPixmap& pixmap,  const QFont &font, const QColor &color, const QColor &bgcolor, unsigned int timeout)
 {
 	kdebug("HintManager::addHint()\n");
-
 	hints.append(new Hint(this, text, pixmap, timeout));
 	int i = hints.count()-1;
-	grid->addItem(hints[i]);
-	hints[i]->setLookHint(font, color, bgcolor);
-	hints[i]->show();
+	grid->addItem(hints.at(i));
+	hints.at(i)->setLookHint(font, color, bgcolor);
+	hints.at(i)->show();
+	hints.at(i)->setId(i);
+	connect(hints.at(i), SIGNAL(clicked(unsigned int)), this, SLOT(clickedHint(unsigned int)));
 	setHint();
 	if (!hint_timer->isActive())
 		hint_timer->start(1000);
@@ -236,6 +257,18 @@ void HintManager::addHintStatus(const UserListElement &ule, unsigned int status,
 				addHint("<b>"+ule.altnick+" </b>"+tr("is unavailable"), *icons->loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
 		return;
 	}
+}
+
+void HintManager::clickedHint(unsigned int id)
+{
+	kdebug("HintManager::clickedHint() id=%d\n", id);
+/*	grid->removeItem(hints.at(id));
+	hints.remove(hints.at(id));
+	int count = hints.count();
+	if (id < count+1)
+	
+	setHint();
+*/
 }
 
 void HintManager::loadConfig(void)
