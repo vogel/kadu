@@ -250,7 +250,7 @@ void UserList::addAnonymous(uin_t uin)
 	addUser(e);
 }
 
-void UserList::changeUserInfo(const QString &oldaltnick, UserListElement &ule)
+void UserList::changeUserInfo(const QString oldaltnick, UserListElement &ule)
 {
 	UserListElement &e = byAltNick(oldaltnick);
 	e.first_name = ule.first_name;
@@ -266,14 +266,12 @@ void UserList::changeUserInfo(const QString &oldaltnick, UserListElement &ule)
 	e.blocking = ule.blocking;
 	e.offline_to_user = ule.offline_to_user;
 	e.notify = ule.notify;
-	if (e.group() != tr("All"))
-		e.setGroup(ule.Group);
-	else
-		e.setGroup("");
-	if (ule.altnick != oldaltnick) {
+	e.Group = ule.Group;
+	if (ule.altnick != oldaltnick)
+	{
 		UserBox::all_renameUser(oldaltnick, ule.altnick);
-		UserBox::all_refresh();			
-		}
+		UserBox::all_refresh();		
+	}
 	emit modified();
 }
 

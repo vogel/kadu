@@ -97,7 +97,13 @@ class UserList : public QObject, public QValueList<UserListElement>
 		void addUser(UserListElement &ule);
 		void addAnonymous(uin_t uin);
 		void removeUser(const QString &altnick);
-		void changeUserInfo(const QString &oldaltnick, UserListElement &ule);
+		/**
+			oldaltnick nie moze byc referencji, chcemy skopiowac
+			ten tekst, poniewaz moze to byc referencja do elementu
+			UserList-y, ktory wlasnie bedziemy modyfikowac
+			(wazna przy zmianie altnicka)
+		**/
+		void changeUserInfo(const QString oldaltnick, UserListElement &ule);
 		void changeUserStatus(const uin_t uin, const unsigned int status);
 		bool writeToFile(QString filename = "");
 		bool readFromFile();
