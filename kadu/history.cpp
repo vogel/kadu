@@ -1254,7 +1254,8 @@ void History::showHistoryEntries(int from, int count) {
 	body->setText(text);
 
 	//obej¶cie buga w qt - dziêki zeskrolowaniu okna animowane emotikony l±duj± tam gdzie trzeba
-	body->scrollToBottom();
+	if (config_file.readBoolEntry("General", "ShowEmotHist"))
+		body->scrollToBottom();
 	//poni¿sze 2 linie to zastêpstwo dla scrollToTop(), ale niestety po nich emotikony siê rozje¿d¿aj± :/
 //	body->sync();
 //	body->setContentsPos(0,0);
