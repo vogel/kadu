@@ -6,9 +6,86 @@ d - drg, sz - szalik). ,,p/nick'' oznacza patch lub ¼ród³o podes³ane
 przez ,,nick'', ,,i/nick'' oznacza czyj¶ pomys³, ,,b/nick'' mówi, kto
 zg³osi³ b³±d.
 
+// 2003-04-01
+
+- libgadu: wywo³anie gg_watch_fd() w stanie GG_STATE_CONNECTING_GG
+  i z session->timeout == 0 spowoduje po³±czenie z kolejnym portem (Ron_K/w)
+- poprawka b³êdów przy wielokrotnym ,,/dcc get'' (ubanus/sz)
+- poprawka ekg -b przy w³±czonym back_reason (jojo/w)
+
+// 2003-03-30
+
+- uruchomienie interatywnej aplikacji nie blokuje ekg (ubanus/w)
+- /play dzia³a jak /exec sound_app, dziêki czemu zadzia³a modprobe
+  w przypadku braku odpowiednich modu³ów (ubanus/w)
+- keep_reason == 2 nie zapisuje stanu (Tohver/w)
+- Alt-Backspace dzia³a w ncurses (porridge/w)
+- poprawka Backspace w wielolinijkowych (embe/w)
+
+// 2003-03-29
+
+- poprawka Ctrl-W (w)
+- ucinanie zbyt d³ugich szyfrowanych wiadomo¶ci (sz/w)
+- poprawka segfaultów przy wysy³aniu d³ugich wiadomo¶ci (w)
+- poprawka Ctrl-Spacja (mateusza/w)
+- zamiana ,,dcc send --reverse'' na ,,dcc rsend'' i ,,dcc voice --reverse''
+  na ,,dcc rvoice'' (FIG/w)
+- poprawka Shift-Enter w xtermopobnych (*/w)
+
+// 2003-03-28
+
+- libgadu: usuniêcie starych sta³ych i nazw struktur zachowanych dla
+  kompatybilno¶ci ze nieaktualnymi wersjami API (w)
+- drobna poprawka do licencji pozwalaj±ca kompilowaæ, konsolidowaæ i
+  uruchamiaæ ekg z bibliotek± OpenSSL (porridge/w)
+- drobne poprawki readline. niech wygl±da jako tako w 1.0, mimo ¿e
+  ju¿ nie supportowane: operator $, window active/last, msg * (sz)
+- sekwencje z Alt'em w readline zawsze odnosz± siê do ma³ych liter (sz)
+- kosmetyczna poprawka jednoczesnego u¿ycia parametrów --stime i --number
+  w /last (sz)
+
+// 2003-03-27
+
+- poprawki zachowania interfejsu readline (porridge/sz)
+- drobne uzupe³nienie dope³niania Tabem w readline (sz)
+
+// 2003-03-26
+
+- usuniêcie leaka w aliasach (w/sz)
+- poprawka wpisywania kolorów (pmb/w)
+
+// 2003-03-25
+
+- zmiana nazw ukrytych poleceñ z _add/_del na _addtab/_deltab (sz)
+- poprawki wymawiania tekstu. nie blokuje, nie gubi tekstu,
+  buforuje, gdy nie mo¿e wypowiedzieæ w danej chwili. dodanie
+  g³upiego polecenia /say, g³ownie dla opcji ,,--clear''. w ogóle,
+  kto¶ tego u¿ywa? (sz)
+
+// 2003-03-24
+
+- kosmetyka komunikatów o b³êdach przy /ignore i /block (sz)
+- przeniesienie obs³ugi logowania i /last do log.c (sz)
+- poprawka dokumentacji zmiennych (embe/w)
+- rozmowy g³osowe dzia³aj± z GG 5.0.5 (w)
+
+// 2003-03-23
+
+- konsekwentne zachowanie przy aliasach ze spacj± (tokugawa/sz)
+- poprawka dokumentacji zmiennych (embe/w)
+- przy uruchomieniu ekg powód bêdzie ustawiany zgodnie z ustawieniami (embe/w)
+
+// 2003-03-22
+
+- poprawka /add -f (embe/sz)
+- poprawka wielokomendowych aliasów z formatami %1...%9 (sz)
+
 // 2003-03-21
 
 - drobne literówki (FIG/sz)
+- libgadu: naprawienie b³êdu wysy³ania plików z libgadu do GG -- po
+  zakoñczonym transferze GG wy¶wietla³o b³±d transferu (w) 
+- sensowniejszy termin ,,motyw'' zamiast ,,opis wygl±du'' (rmrmg/w)
 
 // 2003-03-20
 
@@ -3305,4 +3382,4 @@ i BUGS.
 - eleet niebieskie t³o mesgów (wiem, dalekie od idea³u).
 
 
-$Id: ChangeLog,v 1.17 2003/03/22 08:56:12 chilek Exp $
+$Id: ChangeLog,v 1.18 2003/04/01 22:44:26 chilek Exp $

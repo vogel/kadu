@@ -1,4 +1,4 @@
-/* $Id: libgadu.h,v 1.30 2003/03/26 15:49:20 chilek Exp $ */
+/* $Id: libgadu.h,v 1.31 2003/04/01 22:44:26 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -229,8 +229,6 @@ enum gg_session_t {
 	GG_SESSION_USER7	/* j.w. */
 };
 
-#define gg_session_enum gg_session_t
-
 /*
  * enum gg_state_t
  *
@@ -283,17 +281,6 @@ enum gg_state_t {
 	GG_STATE_READING_TYPE		/* czeka na typ po³±czenia */
 };
 
-#define gg_state_enum gg_state_t
-
-/*
- * dla zachowania kompatybilno¶ci wstecz. w wersji 1.0 bêdzie usuniête. oby.
- */
-#define GG_STATE_CONNECTING_HTTP GG_STATE_CONNECTING
-#define GG_STATE_WRITING_HTTP GG_STATE_READING_DATA
-#define GG_STATE_WAITING_FOR_KEY GG_STATE_READING_KEY
-#define GG_STATE_SENDING_KEY GG_STATE_READING_REPLY
-#define GG_STATE_FINISHED GG_STATE_DONE
-
 /*
  * enum gg_check_t
  *
@@ -305,8 +292,6 @@ enum gg_check_t {
 	GG_CHECK_WRITE = 1,		/* sprawdzamy mo¿liwo¶æ zapisu */
 	GG_CHECK_READ = 2		/* sprawdzamy mo¿liwo¶æ odczytu */
 };
-
-#define gg_check_enum gg_check_t	/* dla kompatybilno¶ci */
 
 /*
  * struct gg_login_params
@@ -825,7 +810,7 @@ char *gg_base64_decode(const char *buf);
 #define GG_DEFAULT_PROTOCOL_VERSION 0x1b
 #define GG_DEFAULT_TIMEOUT 30
 #define GG_HAS_AUDIO_MASK 0x40000000
-#define GG_LIBGADU_VERSION "20030325"
+#define GG_LIBGADU_VERSION "20030401"
 
 #define GG_DEFAULT_DCC_PORT 1550
 
