@@ -190,8 +190,8 @@ void Register::registered(bool ok, UinType uin)
 	}
 	else
 	{
-		QMessageBox::warning(0, tr("Unregister user"),
-				tr("An error has occured while unregistration. Please try again later."), tr("OK"), 0, 0, 1);
+		QMessageBox::warning(0, tr("Register user"),
+				tr("An error has occured while registration. Please try again later."), tr("OK"), 0, 0, 1);
 		setEnabled(true);
 	}
 }
@@ -227,7 +227,9 @@ Unregister::Unregister(QDialog *parent, const char *name)
 	
 	QLabel *l_info = new QLabel(center);
 	l_icon->setPixmap(icons_manager.loadIcon("UnregisterWindowIcon"));
-	l_info->setText(tr("This dialog box allows you to unregister your account."));
+	l_info->setText(tr("This dialog box allows you to unregister your account. Be aware of using this "
+				"option. It will permanently delete your UIN and you will not be able to use "
+				"it later!"));
 	l_info->setAlignment(Qt::WordBreak);
 	// end create main QLabel widgets (icon and app info)
 	
