@@ -223,7 +223,7 @@ void UserBox::refresh()
 	// Dodajemy uzytkownikow bez numerow GG
 	for (i = 0; i < b_users.count(); i++) {
 		UserListElement &user = userlist.byAltNick(b_users[i]);
-		insertItem(user.altnick);
+		insertItem(QPixmap((const char **)cellphone), user.altnick);
 		}
 	// Przywracamy zaznaczenie wczesniej zaznaczonych uzytkownikow
 	for (i = 0; i < s_users.count(); i++)
