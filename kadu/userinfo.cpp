@@ -30,7 +30,7 @@
 
 UserInfo::UserInfo (const QString & name, QDialog* parent , unsigned int uin) : QDialog (parent, name) {
 	resize(240,200);
-	setCaption(i18n("User info on %1").arg(userlist.byUin(uin).comment));
+	setCaption(i18n("User info on %1").arg(userlist.byUin(uin).altnick));
 	setWFlags(Qt::WDestructiveClose);
 
 	QLineEdit *e_status = new QLineEdit(this);
@@ -39,7 +39,7 @@ UserInfo::UserInfo (const QString & name, QDialog* parent , unsigned int uin) : 
 
 	e_nickname = new QLineEdit(this);
 	QLabel *l_nickname = new QLabel(this);
-	l_nickname->setText(i18n("AltNick"));
+	l_nickname->setText(i18n("Nickname"));
 
 	e_firstname = new QLineEdit(this);
 	QLabel *l_firstname = new QLabel(this);
@@ -55,7 +55,7 @@ UserInfo::UserInfo (const QString & name, QDialog* parent , unsigned int uin) : 
 
 	e_altnick = new QLineEdit(this);
 	QLabel *l_altnick = new QLabel(this);
-	l_altnick->setText(i18n("Nickname"));
+	l_altnick->setText(i18n("AltNick"));
 
 	e_mobile = new QLineEdit(this);
 	QLabel *l_mobile = new QLabel(this);
@@ -83,7 +83,7 @@ UserInfo::UserInfo (const QString & name, QDialog* parent , unsigned int uin) : 
 	this_index = i;
 
 	e_nickname->setText(userlist[i].nickname);
-	e_altnick->setText(userlist[i].comment);
+	e_altnick->setText(userlist[i].altnick);
 	e_firstname->setText(userlist[i].first_name);
 	e_lastname->setText(userlist[i].last_name);
  	e_mobile->setText(userlist[i].mobile);	
@@ -164,9 +164,9 @@ void UserInfo::writeUserlist() {
 			userlist[this_index].nickname = e_nickname->text();			
 			userlist[this_index].group = e_group->text();
 			if (e_altnick->text().length())
-				userlist[this_index].comment = e_altnick->text();
+				userlist[this_index].altnick = e_altnick->text();
 			else
-				userlist[this_index].comment = "";
+				userlist[this_index].altnick = "";
 			if (!userlist[this_index].anonymous)
 				userlist[this_index].mobile = e_mobile->text();
 			userlist.writeToFile();

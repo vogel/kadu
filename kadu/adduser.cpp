@@ -33,7 +33,7 @@ QLabel * descr = new QLabel(this);
 descr->setText(i18n("ATTENTION! As of version 0.3.1, Kadu identifies users by the ALTNICK,\n"
 		"not Nickname field. This is similar to EKG, GG and GNU Gadu"));
 
-QLabel * l_nickname = new QLabel(this); l_nickname->setText(i18n("AltNick"));
+QLabel * l_nickname = new QLabel(this); l_nickname->setText(i18n("Nickname"));
 e_nickname = new QLineEdit(this);
 
 QLabel * l_uin = new QLabel(this); l_uin->setText(i18n("Uin"));
@@ -46,7 +46,7 @@ e_lname = new QLineEdit(this);
 QLabel * l_lname = new QLabel(this); l_lname->setText(i18n("Surname"));
 
 e_altnick = new QLineEdit(this);
-QLabel * l_altnick = new QLabel(this); l_altnick->setText(i18n("Nickname"));
+QLabel * l_altnick = new QLabel(this); l_altnick->setText(i18n("AltNick"));
 
 e_tel = new QLineEdit(this);
 QLabel * l_tel = new QLabel(this); l_tel->setText(i18n("Cell #"));
