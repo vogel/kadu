@@ -9,7 +9,6 @@
 #\
 exec wish "$0" "$@"
 
-
 ### Wersja kadu:
 set fd [open configure r]
 gets $fd data
@@ -17,7 +16,7 @@ gets $fd data
 set kadu_ver [string range [lindex $data end] 0 end-1]
 close $fd
 
-######################
+### Inicjalizacja
 set winheight 260
 set winwidth 400
 set geomx [expr [expr [winfo screenwidth .] - $winwidth] / 2]
@@ -27,6 +26,7 @@ wm minsize . $winwidth $winheight
 wm geometry . +$geomx+$geomy
 wm title . "Instalator Kadu"
 
+### Slonko :)
 image create photo kadu -format gif -data {
 R0lGODlhZABJAOcAAAICAubaBrqyBoJ+Bu4mCmpmAlJOAlYSBkJCBjIyAiYm
 AhoaAuYmCpaOBureBhYWAsK6Bg4OAu7iBvLmBl5eXgYGAvaqBs7CBpqSBkIK
@@ -76,7 +76,34 @@ GLxXWnKWAjlLVl6HSzp2Lzi/7OWHVglMYSLwlGK8pSuDGRZRonJwuwyKMWf4
 kUIic5rAJCY2O1jLbXpzIQEBADs=
 }
 
+### Kolorystyka
 set themeopts "-background grey87 -activebackground white -foreground black -activeforeground black"
+
+###########
+### Zmienne
+
+global kdedir qtdir installdir var cwin
+set cwin 1
+set maxwins 7          
+if {[info exists env(QTDIR)]} {
+    set qtdir $env(QTDIR)
+} else {
+    set qtdir /usr/lib/qt
+}
+if {[info exists env(KDEDIR)]} {
+    set kdedir $env(KDEDIR)
+} else {
+    set kdedir /opt/kde
+}
+set installdir /usr/local
+set var(makedoc) 1
+set var(makedeb) 0
+set var(makessl) 1
+set var(makekde) 1
+set var(default) 1
+set var(os) "other"
+
+set main .r.u
 
 ###############
 ### Glowne okno
@@ -105,32 +132,6 @@ pack .r.d.next .r.d.prev -side right
 pack .r.d.close -side left
 
 bind . <Escape> {destroy .}    
-
-###########
-### Zmienne
-
-global kdedir qtdir installdir var cwin
-set cwin 1
-set maxwins 7          
-if {[info exists env(QTDIR)]} {
-    set qtdir $env(QTDIR)
-} else {
-    set qtdir /usr/lib/qt
-}
-if {[info exists env(KDEDIR)]} {
-    set kdedir $env(KDEDIR)
-} else {
-    set kdedir /opt/kde
-}
-set installdir /usr/local
-set var(makedoc) 1
-set var(makedeb) 0
-set var(makessl) 1
-set var(makekde) 1
-set var(default) 1
-set var(os) "other"
-
-set main .r.u
 
 
 
@@ -261,7 +262,7 @@ foreach {path varname text} {deb makedeb "Kompiluj z debugowaniem" doc makedoc "
 ### Okno 7 (Podsumowanie i instalacja)
 set w .r.u.7
 frame $w
-scrollbar $w.s -command "$w.txt yview"
+scrollbar $w.s -command "$w.txt yview" -bd 1
 text $w.txt -wrap word -width 37 -height 12 -yscrollcommand "$w.s set"
 $w.txt tag configure smallfont -font "helvetica 8"
 pack $w.txt -fill both -side left
@@ -328,47 +329,35 @@ proc Install {fd} {
 }
 proc next {} {
     upvar #0 cwin cwin var var installdir installdir kdedir kdedir qtdir qtdir maxwins mw
-    if {$cwin == 1} {
-        if {"$var(os)" != ""} {
-            set test 1
-        } else {
-            set test 0
-            tk_dialog .err "Blad!" "Musisz wybrac system!" "" "" "OK"
-        }
+    pack forget .r.u.$cwin
+    if {$cwin == 1 && $var(default)} {
+        set cwin 7
     } else {
-        set test 1
+        incr cwin
     }
-    if {$test} {
-        pack forget .r.u.$cwin
-        if {$cwin == 1 && $var(default)} {
-            set cwin 7
+    pack .r.u.$cwin
+    update
+    if {$cwin == $mw} {
+        .r.d.next configure -text Instaluj -command {install; .r.d.prev configure -state disabled}
+        .r.u.$mw.txt delete 0.0 end
+        .r.u.$mw.txt insert end "Kadu zostanie zainstalowane w: $installdir\n\nKatalog QTDIR: $qtdir\n\n"
+        if {$var(makekde)} {
+            .r.u.$mw.txt insert end "Katalog KDE: $kdedir\n\n"
         } else {
-            incr cwin
+            .r.u.$mw.txt insert end "Elementy KDE nie zostana zainstalowane.\n\n"
         }
-        pack .r.u.$cwin
+        set args ""
+        if {!$var(makedoc)} {
+            lappend args --disable-doc
+        }
+        if {$var(makedeb)} {
+            lappend args --with-debug
+        }
+        .r.u.$mw.txt insert end "Dodatkowe opcje konfiguracji: $args\n"
         update
-        if {$cwin == $mw} {
-            .r.d.next configure -text Instaluj -command {install; .r.d.prev configure -state disabled}
-            .r.u.$mw.txt delete 0.0 end
-            .r.u.$mw.txt insert end "Kadu zostanie zainstalowane w: $installdir\n\nKatalog QTDIR: $qtdir\n\n"
-            if {$var(makekde)} {
-                .r.u.$mw.txt insert end "Katalog KDE: $kdedir\n\n"
-            } else {
-                .r.u.$mw.txt insert end "Elementy KDE nie zostana zainstalowane.\n\n"
-            }
-            set args ""
-            if {!$var(makedoc)} {
-                lappend args --disable-doc
-            }
-            if {$var(makedeb)} {
-                lappend args --with-debug
-            }
-            .r.u.$mw.txt insert end "Dodatkowe opcje konfiguracji: $args\n"
-            update
-        }
-        if {$cwin > 1} {
-            .r.d.prev configure -state normal
-        }
+    }
+    if {$cwin > 1} {
+        .r.d.prev configure -state normal
     }
 }
 proc prev {} {
@@ -389,5 +378,12 @@ proc prev {} {
 }
 pack .r.u.1
 
+### KDE 3.x tego potrzebuje do sprawnego dzialania :)
 pack propagate . false
+
+### Sprawdzanie kompatybilnosci TCL/TK:
+if {$tk_version < 8.4} {
+    tk_messageBox -type ok -icon warning -parent . -title "Uwaga!" -message "Wersja TCL/TK: $tk_patchLevel\nWymagana to: 8.4.\nMozliwe jest niestabilne zachowanie instalatora."
+}
+
 
