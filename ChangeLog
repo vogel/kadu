@@ -20,7 +20,7 @@
 * osoby nie maj±ce uin, opisem jest: Mobile: nr_telefonu
   + info o 3 klawiszu, aby wys³aæ sms (mast3r)
 * wykluczenie mo¿liwo¶ci wys³ania swojego klucza do osoby
-  nie maj±cej w userliscie uin'u (mast3r)
+  nie maj±cej w userliscie uinu (mast3r)
 * poprawka zamykania siê Kadu (mast3r)
 * malutkie przeoczenie, wywalilem info o 3 klawiszu z hinta
   zapomnia³em o 2kliku lewym :) (mast3r)
@@ -42,6 +42,8 @@
 * historia wy¶wietla siê tak jak kiedy¶ (z paroma dodatkowymi bajerami), ale wykorzystuje
    ju¿ nowy format plików historii (chilek)
 * porz±dki z czasami zdarzeñ (chilek)
+* okno rozmowy: gdy otwieramy pojawia siê w nim 10 ostatnich wypowiedzi
+   z historii rozmowy (chilek)
 
 +++ wersja 0.3.3-final
 * ikonka wiadomo¶ci i ikon statusu "ukryty" z telefonikiem
