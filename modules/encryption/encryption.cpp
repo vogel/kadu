@@ -34,7 +34,7 @@ EncryptionManager::EncryptionManager()
 	ConfigDialog::addHGroupBox("Chat", "Chat", 
 			QT_TRANSLATE_NOOP("@default", "Encryption properties"));
 	ConfigDialog::addComboBox("Chat", "Encryption properties",
-			QT_TRANSLATE_NOOP("@default", "Keys length"));
+			QT_TRANSLATE_NOOP("@default", "Keys length"), "EncryptionKeyLength", QStringList("1024"), QStringList("1024"));
 	ConfigDialog::addPushButton("Chat", "Encryption properties",
 			QT_TRANSLATE_NOOP("@default", "Generate keys"));
 	ConfigDialog::addColorButton("Chat", "Encryption properties", 
@@ -81,9 +81,6 @@ EncryptionManager::~EncryptionManager()
 void EncryptionManager::createConfigDialogSlot()
 {
 	kdebugf();
-	QComboBox* cb_keylength= ConfigDialog::getComboBox("Chat", "Keys length");
-	cb_keylength->insertItem("1024");
-
 	ConfigDialog::getHGroupBox("Chat", "Encryption properties")
 			->setEnabled(ConfigDialog::getCheckBox("Chat", "Use encryption")->isChecked());
 	kdebugf2();

@@ -342,6 +342,20 @@ QDateTime currentDateTime(void) {
 	return date;
 }
 
+QStringList toStringList(const QString &e1, const QString &e2, const QString &e3, const QString &e4, const QString &e5)
+{
+	QStringList list(e1);
+	if (e2!=QString::null)
+		list<<e2;
+	if (e3!=QString::null)
+		list<<e3;
+	if (e4!=QString::null)
+		list<<e4;
+	if (e5!=QString::null)
+		list<<e5;
+	return list;
+}
+
 QString pwHash(const QString &tekst) {
 	QString nowytekst;
 	unsigned int ile;

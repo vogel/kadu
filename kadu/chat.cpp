@@ -1392,7 +1392,9 @@ void Chat::initModule()
 
 	ConfigDialog::addTab("Chat");
 	ConfigDialog::addVGroupBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Emoticons"));
-	ConfigDialog::addComboBox("Chat", "Emoticons", QT_TRANSLATE_NOOP("@default", "Emoticons:"));
+	ConfigDialog::addComboBox("Chat", "Emoticons", QT_TRANSLATE_NOOP("@default", "Emoticons:"),
+			"EmoticonsStyle", toStringList(tr("None"), tr("Static"), tr("Animated")), toStringList("0", "1", "2"), "2");
+
 	ConfigDialog::addComboBox("Chat", "Emoticons", QT_TRANSLATE_NOOP("@default", "Emoticons theme"));
 	ConfigDialog::addVGroupBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "WWW options"));
 	ConfigDialog::addCheckBox("Chat", "WWW options", QT_TRANSLATE_NOOP("@default", "Use default Web browser"), "DefaultWebBrowser", true);
@@ -1587,12 +1589,6 @@ ChatSlots::ChatSlots(QObject* parent, const char* name)
 void ChatSlots::onCreateConfigDialog()
 {
 	kdebugf();
-	QComboBox *cb_emoticons_style= ConfigDialog::getComboBox("Chat", "Emoticons:");
-	cb_emoticons_style->insertItem(tr("None"));
-	cb_emoticons_style->insertItem(tr("Static"));
-	cb_emoticons_style->insertItem(tr("Animated"));
-	cb_emoticons_style->setCurrentItem(config_file.readNumEntry("Chat", "EmoticonsStyle"));
-
 	QComboBox* cb_emoticons_theme= ConfigDialog::getComboBox("Chat", "Emoticons theme");
 	cb_emoticons_theme->insertStringList(emoticons->themes());
 	cb_emoticons_theme->setCurrentText(config_file.readEntry("Chat", "EmoticonsTheme"));
@@ -1646,8 +1642,6 @@ void ChatSlots::onDestroyConfigDialog()
 	QComboBox* cb_emoticons_theme= ConfigDialog::getComboBox("Chat", "Emoticons theme");
 	config_file.writeEntry("Chat", "EmoticonsTheme",cb_emoticons_theme->currentText());
 	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
-	QComboBox *cb_emoticons_style= ConfigDialog::getComboBox("Chat", "Emoticons:");
-	config_file.writeEntry("Chat", "EmoticonsStyle", cb_emoticons_style->currentItem());
 
 	chat_manager->changeAppearance();
 

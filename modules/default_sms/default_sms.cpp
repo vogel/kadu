@@ -261,6 +261,9 @@ void SmsEraGateway::send(const QString& number,const QString& message, const QSt
 	QString path;
 	QString post_data="login="+config_file.readEntry("SMS","EraGateway_"+config_file.readEntry("SMS", "EraGateway")+"_User")+
 	    "&password="+config_file.readEntry("SMS","EraGateway_"+config_file.readEntry("SMS", "EraGateway")+"_Password")+
+//	DO SPRAWDZENIA CZY TO POMAGA
+//	    "&numbers="+number+ "&message="+unicodeUrl2latinUrl(Http.encode(message))+
+//	    "&contact="+contact+ "&signature="+unicodeUrl2latinUrl(Http.encode(signature))+
 	    "&numbers="+number+ "&message="+message+
 	    "&contact="+contact+ "&signature="+signature+
 	    "&success=http://moj.serwer.pl/ok.html&failure=http://moj.serwer.pl/blad.html";
@@ -342,8 +345,10 @@ SmsGatewaySlots::SmsGatewaySlots()
 	kdebugf();
 	ConfigDialog::addVGroupBox("SMS", "SMS",
 			QT_TRANSLATE_NOOP("@default", "SMS Era Gateway"));
+
+	QStringList types=toStringList("Basic", "Omnix", "Charge");
 	ConfigDialog::addComboBox("SMS", "SMS Era Gateway",
-			QT_TRANSLATE_NOOP("@default", "Type of gateway"));
+			QT_TRANSLATE_NOOP("@default", "Type of gateway"), "EraGateway", types, types);
 
 	config_file.addVariable("SMS", "EraGateway", "Omnix");
 	//przepisanie starego hasla
@@ -398,9 +403,6 @@ void SmsGatewaySlots::onApplyConfigDialog()
 {
 	kdebugf();
 	
-	QComboBox *cb_typegateway= ConfigDialog::getComboBox("SMS","Type of gateway");
-	config_file.writeEntry("SMS", "EraGateway",cb_typegateway->currentText());
-
 	QLineEdit *e_erauser= ConfigDialog::getLineEdit("SMS", "User ID");
 	QLineEdit *e_erapassword= ConfigDialog::getLineEdit("SMS", "Password");
 	config_file.writeEntry("SMS", "EraGateway_"+config_file.readEntry("SMS", "EraGateway")+"_Password", e_erapassword->text());
@@ -418,12 +420,7 @@ void SmsGatewaySlots::onCreateConfigDialog()
 {
 	kdebugf();
 	
-	QComboBox *cb_typegateway= ConfigDialog::getComboBox("SMS","Type of gateway");
-	cb_typegateway->insertItem("Basic");
-	cb_typegateway->insertItem("Omnix");
-	cb_typegateway->insertItem("Charge");
-	cb_typegateway->setCurrentText(config_file.readEntry("SMS", "EraGateway"));
-	actualEraGateway=cb_typegateway->currentText();
+	actualEraGateway=config_file.readEntry("SMS", "EraGateway");
 	
 	QLineEdit *e_erauser= ConfigDialog::getLineEdit("SMS", "User ID");
 	QLineEdit *e_erapassword= ConfigDialog::getLineEdit("SMS", "Password");

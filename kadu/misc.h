@@ -69,6 +69,7 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, U
 QString unformatGGMessage(const QString &msg, int &formats_length, void *&formats);
 QString parse(const QString &s, const UserListElement &ule, bool escape = true);
 void stringHeapSort(QStringList &c);
+QStringList toStringList(const QString &e1, const QString &e2=QString(), const QString &e3=QString(), const QString &e4=QString(), const QString &e5=QString());
 
 void saveGeometry(QWidget *w, QString section, QString name);
 void loadGeometry(QWidget *w, QString section, QString name, int defaultX, int defaultY, int defaultWidth, int defaultHeight);

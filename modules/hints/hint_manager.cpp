@@ -51,10 +51,8 @@ HintManager::HintManager()
 		ConfigDialog::addCheckBox("Hints", "Status change", QT_TRANSLATE_NOOP("@default", "Use custom syntax"), "NotifyHintUseSyntax", false);
 		ConfigDialog::addLineEdit("Hints", "Status change", QT_TRANSLATE_NOOP("@default", "Hint syntax"), "NotifyHintSyntax", "");
 
-	QStringList options;
-	QStringList values;
-	options<<tr("Nothing")<<tr("Open chat")<<tr("Delete hint")<<tr("Delete all hints");
-	values<<"0"<<"1"<<"2"<<"3";
+	QStringList options=toStringList(tr("Nothing"),tr("Open chat"),tr("Delete hint"),tr("Delete all hints"));
+	QStringList values=toStringList("0","1","2","3");
 	
 	ConfigDialog::addVGroupBox("Hints", "Hints", QT_TRANSLATE_NOOP("@default", "Mouse buttons"));
 		ConfigDialog::addComboBox("Hints", "Mouse buttons", QT_TRANSLATE_NOOP("@default", "Left button"), "LeftButton", options, values, "1");
@@ -62,11 +60,9 @@ HintManager::HintManager()
 		ConfigDialog::addComboBox("Hints", "Mouse buttons", QT_TRANSLATE_NOOP("@default", "Right button"), "RightButton", options, values, "2");
 	
 	ConfigDialog::addHBox("Hints", "Hints", "hints-hbox");
-		QStringList options2;
-		QStringList values2;
-		options2<<tr("Auto")<<tr("On top")<<tr("On bottom");
-		values2<<"0"<<"1"<<"2";
-		ConfigDialog::addVRadioGroup("Hints", "hints-hbox", QT_TRANSLATE_NOOP("@default", "New hints go"), "NewHintUnder", options2, values2, "0");
+		ConfigDialog::addVRadioGroup("Hints", "hints-hbox", QT_TRANSLATE_NOOP("@default", "New hints go"), "NewHintUnder",
+			toStringList(tr("Auto"),tr("On top"),tr("On bottom")),
+			toStringList("0","1","2"),"0");
 
 		ConfigDialog::addVGroupBox("Hints", "hints-hbox", QT_TRANSLATE_NOOP("@default","Hints position"));
 			ConfigDialog::addCheckBox("Hints", "Hints position", QT_TRANSLATE_NOOP("@default", "Own hints position"), "UseUserPosition", false);
@@ -75,11 +71,9 @@ HintManager::HintManager()
 				ConfigDialog::addSpinBox("Hints", "coords", "x=", "HintsPositionX", -2048, 2048, 1, 100);
 				ConfigDialog::addSpinBox("Hints", "coords", "y=", "HintsPositionY", -2048, 2048, 1, 100);
 				
-		QStringList options4;
-		QStringList values4;
-		options4<<tr("Top left")<<tr("Top right")<<tr("Bottom left")<<tr("Bottom right");
-		values4<<"0"<<"1"<<"2"<<"3";
-		ConfigDialog::addVRadioGroup("Hints", "hints-hbox", QT_TRANSLATE_NOOP("@default", "Corner"), "Corner", options4, values4, "0");
+		ConfigDialog::addVRadioGroup("Hints", "hints-hbox", QT_TRANSLATE_NOOP("@default", "Corner"), "Corner",
+			toStringList(tr("Top left"),tr("Top right"),tr("Bottom left"),tr("Bottom right")),
+			toStringList("0","1","2","3"), "0");
 	
 	ConfigDialog::addVGroupBox("Hints", "Hints", QT_TRANSLATE_NOOP("@default", "Parameters"));
 		ConfigDialog::addHBox("Hints", "Parameters", "top");
@@ -87,13 +81,13 @@ HintManager::HintManager()
 			ConfigDialog::addLabel("Hints", "top", QT_TRANSLATE_NOOP("@default", "<b>Text</b> preview"));
 			
 		ConfigDialog::addHBox("Hints", "Parameters", "center");
-			QStringList options3;
-			QStringList values3;
-			options3<<tr("Online")<<tr("Online (d.)")<<tr("Busy")<<tr("Busy (d.)")<<
+			QStringList options2;
+			QStringList values2;
+			options2<<tr("Online")<<tr("Online (d.)")<<tr("Busy")<<tr("Busy (d.)")<<
 					tr("Invisible")<<tr("Invisible (d.)")<<tr("Offline")<<tr("Offline (d.)")<<
 					tr("Blocking")<<tr("New chat")<<tr("New message in chat")<<tr("Error")<<tr("Other message");
-			values3<<"0"<<"1"<<"2"<<"3"<<"4"<<"5"<<"6"<<"7"<<"8"<<"9"<<"10"<<"11"<<"12";
-			ConfigDialog::addVRadioGroup("Hints", "center", QT_TRANSLATE_NOOP("@default", "Hint type"), "LastSelected", options3, values3, "0");
+			values2<<"0"<<"1"<<"2"<<"3"<<"4"<<"5"<<"6"<<"7"<<"8"<<"9"<<"10"<<"11"<<"12";
+			ConfigDialog::addVRadioGroup("Hints", "center", QT_TRANSLATE_NOOP("@default", "Hint type"), "LastSelected", options2, values2, "0");
 
 			ConfigDialog::addVBox("Hints", "center", "bottom");
 				ConfigDialog::addLabel("Hints", "bottom", "", "stretcher2");

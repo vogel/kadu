@@ -13,6 +13,7 @@ class AutoAwaySlots :public QObject
 	Q_OBJECT
 	public:
 	AutoAwaySlots();
+	~AutoAwaySlots();
 
 	public slots:
 		void onCreateConfigDialog();

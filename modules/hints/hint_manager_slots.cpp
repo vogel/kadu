@@ -90,7 +90,9 @@ void HintManagerSlots::onCreateConfigDialog()
 		config_hint_properties[*it]=prop;
 	}
 	currentOptionPrefix="";
-	clicked_HintType(ConfigDialog::getVButtonGroup("Hints", "Hint type")->selectedId());
+	
+	QVButtonGroup *group=ConfigDialog::getVButtonGroup("Hints", "Hint type");
+	clicked_HintType(group->id(group->selected()));
 
 	kdebugf2();
 }
