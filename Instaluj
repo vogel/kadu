@@ -58,7 +58,7 @@ function Konfiguruj_bez_libgadu()
 	KDEDIR="$KDE_DIR"
 	export KDEDIR
 	OPER="Configure"
-	./configure "--prefix=$APP_DIR" " --with-existing-libgadu"
+	./configure "--prefix=$APP_DIR" "--with-existing-libgadu"
 	WYK=$?
  if test "$WYK" -ne 0; then
         Error
@@ -74,7 +74,7 @@ function Konfiguruj_z_ssl()
 	KDEDIR="$KDE_DIR"
 	export KDEDIR
 	OPER="Configure"
-	./configure "--prefix=$APP_DIR" " --with-openssl"
+	./configure "--prefix=$APP_DIR" "--with-openssl"
 	WYK=$?
  if test "$WYK" -ne 0; then
         Error
@@ -90,7 +90,7 @@ function Konfiguruj_z_debug()
 	KDEDIR="$KDE_DIR"
 	export KDEDIR
 	OPER="Configure"
-	./configure "--prefix=$APP_DIR" " --with-debug" " --with-openssl"
+	./configure "--prefix=$APP_DIR" "--with-debug" "--with-openssl"
 
 	WYK=$?
  if test "$WYK" -ne 0; then
@@ -294,8 +294,6 @@ while [ 1 ]; do
 			Zainstaluj
 		fi;
 		if [[ ("$REPLY" == "U") || ("$REPLY" == "u") ]]; then
-			Konfiguruj
-			Kompiluj
 			Odinstaluj
 		fi;
 		if [[ ("$REPLY" == "E") || ("$REPLY" == "e") ]]; then

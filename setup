@@ -294,8 +294,6 @@ while [ 1 ]; do
 			Zainstaluj
 		fi;
 		if [[ ("$REPLY" == "U") || ("$REPLY" == "u") ]]; then
-			Konfiguruj
-			Kompiluj
 			Odinstaluj
 		fi;
 		if [[ ("$REPLY" == "E") || ("$REPLY" == "e") ]]; then
