@@ -16,14 +16,9 @@
 -----------------------
 
  ! dopracowaæ animowane emotikony na ile siê da
- + dopracowaæ grupy
  ! dopracowaæ ob³ugê historii
  ! dopracowaæ wysy³anie SMS'ów do ERY
  ! wyja¶niæ problemy z autoaway'em
- + mo¿liwo¶æ wy³±czenia pokazywania siê zmian statusu u¿ytkowników
-   w oknie rozmowy i historii
- + okno rozmowy "wyp³ywa na wierzch" za ka¿d± now± wiadomo¶ci± (je¶li
-   odpowiednia opcja w oknie rozmowy jest w³±czona)
 
  TODO dla wersji 0.3.5 lub pó¼niejszych
 ----------------------------------------
@@ -44,6 +39,12 @@
  ? podrêczne menu w oknie rozmowy
  ? inteligentna data w oknie rozmowy
  + zak³adki w oknie rozmowy (opcja)
+ + dopracowaæ grupy
+ + okno rozmowy "wyp³ywa na wierzch" za ka¿d± now± wiadomo¶ci± (je¶li
+   odpowiednia opcja w oknie rozmowy jest w³±czona)
+ + mo¿liwo¶æ wy³±czenia pokazywania siê zmian statusu u¿ytkowników
+   w oknie rozmowy i historii
+
  
  TODO dla wersji 0.4.0
 -----------------------
