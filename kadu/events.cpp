@@ -173,9 +173,9 @@ void EventManager::connectionFailedSlot(int failure)
 	switch (failure)
 	{
 		case GG_FAILURE_RESOLVING:
-			kdebug(tr("Unable to connect, unfind server")+"\n");
+			kdebug(tr("Unable to connect, server has not been found")+"\n");
 			if (hintmanager != NULL)
-				hintmanager->addHintError(tr("Unable to connect, unfind server"));
+				hintmanager->addHintError(tr("Unable to connect, server has not been found"));
 			break;
 		case GG_FAILURE_CONNECTING:
 			kdebug(tr("Unable to connect"));
