@@ -257,8 +257,10 @@ void TrayIcon::mousePressEvent(QMouseEvent * e) {
 	if (!config.dock)
 		return;
 
-	if (e->button() == MidButton || e->state() & ControlButton)
+	if (e->button() == MidButton || e->state() & ControlButton) {
 		emit mousePressMidButton();
+		return;
+	}
 
 	if (e->button() == LeftButton) {
 		emit mousePressLeftButton();
