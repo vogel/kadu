@@ -86,16 +86,15 @@ class SoundSlots : public QObject
 		QMap<QString, QString> soundfiles;
 		QStringList soundNames;
 		QStringList soundTexts;
+		MessageBox* SamplePlayingTestMsgBox;
 		SoundDevice SamplePlayingTestDevice;
 		int16_t* SamplePlayingTestSample;
-		int SamplePlayingTestSampleLen;
+		MessageBox* SampleRecordingTestMsgBox;
 		SoundDevice SampleRecordingTestDevice;
 		int16_t* SampleRecordingTestSample;
-		int SampleRecordingTestSampleLen;
 		MessageBox* FullDuplexTestMsgBox;
 		SoundDevice FullDuplexTestDevice;
 		int16_t* FullDuplexTestSample;
-		int FullDuplexTestSampleLen;
 
 	private slots:
 		void soundPlayer(bool value, bool toolbarChanged=false);
@@ -113,7 +112,7 @@ class SoundSlots : public QObject
 		void sampleRecordingTestSampleRecorded(SoundDevice device);
 		void sampleRecordingTestSamplePlayed(SoundDevice device);
 		void testFullDuplex();
-		void fullDuplexTestSamplePlayed(SoundDevice device);
+		void fullDuplexTestSampleRecorded(SoundDevice device);
 		void closeFullDuplexTest();
 
 	public:

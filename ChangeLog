@@ -382,6 +382,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * obs³uga w±tkowanego odtwarzania w nowym api próbek (adrian)
 * obs³uga w±tkowanego nagrywania w nowym api próbek (adrian)
 * testy odtwarzania i nagrywania u¿ywaj± w±tkowania (adrian)
+* test fulldupleksu i kosmetyka w pozosta³ych testach (adrian)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,

@@ -700,9 +700,12 @@ SoundSlots::SoundSlots(QObject *parent, const char *name) : QObject(parent, name
 		ToolBar::registerButton("Unmute", tr("Mute sounds"), this, SLOT(muteUnmuteSounds()), 0, "mute");
 	}
 
+	SamplePlayingTestMsgBox = NULL;
+	SamplePlayingTestSample = NULL;
+	SampleRecordingTestMsgBox = NULL;
+	SampleRecordingTestSample = NULL;
 	FullDuplexTestMsgBox = NULL;
 	FullDuplexTestSample = NULL;
-	FullDuplexTestSampleLen = 0;
 	
 	kdebugf2();
 }
@@ -962,6 +965,9 @@ void SoundSlots::onApplyConfigDialog()
 
 void SoundSlots::testSamplePlaying()
 {
+	kdebugf();
+	if (SamplePlayingTestMsgBox != NULL)
+		return;
 	QString chatsound;
 	if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
 		chatsound = config_file.readEntry("Sounds", "Chat_sound");
@@ -977,7 +983,6 @@ void SoundSlots::testSamplePlaying()
 	// alokujemy jeden int16_t wiêcej w razie gdyby file.size() nie
 	// by³o wielokrotno¶ci± sizeof(int16_t)
 	SamplePlayingTestSample = new int16_t[file.size() / sizeof(int16_t) + 1];
-	SamplePlayingTestSampleLen = file.size();
 	if (file.readBlock((char*)SamplePlayingTestSample, file.size()) != file.size())
 	{
 		MessageBox::wrn(tr("Reading test sample file failed."));
@@ -988,8 +993,8 @@ void SoundSlots::testSamplePlaying()
 	}
 	file.close();
 	
-	SoundDevice device = sound_manager->openDevice(11025);
-	if (device == NULL)
+	SamplePlayingTestDevice = sound_manager->openDevice(11025);
+	if (SamplePlayingTestDevice == NULL)
 	{
 		MessageBox::wrn(tr("Opening sound device failed."));
 		delete[] SamplePlayingTestSample;
@@ -997,125 +1002,126 @@ void SoundSlots::testSamplePlaying()
 		return;
 	}
 	
-	sound_manager->enableThreading(device);
+	sound_manager->enableThreading(SamplePlayingTestDevice);
 	connect(sound_manager, SIGNAL(samplePlayed(SoundDevice)), this, SLOT(samplePlayingTestSamplePlayed(SoundDevice)));
 
-	SamplePlayingTestDevice = device;
-	sound_manager->playSample(device, SamplePlayingTestSample, SamplePlayingTestSampleLen);
+	SamplePlayingTestMsgBox = new MessageBox(tr("Testing sample playing. You should hear some sound now."));
+	SamplePlayingTestMsgBox->show();
+
+	sound_manager->playSample(SamplePlayingTestDevice, SamplePlayingTestSample, file.size());
+	kdebugf2();
 }
 
 void SoundSlots::samplePlayingTestSamplePlayed(SoundDevice device)
 {
+	kdebugf();
 	if (device == SamplePlayingTestDevice)
 	{
 		disconnect(sound_manager, SIGNAL(samplePlayed(SoundDevice)), this, SLOT(samplePlayingTestSamplePlayed(SoundDevice)));
 		sound_manager->closeDevice(device);
 		delete[] SamplePlayingTestSample;
+		SamplePlayingTestSample = NULL;
+		SamplePlayingTestMsgBox->deleteLater();
+		SamplePlayingTestMsgBox = NULL;
 	}
+	kdebugf2();
 }
 
 void SoundSlots::testSampleRecording()
 {
-	SoundDevice device = sound_manager->openDevice(8000);
-	if (device == NULL)
+	kdebugf();
+	if (SampleRecordingTestMsgBox != NULL)
+		return;
+	SampleRecordingTestDevice = sound_manager->openDevice(8000);
+	if (SampleRecordingTestDevice == NULL)
 	{
 		MessageBox::wrn(tr("Opening sound device failed."));
 		return;
 	}
 	SampleRecordingTestSample = new int16_t[8000 * 3];
-	SampleRecordingTestSampleLen = 8000 * 3;
-	
-	sound_manager->enableThreading(device);
+
+	sound_manager->enableThreading(SampleRecordingTestDevice);
 	connect(sound_manager, SIGNAL(sampleRecorded(SoundDevice)), this, SLOT(sampleRecordingTestSampleRecorded(SoundDevice)));
 	connect(sound_manager, SIGNAL(samplePlayed(SoundDevice)), this, SLOT(sampleRecordingTestSamplePlayed(SoundDevice)));
 
-//	MessageBox::status(tr("Recording test sample, you can talk now"));
-	SampleRecordingTestDevice = device;
-	sound_manager->recordSample(device, SampleRecordingTestSample, sizeof(int16_t) * 8000 * 3);
+	SampleRecordingTestMsgBox = new MessageBox(tr("Testing sample recording. Please talk now (3 seconds)."));
+	SampleRecordingTestMsgBox->show();
+
+	sound_manager->recordSample(SampleRecordingTestDevice, SampleRecordingTestSample, sizeof(int16_t) * 8000 * 3);
+	kdebugf2();
 }
 
 void SoundSlots::sampleRecordingTestSampleRecorded(SoundDevice device)
 {
+	kdebugf();
 	if (device == SampleRecordingTestDevice)
 	{
-//		MessageBox::status(tr("You should now hear recorded sample"));
+		delete SampleRecordingTestMsgBox;
+		SampleRecordingTestMsgBox = new MessageBox(tr("You should hear your recorded sample now."));
+		SampleRecordingTestMsgBox->show();		
 		sound_manager->playSample(device, SampleRecordingTestSample, sizeof(int16_t) * 8000 * 3);
 	}
+	kdebugf2();
 }
 
 void SoundSlots::sampleRecordingTestSamplePlayed(SoundDevice device)
 {
+	kdebugf();
 	if (device == SampleRecordingTestDevice)
 	{
 		disconnect(sound_manager, SIGNAL(sampleRecorded(SoundDevice)), this, SLOT(sampleRecordingTestSampleRecorded(SoundDevice)));
 		disconnect(sound_manager, SIGNAL(samplePlayed(SoundDevice)), this, SLOT(sampleRecordingTestSamplePlayed(SoundDevice)));
 		sound_manager->closeDevice(device);
 		delete[] SampleRecordingTestSample;
+		SampleRecordingTestSample = NULL;
+		SampleRecordingTestMsgBox->deleteLater();
+		SampleRecordingTestMsgBox = NULL;
 	}
+	kdebugf2();
 }
 
 void SoundSlots::testFullDuplex()
 {
-	QString chatsound;
-	if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
-		chatsound = config_file.readEntry("Sounds", "Chat_sound");
-	else 
-		chatsound = sound_manager->themePath(config_file.readEntry("Sounds", "SoundTheme")) + sound_manager->getThemeEntry("Chat");
-
-	QFile file(chatsound);
-	if (!file.open(IO_ReadOnly))
-	{
-		MessageBox::wrn(tr("Opening test sample file failed."));
+	kdebugf();
+	if (FullDuplexTestMsgBox != NULL)
 		return;
-	}
-	// alokujemy jeden int16_t wiêcej w razie gdyby file.size() nie
-	// by³o wielokrotno¶ci± sizeof(int16_t)
-	FullDuplexTestSample = new int16_t[file.size() / sizeof(int16_t) + 1];
-	FullDuplexTestSampleLen = file.size();
-	if (file.readBlock((char*)FullDuplexTestSample, file.size()) != file.size())
-	{
-		MessageBox::wrn(tr("Reading test sample file failed."));
-		file.close();
-		delete[] FullDuplexTestSample;
-		FullDuplexTestSample = NULL;
-		return;	
-	}
-	file.close();
-
-	SoundDevice device = sound_manager->openDevice(11025);
-	if (device == NULL)
+	FullDuplexTestDevice = sound_manager->openDevice(8000);
+	if (FullDuplexTestDevice == NULL)
 	{
 		MessageBox::wrn(tr("Opening sound device failed."));
-		delete[] FullDuplexTestSample;
-		FullDuplexTestSample = NULL;
 		return;
 	}
-	
-	sound_manager->enableThreading(device);
-	connect(sound_manager, SIGNAL(samplePlayed(SoundDevice)), this, SLOT(fullDuplexTestSamplePlayed(SoundDevice)));
-	
-	FullDuplexTestMsgBox = new MessageBox(tr("Playing test sample, you should hear it now"), MessageBox::OK);
+	FullDuplexTestSample = new int16_t[8000];
+
+	sound_manager->enableThreading(FullDuplexTestDevice);
+	connect(sound_manager, SIGNAL(sampleRecorded(SoundDevice)), this, SLOT(fullDuplexTestSampleRecorded(SoundDevice)));
+
+	FullDuplexTestMsgBox = new MessageBox(tr("Testing fullduplex. Please talk now.\nYou should here it with one second delay."), MessageBox::OK);
 	connect(FullDuplexTestMsgBox, SIGNAL(okPressed()), this, SLOT(closeFullDuplexTest()));
 	FullDuplexTestMsgBox->show();
 
-	FullDuplexTestDevice = device;
-	fullDuplexTestSamplePlayed(device);
+	sound_manager->recordSample(FullDuplexTestDevice, FullDuplexTestSample, sizeof(int16_t) * 8000);
+	kdebugf2();
 }
 
-void SoundSlots::fullDuplexTestSamplePlayed(SoundDevice device)
+void SoundSlots::fullDuplexTestSampleRecorded(SoundDevice device)
 {
+	kdebugf();
 	if (device == FullDuplexTestDevice)
-		sound_manager->playSample(device, FullDuplexTestSample, FullDuplexTestSampleLen);
+	{
+		sound_manager->playSample(device, FullDuplexTestSample, sizeof(int16_t) * 8000);
+		sound_manager->recordSample(device, FullDuplexTestSample, sizeof(int16_t) * 8000);
+	}
+	kdebugf2();
 }
 
 void SoundSlots::closeFullDuplexTest()
 {
 	kdebugf();
-	disconnect(sound_manager, SIGNAL(samplePlayed(SoundDevice)), this, SLOT(fullDuplexTestSamplePlayed(SoundDevice)));
+	disconnect(sound_manager, SIGNAL(sampleRecorded(SoundDevice)), this, SLOT(fullDuplexTestSampleRecorded(SoundDevice)));
 	sound_manager->closeDevice(FullDuplexTestDevice);
 	delete[] FullDuplexTestSample;
 	FullDuplexTestSample = NULL;
-	FullDuplexTestSample = 0;
 	FullDuplexTestMsgBox->deleteLater();
 	FullDuplexTestMsgBox = NULL;
 	kdebugf2();
