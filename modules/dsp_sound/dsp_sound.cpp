@@ -259,7 +259,7 @@ void OSSPlayerSlots::recordSample(SoundDevice device, int16_t* data, int length,
 	if (!dev || dev->fd<0)
 	{
 		result = false;
-		kdebugm(KDEBUG_WARNING, "cannot record sample, device not opened, dev:%p dev->fd:%p\n", dev, dev?dev->fd:NULL);
+		kdebugm(KDEBUG_WARNING, "cannot record sample, device not opened, dev:%p dev->fd:%d\n", dev, dev?dev->fd:0);
 		return;
 	}
 	int ret = read_all(dev->fd, (char *)data, length);
