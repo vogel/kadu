@@ -147,10 +147,6 @@ If you leave blank, default settings will be used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Default port to connect to servers</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Use proxy server</source>
         <translation type="unfinished"></translation>
     </message>
@@ -590,6 +586,10 @@ It&apos;s a high security risk!</source>
         <source>Description font color</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Port to connect to servers</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -860,6 +860,10 @@ Your password is incorrect !</source>
     </message>
     <message>
         <source>UIN or password not set!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

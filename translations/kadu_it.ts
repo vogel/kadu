@@ -90,10 +90,6 @@
         <translation>Usi TLSv1</translation>
     </message>
     <message>
-        <source>Default port to connect to servers</source>
-        <translation>Porta predefinita per colegamenti con i servers</translation>
-    </message>
-    <message>
         <source>Use proxy server</source>
         <translation>Usa un proxy server</translation>
     </message>
@@ -595,6 +591,10 @@ E un rischio per la sicurezza!</translation>
         <source>Description font color</source>
         <translation>Colore caratteri descrizione</translation>
     </message>
+    <message>
+        <source>Port to connect to servers</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -869,6 +869,10 @@ La tua password è sbagliata!</translation>
     <message>
         <source>UIN or password not set!</source>
         <translation>Numero GG o password non mandati!</translation>
+    </message>
+    <message>
+        <source>Default</source>
+        <translation type="unfinished">Predefinito</translation>
     </message>
 </context>
 <context>

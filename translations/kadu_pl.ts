@@ -94,10 +94,6 @@
         <translation>Użyj TLSv1</translation>
     </message>
     <message>
-        <source>Default port to connect to servers</source>
-        <translation>Domyślny port do połączeń z serwerami</translation>
-    </message>
-    <message>
         <source>Use proxy server</source>
         <translation>Użyj serwera proxy</translation>
     </message>
@@ -595,6 +591,10 @@ Jest to wysoce ryzykowne!</translation>
         <source>Description font color</source>
         <translation>Kolor czcionki opisu</translation>
     </message>
+    <message>
+        <source>Port to connect to servers</source>
+        <translation>Port do połączeń z serwerami</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -869,6 +869,10 @@ Twoje hasło jest nieprawidłowe!</translation>
     <message>
         <source>UIN or password not set!</source>
         <translation>Nie podałeś nr GG lub hasła!</translation>
+    </message>
+    <message>
+        <source>Default</source>
+        <translation>Domyślny</translation>
     </message>
 </context>
 <context>

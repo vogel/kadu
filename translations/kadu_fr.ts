@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Open chat window on new message</source>
-        <translation>Nouvelle conversation nouveau message chat</translation>
+        <translation>Nouvelle conversation avec un nouveau message chat</translation>
     </message>
     <message>
         <source>Define keys</source>
@@ -47,7 +47,7 @@
     </message>
     <message>
         <source>Don&apos;t show status changes</source>
-        <translation>Sans vision du changement de  statut</translation>
+        <translation>Sans visionnage du changement de  statut</translation>
     </message>
     <message>
         <source>User data</source>
@@ -92,10 +92,6 @@
     <message>
         <source>Use TLSv1</source>
         <translation>Utilise TLSv1</translation>
-    </message>
-    <message>
-        <source>Default port to connect to servers</source>
-        <translation>Port par defaut pour la connexion serveur</translation>
     </message>
     <message>
         <source>Use proxy server</source>
@@ -159,7 +155,7 @@
     </message>
     <message>
         <source>Web browser was not specified. Visit the configuration section</source>
-        <translation>Navigateur  WWW non définit. Selectionnes navigateur WWW dans la fenêtre de configuration.</translation>
+        <translation>Navigateur  WWW non définit. Selectionnez le navigateur WWW dans la fenêtre de configuration</translation>
     </message>
     <message>
         <source>Could not spawn Web browser process. Check if the Web browser is functional</source>
@@ -183,7 +179,7 @@
     </message>
     <message>
         <source>Custom Web browser</source>
-        <translation>Chemin de programme + paramettres </translation>
+        <translation>Navigateur Web</translation>
     </message>
     <message>
         <source>Automatically prune chat messages</source>
@@ -211,7 +207,7 @@
     </message>
     <message>
         <source>Ignore messages from anonymous users</source>
-        <translation>Ignorer les messages des inconnus</translation>
+        <translation>Ignore les messages des inconnus</translation>
     </message>
     <message>
         <source>Look</source>
@@ -297,7 +293,7 @@ Si ce champs reste vide les paramettres par default seront utilisés.</translati
     </message>
     <message>
         <source>Align icon next to contact name</source>
-        <translation>Situer l&apos;icône à la hauteur du nom de contact</translation>
+        <translation>Aligne l&apos;icône à la hauteur du nom de contact</translation>
     </message>
     <message>
         <source>Icon theme</source>
@@ -548,9 +544,9 @@ Attention danger!
 %r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
 %v - revDNS, %p - port %e - email %x - max image size
 </source>
-        <translation>Syntaxe: %s - statut, %d - description, %i - IP, %n - nick, %a - visionne,%f -prénom)
-%r - nom, %m - téléphone, %u - nr GG, %g - groupe, %o -retour espace si contact ne figure pas sur la liste de contacts,
- %v - DNS, %p - port %e - email, %x - max dimension d&apos;image</translation>
+        <translation>Syntaxe: %s - statut, %d - description, %i - IP, %n - avatar, %a - ancien avatar,%f -prénom
+%r - surnom, %m - téléphone, %u - vin GG, %g - groupe, %o -retour_espace_si contact ne figure pas sur la liste de contacts
+ %v - revDNS, %p - port %e - email, %x - max dimension d&apos;image</translation>
     </message>
     <message>
         <source>Debugging mask</source>
@@ -570,31 +566,35 @@ Attention danger!
     </message>
     <message>
         <source>Chat window background color</source>
-        <translation type="unfinished"></translation>
+        <translation>Chat couleur de fond</translation>
     </message>
     <message>
         <source>Text edit background color</source>
-        <translation type="unfinished"></translation>
+        <translation>Edition text couleur de fond</translation>
     </message>
     <message>
         <source>French</source>
-        <translation type="unfinished"></translation>
+        <translation>Français</translation>
     </message>
     <message>
         <source>Host: </source>
-        <translation type="unfinished"></translation>
+        <translation>invité:</translation>
     </message>
     <message>
         <source>###IMAGE BLOCKED###</source>
-        <translation type="unfinished"></translation>
+        <translation>###IMAGE BLOQUÉ###</translation>
     </message>
     <message>
         <source>###IMAGE TOO BIG###</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Port to connect to servers</source>
+        <translation>Port pour connecter les serveurs</translation>
     </message>
     <message>
         <source>Description font color</source>
-        <translation type="unfinished"></translation>
+        <translation>Couleur de la police</translation>
     </message>
 </context>
 <context>
@@ -664,7 +664,7 @@ Attention danger!
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Anule</translation>
+        <translation>&amp;Annule</translation>
     </message>
     <message>
         <source>&amp;Send</source>
@@ -786,7 +786,7 @@ Vous pouvez l&apos;ajouter dans $PATH ou indiquer l&apos;emplacement d&apos;une 
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Anule</translation>
+        <translation>&amp;Annule</translation>
     </message>
 </context>
 <context>
@@ -800,7 +800,7 @@ Vous pouvez l&apos;ajouter dans $PATH ou indiquer l&apos;emplacement d&apos;une 
     <name>ConfigDialog</name>
     <message>
         <source>Cancel</source>
-        <translation>Anule</translation>
+        <translation>Annule</translation>
     </message>
     <message>
         <source>Kadu configuration</source>
@@ -852,7 +852,7 @@ Vous pouvez l&apos;ajouter dans $PATH ou indiquer l&apos;emplacement d&apos;une 
     <message>
         <source>Connection will be stoped
 Your password is incorrect !</source>
-        <translation>Connexion interrompue
+        <translation>Connexion sera interrompue
 Mot de passe incorrect !</translation>
     </message>
     <message>
@@ -870,7 +870,11 @@ Mot de passe incorrect !</translation>
     </message>
     <message>
         <source>UIN or password not set!</source>
-        <translation type="unfinished"></translation>
+        <translation>UIN ou mot de passe non enregistrés!</translation>
+    </message>
+    <message>
+        <source>Default</source>
+        <translation>Par default</translation>
     </message>
 </context>
 <context>
@@ -995,7 +999,7 @@ Mot de passe incorrect !</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Anule</translation>
+        <translation>&amp;Annule</translation>
     </message>
 </context>
 <context>
@@ -1186,7 +1190,7 @@ Mot de passe incorrect !</translation>
     </message>
     <message>
         <source>&amp;Hide Kadu</source>
-        <translation>Cache&amp;Kadu</translation>
+        <translation>&amp;Cache Kadu</translation>
     </message>
     <message>
         <source>&amp;Kadu</source>
@@ -1250,7 +1254,7 @@ Mot de passe incorrect !</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Anule</translation>
+        <translation>&amp;Annule</translation>
     </message>
 </context>
 <context>
@@ -1289,7 +1293,7 @@ Mot de passe incorrect !</translation>
     </message>
     <message>
         <source>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Depends on:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Conflicts with:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Provides:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Exige:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Conflit z:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Delivre:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Auteur:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;</translation>
+        <translation>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Exige:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Conflit avec:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Delivre:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Auteur:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&amp;Close</source>
@@ -1415,7 +1419,7 @@ Peut être module incompatible avec Kadu.</translation>
     </message>
     <message>
         <source>This dialog box allows you to manage your personal information, for example your name, surname or age.</source>
-        <translation>Cette fenêtre de dialogue permet d&apos;administrer des données personnelles comme: prénom, nom, age, genre.</translation>
+        <translation>Cette fenêtre de dialogue permet d&apos;administrer les données personnelles comme: prénom, nom, age, genre.</translation>
     </message>
     <message>
         <source>Your personal information</source>
@@ -1453,7 +1457,7 @@ Peut être module incompatible avec Kadu.</translation>
     </message>
     <message>
         <source>C&amp;lear list</source>
-        <translation>&amp;Eface liste</translation>
+        <translation>C&amp;Eface liste</translation>
     </message>
     <message>
         <source>&amp;Add User</source>
@@ -1505,7 +1509,7 @@ Peut être module incompatible avec Kadu.</translation>
     </message>
     <message>
         <source>Search using the personal data typed above (name, nickname)...</source>
-        <translation>Cherche en utilisant des données personnelles inscrites plus haut...</translation>
+        <translation>Cherche en utilisant les données personnelles inscrites plus haut(nom, pseudo)...</translation>
     </message>
     <message>
         <source>&amp;Uin number</source>
@@ -1537,11 +1541,11 @@ Peut être module incompatible avec Kadu.</translation>
     </message>
     <message>
         <source>Searching...</source>
-        <translation>recherche...</translation>
+        <translation>Recherche...</translation>
     </message>
     <message>
         <source>Done searching</source>
-        <translation>recherche terminée</translation>
+        <translation>Recherche terminée</translation>
     </message>
     <message>
         <source>Add User</source>
@@ -1623,7 +1627,7 @@ Peut être module incompatible avec Kadu.</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Anule</translation>
+        <translation>&amp;Annule</translation>
     </message>
 </context>
 <context>
@@ -1641,7 +1645,7 @@ Peut être module incompatible avec Kadu.</translation>
     </message>
     <message>
         <source>and type here</source>
-        <translation> et inscrivez ici</translation>
+        <translation> et inscrivez le ici</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -1649,7 +1653,7 @@ Peut être module incompatible avec Kadu.</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Anule</translation>
+        <translation>&amp;Annule</translation>
     </message>
 </context>
 <context>
@@ -1785,11 +1789,11 @@ Peut être module incompatible avec Kadu.</translation>
     </message>
     <message>
         <source>Add user problem</source>
-        <translation>Problemme avec ajout de contact</translation>
+        <translation>Ajoute le problème d&apos;utilisateur</translation>
     </message>
     <message>
         <source>Altnick field cannot be empty.</source>
-        <translation>Remplissage obligatoire.</translation>
+        <translation>La zone d&apos;Altnick ne peut pas être vide.</translation>
     </message>
     <message>
         <source>&amp;Close</source>
@@ -1809,7 +1813,7 @@ Peut être module incompatible avec Kadu.</translation>
     </message>
     <message>
         <source>&apos;%1&apos; is prohibited</source>
-        <translation>&apos;%1&apos;interdit</translation>
+        <translation>&apos;%1&apos; est interdit</translation>
     </message>
     <message>
         <source>This group already exists!</source>
@@ -1824,7 +1828,7 @@ Peut être module incompatible avec Kadu.</translation>
     <name>UserList</name>
     <message>
         <source>All</source>
-        <translation>Wszyscy</translation>
+        <translation>Tous</translation>
     </message>
 </context>
 <context>
@@ -1901,11 +1905,11 @@ Peut être module incompatible avec Kadu.</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation>Prénom</translation>
+        <translation>Nom</translation>
     </message>
     <message>
         <source>Surname</source>
-        <translation>Nom</translation>
+        <translation>Prénom</translation>
     </message>
     <message>
         <source>Mobile no.</source>
@@ -1941,15 +1945,15 @@ Peut être module incompatible avec Kadu.</translation>
     </message>
     <message>
         <source>%1 entries will be exported</source>
-        <translation>Export %1 entrées</translation>
+        <translation> %1 Exportation des entrées</translation>
     </message>
     <message>
         <source>Se&amp;nd userlist</source>
-        <translation>&amp;Envoie la liste</translation>
+        <translation>En&amp;voie la liste des utilisateurs</translation>
     </message>
     <message>
         <source>&amp;Delete userlist</source>
-        <translation>&amp;Efface liste</translation>
+        <translation>&amp;Efface la liste des utilisateurs</translation>
     </message>
     <message>
         <source>&amp;Export to file</source>
@@ -1963,11 +1967,11 @@ Peut être module incompatible avec Kadu.</translation>
         <source>The application encountered an internal error
 The import userlist from file was unsuccessful</source>
         <translation>Importation de la liste terminée avec l&apos;erreur interne
-Importation à partir du fichier  non réussie</translation>
+Importation à partir du fichier non réussie</translation>
     </message>
     <message>
         <source>Your userlist has been successfully exported to file</source>
-        <translation>Liste de contacts a été exporté avec success dans le fichier</translation>
+        <translation>Liste de contacts a été exportée avec success dans le fichier</translation>
     </message>
     <message>
         <source>The application encountered an internal error
@@ -1977,12 +1981,13 @@ Export liste de contacts dans le fichier non reussi.</translation>
     </message>
     <message>
         <source>Your userlist has been successfully exported to server</source>
-        <translation>Export de liste de conacts sur serveur</translation>
+        <translation>Exportation de la liste de conacts sur serveur reussie</translation>
     </message>
     <message>
         <source>The application encountered an internal error
 The export was unsuccessful</source>
-        <translation>Export de liste de contact sur le serveur non reussi</translation>
+        <translation>Erreur interne
+Exportation de la liste de contact sur le serveur non reussie</translation>
     </message>
     <message>
         <source>Your userlist has been successfully deleted on server</source>
@@ -1991,15 +1996,16 @@ The export was unsuccessful</source>
     <message>
         <source>The application encountered an internal error
 The delete userlist on server was unsuccessful</source>
-        <translation>Effacement de la liste de contacts du seveur non reussi</translation>
+        <translation>Application erreur interne
+Effacement de la liste de contacts du seveur non reussi</translation>
     </message>
     <message>
         <source>Cannot import user list from server in offline mode</source>
-        <translation>Impossible d&apos;importer la liste de contacts du serveur sans connaxion</translation>
+        <translation>Impossible d&apos;importer la liste de contacts du serveur sans connexion</translation>
     </message>
     <message>
         <source>This operation will delete your current user list. Are you sure you want this?</source>
-        <translation>Cette opération va effacer ta liste actuelle de contacts. Veuillez confirmer?</translation>
+        <translation>Cette opération va effacer ta liste actuelle de contacts. Veuillez confirmer votre accord?</translation>
     </message>
     <message>
         <source>Cannot export user list to server in offline mode</source>
