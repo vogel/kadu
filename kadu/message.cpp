@@ -299,7 +299,7 @@ void Message::commitSend(void) {
 	acks[index].type = 1;
 
 	fprintf(stderr,"KK Message::commitSend(): Message to uin %i queued for delivery\n", uin);
-	setCaption("Message for " + nicksnd + " [sending...]");
+	setCaption(i18n("Message for ") + nicksnd + i18n(" [sending...]"));
 	body->setReadOnly(false);	
 }
 
