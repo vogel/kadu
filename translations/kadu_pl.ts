@@ -685,6 +685,10 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <source>Volume</source>
         <translation>Głośność</translation>
     </message>
+    <message>
+        <source>Type of gateway</source>
+        <translation>Rodzaj bramki</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1883,22 +1887,60 @@ Teraz możesz dodać znajomych do listy kontaktów.</translation>
         <source>The SMS was sent and should be on its way</source>
         <translation>SMS został wysłany i powinien być już w drodze.</translation>
     </message>
+    <message>
+        <source>Contact</source>
+        <translation>Kontakt</translation>
+    </message>
+    <message>
+        <source>Signature</source>
+        <translation>Podpis</translation>
+    </message>
 </context>
 <context>
     <name>SmsEraGateway</name>
     <message>
-        <source>Provider gateway page looks strange. It&apos;s probably temporary disabled
-or has beed changed too much to parse it correctly.</source>
-        <translation>Wskazana bramka SMS jest niedostępna. Prawdopodobnie jest
-czasowo wyłączona lub zmieniła zasady dostępu.</translation>
-    </message>
-    <message>
-        <source>Authorization error. Incorrect login or password.</source>
-        <translation>Błąd autoryzacji. Nieprawidłowy login lub hasło.</translation>
-    </message>
-    <message>
         <source>Provider gateway results page looks strange. SMS was probably NOT sent.</source>
         <translation>Bramka zwróciła dziwną odpowiedź. SMS prawdopodobnie nie został wysłany.</translation>
+    </message>
+    <message>
+        <source>Error: </source>
+        <translation>Błąd:</translation>
+    </message>
+    <message>
+        <source>No error</source>
+        <translation>Bez błędu</translation>
+    </message>
+    <message>
+        <source>System failure</source>
+        <translation>Awaria systemu</translation>
+    </message>
+    <message>
+        <source>Unauthorised user</source>
+        <translation>Użytkownik nieautoryzowany</translation>
+    </message>
+    <message>
+        <source>Access forbidden</source>
+        <translation>Dostęp zablokowany</translation>
+    </message>
+    <message>
+        <source>Syntax error</source>
+        <translation>Błąd składni</translation>
+    </message>
+    <message>
+        <source>Limit of the sms run-down</source>
+        <translation>Wyczerpany limit SMS</translation>
+    </message>
+    <message>
+        <source>Wrong receiver adress</source>
+        <translation>Błędny adres odbiorcy SMS</translation>
+    </message>
+    <message>
+        <source>Message too long</source>
+        <translation>Wiadomość zadługa</translation>
+    </message>
+    <message>
+        <source>Unknown error</source>
+        <translation>Nieznany błąd</translation>
     </message>
 </context>
 <context>

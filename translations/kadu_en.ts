@@ -681,6 +681,10 @@ If you leave blank, default settings will be used.</source>
         <source>Volume</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Type of gateway</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1882,22 +1886,60 @@ Now add your friends to the userlist.</translation>
         <source>The SMS was sent and should be on its way</source>
         <translation>The SMS was sent and should be on its way</translation>
     </message>
+    <message>
+        <source>Contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Signature</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SmsEraGateway</name>
     <message>
-        <source>Provider gateway page looks strange. It&apos;s probably temporary disabled
-or has beed changed too much to parse it correctly.</source>
-        <translation>Provider gateway page looks strange. It&apos;s probably temporary disabled
-or has beed changed too much to parse it correctly.</translation>
-    </message>
-    <message>
-        <source>Authorization error. Incorrect login or password.</source>
-        <translation>Authorization error. Incorrect login or password.</translation>
-    </message>
-    <message>
         <source>Provider gateway results page looks strange. SMS was probably NOT sent.</source>
         <translation>Provider gateway results page looks strange. SMS was probably NOT sent.</translation>
+    </message>
+    <message>
+        <source>Error: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>System failure</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unauthorised user</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Access forbidden</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Syntax error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Limit of the sms run-down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wrong receiver adress</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Message too long</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown error</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

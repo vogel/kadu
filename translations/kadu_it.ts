@@ -685,6 +685,10 @@ Se lasciate lo spazio in bianco, le regolazioni di difetto saranno usate.</trans
         <source>Volume</source>
         <translation>Volume</translation>
     </message>
+    <message>
+        <source>Type of gateway</source>
+        <translation>Tipo di Gateway</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1883,22 +1887,60 @@ Ora aggiunga i vostri amici al lista del contatto.</translation>
         <source>The SMS was sent and should be on its way</source>
         <translation>Lo SMS è stato trasmesso e dovrebbe essere sul relativo senso</translation>
     </message>
+    <message>
+        <source>Contact</source>
+        <translation>Contatto</translation>
+    </message>
+    <message>
+        <source>Signature</source>
+        <translation>Firma</translation>
+    </message>
 </context>
 <context>
     <name>SmsEraGateway</name>
     <message>
-        <source>Provider gateway page looks strange. It&apos;s probably temporary disabled
-or has beed changed too much to parse it correctly.</source>
-        <translation>La pagina del Gateway del fornitore sembra sconosciuta.
-È probabilmente disabled provvisorio o ha beed ha cambiato troppo per analizzarla correttamente.</translation>
-    </message>
-    <message>
-        <source>Authorization error. Incorrect login or password.</source>
-        <translation>Errore di autorizzazione. Inizio attività o parola d&apos;accesso errato.</translation>
-    </message>
-    <message>
         <source>Provider gateway results page looks strange. SMS was probably NOT sent.</source>
         <translation>La pagina di risultati del Gateway del fornitore sembra sconosciuta. SMS probabilmente NON è stato trasmesso.</translation>
+    </message>
+    <message>
+        <source>Error: </source>
+        <translation>Errore:</translation>
+    </message>
+    <message>
+        <source>No error</source>
+        <translation>Nessun errore</translation>
+    </message>
+    <message>
+        <source>System failure</source>
+        <translation>Guasto del sistema</translation>
+    </message>
+    <message>
+        <source>Unauthorised user</source>
+        <translation>Utente non autorizzato</translation>
+    </message>
+    <message>
+        <source>Access forbidden</source>
+        <translation>Accedi a proibito a</translation>
+    </message>
+    <message>
+        <source>Syntax error</source>
+        <translation>Errore di sintassi</translation>
+    </message>
+    <message>
+        <source>Limit of the sms run-down</source>
+        <translation>Il limite SMS si è fermato</translation>
+    </message>
+    <message>
+        <source>Wrong receiver adress</source>
+        <translation>Adress errati della ricevente</translation>
+    </message>
+    <message>
+        <source>Message too long</source>
+        <translation>Messaggio troppo lungamente</translation>
+    </message>
+    <message>
+        <source>Unknown error</source>
+        <translation>Errore sconosciuto</translation>
     </message>
 </context>
 <context>
