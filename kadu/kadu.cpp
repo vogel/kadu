@@ -264,7 +264,7 @@ void deletePendingMessage(int nr) {
  jesli stan sesji jest inny niz polaczone to znaczy
  ze jestesmy niedostepni */
 int getActualStatus() {
-	if (sess->state == GG_STATE_CONNECTED)
+	if (sess && sess->state == GG_STATE_CONNECTED)
 		return sess->status;
 
 	return GG_STATUS_NOT_AVAIL;
@@ -740,9 +740,7 @@ void Kadu::enterEvent (QEvent * e) {
 
 /* invoked every config.autoawaytime of idleness seconds */
 void Kadu::autoAway(void) {
-//	if (!config.autoaway || i_wanna_be_invisible || i_am_busy || !socket_active || !userlist_sent)
-//		return;
-	if (!config.autoaway)
+	if (!config.autoaway || !socket_active)
 		return;
 	beforeAutoAway = getActualStatus() & (~GG_STATUS_FRIENDS_MASK);;
 	fprintf(stderr, "KK Kadu::autoAway(): checking whether to go auto away\n");
@@ -1562,6 +1560,8 @@ void Kadu::disconnectNetwork() {
 	doBlink = false;
 	fprintf(stderr, "KK Kadu::disconnectNetwork(): calling offline routines\n");
 
+	if (autoaway)
+		autoaway->stop();
 	if (pingtimer) {
 		pingtimer->stop();
 		delete pingtimer;
