@@ -1222,6 +1222,7 @@ void Kadu::sendMessage(QListBoxItem *item) {
 	PendingMsgs::Element elem;
 	uin_t uin;
 	QString toadd;
+	bool msgsFromHist = false;
 
 	uin = userlist.byAltNick(item->text()).uin;
 
@@ -1250,6 +1251,10 @@ void Kadu::sendMessage(QListBoxItem *item) {
 								"", "", true);
 						}
 				k = openChat(elem.uins);
+				if (!msgsFromHist) {
+					chats[k].ptr->writeMessagesFromHistory(elem.uins, elem.time);
+					msgsFromHist = true;
+					}
 				chats[k].ptr->formatMessage(false,
 					userlist.byUin(elem.uins[0]).altnick, elem.msg,
 					timestamp(elem.time), toadd);	    

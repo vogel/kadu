@@ -256,6 +256,7 @@ void TrayIcon::mousePressEvent(QMouseEvent * e)
 	QString tmp;
 	PendingMsgs::Element elem;
 	QString toadd;
+	bool msgsFromHist = false;
 
 	if (!config.dock)
 		return;
@@ -282,6 +283,10 @@ void TrayIcon::mousePressEvent(QMouseEvent * e)
 									"", "", true);
 							}
 					k = kadu->openChat(elem.uins);
+					if (!msgsFromHist) {
+						msgsFromHist = true;
+						chats[k].ptr->writeMessagesFromHistory(elem.uins, elem.time);
+						}
 					chats[k].ptr->formatMessage(false, userlist.byUin(elem.uins[0]).altnick,
 						elem.msg, timestamp(elem.time), toadd);
 					deletePendingMessage(i);

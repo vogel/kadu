@@ -58,7 +58,7 @@ class Chat : public QWidget {
 		void setTitle(void);
 		void formatMessage(bool, const QString &, const QString &, const QString &, QString &);
 		void checkPresence(UinsList, QString &, time_t, QString &);
-		void writeMessagesFromHistory(UinsList);
+		void writeMessagesFromHistory(UinsList, time_t);
 		void addEmoticon(QString);
 		void scrollMessages(QString &);
 		void alertNewMessage(void);

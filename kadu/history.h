@@ -58,6 +58,7 @@ class HistoryManager {
 
 		void convHist2ekgForm(UinsList uins);
 		void convSms2ekgForm();
+		void buildIndex(const QString &filename);
 		int getHistoryEntriesCount(UinsList uins);
 		int getHistoryEntriesCount(QString mobile = QString::null);
 		QValueList<HistoryEntry> getHistoryEntries(UinsList uins, int from, int count, int mask = HISTORYMANAGER_ENTRY_ALL);

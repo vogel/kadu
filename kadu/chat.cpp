@@ -224,8 +224,6 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 
 	totaloccurences = 0;
 
-	writeMessagesFromHistory(uins);
-
 	edit->setFocus();
 }
 
@@ -523,14 +521,16 @@ void Chat::scrollMessages(QString &toadd) {
 	body->viewport()->repaint();
 }
 
-void Chat::writeMessagesFromHistory(UinsList senders) {
+void Chat::writeMessagesFromHistory(UinsList senders, time_t time) {
 	QString toadd;
 	QValueList<HistoryEntry> entries;
 	QValueList<HistoryEntry> entriestmp;
+	QDateTime date;
 	int ilosc = 10;
 	int i, from, end, count;
 	
 	kdebug("Chat::writeMessageFromHistory()\n");
+	date.setTime_t(time);
 	count = history.getHistoryEntriesCount(senders);
 	end = count - 1;
 	
@@ -538,6 +538,9 @@ void Chat::writeMessagesFromHistory(UinsList senders) {
 		from = (end < ilosc) ? 0 : end - ilosc + 1;
 		entriestmp = history.getHistoryEntries(senders, from, end - from + 1, HISTORYMANAGER_ENTRY_CHATSEND
 			| HISTORYMANAGER_ENTRY_MSGSEND | HISTORYMANAGER_ENTRY_CHATRCV | HISTORYMANAGER_ENTRY_MSGRCV);
+		for (QValueList<HistoryEntry>::iterator it = entriestmp.begin(); it != entriestmp.end(); it++)
+			if (date <= (*it).date)
+				entriestmp.remove(it);
 		if (entriestmp.count())
 			entries = entriestmp + entries;
 		kdebug("Chat::writeMessageFromHistory(): entries = %d\n", entries.count());

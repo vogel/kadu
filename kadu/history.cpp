@@ -102,11 +102,11 @@ int HistoryManager::typeOfLine(const QString &line) {
 }
 
 void HistoryManager::appendMessage(UinsList uins, uin_t uin, const QString &msg, bool own, time_t czas, bool chat) {
-	QFile f;
+	QFile f, fidx;
 	QString fname = ggPath("history/");
 	QString line, nick;
 	QStringList linelist;
-	int i;
+	int i, offs;
 
 	convHist2ekgForm(uins);
 	fname.append(getFileNameByUinsList(uins));
@@ -139,6 +139,14 @@ void HistoryManager::appendMessage(UinsList uins, uin_t uin, const QString &msg,
 		return;
 		}
 
+	buildIndex(fname);
+	fidx.setName(f.name() + ".idx");
+	if (fidx.open(IO_WriteOnly | IO_Append)) {
+		offs = f.at();
+		fidx.writeBlock((const char *)&offs, sizeof(int));
+		fidx.close();
+		}
+
 	QTextStream stream(&f);
 	stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
 	stream << line << '\n';
@@ -148,11 +156,12 @@ void HistoryManager::appendMessage(UinsList uins, uin_t uin, const QString &msg,
 
 void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 {
-	QFile f;
+	QFile f, fidx;
 	QTextStream stream;
 	QStringList linelist;
 	QString altnick, line, fname;
 	uin_t uin = 0;
+	int offs;
 
 	kdebug("HistoryManager::appendSms(): appending sms to history (%s)\n", mobile.local8Bit().data());
 	
@@ -184,6 +193,15 @@ void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 		kdebug("HistoryManager::appendSms(): Error opening sms history file\n");
 		return;
 		}
+
+	buildIndex(f.name());
+	fidx.setName(f.name() + ".idx");
+	if (fidx.open(IO_WriteOnly | IO_Append)) {
+		offs = f.at();
+		fidx.writeBlock((const char *)&offs, sizeof(int));
+		fidx.close();
+		}
+
 	stream.setDevice(&f);
 	stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
 	stream << line << '\n';
@@ -205,11 +223,11 @@ void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 };
 
 void HistoryManager::appendStatus(uin_t uin, unsigned int status, QString description) {
-	QFile f;
+	QFile f, fidx;
 	QString fname = ggPath("history/");
 	QString line, nick, addr;
 	QStringList linelist;
-	int ip;
+	int ip, offs;
 	unsigned short port;
 	struct in_addr in;
 
@@ -218,7 +236,6 @@ void HistoryManager::appendStatus(uin_t uin, unsigned int status, QString descri
 	UinsList uins;
 	uins.append(uin);
 	convHist2ekgForm(uins);
-
 	linelist.append("status");
 	linelist.append(QString::number(uin));
 	if (userlist.containsUin(uin)) {
@@ -267,6 +284,15 @@ void HistoryManager::appendStatus(uin_t uin, unsigned int status, QString descri
 		kdebug("HistoryManager::appendStatus(): Error opening history file %s\n", (const char *)fname.local8Bit());
 		return;
 		}
+
+	buildIndex(fname);
+	fidx.setName(fname + ".idx");
+	if (fidx.open(IO_WriteOnly | IO_Append)) {
+		offs = f.at();
+		fidx.writeBlock((const char *)&offs, sizeof(int));
+		fidx.close();
+		}
+
 	QTextStream stream(&f);
 	stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
 	stream << line << '\n';
@@ -560,9 +586,10 @@ QValueList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int fr
 
 	QValueList<HistoryEntry> entries;
 	QStringList tokens;
-	QFile f;
+	QFile f, fidx;
 	QString path = ggPath("history/");
 	QString filename, line;
+	int offs;
 
 	filename = getFileNameByUinsList(uins);
 	f.setName(path + filename);
@@ -571,14 +598,19 @@ QValueList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int fr
 		return entries;
 		}
 
+	fidx.setName(f.name() + ".idx");
+	if (!fidx.open(IO_ReadOnly))
+		return entries;
+	fidx.at(from * sizeof(int));
+	fidx.readBlock((char *)&offs, (Q_LONG)sizeof(int));
+	fidx.close();
+	if (!f.at(offs))
+		return entries;
+
 	QTextStream stream(&f);
 	stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
 	
-	int linenr = 0;
-	while (linenr < from && (line = stream.readLine()) != QString::null)
-		linenr++;
-	if ((linenr < from || line == QString::null) && from)
-		return entries;
+	int linenr = from;
 
 	struct HistoryEntry entry;
 	while (linenr < from + count && (line = stream.readLine()) != QString::null) {
@@ -690,6 +722,58 @@ QValueList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int fr
 	f.close();
 
 	return entries;
+}
+
+void HistoryManager::buildIndex(const QString &filename) {
+	kdebug("HistoryManager::buildIndex()\n");
+	QString fnameout = filename + ".idx";
+	char *inbuf;
+	int *outbuf;
+	int inbufoffs, outbufoffs, inoffs;
+	Q_LONG read, written;
+
+	if (QFile::exists(fnameout))
+		return;
+	QFile fin(filename);
+	QFile fout(fnameout);
+	if (!fin.open(IO_ReadOnly)) {
+		kdebug("HistoryManager::buildIndex(): Error opening history file: %s\n", (const char *)fin.name().local8Bit());
+		return;
+		}
+	if (!fout.open(IO_WriteOnly | IO_Truncate)) {
+		kdebug("HistoryManager::buildIndex(): Error creating history index file: %s\n", (const char *)fout.name().local8Bit());
+		fin.close();
+		return;
+		}
+	inbuf = new char[65536];
+	outbuf = new int[4096];
+
+	inoffs = outbufoffs = 0;
+	while ((read = fin.readBlock(inbuf, 65536)) > 0) {
+		inbufoffs = 0;
+		while (inbufoffs < read) {
+			outbuf[outbufoffs++] = inoffs + inbufoffs;
+			if (outbufoffs == 4096) {
+				written = fout.writeBlock((char *)outbuf, 4096 * sizeof(int));
+				outbufoffs = 0;
+				}
+			while (inbufoffs < read && inbuf[inbufoffs] != '\n')
+				inbufoffs++;
+			if (inbufoffs < read) {
+				inbufoffs++;
+				if (inbufoffs == read)
+					inoffs += read;
+				}
+			}
+		}
+	if (outbufoffs)
+		written = fout.writeBlock((char *)outbuf, outbufoffs * sizeof(int));
+
+	delete inbuf;
+	delete outbuf;
+
+	fin.close();
+	fout.close();
 }
 
 QStringList HistoryManager::mySplit(const QChar &sep, const QString &str) {
