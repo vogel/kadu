@@ -23,6 +23,7 @@
 #include "debug.h"
 
 QValueList<struct SearchIdStruct> SearchList;
+QTextCodec *codec = QTextCodec::codecForName("CP1250");
 
 QString ggPath(QString subpath)
 {
@@ -43,7 +44,6 @@ QString ggPath(QString subpath)
 
 QString cp2unicode(unsigned char *buf)
 {
-	QTextCodec *codec = QTextCodec::codecForName("CP1250");
 	if (buf)
 		return codec->toUnicode((const char*)buf);
 	else
@@ -52,15 +52,11 @@ QString cp2unicode(unsigned char *buf)
 
 QCString unicode2cp(const QString &buf)
 {
-	QTextCodec *codec = QTextCodec::codecForName("CP1250");
 	return codec->fromUnicode(buf);
 }
 
 QPixmap loadIcon(const QString &filename) {
-	QPixmap icon;
-	
-	icon.load(QString(DATADIR) + "/apps/kadu/icons/" + filename);
-	return icon;
+	return QPixmap(QString(DATADIR) + "/apps/kadu/icons/" + filename);
 }
 
 QString printDateTime(const QDateTime &datetime) {
