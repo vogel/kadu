@@ -17,6 +17,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * prace nad wydzieleniem ChatManager'a zawierajacego wszystkie operacje
   na oknach Chat. spore porzadki w kodzie. nie zabijacie jesli zepsulem ;)
   (adrian)
+* dalsze prace nad ChatManager'em i porzadki w kodzie obslugi Chatow (adrian)
 
 +++ wersja 0.3.6 (22.11.2003)
 * je¶li klikniemy na jaki¶ kontakt w userboxie, od którego otrzymali¶my jak±¶

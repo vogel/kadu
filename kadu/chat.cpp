@@ -139,93 +139,105 @@ int ChatManager::openChat(UinsList senders)
 	return i;
 }
 
+int ChatManager::openPendingMsg(int index,QString& to_add)
+{
+	PendingMsgs::Element p = pending[index];
+	// jesli ktoregos z nadawcow nie mamy na liscie to dodajemy
+	// go tam jako anonymous
+	for (int j = 0; j < p.uins.count(); j++)
+		if (!userlist.containsUin(p.uins[j]))
+		{
+			QString tmp = QString::number(p.uins[j]);
+			UserListElement e;
+			e.first_name = "";
+			e.last_name = "";
+			e.nickname = tmp;
+			e.altnick = tmp;
+			e.mobile = "";
+			e.uin = p.uins[j];
+			e.setGroup("");
+			e.description = "";
+			e.email = "";
+			e.anonymous = true;
+			if (config_file.readBoolEntry("General", "UseDocking"))
+				userlist.addUser(e);
+			else
+				kadu->addUser(e);
+		}
+	// otwieramy chat (jesli nie istnieje)
+	int l = Chats.count();
+	int k = kadu->openChat(p.uins);
+	// jesli chat zostal utworzony wpisujemy historie
+	if (l < Chats.count())
+		Chats[k].ptr->writeMessagesFromHistory(p.uins, p.time);
+	// dopisujemy nowa wiadomosc do to_add
+	Chats[k].ptr->formatMessage(false, userlist.byUin(p.uins[0]).altnick,p.msg, timestamp(p.time), to_add);
+	// kasujemy wiadomosc z pending
+	pending.deleteMsg(index);
+	// zwracamy indeks okna chat
+	return k;
+}
+
 void ChatManager::openPendingMsgs(UinsList uins)
 {
 	PendingMsgs::Element elem;
-	int l,k;
+	int k;
 	bool stop = false;
 	QString toadd;
-	for (int i = 0; i < pending.count(); i++) {
+	for (int i = 0; i < pending.count(); i++)
+	{
 		elem = pending[i];
 		if (elem.uins.equals(uins))
 			if ((elem.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT
 				|| (elem.msgclass & GG_CLASS_MSG) == GG_CLASS_MSG
-				|| !elem.msgclass) {
-				l = Chats.count();
-				k = openChat(elem.uins);
-				if (l < Chats.count())
-					Chats[k].ptr->writeMessagesFromHistory(elem.uins, elem.time);
-				Chats[k].ptr->formatMessage(false,
-					userlist.byUin(elem.uins[0]).altnick, elem.msg,
-					timestamp(elem.time), toadd);
-				pending.deleteMsg(i);
+				|| !elem.msgclass)
+			{
+				k=openPendingMsg(i,toadd);				
 				i--;
 				uins = elem.uins;
 				stop = true;
-				}
-		}
-	if (stop) {
+			}
+	}
+	if (stop)
+	{
 		Chats[k].ptr->scrollMessages(toadd);
 		UserBox::all_refresh();
-		}
-	else {
+	}
+	else
+	{
 		k = openChat(uins);
 		Chats[k].ptr->writeMessagesFromHistory(uins, 0);
-		}
+	}
 }
 
 void ChatManager::openPendingMsgs()
 {
 	UinsList uins;
-	int i, j, k = -1;
-	QString tmp;
+	int i, k = -1;
 	PendingMsgs::Element elem;
 	QString toadd;
-	bool msgsFromHist = false;
 	bool stop = false;
 	UserListElement e;
-	bool ok;
 
 	kdebug("ChatManager::openPendingMsgs()\n");
 
-	for(i = 0; i<pending.count(); i++) {
+	for(i = 0; i<pending.count(); i++)
+	{
 		elem = pending[i];
 		if (!uins.count() || elem.uins.equals(uins))
-			if ((elem.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT || (elem.msgclass & GG_CLASS_MSG) == GG_CLASS_MSG
-				|| (!elem.msgclass)) {
+			if ((elem.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT
+				|| (elem.msgclass & GG_CLASS_MSG) == GG_CLASS_MSG
+				|| (!elem.msgclass))
+			{
 				if (!uins.count())
 					uins = elem.uins;
-				for (j = 0; j < elem.uins.count(); j++)
-					if (!userlist.containsUin(elem.uins[j])) {
-						tmp = QString::number(elem.uins[j]);
-						e.first_name = "";
-						e.last_name = "";
-						e.nickname = tmp;
-						e.altnick = tmp;
-						e.mobile = "";
-						e.uin = elem.uins[j];
-						e.setGroup("");
-						e.description = "";
-						e.email = "";
-						e.anonymous = true;
-						if (config_file.readBoolEntry("General", "UseDocking"))
-							userlist.addUser(e);
-						else
-							kadu->addUser(e);
-					}
-				k = kadu->openChat(elem.uins);
-				if (!msgsFromHist) {
-					msgsFromHist = true;
-					Chats[k].ptr->writeMessagesFromHistory(elem.uins, elem.time);
-				}
-				Chats[k].ptr->formatMessage(false, userlist.byUin(elem.uins[0]).altnick,elem.msg, timestamp(elem.time), toadd);
-				pending.deleteMsg(i);
+				k=openPendingMsg(i,toadd);
 				i--;
 				stop = true;
 			}
-		}
-
-	if(stop) {
+	}
+	if(stop)
+	{
 		kdebug("ChatManager::openPendingMsgs() end\n");
 		Chats[k].ptr->scrollMessages(toadd);
 		UserBox::all_refresh();
@@ -235,74 +247,41 @@ void ChatManager::openPendingMsgs()
 void ChatManager::sendMessage(uin_t uin,UinsList selected_uins)
 {
 	QString tmp;
-	int i, j, k = -1, l;
+	int i, k = -1, l;
 	bool stop = false;
 	PendingMsgs::Element elem;
-	UserListElement e;
 	UinsList uins;
-	bool ok;
 	QString toadd;
-	bool msgsFromHist = false;
 
-	for (i = 0; i < pending.count(); i++) {
+	for (i = 0; i < pending.count(); i++)
+	{
 		elem = pending[i];
 		if ((!uins.count() && elem.uins.contains(uin)) || (uins.count() && elem.uins.equals(uins)))
 			if ((elem.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT
 				|| (elem.msgclass & GG_CLASS_MSG) == GG_CLASS_MSG
-				|| !elem.msgclass) {
+				|| !elem.msgclass)
+			{
 				if (!uins.count())
-					uins = elem.uins;
-				for (j = 0; j < elem.uins.count(); j++)
-					if (!userlist.containsUin(elem.uins[j])) {
-						tmp = QString::number(pending[i].uins[j]);
-						e.first_name = "";
-						e.last_name = "";
-						e.nickname = tmp;
-						e.altnick = tmp;
-						e.uin = tmp.toUInt(&ok);
-						if (!ok)
-							e.uin = 0;
-						e.mobile = "";
-						e.setGroup("");
-						e.description = "";
-						e.email = "";
-						e.anonymous = true;
-						if (trayicon)
-							userlist.addUser(e);
-						else
-							kadu->addUser(e);
-						}
-				
-				l = Chats.count();
-				k = openChat(elem.uins);
-				if (!msgsFromHist) {
-					if (l < Chats.count())
-						Chats[k].ptr->writeMessagesFromHistory(elem.uins, elem.time);
-					msgsFromHist = true;
-					}
-				Chats[k].ptr->formatMessage(false,
-					userlist.byUin(elem.uins[0]).altnick, elem.msg,
-					timestamp(elem.time), toadd);	    
-				pending.deleteMsg(i);
-				kdebug("Kadu::sendMessage(): k=%d\n", k);
+					uins = elem.uins;					
+				k=openPendingMsg(i,toadd);
 				i--;
 				stop = true;
-				}
-		}
-
-	if (stop) {
+			}
+	}
+	if (stop)
+	{
 		Chats[k].ptr->scrollMessages(toadd);
 		UserBox::all_refresh();
-		return;
-		}
-	else {
+	}
+	else
+	{
 		// zawsze otwieraja sie czaty
 		uins = selected_uins;
 		l = Chats.count();
 		k = openChat(uins);
-		if (!msgsFromHist && l < Chats.count())
+		if (l < Chats.count())
 			Chats[k].ptr->writeMessagesFromHistory(uins, 0);
-		}
+	}
 }
 
 
