@@ -33,7 +33,7 @@ class Hint : public QHBoxLayout
 		/**
 			zwraca listê uinów dotycz±cych tego dymka
 		**/
-		UinsList getUins() { return uins; }
+		UinsList getUins() const { return uins; }
 		
 		/**
 			zwraca identyfikator dymka
