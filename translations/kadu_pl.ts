@@ -557,7 +557,7 @@ Jest to wysoce ryzykowne!</translation>
     </message>
     <message>
         <source>Use paragraphs instead of tables</source>
-        <translation>Użuj peragrafów zamiast tabelek</translation>
+        <translation>Użyj paragrafów zamiast tabelek</translation>
     </message>
     <message>
         <source>If set: chat, history windows and information panel are rendered
