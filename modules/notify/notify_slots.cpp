@@ -36,21 +36,13 @@ void NotifySlots::onCreateConfigDialog()
 	e_availusers->setSelectionMode(QListBox::Extended);
 	e_notifies->setSelectionMode(QListBox::Extended);
 
-	QCheckBox *b_notifyglobal= ConfigDialog::getCheckBox("Notify", "Notify when users become available");
 	QCheckBox *b_notifyall= ConfigDialog::getCheckBox("Notify", "Notify about all users");
 	QGrid *panebox = ConfigDialog::getGrid("Notify","listboxy");
 
 	if (config_file.readBoolEntry("Notify", "NotifyAboutAll"))
 		panebox->setEnabled(false);
 
-	if (!config_file.readBoolEntry("Notify", "NotifyStatusChange"))
-	{
-		b_notifyall->setEnabled(false);
-		panebox->setEnabled(false);
-	}
-
 	connect(b_notifyall, SIGNAL(toggled(bool)), this, SLOT(ifNotifyAll(bool)));
-	connect(b_notifyglobal, SIGNAL(toggled(bool)), this, SLOT(ifNotifyGlobal(bool)));
 	
 	for (QStringList::iterator it=disabledControls.begin(); it!=disabledControls.end(); it++)
 	{
@@ -99,14 +91,6 @@ void NotifySlots::unregisterDisabledControl(const QString &name)
 	kdebugf();
 	disabledControls.remove(name);
 	kdebugf2();
-}
-
-void NotifySlots::ifNotifyGlobal(bool toggled)
-{
-	QCheckBox *b_notifyall= ConfigDialog::getCheckBox("Notify", "Notify about all users");
-
-	b_notifyall->setEnabled(toggled);
-	ConfigDialog::getGrid("Notify","listboxy")->setEnabled(toggled && !b_notifyall->isChecked());
 }
 
 void NotifySlots::ifNotifyAll(bool toggled)

@@ -74,8 +74,6 @@ Notify::Notify()
 	ConfigDialog::addCheckBox("Notify", "Notify",
 		QT_TRANSLATE_NOOP("@default", "Ignore changes on connection to server"), "NotifyIgnoreOnConnection", true, QT_TRANSLATE_NOOP("@default","This option will supersede tooltips with users' status\n changes upon establishing connection to the server"));
 	ConfigDialog::addCheckBox("Notify", "Notify",
-		QT_TRANSLATE_NOOP("@default", "Notify when users become available"), "NotifyStatusChange", false);
-	ConfigDialog::addCheckBox("Notify", "Notify",
 		QT_TRANSLATE_NOOP("@default", "Notify about all users"), "NotifyAboutAll", false);
 
 	ConfigDialog::addGrid("Notify", "Notify" ,"listboxy",3);
@@ -178,12 +176,6 @@ void Notify::changingStatus(const UinType uin, const unsigned int oldstatus, con
 {
 	kdebugf();
 
-	if (!config_file.readBoolEntry("Notify","NotifyStatusChange"))
-	{
-		kdebugf2();
-		return;
-	}
-	
 	if (onConnection && config_file.readBoolEntry("Notify", "NotifyIgnoreOnConnection"))
 	{
 		kdebugf2();
@@ -217,11 +209,6 @@ void Notify::changingStatus(const UinType uin, const unsigned int oldstatus, con
 void Notify::changedStatus(UserListElement *ule, bool onConnection)
 {
 	kdebugf();
-	if (!config_file.readBoolEntry("Notify","NotifyStatusChange"))
-	{
-		kdebugf2();
-		return;
-	}
 
 	if (onConnection && config_file.readBoolEntry("Notify", "NotifyIgnoreOnConnection"))
 	{
@@ -230,11 +217,6 @@ void Notify::changedStatus(UserListElement *ule, bool onConnection)
 	}
 
 	if (!ule->notify && !config_file.readBoolEntry("Notify","NotifyAboutAll"))
-	{
-		kdebugf2();
-		return;
-	}
-	else if (!config_file.readBoolEntry("Notify","NotifyAboutAll"))
 	{
 		kdebugf2();
 		return;

@@ -20,7 +20,6 @@ class NotifySlots : public QObject
 		void _Right();
 		void _Left2(QListBoxItem *item);
 		void _Right2(QListBoxItem *item);
-		void ifNotifyGlobal(bool toggled);
 		void ifNotifyAll(bool toggled);
 	public:
 		NotifySlots();
