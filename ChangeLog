@@ -435,6 +435,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * po zaimportowaniu listy kontaktów, "poprawnie" wysy³amy listê osób, których
   statusy chcemy ogl±daæ - obej¶cie b³êdu w serwerze gg (joi)
 * szybsze otwarcie okna po klikniêciu na ikonê dokuj±c± (joi)
+* dodana mo¿liwo¶æ ustawienia koloru jakim pisany jest opis na li¶cie kontaktów (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,

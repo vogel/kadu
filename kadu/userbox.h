@@ -41,6 +41,7 @@ class KaduListBoxPixmap : public QListBoxItem
 		static void setShowMultilineDesc(bool m);
 		static void setMultiColumn(bool m);
 		static void setMultiColumnWidth(int w);
+		static void setDescriptionColor(const QColor &col);
 
 	private:
 		QPixmap pm;
@@ -54,6 +55,7 @@ class KaduListBoxPixmap : public QListBoxItem
 		static bool ShowMultilineDesc;
 		static bool MultiColumn;
 		static int  MultiColumnWidth;
+		static QColor descColor;
 		
 		mutable QString buf_text;
 		mutable int buf_width;

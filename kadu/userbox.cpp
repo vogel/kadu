@@ -31,6 +31,7 @@ bool KaduListBoxPixmap::AlignUserboxIconsTop;
 bool KaduListBoxPixmap::ShowMultilineDesc;
 bool KaduListBoxPixmap::MultiColumn;
 int  KaduListBoxPixmap::MultiColumnWidth;
+QColor KaduListBoxPixmap::descColor;
 
 void KaduListBoxPixmap::setFont(const QFont &f)
 {
@@ -89,6 +90,11 @@ void KaduListBoxPixmap::setMultiColumn(bool m)
 void KaduListBoxPixmap::setMultiColumnWidth(int w)
 {
 	MultiColumnWidth=w;
+}
+
+void KaduListBoxPixmap::setDescriptionColor(const QColor &col)
+{
+	descColor = col;
 }
 
 void KaduListBoxPixmap::paint(QPainter *painter)
@@ -171,9 +177,15 @@ void KaduListBoxPixmap::paint(QPainter *painter)
 			int h;
 			QStringList out;
 			calculateSize(descr, width(listBox())-5-pm.width(), out, h);
-			for(QStringList::Iterator it = out.begin(); it != out.end(); ++it )
+			if (!out.empty())
 			{
-				painter->drawText(pm.width() + 5, yPos, *it);
+				QPen &pen = (QPen &)painter->pen();
+				pen.setColor(descColor);
+				painter->setPen(pen);
+			}
+			FOREACH(text, out)
+			{
+				painter->drawText(pm.width() + 5, yPos, *text);
 				yPos += descriptionFontMetrics->lineSpacing();
 			}
 
@@ -470,6 +482,7 @@ void UserBox::refresh()
 	KaduListBoxPixmap::setMultiColumn(config_file.readBoolEntry("Look", "MultiColumnUserbox"));
 	KaduListBoxPixmap::setMultiColumnWidth(config_file.readNumEntry("Look", "MultiColumnUserboxWidth", 230));
 	KaduListBoxPixmap::setMyUIN(config_file.readNumEntry("General", "UIN"));
+	KaduListBoxPixmap::setDescriptionColor(config_file.readColorEntry("Look", "DescriptionColor"));
 
 	// Zapamietujemy zaznaczonych uzytkownikow
 	QStringList s_users;
@@ -786,6 +799,7 @@ void UserBox::initModule()
 	config_file.addVariable("Look", "UserboxBgColor", w.paletteBackgroundColor());
 	config_file.addVariable("Look", "UserboxFgColor", w.paletteForegroundColor());
 	config_file.addVariable("Look", "AlignUserboxIconsTop", false);
+	config_file.addVariable("Look", "DescriptionColor", w.paletteForegroundColor());
 
 	QFontInfo info(qApp->font());
 	QFont def_font(info.family(),info.pointSize());
@@ -804,6 +818,7 @@ void UserBox::initModule()
 		ConfigDialog::addVGroupBox("Look", "Colors", QT_TRANSLATE_NOOP("@default", "Main window"));
 			ConfigDialog::addColorButton("Look", "Main window", QT_TRANSLATE_NOOP("@default", "Userbox background color"), "UserboxBgColor", config_file.readColorEntry("Look","UserboxBgColor"), "", "userbox_bg_color");
 			ConfigDialog::addColorButton("Look", "Main window", QT_TRANSLATE_NOOP("@default", "Userbox font color"), "UserboxFgColor", config_file.readColorEntry("Look","UserboxFgColor"), "", "userbox_font_color");
+			ConfigDialog::addColorButton("Look", "Main window", QT_TRANSLATE_NOOP("@default", "Description font color"), "DescriptionColor", config_file.readColorEntry("Look","DescriptionColor"), "", "userbox_desc_color");
 
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Fonts"));
 		ConfigDialog::addSelectFont("Look", "Fonts", QT_TRANSLATE_NOOP("@default", "Font in userbox"), "UserboxFont", def_font.toString(), "", "userbox_font_box");
