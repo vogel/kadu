@@ -165,7 +165,7 @@ void ConfigFile::writeEntry(const QString &group,const QString &name, const QSiz
 }
 
 void ConfigFile::writeEntry(const QString &group,const QString &name, const QColor &value) {
-	changeEntry(group, name, QString("%1,%2,%3").arg(value.red()).arg(value.green()).arg(value.blue()));
+	changeEntry(group, name, value.name());
 }
 
 void ConfigFile::writeEntry(const QString &group,const QString &name, const QFont &value) {
@@ -271,22 +271,11 @@ QSize ConfigFile::readSizeEntry(const QString &group,const QString &name, const 
 
 QColor ConfigFile::readColorEntry(const QString &group,const QString &name, const QColor *def) const
 {
-	QString string = getEntry(group, name);
-	QStringList stringlist;
-	QColor color(0,0,0);
-	int r, g, b;
-	bool ok;
-
-	if (string == QString::null)
-		return def ? *def : color;
-	stringlist = QStringList::split(",", string);
-	if (stringlist.count() != 3)
-		return def ? *def : color;
-	r = stringlist[0].toInt(&ok); if (!ok) return def ? *def : color;
-	g = stringlist[1].toInt(&ok); if (!ok) return def ? *def : color;
-	b = stringlist[2].toInt(&ok); if (!ok) return def ? *def : color;
-	color.setRgb(r, g, b);
-	return color;
+	QString str = getEntry(group, name);
+	if (str==QString::null)
+		return *def;
+	else
+		return QColor(str);
 }
 
 QFont ConfigFile::readFontEntry(const QString &group,const QString &name, const QFont *def) const

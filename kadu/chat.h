@@ -282,8 +282,6 @@ class ChatSlots :public QObject
 {
 	Q_OBJECT
 	private:
-		QValueList<QColor> vl_chatcolor;
-		QValueList<QFont> vl_chatfont;
 		void updatePreview();
 	public slots:
 		void onCreateConfigDialog();
@@ -291,12 +289,8 @@ class ChatSlots :public QObject
 		void chooseEmoticonsStyle(int index);
 		void onDefWebBrowser(bool toggled);
 		void onPruneChat(bool toggled);
-		void chooseColorGet(const QColor& color);
-		void chooseColorGet(const QString& text);
-		void chooseChatSelect(int nr);
-		void chooseChatFont(int nr);
-		void chooseChatFontSize(int nr);
-
+		void chooseColor(const char *name, const QColor &color);
+		void chooseFont(const char *name, const QFont &font);
 };
 
 #endif

@@ -82,30 +82,47 @@ class ColorButton : public QPushButton
 	private:
 	       QColor actualcolor;
 	public:
-	    /**
-		Konstruktor obiektu w którym ustawia sie kolor "color",
-		który ma rodzica "parent" oraz nazywa sie "name"
-	    **/
-	       ColorButton(const QColor &color, QWidget *parent =0, const char* name =0);
+		/**
+			Konstruktor obiektu w którym ustawia sie kolor "color",
+			który ma rodzica "parent" oraz nazywa sie "name"
+		**/
+		ColorButton(const QColor &color, QWidget *parent =0, const char* name =0);
 
-	    /**
-		Pobiera kolor z przycisku
-	    **/
-	       QColor color();
+		/**
+			Pobiera kolor z przycisku
+		**/
+		QColor color();
 
-	    /**
-		Ustawia kolor na przycisku
-	    **/
-	       void setColor(const QColor &color);
+		/**
+			Ustawia kolor na przycisku
+		**/
+		void setColor(const QColor &color);
 	private slots:
-	       void onClick();
+		void onClick();
 	signals:
-	    /**
-		Sygna³ jest emitowany przy zmianie koloru, przesy³a on zmieniony kolor
-	    **/
-		void changed(const QColor& color);
+		/**
+			Sygna³ jest emitowany przy zmianie koloru, przesy³a on nazwê komponentu oraz nowy kolor
+		**/
+		void changed(const char *name, const QColor& color);
+};
 
-
+class SelectFont : public QHBox
+{
+	Q_OBJECT
+	public:
+		SelectFont(const QString &text, const QFont &def_val, QWidget *parent=0,  const char *name=0, const QString &tip="");
+		void setFont(const QFont &font);
+		QFont font();
+	private slots:
+		void onClick();
+	signals:
+		/**
+			Sygna³ jest emitowany przy zmianie czcionki, przesy³a on nazwê komponentu oraz now± czcionkê
+		**/
+		void changed(const char *name, const QFont& font);
+	private:
+		QFont currentFont;
+		QLineEdit *fontEdit;
 };
 
 class SelectPaths : public QDialog
@@ -180,6 +197,7 @@ class ConfigDialog : public QDialog	{
 			CONFIG_TAB,
 			CONFIG_VBOX,
 			CONFIG_VGROUPBOX,
+			CONFIG_SELECTFONT,
 			CONFIG_DELETED
 		};
 
@@ -274,7 +292,10 @@ class ConfigDialog : public QDialog	{
 		**/		
 			    
 		static void addColorButton(const QString& groupname,
-			    const QString& parent, const QString& caption,
+			    const QString& parent, const QString& caption, const QString &entry,
+			    const QColor& color, const QString& tip="", const QString& name="");
+		static void addColorButton(ConfigFile *config, const QString& groupname,
+			    const QString& parent, const QString& caption, const QString &entry,
 			    const QColor& color, const QString& tip="", const QString& name="");
 		/**
 		    Dodaje kontrolkê do zak³adki "groupname", 
@@ -452,13 +473,35 @@ class ConfigDialog : public QDialog	{
 		/**
 		    Dodaje kontrolkê do zak³adki "groupname", 
 			Rodzicem kontrolki jest kontrolka "parent".
+			Ustawia tekst kontrolki na "caption".
+			Warto¶æ kontrolki jest zapisana do pliku konfiguracyjnego "config" w postaci
+			-------------
+			[groupname]
+			entry= value {defaultS}
+			-------------
+			
+			Domy¶ln± warto¶ci± kontrolki przy pierwszym uruchomieniu programu 
+			jest "defaultS".
+			Podpowied¼ kontrolki ustawiona jest na "tip".
+			Nazwa kontrolki ustawiona jest na "name".
+		**/		
+
+		static void addSelectFont(const QString& groupname, const QString& parent,
+				const QString& caption, const QString& entry, const QString& defaultS="",
+				const QString &tip="", const QString& name="");
+		static void addSelectFont(ConfigFile *config, const QString& groupname, const QString& parent,
+				const QString& caption, const QString& entry, const QString& defaultS="",
+				const QString &tip="", const QString& name="");
+
+		/**
+		    Dodaje kontrolkê do zak³adki "groupname", 
+			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
 			Nazwa kontrolki ustawiona jest na "name".
 		**/		
 
 		static void addSelectPaths(const QString& groupname, 
 			    const QString& parent, const QString& caption, const QString& name="");
-			    
 
 		/**
 		    Dodaje kontrolkê do zak³adki "groupname", 
@@ -656,6 +699,10 @@ class ConfigDialog : public QDialog	{
 		    Pobiera wska¼nik do kontrolki PushButton(groupname, caption, name)
 		**/
 		static QPushButton* getPushButton(const QString& groupname, const QString& caption, const QString& name="");
+		/**
+		    Pobiera wska¼nik do kontrolki SelectFont(groupname, caption, name)
+		**/
+		static SelectFont* getSelectFont(const QString& groupname, const QString& caption, const QString& name="");
 		/**
 		    Pobiera wska¼nik do kontrolki SelectPaths(groupname, caption, name)
 		**/

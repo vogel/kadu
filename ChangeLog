@@ -151,6 +151,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   siê za³adowaæ, ale za³adowany zosta³ modu³ zale¿ny (joi)
 * configure: obs³uga execinfo (backtrace na konsoli przy padzie programu),
   nie musimy ju¿ rêcznie tego w³±czaæ grzebi±c w main.cpp (michal, adrian)
+* reorganizacja zak³adki "Wygl±d" w konfiguracji (wed³ug pomys³u Arcisza)
+  dodanie nowego "typu danych" do ConfigDialogu - ujednolicona obs³uga
+  konfiguracji czcionek (joi)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

@@ -14,6 +14,7 @@
 #include <qlayout.h>
 #include <qscrollview.h>
 #include <qfiledialog.h>
+#include <qfontdialog.h>
 
 #include "config_dialog.h"
 #include "misc.h"
@@ -90,7 +91,6 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 	}
 
 	for(QValueList<RegisteredControl>::iterator i=RegisteredControls.begin(); i!=RegisteredControls.end(); i++, num++)
-//		if((*i).type!=CONFIG_DELETED) //gdyby co¶ siê dziwnego dzia³o mo¿na odkomentowaæ t± liniê...
 	{
 // wyswietla cala liste 
 //		kdebug("%d: (%d) "+(*i).group+"->"+(*i).parent+"->"+(*i).caption+"->"+(*i).name+"\n", num, (*i).nrOfControls);
@@ -131,7 +131,8 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 			
 			case CONFIG_COLORBUTTON:
 			{
-				ColorButton* colorbutton=new ColorButton(QColor((*i).defaultS), parent, (*i).name);
+				QColor col((*i).defaultS);
+				ColorButton* colorbutton=new ColorButton((*i).config->readColorEntry((*i).group, (*i).entry, &col), parent, (*i).name);
 				colorbutton->setMaximumSize(QSize(50,25));
 				(*i).widget=colorbutton;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
@@ -238,6 +239,12 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				break;
 			}
+			case CONFIG_SELECTFONT:
+			{
+				QFont def_font((*i).defaultS);
+				(*i).widget=new SelectFont((*i).caption, (*i).config->readFontEntry((*i).group, (*i).entry, &def_font), parent, (*i).name, (*i).tip);
+				break;
+			}
 			case CONFIG_SELECTPATHS:
 			{
 				QPushButton *button =new QPushButton(appHandle->translate("@default",(*i).caption), parent);
@@ -248,7 +255,6 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				connect(button, SIGNAL(clicked()), paths, SLOT(show()));
 				break;
 			}
-
 			case CONFIG_SLIDER:
 			{
 				int minVal;
@@ -413,6 +419,16 @@ void ConfigDialog::updateConfig(void)
 				(*i).config->writeEntry((*i).group, (*i).entry, ((QSpinBox*)((*i).widget))->value());
 				break;
 			}
+			case CONFIG_COLORBUTTON:
+			{
+				(*i).config->writeEntry((*i).group, (*i).entry, ((ColorButton*)((*i).widget))->color());
+				break;
+			}
+			case CONFIG_SELECTFONT:
+			{
+				(*i).config->writeEntry((*i).group, (*i).entry, ((SelectFont*)((*i).widget))->font());
+				break;
+			}
 			default:
 				break;
 		}
@@ -456,16 +472,25 @@ void ConfigDialog::addCheckBox(ConfigFile* config, const QString& groupname,
 }
 
 
-void ConfigDialog::addColorButton(const QString& groupname,
-				const QString& parent, const QString& caption,
+void ConfigDialog::addColorButton(ConfigFile *config, const QString& groupname,
+				const QString& parent, const QString& caption, const QString &entry,
 				const QColor& color, const QString& tip, const QString& name)
 {
 	if (existControl(groupname, caption, name) == -1){
 		RegisteredControl c(CONFIG_COLORBUTTON, groupname, parent, caption, name);
+		c.config=config;
+		c.entry=entry;
 		c.defaultS=color.name();
 		c.tip=tip;
 		addControl(groupname,c);
 	}
+}
+
+void ConfigDialog::addColorButton(const QString& groupname,
+				const QString& parent, const QString& caption, const QString &entry,
+				const QColor& color, const QString& tip, const QString& name)
+{
+	addColorButton(&config_file, groupname, parent, caption, entry, color, tip, name);
 }
 
 
@@ -652,9 +677,7 @@ void ConfigDialog::addSlider(const QString& groupname,
 {
 	addSlider(&config_file, groupname, parent, caption, entry, minValue, maxValue,
 			pageStep, value, tip, name);
-
 }
-
 
 void ConfigDialog::addSlider(ConfigFile* config, const QString& groupname,
 			const QString& parent, const QString& caption,
@@ -730,6 +753,29 @@ void ConfigDialog::addVGroupBox(const QString& groupname,
 	}
 }
 
+void ConfigDialog::addSelectFont(const QString& groupname, const QString& parent,
+				const QString& caption, const QString& entry, const QString& defaultS,
+				const QString &tip, const QString& name)
+{
+	addSelectFont(&config_file, groupname, parent, caption, entry, defaultS, tip, name);
+}
+
+void ConfigDialog::addSelectFont(ConfigFile *config, const QString& groupname, const QString& parent,
+				const QString& caption, const QString& entry, const QString& defaultS,
+				const QString &tip, const QString& name)
+{
+	if (existControl(groupname, caption, name) == -1){
+		RegisteredControl c(CONFIG_SELECTFONT, groupname, parent, caption, name);
+		c.config=config;
+		c.entry=entry;
+		c.defaultS=defaultS;
+		c.tip=tip;
+
+		if (addControl(groupname,c) == 0)
+			c.config->addVariable(groupname, entry, defaultS);	
+	}
+}
+
 ConfigDialog::RegisteredControl::RegisteredControl(RegisteredControlType t,
 	const QString &groupname,
 	const QString &parent,
@@ -743,6 +789,7 @@ ConfigDialog::RegisteredControl::RegisteredControl(RegisteredControlType t,
 	this->name=name;
 	widget=NULL;
 	nrOfControls=0;
+	this->config=NULL;
 }
 
 void ConfigDialog::connectSlot(const QString& groupname, const QString& caption, const char* signal, const QObject* receiver, const char* slot,const QString& name)
@@ -823,7 +870,6 @@ void ConfigDialog::unregisterSlotOnApply(const QObject* receiver, const char* na
 	c.slot=name;
 	SlotsOnApply.remove(SlotsOnApply.find(c));
 }
-
 
 int ConfigDialog::findPreviousTab(int pos)
 {
@@ -1065,6 +1111,11 @@ QPushButton* ConfigDialog::getPushButton(const QString& groupname, const QString
 	return dynamic_cast<QPushButton*>(getWidget(groupname,caption,name));
 }
 
+SelectFont* ConfigDialog::getSelectFont(const QString& groupname, const QString& caption, const QString& name)
+{	
+	return dynamic_cast<SelectFont*>(getWidget(groupname,caption,name));
+}
+
 SelectPaths* ConfigDialog::getSelectPaths(const QString& groupname, const QString& caption, const QString& name)
 {	
 	return dynamic_cast<SelectPaths*>(getWidget(groupname,caption,name));
@@ -1185,6 +1236,43 @@ void HotKey::setShortCut(const QKeySequence& shortcut)
 	return setText(shortcut);
 }
 
+SelectFont::SelectFont(const QString &text, const QFont &val, QWidget *parent, const char *name, const QString &tip)
+	: QHBox(parent, name)
+{
+	new QLabel(qApp->translate("@default", text), this);
+	(new QWidget(this))->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
+
+	fontEdit=new QLineEdit(this);
+	fontEdit->setReadOnly(true);
+	fontEdit->setFixedWidth(int(fontEdit->fontMetrics().width("Bitstream Vera Sans Mono 15")*1.5));
+	QPushButton *button=new QPushButton(tr("Select"), this);
+	setFont(val);
+	connect(button, SIGNAL(clicked()), this, SLOT(onClick()));
+	QToolTip::add(button, tip);
+}
+
+void SelectFont::setFont(const QFont &font)
+{
+	currentFont=font;
+	fontEdit->setText(QString("%1 %2").arg(currentFont.family()).arg(currentFont.pointSize()));
+}
+
+QFont SelectFont::font()
+{
+	return currentFont;
+}
+
+void SelectFont::onClick()
+{
+	bool ok;
+	QFont f=QFontDialog::getFont(&ok, currentFont, NULL, "font_dialog_cd");
+	if (ok)
+	{
+		setFont(f);
+		emit changed(name(), f);
+	}
+}
+
 ColorButton::ColorButton(const QColor &color, QWidget *parent, const char* name): QPushButton(parent, name)
 {
 	setColor(color);
@@ -1196,7 +1284,7 @@ void ColorButton::onClick()
 	QColor color = QColorDialog::getColor(this->color(), this, tr("Color dialog"));
 	setColor(color);
 	if (color.isValid())
-		emit changed(color);
+		emit changed(name(), color);
 }
 
 QColor ColorButton::color()
@@ -1369,7 +1457,6 @@ void SelectPaths::keyPressEvent(QKeyEvent *e)
 	if (e->key() == Qt::Key_Escape)
 		cancelButton();
 }
-
 
 SelectPaths::~SelectPaths()
 {

@@ -309,6 +309,29 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	config_file.addVariable("Look", "UserboxFont", &def_font);
 	config_file.addVariable("Look", "UserboxDescFont", &def_font);
 
+	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Look"));
+
+	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Colors"));
+		ConfigDialog::addVGroupBox("Look", "Colors", QT_TRANSLATE_NOOP("@default", "Main window"));
+			ConfigDialog::addHBox("Look", "Main window", "panel_bg_color_box");
+				ConfigDialog::addLabel("Look", "panel_bg_color_box", QT_TRANSLATE_NOOP("@default", "Panel background color"));
+				ConfigDialog::addColorButton("Look", "panel_bg_color_box", "", "InfoPanelBgColor", config_file.readColorEntry("Look","InfoPanelBgColor"), "", "panel_bg_color");
+			ConfigDialog::addHBox("Look", "Main window", "panel_font_color_box");
+				ConfigDialog::addLabel("Look", "panel_font_color_box", QT_TRANSLATE_NOOP("@default", "Panel font color"));
+				ConfigDialog::addColorButton("Look", "panel_font_color_box", "", "InfoPanelFgColor", config_file.readColorEntry("Look","InfoPanelFgColor"), "", "panel_font_color");
+
+	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Fonts"));
+		ConfigDialog::addSelectFont("Look", "Fonts", QT_TRANSLATE_NOOP("@default", "Font in panel"), "PanelFont", def_font.toString(), "", "panel_font_box");
+
+	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Information panel"));
+		ConfigDialog::addCheckBox("Look", "Information panel", QT_TRANSLATE_NOOP("@default", "Show information panel"), "ShowInfoPanel", true);
+		ConfigDialog::addTextEdit("Look", "Information panel", QT_TRANSLATE_NOOP("@default", "Information panel syntax:"), "PanelContents", "[#%u][, %f] %r [- %d] [ (%i)]", QT_TRANSLATE_NOOP("@default", "Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - frist name\n%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist\n%v - revDNS, %p - port %e - email\nIf you leave blank, default settings will be used"));
+
+	ConfigDialog::connectSlot("Look", "", SIGNAL(changed(const char *, const QColor&)), kaduslots, SLOT(chooseColor(const char *, const QColor&)), "panel_bg_color");
+	ConfigDialog::connectSlot("Look", "", SIGNAL(changed(const char *, const QColor&)), kaduslots, SLOT(chooseColor(const char *, const QColor&)), "panel_font_color");
+
+	ConfigDialog::connectSlot("Look", "Font in panel", SIGNAL(changed(const char *, const QFont&)),kaduslots, SLOT(chooseFont(const char *, const QFont&)), "panel_font_box");
+
 
 	closestatusppmtime.start();
 
@@ -438,9 +461,9 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	descrtb->setTextFormat(Qt::RichText);
 	descrtb->setAlignment(Qt::AlignVCenter | Qt::WordBreak | Qt::DontClip);
 	descrtb->setVScrollBarMode(QScrollView::AlwaysOff);
-	descrtb->setPaletteBackgroundColor(config_file.readColorEntry("Look", "UserboxDescBgColor"));
-	descrtb->setPaletteForegroundColor(config_file.readColorEntry("Look", "UserboxDescTextColor"));
-	descrtb->setFont(config_file.readFontEntry("Look", "UserboxDescFont"));
+	descrtb->setPaletteBackgroundColor(config_file.readColorEntry("Look", "InfoPanelBgColor"));
+	descrtb->setPaletteForegroundColor(config_file.readColorEntry("Look", "InfoPanelFgColor"));
+	descrtb->setFont(config_file.readFontEntry("Look", "PanelFont"));
 	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")==EMOTS_ANIMATED)
 		descrtb->setStyleSheet(new AnimStyleSheet(descrtb, emoticons->themePath()));
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
@@ -793,9 +816,9 @@ void Kadu::changeAppearance() {
 
 	GroupBar->setFont(QFont(config_file.readFontEntry("Look", "UserboxFont").family(), config_file.readFontEntry("Look", "UserboxFont").pointSize(),75));
 
-	descrtb->setPaletteBackgroundColor(config_file.readColorEntry("Look", "UserboxDescBgColor"));
-	descrtb->setPaletteForegroundColor(config_file.readColorEntry("Look", "UserboxDescTextColor"));
-	descrtb->setFont(config_file.readFontEntry("Look", "UserboxDescFont"));
+	descrtb->setPaletteBackgroundColor(config_file.readColorEntry("Look", "InfoPanelBgColor"));
+	descrtb->setPaletteForegroundColor(config_file.readColorEntry("Look", "InfoPanelFgColor"));
+	descrtb->setFont(config_file.readFontEntry("Look", "PanelFont"));
 }
 
 void Kadu::currentChanged(QListBoxItem *item) {
@@ -813,7 +836,7 @@ void Kadu::currentChanged(QListBoxItem *item) {
 		if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")!=EMOTS_NONE && config_file.readBoolEntry("General", "ShowEmotPanel"))
 		{
 			descrtb->mimeSourceFactory()->addFilePath(emoticons->themePath());
-			emoticons->expandEmoticons(doc, config_file.readColorEntry("Look", "UserboxDescBgColor"));
+			emoticons->expandEmoticons(doc, config_file.readColorEntry("Look", "InfoPanelBgColor"));
 		}
 		descrtb->setText(doc.generateHtml());
 	}
@@ -1670,7 +1693,7 @@ void Kadu::infopanelUpdate(UinType uin) {
 		if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")!=EMOTS_NONE && config_file.readBoolEntry("General", "ShowEmotPanel"))
 		{
 			descrtb->mimeSourceFactory()->addFilePath(emoticons->themePath());
-			emoticons->expandEmoticons(doc, config_file.readColorEntry("Look", "UserboxDescBgColor"));
+			emoticons->expandEmoticons(doc, config_file.readColorEntry("Look", "InfoPanelBgColor"));
 		}
 		descrtb->setText(doc.generateHtml());
 	}
@@ -1761,6 +1784,7 @@ void KaduSlots::onCreateConfigDialog()
 	while (i<7 && statusnr !=gg_statuses[i])
 		i++;
 	cb_defstatus->setCurrentItem(i);
+	updatePreview();
 }
 
 void KaduSlots::onDestroyConfigDialog()
@@ -1804,6 +1828,36 @@ void KaduSlots::onDestroyConfigDialog()
 
 	QComboBox *cb_language= ConfigDialog::getComboBox("General", "Set language:");
 	config_file.writeEntry("General", "Language", translateLanguage(qApp, cb_language->currentText(),false));
+}
+
+void KaduSlots::chooseColor(const char *name, const QColor& color)
+{
+	kdebugf();
+	QLabel *preview= ConfigDialog::getLabel("Look", "<b>Text</b> preview", "preview_panel");
+	if (QString(name)=="panel_bg_color")
+		preview->setPaletteBackgroundColor(color);
+	else if (QString(name)=="panel_font_color")
+		preview->setPaletteBackgroundColor(color);
+	else
+		kdebug("chooseColor: ups!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! '%s'\n", name);
+}
+
+void KaduSlots::chooseFont(const char *name, const QFont& font)
+{
+	kdebugf();
+	QLabel *preview= ConfigDialog::getLabel("Look", "<b>Text</b> preview", "preview_panel");
+	if (QString(name)=="panel_font_box")
+		preview->setFont(font);
+}
+
+void KaduSlots::updatePreview()
+{
+	kdebugf();
+	QLabel *preview= ConfigDialog::getLabel("Look", "<b>Text</b> preview", "preview_panel");
+	preview->setFont(config_file.readFontEntry("Look", "PanelFont"));
+	preview->setPaletteForegroundColor(config_file.readColorEntry("Look", "InfoPanelFgColor"));
+	preview->setPaletteBackgroundColor(config_file.readColorEntry("Look", "InfoPanelBgColor"));
+	preview->setAlignment(Qt::AlignLeft);
 }
 
 /*void Kadu::moveEvent(QMoveEvent *e)

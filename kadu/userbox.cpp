@@ -520,7 +520,6 @@ void UserBox::showHideInactive()
 	all_refresh();
 }
 
-
 UinsList UserBox::getSelectedUins()
 {
 	UinsList uins;
@@ -596,48 +595,43 @@ void UserBox::initModule()
 
 // dodanie wpisow do konfiga (pierwsze uruchomienie)
 	QWidget w;
-	config_file.addVariable("Look", "UserboxDescBgColor", w.paletteBackgroundColor());
-	config_file.addVariable("Look", "UserboxDescTextColor", w.paletteForegroundColor());
+	config_file.addVariable("Look", "InfoPanelBgColor", w.paletteBackgroundColor());
+	config_file.addVariable("Look", "InfoPanelFgColor", w.paletteForegroundColor());
 	config_file.addVariable("Look", "UserboxBgColor", w.paletteBackgroundColor());
 	config_file.addVariable("Look", "UserboxFgColor", w.paletteForegroundColor());
 
-	QFontInfo info0(qApp->font());
-	QFont def_font0(info0.family(),info0.pointSize());
-	config_file.addVariable("Look", "UserboxFont", def_font0);
-	config_file.addVariable("Look", "UserboxDescFont", def_font0);
+	QFontInfo info(qApp->font());
+	QFont def_font(info.family(),info.pointSize());
 
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Look"));
-	ConfigDialog::addVGroupBox("Look","Look",QT_TRANSLATE_NOOP("@default", "Userbox properties"));
-	ConfigDialog::addGrid("Look", "Userbox properties", "previewgrid", 2);
-	ConfigDialog::addHGroupBox("Look","previewgrid",QT_TRANSLATE_NOOP("@default", "Preview userbox"));
-	ConfigDialog::addLabel("Look","Preview userbox", "<b>Text</b> preview", "userbox");
-	ConfigDialog::addHGroupBox("Look","previewgrid",QT_TRANSLATE_NOOP("@default", "Preview desc."));
-	ConfigDialog::addLabel("Look","Preview desc.", "<b>Text</b> preview", "desc");
-	ConfigDialog::addHBox("Look", "Userbox properties", "-");
-	ConfigDialog::addComboBox("Look", "-", "", "", "combobox0");
-	ConfigDialog::addLineEdit2("Look", "-", "", "", "", "line0");
-	ConfigDialog::addColorButton("Look", "-","ColorButton0", QColor(config_file.readEntry("Look","UserboxBgColor")));
-	ConfigDialog::addHBox("Look", "Userbox properties", "font&size");
-	ConfigDialog::addComboBox("Look", "font&size", QT_TRANSLATE_NOOP("@default", "Font"));
-	ConfigDialog::addComboBox("Look", "font&size", QT_TRANSLATE_NOOP("@default", "Font size"));
 
+	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Colors"));
+		ConfigDialog::addVGroupBox("Look", "Colors", QT_TRANSLATE_NOOP("@default", "Main window"));
+			ConfigDialog::addHBox("Look", "Main window", "userbox_bg_color_box");
+				ConfigDialog::addLabel("Look", "userbox_bg_color_box", QT_TRANSLATE_NOOP("@default", "Userbox background color"));
+				ConfigDialog::addColorButton("Look", "userbox_bg_color_box", "", "UserboxBgColor", config_file.readColorEntry("Look","UserboxBgColor"), "", "userbox_bg_color");
+			ConfigDialog::addHBox("Look", "Main window", "userbox_font_color_box");
+				ConfigDialog::addLabel("Look", "userbox_font_color_box", QT_TRANSLATE_NOOP("@default", "Userbox font color"));
+				ConfigDialog::addColorButton("Look", "userbox_font_color_box", "", "UserboxFgColor", config_file.readColorEntry("Look","UserboxFgColor"), "", "userbox_font_color");
 
-	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Other"));
-	ConfigDialog::addGrid("Look", "Other", "grid", 2);
-	ConfigDialog::addCheckBox("Look", "grid", QT_TRANSLATE_NOOP("@default", "Show info-panel"), "ShowInfoPanel", true);
-	ConfigDialog::addCheckBox("Look", "grid", QT_TRANSLATE_NOOP("@default", "Show status button"), "ShowStatusButton", true);
-	ConfigDialog::addCheckBox("Look", "grid", QT_TRANSLATE_NOOP("@default", "Display group tabs"), "DisplayGroupTabs", true);
-	ConfigDialog::addCheckBox("Look", "grid", QT_TRANSLATE_NOOP("@default", "Multicolumn userbox"), "MultiColumnUserbox", false);
-	ConfigDialog::addCheckBox("Look", "grid", QT_TRANSLATE_NOOP("@default", "Show description in userbox"), "ShowDesc", true);
-	ConfigDialog::addCheckBox("Look", "grid", QT_TRANSLATE_NOOP("@default", "Multiline description in userbox"), "ShowMultilineDesc", true);
-	ConfigDialog::addCheckBox("Look", "grid", QT_TRANSLATE_NOOP("@default", "Show avaliable in bold"), "ShowBold", true);
+	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Fonts"));
+		ConfigDialog::addSelectFont("Look", "Fonts", QT_TRANSLATE_NOOP("@default", "Font in userbox"), "UserboxFont", def_font.toString(), "", "userbox_font_box");
+
+	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Previews"));
+		ConfigDialog::addHBox("Look", "Previews", "othr_prvws");
+			ConfigDialog::addVGroupBox("Look", "othr_prvws", QT_TRANSLATE_NOOP("@default", "Preview userbox"));
+				ConfigDialog::addLabel("Look", "Preview userbox", "<b>Text</b> preview", "preview_userbox");
+			ConfigDialog::addVGroupBox("Look", "othr_prvws", QT_TRANSLATE_NOOP("@default", "Preview panel"));
+				ConfigDialog::addLabel("Look", "Preview panel", "<b>Text</b> preview", "preview_panel");
 
 	UserBoxSlots *userboxslots= new UserBoxSlots();
 	ConfigDialog::registerSlotOnCreate(userboxslots, SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnApply(userboxslots, SLOT(onDestroyConfigDialog()));
-	ConfigDialog::connectSlot("Look", "ColorButton0", SIGNAL(changed(const QColor&)), userboxslots, SLOT(chooseColorGet(const QColor&)));
-	ConfigDialog::connectSlot("Look", "", SIGNAL(textChanged(const QString&)), userboxslots, SLOT(chooseColorGet(const QString&)), "line0");
-	ConfigDialog::connectSlot("Look", "", SIGNAL(activated(int)), userboxslots, SLOT(chooseUserBoxSelect(int)), "combobox0");
+
+	ConfigDialog::connectSlot("Look", "", SIGNAL(changed(const char *, const QColor&)), userboxslots, SLOT(chooseColor(const char *, const QColor&)), "userbox_bg_color");
+	ConfigDialog::connectSlot("Look", "", SIGNAL(changed(const char *, const QColor&)), userboxslots, SLOT(chooseColor(const char *, const QColor&)), "userbox_font_color");
+
+	ConfigDialog::connectSlot("Look", "Font in userbox", SIGNAL(changed(const char *, const QFont&)), userboxslots, SLOT(chooseFont(const char *, const QFont&)), "userbox_font_box");
 }
 
 UserBoxMenu::UserBoxMenu(QWidget *parent, const char *name): QPopupMenu(parent, name)
@@ -691,179 +685,43 @@ void UserBoxMenu::show(QListBoxItem *item)
 void UserBoxSlots::onCreateConfigDialog()
 {
 	kdebugf();
-	vl_userboxcolor.clear();
-	vl_userboxcolor.append(config_file.readColorEntry("Look","UserboxBgColor"));
-	vl_userboxcolor.append(config_file.readColorEntry("Look","UserboxDescBgColor"));
-	vl_userboxcolor.append(config_file.readColorEntry("Look","UserboxFgColor"));
-	vl_userboxcolor.append(config_file.readColorEntry("Look","UserboxDescTextColor"));
-
-	QLineEdit *l_color= ConfigDialog::getLineEdit("Look", "", "line0");
-	l_color->setMaxLength(7);
-	l_color->setText(vl_userboxcolor[0].name());
-	ColorButton *colorbutton= ConfigDialog::getColorButton("Look", "ColorButton0");
-	colorbutton->setColor(vl_userboxcolor[0]);
-	QComboBox *cb_userboxselect= ConfigDialog::getComboBox("Look", "","combobox0");
-
-	cb_userboxselect->insertItem(tr("Userbox background color"));
-	cb_userboxselect->insertItem(tr("Desc. background color"));
-	cb_userboxselect->insertItem(tr("Font in userbox window"));
-	cb_userboxselect->insertItem(tr("Font in desc."));
-	cb_userboxselect->setCurrentItem(0);
-
-	QHGroupBox *hgb_0 = ConfigDialog::getHGroupBox("Look", "Preview userbox");
-	hgb_0->setAlignment(Qt::AlignCenter);
-
-	QLabel *preview= ConfigDialog::getLabel("Look", "<b>Text</b> preview", "userbox");
-	preview->setFont(QFont(config_file.readFontEntry("Look","UserboxFont")));
-	preview->setPaletteForegroundColor(vl_userboxcolor[2]);
-	preview->setPaletteBackgroundColor(vl_userboxcolor[0]);
-	preview->setAlignment(Qt::AlignCenter);
-
-	QHGroupBox *hgb_1 = ConfigDialog::getHGroupBox("Look", "Preview desc.");
-	hgb_1->setAlignment(Qt::AlignCenter);
-
-	QLabel *preview2= ConfigDialog::getLabel("Look", "<b>Text</b> preview", "desc");
-	preview2->setFont(QFont(config_file.readFontEntry("Look","UserboxDescFont")));
-	preview2->setPaletteForegroundColor(vl_userboxcolor[3]);
-	preview2->setPaletteBackgroundColor(vl_userboxcolor[1]);
-	preview2->setAlignment(Qt::AlignCenter);
-
-	vl_userboxfont.clear();
-	vl_userboxfont.append(config_file.readFontEntry("Look", "UserboxFont"));
-	vl_userboxfont.append(config_file.readFontEntry("Look", "UserboxDescFont"));
-
-	QHBox *h_fontsize= ConfigDialog::getHBox("Look", "font&size");
-	h_fontsize->hide();
-
-	QComboBox *cb_userboxfont= ConfigDialog::getComboBox("Look", "Font");
-	QComboBox *cb_userboxfontsize= ConfigDialog::getComboBox("Look", "Font size");
-
-	QFontDatabase fdb;
-	QValueList<int> vl;
-
-	vl = fdb.pointSizes(vl_userboxfont[0].family(),"Normal");
-	for (QValueList<int>::Iterator points = vl.begin(); points != vl.end(); ++points)
-		cb_userboxfontsize->insertItem(QString::number(*points));
-
-	cb_userboxfontsize->setCurrentText(QString::number(vl_userboxfont[0].pointSize()));
-	cb_userboxfont->insertStringList(fdb.families());
-	cb_userboxfont->setCurrentText(vl_userboxfont[0].family());
-
-	connect(cb_userboxfont, SIGNAL(activated(int)), this, SLOT(chooseUserBoxFont(int)));
-	connect(cb_userboxfontsize, SIGNAL(activated(int)), this, SLOT(chooseUserBoxFontSize(int)));
+	updatePreview();
 }
 
 void UserBoxSlots::onDestroyConfigDialog()
 {
 	kdebugf();
-	config_file.writeEntry("Look","UserboxBgColor",vl_userboxcolor[0]);
-	config_file.writeEntry("Look","UserboxDescBgColor",vl_userboxcolor[1]);
-	config_file.writeEntry("Look","UserboxFgColor", vl_userboxcolor[2]);
-	config_file.writeEntry("Look","UserboxDescTextColor", vl_userboxcolor[3]);
-	config_file.writeEntry("Look","UserboxBgColor",vl_userboxcolor[0]);
-	config_file.writeEntry("Look","UserboxDescBgColor",vl_userboxcolor[1]);
-	config_file.writeEntry("Look", "UserboxFont", vl_userboxfont[0]);
-	config_file.writeEntry("Look", "UserboxDescFont", vl_userboxfont[1]);
 	UserBox::all_refresh();
-
 }
 
-void UserBoxSlots::chooseUserBoxSelect(int nr)
+void UserBoxSlots::chooseColor(const char *name, const QColor &color)
 {
-	kdebug("UserBoxSlots::chooseUserBoxSelect() item: %d\n", nr);
-	ColorButton *colorbutton= ConfigDialog::getColorButton("Look", "ColorButton0");
-	QLineEdit *l_color= ConfigDialog::getLineEdit("Look", "", "line0");
-	colorbutton->setColor(vl_userboxcolor[nr]);
-	l_color->setText(colorbutton->color().name());
-
-	QHBox *h_fontsize= ConfigDialog::getHBox("Look", "font&size");
-	QComboBox *cb_userboxfont= ConfigDialog::getComboBox("Look", "Font");
-	QComboBox *cb_userboxfontsize= ConfigDialog::getComboBox("Look", "Font size");
-
-	if (nr>1)
-	{
-		h_fontsize->show();
-		cb_userboxfontsize->setCurrentText(QString::number(vl_userboxfont[nr-2].pointSize()));
-		cb_userboxfont->setCurrentText(vl_userboxfont[nr-2].family());
-	}
+	kdebugf();
+	QLabel *preview= ConfigDialog::getLabel("Look", "<b>Text</b> preview", "preview_userbox");
+	if (QString(name)=="userbox_bg_color")
+		preview->setPaletteBackgroundColor(color);
+	else if (QString(name)=="userbox_font_color")
+		preview->setPaletteBackgroundColor(color);
 	else
-		h_fontsize->hide();
+		kdebug("chooseColor: ups!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! '%s'\n", name);
 }
 
-void UserBoxSlots::chooseUserBoxFont(int nr)
+void UserBoxSlots::chooseFont(const char *name, const QFont &font)
 {
 	kdebugf();
-
-	QFontDatabase fdb;
-	QValueList<int> vl;
-	QComboBox *cb_userboxfont= ConfigDialog::getComboBox("Look", "Font");
-	QComboBox *cb_userboxfontsize= ConfigDialog::getComboBox("Look", "Font size");
-	QComboBox *cb_userboxselect= ConfigDialog::getComboBox("Look", "","combobox0");
-
-	vl = fdb.pointSizes(cb_userboxfont->text(nr),"Normal");
-	cb_userboxfontsize->clear();
-	for (QValueList<int>::Iterator points = vl.begin(); points != vl.end(); ++points)
-	{
-		cb_userboxfontsize->insertItem(QString::number(*points));
-		if (*points == vl_userboxfont[cb_userboxselect->currentItem()-2].pointSize())
-		cb_userboxfontsize->setCurrentItem(cb_userboxfontsize->count()-1);
-	}
-
-	if (cb_userboxfontsize->count() > 0) {
-		vl_userboxfont[cb_userboxselect->currentItem()-2] =
-			QFont(cb_userboxfont->text(nr), cb_userboxfontsize->currentText().toInt());
-	}
-	QLabel *preview= ConfigDialog::getLabel("Look", "<b>Text</b> preview", "userbox");
-	preview->setFont(vl_userboxfont[0]);
-	QLabel *preview2= ConfigDialog::getLabel("Look", "<b>Text</b> preview", "desc");
-	preview2->setFont(vl_userboxfont[1]);
+	QLabel *preview= ConfigDialog::getLabel("Look", "<b>Text</b> preview", "preview_userbox");
+	if (QString(name)=="userbox_font_box")
+		preview->setFont(font);
 }
 
-void UserBoxSlots::chooseUserBoxFontSize(int nr)
-{
-	QComboBox *cb_userboxfontsize= ConfigDialog::getComboBox("Look", "Font size");
-	QComboBox *cb_userboxfont= ConfigDialog::getComboBox("Look", "Font");
-	QComboBox *cb_userboxselect= ConfigDialog::getComboBox("Look", "","combobox0");
-
-	vl_userboxfont[cb_userboxselect->currentItem()-2]=
-		QFont(cb_userboxfont->currentText(), cb_userboxfontsize->currentText().toInt());
-
-	QLabel *preview= ConfigDialog::getLabel("Look", "<b>Text</b> preview", "userbox");
-	preview->setFont(vl_userboxfont[0]);
-	QLabel *preview2= ConfigDialog::getLabel("Look", "<b>Text</b> preview", "desc");
-	preview2->setFont(vl_userboxfont[1]);
-
-}
-
-void UserBoxSlots::chooseColorGet(const QString &text)
+void UserBoxSlots::updatePreview()
 {
 	kdebugf();
-	if ((text.length() == 7)&& (QColor(text).isValid()))
-	{
-		ColorButton *colorbutton= ConfigDialog::getColorButton("Look", "ColorButton0");
-		QLineEdit *l_color= ConfigDialog::getLineEdit("Look", "", "line0");
-		colorbutton->setColor(QColor(text));
-		int pos=l_color->cursorPosition();
-		chooseColorGet(QColor(text));
-		l_color->setCursorPosition(pos);
-	}
-}
-
-void UserBoxSlots::chooseColorGet(const QColor& color)
-{
-	kdebugf();
-	QLineEdit *l_color= ConfigDialog::getLineEdit("Look", "", "line0");
-	QComboBox *cb_userboxselect= ConfigDialog::getComboBox("Look", "","combobox0");
-
-	l_color->setText(color.name());
-	vl_userboxcolor[cb_userboxselect->currentItem()]=color;
-	QLabel *preview= ConfigDialog::getLabel("Look", "<b>Text</b> preview", "userbox");
-	preview->setPaletteForegroundColor(vl_userboxcolor[2]);
-	preview->setPaletteBackgroundColor(vl_userboxcolor[0]);
-
-	QLabel *preview2= ConfigDialog::getLabel("Look", "<b>Text</b> preview", "desc");
-	preview2->setPaletteForegroundColor(vl_userboxcolor[3]);
-	preview2->setPaletteBackgroundColor(vl_userboxcolor[1]);
+	QLabel *preview= ConfigDialog::getLabel("Look", "<b>Text</b> preview", "preview_userbox");
+	preview->setFont(config_file.readFontEntry("Look", "UserboxFont"));
+	preview->setPaletteForegroundColor(config_file.readColorEntry("Look", "UserboxFgColor"));
+	preview->setPaletteBackgroundColor(config_file.readColorEntry("Look", "UserboxBgColor"));
+	preview->setAlignment(Qt::AlignLeft);
 }
 
 QValueList<UserBox *> UserBox::UserBoxes;

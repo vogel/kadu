@@ -231,6 +231,9 @@ class KaduSlots : public QObject
 	public slots:
 		void onCreateConfigDialog();
 		void onDestroyConfigDialog();
+		void chooseColor(const char *name, const QColor& color);
+		void chooseFont(const char *name, const QFont& font);
+		void updatePreview();
 };
 
 extern Kadu* kadu;
