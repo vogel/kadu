@@ -510,7 +510,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	connect(gadu, SIGNAL(disconnected()), this, SLOT(disconnected()));
 	connect(gadu, SIGNAL(error(GaduError)), this, SLOT(error(GaduError)));
 	connect(gadu, SIGNAL(statusChanged(int)), this, SLOT(setCurrentStatus(int)));
-	connect(gadu, SIGNAL(userStatusChanged(UserListElement &)), this, SLOT(userStatusChagned(UserListElement &)));
+	connect(gadu, SIGNAL(userStatusChanged(UserListElement&, int)), this, SLOT(userStatusChanged(UserListElement&, int)));
 
 	dccsock = NULL;
 	kdebugf2();
