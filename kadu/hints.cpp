@@ -30,7 +30,6 @@ Hint::Hint(QWidget *parent, const QString& text, const QPixmap& pixmap, unsigned
 
 	secs = timeout;
 	ident = 0;
-	setResizeMode(QLayout::Fixed);
 	if (!pixmap.isNull() && config_file.readBoolEntry("Hints","Icons"))
 	{
 		icon = new QLabel(parent, "Icon");
@@ -52,7 +51,6 @@ Hint::Hint(QWidget *parent, const QString& text, const QPixmap& pixmap, unsigned
 
 bool Hint::nextSecond(void)
 {
-//	kdebug("Hint::nextSecond()\n");
 	secs--;
 	return secs;
 }
@@ -96,36 +94,40 @@ bool Hint::eventFilter(QObject *obj, QEvent *ev)
 		{
 			case QEvent::Enter:
 				enter();
+				return true;
 				break;
 			case QEvent::Leave:
 				leave();
+				return true;
 				break;
 			case QEvent::MouseButtonPress:
 			{
-				QMouseEvent *mev = (QMouseEvent*)ev;
-				switch (mev->button())
+				switch ((dynamic_cast<QMouseEvent*>(ev))->button())
 				{
 					case Qt::LeftButton:
 						emit leftButtonClicked(ident);
+						return true;
 						break;
 					case Qt::RightButton:
 						emit rightButtonClicked();
+						return true;
 						break;
 					case Qt::MidButton:
 						emit midButtonClicked(ident);
+						return true;
 						break;
 					default:
 						return false;
+						break;
 				}
-				break;
 			}
 			default:
 				return false;
+				break;
 		}
-		return true;
 	}
 	else
-		return false;
+		return QHBoxLayout::eventFilter(obj, ev);
 }
 
 void Hint::enter(void)
@@ -196,19 +198,11 @@ void HintManager::setHint(void) {
 void HintManager::deleteHint(unsigned int id)
 {
 	kdebug("HintManager::deleteHint() id=%d\n", id);
-//	grid->removeItem(hints.at(id)); //Nie ma tego w qt 3.0.x
 	hints.remove(id);
 	if (!hints.count())
 	{
-	//	grid->setRows(0);
-	//	grid->setCols(0);
-//		grid->invalidate();
 		hint_timer->stop();
 		hide();
-		kdebug("HintManager::deleteHint hints is empty, grid->isEmpty() %d ,grid rows=%d, grid cols=%d!!\n",grid->isEmpty(),grid->numRows(),grid->numCols());
-//		QLayoutIterator it = grid->iterator();
-//		Hint *item = (Hint*)it.current();
-//		kdebug("cos smiesznego %s \n", item->name());
 		return;
 	}
 	for (int i = id; i < hints.count(); i++)
@@ -219,6 +213,7 @@ void HintManager::deleteHint(unsigned int id)
 void HintManager::oneSecond(void)
 {
 	kdebug("HintManager::oneSecond()\n");
+
 	for (int i = 0; i < hints.count(); i++)
 		if (!(hints.at(i)->nextSecond()))
 		{
@@ -236,14 +231,12 @@ void HintManager::leftButtonSlot(unsigned int id)
 
 void HintManager::rightButtonSlot(void)
 {
-	kdebug("HintManager::rightButtonSlot() hints.count()=%d\n", hints.count());
-
-//	for (int i = 0; i < hints.count(); i++)
-//		grid->removeItem(hints.at(i));
+	kdebug("HintManager::rightButtonSlot()\n);
 
 	hint_timer->stop();
+	for (int i = hints.count(); i > 0; i--)
+		hints.remove(i-1);
 	hide();
-	hints.clear();
 }
 
 void HintManager::midButtonSlot(unsigned int id)

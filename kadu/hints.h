@@ -61,13 +61,13 @@ class HintManager : public QFrame
 	public:
 		HintManager();
 		static void initModule();
-
-	public slots:
 		void addHint(const QString &, const QPixmap &, const QFont &, const QColor &, const QColor &, unsigned int);
 		void addHintError(const QString &);
 		void addHintNewMsg(const QString &, const QString &);
 		void addHintNewChat(const QString &, const QString &);
 		void addHintStatus(const UserListElement &, unsigned int status, unsigned int oldstatus);
+
+	public slots:
 		void loadConfig();
 		void deleteHint(unsigned int);
 

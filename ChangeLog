@@ -98,6 +98,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   niektórych plików kadu (mast3r)
 * ma³e poprawki w kodzie dymków i kodzie korzystaj±cym z dymków (mast3r)
 * opcja Voice w instalatorze Instaluj
+* prawy klik na dymku - nie powinien juz powodowaæ seg faulta (mast3r)
+
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci
   (klasa HtmlDocument) i wy³awiania emotów i url-i. Naprawione
