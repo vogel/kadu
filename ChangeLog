@@ -118,6 +118,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * make install kopiuje do $PREFIX/share/kadu pliki AUTHORS, ChangeLog,
   COPYING, HISTORY, README, THANKS na potrzeby nowego okna About (adrian)
 * przebudowane okno "O programie" (chilek)
+* libgadu z 03.11.2003 (chilek)
+* gdy mamy pust± listê kontaktów to sendUserlist() przekazuje NULL do
+  gg_notify*() (chilek)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci

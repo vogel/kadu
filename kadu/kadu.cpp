@@ -112,6 +112,12 @@ void sendUserlist() {
 	char *types;
 	int i, j;
 
+	if (!userlist.count()) {
+		gg_notify_ex(sess, NULL, NULL, 0);
+		kdebug("send_userlist(): Userlist is empty\n");
+		return;
+		}
+
 	for (i = 0, j = 0; i < userlist.count(); i++)
 		if (userlist[i].uin)
 			j++;
