@@ -94,6 +94,7 @@ class UserList : public QObject, public QValueList<UserListElement>
 		UserList &operator=(const UserList& userlist);
 		void setDnsName(uin_t uin, const QString &name);
 		void addDnsLookup(uin_t uin, const QHostAddress &ip);
+		void merge(UserList &userlist);
 
 	protected:
 		DnsLookups dnslookups;

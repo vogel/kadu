@@ -468,6 +468,59 @@ UserList& UserList::operator=(const UserList& userlist)
 		(*i).Parent = this;
 	emit modified();
 	return *this;
-};
+}
+
+void UserList::merge(UserList &userlist) {
+	UserListElement e(this);
+
+	for (Iterator i = userlist.begin(); i != userlist.end(); i++) {
+		Iterator j;
+		if ((*i).uin) {
+			j = begin();
+			while (j != end() && (*j).uin != (*i).uin)
+				j++;
+			}
+		else {
+			j = begin();
+			while (j != end() && (*j).mobile != (*i).mobile)
+				j++;
+			}
+		if (j != end()) {
+			(*j).first_name = (*i).first_name;
+			(*j).last_name = (*i).last_name;
+			(*j).nickname = (*i).nickname;
+			(*j).altnick = (*i).altnick;
+			if ((*i).uin)
+				(*j).mobile = (*i).mobile;
+			else
+				(*j).uin = (*i).uin;
+//			(*j).status = (*i).status;
+//			(*j).image_size = (*i).image_size;
+			(*j).setGroup((*i).group());
+//			(*j).description = (*i).description;
+			(*j).email = (*i).email;
+			}
+		else {
+			e.first_name = (*i).first_name;
+			e.last_name = (*i).last_name;
+			e.nickname = (*i).nickname;
+			e.altnick = (*i).altnick;
+			e.mobile = (*i).mobile;
+			e.uin = (*i).uin;
+			e.status = (*i).status;
+			e.image_size = (*i).image_size;
+			e.blocking = (*i).blocking;
+			e.offline_to_user = (*i).offline_to_user;
+			e.notify = (*i).notify;
+			e.setGroup((*i).group());
+			e.description = (*i).description;
+			e.email = (*i).email;
+			e.anonymous = (*i).anonymous;
+			e.port = (*i).port;
+			append(e);
+			}
+		}
+	emit modified();
+}
 
 UserList userlist;

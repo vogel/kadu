@@ -32,6 +32,7 @@ class UserlistImport : public QDialog {
 
 	private slots:
 		void startTransfer(void);
+		void makeUserlist(void);
 		void updateUserlist(void);
 		void fromfile();
 	protected:

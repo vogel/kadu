@@ -25,19 +25,19 @@
 
 UserlistImport::UserlistImport(QWidget *parent, const char *name)
  : QDialog(parent, name, FALSE, Qt::WDestructiveClose) {
-
-	QGridLayout * grid = new QGridLayout(this, 2, 2, 3, 3);
-
 	results = new QListView(this);
 
-	fetchbtn = new QPushButton(QIconSet(loadIcon("connect_creating.png")),tr("&Fetch userlist"),this);
+	fetchbtn = new QPushButton(QIconSet(loadIcon("connect_creating.png")),tr("&Fetch userlist"), this);
 	QObject::connect(fetchbtn, SIGNAL(clicked()), this, SLOT(startTransfer()));
 
-	QPushButton * savebtn = new QPushButton(QIconSet(loadIcon("filesave.png")),tr("&Save results"),this);
-	QObject::connect(savebtn, SIGNAL(clicked()), this, SLOT(updateUserlist()));
-
-	QPushButton * filebtn = new QPushButton(QIconSet(loadIcon("connect_creating.png")),tr("&Import from file"),this);
+	QPushButton *filebtn = new QPushButton(QIconSet(loadIcon("connect_creating.png")),tr("&Import from file"), this);
 	QObject::connect(filebtn, SIGNAL(clicked()), this, SLOT(fromfile()));
+
+	QPushButton *savebtn = new QPushButton(QIconSet(loadIcon("filesave.png")),tr("&Save results"), this);
+	QObject::connect(savebtn, SIGNAL(clicked()), this, SLOT(makeUserlist()));
+
+	QPushButton *mergebtn = new QPushButton(QIconSet(loadIcon("filesave.png")),tr("&Merge results"), this);
+	QObject::connect(mergebtn, SIGNAL(clicked()), this, SLOT(updateUserlist()));
 
 	results->addColumn(tr("UIN"));
 	results->addColumn(tr("Nickname"));
@@ -49,10 +49,12 @@ UserlistImport::UserlistImport(QWidget *parent, const char *name)
 	results->addColumn(tr("Email"));
 	results->setAllColumnsShowFocus(true);
 
-	grid->addMultiCellWidget(results, 0, 0, 0, 2);
+	QGridLayout * grid = new QGridLayout(this, 2, 3, 3, 3);
+	grid->addMultiCellWidget(results, 0, 0, 0, 3);
 	grid->addWidget(filebtn, 1, 0);	
 	grid->addWidget(fetchbtn, 1, 1);
 	grid->addWidget(savebtn, 1, 2);
+	grid->addWidget(mergebtn, 1, 3);
 
 	resize(450, 330);
 	setCaption(tr("Import userlist"));	
@@ -126,10 +128,10 @@ void UserlistImport::closeEvent(QCloseEvent * e) {
 	QWidget::closeEvent(e);
 }
 
-void UserlistImport::updateUserlist() {
+void UserlistImport::makeUserlist() {
 	int i;
 	
-	kdebug("UserlistImport::updateUserlist()\n");
+	kdebug("UserlistImport::makeUserlist()\n");
 	
 	i = 0;
 	while (i < userlist.count()) {
@@ -139,7 +141,6 @@ void UserlistImport::updateUserlist() {
 		}
 
 	userlist = importedUserlist;
-//	importedUserlist.clear();
 	
 	kadu->userbox->clear();
 	kadu->userbox->clearUsers();
@@ -152,19 +153,59 @@ void UserlistImport::updateUserlist() {
 		if (userlist[i].uin)
 			gg_add_notify(sess, userlist[i].uin);
 
-	uin_t *uins;
-	uins = (uin_t *) malloc(userlist.count() * sizeof(uin_t));
+//	uin_t *uins;
+//	uins = (uin_t *) malloc(userlist.count() * sizeof(uin_t));
+
+//	for (i = 0; i < userlist.count(); i++)
+//		uins[i] = userlist[i].uin;
+
+//	gg_notify(sess, uins, userlist.count());
+//	kdebug("UserlistImport::makeUserlist(): Userlist sent\n");
+
+	userlist.writeToFile();
+	kdebug("UserlistImport::makeUserlist(): Wrote userlist\n");
+
+//	free(uins);			
+}
+
+void UserlistImport::updateUserlist() {
+	int i;
+	
+	kdebug("UserlistImport::updateUserlist()\n");
+	
+	i = 0;
+	while (i < userlist.count()) {
+		if (userlist[i].uin)
+			gg_remove_notify(sess, userlist[i].uin);
+		i++;
+		}
+
+	userlist.merge(importedUserlist);
+	
+	kadu->userbox->clear();
+	kadu->userbox->clearUsers();
+	for (i = 0; i < userlist.count(); i++)
+		kadu->userbox->addUser(userlist[i].altnick);
+		
+	UserBox::all_refresh();
 
 	for (i = 0; i < userlist.count(); i++)
-		uins[i] = userlist[i].uin;
+		if (userlist[i].uin)
+			gg_add_notify(sess, userlist[i].uin);
 
-	gg_notify(sess, uins, userlist.count());
-	kdebug("UserlistImport::updateUserlist(): Userlist sent\n");
+//	uin_t *uins;
+//	uins = (uin_t *) malloc(userlist.count() * sizeof(uin_t));
+
+//	for (i = 0; i < userlist.count(); i++)
+//		uins[i] = userlist[i].uin;
+
+//	gg_notify(sess, uins, userlist.count());
+//	kdebug("UserlistImport::updateUserlist(): Userlist sent\n");
 
 	userlist.writeToFile();
 	kdebug("UserlistImport::updateUserlist(): Wrote userlist\n");
 
-	free(uins);			
+//	free(uins);			
 }
 
 void UserlistImport::userlistReplyReceivedSlot(char type, char *reply) {

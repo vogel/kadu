@@ -98,8 +98,10 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * opcja Voice w instalatorze Instaluj
 * w konstruktorze kopiuj±cym UserList nie by³y uaktualniane pola Parent
   w UserListElementach (chilek)
-* dymki: wreszcie naprawiony b³±d z seg faultem podczas usuwania wszystkich
+* dymki: wreszcie naprawiony b³±d z segfaultem podczas usuwania wszystkich
   dymków, nie wiem jeszcze tylko jak to siê zachowa na QT 3.0.x (mast3r)
+* mo¿liwo¶æ z³±czenia posiadanej listy kontaktów z importowan± list±
+  kontaktów (demsik/chilek)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci
