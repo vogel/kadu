@@ -17,7 +17,6 @@ history.cpp history.h history_moc.cpp \
 ignore.cpp ignore.h ignore_moc.cpp \
 kadu.cpp kadu.h kadu_moc.cpp \
 main.cpp \
-message.cpp message.h message_moc.cpp \
 message_box.cpp message_box.h message_box_moc.cpp \
 misc.cpp misc.h misc_moc.cpp\
 password.cpp password.h password_moc.cpp \
@@ -59,19 +58,19 @@ CLEANFILES = *_moc.cpp
 	$(QTMOCDIR)/moc -o $@ $<
 
 install-data-local:
-	@if test -w "/usr/share"; then \
+	@if test -w "$(DESTDIR)/usr/share"; then \
 		$(mkinstalldirs) "$(DESTDIR)/usr/share/applnk/Internet/"; \
 		echo "[Desktop Entry]" > "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop"; \
 		echo "Type=Application" >> "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop"; \
 		echo "Exec=$(bindir)/kadu" >> "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop"; \
 		echo "Icon=kadu.png" >> "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop"; \
-		echo "MiniIcon=kadu_mini.png" >> "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop"; \
+		echo "MiniIcon=kadu-16.png" >> "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop"; \
 		echo "Terminal=0" >> "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop"; \
 		echo "Name=Kadu" >> "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop"; \
 		$(mkinstalldirs) "$(DESTDIR)/usr/share/pixmaps/"; \
-		$(INSTALL_DATA) hi48-app-kadu.png "$(DESTDIR)/usr/share/pixmaps/kadu_big.png"; \
+		$(INSTALL_DATA) hi48-app-kadu.png "$(DESTDIR)/usr/share/pixmaps/kadu-48.png"; \
 		$(INSTALL_DATA) hi32-app-kadu.png "$(DESTDIR)/usr/share/pixmaps/kadu.png"; \
-		$(INSTALL_DATA) hi16-app-kadu.png "$(DESTDIR)/usr/share/pixmaps/kadu_mini.png"; \
+		$(INSTALL_DATA) hi16-app-kadu.png "$(DESTDIR)/usr/share/pixmaps/kadu-16.png"; \
 		echo ""; \
 		echo "Icons installed to $(DESTDIR)/usr/share/pixmaps"; \
 		echo "Link(kadu.desktop) installed to $(DESTDIR)/usr/share/applnk/Internet"; \
@@ -81,13 +80,13 @@ install-data-local:
 		echo "         *******************************************************************"; \
 		echo "         *                                                                 *"; \
 		echo "         *          You don't have permission to write /usr/share          *"; \
-		echo "         *          Icons and link(kadu.desktop) won't be installed          *"; \
+		echo "         *          Icons and link(kadu.desktop) won't be installed        *"; \
 		echo "         *                                                                 *"; \
 		echo "         *******************************************************************"; \
 		echo "";\
 	fi;
 uninstall-local:
 	rm -f "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop"
-	rm -f "$(DESTDIR)/usr/share/pixmaps/kadu_big.png"
+	rm -f "$(DESTDIR)/usr/share/pixmaps/kadu-48.png"
 	rm -f "$(DESTDIR)/usr/share/pixmaps/kadu.png"
-	rm -f "$(DESTDIR)/usr/share/pixmaps/kadu_mini.png"
+	rm -f "$(DESTDIR)/usr/share/pixmaps/kadu-16.png"

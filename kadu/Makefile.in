@@ -136,7 +136,6 @@ history.cpp history.h history_moc.cpp \
 ignore.cpp ignore.h ignore_moc.cpp \
 kadu.cpp kadu.h kadu_moc.cpp \
 main.cpp \
-message.cpp message.h message_moc.cpp \
 message_box.cpp message_box.h message_box_moc.cpp \
 misc.cpp misc.h misc_moc.cpp\
 password.cpp password.h password_moc.cpp \
@@ -188,18 +187,17 @@ am_kadu_OBJECTS = about.$(OBJEXT) about_moc.$(OBJEXT) adduser.$(OBJEXT) \
 	events_moc.$(OBJEXT) expimp.$(OBJEXT) expimp_moc.$(OBJEXT) \
 	history.$(OBJEXT) history_moc.$(OBJEXT) ignore.$(OBJEXT) \
 	ignore_moc.$(OBJEXT) kadu.$(OBJEXT) kadu_moc.$(OBJEXT) \
-	main.$(OBJEXT) message.$(OBJEXT) message_moc.$(OBJEXT) \
-	message_box.$(OBJEXT) message_box_moc.$(OBJEXT) misc.$(OBJEXT) \
-	misc_moc.$(OBJEXT) password.$(OBJEXT) password_moc.$(OBJEXT) \
-	pending_msgs.$(OBJEXT) pending_msgs_moc.$(OBJEXT) \
-	personal_info.$(OBJEXT) personal_info_moc.$(OBJEXT) \
-	register.$(OBJEXT) register_moc.$(OBJEXT) search.$(OBJEXT) \
-	search_moc.$(OBJEXT) sms.$(OBJEXT) sms_moc.$(OBJEXT) \
-	sound.$(OBJEXT) sound_moc.$(OBJEXT) status.$(OBJEXT) \
-	status_moc.$(OBJEXT) tabbar.$(OBJEXT) tabbar_moc.$(OBJEXT) \
-	userbox.$(OBJEXT) userbox_moc.$(OBJEXT) userinfo.$(OBJEXT) \
-	userinfo_moc.$(OBJEXT) userlist.$(OBJEXT) \
-	userlist_moc.$(OBJEXT) updates.$(OBJEXT)
+	main.$(OBJEXT) message_box.$(OBJEXT) message_box_moc.$(OBJEXT) \
+	misc.$(OBJEXT) misc_moc.$(OBJEXT) password.$(OBJEXT) \
+	password_moc.$(OBJEXT) pending_msgs.$(OBJEXT) \
+	pending_msgs_moc.$(OBJEXT) personal_info.$(OBJEXT) \
+	personal_info_moc.$(OBJEXT) register.$(OBJEXT) \
+	register_moc.$(OBJEXT) search.$(OBJEXT) search_moc.$(OBJEXT) \
+	sms.$(OBJEXT) sms_moc.$(OBJEXT) sound.$(OBJEXT) \
+	sound_moc.$(OBJEXT) status.$(OBJEXT) status_moc.$(OBJEXT) \
+	tabbar.$(OBJEXT) tabbar_moc.$(OBJEXT) userbox.$(OBJEXT) \
+	userbox_moc.$(OBJEXT) userinfo.$(OBJEXT) userinfo_moc.$(OBJEXT) \
+	userlist.$(OBJEXT) userlist_moc.$(OBJEXT) updates.$(OBJEXT)
 kadu_OBJECTS = $(am_kadu_OBJECTS)
 
 DEFS = @DEFS@
@@ -225,9 +223,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/history_moc.Po ./$(DEPDIR)/ignore.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/ignore_moc.Po ./$(DEPDIR)/kadu.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/kadu_moc.Po ./$(DEPDIR)/main.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/message.Po ./$(DEPDIR)/message_box.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/message_box_moc.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/message_moc.Po ./$(DEPDIR)/misc.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/message_box.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/message_box_moc.Po ./$(DEPDIR)/misc.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/misc_moc.Po ./$(DEPDIR)/password.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/password_moc.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/pending_msgs.Po \
@@ -329,10 +326,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/kadu.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/kadu_moc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/message.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/message_box.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/message_box_moc.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/message_moc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/misc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/misc_moc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/password.Po@am__quote@
@@ -538,19 +533,19 @@ uninstall-am: uninstall-binPROGRAMS uninstall-info-am uninstall-local
 	$(QTMOCDIR)/moc -o $@ $<
 
 install-data-local:
-	@if test -w "/usr/share"; then \
+	@if test -w "$(DESTDIR)/usr/share"; then \
 		$(mkinstalldirs) "$(DESTDIR)/usr/share/applnk/Internet/"; \
 		echo "[Desktop Entry]" > "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop"; \
 		echo "Type=Application" >> "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop"; \
 		echo "Exec=$(bindir)/kadu" >> "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop"; \
 		echo "Icon=kadu.png" >> "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop"; \
-		echo "MiniIcon=kadu_mini.png" >> "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop"; \
+		echo "MiniIcon=kadu-16.png" >> "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop"; \
 		echo "Terminal=0" >> "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop"; \
 		echo "Name=Kadu" >> "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop"; \
 		$(mkinstalldirs) "$(DESTDIR)/usr/share/pixmaps/"; \
-		$(INSTALL_DATA) hi48-app-kadu.png "$(DESTDIR)/usr/share/pixmaps/kadu_big.png"; \
+		$(INSTALL_DATA) hi48-app-kadu.png "$(DESTDIR)/usr/share/pixmaps/kadu-48.png"; \
 		$(INSTALL_DATA) hi32-app-kadu.png "$(DESTDIR)/usr/share/pixmaps/kadu.png"; \
-		$(INSTALL_DATA) hi16-app-kadu.png "$(DESTDIR)/usr/share/pixmaps/kadu_mini.png"; \
+		$(INSTALL_DATA) hi16-app-kadu.png "$(DESTDIR)/usr/share/pixmaps/kadu-16.png"; \
 		echo ""; \
 		echo "Icons installed to $(DESTDIR)/usr/share/pixmaps"; \
 		echo "Link(kadu.desktop) installed to $(DESTDIR)/usr/share/applnk/Internet"; \
@@ -560,16 +555,16 @@ install-data-local:
 		echo "         *******************************************************************"; \
 		echo "         *                                                                 *"; \
 		echo "         *          You don't have permission to write /usr/share          *"; \
-		echo "         *          Icons and link(kadu.desktop) won't be installed          *"; \
+		echo "         *          Icons and link(kadu.desktop) won't be installed        *"; \
 		echo "         *                                                                 *"; \
 		echo "         *******************************************************************"; \
 		echo "";\
 	fi;
 uninstall-local:
 	rm -f "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop"
-	rm -f "$(DESTDIR)/usr/share/pixmaps/kadu_big.png"
+	rm -f "$(DESTDIR)/usr/share/pixmaps/kadu-48.png"
 	rm -f "$(DESTDIR)/usr/share/pixmaps/kadu.png"
-	rm -f "$(DESTDIR)/usr/share/pixmaps/kadu_mini.png"
+	rm -f "$(DESTDIR)/usr/share/pixmaps/kadu-16.png"
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
