@@ -2,9 +2,9 @@ MODULE_SOURCES=player_arts.cpp
 MODULE_MOC_HEADERS=player_arts.h
 
 MODULE_INCLUDES=artsc.h
-MODULE_INCLUDES_PATH="$KDEDIR/include/artsc /usr/include/artsc /usr/kde/3.1/include/artsc /usr/kde/3.2/include/artsc /usr/kde/3.3/include/artsc /usr/include/kde/artsc /opt/kde/include/artsc /opt/kde3/include/artsc /usr/local/include/artsc"
+MODULE_INCLUDES_PATH="$KDEDIR/include/artsc `kde-config --prefix`/include/artsc /usr/include/artsc /usr/kde/3.1/include/artsc /usr/kde/3.2/include/artsc /usr/kde/3.3/include/artsc /usr/kde/3.4/include/artsc /usr/include/kde/artsc /opt/kde/include/artsc /opt/kde3/include/artsc /usr/local/include/artsc"
 MODULE_LIBS=artsc
-MODULE_LIBS_PATH="$KDEDIR/lib /usr/kde/3.1/lib /usr/kde/3.2/lib /usr/kde/3.3/lib /opt/kde/lib /opt/kde3/lib /usr/local/lib"
+MODULE_LIBS_PATH="$KDEDIR/lib `kde-config --prefix`/lib /usr/kde/3.1/lib /usr/kde/3.2/lib /usr/kde/3.3/lib /usr/kde/3.4/lib /opt/kde/lib /opt/kde3/lib /usr/local/lib"
 
 MODULE_3RDPARTY="arts_connector"
 MODULE_TOOLS="artsc-config"
