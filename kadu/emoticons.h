@@ -39,7 +39,7 @@ class EmoticonsManager
 		const QStringList& themes();
 		void setEmoticonsTheme(const QString& theme);
 		QString themePath();
-		void expandEmoticons(QString& text,const QColor& bgcolor);
+		void expandEmoticons(HtmlDocument& text,const QColor& bgcolor);
 		int selectorCount();
 		QString selectorString(int emot_num);
 		QString selectorAnimPath(int emot_num);

@@ -160,33 +160,35 @@ QString EmoticonsManager::themePath()
 	return QString(DATADIR)+"/apps/kadu/themes/emoticons/"+config.emoticons_theme;
 };
 
-void EmoticonsManager::expandEmoticons(QString& text,const QColor& bgcolor)
+void EmoticonsManager::expandEmoticons(HtmlDocument& doc,const QColor& bgcolor)
 {
-	QString new_text;
 	kdebug("Expanding emoticons...\n");
-	for(int j=0; j<text.length(); j++)
+	for(int e_i=0; e_i<doc.countElements(); e_i++)
 	{
-		QValueList<EmoticonsListItem>::iterator e=Aliases.end();
-		for(QValueList<EmoticonsListItem>::iterator i=Aliases.begin(); i!=Aliases.end(); i++)
+		if(doc.isTagElement(e_i)) continue;
+		QString text=doc.elementText(e_i);
+		for(int j=0; j<text.length(); j++)
 		{
-			if(text.mid(j,(*i).alias.length())==(*i).alias)
-				if(e==Aliases.end()||(*i).alias.length()>(*e).alias.length())
-					e=i;
+			QValueList<EmoticonsListItem>::iterator e=Aliases.end();
+			for(QValueList<EmoticonsListItem>::iterator i=Aliases.begin(); i!=Aliases.end(); i++)
+			{
+				if(text.mid(j,(*i).alias.length())==(*i).alias)
+					if(e==Aliases.end()||(*i).alias.length()>(*e).alias.length())
+						e=i;
+			};
+			if(e!=Aliases.end())
+			{
+				QString new_text="<IMG src=\"";
+				if(config.emoticons_style==EMOTS_ANIMATED)
+					new_text+=(*e).anim;
+				else
+					new_text+=(*e).stat;			
+				new_text+="\" bgcolor="+bgcolor.name()+">";
+				doc.splitElement(e_i,j,(*e).alias.length());
+				doc.setElementValue(e_i,new_text,true);
+			}
 		};
-		if(e!=Aliases.end())
-		{
-			new_text+=QString("__escaped_lt__IMG src=");
-			if(config.emoticons_style==EMOTS_ANIMATED)
-				new_text+=(*e).anim;
-			else
-				new_text+=(*e).stat;			
-			new_text+=" bgcolor="+bgcolor.name()+"__escaped_gt__";
-			j+=(*e).alias.length()-1;
-		}
-		else
-			new_text+=text[j];
 	};
-	text=new_text;
 	kdebug("Emoticons expanded...\n");
 };
 

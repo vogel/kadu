@@ -507,46 +507,43 @@ void Chat::regEncryptSend(void) {
 /* convert special characters into emoticons, HTML into plain text and so forth */
 QString Chat::convertCharacters(QString edit, bool me) {
 
-	// escape'ujemy http:// i ftp:// zeby emotikony nie bruzdzily
-	edit.replace(QRegExp("http://"),"___escaped_http___");
-	edit.replace(QRegExp("ftp://"),"___escaped_ftp___");
-	
+	// zmieniamy windowsowe \r\n na unixowe \n
+	edit.replace( QRegExp("\r\n"), "\n" );
+	edit.replace( QRegExp("  "), " &nbsp;" );
+	edit.replace( QRegExp("\n"), "<BR>" );
+
+	HtmlDocument doc;
+	doc.parseHtml(edit);
+	fprintf(stderr,(QString("1: ")+edit+"\n").local8Bit().data());
+	fprintf(stderr,(QString("2: ")+doc.generateHtml()+"\n").local8Bit().data());
+
+	// detekcja adresow url
+	QRegExp url_regexp("(http://|www\\.|ftp://)[a-zA-Z0-9\\-\\._/~?=&#\\+%:;,!]+");
+	for(int i=0; i<doc.countElements(); i++)
+	{
+		if(doc.isTagElement(i))
+			continue;
+		QString text=doc.elementText(i);
+		int p=url_regexp.search(text);
+		if (p < 0)
+			continue;
+		int l=url_regexp.matchedLength();
+		QString link="<a href=\""+text.mid(p,l)+"\">"+
+			text.mid(p,l)+"</a>";
+		doc.splitElement(i,p,l);
+		doc.setElementValue(i,link,true);
+	};
+
 	if(config.emoticons_style!=EMOTS_NONE)
 	{
 		body->mimeSourceFactory()->addFilePath(emoticons.themePath());
 		if (me)
-			emoticons.expandEmoticons(edit,config.colors.mychatBg);
+			emoticons.expandEmoticons(doc,config.colors.mychatBg);
 		else
-			emoticons.expandEmoticons(edit,config.colors.usrchatBg);
+			emoticons.expandEmoticons(doc,config.colors.usrchatBg);
 	};
 	
-	// przywracamy http:// i ftp://
-	edit.replace(QRegExp("___escaped_http___"),"http://");
-	edit.replace(QRegExp("___escaped_ftp___"),"ftp://");
-	
-	// zmieniamy windowsowe \r\n na unixowe \n
-	edit.replace( QRegExp("\r\n"), "\n" );
-//	edit.replace( QRegExp("<"), "&lt;" );
-//	edit.replace( QRegExp(">"), "&gt;" );
-	edit.replace( QRegExp("__escaped_lt__"), "<");
-	edit.replace( QRegExp("__escaped_gt__"), ">");
-	edit.replace( QRegExp("  "), " &nbsp;" );
-	edit.replace( QRegExp("\n"), "<BR>" );
-
-	// detekcja adresow url
-	QRegExp url_regexp("(http://|www\\.|ftp://)[a-zA-Z0-9\\-\\._/~?=&#\\+%:;,!]+");
-	for (int s=0; s<edit.length(); s++)
-	{
-		int p=url_regexp.search(edit,s);
-		if (p < 0)
-			break;
-		int l=url_regexp.matchedLength();
-		QString link="<a href=\""+edit.mid(p,l)+"\">"+
-			edit.mid(p,l)+"</a>";
-		edit=edit.left(p)+link+edit.mid(p+l);
-		s=p+link.length();
-	};
-
+	edit=doc.generateHtml();
 	return edit;
 }
 

@@ -3,6 +3,11 @@ lub rozbudowy. Postaæ (x/y) oznacza, ¿e x jest pomys³odawc± lub
 podes³a³ patcha, a zrobi³ to kto¶ oznaczony przez y. Je¶li jest
 w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
++++ wersja 0.3.4-rc5
+* pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci
+  (klasa HtmlDocument) i wy³awiania emotów i url-i. Naprawione
+  problemy z emotikonami w url-ach i w napisach takich jak "<<" (adrian)
+
 +++ wersja 0.3.4-rc4
 * kadu nie pokazuje fa³szywych statusów ukrytych w userboksie (chilek)
 * Monisia wysy³a wiadomo¶ci klasy "0", a my jeste¶my na to odporni (chilek)

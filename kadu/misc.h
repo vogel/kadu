@@ -116,5 +116,64 @@ protected:
 
 };
 
+/**
+	Klasa reprezentuj±ca dokument html. Przechowuje
+	listê elementów. Element mo¿e byæ tagiem html
+	albo kawa³kiem tekstu.
+**/
+class HtmlDocument
+{
+	private:
+		struct Element
+		{
+			QString text;
+			bool tag;
+		};
+		QValueList<Element> Elements;
+		void escapeText(QString& text);
+		void unescapeText(QString& text);
+		void addElement(Element e);
+
+	public:
+		/**
+			Parsuje podany napis zgodny ze struktur± html
+			i otrzymane dane przypisuje do dokumentu.
+			@param html napis do skonwertowania
+		**/
+		void parseHtml(const QString& html);
+		/**
+			Na podstawie zawarto¶ci dokumentu generuje
+			napis zgodny ze struktur± html. Znaki specjalne
+			wchodz±ce w sk³ad elementów nie bêd±cych tagami
+			html s± escapowane.
+		**/
+		QString generateHtml();
+		/**
+			Zwraca ilo¶æ elementów wchodz±cych w sk³ad
+			dokumentu.
+		**/
+		int countElements();
+		/**
+			Sprawdza czy element o podanym indeksie jest
+			tagiem html czy zwyk³ym tekstem.
+		**/
+		bool isTagElement(int index);
+		/**
+			Zwraca tekst elementu o podanym indeksie.
+		**/
+		QString elementText(int index);
+		/**
+			Ustawia tekst i typ elementu o podanym indeksie.
+		**/			
+		void setElementValue(int index,const QString& text,bool tag=false);
+		/**
+			Wydziela z elementu podany fragment tekstu.
+			Element mo¿e pozostaæ jeden albo
+			ulec podzieleniu na dwa lub nawet trzy elementy.
+			Funkcja zmienia warto¶æ argumentu index, aby
+			indeks wydzielonego elementu by³ aktualny.
+		**/
+		void splitElement(int& index,int start,int length);
+};
 
 #endif

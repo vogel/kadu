@@ -722,3 +722,117 @@ void HotKey::keyReleaseEvent(QKeyEvent *e)
     if (text().at(text().length()-1)==QChar(43)) 
     setText("");
 }
+
+void HtmlDocument::escapeText(QString& text)
+{
+	text.replace(QRegExp("&"), "&amp;");
+	text.replace(QRegExp("<"), "&lt;");
+	text.replace(QRegExp(">"), "&gt;");				
+}
+
+void HtmlDocument::unescapeText(QString& text)
+{
+	text.replace(QRegExp("&amp;"), "&");
+	text.replace(QRegExp("&lt;"), "<");
+	text.replace(QRegExp("&gt;"), ">");
+};
+
+void HtmlDocument::addElement(Element e)
+{
+	unescapeText(e.text);
+	Elements.append(e);
+};
+
+void HtmlDocument::parseHtml(const QString& html)
+{
+	Element e;
+	e.tag=false;
+	for(int i=0; i<html.length(); i++)
+	{
+		QChar ch=html[i];
+		switch(ch)
+		{
+			case '<':
+				if(!e.tag)
+				{
+					if(e.text!="")
+						addElement(e);
+					e.tag=true;
+					e.text="<";
+				};
+				break;
+			case '>':
+				if(e.tag)
+				{
+					e.text+='>';
+					addElement(e);
+					e.tag=false;
+					e.text="";
+				};
+				break;
+			default:
+				e.text+=ch;
+		};
+	};
+	if(e.text!="")
+		addElement(e);
+};
+
+QString HtmlDocument::generateHtml()
+{
+	QString html;
+	for(int i=0; i<Elements.size(); i++)
+	{
+		Element e=Elements[i];
+		if(!e.tag)
+			escapeText(e.text);
+		html+=e.text;
+	};
+	return html;
+};
+
+int HtmlDocument::countElements()
+{
+	return Elements.size();
+};
+
+bool HtmlDocument::isTagElement(int index)
+{
+	return Elements[index].tag;
+};
+
+QString HtmlDocument::elementText(int index)
+{
+	return Elements[index].text;
+};
+
+void HtmlDocument::setElementValue(int index,const QString& text,bool tag)
+{
+	Element& e=Elements[index];
+	e.text=text;
+	e.tag=tag;
+};
+
+void HtmlDocument::splitElement(int& index,int start,int length)
+{
+	Element& e=Elements[index];
+	if(start>0)
+	{
+		Element pre;
+		pre.tag=e.tag;
+		pre.text=e.text.left(start);
+		Elements.insert(Elements.at(index),pre);
+		index++;
+	};
+	if(start+length<e.text.length())
+	{
+		Element post;
+		post.tag=e.tag;
+		post.text=e.text.right(e.text.length()-(start+length));
+		if(index<Elements.size())
+			Elements.insert(Elements.at(index),post);
+		else
+			Elements.append(post);
+	};
+	e.text=e.text.mid(start,length);
+};

@@ -9,8 +9,9 @@
 
 * TODO dla wersji 0.3.4
 
- ! poprawiæ escapowanie znaków specjalnych, m.in. ¼le escape'uje <<
  ! naprawiæ b³êdy przy problemach z po³±czeniem
+ ! ró¿ne dziwne b³êdy zwi±zane z GG 6.0. (libgadu?)
+ ! rejestracja, zmiana has³a z GG 6.0 (czekamy na libgadu?)
 
 * TODO dla wersji 0.3.5 lub pó¼niejszych
 
