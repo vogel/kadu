@@ -1,4 +1,4 @@
-/* $Id: dcc.c,v 1.31 2004/12/26 03:41:15 joi Exp $ */
+/* $Id: dcc.c,v 1.32 2004/12/28 22:16:38 joi Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -1073,6 +1073,15 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 					utmp = sizeof(buf);
 				
 				gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() offset=%d, size=%d\n", h->offset, h->file_info.size);
+
+				/* koniec pliku? */
+				if (h->file_info.size == 0) {
+					gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() read() reached eof on empty file\n");
+					e->type = GG_EVENT_DCC_DONE;
+
+					return e;
+				}
+
 				lseek(h->file_fd, h->offset, SEEK_SET);
 
 				size = read(h->file_fd, buf, utmp);
