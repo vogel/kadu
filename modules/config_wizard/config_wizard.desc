@@ -1,0 +1,6 @@
+[Module]
+Description=Configuration wizard
+Description[pl]=Kreator konfiguracji
+Author=Dorregaray
+Dependencies=account_management
+LoadByDefault=true
