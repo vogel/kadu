@@ -812,11 +812,18 @@ void Kadu::enterEvent (QEvent * e) {
 
 /* invoked every config.autoawaytime of idleness seconds */
 void Kadu::autoAway(void) {
-	if (!config.autoaway || i_wanna_be_invisible || i_am_busy || !socket_active || !userlist_sent)
+//	if (!config.autoaway || i_wanna_be_invisible || i_am_busy || !socket_active || !userlist_sent)
+//		return;
+	if (!config.autoaway)
 		return;
 	beforeAutoAway = getActualStatus();
-	fprintf(stderr, "KK Kadu::autoAway(): going auto away\n");
-	setStatus(GG_STATUS_BUSY);
+	fprintf(stderr, "KK Kadu::autoAway(): checking whether to go auto away\n");
+	switch (beforeAutoAway) {
+		case GG_STATUS_AVAIL_DESCR: setStatus(GG_STATUS_BUSY_DESCR); break;
+		case GG_STATUS_AVAIL: setStatus(GG_STATUS_BUSY); break;
+		default: return;
+		}
+
 	i_am_busy = true;
 	autoawayed = true;
 	autoaway->start(config.autoawaytime * 1000, TRUE);
