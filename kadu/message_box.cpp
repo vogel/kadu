@@ -1,0 +1,124 @@
+#include "message_box.h"
+
+#include <qlayout.h>
+#include <qhbox.h>
+#include <qlabel.h>
+#include <qpushbutton.h>
+#include "misc.h"
+
+const int MessageBox::OK       = 1;  // 00001
+const int MessageBox::CANCEL   = 2;  // 00010
+const int MessageBox::YES      = 4;  // 00100
+const int MessageBox::NO       = 8;  // 01000
+const int MessageBox::PROGRESS = 16; // 10000
+
+MessageBox::MessageBox(const QString& message,int components,bool modal)
+	: QDialog(NULL,NULL,modal,WType_TopLevel|WStyle_Customize|WStyle_DialogBorder|WStyle_Title|WStyle_SysMenu)
+{
+	QVBoxLayout* vbox=new QVBoxLayout(this);
+	vbox->setMargin(20);
+	vbox->setSpacing(20);
+	if(message.length()>0)
+	{
+		QLabel* l=new QLabel(this);
+		l->setText(message);
+		vbox->addWidget(l,0,AlignCenter);
+	};
+	if(components&PROGRESS)
+	{
+		Progress=new QProgressBar(this);
+		vbox->addWidget(Progress,0,AlignCenter);
+	}
+	else
+		Progress=NULL;
+	QHBoxLayout* hbox=new QHBoxLayout(vbox);
+	QHBox* buttons=new QHBox(this);
+	buttons->setSpacing(20);
+	hbox->addWidget(buttons,0,AlignCenter);
+	if(components&OK)
+	{
+		QPushButton* b=new QPushButton(buttons);
+		b->setText(i18n("&OK"));
+		connect(b,SIGNAL(clicked()),this,SLOT(okClicked()));
+	};
+	if(components&YES)
+	{
+		QPushButton* b=new QPushButton(buttons);
+		b->setText(i18n("&Yes"));
+		connect(b,SIGNAL(clicked()),this,SLOT(yesClicked()));
+	};
+	if(components&NO)
+	{
+		QPushButton* b=new QPushButton(buttons);
+		b->setText(i18n("&No"));
+		connect(b,SIGNAL(clicked()),this,SLOT(noClicked()));
+	};
+	if(components&CANCEL)
+	{
+		QPushButton* b=new QPushButton(buttons);
+		b->setText(i18n("&Cancel"));
+		connect(b,SIGNAL(clicked()),this,SLOT(cancelClicked()));
+	};
+	buttons->setMaximumSize(buttons->sizeHint());
+};
+
+void MessageBox::okClicked()
+{
+	emit okPressed();
+	accept();
+};
+
+void MessageBox::cancelClicked()
+{
+	emit cancelPressed();
+	reject();
+};
+
+void MessageBox::yesClicked()
+{
+	emit yesPressed();
+	accept();
+};
+
+void MessageBox::noClicked()
+{
+	emit noPressed();
+	reject();
+};
+
+void MessageBox::setTotalSteps(int s)
+{
+	if(Progress!=NULL)
+		Progress->setTotalSteps(s);
+};
+
+void MessageBox::setProgress(int p)
+{
+	if(Progress!=NULL)
+		Progress->setProgress(p);
+};
+
+void MessageBox::status(const QString& message)
+{
+	MessageBox* m=new MessageBox(message);
+	m->show();
+	m->repaint();
+	Boxes.insert(message,m);
+};
+
+bool MessageBox::ask(const QString& message)
+{
+	MessageBox* m=new MessageBox(message,YES|NO,true);
+	return (m->exec()==Accepted);
+};
+
+void MessageBox::close(const QString& message)
+{
+	if(Boxes.contains(message))
+	{
+		Boxes[message]->accept();
+		Boxes.remove(message);
+	};
+};
+
+QMap<QString,MessageBox*> MessageBox::Boxes;

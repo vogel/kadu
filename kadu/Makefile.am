@@ -18,6 +18,7 @@ ignore.cpp ignore.h ignore_moc.cpp \
 kadu.cpp kadu.h kadu_moc.cpp \
 main.cpp \
 message.cpp message.h message_moc.cpp \
+message_box.cpp message_box.h message_box_moc.cpp \
 misc.cpp misc.h misc_moc.cpp\
 network.cpp \
 password.cpp password.h password_moc.cpp \
