@@ -5,6 +5,9 @@
 * mo¿na dodawaæ wielu u¿ytkowników, którzy nie maj± swojego uina
 * dodane czyszczenie listy u¿ytkowników w oknie importu, gdy importujemy listê
   u¿ytkowników z pliku
+* mo¿liwo¶æ usuniêcia z listy wielu u¿ytkowników na raz
+* okno dodawania u¿ytkownika: nie mo¿na dodaæ do listy u¿ytkownika, który
+  ma puste pole "altnick"
 
 +++ wersja 0.3.3-pre4
 * przy imporcie listy u¿ytkowników ustawiamy domy¶lne atrybuty u¿ytkowników

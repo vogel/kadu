@@ -26,6 +26,7 @@
 #include <qtabbar.h>
 #include <kpopupmenu.h>
 #include <qnetworkprotocol.h>
+#include <qstringlist.h>
 #include "userlist.h"
 #include "userbox.h"
 #include "pending_msgs.h"
@@ -152,7 +153,7 @@ class Kadu : public QMainWindow
 			const QString& NickName,const QString& AltNick,
 			const QString& Mobile,const QString& Uin,const int Status,
 			const QString& Group,const QString& Description, const bool Anonymous = false);
-		void removeUser(QString &, bool);
+		void removeUser(QStringList &, bool);
 		void refreshGroupTabBar();
 		void setClosePermitted(bool permitted);
     

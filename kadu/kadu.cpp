@@ -63,6 +63,7 @@
 #include <qpainter.h>
 #include <qmenubar.h>
 #include <qnetworkprotocol.h>
+#include <qstringlist.h>
 
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -673,15 +674,19 @@ void Kadu::userListStatusModified(UserListElement *user)
 			chats[i].ptr->setTitle();
 };
 
-void Kadu::removeUser(QString &username, bool permanently = false) {
+void Kadu::removeUser(QStringList &users, bool permanently = false) {
+	int i;
 
-	UserBox::all_removeUser(username);	
+	for (i = 0; i < users.count(); i++)
+		UserBox::all_removeUser(users[i]);
 	UserBox::all_refresh();
 
-	UserListElement user = userlist.byAltNick(username);
-	if (!user.anonymous)
-		gg_remove_notify(sess, user.uin);
-    	userlist.removeUser(user.altnick);
+	for (i = 0; i < users.count(); i++) {
+		UserListElement user = userlist.byAltNick(users[i]);
+		if (!user.anonymous && user.uin)
+			gg_remove_notify(sess, user.uin);
+		userlist.removeUser(user.altnick);
+		}
 
 	switch (QMessageBox::information(kadu, "Kadu", i18n("Save current userlist to file?"), i18n("Yes"), i18n("No"), QString::null, 0, 1) ) {
 		case 0: // Yes?
@@ -827,7 +832,7 @@ void Kadu::commandParser (int command) {
 	SearchDialog *sd;
 	UinsList uins;
 	UserListElement user;
-	QString tmp;
+	QStringList users;
 	QString keyfile_path;
 	QString mykey;
 	QFile keyfile;
@@ -849,8 +854,10 @@ void Kadu::commandParser (int command) {
 			openChat(uins);
 			break;
 		case KADU_CMD_REMOVE_USER:
-			tmp = userbox->currentText();
-			removeUser(tmp);
+			for (i = 0; i < userbox->count(); i++)
+				if (userbox->isSelected(i))
+					users.append(userbox->text(i));
+			removeUser(users);
 			break;
 		case KADU_CMD_DELETE_HISTORY:
 			for (i = 0; i < userbox->count(); i++)
