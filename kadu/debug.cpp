@@ -1,6 +1,6 @@
 #include "debug.h"
 
-#ifdef DEBUG_MODE
+#ifdef DEBUG_ENABLED
 
 #include <qmutex.h>
 #include <stdio.h>

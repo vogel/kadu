@@ -7340,7 +7340,7 @@ fi
 if test "$enable_debug" = "yes"; then
 
 cat >>confdefs.h <<\_ACEOF
-#define DEBUG_MODE 1
+#define DEBUG_ENABLED 1
 _ACEOF
 
 	CXXFLAGS="$CXXFLAGS -ggdb"
