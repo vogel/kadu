@@ -1137,8 +1137,14 @@ void HttpClient::onConnected()
 {
 	QString query = (PostData.size() > 0 ? "POST" : "GET");
 	query += " ";
-	if ((Path == "" || Path[0] != '/')&&Path.left(7)!="http://")
+	
+	if(Path.left(7)!="http://" && config_file.readBoolEntry("Network", "UseProxy"))
+		query += "http://" + Host;		
+
+	if ((Path == "" || Path[0] != '/') && Path.left(7)!="http://")
 		query += '/';
+		
+
 	query += Path;
 	query += " HTTP/1.1\r\n";
 	query += "Host: " + Host + "\r\n";
@@ -1306,7 +1312,12 @@ void HttpClient::get(QString path)
 	Data.resize(0);
 	PostData.resize(0);
 	HeaderParsed=false;
-	Socket.connectToHost(Host,80);
+	if(config_file.readBoolEntry("Network", "UseProxy", false))
+		Socket.connectToHost(
+			config_file.readEntry("Network", "ProxyHost"),
+			config_file.readNumEntry("Network", "ProxyPort"));
+	else
+		Socket.connectToHost(Host,80);
 }
 
 void HttpClient::post(QString path,const QByteArray& data)
