@@ -11,7 +11,7 @@ void ConfigFile::sync() {
 }
 
 void ConfigFile::setGroup(const QString &name) {
-	struct KaduConfigGroup newgroup;
+	struct ConfigFileGroup newgroup;
 	int i;
 
 	for (i = 0; i < groups.count(); i++)
