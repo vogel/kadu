@@ -18,6 +18,7 @@
 #include <qmessagebox.h>
 #include <qhbox.h>
 #include <qtooltip.h>
+#include <qsplitter.h>
 
 #include <time.h>
 
@@ -1057,31 +1058,33 @@ History::History(UinsList uins): uins(uins), closeDemand(false), finding(false) 
 
 	QGridLayout *grid = new QGridLayout(this, 2, 5, 3, 3);
 
-	uinslb = new QListBox(this, "History uins");
-	dates = new QListBox(this, "History dates");
+	QSplitter *split1 = new QSplitter(Qt::Horizontal, this);
 
-	body = new QTextBrowser(this, "History browser");
+	uinslb = new QListBox(split1, "History uins");
+	QHBox *hbox1 = new QHBox(split1);
+	dates = new QListBox(hbox1, "History dates");
+
+	QVBox *vbox1 = new QVBox(hbox1);
+	body = new QTextBrowser(vbox1, "History browser");
 	body->setReadOnly(true);
 	body->setFont(config_file.readFontEntry("Look","ChatFont"));
 
-	QPushButton *searchbtn = new QPushButton(this);
+	QHBox *btnbox = new QHBox(vbox1);
+	QPushButton *searchbtn = new QPushButton(btnbox);
 	searchbtn->setText(tr("&Find"));
-	QPushButton *searchnextbtn = new QPushButton(this);
+	QPushButton *searchnextbtn = new QPushButton(btnbox);
 	searchnextbtn->setText(tr("Find &next"));
-	QPushButton *searchprevbtn = new QPushButton(this);
+	QPushButton *searchprevbtn = new QPushButton(btnbox);
 	searchprevbtn->setText(tr("Find &previous"));
 
-	grid->addMultiCellWidget(uinslb, 0, 1, 0, 0);
-	grid->addMultiCellWidget(dates, 0, 1, 1, 1);
-	grid->addMultiCellWidget(body, 0, 0, 2, 4);
-	grid->addWidget(searchbtn, 1, 2);
-	grid->addWidget(searchnextbtn, 1, 3);
-	grid->addWidget(searchprevbtn, 1, 4);
-	grid->setColStretch(0, 100);
-	grid->setColStretch(1, 1);
-	grid->setColStretch(2, 100);
-	grid->setColStretch(3, 100);
-	grid->setColStretch(4, 100);
+	hbox1->setStretchFactor(dates, 1);
+	hbox1->setStretchFactor(vbox1, 10);
+	QValueList<int> sizes;
+	sizes.append(1);
+	sizes.append(5);
+	split1->setSizes(sizes);
+	grid->addMultiCellWidget(split1, 0, 1, 0, 4);
+//	grid->setColStretch(4, 100);
 
 	connect(uinslb, SIGNAL(highlighted(QListBoxItem *)), this, SLOT(uinsClicked(QListBoxItem *)));
 	connect(dates, SIGNAL(highlighted(int)), this, SLOT(dateClicked(int)));

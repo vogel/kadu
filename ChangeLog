@@ -100,6 +100,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * w oknie historii pokazywani s± rozmówcy (chilek)
 * dodana mo¿liwo¶æ przegl±dania historii wys³anych smsów (chilek)
 * nie znika nam opis przy problemach z po³±czeniem? (chilek)
+* mo¿liwo¶æ regulacji szeroko¶ci listy rozmówców w oknie historii (chilek)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
