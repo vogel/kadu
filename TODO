@@ -1,4 +1,4 @@
-/** TODO, stan na 03/04/2003. **/
+/** TODO, stan na 16/04/2003. **/
 (TODO mo¿e byæ nieaktualne... zapraszamy na kadu.net/forum)
 
 
@@ -15,26 +15,32 @@
  TODO dla wersji 0.3.4
 -----------------------
 
+ ! dopracowaæ animowane emotikony
+ ! dopracowaæ wysy³anie sms'ów - dodatkowe komunikaty o b³êdach
+ + dopracowaæ grupy
+ + lepsza ob³uga historii
+ + mo¿liwo¶æ ustawienia czy historia rozmowy ma znikaæ po zamkniêciu okna
+ + zmiany statusu u¿ytkowników zapisuj± siê w oknie rozmowy i historii (opcja)
+ + okno rozmowy "wyp³ywa na wierzch" za ka¿d± now± wiadomo¶ci± (je¶li
+   odpowiednia opcja w oknie rozmowy jest w³±czona)
+ + okno rozmowy otwiera siê automatycznie, gdy nadejdzie wiadomo¶æ (opcja)
+ ! przetestowaæ wysy³anie plików
+ + mo¿liwo¶æ wznowienia transmisji plików
+
+
+ TODO dla wersji 0.3.5 lub pó¼niejszych
+----------------------------------------
+
  + dokoñczyæ rozmowy g³osowe
  ? dodawanie nieznanych u¿ytkowników z konferencji do listy jako opcja
    i ew. z listy userów w oknie konferencji
  ? wykrywanie niewidocznych jako opcja
- ! przetestowaæ wysy³anie plików
- + dopracowaæ grupy
- + wywoywanie domyslnego klienta e-mail i pozycja e-mail w info o kontaktach
+ + wywo³ywanie domyslnego klienta e-mail i pozycja e-mail w info o kontaktach
  + wysy³anie smsów do wielu osób jednoczesnie
  - mo¿liwo¶æ formatowania tekstu
  ? ustawienie miejsca wyskakiwania hinta zamiast ko³o tray'a
  ? podrêczne menu w oknie rozmowy
- + mo¿liwo¶æ ustawienia czy historia rozmowy ma znikaæ po zamkniêciu okna
- - intelegenta data w oknie rozmowy
- + lepsza ob³uga historii
- + okno rozmowy "wyp³ywa na wierzch" za ka¿d± now± wiadomo¶ci± (je¶li
-   odpowiednia opcja w oknie rozmowy jest w³±czona)
- + okno rozmowy otwiera siê automatycznie, gdy nadejdzie wiadomo¶æ (opcja)
- + zmiany statusu u¿ytkowników zapisuj± siê w oknie rozmowy i historii (opcja)
- ! przyspieszyæ wykrywanie emotikonek
- + mo¿liwo¶æ wznowienia transmisji plików
+ - inteligentna data w oknie rozmowy
 
  
  TODO dla wersji 0.4.0
@@ -44,9 +50,7 @@
    stabilny komunikator z kompletem opcji, wyrównanie poziomu
    mo¿liwo¶ci do orygina³u + nadliczbowe dodatki
  
- - animowane emotikony
  + dodaæ profile
- ? naprawiæ ikonkê w dock menu
  ? dodaæ wiêcej funkcji do dock menu (szukaj, dodaj, usuñ, odbierz)
  ? autostatus (zmiana z listy co jaki¶ czas)
  ! dodaæ do pliku AUTHORS sekcjê "Byli autorzy"
@@ -55,11 +59,11 @@
  TODO dla wersji pó¼niejszych
 ---------------------------------------- 
 
- + obs³uga libtlen
+ + mo¿liwo¶æ do³±czenia zewnêtrznego kodu (wtyczki)
  + zrobiæ skórki (Licq) 
  - fukcja "autopilot'a" czyli generowanie automatycznych wiadomo¶ci
-   jako odpowiedzi na czyje¶ zapytania
-   (kontynuowanie prac nad jêzykiem skryptowym v-user) 
- ? przechowywanie adresów pocztowych u¿ytkowników i uruchamianie klienta pocztowego
- - mechanizm plugin-ów
+   jako odpowiedzi na czyje¶ zapytania (uskryptowienie kadu) 
+ ? przechowywanie adresów pocztowych u¿ytkowników i
+   uruchamianie klienta pocztowego
  ? przezroczysto¶æ
+
