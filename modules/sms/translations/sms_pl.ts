@@ -33,15 +33,15 @@ Zaznacz i wpisz w to pole poprawny ciąg. Argumenty oddziel spacjami. Argument %
     </message>
     <message>
         <source>Gateways priority</source>
-        <translation type="unfinished"></translation>
+        <translation>Priorytety bramek</translation>
     </message>
     <message>
         <source>Up</source>
-        <translation type="unfinished"></translation>
+        <translation>Przenieś w górę</translation>
     </message>
     <message>
         <source>Down</source>
-        <translation type="unfinished"></translation>
+        <translation>przenieś w dół</translation>
     </message>
 </context>
 <context>
@@ -128,14 +128,14 @@ Zaznacz i wpisz w to pole poprawny ciąg. Argumenty oddziel spacjami. Argument %
     </message>
     <message>
         <source>Mobile number is incorrect or gateway is not available</source>
-        <translation type="unfinished"></translation>
+        <translation>Numer telefonu jest niepoprawny lub bramka jest niedostępna</translation>
     </message>
 </context>
 <context>
     <name>SmsSlots</name>
     <message>
         <source>Send SMS</source>
-        <translation type="unfinished">Wyślij SMS</translation>
+        <translation>Wyślij SMS</translation>
     </message>
 </context>
 </TS>
