@@ -260,7 +260,7 @@ void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)
 		}
 }
 
-void eventGotUserlist(struct gg_event * e) {
+void eventGotUserlist(struct gg_event *e) {
 	struct gg_notify_reply *n;
 	unsigned int oldstatus;
 	int i;
@@ -330,13 +330,16 @@ void eventGotUserlist(struct gg_event * e) {
 				break;
 			}
 		if (n->status != GG_STATUS_NOT_AVAIL)
-			user.status = n->status;
+//			user.status = n->status;
+			userlist.changeUserStatus(n->uin, n->status);
 		else
 			if (user.status == GG_STATUS_NOT_AVAIL
 				|| user.status == GG_STATUS_INVISIBLE2)
-				user.status = GG_STATUS_INVISIBLE2;
+//				user.status = GG_STATUS_INVISIBLE2;
+				userlist.changeUserStatus(n->uin, GG_STATUS_INVISIBLE2);
 			else
-				user.status = GG_STATUS_NOT_AVAIL;
+//				user.status = GG_STATUS_NOT_AVAIL;
+				userlist.changeUserStatus(n->uin, GG_STATUS_NOT_AVAIL);
 
 		for (i = 0; i < chats.count(); i++)
 			if (chats[i].uins.contains(n->uin))
@@ -366,14 +369,14 @@ void eventStatusChange(struct gg_event * e) {
 
 	oldstatus = user.status;
 
-	user.status = e->event.status.status;
-
 	if (user.description)
 		user.description.truncate(0);
-	if (ifStatusWithDescription(user.status)) {
+	if (ifStatusWithDescription(e->event.status.status)) {
 		cp_to_iso((unsigned char *)e->event.status.descr);
 		user.description.append(__c2q(e->event.status.descr));
 		}
+	userlist.changeUserStatus(e->event.status.uin, e->event.status.status);
+	
 	if (user.status == GG_STATUS_NOT_AVAIL || user.status == GG_STATUS_NOT_AVAIL_DESCR) {
 		user.ip = 0;
 		user.port = 0;

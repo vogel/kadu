@@ -651,10 +651,19 @@ void Kadu::userListModified()
 	refreshGroupTabBar();
 };
 
-void Kadu::userListStatusModified(UserListElement *ule)
+void Kadu::userListStatusModified(UserListElement *user)
 {
+	fprintf(stderr, "KK Kadu::userListStatusModified(): %d\n", user->uin);
+
+//	int index = userbox->currentItem();
+//	if (index >= 0) {
+//		QListBoxItem *lbi = userbox->item(index);
+//		UserListElement &u = userlist.byAltNick(lbi->text());
+//		if (u.uin == user->uin)
+//			currentChanged(lbi);
+//		}
 	for (int i = 0; i < chats.count(); i++)
-		if (chats[i].uins.contains(ule->uin))
+		if (chats[i].uins.contains(user->uin))
 			chats[i].ptr->setTitle();
 };
 
