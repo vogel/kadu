@@ -743,7 +743,7 @@ void DccManager::dccSent()
 
 void DccManager::timeout()
 {
-	MessageBox::wrn(tr("Direct connection timeout!\nThe receiver doesn't support direct connections or\nboth machines are behind routers with nat."));
+	MessageBox::wrn(tr("Direct connection timeout!\nThe receiver doesn't support direct connections or\nboth machines are behind routers with NAT."));
 }
 
 void DccManager::cancelTimeout()
@@ -852,7 +852,7 @@ void DccManager::sendFile()
 			}
 			else
 			{
-				TimeoutTimer.start(3000, TRUE);
+				TimeoutTimer.start(15000, TRUE);
 				gadu->dccRequest(user.uin);
 			}
 		}
