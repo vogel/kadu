@@ -1155,7 +1155,6 @@ void History::uinsChanged(QListViewItem *item) {
 
 void History::dateChanged(QListViewItem *item) {
 	int count, depth = item->depth();
-	count = history.getHistoryEntriesCount(uins);
 	switch (depth) {
 		case 1:
 			uinsChanged(item->parent());
@@ -1170,6 +1169,7 @@ void History::dateChanged(QListViewItem *item) {
 				item = item->nextSibling();
 			break;
 		}		
+	count = history.getHistoryEntriesCount(uins);
 	if (depth < 2) {
 		if (item)
 			count = ((DateListViewText *)item)->getDate().idx - start;
