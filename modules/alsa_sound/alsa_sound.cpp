@@ -372,10 +372,10 @@ void ALSAPlayerSlots::setFlushingEnabled(SoundDevice device, bool enabled)
 	ALSADevice *dev = (ALSADevice*)device;
 	if (!dev)
 		return;
-	if (dev->player)
+/*	if (dev->player)
 		snd_pcm_nonblock (dev->player, !enabled);
 	if (dev->recorder)
-		snd_pcm_nonblock (dev->recorder, !enabled);
+		snd_pcm_nonblock (dev->recorder, !enabled);*/
 }
 
 ALSAPlayerSlots *alsa_player_slots;
