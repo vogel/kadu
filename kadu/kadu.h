@@ -116,7 +116,6 @@ class Kadu : public QMainWindow
 		// trzeba to uporz±dkowaæ
 		bool autohammer;
 		bool doBlink;
-		AutoStatusTimer* autostatus_timer;
 
 	public slots:
 		void blink();

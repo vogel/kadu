@@ -80,40 +80,6 @@ int statusGGToStatusNr(int status) {
 	return -1;
 }
 
-AutoStatusTimer::AutoStatusTimer(QObject* parent)
-	: QTimer(parent,"AutoStatusTimer")
-{
-	length_buffor=0;
-	
-	connect(this, SIGNAL(timeout()), SLOT(onTimeout()));
-//	start(1000, TRUE);
-}
-
-void AutoStatusTimer::onTimeout()
-{
-	if (sess && ifStatusWithDescription(sess->status) && config_file.readBoolEntry("General","AddToDescription")) {
-		QFile f(ggPath("description"));
-		if (!f.open(IO_ReadOnly)) {
-			start(1000, TRUE);
-			return;
-			}
-		QTextStream s(&f);
-		QString new_description;
-		new_description = s.readLine();
-		f.close();
-		f.remove(ggPath("description"));
-		//if (new_description != own_description) {
-			kdebug("AutoStatus: adding \"%s\" to description\n", new_description.local8Bit().data());
-			//own_description = new_description;
-			own_description.truncate(own_description.length() - length_buffor);
-			own_description += new_description;
-			kadu->setStatus(sess->status);
-			length_buffor=new_description.length();
-			//}
-		}
-	start(1000, TRUE);
-}
-
 AutoAwayTimer::AutoAwayTimer(QObject* parent) : QTimer(parent,"AutoAwayTimer"), idletime(0) {
 	autoawayed = false;
 	qApp->installEventFilter(this);
@@ -241,8 +207,6 @@ void AutoAwayTimer::initModule()
 	ConfigDialog::addCheckBox("General", "grid", "Start docked", "RunDocked", false);
 	ConfigDialog::addCheckBox("General", "grid", "Private status", "PrivateStatus", false);
 	ConfigDialog::addCheckBox("General", "grid", "Check for updates", "CheckUpdates", true);
-	ConfigDialog::addCheckBox("General", "grid", "Add to description", "AddToDescription", false);
-
 };
 
 void AutoAwaySlots::onCreateConfigDialog()

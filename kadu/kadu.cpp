@@ -468,10 +468,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	if ((!config_file.readBoolEntry("General", "RunDocked")) || (!config_file.readBoolEntry("General", "UseDocking")))
 		show();
 
-	autostatus_timer = new AutoStatusTimer(this);
-	if (config_file.readBoolEntry("General", "AddToDescription"))
-		autostatus_timer->start(1000, true);
-
 	if (config_file.readNumEntry("General", "UIN")) {
 		uc = new UpdatesClass(config_file.readNumEntry("General", "UIN"));
 		if (config_file.readBoolEntry("General", "CheckUpdates"))
@@ -1810,15 +1806,11 @@ void KaduSlots::onDestroyConfigDialog()
 			trayicon->changeIcon();
 				       }
 	else
-		if (!config_file.readBoolEntry("General", "UseDocking") && trayicon) {
+		if (!config_file.readBoolEntry("General", "UseDocking") && trayicon)
+		{
 			delete trayicon;
 			trayicon = NULL;
-							  }
-
-	if (config_file.readBoolEntry("General", "AddToDescription") && !kadu->autostatus_timer->isActive())
-		kadu->autostatus_timer->start(1000, true);
-	else
-		kadu->autostatus_timer->stop();
+		}
 	kadu->showdesc(config_file.readBoolEntry("Look", "ShowInfoPanel"));
 	
 	if (config_file.readBoolEntry("Look", "MultiColumnUserbox"))

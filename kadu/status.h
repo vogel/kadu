@@ -15,20 +15,6 @@ bool isAvailableStatus(unsigned int);
 int getActualStatus();
 int statusGGToStatusNr(int);
 
-class AutoStatusTimer : public QTimer
-{
-	Q_OBJECT
-
-	private slots:
-		void onTimeout();
-
-	public:
-		AutoStatusTimer(QObject *parent = 0);
-
-	private:
-		int length_buffor;
-};
-
 class AutoAwayTimer : private QTimer
 {
 	Q_OBJECT
