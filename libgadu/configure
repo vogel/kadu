@@ -796,6 +796,7 @@ Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
   --with-pthread          Use pthread in resolver
+  --without-openssl       Compile without OpenSSL
 
 Some influential environment variables:
   CC          C compiler command
@@ -1156,6 +1157,7 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 ac_config_headers="$ac_config_headers config.h"
+
 
 
 
@@ -3451,7 +3453,6 @@ echo "${ECHO_T}no" >&6
 fi
 rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
 
-
 # Check whether --enable-debug or --disable-debug was given.
 if test "${enable_debug+set}" = set; then
   enableval="$enable_debug"
@@ -3459,14 +3460,10 @@ if test "${enable_debug+set}" = set; then
 fi;
 
 if test "x$enable_debug" = "xno"; then
-	CFLAGS="$CFLAGS -DGG_DEBUG_DISABLE"
-	CFLAGS_LIBGADU="$CFLAGS_LIBGADU -DGG_DEBUG_DISABLE"
-	strip_ekg="strip-ekg"
-	strip_ioctld="strip-ioctld"
-	strip_libgadu_so="strip-libgadu-so"
-else
-	CFLAGS="$CFLAGS -g"
+	{ echo "$as_me:$LINENO: WARNING: --disable-debug is obsolete." >&5
+echo "$as_me: WARNING: --disable-debug is obsolete." >&2;}
 fi
+
 
 
 # Check whether --enable-shared or --disable-shared was given.
@@ -4023,6 +4020,142 @@ echo "$as_me: failed program was:" >&5
 cat conftest.$ac_ext >&5
 fi
 rm -f core core.* *.core conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
+fi
+
+
+
+
+
+
+
+# Check whether --with-openssl or --without-openssl was given.
+if test "${with_openssl+set}" = set; then
+  withval="$with_openssl"
+  if test "x$withval" = "xno" ; then
+        without_openssl=yes
+      elif test "x$withval" != "xyes" ; then
+        with_arg=$withval/include:-L$withval/lib
+      fi
+fi;
+
+  if test "x$without_openssl" != "xyes" ; then
+    echo "$as_me:$LINENO: checking for ssl.h" >&5
+echo $ECHO_N "checking for ssl.h... $ECHO_C" >&6
+
+    for i in $with_arg \
+    		/usr/include: \
+		/usr/local/include:"-L/usr/local/lib" \
+		/usr/local/ssl/include:"-L/usr/local/ssl/lib" \
+		/usr/pkg/include:"-L/usr/pkg/lib" \
+		/usr/contrib/include:"-L/usr/contrib/lib" \
+		/usr/freeware/include:"-L/usr/freeware/lib32" \
+    		/sw/include:"-L/sw/lib" \
+    		/cw/include:"-L/cw/lib" \
+		/boot/home/config/include:"-L/boot/home/config/lib"; do
+
+      incl=`echo "$i" | sed 's/:.*//'`
+      lib=`echo "$i" | sed 's/.*://'`
+
+      if test -f $incl/openssl/ssl.h; then
+        echo "$as_me:$LINENO: result: $incl/openssl/ssl.h" >&5
+echo "${ECHO_T}$incl/openssl/ssl.h" >&6
+	ldflags_old="$LDFLAGS"
+	LDFLAGS="$lib -lssl -lcrypto"
+	save_LIBS="$LIBS"
+	LIBS="-lssl -lcrypto $LIBS"
+	echo "$as_me:$LINENO: checking for RSA_new in -lssl" >&5
+echo $ECHO_N "checking for RSA_new in -lssl... $ECHO_C" >&6
+if test "${ac_cv_lib_ssl_RSA_new+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lssl  $LIBS"
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+#include "confdefs.h"
+
+/* Override any gcc2 internal prototype to avoid an error.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+/* We use char because int might match the return type of a gcc2
+   builtin and then its argument prototype would still apply.  */
+char RSA_new ();
+#ifdef F77_DUMMY_MAIN
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+#endif
+int
+main ()
+{
+RSA_new ();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_cv_lib_ssl_RSA_new=yes
+else
+  echo "$as_me: failed program was:" >&5
+cat conftest.$ac_ext >&5
+ac_cv_lib_ssl_RSA_new=no
+fi
+rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+echo "$as_me:$LINENO: result: $ac_cv_lib_ssl_RSA_new" >&5
+echo "${ECHO_T}$ac_cv_lib_ssl_RSA_new" >&6
+if test $ac_cv_lib_ssl_RSA_new = yes; then
+
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_OPENSSL 1
+_ACEOF
+
+	  have_openssl=yes
+	  OPENSSL_LIBS="$lib -lssl -lcrypto"
+	  if test "x$incl" != "x/usr/include"; then
+    	    OPENSSL_INCLUDES="-I$incl"
+	  fi
+
+fi
+
+	LIBS="$save_LIBS"
+	LDFLAGS="$ldflags_old"
+	break
+      fi
+    done
+
+    if test "x$have_openssl" != "xyes"; then
+      echo "$as_me:$LINENO: result: not found" >&5
+echo "${ECHO_T}not found" >&6
+    fi
+  fi
+
+
+if test "x$have_openssl" = "xyes"; then
+	OBJS="$OBJS simlite.o"
+	LDFLAGS="$OPENSSL_LIBS $LDFLAGS"
+	LIBS_LIBGADU="$LIBS_LIBGADU $OPENSSL_LIBS"
+	CFLAGS="$CFLAGS $OPENSSL_INCLUDES"
+	CFLAGS_LIBGADU="$CFLAGS_LIBGADU $OPENSSL_INCLUDES"
+
+	sed 's/#undef __GG_LIBGADU_HAVE_OPENSSL/#define __GG_LIBGADU_HAVE_OPENSSL/' < lib/libgadu-config.h > lib/libgadu-config.h-
+	mv -f lib/libgadu-config.h- lib/libgadu-config.h
+
 fi
 
 
@@ -4592,6 +4725,7 @@ s,@LIBS@,$LIBS,;t t
 s,@CFLAGS_LIBGADU@,$CFLAGS_LIBGADU,;t t
 s,@LIBS_LIBGADU@,$LIBS_LIBGADU,;t t
 s,@OBJS@,$OBJS,;t t
+s,@IOCTLD_OBJS@,$IOCTLD_OBJS,;t t
 s,@strip_ekg@,$strip_ekg,;t t
 s,@strip_ioctld@,$strip_ioctld,;t t
 s,@strip_libgadu_so@,$strip_libgadu_so,;t t
@@ -4632,6 +4766,8 @@ s,@STRIP@,$STRIP,;t t
 s,@PTHREAD_CC@,$PTHREAD_CC,;t t
 s,@PTHREAD_LIBS@,$PTHREAD_LIBS,;t t
 s,@PTHREAD_CFLAGS@,$PTHREAD_CFLAGS,;t t
+s,@OPENSSL_LIBS@,$OPENSSL_LIBS,;t t
+s,@OPENSSL_INCLUDES@,$OPENSSL_INCLUDES,;t t
 CEOF
 
 _ACEOF

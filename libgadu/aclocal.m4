@@ -15,7 +15,7 @@ dnl Based on AC_NEED_STDINT_H by Guido Draheim <guidod@gmx.de> that can be
 dnl found at http://www.gnu.org/software/ac-archive/. Do not complain him
 dnl about this macro.
 dnl
-dnl $Id: aclocal.m4,v 1.13 2003/04/28 21:58:27 adrian Exp $
+dnl $Id: aclocal.m4,v 1.14 2003/06/22 12:11:20 adrian Exp $
 
 AC_DEFUN([AC_NEED_STDINT_H],
  [AC_MSG_CHECKING([for uintXX_t types])
@@ -267,4 +267,62 @@ else
 fi
 AC_LANG_RESTORE
 ])dnl ACX_PTHREAD
+
+dnl based on curses.m4 
+dnl $Id: aclocal.m4,v 1.14 2003/06/22 12:11:20 adrian Exp $
+
+AC_DEFUN(AC_CHECK_OPENSSL,[
+  AC_SUBST(OPENSSL_LIBS)
+  AC_SUBST(OPENSSL_INCLUDES)
+
+  AC_ARG_WITH(openssl,
+    [[  --without-openssl       Compile without OpenSSL]], 
+      if test "x$withval" = "xno" ; then
+        without_openssl=yes
+      elif test "x$withval" != "xyes" ; then
+        with_arg=$withval/include:-L$withval/lib
+      fi)
+
+  if test "x$without_openssl" != "xyes" ; then
+    AC_MSG_CHECKING(for ssl.h)
+
+    for i in $with_arg \
+    		/usr/include: \
+		/usr/local/include:"-L/usr/local/lib" \
+		/usr/local/ssl/include:"-L/usr/local/ssl/lib" \
+		/usr/pkg/include:"-L/usr/pkg/lib" \
+		/usr/contrib/include:"-L/usr/contrib/lib" \
+		/usr/freeware/include:"-L/usr/freeware/lib32" \
+    		/sw/include:"-L/sw/lib" \
+    		/cw/include:"-L/cw/lib" \
+		/boot/home/config/include:"-L/boot/home/config/lib"; do
+	
+      incl=`echo "$i" | sed 's/:.*//'`
+      lib=`echo "$i" | sed 's/.*://'`
+
+      if test -f $incl/openssl/ssl.h; then
+        AC_MSG_RESULT($incl/openssl/ssl.h)
+	ldflags_old="$LDFLAGS"
+	LDFLAGS="$lib -lssl -lcrypto"
+	save_LIBS="$LIBS"
+	LIBS="-lssl -lcrypto $LIBS"
+	AC_CHECK_LIB(ssl, RSA_new, [
+	  AC_DEFINE(HAVE_OPENSSL, 1, [define if you have OpenSSL])
+	  have_openssl=yes
+	  OPENSSL_LIBS="$lib -lssl -lcrypto"
+	  if test "x$incl" != "x/usr/include"; then
+    	    OPENSSL_INCLUDES="-I$incl"
+	  fi
+	])
+	LIBS="$save_LIBS"
+	LDFLAGS="$ldflags_old"
+	break
+      fi
+    done
+
+    if test "x$have_openssl" != "xyes"; then
+      AC_MSG_RESULT(not found)
+    fi
+  fi
+])
 
