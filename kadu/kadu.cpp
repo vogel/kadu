@@ -1728,7 +1728,7 @@ void KaduSlots::updatePreview()
 
 void Kadu::resizeEvent(QResizeEvent *)
 {
-	Userbox->all_refresh();
+//	Userbox->all_refresh();
 }
 
 /*void Kadu::moveEvent(QMoveEvent *e)

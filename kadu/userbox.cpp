@@ -786,6 +786,13 @@ void UserBox::initModule()
 	kdebugf2();
 }
 
+void UserBox::resizeEvent(QResizeEvent *r)
+{
+//	kdebugf();
+	QListBox::resizeEvent(r);
+	refresh();
+}
+
 UserBoxMenu::UserBoxMenu(QWidget *parent, const char *name): QPopupMenu(parent, name)
 {
 	connect(this, SIGNAL(aboutToHide()), this, SLOT(restoreLook()));
