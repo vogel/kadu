@@ -653,6 +653,10 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
         <source>Local TCP port:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Don&apos;t save status changes</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1577,6 +1581,10 @@ Controllare connessione a Internet.</translation>
         <source>&lt;br&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;b&gt;Description&lt;/b&gt;:&lt;br&gt;%2</source>
         <translation>&lt;br&gt;&lt;b&gt;Autore:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;b&gt;Descrizione&lt;/b&gt;:&lt;br&gt;%2</translation>
     </message>
+    <message>
+        <source>Static modules</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ModulesManager</name>
@@ -1869,6 +1877,10 @@ Ora è possibile aggiungere i vostri amici alla lista dei contatti.</translation
     <message>
         <source>&amp;Chat</source>
         <translation>&amp;Chat</translation>
+    </message>
+    <message>
+        <source></source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source> </source>

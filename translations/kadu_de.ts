@@ -653,6 +653,10 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
         <source>Local TCP port:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Don&apos;t save status changes</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1575,6 +1579,10 @@ Check your internet connection.</source>
     </message>
     <message>
         <source>&lt;br&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;b&gt;Description&lt;/b&gt;:&lt;br&gt;%2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Static modules</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

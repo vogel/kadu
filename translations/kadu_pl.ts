@@ -653,6 +653,10 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <source>Local TCP port:</source>
         <translation>Lokalny port TCP:</translation>
     </message>
+    <message>
+        <source>Don&apos;t save status changes</source>
+        <translation>Nie zapisuj zmian statusu</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1577,6 +1581,10 @@ Sprawdź swoje połączenie internetowe.</translation>
     <message>
         <source>&lt;br&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;b&gt;Description&lt;/b&gt;:&lt;br&gt;%2</source>
         <translation>&lt;br&gt;&lt;b&gt;Autor:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;b&gt;Opis:&lt;/b&gt;&lt;br&gt;%2</translation>
+    </message>
+    <message>
+        <source>Static modules</source>
+        <translation>Moduły statyczne</translation>
     </message>
 </context>
 <context>
