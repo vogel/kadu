@@ -1,6 +1,7 @@
 
-SUBDIRS = libgadu kadu po varia sms
-DIST_SUBDIRS = libgadu kadu po varia sms
+SUBDIRS = @MY_SUBDIRS@
+
+DIST_SUBDIRS = @MY_SUBDIRS@
 
 EXTRA_DIST = admin kadu.kdevprj AUTHORS COPYING ChangeLog INSTALL README TODO kadu.lsm kadu.spec 
 
