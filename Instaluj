@@ -63,8 +63,11 @@ function Konfiguruj()
 	echo "                Uruchamiam plik configure z domyÅ›lnymi ustawieniami"
 	echo "==============================================================================="
 	./configure "--prefix=$APP_DIR"
-	WYK=$?
- if test "$WYK" -ne 0; then
+if test ! -f libgadu/Makefile; then
+        Error
+	exit
+ fi;
+  if test ! -f Makefile; then
         Error
 	exit
  fi;
@@ -82,8 +85,11 @@ function Konfiguruj_voice()
 	echo "                Uruchamiam plik configure z rozmowami glosowymi"
 	echo "==============================================================================="
 	./configure "--prefix=$APP_DIR" "--enable-voice"
-	WYK=$?
- if test "$WYK" -ne 0; then
+if test ! -f libgadu/Makefile; then
+        Error
+	exit
+ fi;
+  if test ! -f Makefile; then
         Error
 	exit
  fi;
@@ -101,8 +107,7 @@ function Konfiguruj_bez_libgadu()
 	echo "                Uruchamiam plik configure z opcjÄ… linkowania z istniejacym LibGadu"
 	echo "==============================================================================="
 	./configure "--prefix=$APP_DIR" "--with-existing-libgadu"
-	WYK=$?
- if test "$WYK" -ne 0; then
+  if test ! -f Makefile; then
         Error
 	exit
  fi;
@@ -120,8 +125,11 @@ function Konfiguruj_bez_ssl()
 	echo "                Uruchamiam plik configure z opcjÄ… bez SSL"
 	echo "==============================================================================="
 	./configure "--prefix=$APP_DIR" "--without-openssl"
-	WYK=$?
- if test "$WYK" -ne 0; then
+if test ! -f libgadu/Makefile; then
+        Error
+	exit
+ fi;
+  if test ! -f Makefile; then
         Error
 	exit
  fi;
@@ -139,9 +147,11 @@ function Konfiguruj_z_debug()
 	echo "                Uruchamiam plik configure z opcjÄ… Debug"
 	echo "==============================================================================="
 	./configure "--prefix=$APP_DIR" "--with-debug"
-
-	WYK=$?
- if test "$WYK" -ne 0; then
+if test ! -f libgadu/Makefile; then
+        Error
+	exit
+ fi;
+  if test ! -f Makefile; then
         Error
 	exit
  fi;
@@ -476,8 +486,11 @@ function Konfiguruj()
 	echo "                Uruchamiam plik configure z domy¶lnymi ustawieniami"
 	echo "==============================================================================="
 	./configure "--prefix=$APP_DIR"
-	WYK=$?
- if test "$WYK" -ne 0; then
+if test ! -f libgadu/Makefile; then
+        Error
+	exit
+ fi;
+  if test ! -f Makefile; then
         Error
 	exit
  fi;
@@ -495,8 +508,7 @@ function Konfiguruj_bez_libgadu()
 	echo "                Uruchamiam plik configure z opcj± linkowania z istniej±cym LibGadu"
 	echo "==============================================================================="
 	./configure "--prefix=$APP_DIR" "--with-existing-libgadu"
-	WYK=$?
- if test "$WYK" -ne 0; then
+  if test ! -f Makefile; then
         Error
 	exit
  fi;
@@ -514,8 +526,11 @@ function Konfiguruj_voice()
 	echo "                Uruchamiam plik configure z rozmowami glosowymi"
 	echo "==============================================================================="
 	./configure "--prefix=$APP_DIR" "--enable-voice"
-	WYK=$?
- if test "$WYK" -ne 0; then
+if test ! -f libgadu/Makefile; then
+        Error
+	exit
+ fi;
+  if test ! -f Makefile; then
         Error
 	exit
  fi;
@@ -534,8 +549,11 @@ function Konfiguruj_bez_ssl()
 	echo "                Uruchamiam plik configure z opcj± bez SSL"
 	echo "==============================================================================="
 	./configure "--prefix=$APP_DIR" "--without-openssl"
-	WYK=$?
- if test "$WYK" -ne 0; then
+if test ! -f libgadu/Makefile; then
+        Error
+	exit
+ fi;
+  if test ! -f Makefile; then
         Error
 	exit
  fi;
@@ -554,8 +572,11 @@ function Konfiguruj_z_debug()
 	echo "==============================================================================="
 	./configure "--prefix=$APP_DIR" "--with-debug"
 
-	WYK=$?
- if test "$WYK" -ne 0; then
+if test ! -f libgadu/Makefile; then
+        Error
+	exit
+ fi;
+  if test ! -f Makefile; then
         Error
 	exit
  fi;
