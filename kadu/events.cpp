@@ -331,7 +331,11 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 			trayicon->showHint(i18n("New message from: "), ule.altnick,0);
 		return;
 		}
-	
+	else {
+		kdebug("eventRecvMsg(): Error - message is ignored. Class %d not known.\n", msgclass);
+		return;
+	}
+
 	playSound(parse(config.soundmsg,ule));
 
 	pending.addMsg(senders, mesg, msgclass, time);
