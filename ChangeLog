@@ -38,6 +38,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * okno informacji o u¿ytkowniku: pole grupy ma t± sam± szeroko¶æ co inne pola
   (chilek)
 * obs³uga drag&drop kilku u¿ytkowników równocze¶nie (adrian)
+* plik VERSION i jego obs³uga w configure (adrian)
 
 +++ wersja 0.3.4-rc2
 * porzadki: kod rejestrujacy opcje modulow Chat i Sms w oknie konfiguracji
