@@ -1769,6 +1769,7 @@ void DockWidget::mousePressEvent(QMouseEvent * e) {
 					chats[k].ptr->formatMessage(false, userlist.byUin(elem.uins[0]).altnick,
 						elem.msg, timestamp(elem.time), toadd);
 					deletePendingMessage(i);
+					i--;
 					stop = true;
 					}		
 				else {
