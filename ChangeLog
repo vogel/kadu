@@ -24,6 +24,10 @@
 * poprawka zamykania siê Kadu (mast3r)
 * malutkie przeoczenie, wywalilem info o 3 klawiszu z hinta
   zapomnia³em o 2kliku lewym :) (mast3r)
+* format zestawów emotikonów kompatybilny z gg, stare zestawy kadu nie bêd±
+  dzia³aæ. Standardowo zestaw gadu-gadu z najnowszej wersji oryginalnego
+  klienta. Zestawy kadubis i original_kadu usuniête. Przy okazji wysz³a
+  szybsza detekcja emotów w tek¶cie - nie ma ju¿ regexpów (adrian)
 
 +++ wersja 0.3.3-final
 * ikonka wiadomo¶ci i ikon statusu "ukryty" z telefonikiem
