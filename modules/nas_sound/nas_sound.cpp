@@ -72,8 +72,11 @@ NASPlayerSlots::NASPlayerSlots()
 {
 #ifndef INTERNAL_QT_SOUND_SUPPORT
 	auserver=audiolib::AuOpenServer(NULL, 0, NULL, 0, NULL, NULL);
-	sn=new QSocketNotifier(AuServerConnectionNumber(auserver), QSocketNotifier::Read);
-	QObject::connect(sn, SIGNAL(activated(int)), this, SLOT(dataReceived()));
+	if (auserver)
+	{
+		sn=new QSocketNotifier(AuServerConnectionNumber(auserver), QSocketNotifier::Read);
+		QObject::connect(sn, SIGNAL(activated(int)), this, SLOT(dataReceived()));
+	}
 #endif
 }
 
@@ -81,9 +84,11 @@ NASPlayerSlots::~NASPlayerSlots()
 {
 #ifndef INTERNAL_QT_SOUND_SUPPORT
 	if (auserver)
+	{
 		audiolib::AuCloseServer(auserver);
-	QObject::disconnect(sn, SIGNAL(activated(int)), this, SLOT(dataReceived()));
-	delete sn;
+		QObject::disconnect(sn, SIGNAL(activated(int)), this, SLOT(dataReceived()));
+		delete sn;
+	}
 #endif
 }
 
