@@ -331,11 +331,12 @@ void SpeechSlots::newChat(const UinsList &senders, const QString &msg, time_t ti
 	if (config_file.readBoolEntry("Speech","SayWhenWinNotActive") && chatWin)
 		if (chatWin->isActiveWindow())
 			return;
+	QString plainMsg=toPlainText(msg);
 	UserListElement ule=userlist.byUin(senders.first());
 	if (isFemale(ule.firstName()))
-		say(parse(config_file.readEntry("Speech", "ChatFormatFemale"), ule).arg(msg));
+		say(parse(config_file.readEntry("Speech", "ChatFormatFemale"), ule).arg(plainMsg));
 	else
-		say(parse(config_file.readEntry("Speech", "ChatFormatMale"), ule).arg(msg));
+		say(parse(config_file.readEntry("Speech", "ChatFormatMale"), ule).arg(plainMsg));
 	lastSpeech.restart();
 	kdebugf2();
 }
@@ -349,11 +350,12 @@ void SpeechSlots::newMessage(const UinsList &senders, const QString &msg, time_t
 		return;
 	}
 
+	QString plainMsg=toPlainText(msg);
 	UserListElement ule=userlist.byUin(senders.first());
 	if (isFemale(ule.firstName()))
-		say(parse(config_file.readEntry("Speech", "MessageFormatFemale"), ule).arg(msg));
+		say(parse(config_file.readEntry("Speech", "MessageFormatFemale"), ule).arg(plainMsg));
 	else
-		say(parse(config_file.readEntry("Speech", "MessageFormatMale"), ule).arg(msg));
+		say(parse(config_file.readEntry("Speech", "MessageFormatMale"), ule).arg(plainMsg));
 	lastSpeech.restart();
 	kdebugf2();
 }

@@ -2494,3 +2494,23 @@ QValueList<QVariant> toVariantList(const QValueList<int> &in)
 		out.append(QVariant(*it));
 	return out;
 }
+
+QRegExp clean_regexps[3];
+QString toPlainText(const QString &text)
+{
+	kdebugm(KDEBUG_INFO, "rich: %s\n", text.local8Bit().data());
+	if (clean_regexps[0].isEmpty())
+	{
+		clean_regexps[0]=QRegExp("\r\n");
+		clean_regexps[1]=QRegExp("\n");
+		clean_regexps[2]=QRegExp("<.*>");
+		clean_regexps[2].setMinimal(true);
+	}
+	QString copy=text;
+	copy.replace(clean_regexps[0], " ");
+	copy.replace(clean_regexps[1], " ");
+	copy.replace(clean_regexps[2], "");
+	HtmlDocument::unescapeText(copy);
+	kdebugm(KDEBUG_INFO, "plain: %s\n", copy.local8Bit().data());
+	return copy;
+}
