@@ -11,7 +11,7 @@
 
 APP_NAME=KADU
 APP_VER=0.3.3
-APP_DEF_DIR=/usr/local
+APP_DEF_DIR=/usr
 # $1 - nazwy katalogów, $2 - Wartosci domy¶lne
 
 #  Deklaracja funkcji
@@ -177,7 +177,7 @@ fi;
 clear
 echo
 	echo " =============================================================================="
-	echo "            Witaj w $APP_NAME wersja $APP_VER Skrypt instalacyjny v0.1.0"
+	echo "            Witaj w $APP_NAME wersja $APP_VER Skrypt instalacyjny v0.1.1"
 	echo "  Skrypt ten konfiguruje, kompiluje, instaluje lub odinstalowywuje $APP_NAME ."
 	echo " =============================================================================="
 	echo
