@@ -967,9 +967,9 @@ void Kadu::searchInDirectory()
 void Kadu::help()
 {
 	QString link;
-	if (QFile::exists(QString(DOCDIR) + "/index_doc.html"))
+/*	if (QFile::exists(QString(DOCDIR) + "/index_doc.html"))
 		link = QString(DOCDIR) + "/index_doc.html";
-	else
+	else*/
 		link = "http://kadu.net/index_doc.html";
 	openWebBrowser(link);
 }
