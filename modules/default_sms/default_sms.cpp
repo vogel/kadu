@@ -433,7 +433,7 @@ void SmsGatewaySlots::onCreateConfigDialog()
 	kdebugf2();
 }
 
-SmsGateway* SmsGatewaySlots::isValidIdea(QString& number, QObject* parent)
+SmsGateway* SmsGatewaySlots::isValidIdea(const QString& number, QObject* parent)
 {
 	if(SmsIdeaGateway::isNumberCorrect(number))
 		return new SmsIdeaGateway(parent, "sms_idea_gateway");
@@ -441,7 +441,7 @@ SmsGateway* SmsGatewaySlots::isValidIdea(QString& number, QObject* parent)
 		return NULL;
 }
 
-SmsGateway* SmsGatewaySlots::isValidPlus(QString& number, QObject* parent)
+SmsGateway* SmsGatewaySlots::isValidPlus(const QString& number, QObject* parent)
 {
 	if(SmsPlusGateway::isNumberCorrect(number))
 		return new SmsPlusGateway(parent, "sms_plus_gateway");
@@ -449,7 +449,7 @@ SmsGateway* SmsGatewaySlots::isValidPlus(QString& number, QObject* parent)
 		return NULL;
 }
 
-SmsGateway* SmsGatewaySlots::isValidEra(QString& number, QObject* parent)
+SmsGateway* SmsGatewaySlots::isValidEra(const QString& number, QObject* parent)
 {
 	if(SmsEraGateway::isNumberCorrect(number))
 		return new SmsEraGateway(parent, "sms_era_gateway");

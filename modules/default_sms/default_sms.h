@@ -65,9 +65,9 @@ class SmsGatewaySlots: public QObject
 	public:
 		SmsGatewaySlots(QObject *parent=0, const char *name=0);
 		~SmsGatewaySlots();
-		static SmsGateway* isValidIdea(QString& number, QObject* parent);
-		static SmsGateway* isValidPlus(QString& number, QObject* parent);
-		static SmsGateway* isValidEra(QString& number, QObject* parent);
+		static SmsGateway* isValidIdea(const QString& number, QObject* parent);
+		static SmsGateway* isValidPlus(const QString& number, QObject* parent);
+		static SmsGateway* isValidEra(const QString& number, QObject* parent);
 	private:
 		QString actualEraGateway;			
 	public slots:

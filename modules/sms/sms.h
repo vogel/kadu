@@ -121,7 +121,7 @@ class Sms : public QDialog {
 		void onSmsSenderFinished(bool success);
 };
 
-typedef SmsGateway* isValidFunc(QString&, QObject*);
+typedef SmsGateway* isValidFunc(const QString&, QObject*);
 
 class SmsSlots: public QObject
 {
