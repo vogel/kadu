@@ -30,44 +30,43 @@ Kadu *kadu;
 
 static const char *description =
 	I18N_NOOP("Kadu");
-// INSERT A DESCRIPTION FOR YOUR APPLICATION HERE
+	// INSERT A DESCRIPTION FOR YOUR APPLICATION HERE
 	
 	
 static KCmdLineOptions options[] =
 {
-  { 0, 0, 0 }
-  // INSERT YOUR COMMANDLINE OPTIONS HERE
+	{ 0, 0, 0 }
+	// INSERT YOUR COMMANDLINE OPTIONS HERE
 };
 
-	KApplication * a;
-	bool mute = false;
+KApplication * a;
+bool mute = false;
 
 int main(int argc, char *argv[])
 {
+	gg_debug_level = 255;
 
-    gg_debug_level = 255;
+	KAboutData aboutData( "kadu", I18N_NOOP("Kadu"),
+		"0.3.1", description, KAboutData::License_GPL,
+		"(c) 2001-2002, tomee", 0, 0, "tomee@cpi.pl");
+	aboutData.addAuthor("tomee",0, "tomee@cpi.pl");
+	KCmdLineArgs::init( argc, argv, &aboutData );
+	KCmdLineArgs::addCmdLineOptions( options ); // Add our own options.
 
-    KAboutData aboutData( "kadu", I18N_NOOP("Kadu"),
-	"0.3.1", description, KAboutData::License_GPL,
-	"(c) 2001-2002, tomee", 0, 0, "tomee@cpi.pl");
-    aboutData.addAuthor("tomee",0, "tomee@cpi.pl");
-    KCmdLineArgs::init( argc, argv, &aboutData );
-    KCmdLineArgs::addCmdLineOptions( options ); // Add our own options.
+	a = new KApplication;
+	a->setDefaultCodec( QTextCodec::codecForName("ISO 8859-2"));
+	kadu = new Kadu(0, "Kadu");
+	QPixmap px((const char **)gg_inact_xpm);
+	kadu->setIcon(px);
+	a->setMainWidget(kadu);
 
-    a = new KApplication;
-    a->setDefaultCodec( QTextCodec::codecForName("ISO 8859-2") );
-    kadu = new Kadu(0, "Kadu");
-    QPixmap px((const char **)gg_inact_xpm);
-    kadu->setIcon(px);
-    a->setMainWidget(kadu);
+	kadu->show();
+	if (config.defaultstatus != GG_STATUS_NOT_AVAIL && config.defaultstatus != GG_STATUS_NOT_AVAIL_DESCR) {
+		kadu->autohammer = true;
+		own_description = config.defaultdescription;
+		kadu->setStatus(config.defaultstatus);	
+		}
 
-    kadu->show();
-    if (config.defaultstatus != GG_STATUS_NOT_AVAIL && config.defaultstatus != GG_STATUS_NOT_AVAIL_DESCR) {
-	kadu->autohammer = true;
-	own_description = config.defaultdescription;
-	kadu->setStatus(config.defaultstatus);	
-	}
-		
-    QObject::connect(a, SIGNAL(aboutToQuit()), kadu, SLOT(cleanUp()));
-    return a->exec();
+	QObject::connect(a, SIGNAL(aboutToQuit()), kadu, SLOT(cleanUp()));
+	return a->exec();
 }
