@@ -460,6 +460,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 
 ConfigDialog::~ConfigDialog()
 {
+	saveGeometry(this, "General", "ConfigGeometry");
 	emit destroy();
 	configdialog = NULL;
 }
@@ -544,8 +545,6 @@ void ConfigDialog::updateConfig(void)
 				break;
 		}
 	}
-	
-	saveGeometry(this, "General", "ConfigGeometry");
 
 	emit apply();
 
