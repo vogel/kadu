@@ -49,6 +49,7 @@ class GaduProtocol : public QObject
 			Wysy³a pro¶bê o przys³anie obrazka.
 		**/
 		bool sendImageRequest(uin_t uin,int size,uint32_t crc32);
+		bool sendImage(uin_t uin,const QString& file_name,uint32_t size,char* data);
 
 	public slots:
 		void sendUserList();	

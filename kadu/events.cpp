@@ -98,6 +98,8 @@ EventManager::EventManager()
 		this, SLOT(systemMessageReceivedSlot(QString &, QDateTime &, int, void *)));
 	connect(this,SIGNAL(chatMsgReceived2(UinsList,const QString&,time_t)),
 		this,SLOT(chatMsgReceived2Slot(UinsList,const QString&,time_t)));
+	connect(this,SIGNAL(imageRequestReceived(uin_t,uint32_t,uint32_t)),
+		this,SLOT(imageRequestReceivedSlot(uin_t,uint32_t,uint32_t)));
 	connect(this,SIGNAL(imageReceived(uin_t,uint32_t,uint32_t,const QString&,const char*)),
 		this,SLOT(imageReceivedSlot(uin_t,uint32_t,uint32_t,const QString&,const char*)));
 	connect(this,SIGNAL(ackReceived(int)),this,SLOT(ackReceivedSlot(int)));
@@ -285,6 +287,12 @@ void EventManager::chatMsgReceived2Slot(UinsList senders,const QString& msg,time
 	if(config_file.readBoolEntry("Chat","OpenChatOnMessage"))
 		pending.openMessages();
 }
+
+void EventManager::imageRequestReceivedSlot(uin_t sender,uint32_t size,uint32_t crc32)
+{
+	kdebug(QString("Received image request. sender: %1, size: %2, crc32: %3\n").arg(sender).arg(size).arg(crc32).local8Bit().data());
+	image_queue.sendImage(sender,size,crc32);
+}	
 
 void EventManager::imageReceivedSlot(uin_t sender,uint32_t size,uint32_t crc32,const QString& filename,const char* data)
 {
@@ -626,6 +634,15 @@ void EventManager::eventHandler(gg_session* sess)
 				e->event.msg.time, e->event.msg.formats_length, e->event.msg.formats);
 			}
 		}
+
+	if (e->type == GG_EVENT_IMAGE_REQUEST)
+	{
+		kdebug("Image request received\n");
+		emit imageRequestReceived(
+			e->event.image_request.sender,
+			e->event.image_request.size,
+			e->event.image_request.crc32);
+	}
 
 	if (e->type == GG_EVENT_IMAGE_REPLY)
 	{

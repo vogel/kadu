@@ -339,4 +339,23 @@ class CreateNotifier : public QObject
 		void objectCreated(QObject* new_object);
 };
 
+class ImageQueue
+{
+	private:
+		struct QueuedImage
+		{
+			uint32_t size;
+			uint32_t crc32;
+			QString file_name;
+			char* data;		
+		};
+		QValueList<QueuedImage> QueuedImages;
+		
+	public:
+		void addImage(const QString& file_name,uint32_t& size,uint32_t& crc32);
+		void sendImage(uin_t uin,uint32_t size,uint32_t crc32);
+};
+
+extern ImageQueue image_queue;
+
 #endif

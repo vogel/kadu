@@ -51,6 +51,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   z serwerem GG drugi pakiet zmiany statusu (chilek)
 * pokazujemy na li¶cie kontaktów nasz status ukryty (chilek)
 * w opcjach mozna ustawic maksymalna wielkosc odbieranych obrazkow (michal)
+* prymitywna obs³uga wysy³anie obrazków: wstawiamy w wiadomo¶ci
+  [IMAGE ¶cie¿ka/do/pliku] i obrazek jest wstawiany u odbiorcy,
+  narazie trzeba te¿ napisaæ jeszcze jaki¶ tekst, ¿eby zadzia³a³o (adrian)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

@@ -128,4 +128,12 @@ bool GaduProtocol::sendImageRequest(uin_t uin,int size,uint32_t crc32)
 	kdebugf2();
 }
 
+bool GaduProtocol::sendImage(uin_t uin,const QString& file_name,uint32_t size,char* data)
+{
+	kdebugf();
+	int res = gg_image_reply(sess, uin, file_name.local8Bit().data(), data, size);
+	return (res==0);
+	kdebugf2();	
+}
+
 GaduProtocol* gadu;

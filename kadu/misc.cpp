@@ -228,24 +228,28 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, u
 	struct gg_msg_richtext_format *actformat;
 	struct gg_msg_richtext_color *actcolor;
 	struct gg_msg_richtext_image* actimage;
-	int pos, idx;
 
 	kdebug("formatGGMessage()\n");
 	bold = italic = underline = color = inspan = false;
-	pos = 0;
-	if (formats_length) {
-		while (formats_length) {
+	int pos = 0;
+	if (formats_length)
+	{
+		while (formats_length)
+		{
 			actformat = (struct gg_msg_richtext_format *)cformats;
-			if (actformat->position > pos) {
+			if (actformat->position > pos)
+			{
 				tmp = msg.mid(pos, actformat->position - pos);
 				escapeSpecialCharacters(tmp);
 				mesg.append(tmp);
 				pos = actformat->position;
-				}
-			else {
+			}
+			else
+			{
 				if (inspan)
 					mesg.append("</span>");
-				if (actformat->font) {
+				if (actformat->font)
+				{
 					inspan = true;
 					mesg.append("<span style=\"");
 					if (actformat->font & GG_FONT_BOLD)
@@ -254,49 +258,62 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, u
 						mesg.append("font-style:italic;");
 					if (actformat->font & GG_FONT_UNDERLINE)
 						mesg.append("text-decoration:underline;");
-					if (actformat->font & GG_FONT_COLOR) {
+					if (actformat->font & GG_FONT_COLOR)
+					{
 						mesg.append("color:");
 						actcolor = (struct gg_msg_richtext_color *)(cformats
 							+ sizeof(struct gg_msg_richtext_format));
 						mesg.append(QColor(actcolor->red, actcolor->green, actcolor->blue).name());
-						}
-					mesg.append("\">");
 					}
+					mesg.append("\">");
+				}
 				else
 					inspan = false;
 				cformats += sizeof(gg_msg_richtext_format);
 				formats_length -= sizeof(gg_msg_richtext_format);
-				if (actformat->font & GG_FONT_IMAGE) {
-					idx = int((unsigned char)cformats[0]);
-					kdebug("formatGGMessage(): I got image probably: header_length = %d\n", idx);
-					actimage = (struct gg_msg_richtext_image*)(cformats
-							/*+ sizeof(struct gg_msg_richtext_color)*/);
-					kdebug(QString("Image size: %1, crc32: %2\n").arg(actimage->size).arg(actimage->crc32).local8Bit().data());
-					gadu->sendImageRequest(sender,
-						actimage->size,
-						actimage->crc32);
-					mesg.append("[[[OBRAZEK]]]");
-					cformats += idx + 1;
-					formats_length -= idx + 1;
+				if (actformat->font & GG_FONT_IMAGE)
+				{
+					kdebug("formatGGMessage(): I got image probably\n");
+					if (sender!=0)
+					{
+						kdebug("Someone sends us an image\n");	
+						actimage = (struct gg_msg_richtext_image*)(cformats
+								/*+ sizeof(struct gg_msg_richtext_color)*/);
+						kdebug(QString("Image size: %1, crc32: %2\n").arg(actimage->size).arg(actimage->crc32).local8Bit().data());
+						gadu->sendImageRequest(sender,
+							actimage->size,
+							actimage->crc32);
+						mesg.append("[[[OBRAZEK]]]");
 					}
-				else {
+					else
+					{
+						kdebug("It is my message and my image\n");
+						mesg.append("[[[MY IMAGE]]]");
+					}
+					cformats += sizeof(gg_msg_richtext_image);
+					formats_length -= sizeof(gg_msg_richtext_image);
+				}
+				else 
+				{
 					cformats += sizeof(gg_msg_richtext_color) * ((actformat->font & GG_FONT_COLOR) != 0);
 					formats_length -= sizeof(gg_msg_richtext_color) * ((actformat->font & GG_FONT_COLOR) != 0);
-					}
 				}
 			}
-		if (pos < msg.length()) {
+		}
+		if (pos < msg.length())
+		{
 			tmp = msg.mid(pos, msg.length() - pos);
 			escapeSpecialCharacters(tmp);
 			mesg.append(tmp);
-			}
+		}
 		if (inspan)
 			mesg.append("</span>");
-		}
-	else {
+	}
+	else
+	{
 		mesg = msg;
 		escapeSpecialCharacters(mesg);
-		}
+	}
 	kdebug("formatGGMessage(): finished\n");
 	return mesg;
 }
@@ -309,6 +326,7 @@ struct attrib_formant {
 struct richtext_formant {
 	struct gg_msg_richtext_format format;
 	struct gg_msg_richtext_color color;
+	struct gg_msg_richtext_image image;
 };
 
 QString unformatGGMessage(const QString &msg, int &formats_length, void *&formats) {
@@ -348,9 +366,33 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 
 	inspan = -1;
 	pos = idx = formats_length = 0;
+	
 	while (pos < mesg.length()) {
-		if (inspan == -1) {
-			idx = mesg.find("<span style=", pos);
+		int image_idx    = mesg.find("[IMAGE ", pos);
+		int span_idx     = mesg.find("<span style=", pos);
+		int span_end_idx = mesg.find("</span>", pos);
+		if (
+			image_idx != -1 &&
+			(span_idx == -1 || image_idx < span_idx) &&
+			(span_end_idx == -1 || image_idx < span_end_idx))
+		{
+			int idx_end = mesg.find("]",idx);
+			if (idx_end == -1)
+				idx_end = mesg.length() - 1;
+			QString file_name = mesg.mid(image_idx+7,idx_end-image_idx-7);
+			mesg.remove(image_idx,idx_end-image_idx+1);
+			actformant.format.position = image_idx;
+			actformant.format.font = GG_FONT_IMAGE;
+			actformant.image.unknown1 = 0x0109;
+			image_queue.addImage(
+				file_name,actformant.image.size,actformant.image.crc32);
+			formants.append(actformant);
+			formats_length += sizeof(struct gg_msg_richtext_format)
+				+ sizeof(struct gg_msg_richtext_image);
+			pos = image_idx;
+		}
+		else if (inspan == -1) {
+			idx = span_idx;
 			if (idx != -1) {
 				kdebug("unformatGGMessage(): idx=%d\n", idx);
 				inspan = idx;
@@ -400,7 +442,7 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 				break;
 			}
 		else {
-			idx = mesg.find("</span>", pos);
+			idx = span_end_idx;
 			if (idx != -1) {
 				kdebug("unformatGGMessage(): idx=%d\n", idx);
 				pos = idx;
@@ -427,13 +469,15 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 		tmpformats += sizeof(struct gg_msg_richtext);
 		for (QValueList<struct richtext_formant>::iterator it = formants.begin(); it != formants.end(); it++) {
 			actformant = (*it);
+			memcpy(tmpformats, &actformant, sizeof(gg_msg_richtext_format));
+			tmpformats += sizeof(gg_msg_richtext_format);
 			if (actformant.format.font & GG_FONT_COLOR) {
-				memcpy(tmpformats, &actformant, sizeof(richtext_formant));
-				tmpformats += sizeof(richtext_formant);
+				memcpy(tmpformats, &actformant.color, sizeof(gg_msg_richtext_color));
+				tmpformats += sizeof(gg_msg_richtext_color);
 				}
-			else {
-				memcpy(tmpformats, &actformant.format, sizeof(gg_msg_richtext_format));
-				tmpformats += sizeof(gg_msg_richtext_format);
+			if (actformant.format.font & GG_FONT_IMAGE) {
+				memcpy(tmpformats, &actformant.image, sizeof(gg_msg_richtext_image));
+				tmpformats += sizeof(gg_msg_richtext_image);
 				}
 			}
 		kdebug("unformatGGMessage(): formats_length=%d, tmpformats-cformats=%d\n",
@@ -1798,3 +1842,45 @@ void CreateNotifier::notify(QObject* new_object)
 {
 	emit objectCreated(new_object);
 }
+
+void ImageQueue::addImage(const QString& file_name,uint32_t& size,uint32_t& crc32)
+{
+	QueuedImage img;
+	QFile f(file_name);
+	kdebug("Opening file \"%s\"\n",file_name.local8Bit().data());
+	if(!f.open(IO_ReadOnly))
+	{
+		kdebug("Error opening file\n");
+		return;
+	}
+	img.size = f.size();
+	img.file_name=file_name;
+	img.data = new char[img.size];
+	kdebug("Reading file\n");
+	f.readBlock(img.data,img.size);
+	img.crc32 = gg_crc32(0,(const unsigned char*)img.data,img.size);
+	kdebug("Inserting into images queue\n");
+	QueuedImages.append(img);
+	size = img.size;
+	crc32 = img.crc32;
+}
+
+void ImageQueue::sendImage(uin_t uin,uint32_t size,uint32_t crc32)
+{
+	kdebug("Searching images queue\n");
+	for(QValueList<QueuedImage>::Iterator i=QueuedImages.begin(); i!=QueuedImages.end(); i++)
+	{
+		if ((*i).size==size && (*i).crc32==crc32)
+		{
+			kdebug("Image data found\n");
+			gadu->sendImage(uin,(*i).file_name,(*i).size,(*i).data);
+			delete[] (*i).data;
+			kdebug("Removing from images queue\n");	
+			QueuedImages.remove(i);
+			return;
+		}
+	}
+	kdebug("Image data not found\n");
+}
+
+ImageQueue image_queue;
