@@ -30,6 +30,8 @@
 #include <qtoolbar.h>
 #include <qtranslator.h>
 
+#include <sys/types.h>
+#include <sys/socket.h>
 #include <netinet/in.h>
 #include <time.h>
 #include <stdlib.h>
