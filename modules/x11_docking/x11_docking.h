@@ -3,6 +3,7 @@
 
 #include <qlabel.h>
 #include <qpixmap.h>
+#include "gadu.h"
 
 class X11TrayIcon : public QLabel
 {
@@ -12,6 +13,7 @@ class X11TrayIcon : public QLabel
 		void setTrayPixmap(const QPixmap& pixmap);
 		void setTrayTooltip(const QString& tooltip);
 		void findTrayPosition(QPoint& pos);
+		void chatCreatedSlot(const UinsList& senders);
 
 	protected:
 		virtual void enterEvent(QEvent* e);

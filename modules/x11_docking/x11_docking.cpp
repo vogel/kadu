@@ -19,6 +19,7 @@
 #include "config_file.h"
 #include "kadu.h"
 #include "config_dialog.h"
+#include "chat.h"
 
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
@@ -118,7 +119,7 @@ X11TrayIcon::X11TrayIcon(QWidget *parent, const char *name)
 	classhint.res_name  = (char*)"kadudock";
 	classhint.res_class = (char*)"Kadu";
 	XSetClassHint(dsp, win, &classhint);
-	
+
 	//unikamy efektu klepsydry w KDE
 	QWidget *w=new QWidget();
 	w->setGeometry(-100,-100,10,10);
@@ -163,7 +164,8 @@ X11TrayIcon::X11TrayIcon(QWidget *parent, const char *name)
 	connect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap&)), this, SLOT(setTrayPixmap(const QPixmap&)));
 	connect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
 	connect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
-
+	connect(chat_manager, SIGNAL(chatCreated(const UinsList&)), this, SLOT(chatCreatedSlot(const UinsList&)));
+	
 	docking_manager->setDocked(true);
 
 	show();
@@ -172,6 +174,26 @@ X11TrayIcon::X11TrayIcon(QWidget *parent, const char *name)
 	QTimer::singleShot(0, this, SLOT(repaint()));
 	QTimer::singleShot(1000, this, SLOT(repaint()));
 	
+	kdebugf2();
+}
+
+void X11TrayIcon::chatCreatedSlot(const UinsList& senders)
+{
+	kdebugf();
+	Chat *c=chat_manager->findChatByUins(senders);
+	if (!c)
+	{
+		kdebugmf(KDEBUG_FUNCTION_END, "chat is null\n");
+		return;
+	}
+
+	Display *dsp = x11Display();
+	WId win = c->winId();
+
+	XClassHint classhint;
+	classhint.res_name  = (char*)"kadu-chat";
+	classhint.res_class = (char*)"Kadu";
+	XSetClassHint(dsp, win, &classhint);
 	kdebugf2();
 }
 
@@ -225,6 +247,7 @@ X11TrayIcon::~X11TrayIcon()
 	disconnect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap&)), this, SLOT(setTrayPixmap(const QPixmap&)));
 	disconnect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
 	disconnect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
+	disconnect(chat_manager, SIGNAL(chatCreated(const UinsList&)), this, SLOT(chatCreatedSlot(const UinsList&)));
 	
 	docking_manager->setDocked(false);
 
