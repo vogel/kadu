@@ -122,7 +122,8 @@ UserInfo::UserInfo (const QString & name, QDialog* parent , const QString &altni
 	e_status->setReadOnly(true);
 //	e_status->setEnabled(false);
 
-	e_uin->setText(QString::number(userlist[i].uin));
+	if (userlist[i].uin)
+		e_uin->setText(QString::number(userlist[i].uin));
 	e_uin->setReadOnly(true);
 //	e_uin->setEnabled(false);
 
