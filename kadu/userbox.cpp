@@ -333,9 +333,9 @@ void UserBox::refresh()
 	{
 		UserListElement &user = userlist.byAltNick(a_users[i]);
 		bool has_mobile = user.mobile.length();
-		bool active = (user.status == GG_STATUS_AVAIL || user.status == GG_STATUS_AVAIL_DESCR || user.status == GG_STATUS_BUSY || user.status == GG_STATUS_BUSY_DESCR);
+		bool bold = config_file.readBoolEntry("Look", "ShowBold") ? (user.status == GG_STATUS_AVAIL || user.status == GG_STATUS_AVAIL_DESCR || user.status == GG_STATUS_BUSY || user.status == GG_STATUS_BUSY_DESCR) : 0;
 		if (pending.pendingMsgs(user.uin)) {
-			lbp = new KaduListBoxPixmap(*icons->loadIcon("message"), user.altnick, user.description, active);
+			lbp = new KaduListBoxPixmap(*icons->loadIcon("message"), user.altnick, user.description, bold);
 			insertItem(lbp);
 //			insertItem(*icons->loadIcon("message"), user.altnick);
 			}
@@ -372,10 +372,10 @@ void UserBox::refresh()
 					break;
 				};
 			if (pix != NULL)
-				lbp = new KaduListBoxPixmap(*pix, user.altnick, user.description, active);
+				lbp = new KaduListBoxPixmap(*pix, user.altnick, user.description, bold);
 //				insertItem(*pix, user.altnick);
 			else
-				lbp = new KaduListBoxPixmap(*icons->loadIcon("online"), user.altnick, user.description, active);
+				lbp = new KaduListBoxPixmap(*icons->loadIcon("online"), user.altnick, user.description, bold);
 //				insertItem(*icons->loadIcon("online"), user.altnick);
 			insertItem(lbp);
 		};
@@ -594,6 +594,7 @@ void UserBox::initModule()
 	QT_TRANSLATE_NOOP("@default", "Other");	
 	QT_TRANSLATE_NOOP("@default", "Show info-panel");	
 	QT_TRANSLATE_NOOP("@default", "Show description in userbox");	
+	QT_TRANSLATE_NOOP("@default", "Show avaliable in bold");	
 	QT_TRANSLATE_NOOP("@default", "Display group tabs");	
 	QT_TRANSLATE_NOOP("@default", "Multicolumn userbox");	
 	
@@ -612,6 +613,7 @@ void UserBox::initModule()
 	ConfigDialog::addHBox("Look", "Userbox properties", "font&size");
 	ConfigDialog::addComboBox("Look", "font&size", "Font");
 	ConfigDialog::addComboBox("Look", "font&size", "Font size");
+
 	
 	ConfigDialog::addVGroupBox("Look", "Look", "Other");
 	ConfigDialog::addGrid("Look", "Other", "grid", 2);
@@ -619,6 +621,7 @@ void UserBox::initModule()
 	ConfigDialog::addCheckBox("Look", "grid", "Display group tabs", "DisplayGroupTabs", true);
 	ConfigDialog::addCheckBox("Look", "grid", "Multicolumn userbox", "MultiColumnUserbox", true);
 	ConfigDialog::addCheckBox("Look", "grid", "Show description in userbox", "ShowDesc", true);
+	ConfigDialog::addCheckBox("Look", "grid", "Show avaliable in bold", "ShowBold", true);
 	
 	UserBoxSlots *userboxslots= new UserBoxSlots();
 	ConfigDialog::registerSlotOnCreate(userboxslots, SLOT(onCreateConfigDialog()));
