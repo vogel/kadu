@@ -60,7 +60,7 @@ AC_CHECK_FUNCS([floor inet_ntoa memset mkdir select strchr strdup strerror strto
 # parse configuration options
 ########################################################################
 
-MY_SUBDIRS="kadu po varia libgadu"
+MY_SUBDIRS="libgadu kadu po varia"
 
 # doc support
 AC_ARG_ENABLE(doc,[  --disable-doc           do not install Kadu documentation])

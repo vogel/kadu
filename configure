@@ -15723,7 +15723,7 @@ done
 # parse configuration options
 ########################################################################
 
-MY_SUBDIRS="kadu po varia libgadu"
+MY_SUBDIRS="libgadu kadu po varia"
 
 # doc support
 # Check whether --enable-doc or --disable-doc was given.
