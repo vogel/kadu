@@ -1613,6 +1613,16 @@ void Kadu::eventHandler(int state) {
 			}
 		}
 
+	if (e->type == GG_EVENT_SEARCH50_REPLY) {
+		gg_search50_t res = e->event.search50;
+		uint32_t seq = gg_search50_seq(res);
+		i = 0;
+		while (i < SearchList.count() && SearchList[i].seq != seq)
+			i++;
+		if (i < SearchList.count())
+			SearchList[i].sd->showResults(res);
+		}
+
 	if (e->type == GG_EVENT_NOTIFY_DESCR || e->type == GG_EVENT_NOTIFY) {
 		eventGotUserlist(e);
 		UserBox::all_refresh();
