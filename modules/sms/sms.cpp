@@ -554,7 +554,7 @@ void SmsSlots::unregisterGateway(QString name)
 	kdebugf2();
 }
 
-SmsGateway* SmsSlots::getGateway(QString& number)
+SmsGateway* SmsSlots::getGateway(const QString& number)
 {
 	kdebugf();
 	QMap<QString,isValidFunc*>::Iterator it;

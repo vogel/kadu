@@ -132,7 +132,7 @@ class SmsSlots: public QObject
 		~SmsSlots();
 		void registerGateway(QString, isValidFunc* f);
 		void unregisterGateway(QString);
-		SmsGateway* getGateway(QString& number);
+		SmsGateway* getGateway(const QString& number);
 		void newSms(QString nick);
 		
 	private:
