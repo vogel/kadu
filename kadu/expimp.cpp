@@ -11,7 +11,6 @@
 #include <qpushbutton.h>
 #include <qstring.h>
 #include <qfiledialog.h>
-#include <qmessagebox.h>
 #include <qregexp.h>
 #include <qtextcodec.h>
 #include <stdlib.h>
@@ -140,23 +139,34 @@ void UserlistImportExport::keyPressEvent(QKeyEvent *ke_event)
 void UserlistImportExport::fromfile() {
 	kdebugf();
 	QString fname = QFileDialog::getOpenFileName("/", QString::null, this);
-	if (fname.length()) {
+	if (fname.length())
+	{
 		QFile file(fname);
- 		if (file.open(IO_ReadOnly)) {
+ 		if (file.open(IO_ReadOnly))
+		{
 			QTextStream stream(&file);
 			gadu->streamToUserList(stream, importedUserlist);
 			file.close();
-			}
-		else
-			QMessageBox::critical(this, tr("Import error"),
-				tr("The application encountered an internal error\nThe import userlist from file was unsuccessful"));
+
+			for (unsigned int i = 0; i < importedUserlist.count(); i++)
+				new QListViewItem(lv_userlist, QString::number(importedUserlist[i].uin),
+					importedUserlist[i].nickname,   importedUserlist[i].altnick,
+					importedUserlist[i].first_name, importedUserlist[i].last_name,
+					importedUserlist[i].mobile,     importedUserlist[i].group(),
+					importedUserlist[i].email);
 		}
+		else
+			MessageBox::wrn(tr("The application encountered an internal error\nThe import userlist from file was unsuccessful"));
+	}
 }
 
 void UserlistImportExport::startImportTransfer() {
 	kdebugf();
 	if (getCurrentStatus() == GG_STATUS_NOT_AVAIL)
+	{
+		MessageBox::wrn(tr("Cannot import user list from server in offline mode"));
 		return;
+	}
 
 	if (gadu->doImportUserList())
 		pb_fetch->setEnabled(false);
@@ -167,6 +177,9 @@ void UserlistImportExport::makeUserlist() {
 	
 	kdebugf();
 	
+	if (!MessageBox::ask(tr("This operation will delete your current user list. Are you sure you want this?")))
+		return;
+
 	for (i=0; i < userlist.count(); i++)
 		if (userlist[i].uin)
 			gg_remove_notify(sess, userlist[i].uin);
@@ -235,7 +248,10 @@ void UserlistImportExport::startExportTransfer()
 	kdebugf();
 
 	if (getCurrentStatus() == GG_STATUS_NOT_AVAIL)
+	{
+		MessageBox::wrn(tr("Cannot export user list to server in offline mode"));
 		return;
+	}
 
 	if (gadu->doExportUserList(userlist))
 	{
@@ -263,12 +279,10 @@ void UserlistImportExport::ExportToFile(void)
 			stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
 			stream << contacts;
 			file.close();
-			QMessageBox::information(this, tr("Export completed"),
-				tr("Your userlist has been successfully exported to file"));
+			MessageBox::msg(tr("Your userlist has been successfully exported to file"));
 			}
 		else
-			QMessageBox::critical(this, tr("Export error"),
-				tr("The application encountered an internal error\nThe export userlist to file was unsuccessful"));
+			MessageBox::wrn(tr("The application encountered an internal error\nThe export userlist to file was unsuccessful"));
 		}
 
 	pb_send->setEnabled(true);
@@ -280,7 +294,10 @@ void UserlistImportExport::clean() {
 	kdebugf();
 
 	if (getCurrentStatus() == GG_STATUS_NOT_AVAIL)
+	{
+		MessageBox::wrn(tr("Cannot clear user list on server in offline mode"));
 		return;
+	}
 
 	if (gadu->doClearUserList())
 	{
@@ -295,8 +312,7 @@ void UserlistImportExport::userListExported(bool ok)
 	if (ok)
 		MessageBox::msg(tr("Your userlist has been successfully exported to server"));
 	else
-		QMessageBox::critical(this, tr("Export error"),
-			tr("The application encountered an internal error\nThe export was unsuccessful"));
+		MessageBox::wrn(tr("The application encountered an internal error\nThe export was unsuccessful"));
 
 	pb_send->setEnabled(true);
 	pb_delete->setEnabled(true);
@@ -308,8 +324,7 @@ void UserlistImportExport::userListCleared(bool ok)
 	if (ok)
 		MessageBox::msg(tr("Your userlist has been successfully deleted on server"));
 	else
-		QMessageBox::critical(this, tr("Export error"),
-			tr("The application encountered an internal error\nThe delete userlist on server was unsuccessful"));
+		MessageBox::wrn(tr("The application encountered an internal error\nThe delete userlist on server was unsuccessful"));
 
 	pb_send->setEnabled(true);
 	pb_delete->setEnabled(true);

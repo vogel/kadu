@@ -234,6 +234,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   niestety Makefile od libgsm jest kiepsko napisany (adrian)
 * make install: drobna poprawka zwi±zana ze zmienn± $DESTDIR i instalacj±
   niektórych plików do /usr/share (mkostrze/adrian)
+* patch vogela naprawiaj±cy eksport/import z moimi poprawkami (adrian)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
