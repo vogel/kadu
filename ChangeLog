@@ -11,6 +11,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * zaaplikowany patch michala umozliwiajacy zmiane numeru portu
   nasluchujacego polaczen bezposrednich DCC (adrian)
 * zaaplikowany patch romka przywracajacy kompatybilnosc z QT 3.0.x (adrian)
+* dodano mozliwosc wyboru zestawu ikonek zakladka "Wyglad" (pawel_p)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

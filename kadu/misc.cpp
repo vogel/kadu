@@ -19,6 +19,7 @@
 
 #include "misc.h"
 #include "config_file.h"
+#include "config_dialog.h"
 #include "status.h"
 #include "debug.h"
 
@@ -70,9 +71,6 @@ QCString unicode2latin(const QString &buf)
 	return codec_latin2->fromUnicode(buf);
 }
 
-QPixmap loadIcon(const QString &filename) {
-	return QPixmap(QString(DATADIR) + "/kadu/icons/" + filename);
-}
 
 QString printDateTime(const QDateTime &datetime) {
 	QString tmp;
@@ -608,25 +606,25 @@ ChooseDescription::ChooseDescription ( int nr, QWidget * parent, const char * na
 	l_yetlen = new QLabel(" "+QString::number(GG_STATUS_DESCR_MAXSIZE - desc->currentText().length()),this);
 	connect(desc, SIGNAL(textChanged(const QString&)), this, SLOT(updateYetLen(const QString&)));
 
-	QPixmap *pix;
+	QPixmap pix;
 	switch (nr) {
 		case 1:
-			pix = icons->loadIcon("online_d");
+			pix = icons_manager.loadIcon("OnlineWithDescription");
 			break;
 		case 3:
-			pix = icons->loadIcon("busy_d");
+			pix = icons_manager.loadIcon("BusyWithDescription");
 			break;
 		case 5:
-			pix = icons->loadIcon("invisible_d");
+			pix = icons_manager.loadIcon("InvisibleWithDescription");
 			break;
 		case 7:
-			pix = icons->loadIcon("offline_d");
+			pix = icons_manager.loadIcon("OfflineWithDescription");
 			break;
 		default:
-			pix = icons->loadIcon("offline_d");
+			pix = icons_manager.loadIcon("OfflineWithDescription");
 		}
 
-	QPushButton *okbtn = new QPushButton(QIconSet(*pix), tr("&OK"), this);
+	QPushButton *okbtn = new QPushButton(QIconSet(pix), tr("&OK"), this);
 	QPushButton *cancelbtn = new QPushButton(tr("&Cancel"), this);
 	
 
@@ -669,18 +667,14 @@ void ChooseDescription::updateYetLen(const QString& text) {
 	l_yetlen->setText(" "+QString::number(GG_STATUS_DESCR_MAXSIZE - text.length()));
 }
 
-IconsManager::IconsManager() {
-}
+IconsManager::IconsManager(const QString& name, const QString& configname)
+	:Themes(name, configname)
+{
+    connect(this, SIGNAL(themeChanged(const QString&)), this, SLOT(changed(const QString&)));
+};
 
-IconsManager::IconsManager(QString &dir) {
-	directory = dir;
-}
 
-void IconsManager::setDirectory(QString &dir) {
-	directory = dir;
-}
-
-QPixmap *IconsManager::loadIcon(QString name) {
+QPixmap IconsManager::loadIcon(QString name) {
 	int i;
 	QString fname;
 
@@ -688,26 +682,109 @@ QPixmap *IconsManager::loadIcon(QString name) {
 		if (icons[i].name == name)
 			break;
 	if (i < icons.count()) {
-		return &icons[i].pixmap;
+		return icons[i].picture.pixmap();
 		}
 	else {
 		iconhandle icon;
 		icon.name = name;
 		QPixmap p;
-		fname = directory + "/";
-		fname = fname + name + ".png";
-		p.load(fname);
-		icon.pixmap = p;
+		p.load(themePath() + getThemeEntry(name));
+		icon.picture = QIconSet(p);
 		icons.append(icon);
-		return &icons[i].pixmap;
+		return icons[i].picture.pixmap();
 		}		
 }
 
-void IconsManager::clear() {
-	icons.clear();
+
+void IconsManager::onDestroyConfigDialog()
+{
+	kdebug("IconsManager::onDestroyConfigDialog()\n");
+	QComboBox *cb_icontheme= ConfigDialog::getComboBox("Look", "Icon theme");
+	QString theme;
+	if (cb_icontheme->currentText() == tr("Default"))
+		theme= "default";
+	else
+	    theme= cb_icontheme->currentText();
+
+	config_file.writeEntry("Look", "IconsPaths", icons_manager.paths().join(";"));
+	config_file.writeEntry("Look", "IconTheme", theme);
+};
+
+void IconsManager::chooseIconTheme(const QString& string)
+{
+	kdebug("IconsManager::chooseIconTheme()\n");
+	QString str=string;
+	if (string == tr("Default"))
+	    str= "default";
+	icons_manager.setTheme(str);
+	QMessageBox::information(0, tr("Icons"), tr("Please restart kadu to apply new icon theme"));
+};
+
+
+void IconsManager::onCreateConfigDialog()
+{
+	kdebug("IconsManager::onCreateConfigDialog()\n");
+	QComboBox *cb_icontheme= ConfigDialog::getComboBox("Look", "Icon theme");
+	cb_icontheme->insertStringList(icons_manager.themes());
+	cb_icontheme->setCurrentText(config_file.readEntry("Look", "IconTheme"));
+	if (icons_manager.themes().contains("default"))
+	cb_icontheme->changeItem(tr("Default"), icons_manager.themes().findIndex("default"));
+
+	SelectPaths *selpaths= ConfigDialog::getSelectPaths("Look", "Icon paths");
+	QStringList pl(QStringList::split(";", config_file.readEntry("Look", "IconsPaths")));
+	selpaths->setPathList(pl);	
+};
+
+void IconsManager::initModule()
+{
+	QT_TRANSLATE_NOOP("@default","Icon theme");
+	QT_TRANSLATE_NOOP("@default","Icon paths");
+
+	kdebug("IconsManager::initModule()\n");
+	config_file.addVariable("Look", "IconsPaths", icons_manager.defaultKaduPathsWithThemes().join(";"));
+
+    	config_file.addVariable("Look", "IconTheme", "default");
+	icons_manager.setPaths(QStringList::split(";", config_file.readEntry("Look", "IconsPaths")));
+	icons_manager.setTheme(config_file.readEntry("Look","IconTheme"));
+
+	ConfigDialog::addTab("General");
+	ConfigDialog::addTab("ShortCuts");
+	ConfigDialog::addTab("SMS");
+	ConfigDialog::addTab("Chat");
+	ConfigDialog::addTab("Look");
+	ConfigDialog::addHBox("Look", "Look", "icon_theme");
+	ConfigDialog::addComboBox("Look", "icon_theme", "Icon theme");
+	ConfigDialog::addSelectPaths("Look", "icon_theme", "Icon paths");
+	
+	ConfigDialog::registerSlotOnCreate(&icons_manager, SLOT(onCreateConfigDialog()));
+	ConfigDialog::registerSlotOnDestroy(&icons_manager, SLOT(onDestroyConfigDialog()));
+	ConfigDialog::connectSlot("Look", "Icon theme", SIGNAL(activated(const QString&)), &icons_manager, SLOT(chooseIconTheme(const QString&)));
+	ConfigDialog::connectSlot("Look", "Icon paths", SIGNAL(changed(const QStringList&)), &icons_manager, SLOT(selectedPaths(const QStringList&)));
+
 }
 
-IconsManager *icons = NULL;
+void IconsManager::selectedPaths(const QStringList& paths)
+{
+	icons_manager.setPaths(paths);
+	QComboBox* cb_icontheme= ConfigDialog::getComboBox("Look","Icon theme");
+	QString current= cb_icontheme->currentText();
+	
+	cb_icontheme->clear();
+	cb_icontheme->insertStringList(icons_manager.themes());
+	cb_icontheme->setCurrentText(current);
+
+	if (paths.contains("default"))
+	cb_icontheme->changeItem(tr("Default"), paths.findIndex("default"));
+
+};
+
+
+void IconsManager::changed(const QString& theme)
+{
+//    icons.clear();
+}
+
+IconsManager icons_manager("icons", "icons.conf");
 
 void HtmlDocument::escapeText(QString& text)
 {

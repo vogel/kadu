@@ -20,7 +20,10 @@ void PendingMsgs::deleteMsg(int index)
 	writeToFile();
 	kdebug("PendingMsgs::deleteMsg(%d), count=%d\n", index, count());
 	if (!pendingMsgs() && trayicon)
-		trayicon->setType(*icons->loadIcon(gg_icons[statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]));
+		{
+		QPixmap pix= icons_manager.loadIcon(gg_icons[statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]);
+		trayicon->setType(pix);
+		}
 };
 
 bool PendingMsgs::pendingMsgs(uin_t uin)

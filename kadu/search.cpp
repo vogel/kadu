@@ -290,7 +290,7 @@ void SearchDialog::showResults(gg_pubdir50_t res) {
 
 	kdebug("SearchDialog::showResults(): Done searching. count=%d\n", count);
 	QListViewItem * qlv;
-	QPixmap *pix;
+	QPixmap pix;
 	qlv = NULL;
 
 	for (i = 0; i < count; i++) {
@@ -305,9 +305,9 @@ void SearchDialog::showResults(gg_pubdir50_t res) {
 		qlv = results->findItem(uin, 1);
 		statuscode = atoi(status) & 127;
 		if (statuscode)
-			pix = icons->loadIcon(gg_icons[statusGGToStatusNr(statuscode)]);
+			pix = icons_manager.loadIcon(gg_icons[statusGGToStatusNr(statuscode)]);
 		else
-			pix = icons->loadIcon("offline");
+			pix = icons_manager.loadIcon("Offline");
 		if (qlv) {
 			if (!searchhidden) {
 				qlv->setText(1, cp2unicode((unsigned char *)uin));
@@ -325,13 +325,13 @@ void SearchDialog::showResults(gg_pubdir50_t res) {
 				cp2unicode((unsigned char *)nick), cp2unicode((unsigned char *)born));
 			if (count == 1 && r_uin->isChecked() && !searchhidden
 				&& (statuscode == GG_STATUS_NOT_AVAIL || statuscode == GG_STATUS_NOT_AVAIL_DESCR)) {
-				qlv->setPixmap(0, *pix);
+				qlv->setPixmap(0, pix);
 				searchhidden = true;
 				nextSearch();
 				return;
 				}
 			}
-		qlv->setPixmap(0, *pix);
+		qlv->setPixmap(0, pix);
 		qlv = NULL;
 		}
 

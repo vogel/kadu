@@ -335,47 +335,47 @@ void UserBox::refresh()
 		bool has_mobile = user.mobile.length();
 		bool bold = config_file.readBoolEntry("Look", "ShowBold") ? (user.status == GG_STATUS_AVAIL || user.status == GG_STATUS_AVAIL_DESCR || user.status == GG_STATUS_BUSY || user.status == GG_STATUS_BUSY_DESCR) : 0;
 		if (pending.pendingMsgs(user.uin)) {
-			lbp = new KaduListBoxPixmap(*icons->loadIcon("message"), user.altnick, user.description, bold);
+			lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Message"), user.altnick, user.description, bold);
 			insertItem(lbp);
 //			insertItem(*icons->loadIcon("message"), user.altnick);
 			}
 		else
 		{
-			QPixmap *pix = NULL;
+			QPixmap pix;
 			switch (user.status) {
 				case GG_STATUS_AVAIL:
 					if (has_mobile)
-						pix = icons->loadIcon("online_m");
+						pix = icons_manager.loadIcon("OnlineWithMobile");
 					else
-		    				pix = icons->loadIcon("online");
+		    				pix = icons_manager.loadIcon("Online");
 		    			break;
 				case GG_STATUS_AVAIL_DESCR:
 					if (has_mobile)
-						pix = icons->loadIcon("online_d_m");
+						pix = icons_manager.loadIcon("OnlineWithDescriptionMobile");
 					else
-		    				pix = icons->loadIcon("online_d");
+		    				pix = icons_manager.loadIcon("OnlineWithDescription");
 		    			break;
 				case GG_STATUS_BUSY:
 					if (has_mobile)
-						pix = icons->loadIcon("busy_m");
+						pix = icons_manager.loadIcon("BusyWithMobile");
 					else
-						pix = icons->loadIcon("busy");
+						pix = icons_manager.loadIcon("Busy");
 		    			break;
 				case GG_STATUS_BUSY_DESCR:
 					if (has_mobile)
-						pix = icons->loadIcon("busy_d_m");
+						pix = icons_manager.loadIcon("BusyWithDescriptionMobile");
 					else
-						pix = icons->loadIcon("busy_d");
+						pix = icons_manager.loadIcon("BusyWithDescription");
 		    			break;
 				case GG_STATUS_BLOCKED:
-					pix = icons->loadIcon("blocking");
+					pix = icons_manager.loadIcon("Blocking");
 					break;
 				};
-			if (pix != NULL)
-				lbp = new KaduListBoxPixmap(*pix, user.altnick, user.description, bold);
+			if (!pix.isNull())
+				lbp = new KaduListBoxPixmap(pix, user.altnick, user.description, bold);
 //				insertItem(*pix, user.altnick);
 			else
-				lbp = new KaduListBoxPixmap(*icons->loadIcon("online"), user.altnick, user.description, bold);
+				lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Online"), user.altnick, user.description, bold);
 //				insertItem(*icons->loadIcon("online"), user.altnick);
 			insertItem(lbp);
 		};
@@ -385,27 +385,27 @@ void UserBox::refresh()
 		UserListElement &user = userlist.byAltNick(i_users[i]);
 		bool has_mobile = user.mobile.length();
 		if (pending.pendingMsgs(user.uin)) {
-			lbp = new KaduListBoxPixmap(*icons->loadIcon("message"), user.altnick, user.description, 0);
+			lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Message"), user.altnick, user.description, 0);
 			insertItem(lbp);
 //	    		insertItem(*icons->loadIcon("message"), user.altnick);
 			}
 		else {
-			QPixmap *pix = NULL;
+			QPixmap pix;
 			switch (user.status) {
 				case GG_STATUS_INVISIBLE_DESCR:
 					if (has_mobile)
-						pix = icons->loadIcon("invisible_d_m");
+						pix = icons_manager.loadIcon("InvisibleWithDescriptionMobile");
 					else
-						pix = icons->loadIcon("invisible_d");
+						pix = icons_manager.loadIcon("OnlineWithDescription");
     		    			break;
 				case GG_STATUS_INVISIBLE2:
 					if (has_mobile)
-						pix = icons->loadIcon("invisible_m");
+						pix = icons_manager.loadIcon("InvisibleWithMobile");
 					else
-						pix = icons->loadIcon("invisible");
+						pix = icons_manager.loadIcon("Invisible");
 		    			break;
 				}
-			lbp = new KaduListBoxPixmap(*pix, user.altnick, user.description, 0);
+			lbp = new KaduListBoxPixmap(pix, user.altnick, user.description, 0);
 			insertItem(lbp);
 //			insertItem(*pix, user.altnick);			
 			}
@@ -417,32 +417,32 @@ void UserBox::refresh()
 		UserListElement &user = userlist.byAltNick(n_users[i]);
 		bool has_mobile = user.mobile.length();
 		if (pending.pendingMsgs(user.uin)) {		
-			lbp = new KaduListBoxPixmap(*icons->loadIcon("message"), user.altnick, user.description, 0);
+			lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Message"), user.altnick, user.description, 0);
 			insertItem(lbp);
 //	    		insertItem(*icons->loadIcon("message"), user.altnick);
 			}
 		else
 		{
-			QPixmap *pix = NULL;
+			QPixmap pix;
 			switch (user.status) {
 				case GG_STATUS_NOT_AVAIL_DESCR:
 					if (has_mobile)
-						pix = icons->loadIcon("offline_d_m");
+						pix = icons_manager.loadIcon("OfflineWithDescriptionMobile");
 					else
-			    			pix = icons->loadIcon("offline_d");			
+			    			pix = icons_manager.loadIcon("OfflineWithDescription");
     		    			break;
 				default:
 					if (has_mobile)
-						pix = icons->loadIcon("offline_m");
+						pix = icons_manager.loadIcon("OfflineWithMobile");
 					else
-		    				pix = icons->loadIcon("offline");			
+		    				pix = icons_manager.loadIcon("Offline");			
 		    			break;
 				};
-			if (pix != NULL)
-				lbp = new KaduListBoxPixmap(*pix, user.altnick, user.description, 0);
+			if (!pix.isNull())
+				lbp = new KaduListBoxPixmap(pix, user.altnick, user.description, 0);
 //				insertItem(*pix, user.altnick);
 			else
-				lbp = new KaduListBoxPixmap(*icons->loadIcon("online"), user.altnick, user.description, 0);
+				lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Online"), user.altnick, user.description, 0);
 //				insertItem(*icons->loadIcon("online"), user.altnick);
 			insertItem(lbp);
 		};
@@ -450,7 +450,7 @@ void UserBox::refresh()
 	// Dodajemy uzytkownikow bez numerow GG
 	for (i = 0; i < b_users.count(); i++) {
 		UserListElement &user = userlist.byAltNick(b_users[i]);
-		lbp = new KaduListBoxPixmap(*icons->loadIcon("mobile"), user.altnick, user.description, 0);
+		lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Mobile"), user.altnick, user.description, 0);
 		insertItem(lbp);
 //		insertItem(*icons->loadIcon("mobile"), user.altnick);
 		}
@@ -493,9 +493,9 @@ bool UserBox::containsAltNick(const QString &altnick)
 
 void UserBox::changeAllToInactive()
 {
-	QPixmap *qp_inact = icons->loadIcon("offline");
+	QPixmap qp_inact = icons_manager.loadIcon("Offline");
 	for(int i=0; i<count(); i++)
-		changeItem(*qp_inact,item(i)->text(),i);
+		changeItem(qp_inact,item(i)->text(),i);
 };
 
 void UserBox::showHideInactive()

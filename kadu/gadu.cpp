@@ -32,7 +32,7 @@ bool i_wanna_be_invisible = true;
 void GaduProtocol::initModule()
 {
 	gadu=new GaduProtocol();
-	kadu->mainMenu()->insertItem(loadIcon("reload.png"), tr("Resend &userlist"), gadu, SLOT(sendUserList()),0,-1,2);
+	kadu->mainMenu()->insertItem(icons_manager.loadIcon("ResendUserlist"), tr("Resend &userlist"), gadu, SLOT(sendUserList()),0,-1,2);
 }
 
 GaduProtocol::GaduProtocol() : QObject()

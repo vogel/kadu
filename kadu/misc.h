@@ -6,6 +6,7 @@
 #include <qcombobox.h>
 #include <qstring.h>
 #include <qpixmap.h>
+#include <qiconset.h>
 #include <qlabel.h>
 #include <qcstring.h>
 #include <qdatetime.h>
@@ -32,7 +33,6 @@ QString cp2unicode(unsigned char *);
 QCString unicode2cp(const QString &);
 QString latin2unicode(unsigned char *);
 QCString unicode2latin(const QString &);
-QPixmap loadIcon(const QString &filename);
 QString printDateTime(const QDateTime &datetime);
 QString timestamp(time_t = 0);
 QDateTime currentDateTime();
@@ -68,25 +68,6 @@ class ChooseDescription : public QDialog {
 
 };
 
-struct iconhandle {
-	QString name;
-	QPixmap pixmap;
-};
-
-class IconsManager {
-	public:
-		IconsManager();
-		IconsManager(QString &dir);
-		void setDirectory(QString &dir);
-		QPixmap *loadIcon(QString name);
-		void clear();
-
-	private:
-		QValueList<iconhandle> icons;
-		QString directory;
-};
-
-extern IconsManager *icons;
 
 /**
 	Klasa reprezentuj±ca dokument html. Przechowuje
@@ -264,6 +245,33 @@ class Themes : public QObject
 		void themeChanged(const QString& theme);
 		void pathsChanged(const QStringList& list);
 };
+
+
+struct iconhandle {
+	QString name;
+	QIconSet picture;
+};
+
+class IconsManager :public Themes 
+{
+	Q_OBJECT
+	public:
+		IconsManager(const QString& name, const QString& configname);
+		QPixmap loadIcon(QString name);
+		static void initModule();
+
+	private:
+		QValueList<iconhandle> icons;
+	private slots:
+		void changed(const QString& theme);
+		void chooseIconTheme(const QString& string);
+		void selectedPaths(const QStringList& paths);
+		void onCreateConfigDialog();
+		void onDestroyConfigDialog();
+};
+
+extern IconsManager icons_manager;
+
 
 /**
 	klasa rozwiazujaca problem z powiadomieniem

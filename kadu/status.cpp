@@ -22,8 +22,8 @@
 
 AutoAwayTimer* AutoAwayTimer::autoaway_object=NULL;
 
-QString gg_icons[] = {"online", "online_d", "busy", "busy_d", "invisible", "invisible_d",
-	"offline", "offline_d", "blocking"};
+QString gg_icons[] = {"Online", "OnlineWithDescription", "Busy", "BusyWithDescription", "Invisible", "InvisibleWithDescription",
+	"Offline", "OfflineWithDescription", "Blocking"};
 
 int gg_statuses[] = {GG_STATUS_AVAIL, GG_STATUS_AVAIL_DESCR, GG_STATUS_BUSY, GG_STATUS_BUSY_DESCR,
 	GG_STATUS_INVISIBLE, GG_STATUS_INVISIBLE_DESCR, GG_STATUS_NOT_AVAIL, GG_STATUS_NOT_AVAIL_DESCR,

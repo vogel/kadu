@@ -26,6 +26,7 @@
 #include <sys/stat.h>
 #include <stdlib.h>
 //
+#include "misc.h"
 #include "config_dialog.h"
 #include "config_file.h"
 #include "kadu.h"
@@ -390,12 +391,12 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	buttontray = new QHBox(edtbuttontray);
 
 	autosend = new QPushButton(buttontray);
-	autosend->setPixmap(loadIcon("key_enter.png"));
+	autosend->setPixmap(icons_manager.loadIcon("AutoSendMessage"));
 	autosend->setToggleButton(true);
 	QToolTip::add(autosend, tr("Enter key sends message"));
 
 	lockscroll = new QPushButton(buttontray);
-	lockscroll->setPixmap(loadIcon("scroll_lock.png"));
+	lockscroll->setPixmap(icons_manager.loadIcon("ScrollLock"));
 	lockscroll->setToggleButton(true);
 	QToolTip::add(lockscroll, tr("Blocks scrolling"));
 
@@ -417,11 +418,11 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 #endif
 	
 	QPushButton *clearchat= new QPushButton(buttontray);
-	clearchat->setPixmap(loadIcon("eraser.png"));
+	clearchat->setPixmap(icons_manager.loadIcon("ClearChat"));
 	QToolTip::add(clearchat, tr("Clear messages in chat window"));
 
 	iconsel = new QPushButton(buttontray);
-	iconsel->setPixmap(loadIcon("icons.png"));
+	iconsel->setPixmap(icons_manager.loadIcon("ChooseEmoticons"));
 	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")==EMOTS_NONE)
 	{
 		QToolTip::add(iconsel, tr("Insert emoticon - enable in configuration"));
@@ -431,11 +432,11 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 		QToolTip::add(iconsel, tr("Insert emoticon"));
 
 	QPushButton *history = new QPushButton(buttontray);
-	history->setPixmap(loadIcon("history.png"));
+	history->setPixmap(icons_manager.loadIcon("History"));
 	QToolTip::add(history, tr("Show history"));
 
 	QPushButton *whois = new QPushButton(buttontray);
-	whois->setPixmap(loadIcon("viewmag.png"));
+	whois->setPixmap(icons_manager.loadIcon("LookupUserInfo"));
 	QToolTip::add(whois, tr("Lookup user info"));
 
 	edtbuttontray->setStretchFactor(edt, 50);
@@ -475,7 +476,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 
 	QHBox *fillerbox = new QHBox(btnpart);
 
-	sendbtn = new QPushButton(QIconSet(loadIcon("forward.png")),tr("&Send"),btnpart);
+	sendbtn = new QPushButton(QIconSet(icons_manager.loadIcon("SendMessage")),tr("&Send"),btnpart);
 	sendbtn->setFixedWidth(120);
 	connect(sendbtn, SIGNAL(clicked()), this, SLOT(sendMessage()));
 	QAccel *acc = new QAccel(this);
@@ -604,11 +605,11 @@ void Chat::setupEncryptButton(bool enabled) {
 	QToolTip::remove(encryption);
 	if (enabled) {
 		QToolTip::add(encryption, tr("Disable encryption for this conversation"));
-		encryption->setPixmap(loadIcon("encrypted.png"));
+		encryption->setPixmap(icons_manager.loadIcon("EncryptedChat"));
 		}
 	else {
 		QToolTip::add(encryption, tr("Enable encryption for this conversation"));
-		encryption->setPixmap(loadIcon("decrypted.png"));
+		encryption->setPixmap(icons_manager.loadIcon("DecryptedChat"));
 		}
 #endif		
 }
@@ -652,7 +653,7 @@ void Chat::setTitle() {
 				title.append(", ");
 			title.append(parse(config_file.readEntry("Look","ConferenceContents"),userlist.byUinValue(Uins[k]),false));
 		}
-		setIcon(*icons->loadIcon("online"));
+		setIcon(icons_manager.loadIcon("Online"));
 	}
 	else {
 		kdebug("Chat::setTitle()\n");
@@ -660,7 +661,7 @@ void Chat::setTitle() {
 			title = parse(tr("Chat with ")+"%a (%s[: %d])",userlist.byUinValue(Uins[0]),false);
 		else
 			title = parse(config_file.readEntry("Look","ChatContents"),userlist.byUinValue(Uins[0]),false);
-		setIcon(*icons->loadIcon(gg_icons[statusGGToStatusNr(userlist.byUinValue(Uins[0]).status)]));
+		setIcon(icons_manager.loadIcon(gg_icons[statusGGToStatusNr(userlist.byUinValue(Uins[0]).status)]));
 	}
 
 	title.replace(QRegExp("\n"), " ");
@@ -918,7 +919,7 @@ void Chat::cancelMessage(void) {
 	edit->setFocus();
 	disconnect(sendbtn, SIGNAL(clicked()), this, SLOT(cancelMessage()));
 	connect(sendbtn, SIGNAL(clicked()), this, SLOT(sendMessage()));
-	sendbtn->setIconSet(QIconSet(loadIcon("forward.png")));
+	sendbtn->setIconSet(QIconSet(icons_manager.loadIcon("SendMessage")));
 	sendbtn->setText(tr("&Send"));
 }
 
@@ -971,7 +972,7 @@ void Chat::sendMessage(void) {
 		edit->setEnabled(false);
 		disconnect(sendbtn, SIGNAL(clicked()), this, SLOT(sendMessage()));
 		connect(sendbtn, SIGNAL(clicked()), this, SLOT(cancelMessage()));
-		sendbtn->setIconSet(QIconSet(loadIcon("stop.png")));
+		sendbtn->setIconSet(QIconSet(icons_manager.loadIcon("CancelMessage")));
 		sendbtn->setText(tr("&Cancel"));
 		}
 

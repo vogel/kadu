@@ -103,7 +103,7 @@ void ModulesDialog::unloadSelectedItem()
 void ModulesManager::initModule()
 {
 	modules_manager=new ModulesManager();
-	kadu->mainMenu()->insertItem(loadIcon("configure.png"), tr("&Manage Modules"), modules_manager, SLOT(showDialog()), QKeySequence(), -1, 2);
+	kadu->mainMenu()->insertItem(icons_manager.loadIcon("ManageModules"), tr("&Manage Modules"), modules_manager, SLOT(showDialog()), QKeySequence(), -1, 2);
 }
 
 void ModulesManager::closeModule()

@@ -29,16 +29,16 @@ UserlistImport::UserlistImport(QWidget *parent, const char *name)
  : QDialog(parent, name, FALSE, Qt::WDestructiveClose) {
 	results = new QListView(this);
 
-	fetchbtn = new QPushButton(QIconSet(loadIcon("connect_creating.png")),tr("&Fetch userlist"), this);
+	fetchbtn = new QPushButton(QIconSet(icons_manager.loadIcon("FetchUserlist")),tr("&Fetch userlist"), this);
 	QObject::connect(fetchbtn, SIGNAL(clicked()), this, SLOT(startTransfer()));
 
-	QPushButton *filebtn = new QPushButton(QIconSet(loadIcon("connect_creating.png")),tr("&Import from file"), this);
+	QPushButton *filebtn = new QPushButton(QIconSet(icons_manager.loadIcon("ImportFromFile")),tr("&Import from file"), this);
 	QObject::connect(filebtn, SIGNAL(clicked()), this, SLOT(fromfile()));
 
-	QPushButton *savebtn = new QPushButton(QIconSet(loadIcon("filesave.png")),tr("&Save results"), this);
+	QPushButton *savebtn = new QPushButton(QIconSet(icons_manager.loadIcon("SaveUserlist")),tr("&Save results"), this);
 	QObject::connect(savebtn, SIGNAL(clicked()), this, SLOT(makeUserlist()));
 
-	QPushButton *mergebtn = new QPushButton(QIconSet(loadIcon("filesave.png")),tr("&Merge results"), this);
+	QPushButton *mergebtn = new QPushButton(QIconSet(icons_manager.loadIcon("MergeUserlist")),tr("&Merge results"), this);
 	QObject::connect(mergebtn, SIGNAL(clicked()), this, SLOT(updateUserlist()));
 
 	results->addColumn(tr("UIN"));
@@ -264,13 +264,13 @@ UserlistExport::UserlistExport(QWidget *parent, const char *name)
 
 	QLabel *clabel = new QLabel(message,this);
 
-	sendbtn = new QPushButton(QIconSet(loadIcon("connect_creating.png")),tr("&Send userlist"),this);
+	sendbtn = new QPushButton(QIconSet(icons_manager.loadIcon("SendUserlist")),tr("&Send userlist"),this);
 	
-	deletebtn = new QPushButton(QIconSet(loadIcon("connect_creating.png")),tr("&Delete userlist"),this);
+	deletebtn = new QPushButton(QIconSet(icons_manager.loadIcon("DeleteUserlist")),tr("&Delete userlist"),this);
 	
-	tofilebtn = new QPushButton(QIconSet(loadIcon("connect_creating.png")),tr("&Export to file"),this);
+	tofilebtn = new QPushButton(QIconSet(icons_manager.loadIcon("ExportUserlist")),tr("&Export to file"),this);
 
-	QPushButton * closebtn = new QPushButton(QIconSet(loadIcon("stop.png")),tr("&Close window"),this);
+	QPushButton * closebtn = new QPushButton(QIconSet(icons_manager.loadIcon("CloseWindow")),tr("&Close window"),this);
 
 	QObject::connect(closebtn, SIGNAL(clicked()), this, SLOT(close()));
 

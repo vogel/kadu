@@ -243,12 +243,12 @@ SoundSlots::SoundSlots()
 {
 	QIconSet *mu;
 	if (sound_manager.getMute()) {
-		muteitem= kadu->mainMenu()->insertItem(loadIcon("mute.png"), tr("Unmute sounds"), this, SLOT(muteUnmuteSounds()), 0, -1, 3);
-		mu= new QIconSet(loadIcon("mute.png"));
+		muteitem= kadu->mainMenu()->insertItem(icons_manager.loadIcon("Mute"), tr("Unmute sounds"), this, SLOT(muteUnmuteSounds()), 0, -1, 3);
+		mu= new QIconSet(icons_manager.loadIcon("Mute"));
 		}
 	else {
-		muteitem= kadu->mainMenu()->insertItem(loadIcon("unmute.png"), tr("Mute sounds"), this, SLOT(muteUnmuteSounds()), 0, -1, 3);
-		mu= new QIconSet(loadIcon("unmute.png"));
+		muteitem= kadu->mainMenu()->insertItem(icons_manager.loadIcon("Unmute"), tr("Mute sounds"), this, SLOT(muteUnmuteSounds()), 0, -1, 3);
+		mu= new QIconSet(icons_manager.loadIcon("Unmute"));
 		}
 
 	Kadu::addToolButton(*mu, tr("Mute sounds"), this, SLOT(muteUnmuteSounds()), 0, "mute");
@@ -337,14 +337,14 @@ void SoundSlots::muteUnmuteSounds()
 	QToolButton *mutebtn= Kadu::getToolButton("mute");
 	sound_manager.setMute(!sound_manager.getMute());
 	if (sound_manager.getMute()) {
-		mutebtn->setIconSet(loadIcon("mute.png"));
+		mutebtn->setIconSet(icons_manager.loadIcon("Mute"));
 		mutebtn->setTextLabel(tr("Unmute sounds"));
-		kadu->menuBar()->changeItem(muteitem, loadIcon("mute.png"), tr("Unmute sounds"));
+		kadu->menuBar()->changeItem(muteitem, icons_manager.loadIcon("Mute"), tr("Unmute sounds"));
 	    }
 	else {
-		kadu->menuBar()->changeItem(muteitem, loadIcon("unmute.png"), tr("Mute sounds"));
+		kadu->menuBar()->changeItem(muteitem, icons_manager.loadIcon("Unmute"), tr("Mute sounds"));
 		mutebtn->setTextLabel(tr("Mute sounds"));
-		mutebtn->setIconSet(loadIcon("unmute.png"));
+		mutebtn->setIconSet(icons_manager.loadIcon("Unmute"));
 		}
 }
 

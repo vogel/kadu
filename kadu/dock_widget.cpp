@@ -85,7 +85,7 @@ TrayIcon::TrayIcon(QWidget *parent, const char *name)
 	if (!config_file.readBoolEntry("General","UseDocking"))
 		return;
 
-	QPixmap pix = *icons->loadIcon("offline");
+	QPixmap pix = icons_manager.loadIcon("Offline");
 	setBackgroundMode(X11ParentRelative);
 	setMinimumSize(pix.size());
 	QLabel::setPixmap(pix);
@@ -187,12 +187,12 @@ void TrayIcon::setType(QPixmap &pixmap)
 void TrayIcon::changeIcon() {
 	if (pending.pendingMsgs() && config_file.readBoolEntry("General","UseDocking") && !icon_timer->isActive()) {
 		if (!blink) {
-			setPixmap(*icons->loadIcon("message"));
+			setPixmap(icons_manager.loadIcon("Message"));
 			icon_timer->start(500,TRUE);
 			blink = true;
 			}
 		else {
-			setPixmap(*icons->loadIcon(gg_icons[statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]));
+			setPixmap(icons_manager.loadIcon(gg_icons[statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]));
 			icon_timer->start(500,TRUE);
 			blink = false;
 			}

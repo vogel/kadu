@@ -55,13 +55,12 @@ int main(int argc, char *argv[])
 	kadu_qm.load(QString(DATADIR) + QString("/kadu/translations/kadu_") + config_file.readEntry("General", "Language", QTextCodec::locale()), ".");
 	qApp->installTranslator(&kadu_qm);
 
-	QString dir;
-	dir = QString(DATADIR) + "/kadu/icons";
-	icons = new IconsManager(dir);
+	IconsManager::initModule();
 	kadu = new Kadu(0, "Kadu");
+
 	Kadu::InitModules();
-	QPixmap *pix = icons->loadIcon("offline");
-	kadu->setIcon(*pix);
+	QPixmap pix = icons_manager.loadIcon("Offline");
+	kadu->setIcon(pix);
 	qApp->setMainWidget(kadu);
 	if (!config_file.readNumEntry("General","UIN")) {
 		QString path_;

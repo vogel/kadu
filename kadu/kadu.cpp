@@ -322,14 +322,14 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	setActiveGroup("");
 
 	// dodanie przyciskow do paska narzedzi
-	Kadu::addToolButton(*icons->loadIcon("offline"), tr("Show / hide inactive users"), Userbox, SLOT(showHideInactive()));
-	Kadu::addToolButton(loadIcon("configure.png"), tr("Configuration"), this, SLOT(configure()));
+	Kadu::addToolButton(icons_manager.loadIcon("ShowHideInactiveUsers"), tr("Show / hide inactive users"), Userbox, SLOT(showHideInactive()));
+	Kadu::addToolButton(icons_manager.loadIcon("Configuration"), tr("Configuration"), this, SLOT(configure()));
 	Kadu::addToolButtonSeparator();
-	Kadu::addToolButton(loadIcon("history.png"), tr("View history"), this, SLOT(viewHistory()));
-	Kadu::addToolButton(loadIcon("identity.png"), tr("View/edit user info"), this, SLOT(showUserInfo()));
-	Kadu::addToolButton(loadIcon("viewmag.png"), tr("Lookup in directory"), this, SLOT(lookupInDirectory()));
+	Kadu::addToolButton(icons_manager.loadIcon("History"), tr("View history"), this, SLOT(viewHistory()));
+	Kadu::addToolButton(icons_manager.loadIcon("EditUserInfo"), tr("View/edit user info"), this, SLOT(showUserInfo()));
+	Kadu::addToolButton(icons_manager.loadIcon("LookupUserInfo"), tr("Lookup in directory"), this, SLOT(lookupInDirectory()));
 	Kadu::addToolButtonSeparator();
-	Kadu::addToolButton(*icons->loadIcon("online"), tr("Add user"), this, SLOT(addUserAction()));
+	Kadu::addToolButton(icons_manager.loadIcon("AddUser"), tr("Add user"), this, SLOT(addUserAction()));
 
 
 	// popupmenu
@@ -388,9 +388,9 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		qBlue(statuslabeltxt->paletteBackgroundColor().rgb()) - 20));
 
 	statuslabel = new StatusLabel(centralFrame, "statuslabel");
-	QPixmap *pix = icons->loadIcon("offline");
-	statuslabel->setPixmap(*pix);
-	statuslabel->setFixedWidth(pix->width());
+	QPixmap pix = icons_manager.loadIcon("Offline");
+	statuslabel->setPixmap(pix);
+	statuslabel->setFixedWidth(pix.width());
 
 	/* guess what */
 	createMenu();
@@ -399,7 +399,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	connect(statusppm, SIGNAL(aboutToHide()), this, SLOT(statusMenuAboutToHide()));
 
 	dockppm->insertSeparator();
-	dockppm->insertItem(loadIcon("exit.png"), tr("&Exit Kadu"), 9);
+	dockppm->insertItem(icons_manager.loadIcon("Exit"), tr("&Exit Kadu"), 9);
 	if (config_file.readBoolEntry("General", "UseDocking"))
 		trayicon->connectSignals();
 //		connect(dockppm, SIGNAL(activated(int)), trayicon, SLOT(dockletChange(int)));
@@ -1046,7 +1046,7 @@ void Kadu::removeUser(QStringList &users, bool permanently = false)
 
 void Kadu::blink() {
 	int i;
-	QPixmap *pix;
+	QPixmap pix;
 
 	if (!doBlink && socket_active) {
 		setCurrentStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
@@ -1054,26 +1054,26 @@ void Kadu::blink() {
 		}
 	else
 		if (!doBlink && !socket_active) {
-			pix = icons->loadIcon("offline");
-	    		statuslabel->setPixmap(*pix);
+			pix = icons_manager.loadIcon("Offline");
+	    		statuslabel->setPixmap(pix);
 	    		if (trayicon)
-				trayicon->setType(*pix);
+				trayicon->setType(pix);
 	    		return;
 	    		}
 
 	if (blinkOn) {
-		pix = icons->loadIcon("offline");
-		statuslabel->setPixmap(*pix);
+		pix = icons_manager.loadIcon("Offline");
+		statuslabel->setPixmap(pix);
 		if (trayicon)
-			trayicon->setType(*pix);
+			trayicon->setType(pix);
 		blinkOn = false;
 		}
 	else {
 		i = statusGGToStatusNr(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
-		pix = icons->loadIcon(gg_icons[i]);
-		statuslabel->setPixmap(*pix);
+		pix = icons_manager.loadIcon(gg_icons[i]);
+		statuslabel->setPixmap(pix);
 		if (trayicon)
-			trayicon->setType(*pix);
+			trayicon->setType(pix);
 		blinkOn = true;
 		}
 
@@ -1240,11 +1240,11 @@ void Kadu::setCurrentStatus(int status) {
 	statuslabeltxt->setText(qApp->translate("@default", statustext[statusnr]));
 	statusppm->setItemEnabled(7, statusnr != 6);
 	dockppm->setItemEnabled(7, statusnr != 6);
-	QPixmap *pix = icons->loadIcon(gg_icons[statusnr]);
-	statuslabel->setPixmap(*pix);
-	setIcon(*pix);
+	QPixmap pix= icons_manager.loadIcon(gg_icons[statusnr]);
+	statuslabel->setPixmap(pix);
+	setIcon(pix);
 	if (!pending.pendingMsgs() && trayicon)
-		trayicon->setType(*pix);
+		trayicon->setType(pix);
 }
 
 void Kadu::setStatus(int status) {
@@ -1655,28 +1655,26 @@ void Kadu::createMenu() {
 
 	MainMenu = new QPopupMenu(this, "MainMenu");
 	MainMenu->insertItem(tr("Manage &ignored"), this, SLOT(manageIgnored()));
-	MainMenu->insertItem(loadIcon("configure.png"), tr("&Configuration"), this, SLOT(configure()),HotKey::shortCutFromFile("ShortCuts", "kadu_configure"));
+	MainMenu->insertItem(icons_manager.loadIcon("Configuration"), tr("&Configuration"), this, SLOT(configure()),HotKey::shortCutFromFile("ShortCuts", "kadu_configure"));
 	MainMenu->insertSeparator();
 
 	MainMenu->insertItem(tr("Remind &password"), this, SLOT(remindPassword()));
 	MainMenu->insertItem(tr("&Change password/email"), this, SLOT(changePassword()));
-	MainMenu->insertItem(loadIcon("newuser.png"),tr("Register &new user"), this, SLOT(registerUser()));
+	MainMenu->insertItem(icons_manager.loadIcon("RegisterUser"),tr("Register &new user"), this, SLOT(registerUser()));
 	MainMenu->insertItem(tr("Unregister user"), this, SLOT(unregisterUser()));
 	MainMenu->insertItem(tr("Personal information"), this,SLOT(personalInfo()));
 	MainMenu->insertSeparator();
-	QPixmap find;
-	find = loadIcon("viewmag.png");
-	MainMenu->insertItem(find, tr("&Search for users"), this, SLOT(searchInDirectory()));
+	MainMenu->insertItem(icons_manager.loadIcon("LookupUserInfo"), tr("&Search for users"), this, SLOT(searchInDirectory()));
 	MainMenu->insertItem(tr("I&mport userlist"), this, SLOT(importUserlist()));
 	MainMenu->insertItem(tr("E&xport userlist"), this, SLOT(exportUserlist()));
-	MainMenu->insertItem(*icons->loadIcon("online"), tr("&Add user"), this, SLOT(addUserAction()),HotKey::shortCutFromFile("ShortCuts", "kadu_adduser"));
+	MainMenu->insertItem(icons_manager.loadIcon("AddUser"), tr("&Add user"), this, SLOT(addUserAction()),HotKey::shortCutFromFile("ShortCuts", "kadu_adduser"));
 	MainMenu->insertItem(tr("Send SMS"), this,SLOT(sendSms()));
 	MainMenu->insertSeparator();	
 	MainMenu->insertItem(tr("H&elp"), this, SLOT(help()));	
 	MainMenu->insertItem(tr("A&bout..."), this, SLOT(about()));
 	MainMenu->insertSeparator();
 	MainMenu->insertItem(tr("&Hide Kadu"), this, SLOT(hideKadu()));
-	MainMenu->insertItem(loadIcon("exit.png"), tr("&Exit Kadu"), this, SLOT(quit()));
+	MainMenu->insertItem(icons_manager.loadIcon("Exit"), tr("&Exit Kadu"), this, SLOT(quit()));
 
 	MenuBar->insertItem(tr("&Kadu"), MainMenu);
 }
@@ -1694,15 +1692,15 @@ void Kadu::statusMenuAboutToHide() {
 
 void Kadu::createStatusPopupMenu() {
 
-	QPixmap *pix;
+	QPixmap pix;
 	QIconSet icon;
 
 	statusppm = new QPopupMenu(this, "statusppm");
 	dockppm = new QPopupMenu(this, "dockppm");
 
 	for (int i=0; i<8; i++) {
-		pix = icons->loadIcon(gg_icons[i]);
-		icon = QIconSet(*pix);
+		pix = icons_manager.loadIcon(gg_icons[i]);
+		icon = QIconSet(pix);
 		statusppm->insertItem(icon, qApp->translate("@default", statustext[i]), i);
 		dockppm->insertItem(icon, qApp->translate("@default", statustext[i]), i);
 		}
@@ -1806,7 +1804,9 @@ void KaduSlots::onDestroyConfigDialog()
 			trayicon = new TrayIcon(kadu);
 			trayicon->show();
 			trayicon->connectSignals();
-			trayicon->setType(*icons->loadIcon(gg_icons[statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]));
+			QPixmap pix=icons_manager.loadIcon(gg_icons[
+			statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]);
+			trayicon->setType(pix);
 			trayicon->changeIcon();
 				       }
 	else

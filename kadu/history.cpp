@@ -907,9 +907,9 @@ History::History(UinsList uins): uins(uins), closeDemand(false), finding(false) 
 //	QPushButton *closebtn = new QPushButton(this);
 //	closebtn->setText(tr("&Close"));
 	QPushButton *prevbtn = new QPushButton(this);
-	prevbtn->setPixmap(loadIcon("back.png"));
+	prevbtn->setPixmap(icons_manager.loadIcon("PreviousPageHistory"));
 	QPushButton *nextbtn = new QPushButton(this);
-	nextbtn->setPixmap(loadIcon("forward.png"));
+	nextbtn->setPixmap(icons_manager.loadIcon("NextPageHistory"));
 	QPushButton *searchbtn = new QPushButton(this);
 	searchbtn->setText(tr("&Find"));
 	QPushButton *searchnextbtn = new QPushButton(this);
