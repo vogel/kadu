@@ -515,7 +515,7 @@ Jest to wysoce ryzykowne!</translation>
     </message>
     <message>
         <source>Show contacts with description</source>
-        <translation>Pokaż kontakty z opisem</translation>
+        <translation>Pokaż kontakty tylko z opisem</translation>
     </message>
     <message>
         <source>IP address: </source>
@@ -535,7 +535,7 @@ Jest to wysoce ryzykowne!</translation>
     </message>
     <message>
         <source>Display contacts that have a desciption</source>
-        <translation>Wyświetla kontakty, które mają opis</translation>
+        <translation>Wyświetlane będą tylko te kontakty, które mają opis</translation>
     </message>
     <message>
         <source>Show contacts that you are blocking</source>
