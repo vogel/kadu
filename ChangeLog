@@ -1,3 +1,6 @@
++++ wersja 0.3.3-final
+* ikonka wiadomo¶ci i ikon statusu "ukryty" z telefonikiem do oddzielnych plików (chilek)
+
 +++ wersja 0.3.3-rc4
 * dodatkowe opcje dostêpne w menu podrêcznym u¿ytkownika (blokowanie, ignorowanie,
   powiadamianie i niedostêpny przy tylko dla znajomych) (chilek)
@@ -25,7 +28,6 @@
 * poprawne wyswietlanie pola "wyswietl" w informacji o kontakcie (mast3r)
 * kontakty z ustawionym numerem telefonu maj± ikonki z telefonami (jz,adrian)
 * wydzielenie ikon ze statusami do oddzielnych plików (chilek)
-* ikonka wiadomo¶ci i ikon statusu "ukryty" z telefonikiem do oddzielnych plików (chilek)
 
 +++ wersja 0.3.3-rc3
 * sensowne potwierdzenie usuniêcia kontaktu (adrian)
