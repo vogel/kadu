@@ -15,62 +15,80 @@
 #include <sys/socket.h>
 #include <qlayout.h>
 #include <qmessagebox.h>
+#include <qvbox.h>
 
 //
 #include "kadu.h"
 #include "userinfo.h"
 //
 
-UserInfo::UserInfo (const QString & name, QDialog* parent , const QString &altnick) : QDialog (parent, name) {
-	resize(240,200);
+UserInfo::UserInfo (const QString &name, QDialog *parent , const QString &altnick)
+: QTabDialog(parent, name) {
+	resize(200,200);
 	setCaption(i18n("User info on %1").arg(altnick));
 	setWFlags(Qt::WDestructiveClose);
 
-	e_uin = new QLineEdit(this);
-	QLabel *l_uin = new QLabel(this);
+	setupTab1(altnick);
+
+	setOkButton(i18n("Write userlist"));
+	setCancelButton(i18n("Close"));
+
+	connect(this, SIGNAL(applyButtonPressed()), this, SLOT(writeUserlist()));
+	connect(this, SIGNAL(cancelButtonPressed()), this, SLOT(close()));
+
+}
+
+void UserInfo::setupTab1(const QString &altnick) {
+	QVBox *box = new QVBox(this);
+	box->setMargin(10);
+
+//	QHBox *hbox1 = new QHBox(box);
+	QLabel *l_uin = new QLabel(box);
 	l_uin->setText(i18n("Uin"));
+	e_uin = new QLineEdit(box);
 
-	QLineEdit *e_status = new QLineEdit(this);
-	QLabel *l_status = new QLabel(this);
+//	QHBox *hbox2 = new QHBox(box);
+	QLabel *l_status = new QLabel(box);
 	l_status->setText(i18n("Status"));
+	QLineEdit *e_status = new QLineEdit(box);
 
-	e_nickname = new QLineEdit(this);
-	QLabel *l_nickname = new QLabel(this);
+//	QHBox *hbox3 = new QHBox(box);
+	QLabel *l_nickname = new QLabel(box);
 	l_nickname->setText(i18n("Nickname"));
+	e_nickname = new QLineEdit(box);
 
-	e_firstname = new QLineEdit(this);
-	QLabel *l_firstname = new QLabel(this);
+//	QHBox *hbox4 = new QHBox(box);
+	QLabel *l_firstname = new QLabel(box);
 	l_firstname->setText(i18n("First name"));
+	e_firstname = new QLineEdit(box);
 
-	e_lastname = new QLineEdit(this);
-	QLabel *l_lastname = new QLabel(this);
+//	QHBox *hbox5 = new QHBox(box);
+	QLabel *l_lastname = new QLabel(box);
 	l_lastname->setText(i18n("Surname"));
+	e_lastname = new QLineEdit(box);
 
-	e_altnick = new QLineEdit(this);
-	QLabel *l_altnick = new QLabel(this);
+//	QHBox *hbox6 = new QHBox(box);
+	QLabel *l_altnick = new QLabel(box);
 	l_altnick->setText(i18n("AltNick"));
+	e_altnick = new QLineEdit(box);
 
-	e_mobile = new QLineEdit(this);
-	QLabel *l_mobile = new QLabel(this);
+//	QHBox *hbox7 = new QHBox(box);
+	QLabel *l_mobile = new QLabel(box);
 	l_mobile->setText(i18n("Mobile"));
+	e_mobile = new QLineEdit(box);
 
-	e_group = new QLineEdit(this);
-	QLabel *l_group = new QLabel(this);
+//	QHBox *hbox8 = new QHBox(box);
+	QLabel *l_group = new QLabel(box);
 	l_group->setText(i18n("Group"));
+	e_group = new QLineEdit(box);
 
-	e_addr = new QLineEdit(this);
-	QLabel *l_addr = new QLabel(this);
+//	QHBox *hbox9 = new QHBox(box);
+	QLabel *l_addr = new QLabel(box);
 	l_addr->setText(i18n("Address"));
+	e_addr = new QLineEdit(box);
 	e_addr->setReadOnly(true);
 
-//    e_altnick->setText(__c2q(UinToUser(uin)));
-
-	QPushButton * update = new QPushButton(this);
-	update->setText(i18n("Write userlist"));
-	connect(update, SIGNAL( clicked() ), this, SLOT(writeUserlist()));
-
-	int i;
-	i = 0;
+	int i = 0;
  	while (i < userlist.size() && userlist[i].altnick != altnick)
 		i++;
 	this_index = i;
@@ -115,18 +133,12 @@ UserInfo::UserInfo (const QString & name, QDialog* parent , const QString &altni
 		e_status->setText(i18n("(Unknown)"));
 
 	e_status->setReadOnly(true);
-//	e_status->setEnabled(false);
 
 	if (userlist[i].uin)
 		e_uin->setText(QString::number(userlist[i].uin));
 	e_uin->setReadOnly(true);
-//	e_uin->setEnabled(false);
 
-	QPushButton * kloze = new QPushButton(this);
-	kloze->setText(i18n("Close"));
-	connect(kloze, SIGNAL(clicked()), this, SLOT(close()));
-
-	QGridLayout * grid = new QGridLayout(this, 10, 2, 10, 3);
+/*	QGridLayout * grid = new QGridLayout(box, 10, 2, 10, 3);
 	grid->addColSpacing(0,80);
 	grid->addWidget(l_uin,0,0);
 	grid->addWidget(e_uin,0,1);
@@ -145,9 +157,9 @@ UserInfo::UserInfo (const QString & name, QDialog* parent , const QString &altni
 	grid->addWidget(l_group,7,0);
 	grid->addWidget(e_group,7,1);
 	grid->addWidget(l_addr,8,0);
-	grid->addWidget(e_addr,8,1);
-	grid->addWidget(kloze,9,0);
-	grid->addWidget(update,9,1);
+	grid->addWidget(e_addr,8,1);*/
+
+	addTab(box, i18n("General"));
 }
 
 void UserInfo::writeUserlist() {

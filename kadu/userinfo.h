@@ -14,7 +14,7 @@
 #include <qlineedit.h>
 #include "../libgadu/lib/libgadu.h"
 
-class UserInfo : public QDialog {
+class UserInfo : public QTabDialog {
 	Q_OBJECT
 	public:
 		UserInfo(const QString &, QDialog* parent, const QString &altnick);
@@ -29,6 +29,9 @@ class UserInfo : public QDialog {
 		QLineEdit *e_uin;
 		QLineEdit *e_addr;
 		QLineEdit *e_group;		
+
+	protected:
+		void setupTab1(const QString &altnick);
 
 	private slots:
 		void writeUserlist();
