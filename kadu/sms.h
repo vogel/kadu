@@ -74,8 +74,10 @@ class HttpClient : public QObject
 		void setHost(QString host);
 		void get(QString path);
 		void post(QString path,const QByteArray& data);
+		void post(QString path,const QString& data);
 		int status();
 		const QByteArray& data();
+		QString encode(const QString& text);
 		
 	signals:
 		void finished();

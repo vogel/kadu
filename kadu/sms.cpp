@@ -12,6 +12,7 @@
 #include <klocale.h>
 #include <qregexp.h>
 #include <qpainter.h>
+#include <qurl.h>
 //
 #include "kadu.h"
 #include "sms.h"
@@ -195,6 +196,13 @@ void HttpClient::post(QString path,const QByteArray& data)
 	Socket.connectToHost(Host,80);
 };
 
+void HttpClient::post(QString path,const QString& data)
+{
+	QByteArray PostData;
+	PostData.duplicate(data.local8Bit().data(),data.length());
+	post(path,PostData);
+};
+
 int HttpClient::status()
 {
 	return Status;
@@ -203,6 +211,13 @@ int HttpClient::status()
 const QByteArray& HttpClient::data()
 {
 	return Data;
+};
+
+QString HttpClient::encode(const QString& text)
+{
+	QString encoded=text;
+	QUrl::encode(encoded);
+	return encoded;
 };
 
 /********** SmsSender **********/
@@ -248,10 +263,8 @@ void SmsSender::onFinished()
 			};
 			QString code=code_regexp.cap(1);
 			State=SMS_LOADING_RESULTS;
-			QString post_data="bookopen=&numer="+Number+"&ksiazka=ksi%B1%BFka+telefoniczna&message="+Message+"&podpis=Kadu&kontakt=&code="+code+"&Nadaj=Nadaj";
-			QByteArray PostData;
-			PostData.duplicate(post_data.local8Bit().data(),post_data.length());
-			Http.post("sms/sendsms.asp",PostData);
+			QString post_data="bookopen=&numer="+Number+"&ksiazka=ksi%B1%BFka+telefoniczna&message="+Http.encode(Message)+"&podpis=Kadu&kontakt=&code="+code+"&Nadaj=Nadaj";
+			Http.post("sms/sendsms.asp",post_data);
 		};
 	}
 	else if(State==SMS_LOADING_PICTURE)
@@ -309,10 +322,8 @@ void SmsSender::onCodeEntered(const QString& code)
 {
 	fprintf(stderr,"SMS User entered the code\n");
 	State=SMS_LOADING_RESULTS;
-	QString post_data=QString("token=")+Token+"&SENDER=Kadu&RECIPIENT="+Number+"&SHORT_MESSAGE="+Message+"&pass="+code;
-	QByteArray PostData;
-	PostData.duplicate(post_data.local8Bit().data(),post_data.length());
-	Http.post("sendsms.asp",PostData);
+	QString post_data=QString("token=")+Token+"&SENDER=Kadu&RECIPIENT="+Number+"&SHORT_MESSAGE="+Http.encode(Message)+"&pass="+code;
+	Http.post("sendsms.asp",post_data);
 };
 
 void SmsSender::send(const QString& number,const QString& message)
@@ -351,10 +362,7 @@ void SmsSender::send(const QString& number,const QString& message)
 	else if(Provider==SMS_ERA)
 	{
 		Http.setHost("213.158.194.32");
-		QString post_data="sms=1";
-		QByteArray PostData;
-		PostData.duplicate(post_data.local8Bit().data(),post_data.length());
-		Http.post("sms/sendsms.asp",PostData);
+		Http.post("sms/sendsms.asp","sms=1");
 	}
 	else
 	{
