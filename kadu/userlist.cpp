@@ -17,10 +17,7 @@
 
 #include "userlist.h"
 #include "kadu.h"
-//#include <stdio.h>
 #include <qfile.h>
-//#include <iostream.h>
-//#include <unistd.h>
 #include <stdlib.h>
 #include <sys/stat.h>
 
@@ -191,7 +188,6 @@ bool UserList::readFromFile()
             break;
             }
           }
-
         if (!already) {
           grouplist.resize(grouplist.size()+1);
           if (grouplist.size() > 1)
@@ -200,7 +196,6 @@ bool UserList::readFromFile()
             grouplist[grouplist.size()-1].number = 601;
           grouplist[grouplist.size()-1].name = strdup(group);
         }
-
       } */
 
 			if(uin=="")
