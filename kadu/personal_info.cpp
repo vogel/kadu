@@ -157,6 +157,7 @@ void PersonalInfoDialog::socketEvent()
 		deleteSocketNotifiers();
 		QMessageBox::critical(this,i18n("Error"),i18n("Public directory write failed"));
 		gg_pubdir_free(http);
+		http = NULL;
 		return;
 		}
 
@@ -171,6 +172,7 @@ void PersonalInfoDialog::socketEvent()
 		deleteSocketNotifiers();
 		QMessageBox::critical(this,i18n("Error"),i18n("Public directory write failed"));
 		gg_pubdir_free(http);
+		http = NULL;
 		return;
 		}
 
@@ -178,6 +180,7 @@ void PersonalInfoDialog::socketEvent()
 		setEnabled(true);
 		deleteSocketNotifiers();
 		gg_pubdir_free(http);
+		http = NULL;
 		accept();
 		return;
 		}
@@ -199,10 +202,12 @@ void PersonalInfoDialog::deleteSocketNotifiers()
 	if (SocketReadNotifier) {
 		SocketReadNotifier->setEnabled(false);
 		delete SocketReadNotifier;
+		SocketReadNotifier = NULL;
 		}
 	if (SocketWriteNotifier) {
 		SocketWriteNotifier->setEnabled(false);
 		delete SocketWriteNotifier;
+		SocketWriteNotifier = NULL;
 		}
 }
 
