@@ -84,6 +84,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * kadu ³±czy siê z predefiniowan± list± serwerów GG je¶li nie mo¿e po³±czyæ siê z
   hubem GG (chilek)
 * dodany modu³ speech joi-a wraz z moimi poprawkami (chilek)
+* kompilacja modulow autoresponder, echo i speech domyslnie wylaczona (adrian)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
