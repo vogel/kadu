@@ -1,0 +1,2 @@
+MODULE_SOURCES=x11_docking.cpp
+MODULE_MOC_HEADERS=x11_docking.h

@@ -4,52 +4,38 @@
 #include <qlabel.h>
 #include <qpixmap.h>
 
-/**
-	Klasa reprezentuj±ca ikonkê w obszarze powiadamiania
-**/
-class TrayIcon : public QLabel
+class DockingManager : public QObject
 {
 	Q_OBJECT
 
 	private:
-		QWidget* WMakerMasterWidget;
 		QTimer *icon_timer;
 		bool blink;
-		
+
 	private slots:
+		void changeIcon();
+		void dockletChange(int id);
 		void pendingMessageAdded();
 		void pendingMessageDeleted();
 		void showOffline();
 		void showStatus(int status);
 		void showCurrentStatus(int status);
 
-	protected:
-		virtual void enterEvent(QEvent* e);
-		virtual void mousePressEvent(QMouseEvent*);
-
 	public:
-		TrayIcon(QWidget *parent = 0, const char *name = 0);
-		~TrayIcon();
-		QPoint trayPosition();
-		void setPixmap(const QPixmap& pixmap);
-		void show();
-		
-	public slots:
-		// Status change slots
-		void dockletChange(int id);
-		//Funkcja do migania koperty
-		void changeIcon();
+		DockingManager();
+		~DockingManager();
+		void trayMousePressEvent(QMouseEvent * e);
+		QPixmap defaultPixmap();
 
 	signals:
+		void trayPixmapChanged(const QPixmap& pixmap);
+		void trayTooltipChanged(const QString& tooltip);
+		void searchingForTrayPosition(QPoint& pos);
 		void mousePressMidButton();
 		void mousePressLeftButton();
 		void mousePressRightButton();
-		
-	public:
-		static void initModule();
-		static void closeModule();
 };
 
-extern TrayIcon *trayicon;
+extern DockingManager* docking_manager;
 
 #endif

@@ -18,6 +18,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawka polecenia kompilowania w modu³ach - kompilator c++ dla *.cpp (adrian)
 * dodany zapomniany nag³ówek dla abort() (joi)
 * wydzielony z kadu modu³ "docking", domy¶lnie statyczny (adrian)
+* wydzielony z modu³u "docking" modu³ "x11_docking" domy¶lnie statyczny (adrian)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

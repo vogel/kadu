@@ -1,0 +1,7 @@
+[Module]
+Description=XLib tray docking techniques module
+Description[pl]=Modu³ dokuj±cy ikonê w tray'u u¿ywaj±c XLib
+Author=Kadu Team
+Dependencies=docking
+Provides=docking_method
+Conflicts=docking_method
