@@ -41,6 +41,12 @@ struct colors {
 	QString chatUsrFontColor;
 };
 
+struct fonts {
+	QString userboxFont;
+	int userboxFontSize;
+	QString chatFont;
+	int chatFontSize;
+};
 
 struct config {
 	uin_t uin;
@@ -106,10 +112,7 @@ struct config {
 	bool raise;
 
 	struct colors colors;
-	QString userboxFont;
-	int userboxFontSize;
-	QString chatFont;
-	int chatFontSize;
+	struct fonts fonts;
 };
 
 struct groups {
@@ -137,10 +140,11 @@ class Kadu : public QMainWindow
 		void removeUser(QString &, bool);
 		void refreshGroupTabBar();
 		void setClosePermitted(bool permitted);
-		bool returnVar(int i); //funkcja(na pewien czas) na potrzeby autoaway'a
     
 		UserBox *userbox;
-    
+
+		AutoStatusTimer* autostatus_timer;    
+
 	protected:
 		void closeEvent(QCloseEvent *);	
 		bool event(QEvent *e);
@@ -152,8 +156,6 @@ class Kadu : public QMainWindow
 
 		bool blinkOn;
 		bool doBlink;
-
-		AutoStatusTimer* autostatus_timer;
 
 	public slots:
 		void blink();

@@ -129,7 +129,6 @@ int last_read_event = -1;
 int server_nr = 0;
 bool timeout_connected = true;
 bool i_wanna_be_invisible = true;
-bool i_am_busy = false;
 Operation *progresswindow;
 
 struct timeval tv;
@@ -367,7 +366,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	doBlink = false;
 
 	/* another API change, another hack */
-
 	memset(&loginparams, 0, sizeof(loginparams));
 	loginparams.async = 1;
 
@@ -460,7 +458,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	userbox = new UserBox(centralFrame, "userbox");
 	userbox->setPaletteBackgroundColor(QColor(config.colors.userboxBgColor));
 	userbox->setPaletteForegroundColor(QColor(config.colors.userboxFgColor));
-	userbox->QListBox::setFont(QFont(config.userboxFont, config.userboxFontSize));
+	userbox->QListBox::setFont(QFont(config.fonts.userboxFont, config.fonts.userboxFontSize));
 
 	/* add all users to userbox */
 	setActiveGroup("");
@@ -516,9 +514,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		show();
 
 	autostatus_timer = new AutoStatusTimer(this);
-
-	if (config.autoaway)
-		AutoAwayTimer::on();
+  if (config.addtodescription)
+		autostatus_timer->start(1000,TRUE);
 
 	ut = new UpdatesThread(config.uin, actversion);
 	if (config.checkupdates)
@@ -1143,12 +1140,9 @@ void Kadu::setStatus(int status) {
 	with_description = ifStatusWithDescription(status);
 	status &= ~GG_STATUS_FRIENDS_MASK;
     	
-	i_am_busy = i_wanna_be_invisible = false;
-	if (status == GG_STATUS_BUSY || status == GG_STATUS_BUSY_DESCR)
-		i_am_busy = true;
-	else
-		if (status == GG_STATUS_INVISIBLE || status == GG_STATUS_INVISIBLE_DESCR)
-			i_wanna_be_invisible = true;
+	i_wanna_be_invisible = false;
+	if (status == GG_STATUS_INVISIBLE || status == GG_STATUS_INVISIBLE_DESCR)
+		i_wanna_be_invisible = true;
 	disconnect_planned = false;		
 
 	if (!userlist_sent) {
@@ -1213,7 +1207,7 @@ void Kadu::setStatus(int status) {
 		}
 	else
 		gg_proxy_enabled = 0;
-    
+
 	socket_active = TRUE;
 	last_ping = time(NULL);
 	loginparams.status = status | (GG_STATUS_FRIENDS_MASK * config.privatestatus);
@@ -1482,11 +1476,15 @@ void Kadu::eventHandler(int state) {
 
 		if (ifStatusWithDescription(loginparams.status))
 			setStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
+			
+//uruchamiamy autoawaya(jezeli wlaczony) po wyslaniu userlisty i ustawieniu statusu.
+		if (config.autoaway)
+			AutoAwayTimer::on();
 
 		pingtimer = new QTimer;
 		QObject::connect(pingtimer, SIGNAL(timeout()), kadu, SLOT(pingNetwork()));
 		pingtimer->start(60000, TRUE);
-
+		
 		readevent = new QTimer;
 		QObject::connect(readevent, SIGNAL(timeout()), kadu, SLOT(checkConnection()));    
 		readevent->start(10000, TRUE);
@@ -1586,7 +1584,6 @@ void Kadu::disconnectNetwork() {
 		progresswindow = NULL;
 		}
 
-	i_am_busy = false;
 	disconnect_planned = true;
 	if (sess) {
 		gg_logoff(sess);
@@ -1740,15 +1737,4 @@ void MyLabel::mousePressEvent (QMouseEvent * e) {
 		kadu->slotShowStatusMenu();
 }
 
-bool Kadu::returnVar(int i)
-{
-  switch (i) {
-    case 1: return socket_active; break;
-    case 2: return userlist_sent; break;
-    case 3: return i_am_busy; break;
-    case 4: i_am_busy=FALSE; break;
-    case 5: i_am_busy=TRUE; break;
-    }
-}
-  
 #include "kadu.moc"

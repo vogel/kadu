@@ -24,7 +24,7 @@ Sms::Sms(const QString& altnick, QDialog* parent) : QDialog (parent, "Sms")
 	body = new QMultiLineEdit(this);
 	grid->addMultiCellWidget(body, 1, 1, 0, 3);
 	body->setWordWrap(QMultiLineEdit::WidgetWidth);
-	body->setFont(QFont(config.chatFont, config.chatFontSize));
+	body->setFont(QFont(config.fonts.chatFont, config.fonts.chatFontSize));
 	QObject::connect(body, SIGNAL(textChanged()), this, SLOT(updateCounter()));
 
 	recipient = new QLineEdit(this);

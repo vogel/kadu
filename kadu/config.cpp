@@ -124,12 +124,12 @@ void loadKaduConfig(void) {
 	config.colors.chatMyFontColor = konf->readEntry("ChatMyFontColor", "#000000");
 	config.colors.chatUsrFontColor = konf->readEntry("ChatUsrFontColor", "#000000");
 
+	konf->setGroup("Fonts");
 	QFontInfo info(a->font());
-
-	config.userboxFont = konf->readEntry("UserboxFont", info.family());
-	config.userboxFontSize = konf->readNumEntry("UserboxFontSize", info.pointSize());
-	config.chatFont = konf->readEntry("ChatFont", info.family());
-	config.chatFontSize = konf->readNumEntry("ChatFontSize", info.pointSize());
+	config.fonts.userboxFont = konf->readEntry("UserboxFont", info.family());
+	config.fonts.userboxFontSize = konf->readNumEntry("UserboxFontSize", info.pointSize());
+	config.fonts.chatFont = konf->readEntry("ChatFont", info.family());
+	config.fonts.chatFontSize = konf->readNumEntry("ChatFontSize", info.pointSize());
 
 	/* no need for it anymore */
 	delete konf;
@@ -212,10 +212,10 @@ void saveKaduConfig(void) {
 	konf->writeEntry("ChatUsrBgColor", config.colors.chatUsrBgColor);
 	konf->writeEntry("ChatMyFontColor", config.colors.chatMyFontColor);
 	konf->writeEntry("ChatUsrFontColor", config.colors.chatUsrFontColor);
-	konf->writeEntry("UserboxFont", config.userboxFont);
-	konf->writeEntry("UserboxFontSize", config.userboxFontSize);
-	konf->writeEntry("ChatFont", config.chatFont);
-	konf->writeEntry("ChatFontSize", config.chatFontSize);
+	konf->writeEntry("UserboxFont", config.fonts.userboxFont);
+	konf->writeEntry("UserboxFontSize", config.fonts.userboxFontSize);
+	konf->writeEntry("ChatFont", config.fonts.chatFont);
+	konf->writeEntry("ChatFontSize", config.fonts.chatFontSize);
 
 	konf->sync();
 	delete konf;
@@ -837,7 +837,7 @@ void ConfigDialog::setupTab6(void) {
 
 	cb_chatfont = new QComboBox(chatfont);
 	cb_chatfont->insertStringList(fdb.families());
-	cb_chatfont->setCurrentText(config.chatFont);
+	cb_chatfont->setCurrentText(config.fonts.chatFont);
 	connect(cb_chatfont, SIGNAL(activated(int)), this, SLOT(chooseChatFontGet(int)));
 
 	QHBox *chatfontsize = new QHBox(chatprop);
@@ -848,10 +848,10 @@ void ConfigDialog::setupTab6(void) {
 
 	cb_chatfontsize = new QComboBox(chatfontsize);
 
-	vl = fdb.pointSizes(config.chatFont,"Normal");
+	vl = fdb.pointSizes(config.fonts.chatFont,"Normal");
 	for (QValueList<int>::Iterator points = vl.begin(); points != vl.end(); ++points)
 	cb_chatfontsize->insertItem(QString::number(*points));
-	cb_chatfontsize->setCurrentText(QString::number(config.chatFontSize));
+	cb_chatfontsize->setCurrentText(QString::number(config.fonts.chatFontSize));
 
 	QVGroupBox *userboxprop = new QVGroupBox(box6);
 	userboxprop->setTitle(i18n("Userbox properties"));
@@ -894,7 +894,7 @@ void ConfigDialog::setupTab6(void) {
 
 	cb_userboxfont = new QComboBox(userboxfont);
 	cb_userboxfont->insertStringList(fdb.families());
-	cb_userboxfont->setCurrentText(config.userboxFont);
+	cb_userboxfont->setCurrentText(config.fonts.userboxFont);
 	connect(cb_userboxfont, SIGNAL(activated(int)), this, SLOT(chooseUserboxFontGet(int)));
 
 	QHBox *userboxfontsize = new QHBox(userboxprop);
@@ -905,10 +905,10 @@ void ConfigDialog::setupTab6(void) {
 
 	cb_userboxfontsize = new QComboBox(userboxfontsize);
 
-	vl = fdb.pointSizes(config.userboxFont,"Normal");
+	vl = fdb.pointSizes(config.fonts.userboxFont,"Normal");
 	for (QValueList<int>::Iterator points = vl.begin(); points != vl.end(); ++points)
 	cb_userboxfontsize->insertItem(QString::number(*points));
-	cb_userboxfontsize->setCurrentText(QString::number(config.userboxFontSize));
+	cb_userboxfontsize->setCurrentText(QString::number(config.fonts.userboxFontSize));
 
 	addTab(box6, i18n("Look"));
 };
@@ -1116,7 +1116,11 @@ void ConfigDialog::updateConfig(void) {
 	config.rundocked = b_rdocked->isChecked();
 	config.grouptabs = b_grptabs->isChecked();
 	config.checkupdates = b_checkupdates->isChecked();
+	if (!config.addtodescription && b_addtodescription->isChecked())
+		kadu->autostatus_timer->start(1000,TRUE);
 	config.addtodescription = b_addtodescription->isChecked();
+	if (!config.addtodescription)
+		kadu->autostatus_timer->stop();	
 
 	config.smsbuildin = b_smsbuildin->isChecked();
 	config.smsapp = strdup(e_smsapp->text().latin1());
@@ -1137,10 +1141,10 @@ void ConfigDialog::updateConfig(void) {
 	config.colors.chatUsrFontColor = e_chatusrfontcolor->text();
 	config.colors.userboxBgColor = e_userboxbgcolor->text();
 	config.colors.userboxFgColor = e_userboxfgcolor->text();
-	config.chatFont = cb_chatfont->currentText();
-	config.chatFontSize = atoi(cb_chatfontsize->currentText().latin1());
-	config.userboxFont = cb_userboxfont->currentText();
-	config.userboxFontSize = atoi(cb_userboxfontsize->currentText().latin1());
+	config.fonts.chatFont = cb_chatfont->currentText();
+	config.fonts.chatFontSize = atoi(cb_chatfontsize->currentText().latin1());
+	config.fonts.userboxFont = cb_userboxfont->currentText();
+	config.fonts.userboxFontSize = atoi(cb_userboxfontsize->currentText().latin1());
 	free(config.soundnotify);
 	config.soundnotify = strdup(e_soundnotify->text().latin1());
 	config.notifyglobal = b_notifyglobal->isChecked();

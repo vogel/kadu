@@ -30,6 +30,9 @@ class AutoStatusTimer : public QTimer
 
 	public:
 		AutoStatusTimer(QObject *parent = 0);
+
+	private:
+		int length_buffor;
 };
 
 class AutoAwayTimer : private QTimer
@@ -48,7 +51,7 @@ class AutoAwayTimer : private QTimer
 			if(autoaway_object!=NULL){
 				delete autoaway_object;
 				autoaway_object=NULL;
-			}
+				}
 			};
 
 	protected:

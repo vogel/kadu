@@ -93,7 +93,7 @@ rMessage::rMessage(const QString & nick, int msgclass, UinsList uins, QString &m
 	body->setText(msg);
 	body->setReadOnly(true);
 	body->setWordWrap(QMultiLineEdit::WidgetWidth);
-	body->setFont(QFont(config.chatFont, config.chatFontSize));
+	body->setFont(QFont(config.fonts.chatFont, config.fonts.chatFontSize));
 
 	fprintf(stderr,"KK rMessage::rMessage(): message in slot\n");
 
@@ -198,7 +198,7 @@ Message::Message (const QString & nick, bool tchat, QWidget *parent, const char 
 	body = new QMultiLineEdit(this);
 	body->setGeometry(5,30,295,150);
 	body->setWordWrap(QMultiLineEdit::WidgetWidth);
-	body->setFont(QFont(config.chatFont, config.chatFontSize));
+	body->setFont(QFont(config.fonts.chatFont, config.fonts.chatFontSize));
 
 	KIconLoader *loader = KGlobal::iconLoader();
 
