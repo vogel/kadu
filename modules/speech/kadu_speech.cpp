@@ -7,9 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-/*
- * Speech module v. 0.31 by joi
- */
 #include <qfiledialog.h>
 #include <qregexp.h>
 #include <qprocess.h>
@@ -107,10 +104,7 @@ extern "C" int speech_init()
 	ConfigDialog::connectSlot("Speech", "Use Esd", SIGNAL(toggled(bool)), slotsObj, SLOT(useEsd(bool)), "useesd");
 	ConfigDialog::connectSlot("Speech", "Use Dsp", SIGNAL(toggled(bool)), slotsObj, SLOT(useDsp(bool)), "usedsp");
 
-
-
 	ConfigDialog::registerSlotOnCreate(slotsObj, SLOT(onCreateConfigDialog()));
-	ConfigDialog::registerSlotOnDestroy(slotsObj, SLOT(onDestroyConfigDialog()));
 
 	return 0;
 }
@@ -120,7 +114,6 @@ extern "C" void speech_close()
 	kdebugf();
 
 	ConfigDialog::unregisterSlotOnCreate(slotsObj, SLOT(onCreateConfigDialog()));
-	ConfigDialog::unregisterSlotOnDestroy(slotsObj, SLOT(onDestroyConfigDialog()));
 
 	ConfigDialog::disconnectSlot("Speech", "", SIGNAL(clicked()), slotsObj, SLOT(chooseSpeechProgram()), "speech_fileopen");
 	ConfigDialog::disconnectSlot("Speech", "Test", SIGNAL(clicked()), slotsObj, SLOT(testSpeech()), "testspeech");
@@ -399,11 +392,6 @@ void SpeechSlots::onCreateConfigDialog()
 	b=ConfigDialog::getCheckBox("Speech", "Use Esd", "useesd");
 	if (b->isChecked())
 		b->setEnabled(false);
-}
-
-void SpeechSlots::onDestroyConfigDialog()
-{
-	kdebugf();
 }
 
 void SpeechSlots::chooseSpeechProgram()

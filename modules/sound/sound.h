@@ -20,7 +20,7 @@ class SoundSlots: public QObject
 	private slots:
 		void soundPlayer(bool value, bool toolbarChanged=false);
 		void onCreateConfigDialog();
-		void onDestroyConfigDialog();
+		void onApplyConfigDialog();
 		void chooseSoundTheme(const QString& string);
 		void chooseSoundFile();
 		void clearSoundFile();

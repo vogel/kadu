@@ -42,7 +42,7 @@ extern "C" int autoaway_init()
 	ConfigDialog::addSpinBox("General", "times", "Check idle every ", "AutoAwayCheckTime", 1, 10000, 1, 1);
 	autoawayslots= new AutoAwaySlots();
 	ConfigDialog::registerSlotOnCreate(autoawayslots, SLOT(onCreateConfigDialog()));
-	ConfigDialog::registerSlotOnDestroy(autoawayslots, SLOT(onDestroyConfigDialog()));
+	ConfigDialog::registerSlotOnApply(autoawayslots, SLOT(onApplyConfigDialog()));
 	
 	QObject::connect(kadu, SIGNAL(disconnectingNetwork()), autoawayslots, SLOT(off()));
 	QObject::connect(&event_manager, SIGNAL(connected()), autoawayslots, SLOT(on()));
@@ -56,7 +56,7 @@ extern "C" void autoaway_close()
 	QObject::disconnect(kadu, SIGNAL(disconnectingNetwork()), autoawayslots, SLOT(off()));
 	QObject::disconnect(&event_manager, SIGNAL(connected()), autoawayslots, SLOT(on()));
 	ConfigDialog::unregisterSlotOnCreate(autoawayslots, SLOT(onCreateConfigDialog()));
-	ConfigDialog::unregisterSlotOnDestroy(autoawayslots, SLOT(onDestroyConfigDialog()));
+	ConfigDialog::unregisterSlotOnApply(autoawayslots, SLOT(onApplyConfigDialog()));
 	delete autoawayslots;
 	autoawayslots=NULL;
 	ConfigDialog::removeControl("General", "Check idle every ");
@@ -194,7 +194,7 @@ void AutoAwaySlots::onCreateConfigDialog()
 	ConfigDialog::getSpinBox("General", "Check idle every ")->setSuffix(" s");
 }
 
-void AutoAwaySlots::onDestroyConfigDialog()
+void AutoAwaySlots::onApplyConfigDialog()
 {
 	kdebugf();
 

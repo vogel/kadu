@@ -14,7 +14,6 @@ class SpeechSlots : public QObject
 		SpeechSlots();
 	private slots:
 		void onCreateConfigDialog();
-		void onDestroyConfigDialog();
 		void chooseSpeechProgram();
 		
 		void say(const QString &s, const QString &path=QString::null,

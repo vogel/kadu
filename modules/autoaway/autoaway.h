@@ -12,7 +12,7 @@ class AutoAwaySlots :public QObject
 	
 	public slots:
 		void onCreateConfigDialog();
-		void onDestroyConfigDialog();
+		void onApplyConfigDialog();
 		void on();
 		void off();
 };

@@ -86,7 +86,7 @@ extern "C" int sound_init()
 	soundslots= new SoundSlots();
 
 	ConfigDialog::registerSlotOnCreate(soundslots, SLOT(onCreateConfigDialog()));
-	ConfigDialog::registerSlotOnDestroy(soundslots, SLOT(onDestroyConfigDialog()));
+	ConfigDialog::registerSlotOnApply(soundslots, SLOT(onApplyConfigDialog()));
 	ConfigDialog::connectSlot("Sounds", "Play sounds", SIGNAL(toggled(bool)), soundslots, SLOT(soundPlayer(bool)));
 	ConfigDialog::connectSlot("Sounds", "Choose", SIGNAL(clicked()), soundslots, SLOT(chooseSoundFile()));
 	ConfigDialog::connectSlot("Sounds", "Clear", SIGNAL(clicked()), soundslots, SLOT(clearSoundFile()));
@@ -115,7 +115,7 @@ extern "C" void sound_close()
 		sound_manager, SLOT(notifySound(const uin_t, const unsigned int, const unsigned int)));
 
 	ConfigDialog::unregisterSlotOnCreate(soundslots, SLOT(onCreateConfigDialog()));
-	ConfigDialog::unregisterSlotOnDestroy(soundslots, SLOT(onDestroyConfigDialog()));
+	ConfigDialog::unregisterSlotOnApply(soundslots, SLOT(onApplyConfigDialog()));
 	ConfigDialog::disconnectSlot("Sounds", "Play sounds", SIGNAL(toggled(bool)), soundslots, SLOT(soundPlayer(bool)));
 	ConfigDialog::disconnectSlot("Sounds", "Choose", SIGNAL(clicked()), soundslots, SLOT(chooseSoundFile()));
 	ConfigDialog::disconnectSlot("Sounds", "Clear", SIGNAL(clicked()), soundslots, SLOT(clearSoundFile()));
@@ -507,7 +507,7 @@ void SoundSlots::selectedPaths(const QStringList& paths)
 		cb_soundtheme->changeItem(tr("default"), paths.findIndex("default")+1);
 }
 
-void SoundSlots::onDestroyConfigDialog()
+void SoundSlots::onApplyConfigDialog()
 {
 	kdebugf();
 	QComboBox *cb_soundtheme= ConfigDialog::getComboBox("Sounds", "Sound theme");
