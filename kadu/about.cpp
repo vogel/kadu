@@ -109,6 +109,12 @@ About::~About()
 	saveGeometry(this, "General", "AboutGeometry");
 }
 
+void About::keyPressEvent(QKeyEvent *ke_event)
+{
+	if (ke_event->key() == Qt::Key_Escape)
+		close();
+}
+
 QString About::loadFile(const QString &name)
 {
 	QString data;

@@ -9,12 +9,13 @@
 class About : public QHBox {
 	Q_OBJECT
 
-public:
-	About();
-	~About();
+	public:
+		About();
+		~About();
 
-private:
-	QString loadFile(const QString &name);
+	private:
+		QString loadFile(const QString &name);
+		void keyPressEvent(QKeyEvent *);
 };
 
 #endif

@@ -39,6 +39,7 @@ class UserlistImportExport : public QHBox {
 		void ExportToFile(void);
 		void userListExported(bool ok);
 		void userListCleared(bool ok);
+		void keyPressEvent(QKeyEvent *);
 };
 
 #endif

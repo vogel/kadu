@@ -133,6 +133,12 @@ UserlistImportExport::~UserlistImportExport()
 	saveGeometry(this, "General", "ImportExportDialogGeometry");
 }
 
+void UserlistImportExport::keyPressEvent(QKeyEvent *ke_event)
+{
+	if (ke_event->key() == Qt::Key_Escape)
+		close();
+}
+
 void UserlistImportExport::fromfile() {
 	kdebugf();
 	QString fname = QFileDialog::getOpenFileName("/", QString::null, this);

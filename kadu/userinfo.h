@@ -54,6 +54,7 @@ class UserInfo : public QHBox {
 		bool fAddUser;
 		void addNewUser(UserListElement& e);
 		void changeUserData(UserListElement& e);
+		void keyPressEvent(QKeyEvent *);
 
 	protected:
 		void setupTab1();
