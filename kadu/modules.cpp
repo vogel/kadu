@@ -189,6 +189,8 @@ void ModulesDialog::getInfo()
 		message+=info.depends.join("\n");
 		message+=tr("<br/><b>Conflicts with:</b><br/>");
 		message+=info.conflicts.join("\n");
+		message+=tr("<br/><b>Provides:</b><br/>");
+		message+=info.provides.join("\n");
 		message+=tr(
 				"<br/><b>Author:</b><br/>"
 				"%1<br/>"
@@ -398,6 +400,9 @@ bool ModulesManager::moduleInfo(const QString& module_name, ModuleInfo& info) co
 	info.conflicts=QStringList::split(" ",
 		desc_file.readEntry("Module", "Conflicts"));
 
+	info.provides=QStringList::split(" ",
+		desc_file.readEntry("Module", "Provides"));
+
 	return true;
 }
 
@@ -430,11 +435,20 @@ void ModulesManager::saveLoadedModules()
 bool ModulesManager::conflictsWithLoaded(const QString &module_name, const ModuleInfo& module_info) const
 {
 	for (QStringList::ConstIterator it = module_info.conflicts.begin(); it != module_info.conflicts.end(); ++it)
+	{
 		if(moduleIsActive(*it))
 		{
 			MessageBox::msg(tr("Module %1 conflicts with: %2").arg(module_name).arg(*it));
 			return true;
 		}
+		for (QMap<QString, Module>::const_iterator mit=Modules.begin(); mit!=Modules.end(); mit++)
+			for (QStringList::const_iterator sit=(*mit).info.provides.begin(); sit!=(*mit).info.provides.end(); sit++)
+				if ((*it)==(*sit))
+				{
+					MessageBox::msg(tr("Module %1 conflicts with: %2").arg(module_name).arg(mit.key()));
+					return true;
+				}
+	}
 	for (QMap<QString, Module>::const_iterator it=Modules.begin(); it!=Modules.end(); it++)
 		for (QStringList::const_iterator sit=(*it).info.conflicts.begin(); sit!=(*it).info.conflicts.end(); sit++)
 			if ((*sit)==module_name)

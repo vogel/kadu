@@ -39,6 +39,10 @@ struct ModuleInfo
 	**/
 	QStringList conflicts;
 	/**
+	 jak± cechê dostarcza ten modu³
+	**/
+	QStringList provides;
+	/**
 	 opis
 	**/
 	QString description;

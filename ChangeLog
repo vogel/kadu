@@ -253,6 +253,10 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * przy instalacji usuwane s± stare modu³y z docelowego katalogu (adrian)
 * modu³y zgodne z funkcjonalno¶ci± kadu 0.3.7 domy¶lnie statyczne (adrian)
 * obs³uga konfliktów pomiêdzy modu³ami (Conflicts= w nazwa_modu³u.desc) (joi)
+* obs³uga dostarczania cech przez modu³y (Provides= w nazwa_modu³u.desc)
+  teraz je¿eli modu³ chce byæ jedynym w danej kategorii, to musi dostarczaæ cechê
+  i konfliktowaæ z innymi modu³ami dostarczaj±cymi j± (joi)
+* modu³y arts_sound, nas_sound, dsp_sound, esd_sound wykluczaj± siê nazwzajem (joi)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
