@@ -17,7 +17,6 @@
 #include <qprocess.h>
 #include <qmessagebox.h>
 #include <qfileinfo.h>
-#include <math.h>
 #include <qsplitter.h>
 #include <qhbox.h>
 #include <qvbox.h>

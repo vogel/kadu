@@ -12,6 +12,7 @@
 #include <qdir.h>
 #include <qtextcodec.h>
 #include <qtooltip.h>
+#include <math.h>
 
 #include "emoticons.h"
 #include "debug.h"
