@@ -245,6 +245,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * Skrypt Instaluj - usuniêta petla while teraz Cancel z konfiguracji dzia³a (Ron_K)
 * mo¿liwo¶æ automat. pobierania i instalacji modu³u pcspeaker (adrian)
 * ³apanie do linków w chacie/historii/panelu tak¿e polskich znaków (joi)
+* http://kadu.net/mantis/bug_view_page.php?bug_id=0000289 (googie/chilek)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
