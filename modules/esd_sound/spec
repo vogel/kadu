@@ -1,0 +1,4 @@
+MODULE_SOURCES=esd_sound.cpp
+MODULE_MOC_HEADERS=esd_sound.h
+MODULE_CXXFLAGS=`esd-config --cflags`
+MODULE_LDFLAGS=`esd-config --libs`

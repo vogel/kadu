@@ -1,0 +1,3 @@
+MODULE_SOURCES=nas_sound.cpp
+MODULE_MOC_HEADERS=nas_sound.h
+
