@@ -780,7 +780,7 @@ void ConfigDialog::setupTab5(void) {
 	e_extport = new QLineEdit(extportbox);
 
 	b_defserver = new QCheckBox(box5);
-	b_defserver->setText(i18n("Use default server"));
+	b_defserver->setText(i18n("Use default servers"));
 
 	g_server = new QVGroupBox(box5);
 	g_server->setTitle(i18n("Servers"));
@@ -823,7 +823,7 @@ void ConfigDialog::setupTab5(void) {
 		e_extip->setText(config.extip);
 		e_extport->setText(QString::number(config.extport));	
 		}
-	g_server->setEnabled(config.servers.count() && inet_addr(config.servers[0].latin1()));
+	g_server->setEnabled(config.servers.count() && inet_addr(config.servers[0].latin1()) != INADDR_NONE);
 	if (!g_server->isEnabled())
 		b_defserver->setChecked(true);
 	else
