@@ -1,5 +1,6 @@
 #include "debug.h"
 
+int debug_mask;
 #ifdef DEBUG_ENABLED
 
 #include <qmutex.h>
@@ -13,7 +14,6 @@
 	poszczególnymi wywo³aniami fprintf
 */
 static QMutex debug_mutex;
-int debug_mask;
 
 void _kdebug_with_mask(int mask, const char* file,const int line,const char* format,...)
 {
