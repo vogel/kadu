@@ -74,10 +74,11 @@ class Chat : public QDialog {
 		void insertEmoticon(void);
 		void regAutosend(void);
 		void addMyMessageToHistory(void);
+		void clearChatWindow(void);
 
-  private:
-    QString title_buffer;
-    QTimer *title_timer;  
+	private:
+		QString title_buffer;
+		QTimer *title_timer;  
 };
 
 class CustomInput : public QMultiLineEdit {

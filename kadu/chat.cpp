@@ -98,6 +98,10 @@ Chat::Chat(UinsList uins, QWidget *parent)
 		autosend_enabled = true;
 		}
 
+	QPushButton *clearchat= new QPushButton(buttontray);
+	clearchat->setPixmap(loader->loadIcon("eraser", KIcon::Small));
+	QToolTip::add(clearchat, i18n("Clear messages in chat window"));
+
 	iconsel = new QPushButton(buttontray);
 	iconsel->setPixmap(loader->loadIcon("icons", KIcon::Small));
 	iconsel->setToggleButton(true);
@@ -123,6 +127,7 @@ Chat::Chat(UinsList uins, QWidget *parent)
 	connect(history, SIGNAL(clicked()), this, SLOT(HistoryBox()));
 	connect(iconsel, SIGNAL(clicked()), this, SLOT(insertEmoticon()));
 	connect(whois, SIGNAL(clicked()), this, SLOT(userWhois()));
+	connect(clearchat, SIGNAL(clicked()), this, SLOT(clearChatWindow()));
 
 	QGridLayout *grid = new QGridLayout (this, 5, 4, 3, 3);
 	QHBoxLayout *subgrid = new QHBoxLayout(grid);
@@ -226,10 +231,9 @@ void Chat::windowActivationChange(bool oldActive) {
 	}
 }
 
-void Chat::keyPressEvent(QKeyEvent * e) {
-	if (e->key() == Key_F9){
-		body->setText("");
-		totaloccurences=0;
+void Chat::keyPressEvent(QKeyEvent *e) {
+	if (e->key() == Key_F9) {
+		clearChatWindow();
 	}
 }
 
@@ -413,6 +417,11 @@ void Chat::addMyMessageToHistory() {
 	uin = uins[0];
 	if (config.logmessages)
 		appendHistory(uins, uin, (unsigned char *)utmp, true);
+}
+
+void Chat::clearChatWindow(void) {
+	body->setText("");
+	totaloccurences = 0;
 }
 
 /* sends the message typed */
