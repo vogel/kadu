@@ -87,15 +87,15 @@
     </message>
     <message>
         <source>Maximum number of spoken letters</source>
-        <translation type="unfinished"></translation>
+        <translation>Quatntià massima delle lettere pronunciate</translation>
     </message>
     <message>
         <source>Message too long (male):</source>
-        <translation type="unfinished"></translation>
+        <translation>Messaggio troppo lungo (maschio):</translation>
     </message>
     <message>
         <source>Message too long (female):</source>
-        <translation type="unfinished"></translation>
+        <translation>Messaggio tropo lungo (femmina):</translation>
     </message>
 </context>
 <context>
@@ -114,15 +114,15 @@
     </message>
     <message>
         <source>man %a wrote %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Un certo %a ha scritto %1</translation>
     </message>
     <message>
         <source>woman %a wrote %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Una certa %a ha scritto %1</translation>
     </message>
     <message>
         <source>%a wrote long message</source>
-        <translation type="unfinished"></translation>
+        <translation>%a ha scritto messaggio lungo </translation>
     </message>
 </context>
 </TS>

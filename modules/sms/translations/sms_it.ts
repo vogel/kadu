@@ -100,7 +100,7 @@ e scrivi la stringa corretta. I parametri devono essere separati da spazio. Il p
     </message>
     <message>
         <source>Save SMS in history</source>
-        <translation type="unfinished"></translation>
+        <translation>Salva SMS nello storico</translation>
     </message>
 </context>
 <context>

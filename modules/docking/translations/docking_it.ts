@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Show tooltip in tray</source>
-        <translation>Visualizza notifiche in tray</translation>
+        <translation>Visualizza notifiche sulla barra</translation>
     </message>
 </context>
 <context>

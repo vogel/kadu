@@ -66,7 +66,7 @@
     </message>
     <message>
         <source>Cannot encrypt message. sim_message_encrypt returned: &quot;%1&quot; (sim_errno=%2)</source>
-        <translation type="unfinished"></translation>
+        <translation> Non posso crittare messaggio. sim_message_encrypt restituito: &quot;%1&quot; (sim_errno=%2)</translation>
     </message>
 </context>
 <context>

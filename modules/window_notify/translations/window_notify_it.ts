@@ -3,7 +3,7 @@
     <name>@default</name>
     <message>
         <source>Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Finestra</translation>
     </message>
 </context>
 <context>

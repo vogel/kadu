@@ -78,7 +78,11 @@ oppure entrambe le macchine sono dietro router con NAT.</translation>
 IP address (%2) differs from what GG server returned
 as his/her IP address (%3). It may be spoofing
 or he/she has port forwarding. Continue connection?</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 chiede colegamento diretto ma suo
+Indirizzo IP (%2) è diverso da questo comunicato  dai servers GG
+che è (%3). Possibile, che è stato scambiato, oppure contatto
+ha port forwarding attivato. Continuare connessione ?
+</translation>
     </message>
 </context>
 <context>

@@ -47,23 +47,23 @@
     </message>
     <message>
         <source>Samples</source>
-        <translation type="unfinished"></translation>
+        <translation>Campioni</translation>
     </message>
     <message>
         <source>Test sample playing</source>
-        <translation type="unfinished"></translation>
+        <translation>Prova riproduzione campione</translation>
     </message>
     <message>
         <source>Test sample recording</source>
-        <translation type="unfinished"></translation>
+        <translation>Prova registrazione campione</translation>
     </message>
     <message>
         <source>Test full duplex</source>
-        <translation type="unfinished"></translation>
+        <translation>Prova full duplex</translation>
     </message>
     <message>
         <source>Sound</source>
-        <translation type="unfinished"></translation>
+        <translation>Suono</translation>
     </message>
 </context>
 <context>
@@ -122,36 +122,37 @@
     </message>
     <message>
         <source>Status invisible sound</source>
-        <translation type="unfinished"></translation>
+        <translation>Suono di status mascosto</translation>
     </message>
     <message>
         <source>Opening test sample file failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Apertura file campione sonoro fallita.</translation>
     </message>
     <message>
         <source>Reading test sample file failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lettura file campione sonorao fallita.</translation>
     </message>
     <message>
         <source>Opening sound device failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Apertura dispositivo sonoro fallita.</translation>
     </message>
     <message>
         <source>Testing sample playing. You should hear some sound now.</source>
-        <translation type="unfinished"></translation>
+        <translation>Prova riproduzione campioni. Si dovrebbe sentire suono adesso.</translation>
     </message>
     <message>
         <source>Testing sample recording. Please talk now (3 seconds).</source>
-        <translation type="unfinished"></translation>
+        <translation>Prova registrazione campione. Parla adesso (3 secondi).</translation>
     </message>
     <message>
         <source>You should hear your recorded sample now.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si dovrebbe sentire la registrazione campione.</translation>
     </message>
     <message>
         <source>Testing fullduplex. Please talk now.
 You should here it with one second delay.</source>
-        <translation type="unfinished"></translation>
+        <translation>Prova fullduplex. Prego di parlare adesso.
+Devresti sentire con un secondo di ritardo.</translation>
     </message>
 </context>
 </TS>

@@ -99,7 +99,7 @@
     </message>
     <message>
         <source>Open chat on click</source>
-        <translation type="unfinished"></translation>
+        <translation>Un click apre il chat </translation>
     </message>
 </context>
 <context>
@@ -258,11 +258,11 @@
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; is invisible&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; is invisibile&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; is invisible</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; è invisibile</translation>
     </message>
 </context>
 <context>

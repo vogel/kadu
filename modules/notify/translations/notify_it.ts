@@ -27,7 +27,7 @@
     </message>
     <message>
         <source>New chat</source>
-        <translation>Nuova chat</translation>
+        <translation>Nuovo chat</translation>
     </message>
     <message>
         <source>New message</source>
@@ -65,11 +65,11 @@ durante primo colegamento Kadu con serwer</translation>
     </message>
     <message>
         <source>Ignore status changes from available/busy to available/busy</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignora i cambiament dello status da disponibile/occupato a disponibile/occupato</translation>
     </message>
     <message>
         <source>User changed status to &quot;Invisible&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Contatto ha cambiato status a &quot;Invisibile&quot;</translation>
     </message>
 </context>
 </TS>

@@ -58,11 +58,11 @@
     </message>
     <message>
         <source>Wrong receiver address</source>
-        <translation type="unfinished"></translation>
+        <translation>Indirizzo destinatario errato</translation>
     </message>
     <message>
         <source>Unknown error (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Errore sconosciuto (%1)</translation>
     </message>
 </context>
 <context>
