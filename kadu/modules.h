@@ -47,7 +47,9 @@ class ModulesManager : public QObject
 	
 	public:	
 		static void initModule();
+		static void closeModule();
 		ModulesManager();
+		~ModulesManager();
 		QStringList installedModules();
 		QStringList loadedModules();
 		QStringList unloadedModules();

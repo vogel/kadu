@@ -63,6 +63,10 @@
 #include "gadu.h"
 #include "../config.h"
 
+#ifdef MODULES_ENABLED
+#include "modules.h"
+#endif
+
 #define GG_USER_OFFLINE	0x01
 #define	GG_USER_NORMAL	0x03
 #define GG_USER_BLOCKED	0x04
@@ -1584,6 +1588,10 @@ bool Kadu::close(bool quit) {
 		return false;
 		}
 	else {
+
+#ifdef MODULES_ENABLED
+		ModulesManager::closeModule();
+#endif
 	
 	    if (config_file.readBoolEntry("General", "SaveGeometry"))
 	    {

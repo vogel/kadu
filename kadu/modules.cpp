@@ -106,6 +106,11 @@ void ModulesManager::initModule()
 	kadu->mainMenu()->insertItem(loadIcon("configure.png"), tr("&Manage Modules"), modules_manager, SLOT(showDialog()), QKeySequence(), -1, 2);
 }
 
+void ModulesManager::closeModule()
+{
+	delete modules_manager;
+}
+
 ModulesManager::ModulesManager() : QObject()
 {
 	QString loaded_str=config_file.readEntry("General", "LoadedModules");
@@ -113,6 +118,13 @@ ModulesManager::ModulesManager() : QObject()
 	for(int i=0; i<loaded_list.count(); i++)
 		loadModule(loaded_list[i]);
 	Dialog=NULL;
+}
+
+ModulesManager::~ModulesManager()
+{
+	QStringList loaded=loadedModules();
+	for(int i=0; i<loaded.size(); i++)
+		unloadModule(loaded[i]);
 }
 
 QStringList ModulesManager::installedModules()

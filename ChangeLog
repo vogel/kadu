@@ -145,6 +145,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   z ktorym prowadzimy rozmowe (adrian)
 * poprawka "tylko dla znajomych" z okna konfiguracji. kadu juz sie nie laczy 
   przy wcisnieciu "ok" (pawel_p)
+* przed zakonczeniem kadu wyladowuje poprawnie wszystkie moduly,
+  pozwalajac im zapisac konfiguracje itp (adrian)
 
 +++ wersja 0.3.6 (22.11.2003)
 * je¶li klikniemy na jaki¶ kontakt w userboxie, od którego otrzymali¶my jak±¶
