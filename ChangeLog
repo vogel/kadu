@@ -171,6 +171,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * lista modu³ów statycznych w menad¿erze modu³ów (adrian)
 * obs³uga funkcji init i close modu³ów statycznych (adrian)
 * konfiguracja timera w autoaway'u (joi)
+* tylko jedno Kadu mo¿e korzystaæ z profilu (joi)
+* zapisywanie pliku konfiguracyjnego w przypadku wywrotki (joi)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

@@ -32,9 +32,22 @@
 
 Kadu *kadu;	
 
+#include <signal.h>
+#include "debug.h"
+void kill_signal(int s)
+{
+	//s==SIGSEGV
+	kdebug("Kadu crashed :(\n");
+	config_file.sync();
+	QFile::remove(ggPath("lock"));
+	raise(SIGABRT);
+}
+
 int main(int argc, char *argv[])
 {
 	gg_debug_level = 255;
+
+	signal(SIGSEGV, kill_signal);
 
 	new QApplication(argc, argv);
 
@@ -50,6 +63,21 @@ int main(int argc, char *argv[])
 	QTranslator kadu_qm(0);
 	kadu_qm.load(QString(DATADIR) + QString("/kadu/translations/kadu_") + config_file.readEntry("General", "Language", QTextCodec::locale()), ".");
 	qApp->installTranslator(&kadu_qm);
+
+	QFile f(ggPath("lock"));
+	if (f.exists())
+	{
+		if (QMessageBox::warning(NULL, "Kadu lock",
+			qApp->translate("@default", QT_TR_NOOP("Lock file in profile directory exists. Another Kadu probably running.")),
+			qApp->translate("@default", QT_TR_NOOP("Force running Kadu (not recommended).")),
+			qApp->translate("@default", QT_TR_NOOP("Quit.")), 0, 1)==1 )
+		return 1;
+	}
+	else
+	{
+		f.open(IO_WriteOnly);
+		f.close();
+	}
 
 	IconsManager::initModule();
 	kadu = new Kadu(0, "Kadu");
@@ -90,8 +118,6 @@ int main(int argc, char *argv[])
 		}
 
 	QObject::connect(qApp, SIGNAL(aboutToQuit()), kadu, SLOT(quitApplication()));
-
-
 
 #ifdef MODULES_ENABLED
 	ModulesManager::initModule();

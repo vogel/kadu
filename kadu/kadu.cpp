@@ -1669,6 +1669,7 @@ bool Kadu::close(bool quit) {
 		disconnectNetwork();
 		kdebug("Kadu::close(): Saved config, disconnect and ignored\n");
 		QWidget::close(true);
+		QFile::remove(ggPath("lock"));
 		kdebug("Kadu::close(): Graceful shutdown...\n");
 		return true;
 	}
