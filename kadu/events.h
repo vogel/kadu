@@ -16,8 +16,6 @@
  ***************************************************************************/
 
 void eventRecvMsg(int, QArray<uin_t>, unsigned char *,time_t,int=0,struct gg_msg_format * = NULL);
-void UinToUserlistEntry (unsigned int, int);
-int GetStatusFromUserlist (unsigned int);
 void ChangeUserStatus (unsigned int, int);
 void eventGotUserlist(struct gg_event *);
 void eventGotUserlistWithDescription(struct gg_event *);
