@@ -1552,7 +1552,8 @@ void HtmlDocument::splitElement(int& index,int start,int length)
 
 void HtmlDocument::convertUrlsToHtml()
 {
-	QRegExp url_regexp("(http://|https://|www\\.|ftp://|ftp\\.|sftp://|smb://|file:/|rsync://|mailto:)[a-zA-Z0-9\\-\\._/~?=&#\\+%:;,!@\\\\]+");
+//	QRegExp url_regexp("(http://|https://|www\\.|ftp://|ftp\\.|sftp://|smb://|file:/|rsync://|mailto:)[a-zA-Z0-9\\-\\._/~?=&#\\+%:;,!@\\\\]+");
+	QRegExp url_regexp(latin2unicode((const unsigned char *)"(http://|https://|www\\.|ftp://|ftp\\.|sftp://|smb://|file:/|rsync://|mailto:)[a-zA-Z0-9ÍÛ±∂≥øºÊÒ ”°¶£Ø¨∆—\\-\\._/~?=&#\\+%:;,!@\\\\]+"));
 	for(int i = 0; i < countElements(); i++)
 	{
 		if(isTagElement(i))

@@ -235,7 +235,6 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * make install: drobna poprawka zwi±zana ze zmienn± $DESTDIR i instalacj±
   niektórych plików do /usr/share (mkostrze/adrian)
 * patch vogela naprawiaj±cy eksport/import z moimi poprawkami (adrian)
-* ³apanie do linków w chacie/historii/panelu tak¿e polskich znaków (joi)
 * Skrypt Instaluj - Modu³y domy¶lnie statyczne nie podlegaj± wyborowi (Ron_K)
 * historia rozmowy: gdy klikniemy na altnick wy¶wietla siê pierwsza rozmowa (chilek)
 * bramka Ery obs³uguje nowy prefix Heyah: 880 (d7:R-k,attis/adrian)
@@ -245,6 +244,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   (brakuje zaznaczania paragrafu w którym znaleziono wzorzec) (chilek)
 * Skrypt Instaluj - usuniêta petla while teraz Cancel z konfiguracji dzia³a (Ron_K)
 * mo¿liwo¶æ automat. pobierania i instalacji modu³u pcspeaker (adrian)
+* ³apanie do linków w chacie/historii/panelu tak¿e polskich znaków (joi)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
