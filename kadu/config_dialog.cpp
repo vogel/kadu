@@ -1407,7 +1407,7 @@ QKeySequence HotKey::shortCutFromFile(const QString& groupname, const QString &n
 
 bool HotKey::shortCut(QKeyEvent *e,const QString& groupname, const QString &name)
 {
-	return (shortCutFromFile(groupname, name)==QKeySequence(keyEventToString(e)));
+	return config_file.readEntry(groupname, name)==keyEventToString(e);
 }
 
 HotKey::HotKey(QWidget *parent, const char* name): QLineEdit(parent, name)
