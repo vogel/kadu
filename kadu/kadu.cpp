@@ -302,6 +302,11 @@ void Kadu::keyPressEvent(QKeyEvent *e) {
 		kdebug("Kadu::keyPressEvent(Key_Escape): Kadu hide\n");
 		hide();
 	}
+	else if (e->key()== Key_Delete)
+	{
+	 commandParser(KADU_CMD_REMOVE_USER);
+	}
+
 	QWidget::keyPressEvent(e);
 }
 

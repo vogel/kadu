@@ -10,6 +10,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * optymalizacja w misc.cpp (Zenobiusz/mast3r)
 * pola których w oknie informacji o u¿ytkowniku nie mo¿emy zmieni
   s± teraz (disabled) (mast3r)
+* klawisz delete usuwa kontakt z listy (pawel_p/adrian)
 
 +++ wersja 0.3.4-rc3
 * je¶li u¿ywamy po³±czenia TLSv1 i wpisujemy jawnie serwery GG to domy¶lnym
