@@ -50,6 +50,7 @@ kadu_DEPENDENCIES = $(SIM)
 AM_CPPFLAGS = $(PTHREAD_CPPFLAGS) -DQT_THREAD_SUPPORT -D_REENTRANT -DBINDIR="\"$(bindir)\"" -DDATADIR="\"$(datadir)\""
 
 EXTRA_DIST = hi16-app-kadu.png hi32-app-kadu.png hi48-app-kadu.png kadu.desktop
+CLEANFILES = *_moc.cpp
 
 %_moc.cpp: %.h
 	$(QTMOCDIR)/moc -o $@ $<
