@@ -84,7 +84,7 @@ bool UserList::containsAltNick(const QString altnick) {
 	for (iterator i = begin(); i != end(); i++)
 		if ((*i).altnick == altnick)
 			return true;
-	fprintf(stderr, "KK UserList::containsAltNick(): userlist doesnt contain %s\n", altnick.local8Bit());
+	fprintf(stderr, "KK UserList::containsAltNick(): userlist doesnt contain %s\n", (const char *)altnick.local8Bit());
 	return false;
 }
 
