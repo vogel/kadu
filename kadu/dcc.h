@@ -119,4 +119,26 @@ class FileDccSocket : public DccSocket
 		~FileDccSocket();
 };
 
+class DccManager : public QObject
+{
+	Q_OBJECT
+
+	private:
+		void watchDcc();
+
+	private slots:
+		void dccSetupFailed();
+
+	public:
+		static void initModule();
+		DccManager();
+
+	public slots:
+		void dccFinished(DccSocket* dcc);
+		void dccReceived();
+		void dccSent();
+};
+
+extern DccManager* dcc_manager;
+
 #endif

@@ -32,6 +32,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * po ostatnich zmianach vogela/kida/adriana/joi-a nie kompilowa³ siê autoresponder;
   postulujê zmianê wersji na 0.3.10-cvs (chilek)
 * modu³y echo, kadu_speech znowu sie kompiluj± po zmianach vogela ;) (michal)
+* porz±dki w dcc czê¶æ druga - powstanie klasy DccManager z czê¶ci kodu
+  znajduj±cego siê uprzednio w klasie Kadu (adrian)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,

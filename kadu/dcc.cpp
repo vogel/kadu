@@ -500,3 +500,88 @@ void FileDccSocket::setState(int pstate)
 	if (filedialog)
 		filedialog->dccFinished = true;
 }
+
+void DccManager::initModule()
+{
+	dcc_manager = new DccManager();
+}
+
+DccManager::DccManager() : QObject(NULL,"dcc_manager")
+{
+	connect(gadu, SIGNAL(dccSetupFailed()), this, SLOT(dccSetupFailed()));
+}
+
+void DccManager::watchDcc()
+{
+	kdebugf();
+	struct gg_event* dcc_e;
+	if (!(dcc_e = gg_dcc_watch_fd(dccsock))) {
+		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "Kadu::watchDcc(): Connection broken unexpectedly!\n");
+		config_file.writeEntry("Network", "AllowDCC", false);
+		delete dccsnr;
+		dccsnr = NULL;
+		delete dccsnw;
+		dccsnw = NULL;
+		return;
+		}
+
+	switch (dcc_e->type) {
+		case GG_EVENT_NONE:
+			break;
+		case GG_EVENT_DCC_ERROR:
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "Kadu::watchDcc(): GG_EVENT_DCC_ERROR\n");
+			break;
+		case GG_EVENT_DCC_NEW:
+			if (DccSocket::count() < 8) {
+				FileDccSocket* dcc = new FileDccSocket(dcc_e->event.dcc_new);
+				connect(dcc, SIGNAL(dccFinished(DccSocket *)), this, SLOT(dccFinished(DccSocket *)));
+				dcc->initializeNotifiers();
+				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "Kadu::watchDcc(): GG_EVENT_DCC_NEW: spawning object\n");
+				}
+			else {
+				if (dcc_e->event.dcc_new->file_fd > 0)
+					close(dcc_e->event.dcc_new->file_fd);
+				gg_dcc_free(dcc_e->event.dcc_new);
+				}
+			break;
+		default:
+			break;
+		}
+
+	if (dccsock->check == GG_CHECK_WRITE)
+		dccsnw->setEnabled(true);
+
+	gg_free_event(dcc_e);
+	kdebugf2();
+}
+
+void DccManager::dccSetupFailed()
+{
+	QMessageBox::warning(kadu, "",
+		tr("Couldn't create DCC socket.\nDirect connections disabled."));
+}
+
+void DccManager::dccFinished(DccSocket* dcc)
+{
+	kdebugf();
+	delete dcc;
+	kdebugf2();
+}
+
+void DccManager::dccReceived()
+{
+	kdebugf();
+	watchDcc();
+	kdebugf2();
+}
+
+void DccManager::dccSent()
+{
+	kdebugf();
+	dccsnw->setEnabled(false);
+	if (dccsock->check & GG_CHECK_WRITE)
+		watchDcc();
+	kdebugf2();
+}
+
+DccManager* dcc_manager = NULL;

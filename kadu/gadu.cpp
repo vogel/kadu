@@ -14,6 +14,7 @@
 #include "kadu.h"
 #include "chat.h"
 #include "ignore.h"
+#include "dcc.h"
 
 #include <netinet/in.h>
 
@@ -652,7 +653,7 @@ void GaduProtocol::dccConnectionReceived(const UserListElement &sender)
 		if (dcc_new)
 		{
 			dcc = new FileDccSocket(dcc_new);
-			connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), kadu, SLOT(dccFinished(dccSocketClass *)));
+			connect(dcc, SIGNAL(dccFinished(DccSocket*)), dcc_manager, SLOT(dccFinished(DccSocket*)));
 			dcc->initializeNotifiers();
 		}
 	}
@@ -1114,10 +1115,10 @@ void GaduProtocol::setupDcc()
 	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol:setupDcc() DCC_IP=%s DCC_PORT=%d\n", dccIp.toString().latin1(), dccsock->port);
 
 	dccsnr = new QSocketNotifier(dccsock->fd, QSocketNotifier::Read, kadu);
-	QObject::connect(dccsnr, SIGNAL(activated(int)), kadu, SLOT(dccReceived()));
+	QObject::connect(dccsnr, SIGNAL(activated(int)), dcc_manager, SLOT(dccReceived()));
 
 	dccsnw = new QSocketNotifier(dccsock->fd, QSocketNotifier::Write, kadu);
-	QObject::connect(dccsnw, SIGNAL(activated(int)), kadu, SLOT(dccSent()));
+	QObject::connect(dccsnw, SIGNAL(activated(int)), dcc_manager, SLOT(dccSent()));
 
 	kdebugf2();
 }

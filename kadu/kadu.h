@@ -23,7 +23,6 @@
 #include "userbox.h"
 #include "userlist.h"
 #include "tabbar.h"
-#include "dcc.h"
 #include "status.h"
 
 /**
@@ -90,7 +89,6 @@ class Kadu : public QMainWindow
 
 	protected:
 		bool event(QEvent *e);
-		void watchDcc(void);
 		void keyPressEvent(QKeyEvent *e);
 		virtual void resizeEvent(QResizeEvent *);
 //		virtual void moveEvent(QMoveEvent *);
@@ -127,7 +125,6 @@ class Kadu : public QMainWindow
 		void chatMsgReceived(UinsList senders, const QString &msg, time_t time);
 		void connected();
 		void connecting();
-		void dccSetupFailed();
 		void disconnected();
 		void error(GaduError);
 		void imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &path);
@@ -151,14 +148,11 @@ class Kadu : public QMainWindow
 		void refreshGroupTabBar();
 		void changeAppearance();
 		void blink();
-		void dccFinished(DccSocket *dcc);
 		void slotHandleState(int command);
 		void setCurrentStatus(int status);
 		void sendMessage(QListBoxItem *);
 		void dataReceived();
 		void dataSent();
-		void dccReceived();
-		void dccSent();
 		void setStatus(int);
 		void gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op);
 		void currentChanged(QListBoxItem *item);

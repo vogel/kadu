@@ -313,6 +313,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	History::initModule();
 	HintManager::initModule();
 	EventConfigSlots::initModule();
+	DccManager::initModule();
 
 	//zaladowanie wartosci domyslnych (pierwsze uruchomienie)
 	config_file.addVariable("General", "UserBoxHeight", 300);
@@ -512,7 +513,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		this, SLOT(chatMsgReceived(UinsList, const QString &, time_t)));
 	connect(gadu, SIGNAL(connecting()), this, SLOT(connecting()));
 	connect(gadu, SIGNAL(connected()), this, SLOT(connected()));
-	connect(gadu, SIGNAL(dccSetupFailed()), this, SLOT(dccSetupFailed()));
 	connect(gadu, SIGNAL(disconnected()), this, SLOT(disconnected()));
 	connect(gadu, SIGNAL(error(GaduError)), this, SLOT(error(GaduError)));
 	connect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
@@ -648,8 +648,8 @@ void Kadu::sendFile()
 				if ((dcc_new = gg_dcc_send_file(htonl(user.ip.ip4Addr()), user.port,
 					config_file.readNumEntry("General", "UIN"), user.uin)) != NULL) {
 					FileDccSocket* dcc = new FileDccSocket(dcc_new);
-					connect(dcc, SIGNAL(dccFinished(DccSocket *)), this,
-						SLOT(dccFinished(DccSocket *)));
+					connect(dcc, SIGNAL(dccFinished(DccSocket*)), dcc_manager,
+						SLOT(dccFinished(DccSocket*)));
 					dcc->initializeNotifiers();
 					}
 				}
@@ -1146,12 +1146,6 @@ void Kadu::blink() {
 	blinktimer->start(1000, TRUE);
 }
 
-void Kadu::dccSetupFailed()
-{
-	QMessageBox::warning(kadu, "",
-		tr("Couldn't create DCC socket.\nDirect connections disabled."));
-}
-
 void Kadu::userListUserAdded(const UserListElement& user)
 {
 	// jesli dodany do listy uzyszkodnik jest uzyszkodnikiem anonimowym
@@ -1497,11 +1491,6 @@ void Kadu::disconnected()
 	kdebugf2();
 }
 
-void Kadu::dccFinished(DccSocket *dcc) {
-	kdebugf();
-	delete dcc;
-}
-
 bool Kadu::event(QEvent *e) {
 	QCustomEvent *ce;
 	DccSocket *dcc;
@@ -1532,63 +1521,6 @@ bool Kadu::event(QEvent *e) {
 		ce->setData(NULL);
 		}
 	return QWidget::event(e);
-}
-
-void Kadu::dccReceived(void) {
-	kdebugf();
-	watchDcc();
-	kdebugf2();
-}
-
-void Kadu::dccSent(void) {
-	kdebugf();
-	dccsnw->setEnabled(false);
-	if (dccsock->check & GG_CHECK_WRITE)
-		watchDcc();
-	kdebugf2();
-}
-
-void Kadu::watchDcc(void) {
-	kdebugf();
-	struct gg_event* dcc_e;
-	if (!(dcc_e = gg_dcc_watch_fd(dccsock))) {
-		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "Kadu::watchDcc(): Connection broken unexpectedly!\n");
-		config_file.writeEntry("Network", "AllowDCC", false);
-		delete dccsnr;
-		dccsnr = NULL;
-		delete dccsnw;
-		dccsnw = NULL;
-		return;
-		}
-
-	switch (dcc_e->type) {
-		case GG_EVENT_NONE:
-			break;
-		case GG_EVENT_DCC_ERROR:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "Kadu::watchDcc(): GG_EVENT_DCC_ERROR\n");
-			break;
-		case GG_EVENT_DCC_NEW:
-			if (DccSocket::count() < 8) {
-				FileDccSocket* dcc = new FileDccSocket(dcc_e->event.dcc_new);
-				connect(dcc, SIGNAL(dccFinished(DccSocket *)), this, SLOT(dccFinished(DccSocket *)));
-				dcc->initializeNotifiers();
-				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "Kadu::watchDcc(): GG_EVENT_DCC_NEW: spawning object\n");
-				}
-			else {
-				if (dcc_e->event.dcc_new->file_fd > 0)
-					close(dcc_e->event.dcc_new->file_fd);
-				gg_dcc_free(dcc_e->event.dcc_new);
-				}
-			break;
-		default:
-			break;
-		}
-
-	if (dccsock->check == GG_CHECK_WRITE)
-		dccsnw->setEnabled(true);
-
-	gg_free_event(dcc_e);
-	kdebugf2();
 }
 
 bool Kadu::close(bool quit) {
