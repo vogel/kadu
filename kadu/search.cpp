@@ -483,5 +483,6 @@ void SearchDialog::openChat()
 
 	uins.append((uin_t)uin.toInt());
 
-	chat_manager->openChat(uins);
+	if (uins.findIndex(config_file.readNumEntry("General", "UIN")) == -1)
+		chat_manager->openChat(uins);
 }
