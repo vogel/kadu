@@ -407,7 +407,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	/* connect userlist signals */
 	connect(&userlist, SIGNAL(modified()), this, SLOT(userListModified()));
-	connect(&userlist, SIGNAL(statusModified(UserListElement *, bool)), this, SLOT(userListStatusModified(UserListElement *, bool)));
 	connect(&userlist, SIGNAL(userAdded(const UserListElement&)),this,SLOT(userListUserAdded(const UserListElement&)));
 
 	/* add all users to userbox */
@@ -488,8 +487,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		this, SLOT(readTokenValue(QPixmap, QString &)));
 	connect(gadu, SIGNAL(systemMessageReceived(QString &)), this, SLOT(systemMessageReceived(QString &)));
 	connect(gadu, SIGNAL(userListChanged()), this, SLOT(userListChanged()));
-	connect(gadu, SIGNAL(userStatusChanged(UserListElement&, const Status &, bool)),
-		this, SLOT(userStatusChanged(UserListElement&, const Status &, bool)));
+	connect(gadu, SIGNAL(userStatusChanged(const UserListElement&, const Status &, bool)),
+		this, SLOT(userStatusChanged(const UserListElement&, const Status &, bool)));
 
 	connect(&(gadu->status()), SIGNAL(goOnline(const QString &)),
 		this, SLOT(wentOnline(const QString &)));
@@ -922,15 +921,6 @@ void Kadu::userListModified()
 	refreshGroupTabBar();
 }
 
-void Kadu::userListStatusModified(UserListElement *user, bool onConnection)
-{
-	kdebugm(KDEBUG_FUNCTION_START, "Kadu::userListStatusModified(): %d\n", user->uin);
-	if (user->status->isOffline())
-		InfoPanel->setText("");
-	chat_manager->refreshTitlesForUin(user->uin);
-	kdebugf2();
-}
-
 void Kadu::userListChanged()
 {
 	kdebugf();
@@ -938,12 +928,15 @@ void Kadu::userListChanged()
 	kdebugf2();
 }
 
-void Kadu::userStatusChanged(UserListElement &user, const Status &oldstatus, bool onConnection)
+void Kadu::userStatusChanged(const UserListElement &user, const Status &oldstatus, bool onConnection)
 {
 	kdebugf();
 
 	history.appendStatus(user.uin, *(user.status));
 	chat_manager->refreshTitlesForUin(user.uin);
+	if (user.status->isOffline())
+		InfoPanel->setText("");
+	UserBox::all_refresh();
 
 	kdebugf2();
 }

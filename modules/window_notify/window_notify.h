@@ -13,10 +13,10 @@ class WindowNotify : public QObject
 		~WindowNotify();
 
 	public slots:
-		void newChat(UinsList senders, const QString& msg, time_t time);
-		void newMessage(UinsList senders, const QString& msg, time_t time, bool &grab);
+		void newChat(const UinsList &senders, const QString& msg, time_t time);
+		void newMessage(const UinsList &senders, const QString& msg, time_t time, bool &grab);
 		void connectionError(const QString &message);
-		void userChangingStatus(const UinType uin, const Status &oldstatus, const Status &status);
+		void userStatusChanged(const UserListElement &ule, const Status &oldStatus);
 		void userChangedStatusToAvailable(const UserListElement &ule);
 		void userChangedStatusToBusy(const UserListElement &ule);
 		void userChangedStatusToNotAvailable(const UserListElement &ule);

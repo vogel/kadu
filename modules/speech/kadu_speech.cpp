@@ -161,8 +161,8 @@ SpeechSlots::SpeechSlots()
 	ConfigDialog::registerSlotOnCreate(this, SLOT(onCreateConfigDialog()));
 
 	QMap<QString, QString> s;
-	s["NewChat"]=SLOT(newChat(UinsList, const QString &, time_t));
-	s["NewMessage"]=SLOT(newMessage(UinsList, const QString &, time_t, bool &));
+	s["NewChat"]=SLOT(newChat(const UinsList &, const QString &, time_t));
+	s["NewMessage"]=SLOT(newMessage(const UinsList &, const QString &, time_t, bool &));
 	s["ConnError"]=SLOT(connectionError(const QString &));
 	s["toAvailable"]=SLOT(userChangedStatusToAvailable(const UserListElement &));
 	s["toBusy"]=SLOT(userChangedStatusToBusy(const UserListElement &));
@@ -317,7 +317,7 @@ void SpeechSlots::testSpeech()
 	kdebugf2();
 }
 
-void SpeechSlots::newChat(UinsList senders, const QString &msg, time_t time)
+void SpeechSlots::newChat(const UinsList &senders, const QString &msg, time_t time)
 {
 	kdebugf();
 	if (lastSpeech.elapsed()<1500)
@@ -339,7 +339,7 @@ void SpeechSlots::newChat(UinsList senders, const QString &msg, time_t time)
 	kdebugf2();
 }
 
-void SpeechSlots::newMessage(UinsList senders, const QString &msg, time_t time, bool &grab)
+void SpeechSlots::newMessage(const UinsList &senders, const QString &msg, time_t time, bool &grab)
 {
 	kdebugf();
 	if (lastSpeech.elapsed()<1500)

@@ -406,7 +406,7 @@ void openWebBrowser(const QString &link)
 	kdebugf();
 	QProcess *browser;
 	QStringList args;
-	
+
 	QString webBrowser=config_file.readEntry("Chat","WebBrowser");
 	if (webBrowser == "")
 	{
@@ -426,11 +426,11 @@ void openWebBrowser(const QString &link)
 		kdebugm(KDEBUG_INFO, "openWebBrowser(): %s\n", unicode2latin(*i).data());
 	browser = new QProcess();
 	browser->setArguments(args);
-	
+
 	if (!browser->start())
 		QMessageBox::critical(0, qApp->translate("@default", QT_TR_NOOP("WWW error")),
 			qApp->translate("@default", QT_TR_NOOP("Could not spawn Web browser process. Check if the Web browser is functional")));
-	
+
 	kdebugf2();
 }
 
@@ -809,8 +809,7 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 					++i;
 					if (!ule.uin)
 						break;
-					pe.str= qApp->translate("@default",
-						Status::name(Status::index(ule.status->status(), false)));
+					pe.str = qApp->translate("@default", ule.status->name());
 					break;
 				case 'd':
 					++i;

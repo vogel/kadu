@@ -43,8 +43,8 @@ class SoundManager : public Themes
 		bool mute;
 
 	private slots:
-		void newChat(UinsList senders, const QString& msg, time_t time);
-		void newMessage(UinsList senders, const QString& msg, time_t time, bool &grab);
+		void newChat(const UinsList &senders, const QString& msg, time_t time);
+		void newMessage(const UinsList &senders, const QString& msg, time_t time, bool &grab);
 		void connectionError(const QString &message);
 		void userChangedStatusToAvailable(const UserListElement &ule);
 		void userChangedStatusToBusy(const UserListElement &ule);

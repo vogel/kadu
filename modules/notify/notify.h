@@ -38,10 +38,7 @@ class Notify : public QObject
 
 	private slots:
 	/* obs³uga zmian statusów */
-	void changingStatus(const UinType uin, const Status &oldstatus, const Status &status, bool onConnection);
-
-	/* obs³uga zmian statusów */
-	void changedStatus(UserListElement *, bool onConnection);
+	void userStatusChanged(const UserListElement &, const Status &oldStatus, bool onConnection);
 
 	/* pomocniczy slot */
 	void probablyNewChat(UinsList senders, const QString& msg, time_t time);
@@ -72,7 +69,7 @@ class Notify : public QObject
 		"NewChat" - nowa rozmowa
 		"NewMessage" - nowa wiadomo¶æ
 		"ConnError" - b³±d po³±czenia
-		"ChangingStatus" - zmiana statusu (dopiero siê odbêdzie)
+		"StatusChanged" - zmiana statusu ogólna
 		"toAvailable" - u¿ytkownik zmieni³ status na "Dostêpny"
 		"toBusy" - u¿ytkownik zmieni³ status na "Zaraz wracam"
 		"toNotAvailable" - u¿ytkownik zmieni³ status na "Niewidoczny lub Niedostêpny"
@@ -106,18 +103,18 @@ class Notify : public QObject
 	//UWAGA: razem ze zmianami nazw/parametrów tych sygna³ów nale¿y aktualizowaæ wpisy w konstruktorze Notify
 
 	/* nowa rozmowa */
-	void newChat(UinsList senders, const QString& msg, time_t time);
+	void newChat(const UinsList &senders, const QString& msg, time_t time);
 
 	/* nowa wiadomo¶æ w oknie chat */
-	void newMessage(UinsList senders, const QString& msg, time_t time, bool &grab);
+	void newMessage(const UinsList &senders, const QString& msg, time_t time, bool &grab);
 
 	/* b³±d po³±czenia */
 	void connectionError(const QString &message);
 
-	/* u¿ytkownik ZMIENIA status (mo¿na operowaæ tylko na podanych parametrach, bo status _jeszcze_ siê nie zmieni³) */
-	void userChangingStatus(const UinType uin, const Status &oldstatus, const Status &status);
+	/* u¿ytkownik zmieni³ status */
+	void userStatusChanged(const UserListElement &, const Status &oldStatus);
 
-	/* u¿ytkownik ZMIENI£ status na "Dostêpny" */
+	/* u¿ytkownik zmieni³ status na "Dostêpny" */
 	void userChangedStatusToAvailable(const UserListElement &);
 
 	/* u¿ytkownik zmieni³ status na "Zaraz wracam" */

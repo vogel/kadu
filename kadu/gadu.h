@@ -485,7 +485,7 @@ class GaduProtocol : public QObject
 		**/
 		void imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &path);
 		void userListChanged();
-		void userStatusChanged(UserListElement &, const Status &oldStatus, bool onConnection = false);
+		void userStatusChanged(const UserListElement &, const Status &oldStatus, bool onConnection = false);
 		void systemMessageReceived(QString &);
 		void dccConnectionReceived(const UserListElement&);
 		void disconnectNetwork();

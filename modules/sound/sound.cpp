@@ -96,8 +96,8 @@ SoundManager::SoundManager(const QString& name, const QString& configname)
 	setTheme(config_file.readEntry("Sounds","SoundTheme"));
 
 	QMap<QString, QString> s;
-	s["NewChat"]=SLOT(newChat(UinsList, const QString &, time_t));
-	s["NewMessage"]=SLOT(newMessage(UinsList, const QString &, time_t, bool &));
+	s["NewChat"]=SLOT(newChat(const UinsList &, const QString &, time_t));
+	s["NewMessage"]=SLOT(newMessage(const UinsList &, const QString &, time_t, bool &));
 	s["ConnError"]=SLOT(connectionError(const QString &));
 	s["toAvailable"]=SLOT(userChangedStatusToAvailable(const UserListElement &));
 	s["toBusy"]=SLOT(userChangedStatusToBusy(const UserListElement &));
@@ -160,7 +160,7 @@ void SoundManager::setMute(const bool& enable)
 	mute= enable;
 }
 
-void SoundManager::newChat(UinsList senders, const QString& msg, time_t time)
+void SoundManager::newChat(const UinsList &senders, const QString& msg, time_t time)
 {
 	kdebugf();
 	if (isMuted())
@@ -188,7 +188,7 @@ void SoundManager::newChat(UinsList senders, const QString& msg, time_t time)
 	kdebugf2();
 }
 
-void SoundManager::newMessage(UinsList senders, const QString& msg, time_t time, bool &grab)
+void SoundManager::newMessage(const UinsList &senders, const QString& msg, time_t time, bool &grab)
 {
 	kdebugf();
 	if (isMuted())

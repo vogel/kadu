@@ -93,7 +93,6 @@ class Kadu : public QMainWindow
 
 	private slots:
 		void userListModified();
-		void userListStatusModified(UserListElement *, bool);
 		void openChat();
 		void userListUserAdded(const UserListElement& user);
 		void chatMsgReceived(UinsList senders, const QString &msg, time_t time);
@@ -110,7 +109,7 @@ class Kadu : public QMainWindow
 		void error(GaduError);
 		void imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &path);
 		void systemMessageReceived(QString &);
-		void userStatusChanged(UserListElement &, const Status &oldstatus, bool onConnection);
+		void userStatusChanged(const UserListElement &, const Status &oldstatus, bool onConnection);
 
 	protected:
 		void keyPressEvent(QKeyEvent *e);

@@ -64,18 +64,18 @@ class HintManager : public QFrame
 	public slots:
 /*********** sloty dla notify ************/
 		/* nowa rozmowa */
-		void newChat(UinsList senders, const QString& msg, time_t time);
+		void newChat(const UinsList &senders, const QString& msg, time_t time);
 
 		/* nowa wiadomo¶æ w oknie chat */
-		void newMessage(UinsList senders, const QString& msg, time_t time, bool &grab);
+		void newMessage(const UinsList &senders, const QString& msg, time_t time, bool &grab);
 
 		/* b³±d po³±czenia */
 		void connectionError(const QString &message);
 
-		/* u¿ytkownik ZMIENIA status (mo¿na operowaæ tylko na podanych parametrach, bo status _jeszcze_ siê nie zmieni³) */
-		void userChangingStatus(const UinType uin, const Status &oldstatus, const Status &status);
+		/* u¿ytkownik zmieni³ status */
+		void userStatusChanged(const UserListElement &ule, const Status &oldStatus);
 
-		/* u¿ytkownik ZMIENI£ status na "Dostêpny" */
+		/* u¿ytkownik zmieni³ status na "Dostêpny" */
 		void userChangedStatusToAvailable(const UserListElement &ule);
 
 		/* u¿ytkownik zmieni³ status na "Zaraz wracam" */
@@ -105,7 +105,7 @@ class HintManager : public QFrame
 
 			pozosta³e funkcje pokazuj±ce dymki s± tylko opakowaniami na t± funkcjê
 		**/
-		void addHint(const QString &text, const QPixmap &pixmap, const QFont &font, const QColor &fgcolor, const QColor &bgcolor, unsigned int timeout, UinsList* senders=0);
+		void addHint(const QString &text, const QPixmap &pixmap, const QFont &font, const QColor &fgcolor, const QColor &bgcolor, unsigned int timeout, const UinsList &senders=UinsList());
 
 		/**
 			usuwa dymek o numerze id

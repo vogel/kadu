@@ -2053,7 +2053,6 @@ void GaduProtocol::userListReceived(const struct gg_event *e)
 				break;
 		}
 
-		userlist.changeUserStatus(user.uin, *(user.status), true);
 		emit userStatusChanged(user, oldStatus, false);
 
 		++nr;
@@ -2158,9 +2157,6 @@ void GaduProtocol::userStatusChanged(const struct gg_event *e)
 		return;
 	}
 
-	oldStatus.setStatus(*(user.status));
-	userlist.changeUserStatus(uin, status);
-
 	if (user.status->isOffline())
 	{
 		user.ip.setAddress((unsigned int)0);
@@ -2177,7 +2173,11 @@ void GaduProtocol::userStatusChanged(const struct gg_event *e)
 	}
 	userlist.addDnsLookup(user.uin, user.ip);
 
-	emit userStatusChanged(user, oldStatus);
+	oldStatus.setStatus(*(user.status));
+	user.status->setStatus(status);
+
+	if (status != oldStatus)
+		emit userStatusChanged(user, oldStatus);
 	emit userListChanged();
 
 	kdebugf2();
@@ -2425,7 +2425,7 @@ void GaduStatus::fromStatusNumber(int statusNumber, const QString &description)
 		case GG_STATUS_INVISIBLE_DESCR:
 			Stat = Invisible;
 			break;
-		
+
 		case GG_STATUS_BLOCKED:
 			Stat = Blocking;
 			break;

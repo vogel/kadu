@@ -74,7 +74,7 @@ class Hint : public QHBoxLayout
 		/**
 			ustawia listê uinów dotycz±cych tego dymka
 		**/
-		void setUins(UinsList i) { uins=i; };
+		void setUins(const UinsList &i) { uins=i; };
 
 	signals:
 		void leftButtonClicked(unsigned int id);
