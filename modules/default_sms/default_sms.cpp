@@ -313,12 +313,11 @@ void SmsEraGateway::httpFinished()
 
 SmsGatewaySlots::SmsGatewaySlots()
 {
-	QT_TRANSLATE_NOOP("@default", "SMS Era Gateway");
-	QT_TRANSLATE_NOOP("@default", "User ID");
-	QT_TRANSLATE_NOOP("@default", "Password");
-	QT_TRANSLATE_NOOP("@default", "Type of gateway");
-	ConfigDialog::addVGroupBox("SMS", "SMS", "SMS Era Gateway");
-	ConfigDialog::addComboBox("SMS", "SMS Era Gateway", "Type of gateway");
+
+	ConfigDialog::addVGroupBox("SMS", "SMS",
+			QT_TRANSLATE_NOOP("@default", "SMS Era Gateway"));
+	ConfigDialog::addComboBox("SMS", "SMS Era Gateway",
+			QT_TRANSLATE_NOOP("@default", "Type of gateway"));
 
 	config_file.addVariable("SMS", "EraGateway", "Omnix");
 	//przepisanie starego hasla
@@ -326,8 +325,11 @@ SmsGatewaySlots::SmsGatewaySlots()
 	config_file.addVariable("SMS", "EraGateway_Omnix_Password", config_file.readEntry("SMS", "EraGatewayPassword"));
 	//
 
-	ConfigDialog::addLineEdit2("SMS", "SMS Era Gateway", "User ID");
-	ConfigDialog::addLineEdit2("SMS", "SMS Era Gateway", "Password");
+	ConfigDialog::addLineEdit2("SMS", "SMS Era Gateway",
+			QT_TRANSLATE_NOOP("@default", "User ID"));
+	ConfigDialog::addLineEdit2("SMS", "SMS Era Gateway",
+			QT_TRANSLATE_NOOP("@default", "Password"));
+
 	ConfigDialog::registerSlotOnCreate(this, SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnClose(this, SLOT(onCloseConfigDialog()));
 	ConfigDialog::registerSlotOnApply(this, SLOT(onApplyConfigDialog()));
