@@ -59,7 +59,7 @@ snd_pcm_t *ALSAPlayerSlots::alsa_open (const char *device, int channels, int sam
 
 	int err;
 
-	alsa_period_size = 512;
+	alsa_period_size = 50;//MUSI BYÆ MNIEJSZE NI¯ 160/3 (160 to liczba próbek, które s± czytane przy rozmowach g³osowych)
 	alsa_buffer_frames = 3 * alsa_period_size;
 
 	if ((err = snd_pcm_open (&alsa_dev, device, play?SND_PCM_STREAM_PLAYBACK:SND_PCM_STREAM_CAPTURE, 0)) < 0)
@@ -254,9 +254,29 @@ void ALSAPlayerSlots::openDevice(SoundDeviceType type, int sample_rate, int chan
 	kdebugf();
 	ALSADevice *dev = new ALSADevice();
 	if (type == PLAY_ONLY || type == PLAY_AND_RECORD)
+	{
 		dev->player = alsa_open (config_file.readEntry("Sounds", "ALSAOutputDevice").local8Bit().data(), channels, sample_rate, true);
+		if (dev->player == NULL)
+		{
+			delete dev;
+			device = NULL;
+			kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING,"end: cannot open play device\n");
+			return;
+		}
+	}
 	if (type == RECORD_ONLY || type == PLAY_AND_RECORD)
+	{
 		dev->recorder = alsa_open (config_file.readEntry("Sounds", "ALSAOutputDevice").local8Bit().data(), channels, sample_rate, false);
+		if (dev->recorder == NULL)
+		{
+			if (dev->player)
+				snd_pcm_close(dev->player);
+			delete dev;
+			device = NULL;
+			kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING,"end: cannot open record device\n");
+			return;
+		}
+	}
 	dev->channels = channels;
 	device = (SoundDevice)dev;
 	kdebugf2();
@@ -306,6 +326,7 @@ int xrun_recovery(snd_pcm_t *handle, int err)
 
 void ALSAPlayerSlots::playSample(SoundDevice device, const int16_t* data, int length, bool& result)
 {
+//	kdebugf();
 	ALSADevice *dev = (ALSADevice*)device;
 	result = (dev!=NULL && dev->player!=NULL);
 	const char *cdata = (const char *)data;
@@ -338,6 +359,7 @@ void ALSAPlayerSlots::playSample(SoundDevice device, const int16_t* data, int le
 	
 void ALSAPlayerSlots::recordSample(SoundDevice device, int16_t* data, int length, bool& result)
 {
+//	kdebugf();
 	ALSADevice *dev = (ALSADevice*)device;
 	result = (dev!=NULL && dev->recorder!=NULL);
 	char *cdata = (char *)data;
@@ -347,6 +369,7 @@ void ALSAPlayerSlots::recordSample(SoundDevice device, int16_t* data, int length
 		while (reed < length)
 		{
 			int toread = (length - reed) / (2 * dev->channels);
+//			kdebugm(KDEBUG_INFO, "reading %p %d %d\n", data, length, toread);
 			res = snd_pcm_readi(dev->recorder, cdata + reed, toread);
 			kdebugm(KDEBUG_INFO, "req:%d ret:%d\n", toread, res);
 			if (res == -EAGAIN)
