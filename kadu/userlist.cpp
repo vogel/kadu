@@ -91,6 +91,14 @@ void UserListElement::setGroup(const QString& group)
 		emit Parent->modified();
 };
 
+UserList::UserList(UserList &source)
+{
+	for(iterator i=source.begin(); i!=source.end(); i++)
+		append(*i);
+
+};
+
+
 UserList::UserList() : QObject(), QValueList<UserListElement>()
 {
 	dnslookups.setAutoDelete(true);

@@ -79,6 +79,7 @@ class UserList : public QObject, public QValueList<UserListElement>
 	public:
 		UserList();
 		~UserList();
+		UserList::UserList(UserList &source);
 		UserListElement& byUin(uin_t uin);
 		UserListElement& byNick(const QString& nickname);
 		UserListElement& byAltNick(const QString& altnick);
