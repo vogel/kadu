@@ -66,7 +66,7 @@ void aRtsDevice::deleteLater2()
 		QTimer::singleShot(5000, process, SLOT(kill()));
 		QTimer::singleShot(5500, process, SLOT(deleteLater()));
 	}
-	delete this;
+	deleteLater();
 	kdebugf2();
 }
 
