@@ -259,43 +259,6 @@ PACKAGE_STRING=
 PACKAGE_BUGREPORT=
 
 ac_unique_file="lib/libgadu.h"
-# Factoring default headers for most tests.
-ac_includes_default="\
-#include <stdio.h>
-#if HAVE_SYS_TYPES_H
-# include <sys/types.h>
-#endif
-#if HAVE_SYS_STAT_H
-# include <sys/stat.h>
-#endif
-#if STDC_HEADERS
-# include <stdlib.h>
-# include <stddef.h>
-#else
-# if HAVE_STDLIB_H
-#  include <stdlib.h>
-# endif
-#endif
-#if HAVE_STRING_H
-# if !STDC_HEADERS && HAVE_MEMORY_H
-#  include <memory.h>
-# endif
-# include <string.h>
-#endif
-#if HAVE_STRINGS_H
-# include <strings.h>
-#endif
-#if HAVE_INTTYPES_H
-# include <inttypes.h>
-#else
-# if HAVE_STDINT_H
-#  include <stdint.h>
-# endif
-#endif
-#if HAVE_UNISTD_H
-# include <unistd.h>
-#endif"
-
 
 # Initialize some variables set by options.
 ac_init_help=
@@ -822,7 +785,7 @@ if test -n "$ac_init_help"; then
 Optional Features:
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
-  --disable-debug         Compile without debugging symbols and messages
+  --disable-debug         Compile without debugging support
   --enable-shared         Compile shared version of libgadu
   --disable-static        Don't compile static version of libgadu
 
@@ -1193,6 +1156,56 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 ac_config_headers="$ac_config_headers config.h"
+
+
+
+
+
+
+strip_ekg=""
+
+strip_ioctld=""
+
+strip_libgadu_so=""
+
+
+ioctld=""
+
+install_ioctld=""
+
+
+shared=""
+
+install_shared=""
+
+
+lgadu=""
+
+libgadu_a=""
+
+
+static="static"
+
+install_static="install-static"
+
+
+ekg=""
+
+install_ekg=""
+
+clean_ekg=""
+
+distclean_ekg=""
+
+uninstall_ekg=""
+
+dep_ekg=""
+
+
+make_ekgwap=""
+
+install_ekgwap=""
+
 
 
 ac_ext=c
@@ -2347,6 +2360,203 @@ echo "${ECHO_T}no, using $LN_S" >&6
 fi
 
 
+echo "$as_me:$LINENO: checking for $CC option to accept ANSI C" >&5
+echo $ECHO_N "checking for $CC option to accept ANSI C... $ECHO_C" >&6
+if test "${ac_cv_prog_cc_stdc+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_cv_prog_cc_stdc=no
+ac_save_CC=$CC
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+#include "confdefs.h"
+#include <stdarg.h>
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+/* Most of the following tests are stolen from RCS 5.7's src/conf.sh.  */
+struct buf { int x; };
+FILE * (*rcsopen) (struct buf *, struct stat *, int);
+static char *e (p, i)
+     char **p;
+     int i;
+{
+  return p[i];
+}
+static char *f (char * (*g) (char **, int), char **p, ...)
+{
+  char *s;
+  va_list v;
+  va_start (v,p);
+  s = g (p, va_arg (v,int));
+  va_end (v);
+  return s;
+}
+int test (int i, double x);
+struct s1 {int (*f) (int a);};
+struct s2 {int (*f) (double a);};
+int pairnames (int, char **, FILE *(*)(struct buf *, struct stat *, int), int, int);
+int argc;
+char **argv;
+#ifdef F77_DUMMY_MAIN
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+#endif
+int
+main ()
+{
+return f (e, argv, 0) != argv[0]  ||  f (e, argv, 1) != argv[1];
+  ;
+  return 0;
+}
+_ACEOF
+# Don't try gcc -ansi; that turns off useful extensions and
+# breaks some systems' header files.
+# AIX			-qlanglvl=ansi
+# Ultrix and OSF/1	-std1
+# HP-UX 10.20 and later	-Ae
+# HP-UX older versions	-Aa -D_HPUX_SOURCE
+# SVR4			-Xc -D__EXTENSIONS__
+for ac_arg in "" -qlanglvl=ansi -std1 -Ae "-Aa -D_HPUX_SOURCE" "-Xc -D__EXTENSIONS__"
+do
+  CC="$ac_save_CC $ac_arg"
+  rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_cv_prog_cc_stdc=$ac_arg
+break
+else
+  echo "$as_me: failed program was:" >&5
+cat conftest.$ac_ext >&5
+fi
+rm -f conftest.$ac_objext
+done
+rm -f conftest.$ac_ext conftest.$ac_objext
+CC=$ac_save_CC
+
+fi
+
+case "x$ac_cv_prog_cc_stdc" in
+  x|xno)
+    echo "$as_me:$LINENO: result: none needed" >&5
+echo "${ECHO_T}none needed" >&6 ;;
+  *)
+    echo "$as_me:$LINENO: result: $ac_cv_prog_cc_stdc" >&5
+echo "${ECHO_T}$ac_cv_prog_cc_stdc" >&6
+    CC="$CC $ac_cv_prog_cc_stdc" ;;
+esac
+
+echo "$as_me:$LINENO: checking for an ANSI C-conforming const" >&5
+echo $ECHO_N "checking for an ANSI C-conforming const... $ECHO_C" >&6
+if test "${ac_cv_c_const+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+#include "confdefs.h"
+
+#ifdef F77_DUMMY_MAIN
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+#endif
+int
+main ()
+{
+/* FIXME: Include the comments suggested by Paul. */
+#ifndef __cplusplus
+  /* Ultrix mips cc rejects this.  */
+  typedef int charset[2];
+  const charset x;
+  /* SunOS 4.1.1 cc rejects this.  */
+  char const *const *ccp;
+  char **p;
+  /* NEC SVR4.0.2 mips cc rejects this.  */
+  struct point {int x, y;};
+  static struct point const zero = {0,0};
+  /* AIX XL C 1.02.0.0 rejects this.
+     It does not let you subtract one const X* pointer from another in
+     an arm of an if-expression whose if-part is not a constant
+     expression */
+  const char *g = "string";
+  ccp = &g + (g ? g-g : 0);
+  /* HPUX 7.0 cc rejects these. */
+  ++ccp;
+  p = (char**) ccp;
+  ccp = (char const *const *) p;
+  { /* SCO 3.2v4 cc rejects this.  */
+    char *t;
+    char const *s = 0 ? (char *) 0 : (char const *) 0;
+
+    *t++ = 0;
+  }
+  { /* Someone thinks the Sun supposedly-ANSI compiler will reject this.  */
+    int x[] = {25, 17};
+    const int *foo = &x[0];
+    ++foo;
+  }
+  { /* Sun SC1.0 ANSI compiler rejects this -- but not the above. */
+    typedef const int *iptr;
+    iptr p = 0;
+    ++p;
+  }
+  { /* AIX XL C 1.02.0.0 rejects this saying
+       "k.c", line 2.27: 1506-025 (S) Operand must be a modifiable lvalue. */
+    struct s { int j; const int *ap[3]; };
+    struct s *b; b->j = 5;
+  }
+  { /* ULTRIX-32 V3.1 (Rev 9) vcc rejects this */
+    const int foo = 10;
+  }
+#endif
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_cv_c_const=yes
+else
+  echo "$as_me: failed program was:" >&5
+cat conftest.$ac_ext >&5
+ac_cv_c_const=no
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+fi
+echo "$as_me:$LINENO: result: $ac_cv_c_const" >&5
+echo "${ECHO_T}$ac_cv_c_const" >&6
+if test $ac_cv_c_const = no; then
+
+cat >>confdefs.h <<\_ACEOF
+#define const
+_ACEOF
+
+fi
+
+
 # Extract the first word of "gmake", so it can be a program name with args.
 set dummy gmake; ac_word=$2
 echo "$as_me:$LINENO: checking for $ac_word" >&5
@@ -2387,8 +2597,9 @@ else
 echo "${ECHO_T}no" >&6
 fi
 
+
 if test "x$GMAKE" = "xno"; then
-  # Extract the first word of "make", so it can be a program name with args.
+	# Extract the first word of "make", so it can be a program name with args.
 set dummy make; ac_word=$2
 echo "$as_me:$LINENO: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
@@ -2428,13 +2639,14 @@ else
 echo "${ECHO_T}no" >&6
 fi
 
-  if test "x$MAKE" = "xno"; then
-    { { echo "$as_me:$LINENO: error: make " >&5
+
+	if test "x$MAKE" = "xno"; then
+		{ { echo "$as_me:$LINENO: error: make " >&5
 echo "$as_me: error: make " >&2;}
    { (exit 1); exit 1; }; }
-  fi
+	fi
 else
-  MAKE="$GMAKE"
+	MAKE="$GMAKE"
 fi
 
 # Extract the first word of "ar", so it can be a program name with args.
@@ -2477,8 +2689,9 @@ else
 echo "${ECHO_T}no" >&6
 fi
 
+
 if test "x$AR" = "xno"; then
-  { { echo "$as_me:$LINENO: error: ar " >&5
+	{ { echo "$as_me:$LINENO: error: ar " >&5
 echo "$as_me: error: ar " >&2;}
    { (exit 1); exit 1; }; }
 fi
@@ -2525,93 +2738,13 @@ fi
 
 
 
-echo "$as_me:$LINENO: checking for uintXX_t types" >&5
-echo $ECHO_N "checking for uintXX_t types... $ECHO_C" >&6
-
-  if test "x" = "x"; then
-    ac_stdint_h="stdint.h"
-  else
-    ac_stdint_h=""
-  fi
-
-  rm -f $ac_stdint_h
-
-  ac_header_stdint=""
-  for i in stdint.h inttypes.h sys/inttypes.h sys/int_types.h sys/types.h; do
-    if test "x$ac_header_stdint" = "x"; then
-      cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-#include "confdefs.h"
-#include <$i>
-#ifdef F77_DUMMY_MAIN
-#  ifdef __cplusplus
-     extern "C"
-#  endif
-   int F77_DUMMY_MAIN() { return 1; }
-#endif
-int
-main ()
-{
-uint32_t foo
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_header_stdint=$i
-else
-  echo "$as_me: failed program was:" >&5
-cat conftest.$ac_ext >&5
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-    fi
-  done
-
-  if test "x$ac_header_stdint" != "x" ; then
-    echo "$as_me:$LINENO: result: found in <$ac_header_stdint>" >&5
-echo "${ECHO_T}found in <$ac_header_stdint>" >&6
-    STDINT_H="$ac_header_stdint"
-    if test "x$ac_header_stdint" != "xstdint.h" ; then
-      echo "#include <$ac_header_stdint>" > $ac_stdint_h
-    fi
-  else
-    echo "$as_me:$LINENO: result: not found, using reasonable defaults" >&5
-echo "${ECHO_T}not found, using reasonable defaults" >&6
-
-    STDINT_H=""
-
-        stdint_h_foobar=define
 
 
 
-    cat > $ac_stdint_h << EOF
-#ifndef __AC_STDINT_H
-#$stdint_h_foobar __AC_STDINT_H 1
 
-/* ISO C 9X: 7.18 Integer types <stdint.h> */
+echo "/* Generated automatically by configure. Do not edit. */" > lib/libgadu-config.h
+cat lib/libgadu-config.h.in >> lib/libgadu-config.h
 
-#define __int8_t_defined
-typedef   signed char    int8_t;
-typedef unsigned char   uint8_t;
-typedef   signed short  int16_t;
-typedef unsigned short uint16_t;
-typedef   signed int    int32_t;
-typedef unsigned int   uint32_t;
-
-#endif /* __AC_STDINT_H */
-EOF
-  fi
 
 echo "$as_me:$LINENO: checking whether byte ordering is bigendian" >&5
 echo $ECHO_N "checking whether byte ordering is bigendian... $ECHO_C" >&6
@@ -2816,60 +2949,6 @@ presetting ac_cv_c_bigendian=no (or yes) will help" >&2;}
 esac
 
 
-
-
-
-strip_ekg=""
-
-strip_ioctld=""
-
-strip_libgadu_so=""
-
-
-ioctld=""
-
-install_ioctld=""
-
-
-shared=""
-
-install_shared=""
-
-
-lgadu=""
-
-libgadu_a=""
-
-
-static="static"
-
-install_static="install-static"
-
-
-ekg=""
-
-install_ekg=""
-
-clean_ekg=""
-
-distclean_ekg=""
-
-uninstall_ekg=""
-
-dep_ekg=""
-
-
-make_ekgwap=""
-
-install_ekgwap=""
-
-
-OBJS=""
-
-
-echo "/* Generated automatically by configure. Do not edit. */" > lib/libgadu-config.h
-cat lib/libgadu-config.h.in >> lib/libgadu-config.h
-
 if test "$cross_compiling" = yes; then
   { { echo "$as_me:$LINENO: error: cannot run test program while cross compiling" >&5
 echo "$as_me: error: cannot run test program while cross compiling" >&2;}
@@ -2878,15 +2957,16 @@ else
   cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
 #include "confdefs.h"
+#include "confdefs.h"
 
-  int main() {
-  #ifdef WORDS_BIGENDIAN
-    return 0;
-  #else
-    return 1;
-  #endif
-  }
-
+int main()
+{
+#ifdef WORDS_BIGENDIAN
+	return 0;
+#else
+	return 1;
+#endif
+}
 _ACEOF
 rm -f conftest$ac_exeext
 if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
@@ -2900,47 +2980,117 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
 
-  sed 's/#undef __GG_LIBGADU_BIGENDIAN/#define __GG_LIBGADU_BIGENDIAN/' < lib/libgadu-config.h > lib/libgadu-config.h-
-  mv -f lib/libgadu-config.h- lib/libgadu-config.h
+	sed 's/#undef __GG_LIBGADU_BIGENDIAN/#define __GG_LIBGADU_BIGENDIAN/' < lib/libgadu-config.h > lib/libgadu-config.h-
+	mv -f lib/libgadu-config.h- lib/libgadu-config.h
 
 else
   echo "$as_me: program exited with status $ac_status" >&5
 echo "$as_me: failed program was:" >&5
 cat conftest.$ac_ext >&5
-( exit $ac_status )
-
-  sed 's/#undef __GG_LIBGADU_BIGENDIAN.*/\/* & *\//' < lib/libgadu-config.h > lib/libgadu-config.h-
-  mv -f lib/libgadu-config.h- lib/libgadu-config.h
-
 fi
 rm -f core core.* *.core conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
 fi
 
+
+echo "$as_me:$LINENO: checking for uintXX_t types" >&5
+echo $ECHO_N "checking for uintXX_t types... $ECHO_C" >&6
+
+  if test "x" = "x"; then
+    ac_stdint_h="stdint.h"
+  else
+    ac_stdint_h=""
+  fi
+
+  rm -f $ac_stdint_h
+
+  ac_header_stdint=""
+  for i in stdint.h inttypes.h sys/inttypes.h sys/int_types.h sys/types.h; do
+    if test "x$ac_header_stdint" = "x"; then
+      cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+#include "confdefs.h"
+#include <$i>
+#ifdef F77_DUMMY_MAIN
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+#endif
+int
+main ()
+{
+uint32_t foo
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_header_stdint=$i
+else
+  echo "$as_me: failed program was:" >&5
+cat conftest.$ac_ext >&5
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+    fi
+  done
+
+  if test "x$ac_header_stdint" != "x" ; then
+    echo "$as_me:$LINENO: result: found in <$ac_header_stdint>" >&5
+echo "${ECHO_T}found in <$ac_header_stdint>" >&6
+    STDINT_H="$ac_header_stdint"
+    if test "x$ac_header_stdint" != "xstdint.h" ; then
+      echo "#include <$ac_header_stdint>" > $ac_stdint_h
+    fi
+  else
+    echo "$as_me:$LINENO: result: not found, using reasonable defaults" >&5
+echo "${ECHO_T}not found, using reasonable defaults" >&6
+
+    STDINT_H=""
+
+        stdint_h_foobar=define
+
+
+
+    cat > $ac_stdint_h << EOF
+#ifndef __AC_STDINT_H
+#$stdint_h_foobar __AC_STDINT_H 1
+
+/* ISO C 9X: 7.18 Integer types <stdint.h> */
+
+typedef unsigned char   uint8_t;
+typedef unsigned short uint16_t;
+typedef unsigned int   uint32_t;
+
+#ifndef __CYGWIN__
+#define __int8_t_defined
+typedef   signed char    int8_t;
+typedef   signed short  int16_t;
+typedef   signed int    int32_t;
+#endif
+
+#endif /* __AC_STDINT_H */
+EOF
+  fi
+
+
 if test "x$STDINT_H" = "x"; then
-  cp stdint.h lib/libgadu-stdint.h
-  STDINT_H=libgadu-stdint.h
+	cp stdint.h lib/libgadu-stdint.h
+	STDINT_H=libgadu-stdint.h
 fi
 
 sed "s/#include <stdint.h>/#include <$STDINT_H>/" < lib/libgadu-config.h > lib/libgadu-config.h-
 mv -f lib/libgadu-config.h- lib/libgadu-config.h
-
-# najpierw sprawdzamy te opcje, które s± wspólne dla libgadu i ekg.
-
-# Check whether --enable-debug or --disable-debug was given.
-if test "${enable_debug+set}" = set; then
-  enableval="$enable_debug"
-
-fi;
-
-if test "x$enable_debug" = "xno"; then
-  CFLAGS=`echo "$CFLAGS" | sed 's/-g//'`
-  CFLAGS="$CFLAGS -DGG_DEBUG_DISABLE"
-  strip_ekg="strip-ekg"
-  strip_ioctld="strip-ioctld"
-  strip_libgadu_so="strip-libgadu-so"
-else
-  CFLAGS="$CFLAGS -g"
-fi
 
 echo "$as_me:$LINENO: checking for t_accept in -lnsl" >&5
 echo $ECHO_N "checking for t_accept in -lnsl... $ECHO_C" >&6
@@ -3059,6 +3209,7 @@ echo "${ECHO_T}$ac_cv_lib_socket_socket" >&6
 if test $ac_cv_lib_socket_socket = yes; then
   LIBS="$LIBS -lsocket"
 fi
+
 
 echo "$as_me:$LINENO: checking for __inet_addr in -lbind" >&5
 echo $ECHO_N "checking for __inet_addr in -lbind... $ECHO_C" >&6
@@ -3193,6 +3344,9 @@ if test `eval echo '${'$as_ac_var'}'` = yes; then
 #define `echo "HAVE_$ac_func" | $as_tr_cpp` 1
 _ACEOF
 
+	sed 's/#undef __GG_LIBGADU_HAVE_GETHOSTBYNAME_R/#define __GG_LIBGADU_HAVE_GETHOSTBYNAME_R/' < lib/libgadu-config.h > lib/libgadu-config.h-
+	mv -f lib/libgadu-config.h- lib/libgadu-config.h
+
 fi
 done
 
@@ -3230,19 +3384,19 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
 
-  echo "$as_me:$LINENO: result: yes" >&5
+	echo "$as_me:$LINENO: result: yes" >&5
 echo "${ECHO_T}yes" >&6
-  sed 's/#undef __GG_LIBGADU_HAVE_VA_COPY/#define __GG_LIBGADU_HAVE_VA_COPY/' < lib/libgadu-config.h > lib/libgadu-config.h-
-  mv -f lib/libgadu-config.h- lib/libgadu-config.h
+
+	sed 's/#undef __GG_LIBGADU_HAVE_VA_COPY/#define __GG_LIBGADU_HAVE_VA_COPY/' < lib/libgadu-config.h > lib/libgadu-config.h-
+	mv -f lib/libgadu-config.h- lib/libgadu-config.h
+
 
 else
   echo "$as_me: failed program was:" >&5
 cat conftest.$ac_ext >&5
 
-  echo "$as_me:$LINENO: result: no" >&5
+	echo "$as_me:$LINENO: result: no" >&5
 echo "${ECHO_T}no" >&6
-  sed 's/#undef __GG_LIBGADU_HAVE_VA_COPY.*/\/* & *\//' < lib/libgadu-config.h > lib/libgadu-config.h-
-  mv -f lib/libgadu-config.h- lib/libgadu-config.h
 
 fi
 rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
@@ -3280,24 +3434,39 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
 
-  echo "$as_me:$LINENO: result: yes" >&5
+	echo "$as_me:$LINENO: result: yes" >&5
 echo "${ECHO_T}yes" >&6
-  sed 's/#undef __GG_LIBGADU_HAVE___VA_COPY/#define __GG_LIBGADU_HAVE___VA_COPY/' < lib/libgadu-config.h > lib/libgadu-config.h-
-  mv -f lib/libgadu-config.h- lib/libgadu-config.h
+
+	sed 's/#undef __GG_LIBGADU_HAVE___VA_COPY/#define __GG_LIBGADU_HAVE___VA_COPY/' < lib/libgadu-config.h > lib/libgadu-config.h-
+	mv -f lib/libgadu-config.h- lib/libgadu-config.h
+
 
 else
   echo "$as_me: failed program was:" >&5
 cat conftest.$ac_ext >&5
 
-  echo "$as_me:$LINENO: result: no" >&5
+	echo "$as_me:$LINENO: result: no" >&5
 echo "${ECHO_T}no" >&6
-  sed 's/#undef __GG_LIBGADU_HAVE___VA_COPY.*/\/* & *\//' < lib/libgadu-config.h > lib/libgadu-config.h-
-  mv -f lib/libgadu-config.h- lib/libgadu-config.h
 
 fi
 rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
 
-# jak± wersjê libgadu kompilujemy?
+
+# Check whether --enable-debug or --disable-debug was given.
+if test "${enable_debug+set}" = set; then
+  enableval="$enable_debug"
+
+fi;
+
+if test "x$enable_debug" = "xno"; then
+	CFLAGS="$CFLAGS -DGG_DEBUG_DISABLE"
+	strip_ekg="strip-ekg"
+	strip_ioctld="strip-ioctld"
+	strip_libgadu_so="strip-libgadu-so"
+else
+	CFLAGS="$CFLAGS -g"
+fi
+
 
 # Check whether --enable-shared or --disable-shared was given.
 if test "${enable_shared+set}" = set; then
@@ -3308,9 +3477,9 @@ fi;
 lib_shared_enabled=no
 
 if test "x$enable_shared" = "xyes"; then
-  shared="shared"
-  install_shared="install-shared"
-  lib_shared_enabled=yes
+	shared="shared"
+	install_shared="install-shared"
+	lib_shared_enabled=yes
 fi
 
 # Check whether --enable-static or --disable-static was given.
@@ -3322,9 +3491,9 @@ fi;
 lib_static_enabled=yes
 
 if test "x$enable_static" = "xno"; then
-  static=""
-  install_static=""
-  lib_static_enabled=no
+	static=""
+	install_static=""
+	lib_static_enabled=no
 fi
 
 if test "x$enable_static" = "xno" -a "x$enable_shared" != "xyes"; then
@@ -3339,6 +3508,7 @@ if test "${enable_dynamic+set}" = set; then
 
 fi;
 
+
 echo "$as_me:$LINENO: checking for C99-compatible vsnprintf()" >&5
 echo $ECHO_N "checking for C99-compatible vsnprintf()... $ECHO_C" >&6
 if test "$cross_compiling" = yes; then
@@ -3349,13 +3519,14 @@ else
   cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
 #include "confdefs.h"
-#include <stdio.h>
 
-  int main()
-  {
-    char tmp;
-    return (snprintf(&tmp, sizeof(tmp), "test") != 4);
-  }
+	#include <stdio.h>
+	int main()
+	{
+		char tmp;
+		return (snprintf(&tmp, sizeof(tmp), "test") != 4);
+	}
+
 _ACEOF
 rm -f conftest$ac_exeext
 if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
@@ -3369,15 +3540,12 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
 
-
-cat >>confdefs.h <<\_ACEOF
-#define HAVE_C99_VSNPRINTF 1
-_ACEOF
-
 	echo "$as_me:$LINENO: result: yes" >&5
 echo "${ECHO_T}yes" >&6
-      	sed 's/#undef __GG_LIBGADU_HAVE_C99_VSNPRINTF/#define __GG_LIBGADU_HAVE_C99_VSNPRINTF/' < lib/libgadu-config.h > lib/libgadu-config.h-
-        mv -f lib/libgadu-config.h- lib/libgadu-config.h
+
+	sed 's/#undef __GG_LIBGADU_HAVE_C99_VSNPRINTF/#define __GG_LIBGADU_HAVE_C99_VSNPRINTF/' < lib/libgadu-config.h > lib/libgadu-config.h-
+	mv -f lib/libgadu-config.h- lib/libgadu-config.h
+
 
 else
   echo "$as_me: program exited with status $ac_status" >&5
@@ -3387,12 +3555,11 @@ cat conftest.$ac_ext >&5
 
 	echo "$as_me:$LINENO: result: no" >&5
 echo "${ECHO_T}no" >&6
-        sed 's/#undef __GG_LIBGADU_HAVE_C99_VSNPRINTF/\/* & *\//' < lib/libgadu-config.h > lib/libgadu-config.h-
-        mv -f lib/libgadu-config.h- lib/libgadu-config.h
 
 fi
 rm -f core core.* *.core conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
 fi
+
 
 
 # Check whether --with-pthread or --without-pthread was given.
@@ -3780,20 +3947,21 @@ fi
 # Finally, execute ACTION-IF-FOUND/ACTION-IF-NOT-FOUND:
 if test x"$acx_pthread_ok" = xyes; then
 
-    LIBS="$PTHREAD_LIBS $LIBS"
-    CFLAGS="$CFLAGS $PTHREAD_CFLAGS"
-    CC="$PTHREAD_CC"
-    have_pthread=yes
+		LIBS="$PTHREAD_LIBS $LIBS"
+		CFLAGS="$CFLAGS $PTHREAD_CFLAGS"
+		CC="$PTHREAD_CC"
+		have_pthread=yes
 
-    sed 's/#undef __GG_LIBGADU_HAVE_PTHREAD/#define __GG_LIBGADU_HAVE_PTHREAD/' < lib/libgadu-config.h > lib/libgadu-config.h-
-    mv -f lib/libgadu-config.h- lib/libgadu-config.h
-    libgadu_have_pthread=yes
+
+	sed 's/#undef __GG_LIBGADU_HAVE_PTHREAD/#define __GG_LIBGADU_HAVE_PTHREAD/' < lib/libgadu-config.h > lib/libgadu-config.h-
+	mv -f lib/libgadu-config.h- lib/libgadu-config.h
+
 
         :
 else
         acx_pthread_ok=no
 
-    { { echo "$as_me:$LINENO: error: Your system is not supporting pthreads" >&5
+		{ { echo "$as_me:$LINENO: error: Your system is not supporting pthreads" >&5
 echo "$as_me: error: Your system is not supporting pthreads" >&2;}
    { (exit 1); exit 1; }; }
 
@@ -3807,12 +3975,6 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 fi
 
-if test "x$libgadu_have_pthread" != "xyes"; then
-  sed 's/#undef __GG_LIBGADU_HAVE_PTHREAD/\/* & *\//' < lib/libgadu-config.h > lib/libgadu-config.h-
-  mv -f lib/libgadu-config.h- lib/libgadu-config.h
-fi
-
-# sprawdzamy, czy jest ,,long long'' na potrzeby obliczeñ czasów dcc
 
 echo "$as_me:$LINENO: checking for long long" >&5
 echo $ECHO_N "checking for long long... $ECHO_C" >&6
@@ -3826,11 +3988,12 @@ else
 #line $LINENO "configure"
 #include "confdefs.h"
 
-  int main() {
-    long long a = 1LL;
-    unsigned long long b = 1LL;
-    return 0;
-  }
+	int main()
+	{
+		long long a = 1LL;
+		unsigned long long b = 1LL;
+		return 0;
+	}
 
 _ACEOF
 rm -f conftest$ac_exeext
@@ -3845,275 +4008,21 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
 
-  echo "$as_me:$LINENO: result: yes" >&5
+	echo "$as_me:$LINENO: result: yes" >&5
 echo "${ECHO_T}yes" >&6
-  sed 's/#undef __GG_LIBGADU_HAVE_LONG_LONG/#define __GG_LIBGADU_HAVE_LONG_LONG/' < lib/libgadu-config.h > lib/libgadu-config.h-
-  mv -f lib/libgadu-config.h- lib/libgadu-config.h
+
+	sed 's/#undef __GG_LIBGADU_HAVE_LONG_LONG/#define __GG_LIBGADU_HAVE_LONG_LONG/' < lib/libgadu-config.h > lib/libgadu-config.h-
+	mv -f lib/libgadu-config.h- lib/libgadu-config.h
+
 
 else
   echo "$as_me: program exited with status $ac_status" >&5
 echo "$as_me: failed program was:" >&5
 cat conftest.$ac_ext >&5
-( exit $ac_status )
-
-  echo "$as_me:$LINENO: result: no" >&5
-echo "${ECHO_T}no" >&6
-  sed 's/#undef __GG_LIBGADU_HAVE_LONG_LONG.*/\/* & *\//' < lib/libgadu-config.h > lib/libgadu-config.h-
-  mv -f lib/libgadu-config.h- lib/libgadu-config.h
-
 fi
 rm -f core core.* *.core conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
 fi
 
-
-echo "$as_me:$LINENO: checking for ANSI C header files" >&5
-echo $ECHO_N "checking for ANSI C header files... $ECHO_C" >&6
-if test "${ac_cv_header_stdc+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-#include "confdefs.h"
-#include <stdlib.h>
-#include <stdarg.h>
-#include <string.h>
-#include <float.h>
-
-_ACEOF
-if { (eval echo "$as_me:$LINENO: \"$ac_cpp conftest.$ac_ext\"") >&5
-  (eval $ac_cpp conftest.$ac_ext) 2>conftest.er1
-  ac_status=$?
-  egrep -v '^ *\+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } >/dev/null; then
-  if test -s conftest.err; then
-    ac_cpp_err=$ac_c_preproc_warn_flag
-  else
-    ac_cpp_err=
-  fi
-else
-  ac_cpp_err=yes
-fi
-if test -z "$ac_cpp_err"; then
-  ac_cv_header_stdc=yes
-else
-  echo "$as_me: failed program was:" >&5
-  cat conftest.$ac_ext >&5
-  ac_cv_header_stdc=no
-fi
-rm -f conftest.err conftest.$ac_ext
-
-if test $ac_cv_header_stdc = yes; then
-  # SunOS 4.x string.h does not declare mem*, contrary to ANSI.
-  cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-#include "confdefs.h"
-#include <string.h>
-
-_ACEOF
-if (eval "$ac_cpp conftest.$ac_ext") 2>&5 |
-  egrep "memchr" >/dev/null 2>&1; then
-  :
-else
-  ac_cv_header_stdc=no
-fi
-rm -f conftest*
-
-fi
-
-if test $ac_cv_header_stdc = yes; then
-  # ISC 2.0.2 stdlib.h does not declare free, contrary to ANSI.
-  cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-#include "confdefs.h"
-#include <stdlib.h>
-
-_ACEOF
-if (eval "$ac_cpp conftest.$ac_ext") 2>&5 |
-  egrep "free" >/dev/null 2>&1; then
-  :
-else
-  ac_cv_header_stdc=no
-fi
-rm -f conftest*
-
-fi
-
-if test $ac_cv_header_stdc = yes; then
-  # /bin/cc in Irix-4.0.5 gets non-ANSI ctype macros unless using -ansi.
-  if test "$cross_compiling" = yes; then
-  :
-else
-  cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-#include "confdefs.h"
-#include <ctype.h>
-#if ((' ' & 0x0FF) == 0x020)
-# define ISLOWER(c) ('a' <= (c) && (c) <= 'z')
-# define TOUPPER(c) (ISLOWER(c) ? 'A' + ((c) - 'a') : (c))
-#else
-# define ISLOWER(c) (('a' <= (c) && (c) <= 'i') \
-                     || ('j' <= (c) && (c) <= 'r') \
-                     || ('s' <= (c) && (c) <= 'z'))
-# define TOUPPER(c) (ISLOWER(c) ? ((c) | 0x40) : (c))
-#endif
-
-#define XOR(e, f) (((e) && !(f)) || (!(e) && (f)))
-int
-main ()
-{
-  int i;
-  for (i = 0; i < 256; i++)
-    if (XOR (islower (i), ISLOWER (i))
-        || toupper (i) != TOUPPER (i))
-      exit(2);
-  exit (0);
-}
-_ACEOF
-rm -f conftest$ac_exeext
-if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
-  (eval $ac_link) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } && { ac_try='./conftest$ac_exeext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  :
-else
-  echo "$as_me: program exited with status $ac_status" >&5
-echo "$as_me: failed program was:" >&5
-cat conftest.$ac_ext >&5
-( exit $ac_status )
-ac_cv_header_stdc=no
-fi
-rm -f core core.* *.core conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
-fi
-fi
-fi
-echo "$as_me:$LINENO: result: $ac_cv_header_stdc" >&5
-echo "${ECHO_T}$ac_cv_header_stdc" >&6
-if test $ac_cv_header_stdc = yes; then
-
-cat >>confdefs.h <<\_ACEOF
-#define STDC_HEADERS 1
-_ACEOF
-
-fi
-
-# On IRIX 5.3, sys/types and inttypes.h are conflicting.
-
-
-
-
-
-
-
-
-
-for ac_header in sys/types.h sys/stat.h stdlib.h string.h memory.h strings.h \
-                  inttypes.h stdint.h unistd.h
-do
-as_ac_Header=`echo "ac_cv_header_$ac_header" | $as_tr_sh`
-echo "$as_me:$LINENO: checking for $ac_header" >&5
-echo $ECHO_N "checking for $ac_header... $ECHO_C" >&6
-if eval "test \"\${$as_ac_Header+set}\" = set"; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-#include "confdefs.h"
-$ac_includes_default
-
-#include <$ac_header>
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  eval "$as_ac_Header=yes"
-else
-  echo "$as_me: failed program was:" >&5
-cat conftest.$ac_ext >&5
-eval "$as_ac_Header=no"
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-fi
-echo "$as_me:$LINENO: result: `eval echo '${'$as_ac_Header'}'`" >&5
-echo "${ECHO_T}`eval echo '${'$as_ac_Header'}'`" >&6
-if test `eval echo '${'$as_ac_Header'}'` = yes; then
-  cat >>confdefs.h <<_ACEOF
-#define `echo "HAVE_$ac_header" | $as_tr_cpp` 1
-_ACEOF
-
-fi
-
-done
-
-
-echo "$as_me:$LINENO: checking for long long" >&5
-echo $ECHO_N "checking for long long... $ECHO_C" >&6
-if test "${ac_cv_type_long_long+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-#include "confdefs.h"
-$ac_includes_default
-#ifdef F77_DUMMY_MAIN
-#  ifdef __cplusplus
-     extern "C"
-#  endif
-   int F77_DUMMY_MAIN() { return 1; }
-#endif
-int
-main ()
-{
-if ((long long *) 0)
-  return 0;
-if (sizeof (long long))
-  return 0;
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_cv_type_long_long=yes
-else
-  echo "$as_me: failed program was:" >&5
-cat conftest.$ac_ext >&5
-ac_cv_type_long_long=no
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-fi
-echo "$as_me:$LINENO: result: $ac_cv_type_long_long" >&5
-echo "${ECHO_T}$ac_cv_type_long_long" >&6
-
-
-# zachowujemy opcje dla libgadu
 
 CFLAGS_LIBGADU="$CFLAGS_LIBGADU $CFLAGS"
 LIBS_LIBGADU="$LIBS_LIBGADU $LIBS"
@@ -4679,26 +4588,9 @@ s,@ECHO_C@,$ECHO_C,;t t
 s,@ECHO_N@,$ECHO_N,;t t
 s,@ECHO_T@,$ECHO_T,;t t
 s,@LIBS@,$LIBS,;t t
-s,@CC@,$CC,;t t
-s,@CFLAGS@,$CFLAGS,;t t
-s,@LDFLAGS@,$LDFLAGS,;t t
-s,@CPPFLAGS@,$CPPFLAGS,;t t
-s,@ac_ct_CC@,$ac_ct_CC,;t t
-s,@EXEEXT@,$EXEEXT,;t t
-s,@OBJEXT@,$OBJEXT,;t t
-s,@CPP@,$CPP,;t t
-s,@INSTALL_PROGRAM@,$INSTALL_PROGRAM,;t t
-s,@INSTALL_SCRIPT@,$INSTALL_SCRIPT,;t t
-s,@INSTALL_DATA@,$INSTALL_DATA,;t t
-s,@RANLIB@,$RANLIB,;t t
-s,@ac_ct_RANLIB@,$ac_ct_RANLIB,;t t
-s,@LN_S@,$LN_S,;t t
-s,@GMAKE@,$GMAKE,;t t
-s,@MAKE@,$MAKE,;t t
-s,@AR@,$AR,;t t
-s,@STRIP@,$STRIP,;t t
 s,@CFLAGS_LIBGADU@,$CFLAGS_LIBGADU,;t t
 s,@LIBS_LIBGADU@,$LIBS_LIBGADU,;t t
+s,@OBJS@,$OBJS,;t t
 s,@strip_ekg@,$strip_ekg,;t t
 s,@strip_ioctld@,$strip_ioctld,;t t
 s,@strip_libgadu_so@,$strip_libgadu_so,;t t
@@ -4718,7 +4610,24 @@ s,@uninstall_ekg@,$uninstall_ekg,;t t
 s,@dep_ekg@,$dep_ekg,;t t
 s,@make_ekgwap@,$make_ekgwap,;t t
 s,@install_ekgwap@,$install_ekgwap,;t t
-s,@OBJS@,$OBJS,;t t
+s,@CC@,$CC,;t t
+s,@CFLAGS@,$CFLAGS,;t t
+s,@LDFLAGS@,$LDFLAGS,;t t
+s,@CPPFLAGS@,$CPPFLAGS,;t t
+s,@ac_ct_CC@,$ac_ct_CC,;t t
+s,@EXEEXT@,$EXEEXT,;t t
+s,@OBJEXT@,$OBJEXT,;t t
+s,@CPP@,$CPP,;t t
+s,@INSTALL_PROGRAM@,$INSTALL_PROGRAM,;t t
+s,@INSTALL_SCRIPT@,$INSTALL_SCRIPT,;t t
+s,@INSTALL_DATA@,$INSTALL_DATA,;t t
+s,@RANLIB@,$RANLIB,;t t
+s,@ac_ct_RANLIB@,$ac_ct_RANLIB,;t t
+s,@LN_S@,$LN_S,;t t
+s,@GMAKE@,$GMAKE,;t t
+s,@MAKE@,$MAKE,;t t
+s,@AR@,$AR,;t t
+s,@STRIP@,$STRIP,;t t
 s,@PTHREAD_CC@,$PTHREAD_CC,;t t
 s,@PTHREAD_LIBS@,$PTHREAD_LIBS,;t t
 s,@PTHREAD_CFLAGS@,$PTHREAD_CFLAGS,;t t
@@ -5171,22 +5080,22 @@ echo
 echo "configured options:"
 
 if test "x$lib_static_enabled" = "xyes"; then
-  if test "x$lib_static_default" = "xyes"; then
-    echo " - static libgadu: enabled (default)"
-  else
-    echo " - static libgadu: enabled"
-  fi
+	if test "x$lib_static_default" = "xyes"; then
+		echo " - static libgadu: enabled (default)"
+	else
+		echo " - static libgadu: enabled"
+	fi
 else
-  echo " - static libgadu: disabled"
+	echo " - static libgadu: disabled"
 fi
 
 if test "x$lib_shared_enabled" = "xyes"; then
-  if test "x$lib_shared_default" = "xyes"; then
-    echo " - shared libgadu: enabled (default)"
-  else
-    echo " - shared libgadu: enabled"
-  fi
+	if test "x$lib_shared_default" = "xyes"; then
+		echo " - shared libgadu: enabled (default)"
+	else
+		echo " - shared libgadu: enabled"
+	fi
 else
-  echo " - shared libgadu: disabled"
+	echo " - shared libgadu: disabled"
 fi
 

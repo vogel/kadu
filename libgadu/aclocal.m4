@@ -15,7 +15,7 @@ dnl Based on AC_NEED_STDINT_H by Guido Draheim <guidod@gmx.de> that can be
 dnl found at http://www.gnu.org/software/ac-archive/. Do not complain him
 dnl about this macro.
 dnl
-dnl $Id: aclocal.m4,v 1.11 2003/02/21 00:40:08 adrian Exp $
+dnl $Id: aclocal.m4,v 1.12 2003/03/22 19:06:53 adrian Exp $
 
 AC_DEFUN([AC_NEED_STDINT_H],
  [AC_MSG_CHECKING([for uintXX_t types])
@@ -57,20 +57,21 @@ AC_DEFUN([AC_NEED_STDINT_H],
 
 /* ISO C 9X: 7.18 Integer types <stdint.h> */
 
+typedef unsigned char   uint8_t;
+typedef unsigned short uint16_t;
+typedef unsigned int   uint32_t;
+
+#ifndef __CYGWIN__
 #define __int8_t_defined
 typedef   signed char    int8_t;
-typedef unsigned char   uint8_t;
 typedef   signed short  int16_t;
-typedef unsigned short uint16_t;
 typedef   signed int    int32_t;
-typedef unsigned int   uint32_t;
+#endif
 
 #endif /* __AC_STDINT_H */
 EOF
   fi
 ])
-
-
 
 dnl Available from the GNU Autoconf Macro Archive at:
 dnl http://www.gnu.org/software/ac-archive/htmldoc/acx_pthread.html
