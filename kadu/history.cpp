@@ -240,8 +240,9 @@ void HistoryManager::appendStatus(uin_t uin, unsigned int status, QString descri
 		port = 0;
 		}
 	linelist.append(text2csv(nick));
+	add = ip.toString();
 	if (port)
-		addr = ip.toString() + QString(":") + QString::number(port);
+		addr = addr + QString(":") + QString::number(port);
 	linelist.append(addr);
 	linelist.append(QString::number(time(NULL)));
 	switch (status) {
