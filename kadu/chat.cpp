@@ -50,7 +50,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	QPoint pos = QCursor::pos();
 	
 	if (uins.count() > 1) {
-		setGeometry(pos.x(),pos.y(),550,400);
+		setGeometry((pos.x()+550)/2,(pos.y()+400)/2,550,400);
 		userbox = new UserBox(this);
 
 		userbox->setPaletteBackgroundColor(QColor(config.colors.userboxBgColor));
@@ -62,7 +62,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 		userbox->refresh();
 		}
 	else {
-		setGeometry(pos.x(),pos.y(),400,400);
+		setGeometry((pos.x()+400)/2,(pos.y()+400)/2,400,400);
 		userbox = NULL;
 		}
 		
@@ -85,6 +85,8 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	cancelbtn->setText(i18n("&Cancel"));
 	cancelbtn->setGeometry(245, 375, 70, 20);
 	cancelbtn->setIconSet(QIconSet(loader->loadIcon("stop", KIcon::Small)));
+	QToolTip::add(cancelbtn, i18n("Cancel waiting for delivery"));
+	cancelbtn->hide();
 	connect(cancelbtn, SIGNAL(clicked()), this, SLOT(cancelMessage()));
 
 	QLabel *edt = new QLabel(this);
@@ -428,6 +430,7 @@ void Chat::cancelMessage(void) {
 	edit->setEnabled(true);
 	edit->setFocus();
 	sendbtn->setEnabled(true);
+	cancelbtn->hide();
 }
 
 /* sends the message typed */
@@ -447,6 +450,7 @@ void Chat::sendMessage(void) {
 		edit->setReadOnly(true);	
 		edit->setEnabled(false);
 		sendbtn->setEnabled(false);
+		cancelbtn->show();
 		}
 
 	addMyMessageToHistory();
