@@ -134,3 +134,12 @@ uninstall-local:
 	rm -f $(DESTDIR)/$(datadir)/kadu/modules/*.so
 	rm -f $(DESTDIR)/$(datadir)/kadu/modules/translations/*.qm
 	rm -rf $(DESTDIR)/$(datadir)/kadu/modules/data/*
+
+clean-local:
+	@for dir in $(static_modules) $(shared_modules); do \
+		MODULE_3RDPARTY= && \
+		. ./$$dir/spec && \
+		for mod_3rdparty in $$MODULE_3RDPARTY; do \
+			$(MAKE) -C $$dir/$$mod_3rdparty clean; \
+		done; \
+	done
