@@ -14,6 +14,7 @@
 #include <config.h>
 #endif
 
+#include <qapplication.h>
 #include <qprogressdialog.h>
 #include <qmultilineedit.h>
 #include <qsocketnotifier.h>

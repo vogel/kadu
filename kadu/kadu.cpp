@@ -55,7 +55,6 @@
 #include <qstringlist.h>
 #include <qsplitter.h>
 #include <qdatetime.h>
-#include <qevent.h>
 #include <qframe.h>
 #include <arpa/inet.h>
 #include <libintl.h>
@@ -1818,6 +1817,7 @@ void Kadu::cleanUp(void) {
 }
 
 Kadu::~Kadu(void) {
+	QApplication::desktop()->releaseMouse();
 }
 
 void Kadu::createMenu() {

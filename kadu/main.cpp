@@ -27,7 +27,7 @@
 //
 
 Kadu *kadu;	
-QApplication * a;
+QApplication *a;
 //KApplication * a;
 bool mute = false;
 
@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
 	QPixmap px((const char **)gg_inact_xpm);
 	kadu->setIcon(px);
 	a->setMainWidget(kadu);
-	
+
 	// pokazanie okna przeniesione do konstruktora z powodu RunDocked
 //	kadu->show();
 	if (!config.uin) {

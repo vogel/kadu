@@ -10,6 +10,7 @@
 #include <qapplication.h>
 #include <qfile.h>
 #include <qtextstream.h>
+#include <qdesktopwidget.h>
 
 #include "status.h"
 #include "kadu.h"
@@ -91,22 +92,29 @@ void AutoStatusTimer::onTimeout()
 
 AutoAwayTimer::AutoAwayTimer(QObject* parent) : QTimer(parent,"AutoAwayTimer") {
 	autoawayed = false;
-	a->installEventFilter(this);
+	QApplication::desktop()->installEventFilter(this);
+//	QApplication::desktop()->grabMouse();
+//	a->installEventFilter(this);
 	connect(this, SIGNAL(timeout()), SLOT(onTimeout()));
 	start(config.autoawaytime * 1000,TRUE);
 }
 
 bool AutoAwayTimer::eventFilter(QObject *o,QEvent *e)
 {
-	if (e->type() == QEvent::KeyPress || e->type() == QEvent::Enter) {
+	fprintf(stderr, "KK AutoAwayTimer::eventFilter()\n");
+	if (e->type() == QEvent::KeyPress || e->type() == QEvent::Enter || e->type() == QEvent::MouseMove) {
 		stop();
 		start(config.autoawaytime * 1000, TRUE);
 		if (autoawayed) {
 			fprintf(stderr, "KK AutoAwayTimer::eventFilter(type = QEvent::KeyPress or QEvent::Enter): auto away cancelled\n");
 			autoawayed = false;
 			kadu->setStatus(beforeAutoAway);
+			QApplication::desktop()->releaseMouse();
+			QApplication::desktop()->releaseKeyboard();
+			a->sendEvent(o, e);
 			}
 		}
+//	return false;
 	return QObject::eventFilter(o, e);
 }
 
@@ -121,8 +129,10 @@ void AutoAwayTimer::onTimeout()
 			default: start(config.autoawaytime * 1000, TRUE); return;
 			}
 		fprintf(stderr, "KK AutoAwayTimer::onTimeout(): I am away!\n");
+		QApplication::desktop()->grabMouse();
+		QApplication::desktop()->grabKeyboard();
 		autoawayed = true;
-	}
+		}
 //potrzebne na wypadek zerwania polaczenia i ponownego polaczenia sie z statusem innym niz busy*
 	start(config.autoawaytime * 1000, TRUE);
 }
