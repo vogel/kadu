@@ -143,6 +143,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawka segfaulta przy zmianie altnicka uczestnika konferencji (adrian)
 * poprawka problemu z dodaniem do listy anonimowego uzytkownika
   z ktorym prowadzimy rozmowe (adrian)
+* poprawka "tylko dla znajomych" z okna konfiguracji. kadu juz sie nie laczy 
+  przy wcisnieciu "ok" (pawel_p)
 
 +++ wersja 0.3.6 (22.11.2003)
 * je¶li klikniemy na jaki¶ kontakt w userboxie, od którego otrzymali¶my jak±¶
