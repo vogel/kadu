@@ -26,6 +26,15 @@ class ChatManager : public QObject
 		ChatList Chats;
 		int openPendingMsg(int index,QString& to_add);	
 		
+		struct ChatInfo
+		{
+			UinsList uins;
+			QRect geometry;
+			QValueList<int> vertSizes;
+			QValueList<int> horizSizes;
+		};
+		QValueList<ChatInfo> sizes;
+		
 	public:	
 		ChatManager();
 		~ChatManager();

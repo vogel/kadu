@@ -78,6 +78,27 @@ void ChatManager::unregisterChat(Chat* chat)
 	for(int i=0; i<Chats.count(); i++)
 		if(Chats[i]==chat)
 		{
+			ChatInfo info;
+			info.uins=chat->uins();
+			
+			info.geometry.setX(chat->pos().x());
+			info.geometry.setY(chat->pos().y());
+			info.geometry.setWidth(chat->size().width());
+			info.geometry.setHeight(chat->size().height());
+
+			for (QValueList<ChatInfo>::iterator j=sizes.begin(); j!=sizes.end(); j++)
+				if ((*j).uins.equals(info.uins))
+				{
+					sizes.remove(j);
+					break;
+				}
+
+			info.vertSizes=chat->vertSplit->sizes();
+			if (chat->horizSplit)
+				info.horizSizes=chat->horizSplit->sizes();
+
+			sizes.push_front(info);
+
 			emit chatDestroying(chat->uins());
 			Chats.remove(Chats.at(i));
 			emit chatDestroyed(chat->uins());
@@ -124,6 +145,26 @@ int ChatManager::openChat(UinsList senders,time_t time)
 		}
 	Chat* chat = new Chat(senders, 0);
 	chat->setTitle();
+
+	bool found=false;
+	for (QValueList<ChatInfo>::iterator j=sizes.begin(); j!=sizes.end(); j++)
+		if ((*j).uins.equals(senders))
+		{
+			found=true;
+			chat->setGeometry((*j).geometry);
+			chat->vertSplit->setSizes((*j).vertSizes);
+			if (chat->horizSplit)
+				chat->horizSplit->setSizes((*j).horizSizes);
+			break;
+		}
+	if (!found)
+	{
+		QPoint pos = QCursor::pos();
+		if (senders.count()>1)
+			chat->setGeometry((pos.x() + 550) / 2, (pos.y() + 400) / 2, 550, 400);
+		else
+			chat->setGeometry((pos.x() + 400) / 2, (pos.y() + 400) / 2, 400, 400);
+	}
 
 	chat->show();
 	chat->writeMessagesFromHistory(senders, time);
@@ -433,7 +474,6 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	QPoint pos = QCursor::pos();
 	
 	if (uins.count() > 1) {
-		setGeometry((pos.x() + 550) / 2, (pos.y() + 400) / 2, 550, 400);
 		userbox = new UserBox(horizSplit);
 		userbox->setMinimumSize(QSize(30,30));
 		userbox->setPaletteBackgroundColor(config_file.readColorEntry("Look","UserboxBgColor"));
@@ -452,7 +492,6 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 		horizSplit->setSizes(sizes);
 		}
 	else {
-		setGeometry((pos.x() + 400) / 2, (pos.y() + 400) / 2, 400, 400);
 		userbox = NULL;
 		}
 		
