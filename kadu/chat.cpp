@@ -557,8 +557,6 @@ void Chat::closeEvent(QCloseEvent *e) {
 
 /* look up party's info */
 void Chat::userWhois(void) {
-	SearchDialog *sd;
-	QString tmp;
 	uin_t uin;
 	
 	if (!userbox)
@@ -568,7 +566,7 @@ void Chat::userWhois(void) {
 			uin = uins[0];
 		else
 			uin = userlist.byAltNick(userbox->currentText()).uin;
-	sd = new SearchDialog(0, "User info", uin);
+	SearchDialog *sd = new SearchDialog(0, "User info", uin);
 	sd->init();
 	sd->show();
 	sd->firstSearch();

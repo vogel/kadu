@@ -861,19 +861,6 @@ UinsList Kadu::getSelectedUins() {
 
 /* menu and popup menu parser */
 void Kadu::commandParser (int command) {
-	int i = 0, l, k;
-	SearchDialog *sd;
-	UinsList uins;
-	UserListElement user;
-	UserListElement *puser;
-	QStringList users;
-	QString keyfile_path;
-	QString mykey;
-	QString toadd;
-	QFile keyfile;
-	PendingMsgs::Element elem;
-	bool stop = false;
-
 	switch (command) {
 /*		case KADU_CMD_SEND_MESSAGE:
 			Message *msg;
@@ -881,9 +868,13 @@ void Kadu::commandParser (int command) {
 			msg->init();
 			msg->show();
 			break;*/
-		case KADU_CMD_OPEN_CHAT:
-			uins = getSelectedUins();
-			for (i = 0; i < pending.count(); i++) {
+		case KADU_CMD_OPEN_CHAT: {
+			PendingMsgs::Element elem;
+			int l,k;
+			bool stop = false;
+			UinsList uins = getSelectedUins();
+			QString toadd;
+			for (int i = 0; i < pending.count(); i++) {
 				elem = pending[i];
 				if (elem.uins.equals(uins))
 					if ((elem.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT
@@ -910,41 +901,48 @@ void Kadu::commandParser (int command) {
 				chats[k].ptr->writeMessagesFromHistory(uins, 0);
 				}
 			break;
-		case KADU_CMD_REMOVE_USER:
-			for (i = 0; i < userbox->count(); i++)
+		}
+		case KADU_CMD_REMOVE_USER: {
+			QStringList users;
+			for (int i = 0; i < userbox->count(); i++)
 				if (userbox->isSelected(i))
 					users.append(userbox->text(i));
 			removeUser(users);
 			break;
-		case KADU_CMD_DELETE_HISTORY:
-			for (i = 0; i < userbox->count(); i++)
+		}
+		case KADU_CMD_DELETE_HISTORY: {
+			UinsList uins;
+			for (int i = 0; i < userbox->count(); i++)
 				if (userbox->isSelected(i))
 					uins.append(userlist.byAltNick(userbox->text(i)).uin);
 			history.removeHistory(uins);
 			break;
-		case KADU_CMD_SHOW_HISTORY:
-			History *hb;
-			for (i = 0; i < userbox->count(); i++)
+		}
+		case KADU_CMD_SHOW_HISTORY: {
+			UinsList uins;
+			for (int i = 0; i < userbox->count(); i++)
 				if (userbox->isSelected(i))
 					uins.append(userlist.byAltNick(userbox->text(i)).uin);
 			if (uins.count()) {
-				hb = new History(uins);
+				History *hb = new History(uins);
 				hb->show();
 				}
 			break;
-		case KADU_CMD_USERINFO:
-			UserInfo *ui;
+		}
+		case KADU_CMD_USERINFO: {
 			if (userbox->currentItem() != -1) {
-				ui = new UserInfo("user info", 0, userbox->currentText());
+				UserInfo *ui = new UserInfo("user info", 0, userbox->currentText());
 				ui->show();
 				}
 			break;
-		case KADU_CMD_SEARCH:
-			sd = new SearchDialog();
+		}
+		case KADU_CMD_SEARCH: {
+			SearchDialog *sd = new SearchDialog();
 			sd->init();
 			sd->show();
 			break;
-		case KADU_CMD_MUTE:
+		}
+		case KADU_CMD_MUTE: {
 			mute = !mute;
 			if (mute) {
 				QPixmap snd_unmute((const char **)snd_mute_xpm);
@@ -957,19 +955,19 @@ void Kadu::commandParser (int command) {
 				mmb->changeItem(KADU_CMD_MUTE, icon, i18n("Mute sounds"));
 				}
 			break;
-		case KADU_CMD_ADD_USER:
-			Adduser *au;
-			au = new Adduser(0, "add_user");
+		}
+		case KADU_CMD_ADD_USER: {
+			Adduser *au = new Adduser(0, "add_user");
 			au->show();
 			break;
-		case KADU_CMD_MANAGE_IGNORED:
-			Ignored *ign;
-			ign = new Ignored(0, "ignored");
+		}
+		case KADU_CMD_MANAGE_IGNORED: {
+			Ignored *ign = new Ignored(0, "ignored");
 			ign->show();
 			break;
-		case KADU_CMD_HELP:
-			QProcess *help;
-			help = new QProcess();
+		}
+		case KADU_CMD_HELP: {
+			QProcess *help = new QProcess();
 			help->addArgument("konqueror");
 			if (QFile::exists(QString(DOCDIR)+"/index_doc.html"))
 				help->addArgument(QString(DOCDIR)+"/index_doc.html");
@@ -978,103 +976,112 @@ void Kadu::commandParser (int command) {
 			help->start();
 			delete help;
 			break;
-		case KADU_CMD_ABOUT:
-			About *about;
-			about = new About;
+		}
+		case KADU_CMD_ABOUT: {
+			About *about = new About;
 			about->show();
 			break;
-		case KADU_CMD_SEND_USERLIST:
+		}
+		case KADU_CMD_SEND_USERLIST: {
 			sendUserlist();
 			break;
-		case KADU_CMD_SMS:
-			Sms *sms;
-			sms = new Sms(userbox->currentText(), 0);
+		}
+		case KADU_CMD_SMS: {
+			Sms *sms = new Sms(userbox->currentText(), 0);
 			sms->show();
 			break;
-		case KADU_CMD_MAINMENU_SMS:
-			sms = new Sms("", 0);
+		}
+		case KADU_CMD_MAINMENU_SMS: {
+			Sms *sms = new Sms("", 0);
 			sms->show();
 			break;
-		case KADU_CMD_REMIND_PASSWORD:
-			remindPassword *rp;	
-			rp = new remindPassword();
+		}
+		case KADU_CMD_REMIND_PASSWORD: {
+			remindPassword *rp = new remindPassword();
 			rp->start();
 			break;
-		case KADU_CMD_CHANGE_PASSWORD:
-			changePassword *cp;	
-			cp = new changePassword();
+		}
+		case KADU_CMD_CHANGE_PASSWORD: {
+			changePassword *cp = new changePassword();
 			cp->show();
 			break;
-		case KADU_CMD_REGISTER_USER:
-			Register *reg;
-			reg = new Register;
+		}
+		case KADU_CMD_REGISTER_USER: {
+			Register *reg = new Register;
 			reg->show();
 			break;
-		case KADU_CMD_UNREGISTER_USER:
-			Unregister *ureg;
-			ureg = new Unregister;
+		}
+		case KADU_CMD_UNREGISTER_USER: {
+			Unregister *ureg = new Unregister;
 			ureg->show();
 			break;
-		case KADU_CMD_QUIT:
+		}
+		case KADU_CMD_QUIT: {
 			close(true);
 			break;
-		case KADU_CMD_SEARCH_USER:
+		}
+		case KADU_CMD_SEARCH_USER: {
 			if (userbox->currentItem() != -1) {
-				sd = new SearchDialog(0, i18n("User info"),
+				SearchDialog *sd = new SearchDialog(0, i18n("User info"),
 					userlist.byAltNick(userbox->currentText()).uin);
 				sd->init();
 				sd->show();
 				sd->firstSearch();
 				}
 			break;
-		case KADU_CMD_IMPORT_USERLIST:
-			UserlistImport *uli;
-			uli = new UserlistImport();
+		}
+		case KADU_CMD_IMPORT_USERLIST: {
+			UserlistImport *uli = new UserlistImport();
 			uli->init();
 			uli->show();
 			break;
-		case KADU_CMD_CONFIG:
+		}
+		case KADU_CMD_CONFIG: {
 			ConfigDialog::showConfigDialog();
 			break;
-		case KADU_CMD_EXPORT_USERLIST:
-			UserlistExport *ule;
-			ule = new UserlistExport();
+		}
+		case KADU_CMD_EXPORT_USERLIST: {
+			UserlistExport *ule = new UserlistExport();
 			ule->init();
 			ule->show();
 			break;
-		case KADU_CMD_HIDE:
+		}
+		case KADU_CMD_HIDE: {
 			if (trayicon)
 				close();
 			break;
-		case KADU_CMD_SEND_FILE:
+		}
+		case KADU_CMD_SEND_FILE: {
 			struct gg_dcc *dcc_new;
-			user = userlist.byAltNick(userbox->currentText());
-
-			dccSocketClass *dcc;
+			UserListElement user = userlist.byAltNick(userbox->currentText());
 			if (user.port >= 10) {
 				if ((dcc_new = gg_dcc_send_file(htonl(user.ip.ip4Addr()), user.port, config.uin, user.uin)) != NULL) {
-					dcc = new dccSocketClass(dcc_new);
+					dccSocketClass *dcc = new dccSocketClass(dcc_new);
 					connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), this, SLOT(dccFinished(dccSocketClass *)));
 					dcc->initializeNotifiers();
 					}
 				}
 			else {
 				acks.resize(acks.size() + 1);
-				i = acks.size() - 1;
+				int i = acks.size() - 1;
 				acks[i].ack = 0;
 				acks[i].seq = gg_dcc_request(sess, user.uin);
 				acks[i].type = 0;
 				acks[i].ptr = NULL;
 				}
 			break;
-		case KADU_CMD_PERSONAL_INFO:
-			PersonalInfoDialog *pid;
-			pid = new PersonalInfoDialog();
+		}
+		case KADU_CMD_PERSONAL_INFO: {
+			PersonalInfoDialog *pid = new PersonalInfoDialog();
 			pid->show();
 			break;
+		}
 #ifdef HAVE_OPENSSL
-		case KADU_CMD_SEND_KEY:
-			user = userlist.byAltNick(userbox->currentText());
+		case KADU_CMD_SEND_KEY: {
+			UserListElement user = userlist.byAltNick(userbox->currentText());
+			QString keyfile_path;
+			QString mykey;
+			QFile keyfile;
 
 			keyfile_path.append(ggPath("keys/"));
 			keyfile_path.append(QString::number(config.uin));
@@ -1091,37 +1098,41 @@ void Kadu::commandParser (int command) {
 				QMessageBox::information(this, "Kadu",
 					i18n("Your public key has been sent"), i18n("OK"), QString::null, 0);
 			}
-
 			break;
+		}
 #endif
-		case KADU_CMD_IGNORE_USER:
-			uins = getSelectedUins();
+		case KADU_CMD_IGNORE_USER: {
+			UinsList uins = getSelectedUins();
 			if (isIgnored(uins))
 				delIgnored(uins);
 			else
 				addIgnored(uins);
 			writeIgnored();
 			break;
-		case KADU_CMD_BLOCK_USER:
-			puser = &userlist.byAltNick(userbox->currentText());
+		}
+		case KADU_CMD_BLOCK_USER: {
+			UserListElement *puser = &userlist.byAltNick(userbox->currentText());
 			puser->blocking = !puser->blocking;
 			gg_remove_notify_ex(sess, puser->uin, puser->blocking ? GG_USER_NORMAL : GG_USER_BLOCKED);
 			gg_add_notify_ex(sess, puser->uin, puser->blocking ? GG_USER_BLOCKED : GG_USER_NORMAL);
 			userlist.writeToFile();
 			break;
-		case KADU_CMD_NOTIFY_USER:
-			puser = &userlist.byAltNick(userbox->currentText());
+		}
+		case KADU_CMD_NOTIFY_USER: {
+			UserListElement *puser = &userlist.byAltNick(userbox->currentText());
 			puser->notify = !puser->notify;
 			userlist.writeToFile();
 			break;
-		case KADU_CMD_OFFLINE_TO_USER:
-			puser = &userlist.byAltNick(userbox->currentText());
+		}
+		case KADU_CMD_OFFLINE_TO_USER: {
+			UserListElement *puser = &userlist.byAltNick(userbox->currentText());
 			puser->offline_to_user = !puser->offline_to_user;
 			gg_remove_notify_ex(sess, puser->uin, puser->offline_to_user ? GG_USER_NORMAL : GG_USER_OFFLINE);
 			gg_add_notify_ex(sess, puser->uin, puser->offline_to_user ? GG_USER_OFFLINE : GG_USER_NORMAL);
 			userlist.writeToFile();
 			break;
 		}
+	}
 }
 
 /* changes the active group */
