@@ -1,4 +1,4 @@
-/* $Id: libgadu.h,v 1.16 2002/12/08 23:54:01 chilek Exp $ */
+/* $Id: libgadu.h,v 1.17 2002/12/09 00:57:25 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>,
@@ -35,6 +35,8 @@ extern "C" {
 #include <sys/types.h>
 #include <stdint.h>
 #include "config.h"
+
+#define HAVE_PTHREAD 1
 
 #ifdef HAVE_PTHREAD
 #  include <pthread.h>
