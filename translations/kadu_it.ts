@@ -758,6 +758,37 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
     </message>
 </context>
 <context>
+    <name>ChangePassword</name>
+    <message>
+        <source>New email</source>
+        <translation type="unfinished">Nuova E-mail</translation>
+    </message>
+    <message>
+        <source>New password</source>
+        <translation type="unfinished">Nuova password</translation>
+    </message>
+    <message>
+        <source>Retype new password</source>
+        <translation type="unfinished">Riscrivi la nuova password</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Change password/email</source>
+        <translation type="unfinished">Cambia la password/email</translation>
+    </message>
+    <message>
+        <source>Bad data</source>
+        <translation type="unfinished">Dati non corretti</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished">Errore</translation>
+    </message>
+</context>
+<context>
     <name>Chat</name>
     <message>
         <source>Edit window:</source>
@@ -1032,6 +1063,13 @@ La password è errata!!!</translation>
     <message>
         <source>Please change your email in &quot;Change password/email&quot; window. Leave new password field blank.</source>
         <translation>Cambiare indirizzo e-mail in &quot;Cambia password/email&quot;. Lasciare vuoto il campo nuova password.</translation>
+    </message>
+</context>
+<context>
+    <name>GaduProtocol</name>
+    <message>
+        <source>Resend &amp;userlist</source>
+        <translation type="unfinished">&amp;Reinvia la lista dei contatti</translation>
     </message>
 </context>
 <context>
@@ -1390,14 +1428,6 @@ La password è errata!!!</translation>
         <translation>Toolbar principale</translation>
     </message>
     <message>
-        <source>Mute sounds</source>
-        <translation>Disattiva Suoni</translation>
-    </message>
-    <message>
-        <source>Unmute sounds</source>
-        <translation>Attiva Suoni</translation>
-    </message>
-    <message>
         <source>User info</source>
         <translation>Info contatto</translation>
     </message>
@@ -1502,10 +1532,6 @@ Controllare connessione a Internet.</translation>
         <translation>&amp;Configurazione</translation>
     </message>
     <message>
-        <source>Resend &amp;userlist</source>
-        <translation>&amp;Reinvia la lista dei contatti</translation>
-    </message>
-    <message>
         <source>Remind &amp;password</source>
         <translation>Ricorda la &amp;password</translation>
     </message>
@@ -1556,10 +1582,6 @@ Controllare connessione a Internet.</translation>
     <message>
         <source>Private</source>
         <translation>Riservato</translation>
-    </message>
-    <message>
-        <source>I am busy.</source>
-        <translation>Sono occupato.</translation>
     </message>
     <message>
         <source>Voice chat</source>
@@ -1767,6 +1789,21 @@ Now add your friends to the userlist.</source>
         <translation>La registrazione riuscita. Il vostro nuovo numero è %1.
 Conservilo insieme con la password in un luogo sicuro
 Ora è possibile aggiungere i vostri amici alla lista dei contatti.</translation>
+    </message>
+</context>
+<context>
+    <name>RemindPassword</name>
+    <message>
+        <source>Remind password</source>
+        <translation type="unfinished">Ricorda password</translation>
+    </message>
+    <message>
+        <source>Error during remind password</source>
+        <translation type="unfinished">L&apos;errore durante ricorda  password</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
     </message>
 </context>
 <context>
@@ -2144,6 +2181,22 @@ Probabilmente è temporaneamente disattivata, o sono state cambiate le reole acc
     <message>
         <source>Notify sound</source>
         <translation type="unfinished">Suono di notifica</translation>
+    </message>
+    <message>
+        <source>Unmute sounds</source>
+        <translation type="unfinished">Attiva Suoni</translation>
+    </message>
+    <message>
+        <source>Mute sounds</source>
+        <translation type="unfinished">Disattiva Suoni</translation>
+    </message>
+    <message>
+        <source>default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2586,37 +2639,6 @@ L&apos;importazione è fallita</translation>
     </message>
 </context>
 <context>
-    <name>changePassword</name>
-    <message>
-        <source>New password</source>
-        <translation>Nuova password</translation>
-    </message>
-    <message>
-        <source>Retype new password</source>
-        <translation>Riscrivi la nuova password</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-    <message>
-        <source>Bad data</source>
-        <translation>Dati non corretti</translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation>Errore</translation>
-    </message>
-    <message>
-        <source>New email</source>
-        <translation>Nuova E-mail</translation>
-    </message>
-    <message>
-        <source>Change password/email</source>
-        <translation>Cambia la password/email</translation>
-    </message>
-</context>
-<context>
     <name>dccSocketClass</name>
     <message>
         <source>User </source>
@@ -2691,21 +2713,6 @@ di</translation>
     <message>
         <source>Incoming voice chat</source>
         <translation>Chat a voce entrante</translation>
-    </message>
-</context>
-<context>
-    <name>remindPassword</name>
-    <message>
-        <source>Remind password</source>
-        <translation>Ricorda password</translation>
-    </message>
-    <message>
-        <source>Error during remind password</source>
-        <translation>L&apos;errore durante ricorda  password</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
     </message>
 </context>
 </TS>

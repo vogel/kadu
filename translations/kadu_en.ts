@@ -752,6 +752,37 @@ Arguments should be separated with spaces. %n argument is converted to number, %
     </message>
 </context>
 <context>
+    <name>ChangePassword</name>
+    <message>
+        <source>New email</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Retype new password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change password/email</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bad data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Chat</name>
     <message>
         <source>Edit window:</source>
@@ -1024,6 +1055,13 @@ Your password is incorrect !!!</source>
     </message>
     <message>
         <source>Disconnection has occured</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>GaduProtocol</name>
+    <message>
+        <source>Resend &amp;userlist</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1323,10 +1361,6 @@ Your password is incorrect !!!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>I am busy.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Me</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1415,19 +1449,11 @@ Your password is incorrect !!!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Mute sounds</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Add user</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unmute sounds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1498,10 +1524,6 @@ Check your internet connection.</source>
     </message>
     <message>
         <source>&amp;Configuration</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Resend &amp;userlist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1752,6 +1774,21 @@ This will erase your current config file contents if you have one</source>
         <source>Registration was successful. Your new number is %1.
 Store it in a safe place along with the password.
 Now add your friends to the userlist.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>RemindPassword</name>
+    <message>
+        <source>Remind password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error during remind password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2127,6 +2164,22 @@ or has beed changed too much to parse it correctly.</source>
     </message>
     <message>
         <source>Notify sound</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unmute sounds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mute sounds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2563,37 +2616,6 @@ The import was unsuccessful</source>
     </message>
 </context>
 <context>
-    <name>changePassword</name>
-    <message>
-        <source>New email</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>New password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Retype new password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Change password/email</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Bad data</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>dccSocketClass</name>
     <message>
         <source>User </source>
@@ -2666,21 +2688,6 @@ of size </source>
     </message>
     <message>
         <source>open file</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>remindPassword</name>
-    <message>
-        <source>Remind password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error during remind password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -758,6 +758,37 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     </message>
 </context>
 <context>
+    <name>ChangePassword</name>
+    <message>
+        <source>New email</source>
+        <translation>Nowy e-mail</translation>
+    </message>
+    <message>
+        <source>New password</source>
+        <translation>Nowe hasło</translation>
+    </message>
+    <message>
+        <source>Retype new password</source>
+        <translation>Powtórz nowe hasło</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <source>Change password/email</source>
+        <translation>Zmień hasło/email</translation>
+    </message>
+    <message>
+        <source>Bad data</source>
+        <translation>Złe dane</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Błąd</translation>
+    </message>
+</context>
+<context>
     <name>Chat</name>
     <message>
         <source>Edit window:</source>
@@ -1032,6 +1063,13 @@ Twoje hasło jest nieprawidłowe!!!</translation>
     <message>
         <source>Please change your email in &quot;Change password/email&quot; window. Leave new password field blank.</source>
         <translation>Zmień swój e-mail w oknie &quot;Zmień hasło/e-mail&quot;. Pole nowe hasło pozostaw puste.</translation>
+    </message>
+</context>
+<context>
+    <name>GaduProtocol</name>
+    <message>
+        <source>Resend &amp;userlist</source>
+        <translation>&amp;Wyślij listę kontaktów</translation>
     </message>
 </context>
 <context>
@@ -1390,14 +1428,6 @@ Twoje hasło jest nieprawidłowe!!!</translation>
         <translation>Mój pasek narzędziowy</translation>
     </message>
     <message>
-        <source>Mute sounds</source>
-        <translation>Wyłącz dźwięki</translation>
-    </message>
-    <message>
-        <source>Unmute sounds</source>
-        <translation>Przywróć dźwięki</translation>
-    </message>
-    <message>
         <source>User info</source>
         <translation>Informacje o kontakcie</translation>
     </message>
@@ -1502,10 +1532,6 @@ Sprawdź swoje połączenie internetowe.</translation>
         <translation>&amp;Konfiguracja</translation>
     </message>
     <message>
-        <source>Resend &amp;userlist</source>
-        <translation>&amp;Wyślij listę kontaktów</translation>
-    </message>
-    <message>
         <source>Remind &amp;password</source>
         <translation>Przypomnij h&amp;asło</translation>
     </message>
@@ -1556,10 +1582,6 @@ Sprawdź swoje połączenie internetowe.</translation>
     <message>
         <source>Private</source>
         <translation>Tylko dla znajomych</translation>
-    </message>
-    <message>
-        <source>I am busy.</source>
-        <translation>Jestem zajęty.</translation>
     </message>
     <message>
         <source>Voice chat</source>
@@ -1767,6 +1789,21 @@ Now add your friends to the userlist.</source>
         <translation>Rejestracja zakończona. Twój nowy numer to: %1.
 Zapisz go wraz z hasłem w bezpiecznym miejscu.
 Teraz możesz dodać znajomych do listy kontaktów.</translation>
+    </message>
+</context>
+<context>
+    <name>RemindPassword</name>
+    <message>
+        <source>Remind password</source>
+        <translation>Przypomnij hasło</translation>
+    </message>
+    <message>
+        <source>Error during remind password</source>
+        <translation>Błąd podczas przypominania hasła</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
@@ -2140,6 +2177,22 @@ czasowo wyłączona lub zmieniła zasady dostępu.</translation>
     <message>
         <source>Notify sound</source>
         <translation>Dźwięk powiadomienia</translation>
+    </message>
+    <message>
+        <source>Unmute sounds</source>
+        <translation>Przywróć dźwięki</translation>
+    </message>
+    <message>
+        <source>Mute sounds</source>
+        <translation>Wyłącz dźwięki</translation>
+    </message>
+    <message>
+        <source>default</source>
+        <translation>domyślny</translation>
+    </message>
+    <message>
+        <source>Default</source>
+        <translation>Domyślny</translation>
     </message>
 </context>
 <context>
@@ -2582,37 +2635,6 @@ zakończony niepowodzeniem.</translation>
     </message>
 </context>
 <context>
-    <name>changePassword</name>
-    <message>
-        <source>New password</source>
-        <translation>Nowe hasło</translation>
-    </message>
-    <message>
-        <source>Retype new password</source>
-        <translation>Powtórz nowe hasło</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-    <message>
-        <source>Bad data</source>
-        <translation>Złe dane</translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation>Błąd</translation>
-    </message>
-    <message>
-        <source>New email</source>
-        <translation>Nowy e-mail</translation>
-    </message>
-    <message>
-        <source>Change password/email</source>
-        <translation>Zmień hasło/email</translation>
-    </message>
-</context>
-<context>
     <name>dccSocketClass</name>
     <message>
         <source>User </source>
@@ -2687,21 +2709,6 @@ o rozmiarze </translation>
     <message>
         <source>Incoming voice chat</source>
         <translation>Przychodzaca rozmowa głosowa</translation>
-    </message>
-</context>
-<context>
-    <name>remindPassword</name>
-    <message>
-        <source>Remind password</source>
-        <translation>Przypomnij hasło</translation>
-    </message>
-    <message>
-        <source>Error during remind password</source>
-        <translation>Błąd podczas przypominania hasła</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
     </message>
 </context>
 </TS>
