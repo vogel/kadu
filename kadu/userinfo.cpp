@@ -364,6 +364,9 @@ void UserInfo::setupTab3()
 	c_offtouser = new QCheckBox(tr("Offline to user"), vgb_others);
 	c_notify = new QCheckBox(tr("Notify about status changes"), vgb_others);
 
+	if (!config_file.readBoolEntry("General", "PrivateStatus"))
+		c_offtouser->setEnabled(false);
+
 	if (addUser)
 		c_notify->setChecked(true);
 	else

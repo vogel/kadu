@@ -237,6 +237,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * ³ata Vogela na problemy z ³±czeniem i zrywaniem po³±czenia (joi)
 * paragrafy s± ju¿ prawie nieodró¿nialne od tabelek (joi)
 * usuniêty segfault w encryption (próba wys³ania klucza przy braku po³±czenia) (joi)
+* ³ata Vogela: wy³±czanie checkboksa "Niedostêpny dla kontaktu" w informacjach
+  o kontakcie przy wy³±czonym statusie "Tylko dla znajomych" (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
