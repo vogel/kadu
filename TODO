@@ -11,15 +11,23 @@
 ! :: _MUSI_ byæ
 
 
+ TODO dla wersji 0.3.3-final
+-----------------------------
+
+ ! pady, halty i bugi kadu - patrz forum
+ ! wyja¶niæ zapêtlenia siê przy utracie ³±czno¶ci z serwerem 
+ + doprowadziæ dockhints do stanu u¿ywalno¶ci
+ ! naprawiæ reszte problemów z configure (freeBSD)
+ + dokowanie w GNOME i wybór dokowania w konfiguracji
+
+
  TODO dla wersji 0.3.4
 -----------------------
 
  + dokoñczyæ rozmowy g³osowe
- ! inne pady i halty kadu - patrz forum
  ? dodawanie nieznanych u¿ytkowników z konferencji do listy jako opcja
    i ew. z listy userów w oknie konferencji
  ? wykrywanie niewidocznych jako opcja
- ! wyja¶niæ zapêtlenia siê przy utracie ³±czno¶ci z serwerem 
  ! przetestowaæ wysy³anie plików
  + dopracowaæ grupy
  + wywoywanie domyslnego klienta e-mail i pozycja e-mail w info o kontaktach
@@ -33,6 +41,7 @@
  - intelegenta data w oknie rozmowy
  + lepsza ob³uga historii
  ! przyspieszyæ wykrywanie emotikonek
+
  
  TODO dla wersji 0.4.0
 -----------------------
