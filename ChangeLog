@@ -1,3 +1,6 @@
++++ wersja 0.3.3-final
+* sms.cpp masz szansê kompilowaæ siê na Qt < 3.0.5
+
 +++ wersja 0.3.3-pre5
 * wszystkie? wiadomo¶ci od u¿ytkowników powinny wpadaæ do okna rozmowy
 * je¶li nie mamy po³±czenia z internetem, a tym samym gg_login() zwróci NULL
