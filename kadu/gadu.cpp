@@ -55,7 +55,7 @@ ConnectionTimeoutTimer *ConnectionTimeoutTimer::connectiontimeout_object = NULL;
 
 ConnectionTimeoutTimer::ConnectionTimeoutTimer(QObject *parent, const char *name) : QTimer(parent, name)
 {
-	start(5000, TRUE);
+	start(config_file.readUnsignedNumEntry("Network", "TimeoutInMs"), true);
 }
 
 bool ConnectionTimeoutTimer::connectTimeoutRoutine(const QObject *receiver, const char *member)
@@ -792,6 +792,8 @@ void GaduProtocol::initModule()
 	values << "0" << "8074" << "443";
 	ConfigDialog::addComboBox("Network", "Servers properties",
 		QT_TRANSLATE_NOOP("@default", "Port to connect to servers"), "DefaultPort", options, values);
+	
+	config_file.addVariable("Network", "TimeoutInMs", 5000);
 
 	ConfigDialog::addCheckBox("Network", "Network",
 		QT_TRANSLATE_NOOP("@default", "Use proxy server"), "UseProxy", false);
