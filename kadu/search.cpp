@@ -282,8 +282,8 @@ void SearchDialog::nextSearch(void) {
 
 	if (only_active->isChecked())
 		gg_search50_add(req, GG_SEARCH50_ACTIVE, GG_SEARCH50_ACTIVE_TRUE);
-	else
-		gg_search50_add(req, GG_SEARCH50_ACTIVE, GG_SEARCH50_ACTIVE_FALSE);
+//	else
+//		gg_search50_add(req, GG_SEARCH50_ACTIVE, GG_SEARCH50_ACTIVE_FALSE);
 	QString s;
 	s = QString::number(fromUin);
 	gg_search50_add(req, GG_SEARCH50_START, s.local8Bit());
