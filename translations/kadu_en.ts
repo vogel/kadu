@@ -2060,6 +2060,13 @@ Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new pa
     </message>
 </context>
 <context>
+    <name>Themes</name>
+    <message>
+        <source>does not contain any theme configuration file</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>TokenDialog</name>
     <message>
         <source>Read this code ...</source>
@@ -2443,24 +2450,12 @@ Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new pa
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Import error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>The application encountered an internal error
 The import userlist from file was unsuccessful</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Export completed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Your userlist has been successfully exported to file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2484,6 +2479,22 @@ The export was unsuccessful</source>
     <message>
         <source>The application encountered an internal error
 The delete userlist on server was unsuccessful</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot import user list from server in offline mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This operation will delete your current user list. Are you sure you want this?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot export user list to server in offline mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot clear user list on server in offline mode</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -2077,6 +2077,13 @@ Hasła  muszą być identyczne w obu polach!</translation>
     </message>
 </context>
 <context>
+    <name>Themes</name>
+    <message>
+        <source>does not contain any theme configuration file</source>
+        <translation>Plik konfiguracyjny w podanej ścieżce nie istnieje</translation>
+    </message>
+</context>
+<context>
     <name>TokenDialog</name>
     <message>
         <source>Read this code ...</source>
@@ -2461,26 +2468,14 @@ Teraz już nie masz numeru GG :(</translation>
         <translation>&amp;Zamknij</translation>
     </message>
     <message>
-        <source>Import error</source>
-        <translation>Błąd importu listy kontaktów</translation>
-    </message>
-    <message>
         <source>The application encountered an internal error
 The import userlist from file was unsuccessful</source>
         <translation>Import listy kontaktów z pliku został zakończony
 niepowodzeniem z powodu wewnętrznego błędu</translation>
     </message>
     <message>
-        <source>Export completed</source>
-        <translation>Eksport zakończony</translation>
-    </message>
-    <message>
         <source>Your userlist has been successfully exported to file</source>
         <translation>Lista kontaktów została wyeksportowana do pliku</translation>
-    </message>
-    <message>
-        <source>Export error</source>
-        <translation>Błąd eksportu</translation>
     </message>
     <message>
         <source>The application encountered an internal error
@@ -2507,6 +2502,23 @@ został zakończony niepowodzeniem</translation>
 The delete userlist on server was unsuccessful</source>
         <translation>Usunięcie listy kontaktów z serwera
 zostało zakończone niepowodzeniem</translation>
+    </message>
+    <message>
+        <source>Cannot import user list from server in offline mode</source>
+        <translation>Nie można pobrać listy kontaktów z serwera bez połączenia z nim</translation>
+    </message>
+    <message>
+        <source>This operation will delete your current user list. Are you sure you want this?</source>
+        <translation>Ta operacja usunie twoją bieżacą listę kontaktów.
+Jesteś pewny że tego chcesz?</translation>
+    </message>
+    <message>
+        <source>Cannot export user list to server in offline mode</source>
+        <translation>Nie można wysłać listy kontaktów na serwer bez połączenia z nim</translation>
+    </message>
+    <message>
+        <source>Cannot clear user list on server in offline mode</source>
+        <translation>Nie można usunąć listy kontaktów z serwera bez połączenia z nim</translation>
     </message>
 </context>
 <context>

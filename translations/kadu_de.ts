@@ -2077,6 +2077,13 @@ Das Passwort, das Sie angegeben haben, sollte in beiden Feldern (&quot;Neues Pas
     </message>
 </context>
 <context>
+    <name>Themes</name>
+    <message>
+        <source>does not contain any theme configuration file</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>TokenDialog</name>
     <message>
         <source>Read this code ...</source>
@@ -2460,25 +2467,13 @@ Das Passwort, das Sie angegeben haben, sollte in beiden Feldern (&quot;Neues Pas
         <translation>&amp;Schliessen</translation>
     </message>
     <message>
-        <source>Import error</source>
-        <translation>Fehler beim Importieren</translation>
-    </message>
-    <message>
         <source>The application encountered an internal error
 The import userlist from file was unsuccessful</source>
         <translation>Das Importieren wurde wegen eines Fehlers beendet</translation>
     </message>
     <message>
-        <source>Export completed</source>
-        <translation>Export beendet</translation>
-    </message>
-    <message>
         <source>Your userlist has been successfully exported to file</source>
         <translation>Die Kontaktliste wurde erfolgreich exportiert in Datei </translation>
-    </message>
-    <message>
-        <source>Export error</source>
-        <translation>Export-Fehler</translation>
     </message>
     <message>
         <source>The application encountered an internal error
@@ -2503,6 +2498,22 @@ The export was unsuccessful</source>
 The delete userlist on server was unsuccessful</source>
         <translation>Das löschen der Kontaktliste vom Server ist nicht gelungen.
 Die Anwendung hat einen Fehler zurückgemeldet</translation>
+    </message>
+    <message>
+        <source>Cannot import user list from server in offline mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This operation will delete your current user list. Are you sure you want this?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot export user list to server in offline mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot clear user list on server in offline mode</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

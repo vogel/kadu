@@ -2075,6 +2075,13 @@ Le password devo esser identiche !</translation>
     </message>
 </context>
 <context>
+    <name>Themes</name>
+    <message>
+        <source>does not contain any theme configuration file</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>TokenDialog</name>
     <message>
         <source>Read this code ...</source>
@@ -2458,26 +2465,14 @@ Le password devo esser identiche !</translation>
         <translation>&amp;Chiudi</translation>
     </message>
     <message>
-        <source>Import error</source>
-        <translation>Errore scaricamento Lista contatti</translation>
-    </message>
-    <message>
         <source>The application encountered an internal error
 The import userlist from file was unsuccessful</source>
         <translation>L&apos;applicazione ha generatoun errore interno
 L&apos;importazione della lista contatti è fallita</translation>
     </message>
     <message>
-        <source>Export completed</source>
-        <translation>Esportazione completata</translation>
-    </message>
-    <message>
         <source>Your userlist has been successfully exported to file</source>
         <translation>La vostra lista contatti è stata salvata con successo in un file</translation>
-    </message>
-    <message>
-        <source>Export error</source>
-        <translation>Errore di espotazione</translation>
     </message>
     <message>
         <source>The application encountered an internal error
@@ -2504,6 +2499,22 @@ L&apos;esportazione è fallita</translation>
 The delete userlist on server was unsuccessful</source>
         <translation>L&apos;applicazione ha generato un errore interno
 Cancellazione lista contatti su server GG fallita</translation>
+    </message>
+    <message>
+        <source>Cannot import user list from server in offline mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This operation will delete your current user list. Are you sure you want this?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot export user list to server in offline mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot clear user list on server in offline mode</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
