@@ -118,7 +118,7 @@ class Chat : public QWidget {
 		void toggledUnderline(bool on);
 		void curPosChanged(int para, int pos);
 		void specialKeyPressed(int key);
-		void colorChanged(QColor color);
+		void colorChanged(const QColor& color);
 		void aboutToClose();
 
 	protected:
@@ -176,7 +176,7 @@ class ColorSelector : public QWidget
 
 	signals:
 		void aboutToClose();
-		void colorSelect(QColor);
+		void colorSelect(const QColor&);
 };
 
 #endif

@@ -224,6 +224,20 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 	a przynajmniej poprawiæ i rozbiæ na mniejsze.
 */
 
+	//sprawdzamy czy user jest na naszej liscie, jezeli nie to .anonymous zwroci true
+	//i czy jest wlaczona opcja ignorowania nieznajomych
+	//jezeli warunek jest spelniony przerywamy dzialanie funkcji.
+	if (userlist.byUinValue(senders[0]).anonymous && config.ignoreanonusers) {
+		kdebug("EventManager::messageReceivedSlot(): Ignored anonymous. %d is ignored\n",senders[0]);
+		return;
+		}
+
+	//w dalszej czêsci kodu wystêpuje ten warunek, po co ma sprawdzac po kilka razy, jak mozna raz,
+	//podejrzewam ze to juz nie jest potrzebne, gdyz kiedys to sluzylo co oznaczania wiadomosci
+	//systemowych,ktore obecnie sa ignorowane, w dalszej czesci kodu.
+	if (senders[0] == config.uin)
+		return;
+
 	// ignorujemy, jesli nick na liscie ignorowanych
 	// PYTANIE CZY IGNORUJEMY CALA KONFERENCJE
 	// JESLI PIERWSZY SENDER JEST IGNOROWANY????
@@ -248,7 +262,6 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 
 	int i;
 
-	QString tmp;
 #ifdef HAVE_OPENSSL
 	if (config.encryption) {
 		if (!strncmp((char *)msg, "-----BEGIN RSA PUBLIC KEY-----", 20)) {
@@ -282,27 +295,21 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 
 	mesg = formatGGMessage(mesg, formats_length, formats);
 
-	UserListElement ule;
+//Jezeli uin osoby jest rozny od naszego uin to dodawana i nie mamy ten osoby w userliscie
+//jest osoba do userlisty na dwa rozne sposoby(w zaleznosci czy mamy wlaczona ikonke w docku)
+//jezeli nie to dodawana jest owa osoba do userlisty w userboxie.
 
-	if (userlist.containsUin(senders[0])) {
-		ule = userlist.byUin(senders[0]);
-		if (ule.anonymous && config.ignoreanonusers)
-			return;
-		}
-	else
-		if (senders[0] != config.uin) {
-			if (config.ignoreanonusers)
-				return;
-			ule.uin = senders[0];
-			ule.altnick = QString::number(senders[0]);
-			if (trayicon)
-				userlist.addUser("", "", ule.altnick, ule.altnick, "", ule.altnick, GG_STATUS_NOT_AVAIL,
-					false, false, true, "", "", true);
-			else
-				kadu->addUser("", "", ule.altnick, ule.altnick, "", ule.altnick, GG_STATUS_NOT_AVAIL,
-					"", "", true);
-			}
-	if (config.logmessages && senders[0] != config.uin)
+	UserListElement ule = userlist.byUinValue(senders[0]);
+
+	if (userlist.containsUin(senders[0]))
+		if (trayicon)
+			userlist.addUser("", "", ule.altnick, ule.altnick, "", ule.altnick, GG_STATUS_NOT_AVAIL,
+				false, false, true, "", "", true);
+		else
+			kadu->addUser("", "", ule.altnick, ule.altnick, "", ule.altnick, GG_STATUS_NOT_AVAIL,
+				"", "", true);
+
+	if (config.logmessages)
 		history.appendMessage(senders, senders[0], mesg, FALSE, time);
 
 	//script.eventMsg(senders[0],msgclass,(char*)msg);
@@ -321,15 +328,14 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 		return;
 		}
 	
-	playSound(parse(config.soundmsg, ule));
+	playSound(parse(config.soundmsg,ule));
 
-	if (senders[0] != config.uin)
-		pending.addMsg(senders, mesg, msgclass, time);
+	pending.addMsg(senders, mesg, msgclass, time);
 	
 	kdebug("eventRecvMsg(): Message allocated to slot %d\n", i);
 	kdebug("eventRecvMsg(): Got message from %d (%s) saying \"%s\"\n",
 			senders[0], (const char *)ule.altnick.local8Bit(), (const char *)mesg.local8Bit());
-											  
+
 	UserBox::all_refresh();
 	trayicon->changeIcon();
 

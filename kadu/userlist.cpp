@@ -127,7 +127,7 @@ UserListElement& UserList::byUin(uin_t uin)
 	// Kadu Panic :) What we should do here???
 };
 
-UserListElement& UserList::byNick(QString nickname)
+UserListElement& UserList::byNick(const QString& nickname)
 {
 	for(iterator i=begin(); i!=end(); i++)
 		if((*i).nickname==nickname)
@@ -136,13 +136,27 @@ UserListElement& UserList::byNick(QString nickname)
 	// Kadu Panic :) What we should do here???
 };
 
-UserListElement& UserList::byAltNick(QString altnick)
+UserListElement& UserList::byAltNick(const QString& altnick)
 {
 	for(iterator i=begin(); i!=end(); i++)
 		if((*i).altnick==altnick)
 			return (*i);
 	kdebug("UserList::byAltNick(): Panic! %s not exists\n",(const char*)altnick.local8Bit());
 	// Kadu Panic :) What we should do here???
+};
+
+//Zwraca elementy userlisty, jezeli nie mamy danego
+//uin na liscie, zwracany jest UserListElement tylko z uin i altnick == uin
+UserListElement UserList::byUinValue(uin_t uin)
+{
+	for(iterator i=begin(); i!=end(); i++)
+		if((*i).uin==uin)
+			return (*i);
+	UserListElement ule;
+	ule.uin=uin;
+	ule.altnick=QString::number(uin);
+	ule.anonymous=true;
+	return ule;
 };
 
 bool UserList::containsUin(uin_t uin) {
@@ -153,7 +167,7 @@ bool UserList::containsUin(uin_t uin) {
 	return false;
 }
 
-bool UserList::containsAltNick(const QString altnick) {
+bool UserList::containsAltNick(const QString &altnick) {
 	for (iterator i = begin(); i != end(); i++)
 		if ((*i).altnick == altnick)
 			return true;
@@ -161,11 +175,11 @@ bool UserList::containsAltNick(const QString altnick) {
 	return false;
 }
 
-void UserList::addUser(const QString FirstName,const QString LastName,
-	const QString NickName,const QString AltNick,
-	const QString Mobile,const QString Uin,const int Status,
+void UserList::addUser(const QString& FirstName,const QString& LastName,
+	const QString& NickName,const QString& AltNick,
+	const QString& Mobile,const QString& Uin,const int Status,
 	const bool Blocking, const bool Offline_to_user, const bool Notify,
-	const QString Group,const QString Description, const bool Anonymous)
+	const QString& Group,const QString& Description, const bool Anonymous)
 {
 	UserListElement e;
 	e.first_name = FirstName;
@@ -187,7 +201,7 @@ void UserList::addUser(const QString FirstName,const QString LastName,
 	emit modified();
 };
 
-void UserList::changeUserInfo(const QString OldAltNick,
+void UserList::changeUserInfo(const QString& OldAltNick,
 	const QString& FirstName, const QString& LastName,
 	const QString& NickName, const QString& AltNick,
 	const QString& Mobile, const QString &Uin, int Status,

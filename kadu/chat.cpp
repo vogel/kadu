@@ -436,37 +436,29 @@ void Chat::changeAppearance() {
 }
 
 void Chat::setTitle() {
-	QString name;
+
 	QString title;
-	int k;
-	UserListElement user;
 
 	if (uins.size() > 1) {
+		kdebug("Chat::setTitle(): uins.size() > 1\n");
 		if (config.conferenceprefix.isEmpty())
 			title = i18n("Conference with ");
 		else
 			title = config.conferenceprefix;
-		for (k = 0; k < uins.size(); k++) {
+		for (int k = 0; k < uins.size(); k++) {
 			if (k)
 				title.append(", ");
-			if (userlist.containsUin(uins[k]))
-				user = userlist.byUin(uins[k]);
-			else
-				user.uin = uins[k];
-			title.append(parse(config.conferencesyntax,user,false));
+			title.append(parse(config.conferencesyntax,userlist.byUinValue(uins[k]),false));
 		}
 		setIcon(*icons->loadIcon("online"));
 	}
 	else {
-		if (userlist.containsUin(uins[0]))
-			user = userlist.byUin(uins[0]);
-		else
-			user.uin = uins[0];
+		kdebug("Chat::setTitle()\n");
 		if (config.chatsyntax.isEmpty())
-			title = parse(i18n("Chat with ")+"%a (%s[: %d])",user,false);
+			title = parse(i18n("Chat with ")+"%a (%s[: %d])",userlist.byUinValue(uins[0]),false);
 		else
-			title = parse(config.chatsyntax,user,false);
-		setIcon(*icons->loadIcon(gg_icons[statusGGToStatusNr(user.status)]));
+			title = parse(config.chatsyntax,userlist.byUinValue(uins[0]),false);
+		setIcon(*icons->loadIcon(gg_icons[statusGGToStatusNr(userlist.byUinValue(uins[0]).status)]));
 	}
 
 	title.replace(QRegExp("\n"), " ");
@@ -973,7 +965,7 @@ void Chat::changeColor(void)
 		color_selector = new ColorSelector(this);
 		color_selector->alignTo(colorbtn);
 		color_selector->show();
-		connect(color_selector, SIGNAL(colorSelect(QColor)), this, SLOT(colorChanged(QColor)));
+		connect(color_selector, SIGNAL(colorSelect(const QColor&)), this, SLOT(colorChanged(const QColor&)));
 		connect(color_selector, SIGNAL(aboutToClose()), this, SLOT(aboutToClose()));
 		}
 	else
@@ -985,7 +977,7 @@ void Chat::aboutToClose() {
 	color_selector = NULL;
 }
 
-void Chat::colorChanged(QColor color) {
+void Chat::colorChanged(const QColor& color) {
 	color_selector = NULL;
 	QPixmap p(16, 16);
 	p.fill(color);

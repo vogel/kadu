@@ -70,17 +70,18 @@ class UserList : public QObject, public QValueList<UserListElement>
 		UserList();
 		~UserList();
 		UserListElement& byUin(uin_t uin);
-		UserListElement& byNick(QString nickname);
-		UserListElement& byAltNick(QString altnick);
+		UserListElement& byNick(const QString& nickname);
+		UserListElement& byAltNick(const QString& altnick);
+		UserListElement byUinValue(uin_t uin);
 		bool containsUin(uin_t uin);
-		bool containsAltNick(const QString altnick);
-		void addUser(const QString FirstName, const QString LastName,
-			const QString NickName, const QString AltNick,
-			const QString Mobile, const QString Uin,
+		bool containsAltNick(const QString& altnick);
+		void addUser(const QString& FirstName, const QString& LastName,
+			const QString& NickName, const QString& AltNick,
+			const QString& Mobile, const QString& Uin,
 			const int Status = GG_STATUS_NOT_AVAIL,
 			const bool Blocking = false, const bool Offline_to_user = false,
-			const bool Notify = true, const QString Group = "", const QString Description = "", const bool anonymous = false);
-		void changeUserInfo(const QString OldAltNick,
+			const bool Notify = true, const QString& Group = "", const QString& Description = "", const bool anonymous = false);
+		void changeUserInfo(const QString& OldAltNick,
 			const QString &FirstName, const QString &LastName,
 			const QString &NickName, const QString &AltNick,
 			const QString &Mobile, const QString &Uin, int Status,
