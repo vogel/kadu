@@ -985,7 +985,7 @@ Se lasciate lo spazio vuoto, sarà inserita stringa predefinita.</translation>
     </message>
     <message>
         <source>Incorrect password</source>
-        <translation>Passwoed errata</translation>
+        <translation>Password errata</translation>
     </message>
     <message>
         <source>Connection will be stoped
@@ -1003,7 +1003,7 @@ La vostra password è errata!!!</translation>
     </message>
     <message>
         <source>Please change your email in &quot;Change password/email&quot; window. Leave new password field blank.</source>
-        <translation type="unfinished"></translation>
+        <translation>Prego di cambiare il tuo e-mail in &quot;Cambia password/email&quot;. Lasciare campo nuova password vuoto.</translation>
     </message>
 </context>
 <context>
@@ -1539,7 +1539,7 @@ Controlli collegamenti  Internet.</translation>
     </message>
     <message>
         <source>&amp;Change password/email</source>
-        <translation>&amp;Cambi la password/email</translation>
+        <translation>&amp;Cambia la password/email</translation>
     </message>
 </context>
 <context>
@@ -1847,10 +1847,6 @@ Ora aggiunga i vostri amici al lista dei contatti.</translation>
     <message>
         <source>Select user first</source>
         <translation>Prona devi selezionare l&apos;utente</translation>
-    </message>
-    <message>
-        <source> </source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
