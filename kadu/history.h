@@ -90,7 +90,7 @@ class History : public QDialog {
 		void searchPrevBtnClicked();
 
 	protected:
-		void formatHistoryEntry(QString &text, const HistoryEntry &entry);
+		void formatHistoryEntry(QString &text, const HistoryEntry &entry, QStringList &paracolors);
 		void showHistoryEntries(int from, int count);
 		void setDateListViewText(QDateTime &datetime);
 		void searchHistory();

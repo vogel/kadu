@@ -1179,14 +1179,13 @@ void History::dateChanged(QListViewItem *item) {
 		}
 }
 
-void History::formatHistoryEntry(QString &text, const HistoryEntry &entry) {
+void History::formatHistoryEntry(QString &text, const HistoryEntry &entry, QStringList &paracolors) {
 	QString bgcolor, textcolor;
 	QString message;
 
 	message = entry.message;
 	message.replace(QRegExp("\n"), "<br/>");
 
-	text.append("<table width=\"100%\"><tr><td bgcolor=\"");
 	if (entry.type & (HISTORYMANAGER_ENTRY_CHATSEND | HISTORYMANAGER_ENTRY_MSGSEND
 		| HISTORYMANAGER_ENTRY_SMSSEND)) {
 		bgcolor = config_file.readColorEntry("Look","ChatMyBgColor").name();
@@ -1196,10 +1195,9 @@ void History::formatHistoryEntry(QString &text, const HistoryEntry &entry) {
 		bgcolor = config_file.readColorEntry("Look","ChatUsrBgColor").name();
 		textcolor = config_file.readColorEntry("Look","ChatUsrFontColor").name();
 		}
-	text.append(bgcolor);
-	text.append("\"><font color=\"");
-	text.append(textcolor);
-	text.append("\"><b>");
+//	text.append(QString("<table width=\"100%\"><tr><td bgcolor=\"") + bgcolor + "\"><font color=\"" + textcolor + "\"><b>");
+	text.append(QString("<p style=\"color:") + textcolor + "\"><b>");
+	paracolors.append(bgcolor);
 
 	if (entry.type == HISTORYMANAGER_ENTRY_SMSSEND)
 		text.append(entry.mobile + " SMS");
@@ -1249,21 +1247,26 @@ void History::formatHistoryEntry(QString &text, const HistoryEntry &entry) {
 		
 		text.append(doc.generateHtml());
 	}
-	text.append("</font></td></tr></table>");
+//	text.append("</font></td></tr></table>");
+	text.append("</p>");
 }
 
 void History::showHistoryEntries(int from, int count) {
 	kdebugf();
 	QString text;
+	QStringList paracolors;
+	unsigned int i;
 
 	bool noStatus = config_file.readBoolEntry("History", "DontShowStatusChanges");
 
 	QValueList<HistoryEntry> entries;
 	entries = history.getHistoryEntries(uins, from, count);
-	for (unsigned int i = 0; i < entries.count(); i++)
+	for (i = 0; i < entries.count(); i++)
 		if ( ! (noStatus && entries[i].type & HISTORYMANAGER_ENTRY_STATUS))
-			formatHistoryEntry(text, entries[i]);
+			formatHistoryEntry(text, entries[i], paracolors);
 	body->setText(text);
+	for (i = 0; i < paracolors.count(); i++)
+		body->setParagraphBackgroundColor(i, paracolors[i]);
 
 	//obej¶cie buga w qt - dziêki zeskrolowaniu okna animowane emotikony l±duj± tam gdzie trzeba
 	if (config_file.readBoolEntry("General", "ShowEmotHist"))
@@ -1330,7 +1333,7 @@ void History::setDateListViewText(QDateTime &datetime) {
 			actlvi = actlvi->nextSibling();
 		if (actlvi) {
 			uinslv->setCurrentItem(actlvi);
-			body->setSelection(0, 0, 1, 10);
+//			body->setSelection(0, 0, 1, 10);
 			}
 		}
 }
