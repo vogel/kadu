@@ -14,6 +14,8 @@
 #include <qmessagebox.h>
 #include <unistd.h>
 #include <qprocess.h>
+#include <qfileinfo.h>
+
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/un.h>
@@ -140,7 +142,7 @@ void dccSocketClass::watchDcc(int check) {
 			kdebug("dccSocketClass::watchDcc():  GG_EVENT_DCC_NEED_FILE_INFO! %d %d\n",
 				dccsock->uin, dccsock->peer_uin);
 			f = selectFile();
-			if (f == NULL) {
+			if (f == QString::null) {
 				kdebug("dccSocketClass::watchDcc(): Abort transfer\n");
 				setState(DCC_SOCKET_TRANSFER_ERROR);
 				return;
@@ -148,7 +150,7 @@ void dccSocketClass::watchDcc(int check) {
 			gg_dcc_fill_file_info(dccsock, f.local8Bit());
 			dialog = new DccGet(this, DCC_TYPE_SEND);
 			dialog->printFileInfo(dccsock);
-			break;	    
+			break;
 		case GG_EVENT_DCC_NEED_VOICE_ACK:
 			unlink("/home/chilek/.gg/kaduplayvoice");			
 			playprocess = new QProcess(QString("kaduplayvoice"));
@@ -208,7 +210,8 @@ void dccSocketClass::watchDcc(int check) {
 }
 
 void dccSocketClass::askAccept(void) {
-	QString str,f;
+	QString str, f;
+	QFileInfo fi;
 
 	kdebug("dccSocketClass::askAccept()\n");
 	str.append(i18n("User "));
@@ -222,8 +225,8 @@ void dccSocketClass::askAccept(void) {
 	str.append(fsize);
 	str.append(i18n(". Accept transfer?"));
 
-	switch (QMessageBox::information( 0, i18n("Incoming transfer"),str, i18n("Yes"), i18n("No"),
-		QString::null, 0, 1) ) {
+	switch (QMessageBox::information(0, i18n("Incoming transfer"), str, i18n("Yes"), i18n("No"),
+		QString::null, 0, 1)) {
 		case 0: // Yes?
 			kdebug("dccSocketClass::askAccept(): accepted\n");
 			f = QFileDialog::getSaveFileName((char *)dccsock->file_info.filename,
@@ -231,14 +234,49 @@ void dccSocketClass::askAccept(void) {
 			if (f.isEmpty()) {
 				kdebug("dccSocketClass::askAccept(): discarded\n");
 				setState(DCC_SOCKET_TRANSFER_DISCARDED);
-				break;
+				return;
 				}
 
-			kdebug("dccSocketClass::askAccept(): opening file %s\n", f.latin1());
+			fi.setFile(f);
+			if (fi.exists() && fi.size() > dccsock->file_info.size) {
+				switch (QMessageBox::information(0, i18n("save file"),
+					i18n("File exists."), i18n("Overwrite"), i18n("Resume"),
+					i18n("Cancel"), 0, 2)) {
+					case 0:
+						kdebug("dccSocketClass::askAccept(): truncating file %s\n", f.latin1());
 
-			if ((dccsock->file_fd = open(f.latin1(), O_WRONLY | O_CREAT, 0600)) == -1) {
-				QMessageBox::warning(kadu, i18n("Connect error"), i18n("Could not open file"));
-				setState(DCC_SOCKET_COULDNT_OPEN_FILE);
+						if ((dccsock->file_fd = open(f.latin1(), O_WRONLY | O_CREAT | O_TRUNC, 0600)) == -1) {
+							QMessageBox::warning(kadu, i18n("Connect error"), i18n("Could not open file"));
+							setState(DCC_SOCKET_COULDNT_OPEN_FILE);
+							return;
+							}
+						dccsock->offset = 0;
+						break;
+					case 1:
+						kdebug("dccSocketClass::askAccept(): appending to file %s\n", f.latin1());
+
+						if ((dccsock->file_fd = open(f.latin1(), O_WRONLY | O_APPEND, 0600)) == -1) {
+							QMessageBox::warning(kadu, i18n("Connect error"), i18n("Could not open file"));
+							setState(DCC_SOCKET_COULDNT_OPEN_FILE);
+							return;
+							}
+						dccsock->offset = fi.size();
+						break;
+					case 2:
+						kdebug("dccSocketClass::askAccept(): discarded\n");
+						setState(DCC_SOCKET_TRANSFER_DISCARDED);
+						return;
+					}
+				}
+			else {
+				kdebug("dccSocketClass::askAccept(): creating file %s\n", f.latin1());
+
+				if ((dccsock->file_fd = open(f.latin1(), O_WRONLY | O_CREAT, 0600)) == -1) {
+					QMessageBox::warning(kadu, i18n("Connect error"), i18n("Could not open file"));
+					setState(DCC_SOCKET_COULDNT_OPEN_FILE);
+					return;
+					}
+				dccsock->offset = 0;
 				}
 
 			dialog = new DccGet(this);
@@ -278,7 +316,6 @@ DccGet::DccGet(dccSocketClass *dccsocket, int type, QDialog *parent, const char 
 	vbox1->setMargin(5);
 	setWFlags(Qt::WDestructiveClose);
 	prevPercent = 0;
-	prevOffset = 0;
 	dccFinished = false;
 }
 
@@ -295,6 +332,8 @@ void DccGet::closeEvent(QCloseEvent *e) {
 }
 
 void DccGet::printFileInfo(struct gg_dcc *dccsock) {
+	long long int percent;
+ 	long double fpercent;
 
 	QLabel *l_sender = new QLabel(vbox1);
 
@@ -330,7 +369,16 @@ void DccGet::printFileInfo(struct gg_dcc *dccsock) {
 
 	time = new QTime();
 	time->start();
+
 	prevOffset = dccsock->offset;
+	fpercent = ((long double)dccsock->offset * 100.0) / (long double)dccsock->file_info.size;
+	percent = (long long int) fpercent;
+	if (percent > prevPercent) {
+		p_progress->setProgress(percent);
+		prevPercent = percent;
+		}
+	else
+		p_progress->setProgress(0);
 
 	vbox1->resize(vbox1->sizeHint());
 	resize(vbox1->sizeHint().width() + 15, vbox1->sizeHint().height() + 15);
