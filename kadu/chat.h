@@ -15,6 +15,7 @@
 
 #include "misc.h"
 #include "userbox.h"
+#include "emoticons.h"
 
 class Chat;
 
@@ -236,7 +237,7 @@ class Chat : public QWidget
 
 	protected:
 		virtual void closeEvent(QCloseEvent*);
-		QString convertCharacters(QString,bool me);
+		QString convertCharacters(QString text, const QColor &bgcolor, EmoticonsStyle style);
 		virtual void windowActivationChange(bool oldActive);
 		virtual void keyPressEvent(QKeyEvent* e);
 		virtual void mouseReleaseEvent(QMouseEvent *e);
@@ -255,7 +256,13 @@ class Chat : public QWidget
 		static void registerButton(const QString& name, QObject* receiver, const QString& slot);
 		static void unregisterButton(const QString& name);
 		QPushButton* button(const QString& name);
-		void formatMessage(ChatMessage &message);
+
+		void formatMessages(QValueList<ChatMessage *> &msgs);
+		void formatMessage(ChatMessage &msg,
+				QColor myBgColor=QColor(), QColor usrBgColor=QColor(),
+				QColor myFontColor=QColor(), QColor usrFontColor=QColor(),
+				EmoticonsStyle style=(EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle"));
+		
 		void checkPresence(UinsList, const QString&, time_t, QValueList<ChatMessage *> &messages);
 		void writeMessagesFromHistory(UinsList, time_t);
 		/**

@@ -17,6 +17,7 @@
 #include <qcursor.h>
 
 #include "emoticons.h"
+#include "chat.h"
 #include "debug.h"
 #include "config_file.h"
 #include "kadu-config.h"
@@ -50,7 +51,7 @@ QStringList EmoticonsManager::getSubDirs(const QString& path)
 	return subdirs;
 }
 
-const QStringList& EmoticonsManager::themes()
+const QStringList& EmoticonsManager::themes() const
 {
 	return ThemesList;
 }
@@ -185,12 +186,12 @@ bool EmoticonsManager::loadGGEmoticonTheme()
 	return something_loaded;
 }
 
-QString EmoticonsManager::themePath()
+QString EmoticonsManager::themePath() const
 {
 	return dataPath("kadu/themes/emoticons/"+config_file.readEntry("Chat","EmoticonsTheme"));
 }
 
-void EmoticonsManager::expandEmoticons(HtmlDocument& doc,const QColor& bgcolor)
+void EmoticonsManager::expandEmoticons(HtmlDocument& doc, const QColor& bgcolor, EmoticonsStyle style)
 {
 	kdebugf();
 
@@ -201,7 +202,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc,const QColor& bgcolor)
 	}
 	
 	// check in config if user wants animated emots
-	bool animated = (EmoticonsStyle) config_file.readNumEntry("Chat", "EmoticonsStyle") == EMOTS_ANIMATED;
+	bool animated = style == EMOTS_ANIMATED;
 
 	kdebugm(KDEBUG_INFO, "Expanding emoticons...\n");
 	// iterate through parsed html parts of message
@@ -272,22 +273,22 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc,const QColor& bgcolor)
 	kdebugf2();
 }
 
-int EmoticonsManager::selectorCount()
+int EmoticonsManager::selectorCount() const
 {
 	return Selector.count();
 }
 
-QString EmoticonsManager::selectorString(int emot_num)
+QString EmoticonsManager::selectorString(int emot_num) const
 {
 	return Selector[emot_num].alias;
 }
 
-QString EmoticonsManager::selectorAnimPath(int emot_num)
+QString EmoticonsManager::selectorAnimPath(int emot_num) const
 {
 	return themePath()+"/"+Selector[emot_num].anim;
 }
 
-QString EmoticonsManager::selectorStaticPath(int emot_num)
+QString EmoticonsManager::selectorStaticPath(int emot_num) const
 {
 	return themePath()+"/"+Selector[emot_num].stat;
 }

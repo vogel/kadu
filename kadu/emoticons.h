@@ -12,9 +12,17 @@
 #include <qmovie.h>
 #include <qmap.h>
 
-#include "chat.h"
+#include "misc.h"
 
+class Chat;
 class EmotsWalker;
+
+enum EmoticonsStyle
+{
+	EMOTS_NONE,
+	EMOTS_STATIC,
+	EMOTS_ANIMATED
+};
 
 /**
 	Menad¿er emotikonów
@@ -33,22 +41,23 @@ class EmoticonsManager
 		QValueList<EmoticonsListItem> Selector;
 		EmotsWalker *walker;
 
-		QStringList getSubDirs(const QString& path);
-		QString getQuoted(const QString& s, unsigned int& pos);
-		QString fixFileName(const QString& path,const QString& fn);
+		static QStringList getSubDirs(const QString& path);
+		static QString getQuoted(const QString& s, unsigned int& pos);
+		static QString fixFileName(const QString& path,const QString& fn);
 		bool loadGGEmoticonThemePart(QString subdir);
 		bool loadGGEmoticonTheme();
 	public:
 		EmoticonsManager();
 		~EmoticonsManager();
-		const QStringList& themes();
+		const QStringList& themes() const;
 		void setEmoticonsTheme(const QString& theme);
-		QString themePath();
-		void expandEmoticons(HtmlDocument& text,const QColor& bgcolor);
-		int selectorCount();
-		QString selectorString(int emot_num);
-		QString selectorAnimPath(int emot_num);
-		QString selectorStaticPath(int emot_num);
+		QString themePath() const;
+		void expandEmoticons(HtmlDocument& text, const QColor& bgcolor,
+			EmoticonsStyle style=(EmoticonsStyle) config_file.readNumEntry("Chat", "EmoticonsStyle"));
+		int selectorCount() const;
+		QString selectorString(int emot_num) const;
+		QString selectorAnimPath(int emot_num) const;
+		QString selectorStaticPath(int emot_num) const;
 };
 
 extern EmoticonsManager *emoticons;
@@ -168,12 +177,6 @@ class StaticStyleSheet : public QStyleSheet
 };
 
 
-enum EmoticonsStyle
-{
-	EMOTS_NONE,
-	EMOTS_STATIC,
-	EMOTS_ANIMATED
-};
 
 struct PrefixNode 
 {

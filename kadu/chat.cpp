@@ -980,7 +980,7 @@ void Chat::mouseReleaseEvent(QMouseEvent *e)
 }
 
 /* convert special characters into emoticons, HTML into plain text and so forth */
-QString Chat::convertCharacters(QString edit, bool me)
+QString Chat::convertCharacters(QString edit, const QColor &bgcolor, EmoticonsStyle style)
 {
 	// zmieniamy windowsowe \r\n na unixowe \n
 	edit.replace( QRegExp("\r\n"), "<br/>" );
@@ -992,16 +992,10 @@ QString Chat::convertCharacters(QString edit, bool me)
 	// detekcja adresow url
 	doc.convertUrlsToHtml();
 
-	QColor bgcolor;
-	if (me)
-		bgcolor=config_file.readColorEntry("Look","ChatMyBgColor");
-	else
-		bgcolor=config_file.readColorEntry("Look","ChatUsrBgColor");
-
-	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")!=EMOTS_NONE)
+	if (style!=EMOTS_NONE)
 	{
 		body->mimeSourceFactory()->addFilePath(emoticons->themePath());
-		emoticons->expandEmoticons(doc, bgcolor);
+		emoticons->expandEmoticons(doc, bgcolor, style);
 	}
 
 	GaduImagesManager::setBackgroundsForAnimatedImages(doc, bgcolor);
@@ -1049,18 +1043,45 @@ void Chat::userWhois()
 	kdebugf2();
 }
 
-void Chat::formatMessage(ChatMessage &msg)
+void Chat::formatMessages(QValueList<ChatMessage *> &msgs)
 {
-	QString formatString = "<p style=\"background-color: %1\"><img title=\"\" height=\"%6\" width=\"10000\" align=\"right\"><font color=\"%2\"><b>%3 :: %4</b><br/>%5</font></p>";
+	QColor myBgColor=config_file.readColorEntry("Look", "ChatMyBgColor");
+	QColor usrBgColor=config_file.readColorEntry("Look", "ChatUsrBgColor");
+	QColor myFontColor=config_file.readColorEntry("Look", "ChatMyFontColor");
+	QColor usrFontColor=config_file.readColorEntry("Look", "ChatUsrFontColor");
+	EmoticonsStyle style=(EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle");
+	for (QValueList<ChatMessage *>::iterator it=msgs.begin(); it!=msgs.end(); ++it)
+		formatMessage(**it, myBgColor, usrBgColor, myFontColor, usrFontColor, style);
+}
+
+void Chat::formatMessage(ChatMessage &msg, QColor myBgColor, QColor usrBgColor, QColor myFontColor, QColor usrFontColor, EmoticonsStyle style)
+{
+	const static QString formatString("<p style=\"background-color: %1\"><img title=\"\" height=\"%6\" width=\"10000\" align=\"right\"><font color=\"%2\"><b>%3 :: %4</b><br/>%5</font></p>");
 
 	if (msg.isMyMessage)
-		msg.backgroundColor=config_file.readColorEntry("Look","ChatMyBgColor");
+	{
+		if (myBgColor.isValid())
+			msg.backgroundColor=myBgColor;
+		else
+			msg.backgroundColor=config_file.readColorEntry("Look","ChatMyBgColor");
+
+		if (myFontColor.isValid())
+			msg.textColor=myFontColor;
+		else
+			msg.textColor=config_file.readColorEntry("Look","ChatMyFontColor");
+	}
 	else
-		msg.backgroundColor=config_file.readColorEntry("Look","ChatUsrBgColor");
-	if (msg.isMyMessage)
-		msg.textColor=config_file.readColorEntry("Look","ChatMyFontColor");
-	else
-		msg.textColor=config_file.readColorEntry("Look","ChatUsrFontColor");
+	{
+		if (usrBgColor.isValid())
+			msg.backgroundColor=usrBgColor;
+		else
+			msg.backgroundColor=config_file.readColorEntry("Look","ChatUsrBgColor");
+
+		if (usrFontColor.isValid())
+			msg.textColor=usrFontColor;
+		else
+			msg.textColor=config_file.readColorEntry("Look","ChatUsrFontColor");
+	}
 
 	QString date=printDateTime(msg.date);
 	if (!msg.sdate.isNull())
@@ -1074,7 +1095,7 @@ void Chat::formatMessage(ChatMessage &msg)
 			.arg(msg.textColor.name())
 			.arg(nick)
 			.arg(date)
-			.arg(convertCharacters(msg.unformattedMessage, msg.isMyMessage))
+			.arg(convertCharacters(msg.unformattedMessage, msg.backgroundColor, style))
 			.arg(ParagraphSeparator);
 
 	msg.needsToBeFormatted=false;
@@ -1156,12 +1177,13 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time)
 	end = count - 1;
 
 	from = count;
-	while (from >= 1 && entries.count() < config_file.readUnsignedNumEntry("History","ChatHistoryCitation"))
+	unsigned int chatHistoryQuotation=config_file.readUnsignedNumEntry("History", "ChatHistoryCitation");
+	while (from >= 1 && entries.count() < chatHistoryQuotation)
 	{
-		if (end < config_file.readUnsignedNumEntry("History", "ChatHistoryCitation"))
+		if (end < chatHistoryQuotation)
 			from = 0;
 		else
-			from = end - config_file.readUnsignedNumEntry("History","ChatHistoryCitation") + 1;
+			from = end - chatHistoryQuotation + 1;
 
 		entriestmp = history.getHistoryEntries(senders, from, end - from + 1, HISTORYMANAGER_ENTRY_CHATSEND
 			| HISTORYMANAGER_ENTRY_MSGSEND | HISTORYMANAGER_ENTRY_CHATRCV | HISTORYMANAGER_ENTRY_MSGRCV);
@@ -1175,8 +1197,8 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time)
 					|| (*it).type == HISTORYMANAGER_ENTRY_MSGRCV)
 				{
 					kdebugmf(KDEBUG_INFO, "%s %s\n",
-						(const char *)date.toString("dd.MM.yyyy hh:mm:ss").local8Bit(),
-						(const char *)(*it).sdate.toString("dd.MM.yyyy hh:mm:ss").local8Bit());
+						date.toString("dd.MM.yyyy hh:mm:ss").local8Bit().data(),
+						(*it).sdate.toString("dd.MM.yyyy hh:mm:ss").local8Bit().data());
 					if (date <= (*it).sdate)
 						it = entriestmp.remove(it);
 					else
@@ -1191,24 +1213,26 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time)
 		kdebugmf(KDEBUG_INFO, "entries = %d\n", entries.count());
 		end = from - 1;
 	}
-	if (entries.count() < config_file.readUnsignedNumEntry("History","ChatHistoryCitation"))
+	if (entries.count() < chatHistoryQuotation)
 		from = 0;
 	else
-		from = entries.count() - config_file.readUnsignedNumEntry("History","ChatHistoryCitation");
+		from = entries.count() - chatHistoryQuotation;
 
 	QValueList<ChatMessage *> messages;
 
+	int quotTime=config_file.readNumEntry("History","ChatHistoryQuotationTime");
+	QString myNick=config_file.readEntry("General","Nick");
 	for (unsigned int i = from; i < entries.count(); ++i)
-		if (entries[i].date.secsTo(QDateTime::currentDateTime()) <= -config_file.readNumEntry("History","ChatHistoryQuotationTime") * 3600)
+		if (entries[i].date.secsTo(QDateTime::currentDateTime()) <= -quotTime * 3600)
 		{
 			ChatMessage *msg;
 			if (entries[i].type == HISTORYMANAGER_ENTRY_MSGSEND	|| entries[i].type == HISTORYMANAGER_ENTRY_CHATSEND)
-				msg=new ChatMessage(config_file.readEntry("General","Nick"), entries[i].message, true, entries[i].date);
+				msg=new ChatMessage(myNick, entries[i].message, true, entries[i].date);
 			else
 				msg=new ChatMessage(entries[i].nick, entries[i].message, false, entries[i].date, entries[i].sdate);
-			formatMessage(*msg);
 			messages.append(msg);
 		}
+	formatMessages(messages);
 	if (!messages.empty())
 		scrollMessages(messages);
 	kdebugf2();
