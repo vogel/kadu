@@ -29,9 +29,9 @@ QString ggPath(const QString &subpath);
 
 //#define i18n(String) __c2q(gettext(String))
 
-QString cp2unicode(unsigned char *);
+QString cp2unicode(const unsigned char *);
 QCString unicode2cp(const QString &);
-QString latin2unicode(unsigned char *);
+QString latin2unicode(const unsigned char *);
 QCString unicode2latin(const QString &);
 QString unicode2std(const QString &);
 QString printDateTime(const QDateTime &datetime);

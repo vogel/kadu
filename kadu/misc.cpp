@@ -46,7 +46,7 @@ QString ggPath(const QString &subpath)
 	return path;
 };
 
-QString cp2unicode(unsigned char *buf)
+QString cp2unicode(const unsigned char *buf)
 {
 	if (buf)
 		return codec_cp1250->toUnicode((const char*)buf);
@@ -59,7 +59,7 @@ QCString unicode2cp(const QString &buf)
 	return codec_cp1250->fromUnicode(buf);
 }
 
-QString latin2unicode(unsigned char *buf)
+QString latin2unicode(const unsigned char *buf)
 {
 	if (buf)
 		return codec_latin2->toUnicode((const char*)buf);
