@@ -135,6 +135,7 @@ void Register::gotTokenReceived(struct gg_http *h) {
 		buf[i] = h->body[i];
 
 	tokenimage->setImage(buf);
+	status->setText(tr("token received"));
 	setEnabled(true);
 	kdebug("Register::gotTokenReceived(): finished\n");
 }
