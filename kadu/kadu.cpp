@@ -395,12 +395,12 @@ void sendUserlist() {
 void Kadu::removeUser(QString &username, bool permanently = false) {
 	int i = 0;
 
-	userbox->removeUser(username);	
-	userbox->refresh();
+	UserBox::all_removeUser(username);	
+	UserBox::all_refresh();
 	
-	UserListElement ule = userlist.byAltNick(username);
-	gg_remove_notify(&sess, ule.uin);
-    	userlist.removeUser(ule.uin);
+	UserListElement user = userlist.byAltNick(username);
+	gg_remove_notify(&sess, user.uin);
+    	userlist.removeUser(user.uin);
 
 	switch (QMessageBox::information(kadu, "Kadu", i18n("Save current userlist to file?"), i18n("Yes"), i18n("No"), QString::null, 0, 1) ) {
 		case 0: // Yes?
@@ -519,7 +519,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget (parent, name)
 
 	for (int i = 0; i < userlist.count(); i++)
 		userbox->addUin(userlist[i].uin);
-	userbox->refresh();
+	UserBox::all_refresh();
 	
 	/* start auto away. yes, even if it's disabled. this way enabling it will work at run-time */
 	autoaway = new QTimer(this);
@@ -666,7 +666,7 @@ void Kadu::addUser(const QString& FirstName, const QString& LastName,
 	userlist.writeToFile();
 
 	userbox->addUin(Uin.toInt());
-	userbox->refresh();
+	UserBox::all_refresh();
 
 	gg_add_notify(&sess, Uin.toInt());
 };
@@ -956,7 +956,7 @@ void Kadu::sendMessage(QListBoxItem *item) {
 				return;
 				}
 	if (stop) {
-		userbox->refresh();
+		UserBox::all_refresh();
 		return;
 		}
 
@@ -1363,17 +1363,17 @@ void Kadu::eventHandler(int state) {
 
 	if (e->type == GG_EVENT_NOTIFY_DESCR) {
 		eventGotUserlistWithDescription(e);
-		userbox->refresh();
+		UserBox::all_refresh();
 		}
 
 	if (e->type == GG_EVENT_NOTIFY) {
 		eventGotUserlist(e);
-		userbox->refresh();
+		UserBox::all_refresh();
 		}
 
 	if (e->type == GG_EVENT_STATUS) {
 		eventStatusChange(e);
-		userbox->refresh();
+		UserBox::all_refresh();
 		}
 
 	if (e->type == GG_EVENT_ACK) {
@@ -1417,7 +1417,7 @@ void Kadu::eventHandler(int state) {
 		if (sess.state == GG_STATE_IDLE && userlist_sent) {
 			char error[512];
 			socket_active = false;
-			userbox->changeAllToInactive();
+			UserBox::all_changeAllToInactive();
 			snprintf(error, sizeof(error), "KK Kadu::eventHandler(): Unscheduled connection termination\n");
 			fprintf(stderr, error);
 			disconnectNetwork();			
@@ -1513,7 +1513,7 @@ void Kadu::disconnectNetwork() {
 		i++;
 		}
 
-	userbox->refresh();
+	UserBox::all_refresh();
 
 	socket_active = false;
 	statuslabel->setPixmap(QPixmap((const char**)gg_inact_xpm));
@@ -1582,7 +1582,7 @@ void DockWidget::mousePressEvent(QMouseEvent * e) {
 					}
 			}
 		if (stop) {
-	    		kadu->userbox->refresh();
+	    		UserBox::all_refresh();
 			return;
 			}
 		}

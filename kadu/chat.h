@@ -25,6 +25,7 @@
 #include <qarray.h>
 #include "../libgadu/lib/libgadu.h"
 #include "misc.h"
+#include "userbox.h"
 
 class IconSelector;
 
@@ -42,6 +43,8 @@ class Chat : public QDialog {
 		QPushButton *autosend;
 		QAccel *acc;
 		QPushButton *sendbtn;
+		UserBox *userbox;
+
 		void pruneWindow(void);
 
 	public:

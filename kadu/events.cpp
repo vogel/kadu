@@ -115,7 +115,7 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 	fprintf(stderr, "KK eventRecvMsg(): Got message from %d (%s) saying \"%s\"\n",
 		senders[0], (const char *)nick.local8Bit(), msg);
 
-	kadu->userbox->refresh();
+	UserBox::all_refresh();
 	dw->setType((char **)gg_msg_xpm);
 
 	if (config.raise) {
@@ -292,7 +292,6 @@ void eventGotUserlist(struct gg_event * e) {
 		
 		}
 
-//	kadu->userbox->refresh();
 }
 
 void eventGotUserlistWithDescription(struct gg_event *e) {
@@ -343,7 +342,6 @@ void eventGotUserlistWithDescription(struct gg_event *e) {
 		n++;
 		}
 
-//	kadu->userbox->refresh();
 }
 
 

@@ -45,6 +45,7 @@ class UserBox : public QListBox , QToolTip
 		void changeAllToInactive();
 		// Functions below works on all created userboxes
 		static void all_refresh();
+		static void all_removeUin(uin_t uin);		
 		static void all_removeUser(QString& username);		
 		static void all_changeAllToInactive();		
 };

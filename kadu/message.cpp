@@ -107,7 +107,7 @@ rMessage::rMessage(const QString & nick, int i, QDialog* parent , const char *na
 
 	deletePendingMessage(i);
 
-	kadu->userbox->refresh();
+	UserBox::all_refresh();
 
 	QPushButton * btn;
 	btn = new QPushButton (this);

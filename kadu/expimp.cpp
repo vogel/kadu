@@ -122,7 +122,7 @@ void UserlistImport::updateUserlist() {
 	for (i = 0; i < userlist.count(); i++)
 		kadu->userbox->addUin(userlist[i].uin);
 		
-	kadu->userbox->refresh();
+	UserBox::all_refresh();
 
 	i = 0;
 	while (i < userlist.count()) {

@@ -258,6 +258,12 @@ void UserBox::all_refresh()
 		UserBoxes[i]->refresh();
 };
 
+void UserBox::all_removeUin(uin_t uin)
+{
+	for(int i=0; i<UserBoxes.size(); i++)
+		UserBoxes[i]->removeUin(uin);
+};
+
 void UserBox::all_removeUser(QString& username)
 {
 	for(int i=0; i<UserBoxes.size(); i++)

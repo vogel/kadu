@@ -188,7 +188,7 @@ void UserInfo::writeUserlist() {
 				grouplist[grouplist.size()-1].name = strdup(userlist[this_index].group);
 				}
 
-			kadu->userbox->refresh();			
+			UserBox::all_refresh();			
 			break;
 		case 1:
 			return;	

@@ -52,7 +52,15 @@ Chat::Chat(UinsList uins, QDialog *parent) : QDialog (parent), uins(uins) {
 	setTitle();
 
 	body = new KTextBrowser(this);
-
+	if (uins.count() > 1) {
+		userbox = new UserBox(this);
+		for (i = 0; i < uins.count(); i++)
+			userbox->addUin(uins[i]);
+		userbox->refresh();
+		}
+	else
+		userbox = NULL;
+		
 	edit = new CustomInput(this);
 	edit->setGeometry(5,215, 390, 150);
 	edit->setWordWrap(QMultiLineEdit::WidgetWidth);
@@ -115,7 +123,11 @@ Chat::Chat(UinsList uins, QDialog *parent) : QDialog (parent), uins(uins) {
 	connect(whois, SIGNAL(clicked()), this, SLOT(userWhois()));
 
 	QGridLayout *grid = new QGridLayout (this, 5, 4, 3, 3);
-	grid->addMultiCellWidget(body, 0, 0, 0, 3);
+	QHBoxLayout *subgrid = new QHBoxLayout(grid);
+	subgrid->addWidget(body, 2);
+	if (userbox)
+		subgrid->addWidget(userbox, 1);
+	grid->addMultiCellLayout(subgrid, 0, 0, 0, 3);
 	grid->addWidget(buttontray, 2,3,Qt::AlignRight);
 	grid->addMultiCellWidget(edt, 2, 2, 0, 2, Qt::AlignLeft);
 	grid->addMultiCellWidget(edit, 3, 3, 0, 3);
@@ -157,6 +169,9 @@ Chat::~Chat() {
 			}
 		acks.resize(acks.size() - 1);
 		}
+	if (userbox)
+		delete userbox;
+		
 	fprintf(stderr, "KK Chat::~Chat: chat destroyed: index %d\n", index);
 }
 
