@@ -1391,7 +1391,7 @@ void Kadu::sendMessage(QListBoxItem *item) {
 	bool msgsFromHist = false;
 
 	uins = userbox->getSelectedUins();
-	uin = userlist.byAltNick(userbox->getSelectedAltNicks().first()).uin;
+	uin = userlist.byAltNick(item->text()).uin;
 
 	if (!uin) {
 		sendSmsToUser();
