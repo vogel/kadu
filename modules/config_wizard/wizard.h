@@ -56,10 +56,10 @@ class Wizard : public QWizard
 		QLabel *preview, *preview2, *preview4, *iconPreview, *iconPreview2, *iconPreview3, *iconPreview4, *moduleInfo;
 		QString customHint, customPanel;
 		KaduTextBrowser *infoPreview;
+		QPushButton *registerAccount;
 
 		/* zapisuj± konfiguracjê */
 		void tryImport();
-		void setGaduAccount();
 		void setChatOptions();
 		void setSoundOptions();
 		void setGeneralOptions();
@@ -75,6 +75,7 @@ class Wizard : public QWizard
 
 	protected slots:
 		void setLanguage(int);
+		void setGaduAccount();
 		void registeredAccount(bool, UinType);
 		void previewHintsTheme(int);
 		void previewHintsType(int);

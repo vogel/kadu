@@ -92,7 +92,7 @@ QString informationPanelSyntax[]=
 		"<td widht=\"155px\" align=\"left\"><font size=\"-1\" color=red><i>You are not on the list%o</i></font></td></tr></table>]"
 		"</td></tr></table></body>",
 
-	"<body background=\"#4f4f4f\"><table width=\"234\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td align=\"right\">"
+	"<body bgcolor=\"#4f4f4f\"><table width=\"234\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td align=\"right\">"
 		"[<font color=\"green\">]"
 		"[UIN :: %u][<font>]</td></tr>"
 		"[<tr><td align=\"right\"><font color=\"green\">MAIL :: <a href=\"mailto:%e\">%e</a><font></td></tr>]"

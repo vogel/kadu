@@ -30,6 +30,7 @@ unsigned int hintColorCount=sizeof(hintColors)/sizeof(hintColors[0]);
 unsigned int kaduColorCount=sizeof(kaduColors)/sizeof(kaduColors[0]);
 QString currentColors[8];	//tu przechowujemy aktualny zestaw kolorow
 QString currentHints[13][2]; //a tu aktualne kolorki hintow
+bool registered=false;	//potrzebne przy blokowaniu/odblokowywaniu przyciska Dalej
 
 extern "C" int config_wizard_init()
 {
@@ -185,12 +186,15 @@ void Wizard::nextClicked()
 			QWizard::showPage(generalOptionsPage);
 	}
 	else if (currentPage()==ggCurrentNumberPage && rb_dontHaveNumber->isChecked())
+	{	
 		QWizard::showPage(ggNewNumberPage);	
+		if (!registered) nextButton()->setEnabled(false);
+	}
 	else if (currentPage()==ggNewNumberPage && rb_haveNumber->isChecked())
 		QWizard::showPage(generalOptionsPage);
 	
-	if (currentPage()==generalOptionsPage && gadu->status().isOffline())		//jesli przeszedl jedno pole dalej niz konf. konta i nie polaczony
-		setGaduAccount();	//to zapisuje ustawienia konta
+	//if (currentPage()==generalOptionsPage && gadu->status().isOffline())		//jesli przeszedl jedno pole dalej niz konf. konta i nie polaczony
+	//	setGaduAccount();	//to zapisuje ustawienia konta
 	kdebugf2();
 }
 
@@ -266,6 +270,8 @@ void Wizard::connected()
 void Wizard::setGaduAccount()
 {
 	kdebugf();
+	//registerAccount->setEnabled(false);	//blokuje przycisk Register
+	//disconnect(registerAccount, SIGNAL(clicked()), this, SLOT(setGaduAccount()));
 	if (rb_haveNumber->isChecked())
 	{
 		config_file.writeEntry("General", "UIN", l_ggNumber->text());
@@ -287,7 +293,10 @@ void Wizard::setGaduAccount()
 			isOk=false;
 		}
 		if (isOk)
+		{	
 			gadu->registerAccount(l_email->text(), l_ggNewPasssword->text());
+			registerAccount->setEnabled(false);
+		}
 		connect(gadu, SIGNAL(registered(bool, UinType)), this, SLOT(registeredAccount(bool, UinType)));
 	}
 	kdebugf2();
@@ -305,10 +314,15 @@ void Wizard::registeredAccount(bool ok, UinType uin)
 		config_file.writeEntry("General", "Password", pwHash(l_ggNewPasssword->text()));
 		gadu->status().setOnline();	//jak zarejestrowal to od razu sie laczy
 		MessageBox::msg(tr("Registration was successful."));
+		registered = true;
 	}
 	else
+	{
 		MessageBox::wrn(tr("An error has occured while registration. Please try again later."));
+		registerAccount->setEnabled(true);
+	}
 	disconnect(gadu, SIGNAL(registered(bool, UinType)), this, SLOT(registeredAccount(bool, UinType)));
+	nextButton()->setEnabled(true); //odblokowuje Next >
 	kdebugf2();
 }
 
@@ -429,7 +443,10 @@ void Wizard::createGGNewNumberPage()
 	l_ggNewPassswordRetyped->setEchoMode(QLineEdit::Password);
 	new QLabel(tr("Your e-mail address"), grp_dontHaveNumber);
 	l_email=new QLineEdit(grp_dontHaveNumber);
-
+	
+	registerAccount = new QPushButton(tr("Register"), ggNewNumberPage);
+	connect(registerAccount, SIGNAL(clicked()), this, SLOT(setGaduAccount()));
+	
 	addPage(ggNewNumberPage, tr("Gadu-gadu account"));
 	kdebugf2();
 }
@@ -551,6 +568,7 @@ void Wizard::createSoundOptionsPage()
 	
 	cb_soundModule = new QComboBox(soundModuleOptions);
 	cb_soundModule->insertItem(tr("None"));
+	cb_soundModule->insertItem("alsa_sound");
 	cb_soundModule->insertItem("ao_sound");
 	cb_soundModule->insertItem("arts_sound");
 	cb_soundModule->insertItem("dsp_sound");
@@ -570,40 +588,46 @@ void Wizard::createSoundOptionsPage()
 	moduleInfo->setFixedWidth(300);
 	moduleInfo->setAutoResize(true);
 
-	if (modules_manager->moduleIsLoaded("ao_sound"))
-	{
+	if (modules_manager->moduleIsLoaded("alsa_sound"))
+	{	
 		cb_soundModule->setCurrentItem(1);
+		moduleInfo->setText(tr("This module play sounds using ALSA - Advanced Linux Sound Architecture driver."
+								"This is third-party module not supported by Kadu Team."));
+	}
+	else if (modules_manager->moduleIsLoaded("ao_sound"))
+	{
+		cb_soundModule->setCurrentItem(2);
 		moduleInfo->setText(tr("This module uses libao to produce sounds. "
 								"This is third-party module not supported by Kadu Team."));
 	}
 	else if (modules_manager->moduleIsLoaded("arts_sound"))
 	{
-		cb_soundModule->setCurrentItem(2);
+		cb_soundModule->setCurrentItem(3);
 		moduleInfo->setText(tr("This module uses KDE's aRts daemon which mixes "
 								"multiple digital sources at real time.<br> When your "
 								"soundcard doesn't handle that, this module is for you."));
 	}
 	else if (modules_manager->moduleIsLoaded("dsp_sound")) 
 	{
-		cb_soundModule->setCurrentItem(3);
+		cb_soundModule->setCurrentItem(4);
 		moduleInfo->setText(tr("This module uses OSS kernel module to produce sounds."));
 	}
 	else if (modules_manager->moduleIsLoaded("esd_sound")) 
 	{
-		cb_soundModule->setCurrentItem(4);
+		cb_soundModule->setCurrentItem(5);
 		moduleInfo->setText(tr("This module uses GNOME's Enlightened Sound Daemon "
 							"which mixes multiple digital sources at real time.<br> "
 							"When your soundcard doesn't handle that, this module is for you."));
 	}
 	else if (modules_manager->moduleIsLoaded("ext_sound")) 
 	{
-		cb_soundModule->setCurrentItem(5);
+		cb_soundModule->setCurrentItem(6);
 		moduleInfo->setText(tr("This module uses external application to produce sounds. "
 								"You must specify path to external program in configuration."));
 	}
 	else if (modules_manager->moduleIsLoaded("nas_sound")) 
 	{
-		cb_soundModule->setCurrentItem(6);
+		cb_soundModule->setCurrentItem(7);
 		moduleInfo->setText(tr("This module uses Network Audio System to produce sounds. "
 								"Use it when you use NAS sound system."));
 	}
@@ -880,7 +904,7 @@ void Wizard::createInfoPanelPage()
 	infoPreview->setFrameStyle(QFrame::Box | QFrame::Plain);
     infoPreview->setLineWidth(1);
 	infoPreview->setAlignment(Qt::AlignVCenter | Qt::WordBreak | Qt::DontClip);
-	infoPreview->setMaximumWidth(230);	
+	infoPreview->setMaximumWidth(240);	
 	
 	if (c_showScrolls->isChecked())
 		infoPreview->setVScrollBarMode(QScrollView::AlwaysOn); //zeby bylo je widac nawet przy krotkich panelach
@@ -1009,7 +1033,8 @@ void Wizard::setSoundOptions()
 	config_file.writeEntry("Sounds", "PlaySoundChat", c_playWhilstChatting->isChecked());
 	config_file.writeEntry("Sounds", "PlaySoundChatInvisible", c_playWhenInvisible->isChecked());
 	
-	if (modules_manager->moduleIsLoaded("ao_sound") && (cb_soundModule->currentText() != "ao_sound")) modules_manager->deactivateModule("ao_sound", false);
+	if (modules_manager->moduleIsLoaded("alsa_sound") && (cb_soundModule->currentText() != "alsa_sound")) modules_manager->deactivateModule("alsa_sound", false);
+	else if (modules_manager->moduleIsLoaded("ao_sound") && (cb_soundModule->currentText() != "ao_sound")) modules_manager->deactivateModule("ao_sound", false);
 	else if (modules_manager->moduleIsLoaded("arts_sound") && (cb_soundModule->currentText() != "arts_sound")) modules_manager->deactivateModule("arts_sound", false);
 	else if (modules_manager->moduleIsLoaded("dsp_sound") && (cb_soundModule->currentText() != "dsp_sound")) modules_manager->deactivateModule("dsp_sound", false);
 	else if (modules_manager->moduleIsLoaded("esd_sound") && (cb_soundModule->currentText() != "esd_sound")) modules_manager->deactivateModule("esd_sound", false);
@@ -1277,12 +1302,20 @@ void Wizard::setColorsAndIcons()
 **/
 void Wizard::previewPanelTheme(int panelThemeID)
 {
-	infoPreview->clearParagraphBackground(0);
+	kdebugf();
+	QString panelLook;
 	UserListElement el;
-	if (panelThemeID==int(informationPanelCount))
-			infoPreview->setText(parse(toDisplay(customPanel), el));
+	
+	if (panelThemeID == int(informationPanelCount))
+		panelLook = customPanel;
 	else 
-		infoPreview->setText(parse(toDisplay(informationPanelSyntax[cb_panelTheme->currentItem()]), el));
+		panelLook = informationPanelSyntax[cb_panelTheme->currentItem()];
+
+	if (panelLook.contains("background=", false) == 0)	//to nam zapewnia odswierzenie tla jesli wczesniej byl obrazek
+		infoPreview->setText("<body bgcolor=\""+config_file.readEntry("Look", "InfoPanelBgColor")+"\"></body>");	
+		
+	infoPreview->setText(parse(toDisplay(panelLook), el));
+	kdebugf2();
 }
 
 /**
@@ -1371,7 +1404,10 @@ QString Wizard::toSave(QString s)
 void Wizard::setSoundModule(int comboPos)
 {	
 	QString moduleName = cb_soundModule->text(comboPos);
-	if (moduleName == "arts_sound")
+	if (moduleName == "alsa_sound")
+		moduleInfo->setText(tr("This module play sounds using ALSA - Advanced Linux Sound Architecture driver."
+								"This is third-party module not supported by Kadu Team."));
+	else if (moduleName == "arts_sound")
 		moduleInfo->setText(tr("This module uses KDE's aRts daemon which mixes multiple "
 							"digital sources at real time.<br> When your soundcard "
 							"doesn't handle that, this module is for you."));
