@@ -91,6 +91,11 @@ UserList::~UserList()
 		konieczne wiêc zakomentowa³em.
 		kdebug("UserList::~UserList(): dnslookups.count() = %d\n", dnslookups.count());
 	*/
+	/* chilek: Mysle, ze nie jest to takie mocno ciekawe, zwazywszy na to, ze pare linii
+		wyzej mamy w konstruktorze dnslookups ustawiony na autoDelete ;)
+		Po prostu tu w destruktorze klasy UserList pewnie juz obiekt dnslookups zostal
+		zniszczony i stad problem z wyswietleniem pewnych jego atrybutow.
+	*/
 }
 
 void UserList::addDnsLookup(uin_t uin, const QHostAddress &ip) {
