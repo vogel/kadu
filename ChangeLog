@@ -49,6 +49,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   register i unregister potrafia zmodyfikowac juz istniejacy toolbar (adrian)
 * poprawki modulu sound zwiazane z rejestrowaniem sie w pasku
   narzedziowym i wyrejestrowaniem sie z paska narzedziowego oraz menu (adrian)
+* zaaplikowany patch Vogel-a wymieniajacy brzydki statusbar
+  na ladny statusbutton i usuwajacy troche zbednych komponentow (adrian)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

@@ -62,7 +62,7 @@ void KaduListBoxPixmap::paint(QPainter *painter) {
 					painter->setPen(pen);
 					}
 		}
-	
+
 	int itemHeight = height(listBox());
 	int yPos;
 
@@ -136,10 +136,10 @@ UserBoxMenu *UserBox::userboxmenu = NULL;
 UserBox::UserBox(QWidget* parent,const char* name,WFlags f)
 	: QListBox(parent,name),QToolTip(viewport())
 
-{	
+{
 	if (!userboxmenu)
 	    userboxmenu= new UserBoxMenu(this);
-	
+
 	UserBoxes.append(this);
 	setSelectionMode(QListBox::Extended);
 }
@@ -189,7 +189,7 @@ void UserBox::maybeTip(const QPoint &c)
 				s = tr("<nobr><I>Available <B>(d.)</B></I></nobr>");
 				break;
 			case GG_STATUS_BLOCKED:
-				s = tr("<nobr><I>Blocking</I></nobr>");				
+				s = tr("<nobr><I>Blocking</I></nobr>");
 				break;
 			default:
 				s = tr("<nobr><I>Unknown status</I></nobr>");
@@ -208,7 +208,7 @@ void UserBox::maybeTip(const QPoint &c)
 	};
 }
 
-void UserBox::mousePressEvent(QMouseEvent *e) {	
+void UserBox::mousePressEvent(QMouseEvent *e) {
 	if (e->button() != RightButton)
 		QListBox::mousePressEvent(e);
 	else {
@@ -283,9 +283,9 @@ void UserBox::refresh()
 {
 	int i;
 	KaduListBoxPixmap *lbp;
-	
+
 	kdebug("UserBox::refresh()\n");
-	
+
 	this->setPaletteBackgroundColor(config_file.readColorEntry("Look","UserboxBgColor"));
 	this->setPaletteForegroundColor(config_file.readColorEntry("Look","UserboxFgColor"));
 	this->QListBox::setFont(config_file.readFontEntry("Look","UserboxFont"));
@@ -379,7 +379,7 @@ void UserBox::refresh()
 //				insertItem(*icons->loadIcon("online"), user.altnick);
 			insertItem(lbp);
 		};
-	};	
+	};
 	// Dodajemy niewidocznych
 	for (i = 0; i < i_users.count(); i++) {
 		UserListElement &user = userlist.byAltNick(i_users[i]);
@@ -407,7 +407,7 @@ void UserBox::refresh()
 				}
 			lbp = new KaduListBoxPixmap(pix, user.altnick, user.description, 0);
 			insertItem(lbp);
-//			insertItem(*pix, user.altnick);			
+//			insertItem(*pix, user.altnick);
 			}
 		}
 	// Dodajemy nieaktywnych
@@ -416,7 +416,7 @@ void UserBox::refresh()
 	{
 		UserListElement &user = userlist.byAltNick(n_users[i]);
 		bool has_mobile = user.mobile.length();
-		if (pending.pendingMsgs(user.uin)) {		
+		if (pending.pendingMsgs(user.uin)) {
 			lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Message"), user.altnick, user.description, 0);
 			insertItem(lbp);
 //	    		insertItem(*icons->loadIcon("message"), user.altnick);
@@ -435,7 +435,7 @@ void UserBox::refresh()
 					if (has_mobile)
 						pix = icons_manager.loadIcon("OfflineWithMobile");
 					else
-		    				pix = icons_manager.loadIcon("Offline");			
+		    				pix = icons_manager.loadIcon("Offline");
 		    			break;
 				};
 			if (!pix.isNull())
@@ -499,7 +499,7 @@ void UserBox::changeAllToInactive()
 };
 
 void UserBox::showHideInactive()
-{	
+{
 	config_file.writeEntry("General","ShowHideInactive",!config_file.readBoolEntry("General","ShowHideInactive"));
 	all_refresh();
 }
@@ -562,13 +562,13 @@ void UserBox::all_removeUser(QString &altnick)
 void UserBox::all_changeAllToInactive()
 {
 	for(int i=0; i<UserBoxes.size(); i++)
-		UserBoxes[i]->changeAllToInactive();	
+		UserBoxes[i]->changeAllToInactive();
 };
 
 void UserBox::all_renameUser(const QString &oldaltnick, const QString &newaltnick)
 {
 	for(int i = 0; i < UserBoxes.size(); i++)
-		UserBoxes[i]->renameUser(oldaltnick, newaltnick);	
+		UserBoxes[i]->renameUser(oldaltnick, newaltnick);
 };
 
 void UserBox::initModule()
@@ -576,8 +576,8 @@ void UserBox::initModule()
 
 	QT_TRANSLATE_NOOP("@default", "General");
 	QT_TRANSLATE_NOOP("@default", "Show Inactive users");
-	
-	
+
+
 	ConfigDialog::addTab("General");
 	ConfigDialog::addCheckBox("General", "General", "Show Inactive users", "ShowHideInactive", true);
 
@@ -592,21 +592,21 @@ void UserBox::initModule()
 	config_file.addVariable("Look", "UserboxFont", def_font0);
 	config_file.addVariable("Look", "UserboxDescFont", def_font0);
 //
-	
+
 	QT_TRANSLATE_NOOP("@default", "Look");
 	QT_TRANSLATE_NOOP("@default", "Userbox properties");
 	QT_TRANSLATE_NOOP("@default", "Preview userbox");
 	QT_TRANSLATE_NOOP("@default", "Preview desc.");
 	QT_TRANSLATE_NOOP("@default", "Font");
 	QT_TRANSLATE_NOOP("@default", "Font size");
-	QT_TRANSLATE_NOOP("@default", "Other");	
-	QT_TRANSLATE_NOOP("@default", "Show info-panel");	
-	QT_TRANSLATE_NOOP("@default", "Show description in userbox");	
-	QT_TRANSLATE_NOOP("@default", "Show avaliable in bold");	
-	QT_TRANSLATE_NOOP("@default", "Display group tabs");	
-	QT_TRANSLATE_NOOP("@default", "Multicolumn userbox");	
-	
-	
+	QT_TRANSLATE_NOOP("@default", "Other");
+	QT_TRANSLATE_NOOP("@default", "Show info-panel");
+	QT_TRANSLATE_NOOP("@default", "Show description in userbox");
+	QT_TRANSLATE_NOOP("@default", "Show avaliable in bold");
+	QT_TRANSLATE_NOOP("@default", "Display group tabs");
+	QT_TRANSLATE_NOOP("@default", "Multicolumn userbox");
+
+
 	ConfigDialog::addTab("Look");
 	ConfigDialog::addVGroupBox("Look","Look","Userbox properties");
 	ConfigDialog::addGrid("Look", "Userbox properties", "previewgrid", 2);
@@ -622,15 +622,16 @@ void UserBox::initModule()
 	ConfigDialog::addComboBox("Look", "font&size", "Font");
 	ConfigDialog::addComboBox("Look", "font&size", "Font size");
 
-	
+
 	ConfigDialog::addVGroupBox("Look", "Look", "Other");
 	ConfigDialog::addGrid("Look", "Other", "grid", 2);
 	ConfigDialog::addCheckBox("Look", "grid", "Show info-panel", "ShowInfoPanel", true);
+	ConfigDialog::addCheckBox("Look", "grid", "Show status button", "ShowStatusButton", true);
 	ConfigDialog::addCheckBox("Look", "grid", "Display group tabs", "DisplayGroupTabs", true);
 	ConfigDialog::addCheckBox("Look", "grid", "Multicolumn userbox", "MultiColumnUserbox", true);
 	ConfigDialog::addCheckBox("Look", "grid", "Show description in userbox", "ShowDesc", true);
 	ConfigDialog::addCheckBox("Look", "grid", "Show avaliable in bold", "ShowBold", true);
-	
+
 	UserBoxSlots *userboxslots= new UserBoxSlots();
 	ConfigDialog::registerSlotOnCreate(userboxslots, SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnDestroy(userboxslots, SLOT(onDestroyConfigDialog()));
@@ -663,7 +664,7 @@ int UserBoxMenu::getItem(const QString &caption)
 	{
 		return idAt(i);
 	}
-	return -1;	
+	return -1;
 }
 
 void UserBoxMenu::restoreLook()
@@ -681,7 +682,7 @@ void UserBoxMenu::show(QListBoxItem *item)
 {
 	if (item == NULL)
 	    return;
-	    
+
 	emit popup();
 	exec(QCursor::pos());
 
@@ -712,7 +713,7 @@ void UserBoxSlots::onCreateConfigDialog()
 
 	QHGroupBox *hgb_0 = ConfigDialog::getHGroupBox("Look", "Preview userbox");
 	hgb_0->setAlignment(Qt::AlignCenter);
-	
+
 	QLabel *preview= ConfigDialog::getLabel("Look", "<b>Text</b> preview", "userbox");
 	preview->setFont(QFont(config_file.readFontEntry("Look","UserboxFont")));
 	preview->setPaletteForegroundColor(vl_userboxcolor[2]);
@@ -732,7 +733,7 @@ void UserBoxSlots::onCreateConfigDialog()
 	vl_userboxfont.clear();
 	vl_userboxfont.append(config_file.readFontEntry("Look", "UserboxFont"));
 	vl_userboxfont.append(config_file.readFontEntry("Look", "UserboxDescFont"));
-	
+
 	QHBox *h_fontsize= ConfigDialog::getHBox("Look", "font&size");
 	h_fontsize->hide();
 
@@ -741,16 +742,16 @@ void UserBoxSlots::onCreateConfigDialog()
 
 	QFontDatabase fdb;
 	QValueList<int> vl;
-	
+
 	vl = fdb.pointSizes(vl_userboxfont[0].family(),"Normal");
 	for (QValueList<int>::Iterator points = vl.begin(); points != vl.end(); ++points)
 		cb_userboxfontsize->insertItem(QString::number(*points));
-	
+
 	cb_userboxfontsize->setCurrentText(QString::number(vl_userboxfont[0].pointSize()));
 	cb_userboxfont->insertStringList(fdb.families());
 	cb_userboxfont->setCurrentText(vl_userboxfont[0].family());
-	
-	
+
+
 	connect(cb_userboxfont, SIGNAL(activated(int)), this, SLOT(chooseUserBoxFont(int)));
 	connect(cb_userboxfontsize, SIGNAL(activated(int)), this, SLOT(chooseUserBoxFontSize(int)));
 }
@@ -803,7 +804,7 @@ void UserBoxSlots::chooseUserBoxFont(int nr)
 	QComboBox *cb_userboxfont= ConfigDialog::getComboBox("Look", "Font");
 	QComboBox *cb_userboxfontsize= ConfigDialog::getComboBox("Look", "Font size");
 	QComboBox *cb_userboxselect= ConfigDialog::getComboBox("Look", "","combobox0");
-	
+
 	vl = fdb.pointSizes(cb_userboxfont->text(nr),"Normal");
 	cb_userboxfontsize->clear();
 	for (QValueList<int>::Iterator points = vl.begin(); points != vl.end(); ++points)
@@ -812,10 +813,10 @@ void UserBoxSlots::chooseUserBoxFont(int nr)
 		if (*points == vl_userboxfont[cb_userboxselect->currentItem()-2].pointSize())
 		cb_userboxfontsize->setCurrentItem(cb_userboxfontsize->count()-1);
 	}
-	
+
 	if (cb_userboxfontsize->count() > 0) {
-	
-		vl_userboxfont[cb_userboxselect->currentItem()-2] = 
+
+		vl_userboxfont[cb_userboxselect->currentItem()-2] =
 		    QFont(cb_userboxfont->text(nr), cb_userboxfontsize->currentText().toInt());
 					     }
 	QLabel *preview= ConfigDialog::getLabel("Look", "<b>Text</b> preview", "userbox");
@@ -830,8 +831,8 @@ void UserBoxSlots::chooseUserBoxFontSize(int nr)
 	QComboBox *cb_userboxfontsize= ConfigDialog::getComboBox("Look", "Font size");
 	QComboBox *cb_userboxfont= ConfigDialog::getComboBox("Look", "Font");
 	QComboBox *cb_userboxselect= ConfigDialog::getComboBox("Look", "","combobox0");
-	
-	vl_userboxfont[cb_userboxselect->currentItem()-2]= 
+
+	vl_userboxfont[cb_userboxselect->currentItem()-2]=
 	    QFont(cb_userboxfont->currentText(), cb_userboxfontsize->currentText().toInt());
 
 	QLabel *preview= ConfigDialog::getLabel("Look", "<b>Text</b> preview", "userbox");
@@ -860,7 +861,7 @@ void UserBoxSlots::chooseColorGet(const QColor& color)
 	kdebug("UserBoxSlots::chooseColorGet()\n");
 	QLineEdit *l_color= ConfigDialog::getLineEdit("Look", "", "line0");
 	QComboBox *cb_userboxselect= ConfigDialog::getComboBox("Look", "","combobox0");
-	
+
 	l_color->setText(color.name());
 	vl_userboxcolor[cb_userboxselect->currentItem()]=color;
 	QLabel *preview= ConfigDialog::getLabel("Look", "<b>Text</b> preview", "userbox");

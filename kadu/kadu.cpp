@@ -77,8 +77,7 @@ QTime closestatusppmtime;
 QTimer* blinktimer;
 QPopupMenu* statusppm;
 QPopupMenu* dockppm;
-QLabel* statuslabel;
-QLabel* statuslabeltxt;
+QPushButton* statusbutton;
 
 UpdatesClass* uc;
 
@@ -197,7 +196,7 @@ void Kadu::gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op) {
 	QString newestversion;
 
 	if (data.size() > 31) {
-		kdebug("Kadu::gotUpdatesInfo(): cannot obtain update info\n");		
+		kdebug("Kadu::gotUpdatesInfo(): cannot obtain update info\n");
 		delete uc;
 		return;
 		}
@@ -229,7 +228,7 @@ void Kadu::keyPressEvent(QKeyEvent *e) {
 	{
 	if (Userbox->getSelectedAltNicks().count() == 1)
 	        showUserInfo();
-	}	
+	}
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_sendsms"))
 	{
 		sendSmsToUser();
@@ -237,11 +236,11 @@ void Kadu::keyPressEvent(QKeyEvent *e) {
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_viewhistory"))
 	{
 		viewHistory();
-	}	
+	}
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_searchuser"))
 	{
 		lookupInDirectory();
-	}	
+	}
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_showinactive"))
 	{
 		Userbox->showHideInactive();
@@ -252,13 +251,13 @@ void Kadu::keyPressEvent(QKeyEvent *e) {
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_sendfile"))
 	{
 		sendFile();
-	}		
+	}
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_configure"))
 	{
 		configure();
-	}	
+	}
 
-	
+
 	QWidget::keyPressEvent(e);
 }
 
@@ -278,7 +277,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	QT_TRANSLATE_NOOP("@default", "Set language:");
 
 	KaduSlots *kaduslots=new KaduSlots();
-	
+
 	ConfigDialog::addTab("General");
 	ConfigDialog::addHGroupBox("General", "General", "User data");
 	ConfigDialog::addLineEdit("General", "User data", "Uin", "UIN", "0");
@@ -328,12 +327,13 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	AutoAwayTimer::initModule();
 	EventConfigSlots::initModule();
 
-    
+
 	//zaladowanie wartosci domyslnych (pierwsze uruchomienie)
 	QRect def_rect(0, 0, 145, 465);
 	config_file.addVariable("General", "Geometry", def_rect);
-	QSize def_size(340, 60);
-	config_file.addVariable("General", "SplitSize", def_size);
+	config_file.addVariable("General", "UserBoxHeight", 300);
+	config_file.addVariable("General", "DescriptionHeight", 60);
+	config_file.addVariable("General", "StatusButtonHeight", 30);
 
 	QFontInfo info(qApp->font());
 	QFont def_font(info.family(),info.pointSize());
@@ -346,7 +346,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	gg_proxy_host = NULL;
 
 	/* timers, cause event loops and QSocketNotifiers suck. */
-	
+
 	//pingtimer = blinktimer = readevent = NULL; zamieniamy na(powod: patrz plik events.cpp)
 	pingtimer = blinktimer = NULL;
 
@@ -357,7 +357,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	/* another API change, another hack */
 	memset(&loginparams, 0, sizeof(loginparams));
 	loginparams.async = 1;
-        
+
 	QRect geom;
 	geom=config_file.readRectEntry("General", "Geometry");
 	kdebug("Setting size: width=%d, height=%d and setting position: x=%d, y=%d\n",
@@ -390,10 +390,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	if (config_file.readBoolEntry("General", "UseDocking"))
 		trayicon->changeIcon();
 
-	centralFrame = new QFrame(this);
-	setCentralWidget(centralFrame);
-
-	QSplitter *split = new QSplitter(Qt::Vertical, centralFrame);
+	QSplitter *split = new QSplitter(Qt::Vertical, this);
+	setCentralWidget(split);
 
 	QHBox *hbox1 = new QHBox(split);
 
@@ -469,30 +467,13 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	connect(Userbox, SIGNAL(rightButtonClicked(QListBoxItem *, const QPoint &)),
 		UserBox::userboxmenu, SLOT(show(QListBoxItem *)));
 	//
-	
+
 	connect(Userbox, SIGNAL(doubleClicked(QListBoxItem *)), this, SLOT(sendMessage(QListBoxItem *)));
 	connect(Userbox, SIGNAL(returnPressed(QListBoxItem *)), this, SLOT(sendMessage(QListBoxItem *)));
-	
+
 	connect(Userbox, SIGNAL(mouseButtonClicked(int, QListBoxItem *, const QPoint &)),
 		this, SLOT(mouseButtonClicked(int, QListBoxItem *)));
 	connect(Userbox, SIGNAL(currentChanged(QListBoxItem *)), this, SLOT(currentChanged(QListBoxItem *)));
-
-	statuslabeltxt = new StatusLabel(centralFrame, "statuslabeltxt");
-	statuslabeltxt->setText(tr("Offline"));
-	statuslabeltxt->setFrameStyle(QFrame::WinPanel | QFrame::Sunken);
-	statuslabeltxt->setFont(QFont("Verdana", 9));
-	statuslabeltxt->setFixedWidth((width() - 45) > 50 ? width() - 45 : 50);
-
-	/* a bit darker than the rest */
-	statuslabeltxt->setPaletteBackgroundColor(QColor(
-		qRed(statuslabeltxt->paletteBackgroundColor().rgb()) - 20,
-		qGreen(statuslabeltxt->paletteBackgroundColor().rgb()) - 20,
-		qBlue(statuslabeltxt->paletteBackgroundColor().rgb()) - 20));
-
-	statuslabel = new StatusLabel(centralFrame, "statuslabel");
-	QPixmap pix = icons_manager.loadIcon("Offline");
-	statuslabel->setPixmap(pix);
-	statuslabel->setFixedWidth(pix.width());
 
 	/* guess what */
 	createMenu();
@@ -520,10 +501,16 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		descrtb->hide();
 	QObject::connect(&userlist, SIGNAL(dnsNameReady(uin_t)), this, SLOT(infopanelUpdate(uin_t)));
 
+	statusbutton = new QPushButton(QIconSet(icons_manager.loadIcon("Offline")), tr("Offline"), split, "statusbutton");
+	statusbutton->setPopup(statusppm);
+	if (!config_file.readBoolEntry("Look", "ShowStatusButton"))
+		statusbutton->hide();
+
 	QValueList<int> splitsizes;
-	
-	splitsizes.append(config_file.readSizeEntry("General", "SplitSize").width());
-	splitsizes.append(config_file.readSizeEntry("General", "SplitSize").height());
+
+	splitsizes.append(config_file.readNumEntry("General", "UserBoxHeight"));
+	splitsizes.append(config_file.readNumEntry("General", "DescriptionHeight"));
+	splitsizes.append(config_file.readNumEntry("General", "StatusButtonHeight"));
 	split->setSizes(splitsizes);
 
 //	tworzymy pasek narzedziowy
@@ -540,23 +527,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		ip.setAddress(QString(gg_servers_ip[i]));
 		gg_servers.append(ip);
 		}
-
-//	tworzymy gridlayout
-	grid = new QGridLayout(centralFrame, 2, 6);
-	grid->addMultiCellWidget(split, 0, 0, 0, 5);
-	grid->addWidget(statuslabeltxt, 1, 0, Qt::AlignLeft);
-	grid->addWidget(statuslabel, 1, 5, Qt::AlignRight);
-	grid->setColStretch(0, 5);
-	grid->setColStretch(1, 1);
-	grid->setColStretch(2, 1);
-	grid->setColStretch(3, 1);
-	grid->setColStretch(4, 1);
-	grid->setColStretch(5, 1);
-	grid->setRowStretch(0, 40);
-	grid->setRowStretch(1, 1);
-	grid->activate();
-
-	centralFrame->setMinimumSize(50, 100);
 
 	refreshGroupTabBar();
         int configTab = config_file.readNumEntry( "Look", "CurrentGroupTab" );
@@ -589,7 +559,7 @@ void Kadu::createToolBar()
 }
 
 void Kadu::popupMenu()
-{	
+{
 	UserList users;
 	users = UserBox::getActiveUserBox()->getSelectedUsers();
 	UserListElement user = users.first();
@@ -666,14 +636,14 @@ void Kadu::popupMenu()
 
 		}
 		if ((users.count() != 1) || (!user.uin)) UserBox::userboxmenu->setItemEnabled(searchuser, false);
-		if (users.count() != 1) 
+		if (users.count() != 1)
 			UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("View/edit user info")), false);
 
 	if (!user.uin)	UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("Open chat window")), false);
 }
 
 
-void Kadu::configure() 
+void Kadu::configure()
 {
 	ConfigDialog::showConfigDialog(qApp);
 }
@@ -694,7 +664,7 @@ void Kadu::sendSmsToUser()
 		{
 		Sms *sms = new Sms(users.first().altnick, 0);
 		sms->show();
-		}	
+		}
 }
 
 
@@ -773,14 +743,14 @@ void Kadu::lookupInDirectory() {
 void Kadu::showUserInfo() {
 	UserList users;
 	users= UserBox::getActiveUserBox()->getSelectedUsers();
-	if (users.count() == 1) 
+	if (users.count() == 1)
 		{
 		UserInfo *ui = new UserInfo("user info", 0, users.first().altnick);
 		ui->show();
 		}
 }
 
-void Kadu::deleteUsers() 
+void Kadu::deleteUsers()
 {
 	QStringList  users = UserBox::getActiveUserBox()->getSelectedAltNicks();
 	removeUser(users, false);
@@ -826,7 +796,7 @@ void Kadu::sendKey()
 
 void Kadu::deleteHistory()
 {
-    
+
 	history.removeHistory(UserBox::getActiveUserBox()->getSelectedUins());
 }
 
@@ -943,10 +913,6 @@ void Kadu::offlineToUser()
 	userlist.writeToFile();
 }
 
-void Kadu::resizeEvent(QResizeEvent *e) {
-	statuslabeltxt->setFixedWidth((width() - 45) > 50 ? width() - 45 : 50);
-}
-
 void Kadu::changeAppearance() {
 	kdebug("kadu::changeAppearance()\n");
 
@@ -977,7 +943,7 @@ void Kadu::refreshGroupTabBar()
 	{
 		GroupBar->hide();
 		return;
-	};	
+	};
 	/* budujemy listê grup */
 	QValueList<QString> group_list;
 	for (int i = 0; i < userlist.count(); i++)
@@ -1097,7 +1063,7 @@ void Kadu::blink() {
 	else
 		if (!doBlink && !socket_active) {
 			pix = icons_manager.loadIcon("Offline");
-	    		statuslabel->setPixmap(pix);
+					statusbutton->setIconSet(QIconSet(pix));
 	    		if (trayicon)
 				trayicon->setType(pix);
 	    		return;
@@ -1105,7 +1071,7 @@ void Kadu::blink() {
 
 	if (blinkOn) {
 		pix = icons_manager.loadIcon("Offline");
-		statuslabel->setPixmap(pix);
+		statusbutton->setIconSet(QIconSet(pix));
 		if (trayicon)
 			trayicon->setType(pix);
 		blinkOn = false;
@@ -1113,7 +1079,7 @@ void Kadu::blink() {
 	else {
 		i = statusGGToStatusNr(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
 		pix = icons_manager.loadIcon(gg_icons[i]);
-		statuslabel->setPixmap(pix);
+		statusbutton->setIconSet(QIconSet(pix));
 		if (trayicon)
 			trayicon->setType(pix);
 		blinkOn = true;
@@ -1181,7 +1147,7 @@ void Kadu::mouseButtonClicked(int button, QListBoxItem *item) {
 		return;
 	UserListElement user;
 	user = userlist.byAltNick(item->text());
-	if (user.mobile.length())	
+	if (user.mobile.length())
 		sendSmsToUser();
 }
 
@@ -1249,21 +1215,15 @@ void Kadu::slotHandleState(int command) {
 				AutoConnectionTimer::off();
 				autohammer = false;
 				}
-			break;	    
+			break;
 		case 8:
 			statusppm->setItemChecked(8, !statusppm->isItemChecked(8));
-			dockppm->setItemChecked(8, !dockppm->isItemChecked(8));	    
+			dockppm->setItemChecked(8, !dockppm->isItemChecked(8));
 			config_file.writeEntry("General", "PrivateStatus",statusppm->isItemChecked(8));
 			if (!statusppm->isItemChecked(6) && !statusppm->isItemChecked(7))
 				setStatus(sess->status & (~GG_STATUS_FRIENDS_MASK));
 			break;
 		}
-}
-
-void Kadu::slotShowStatusMenu() {
-	QPoint point = statuslabeltxt->mapToGlobal(QPoint(0, 0));
-	point.setY(point.y() - statusppm->sizeHint().height());
-	statusppm->popup(point);
 }
 
 void Kadu::setCurrentStatus(int status) {
@@ -1277,13 +1237,13 @@ void Kadu::setCurrentStatus(int status) {
 		i++;
 		}
 	statusppm->setItemChecked(statusnr, true);
-	dockppm->setItemChecked(statusnr, true);	
+	dockppm->setItemChecked(statusnr, true);
 
-	statuslabeltxt->setText(qApp->translate("@default", statustext[statusnr]));
+	statusbutton->setText(qApp->translate("@default", statustext[statusnr]));
 	statusppm->setItemEnabled(7, statusnr != 6);
 	dockppm->setItemEnabled(7, statusnr != 6);
 	QPixmap pix= icons_manager.loadIcon(gg_icons[statusnr]);
-	statuslabel->setPixmap(pix);
+	statusbutton->setIconSet(QIconSet(pix));
 	setIcon(pix);
 	if (!pending.pendingMsgs() && trayicon)
 		trayicon->setType(pix);
@@ -1296,10 +1256,10 @@ void Kadu::setStatus(int status) {
 		status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General", "PrivateStatus")));
 
 	bool with_description;
-    
+
 	with_description = ifStatusWithDescription(status);
 	status &= ~GG_STATUS_FRIENDS_MASK;
-    	
+
 	i_wanna_be_invisible = false;
 	if (status == GG_STATUS_INVISIBLE || status == GG_STATUS_INVISIBLE_DESCR)
 		i_wanna_be_invisible = true;
@@ -1312,7 +1272,7 @@ void Kadu::setStatus(int status) {
 			}
 		blinktimer->start(1000, TRUE);
 		}
-    
+
 	if (socket_active) {
 		doBlink = false;
 		if (with_description) {
@@ -1329,7 +1289,7 @@ void Kadu::setStatus(int status) {
 			gg_change_status(sess, status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General", "PrivateStatus")));
 		if (sess->check & GG_CHECK_WRITE)
 			kadusnw->setEnabled(true);
-	
+
 		setCurrentStatus(status);
 
 		kdebug("Kadu::setStatus(): actual status: %d\n", sess->status);
@@ -1368,18 +1328,18 @@ void Kadu::setStatus(int status) {
 		}
 	else
 		gg_proxy_enabled = 0;
-		
+
 	loginparams.status = status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General", "PrivateStatus"));
         loginparams.password =
 		strdup(unicode2cp(pwHash(config_file.readEntry("General", "Password"))).data());
-	char *tmp = 	 
-		strdup(unicode2latin(pwHash(config_file.readEntry("General", "Password"))).data()); 	 
-	kdebug("Kadu::setStatus(): password = %s\n", tmp); 	 
+	char *tmp =
+		strdup(unicode2latin(pwHash(config_file.readEntry("General", "Password"))).data());
+	kdebug("Kadu::setStatus(): password = %s\n", tmp);
 	free(tmp);
 	loginparams.uin = config_file.readNumEntry("General", "UIN");
 	loginparams.client_version = GG_DEFAULT_CLIENT_VERSION;
 	loginparams.has_audio = 1;
-	
+
 	if (config_file.readBoolEntry("Network", "AllowDCC") && config_extip.ip4Addr() && config_file.readNumEntry("Network", "ExternalPort") > 1023) {
 		loginparams.external_addr = htonl(config_extip.ip4Addr());
 		loginparams.external_port = config_file.readNumEntry("Network", "ExternalPort");
@@ -1387,7 +1347,7 @@ void Kadu::setStatus(int status) {
 	else {
 		loginparams.external_addr = 0;
 		loginparams.external_port = 0;
-		}	
+		}
 	if (config_servers.count() && !config_file.readBoolEntry("Network", "isDefServers") && config_servers[server_nr].ip4Addr()) {
 		loginparams.server_addr = htonl(config_servers[server_nr].ip4Addr());
 		loginparams.server_port = config_file.readNumEntry("Network", "DefaultPort");
@@ -1520,9 +1480,9 @@ void Kadu::disconnectNetwork() {
 	chat_manager->refreshTitles();
 
 	UserBox::all_refresh();
-	
+
 	socket_active = false;
-	
+
 	setCurrentStatus(GG_STATUS_NOT_AVAIL);
 }
 
@@ -1585,7 +1545,7 @@ void Kadu::dccSent(void) {
 }
 
 void Kadu::watchDcc(void) {
-	kdebug("Kadu::watchDcc(): data on socket\n");			
+	kdebug("Kadu::watchDcc(): data on socket\n");
 	if (!(dcc_e = gg_dcc_watch_fd(dccsock))) {
 		kdebug("Kadu::watchDcc(): Connection broken unexpectedly!\n");
 		config_file.writeEntry("Network", "AllowDCC", false);
@@ -1604,7 +1564,7 @@ void Kadu::watchDcc(void) {
 			break;
 		case GG_EVENT_DCC_NEW:
 			if (dccSocketClass::count < 8) {
-				dccSocketClass *dcc;    
+				dccSocketClass *dcc;
 				dcc = new dccSocketClass(dcc_e->event.dcc_new);
 				connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), this, SLOT(dccFinished(dccSocketClass *)));
 				dcc->initializeNotifiers();
@@ -1637,22 +1597,26 @@ bool Kadu::close(bool quit) {
 #ifdef MODULES_ENABLED
 		ModulesManager::closeModule();
 #endif
-	
+
 	    if (config_file.readBoolEntry("General", "SaveGeometry"))
 	    {
 		if (config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		    {
 			QSize split;
-			    split.setWidth(Userbox->size().height());
-			    split.setHeight(descrtb->size().height());
-			    config_file.writeEntry("General", "SplitSize",split);
+			config_file.writeEntry("General", "UserBoxHeight", Userbox->size().height());
+			config_file.writeEntry("General", "DescriptionHeight", descrtb->size().height());
+		}
+		if (config_file.readBoolEntry("Look", "ShowStatusButton"))
+		{
+			config_file.writeEntry("General", "UserBoxHeight", Userbox->size().height());
+			config_file.writeEntry("General", "StatusButtonHeight", statusbutton->size().height());
 		    }
 		QRect geom;
 		    geom.setX(pos().x());
 		    geom.setY(pos().y());
 		    geom.setWidth(size().width());
 		    geom.setHeight(size().height());
-		
+
 		config_file.writeEntry("General", "Geometry",geom);
 	    }
 		config_file.writeEntry("General", "DefaultDescription", defaultdescriptions.join("<-->"));
@@ -1712,8 +1676,8 @@ void Kadu::createMenu() {
 	MainMenu->insertItem(tr("E&xport userlist"), this, SLOT(exportUserlist()));
 	MainMenu->insertItem(icons_manager.loadIcon("AddUser"), tr("&Add user"), this, SLOT(addUserAction()),HotKey::shortCutFromFile("ShortCuts", "kadu_adduser"));
 	MainMenu->insertItem(tr("Send SMS"), this,SLOT(sendSms()));
-	MainMenu->insertSeparator();	
-	MainMenu->insertItem(tr("H&elp"), this, SLOT(help()));	
+	MainMenu->insertSeparator();
+	MainMenu->insertItem(tr("H&elp"), this, SLOT(help()));
 	MainMenu->insertItem(tr("A&bout..."), this, SLOT(about()));
 	MainMenu->insertSeparator();
 	MainMenu->insertItem(tr("&Hide Kadu"), this, SLOT(hideKadu()));
@@ -1757,29 +1721,18 @@ void Kadu::createStatusPopupMenu() {
 	dockppm->setCheckable(true);
 	statusppm->setItemChecked(6, true);
 	dockppm->setItemChecked(6, true);
-	
+
 	statusppm->setItemEnabled(7, false);
 	dockppm->setItemEnabled(7, false);
 
 	connect(statusppm, SIGNAL(activated(int)), this, SLOT(slotHandleState(int)));
 }
 
-void StatusLabel::mousePressEvent (QMouseEvent * e) {
-	if (e->button() == Qt::LeftButton && closestatusppmtime.elapsed() >= 100)
-		kadu->slotShowStatusMenu();
-}
-
 void Kadu::showdesc(bool show) {
 	if (show)
 		descrtb->show();
 	else
-	    {
-		QSize split;
-		split.setWidth(Userbox->size().height());
-		split.setHeight(descrtb->size().height());
-		config_file.writeEntry("General", "SplitSize",split);
 		descrtb->hide();
-	    }
 }
 
 void Kadu::infopanelUpdate(uin_t uin) {
@@ -1826,7 +1779,7 @@ void KaduSlots::onCreateConfigDialog()
 	         *it=translateLanguage(qApp, (*it).mid(5, (*it).length()-8), true);
 		      }
 	cb_language->insertStringList(files);
-	cb_language->setCurrentText(translateLanguage(qApp, 
+	cb_language->setCurrentText(translateLanguage(qApp,
 	       config_file.readEntry("General", "Language", QTextCodec::locale()),true));
 }
 
@@ -1836,7 +1789,7 @@ void KaduSlots::onDestroyConfigDialog()
 	QLineEdit *e_password=ConfigDialog::getLineEdit("General", "Password");
 	e_password->setEchoMode(QLineEdit::Password);
 	config_file.writeEntry("General", "Password",pwHash(e_password->text()));
-	    
+
 	if (config_file.readBoolEntry("General", "UseDocking") && !trayicon) {
 			trayicon = new TrayIcon(kadu);
 			trayicon->show();
@@ -1853,7 +1806,12 @@ void KaduSlots::onDestroyConfigDialog()
 			trayicon = NULL;
 		}
 	kadu->showdesc(config_file.readBoolEntry("Look", "ShowInfoPanel"));
-	
+
+	if (config_file.readBoolEntry("Look", "ShowStatusButton"))
+		statusbutton->show();
+	else
+		statusbutton->hide();
+
 	if (config_file.readBoolEntry("Look", "MultiColumnUserbox"))
 		kadu->userbox()->setColumnMode(QListBox::FitToWidth);
 	else

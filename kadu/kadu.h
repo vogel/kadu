@@ -69,7 +69,7 @@ class Kadu : public QMainWindow
 		QPopupMenu* MainMenu;
 		KaduTabBar* GroupBar;
 		UserBox* Userbox;
-		
+
 		int commencing_startup;
 
 		void createMenu();
@@ -88,7 +88,6 @@ class Kadu : public QMainWindow
 		bool event(QEvent *e);
 		void watchDcc(void);
 		void keyPressEvent(QKeyEvent *e);
-		void resizeEvent(QResizeEvent *e);
 
 		struct gg_event *dcc_e;
 		int dcc_ret;
@@ -112,13 +111,13 @@ class Kadu : public QMainWindow
 		QPopupMenu* mainMenu();
 		/**
 			Zwraca wskaznik do zakladek z nazwami grup.
-		**/		
+		**/
     		KaduTabBar* groupBar();
 		/**
 			Zwraca wskaznik do userbox-a w glownym oknie.
-		**/				
+		**/
 		UserBox* userbox();
-    
+
 		// te zmienne s± tylko chwilowo publiczne.
 		// trzeba to uporz±dkowaæ
 		bool autohammer;
@@ -128,7 +127,6 @@ class Kadu : public QMainWindow
 		void blink();
 		void dccFinished(dccSocketClass *dcc);
 		void slotHandleState(int command);
-		void slotShowStatusMenu();
 		void setCurrentStatus(int status);
 		void sendMessage(QListBoxItem *);
 		void dataReceived();
@@ -177,23 +175,14 @@ class Kadu : public QMainWindow
 		void showUserInfo();
 		void unregisterUser();
 		void viewHistory();
-		void popupMenu();		
-};
-
-class StatusLabel : public QLabel {
-	Q_OBJECT
-	public:
-		StatusLabel(QWidget *parent, const char *name): QLabel(parent, name) {};
-
-	protected:
-		void mousePressEvent (QMouseEvent * e);
+		void popupMenu();
 };
 
 class KaduSlots : public QObject
 {
 
     Q_OBJECT
-    
+
 	public slots:
 	    void onCreateConfigDialog();
 	    void onDestroyConfigDialog();
