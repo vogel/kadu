@@ -21,6 +21,10 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   --disable-voice (adrian)
 * configure: aktualizacja listy szukanych naglowkow i bibliotek
   do nowych zrodel programu (adrian)
+* configure: pliki naglowkowe kadu instaluja sie
+  do $prefix/include/kadu (adrian)
+* configure: generowany i instalowany jest skrypt kadu-config, pomocny
+  przy instalacji modulow z poza glownych zrodel kadu (adrian)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

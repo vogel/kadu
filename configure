@@ -6520,7 +6520,7 @@ fi
 # finalize configure
 ########################################################################
 
-                                                  ac_config_files="$ac_config_files ./Makefile kadu/Makefile translations/Makefile varia/Makefile modules/Makefile"
+                                                            ac_config_files="$ac_config_files ./Makefile kadu/Makefile translations/Makefile varia/Makefile modules/Makefile varia/scripts/kadu-config"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -7090,6 +7090,7 @@ do
   "translations/Makefile" ) CONFIG_FILES="$CONFIG_FILES translations/Makefile" ;;
   "varia/Makefile" ) CONFIG_FILES="$CONFIG_FILES varia/Makefile" ;;
   "modules/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/Makefile" ;;
+  "varia/scripts/kadu-config" ) CONFIG_FILES="$CONFIG_FILES varia/scripts/kadu-config" ;;
   "depfiles" ) CONFIG_COMMANDS="$CONFIG_COMMANDS depfiles" ;;
   "config.h" ) CONFIG_HEADERS="$CONFIG_HEADERS config.h" ;;
   *) { { echo "$as_me:$LINENO: error: invalid argument: $ac_config_target" >&5

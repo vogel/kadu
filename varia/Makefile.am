@@ -21,6 +21,7 @@ install-data-local:
 
 	$(mkinstalldirs) "$(DESTDIR)/$(bindir)/"	
 	$(INSTALL_SCRIPT) scripts/kadu-mozilla "$(DESTDIR)/$(bindir)/"
+	$(INSTALL_SCRIPT) scripts/kadu-config "$(DESTDIR)/$(bindir)/"
 
 uninstall-local:
 	rm -f "$(DESTDIR)/$(datadir)/kadu/themes/sounds/default"/*
@@ -28,3 +29,4 @@ uninstall-local:
 	rm -f "$(DESTDIR)/$(datadir)/kadu/themes/emoticons/gadu-gadu/1"/*
 	rm -f "$(DESTDIR)/$(datadir)/kadu/themes/emoticons/gadu-gadu/2"/*
 	rm -f "$(DESTDIR)/$(bindir)/kadu-mozilla"
+	rm -f "$(DESTDIR)/$(bindir)/kadu-config"

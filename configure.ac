@@ -379,7 +379,7 @@ fi
 # finalize configure
 ########################################################################
 
-AC_CONFIG_FILES([./Makefile kadu/Makefile translations/Makefile varia/Makefile modules/Makefile])
+AC_CONFIG_FILES([./Makefile kadu/Makefile translations/Makefile varia/Makefile modules/Makefile varia/scripts/kadu-config])
 AC_OUTPUT
 
 echo
