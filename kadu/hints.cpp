@@ -33,7 +33,7 @@ Hint::Hint(QWidget *parent, const QString& text, const QPixmap& pixmap, unsigned
 
 	secs = timeout;
 	ident = 0;
-	uin = 0;
+
 	setResizeMode(QLayout::Fixed);
 
 	if (!pixmap.isNull() && config_file.readBoolEntry("Hints","Icons"))
@@ -242,10 +242,9 @@ void HintManager::oneSecond(void)
 void HintManager::leftButtonSlot(unsigned int id)
 {
 	kdebug("HintManager::leftButtonSlot() %d\n", id);
-	if(hints.at(id)->getUin()){
-		UinsList uins;
-		uins+=hints.at(id)->getUin();
-		chat_manager->openPendingMsgs(uins);
+	UinsList senders=hints.at(id)->getUins();
+	if(senders.size()!=0){	
+		chat_manager->openPendingMsgs(senders);
 	}
 	deleteHint(id);
 }
@@ -268,14 +267,16 @@ void HintManager::midButtonSlot(unsigned int id)
 	kdebug("HintManager::midButtonSlot() %d\n", id);
 }
 
-void HintManager::addHint(const QString& text, const QPixmap& pixmap,  const QFont &font, const QColor &color, const QColor &bgcolor, unsigned int timeout, uin_t uin)
+void HintManager::addHint(const QString& text, const QPixmap& pixmap,  const QFont &font, const QColor &color, const QColor &bgcolor, unsigned int timeout, UinsList* senders)
 {
 	kdebug("HintManager::addHint()\n");
 	hints.append(new Hint(this, text, pixmap, timeout));
 	int i = hints.count()-1;
 	grid->addLayout(hints.at(i), i, 0);
 	hints.at(i)->set(font, color, bgcolor, i);
-	hints.at(i)->setUin(uin);
+	if(senders)
+		hints.at(i)->setUins(*senders);
+
 	connect(hints.at(i), SIGNAL(leftButtonClicked(unsigned int)), this, SLOT(leftButtonSlot(unsigned int)));
 	connect(hints.at(i), SIGNAL(rightButtonClicked()), this, SLOT(rightButtonSlot()));
 	connect(hints.at(i), SIGNAL(midButtonClicked(unsigned int)), this, SLOT(midButtonSlot(unsigned int)));
@@ -300,8 +301,6 @@ void HintManager::addHintNewMsg(const QString &nick, const QString &msg)
 	if (this == NULL)
 		return;
 
-	uin_t uin=userlist.byAltNick(nick).uin;
-
 	if (config_file.readBoolEntry("Hints","ShowContentMessage"))
 	{
 		QString cite;
@@ -309,19 +308,19 @@ void HintManager::addHintNewMsg(const QString &nick, const QString &msg)
 			cite = msg;
 		else
 			cite = msg.left(config_file.readNumEntry("Hints","CiteSign"))+"...";
-		addHint(tr("New message from")+" <b>"+nick+"<br></b> <small>"+cite+"</small>", icons_manager.loadIcon("Message"), QFont(config[10][0], config[10][1].toInt()), QColor(config[10][2]), QColor(config[10][3]), config[10][4].toInt(), uin);
+		addHint(tr("New message from")+" <b>"+nick+"<br></b> <small>"+cite+"</small>", icons_manager.loadIcon("Message"), QFont(config[10][0], config[10][1].toInt()), QColor(config[10][2]), QColor(config[10][3]), config[10][4].toInt());
 	}
 	else
-		addHint(tr("New message from")+" <b>"+nick+"</b>", icons_manager.loadIcon("Message"), QFont(config[10][0], config[10][1].toInt()), QColor(config[10][2]), QColor(config[10][3]), config[10][4].toInt(), uin);
+		addHint(tr("New message from")+" <b>"+nick+"</b>", icons_manager.loadIcon("Message"), QFont(config[10][0], config[10][1].toInt()), QColor(config[10][2]), QColor(config[10][3]), config[10][4].toInt());
 }
 
-void HintManager::addHintNewChat(const QString &nick, const QString &msg)
+void HintManager::addHintNewChat(UinsList& senders, const QString &msg)
 {
 	if (this == NULL)
 		return;
 
-	uin_t uin=userlist.byAltNick(nick).uin;
-
+	QString nick=userlist.byUinValue(senders[0]).altnick;
+	
 	if (config_file.readBoolEntry("Hints","ShowContentMessage"))
 	{
 		QString cite;
@@ -329,10 +328,10 @@ void HintManager::addHintNewChat(const QString &nick, const QString &msg)
 			cite = msg;
 		else
 			cite = msg.left(config_file.readNumEntry("Hints","CiteSign"))+"...";
-		addHint(tr("Chat with")+" <b>"+nick+"<br></b> <small>"+cite+"</small>",icons_manager.loadIcon("Message"), QFont(config[9][0], config[9][1].toInt()), QColor(config[9][2]), QColor(config[9][3]), config[9][4].toInt(), uin);
+		addHint(tr("Chat with")+" <b>"+nick+"<br></b> <small>"+cite+"</small>",icons_manager.loadIcon("Message"), QFont(config[9][0], config[9][1].toInt()), QColor(config[9][2]), QColor(config[9][3]), config[9][4].toInt(), &senders);
 	}
 	else
-		addHint(tr("Chat with")+" <b>"+nick+"</b>",icons_manager.loadIcon("Message"), QFont(config[9][0], config[9][1].toInt()), QColor(config[9][2]), QColor(config[9][3]), config[9][4].toInt(), uin);
+		addHint(tr("Chat with")+" <b>"+nick+"</b>",icons_manager.loadIcon("Message"), QFont(config[9][0], config[9][1].toInt()), QColor(config[9][2]), QColor(config[9][3]), config[9][4].toInt(), &senders);
 }
 
 void HintManager::addHintStatus(const UserListElement &ule, unsigned int status, unsigned int oldstatus)

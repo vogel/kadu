@@ -13,6 +13,8 @@
 #include <qspinbox.h>
 #include <qpushbutton.h>
 
+#include "misc.h"
+
 class Hint : public QHBoxLayout
 {
  Q_OBJECT
@@ -23,7 +25,7 @@ class Hint : public QHBoxLayout
 		QColor bcolor;
 		unsigned int secs;
 		unsigned int ident;
-		uin_t uin;
+		UinsList uins;
 		void enter();
 		void leave();
 
@@ -31,8 +33,8 @@ class Hint : public QHBoxLayout
 		Hint(QWidget *parent, const QString &text, const QPixmap &pixmap, unsigned int timeout);
 		~Hint();
 		void setId(unsigned int id) {ident = id;}
-		void setUin(uin_t i) { uin=i; };
-		uin_t getUin() { return uin ; };
+		void setUins(UinsList i) { uins=i; };
+		UinsList getUins() { return uins ; };
 		unsigned int id() const {return ident;}
 
 	protected:
@@ -64,10 +66,10 @@ class HintManager : public QFrame
 	public:
 		HintManager();
 		static void initModule();
-		void addHint(const QString &, const QPixmap &, const QFont &, const QColor &, const QColor &, unsigned int, uin_t=0);
+		void addHint(const QString &, const QPixmap &, const QFont &, const QColor &, const QColor &, unsigned int, UinsList* senders=0);
 		void addHintError(const QString &);
 		void addHintNewMsg(const QString &, const QString &);
-		void addHintNewChat(const QString &, const QString &);
+		void addHintNewChat(UinsList& senders, const QString &);
 		void addHintStatus(const UserListElement &, unsigned int status, unsigned int oldstatus);
 
 	public slots:

@@ -268,7 +268,7 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 
 void EventManager::chatMsgReceived2Slot(UinsList senders,const QString& msg,time_t time)
 {
-	UserListElement ule = userlist.byUinValue(senders[0]);		
+//	UserListElement ule = userlist.byUinValue(senders[0]);		
 
 	pending.addMsg(senders, msg, GG_CLASS_CHAT, time);
 	
@@ -280,7 +280,7 @@ void EventManager::chatMsgReceived2Slot(UinsList senders,const QString& msg,time
 		kadu->setFocus();
 		}
 
-	hintmanager->addHintNewChat(ule.altnick, msg);
+	hintmanager->addHintNewChat(senders, msg);
 
 	if(config_file.readBoolEntry("Chat","OpenChatOnMessage"))
 		pending.openMessages();

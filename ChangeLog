@@ -188,6 +188,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   jeszcze popracujê nad modu³ami ale raczej poprawiamy b³êdy (adrian)
 * drobne poprawki w chat.cpp zwi±zane z EmoticonSelectorem
   i ColorSelectorem, nadal gdzie¶ tam jest wyciek pamiêci :( (joi)
+* klikniecie na dymek w przypadku konferencji otwiera okno konferencji nie
+  chat z osoba ktora ja rozpoczela (michal)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
