@@ -226,10 +226,19 @@ void TrayIcon::mousePressEvent(QMouseEvent * e)
 }
 
 void TrayIcon::showHint(const QString &str, const QString &nick, int index) {
-	if (!config.showhint)
+	if (!config.trayhint || !config.dock)
 		return;
+	if (!config.hinterror && index == 2)
+		return;
+	if (config.hinterror && index == 2)
+		index = 1;
+
 	fprintf(stderr,"KK TrayIcon::showHint()\n");
 	hint->show_hint(str,nick,index);
+}
+void TrayIcon::reconfigHint() {
+	fprintf(stderr,"KK TrayIcon::reconfigHint()\n");
+	hint->restart();
 }
 
 TrayHint::TrayHint(QWidget *parent, const char *name)
@@ -271,6 +280,11 @@ void TrayHint::set_hint(void) {
 		pos_hint.setY(pos_tray.y()-size_hint.height());
 	move(pos_hint);
 	fprintf(stderr,"KK TrayHint::set_hint()\n");
+
+	hint->setFont(config.fonts.trayhint);
+	hint->setPaletteBackgroundColor(config.colors.trayhintBg);
+	hint->setPaletteForegroundColor(config.colors.trayhintText);
+
 }
 
 void TrayHint::show_hint(const QString &str, const QString &nick, int index) {
@@ -308,7 +322,7 @@ void TrayHint::show_hint(const QString &str, const QString &nick, int index) {
 	set_hint();
 	show();
 	if (!hint_timer->isActive())
-		hint_timer->start(config.timeouthint * 1000);
+		hint_timer->start(config.hinttime * 1000);
 }
 
 void TrayHint::remove_hint() {
@@ -323,10 +337,20 @@ void TrayHint::remove_hint() {
 		hint->clear();
 		hint_timer->stop();
 		hint_list.clear();
-		fprintf(stderr, "KK TRayHint::remove_hint() hint and hint_list is cleared\n");
+		fprintf(stderr, "KK TrayHint::remove_hint() hint and hint_list is cleared\n");
 		return;
 	}
 	set_hint();
+}
+
+void TrayHint::restart() {
+	hint->clear();
+	hint_timer->stop();
+	hint_list.clear();
+	hint->setFont(config.fonts.trayhint);
+	hint->setPaletteBackgroundColor(config.colors.trayhintBg);
+	hint->setPaletteForegroundColor(config.colors.trayhintText);
+	fprintf(stderr, "KK TrayHint::restart()\n");
 }
 
 TrayIcon *trayicon = NULL;

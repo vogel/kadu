@@ -36,6 +36,7 @@ class TrayIcon : protected QLabel
 		void show();
 		void connectSignals();
 		void showHint(const QString&, const QString&, int index);
+		void reconfigHint();
 
 	public slots:
 		// Status change slots
@@ -56,6 +57,7 @@ class TrayHint : public QWidget
 	public:
 		TrayHint(QWidget *parent=0, const char *name = 0);
 		void show_hint(const QString&, const QString&, int index);
+		void restart();
 		
 	public slots:
 		void remove_hint();

@@ -51,13 +51,15 @@ class ConfigDialog : public QTabDialog	{
 		QCheckBox *b_smscustomconf;
 		QCheckBox *b_autoaway;
 		QLineEdit *e_autoawaytime;
+		QLineEdit *e_hinttime;
 		QCheckBox *b_dock;
 		QCheckBox *b_private;
 		QCheckBox *b_rdocked;
 		QCheckBox *b_grptabs;
 		QCheckBox *b_checkupdates;
 		QCheckBox *b_addtodescription;
-		QCheckBox *b_showhint;
+		QCheckBox *b_trayhint;
+		QCheckBox *b_hinterror;
 		QCheckBox *b_showdesc;
 
 		QLineEdit *e_soundprog;
@@ -119,16 +121,24 @@ class ConfigDialog : public QTabDialog	{
 		QComboBox *cb_userboxfontsize;
 		QComboBox *cb_chatselect;
 		QComboBox *cb_userboxselect;
+		QComboBox *cb_otherselect;
+		QComboBox *cb_otherfont;
+		QComboBox *cb_otherfontsize;
 		QPushButton *pb_chatcolor;
 		QPushButton *pb_userboxcolor;
+		QPushButton *pb_othercolor;
 		QLineEdit *e_chatcolor;
 		QLineEdit *e_userboxcolor;
+		QLineEdit *e_othercolor;
 		QHBox *chatselectfont;
 		QHBox *userboxselectfont;
+		QHBox *otherselectfont;
 		QValueList<QColor> vl_userboxcolor;
 		QValueList<QFont> vl_userboxfont;
 		QValueList<QColor> vl_chatcolor;
 		QValueList<QFont> vl_chatfont;
+		QValueList<QColor> vl_othercolor;
+		QValueList<QFont> vl_otherfont;
 
 #ifdef HAVE_OPENSSL
 		QCheckBox *b_encryption;
@@ -155,8 +165,13 @@ class ConfigDialog : public QTabDialog	{
 		void chooseUserboxSelect(int index);
 		void chooseUserboxFontSizeGet(int index);
 		void chooseChatFontSizeGet(int index);
+		void chooseOtherColorGet();
+		void chooseOtherFontGet(int index);
+		void chooseOtherSelect(int index);
+		void chooseOtherFontSizeGet(int index);
 		void chooseChatLine(const QString&);
 		void chooseUserboxLine(const QString&);
+		void chooseOtherLine(const QString&);
 		void chooseMsgTest();
 		void chooseChatTest();
 		void chooseNotifyTest();

@@ -3,7 +3,12 @@
 * próba nowego "porz±dnego" autoaway'a (chilek)
 * autodetekcja adresu IP dla DCC jest robiona przy ka¿dym po³±czeniu o ile
   nie wpiszemy adresu IP jawnie (chilek)
-
+* poprawka dotycz±ca tytu³u okna rozmowy - nie ma juz napisu 
+  "opis" przy nazwie statusu rozmówcy (mast3r)
+* mo¿liwo¶æ ustawienia wygl±du tray hinta w oknie konfiguracji 
+  i kilka poprawek (mast3r)
+* pozbycie siê snprintf - zamiast tego jest QString::number (mast3r)
+ 
 +++ wersja 0.3.3-rc2
 * sporo poprawek dla FreeBSD (adrian)
 * gdy mamy status domy¶lny "niedostêpny" to nie ginie nam zapamiêtany

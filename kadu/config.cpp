@@ -91,8 +91,9 @@ void loadKaduConfig(void) {
 	config.grouptabs = konf->readBoolEntry("DisplayGroupTabs", true);
 	config.checkupdates = konf->readBoolEntry("CheckUpdates", true);
 	config.addtodescription = konf->readBoolEntry("AddToDescription", false);
-	config.showhint = konf->readBoolEntry("ShowHint",false);
-	config.timeouthint = konf->readNumEntry("TimeoutHint",5);
+	config.trayhint = konf->readBoolEntry("TrayHint",true);
+	config.hinterror = konf->readBoolEntry("HintError",true);
+	config.hinttime = konf->readNumEntry("TimeoutHint",5);
 	QRect def_rect(0,0,145,465);
 	config.geometry = konf->readRectEntry("Geometry",&def_rect);
 	QSize def_size(340,60);
@@ -225,8 +226,9 @@ void saveKaduConfig(void) {
 	konf->writeEntry("CheckUpdates", config.checkupdates);
 	konf->writeEntry("DisplayGroupTabs",config.grouptabs);
 	konf->writeEntry("AddToDescription",config.addtodescription);
-	konf->writeEntry("ShowHint",config.showhint);
-	konf->writeEntry("TimeoutHint",config.timeouthint);
+	konf->writeEntry("TrayHint",config.trayhint);
+	konf->writeEntry("HintError",config.hinterror);
+	konf->writeEntry("TimeoutHint",config.hinttime);
 	konf->writeEntry("ShowDesc",config.showdesc);
 
 	if (config.savegeometry) {
@@ -326,10 +328,10 @@ void ConfigDialog::setupTab1(void) {
 	QLabel *l_uin = new QLabel(userinfo);
 	l_uin->setText(i18n("Uin"));
 
-	char uin[12];
-	snprintf(uin, sizeof(uin), "%d", config.uin);
+//	char uin[12];
+//	snprintf(uin, sizeof(uin), "%d", config.uin);
 	e_uin = new QLineEdit(userinfo);
-	e_uin->setText(uin);
+	e_uin->setText(QString::number(config.uin));
 
 	QLabel *l_password = new QLabel(userinfo);
 	l_password->setText(i18n("Password"));
@@ -390,11 +392,8 @@ void ConfigDialog::setupTab1(void) {
 	QLabel *l_autoaway = new QLabel(awygrp);
 	l_autoaway->setText(i18n("Set status to away after "));
 
-	char czas[8];
-	snprintf(czas, sizeof(czas), "%d", config.autoawaytime);
-
 	e_autoawaytime = new QLineEdit(awygrp);
-	e_autoawaytime->setText(czas);
+	e_autoawaytime->setText(QString::number(config.autoawaytime));
 
 	QLabel *l_autoaway2 = new QLabel(awygrp);
 	l_autoaway2->setText(i18n(" seconds"));
@@ -405,6 +404,31 @@ void ConfigDialog::setupTab1(void) {
 		awygrp->setEnabled(false);
 
 	QObject::connect(b_autoaway, SIGNAL(toggled(bool)), awygrp, SLOT(setEnabled(bool)));
+
+	b_trayhint = new QCheckBox(box);
+	b_trayhint->setText(i18n("Enable tray hints"));
+
+	QVGroupBox *hintgrp = new QVGroupBox(box);
+	QHBox *box_time = new QHBox(hintgrp);
+	QLabel *l_trayhint = new QLabel(box_time);
+	l_trayhint->setText(i18n("Tray Hints timeout "));
+
+	e_hinttime = new QLineEdit(box_time);
+	e_hinttime->setText(QString::number(config.hinttime));
+
+	QLabel *l_trayhint2 = new QLabel(box_time);
+	l_trayhint2->setText(i18n(" seconds"));
+
+	b_hinterror = new QCheckBox(hintgrp);
+	b_hinterror->setText(i18n("Show errors connection in tray hints"));
+	b_hinterror->setChecked(config.hinterror);
+
+	if (config.trayhint)
+		b_trayhint->setChecked(true);
+	else
+		hintgrp->setEnabled(false);
+
+	QObject::connect(b_trayhint, SIGNAL(toggled(bool)), hintgrp, SLOT(setEnabled(bool)));
 
 	QVGroupBox *gb_defstatus = new QVGroupBox(box);
 	gb_defstatus->setTitle(i18n("Default Status"));
@@ -459,15 +483,6 @@ void ConfigDialog::setupTab1(void) {
 	if (config.addtodescription)
 		b_addtodescription->setChecked(true);		
 	QToolTip::add(b_addtodescription,i18n("If a file description in gg settings directory is present, its contents will be added\nto the status description and then the file will be deleted."));
-
-	b_showhint = new QCheckBox(grid);
-	b_showhint->setText(i18n("Dock hint(experimental)"));
-	if (config.dock)
-		b_showhint->setChecked(config.showhint);
-	else {
-		b_showhint->setChecked(false);
-		b_showhint->setEnabled(false);
-		}
 	
 	b_showdesc = new QCheckBox(grid);
 	b_showdesc->setText(i18n("Show userbox-desc."));
@@ -767,6 +782,7 @@ void ConfigDialog::setupTab4(void) {
 	
 	b_notifyhint = new QCheckBox(notifybox);
 	b_notifyhint->setText(i18n("Notify by hint"));
+	b_notifyhint->setChecked(config.notifyhint);
 
 	if (config.notifyglobal)
 		b_notifyglobal->setChecked(true);
@@ -783,8 +799,6 @@ void ConfigDialog::setupTab4(void) {
 
 	if (config.notifydialog)
 		b_notifydialog->setChecked(true);
-	if (config.notifyhint)
-		b_notifyhint->setChecked(true);
 	if (config.notifysound)
 		b_notifysound->setChecked(true);
 	else
@@ -793,6 +807,8 @@ void ConfigDialog::setupTab4(void) {
 	QObject::connect(b_notifysound, SIGNAL(toggled(bool)), soundbox, SLOT(setEnabled(bool)));
 	QObject::connect(b_notifyall, SIGNAL(toggled(bool)), this, SLOT(ifNotifyAll(bool)));
 	QObject::connect(b_notifyglobal, SIGNAL(toggled(bool)), this, SLOT(ifNotifyGlobal(bool)));
+
+	QObject::connect(b_trayhint, SIGNAL(toggled(bool)), b_notifyhint, SLOT(setEnabled(bool)));
 
 	addTab(box4, i18n("Users"));
 }
@@ -930,6 +946,11 @@ void ConfigDialog::setupTab6(void) {
 	vl_chatfont.append(config.fonts.chat);
 	vl_userboxfont.append(config.fonts.userbox);
 	vl_userboxfont.append(config.fonts.userboxDesc);
+//Comboboxy innych - kolory
+	vl_othercolor.append(config.colors.trayhintBg);
+	vl_othercolor.append(config.colors.trayhintText);
+//Comboboxy innych - fonty
+	vl_otherfont.append(config.fonts.trayhint);
 
 	QVBox *box6 = new QVBox(this);
 	box6->setMargin(2);
@@ -1038,10 +1059,53 @@ void ConfigDialog::setupTab6(void) {
 	QVGroupBox *otherprop = new QVGroupBox(box6);
 	otherprop->setTitle(i18n("Other properties"));
 
+	QHBox *otherselectcolor = new QHBox(otherprop);
+	otherselectcolor->setSpacing(5);
+
+	cb_otherselect = new QComboBox(otherselectcolor);
+	cb_otherselect->insertItem(i18n("Tray Hint background color"));
+	cb_otherselect->insertItem(i18n("Font in Tray Hint"));
+	cb_otherselect->setCurrentItem(0);
+	
+	connect(cb_otherselect, SIGNAL(activated(int)), this, SLOT(chooseOtherSelect(int)));
+
+	e_othercolor = new QLineEdit(otherselectcolor);
+	e_othercolor->setText(vl_othercolor[0].name());
+
+	connect(e_othercolor, SIGNAL(textChanged(const QString&)), this, SLOT(chooseOtherLine(const QString&)));
+
+	pb_othercolor = new QPushButton(otherselectcolor);
+	pm_buttoncolor.fill(vl_othercolor[0]);
+	pb_othercolor->setPixmap(pm_buttoncolor);
+	connect(pb_othercolor, SIGNAL(clicked()), this, SLOT(chooseOtherColorGet()));
+	
+	otherselectfont = new QHBox(otherprop);
+	otherselectfont->setSpacing(5);
+
+	QLabel *l_otherfont = new QLabel(otherselectfont);
+	l_otherfont->setText(i18n("Font"));
+
+	cb_otherfont = new QComboBox(otherselectfont);
+	cb_otherfont->insertStringList(fdb.families());
+	cb_otherfont->setCurrentText(vl_otherfont[0].family());
+	connect(cb_otherfont, SIGNAL(activated(int)), this, SLOT(chooseOtherFontGet(int)));
+
+	QLabel *l_otherfontsize = new QLabel(otherselectfont);
+	l_otherfontsize->setText(i18n("Font size"));
+
+	cb_otherfontsize = new QComboBox(otherselectfont);
+
+	vl = fdb.pointSizes(vl_otherfont[0].family(),"Normal");
+	for (QValueList<int>::Iterator points = vl.begin(); points != vl.end(); ++points)
+		cb_otherfontsize->insertItem(QString::number(*points));
+	cb_otherfontsize->setCurrentText(QString::number(vl_otherfont[0].pointSize()));
+
+	connect(cb_otherfontsize, SIGNAL(activated(int)), this, SLOT(chooseOtherFontSizeGet(int)));
+
+	otherselectfont->hide();
 
 	addTab(box6, i18n("Look"));
 };
-
 
 void ConfigDialog::onSmsBuildInCheckToogle(bool toggled)
 {
@@ -1056,11 +1120,15 @@ void ConfigDialog::onDefWebBrowserToogle(bool toggled)
 
 void ConfigDialog::ifDockEnabled(bool toggled) {
 	if (!toggled) {
-		b_showhint->setChecked(false);
-		b_showhint->setEnabled(false);
+		b_trayhint->setChecked(false);
+		b_hinterror->setChecked(false);
+		b_notifyhint->setChecked(false);
+		b_notifyhint->setEnabled(false);
+		b_trayhint->setEnabled(false);
 		}
 	else
-		b_showhint->setEnabled(true);
+		b_trayhint->setEnabled(true);
+		b_notifyhint->setEnabled(true);
 }
 
 void ConfigDialog::ifDccEnabled(bool toggled) {
@@ -1191,6 +1259,28 @@ void ConfigDialog::chooseUserboxSelect(int index) {
 		userboxselectfont->hide();
 }
 
+void ConfigDialog::chooseOtherSelect(int index) {
+	QPixmap pm(35,10);
+
+	e_othercolor->setText(vl_othercolor[index].name());
+	pm.fill(vl_othercolor[index]);
+	pb_othercolor->setPixmap(pm);
+
+	if (index >= 1) {
+		QFontDatabase fdb;
+		QValueList<int> vl;
+		otherselectfont->show();
+		cb_otherfont->setCurrentText(vl_otherfont[index-1].family());
+		vl = fdb.pointSizes(cb_otherfont->currentText(),"Normal");
+		cb_otherfontsize->clear();
+		for (QValueList<int>::Iterator points = vl.begin(); points != vl.end(); ++points)
+			cb_otherfontsize->insertItem(QString::number(*points));
+		cb_otherfontsize->setCurrentText(QString::number(vl_otherfont[index-1].pointSize()));
+		}
+	else
+		otherselectfont->hide();
+}
+
 void ConfigDialog::chooseChatColorGet(void) {
 	QColor color = QColorDialog::getColor(QColor(e_chatcolor->text()), this, i18n("Color dialog"));
 	if ( color.isValid() ) {
@@ -1210,6 +1300,17 @@ void ConfigDialog::chooseUserboxColorGet(void) {
 		pm.fill(QColor(color.name()));
 		pb_userboxcolor->setPixmap(pm);
 		vl_userboxcolor[cb_userboxselect->currentItem()] = color;
+		}
+}
+
+void ConfigDialog::chooseOtherColorGet(void) {
+	QColor color = QColorDialog::getColor(QColor(e_othercolor->text()), this, i18n("Color dialog"));
+	if ( color.isValid() ) {
+		e_othercolor->setText(color.name());
+		QPixmap pm(35,10);
+		pm.fill(QColor(color.name()));
+		pb_othercolor->setPixmap(pm);
+		vl_othercolor[cb_otherselect->currentItem()] = color;
 		}
 }
 
@@ -1239,12 +1340,29 @@ void ConfigDialog::chooseUserboxFontGet(int index) {
 	}
 }
 
+void ConfigDialog::chooseOtherFontGet(int index) {
+	QFontDatabase fdb;
+	QValueList<int> vl;
+	vl = fdb.pointSizes(cb_otherfont->text(index),"Normal");
+	cb_otherfontsize->clear();
+	for (QValueList<int>::Iterator points = vl.begin(); points != vl.end(); ++points)
+		cb_otherfontsize->insertItem(QString::number(*points));
+	if (cb_otherfontsize->count() > 0) {
+		cb_otherfontsize->setCurrentItem(0);
+		vl_otherfont[cb_otherselect->currentItem()-1] = QFont(cb_otherfont->text(index),atoi(cb_otherfontsize->currentText()));
+	}
+}
+
 void ConfigDialog::chooseChatFontSizeGet(int index) {
 	vl_chatfont[cb_chatselect->currentItem()-4] = QFont(cb_chatfont->currentText(),atoi(cb_chatfontsize->text(index)));
 }
 
 void ConfigDialog::chooseUserboxFontSizeGet(int index) {
 	vl_userboxfont[cb_userboxselect->currentItem()-2] = QFont(cb_userboxfont->currentText(),atoi(cb_userboxfontsize->text(index)));
+}
+
+void ConfigDialog::chooseOtherFontSizeGet(int index) {
+	vl_otherfont[cb_otherselect->currentItem()-1] = QFont(cb_otherfont->currentText(),atoi(cb_otherfontsize->text(index)));
 }
 
 void ConfigDialog::chooseChatLine(const QString& text) {
@@ -1262,6 +1380,15 @@ void ConfigDialog::chooseUserboxLine(const QString& text) {
 		pm.fill(QColor(text));
 		pb_userboxcolor->setPixmap(pm);
 		vl_userboxcolor[cb_userboxselect->currentItem()].setNamedColor(e_userboxcolor->text());
+	}
+}
+
+void ConfigDialog::chooseOtherLine(const QString& text) {
+	if (e_othercolor->text()[0] == '#' && e_othercolor->text().length() == 7 ) {
+		QPixmap pm(35,10);
+		pm.fill(QColor(text));
+		pb_othercolor->setPixmap(pm);
+		vl_othercolor[cb_otherselect->currentItem()].setNamedColor(e_othercolor->text());
 	}
 }
 
@@ -1365,7 +1492,11 @@ void ConfigDialog::updateConfig(void) {
 	if (!config.addtodescription)
 		kadu->autostatus_timer->stop();
 
-	config.showhint = b_showhint->isChecked();
+	config.trayhint = b_trayhint->isChecked();
+//potrzebne aby zmiany weszly w "zycie" kadu ;)
+	trayicon->reconfigHint();
+	config.hinterror = b_hinterror->isChecked();
+	config.hinttime = atoi(e_hinttime->text().latin1());
 
 	if (!b_showdesc->isChecked() && config.showdesc) {
 		kadu->hidedesc();
@@ -1405,10 +1536,13 @@ void ConfigDialog::updateConfig(void) {
 	config.colors.userboxBg = vl_userboxcolor[0];
 	config.colors.userboxDescBg = vl_userboxcolor[1];
 	config.colors.userboxDescText = vl_userboxcolor[3];
+	config.colors.trayhintBg = vl_othercolor[0];
+	config.colors.trayhintText = vl_othercolor[1];
 	
 	config.fonts.chat = vl_chatfont[0];
 	config.fonts.userbox = vl_userboxfont[0];
 	config.fonts.userboxDesc = vl_userboxfont[1];
+	config.fonts.trayhint = vl_otherfont[0];
 
 	free(config.soundnotify);
 	config.soundnotify = strdup(e_soundnotify->text().latin1());

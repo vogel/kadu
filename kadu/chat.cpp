@@ -328,7 +328,10 @@ void Chat::setTitle() {
 			setIcon(QPixmap((const char **)gg_inact_xpm));
 			}
 		title.append(" (");
-		title.append(i18n(statustext[j]));
+		if (j == 1 || j == 3 || j == 5 || j == 7)
+			title.append(i18n(statustext[j-1]));
+		else
+			title.append(i18n(statustext[j]));
 		if (j & 1)
 			title.append(i18n(": %1)").arg(user.description));
 		else

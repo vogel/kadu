@@ -88,7 +88,8 @@ struct config {
 	bool grouptabs;
 	bool checkupdates;
 	bool addtodescription;
-	bool showhint;
+	bool trayhint;
+	bool hinterror;
 	bool showdesc;
 
 	QRect geometry;
@@ -114,7 +115,7 @@ struct config {
 
 	bool autoaway;
 	int autoawaytime;
-	int timeouthint;
+	int hinttime;
 
 	QStringList notifies;
 	char *soundnotify;
