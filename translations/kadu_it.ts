@@ -2078,7 +2078,7 @@ Le password devo esser identiche !</translation>
     <name>Themes</name>
     <message>
         <source>does not contain any theme configuration file</source>
-        <translation type="unfinished"></translation>
+        <translation>non contiene nennun file di configurazione theme</translation>
     </message>
 </context>
 <context>
@@ -2502,19 +2502,19 @@ Cancellazione lista contatti su server GG fallita</translation>
     </message>
     <message>
         <source>Cannot import user list from server in offline mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Non è possibile importare lista utenti da server non attivo </translation>
     </message>
     <message>
         <source>This operation will delete your current user list. Are you sure you want this?</source>
-        <translation type="unfinished"></translation>
+        <translation>Questa operzione cancella lista contatti attuale. Veramente vuoi questo ?</translation>
     </message>
     <message>
         <source>Cannot export user list to server in offline mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Non è possibile esportare la lista contatti al server non attivo</translation>
     </message>
     <message>
         <source>Cannot clear user list on server in offline mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Non è possibile cancellare la lista contatti su srever non attivo</translation>
     </message>
 </context>
 <context>
