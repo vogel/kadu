@@ -11,6 +11,7 @@
 #include <qtextstream.h>
 #include <qtextcodec.h>
 #include <qdns.h>
+#include <qregexp.h>
 
 #include <sys/stat.h>
 
@@ -339,7 +340,9 @@ bool UserList::writeToFile(QString filename)
 		s.append(QString(";"));
 		s.append((*i).mobile);
 		s.append(QString(";"));
-		s.append((*i).group());
+		tmp = (*i).group();
+		tmp.replace(QRegExp(","), ";");
+		s.append(tmp);
 		s.append(QString(";"));
 		if ((*i).uin)
 			s.append(QString::number((*i).uin));
@@ -388,8 +391,10 @@ bool UserList::readFromFile()
 {
 	QString path;
 	QValueList<QStringList> ualist;
+	QStringList userattribs,groupnames;
 	QString line;
 	UserListElement e;
+	int groups, i;
 	bool ok;
 
 	path = ggPath("userattribs");
@@ -450,17 +455,26 @@ bool UserList::readFromFile()
 			e.notify = true;
 			addUser(e);
 			}
-		else {	    
-			e.first_name = line.section(';', 0, 0);
-			e.last_name = line.section(';', 1, 1);
-			e.nickname = line.section(';', 2, 2);
-			e.altnick = line.section(';', 3, 3);
-			e.mobile = line.section(';', 4, 4);
-			e.setGroup(line.section(';', 5, 5));
-			e.uin = line.section(';', 6, 6).toUInt(&ok);
+		else {
+			userattribs = QStringList::split(";", line, TRUE);
+			kdebug("UserList::readFromFile(): userattribs = %d\n", userattribs.count());
+			if (userattribs.count() >= 12)
+				groups = userattribs.count() - 11;
+			else
+				groups = userattribs.count() - 7;
+			e.first_name = userattribs[0];
+			e.last_name = userattribs[1];
+			e.nickname = userattribs[2];
+			e.altnick = userattribs[3];
+			e.mobile = userattribs[4];
+			groupnames.clear();
+			for (i = 0; i < groups; i++)
+				groupnames.append(userattribs[5 + i]);
+			e.setGroup(groupnames.join(","));
+			e.uin = userattribs[5 + groups].toUInt(&ok);
 			if (!ok)
 				e.uin = 0;
-			e.email = line.section(';', 7, 7);
+			e.email = userattribs[6 + groups];
 
 			if (e.altnick == "") {
 				if (e.nickname == "")

@@ -167,6 +167,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * emotikony l±duj± tam gdzie trzeba przy przesuwaniu splittera (joi)
 * indeksowane pliki ".a" statycznych modu³ów (adrian)
 * sprawdzanie zale¿no¶ci od plików nag³ówkowych przy kompilacji modu³ów (adrian)
+* zapis informacji o grupach zgodny z gg (chilek)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
