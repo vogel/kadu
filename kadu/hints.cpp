@@ -43,6 +43,7 @@ Hint::Hint(QWidget *parent, const QString& text, const QPixmap& pixmap, unsigned
 		icon = NULL;
 
 	label = new QLabel(" "+QString(text).replace(QRegExp(" "), "&nbsp;"), parent, "Label");
+	label->setTextFormat(Qt::RichText);
 	label->setAlignment(AlignVCenter | Qt::AlignLeft);
 	label->hide();
 	label->installEventFilter(this);
