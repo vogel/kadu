@@ -1,12 +1,5 @@
 <!DOCTYPE TS><TS>
 <context>
-    <name>@default</name>
-    <message>
-        <source>&lt;b&gt;%n&lt;/b&gt; changed status to &lt;b&gt;%s&lt;/b&gt;</source>
-        <translation type="obsolete">&lt;b&gt;%n&lt;/b&gt; zmienił status na &lt;b&gt;%s&lt;/b&gt;</translation>
-    </message>
-</context>
-<context>
     <name>Wizard</name>
     <message>
         <source>Kadu Wizard</source>
@@ -161,10 +154,6 @@
         <translation>Własna przeglądarka</translation>
     </message>
     <message>
-        <source>Specify path</source>
-        <translation type="obsolete">Określ scieżkę</translation>
-    </message>
-    <message>
         <source>WWW</source>
         <translation>WWW</translation>
     </message>
@@ -241,10 +230,6 @@
         <translation>Wybierz kolorystykę dymków</translation>
     </message>
     <message>
-        <source>Black and white</source>
-        <translation type="obsolete">Czerń i biel</translation>
-    </message>
-    <message>
         <source>Preview</source>
         <translation>Podgląd</translation>
     </message>
@@ -253,24 +238,12 @@
         <translation>&lt;b&gt;Użytkownik&lt;/b&gt; zmienił status na &lt;b&gt;Zajęty&lt;/b&gt;</translation>
     </message>
     <message>
-        <source>New message from &lt;b&gt;User&lt;/b&gt;</source>
-        <translation type="obsolete">Nowa wiadomośc od &lt;b&gt;Użytkownika&lt;./b&gt;</translation>
-    </message>
-    <message>
         <source>Hints construction</source>
         <translation>Skład dymka</translation>
     </message>
     <message>
         <source>Please choose hints type</source>
         <translation>Wybierz rodzaj dymka</translation>
-    </message>
-    <message>
-        <source>Maximal information</source>
-        <translation type="obsolete">Maksimum informacji</translation>
-    </message>
-    <message>
-        <source>Hint &lt;b&gt;preview&lt;/b&gt;</source>
-        <translation type="obsolete">&lt;b&gt;Podgląd&lt;/b&gt; dymka</translation>
     </message>
     <message>
         <source>&lt;h3&gt;Choose color theme and icons for Kadu&lt;/h3&gt;</source>
@@ -283,10 +256,6 @@
     <message>
         <source>Please choose Kadu design</source>
         <translation>Wybierz wygląd Kadu</translation>
-    </message>
-    <message>
-        <source>Classic</source>
-        <translation type="obsolete">Klasyczny</translation>
     </message>
     <message>
         <source>Icons</source>
@@ -311,14 +280,6 @@
     <message>
         <source>Qt Theme</source>
         <translation>Motyw QT</translation>
-    </message>
-    <message>
-        <source>Please choose panel style</source>
-        <translation type="obsolete">Wybierz styl panelu</translation>
-    </message>
-    <message>
-        <source>#999999, Jan Kowalski - I&apos;m nobody (192.168.0.1)</source>
-        <translation type="obsolete">#999999, Jan Kowalski - Mój status (192.168.0.1)</translation>
     </message>
     <message>
         <source>Info panel Look</source>
@@ -389,32 +350,8 @@ Hasło powinno w obu polach być takie same!</translation>
         <translation>Anuluj</translation>
     </message>
     <message>
-        <source>Open in new window</source>
-        <translation type="obsolete">Otwórz w nowym oknie</translation>
-    </message>
-    <message>
-        <source>Open in new tab</source>
-        <translation type="obsolete">Otwórz na nowej zakładce</translation>
-    </message>
-    <message>
-        <source>Open in background tab</source>
-        <translation type="obsolete">Otwórz na nowej zakładce w tle</translation>
-    </message>
-    <message>
         <source>&lt;b&gt;Error&lt;/b&gt;: (192.168.0.1) Disconnection has occured</source>
         <translation>&lt;b&gt;Błąd&lt;/b&gt;: (192.168.0.1) Rozłączony</translation>
-    </message>
-    <message>
-        <source>Ciuciu</source>
-        <translation type="obsolete">Ciuciu</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;User&lt;/b&gt; changed status to Busy (description)&lt;br&gt;My description</source>
-        <translation type="obsolete">&lt;b&gt;Użytkownik&lt;/b&gt; zmienił status na Zajęty (opis)&lt;br&gt;Mój opis</translation>
-    </message>
-    <message>
-        <source>Dark grey</source>
-        <translation type="obsolete">Dark grey</translation>
     </message>
     <message>
         <source>Information panel Theme</source>
@@ -423,12 +360,6 @@ Hasło powinno w obu polach być takie same!</translation>
     <message>
         <source>Unknown</source>
         <translation>Nieznany</translation>
-    </message>
-    <message>
-        <source>I didn&apos;t find the browser you selected! The path to it doesn&apos;t exists in $PATH variable. 
-You may add it to $PATH or specify location using Specify path option.</source>
-        <translation type="obsolete">Nie znalazłem wybranej przeglądarki. Ścieżka do niej nie istnieje w zmiennej $PATH. (new line)
-Dodaj ją i powtórz wybór $PATH albo skorzystaj z możliwości wpisania jej samodzielnie.</translation>
     </message>
     <message>
         <source>Configuration Wizard</source>
@@ -469,6 +400,10 @@ Dodaj ją i powtórz wybór $PATH albo skorzystaj z możliwości wpisania jej sa
     <message>
         <source>You are not on the list</source>
         <translation>Nie ma cię na liście</translation>
+    </message>
+    <message>
+        <source>Show vertical scrollbar</source>
+        <translation>Pokaż pionowy pasek przewijania</translation>
     </message>
 </context>
 </TS>

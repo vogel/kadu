@@ -105,10 +105,10 @@ Wizard::~Wizard()
 	delete(rb_haveNumber); delete(rb_dontHaveNumber); delete(l_ggNumber); delete(l_ggPassword); delete(l_ggNewPasssword); delete(l_ggNewPassswordRetyped); delete(l_email); delete(l_customBrowser);
 	delete(c_importContacts); delete(c_waitForDelivery); delete(c_enterSendsMessage); delete(c_openOnNewMessage); delete(c_flashTitleOnNewMessage); delete(c_ignoreAnonyms);
 	delete(c_logMessages); delete(c_logStatusChanges); delete(c_privateStatus); delete(c_showBlocked); delete(c_showBlocking); delete(c_startDocked); delete(c_enableSounds); delete(c_playWhilstChatting);
-	delete(c_playWhenInvisible); delete(cb_showInfoPanel);	delete(cb_browser); delete(cb_browserOptions); delete(cb_hintsTheme); delete(cb_hintsType); delete(cb_colorTheme); delete(cb_iconTheme); 
+	delete(c_playWhenInvisible); delete(c_showInfoPanel); delete(cb_browser); delete(cb_browserOptions); delete(cb_hintsTheme); delete(cb_hintsType); delete(cb_colorTheme); delete(cb_iconTheme); 
 	delete(cb_qtTheme); delete(cb_panelTheme); delete(preview); delete(preview2); delete(preview4); delete(iconPreview); delete(iconPreview2); delete(iconPreview3); delete(iconPreview4); delete(infoPreview);
 	delete(welcomePage); delete(ggNumberSelect); delete(ggCurrentNumberPage); delete(ggNewNumberPage); delete(languagePage); delete(chatOptionsPage); delete(wwwOptionsPage); 
-	delete(soundOptionsPage); delete(generalOptionsPage); delete(greetingsPage); delete(hintsOptionsPage); delete(colorsPage); delete(qtStylePage); delete(infoPanelPage);
+	delete(soundOptionsPage); delete(generalOptionsPage); delete(greetingsPage); delete(hintsOptionsPage); delete(colorsPage); delete(qtStylePage); delete(infoPanelPage); delete(c_showScrolls);
 }
 
 /**
@@ -167,8 +167,8 @@ void Wizard::showGGCurrentNumberPage()
 	l_ggPassword->setEchoMode(QLineEdit::Password);
 	l_ggPassword->setText(pwHash(config_file.readEntry("General", "Password", "")));
 	c_importContacts = new QCheckBox(tr("Import contacts"), grp_haveNumber);
-	//c_importContacts->setChecked(true);
-	c_importContacts->setEnabled(false);	//na razie zablokowane
+	c_importContacts->setChecked(false);
+	//c_importContacts->setEnabled(false);	//na razie zablokowane
 
 	addPage(ggCurrentNumberPage, tr("Gadu-gadu account"));
 }
@@ -280,6 +280,7 @@ void Wizard::showWWWOpionsPage()
 	l_customBrowser = new QLineEdit (grp_wwwOptions);
 
 	ChatSlots::initBrowserOptions(cb_browser, cb_browserOptions, l_customBrowser);
+	l_customBrowser->setEnabled(!cb_browser->currentItem());
 	l_customBrowser->setText(config_file.readEntry("Chat", "WebBrowser"));
 
 	connect(cb_browser, SIGNAL(activated (int)), this, SLOT(findAndSetWebBrowser(int)));
@@ -493,25 +494,34 @@ void Wizard::showInfoPanelPage()
 	grp_infoPanelOptions->setInsideMargin(10);
 	grp_infoPanelOptions->setColumns(2);
 	grp_infoPanelOptions->setInsideSpacing(4);
-	
-	cb_showInfoPanel = new QCheckBox (tr("Show information panel"), grp_infoPanelOptions);
-	cb_showInfoPanel->setChecked(config_file.readBoolEntry("Look", "ShowInfoPanel", true));
+
+	QVBox *grp_checks = new QVBox(grp_infoPanelOptions);
+	c_showInfoPanel = new QCheckBox (tr("Show information panel"), grp_checks);
+	c_showInfoPanel->setChecked(config_file.readBoolEntry("Look", "ShowInfoPanel", true));
+	c_showScrolls = new QCheckBox (tr("Show vertical scrollbar"), grp_checks);
+	c_showScrolls->setChecked(config_file.readBoolEntry("Look", "PanelVerticalScrollbar", true));
 
 	cb_panelTheme = new QComboBox(grp_infoPanelOptions);
 
 	for (int i=0; i<panelNumber; ++i)
-		cb_panelTheme->insertItem(panelLookName[i]);
+		cb_panelTheme->insertItem(tr(panelLookName[i]));
 
 	new QLabel(tr("Preview"), grp_infoPanelOptions);
 	
+	//infoPreview = new KaduTextBrowser (grp_infoPanelOptions);	//-- przymiarka pod zmiane podgladu
 	infoPreview = new QLabel (toDisplay(panelLook[0]), grp_infoPanelOptions);
 	infoPreview->setFrameStyle(QFrame::Box | QFrame::Plain);
     	infoPreview->setLineWidth(1);
 	infoPreview->setAlignment(Qt::AlignVCenter | Qt::WordBreak | Qt::DontClip);
 	infoPreview->setAutoResize(true);
-	infoPreview->setMaximumWidth(200);
-	
+	infoPreview->setMaximumWidth(230);
+	/*	//--przymiarka pod j.w.
+	if (c_showScrolls->isChecked())
+		infoPreview->setVScrollBarMode(QScrollView::Auto);
+	else 	infoPreview->setVScrollBarMode(QScrollView::AlwaysOff);
+	*/
 	connect(cb_panelTheme, SIGNAL(activated (int)), this, SLOT(previewPanelTheme(int)));
+	//connect(c_showScrolls, SIGNAL(toggled(bool)), this, SLOT(addScrolls(bool)));	//--j.w.
 	
 	QString panelConstruction=config_file.readEntry("Look", "PanelContents", "");
 	if (panelConstruction != "")
@@ -531,7 +541,6 @@ void Wizard::showInfoPanelPage()
 					infoPreview->setText(toDisplay(panelConstruction));
 				}	
 		}
-	
 	addPage(infoPanelPage, tr("Info panel Look"));
 }
 
@@ -650,8 +659,6 @@ void Wizard::tryImport()
 					connect(gadu, SIGNAL(connected()), this, SLOT(connected()));
 				}	//jak polaczony to bez cyrkow robi import
 			else if (!gadu->doImportUserList()) QMessageBox::information(0, tr("Kadu Wizard"), tr("User list wasn't imported becouse of some error"), tr("OK"), 0, 0, 1);
-			
-			
 		}
 	kdebugf2();
 }
@@ -715,6 +722,9 @@ void Wizard::setBrowser()
 void Wizard::findAndSetWebBrowser(int selectedBrowser)
 {
 	ChatSlots::findBrowser(selectedBrowser, cb_browser, cb_browserOptions, l_customBrowser);
+	//if (selectedBrowser!=0)
+	//	l_customBrowser->setEnabled(false);
+	l_customBrowser->setEnabled(!selectedBrowser);
 }
 
 
@@ -885,7 +895,8 @@ void Wizard::previewPanelTheme(int panelThemeID)
 **/
 void Wizard::setPanelTheme()
 {	kdebugf();
-	config_file.writeEntry("Look", "ShowInfoPanel", cb_showInfoPanel->isChecked());
+	config_file.writeEntry("Look", "ShowInfoPanel", c_showInfoPanel->isChecked());
+	config_file.writeEntry("Look", "PanelVerticalScrollbar", c_showScrolls->isChecked());
 	if (cb_panelTheme->currentItem()==panelNumber)
 		config_file.writeEntry("Look", "PanelContents", customPanel);
 	else
@@ -995,10 +1006,7 @@ QString Wizard::toDisplay(QString s)
 	s.replace("changed status to", tr("changed status to"));
 	s.replace("You are not on the list", tr("You are not on the list"));
 
-	int i; /*
-	for (i=0; i<s.contains("/usr/share/kadu/"); ++i)
-		s.replace("/usr/share/kadu/", dataPath("kadu/"));
-	*/
+	int i; 
 	for (i=0; i<s.contains("$KADU_CONF"); ++i)
 		s.replace("$KADU_CONF", ggPath());
 	
@@ -1017,10 +1025,9 @@ QString Wizard::toDisplay(QString s)
 **/
 QString Wizard::toSave(QString s)
 {	
-	int i; /*
-	for (i=0; i<s.contains("/usr/share/kadu/"); ++i)
-		s.replace("/usr/share/kadu/", dataPath("kadu/"));
-	*/
+	s.replace("You are not on the list", tr("You are not on the list"));
+
+	int i; 
 	for (i=0; i<s.contains("$KADU_SHARE"); ++i)
 		s.replace("$KADU_SHARE", dataPath("kadu"));
 	
@@ -1040,15 +1047,9 @@ QString Wizard::toSave(QString s)
 void Wizard::userListImported(bool ok, UserList& userList)
 {	kdebugf();
 
-//to wylecialo z expimp.cpp wiec widac nie potrzebne
-/*
-	for (UserList::const_iterator i = userlist.begin(); i != userlist.end(); ++i)
-		if ((*i).uin)
-			gadu->removeNotify((*i).uin);
-*/
 	userlist.merge(userList);
-//to chyba ciagle wywala kadu
-/*
+	userlist.writeToFile();	//zaraz zapisuje liste bo kadu zaraz pewnie poleci
+
 	kadu->userbox()->clear();
 	kadu->userbox()->clearUsers();
 
@@ -1056,15 +1057,7 @@ void Wizard::userListImported(bool ok, UserList& userList)
 		kadu->userbox()->addUser((*i).altNick());
 
 	UserBox::all_refresh();
-*/
-//to tez wylecialo z expimp.cpp
-/*
-	for (UserList::const_iterator i = userlist.begin(); i != userlist.end(); ++i)
-		if ((*i).uin)
-			gadu->addNotify((*i).uin);
-*/
-	userlist.writeToFile();
-
+	
 	kdebugf2();
 }
 
