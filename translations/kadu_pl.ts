@@ -971,14 +971,6 @@ Podałeś nazwę hosta zamiast adresu IP?</translation>
 <context>
     <name>Kadu</name>
     <message>
-        <source>Update information</source>
-        <translation>Informacja o aktualizacjach</translation>
-    </message>
-    <message>
-        <source>The newest Kadu version is %1</source>
-        <translation>Najnowszą wersją kadu jest %1</translation>
-    </message>
-    <message>
         <source>Me</source>
         <translation>Ja</translation>
     </message>
@@ -1610,45 +1602,6 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     </message>
 </context>
 <context>
-    <name>Status</name>
-    <message>
-        <source>Online</source>
-        <translation>Dostępny</translation>
-    </message>
-    <message>
-        <source>Online (d.)</source>
-        <translation>Dostępny z opisem</translation>
-    </message>
-    <message>
-        <source>Busy</source>
-        <translation>Zaraz wracam</translation>
-    </message>
-    <message>
-        <source>Busy (d.)</source>
-        <translation>Zaraz wracam z opisem</translation>
-    </message>
-    <message>
-        <source>Invisible</source>
-        <translation>Ukryty</translation>
-    </message>
-    <message>
-        <source>Invisible (d.)</source>
-        <translation>Ukryty z opisem</translation>
-    </message>
-    <message>
-        <source>Offline</source>
-        <translation>Niedostępny</translation>
-    </message>
-    <message>
-        <source>Offline (d.)</source>
-        <translation>Niedostępny z opisem</translation>
-    </message>
-    <message>
-        <source>Blocking</source>
-        <translation>Blokuje</translation>
-    </message>
-</context>
-<context>
     <name>Themes</name>
     <message>
         <source>&lt;i&gt;%1&lt;/i&gt;&lt;br/&gt;does not contain any theme configuration file</source>
@@ -1679,6 +1632,17 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     <message>
         <source>Main toolbar</source>
         <translation>Mój pasek narzędziowy</translation>
+    </message>
+</context>
+<context>
+    <name>Updates</name>
+    <message>
+        <source>Update information</source>
+        <translation>Informacja o aktualizacjach</translation>
+    </message>
+    <message>
+        <source>The newest Kadu version is %1</source>
+        <translation>Najnowszą wersją kadu jest %1</translation>
     </message>
 </context>
 <context>
@@ -1843,6 +1807,45 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     <message>
         <source>All</source>
         <translation>Wszyscy</translation>
+    </message>
+</context>
+<context>
+    <name>UserStatus</name>
+    <message>
+        <source>Online</source>
+        <translation>Dostępny</translation>
+    </message>
+    <message>
+        <source>Online (d.)</source>
+        <translation>Dostępny z opisem</translation>
+    </message>
+    <message>
+        <source>Busy</source>
+        <translation>Zaraz wracam</translation>
+    </message>
+    <message>
+        <source>Busy (d.)</source>
+        <translation>Zaraz wracam z opisem</translation>
+    </message>
+    <message>
+        <source>Invisible</source>
+        <translation>Ukryty</translation>
+    </message>
+    <message>
+        <source>Invisible (d.)</source>
+        <translation>Ukryty z opisem</translation>
+    </message>
+    <message>
+        <source>Offline</source>
+        <translation>Niedostępny</translation>
+    </message>
+    <message>
+        <source>Offline (d.)</source>
+        <translation>Niedostępny z opisem</translation>
+    </message>
+    <message>
+        <source>Blocking</source>
+        <translation>Blokuje</translation>
     </message>
 </context>
 <context>

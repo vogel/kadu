@@ -964,14 +964,6 @@ You may add it to $PATH or specify location using Specify path option.</source>
 <context>
     <name>Kadu</name>
     <message>
-        <source>Update information</source>
-        <translation>Informationnen über Akualisierungen</translation>
-    </message>
-    <message>
-        <source>The newest Kadu version is %1</source>
-        <translation>Die neuste Version von Kadu ist %1</translation>
-    </message>
-    <message>
         <source>Me</source>
         <translation>Ich</translation>
     </message>
@@ -1600,45 +1592,6 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     </message>
 </context>
 <context>
-    <name>Status</name>
-    <message>
-        <source>Online</source>
-        <translation type="unfinished">Online</translation>
-    </message>
-    <message>
-        <source>Online (d.)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Busy</source>
-        <translation type="unfinished">Beschäftigt</translation>
-    </message>
-    <message>
-        <source>Busy (d.)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Invisible</source>
-        <translation type="unfinished">Versteckt</translation>
-    </message>
-    <message>
-        <source>Invisible (d.)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Offline</source>
-        <translation type="unfinished">Offline</translation>
-    </message>
-    <message>
-        <source>Offline (d.)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Blocking</source>
-        <translation type="unfinished">Blockt</translation>
-    </message>
-</context>
-<context>
     <name>Themes</name>
     <message>
         <source>&lt;i&gt;%1&lt;/i&gt;&lt;br/&gt;does not contain any theme configuration file</source>
@@ -1669,6 +1622,17 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     <message>
         <source>Main toolbar</source>
         <translation>Mein Toolbar</translation>
+    </message>
+</context>
+<context>
+    <name>Updates</name>
+    <message>
+        <source>Update information</source>
+        <translation type="unfinished">Informationnen über Akualisierungen</translation>
+    </message>
+    <message>
+        <source>The newest Kadu version is %1</source>
+        <translation type="unfinished">Die neuste Version von Kadu ist %1</translation>
     </message>
 </context>
 <context>
@@ -1833,6 +1797,45 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     <message>
         <source>All</source>
         <translation>Alle</translation>
+    </message>
+</context>
+<context>
+    <name>UserStatus</name>
+    <message>
+        <source>Online</source>
+        <translation type="unfinished">Online</translation>
+    </message>
+    <message>
+        <source>Online (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Busy</source>
+        <translation type="unfinished">Beschäftigt</translation>
+    </message>
+    <message>
+        <source>Busy (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invisible</source>
+        <translation type="unfinished">Versteckt</translation>
+    </message>
+    <message>
+        <source>Invisible (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Offline</source>
+        <translation type="unfinished">Offline</translation>
+    </message>
+    <message>
+        <source>Offline (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Blocking</source>
+        <translation type="unfinished">Blockt</translation>
     </message>
 </context>
 <context>
