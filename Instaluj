@@ -84,6 +84,15 @@ additional_parameters()
 # Try to predict errors which will break the installation
 find_possible_errors()
 {
+	# Check if installer is run from the current directory:
+	test -f ./Instaluj
+	if [ $? != "0" ]; then
+		dialog --begin 19 48 --infobox "Naci¶nij CTRL+C aby wyj¶æ" 3 29 --and-widget --stdout --defaultno --backtitle "Instalator Kadu" --title "Niepoprawny katalog" --yesno "Instalator Kadu trzeba uruchamiaæ bezpo¶rednio\nz katalogu zawieraj±cego ¼ród³a!\nNa pewno kontynuowaæ? Mog± pojawiæ siê b³êdy!" 7 50
+		if [ $? == "1" ]; then
+			exit
+		fi;
+	fi;
+
 	# Check if user is logged in as root:
 	if [ $UID != "0" ]; then
 		dialog --begin 19 48 --infobox "Naci¶nij CTRL+C aby wyj¶æ" 3 29 --and-widget --stdout --defaultno --backtitle "Instalator Kadu" --title "Brak uprawnieñ administratora" --yesno "Nie pracujesz jako root\nMusisz znaæ to has³o, ¿eby zainstalowaæ Kadu.\nCzy chcesz kontynuowaæ instalacjê?" 7 50
