@@ -111,6 +111,12 @@ void MessageBox::status(const QString& message)
 	qApp->processEvents();
 };
 
+void MessageBox::msg(const QString& message)
+{
+	MessageBox* m=new MessageBox(message,OK);
+	m->show();
+};
+
 bool MessageBox::ask(const QString& message)
 {
 	MessageBox* m=new MessageBox(message,YES|NO,true);

@@ -7,9 +7,11 @@
 * zapamiêtywanie odebranych wiadomo¶ci przy ka¿dej operacji na li¶cie wiadomo¶ci
   oczekuj±cych na odczytanie (chilek)
 * pasek narzêdziowy dokowalny, guzik narzêdziowy "dodaj u¿ytkownika" (chilek)
-* pozadki w kodzie, zakomentowanie nieuzywanych zmiennych i
+* porzadki w kodzie, zakomentowanie nieuzywanych zmiennych i
   klasy Operation( nie uzywana od dluzszego czasu, moze czas
   pozbyc sie jej i usunac network.cpp) (mast3r)
+* funkcja MessageBox::msg(), usuniête network.cpp oraz
+  porz±dki w pliku AUTHORS (adrian)
   
 +++ wersja 0.3.4-pre2
 * graficzny instalator - instaluj.tcl (googie)

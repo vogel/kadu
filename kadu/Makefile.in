@@ -136,7 +136,6 @@ main.cpp \
 message.cpp message.h message_moc.cpp \
 message_box.cpp message_box.h message_box_moc.cpp \
 misc.cpp misc.h misc_moc.cpp\
-network.cpp \
 password.cpp password.h password_moc.cpp \
 pending_msgs.cpp pending_msgs.h \
 personal_info.cpp personal_info.h personal_info_moc.cpp \
@@ -189,16 +188,15 @@ am_kadu_OBJECTS = about.$(OBJEXT) about_moc.$(OBJEXT) adduser.$(OBJEXT) \
 	ignore_moc.$(OBJEXT) kadu.$(OBJEXT) kadu_moc.$(OBJEXT) \
 	main.$(OBJEXT) message.$(OBJEXT) message_moc.$(OBJEXT) \
 	message_box.$(OBJEXT) message_box_moc.$(OBJEXT) misc.$(OBJEXT) \
-	misc_moc.$(OBJEXT) network.$(OBJEXT) password.$(OBJEXT) \
-	password_moc.$(OBJEXT) pending_msgs.$(OBJEXT) \
-	personal_info.$(OBJEXT) personal_info_moc.$(OBJEXT) \
-	register.$(OBJEXT) register_moc.$(OBJEXT) search.$(OBJEXT) \
-	search_moc.$(OBJEXT) sms.$(OBJEXT) sms_moc.$(OBJEXT) \
-	sound.$(OBJEXT) sound_moc.$(OBJEXT) status.$(OBJEXT) \
-	status_moc.$(OBJEXT) tabbar.$(OBJEXT) tabbar_moc.$(OBJEXT) \
-	userbox.$(OBJEXT) userbox_moc.$(OBJEXT) userinfo.$(OBJEXT) \
-	userinfo_moc.$(OBJEXT) userlist.$(OBJEXT) \
-	userlist_moc.$(OBJEXT) updates.$(OBJEXT)
+	misc_moc.$(OBJEXT) password.$(OBJEXT) password_moc.$(OBJEXT) \
+	pending_msgs.$(OBJEXT) personal_info.$(OBJEXT) \
+	personal_info_moc.$(OBJEXT) register.$(OBJEXT) \
+	register_moc.$(OBJEXT) search.$(OBJEXT) search_moc.$(OBJEXT) \
+	sms.$(OBJEXT) sms_moc.$(OBJEXT) sound.$(OBJEXT) \
+	sound_moc.$(OBJEXT) status.$(OBJEXT) status_moc.$(OBJEXT) \
+	tabbar.$(OBJEXT) tabbar_moc.$(OBJEXT) userbox.$(OBJEXT) \
+	userbox_moc.$(OBJEXT) userinfo.$(OBJEXT) userinfo_moc.$(OBJEXT) \
+	userlist.$(OBJEXT) userlist_moc.$(OBJEXT) updates.$(OBJEXT)
 kadu_OBJECTS = $(am_kadu_OBJECTS)
 
 DEFS = @DEFS@
@@ -227,8 +225,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/message.Po ./$(DEPDIR)/message_box.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/message_box_moc.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/message_moc.Po ./$(DEPDIR)/misc.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/misc_moc.Po ./$(DEPDIR)/network.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/password.Po ./$(DEPDIR)/password_moc.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/misc_moc.Po ./$(DEPDIR)/password.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/password_moc.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/pending_msgs.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/personal_info.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/personal_info_moc.Po \
@@ -333,7 +331,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/message_moc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/misc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/misc_moc.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/network.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/password.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/password_moc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pending_msgs.Po@am__quote@

@@ -56,6 +56,12 @@ class MessageBox : public QDialog
 		**/
 		static bool ask(const QString& message);
 		/**
+			Przekazuje u¿ytkownikowi informacjê. Tworzy
+			dialog z przyciskiem: "OK" zamykaj±cy okno.
+			Nie blokuje wykonywania programu.
+		**/
+		static void msg(const QString& message);
+		/**
 			Informuje u¿ytkownika o postêpie wykonywanej
 			przez program czynno¶ci. Tworzy dialog zawieraj±cy
 			podany tekst, pasek postêpu o podanej
