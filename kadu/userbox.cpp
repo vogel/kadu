@@ -70,7 +70,7 @@ void UserBox::maybeTip(const QPoint &c)
 				s = i18n("<nobr><I>Available <B>(d.)</B></I></nobr>");
 				break;
 			case GG_STATUS_BLOCKED:
-				s = i18n("<nobr><I>Blocked</I></nobr>");				
+				s = i18n("<nobr><I>Blocking</I></nobr>");				
 				break;
 			default:
 				s = i18n("<nobr><I>Unknown status</I></nobr>");

@@ -174,7 +174,7 @@ int gg_statuses[] = {GG_STATUS_AVAIL, GG_STATUS_AVAIL_DESCR, GG_STATUS_BUSY, GG_
 const char *statustext[] = {"Online", "Online (d.)",
 	"Busy", "Busy (d.)",
 	"Invisible", "Invisible (d.)",
-	"Offline", "Offline (d.)", "Blocked"};
+	"Offline", "Offline (d.)", "Blocking"};
 enum {
 	KADU_CMD_SEND_MESSAGE,
 	KADU_CMD_OPEN_CHAT,
