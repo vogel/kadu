@@ -54,10 +54,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Use default Web browser</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Custom Web browser</source>
         <translation type="unfinished"></translation>
     </message>
@@ -127,13 +123,6 @@
     </message>
     <message>
         <source>Conference window title prefix:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - frist name
-%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
-%v - revDNS, %p - port %e - email
-If you leave blank, default settings will be used</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -554,6 +543,21 @@ It&apos;s a high security risk!</source>
         <source>Show contacts that are blocking you</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Choose your browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Browser options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
+%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
+%v - revDNS, %p - port %e - email
+If you leave blank, default settings will be used</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -690,6 +694,27 @@ It&apos;s a high security risk!</source>
     <message>
         <source>This will show a long URL as http://www.start...end.com/
 to protect the chat window from a mess</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Specify path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open in new window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open in new tab</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open in background tab</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I didn&apos;t find the browser you selected! The path to it doesn&apos;t exists in $PATH variable. 
+You may add it to $PATH or specify location using Specify path option.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

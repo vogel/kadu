@@ -182,12 +182,8 @@
         <translation>Opcje WWW</translation>
     </message>
     <message>
-        <source>Use default Web browser</source>
-        <translation>Użyj domyślnej przeglądarki</translation>
-    </message>
-    <message>
         <source>Custom Web browser</source>
-        <translation>Własna przeglądarka: </translation>
+        <translation>Ścieżka do programu + paramaetry: </translation>
     </message>
     <message>
         <source>Automatically prune chat messages</source>
@@ -236,16 +232,6 @@
     <message>
         <source>Conference window title prefix:</source>
         <translation>Prefiks tytułu okna konferencji: </translation>
-    </message>
-    <message>
-        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - frist name
-%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
-%v - revDNS, %p - port %e - email
-If you leave blank, default settings will be used</source>
-        <translation>Składnia: %s - status, %d - opis, %i - IP, %n - nick, %a - altnick, %f - imię
-%r - nazwisko, %m - telefon, %u - uin, %g - grupa, %o - wstawia spacje
-jeśli kontakt nie ma cie na liście, %v - DNS, %p - port %e - email
-Jeśli to pole pozostanie puste, będą użyte ustawienia domyślne</translation>
     </message>
     <message>
         <source>This text will be before syntax.
@@ -559,6 +545,24 @@ Jest to wysoce ryzykowne!</translation>
         <source>Show contacts that are blocking you</source>
         <translation>Pokaż kontakty, które blokują ciebie</translation>
     </message>
+    <message>
+        <source>Choose your browser</source>
+        <translation>Wybór przeglądarki www</translation>
+    </message>
+    <message>
+        <source>Browser options</source>
+        <translation>Opcje przeglądarki</translation>
+    </message>
+    <message>
+        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
+%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
+%v - revDNS, %p - port %e - email
+If you leave blank, default settings will be used</source>
+        <translation>Składnia: %s - status, %d - opis, %i - IP, %n - nick, %a - wyświetl, %f - imię
+%r - nazwisko, %m - telefon, %u - nr GG, %g - grupa, %o - zwraca spacjie jeżeli kontakt nie ma cię na liście
+%v - DNS, %p - port %e - email
+Jeżeli pole to zostanie puste, używane będą ustawienia domyślne</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -697,6 +701,28 @@ Jest to wysoce ryzykowne!</translation>
 to protect the chat window from a mess</source>
         <translation>Będzie pokazywać długie adresy URL jako http://www.start...end.com/
 aby uchronić okno rozmowy przed bałaganem</translation>
+    </message>
+    <message>
+        <source>Specify path</source>
+        <translation>Specyficzna ścieżka</translation>
+    </message>
+    <message>
+        <source>Open in new window</source>
+        <translation>Otwórz w nowym oknie</translation>
+    </message>
+    <message>
+        <source>Open in new tab</source>
+        <translation>Otwórz w nowej zakładce</translation>
+    </message>
+    <message>
+        <source>Open in background tab</source>
+        <translation>Otwórz w nowej zakładce w tle</translation>
+    </message>
+    <message>
+        <source>I didn&apos;t find the browser you selected! The path to it doesn&apos;t exists in $PATH variable. 
+You may add it to $PATH or specify location using Specify path option.</source>
+        <translation>&lt;B&gt;&lt;CENTER&gt;Nie można znaleźć wybranej przeglądarki!&lt;/CENTER&gt;&lt;/B&gt;
+Wybrana ścieżka do przeglądarki nie istnieje w zmiennej $PATH. Musisz ją do niej dodać lub podać ścieżkę do przeglądarki wybierająć jako przeglądarkę &quot;Specyficzna lokalizacja&quot;.</translation>
     </message>
 </context>
 <context>

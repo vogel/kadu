@@ -174,10 +174,6 @@
         <translation>Opzioni WWW</translation>
     </message>
     <message>
-        <source>Use default Web browser</source>
-        <translation>Usa WEB browser predefinito</translation>
-    </message>
-    <message>
         <source>Custom Web browser</source>
         <translation>WEB browser personalizzato</translation>
     </message>
@@ -228,16 +224,6 @@
     <message>
         <source>Conference window title prefix:</source>
         <translation>Prefisso del titolo della finestra di conferenza:</translation>
-    </message>
-    <message>
-        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - frist name
-%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
-%v - revDNS, %p - port %e - email
-If you leave blank, default settings will be used</source>
-        <translation>Sintassi: %s - status, %d - descrizione, %i - IP, %n - nick, %a - altnick, %f - nome
-%r - cognome, %m - cell, %u - no GG, %g - gruppo, %o - inserisce lo spazio se non sei inserito nella lista dei contatti
-%v - revDNS, %p - port, %e - email
-Se lasciate lo spazio vuoto, sarà usata impostazione predefinita</translation>
     </message>
     <message>
         <source>This text will be before syntax.
@@ -558,6 +544,21 @@ It&apos;s a high security risk!</source>
         <source>Show contacts that are blocking you</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Choose your browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Browser options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
+%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
+%v - revDNS, %p - port %e - email
+If you leave blank, default settings will be used</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -696,6 +697,27 @@ It&apos;s a high security risk!</source>
 to protect the chat window from a mess</source>
         <translation>Saranno visualizzati URL lunghi come http://www.start...end.com/
 per salvare finestra di chat da disordine</translation>
+    </message>
+    <message>
+        <source>Specify path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open in new window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open in new tab</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open in background tab</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I didn&apos;t find the browser you selected! The path to it doesn&apos;t exists in $PATH variable. 
+You may add it to $PATH or specify location using Specify path option.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1577,7 +1599,7 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     <name>Status</name>
     <message>
         <source>Online</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Accessibile</translation>
     </message>
     <message>
         <source>Online (d.)</source>
@@ -1593,7 +1615,7 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     </message>
     <message>
         <source>Invisible</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Invisibile</translation>
     </message>
     <message>
         <source>Invisible (d.)</source>
@@ -1601,7 +1623,7 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     </message>
     <message>
         <source>Offline</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Fuori linea</translation>
     </message>
     <message>
         <source>Offline (d.)</source>
