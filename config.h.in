@@ -1,5 +1,8 @@
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
+/* Define distribution type of this copy of application */
+#undef DIST_TYPE
+
 /* Define to 1 if you have the <arpa/inet.h> header file. */
 #undef HAVE_ARPA_INET_H
 
@@ -23,6 +26,9 @@
 
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
+
+/* Define to 1 if you have the `gadu' library (-lgadu). */
+#undef HAVE_LIBGADU
 
 /* Define if you have libjpeg */
 #undef HAVE_LIBJPEG

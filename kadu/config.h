@@ -17,7 +17,7 @@
 #include <qslider.h>
 #include <qvgroupbox.h>
 #include <qhbox.h>
-#include "../libgadu/lib/libgadu.h"
+#include "libgadu.h"
 
 void loadKaduConfig(void);
 void saveKaduConfig(void);

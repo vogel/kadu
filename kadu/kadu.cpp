@@ -89,7 +89,7 @@
 #include <sys/ioctl.h>
 #include <net/if.h>
 
-#include "../libgadu/lib/libgadu.h"
+#include "libgadu.h"
 
 //
 #include "misc.h"

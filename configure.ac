@@ -1,9 +1,9 @@
 # configure.ac for Kadu written by A.Smarzewski
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([Kadu],[0.3.3-pre1])
+AC_INIT([Kadu],[0.3.3-pre2])
 AC_COPYRIGHT([configure.ac written by A.Smarzewski])
-AC_REVISION([0.3.3-pre1])
+AC_REVISION([0.3.3-pre2])
 AC_PREREQ(2.53)
 
 echo
@@ -16,7 +16,7 @@ AC_CONFIG_SRCDIR([kadu/kadu.cpp])
 AC_CONFIG_AUX_DIR([admin])
 AM_CONFIG_HEADER([config.h])
 AC_CANONICAL_SYSTEM
-AM_INIT_AUTOMAKE([kadu-0.3.3-pre1],[0.3.3-pre1])
+AM_INIT_AUTOMAKE([kadu-0.3.3-pre2],[0.3.3-pre2])
 
 KDE_SET_PREFIX
 
@@ -60,7 +60,28 @@ AC_CHECK_FUNCS([floor inet_ntoa memset mkdir select strchr strdup strerror strto
 # parse configuration options
 ########################################################################
 
-MY_SUBDIRS="libgadu kadu po varia"
+MY_SUBDIRS=
+
+# existing libgadu support
+AC_ARG_WITH(existing-libgadu,[  --with-existing-libgadu do not compile libgadu, link with existing one])
+if test -z "$with_existing_libgadu"; then
+	with_existing_libgadu=no
+fi
+if test "$with_existing_libgadu" = "yes"; then
+	AC_CHECK_HEADER(libgadu.h,[
+		AC_CHECK_LIB(gadu,gg_libgadu_version,,[
+			AC_MSG_ERROR([existing libgadu was not found!])
+		],[-lpthread])
+	],[
+		AC_MSG_ERROR([existing libgadu was not found!])
+	])
+else
+	MY_SUBDIRS="$MY_SUBDIRS libgadu"
+	LIBS="$LIBS -L../libgadu/lib"
+	CPPFLAGS="$CPPFLAGS -I../libgadu/lib"
+fi
+
+MY_SUBDIRS="$MY_SUBDIRS kadu po varia"
 
 # doc support
 AC_ARG_ENABLE(doc,[  --disable-doc           do not install Kadu documentation])
@@ -102,6 +123,13 @@ else
 	ac_configure_args="$ac_configure_args --disable-debug"
 fi
 
+# dist-info support
+AC_ARG_ENABLE(dist-info,[  --enable-dist-info=DIST enable distribution type information, default: sources])
+if test -z "$enable_dist_info"; then
+	enable_dist_info=sources
+fi
+AC_DEFINE_UNQUOTED(DIST_TYPE,"$enable_dist_info",[Define distribution type of this copy of application])
+
 AC_SUBST(MY_SUBDIRS)
 
 
@@ -115,8 +143,11 @@ echo " * Configuring libgadu and sms (if enabled), please wait . . . *"
 echo " ***************************************************************"
 echo
 
-ac_configure_args="$ac_configure_args --disable-static --enable-shared"
-AC_CONFIG_SUBDIRS([libgadu])
+if test "$with_existing_libgadu" = "no"; then
+	ac_configure_args="$ac_configure_args --disable-static --enable-shared"
+	AC_CONFIG_SUBDIRS([libgadu])
+fi
+
 if test "$enable_sms" = "yes"; then
 	AC_CONFIG_SUBDIRS([sms])
 fi
@@ -145,6 +176,8 @@ echo "    Install Kadu documentation:                   $enable_doc"
 echo "    Compile and install built-in sms application: $enable_sms"
 echo "    Use pthread resolving in libgadu:             $with_pthread"
 echo "    Compile with debug symbols:                   $enable_debug"
+echo "    Link with existing libgadu:                   $with_existing_libgadu"
+echo "    Distribution type information:                $enable_dist_info"
 echo
 echo " Run make now (gmake on FreeBSD) to compile Kadu."
 echo

@@ -4,7 +4,7 @@
 #include <qvaluelist.h>
 #include <qdialog.h>
 #include <qlineedit.h>
-#include "../libgadu/lib/libgadu.h"
+#include "libgadu.h"
 
 #define __c2q(__char_pointer__) QString::fromLocal8Bit(__char_pointer__)
 
