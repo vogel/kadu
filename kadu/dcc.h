@@ -74,6 +74,8 @@ class dccSocketClass : public QObject {
 		DccGet *dialog;
 		QProcess *playprocess;
 		QProcess *recordprocess;
+		int playsocket;
+		int recordsocket;
 
 	protected slots:
 		void dccDataReceived();
