@@ -62,6 +62,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * ma³e poprawki optymalizuj±ce do dymków (mast3r)
 * ma³a przeróbka - moze nie bêdzie siê teraz wywalaæ kadu (w szczególnych
   wypadkach) przy znikaniu dymków.+Przygotowania do klikalno¶ci (mast3r)
+* male przeróbki w dymkach i dodano funkcje klikniecia na poszczegolnym
+  dymku powoduje jego znikniêcie (mast3r)
+* poprawiony b³±d - dymki nie kompilowa³y siê na qt 3.0.x (mast3r)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci

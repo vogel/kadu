@@ -35,8 +35,8 @@ class Hint : public QHBoxLayout
 
 	public slots:
 		bool nextSecond();
-		void show();
-		void setLookHint(const QFont &, const QColor &, const QColor &);
+		void setShown(bool);
+		void set(const QFont &, const QColor &, const QColor &, unsigned int, bool show = true);
 
 	signals:
 		void clicked(unsigned int);
@@ -65,11 +65,11 @@ class HintManager : public QFrame
 		void addHintNewChat(const QString &, const QString &);
 		void addHintStatus(const UserListElement &, unsigned int status, unsigned int oldstatus);
 		void loadConfig();
+		void deleteHint(unsigned int);
 
 	private slots:
-		void deleteHint();
+		void oneSecond();
 		void setHint();
-		void clickedHint(unsigned int);
 };
 
 class HintManagerSlots: public QObject

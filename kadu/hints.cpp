@@ -56,21 +56,29 @@ bool Hint::nextSecond(void)
 	return secs;
 }
 
-void Hint::show(void)
+void Hint::setShown(bool show)
 {
-	kdebug("Hint::show()\n");
+	kdebug("Hint::setShown() show=%d\n", show);
+
 	if (icon != NULL)
-		icon->show();
-	label->show();
+		icon->setShown(show);
+	label->setShown(show);
 }
 
-void Hint::setLookHint(const QFont &font, const QColor &color, const QColor &bgcolor)
+void Hint::set(const QFont &font, const QColor &color, const QColor &bgcolor, unsigned int id, bool show)
 {
+	kdebug("Hint::set()\n");
+
+	ident = id;
 	label->setFont(font);
 	if (icon != NULL)
+	{
 		icon->setPaletteBackgroundColor(bgcolor);
+		icon->setShown(show);
+	}
 	label->setPaletteForegroundColor(color);
 	label->setPaletteBackgroundColor(bgcolor);
+	label->setShown(show);
 }
 
 bool Hint::eventFilter(QObject *obj, QEvent *ev)
@@ -113,7 +121,7 @@ HintManager::HintManager()
 	loadConfig();
 
 	hint_timer = new QTimer(this);
-	connect(hint_timer,SIGNAL(timeout()),this,SLOT(deleteHint()));
+	connect(hint_timer,SIGNAL(timeout()),this,SLOT(oneSecond()));
 }
 
 void HintManager::setHint(void) {
@@ -139,27 +147,32 @@ void HintManager::setHint(void) {
 	}
 }
 
-void HintManager::deleteHint(void)
+void HintManager::deleteHint(unsigned int id)
 {
-	kdebug("HintManager::deleteHint()\n");
-
-	for ( int i = 0; i < hints.count(); i++ )
+	kdebug("HintManager::deleteHint() id=%d\n", id);
+	grid->removeItem(hints.at(id));
+	hints.remove(id);
+	if (!hints.count())
 	{
+		hint_timer->stop();
+		hide();
+		kdebug("HintManager::deleteHint hints is empty !!\n");
+		return;
+	}
+	for (int i = id; i < hints.count(); i++)
+		hints.at(i)->setId(i);
+	setHint();
+}
+
+void HintManager::oneSecond(void)
+{
+	kdebug("HintManager::oneSecond()\n");
+	for (int i = 0; i < hints.count(); i++)
 		if (!(hints.at(i)->nextSecond()))
 		{
-			grid->removeItem(hints.at(i));
-			hints.remove(hints.at(i));
+			deleteHint(i);
 			i--;
-			if (!hints.count())
-			{
-				hint_timer->stop();
-				hide();
-				kdebug("HintManager::deleteHint hints is empty !!\n");
-				return;
-			}
-			setHint();
 		}
-	}
 }
 
 void HintManager::addHint(const QString& text, const QPixmap& pixmap,  const QFont &font, const QColor &color, const QColor &bgcolor, unsigned int timeout)
@@ -168,18 +181,19 @@ void HintManager::addHint(const QString& text, const QPixmap& pixmap,  const QFo
 	hints.append(new Hint(this, text, pixmap, timeout));
 	int i = hints.count()-1;
 	grid->addItem(hints.at(i));
-	hints.at(i)->setLookHint(font, color, bgcolor);
-	hints.at(i)->show();
-	hints.at(i)->setId(i);
-	connect(hints.at(i), SIGNAL(clicked(unsigned int)), this, SLOT(clickedHint(unsigned int)));
+	hints.at(i)->set(font, color, bgcolor, i);
+	connect(hints.at(i), SIGNAL(clicked(unsigned int)), this, SLOT(deleteHint(unsigned int)));
 	setHint();
 	if (!hint_timer->isActive())
 		hint_timer->start(1000);
-	show();
+	if (!isShown())
+		show();
 }
 
 void HintManager::addHintError(const QString &error)
 {
+	if (hintmanager == NULL)
+		return;
 	if (config_file.readBoolEntry("Hints","Errors"))
 		addHint("<b>"+tr("Error:")+"</b> "+error, *icons->loadIcon("blocking"), QFont(config[11][0], config[11][1].toInt()), QColor(config[11][2]), QColor(config[11][3]), config[11][4].toInt());
 }
@@ -257,18 +271,6 @@ void HintManager::addHintStatus(const UserListElement &ule, unsigned int status,
 				addHint("<b>"+ule.altnick+" </b>"+tr("is unavailable"), *icons->loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
 		return;
 	}
-}
-
-void HintManager::clickedHint(unsigned int id)
-{
-	kdebug("HintManager::clickedHint() id=%d\n", id);
-/*	grid->removeItem(hints.at(id));
-	hints.remove(hints.at(id));
-	int count = hints.count();
-	if (id < count+1)
-	
-	setHint();
-*/
 }
 
 void HintManager::loadConfig(void)
