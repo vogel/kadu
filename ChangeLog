@@ -13,6 +13,8 @@
 * uaktualnione wysy³anie smsów do telefonów komórkowych w sieci era (chilek)
 * poprawka w oknie about - Kadu ju¿ przecie¿ nie bazuje na KDE (adrian)
 * zawsze otwiera siê okno czatu niezale¿nie od statusu u¿ytkownika (chilek)
+* kadu dzia³a w unicode, pliki konfiguracyjne w ISO 8859-2, komunikacja z
+  serwerami GG w CP1250 (chilek)
 
 +++ wersja 0.3.3-rc4
 * dodatkowe opcje dostêpne w menu podrêcznym u¿ytkownika (blokowanie, ignorowanie,
