@@ -91,6 +91,8 @@ class ConfigDialog : public QTabDialog	{
 		QCheckBox *b_hinterror;
 		QCheckBox *b_showdesc;
 		QCheckBox *b_multicoluserbox;
+		QCheckBox *b_disconnectdesc;
+		QLineEdit *e_disconnectdesc;
 
 		QLineEdit *e_soundprog;
 		QCheckBox *b_playsound;
@@ -294,10 +296,13 @@ struct config {
 	bool hintalert;
 	bool showdesc;
 	bool multicoluserbox;
+	bool disconnectwithdesc;
+	
 	QString panelsyntax;
 	QString chatsyntax;
 	QString conferenceprefix;
 	QString conferencesyntax;
+	QString disconnectdesc;
 
 	QRect geometry;
 	QString dockwindows;

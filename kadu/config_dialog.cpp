@@ -148,6 +148,8 @@ void loadKaduConfig(void) {
 	config.chatsyntax = config_file.readEntry("ChatContents", "");
 	config.conferenceprefix = config_file.readEntry("ConferencePrefix", "");
 	config.conferencesyntax = config_file.readEntry("ConferenceContents", "%a (%s[: %d])");
+	config.disconnectwithdesc = config_file.readBoolEntry("DisconnectWithDescription", false);
+	config.disconnectdesc = config_file.readEntry("DisconnectDescription","");
 
 	config_file.setGroup("Notify");
 	config.soundnotify = strdup(config_file.readEntry("NotifySound", ""));
@@ -297,6 +299,8 @@ void saveKaduConfig(void) {
 	config_file.writeEntry("ChatContents", config.chatsyntax);
 	config_file.writeEntry("ConferencePrefix", config.conferenceprefix);
 	config_file.writeEntry("ConferenceContents", config.conferencesyntax);
+	config_file.writeEntry("DisconnectWithDescription", config.disconnectwithdesc);
+	config_file.writeEntry("DisconnectDescription", config.disconnectdesc);
 
 	config_file.setGroup("Proxy");
 	config_file.writeEntry("UseProxy",config.useproxy);
@@ -509,6 +513,15 @@ void ConfigDialog::setupTab1(void) {
 	while (i < 7 && config.defaultstatus != gg_statuses[i])
 		i++;
 	cb_defstatus->setCurrentItem(i);
+
+	b_disconnectdesc = new QCheckBox(i18n("Enable disconnect with description"),box1);
+	b_disconnectdesc->setChecked(config.disconnectwithdesc);
+
+	e_disconnectdesc = new QLineEdit(config.disconnectdesc,box1);
+	e_disconnectdesc->setEnabled(config.disconnectwithdesc);
+	e_disconnectdesc->setMaxLength(GG_STATUS_DESCR_MAXSIZE);
+
+	QObject::connect(b_disconnectdesc, SIGNAL(toggled(bool)), e_disconnectdesc, SLOT(setEnabled(bool)));
 
 	QGrid* grid = new QGrid(3, box1);
 
@@ -1629,6 +1642,9 @@ void ConfigDialog::updateConfig(void) {
 		}
 	else
 		config.trayhint = config.hinterror = false;
+
+	config.disconnectwithdesc = b_disconnectdesc->isChecked();
+	config.disconnectdesc = e_disconnectdesc->text();
 
 	config.showdesc = b_showdesc->isChecked();
 	kadu->showdesc(config.showdesc);

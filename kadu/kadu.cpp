@@ -1762,15 +1762,25 @@ bool Kadu::close(bool quit) {
 		config.splitsize.setHeight(descrtb->size().height());
 		config.geometry = geometry();
 		saveKaduConfig();
-		writeIgnored();
 		pending.writeToFile();
-		kadu->disconnectNetwork();
-		kdebug("Kadu::close(): Saved config, ignored and disconnect\n");
-		QMainWindow::close(true);
-		a->quit();
+		writeIgnored();
+		if (config.disconnectwithdesc && getActualStatus() != GG_STATUS_NOT_AVAIL) {
+			kdebug("Kadu::close(): Set status NOT_AVAIL_DESCR with disconnect description(%s)\n",(const char *)config.disconnectdesc.local8Bit());
+			own_description = config.disconnectdesc;
+			setStatus(GG_STATUS_NOT_AVAIL_DESCR);
+		}
+		disconnectNetwork();
+		kdebug("Kadu::close(): Saved config, disconnect and ignored\n");
+		QWidget::close(true);
+//		a->quit();
 		kdebug("Kadu::close(): Graceful shutdown...\n");
 		return true;
 	}
+}
+
+void Kadu::quitApplication() {
+	kdebug("Kadu::quitApplication()\n");
+	close(true);
 }
 
 Kadu::~Kadu(void) {

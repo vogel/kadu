@@ -81,6 +81,8 @@ int main(int argc, char *argv[])
 	sim_key_path = strdup(ggPath("keys/").local8Bit());
 #endif
 
+	QObject::connect(a, SIGNAL(aboutToQuit()), kadu, SLOT(quitApplication()));
+
 //	ArtsSoundDevice *snd = new ArtsSoundDevice(11000, 8, 1);
 /*	DspSoundDevice *snd = new DspSoundDevice(11000, 8, 1);
 	char buf[65536];

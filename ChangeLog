@@ -52,6 +52,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * ESC gdy wy³±czona jest ikonka w panelu dokuj±cym nic nie powoduje (mast3r)
 * przy zamykaniu Kadu przez np. KDE kadu powinno zapisaæ konfiguracje (mast3r)
 * wa¿na poprawka - Kadu wreszcie nie blokuje zamykania KDE !!! (mast3r)
+* mozna ustawiæ opis który zostanie ustawiony przy zamykaniu Kadu (mast3r)
+* zamkniecie Kadu przez KDE, moze tym razem bêdzie za kazdym razem zapisywac
+  konfiguracje (ogolnie to jest jaka¶ dziwna sytuacja) (mast3r)
 
 +++ wersja 0.3.4-pre3
 * dodane przeszukiwanie historii (chilek)

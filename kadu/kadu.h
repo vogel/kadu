@@ -100,6 +100,7 @@ class Kadu : public QMainWindow
 		void addUserAction();
 		void infopanelUpdate(uin_t);
 		virtual bool close(bool quit = false);
+		void quitApplication();
 
 	private:
 		QFrame *centralFrame;
