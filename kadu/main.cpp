@@ -14,8 +14,8 @@
 #include <sys/types.h>
 #include <locale.h>
 #include <libintl.h>
-#include <fcntl.h>
-#include <unistd.h>
+//#include <fcntl.h>
+//#include <unistd.h>
 
 //
 #include "kadu.h"
