@@ -282,7 +282,7 @@ void changePassword::socketEvent() {
 				setEnabled(true);
 				}
 			else {
-				saveKaduConfig();
+				config_file.sync();
 				accept();
 				}
 			break;

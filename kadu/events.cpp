@@ -227,7 +227,7 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 	// ignorujemy wiadomosci systemowe
 	if (senders[0] == 0)
 	{
-		if (msgclass <= config_file.readNumEntry("Global","SystemMsgIndex"))
+		if (msgclass <= config_file.readNumEntry("Global","SystemMsgIndex",0))
 		{
 			kdebug("Already had this message, ignoring\n");
 			return;

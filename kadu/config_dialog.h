@@ -16,7 +16,6 @@
 #include <qslider.h>
 
 void loadKaduConfig(void);
-void saveKaduConfig(void);
 
 
 /**
@@ -114,9 +113,9 @@ class ConfigDialog : public QTabDialog	{
 			    
 		static void registerSpinBox(
 			    const QString& parent,const QString& caption,
-			    const QString& group,const QString& entry,const int value,
+			    const QString& group,const QString& entry,
 			    const int minValue=0, const int maxValue=100,const int step=1,
-			    const QString& tip="",const QString& name="");
+			    const int value=50,const QString& tip="",const QString& name="");
 			    
 		static void registerTab(const QString& caption);
 		
@@ -130,6 +129,8 @@ class ConfigDialog : public QTabDialog	{
 		static void registerSlotOnDestroy(const QObject* receiver,const char* slot);
 		
 		static QWidget* getWidget(const QString& parent,const QString& caption,const QString& name="");
+		static bool existControl(const QString& parent,const QString& caption,const QString& name="");
+		
 		//
 		static void initModule();
 	
@@ -161,6 +162,7 @@ class ConfigSlots: public QObject
 	    void ifDccIpEnabled(bool);
 	    void ifDefServerEnabled(bool);
 	    void useTlsEnabled(bool);
+
 };
 
 #endif

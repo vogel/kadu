@@ -688,7 +688,7 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time) {
 		}
 	from = (entries.count() < config_file.readNumEntry("Other","ChatHistoryCitation")) ? 0 : entries.count() - config_file.readNumEntry("Other","ChatHistoryCitation");
 	for (i = from; i < entries.count(); i++)
-		if (entries[i].date.secsTo(QDateTime::currentDateTime()) <= config_file.readNumEntry("Other","ChatHistoryQuotationTime") * 3600)
+		if (entries[i].date.secsTo(QDateTime::currentDateTime()) <= -config_file.readNumEntry("Other","ChatHistoryQuotationTime") * 3600)
 			if (entries[i].type == HISTORYMANAGER_ENTRY_MSGSEND
 				|| entries[i].type == HISTORYMANAGER_ENTRY_CHATSEND)
 				formatMessage(true, config_file.readEntry("Global","Nick"), entries[i].message,

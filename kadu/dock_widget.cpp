@@ -300,6 +300,7 @@ void TrayIcon::showErrorHint(const QString &str) {
 
 void TrayIcon::initModule()
 {
+	kdebug("TrayIcon::initModule() \n");
 	ConfigDialog::registerTab(tr("General"));
 	ConfigDialog::registerCheckBox(tr("General"),tr("Enable tray hints"),"Global","TrayHint",true);
 	ConfigDialog::registerVGroupBox(tr("General"),"---");

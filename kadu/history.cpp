@@ -1187,10 +1187,11 @@ void History::closeEvent(QCloseEvent *e) {
 
 void History::initModule()
 {
+	kdebug("History::initModule() \n");
 	HistorySlots *historyslots=new HistorySlots();
 	ConfigDialog::registerTab(tr("History"));
 	ConfigDialog::registerVGroupBox(tr("History"),tr("Quoted phrases during chat open"));
-	ConfigDialog::registerSpinBox(tr("Quoted phrases during chat open"),tr("Count:"),"Other","ChatHistoryCitation",0,200,1);
+	ConfigDialog::registerSpinBox(tr("Quoted phrases during chat open"),tr("Count:"),"Other","ChatHistoryCitation",0,200,1,10);
 	ConfigDialog::registerLabel(tr("Quoted phrases during chat open"),tr("Don't quote phrases older than:"));
 	ConfigDialog::registerSlider(tr("Quoted phrases during chat open"),"historyslider","Other","ChatHistoryQuotationTime",-744,-1,24,-336);
 	ConfigDialog::registerLabel(tr("Quoted phrases during chat open"),"","dayhour");
@@ -1493,15 +1494,13 @@ void HistorySlots::onCreateConfigDialog()
 	kdebug("HistorySlots::onCreateConfigDialog() \n");
 	QLabel *l_qtimeinfo=(QLabel*)(ConfigDialog::getWidget(tr("Quoted phrases during chat open"),"","dayhour"));
 	l_qtimeinfo->setAlignment(Qt::AlignHCenter);
-	updateQuoteTimeLabel(-config_file.readNumEntry("Other","ChatHistoryQuotationTime",336));
+	updateQuoteTimeLabel(config_file.readNumEntry("Other","ChatHistoryQuotationTime"));
 
 };
 
 void HistorySlots::onDestroyConfigDialog()
 {
 	kdebug("HistorySlots::onDestroyConfigDialog() \n");
-	QSlider *sl_quotation=(QSlider*)(ConfigDialog::getWidget(tr("Quoted phrases during chat open"),"historyslider"));
-	config_file.writeEntry("Other","ChatHistoryQuotationTime",-sl_quotation->value());
 
 };
 

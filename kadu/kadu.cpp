@@ -222,14 +222,14 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	ConfigDialog::registerSlotOnCreate(kaduslots,SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnDestroy(kaduslots,SLOT(onDestroyConfigDialog()));
 
-	Sms::initModule();
-	TrayIcon::initModule();		
-	AutoAwayTimer::initModule();
 
-	ConfigDialog::initModule();
+	Sms::initModule();
 	UserBox::initModule();
 	Chat::initModule();
 	History::initModule();
+	TrayIcon::initModule();
+	ConfigDialog::initModule();	
+	AutoAwayTimer::initModule();
 	
 	ConfigDialog::registerHotKeyEdit(tr("Define keys"),tr("Remove from userlist"),  "ShortCuts","kadu_deleteuser","Del");
 	ConfigDialog::registerHotKeyEdit(tr("Define keys"),tr("View/edit user info"),"ShortCuts","kadu_persinfo","Ins");
@@ -264,6 +264,26 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	int g;
 
 	loadKaduConfig();
+	    defaultdescriptions = QStringList::split(QRegExp("<-->"),config_file.readEntry("Global","DefaultDescription", tr("I am busy.")),true);
+
+		if (!config_dccip.setAddress(config_file.readEntry("Global","DccIP", "")))
+			config_dccip.setAddress((unsigned int)0);
+
+	        if (!config_extip.setAddress(config_file.readEntry("Global","ExternalIP", "")))
+			config_extip.setAddress((unsigned int)0);
+
+
+	    QStringList servers;
+	    QHostAddress ip2;
+	    servers = QStringList::split(";", config_file.readEntry("Global","Server", ""));
+	    config_servers.clear();
+	        for (int i = 0; i < servers.count(); i++)
+		    {
+		        if (ip2.setAddress(servers[i]))
+  			       config_servers.append(ip2);
+		    }
+		server_nr = 0;
+
         
 	QRect geom;
 	geom=config_file.readRectEntry("Global","Geometry");
@@ -1751,14 +1771,33 @@ bool Kadu::close(bool quit) {
 		return false;
 		}
 	else {
-		config_file.readSizeEntry("Global","SplitSize").setWidth(userbox->size().height());
-		config_file.readSizeEntry("Global","SplitSize").setHeight(descrtb->size().height());
-		QRect geom=config_file.readRectEntry("Global","Geometry");
-		geom.setX(pos().x());
-		geom.setY(pos().y());
-		geom.setWidth(size().width());
-		geom.setHeight(size().height());
-		saveKaduConfig();
+	
+	    if (config_file.readBoolEntry("Global","SaveGeometry"))
+	    {
+		QSize split;
+		    split.setWidth(userbox->size().height());
+		    split.setHeight(descrtb->size().height());
+		
+		config_file.writeEntry("Global","SplitSize",split);
+		
+		QRect geom;
+		    geom.setX(pos().x());
+		    geom.setY(pos().y());
+		    geom.setWidth(size().width());
+		    geom.setHeight(size().height());
+		
+		config_file.writeEntry("Global","Geometry",geom);
+	    }
+		config_file.writeEntry("Global","DefaultDescription", defaultdescriptions.join("<-->"));
+		
+		QString dockwindows=config_file.readEntry("Global","DockWindows");
+		QTextStream stream(&dockwindows, IO_WriteOnly);
+		stream << *kadu;
+		dockwindows.replace(QRegExp("\\n"), "\\n");
+		
+		config_file.writeEntry("Global","DockWindows", dockwindows);
+		config_file.sync();
+		
 		pending.writeToFile();
 		writeIgnored();
 		if (config_file.readBoolEntry("Other","DisconnectWithDescription") && getActualStatus() != GG_STATUS_NOT_AVAIL) {

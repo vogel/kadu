@@ -213,7 +213,16 @@ void AutoAwayTimer::initModule()
 	AutoAwaySlots *autoawayslots=new AutoAwaySlots();
 	ConfigDialog::registerSlotOnCreate(autoawayslots,SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnDestroy(autoawayslots,SLOT(onDestroyConfigDialog()));
-}
+	
+	ConfigDialog::registerGrid(tr("General"),"grid",3);
+	ConfigDialog::registerCheckBox("grid",tr("Enable dock icon"),"Global","UseDocking",true);
+	ConfigDialog::registerCheckBox("grid",tr("Start docked"),"Global","RunDocked",false);
+	ConfigDialog::registerCheckBox("grid",tr("Private status"),"Global","PrivateStatus",false);
+	ConfigDialog::registerCheckBox("grid",tr("Check for updates"),"Global","CheckUpdates",true);
+	ConfigDialog::registerCheckBox("grid",tr("Add to description"),"Global","AddToDescription",false);
+	ConfigDialog::connectSlot(tr("Enable dock icon"), SIGNAL(toggled(bool)), autoawayslots, SLOT(ifDockEnabled(bool)));
+
+};
 
 void AutoAwaySlots::onCreateConfigDialog()
 {
@@ -247,4 +256,26 @@ void AutoAwaySlots::onDestroyConfigDialog()
 	QComboBox* cb_defstatus=(QComboBox*)(ConfigDialog::getWidget(tr("Default Status"),"","cb_defstatus"));
 	config_file.writeEntry("Global","DefaultStatus",gg_statuses[cb_defstatus->currentItem()]);
 	config_file.sync();	
-}
+};
+
+void AutoAwaySlots::ifDockEnabled(bool value)
+{
+
+	kdebug("AutoAwaySlots::ifDockEnabled() \n");
+	
+	QCheckBox *b_trayhint=(QCheckBox*)(ConfigDialog::getWidget(tr("General"),tr("Enable tray hints")));
+	QCheckBox *b_hinterror=(QCheckBox*)(ConfigDialog::getWidget(tr("---"),tr("Show connection errors in tray hints")));
+	if (!value) {
+		b_trayhint->setChecked(false);
+		b_hinterror->setChecked(false);
+//		b_notifyhint->setChecked(false);
+//		b_notifyhint->setEnabled(false);
+		b_trayhint->setEnabled(false);
+		}
+	else
+		b_trayhint->setEnabled(true);
+//		b_notifyhint->setEnabled(true);
+
+
+
+};

@@ -18,6 +18,7 @@
 #include "emoticons.h"
 #include "config_dialog.h"
 #include "config_file.h"
+#include "dock_widget.h"
 #include "debug.h"
 
 #ifdef HAVE_OPENSSL
@@ -29,154 +30,17 @@ extern "C"
 //
 
 void loadKaduConfig(void) {  	
-	QStringList servers;
 	QString temp;
 	/* first read our own config file... */
 	kdebug("loadKaduConfig(): Reading config file...\n");
-	
-	defaultdescriptions = QStringList::split(QRegExp("<-->"),
-		config_file.readEntry("Global", "DefaultDescription", QT_TR_NOOP("I am busy.")), true);
-
-	temp = config_file.readEntry("Global","VolumeControl");
-	if (temp == "")
-	config_file.writeEntry("Global", "VolumeControl", false);
-	temp = config_file.readEntry("Global", "SoundVolume");
-	if (temp == "")
-	config_file.writeEntry("Global", "SoundVolume", 1.0);
-	
-	
-	temp=config_file.readEntry("Global","Logging");
-	if (temp=="")
-	config_file.writeEntry("Global","Logging",true);	
-	
-	temp=config_file.readEntry("Global","Message_sound");
-	if (temp=="")
-	config_file.writeEntry("Global","Message_sound","");
-
-	temp=config_file.readEntry("Global","Chat_sound");
-	if (temp=="")
-	config_file.writeEntry("Global","Chat_sound","");
-
-	temp=config_file.readEntry("Global","SoundPlayer");
-	if (temp=="")
-	config_file.writeEntry("Global","SoundPlayer","");
-
-	
-	temp=config_file.readEntry("Global","SaveGeometry");
-	if (temp=="")
-	config_file.writeEntry("Global","SaveGeometry",true);
-	
-	temp=config_file.readEntry("Global","PlaySoundChat");
-	if (temp=="")
-	config_file.writeEntry("Global","PlaySoundChat",true);
-	
-	temp=config_file.readEntry("Global","PlaySoundChatInvisible");
-	if (temp=="")
-	config_file.writeEntry("Global","PlaySoundChatInvisible",true);
-	
-	temp=config_file.readEntry("Global","PlaySound");
-	if (temp=="")
-	config_file.writeEntry("Global","PlaySound",false);
-	
-	temp=config_file.readEntry("Global","PlaySoundArtsDsp");
-	if (temp=="")
-	config_file.writeEntry("Global","PlaySoundArtsDsp",false);
-	
-	temp=config_file.readEntry("Global","SystemMsgIndex");
-	if (temp=="")
-	config_file.writeEntry("Global","SystemMsgIndex",0);
-	
-	temp=config_file.readEntry("Global","AutoAway");
-	if (temp=="")
-	config_file.writeEntry("Global","AutoAway", false);
-	
-	temp=config_file.readEntry("Global","AutoAwayTime");
-	if (temp=="")
-	config_file.writeEntry("Global","AutoAwayTime", 300);
-	
-	temp=config_file.readEntry("Global","AllowDCC");
-	if (temp=="")
-	config_file.writeEntry("Global","AllowDCC",false);
-	
-	if (!config_dccip.setAddress(config_file.readEntry("Global","DccIP", "")))
-		config_dccip.setAddress((unsigned int)0);
-		
-	if (!config_extip.setAddress(config_file.readEntry("Global","ExternalIP", "")))
-	config_extip.setAddress((unsigned int)0);	
-
-	temp=config_file.readEntry("Global","ExternalPort");
-	if (temp=="")
-	config_file.writeEntry("Global","ExternalPort", 0);
-	
-	
-        servers = QStringList::split(";", config_file.readEntry("Global","Server", ""));
-	config_servers.clear();
-	QHostAddress ip;
-	    for (int i = 0; i < servers.count(); i++) 
-			{
-		    if (ip.setAddress(servers[i]))
-				config_servers.append(ip);
-			}
-						
-
-
-	temp=config_file.readEntry("Global","isDefServers");
-	if (temp=="")
-	config_file.writeEntry("Global","isDefServers",true);
-	
-#ifdef HAVE_OPENSSL
-	temp=config_file.readEntry("Global","UseTLS");
-	if (temp=="")
-	config_file.writeEntry("Global","UseTLS", 0);
-#else
-	config_file.writeEntry("Global","UseTLS", 0);	
-#endif
-
-	temp=config_file.readEntry("Global","DefaultPort");
-	if (temp=="")
-	config_file.writeEntry("Global","DefaultPort", 8074);
-	
-	server_nr = 0;	
-	
-	temp=config_file.readEntry("Global","UseDocking");
-	if (temp=="")
-	config_file.writeEntry("Global","UseDocking",true);	
-	
-	temp=config_file.readEntry("Global","RunDocked");
-	if (temp=="")
-	config_file.writeEntry("Global","RunDocked", false);
 	
 	temp=config_file.readEntry("Global","AutoRaise");
 	if (temp=="")
 	config_file.readBoolEntry("Global","AutoRaise",false);
 	
-	temp=config_file.readEntry("Global","PrivateStatus");
-	if (temp=="")
-	config_file.writeEntry("Global","PrivateStatus", false);
-	
 	temp=config_file.readEntry("Global","DisplayGroupTabs");
 	if (temp=="")
 	config_file.writeEntry("Global","DisplayGroupTabs", true);
-	
-	temp=config_file.readEntry("Global","CheckUpdates");
-	if (temp=="")
-	config_file.writeEntry("Global","CheckUpdates", true);
-	
-	temp=config_file.readEntry("Global","AddToDescription");
-	if (temp=="")
-	config_file.writeEntry("Global","AddToDescription", false);
-	
-	temp=config_file.readEntry("Global","TrayHint");
-	if (temp=="")
-	config_file.writeEntry("Global","TrayHint",true);
-	
-	temp=config_file.readEntry("Global","HintError");
-	if (temp=="")
-	config_file.writeEntry("Global","HintError",true);
-	
-	temp=config_file.readEntry("Global","TimeoutHint");
-	if (temp=="")
-	config_file.writeEntry("Global","TimeoutHint",5);
 	
 	QRect def_rect(0, 0, 145, 465);
 	temp=config_file.readEntry("Global","Geometry");
@@ -212,26 +76,6 @@ void loadKaduConfig(void) {
 
 //	
 	
-	temp=config_file.readEntry("SMS","BuiltInApp");
-	if (temp=="")
-	config_file.writeEntry("SMS","BuiltInApp",true);
-	
-	temp=config_file.readEntry("SMS","SmsApp");
-	if (temp=="")
-	config_file.writeEntry("SMS","SmsApp","");
-
-	temp=config_file.readEntry("SMS","SmsString");
-	if (temp=="")
-	config_file.writeEntry("SMS","SmsString","");
-
-
-	temp=config_file.readEntry("SMS","UseCustomString");
-	if (temp=="")
-	config_file.writeEntry("SMS","UseCustomString",false);
-
-		    	
-//
-	
 	temp=config_file.readEntry("Other","EmoticonsStyle");
 	if (temp=="")
 	config_file.writeEntry("Other","EmoticonsStyle",EMOTS_ANIMATED);
@@ -253,15 +97,7 @@ void loadKaduConfig(void) {
 	temp=config_file.readEntry("Other","ChatPruneLen");
 	if (temp=="")
 	config_file.writeEntry("Other","ChatPruneLen",20);
-	
-	temp=config_file.readEntry("Other","ChatHistoryCitation");
-	if (temp=="")
-	config_file.writeEntry("Other","ChatHistoryCitation", 10);
-	
-	temp=config_file.readEntry("Other","ChatHistoryQuotationTime");
-	if (temp=="")
-	config_file.writeEntry("Other","ChatHistoryQuotationTime", 336);
-	
+		
 	temp=config_file.readEntry("Other","MessageAcks");
 	if (temp=="")
 	config_file.writeEntry("Other","MessageAcks",true);
@@ -301,10 +137,6 @@ void loadKaduConfig(void) {
 	if (temp=="")
 	config_file.writeEntry("Other","ConferenceContents", "%a (%s[: %d])");	
 
-	temp=config_file.readEntry("Other","DisconnectWithDescription");
-	if (temp=="")
-	config_file.writeEntry("Other","DisconnectWithDescription", false);
-	
 //
 	temp=config_file.readEntry("Notify","NotifySound");
 	if (temp=="")	
@@ -331,32 +163,6 @@ void loadKaduConfig(void) {
 	config_file.writeEntry("Notify","NotifyWithHint",true);	
 
 //	    	
-	
-	temp=config_file.readEntry("Proxy","UseProxy");
-	if (temp=="")
-	config_file.writeEntry("Proxy","UseProxy", false);
-
-	temp=config_file.readEntry("Proxy","ProxyHost");
-	if (temp=="")
-	config_file.writeEntry("Proxy","ProxyHost", "");
-
-
-	    if (!config_proxyaddr.setAddress(config_file.readEntry("Proxy","ProxyHost", "")))
-		    config_proxyaddr.setAddress((unsigned int)0);
-
-	temp=config_file.readEntry("Proxy","ProxyPort");
-	if (temp=="")
-	config_file.writeEntry("Proxy","ProxyPort", 0);
-
-	temp=config_file.readEntry("Proxy","ProxyUser");
-	if (temp=="")
-	config_file.writeEntry("Proxy","ProxyUser", "");
-
-	temp=config_file.readEntry("Proxy","ProxyPassword");
-	if (temp=="")
-	config_file.writeEntry("Proxy","ProxyPassword", "");
-				
-//
 	
 	QColor def_color("#FFFFFF");
 
@@ -429,40 +235,8 @@ void loadKaduConfig(void) {
 	temp=config_file.readEntry("Fonts","TrayHintFont");
 	if (temp=="")
 	config_file.writeEntry("Fonts","TrayHintFont", def_font);
-			    
-
 
 	
-}
-
-void saveKaduConfig(void) {
-	QStringList servers;
-
-	kdebug("saveKaduConfig(): Writing config files...\n");
-	config_file.writeEntry("Global","Geometry",kadu->geometry());
-	
-	config_file.writeEntry("Global","DefaultDescription", defaultdescriptions.join("<-->"));
-
-
-    for (int i = 0; i < config_servers.count(); i++)
-	    servers.append(config_servers[i].toString());
-		config_file.writeEntry("Global","Server", servers.join(";"));
-
-		
-
-	
-//#ifdef HAVE_OPENSSL
-//        config_file.writeEntry("Other","Encryption");
-//#endif
-		
-
-	QString dockwindows=config_file.readEntry("Global","DockWindows");
-	QTextStream stream(&dockwindows, IO_WriteOnly);
-	stream << *kadu;
-	dockwindows.replace(QRegExp("\\n"), "\\n");
-	config_file.writeEntry("Global","DockWindows", dockwindows);
-
-	config_file.sync();
 }
 
 QString ConfigDialog::acttab = QT_TR_NOOP("General");
@@ -491,7 +265,6 @@ ConfigDialog::ConfigDialog(QWidget *parent, const char *name) : QTabDialog(paren
 		    for(QValueList<RegisteredControl>::iterator j=RegisteredControls.begin(); j!=RegisteredControls.end(); j++)
 				if((*j).caption==(*i).parent)
 					parent=(*j).widget;
-
 		switch((*i).type)
 		{
 			case CONFIG_CHECKBOX:
@@ -577,7 +350,7 @@ ConfigDialog::ConfigDialog(QWidget *parent, const char *name) : QTabDialog(paren
 				pageStep=values[2].toInt();
 				value=values[3].toInt();
 				QSlider *slider=new QSlider(minVal,maxVal,pageStep,value,Qt::Horizontal,parent,(*i).caption);
-				slider->setValue(-config_file.readNumEntry((*i).group,(*i).entry));
+				slider->setValue(config_file.readNumEntry((*i).group,(*i).entry));
 				slider->setTickmarks(QSlider::Below);
 				(*i).widget=slider;
 				QToolTip::add((*i).widget,(*i).tip);
@@ -619,15 +392,17 @@ ConfigDialog::ConfigDialog(QWidget *parent, const char *name) : QTabDialog(paren
 				(*i).widget=box;
 				break;
 			}
-			
-		};			
 
+
+		};
 			for(QValueList<ElementConnections>::iterator k=(*i).ConnectedSlots.begin(); k!=(*i).ConnectedSlots.end(); k++)
 			{
 				connect((*i).widget,(*k).signal,(*k).receiver,(*k).slot);
 			}
+		
 	};
 	//
+
 
 		for(QValueList<ElementConnections>::iterator a=SlotsOnCreate.begin(); a!=SlotsOnCreate.end(); a++)
 			connect(this,SIGNAL(create()),(*a).receiver,(*a).slot);
@@ -656,20 +431,22 @@ void ConfigDialog::registerCheckBox(
 			const QString& parent,const QString& caption,
 			const QString& group,const QString& entry,const bool defaultS,const QString& tip,const QString& name)
 {
-	RegisteredControl c;
-	c.type=CONFIG_CHECKBOX;
-	c.parent=parent;
-	c.name=name;
-	c.caption=caption;
-	c.group=group;
-	c.entry=entry;
-	c.defaultS=QString::number(defaultS);
-	c.tip=tip;
-	if (config_file.readEntry(group,entry)=="")
-	{		
-		config_file.writeEntry(group,entry,defaultS);
-	}
-	RegisteredControls.append(c);
+	if (!existControl(parent,caption,name)){
+		RegisteredControl c;
+		c.type=CONFIG_CHECKBOX;
+		c.parent=parent;
+		c.name=name;
+		c.caption=caption;
+		c.group=group;
+		c.entry=entry;
+		c.defaultS=QString::number(defaultS);
+		c.tip=tip;
+		if (config_file.readEntry(group,entry)=="")
+		{		
+			config_file.writeEntry(group,entry,defaultS);
+		}
+		RegisteredControls.append(c);
+						}
 };
 
 
@@ -678,120 +455,135 @@ void ConfigDialog::registerComboBox(
 			const QString& parent,const QString& caption,
 			const QString& group,const QString& entry,const QString& tip,const QString& name)
 {
-	RegisteredControl c;
-	c.type=CONFIG_COMBOBOX;
-	c.parent=parent;
-	c.name=name;
-	c.caption=caption;
-	c.group=group;
-	c.entry=entry;
-	c.tip=tip;
-	
-	if (config_file.readEntry(group,entry)=="")
-	config_file.writeEntry(group,entry,c.defaultS);
-	
-	RegisteredControls.append(c);
+	if (!existControl(parent,caption,name)){
+		RegisteredControl c;
+		c.type=CONFIG_COMBOBOX;
+		c.parent=parent;
+		c.name=name;
+		c.caption=caption;
+		c.group=group;
+		c.entry=entry;
+		c.tip=tip;
+
+		if (config_file.readEntry(group,entry)=="")
+		config_file.writeEntry(group,entry,c.defaultS);	
+		RegisteredControls.append(c);
+						}
 
 }
 
 void ConfigDialog::registerGrid(
 			const QString& parent,const QString& caption,const int nrColumns,const QString& name)
 {
-	RegisteredControl c;
-	c.type=CONFIG_GRID;
-	c.parent=parent;
-	c.name=name;
-	c.caption=caption;
-	c.defaultS=QString::number(nrColumns);
-	RegisteredControls.append(c);
+	if (!existControl(parent,caption,name)){
+		RegisteredControl c;
+		c.type=CONFIG_GRID;
+		c.parent=parent;
+		c.name=name;
+		c.caption=caption;
+		c.defaultS=QString::number(nrColumns);
+		RegisteredControls.append(c);
+						}
 
 }
 
 void ConfigDialog::registerHGroupBox(
 	const QString& parent,const QString& caption,const QString& name)
 {
-	RegisteredControl c;
-	c.type=CONFIG_HGROUPBOX;
-	c.parent=parent;
-	c.name=name;
-	c.caption=caption;
-	RegisteredControls.append(c);
+	if (!existControl(parent,caption,name)){
+		RegisteredControl c;
+		c.type=CONFIG_HGROUPBOX;
+		c.parent=parent;
+		c.name=name;
+		c.caption=caption;
+		RegisteredControls.append(c);
+						}
 };
 
 void ConfigDialog::registerHotKeyEdit(
 			const QString& parent,const QString& caption,
 			const QString& group,const QString& entry,const QString& defaultS,const QString& tip,const QString& name)
 {
-	RegisteredControl c;
-	c.type=CONFIG_HOTKEYEDIT;
-	c.parent=parent;
-	c.name=name;
-	c.caption=caption;
-	c.group=group;
-	c.entry=entry;
-	c.defaultS=defaultS;
-	c.tip=tip;
-	RegisteredControls.append(c);
-	// zapisujemy warto¶æ domy¶ln±, aby ju¿ wiêcej nie musieæ
-	// jej podawaæ przy czytaniu z pliku conf
-	if (config_file.readEntry(group,entry)=="")
-	config_file.writeEntry(group,entry,defaultS);
+	if (!existControl(parent,caption,name)){
+		RegisteredControl c;
+		c.type=CONFIG_HOTKEYEDIT;
+		c.parent=parent;
+		c.name=name;
+		c.caption=caption;
+		c.group=group;
+		c.entry=entry;
+		c.defaultS=defaultS;
+		c.tip=tip;
+		RegisteredControls.append(c);
+		// zapisujemy warto¶æ domy¶ln±, aby ju¿ wiêcej nie musieæ
+		// jej podawaæ przy czytaniu z pliku conf
+		if (config_file.readEntry(group,entry)=="")
+		config_file.writeEntry(group,entry,defaultS);
+						}
 };
 
 void ConfigDialog::registerLineEdit(
 			const QString& parent,const QString& caption,
 			const QString& group,const QString& entry,const QString& defaultS,const QString& tip,const QString& name)
 {
-	RegisteredControl c;
-	c.type=CONFIG_LINEEDIT;
-	c.parent=parent;
-	c.name=name;
-	c.caption=caption;
-	c.group=group;
-	c.entry=entry;
-	c.defaultS=defaultS;
-	c.tip=tip;
-	if (config_file.readEntry(group,entry)=="")
-	config_file.writeEntry(group,entry,defaultS);
-	RegisteredControls.append(c);
+	if (!existControl(parent,caption,name)){
+		RegisteredControl c;
+		c.type=CONFIG_LINEEDIT;
+		c.parent=parent;
+		c.name=name;
+		c.caption=caption;
+		c.group=group;
+		c.entry=entry;
+		c.defaultS=defaultS;
+	    	c.tip=tip;
+		if (config_file.readEntry(group,entry)=="")
+		    config_file.writeEntry(group,entry,defaultS);
+		RegisteredControls.append(c);
+						}
 };
 
 void ConfigDialog::registerLabel(
 			const QString& parent,const QString& caption,const QString& name)
 {
-	RegisteredControl c;
-	c.type=CONFIG_LABEL;
-	c.parent=parent;
-	c.name=name;
-	c.caption=caption;
-	RegisteredControls.append(c);
+	if (!existControl(parent,caption,name)){
+		RegisteredControl c;
+		c.type=CONFIG_LABEL;
+		c.parent=parent;
+		c.name=name;
+		c.caption=caption;
+		RegisteredControls.append(c);
+						}
 };
 
 
 void ConfigDialog::registerListBox(
 			    const QString& parent,const QString& caption,const QString& tip,const QString& name)
 {
-	RegisteredControl c;
-	c.type=CONFIG_LISTBOX;
-	c.parent=parent;
-	c.name=name;
-	c.caption=caption;
-	c.tip=tip;
-	RegisteredControls.append(c);
+	if (!existControl(parent,caption,name)){
+		RegisteredControl c;
+		c.type=CONFIG_LISTBOX;
+		c.parent=parent;
+		c.name=name;
+		c.caption=caption;
+		c.tip=tip;
+		RegisteredControls.append(c);
+						}
 };
 
 void ConfigDialog::registerPushButton(
 			    const QString& parent,const QString& caption,
 			    const QString &iconFileName,const QString& tip,const QString& name)
 {
-	RegisteredControl c;
-	c.type=CONFIG_PUSHBUTTON;
-	c.parent=parent;
-	c.name=name;
-	c.caption=caption;
-	c.defaultS=iconFileName;
-	c.tip=tip;
-	RegisteredControls.append(c);
+	if (!existControl(parent,caption,name)){
+		RegisteredControl c;
+		c.type=CONFIG_PUSHBUTTON;
+		c.parent=parent;
+		c.name=name;
+		c.caption=caption;
+		c.defaultS=iconFileName;
+	    	c.tip=tip;
+		RegisteredControls.append(c);
+						}
 };
 
 void ConfigDialog::registerSlider(
@@ -800,16 +592,19 @@ void ConfigDialog::registerSlider(
 			    const int minValue, const int maxValue,
 			    const int pageStep,const int value,const QString& tip,const QString& name)
 {
-	RegisteredControl c;
-	c.type=CONFIG_SLIDER;
-	c.parent=parent;
-	c.caption=caption;
-	c.name=name;
-	c.group=group;
-	c.entry=entry;
-	c.tip=tip;
-	c.defaultS=QString::number(minValue)+","+QString::number(maxValue)+","+QString::number(pageStep)+","+QString::number(value);
-	RegisteredControls.append(c);
+
+	if (!existControl(parent,caption,name)){
+		RegisteredControl c;
+		c.type=CONFIG_SLIDER;
+		c.parent=parent;
+		c.caption=caption;
+		c.name=name;
+		c.group=group;
+		c.entry=entry;
+		c.tip=tip;
+		c.defaultS=QString::number(minValue)+","+QString::number(maxValue)+","+QString::number(pageStep)+","+QString::number(value);
+		RegisteredControls.append(c);
+					       }
 
 };
 
@@ -818,42 +613,50 @@ void ConfigDialog::registerSpinBox(
 			    const QString& group,const QString& entry,
 			    const int minValue, const int maxValue,const int step,const int value,const QString& tip,const QString& name)
 {
-	RegisteredControl c;
-	c.type=CONFIG_SPINBOX;
-	c.parent=parent;
-	c.caption=caption;
-	c.group=group;
-	c.entry=entry;
-	c.tip=tip;
-	c.defaultS=QString::number(minValue)+","+QString::number(maxValue)+","+QString::number(step)+","+QString::number(value);
-	RegisteredControls.append(c);
+
+	if (!existControl(parent,caption,name)){
+		RegisteredControl c;
+		c.type=CONFIG_SPINBOX;
+		c.parent=parent;
+		c.caption=caption;
+		c.group=group;
+		c.entry=entry;
+		c.tip=tip;
+		c.defaultS=QString::number(minValue)+","+QString::number(maxValue)+","+QString::number(step)+","+QString::number(value);
+		RegisteredControls.append(c);
+					       }
 
 };
 
 void ConfigDialog::registerTab(const QString& caption)
 {
-	for(QValueList<RegisteredControl>::iterator i=RegisteredControls.begin(); i!=RegisteredControls.end(); i++)
-		if((*i).caption==caption)
-			return;
-	RegisteredControl c;
-	c.type=CONFIG_TAB;
-	c.caption=caption;
-	RegisteredControls.append(c);
+
+	for(QValueList<RegisteredControl>::iterator j=RegisteredControls.begin(); j!=RegisteredControls.end(); j++)
+				if((*j).caption==caption)
+					return;
+
+		RegisteredControl c;
+		c.type=CONFIG_TAB;
+		c.caption=caption;
+		RegisteredControls.append(c);
 };
 
 void ConfigDialog::registerVGroupBox(
 	const QString& parent,const QString& caption,const QString& name)
 {
-	RegisteredControl c;
-	c.type=CONFIG_VGROUPBOX;
-	c.parent=parent;
-	c.name=name;
-	c.caption=caption;
-	RegisteredControls.append(c);
+	if (!existControl(parent,caption,name)){
+		RegisteredControl c;
+		c.type=CONFIG_VGROUPBOX;
+		c.parent=parent;
+		c.name=name;
+		c.caption=caption;
+		RegisteredControls.append(c);
+						}
 };
 
 void ConfigDialog::connectSlot(const QString& name,const char* signal,const QObject* receiver,const char* slot)
 {
+	kdebug("Try to connect Slot::\n");
 		for(QValueList<RegisteredControl>::iterator j=RegisteredControls.begin(); j!=RegisteredControls.end(); j++)
 				if((*j).caption==name)
 			{
@@ -889,15 +692,24 @@ void ConfigDialog::registerSlotOnDestroy(const QObject* receiver,const char* nam
 
 QWidget* ConfigDialog::getWidget(const QString& parent,const QString& caption,const QString& name)
 {
-
 	for(QValueList<RegisteredControl>::iterator j=RegisteredControls.begin(); j!=RegisteredControls.end(); j++)
-				if  (((*j).parent==parent)&& ((*j).caption==caption)&& ((*j).name=name))
+				if  (((*j).parent == parent)&& ((*j).caption == caption)&& ((*j).name == name))
 				{
 					return ((*j).widget);
 				}
-
+	kdebug("Warning there is no \\" +parent+ "\\"+ caption+ "\\"+ name+ "\\\n");
 };
 
+
+bool ConfigDialog::existControl(const QString& parent,const QString& caption,const QString& name)
+{
+	for(QValueList<RegisteredControl>::iterator j=RegisteredControls.begin(); j!=RegisteredControls.end(); j++)
+				if  ((*j).parent==parent)
+				    if ((*j).caption==caption)
+					if ((*j).name==name)
+					    return true;
+	return false;				
+}
 
 void ConfigDialog::generateMyKeys(void) {
 #ifdef HAVE_OPENSSL
@@ -931,9 +743,7 @@ void ConfigDialog::generateMyKeys(void) {
 
 void ConfigDialog::updateConfig(void) {
 
-	/* and now, save it */
-	saveKaduConfig();
-	userlist.writeToFile();
+    bool prevprivatestatus = config_file.readBoolEntry("Global","PrivateStatus");
 
 	// nowy mechanizm
 	for(QValueList<RegisteredControl>::iterator i=RegisteredControls.begin(); i!=RegisteredControls.end(); i++)
@@ -971,7 +781,59 @@ void ConfigDialog::updateConfig(void) {
 			}
 		};
 	};
+
+
+	if (config_file.readBoolEntry("Global","AutoAway"))
+	        AutoAwayTimer::on();
+	else
+                AutoAwayTimer::off();
+	    
+	if (config_file.readBoolEntry("Global","UseDocking") && !trayicon) {
+			trayicon = new TrayIcon(kadu);
+			trayicon->show();
+			trayicon->connectSignals();
+			trayicon->setType(*icons->loadIcon(gg_icons[statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]));
+			trayicon->changeIcon();
+				       }
+		    else
+			    if (!config_file.readBoolEntry("Global","UseDocking") && trayicon) {
+				delete trayicon;
+				trayicon = NULL;
+							  }
+
+	if (!statusppm->isItemChecked(6) && !statusppm->isItemChecked(7)
+		    && prevprivatestatus != config_file.readBoolEntry("Global","PrivateStatus")) {
+			    statusppm->setItemChecked(8, config_file.readBoolEntry("Global","PrivateStatus"));
+			    kadu->setStatus(sess->status & (~GG_STATUS_FRIENDS_MASK));
+												}
+
+	if (config_file.readBoolEntry("Global","AddToDescription") && !kadu->autostatus_timer->isActive())
+		kadu->autostatus_timer->start(1000,TRUE);
+	else
+		kadu->autostatus_timer->stop();
+			    					    
+
+	if (trayicon) 
+	    	    trayicon->reconfigHint();
+
+	else
+	    {
+		    config_file.writeEntry("Global","TrayHint",false);
+		    config_file.writeEntry("Global","HintError",false);
+	    }
+
+	kadu->showdesc(config_file.readBoolEntry("Global","ShowDesc"));
 	
+	if (config_file.readBoolEntry("Global","MultiColumnUserbox"))
+		kadu->userbox->setColumnMode(QListBox::FitToWidth);
+	else
+		kadu->userbox->setColumnMode(1);
+
+
+// dopisac kolory/czcionki/powiadomienia    
+
+	/* and now, save it */
+	userlist.writeToFile();	
 	config_file.sync();
 	//
 
@@ -986,21 +848,18 @@ void ConfigDialog::updateConfig(void) {
 void ConfigDialog::initModule()
 {
 
+	kdebug("ConfigDialog::initModule()\n");
 // zakladka "ogolne"
-	
+	ConfigDialog::registerTab(tr("General"));
 	ConfigDialog::registerGrid(tr("General"),"grid",3);
 	ConfigDialog::registerCheckBox("grid",tr("Log messages"),"Global","Logging",true);
 	ConfigDialog::registerCheckBox("grid",tr("Restore window geometry"),"Global","SaveGeometry",true);
-	ConfigDialog::registerCheckBox("grid",tr("Enable dock icon"),"Global","UseDocking",true);
-	ConfigDialog::registerCheckBox("grid",tr("Private status"),"Global","PrivateStaus",false);
-	ConfigDialog::registerCheckBox("grid",tr("Start docked"),"Global","RunDocked",false);
 	ConfigDialog::registerCheckBox("grid",tr("Check for updates"),"Global","CheckUpdates",true);
-	ConfigDialog::registerCheckBox("grid",tr("Add to description"),"Global","AddToDescription",false);
 
-/*
+
 
 // zakladka "dzwieki"
-
+/*
 	ConfigDialog::registerTab(tr("Sounds"));
 	ConfigDialog::registerCheckBox(tr("Sounds"),tr("Play sounds"),"Global","PlaySound",false);
 	ConfigDialog::registerCheckBox(tr("Sounds"),tr("Play sounds using aRts! server"),"Global","PlaySoundArtsDsp",false);
@@ -1012,7 +871,7 @@ void ConfigDialog::initModule()
 	ConfigDialog::registerCheckBox(tr("Sounds"),tr("Enable volume control (player must support it)"),"Global","VolumeControl",false);
 	ConfigDialog::registerGrid(tr("Sounds"),"volume",2);
 	ConfigDialog::registerLabel("volume",tr("Volume"));
-	ConfigDialog::registerSlider("volume","slider","Global","SoundVolume");
+	ConfigDialog::registerSlider("volume","slider","Global","SoundVolume",0,400,50,200);
 
 	ConfigDialog::registerHGroupBox(tr("Sounds"),tr("Message sound"));
 	ConfigDialog::registerLineEdit(tr("Message sound"),tr("Path:"),"Global","Message_sound","");
@@ -1135,9 +994,9 @@ void ConfigDialog::initModule()
 	ConfigDialog::connectSlot(tr("DCC enabled"),SIGNAL(toggled(bool)),configslots,SLOT(ifDccEnabled(bool)));
 	ConfigDialog::connectSlot(tr("DCC IP autodetection"),SIGNAL(toggled(bool)),configslots,SLOT(ifDccIpEnabled(bool)));
 	ConfigDialog::connectSlot(tr("Use default servers"),SIGNAL(toggled(bool)),configslots,SLOT(ifDefServerEnabled(bool)));
+#ifdef HAVE_OPENSSL
 	ConfigDialog::connectSlot(tr("Use TLSv1"),SIGNAL(toggled(bool)),configslots,SLOT(useTlsEnabled(bool)));
-	
-	
+#endif	
 }	
 
 void ConfigSlots::onCreateConfigDialog()
@@ -1168,10 +1027,7 @@ void ConfigSlots::onCreateConfigDialog()
 	cb_portselect->setCurrentText(config_file.readEntry("Global","DefaultPort","8074"));
 	
 	connect(b_dccfwd, SIGNAL(toggled(bool)), g_fwdprop, SLOT(setEnabled(bool)));
-#ifdef HAVE_OPENSSL
-       connect(b_tls, SIGNAL(toggled(bool)), this, SLOT(useTlsEnabled(bool)));
-#endif
-       connect(b_useproxy, SIGNAL(toggled(bool)), g_proxy, SLOT(setEnabled(bool)));
+        connect(b_useproxy, SIGNAL(toggled(bool)), g_proxy, SLOT(setEnabled(bool)));
 };
 
 void ConfigSlots::onDestroyConfigDialog()
@@ -1180,6 +1036,49 @@ void ConfigSlots::onDestroyConfigDialog()
 
 	QComboBox *cb_portselect=(QComboBox*)(ConfigDialog::getWidget(tr("Servers properties"),tr("Default port to connect to servers")));
 	config_file.writeEntry("Global","DefaultPort",cb_portselect->currentText());
+	
+	QLineEdit *e_servers=(QLineEdit*)(ConfigDialog::getWidget(tr("Servers properties"),tr("IP addresses:")));
+	
+	QStringList tmpservers,server;
+	QValueList<QHostAddress> servers;
+	QHostAddress ip;
+	bool ipok;
+	int i;
+	
+	    tmpservers = QStringList::split(";", e_servers->text());
+		for (i = 0; i < tmpservers.count(); i++) 
+		{
+		ipok = ip.setAddress(tmpservers[i]);
+			if (!ipok)
+			    break;
+			    servers.append(ip);
+			    server.append(ip.toString());
+		}
+		config_file.writeEntry("Global","Server",server.join(";"));
+		config_servers=servers;
+			    server_nr = 0;
+			    
+	if (!config_dccip.setAddress(config_file.readEntry("Global","DccIP")))
+	    {
+		config_file.writeEntry("Global","DccIP","0.0.0.0");
+		config_dccip.setAddress((unsigned int)0);
+	    }										
+	
+	if (!config_extip.setAddress(config_file.readEntry("Global","ExternalIP")))
+	    config_file.writeEntry("Global","ExternalIP","0.0.0.0");
+		config_extip.setAddress((unsigned int)0);
+	
+	if (config_file.readNumEntry("Global","ExternalPort")<=1023)
+	    config_file.writeEntry("Global","ExternalPort",0);
+	
+	if (!ip.setAddress(config_file.readEntry("Proxy","ProxyHost")))
+	    config_file.writeEntry("Proxy","ProxyHost","0.0.0.0");
+
+	if (config_file.readNumEntry("Proxy","ProxyPort")<=1023)
+	    config_file.writeEntry("Proxy","ProxyPort",0);
+		
+	    
+	
 };
 
 
