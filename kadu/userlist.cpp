@@ -438,12 +438,12 @@ bool UserList::readFromFile()
 				}
 
 			QValueList<QStringList>::Iterator i = ualist.begin();
-			while ((*i)[0] != e.uin && i != ualist.end())
+			while ((*i)[0].toUInt() != e.uin && i != ualist.end())
 				i++;
 			if (i != ualist.end()) {
-				e.blocking = ((*i)[1] == "true" ? true : false);
-				e.offline_to_user = ((*i)[2] == "true" ? true : false);
-				e.notify = ((*i)[3] == "true" ? true : false);
+				e.blocking = ((*i)[1] == "true");
+				e.offline_to_user = ((*i)[2] == "true");
+				e.notify = ((*i)[3] == "true");
 				}
 			else {
 				e.blocking = false;

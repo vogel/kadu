@@ -54,6 +54,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * wiêcej informacji o b³êdach przy ³±czeniu siê z serwerem, informacja o
   niepoprawnym hasle i poprawka przy DISCONNECT - by³y wywo³ywane
   dwie funkcje zamiast jednej (mast3r)
+* znowu dobrze zapamiêtuje blokowanych itd. itp. (chilek)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci
