@@ -199,8 +199,13 @@ void SearchDialog::deleteSocketNotifiers() {
 
 void SearchDialog::prepareMessage(QListViewItem *item) {
 	Message *msg;
-	msg = new Message(userlist.byUin(atoi(item->text(1).local8Bit())).altnick);
-	msg->show();
+
+	if (!userlist.containsUin(atoi(item->text(1).local8Bit())))
+		AddButtonClicked();
+	else {
+		msg = new Message(userlist.byUin(atoi(item->text(1).local8Bit())).altnick);
+		msg->show();
+		}
 }
 
 void SearchDialog::clearResults(void) {
