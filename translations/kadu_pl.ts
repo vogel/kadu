@@ -1940,7 +1940,7 @@ Teraz możesz dodać znajomych do listy kontaktów.</translation>
     </message>
     <message>
         <source>Message too long</source>
-        <translation>Wiadomość zadługa</translation>
+        <translation>Wiadomość za długa</translation>
     </message>
     <message>
         <source>Unknown error</source>
