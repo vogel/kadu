@@ -99,7 +99,7 @@ HintManager::HintManager()
 				ConfigDialog::addLabel("Hints", "bottom", "", "stretcher2");
 				ConfigDialog::addLabel("Hints", "bottom", "", "stretcher3");
 
-				ConfigDialog::addSpinBox("Hints", "bottom", "Hint timeout", "LastTimeout", -2048, 2048, 1, 10);
+				ConfigDialog::addSpinBox("Hints", "bottom", QT_TRANSLATE_NOOP("@default","Hint timeout"), "LastTimeout", -2048, 2048, 1, 10);
 				ConfigDialog::addPushButton("Hints", "bottom", QT_TRANSLATE_NOOP("@default", "Change font color"));
 				ConfigDialog::addPushButton("Hints", "bottom", QT_TRANSLATE_NOOP("@default", "Change background color"));
 				ConfigDialog::addPushButton("Hints", "bottom", QT_TRANSLATE_NOOP("@default", "Change font"));
