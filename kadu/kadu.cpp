@@ -559,11 +559,13 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	if (config.addtodescription)
 		autostatus_timer->start(1000,TRUE);
 
-	ut = new UpdatesThread(config.uin);
-	if (config.checkupdates)
-		QObject::connect(ut->op, SIGNAL(data(const QByteArray &, QNetworkOperation *)),
-			this, SLOT(gotUpdatesInfo(const QByteArray &, QNetworkOperation *)));
-	ut->start();
+	if (config.uin) {
+		ut = new UpdatesThread(config.uin);
+		if (config.checkupdates)
+			QObject::connect(ut->op, SIGNAL(data(const QByteArray &, QNetworkOperation *)),
+				this, SLOT(gotUpdatesInfo(const QByteArray &, QNetworkOperation *)));
+		ut->start();
+		}
 }
 
 void Kadu::currentChanged(QListBoxItem *item) {
