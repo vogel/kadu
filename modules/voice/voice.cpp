@@ -534,9 +534,10 @@ void VoiceManager::dccError(DccSocket* socket)
 	kdebugf();
 	if (VoiceChatDialog::bySocket(socket) != NULL)
 	{
+		UinType peer_uin=socket->ggDccStruct()->peer_uin;
+
 		socket->setState(DCC_SOCKET_VOICECHAT_DISCARDED);
 
-		UinType peer_uin=socket->ggDccStruct()->peer_uin;
 		if (direct.contains(peer_uin))
 		{
 			direct.remove(peer_uin);
