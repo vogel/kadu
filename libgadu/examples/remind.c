@@ -1,4 +1,4 @@
-/* $Id: remind.c,v 1.7 2003/01/12 22:56:42 chilek Exp $ */
+/* $Id: remind.c,v 1.8 2003/06/29 20:17:02 adrian Exp $ */
 
 #include <stdio.h>
 #include "libgadu.h"

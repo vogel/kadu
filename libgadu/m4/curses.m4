@@ -1,67 +1,85 @@
 dnl Rewritten from scratch. --wojtekka
-dnl $Id: curses.m4,v 1.13 2003/02/20 14:13:50 chilek Exp $
+dnl $Id: curses.m4,v 1.14 2003/06/29 20:17:02 adrian Exp $
 
-AC_DEFUN(AC_CHECK_NCURSES,[
-  AC_SUBST(CURSES_LIBS)
-  AC_SUBST(CURSES_INCLUDES)
+AC_DEFUN(AC_CHECK_NCURSES,
+[
+	AC_SUBST(CURSES_LIBS)
+	AC_SUBST(CURSES_INCLUDES)
 
-  AC_ARG_WITH(ncurses,
-    [[  --with-ncurses[=dir]    Compile with ncurses/locate base dir]],
-      if test "x$withval" = "xno" ; then
-        without_ncurses=yes
-      elif test "x$withval" != "xyes" ; then
-        with_arg=$withval/include:-L$withval/lib
-      fi)
+	AC_ARG_WITH(ncurses, [[  --with-ncurses[=dir]    Compile with ncurses/locate base dir]],
+	[
+		if test "x$withval" = "xno" ; then
+			without_ncurses=yes
+			with_arg=""
+		elif test "x$withval" != "xyes" ; then
+			with_arg=$withval/include:-L$withval/lib
+		fi
+	])
 
-  if test "x$without_ncurses" != "xyes" ; then
-    AC_MSG_CHECKING(for ncurses.h)
-
-    for i in $with_arg \
-    		/usr/include: \
-		/usr/local/include:"-L/usr/local/lib -L/usr/local/lib/ncurses" \
-		/usr/pkg/include:-L/usr/pkg/lib \
-		/usr/contrib/include:-L/usr/contrib/lib \
-		/usr/freeware/include:-L/usr/freeware/lib32 \
-    		/sw/include:-L/sw/lib \
-    		/cw/include:-L/cw/lib \
-		/boot/home/config/include:-L/boot/home/config/lib; do
+	if test "x$without_ncurses" != "xyes" ; then
+		for i in $with_arg \
+			: \
+			-I/usr/pkg/include:-L/usr/pkg/lib \
+			-I/usr/contrib/include:-L/usr/contrib/lib \
+			-I/usr/freeware/include:-L/usr/freeware/lib32 \
+			-I/sw/include:-L/sw/lib \
+			-I/cw/include:-L/cw/lib \
+			-I/boot/home/config/include:-L/boot/home/config/lib; do
 	
-      incl=`echo "$i" | sed 's/:.*//'`
-      lib=`echo "$i" | sed 's/.*://'`
-		
-      if test -f $incl/ncurses/ncurses.h; then
-        include=$incl/ncurses
-      elif test -f $incl/ncurses.h; then
-        include=$incl
-      fi
+			incl=`echo "$i" | sed 's/:.*//'`	# 'g³upi vim
+			lib=`echo "$i" | sed 's/.*://'`		# 'g³upi vim
+			path=`echo "$incl" | sed 's/^..//'`	# 'g³upi vim
 
-      if test "x$include" != "x"; then
-        AC_MSG_RESULT($include/ncurses.h)
-	CURSES_LIBS="$lib"
-	CURSES_INCLUDES=""
-	if test "$include" != "/usr/include"; then
-	  CURSES_INCLUDES="-I$include"
-	fi
-	if test "$incl" != "/usr/include"; then
-	  CURSES_INCLUDES="$CURSES_INCLUDES -I$incl"
-	fi
-	have_ncurses=yes
-	ldflags_old="$LDFLAGS"
-	LDFLAGS="$CURSES_LIBS"
-	AC_DEFINE(HAVE_NCURSES, 1, [define if You want ncurses])
-	AC_CHECK_LIB(ncurses, initscr,
-	  [CURSES_LIBS="$CURSES_LIBS -lncurses"],
-	  [AC_CHECK_LIB(curses, initscr,
-	    [CURSES_LIBS="$CURSES_LIBS -lcurses"])])
-	LDFLAGS="$ldflags_old"
-	break
-      fi
-    done
-  fi
+			cppflags="$CPPFLAGS"
+			ldflags="$LDFLAGS"
 
-  if test "x$have_ncurses" != "xyes"; then
-    AC_MSG_RESULT(not found)
-  fi
+			CPPFLAGS="$CPPFLAGS $incl"
+			LDFLAGS="$LDFLAGS $libs"
+
+			have_ncurses_h=""
+
+			if test "x$path" = "x" -o -f "$path/ncurses.h" -o -f "$path/ncurses/ncurses.h"; then
+				$as_unset ac_cv_header_ncurses_h
+				$as_unset ac_cv_header_ncurses_ncurses_h
+				AC_CHECK_HEADERS([ncurses.h], [
+					CURSES_INCLUDES="$incl"
+					have_ncurses_h=yes
+				], [
+					AC_CHECK_HEADERS([ncurses/ncurses.h],
+					[
+						CURSES_INCLUDES="$incl"
+						have_ncurses_h=yes
+					])
+				])
+			fi
+
+			if test "x$have_ncurses_h" = "xyes"; then
+				$as_unset ac_cv_lib_ncurses_initscr
+				$as_unset ac_cv_lib_curses_initscr
+				have_libncurses=""
+				AC_CHECK_LIB(ncurses, initscr,
+				[
+					CURSES_LIBS="$libs -lncurses"
+					have_libncurses=yes
+				], [
+					AC_CHECK_LIB(curses, initscr,
+					[
+						CURSES_LIBS="$libs -lcurses"
+						have_libncurses=yes
+					])
+				])
+
+				if test "x$have_libncurses" = "xyes"; then
+					AC_DEFINE(HAVE_NCURSES, 1, [define if ncurses is installed])
+					have_ncurses=yes
+					break
+				fi
+			fi
+
+			CPPFLAGS="$cppflags"
+			LDFLAGS="$ldflags"
+		done
+	fi
 ])
 
 

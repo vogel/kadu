@@ -1,4 +1,4 @@
-dnl $Id: configure.in,v 1.22 2003/06/21 10:06:17 chilek Exp $
+dnl $Id: configure.in,v 1.23 2003/06/29 20:16:39 adrian Exp $
 
 AC_INIT(lib/libgadu.h)
 AC_PREREQ(2.50)
@@ -58,13 +58,13 @@ else
 	MAKE="$GMAKE"
 fi
 
-AC_PATH_PROG(AR, ar, no)
+AC_CHECK_TOOL(AR, ar, no)
 
 if test "x$AR" = "xno"; then
 	AC_MSG_ERROR([ar ])
 fi
 
-AC_PATH_PROG(STRIP, strip, :)
+AC_CHECK_TOOL(STRIP, strip, :)
 
 dnl
 dnl  Tworzymy osobny plik lib/libgadu-config.h niezale¿ny od autoconfa
@@ -93,18 +93,9 @@ dnl
 
 AC_C_BIGENDIAN
 
-AC_TRY_RUN(
-[#include "confdefs.h"
-
-int main()
-{
-#ifdef WORDS_BIGENDIAN
-	return 0;
-#else
-	return 1;
-#endif
-}], [AC_LIBGADU_DEFINE([BIGENDIAN])])
-	
+if test "x$ac_cv_c_bigendian" = "xyes"; then
+	AC_LIBGADU_DEFINE([BIGENDIAN])
+fi
 
 AC_NEED_STDINT_H
 
@@ -197,24 +188,34 @@ AC_ARG_ENABLE(dynamic,
   [  --enable-dynamic        Link ekg dynamically with libgadu])
 
 dnl
-dnl  Sprawd¼my, jak± wersjê vsnprintf() dostajemy.
+dnl  Sprawd¼my, jak± wersjê vsnprintf() dostajemy. Dodatkowa opcja jest
+dnl  dla crosskompilacji, bo nie mo¿na wtedy korzystaæ z AC_TRY_RUN().
 dnl
 
-AC_MSG_CHECKING([for C99-compatible vsnprintf()])
-AC_TRY_RUN(
-[
-	#include <stdio.h>
-	int main()
-	{
-		char tmp;
-		return (snprintf(&tmp, sizeof(tmp), "test") != 4);
-	}
-], [
-	AC_MSG_RESULT([yes])
+AC_ARG_WITH(c99-vsnprintf,
+  [  --with-c99-vsnprintf    Target system has C99-compatible vsnprintf()])
+
+if test "x$with_c99_vsnprintf" = "xyes"; then
 	AC_LIBGADU_DEFINE([HAVE_C99_VSNPRINTF])
-], [
-	AC_MSG_RESULT([no])
-])
+fi
+
+if test "x$with_c99_vsnprintf" = "x"; then
+	AC_MSG_CHECKING([for C99-compatible vsnprintf()])
+	AC_TRY_RUN(
+	[
+		#include <stdio.h>
+		int main()
+		{
+			char tmp;
+			return (snprintf(&tmp, sizeof(tmp), "test") != 4);
+		}
+	], [
+		AC_MSG_RESULT([yes])
+		AC_LIBGADU_DEFINE([HAVE_C99_VSNPRINTF])
+	], [
+		AC_MSG_RESULT([no])
+	])
+fi
 
 dnl
 dnl  Resolver libgadu oparty na pthread
@@ -244,14 +245,10 @@ dnl
 
 AC_MSG_CHECKING([for long long])
 
-AC_TRY_RUN(
+AC_TRY_COMPILE([],
 [
-	int main()
-	{
-		long long a = 1LL;
-		unsigned long long b = 1LL;
-		return 0;
-	}
+	long long a = 1LL;
+	unsigned long long b = 1LL;
 ], [
 	AC_MSG_RESULT([yes])
 	AC_LIBGADU_DEFINE([HAVE_LONG_LONG])

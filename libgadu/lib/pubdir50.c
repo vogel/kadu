@@ -1,4 +1,4 @@
-/* $Id: pubdir50.c,v 1.6 2003/06/21 10:06:17 chilek Exp $ */
+/* $Id: pubdir50.c,v 1.7 2003/06/29 20:20:28 adrian Exp $ */
 
 /*
  *  (C) Copyright 2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -297,6 +297,10 @@ int gg_pubdir50_handle_reply(struct gg_event *e, const char *packet, int length)
 			e->type = GG_EVENT_PUBDIR50_SEARCH_REPLY;
 			break;
 	}
+
+	/* brak wyników? */
+	if (length == 5)
+		return 0;
 
 	/* pomiñ pocz±tek odpowiedzi */
 	p = packet + 5;

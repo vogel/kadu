@@ -1,39 +1,34 @@
-# $Id: Makefile.in,v 1.7 2003/01/12 22:56:42 chilek Exp $
+# $Id: Makefile.in,v 1.8 2003/06/29 20:17:02 adrian Exp $
 
 CC = @CC@
-CFLAGS = @CFLAGS@ -I.. -I../lib -I../src
+CFLAGS = @CFLAGS_LIBGADU@ @CFLAGS@ -I.. -I../lib -I../src
+LIBS = @LIBS_LIBGADU@
 MAKE = @MAKE@
 
 OBJS = ../lib/libgadu.a
 
-all:	search-sync search-async register-sync register-async conn-async send remind-async remind-sync httphash
-
-search-sync: search.c $(OBJS)
-	$(CC) $(CFLAGS) search.c -o search-sync $(OBJS)
-
-search-async: search.c $(OBJS)
-	$(CC) $(CFLAGS) search.c -o search-async -DASYNC $(OBJS)
+all:	register-sync register-async conn-async send remind-async remind-sync httphash
 
 register-sync: register.c $(OBJS)
-	$(CC) $(CFLAGS) register.c -o register-sync $(OBJS)
+	$(CC) $(CFLAGS) register.c -o register-sync $(OBJS) $(LIBS)
 
 register-async: register.c $(OBJS)
-	$(CC) $(CFLAGS) register.c -o register-async -DASYNC $(OBJS)
+	$(CC) $(CFLAGS) register.c -o register-async -DASYNC $(OBJS) $(LIBS)
 
 remind-sync: remind.c $(OBJS)
-	$(CC) $(CFLAGS) remind.c -o remind-sync $(OBJS)
+	$(CC) $(CFLAGS) remind.c -o remind-sync $(OBJS) $(LIBS)
 
 remind-async: remind.c $(OBJS)
-	$(CC) $(CFLAGS) remind.c -o remind-async -DASYNC $(OBJS)
+	$(CC) $(CFLAGS) remind.c -o remind-async -DASYNC $(OBJS) $(LIBS)
 
 send:	send.c $(OBJS)
-	$(CC) $(CFLAGS) send.c -o send $(OBJS)
+	$(CC) $(CFLAGS) send.c -o send $(OBJS) $(LIBS)
 
 httphash: httphash.c $(OBJS)
-	$(CC) $(CFLAGS) httphash.c -o httphash $(OBJS)
+	$(CC) $(CFLAGS) httphash.c -o httphash $(OBJS) $(LIBS)
 
 conn-async: conn-async.c $(OBJS)
-	$(CC) $(CFLAGS) conn-async.c -o conn-async $(OBJS)
+	$(CC) $(CFLAGS) conn-async.c -o conn-async $(OBJS) $(LIBS)
 
 $(OBJS):
 	cd ../lib && $(MAKE)
@@ -41,7 +36,7 @@ $(OBJS):
 #
 
 clean: 	
-	rm -f *~ *.o search-{sync,async} send conn-async register-{sync,async} remind-{sync,async} httphash
+	rm -f *~ *.o send conn-async register-{sync,async} remind-{sync,async} httphash
 
 distclean: clean
 	rm -f Makefile

@@ -2,7 +2,7 @@ dnl Based on AC_NEED_STDINT_H by Guido Draheim <guidod@gmx.de> that can be
 dnl found at http://www.gnu.org/software/ac-archive/. Do not complain him
 dnl about this macro.
 dnl
-dnl $Id: stdint.m4,v 1.13 2003/03/22 08:56:13 chilek Exp $
+dnl $Id: stdint.m4,v 1.14 2003/06/29 20:17:02 adrian Exp $
 
 AC_DEFUN([AC_NEED_STDINT_H],
  [AC_MSG_CHECKING([for uintXX_t types])

@@ -1,5 +1,5 @@
 dnl based on curses.m4 
-dnl $Id: openssl.m4,v 1.9 2003/06/21 10:06:17 chilek Exp $
+dnl $Id: openssl.m4,v 1.10 2003/06/29 20:17:02 adrian Exp $
 
 AC_DEFUN(AC_CHECK_OPENSSL,[
   AC_SUBST(OPENSSL_LIBS)

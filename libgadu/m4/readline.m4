@@ -1,5 +1,5 @@
 dnl Rewritten from scratch. --wojtekka
-dnl $Id: readline.m4,v 1.13 2003/02/20 14:13:50 chilek Exp $
+dnl $Id: readline.m4,v 1.14 2003/06/29 20:17:02 adrian Exp $
 
 AC_DEFUN(AC_CHECK_READLINE,[
   AC_SUBST(READLINE_LIBS)

@@ -1,4 +1,4 @@
-/* $Id: events.c,v 1.22 2003/06/21 10:06:17 chilek Exp $ */
+/* $Id: events.c,v 1.23 2003/06/29 20:20:28 adrian Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -568,6 +568,8 @@ struct gg_event *gg_watch_fd(struct gg_session *sess)
 				e->type = GG_EVENT_CONN_FAILED;
 				e->event.failure = GG_FAILURE_WRITING;
 				sess->state = GG_STATE_IDLE;
+				close(sess->fd);
+				sess->fd = -1;
 				break;
 			}
 
@@ -652,6 +654,7 @@ struct gg_event *gg_watch_fd(struct gg_session *sess)
 						gg_debug(GG_DEBUG_MISC, "// gg_watch_fd() out of memory for system message, ignoring\n");
 						break;
 					}
+
 					sysmsg_buf = foo;
 
 					if (!len)
@@ -732,7 +735,7 @@ struct gg_event *gg_watch_fd(struct gg_session *sess)
 
 		case GG_STATE_CONNECTING_GG:
 		{
-			int res, res_size = sizeof(res);
+			int res = 0, res_size = sizeof(res);
 
 			gg_debug(GG_DEBUG_MISC, "// gg_watch_fd() GG_STATE_CONNECTING_GG\n");
 

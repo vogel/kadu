@@ -1,4 +1,4 @@
-/* $Id: http.c,v 1.21 2003/06/21 10:06:17 chilek Exp $ */
+/* $Id: http.c,v 1.22 2003/06/29 20:20:28 adrian Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -291,10 +291,15 @@ int gg_http_watch_fd(struct gg_http *h)
 
 		gg_debug(GG_DEBUG_MISC, "=> http, read %d bytes of header\n", res);
 
-		if (!(h->header = realloc(h->header, h->header_size + res + 1))) {
+		if (!(tmp = realloc(h->header, h->header_size + res + 1))) {
 			gg_debug(GG_DEBUG_MISC, "=> http, not enough memory for header\n");
+			free(h->header);
+			h->header = NULL;
 			gg_http_error(GG_ERROR_READING);
 		}
+
+		h->header = tmp;
+
 		memcpy(h->header + h->header_size, buf, res);
 		h->header_size += res;
 
@@ -314,7 +319,6 @@ int gg_http_watch_fd(struct gg_http *h)
 			if (strlen(h->header) < 16 || strncmp(h->header + 9, "200", 3)) {
 			        gg_debug(GG_DEBUG_MISC, "=> -----BEGIN-HTTP-HEADER-----\n%s\n=> -----END-HTTP-HEADER-----\n", h->header);
 
-				gg_debug(GG_DEBUG_MISC, h->header);
 				gg_debug(GG_DEBUG_MISC, "=> http, didn't get 200 OK -- no results\n");
 				free(h->header);
 				h->header = NULL;

@@ -4,6 +4,38 @@ oznacza, ¿e ,,nick'' jest pomys³odawc± lub podes³a³ patcha, a zrobi³
 to kto¶ oznaczony przez ,,x'' (w - wojtekka, s - speedy, a - arekm,
 d - drg, sz - szalik).
 
+// 2003-06-27
+
+- poprawka dope³niania /python (rmrmg/w)
+- poprawka zapisu plików konfiguracyjnych (porridge/w)
+- libgadu: poprawne zwalnianie pamiêci w sytuacjach kryzysowych (scooty/w)
+- dodanie %| do tematu pasku stanu, który dope³nia do koñca linii (ptar/w)
+
+// 2003-06-24
+
+- przepisanie wykrywania ncurses, ¿eby dzia³a³o dobrze przy crosskompilacji.
+  u¿ywa teraz AC_CHECK_HEADERS, zamiast sprawdzania obecno¶ci plików
+  (pliszka/w)
+- poprawka tematu ostatniej obecno¶ci (rmrmg/w)
+- libgadu: niezainicjowana zmienna mog³a powodowaæ wywrotki w fazie
+  ³±czenia na systemach, gdzie strerror() potrafi zwróciæ NULL, np.
+  SunOS (w,sz)
+
+// 2003-06-23
+
+- poprawki crosskompilacji (pliszka/w)
+
+// 2003-06-22
+
+- dodanie informacji o kompilacji rtg (rinoa/w)
+- ekg nie usuwa u¿ytkowników bez podanego numeru z listy kontaktów
+  (a.latanski/w)
+- lepsza obs³uga padniêtego katalogu publicznego (w)
+
+// 2003-06-21
+
+- dodanie skryptu contrib/ekglog.pl (fixer/w)
+
 // 2003-06-20
 
 - lista kontaktów obs³uguje adres e-mail (a.latanski/w)
@@ -168,4 +200,4 @@ d - drg, sz - szalik).
 - poprawka zachowania trybu wielolinijkowego (theKnight/w)
 
 
-$Id: ChangeLog,v 1.20 2003/06/21 10:06:17 chilek Exp $
+$Id: ChangeLog,v 1.21 2003/06/29 20:16:39 adrian Exp $
