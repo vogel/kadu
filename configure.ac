@@ -246,16 +246,6 @@ FIND_LIBRARY([png],[/usr/lib /usr/local/lib],
 AC_SUBST(PNG_LIBS)
 
 #################
-# XFREE Headers
-#################
-
-FIND_HEADER([X11/Xlib.h],[/usr/X11R6/include /usr/include /usr/local/include],
-[
-	XFREE_INCLUDES="-I$FILE_DIR"
-])
-AC_SUBST(XFREE_INCLUDES)
-
-#################
 # QT Headers
 #################
 
@@ -403,29 +393,17 @@ AC_SUBST(OPENSSL_LIBS)
 AC_SUBST(OPENSSL_INCLUDES)
 
 # Loadable modules support
-AC_ARG_ENABLE(modules,[  --disable-modules       compile without loadable modules support])
-if test -z "$enable_modules"; then
-	enable_modules=yes
-fi
-if test "$enable_modules" = "yes"; then
-	AC_DEFINE(MODULES_ENABLED,1,[Define if loadable modules support is enabled])
-	MODULES_LDFLAGS=-rdynamic
-	MY_SUBDIRS="$MY_SUBDIRS modules"
-	FIND_AVAILABLE_MODULES()
-	CHECK_MODULES_CONFIGURATION()
-	AC_DEFINE_UNQUOTED(STATIC_MODULES,"$static_modules",[List of modules compiled-in into Kadu binary])
-	PROCESS_MODULE_SPEC_FILES()
-	GENERATE_STATIC_MODULES_CODE()
-fi
-AM_CONDITIONAL(MODULES,[test "$enable_modules" = "yes"])
-AC_SUBST(MODULES_LDFLAGS)
+FIND_AVAILABLE_MODULES()
+CHECK_MODULES_CONFIGURATION()
+PROCESS_MODULE_SPEC_FILES()
+GENERATE_STATIC_MODULES_CODE()
 AC_SUBST(shared_modules)
 AC_SUBST(static_modules)
 AC_SUBST(static_modules_ldflags)
 AC_SUBST(STATIC_MODULES_DECLS)
 AC_SUBST(STATIC_MODULES_REGRS)
 
-MY_SUBDIRS="$MY_SUBDIRS kadu translations varia"
+MY_SUBDIRS="$MY_SUBDIRS modules kadu translations varia"
 AC_SUBST(MY_SUBDIRS)
 
 
@@ -463,7 +441,7 @@ echo " **************************************"
 echo " * Kadu configuration is now complete *"
 echo " **************************************"
 echo
-echo " Kadu was configured using options specified below:"
+echo " Kadu $version was configured using options specified below:"
 echo
 echo "   Installation prefix:                [[$prefix]]" 
 echo "   Use pthread resolving in libgadu:   $with_pthread"
@@ -471,18 +449,13 @@ echo "   Compile with debug symbols:         $enable_debug"
 echo "   System signals handling:            $enable_sig_handling"
 echo "   Link with existing libgadu:         $with_existing_libgadu"
 echo "   Voice talk (libgsm) support:        $enable_voice"
-echo "   Loadable modules support:           $enable_modules"
 echo "   OpenSSL encryption support:         $have_openssl"
 echo "   Distribution type information:      $enable_dist_info"
 echo "   Additional c++ compiler flags:      $user_cxxflags"
 echo
-
-if test "$enable_modules" == "yes"; then \
-	echo "   Static modules:   $static_modules"; \
-	echo "   Shared modules:   $shared_modules"; \
-	echo "   Disabled modules: $disabled_modules"; \
-fi
-
+echo "   Static modules:   $static_modules"
+echo "   Shared modules:   $shared_modules"
+echo "   Disabled modules: $disabled_modules"
 echo
 echo " Run make now (Linux) or gmake (FreeBSD and others) to compile Kadu."
 echo

@@ -79,7 +79,6 @@ GADU_LIBS = @GADU_LIBS@
 GSM_INCLUDES = @GSM_INCLUDES@
 GSM_LIBS = @GSM_LIBS@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
-MODULES_LDFLAGS = @MODULES_LDFLAGS@
 MY_SUBDIRS = @MY_SUBDIRS@
 OPENSSL_INCLUDES = @OPENSSL_INCLUDES@
 OPENSSL_LIBS = @OPENSSL_LIBS@
@@ -96,7 +95,6 @@ STATIC_MODULES_DECLS = @STATIC_MODULES_DECLS@
 STATIC_MODULES_REGRS = @STATIC_MODULES_REGRS@
 STRIP = @STRIP@
 VERSION = @VERSION@
-XFREE_INCLUDES = @XFREE_INCLUDES@
 am__include = @am__include@
 am__quote = @am__quote@
 install_sh = @install_sh@
@@ -124,6 +122,7 @@ kadu.cpp kadu.h kadu_moc.cpp \
 main.cpp \
 message_box.cpp message_box.h message_box_moc.cpp \
 misc.cpp misc.h misc_moc.cpp \
+modules.cpp modules.h modules_moc.cpp \
 password.cpp password.h password_moc.cpp \
 pending_msgs.cpp pending_msgs.h pending_msgs_moc.cpp \
 personal_info.cpp personal_info.h personal_info_moc.cpp \
@@ -138,15 +137,9 @@ updates.cpp updates.h
 
 
 EXTRA_kadu_SOURCES = \
-modules.cpp modules.h modules_moc.cpp \
 voice.cpp voice.h voice_moc.cpp \
 voice_dsp.cpp voice_dsp.h voice_dsp_moc.cpp
 
-
-@MODULES_TRUE@MODULES_OBJS = \
-@MODULES_TRUE@modules.$(OBJEXT) modules_moc.$(OBJEXT)
-
-@MODULES_FALSE@MODULES_OBJS = 
 
 @VOICE_TRUE@VOICE_OBJS = \
 @VOICE_TRUE@voice.$(OBJEXT) voice_moc.$(OBJEXT) \
@@ -157,17 +150,17 @@ voice_dsp.cpp voice_dsp.h voice_dsp_moc.cpp
 INCLUDES = $(XFREE_INCLUDES) $(QT_INCLUDES) $(OPENSSL_INCLUDES) $(GSM_INCLUDES) $(GADU_INCLUDES)
 
 kadu_LDADD = \
-$(MODULES_OBJS) $(VOICE_OBJS) $(PTHREAD_LIBS) $(PNG_LIBS) \
+$(VOICE_OBJS) $(PTHREAD_LIBS) $(PNG_LIBS) \
 $(QT_LIBS) $(GSM_LIBS) $(GADU_LIBS) \
 $(foreach mod,$(basename $(static_modules)),../modules/$(mod)/$(mod).a)
 
 
 kadu_LDFLAGS = \
-$(PTHREAD_LDFLAGS) $(MODULES_LDFLAGS) $(OPENSSL_LIBS) \
+$(PTHREAD_LDFLAGS) -rdynamic $(OPENSSL_LIBS) \
 $(static_modules_ldflags)
 
 
-kadu_DEPENDENCIES = $(MODULES_OBJS) $(VOICE_OBJS)
+kadu_DEPENDENCIES = $(VOICE_OBJS)
 
 AM_CPPFLAGS = $(PTHREAD_CPPFLAGS) -DQT_THREAD_SUPPORT -D_REENTRANT
 
@@ -190,15 +183,15 @@ am_kadu_OBJECTS = about.$(OBJEXT) about_moc.$(OBJEXT) chat.$(OBJEXT) \
 	history.$(OBJEXT) history_moc.$(OBJEXT) ignore.$(OBJEXT) \
 	ignore_moc.$(OBJEXT) kadu.$(OBJEXT) kadu_moc.$(OBJEXT) \
 	main.$(OBJEXT) message_box.$(OBJEXT) message_box_moc.$(OBJEXT) \
-	misc.$(OBJEXT) misc_moc.$(OBJEXT) password.$(OBJEXT) \
-	password_moc.$(OBJEXT) pending_msgs.$(OBJEXT) \
-	pending_msgs_moc.$(OBJEXT) personal_info.$(OBJEXT) \
-	personal_info_moc.$(OBJEXT) register.$(OBJEXT) \
-	register_moc.$(OBJEXT) search.$(OBJEXT) search_moc.$(OBJEXT) \
-	status.$(OBJEXT) status_moc.$(OBJEXT) tabbar.$(OBJEXT) \
-	tabbar_moc.$(OBJEXT) userbox.$(OBJEXT) userbox_moc.$(OBJEXT) \
-	userinfo.$(OBJEXT) userinfo_moc.$(OBJEXT) userlist.$(OBJEXT) \
-	userlist_moc.$(OBJEXT) updates.$(OBJEXT)
+	misc.$(OBJEXT) misc_moc.$(OBJEXT) modules.$(OBJEXT) \
+	modules_moc.$(OBJEXT) password.$(OBJEXT) password_moc.$(OBJEXT) \
+	pending_msgs.$(OBJEXT) pending_msgs_moc.$(OBJEXT) \
+	personal_info.$(OBJEXT) personal_info_moc.$(OBJEXT) \
+	register.$(OBJEXT) register_moc.$(OBJEXT) search.$(OBJEXT) \
+	search_moc.$(OBJEXT) status.$(OBJEXT) status_moc.$(OBJEXT) \
+	tabbar.$(OBJEXT) tabbar_moc.$(OBJEXT) userbox.$(OBJEXT) \
+	userbox_moc.$(OBJEXT) userinfo.$(OBJEXT) userinfo_moc.$(OBJEXT) \
+	userlist.$(OBJEXT) userlist_moc.$(OBJEXT) updates.$(OBJEXT)
 kadu_OBJECTS = $(am_kadu_OBJECTS)
 
 DEFS = @DEFS@

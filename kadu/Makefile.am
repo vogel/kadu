@@ -19,6 +19,7 @@ kadu.cpp kadu.h kadu_moc.cpp \
 main.cpp \
 message_box.cpp message_box.h message_box_moc.cpp \
 misc.cpp misc.h misc_moc.cpp \
+modules.cpp modules.h modules_moc.cpp \
 password.cpp password.h password_moc.cpp \
 pending_msgs.cpp pending_msgs.h pending_msgs_moc.cpp \
 personal_info.cpp personal_info.h personal_info_moc.cpp \
@@ -32,16 +33,8 @@ userlist.cpp userlist.h userlist_moc.cpp \
 updates.cpp updates.h
 
 EXTRA_kadu_SOURCES = \
-modules.cpp modules.h modules_moc.cpp \
 voice.cpp voice.h voice_moc.cpp \
 voice_dsp.cpp voice_dsp.h voice_dsp_moc.cpp
-
-if MODULES
-MODULES_OBJS = \
-modules.$(OBJEXT) modules_moc.$(OBJEXT)
-else
-MODULES_OBJS =
-endif
 
 if VOICE
 VOICE_OBJS = \
@@ -54,15 +47,15 @@ endif
 INCLUDES = $(XFREE_INCLUDES) $(QT_INCLUDES) $(OPENSSL_INCLUDES) $(GSM_INCLUDES) $(GADU_INCLUDES)
 
 kadu_LDADD = \
-$(MODULES_OBJS) $(VOICE_OBJS) $(PTHREAD_LIBS) $(PNG_LIBS) \
+$(VOICE_OBJS) $(PTHREAD_LIBS) $(PNG_LIBS) \
 $(QT_LIBS) $(GSM_LIBS) $(GADU_LIBS) \
 $(foreach mod,$(basename $(static_modules)),../modules/$(mod)/$(mod).a)
 
 kadu_LDFLAGS = \
-$(PTHREAD_LDFLAGS) $(MODULES_LDFLAGS) $(OPENSSL_LIBS) \
+$(PTHREAD_LDFLAGS) -rdynamic $(OPENSSL_LIBS) \
 $(static_modules_ldflags)
 
-kadu_DEPENDENCIES = $(MODULES_OBJS) $(VOICE_OBJS)
+kadu_DEPENDENCIES = $(VOICE_OBJS)
 
 AM_CPPFLAGS = $(PTHREAD_CPPFLAGS) -DQT_THREAD_SUPPORT -D_REENTRANT
 
