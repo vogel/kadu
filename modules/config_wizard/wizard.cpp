@@ -1404,8 +1404,7 @@ void Wizard::setSoundModule(int comboPos)
 {	
 	QString moduleName = cb_soundModule->text(comboPos);
 	if (moduleName == "alsa_sound")
-		moduleInfo->setText(tr("This module play sounds using ALSA - Advanced Linux Sound Architecture driver."
-								"This is third-party module not supported by Kadu Team."));
+		moduleInfo->setText(tr("This module play sounds using ALSA - Advanced Linux Sound Architecture driver."));
 	else if (moduleName == "arts_sound")
 		moduleInfo->setText(tr("This module uses KDE's aRts daemon which mixes multiple "
 							"digital sources at real time.<br> When your soundcard "
