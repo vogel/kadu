@@ -21,6 +21,7 @@
 * dane osobiste: pobieranie o nas informacji wykorzystuje wyszukiwanie zgodne z GG 5.0
 * dane osobiste: dzia³aj± w standardzie GG 5.0 (nie ma problemów z poszczególnymi polami
   naszego opisu)
+* dane osobiste: obs³uga FamilyName i FamilyCity
 
 +++ wersja 0.3.3-pre3
 * CTRL + klik dowolnego przycisku myszki na ikonce w tray'u powoduje

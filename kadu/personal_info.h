@@ -26,6 +26,8 @@ class PersonalInfoDialog : public QDialog
 		QComboBox* GenderCombo;
 		QLineEdit* BirthyearEdit;
 		QLineEdit* CityEdit;
+		QLineEdit* FamilyNameEdit;
+		QLineEdit* FamilyCityEdit;
 		QSocketNotifier* SocketReadNotifier;
 		QSocketNotifier* SocketWriteNotifier;
 		struct gg_http* http;
