@@ -19,6 +19,8 @@
 * kadu nie wysypuje siê jak mamy w³±czone "autoaway" i jeste¶my offline
 * w oknie poszukiwañ: gdy znaleziono jednego u¿ytkownika nie trzeba go zaznaczaæ,
   aby dodaæ go do listy, albo uaktualniæ informacjê o nim
+* w oknie konfiguracji: gdy odznaczymy domy¶lny serwer GG i nie wpiszemy ¿adnego
+  serwera GG to kadu ju¿ nie wywala siê przy próbie ponownego ³±czenia siê
 
 +++ wersja 0.3.2
 * dalsze porz±dki w kodzie
