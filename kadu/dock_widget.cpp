@@ -42,12 +42,12 @@ void DockWidget::changeIcon() {
   if (pending.pendingMsgs() && config.dock && !icon_timer->isActive()) {
     if (!blink) {
       setPixmap(QPixmap((const char**)gg_msg_xpm));
-      icon_timer->start(1000,TRUE);
+      icon_timer->start(500,TRUE);
       blink = true;
       }
     else {
       setPixmap(QPixmap((const char**)gg_xpm[statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]));
-      icon_timer->start(1000,TRUE);
+      icon_timer->start(500,TRUE);
       blink = false;
       }
   }
