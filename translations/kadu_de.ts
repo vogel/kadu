@@ -565,71 +565,71 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>Icon theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Icon theme</translation>
     </message>
     <message>
         <source>Icon paths</source>
-        <translation type="unfinished"></translation>
+        <translation>Icon paths</translation>
     </message>
     <message>
         <source>Multiline description in userbox</source>
-        <translation type="unfinished"></translation>
+        <translation>Multilinebeschreibung in userbox</translation>
     </message>
     <message>
         <source>Local TCP port:</source>
-        <translation type="unfinished"></translation>
+        <translation>Locale TCP port:</translation>
     </message>
     <message>
         <source>Don&apos;t save status changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Statusänderungen nicht speichern</translation>
     </message>
     <message>
         <source>Lock file in profile directory exists. Another Kadu probably running.</source>
-        <translation type="unfinished"></translation>
+        <translation>Loock datei im Profilverzeichnis bereits besteht. Ein anderes vermutlich laufendes Kadu.</translation>
     </message>
     <message>
         <source>Force running Kadu (not recommended).</source>
-        <translation type="unfinished"></translation>
+        <translation>Force running Kadu (not recommended).</translation>
     </message>
     <message>
         <source>Quit.</source>
-        <translation type="unfinished"></translation>
+        <translation>Quit.</translation>
     </message>
     <message>
         <source>Show status button</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Statustaste</translation>
     </message>
     <message>
         <source>Max image size</source>
-        <translation type="unfinished"></translation>
+        <translation>Maximale Bildgröße</translation>
     </message>
     <message>
         <source>Mouse buttons</source>
-        <translation type="unfinished"></translation>
+        <translation>Maustasten</translation>
     </message>
     <message>
         <source>Left button</source>
-        <translation type="unfinished"></translation>
+        <translation>Linke Taste</translation>
     </message>
     <message>
         <source>Middle button</source>
-        <translation type="unfinished"></translation>
+        <translation>Mittlere Taste</translation>
     </message>
     <message>
         <source>Right button</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechte Taste</translation>
     </message>
     <message>
         <source>Show inactive users</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige nicht aktive Benutzer</translation>
     </message>
     <message>
         <source>Show emoticons in panel</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Emoticons in Panel</translation>
     </message>
     <message>
         <source>Show emoticons in history</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Emoticons in der Geschichte</translation>
     </message>
 </context>
 <context>
@@ -758,7 +758,7 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>Insert image</source>
-        <translation type="unfinished"></translation>
+        <translation>Bild einfügen</translation>
     </message>
 </context>
 <context>
@@ -842,7 +842,7 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>Apply</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -1071,19 +1071,19 @@ Dein Passwort ist falsch!!!</translation>
     </message>
     <message>
         <source>Nothing</source>
-        <translation type="unfinished"></translation>
+        <translation>Nichts</translation>
     </message>
     <message>
         <source>Open chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Chatfenster öffnen</translation>
     </message>
     <message>
         <source>Delete hint</source>
-        <translation type="unfinished"></translation>
+        <translation>Hints löschen</translation>
     </message>
     <message>
         <source>Delete all hints</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle hints löschen</translation>
     </message>
 </context>
 <context>
@@ -1122,7 +1122,7 @@ Dein Passwort ist falsch!!!</translation>
     </message>
     <message>
         <source>Uins</source>
-        <translation type="unfinished"></translation>
+        <translation>Uins</translation>
     </message>
 </context>
 <context>
@@ -1222,15 +1222,15 @@ Dein Passwort ist falsch!!!</translation>
     <name>IconsManager</name>
     <message>
         <source>Default</source>
-        <translation type="unfinished"></translation>
+        <translation>Default</translation>
     </message>
     <message>
         <source>Icons</source>
-        <translation type="unfinished"></translation>
+        <translation>Icons</translation>
     </message>
     <message>
         <source>Please restart kadu to apply new icon theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Bitte kadu neu starten, um neues Ikone Thema anzuwenden</translation>
     </message>
 </context>
 <context>
@@ -1260,7 +1260,7 @@ Dein Passwort ist falsch!!!</translation>
     <name>ImageDialog</name>
     <message>
         <source>Images</source>
-        <translation type="unfinished"></translation>
+        <translation>Images</translation>
     </message>
 </context>
 <context>
@@ -1484,7 +1484,7 @@ Check your internet connection.</source>
     <name>KaduTextBrowser</name>
     <message>
         <source>Copy link &amp;location</source>
-        <translation type="unfinished"></translation>
+        <translation>Copy link &amp;location</translation>
     </message>
 </context>
 <context>
@@ -1522,35 +1522,35 @@ Check your internet connection.</source>
     </message>
     <message>
         <source>Info</source>
-        <translation type="unfinished"></translation>
+        <translation>Info</translation>
     </message>
     <message>
         <source>Static</source>
-        <translation type="unfinished">statische</translation>
+        <translation>Statische</translation>
     </message>
     <message>
         <source>Installed</source>
-        <translation type="unfinished"></translation>
+        <translation>Installiert</translation>
     </message>
     <message>
         <source>Loaded</source>
-        <translation type="unfinished"></translation>
+        <translation>Geladen</translation>
     </message>
     <message>
         <source>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;%1&lt;br/&gt;&lt;b&gt;Depends on:&lt;/b&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;%1&lt;br/&gt;&lt;b&gt;abhängig von:&lt;/b&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <source>&lt;br/&gt;&lt;b&gt;Conflicts with:&lt;/b&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;br/&gt;&lt;b&gt;Konflikte mit:&lt;/b&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <source>&lt;br/&gt;&lt;b&gt;Provides:&lt;/b&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;br/&gt;&lt;b&gt;Stellt zur Verfügung&lt;/b&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <source>&lt;br/&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br/&gt;%1&lt;br/&gt;&lt;b&gt;Description&lt;/b&gt;:&lt;br/&gt;%2</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;br/&gt;&lt;b&gt;Autor:&lt;/b&gt;&lt;br/&gt;%1&lt;br/&gt;&lt;b&gt;Beschreibung&lt;/b&gt;:&lt;br/&gt;%2</translation>
     </message>
 </context>
 <context>
@@ -1571,24 +1571,25 @@ Vielleicht ist es kein Kadu-kompatibles Modul.</translation>
     </message>
     <message>
         <source>Required module %1 was not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Erforderliches Modul %1 wurde nicht gefunden</translation>
     </message>
     <message>
         <source>Module %1 is already active</source>
-        <translation type="unfinished"></translation>
+        <translation>Modul %1 ist bereits aktiv</translation>
     </message>
     <message>
         <source>Cannot load %1 module library.:
 %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Kann nicht die Bibliothek %1 mit Modulen laden
+%2</translation>
     </message>
     <message>
         <source>Module %1 cannot be deactivated because it is used now</source>
-        <translation type="unfinished"></translation>
+        <translation>Modul %1 kann nicht dentaktiviert werden, weil es jetzt benutzt wird</translation>
     </message>
     <message>
         <source>Module %1 conflicts with: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Modul %1 widerspricht mit: %2</translation>
     </message>
 </context>
 <context>
@@ -1650,7 +1651,7 @@ Vielleicht ist es kein Kadu-kompatibles Modul.</translation>
     <name>PixmapPreview</name>
     <message>
         <source>This is not an image</source>
-        <translation type="unfinished"></translation>
+        <translation>Dieses ist keine image datei</translation>
     </message>
 </context>
 <context>
@@ -1734,7 +1735,7 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
     </message>
     <message>
         <source>Password reminded</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwort erinnert</translation>
     </message>
 </context>
 <context>
@@ -1849,23 +1850,23 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
     </message>
     <message>
         <source>&amp;Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Chat</translation>
     </message>
     <message>
         <source>from</source>
-        <translation type="unfinished"></translation>
+        <translation>von</translation>
     </message>
     <message>
         <source>to</source>
-        <translation type="unfinished"></translation>
+        <translation>zum</translation>
     </message>
     <message>
         <source>No results</source>
-        <translation type="unfinished"></translation>
+        <translation>Keine Resultate</translation>
     </message>
     <message>
         <source>There were no results of your search</source>
-        <translation type="unfinished"></translation>
+        <translation>Es gab keine Resultate Ihrer Suche</translation>
     </message>
 </context>
 <context>
@@ -1926,7 +1927,7 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
     <name>ToolBar</name>
     <message>
         <source>Main toolbar</source>
-        <translation type="unfinished">Mein Toolbar</translation>
+        <translation>Mein Toolbar</translation>
     </message>
 </context>
 <context>
@@ -1973,58 +1974,58 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
     </message>
     <message>
         <source>Unregistation was successful. Now you don&apos;t have any GG number :(</source>
-        <translation type="unfinished"></translation>
+        <translation>Unregistation war erfolgreich. Jetzt haben Sie keine GG Nummer mehr :(</translation>
     </message>
 </context>
 <context>
     <name>UserBox</name>
     <message>
         <source>&lt;i&gt;Available&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;Zugänglich&lt;/i&gt;</translation>
     </message>
     <message>
         <source>&lt;i&gt;Busy&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;Beschäftigt&lt;/i&gt;</translation>
     </message>
     <message>
         <source>&lt;i&gt;Mobile:&lt;/i&gt;&lt;b&gt; </source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;Mobile:&lt;/i&gt;&lt;b&gt;</translation>
     </message>
     <message>
         <source>&lt;nobr&gt;&lt;i&gt;Not available&lt;/i&gt;&lt;/nobr&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;nobr&gt;&lt;i&gt;Nicht Zugänglich&lt;/i&gt;&lt;/nobr&gt;</translation>
     </message>
     <message>
         <source>&lt;i&gt;Invisible&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;Versteckt&lt;/i&gt;</translation>
     </message>
     <message>
         <source>&lt;i&gt;Invisible &lt;b&gt;(d.)&lt;/b&gt;&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;Versteckt &lt;b&gt;(d.)&lt;/b&gt;&lt;/i&gt;</translation>
     </message>
     <message>
         <source>&lt;nobr&gt;&lt;i&gt;Busy &lt;b&gt;(d.)&lt;/b&gt;&lt;/i&gt;&lt;/nobr&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;nobr&gt;&lt;i&gt;Beschäftigt &lt;b&gt;(d.)&lt;/b&gt;&lt;/i&gt;&lt;/nobr&gt;</translation>
     </message>
     <message>
         <source>&lt;nobr&gt;&lt;i&gt;Not available &lt;b&gt;(d.)&lt;/b&gt;&lt;/i&gt;&lt;/nobr&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;nobr&gt;&lt;i&gt;Nicht zugänglich &lt;b&gt;(d.)&lt;/b&gt;&lt;/i&gt;&lt;/nobr&gt;</translation>
     </message>
     <message>
         <source>&lt;nobr&gt;&lt;i&gt;Available &lt;b&gt;(d.)&lt;/b&gt;&lt;/i&gt;&lt;/nobr&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;nobr&gt;&lt;i&gt;Zugänglich &lt;b&gt;(d.)&lt;/b&gt;&lt;/i&gt;&lt;/nobr&gt;</translation>
     </message>
     <message>
         <source>&lt;nobr&gt;&lt;i&gt;Blocking&lt;/i&gt;&lt;/nobr&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;nobr&gt;&lt;i&gt;Blockieren&lt;/i&gt;&lt;/nobr&gt;</translation>
     </message>
     <message>
         <source>&lt;nobr&gt;&lt;i&gt;Unknown status&lt;/i&gt;&lt;/nobr&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;nobr&gt;&lt;i&gt;Unbekannte status&lt;/i&gt;&lt;/nobr</translation>
     </message>
     <message>
         <source>&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Beschreibung:&lt;/b&gt;&lt;br/&gt;</translation>
     </message>
 </context>
 <context>
@@ -2271,7 +2272,7 @@ Die Anwendung hat einen Fehler zurückgemeldet</translation>
     </message>
     <message>
         <source>Your userlist has been successfully deleted on server</source>
-        <translation type="unfinished"></translation>
+        <translation>Ihr userlist ist erfolgreich von Server gelöscht worden</translation>
     </message>
 </context>
 <context>
