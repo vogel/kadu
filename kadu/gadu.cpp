@@ -1234,7 +1234,6 @@ void GaduProtocol::login()
 	if (NextStatus->hasDescription())
 		LoginParams.status_descr = strdup((const char *)unicode2cp(NextStatus->description()));
 
-	LoginParams.password = strdup((const char *)unicode2cp(pwHash(config_file.readEntry("General", "Password"))));
 
 	LoginParams.uin = (UinType)config_file.readNumEntry("General", "UIN");
 	LoginParams.has_audio = config_file.readBoolEntry("Network", "AllowDCC");
@@ -1283,7 +1282,7 @@ void GaduProtocol::login()
 //	polaczenia TLS z serwerami GG na razie nie dzialaja
 //	LoginParams.tls = config_file.readBoolEntry("Network", "UseTLS");
 	LoginParams.tls = 0;
-	LoginParams.client_version = GG_DEFAULT_CLIENT_VERSION;
+	LoginParams.client_version = GG_DEFAULT_CLIENT_VERSION; //tego siê nie zwalnia...
 	LoginParams.protocol_version = GG_DEFAULT_PROTOCOL_VERSION;
 	if (LoginParams.tls)
 	{
@@ -1298,9 +1297,12 @@ void GaduProtocol::login()
 
 	ConnectionTimeoutTimer::on();
 	ConnectionTimeoutTimer::connectTimeoutRoutine(this, SLOT(connectionTimeoutTimerSlot()));
+
+	LoginParams.password = strdup((const char *)unicode2cp(pwHash(config_file.readEntry("General", "Password"))));
 	Sess = gg_login(&LoginParams);
-//	free(LoginParams.client_version);
+	memset(LoginParams.password, 0, strlen(LoginParams.password));
 	free(LoginParams.password);
+
 	if (LoginParams.status_descr)
 		free(LoginParams.status_descr);
 
