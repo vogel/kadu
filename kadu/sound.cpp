@@ -180,7 +180,7 @@ void SoundManager::initModule()
 	QT_TRANSLATE_NOOP("@default","Clear");
 	QT_TRANSLATE_NOOP("@default","Test");
 	QT_TRANSLATE_NOOP("@default","Sound paths");
-
+	QT_TRANSLATE_NOOP("@default","Sound theme");
 	ConfigDialog::addTab("Sounds");
 	ConfigDialog::addCheckBox("Sounds", "Sounds", "Play sounds", "PlaySound", false);
 	ConfigDialog::addCheckBox("Sounds", "Sounds", "Play sounds using aRts! server", "PlaySoundArtsDsp", false);
