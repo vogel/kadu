@@ -110,18 +110,19 @@ void SoundSlots::onCreateConfigDialog()
 	QHGroupBox *g_messagesnd= ConfigDialog::getHGroupBox("Sounds", "Message sound");
 	QHGroupBox *g_chatsnd= ConfigDialog::getHGroupBox("Sounds", "Chat sound");
 	
+	
+	QGrid *panebox = ConfigDialog::getGrid("Notify","listboxy");
+	QCheckBox *b_notifysound= ConfigDialog::getCheckBox("Notify", "Notify by sound");
 
 	soundPlayer(b_playsound->isChecked());
-
+	
 	g_volume->setEnabled(b_playsound->isChecked() && b_volumectrl->isChecked());
 	b_playinvisible->setEnabled(b_playsound->isChecked()&& b_playchatting->isChecked());
 	g_chatsnd->setEnabled(b_playsound->isChecked()&& b_playchatting->isChecked());
-	g_chatsnd->setEnabled(b_playsound->isChecked()&& b_playinvisible->isChecked());
 	
 	connect(b_volumectrl,SIGNAL(toggled(bool)), g_volume, SLOT(setEnabled(bool)));
 	connect(b_playchatting,SIGNAL(toggled(bool)), b_playinvisible, SLOT(setEnabled(bool)));
-	connect(b_playchatting,SIGNAL(toggled(bool)), g_chatsnd, SLOT(setEnabled(bool)));	
-	connect(b_playinvisible,SIGNAL(toggled(bool)), g_chatsnd, SLOT(setEnabled(bool)));
+	connect(b_playchatting,SIGNAL(toggled(bool)), g_chatsnd, SLOT(setEnabled(bool)));
 	
 };
 
@@ -137,6 +138,12 @@ void SoundSlots::soundPlayer(bool value)
 	QCheckBox *b_playinvisible= ConfigDialog::getCheckBox("Sounds", "Play chat sounds only when window is invisible");
 	QHGroupBox *g_messagesnd= ConfigDialog::getHGroupBox("Sounds", "Message sound");
 	QHGroupBox *g_chatsnd= ConfigDialog::getHGroupBox("Sounds", "Chat sound");
+
+	QHGroupBox *notifysound = ConfigDialog::getHGroupBox("Notify","Notify sound");
+	QCheckBox *b_notifysound= ConfigDialog::getCheckBox("Notify", "Notify by sound");
+
+	    b_notifysound->setEnabled(value);
+	    notifysound->setEnabled(value && b_notifysound->isChecked());
 
 	    b_playarts->setEnabled(value);
 	    g_soundplayer->setEnabled(value);

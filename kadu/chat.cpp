@@ -680,17 +680,21 @@ void Chat::checkPresence(UinsList senders, QString &msg, time_t time, QString &t
 }
 
 void Chat::alertNewMessage(void) {
-	if (config_file.readBoolEntry("Sounds","PlaySoundChatInvisible")){
-		if (!isActiveWindow())
-			playSound(config_file.readEntry("Sounds","Chat_sound"));
+
+	if (config_file.readBoolEntry("Sounds","PlaySoundChat"))
+		{
+		    if (config_file.readBoolEntry("Sounds","PlaySoundChatInvisible")){
+			if (isActiveWindow())
+				return;
+										     }
+		playSound(config_file.readEntry("Sounds","Chat_sound"));
+			
 		}
-	else
-		if (config_file.readBoolEntry("Sounds","PlaySoundChat"))
-			playSound(config_file.readEntry("Sounds","Chat_sound"));
 
 	if (config_file.readBoolEntry("Chat","BlinkChatTitle"))
 		if (!isActiveWindow() && !title_timer->isActive())
 			changeTitle();
+
 }
 
 void Chat::writeMyMessage() {
@@ -1260,7 +1264,7 @@ void ChatSlots::onCreateConfigDialog()
 	vl_chatcolor.append(config_file.readColorEntry("Look", "ChatUsrFontColor"));
 	
 	vl_chatfont.clear();
-	vl_chatcolor.append(config_file.readColorEntry("Look", "ChatFont"));
+	vl_chatfont.append(config_file.readFontEntry("Look", "ChatFont"));
 
 	QLineEdit *l_color= ConfigDialog::getLineEdit("Look", "", "line1");
 	l_color->setMaxLength(7);

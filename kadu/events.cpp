@@ -450,7 +450,7 @@ void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)
 			msgbox->show();
 			}
 
-		if (config_file.readBoolEntry("Notify","NotifyWithSound")) {
+		if (config_file.readBoolEntry("Notify","NotifyWithSound") && config_file.readBoolEntry("Sounds", "PlaySound")) {
 			if (lastsoundtime.elapsed() >= 500)
 				playSound(parse(config_file.readEntry("Notify","NotifySound"),userlist.byUin(uin),false));
 			lastsoundtime.restart();
@@ -972,14 +972,16 @@ void EventConfigSlots::onCreateConfigDialog()
 	QVGroupBox *notifybox= ConfigDialog::getVGroupBox("Notify", "Notify options");
 	QGrid *panebox = ConfigDialog::getGrid("Notify","listboxy");	
 	QHGroupBox *soundbox= ConfigDialog::getHGroupBox("Notify", "Notify sound");
-	QCheckBox *b_notifydialog= ConfigDialog::getCheckBox("Notify", "Notify by dialog box");
 	QCheckBox *b_notifysound= ConfigDialog::getCheckBox("Notify", "Notify by sound");
-
+	
 	if (config_file.readBoolEntry("Notify", "NotifyAboutAll")) 
 		panebox->setEnabled(false);
 
-	if (!config_file.readBoolEntry("Notify", "NotifyWithSound"))
+	if (!config_file.readBoolEntry("Sounds", "PlaySound"))
+		{
 		soundbox->setEnabled(false);
+		b_notifysound->setEnabled(false);
+		}
 
 	if (!config_file.readBoolEntry("Notify", "NotifyStatusChange"))
 		{	
@@ -1072,9 +1074,12 @@ void EventConfigSlots::ifNotifyGlobal(bool toggled) {
 	QCheckBox *b_notifyall= ConfigDialog::getCheckBox("Notify", "Notify about all users");
 	QVGroupBox *notifybox= ConfigDialog::getVGroupBox("Notify", "Notify options");
 	QGrid *panebox = ConfigDialog::getGrid("Notify","listboxy");
-
+	QCheckBox *b_sounds= ConfigDialog::getCheckBox("Sounds", "Play sounds");
+	QCheckBox *b_notifysound= ConfigDialog::getCheckBox("Notify", "Notify by sound");
+	
 	b_notifyall->setEnabled(toggled);
 	panebox->setEnabled(toggled && !b_notifyall->isChecked());
+	b_notifysound->setEnabled(toggled && b_sounds->isChecked());
 	notifybox->setEnabled(toggled);
 }
 
