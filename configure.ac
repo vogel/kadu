@@ -1,14 +1,16 @@
 # Process this file with autoconf to produce a configure script.
-AC_INIT([Kadu],[0.3.1])
+AC_INIT([Kadu],[0.3.2])
 AC_COPYRIGHT([configure.ac written by A.Smarzewski])
-AC_REVISION([0.1.0])
+AC_REVISION([0.3.2-1])
 AC_PREREQ(2.53)
 
 AC_CONFIG_SRCDIR([kadu/kadu.cpp])
 AC_CONFIG_AUX_DIR([admin])
 AM_CONFIG_HEADER([config.h])
 AC_CANONICAL_SYSTEM
-AM_INIT_AUTOMAKE([kadu-3.0.1],[3.0.1])
+AM_INIT_AUTOMAKE([kadu-0.3.2],[0.3.2])
+
+KDE_SET_PREFIX
 
 # Checks for programs.
 AC_PROG_CXX
