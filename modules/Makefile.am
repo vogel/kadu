@@ -89,7 +89,7 @@ $(module_moc_cpp_files):
 	$(QT_MOC_DIR)/moc -o $@ $<
 
 
-install-data-local:
+install-data-local: uninstall-local
 	$(mkinstalldirs) "$(DESTDIR)/$(includedir)/kadu/modules/"
 	$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/modules/"
 	$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/modules/translations"

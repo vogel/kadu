@@ -250,6 +250,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   i zakoñczeniu dzia³ania (joi)
 * zamykanie okien chatów i konfiguracji przed wyj¶ciem + wiêcej komunikatów
   debuguj±cych (joi)
+* przy instalacji usuwane s± stare modu³y z docelowego katalogu (adrian)
+* modu³y zgodne z funkcjonalno¶ci± kadu 0.3.7 domy¶lnie statyczne (adrian)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
