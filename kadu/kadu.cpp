@@ -779,7 +779,7 @@ void Kadu::help()
 /*	if (QFile::exists(QString(DOCDIR) + "/index_doc.html"))
 		link = QString(DOCDIR) + "/index_doc.html";
 	else*/
-		link = "http://kadu.net/index_doc.html";
+		link = "http://kadu.net/doc.php";
 	openWebBrowser(link);
 }
 
