@@ -303,8 +303,16 @@ void Chat::closeEvent(QCloseEvent *e) {
 void Chat::userWhois(void) {
 	SearchDialog *sd;
 	QString tmp;
-
-	sd = new SearchDialog(0, "User info", uins[0]);
+	uin_t uin;
+	
+	if (!userbox)
+		uin = uins[0];
+	else
+		if (userbox->currentItem() == -1)
+			uin = uins[0];
+		else
+			uin = userlist.byAltNick(userbox->currentText()).uin;
+	sd = new SearchDialog(0, "User info", uin);
 	sd->show();
 	sd->doSearch();
 }
