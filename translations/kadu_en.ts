@@ -554,6 +554,18 @@ It&apos;s a high security risk!</source>
         <source>Debugging mask</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Receive images during invisibility</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Block window close on new message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Max time to block window close</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -686,6 +698,10 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>Chat window will be cleared. Continue?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New message received, close window anyway?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1147,27 +1163,6 @@ You may add it to $PATH or specify location using Specify path option.</source>
     </message>
     <message>
         <source>Connection timeout!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>You don&apos;t have a config file.
-What would you like to do?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>New UIN</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Configure</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Kadu: new user</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

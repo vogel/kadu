@@ -559,6 +559,18 @@ Jest to wysoce ryzykowne!</translation>
         <source>Debugging mask</source>
         <translation>Maska debugera</translation>
     </message>
+    <message>
+        <source>Receive images during invisibility</source>
+        <translation>Odbieraj obrazki gdy jestem niedostępny</translation>
+    </message>
+    <message>
+        <source>Block window close on new message</source>
+        <translation>Blokuj zamykanie okna gdy nadejdzie nowa wiadomość</translation>
+    </message>
+    <message>
+        <source>Max time to block window close</source>
+        <translation>Maksymalny czas blokowania okna</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -692,6 +704,10 @@ Jest to wysoce ryzykowne!</translation>
     <message>
         <source>Chat window will be cleared. Continue?</source>
         <translation>Okno rozmowy zostanie wyczyszczone. Kontynuować?</translation>
+    </message>
+    <message>
+        <source>New message received, close window anyway?</source>
+        <translation>Odebrano nową wiadomość, czy chcesz zamknąć okno?</translation>
     </message>
 </context>
 <context>
@@ -1157,28 +1173,6 @@ Podałeś nazwę hosta zamiast adresu IP?</translation>
         <source>Connection timeout!</source>
         <translation>
 Przekroczenie czasu połączenia!</translation>
-    </message>
-    <message>
-        <source>You don&apos;t have a config file.
-What would you like to do?</source>
-        <translation>Brak pliku konfiguracyjnego.
-Wybierz jedną z poniższych opcji:</translation>
-    </message>
-    <message>
-        <source>New UIN</source>
-        <translation>Nowy nr GG</translation>
-    </message>
-    <message>
-        <source>Configure</source>
-        <translation>Mam już nr GG</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Anuluj</translation>
-    </message>
-    <message>
-        <source>Kadu: new user</source>
-        <translation>Kadu: nowy użytkownik</translation>
     </message>
     <message>
         <source>Show / hide users without description</source>

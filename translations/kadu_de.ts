@@ -556,6 +556,18 @@ Es ist ein sehr hohes Risiko!</translation>
         <source>Debugging mask</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Receive images during invisibility</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Block window close on new message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Max time to block window close</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -688,6 +700,10 @@ Es ist ein sehr hohes Risiko!</translation>
     </message>
     <message>
         <source>Chat window will be cleared. Continue?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New message received, close window anyway?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1152,28 +1168,6 @@ Sie sollten den Pfad zum Browser in $PATH eintragen oder in der kadu-Konfigurati
     <message>
         <source>Connection timeout!</source>
         <translation>Verbindungs-Timeout!</translation>
-    </message>
-    <message>
-        <source>You don&apos;t have a config file.
-What would you like to do?</source>
-        <translation>Es fehlt die Konfigurationsdatei.
-Was wollen sie nun tun?</translation>
-    </message>
-    <message>
-        <source>New UIN</source>
-        <translation>Neue Nr. GG</translation>
-    </message>
-    <message>
-        <source>Configure</source>
-        <translation>Konfigurieren</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Abbrechen</translation>
-    </message>
-    <message>
-        <source>Kadu: new user</source>
-        <translation>Kadu: neuer Benutzer</translation>
     </message>
     <message>
         <source>Show / hide users without description</source>

@@ -556,6 +556,18 @@ E un rischio per la sicurezza!</translation>
         <source>Debugging mask</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Receive images during invisibility</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Block window close on new message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Max time to block window close</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -688,6 +700,10 @@ E un rischio per la sicurezza!</translation>
     </message>
     <message>
         <source>Chat window will be cleared. Continue?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New message received, close window anyway?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1152,28 +1168,6 @@ Il percorso per raggiungere browser non esiste in $PATH. Devi specificarlo.</tra
     <message>
         <source>Connection timeout!</source>
         <translation>Tempo di connessione superato!</translation>
-    </message>
-    <message>
-        <source>You don&apos;t have a config file.
-What would you like to do?</source>
-        <translation>Manca file di configurazione.
-Cosa vogliamo fare?</translation>
-    </message>
-    <message>
-        <source>New UIN</source>
-        <translation>Nuovo no GG</translation>
-    </message>
-    <message>
-        <source>Configure</source>
-        <translation>Ho già numero GG</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Annulla</translation>
-    </message>
-    <message>
-        <source>Kadu: new user</source>
-        <translation>Kadu: nuovo utente</translation>
     </message>
     <message>
         <source>Show / hide users without description</source>
