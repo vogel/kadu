@@ -87,7 +87,7 @@ AC_DEFUN(FIND_HEADER,[
 # $3 - action if found but not in system dirs
 # $4 - action if not found (default is error message)
 AC_DEFUN(FIND_LIBRARY,[
-	AC_MSG_CHECKING([if lib$1.so library is in system directories])
+	AC_MSG_CHECKING([if lib$1.so/dylib library is in system directories])
 	save_CFLAGS="$CFLAGS"
 	CFLAGS="$CFLAGS -l$1"
 	AC_TRY_LINK([],
@@ -99,7 +99,10 @@ AC_DEFUN(FIND_LIBRARY,[
 	],[
 		CFLAGS="$save_CFLAGS"
 		AC_MSG_RESULT([no])
-		FIND_FILE([lib$1.so],[$2],[$3],[$4])
+		FIND_FILE([lib$1.so],[$2],[$3],
+		[
+			FIND_FILE([lib$1.dylib],[$2],[$3],[$4])
+		])
 	])
 ])
 
