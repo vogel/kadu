@@ -25,6 +25,8 @@ extern bool socket_active;
 extern unsigned int server_nr;
 extern QValueList<QHostAddress> config_servers;
 
+extern QHostAddress config_extip;
+
 class UinsList : public QValueList<UinType>
 {
 	public:
@@ -218,7 +220,6 @@ class GaduProtocol : public QObject
 		QHostAddress* ActiveServer;
 
 		void setupProxy();
-		void setupDcc();
 		void changeStatus(int status);
 
 	private slots:
@@ -230,7 +231,6 @@ class GaduProtocol : public QObject
 		void connectedSlot();
 		void disconnectedSlot();
 		void connectionTimeoutTimerSlot();
-		void dccConnectionReceived(const UserListElement &);
 		void errorSlot(GaduError);
 		void imageReceived(UinType, uint32_t, uint32_t, const QString &, const char *data);
 		void imageRequestReceived(UinType, uint32_t, uint32_t);
@@ -358,8 +358,7 @@ class GaduProtocol : public QObject
 		void userListChanged();
 		void userStatusChanged(UserListElement &, int oldstatus);
 		void systemMessageReceived(QString &);
-
-		void dccSetupFailed();
+		void dccConnectionReceived(const UserListElement&);
 		void statusChanged(int);
 		void disconnectNetwork();
 		void newSearchResults(SearchResults& searchResults, int seq, int lastUin);

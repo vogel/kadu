@@ -27,10 +27,9 @@
 #include "message_box.h"
 #include "config_dialog.h"
 
-QSocketNotifier *dccsnr = NULL;
-QSocketNotifier *dccsnw = NULL;
+QSocketNotifier* dccsnr = NULL;
+QSocketNotifier* dccsnw = NULL;
 QHostAddress config_dccip;
-QHostAddress config_extip;
 struct gg_dcc* dccsock = NULL;
 
 int DccSocket::Count = 0;
@@ -537,7 +536,10 @@ DccManager::DccManager() : QObject(NULL,"dcc_manager")
 	if (!config_extip.setAddress(config_file.readEntry("Network","ExternalIP", "")))
 		config_extip.setAddress((unsigned int)0);
 
-	connect(gadu, SIGNAL(dccSetupFailed()), this, SLOT(dccSetupFailed()));
+	connect(gadu, SIGNAL(connecting()), this, SLOT(setupDcc()));
+	connect(gadu, SIGNAL(disconnected()), this, SLOT(closeDcc()));
+	connect(gadu, SIGNAL(dccConnectionReceived(const UserListElement&)),
+		this, SLOT(dccConnectionReceived(const UserListElement&)));
 	UserBox::userboxmenu->addItemAtPos(1, "SendFile", tr("Send file"),
 		this,SLOT(sendFile()),
 		HotKey::shortCutFromFile("ShortCuts", "kadu_sendfile"));
@@ -589,12 +591,6 @@ void DccManager::watchDcc()
 	kdebugf2();
 }
 
-void DccManager::dccSetupFailed()
-{
-	QMessageBox::warning(kadu, "",
-		tr("Couldn't create DCC socket.\nDirect connections disabled."));
-}
-
 void DccManager::dccFinished(DccSocket* dcc)
 {
 	kdebugf();
@@ -616,6 +612,72 @@ void DccManager::dccSent()
 	if (dccsock->check & GG_CHECK_WRITE)
 		watchDcc();
 	kdebugf2();
+}
+
+void DccManager::setupDcc()
+{
+	kdebugf();
+
+	if (!config_file.readBoolEntry("Network", "AllowDCC"))
+	{
+		kdebugf2();
+		return;
+	}
+
+	QHostAddress dccIp;
+
+	if (!config_dccip.ip4Addr())
+		dccIp.setAddress("255.255.255.255");
+	else
+		dccIp = config_dccip;
+
+	dccsock = gg_dcc_socket_create(config_file.readNumEntry("General", "UIN"), config_file.readNumEntry("Network", "LocalPort", 1550));
+
+	if (!dccsock)
+	{
+		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::setupDcc(): Couldn't bind DCC socket.\n");
+		gg_dcc_free(dccsock);
+
+		QMessageBox::warning(kadu, "",
+			tr("Couldn't create DCC socket.\nDirect connections disabled."));
+		return;
+	}
+
+	gg_dcc_ip = htonl(dccIp.ip4Addr());
+	gg_dcc_port = dccsock->port;
+
+	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol:setupDcc() DCC_IP=%s DCC_PORT=%d\n", dccIp.toString().latin1(), dccsock->port);
+
+	dccsnr = new QSocketNotifier(dccsock->fd, QSocketNotifier::Read, kadu);
+	connect(dccsnr, SIGNAL(activated(int)), this, SLOT(dccReceived()));
+
+	dccsnw = new QSocketNotifier(dccsock->fd, QSocketNotifier::Write, kadu);
+	connect(dccsnw, SIGNAL(activated(int)), this, SLOT(dccSent()));
+
+	kdebugf2();
+}
+
+void DccManager::closeDcc()
+{
+	if (dccsnr)
+	{
+		delete dccsnr;
+		dccsnr = NULL;
+	}
+
+	if (dccsnw)
+	{
+		delete dccsnw;
+		dccsnw = NULL;
+	}
+
+	if (dccsock)
+	{
+		gg_dcc_free(dccsock);
+		dccsock = NULL;
+		gg_dcc_ip = 0;
+		gg_dcc_port = 0;
+	}
 }
 
 void DccManager::sendFile()
@@ -771,6 +833,23 @@ void DccManager::configDialogApply()
 	}
 	if (config_file.readNumEntry("Network","ExternalPort")<=1023)
 		config_file.writeEntry("Network","ExternalPort",0);
+}
+
+void DccManager::dccConnectionReceived(const UserListElement& sender)
+{
+	kdebugf();
+	struct gg_dcc* dcc_new;
+	if (DccSocket::count() < 8)
+	{
+		dcc_new = gg_dcc_get_file(htonl(sender.ip.ip4Addr()), sender.port, config_file.readNumEntry("General","UIN"), sender.uin);
+		if (dcc_new)
+		{
+			FileDccSocket* dcc = new FileDccSocket(dcc_new);
+			connect(dcc, SIGNAL(dccFinished(DccSocket*)), this, SLOT(dccFinished(DccSocket*)));
+			dcc->initializeNotifiers();
+		}
+	}
+	kdebugf2();
 }
 
 DccManager* dcc_manager = NULL;

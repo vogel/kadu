@@ -14,7 +14,6 @@
 #include "kadu.h"
 #include "chat.h"
 #include "ignore.h"
-#include "dcc.h"
 
 #include <netinet/in.h>
 
@@ -35,6 +34,8 @@ QValueList<QHostAddress> config_servers;
 QValueList<QHostAddress> gg_servers;
 const char *gg_servers_ip[7] = {"217.17.41.82", "217.17.41.83", "217.17.41.84", "217.17.41.85",
 	"217.17.41.86", "217.17.41.87", "217.17.41.88"};
+
+QHostAddress config_extip;
 
 bool UinsList::equals(const UinsList &uins) const
 {
@@ -613,8 +614,8 @@ GaduProtocol::GaduProtocol(QObject *parent, const char *name) : QObject(parent, 
 
 	connect(SocketNotifiers, SIGNAL(ackReceived(int)), this, SIGNAL(ackReceived(int)));
 	connect(SocketNotifiers, SIGNAL(connected()), this, SLOT(connectedSlot()));
-	connect(SocketNotifiers, SIGNAL(dccConnectionReceived(const UserListElement &)),
-		this, SLOT(dccConnectionReceived(const UserListElement &)));
+	connect(SocketNotifiers, SIGNAL(dccConnectionReceived(const UserListElement&)),
+		this, SIGNAL(dccConnectionReceived(const UserListElement&)));
 	connect(SocketNotifiers, SIGNAL(disconnected()), this, SLOT(disconnectedSlot()));
 	connect(SocketNotifiers, SIGNAL(error(GaduError)), this, SLOT(errorSlot(GaduError)));
 	connect(SocketNotifiers, SIGNAL(imageReceived(UinType, uint32_t, uint32_t, const QString &, const char *)),
@@ -668,26 +669,6 @@ void GaduProtocol::connectedSlot()
 	kdebugf2();
 }
 
-void GaduProtocol::dccConnectionReceived(const UserListElement &sender)
-{
-	kdebugf();
-
-	struct gg_dcc *dcc_new;
-	FileDccSocket *dcc;
-	if (DccSocket::count() < 8)
-	{
-		dcc_new = gg_dcc_get_file(htonl(sender.ip.ip4Addr()), sender.port, config_file.readNumEntry("General","UIN"), sender.uin);
-		if (dcc_new)
-		{
-			dcc = new FileDccSocket(dcc_new);
-			connect(dcc, SIGNAL(dccFinished(DccSocket*)), dcc_manager, SLOT(dccFinished(DccSocket*)));
-			dcc->initializeNotifiers();
-		}
-	}
-
-	kdebugf2();
-}
-
 void GaduProtocol::disconnectedSlot()
 {
 	kdebugf();
@@ -701,27 +682,6 @@ void GaduProtocol::disconnectedSlot()
 	}
 
 	SocketNotifiers->stop();
-
-	if (dccsnr)
-	{
-		delete dccsnr;
-		dccsnr = NULL;
-	}
-
-	if (dccsnw)
-	{
-		delete dccsnw;
-		dccsnw = NULL;
-	}
-
-	if (dccsock)
-	{
-		gg_dcc_free(dccsock);
-		dccsock = NULL;
-		gg_dcc_ip = 0;
-		gg_dcc_port = 0;
-	}
-
 
 	if (sess)
 	{
@@ -953,8 +913,6 @@ void GaduProtocol::login(int status)
 	// maksymalny rozmiar grafiki w kb
 	loginparams.image_size = config_file.readNumEntry("Chat", "MaxImageSize", 20);
 
-	if (config_file.readBoolEntry("Network", "AllowDCC"))
-		setupDcc();
 	setupProxy();
 
 	loginparams.status = status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General", "PrivateStatus"));
@@ -1094,42 +1052,6 @@ void GaduProtocol::setupProxy()
 			gg_proxy_password = strdup((char *)unicode2latin(config_file.readEntry("Network", "ProxyPassword")).data());
 		}
 	}
-
-	kdebugf2();
-}
-
-void GaduProtocol::setupDcc()
-{
-	kdebugf();
-
-	QHostAddress dccIp;
-
-	if (!config_dccip.ip4Addr())
-		dccIp.setAddress("255.255.255.255");
-	else
-		dccIp = config_dccip;
-
-	dccsock = gg_dcc_socket_create(config_file.readNumEntry("General", "UIN"), config_file.readNumEntry("Network", "LocalPort", 1550));
-
-	if (!dccsock)
-	{
-		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::setupDcc(): Couldn't bind DCC socket.\n");
-		gg_dcc_free(dccsock);
-
-		emit dccSetupFailed();
-		return;
-	}
-
-	gg_dcc_ip = htonl(dccIp.ip4Addr());
-	gg_dcc_port = dccsock->port;
-
-	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol:setupDcc() DCC_IP=%s DCC_PORT=%d\n", dccIp.toString().latin1(), dccsock->port);
-
-	dccsnr = new QSocketNotifier(dccsock->fd, QSocketNotifier::Read, kadu);
-	QObject::connect(dccsnr, SIGNAL(activated(int)), dcc_manager, SLOT(dccReceived()));
-
-	dccsnw = new QSocketNotifier(dccsock->fd, QSocketNotifier::Write, kadu);
-	QObject::connect(dccsnw, SIGNAL(activated(int)), dcc_manager, SLOT(dccSent()));
 
 	kdebugf2();
 }

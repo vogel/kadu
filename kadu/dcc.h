@@ -10,12 +10,11 @@
 #include <qevent.h>
 
 #include "kadu-config.h"
-#include "libgadu.h"
+#include "gadu.h"
 
 extern QSocketNotifier* dccsnr;
 extern QSocketNotifier* dccsnw;
 extern QHostAddress config_dccip;
-extern QHostAddress config_extip;
 extern struct gg_dcc* dccsock;
 
 class FileDccSocket;
@@ -128,10 +127,12 @@ class DccManager : public QObject
 		void watchDcc();
 
 	private slots:
-		void dccSetupFailed();
+		void setupDcc();
+		void closeDcc();
 		void userboxMenuPopup();
 		void sendFile();
 		void kaduKeyPressed(QKeyEvent* e);
+		void dccConnectionReceived(const UserListElement& sender);
 
 	protected:
 		virtual bool event(QEvent* e);
