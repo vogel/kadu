@@ -277,13 +277,11 @@ int statusGGToStatusNr(int status) {
 }
 
 void deletePendingMessage(int nr) {
-
-	delete pending[nr].msg;
-	pending.remove(pending.at(nr));
+	pending.deleteMsg(nr);
 
 	fprintf(stderr, "KK deletePendingMessage()\n");
 
-	if (ifPendingMessages())
+	if (pending.pendingMsgs())
 		dw->setType((char **)gg_msg_xpm);
 	else	
 		dw->setType((char **)gg_xpm[statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]);
@@ -308,7 +306,7 @@ bool ifStatusWithDescription(int status) {
 	status == GG_STATUS_BUSY_DESCR || status == GG_STATUS_INVISIBLE_DESCR);
 }
 
-bool ifPendingMessages(int uin) {
+/*bool ifPendingMessages(int uin) {
     bool pendings = false;
     int i;
     
@@ -322,7 +320,7 @@ bool ifPendingMessages(int uin) {
 		    pendings = true;
 	}
     return pendings;
-}
+}*/
 
 /* reading only ignore file right now */
 void readConfig(void)
@@ -987,19 +985,19 @@ void Kadu::sendMessage(QListBoxItem *item) {
 	UinsList uins;
 	PendingMsgs::Element elem;
 	
-	while (pending.pendingMsgs()) {
-		elem = accessNextMsg(elem);
+	for (i = 0; i < pending.count(); i++) {
+		elem = pending[i];
 		if (!uins.count() || elem.uins.equals(uins))
 			if (elem.msgclass == GG_CLASS_CHAT) {
 				if (!uins.count())
 					uins = elem.uins;
-				for (j = 0; j < pending[i].uins.count(); j++)
-					if (!userlist.containsUin(pending[i].uins[j])) {
+				for (j = 0; j < elem.uins.count(); j++)
+					if (!userlist.containsUin(elem.uins[j])) {
 						tmp = QString::number(pending[i].uins[j]);
 						addUser("", "", tmp, tmp, "", tmp, GG_STATUS_NOT_AVAIL, "", "", true);
 						}
-				j = openChat(pending[i].uins);
-				chats[j].ptr->checkPresence(pending[i].uins, pending[i].msg, pending[i].time);	    
+				j = openChat(elem.uins);
+				chats[j].ptr->checkPresence(elem.uins, elem.msg, elem.time);	    
 				deletePendingMessage(i);
 				fprintf(stderr, "KK Kadu::sendMessage(): j=%d\n", j);
 				i--;
@@ -1010,6 +1008,7 @@ void Kadu::sendMessage(QListBoxItem *item) {
 		    			{
   		    			rmsg = new rMessage(item->text(),
 						elem.msgclass, elem.uins, elem.msg);
+					deletePendingMessage(i);
 					UserBox::all_refresh();
 					rmsg->init();
 					rmsg->show();
@@ -1631,8 +1630,8 @@ void DockWidget::mousePressEvent(QMouseEvent * e) {
 		bool stop = false;
 	
 		UinsList uins;
-		while (pending.pendingMsgs()) {
-			elem = pending.accessNextMsg();
+		for (i = 0; i < pending.count(); i++) {
+			elem = pending[i];
 			if (!uins.count() || elem.uins.equals(uins))
 				if (elem.msgclass == GG_CLASS_CHAT) {
 					if (!uins.count())
@@ -1645,7 +1644,7 @@ void DockWidget::mousePressEvent(QMouseEvent * e) {
 					j = kadu->openChat(elem.uins);
 					chats[j].ptr->checkPresence(elem.uins,
 						elem.msg, elem.time);	    
-					pending.deleteNextMsg();
+					deltePendingMessage(i);
 					stop = true;
 					}		
 				else {
@@ -1653,6 +1652,7 @@ void DockWidget::mousePressEvent(QMouseEvent * e) {
 						rMessage *rmsg;
 						rmsg = new rMessage(userlist.byUin(elem.uins[0]).altnick,
 							elem.msgclass, elem.uins, elem.msg);
+						deletePendingMessage(i);
 						UserBox::all_refresh();
 						rmsg->init();
 						rmsg->show();

@@ -306,7 +306,6 @@ void *watch_socket(void *);
 void kadu_debug(int, char*);
 void playSound(char *);
 
-bool ifPendingMessages(int uin = -1);
 void readConfig(void);
 char *pwHash(const char *);
 void confirmHistoryDeletion(const char *);
