@@ -517,6 +517,7 @@ void SearchDialog::AddButtonClicked()
 
 	kadu->addUser(firstname,lastname,nickname,altnick,"",uin,
 		GG_STATUS_NOT_AVAIL,"","");
+	selectionChanged(selected);
 }
 
 void SearchDialog::updateInfoClicked()

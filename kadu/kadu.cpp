@@ -708,8 +708,15 @@ void Kadu::addUser(const QString& FirstName, const QString& LastName,
 	const QString& Mobile, const QString& Uin, const int Status,
 	const QString& Group, const QString& Description, const bool Foreign)
 {
-	userlist.addUser(FirstName, LastName, NickName, AltNick, Mobile, Uin, Status, 
-		false, false, true, Group, Description, Foreign);
+	if (!userlist.containsUin(Uin.toUInt()))
+		userlist.addUser(FirstName, LastName, NickName, AltNick, Mobile, Uin, Status, 
+			false, false, true, Group, Description, Foreign);
+	else {
+		UserListElement &ule = userlist.byUin(Uin.toUInt());
+		userlist.changeUserInfo(ule.altnick,
+			FirstName, LastName, NickName, AltNick, Mobile, ule.blocking, ule.offline_to_user,
+			ule.notify, Group);
+		}
 	userlist.writeToFile();
 
 	userbox->addUser(AltNick);
@@ -1011,7 +1018,8 @@ void Kadu::sendMessage(QListBoxItem *item) {
 				for (j = 0; j < elem.uins.count(); j++)
 					if (!userlist.containsUin(elem.uins[j])) {
 						tmp = QString::number(pending[i].uins[j]);
-						addUser("", "", tmp, tmp, "", tmp, GG_STATUS_NOT_AVAIL, "", "", true);
+						userlist.addUser("", "", tmp, tmp, "", tmp, GG_STATUS_NOT_AVAIL,
+							false, false, true, "", "", true);
 						}
 				k = openChat(elem.uins);
 				chats[k].ptr->formatMessage(false,
