@@ -934,11 +934,12 @@ void Chat::insertEmoticon(void)
 
 /* adds an emoticon code to the edit window */
 void Chat::addEmoticon(QString string) {
+	int para, index;
+
 	if (string.length()) {
 		string.replace(QRegExp("&lt;"), "<");
 		string.replace(QRegExp("&gt;"), ">");
 		edit->insert(string);
-		edit->end();
 		edit->setFocus();
 		}
 	emoticon_selector = NULL;

@@ -26,6 +26,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * wywalenie snprintf - zamiast tego kdebug i drobne poprawki przy disconnect (mast3r)
 * poprawka: CTRL + klik nie pokazuje/ukrywa okna Kadu, ani
   nie pokazuje siê menu przy CTRL + prawy klik (mast3r)
+* okno rozmowy: znowu autosend dzia³a prawid³owo (chilek)
+* dostosowanie wstawiania emotek do nowego typu pola edycji wiadomo¶ci (chilek)
+* wstawienie emotki powoduje przesuniêcie kursora zaraz za ni± (chilek)
 
 +++ wersja 0.3.4-pre3
 * dodane przeszukiwanie historii (chilek)

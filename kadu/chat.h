@@ -33,7 +33,6 @@ class CustomInput : public QMultiLineEdit {
 	Q_OBJECT
 	public:
 		CustomInput(QWidget *parent = 0, const char *name = 0);
-		friend class Chat;
 
 		enum {
 			KEY_BOLD,
