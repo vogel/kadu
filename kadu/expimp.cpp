@@ -45,6 +45,7 @@ UserlistImport::UserlistImport(QWidget *parent, const char *name)
 	results->addColumn(i18n("Surname"));
 	results->addColumn(i18n("Mobile no."));
 	results->addColumn(i18n("Group"));
+	results->addColumn(i18n("Email"));
 	results->setAllColumnsShowFocus(true);
 
 	grid->addMultiCellWidget(results, 0, 0, 0, 2);
@@ -79,7 +80,7 @@ void UserlistImport::fromfile(){
 					lines[3], lines[4], lines[6], GG_STATUS_NOT_AVAIL,
 					false, false, true, lines[5], "", lines[7]);
 				qlv = new QListViewItem(results, lines[6], lines[2], lines[3],
-					lines[0], lines[1], lines[4], lines[5]);				
+					lines[0], lines[1], lines[4], lines[5], lines[7]);
 	  			}
 			file.close();
 			}
@@ -113,15 +114,6 @@ void UserlistImport::startTransfer() {
 		QMessageBox::critical(this, "Import error", i18n("The application encountered an internal error\nThe import was unsuccessful") );
 		return;
 		}
-
-/*	int ret;
-	while ((ret = gg_userlist_get_watch_fd(gg_http)) >=0 && gg_http->state != GG_STATE_CONNECTING);
-	if (ret < 0) {
-		QMessageBox::critical(this, "Import error", i18n("The application encountered a network error\nThe export was unsuccessful") );
-		gg_userlist_get_free(gg_http);
-		gg_http = NULL;
-		return;
-		}*/
 
 	fetchbtn->setEnabled(false);
 
@@ -268,7 +260,7 @@ void UserlistImport::socketEvent() {
 				false, false, true, tmparray[5], "", tmparray[7]);
 
 			qlv = new QListViewItem(results, tmparray[6], tmparray[2], tmparray[3],
-				tmparray[0], tmparray[1], tmparray[4], tmparray[5]);
+				tmparray[0], tmparray[1], tmparray[4], tmparray[5], tmparray[7]);
 
 			kdebug("\n%s \n", (const char *)(*it).local8Bit());
 			}
