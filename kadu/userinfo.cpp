@@ -236,40 +236,33 @@ void UserInfo::setupTab2() {
 void UserInfo::accept() {
 }
 
-void UserInfo::updateUserlist() {
-	bool ok;
-	UserListElement e;
+void UserInfo::addNewUser(UserListElement& e)
+{
+	bool uin_exist = e.uin && (userlist.containsUin(e.uin));
+	if (uin_exist)
+	{
+		puser = &userlist.byUin(e.uin);
+		if (puser->anonymous)
+			changeUserData(e);
+	}
+	if (!e_altnick->text().length())
+	{
+		QMessageBox::warning(this, tr("Add user problem"),
+			tr("Altnick field cannot be empty."));
+		return;
+	}
+	if (userlist.containsAltNick(e_altnick->text()) || uin_exist)
+	{
+		QMessageBox::information(this, "Kadu",
+			tr("User is already in userlist"), QMessageBox::Ok);
+		return;
+	}
+	userlist.addUser(e);
+	close(true);
+}
 
-	kdebug("UserInfo::updateUserlist() \n");
-	e.first_name = e_firstname->text();
-	e.last_name = e_lastname->text();
-	e.nickname = e_nickname->text();
-	e.altnick = e_altnick->text();
-	e.mobile = e_mobile->text();
-	e.uin = e_uin->text().toUInt(&ok);
-	if (!ok)
-		e.uin = 0;
-	if (cb_group->currentText() == tr("All"))
-		e.setGroup("");
-	else
-		e.setGroup(cb_group->currentText());
-	e.description = "";
-	e.email = e_email->text();
-	if (fAddUser) {
-		if (!e_altnick->text().length()) {
-			QMessageBox::warning(this, tr("Add user problem"),
-				tr("Altnick field cannot be empty."));
-			return;
-			}
-		if (userlist.containsAltNick(e_altnick->text()) || (e.uin&& (userlist.containsUin(e.uin)))) {
-			QMessageBox::information(this, "Kadu",
-				tr("User is already in userlist"), QMessageBox::Ok);
-			return;
-			}
-		userlist.addUser(e);
-		close(true);
-		}
-	else {
+void UserInfo::changeUserData(UserListElement& e)
+{
 		if (e_uin->text().length() && !e.uin) {
 			QMessageBox::information(this, "Kadu",
 				tr("Bad UIN"), QMessageBox::Ok);
@@ -341,6 +334,29 @@ void UserInfo::updateUserlist() {
 		UserBox::all_refresh();
 		chat_manager->refreshTitlesForUin(puser->uin);
 		close();
-		}
 }
 
+void UserInfo::updateUserlist() {
+	bool ok;
+	UserListElement e;
+
+	kdebug("UserInfo::updateUserlist() \n");
+	e.first_name = e_firstname->text();
+	e.last_name = e_lastname->text();
+	e.nickname = e_nickname->text();
+	e.altnick = e_altnick->text();
+	e.mobile = e_mobile->text();
+	e.uin = e_uin->text().toUInt(&ok);
+	if (!ok)
+		e.uin = 0;
+	if (cb_group->currentText() == tr("All"))
+		e.setGroup("");
+	else
+		e.setGroup(cb_group->currentText());
+	e.description = "";
+	e.email = e_email->text();
+	if (fAddUser)
+		addNewUser(e);
+	else
+		changeUserData(e);
+}

@@ -47,6 +47,8 @@ class UserInfo : public QTabDialog {
 		QCheckBox *c_notify;
 		QDns *dns;
 		bool fAddUser;
+		void addNewUser(UserListElement& e);
+		void changeUserData(UserListElement& e);
 
 	protected:
 		void setupTab1();
