@@ -2337,6 +2337,7 @@ void GaduProtocol::onCreateConfigDialog()
 
 	QVGroupBox *g_proxy = ConfigDialog::getVGroupBox("Network", "Proxy server");
 	QCheckBox *b_useproxy= ConfigDialog::getCheckBox("Network", "Use proxy server");
+	ConfigDialog::getLineEdit("Network"," Password: ")->setEchoMode(QLineEdit::Password);
 
 #ifdef HAVE_OPENSSL
 	QCheckBox *b_tls= ConfigDialog::getCheckBox("Network", "Use TLSv1");

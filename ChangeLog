@@ -397,6 +397,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   do tego przyciskami, po co utrudniaæ sobie ¿ycie ;) (adrian)
 * Patch Dorr-a na segfault w desktop_docking (Ron_K)
 * kolejna ³atka Dorregaraya dotycz±ca modu³u config_wizard (adrian)
+* pole "Has³o" w konfiguracji proxy jest wygwiazdkowane (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
