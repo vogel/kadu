@@ -48,10 +48,8 @@
    (kontynuowanie prac nad jêzykiem skryptowym v-user) 
  ? naprawiæ ikonkê w dock menu
  ? dodaæ wiêcej funkcji do dock menu (szukaj, dodaj, usuñ, odbierz)
- ? ustawienia kolorów w oknie konfiguracji
  ? ustawienie czy mesg ma wpadaæ do otwartego okna chat
  ? przechowywanie maili userów i uruchamianie klienta mail
  - wybór przegl±darki obs³uguj±cej linki
- ? ustawienia czcionki okien w oknie konfiguracji
  ? rozbudowa opcji ignorowania o blokowanie
  - mechanizm plugin'ów
