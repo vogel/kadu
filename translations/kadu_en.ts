@@ -1761,10 +1761,6 @@ Now add your friends to the userlist.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source> </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Male</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1846,6 +1842,10 @@ Now add your friends to the userlist.</source>
     </message>
     <message>
         <source>Select user first</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> </source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -699,7 +699,7 @@ Se lasciate lo spazio vuoto, sarà inserita stringa predefinita.</translation>
     </message>
     <message>
         <source>User %1 is available</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 è disponibile</translation>
     </message>
 </context>
 <context>
@@ -1855,10 +1855,6 @@ Ora è possibile aggiungere i vostri amici al lista dei contatti.</translation>
     <message>
         <source>Select user first</source>
         <translation>Prima scegli l&apos;utente</translation>
-    </message>
-    <message>
-        <source> </source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

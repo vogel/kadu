@@ -695,11 +695,11 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>Don&apos;t show status changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Keine Zustandsänderungen anzeigen</translation>
     </message>
     <message>
         <source>User %1 is available</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzer %1 ist erreichbar</translation>
     </message>
 </context>
 <context>
@@ -816,31 +816,31 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     <name>ChatSlots</name>
     <message>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation>Ohne Emotikonen</translation>
     </message>
     <message>
         <source>Static</source>
-        <translation type="unfinished"></translation>
+        <translation>statische</translation>
     </message>
     <message>
         <source>Animated</source>
-        <translation type="unfinished"></translation>
+        <translation>animierte</translation>
     </message>
     <message>
         <source>Your background color</source>
-        <translation type="unfinished"></translation>
+        <translation>Deine Hintergrundfarbe</translation>
     </message>
     <message>
         <source>Your font color</source>
-        <translation type="unfinished"></translation>
+        <translation>Deine Schriftfarbe</translation>
     </message>
     <message>
         <source>User background color</source>
-        <translation type="unfinished"></translation>
+        <translation>Hintergrundfarbe für Kontakt</translation>
     </message>
     <message>
         <source>User font color</source>
-        <translation type="unfinished"></translation>
+        <translation>Schriftfarbe für Kontakt</translation>
     </message>
     <message>
         <source>Font in chat window</source>
@@ -898,7 +898,7 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     <name>ColorButton</name>
     <message>
         <source>Color dialog</source>
-        <translation></translation>
+        <translation>Farben</translation>
     </message>
 </context>
 <context>
@@ -1011,7 +1011,7 @@ Dein Passwort ist falsch!!!</translation>
     </message>
     <message>
         <source>Please change your email in &quot;Change password/email&quot; window. Leave new password field blank.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ändern Sie Ihre Email-Adresse in &quot;Passwort/Email ändern&quot;-Fenster. Lassen Sie das Feld ür neues Passwort leer.</translation>
     </message>
 </context>
 <context>
@@ -1081,11 +1081,11 @@ Dein Passwort ist falsch!!!</translation>
     </message>
     <message>
         <source>Offline</source>
-        <translation type="unfinished">Offline</translation>
+        <translation>Offline</translation>
     </message>
     <message>
         <source>Offline (d.)</source>
-        <translation type="unfinished">Offline (Beschr.)</translation>
+        <translation>Offline (Beschr.)</translation>
     </message>
     <message>
         <source>Blocking</source>
@@ -1547,7 +1547,7 @@ Check your internet connection.</source>
     </message>
     <message>
         <source>&amp;Change password/email</source>
-        <translation>Passwort/Email än&amp;dern</translation>
+        <translation>Passwort/Email &amp;ändern</translation>
     </message>
 </context>
 <context>
@@ -1855,10 +1855,6 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
     <message>
         <source>Select user first</source>
         <translation>Markiere zuerst Benutzer</translation>
-    </message>
-    <message>
-        <source> </source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2380,11 +2376,12 @@ The export userlist to file was unsuccessful</source>
     <message>
         <source>The application encountered an internal error
 The delete userlist on server was unsuccessful</source>
-        <translation type="unfinished"></translation>
+        <translation>Das löschen der Kontaktliste vom Server ist nicht gelungen.
+Die Anwendung hat einen Fehler zurückgemeldet</translation>
     </message>
     <message>
         <source>Your userlist has been successfully exported to server</source>
-        <translation type="unfinished"></translation>
+        <translation>Die Kontakt-Liste wurde auf den Server exportiert</translation>
     </message>
 </context>
 <context>
