@@ -6,6 +6,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 +++ wersja 0.4.0
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
   w oknie konfiguracji (adrian)
+* poprawione 2 b³êdy zwi±zane z dymkami i docking gdy te pierwsze s± wy³±czone (joi)
 
 +++ wersja 0.3.9 (01.06.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
