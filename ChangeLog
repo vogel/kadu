@@ -38,6 +38,7 @@
   wprowadzony tekst z obrazka, adresat z nieuaktywnion± us³ug± "sms standard".
   Zamkniêcie okienka z obrazkiem idei - np klawiszem esc - powoduje prawid³owy
   powrót do edycji (adrian)
+* znaki < i > wy¶wietlaj± siê prawid³owo w widoku opisu u¿ytkownika (chilek)
 
 +++ wersja 0.3.3-final
 * ikonka wiadomo¶ci i ikon statusu "ukryty" z telefonikiem

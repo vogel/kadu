@@ -614,6 +614,8 @@ void Kadu::currentChanged(QListBoxItem *item) {
 			s+=" - ";
 		s+=ule.description;
 	};	
+	s.replace(QRegExp("<"), "&lt;");
+	s.replace(QRegExp(">"), "&gt;");
 	descrtb->setText(s);
 }
 
