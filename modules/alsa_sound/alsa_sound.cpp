@@ -30,12 +30,12 @@ extern "C" int alsa_sound_init()
 	kdebugf();
 
 	alsa_player_slots = new ALSAPlayerSlots(NULL, "alsa_player_slots");
-	if (!alsa_player_slots->isOk())
+/*	if (!alsa_player_slots->isOk())
 	{
 		delete alsa_player_slots;
 		return -1;
 	}
-
+*/
 	kdebugf2();
 	return 0;
 }
