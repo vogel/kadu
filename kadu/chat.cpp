@@ -77,7 +77,10 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 		}
 	else 
 		body = new KaduTextBrowser(split1);
-	body->setStyleSheet(new AnimStyleSheet(body,emoticons.themePath()));
+		
+	if(config.emoticons_style==EMOTS_ANIMATED)
+		body->setStyleSheet(new AnimStyleSheet(body,emoticons.themePath()));
+	
 	body->setMinimumSize(QSize(1,1));
 	body->setFont(config.fonts.chat);
 	QObject::connect(body, SIGNAL(linkClicked(const QString &)), this, SLOT(hyperlinkClicked(const QString &)));
@@ -148,12 +151,13 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 
 	iconsel = new QPushButton(buttontray);
 	iconsel->setPixmap(loadIcon("icons.png"));
-	if (config.emoticons)
-		QToolTip::add(iconsel, i18n("Insert emoticon"));
-	else {
+	if(config.emoticons_style==EMOTS_NONE)
+	{
 		QToolTip::add(iconsel, i18n("Insert emoticon - enable in configuration"));
 		iconsel->setEnabled(false);
-		}
+	}
+	else
+		QToolTip::add(iconsel, i18n("Insert emoticon"));
 
 	QPushButton *history = new QPushButton(buttontray);
 	history->setPixmap(QPixmap((const char**)history_xpm));
@@ -390,7 +394,7 @@ QString Chat::convertCharacters(QString edit, bool me) {
 	edit.replace(QRegExp("http://"),"___escaped_http___");
 	edit.replace(QRegExp("ftp://"),"___escaped_ftp___");
 	
-	if(config.emoticons)
+	if(config.emoticons_style!=EMOTS_NONE)
 	{
 		body->mimeSourceFactory()->addFilePath(emoticons.themePath());
 		if (me)

@@ -113,7 +113,7 @@ void loadKaduConfig(void) {
 	config.smsconf = strdup(konf->readEntry("SmsString",""));
 
 	konf->setGroup("Other");
-	config.emoticons = konf->readBoolEntry("UseEmoticons",false);
+	config.emoticons_style = (EmoticonsStyle)konf->readNumEntry("EmoticonsStyle",EMOTS_ANIMATED);
 	emoticons.setEmoticonsTheme(konf->readEntry("EmoticonsTheme",""));
 	config.autosend = konf->readBoolEntry("AutoSend",false);
 	config.scrolldown = konf->readBoolEntry("ScrollDown",true);
@@ -250,7 +250,7 @@ void saveKaduConfig(void) {
 	konf->writeEntry("UseCustomString",config.smscustomconf);
 
 	konf->setGroup("Other");
-	konf->writeEntry("UseEmoticons",config.emoticons);
+	konf->writeEntry("EmoticonsStyle",config.emoticons_style);
 	konf->writeEntry("EmoticonsTheme",config.emoticons_theme);
 	konf->writeEntry("AutoSend",config.autosend);
 	konf->writeEntry("ScrollDown",config.scrolldown);
@@ -553,7 +553,13 @@ void ConfigDialog::setupTab3(void) {
 	QVGroupBox *emogroup = new QVGroupBox(box3);
 	emogroup->setTitle(i18n("Emoticons"));
 
-	b_emoticons = new QCheckBox(i18n("Enable emoticons in chat window"),emogroup);
+	QHBox* emostyle_box = new QHBox(emogroup);
+	QLabel* l_emoticons_style=new QLabel(i18n("Emoticons"),emostyle_box);
+	cb_emoticons_style=new QComboBox(emostyle_box);
+	cb_emoticons_style->insertItem(i18n("None"));
+	cb_emoticons_style->insertItem(i18n("Static"));
+	cb_emoticons_style->insertItem(i18n("Animated"));
+	cb_emoticons_style->setCurrentItem(config.emoticons_style);
 
 	QHBox* emotheme_box = new QHBox(emogroup);
 	QLabel* l_emoticons_theme=new QLabel(i18n("Emoticons theme"),emotheme_box);
@@ -561,12 +567,10 @@ void ConfigDialog::setupTab3(void) {
 	cb_emoticons_theme->insertStringList(emoticons.themes());
 	cb_emoticons_theme->setCurrentText(config.emoticons_theme);
 
-	if (config.emoticons)
-		b_emoticons->setChecked(true);
-	else
+	if (config.emoticons_style==EMOTS_NONE)
 		emotheme_box->setEnabled(false);
 
-	QObject::connect(b_emoticons,SIGNAL(toggled(bool)), emotheme_box, SLOT(setEnabled(bool)));
+	QObject::connect(cb_emoticons_style,SIGNAL(activated(int)), emotheme_box, SLOT(setEnabled(bool)));
 
 	/* WWW begin */
 	QVGroupBox *webvgrp = new QVGroupBox(box3);
@@ -1450,7 +1454,7 @@ void ConfigDialog::updateConfig(void) {
 	config.smsapp = strdup(e_smsapp->text().latin1());
 	config.smsconf = strdup(e_smsconf->text().latin1());
 	config.smscustomconf = b_smscustomconf->isChecked();
-	config.emoticons = b_emoticons->isChecked();
+	config.emoticons_style = (EmoticonsStyle)cb_emoticons_style->currentItem();
 	emoticons.setEmoticonsTheme(cb_emoticons_theme->currentText());
 	config.autosend = b_autosend->isChecked();
 	config.scrolldown = b_scrolldown->isChecked();

@@ -74,7 +74,7 @@ class ConfigDialog : public QTabDialog	{
 		QSlider *s_volume;
 		QCheckBox *b_soundvolctrl;
 
-		QCheckBox *b_emoticons;
+		QComboBox *cb_emoticons_style;
 		QComboBox *cb_emoticons_theme;
 		QCheckBox *b_autosend;
 		QCheckBox *b_scrolldown;
@@ -209,6 +209,13 @@ struct fonts {
 	QFont trayhint;
 };
 
+enum EmoticonsStyle
+{
+	EMOTS_NONE,
+	EMOTS_STATIC,
+	EMOTS_ANIMATED
+};
+
 struct config {
 	uin_t uin;
 	QString password;
@@ -257,7 +264,7 @@ struct config {
 	bool smscustomconf;
 	char * smsconf;
 
-	bool emoticons;
+	EmoticonsStyle emoticons_style;
 	QString emoticons_theme;
 	bool autosend;
 	bool scrolldown;

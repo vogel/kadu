@@ -173,7 +173,12 @@ void EmoticonsManager::expandEmoticons(QString& text,const QColor& bgcolor)
 		};
 		if(e!=Aliases.end())
 		{
-			new_text+=QString("__escaped_lt__IMG src=")+(*e).anim+" bgcolor="+bgcolor.name()+"__escaped_gt__";
+			new_text+=QString("__escaped_lt__IMG src=");
+			if(config.emoticons_style==EMOTS_ANIMATED)
+				new_text+=(*e).anim;
+			else
+				new_text+=(*e).stat;			
+			new_text+=" bgcolor="+bgcolor.name()+"__escaped_gt__";
 			j+=(*e).alias.length()-1;
 		}
 		else
@@ -234,6 +239,8 @@ void EmoticonSelectorButton::movieUpdate()
 void EmoticonSelectorButton::enterEvent(QEvent* e)
 {
 	QToolButton::enterEvent(e);
+	if(config.emoticons_style!=EMOTS_ANIMATED)
+		return;
 	if(Movie==NULL)
 	{
 		Movie=new QMovie(AnimPath);
