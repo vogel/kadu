@@ -1071,19 +1071,19 @@ void ConfigDialog::setupTab6(void) {
 	QHBox *chatconbox = new QHBox(contentsprop);
 	chatconbox->setSpacing(5);
 
-	QLabel *l_chatcon = new QLabel(i18n("Title chat window contents"), chatconbox);
+	QLabel *l_chatcon = new QLabel(i18n("Chat window title contents"), chatconbox);
 	e_chatcontents = new QLineEdit(config.chatcontents, chatconbox);
 
 	QHBox *confprefixbox = new QHBox(contentsprop);
 	confprefixbox->setSpacing(5);
 
-	QLabel *l_confprefixcon = new QLabel(i18n("Title conference window prefix contents"), confprefixbox);
+	QLabel *l_confprefixcon = new QLabel(i18n("Conference window title prefix contents"), confprefixbox);
 	e_conferenceprefix = new QLineEdit(config.conferenceprefix, confprefixbox);
 
 	QHBox *confconbox = new QHBox(contentsprop);
 	confconbox->setSpacing(5);
 
-	QLabel *l_confcon = new QLabel(i18n("Title conference window contents"), confconbox);
+	QLabel *l_confcon = new QLabel(i18n("Conference window title contents"), confconbox);
 	e_conferencecontents = new QLineEdit(config.conferencecontents, confconbox);
 
 	addTab(box6, i18n("Look"));
