@@ -47,19 +47,20 @@ Chat::Chat(UinsList uins, QDialog *parent) : QDialog (parent), uins(uins) {
 	chats.append(chat);
 	index = chats.count() - 1;
 
-	resize(400,400);
-
 	setTitle();
 
 	body = new KTextBrowser(this);
 	if (uins.count() > 1) {
+  	resize(550,400);
 		userbox = new UserBox(this);
 		for (i = 0; i < uins.count(); i++)
 			userbox->addUin(uins[i]);
 		userbox->refresh();
 		}
-	else
+	else {
+  	resize(400,400);
 		userbox = NULL;
+    }
 		
 	edit = new CustomInput(this);
 	edit->setGeometry(5,215, 390, 150);
