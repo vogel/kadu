@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include <qfiledialog.h>
+#include "../sound/sound.h"
 #include "player_external.h"
 #include "debug.h"
 #include "config_dialog.h"

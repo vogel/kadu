@@ -20,6 +20,7 @@
 #include "config_dialog.h"
 #include "kadu.h"
 #include "../notify/notify.h"
+#include "misc.h"
 
 SoundManager* sound_manager=NULL;
 SoundSlots* sound_slots;

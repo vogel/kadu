@@ -4,9 +4,6 @@
 #include <qstring.h>
 #include <qglobal.h>
 
-#include "../sound/sound.h"
-#include "misc.h"
-
 #ifdef Q_OS_WIN
 #define INTERNAL_QT_SOUND_SUPPORT
 #endif

@@ -10,6 +10,7 @@
 #include <esd.h>
 #include "esd_sound.h"
 #include "debug.h"
+#include "../sound/sound.h"
 
 extern "C" int esd_sound_init()
 {

@@ -7,6 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "../sound/sound.h"
+#include "misc.h"
 #include "nas_sound.h"
 #include "debug.h"
 #include <qapplication.h>

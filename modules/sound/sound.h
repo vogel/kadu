@@ -1,17 +1,19 @@
-#ifndef SOUND_H
-#define SOUND_H
+#ifndef KADU_SOUND_H
+#define KADU_SOUND_H
 
 #include <qobject.h>
 #include <qstring.h>
 #include <qdatetime.h>
 #include <qstringlist.h>
 #include <qmap.h>
+
 #include "config_file.h"
-
-#include "misc.h"
 #include "modules.h"
+#include "gadu.h"
+#include "userlist.h"
+#include "misc.h"
 
-class SoundSlots: public QObject
+class SoundSlots : public QObject
 {
 	Q_OBJECT
 	private:

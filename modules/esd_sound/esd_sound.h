@@ -2,8 +2,6 @@
 #define KADU_ESD_SOUND_H
 #include <qobject.h>
 #include <qstring.h>
-#include "../sound/sound.h"
-#include "misc.h"
 
 class ESDPlayerSlots : public QObject
 {

@@ -2,8 +2,6 @@
 #define PLAYER_EXTERNAL_H
 #include <qobject.h>
 #include <qstring.h>
-#include "../sound/sound.h"
-#include "misc.h"
 
 class ExternalPlayerSlots : public QObject
 {

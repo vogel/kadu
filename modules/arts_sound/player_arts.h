@@ -3,8 +3,6 @@
 #include <qobject.h>
 #include <qstring.h>
 #include <soundserver.h>
-#include "../sound/sound.h"
-#include "misc.h"
 
 using namespace Arts;
 

@@ -9,6 +9,7 @@
 #include "player_arts.h"
 #include "debug.h"
 #include <string>
+#include "../sound/sound.h"
 
 extern "C" int arts_sound_init()
 {
