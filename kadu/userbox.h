@@ -91,10 +91,30 @@ class UserBox : public QListBox , QToolTip
 		static void all_changeAllToInactive();
 		static void all_renameUser(const QString &oldaltnick, const QString &newaltnick);		
 		static void initModule();
-		UinsList getSelectedUins();
-		UserList getSelectedUsers();
-		QStringList getSelectedAltNicks();
+		/**
+		    Funkcja zwraca liste zaznaczonych uzytkownikow 
+		    @return UinsList z zaznaczonymi 
+		    uzytkownikami posiadajacymi numer GG
+		**/
 
+		UinsList getSelectedUins();
+		/**
+		    Funkcja zwraca liste zaznaczonych uzytkownikow
+		    @return UserList z zaznaczonymi uzytkownikami
+		**/
+
+		UserList getSelectedUsers();
+		/**
+		    Funkcja zwraca liste zaznaczonych uzytkownikow
+		    @return QStringList z AltNick'ami
+		**/
+		QStringList getSelectedAltNicks();
+		/**
+		    Funkcja znajdujaca aktywny UserBox.
+		    @return wskaznik do aktywnego UserBox'a, 
+		    jesli taki nie istnieje zwracana jest wartosc NULL
+		**/
+		static UserBox* getActiveUserBox();
 	public slots:	
 		void showHideInactive();
 

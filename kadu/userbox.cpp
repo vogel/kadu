@@ -474,6 +474,7 @@ void UserBox::removeUser(const QString &altnick)
 
 void UserBox::renameUser(const QString &oldaltnick, const QString &newaltnick)
 {
+kdebug("UserBox::renameUser()\n");
 	QStringList::iterator it = Users.find(oldaltnick);
 	(*it) = newaltnick;
 };
@@ -495,46 +496,41 @@ void UserBox::showHideInactive()
 UinsList UserBox::getSelectedUins()
 {
 	UinsList uins;
-	for(int j=0; j<UserBoxes.size(); j++)
-		if (UserBoxes[j]->isActiveWindow())
-		{
-			for (int i = 0; i < UserBoxes[j]->count(); i++)
-				if (UserBoxes[j]->isSelected(i))
+			for (int i = 0; i < count(); i++)
+				if (isSelected(i))
 				{
-					UserListElement user = userlist.byAltNick(UserBoxes[j]->text(i));
+					UserListElement user = userlist.byAltNick(text(i));
 					if (user.uin)
 						uins.append(user.uin);
 				}
-			break;
-		}
 	return uins;
 }
 
 UserList UserBox::getSelectedUsers()
 {
 	UserList users;
-	for(int j=0; j<UserBoxes.size(); j++)
-		if (UserBoxes[j]->isActiveWindow())
-		{
-			for (int i=0; i< UserBoxes[j]->count(); i++)
-				if (UserBoxes[j]->isSelected(i))
-					users.addUser(userlist.byAltNick(UserBoxes[j]->text(i)));
-			break;
-		}
+			for (int i=0; i< count(); i++)
+				if (isSelected(i))
+					users.addUser(userlist.byAltNick(text(i)));
 	return users;
+}
+
+UserBox* UserBox::getActiveUserBox()
+{
+    for (int i=0; i<UserBoxes.size(); i++)
+	{
+	    if (UserBoxes[i]->isActiveWindow())
+		return UserBoxes[i];
+	}
+    return NULL;
 }
 
 QStringList UserBox::getSelectedAltNicks()
 {
 	QStringList nicks;
-	for(int j=0; j<UserBoxes.size(); j++)
-		if (UserBoxes[j]->isActiveWindow())
-		{
-			for (int i=0; i< UserBoxes[j]->count(); i++)
-				if (UserBoxes[j]->isSelected(i))
-					nicks.append(UserBoxes[j]->text(i));
-			break;
-		}
+			for (int i=0; i< count(); i++)
+				if (isSelected(i))
+					nicks.append(text(i));
 	return nicks;
 }
 /////////////////////////////////////////////////////////

@@ -542,7 +542,7 @@ void Kadu::createToolBar()
 void Kadu::popupMenu()
 {	
 	UserList users;
-	users = Userbox->getSelectedUsers();
+	users = UserBox::getActiveUserBox()->getSelectedUsers();
 	UserListElement user = users.first();
 
 	if (!user.mobile.length() || (users.count() !=1))
@@ -595,7 +595,7 @@ void Kadu::popupMenu()
 		}
 	else {
 		UinsList uins;
-		uins = Userbox->getSelectedUins();
+		uins = UserBox::getActiveUserBox()->getSelectedUins();
 		if (isIgnored(uins))
 			UserBox::userboxmenu->setItemChecked(ignoreuseritem, true);
 		if (user.blocking)
@@ -638,7 +638,7 @@ void Kadu::sendSms()
 void Kadu::sendSmsToUser()
 {
 	UserList users;
-	users= Userbox->getSelectedUsers();
+	users= UserBox::getActiveUserBox()->getSelectedUsers();
 	if (users.count() != 1)
 		return;
 	if (users.first().mobile.length())
@@ -650,7 +650,7 @@ void Kadu::sendSmsToUser()
 
 
 void Kadu::viewHistory() {
-	UinsList uins= Userbox->getSelectedUins();
+	UinsList uins= UserBox::getActiveUserBox()->getSelectedUins();
 		if (uins.count()) {
 			History *hb = new History(uins);
 			hb->show();
@@ -663,7 +663,7 @@ void Kadu::sendFile()
 		if (config_dccip.isIp4Addr()) {
 			struct gg_dcc *dcc_new;
 			UserList users;
-			users= Userbox->getSelectedUsers();
+			users= UserBox::getActiveUserBox()->getSelectedUsers();
 			if (users.count() != 1)
 				return;
 			UserListElement user = users.first();
@@ -687,7 +687,7 @@ void Kadu::makeVoiceChat()
 		if (config_dccip.isIp4Addr()) {
 			struct gg_dcc *dcc_new;
 			UserList users;
-			users = Userbox->getSelectedUsers();
+			users = UserBox::getActiveUserBox()->getSelectedUsers();
 			if (users.count() != 1)
 				return;
 			UserListElement user = users.first();
@@ -708,7 +708,7 @@ void Kadu::makeVoiceChat()
 void Kadu::lookupInDirectory() {
 	SearchDialog *sd;
 	UserList users;
-	users = Userbox->getSelectedUsers();
+	users = UserBox::getActiveUserBox()->getSelectedUsers();
 	if (users.count() == 1) {
 		sd = new SearchDialog(0, tr("User info"),
 			userlist.byAltNick(users.first().altnick).uin);
@@ -723,7 +723,7 @@ void Kadu::lookupInDirectory() {
 
 void Kadu::showUserInfo() {
 	UserList users;
-	users= Userbox->getSelectedUsers();
+	users= UserBox::getActiveUserBox()->getSelectedUsers();
 	if (users.count() == 1) 
 		{
 		UserInfo *ui = new UserInfo("user info", 0, users.first().altnick);
@@ -733,7 +733,7 @@ void Kadu::showUserInfo() {
 
 void Kadu::deleteUsers() 
 {
-	QStringList  users = Userbox->getSelectedAltNicks();
+	QStringList  users = UserBox::getActiveUserBox()->getSelectedAltNicks();
 	removeUser(users, false);
 	if (!Userbox->isSelected(Userbox->currentItem()))
 		descrtb->setText("");
@@ -768,7 +768,7 @@ void Kadu::sendKey()
 		mykey = t.read();
 		keyfile.close();
 		QCString tmp(mykey.local8Bit());
-		gg_send_message(sess, GG_CLASS_MSG, Userbox->getSelectedUins().first(), (unsigned char *)tmp.data());
+		gg_send_message(sess, GG_CLASS_MSG, UserBox::getActiveUserBox()->getSelectedUins().first(), (unsigned char *)tmp.data());
 		QMessageBox::information(this, "Kadu",
 			tr("Your public key has been sent"), tr("OK"), QString::null, 0);
 		}
@@ -778,7 +778,7 @@ void Kadu::sendKey()
 void Kadu::deleteHistory()
 {
     
-	history.removeHistory(Userbox->getSelectedUins());
+	history.removeHistory(UserBox::getActiveUserBox()->getSelectedUins());
 }
 
 void Kadu::manageIgnored()
@@ -789,7 +789,7 @@ void Kadu::manageIgnored()
 
 void Kadu::openChat()
 {
-	chat_manager->openPendingMsgs(Userbox->getSelectedUins());
+	chat_manager->openPendingMsgs(UserBox::getActiveUserBox()->getSelectedUins());
 }
 
 void Kadu::searchInDirectory()
@@ -861,7 +861,7 @@ void Kadu::hideKadu()
 
 void Kadu::ignoreUser()
 {
-	UinsList uins = Userbox->getSelectedUins();
+	UinsList uins = UserBox::getActiveUserBox()->getSelectedUins();
 	if (isIgnored(uins))
 		delIgnored(uins);
 	else
@@ -871,7 +871,7 @@ void Kadu::ignoreUser()
 
 void Kadu::blockUser()
 {
-	UserListElement *puser = &userlist.byAltNick(Userbox->getSelectedUsers().first().altnick);
+	UserListElement *puser = &userlist.byAltNick(UserBox::getActiveUserBox()->getSelectedUsers().first().altnick);
 	puser->blocking = !puser->blocking;
 	gg_remove_notify_ex(sess, puser->uin, puser->blocking ? GG_USER_NORMAL : GG_USER_BLOCKED);
 	gg_add_notify_ex(sess, puser->uin, puser->blocking ? GG_USER_BLOCKED : GG_USER_NORMAL);
@@ -880,14 +880,14 @@ void Kadu::blockUser()
 
 void Kadu::notifyUser()
 {
-	UserListElement *puser = &userlist.byAltNick(Userbox->getSelectedUsers().first().altnick);
+	UserListElement *puser = &userlist.byAltNick(UserBox::getActiveUserBox()->getSelectedUsers().first().altnick);
 	puser->notify = !puser->notify;
 	userlist.writeToFile();
 }
 
 void Kadu::offlineToUser()
 {
-	UserListElement *puser = &userlist.byAltNick(Userbox->getSelectedUsers().first().altnick);
+	UserListElement *puser = &userlist.byAltNick(UserBox::getActiveUserBox()->getSelectedUsers().first().altnick);
 	puser->offline_to_user = !puser->offline_to_user;
 	gg_remove_notify_ex(sess, puser->uin, puser->offline_to_user ? GG_USER_NORMAL : GG_USER_OFFLINE);
 	gg_add_notify_ex(sess, puser->uin, puser->offline_to_user ? GG_USER_OFFLINE : GG_USER_NORMAL);
@@ -1142,7 +1142,7 @@ void Kadu::sendMessage(QListBoxItem *item)
 {
 	uin_t uin=userlist.byAltNick(item->text()).uin;
 	if(uin!=0)
-		chat_manager->sendMessage(uin,Userbox->getSelectedUins());
+		chat_manager->sendMessage(uin,UserBox::getActiveUserBox()->getSelectedUins());
 	else
 		sendSmsToUser();
 }
