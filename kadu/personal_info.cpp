@@ -77,7 +77,7 @@ PersonalInfoDialog::PersonalInfoDialog(QDialog *parent, const char *name)
 	GridLayout->addMultiCellWidget(CancelButton,3,3,3,4);	
 	connect(CancelButton, SIGNAL(clicked()), this, SLOT(reject()));
 
-	if (sess) {
+	if (getActualStatus() != GG_STATUS_NOT_AVAIL) {
 		struct SearchIdStruct sid;
 		gg_search50_t req;
 		req = gg_search50_new();
@@ -92,6 +92,9 @@ PersonalInfoDialog::PersonalInfoDialog(QDialog *parent, const char *name)
 
 void PersonalInfoDialog::OkButtonClicked()
 {
+	if (getActualStatus() == GG_STATUS_NOT_AVAIL)
+		return;
+
 	char *nick = strdup(NicknameEdit->text().local8Bit());
 	char *first = strdup(NameEdit->text().local8Bit());
 	char *last = strdup(SurnameEdit->text().local8Bit());
