@@ -186,18 +186,7 @@ void EncryptionManager::receivedMessageFilter(const UinsList& senders, QCString&
 	{
 		if (!strncmp(msg, "-----BEGIN RSA PUBLIC KEY-----", 20))
 		{
-			QFile keyfile;
-			QString keyfile_path;
-			QWidget *parent;
-
-			Chat* chat=chat_manager->findChatByUins(senders);
-			if (chat == NULL)
-				parent = kadu;
-			else
-				parent = chat;
-
-			SavePublicKey *spk = new SavePublicKey(senders[0], msg, NULL);
-			spk->show();
+			(new SavePublicKey(senders[0], msg, NULL))->show();
 			stop = true;
 
 			kdebugf2();
