@@ -6,7 +6,6 @@
 
 class remindPassword : public QObject {
 	Q_OBJECT
-
 	public:
 		remindPassword();
 		~remindPassword();

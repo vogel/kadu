@@ -2,7 +2,7 @@
 #include "kadu.h"
 #include "password.h"
 
-void remindPassword::remindPassword() {
+remindPassword::remindPassword() {
 	fprintf(stderr, "KK remindPassword::remindPassword()\n");
 	snr = snw = NULL;
 	h = NULL;
