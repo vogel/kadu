@@ -30,7 +30,10 @@ const QStringList& EmoticonsManager::themes()
 
 void EmoticonsManager::setEmoticonsTheme(const QString& theme)
 {
-	config.emoticons_theme=theme;
+	if(ThemesList.contains(theme))
+		config.emoticons_theme=theme;
+	else
+		config.emoticons_theme="kadubis";
 	loadEmoticonsRegexpList();
 	loadEmoticonsSelectorList();
 };
