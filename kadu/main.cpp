@@ -13,7 +13,6 @@
 #include <qmessagebox.h>
 
 #include <sys/stat.h>
-//#include <locale.h>
 
 #include "kadu.h"
 #include "../config.h"
@@ -26,6 +25,7 @@
 #include "config_file.h"
 #include "config_dialog.h"
 #include "register.h"
+
 #ifdef HAVE_OPENSSL
 #include "simlite.h"
 #endif
@@ -36,10 +36,6 @@ QApplication *a;
 int main(int argc, char *argv[])
 {
 	gg_debug_level = 255;
-
-//	setlocale(LC_ALL, "");
-//	bindtextdomain("kadu", (QString(DATADIR)+"/locale").local8Bit().data());
-//	textdomain("kadu");
 
 	a = new QApplication(argc, argv);
 
@@ -98,15 +94,6 @@ int main(int argc, char *argv[])
 #endif
 
 	QObject::connect(a, SIGNAL(aboutToQuit()), kadu, SLOT(quitApplication()));
-
-//	ArtsSoundDevice *snd = new ArtsSoundDevice(11000, 8, 1);
-/*	DspSoundDevice *snd = new DspSoundDevice(11000, 8, 1);
-	char buf[65536];
-	int file = open("/usr/share/licq/sounds/icq/Online.wav", O_RDONLY);
-	int size = read(file, buf, 65536);
-	close(file);
-	fprintf(stderr, "KK main(): size=%d\n", size);
-	snd->play(buf, size);*/
 
 	return a->exec();
 }
