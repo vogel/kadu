@@ -677,51 +677,51 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>Automatically fold links</source>
-        <translation>Falte Hyperlinks automatisch</translation>
+        <translation>Falten automatisch</translation>
     </message>
     <message>
         <source>Link folding</source>
-        <translation>Hyperlink-Faltung</translation>
+        <translation>Links falten</translation>
     </message>
     <message>
         <source>Automatically fold links longer than</source>
-        <translation>Falte Hyperlinks automatisch, die länger sind als</translation>
+        <translation>Falten Sie automatisch links die länger sind als</translation>
     </message>
     <message>
         <source>Show available users in bold</source>
-        <translation>Zeige erreibare Benuter fett an</translation>
+        <translation>Zeigen Sie erreichbaren Benutzer in bold</translation>
     </message>
     <message>
         <source>Displays users that are not offline using a bold font</source>
-        <translation>Zeige Benutzer, die nicht offline sind fett an</translation>
+        <translation>Displays users that are not offline using a bold font</translation>
     </message>
     <message>
         <source>Notify about users&apos; status changes</source>
-        <translation>Benachrichtige über Status-Änderungen der Benutzer</translation>
+        <translation>Teile über Statusänderungen der Benutzer mit</translation>
     </message>
     <message>
         <source>Notify about users becoming available</source>
-        <translation>Benachrichtige über Benutzer, welche auf erreichbar umschalten</translation>
+        <translation>Teile über die Benutzer mit, die erreichbar sind</translation>
     </message>
     <message>
         <source>Notify about users becoming unavailable</source>
-        <translation>Benachrichtigen über Benutzer, welche auf unerreichbar umschalten</translation>
+        <translation>Teile über die Benutzer mit, die nicht erreichbar sind</translation>
     </message>
     <message>
         <source>Remember window size and position between startups</source>
-        <translation>Behalte die Fenstergröße und -Position bis zum nächsten Start bei</translation>
+        <translation>Fenstergröße und Position merken nach dem restart</translation>
     </message>
     <message>
         <source>Automatically checks whether a new version is available</source>
-        <translation>Überprüfe automatisch auf Updates</translation>
+        <translation>Überprüft automatisch, ob eine neue Version vorhanden ist</translation>
     </message>
     <message>
         <source>When enabled, you&apos;re visible only to users on your list</source>
-        <translation>Wenn eingeschaltet, sind Sie nur für Benutzer sichtbar, die in Ihrer Liste eingetragen sind</translation>
+        <translation>Wenn es ermöglicht wird, sind Sie nur zu den Benutzern auf Ihrer kontaktliste sichtbar</translation>
     </message>
     <message>
         <source>Display users that are offline</source>
-        <translation>Zeige Benutzer, die unerreichbar sind</translation>
+        <translation>Zeige Benutzer die offline sind</translation>
     </message>
 </context>
 <context>
@@ -905,13 +905,13 @@ Das Passwort, das Sie angegeben haben, sollte in beiden Feldern (&quot;Neues Pas
     </message>
     <message>
         <source>URLs longer than this value will be shown truncated to this length</source>
-        <translation>Hyperlinks , die länger sind als der sichtbare Bereich werden an das Fenseter angepasst</translation>
+        <translation>URLs länger als dieser Wert wird beschnitten zu dieser Länge gezeigt</translation>
     </message>
     <message>
         <source>This will show a long URL as http://www.start...end.com/
 to protect the chat window from a mess</source>
-        <translation>Dies wird einen langen Hyperlink als http://www.start...end.com/
-zeigen, um das Chat-Fenster vor Verwirrung</translation>
+        <translation>Dieses zeigt ein langes URL http://www.start... end.com/
+um das Chatfenster vor einer unordnung zu schützen</translation>
     </message>
 </context>
 <context>
@@ -1568,7 +1568,7 @@ Dein Passwort ist falsch!!!</translation>
     </message>
     <message>
         <source>Connection timeout!</source>
-        <translation>Verbindungstimeout!</translation>
+        <translation>Verbindung timeout!</translation>
     </message>
 </context>
 <context>
