@@ -1,6 +1,8 @@
 +++ wersja 0.3.3-pre3
 * CTRL + klik dowolnego przycisku myszki na ikonce w tray'u powoduje
   wy¶wietlenie wiadomo¶ci/rozmowy
+* szyfrowanie wiadomo¶ci przy u¿yciu OpenSSL (scooty) +
+  configure: opcja --with-openssl (ca³o¶æ eksperymentalna)
 
 +++ wersja 0.3.3-pre2
 * dostosowanie do QT 3.1.0 i KDE 3.1-rc5
