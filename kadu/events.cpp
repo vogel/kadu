@@ -243,6 +243,11 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,QCString& 
 	QDateTime datetime;
 	datetime.setTime_t(time);
 
+	bool grab=false;
+	emit chatMsgReceived0(senders,mesg,time,grab);
+	if (grab)
+		return;
+
 	// wiadomosci systemowe maja sensers[0] = 0
 	// FIX ME!!!
 	if (senders[0] == 0) {
@@ -265,7 +270,6 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,QCString& 
 	kdebug("eventRecvMsg(): Got message from %d saying \"%s\"\n",
 			senders[0], (const char *)mesg.local8Bit());
 
-	bool grab=false;
 	emit chatMsgReceived1(senders,mesg,time,grab);
 	if(!grab)
 		emit chatMsgReceived2(senders,mesg,time);

@@ -91,6 +91,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * uaktualnienie libgadu do wersji z dnia 02.05.2004 (michal)
 * mechanizm ¶ci±gania odpowiednich ¼róde³ i rozpakowywania ich dla
   popularnych zewnêtrznych modu³ów. przygotowane: tcl_scripting, xmms (adrian)
+* ³atka googiego dodaj±ca sygna³y chatReceived0 i changingStatus (adrian)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

@@ -1171,6 +1171,15 @@ void Kadu::setStatus(int status) {
 		}
 
 	if (socket_active) {
+		QString sigDesc = QString::null;
+		bool stop = FALSE;
+		if (with_description)
+			sigDesc = own_description;
+
+		emit changingStatus(status, sigDesc, stop);
+		if (stop)
+			return;
+
 		doBlink = false;
 		if (with_description) {
 			descr = (unsigned char *)strdup(unicode2cp(own_description).data());

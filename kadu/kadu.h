@@ -202,6 +202,13 @@ class Kadu : public QMainWindow
 			Zmieni³ siê nasz aktualny status GG.
 		**/
 		void currentStatusChanged(int status);
+		/**
+			U¿ytkownik chce zmieniæ status. Je¶li jest to status
+			bezopisowy, to zmienna sigDesc bêdzie równa QString::null.
+			Je¶li zostanie ustawiona zmienna stop, to status nie
+			bêdzie zmieniony.
+		**/
+		void changingStatus(int status, QString sigDesc, bool &stop);
 };
 
 class KaduSlots : public QObject

@@ -130,9 +130,15 @@ class EventManager : public QObject
 			Otrzymano wiadomo¶æ, któr± trzeba pokazaæ (klasa chat lub msg,
 			nadawca nie jest ignorowany, itp)
 			Tre¶æ zdeszyfrowana i zdekodowana do unicode.
-			Jesli ktorys ze slotow ustawi zmienna grab na true
-			to sygnal chatReceived2 nie zostanie wygenerowany.
+			Jesli ktorys ze slotow sygna³u chatMsgReceived1 ustawi zmienna
+			grab na true to sygnal chatReceived2 nie zostanie wygenerowany.
+			Je¶li natomiast zmienna grab zostanie ustawiona przez slot
+			chatMsgReceived0, to ¿adna czynno¶æ zwi±zana z obs³ug± tego
+			zdarzenia nie zostanie podjêta (tj. wy¶wietlanie wiadomo¶ci
+			w oknie, dodanie jej do historii, etc.), poza przekonwertowaniem
+			kodowania wiadomo¶ci z CP1250 na Unicode.
 		**/
+		void chatMsgReceived0(UinsList senders,const QString& msg,time_t time,bool& grab);
 		void chatMsgReceived1(UinsList senders,const QString& msg,time_t time,bool& grab);
 		void chatMsgReceived2(UinsList senders,const QString& msg,time_t time);
 		/**
