@@ -36,7 +36,7 @@ extern "C" int speech_init()
 	QT_TRANSLATE_NOOP("@default","Frequency");
 	QT_TRANSLATE_NOOP("@default","Tempo");
 	QT_TRANSLATE_NOOP("@default","Base frequency");
-	QT_TRANSLATE_NOOP("@default","Melodie");
+	QT_TRANSLATE_NOOP("@default","Melody");
 	QT_TRANSLATE_NOOP("@default","Klatt synthesizer (requires dsp)");
 	QT_TRANSLATE_NOOP("@default","Use aRts");
 	QT_TRANSLATE_NOOP("@default","Use Esd");
@@ -51,6 +51,10 @@ extern "C" int speech_init()
 	QT_TRANSLATE_NOOP("@default","Notify format (female):");
 	QT_TRANSLATE_NOOP("@default","Test");
 	QT_TRANSLATE_NOOP("@default","Program");
+	QT_TRANSLATE_NOOP("@default", "man %a said %1");
+	QT_TRANSLATE_NOOP("@default", "woman %a said %1");
+	QT_TRANSLATE_NOOP("@default", "man %a changed status to %s %d");
+	QT_TRANSLATE_NOOP("@default", "woman %a changed status to %s %d");
 
 	slotsObj=new SpeechSlots();
 
@@ -83,7 +87,7 @@ extern "C" int speech_init()
 	ConfigDialog::addLabel("Speech", "basefreq", "Base frequency");
 	ConfigDialog::addSlider("Speech", "basefreq", "slider3", "BaseFrequency", 60, 440, 10, 133);
 
-	ConfigDialog::addCheckBox("Speech", "Speech", "Melodie", "Melodie", true);
+	ConfigDialog::addCheckBox("Speech", "Speech", "Melody", "Melody", true);
 	ConfigDialog::addCheckBox("Speech", "Speech", "Klatt synthesizer (requires dsp)", "KlattSynt", false);
 	ConfigDialog::addCheckBox("Speech", "Speech", "Use aRts", "UseArts", false, "", "usearts");
 	ConfigDialog::addCheckBox("Speech", "Speech", "Use Esd", "UseEsd", false, "", "useesd");
@@ -91,18 +95,18 @@ extern "C" int speech_init()
 	ConfigDialog::addLineEdit("Speech", "Speech", "Dsp device:", "DspDev","/dev/dsp");
 
 	ConfigDialog::addHGroupBox("Speech", "Speech", "Program");
-	ConfigDialog::addLineEdit("Speech", "Program", "Speech program:", "SpeechProgram","/home/marcin/kadu-20040305/kadu-poligon/modules/speech/program/powiedz");
+	ConfigDialog::addLineEdit("Speech", "Program", "Speech program:", "SpeechProgram","powiedz");
 	ConfigDialog::addPushButton("Speech", "Program", "", "OpenFile","","speech_fileopen");
 	ConfigDialog::connectSlot("Speech", "", SIGNAL(clicked()), slotsObj, SLOT(chooseSpeechProgram()), "speech_fileopen");
 	
-	ConfigDialog::addLineEdit("Speech", "Speech", "Chat format (male):", "ChatFormatMale", "%a napisa³ %1");
-	ConfigDialog::addLineEdit("Speech", "Speech", "Chat format (female):", "ChatFormatFemale", "%a napisa³a %1");
+	ConfigDialog::addLineEdit("Speech", "Speech", "Chat format (male):", "ChatFormatMale", "man %a said %1");
+	ConfigDialog::addLineEdit("Speech", "Speech", "Chat format (female):", "ChatFormatFemale", "woman %a said %1");
 
-	ConfigDialog::addLineEdit("Speech", "Speech", "Message format (male):", "MessageFormatMale", "%a napisa³ %1");
-	ConfigDialog::addLineEdit("Speech", "Speech", "Message format (female):", "MessageFormatFemale", "%a napisa³a %1");
+	ConfigDialog::addLineEdit("Speech", "Speech", "Message format (male):", "MessageFormatMale", "man %a said %1");
+	ConfigDialog::addLineEdit("Speech", "Speech", "Message format (female):", "MessageFormatFemale", "woman %a said %1");
 
-	ConfigDialog::addLineEdit("Speech", "Speech", "Notify format (male):", "NotifyFormatMale", "%a zmieni³ status na %s %d");
-	ConfigDialog::addLineEdit("Speech", "Speech", "Notify format (female):", "NotifyFormatFemale", "%a zmieni³a status na %s %d");
+	ConfigDialog::addLineEdit("Speech", "Speech", "Notify format (male):", "NotifyFormatMale", "man %a changed status to %s %d");
+	ConfigDialog::addLineEdit("Speech", "Speech", "Notify format (female):", "NotifyFormatFemale", "woman %a changed status to %s %d");
 	
 	ConfigDialog::addPushButton("Speech", "Speech", "Test", "", "", "testspeech");
 
@@ -208,7 +212,7 @@ SpeechSlots::SpeechSlots()
 }
 
 void SpeechSlots::say(const QString &s, const QString &path,
-						bool klatt, bool melodie,
+						bool klatt, bool melody,
 						bool arts, bool esd, bool dsp, const QString &device,
 						int freq, int tempo, int basefreq)
 {
@@ -219,9 +223,9 @@ void SpeechSlots::say(const QString &s, const QString &path,
 
 	if (path==QString::null)
 	{
-		t=config_file.readEntry("Speech","SpeechProgram", "/usr/local/bin/powiedz");
+		t=config_file.readEntry("Speech","SpeechProgram", "powiedz");
 		klatt=config_file.readBoolEntry("Speech", "KlattSynt");
-		melodie=config_file.readBoolEntry("Speech", "Melodie");
+		melody=config_file.readBoolEntry("Speech", "Melody");
 		arts=config_file.readBoolEntry("Speech", "UseArts");
 		esd=config_file.readBoolEntry("Speech", "UseEsd");
 		dsp=config_file.readBoolEntry("Speech", "UseDsp");
@@ -239,7 +243,7 @@ void SpeechSlots::say(const QString &s, const QString &path,
 	list.append(t);
 	if (klatt && dsp)
 		list.append(" -L");
-	if (!melodie)
+	if (!melody)
 		list.append("-n");
 	if (arts)
 		list.append("-k");
@@ -271,7 +275,7 @@ void SpeechSlots::testSpeech()
 	QString formatF=ConfigDialog::getLineEdit("Speech", "Chat format (female):")->text();
 	QString device=ConfigDialog::getLineEdit("Speech", "Dsp device:")->text();
 	bool klatt=ConfigDialog::getCheckBox("Speech", "Klatt synthesizer (requires dsp)")->isChecked();
-	bool mel=ConfigDialog::getCheckBox("Speech", "Melodie")->isChecked();
+	bool mel=ConfigDialog::getCheckBox("Speech", "Melody")->isChecked();
 
 	bool arts=ConfigDialog::getCheckBox("Speech", "Use aRts", "usearts")->isChecked();
 	bool esd=ConfigDialog::getCheckBox("Speech", "Use Esd", "useesd")->isChecked();

@@ -22,10 +22,6 @@
         <translation>Częstotliwość podstawowa</translation>
     </message>
     <message>
-        <source>Melodie</source>
-        <translation>Melodia</translation>
-    </message>
-    <message>
         <source>Klatt synthesizer (requires dsp)</source>
         <translation>Synteza Klatta (wymaga dsp)</translation>
     </message>
@@ -84,6 +80,26 @@
     <message>
         <source>Speech</source>
         <translation>Mowa</translation>
+    </message>
+    <message>
+        <source>Melody</source>
+        <translation>Melodia</translation>
+    </message>
+    <message>
+        <source>man %a said %1</source>
+        <translation>%a napisał %1</translation>
+    </message>
+    <message>
+        <source>woman %a said %1</source>
+        <translation>%a napisała %1</translation>
+    </message>
+    <message>
+        <source>man %a changed status to %s %d</source>
+        <translation>%a zmienił status na %s %d</translation>
+    </message>
+    <message>
+        <source>woman %a changed status to %s %d</source>
+        <translation>%a zmieniła status na %s %d</translation>
     </message>
 </context>
 </TS>
