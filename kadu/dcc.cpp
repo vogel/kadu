@@ -293,10 +293,13 @@ void dccSocketClass::askAccept(void) {
 
 QString dccSocketClass::selectFile(void) {
 	QString f;
+	QFileInfo fi;
+	do {
+		f = QFileDialog::getOpenFileName((char *)dccsock->file_info.filename,
+			QString::null, 0, i18n("open file"), i18n("Select file location"));
+		fi.setFile(f);
+	} while (f != QString::null && !fi.isReadable());
 
-	f = QFileDialog::getOpenFileName((char *)dccsock->file_info.filename,
-		QString::null, 0, i18n("open file"), i18n("Select file location"));
-	
 	return f;
 }
 
