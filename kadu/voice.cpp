@@ -130,3 +130,5 @@ void VoiceManager::addGsmSample(char *data, int length) {
 	pt->mutex.unlock();
 	pt->wsem--;
 }
+
+VoiceManager *voice_manager;

@@ -87,4 +87,6 @@ class RecordThread : public QObject, public QThread
 	friend class VoiceManager;
 };
 
+extern VoiceManager *voice_manager;
+
 #endif
