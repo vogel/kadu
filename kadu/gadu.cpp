@@ -55,7 +55,8 @@ void SearchResult::setData(const char *uin, const char *first, const char *nick,
 	this->nick = cp2unicode((unsigned char *)nick);
 	this->born = cp2unicode((unsigned char *)born);
 	this->city = cp2unicode((unsigned char *)city);
-	this->status = atoi(status) & 127;
+	if (status)
+		this->status = atoi(status) & 127;
 }
 
 SearchRecord::SearchRecord()
@@ -128,14 +129,14 @@ void SearchRecord::clearData()
 
 SocketNotifiers::SocketNotifiers(struct gg_http* nh)
 {
-	kdebug("SocketNotifiers::SocketNotifiers()\n");
+	kdebugf();
 
 	h = nh;
 }
 
 SocketNotifiers::~SocketNotifiers()
 {
-	kdebug("SocketNotifiers::~SocketNotifiers()\n");
+	kdebugf();
 
 	deleteSocketNotifiers();
 }
@@ -147,7 +148,7 @@ void SocketNotifiers::start()
 
 void SocketNotifiers::createSocketNotifiers()
 {
-	kdebug("SocketNotifiers::createSocketNotifiers()\n");
+	kdebugf();
 
 	snr = new QSocketNotifier(h->fd, QSocketNotifier::Read);
 	connect(snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
@@ -159,7 +160,7 @@ void SocketNotifiers::createSocketNotifiers()
 
 void SocketNotifiers::deleteSocketNotifiers()
 {
-	kdebug("SocketNotifiers::deleteSocketNotifiers()\n");
+	kdebugf();
 	
 	if (snr)
 	{
@@ -179,7 +180,7 @@ void SocketNotifiers::deleteSocketNotifiers()
 
 void SocketNotifiers::recreateSocketNotifiers()
 {
-	kdebug("SocketNotifiers::recreateSocketNotifiers()\n");
+	kdebugf();
 
 	deleteSocketNotifiers();
 	createSocketNotifiers();
@@ -191,7 +192,7 @@ void SocketNotifiers::recreateSocketNotifiers()
 
 void SocketNotifiers::dataReceived()
 {
-	kdebug("SocketNotifiers::dataReceived()\n");
+	kdebugf();
 
 	if (h->check & GG_CHECK_READ)
 		socketEvent();
@@ -208,7 +209,7 @@ void SocketNotifiers::dataSent()
 
 void SocketNotifiers::socketEvent()
 {
-	kdebug("SocketNotifiers::socketEvent()\n");
+	kdebugf();
 
 	if (gg_pubdir_watch_fd(h) == -1)
 	{
@@ -427,14 +428,17 @@ void GaduProtocol::searchNextInPubdir(SearchRecord& searchRecord) {
 	gg_pubdir50_free(req);
 }
 
-void GaduProtocol::newResults(gg_pubdir50_t res) {
+void GaduProtocol::newResults(gg_pubdir50_t res)
+{
+	kdebugf();
 	int count, fromUin;
 	SearchResult searchResult;
 	SearchResults searchResults;
 
 	count = gg_pubdir50_count(res);
 
-	for (int i = 0; i < count; i++) {
+	for (int i = 0; i < count; i++)
+	{
 		searchResult.setData(
 			gg_pubdir50_get(res, i, GG_PUBDIR50_UIN),
 			gg_pubdir50_get(res, i, GG_PUBDIR50_FIRSTNAME),
@@ -445,10 +449,10 @@ void GaduProtocol::newResults(gg_pubdir50_t res) {
 		);
 		searchResults.append(searchResult);
 	}
-		
 	fromUin = gg_pubdir50_next(res);
 
 	emit newSearchResults(searchResults, res->seq, fromUin);
+	kdebugf2();
 }
 
 /* rejestrowanie u¿ytkownika */
@@ -461,13 +465,10 @@ bool GaduProtocol::doRegister(QString& mail, QString& password, QString& token_i
 		SocketNotifiers *sn = new SocketNotifiers(h);
 		connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(registerDone(bool, struct gg_http *)));
 		sn->start();
-		return true;
 	}
 	else
-	{
 		emit registered(false, 0);
-		return false;
-	}
+	return (h!=NULL);
 }
 
 void GaduProtocol::registerDone(bool ok, struct gg_http *h)
@@ -488,13 +489,10 @@ bool GaduProtocol::doUnregister(UinType uin, QString &password, QString& token_i
 		SocketNotifiers *sn = new SocketNotifiers(h);
 		connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(unregisterDone(bool, struct gg_http *)));
 		sn->start();
-		return true;
 	}
 	else
-	{
 		emit unregistered(false);
-		return false;
-	}
+	return (h!=NULL);
 }
 
 void GaduProtocol::unregisterDone(bool ok, struct gg_http *)
@@ -506,7 +504,7 @@ void GaduProtocol::unregisterDone(bool ok, struct gg_http *)
 
 bool GaduProtocol::doRemind(UinType uin, QString& token_id, QString& token_value)
 {
-	kdebug("GaduProtocol::remindPassword()\n");
+	kdebugf();
 
 	struct gg_http *h = gg_remind_passwd2(uin, unicode2cp(token_id).data(), unicode2cp(token_value).data(), 1);
 	if (h)
@@ -514,13 +512,10 @@ bool GaduProtocol::doRemind(UinType uin, QString& token_id, QString& token_value
 		SocketNotifiers *sn = new SocketNotifiers(h);
 		connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(remindDone(bool, struct gg_http *)));
 		sn->start();
-		return true;
 	}
 	else
-	{
 		emit reminded(false);
-		return false;
-	}
+	return (h!=NULL);
 }
 
 void GaduProtocol::remindDone(bool ok, struct gg_http *)
@@ -532,7 +527,7 @@ void GaduProtocol::remindDone(bool ok, struct gg_http *)
 
 bool GaduProtocol::doChangePassword(UinType uin, QString& mail, QString& password, QString& new_password, QString& token_id, QString& token_val)
 {
-	kdebug("GaduProtocol::doChangePassword()\n");
+	kdebugf();
 
 	struct gg_http *h = gg_change_passwd4(uin, unicode2cp(mail).data(), unicode2cp(password).data(), 
 			unicode2cp(new_password).data(), unicode2cp(token_id).data(), unicode2cp(token_val).data(), 1);
@@ -541,13 +536,10 @@ bool GaduProtocol::doChangePassword(UinType uin, QString& mail, QString& passwor
 		SocketNotifiers *sn = new SocketNotifiers(h);
 		connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(changePasswordDone(bool, struct gg_http *)));
 		sn->start();
-		return true;
 	}
 	else
-	{
 		emit passwordChanged(false);
-		return false;
-	}
+	return (h!=NULL);
 }
 
 void GaduProtocol::changePasswordDone(bool ok, struct gg_http *)
@@ -702,7 +694,6 @@ bool GaduProtocol::doImportUserList()
 void GaduProtocol::userListReplyReceived(char type, char *reply)
 {
 	kdebugf();
-	kdebug("GaduProtocol::userlistReplyReceived()\n");
 
 	if (type == GG_USERLIST_PUT_REPLY)
 	{
