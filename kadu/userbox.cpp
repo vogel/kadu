@@ -452,7 +452,7 @@ void UserBox::refresh()
 					n_users.append(user.altNick());
 					break;
 				case Invisible:
-					n_users.append(user.altNick());
+					i_users.append(user.altNick());
 					break;
 				default:
 					a_users.append(user.altNick());
