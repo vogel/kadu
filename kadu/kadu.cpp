@@ -596,14 +596,16 @@ void Kadu::refreshGroupTabBar()
 	/* dodajemy nowe zakladki */
 	for(int i=0; i<userlist.count(); i++)
 	{
-		if(userlist[i].group!="")
+		QString groups=userlist[i].group;
+		QString group;
+		for(int g=0; (group=groups.section(',',g,g))!=""; g++)
 		{
 			bool createNewTab=true;
 			for(int j=0; j<group_bar->count(); j++)
-				if(group_bar->tabAt(j)->text()==userlist[i].group)
+				if(group_bar->tabAt(j)->text()==group)
 					createNewTab=false;
 			if(createNewTab)
-				group_bar->addTab(new QTab(userlist[i].group));
+				group_bar->addTab(new QTab(group));
 		};
 	};
 	if(group_bar->count()==1)
@@ -617,9 +619,21 @@ void Kadu::refreshGroupTabBar()
 void Kadu::setActiveGroup(const QString& group)
 {
 	userbox->clearUsers();
-	for (int i = 0; i < userlist.count(); i++)
+	for(int i=0; i<userlist.count(); i++)
 	{
-		if(group==""||group==userlist[i].group)
+		bool belongsToGroup;
+		if(group=="")
+			belongsToGroup=true;
+		else
+		{
+			belongsToGroup=false;
+			QString user_groups=userlist[i].group;
+			QString user_group;
+			for(int g=0; (user_group=user_groups.section(',',g,g))!=""; g++)
+				if(user_group==group)
+					belongsToGroup=true;
+		};
+		if(belongsToGroup)
 			userbox->addUser(userlist[i].altnick);
 	};
 	UserBox::all_refresh();
