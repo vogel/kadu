@@ -7,8 +7,9 @@
 #include "kadu.h"
 #include "gadu.h"
 
-Updates *Updates::instance=NULL;
-bool Updates::UpdateChecked=false;
+Updates *Updates::instance = NULL;
+bool Updates::UpdateChecked = false;
+QDateTime Updates::LastUpdateCheck;
 
 Updates::Updates(UinType uin)
 {
@@ -41,7 +42,13 @@ bool Updates::ifNewerVersion(const QString &newestversion)
 void Updates::initModule()
 {
 	kdebugf();
-	if (!UpdateChecked)
+
+	QDateTime actualtime = QDateTime::currentDateTime();
+	LastUpdateCheck.setTime_t(config_file.readNumEntry("General", "LastUpdateCheck"));
+	kdebugmf(KDEBUG_INFO, "LastUpdateCheck = %s\n", (const char *)unicode2latin(LastUpdateCheck.toString("dd.MM.yyyy")));
+	kdebugmf(KDEBUG_INFO, "actualtime = %s\n", (const char *)unicode2latin(actualtime.toString("dd.MM.yyyy")));
+
+	if (!UpdateChecked && LastUpdateCheck.secsTo(actualtime) >= 3600)
 	{
 		UinType myUin=(UinType)config_file.readNumEntry("General", "UIN");
 		if (myUin)
@@ -90,7 +97,8 @@ void Updates::gotUpdatesInfo(const QByteArray &data, QNetworkOperation * /*op*/)
 				tr("The newest Kadu version is %1").arg(newestversion), QMessageBox::Ok);
 	}
 	disconnect(gadu, SIGNAL(connected()), this, SLOT(run()));
-	UpdateChecked=true;
+	UpdateChecked = true;
+	config_file.writeEntry("General", "LastUpdateCheck", QDateTime(QDate(1970, 1, 1)).secsTo(QDateTime::currentDateTime()));
 	deleteLater();
 	kdebugf2();
 }

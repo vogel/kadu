@@ -3,6 +3,7 @@
 
 #include <qurloperator.h>
 #include <qstring.h>
+#include <qdatetime.h>
 
 #include "gadu.h"
 
@@ -20,6 +21,7 @@ class Updates : public QObject
 	private:
 		static bool UpdateChecked;
 		static Updates *instance;
+		static QDateTime LastUpdateCheck;
 		
 		QString query;
 		QUrlOperator *op;
