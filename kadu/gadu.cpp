@@ -786,9 +786,12 @@ void GaduProtocol::initModule()
 	ConfigDialog::addLineEdit("Network", "Servers properties",
 		QT_TRANSLATE_NOOP("@default", "IP addresses:"), "Server","","","server");
 
-	// opcja wed³ug niektórych przydatna
+	config_file.addVariable("Network", "DefaultPort", 0);
+	QStringList options, values;
+	options << tr("Default") << "8074" << "443";
+	values << "0" << "8074" << "443";
 	ConfigDialog::addComboBox("Network", "Servers properties",
-		QT_TRANSLATE_NOOP("@default", "Default port to connect to servers"));
+		QT_TRANSLATE_NOOP("@default", "Port to connect to servers"), "DefaultPort", options, values);
 
 	ConfigDialog::addCheckBox("Network", "Network",
 		QT_TRANSLATE_NOOP("@default", "Use proxy server"), "UseProxy", false);
@@ -2507,17 +2510,10 @@ void GaduProtocol::onCreateConfigDialog()
 #ifdef HAVE_OPENSSL
 	QCheckBox *b_tls= ConfigDialog::getCheckBox("Network", "Use TLSv1");
 #endif
-	QComboBox *cb_portselect= ConfigDialog::getComboBox("Network", "Default port to connect to servers");
-
 	QHBox *serverbox=(QHBox*)(ConfigDialog::getLineEdit("Network", "IP addresses:","server")->parent());
 	QCheckBox* b_defaultserver= ConfigDialog::getCheckBox("Network", "Use default servers");
 
 	g_proxy->setEnabled(b_useproxy->isChecked());
-
-//	((QHBox*)cb_portselect->parent())->setEnabled(!b_tls->isChecked());
-	cb_portselect->insertItem("8074");
-	cb_portselect->insertItem("443");
-	cb_portselect->setCurrentText(config_file.readEntry("Network", "DefaultPort", "8074"));
 
 	serverbox->setEnabled(!b_defaultserver->isChecked());
 
@@ -2529,9 +2525,6 @@ void GaduProtocol::onCreateConfigDialog()
 void GaduProtocol::onDestroyConfigDialog()
 {
 	kdebugf();
-
-	QComboBox *cb_portselect=ConfigDialog::getComboBox("Network", "Default port to connect to servers");
-	config_file.writeEntry("Network","DefaultPort",cb_portselect->currentText());
 
 	QLineEdit *e_servers=ConfigDialog::getLineEdit("Network", "IP addresses:", "server");
 
@@ -2572,7 +2565,7 @@ void GaduProtocol::useTlsEnabled(bool value)
 {
 #ifdef HAVE_OPENSSL
 	kdebugf();
-	QHBox *box_portselect=(QHBox*)(ConfigDialog::getComboBox("Network", "Default port to connect to servers")->parent());
+	QHBox *box_portselect=(QHBox*)(ConfigDialog::getComboBox("Network", "Port to connect to servers")->parent());
 	box_portselect->setEnabled(!value);
 	kdebugf2();
 #endif
