@@ -113,6 +113,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawiono zapamietywanie wybranego jezyka (pawel_p)
 * dokumentacja opu¶ci³a ¼ród³a kadu i przenios³a siê do repozytorium kadu-doc.
   opcja Pomoc zawsze otwiera dokumentacjê z kadu.net (adrian)
+* emotki sa niewrazliwe na wielkosc liter 
+  (<ok>, <oK>, <OK> to ta sama ikonka) (pawel_p)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci
