@@ -337,11 +337,12 @@ install-data-local: uninstall-local
 			$(INSTALL_DATA) $$dir/translations/*.qm "$(DESTDIR)/$(datadir)/kadu/modules/translations/"; \
 		fi; \
 		if test -d $$dir/data; then \
-			for new_dir in `find $$dir/data -type d | grep -v /CVS | grep -v /.svn`; do \
-				$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/modules/data/$$new_dir"; \
-				for new_file in `find $$new_dir -type f -maxdepth 1 | sed "s/ /_SPACE_/g"`; do \
+			for sub_dir in `find $$dir/data -type d | grep -v /CVS | grep -v /.svn`; do \
+				dst_dir=`echo "$$sub_dir" | sed "s,/data/,/," | sed "s,/data$$,,"`; \
+				$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/modules/data/$$dst_dir"; \
+				for new_file in `find $$sub_dir -type f -maxdepth 1 | sed "s/ /_SPACE_/g"`; do \
 					new_file=`echo "$$new_file" | sed "s/_SPACE_/ /g"`; \
-					$(INSTALL_DATA) "$$new_file" "$(DESTDIR)/$(datadir)/kadu/modules/data/$$new_dir"; \
+					$(INSTALL_DATA) "$$new_file" "$(DESTDIR)/$(datadir)/kadu/modules/data/$$dst_dir"; \
 				done; \
 			done; \
 		fi; \
