@@ -1195,6 +1195,7 @@ Themes::Themes(const QString& name, const QString& configname)
 {
     Name= name;
     ConfigName= configname;
+    ActualTheme="Custom";
 };
 
 QStringList Themes::getSubDirs(const QString& path)
@@ -1303,7 +1304,9 @@ QString Themes::themePath(const QString& theme)
     if (theme == "")
 	t= ActualTheme;
     if (theme == "Custom")
-	return "";
+	return "";    
+    if (ThemesPaths.isEmpty())
+	return "Custom";
 
     return ThemesPaths.grep(t).first();
 	
