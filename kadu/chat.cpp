@@ -538,6 +538,7 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 
 	body->setMinimumSize(QSize(100,100));
 	body->setFont(config_file.readFontEntry("Look","ChatFont"));
+	body->setParagraphSeparators(true);
 
 	QPoint pos = QCursor::pos();
 

@@ -1210,6 +1210,7 @@ History::History(UinsList uins): uins(uins), closeDemand(false), finding(false)
 
 	QVBox *vbox1 = new QVBox(split1);
 	body = new KaduTextBrowser(vbox1, "History browser");
+	body->setParagraphSeparators(true);
 	body->setReadOnly(true);
 	body->QTextEdit::setFont(config_file.readFontEntry("Look","ChatFont"));
 	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")==EMOTS_ANIMATED)

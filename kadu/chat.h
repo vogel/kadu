@@ -2,7 +2,6 @@
 #define CHAT_H
 
 #include <qdialog.h>
-#include <qtextbrowser.h>
 #include <qhbox.h>
 #include <qmultilineedit.h>
 #include <qpushbutton.h>
@@ -240,9 +239,9 @@ class Chat : public QWidget
 
 	public:
 		// FIXME - nie powinno byc publicznych zmiennych
-		QTextBrowser *body;
-		CustomInput *edit;
-		QHBox *buttontray;
+		KaduTextBrowser* body;
+		CustomInput* edit;
+		QHBox* buttontray;
 		/**
 			Rejestruje opcje modulu Chat w oknie konfiguracji.
 		**/
