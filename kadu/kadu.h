@@ -195,7 +195,7 @@ class Kadu : public QMainWindow
 	private:
 		QMenuBar *mmb;
 		QTabBar *group_bar;
-		QLabel *descrlabel;
+		QTextBrowser *descrtb;
 		int commencing_startup;
 		void createMenu();
 		void createStatusPopupMenu();

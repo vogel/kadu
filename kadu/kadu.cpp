@@ -527,15 +527,19 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	dockppm->insertItem(loader->loadIcon("exit",KIcon::Small), i18n("&Exit Kadu"), 9);
 	connect(dockppm, SIGNAL(activated(int)), dw, SLOT(dockletChange(int)));
 
-	descrlabel = new QLabel(centralFrame, "descrlabel", WStyle_Tool);
-	descrlabel->setFrameStyle(QFrame::Box | QFrame::Sunken);
-	descrlabel->setFixedHeight(70);
-	descrlabel->setTextFormat(Qt::RichText);
+	descrtb = new QTextBrowser(centralFrame, "descrtb");
+//	descrtb->setFrameStyle(QFrame::Box | QFrame::Plain);
+	descrtb->setFrameStyle(QFrame::NoFrame);
+	descrtb->setFixedHeight(70);
+	descrtb->setTextFormat(Qt::RichText);
+	descrtb->setAlignment(Qt::AlignAuto | Qt::AlignTop | Qt::WordBreak | Qt::DontClip);
+	descrtb->setVScrollBarMode(QScrollView::AlwaysOff);
+	descrtb->setPaper(QBrush(lightGray));
 
 	QGridLayout * grid = new QGridLayout(centralFrame, 4, 3);
 	grid->addMultiCellWidget(group_bar, 0, 0, 0, 2);
 	grid->addMultiCellWidget(userbox, 1, 1, 0, 2);
-	grid->addMultiCellWidget(descrlabel, 2, 2, 0, 2);
+	grid->addMultiCellWidget(descrtb, 2, 2, 0, 2);
 	grid->addWidget(statuslabeltxt, 3, 0, Qt::AlignLeft);
 	grid->addWidget(statuslabel, 3, 2, Qt::AlignCenter);
 	grid->setColStretch(0, 3);
@@ -567,8 +571,12 @@ void Kadu::currentChanged(QListBoxItem *item) {
 		return;
 	fprintf(stderr, "KK Kadu::currentChanged(): %s\n", (const char *)item->text().local8Bit());
 	UserListElement &ule = userlist.byAltNick(item->text());
-	descrlabel->setText(
-		QString("UIN: %1<BR>%2 %3<BR>%4").arg(ule.uin).arg(ule.first_name).arg(ule.last_name).arg(ule.description));
+	QString s;
+	if (ule.uin)
+		s = QString("UIN: %1").arg(ule.uin);
+	s = s + "<BR>";
+	s = s + QString("%2 %3<BR>%4").arg(ule.first_name).arg(ule.last_name).arg(ule.description);
+	descrtb->setText(s);
 }
 
 void Kadu::refreshGroupTabBar()
