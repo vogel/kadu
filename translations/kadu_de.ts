@@ -1641,8 +1641,8 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
 <context>
     <name>Themes</name>
     <message>
-        <source>does not contain any theme configuration file</source>
-        <translation>enthält keine Datei mit Design-Konfiguration</translation>
+        <source>&lt;i&gt;%1&lt;/i&gt;&lt;br/&gt;does not contain any theme configuration file</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

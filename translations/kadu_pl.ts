@@ -1651,8 +1651,8 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
 <context>
     <name>Themes</name>
     <message>
-        <source>does not contain any theme configuration file</source>
-        <translation>Plik konfiguracyjny w podanej ścieżce nie istnieje</translation>
+        <source>&lt;i&gt;%1&lt;/i&gt;&lt;br/&gt;does not contain any theme configuration file</source>
+        <translation>&lt;i&gt;%1&lt;/i&gt;&lt;br/&gt;nie zawiera pliku konfiguracyjnego do zestawu</translation>
     </message>
 </context>
 <context>
