@@ -10,7 +10,7 @@ echo
 echo -e "\033[32m>>>\033[0m Downloading $1 module"
 echo
 KADU_VERSION=`cat ../VERSION`
-MODULE_WEBSITE=`cat $1.href`
+MODULE_WEBSITE=`cat $1.web`
 wget -N $MODULE_WEBSITE/kadu-$KADU_VERSION-$1.href
 MODULE_HREF=`cat kadu-$KADU_VERSION-$1.href`
 wget -N $MODULE_HREF
