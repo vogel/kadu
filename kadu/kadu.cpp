@@ -725,7 +725,7 @@ void Kadu::remindPassword()
 
 void Kadu::changePassword()
 {
-	new ChangePassword();
+	(new ChangePassword())->show();
 }
 
 void Kadu::registerUser()

@@ -1,12 +1,10 @@
 #ifndef PASSWORD_H
 #define PASSWORD_H
 
-#include <qobject.h>
-#include <qlabel.h>
+#include <qhbox.h>
 #include <qlineedit.h>
-#include <qdialog.h>
 
-class RemindPassword : public QObject {
+class RemindPassword : public QHBox {
 	Q_OBJECT
 	public:
 		RemindPassword();
@@ -20,18 +18,19 @@ class RemindPassword : public QObject {
 
 };
 
-class ChangePassword : public QDialog {
+class ChangePassword : public QHBox {
 	Q_OBJECT
 	public:
 		ChangePassword(QDialog *parent = 0, const char *name = 0);
+		~ChangePassword();
 
 	private:
 		QLineEdit *emailedit, *newpwd, *newpwd2;
-		QLabel *status;
 
 	private slots:
 		void start();
 		void passwordChanged(bool ok);
+		void keyPressEvent(QKeyEvent *);
 
 };
 
