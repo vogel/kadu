@@ -7,21 +7,11 @@
 function Wyb_Dystr()
 {
 clear
-echo
-	echo " =============================================================================="
-	echo "                    Witaj w skrypcie instalacyjnym v0.1.3"
-	echo "         Skrypt ten konfiguruje, kompiluje, instaluje lub odinstalowywuje"
-	echo "                           $APP_NAME oraz $LIB_NAME."
-	echo " =============================================================================="
-	echo
-        echo 
-	echo " =============================================================================="
-	echo " |                               WYBIERZ RODZAJ DYSTRYBUCJI                   |"
-	echo " =============================================================================="
-	echo " |          Naci¶nij   R  jesli twoja dystrybucja to RedHat - Aurox.          |"
-	echo " |          Naci¶nij   I  jesli masz inna.                                    |"
-	echo " |          Naci¶nij   E  aby zakonczyc program instalacyjny.                 |"
-	echo " =============================================================================="
+dialog --msgbox "\n\nWitaj w skrypcie instalacyjnym v0.1.4 \
+Skrypt ten konfiguruje, kompiluje, instaluje lub odinstalowywuje \
+$APP_NAME oraz $LIB_NAME." 10 80
+
+dialog --menu "WYBIERZ RODZAJ DYSTRYBUCJI" 0 80 0 R "RedHat - Aurox" I "Inna" E "Zakoncz program instalacyjny"  2> /tmp/dist_sel
 }
 function RedHat()
 {
@@ -265,38 +255,39 @@ function Error()
 
 function ShowInfo()
 {
- 	clear
-        echo
-	echo " =============================================================================="
-	echo "                 PROGRAM BÄ˜DZIE KORZYSTAÅ Z PODANYCH ÅšCIEÅ»EK :"
-	CheckPath "$APP_DIR" bin/kadu "ZAINSTALOWANE" "NIE ZAINSTALOWANE"
-	echo "  * Lokalizacja $APP_NAME w katalogu: [$APP_DIR], $CORRECT"
-	CheckPath "$LIB_DIR" /libgadu.a "ZAINSTALOWANE" "NIE ZAINSTALOWANE uÅ¼yj opcji standardowej"
-	echo "  * Lokalizacja $LIB_NAME w katalogu: [$LIB_DIR], $CORRECT"
-	CheckPath "$QT_DIR" include/qapplication.h "ZNALEZIONA." "NIE ZNALEZIONA!"
-	echo "  * Biblioteka QT wersja >=3.0.1, w katalogu: [$QT_DIR], $CORRECT"
-	CheckPath "$KDE_DIR" include/kde/kapp.h "ZNALEZIONE." "NIE ZNALEZIONE!"
-	echo "  * KDE Desktop wersja >=3.0.0, w katalogu: [$KDE_DIR], $CORRECT"
-	echo "  KDE NIE JEST WYMAGANE DO INSTALACJI NA INNYCH MENADZERACH OKEN"
-	echo
-	echo " =============================================================================="
-	echo " |                               MENU PROGRAMU                                |"
-	echo " =============================================================================="
-	echo " |          NaciÅ›nij   L  aby zobaczyÄ‡ licencje GNU.                          |"
-	echo " |          NaciÅ›nij   Q  aby zmieniÄ‡ Å›cieÅ¼kÄ™ do biblioteki QT.               |"
-	echo " |          NaciÅ›nij   K  aby zmieniÄ‡ Å›cieÅ¼kÄ™ do KDE Desktop.                 |"
-	echo " |          NaciÅ›nij   D  aby zmieniÄ‡ lokalizacjÄ™ $APP_NAME .                      |"
-	echo " |          NaciÅ›nij   I  aby rozpoczÄ…Ä‡ instalacjÄ™ standardowÄ….               |"
-	echo " |          NaciÅ›nij   U  aby odinstalowaÄ‡ $APP_NAME.                              |"
-	echo " |          NaciÅ›nij   B  aby rozpoczÄ…Ä‡ instalacjÄ™ bez libgadu.               |"
-	echo " |          NaciÅ›nij   V  aby rozpoczÄ…Ä‡ instalacjÄ™ bez rozmow glosowych.      |"
-	echo " |          NaciÅ›nij   S  aby rozpoczÄ…Ä‡ instalacjÄ™ bez szyfrowania w SSL.     |"
-	echo " |          NaciÅ›nij   M  aby rozpoczÄ…Ä‡ instalacjÄ™ bez modulow.               |"
-	echo " |          NaciÅ›nij   G  rozpoczÄ…Ä‡ instalacjÄ™ z debug.                       |"
-	echo " |          NaciÅ›nij   P  aby uzyskaÄ‡ Pomoc za pomocÄ… programu Mozilla.       |"
-	echo " |          NaciÅ›nij   E  aby zakoÅ„czyÄ‡ program instalacyjny.                 |"
-	echo " =============================================================================="
-        echo "                 UWAGA!!! musisz mieÄ‡ uprawnienia administratora"
+	rm -fr /tmp/kadu_info
+	echo " ============================================================================" >> /tmp/kadu_info
+	echo "                 PROGRAM BÄ˜DZIE KORZYSTAÅ Z PODANYCH ÅšCIEÅ»EK :" >> /tmp/kadu_info
+	CheckPath "$APP_DIR" bin/kadu "ZAINSTALOWANE" "NIE ZAINSTALOWANE" >> /tmp/kadu_info
+	echo "  * Lokalizacja $APP_NAME w katalogu: [$APP_DIR], $CORRECT" >> /tmp/kadu_info
+	CheckPath "$LIB_DIR" /libgadu.a "ZAINSTALOWANE" "NIE ZAINSTALOWANE uÅ¼yj opcji standardowej" >> /tmp/kadu_info
+	echo "  * Lokalizacja $LIB_NAME w katalogu: [$LIB_DIR], $CORRECT" >> /tmp/kadu_info
+	CheckPath "$QT_DIR" include/qapplication.h "ZNALEZIONA." "NIE ZNALEZIONA!" >> /tmp/kadu_info
+	echo "  * Biblioteka QT wersja >=3.0.1, w katalogu: [$QT_DIR], $CORRECT" >> /tmp/kadu_info
+	CheckPath "$KDE_DIR" include/kde/kapp.h "ZNALEZIONE." "NIE ZNALEZIONE!" >> /tmp/kadu_info
+	echo "  * KDE Desktop wersja >=3.0.0, w katalogu: [$KDE_DIR], $CORRECT" >> /tmp/kadu_info
+	echo "  KDE NIE JEST WYMAGANE DO INSTALACJI NA INNYCH MENADZERACH OKEN" >> /tmp/kadu_info
+        echo "\nUWAGA!!! musisz mieÄ‡ uprawnienia administratora"	
+	dialog --msgbox "`cat /tmp/kadu_info`" 15 80
+	rm -fr /tmp/kadu_info
+
+    
+        dialog --menu "MENU PROGRAMU" 0 80 0 \
+	L  "Zobaczyæ licencje GNU" \
+	Q  "Zmieniæ ¶cie¿kê do biblioteki QT" \
+	K  "Zmieniæ ¶cie¿kê do KDE Desktop" \
+	D  "Zmieniæ lokalizacje $APP_NAME" \
+	I  "Rozpocz±æ instalacjê standardow±" \
+	U  "Odinstalowaæ $APP_NAME" \
+	B  "Rozpocz±æ instalacjê bez libgadu" \
+	V  "Rozpocz±æ instalacjê bez rozmowi glosowych" \
+	S  "Rozpocz±æ instalacjê bez szyfrowania w SSL" \
+	M  "Rozpocz±æ instalacjê bez modulow"\
+	G  "Rozpocz±æ instalacjê z debug"\
+	P  "Uzyskaæ Pomoc za pomoc± programu Mozilla."\
+	E  "Zakoñczyæ program instalacyjny" 2> /tmp/mainmenu
+
+
 }
 
 function Szuk_kadu()
@@ -401,10 +392,90 @@ clear
 ########################################################################################
 #					SEKCJA WYBORU MENU										#
 ########################################################################################
+
+dialog --separate-output --checklist "Wybierz moduly do zainstalowania" 0 80 0 \
+    encryption "Obsluga szyfrowania SSL" on \
+    speech "Obsluga syntezatora mowy" 0 \
+    sound "Ogolne wsparcie dla dzwieku" on \
+    ext_sound "Obsluga zewnetrznego programu obslugujacego dzwiek" on \
+    dsp_sound "Wsparcie DSP dla dzwieku" 0 \
+    arts_sound "Wsparcie aRts! dla dzwieku" 0 \
+    esd_sound "Wsparcie ESD dla dzwieku" 0 \
+    nas_sound "Wsparcie Network Audio System dla dzwieku" 0 \
+    "echo" "Przykladowy modul Echo" 0 \
+    autoresponder "Przykladowy modul Autoresponder" 0 2>/tmp/selectedmodule
+
+rm -fr .config
+
+if [[ `cat /tmp/selectedmodule |grep encryption` != "" ]]; then
+	echo "module_encryption=m" >> .config
+    else
+	echo "module_encryption=n" >> .config
+fi;
+
+if [[ `cat /tmp/selectedmodule |grep speech` != "" ]]; then
+	echo "module_speech=m" >> .config
+    else
+	echo "module_speech=n" >> .config
+fi;
+
+if [[ `cat /tmp/selectedmodule |grep sound` != "" ]]; then
+	echo "module_sound=m" >> .config
+    else
+	echo "module_sound=n" >> .config
+fi;
+
+if [[ `cat /tmp/selectedmodule |grep ext_sound` != "" ]]; then
+	echo "module_ext_sound=m" >> .config
+    else
+	echo "module_ext_sound=n" >> .config
+fi;
+
+if [[ `cat /tmp/selectedmodule |grep dsp_sound` != "" ]]; then
+	echo "module_dsp_sound=m" >> .config
+    else
+	echo "module_dsp_sound=n" >> .config
+fi;
+
+if [[ `cat /tmp/selectedmodule |grep arts_sound` != "" ]]; then
+	echo "module_arts_sound=m" >> .config
+    else
+	echo "module_arts_sound=n" >> .config
+fi;
+
+if [[ `cat /tmp/selectedmodule |grep esd_sound` != "" ]]; then
+	echo "module_esd_sound=m" >> .config
+    else
+	echo "module_esd_sound=n" >> .config
+fi;
+
+if [[ `cat /tmp/selectedmodule |grep nas_sound` != "" ]]; then
+	echo "module_nas_sound=m" >> .config
+    else
+	echo "module_nas_sound=n" >> .config
+fi;
+
+
+if [[ `cat /tmp/selectedmodule |grep "echo"` != "" ]]; then
+	echo "module_echo=m" >> .config
+    else
+	echo "module_echo=n" >> .config
+fi;
+
+if [[ `cat /tmp/selectedmodule |grep autoresponder` != "" ]]; then
+	echo "module_autoresponder=m" >> .config
+    else
+	echo "module_autoresponder=n" >> .config
+fi;
+
+
+
 while [ 1 ]; do
 	ShowInfo
+	clear
+	export REPLY=`cat /tmp/mainmenu`
 	while [ 1 ]; do
-		read -n 1 -s
+		
 		if [[ ("$REPLY" == "L") || ("$REPLY" == "l") ]]; then
 			clear
 			cat COPYING | more
@@ -467,7 +538,7 @@ while [ 1 ]; do
 			exit
 		fi;
 		if [[ ("$REPLY" == "P") || ("$REPLY" == "p") ]]; then
-			mozilla ./doc/index_doc.html
+			mozilla http://kadu.net/doc.php
 			break
 		fi;
 	done
@@ -718,38 +789,36 @@ function Error()
 
 function ShowInfo()
 {
-	clear
-        echo
-	echo " =============================================================================="
-	echo "                 PROGRAM BÊDZIE KORZYSTA£ Z PODANYCH ¦CIE¯EK :"
-	CheckPath "$APP_DIR" /bin/kadu "ZAINSTALOWANE" "NIE ZAINSTALOWANE"
-	echo "  * Lokalizacja $APP_NAME w katalogu: [$APP_DIR], $CORRECT"
-	CheckPath "$LIB_DIR" /libgadu.a "ZAINSTALOWANE" "NIE ZAINSTALOWANE u¿yj opcji standardowej"
-	echo "  * Lokalizacja $LIB_NAME w katalogu: [$LIB_DIR], $CORRECT"
-	CheckPath "$QT_DIR" include/qapplication.h "ZNALEZIONA." "NIE ZNALEZIONA!"
-	echo "  * Biblioteka QT wersja >=3.0.1, w katalogu: [$QT_DIR], $CORRECT"
-	CheckPath "$KDE_DIR" include/kapp.h "ZNALEZIONE." "NIE ZNALEZIONE!"
-	echo "  * KDE Desktop wersja >=3.0.0, w katalogu: [$KDE_DIR], $CORRECT"
-	echo "  KDE NIE JEST WYMAGANE DO INSTALACJI NA INNYCH MENADZERACH OKEN"
-	echo
-	echo " =============================================================================="
-	echo " |                               MENU PROGRAMU                                |"
-	echo " =============================================================================="
-	echo " |          Naci¶nij   L  aby zobaczyæ licencje GNU.                          |"
-	echo " |          Naci¶nij   Q  aby zmieniæ ¶cie¿kê do biblioteki QT.               |"
-	echo " |          Naci¶nij   K  aby zmieniæ ¶cie¿kê do KDE Desktop.                 |"
-	echo " |          Naci¶nij   D  aby zmieniæ lokalizacje $APP_NAME .                      |"
-	echo " |          Naci¶nij   I  aby rozpocz±æ instalacjê standardow±                |"
-	echo " |          Naci¶nij   U  aby odinstalowaæ $APP_NAME.                              |"
-	echo " |          Naci¶nij   B  aby rozpocz±æ instalacjê bez libgadu.               |"
-	echo " |          Naci¶nij   V  aby rozpocz±æ instalacjê bez rozmowi glosowych.     |"
-	echo " |          Naci¶nij   S  aby rozpocz±æ instalacjê bez szyfrowania w SSL.     |"
-	echo " |          Naci¶nij   M  aby rozpocz±æ instalacjê bez modulow.               |"
-	echo " |          Naci¶nij   G  aby rozpocz±æ instalacjê z debug.                   |"
-	echo " |          Naci¶nij   P  aby uzyskaæ Pomoc za pomoc± programu Mozilla.       |"
-	echo " |          Naci¶nij   E  aby zakoñczyæ program instalacyjny.                 |"
-	echo " =============================================================================="
-        echo "                 UWAGA!!! musisz mieæ uprawnienia administratora"
+
+	rm -fr /tmp/kadu_info
+	echo "                 PROGRAM BÊDZIE KORZYSTA£ Z PODANYCH ¦CIE¯EK :"  >> /tmp/kadu_info
+	CheckPath "$APP_DIR" /bin/kadu "ZAINSTALOWANE" "NIE ZAINSTALOWANE"  >> /tmp/kadu_info
+	echo "\n  * Lokalizacja $APP_NAME w katalogu: [$APP_DIR], $CORRECT"  >> /tmp/kadu_info
+	CheckPath "$LIB_DIR" /libgadu.a "ZAINSTALOWANE" "NIE ZAINSTALOWANE u¿yj opcji standardowej"  >> /tmp/kadu_info
+	echo "\n  * Lokalizacja $LIB_NAME w katalogu: [$LIB_DIR], $CORRECT"  >> /tmp/kadu_info
+	CheckPath "$QT_DIR" include/qapplication.h "ZNALEZIONA." "NIE ZNALEZIONA!"  >> /tmp/kadu_info
+	echo "\n  * Biblioteka QT wersja >=3.0.1, w katalogu: [$QT_DIR], $CORRECT"  >> /tmp/kadu_info
+	CheckPath "$KDE_DIR" include/kapp.h "ZNALEZIONE." "NIE ZNALEZIONE!"  >> /tmp/kadu_info
+	echo "\n  * KDE Desktop wersja >=3.0.0, w katalogu: [$KDE_DIR], $CORRECT"  >> /tmp/kadu_info
+	echo "\n  KDE NIE JEST WYMAGANE DO INSTALACJI NA INNYCH MENADZERACH OKEN"  >> /tmp/kadu_info
+	echo "\n\n\nMusisz miec uprawnienia administratora!!!" >> /tmp/kadu_info
+	dialog --msgbox "`cat /tmp/kadu_info`" 15 80
+	rm -fr /tmp/kadu_info
+
+        dialog --menu "MENU PROGRAMU" 0 80 0 \
+	L  "Zobaczyæ licencje GNU" \
+	Q  "Zmieniæ ¶cie¿kê do biblioteki QT" \
+	K  "Zmieniæ ¶cie¿kê do KDE Desktop" \
+	D  "Zmieniæ lokalizacje $APP_NAME" \
+	I  "Rozpocz±æ instalacjê standardow±" \
+	U  "Odinstalowaæ $APP_NAME" \
+	B  "Rozpocz±æ instalacjê bez libgadu" \
+	V  "Rozpocz±æ instalacjê bez rozmowi glosowych" \
+	S  "Rozpocz±æ instalacjê bez szyfrowania w SSL" \
+	M  "Rozpocz±æ instalacjê bez modulow"\
+	G  "Rozpocz±æ instalacjê z debug"\
+	P  "Uzyskaæ Pomoc za pomoc± programu Mozilla."\
+	E  "Zakoñczyæ program instalacyjny" 2> /tmp/mainmenu
 }
 
 function Szuk_kadu()
@@ -850,80 +919,158 @@ clear
 ########################################################################################
 #					SEKCJA WYBORU MENU										#
 ########################################################################################
+
+dialog --separate-output --checklist "Wybierz moduly do zainstalowania" 0 80 0 \
+    encryption "Obsluga szyfrowania SSL" on \
+    speech "Obsluga syntezatora mowy" 0 \
+    sound "Ogolne wsparcie dla dzwieku" on \
+    ext_sound "Obsluga zewnetrznego programu obslugujacego dzwiek" on \
+    dsp_sound "Wsparcie DSP dla dzwieku" 0 \
+    arts_sound "Wsparcie aRts! dla dzwieku" 0 \
+    esd_sound "Wsparcie ESD dla dzwieku" 0 \
+    nas_sound "Wsparcie Network Audio System dla dzwieku" 0 \
+    "echo" "Przykladowy modul Echo" 0 \
+    autoresponder "Przykladowy modul Autoresponder" 0 2>/tmp/selectedmodule
+
+rm -fr .config
+
+if [[ `cat /tmp/selectedmodule |grep encryption` != "" ]]; then
+	echo "module_encryption=m" >> .config
+    else
+	echo "module_encryption=n" >> .config
+fi;
+
+if [[ `cat /tmp/selectedmodule |grep speech` != "" ]]; then
+	echo "module_speech=m" >> .config
+    else
+	echo "module_speech=n" >> .config
+fi;
+
+if [[ `cat /tmp/selectedmodule |grep sound` != "" ]]; then
+	echo "module_sound=m" >> .config
+    else
+	echo "module_sound=n" >> .config
+fi;
+
+if [[ `cat /tmp/selectedmodule |grep ext_sound` != "" ]]; then
+	echo "module_ext_sound=m" >> .config
+    else
+	echo "module_ext_sound=n" >> .config
+fi;
+
+if [[ `cat /tmp/selectedmodule |grep dsp_sound` != "" ]]; then
+	echo "module_dsp_sound=m" >> .config
+    else
+	echo "module_dsp_sound=n" >> .config
+fi;
+
+if [[ `cat /tmp/selectedmodule |grep arts_sound` != "" ]]; then
+	echo "module_arts_sound=m" >> .config
+    else
+	echo "module_arts_sound=n" >> .config
+fi;
+
+if [[ `cat /tmp/selectedmodule |grep esd_sound` != "" ]]; then
+	echo "module_esd_sound=m" >> .config
+    else
+	echo "module_esd_sound=n" >> .config
+fi;
+
+if [[ `cat /tmp/selectedmodule |grep nas_sound` != "" ]]; then
+	echo "module_nas_sound=m" >> .config
+    else
+	echo "module_nas_sound=n" >> .config
+fi;
+
+
+if [[ `cat /tmp/selectedmodule |grep "echo"` != "" ]]; then
+	echo "module_echo=m" >> .config
+    else
+	echo "module_echo=n" >> .config
+fi;
+
+if [[ `cat /tmp/selectedmodule |grep autoresponder` != "" ]]; then
+	echo "module_autoresponder=m" >> .config
+    else
+	echo "module_autoresponder=n" >> .config
+fi;
+
 while [ 1 ]; do
 	ShowInfo
-	while [ 1 ]; do
-		read -n 1 -s
-		if [[ ("$REPLY" == "L") || ("$REPLY" == "l") ]]; then
-			clear
-			cat COPYING | more
-			break
-		fi;
-		if [[ ("$REPLY" == "Q") || ("$REPLY" == "q") ]]; then
-			AskForPath "biblioteki QT"
-			QT_DIR="$REPLY"
-			break
-		fi;
-		if [[ ("$REPLY" == "K") || ("$REPLY" == "k") ]]; then
-			AskForPath "KDE Desktop"
-			KDE_DIR="$REPLY"
-			break
-		fi;
-		if [[ ("$REPLY" == "D") || ("$REPLY" == "d") ]]; then
-			AskForPath "$APP_NAME"
-			APP_DIR="$REPLY"
-                        break
-		fi;
-		if [[ ("$REPLY" == "I") || ("$REPLY" == "i") ]]; then
-			Konfiguruj
-			Kompiluj
-			Zainstaluj
-			Aktualizuj_ldsoconf
-		fi;
-		if [[ ("$REPLY" == "V") || ("$REPLY" == "v") ]]; then
-			Konfiguruj_voice
-			Kompiluj
-			Zainstaluj
-			Aktualizuj_ldsoconf
-		fi;
-		if [[ ("$REPLY" == "M") || ("$REPLY" == "m") ]]; then
-			Konfiguruj_Modules
-			Kompiluj
-			Zainstaluj
-			Aktualizuj_ldsoconf
-		fi;
-		if [[ ("$REPLY" == "B") || ("$REPLY" == "b") ]]; then
-			Konfiguruj_bez_libgadu
-			Kompiluj
-			Zainstaluj
-		fi;
-		if [[ ("$REPLY" == "S") || ("$REPLY" == "s") ]]; then
-			Konfiguruj_bez_ssl
-			Kompiluj
-			Zainstaluj
-			Aktualizuj_ldsoconf
-		fi;
-		if [[ ("$REPLY" == "G") || ("$REPLY" == "g") ]]; then
-			Konfiguruj_z_debug
-			Kompiluj
-			Zainstaluj
-			Aktualizuj_ldsoconf
-		fi;
-		if [[ ("$REPLY" == "U") || ("$REPLY" == "u") ]]; then
-			Odinstaluj
-		fi;
-		if [[ ("$REPLY" == "E") || ("$REPLY" == "e") ]]; then
-			exit
-		fi;
-		if [[ ("$REPLY" == "P") || ("$REPLY" == "p") ]]; then
-			mozilla ./doc/index_doc.html
-			break
-		fi;
-	done
+	export REPLY=`cat /tmp/mainmenu`
+	clear
+    while [ 1 ]; do	
+	if [[ ("$REPLY" == "L") || ("$REPLY" == "l") ]]; then
+		clear
+		cat COPYING | more
+		break
+	fi;
+	if [[ ("$REPLY" == "Q") || ("$REPLY" == "q") ]]; then
+		AskForPath "biblioteki QT"
+		QT_DIR="$REPLY"
+		break
+	fi;
+	if [[ ("$REPLY" == "K") || ("$REPLY" == "k") ]]; then
+		AskForPath "KDE Desktop"
+		KDE_DIR="$REPLY"
+		break
+	fi;
+	if [[ ("$REPLY" == "D") || ("$REPLY" == "d") ]]; then
+		AskForPath "$APP_NAME"
+		APP_DIR="$REPLY"
+                    break
+	fi;
+	if [[ ("$REPLY" == "I") || ("$REPLY" == "i") ]]; then
+		Konfiguruj
+		Kompiluj
+		Zainstaluj
+		Aktualizuj_ldsoconf
+	fi;
+	if [[ ("$REPLY" == "V") || ("$REPLY" == "v") ]]; then
+		Konfiguruj_voice
+		Kompiluj
+		Zainstaluj
+		Aktualizuj_ldsoconf
+	fi;
+	if [[ ("$REPLY" == "M") || ("$REPLY" == "m") ]]; then
+		Konfiguruj_Modules
+		Kompiluj
+		Zainstaluj
+		Aktualizuj_ldsoconf
+	fi;
+	if [[ ("$REPLY" == "B") || ("$REPLY" == "b") ]]; then
+		Konfiguruj_bez_libgadu
+		Kompiluj
+		Zainstaluj
+	fi;
+	if [[ ("$REPLY" == "S") || ("$REPLY" == "s") ]]; then
+		Konfiguruj_bez_ssl
+		Kompiluj
+		Zainstaluj
+		Aktualizuj_ldsoconf
+	fi;
+	if [[ ("$REPLY" == "G") || ("$REPLY" == "g") ]]; then
+		Konfiguruj_z_debug
+		Kompiluj
+		Zainstaluj
+		Aktualizuj_ldsoconf
+	fi;
+	if [[ ("$REPLY" == "U") || ("$REPLY" == "u") ]]; then
+		Odinstaluj
+	fi;
+	if [[ ("$REPLY" == "E") || ("$REPLY" == "e") ]]; then
+		exit
+	fi;
+	if [[ ("$REPLY" == "P") || ("$REPLY" == "p") ]]; then
+		mozilla http://kadu.net/doc.php
+		break
+	fi;
+	exit
+    done
 done
+
 #################################    KONIEC Inne  ####################################
 }
-
 
 ####################################
 #      DEKLARACJA ZMIENNYCH        #
@@ -935,16 +1082,16 @@ LIB_DEF_DIR=/usr/lib
 
 while [ 1 ]; do
 	Wyb_Dystr
-	while [ 1 ]; do
-		read -n 1 -s
-		if [[ ("$REPLY" == "r") || ("$REPLY" == "R") ]]; then
-			RedHat
-		fi;
-		if [[ ("$REPLY" == "e") || ("$REPLY" == "E") ]]; then
-			exit
-		fi;
-		if [[ ("$REPLY" == "i") || ("$REPLY" == "I") ]]; then
-			Inne
-		fi;
-	done
+	if [[ ( `cat /tmp/dist_sel` == "R") ]]; then
+		rm -fr /tmp/dist_sel
+		RedHat
+	fi;
+	if [[ ( `cat /tmp/dist_sel` == "E") ]]; then
+		rm -fr /tmp/dist_sel
+		exit
+	fi;
+	if [[ ( `cat /tmp/dist_sel` == "I") ]]; then
+		rm -fr /tmp/dist_sel
+		Inne
+	fi;
 done

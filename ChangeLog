@@ -159,6 +159,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * nie wy¶wietla siê ju¿ pusty wiersz w oknie chatu przy przechodzeniu 
   do nowej linii (joi)
 * drobne porz±dki przy htmlu (joi)
+* dodano opcje konfiguracji modu³ów do skryptu Instaluj z wykorzystaniem programu dialog. (Ron_K/Sad Mephisto)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
