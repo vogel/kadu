@@ -212,7 +212,7 @@ Teraz już nie masz numeru GG :(</translation>
     </message>
     <message>
         <source>This dialog box allows you to unregister your account. Be aware of using this option. &lt;font color=&quot;red&quot;&gt;&lt;b&gt;It will permanently delete your UIN and you will not be able to use it later!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation>To okno dialogowe pozwala na trwałe wyrejestrowanie użytkownika z serwera Gadu-Gadu. &lt;font color=&quot;red&quot;&gt;&lt;b&gt;Musisz sobie zdawć sprawę że spowoduje to nieodwracalne usunięcie numeru GG z serwera i nigdy już nie bedziesz mógł z niego korzystać!&lt;/b&gt;&lt;/font&gt;</translation>
+        <translation>To okno dialogowe pozwala na trwałe wyrejestrowanie użytkownika z serwera Gadu-Gadu. &lt;font color=&quot;red&quot;&gt;&lt;b&gt;Musisz sobie zdawć sprawę że spowoduje to nieodwracalne usunięcie numeru GG z serwera i nigdy już nie będziesz mógł z niego korzystać!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
 </context>
 </TS>

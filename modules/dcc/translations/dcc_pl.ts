@@ -94,7 +94,7 @@ Połączenia bezpośrednie wyłączone.</translation>
 The receiver doesn&apos;t support direct connections or
 both machines are behind routers with nat.</source>
         <translation>Czas na połączenie upłynął!
-Odbiorca nie ma właczonego DCC lub
+Odbiorca nie ma włączonego DCC lub
 oba komputery są za NAT-em.</translation>
     </message>
 </context>

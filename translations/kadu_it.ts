@@ -2,42 +2,6 @@
 <context>
     <name>@default</name>
     <message>
-        <source>Online</source>
-        <translation>Accessibile</translation>
-    </message>
-    <message>
-        <source>Online (d.)</source>
-        <translation>Accessibile (desc.)</translation>
-    </message>
-    <message>
-        <source>Busy</source>
-        <translation>Occupato</translation>
-    </message>
-    <message>
-        <source>Busy (d.)</source>
-        <translation>Occupato (desc.)</translation>
-    </message>
-    <message>
-        <source>Invisible</source>
-        <translation>Nascosto</translation>
-    </message>
-    <message>
-        <source>Invisible (d.)</source>
-        <translation>Nascosto (desc.)</translation>
-    </message>
-    <message>
-        <source>Offline</source>
-        <translation>Non presente</translation>
-    </message>
-    <message>
-        <source>Offline (d.)</source>
-        <translation>Non presente (desc.)</translation>
-    </message>
-    <message>
-        <source>Blocking</source>
-        <translation>Bloccato</translation>
-    </message>
-    <message>
         <source>General</source>
         <translation>Generale</translation>
     </message>
@@ -567,18 +531,6 @@ It&apos;s a high security risk!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Display contacts who has a desciption</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show contacts who you are blocking</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show contacts who are blocking you</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>IP address: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -592,6 +544,18 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source> Password: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display contacts that have a desciption</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show contacts that you are blocking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show contacts that are blocking you</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -700,21 +664,21 @@ It&apos;s a high security risk!</source>
         <source>Filtered message too long (%1&gt;=%2)</source>
         <translation>messaggio filtrato troppo lungo (%1&gt;=%2)</translation>
     </message>
-</context>
-<context>
-    <name>ChatSlots</name>
     <message>
         <source>None</source>
-        <translation>Nessuno</translation>
+        <translation type="unfinished">Nessuno</translation>
     </message>
     <message>
         <source>Static</source>
-        <translation>Statico</translation>
+        <translation type="unfinished">Statico</translation>
     </message>
     <message>
         <source>Animated</source>
-        <translation>Animato</translation>
+        <translation type="unfinished">Animato</translation>
     </message>
+</context>
+<context>
+    <name>ChatSlots</name>
     <message>
         <source>Chat with </source>
         <translation>Chat con  </translation>
@@ -1684,51 +1648,11 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
 <context>
     <name>UserBox</name>
     <message>
-        <source>&lt;i&gt;Available&lt;/i&gt;</source>
-        <translation>&lt;i&gt;Disponibile&lt;/i&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;i&gt;Busy&lt;/i&gt;</source>
-        <translation>&lt;i&gt;Occupato&lt;/i&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;nobr&gt;&lt;i&gt;Not available&lt;/i&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;i&gt;Non disponibile&lt;/i&gt;&lt;/nobr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;i&gt;Invisible&lt;/i&gt;</source>
-        <translation>&lt;i&gt;Invisibile&lt;/i&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;i&gt;Invisible &lt;b&gt;(d.)&lt;/b&gt;&lt;/i&gt;</source>
-        <translation>&lt;i&gt;Invisibile&lt;b&gt;(desc.)&lt;/b&gt;&lt;/i&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;nobr&gt;&lt;i&gt;Busy &lt;b&gt;(d.)&lt;/b&gt;&lt;/i&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;i&gt;Occupato &lt;b&gt;(desc.)&lt;/b&gt;&lt;/nobr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;nobr&gt;&lt;i&gt;Not available &lt;b&gt;(d.)&lt;/b&gt;&lt;/i&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;i&gt;Non disponibile &lt;b&gt;(desc.)&lt;/b&gt;&lt;/i&gt;&lt;/nobr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;nobr&gt;&lt;i&gt;Available &lt;b&gt;(d.)&lt;/b&gt;&lt;/i&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;i&gt;Disponibile &lt;b&gt;(desc.)&lt;/b&gt;&lt;/i&gt;&lt;/nobr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;nobr&gt;&lt;i&gt;Blocking&lt;/i&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;i&gt;Bloccato&lt;/i&gt;&lt;/nobr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;nobr&gt;&lt;i&gt;Unknown status&lt;/i&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;i&gt;Status sconosciuto&lt;/i&gt;&lt;/nobr&gt;</translation>
-    </message>
-    <message>
         <source>&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;</source>
         <translation>&lt;b&gt;Descrizione:&lt;/b&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <source>&lt;i&gt;Mobile:&lt;/i&gt; &lt;b&gt;%1&lt;/b&gt;</source>
+        <source>&lt;i&gt;Mobile:&lt;/i&gt;&lt;b&gt; </source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1789,42 +1713,6 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     <message>
         <source>(Unknown)</source>
         <translation>(Sconosciuto)</translation>
-    </message>
-    <message>
-        <source>Online</source>
-        <translation>disponibile</translation>
-    </message>
-    <message>
-        <source>Online (d.)</source>
-        <translation>disponibile (desc.)</translation>
-    </message>
-    <message>
-        <source>Offline</source>
-        <translation>Fuori linea</translation>
-    </message>
-    <message>
-        <source>Offline (d.)</source>
-        <translation>Fuori linea (desc.)</translation>
-    </message>
-    <message>
-        <source>Busy</source>
-        <translation>Occupato</translation>
-    </message>
-    <message>
-        <source>Busy (d.)</source>
-        <translation>Occupato (desc.)</translation>
-    </message>
-    <message>
-        <source>Invisible</source>
-        <translation>Invisibile</translation>
-    </message>
-    <message>
-        <source>Invisible (d.)</source>
-        <translation>Invisibile (desc.)</translation>
-    </message>
-    <message>
-        <source>Blocks us</source>
-        <translation>Ci blocca</translation>
     </message>
     <message>
         <source>General</source>

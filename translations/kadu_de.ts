@@ -2,42 +2,6 @@
 <context>
     <name>@default</name>
     <message>
-        <source>Online</source>
-        <translation>Online</translation>
-    </message>
-    <message>
-        <source>Online (d.)</source>
-        <translation>Online (Beschr.)</translation>
-    </message>
-    <message>
-        <source>Busy</source>
-        <translation>Beschäftigt</translation>
-    </message>
-    <message>
-        <source>Busy (d.)</source>
-        <translation>Beschäftigt (Beschr.)</translation>
-    </message>
-    <message>
-        <source>Invisible</source>
-        <translation>Versteckt</translation>
-    </message>
-    <message>
-        <source>Invisible (d.)</source>
-        <translation>Versteckt (Beschr.)</translation>
-    </message>
-    <message>
-        <source>Offline</source>
-        <translation>Offline</translation>
-    </message>
-    <message>
-        <source>Offline (d.)</source>
-        <translation>Offline (Beschr.)</translation>
-    </message>
-    <message>
-        <source>Blocking</source>
-        <translation>Blockt</translation>
-    </message>
-    <message>
         <source>General</source>
         <translation>Allgemein</translation>
     </message>
@@ -567,18 +531,6 @@ It&apos;s a high security risk!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Display contacts who has a desciption</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show contacts who you are blocking</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show contacts who are blocking you</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>IP address: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -592,6 +544,18 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source> Password: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display contacts that have a desciption</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show contacts that you are blocking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show contacts that are blocking you</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -700,21 +664,21 @@ It&apos;s a high security risk!</source>
         <source>Filtered message too long (%1&gt;=%2)</source>
         <translation>Die gefilterte Nachricht ist zu lang (%1&gt;=%2)</translation>
     </message>
-</context>
-<context>
-    <name>ChatSlots</name>
     <message>
         <source>None</source>
-        <translation>Ohne Emotikonen</translation>
+        <translation type="unfinished">Ohne Emotikonen</translation>
     </message>
     <message>
         <source>Static</source>
-        <translation>statische</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Animated</source>
-        <translation>animierte</translation>
+        <translation type="unfinished">animierte</translation>
     </message>
+</context>
+<context>
+    <name>ChatSlots</name>
     <message>
         <source>Chat with </source>
         <translation>Chat mit</translation>
@@ -1684,51 +1648,11 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
 <context>
     <name>UserBox</name>
     <message>
-        <source>&lt;i&gt;Available&lt;/i&gt;</source>
-        <translation>&lt;i&gt;Zugänglich&lt;/i&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;i&gt;Busy&lt;/i&gt;</source>
-        <translation>&lt;i&gt;Beschäftigt&lt;/i&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;nobr&gt;&lt;i&gt;Not available&lt;/i&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;i&gt;Nicht Zugänglich&lt;/i&gt;&lt;/nobr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;i&gt;Invisible&lt;/i&gt;</source>
-        <translation>&lt;i&gt;Versteckt&lt;/i&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;i&gt;Invisible &lt;b&gt;(d.)&lt;/b&gt;&lt;/i&gt;</source>
-        <translation>&lt;i&gt;Versteckt &lt;b&gt;(d.)&lt;/b&gt;&lt;/i&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;nobr&gt;&lt;i&gt;Busy &lt;b&gt;(d.)&lt;/b&gt;&lt;/i&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;i&gt;Beschäftigt &lt;b&gt;(d.)&lt;/b&gt;&lt;/i&gt;&lt;/nobr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;nobr&gt;&lt;i&gt;Not available &lt;b&gt;(d.)&lt;/b&gt;&lt;/i&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;i&gt;Nicht zugänglich &lt;b&gt;(d.)&lt;/b&gt;&lt;/i&gt;&lt;/nobr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;nobr&gt;&lt;i&gt;Available &lt;b&gt;(d.)&lt;/b&gt;&lt;/i&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;i&gt;Zugänglich &lt;b&gt;(d.)&lt;/b&gt;&lt;/i&gt;&lt;/nobr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;nobr&gt;&lt;i&gt;Blocking&lt;/i&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;i&gt;Blockieren&lt;/i&gt;&lt;/nobr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;nobr&gt;&lt;i&gt;Unknown status&lt;/i&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;i&gt;Unbekannte status&lt;/i&gt;&lt;/nobr</translation>
-    </message>
-    <message>
         <source>&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;</source>
         <translation>&lt;b&gt;Beschreibung:&lt;/b&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <source>&lt;i&gt;Mobile:&lt;/i&gt; &lt;b&gt;%1&lt;/b&gt;</source>
+        <source>&lt;i&gt;Mobile:&lt;/i&gt;&lt;b&gt; </source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1789,42 +1713,6 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     <message>
         <source>(Unknown)</source>
         <translation>(unbekannt)</translation>
-    </message>
-    <message>
-        <source>Online</source>
-        <translation>Online</translation>
-    </message>
-    <message>
-        <source>Online (d.)</source>
-        <translation>Online (mit Beschr.)</translation>
-    </message>
-    <message>
-        <source>Offline</source>
-        <translation>Offline</translation>
-    </message>
-    <message>
-        <source>Offline (d.)</source>
-        <translation>Offline (mit Beschr.)</translation>
-    </message>
-    <message>
-        <source>Busy</source>
-        <translation>Beschäftigt</translation>
-    </message>
-    <message>
-        <source>Busy (d.)</source>
-        <translation>Beschäftigt (mit Beschr.)</translation>
-    </message>
-    <message>
-        <source>Invisible</source>
-        <translation>Versteckt</translation>
-    </message>
-    <message>
-        <source>Invisible (d.)</source>
-        <translation>Versteckt (mit Beschr.)</translation>
-    </message>
-    <message>
-        <source>Blocks us</source>
-        <translation>Blockiert uns</translation>
     </message>
     <message>
         <source>General</source>

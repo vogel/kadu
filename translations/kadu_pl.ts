@@ -2,42 +2,6 @@
 <context>
     <name>@default</name>
     <message>
-        <source>Online</source>
-        <translation>Dostępny</translation>
-    </message>
-    <message>
-        <source>Online (d.)</source>
-        <translation>Dostępny (opis)</translation>
-    </message>
-    <message>
-        <source>Busy</source>
-        <translation>Zaraz wracam</translation>
-    </message>
-    <message>
-        <source>Busy (d.)</source>
-        <translation>Zaraz wracam (opis)</translation>
-    </message>
-    <message>
-        <source>Invisible</source>
-        <translation>Ukryty</translation>
-    </message>
-    <message>
-        <source>Invisible (d.)</source>
-        <translation>Ukryty (opis)</translation>
-    </message>
-    <message>
-        <source>Offline</source>
-        <translation>Niedostępny</translation>
-    </message>
-    <message>
-        <source>Offline (d.)</source>
-        <translation>Niedostępny (opis)</translation>
-    </message>
-    <message>
-        <source>Blocking</source>
-        <translation>Blokuje</translation>
-    </message>
-    <message>
         <source>General</source>
         <translation>Ogólne</translation>
     </message>
@@ -523,7 +487,7 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     </message>
     <message>
         <source>When enabled, you&apos;re visible only to users on your list</source>
-        <translation>Kiedy włączone, jesteś widoczny tylko do użytkowników na twojej liście</translation>
+        <translation>Kiedy włączone, jesteś widoczny tylko dla użytkowników na twojej liście</translation>
     </message>
     <message>
         <source>Columns</source>
@@ -549,7 +513,7 @@ Jest to wysoce ryzykowne!</translation>
     </message>
     <message>
         <source>Show tooltip on userbox</source>
-        <translation>Włacz dymki w liście kontaktów</translation>
+        <translation>Włącz dymki w liście kontaktów</translation>
     </message>
     <message>
         <source>Number of kept descriptions</source>
@@ -561,23 +525,11 @@ Jest to wysoce ryzykowne!</translation>
     </message>
     <message>
         <source>Display contacts who are offline</source>
-        <translation>Wyświetl kotakty, któe są niedostępne</translation>
+        <translation>Wyświetl kontakty, które są niedostępne</translation>
     </message>
     <message>
         <source>Show contacts with description</source>
         <translation>Pokaż kontakty z opisem</translation>
-    </message>
-    <message>
-        <source>Display contacts who has a desciption</source>
-        <translation>Wyświetlaj kontakty z opisami</translation>
-    </message>
-    <message>
-        <source>Show contacts who you are blocking</source>
-        <translation>Pokaż kontakty, które blokujesz</translation>
-    </message>
-    <message>
-        <source>Show contacts who are blocking you</source>
-        <translation>Pokaż kontakty, które blokują ciebie</translation>
     </message>
     <message>
         <source>IP address: </source>
@@ -594,6 +546,18 @@ Jest to wysoce ryzykowne!</translation>
     <message>
         <source> Password: </source>
         <translation> Hasło: </translation>
+    </message>
+    <message>
+        <source>Display contacts that have a desciption</source>
+        <translation>Wyświetla kontakty, które mają opis</translation>
+    </message>
+    <message>
+        <source>Show contacts that you are blocking</source>
+        <translation>Pokaż kontakty, które są blokowane</translation>
+    </message>
+    <message>
+        <source>Show contacts that are blocking you</source>
+        <translation>Pokaż kontakty, które blokują ciebie</translation>
     </message>
 </context>
 <context>
@@ -701,21 +665,21 @@ Jest to wysoce ryzykowne!</translation>
         <source>Filtered message too long (%1&gt;=%2)</source>
         <translation>Filtrowana  wiadomość zbyt długa (%1&gt;=%2)</translation>
     </message>
-</context>
-<context>
-    <name>ChatSlots</name>
     <message>
         <source>None</source>
         <translation>Bez emotikon</translation>
     </message>
     <message>
         <source>Static</source>
-        <translation>Statyczne</translation>
+        <translation>Bez animacji</translation>
     </message>
     <message>
         <source>Animated</source>
         <translation>Animowane</translation>
     </message>
+</context>
+<context>
+    <name>ChatSlots</name>
     <message>
         <source>Chat with </source>
         <translation>Rozmowa z </translation>
@@ -1689,52 +1653,12 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
 <context>
     <name>UserBox</name>
     <message>
-        <source>&lt;i&gt;Available&lt;/i&gt;</source>
-        <translation>&lt;i&gt;Dostępny&lt;/i&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;i&gt;Busy&lt;/i&gt;</source>
-        <translation>&lt;i&gt;Zaraz wracam&lt;/i&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;nobr&gt;&lt;i&gt;Not available&lt;/i&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;i&gt;Niedostępny&lt;/i&gt;&lt;/nobr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;i&gt;Invisible&lt;/i&gt;</source>
-        <translation>&lt;i&gt;Ukryty&lt;/i&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;i&gt;Invisible &lt;b&gt;(d.)&lt;/b&gt;&lt;/i&gt;</source>
-        <translation>&lt;i&gt;Ukryty &lt;b&gt;(opis)&lt;/b&gt;&lt;/i&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;nobr&gt;&lt;i&gt;Busy &lt;b&gt;(d.)&lt;/b&gt;&lt;/i&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;i&gt;Zaraz wracam &lt;b&gt;(opis)&lt;/b&gt;&lt;/i&gt;&lt;/nobr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;nobr&gt;&lt;i&gt;Not available &lt;b&gt;(d.)&lt;/b&gt;&lt;/i&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;i&gt;Niedostępny &lt;b&gt;(opis)&lt;/b&gt;&lt;/i&gt;&lt;/nobr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;nobr&gt;&lt;i&gt;Available &lt;b&gt;(d.)&lt;/b&gt;&lt;/i&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;i&gt;Dostępny &lt;b&gt;(opis)&lt;/b&gt;&lt;/i&gt;&lt;/nobr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;nobr&gt;&lt;i&gt;Blocking&lt;/i&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;i&gt;Zablokowany&lt;/i&gt;&lt;/nobr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;nobr&gt;&lt;i&gt;Unknown status&lt;/i&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;i&gt;Nieznany status&lt;/i&gt;&lt;/nobr&gt;</translation>
-    </message>
-    <message>
         <source>&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;</source>
         <translation>&lt;b&gt;Opis:&lt;/b&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <source>&lt;i&gt;Mobile:&lt;/i&gt; &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation>&lt;i&gt;Telefon:&lt;/i&gt; &lt;b&gt;%1&lt;/b&gt;</translation>
+        <source>&lt;i&gt;Mobile:&lt;/i&gt;&lt;b&gt; </source>
+        <translation>&lt;i&gt;Telefon:&lt;/i&gt;&lt;b&gt; </translation>
     </message>
 </context>
 <context>
@@ -1794,42 +1718,6 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     <message>
         <source>(Unknown)</source>
         <translation>(Nieznany)</translation>
-    </message>
-    <message>
-        <source>Online</source>
-        <translation>Dostępny</translation>
-    </message>
-    <message>
-        <source>Online (d.)</source>
-        <translation>Dostępny z opisem</translation>
-    </message>
-    <message>
-        <source>Offline</source>
-        <translation>Niedostępny</translation>
-    </message>
-    <message>
-        <source>Offline (d.)</source>
-        <translation>Niedostępny z opisem</translation>
-    </message>
-    <message>
-        <source>Busy</source>
-        <translation>Zaraz wracam</translation>
-    </message>
-    <message>
-        <source>Busy (d.)</source>
-        <translation>Zaraz wracam z opisem</translation>
-    </message>
-    <message>
-        <source>Invisible</source>
-        <translation>Ukryty</translation>
-    </message>
-    <message>
-        <source>Invisible (d.)</source>
-        <translation>Ukryty z opisem</translation>
-    </message>
-    <message>
-        <source>Blocks us</source>
-        <translation>Blokuje nas</translation>
     </message>
     <message>
         <source>General</source>

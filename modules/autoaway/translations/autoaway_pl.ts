@@ -11,7 +11,7 @@
     </message>
     <message>
         <source>Set status to away after </source>
-        <translation>Zmień status po</translation>
+        <translation>Zmień status po: </translation>
     </message>
     <message>
         <source>Check idle every </source>
@@ -19,7 +19,7 @@
     </message>
     <message>
         <source>Enable autoinvisible</source>
-        <translation>Włącz autoniedostępny</translation>
+        <translation>Włącz auto niewidoczny</translation>
     </message>
     <message>
         <source>Enable autodisconnect</source>
@@ -27,11 +27,11 @@
     </message>
     <message>
         <source>Set status to invisible after </source>
-        <translation>Ustaw status niedostępny po </translation>
+        <translation>Ustaw status niewidoczny po:  </translation>
     </message>
     <message>
         <source>Disconnect after </source>
-        <translation>Rozłącz po </translation>
+        <translation>Rozłącz po:  </translation>
     </message>
     <message>
         <source>Enable AutoStatus</source>

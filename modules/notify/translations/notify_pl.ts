@@ -11,7 +11,7 @@
     </message>
     <message>
         <source>Available</source>
-        <translation>Dostępny</translation>
+        <translation>Dostępni</translation>
     </message>
     <message>
         <source>Tracked</source>
