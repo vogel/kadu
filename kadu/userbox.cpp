@@ -150,7 +150,7 @@ int KaduListBoxPixmap::height(const QListBox* lb) const
 	UserListElement &user = userlist.byAltNick(text());
 	bool isOurUin=((UinType)config_file.readNumEntry("General", "UIN") == user.uin);
 	QString descr=isOurUin ? gadu->status().description() : description();
-	bool hasDescription=isOurUin ? gadu->status().isOffline() : !descr.isEmpty();
+	bool hasDescription=isOurUin ? gadu->status().hasDescription() : !descr.isEmpty();
 
 	int height=lb->fontMetrics().lineSpacing()+3;
 	if (hasDescription && config_file.readBoolEntry("Look", "ShowDesc"))
@@ -468,6 +468,36 @@ void UserBox::refresh()
 			{
 				//user.status = gadu->getCurrentStatus() & (~GG_STATUS_FRIENDS_MASK);
 				user.description = gadu->status().description();
+				
+				//mo¿e niezbyt optymalnie, ale przynajmniej dzia³a
+				if (gadu->status().isOnline())
+				{
+					if (gadu->status().hasDescription())
+						user.status=GG_STATUS_AVAIL_DESCR;
+					else
+						user.status=GG_STATUS_AVAIL;
+				}
+				else if (gadu->status().isBusy())
+				{
+					if (gadu->status().hasDescription())
+						user.status=GG_STATUS_BUSY_DESCR;
+					else
+						user.status=GG_STATUS_BUSY;
+				}
+				else if (gadu->status().isInvisible())
+				{
+					if (gadu->status().hasDescription())
+						user.status=GG_STATUS_INVISIBLE_DESCR;
+					else
+						user.status=GG_STATUS_INVISIBLE;
+				}
+				else
+				{
+					if (gadu->status().hasDescription())
+						user.status=GG_STATUS_NOT_AVAIL_DESCR;
+					else
+						user.status=GG_STATUS_NOT_AVAIL;
+				}
 			}
 			switch (user.status)
 			{
