@@ -94,6 +94,8 @@ void UserInfo::setupTab1() {
 		cb_group->setCurrentText(puser->group());
 	cb_group->setEditable(true);
 	cb_group->setAutoCompletion(true);
+	hbox4->setStretchFactor(vbox41, 1);
+	hbox4->setStretchFactor(vbox42, 1);
 
 	QHBox *hbox5 = new QHBox(box);
 	hbox5->setSpacing(10);
