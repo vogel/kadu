@@ -1235,7 +1235,6 @@ void GaduProtocol::login()
 	if (NextStatus->hasDescription())
 		LoginParams.status_descr = strdup((const char *)unicode2cp(NextStatus->description()));
 
-
 	LoginParams.uin = (UinType)config_file.readNumEntry("General", "UIN");
 	LoginParams.has_audio = config_file.readBoolEntry("Network", "AllowDCC");
 	LoginParams.last_sysmsg = config_file.readNumEntry("Global", "SystemMsgIndex");
@@ -2379,15 +2378,15 @@ int GaduStatus::toStatusNumber(eStatus status, bool has_desc)
 	switch (status)
 	{
 		case Online:
-			sn = has_desc ? GG_STATUS_AVAIL : GG_STATUS_AVAIL_DESCR;
+			sn = has_desc ? GG_STATUS_AVAIL_DESCR : GG_STATUS_AVAIL;
 			break;
 
 		case Busy:
-			sn = has_desc ? GG_STATUS_BUSY : GG_STATUS_BUSY_DESCR;
+			sn = has_desc ? GG_STATUS_BUSY_DESCR : GG_STATUS_BUSY;
 			break;
 
 		case Invisible:
-			sn = has_desc ? GG_STATUS_INVISIBLE : GG_STATUS_INVISIBLE_DESCR;
+			sn = has_desc ? GG_STATUS_INVISIBLE_DESCR : GG_STATUS_INVISIBLE;
 			break;
 
 		case Blocking:
@@ -2396,7 +2395,7 @@ int GaduStatus::toStatusNumber(eStatus status, bool has_desc)
 
 		case Offline:
 		default:
-			sn = has_desc ? GG_STATUS_NOT_AVAIL : GG_STATUS_NOT_AVAIL_DESCR;
+			sn = has_desc ? GG_STATUS_NOT_AVAIL_DESCR : GG_STATUS_NOT_AVAIL;
 			break;
 	}
 

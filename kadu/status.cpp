@@ -247,7 +247,8 @@ void Status::setFriendsOnly(bool f)
 
 void Status::setStatus(const Status& stat)
 {
-	setFriendsOnly(stat.FriendsOnly);
+	FriendsOnly = stat.FriendsOnly;
+	Changed = true;
 
 	switch (stat.Stat)
 	{
