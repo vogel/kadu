@@ -25,7 +25,7 @@
 #include <qmainwindow.h>
 #include <qtabbar.h>
 #include <kpopupmenu.h>
-
+#include <qnetworkprotocol.h>
 #include "userlist.h"
 #include "userbox.h"
 #include "pending_msgs.h"
@@ -152,8 +152,8 @@ class Kadu : public QMainWindow
 		bool doBlink;
 
 		AutoStatusTimer* autostatus_timer;
-    AutoAwayTimer* autoaway_timer;
-    
+		AutoAwayTimer* autoaway_timer;
+
 	public slots:
 		void blink();
 		void dccFinished(dccSocketClass *dcc);
@@ -176,7 +176,8 @@ class Kadu : public QMainWindow
 		void disconnectNetwork(void);
 		void changeGroup(int);
 		int openChat(UinsList);
-	
+		void gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op);
+
 	private:
 		QMenuBar *mmb;
 		QTabBar *group_bar;

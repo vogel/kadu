@@ -60,6 +60,7 @@
 #include <qaccel.h>
 #include <qpainter.h>
 #include <qmenubar.h>
+#include <qnetworkprotocol.h>
 
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -161,6 +162,7 @@ QSocketNotifier *kadusnw = NULL;
 QSocketNotifier *dccsnr = NULL;
 QSocketNotifier *dccsnw = NULL;
 UpdatesThread *ut;
+QString actversion("0.3.3");
 
 char **gg_xpm[] = {gg_act_xpm, gg_actdescr_xpm, gg_busy_xpm, gg_busydescr_xpm,
 	gg_invi_xpm, gg_invidescr_xpm, gg_inact_xpm, gg_inactdescr_xpm, gg_stop_xpm};
@@ -331,6 +333,24 @@ void sendUserlist() {
 
 	free(uins);
 }
+
+void Kadu::gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op) {	
+	char buf[32];
+	int i;
+	QString newestversion;
+	
+	for (i = 0; i < data.size(); i++)
+		buf[i] = data[i];
+	buf[data.size()] = 0;
+	newestversion = buf;
+
+	fprintf(stderr, "KK Kadu::gotUpdatesInfo(): %s\n", buf);
+	
+	if (ut->ifNewerVersion(newestversion)) {
+		QMessageBox::information(this, "Update information",
+			QString("The newest Kadu version is %1").arg(newestversion), QMessageBox::Ok);
+		}
+}
   
 /* a monstrous constructor so Kadu would take longer to start up */
 Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
@@ -346,10 +366,10 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	doBlink = false;
 
 	/* another API change, another hack */
-	
-  memset(&loginparams, 0, sizeof(loginparams));
+
+	memset(&loginparams, 0, sizeof(loginparams));
 	loginparams.async = 1;
-  
+
 	/* active group, 600 is all groups */
 	activegrpno = 600;
 
@@ -491,14 +511,16 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	commencing_startup = true;
 
 	/* pokaz okno jesli RunDocked jest wylaczone lub dock wylaczone */
-	if((!config.rundocked)||(!config.dock))
+	if ((!config.rundocked) || (!config.dock))
 		show();
-		
-	autostatus_timer=new AutoStatusTimer(this);
-  if(config.autoaway)
-    autoaway_timer=new AutoAwayTimer(this);
-	
-	ut = new UpdatesThread(config.uin, QString("0.3.3"));
+
+	autostatus_timer = new AutoStatusTimer(this);
+	if (config.autoaway)
+		autoaway_timer = new AutoAwayTimer(this);
+
+	ut = new UpdatesThread(config.uin, actversion);
+	QObject::connect(ut->op, SIGNAL(data(const QByteArray &, QNetworkOperation *)),
+		this, SLOT(gotUpdatesInfo(const QByteArray &, QNetworkOperation *)));
 	ut->start();
 }
 
