@@ -966,15 +966,12 @@ void Chat::sendMessage(void) {
 	if(tmp==NULL)
 		return;
 
-	if (tmp != NULL)
-	{
-		if (myLastFormatsLength)
-			seq = gadu->sendMessageRichText(Uins, tmp,
-				(unsigned char *)myLastFormats, myLastFormatsLength);
-		else
-			seq = gadu->sendMessage(Uins, tmp);
-		free(tmp);
-	}
+	if (myLastFormatsLength)
+		seq = gadu->sendMessageRichText(Uins, tmp,
+			(unsigned char *)myLastFormats, myLastFormatsLength);
+	else
+		seq = gadu->sendMessage(Uins, tmp);
+	free(tmp);
 
  	if (config_file.readBoolEntry("Chat","MessageAcks"))
 	{

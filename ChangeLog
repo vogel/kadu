@@ -86,6 +86,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dodany modu³ speech joi-a wraz z moimi poprawkami (chilek)
 * kompilacja modulow autoresponder, echo i speech domyslnie wylaczona (adrian)
 * poprawki kiemlo dla MacOS X (adrian)
+* zaaplikowany patch joi'a likwidujacy blad z obsluga popup menu
+  listy kontaktow (adrian)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

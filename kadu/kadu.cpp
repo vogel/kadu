@@ -185,6 +185,7 @@ QToolButton* ToolBar::getButton(const char* name)
 	for(QValueList<ToolButton>::iterator j=RegisteredToolButtons.begin(); j!=RegisteredToolButtons.end(); j++)
 		if ((*j).name == name)
 			return (*j).button;
+	kdebug("return NULL\n");
 	return NULL;
 }
 
@@ -561,7 +562,10 @@ void Kadu::createToolBar()
 void Kadu::popupMenu()
 {
 	UserList users;
-	users = UserBox::getActiveUserBox()->getSelectedUsers();
+	UserBox *box=UserBox::getActiveUserBox();
+	if (box==NULL)//to siê zdarza...
+		return;
+	users = box->getSelectedUsers();
 	UserListElement user = users.first();
 	bool isOurUin = (user.uin == config_file.readNumEntry("General", "UIN"));
 

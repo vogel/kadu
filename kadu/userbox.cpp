@@ -528,9 +528,9 @@ UinsList UserBox::getSelectedUins()
 UserList UserBox::getSelectedUsers()
 {
 	UserList users;
-			for (int i=0; i< count(); i++)
-				if (isSelected(i))
-					users.addUser(userlist.byAltNick(text(i)));
+	for (int i=0; i< count(); i++)
+		if (isSelected(i))
+			users.addUser(userlist.byAltNick(text(i)));
 	return users;
 }
 
@@ -538,9 +538,11 @@ UserBox* UserBox::getActiveUserBox()
 {
     for (int i=0; i<UserBoxes.size(); i++)
 	{
-	    if (UserBoxes[i]->isActiveWindow())
-		return UserBoxes[i];
+		UserBox *box=UserBoxes[i];
+		if (box->isActiveWindow())
+			return box;
 	}
+	kdebug("return NULL!\n");
     return NULL;
 }
 
