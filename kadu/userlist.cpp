@@ -73,8 +73,8 @@ UserListElement::UserListElement(const UserListElement &copyMe)
 {
 	kdebugf();
 	// TODO: zuniwersalizowaæ
-	*this = copyMe;
 	Stat = new GaduStatus();
+	*this = copyMe;
 }
 
 UserListElement::UserListElement()
