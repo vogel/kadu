@@ -1322,8 +1322,8 @@ QString IconsManager::iconPath(const QString &name) const
 const QPixmap &IconsManager::loadIcon(const QString &name)
 {
 //	kdebugf();
-	QMap<QString, QPixmap>::iterator i=icons.find(name);
-	if (i!=icons.end())
+	QMap<QString, QPixmap>::const_iterator i = icons.find(name);
+	if (i != icons.end())
 	{
 //		kdebugf2();
 		return *i;
