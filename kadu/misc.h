@@ -61,7 +61,6 @@ QDateTime currentDateTime();
 QString pwHash(const QString &tekst);
 QString translateLanguage(const QApplication *application, const QString &locale, const bool l2n);
 void openWebBrowser(const QString &link);
-void escapeSpecialCharacters(QString &msg);
 QString formatGGMessage(const QString &msg, int formats_length, void *formats, UinType sender);
 QString unformatGGMessage(const QString &msg, int &formats_length, void *&formats);
 QString parse(const QString &s, const UserListElement &ule, bool escape = true);
@@ -150,11 +149,12 @@ class HtmlDocument
 			bool tag;
 		};
 		QValueList<Element> Elements;
-		static void escapeText(QString& text);
-		static void unescapeText(QString& text);
 		void addElement(Element e);
 
 	public:
+		static void escapeText(QString& text);
+		static void unescapeText(QString& text);
+
 		/**
 			Dodaje podany tekst do listy elementów jako
 			tag html.

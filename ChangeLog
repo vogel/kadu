@@ -9,6 +9,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawione 2 b³êdy zwi±zane z dymkami i docking gdy te pierwsze s± wy³±czone (joi)
 * patch vogela przenosz±cy obs³ugê zdarzenia zmiany statusu przez kontakt do
   klasy GaduProtocol (adrian)
+* tylko jedna para funkcji escapuj±cych: HtmlDocument::(un)escapeText (adrian)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,

@@ -374,12 +374,6 @@ void openWebBrowser(const QString &link) {
 	delete browser;
 }
 
-void escapeSpecialCharacters(QString &msg) {
-	msg.replace(QRegExp("&"), "&amp;");
-	msg.replace(QRegExp("<"), "&lt;");
-	msg.replace(QRegExp(">"), "&gt;");
-}
-
 QString formatGGMessage(const QString &msg, int formats_length, void *formats, UinType sender)
 {
 	kdebugf();
@@ -400,7 +394,7 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, U
 			if (actformat->position > pos)
 			{
 				tmp = msg.mid(pos, actformat->position - pos);
-				escapeSpecialCharacters(tmp);
+				HtmlDocument::escapeText(tmp);
 				mesg.append(tmp);
 				pos = actformat->position;
 			}
@@ -479,7 +473,7 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, U
 		if (pos < msg.length())
 		{
 			tmp = msg.mid(pos, msg.length() - pos);
-			escapeSpecialCharacters(tmp);
+			HtmlDocument::escapeText(tmp);
 			mesg.append(tmp);
 		}
 		if (inspan)
@@ -488,7 +482,7 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, U
 	else
 	{
 		mesg = msg;
-		escapeSpecialCharacters(mesg);
+		HtmlDocument::escapeText(mesg);
 	}
 	kdebugf2();
 	return mesg;
@@ -752,7 +746,7 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 
 					//pe.str=ule.description;
 				 	if (escape)
-			 			escapeSpecialCharacters(pe.str);
+			 			HtmlDocument::escapeText(pe.str);
 					if(config_file.readBoolEntry("Look", "ShowMultilineDesc")) {
 						pe.str.replace(QRegExp("\n"), QString("<br/>"));
 						pe.str.replace(QRegExp("\\s\\s"), QString(" &nbsp;"));
