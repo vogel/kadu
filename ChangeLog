@@ -24,6 +24,8 @@
 * Autostatus z pliku ~/.gg/description je¶li istnieje - do zastosowañ zwi±zanych
   z XMMS i innymi.
 * okno rejestracji: przej¶cie na QSocketNotifier
+* status opisowy: bardziej restrykcyjne (zmienna sess) sprawdzanie czy jeste¶my
+  od³±czeni od serwera
 
 +++ wersja 0.3.2
 * dalsze porz±dki w kodzie
