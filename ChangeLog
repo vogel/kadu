@@ -128,10 +128,10 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * pe³na obs³uga linków w oknie historii, ogólne porz±dki zwi±zane z tym (adrian)
 * linki w panelu informacyjnym (joi)
 * graficzne emotikony w panelu informacyjnym i w historii (joi)
-* Instalator dodano obs³uge modu³ów zewnetrznych amarok, mail, filedesc
- i opis do Pomocy (Ron_K)
-* Instalator poprawiny b³±d podawania z³ych parametrów do configure (Ron_K)
-* dymek w tray-u pokazuje sie takze przed zmiana statusu (michal)
+* Instalator: dodano obs³ugê modu³ów zewnêtrznych: amarok, mail, filedesc
+  oraz dodano opis w pomocy (Ron_K)
+* Instalator: poprawiony b³±d podawania z³ych parametrów do configure (Ron_K)
+* dymek w tray'u pokazuje siê tak¿e przed zmian± statusu (michal)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
