@@ -1333,8 +1333,7 @@ History::History(UinsList uins) : QDialog(NULL, "HistoryDialog"), uins(uins), cl
 	else
 		body->setStyleSheet(new StaticStyleSheet(body,emoticons->themePath()));
 	ParagraphSeparator=config_file.readNumEntry("General", "ParagraphSeparator");
-	if (config_file.readBoolEntry("General", "UseParagraphs"))
-		body->setMargin(ParagraphSeparator);
+	body->setMargin(ParagraphSeparator);
 
 	QHBox *btnbox = new QHBox(vbox, "btnbox");
 	QPushButton *searchbtn = new QPushButton(tr("&Find"), btnbox, "searchbtn");
@@ -1456,12 +1455,7 @@ void History::formatHistoryEntry(QString &text, const HistoryEntry &entry, QStri
 		textcolor = config_file.readColorEntry("Look","ChatUsrFontColor").name();
 	}
 
-	bool useParagraphs=config_file.readBoolEntry("General", "UseParagraphs");
-
-	if (useParagraphs)
-		text.append(QString("<p style=\"background-color: %1; color: %2\"><img title=\"\" height=\"%3\" width=\"10000\" align=\"right\"><b>").arg(bgcolor).arg(textcolor).arg(ParagraphSeparator));
-	else
-		text.append(QString("<table width=\"100%\"><tr><td bgcolor=\"%1\"><font color=\"%2\"><b>").arg(bgcolor).arg(textcolor));
+	text.append(QString("<p style=\"background-color: %1; color: %2\"><img title=\"\" height=\"%3\" width=\"10000\" align=\"right\"><b>").arg(bgcolor).arg(textcolor).arg(ParagraphSeparator));
 	paracolors.append(bgcolor);
 
 	if (entry.type == HISTORYMANAGER_ENTRY_SMSSEND)
@@ -1521,10 +1515,7 @@ void History::formatHistoryEntry(QString &text, const HistoryEntry &entry, QStri
 
 		text.append(doc.generateHtml());
 	}
-	if (useParagraphs)
-		text.append("</p>");
-	else
-		text.append("</font></td></tr></table>");
+	text.append("</p>");
 	kdebugf2();
 }
 
@@ -1555,20 +1546,8 @@ void History::showHistoryEntries(int from, int count)
 
 	body->setText(text);
 
-	if (config_file.readBoolEntry("General", "UseParagraphs"))
-	{
-		for (i = 0; i < paracolors.count(); ++i)
-			body->setParagraphBackgroundColor(i, paracolors[i]);
-	}
-	else
-	{
-		//obej¶cie buga w qt - dziêki zeskrolowaniu okna animowane emotikony l±duj± tam gdzie trzeba
-		if (config_file.readBoolEntry("General", "ShowEmotHist"))
-			body->scrollToBottom();
-		//poni¿sze 2 linie to zastêpstwo dla scrollToTop(), ale niestety po nich emotikony siê rozje¿d¿aj± :/
-//		body->sync();
-//		body->setContentsPos(0,0);
-	}
+	for (i = 0; i < paracolors.count(); ++i)
+		body->setParagraphBackgroundColor(i, paracolors[i]);
 
 	kdebugf2();
 }

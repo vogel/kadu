@@ -712,21 +712,11 @@ void AnimTextItem::draw(
 
 	EditSize=Edit->size();
 
-	QPoint u;	
-	if (config_file.readBoolEntry("General", "UseParagraphs"))
-	{
-		u = QPoint(x, y - cy);
-		//trzeba ustaliæ warto¶æ prawej strony tej nierówno¶ci, na pewno jest to warto¶æ dodatnia
-		//nie jest to 0,10,ch,height,visibleHeight/2
-		if (u.y()>=10) 
-			u += QPoint(0, Edit->visibleHeight()-ch);
-	}
-	else
-	{
-		u = p->xForm(QPoint(x,y));
-		if(Edit->contentsY()==0)
-			u += Edit->paragraphRect(0).topLeft();
-	}
+	QPoint u(x, y - cy);
+	//trzeba ustaliæ warto¶æ prawej strony tej nierówno¶ci, na pewno jest to warto¶æ dodatnia
+	//nie jest to 0,10,ch,height,visibleHeight/2
+	if (u.y()>=10) 
+		u += QPoint(0, Edit->visibleHeight()-ch);
 	
 //	Edit->moveChild(Label, u.x(), u.y());
 	Label->move(u);

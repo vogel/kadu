@@ -2407,8 +2407,7 @@ KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
 #if QT_VERSION >= 0x030100
 	setWrapPolicy(QTextEdit::AtWordOrDocumentBoundary);
 #endif
-//	if (config_file.readBoolEntry("General", "UseParagraphs"))
-		setTextFormat(Qt::RichText);
+	setTextFormat(Qt::RichText);
 	
 //	connect(verticalScrollBar(), SIGNAL(sliderReleased()), this, SLOT(repaint()));
 	kdebugf2();
@@ -2482,79 +2481,76 @@ void KaduTextBrowser::hyperlinkClicked(const QString &link)
 void KaduTextBrowser::copy()
 {
 	kdebugf();
-	if (config_file.readBoolEntry("General", "UseParagraphs"))
-	{
-		int paraFrom, indexFrom, paraTo, indexTo;
-		getSelection(&paraFrom, &indexFrom, &paraTo, &indexTo);
-//		kdebugm(KDEBUG_DUMP, "selection: %d %d %d %d\n", paraFrom, indexFrom, paraTo, indexTo);
-		if (paraFrom==paraTo && indexFrom==indexTo)
-			return;
 
-		QString txt=selectedText();
-//		kdebugm(KDEBUG_DUMP, "%d    plain:%d rich:%d auto:%d log:%d\n", textFormat(), Qt::PlainText, Qt::RichText, Qt::AutoText, Qt::LogText);
-//		kdebugm(KDEBUG_DUMP, "\n%s\n----------------------\n", txt.local8Bit().data());
+	int paraFrom, indexFrom, paraTo, indexTo;
+	getSelection(&paraFrom, &indexFrom, &paraTo, &indexTo);
+//	kdebugm(KDEBUG_DUMP, "selection: %d %d %d %d\n", paraFrom, indexFrom, paraTo, indexTo);
+	if (paraFrom==paraTo && indexFrom==indexTo)
+		return;
 
-		//czasem siê to cholerstwo pojawia gdy dostajemy ca³y dokument (bug w qt!),
-		//wiêc wypada³oby pozbyæ siê wszystkich zbêdnych tagów...
-		txt.replace(QRegExp("<html>"), "");
-		txt.replace(QRegExp("</html>"), "");
+	QString txt=selectedText();
+//	kdebugm(KDEBUG_DUMP, "%d    plain:%d rich:%d auto:%d log:%d\n", textFormat(), Qt::PlainText, Qt::RichText, Qt::AutoText, Qt::LogText);
+//	kdebugm(KDEBUG_DUMP, "\n%s\n----------------------\n", txt.local8Bit().data());
 
-		txt.replace(QRegExp("<head>"), "");
-		txt.replace(QRegExp("</head>"), "");
+	//czasem siê to cholerstwo pojawia gdy dostajemy ca³y dokument (bug w qt!),
+	//wiêc wypada³oby pozbyæ siê wszystkich zbêdnych tagów...
+	txt.replace(QRegExp("<html>"), "");
+	txt.replace(QRegExp("</html>"), "");
 
-		txt.replace(QRegExp("<meta[^>]+>"), "");
+	txt.replace(QRegExp("<head>"), "");
+	txt.replace(QRegExp("</head>"), "");
 
-		txt.replace(QRegExp("<body>"), "");
-		txt.replace(QRegExp("<body [^>]+>"), "");
-		txt.replace(QRegExp("</body>"), "");
+	txt.replace(QRegExp("<meta[^>]+>"), "");
 
-		txt.replace(QRegExp("<a [^>]+>"), "");
-		txt.replace(QRegExp("</a>"), "");
+	txt.replace(QRegExp("<body>"), "");
+	txt.replace(QRegExp("<body [^>]+>"), "");
+	txt.replace(QRegExp("</body>"), "");
 
-		txt.replace(QRegExp("<br>"), "\n");
-		txt.replace(QRegExp("<br/>"), "\n");
-		txt.replace(QRegExp("<br />"), "\n");
+	txt.replace(QRegExp("<a [^>]+>"), "");
+	txt.replace(QRegExp("</a>"), "");
+
+	txt.replace(QRegExp("<br>"), "\n");
+	txt.replace(QRegExp("<br/>"), "\n");
+	txt.replace(QRegExp("<br />"), "\n");
 		
-		//usuwamy wszystkie znane tagi htmla, które mog± siê pojawiæ w chacie
-		//nie mo¿na u¿yæ po prostu <[^>]+>, bo za³api± siê te¿ emotikony typu <rotfl>
-		txt.replace(QRegExp("<![^>]+>"), "");//<!--StartFragment-->
+	//usuwamy wszystkie znane tagi htmla, które mog± siê pojawiæ w chacie
+	//nie mo¿na u¿yæ po prostu <[^>]+>, bo za³api± siê te¿ emotikony typu <rotfl>
+	txt.replace(QRegExp("<![^>]+>"), "");//<!--StartFragment-->
 
-		txt.replace(QRegExp("<p>"), "");
-		txt.replace(QRegExp("<p [^>]+>"), "");
-		txt.replace(QRegExp("</p>"), "");
+	txt.replace(QRegExp("<p>"), "");
+	txt.replace(QRegExp("<p [^>]+>"), "");
+	txt.replace(QRegExp("</p>"), "");
 
-		txt.replace(QRegExp("<span>"), "");
-		txt.replace(QRegExp("<span [^>]+>"), "");
-		txt.replace(QRegExp("</span>"), "");
+	txt.replace(QRegExp("<span>"), "");
+	txt.replace(QRegExp("<span [^>]+>"), "");
+	txt.replace(QRegExp("</span>"), "");
 
-		txt.replace(QRegExp("<table>"), "");
-		txt.replace(QRegExp("<table [^>]+>"), "");
-		txt.replace(QRegExp("</table>"), "");
+	txt.replace(QRegExp("<table>"), "");
+	txt.replace(QRegExp("<table [^>]+>"), "");
+	txt.replace(QRegExp("</table>"), "");
 
-		txt.replace(QRegExp("<tr>"), "");
-		txt.replace(QRegExp("<tr [^>]+>"), "");
-		txt.replace(QRegExp("</tr>"), "");
+	txt.replace(QRegExp("<tr>"), "");
+	txt.replace(QRegExp("<tr [^>]+>"), "");
+	txt.replace(QRegExp("</tr>"), "");
 
-		txt.replace(QRegExp("<td>"), "");
-		txt.replace(QRegExp("<td [^>]+>"), "");
-		txt.replace(QRegExp("</td>"), "");
+	txt.replace(QRegExp("<td>"), "");
+	txt.replace(QRegExp("<td [^>]+>"), "");
+	txt.replace(QRegExp("</td>"), "");
 
-		//specjalnie traktujemy obrazki, mo¿e u¿ytkownik domy¶li siê o co tu chodzi :P
-		txt.replace(QRegExp("<img gg_crc=([0-9]*) gg_sender=([0-9]*) gg_size=([0-9]*) src=[^>]+>"), "\\2-\\3-\\1-*");
-		txt.replace(QRegExp("<img src=([^>]+)>"), "\\1");
+	//specjalnie traktujemy obrazki, mo¿e u¿ytkownik domy¶li siê o co tu chodzi :P
+	txt.replace(QRegExp("<img gg_crc=([0-9]*) gg_sender=([0-9]*) gg_size=([0-9]*) src=[^>]+>"), "\\2-\\3-\\1-*");
+	txt.replace(QRegExp("<img src=([^>]+)>"), "\\1");
 
-//		txt.replace(QRegExp("<[^>]+>[^<]+</[^>]+>"), "");
+//	txt.replace(QRegExp("<[^>]+>[^<]+</[^>]+>"), "");
 
-		txt.replace(QRegExp("&lt;"), "<");
-		txt.replace(QRegExp("&gt;"), ">");
-		txt.replace(QRegExp("&amp;"), "&");
-		txt.replace(QRegExp("&quot;"), "\"");
+	txt.replace(QRegExp("&lt;"), "<");
+	txt.replace(QRegExp("&gt;"), ">");
+	txt.replace(QRegExp("&amp;"), "&");
+	txt.replace(QRegExp("&quot;"), "\"");
 
-//		kdebugm(KDEBUG_DUMP, "result: \n%s\n\n", txt.local8Bit().data());
-		QApplication::clipboard()->setText(txt, QClipboard::Clipboard);
-	}
-	else
-		QTextBrowser::copy();
+//	kdebugm(KDEBUG_DUMP, "result: \n%s\n\n", txt.local8Bit().data());
+	QApplication::clipboard()->setText(txt, QClipboard::Clipboard);
+
 	kdebugf2();
 }
 

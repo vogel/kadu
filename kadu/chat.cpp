@@ -544,8 +544,7 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 	else
 		body->setStyleSheet(new StaticStyleSheet(body,emoticons->themePath()));
 
-	if (config_file.readBoolEntry("General", "UseParagraphs"))
-		body->setMargin(ParagraphSeparator);
+	body->setMargin(ParagraphSeparator);
 	body->setMinimumSize(QSize(100,100));
 	body->setFont(config_file.readFontEntry("Look","ChatFont"));
 
@@ -1036,11 +1035,7 @@ void Chat::userWhois()
 
 void Chat::formatMessage(ChatMessage &msg)
 {
-	QString formatString;
-	if (config_file.readBoolEntry("General", "UseParagraphs"))
-		formatString="<p style=\"background-color: %1\"><img title=\"\" height=\"%6\" width=\"10000\" align=\"right\"><font color=\"%2\"><b>%3 :: %4</b><br/>%5</font></p>";
-	else
-		formatString="<table width=\"100%\"><tr><td bgcolor=\"%1\"><font color=\"%2\"><b>%3 :: %4</b><br/>%5</font></td></tr></table>";
+	QString formatString = "<p style=\"background-color: %1\"><img title=\"\" height=\"%6\" width=\"10000\" align=\"right\"><font color=\"%2\"><b>%3 :: %4</b><br/>%5</font></p>";
 
 	if (msg.isMyMessage)
 		msg.backgroundColor=config_file.readColorEntry("Look","ChatMyBgColor");
@@ -1063,9 +1058,8 @@ void Chat::formatMessage(ChatMessage &msg)
 			.arg(msg.textColor.name())
 			.arg(nick)
 			.arg(date)
-			.arg(convertCharacters(msg.unformattedMessage, msg.isMyMessage));
-	if (config_file.readBoolEntry("General", "UseParagraphs"))
-		msg.message=msg.message.arg(ParagraphSeparator);
+			.arg(convertCharacters(msg.unformattedMessage, msg.isMyMessage))
+			.arg(ParagraphSeparator);
 
 	msg.needsToBeFormatted=false;
 }
@@ -1092,12 +1086,9 @@ void Chat::repaintMessages()
 			text+=(*it)->message;
 		body->setText(text);
 
-		if (config_file.readBoolEntry("General", "UseParagraphs"))
-		{
-			i=0;
-			for(QValueList<ChatMessage *>::const_iterator it=ChatMessages.begin(); it!=ChatMessages.end(); ++it, ++i)
-				body->setParagraphBackgroundColor(i, (*it)->backgroundColor);
-		}
+		i=0;
+		for(QValueList<ChatMessage *>::const_iterator it=ChatMessages.begin(); it!=ChatMessages.end(); ++it, ++i)
+			body->setParagraphBackgroundColor(i, (*it)->backgroundColor);
 
 		if (!lockscroll->isOn())
 			body->scrollToBottom();
@@ -1115,12 +1106,10 @@ void Chat::repaintMessages()
 		for(; it!=ChatMessages.end(); ++it)
 			text=(*it)->message+text;
 		body->setText(text);
-		if (config_file.readBoolEntry("General", "UseParagraphs"))
-		{
-			i=ChatMessages.size()-1;
-			for(QValueList<ChatMessage *>::const_iterator it=ChatMessages.begin(); it!=ChatMessages.end(); ++it, --i)
-				body->setParagraphBackgroundColor(i, (*it)->backgroundColor);
-		}
+		
+		i=ChatMessages.size()-1;
+		for(QValueList<ChatMessage *>::const_iterator it=ChatMessages.begin(); it!=ChatMessages.end(); ++it, --i)
+			body->setParagraphBackgroundColor(i, (*it)->backgroundColor);
 	}
 
 	body->viewport()->setUpdatesEnabled(true);
