@@ -526,12 +526,25 @@ void Chat::scrollMessages(QString &toadd) {
 void Chat::writeMessagesFromHistory(UinsList senders) {
 	QString toadd;
 	QValueList<HistoryEntry> entries;
-	int i, from, count;
+	QValueList<HistoryEntry> entriestmp;
+	int ilosc = 10;
+	int i, from, end, count;
 	
+	kdebug("Chat::writeMessageFromHistory()\n");
 	count = history.getHistoryEntriesCount(senders);
-	entries = history.getHistoryEntries(senders, 0, count, HISTORYMANAGER_ENTRY_CHATSEND
-		| HISTORYMANAGER_ENTRY_MSGSEND | HISTORYMANAGER_ENTRY_CHATRCV | HISTORYMANAGER_ENTRY_MSGRCV);
-	from = (entries.count() < 10) ? 0 : entries.count() - 10;
+	end = count - 1;
+	
+	while (end >= 0 && entries.count() < ilosc) {
+		from = (end < ilosc) ? 0 : end - ilosc + 1;
+		entriestmp = history.getHistoryEntries(senders, from, end - from + 1, HISTORYMANAGER_ENTRY_CHATSEND
+			| HISTORYMANAGER_ENTRY_MSGSEND | HISTORYMANAGER_ENTRY_CHATRCV | HISTORYMANAGER_ENTRY_MSGRCV);
+		if (entriestmp.count())
+			entries = entriestmp + entries;
+		kdebug("Chat::writeMessageFromHistory(): entries = %d\n", entries.count());
+		end = from - 1;
+		}
+
+	from = (entries.count() < ilosc) ? 0 : entries.count() - ilosc;
 	for (i = from; i < entries.count(); i++) {
 		if (entries[i].type == HISTORYMANAGER_ENTRY_MSGSEND
 			|| entries[i].type == HISTORYMANAGER_ENTRY_CHATSEND)
