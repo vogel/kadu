@@ -29,9 +29,9 @@ extern "C" int sound_init()
 	kdebugf();
 	sound_manager=new SoundManager("sounds", "sound.conf");
 	
-	QObject::connect(&event_manager, SIGNAL(chatMsgReceived1(UinsList, const QString&, time_t,bool&)),
+	QObject::connect(gadu, SIGNAL(chatMsgReceived1(UinsList, const QString&, time_t,bool&)),
 		sound_manager, SLOT(chatSound(UinsList, const QString&, time_t,bool&)));
-	QObject::connect(&event_manager, SIGNAL(chatMsgReceived2(UinsList, const QString&, time_t)),
+	QObject::connect(gadu, SIGNAL(chatMsgReceived2(UinsList, const QString&, time_t)),
 		sound_manager, SLOT(messageSound(UinsList, const QString&,time_t)));
 	QObject::connect(&userlist, SIGNAL(changingStatus(const UinType, const unsigned int, const unsigned int)),
 		sound_manager, SLOT(notifySound(const UinType, const unsigned int, const unsigned int)));
@@ -96,9 +96,9 @@ extern "C" int sound_init()
 extern "C" void sound_close()
 {
 	kdebugf();
-	QObject::disconnect(&event_manager, SIGNAL(chatMsgReceived1(UinsList, const QString&, time_t,bool&)),
+	QObject::disconnect(gadu, SIGNAL(chatMsgReceived1(UinsList, const QString&, time_t,bool&)),
 		sound_manager, SLOT(chatSound(UinsList, const QString&, time_t,bool&)));
-	QObject::disconnect(&event_manager, SIGNAL(chatMsgReceived2(UinsList, const QString&, time_t)),
+	QObject::disconnect(gadu, SIGNAL(chatMsgReceived2(UinsList, const QString&, time_t)),
 		sound_manager, SLOT(messageSound(UinsList, const QString&,time_t)));
 	QObject::disconnect(&userlist, SIGNAL(changingStatus(const UinType, const unsigned int, const unsigned int)),
 		sound_manager, SLOT(notifySound(const UinType, const unsigned int, const unsigned int)));
