@@ -1638,6 +1638,15 @@ void KaduSlots::onDestroyConfigDialog()
 	kadu->changeAppearance();
 	chat_manager->changeAppearance();
 	kadu->refreshGroupTabBar();
+	
+	if (!config_file.readBoolEntry("Look", "DisplayGroupTabs"))
+	{
+		
+		kadu->groupBar()->setCurrentTab(kadu->groupBar()->tabAt(0));
+		config_file.writeEntry("Look", "CurrentGroupTab", 0);
+		kadu->setActiveGroup("");
+	}
+	
 	kadu->setCaption(tr("Kadu: %1").arg((UinType)config_file.readNumEntry("General", "UIN")));
 
 	QComboBox *cb_language= ConfigDialog::getComboBox("General", "Set language:");
