@@ -255,7 +255,7 @@ all:
 		echo -e "\033[32m>>>\033[0m Compiling $$dir module [LD=$$MODULE_LDFLAGS,CXX=$$MODULE_CXXFLAGS] ..." && \
 		echo && \
 		for mod_3rdparty in $$MODULE_3RDPARTY; do \
-			$(MAKE) -C $$dir/$$mod_3rdparty; \
+			$(MAKE) -C $$dir/$$mod_3rdparty CC="$(CC)" CXX="$(CXX)"; \
 		done && \
 		moc_cpp_files="" && \
 		o_files="" && \
