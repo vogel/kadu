@@ -4,16 +4,16 @@
  * details.  THERE IS ABSOLUTELY NO WARRANTY FOR THIS SOFTWARE.
  */
 
-/*$Header: /usr/src/kadu/cvs2svn-migrated/kadu/modules/voice/libgsm/inc/private.h,v 1.1 2003/10/15 09:54:12 adrian Exp $*/
+/*$Header: /usr/src/kadu/cvs2svn-migrated/kadu/modules/voice/libgsm/inc/private.h,v 1.2 2005/03/25 00:14:57 joi Exp $*/
 
 #ifndef	PRIVATE_H
 #define	PRIVATE_H
 
 typedef short			word;		/* 16 bit signed int	*/
-typedef long			longword;	/* 32 bit signed int	*/
+typedef int			longword;	/* 32 bit signed int	*/
 
 typedef unsigned short		uword;		/* unsigned word	*/
-typedef unsigned long		ulongword;	/* unsigned longword	*/
+typedef unsigned int		ulongword;	/* unsigned longword	*/
 
 struct gsm_state {
 
