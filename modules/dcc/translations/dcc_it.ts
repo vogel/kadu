@@ -43,15 +43,37 @@
     </message>
 </context>
 <context>
-    <name>DccFileDialog</name>
+    <name>DccManager</name>
     <message>
-        <source>(stalled)</source>
-        <translation>(in stallo)</translation>
+        <source>Couldn&apos;t create DCC socket.
+Direct connections disabled.</source>
+        <translation>Impossibile creare socket DCC.
+Connessioni dirette disabilitate.</translation>
     </message>
     <message>
-        <source>File transfered %1%</source>
-        <translation>File trasferito %1%</translation>
+        <source>Direct connection timeout!
+The receiver doesn&apos;t support direct connections or
+both machines are behind routers with NAT.</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>DccSocket</name>
+    <message>
+        <source>File has been transferred sucessfully.</source>
+        <translation>Il trasferimento del file completato con successo.</translation>
+    </message>
+    <message>
+        <source>File transfer error!</source>
+        <translation>Errore trasferimento di file!</translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t open file!</source>
+        <translation>Problemi con apertura file!</translation>
+    </message>
+</context>
+<context>
+    <name>FileTransferDialog</name>
     <message>
         <source>Sender: %1</source>
         <translation type="unfinished"></translation>
@@ -73,46 +95,24 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>File transfered %1%</source>
+        <translation>File trasferito %1%</translation>
+    </message>
+    <message>
         <source>Speed: %1kB/s </source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>(stalled)</source>
+        <translation>(in stallo)</translation>
+    </message>
 </context>
 <context>
-    <name>DccManager</name>
+    <name>FileTransferManager</name>
     <message>
         <source>Send file</source>
         <translation>Manda un file</translation>
     </message>
-    <message>
-        <source>Couldn&apos;t create DCC socket.
-Direct connections disabled.</source>
-        <translation>Impossibile creare socket DCC.
-Connessioni dirette disabilitate.</translation>
-    </message>
-    <message>
-        <source>Direct connection timeout!
-The receiver doesn&apos;t support direct connections or
-both machines are behind routers with NAT.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>DccSocket</name>
-    <message>
-        <source>File has been transferred sucessfully.</source>
-        <translation type="unfinished">Il trasferimento del file completato con successo.</translation>
-    </message>
-    <message>
-        <source>File transfer error!</source>
-        <translation type="unfinished">Errore trasferimento di file!</translation>
-    </message>
-    <message>
-        <source>Couldn&apos;t open file!</source>
-        <translation type="unfinished">Problemi con apertura file!</translation>
-    </message>
-</context>
-<context>
-    <name>FileDccSocket</name>
     <message>
         <source>open file</source>
         <translation>apri file</translation>
@@ -120,6 +120,15 @@ both machines are behind routers with NAT.</source>
     <message>
         <source>Select file location</source>
         <translation>Selezioni percorso del file</translation>
+    </message>
+    <message>
+        <source>This file is not readable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User %1 wants to send us a file %2
+of size %3kB. Accept transfer?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Incoming transfer</source>
@@ -156,15 +165,6 @@ both machines are behind routers with NAT.</source>
     <message>
         <source>Could not open file</source>
         <translation>Errore apertura file</translation>
-    </message>
-    <message>
-        <source>This file is not readable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>User %1 wants to send us a file %2
-of size %3kB. Accept transfer?</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

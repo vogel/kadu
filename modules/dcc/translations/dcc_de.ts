@@ -43,46 +43,7 @@
     </message>
 </context>
 <context>
-    <name>DccFileDialog</name>
-    <message>
-        <source>(stalled)</source>
-        <translation>(gestoppt)</translation>
-    </message>
-    <message>
-        <source>File transfered %1%</source>
-        <translation>Datei transferiert %1%</translation>
-    </message>
-    <message>
-        <source>Sender: %1</source>
-        <translation>Absender: %1</translation>
-    </message>
-    <message>
-        <source>Receiver: %1</source>
-        <translation>Empfänger: %1</translation>
-    </message>
-    <message>
-        <source>Filename: %1</source>
-        <translation>Dateiname: %1</translation>
-    </message>
-    <message>
-        <source>File size: %1B</source>
-        <translation>Dateigröße: %1</translation>
-    </message>
-    <message>
-        <source>Speed: 0kB/s (not started)  </source>
-        <translation>Geschwindigkeit: 0kB/s (nicht gestartet)</translation>
-    </message>
-    <message>
-        <source>Speed: %1kB/s </source>
-        <translation>Geschwindigkeit: %kB/s</translation>
-    </message>
-</context>
-<context>
     <name>DccManager</name>
-    <message>
-        <source>Send file</source>
-        <translation>Sende Datei</translation>
-    </message>
     <message>
         <source>Couldn&apos;t create DCC socket.
 Direct connections disabled.</source>
@@ -114,7 +75,46 @@ oder beide Computer sind hinter NAT.</translation>
     </message>
 </context>
 <context>
-    <name>FileDccSocket</name>
+    <name>FileTransferDialog</name>
+    <message>
+        <source>Sender: %1</source>
+        <translation>Absender: %1</translation>
+    </message>
+    <message>
+        <source>Receiver: %1</source>
+        <translation>Empfänger: %1</translation>
+    </message>
+    <message>
+        <source>Filename: %1</source>
+        <translation>Dateiname: %1</translation>
+    </message>
+    <message>
+        <source>File size: %1B</source>
+        <translation>Dateigröße: %1</translation>
+    </message>
+    <message>
+        <source>Speed: 0kB/s (not started)  </source>
+        <translation>Geschwindigkeit: 0kB/s (nicht gestartet)</translation>
+    </message>
+    <message>
+        <source>File transfered %1%</source>
+        <translation>Datei transferiert %1%</translation>
+    </message>
+    <message>
+        <source>Speed: %1kB/s </source>
+        <translation>Geschwindigkeit: %kB/s</translation>
+    </message>
+    <message>
+        <source>(stalled)</source>
+        <translation>(gestoppt)</translation>
+    </message>
+</context>
+<context>
+    <name>FileTransferManager</name>
+    <message>
+        <source>Send file</source>
+        <translation>Sende Datei</translation>
+    </message>
     <message>
         <source>open file</source>
         <translation>Öffne Datei</translation>
@@ -122,6 +122,16 @@ oder beide Computer sind hinter NAT.</translation>
     <message>
         <source>Select file location</source>
         <translation>Wohin</translation>
+    </message>
+    <message>
+        <source>This file is not readable</source>
+        <translation>Diese Datei ist nicht lesbar</translation>
+    </message>
+    <message>
+        <source>User %1 wants to send us a file %2
+of size %3kB. Accept transfer?</source>
+        <translation>Benutzer %1 will Ihnen eine Datei senden %2
+von %3kB Größe. Übertragung Akzeptieren?</translation>
     </message>
     <message>
         <source>Incoming transfer</source>
@@ -158,16 +168,6 @@ oder beide Computer sind hinter NAT.</translation>
     <message>
         <source>Could not open file</source>
         <translation>Problem beim Öffnen der Datei</translation>
-    </message>
-    <message>
-        <source>This file is not readable</source>
-        <translation>Diese Datei ist nicht lesbar</translation>
-    </message>
-    <message>
-        <source>User %1 wants to send us a file %2
-of size %3kB. Accept transfer?</source>
-        <translation>Benutzer %1 will Ihnen eine Datei senden %2
-von %3kB Größe. Übertragung Akzeptieren?</translation>
     </message>
 </context>
 </TS>

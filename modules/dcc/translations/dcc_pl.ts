@@ -43,46 +43,7 @@
     </message>
 </context>
 <context>
-    <name>DccFileDialog</name>
-    <message>
-        <source>(stalled)</source>
-        <translation>(zatrzymana)</translation>
-    </message>
-    <message>
-        <source>File transfered %1%</source>
-        <translation>Transmisja pliku %1%</translation>
-    </message>
-    <message>
-        <source>Sender: %1</source>
-        <translation>Nadawca: %1</translation>
-    </message>
-    <message>
-        <source>Receiver: %1</source>
-        <translation>Odbiorca: %1</translation>
-    </message>
-    <message>
-        <source>Filename: %1</source>
-        <translation>Nazwa pliku: %1</translation>
-    </message>
-    <message>
-        <source>File size: %1B</source>
-        <translation>Rozmiar pliku: %1B</translation>
-    </message>
-    <message>
-        <source>Speed: 0kB/s (not started)  </source>
-        <translation>Prędkość: 0kB/s (nie zaczęte)</translation>
-    </message>
-    <message>
-        <source>Speed: %1kB/s </source>
-        <translation>Prędkość: %1kB/s</translation>
-    </message>
-</context>
-<context>
     <name>DccManager</name>
-    <message>
-        <source>Send file</source>
-        <translation>Wyślij plik</translation>
-    </message>
     <message>
         <source>Couldn&apos;t create DCC socket.
 Direct connections disabled.</source>
@@ -114,7 +75,46 @@ plików lub oba komputery są za NAT-em.</translation>
     </message>
 </context>
 <context>
-    <name>FileDccSocket</name>
+    <name>FileTransferDialog</name>
+    <message>
+        <source>Sender: %1</source>
+        <translation>Nadawca: %1</translation>
+    </message>
+    <message>
+        <source>Receiver: %1</source>
+        <translation>Odbiorca: %1</translation>
+    </message>
+    <message>
+        <source>Filename: %1</source>
+        <translation>Nazwa pliku: %1</translation>
+    </message>
+    <message>
+        <source>File size: %1B</source>
+        <translation>Rozmiar pliku: %1B</translation>
+    </message>
+    <message>
+        <source>Speed: 0kB/s (not started)  </source>
+        <translation>Prędkość: 0kB/s (nie zaczęte)</translation>
+    </message>
+    <message>
+        <source>File transfered %1%</source>
+        <translation>Transmisja pliku %1%</translation>
+    </message>
+    <message>
+        <source>Speed: %1kB/s </source>
+        <translation>Prędkość: %1kB/s</translation>
+    </message>
+    <message>
+        <source>(stalled)</source>
+        <translation>(zatrzymana)</translation>
+    </message>
+</context>
+<context>
+    <name>FileTransferManager</name>
+    <message>
+        <source>Send file</source>
+        <translation>Wyślij plik</translation>
+    </message>
     <message>
         <source>open file</source>
         <translation>otwórz plik</translation>
@@ -122,6 +122,16 @@ plików lub oba komputery są za NAT-em.</translation>
     <message>
         <source>Select file location</source>
         <translation>Wybierz lokalizację pliku</translation>
+    </message>
+    <message>
+        <source>This file is not readable</source>
+        <translation>Brak uprawnień do odczytu pliku</translation>
+    </message>
+    <message>
+        <source>User %1 wants to send us a file %2
+of size %3kB. Accept transfer?</source>
+        <translation>Użytkownik %1 wysyła ci plik %2
+o rozmiarze %3kB. Akceptujesz?</translation>
     </message>
     <message>
         <source>Incoming transfer</source>
@@ -158,16 +168,6 @@ plików lub oba komputery są za NAT-em.</translation>
     <message>
         <source>Could not open file</source>
         <translation>Problem z otwarciem pliku</translation>
-    </message>
-    <message>
-        <source>This file is not readable</source>
-        <translation>Brak uprawnień do odczytu pliku</translation>
-    </message>
-    <message>
-        <source>User %1 wants to send us a file %2
-of size %3kB. Accept transfer?</source>
-        <translation>Użytkownik %1 wysyła ci plik %2
-o rozmiarze %3kB. Akceptujesz?</translation>
     </message>
 </context>
 </TS>
