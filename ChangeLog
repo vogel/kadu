@@ -55,8 +55,10 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * mozna ustawiæ opis który zostanie ustawiony przy zamykaniu Kadu (mast3r)
 * zamkniecie Kadu przez KDE, moze tym razem bêdzie za kazdym razem zapisywac
   konfiguracje (ogolnie to jest jaka¶ dziwna sytuacja) (mast3r)
-* przepuszczenie przez parser pliku dzwiêku wiadomo¶ci czyli jest mozliwo
+* przepuszczenie przez parser pliku dzwiêku wiadomo¶ci czyli jest mozliwosc
   ustawienia dla kazdej osoby innego pliku dzwiêkowego (mast3r)
+* dodanie katalogu debian/ w katalogu glownym programu, teraz kazdy
+  bedzie mogl stworzyc wlasna paczke programu dla swojego Debian'a (mast3r)
 
 +++ wersja 0.3.4-pre3
 * dodane przeszukiwanie historii (chilek)
