@@ -134,6 +134,7 @@ class UserBox : public QListBox , QToolTip
 		static UserBox* getActiveUserBox();
 	public slots:	
 		void showHideInactive();
+		void showHideDescriptions();
 		virtual void clear() { QListBox::clear(); };
 		/**
 			Funkcja czy¶ci ca³± listê u¿ytkowników w UserBox

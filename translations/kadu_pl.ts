@@ -705,6 +705,14 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <source>Columns</source>
         <translation>Kolumny</translation>
     </message>
+    <message>
+        <source>Show / hide users without description</source>
+        <translation>Filtruj kontakty z opisami</translation>
+    </message>
+    <message>
+        <source>Display only users that have desciption</source>
+        <translation>Wyświtl tylko kontakty, które mają opisy</translation>
+    </message>
 </context>
 <context>
     <name>About</name>

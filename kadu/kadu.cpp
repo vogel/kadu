@@ -243,6 +243,8 @@ void Kadu::keyPressEvent(QKeyEvent *e) {
 		lookupInDirectory();
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_showinactive"))
 		Userbox->showHideInactive();
+	else if (HotKey::shortCut(e,"ShortCuts", "kadu_showonlydesc"))
+		Userbox->showHideDescriptions();
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_sendfile"))
 		sendFile();
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_configure"))
@@ -299,6 +301,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "View history"), "kadu_viewhistory", "Ctrl+H");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Lookup in directory"), "kadu_searchuser", "Ctrl+F");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Show / hide inactive users"), "kadu_showinactive", "F9");
+	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Show / hide users without description"), "kadu_showonlydesc", "F10");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Send file"), "kadu_sendfile", "F8");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Configuration"), "kadu_configure", "F2");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Add user"), "kadu_adduser", "Ctrl+N");
@@ -410,6 +413,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	// dodanie przyciskow do paska narzedzi
 	ToolBar::registerButton(icons_manager.loadIcon("ShowHideInactiveUsers"), tr("Show / hide inactive users"), Userbox, SLOT(showHideInactive()));
+	ToolBar::registerButton(icons_manager.loadIcon("ShowOnlyDescriptionUsers"), tr("Show / hide users without description"), Userbox, SLOT(showHideDescriptions()));
 	ToolBar::registerButton(icons_manager.loadIcon("Configuration"), tr("Configuration"), this, SLOT(configure()));
 	ToolBar::registerSeparator();
 	ToolBar::registerButton(icons_manager.loadIcon("History"), tr("View history"), this, SLOT(viewHistory()));
