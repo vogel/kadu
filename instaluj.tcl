@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 ################################################################################
 # Ten program jest wolnym oprogramowaniem. Mo¿na go rozprowadzaæ i modyfikowaæ #
 # zgodnie z licencj± GNU General Public License opublikowan± przez             #
@@ -6,8 +6,48 @@
 #                                                                              #
 #                                       Pawe³ Salawa (Googie) boogie@arkada.pl #
 ################################################################################
+
+# Na wstepie, bash sprawdzi czy mamy pakiet TK:
+#\
+if [ -z `which wish` ]; then
+#\
+echo
+#\
+echo "-----"
+#\
+echo "Nie mozna odnalezc programu wish w zmiennej PATH."
+#\
+echo "Prawdopodobnie TK (badz tez caly TCL) nie jest zainstalowany."
+#\
+echo "Z regoly obydwa pakiety znajduja sie na plycie instalacyjnej"
+#\
+echo "kazdego systemu unixowego, wiec latwo mozna je doinstalowac."
+#\
+exit 1
+#\
+fi
+# Jesli jest, to uruchaiamy go:
 #\
 exec wish "$0" "$@"
+
+### I teraz juz TCL/TK :)
+
+### Sprawdzanie kompatybilnosci TCL/TK:
+if {$tk_version < 8.3} {
+    toplevel .err
+    set winheight 80
+    set winwidth 300
+    set geomx [expr [expr [winfo screenwidth .] - $winwidth] / 2]
+    set geomy [expr [expr [winfo screenheight .] - $winheight] / 2]
+    wm maxsize .err $winwidth $winheight
+    wm minsize .err $winwidth $winheight
+    wm geometry .err +$geomx+$geomy
+    wm title .err "Uwaga!"
+    label .err.txt -text "Wersja TCL/TK: $tk_patchLevel\nWymagana >= 8.4\nMozliwe jest niestabilne zachowanie instalatora." -font "Helvetica -12 bold"
+    button .err.bt -text "OK" -bd 1 -command {destroy .err; set ok 1}
+    pack .err.txt .err.bt -side top
+    vwait ok
+}
 
 ### Wersja kadu:
 set fd [open configure r]
@@ -82,7 +122,7 @@ set themeopts "-background grey87 -activebackground white -foreground black -act
 ###########
 ### Zmienne
 
-global kdedir qtdir installdir var cwin
+global kdedir qtdir installdir var cwin pad
 set cwin 1
 set maxwins 7          
 if {[info exists env(QTDIR)]} {
@@ -124,20 +164,21 @@ pack .l.c.txt -side top
 pack .r.u -side top -fill both -expand yes
 pack .r.d -side bottom -fill x
 
-eval button .r.d.close -text "Zaniechaj" -borderwidth 1 -command {"destroy ."} $themeopts
+eval button .r.d.close -text "Zaniechaj" -borderwidth 1 -command exit $themeopts
 eval button .r.d.next -text {"Dalej >>"} -borderwidth 1 -command next $themeopts
 eval button .r.d.prev -text {"<< Wstecz"} -borderwidth 1 -command prev -state disabled $themeopts
 
 pack .r.d.next .r.d.prev -side right
 pack .r.d.close -side left
 
-bind . <Escape> {destroy .}    
+bind . <Escape> exit
 
 
 
 ### Okno 1 (Instalacja domyslna lub reczna)
 set w .r.u.1
-frame $w -pady 3c
+set pad($w) 3c
+frame $w
 frame $w.1
 frame $w.2
 radiobutton $w.1.def -text "Zainstaluj Kadu z domyslnymi parametrami." -variable var(default) -value 1 -bd 1 -selectcolor "blue"
@@ -153,7 +194,8 @@ pack $w.2.def -side left
 
 ### Okno 2 (Wybor systemu)
 set w .r.u.2
-frame $w -pady 2c
+set pad($w) 2c
+frame $w
 frame $w.0
 frame $w.1
 frame $w.2
@@ -173,7 +215,8 @@ pack $w.2.def -side left
 
 ### Okno 3 (Sciezka do katalogu QT)
 set w .r.u.3
-frame $w -pady 3c
+set pad($w) 3c
+frame $w
 label $w.l -text "Katalog QT:"
 frame $w.o
 entry $w.o.e -width 24 -textvariable qtdir
@@ -191,7 +234,8 @@ pack $w.l $w.o -side top
 
 ### Okno 4 (Sciezka do katalogu KDE)
 set w .r.u.4
-frame $w -pady 2c
+set pad($w) 2c
+frame $w
 
 set ww $w.check
 frame $ww
@@ -200,7 +244,7 @@ pack $ww.c
 eval $ww.c configure $themeopts
 
 set ww $w.kde
-frame $ww -pady 0.5c
+frame $ww
 label $ww.l -text "Katalog KDE:"
 frame $ww.o
 entry $ww.o.e -width 24 -textvariable kdedir
@@ -213,7 +257,8 @@ button $ww.o.b -text "Przegladaj" -borderwidth 1 -command {
 eval $ww.o.b configure $themeopts
 pack $ww.o.b $ww.o.e -side right
 pack $ww.l $ww.o -side top
-pack $w.check $w.kde -side top
+pack $w.check -side top
+pack $w.kde -side top -pady 0.5c
 
 proc EnDisKde {sw} {
     foreach path {.r.u.4.kde.l .r.u.4.kde.o.e .r.u.4.kde.o.b} {
@@ -229,7 +274,8 @@ proc EnDisKde {sw} {
 
 ### Okno 5 (Katalog instalacji)
 set w .r.u.5
-frame $w -pady 3c
+set pad($w) 3c
+frame $w
 label $w.l -text "Katalog instalacji:"
 frame $w.o
 entry $w.o.e -width 14 -textvariable installdir
@@ -247,7 +293,8 @@ pack $w.l $w.o -side top
 
 ### Okno 6 (Dodatkowe opcje)
 set w .r.u.6
-frame $w -pady 2c
+set pad($w) 2c
+frame $w
 foreach {path varname text} {deb makedeb "Kompiluj z debugowaniem" doc makedoc "Zainstaluj dokumentacje"} {
     set ww $w.$path
     frame $ww
@@ -287,18 +334,21 @@ proc install {} {
     set env(KDEDIR) "$kdedir"
     set env(QTDIR) "$qtdir"
     append env(LD_LIBRARY_PATH) ":$qtdir/lib"
+    
     $p configure -text "Status:\nKonfiguracja: ./configure --prefix=$installdir\n$args"
     wm title . "Konfiguracja..."
     set fd [open "|./configure --prefix=$installdir $args" r]
     fileevent $fd readable "Install $fd"
     vwait var(ins)
     unset var(ins)
+    
     $p configure -text "Status:\nKompilacja... (make)"
     wm title . "Kompilacja..."
     set fd [open "|make" r]
     fileevent $fd readable "Install $fd"
     vwait var(ins)
     unset var(ins)
+    
     if {"[exec whoami]" == "root"} {
         $p configure -text "Status:\nKopiowanie plikow... (make install)"
         wm title . "Kopiowanie plikow..."
@@ -328,14 +378,18 @@ proc Install {fd} {
     }
 }
 proc next {} {
-    upvar #0 cwin cwin var var installdir installdir kdedir kdedir qtdir qtdir maxwins mw
+    upvar #0 cwin cwin var var installdir installdir kdedir kdedir qtdir qtdir maxwins mw pad pad
     pack forget .r.u.$cwin
     if {$cwin == 1 && $var(default)} {
         set cwin 7
     } else {
         incr cwin
     }
-    pack .r.u.$cwin
+    if {[info exists pad(.r.u.$cwin)]} {
+        eval pack .r.u.$cwin -pady $pad(.r.u.$cwin)
+    } else {
+        pack .r.u.$cwin
+    }
     update
     if {$cwin == $mw} {
         .r.d.next configure -text Instaluj -command {install; .r.d.prev configure -state disabled}
@@ -361,14 +415,18 @@ proc next {} {
     }
 }
 proc prev {} {
-    upvar #0 cwin cwin var var maxwins mw
+    upvar #0 cwin cwin var var maxwins mw pad pad
     pack forget .r.u.$cwin
     if {$cwin == $mw && $var(default)} {
         set cwin 1
     } else {
         incr cwin -1
     }
-    pack .r.u.$cwin
+    if {[info exists pad(.r.u.$cwin)]} {
+        eval pack .r.u.$cwin -pady $pad(.r.u.$cwin)
+    } else {
+        pack .r.u.$cwin
+    }
     if {$cwin < $mw} {
         .r.d.next configure -text "Dalej >>" -command next
     }
@@ -376,14 +434,9 @@ proc prev {} {
         .r.d.prev configure -state disabled
     }
 }
-pack .r.u.1
+eval pack .r.u.1 -pady $pad(.r.u.1)
 
 ### KDE 3.x tego potrzebuje do sprawnego dzialania :)
 pack propagate . false
-
-### Sprawdzanie kompatybilnosci TCL/TK:
-if {$tk_version < 8.4} {
-    tk_messageBox -type ok -icon warning -parent . -title "Uwaga!" -message "Wersja TCL/TK: $tk_patchLevel\nWymagana to: 8.4.\nMozliwe jest niestabilne zachowanie instalatora."
-}
 
 
