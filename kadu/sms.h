@@ -19,6 +19,7 @@
 #include <qprocess.h>
 #include <qsocket.h>
 #include <qimage.h>
+#include <qmap.h>
 
 class SmsImageWidget : public QWidget
 {
