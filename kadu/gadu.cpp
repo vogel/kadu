@@ -11,6 +11,8 @@
 #include "userlist.h"
 #include "debug.h"
 
+#include <stdlib.h>
+
 extern struct gg_session* sess;
 extern bool i_wanna_be_invisible;
 
