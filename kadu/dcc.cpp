@@ -117,7 +117,7 @@ void dccSocketClass::watchDcc(int check) {
 	kdebug("dccSocketClass::watchDcc()\n");			
 	if (!(dccevent = gg_dcc_watch_fd(dccsock))) {
 		kdebug("dccSocketClass::watchDcc(): Connection broken unexpectedly!\n");
-		setState(DCC_SOCKET_CONNECTION_BROKEN);
+		setState(dialog ? DCC_SOCKET_TRANSFER_ERROR : DCC_SOCKET_CONNECTION_BROKEN);
     		return;
 		}
 
@@ -182,7 +182,7 @@ void dccSocketClass::watchDcc(int check) {
 			break;
 		case GG_EVENT_DCC_ERROR:
 			kdebug("dccSocketClass::watchDcc(): GG_EVENT_DCC_ERROR\n");
-			setState(DCC_SOCKET_TRANSFER_ERROR);
+			setState(dialog ? DCC_SOCKET_TRANSFER_ERROR : DCC_SOCKET_CONNECTION_BROKEN);
 			return;
 		case GG_EVENT_DCC_DONE:
 			kdebug("dccSocketClass::watchDcc(): GG_EVENT_DCC_DONE\n");

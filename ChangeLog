@@ -13,6 +13,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dostêpno¶æ w hincie wy¶wietla siê w jêzyku ojczystym (chilek)
 * Qt internationale kadu_it.ts (Ron_K)
 * przebudowane dodawanie kontaktów (jest case insensitive) (chilek)
+* nie pojawiaj± siê okna b³êdu transmisji DCC, gdy tranmisja pliku nie
+  zaczê³a siê (chilek)
+* tworzenie nowego u¿ytkownika po polsku (chilek)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci
