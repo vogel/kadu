@@ -491,8 +491,9 @@ Po jakiego czorta to ?
 	toolbar->addSeparator();
 	QToolButton *adduserbtn = new QToolButton(*icons->loadIcon("online"), i18n("Add user"),
 		QString::null, this, SLOT(addUserAction()), toolbar, "adduser");
-	QHBox *toolbarfiller = new QHBox(toolbar);
+	QFrame *toolbarfiller = new QFrame(toolbar);
 	toolbar->setStretchableWidget(toolbarfiller);
+	toolbar->setVerticallyStretchable(true);
 
 	if (config.dockwindows != QString::null) {
 		config.dockwindows.replace(QRegExp("\\\\n"), "\n");
