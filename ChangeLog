@@ -103,6 +103,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   opcja ignorowania zmian statusów zaraz po po³aczeniu z serwerem
   uproszczenie modu³ów d¼wiêkowych (joi)
 * usuwanie kolejnych zbêdnych tagów z wiadomo¶ci (<wsp></wsp>) (joi)
+* mo¿liwo¶æ wy³±czenia dymka nad list± kontaktów (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,

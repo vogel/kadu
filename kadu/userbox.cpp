@@ -317,8 +317,10 @@ UserBox::~UserBox()
 void UserBox::maybeTip(const QPoint &c)
 {
 	kdebugf();
-	QListBoxItem* item = static_cast<QListBoxItem*>(itemAt(c));
+	if (!config_file.readBoolEntry("General", "ShowTooltipOnUserbox"))
+		return;
 
+	QListBoxItem* item = static_cast<QListBoxItem*>(itemAt(c));
 	if(item)
 	{
 		QRect r(itemRect(item));
@@ -334,7 +336,7 @@ void UserBox::maybeTip(const QPoint &c)
 				break;
 			case GG_STATUS_NOT_AVAIL:
 				if (!userlist.byAltNick(item->text()).uin)
-					s = tr("<i>Mobile:</i><b> ")+userlist.byAltNick(item->text()).mobile+"</b>";
+					s = tr("<i>Mobile:</i> <b>%1</b>").arg(userlist.byAltNick(item->text()).mobile);
 				else
 					s = tr("<nobr><i>Not available</i></nobr>");
 				break;
@@ -380,10 +382,11 @@ void UserBox::mousePressEvent(QMouseEvent *e) {
 	kdebugf();
 	if (e->button() != RightButton)
 		QListBox::mousePressEvent(e);
-	else {
-		QListBoxItem *item;
-		item = itemAt(e->pos());
-		if (item) {
+	else
+	{
+		QListBoxItem *item = itemAt(e->pos());
+		if (item)
+		{
 			if (!item->isSelected())
 				if (!(e->state() & Qt::ControlButton))
 					for (unsigned int i = 0; i < count(); i++)
@@ -391,8 +394,8 @@ void UserBox::mousePressEvent(QMouseEvent *e) {
 			setSelected(item, TRUE);
 			setCurrentItem(item);
 			emit rightButtonClicked(item, e->globalPos());
-			}
 		}
+	}
 	kdebugf2();
 }
 
@@ -426,8 +429,8 @@ void UserBox::keyPressEvent(QKeyEvent *e)
 //	kdebugf2();
 }
 
-void UserBox::sortUsersByAltNick(QStringList &users) {
-
+void UserBox::sortUsersByAltNick(QStringList &users)
+{
 	stringHeapSort(users);
 }
 
@@ -870,6 +873,8 @@ void UserBox::initModule()
 			ConfigDialog::addVGroupBox("Look", "othr_prvws", QT_TRANSLATE_NOOP("@default", "Preview panel"));
 				ConfigDialog::addLabel("Look", "Preview panel", "<b>Text</b> preview", "preview_panel");
 
+	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show tooltip on userbox"), "ShowTooltipOnUserbox", true);
+	
 	UserBoxSlots *userboxslots= new UserBoxSlots();
 	ConfigDialog::registerSlotOnCreate(userboxslots, SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnApply(userboxslots, SLOT(onDestroyConfigDialog()));
