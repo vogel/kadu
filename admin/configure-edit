@@ -5,5 +5,5 @@
 # skrypt configure-gen. Uruchamiaæ z katalogu wy¿ej.
 #
 
-cvs edit aclocal.m4 stamp-h.in kadu-config.h.in stamp-h configure \
+cvs edit aclocal.m4 stamp-h.in kadu-config.h.in stamp-h configure.ac configure \
 	Makefile.in kadu/Makefile.in modules/Makefile.in translations/Makefile.in varia/Makefile.in
