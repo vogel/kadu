@@ -30,4 +30,18 @@ class AutoStatusTimer : public QTimer
 		AutoStatusTimer(QObject* parent=0);
 };
 
+class AutoAwayTimer : public QTimer
+{
+  Q_OBJECT
+  private slots:
+    void onTimeout();
+  public:
+    AutoAwayTimer(QObject* parent=0);
+  protected:
+    bool eventFilter(QObject*, QEvent*);
+  private:
+  bool autoawayed;
+  int beforeAutoAway;
+};
+
 #endif

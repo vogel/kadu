@@ -104,7 +104,7 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 		senders[0], (const char *)nick.local8Bit(), msg);
 
 	UserBox::all_refresh();
-	dw->setType((char **)gg_msg_xpm);
+	dw->changeIcon();
 
 	if (config.raise) {
 		kadu->showNormal();

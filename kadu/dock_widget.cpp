@@ -26,6 +26,9 @@ DockWidget::DockWidget(QWidget *parent, const char *name ) : KSystemTray( parent
 
 	setPixmap( QPixmap((const char**)gg_inact_xpm) );
 	QToolTip::add(this, i18n("Left click - hide/show window\nMiddle click - next message"));
+  icon_timer = new QTimer(this);
+  blink = FALSE;
+  connect(icon_timer,SIGNAL(timeout()),this,SLOT(changeIcon()));
 }
 
 void DockWidget::setType(char **gg_xpm) {
@@ -33,6 +36,21 @@ void DockWidget::setType(char **gg_xpm) {
 		return;
 	
 	setPixmap(QPixmap((const char**)gg_xpm));
+}
+
+void DockWidget::changeIcon() {
+  if (pending.pendingMsgs() && config.dock && !icon_timer->isActive()) {
+    if (!blink) {
+      setPixmap(QPixmap((const char**)gg_msg_xpm));
+      icon_timer->start(1000,TRUE);
+      blink = true;
+      }
+    else {
+      setPixmap(QPixmap((const char**)gg_xpm[statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]));
+      icon_timer->start(1000,TRUE);
+      blink = false;
+      }
+  }
 }
 
 void DockWidget::dockletChange(int id)

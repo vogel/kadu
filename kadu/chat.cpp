@@ -145,8 +145,6 @@ Chat::Chat(UinsList uins, QWidget *parent)
 	body->setTextFormat(Qt::RichText);
 
 	totaloccurences = 0;
-
-	QObject::connect(edit, SIGNAL(textChanged()), this, SLOT(resetAutoAway()));
 }
 
 Chat::~Chat() {
@@ -326,12 +324,6 @@ void Chat::cleanUp(void) {
 	close();
 }
 
-/* reset autoaway timer, something was pressed */
-void Chat::resetAutoAway(void) {
-	kadu->autoaway->stop();
-	kadu->autoaway->start(config.autoawaytime * 1000, TRUE);
-}	
-
 void Chat::formatMessage(bool me, QString &altnick, QString &msg, const char *time, QString &toadd) {
 	QString editext = convertCharacters(msg);
 
@@ -369,8 +361,6 @@ void Chat::scrollMessages(QString &toadd) {
 
 /* invoked from outside when new message arrives, this is the window to the world */
 void Chat::checkPresence(UinsList senders, QString &msg, time_t time, QString &toadd) {
-	resetAutoAway();
-
 	formatMessage(false, userlist.byUin(senders[0]).altnick, msg, timestamp(time), toadd);
 
 	scrollMessages(toadd);
@@ -416,9 +406,6 @@ void Chat::addMyMessageToHistory() {
 void Chat::sendMessage(void) {
 	int i,j;
 	uin_t *users;
-
-	kadu->autoaway->stop();
-	kadu->autoaway->start(config.autoawaytime * 1000, TRUE);
 
 	if (!QString::compare(edit->text().local8Bit(),""))
 		return;

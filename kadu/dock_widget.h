@@ -25,7 +25,12 @@ class DockWidget : public KSystemTray
 
 	public slots:
 		// Status change slots
-		void dockletChange(int id);   
+		void dockletChange(int id);
+    //Funkcja do migania koperty
+    void changeIcon(void);
+  private:
+    QTimer *icon_timer;
+    bool blink;   
 };
 
 extern DockWidget* dw;

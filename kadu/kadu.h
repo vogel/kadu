@@ -124,7 +124,6 @@ class Kadu : public QMainWindow
 		QTimer * autoaway;
 		Kadu(QWidget* parent=0, const char *name=0);
 		~Kadu();
-		bool autoawayed;
 		bool autohammer;
 		bool userInActiveGroup(uin_t uin);
 		// code for addUser has been moved from adduser.cpp
@@ -136,11 +135,11 @@ class Kadu : public QMainWindow
 		void removeUser(QString &, bool);
 		void refreshGroupTabBar();
 		void setClosePermitted(bool permitted);
-		
+		bool returnVar(int i); //funkcja(na pewien czas) na potrzeby autoaway'a
+    
 		UserBox *userbox;
-
+    
 	protected:
-		void enterEvent(QEvent *);
 		void closeEvent(QCloseEvent *);	
 		bool event(QEvent *e);
 		void watchDcc(void);
@@ -153,7 +152,8 @@ class Kadu : public QMainWindow
 		bool doBlink;
 
 		AutoStatusTimer* autostatus_timer;
-
+    AutoAwayTimer* autoaway_timer;
+    
 	public slots:
 		void blink();
 		void dccFinished(dccSocketClass *dcc);
@@ -169,7 +169,6 @@ class Kadu : public QMainWindow
 		void dccSent();
 		void eventHandler(int state);
 		void prepareDcc(void);
-		void autoAway(void);
 		void cleanUp(void);
 		void pingNetwork(void);
 		void checkConnection(void);
@@ -181,7 +180,6 @@ class Kadu : public QMainWindow
 	private:
 		QMenuBar *mmb;
 		QTabBar *group_bar;
-		int beforeAutoAway;
 		int commencing_startup;
 		void createMenu();
 		void createStatusPopupMenu();
@@ -277,12 +275,10 @@ int writeIgnored(char *);
 void *watch_socket(void *);
 void kadu_debug(int, char*);
 void playSound(char *);
-
 void readConfig(void);
 QString pwHash(const QString);
 void confirmHistoryDeletion(const char *);
 void remindPassword();
-
 extern KPopupMenu *dockppm;
 
 #endif

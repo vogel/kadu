@@ -236,10 +236,7 @@ void deletePendingMessage(int nr) {
 	pending.deleteMsg(nr);
 
 	fprintf(stderr, "KK deletePendingMessage()\n");
-
-	if (pending.pendingMsgs())
-		dw->setType((char **)gg_msg_xpm);
-	else	
+  if (!pending.pendingMsgs())
 		dw->setType((char **)gg_xpm[statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]);
 }
 
@@ -346,13 +343,11 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	blinkOn = false;
 	doBlink = false;
 
-	/* we're not auto away yet */
-	autoawayed = false;
-
 	/* another API change, another hack */
-	memset(&loginparams, 0, sizeof(loginparams));
+	
+  memset(&loginparams, 0, sizeof(loginparams));
 	loginparams.async = 1;
-
+  
 	/* active group, 600 is all groups */
 	activegrpno = 600;
 
@@ -447,11 +442,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	/* add all users to userbox */
 	setActiveGroup("");
 
-	/* start auto away. yes, even if it's disabled. this way enabling it will work at run-time */
-	autoaway = new QTimer(this);
-	autoaway->start(config.autoawaytime * 1000, TRUE);
-	connect(autoaway, SIGNAL( timeout() ), this, SLOT( autoAway() ));
-
 	connect(userbox, SIGNAL(doubleClicked(QListBoxItem *)), this, SLOT(sendMessage(QListBoxItem *)));
 	connect(userbox, SIGNAL(returnPressed(QListBoxItem *)), this, SLOT(sendMessage(QListBoxItem *)));
 	connect(userbox, SIGNAL(rightButtonClicked(QListBoxItem *, const QPoint &)),
@@ -503,6 +493,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		show();
 		
 	autostatus_timer=new AutoStatusTimer(this);
+  if(config.autoaway)
+    autoaway_timer=new AutoAwayTimer(this);
 }
 
 void Kadu::refreshGroupTabBar()
@@ -684,44 +676,6 @@ void Kadu::addUser(const QString& FirstName, const QString& LastName,
 
 	gg_add_notify(sess, Uin.toInt());
 };
-
-/* cancel autoaway, we're alive */
-void Kadu::enterEvent (QEvent * e) {
-	autoaway->stop();
-	autoaway->start(config.autoawaytime * 1000, TRUE);
-	if (autoawayed && socket_active && userlist_sent) {
-		fprintf(stderr, "KK Kadu::enterEvent(): auto away cancelled\n");
-		autoawayed = false;
-		switch (beforeAutoAway) {
-			case GG_STATUS_AVAIL:
-			case GG_STATUS_AVAIL_DESCR:
-			case GG_STATUS_INVISIBLE:
-			case GG_STATUS_INVISIBLE_DESCR:
-				i_am_busy = false;
-				break;
-			}
-		setStatus(beforeAutoAway);
-		}
-	QWidget::enterEvent(e);
-}
-
-/* invoked every config.autoawaytime of idleness seconds */
-void Kadu::autoAway(void) {
-	if (!config.autoaway || !socket_active)
-		return;
-	beforeAutoAway = getActualStatus() & (~GG_STATUS_FRIENDS_MASK);;
-	fprintf(stderr, "KK Kadu::autoAway(): checking whether to go auto away\n");
-	switch (beforeAutoAway) {
-		case GG_STATUS_AVAIL_DESCR: setStatus(GG_STATUS_BUSY_DESCR); break;
-		case GG_STATUS_AVAIL: setStatus(GG_STATUS_BUSY); break;
-		default: return;
-		}
-
-	fprintf(stderr, "KK Kadu::autoAway(): I am away!\n");
-	i_am_busy = true;
-	autoawayed = true;
-	autoaway->start(config.autoawaytime * 1000, TRUE);
-}
 
 int Kadu::openChat(UinsList senders) {
 	int i,j;
@@ -1139,9 +1093,7 @@ void Kadu::setCurrentStatus(int status) {
 	dockppm->setItemEnabled(7, statusnr != 6);
 	statuslabel->setPixmap(QPixmap((const char**)gg_xpm[statusnr]));
 	setIcon(QPixmap((const char**)gg_xpm[statusnr]));
-	if (pending.pendingMsgs())
-		dw->setType((char **)gg_msg_xpm);
-	else
+	if (!pending.pendingMsgs())
 		dw->setType((char **)gg_xpm[statusnr]);
 }
 
@@ -1231,7 +1183,7 @@ void Kadu::setStatus(int status) {
 		}
 	else
 		gg_proxy_enabled = 0;
-
+    
 	socket_active = TRUE;
 	last_ping = time(NULL);
 	loginparams.status = status | (GG_STATUS_FRIENDS_MASK * config.privatestatus);
@@ -1556,8 +1508,8 @@ void Kadu::disconnectNetwork() {
 	doBlink = false;
 	fprintf(stderr, "KK Kadu::disconnectNetwork(): calling offline routines\n");
 
-	if (autoaway)
-		autoaway->stop();
+	if (autoaway_timer)
+		autoaway_timer->stop();
 	if (pingtimer) {
 		pingtimer->stop();
 		delete pingtimer;
@@ -1758,4 +1710,15 @@ void MyLabel::mousePressEvent (QMouseEvent * e) {
 		kadu->slotShowStatusMenu();
 }
 
+bool Kadu::returnVar(int i)
+{
+  switch (i) {
+    case 1: return socket_active; break;
+    case 2: return userlist_sent; break;
+    case 3: return i_am_busy; break;
+    case 4: i_am_busy=FALSE; break;
+    case 5: i_am_busy=TRUE; break;
+    }
+}
+  
 #include "kadu.moc"

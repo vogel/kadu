@@ -69,7 +69,6 @@ class Chat : public QDialog {
 		virtual void windowActivationChange(bool oldActive);
 
 	private slots:
-		void resetAutoAway(void);
 		void userWhois(void);
 		void insertEmoticon(void);
 		void regAutosend(void);
