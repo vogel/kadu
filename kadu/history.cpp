@@ -934,18 +934,22 @@ History::History(UinsList uins): uins(uins), closeDemand(false), finding(false) 
 	searchbtn->setText(i18n("&Find"));
 	QPushButton *searchnextbtn = new QPushButton(this);
 	searchnextbtn->setText(i18n("Find &next"));
+	QPushButton *searchprevbtn = new QPushButton(this);
+	searchprevbtn->setText(i18n("Find &previous"));
 
-	grid->addMultiCellWidget(body, 0, 0, 0, 3);
+	grid->addMultiCellWidget(body, 0, 0, 0, 4);
 	grid->addWidget(prevbtn, 1, 0);
 	grid->addWidget(nextbtn, 1, 1);
 	grid->addWidget(searchbtn, 1, 2);
 	grid->addWidget(searchnextbtn, 1, 3);
+	grid->addWidget(searchprevbtn, 1, 4);
 //	grid->addWidget(closebtn, 1, 5, Qt::AlignRight);
 
 	connect(prevbtn, SIGNAL(clicked()), this, SLOT(prevBtnClicked()));
 	connect(nextbtn, SIGNAL(clicked()), this, SLOT(nextBtnClicked()));
 	connect(searchbtn, SIGNAL(clicked()), this, SLOT(searchBtnClicked()));
 	connect(searchnextbtn, SIGNAL(clicked()), this, SLOT(searchNextBtnClicked()));
+	connect(searchprevbtn, SIGNAL(clicked()), this, SLOT(searchPrevBtnClicked()));
 //	connect(closebtn, SIGNAL(clicked()), this, SLOT(close()));
 
 	resize(500,400);
@@ -1048,11 +1052,8 @@ void History::showHistoryEntries(int from, int count) {
 
 	QValueList<HistoryEntry> entries;
 	entries = history.getHistoryEntries(uins, from, count);
-	for (i = 0; i < entries.count(); i++) {
-		entries[i].message.replace(QRegExp("<"), "&lt;");
-		entries[i].message.replace(QRegExp(">"), "&gt;");
+	for (i = 0; i < entries.count(); i++)
 		formatHistoryEntry(text, entries[i]);
-		}
 	body->setText(text);
 }
 
@@ -1073,6 +1074,13 @@ void History::searchBtnClicked() {
 
 void History::searchNextBtnClicked() {
 	kdebug("History::searchNextBtnClicked()\n");
+	findrec.reverse = false;
+	searchHistory();
+}
+
+void History::searchPrevBtnClicked() {
+	kdebug("History::searchPrevBtnClicked()\n");
+	findrec.reverse = true;
 	searchHistory();
 }
 
@@ -1150,6 +1158,7 @@ void History::searchHistory() {
 					showHistoryEntries(findrec.actualrecord - i,
 						findrec.actualrecord - i + 99 < count ? 100
 						: count - findrec.actualrecord + i);
+					History::start = findrec.actualrecord - i;
 					break;
 					}
 			findrec.actualrecord -= i + (i < entries.count());
@@ -1172,6 +1181,7 @@ void History::searchHistory() {
 					showHistoryEntries(findrec.actualrecord + i,
 						findrec.actualrecord + 99 < count ? 100
 						: count - findrec.actualrecord - i);
+					History::start = findrec.actualrecord + i;
 					break;
 					}
 			findrec.actualrecord += i + (i < entries.count());
