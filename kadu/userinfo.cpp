@@ -160,38 +160,11 @@ void UserInfo::writeUserlist() {
 	switch (QMessageBox::information(kadu, "Kadu", i18n("This will write current userlist"), i18n("OK"), i18n("Cancel"), QString::null, 0, 1)) {
 		case 0: // Yes?
 			fprintf(stderr, "KK UserInfo::writeUserlist(): this_index: %d\n", this_index);
-			userlist[this_index].first_name = e_firstname->text();
-			userlist[this_index].last_name = e_lastname->text();
-			userlist[this_index].nickname = e_nickname->text();			
-			userlist[this_index].group = e_group->text();
-			if (e_altnick->text() != userlist[this_index].altnick)
-				UserBox::all_renameUser(userlist[this_index].altnick, e_altnick->text());
-			if (e_altnick->text().length())
-				userlist[this_index].altnick = e_altnick->text();
-			else
-				userlist[this_index].altnick = "";
-			if (!userlist[this_index].anonymous)
-				userlist[this_index].mobile = e_mobile->text();
-			userlist[this_index].foreign = false;
+			userlist.changeUserInfo(userlist[this_index].altnick,
+				e_firstname->text(),e_lastname->text(),
+				e_nickname->text(),e_altnick->text(),
+				e_mobile->text(),e_group->text());
 			userlist.writeToFile();
-
-			for (int i = 0; i < grouplist.size(); i++) {
-				if (QString::compare(__c2q(grouplist[i].name), __c2q(userlist[this_index].group)) == 0) {
-					yes = true;
-					break;
-					}
-				}
-
-			if (!yes) {
-				grouplist.resize(grouplist.size()+1);
-				if (grouplist.size() > 1)
-					grouplist[grouplist.size()-1].number = grouplist[grouplist.size()-2].number + 1;
-				else
-					grouplist[grouplist.size()-1].number = 601;
-				grouplist[grouplist.size()-1].name = strdup(userlist[this_index].group);
-				}
-
-			UserBox::all_refresh();			
 			break;
 		case 1:
 			return;	
