@@ -180,6 +180,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   do GaduProtocol (adrian)
 * je¿eli za³adujemy modu³ gdy okno konfiguracji jest otwarte i zamkniemy
   konfiguracjê, Kadu siê nie wywróci (joi)
+* nowe okna rejestracji/wyrejestrowania u¿ytkownika by KID (KID/michal)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

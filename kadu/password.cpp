@@ -131,7 +131,7 @@ void ChangePassword::start()
 	{
 		QMessageBox::information(0, tr("Change password"),
 				tr("Error data typed in required fields.\n\nPasswords typed in "
-				"both fields (\"New password\" and \"Retype new password\" "
+				"both fields (\"New password\" and \"Retype new password\") "
 				"should be the same!"), tr("OK"), 0, 0, 1);
 		return;
 	}

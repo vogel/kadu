@@ -1,7 +1,7 @@
 #ifndef REGISTER_H
 #define REGISTER_H
 
-#include <qdialog.h>
+#include <qhbox.h>
 #include <qtimer.h>
 #include <qlineedit.h>
 #include <qlabel.h>
@@ -13,33 +13,36 @@
 /**
 	Dialog umo¿liwiaj±cy rejestracjê nowego u¿ytkownika
 **/
-class Register : public QDialog {
+class Register : public QHBox {
 	Q_OBJECT
 
 	public:
 		Register(QDialog* parent = 0, const char *name = 0);
+		~Register();
 
 	private:
 		QLineEdit *pwd, *pwd2, *mailedit;
 		QLabel *status;
 		UinType uin;
-		QCheckBox *updateconfig;
+		QCheckBox *cb_updateconfig;
 
 		void ask();	
 
 	private slots:
 		void doRegister();
+		void keyPressEvent(QKeyEvent *);
 
 	public slots:
 		void registered(bool ok, UinType uin);
 
 };
 
-class Unregister : public QDialog {
+class Unregister : public QHBox {
 	Q_OBJECT
 
 	public:
 		Unregister(QDialog* parent = 0, const char *name = 0);
+		~Unregister();
 
 	private:
 		QLineEdit *uin, *pwd;
@@ -50,6 +53,7 @@ class Unregister : public QDialog {
 
 	private slots:
 		void doUnregister();
+		void keyPressEvent(QKeyEvent *);
 	
 	public slots:
 		void unregistered(bool ok);

@@ -734,12 +734,12 @@ void Kadu::changePassword()
 
 void Kadu::registerUser()
 {
-	new Register();
+	(new Register())->show();
 }
 
 void Kadu::unregisterUser()
 {
-	new Unregister();
+	(new Unregister())->show();
 }
 
 void Kadu::quit()

@@ -149,9 +149,7 @@ int main(int argc, char *argv[])
 				ConfigDialog::showConfigDialog(qApp);
 				break;
 			case 0: // Register
-				Register *reg;
-				reg = new Register;
-				reg->show();
+				(new Register())->show();
 				break;
 			case 2: // Nothing
 				break;

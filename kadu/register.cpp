@@ -7,12 +7,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qlayout.h>
+#include <qvbox.h>
 #include <qpushbutton.h>
 #include <qmessagebox.h>
 #include <qfile.h>
 #include <qapplication.h>
 #include <qtooltip.h>
+#include <qvgroupbox.h>
 
 #include <unistd.h>
 #include <sys/types.h>
@@ -62,51 +63,84 @@ void createConfig() {
 	kdebug("createConfig(): Config file created\n");
 }
 
-Register::Register(QDialog *parent, const char *name) : QDialog (parent, name, FALSE, Qt::WDestructiveClose) {
-	kdebug("Register::Register()\n");
-
-	QGridLayout *grid = new QGridLayout(this, 5, 2, 6, 5);
-
-	QLabel *l_pwd = new QLabel(tr("Password"),this);
-	pwd = new QLineEdit(this);
-	pwd->setEchoMode(QLineEdit::Password);
-
-	QLabel *l_pwd2 = new QLabel(tr("Retype password"), this);
-	pwd2 = new QLineEdit(this);
-	pwd2->setEchoMode(QLineEdit::Password);
-
-	QLabel *l_mail = new QLabel(tr("E-mail"), this);
-	mailedit = new QLineEdit(this);
-
-	QPushButton *snd = new QPushButton(this);
-	snd->setText(tr("Register"));
-	QObject::connect(snd, SIGNAL(clicked()), this, SLOT(doRegister()));
-
-	status = new QLabel(this);
-
-	updateconfig = new QCheckBox(this);
-	QLabel *l_updateconfig = new QLabel(tr("Create config file"),this);
-	updateconfig->setChecked(true);
-	QToolTip::add(l_updateconfig, tr("Write the newly obtained UIN and password into a clean configuration file\nThis will erase your current config file contents if you have one"));
-
-	grid->addWidget(l_pwd, 0, 0);
-	grid->addWidget(pwd, 0, 1);
-	grid->addWidget(l_pwd2, 1, 0);
-	grid->addWidget(pwd2, 1, 1);
-	grid->addWidget(l_mail, 2, 0);
-	grid->addWidget(mailedit, 2, 1);
-	grid->addWidget(updateconfig, 3, 0, Qt::AlignRight);
-	grid->addWidget(l_updateconfig, 3, 1);
-	grid->addWidget(status, 4, 0);
-	grid->addWidget(snd, 4, 1);
-	grid->addRowSpacing(3, 20);
-
+Register::Register(QDialog *parent, const char *name)
+{
+	kdebugf();
+	setWFlags(Qt::WDestructiveClose);
 	setCaption(tr("Register user"));
-	resize(240, 150);
+	
+	// create main QLabel widgets (icon and app info)
+	QVBox *left=new QVBox(this);
+	left->setMargin(10);
+	left->setSpacing(10);
+	
+	QLabel *l_icon = new QLabel(left);
+	QWidget *blank=new QWidget(left);
+	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
+	
+	QVBox *center=new QVBox(this);
+	center->setMargin(10);
+	center->setSpacing(10);
+	
+	QLabel *l_info = new QLabel(center);
+	l_icon->setPixmap(icons_manager.loadIcon("RegisterWindowIcon"));
+	l_info->setText(tr("This dialog box allows you to register a new account."));
+	l_info->setAlignment(Qt::WordBreak);
+	// end create main QLabel widgets (icon and app info)
+	
+	//our QVGroupBox
+	QVGroupBox *vgb_email = new QVGroupBox(center);
+	vgb_email->setTitle(tr("Email"));
+	QVGroupBox *vgb_password = new QVGroupBox(center);
+	vgb_password->setTitle(tr("Password"));
+	center->setStretchFactor(vgb_password, 1);
+	//end our QGroupBox
+	
+	// create needed fields
+	
+	new QLabel(tr("New email:"), vgb_email);
+	mailedit = new QLineEdit(vgb_email);
+	
+	new QLabel(tr("New password:"), vgb_password);
+	pwd = new QLineEdit(vgb_password);
+	pwd->setEchoMode(QLineEdit::Password);
+	
+	new QLabel(tr("Retype new password:"), vgb_password);
+	pwd2 = new QLineEdit(vgb_password);
+	pwd2->setEchoMode(QLineEdit::Password);
+	// end create needed fields
 
-	connect(gadu, SIGNAL(registered(bool,UinType)), this, SLOT(registered(bool,UinType)));
+	cb_updateconfig = new QCheckBox(center);
+	cb_updateconfig->setChecked(center);
+	cb_updateconfig->setText(tr("Create config file"));
+	QToolTip::add(cb_updateconfig, tr("Write the newly obtained UIN and password into a clean configuration file\nThis will erase your current config file contents if you have one"));
+	
+	// buttons
+	QHBox *bottom = new QHBox(center);
+	QWidget *blank2 = new QWidget(bottom);
+	bottom->setSpacing(5);
+	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
+	QPushButton *pb_register = new QPushButton(icons_manager.loadIcon("RegisterAccountButton"), tr("Register"), bottom, "register");
+	QPushButton *pb_close = new QPushButton(icons_manager.loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
+	// end buttons
+	
+	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
+	connect(pb_register, SIGNAL(clicked()), this, SLOT(doRegister()));
+	connect(gadu, SIGNAL(registered(bool, UinType)), this, SLOT(registered(bool, UinType)));
+	
+ 	loadGeometry(this, "General", "RegisterDialogGeometry", 0, 0, 240, 150);
+}
 
-	show();
+Register::~Register()
+{
+	kdebugf();
+	saveGeometry(this, "General", "RegisterDialogGeometry");
+}
+
+void Register::keyPressEvent(QKeyEvent *ke_event)
+{
+	if (ke_event->key() == Qt::Key_Escape)
+		close();
 }
 
 void Register::doRegister() {
@@ -114,7 +148,10 @@ void Register::doRegister() {
 	
 	if (pwd->text() != pwd2->text()) 
 	{
-		QMessageBox::warning(this, "Kadu", tr("Passwords do not match"), tr("OK"), 0, 0, 1);
+		QMessageBox::information(0, tr("Register user"),
+				tr("Error data typed in required fields.\n\nPasswords typed in "
+				"both fields (\"New password\" and \"Retype new password\") "
+				"should be the same!"), tr("OK"), 0, 0, 1);
 		return;
 	}
 
@@ -139,18 +176,13 @@ void Register::doRegister() {
 	Email = mailedit->text();
 
 	if (gadu->doRegister(Password, Email, Tokenid, Tokenval))
-	{
-		status->setText(tr("Registering"));
 		setEnabled(false);
-	}
-	
 }
 
 void Register::registered(bool ok, UinType uin)
 {
 	if (ok)
 	{	
-		status->setText(tr("Success!"));
 		this->uin = uin;
 		QMessageBox::information(this, "Kadu", tr("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(uin), tr("OK"), 0, 0, 1);
 		ask();
@@ -158,7 +190,8 @@ void Register::registered(bool ok, UinType uin)
 	}
 	else
 	{
-		status->setText(tr("Error"));
+		QMessageBox::warning(0, tr("Unregister user"),
+				tr("An error has occured while unregistration. Please try again later."), tr("OK"), 0, 0, 1);
 		setEnabled(true);
 	}
 }
@@ -166,44 +199,80 @@ void Register::registered(bool ok, UinType uin)
 
 void Register::ask() {
 	kdebug("Register::ask()\n");
-	if (updateconfig->isChecked()) {
+	if (cb_updateconfig->isChecked()) {
 		config_file.writeEntry("General","UIN",(int)uin);
 		config_file.writeEntry("General","Password",pwHash(pwd->text()));
 		createConfig();
 		}
 }
 
-Unregister::Unregister(QDialog *parent, const char *name) : QDialog (parent, name, FALSE, Qt::WDestructiveClose) {
-	kdebug("Unregister::Unregister()\n");
-
-	QGridLayout *grid = new QGridLayout(this, 3, 2, 6, 5);
-
-	QLabel *l_uin = new QLabel(tr("UIN"),this);
-	uin = new QLineEdit(this);
-
-	QLabel *l_pwd = new QLabel(tr("Password"),this);
-	pwd = new QLineEdit(this);
-	pwd->setEchoMode(QLineEdit::Password);
-
-	QPushButton *snd = new QPushButton(this);
-	snd->setText(tr("Unregister"));
-	QObject::connect(snd, SIGNAL(clicked()), this, SLOT(doUnregister()));
-
-	status = new QLabel(this);
-
-	grid->addWidget(l_uin, 0, 0);
-	grid->addWidget(uin, 0, 1);
-	grid->addWidget(l_pwd, 1, 0);
-	grid->addWidget(pwd, 1, 1);
-	grid->addWidget(status, 2, 0);
-	grid->addWidget(snd, 2, 1);
-	grid->addRowSpacing(3, 20);
-
+Unregister::Unregister(QDialog *parent, const char *name)
+{
+	kdebugf();
+	setWFlags(Qt::WDestructiveClose);
 	setCaption(tr("Unregister user"));
-	resize(240, 100);
-
+	
+	// create main QLabel widgets (icon and app info)
+	QVBox *left=new QVBox(this);
+	left->setMargin(10);
+	left->setSpacing(10);
+	
+	QLabel *l_icon = new QLabel(left);
+	QWidget *blank=new QWidget(left);
+	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
+	
+	QVBox *center=new QVBox(this);
+	center->setMargin(10);
+	center->setSpacing(10);
+	
+	QLabel *l_info = new QLabel(center);
+	l_icon->setPixmap(icons_manager.loadIcon("UnregisterWindowIcon"));
+	l_info->setText(tr("This dialog box allows you to unregister your account."));
+	l_info->setAlignment(Qt::WordBreak);
+	// end create main QLabel widgets (icon and app info)
+	
+	//our QVGroupBox
+	QVGroupBox *vgb_uinpass = new QVGroupBox(center);
+	vgb_uinpass->setTitle(tr("UIN and password"));
+	center->setStretchFactor(vgb_uinpass, 1);
+	//end our QGroupBox
+	
+	// create needed fields
+	
+	new QLabel(tr("UIN:"), vgb_uinpass);
+	uin = new QLineEdit(vgb_uinpass);
+	
+	new QLabel(tr("Password:"), vgb_uinpass);
+	pwd = new QLineEdit(vgb_uinpass);
+	pwd->setEchoMode(QLineEdit::Password);
+	// end create needed fields
+	
+	// buttons
+	QHBox *bottom = new QHBox(center);
+	QWidget *blank2 = new QWidget(bottom);
+	bottom->setSpacing(5);
+	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
+	QPushButton *pb_unregister = new QPushButton(icons_manager.loadIcon("UnregisterAccountButton"), tr("Unregister"), bottom, "unregister");
+	QPushButton *pb_close = new QPushButton(icons_manager.loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
+	// end buttons
+	
+	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
+	connect(pb_unregister, SIGNAL(clicked()), this, SLOT(doUnregister()));
 	connect(gadu, SIGNAL(unregistered(bool)), this, SLOT(unregistered(bool)));
-	show();
+	
+ 	loadGeometry(this, "General", "UnregisterDialogGeometry", 0, 0, 240, 150);
+}
+
+Unregister::~Unregister()
+{
+	kdebugf();
+	saveGeometry(this, "General", "UnregisterDialogGeometry");
+}
+
+void Unregister::keyPressEvent(QKeyEvent *ke_event)
+{
+	if (ke_event->key() == Qt::Key_Escape)
+		close();
 }
 
 void Unregister::doUnregister() {
@@ -229,24 +298,20 @@ void Unregister::doUnregister() {
 	QString Password = pwd->text();
 
 	if (gadu->doUnregister(uin->text().toUInt(), Password, Tokenid, Tokenval))
-	{
-		status->setText(tr("Unregistering"));
 		setEnabled(false);
-	}
-
 }
 
 void Unregister::unregistered(bool ok)
 {
 	if (ok)
 	{
-		status->setText(tr("Success!"));
 		QMessageBox::information(this, "Kadu", tr("Unregistation was successful. Now you don't have any GG number :("));
 		close();
 	}
 	else
 	{
-		status->setText(tr("Error"));
+		QMessageBox::warning(0, tr("Unregister user"),
+				tr("An error has occured while unregistration. Please try again later."), tr("OK"), 0, 0, 1);
 		setEnabled(true);
 	}
 }
