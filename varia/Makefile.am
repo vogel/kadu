@@ -2,6 +2,8 @@
 install-data-local:
 	$(mkinstalldirs) "$(DESTDIR)/$(kde_datadir)/kadu/themes/emoticons/"	
 	$(INSTALL_DATA) msg.wav "$(DESTDIR)/$(kde_datadir)/kadu/"
+	$(mkinstalldirs) "$(DESTDIR)/$(kde_datadir)/kadu/icons/"
+	$(INSTALL_DATA) icons/*.png "$(DESTDIR)/$(kde_datadir)/kadu/icons/"	
 	$(mkinstalldirs) "$(DESTDIR)/$(kde_datadir)/kadu/themes/emoticons/kadubis/"	
 	$(INSTALL_DATA) themes/emoticons/kadubis/*.gif "$(DESTDIR)/$(kde_datadir)/kadu/themes/emoticons/kadubis/"
 	$(INSTALL_DATA) themes/emoticons/kadubis/emoticons_regexp "$(DESTDIR)/$(kde_datadir)/kadu/themes/emoticons/kadubis/"
