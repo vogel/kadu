@@ -2227,7 +2227,7 @@ void GaduProtocol::userStatusChanged(const struct gg_event *e)
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "User %d went %d (%s)\n", uin,
 		status.toStatusNumber(), status.name().local8Bit().data());
 
-	if (!userlist.containsUin(uin))
+	if (!userlist.containsUin(uin) || userlist.byUin(uin).isAnonymous())
 	{
 		// ignore!
 		kdebugmf(KDEBUG_INFO, "buddy %d not in list. Damned server!\n", uin);
