@@ -661,6 +661,10 @@ If you leave blank, default settings will be used.</source>
         <source>Multicolumn userbox</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Content message in hint</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
