@@ -312,7 +312,7 @@ void Message::commitSend(void) {
 	UinsList uins;
 	uins.append(uin);
 	if (config.logmessages)
-		appendHistory(uins, uin, text, TRUE);
+		history.appendMessage(uins, uin, text, TRUE);
 	utmp = (unsigned char *)strdup(unicode2cp(text).data());
 
 #ifdef HAVE_OPENSSL

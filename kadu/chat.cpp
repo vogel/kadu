@@ -556,7 +556,7 @@ void Chat::addMyMessageToHistory() {
 
 	uin = uins[0];
 	if (config.logmessages)
-		appendHistory(uins, uin, myLastMessage, true);
+		history.appendMessage(uins, uin, myLastMessage, true);
 }
 
 void Chat::clearChatWindow(void) {

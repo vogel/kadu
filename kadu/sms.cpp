@@ -476,7 +476,7 @@ void Sms::sendSms(void) {
 	b_send->setEnabled(false);
 	body->setEnabled(false);
 
-	appendSMSHistory(recipient->text(),body->text());
+	history.appendSms(recipient->text(), body->text());
 
 	if(config.smsbuildin)
 	{

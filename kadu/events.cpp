@@ -196,7 +196,7 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char *msg, time_t tim
 					"", "", true);
 			}
 	if (config.logmessages && senders[0] != config.uin)
-		appendHistory(senders, senders[0], mesg, FALSE, time);
+		history.appendMessage(senders, senders[0], mesg, FALSE, time);
 
 	//script.eventMsg(senders[0],msgclass,(char*)msg);
 
@@ -393,6 +393,8 @@ void eventGotUserlist(struct gg_event *e) {
 //				user.status = GG_STATUS_NOT_AVAIL;
 				userlist.changeUserStatus(n->uin, GG_STATUS_NOT_AVAIL);
 
+		history.appendStatus(user.uin, user.status, user.description.length() ? user.description : QString::null);
+
 		for (i = 0; i < chats.count(); i++)
 			if (chats[i].uins.contains(n->uin))
 				chats[i].ptr->setTitle();
@@ -432,6 +434,8 @@ void eventStatusChange(struct gg_event * e) {
 		user.ip = 0;
 		user.port = 0;
 		}
+
+	history.appendStatus(user.uin, user.status, user.description.length() ? user.description : QString::null);
 
 	for (i = 0; i < chats.count(); i++)
 		if (chats[i].uins.contains(e->event.status.uin))
