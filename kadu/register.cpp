@@ -7,7 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <kconfig.h>
 #include <qlayout.h>
 #include <qpushbutton.h>
 #include <qmessagebox.h>
@@ -22,6 +21,7 @@
 // to mam nadzieje kiedys usuniemy
 #include "kadu.h"
 #include "adduser.h"
+#include "config_file.h"
 #include "register.h"
 //
 
@@ -237,10 +237,10 @@ void createConfig() {
 		}
 
 	fprintf(stderr, "KK createConfig(): Writing config files...\n");
-	KConfig *konf;
-	konf = new KConfig(ggPath("kadu.conf"));
+	ConfigFile *konf;
+	konf = new ConfigFile(ggPath("kadu.conf"));
 	konf->setGroup("Global");
-	konf->writeEntry("UIN", config.uin);
+	konf->writeEntry("UIN", int(config.uin));
 	konf->writeEntry("Password", pwHash(config.password));
 	konf->sync();
 	delete konf;

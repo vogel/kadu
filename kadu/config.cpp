@@ -9,7 +9,6 @@
 
 #include <kicontheme.h>
 #include <kiconloader.h>
-#include <kconfig.h>
 #include <kglobal.h>
 #include <qapplication.h>
 #include <qvaluelist.h>
@@ -38,6 +37,7 @@
 #include "emoticons.h"
 #include "config.h"
 #include "dock_widget.h"
+#include "config_file.h"
 #ifdef HAVE_OPENSSL
 extern "C"
 {
@@ -49,10 +49,8 @@ extern "C"
 void loadKaduConfig(void) {  	
 	/* first read our own config file... */
 	fprintf(stderr,"KK loadKaduConfig(): Reading config file...\n");
-	KConfig * konf;
-	konf = new KConfig(ggPath(QString("kadu.conf")));
-
-	fprintf(stderr, "KK loadKaduConfig(): here I am\n");
+	ConfigFile * konf;
+	konf = new ConfigFile(ggPath(QString("kadu.conf")));
 
 	konf->setGroup("Global");
 	config.uin = konf->readNumEntry("UIN",0);
@@ -178,11 +176,11 @@ void loadKaduConfig(void) {
 
 void saveKaduConfig(void) {
 	fprintf(stderr,"KK saveKaduConfig(): Writing config files...\n");
-	KConfig * konf;
-	konf = new KConfig(ggPath(QString("kadu.conf")));
+	ConfigFile * konf;
+	konf = new ConfigFile(ggPath(QString("kadu.conf")));
 
 	konf->setGroup("Global");
-	konf->writeEntry("UIN",config.uin);
+	konf->writeEntry("UIN", int(config.uin));
 	konf->writeEntry("Password", pwHash(config.password));
 	konf->writeEntry("Nick", config.nick);
 	konf->writeEntry("Geometry",kadu->geometry());

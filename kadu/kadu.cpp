@@ -9,7 +9,6 @@
 
 #include <kglobal.h>
 #include <kiconloader.h>
-#include <kconfig.h>
 #include <ksystemtray.h>
 #include <qradiobutton.h>
 #include <qevent.h>

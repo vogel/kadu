@@ -6,6 +6,7 @@
   nie powinny wywalaæ kadu
 * wci¶niêcie klawisza escape zamyka okno rozmowy
 * locales jest obs³ugiwane bez po¶rednictwa KDE
+* obs³uga pliku konfiguracyjnego kadu.conf bez po¶rednictwa KDE
 
 +++ wersja 0.3.3-pre5
 * wszystkie? wiadomo¶ci od u¿ytkowników powinny wpadaæ do okna rozmowy
