@@ -100,6 +100,7 @@ am__quote = @am__quote@
 install_sh = @install_sh@
 shared_modules = @shared_modules@
 static_modules = @static_modules@
+static_modules_ldflags = @static_modules_ldflags@
 
 bin_PROGRAMS = kadu
 
@@ -154,8 +155,18 @@ voice_dsp.cpp voice_dsp.h voice_dsp_moc.cpp
 @VOICE_FALSE@VOICE_OBJS = 
 
 INCLUDES = $(XFREE_INCLUDES) $(QT_INCLUDES) $(OPENSSL_INCLUDES) $(GSM_INCLUDES) $(GADU_INCLUDES)
-kadu_LDADD = $(MODULES_OBJS) $(VOICE_OBJS) $(PTHREAD_LIBS) $(PNG_LIBS) $(QT_LIBS) $(GSM_LIBS) $(GADU_LIBS)
-kadu_LDFLAGS = $(PTHREAD_LDFLAGS) $(MODULES_LDFLAGS) $(OPENSSL_LIBS)
+
+kadu_LDADD = \
+$(MODULES_OBJS) $(VOICE_OBJS) $(PTHREAD_LIBS) $(PNG_LIBS) \
+$(QT_LIBS) $(GSM_LIBS) $(GADU_LIBS) \
+$(foreach mod,$(basename $(static_modules)),../modules/$(mod)/$(mod).a)
+
+
+kadu_LDFLAGS = \
+$(PTHREAD_LDFLAGS) $(MODULES_LDFLAGS) $(OPENSSL_LIBS) \
+$(static_modules_ldflags)
+
+
 kadu_DEPENDENCIES = $(MODULES_OBJS) $(VOICE_OBJS)
 
 AM_CPPFLAGS = $(PTHREAD_CPPFLAGS) -DQT_THREAD_SUPPORT -D_REENTRANT

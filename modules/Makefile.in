@@ -100,6 +100,7 @@ am__quote = @am__quote@
 install_sh = @install_sh@
 shared_modules = @shared_modules@
 static_modules = @static_modules@
+static_modules_ldflags = @static_modules_ldflags@
 
 INCLUDES = -I.. -I../kadu $(XFREE_INCLUDES) $(QT_INCLUDES) $(OPENSSL_INCLUDES) $(GSM_INCLUDES) $(GADU_INCLUDES)
 
@@ -240,11 +241,11 @@ all:
 		MODULE_HEADERS=; \
 		MODULE_CXXFLAGS=; \
 		MODULE_LDFLAGS=; \
-		. $$dir/spec; \
+		. ./$$dir/spec; \
 		MODULE_CXXFLAGS="$$MODULE_CXXFLAGS "`cat $$dir/cxxflags`; \
 		MODULE_LDFLAGS="$$MODULE_LDFLAGS "`cat $$dir/ldflags`; \
 		echo; \
-		echo -e "\033[33m>>>\033[0m Compiling $$dir module [LD=$$MODULE_LDFLAGS,CXX=$$MODULE_CXXFLAGS] ..."; \
+		echo -e "\033[32m>>>\033[0m Compiling $$dir module [LD=$$MODULE_LDFLAGS,CXX=$$MODULE_CXXFLAGS] ..."; \
 		echo; \
 		moc_cpp_files="" \
 		o_files=""; \
@@ -274,6 +275,9 @@ all:
 			"module_ldflags=$$MODULE_LDFLAGS" \
 			$$dir/$$file_name; \
 	done
+	echo; \
+	echo -e "\033[32m>>>\033[0m Modules successfully compiled."; \
+	echo;
 
 .SECONDARY: $(module_o_files) $(module_moc_cpp_files)
 
@@ -281,12 +285,12 @@ all:
 	$(CC) -shared -o $@ $(module_o_files) $(module_ldflags)
 
 %.a: $(module_o_files)
-	ar r $@ $(module_o_files)
+	$(AR) r $@ $(module_o_files)
 
-.cpp.o: $(module_h_files)
+.cpp.o: $(module_h_files) ../kadu-config.h ../kadu/*.h
 	$(CC) -o $@ -c -fPIC $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)
 
-.c.o: $(module_h_files)
+.c.o: $(module_h_files) ../kadu-config.h ../kadu/*.h
 	$(CC) -o $@ -c -fPIC $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)
 
 %_moc.cpp: %.h
@@ -297,7 +301,7 @@ install-data-local:
 	$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/modules/"
 	$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/modules/translations"
 	@for dir in $(shared_modules); do \
-		echo ">>> Installing $$dir module ..."; \
+		echo -e "\033[32m>>>\033[0m Installing $$dir module ..."; \
 		$(INSTALL_DATA) $$dir/*.h "$(DESTDIR)/$(includedir)/kadu/modules"; \
 		$(INSTALL_DATA) $$dir/$$dir.so "$(DESTDIR)/$(datadir)/kadu/modules/"; \
 		if test -d $$dir/translations; then \

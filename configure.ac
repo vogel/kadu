@@ -121,10 +121,10 @@ AC_DEFUN(CHECK_MODULES_CONFIGURATION,[
 	static_modules=
 	shared_modules=
 	disabled_modules=
-	. .config; \
+	. ./.config; \
 	for mod in $available_modules; do \
 		echo "option=\$module_$mod" > .temp; \
-		. .temp; \
+		. ./.temp; \
 		if test -z "$option"; then \
 			option=m; \
 		fi; \
@@ -142,7 +142,9 @@ AC_DEFUN(PROCESS_MODULE_SPEC_FILES,[
 	echo " ******************************************"
 	echo " * Configuring modules, please wait . . . *"
 	echo " ******************************************"
-	for mod in $static_module $shared_modules; do \
+	static_modules_ldflags=
+	static_modules_cxxflags=
+	for mod in $static_modules $shared_modules; do \
 		if test -f modules/$mod/spec; then \
 			echo; \
 			echo ">>> Configuring $mod module..."; \
@@ -150,26 +152,33 @@ AC_DEFUN(PROCESS_MODULE_SPEC_FILES,[
 			MODULE_LIBS_PATH=; \
 			MODULE_INCLUDES=; \
 			MODULE_INCLUDES_PATH=; \
-			. modules/$mod/spec; \
+			. ./modules/$mod/spec; \
 			echo "MODULE_LIBS:          $MODULE_LIBS"; \
 			echo "MODULE_LIBS_PATH:     $MODULE_LIBS_PATH"; \
 			echo "MODULE_INCLUDES:      $MODULE_INCLUDES"; \
 			echo "MODULE_INCLUDES_PATH: $MODULE_INCLUDES_PATH"; \
-			echo -n > modules/$mod/ldflags; \
-			echo -n > modules/$mod/cxxflags; \
+			MODULE_LDFLAGS=; \
+			MODULE_CXXFLAGS=; \
 			for lib in $MODULE_LIBS; do \
 				FIND_LIBRARY([$lib],[$MODULE_LIBS_PATH],
 				[
-					echo -n "-L$FILE_DIR " >> modules/$mod/ldflags
+					MODULE_LDFLAGS="$MODULE_LDFLAGS -L$FILE_DIR"
 				]) \
-				echo -n "-l$lib " >> modules/$mod/ldflags; \
+				MODULE_LDFLAGS="$MODULE_LDFLAGS -l$lib"; \
 			done; \
 			for hdr in $MODULE_INCLUDES; do \
 				FIND_HEADER([$hdr],[$MODULE_INCLUDES_PATH],
 				[
-					echo -n "-I$FILE_DIR " >> modules/$mod/cxxflags
+					MODULE_CXXFLAGS="$MODULE_CXXFLAGS -I$FILE_DIR"
 				]) \
 			done; \
+			echo -n "$MODULE_CXXFLAGS" > modules/$mod/cxxflags; \
+			if test -z `expr " $shared_modules " : ".* \($mod\) "`; then \
+				echo -n > modules/$mod/ldflags; \
+				static_modules_ldflags="$static_modules_ldflags $MODULE_LDFLAGS"; \
+			else \
+				echo -n "$MODULE_LDFLAGS" > modules/$mod/ldflags; \
+			fi; \
 		fi; \
 	done
 ])
@@ -393,6 +402,7 @@ AM_CONDITIONAL(MODULES,[test "$enable_modules" = "yes"])
 AC_SUBST(MODULES_LDFLAGS)
 AC_SUBST(shared_modules)
 AC_SUBST(static_modules)
+AC_SUBST(static_modules_ldflags)
 
 MY_SUBDIRS="$MY_SUBDIRS kadu translations varia"
 AC_SUBST(MY_SUBDIRS)
