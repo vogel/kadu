@@ -37,14 +37,16 @@ struct UserListElement
 	bool foreign;
 	int ip;
 	short port;
+	int time_to_death;
 };
 
-class UserList : public QObject,public QValueList<UserListElement>
+class UserList : public QObject, public QValueList<UserListElement>
 {
 	Q_OBJECT
 	
 	public:
 		UserList();
+		~UserList();
 		UserListElement& byUin(uin_t uin);
 		UserListElement& byNick(QString nickname);
 		UserListElement& byAltNick(QString altnick);
@@ -58,15 +60,21 @@ class UserList : public QObject,public QValueList<UserListElement>
 			const QString& FirstName, const QString& LastName,
 			const QString& NickName, const QString& AltNick,
 			const QString& Mobile, const QString& Group);
+		void changeUserStatus(const uin_t uin, const unsigned int status);
 		void removeUser(const QString &altnick);
 		bool writeToFile(char *filename = NULL);
 		bool readFromFile();
-		UserList& operator=(const UserList& userlist);
-/*		int count();
-		UserListElement& operator[](const int i);*/
+		UserList &operator=(const UserList& userlist);
 		
-	signals:
+	protected:
+		QTimer *invisibleTimer;
+
+	protected slots:
+		void timeout();
+
+	public signals:
 		void modified();
+		void statusModified(UserListElement *);
 };
 
 #endif

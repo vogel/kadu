@@ -25,7 +25,33 @@
 
 UserList::UserList() : QObject(), QValueList<UserListElement>()
 {
+	invisibleTimer = new QTimer;
+	connect(invisibleTimer, SIGNAL(timeout()), this, SLOT(timeout()));
+	invisibleTimer->start(1000, TRUE);
 };
+
+UserList::~UserList()
+{
+	invisibleTimer->stop();
+	delete invisibleTimer;
+}
+
+void UserList::timeout()
+{
+	for (iterator i = begin(); i != end(); i++) {
+		UserListElement &ule = *i;
+		if (ule.status == GG_STATUS_INVISIBLE || ule.status == GG_STATUS_INVISIBLE_DESCR ||
+			ule.status == GG_STATUS_INVISIBLE2) {
+			ule.time_to_death--;
+			if (!ule.time_to_death)
+				changeUserStatus(user.uin, GG_STATUS_OFFLINE);
+			else
+				if (ule.time_to_death < 0)
+					ule.time_to_death = 0;
+			}
+		}
+	invisibleTimer->start(1000, TRUE);
+}
 
 UserListElement& UserList::byUin(uin_t uin)
 {
@@ -82,6 +108,7 @@ void UserList::addUser(const QString FirstName,const QString LastName,
 	e.foreign = Foreign;
 	e.ip = 0;
 	e.port = 0;
+	e.time_to_death = 300;
 	append(e);
 	emit modified();
 };
@@ -107,6 +134,16 @@ void UserList::changeUserInfo(const QString OldAltNick,
 //			if (!userlist[this_index].anonymous)
 //				userlist[this_index].mobile = e_mobile->text();
 	emit modified();
+};
+
+void UserList::changeUserStatus(const uin_t uin, const unsigned int status)
+{
+	UserListElement &e = byUin(uin);
+	if (status != e.status) {
+		e.status = status;
+		UserBox::all_refresh();			
+		emit statusModified(&e);
+		}
 };
 
 void UserList::removeUser(const QString &altnick)
@@ -228,15 +265,6 @@ bool UserList::readFromFile()
 
 		};
 
-	// Trzeba dodac obsluge pl literek!!!!!!!!!!!!!!!
-	
-/*	    cp_to_iso((unsigned char *)first_name);
-	    cp_to_iso((unsigned char *)userlist[i].last_name);
-	    cp_to_iso((unsigned char *)userlist[i].nickname);
-	    cp_to_iso((unsigned char *)userlist[i].comment);
-	    cp_to_iso((unsigned char *)userlist[i].group);*/
-
-		// if the nickname isn't defined explicitly, try to guess it 
 	};
 
 	f.close();
