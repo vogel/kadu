@@ -17,10 +17,8 @@ class DnsHandler : public QObject
 {
 	Q_OBJECT
 
-	UserListElement &Ule;
-
 	public:
-		DnsHandler(UserListElement &ule);
+		DnsHandler(const QHostAddress &addr);
 		~DnsHandler();
 
 		static int counter;
@@ -30,10 +28,14 @@ class DnsHandler : public QObject
 
 	private slots:
 		void resultsReady();
+
+	signals:
+		void result(const QString &hostname);
 };
 
-class UserListElement
+class UserListElement : public QObject
 {
+	Q_OBJECT
 	private:
 		QString Group;
 		QString FirstName;
@@ -56,6 +58,23 @@ class UserListElement
 
 		UserList *Parent;
 		friend class UserList;
+	public slots:
+		void setGroup(const QString& group);
+		void setFirstName(const QString &firstName);
+		void setLastName(const QString &lastName);
+		void setNickName(const QString &nickName);
+		void setAltNick(const QString &altNick);
+		void setMobile(const QString &mobile);
+		void setEmail(const QString &email);
+		void setUin(const UinType &uin);
+		void setMaxImageSize(const int maxImageSize);
+		void setAnonymous(const bool anonymous);
+		void setDnsName(const QString &dnsName);
+		void setPort(short port);
+		void setVersion(const int version);
+		void setBlocking(const bool blocking);
+		void setOfflineTo(const bool offlineTo);
+		void setNotify(const bool notify);
 
 	public:
 		UserListElement(UserList* parent);
@@ -68,58 +87,29 @@ class UserListElement
 		void operator = (const UserListElement &copyMe);
 
 		QString group() const;
-		void setGroup(const QString& group);
-
 		QString firstName() const;
-		void setFirstName(const QString &firstName);
-
 		QString lastName() const;
-		void setLastName(const QString &lastName);
-
 		QString nickName() const;
-		void setNickName(const QString &nickName);
-
 		QString altNick() const;
-		void setAltNick(const QString &altNick);
-
 		QString mobile() const;
-		void setMobile(const QString &mobile);
-
 		QString email() const;
-		void setEmail(const QString &email);
-
 		UinType uin() const;
-		void setUin(const UinType &uin);
 
 		const UserStatus & status() const;
 		UserStatus & status();
 
 		int maxImageSize() const;
-		void setMaxImageSize(const int maxImageSize);
-
 		bool isAnonymous() const;
-		void setAnonymous(const bool anonymous);
 
 		const QHostAddress & ip() const;
 		QHostAddress & ip();
 
 		QString dnsName() const;
-		void setDnsName(const QString &dnsName);
-
 		short port() const;
-		void setPort(short port);
-
 		int version() const;
-		void setVersion(const int version);
-
 		bool blocking() const;
-		void setBlocking(const bool blocking);
-
 		bool offlineTo() const;
-		void setOfflineTo(const bool offlineTo);
-
 		bool notify() const;
-		void setNotify(const bool notify);
 };
 
 /**

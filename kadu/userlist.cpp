@@ -19,16 +19,16 @@
 #include "userbox.h"
 #include "debug.h"
 
-DnsHandler::DnsHandler(UserListElement &ule) : Ule(ule)
+DnsHandler::DnsHandler(const QHostAddress &address)
 {
 	kdebugf();
 
-	if (ule.ip() == QHostAddress())
+	if (address == QHostAddress())
 		kdebugmf(KDEBUG_WARNING, "NULL ip address!\n");
 
 	connect(&DnsResolver, SIGNAL(resultsReady()), this, SLOT(resultsReady()));
 	DnsResolver.setRecordType(QDns::Ptr);
-	DnsResolver.setLabel(Ule.ip());
+	DnsResolver.setLabel(address);
 	++counter;
 
 	kdebugmf(KDEBUG_FUNCTION_END, "counter = %d\n", counter);
@@ -44,9 +44,9 @@ void DnsHandler::resultsReady()
 	kdebugf();
 
 	if (DnsResolver.hostNames().count())
-		Ule.setDnsName(DnsResolver.hostNames()[0]);
+		emit result(DnsResolver.hostNames()[0]);
 	else
-		Ule.setDnsName(QString::null);
+		emit result(QString::null);
 
 	deleteLater();
 	kdebugf2();
@@ -382,7 +382,8 @@ void UserListElement::setNotify(const bool notify)
 void UserListElement::refreshDnsName()
 {
 	if (!(Ip == QHostAddress()))
-		new DnsHandler(*this);
+		connect(new DnsHandler(Ip), SIGNAL(result(const QString &)),
+				this, SLOT(setDnsName(const QString &)));
 }
 
 void UserListElement::operator = (const UserListElement &copyMe)
