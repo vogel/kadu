@@ -7,42 +7,40 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "autoresponder.h"
+#include "echo.h"
 
 #include "events.h"
 #include "message_box.h"
 #include "gadu.h"
-#include "status.h"
 
 extern "C" void init_module()
 {
-	autoresponder=new AutoResponder();
+	echo=new Echo();
 	QObject::connect(&event_manager,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
-		autoresponder,SLOT(chatReceived(UinsList,const QString&,time_t)));
+		echo,SLOT(chatReceived(UinsList,const QString&,time_t)));
 }
 
 extern "C" void close_module()
 {
 	QObject::disconnect(&event_manager,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
-		autoresponder,SLOT(chatReceived(UinsList,const QString&,time_t)));
-	delete autoresponder;
+		echo,SLOT(chatReceived(UinsList,const QString&,time_t)));
+	delete echo;
 }
 
-AutoResponder::AutoResponder() : QObject()
+Echo::Echo() : QObject()
 {
-	MessageBox::msg("Autoresponder started");
+	MessageBox::msg("Echo started");
 }
 
-AutoResponder::~AutoResponder()
+Echo::~Echo()
 {
-	MessageBox::msg("Autoresponder stopped");
+	MessageBox::msg("Echo stopped");
 }
 
-void AutoResponder::chatReceived(UinsList senders,const QString& msg,time_t time)
+void Echo::chatReceived(UinsList senders,const QString& msg,time_t time)
 {
-	int status=getActualStatus();
-	if(status==GG_STATUS_BUSY||status==GG_STATUS_BUSY_DESCR)
-		gadu->sendMessage(senders,"KADU AUTORESPONDER: Thanks for your message. User is not currently available.");
+	QString resp=QString("KADU ECHO: ")+msg;
+	gadu->sendMessage(senders,resp);
 }
 
-AutoResponder* autoresponder;
+Echo* echo;

@@ -1,21 +1,21 @@
-#ifndef AUTORESPONDER_H
-#define AUTORESPONDER_H
+#ifndef ECHO_H
+#define ECHO_H
 
 #include <qobject.h>
 #include "misc.h"
 
-class AutoResponder : public QObject
+class Echo : public QObject
 {
 	Q_OBJECT
 
 	public:	
-		AutoResponder();
-		~AutoResponder();
+		Echo();
+		~Echo();
 		
 	public slots:
 		void chatReceived(UinsList senders,const QString& msg,time_t time);
 };
 
-extern AutoResponder* autoresponder;
+extern Echo* echo;
 
 #endif
