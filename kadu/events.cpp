@@ -54,7 +54,7 @@ extern "C"
 };
 #endif
 
-QTime oldtime(QTime::currentTime());;
+QTime lastsoundtime;
 
 SavePublicKey::SavePublicKey(uin_t uin, QString keyData, QWidget *parent, const char *name) :
 	QDialog(parent, name, Qt::WDestructiveClose), uin(uin), keyData(keyData) {
@@ -310,10 +310,9 @@ void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)
 			}
 
 		if (config.notifysound) {
-			QTime acttime(QTime::currentTime());			
-			if (acttime.msecsTo(oldtime) <= -500)
+			if (lastsoundtime.elapsed() >= 500)
 				playSound(config.soundnotify);
-			oldtime = acttime;
+			lastsoundtime.restart();
 			}
 		}
 }

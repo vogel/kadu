@@ -359,6 +359,7 @@ void Kadu::gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op) {
 Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 {
 	closestatusppmtime.start();
+	lastsoundtime.start();
 
 	/* timers, cause event loops and QSocketNotifiers suck. */
 	pingtimer = blinktimer = readevent = NULL;

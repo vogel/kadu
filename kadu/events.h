@@ -12,6 +12,7 @@
 
 #include <qdialog.h>
 #include <qstring.h>
+#include <qdatetime.h>
 
 #include "libgadu.h"
 #include "misc.h"
@@ -32,5 +33,7 @@ class SavePublicKey : public QDialog {
 void eventRecvMsg(int, UinsList, unsigned char *,time_t,int=0,struct gg_msg_format * = NULL);
 void eventGotUserlist(struct gg_event *);
 void eventStatusChange(struct gg_event *);
+
+extern QTime lastsoundtime;
 
 #endif
