@@ -49,7 +49,7 @@ UserListElement& UserList::byAltNick(QString altnick)
 	for(iterator i=begin(); i!=end(); i++)
 		if((*i).altnick==altnick)
 			return (*i);
-	fprintf(stderr, "KK UserList::byComment(): Panic! %s not exists\n",(const char*)comment.local8Bit());
+	fprintf(stderr, "KK UserList::byAltNick(): Panic! %s not exists\n",(const char*)altnick.local8Bit());
 	// Kadu Panic :) What we should do here???
 };
 
