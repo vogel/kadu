@@ -72,7 +72,7 @@ Notify::Notify()
 	notify_slots=new NotifySlots();
 
 	ConfigDialog::addCheckBox("Notify", "Notify",
-		QT_TRANSLATE_NOOP("@default", "Ignore changes on connection to server"), "NotifyIgnoreOnConnection", true);
+		QT_TRANSLATE_NOOP("@default", "Ignore changes on connection to server"), "NotifyIgnoreOnConnection", true, QT_TRANSLATE_NOOP("@default","This option will supersede tooltips with users' status\n changes upon establishing connection to the server"));
 	ConfigDialog::addCheckBox("Notify", "Notify",
 		QT_TRANSLATE_NOOP("@default", "Notify when users become available"), "NotifyStatusChange", false);
 	ConfigDialog::addCheckBox("Notify", "Notify",
