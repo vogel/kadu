@@ -70,6 +70,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * rozwój nowego mechanizmu budowania okna konfiguracyjnego (adrian)
 * sms: obs³uga nowej bramki ery - na razie bardzo wolno dzia³a,
   nie wiem jeszcze dlaczego (adrian)
+* u¿ytkownicy blokowani przez nas wy¶wietlaj± siê kolorem czerwonym,
+  u¿ytkownicy ignorowani przez nas kolorem ¿ó³tym (chilek)
 
 +++ wersja 0.3.4-pre3
 * dodane przeszukiwanie historii (chilek)

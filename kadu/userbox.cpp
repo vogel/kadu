@@ -9,14 +9,40 @@
 
 #include <qmap.h>
 #include <qregexp.h>
-
+#include <qpainter.h>
+#include <qpen.h>
 //
 #include "kadu.h"
 //
 #include "userbox.h"
+#include "ignore.h"
 #include "pixmaps.h"
 #include "debug.h"
 #include "pending_msgs.h"
+
+KaduListBoxPixmap::KaduListBoxPixmap(const QPixmap &pix, const QString &text)
+	: QListBoxPixmap(pix, text)
+{
+}
+
+void KaduListBoxPixmap::paint(QPainter *painter) {
+	UserListElement &user = userlist.byAltNick(text());
+	if (user.blocking) {
+		QPen &pen = (QPen &)painter->pen();
+		pen.setColor(QColor(255, 0, 0));
+		painter->setPen(pen);
+		}
+	if (user.uin) {
+		UinsList uins;
+		uins.append(user.uin);
+		if (isIgnored(uins)) {
+			QPen &pen = (QPen &)painter->pen();
+			pen.setColor(QColor(192, 192, 0));
+			painter->setPen(pen);
+			}
+		}
+	QListBoxPixmap::paint(painter);
+}
 
 UserBox::UserBox(QWidget* parent,const char* name,WFlags f)
 	: QListBox(parent,name),QToolTip(viewport())
@@ -139,6 +165,7 @@ void UserBox::sortUsersByAltNick(QStringList &users) {
 void UserBox::refresh()
 {
 	int i;
+	KaduListBoxPixmap *lbp;
 
 	kdebug("UserBox::refresh()\n");
 
@@ -186,7 +213,9 @@ void UserBox::refresh()
 		UserListElement &user = userlist.byAltNick(a_users[i]);
 		bool has_mobile = user.mobile.length();
 		if (pending.pendingMsgs(user.uin)) {
-	    		insertItem(*icons->loadIcon("message"), user.altnick);
+			lbp = new KaduListBoxPixmap(*icons->loadIcon("message"), user.altnick);
+			insertItem(lbp);
+//			insertItem(*icons->loadIcon("message"), user.altnick);
 			}
 		else
 		{
@@ -221,9 +250,12 @@ void UserBox::refresh()
 					break;
 				};
 			if (pix != NULL)
-				insertItem(*pix, user.altnick);
+				lbp = new KaduListBoxPixmap(*pix, user.altnick);
+//				insertItem(*pix, user.altnick);
 			else
-				insertItem(*icons->loadIcon("online"), user.altnick);			
+				lbp = new KaduListBoxPixmap(*icons->loadIcon("online"), user.altnick);
+//				insertItem(*icons->loadIcon("online"), user.altnick);
+			insertItem(lbp);
 		};
 	};	
 	// Dodajemy niewidocznych
@@ -231,7 +263,9 @@ void UserBox::refresh()
 		UserListElement &user = userlist.byAltNick(i_users[i]);
 		bool has_mobile = user.mobile.length();
 		if (pending.pendingMsgs(user.uin)) {
-	    		insertItem(*icons->loadIcon("message"), user.altnick);
+			lbp = new KaduListBoxPixmap(*icons->loadIcon("message"), user.altnick);
+			insertItem(lbp);
+//	    		insertItem(*icons->loadIcon("message"), user.altnick);
 			}
 		else {
 			QPixmap *pix = NULL;
@@ -249,7 +283,9 @@ void UserBox::refresh()
 						pix = icons->loadIcon("invisible");
 		    			break;
 				}
-			insertItem(*pix, user.altnick);			
+			lbp = new KaduListBoxPixmap(*pix, user.altnick);
+			insertItem(lbp);
+//			insertItem(*pix, user.altnick);			
 			}
 		}
 	// Dodajemy nieaktywnych
@@ -257,8 +293,10 @@ void UserBox::refresh()
 	{
 		UserListElement &user = userlist.byAltNick(n_users[i]);
 		bool has_mobile = user.mobile.length();
-		if (pending.pendingMsgs(user.uin)) {
-	    		insertItem(*icons->loadIcon("message"), user.altnick);
+		if (pending.pendingMsgs(user.uin)) {		
+			lbp = new KaduListBoxPixmap(*icons->loadIcon("message"), user.altnick);
+			insertItem(lbp);
+//	    		insertItem(*icons->loadIcon("message"), user.altnick);
 			}
 		else
 		{
@@ -278,15 +316,20 @@ void UserBox::refresh()
 		    			break;
 				};
 			if (pix != NULL)
-				insertItem(*pix, user.altnick);
+				lbp = new KaduListBoxPixmap(*pix, user.altnick);
+//				insertItem(*pix, user.altnick);
 			else
-				insertItem(*icons->loadIcon("online"), user.altnick);			
+				lbp = new KaduListBoxPixmap(*icons->loadIcon("online"), user.altnick);
+//				insertItem(*icons->loadIcon("online"), user.altnick);
+			insertItem(lbp);
 		};
 	};
 	// Dodajemy uzytkownikow bez numerow GG
 	for (i = 0; i < b_users.count(); i++) {
 		UserListElement &user = userlist.byAltNick(b_users[i]);
-		insertItem(*icons->loadIcon("mobile"), user.altnick);
+		lbp = new KaduListBoxPixmap(*icons->loadIcon("mobile"), user.altnick);
+		insertItem(lbp);
+//		insertItem(*icons->loadIcon("mobile"), user.altnick);
 		}
 	// Przywracamy zaznaczenie wczesniej zaznaczonych uzytkownikow
 	for (i = 0; i < s_users.count(); i++)

@@ -13,6 +13,15 @@
 #include <qlistbox.h>
 #include <qtooltip.h>
 #include <qstringlist.h>
+#include <qpainter.h>
+
+class KaduListBoxPixmap : public QListBoxPixmap {
+        public:
+                KaduListBoxPixmap(const QPixmap &pix, const QString &text);
+
+        protected:
+                void paint(QPainter *painter);
+};
 
 class UserBox : public QListBox , QToolTip
 {    
