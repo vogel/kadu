@@ -1060,30 +1060,30 @@ void ConfigDialog::setupTab6(void) {
 	otherselectfont->hide();
 
 	QVGroupBox *contentsprop = new QVGroupBox(box6);
-	QToolTip::add(contentsprop,i18n("%s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - frist name\n%r = surname, %m - mobile, %u - uin, %g - group, %o - If person doesn't have us in userlist\nIf is empty - default setting"));
+	QToolTip::add(contentsprop,i18n("%s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - frist name\n%r = surname, %m - mobile, %u - uin, %g - group, %o - if user doesn't have us in userlist\nIf you leave it empty - default settings will be used"));
 
 	QHBox *panelbox = new QHBox(contentsprop);
 	panelbox->setSpacing(5);
 	
-	QLabel *l_panel = new QLabel(i18n("Panel information contents"), panelbox);
+	QLabel *l_panel = new QLabel(i18n("Information panel syntax"), panelbox);
 	e_panelcontents = new QLineEdit(config.panelcontents, panelbox);
 
 	QHBox *chatconbox = new QHBox(contentsprop);
 	chatconbox->setSpacing(5);
 
-	QLabel *l_chatcon = new QLabel(i18n("Chat window title contents"), chatconbox);
+	QLabel *l_chatcon = new QLabel(i18n("Chat window title syntax"), chatconbox);
 	e_chatcontents = new QLineEdit(config.chatcontents, chatconbox);
 
 	QHBox *confprefixbox = new QHBox(contentsprop);
 	confprefixbox->setSpacing(5);
 
-	QLabel *l_confprefixcon = new QLabel(i18n("Conference window title prefix contents"), confprefixbox);
+	QLabel *l_confprefixcon = new QLabel(i18n("Conference window title prefix"), confprefixbox);
 	e_conferenceprefix = new QLineEdit(config.conferenceprefix, confprefixbox);
 
 	QHBox *confconbox = new QHBox(contentsprop);
 	confconbox->setSpacing(5);
 
-	QLabel *l_confcon = new QLabel(i18n("Conference window title contents"), confconbox);
+	QLabel *l_confcon = new QLabel(i18n("Conference window title syntax"), confconbox);
 	e_conferencecontents = new QLineEdit(config.conferencecontents, confconbox);
 
 	addTab(box6, i18n("Look"));
