@@ -472,7 +472,8 @@ Premi Avanti per continuare</translation>
     <message>
         <source>&lt;h3&gt;Please enter your valid e-mail address and password you want to secure your new Gadu-gadu number&lt;/h3&gt;
 Password must contain at least 5 signs (only letters and numbers)</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;h3&gt;Prego di inserire valido indirizzo e-mail e passwod per rendere sicuro account GG &lt;/h3&gt;
+Password deve contenere almeno   5 caratteri ( lettere e nimeri)</translation>
     </message>
 </context>
 <context>
