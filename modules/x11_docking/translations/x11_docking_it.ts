@@ -3,7 +3,7 @@
     <name>@default</name>
     <message>
         <source>Remove from taskbar (experimental)</source>
-        <translation type="unfinished"></translation>
+        <translation>Rimuovi dalla barra (sperimentale)</translation>
     </message>
 </context>
 </TS>

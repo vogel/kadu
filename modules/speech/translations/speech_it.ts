@@ -55,15 +55,15 @@
     </message>
     <message>
         <source>Message format (male):</source>
-        <translation>Message format(maschio):</translation>
+        <translation>Formato messaggio (maschio):</translation>
     </message>
     <message>
         <source>Notify format (male):</source>
-        <translation>Notify format (maschio):</translation>
+        <translation>Formato notifica (maschio):</translation>
     </message>
     <message>
         <source>Notify format (female):</source>
-        <translation>Notify format (femmina):</translation>
+        <translation>Formato notifica (femmina):</translation>
     </message>
     <message>
         <source>Test</source>
@@ -71,7 +71,7 @@
     </message>
     <message>
         <source>Message format (female):</source>
-        <translation>Message format (femmina):</translation>
+        <translation>Formato messaggio (femmina):</translation>
     </message>
     <message>
         <source>Program</source>
@@ -90,19 +90,19 @@
     <name>SpeechSlots</name>
     <message>
         <source>man %a said %1</source>
-        <translation type="unfinished">%a ha scritto %1</translation>
+        <translation>%a (uomo) ha scritto %1</translation>
     </message>
     <message>
         <source>woman %a said %1</source>
-        <translation type="unfinished">%a ha scritto %1</translation>
+        <translation>%a (donna) ha scritto %1</translation>
     </message>
     <message>
         <source>man %a changed status to %s %d</source>
-        <translation type="unfinished">%a ha cambiato status %s %d</translation>
+        <translation>%a (uomo) ha cambiato status a %s %d</translation>
     </message>
     <message>
         <source>woman %a changed status to %s %d</source>
-        <translation type="unfinished">%a ha cambiato status per %s %d</translation>
+        <translation>%a (donna) ha cambiato status a %s %d</translation>
     </message>
 </context>
 </TS>

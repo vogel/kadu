@@ -68,7 +68,7 @@ e scrivi la stringa corretta. I parametri devono essere separati da spazio. Il p
     </message>
     <message>
         <source>Could not spawn child process. Check if the program is functional</source>
-        <translation>Problemi in avvio del programa SMS.  Verificare corretta funzionalità del programma</translation>
+        <translation>Problemi di avvio del programa SMS.  Verificare corretta funzionalità del programma</translation>
     </message>
     <message>
         <source>SMS sent</source>

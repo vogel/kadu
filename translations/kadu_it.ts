@@ -561,135 +561,135 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
     </message>
     <message>
         <source>Max image size</source>
-        <translation type="unfinished"></translation>
+        <translation>Dimensioni max. file</translation>
     </message>
     <message>
         <source>Mouse buttons</source>
-        <translation type="unfinished"></translation>
+        <translation>Bottoni del mause</translation>
     </message>
     <message>
         <source>Left button</source>
-        <translation type="unfinished"></translation>
+        <translation>Bottone sx</translation>
     </message>
     <message>
         <source>Middle button</source>
-        <translation type="unfinished"></translation>
+        <translation>Bottone centrale</translation>
     </message>
     <message>
         <source>Right button</source>
-        <translation type="unfinished"></translation>
+        <translation>Bottone dx</translation>
     </message>
     <message>
         <source>Show inactive users</source>
-        <translation type="unfinished"></translation>
+        <translation>Visualizza contatti inattivi</translation>
     </message>
     <message>
         <source>Show emoticons in panel</source>
-        <translation type="unfinished"></translation>
+        <translation>Visualizza emoticons nell panello</translation>
     </message>
     <message>
         <source>Show emoticons in history</source>
-        <translation type="unfinished"></translation>
+        <translation>Visualizza emoticons nello storico</translation>
     </message>
     <message>
         <source>Show available in bold</source>
-        <translation type="unfinished"></translation>
+        <translation>Visualizza accessibili in grassetto</translation>
     </message>
     <message>
         <source>Colors</source>
-        <translation type="unfinished"></translation>
+        <translation>Colori</translation>
     </message>
     <message>
         <source>Chat window</source>
-        <translation type="unfinished"></translation>
+        <translation>Finestra di chat</translation>
     </message>
     <message>
         <source>Your background color</source>
-        <translation type="unfinished">Tuo colore di sfondo</translation>
+        <translation>Tuo colore di sfondo</translation>
     </message>
     <message>
         <source>User background color</source>
-        <translation type="unfinished">Colore di sfondo del contatto</translation>
+        <translation>Colore di sfondo del contatto</translation>
     </message>
     <message>
         <source>Your font color</source>
-        <translation type="unfinished">Tuo colore caratteri</translation>
+        <translation>Tuo colore caratteri</translation>
     </message>
     <message>
         <source>User font color</source>
-        <translation type="unfinished">Colore caratteri del contatto</translation>
+        <translation>Colore caratteri del contatto</translation>
     </message>
     <message>
         <source>Fonts</source>
-        <translation type="unfinished"></translation>
+        <translation>Caratteri</translation>
     </message>
     <message>
         <source>Font in chat window</source>
-        <translation type="unfinished">Caratteri nella finestra di chat</translation>
+        <translation>Caratteri nella finestra di chat</translation>
     </message>
     <message>
         <source>Previews</source>
-        <translation type="unfinished"></translation>
+        <translation>Anteprima</translation>
     </message>
     <message>
         <source>Chat preview</source>
-        <translation type="unfinished"></translation>
+        <translation>Anteprima Chat</translation>
     </message>
     <message>
         <source>Main window</source>
-        <translation type="unfinished"></translation>
+        <translation>Finestra principale</translation>
     </message>
     <message>
         <source>Panel background color</source>
-        <translation type="unfinished"></translation>
+        <translation>Colore sfondo di panello</translation>
     </message>
     <message>
         <source>Panel font color</source>
-        <translation type="unfinished"></translation>
+        <translation>Caratteri di panello</translation>
     </message>
     <message>
         <source>Font in panel</source>
-        <translation type="unfinished"></translation>
+        <translation>Caratteri nel panello</translation>
     </message>
     <message>
         <source>Information panel</source>
-        <translation type="unfinished"></translation>
+        <translation>Panello informazioni</translation>
     </message>
     <message>
         <source>Show information panel</source>
-        <translation type="unfinished"></translation>
+        <translation>Visualizza panello informazioni</translation>
     </message>
     <message>
         <source>Userbox background color</source>
-        <translation type="unfinished">Colore di sfondo della lista contatti</translation>
+        <translation>Colore di sfondo della lista contatti</translation>
     </message>
     <message>
         <source>Userbox font color</source>
-        <translation type="unfinished"></translation>
+        <translation>Colore caratteri della lista contatti</translation>
     </message>
     <message>
         <source>Font in userbox</source>
-        <translation type="unfinished"></translation>
+        <translation>Caratteri nella lista contatti</translation>
     </message>
     <message>
         <source>Preview panel</source>
-        <translation type="unfinished"></translation>
+        <translation>Anteprima panello</translation>
     </message>
     <message>
         <source>Message citation in chat window</source>
-        <translation type="unfinished"></translation>
+        <translation>Citazione messaggi nella finestra chat</translation>
     </message>
     <message>
         <source>Don&apos;t cite messages older than:</source>
-        <translation type="unfinished"></translation>
+        <translation>Non visualizza messagi più vecchi di:</translation>
     </message>
     <message>
         <source>Show vertical scrollbar in information panel</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostra scrollbar verticale nel panello</translation>
     </message>
     <message>
         <source>Userbox width when multi column</source>
-        <translation type="unfinished"></translation>
+        <translation>laghezza Lista contatti multicolonna</translation>
     </message>
 </context>
 <context>
@@ -735,41 +735,42 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
     </message>
     <message>
         <source>This dialog box allows you to change your current password or e-mail.</source>
-        <translation type="unfinished"></translation>
+        <translation>Questa finestr di dialogo permette di cambiare la password attuale e e-mail.</translation>
     </message>
     <message>
         <source>Email</source>
-        <translation type="unfinished">E-mail</translation>
+        <translation>E-mail</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished">Password</translation>
+        <translation>Password</translation>
     </message>
     <message>
         <source>New email:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nuovo e-mail:</translation>
     </message>
     <message>
         <source>New password:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nuova password:</translation>
     </message>
     <message>
         <source>Retype new password:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ripetu nuova password:</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Chiudi</translation>
+        <translation>&amp;Chiudi</translation>
     </message>
     <message>
         <source>Change password</source>
-        <translation type="unfinished"></translation>
+        <translation>Cambia password</translation>
     </message>
     <message>
         <source>Error data typed in required fields.
 
 Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new password&quot;) should be the same!</source>
-        <translation type="unfinished"></translation>
+        <translation>Errore dati bnei campi richiesti.
+Campi password devono contenere la stessa frase !</translation>
     </message>
 </context>
 <context>
@@ -836,15 +837,15 @@ Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new pa
     </message>
     <message>
         <source>Insert image</source>
-        <translation type="unfinished"></translation>
+        <translation>Inserisci immagine</translation>
     </message>
     <message>
         <source>Message too long (%1&gt;=%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Messaggio troppo lungo (%1&gt;=%2)</translation>
     </message>
     <message>
         <source>Filtered message too long (%1&gt;=%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>messaggio filtrato troppo lungo (%1&gt;=%2)</translation>
     </message>
 </context>
 <context>
@@ -1088,19 +1089,19 @@ Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new pa
     </message>
     <message>
         <source>Nothing</source>
-        <translation type="unfinished"></translation>
+        <translation>Nienete</translation>
     </message>
     <message>
         <source>Open chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Apri la finestra chat</translation>
     </message>
     <message>
         <source>Delete hint</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancella fumetto</translation>
     </message>
     <message>
         <source>Delete all hints</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancella tutti fumetti</translation>
     </message>
 </context>
 <context>
@@ -1270,26 +1271,26 @@ Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new pa
     </message>
     <message>
         <source>This dialog box allows you to manage your ignored contacts.</source>
-        <translation type="unfinished"></translation>
+        <translation>Questa finestra di dialogo permette gestire contatti da igniorare.</translation>
     </message>
     <message>
         <source>Type here the UIN of the person you want to ignore.</source>
-        <translation type="unfinished"></translation>
+        <translation>Metti qui numero GG della persona da igniorare.</translation>
     </message>
     <message>
         <source>Uin:</source>
-        <translation type="unfinished"></translation>
+        <translation>Numero GG:</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Chiudi</translation>
+        <translation>&amp;Chiudi</translation>
     </message>
 </context>
 <context>
     <name>ImageDialog</name>
     <message>
         <source>Images</source>
-        <translation type="unfinished"></translation>
+        <translation>Immagini</translation>
     </message>
 </context>
 <context>
@@ -1474,53 +1475,53 @@ Connessioni dirette disabilitate.</translation>
     </message>
     <message>
         <source>I&amp;mport / Export userlist</source>
-        <translation type="unfinished"></translation>
+        <translation>I&amp;mport / Export lista contatti</translation>
     </message>
     <message>
         <source>Unable to connect, server has not been found</source>
-        <translation type="unfinished">Impossibile collegarsi, il server non è stato trovato</translation>
+        <translation>Impossibile collegarsi, il server non è stato trovato</translation>
     </message>
     <message>
         <source>Unable to connect</source>
-        <translation type="unfinished">Collegamento impossibile</translation>
+        <translation>Collegamento impossibile</translation>
     </message>
     <message>
         <source>Please change your email in &quot;Change password/email&quot; window. Leave new password field blank.</source>
-        <translation type="unfinished">Cambiare indirizzo e-mail in &quot;Cambia password/email&quot;. Lasciare vuoto il campo nuova password.</translation>
+        <translation>Cambiare indirizzo e-mail in &quot;Cambia password/email&quot;. Lasciare vuoto il campo nuova password.</translation>
     </message>
     <message>
         <source>Unable to connect, server has returned unknown data</source>
-        <translation type="unfinished">Impossibile collegarsi, il server ha restituito i dati sconosciuti</translation>
+        <translation>Impossibile collegarsi, il server ha restituito i dati sconosciuti</translation>
     </message>
     <message>
         <source>Unable to connect, connection break during reading</source>
-        <translation type="unfinished">Impossibile collegarsi, interruzzione del collegamento durante la lettura</translation>
+        <translation>Impossibile collegarsi, interruzzione del collegamento durante la lettura</translation>
     </message>
     <message>
         <source>Unable to connect, connection break during writing</source>
-        <translation type="unfinished">Impossibile collegarsi, interruzione del collegamento durante la scrittura</translation>
+        <translation>Impossibile collegarsi, interruzione del collegamento durante la scrittura</translation>
     </message>
     <message>
         <source>Unable to connect, incorrect password</source>
-        <translation type="unfinished">Impossibile collegarsi, password errata</translation>
+        <translation>Impossibile collegarsi, password errata</translation>
     </message>
     <message>
         <source>Incorrect password</source>
-        <translation type="unfinished">Password errata</translation>
+        <translation>Password errata</translation>
     </message>
     <message>
         <source>Connection will be stoped
 Your password is incorrect !!!</source>
-        <translation type="unfinished">La conessione sarà interrotta.
+        <translation>La conessione sarà interrotta.
 La password è errata!!!</translation>
     </message>
     <message>
         <source>Unable to connect, error of negotiation TLS</source>
-        <translation type="unfinished">Impossibile collegarsi, errore in fase di negoziazione TLS</translation>
+        <translation>Impossibile collegarsi, errore in fase di negoziazione TLS</translation>
     </message>
     <message>
         <source>Disconnection has occured</source>
-        <translation type="unfinished">Disconessione</translation>
+        <translation>Disconessione</translation>
     </message>
 </context>
 <context>
@@ -1587,59 +1588,59 @@ La password è errata!!!</translation>
     </message>
     <message>
         <source>This dialog box allows you to manage installed modules. Modules are responsible for numerous vital features like playing sounds or message encryption. You can load (or unload) them by double-clicking on their names.</source>
-        <translation type="unfinished"></translation>
+        <translation>Questa finestra di dialogo permette amministrazione dei moduli installati.  Questi moduli servono per svolgere moltitudine funzioni come riproduzione suoni o cifratura messaggi. Se vuoi attivare (o disattivare) modulo, basta cliccare due volte sul suo nome. I moduli statici non possono essere disattivati.</translation>
     </message>
     <message>
         <source>Module name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nome del modulo</translation>
     </message>
     <message>
         <source>Module type</source>
-        <translation type="unfinished"></translation>
+        <translation>Tipo del modulo</translation>
     </message>
     <message>
         <source>State</source>
-        <translation type="unfinished"></translation>
+        <translation>Lo stato</translation>
     </message>
     <message>
         <source>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Depends on:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Conflicts with:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Provides:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Modulo:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Dipende da:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Va in conflitto con:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Procura:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Autore:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Descrizione:&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Chiudi</translation>
+        <translation>&amp;Chiudi</translation>
     </message>
     <message>
         <source>Dynamic</source>
-        <translation type="unfinished"></translation>
+        <translation>Dinamico</translation>
     </message>
     <message>
         <source>Not loaded</source>
-        <translation type="unfinished"></translation>
+        <translation>Non caricato</translation>
     </message>
     <message>
         <source>&lt;b&gt;Module: &lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Modulo: &lt;/b&gt;</translation>
     </message>
     <message>
         <source>&lt;br/&gt;&lt;b&gt;Depends on: &lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;br/&gt;&lt;b&gt;Dipende da: &lt;/b</translation>
     </message>
     <message>
         <source>&lt;br/&gt;&lt;b&gt;Conflicts with: &lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;br/&gt;&lt;b&gt;Va in conflitto con: &lt;/b&gt;</translation>
     </message>
     <message>
         <source>&lt;br/&gt;&lt;b&gt;Provides: &lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;br/&gt;&lt;b&gt;Procura: &lt;/b&gt;</translation>
     </message>
     <message>
         <source>&lt;br/&gt;&lt;b&gt;Author: &lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;br/&gt;&lt;b&gt;Autore: &lt;/b&gt;</translation>
     </message>
     <message>
         <source>&lt;br/&gt;&lt;b&gt;Description: &lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;br/&gt;&lt;b&gt;Descrizione: &lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -1678,7 +1679,7 @@ Probabilmente Modulo non è compatibile.</translation>
     </message>
     <message>
         <source>Module %1 conflicts with: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Modulo %1 va in conflitto con: %2</translation>
     </message>
 </context>
 <context>
@@ -1729,30 +1730,30 @@ Probabilmente Modulo non è compatibile.</translation>
     </message>
     <message>
         <source>This dialog box allows you to manage your personal information, for example your name, surname or age.</source>
-        <translation type="unfinished"></translation>
+        <translation>Questa finestra di dialogo permette di amministrare i tuoi dati personali come nome, cognome, età, sesso.</translation>
     </message>
     <message>
         <source>Your personal information</source>
-        <translation type="unfinished"></translation>
+        <translation>Tuoi dat personali</translation>
     </message>
     <message>
         <source>&amp;Save</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Salva</translation>
     </message>
     <message>
         <source>&amp;Reload</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ricarica</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Chiudi</translation>
+        <translation>&amp;Chiudi</translation>
     </message>
 </context>
 <context>
     <name>PixmapPreview</name>
     <message>
         <source>This is not an image</source>
-        <translation type="unfinished"></translation>
+        <translation>Questo non è un immagine</translation>
     </message>
 </context>
 <context>
@@ -1797,37 +1798,38 @@ Ora è possibile aggiungere i vostri amici alla lista dei contatti.</translation
     </message>
     <message>
         <source>This dialog box allows you to register a new account.</source>
-        <translation type="unfinished"></translation>
+        <translation>Questa finestra di dialogo permette la registrazione nuovo acconto.</translation>
     </message>
     <message>
         <source>Email</source>
-        <translation type="unfinished">E-mail</translation>
+        <translation>E-mail</translation>
     </message>
     <message>
         <source>New email:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nuovo e-mail:</translation>
     </message>
     <message>
         <source>New password:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nuova password:</translation>
     </message>
     <message>
         <source>Retype new password:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ripeti passwoed:</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Chiudi</translation>
+        <translation>&amp;Chiudi</translation>
     </message>
     <message>
         <source>Error data typed in required fields.
 
 Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new password&quot;) should be the same!</source>
-        <translation type="unfinished"></translation>
+        <translation>Dati errati nei campi.
+Le password devo esser identiche !</translation>
     </message>
     <message>
         <source>An error has occured while registration. Please try again later.</source>
-        <translation type="unfinished"></translation>
+        <translation>Errore durante la registrazione. Devi riprovare più tardi.</translation>
     </message>
 </context>
 <context>
@@ -1846,7 +1848,7 @@ Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new pa
     </message>
     <message>
         <source>Password reminded</source>
-        <translation type="unfinished"></translation>
+        <translation>Ricordi password</translation>
     </message>
 </context>
 <context>
@@ -1965,26 +1967,26 @@ Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new pa
     </message>
     <message>
         <source>from</source>
-        <translation type="unfinished"></translation>
+        <translation>da</translation>
     </message>
     <message>
         <source>to</source>
-        <translation type="unfinished"></translation>
+        <translation>a</translation>
     </message>
     <message>
         <source>No results</source>
-        <translation type="unfinished"></translation>
+        <translation>Non trovato</translation>
     </message>
     <message>
         <source>There were no results of your search</source>
-        <translation type="unfinished"></translation>
+        <translation>isultato nullo della ricerca</translation>
     </message>
 </context>
 <context>
     <name>SelectFont</name>
     <message>
         <source>Select</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleziona</translation>
     </message>
 </context>
 <context>
@@ -2072,31 +2074,31 @@ Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new pa
     </message>
     <message>
         <source>Unregistation was successful. Now you don&apos;t have any GG number :(</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancellazione account terminata con successo. Adesso no hai più numero GG:(</translation>
     </message>
     <message>
         <source>This dialog box allows you to unregister your account. Be aware of using this option. It will permanently delete your UIN and you will not be able to use it later!</source>
-        <translation type="unfinished"></translation>
+        <translation>Questa finestra di dialogo permette di cancellare it tuo account GG. Devi essere consapevole, che il tuo account GG sarà cancellato e non potrai più utilizzarlo !</translation>
     </message>
     <message>
         <source>UIN and password</source>
-        <translation type="unfinished"></translation>
+        <translation>Numero GG e password</translation>
     </message>
     <message>
         <source>UIN:</source>
-        <translation type="unfinished"></translation>
+        <translation>Numero GG:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation type="unfinished">Password:</translation>
+        <translation>Password:</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Chiudi</translation>
+        <translation>&amp;Chiudi</translation>
     </message>
     <message>
         <source>An error has occured while unregistration. Please try again later.</source>
-        <translation type="unfinished"></translation>
+        <translation>Errore durante cancellazione account. Devi riprovare più tardi.</translation>
     </message>
 </context>
 <context>
@@ -2298,11 +2300,11 @@ Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new pa
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Chiudi</translation>
+        <translation>&amp;Chiudi</translation>
     </message>
     <message>
         <source>This dialog box allows you to view and edit information about the selected contact.</source>
-        <translation type="unfinished"></translation>
+        <translation>Questa finestra di dialogo permette di cambiare informazioni circa il contatto.</translation>
     </message>
 </context>
 <context>
@@ -2323,134 +2325,134 @@ Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new pa
     <name>UserlistImportExport</name>
     <message>
         <source>Import / export userlist</source>
-        <translation type="unfinished"></translation>
+        <translation>Import / Export Lista contatti</translation>
     </message>
     <message>
         <source>This dialog box allows you to import and export your buddy list to a server or a file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Questa finestra di dialogo permette di salvare o caricale la tua lista contatti su server Gadu-Gadu, oppure nel file.</translation>
     </message>
     <message>
         <source>Import userlist</source>
-        <translation type="unfinished">importa lista contatti</translation>
+        <translation>importa lista contatti</translation>
     </message>
     <message>
         <source>UIN</source>
-        <translation type="unfinished">Numero GG</translation>
+        <translation>Numero GG</translation>
     </message>
     <message>
         <source>Nickname</source>
-        <translation type="unfinished"></translation>
+        <translation>Nick</translation>
     </message>
     <message>
         <source>Disp. nick</source>
-        <translation type="unfinished">Visualizza Nick</translation>
+        <translation>Visualizza Nick</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation type="unfinished">Nome</translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <source>Surname</source>
-        <translation type="unfinished">Cognome</translation>
+        <translation>Cognome</translation>
     </message>
     <message>
         <source>Mobile no.</source>
-        <translation type="unfinished">Cell no.</translation>
+        <translation>Cell no.</translation>
     </message>
     <message>
         <source>Group</source>
-        <translation type="unfinished">Gruppo</translation>
+        <translation>Gruppo</translation>
     </message>
     <message>
         <source>Email</source>
-        <translation type="unfinished">E-mail</translation>
+        <translation>E-mail</translation>
     </message>
     <message>
         <source>&amp;Fetch userlist</source>
-        <translation type="unfinished">&amp;Scarica la lista deicontatti</translation>
+        <translation>&amp;Carica la lista dei contatti</translation>
     </message>
     <message>
         <source>&amp;Import from file</source>
-        <translation type="unfinished">&amp;Importazione dal file</translation>
+        <translation>&amp;Importazione dal file</translation>
     </message>
     <message>
         <source>&amp;Save results</source>
-        <translation type="unfinished">&amp;Salva i risultati</translation>
+        <translation>&amp;Salva i risultati</translation>
     </message>
     <message>
         <source>&amp;Merge results</source>
-        <translation type="unfinished">&amp;Unisci risultati</translation>
+        <translation>&amp;Unisci risultati</translation>
     </message>
     <message>
         <source>Export userlist</source>
-        <translation type="unfinished">Esportazione lista dei contatti</translation>
+        <translation>Esportazione lista dei contatti</translation>
     </message>
     <message>
         <source>%1 entries will be exported</source>
-        <translation type="unfinished">%1 contatti sarnno esportati</translation>
+        <translation>%1 contatti sarnno esportati</translation>
     </message>
     <message>
         <source>Se&amp;nd userlist</source>
-        <translation type="unfinished"></translation>
+        <translation>Ma&amp;nda la lista</translation>
     </message>
     <message>
         <source>&amp;Delete userlist</source>
-        <translation type="unfinished">&amp;Cancella la lista contatti</translation>
+        <translation>&amp;Cancella la lista contatti</translation>
     </message>
     <message>
         <source>&amp;Export to file</source>
-        <translation type="unfinished">Salva in fil&amp;e</translation>
+        <translation>Salva in fil&amp;e</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Chiudi</translation>
+        <translation>&amp;Chiudi</translation>
     </message>
     <message>
         <source>Import error</source>
-        <translation type="unfinished">Errore scaricamento Lista contatti</translation>
+        <translation>Errore scaricamento Lista contatti</translation>
     </message>
     <message>
         <source>The application encountered an internal error
 The import userlist from file was unsuccessful</source>
-        <translation type="unfinished">L&apos;applicazione ha generatoun errore interno
+        <translation>L&apos;applicazione ha generatoun errore interno
 L&apos;importazione della lista contatti è fallita</translation>
     </message>
     <message>
         <source>Export completed</source>
-        <translation type="unfinished">Esportazione completata</translation>
+        <translation>Esportazione completata</translation>
     </message>
     <message>
         <source>Your userlist has been successfully exported to file</source>
-        <translation type="unfinished">La vostra lista contatti è stata salvata con successo in un file</translation>
+        <translation>La vostra lista contatti è stata salvata con successo in un file</translation>
     </message>
     <message>
         <source>Export error</source>
-        <translation type="unfinished">Errore di espotazione</translation>
+        <translation>Errore di espotazione</translation>
     </message>
     <message>
         <source>The application encountered an internal error
 The export userlist to file was unsuccessful</source>
-        <translation type="unfinished">L&apos;applicazione ha generato un errore interno
+        <translation>L&apos;applicazione ha generato un errore interno
 Salvataggio lista contatti fallito</translation>
     </message>
     <message>
         <source>Your userlist has been successfully exported to server</source>
-        <translation type="unfinished">La vostra lista dei contatti è stata esportata con successo sul server GG</translation>
+        <translation>La vostra lista dei contatti è stata esportata con successo sul server GG</translation>
     </message>
     <message>
         <source>The application encountered an internal error
 The export was unsuccessful</source>
-        <translation type="unfinished">L&apos;applicazione ha incontrato un errore interno
+        <translation>L&apos;applicazione ha incontrato un errore interno
 L&apos;esportazione è fallita</translation>
     </message>
     <message>
         <source>Your userlist has been successfully deleted on server</source>
-        <translation type="unfinished"></translation>
+        <translation>La tua lista contatti è stata cancellata con successo su server</translation>
     </message>
     <message>
         <source>The application encountered an internal error
 The delete userlist on server was unsuccessful</source>
-        <translation type="unfinished">L&apos;applicazione ha generato un errore interno
+        <translation>L&apos;applicazione ha generato un errore interno
 Cancellazione lista contatti su server GG fallita</translation>
     </message>
 </context>

@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Autoresponder options</source>
-        <translation>Configuracione riposta automatica</translation>
+        <translation>Configurazione riposta automatica</translation>
     </message>
     <message>
         <source>Autoanswer text:</source>
@@ -19,7 +19,7 @@
     </message>
     <message>
         <source>Choose status:</source>
-        <translation>Scegliere status:</translation>
+        <translation>Scegli status:</translation>
     </message>
     <message>
         <source>Status invisible</source>

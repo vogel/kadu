@@ -71,7 +71,7 @@
         <source>Provider gateway page looks strange. It&apos;s probably temporary disabled
 or has beed changed too much to parse it correctly.</source>
         <translation>La pagina del Gateway del fornitore sembra sconosciuta.
-Probabilmente è temporaneamente disabilitata, o sono state cambiate le regole accesso.</translation>
+Probabilmente è temporaneamente disabilitata, o sono state cambiate le regole d&apos;accesso.</translation>
     </message>
     <message>
         <source>You exceeded your daily limit</source>
@@ -79,7 +79,7 @@ Probabilmente è temporaneamente disabilitata, o sono state cambiate le regole a
     </message>
     <message>
         <source>Text from the picture is incorrect</source>
-        <translation>Il testo dall&apos;immagine errato</translation>
+        <translation>Il testo d&apos;immagine errato</translation>
     </message>
     <message>
         <source>The receiver has to enable SMS STANDARD service</source>
@@ -100,7 +100,7 @@ Probabilmente è temporaneamente disattivata, o sono state cambiate le reole acc
     </message>
     <message>
         <source>Provider gateway results page looks strange. SMS was probably NOT sent.</source>
-        <translation>La pagina di risultati del Gateway del operatore GSM sembra sconosciuta. SMS probabilmente NON trasmesso.</translation>
+        <translation>La pagina dei risultati del Gateway del operatore GSM sembra sconosciuta. SMS probabilmente NON trasmesso.</translation>
     </message>
 </context>
 </TS>
