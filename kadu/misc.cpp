@@ -135,14 +135,14 @@ void escapeSpecialCharacters(QString &msg) {
 
 QString formatGGMessage(const QString &msg, int formats_length, void *formats) {
 	QString mesg, tmp;
-	bool bold, italic, underline, color;
+	bool bold, italic, underline, color, inspan;
 	char *cformats = (char *)formats;
 	struct gg_msg_richtext_format *actformat;
 	struct gg_msg_richtext_color *actcolor;
 	int pos, idx;
 
 	kdebug("formatGGMessage()\n");
-	bold = italic = underline = color = false;
+	bold = italic = underline = color = inspan = false;
 	pos = 0;
 	if (formats_length) {
 		while (formats_length) {
@@ -154,51 +154,27 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats) {
 				pos = actformat->position;
 				}
 			else {
-				if (actformat->font & GG_FONT_BOLD) {
-					if (!bold) {
-						mesg.append("<B>");
-						bold = true;
+				if (inspan)
+					mesg.append("</span>");
+				if (actformat->font) {
+					inspan = true;
+					mesg.append("<span style=\"");
+					if (actformat->font & GG_FONT_BOLD)
+						mesg.append("font-weight:600;");
+					if (actformat->font & GG_FONT_ITALIC)
+						mesg.append("font-style:italic;");
+					if (actformat->font & GG_FONT_UNDERLINE)
+						mesg.append("text-decoration:underline;");
+					if (actformat->font & GG_FONT_COLOR) {
+						mesg.append("color:");
+						actcolor = (struct gg_msg_richtext_color *)(cformats
+							+ sizeof(struct gg_msg_richtext_format));
+						mesg.append(QColor(actcolor->red, actcolor->green, actcolor->blue).name());
 						}
 					}
 				else
-					if (bold) {
-						mesg.append("</B>");
-						bold = false;
-						}
-				if (actformat->font & GG_FONT_ITALIC) {
-					if (!italic) {
-						mesg.append("<I>");
-						italic = true;
-						}
-					}
-				else
-					if (italic) {
-						mesg.append("</I>");
-						italic = false;
-						}
-				if (actformat->font & GG_FONT_UNDERLINE) {
-					if (!underline) {
-						mesg.append("<U>");
-						underline = true;
-						}
-					}
-				else
-					if (underline) {
-						mesg.append("</U>");
-						underline = false;
-						}
-				if (actformat->font & GG_FONT_COLOR) {
-					actcolor = (struct gg_msg_richtext_color *)(cformats
-						+ sizeof(struct gg_msg_richtext_format));
-					mesg.append(QString("<FONT color=\"%1\">").arg(
-						QColor(actcolor->red, actcolor->green, actcolor->blue).name()));
-					color = true;
-					}
-				else
-					if (color) {
-						mesg.append("</FONT>");
-						color = false;
-						}
+					inspan = false;
+				mesg.append("\">");
 				cformats += sizeof(gg_msg_richtext_format);
 				formats_length -= sizeof(gg_msg_richtext_format);
 				if (actformat->font & GG_FONT_IMAGE) {
@@ -219,6 +195,8 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats) {
 			escapeSpecialCharacters(tmp);
 			mesg.append(tmp);
 			}
+		if (inspan)
+			mesg.append("</span>");
 		}
 	else {
 		mesg = msg;
@@ -371,7 +349,7 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 //	mesg.replace(QRegExp("#"), "<");
 //	mesg.replace(QRegExp("#"), ">");
 
-	kdebug("unformatGGMessage():\n%s\n", mesg.latin1());
+	kdebug("unformatGGMessage():\n%s\n", unicode2latin(mesg).data());
 	return mesg;
 }
 
