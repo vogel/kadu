@@ -501,7 +501,13 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 					break;
 				case 'd':
 					i++;
-					pe.str=ule.description;
+					if(config_file.readNumEntry("General", "UIN") == ule.uin &&
+							! ifStatusWithDescription(getActualStatus()))
+						pe.str=QString::null;
+					else
+						pe.str=ule.description;
+
+					//pe.str=ule.description;
 				 	if (escape)
 			 			escapeSpecialCharacters(pe.str);
 					if(config_file.readBoolEntry("Look", "ShowMultilineDecs")) {

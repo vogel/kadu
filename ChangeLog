@@ -161,6 +161,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * drobne porz±dki przy htmlu (joi)
 * dodano opcje konfiguracji modu³ów do skryptu Instaluj z wykorzystaniem programu dialog. (Ron_K/Sad Mephisto)
 * poprawka odtwarzania d¼wiêków przez modu³y (joi)
+* wlasne informacje w panelu informacyjnym sa pokazywane prawidlowo (michal)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
