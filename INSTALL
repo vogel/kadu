@@ -1,18 +1,17 @@
-Instrukcja instalacji dla wersji 0.3.0 lub nowszej
+Instrukcja instalacji dla wersji 0.3.8 lub nowszej
 
-Aby zainstalowaæ Kadu ze ¼róde³ przeczytaj dokumentacje która siê
-znajduje na strnie http://kadu.net/index_doc.html
-Nastepnie spróbuj u¿yæ jednego z kreatorów:
- ./Instaluj -> tryb tekstowy - zalecany dla poczatkujacych
- ./Instaluj.tcl -> tryb graficzny wymaga jednak znajomosci systemu
-  (gdzie sie co ma zainstalowane) no i TCL-a w wersji minimum 8.3
+Aby zainstalowaæ Kadu ze ¼róde³ przeczytaj dokumentacjê, która siê
+znajduje na stronie http://www.kadu.net/index.php?page=docs
+Nastêpnie spróbuj u¿yæ kreatora:
+ ./Instaluj
 
-W przeciwnym wypadku:
-1. w kadu zrobiæ ./configure ; make i modliæ siê, ¿eby przesz³o ;>
-   ewentualnie posi³kowaæ siê np. --with-qt-dir=/¶cie¿ka
-2. jako root make install i zapamiêtaæ, gdzie co le¿y, ¿eby potem wpisaæ do
-   konfiga.
-
+W przypadku problemów zainstaluj Kadu rêcznie:
+1. vi .config - wybierz modu³y, które chcesz instalowaæ stawiaj±c przy nich
+   literê 'm' je¿eli chcesz je skompilowaæ jako modu³y dynamiczne lub 'y' je¿eli
+   chcesz je wkompilowaæ na sta³e w binarkê Kadu (we¼ pod uwagê zale¿no¶ci!)
+2. zrób ./configure ; make
+   ewentualnie mo¿na posi³kowaæ siê np. --with-includes=/¶cie¿ka --with-libs=/¶cie¿ka
+   lub pozosta³ymi opcjami configure (listê dostaniesz dziêki opcji --help)
+3. jako root make install 
+   (np. poprzez su -c make install)
 proste? proste ;>
-
-Wiêcej informacji mo¿esz znale¼æ w pliku doc/install.html
