@@ -157,6 +157,23 @@ AC_DEFUN(FIND_AVAILABLE_MODULES,[
 	cd ..
 ])
 
+AC_DEFUN(FIND_AVAILABLE_ICON_THEMES,[
+	available_icon_themes=
+	cd varia/themes/icons
+	for dir in *; do \
+		if test -f $dir/icons.conf; then \
+			available_icon_themes="$available_icon_themes $dir"; \
+		fi; \
+	done
+	for file in *.web; do \
+		dir=`basename $file .web`; \
+		if test ! -f $dir/icons.conf; then \
+			available_icon_themes="$available_icon_themes $dir"; \
+		fi; \
+	done
+	cd ../../..
+])
+
 AC_DEFUN(CHECK_MODULES_CONFIGURATION,[
 	static_modules=
 	shared_modules=
@@ -177,6 +194,24 @@ AC_DEFUN(CHECK_MODULES_CONFIGURATION,[
 	rm .temp
 ])
 
+AC_DEFUN(CHECK_ICON_THEMES_CONFIGURATION,[
+	enabled_icon_themes=
+	disabled_icon_themes=
+	. ./.config; \
+	for i_t in $available_icon_themes; do \
+		echo "option=\$icons_$i_t" > .temp; \
+		. ./.temp; \
+		if test -z "$option"; then \
+			option=y; \
+		fi; \
+		case "$option" in
+			y) enabled_icon_themes="$enabled_icon_themes $i_t";; \
+			*) disabled_icon_themes="$disabled_icon_themes $i_t";; \
+		esac; \
+	done; \
+	rm .temp
+])
+
 AC_DEFUN(PROCESS_MODULE_SPEC_FILES,[
 	echo
 	echo " ******************************************"
@@ -188,7 +223,7 @@ AC_DEFUN(PROCESS_MODULE_SPEC_FILES,[
 		if test -f modules/$mod.web; then \
 			if test -f modules/$mod/.autodownloaded -o ! -f modules/$mod/spec; then \
 				cd modules; \
-				if ! ./download_module $mod; then \
+				if ! ../varia/scripts/autodownload $mod module; then \
 					AC_MSG_ERROR([$mod download failed!]); \
 				fi; \
 				cd ..; \
@@ -243,6 +278,24 @@ AC_DEFUN(PROCESS_MODULE_SPEC_FILES,[
 				static_modules_ldflags="$static_modules_ldflags $MODULE_LDFLAGS"; \
 			else \
 				echo -n "$MODULE_LDFLAGS" > modules/$mod/ldflags; \
+			fi; \
+		fi; \
+	done
+])
+
+AC_DEFUN(PROCESS_ICON_THEMES,[
+	echo
+	echo " **********************************************"
+	echo " * Configuring icon themes, please wait . . . *"
+	echo " **********************************************"
+	for i_t in $enabled_icon_themes; do \
+		if test -f varia/themes/icons/$i_t.web; then \
+			if test -f varia/themes/icons/$i_t/.autodownloaded -o ! -f varia/themes/icons/$i_t/icons.conf; then \
+				cd varia/themes/icons; \
+				if ! ../../scripts/autodownload $i_t "icon theme"; then \
+					AC_MSG_ERROR([$i_t download failed!]); \
+				fi; \
+				cd ../../..; \
 			fi; \
 		fi; \
 	done
@@ -495,6 +548,13 @@ AC_SUBST(static_modules_ldflags)
 AC_SUBST(STATIC_MODULES_DECLS)
 AC_SUBST(STATIC_MODULES_REGRS)
 
+# Icon themes support
+FIND_AVAILABLE_ICON_THEMES()
+CHECK_ICON_THEMES_CONFIGURATION()
+PROCESS_ICON_THEMES()
+AC_SUBST(enabled_icon_themes)
+
+#
 MY_SUBDIRS="$MY_SUBDIRS modules kadu translations varia"
 AC_SUBST(MY_SUBDIRS)
 
@@ -552,6 +612,9 @@ echo
 echo "   Static modules:   $static_modules"
 echo "   Shared modules:   $shared_modules"
 echo "   Disabled modules: $disabled_modules"
+echo
+echo "   Enabled icon themes:  $enabled_icon_themes"
+echo "   Disabled icon themes: $disabled_icon_themes"
 echo
 echo " Run make now (Linux) or gmake (FreeBSD and others) to compile Kadu."
 echo

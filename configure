@@ -314,7 +314,7 @@ ac_includes_default="\
 #endif"
 
 ac_subdirs_all="$ac_subdirs_all libgadu"
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE CXX CXXFLAGS LDFLAGS CPPFLAGS ac_ct_CXX EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CXXDEPMODE CC CFLAGS ac_ct_CC CCDEPMODE CPP EGREP PTHREAD_CPPFLAGS PTHREAD_LDFLAGS PTHREAD_LIBS PNG_LIBS QT_INCLUDES QT_LIBS QT_MOC_DIR LIBOBJS GADU_LIBS GADU_INCLUDES enable_pheaders PHEADERS_ENABLED_TRUE PHEADERS_ENABLED_FALSE shared_modules static_modules static_modules_ldflags STATIC_MODULES_DECLS STATIC_MODULES_REGRS MY_SUBDIRS subdirs LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE CXX CXXFLAGS LDFLAGS CPPFLAGS ac_ct_CXX EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CXXDEPMODE CC CFLAGS ac_ct_CC CCDEPMODE CPP EGREP PTHREAD_CPPFLAGS PTHREAD_LDFLAGS PTHREAD_LIBS PNG_LIBS QT_INCLUDES QT_LIBS QT_MOC_DIR LIBOBJS GADU_LIBS GADU_INCLUDES enable_pheaders PHEADERS_ENABLED_TRUE PHEADERS_ENABLED_FALSE shared_modules static_modules static_modules_ldflags STATIC_MODULES_DECLS STATIC_MODULES_REGRS enabled_icon_themes MY_SUBDIRS subdirs LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -6531,7 +6531,7 @@ _ACEOF
 		if test -f modules/$mod.web; then \
 			if test -f modules/$mod/.autodownloaded -o ! -f modules/$mod/spec; then \
 				cd modules; \
-				if ! ./download_module $mod; then \
+				if ! ../varia/scripts/autodownload $mod module; then \
 					{ { echo "$as_me:$LINENO: error: $mod download failed!" >&5
 echo "$as_me: error: $mod download failed!" >&2;}
    { (exit 1); exit 1; }; }; \
@@ -6818,6 +6818,62 @@ echo "$as_me: error: Additional module configuration command failed!" >&2;}
 
 
 
+# Icon themes support
+
+	available_icon_themes=
+	cd varia/themes/icons
+	for dir in *; do \
+		if test -f $dir/icons.conf; then \
+			available_icon_themes="$available_icon_themes $dir"; \
+		fi; \
+	done
+	for file in *.web; do \
+		dir=`basename $file .web`; \
+		if test ! -f $dir/icons.conf; then \
+			available_icon_themes="$available_icon_themes $dir"; \
+		fi; \
+	done
+	cd ../../..
+
+
+	enabled_icon_themes=
+	disabled_icon_themes=
+	. ./.config; \
+	for i_t in $available_icon_themes; do \
+		echo "option=\$icons_$i_t" > .temp; \
+		. ./.temp; \
+		if test -z "$option"; then \
+			option=y; \
+		fi; \
+		case "$option" in
+			y) enabled_icon_themes="$enabled_icon_themes $i_t";; \
+			*) disabled_icon_themes="$disabled_icon_themes $i_t";; \
+		esac; \
+	done; \
+	rm .temp
+
+
+	echo
+	echo " **********************************************"
+	echo " * Configuring icon themes, please wait . . . *"
+	echo " **********************************************"
+	for i_t in $enabled_icon_themes; do \
+		if test -f varia/themes/icons/$i_t.web; then \
+			if test -f varia/themes/icons/$i_t/.autodownloaded -o ! -f varia/themes/icons/$i_t/icons.conf; then \
+				cd varia/themes/icons; \
+				if ! ../../scripts/autodownload $i_t "icon theme"; then \
+					{ { echo "$as_me:$LINENO: error: $i_t download failed!" >&5
+echo "$as_me: error: $i_t download failed!" >&2;}
+   { (exit 1); exit 1; }; }; \
+				fi; \
+				cd ../../..; \
+			fi; \
+		fi; \
+	done
+
+
+
+#
 MY_SUBDIRS="$MY_SUBDIRS modules kadu translations varia"
 
 
@@ -7574,6 +7630,7 @@ s,@static_modules@,$static_modules,;t t
 s,@static_modules_ldflags@,$static_modules_ldflags,;t t
 s,@STATIC_MODULES_DECLS@,$STATIC_MODULES_DECLS,;t t
 s,@STATIC_MODULES_REGRS@,$STATIC_MODULES_REGRS,;t t
+s,@enabled_icon_themes@,$enabled_icon_themes,;t t
 s,@MY_SUBDIRS@,$MY_SUBDIRS,;t t
 s,@subdirs@,$subdirs,;t t
 s,@LTLIBOBJS@,$LTLIBOBJS,;t t
@@ -8481,6 +8538,9 @@ echo
 echo "   Static modules:   $static_modules"
 echo "   Shared modules:   $shared_modules"
 echo "   Disabled modules: $disabled_modules"
+echo
+echo "   Enabled icon themes:  $enabled_icon_themes"
+echo "   Disabled icon themes: $disabled_icon_themes"
 echo
 echo " Run make now (Linux) or gmake (FreeBSD and others) to compile Kadu."
 echo

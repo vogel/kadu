@@ -1,0 +1,76 @@
+#!/bin/sh
+if test $# != 2; then
+	echo
+	echo "Downloads and unpacks Kadu module, icon theme, sound theme or other."
+	echo "Usage: autodownload <item_name> <item_type>"
+	echo
+	exit 1
+fi
+
+echo
+echo -e "\033[32m>>>\033[0m Downloading $1 $2"
+echo
+
+if test -f ../VERSION; then
+	KADU_VERSION=`cat ../VERSION`
+elif test -f ../../VERSION; then
+	KADU_VERSION=`cat ../../VERSION`
+else
+	KADU_VERSION=`cat ../../../VERSION`
+fi
+
+ITEM_WEBSITE=`cat $1.web`
+if test -z $ITEM_WEBSITE; then
+	echo -e "\033[31m!!!\033[0m ERROR: Homepage for $1 $2 is unknown"
+	echo
+	exit 1
+fi
+
+if ! wget -N $ITEM_WEBSITE/kadu-$KADU_VERSION-$1.href; then
+	echo -e "\033[31m!!!\033[0m ERROR: Downloading of $1 $2 href-file failed"
+	echo
+	exit 1
+fi
+ITEM_HREF=`cat kadu-$KADU_VERSION-$1.href`
+
+if ! wget -N $ITEM_HREF; then
+	echo -e "\033[31m!!!\033[0m ERROR: Downloading of $1 $2 package failed"
+	echo
+	exit 1
+fi
+
+echo
+echo -e "\033[32m>>>\033[0m Unpacking $1 $2"
+echo
+
+rm -rf $1
+ITEM_HREF_EXT=`expr "$ITEM_HREF" : '.*\.\(.*\)'`
+if test "$ITEM_HREF_EXT" = gz; then
+	TAR_OPTION=z
+elif test "$ITEM_HREF_EXT" = bz2; then
+	TAR_OPTION=j
+else
+	echo -e "\033[31m!!!\033[0m ERROR: Unpacking $1 $2 package failed: not supported archive format"
+	echo
+	exit 1
+fi
+ITEM_HREF_NAME=`basename $ITEM_HREF`
+if ! tar -x${TAR_OPTION}f "$ITEM_HREF_NAME"; then
+	echo -e "\033[31m!!!\033[0m ERROR: Unpacking $1 $2 package failed"
+	echo
+	exit 1
+fi
+if ! test -d "$1"; then
+	ITEM_HREF_NAME_WITHOUT_EXT=`expr "$ITEM_HREF_NAME" : '\([^.]\+\)\..*'`
+	if test -d "$ITEM_HREF_NAME_WITHOUT_EXT"; then
+		mv "$ITEM_HREF_NAME_WITHOUT_EXT" "$1"
+	else
+		echo -e "\033[31m!!!\033[0m ERROR: Unpacking $1 $2 package failed: doesn't contain required directory"
+		echo
+		exit 1
+	fi
+fi
+touch $1/.autodownloaded
+
+echo -e "\033[32m>>>\033[0m $2 downloaded and unpacked successfully"
+echo

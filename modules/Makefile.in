@@ -97,6 +97,7 @@ VERSION = @VERSION@
 am__include = @am__include@
 am__quote = @am__quote@
 enable_pheaders = @enable_pheaders@
+enabled_icon_themes = @enabled_icon_themes@
 install_sh = @install_sh@
 shared_modules = @shared_modules@
 static_modules = @static_modules@

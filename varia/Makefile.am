@@ -1,13 +1,16 @@
 
-install-data-local:
-
+install-data-local: uninstall-local
 	$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/themes/sounds/default/"
 	$(INSTALL_DATA) themes/sounds/default/*.wav "$(DESTDIR)/$(datadir)/kadu/themes/sounds/default"
 	$(INSTALL_DATA) themes/sounds/default/sound.conf "$(DESTDIR)/$(datadir)/kadu/themes/sounds/default"
 
-	$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/themes/icons/default/"
-	$(INSTALL_DATA) themes/icons/default/*.png "$(DESTDIR)/$(datadir)/kadu/themes/icons/default"
-	$(INSTALL_DATA) themes/icons/default/icons.conf "$(DESTDIR)/$(datadir)/kadu/themes/icons/default"
+	$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/themes/icons/"
+	@for i_t in $(enabled_icon_themes); do \
+		echo -e "\033[32m>>>\033[0m Installing $$i_t icon theme ..."; \
+		$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/themes/icons/$$i_t"; \
+		$(INSTALL_DATA) themes/icons/$$i_t/icons.conf "$(DESTDIR)/$(datadir)/kadu/themes/icons/$$i_t"; \
+		$(INSTALL_DATA) themes/icons/$$i_t/*.png "$(DESTDIR)/$(datadir)/kadu/themes/icons/$$i_t"; \
+	done
 
 	$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/themes/emoticons/"	
 	$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/themes/emoticons/gadu-gadu/"
@@ -25,7 +28,7 @@ install-data-local:
 
 uninstall-local:
 	rm -f "$(DESTDIR)/$(datadir)/kadu/themes/sounds/default"/*
-	rm -f "$(DESTDIR)/$(datadir)/kadu/themes/icons/default"/*
+	rm -rf "$(DESTDIR)/$(datadir)/kadu/themes/icons"/*
 	rm -f "$(DESTDIR)/$(datadir)/kadu/themes/emoticons/gadu-gadu/1"/*
 	rm -f "$(DESTDIR)/$(datadir)/kadu/themes/emoticons/gadu-gadu/2"/*
 	rm -f "$(DESTDIR)/$(bindir)/kadu-mozilla"
