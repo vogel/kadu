@@ -100,7 +100,10 @@ void AutoAwayTimer::checkIdleTime()
 {
 	static int kbdirqs = 0;
 	static int mouseirqs = 0;
-	int actkbdirqs, actmouseirqs;
+	static int i8042irqs = 0;
+	int actkbdirqs   = 0;
+	int actmouseirqs = 0;
+	int acti8042irqs = 0;
 
 //	sprawdzenie czy wzrosla liczba obsluzonych przerwan klawiatury lub myszki
 	QFile f("/proc/interrupts");
@@ -109,6 +112,10 @@ void AutoAwayTimer::checkIdleTime()
 		QString line;
 		QStringList strlist;
 		while (!stream.atEnd() && (line = stream.readLine()) != QString::null) {
+			if (line.contains(QRegExp("i8042"))) {
+				strlist = QStringList::split(" ", line);
+				acti8042irqs += strlist[1].toUInt();
+				}
 			if (line.contains(QRegExp("keyboard"))) {
 				strlist = QStringList::split(" ", line);
 				actkbdirqs = strlist[1].toUInt();
@@ -119,12 +126,13 @@ void AutoAwayTimer::checkIdleTime()
 				}
 			}
 		f.close();
-		if (actkbdirqs == kbdirqs && actmouseirqs == mouseirqs)
+		if (actkbdirqs == kbdirqs && actmouseirqs == mouseirqs && acti8042irqs == i8042irqs)
 			idletime++;
 		else
 			idletime = 0;
 		kbdirqs = actkbdirqs;
 		mouseirqs = actmouseirqs;
+		i8042irqs = acti8042irqs;
 		}
 	else
 		idletime++;

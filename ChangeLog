@@ -92,6 +92,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   oraz wyszarzanie, gdy nie mozna wyslac klucza (adrian)
 * dodana mo¿liwo¶æ kopiowania hyperlinka w oknie rozmowy (chilek)
 * na³o¿ona ³ata joi-a pokazuj±ca w oknach rozmowy opisy emotikonek (chilek)
+* zaaplikowany patch michala rozbudowujacy autoaway o obsluge klawiatury
+  i myszki PS/2 pod linuxem 2.6.x (adrian)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
