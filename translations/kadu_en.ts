@@ -154,10 +154,6 @@ If you leave blank, default settings will be used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Conference window title prefix</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>syntax:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -527,19 +523,7 @@ What would you like to do?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Enable dock icon</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start docked</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Private status</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show Inactive users</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -608,6 +592,30 @@ What would you like to do?</source>
     </message>
     <message>
         <source>Show status button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Max image size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mouse buttons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Left button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Middle button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Right button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show inactive users</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -743,6 +751,10 @@ What would you like to do?</source>
         <source>&amp;Cancel</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Insert image</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ChatSlots</name>
@@ -860,17 +872,6 @@ What would you like to do?</source>
     </message>
     <message>
         <source>File transfered %1%</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>DccVoiceDialog</name>
-    <message>
-        <source>Voice chat</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Stop</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1069,6 +1070,22 @@ Your password is incorrect !!!</source>
         <source>Color dialog</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Nothing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete hint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete all hints</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>History</name>
@@ -1241,6 +1258,13 @@ Your password is incorrect !!!</source>
     </message>
 </context>
 <context>
+    <name>ImageDialog</name>
+    <message>
+        <source>Images</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Kadu</name>
     <message>
         <source>Update information</source>
@@ -1268,10 +1292,6 @@ Your password is incorrect !!!</source>
     </message>
     <message>
         <source>Send file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Voice chat</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1365,19 +1385,7 @@ Check your internet connection.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Information</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>File has been transferred sucessfully.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1516,14 +1524,6 @@ Check your internet connection.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;b&gt;Module:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;b&gt;Depends on:&lt;/b&gt;&lt;br&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;br&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;b&gt;Description&lt;/b&gt;:&lt;br&gt;%2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Static</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1533,6 +1533,22 @@ Check your internet connection.</source>
     </message>
     <message>
         <source>Loaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;%1&lt;br/&gt;&lt;b&gt;Depends on:&lt;/b&gt;&lt;br/&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;br/&gt;&lt;b&gt;Conflicts with:&lt;/b&gt;&lt;br/&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;br/&gt;&lt;b&gt;Provides:&lt;/b&gt;&lt;br/&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;br/&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br/&gt;%1&lt;br/&gt;&lt;b&gt;Description&lt;/b&gt;:&lt;br/&gt;%2</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1566,6 +1582,10 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     </message>
     <message>
         <source>Module %1 cannot be deactivated because it is used now</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Module %1 conflicts with: %2</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1621,6 +1641,13 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     </message>
     <message>
         <source>&amp;Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PixmapPreview</name>
+    <message>
+        <source>This is not an image</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1804,14 +1831,6 @@ Now add your friends to the userlist.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>No results</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>There were no results of your search</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Add User</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1821,6 +1840,14 @@ Now add your friends to the userlist.</source>
     </message>
     <message>
         <source>&amp;Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>from</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>to</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1882,14 +1909,6 @@ Now add your friends to the userlist.</source>
     <name>ToolBar</name>
     <message>
         <source>Main toolbar</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>TrayIcon</name>
-    <message>
-        <source>Left click - hide/show window
-Middle click or Left click- next message</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2354,19 +2373,7 @@ of size </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Connect error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Could not open file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source> wants to talk with you. Do you accept it?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Incoming voice chat</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

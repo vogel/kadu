@@ -268,20 +268,8 @@ Wybierz jedną z poniższych opcji:</translation>
         <translation>Wyłączając ustaw opis:</translation>
     </message>
     <message>
-        <source>Enable dock icon</source>
-        <translation>Ikona w panelu dokującym</translation>
-    </message>
-    <message>
-        <source>Start docked</source>
-        <translation>Uruchom zminimalizowany</translation>
-    </message>
-    <message>
         <source>Private status</source>
         <translation>Tylko dla znajomych</translation>
-    </message>
-    <message>
-        <source>Show Inactive users</source>
-        <translation>Pokaż niedostępne kontakty</translation>
     </message>
     <message>
         <source>Hints</source>
@@ -448,10 +436,6 @@ If you leave blank, default settings will be used.</source>
 Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation>
     </message>
     <message>
-        <source>Conference window title prefix</source>
-        <translation>Prefix tytułu okna konferencji</translation>
-    </message>
-    <message>
         <source>syntax:</source>
         <translation> składnia: </translation>
     </message>
@@ -615,6 +599,30 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <source>Show status button</source>
         <translation>Pokaż przycisk statusów</translation>
     </message>
+    <message>
+        <source>Max image size</source>
+        <translation>Max rozmiar obrazu</translation>
+    </message>
+    <message>
+        <source>Mouse buttons</source>
+        <translation>Klawisze myszy</translation>
+    </message>
+    <message>
+        <source>Left button</source>
+        <translation>Lewy klawisz</translation>
+    </message>
+    <message>
+        <source>Middle button</source>
+        <translation>Środkowy klawisz</translation>
+    </message>
+    <message>
+        <source>Right button</source>
+        <translation>Prawy klawisz</translation>
+    </message>
+    <message>
+        <source>Show inactive users</source>
+        <translation>Pokaż nie aktywne kontakty</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -748,6 +756,10 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <source>Application encountered network error.</source>
         <translation>Błąd sieci.</translation>
     </message>
+    <message>
+        <source>Insert image</source>
+        <translation>Wstaw obraz</translation>
+    </message>
 </context>
 <context>
     <name>ChatSlots</name>
@@ -866,17 +878,6 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     <message>
         <source>File transfered %1%</source>
         <translation>Transmisja pliku %1%</translation>
-    </message>
-</context>
-<context>
-    <name>DccVoiceDialog</name>
-    <message>
-        <source>Voice chat</source>
-        <translation>Rozmowa głosowa</translation>
-    </message>
-    <message>
-        <source>&amp;Stop</source>
-        <translation>&amp;Stop</translation>
     </message>
 </context>
 <context>
@@ -1075,6 +1076,22 @@ Twoje hasło jest nieprawidłowe!!!</translation>
         <source>In bottom</source>
         <translation>W dół</translation>
     </message>
+    <message>
+        <source>Nothing</source>
+        <translation>Nic</translation>
+    </message>
+    <message>
+        <source>Open chat</source>
+        <translation>Otwórz okno rozmowy</translation>
+    </message>
+    <message>
+        <source>Delete hint</source>
+        <translation>Kasuj dymek</translation>
+    </message>
+    <message>
+        <source>Delete all hints</source>
+        <translation>Kasuj wszystkie dymki</translation>
+    </message>
 </context>
 <context>
     <name>History</name>
@@ -1248,6 +1265,13 @@ by zmiany odniosły skutek</translation>
     </message>
 </context>
 <context>
+    <name>ImageDialog</name>
+    <message>
+        <source>Images</source>
+        <translation>Obrazy</translation>
+    </message>
+</context>
+<context>
     <name>Kadu</name>
     <message>
         <source>Update information</source>
@@ -1370,20 +1394,8 @@ Check your internet connection.</source>
 Sprawdź swoje połączenie internetowe.</translation>
     </message>
     <message>
-        <source>Information</source>
-        <translation>Informacja</translation>
-    </message>
-    <message>
         <source>File has been transferred sucessfully.</source>
         <translation>Transfer pliku zakończony pomyślnie.</translation>
-    </message>
-    <message>
-        <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation>Błąd</translation>
     </message>
     <message>
         <source>File transfer error!</source>
@@ -1454,10 +1466,6 @@ Sprawdź swoje połączenie internetowe.</translation>
         <translation>Tylko dla znajomych</translation>
     </message>
     <message>
-        <source>Voice chat</source>
-        <translation>Rozmowa głosowa</translation>
-    </message>
-    <message>
         <source>&amp;Change password/email</source>
         <translation>Zmień &amp;hasło/email</translation>
     </message>
@@ -1525,14 +1533,6 @@ Sprawdź swoje połączenie internetowe.</translation>
         <translation>Informacje</translation>
     </message>
     <message>
-        <source>&lt;b&gt;Module:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;b&gt;Depends on:&lt;/b&gt;&lt;br&gt;</source>
-        <translation>&lt;b&gt;Moduł:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;b&gt;Jest zależny od:&lt;/b&gt;&lt;br&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;br&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;b&gt;Description&lt;/b&gt;:&lt;br&gt;%2</source>
-        <translation>&lt;br&gt;&lt;b&gt;Autor:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;b&gt;Opis:&lt;/b&gt;&lt;br&gt;%2</translation>
-    </message>
-    <message>
         <source>Static</source>
         <translation>Statyczne</translation>
     </message>
@@ -1543,6 +1543,22 @@ Sprawdź swoje połączenie internetowe.</translation>
     <message>
         <source>Loaded</source>
         <translation>Załadowane</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;%1&lt;br/&gt;&lt;b&gt;Depends on:&lt;/b&gt;&lt;br/&gt;</source>
+        <translation>&lt;b&gt;Moduł:&lt;/b&gt;&lt;br/&gt;%1&lt;br/&gt;&lt;b&gt;Jest zależny od:&lt;/b&gt;&lt;br/&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;br/&gt;&lt;b&gt;Conflicts with:&lt;/b&gt;&lt;br/&gt;</source>
+        <translation>&lt;br/&gt;&lt;b&gt;Konflikt z:&lt;/b&gt;&lt;br/&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;br/&gt;&lt;b&gt;Provides:&lt;/b&gt;&lt;br/&gt;</source>
+        <translation>&lt;br/&gt;&lt;b&gt;Dostarcza:&lt;/b&gt;&lt;br/&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;br/&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br/&gt;%1&lt;br/&gt;&lt;b&gt;Description&lt;/b&gt;:&lt;br/&gt;%2</source>
+        <translation>&lt;br/&gt;&lt;b&gt;Autor:&lt;/b&gt;&lt;br/&gt;%1&lt;br/&gt;&lt;b&gt;Opis&lt;/b&gt;:&lt;br/&gt;%2</translation>
     </message>
 </context>
 <context>
@@ -1578,6 +1594,10 @@ Być może nie jest to moduł kompatybilny z Kadu</translation>
     <message>
         <source>Module %1 cannot be deactivated because it is used now</source>
         <translation>Moduł %1 nie może być zdeaktywowany ponieważ jest obecnie w użyciu</translation>
+    </message>
+    <message>
+        <source>Module %1 conflicts with: %2</source>
+        <translation>Moduł %1 koliduje z: %2</translation>
     </message>
 </context>
 <context>
@@ -1633,6 +1653,13 @@ Być może nie jest to moduł kompatybilny z Kadu</translation>
     <message>
         <source>&amp;Cancel</source>
         <translation>&amp;Anuluj</translation>
+    </message>
+</context>
+<context>
+    <name>PixmapPreview</name>
+    <message>
+        <source>This is not an image</source>
+        <translation>To nie jest obraz</translation>
     </message>
 </context>
 <context>
@@ -1818,14 +1845,6 @@ Teraz możesz dodać znajomych do listy kontaktów.</translation>
         <translation>Wyszukiwanie zakończone</translation>
     </message>
     <message>
-        <source>No results</source>
-        <translation>Brak wyników</translation>
-    </message>
-    <message>
-        <source>There were no results of your search</source>
-        <translation>Nie znaleziono użytkowników</translation>
-    </message>
-    <message>
         <source>Add User</source>
         <translation>Dodaj użytk.</translation>
     </message>
@@ -1836,6 +1855,14 @@ Teraz możesz dodać znajomych do listy kontaktów.</translation>
     <message>
         <source>&amp;Chat</source>
         <translation>&amp;Rozmowa</translation>
+    </message>
+    <message>
+        <source>from</source>
+        <translation>od</translation>
+    </message>
+    <message>
+        <source>to</source>
+        <translation>do</translation>
     </message>
 </context>
 <context>
@@ -1897,16 +1924,6 @@ Teraz możesz dodać znajomych do listy kontaktów.</translation>
     <message>
         <source>Main toolbar</source>
         <translation>Mój pasek narzędziowy</translation>
-    </message>
-</context>
-<context>
-    <name>TrayIcon</name>
-    <message>
-        <source>Left click - hide/show window
-Middle click or Left click- next message</source>
-        <translation>Lewy przycisk - Ukryj/Pokaż Kadu
-Lewy lub Środ. przycisk - Odbierz wiadomość
-Prawy przycisk - Ustaw status</translation>
     </message>
 </context>
 <context>
@@ -2376,24 +2393,12 @@ o rozmiarze </translation>
         <translation>Anuluj</translation>
     </message>
     <message>
-        <source>Connect error</source>
-        <translation>Błąd połączenia</translation>
-    </message>
-    <message>
         <source>Could not open file</source>
         <translation>Problem z otwarciem pliku</translation>
     </message>
     <message>
         <source>open file</source>
         <translation>otwórz plik</translation>
-    </message>
-    <message>
-        <source> wants to talk with you. Do you accept it?</source>
-        <translation> chce rozmawiać z Tobą. Akceptujesz?</translation>
-    </message>
-    <message>
-        <source>Incoming voice chat</source>
-        <translation>Przychodzaca rozmowa głosowa</translation>
     </message>
 </context>
 </TS>

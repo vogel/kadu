@@ -260,20 +260,8 @@ Was wollen sie nun tun?</translation>
         <translation>Beim Ausschalten setze Beschreibung:</translation>
     </message>
     <message>
-        <source>Enable dock icon</source>
-        <translation>Ikone in der Programm-Andockleiste</translation>
-    </message>
-    <message>
-        <source>Start docked</source>
-        <translation>Starte minimiert</translation>
-    </message>
-    <message>
         <source>Private status</source>
         <translation>Status &quot;Nur für Bekannte&quot;</translation>
-    </message>
-    <message>
-        <source>Show Inactive users</source>
-        <translation>Zeige die Unerreichbaren</translation>
     </message>
     <message>
         <source>Hints</source>
@@ -438,10 +426,6 @@ If you leave blank, default settings will be used</source>
 If you leave blank, default settings will be used.</source>
         <translation>Dieser Text wird vor der Syntax gezeigt.
 Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
-    </message>
-    <message>
-        <source>Conference window title prefix</source>
-        <translation>Prefix der Titelleiste des Konferenz-Fensters</translation>
     </message>
     <message>
         <source>syntax:</source>
@@ -615,6 +599,30 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
         <source>Show status button</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Max image size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mouse buttons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Left button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Middle button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Right button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show inactive users</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -748,6 +756,10 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
         <source>Application encountered network error.</source>
         <translation>Netzfehler.</translation>
     </message>
+    <message>
+        <source>Insert image</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ChatSlots</name>
@@ -866,17 +878,6 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     <message>
         <source>File transfered %1%</source>
         <translation>Datei transferiert %1%</translation>
-    </message>
-</context>
-<context>
-    <name>DccVoiceDialog</name>
-    <message>
-        <source>Voice chat</source>
-        <translation>Telephonat</translation>
-    </message>
-    <message>
-        <source>&amp;Stop</source>
-        <translation>&amp;Stop</translation>
     </message>
 </context>
 <context>
@@ -1075,6 +1076,22 @@ Dein Passwort ist falsch!!!</translation>
         <source>In bottom</source>
         <translation>hinunter</translation>
     </message>
+    <message>
+        <source>Nothing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete hint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete all hints</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>History</name>
@@ -1247,6 +1264,13 @@ Dein Passwort ist falsch!!!</translation>
     </message>
 </context>
 <context>
+    <name>ImageDialog</name>
+    <message>
+        <source>Images</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Kadu</name>
     <message>
         <source>Update information</source>
@@ -1369,20 +1393,8 @@ Check your internet connection.</source>
 Überprüfe deine Internet-Verbindung.</translation>
     </message>
     <message>
-        <source>Information</source>
-        <translation>Information</translation>
-    </message>
-    <message>
         <source>File has been transferred sucessfully.</source>
         <translation>Transfer der Datei gelungen.</translation>
-    </message>
-    <message>
-        <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation>Fehler</translation>
     </message>
     <message>
         <source>File transfer error!</source>
@@ -1453,10 +1465,6 @@ Check your internet connection.</source>
         <translation>Nur für Bekannte</translation>
     </message>
     <message>
-        <source>Voice chat</source>
-        <translation>Telephonat</translation>
-    </message>
-    <message>
         <source>&amp;Change password/email</source>
         <translation>Passwort/Email &amp;ändern</translation>
     </message>
@@ -1524,14 +1532,6 @@ Check your internet connection.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;b&gt;Module:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;b&gt;Depends on:&lt;/b&gt;&lt;br&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;br&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;b&gt;Description&lt;/b&gt;:&lt;br&gt;%2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Static</source>
         <translation type="unfinished">statische</translation>
     </message>
@@ -1541,6 +1541,22 @@ Check your internet connection.</source>
     </message>
     <message>
         <source>Loaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;%1&lt;br/&gt;&lt;b&gt;Depends on:&lt;/b&gt;&lt;br/&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;br/&gt;&lt;b&gt;Conflicts with:&lt;/b&gt;&lt;br/&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;br/&gt;&lt;b&gt;Provides:&lt;/b&gt;&lt;br/&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;br/&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br/&gt;%1&lt;br/&gt;&lt;b&gt;Description&lt;/b&gt;:&lt;br/&gt;%2</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1575,6 +1591,10 @@ Vielleicht ist es kein Kadu-kompatibles Modul.</translation>
     </message>
     <message>
         <source>Module %1 cannot be deactivated because it is used now</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Module %1 conflicts with: %2</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1631,6 +1651,13 @@ Vielleicht ist es kein Kadu-kompatibles Modul.</translation>
     <message>
         <source>&amp;Cancel</source>
         <translation>&amp;Abbrechen</translation>
+    </message>
+</context>
+<context>
+    <name>PixmapPreview</name>
+    <message>
+        <source>This is not an image</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1816,14 +1843,6 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
         <translation>Suche beendet</translation>
     </message>
     <message>
-        <source>No results</source>
-        <translation>Keine Ergebnisse</translation>
-    </message>
-    <message>
-        <source>There were no results of your search</source>
-        <translation>Benutzer wurden nicht gefunden</translation>
-    </message>
-    <message>
         <source>Add User</source>
         <translation>Benutzer hinzufügen</translation>
     </message>
@@ -1833,6 +1852,14 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
     </message>
     <message>
         <source>&amp;Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>from</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>to</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1895,16 +1922,6 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
     <message>
         <source>Main toolbar</source>
         <translation type="unfinished">Mein Toolbar</translation>
-    </message>
-</context>
-<context>
-    <name>TrayIcon</name>
-    <message>
-        <source>Left click - hide/show window
-Middle click or Left click- next message</source>
-        <translation>Linke Maustaste - Zeige / Verstecke Kadu
-Linke o. mittlere Maustaste - Öffne die Nachricht
-Rechte Maustaste - Setze Status</translation>
     </message>
 </context>
 <context>
@@ -2370,24 +2387,12 @@ mit Größe</translation>
         <translation>Abbruch</translation>
     </message>
     <message>
-        <source>Connect error</source>
-        <translation>Verbindungsfehler</translation>
-    </message>
-    <message>
         <source>Could not open file</source>
         <translation>Problem beim Öffnen der Datei</translation>
     </message>
     <message>
         <source>open file</source>
         <translation>Öffne Datei</translation>
-    </message>
-    <message>
-        <source> wants to talk with you. Do you accept it?</source>
-        <translation> will mit dir reden. Erlauben?</translation>
-    </message>
-    <message>
-        <source>Incoming voice chat</source>
-        <translation>Es kommt ein Telefonat an</translation>
     </message>
 </context>
 </TS>
