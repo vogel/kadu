@@ -27,9 +27,7 @@ class SoundSlots: public QObject
 		void testSoundFile();
 		void selectedPaths(const QStringList& paths);
 		void muteUnmuteSounds();
-		void playMessage(UinsList senders);
-		void playChat(UinsList senders);
-		void playNotify(const uin_t uin);
+		void playingSound(const QString& file);
 	public:
 		SoundSlots();
 
@@ -50,6 +48,7 @@ class SoundManager : public Themes
 		void messageSound(UinsList senders,const QString& msg,time_t time);
 		void notifySound(const uin_t uin, const unsigned int oldstatus, const unsigned int status);
 
+
 	public:
 		SoundManager(const QString& name, const QString& configname);
 		bool getMute();
@@ -59,11 +58,14 @@ class SoundManager : public Themes
 		static void initModule();
 
 	signals:
+		void playFile(const QString& file);
+
 		void playOnMessage(UinsList senders);
 		void playOnChat(UinsList senders);
 		void playOnNotify(const uin_t uin);
 
+
 };
 
-extern SoundManager soundmanager;
+extern SoundManager sound_manager;
 #endif
