@@ -222,7 +222,7 @@ class TokenSocketNotifiers : public SocketNotifiers
 		void tokenError();
 };
 
-typedef enum
+enum GaduError
 {
 	ConnectionServerNotFound,
 	ConnectionCannotConnect,
@@ -235,7 +235,7 @@ typedef enum
 	ConnectionUnknow,
 	ConnectionTimeout,
 	Disconnected
-} GaduError;
+};
 
 class GaduSocketNotifiers : public SocketNotifiers
 {
@@ -287,7 +287,7 @@ class GaduSocketNotifiers : public SocketNotifiers
 
 /**
 	Klasa do obs³ugi protoko³u Gadu-Gadu
- **/
+**/
 class GaduProtocol : public QObject
 {
 	Q_OBJECT
