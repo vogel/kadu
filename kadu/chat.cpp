@@ -46,7 +46,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 
 	body = new QTextBrowser(this);
 	body->setFont(QFont(config.fonts.chatFont, config.fonts.chatFontSize));
-	
+
 	QPoint pos = QCursor::pos();
 	
 	if (uins.count() > 1) {
@@ -372,11 +372,9 @@ void Chat::scrollMessages(QString &toadd) {
 
 	body->viewport()->setUpdatesEnabled(false);
 	if (!config.scrolldown)
-//		body->setText(toadd + body->text());
-		body->insertAt(toadd, 0, 0);
+		body->setText(toadd + body->text());
 	else {
-//		body->setText(body->text() + toadd);
-		body->append(toadd);
+		body->setText(body->text() + toadd);
 		body->scrollToBottom();
 		}
 	body->viewport()->setUpdatesEnabled(true);
@@ -426,7 +424,7 @@ void Chat::addMyMessageToHistory() {
 }
 
 void Chat::clearChatWindow(void) {
-	body->setText("");
+	body->clear();
 	totaloccurences = 0;
 }
 
