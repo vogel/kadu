@@ -87,6 +87,21 @@ static void kadu_signal_handler(int s)
 			for (int i = 0; i < num_entries; ++i)
 				fprintf(dbgfile, "[%d] %s\n", i, bt_strings[i]);
 			fprintf(dbgfile, "======= END OF BACKTRACE  ======\n");
+			fflush(dbgfile);
+
+			fprintf(dbgfile, "static modules:\n");
+			QStringList modules = modules_manager->staticModules();
+			
+			CONST_FOREACH(module, modules)
+				fprintf(dbgfile, "> %s\n", (*module).local8Bit().data());
+			fflush(dbgfile);
+
+			fprintf(dbgfile, "loaded modules:\n");
+			modules = modules_manager->loadedModules();
+			CONST_FOREACH(module, modules)
+				fprintf(dbgfile, "> %s\n", (*module).local8Bit().data());
+			fflush(dbgfile);
+
 			fclose(dbgfile);
 		}
 
