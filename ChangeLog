@@ -244,6 +244,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   (mo¿liwo¶æ w³±czenia w konfiguracji) (joi)
 * opcja ignorowania zmian statusów dostêpny->dostêpny, itp. (domy¶lnie w³±czona) (joi)
 * poprawki w module config_wizard - wy³adowuje siê ju¿ prawid³owo (adrian)
+* dodany modu³ ext_info do autodownloadu (adrian)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
