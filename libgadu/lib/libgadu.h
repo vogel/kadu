@@ -1,4 +1,4 @@
-/* $Id: libgadu.h,v 1.39 2003/09/10 08:01:31 chilek Exp $ */
+/* $Id: libgadu.h,v 1.40 2003/09/12 12:08:44 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -124,6 +124,8 @@ struct gg_session {
 	void *ssl;		/* zachowujemy ABI */
 	void *ssl_ctx;
 #endif
+
+	int image_size;		/* maksymalny rozmiar obrazków */
 };
 
 /*
@@ -331,8 +333,9 @@ struct gg_login_params {
 	uint32_t external_addr;		/* adres widziany na zewnatrz */
 	uint16_t external_port;		/* port widziany na zewnatrz */
 	int tls;			/* czy ³±czymy po TLS? */
+	int image_size;			/* maksymalny rozmiar obrazka */
 
-	char dummy[8 * sizeof(int)];	/* miejsce na kolejnych 8 zmiennych,
+	char dummy[7 * sizeof(int)];	/* miejsce na kolejnych 8 zmiennych,
 					 * ¿eby z dodaniem parametru nie 
 					 * zmienia³ siê rozmiar struktury */
 };
@@ -349,6 +352,7 @@ int gg_send_message_confer(struct gg_session *sess, int msgclass, int recipients
 int gg_send_message_confer_richtext(struct gg_session *sess, int msgclass, int recipients_count, uin_t *recipients, const unsigned char *message, const unsigned char *format, int formatlen);
 int gg_send_message_ctcp(struct gg_session *sess, int msgclass, uin_t recipient, const unsigned char *message, int message_len);
 int gg_ping(struct gg_session *sess);
+int gg_userlist_request(struct gg_session *sess, char type, const char *request);
 
 /*
  * enum gg_event_t
@@ -382,7 +386,8 @@ enum gg_event_t {
 	GG_EVENT_PUBDIR50_WRITE,		/* wpisano w³asne dane do katalogu */
 
 	GG_EVENT_STATUS60,		/* kto¶ zmieni³ stan w GG 6.0 */
-	GG_EVENT_NOTIFY60		/* kto¶ siê pojawi³ w GG 6.0 */
+	GG_EVENT_NOTIFY60,		/* kto¶ siê pojawi³ w GG 6.0 */
+	GG_EVENT_USERLIST		/* odpowied¼ listy kontaktów w GG 6.0 */
 };
 
 #define GG_EVENT_SEARCH50_REPLY GG_EVENT_PUBDIR50_SEARCH_REPLY
@@ -529,6 +534,11 @@ struct gg_event {
 			uint8_t *data;		/* dane d¼wiêkowe */
 			int length;		/* ilo¶æ danych d¼wiêkowych */
 		} dcc_voice_data;
+
+		struct {			/* @userlist odpowied¼ listy kontaktów serwera */
+			char type;		/* rodzaj odpowiedzi */
+			char *reply;		/* tre¶æ odpowiedzi */
+		} userlist;
 	} event;
 };
 
@@ -1119,6 +1129,24 @@ struct gg_recv_msg {
 #define GG_PONG 0x0007
 
 #define GG_DISCONNECTING 0x000b
+
+#define GG_USERLIST_REQUEST 0x0016
+
+#define GG_USERLIST_PUT 0x00
+#define GG_USERLIST_GET 0x02
+
+struct gg_userlist_request {
+	uint8_t type;
+} GG_PACKED;
+
+#define GG_USERLIST_REPLY 0x0010
+
+#define GG_USERLIST_PUT_REPLY 0x00
+#define GG_USERLIST_GET_REPLY 0x06
+
+struct gg_userlist_reply {
+	uint8_t type;
+} GG_PACKED;
 
 /*
  * pakiety, sta³e, struktury dla DCC

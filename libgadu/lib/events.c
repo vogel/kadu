@@ -1,4 +1,4 @@
-/* $Id: events.c,v 1.26 2003/09/09 22:20:44 chilek Exp $ */
+/* $Id: events.c,v 1.27 2003/09/12 12:08:44 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -81,6 +81,9 @@ void gg_event_free(struct gg_event *e)
 
 	if (e->type == GG_EVENT_PUBDIR50_SEARCH_REPLY || e->type == GG_EVENT_PUBDIR50_READ || e->type == GG_EVENT_PUBDIR50_WRITE)
 		gg_pubdir50_free(e->event.pubdir50);
+
+	if (e->type == GG_EVENT_USERLIST)
+		free(e->event.userlist.reply);
 	
 	free(e);
 }
@@ -494,6 +497,30 @@ static int gg_watch_fd_connected(struct gg_session *sess, struct gg_event *e)
 			break;
 		}
 
+		case GG_USERLIST_REPLY:
+		{
+			gg_debug(GG_DEBUG_MISC, "// gg_watch_fd_connected() received userlist reply\n");
+
+			if (h->length < 1)
+				break;
+
+			e->type = GG_EVENT_USERLIST;
+			e->event.userlist.type = p[0];
+			e->event.userlist.reply = NULL;
+
+			if (h->length > 1) {
+				if (!(e->event.userlist.reply = malloc(h->length))) {
+					gg_debug(GG_DEBUG_MISC, "// gg_watch_fd_connected() not enough memory for userlist reply\n");
+					goto fail;
+				}
+
+				e->event.userlist.reply[h->length] = 0;
+				memcpy(e->event.userlist.reply, p + 1, h->length - 1);
+			}
+
+			break;
+		}
+
 		default:
 			gg_debug(GG_DEBUG_MISC, "// gg_watch_fd_connected() received unknown packet 0x%.2x\n", h->type);
 	}
@@ -867,6 +894,7 @@ struct gg_event *gg_watch_fd(struct gg_session *sess)
 				}
 
 				close(sess->fd);
+				sess->fd = -1;
 
 #ifdef ETIMEDOUT
 				if (sess->timeout == 0)
@@ -1035,13 +1063,15 @@ struct gg_event *gg_watch_fd(struct gg_session *sess)
 		{
 			struct gg_header *h;			
 			struct gg_welcome *w;
-			struct gg_login l;
-			struct gg_login_ext lext;
+			struct gg_login60 l;
 			unsigned int hash;
 			unsigned char *password = sess->password;
 			int ret;
 			
 			gg_debug(GG_DEBUG_MISC, "// gg_watch_fd() GG_STATE_READING_KEY\n");
+
+			memset(&l, 0, sizeof(l));
+			l.dunno2 = 0xbe;
 
 			/* XXX bardzo, bardzo, bardzo g³upi pomys³ na pozbycie
 			 * siê tekstu wrzucanego przez proxy. */
@@ -1127,17 +1157,15 @@ struct gg_event *gg_watch_fd(struct gg_session *sess)
 			l.status = gg_fix32(sess->initial_status ? sess->initial_status : GG_STATUS_AVAIL);
 			l.version = gg_fix32(sess->protocol_version);
 			l.local_port = gg_fix16(gg_dcc_port);
+			l.image_size = sess->image_size;
 			
 			if (sess->external_addr && sess->external_port > 1023) {
-				memcpy(&lext, &l, sizeof(l));
-				lext.external_ip = sess->external_addr;
-				lext.external_port = sess->external_port;
-				gg_debug(GG_DEBUG_TRAFFIC, "// gg_watch_fd() sending GG_LOGIN_EXT packet\n");
-				ret = gg_send_packet(sess, GG_LOGIN_EXT, &lext, sizeof(lext), sess->initial_descr, (sess->initial_descr) ? strlen(sess->initial_descr) : 0, NULL);
-			} else {
-				gg_debug(GG_DEBUG_TRAFFIC, "// gg_watch_fd() sending GG_LOGIN packet\n");
-				ret = gg_send_packet(sess, GG_LOGIN, &l, sizeof(l), sess->initial_descr, (sess->initial_descr) ? strlen(sess->initial_descr) : 0, NULL);
+				l.external_ip = sess->external_addr;
+				l.external_port = sess->external_port;
 			}
+
+			gg_debug(GG_DEBUG_TRAFFIC, "// gg_watch_fd() sending GG_LOGIN60 packet\n");
+			ret = gg_send_packet(sess, GG_LOGIN60, &l, sizeof(l), sess->initial_descr, (sess->initial_descr) ? strlen(sess->initial_descr) : 0, NULL);
 
 			free(sess->initial_descr);
 			sess->initial_descr = NULL;

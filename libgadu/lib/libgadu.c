@@ -1,4 +1,4 @@
-/* $Id: libgadu.c,v 1.26 2003/09/09 22:20:44 chilek Exp $ */
+/* $Id: libgadu.c,v 1.27 2003/09/12 12:08:44 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -69,7 +69,7 @@ static char rcsid[]
 #ifdef __GNUC__
 __attribute__ ((unused))
 #endif
-= "$Id: libgadu.c,v 1.26 2003/09/09 22:20:44 chilek Exp $";
+= "$Id: libgadu.c,v 1.27 2003/09/12 12:08:44 chilek Exp $";
 #endif 
 
 /*
@@ -723,6 +723,7 @@ struct gg_session *gg_login(const struct gg_login_params *p)
 		sess->protocol_version |= GG_HAS_AUDIO_MASK;
 	sess->client_version = (p->client_version) ? strdup(p->client_version) : NULL;
 	sess->last_sysmsg = p->last_sysmsg;
+	sess->image_size = p->image_size;
 
 	if (p->tls == 1) {
 #ifdef __GG_LIBGADU_HAVE_OPENSSL
@@ -903,6 +904,9 @@ void gg_free_session(struct gg_session *sess)
 		sess->resolver = NULL;
 	}
 #endif
+
+	if (sess->fd != -1)
+		close(sess->fd);
 
 	free(sess);
 }
@@ -1455,6 +1459,22 @@ int gg_remove_notify_ex(struct gg_session *sess, uin_t uin, char type)
 int gg_remove_notify(struct gg_session *sess, uin_t uin)
 {
 	return gg_remove_notify_ex(sess, uin, 3);
+}
+
+/*
+ * gg_userlist_request()
+ *
+ * wysy³a ¿±danie/zapytanie listy kontaktów na serwerze.
+ *
+ *  - sess - identyfikator sesji
+ *  - type - rodzaj zapytania/¿±dania
+ *  - request - tre¶æ zapytania/¿±dania (mo¿e byæ NULL)
+ *
+ * 0, -1
+ */
+int gg_userlist_request(struct gg_session *sess, char type, const char *request)
+{
+	return gg_send_packet(sess, GG_USERLIST_REQUEST, &type, sizeof(type), request, (request) ? strlen(request) : 0, NULL);
 }
 
 /*
