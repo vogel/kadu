@@ -51,6 +51,7 @@ Hint::Hint(QWidget *parent, const QString& text, const QPixmap& pixmap, unsigned
 	label->hide();
 	label->installEventFilter(this);
 	addWidget(label, 1);
+	kdebugf2();
 }
 
 bool Hint::nextSecond(void)
@@ -69,6 +70,7 @@ void Hint::setShown(bool show)
 			icon->show();
 		label->show();
 	}
+	kdebugf2();
 }
 
 void Hint::set(const QFont &font, const QColor &color, const QColor &bgcolor, unsigned int id, bool show)
@@ -88,6 +90,7 @@ void Hint::set(const QFont &font, const QColor &color, const QColor &bgcolor, un
 	label->setPaletteBackgroundColor(bcolor);
 	if (show)
 		label->show();
+	kdebugf2();
 }
 
 bool Hint::eventFilter(QObject *obj, QEvent *ev)
@@ -163,6 +166,7 @@ Hint::~Hint(void)
 	label->hide();
 #endif
 	label->deleteLater();
+	kdebugf2();
 }
 
 HintManager::HintManager()
@@ -182,6 +186,7 @@ HintManager::HintManager()
 
 	hint_timer = new QTimer(this);
 	connect(hint_timer,SIGNAL(timeout()),this,SLOT(oneSecond()));
+	kdebugf2();
 }
 
 void HintManager::setHint(void) {
@@ -206,6 +211,7 @@ void HintManager::setHint(void) {
 			pos_hint.setY(pos_tray.y()-size_hint.height());
 		move(pos_hint);
 	}
+	kdebugf2();
 }
 
 void HintManager::deleteHint(unsigned int id)
@@ -224,6 +230,7 @@ void HintManager::deleteHint(unsigned int id)
 	for (unsigned int i = id; i < hints.count(); i++)
 		hints.at(i)->setId(i);
 	setHint();
+	kdebugf2();
 }
 
 void HintManager::oneSecond(void)
@@ -233,6 +240,7 @@ void HintManager::oneSecond(void)
 	for (unsigned int i = 0; i < hints.count(); i++)
 		if (!(hints.at(i)->nextSecond()))
 			deleteHint(i--);
+	kdebugf2();
 }
 
 void HintManager::leftButtonSlot(unsigned int id)
@@ -249,6 +257,7 @@ void HintManager::leftButtonSlot(unsigned int id)
 			deleteAllHints();
 			break;
 	}
+	kdebugf2();
 }
 
 void HintManager::rightButtonSlot(unsigned int id)
@@ -265,6 +274,7 @@ void HintManager::rightButtonSlot(unsigned int id)
 			deleteAllHints();
 			break;
 	}
+	kdebugf2();
 }
 
 void HintManager::midButtonSlot(unsigned int id)
@@ -281,6 +291,7 @@ void HintManager::midButtonSlot(unsigned int id)
 			deleteAllHints();
 			break;
 	}
+	kdebugf2();
 }
 
 void HintManager::openChat(unsigned int id)
@@ -290,6 +301,7 @@ void HintManager::openChat(unsigned int id)
 	if(senders.size()!=0)
 		chat_manager->openPendingMsgs(senders);
 	deleteHint(id);
+	kdebugf2();
 }
 
 void HintManager::deleteAllHints()
@@ -323,21 +335,25 @@ void HintManager::addHint(const QString& text, const QPixmap& pixmap,  const QFo
 		hint_timer->start(1000);
 	if (isHidden())
 		show();
+	kdebugf2();
 }
 
 void HintManager::addHintError(const QString &error)
 {
 	if (this == NULL)
 		return;
+	kdebugf();
 
 	if (config_file.readBoolEntry("Hints","Errors"))
 		addHint("<b>"+tr("Error:")+"</b> "+error, icons_manager.loadIcon("Blocking"), QFont(config[11][0], config[11][1].toInt()), QColor(config[11][2]), QColor(config[11][3]), config[11][4].toInt());
+	kdebugf2();
 }
 
 void HintManager::addHintNewMsg(const QString &nick, const QString &msg)
 {
 	if (this == NULL)
 		return;
+	kdebugf();
 
 	if (config_file.readBoolEntry("Hints","ShowContentMessage"))
 	{
@@ -351,12 +367,14 @@ void HintManager::addHintNewMsg(const QString &nick, const QString &msg)
 	}
 	else
 		addHint(tr("New message from")+" <b>"+nick+"</b>", icons_manager.loadIcon("Message"), QFont(config[10][0], config[10][1].toInt()), QColor(config[10][2]), QColor(config[10][3]), config[10][4].toInt());
+	kdebugf2();
 }
 
 void HintManager::addHintNewChat(UinsList& senders, const QString &msg)
 {
 	if (this == NULL)
 		return;
+	kdebugf();
 
 	QString nick=userlist.byUinValue(senders[0]).altnick;
 	
@@ -372,12 +390,14 @@ void HintManager::addHintNewChat(UinsList& senders, const QString &msg)
 	}
 	else
 		addHint(tr("Chat with")+" <b>"+nick+"</b>",icons_manager.loadIcon("Message"), QFont(config[9][0], config[9][1].toInt()), QColor(config[9][2]), QColor(config[9][3]), config[9][4].toInt(), &senders);
+	kdebugf2();
 }
 
 void HintManager::addHintStatus(const UserListElement &ule, unsigned int status, unsigned int oldstatus)
 {
 	if (this == NULL)
 		return;
+	kdebugf();
 
 	bool availstatus = isAvailableStatus(status);
 	bool availoldstatus = isAvailableStatus(oldstatus);
@@ -392,6 +412,7 @@ void HintManager::addHintStatus(const UserListElement &ule, unsigned int status,
 				addHint("<b>"+ule.altnick+" </b>"+tr("is available")+"<br> <small>"+QStyleSheet::escape(ule.description)+"</small>", icons_manager.loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
 			else
 				addHint("<b>"+ule.altnick+" </b>"+tr("is available"), icons_manager.loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
+		kdebugf2();
 		return;
 	}
 
@@ -404,6 +425,7 @@ void HintManager::addHintStatus(const UserListElement &ule, unsigned int status,
 				addHint("<b>"+ule.altnick+" </b>"+tr("changed status to")+" <i>"+qApp->translate("@default", statustext[statusnr])+"</i><br/> <small>"+QStyleSheet::escape(ule.description)+"</small>", icons_manager.loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
 			else
 				addHint("<b>"+ule.altnick+" </b>"+tr("changed status to")+" <i>"+qApp->translate("@default", statustext[statusnr])+"</i>", icons_manager.loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
+		kdebugf2();
 		return;
 	}
 
@@ -416,12 +438,15 @@ void HintManager::addHintStatus(const UserListElement &ule, unsigned int status,
 				addHint("<b>"+ule.altnick+" </b>"+tr("is unavailable")+"<br/> <small>"+QStyleSheet::escape(ule.description)+"</small>", icons_manager.loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
 			else
 				addHint("<b>"+ule.altnick+" </b>"+tr("is unavailable"), icons_manager.loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
+		kdebugf2();
 		return;
 	}
+	kdebugf2();
 }
 
 void HintManager::loadConfig(void)
 {
+	kdebugf();
 	config.clear();
 	config.append(QStringList::split(",",config_file.readEntry("Hints","HintOnline")));
 	config.append(QStringList::split(",",config_file.readEntry("Hints","HintOnlineD")));
@@ -437,10 +462,12 @@ void HintManager::loadConfig(void)
 	config.append(QStringList::split(",",config_file.readEntry("Hints","HintError")));
 	useposition = config_file.readBoolEntry("Hints","UseUserPosition");
 	position = config_file.readPointEntry("Hints","HintsPosition");
+	kdebugf2();
 }
 
 void HintManager::setGridOrigin()
 {
+	kdebugf();
 	QPoint detected_pos;
 	emit searchingForPosition(detected_pos);
 	switch(config_file.readNumEntry("Hints","NewHintUnder"))
@@ -468,6 +495,7 @@ void HintManager::setGridOrigin()
 			grid->setOrigin(QGridLayout::TopLeft);
 			break;
 	}
+	kdebugf2();
 }
 
 void HintManager::initModule(void)
@@ -528,6 +556,7 @@ void HintManager::initModule(void)
 	HintManagerSlots *hintmanagerslots = new HintManagerSlots(); 
 	ConfigDialog::registerSlotOnCreate(hintmanagerslots,SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnApply(hintmanagerslots,SLOT(onDestroyConfigDialog()));
+	kdebugf2();
 }
 
 void HintManagerSlots::onCreateConfigDialog()
@@ -666,6 +695,7 @@ void HintManagerSlots::onCreateConfigDialog()
 	connect(sb_timeout,SIGNAL(valueChanged(int)),this,SLOT(changeTimeout(int)));
 	connect(b_useposition,SIGNAL(toggled(bool)),vboxgrp2,SLOT(setEnabled(bool)));
 	connect(b_showcontent,SIGNAL(toggled(bool)),messagegrp,SLOT(setEnabled(bool)));
+	kdebugf2();
 }
 
 void HintManagerSlots::onDestroyConfigDialog()
@@ -713,6 +743,7 @@ void HintManagerSlots::onDestroyConfigDialog()
 	else
 		if (b_hint->isChecked())
 			hintmanager = new HintManager();
+	kdebugf2();
 }
 
 void HintManagerSlots::activatedChanged(int index)

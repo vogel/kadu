@@ -58,6 +58,7 @@ SearchResult::SearchResult(const SearchResult& copyFrom)
 void SearchResult::setData(const char *uin, const char *first, const char *last, const char *nick, const char *born,
 	const char *city, const char *familyName, const char *familyCity, const char *gender, const char *status)
 {
+	kdebugf();
 	Uin = cp2unicode((unsigned char *)uin);
 	First = cp2unicode((unsigned char *)first);
 	Last = cp2unicode((unsigned char *)last);
@@ -72,6 +73,7 @@ void SearchResult::setData(const char *uin, const char *first, const char *last,
 		Gender = atoi(gender);
 	else
 		Gender = 0;
+	kdebugf2();
 }
 
 SearchRecord::SearchRecord()
@@ -123,7 +125,7 @@ void SearchRecord::reqGender(bool female)
 void SearchRecord::reqActive()
 {
 	Active = true;
-};
+}
 
 void SearchRecord::clearData()
 {
@@ -138,6 +140,7 @@ void SearchRecord::clearData()
 	BirthYearTo = "";
 	Gender = 0;
 	Active = false;
+	kdebugf2();
 }
 /* SocketNotifiers */
 
@@ -146,18 +149,22 @@ SocketNotifiers::SocketNotifiers(int fd)
 	kdebugf();
 
 	Fd = fd;
+
+	kdebugf2();
 }
 
 SocketNotifiers::~SocketNotifiers()
 {
 	kdebugf();
-
 	deleteSocketNotifiers();
+	kdebugf2();
 }
 
 void SocketNotifiers::start()
 {
+	kdebugf();
 	createSocketNotifiers();
+	kdebugf2();
 }
 
 void SocketNotifiers::createSocketNotifiers()
@@ -170,6 +177,7 @@ void SocketNotifiers::createSocketNotifiers()
 	Snw = new QSocketNotifier(Fd, QSocketNotifier::Write);
 	connect(Snw, SIGNAL(activated(int)), this, SLOT(dataSent()));
 
+	kdebugf2();
 }
 
 void SocketNotifiers::deleteSocketNotifiers()
@@ -190,6 +198,7 @@ void SocketNotifiers::deleteSocketNotifiers()
 		Snw = NULL;
 	}
 
+	kdebugf2();
 }
 
 void SocketNotifiers::recreateSocketNotifiers()
@@ -198,6 +207,8 @@ void SocketNotifiers::recreateSocketNotifiers()
 
 	deleteSocketNotifiers();
 	createSocketNotifiers();
+
+	kdebugf2();
 }
 
 /* PubdirSocketNotifiers */
@@ -207,12 +218,14 @@ PubdirSocketNotifiers::PubdirSocketNotifiers(struct gg_http *h)
 {
 	kdebugf();
 	H = h;
+	kdebugf2();
 }
 
 PubdirSocketNotifiers::~PubdirSocketNotifiers()
 {
-	deleteSocketNotifiers();
 	kdebugf();
+	deleteSocketNotifiers();
+	kdebugf2();
 }
 
 void PubdirSocketNotifiers::dataReceived()
@@ -221,6 +234,8 @@ void PubdirSocketNotifiers::dataReceived()
 
 	if (H->check & GG_CHECK_READ)
 		socketEvent();
+
+	kdebugf2();
 }
 
 void PubdirSocketNotifiers::dataSent()
@@ -230,6 +245,8 @@ void PubdirSocketNotifiers::dataSent()
 	Snw->setEnabled(false);
 	if (H->check & GG_CHECK_WRITE)
 		socketEvent();
+
+	kdebugf2();
 }
 
 void PubdirSocketNotifiers::socketEvent()
@@ -285,6 +302,7 @@ void PubdirSocketNotifiers::socketEvent()
 			if (H->check & GG_CHECK_WRITE)
 				Snw->setEnabled(true);
 	}
+	kdebugf2();
 }
 
 /* DccSocketNotifier */
@@ -294,6 +312,7 @@ DccSocketNotifiers::DccSocketNotifiers(struct gg_dcc *d)
 {
 	kdebugf();
 	D = d;
+	kdebugf2();
 }
 
 DccSocketNotifiers::~DccSocketNotifiers()
@@ -305,6 +324,7 @@ void DccSocketNotifiers::dataReceived()
 	kdebugf();
 
 	socketEvent();
+	kdebugf2();
 }
 
 void DccSocketNotifiers::dataSent()
@@ -314,6 +334,7 @@ void DccSocketNotifiers::dataSent()
 	Snw->setEnabled(false);
 	if (D->check & GG_CHECK_WRITE)
 		socketEvent();
+	kdebugf2();
 }
 
 void DccSocketNotifiers::socketEvent()
@@ -336,6 +357,7 @@ GaduSocketNotifiers::GaduSocketNotifiers()
 	connect(&event_manager, SIGNAL(systemMessageReceived(QString &, QDateTime &, int, void *)), this,
 		SLOT(proteza_systemMessageReceived(QString &, QDateTime &, int, void *)));
 	connect(&event_manager, SIGNAL(userlistReplyReceived(char, char *)), this, SIGNAL(userlistReplyReceived(char, char *)));
+	kdebugf2();
 }
 
 GaduSocketNotifiers::~GaduSocketNotifiers()
@@ -344,6 +366,7 @@ GaduSocketNotifiers::~GaduSocketNotifiers()
 
 void GaduSocketNotifiers::proteza_connectionFailed(int failure)
 {
+	kdebugf();
 	GaduError err;
 
 	switch (failure)
@@ -359,23 +382,29 @@ void GaduSocketNotifiers::proteza_connectionFailed(int failure)
 	}
 
 	emit error(err);
+	kdebugf2();
 }
 
 void GaduSocketNotifiers::proteza_connectionBroken()
 {
+	kdebugf();
 	emit error(ConnectionUnknow);
+	kdebugf2();
 }
 
 void GaduSocketNotifiers::proteza_systemMessageReceived(QString &message, QDateTime &time, int formats_length, void *formats)
 {
+	kdebugf();
 	QString mesg = time.toString("hh:mm:ss (dd.MM.yyyy): ") + message;
 	emit systemMessageReceived(mesg);
+	kdebugf2();
 }
 
 /* GaduProtocol */
 
 void GaduProtocol::initModule()
 {
+	kdebugf();
 	gadu = new GaduProtocol(kadu, "gadu");
 	
 	QHostAddress ip;
@@ -390,6 +419,7 @@ void GaduProtocol::initModule()
 	gg_proxy_password = NULL;
 
 //	kadu->mainMenu()->insertItem(icons_manager.loadIcon("ResendUserlist"), tr("Resend &userlist"), gadu, SLOT(sendUserList()),0,-1,2);
+	kdebugf2();
 }
 
 GaduProtocol::GaduProtocol(QObject *parent, const char *name) : QObject(parent, name)
@@ -407,6 +437,7 @@ GaduProtocol::GaduProtocol(QObject *parent, const char *name) : QObject(parent, 
 	connect(SocketNotifiers, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)), this, SLOT(newResults(gg_pubdir50_t)));
 	connect(SocketNotifiers, SIGNAL(systemMessageReceived(QString &)), this, SIGNAL(systemMessageReceived(QString &)));
 	connect(SocketNotifiers, SIGNAL(userlistReplyReceived(char, char *)), this, SLOT(userListReplyReceived(char, char *)));
+	kdebugf2();
 }
 
 GaduProtocol::~GaduProtocol()
@@ -414,6 +445,8 @@ GaduProtocol::~GaduProtocol()
 	kdebugf();
 
 	delete SocketNotifiers;
+
+	kdebugf2();
 }
 
 QHostAddress* GaduProtocol::activeServer()
@@ -435,10 +468,13 @@ void GaduProtocol::connectedSlot()
 
 	emit connected();
 	emit statusChanged(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
+
+	kdebugf2();
 }
 
 void GaduProtocol::disconnectedSlot()
 {
+	kdebugf();
 	ConnectionTimeoutTimer::off();
 	
 	if (PingTimer)
@@ -507,6 +543,7 @@ void GaduProtocol::disconnectedSlot()
 
 	emit statusChanged(GG_STATUS_NOT_AVAIL);
 	emit disconnected();
+	kdebugf2();
 }
 
 void GaduProtocol::connectionTimeoutTimerSlot()
@@ -521,6 +558,7 @@ void GaduProtocol::connectionTimeoutTimerSlot()
 		logout();
 		login(RequestedStatusForLogin);
 	}
+	kdebugf2();
 }
 
 void GaduProtocol::errorSlot(GaduError err)
@@ -531,6 +569,7 @@ void GaduProtocol::errorSlot(GaduError err)
 	emit error(err);
 	if(err != Disconnected)
 		login(RequestedStatusForLogin);
+	kdebugf2();
 }
 
 void GaduProtocol::pingNetwork()
@@ -725,6 +764,8 @@ void GaduProtocol::logout()
 	kdebugf();
 
 	disconnectedSlot();
+
+	kdebugf2();
 }
 
 void GaduProtocol::setupProxy()
@@ -908,11 +949,14 @@ bool GaduProtocol::sendImage(UinType uin,const QString& file_name,uint32_t size,
 /* wyszukiwanie w katalogu publicznym */
 
 void GaduProtocol::searchInPubdir(SearchRecord& searchRecord) {
+	kdebugf();
 	searchRecord.FromUin = 0;
 	searchNextInPubdir(searchRecord);
+	kdebugf2();
 }
 
 void GaduProtocol::searchNextInPubdir(SearchRecord& searchRecord) {
+	kdebugf();
 	QString bufYear;
 	gg_pubdir50_t req;
 
@@ -952,6 +996,7 @@ void GaduProtocol::searchNextInPubdir(SearchRecord& searchRecord) {
 
 	searchRecord.Seq = gg_pubdir50(sess, req);
 	gg_pubdir50_free(req);
+	kdebugf2();
 }
 
 void GaduProtocol::newResults(gg_pubdir50_t res)
@@ -998,6 +1043,7 @@ void GaduProtocol::getPersonalInfo(SearchRecord& searchRecord)
 	req = gg_pubdir50_new(GG_PUBDIR50_READ);
 	searchRecord.Seq = gg_pubdir50(sess, req);
 	gg_pubdir50_free(req);
+	kdebugf2();
 }
 
 void GaduProtocol::setPersonalInfo(SearchRecord& searchRecord, SearchResult& newData)
@@ -1026,12 +1072,14 @@ void GaduProtocol::setPersonalInfo(SearchRecord& searchRecord, SearchResult& new
 
 	searchRecord.Seq = gg_pubdir50(sess, req);
 	gg_pubdir50_free(req);
+	kdebugf2();
 }
 
 /* rejestrowanie u¿ytkownika */
 
 bool GaduProtocol::doRegister(QString& mail, QString& password, QString& token_id, QString& token_value)
 {
+	kdebugf();
 	struct gg_http *h = gg_register3(unicode2cp(mail).data(), unicode2cp(password).data(), unicode2cp(token_id).data(), unicode2cp(token_value).data(), 1);
 	if (h)
 	{
@@ -1041,21 +1089,25 @@ bool GaduProtocol::doRegister(QString& mail, QString& password, QString& token_i
 	}
 	else
 		emit registered(false, 0);
+	kdebugf2();
 	return (h!=NULL);
 }
 
 void GaduProtocol::registerDone(bool ok, struct gg_http *h)
 {
+	kdebugf();
 	if (ok)
 		emit registered(true, ((struct gg_pubdir *)h->data)->uin);
 	else
 		emit registered(false, 0);
+	kdebugf2();
 }
 
 /* wyrejestrowywanie u¿ytkownika */
 
 bool GaduProtocol::doUnregister(UinType uin, QString &password, QString& token_id, QString& token_value)
 {
+	kdebugf();
 	struct gg_http* h = gg_unregister3(uin, unicode2cp(password).data(), unicode2cp(token_id).data(), unicode2cp(token_value).data(), 1);
 	if (h)
 	{
@@ -1065,12 +1117,15 @@ bool GaduProtocol::doUnregister(UinType uin, QString &password, QString& token_i
 	}
 	else
 		emit unregistered(false);
+	kdebugf2();
 	return (h!=NULL);
 }
 
 void GaduProtocol::unregisterDone(bool ok, struct gg_http *)
 {
+	kdebugf();
 	emit unregistered(ok);
+	kdebugf2();
 }
 
 /* przypomnienie hasla */
@@ -1088,12 +1143,15 @@ bool GaduProtocol::doRemind(UinType uin, QString& token_id, QString& token_value
 	}
 	else
 		emit reminded(false);
+	kdebugf2();
 	return (h!=NULL);
 }
 
 void GaduProtocol::remindDone(bool ok, struct gg_http *)
 {
+	kdebugf();
 	emit reminded(ok);
+	kdebugf2();
 }
 
 /* zmiana has³a */
@@ -1112,12 +1170,15 @@ bool GaduProtocol::doChangePassword(UinType uin, QString& mail, QString& passwor
 	}
 	else
 		emit passwordChanged(false);
+	kdebugf2();
 	return (h!=NULL);
 }
 
 void GaduProtocol::changePasswordDone(bool ok, struct gg_http *)
 {
+	kdebugf();
 	emit passwordChanged(ok);
+	kdebugf2();
 }
 
 /* lista u¿ytkowników */
@@ -1153,6 +1214,7 @@ QString GaduProtocol::userListToString(const UserList& userList) const
 
 	contacts.replace(QRegExp("(null)"), "");
 
+	kdebugf2();
 	return contacts;
 }
 
@@ -1202,6 +1264,7 @@ void GaduProtocol::streamToUserList(QTextStream& stream, UserList& userList) con
 		e.email = sections[6 + groups];
 		userList.addUser(e);
 	}
+	kdebugf2();
 }
 
 bool GaduProtocol::doExportUserList(const UserList& userList)
@@ -1217,18 +1280,15 @@ bool GaduProtocol::doExportUserList(const UserList& userList)
 	userListClear = false;
 
 	dup = strdup(unicode2std(contacts));
-	if (gg_userlist_request(sess, GG_USERLIST_PUT, dup) == -1)
+	bool success=(gg_userlist_request(sess, GG_USERLIST_PUT, dup)!=-1);
+	if (!success)
 	{
-		free(dup);
 		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol:: gg_userlist_put() failed\n");
 		emit userListExported(false);
-		return false;
 	}
-	else
-	{
-		free(dup);
-		return true;
-	}
+	free(dup);
+	kdebugf2();
+	return success;
 }
 
 bool GaduProtocol::doClearUserList()
@@ -1238,14 +1298,14 @@ bool GaduProtocol::doClearUserList()
 	userListClear = true;
 
 	char *dup = "";
-	if (gg_userlist_request(sess, GG_USERLIST_PUT, dup) == -1)
+	bool success=(gg_userlist_request(sess, GG_USERLIST_PUT, dup) != -1);
+	if (!success)
 	{
 		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol:: gg_userlist_out() failed\n");
 		emit userListCleared(false);
-		return false;
 	}
-	else
-		return true;
+	kdebugf2();
+	return success;
 }
 
 bool GaduProtocol::doImportUserList()
@@ -1254,14 +1314,14 @@ bool GaduProtocol::doImportUserList()
 
 	importReply = "";
 
-	if (gg_userlist_request(sess, GG_USERLIST_GET, NULL) == -1)
+	bool success=(gg_userlist_request(sess, GG_USERLIST_GET, NULL) != -1);
+	if (!success)
 	{
 		UserList empty;
 		emit userListImported(false, empty);
-		return false;
 	}
-	else
-		return true;
+	kdebugf2();
+	return success;
 }
 
 void GaduProtocol::userListReplyReceived(char type, char *reply)
@@ -1310,6 +1370,7 @@ void GaduProtocol::userListReplyReceived(char type, char *reply)
 
 		emit userListImported(true, importedUserList);
 	}
+	kdebugf2();
 }
 
 GaduProtocol* gadu;
