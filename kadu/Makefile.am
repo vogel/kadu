@@ -26,6 +26,7 @@ pixmaps.h \
 register.cpp register.h register_moc.cpp \
 search.cpp search.h search_moc.cpp \
 sms.cpp sms.h sms_moc.cpp \
+sound.cpp sound.h sound_moc.cpp \
 status.cpp status.h status_moc.cpp \
 tabbar.cpp tabbar.h tabbar_moc.cpp \
 userbox.cpp userbox.h userbox_moc.cpp \
