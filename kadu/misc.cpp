@@ -2238,7 +2238,9 @@ KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
 	connect(this, SIGNAL(highlighted(const QString&)), this, SLOT(linkHighlighted(const QString &)));
 	//QString s("Hello");
 	//linkHighlighted(s);
+#if QT_VERSION >= 0x030100
 	setWrapPolicy(QTextEdit::AtWordOrDocumentBoundary);
+#endif
 }
 
 void KaduTextBrowser::maybeTip(const QPoint &c) {
