@@ -263,7 +263,7 @@ void HintManager::addHint(const QString& text, const QPixmap& pixmap,  const QFo
 	setHint();
 	if (!hint_timer->isActive())
 		hint_timer->start(1000);
-	if (!isShown())
+	if (isHidden())
 		show();
 }
 
