@@ -15,6 +15,8 @@
 * prawdopodobnie rozwi±zany problem z zapisywaniem has³a
 * poprawiony b³±d wystêpuj±cy gdy ustawiony jest nieistniej±cy ju¿
   zestaw emotów.
+* dockhint->trayhint(poprawki, ulepszczenia i przygotowania do dodania powiadomien
+  o dostêpnych osobach i ew. b³êdach podczas ³±czenia siê z serwerem GG.
 
 +++ wersja 0.3.3-rc1
 * sms.cpp ma szansê kompilowaæ siê na Qt < 3.0.5
