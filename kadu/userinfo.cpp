@@ -115,7 +115,7 @@ UserInfo::UserInfo (const QString & name, QDialog* parent , const QString &altni
 		case GG_STATUS_INVISIBLE2:
 			e_status->setText(i18n("Invisible")); break;
 		case GG_STATUS_BLOCKED:
-			e_status->setText(i18n("Blocked")); break;
+			e_status->setText(i18n("Blocks us")); break;
 		}
 
 	if (!userlist_sent)
