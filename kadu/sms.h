@@ -17,10 +17,7 @@
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include <qprocess.h>
-#include <qthread.h>
-#include <qnetwork.h>
-#include <qurloperator.h>
-#include <qnetworkprotocol.h>
+#include <qsocket.h>
 #include <qimage.h>
 
 class Sms : public QDialog {
@@ -77,13 +74,42 @@ class SmsImageDialog : public QDialog
 		void codeEntered(const QString& code);
 };
 
-class SmsThread : public QObject,public QThread
+class HttpClient : public QSocket
+{
+	Q_OBJECT
+	
+	private:
+		QString Host;
+		QString Path;
+		QByteArray Data;
+		QByteArray PostData;
+		int ContentLength;
+		QString CookieName;
+		QString CookieValue;
+		
+	private slots:
+		void onConnected();
+		void onReadyRead();
+		
+	public:
+		HttpClient(QString host);
+		void get(QString path);
+		void post(QString path,const QByteArray& data);
+		const QByteArray& data();
+		
+	signals:
+		void finished();
+};
+
+class SmsSender : public QObject
 {
 	Q_OBJECT
 
 	private:
-		QUrlOperator* UrlOp;
-		QByteArray Data;
+		QString Number;
+		QString Message;
+		QString Token;
+		HttpClient* Http;
 		enum SmsThreadState
 		{
 			SMS_LOADING_PAGE,
@@ -93,15 +119,12 @@ class SmsThread : public QObject,public QThread
 		SmsThreadState State;
 
 	private slots:
-		void onFinished(QNetworkOperation* op);
+		void onFinished();
 		void onCodeEntered(const QString& code);
-		void onData(const QByteArray& data,QNetworkOperation* op);
-
-	protected:
-		void run();
 
 	public:
-		SmsThread(QObject* parent,const QString& number,const QString& message);
+		SmsSender(QObject* parent,const QString& number,const QString& message);
+		void run();
 };
 
 #endif
