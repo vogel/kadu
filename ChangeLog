@@ -127,6 +127,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * patch Kida dotycz±cy odstêpów miêdzy komponentami w oknie "O programie" (joi)
 * pe³na obs³uga linków w oknie historii, ogólne porz±dki zwi±zane z tym (adrian)
 * linki w panelu informacyjnym (joi)
+* graficzne emotikony w panelu informacyjnym i w historii (joi)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
