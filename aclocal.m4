@@ -835,7 +835,7 @@ Usually this means the macro was only invoked conditionally.])
 fi])])
 
 dnl based on curses.m4 
-dnl $Id: aclocal.m4,v 1.52 2003/09/21 12:07:38 adrian Exp $
+dnl $Id: aclocal.m4,v 1.53 2003/10/10 19:38:49 adrian Exp $
 
 AC_DEFUN(AC_CHECK_OPENSSL,[
   AC_SUBST(OPENSSL_LIBS)
@@ -856,6 +856,7 @@ AC_DEFUN(AC_CHECK_OPENSSL,[
       OPENSSL_LIBS=$($PKGCONFIG --libs openssl)
       OPENSSL_INCLUDES=$($PKGCONFIG --cflags openssl)
       if test "x$OPENSSL_LIBS" != "x" -o "x$OPENSSL_INCLUDES" != "x"; then
+	AC_DEFINE(HAVE_OPENSSL, 1, [define if you have OpenSSL])
 	AC_MSG_RESULT([yes])
         without_openssl=yes
 	have_openssl=yes

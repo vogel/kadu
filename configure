@@ -5707,6 +5707,11 @@ echo $ECHO_N "checking for OpenSSL... $ECHO_C" >&6
       OPENSSL_LIBS=$($PKGCONFIG --libs openssl)
       OPENSSL_INCLUDES=$($PKGCONFIG --cflags openssl)
       if test "x$OPENSSL_LIBS" != "x" -o "x$OPENSSL_INCLUDES" != "x"; then
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_OPENSSL 1
+_ACEOF
+
 	echo "$as_me:$LINENO: result: yes" >&5
 echo "${ECHO_T}yes" >&6
         without_openssl=yes
@@ -5854,7 +5859,7 @@ echo " ******************************************"
 echo
 
 if test "$with_existing_libgadu" = "no"; then
-	ac_configure_args="$ac_configure_args 'CFLAGS_LIBGADU=$libgadu_CFLAGS' --disable-static --enable-shared"
+	ac_configure_args="$ac_configure_args 'CFLAGS_LIBGADU=$libgadu_CFLAGS' --enable-static --disable-shared"
 
 
 subdirs="$subdirs libgadu"
