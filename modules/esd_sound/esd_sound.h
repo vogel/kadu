@@ -2,19 +2,23 @@
 #define KADU_ESD_SOUND_H
 #include <qobject.h>
 #include <qstring.h>
+#include "../sound/sound.h"
 
-class ESDPlayerSlots : public QObject
+class ESDPlayer : public QObject
 {
 	Q_OBJECT
 	public:
-		int sock;
-		ESDPlayerSlots(QObject *parent=0, const char *name=0);
-		~ESDPlayerSlots();
+		ESDPlayer(QObject *parent=0, const char *name=0);
+		~ESDPlayer();
 	private slots:
-		void playSound(const QString &s, bool volCntrl, double vol);
+		void openDevice(int sample_rate, int channels, SoundDevice& device);
+		void closeDevice(SoundDevice device);
+		void playSample(SoundDevice device, const int16_t* data, int length, bool& result);
+		void recordSample(SoundDevice device, int16_t* data, int length, bool& result);
+		void setFlushingEnabled(SoundDevice device, bool enabled);
 };
 
-extern ESDPlayerSlots *esd_player_slots;
+extern ESDPlayer *esd_player;
 
 #endif
 
