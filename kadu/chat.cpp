@@ -1047,7 +1047,7 @@ void Chat::sendMessage(void) {
 			(void *)((char *)(myLastFormats) + sizeof(struct gg_msg_richtext)),0);
 	else
 		escapeSpecialCharacters(myLastMessage);
-	kdebugm(KDEBUG_INFO, "Chat::sendMessage():\n%s\n", myLastMessage.latin1());
+	kdebugm(KDEBUG_INFO, "Chat::sendMessage():\n%s\n", (const char *)unicode2latin(myLastMessage));
 	// zmieniamy unixowe \n na windowsowe \r\n
 	myLastMessage.replace(QRegExp("\r\n"), "\n");
 
