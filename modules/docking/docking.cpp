@@ -143,7 +143,7 @@ void DockingManager::showCurrentStatus(int status)
 {
 	int statusnr = statusGGToStatusNr(status);
 	QPixmap pix = icons_manager.loadIcon(gg_icons[statusnr]);
-	QString tiptext=tr("Left click - hide/show window\nMiddle click or Left click- next message");
+	QString tiptext=tr("Left click - hide/show window\nMiddle click or Left click- open message");
 		
 	if (!pending.pendingMsgs())
 		emit trayPixmapChanged(pix);

@@ -9,15 +9,22 @@
 <context>
     <name>DockingManager</name>
     <message>
-        <source>Current status:
-%1
-Descrition:
+        <source>
+
+Current status:
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>
+
+Description:
 %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Current status:
-%1</source>
+        <source>Left click - hide/show window
+Middle click or Left click- open message</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
