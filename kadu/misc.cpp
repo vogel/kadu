@@ -71,7 +71,7 @@ QCString unicode2latin(const QString &buf)
 }
 
 QPixmap loadIcon(const QString &filename) {
-	return QPixmap(QString(DATADIR) + "/apps/kadu/icons/" + filename);
+	return QPixmap(QString(DATADIR) + "/kadu/icons/" + filename);
 }
 
 QString printDateTime(const QDateTime &datetime) {

@@ -50,14 +50,14 @@ int main(int argc, char *argv[])
 
 	// ladowanie tlumaczenia
 	QTranslator qt_qm(0);
-	qt_qm.load(QString(DATADIR) + QString("/locale/qt_") + config_file.readEntry("General", "Language", QTextCodec::locale()), ".");
+	qt_qm.load(QString(DATADIR) + QString("/kadu/translations/qt_") + config_file.readEntry("General", "Language", QTextCodec::locale()), ".");
 	a->installTranslator(&qt_qm);
 	QTranslator kadu_qm(0);
-	kadu_qm.load(QString(DATADIR) + QString("/locale/kadu_") + config_file.readEntry("General", "Language", QTextCodec::locale()), ".");
+	kadu_qm.load(QString(DATADIR) + QString("/kadu/translations/kadu_") + config_file.readEntry("General", "Language", QTextCodec::locale()), ".");
 	a->installTranslator(&kadu_qm);
 
 	QString dir;
-	dir = QString(DATADIR) + "/apps/kadu/icons";
+	dir = QString(DATADIR) + "/kadu/icons";
 	icons = new IconsManager(dir);
 	kadu = new Kadu(0, "Kadu");
 	QPixmap *pix = icons->loadIcon("offline");

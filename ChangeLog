@@ -90,6 +90,12 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * konfiguracja: poprawki i mo¿liwo¶æ wyboru jêzyka (pawel_p/adrian)
 * okno rozmowy: guzik wy¶lij jest zamieniany na anuluj je¿eli mamy w³±czon±
   opcje: czekaj na potwierdzenie - okno nie powinno siê ju¿ rozszerzaæ (mast3r)
+* katalog .../share/apps/kadu przenosimy do .../share/kadu - poniewa¿
+  kadu nie jest programem KDE (mast3r)
+* pliki .qm z translacj± instalujemy do .../share/kadu/translations , a nie
+  jak do tej pory do .../share/locale (mast3r)
+* poprawki w debian/ dotycz±ce poprawek z miejscem instalacji
+  niektórych plików kadu (mast3r)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci

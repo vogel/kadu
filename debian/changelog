@@ -8,5 +8,7 @@ kadu (<wersja>) unstable; urgency=low
   * 11.10.2003 - Paczka Kadu nie wymaga juz paczki libgadu poniewaz
 		 kadu linkuje sie statycznie z kompilowana bibliotek±
 		 libgadu w kadu.
+  * 23.10.2003 - Poprawki dotyczace nowej translacji i miejsca instalacji
+		 plikow kadu.
 
  -- Dariusz Jagodzik <mast3r@kadu.net>  Tue, 25 Feb 2003 10:06:51 +0100

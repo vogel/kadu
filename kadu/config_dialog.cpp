@@ -171,7 +171,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 			case CONFIG_PUSHBUTTON:
 			{
 				QPushButton *button =new QPushButton(appHandle->translate("@default",(*i).caption), parent, (*i).name);
-				button->setIconSet(QPixmap(QString(DATADIR)+ "/apps/kadu/icons/" + (*i).defaultS));
+				button->setIconSet(QPixmap(QString(DATADIR)+ "/kadu/icons/" + (*i).defaultS));
 				(*i).widget=button;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				break;
