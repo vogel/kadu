@@ -221,7 +221,6 @@ class GaduSocketNotifiers : public SocketNotifiers
 	private:
 		gg_session *Sess;
 		int socketEventCalls;
-		int eagainCount;
 
 		void connectionFailed(int);
 
@@ -334,6 +333,9 @@ class GaduProtocol : public QObject
 		struct gg_login_params LoginParams;
 		/** Sesja po³±czenia - wymagane przez bibliotekê libgadu **/
 		gg_session* Sess;
+
+		/** czy jeste¶my w trakcie ³±czenia siê z serwerem **/
+		bool whileConnecting;
 
 		QHostAddress DccExternalIP;
 

@@ -277,7 +277,6 @@ void SocketNotifiers::deleteSocketNotifiers()
 
 	if (Snr)
 	{
-//		disconnect(Snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
 		Snr->setEnabled(false);
 		Snr->deleteLater();
 		Snr = NULL;
@@ -285,7 +284,6 @@ void SocketNotifiers::deleteSocketNotifiers()
 
 	if (Snw)
 	{
-//		disconnect(Snw, SIGNAL(activated(int)), this, SLOT(dataSent()));
 		Snw->setEnabled(false);
 		Snw->deleteLater();
 		Snw = NULL;
@@ -534,7 +532,6 @@ GaduSocketNotifiers::GaduSocketNotifiers(QObject *parent, const char *name) : So
 	kdebugf();
 	Sess = 0;
 	socketEventCalls = 0;
-	eagainCount = 0;
 	kdebugf2();
 }
 
@@ -720,23 +717,6 @@ void GaduSocketNotifiers::socketEvent()
 	else if (e->type == GG_EVENT_NONE)
 		kdebugm (KDEBUG_NETWORK, "GG_EVENT_NONE\n");
 
-	if (e->type == GG_EVENT_NONE)
-		++eagainCount;
-	else
-		eagainCount = 0;
-	if (eagainCount > 50)
-	{
-		kdebugm(KDEBUG_ERROR, "ehhh\n");
-		eagainCount = 0;
-		//trzeba jako¶ ³adnie siê tu roz³±czyæ...
-
-//		MessageBox::wrn(tr("Disconnecting network!"));
-//		deleteSocketNotifiers();
-//		emit disconnected();
-//		close(Sess->fd);
-//		Sess->fd = -1;
-	}
-
 	gg_free_event(e);
 	--socketEventCalls;
 	kdebugf2();
@@ -848,6 +828,7 @@ GaduProtocol::GaduProtocol(QObject *parent, const char *name) : QObject(parent, 
 {
 	kdebugf();
 
+	whileConnecting = false;
 	Sess = NULL;
 	CurrentStatus = new GaduStatus();
 	NextStatus = new GaduStatus();
@@ -913,6 +894,11 @@ void GaduProtocol::iWantGoOnline(const QString &desc)
 {
 	kdebugf();
 
+	//nie pozwalamy na zmianê statusu lub ponowne logowanie gdy jeste¶my
+	//w trakcie ³aczenia siê z serwerem, bo serwer zwróci nam g³upoty
+	if (whileConnecting)
+		return;
+
 	if (CurrentStatus->isOffline())
 	{
 		login();
@@ -923,8 +909,7 @@ void GaduProtocol::iWantGoOnline(const QString &desc)
 
 	if (!desc.isEmpty())
 	{
-		unsigned char *pdesc;
-		pdesc = (unsigned char *)strdup(unicode2cp(desc).data());
+		unsigned char *pdesc = (unsigned char *)strdup(unicode2cp(desc).data());
 		gg_change_status_descr(Sess, GG_STATUS_AVAIL_DESCR | friends, (const char *)pdesc);
 		free(pdesc);
 	}
@@ -940,6 +925,10 @@ void GaduProtocol::iWantGoBusy(const QString &desc)
 {
 	kdebugf();
 
+	//patrz iWantGoOnline()
+	if (whileConnecting)
+		return;
+
 	if (CurrentStatus->isOffline())
 	{
 		login();
@@ -950,8 +939,7 @@ void GaduProtocol::iWantGoBusy(const QString &desc)
 
 	if (!desc.isEmpty())
 	{
-		unsigned char *pdesc;
-		pdesc = (unsigned char *)strdup(unicode2cp(desc).data());
+		unsigned char *pdesc = (unsigned char *)strdup(unicode2cp(desc).data());
 		gg_change_status_descr(Sess, GG_STATUS_BUSY_DESCR | friends, (const char *)pdesc);
 		free(pdesc);
 	}
@@ -967,6 +955,10 @@ void GaduProtocol::iWantGoInvisible(const QString &desc)
 {
 	kdebugf();
 
+	//patrz iWantGoOnline()
+	if (whileConnecting)
+		return;
+
 	if (CurrentStatus->isOffline())
 	{
 		login();
@@ -977,8 +969,7 @@ void GaduProtocol::iWantGoInvisible(const QString &desc)
 
 	if (!desc.isEmpty())
 	{
-		unsigned char *pdesc;
-		pdesc = (unsigned char *)strdup(unicode2cp(desc).data());
+		unsigned char *pdesc = (unsigned char *)strdup(unicode2cp(desc).data());
 		gg_change_status_descr(Sess, GG_STATUS_INVISIBLE_DESCR | friends, (const char *)pdesc);
 		free(pdesc);
 	}
@@ -999,8 +990,7 @@ void GaduProtocol::iWantGoOffline(const QString &desc)
 
 	if (!desc.isEmpty())
 	{
-		unsigned char *pdesc;
-		pdesc = (unsigned char *)strdup(unicode2cp(desc).data());
+		unsigned char *pdesc = (unsigned char *)strdup(unicode2cp(desc).data());
 		gg_change_status_descr(Sess, GG_STATUS_NOT_AVAIL_DESCR, (const char *)pdesc);
 		free(pdesc);
 	}
@@ -1094,6 +1084,7 @@ void GaduProtocol::connectedSlot()
 {
 	kdebugf();
 
+	whileConnecting = false;
 	sendUserList();
 
 	/* jezeli sie rozlaczymy albo stracimy polaczenie, proces laczenia sie z serwerami zaczyna sie od poczatku */
@@ -1110,14 +1101,20 @@ void GaduProtocol::connectedSlot()
 	NextStatus->refresh();
 	
 	/*
-		je¿eli robimy refresh(), to przy przechodzeniu z niedostêpnego z opisem
+		UWAGA: je¿eli robimy refresh(), to przy przechodzeniu z niedostêpnego z opisem
 		na niewidoczny z opisem ta zmiana jest ujawniana naszym kontaktom!
-		przy przechodzeniu z nidostêpnego na niewidoczny efekt nie wystêpuje
+		przy przechodzeniu z niedostêpnego na niewidoczny efekt nie wystêpuje
 	
 		je¿eli NIE zrobimy refresh(), to powy¿szy efekt nie wystêpuje, ale przy
 		przechodzeniu z niedostêpnego z opisem na niewidoczny (bez opisu), nasz
 		opis u innych pozostaje! (a¿ do czasu naszej zmiany statusu lub ich
 		roz³±czenia i po³±czenia)
+	*/
+	
+	/*
+		UWAGA 2: procedura ³±czenia siê z serwerem w chwili obecnej wykorzystuje
+		fakt ponownego ustawienia statusu po zalogowaniu, bo iWantGo* blokuj±
+		zmiany statusów w trakcie ³aczenia siê z serwerem
 	*/
 	
 	kdebugf2();
@@ -1286,6 +1283,7 @@ void GaduProtocol::systemMessageReceived(QString &message, QDateTime &time, int 
 void GaduProtocol::login()
 {
 	kdebugf();
+	whileConnecting = true;
 
 	emit connecting();
 
@@ -1382,6 +1380,7 @@ void GaduProtocol::login()
 	}
 	else
 	{
+		whileConnecting = false;
 		disconnectedSlot();
 		emit error(Disconnected);
 	}
@@ -1393,6 +1392,7 @@ void GaduProtocol::logout()
 {
 	kdebugf();
 
+	whileConnecting = false;
 	disconnectedSlot();
 
 	kdebugf2();
