@@ -6,6 +6,8 @@
 #include <qcstring.h>
 #include <qdatetime.h>
 #include <qregexp.h>
+#include <qcolor.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <pwd.h>
@@ -269,12 +271,10 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 						actformant.format.font |= GG_FONT_BOLD;
 					if (actattrib.name == "color") {
 						actformant.format.font |= GG_FONT_COLOR;
-						tmp = actattrib.value.mid(1, 2);
-						actformant.color.red = tmp.toUShort(0, 16);
-						tmp = actattrib.value.mid(3, 2);
-						actformant.color.green = tmp.toUShort(0, 16);
-						tmp = actattrib.value.mid(5, 2);
-						actformant.color.blue = tmp.toUShort(0, 16);
+						QColor color(actattrib.value);
+						actformant.color.red = color.red();
+						actformant.color.green = color.green();
+						actformant.color.blue = color.blue();
 						}
 					}
 				formants.append(actformant);
