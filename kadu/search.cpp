@@ -379,17 +379,16 @@ void SearchDialog::AddButtonClicked()
 
 	QString uin = selected->text(1);
 	QString firstname = selected->text(2);
-	QString lastname = selected->text(3);
-	QString nickname = selected->text(5);
+	QString nickname = selected->text(4);
 
 	// Build altnick. Try user nick first.
 	QString altnick = nickname;
 	// If nick is empty, try firstname+lastname.
 	if (!altnick.length()) {
 		altnick = firstname;
-		if (firstname.length() && lastname.length())
-			altnick += " ";
-		altnick += lastname;
+//		if (firstname.length() && lastname.length())
+//			altnick += " ";
+//		altnick += lastname;
 		}
 	// If nick is empty, use uin.
 	if (!altnick.length())
@@ -400,8 +399,8 @@ void SearchDialog::AddButtonClicked()
 		i18n("&Yes"), i18n("&No")) != 0)
 		return;
 
-	kadu->addUser(firstname,lastname,nickname,altnick,"",uin,
-		GG_STATUS_NOT_AVAIL,"","");
+	kadu->addUser(firstname, "", nickname, altnick, "", uin,
+		GG_STATUS_NOT_AVAIL, "", "");
 	selectionChanged(selected);
 }
 
@@ -415,8 +414,8 @@ void SearchDialog::updateInfoClicked()
 
 	QString suin = selected->text(1);
 	QString firstname = selected->text(2);
-	QString lastname = selected->text(3);
-	QString nickname = selected->text(5);
+//	QString lastname = selected->text(3);
+	QString nickname = selected->text(4);
 
 	uin_t uin = suin.toUInt();
 	UserListElement &ule = userlist.byUin(uin);
@@ -426,9 +425,9 @@ void SearchDialog::updateInfoClicked()
 	// If nick is empty, try firstname+lastname.
 	if (!altnick.length()) {
 		altnick = firstname;
-		if (firstname.length() && lastname.length())
-			altnick += " ";
-		altnick += lastname;
+//		if (firstname.length() && lastname.length())
+//			altnick += " ";
+//		altnick += lastname;
 		}
 	// If nick is empty, use uin.
 	if (!altnick.length())
@@ -439,7 +438,7 @@ void SearchDialog::updateInfoClicked()
 		i18n("&Yes"), i18n("&No")) != 0)
 		return;
 
-	userlist.changeUserInfo(ule.altnick, firstname, lastname, nickname, ule.altnick,
+	userlist.changeUserInfo(ule.altnick, firstname, "", nickname, ule.altnick,
 		ule.mobile, ule.blocking, ule.offline_to_user, ule.notify, ule.group);
 	userlist.writeToFile();
 }
