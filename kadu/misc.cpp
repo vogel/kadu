@@ -809,7 +809,8 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 				break;
 			pe.type=ParseElem::PE_STRING;
 
-			switch(slatin[i]) {
+			switch(slatin[i])
+			{
 				case 's':
 					++i;
 					if (!ule.uin())
@@ -825,7 +826,8 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 
 				 	if (escape)
 			 			HtmlDocument::escapeText(pe.str);
-					if(config_file.readBoolEntry("Look", "ShowMultilineDesc")) {
+					if(config_file.readBoolEntry("Look", "ShowMultilineDesc"))
+					{
 						pe.str.replace(QRegExp("\n"), QString("<br/>"));
 						pe.str.replace(QRegExp("\\s\\s"), QString(" &nbsp;"));
 					}
@@ -2106,6 +2108,7 @@ QString Themes::fixFileName(const QString& path,const QString& fn)
 
 void Themes::setPaths(const QStringList& paths)
 {
+	kdebugf();
 	ThemesList.clear();
 	ThemesPaths.clear();
 	additional.clear();
@@ -2122,9 +2125,10 @@ void Themes::setPaths(const QStringList& paths)
 			ThemesList.append((*it).section("/", -2));
 		}
 		else
-			MessageBox::wrn("<i>"+(*it)+"</i><br>"+tr("does not contain any theme configuration file"));
+			MessageBox::wrn(tr("<i>%1</i><br/>does not contain any theme configuration file").arg(*it));
 	}
 	emit pathsChanged(ThemesPaths);
+	kdebugf2();
 }
 
 QStringList Themes::defaultKaduPathsWithThemes()

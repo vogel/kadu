@@ -55,7 +55,8 @@ KaduListBoxPixmap::KaduListBoxPixmap(const QPixmap &pix, const QString &text, co
 	setBold(bold);
 }
 
-void KaduListBoxPixmap::paint(QPainter *painter) {
+void KaduListBoxPixmap::paint(QPainter *painter)
+{
 //	kdebugf();
 	UserListElement &user = userlist.byAltNick(text());
 //	kdebugm(KDEBUG_INFO, "%d\n", (int)&user);
@@ -90,15 +91,18 @@ void KaduListBoxPixmap::paint(QPainter *painter) {
 	QString descr=isOurUin ? gadu->status().description() : description();
 	bool hasDescription=isOurUin ? gadu->status().hasDescription() : !descr.isEmpty();
 
-	if (!pm.isNull()) {
+	if (!pm.isNull())
+	{
 		yPos = (itemHeight - pm.height()) / 2;
 		painter->drawPixmap(3, yPos, pm);
 	}
 
-	if (!text().isEmpty()) {
+	if (!text().isEmpty())
+	{
 		QFont oldFont = painter->font();
 
-		if (bold) {
+		if (bold)
+		{
 			QFont newFont = QFont(oldFont);
 			newFont.setWeight(QFont::Bold);
 			painter->setFont(newFont);
@@ -119,7 +123,8 @@ void KaduListBoxPixmap::paint(QPainter *painter) {
 
 //		kdebugm(KDEBUG_INFO, "KaduListBoxPixmap::paint(): isOurUin = %d, own_description = %s\n",
 //			isOurUin, (const char *)unicode2latin(own_description));
-		if (showDesc && hasDescription) {
+		if (showDesc && hasDescription)
+		{
 			yPos += fm.height() - fm.descent();
 
 			QFont newFont = QFont(oldFont);
@@ -349,7 +354,8 @@ void UserBox::maybeTip(const QPoint &c)
 	kdebugf2();
 }
 
-void UserBox::mousePressEvent(QMouseEvent *e) {
+void UserBox::mousePressEvent(QMouseEvent *e)
+{
 	kdebugf();
 	if (e->button() != RightButton)
 		QListBox::mousePressEvent(e);
