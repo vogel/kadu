@@ -70,6 +70,9 @@ UserListElement::UserListElement()
 	status = GG_STATUS_NOT_AVAIL;
 	image_size = 0;
 	port = 0;
+	QHostAddress ipaddress;
+	ipaddress.setAddress("0.0.0.0");
+	ip = ipaddress;
 	blocking = false;
 	offline_to_user = false;
 	notify = true;
@@ -225,6 +228,7 @@ void UserList::addUser(UserListElement &ule)
 	e.description = ule.description;
 	e.email = ule.email;
 	e.anonymous = ule.anonymous;
+	e.ip = ule.ip;
 	e.port = ule.port;
 	append(e);
 	emit modified();
