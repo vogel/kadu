@@ -1,5 +1,5 @@
 #!/bin/sh
-if test $*; then
+if test "$*"; then
   ARGS="$*"
 else
   if test -f config.log; then

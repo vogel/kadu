@@ -1,4 +1,4 @@
-/* $Id: http.c,v 1.9 2002/10/24 11:03:57 adrian Exp $ */
+/* $Id: http.c,v 1.10 2002/11/14 17:13:15 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -73,7 +73,7 @@ struct gg_http *gg_http_connect(const char *hostname, int port, int async, const
 		h->query = gg_saprintf("%s http://%s:%d%s HTTP/1.0\r\n%s",
 				method, hostname, port, path, header);
 		hostname = gg_proxy_host;
-		port = gg_proxy_port;
+		h->port = port = gg_proxy_port;
 	} else {
 		h->query = gg_saprintf("%s %s HTTP/1.0\r\n%s",
 				method, path, header);
@@ -429,12 +429,15 @@ void gg_http_free(struct gg_http *h)
 
 	gg_http_stop(h);
 
-	if (h->query)
+	if (h->query) {
 		free(h->query);
-	if (h->header)
+		h->query = NULL;
+	}
+	
+	if (h->header) {
 		free(h->header);
-	if (h->query)
-		free(h->query);
+		h->header = NULL;
+	}
 
 	free(h);
 }

@@ -5,9 +5,113 @@ pierwsz± liter± nicka jest ,,x'' (w - wojtekka, s - speedy, a - arekm,
 d - drg). ,,p/nick'' oznacza patch lub ¼ród³o podes³ane przez ,,nick'',
 ,,i/nick'' oznacza czyj¶ pomys³, ,,b/nick'' mówi, kto zg³osi³ b³±d.
 
+// 2002-11-14
+
+- poprawka obs³ugi proxy http (Chilek/w)
+- poprawka segfaulta przy szukaniu (*/w)
+
+// 2002-11-13
+
+- dodany eileen.theme (d)
+- poprawki wykrywania openssl (Arim/w)
+
+// 2002-11-12
+
+- usuniêcie basename() i jego u¿ycia (w)
+- dodanie nag³ówków do compatowego dirname() (w)
+- zmiana domy¶lnego wygl±du statusu w ncurses. zamiast ,,uin'' jest w³asny
+  nick, je¶li jest zdefiniowany w li¶cie kontaktów (FIG/w)
+- dodanie serwera w docs/FAQ (szalik/w)
+- drobne poprawki dokumentacji (szalik/w)
+
+// 2002-11-11
+
+- 1. Limitowanie wysy?anych sms'ów przy w??czonym sms_away (szalik/s)
+- 2. 'status' wy?wietla od kiedy jeste?my po??czeni, lub roz??czeni. (szalik/s)
+- dodany leon.theme (leon/s)
+
+// 2002-11-09 
+
+- poprawka wykrywania openssl (s)
+
+// 2002-11-08
+
+- poprawka dla "starych" systemow - libgen.h pojawilo sie dopiero 
+  w fbsd 4.2. (s)
+  
+// 2002-11-06
+
+- poprawka wykrywania <gsm/gsm.h> na Debianach (pawsku/w)
+
+// 2002-11-05
+
+- poprawka timestampów w logach na maszynach niezgodnych z SUS (Murphy/w)
+
+// 2002-11-03
+
+- poprawka kompilacji na systemach bez openssl (kjtd/w)
+- poprawka segfaulta przy zmianie w li¶cie kontaktów (sdas/w)
+
+// 2002-11-02
+
+- poprawka segfaulta przy /reconnect (szalik/w)
+- usuniêcie kodu /history (w)
+- przy w³±czonym keep_reason, stan i opis zostan± zapisane w konfiguracji
+  bez potrzebny wydawania komendy /save (w)
+
+// 2002-11-01
+
+- poprawka docs/themes.txt (en/w)
+- uaktualnienie informacji o protokole (pm/w)
+
+// 2002-10-31
+
+- configure pokazuje, które wersje bibliotek i interfejsów zosta³y
+  wybrane i które s± domy¶lne (seba/w)
+- zmiana domy¶lnego interfejsu na ncurses. szczegó³y w FAQ, w README,
+  w tek¶cie wyrzucanym przez ./configure (w)
+
+// 2002-10-30
+
+- poprawka wy³±czonego debugowania (Brzezi/w)
+- poprawka segfaultu po wygenerowaniu kluczy (FIG/w)
+- podanie powodu ,,-'' spowoduje jego wyczyszczenie bez wzglêdu na
+  ustawienia jakichkolwiek zmiennych zmieniaj±cych zachowanie komend
+  /away, /back, /invisible i /quit (w)
+- zmienne tekstowe s± wy¶wietlane w cudzys³owiach (w)
+- dodanie skryptu contrib/ekgh (greblus/w)
+- poprawka wysy³ania wiadomo¶ci do grup (Joshua/w)
+
+// 2002-10-29
+
+- ze wzglêdu na du¿e zainteresowanie u¿ytkowników, dodano zmienn±
+  log_timestamp (*/w)
+- poprawka configure.in (porridge/w)
+- Alt-I ignoruje rozmówcê w ui-ncurses (w)
+- dodanie krótkiego tekstu, który informuje, co fajnego mo¿na zrobiæ
+  z okienkiem, gdy kto¶ nas mesgn±³ (w)
+- poprawka timestampu w ui-readline (w)
+- poprawka pagera w ui-readline (Brzezi/w)
+- usuniêciê z listy kontaktów uaktualnia nazwê okna w ui-ncurses (Perry/w)
+
+// 2002-10-28
+
+- poprawka extract.pl (sdas/w)
+- dwie nowe odpowiedzi w docs/FAQ (w)
+- literówka w README (Brzezi/w)
+
+// 2002-10-27
+
+- poprawki PATH_MAX dla hurd'a (s) 
+
+// 2002-10-24
+
+- dodanie komend /_keydel i /_keysend. szczegó³y w docs/sim.txt (w)
+
 // 2002-10-23
 
 - timestampy w ui-readline (Joshua/w)
+- wrzucenie ncursesowych promptów do g³ównego themu (w)
 
 // 2002-10-21
 
@@ -2010,4 +2114,4 @@ i BUGS.
 - eleet niebieskie t³o mesgów (wiem, dalekie od idea³u).
 
 
-$Id: ChangeLog,v 1.6 2002/10/24 11:03:57 adrian Exp $
+$Id: ChangeLog,v 1.7 2002/11/14 17:13:15 chilek Exp $

@@ -1,4 +1,4 @@
-/* $Id: common.c,v 1.9 2002/10/24 11:03:57 adrian Exp $ */
+/* $Id: common.c,v 1.10 2002/11/14 17:13:15 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>,
@@ -39,9 +39,9 @@
 #include "config.h"
 #include "libgadu.h"
 
-#ifndef GG_DEBUG_DISABLE
-
 FILE *gg_debug_file = NULL;
+
+#ifndef GG_DEBUG_DISABLE
 
 /*
  * gg_debug() // funkcja wewnêtrzna
