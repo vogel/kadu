@@ -215,13 +215,16 @@ void changePassword::closeEvent(QCloseEvent *e) {
 
 void changePassword::start() {
 	kdebug("changePassword::start()\n");
-	if (!newpwd->text().length() ||	newpwd->text() != newpwd2->text()) {
+	if (newpwd->text() != newpwd2->text()) {
 		status->setText(tr("Bad data"));
 		return;
 		}
 	char *passwd, *newpasswd, *mail, *tokenid, *tokenval;
 	passwd = strdup(unicode2cp(pwHash(config_file.readEntry("General", "Password"))).data());
-	newpasswd = strdup(unicode2cp(newpwd->text()).data());
+	if (newpwd->text().length())
+		newpasswd = strdup(unicode2cp(newpwd->text()).data());
+	else
+		newpasswd = strdup(passwd);	
 	mail = strdup(unicode2cp(emailedit->text()).data());
 	tokenid = strdup(unicode2cp(token_id).data());
 	tokenval = strdup(unicode2cp(tokenedit->text()).data());
