@@ -677,51 +677,51 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>Automatically fold links</source>
-        <translation type="unfinished"></translation>
+        <translation>Falte Hyperlinks automatisch</translation>
     </message>
     <message>
         <source>Link folding</source>
-        <translation type="unfinished"></translation>
+        <translation>Hyperlink-Faltung</translation>
     </message>
     <message>
         <source>Automatically fold links longer than</source>
-        <translation type="unfinished"></translation>
+        <translation>Falte Hyperlinks automatisch, die länger sind als</translation>
     </message>
     <message>
         <source>Show available users in bold</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige erreibare Benuter fett an</translation>
     </message>
     <message>
         <source>Displays users that are not offline using a bold font</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Benutzer, die nicht offline sind fett an</translation>
     </message>
     <message>
         <source>Notify about users&apos; status changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Benachrichtige über Status-Änderungen der Benutzer</translation>
     </message>
     <message>
         <source>Notify about users becoming available</source>
-        <translation type="unfinished"></translation>
+        <translation>Benachrichtige über Benutzer, welche auf erreichbar umschalten</translation>
     </message>
     <message>
         <source>Notify about users becoming unavailable</source>
-        <translation type="unfinished"></translation>
+        <translation>Benachrichtigen über Benutzer, welche auf unerreichbar umschalten</translation>
     </message>
     <message>
         <source>Remember window size and position between startups</source>
-        <translation type="unfinished"></translation>
+        <translation>Behalte die Fenstergröße und -Position bis zum nächsten Start bei</translation>
     </message>
     <message>
         <source>Automatically checks whether a new version is available</source>
-        <translation type="unfinished"></translation>
+        <translation>Überprüfe automatisch auf Updates</translation>
     </message>
     <message>
         <source>When enabled, you&apos;re visible only to users on your list</source>
-        <translation type="unfinished"></translation>
+        <translation>Wenn eingeschaltet, sind Sie nur für Benutzer sichtbar, die in Ihrer Liste eingetragen sind</translation>
     </message>
     <message>
         <source>Display users that are offline</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Benutzer, die unerreichbar sind</translation>
     </message>
 </context>
 <context>
@@ -905,12 +905,13 @@ Das Passwort, das Sie angegeben haben, sollte in beiden Feldern (&quot;Neues Pas
     </message>
     <message>
         <source>URLs longer than this value will be shown truncated to this length</source>
-        <translation type="unfinished"></translation>
+        <translation>Hyperlinks , die länger sind als der sichtbare Bereich werden an das Fenseter angepasst</translation>
     </message>
     <message>
         <source>This will show a long URL as http://www.start...end.com/
 to protect the chat window from a mess</source>
-        <translation type="unfinished"></translation>
+        <translation>Dies wird einen langen Hyperlink als http://www.start...end.com/
+zeigen, um das Chat-Fenster vor Verwirrung</translation>
     </message>
 </context>
 <context>
@@ -1567,7 +1568,7 @@ Dein Passwort ist falsch!!!</translation>
     </message>
     <message>
         <source>Connection timeout!</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbindungstimeout!</translation>
     </message>
 </context>
 <context>
