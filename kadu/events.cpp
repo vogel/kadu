@@ -840,6 +840,8 @@ void EventConfigSlots::onCreateConfigDialog()
 
 	e_availusers->sort();
 	e_notifies->sort();
+	e_availusers->setSelectionMode(QListBox::Extended);
+	e_notifies->setSelectionMode(QListBox::Extended);
 
 	QCheckBox *b_notifyglobal= ConfigDialog::getCheckBox("Notify", "Notify when users become available");
 	QCheckBox *b_notifyall= ConfigDialog::getCheckBox("Notify", "Notify about all users");
@@ -961,24 +963,40 @@ void EventConfigSlots::_Left(void) {
 	kdebug("EventConfigSlots::_Left()\n");
 	QListBox *e_availusers= ConfigDialog::getListBox("Notify", "available");
 	QListBox *e_notifies= ConfigDialog::getListBox("Notify", "track");
+	QStringList tomove;
+	int i;
 
-	if (e_notifies->currentItem() != -1) {
-		e_availusers->insertItem(e_notifies->text(e_notifies->currentItem()));
-		e_notifies->removeItem(e_notifies->currentItem());
-		e_availusers->sort();
-		}
+	for(i=0;i<e_notifies->count();i++){
+		if (e_notifies->isSelected(i))
+			tomove+=e_notifies->text(i);
+	}
+
+	for(i=0;i<tomove.size();i++){
+		e_availusers->insertItem(tomove[i]);
+		e_notifies->removeItem(e_notifies->index(e_notifies->findItem(tomove[i])));
+	}
+
+	e_availusers->sort();
 }
 
 void EventConfigSlots::_Right(void) {
 	kdebug("EventConfigSlots::_Right()\n");
 	QListBox *e_availusers= ConfigDialog::getListBox("Notify", "available");
 	QListBox *e_notifies= ConfigDialog::getListBox("Notify", "track");
+	QStringList tomove;
+	int i;
 
-	if (e_availusers->currentItem() != -1) {
-		e_notifies->insertItem(e_availusers->text(e_availusers->currentItem()));
-		e_availusers->removeItem(e_availusers->currentItem());
-		e_notifies->sort();
-		}
+	for(i=0;i<e_availusers->count();i++){
+		if (e_availusers->isSelected(i))
+			tomove+=e_availusers->text(i);
+	}
+
+	for(i=0;i<tomove.size();i++){
+		e_notifies->insertItem(tomove[i]);
+		e_availusers->removeItem(e_availusers->index(e_availusers->findItem(tomove[i])));
+	}
+
+	e_notifies->sort();
 }
 
 
