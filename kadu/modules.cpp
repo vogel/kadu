@@ -171,6 +171,8 @@ void ModulesDialog::refreshList()
 {
 	kdebugf();
 	
+	int vScrollValue=lv_modules->verticalScrollBar()->value();
+
 	QString s_selected;
 	
 	if (lv_modules->selectedItem() != NULL)
@@ -191,6 +193,8 @@ void ModulesDialog::refreshList()
 		(void) new QListViewItem(lv_modules, sl_list[i], tr("Dynamic"), tr("Not loaded"));
 	
 	lv_modules->setSelected(lv_modules->findItem(s_selected, 0), true);
+
+	lv_modules->verticalScrollBar()->setValue(vScrollValue);
 	kdebugf2();
 }
 

@@ -188,6 +188,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dymki z opisem sk³adni pojawiaj± siê w konfiguracji nad polami w hintach i speech (joi)
 * eskejpowanie znaków specjalnych w nickach przy wy¶wietlaniu dymków (joi)
 * poprawne otwieranie linków zawieraj±cych spacje (joi)
+* "przytrzymywanie" stanu bocznego suwaka w zarz±dcy modu³ów przy
+  ³adowaniu / wy³adowywaniu (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
