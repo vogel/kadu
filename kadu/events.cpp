@@ -282,8 +282,7 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 */
 
  
- 	//script.eventMsg(senders[0],msgclass,(char*)msg);
-	
+	if(!userlist.containsUin(senders[0]))
 		if (config_file.readBoolEntry("Global","UseDocking"))
 			userlist.addUser("", "", ule.altnick, ule.altnick, "", ule.altnick, GG_STATUS_NOT_AVAIL,
 				0, false, false, true, "", "", "", true);
