@@ -34,6 +34,10 @@
   d³u¿szych napisów oraz rozpoznaje dodatkowo znaki ':','%' i '+' (adrian)
 * selektor emotikonów jest bardziej inteligentny i bardzo
   siê stara nie wystawaæ poza krawêdzie ekranu (adrian)
+* sms idea: obs³ugiwane s± dodatkowe sytuacje takie jak nieprawid³owo
+  wprowadzony tekst z obrazka, adresat z nieuaktywnion± us³ug± "sms standard".
+  Zamkniêcie okienka z obrazkiem idei - np klawiszem esc - powoduje prawid³owy
+  powrót do edycji.
 
 +++ wersja 0.3.3-final
 * ikonka wiadomo¶ci i ikon statusu "ukryty" z telefonikiem

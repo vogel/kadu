@@ -49,6 +49,12 @@ SmsImageDialog::SmsImageDialog(QDialog* parent,const QByteArray& image)
 	connect(code_edit,SIGNAL(returnPressed()),this,SLOT(onReturnPressed()));
 };
 
+void SmsImageDialog::reject()
+{
+	emit codeEntered("");
+	QDialog::reject();
+};
+
 void SmsImageDialog::onReturnPressed()
 {
 	accept();
@@ -134,7 +140,21 @@ void HttpClient::onReadyRead()
 			return;
 		};
 		Status=status_regexp.cap(1).toInt();
-		kdebug("HttpClient: Status: %i\n",Status);			
+		kdebug("HttpClient: Status: %i\n",Status);
+		// Status 302 oznacza przekierowanie.
+		if(Status==302)
+		{
+			QRegExp location_regexp("Location: ([^\\n]+)");
+			if(location_regexp.search(s)<0)
+			{
+				Socket.close();
+				emit error();
+				return;
+			};
+			QString location=location_regexp.cap(1);
+			get(location);
+			return;
+		};
 		// Wyci±gamy Content-Length
 		QRegExp cl_regexp("Content-Length: (\\d+)");
 		if(cl_regexp.search(s)<0)
@@ -297,6 +317,16 @@ void SmsSender::onFinished()
 				QMessageBox::critical((QWidget*)parent(),"SMS",i18n("You exceeded your daily limit"));
 				emit finished(false);
 			}
+			else if(Page.find("B³êdne has³o")>=0)
+			{
+				QMessageBox::critical((QWidget*)parent(),"SMS",i18n("Text from the picture is incorrect"));
+				emit finished(false);				
+			}
+			else if(Page.find("Odbiorca nie ma aktywnej uslugi")>=0)
+			{
+				QMessageBox::critical((QWidget*)parent(),"SMS",i18n("The receiver has to enable SMS STANDARD service"));
+				emit finished(false);				
+			}			
 			else if(Page.find("wiadomo¶æ tekstowa zosta³a wys³ana")>=0)
 			{
 				emit finished(true);
@@ -344,6 +374,11 @@ void SmsSender::onError()
 
 void SmsSender::onCodeEntered(const QString& code)
 {
+	if(code=="")
+	{
+		emit finished(false);
+		return;
+	};
 	kdebug("SMS User entered the code\n");
 	State=SMS_LOADING_RESULTS;
 	QString post_data=QString("token=")+Token+"&SENDER="+config.nick+"&RECIPIENT="+Number+"&SHORT_MESSAGE="+Http.encode(Message)+"&pass="+code;

@@ -47,6 +47,7 @@ class SmsImageDialog : public QDialog
 
 	public:
 		SmsImageDialog(QDialog* parent,const QByteArray& image);
+		void reject();
 
 	signals:
 		void codeEntered(const QString& code);
