@@ -18,6 +18,7 @@
 #include <errno.h>
 #include <kconfig.h>
 #include <stdlib.h>
+#include <qfile.h>
 
 // to mam nadzieje kiedys usuniemy
 #include "kadu.h"
@@ -201,6 +202,16 @@ void Register::socketEvent() {
 		}
 }
 
+void Register::ask() {
+	fprintf(stderr, "KK Register::ask()\n");
+	if (updateconfig->isChecked()) {
+		config.uin = uin;
+		config.password = pwd->text();
+		createConfig();
+		}
+}
+
+
 void createConfig() {
 	fprintf(stderr, "KK createConfig()\n");
 	char *home = getenv("HOME");
@@ -240,13 +251,180 @@ void createConfig() {
 	fprintf(stderr, "KK createConfig(): Config file created\n");
 }
 
-void Register::ask() {
-	fprintf(stderr, "KK Register::ask()\n");
-	if (updateconfig->isChecked()) {
-		config.uin = uin;
-		config.password = pwd->text();
-		createConfig();
+Unregister::Unregister(QDialog *parent, const char *name) : QDialog (parent, name, FALSE, Qt::WDestructiveClose) {
+	fprintf(stderr, "KK Unregister::Unregister()\n");
+
+	QGridLayout *grid = new QGridLayout(this, 4, 2, 6, 5);
+
+	QLabel *l_uin = new QLabel(this);
+	l_uin->setText(i18n("UIN"));
+	uin = new QLineEdit(this);
+
+	QLabel *l_pwd = new QLabel(this);
+	l_pwd->setText(i18n("Password"));
+	pwd = new QLineEdit(this);
+	pwd->setEchoMode(QLineEdit::Password);
+
+	QLabel *l_mail = new QLabel(this);
+	l_mail->setText(i18n("E-mail"));
+	mail = new QLineEdit(this);
+
+	QPushButton *snd = new QPushButton(this);
+	snd->setText(i18n("Unregister"));
+	QObject::connect(snd, SIGNAL(clicked()), this, SLOT(doUnregister()));
+
+	status = new QLabel(this);
+
+	grid->addWidget(l_uin, 0, 0);
+	grid->addWidget(uin, 0, 1);
+	grid->addWidget(l_pwd, 1, 0);
+	grid->addWidget(pwd, 1, 1);
+	grid->addWidget(l_mail, 2, 0);
+	grid->addWidget(mail, 2, 1);
+	grid->addWidget(status, 3, 0);
+	grid->addWidget(snd, 3, 1);
+	grid->addRowSpacing(3, 20);
+
+	setCaption(i18n("Unregister user"));
+	resize(240, 150);
+
+	snr = snw = NULL;
+	h = NULL;
+}
+
+void Unregister::doUnregister() {
+	fprintf(stderr, "KK Unregister::doUnregister()\n");
+
+	if (!uin->text().toUInt() || !pwd->text().length()) {
+		QMessageBox::warning(this, "Kadu", i18n("Please fill out all fields"), i18n("OK"), 0, 0, 1);
+		return;
+		}
+
+	if (!(h = gg_unregister(uin->text().toUInt(), pwd->text().local8Bit(), mail->text().local8Bit(), 1))) {
+		status->setText(i18n("Error"));
+		return;
+		}
+
+	status->setText(i18n("Unregistering"));
+
+	setEnabled(false);
+	createSocketNotifiers();
+}
+
+void Unregister::closeEvent(QCloseEvent *e) {
+	fprintf(stderr, "KK Unregister::closeEvent()\n");
+	deleteSocketNotifiers();
+	if (h) {
+		gg_free_register(h);
+		h = NULL;
+		}
+	QDialog::closeEvent(e);
+	fprintf(stderr, "KK Unregister::closeEvent(): end\n");
+}
+
+void Unregister::createSocketNotifiers() {
+	fprintf(stderr, "KK Unregister::createSocketNotifiers()\n");
+
+	snr = new QSocketNotifier(h->fd, QSocketNotifier::Read, kadu);
+	QObject::connect(snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
+
+	snw = new QSocketNotifier(h->fd, QSocketNotifier::Write, kadu);
+	QObject::connect(snw, SIGNAL(activated(int)), this, SLOT(dataSent()));
+}
+
+void Unregister::deleteSocketNotifiers() {
+	fprintf(stderr, "KK Unregister::deleteSocketNotifiers()\n");
+	if (snr) {
+		snr->setEnabled(false);
+		snr->deleteLater();
+		snr = NULL;
+		}
+	if (snw) {
+		snw->setEnabled(false);
+		snw->deleteLater();
+		snw = NULL;
 		}
 }
+
+void Unregister::dataReceived() {
+	fprintf(stderr, "KK Unregister::dataReceived()\n");
+	if (h->check && GG_CHECK_READ)
+		socketEvent();
+}
+
+void Unregister::dataSent() {
+	fprintf(stderr, "KK Unregister::dataSent()\n");
+	snw->setEnabled(false);
+	if (h->check && GG_CHECK_WRITE)
+		socketEvent();
+}
+
+void Unregister::socketEvent() {
+	fprintf(stderr, "KK Unregister::socketEvent()\n");
+	if (gg_register_watch_fd(h) == -1) {
+		deleteSocketNotifiers();
+		gg_free_register(h);
+		h = NULL;
+		fprintf(stderr, "KK Unregister::socketEvent(): error unregistering\n");
+		status->setText(i18n("Error"));
+		setEnabled(true);
+		return;
+		}
+	struct gg_pubdir *p = (struct gg_pubdir *)h->data;
+	switch (h->state) {
+		case GG_STATE_CONNECTING:
+			fprintf(stderr, "KK Unregister::socketEvent(): changing QSocketNotifiers.\n");
+			deleteSocketNotifiers();
+			createSocketNotifiers();
+			if (h->check & GG_CHECK_WRITE)
+				snw->setEnabled(true);
+			break;
+		case GG_STATE_ERROR:
+			deleteSocketNotifiers();
+			gg_free_register(h);
+			h = NULL;
+			fprintf(stderr, "KK Unregister::socketEvent(): error unregistering\n");
+			status->setText(i18n("Error"));
+			setEnabled(true);
+			break;
+		case GG_STATE_DONE:
+			deleteSocketNotifiers();
+			fprintf(stderr, "KK Unregister::socketEvent(): success\n");
+			if (p->success) {
+				status->setText(i18n("Success!"));
+//				uin = p->uin;
+//				QMessageBox::information(this, "Kadu", i18n("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(uin),
+//					i18n("OK"), 0, 0, 1);
+//				ask();
+				deleteConfig();
+				fprintf(stderr, "KK Unregister::socketEvent() before close()\n");
+				close();
+				}
+			else {
+				gg_free_register(h);
+				h = NULL;
+				fprintf(stderr, "KK Unregister::socketEvent(): error unregistering\n");
+				status->setText(i18n("Error"));
+				setEnabled(true);
+				}
+			break;
+		default:
+			if (h->check & GG_CHECK_WRITE)
+				snw->setEnabled(true);
+		}
+}
+
+void Unregister::deleteConfig() {
+	fprintf(stderr, "KK Unregister::deleteConfig()\n");
+
+	fprintf(stderr, "KK Unregister::deleteConfig(): Deleting config file...\n");
+	QFile::remove(ggPath("kadu.conf"));
+	config.uin = 0;
+
+	kadu->setCaption(i18n("No user"));
+
+	fprintf(stderr, "KK Unregister::deleteConfig(): Config file deleted\n");
+}
+
 
 #include "register.moc"

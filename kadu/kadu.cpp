@@ -193,6 +193,7 @@ enum {
 	KADU_CMD_REMIND_PASSWORD,
 	KADU_CMD_CHANGE_PASSWORD,
 	KADU_CMD_REGISTER_USER,
+	KADU_CMD_UNREGISTER_USER,
 	KADU_CMD_QUIT,
 	KADU_CMD_SEARCH_USER,
 	KADU_CMD_EXPORT_USERLIST,
@@ -921,6 +922,11 @@ void Kadu::commandParser (int command) {
 			Register *reg;
 			reg = new Register;
 			reg->show();
+			break;
+		case KADU_CMD_UNREGISTER_USER:
+			Unregister *ureg;
+			ureg = new Unregister;
+			ureg->show();
 			break;
 		case KADU_CMD_QUIT:
 			pending.writeToFile();
@@ -1795,6 +1801,7 @@ void Kadu::createMenu() {
 	ppm->insertItem(i18n("&Change password"), KADU_CMD_CHANGE_PASSWORD);
 	QPixmap new__user((const char **)new_user);
 	ppm->insertItem(new__user,i18n("Register &new user"), KADU_CMD_REGISTER_USER);
+	ppm->insertItem(i18n("Unregister user"), KADU_CMD_UNREGISTER_USER);
 	ppm->insertItem(i18n("Personal information"), KADU_CMD_PERSONAL_INFO);
 	ppm->insertSeparator();
 	QPixmap find;

@@ -28,10 +28,11 @@
 * dodane okno zmiany has³a GG
 * porz±dki zwi±zane z oknem rejestracji u¿ytkownika GG
 * zapisywanie pozycji podzia³u userlist(userbox) i opisu + poprawki zapisywania
-  geometrii okna i waro¶ci domy¶lnych
+  geometrii okna i warto¶ci domy¶lnych
 * udoskonalenie zak³adki wygl±d i dodanie mo¿liwo¶ci ustawienia wygl±du widgetu
   w userboxie, który pokazuje dane u¼ytkownika + zmiany w sposobie zapisu konfiguracji
   kolorów i czcionek.
+* dodane okno wyrejestrowania u¿ytkownika GG
 
 +++ wersja 0.3.3-pre3
 * CTRL + klik dowolnego przycisku myszki na ikonce w tray'u powoduje
