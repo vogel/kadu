@@ -27,7 +27,8 @@ userinfo.cpp userinfo.h \
 userlist.cpp userlist.h \
 vuser.cpp vuser.h \
 dock_widget.cpp dock_widget.h \
-emoticons.cpp emoticons.h
+emoticons.cpp emoticons.h \
+status.cpp status.h
 
 METASOURCES = AUTO
 

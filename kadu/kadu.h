@@ -30,8 +30,7 @@
 #include "userbox.h"
 #include "pending_msgs.h"
 #include "misc.h"
-
-#define GG_STATUS_INVISIBLE2 0x0009 /* g³upy... */
+#include "status.h"
 
 struct colors {
 	QString userboxBgColor;
@@ -153,6 +152,8 @@ class Kadu : public QMainWindow
 		bool blinkOn;
 		bool doBlink;
 
+		AutoStatusTimer* autostatus_timer;
+
 	public slots:
 		void blink();
 		void dccFinished(dccSocketClass *dcc);
@@ -234,9 +235,7 @@ struct chats {
     };
 };
 
-extern const char *statustext[];
 extern char **gg_xpm[];
-extern int gg_statuses[];
 extern KApplication *a;
 extern Kadu *kadu;
 extern struct gg_session *sess;
@@ -267,9 +266,6 @@ extern QSocketNotifier *kadusnw;
 extern QSocketNotifier *dccsnr;
 extern QSocketNotifier *dccsnw;
 
-int statusGGToStatusNr(int);
-int getActualStatus();
-bool ifStatusWithDescription(int status);
 void deletePendingMessage(int nr);
 void sendUserlist(void);
 
