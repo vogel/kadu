@@ -134,7 +134,6 @@ Notify::~Notify()
 	ConfigDialog::removeControl("Notify", "listboxy");
 
 	ConfigDialog::removeControl("Notify", "Notify about all users");
-	ConfigDialog::removeControl("Notify", "Notify when users become available");
 	ConfigDialog::removeControl("Notify", "Ignore changes on connection to server");
 
 	disconnect(kadu, SIGNAL(connectionError(const QString &)), this, notifySignals["ConnError"]);
