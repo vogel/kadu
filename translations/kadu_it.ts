@@ -673,6 +673,18 @@ Se lasciate lo spazio in bianco, le regolazioni di difetto saranno usate.</trans
         <source>%1 - Url clicked in chat window</source>
         <translation>%1 Url scatto in chiacchierarata finestra</translation>
     </message>
+    <message>
+        <source>&lt;b&gt;Me&lt;/b&gt; 00:00:00</source>
+        <translation>&lt;b&gt;Io&lt;/b&gt; 00:00:00</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Other party&lt;/b&gt; 00:00:02</source>
+        <translation>&lt;b&gt;Interlocutore&lt;/b&gt; 00:00:02</translation>
+    </message>
+    <message>
+        <source>Volume</source>
+        <translation>Volume</translation>
+    </message>
 </context>
 <context>
     <name>About</name>

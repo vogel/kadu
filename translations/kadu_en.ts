@@ -669,6 +669,18 @@ If you leave blank, default settings will be used.</source>
         <source>%1 - Url clicked in chat window</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&lt;b&gt;Me&lt;/b&gt; 00:00:00</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Other party&lt;/b&gt; 00:00:02</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Volume</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>

@@ -655,7 +655,7 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     </message>
     <message>
         <source>Notify about user becoming unavailable</source>
-        <translation>Powiadom kiedy kontakt stanie się nie dostępny</translation>
+        <translation>Powiadom kiedy kontakt stanie się niedostępny</translation>
     </message>
     <message>
         <source>Message acknowledgements (wait for delivery)</source>
@@ -672,6 +672,18 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     <message>
         <source>%1 - Url clicked in chat window</source>
         <translation>%1 - URL przekazywany z okna rozmowy</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Me&lt;/b&gt; 00:00:00</source>
+        <translation>&lt;b&gt;Ja&lt;/b&gt; 00:00:00</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Other party&lt;/b&gt; 00:00:02</source>
+        <translation>&lt;b&gt;Rozmówca&lt;/b&gt; 00:00:02</translation>
+    </message>
+    <message>
+        <source>Volume</source>
+        <translation>Głośność</translation>
     </message>
 </context>
 <context>
