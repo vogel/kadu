@@ -510,8 +510,8 @@ void SoundSlots::onDestroyConfigDialog()
 	    }
 	else
 	    theme= cb_soundtheme->currentText();
-	if (theme == tr("Default"))
-		theme= "Default";
+	if (theme == tr("default"))
+		theme= "default";
 
 	config_file.writeEntry("Sounds", "SoundPaths", soundmanager.paths().join(";"));
 	config_file.writeEntry("Sounds", "SoundTheme", theme);
