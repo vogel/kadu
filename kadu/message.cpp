@@ -256,7 +256,7 @@ Message::Message (const QString & nick, bool tchat, QWidget *parent, const char 
 
 void Message::init(void) {
 	resize(355,235);
-	setCaption(i18n("Message for " + nicksnd));
+	setCaption(i18n("Message for ") + nicksnd);
 }
 
 /* the actual send */
