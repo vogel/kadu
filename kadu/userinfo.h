@@ -15,7 +15,8 @@
 class UserInfo : public QTabDialog {
 	Q_OBJECT
 	public:
-		UserInfo(const QString &, QDialog* parent, const QString &altnick);
+		UserInfo(const QString &, QDialog* parent,
+			const QString &altnick, bool fAddUser = false);
 		~UserInfo();
 
 	private:
@@ -35,6 +36,7 @@ class UserInfo : public QTabDialog {
 		QCheckBox *c_offtouser;
 		QCheckBox *c_notify;
 		QDns *dns;
+		bool fAddUser;
 
 	protected:
 		void setupTab1();
@@ -44,7 +46,7 @@ class UserInfo : public QTabDialog {
 		void resultsReady();
 
 	private slots:
-		void writeUserlist();
+		void updateUserlist();
 };
 
 #endif

@@ -613,8 +613,8 @@ void Kadu::personalInfo()
 }
 
 void Kadu::addUserAction() {
-	Adduser *au = new Adduser(0, "add_user");
-	au->show();
+	UserInfo *ui = new UserInfo("add user", 0, QString::null, true);
+	ui->show();
 }
 
 void Kadu::sendKey()

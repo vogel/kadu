@@ -15,6 +15,7 @@
 #include "kadu.h"
 #include "search.h"
 #include "events.h"
+#include "userinfo.h"
 #include "debug.h"
 //
 
@@ -384,13 +385,15 @@ void SearchDialog::AddButtonClicked()
 	if (!altnick.length())
 		altnick = uin;
 
-	if (QMessageBox::information(this, tr("Add User"),
-		tr("Do you want to add user %1 to user list?").arg(altnick),
-		tr("&Yes"), tr("&No")) != 0)
-		return;
+//	if (QMessageBox::information(this, tr("Add User"),
+//		tr("Do you want to add user %1 to user list?").arg(altnick),
+//		tr("&Yes"), tr("&No")) != 0)
+//		return;
 
-	kadu->addUser(firstname, "", nickname, altnick, "", uin,
-		GG_STATUS_NOT_AVAIL, 0, "", "", "");
+	UserInfo *ui = new UserInfo("user info", 0, QString::null, true);
+	ui->show();
+//	kadu->addUser(firstname, "", nickname, altnick, "", uin,
+//		GG_STATUS_NOT_AVAIL, 0, "", "", "");
 	selectionChanged(selected);
 }
 
