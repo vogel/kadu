@@ -84,12 +84,6 @@ static bool send_message(
 extern "C" int docking_init()
 {
 	trayicon = new TrayIcon(kadu);
-	trayicon->show();
-	QPixmap pix=icons_manager.loadIcon(gg_icons[
-		statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]);
-	trayicon->setType(pix);
-	trayicon->changeIcon();
-	trayicon->connectSignals();
 	return 0;
 }
 
@@ -102,8 +96,9 @@ extern "C" int docking_close()
 TrayIcon::TrayIcon(QWidget *parent, const char *name)
 	: QLabel(0,"TrayIcon", WMouseNoMask | WRepaintNoErase | WType_TopLevel | WStyle_Customize | WStyle_NoBorder | WStyle_StaysOnTop)
 {
-	QPixmap pix = icons_manager.loadIcon("Offline");
 	setBackgroundMode(X11ParentRelative);
+	QPixmap pix = icons_manager.loadIcon(gg_icons[
+		statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]);;	
 	setMinimumSize(pix.size());
 	QLabel::setPixmap(pix);
 	resize(pix.size());
@@ -173,9 +168,14 @@ TrayIcon::TrayIcon(QWidget *parent, const char *name)
 	connect(kadu, SIGNAL(currentStatusChanged(int)), this, SLOT(showCurrentStatus(int)));
 	connect(&pending, SIGNAL(messageAdded()), this, SLOT(pendingMessageAdded()));
 	connect(&pending, SIGNAL(messageDeleted()), this, SLOT(pendingMessageDeleted()));
+	connect(dockppm, SIGNAL(activated(int)), this, SLOT(dockletChange(int)));
 	connect(this, SIGNAL(mousePressMidButton()), &pending, SLOT(openMessages()));
 
 	hintmanager->setDetectedPosition(trayPosition());
+	changeIcon();
+	show();
+
+	kadu->setDocked(true);
 }
 
 TrayIcon::~TrayIcon()
@@ -189,7 +189,10 @@ TrayIcon::~TrayIcon()
 	disconnect(kadu, SIGNAL(currentStatusChanged(int)), this, SLOT(showCurrentStatus(int)));
 	disconnect(&pending, SIGNAL(messageAdded()), this, SLOT(pendingMessageAdded()));
 	disconnect(&pending, SIGNAL(messageDeleted()), this, SLOT(pendingMessageDeleted()));
+	disconnect(dockppm, SIGNAL(activated(int)), this, SLOT(dockletChange(int)));
 	delete WMakerMasterWidget;
+	
+	kadu->setDocked(false);
 }
 
 QPoint TrayIcon::trayPosition()
@@ -212,11 +215,6 @@ void TrayIcon::setPixmap(const QPixmap& pixmap)
 	QLabel::setPixmap(pixmap);
 	WMakerMasterWidget->setIcon(pixmap);
 	repaint();
-}
-
-void TrayIcon::setType(const QPixmap& pixmap)
-{
-	setPixmap(pixmap);
 }
 
 void TrayIcon::changeIcon() {
@@ -243,17 +241,6 @@ void TrayIcon::dockletChange(int id)
 		kadu->slotHandleState(id);
 	else
 		kadu->close(true);
-}
-
-void TrayIcon::connectSignals() {
-	QObject::connect(dockppm, SIGNAL(activated(int)), this, SLOT(dockletChange(int)));
-}
-
-void TrayIcon::resizeEvent(QResizeEvent* e)
-{
-//	if (icon)
-//		icon->resize(size());
-//	resize(size());
 }
 
 void TrayIcon::enterEvent(QEvent* e)
@@ -317,19 +304,19 @@ void TrayIcon::pendingMessageDeleted()
 	if (!pending.pendingMsgs())
 	{
 		QPixmap pix= icons_manager.loadIcon(gg_icons[statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]);
-		setType(pix);
+		setPixmap(pix);
 	}
 }
 
 void TrayIcon::showOffline()
 {
-	setType(icons_manager.loadIcon("Offline"));
+	setPixmap(icons_manager.loadIcon("Offline"));
 }
 
 void TrayIcon::showStatus(int status)
 {
 	int i = statusGGToStatusNr(status);
-	setType(icons_manager.loadIcon(gg_icons[i]));
+	setPixmap(icons_manager.loadIcon(gg_icons[i]));
 }
 
 void TrayIcon::showCurrentStatus(int status)
@@ -337,7 +324,7 @@ void TrayIcon::showCurrentStatus(int status)
 	int statusnr = statusGGToStatusNr(status);
 	QPixmap pix = icons_manager.loadIcon(gg_icons[statusnr]);
 	if (!pending.pendingMsgs())
-		setType(pix);
+		setPixmap(pix);
 }
 
 TrayIcon *trayicon = NULL;

@@ -24,8 +24,6 @@ class TrayIcon : public QLabel
 		void showCurrentStatus(int status);
 
 	protected:
-		void setPixmap(const QPixmap& pixmap);
-		virtual void resizeEvent(QResizeEvent* e);
 		virtual void enterEvent(QEvent* e);
 		virtual void mousePressEvent(QMouseEvent*);
 
@@ -33,9 +31,8 @@ class TrayIcon : public QLabel
 		TrayIcon(QWidget *parent = 0, const char *name = 0);
 		~TrayIcon();
 		QPoint trayPosition();
+		void setPixmap(const QPixmap& pixmap);
 		void show();
-		void setType(const QPixmap& pixmap);
-		void connectSignals();
 		
 	public slots:
 		// Status change slots
