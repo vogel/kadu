@@ -95,21 +95,27 @@ void ChatManager::unregisterChat(Chat* chat)
 
 void ChatManager::refreshTitles()
 {
+	kdebugf();
 	for (unsigned int i = 0; i < Chats.count(); ++i)
 		Chats[i]->setTitle();
+	kdebugf2();
 }
 
 void ChatManager::refreshTitlesForUin(UinType uin)
 {
+	kdebugf();
 	for (unsigned int i = 0; i < Chats.count(); ++i)
 		if (Chats[i]->uins().contains(uin))
 			Chats[i]->setTitle();
+	kdebugf2();
 }
 
 void ChatManager::changeAppearance()
 {
+	kdebugf();
 	for (unsigned int i = 0; i < Chats.count(); ++i)
 		Chats[i]->changeAppearance();
+	kdebugf2();
 }
 
 Chat* ChatManager::findChatByUins(UinsList uins)
@@ -334,23 +340,30 @@ void ChatManager::chatMsgReceived(UinsList senders, const QString& msg, time_t t
 
 QVariant& ChatManager::getChatProperty(const UinsList &uins, const QString &name)
 {
+	kdebugf();
 	for (QValueList<ChatInfo>::iterator it=addons.begin(); it!=addons.end(); it++)
 		if ((*it).uins.equals(uins))
+		{
+			kdebugf2();
 			return (*it).map[name];
+		}
 	ChatInfo info;
 	info.uins=uins;
 	info.map[name]=QVariant();
 	addons.push_front(info);
+	kdebugm(KDEBUG_FUNCTION_END, "ChatManager::getChatProperty() end: %s NOT found\n", name.local8Bit().data());
 	return addons[0].map[name];
 //	return addons[uins][name];
 }
 
 void ChatManager::setChatProperty(const UinsList &uins, const QString &name, const QVariant &value)
 {
+	kdebugf();
 	for (QValueList<ChatInfo>::iterator it=addons.begin(); it!=addons.end(); it++)
 		if ((*it).uins.equals(uins))
 		{
 			(*it).map[name]=value;
+			kdebugf2();
 			return;
 		}
 	ChatInfo info;
@@ -358,6 +371,7 @@ void ChatManager::setChatProperty(const UinsList &uins, const QString &name, con
 	info.map[name]=value;
 	addons.push_front(info);
 //	addons[uins][name]=value;
+	kdebugf2();
 }
 
 ChatManager* chat_manager=NULL;
@@ -910,10 +924,10 @@ void Chat::changeTitle()
 {
 	if(!isActiveWindow())
 	{
-		if (caption() == "  ")
+		if (caption() != title_buffer)
 			setCaption(title_buffer);
 		else
-			setCaption("  ");
+			setCaption(QString().fill(' ', title_buffer.length()));
 		title_timer->start(500,TRUE);
 	}
 }
