@@ -58,7 +58,8 @@ class HistoryManager {
 
 		void convHist2ekgForm(UinsList uins);
 		void convSms2ekgForm();
-		void buildIndex(const QString &filename);
+		void buildIndex(UinsList uins);
+		void buildIndex(QString mobile = QString::null);
 		int getHistoryEntriesCount(UinsList uins);
 		int getHistoryEntriesCount(QString mobile = QString::null);
 		QValueList<HistoryEntry> getHistoryEntries(UinsList uins, int from, int count, int mask = HISTORYMANAGER_ENTRY_ALL);
@@ -70,6 +71,7 @@ class HistoryManager {
 		QString text2csv(const QString &text);
 		int typeOfLine(const QString &line);
 		int getHistoryEntriesCountPrivate(const QString &filename);
+		void buildIndexPrivate(const QString &filename);
 };
 
 extern HistoryManager history;

@@ -139,7 +139,7 @@ void HistoryManager::appendMessage(UinsList uins, uin_t uin, const QString &msg,
 		return;
 		}
 
-	buildIndex(fname);
+	buildIndexPrivate(fname);
 	fidx.setName(f.name() + ".idx");
 	if (fidx.open(IO_WriteOnly | IO_Append)) {
 		offs = f.at();
@@ -194,7 +194,7 @@ void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 		return;
 		}
 
-	buildIndex(f.name());
+	buildIndexPrivate(f.name());
 	fidx.setName(f.name() + ".idx");
 	if (fidx.open(IO_WriteOnly | IO_Append)) {
 		offs = f.at();
@@ -285,7 +285,7 @@ void HistoryManager::appendStatus(uin_t uin, unsigned int status, QString descri
 		return;
 		}
 
-	buildIndex(fname);
+	buildIndexPrivate(fname);
 	fidx.setName(fname + ".idx");
 	if (fidx.open(IO_WriteOnly | IO_Append)) {
 		offs = f.at();
@@ -571,14 +571,14 @@ int HistoryManager::getHistoryEntriesCountPrivate(const QString &filename) {
 }
 
 int HistoryManager::getHistoryEntriesCount(UinsList uins) {
-	return getHistoryEntriesCountPrivate(getFileNameByUinsList(uins));
+	return getHistoryEntriesCountPrivate(ggPath("history/") + getFileNameByUinsList(uins));
 }
 
 int HistoryManager::getHistoryEntriesCount(QString mobile) {
 	if (mobile == QString::null)
-		return getHistoryEntriesCountPrivate("sms");
+		return getHistoryEntriesCountPrivate(ggPath("history/") + "sms");
 	else
-		return getHistoryEntriesCountPrivate(mobile);
+		return getHistoryEntriesCountPrivate(ggPath("history/") + mobile);
 }
 
 QValueList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int from, int count, int mask) {
@@ -724,8 +724,8 @@ QValueList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int fr
 	return entries;
 }
 
-void HistoryManager::buildIndex(const QString &filename) {
-	kdebug("HistoryManager::buildIndex()\n");
+void HistoryManager::buildIndexPrivate(const QString &filename) {
+	kdebug("HistoryManager::buildIndexPrivate()\n");
 	QString fnameout = filename + ".idx";
 	char *inbuf;
 	int *outbuf;
@@ -738,11 +738,11 @@ void HistoryManager::buildIndex(const QString &filename) {
 	QFile fin(filename);
 	QFile fout(fnameout);
 	if (!fin.open(IO_ReadOnly)) {
-		kdebug("HistoryManager::buildIndex(): Error opening history file: %s\n", (const char *)fin.name().local8Bit());
+		kdebug("HistoryManager::buildIndexPrivate(): Error opening history file: %s\n", (const char *)fin.name().local8Bit());
 		return;
 		}
 	if (!fout.open(IO_WriteOnly | IO_Truncate)) {
-		kdebug("HistoryManager::buildIndex(): Error creating history index file: %s\n", (const char *)fout.name().local8Bit());
+		kdebug("HistoryManager::buildIndexPrivate(): Error creating history index file: %s\n", (const char *)fout.name().local8Bit());
 		fin.close();
 		return;
 		}
@@ -780,6 +780,18 @@ void HistoryManager::buildIndex(const QString &filename) {
 	fin.close();
 	fout.close();
 }
+
+void HistoryManager::buildIndex(UinsList uins) {
+	buildIndexPrivate(ggPath("history/") + getFileNameByUinsList(uins));
+}
+
+void HistoryManager::buildIndex(QString mobile) {
+	if (mobile == QString::null)
+		buildIndexPrivate(ggPath("history/") + "sms");
+	else
+		buildIndexPrivate(ggPath("history/") + mobile);
+}
+
 
 QStringList HistoryManager::mySplit(const QChar &sep, const QString &str) {
 	QStringList strlist;
@@ -857,6 +869,7 @@ History::History(UinsList uins) {
 	int i;
 	
 	history.convHist2ekgForm(uins);
+	history.buildIndex(uins);
 
 	setCaption(i18n("History"));
 	setWFlags(Qt::WDestructiveClose);
