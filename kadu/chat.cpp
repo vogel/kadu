@@ -47,6 +47,21 @@ ChatManager::ChatManager() : QObject()
 {
 }
 
+void ChatManager::closeAllWindows()
+{
+	kdebugf();
+	while (!Chats.empty())
+	{
+		Chat *chat=Chats.first();
+		delete chat;
+	}
+}
+
+ChatManager::~ChatManager()
+{
+	kdebugf();
+}
+
 const ChatList& ChatManager::chats()
 {
 	return Chats;
@@ -63,6 +78,7 @@ void ChatManager::unregisterChat(Chat* chat)
 	for(int i=0; i<Chats.count(); i++)
 		if(Chats[i]==chat)
 		{
+			emit chatDestroying(chat->uins());
 			Chats.remove(Chats.at(i));
 			emit chatDestroyed(chat->uins());
 			return;
@@ -108,6 +124,7 @@ int ChatManager::openChat(UinsList senders,time_t time)
 		}
 	Chat* chat = new Chat(senders, 0);
 	chat->setTitle();
+
 	chat->show();
 	chat->writeMessagesFromHistory(senders, time);
 	emit chatCreated(senders);
@@ -346,41 +363,37 @@ void CustomInput::paste() {
 
 QValueList<Chat::RegisteredButton> Chat::RegisteredButtons;
 
-class KaduSplitter : public QSplitter
+KaduSplitter::KaduSplitter(QWidget *parent, const char *name) : QSplitter (parent, name)
 {
-	public:
-		KaduSplitter(QWidget * parent = 0, const char * name = 0) : QSplitter (parent, name)
-		{
-		}
-		KaduSplitter(Orientation o, QWidget * parent = 0, const char * name = 0 ) : QSplitter(o,parent,name)
-		{
-		}
-	protected:
-		QValueList<KaduTextBrowser *> list;
-		virtual void drawContents ( QPainter * p)
-		{
-			QSplitter::drawContents(p);
-			kdebugf();
-			for (QValueList<KaduTextBrowser *>::iterator i=list.begin(); i!=list.end(); i++)
-				(*i)->viewport()->repaint();
-//			kdebug("drawContents(): exit\n");
-		}
+}
 
-		virtual void childEvent(QChildEvent *c)
-		{
-			QSplitter::childEvent(c);
-			kdebugf();
-			QObject *o=c->child();
-			if (o->inherits("KaduTextBrowser"))
-			{
-				if (c->inserted())
-					list.append((KaduTextBrowser*)o);
-				else 
-					list.remove((KaduTextBrowser*)o);
-			}
-//			kdebug("%d %d %p %p %s %s\n", c->inserted(), c->removed(), this, o, o->className(), o->name());
-		}
-};
+KaduSplitter::KaduSplitter(Orientation o, QWidget *parent, const char *name) : QSplitter(o,parent,name)
+{
+}
+
+void KaduSplitter::drawContents(QPainter *p)
+{
+	QSplitter::drawContents(p);
+	kdebugf();
+	for (QValueList<KaduTextBrowser *>::iterator i=list.begin(); i!=list.end(); i++)
+		(*i)->viewport()->repaint();
+//	kdebug("drawContents(): exit\n");
+}
+
+void KaduSplitter::childEvent(QChildEvent *c)
+{
+	QSplitter::childEvent(c);
+	kdebugf();
+	QObject *o=c->child();
+	if (o->inherits("KaduTextBrowser"))
+	{
+		if (c->inserted())
+			list.append((KaduTextBrowser*)o);
+		else 
+			list.remove((KaduTextBrowser*)o);
+	}
+//	kdebug("%d %d %p %p %s %s\n", c->inserted(), c->removed(), this, o, o->className(), o->name());
+}
 
 Chat::Chat(UinsList uins, QWidget *parent, const char *name)
  : QWidget(parent, name, Qt::WDestructiveClose), Uins(uins)
@@ -397,16 +410,18 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	/* register us in the chats registry... */
 	index=chat_manager->registerChat(this);
 
-	KaduSplitter *split1, *split2;
+	vertSplit = new KaduSplitter(Qt::Vertical, this);
 
-	split1 = new KaduSplitter(Qt::Vertical, this);
-
-	if (uins.count() > 1) {
-		split2 = new KaduSplitter(Qt::Horizontal, split1);
-		body = new KaduTextBrowser(split2);
-		}
+	if (uins.count() > 1)
+	{
+		horizSplit = new KaduSplitter(Qt::Horizontal, vertSplit);
+		body = new KaduTextBrowser(horizSplit);
+	}
 	else 
-		body = new KaduTextBrowser(split1);
+	{
+		horizSplit=NULL;
+		body = new KaduTextBrowser(vertSplit);
+	}
 		
 	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")==EMOTS_ANIMATED)
 		body->setStyleSheet(new AnimStyleSheet(body,emoticons.themePath()));
@@ -419,7 +434,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	
 	if (uins.count() > 1) {
 		setGeometry((pos.x() + 550) / 2, (pos.y() + 400) / 2, 550, 400);
-		userbox = new UserBox(split2);
+		userbox = new UserBox(horizSplit);
 		userbox->setMinimumSize(QSize(30,30));
 		userbox->setPaletteBackgroundColor(config_file.readColorEntry("Look","UserboxBgColor"));
 		userbox->setPaletteForegroundColor(config_file.readColorEntry("Look","UserboxFgColor"));
@@ -434,14 +449,14 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 
 		sizes.append(3);
 		sizes.append(1);
-		split2->setSizes(sizes);
+		horizSplit->setSizes(sizes);
 		}
 	else {
 		setGeometry((pos.x() + 400) / 2, (pos.y() + 400) / 2, 400, 400);
 		userbox = NULL;
 		}
 		
-	QVBox *downpart = new QVBox(split1);
+	QVBox *downpart = new QVBox(vertSplit);
 	QHBox *edtbuttontray = new QHBox(downpart);
 
 	QLabel *edt = new QLabel(tr("Edit window:"),edtbuttontray);
@@ -547,10 +562,10 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	sizes.clear();
 	sizes.append(3);
 	sizes.append(2);
-	split1->setSizes(sizes);
+	vertSplit->setSizes(sizes);
 
 	QGridLayout *grid = new QGridLayout (this, 5, 4, 3, 3);
-	grid->addMultiCellWidget(split1, 0, 4, 0, 3);
+	grid->addMultiCellWidget(vertSplit, 0, 4, 0, 3);
 	grid->addRowSpacing(1, 5);
 	grid->setRowStretch(0, 2);
 
@@ -1142,8 +1157,10 @@ void Chat::addEmoticon(QString string) {
 	emoticon_selector = NULL;
 }
 
+
 void Chat::initModule()
 {
+	kdebugf();
 	QT_TRANSLATE_NOOP("@default", "General");
 	QT_TRANSLATE_NOOP("@default", "Open chat window on new message");
 	QT_TRANSLATE_NOOP("@default", "Define keys");
@@ -1272,6 +1289,7 @@ void Chat::initModule()
 	connect(&event_manager,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
 		chat_manager,SLOT(chatMsgReceived(UinsList,const QString&,time_t,bool&)));
 }
+
 
 const UinsList& Chat::uins()
 {

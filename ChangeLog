@@ -250,8 +250,6 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   i zakoñczeniu dzia³ania (joi)
 * zamykanie okien chatów i konfiguracji przed wyj¶ciem + wiêcej komunikatów
   debuguj±cych (joi)
-* confniête ostatnie zmiany joi'a w plikach chat.cpp, chat.h, kadu.cpp,
-  kadu sypa³o siê od razu po otwarciu okna chat! (adrian)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

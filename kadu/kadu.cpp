@@ -809,6 +809,7 @@ void Kadu::unregisterUser()
 
 void Kadu::quit()
 {
+	kdebugf();
 	close(true);
 }
 
@@ -1593,7 +1594,8 @@ bool Kadu::close(bool quit) {
 		return false;
 	}
 	else {
-
+		chat_manager->closeAllWindows();
+		ConfigDialog::closeDialog();
 #ifdef MODULES_ENABLED
 		ModulesManager::closeModule();
 #endif
