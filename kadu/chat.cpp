@@ -658,8 +658,6 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 	connect(&event_manager, SIGNAL(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)),
 		this, SLOT(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)));
 
-	totaloccurences = 0;
-
 	edit->setFocus();
 	kdebugf2();
 }
@@ -1152,7 +1150,6 @@ void Chat::clearChatWindow()
 		delete *it;
 	chatMessages.clear();
 	body->clear();
-	totaloccurences = 0;
 }
 
 void Chat::cancelMessage()
@@ -1690,8 +1687,7 @@ void ChatSlots::chooseFont(const char* name, const QFont& font)
 
 void ChatSlots::chooseEmoticonsStyle(int index)
 {
-	QComboBox *emotheme_box= ConfigDialog::getComboBox("Chat","Emoticons theme");
-	emotheme_box->setEnabled(index!=0);
+	ConfigDialog::getComboBox("Chat","Emoticons theme")->setEnabled(index!=0);
 }
 
 void ChatSlots::updatePreview()

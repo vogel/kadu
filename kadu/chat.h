@@ -176,7 +176,6 @@ class Chat : public QWidget
 	
 		UinsList Uins;
 		int index;
-		int totaloccurences;
 		QString title_buffer;
 		QTimer* title_timer;  
 		QColor actcolor;
