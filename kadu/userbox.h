@@ -22,15 +22,35 @@
 #include <qtooltip.h>
 #include "../libgadu/lib/libgadu.h"
 
-class MyListBox : public QListBox , QToolTip {
-    Q_OBJECT
-    public:
-	MyListBox ( QWidget * parent=0, const char * name=0, WFlags f=0 );
-	virtual void clear() { QListBox::clear(); };
+class UserBox : public QListBox , QToolTip
+{    
+	Q_OBJECT
 
-    protected:
-	virtual void maybeTip(const QPoint&);
-	int descriptionForUser(QListBoxItem *);
+	private:
+		static QValueList<UserBox*> UserBoxes;
+		QValueList<uin_t> Uins;
+	
+	protected:
+		virtual void maybeTip(const QPoint&);
+		int descriptionForUser(QListBoxItem *);
+		int findUinInUserlist(uin_t uin);    
+		int findCommentInUserlist(QString& comment);
+		void sortUsers();
+		
+	public:
+		UserBox(QWidget* parent=0,const char* name=0,WFlags f=0);
+		~UserBox();
+		virtual void clear() { QListBox::clear(); };
+		void refresh();
+		void addUin(uin_t uin);
+		void removeUin(uin_t uin);
+		void removeUser(QString& username);
+		void changeUserStatus(
+		void changeAllToInactive();
+		// Functions below works on all created userboxes
+		static void all_refresh();
+		static void all_removeUser(QString& username);		
+		static void all_changeAllToInactive();		
 };
 
 #endif
