@@ -209,7 +209,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * usuniêty segfault przy zmianie danych o kontakcie (joi)
 * w³asny opis w ToolTipie na li¶cie kontaktów po pierwszym prze³±czeniu siê ze
   statusu niedostêpnego jest wy¶wietlany poprawnie (joi)
-* dodano obcinanie wyswietlanych linkow, konfigurowalne (tomee)
+* dodano obcinanie wy¶wietlanych linków, konfigurowalne (tomee)
 * zawijanie d³ugich tekstów bez spacji w chacie/historii/panelu (joi)
 * nad odno¶nikami w oknie rozmowy pokazuj± siê dymki z ich pe³n± tre¶ci± (tomee)
 * poprawki w ³±czeniu z serwerami: przywrócone cykliczne ³±czenie, wszêdzie
@@ -219,7 +219,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * w oknie konfiguracji opcje, które s± liczbami ustawiane s± przy pomocy
   spinboksa, a nie zwyk³ego pola edycyjnego (joi)
 * lepsza (bo obliczana na podstawie czcionki) warto¶æ domy¶lna szeroko¶ci
-  userboksa przy wielokolumnowsej li¶cie kontaktów (joi)
+  userboksa przy wielokolumnowej li¶cie kontaktów (joi)
 * drobne porz±dki, usuniêcie paru niepotrzebnych zmiennych, przeniesienie
   paru globalnych do klas, zmiana publicznych na prywatne, nazwy.. (adrian)
 * w konferencji od¶wie¿anie listy u¿ytkowników gdy w³±czone s± opisy pod kontaktami (joi)
@@ -228,6 +228,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * kolejne drobne porz±dki: pingtimer ukryty w klasie GaduProtocol,
   pozbycie siê publicznych zmiennych z klasy Kadu (adrian)
 * porz±dki w wewnêtrznym nazewnictwie obiektów (joi)
+* poprawione zwijanie linków (joi)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

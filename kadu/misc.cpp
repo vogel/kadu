@@ -1561,7 +1561,7 @@ void HtmlDocument::convertUrlsToHtml()
 		QString link;
 		int lft = config_file.readNumEntry("Chat","LinkFoldTreshold");
 		if (l-p > lft && config_file.readBoolEntry("Chat","FoldLink"))
-			link="<a href=\""+text.mid(p,l)+"\">"+text.mid(p,p+(lft/2))+"..."+text.mid(l-(lft/2),l)+"</a>";
+			link="<a href=\""+text.mid(p,l)+"\">"+text.mid(p,p+(lft/2))+"..."+text.mid(l-(lft/2),lft/2)+"</a>";
 		else
 			link="<a href=\""+text.mid(p,l)+"\">"+text.mid(p,l)+"</a>";
 		splitElement(i,p,l);
