@@ -28,6 +28,7 @@
 #include <qsplitter.h>
 #include <qtoolbar.h>
 #include <qtranslator.h>
+#include <qstyle.h>
 #include <qstylefactory.h>
 
 #include <sys/file.h>
