@@ -23,7 +23,7 @@ all:
 		o_files=""; \
 		h_files=""; \
 		for src_file in $$MODULE_SOURCES; do \
-			o_file=`expr $$src_file : "\(.*\).cpp"`.o; \
+			o_file=`expr $$src_file : "\(.*\)\\.c.*"`.o; \
 			o_files="$$o_files $$dir/$$o_file"; \
 		done; \
 		for moc_h_file in $$MODULE_MOC_HEADERS; do \
@@ -57,6 +57,9 @@ all:
 	ar r $@ $(module_o_files)
 
 .cpp.o: $(module_h_files)
+	$(CC) -o $@ -c -fPIC $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)
+
+.c.o: $(module_h_files)
 	$(CC) -o $@ -c -fPIC $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)
 
 %_moc.cpp: %.h

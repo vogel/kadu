@@ -112,12 +112,17 @@ subdir = modules
 mkinstalldirs = $(SHELL) $(top_srcdir)/admin/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
+CFLAGS = @CFLAGS@
+COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
+	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 DIST_SOURCES =
 DIST_COMMON = Makefile.am Makefile.in
 all: all-am
 
 .SUFFIXES:
-.SUFFIXES: .cpp .o
+.SUFFIXES: .c .cpp .o
 $(srcdir)/Makefile.in:  Makefile.am  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
 	  $(AUTOMAKE) --gnu  modules/Makefile
@@ -247,7 +252,7 @@ all:
 		o_files=""; \
 		h_files=""; \
 		for src_file in $$MODULE_SOURCES; do \
-			o_file=`expr $$src_file : "\(.*\).cpp"`.o; \
+			o_file=`expr $$src_file : "\(.*\)\\.c.*"`.o; \
 			o_files="$$o_files $$dir/$$o_file"; \
 		done; \
 		for moc_h_file in $$MODULE_MOC_HEADERS; do \
@@ -281,6 +286,9 @@ all:
 	ar r $@ $(module_o_files)
 
 .cpp.o: $(module_h_files)
+	$(CC) -o $@ -c -fPIC $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)
+
+.c.o: $(module_h_files)
 	$(CC) -o $@ -c -fPIC $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)
 
 %_moc.cpp: %.h

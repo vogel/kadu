@@ -1,4 +1,4 @@
-MODULE_SOURCES="encryption.cpp simlite.cpp"
+MODULE_SOURCES="encryption.cpp simlite.c"
 MODULE_HEADERS=simlite.h
 MODULE_MOC_HEADERS=encryption.h
 MODULE_INCLUDES=ssl.h
