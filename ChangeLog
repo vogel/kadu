@@ -74,6 +74,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   u¿ytkownicy ignorowani przez nas kolorem ¿ó³tym (chilek)
 * poczatki drag&drop - mozna przeciagac uzytkownikow z userbox'a.
   narazie np do jakiegos edytora tekstowego (adrian)
+* zakladki z grupami przyjmuja drag&drop z userbox'a i przenosi
+  kontakt do okreslonej grupy. trzeba to jeszcze dopracowac.
+  przy okazji drobna przerobka UserListElement (adrian)
 
 +++ wersja 0.3.4-pre3
 * dodane przeszukiwanie historii (chilek)

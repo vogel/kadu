@@ -53,6 +53,27 @@ bool DnsHandler::isCompleted() {
 	return completed;
 }
 
+UserListElement::UserListElement(UserList* parent)
+{
+	Parent=parent;
+};
+
+UserListElement::UserListElement()
+{
+	Parent=NULL;
+};
+
+QString UserListElement::group()
+{
+	return Group;
+};
+
+void UserListElement::setGroup(const QString& group)
+{
+	Group=group;
+	emit Parent->modified();
+};
+
 UserList::UserList() : QObject(), QValueList<UserListElement>()
 {
 	dnslookups.setAutoDelete(true);
@@ -159,7 +180,7 @@ void UserList::addUser(const QString& FirstName,const QString& LastName,
 	const bool Blocking, const bool Offline_to_user, const bool Notify,
 	const QString& Group,const QString& Description, const bool Anonymous)
 {
-	UserListElement e;
+	UserListElement e(this);
 	e.first_name = FirstName;
 	e.last_name = LastName;
 	e.nickname = NickName;
@@ -170,7 +191,7 @@ void UserList::addUser(const QString& FirstName,const QString& LastName,
 	e.blocking = Blocking;
 	e.offline_to_user = Offline_to_user;
 	e.notify = Notify;
-	e.group = Group;
+	e.Group = Group;
 	e.description = Description;
 	e.anonymous = Anonymous;
 	e.port = 0;
@@ -200,7 +221,7 @@ void UserList::changeUserInfo(const QString& OldAltNick,
 	e.blocking = Blocking;
 	e.offline_to_user = Offline_to_user;
 	e.notify = Notify;
-	e.group = Group;
+	e.Group = Group;
 	if (AltNick != OldAltNick) {
 		UserBox::all_renameUser(OldAltNick,AltNick);
 		UserBox::all_refresh();			
@@ -266,7 +287,7 @@ bool UserList::writeToFile(QString filename)
 		s.append(QString(";"));
 		s.append((*i).mobile);
 		s.append(QString(";"));
-		s.append((*i).group);
+		s.append((*i).group());
 		s.append(QString(";"));
 		s.append(QString::number((*i).uin));
 		s.append(QString("\r\n"));

@@ -19,9 +19,12 @@
 #include <qiconset.h>
 #include <qcursor.h>
 #include <qsizepolicy.h>
+#include <qdragobject.h>
 
 #include "tabbar.h"
 #include "debug.h"
+#include "userbox.h"
+#include "userlist.h"
 
 struct QTabPrivate;
 
@@ -37,6 +40,7 @@ KaduTabBar::KaduTabBar(QWidget *parent, const char *name)
 	downB = new QToolButton(DownArrow, this, "qt_down_btn");
 	connect(downB, SIGNAL(clicked()), this, SLOT(scrollTabsVert()));
 	downB->hide();
+	setAcceptDrops(true);
 }
 
 KaduTabBar::~KaduTabBar() {
@@ -257,3 +261,19 @@ void KaduTabBar::scrollTabsVert() {
 		if (sender() == downB)
 			makeVisibleVert(down);
 }
+
+void KaduTabBar::dragEnterEvent(QDragEnterEvent* e)
+{
+	e->accept(QTextDrag::canDecode(e) &&
+		dynamic_cast<UserBox*>(e->source()));
+};
+
+void KaduTabBar::dropEvent(QDropEvent* e)
+{
+	QString altnick;
+	if(dynamic_cast<UserBox*>(e->source()) &&
+		QTextDrag::decode(e,altnick))
+	{
+		userlist.byAltNick(altnick).setGroup(selectTab(e->pos())->text());
+	};
+};

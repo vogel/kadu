@@ -237,17 +237,6 @@ QHostAddress getMyIP(void) {
 	return ip;
 }
 
-/*void deletePendingMessage(int nr) {
-	kdebug("predeletePendingMessage(), counts: %d\n",pending.count());
-	pending.deleteMsg(nr);
-	kdebug("deletePendingMessage(%d), counts: %d\n",nr,pending.count());
-	if (!pending.pendingMsgs()) {
-		kdebug("pendingMessage is false\n");
-		if (trayicon)
-			trayicon->setType(*icons->loadIcon(gg_icons[statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]));
-		}
-}*/
-
 /* sends the userlist. ripped off EKG, actually, but works */
 void sendUserlist() {
 	uin_t *uins;
@@ -617,7 +606,7 @@ void Kadu::refreshGroupTabBar()
 		group_bar->removeTab(group_bar->tabAt(i));
 	/* dodajemy nowe zakladki */
 	for (int i = 0; i < userlist.count(); i++) {
-		QString groups = userlist[i].group;
+		QString groups = userlist[i].group();
 		QString group;
 		for (int g = 0; (group = groups.section(',' ,g ,g)) != ""; g++) {
 			bool createNewTab = true;
@@ -633,7 +622,9 @@ void Kadu::refreshGroupTabBar()
 		setActiveGroup("");
 		}
 	else
+	{
 		group_bar->show();
+	};
 	/* odswiezamy - dziala tylko jesli jest widoczny */
 	group_bar->update();
 };
@@ -649,7 +640,7 @@ void Kadu::setActiveGroup(const QString& group)
 		else
 		{
 			belongsToGroup=false;
-			QString user_groups=userlist[i].group;
+			QString user_groups=userlist[i].group();
 			QString user_group;
 			for(int g=0; (user_group=user_groups.section(',',g,g))!=""; g++)
 				if(user_group==group)

@@ -348,7 +348,7 @@ QString UserlistExport::saveContacts(){
 		contacts += ";";
 		contacts += userlist[i].mobile;
 		contacts += ";";
-		contacts += userlist[i].group;
+		contacts += userlist[i].group();
 		contacts += ";";
 		contacts += QString::number(userlist[i].uin);
 		contacts += ";\r\n";

@@ -412,7 +412,7 @@ QString parse_symbols(QString s, int i, UserListElement &ule, bool escape) {
 				break;
 			case 'g':
 				i++;
-				r+=ule.group;
+				r+=ule.group();
 				break;
 			case 'o':
 				i++;

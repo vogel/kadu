@@ -80,7 +80,7 @@ void UserInfo::setupTab1() {
 	e_mobile = new QLineEdit(puser->mobile, vbox41);
 	QVBox *vbox42 = new QVBox(hbox4);
 	QLabel *l_group = new QLabel(i18n("Group"), vbox42);
-	e_group = new QLineEdit(puser->group, vbox42);
+	e_group = new QLineEdit(puser->group(), vbox42);
 
 	QLabel *l_addr = new QLabel(i18n("Address IP and Port"), box);
 	e_addr = new QLineEdit(box);

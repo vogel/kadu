@@ -28,6 +28,8 @@ class KaduTabBar : public QTabBar {
 		void updateArrowButtonsVert();
 		void makeVisibleVert(QTab *t);
 		void resizeEvent(QResizeEvent *);
+		void dragEnterEvent(QDragEnterEvent* e);
+		void dropEvent(QDropEvent* e);
 
 		QPtrList<QTab> *lstatic2;
 		bool vertscrolls;

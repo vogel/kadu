@@ -41,24 +41,38 @@ class DnsHandler : public QObject
 
 typedef QPtrList<DnsHandler> DnsLookups;
 
+class UserList;
+
 struct UserListElement
 {
-	QString first_name;
-	QString last_name;
-	QString nickname;
-	QString altnick;
-	QString mobile;
-	QString group;
-	QString description;
-	uin_t uin;
-	unsigned int status;
-	bool anonymous;
-	QHostAddress ip;
-	QString dnsname;
-	short port;
-	bool blocking;
-	bool offline_to_user;
-	bool notify;
+	private:
+		QString Group;
+		UserList* Parent;
+		friend class UserList;
+	
+	public:
+		UserListElement(UserList* parent);
+		UserListElement();
+		QString group();
+		void setGroup(const QString& group);
+	
+		// te trzeba kiedys trzeba tak uporzadkowac
+		// jak Group
+		QString first_name;
+		QString last_name;
+		QString nickname;
+		QString altnick;
+		QString mobile;
+		QString description;
+		uin_t uin;
+		unsigned int status;
+		bool anonymous;
+		QHostAddress ip;
+		QString dnsname;
+		short port;
+		bool blocking;
+		bool offline_to_user;
+		bool notify;
 };
 
 class UserList : public QObject, public QValueList<UserListElement>
@@ -96,6 +110,7 @@ class UserList : public QObject, public QValueList<UserListElement>
 
 	protected:
 		DnsLookups dnslookups;
+		friend class UserListElement;
 
 	signals:
 		void modified();
