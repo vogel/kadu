@@ -79,13 +79,13 @@ PersonalInfoDialog::PersonalInfoDialog(QDialog *parent, const char *name)
 
 	if (getActualStatus() != GG_STATUS_NOT_AVAIL) {
 		struct SearchIdStruct sid;
-		gg_search50_t req;
-		req = gg_search50_new();
+		gg_pubdir50_t req;
+		req = gg_pubdir50_new(GG_PUBDIR50_READ);
 		sid.ptr = this;
-		sid.seq = gg_search50(sess, req, 0x02);
+		sid.seq = gg_pubdir50(sess, req);
 		sid.type = DIALOG_PERSONAL;
 		SearchList.append(sid);
-		gg_search50_free(req);
+		gg_pubdir50_free(req);
 		State = READING;
 		}
 };
@@ -107,25 +107,25 @@ void PersonalInfoDialog::OkButtonClicked()
 	iso_to_cp((unsigned char *)city);
 
 	struct SearchIdStruct sid;
-	gg_search50_t req;
-	req = gg_search50_new();
+	gg_pubdir50_t req;
+	req = gg_pubdir50_new(GG_PUBDIR50_WRITE);
 	if (strlen(first))
-		gg_search50_add(req, GG_SEARCH50_FIRSTNAME, (const char *)first);
+		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)first);
 	if (strlen(last))
-		gg_search50_add(req, GG_SEARCH50_LASTNAME, (const char *)last);
+		gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, (const char *)last);
 	if (strlen(nick))
-		gg_search50_add(req, GG_SEARCH50_NICKNAME, (const char *)nick);
+		gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)nick);
 	if (strlen(city))
-		gg_search50_add(req, GG_SEARCH50_CITY, (const char *)city);
+		gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)city);
 	if (GenderCombo->currentItem())
-		gg_search50_add(req, GG_SEARCH50_GENDER, QString::number(GenderCombo->currentItem()).latin1());
+		gg_pubdir50_add(req, GG_PUBDIR50_GENDER, QString::number(GenderCombo->currentItem()).latin1());
 	if (strlen(born))
-		gg_search50_add(req, GG_SEARCH50_BIRTHYEAR, (const char *)born);
+		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)born);
 	sid.ptr = this;
-	sid.seq = gg_search50(sess, req, 0x01);
+	sid.seq = gg_pubdir50(sess, req);
 	sid.type = DIALOG_PERSONAL;
 	SearchList.append(sid);
-	gg_search50_free(req);
+	gg_pubdir50_free(req);
 
 	State = WRITTING;
 
@@ -138,7 +138,7 @@ void PersonalInfoDialog::OkButtonClicked()
 	delete born;
 };
 
-void PersonalInfoDialog::fillFields(gg_search50_t res)
+void PersonalInfoDialog::fillFields(gg_pubdir50_t res)
 {
 	int count;
 	const char *first, *last, *nick, *born, *city, *gender;
@@ -149,12 +149,12 @@ void PersonalInfoDialog::fillFields(gg_search50_t res)
 		case READING:
 			fprintf(stderr, "KK PersonalInfoDialog::fillFields(): Done reading info,\n");
 
-			first = gg_search50_get(res, 0, GG_SEARCH50_FIRSTNAME);
-			last = gg_search50_get(res, 0, GG_SEARCH50_LASTNAME);
-			nick = gg_search50_get(res, 0, GG_SEARCH50_NICKNAME);
-			gender = gg_search50_get(res, 0, GG_SEARCH50_GENDER);
-			born = gg_search50_get(res, 0, GG_SEARCH50_BIRTHYEAR);
-			city = gg_search50_get(res, 0, GG_SEARCH50_CITY);
+			first = gg_pubdir50_get(res, 0, GG_PUBDIR50_FIRSTNAME);
+			last = gg_pubdir50_get(res, 0, GG_PUBDIR50_LASTNAME);
+			nick = gg_pubdir50_get(res, 0, GG_PUBDIR50_NICKNAME);
+			gender = gg_pubdir50_get(res, 0, GG_PUBDIR50_GENDER);
+			born = gg_pubdir50_get(res, 0, GG_PUBDIR50_BIRTHYEAR);
+			city = gg_pubdir50_get(res, 0, GG_PUBDIR50_CITY);
 			if (first)
 				cp_to_iso((unsigned char *)first);
 			if (last)

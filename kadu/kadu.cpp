@@ -1609,9 +1609,10 @@ void Kadu::eventHandler(int state) {
 			}
 		}
 
-	if (e->type == GG_EVENT_SEARCH50_REPLY) {
-		gg_search50_t res = e->event.search50;
-		uint32_t seq = gg_search50_seq(res);
+	if (e->type == GG_EVENT_PUBDIR50_SEARCH_REPLY
+		|| e->type == GG_EVENT_PUBDIR50_READ || e->type == GG_EVENT_PUBDIR50_WRITE) {
+		gg_pubdir50_t res = e->event.pubdir50;
+		uint32_t seq = gg_pubdir50_seq(res);
 		i = 0;
 		while (i < SearchList.count() && SearchList[i].seq != seq)
 			i++;

@@ -219,7 +219,7 @@ void SearchDialog::firstSearch(void) {
 
 void SearchDialog::nextSearch(void) {
 	int i;
-	gg_search50_t req;
+	gg_pubdir50_t req;
 	char *reqbuf;
 	char bufyear[32];
 
@@ -229,45 +229,45 @@ void SearchDialog::nextSearch(void) {
 	b_sendbtn->setEnabled(false);
 	b_nextbtn->setEnabled(false);
 
-	req = gg_search50_new();
+	req = gg_pubdir50_new(GG_PUBDIR50_SEARCH);
 
 	if (r_pers->isChecked()) {
 		reqbuf = e_name->text().length() ? strdup(e_name->text().local8Bit()) : NULL;
 		if (reqbuf) {
 			iso_to_cp((unsigned char *)reqbuf);
-			gg_search50_add(req, GG_SEARCH50_FIRSTNAME, (const char *)reqbuf);
+			gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)reqbuf);
 			free(reqbuf);
 			}
 		reqbuf = e_surname->text().length() ? strdup(e_surname->text().local8Bit()) : NULL;
 		if (reqbuf) {
 			iso_to_cp((unsigned char *)reqbuf);
-			gg_search50_add(req, GG_SEARCH50_LASTNAME, (const char *)reqbuf);
+			gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, (const char *)reqbuf);
 			free(reqbuf);			
 			}
 		reqbuf = e_nick->text().length() ? strdup(e_nick->text().local8Bit()) : NULL;
 		if (reqbuf) {
 			iso_to_cp((unsigned char *)reqbuf);
-			gg_search50_add(req, GG_SEARCH50_NICKNAME, (const char *)reqbuf);
+			gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)reqbuf);
 			free(reqbuf);			
 			}
 		reqbuf = e_city->text().length() ? strdup(e_city->text().local8Bit()) : NULL;
 		if (reqbuf) {
 			iso_to_cp((unsigned char *)reqbuf);
-			gg_search50_add(req, GG_SEARCH50_CITY, (const char *)reqbuf);
+			gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)reqbuf);
 			free(reqbuf);			
 			}
 		reqbuf = e_byr->text().length() ? strdup(e_byr->text().local8Bit()) : NULL;
 		if (reqbuf) {
 			sprintf(bufyear, "%s %s", reqbuf, reqbuf);
 			free(reqbuf);
-			gg_search50_add(req, GG_SEARCH50_BIRTHYEAR, (const char *)bufyear);
+			gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)bufyear);
 			}
 		switch (c_gender->currentItem()) {
 			case 1:
-				gg_search50_add(req, GG_SEARCH50_GENDER, GG_SEARCH50_GENDER_MALE);
+				gg_pubdir50_add(req, GG_PUBDIR50_GENDER, GG_PUBDIR50_GENDER_MALE);
 				break;
 			case 2:
-				gg_search50_add(req, GG_SEARCH50_GENDER, GG_SEARCH50_GENDER_FEMALE);
+				gg_pubdir50_add(req, GG_PUBDIR50_GENDER, GG_PUBDIR50_GENDER_FEMALE);
 				break;
 			}
 		}
@@ -275,33 +275,33 @@ void SearchDialog::nextSearch(void) {
 		if (r_uin->isChecked()) {
 			reqbuf = e_uin->text().length() ? strdup(e_uin->text().local8Bit()) : NULL;
 			if (reqbuf) {
-				gg_search50_add(req, GG_SEARCH50_UIN, (const char *)reqbuf);
+				gg_pubdir50_add(req, GG_PUBDIR50_UIN, (const char *)reqbuf);
 				free(reqbuf);
 				}
 			}
 
 	if (only_active->isChecked())
-		gg_search50_add(req, GG_SEARCH50_ACTIVE, GG_SEARCH50_ACTIVE_TRUE);
+		gg_pubdir50_add(req, GG_PUBDIR50_ACTIVE, GG_PUBDIR50_ACTIVE_TRUE);
 	QString s;
 	s = QString::number(fromUin);
-	gg_search50_add(req, GG_SEARCH50_START, s.local8Bit());
+	gg_pubdir50_add(req, GG_PUBDIR50_START, s.local8Bit());
 
 	progress->setText(i18n("Searching..."));
 	fprintf(stderr, "KK SearchDialog::doSearch(): let the search begin\n");
 
 	struct SearchIdStruct sid;
 	sid.ptr = this;
-	sid.seq = gg_search50(sess, req, 0x03);
+	sid.seq = gg_pubdir50(sess, req);
 	sid.type = DIALOG_SEARCH;
 	SearchList.append(sid);
-	gg_search50_free(req);
+	gg_pubdir50_free(req);
 }
 
 void SearchDialog::showResults(gg_search50_t res) {
 	int i, count;
 	const char *uin, *first, *nick, *born, *city, *status;
 	
-	count = gg_search50_count(res);
+	count = gg_pubdir50_count(res);
 
 	if (count < 1) {
 		fprintf(stderr, "KK SearchDialog::showResults(): No results. Exit.\n");
@@ -318,12 +318,12 @@ void SearchDialog::showResults(gg_search50_t res) {
 	qlv = NULL;
 
 	for (i = 0; i < count; i++) {
-		uin = gg_search50_get(res, i, GG_SEARCH50_UIN);
-		first = gg_search50_get(res, i, GG_SEARCH50_FIRSTNAME);
-		nick = gg_search50_get(res, i, GG_SEARCH50_NICKNAME);
-		born = gg_search50_get(res, i, GG_SEARCH50_BIRTHYEAR);
-		city = gg_search50_get(res, i, GG_SEARCH50_CITY);
-		status = gg_search50_get(res, i, GG_SEARCH50_STATUS);
+		uin = gg_pubdir50_get(res, i, GG_PUBDIR50_UIN);
+		first = gg_pubdir50_get(res, i, GG_PUBDIR50_FIRSTNAME);
+		nick = gg_pubdir50_get(res, i, GG_PUBDIR50_NICKNAME);
+		born = gg_pubdir50_get(res, i, GG_PUBDIR50_BIRTHYEAR);
+		city = gg_pubdir50_get(res, i, GG_PUBDIR50_CITY);
+		status = gg_pubdir50_get(res, i, GG_PUBDIR50_STATUS);
 		if ((status && atoi(status) <= 1 && only_active->isChecked()) || !status)
 			continue;
 		if (results->findItem(uin, 1))
@@ -343,7 +343,7 @@ void SearchDialog::showResults(gg_search50_t res) {
 		qlv->setPixmap(0, *qpx);
 		}
 
-	fromUin = gg_search50_next(res);
+	fromUin = gg_pubdir50_next(res);
 	if (!results->selectedItem())
 		results->setSelected(results->firstChild(), true);
 	else
