@@ -21,8 +21,8 @@
 typedef void* SoundDevice;
 
 /**
-	To jest klasa uzywana wewnetrznie przez klase SoundManager
-	i nie powinienes miec potrzeby jej uzywania.
+	To jest klasa u¿ywana wewnêtrznie przez klasê SoundManager
+	i nie powiniene¶ mieæ potrzeby jej u¿ywania.
 **/
 class SoundPlayThread : public QObject, public QThread
 {
@@ -138,6 +138,9 @@ class SoundManager : public Themes
 			wielu niezale¿nie dzia³aj±cych "po³±czeñ"
 			z urz±dzeniami. Ka¿de otwarte po³±czenie nale¿y
 			zamkn±æ za pomoc± tej metody.
+			Je¶li w³±czyli¶my operacje nieblokuj±ce to
+			metoda ta czeka na zakoñczenie trwaj±cych operacji
+			i koñczy dzia³anie w±tków.
 			Emituje sygna³ closeDeviceImpl() w celu
 			przekazania ¿±dania do konkrentego modu³u
 			d¼wiêkowego.
@@ -145,14 +148,25 @@ class SoundManager : public Themes
 		**/
 		void closeDevice(SoundDevice device);
 		/**
+			Powo³uje do ¿ycia w±tek zajmuj±cy siê odtwarzaniem
+			próbek dla danego po³±czenia z urz±dzeniem d¼wiêkowym.
+			Od tej chwili playSample() bêdzie operacj± nieblokuj±c±.
+			@param device uogólniony deskryptor urz±dzenia.
 		**/
 		void enableThreading(SoundDevice device);
 		/**
-			Odtwarza próbkê d¼wiêkow±. Operacja blokuj±ca.
-			Mo¿e byæ wywo³ana z innego w±tku (a nawet powinna).
+			Odtwarza próbkê d¼wiêkow±. Standardowo jest to
+			operacja blokuj±ca. Mo¿e byæ wywo³ana z innego
+			w±tku (a nawet powinna).
 			Emituje sygna³ playSampleImpl() w celu
 			przekazania ¿±dania do konkrentego modu³u
 			d¼wiêkowego.
+			Po uprzednim wywo³aniu enableThreading() dzia³anie
+			metoda jest nieblokuj±ca i przekazuje jedynie polecenie
+			odtwarzania do w±tku.
+			W takim wypadku nale¿y uwa¿aæ, aby nie zwolniæ pamiêci
+			zajmowanej przez dane sampla zanim odtwarzanie siê nie
+			zakoñczy.
 			@param device uogólniony deskryptor urz±dzenia
 			@data wska¼nik do danych sampla
 			@length d³ugo¶æ danych sampla
@@ -174,6 +188,11 @@ class SoundManager : public Themes
 
 	signals:
 		void playSound(const QString &sound, bool volCntrl, double vol);
+		/**
+			Sygna³ emitowany gdy odtwarzanie sampla siê
+			zakoñczy³o (odnosi siê tylko do sytuacji gdy
+			w³±czony jest nieblokuj±cy tryb odtwarzania).
+		**/
 		void samplePlayed(SoundDevice device);
 		/**
 			Pod ten sygna³ powinien podpi±æ siê modu³
