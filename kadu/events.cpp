@@ -122,43 +122,45 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 		}
 }
 
-void playSound(char * sound) {
+void playSound(char *sound) {
 	if (!config.playsound)
 		return;
 
 	if (!mute) {
-		if ((QString::compare(sound,NULL) == 0) || (QString::compare(sound,"") == 0)) {
+		QStringList args;
+		if ((QString::compare(sound,NULL) == 0) || (QString::compare(sound, "") == 0)) {
 			fprintf(stderr,"KK No sound file specified?\n");
 			return;
 			}
-		char path[511];
-		pid_t nasz_pid;
-		nasz_pid = fork();
-		if (nasz_pid == 0) {
-			if (config.playartsdsp) {
-				if (config.soundvolctrl)
-					snprintf(path, sizeof(path), "artsdsp %s -v %.2f %s", config.soundprog, config.soundvol, sound);
-				else
-					snprintf(path, sizeof(path), "artsdsp %s %s", config.soundprog, sound);
+//		char path[511];
+//		pid_t nasz_pid;
+//		nasz_pid = fork();
+		if (config.playartsdsp) {
+			args.append("artsdsp");
+			if (config.soundvolctrl) {
+//				args.append(QString("artsdsp %1 -v %.2f %3").arg(config.soundprog).arg(config.soundvol).arg(sound));
+				args.append(config.soundprog);
+				args.append(QString("-v %1").arg(config.soundvol));
 				}
-			else {
-				if (config.soundvolctrl)
-					snprintf(path, sizeof(path), "%s -v %.2f %s", config.soundprog, config.soundvol, sound);
-				else	
-					snprintf(path, sizeof(path), "%s %s", config.soundprog, sound);
-				}
-
-			system(path);
-			exit(0);
+			else
+				args.append(config.soundprog);
 			}
 		else {
-			struct sigaction sigact;
-			sigact.sa_handler = sigchldHndl;
-			sigact.sa_flags = 0;
-//			sigact.sa_restorer = NULL;
-			if (sigaction(SIGCHLD,&sigact,NULL) < 0)
-      				perror("sigaction");
+			if (config.soundvolctrl) {
+//				args.append(QString("%s -v %.2f %s", config.soundprog, config.soundvol, sound);
+				args.append(config.soundprog);
+				args.append(QString("-v %1").arg(config.soundvol));
+				}
+			else
+				args.append(config.soundprog);
 			}
+		args.append(sound);
+		for (QStringList::Iterator it = args.begin(); it != args.end(); ++it ) {
+        		fprintf(stderr, "KK playSound(): %s\n", (*it).latin1());
+    			}
+		QProcess *sndprocess = new QProcess(args, kadu);
+		sndprocess->start();
+		delete sndprocess;
 		}
 }
 
