@@ -261,6 +261,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * gdy domy¶lny kolor czcionki w chacie jest inny ni¿ czarny, to przy wyborze
   koloru pojawia siê dodatkowy przycisk z tym kolorem, BUG_ID=50 (joi)
 * skrypt kadu-mozilla wspó³pracuje z now± Mozill± 1.7 (adrian)
+* poprawka segfaula w przypadku gdny nie ma zastawów emotionek
+  zainstalowanych (michal)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

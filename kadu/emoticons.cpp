@@ -191,6 +191,10 @@ QString EmoticonsManager::themePath()
 void EmoticonsManager::expandEmoticons(HtmlDocument& doc,const QColor& bgcolor)
 {
 	kdebugf();
+
+	if(getSubDirs(dataPath("kadu/themes/emoticons")).size()==0)
+		return;
+	
 	// check in config if user wants animated emots
 	bool animated = (EmoticonsStyle) config_file.readNumEntry("Chat", "EmoticonsStyle") == EMOTS_ANIMATED;
 
