@@ -36,6 +36,7 @@
 #include <netinet/in.h>
 #include <time.h>
 #include <stdlib.h>
+#include <sys/stat.h>
 //
 #include "config_dialog.h"
 #include "config_file.h"
