@@ -371,7 +371,8 @@ if test -z "$have_openssl"; then
 	have_openssl=no
 fi
 AM_CONDITIONAL(OPENSSL,[test "$have_openssl" = "yes"])
-
+AC_SUBST(OPENSSL_LIBS)
+AC_SUBST(OPENSSL_INCLUDES)
 
 AC_SUBST(MY_SUBDIRS)
 

@@ -835,7 +835,7 @@ Usually this means the macro was only invoked conditionally.])
 fi])])
 
 dnl based on curses.m4 
-dnl $Id: aclocal.m4,v 1.53 2003/10/10 19:38:49 adrian Exp $
+dnl $Id: aclocal.m4,v 1.54 2003/10/10 19:57:34 adrian Exp $
 
 AC_DEFUN(AC_CHECK_OPENSSL,[
   AC_SUBST(OPENSSL_LIBS)
