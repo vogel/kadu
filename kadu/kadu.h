@@ -107,11 +107,13 @@ class Kadu : public QMainWindow
 		KaduTabBar *group_bar;
 		QTextBrowser *descrtb;
 		int commencing_startup;
+
 		void createMenu();
 		void createStatusPopupMenu();
 		void setActiveGroup(const QString& group);
 		bool close_permitted;
-	
+		UinsList getSelectedUins();
+
 	private slots:
 		void groupTabSelected(int id);
 		void userListModified();

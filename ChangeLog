@@ -70,6 +70,7 @@
   cytowane wypowiedzi (chilek)
 * na razie zablokowa³em poprzedni feature (chilek)
 * poprawki w konwersji historii - nick mo¿e zawieraæ spacje i nie tylko (chilek)
+* mo¿na ignorowaæ grupy u¿ytkowników (chilek)
 
 +++ wersja 0.3.3-final
 * ikonka wiadomo¶ci i ikon statusu "ukryty" z telefonikiem

@@ -838,6 +838,18 @@ int Kadu::openChat(UinsList senders) {
 	return i;
 }
 
+UinsList Kadu::getSelectedUins() {
+	UinsList uins;
+	UserListElement user;
+	for (int i = 0; i < userbox->count(); i++)
+		if (userbox->isSelected(i)) {
+			user = userlist.byAltNick(userbox->text(i));
+			if (user.uin)
+				uins.append(user.uin);
+			}
+	return uins;
+}
+
 /* menu and popup menu parser */
 void Kadu::commandParser (int command) {
 	int i = 0, l, k;
@@ -861,12 +873,7 @@ void Kadu::commandParser (int command) {
 			msg->show();
 			break;
 		case KADU_CMD_OPEN_CHAT:
-			for (i = 0; i < userbox->count(); i++)
-				if (userbox->isSelected(i)) {
-					user = userlist.byAltNick(userbox->text(i));
-					if (user.uin)
-						uins.append(user.uin);
-					}
+			uins = getSelectedUins();
 			for (i = 0; i < pending.count(); i++) {
 				elem = pending[i];
 				if (elem.uins.equals(uins))
@@ -1078,8 +1085,7 @@ void Kadu::commandParser (int command) {
 			break;
 #endif
 		case KADU_CMD_IGNORE_USER:
-			user = userlist.byAltNick(userbox->currentText());
-			uins.append(user.uin);
+			uins = getSelectedUins();
 			if (isIgnored(uins))
 				delIgnored(uins);
 			else
@@ -1183,7 +1189,7 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 		}
 	else {
 		UinsList uins;
-		uins.append(user.uin);
+		uins = getSelectedUins();
 		if (isIgnored(uins))
 			pm->setItemChecked(KADU_CMD_IGNORE_USER, true);
 		if (user.blocking)
