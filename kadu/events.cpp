@@ -75,7 +75,7 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 	QString nick;
 	if(userlist.containsUin(senders[0]))
 		nick = userlist.byUin(senders[0]).altnick;
-	else {
+	else if (senders[0] != config.uin) {
 		nick = QString::number(senders[0]);
 		kadu->addUser("", "", nick, nick, "", nick, GG_STATUS_NOT_AVAIL, "", "", true);
 		}
@@ -102,8 +102,9 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 
 //	fprintf(stderr, "KK eventRecvMsg(): New buffer size: %d\n",pending.size());
 
-	pending.addMsg(senders, __c2q((const char*)msg), msgclass, time);
-	
+	if (senders[0] != config.uin)
+		pending.addMsg(senders, __c2q((const char*)msg), msgclass, time);
+
 	fprintf(stderr, "KK eventRecvMsg(): Message allocated to slot %d\n", i);
 	fprintf(stderr, "KK eventRecvMsg(): Got message from %d (%s) saying \"%s\"\n",
 		senders[0], (const char *)nick.local8Bit(), msg);
@@ -117,7 +118,7 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 		}
 
 	PendingMsgs::Element elem;
-	
+
 	if (senders[0] == config.uin) {
 		rMessage *rmsg;
 		elem = pending[i];
