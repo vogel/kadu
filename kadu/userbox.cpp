@@ -627,7 +627,7 @@ void UserBox::initModule()
 	ConfigDialog::addCheckBox("Look", "grid", QT_TRANSLATE_NOOP("@default", "Show info-panel"), "ShowInfoPanel", true);
 	ConfigDialog::addCheckBox("Look", "grid", QT_TRANSLATE_NOOP("@default", "Show status button"), "ShowStatusButton", true);
 	ConfigDialog::addCheckBox("Look", "grid", QT_TRANSLATE_NOOP("@default", "Display group tabs"), "DisplayGroupTabs", true);
-	ConfigDialog::addCheckBox("Look", "grid", QT_TRANSLATE_NOOP("@default", "Multicolumn userbox"), "MultiColumnUserbox", true);
+	ConfigDialog::addCheckBox("Look", "grid", QT_TRANSLATE_NOOP("@default", "Multicolumn userbox"), "MultiColumnUserbox", false);
 	ConfigDialog::addCheckBox("Look", "grid", QT_TRANSLATE_NOOP("@default", "Show description in userbox"), "ShowDesc", true);
 	ConfigDialog::addCheckBox("Look", "grid", QT_TRANSLATE_NOOP("@default", "Multiline description in userbox"), "ShowMultilineDecs", true);
 	ConfigDialog::addCheckBox("Look", "grid", QT_TRANSLATE_NOOP("@default", "Show avaliable in bold"), "ShowBold", true);
