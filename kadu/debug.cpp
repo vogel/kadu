@@ -23,6 +23,6 @@ void _kdebug(const char* file,const int line,const char* format,...)
 	vfprintf(stderr,format,args);
 	va_end(args);
 	debug_mutex.unlock();
-};
+}
 
 #endif

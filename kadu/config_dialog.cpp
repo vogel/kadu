@@ -293,7 +293,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				box->setSizePolicy(QSizePolicy(QSizePolicy::Minimum,QSizePolicy::Maximum));
 				break;
 			}
-		};
+		}
 
 		for(QValueList<ElementConnections>::iterator k=(*i).ConnectedSlots.begin(); k!=(*i).ConnectedSlots.end(); k++)
 			if (!connect((*i).widget, (*k).signal, (*k).receiver, (*k).slot))
@@ -438,7 +438,7 @@ void ConfigDialog::addCheckBox(ConfigFile* config, const QString& groupname,
 		c.defaultS=QString::number(defaultS);
 		c.tip=tip;
 		if (addControl(groupname,c) == 0)
-			  config_file.addVariable(groupname, entry, defaultS);
+			config_file.addVariable(groupname, entry, defaultS);
 	}
 }
 
@@ -517,7 +517,7 @@ void ConfigDialog::addHotKeyEdit(ConfigFile* config, const QString& groupname,
 		if (addControl(groupname,c) == 0)
 		// zapisujemy warto¶æ domy¶ln±, aby ju¿ wiêcej nie musieæ
 		// jej podawaæ przy czytaniu z pliku conf		
-			  config_file.addVariable(groupname, entry, defaultS);	
+			config_file.addVariable(groupname, entry, defaultS);	
 	}
 }
 
@@ -537,7 +537,7 @@ void ConfigDialog::addLineEdit(const QString& groupname,
 			const QString& parent, const QString& caption,
 			const QString& entry, const QString& defaultS, const QString& tip, const QString& name)
 {
-	addLineEdit(&config_file, groupname, parent, caption, entry,  defaultS, tip, name);
+	addLineEdit(&config_file, groupname, parent, caption, entry, defaultS, tip, name);
 }
 
 
@@ -576,7 +576,7 @@ void ConfigDialog::addTextEdit(ConfigFile* config, const QString& groupname,
 		c.tip=tip;
 
 		if (addControl(groupname,c) == 0)
-			  config_file.addVariable(groupname, entry, defaultS);	
+			config_file.addVariable(groupname, entry, defaultS);	
 	}
 }
 
@@ -637,7 +637,7 @@ void ConfigDialog::addSlider(const QString& groupname,
 			const int minValue, const int maxValue,
 			const int pageStep, const int value, const QString& tip, const QString& name)
 {
-	addSlider(&config_file, groupname, parent, caption, entry, minValue,  maxValue,
+	addSlider(&config_file, groupname, parent, caption, entry, minValue, maxValue,
 			pageStep, value, tip, name);
 
 }
@@ -657,7 +657,7 @@ void ConfigDialog::addSlider(ConfigFile* config, const QString& groupname,
 		c.defaultS=QString::number(minValue)+","+QString::number(maxValue)+","+QString::number(pageStep)+","+QString::number(value);
 
 		if (addControl(groupname,c) == 0)
-			  config_file.addVariable(groupname, entry, value);
+			config_file.addVariable(groupname, entry, value);
 	}
 }
 
@@ -685,7 +685,7 @@ void ConfigDialog::addSpinBox(ConfigFile* config, const QString& groupname,
 		c.defaultS=QString::number(minValue)+","+QString::number(maxValue)+","+QString::number(step)+","+QString::number(value);
 		
 		if (addControl(groupname,c) == 0)
-			  config_file.addVariable(groupname, entry, value);
+			config_file.addVariable(groupname, entry, value);
 	}
 }
 

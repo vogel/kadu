@@ -31,49 +31,49 @@ static int dock_xerror = 0;
 
 static int dock_xerrhandler(Display* dpy, XErrorEvent* err)
 {
-    dock_xerror = err->error_code;
-    return old_handler(dpy, err);
+	dock_xerror = err->error_code;
+	return old_handler(dpy, err);
 }
 
 static void trap_errors()
 {
-    dock_xerror = 0;
-    old_handler = XSetErrorHandler(dock_xerrhandler);
+	dock_xerror = 0;
+	old_handler = XSetErrorHandler(dock_xerrhandler);
 }
 
 static bool untrap_errors()
 {
-    XSetErrorHandler(old_handler);
-    return (dock_xerror == 0);
+	XSetErrorHandler(old_handler);
+	return (dock_xerror == 0);
 }
 
 static bool send_message(
-    Display* dpy, /* display */
-    Window w,     /* sender (tray icon window) */
-    long message, /* message opcode */
-    long data1,   /* message data 1 */
-    long data2,   /* message data 2 */
-    long data3    /* message data 3 */
+	Display* dpy, /* display */
+	Window w,     /* sender (tray icon window) */
+	long message, /* message opcode */
+	long data1,   /* message data 1 */
+	long data2,   /* message data 2 */
+	long data3    /* message data 3 */
 )
 {
-    XEvent ev;
+	XEvent ev;
 
-    memset(&ev, 0, sizeof(ev));
-    ev.xclient.type = ClientMessage;
-    ev.xclient.window = w;
-    ev.xclient.message_type = XInternAtom (dpy, "_NET_SYSTEM_TRAY_OPCODE", False );
-    ev.xclient.format = 32;
-    ev.xclient.data.l[0] = CurrentTime;
-    ev.xclient.data.l[1] = message;
-    ev.xclient.data.l[2] = data1;
-    ev.xclient.data.l[3] = data2;
-    ev.xclient.data.l[4] = data3;
+	memset(&ev, 0, sizeof(ev));
+	ev.xclient.type = ClientMessage;
+	ev.xclient.window = w;
+	ev.xclient.message_type = XInternAtom (dpy, "_NET_SYSTEM_TRAY_OPCODE", False );
+	ev.xclient.format = 32;
+	ev.xclient.data.l[0] = CurrentTime;
+	ev.xclient.data.l[1] = message;
+	ev.xclient.data.l[2] = data1;
+	ev.xclient.data.l[3] = data2;
+	ev.xclient.data.l[4] = data3;
 
-    trap_errors();
-    XSendEvent(dpy, w, False, NoEventMask, &ev);
-    XSync(dpy, False);
-    return untrap_errors();
-};
+	trap_errors();
+	XSendEvent(dpy, w, False, NoEventMask, &ev);
+	XSync(dpy, False);
+	return untrap_errors();
+}
 
 #define SYSTEM_TRAY_REQUEST_DOCK    0
 #define SYSTEM_TRAY_BEGIN_MESSAGE   1
@@ -147,7 +147,7 @@ TrayIcon::TrayIcon(QWidget *parent, const char *name)
 	XFree( hints );
 
 	connect(this, SIGNAL(mousePressMidButton()), &pending, SLOT(openMessages()));
-};
+}
 
 TrayIcon::~TrayIcon()
 {
@@ -158,7 +158,7 @@ TrayIcon::~TrayIcon()
 QPoint TrayIcon::trayPosition()
 {
 	return mapToGlobal(QPoint(0,0));
-};
+}
 
 void TrayIcon::show()
 {
@@ -168,14 +168,14 @@ void TrayIcon::show()
 	// nie powinno zostaæ widoczne
 	if(XInternAtom(x11Display(),"_WINDOWMAKER_WM_PROTOCOLS",true)==0)
 		WMakerMasterWidget->hide();
-};
+}
 
 void TrayIcon::setPixmap(const QPixmap& pixmap)
 {
 	QLabel::setPixmap(pixmap);
 	WMakerMasterWidget->setIcon(pixmap);
 	repaint();
-};
+}
 
 void TrayIcon::setType(QPixmap &pixmap)
 {
@@ -219,7 +219,7 @@ void TrayIcon::resizeEvent(QResizeEvent* e)
 //	if (icon)
 //		icon->resize(size());
 //	resize(size());
-};
+}
 
 void TrayIcon::enterEvent(QEvent* e)
 {
@@ -236,9 +236,9 @@ void TrayIcon::enterEvent(QEvent* e)
 		qt_x_time = 1;
 		qApp->x11ProcessEvent( &ev );
 		qt_x_time = time;
-	};
+	}
 	QWidget::enterEvent(e);
-};
+}
 
 void TrayIcon::mousePressEvent(QMouseEvent * e) {
 

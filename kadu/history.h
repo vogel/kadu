@@ -182,9 +182,9 @@ class HistorySlots: public QObject
 {
 	Q_OBJECT
 	public slots:
-	    void onCreateConfigDialog();
-	    void onDestroyConfigDialog();
-	    void updateQuoteTimeLabel(int);
+		void onCreateConfigDialog();
+		void onDestroyConfigDialog();
+		void updateQuoteTimeLabel(int);
 };
 
 #endif

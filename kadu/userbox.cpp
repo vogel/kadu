@@ -162,7 +162,7 @@ UserBox::UserBox(QWidget* parent,const char* name,WFlags f)
 
 {
 	if (!userboxmenu)
-	    userboxmenu= new UserBoxMenu(this);
+		userboxmenu= new UserBoxMenu(this);
 
 	UserBoxes.append(this);
 	setSelectionMode(QListBox::Extended);
@@ -171,7 +171,7 @@ UserBox::UserBox(QWidget* parent,const char* name,WFlags f)
 UserBox::~UserBox()
 {
 	UserBoxes.remove(this);
-};
+}
 
 void UserBox::maybeTip(const QPoint &c)
 {
@@ -192,9 +192,9 @@ void UserBox::maybeTip(const QPoint &c)
 				break;
 			case GG_STATUS_NOT_AVAIL:
 				if (!userlist.byAltNick(item->text()).uin)
-				    s = tr("<i>Mobile:</i><b> ")+userlist.byAltNick(item->text()).mobile+"</b>";
+					s = tr("<i>Mobile:</i><b> ")+userlist.byAltNick(item->text()).mobile+"</b>";
 				else
-				    s = tr("<nobr><i>Not available</i></nobr>");
+					s = tr("<nobr><i>Not available</i></nobr>");
 				break;
 			case GG_STATUS_INVISIBLE:
 			case GG_STATUS_INVISIBLE2:
@@ -218,7 +218,7 @@ void UserBox::maybeTip(const QPoint &c)
 			default:
 				s = tr("<nobr><i>Unknown status</i></nobr>");
 				break;
-		};
+		}
 		QString desc = userlist.byAltNick(item->text()).description;
 		if (desc != "")
 		{
@@ -228,9 +228,9 @@ void UserBox::maybeTip(const QPoint &c)
 			desc.replace(QRegExp(" "), "&nbsp;");
 			desc.replace(QRegExp("\n"), "<br/>");
 			s += desc;
-		};
+		}
 		tip(r, s);
-	};
+	}
 }
 
 void UserBox::mousePressEvent(QMouseEvent *e) {
@@ -253,22 +253,22 @@ void UserBox::mousePressEvent(QMouseEvent *e) {
 
 void UserBox::mouseMoveEvent(QMouseEvent* e)
 {
-    if ((e->state() & LeftButton)&&itemAt(e->pos()))
-    {
-    	QString drag_text;
-	for(int i=0; i<count(); i++)
-		if(isSelected(i))
-		{
-			if(drag_text!="")
-				drag_text+="\n";
-			drag_text+=item(i)->text();
-		}
-        QDragObject* d = new QTextDrag(drag_text,this);
-	d->dragCopy();
-    }
-    else
-	QListBox::mouseMoveEvent(e);
-};
+	if ((e->state() & LeftButton)&&itemAt(e->pos()))
+	{
+		QString drag_text;
+		for(int i=0; i<count(); i++)
+			if(isSelected(i))
+			{
+				if(drag_text!="")
+					drag_text+="\n";
+				drag_text+=item(i)->text();
+			}
+		QDragObject* d = new QTextDrag(drag_text,this);
+		d->dragCopy();
+	}
+	else
+		QListBox::mouseMoveEvent(e);
+}
 
 void UserBox::keyPressEvent(QKeyEvent *e)
 {
@@ -355,30 +355,30 @@ void UserBox::refresh()
 					if (has_mobile)
 						pix = icons_manager.loadIcon("OnlineWithMobile");
 					else
-		    				pix = icons_manager.loadIcon("Online");
-		    			break;
+						pix = icons_manager.loadIcon("Online");
+					break;
 				case GG_STATUS_AVAIL_DESCR:
 					if (has_mobile)
 						pix = icons_manager.loadIcon("OnlineWithDescriptionMobile");
 					else
-		    				pix = icons_manager.loadIcon("OnlineWithDescription");
-		    			break;
+						pix = icons_manager.loadIcon("OnlineWithDescription");
+					break;
 				case GG_STATUS_BUSY:
 					if (has_mobile)
 						pix = icons_manager.loadIcon("BusyWithMobile");
 					else
 						pix = icons_manager.loadIcon("Busy");
-		    			break;
+					break;
 				case GG_STATUS_BUSY_DESCR:
 					if (has_mobile)
 						pix = icons_manager.loadIcon("BusyWithDescriptionMobile");
 					else
 						pix = icons_manager.loadIcon("BusyWithDescription");
-		    			break;
+					break;
 				case GG_STATUS_BLOCKED:
 					pix = icons_manager.loadIcon("Blocking");
 					break;
-				};
+				}
 			if (!pix.isNull())
 				lbp = new KaduListBoxPixmap(pix, user.altnick, user.description, bold);
 //				insertItem(*pix, user.altnick);
@@ -386,8 +386,8 @@ void UserBox::refresh()
 				lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Online"), user.altnick, user.description, bold);
 //				insertItem(*icons->loadIcon("online"), user.altnick);
 			insertItem(lbp);
-		};
-	};
+		}
+	}
 	// Dodajemy niewidocznych
 	for (i = 0; i < i_users.count(); i++) {
 		UserListElement &user = userlist.byAltNick(i_users[i]);
@@ -395,7 +395,7 @@ void UserBox::refresh()
 		if (pending.pendingMsgs(user.uin)) {
 			lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Message"), user.altnick, user.description, 0);
 			insertItem(lbp);
-//	    		insertItem(*icons->loadIcon("message"), user.altnick);
+//			insertItem(*icons->loadIcon("message"), user.altnick);
 			}
 		else {
 			QPixmap pix;
@@ -405,13 +405,13 @@ void UserBox::refresh()
 						pix = icons_manager.loadIcon("InvisibleWithDescriptionMobile");
 					else
 						pix = icons_manager.loadIcon("OnlineWithDescription");
-    		    			break;
+					break;
 				case GG_STATUS_INVISIBLE2:
 					if (has_mobile)
 						pix = icons_manager.loadIcon("InvisibleWithMobile");
 					else
 						pix = icons_manager.loadIcon("Invisible");
-		    			break;
+					break;
 				}
 			lbp = new KaduListBoxPixmap(pix, user.altnick, user.description, 0);
 			insertItem(lbp);
@@ -427,7 +427,7 @@ void UserBox::refresh()
 		if (pending.pendingMsgs(user.uin)) {
 			lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Message"), user.altnick, user.description, 0);
 			insertItem(lbp);
-//	    		insertItem(*icons->loadIcon("message"), user.altnick);
+//			insertItem(*icons->loadIcon("message"), user.altnick);
 			}
 		else
 		{
@@ -437,15 +437,15 @@ void UserBox::refresh()
 					if (has_mobile)
 						pix = icons_manager.loadIcon("OfflineWithDescriptionMobile");
 					else
-			    			pix = icons_manager.loadIcon("OfflineWithDescription");
-    		    			break;
+						pix = icons_manager.loadIcon("OfflineWithDescription");
+					break;
 				default:
 					if (has_mobile)
 						pix = icons_manager.loadIcon("OfflineWithMobile");
 					else
-		    				pix = icons_manager.loadIcon("Offline");
-		    			break;
-				};
+						pix = icons_manager.loadIcon("Offline");
+					break;
+				}
 			if (!pix.isNull())
 				lbp = new KaduListBoxPixmap(pix, user.altnick, user.description, 0);
 //				insertItem(*pix, user.altnick);
@@ -453,8 +453,8 @@ void UserBox::refresh()
 				lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Online"), user.altnick, user.description, 0);
 //				insertItem(*icons->loadIcon("online"), user.altnick);
 			insertItem(lbp);
-		};
-	};
+		}
+	}
 	// Dodajemy uzytkownikow bez numerow GG
 	for (i = 0; i < b_users.count(); i++) {
 		UserListElement &user = userlist.byAltNick(b_users[i]);
@@ -653,7 +653,7 @@ void UserBox::initModule()
 
 UserBoxMenu::UserBoxMenu(QWidget *parent, const char *name): QPopupMenu(parent, name)
 {
-    connect(this, SIGNAL(aboutToHide()), this, SLOT(restoreLook()));
+	connect(this, SIGNAL(aboutToHide()), this, SLOT(restoreLook()));
 }
 
 int UserBoxMenu::addItem(const QString &text, const QObject* receiver, const char* member, const QKeySequence accel, int id)
@@ -693,7 +693,7 @@ void UserBoxMenu::restoreLook()
 void UserBoxMenu::show(QListBoxItem *item)
 {
 	if (item == NULL)
-	    return;
+		return;
 
 	emit popup();
 	exec(QCursor::pos());
@@ -793,14 +793,12 @@ void UserBoxSlots::chooseUserBoxSelect(int nr)
 
 	if (nr>1)
 	{
-	    h_fontsize->show();
-	    cb_userboxfontsize->setCurrentText(QString::number(vl_userboxfont[nr-2].pointSize()));
-	    cb_userboxfont->setCurrentText(vl_userboxfont[nr-2].family());
+		h_fontsize->show();
+		cb_userboxfontsize->setCurrentText(QString::number(vl_userboxfont[nr-2].pointSize()));
+		cb_userboxfont->setCurrentText(vl_userboxfont[nr-2].family());
 	}
 	else
-	{
-	    h_fontsize->hide();
-	}
+		h_fontsize->hide();
 }
 
 void UserBoxSlots::chooseUserBoxFont(int nr)
@@ -823,15 +821,13 @@ void UserBoxSlots::chooseUserBoxFont(int nr)
 	}
 
 	if (cb_userboxfontsize->count() > 0) {
-
 		vl_userboxfont[cb_userboxselect->currentItem()-2] =
-		    QFont(cb_userboxfont->text(nr), cb_userboxfontsize->currentText().toInt());
-					     }
+			QFont(cb_userboxfont->text(nr), cb_userboxfontsize->currentText().toInt());
+	}
 	QLabel *preview= ConfigDialog::getLabel("Look", "<b>Text</b> preview", "userbox");
 	preview->setFont(vl_userboxfont[0]);
 	QLabel *preview2= ConfigDialog::getLabel("Look", "<b>Text</b> preview", "desc");
 	preview2->setFont(vl_userboxfont[1]);
-
 }
 
 void UserBoxSlots::chooseUserBoxFontSize(int nr)
@@ -841,7 +837,7 @@ void UserBoxSlots::chooseUserBoxFontSize(int nr)
 	QComboBox *cb_userboxselect= ConfigDialog::getComboBox("Look", "","combobox0");
 
 	vl_userboxfont[cb_userboxselect->currentItem()-2]=
-	    QFont(cb_userboxfont->currentText(), cb_userboxfontsize->currentText().toInt());
+		QFont(cb_userboxfont->currentText(), cb_userboxfontsize->currentText().toInt());
 
 	QLabel *preview= ConfigDialog::getLabel("Look", "<b>Text</b> preview", "userbox");
 	preview->setFont(vl_userboxfont[0]);
@@ -854,14 +850,14 @@ void UserBoxSlots::chooseColorGet(const QString &text)
 {
 	kdebugf();
 	if ((text.length() == 7)&& (QColor(text).isValid()))
-	    {
+	{
 		ColorButton *colorbutton= ConfigDialog::getColorButton("Look", "ColorButton0");
 		QLineEdit *l_color= ConfigDialog::getLineEdit("Look", "", "line0");
 		colorbutton->setColor(QColor(text));
 		int pos=l_color->cursorPosition();
 		chooseColorGet(QColor(text));
 		l_color->setCursorPosition(pos);
-	    }
+	}
 }
 
 void UserBoxSlots::chooseColorGet(const QColor& color)

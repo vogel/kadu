@@ -190,7 +190,7 @@ class Chat : public QWidget
 			Zwraca liste numerow rozmowcow.
 		**/
 		const UinsList& uins();
-    
+
 	public slots:
 		void HistoryBox(void);
 		void sendMessage(void);

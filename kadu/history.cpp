@@ -191,7 +191,7 @@ void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 		stream << line << '\n';
 		f.close();
 		}
-};
+}
 
 void HistoryManager::appendStatus(uin_t uin, unsigned int status, QString description) {
 	QFile f, fidx;
@@ -1242,10 +1242,9 @@ void History::showHistoryEntries(int from, int count) {
 
 	QValueList<HistoryEntry> entries;
 	entries = history.getHistoryEntries(uins, from, count);
-	for (i = 0; i < entries.count(); i++) {
-	    if ( ! (noStatus && entries[i].type & HISTORYMANAGER_ENTRY_STATUS))
+	for (i = 0; i < entries.count(); i++)
+		if ( ! (noStatus && entries[i].type & HISTORYMANAGER_ENTRY_STATUS))
 			formatHistoryEntry(text, entries[i]);
-	}
 	body->setText(text);
 }
 
@@ -1735,22 +1734,19 @@ void HistorySlots::onCreateConfigDialog()
 	l_qtimeinfo->setAlignment(Qt::AlignHCenter);
 	updateQuoteTimeLabel(config_file.readNumEntry("History", "ChatHistoryQuotationTime"));
 
-};
+}
 
 void HistorySlots::onDestroyConfigDialog()
 {
 	kdebug("HistorySlots::onDestroyConfigDialog() \n");
 
-};
-
+}
 
 void HistorySlots::updateQuoteTimeLabel(int value)
 {
 	kdebug("HistorySlots::updateQuoteTimeLabel() \n");
-    	QLabel *l_qtimeinfo= ConfigDialog::getLabel("History", "", "dayhour");
+	QLabel *l_qtimeinfo= ConfigDialog::getLabel("History", "", "dayhour");
 	l_qtimeinfo->setText(QString(tr("%1 day(s) %2 hour(s)")).arg(-value / 24).arg((-value) % 24));
-};
-
-
+}
 
 HistoryManager history;

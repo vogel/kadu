@@ -44,7 +44,7 @@ QString ggPath(const QString &subpath)
 	else
 		path = QString("%1/%2/gg/%3").arg(home).arg(config_dir).arg(subpath);
 	return path;
-};
+}
 
 QString cp2unicode(const unsigned char *buf)
 {
@@ -1248,7 +1248,7 @@ ImageWidget::ImageWidget(QWidget *parent)
 }
 
 ImageWidget::ImageWidget(QWidget *parent,const QByteArray &image)
-        : QWidget(parent, "ImageWidget"), Image(image)
+	: QWidget(parent, "ImageWidget"), Image(image)
 {
 	setMinimumSize(Image.width(), Image.height());
 }

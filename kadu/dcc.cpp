@@ -60,7 +60,7 @@ dccSocketClass::~dccSocketClass() {
 			if (filedialog->isVisible())
 				filedialog->close();
 			else
-				delete filedialog;    
+				delete filedialog;
 			filedialog = NULL;
 			}
 		}
@@ -165,7 +165,7 @@ void dccSocketClass::watchDcc(int check) {
 				setState(DCC_SOCKET_TRANSFER_DISCARDED);
 				}
 			break;
-		case GG_EVENT_NONE:	    
+		case GG_EVENT_NONE:
 			if (filedialog && filedialog->isVisible())
 				filedialog->updateFileInfo(dccsock);
 			break;

@@ -25,7 +25,7 @@ struct QTabPrivate;
 
 KaduTabBar::KaduTabBar(QWidget *parent, const char *name)
 	: QTabBar(parent, name) {
-	kdebug("KaduTabBar::KaduTabBar()\n");
+	kdebugf();
 	setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred));
 	lstatic2 = new QPtrList<QTab>;
 	vertscrolls = FALSE;
@@ -39,13 +39,13 @@ KaduTabBar::KaduTabBar(QWidget *parent, const char *name)
 }
 
 KaduTabBar::~KaduTabBar() {
-	kdebug("KaduTabBar::~KaduTabBar()\n");
+	kdebugf();
 	delete lstatic2;
 	lstatic2 = 0;
 }
 
 void KaduTabBar::layoutTabs() {
-	kdebug("KaduTabBar::layoutTabs()\n");
+	kdebugf();
 	if (lstatic2->isEmpty())
 		return;
 
@@ -92,7 +92,7 @@ void KaduTabBar::layoutTabs() {
 }
 
 QSize KaduTabBar::sizeHint() const {
-	kdebug("KaduTabBar::sizeHint()\n");
+	kdebugf();
 	QTab *t = lstatic2->first();
 	if (t) {
 		QRect r(t->rect());
@@ -106,21 +106,21 @@ QSize KaduTabBar::sizeHint() const {
 }
 
 QSize KaduTabBar::minimumSizeHint() const {
-	kdebug("KaduTabBar::minimumsizeHint()\n");
+	kdebugf();
 	return QSize(sizeHint().width(), downB->sizeHint().height() * 2 + 75);
 }
 
 void KaduTabBar::paint(QPainter *p, QTab *t, bool selected) const {
-	kdebug("KaduTabBar::paint()\n");
+	kdebugf();
 	QStyle::SFlags flags = QStyle::Style_Default;
 
 	if (isEnabled() && t->isEnabled())
 		flags |= QStyle::Style_Enabled;
 	if ( selected )
 		flags |= QStyle::Style_Selected;
-//    else if(t == d->pressed)
-//        flags |= QStyle::Style_Sunken;
-    //selection flags
+//	else if(t == d->pressed)
+//		flags |= QStyle::Style_Sunken;
+	//selection flags
 	if (t->rect().contains(mapFromGlobal(QCursor::pos())))
 		flags |= QStyle::Style_MouseOver;
 
@@ -150,11 +150,12 @@ void KaduTabBar::paint(QPainter *p, QTab *t, bool selected) const {
 		v.top() + (v.height() - h) / 2,
 		w, h), t, t->identifier() == keyboardFocusTab());
 	p->restore();
+	kdebug("KaduTabBar::paint() exit\n");
 }
 
 int KaduTabBar::insertTab(QTab *newTab, int index)
 {
-	kdebug("KaduTabBar::insertTab()\n");
+	kdebugf();
 	if (index < 0 || index > int(lstatic2->count()))
 		lstatic2->append(newTab);
 	else
@@ -168,7 +169,7 @@ int KaduTabBar::insertTab(QTab *newTab, int index)
 
 void KaduTabBar::removeTab(QTab *t)
 {
-	kdebug("KaduTabBar::removeTab()\n");
+	kdebugf();
 	lstatic2->remove(t);
 	QTabBar::removeTab(t);
 	updateArrowButtonsVert();
@@ -183,7 +184,7 @@ void KaduTabBar::setCurrentTab(QTab *tab) {
 }
 
 void KaduTabBar::resizeEvent(QResizeEvent *e) {
-	kdebug("KaduTabBar::resizeEvent()\n");
+	kdebugf();
 	const int arrowHeight = 16;
 	downB->setGeometry(0, height() - arrowHeight, width(), arrowHeight);
 	upB->setGeometry(0, height() - 2 * arrowHeight, width(), arrowHeight);
@@ -193,7 +194,7 @@ void KaduTabBar::resizeEvent(QResizeEvent *e) {
 }
 
 void KaduTabBar::makeVisibleVert(QTab *tab) {
-	kdebug("KaduTabBar::makeVisibleVert()\n");
+	kdebugf();
 	bool tooFarUp = (tab && tab->rect().top() < 0);
 	bool tooFarDown = (tab && tab->rect().bottom() >= upB->y());
 	if (!vertscrolls || (!tooFarUp && !tooFarDown))
@@ -225,7 +226,7 @@ void KaduTabBar::makeVisibleVert(QTab *tab) {
 }
 
 void KaduTabBar::updateArrowButtonsVert() {
-	kdebug("KaduTabBar::updateArrowButtonsVert()\n");
+	kdebugf();
 	bool b = lstatic2->last() && (lstatic2->last()->rect().bottom() > height());
 	vertscrolls = b;
 	if (vertscrolls) {
@@ -241,7 +242,7 @@ void KaduTabBar::updateArrowButtonsVert() {
 }
 
 void KaduTabBar::scrollTabsVert() {
-	kdebug("KaduTabBar::scrollTabsVert()\n");
+	kdebugf();
 	QTab *up = 0;
 	QTab *down = 0;
 	for (QTab *t = lstatic2->first(); t; t = lstatic2->next()) {
@@ -259,14 +260,14 @@ void KaduTabBar::scrollTabsVert() {
 
 void KaduTabBar::dragEnterEvent(QDragEnterEvent* e)
 {
-	kdebug("KaduTabBar::dragEnterEvent()\n");
+	kdebugf();
 	e->accept(QTextDrag::canDecode(e) &&
 		dynamic_cast<UserBox*>(e->source()));
-};
+}
 
 void KaduTabBar::dropEvent(QDropEvent* e)
 {
-	kdebug("KaduTabBar::dropEvent()\n");
+	kdebugf();
 	QString altnicks;
 	if(dynamic_cast<UserBox*>(e->source()) && QTextDrag::decode(e,altnicks)) {
 		QString group;
@@ -290,4 +291,4 @@ void KaduTabBar::dropEvent(QDropEvent* e)
 		// trzeba dodaæ mozliwo¶æ zmiany danych tylko jednego user !!
 		userlist.writeToFile();
 	}
-};
+}

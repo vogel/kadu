@@ -94,14 +94,14 @@ void ConfigFile::sync() {
 
 QValueList<ConfigFileEntry> ConfigFile::getGroupSection(const QString& name)
 {
-    int i;
-    kdebug("ConfigFile::getGroupSection()\n");
-    for(i=0; i < groups.count(); i++)
-    	if (name == groups[i].name)
-		  return groups[i].entries;
-    
-    QValueList<ConfigFileEntry> empty_group;
-    return empty_group;
+	int i;
+	kdebug("ConfigFile::getGroupSection()\n");
+	for(i=0; i < groups.count(); i++)
+		if (name == groups[i].name)
+			return groups[i].entries;
+
+	QValueList<ConfigFileEntry> empty_group;
+	return empty_group;
 }
 
 void ConfigFile::setGroup(const QString &name) {
@@ -400,61 +400,61 @@ void ConfigFile::addVariable(const QString &group, const QString &name, const QS
 {
 	setGroup(group);
 	if (getEntry(name)=="")
-	    writeEntry(group,name,defvalue);
+		writeEntry(group,name,defvalue);
 }
 void ConfigFile::addVariable(const QString &group, const QString &name, const char *defvalue)
 {
 	setGroup(group);
 	if (getEntry(name)=="")
-	    writeEntry(group,name,defvalue);
+		writeEntry(group,name,defvalue);
 }
 void ConfigFile::addVariable(const QString &group, const QString &name, const int defvalue)
 {
 	setGroup(group);
 	if (getEntry(name)=="")
-	    writeEntry(group,name,defvalue);
+		writeEntry(group,name,defvalue);
 }
 void ConfigFile::addVariable(const QString &group, const QString &name, const double defvalue)
 {
 	setGroup(group);
 	if (getEntry(name)=="")
-	    writeEntry(group,name,defvalue);
+		writeEntry(group,name,defvalue);
 }
 void ConfigFile::addVariable(const QString &group, const QString &name, const bool defvalue)
 {
 	setGroup(group);
 	if (getEntry(name)=="")
-	    writeEntry(group,name,defvalue);
+		writeEntry(group,name,defvalue);
 }
 void ConfigFile::addVariable(const QString &group, const QString &name, const QRect &defvalue)
 {
 	setGroup(group);
 	if (getEntry(name)=="")
-	    writeEntry(group,name,defvalue);
+		writeEntry(group,name,defvalue);
 }
 void ConfigFile::addVariable(const QString &group, const QString &name, const QSize &defvalue)
 {
 	setGroup(group);
 	if (getEntry(name)=="")
-	    writeEntry(group,name,defvalue);
+		writeEntry(group,name,defvalue);
 }
 void ConfigFile::addVariable(const QString &group, const QString &name, const QColor &defvalue)
 {
 	setGroup(group);
 	if (getEntry(name)=="")
-	    writeEntry(group,name,defvalue);
+		writeEntry(group,name,defvalue);
 }
 void ConfigFile::addVariable(const QString &group, const QString &name, const QFont &defvalue)
 {
 	setGroup(group);
 	if (getEntry(name)=="")
-	    writeEntry(group,name,defvalue);
+		writeEntry(group,name,defvalue);
 }
 void ConfigFile::addVariable(const QString &group, const QString &name, const QPoint &defvalue)
 {
 	setGroup(group);
 	if (getEntry(name)=="")
-	    writeEntry(group,name,defvalue);
+		writeEntry(group,name,defvalue);
 }
 
 ConfigFile config_file(ggPath(QString("kadu.conf")));

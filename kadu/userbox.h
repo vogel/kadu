@@ -10,17 +10,17 @@
 #include "misc.h"
 
 class KaduListBoxPixmap : public QListBoxItem {
-        public:
-                KaduListBoxPixmap(const QPixmap &pix, const QString &text);
-                KaduListBoxPixmap(const QPixmap &pix, const QString &text, const QString &descr, bool bold);
+	public:
+		KaduListBoxPixmap(const QPixmap &pix, const QString &text);
+		KaduListBoxPixmap(const QPixmap &pix, const QString &text, const QString &descr, bool bold);
 
 		QString description() const { return descr; }
 		bool isBold() const { return bold; }
 		int height(const QListBox *lb) const;
 		int width(const QListBox *lb) const;
 
-        protected:
-                void paint(QPainter *painter);
+	protected:
+		void paint(QPainter *painter);
 		void setDescription(const QString &d) { descr = d; }
 		void setBold(bool b) { bold = b; }
 
@@ -32,29 +32,29 @@ class KaduListBoxPixmap : public QListBoxItem {
 
 class UserBoxMenu : public QPopupMenu
 {
-    Q_OBJECT
+	Q_OBJECT
 
-    private slots:
-	    void restoreLook();
+	private slots:
+		void restoreLook();
 
-    public:
-	    UserBoxMenu(QWidget *parent=0, const char* name=0);
-	    int getItem(const QString &caption);
-	    int addItem(const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1);
-	    /**
-	    	@param iconname nazwa ikony z zestawu lub sciezka do pliku
-	    **/
-	    int addItem(const QString &iconname, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1);
-	    /**
-	    	@param iconname nazwa ikony z zestawu lub sciezka do pliku
-	    **/
-	    int addItemAtPos(int index,const QString &iconname, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1);
-	    
-    public slots:
-	    void show(QListBoxItem *item);
+	public:
+		UserBoxMenu(QWidget *parent=0, const char* name=0);
+		int getItem(const QString &caption);
+		int addItem(const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1);
+		/**
+			@param iconname nazwa ikony z zestawu lub sciezka do pliku
+		**/
+		int addItem(const QString &iconname, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1);
+		/**
+			@param iconname nazwa ikony z zestawu lub sciezka do pliku
+		**/
+		int addItemAtPos(int index,const QString &iconname, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1);
+	
+	public slots:
+		void show(QListBoxItem *item);
 
-    signals:
-	    void popup();
+	signals:
+		void popup();
 };
 
 
@@ -62,7 +62,7 @@ class UserBoxMenu : public QPopupMenu
 	Klasa reprezentuj±ca listê kontaktów wraz z ikonkami stanów
 **/
 class UserBox : public QListBox , QToolTip
-{    
+{
 	Q_OBJECT
 
 	private:
@@ -118,27 +118,27 @@ class UserBox : public QListBox , QToolTip
 		static void all_renameUser(const QString &oldaltnick, const QString &newaltnick);		
 		static void initModule();
 		/**
-		    Funkcja zwraca liste zaznaczonych uzytkownikow 
-		    @return UinsList z zaznaczonymi 
-		    uzytkownikami posiadajacymi numer GG
+			Funkcja zwraca liste zaznaczonych uzytkownikow 
+			@return UinsList z zaznaczonymi 
+			uzytkownikami posiadajacymi numer GG
 		**/
 
 		UinsList getSelectedUins();
 		/**
-		    Funkcja zwraca liste zaznaczonych uzytkownikow
-		    @return UserList z zaznaczonymi uzytkownikami
+			Funkcja zwraca liste zaznaczonych uzytkownikow
+			@return UserList z zaznaczonymi uzytkownikami
 		**/
 
 		UserList getSelectedUsers();
 		/**
-		    Funkcja zwraca liste zaznaczonych uzytkownikow
-		    @return QStringList z AltNick'ami
+			Funkcja zwraca liste zaznaczonych uzytkownikow
+			@return QStringList z AltNick'ami
 		**/
 		QStringList getSelectedAltNicks();
 		/**
-		    Funkcja znajdujaca aktywny UserBox.
-		    @return wskaznik do aktywnego UserBox'a, 
-		    jesli taki nie istnieje zwracana jest wartosc NULL
+			Funkcja znajdujaca aktywny UserBox.
+			@return wskaznik do aktywnego UserBox'a, 
+			jesli taki nie istnieje zwracana jest wartosc NULL
 		**/
 		static UserBox* getActiveUserBox();
 	public slots:	

@@ -62,8 +62,6 @@ class ModulesManager : public QObject
 		};
 		QMap<QString,Module> Modules;	
 		ModulesDialog* Dialog;
-		void initStaticModules();
-		void closeStaticModules();
 
 	private slots:
 		void dialogDestroyed();
@@ -73,39 +71,15 @@ class ModulesManager : public QObject
 		static void closeModule();
 		ModulesManager();
 		~ModulesManager();
-		/**
-			Zwraca listê modu³ów wkompilowanych
-			statycznie w plik wykonywalny kadu
-		**/
-		QStringList staticModules();
-		/**
-			Zwraca listê modu³ów zainstalowanych jako
-			dzielone biblioteki (shared libraries)
-		**/
 		QStringList installedModules();
-		/**
-			Zwraca listê modu³ów za³adowanych do pamiêci
-			jako dzielone biblioteki (shared libraries)
-		**/
 		QStringList loadedModules();
-		/**
-			Zwraca listê modu³ów zainstalowanych jako
-			dzielone biblioteki (shared libraries)
-			i nie za³adowanych aktualnie do pamiêci
-		**/		
 		QStringList unloadedModules();
 		/**
 			Pobiera do info informacje o module module_name jesli
 			sie to udalo zwraca true w przeciwnym wypadku false		 
 		**/		
 		bool moduleInfo(const QString& module_name, ModuleInfo& info);
-		/**
-			£aduje modu³ do pamiêci i inicjalizuje go
-		**/
 		bool loadModule(const QString& module_name);
-		/**
-			Zamyka modu³ i usuwa go z pamiêci
-		**/		
 		bool unloadModule(const QString& module_name, bool force=false);
 		/**
 			Pobiera adres symbolu zaladowanego do pamieci modulu.

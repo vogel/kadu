@@ -246,8 +246,7 @@ void UserInfo::addNewUser(UserListElement& e)
 		{
 			changeUserData(e);
 			return;
-		};
-			
+		}	
 	}
 	if (!e_altnick->text().length())
 	{

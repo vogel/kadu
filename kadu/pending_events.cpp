@@ -87,7 +87,7 @@ void PendingEvents::activateEvent(int index)
 	kdebug("PendingEvents::activateEvent(%d), count=%d\n", index, Events.count());
 	emit eventActivated(event);
 	delete event;
-};
+}
 
 void activateEvent()
 {
@@ -97,7 +97,7 @@ void activateEvent()
 PendingEvent* PendingEvents::operator[](int index)
 {
 	return Events.at(index);
-};
+}
 
 bool PendingEvents::pendingEvents(uin_t uin)
 {
@@ -105,11 +105,11 @@ bool PendingEvents::pendingEvents(uin_t uin)
 		if((*i)->sendBy(uin))
 			return true;
 	return false;
-};
+}
 
 bool PendingEvents::pendingEvents()
 {
 	return (Events.count()>0);
-};
+}
 
 extern PendingEvents pending_events;

@@ -163,44 +163,44 @@ void HtmlDocumentToGGMessage(HtmlDocument &htmldoc, QString &msg,
 
 class ImageWidget : public QWidget
 {
-        Q_OBJECT
+	Q_OBJECT
 
-        private:
-                QImage Image;
+	private:
+		QImage Image;
 
-        protected:
-                virtual void paintEvent(QPaintEvent *e);
+	protected:
+		virtual void paintEvent(QPaintEvent *e);
 
-        public:
+	public:
 		ImageWidget(QWidget *parent);
-                ImageWidget(QWidget *parent,const QByteArray &image);
+		ImageWidget(QWidget *parent,const QByteArray &image);
 		void setImage(const QByteArray &image);
 };
 
 class token : public QObject {
-        Q_OBJECT
+	Q_OBJECT
 
-        public:
-                token();
-                ~token();
-                void getToken();
+	public:
+		token();
+		~token();
+		void getToken();
 
-        private:
-                struct gg_http *h;
-                QSocketNotifier *snr;
-                QSocketNotifier *snw;
+	private:
+		struct gg_http *h;
+		QSocketNotifier *snr;
+		QSocketNotifier *snw;
 
-                void deleteSocketNotifiers();
-                void createSocketNotifiers();
+		void deleteSocketNotifiers();
+		void createSocketNotifiers();
 
-        private slots:
-                void socketEvent();
-                void dataReceived();
-                void dataSent();
+	private slots:
+		void socketEvent();
+		void dataReceived();
+		void dataSent();
 
-        signals:
-                void gotToken(struct gg_http *h);
-                void tokenError();
+	signals:
+		void gotToken(struct gg_http *h);
+		void tokenError();
 };
 
 class TokenDialog : public QDialog {

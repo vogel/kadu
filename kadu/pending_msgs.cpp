@@ -11,7 +11,7 @@
 
 PendingMsgs::PendingMsgs(): QObject()
 {
-};
+}
 
 void PendingMsgs::deleteMsg(int index)
 {
@@ -24,7 +24,7 @@ void PendingMsgs::deleteMsg(int index)
 		QPixmap pix= icons_manager.loadIcon(gg_icons[statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]);
 		trayicon->setType(pix);
 		}
-};
+}
 
 bool PendingMsgs::pendingMsgs(uin_t uin)
 {
@@ -34,22 +34,22 @@ bool PendingMsgs::pendingMsgs(uin_t uin)
 		if((*i).uins[0]==uin)
 			return true;
 	return false;
-};
+}
 
 bool PendingMsgs::pendingMsgs()
 {
 	return (msgs.size()>0);
-};
+}
 
 int PendingMsgs::count()
 {
 	return msgs.count();
-};
+}
 
 PendingMsgs::Element &PendingMsgs::operator[](int index)
 {
 	return msgs[index];
-};
+}
 
 void PendingMsgs::addMsg(UinsList uins, QString msg, int msgclass, time_t time)
 {
@@ -60,7 +60,7 @@ void PendingMsgs::addMsg(UinsList uins, QString msg, int msgclass, time_t time)
 	e.time = time;
 	msgs.append(e);
 	writeToFile();
-};
+}
 
 void PendingMsgs::writeToFile()
 {
@@ -70,7 +70,7 @@ void PendingMsgs::writeToFile()
 	{
 		kdebug("PendingMsgs::saveToFile(): Cannot open file kadu.msgs\n");
 		return;
-	};
+	}
 	// Najpierw zapisujemy ilosc wiadomosci
 	int t=msgs.count();
 	f.writeBlock((char*)&t,sizeof(int));
@@ -93,10 +93,10 @@ void PendingMsgs::writeToFile()
 		f.writeBlock((char*)&(*i).msgclass,sizeof(int));
 		// i czas
 		f.writeBlock((char*)&(*i).time,sizeof(time_t));
-	};
+	}
 	// I zamykamy plik
 	f.close();
-};
+}
 
 bool PendingMsgs::loadFromFile()
 {
@@ -131,7 +131,7 @@ bool PendingMsgs::loadFromFile()
 				return false;
 				}
 			e.uins.append(uin);
-		};
+		}
 		// nastepnie wiadomosc - dlugosc
 		int msg_size;
 		if (f.readBlock((char*)&msg_size, sizeof(int)) <= 0) {
@@ -162,11 +162,11 @@ bool PendingMsgs::loadFromFile()
 			}						
 		// dodajemy do listy
 		msgs.append(e);
-	};
+	}
 	// I zamykamy plik
 	f.close();
 	return true;
-};
+}
 
 void PendingMsgs::openMessages() {
 	chat_manager->openPendingMsgs();

@@ -24,7 +24,7 @@ MessageBox::MessageBox(const QString& message,int components,bool modal)
 		QLabel* l=new QLabel(this);
 		l->setText(message);
 		vbox->addWidget(l,0,AlignCenter);
-	};
+	}
 	if(components&PROGRESS)
 	{
 		Progress=new QProgressBar(this);
@@ -45,63 +45,63 @@ MessageBox::MessageBox(const QString& message,int components,bool modal)
 		QPushButton* b=new QPushButton(buttons);
 		b->setText(tr("&OK"));
 		connect(b,SIGNAL(clicked()),this,SLOT(okClicked()));
-	};
+	}
 	if(components&YES)
 	{
 		QPushButton* b=new QPushButton(buttons);
 		b->setText(tr("&Yes"));
 		connect(b,SIGNAL(clicked()),this,SLOT(yesClicked()));
-	};
+	}
 	if(components&NO)
 	{
 		QPushButton* b=new QPushButton(buttons);
 		b->setText(tr("&No"));
 		connect(b,SIGNAL(clicked()),this,SLOT(noClicked()));
-	};
+	}
 	if(components&CANCEL)
 	{
 		QPushButton* b=new QPushButton(buttons);
 		b->setText(tr("&Cancel"));
 		connect(b,SIGNAL(clicked()),this,SLOT(cancelClicked()));
-	};
+	}
 	buttons->setMaximumSize(buttons->sizeHint());
-};
+}
 
 void MessageBox::okClicked()
 {
 	emit okPressed();
 	accept();
-};
+}
 
 void MessageBox::cancelClicked()
 {
 	emit cancelPressed();
 	reject();
-};
+}
 
 void MessageBox::yesClicked()
 {
 	emit yesPressed();
 	accept();
-};
+}
 
 void MessageBox::noClicked()
 {
 	emit noPressed();
 	reject();
-};
+}
 
 void MessageBox::setTotalSteps(int s)
 {
 	if(Progress!=NULL)
 		Progress->setTotalSteps(s);
-};
+}
 
 void MessageBox::setProgress(int p)
 {
 	if(Progress!=NULL)
 		Progress->setProgress(p);
-};
+}
 
 void MessageBox::status(const QString& message)
 {
@@ -109,19 +109,19 @@ void MessageBox::status(const QString& message)
 	m->show();
 	Boxes.insert(message,m);
 	qApp->processEvents();
-};
+}
 
 void MessageBox::msg(const QString& message)
 {
 	MessageBox* m=new MessageBox(message,OK);
 	m->show();
-};
+}
 
 bool MessageBox::ask(const QString& message)
 {
 	MessageBox* m=new MessageBox(message,YES|NO,true);
 	return (m->exec()==Accepted);
-};
+}
 
 void MessageBox::progress(const QString& message, const QObject* receiver,
 	const char* slot, int total_steps)
@@ -138,7 +138,7 @@ void MessageBox::progress(const QString& message, const QObject* receiver,
 	m->show();
 	Boxes.insert(message,m);	
 	qApp->processEvents();
-};
+}
 
 void MessageBox::progress(const QString& message,int progress)
 {
@@ -147,8 +147,8 @@ void MessageBox::progress(const QString& message,int progress)
 		MessageBox* m=Boxes[message];
 		m->setProgress(progress);
 		qApp->processEvents();
-	};
-};
+	}
+}
 
 void MessageBox::close(const QString& message)
 {
@@ -156,7 +156,7 @@ void MessageBox::close(const QString& message)
 	{
 		Boxes[message]->accept();
 		Boxes.remove(message);
-	};
-};
+	}
+}
 
 QMap<QString,MessageBox*> MessageBox::Boxes;

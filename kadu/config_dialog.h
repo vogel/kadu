@@ -112,41 +112,41 @@ class SelectPaths : public QDialog
 {	
 	Q_OBJECT
 	protected:
-	      QStringList releaseList;
-	      QListBox *pathListBox;
-	      QPushButton *ok, *cancel;
-	      QPushButton *add, *change, *remove;
-	      QLineEdit *pathEdit;
-	      QPushButton *findPath;
+		QStringList releaseList;
+		QListBox *pathListBox;
+		QPushButton *ok, *cancel;
+		QPushButton *add, *change, *remove;
+		QLineEdit *pathEdit;
+		QPushButton *findPath;
 	protected slots:
-	      void okButton();
-	      void cancelButton();
-	      void addPath();
-	      void replacePath();
-	      void deletePath();
-	      void choosePath();
-	      void closeEvent(QCloseEvent *e);
-	      void keyPressEvent(QKeyEvent *e);
+		void okButton();
+		void cancelButton();
+		void addPath();
+		void replacePath();
+		void deletePath();
+		void choosePath();
+		void closeEvent(QCloseEvent *e);
+		void keyPressEvent(QKeyEvent *e);
 	public:
-	      SelectPaths(QWidget *parent =0, const char* name =0);
-	      ~SelectPaths();
-	      /**
-	        Pobiera liste sciezek katalogow
-	      **/
-	      QStringList getPathList();
+		SelectPaths(QWidget *parent =0, const char* name =0);
+		~SelectPaths();
+		/**
+			Pobiera liste sciezek katalogow
+		**/
+		QStringList getPathList();
 
-	      /**
-		Ustawia sciezki z katalogami
-	      **/
-	      void setPathList(QStringList& list);
+		/**
+			Ustawia sciezki z katalogami
+		**/
+		void setPathList(QStringList& list);
 
 	signals:
 
-	    /**
-		Sygnal jest emitowany przy zamknieciu okna przez "ok",
-		przesyla on zmieniony zmieniona liste sciezek katalogow
+		/**
+			Sygnal jest emitowany przy zamknieciu okna przez "ok",
+			przesyla on zmieniony zmieniona liste sciezek katalogow
 	    **/
-	    void changed(const QStringList& paths);
+		void changed(const QStringList& paths);
 };
 
 

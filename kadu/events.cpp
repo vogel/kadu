@@ -105,7 +105,7 @@ EventManager::EventManager()
 		this,SLOT(pubdirReplyReceivedSlot(gg_pubdir50_t)));
 	connect(this,SIGNAL(userlistReplyReceived(char, char *)),
 		this,SLOT(userlistReplyReceivedSlot(char, char *)));
-};
+}
 
 void EventManager::connectedSlot()
 {
@@ -125,7 +125,7 @@ void EventManager::connectedSlot()
 	pingtimer = new QTimer;
 	QObject::connect(pingtimer, SIGNAL(timeout()), kadu, SLOT(pingNetwork()));
 	pingtimer->start(60000, TRUE);
-};
+}
 
 void EventManager::connectionFailedSlot(int failure)
 {
@@ -174,7 +174,7 @@ void EventManager::connectionFailedSlot(int failure)
 	kadu->disconnectNetwork();
 	if (kadu->autohammer)
 		AutoConnectionTimer::on();
-};
+}
 
 void EventManager::connectionBrokenSlot()
 {
@@ -182,7 +182,7 @@ void EventManager::connectionBrokenSlot()
 	kadu->disconnectNetwork();
 	if (kadu->autohammer)
 		AutoConnectionTimer::on();
-};
+}
 
 void EventManager::connectionTimeoutSlot()
 {
@@ -190,7 +190,7 @@ void EventManager::connectionTimeoutSlot()
 	kadu->disconnectNetwork();
 	if (kadu->autohammer)
 		AutoConnectionTimer::on();
-};
+}
 
 void EventManager::disconnectedSlot()
 {
@@ -200,7 +200,7 @@ void EventManager::disconnectedSlot()
 	kadu->autohammer = false;
 	kadu->disconnectNetwork();
 	AutoConnectionTimer::off();
-};
+}
 
 void EventManager::systemMessageReceivedSlot(QString &msg, QDateTime &time,
 	int formats_length, void *formats)
@@ -284,7 +284,7 @@ void EventManager::chatMsgReceived2Slot(UinsList senders,const QString& msg,time
 
 	if(config_file.readBoolEntry("Chat","OpenChatOnMessage"))
 		pending.openMessages();
-};
+}
 
 void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)
 {
@@ -432,7 +432,7 @@ void EventManager::userStatusChangedSlot(struct gg_event * e) {
 		image_size = 0;
 		}
 
-	kdebug("eventStatusChange(): User %d went %d\n", uin,  status);
+	kdebug("eventStatusChange(): User %d went %d\n", uin, status);
 	UserListElement &user = userlist.byUin(uin);
 
 	if (!userlist.containsUin(uin)) {
@@ -472,12 +472,12 @@ void EventManager::userStatusChangedSlot(struct gg_event * e) {
 			
 	ifNotify(uin, status, oldstatus);
 	UserBox::all_refresh();
-};
+}
 
 void EventManager::ackReceivedSlot(int seq)
 {
 	kdebug("EventManager::ackReceivedSlot(): got msg ack.\n");
-};
+}
 
 void EventManager::dccConnectionReceivedSlot(const UserListElement& sender)
 {
@@ -493,12 +493,12 @@ void EventManager::dccConnectionReceivedSlot(const UserListElement& sender)
 			dcc->initializeNotifiers();
 		}
 	}
-};
+}
 
 void EventManager::pubdirReplyReceivedSlot(gg_pubdir50_t res)
 {
 	kdebug("EventManager::pubdirReplyReceivedSlot(): got pubdir reply.\n");
-};
+}
 
 void EventManager::userlistReplyReceivedSlot(char type, char *reply)
 {
@@ -556,8 +556,8 @@ void EventManager::eventHandler(gg_session* sess)
 		QObject::connect(kadusnw, SIGNAL(activated(int)), kadu, SLOT(dataSent()));
 
 		kadusnr = new QSocketNotifier(sess->fd, QSocketNotifier::Read, this); 
-		QObject::connect(kadusnr, SIGNAL(activated(int)), kadu, SLOT(dataReceived()));    
-	};
+		QObject::connect(kadusnr, SIGNAL(activated(int)), kadu, SLOT(dataReceived()));
+	}
 
 	switch (sess->state)
 	{
@@ -655,11 +655,11 @@ void EventManager::eventHandler(gg_session* sess)
 
 	gg_free_event(e);
 	calls--;
-};
+}
 
 void EventConfigSlots::initModule()
 {
-    	kdebug("EventConfigSlots::initModule()\n");
+	kdebug("EventConfigSlots::initModule()\n");
 	
 	EventConfigSlots *eventconfigslots = new EventConfigSlots();
 	
@@ -698,7 +698,7 @@ void EventConfigSlots::initModule()
 //zakladka "siec"
 	//potrzebne do translacji
 	QT_TRANSLATE_NOOP("@default", "Network");
-	QT_TRANSLATE_NOOP("@default",  "DCC enabled");
+	QT_TRANSLATE_NOOP("@default", "DCC enabled");
 	QT_TRANSLATE_NOOP("@default", "DCC IP autodetection");
 	QT_TRANSLATE_NOOP("@default", "DCC IP");
 	QT_TRANSLATE_NOOP("@default", "IP address:");
@@ -761,25 +761,24 @@ void EventConfigSlots::initModule()
 	ConfigDialog::connectSlot("Network", "Use TLSv1", SIGNAL(toggled(bool)), eventconfigslots, SLOT(useTlsEnabled(bool)));
 #endif	
 
-	    defaultdescriptions = QStringList::split(QRegExp("<-->"), config_file.readEntry("General","DefaultDescription", tr("I am busy.")), true);
-		if (!config_file.readBoolEntry("Network","DccIpDetect"))
+	defaultdescriptions = QStringList::split(QRegExp("<-->"), config_file.readEntry("General","DefaultDescription", tr("I am busy.")), true);
+	if (!config_file.readBoolEntry("Network","DccIpDetect"))
 		if (!config_dccip.setAddress(config_file.readEntry("Network","DccIP", "")))
 			config_dccip.setAddress((unsigned int)0);
 
-	        if (!config_extip.setAddress(config_file.readEntry("Network","ExternalIP", "")))
-			config_extip.setAddress((unsigned int)0);
+	if (!config_extip.setAddress(config_file.readEntry("Network","ExternalIP", "")))
+		config_extip.setAddress((unsigned int)0);
 
-
-	    QStringList servers;
-	    QHostAddress ip2;
-	    servers = QStringList::split(";", config_file.readEntry("Network","Server", ""));
-	    config_servers.clear();
-	        for (unsigned int i = 0; i < servers.count(); i++)
-		    {
-		        if (ip2.setAddress(servers[i]))
-  			       config_servers.append(ip2);
-		    }
-		server_nr = 0;
+	QStringList servers;
+	QHostAddress ip2;
+	servers = QStringList::split(";", config_file.readEntry("Network","Server", ""));
+	config_servers.clear();
+	for (unsigned int i = 0; i < servers.count(); i++)
+	{
+		if (ip2.setAddress(servers[i]))
+			config_servers.append(ip2);
+	}
+	server_nr = 0;
 
 
 	ConfigDialog::connectSlot("Notify", "", SIGNAL(clicked()), eventconfigslots, SLOT(_Right()), "forward");
@@ -823,7 +822,7 @@ void EventConfigSlots::onCreateConfigDialog()
 	serverbox->setEnabled(!b_defaultserver->isChecked());
 	
 	connect(b_dccfwd, SIGNAL(toggled(bool)), g_fwdprop, SLOT(setEnabled(bool)));
-        connect(b_useproxy, SIGNAL(toggled(bool)), g_proxy, SLOT(setEnabled(bool)));
+	connect(b_useproxy, SIGNAL(toggled(bool)), g_proxy, SLOT(setEnabled(bool)));
 
 // notify
 
@@ -881,38 +880,39 @@ void EventConfigSlots::onDestroyConfigDialog()
 	bool ipok;
 	int i;
 	
-	    tmpservers = QStringList::split(";", e_servers->text());
-		for (i = 0; i < tmpservers.count(); i++) 
-		{
+	tmpservers = QStringList::split(";", e_servers->text());
+	for (i = 0; i < tmpservers.count(); i++) 
+	{
 		ipok = ip.setAddress(tmpservers[i]);
-			if (!ipok)
-			    break;
-			    servers.append(ip);
-			    server.append(ip.toString());
-		}
-		config_file.writeEntry("Network","Server",server.join(";"));
-		config_servers=servers;
-			    server_nr = 0;
-			    
+		if (!ipok)
+			break;
+		servers.append(ip);
+		server.append(ip.toString());
+	}
+	config_file.writeEntry("Network","Server",server.join(";"));
+	config_servers=servers;
+	server_nr = 0;
+
 	if (!config_dccip.setAddress(config_file.readEntry("Network","DccIP")))
-	    {
+	{
 		config_file.writeEntry("Network","DccIP","0.0.0.0");
 		config_dccip.setAddress((unsigned int)0);
-	    }										
-	
+	}
+
 	if (!config_extip.setAddress(config_file.readEntry("Network","ExternalIP")))
-	    {	config_file.writeEntry("Network","ExternalIP","0.0.0.0");
+	{
+		config_file.writeEntry("Network","ExternalIP","0.0.0.0");
 		config_extip.setAddress((unsigned int)0);
-	    }	
+	}
 	
 	if (config_file.readNumEntry("Network","ExternalPort")<=1023)
-	    config_file.writeEntry("Network","ExternalPort",0);
-	
+		config_file.writeEntry("Network","ExternalPort",0);
+
 	if (!ip.setAddress(config_file.readEntry("Network","ProxyHost")))
-	    config_file.writeEntry("Network","ProxyHost","0.0.0.0");
+		config_file.writeEntry("Network","ProxyHost","0.0.0.0");
 
 	if (config_file.readNumEntry("Network","ProxyPort")<=1023)
-	    config_file.writeEntry("Network","ProxyPort",0);
+		config_file.writeEntry("Network","ProxyPort",0);
 
 
 	//notify
@@ -920,7 +920,7 @@ void EventConfigSlots::onDestroyConfigDialog()
 	QListBox *e_notifies= ConfigDialog::getListBox("Notify", "track");
 
 	QString tmp;
-    	for (i = 0; i < e_notifies->count(); i++) {
+	for (i = 0; i < e_notifies->count(); i++) {
 		tmp = e_notifies->text(i);
 		userlist.byAltNick(tmp).notify = true;
 		}
@@ -932,10 +932,7 @@ void EventConfigSlots::onDestroyConfigDialog()
 	/* and now, save it */
 	userlist.writeToFile();	
 	//
-
-
-};
-
+}
 
 void EventConfigSlots::ifNotifyGlobal(bool toggled) {
 	QCheckBox *b_notifyall= ConfigDialog::getCheckBox("Notify", "Notify about all users");
@@ -953,11 +950,11 @@ void EventConfigSlots::ifNotifyAll(bool toggled) {
 }
 
 void EventConfigSlots::_Left2( QListBoxItem *item) {
-    _Left();
+	_Left();
 }
 
 void EventConfigSlots::_Right2( QListBoxItem *item) {
-    _Right();
+	_Right();
 }
 
 
@@ -1015,21 +1012,21 @@ void EventConfigSlots::ifDccEnabled(bool value)
 	g_dccip->setEnabled(!b_dccip->isChecked()&& value);	
 	b_dccfwd->setEnabled(value);
 	g_fwdprop->setEnabled(b_dccfwd->isChecked() &&value);
-};
+}
 
 void EventConfigSlots::ifDccIpEnabled(bool value)
 {
 	kdebug("EventConfigSlots::ifDccIpEnabled() \n");
 	QVGroupBox *g_dccip = ConfigDialog::getVGroupBox("Network", "DCC IP");
 	g_dccip->setEnabled(!value);
-};
+}
 
 void EventConfigSlots::ifDefServerEnabled(bool value)
 {
 	kdebug("EventConfigSlots::ifDefServerEnabled() \n");
 	QHBox *serverbox=(QHBox*)(ConfigDialog::getLineEdit("Network", "IP addresses:","server")->parent());
 	serverbox->setEnabled(!value);	
-};
+}
 
 void EventConfigSlots::useTlsEnabled(bool value)
 {
@@ -1038,7 +1035,7 @@ void EventConfigSlots::useTlsEnabled(bool value)
 	QHBox *box_portselect=(QHBox*)(ConfigDialog::getComboBox("Network", "Default port to connect to servers")->parent());
 	box_portselect->setEnabled(!value);
 #endif
-};
+}
 
 
 EventManager event_manager;

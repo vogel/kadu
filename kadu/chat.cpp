@@ -346,6 +346,7 @@ class KaduSplitter : public QSplitter
 			kdebugf();
 			for (QValueList<KaduTextBrowser *>::iterator i=list.begin(); i!=list.end(); i++)
 				(*i)->viewport()->repaint();
+//			kdebug("drawContents(): exit\n");
 		}
 
 		virtual void childEvent(QChildEvent *c)
@@ -375,7 +376,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 
 	title_timer = new QTimer(this);
 	connect(title_timer,SIGNAL(timeout()),this,SLOT(changeTitle()));
-  
+
 	/* register us in the chats registry... */
 	index=chat_manager->registerChat(this);
 
@@ -1372,7 +1373,7 @@ void ChatSlots::onCreateConfigDialog()
 	QLineEdit *l_webbrow= ConfigDialog::getLineEdit("Chat", "Custom Web browser");
 	
 	if (c_defweb->isChecked())
-	    ((QHBox*)l_webbrow->parent())->setEnabled(false);
+		((QHBox*)l_webbrow->parent())->setEnabled(false);
 	
 	QCheckBox *c_prunechat= ConfigDialog::getCheckBox("Chat", "Automatically prune chat messages");
 	QHGroupBox *h_prune= ConfigDialog::getHGroupBox("Chat", "Message pruning");
@@ -1477,7 +1478,7 @@ void ChatSlots::onDestroyConfigDialog()
 }
 
 void ChatSlots::chooseEmoticonsStyle(int index) {
-    QComboBox *emotheme_box= ConfigDialog::getComboBox("Chat","Emoticons theme");
+	QComboBox *emotheme_box= ConfigDialog::getComboBox("Chat","Emoticons theme");
 	emotheme_box->setEnabled(index!=0);
 }
 
@@ -1495,17 +1496,17 @@ void ChatSlots::chooseChatSelect(int nr)
 
 	if (nr == 4)
 	{
-	    h_fontsize->show();
-	    cb_chatfontsize->setCurrentText(QString::number(vl_chatfont[0].pointSize()));
-	    cb_chatfont->setCurrentText(vl_chatfont[0].family());
-	    colorbutton->setEnabled(false);
-	    l_color->setEnabled(false);
+		h_fontsize->show();
+		cb_chatfontsize->setCurrentText(QString::number(vl_chatfont[0].pointSize()));
+		cb_chatfont->setCurrentText(vl_chatfont[0].family());
+		colorbutton->setEnabled(false);
+		l_color->setEnabled(false);
 	}
 	else
 	{
-	    h_fontsize->hide();
-	    colorbutton->setEnabled(true);
-	    l_color->setEnabled(true);
+		h_fontsize->hide();
+		colorbutton->setEnabled(true);
+		l_color->setEnabled(true);
 	}
 }
 
@@ -1521,17 +1522,15 @@ void ChatSlots::chooseChatFont(int nr)
 	vl = fdb.pointSizes(cb_chatfont->text(nr),"Normal");
 	cb_chatfontsize->clear();
 	for (QValueList<int>::Iterator points = vl.begin(); points != vl.end(); ++points)
-	    {	
+	{
 		cb_chatfontsize->insertItem(QString::number(*points));
 		if (*points == vl_chatfont[0].pointSize())
-		cb_chatfontsize->setCurrentItem(cb_chatfontsize->count()-1);
-	    }
+			cb_chatfontsize->setCurrentItem(cb_chatfontsize->count()-1);
+	}
 	if (cb_chatfontsize->count() > 0)
-		vl_chatfont[0] = 
-		    QFont(cb_chatfont->text(nr), cb_chatfontsize->currentText().toInt());
+		vl_chatfont[0] = QFont(cb_chatfont->text(nr), cb_chatfontsize->currentText().toInt());
 
 	updatePreview();
-
 }
 
 void ChatSlots::chooseChatFontSize(int nr)

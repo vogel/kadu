@@ -128,7 +128,7 @@ void ToolBar::registerSeparator(int position)
 	if(instance!=NULL)
 		instance->clear();
 
-        ToolButton RToolButton;
+	ToolButton RToolButton;
 	RToolButton.caption="--separator--";
 
 	if (((RegisteredToolButtons.count()-1)<position) || (position == -1))
@@ -141,7 +141,7 @@ void ToolBar::registerSeparator(int position)
 }
 
 void ToolBar::registerButton(const QIconSet& iconfile, const QString& caption, 
-		    QObject* receiver, const char* slot, int position, const char* name)
+			QObject* receiver, const char* slot, int position, const char* name)
 {
 	if(instance!=NULL)
 		instance->clear();
@@ -154,7 +154,7 @@ void ToolBar::registerButton(const QIconSet& iconfile, const QString& caption,
 	RToolButton.slot= slot;
 	RToolButton.position= position;
 	RToolButton.name= name;
-    
+
 	if (((RegisteredToolButtons.count()-1)<position) || (position == -1))
 		RegisteredToolButtons.append(RToolButton);
 	else
@@ -222,42 +222,28 @@ void Kadu::keyPressEvent(QKeyEvent *e) {
 	}
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_deleteuser"))
 	{
-	if (Userbox->getSelectedAltNicks().count())
-		deleteUsers();
+		if (Userbox->getSelectedAltNicks().count())
+			deleteUsers();
 	}
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_persinfo"))
 	{
-	if (Userbox->getSelectedAltNicks().count() == 1)
-	        showUserInfo();
+		if (Userbox->getSelectedAltNicks().count() == 1)
+			showUserInfo();
 	}
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_sendsms"))
-	{
 		sendSmsToUser();
-	}
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_viewhistory"))
-	{
 		viewHistory();
-	}
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_searchuser"))
-	{
 		lookupInDirectory();
-	}
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_showinactive"))
-	{
 		Userbox->showHideInactive();
-	}
-	else if (HotKey::shortCut(e,"ShortCuts", "kadu_voicechat")) {
+	else if (HotKey::shortCut(e,"ShortCuts", "kadu_voicechat"))
 		makeVoiceChat();
-		}
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_sendfile"))
-	{
 		sendFile();
-	}
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_configure"))
-	{
 		configure();
-	}
-
 
 	QWidget::keyPressEvent(e);
 }
@@ -390,8 +376,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	if (config_file.readBoolEntry("General", "UseDocking"))
 		trayicon->changeIcon();
 	
-        QVBoxLayout *layout = new QVBoxLayout(this);
-        layout->setAutoAdd(true);
+	QVBoxLayout *layout = new QVBoxLayout(this);
+	layout->setAutoAdd(true);
 
 	QSplitter *split = new QSplitter(Qt::Vertical, this);
 	setCentralWidget(split);
@@ -530,9 +516,9 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		}
 
 	refreshGroupTabBar();
-        int configTab = config_file.readNumEntry( "Look", "CurrentGroupTab" );
-        if ( configTab >= 0 && configTab < GroupBar -> count() )
-          ((QTabBar*) GroupBar) -> setCurrentTab( configTab );
+	int configTab = config_file.readNumEntry( "Look", "CurrentGroupTab" );
+	if ( configTab >= 0 && configTab < GroupBar -> count() )
+		((QTabBar*) GroupBar) -> setCurrentTab( configTab );
 
 	dccsock = NULL;
 	/* dirty workaround for multiple showEvents */
@@ -944,7 +930,7 @@ void Kadu::refreshGroupTabBar()
 	{
 		GroupBar->hide();
 		return;
-	};
+	}
 	/* budujemy listê grup */
 	QValueList<QString> group_list;
 	for (int i = 0; i < userlist.count(); i++)
@@ -954,7 +940,7 @@ void Kadu::refreshGroupTabBar()
 		for (int g = 0; (group = groups.section(',' ,g ,g)) != ""; g++)
 			if(!group_list.contains(group))
 				group_list.append(group);
-	};
+	}
 	kdebug("%i groups found\n",group_list.count());
 	//
 	if (group_list.count() == 0)
@@ -962,7 +948,7 @@ void Kadu::refreshGroupTabBar()
 		GroupBar->hide();
 		setActiveGroup("");
 		return;
-	};
+	}
 	/* usuwamy wszystkie niepotrzebne zakladki - od tylu,
 	   bo indeksy sie przesuwaja po usunieciu */
 	for (int i = GroupBar->count() - 1; i >= 1; i--)
@@ -982,7 +968,7 @@ void Kadu::refreshGroupTabBar()
 	GroupBar->show();
 	/* odswiezamy - dziala tylko jesli jest widoczny */
 	GroupBar->update();
-};
+}
 
 void Kadu::setActiveGroup(const QString& group)
 {
@@ -1005,7 +991,7 @@ void Kadu::setActiveGroup(const QString& group)
 			Userbox->addUser(userlist[i].altnick);
 		}
 	UserBox::all_refresh();
-};
+}
 
 void Kadu::groupTabSelected(int id)
 {
@@ -1013,21 +999,21 @@ void Kadu::groupTabSelected(int id)
 		setActiveGroup("");
 	else
 		setActiveGroup(GroupBar->tab(id)->text());
-};
+}
 
 void Kadu::userListModified()
 {
 	refreshGroupTabBar();
-};
+}
 
 void Kadu::userListStatusModified(UserListElement *user)
 {
 	kdebug("Kadu::userListStatusModified(): %d\n", user->uin);
 	if ((user->status == GG_STATUS_NOT_AVAIL)
-	    || (user->status == GG_STATUS_NOT_AVAIL_DESCR))
+		|| (user->status == GG_STATUS_NOT_AVAIL_DESCR))
 		descrtb->setText("");
 	chat_manager->refreshTitlesForUin(user->uin);
-};
+}
 
 void Kadu::removeUser(QStringList &users, bool permanently = false)
 {
@@ -1064,11 +1050,11 @@ void Kadu::blink() {
 	else
 		if (!doBlink && !socket_active) {
 			pix = icons_manager.loadIcon("Offline");
-					statusbutton->setIconSet(QIconSet(pix));
-	    		if (trayicon)
+			statusbutton->setIconSet(QIconSet(pix));
+			if (trayicon)
 				trayicon->setType(pix);
-	    		return;
-	    		}
+				return;
+		}
 
 	if (blinkOn) {
 		pix = icons_manager.loadIcon("Offline");
@@ -1137,7 +1123,7 @@ void Kadu::userListUserAdded(const UserListElement& user)
 
 	if (user.uin)
 		gg_add_notify(sess, user.uin);
-};
+}
 
 void Kadu::mouseButtonClicked(int button, QListBoxItem *item) {
 	kdebug("Kadu::mouseButtonClicked(): button=%d\n", button);
@@ -1348,10 +1334,8 @@ void Kadu::setStatus(int status) {
 	loginparams.status = status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General", "PrivateStatus"));
 	if (with_description)
 		loginparams.status_descr = strdup((const char *)unicode2cp(own_description));
-        loginparams.password =
-		strdup((const char *)unicode2cp(pwHash(config_file.readEntry("General", "Password"))));
-	char *tmp =
-		strdup((const char *)unicode2latin(pwHash(config_file.readEntry("General", "Password"))));
+		loginparams.password = strdup((const char *)unicode2cp(pwHash(config_file.readEntry("General", "Password"))));
+	char *tmp = strdup((const char *)unicode2latin(pwHash(config_file.readEntry("General", "Password"))));
 	kdebug("Kadu::setStatus(): password = %s\n", tmp);
 	free(tmp);
 	loginparams.uin = config_file.readNumEntry("General", "UIN");
@@ -1803,12 +1787,11 @@ void KaduSlots::onCreateConfigDialog()
 	QDir locale(QString(DATADIR)+"/kadu/translations/", "kadu_*.qm");
 	QStringList files=locale.entryList();
 
-	  for ( QStringList::Iterator it = files.begin(); it != files.end(); ++it ) {
-	         *it=translateLanguage(qApp, (*it).mid(5, (*it).length()-8), true);
-		      }
+	for ( QStringList::Iterator it = files.begin(); it != files.end(); ++it )
+		*it=translateLanguage(qApp, (*it).mid(5, (*it).length()-8), true);
 	cb_language->insertStringList(files);
 	cb_language->setCurrentText(translateLanguage(qApp,
-	       config_file.readEntry("General", "Language", QTextCodec::locale()),true));
+	config_file.readEntry("General", "Language", QTextCodec::locale()),true));
 }
 
 void KaduSlots::onDestroyConfigDialog()
@@ -1819,14 +1802,14 @@ void KaduSlots::onDestroyConfigDialog()
 	config_file.writeEntry("General", "Password",pwHash(e_password->text()));
 
 	if (config_file.readBoolEntry("General", "UseDocking") && !trayicon) {
-			trayicon = new TrayIcon(kadu);
-			trayicon->show();
-			trayicon->connectSignals();
-			QPixmap pix=icons_manager.loadIcon(gg_icons[
-			statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]);
-			trayicon->setType(pix);
-			trayicon->changeIcon();
-				       }
+		trayicon = new TrayIcon(kadu);
+		trayicon->show();
+		trayicon->connectSignals();
+		QPixmap pix=icons_manager.loadIcon(gg_icons[
+		statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]);
+		trayicon->setType(pix);
+		trayicon->changeIcon();
+	}
 	else
 		if (!config_file.readBoolEntry("General", "UseDocking") && trayicon)
 		{
@@ -1855,4 +1838,4 @@ void KaduSlots::onDestroyConfigDialog()
 	QComboBox *cb_language= ConfigDialog::getComboBox("General", "Set language:");
 	config_file.writeEntry("General", "Language", translateLanguage(qApp, cb_language->currentText(),false));
 
-};
+}

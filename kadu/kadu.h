@@ -48,7 +48,7 @@ class ToolBar : public QToolBar
 		ToolBar(QMainWindow* parent);
 		~ToolBar();
 		static void registerButton(const QIconSet& iconfile, const QString& caption, 
-		    QObject* receiver, const char* slot, const int position=-1, const char* name="");
+			QObject* receiver, const char* slot, const int position=-1, const char* name="");
 		static void unregisterButton(const char* name);
 		static void registerSeparator(int position=-1);
 		static QToolButton* getButton(const char* name);
@@ -112,7 +112,7 @@ class Kadu : public QMainWindow
 		/**
 			Zwraca wskaznik do zakladek z nazwami grup.
 		**/
-    		KaduTabBar* groupBar();
+		KaduTabBar* groupBar();
 		/**
 			Zwraca wskaznik do userbox-a w glownym oknie.
 		**/
@@ -179,12 +179,11 @@ class Kadu : public QMainWindow
 
 class KaduSlots : public QObject
 {
-
-    Q_OBJECT
+	Q_OBJECT
 
 	public slots:
-	    void onCreateConfigDialog();
-	    void onDestroyConfigDialog();
+		void onCreateConfigDialog();
+		void onDestroyConfigDialog();
 };
 
 extern Kadu* kadu;

@@ -92,7 +92,7 @@ PersonalInfoDialog::PersonalInfoDialog(QDialog *parent, const char *name)
 		gg_pubdir50_free(req);
 		State = READING;
 		}
-};
+}
 
 void PersonalInfoDialog::OkButtonClicked()
 {

@@ -79,7 +79,7 @@ void HttpClient::onConnected()
 		
 //		wywolanie Cookies.keys() zostaje na lepsze czasu jak juz
 //		wszyscy beda mieli Qt >= 3.0.5		
-//    		for(int i=0; i<Cookies.keys().size(); i++)
+//		for(int i=0; i<Cookies.keys().size(); i++)
 		for (int i = 0; i < keys.size(); i++) {
 			if (i > 0)
 				query+="; ";

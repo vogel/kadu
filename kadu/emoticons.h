@@ -31,7 +31,7 @@ class EmoticonsManager
 		};
 		QValueVector<EmoticonsListItem> Aliases;
 		QValueList<EmoticonsListItem> Selector;
-                EmotsWalker *walker;
+		EmotsWalker *walker;
 
 		QStringList getSubDirs(const QString& path);
 		QString getQuoted(const QString& s,int& pos);
@@ -142,43 +142,52 @@ struct PrefixNode
   QValueVector<QPair<QChar, PrefixNode*> > childs;
 };
 
-/** this class serves as dictionary of emots, allowing easy
-    finding of their occurrences in text;
-    new search is initialized by calling 'initWalking()'
-    then characters are put into analysis by 'checkEmotOccurrence(c)'
+/**
+	this class serves as dictionary of emots, allowing easy
+	finding of their occurrences in text;
+	new search is initialized by calling 'initWalking()'
+	then characters are put into analysis by 'checkEmotOccurrence(c)'
 */
 class EmotsWalker 
 {
-  /** dictionary is based on prefix tree */
-  PrefixNode* root;
-  QPair<QChar, PrefixNode*> myPair;
-  /** positions in prefix tree, representing current analysis of text */
-  QValueVector<PrefixNode*> positions;
-  QValueVector<int> lengths;
-  int amountPositions;
+	/** dictionary is based on prefix tree */
+	PrefixNode* root;
+	QPair<QChar, PrefixNode*> myPair;
+	/** positions in prefix tree, representing current analysis of text */
+	QValueVector<PrefixNode*> positions;
+	QValueVector<int> lengths;
+	int amountPositions;
 
- public:
-  EmotsWalker();
-  ~EmotsWalker();
+	public:
+		EmotsWalker();
+		~EmotsWalker();
 
- private:
-  PrefixNode* findChild( PrefixNode* node, const QChar& c );
-  PrefixNode* insertChild( PrefixNode* node, const QChar& c );
-  void removeChilds( PrefixNode* node );
+	private:
+		PrefixNode* findChild( PrefixNode* node, const QChar& c );
+		PrefixNode* insertChild( PrefixNode* node, const QChar& c );
+		void removeChilds( PrefixNode* node );
 
- public:
-  /** adds given string (emot) to dictionary of emots, giving it
-      number, which will be used later to notify occurrences of
-      emot in analyzed text  */
-  void insertString( const QString& str, int num );
-  /** return number of emot, which occurre in analyzed text just
-      after adding given character (thus ending on this character)
-      beginning of text analysis is turned on by 'initWalking()'
-      if no emot occures, -1 is returned  */
-  int checkEmotOccurrence( const QChar& c );
-  /** clear internal structures responsible for analyzing text, it allows 
-      begin of new text analysis  */
-  void initWalking();
+	public:
+		/**
+			adds given string (emot) to dictionary of emots, giving it
+			number, which will be used later to notify occurrences of
+			emot in analyzed text
+		*/
+		void insertString( const QString& str, int num );
+		
+		/**
+			return number of emot, which occurre in analyzed text just
+			after adding given character (thus ending on this character)
+			beginning of text analysis is turned on by 'initWalking()'
+			if no emot occures, -1 is returned
+		*/
+		int checkEmotOccurrence( const QChar& c );
+		
+		/**
+			clear internal structures responsible for analyzing text, it allows 
+			begin of new text analysis
+		*/
+		void initWalking();
 };
 
 #endif
