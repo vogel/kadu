@@ -238,6 +238,7 @@ void Register::gotTokenReceived(struct gg_http *h) {
 
 void Register::tokenErrorReceived() {
 	kdebug("Register::tokenErrorReceived()\n");
+	status->setText(tr("Couldn't get token"));
 	setEnabled(true);
 }
 
