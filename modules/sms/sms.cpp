@@ -14,7 +14,6 @@
 #include <qgrid.h>
 #include <qstring.h>
 #include <qobject.h>
-#include <qlistbox.h>
 
 #include "config_dialog.h"
 #include "config_file.h"
@@ -32,7 +31,10 @@ extern "C" int sms_init()
 	QT_TRANSLATE_NOOP("@default", "Custom SMS application");
 	QT_TRANSLATE_NOOP("@default", "SMS custom string");
 	QT_TRANSLATE_NOOP("@default", "Check this box if your sms application doesn't understand arguments: number \"message\"\nArguments should be separated with spaces. %n argument is converted to number, %m to message");
-
+	QT_TRANSLATE_NOOP("@default", "Gateways priority");
+	QT_TRANSLATE_NOOP("@default", "Up");
+	QT_TRANSLATE_NOOP("@default", "Down");
+	QT_TRANSLATE_NOOP("@default", "Send SMS");
 
 	kdebug("sms_init \n");	
 	
@@ -44,21 +46,28 @@ extern "C" int sms_init()
 	ConfigDialog::addCheckBox("SMS", "smsgrid", "SMS custom string", "UseCustomString", false
 	,"Check this box if your sms application doesn't understand arguments: number \"message\"\nArguments should be separated with spaces. %n argument is converted to number, %m to message");
 	ConfigDialog::addLineEdit("SMS", "smsgrid", "", "SmsString", "", "", "smsstring");
-
-/*	ConfigDialog::addHGroupBox("SMS", "SMS", "Gateways priority");
+	ConfigDialog::addHGroupBox("SMS", "SMS", "Gateways priority");
 	ConfigDialog::addListBox("SMS", "Gateways priority", "gateways");
 	ConfigDialog::addVBox("SMS", "Gateways priority", "button");
 	ConfigDialog::addPushButton("SMS", "button", "Up");
-	ConfigDialog::addPushButton("SMS", "button", "Down");*/
+	ConfigDialog::addPushButton("SMS", "button", "Down");
+	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Send SMS", "kadu_sendsms", "Ctrl+S");
+
 	
 	smsslots=new SmsSlots();
 	ConfigDialog::registerSlotOnCreate(smsslots, SLOT(onCreateConfigDialog()));
+	ConfigDialog::registerSlotOnDestroy(smsslots, SLOT(onDestroyConfigDialog()));
     	ConfigDialog::connectSlot("SMS", "Use built-in SMS application", SIGNAL(toggled(bool)), smsslots, SLOT(onSmsBuildInCheckToggle(bool)));
-/*	ConfigDialog::connectSlot("SMS", "Up", SIGNAL(clicked()), smsslots, SLOT(onUpButton()));
-	ConfigDialog::connectSlot("SMS", "Down", SIGNAL(clicked()), smsslots, SLOT(onDownButton()));*/
+	ConfigDialog::connectSlot("SMS", "Up", SIGNAL(clicked()), smsslots, SLOT(onUpButton()));
+	ConfigDialog::connectSlot("SMS", "Down", SIGNAL(clicked()), smsslots, SLOT(onDownButton()));
+	
+	QObject::connect(kadu->userbox(), SIGNAL(doubleClicked(QListBoxItem *)),
+			smsslots, SLOT(onUserDblClicked(QListBoxItem *)));
+	QObject::connect(kadu->userbox(), SIGNAL(returnPressed(QListBoxItem *)),
+			smsslots, SLOT(onUserDblClicked(QListBoxItem *)));
+	QObject::connect(UserBox::userboxmenu, SIGNAL(popup()), smsslots, SLOT(onPopupMenuCreate()));
 
-	QObject::connect(kadu, SIGNAL(userDblClicked(UserListElement)), smsslots, SLOT(onUserDblClicked(UserListElement)));
-
+	config_file.addVariable("SMS", "Priority", "");
 
 	return 0;
 };
@@ -68,17 +77,18 @@ extern "C" void sms_close()
 	kdebug("sms_close \n");	
 
 	ConfigDialog::unregisterSlotOnCreate(smsslots, SLOT(onCreateConfigDialog()));
+	ConfigDialog::unregisterSlotOnDestroy(smsslots, SLOT(onDestroyConfigDialog()));
 
     	ConfigDialog::disconnectSlot("SMS", "Use built-in SMS application", SIGNAL(toggled(bool)), smsslots, SLOT(onSmsBuildInCheckToggle(bool)));
-/*	ConfigDialog::disconnectSlot("SMS", "Up", SIGNAL(clicked()), smsslots, SLOT(onUpButton()));
+	ConfigDialog::disconnectSlot("SMS", "Up", SIGNAL(clicked()), smsslots, SLOT(onUpButton()));
 	ConfigDialog::disconnectSlot("SMS", "Down", SIGNAL(clicked()), smsslots, SLOT(onDownButton()));
 	
-
+	ConfigDialog::removeControl("ShortCuts", "Send SMS");
 	ConfigDialog::removeControl("SMS", "Up");
 	ConfigDialog::removeControl("SMS", "Down");
 	ConfigDialog::removeControl("SMS", "button");
 	ConfigDialog::removeControl("SMS", "gateways");
-	ConfigDialog::removeControl("SMS", "Gateways priority");*/
+	ConfigDialog::removeControl("SMS", "Gateways priority");
 	ConfigDialog::removeControl("SMS", "", "smsstring");
 	ConfigDialog::removeControl("SMS", "SMS custom string");
 	ConfigDialog::removeControl("SMS", "smsgrid");
@@ -87,7 +97,11 @@ extern "C" void sms_close()
 	ConfigDialog::removeControl("SMS", "SMS options");
 	ConfigDialog::removeTab("SMS");
 										
-	QObject::disconnect(kadu, SIGNAL(userDblClicked(UserListElement)), smsslots, SLOT(onUserDblClicked(UserListElement)));
+	QObject::disconnect(kadu->userbox(), SIGNAL(doubleClicked(QListBoxItem *)),
+			smsslots, SLOT(onUserDblClicked(QListBoxItem *)));
+	QObject::disconnect(kadu->userbox(), SIGNAL(returnPressed(QListBoxItem *)),
+			smsslots, SLOT(onUserDblClicked(QListBoxItem *)));
+	QObject::disconnect(UserBox::userboxmenu, SIGNAL(popup()), smsslots, SLOT(onPopupMenuCreate()));
 
 	delete smsslots;
 }
@@ -129,6 +143,13 @@ SmsGateway::SmsGateway(QObject* parent)
 	QObject::connect(&Http,SIGNAL(error()),this,SLOT(httpError()));
 };
 
+SmsGateway::~SmsGateway()
+{
+	QObject::disconnect(&Http,SIGNAL(finished()),this,SLOT(httpFinished()));
+	QObject::disconnect(&Http,SIGNAL(redirected(QString)),this,SLOT(httpRedirected(QString)));
+	QObject::disconnect(&Http,SIGNAL(error()),this,SLOT(httpError()));
+};
+
 void SmsGateway::httpError()
 {
 	kdebug("SmsGateway::httpError()\n");
@@ -142,6 +163,16 @@ SmsSender::SmsSender(QObject* parent)
 	: QObject(parent,"SmsSender")
 {
 };
+
+SmsSender::~SmsSender()
+{
+	kdebugf();
+	emit finished(false);
+	if(Gateway){
+		QObject::disconnect(Gateway, SIGNAL(finished(bool)), this, SLOT(onFinished(bool)));
+		delete Gateway;
+	}
+}
 
 void SmsSender::onFinished(bool success)
 {
@@ -159,7 +190,7 @@ void SmsSender::send(const QString& number,const QString& message, const QString
 		emit finished(false);
 		return;
 	};
-	SmsGateway* Gateway=smsslots->getGateway(Number);
+	Gateway=smsslots->getGateway(Number);
 
 	if(Gateway==NULL)
 	{
@@ -177,6 +208,8 @@ void SmsSender::send(const QString& number,const QString& message, const QString
 Sms::Sms(const QString& altnick, QDialog* parent) : QDialog (parent, "Sms")
 {
 	QGridLayout * grid = new QGridLayout(this, 3, 4, 10, 3);
+
+	Sender=new SmsSender();
 
 	body = new QMultiLineEdit(this);
 	grid->addMultiCellWidget(body, 1, 1, 0, 3);
@@ -230,7 +263,14 @@ Sms::Sms(const QString& altnick, QDialog* parent) : QDialog (parent, "Sms")
 	resize(400,250);
 	setCaption(tr("Send SMS"));
 
-	connect(&Sender,SIGNAL(finished(bool)),this,SLOT(onSmsSenderFinished(bool)));
+	connect(Sender,SIGNAL(finished(bool)),this,SLOT(onSmsSenderFinished(bool)));
+}
+
+Sms::~Sms()
+{
+	kdebugf();
+	if(Sender)
+		delete Sender;
 }
 
 void Sms::updateRecipient(const QString &newtext)
@@ -271,7 +311,7 @@ void Sms::sendSms(void) {
 
 	if(config_file.readBoolEntry("SMS","BuiltInApp"))
 	{
-		Sender.send(recipient->text(), body->text(), e_contact->text(), e_signature->text());
+		Sender->send(recipient->text(), body->text(), e_contact->text(), e_signature->text());
 	}
 	else
 	{
@@ -357,6 +397,8 @@ SmsSlots::~SmsSlots()
 	int sendsmstem = UserBox::userboxmenu->getItem(tr("Send SMS"));
 	UserBox::userboxmenu->removeItem(sendsmstem);
 	kadu->mainMenu()->removeItem(menuid);
+	while(!activegw.isEmpty())
+		delete activegw.pop();
 }
 	
 
@@ -394,24 +436,50 @@ void SmsSlots::onCreateConfigDialog()
 			    
 	connect(b_smscustomconf,SIGNAL(toggled(bool)),e_smsconf,SLOT(setEnabled(bool)));
 
-/*	QListBox* lb_gws=ConfigDialog::getListBox("SMS", "gateways");
+	QListBox* lb_gws=ConfigDialog::getListBox("SMS", "gateways");
 	QMap<QString,isValidFunc*>::Iterator it;
-//	QStringList priority=QStringList::split(";", config_file.readEntry("SMS", "Priority"));	
+	QStringList priority=QStringList::split(";", config_file.readEntry("SMS", "Priority"));	
+
+	for(QStringList::Iterator it=priority.begin();it != priority.end();++it)
+		if(gateways.contains(*it))
+			lb_gws->insertItem(*it);
 
 	for(it = gateways.begin(); it != gateways.end(); ++it ){
 		if(lb_gws->index(lb_gws->findItem(it.key()))==-1)
 			lb_gws->insertItem(it.key());
-	}*/
+	}
 	
 };
 
-void SmsSlots::onUserDblClicked(UserListElement user)
+void SmsSlots::onDestroyConfigDialog()	
 {
 	kdebugf();
-	if(!user.uin){
-		Sms* sms=new Sms(user.altnick);
-		sms->show();
+
+	QListBox* lb_gws=ConfigDialog::getListBox("SMS", "gateways");
+	QStringList priority;
+	QListBoxItem* lbi_item=lb_gws->firstItem();
+	
+	while(lbi_item!=0){
+		priority+=lbi_item->text();
+		lbi_item=lbi_item->next();
 	}
+	
+	config_file.writeEntry("SMS", "Priority", priority.join(";"));
+}
+
+void SmsSlots::newSms(QString nick)
+{
+	Sms* sms=new Sms(nick);
+	sms->show();	
+	activegw.push(sms);
+}
+
+void SmsSlots::onUserDblClicked(QListBoxItem* item)
+{
+	kdebugf();
+	UserListElement user=userlist.byAltNick(item->text());
+	if(!user.uin)
+		newSms(user.altnick);
 }
 
 void SmsSlots::onSendSmsToUser()
@@ -425,58 +493,85 @@ void SmsSlots::onSendSmsToUser()
         if (users.count() != 1)
                 return;
 	
-        if (users.first().mobile.length()){
-		Sms* sms=new Sms(users.first().altnick);
-		sms->show();
-	}
+        if (users.first().mobile.length())
+		newSms(users.first().altnick);
 }
 
 void SmsSlots::onSendSms()
 {
-	Sms* sms=new Sms("");
-	sms->show();
+	newSms("");
 }
 
 void SmsSlots::registerGateway(QString name, isValidFunc* f)
 {
+	kdebugf();
 	gateways.insert(name, f);
 }
 
 void SmsSlots::unregisterGateway(QString name)
 {
+	kdebugf();
 	gateways.remove(name);
 }
 
 SmsGateway* SmsSlots::getGateway(QString& number)
 {
+	kdebugf();
 	QMap<QString,isValidFunc*>::Iterator it;
 	isValidFunc* f;
 	SmsGateway* Gateway;
-	for(it = gateways.begin(); it != gateways.end(); ++it ){
-		f=it.data();
-		Gateway=f(number, this);
-		if(Gateway)
-			return Gateway;
+	QStringList priority=QStringList::split(";", config_file.readEntry("SMS", "Priority"));	
+
+	for(QStringList::Iterator it=priority.begin();it != priority.end();++it) {
+		if(gateways.contains(*it)){
+			f=gateways[*it];
+			Gateway=f(number, this);
+			if(Gateway)
+				return Gateway;
+		}
 	}
+
 	return NULL;
 }
 
-/*void SmsSlots::onUpButton()
+void SmsSlots::onUpButton()
 {
+	kdebugf();
 	QListBox* list=ConfigDialog::getListBox("SMS", "gateways");
 	int index=list->currentItem();
+	if(index==0)
+		return;
 	QString text=list->text(index);
 	list->removeItem(index);
-	list->insertItem(text, index++);
+	list->insertItem(text, --index);
+	list->setSelected(list->findItem(text), true);
 }
 
 void SmsSlots::onDownButton()
 {
+	kdebugf();
 	QListBox* list=ConfigDialog::getListBox("SMS", "gateways");
 	int index=list->currentItem();
+	if(index==list->count())
+		return;
 	QString text=list->text(index);
 	list->removeItem(index);
-	list->insertItem(text, index--);
-}*/
+	list->insertItem(text, ++index);
+	list->setSelected(list->findItem(text), true);
+}
+
+void SmsSlots::onPopupMenuCreate()
+{
+	kdebugf();
+	UserList users;
+	UserBox *activeUserBox=kadu->userbox()->getActiveUserBox();
+	if (activeUserBox==NULL)//to siê zdarza...
+		return;
+	users = activeUserBox->getSelectedUsers();
+	UserListElement user = users.first();	
+
+	if (!user.mobile.length() || users.count() != 1)
+		UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("Send SMS")), false);
+}
 
 SmsSlots *smsslots;

@@ -12,6 +12,8 @@
 #include <qimage.h>
 #include <qmap.h>
 #include <qmessagebox.h>
+#include <qlistbox.h>
+#include <qptrstack.h> 
 
 #include "userlist.h"
 #include "misc.h"
@@ -60,6 +62,7 @@ class SmsGateway : public QObject
 		
 	public:
 		SmsGateway(QObject* parent);
+		~SmsGateway();
 		virtual void send(const QString& number,const QString& message, const QString& contact, const QString& signature)=0;
 
 	signals:
@@ -72,9 +75,11 @@ class SmsSender : public QObject
 
 	private slots:
 		void onFinished(bool success);
+		SmsGateway* Gateway;
 
 	public:
 		SmsSender(QObject* parent=0);
+		~SmsSender();
 		void send(const QString& number,const QString& message, const QString& contact, const QString& signature);
 		
 	signals:
@@ -89,6 +94,7 @@ class Sms : public QDialog {
 	
 	public:
 		Sms(const QString& altnick, QDialog* parent=0);
+		~Sms();
 
 	private:
 		QMultiLineEdit *body;
@@ -101,7 +107,7 @@ class Sms : public QDialog {
 		QLineEdit *e_signature;
 		QPushButton *b_send;
 		QProcess *smsProcess;
-		SmsSender Sender;
+		SmsSender* Sender;
 
 	private slots:
 		void updateRecipient(const QString &);
@@ -124,20 +130,23 @@ class SmsSlots: public QObject
 		void registerGateway(QString, isValidFunc* f);
 		void unregisterGateway(QString);
 		SmsGateway* getGateway(QString& number);
+		void newSms(QString nick);
 		
 	private:
 		int menuid;
 		QMap<QString,isValidFunc*> gateways;
+		QPtrStack<Sms> activegw;
 	
 	public slots:
 		void onSmsBuildInCheckToggle(bool);
 		void onCreateConfigDialog();
-//		void onDestroyConfigDialog();
+		void onDestroyConfigDialog();
 		void onSendSms();
-		void onUserDblClicked(UserListElement user);		
+		void onUserDblClicked(QListBoxItem* item);		
+		void onPopupMenuCreate();
 		void onSendSmsToUser();
-//		void onUpButton();
-//		void onDownButton();
+		void onUpButton();
+		void onDownButton();
 };
 
 extern SmsSlots *smsslots;

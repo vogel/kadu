@@ -281,7 +281,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	QT_TRANSLATE_NOOP("@default", "Define keys");
 	QT_TRANSLATE_NOOP("@default", "Remove from userlist");
 	QT_TRANSLATE_NOOP("@default", "View/edit user info");
-	QT_TRANSLATE_NOOP("@default", "Send SMS");
 	QT_TRANSLATE_NOOP("@default", "View history");
 	QT_TRANSLATE_NOOP("@default", "Lookup in directory");
 	QT_TRANSLATE_NOOP("@default", "Show / hide inactive users");
@@ -293,7 +292,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	ConfigDialog::addVGroupBox("ShortCuts", "ShortCuts", "Define keys");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Remove from userlist", "kadu_deleteuser", "Del");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "View/edit user info", "kadu_persinfo", "Ins");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Send SMS", "kadu_sendsms", "Ctrl+S");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "View history", "kadu_viewhistory", "Ctrl+H");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Lookup in directory", "kadu_searchuser", "Ctrl+F");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Show / hide inactive users", "kadu_showinactive", "F9");
@@ -549,9 +547,6 @@ void Kadu::popupMenu()
 
 	bool isOurUin=users.containsUin(config_file.readNumEntry("General", "UIN"));
 	
-	if (!user.mobile.length() || users.count() != 1)
-		UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("Send SMS")), false);
-
 	int voicechat = UserBox::userboxmenu->getItem(tr("Voice chat"));
 	int sendfile = UserBox::userboxmenu->getItem(tr("Send file"));
 
@@ -1118,8 +1113,6 @@ void Kadu::sendMessage(QListBoxItem *item)
 		if (uins.findIndex(config_file.readNumEntry("General", "UIN")) == -1)
 			chat_manager->sendMessage(uin, uins);
 	}
-
-	emit userDblClicked(userlist.byAltNick(item->text()));
 }
 
 /* when we want to change the status */

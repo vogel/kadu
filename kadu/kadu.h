@@ -173,12 +173,6 @@ class Kadu : public QMainWindow
 		void unregisterUser();
 		void viewHistory();
 		void popupMenu();
-
-	signals:
-		/**
-		 	Jest emitowany gdy kontakt zostal podwojnie klikniety w userboxie
-		**/ 
-		void userDblClicked(UserListElement user);
 };
 
 class KaduSlots : public QObject
