@@ -137,14 +137,13 @@ TrayIcon::TrayIcon(QWidget *parent, const char *name)
 	long data[1];
 	xatom = XInternAtom(dsp, "KWM_DOCKWINDOW", false);
 	data[0] = 1;
-	XChangeProperty(dsp, win, xatom, xatom,
-		32, PropModeReplace,(unsigned char*)data, 1);
+	kdebug("TrayIcon::TrayIcon(): XChangeProperty() result=%d\n", XChangeProperty(dsp, win, xatom, xatom,
+		32, PropModeReplace,(unsigned char*)data, 1));
 	xatom = XInternAtom(dsp, "_KDE_NET_WM_SYSTEM_TRAY_WINDOW_FOR", false);
 	data[0] = 0;
-	XChangeProperty(dsp, win, xatom, XA_WINDOW,
-		32, PropModeReplace,(unsigned char*)data, 1);
+	kdebug("TrayIcon::TrayIcon(): XChangeProperty() result=%d\n", XChangeProperty(dsp, win, xatom, XA_WINDOW,
+		32, PropModeReplace,(unsigned char*)data, 1));
 
-	kdebug("TrayIcon::TrayIcon(): after way 2\n");
 	icon = new QLabel(this);
 	icon->setBackgroundMode(X11ParentRelative);
 	icon->setAlignment(Qt::AlignVCenter);
