@@ -38,7 +38,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * Hinty: zmiana domy¶lnej warto¶ci cytownych znaków na 50 (mast3r)
 * Hinty: mozliwo¶æ przet³umaczenia opcji w zak³adce Hintów(dymków) (mast3r)
 * Hinty: poprawka - w³asna s³adnia jest teraz zawsze u¿ywana
-  gdy jest w³±czona nie tylko gdy status jest z opisem (mast3r) 
+  gdy jest w³±czona nie tylko gdy status jest z opisem (ciuciu/mast3r)
+* Hinty: przy zmianie statusu powinno dzia³aæ ju¿ t³umaczenie, ma³a
+  przeróbka estetyczna w zak³adce konfiguracji (mast3r) 
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci

@@ -215,9 +215,9 @@ void HintManager::addHintStatus(const UserListElement &ule, unsigned int status,
 			addHint(parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true), *icons->loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
 		else
 			if (ifStatusWithDescription(status) && config_file.readBoolEntry("Hints","NotifyHintDescription"))
-				addHint("<b>"+ule.altnick+" </b>"+tr("changed status to")+" <i>"+statustext[statusnr]+"</i><br> <small>"+QStyleSheet::escape(ule.description)+"</small>", *icons->loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
+				addHint("<b>"+ule.altnick+" </b>"+tr("changed status to")+" <i>"+qApp->translate("@default", statustext[statusnr])+"</i><br> <small>"+QStyleSheet::escape(ule.description)+"</small>", *icons->loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
 			else
-				addHint("<b>"+ule.altnick+" </b>"+tr("changed status to")+" <i>"+statustext[statusnr]+"</i>", *icons->loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
+				addHint("<b>"+ule.altnick+" </b>"+tr("changed status to")+" <i>"+qApp->translate("@default", statustext[statusnr])+"</i>", *icons->loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
 		return;
 	}
 
@@ -289,7 +289,7 @@ void HintManager::initModule(void)
 	QT_TRANSLATE_NOOP("@default", "Hints options");
 	QT_TRANSLATE_NOOP("@default", "Enable icons in hints");
 	QT_TRANSLATE_NOOP("@default", "Show connection errors in hints");
-	QT_TRANSLATE_NOOP("@default", "Notify of new message in inactive chat window");
+	QT_TRANSLATE_NOOP("@default", "Notify of new message");
 	QT_TRANSLATE_NOOP("@default", "Notify of new chat");
 	QT_TRANSLATE_NOOP("@default", "Show in notify content message");
 	QT_TRANSLATE_NOOP("@default", "Content message in hint");
@@ -309,8 +309,8 @@ void HintManager::initModule(void)
 	ConfigDialog::addGrid("Hints", "Hints options", "grid-options", 2);
 	ConfigDialog::addCheckBox("Hints", "grid-options", "Enable icons in hints", "Icons", true);
 	ConfigDialog::addCheckBox("Hints", "grid-options", "Show connection errors in hints" ,"Errors", true);
-	ConfigDialog::addCheckBox("Hints", "grid-options", "Notify of new message in inactive chat window", "NotifyNewMessage", false);
 	ConfigDialog::addCheckBox("Hints", "grid-options", "Notify of new chat", "NotifyNewChat", true);
+	ConfigDialog::addCheckBox("Hints", "grid-options", "Notify of new message", "NotifyNewMessage", false);
 	ConfigDialog::addCheckBox("Hints", "grid-options", "Show in notify content message", "ShowContentMessage", false);
 	ConfigDialog::addVGroupBox("Hints", "Hints options", "Content message in hint");
 	ConfigDialog::addCheckBox("Hints", "Hints options", "Enable status notification by hint", "NotifyHint", true);
