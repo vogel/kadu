@@ -77,15 +77,14 @@ PersonalInfoDialog::PersonalInfoDialog(QDialog *parent, const char *name)
 	GridLayout->addMultiCellWidget(CancelButton,3,3,3,4);	
 	connect(CancelButton, SIGNAL(clicked()), this, SLOT(reject()));
 
-	http=gg_search(gg_search_request_mode_3(config.uin,FALSE,0),TRUE);
-	if(http==NULL)
-	{
+	http = gg_search(gg_search_request_mode_3(config.uin,FALSE,0),TRUE);
+	if (http == NULL) {
 		QMessageBox::critical(this,i18n("Error"),i18n("Public directory read failed"));
 		return;	
-	};
+		}
 	
 	setEnabled(false);
-	State=READING;
+	State = READING;
 	createSocketNotifiers();
 };
 
@@ -133,14 +132,14 @@ void PersonalInfoDialog::OkButtonClicked()
 
 void PersonalInfoDialog::dataReceived()
 {
-    if (http->check & GG_CHECK_READ)
-	socketEvent();
+	if (http->check & GG_CHECK_READ)
+		socketEvent();
 }
 
 void PersonalInfoDialog::dataSent()
 {
-    if (http->check & GG_CHECK_WRITE)
-	socketEvent();
+	if (http->check & GG_CHECK_WRITE)
+		socketEvent();
 }
 
 void PersonalInfoDialog::socketEvent()
@@ -228,20 +227,22 @@ void PersonalInfoDialog::fillFields()
 {
 	struct gg_search_result* search_res=((struct gg_search*)http->data)->results;
 
-	cp_to_iso((unsigned char *)search_res->nickname);
-	cp_to_iso((unsigned char *)search_res->first_name);
-	cp_to_iso((unsigned char *)search_res->last_name);
-	cp_to_iso((unsigned char *)search_res->city);
-	
-	NicknameEdit->setText(__c2q(search_res->nickname));
-	NameEdit->setText(__c2q(search_res->first_name));
-	SurnameEdit->setText(__c2q(search_res->last_name));
-	GenderCombo->setCurrentItem(search_res->gender);
-	QCString BirthyearString;
-	BirthyearString.setNum(search_res->born);
-	BirthyearEdit->setText(BirthyearString);
-	CityEdit->setText(__c2q(search_res->city));
-};
+	if (search_res) {
+		cp_to_iso((unsigned char *)search_res->nickname);
+		cp_to_iso((unsigned char *)search_res->first_name);
+		cp_to_iso((unsigned char *)search_res->last_name);
+		cp_to_iso((unsigned char *)search_res->city);
+
+		NicknameEdit->setText(__c2q(search_res->nickname));
+		NameEdit->setText(__c2q(search_res->first_name));
+		SurnameEdit->setText(__c2q(search_res->last_name));
+		GenderCombo->setCurrentItem(search_res->gender);
+		QCString BirthyearString;
+		BirthyearString.setNum(search_res->born);
+		BirthyearEdit->setText(BirthyearString);
+		CityEdit->setText(__c2q(search_res->city));
+		}
+}
 
 void PersonalInfoDialog::closeEvent(QCloseEvent * e)
 {

@@ -7,6 +7,8 @@
 * w oknie rozmowy dodano guzik blokuj±cy przewijanie rozmowy (mo¿na spokojnie przeczytaæ
   co kto¶ do nas napisa³ du¿o wcze¶niej)
 * mo¿liwo¶æ rezygnacji ze zmiany statusu na status opisowy
+* usuniête wywalanie siê kadu po otwarciu okna z danymi osobistymi
+  (w momencie gdy nie znaleziono informacji o nas w katalogu publicznym)
 
 +++ wersja 0.3.3-pre3
 * CTRL + klik dowolnego przycisku myszki na ikonce w tray'u powoduje
