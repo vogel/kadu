@@ -41,11 +41,11 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchU
 	b_sendbtn = new QPushButton(this);
 	b_sendbtn->setText(i18n("&Search"));
 	b_sendbtn->setAccel(Key_Return);	
-	connect(b_sendbtn, SIGNAL(clicked()), this, SLOT(doSearchWithoutStart()));
+	connect(b_sendbtn, SIGNAL(clicked()), this, SLOT(firstSearch()));
 
 	b_nextbtn = new QPushButton(this);
 	b_nextbtn->setText(i18n("&Next results"));
-	connect(b_nextbtn, SIGNAL(clicked()), this, SLOT(doSearch()));
+	connect(b_nextbtn, SIGNAL(clicked()), this, SLOT(nextSearch()));
 
 	QPushButton *b_clrbtn;
 	b_clrbtn = new QPushButton(this);
@@ -210,12 +210,12 @@ void SearchDialog::clearResults(void) {
 	results->clear();
 }
 
-void SearchDialog::doSearchWithoutStart(void) {
+void SearchDialog::firstSearch(void) {
 	fromUin = 0;
-	doSearch();
+	nextSearch();
 }
 
-void SearchDialog::doSearch(void) {
+void SearchDialog::nextSearch(void) {
 	int i;
 	gg_search50_t req;
 	char *reqbuf;
@@ -279,6 +279,9 @@ void SearchDialog::doSearch(void) {
 		gg_search50_add(req, GG_SEARCH50_ACTIVE, GG_SEARCH50_ACTIVE_TRUE);
 	else
 		gg_search50_add(req, GG_SEARCH50_ACTIVE, GG_SEARCH50_ACTIVE_FALSE);
+	QString s;
+	s = QString::number(fromUin);
+	gg_search50_add(req, GG_SEARCH50_START, s.local8Bit());
 
 	progress->setText(i18n("Searching..."));
 	fprintf(stderr, "KK SearchDialog::doSearch(): let the search begin\n");
@@ -317,20 +320,15 @@ void SearchDialog::showResults(gg_search50_t res) {
 		born = gg_search50_get(res, i, GG_SEARCH50_BIRTHYEAR);
 		city = gg_search50_get(res, i, GG_SEARCH50_CITY);
 		status = gg_search50_get(res, i, GG_SEARCH50_STATUS);
-		switch ((status) ? atoi(status) : -1) {
-			case GG_STATUS_AVAIL:
-				qpx = new QPixmap((const char **)gg_act_xpm);
-				break;
-			case GG_STATUS_BUSY:
-				qpx = new QPixmap((const char **)gg_busy_xpm);
-				break;
-			default:
-				qpx = new QPixmap((const char **)gg_inact_xpm);
-			}
-
-		cp_to_iso((unsigned char *)first);
-		cp_to_iso((unsigned char *)nick);
-		cp_to_iso((unsigned char *)city);
+		if (atoi(status) <= 1 && only_active->isChecked())
+			continue;
+		qpx = new QPixmap((const char **)gg_xpm[statusGGToStatusNr(atoi(status) & 127)]);
+		if (first)
+			cp_to_iso((unsigned char *)first);
+		if (nick)
+			cp_to_iso((unsigned char *)nick);
+		if (city)
+			cp_to_iso((unsigned char *)city);
 		qlv = new QListViewItem(results, QString::null, __c2q(uin),
 			__c2q(first), __c2q(city), __c2q(nick), __c2q(born));
 		qlv->setPixmap(0, *qpx);

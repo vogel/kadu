@@ -65,8 +65,8 @@ class SearchDialog : public QDialog {
 		void updateInfoClicked();
 
 	public slots:
-		void doSearch(void);
-		void doSearchWithoutStart(void);
+		void firstSearch(void);
+		void nextSearch(void);
 		void deleteSearchIdStruct(void);
 		void showResults(gg_search50_t res);
 		void selectionChanged(QListViewItem *);

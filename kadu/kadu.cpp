@@ -171,7 +171,7 @@ QSocketNotifier *dccsnr = NULL;
 QSocketNotifier *dccsnw = NULL;
 UpdatesThread *ut;
 
-char **gg_xpm[] = {gg_act_xpm, gg_actdescr_xpm, gg_busy_xpm, gg_busydescr_xpm,
+const char **gg_xpm[] = {gg_act_xpm, gg_actdescr_xpm, gg_busy_xpm, gg_busydescr_xpm,
 	gg_invi_xpm, gg_invidescr_xpm, gg_inact_xpm, gg_inactdescr_xpm, gg_stop_xpm};
 enum {
 	KADU_CMD_SEND_MESSAGE,
@@ -965,7 +965,7 @@ void Kadu::commandParser (int command) {
 			sd = new SearchDialog(0, i18n("User info"), userlist.byAltNick(userbox->currentText()).uin);
 			sd->init();
 			sd->show();
-			sd->doSearch();
+			sd->firstSearch();
 			break;
 		case KADU_CMD_IMPORT_USERLIST:
 			UserlistImport *uli;

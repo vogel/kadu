@@ -156,19 +156,19 @@ ChooseDescription::ChooseDescription ( int nr, QWidget * parent, const char * na
 	char **gg_xpm;
 	switch (nr) {
 		case 1:
-			gg_xpm = gg_actdescr_xpm;
+			gg_xpm = (char **)gg_actdescr_xpm;
 			break;
 		case 3:
-			gg_xpm = gg_busydescr_xpm;
+			gg_xpm = (char **)gg_busydescr_xpm;
 			break;
 		case 5:
-			gg_xpm = gg_invidescr_xpm;
+			gg_xpm = (char **)gg_invidescr_xpm;
 			break;
 		case 7:
-			gg_xpm = gg_inactdescr_xpm;
+			gg_xpm = (char **)gg_inactdescr_xpm;
 			break;
 		default:
-			gg_xpm = gg_inactdescr_xpm;
+			gg_xpm = (char **)gg_inactdescr_xpm;
 		}
 	okbtn->setIconSet(QIconSet(QPixmap((const char**)gg_xpm)));
 

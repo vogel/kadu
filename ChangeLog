@@ -10,6 +10,7 @@
 * usuniête wywalanie siê kadu po otwarciu okna z danymi osobistymi
   (w momencie gdy nie znaleziono informacji o nas w katalogu publicznym)
 * mo¿liwo¶æ regulacji wielko¶ci panela informacyjnego
+* wyszukiwanie u¿ytkowników zgodne z GG 5.0
 
 +++ wersja 0.3.3-pre3
 * CTRL + klik dowolnego przycisku myszki na ikonce w tray'u powoduje

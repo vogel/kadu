@@ -405,7 +405,7 @@ void Chat::userWhois(void) {
 	sd = new SearchDialog(0, "User info", uin);
 	sd->init();
 	sd->show();
-	sd->doSearch();
+	sd->firstSearch();
 }
 
 void Chat::hyperlinkClicked(const QString &link) {

@@ -187,19 +187,19 @@ void UserBox::refresh()
 		{
 			switch (user.status) {
 				case GG_STATUS_AVAIL:
-		    			gg_xpm = gg_act_xpm;
+		    			gg_xpm = (char **)gg_act_xpm;
 		    			break;
 				case GG_STATUS_AVAIL_DESCR:
-		    			gg_xpm = gg_actdescr_xpm;
+		    			gg_xpm = (char **)gg_actdescr_xpm;
 		    			break;
 				case GG_STATUS_BUSY:
-					gg_xpm = gg_busy_xpm;
+					gg_xpm = (char **)gg_busy_xpm;
 		    			break;
 				case GG_STATUS_BUSY_DESCR:
-					gg_xpm = gg_busydescr_xpm;
+					gg_xpm = (char **)gg_busydescr_xpm;
 		    			break;
 				case GG_STATUS_BLOCKED:
-					gg_xpm = gg_stop_xpm;
+					gg_xpm = (char **)gg_stop_xpm;
 					break;
 				};
 			insertItem(QPixmap((const char **)gg_xpm), user.altnick);			
@@ -217,10 +217,10 @@ void UserBox::refresh()
 		{
 			switch (user.status) {
 				case GG_STATUS_INVISIBLE_DESCR:
-		    			gg_xpm = gg_invidescr_xpm;
+		    			gg_xpm = (char **)gg_invidescr_xpm;
     		    			break;
 				case GG_STATUS_INVISIBLE2:
-					gg_xpm = gg_invi_xpm;
+					gg_xpm = (char **)gg_invi_xpm;
 		    			break;
 				};
 			insertItem(QPixmap((const char **)gg_xpm), user.altnick);			
@@ -238,10 +238,10 @@ void UserBox::refresh()
 		{
 			switch (user.status) {
 				case GG_STATUS_NOT_AVAIL_DESCR:
-		    			gg_xpm = gg_inactdescr_xpm;			
+		    			gg_xpm = (char **)gg_inactdescr_xpm;			
     		    			break;
 				default:
-		    			gg_xpm = gg_inact_xpm;			
+		    			gg_xpm = (char **)gg_inact_xpm;			
 		    			break;
 				};
 			insertItem(QPixmap((const char **)gg_xpm), user.altnick);			

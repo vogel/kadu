@@ -249,7 +249,7 @@ struct chats {
     };
 };
 
-extern char **gg_xpm[];
+extern const char **gg_xpm[];
 extern KApplication *a;
 extern Kadu *kadu;
 extern struct gg_session *sess;
