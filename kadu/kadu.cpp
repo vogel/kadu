@@ -493,15 +493,12 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	if ( configTab >= 0 && configTab < GroupBar -> count() )
 		((QTabBar*) GroupBar) -> setCurrentTab( configTab );
 
-//	connect(gadu, SIGNAL(connecting()), this, SLOT(proteza_connecting()));
-	connect(gadu, SIGNAL(statusChanged(int)), this, SLOT(proteza_statusChanged(int)));
-	connect(gadu, SIGNAL(disconnectNetwork()), this, SLOT(proteza_disconnectNetwork()));
-
 	connect(gadu, SIGNAL(connecting()), this, SLOT(connecting()));
 	connect(gadu, SIGNAL(connected()), this, SLOT(connected()));
-	connect(gadu, SIGNAL(connectionError(GaduConnectionError)), this, SLOT(connectionError(GaduConnectionError)));
 	connect(gadu, SIGNAL(dccSetupFailed()), this, SLOT(dccSetupFailed()));
 	connect(gadu, SIGNAL(disconnected()), this, SLOT(disconnected()));
+	connect(gadu, SIGNAL(error(GaduError)), this, SLOT(error(GaduError)));
+	connect(gadu, SIGNAL(statusChanged(int)), this, SLOT(setCurrentStatus(int)));
 
 	dccsock = NULL;
 	/* dirty workaround for multiple showEvents */
@@ -1084,7 +1081,8 @@ void Kadu::slotHandleState(int command) {
 				}
 			break;
 		case 6:
-			disconnectNetwork();
+			gadu->logout();
+		//	disconnectNetwork();
 			AutoConnectionTimer::off();
 			autohammer = false;
 			setCurrentStatus(GG_STATUS_NOT_AVAIL);
@@ -1094,7 +1092,8 @@ void Kadu::slotHandleState(int command) {
 			if (cd->exec() == QDialog::Accepted) {
 				setStatus(GG_STATUS_NOT_AVAIL_DESCR);
 				statusppm->setItemEnabled(7, false);
-				disconnectNetwork();
+				gadu->logout();
+				//disconnectNetwork();
 				AutoConnectionTimer::off();
 				autohammer = false;
 				}
@@ -1133,24 +1132,8 @@ void Kadu::setCurrentStatus(int status) {
 	QPixmap pix = icons_manager.loadIcon(gg_icons[statusnr]);
 	statusbutton->setIconSet(QIconSet(pix));
 	setIcon(pix);
-	emit currentStatusChanged(status);
-}
-
-void Kadu::proteza_statusChanged(int status)
-{
-	kdebugf();
-
-	setCurrentStatus(status);
 	UserBox::all_refresh();
-}
-
-void Kadu::proteza_disconnectNetwork()
-{
-	kdebugf();
-
-	disconnectNetwork();
-	QMessageBox::warning(kadu, tr("Connection problem"),
-		tr("Couldn't connect.\nCheck your internet connection."));
+	emit currentStatusChanged(status);
 }
 
 void Kadu::setStatus(int status) {
@@ -1168,18 +1151,7 @@ void Kadu::setStatus(int status) {
 			updateChecked=true;
 		}
 	}
-/*
-	if (!userlist_sent)
-	{
-		doBlink = true;
-		if (!blinktimer)
-		{
-			blinktimer = new QTimer;
-			QObject::connect(blinktimer, SIGNAL(timeout()), kadu, SLOT(blink()));
-		}
-		blinktimer->start(1000, true);
-	}
-*/
+
 	gadu->setStatus(status);
 }
 
@@ -1209,23 +1181,23 @@ void Kadu::connected()
 		kadu->setStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
 }
 
-void Kadu::connectionError(GaduConnectionError error)
+void Kadu::error(GaduError err)
 {
 	kdebugf();
 
 	QString msg = QString::null;
 
-	switch (error)
+	switch (err)
 	{
-		case ServerNotFound:
+		case ConnectionServerNotFound:
 			msg = QString(tr("Unable to connect, server has not been found"));
 			break;
 
-		case CannotConnect:
+		case ConnectionCannotConnect:
 			msg = QString(tr("Unable to connect"));
 			break;
 
-		case NeedEmail:
+		case ConnectionNeedEmail:
 			msg = QString(tr("Please change your email in \"Change password/email\" window. "
 				"Leave new password field blank."));
 			autohammer = false; /* FIXME 2/2*/
@@ -1234,19 +1206,19 @@ void Kadu::connectionError(GaduConnectionError error)
 			MessageBox::msg(msg);
 			break;
 
-		case InvalidData:
+		case ConnectionInvalidData:
 			msg = QString(tr("Unable to connect, server has returned unknown data"));
 			break;
 			
-		case CannotRead:
+		case ConnectionCannotRead:
 			msg = QString(tr("Unable to connect, connection break during reading"));
 			break;
 
-		case CannotWrite:
+		case ConnectionCannotWrite:
 			msg = QString(tr("Unable to connect, connection break during writing"));
 			break;
 
-		case IncorrectPassword:
+		case ConnectionIncorrectPassword:
 			msg = QString(tr("Unable to connect, incorrect password"));
 			autohammer = false; /* FIXME 2/2*/
 			AutoConnectionTimer::off();
@@ -1254,16 +1226,24 @@ void Kadu::connectionError(GaduConnectionError error)
 			QMessageBox::critical(0, tr("Incorrect password"), tr("Connection will be stoped\nYour password is incorrect !!!"), QMessageBox::Ok, 0);
 			return;
 
-		case TlsError:
+		case ConnectionTlsError:
 			msg = QString(tr("Unable to connect, error of negotiation TLS"));
 			break;
 
-		case Unknow:
+		case ConnectionUnknow:
 			kdebug("Connection broken unexpectedly!\nUnscheduled connection termination\n");
 			break;
 
-		case Timeout:
+		case ConnectionTimeout:
 			kdebug("Connection timeout!\nUnscheduled connection termination\n");
+			break;
+
+		case Disconnected:
+			kdebug("Disconnection!");
+			msg = QString(tr("Disconnection has occured"));
+			break;
+
+		default:
 			break;
 	
 	}
@@ -1274,23 +1254,9 @@ void Kadu::connectionError(GaduConnectionError error)
 		hintmanager->addHintError(msg);
 	}
 
-	kadu->disconnectNetwork();	// ??
-	if (kadu->autohammer)
+	if (autohammer)
 		AutoConnectionTimer::on();
 
-}
-
-void Kadu::disconnected()
-{	
-	kdebugf();
-	kdebug("Disconnection has occured\n");
-
-	if (hintmanager)
-		hintmanager->addHintError(tr("Disconnection has occured"));
-	
-	autohammer = false;
-	disconnectNetwork();
-	AutoConnectionTimer::off();
 }
 
 void Kadu::systemMessageReceived(QString &msg)
@@ -1317,74 +1283,23 @@ void Kadu::pingNetwork(void) {
 	pingtimer->start(60000, TRUE);
 }
 
-void Kadu::disconnectNetwork() {
+void Kadu::disconnected()
+{
+	kdebugf();
+	kdebug("Disconnection has occured\n");
+
 	doBlink = false;
 
-	kdebug("Kadu::disconnectNetwork(): calling offline routines\n");
-
-	emit disconnectingNetwork();
-	
-	ConnectionTimeoutTimer::off();
-	if (pingtimer) {
-		pingtimer->stop();
-		delete pingtimer;
-		pingtimer = NULL;
-		}
-	if (blinktimer) {
+	if (blinktimer)
+	{
 		blinktimer->stop();
 		delete blinktimer;
 		blinktimer = NULL;
-		}
-	if (kadusnw) {
-		kadusnw->setEnabled(false);
-		delete kadusnw;
-		kadusnw = NULL;
-		}
-	if (kadusnr) {
-		kadusnr->setEnabled(false);
-		delete kadusnr;
-		kadusnr = NULL;
-		}
-	if (dccsnr) {
-		delete dccsnr;
-		dccsnr = NULL;
-		}
-	if (dccsnw) {
-		delete dccsnw;
-		dccsnw = NULL;
-		}
-	if (dccsock) {
-		gg_dcc_free(dccsock);
-		dccsock = NULL;
-		gg_dcc_ip = 0;
-		gg_dcc_port = 0;
-		}
-
-	if (sess) {
-		gg_logoff(sess);
-		gg_free_session(sess);
-		sess = NULL;
-		}
-	userlist_sent = false;
-
-	for (unsigned int i=0; i < userlist.count(); i++)
-	{
-		userlist[i].status = GG_STATUS_NOT_AVAIL;
-		userlist[i].description = "";
 	}
 
-	chat_manager->refreshTitles();
-
-//	own_description = QString::null;
-	UserBox::all_refresh();
-
-	socket_active = false;
-
-	setCurrentStatus(GG_STATUS_NOT_AVAIL);
-	
-	emit disconnectedNetwork();
+	autohammer = false;
+	AutoConnectionTimer::off();
 }
-
 
 void Kadu::dccFinished(dccSocketClass *dcc) {
 	kdebugf();
@@ -1523,7 +1438,8 @@ bool Kadu::close(bool quit) {
 			own_description = config_file.readEntry("General", "DisconnectDescription");
 			setStatus(GG_STATUS_NOT_AVAIL_DESCR);
 		}
-		disconnectNetwork();
+//		disconnectNetwork();
+		gadu->logout();
 		kdebug("Kadu::close(): Saved config, disconnect and ignored\n");
 		QWidget::close(true);
 		flock(lockFileHandle, LOCK_UN);

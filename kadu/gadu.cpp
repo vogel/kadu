@@ -346,34 +346,31 @@ GaduSocketNotifiers::~GaduSocketNotifiers()
 
 void GaduSocketNotifiers::proteza_connectionFailed(int failure)
 {
-	GaduConnectionError error;
+	GaduError err;
 
 	switch (failure)
 	{
-		case GG_FAILURE_RESOLVING:	error = ServerNotFound; break;
-		case GG_FAILURE_CONNECTING:	error = CannotConnect; break;
-		case GG_FAILURE_NEED_EMAIL:	error = NeedEmail; break;
-		case GG_FAILURE_INVALID:	error = InvalidData; break;
-		case GG_FAILURE_READING:	error = CannotRead; break;
-		case GG_FAILURE_WRITING:	error = CannotWrite; break;
-		case GG_FAILURE_PASSWORD:	error = IncorrectPassword; break;
-		case GG_FAILURE_TLS:		error = TlsError;
+		case GG_FAILURE_RESOLVING:	err = ConnectionServerNotFound; break;
+		case GG_FAILURE_CONNECTING:	err = ConnectionCannotConnect; break;
+		case GG_FAILURE_NEED_EMAIL:	err = ConnectionNeedEmail; break;
+		case GG_FAILURE_INVALID:	err = ConnectionInvalidData; break;
+		case GG_FAILURE_READING:	err = ConnectionCannotRead; break;
+		case GG_FAILURE_WRITING:	err = ConnectionCannotWrite; break;
+		case GG_FAILURE_PASSWORD:	err = ConnectionIncorrectPassword; break;
+		case GG_FAILURE_TLS:		err = ConnectionTlsError; break;
 	}
 
-	kadu->disconnectNetwork();
-	emit connectionError(error);
+	emit error(err);
 }
 
 void GaduSocketNotifiers::proteza_connectionBroken()
 {
-	kadu->disconnectNetwork();
-	emit connectionError(Unknow);
+	emit error(ConnectionUnknow);
 }
 
 void GaduSocketNotifiers::proteza_connectionTimeout()
 {
-	kadu->disconnectNetwork();
-	emit connectionError(Timeout);
+	emit error(ConnectionTimeout);
 }
 
 void GaduSocketNotifiers::proteza_systemMessageReceived(QString &message, QDateTime &time, int formats_length, void *formats)
@@ -409,8 +406,8 @@ GaduProtocol::GaduProtocol() : QObject()
 	SocketNotifiers = new GaduSocketNotifiers();
 
 	connect(SocketNotifiers, SIGNAL(connected()), this, SLOT(connectedSlot()));
-	connect(SocketNotifiers, SIGNAL(connectionError(GaduConnectionError)), this, SIGNAL(connectionError(GaduConnectionError)));
 	connect(SocketNotifiers, SIGNAL(disconnected()), this, SIGNAL(disconnected()));
+	connect(SocketNotifiers, SIGNAL(error(GaduError)), this, SLOT(errorSlot(GaduError)));
 	connect(SocketNotifiers, SIGNAL(systemMessageReceived(QString &)), this, SIGNAL(systemMessageReceived(QString &)));
 
 	connect(&event_manager, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)),
@@ -440,6 +437,87 @@ void GaduProtocol::connectedSlot()
 
 	emit connected();
 	emit statusChanged(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
+}
+
+void GaduProtocol::disconnectedSlot()
+{
+	ConnectionTimeoutTimer::off();
+	
+	if (pingtimer)
+	{
+		pingtimer->stop();
+		delete pingtimer;
+		pingtimer = NULL;
+	}
+
+
+	if (kadusnw)
+	{
+		kadusnw->setEnabled(false);
+		delete kadusnw;
+		kadusnw = NULL;
+	}
+	
+	if (kadusnr)
+	{
+		kadusnr->setEnabled(false);
+		delete kadusnr;
+		kadusnr = NULL;
+	}
+	
+	if (dccsnr)
+	{
+		delete dccsnr;
+		dccsnr = NULL;
+	}
+	
+	if (dccsnw)
+	{
+		delete dccsnw;
+		dccsnw = NULL;
+	}
+	
+	if (dccsock)
+	{
+		gg_dcc_free(dccsock);
+		dccsock = NULL;
+		gg_dcc_ip = 0;
+		gg_dcc_port = 0;
+	}
+	
+
+	if (sess)
+	{
+		gg_logoff(sess);
+		gg_free_session(sess);
+		sess = NULL;
+	}
+	
+	userlist_sent = false;
+
+	for (unsigned int i=0; i < userlist.count(); i++)
+	{
+		userlist[i].status = GG_STATUS_NOT_AVAIL;
+		userlist[i].description = "";
+	}
+
+	chat_manager->refreshTitles();
+
+//	own_description = QString::null;
+	UserBox::all_refresh();
+
+	socket_active = false;
+
+	emit statusChanged(GG_STATUS_NOT_AVAIL);
+	emit disconnected();
+}
+
+void GaduProtocol::errorSlot(GaduError err)
+{
+	kdebugf();
+
+	disconnectedSlot();
+	emit error(err);
 }
 
 void GaduProtocol::setStatus(int status)
@@ -608,9 +686,19 @@ void GaduProtocol::login(int status)
 		connect(kadusnr, SIGNAL(activated(int)), kadu, SLOT(dataReceived()));
 	}
 	else
-		emit disconnectNetwork();
+	{
+		disconnectedSlot();
+		emit error(Disconnected);
+	}
 
 	kdebugf2();
+}
+
+void GaduProtocol::logout()
+{
+	kdebugf();
+
+	disconnectedSlot();
 }
 
 void GaduProtocol::setupProxy()
@@ -1191,7 +1279,6 @@ void GaduProtocol::userListReplyReceived(char type, char *reply)
 		kdebug("GaduProtocol::userListReplyReceived()\n%s\n",
 			unicode2latin(importReply).data());
 
-		//QTextStream stream(&importReply, IO_ReadOnly);
 		UserList importedUserList;
 		stringToUserList(importReply, importedUserList);
 

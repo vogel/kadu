@@ -189,6 +189,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   za 1. argument przyjmuje maskê bitow± z informacj± o typie wypisywanej
   informacji, maskê ustawia siê jako zmienn± ¶rodowiskow± DEBUG_MASK,
   na razie tylko kilka plików przerobionych na nowy mechanizm (joi)
+* dziewi±ty patch porz±dkuj±cy vogela: walka z sygna³ami i slotami (adrian)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

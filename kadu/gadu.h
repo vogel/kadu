@@ -150,17 +150,18 @@ class DccSocketNotifiers : public SocketNotifiers
 typedef uin_t UinType;
 typedef enum
 {
-	ServerNotFound,
-	CannotConnect,
-	NeedEmail,
-	InvalidData,
-	CannotRead,
-	CannotWrite,
-	IncorrectPassword,
-	TlsError,
-	Unknow,
-	Timeout
-} GaduConnectionError;
+	ConnectionServerNotFound,
+	ConnectionCannotConnect,
+	ConnectionNeedEmail,
+	ConnectionInvalidData,
+	ConnectionCannotRead,
+	ConnectionCannotWrite,
+	ConnectionIncorrectPassword,
+	ConnectionTlsError,
+	ConnectionUnknow,
+	ConnectionTimeout,
+	Disconnected
+} GaduError;
 
 class GaduSocketNotifiers : public QObject //SocketNotifiers
 {
@@ -178,8 +179,8 @@ class GaduSocketNotifiers : public QObject //SocketNotifiers
 
 	signals:
 		void connected();
-		void connectionError(GaduConnectionError);
 		void disconnected();
+		void error(GaduError);
 		void systemMessageReceived(QString &);
 };
 
@@ -193,7 +194,6 @@ class GaduProtocol : public QObject
 		bool userListClear;
 		QString importReply;
 
-		void login(int status);
 		void setupProxy();
 		void setupDcc();
 		void changeStatus(int status);
@@ -205,6 +205,8 @@ class GaduProtocol : public QObject
 		void changePasswordDone(bool ok, struct gg_http *);
 
 		void connectedSlot();
+		void disconnectedSlot();
+		void errorSlot(GaduError);
 
 	public:	
 		static void initModule();
@@ -217,6 +219,9 @@ class GaduProtocol : public QObject
 		QString userListToString(const UserList& userList) const;
 		void stringToUserList(QString&, UserList& userList) const;
 		void streamToUserList(QTextStream&, UserList& userList) const;
+
+		void login(int status);
+		void logout();
 
 		/**
 			Zmieniamy sobie status
@@ -306,8 +311,8 @@ class GaduProtocol : public QObject
 	signals:
 		void connected();
 		void connecting();
-		void connectionError(GaduConnectionError);
 		void disconnected();
+		void error(GaduError);
 		void systemMessageReceived(QString &);
 
 		void dccSetupFailed();

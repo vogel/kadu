@@ -140,9 +140,9 @@ class Kadu : public QMainWindow
 	private slots:
 		void connected();
 		void connecting();
-		void connectionError(GaduConnectionError);
 		void dccSetupFailed();
 		void disconnected();
+		void error(GaduError);
 		void systemMessageReceived(QString &);
 	
 	public slots:
@@ -157,7 +157,6 @@ class Kadu : public QMainWindow
 		void dccSent();
 		void pingNetwork(void);
 		void setStatus(int);
-		void disconnectNetwork(void);
 		void gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op);
 		void currentChanged(QListBoxItem *item);
 		void showdesc(bool show = true);
@@ -166,10 +165,6 @@ class Kadu : public QMainWindow
 		void infopanelUpdate(UinType);
 		virtual bool close(bool quit = false);
 		void quitApplication();
-
-		// protezy...
-		void proteza_statusChanged(int);
-		void proteza_disconnectNetwork();
 
 		void about();
 		void addUserAction();
