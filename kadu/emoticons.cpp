@@ -11,7 +11,6 @@
 
 #include <qfile.h>
 #include <qtextstream.h>
-#include <qregexp.h>
 #include <qdir.h>
 
 // dla config
@@ -49,11 +48,11 @@ void EmoticonsManager::loadEmoticonsRegexpList()
 		if(regexp==""||regexp[0]=='#') continue;
 		QString picname=emoticons_stream.readLine();
 		EmoticonsRegexpListItem item;
-		item.regexp=regexp;
+		item.regexp=QRegExp(regexp);
 		item.picname=picname;
 		bool added=false;
 		for(QValueList<EmoticonsRegexpListItem>::iterator i=EmoticonsRegexpList.begin(); i!=EmoticonsRegexpList.end(); i++)
-			if(regexp.length()>=(*i).regexp.length())
+			if(regexp.length()>=(*i).regexp.pattern().length())
 			{
 				EmoticonsRegexpList.insert(i,item);
 				added=true;
@@ -98,11 +97,10 @@ void EmoticonsManager::expandEmoticons(QString& text)
 		bool emoticonFound=false;
 		for(QValueList<EmoticonsRegexpListItem>::iterator i=EmoticonsRegexpList.begin(); i!=EmoticonsRegexpList.end(); i++)
 		{
-			QRegExp r=QRegExp((*i).regexp);
-			if(r.search(text,j)==j)
+			if((*i).regexp.search(text,j)==j)
 			{
 				new_text+=QString("__escaped_lt__IMG SRC=")+(*i).picname+"__escaped_gt__";
-				j+=r.matchedLength()-1;
+				j+=(*i).regexp.matchedLength()-1;
 				emoticonFound=true;
 			};
 		};

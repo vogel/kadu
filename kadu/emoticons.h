@@ -12,6 +12,7 @@
 
 #include <qvaluelist.h>
 #include <qstringlist.h>
+#include <qregexp.h>
 
 class EmoticonsManager
 {
@@ -19,7 +20,7 @@ class EmoticonsManager
 		QStringList ThemesList;
 		struct EmoticonsRegexpListItem
 		{
-			QString regexp;
+			QRegExp regexp;
 			QString picname;
 		};
 		QValueList<EmoticonsRegexpListItem> EmoticonsRegexpList;
