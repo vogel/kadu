@@ -9,7 +9,6 @@
 #   Definicja domyślnych wartości dla zmiennych
 
 APP_NAME=KADU
-APP_VER=0.3.3-rc1
 APP_DEF_DIR=/usr
 # $1 - nazwy katalogw, $2 - Wartości domyślne
 
@@ -169,6 +168,7 @@ function ShowInfo()
 	echo "     * Biblioteka QT wersja >=3.0.1, w katalogu: [$QT_DIR], $CORRECT"
 	CheckPath "$KDE_DIR" include/kde/kapp.h ZNALEZIONE. "NIE ZNALEZIONE!"
 	echo "     * KDE Desktop wersja >=3.0.0, w katalogu: [$KDE_DIR], $CORRECT"
+	echo " KDE NIE JEST WYMAGANE DO PRAWIDLOWEJ INSTALACJI W INNYCH MENADŻERACH OKIEN"
 	CheckPath "$APP_DIR" bin/kadu "ZAINSTALOWANE" "NIE ZAINSTALOWANE"
 	echo "     * Lokalizacja $APP_NAME w katalogu: [$APP_DIR], $CORRECT"
 	echo
@@ -226,7 +226,7 @@ fi;
 clear
 echo
 	echo " =============================================================================="
-	echo "            Witaj w $APP_NAME wersja $APP_VER Skrypt instalacyjny v0.1.2-1 "
+	echo "                    Witaj w $APP_NAME Skrypt instalacyjny v0.1.2-1 "
 	echo "                        PRZEZNACZONY DLA REDHAT 8.0 I AUROX 8.0"
 	echo "  Skrypt ten konfiguruje, kompiluje, instaluje lub odinstalowywuje $APP_NAME"
 	echo " =============================================================================="
@@ -243,7 +243,7 @@ echo
 		Szuk_kadu
 	echo "Szukam  QT..."
 		Szuk_QT
-	echo "Szukam KDE..."
+#	echo "Szukam KDE..."
 		Szuk_KDE
 
 ########################################################################################

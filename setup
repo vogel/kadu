@@ -9,7 +9,6 @@
 #   Definicja domyslnych wartosci dla zmiennych
 
 APP_NAME=KADU
-APP_VER=0.3.3-rc1
 APP_DEF_DIR=/usr
 # $1 - nazwy katalogów, $2 - Wartosci domy?lne
 
@@ -169,6 +168,7 @@ function ShowInfo()
 	echo "     * Library QT version >=3.0.1, in directory: [$QT_DIR], $CORRECT"
 	CheckPath "$KDE_DIR" include/kapp.h FOUND. "NOT FOUND!"
 	echo "     * KDE Desktop version >=3.0.0, in directory: [$KDE_DIR], $CORRECT"
+	echo "     KDE IS NOT REQUIRED  FOR INSTALLATION IN ODHER MENAGERS"
 	CheckPath "$APP_DIR" bin/kadu "INSTALLED" "NOT INSTALLED"
 	echo "     * Application $APP_NAME will be installed at directory: [$APP_DIR], $CORRECT"
 	echo
@@ -226,7 +226,7 @@ fi;
 clear
 	echo
 	echo "==============================================================================="
-	echo "          Welcome To $APP_NAME v$APP_VER Application Setup Script v0.1.2"
+	echo "          Welcome To $APP_NAME  Application Setup Script v0.1.2"
 	echo "==============================================================================="
 	echo
 	echo "  This program is free software; you can redistribute it and/or modify"
@@ -243,7 +243,6 @@ clear
 		Szuk_kadu
 	echo "Searching for  QT..."
 		Szuk_QT
-	echo "Searching for KDE..."
 		Szuk_KDE
 
 ########################################################################################
