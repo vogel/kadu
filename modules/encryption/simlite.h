@@ -25,6 +25,7 @@
 #include <inttypes.h>
 #endif
 #include <limits.h>
+#include <sys/param.h>
 
 extern char *sim_key_path;
 extern int sim_errno;
