@@ -777,8 +777,9 @@ void Kadu::blockUser()
 	}
 	UserListElement *puser = &userlist.byAltNick((*activeUserBox->getSelectedUsers().begin()).altnick);
 	puser->blocking = !puser->blocking;
-	gg_remove_notify_ex(sess, puser->uin, puser->blocking ? GG_USER_NORMAL : GG_USER_BLOCKED);
-	gg_add_notify_ex(sess, puser->uin, puser->blocking ? GG_USER_BLOCKED : GG_USER_NORMAL);
+
+	gadu->blockUser(puser->uin, puser->blocking);
+
 	userlist.writeToFile();
 	kdebugf2();
 }
@@ -809,8 +810,9 @@ void Kadu::offlineToUser()
 	}
 	UserListElement *puser = &userlist.byAltNick((*activeUserBox->getSelectedUsers().begin()).altnick);
 	puser->offline_to_user = !puser->offline_to_user;
-	gg_remove_notify_ex(sess, puser->uin, puser->offline_to_user ? GG_USER_NORMAL : GG_USER_OFFLINE);
-	gg_add_notify_ex(sess, puser->uin, puser->offline_to_user ? GG_USER_OFFLINE : GG_USER_NORMAL);
+
+	gadu->offlineToUser(puser->uin, puser->offline_to_user);
+
 	userlist.writeToFile();
 	kdebugf2();
 }
@@ -1032,7 +1034,7 @@ void Kadu::removeUser(QStringList &users, bool permanently = false)
 	for (i = 0; i < users.count(); i++) {
 		UserListElement user = userlist.byAltNick(users[i]);
 		if (!user.anonymous && user.uin)
-			gg_remove_notify(sess, user.uin);
+			gadu->removeNotify(user.uin);
 		userlist.removeUser(user.altnick);
 		}
 
@@ -1092,7 +1094,7 @@ void Kadu::userListUserAdded(const UserListElement& user)
 	refreshGroupTabBar();
 
 	if (user.uin)
-		gg_add_notify(sess, user.uin);
+		gadu->addNotify(user.uin);
 }
 
 void Kadu::mouseButtonClicked(int button, QListBoxItem *item) {
@@ -1180,12 +1182,10 @@ void Kadu::slotHandleState(int command) {
 				}
 			break;
 		case 8:
-			int nstat = sess ? sess->status & (~GG_STATUS_FRIENDS_MASK) : 0;
 			statusppm->setItemChecked(8, !statusppm->isItemChecked(8));
 			dockppm->setItemChecked(8, !dockppm->isItemChecked(8));
 			config_file.writeEntry("General", "PrivateStatus",statusppm->isItemChecked(8));
-			if (nstat && !statusppm->isItemChecked(6) && !statusppm->isItemChecked(7))
-				setStatus(nstat);
+			gadu->friendsOnly(statusppm->isItemChecked(8));
 			break;
 		}
 	kdebugf2();
@@ -1445,7 +1445,7 @@ bool Kadu::close(bool quit) {
 
 		pending.writeToFile();
 		writeIgnored();
-		if (config_file.readBoolEntry("General", "DisconnectWithDescription") && getCurrentStatus() != GG_STATUS_NOT_AVAIL) {
+		if (config_file.readBoolEntry("General", "DisconnectWithDescription") && gadu->getCurrentStatus() != GG_STATUS_NOT_AVAIL) {
 			kdebugm(KDEBUG_INFO, "Kadu::close(): Set status NOT_AVAIL_DESCR with disconnect description(%s)\n",(const char *)config_file.readEntry("General", "DisconnectDescription").local8Bit());
 			own_description = config_file.readEntry("General", "DisconnectDescription");
 			setStatus(GG_STATUS_NOT_AVAIL_DESCR);
@@ -1687,7 +1687,7 @@ void KaduSlots::onDestroyConfigDialog()
 	QComboBox* cb_defstatus= ConfigDialog::getComboBox("General", "Default status", "cb_defstatus");
 	config_file.writeEntry("General", "DefaultStatus", gg_statuses[cb_defstatus->currentItem()]);
 
-	int status = getCurrentStatus();
+	StatusType status = gadu->getCurrentStatus();
 
 	bool privateStatus=config_file.readBoolEntry("General", "PrivateStatus");
 

@@ -1193,7 +1193,7 @@ void Chat::sendMessage()
 
 	QString mesg;
 
-	if (getCurrentStatus() == GG_STATUS_NOT_AVAIL) {
+	if (gadu->getCurrentStatus() == GG_STATUS_NOT_AVAIL) {
 		QMessageBox::critical(this, tr("Send message error"),
 			tr("Application encountered network error."));
 		kdebugm(KDEBUG_FUNCTION_END, "void Chat::sendMessage() end: not connected!\n");

@@ -68,8 +68,8 @@ void AutoResponder::chatReceived(UinsList senders, const QString& msg, time_t ti
 	kdebugf();
 	if (msg.left(5)!="KADU ")
 	{
-		int status=getCurrentStatus() & ~GG_STATUS_FRIENDS_MASK; //pozbywamy siê flagi "Tylko dla przyjació³"
-		
+		int status=gadu->getCurrentStatus() & ~GG_STATUS_FRIENDS_MASK; //pozbywamy siê flagi "Tylko dla przyjació³"
+
 		bool respond=config->readBoolEntry("Autoresponder", "StatusInvisible") &&
 					(status==GG_STATUS_INVISIBLE || status==GG_STATUS_INVISIBLE_DESCR);
 

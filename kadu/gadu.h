@@ -14,18 +14,13 @@
 #include "libgadu.h"
 
 typedef uin_t UinType;
+typedef int StatusType;
 
 class UserList;
 class UserListElement;
 
-extern struct gg_session* sess;
 extern struct gg_login_params loginparams;
-
-extern bool userlist_sent;
 extern bool socket_active;
-extern unsigned int server_nr;
-extern QValueList<QHostAddress> config_servers;
-
 extern QHostAddress config_extip;
 
 // ------------------------------------
@@ -231,11 +226,18 @@ class GaduProtocol : public QObject
 	Q_OBJECT
 
 	private:
+		static QValueList<QHostAddress> ConfigServers;
+
+		gg_session* Sess;
+
 		GaduSocketNotifiers *SocketNotifiers;
 		QTimer* PingTimer;
 
-		bool userListClear;
-		QString importReply;
+		unsigned int ServerNr;
+
+		bool UserListSent;
+		bool UserListClear;
+		QString ImportReply;
 		int RequestedStatusForLogin;
 		bool IWannaBeInvisible;
 		QHostAddress* ActiveServer;
@@ -284,6 +286,17 @@ class GaduProtocol : public QObject
 
 		void enableAutoConnection();
 		void disableAutoConnection();
+
+		StatusType getCurrentStatus();
+		void blockUser(const UinType&, bool);
+		void offlineToUser(const UinType&, bool);
+		void addNotify(const UinType&);
+		void removeNotify(const UinType&);
+		void addNotifyEx(const UinType&, bool blocked, bool offline);
+		void removeNotifyEx(const UinType &, bool blocked, bool offline);
+		void friendsOnly(bool);
+
+		bool userListSent();
 
 	public slots:
 		/**
@@ -351,7 +364,7 @@ class GaduProtocol : public QObject
 		/**
 			Zmieniamy sobie status
 		**/
-		void setStatus(int status);
+		void setStatus(StatusType status);
 
 		/**
 		  	Szuka ludzi w katalogu publicznym
@@ -368,6 +381,12 @@ class GaduProtocol : public QObject
 			Ustawia informacje o danych osobowych z katalogu publicznego
 		**/
 		void setPersonalInfo(SearchRecord& searchRecord, SearchResult& newData);
+
+		// --------------------
+		//  DCC
+		// --------------------
+
+		void dccRequest(UinType &);
 
 		// przeniesione z events.h
 	    void onCreateConfigDialog();

@@ -91,7 +91,7 @@ void RecordThread::run() {
 VoiceManager::VoiceManager()
 {
 	kdebugf();
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", 
+	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys",
 			QT_TRANSLATE_NOOP("@default", "Voice chat"), "kadu_voicechat", "F7");
 
 	voice_enc = voice_dec = NULL;
@@ -274,7 +274,7 @@ void VoiceManager::makeVoiceChat()
 				}
 			}
 			else
-				gg_dcc_request(sess, user.uin);
+				gadu->dccRequest(user.uin);
 		}
 	kdebugf2();
 }
@@ -301,7 +301,7 @@ void VoiceManager::userBoxMenuPopup()
 	UserList users = activeUserBox->getSelectedUsers();
 	UserListElement user = (*users.begin());
 
-	bool isOurUin=users.containsUin(config_file.readNumEntry("General", "UIN"));	
+	bool isOurUin=users.containsUin(config_file.readNumEntry("General", "UIN"));
 	int voicechat = UserBox::userboxmenu->getItem(tr("Voice chat"));
 
 	if (
@@ -309,7 +309,7 @@ void VoiceManager::userBoxMenuPopup()
 		users.count() == 1 &&
 		!isOurUin &&
 		config_file.readBoolEntry("Network", "AllowDCC") &&
-		(user.status == GG_STATUS_AVAIL || 
+		(user.status == GG_STATUS_AVAIL ||
 		user.status == GG_STATUS_AVAIL_DESCR ||
 		user.status == GG_STATUS_BUSY ||
 		user.status == GG_STATUS_BUSY_DESCR))

@@ -88,7 +88,7 @@ void KaduListBoxPixmap::paint(QPainter *painter) {
 	int itemHeight = alignIconTop ? lineHeight(listBox()):height(listBox());
 	int yPos;
 	QString descr=isOurUin ? own_description : description();
-	bool hasDescription=isOurUin ? ifStatusWithDescription(getCurrentStatus()) : !descr.isEmpty();
+	bool hasDescription=isOurUin ? ifStatusWithDescription(gadu->getCurrentStatus()) : !descr.isEmpty();
 
 	if (!pm.isNull()) {
 		yPos = (itemHeight - pm.height()) / 2;
@@ -150,7 +150,7 @@ int KaduListBoxPixmap::height(const QListBox* lb) const
 	UserListElement &user = userlist.byAltNick(text());
 	bool isOurUin=((UinType)config_file.readNumEntry("General", "UIN") == user.uin);
 	QString descr=isOurUin ? own_description : description();
-	bool hasDescription=isOurUin ? ifStatusWithDescription(getCurrentStatus()) : !descr.isEmpty();
+	bool hasDescription=isOurUin ? ifStatusWithDescription(gadu->getCurrentStatus()) : !descr.isEmpty();
 
 	int height=lb->fontMetrics().lineSpacing()+3;
 	if (hasDescription && config_file.readBoolEntry("Look", "ShowDesc"))
@@ -185,7 +185,7 @@ int KaduListBoxPixmap::width(const QListBox* lb) const
    trzeba daæ lb->width()-20, ¿eby zmie¶ci³ siê suwak - nie mo¿na pobraæ jego
    szeroko¶ci ze stylu, bo np Keramik zwraca b³êdn± warto¶æ (=100)  (ze standardowych
    stylów KDE tylko SGI ma szeroko¶æ >20 i na nim kadu bêdzie kiepsko wygl±daæ:( )
-   
+
    nie mo¿na te¿ wzi±æ lb->visibleWidth(), bo gdy w jednej zak³adce mamy tyle kontaktów,
    ¿e siê nie mieszcz± na 1 ekranie, a w drugiej tyle ¿e siê mieszcz±, to przy
    prze³±czaniu siê z jednej zak³adki do drugiej dostajemy poziomy suwak... :|
@@ -204,7 +204,7 @@ void KaduListBoxPixmap::calculateSize(const QString &text, int width, QStringLis
 	}
 
 	int tmplen;
-	
+
 	out.clear();
 	height=0;
 
@@ -269,7 +269,7 @@ void KaduListBoxPixmap::calculateSize(const QString &text, int width, QStringLis
 	kdebugm(KDEBUG_INFO, "czas: %ld\n", (t2.tv_usec-t1.tv_usec)+(t2.tv_sec*1000000)-(t1.tv_sec*1000000));
 */
 	height*=descriptionFontMetrics->lineSpacing();
-	
+
 	buf_text=text;
 	buf_width=width;
 	buf_out=out;
@@ -303,7 +303,7 @@ UserBox::UserBox(QWidget* parent,const char* name,WFlags f)
 	QListBox::setFont(config_file.readFontEntry("Look", "UserboxFont"));
 	setMinimumWidth(20);
 	setSelectionMode(QListBox::Extended);
-	
+
 	kdebugf2();
 }
 
@@ -448,16 +448,16 @@ void UserBox::refresh()
 		if (isSelected(i))
 			s_users.append(item(i)->text());
 	QString s_user = currentText();
-	
+
 	//zapamiêtajmy po³o¿enie pionowego suwaka
 	int vScrollValue=verticalScrollBar()->value();
-	
+
 	// Najpierw dzielimy uzytkownikow na cztery grupy
 	QStringList a_users;
 	QStringList i_users;
 	QStringList n_users;
 	QStringList b_users;
-	
+
 	UinType myUin=config_file.readNumEntry("General", "UIN");
 	for (i = 0; i < Users.count(); i++)
 	{
@@ -466,8 +466,8 @@ void UserBox::refresh()
 		{
 			if (user.uin == myUin)
 			{
-				user.status = getCurrentStatus() & (~GG_STATUS_FRIENDS_MASK);
-				user.description = ifStatusWithDescription(getCurrentStatus()) ? own_description : QString::null;
+				user.status = gadu->getCurrentStatus() & (~GG_STATUS_FRIENDS_MASK);
+				user.description = ifStatusWithDescription(gadu->getCurrentStatus()) ? own_description : QString::null;
 			}
 			switch (user.status)
 			{
@@ -506,7 +506,7 @@ void UserBox::refresh()
 			&& (user.status != GG_STATUS_BUSY_DESCR)
 			&&  showOnlyDesc))
 		{
-		
+
 			bool has_mobile = user.mobile.length();
 			bool bold = showBold ? (user.status == GG_STATUS_AVAIL || user.status == GG_STATUS_AVAIL_DESCR || user.status == GG_STATUS_BUSY || user.status == GG_STATUS_BUSY_DESCR) : 0;
 			if (pending.pendingMsgs(user.uin)) {
@@ -599,7 +599,7 @@ void UserBox::refresh()
 		if (! ((user.status != GG_STATUS_NOT_AVAIL_DESCR)
 			&&  showOnlyDesc))
 		{
-		
+
 			bool has_mobile = user.mobile.length();
 			if (pending.pendingMsgs(user.uin)) {
 				lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Message"), user.altnick, user.description, 0);
@@ -814,13 +814,13 @@ void UserBox::initModule()
 
 	QFontInfo info(qApp->font());
 	QFont def_font(info.family(),info.pointSize());
-	
+
 	int defUserboxWidth=int(QFontMetrics(def_font).width("Imie i Nazwisko")*1.5);
 
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Look"));
-	
+
 	ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Align icon next to contact name"), "AlignUserboxIconsTop", config_file.readBoolEntry("Look", "AlignUserboxIconsTop"));
-	
+
 	ConfigDialog::addVGroupBox("Look", "varOpts2", QT_TRANSLATE_NOOP("@default", "Columns"));
 	ConfigDialog::addCheckBox("Look", "Columns", QT_TRANSLATE_NOOP("@default", "Multicolumn userbox"), "MultiColumnUserbox", false);
 	ConfigDialog::addSpinBox("Look", "Columns", QT_TRANSLATE_NOOP("@default", "Userbox width when multi column"), "MultiColumnUserboxWidth", 1, 1000, 1, defUserboxWidth);

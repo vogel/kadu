@@ -41,7 +41,7 @@ DockingManager::DockingManager() : QObject(NULL, "docking_manager")
 	icon_timer = new QTimer(this);
 	blink = false;
 	QObject::connect(icon_timer, SIGNAL(timeout()), this, SLOT(changeIcon()));
-		
+
 	connect(kadu, SIGNAL(connectingBlinkShowOffline()), this, SLOT(showOffline()));
 	connect(kadu, SIGNAL(connectingBlinkShowStatus(int)), this, SLOT(showStatus(int)));
 	connect(kadu, SIGNAL(currentStatusChanged(int)), this, SLOT(showCurrentStatus(int)));
@@ -88,7 +88,7 @@ void DockingManager::changeIcon()
 		}
 		else
 		{
-			emit trayPixmapChanged(icons_manager.loadIcon(gg_icons[statusGGToStatusNr(getCurrentStatus() & (~GG_STATUS_FRIENDS_MASK))]));
+			emit trayPixmapChanged(icons_manager.loadIcon(gg_icons[statusGGToStatusNr(gadu->getCurrentStatus() & (~GG_STATUS_FRIENDS_MASK))]));
 			icon_timer->start(500,TRUE);
 			blink = false;
 		}
@@ -115,7 +115,7 @@ void DockingManager::pendingMessageDeleted()
 {
 	if (!pending.pendingMsgs())
 	{
-		QPixmap pix = icons_manager.loadIcon(gg_icons[statusGGToStatusNr(getCurrentStatus() & (~GG_STATUS_FRIENDS_MASK))]);
+		QPixmap pix = icons_manager.loadIcon(gg_icons[statusGGToStatusNr(gadu->getCurrentStatus() & (~GG_STATUS_FRIENDS_MASK))]);
 		emit trayPixmapChanged(pix);
 	}
 }
@@ -133,7 +133,7 @@ void DockingManager::showStatus(int status)
 
 void DockingManager::defaultToolTip()
 {
-	showCurrentStatus(getCurrentStatus());
+	showCurrentStatus(gadu->getCurrentStatus());
 }
 
 void DockingManager::showCurrentStatus(int status)
@@ -142,7 +142,7 @@ void DockingManager::showCurrentStatus(int status)
 	int statusnr = statusGGToStatusNr(status & (~GG_STATUS_FRIENDS_MASK));
 	QPixmap pix = icons_manager.loadIcon(gg_icons[statusnr]);
 	QString tiptext=tr("Left click - hide/show window\nMiddle click or Left click- open message");
-		
+
 	if (!pending.pendingMsgs())
 		emit trayPixmapChanged(pix);
 
@@ -201,7 +201,7 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 QPixmap DockingManager::defaultPixmap()
 {
 	return icons_manager.loadIcon(gg_icons[
-		statusGGToStatusNr(getCurrentStatus() & (~GG_STATUS_FRIENDS_MASK))]);
+		statusGGToStatusNr(gadu->getCurrentStatus() & (~GG_STATUS_FRIENDS_MASK))]);
 }
 
 void DockingManager::setDocked(bool docked)
@@ -211,7 +211,7 @@ void DockingManager::setDocked(bool docked)
 	{
 		changeIcon();
 		defaultToolTip();
-		ConfigDialog::addCheckBox("General", "grid", 
+		ConfigDialog::addCheckBox("General", "grid",
 			QT_TRANSLATE_NOOP("@default", "Start docked"), "RunDocked", false);
 		if (config_file.readBoolEntry("General", "RunDocked"))
 			kadu->setShowMainWindowOnStart(false);

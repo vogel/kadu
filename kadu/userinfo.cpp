@@ -22,33 +22,33 @@
 CreateNotifier UserInfo::createNotifier;
 
 UserInfo::UserInfo(const QString &name, QDialog *parent, const QString &altnick, bool fAddUser)
-: fAddUser(fAddUser) 
+: fAddUser(fAddUser)
 {
 	kdebugf();
 	setWFlags(Qt::WDestructiveClose|Qt::WShowModal);
-	
+
 	// create main QLabel widgets (icon and app info)
 	QVBox *left=new QVBox(this);
 	left->setMargin(10);
 	left->setSpacing(10);
-	
+
 	QLabel *l_icon = new QLabel(left);
 	QWidget *w_icoblankwidget=new QWidget(left);
 	w_icoblankwidget->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
-	
+
 	QVBox *center=new QVBox(this);
 	center->setMargin(10);
 	center->setSpacing(10);
-	
+
 	QLabel *l_info = new QLabel(center);
-	
+
 	if (fAddUser)
 	{
 		puser = NULL;
 		setCaption(tr("Add user"));
 		l_icon->setPixmap(icons_manager.loadIcon("AddUserWindowIcon"));
 	}
-	else 
+	else
 	{
 		for (UserList::Iterator i = userlist.begin(); i != userlist.end(); i++)
 			if ((*i).altnick == altnick)
@@ -57,16 +57,16 @@ UserInfo::UserInfo(const QString &name, QDialog *parent, const QString &altnick,
 				break;
 			}
 		setCaption(tr("User info on %1").arg(altnick));
-		
+
 		l_icon->setPixmap(icons_manager.loadIcon("ManageUsersWindowIcon"));
 	}
-	
+
 	l_info->setText(tr("This dialog box allows you to view and edit information about the selected contact."));
 	l_info->setAlignment(Qt::WordBreak);
 	// end create main QLabel widgets (icon and app info)
-	
+
 	tw_main = new QTabWidget(center);
-	
+
 	// create our Tabs
 	setupTab1();
 	setupTab2();
@@ -80,15 +80,15 @@ UserInfo::UserInfo(const QString &name, QDialog *parent, const QString &altnick,
 		pb_addapply = new QPushButton(icons_manager.loadIcon("AddUserButton"), tr("Add"), bottom, "add");
 	else
 		pb_addapply = new QPushButton(icons_manager.loadIcon("UpdateUserButton"), tr("Update"), bottom, "update");
-	
+
 	QPushButton *pb_close = new QPushButton(icons_manager.loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
 	// end buttons
-	
-	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));	
+
+	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 	connect(pb_addapply, SIGNAL(clicked()), this, SLOT(updateUserlist()));
-	
+
 	createNotifier.notify(this);
-	
+
 	loadGeometry(this, "General", "ManageUsersDialogGeometry", 0, 0, 355, 415);
 	kdebugf2();
 }
@@ -111,11 +111,11 @@ void UserInfo::setupTab1()
 	vgb_general = new QVGroupBox(tw_main);
 	vgb_general->setFrameStyle(QFrame::NoFrame);
 	// end our QGroupBox
-	
+
 	tw_main->addTab(vgb_general, tr("General"));
-	
+
 	// info panel
-	
+
 	// UIN and STATUS
 	QHBox *hb_uinstate = new QHBox(vgb_general);
 	QVBox *vb_uin = new QVBox(hb_uinstate);
@@ -123,13 +123,13 @@ void UserInfo::setupTab1()
 	hb_uinstate->setSpacing(3);
 	vb_uin->setSpacing(3);
 	vb_state->setSpacing(3);
-	
+
 	new QLabel(tr("Uin"), vb_uin);
 	e_uin = new QLineEdit(vb_uin);
 	new QLabel(tr("Status"), vb_state);
 	QLineEdit *e_status = new QLineEdit(vb_state);
 	// end UIN and STATUS
-	
+
 	// Nick and Disp. nick
 	QHBox *hb_dispnick = new QHBox(vgb_general);
 	QVBox *vb_nick = new QVBox(hb_dispnick);
@@ -137,13 +137,13 @@ void UserInfo::setupTab1()
 	hb_dispnick->setSpacing(3);
 	vb_nick->setSpacing(3);
 	vb_disp->setSpacing(3);
-	
+
 	new QLabel(tr("Nickname"), vb_nick);
 	e_nickname = new QLineEdit(vb_nick);
 	new QLabel(tr("AltNick"), vb_disp);
 	e_altnick = new QLineEdit(vb_disp);
 	// end Nick and Disp. nick
-	
+
 	// Name and Surname
 	QHBox *hb_namesurname = new QHBox(vgb_general);
 	QVBox *vb_name = new QVBox(hb_namesurname);
@@ -151,13 +151,13 @@ void UserInfo::setupTab1()
 	hb_namesurname->setSpacing(3);
 	vb_name->setSpacing(3);
 	vb_surname->setSpacing(3);
-	
+
 	new QLabel(tr("First name"), vb_name);
 	e_firstname = new QLineEdit(vb_name);
 	new QLabel(tr("Surname"), vb_surname);
 	e_lastname = new QLineEdit(vb_surname);
 	// end Name and Surname
-	
+
 	// Mobile and Group
 	QHBox *hb_mobilegroup = new QHBox(vgb_general);
 	QVBox *vb_mobile = new QVBox(hb_mobilegroup);
@@ -165,13 +165,13 @@ void UserInfo::setupTab1()
 	hb_mobilegroup->setSpacing(3);
 	vb_mobile->setSpacing(3);
 	vb_group->setSpacing(3);
-	
+
 	// get available groups
 	QStringList list;
 	for (int i=0; i < kadu->groupBar()->count(); i++)
 		list << kadu->groupBar()->tabAt(i)->text();
 	// end get available groups
-	
+
 	new QLabel(tr("Mobile"), vb_mobile);
 	e_mobile = new QLineEdit(vb_mobile);
 	new QLabel(tr("Group"), vb_group);
@@ -182,7 +182,7 @@ void UserInfo::setupTab1()
 	hb_mobilegroup->setStretchFactor(vb_mobile, 1);
 	hb_mobilegroup->setStretchFactor(vb_group, 1);
 	// end Mobile and Group
-	
+
 	// IP and Protocol Version
 	QHBox *hb_ipprotversion = new QHBox(vgb_general);
 	QVBox *vb_ip = new QVBox(hb_ipprotversion);
@@ -190,13 +190,13 @@ void UserInfo::setupTab1()
 	hb_ipprotversion->setSpacing(3);
 	vb_ip->setSpacing(3);
 	vb_protversion->setSpacing(3);
-	
+
 	new QLabel(tr("Address IP and Port"), vb_ip);
 	e_addr = new QLineEdit(vb_ip);
 	new QLabel(tr("Protocol version"), vb_protversion);
 	e_ver = new QLineEdit(vb_protversion);
 	// end IP and Protocol Version
-	
+
 	// DNS and Email
 	QHBox *hb_dnsemail = new QHBox(vgb_general);
 	QVBox *vb_dns = new QVBox(hb_dnsemail);
@@ -204,20 +204,20 @@ void UserInfo::setupTab1()
 	hb_dnsemail->setSpacing(3);
 	vb_dns->setSpacing(3);
 	vb_email->setSpacing(3);
-	
+
 	new QLabel(tr("DNS name"), vb_dns);
 	e_dnsname = new QLineEdit(vb_dns);
 	new QLabel(tr("Email"), vb_email);
 	e_email = new QLineEdit(vb_email);
 	// end DNS and Email
-	
-	if (!userlist_sent)
+
+	if (!gadu->userListSent())
 		e_status->setText(tr("(Unknown)"));
-		
+
 	QString s_temp;
 	dns = new QDns();
 
-	e_status->setReadOnly(true);	
+	e_status->setReadOnly(true);
 	e_addr->setReadOnly(true);
 	e_ver->setReadOnly(true);
 	e_dnsname->setReadOnly(true);
@@ -309,9 +309,9 @@ void UserInfo::setupTab2()
 	// Misc options
 	QVGroupBox *vgb_others = new QVGroupBox(vgb_general);
 	vgb_others->setFrameStyle(QFrame::NoFrame);
-	
+
 	tw_main->addTab(vgb_others, tr("Others"));
-	
+
 	c_blocking = new QCheckBox(tr("Block user"), vgb_others);
 	c_offtouser = new QCheckBox(tr("Offline to user"), vgb_others);
 	c_notify = new QCheckBox(tr("Notify about status changes"), vgb_others);
@@ -323,11 +323,11 @@ void UserInfo::setupTab2()
 		}
 	else
 		c_notify->setChecked(true);
-	// end Misc options	
+	// end Misc options
 	kdebugf2();
 }
 
-UserInfo::~UserInfo() 
+UserInfo::~UserInfo()
 {
 	kdebugf();
 	saveGeometry(this, "General", "ManageUsersDialogGeometry");
@@ -356,7 +356,7 @@ void UserInfo::addNewUser(UserListElement& e)
 		{
 			changeUserData(e);
 			return;
-		}	
+		}
 	}
 	if (!e_altnick->text().length())
 	{
@@ -396,41 +396,48 @@ void UserInfo::changeUserData(UserListElement& e)
 		close();
 		return;
 	}
-	
-	if (sess && sess->status != GG_STATUS_NOT_AVAIL) {
-		if (c_offtouser->isChecked() && !puser->offline_to_user) {
+
+	if (gadu->getCurrentStatus() != GG_STATUS_NOT_AVAIL)
+	{
+		if (c_offtouser->isChecked() && !puser->offline_to_user)
+		{
 			if (puser->uin)
-				gg_remove_notify_ex(sess, puser->uin, GG_USER_NORMAL);
+				gadu->removeNotifyEx(puser->uin, false, false);
 			if (e.uin)
-				gg_add_notify_ex(sess, e.uin, GG_USER_OFFLINE);
+				gadu->addNotifyEx(e.uin, false, true);
 		}
-		else if (!c_offtouser->isChecked() && puser->offline_to_user) {
+		else if (!c_offtouser->isChecked() && puser->offline_to_user)
+		{
 			if (puser->uin)
-				gg_remove_notify_ex(sess, puser->uin, GG_USER_OFFLINE);
+				gadu->removeNotifyEx(puser->uin, false, true);
 			if (e.uin)
-				gg_add_notify_ex(sess, e.uin, GG_USER_NORMAL);
+				gadu->addNotifyEx(e.uin, false, false);
 		}
-		else if (c_blocking->isChecked() && !puser->blocking) {
+		else if (c_blocking->isChecked() && !puser->blocking)
+		{
 			if (puser->uin)
-				gg_remove_notify_ex(sess, puser->uin, GG_USER_NORMAL);
+				gadu->removeNotifyEx(puser->uin, false, false);
 			if (e.uin)
-				gg_add_notify_ex(sess, e.uin, GG_USER_BLOCKED);
+				gadu->addNotifyEx(e.uin, true, false);
 		}
-		else if (!c_blocking->isChecked() && puser->blocking) {
+		else if (!c_blocking->isChecked() && puser->blocking)
+		{
 			if (puser->uin)
-				gg_remove_notify_ex(sess, puser->uin, GG_USER_BLOCKED);
+				gadu->removeNotifyEx(puser->uin, true, false);
 			if (e.uin)
-				gg_add_notify_ex(sess, e.uin, GG_USER_NORMAL);
+				gadu->removeNotifyEx(e.uin, false, false);
 		}
-		else if (puser->anonymous) {
+		else if (puser->anonymous)
+		{
 			if (e.uin)
-				gg_add_notify(sess, e.uin);
+				gadu->addNotify(e.uin);
 		}
-		else if (e.uin != puser->uin) {
+		else if (e.uin != puser->uin)
+		{
 			if (puser->uin)
-				gg_remove_notify(sess, puser->uin);
+				gadu->removeNotify(puser->uin);
 			if (e.uin)
-				gg_add_notify(sess, e.uin);
+				gadu->addNotify(e.uin);
 		}
 	}
 

@@ -25,33 +25,33 @@ PersonalInfoDialog::PersonalInfoDialog(QDialog *parent, const char *name)
 	kdebugf();
 	setWFlags(Qt::WDestructiveClose);
 	setCaption(tr("Personal Information"));
-	
+
 	// create main QLabel widgets (icon and app info)
 	QVBox *left=new QVBox(this);
 	left->setMargin(10);
 	left->setSpacing(10);
-	
+
 	QLabel *l_icon = new QLabel(left);
 	QWidget *blank=new QWidget(left);
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
-	
+
 	QVBox *center=new QVBox(this);
 	center->setMargin(10);
 	center->setSpacing(10);
-	
+
 	QLabel *l_info = new QLabel(center);
 	l_icon->setPixmap(icons_manager.loadIcon("PersonalInformationWindowIcon"));
 	l_info->setText(tr("This dialog box allows you to manage your personal information, for example your "
 				"name, surname or age."));
 	l_info->setAlignment(Qt::WordBreak);
 	// end create main QLabel widgets (icon and app info)
-	
+
 	// our QVGroupBox
 	QVGroupBox *vgb_info = new QVGroupBox(center);
 	vgb_info->setTitle(tr("Your personal information"));
 	center->setStretchFactor(vgb_info, 1);
 	// end our QGroupBox
-	
+
 	// create our info-fields
 	QHBox *hb_nicknamesurname = new QHBox(vgb_info);
 	QVBox *vb_nickname = new QVBox(hb_nicknamesurname);
@@ -61,14 +61,14 @@ PersonalInfoDialog::PersonalInfoDialog(QDialog *parent, const char *name)
 	vb_nickname->setSpacing(3);
 	vb_name->setSpacing(3);
 	vb_surname->setSpacing(3);
-	
+
 	new QLabel(tr("Nickname"), vb_nickname);
 	le_nickname = new QLineEdit(vb_nickname);
 	new QLabel(tr("Name"), vb_name);
 	le_name = new QLineEdit(vb_name);
 	new QLabel(tr("Surname"), vb_surname);
 	le_surname = new QLineEdit(vb_surname);
-	
+
 	//
 	QHBox *hb_genderbirthyearcity = new QHBox(vgb_info);
 	QVBox *vb_gender = new QVBox(hb_genderbirthyearcity);
@@ -78,10 +78,10 @@ PersonalInfoDialog::PersonalInfoDialog(QDialog *parent, const char *name)
 	vb_gender->setSpacing(3);
 	vb_birthyear->setSpacing(3);
 	vb_city->setSpacing(3);
-	
+
 	new QLabel(tr("Gender"), vb_gender);
 	cb_gender = new QComboBox(vb_gender);
-	cb_gender->insertItem("");	
+	cb_gender->insertItem("");
 	cb_gender->insertItem(tr("Male"));
 	cb_gender->insertItem(tr("Female"));
 	cb_gender->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
@@ -92,7 +92,7 @@ PersonalInfoDialog::PersonalInfoDialog(QDialog *parent, const char *name)
 	new QLabel(tr("City"), vb_city);
 	le_city = new QLineEdit(vb_city);
 	hb_genderbirthyearcity->setStretchFactor(le_city, 1);
-	
+
 	//
 	QHBox *hb_fnamefcity = new QHBox(vgb_info);
 	QVBox *vb_fname = new QVBox(hb_fnamefcity);
@@ -102,7 +102,7 @@ PersonalInfoDialog::PersonalInfoDialog(QDialog *parent, const char *name)
 	vb_fname->setSpacing(3);
 	vb_fcity->setSpacing(3);
 	vb_blank->setSpacing(3);
-	
+
 	new QLabel(tr("Family Name"), vb_fname);
 	le_familyname = new QLineEdit(vb_fname);
 	new QLabel(tr("Family City"), vb_fcity);
@@ -110,7 +110,7 @@ PersonalInfoDialog::PersonalInfoDialog(QDialog *parent, const char *name)
 	QWidget *w_blankfill = new QWidget(vb_blank);
 	w_blankfill->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 	//
-	
+
 	// buttons
 	QHBox *bottom=new QHBox(center);
 	QWidget *blank2=new QWidget(bottom);
@@ -120,18 +120,18 @@ PersonalInfoDialog::PersonalInfoDialog(QDialog *parent, const char *name)
 	QPushButton *pb_reload = new QPushButton(icons_manager.loadIcon("ReloadPersonalInfoButton"), tr("&Reload"), bottom, "save");
 	QPushButton *pb_close = new QPushButton(icons_manager.loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
 	// end buttons
-	
+
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 	connect(pb_save, SIGNAL(clicked()), this, SLOT(saveButtonClicked()));
 	connect(pb_reload, SIGNAL(clicked()), this, SLOT(reloadInfo()));
-	
+
 	connect(gadu, SIGNAL(newSearchResults(SearchResults&, int, int)), this, SLOT(fillFields(SearchResults&, int, int)));
 
 	State = READY;
 
 	data = new SearchRecord();
 	reloadInfo();
-	
+
  	loadGeometry(this, "General", "PersonalInfoDialogGeometry", 0, 0, 440, 255);
 	kdebugf2();
 }
@@ -157,7 +157,7 @@ void PersonalInfoDialog::keyPressEvent(QKeyEvent *ke_event)
 void PersonalInfoDialog::reloadInfo()
 {
 	kdebugf();
-	if (getCurrentStatus() != GG_STATUS_NOT_AVAIL) 
+	if (gadu->getCurrentStatus() != GG_STATUS_NOT_AVAIL)
 	{
 		State = READING;
 		gadu->getPersonalInfo(*data);
@@ -170,7 +170,7 @@ void PersonalInfoDialog::reloadInfo()
 void PersonalInfoDialog::saveButtonClicked()
 {
 	kdebugf();
-	if (getCurrentStatus() == GG_STATUS_NOT_AVAIL)
+	if (gadu->getCurrentStatus() == GG_STATUS_NOT_AVAIL)
 		return;
 
 	SearchResult save;

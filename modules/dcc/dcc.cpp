@@ -125,7 +125,7 @@ void DccSocket::watchDcc(int check)
 	if (!(dccevent = gg_dcc_watch_fd(dccsock)))
 	{
 		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "DccSocket::watchDcc(): Connection broken unexpectedly!\n");
-		connectionBroken();		
+		connectionBroken();
 		return;
 	}
 
@@ -167,7 +167,7 @@ void DccSocket::watchDcc(int check)
 		default:
 			break;
 	}
-		
+
 	dccEvent();
 
 	if (dccsock->check & GG_CHECK_WRITE)
@@ -338,7 +338,7 @@ void DccFileDialog::updateFileInfo(struct gg_dcc *dccsock)
 		if (!diffOffset)
 			str.append(tr("(stalled)"));
 		l_offset->setText(str);
-		time->restart();	
+		time->restart();
 		}
 	fpercent = ((long double)dccsock->offset * 100.0) / (long double)dccsock->file_info.size;
 	percent = (long long int) fpercent;
@@ -729,7 +729,7 @@ void DccManager::sendFile()
 					}
 				}
 			else
-				gg_dcc_request(sess, user.uin);
+				gadu->dccRequest(user.uin);
 			}
 	kdebugf2();
 }

@@ -44,7 +44,7 @@ void saveGeometry(QWidget *w, QString section, QString name)
 	geom.setY(w->pos().y());
 	geom.setWidth(w->size().width());
 	geom.setHeight(w->size().height());
-	
+
 	config_file.writeEntry(section, name, geom);
 }
 
@@ -95,7 +95,7 @@ char *findMe(const char *argv0, char *path, int len)
 	char *previous;
 	int l;
 
-	
+
 	if (argv0[0]=='.' && argv0[1]=='/') //¶cie¿ka wzglêdem bie¿±cego katalogu (./)
 	{
 		if (getcwd(path, len-2)==NULL)
@@ -128,7 +128,7 @@ char *findMe(const char *argv0, char *path, int len)
 		kdebugf2();
 		return path;
 	}
-	
+
 	if (argv0[0]=='/') //¶cie¿ka bezwzglêdna
 	{
 		strncpy(path, argv0, len-1);
@@ -149,7 +149,7 @@ char *findMe(const char *argv0, char *path, int len)
 			kdebugf2();
 			return NULL;
 		}
-		
+
 		memcpy(path, previous, l);
 		path[l]='/';
 		path[l+1]=0;
@@ -169,7 +169,7 @@ char *findMe(const char *argv0, char *path, int len)
 	//nie znale¼li¶my dot±d (bo szukali¶my ':'), wiêc mo¿e w pozosta³ej czê¶ci co¶ siê znajdzie?
 	strncpy(path, previous, len-2);
 	path[len-2]=0;
-	
+
 	l=strlen(path);
 	path[l]='/';
 	path[l+1]=0;
@@ -201,10 +201,10 @@ QString dataPath(const QString &p, const char *argv0)
 	{
 		QString datadir(DATADIR);
 		QString bindir(BINDIR);
-		
+
 		//je¿eli ¶cie¿ki nie koñcz± siê na /share i /bin oraz gdy bez tych koñcówek
 		//¶cie¿ki siê nie pokrywaj±, to znaczy ¿e kto¶ ustawi³ rêcznie DATADIR lub BINDIR
-		if (!datadir.endsWith("/share") || !bindir.endsWith("/bin") || 
+		if (!datadir.endsWith("/share") || !bindir.endsWith("/bin") ||
 			(datadir.left(datadir.length()-6)!=bindir.left(bindir.length()-4)))
 			path=datadir+"/";
 		else
@@ -294,7 +294,7 @@ QString timestamp(time_t customtime)
 	QString buf;
 	QDateTime date;
 	time_t t;
-	
+
 	t = time(NULL);
 
 	date.setTime_t(t);
@@ -345,14 +345,14 @@ QString translateLanguage(const QApplication *application, const QString &locale
 		if (l2n) {
 			if (locale.mid(0, 2) == local[i])
 				return application->translate("@default", name[i]);
-			}	
-		else 
+			}
+		else
 			if (locale == application->translate("@default", name[i]))
 				return local[i];
 		}
-	if (l2n) 
+	if (l2n)
 		return application->translate("@default", QT_TR_NOOP("English"));
-	else 
+	else
 		return "en";
 }
 
@@ -477,7 +477,7 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, U
 					cformats += sizeof(gg_msg_richtext_image);
 					formats_length -= sizeof(gg_msg_richtext_image);
 				}
-				else 
+				else
 				{
 					cformats += sizeof(gg_msg_richtext_color) * ((actformat->font & GG_FONT_COLOR) != 0);
 					formats_length -= sizeof(gg_msg_richtext_color) * ((actformat->font & GG_FONT_COLOR) != 0);
@@ -551,7 +551,7 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 
 	inspan = -1;
 	pos = idx = formats_length = 0;
-	
+
 	while (uint(pos) < mesg.length()) {
 		int image_idx    = mesg.find("[IMAGE ", pos);
 		int span_idx     = mesg.find("<span style=", pos);
@@ -704,21 +704,21 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 	searchChars[(unsigned char)'\'']=true;
 	searchChars[(unsigned char)'}']=true;
 	searchChars[(unsigned char)']']=true;
-	
+
 	UinType myUin=config_file.readNumEntry("General", "UIN");
 	while (index<len)
 	{
 		ParseElem pe1, pe;
-		
+
 		for(i=index; i<len; i++)
 			if (searchChars[(unsigned char)unicode2latin(s)[i]])
 				break;
 		if (i==len)
 			i=-1;
-		
+
 //		to jest dok³adnie to samo, tyle ¿e to co wy¿ej jest duuuuu¿o szybsze
 //		i=s.find(QRegExp("%|`|\\{|\\[|'|\\}|\\]"), index);
-		
+
 		if (i==-1)
 		{
 			pe1.type=ParseElem::PE_STRING;
@@ -732,7 +732,7 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 			pe1.str=s.mid(index, i-index);
 			parseStack.push_back(pe1);
 		}
-		
+
 		QChar c=s[i];
 		if (c=='%')
 		{
@@ -740,7 +740,7 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 			if (i==len)
 				break;
 			pe.type=ParseElem::PE_STRING;
-			
+
 			switch(unicode2latin(s)[i]) {
 				case 's':
 					i++;
@@ -754,7 +754,7 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 				case 'd':
 					i++;
 					if(myUin == ule.uin &&
-							! ifStatusWithDescription(getCurrentStatus()))
+							! ifStatusWithDescription(gadu->getCurrentStatus()))
 						pe.str=QString::null;
 					else
 						pe.str=ule.description;
@@ -884,7 +884,7 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 					pe.str.replace(QRegExp("`|>|<"), "");
 					pe.str.append(" >");
 					pe.str.append(ggPath("execoutput"));
-				
+
 					system(pe.str.local8Bit());
 					QFile *f=new QFile(ggPath("execoutput"));
 					if (f->open(IO_ReadOnly))
@@ -988,7 +988,7 @@ ChooseDescription::ChooseDescription ( int nr, QWidget * parent, const char * na
 	ss= new QLineEdit(this,"LineEdit");
 	desc->setLineEdit(ss);
 	ss->setMaxLength(GG_STATUS_DESCR_MAXSIZE);
-	
+
 	l_yetlen = new QLabel(" "+QString::number(GG_STATUS_DESCR_MAXSIZE - desc->currentText().length()),this);
 	connect(desc, SIGNAL(textChanged(const QString&)), this, SLOT(updateYetLen(const QString&)));
 
@@ -1012,7 +1012,7 @@ ChooseDescription::ChooseDescription ( int nr, QWidget * parent, const char * na
 
 	QPushButton *okbtn = new QPushButton(QIconSet(pix), tr("&OK"), this);
 	QPushButton *cancelbtn = new QPushButton(tr("&Cancel"), this);
-	
+
 
 	QObject::connect(okbtn, SIGNAL(clicked()), this, SLOT(okbtnPressed()));
 	QObject::connect(cancelbtn, SIGNAL(clicked()), this, SLOT(cancelbtnPressed()));
@@ -1035,7 +1035,7 @@ void ChooseDescription::okbtnPressed() {
 		if (defaultdescriptions.count()==4)
 			defaultdescriptions.remove(defaultdescriptions.last());
 	}
-	else 
+	else
 		defaultdescriptions.remove(desc->currentText());
 	defaultdescriptions.prepend(desc->currentText());
 	own_description=defaultdescriptions.first();
@@ -1059,7 +1059,7 @@ IconsManager::IconsManager(const QString& name, const QString& configname)
 
 QString IconsManager::iconPath(const QString &name)
 {
-	QString fname;	
+	QString fname;
 	if(name.contains('/'))
 		fname = name;
 	else
@@ -1118,7 +1118,7 @@ void IconsManager::onCreateConfigDialog()
 
 	SelectPaths *selpaths= ConfigDialog::getSelectPaths("Look", "Icon paths");
 	QStringList pl(QStringList::split(";", config_file.readEntry("Look", "IconsPaths")));
-	selpaths->setPathList(pl);	
+	selpaths->setPathList(pl);
 	kdebugf2();
 }
 
@@ -1127,7 +1127,7 @@ void IconsManager::initModule()
 	kdebugf();
 	config_file.addVariable("Look", "IconsPaths", "");
 	config_file.addVariable("Look", "IconTheme", "default");
-	
+
 	icons_manager.setPaths(QStringList::split(";", config_file.readEntry("Look", "IconsPaths")));
 	icons_manager.setTheme(config_file.readEntry("Look","IconTheme"));
 
@@ -1138,7 +1138,7 @@ void IconsManager::initModule()
 	ConfigDialog::addHBox("Look", "Look", "icon_theme");
 	ConfigDialog::addComboBox("Look", "icon_theme", QT_TRANSLATE_NOOP("@default","Icon theme"));
 	ConfigDialog::addSelectPaths("Look", "icon_theme", QT_TRANSLATE_NOOP("@default","Icon paths"));
-	
+
 	ConfigDialog::registerSlotOnCreate(&icons_manager, SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnApply(&icons_manager, SLOT(onDestroyConfigDialog()));
 	ConfigDialog::connectSlot("Look", "Icon theme", SIGNAL(activated(const QString&)), &icons_manager, SLOT(chooseIconTheme(const QString&)));
@@ -1154,7 +1154,7 @@ void IconsManager::selectedPaths(const QStringList& paths)
 
 	SelectPaths* iconPath = ConfigDialog::getSelectPaths("Look","Icon paths");
 	iconPath->setPathList(additionalPaths());
-	
+
 	cb_icontheme->clear();
 	cb_icontheme->insertStringList(themes());
 	cb_icontheme->setCurrentText(current);
@@ -1183,13 +1183,13 @@ void HttpClient::onConnected()
 	kdebugf();
 	QString query = (PostData.size() > 0 ? "POST" : "GET");
 	query += " ";
-	
+
 	if(Path.left(7)!="http://" && config_file.readBoolEntry("Network", "UseProxy"))
-		query += "http://" + Host;		
+		query += "http://" + Host;
 
 	if ((Path == "" || Path[0] != '/') && Path.left(7)!="http://")
 		query += '/';
-		
+
 
 	query += Path;
 	query += " HTTP/1.1\r\n";
@@ -1205,9 +1205,9 @@ void HttpClient::onConnected()
 		QValueList<QString> keys;
 		for (QMap<QString, QString>::const_iterator it = Cookies.begin(); it != Cookies.end(); ++it)
 			keys.append(it.key());
-		
+
 //		wywolanie Cookies.keys() zostaje na lepsze czasu jak juz
-//		wszyscy beda mieli Qt >= 3.0.5		
+//		wszyscy beda mieli Qt >= 3.0.5
 //    		for(int i=0; i<Cookies.keys().size(); i++)
 		for (unsigned int i = 0; i < keys.size(); i++) {
 			if (i > 0)
@@ -1246,15 +1246,15 @@ void HttpClient::onReadyRead()
 		Data[old_size+i]=buf[i];
 	// Jesli nie mamy jeszcze naglowka
 	if(!HeaderParsed)
-	{	
+	{
 		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Trying to parse header\n");
 		// Kontynuuj odczyt jesli naglowek niekompletny
 		QString s=QString(Data);
 		int p=s.find("\r\n\r\n");
 		if(p<0)
 			return;
-		// Dostalismy naglowek, 
-		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Http header found:\n%s\n",s.local8Bit().data());		
+		// Dostalismy naglowek,
+		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Http header found:\n%s\n",s.local8Bit().data());
 		HeaderParsed=true;
 		// Wyci±gamy status
 		QRegExp status_regexp("HTTP/1\\.[01] (\\d+)");
@@ -1300,9 +1300,9 @@ void HttpClient::onReadyRead()
 		else
 		{
 			ContentLength=cl_regexp.cap(1).toUInt();
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Content-Length: %i bytes\n",ContentLength);			
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Content-Length: %i bytes\n",ContentLength);
 		}
-		
+
 		// Wyciagamy ewentualne cookie (dla uproszczenia tylko jedno)
 		QRegExp cookie_regexp("Set-Cookie: ([^=]+)=([^;]+);");
 		if(cookie_regexp.search(s)>=0)
@@ -1584,7 +1584,7 @@ void HtmlDocument::convertUrlsToHtml()
 	to jest zast±pienie funkcji formatGGMessage,unformatGGMessage,
 	ale jeszcze nie u¿ywane i nie wiem czy skoñczone, w ka¿dym
 	razie obs³ugê obrazków dorabiam w tamtej funkcji. Adrian.
-	
+
 HtmlDocument GGMessageToHtmlDocument(const QString &msg, int formats_length, void *formats)
 {
 	QString tmp;
@@ -2005,7 +2005,7 @@ QString Themes::fixFileName(const QString& path,const QString& fn)
 		return fn;
 	// mo¿e ca³o¶æ lowercase?
 	if(QFile::exists(path+"/"+fn.lower()))
-		return fn.lower();	
+		return fn.lower();
 	// rozbij na nazwê i rozszerzenie
 	QString name=fn.section('.',0,0);
 	QString ext=fn.section('.',1);
@@ -2051,7 +2051,7 @@ QStringList Themes::defaultKaduPathsWithThemes()
 	for (QStringList::Iterator it= default2.begin(); it!=default2.end(); it++)
 		(*it)=ggPath(Name)+"/"+(*it)+"/";
 
-	return default1+default2;    
+	return default1+default2;
 }
 
 QStringList Themes::paths()
@@ -2069,7 +2069,7 @@ QString Themes::themePath(const QString& theme)
 	if (theme == "")
 		t= ActualTheme;
 	if (theme == "Custom")
-		return "";    
+		return "";
 	if (ThemesPaths.isEmpty())
 		return "Custom";
 	return ThemesPaths.grep(t).first();
@@ -2134,7 +2134,7 @@ void GaduImagesManager::sendImage(UinType uin,uint32_t size,uint32_t crc32)
 			kdebugm(KDEBUG_INFO, "Image data found\n");
 			gadu->sendImage(uin,(*i).file_name,(*i).size,(*i).data);
 			delete[] (*i).data;
-			kdebugm(KDEBUG_INFO, "Removing from images queue\n");	
+			kdebugm(KDEBUG_INFO, "Removing from images queue\n");
 			ImagesToSend.remove(i);
 			return;
 		}
@@ -2161,7 +2161,7 @@ QString GaduImagesManager::saveImage(UinType sender,uint32_t size,uint32_t crc32
 	SavedImages.append(img);
 	kdebugf2();
 	return img.file_name;
-}	
+}
 
 QString GaduImagesManager::getImageToSendFileName(uint32_t size,uint32_t crc32)
 {
@@ -2327,16 +2327,16 @@ void KaduTextBrowser::copy()
 		QString txt=selectedText();
 //		kdebugm(KDEBUG_DUMP, "%d    plain:%d rich:%d auto:%d log:%d\n", textFormat(), Qt::PlainText, Qt::RichText, Qt::AutoText, Qt::LogText);
 //		kdebugm(KDEBUG_DUMP, "\n%s\n----------------------\n", txt.local8Bit().data());
-	
+
 		txt.replace(QRegExp("<br>"), "\n");
 		txt.replace(QRegExp("<br/>"), "\n");
 		txt.replace(QRegExp("<br />"), "\n");
 		txt.replace(QRegExp("<[^>]+>"), "");
-	
+
 		txt.replace(QRegExp("&lt;"), "<");
 		txt.replace(QRegExp("&gt;"), ">");
 		txt.replace(QRegExp("&amp;"), "&");
-	
+
 //		kdebugm(KDEBUG_DUMP, "result: \n%s\n\n", txt.local8Bit().data());
 		QApplication::clipboard()->setText(txt, QClipboard::Clipboard);
 	}

@@ -11,7 +11,7 @@
 #include <qtextstream.h>
 #include <qregexp.h>
 #include <qhgroupbox.h>
-#include <qcursor.h> 
+#include <qcursor.h>
 
 #include "config_file.h"
 #include "config_dialog.h"
@@ -26,7 +26,7 @@ AutoAwaySlots *autoawayslots=NULL;
 extern "C" int autoaway_init()
 {
 	kdebugf();
-	
+
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "General"));
 	ConfigDialog::addVGroupBox("General", "General", "Status");
 	ConfigDialog::addCheckBox("General", "Status",
@@ -40,7 +40,7 @@ extern "C" int autoaway_init()
 	autoawayslots= new AutoAwaySlots();
 	ConfigDialog::registerSlotOnCreate(autoawayslots, SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnApply(autoawayslots, SLOT(onApplyConfigDialog()));
-	
+
 	QObject::connect(kadu, SIGNAL(disconnectingNetwork()), autoawayslots, SLOT(off()));
 	QObject::connect(gadu, SIGNAL(connected()), autoawayslots, SLOT(on()));
 	kdebugf2();
@@ -87,7 +87,7 @@ void AutoAwayTimer::checkIdleTime()
 	static int mouseirqs = 0;
 	static int i8042irqs = 0;
 	static QPoint mousepos(0, 0);
-	
+
 	int actkbdirqs   = 0;
 	int actmouseirqs = 0;
 	int acti8042irqs = 0;
@@ -133,13 +133,13 @@ void AutoAwayTimer::checkIdleTime()
 		mouseirqs = actmouseirqs;
 		i8042irqs = acti8042irqs;
 		}
-	
+
 	if(inactive)
 		idletime+=autoAwayCheckTime;
 
 //	czy mamy stac sie "zajeci" po config.autoawaytime sekund nieaktywnosci
 	if (idletime >= autoAwayTime && !autoawayed) {
-		beforeAutoAway = getCurrentStatus() & (~GG_STATUS_FRIENDS_MASK);;
+		beforeAutoAway = gadu->getCurrentStatus() & (~GG_STATUS_FRIENDS_MASK);;
 		kdebugm(KDEBUG_INFO, "AutoAwayTimer::checkIdleTime(): checking whether to go auto away, beforeAutoAway = %d\n", beforeAutoAway);
 		switch (beforeAutoAway) {
 			case GG_STATUS_AVAIL_DESCR:
@@ -188,7 +188,7 @@ void AutoAwaySlots::onCreateConfigDialog()
 	QCheckBox * b_autoaway= ConfigDialog::getCheckBox("General", "Enable autoaway");
 	awygrp->setEnabled(b_autoaway->isChecked());
 	connect(b_autoaway,SIGNAL(toggled(bool)),awygrp,SLOT(setEnabled(bool)));
-	
+
 	ConfigDialog::getSpinBox("General", "Set status to away after ")->setSuffix(" s");
 	ConfigDialog::getSpinBox("General", "Check idle every ")->setSuffix(" s");
 	kdebugf2();

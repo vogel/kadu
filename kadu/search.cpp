@@ -39,12 +39,12 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	QLabel *l_gender;
 	QLabel *l_city;
 	QLabel *l_uin;
-	
+
 	b_chat = new QPushButton(tr("&Chat"),this);
 	connect(b_chat, SIGNAL(clicked()), this, SLOT(openChat()));
 
 	b_sendbtn = new QPushButton(tr("&Search"),this);
-	b_sendbtn->setAccel(Key_Return);	
+	b_sendbtn->setAccel(Key_Return);
 	connect(b_sendbtn, SIGNAL(clicked()), this, SLOT(firstSearch()));
 
 	b_nextbtn = new QPushButton(tr("&Next results"),this);
@@ -242,12 +242,12 @@ void SearchDialog::firstSearch(void) {
 				searchRecord->reqGender(true);
 				break;
 		}
-		
+
 	}
 	else
 		if (r_uin->isChecked())
 			searchRecord->reqUin(e_uin->text());
-			
+
 	if (only_active->isChecked())
 		searchRecord->reqActive();
 
@@ -261,7 +261,7 @@ void SearchDialog::firstSearch(void) {
 }
 
 void SearchDialog::nextSearch(void) {
-	if (getCurrentStatus() == GG_STATUS_NOT_AVAIL)
+	if (gadu->getCurrentStatus() == GG_STATUS_NOT_AVAIL)
 		return;
 	kdebugf();
 
@@ -289,7 +289,7 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 	// ??	if ((status && atoi(status) <= 1 && only_active->isChecked()) || !status)
 
 	for (searchIterator = searchResults.begin(); searchIterator != searchResults.end(); searchIterator++) {
-		
+
 		qlv = results->findItem((*searchIterator).Uin, 1);
 
 		if ((*searchIterator).Status)
@@ -408,7 +408,7 @@ void SearchDialog::AddButtonClicked()
 	a jest wywolywana zaraz po pokazaniu sie okienka z dodawaniem usera
 	tip: dodaæ do okna z dodawaniem sygnal który by wemitowa³ sie
 	gdy dodamy nowego usera i siê pod ten sygna³ podpi±æ i wywo³aæ t± funkcje
-	
+
 	*/
 	kdebugf2();
 }

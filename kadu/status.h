@@ -13,7 +13,6 @@ extern QString own_description;
 extern QStringList defaultdescriptions;
 bool ifStatusWithDescription(int status);
 bool isAvailableStatus(unsigned int);
-int getCurrentStatus();
 int statusGGToStatusNr(int);
 
 #endif

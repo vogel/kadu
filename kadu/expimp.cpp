@@ -29,26 +29,26 @@ UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) : 
 {
 	kdebugf();
 	setCaption(tr("Import / export userlist"));
-	
+
 	// create main QLabel widgets (icon and app info)
 	QVBox *left=new QVBox(this);
 	left->setMargin(10);
 	left->setSpacing(10);
-	
+
 	QLabel *l_icon = new QLabel(left);
 	QWidget *w_blank = new QWidget(left);
 	w_blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
-	
+
 	QVBox *center=new QVBox(this);
 	center->setMargin(10);
 	center->setSpacing(10);
-	
+
 	QLabel *l_info = new QLabel(center);
 	l_icon->setPixmap(icons_manager.loadIcon("ImportExportWindowIcon"));
 	l_info->setText(tr("This dialog box allows you to import and export your buddy list to a server or a file."));
 	l_info->setAlignment(Qt::WordBreak);
 	// end create main QLabel widgets (icon and app info)
-	
+
 	// our QListView
 	// our QVGroupBox
 	QVGroupBox *vgb_import = new QVGroupBox(center);
@@ -71,13 +71,13 @@ UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) : 
 	QWidget *w_blank2 = new QWidget(hb_importbuttons);
 	hb_importbuttons->setSpacing(5);
 	w_blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
-	
+
 	pb_fetch = new QPushButton(icons_manager.loadIcon("FetchUserList"), tr("&Fetch userlist"), hb_importbuttons, "fetch");
 	QPushButton *pb_file = new QPushButton(icons_manager.loadIcon("ImportFromFile"), tr("&Import from file"), hb_importbuttons, "file");
 	QPushButton *pb_save = new QPushButton(icons_manager.loadIcon("SaveUserlist"), tr("&Save results"), hb_importbuttons, "save");
 	QPushButton *pb_merge = new QPushButton(icons_manager.loadIcon("MergeUserlist"), tr("&Merge results"), hb_importbuttons, "merge");
 	// end buttons
-	
+
 	// our QVGroupBox
 	QVGroupBox *vgb_export = new QVGroupBox(center);
 	vgb_export->setTitle(tr("Export userlist"));
@@ -85,34 +85,34 @@ UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) : 
 
 	l_itemscount = new QLabel(vgb_export);
 	l_itemscount->setText(tr("%1 entries will be exported").arg(userlist.count()));
-	
+
 	// export buttons
 	QHBox *hb_exportbuttons = new QHBox(vgb_export);
 	QWidget *w_blank3 = new QWidget(hb_exportbuttons);
 	hb_exportbuttons->setSpacing(5);
 	w_blank3->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
-	
+
 	pb_send = new QPushButton(icons_manager.loadIcon("SendUserlist"),tr("Se&nd userlist"), hb_exportbuttons, "send");
 	pb_delete = new QPushButton(icons_manager.loadIcon("DeleteUserlist"),tr("&Delete userlist"), hb_exportbuttons, "delete");
 	pb_tofile = new QPushButton(icons_manager.loadIcon("ExportUserlist"),tr("&Export to file"), hb_exportbuttons, "tofile");
 	// end export buttons
-	
+
 	// buttons
 	QHBox *bottom = new QHBox(center);
 	QWidget *w_blank4 = new QWidget(bottom);
 	bottom->setSpacing(5);
 	w_blank4->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
-	
+
 	QPushButton *pb_close = new QPushButton(icons_manager.loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
 	// end buttons
-	
+
 	// connect
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 	connect(pb_fetch, SIGNAL(clicked()), this, SLOT(startImportTransfer()));
 	connect(pb_file, SIGNAL(clicked()), this, SLOT(fromfile()));
 	connect(pb_save, SIGNAL(clicked()), this, SLOT(makeUserlist()));
 	connect(pb_merge, SIGNAL(clicked()), this, SLOT(updateUserlist()));
-	connect(pb_send, SIGNAL(clicked()), this, SLOT(startExportTransfer()));	
+	connect(pb_send, SIGNAL(clicked()), this, SLOT(startExportTransfer()));
 	connect(pb_tofile, SIGNAL(clicked()), this, SLOT(ExportToFile()));
 	connect(pb_delete, SIGNAL(clicked()), this, SLOT(clean()));
 
@@ -120,12 +120,12 @@ UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) : 
 	connect(gadu, SIGNAL(userListCleared(bool)), this, SLOT(userListCleared(bool)));
 	connect(gadu, SIGNAL(userListImported(bool, UserList&)), this, SLOT(userListImported(bool, UserList&)));
 	// end connect
-	
+
  	loadGeometry(this, "General", "ImportExportDialogGeometry", 0, 0, 560, 450);
 	kdebugf2();
 }
 
-UserlistImportExport::~UserlistImportExport() 
+UserlistImportExport::~UserlistImportExport()
 {
 	kdebugf();
 	saveGeometry(this, "General", "ImportExportDialogGeometry");
@@ -165,7 +165,7 @@ void UserlistImportExport::fromfile() {
 
 void UserlistImportExport::startImportTransfer() {
 	kdebugf();
-	if (getCurrentStatus() == GG_STATUS_NOT_AVAIL)
+	if (gadu->getCurrentStatus() == GG_STATUS_NOT_AVAIL)
 	{
 		MessageBox::wrn(tr("Cannot import user list from server in offline mode"));
 		return;
@@ -177,29 +177,29 @@ void UserlistImportExport::startImportTransfer() {
 }
 
 void UserlistImportExport::makeUserlist()
-{	
+{
 	kdebugf();
-	
+
 	if (!MessageBox::ask(tr("This operation will delete your current user list. Are you sure you want this?")))
 		return;
 
 	for (UserList::const_iterator i = userlist.begin(); i != userlist.end(); i++)
 		if ((*i).uin)
-			gg_remove_notify(sess, (*i).uin);
+			gadu->removeNotify((*i).uin);
 
 	userlist = importedUserlist;
-	
+
 	clearIgnored();
 	kadu->userbox()->clear();
 	kadu->userbox()->clearUsers();
 	for (UserList::const_iterator i = userlist.begin(); i != userlist.end(); i++)
 		kadu->userbox()->addUser((*i).altnick);
-		
+
 	UserBox::all_refresh();
 
 	for (UserList::const_iterator i = userlist.begin(); i != userlist.end(); i++)
 		if ((*i).uin)
-			gg_add_notify(sess, (*i).uin);
+			gadu->addNotify((*i).uin);
 
 	userlist.writeToFile();
 	l_itemscount->setText(tr("%1 entries will be exported").arg(userlist.count()));
@@ -207,25 +207,25 @@ void UserlistImportExport::makeUserlist()
 }
 
 void UserlistImportExport::updateUserlist()
-{	
+{
 	kdebugf();
 
 	for (UserList::const_iterator i = userlist.begin(); i != userlist.end(); i++)
 		if ((*i).uin)
-			gg_remove_notify(sess, (*i).uin);
+			gadu->removeNotify((*i).uin);
 
 	userlist.merge(importedUserlist);
-	
+
 	kadu->userbox()->clear();
 	kadu->userbox()->clearUsers();
 	for (UserList::const_iterator i = userlist.begin(); i != userlist.end(); i++)
 		kadu->userbox()->addUser((*i).altnick);
-		
+
 	UserBox::all_refresh();
 
 	for (UserList::const_iterator i = userlist.begin(); i != userlist.end(); i++)
 		if ((*i).uin)
-			gg_add_notify(sess, (*i).uin);
+			gadu->addNotify((*i).uin);
 
 	userlist.writeToFile();
 	l_itemscount->setText(tr("%1 entries will be exported").arg(userlist.count()));
@@ -252,7 +252,7 @@ void UserlistImportExport::startExportTransfer()
 {
 	kdebugf();
 
-	if (getCurrentStatus() == GG_STATUS_NOT_AVAIL)
+	if (gadu->getCurrentStatus() == GG_STATUS_NOT_AVAIL)
 	{
 		MessageBox::wrn(tr("Cannot export user list to server in offline mode"));
 		kdebugf2();
@@ -263,7 +263,7 @@ void UserlistImportExport::startExportTransfer()
 	{
 		pb_send->setEnabled(false);
 		pb_delete->setEnabled(false);
-		pb_tofile->setEnabled(false);	
+		pb_tofile->setEnabled(false);
 	}
 	kdebugf2();
 }
@@ -274,7 +274,7 @@ void UserlistImportExport::ExportToFile(void)
 	QString contacts;
 	pb_send->setEnabled(false);
 	pb_delete->setEnabled(false);
-	pb_tofile->setEnabled(false);	
+	pb_tofile->setEnabled(false);
 
 	QString fname = QFileDialog::getSaveFileName("/", QString::null,this);
 	if (fname.length()) {
@@ -301,7 +301,7 @@ void UserlistImportExport::ExportToFile(void)
 void UserlistImportExport::clean() {
 	kdebugf();
 
-	if (getCurrentStatus() == GG_STATUS_NOT_AVAIL)
+	if (gadu->getCurrentStatus() == GG_STATUS_NOT_AVAIL)
 	{
 		MessageBox::wrn(tr("Cannot clear user list on server in offline mode"));
 		kdebugf2();

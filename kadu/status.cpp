@@ -48,17 +48,6 @@ bool isAvailableStatus(unsigned int status)
 	return (status != GG_STATUS_NOT_AVAIL && status != GG_STATUS_NOT_AVAIL_DESCR);
 }
 
-/* zwraca nasz aktualny status 
- je¿eli stan sesji jest inny ni¿ po³±czony to znaczy
- ¿e jeste¶my niedostêpni */
-int getCurrentStatus()
-{
-	if (sess && sess->state == GG_STATE_CONNECTED)
-		return sess->status;
-
-	return GG_STATUS_NOT_AVAIL;
-}
-
 int statusGGToStatusNr(int status) {
 	int i = 0;
 	if (status == GG_STATUS_INVISIBLE2)
