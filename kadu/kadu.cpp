@@ -1031,7 +1031,7 @@ void Kadu::makeVoiceChat()
 			if (user.port >= 10) {
 				if ((dcc_new = gg_dcc_voice_chat(htonl(user.ip.ip4Addr()), user.port,
 					config_file.readNumEntry("General", "UIN"), user.uin)) != NULL) {
-					dccSocketClass *dcc = new dccSocketClass(dcc_new);
+					dccSocketClass *dcc = new dccSocketClass(dcc_new, DCC_TYPE_VOICE);
 					connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), this,
 						SLOT(dccFinished(dccSocketClass *)));
 					dcc->initializeNotifiers();
