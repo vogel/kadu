@@ -20,7 +20,10 @@
 //
 #include "dcc.h"
 #include "debug.h"
+
+#ifdef VOICE_ENABLED
 #include "voice.h"
+#endif
 
 int dccSocketClass::count = 0;
 
@@ -77,8 +80,9 @@ void dccSocketClass::initializeNotifiers() {
 
 	snw = new QSocketNotifier(dccsock->fd, QSocketNotifier::Write, this);
 	QObject::connect(snw, SIGNAL(activated(int)), this, SLOT(dccDataSent()));
-
+#ifdef VOICE_ENABLED
 	connect(voice_manager, SIGNAL(gsmSampleRecorded(char *, int)), this, SLOT(voiceDataRecorded(char *, int)));
+#endif	
 }
 
 void dccSocketClass::voiceDataRecorded(char *data, int length) {
@@ -112,7 +116,9 @@ void dccSocketClass::watchDcc(int check) {
 	kdebug("dccSocketClass::watchDcc()\n");			
 	if (!(dccevent = gg_dcc_watch_fd(dccsock))) {
 		kdebug("dccSocketClass::watchDcc(): Connection broken unexpectedly!\n");
+#ifdef VOICE_ENABLED
 		voice_manager->free();
+#endif
 		setState(dialog ? DCC_SOCKET_TRANSFER_ERROR : DCC_SOCKET_CONNECTION_BROKEN);
 		return;
 		}
@@ -145,6 +151,7 @@ void dccSocketClass::watchDcc(int check) {
 			break;
 		case GG_EVENT_DCC_NEED_VOICE_ACK:
 			break;
+#ifdef VOICE_ENABLED
 		case GG_EVENT_DCC_VOICE_DATA:
 			voice_manager->setup();
 			voice_buf = new char[dccevent->event.dcc_voice_data.length];
@@ -153,9 +160,12 @@ void dccSocketClass::watchDcc(int check) {
 			voice_manager->addGsmSample(voice_buf,
 				dccevent->event.dcc_voice_data.length);
 			break;
+#endif
 		case GG_EVENT_DCC_ERROR:
 			kdebug("dccSocketClass::watchDcc(): GG_EVENT_DCC_ERROR\n");
+#ifdef VOICE_ENABLED
 			voice_manager->free();
+#endif
 			setState(dialog ? DCC_SOCKET_TRANSFER_ERROR : DCC_SOCKET_CONNECTION_BROKEN);
 			return;
 		case GG_EVENT_DCC_DONE:

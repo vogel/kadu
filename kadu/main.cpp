@@ -16,12 +16,16 @@
 //#include <locale.h>
 
 #include "kadu.h"
+#include "../config.h"
+
+#ifdef VOICE_ENABLED
 #include "voice.h"
 #include "voice_dsp.h"
+#endif
+
 #include "config_file.h"
 #include "config_dialog.h"
 #include "register.h"
-#include "../config.h"
 #ifdef HAVE_OPENSSL
 #include "simlite.h"
 #endif
@@ -39,8 +43,10 @@ int main(int argc, char *argv[])
 
 	a = new QApplication(argc, argv);
 
+#ifdef VOICE_ENABLED
 	voice_manager = new VoiceManager();
 	sound_dsp = new SoundDsp();
+#endif
 
 	// ladowanie tlumaczenia
 	QTranslator qt_qm(0);
