@@ -18,7 +18,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * tworzenie nowego u¿ytkownika po polsku (chilek)
 * poprawione hashowanie has³a - tymczasowo rozszyfrowane has³o
   pojawia siê na konsoli (chilek)
-
+* poprawiony bug przy dodawaniu u¿ytkownika, który ju¿ do nas odezwa³
+  siê (ReGiS/chilek)
+  
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci
   (klasa HtmlDocument) i wy³awiania emotów i url-i. Naprawione

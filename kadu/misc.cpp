@@ -19,7 +19,8 @@
 
 #define GG_FONT_IMAGE	0x80
 
-QTextCodec *codec = QTextCodec::codecForName("CP1250");
+QTextCodec *codec_cp1250 = QTextCodec::codecForName("CP1250");
+QTextCodec *codec_latin2 = QTextCodec::codecForName("ISO8859-2");
 
 QString ggPath(QString subpath)
 {
@@ -41,14 +42,27 @@ QString ggPath(QString subpath)
 QString cp2unicode(unsigned char *buf)
 {
 	if (buf)
-		return codec->toUnicode((const char*)buf);
+		return codec_cp1250->toUnicode((const char*)buf);
 	else
 		return QString::null;
 }
 
 QCString unicode2cp(const QString &buf)
 {
-	return codec->fromUnicode(buf);
+	return codec_cp1250->fromUnicode(buf);
+}
+
+QString latin2unicode(unsigned char *buf)
+{
+	if (buf)
+		return codec_latin2->toUnicode((const char*)buf);
+	else
+		return QString::null;
+}
+
+QCString unicode2latin(const QString &buf)
+{
+	return codec_latin2->fromUnicode(buf);
 }
 
 QPixmap loadIcon(const QString &filename) {

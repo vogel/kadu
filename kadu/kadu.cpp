@@ -1044,6 +1044,7 @@ void Kadu::addUser(UserListElement &ule)
 		}
 	else {
 		UserListElement &oldule = userlist.byUin(ule.uin);
+		kdebug("Kadu::addUser(): uin = %d\n", ule.uin);
 		if (!ule.uin)
 			oldule = userlist.byAltNick(ule.altnick);
 		e.status = oldule.status;
@@ -1051,7 +1052,7 @@ void Kadu::addUser(UserListElement &ule)
 		e.blocking = oldule.blocking;
 		e.offline_to_user = oldule.offline_to_user;
 		e.notify = oldule.notify;
-		userlist.changeUserInfo(ule.altnick, e);
+		userlist.changeUserInfo(oldule.altnick, e);
 		}
 	userlist.writeToFile();
 
