@@ -767,6 +767,10 @@ You may add it to $PATH or specify location using Specify path option.</source>
         <source>I am busy.</source>
         <translation type="unfinished">Sono occupato.</translation>
     </message>
+    <message>
+        <source>Cannot set proxy IP address. Did you put hostname instead of IP address?</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>History</name>

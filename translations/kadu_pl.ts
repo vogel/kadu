@@ -515,7 +515,7 @@ Jest to wysoce ryzykowne!</translation>
     </message>
     <message>
         <source>Show contacts with description</source>
-        <translation>Pokaż kontakty tylko z opisem</translation>
+        <translation>Pokaż tylko kontakty z opisem</translation>
     </message>
     <message>
         <source>IP address: </source>
@@ -772,6 +772,11 @@ Wybrana ścieżka do przeglądarki nie istnieje w zmiennej $PATH. Musisz ją do 
     <message>
         <source>I am busy.</source>
         <translation>Jestem zajęty.</translation>
+    </message>
+    <message>
+        <source>Cannot set proxy IP address. Did you put hostname instead of IP address?</source>
+        <translation>Nie można ustawić adresu IP serwera proxy.
+Podałeś nazwę hosta zamiast adresu IP?</translation>
     </message>
 </context>
 <context>
