@@ -184,6 +184,13 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 
 	QHBox *fillerbox = new QHBox(btnpart);
 
+	cancelbtn = new QPushButton(btnpart);
+	cancelbtn->setText(i18n("&Cancel"));
+	cancelbtn->setFixedWidth(120);
+	cancelbtn->setIconSet(QIconSet(loader->loadIcon("stop", KIcon::Small)));
+	QToolTip::add(cancelbtn, i18n("Cancel waiting for delivery"));
+	cancelbtn->hide();
+
 	sendbtn = new QPushButton(btnpart);
 	sendbtn->setText(i18n("&Send"));
 	sendbtn->setFixedWidth(120);
@@ -191,13 +198,6 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	connect(sendbtn, SIGNAL(clicked()), this, SLOT(sendMessage()));
 	QAccel *acc = new QAccel( this );
 	acc->connectItem(acc->insertItem(Key_Return+CTRL), this, SLOT(sendMessage()));
-
-	cancelbtn = new QPushButton(btnpart);
-	cancelbtn->setText(i18n("&Cancel"));
-	cancelbtn->setFixedWidth(120);
-	cancelbtn->setIconSet(QIconSet(loader->loadIcon("stop", KIcon::Small)));
-	QToolTip::add(cancelbtn, i18n("Cancel waiting for delivery"));
-	cancelbtn->hide();
 
 	btnpart->setStretchFactor(fillerbox, 50);
 	btnpart->setStretchFactor(cancelbtn, 1);
@@ -717,7 +717,7 @@ void Chat::HistoryBox(void) {
 void Chat::insertEmoticon(void) {
 	if (iconsel_ptr == NULL) {
 //		iconsel->setOn(true);
-		iconsel_ptr = new IconSelector(NULL,"Icon selector",this);
+		iconsel_ptr = new IconSelector(NULL, "Icon selector", this);
 		iconsel_ptr->show();
 		}
 	else {
@@ -741,8 +741,8 @@ void Chat::addEmoticon(QString string) {
 IconSelectorButton::IconSelectorButton(QWidget* parent,const QString& emoticon_string)
 	: QToolButton(parent)
 {
-	EmoticonString=emoticon_string;
-	connect(this,SIGNAL(clicked()),this,SLOT(buttonClicked()));
+	EmoticonString = emoticon_string;
+	connect(this, SIGNAL(clicked()), this, SLOT(buttonClicked()));
 };
 
 void IconSelectorButton::buttonClicked()
