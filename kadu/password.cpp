@@ -87,6 +87,7 @@ void remindPassword::socketEvent() {
 		deleteLater();
 		return;
 		}
+	struct gg_pubdir *p = (struct gg_pubdir *)h->data;
 	switch (h->state) {
 		case GG_STATE_CONNECTING:
 			fprintf(stderr, "KK remindPassword::socketEvent(): changing QSocketNotifiers.\n");
@@ -104,6 +105,10 @@ void remindPassword::socketEvent() {
 		case GG_STATE_DONE:
 			fprintf(stderr, "KK remindPassword::socketEvent(): success!\n");
 			deleteSocketNotifiers();
+			if (!p->success) {
+				fprintf(stderr, "KK remindPassword::socketEvent(): error reminding password!\n");
+				showErrorMessageBox();
+				}
 			deleteLater();
 			break;
 		default:
@@ -242,6 +247,7 @@ void changePassword::socketEvent() {
 		setEnabled(true);
 		return;
 		}
+	struct gg_pubdir *p = (struct gg_pubdir *)h->data;
 	switch (h->state) {
 		case GG_STATE_CONNECTING:
 			fprintf(stderr, "KK changePassword::socketEvent(): changing QSocketNotifiers.\n");
@@ -261,8 +267,17 @@ void changePassword::socketEvent() {
 		case GG_STATE_DONE:
 			fprintf(stderr, "KK changePassword::socketEvent(): success!\n");
 			deleteSocketNotifiers();
-			saveKaduConfig();
-			accept();
+			if (!p->success) {
+				gg_change_passwd_free(h);
+				h = NULL;
+				fprintf(stderr, "KK changePassword::socketEvent(): error changing password!\n");
+				status->setText(i18n("Error"));
+				setEnabled(true);
+				}
+			else {
+				saveKaduConfig();
+				accept();
+				}
 			break;
 		default:
 			if (h->check & GG_CHECK_WRITE)
