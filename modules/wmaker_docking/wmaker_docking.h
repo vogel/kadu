@@ -21,7 +21,7 @@ class WMakerTrayIcon : public QLabel
 		virtual void mousePressEvent(QMouseEvent* e);
 
 	public:
-		WMakerTrayIcon(QObject *parent=0, const char *name=0);
+		WMakerTrayIcon(QWidget *parent=0, const char *name=0);
 		~WMakerTrayIcon();
 		void show();
 };

@@ -36,7 +36,7 @@ extern "C" void wmaker_docking_close()
 	wmaker_tray_icon = NULL;
 }
 
-WMakerTrayIcon::WMakerTrayIcon(QObject *parent, const char *name)
+WMakerTrayIcon::WMakerTrayIcon(QWidget *parent, const char *name)
 	: QLabel(parent, name, WMouseNoMask | WRepaintNoErase | WType_TopLevel | WStyle_Customize | WStyle_NoBorder | WStyle_StaysOnTop)
 {
 	kdebugf();

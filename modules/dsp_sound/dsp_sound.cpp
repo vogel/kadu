@@ -22,7 +22,7 @@ extern "C" int dsp_sound_init()
 {
 	kdebugf();
 		
-	oss_player_slots=new OSSPlayerSlots();
+	oss_player_slots=new OSSPlayerSlots(NULL, "oss_player_slots");
 
 	ConfigDialog::addHGroupBox("Sounds", "Sounds",
 			QT_TRANSLATE_NOOP("@default","Output device"));
@@ -42,7 +42,7 @@ extern "C" void dsp_sound_close()
 	kdebugf2();
 }
 
-OSSPlayerSlots::OSSPlayerSlots():thread(NULL)
+OSSPlayerSlots::OSSPlayerSlots(QObject *parent, const char *name) : QObject(parent, name), thread(NULL)
 {
 	kdebugf();
 	error=true;
