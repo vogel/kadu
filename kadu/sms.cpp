@@ -626,13 +626,14 @@ Sms::Sms(const QString& altnick, QDialog* parent) : QDialog (parent, "Sms")
 	QObject::connect(recipient,SIGNAL(textChanged(const QString&)),this,SLOT(updateList(const QString&)));
 	grid->addWidget(recipient, 0, 1);
 
+	QStringList strlist;
 	list = new QComboBox(this);
-	list->insertItem("");
-	for(int i=0; i<userlist.count(); i++)
-	{
+	for (int i = 0; i < userlist.count(); i++)
 		if (userlist[i].mobile.length())
-			list->insertItem(userlist[i].altnick);
-	};
+		 	strlist.append(userlist[i].altnick);
+	strlist.sort();
+	strlist.insert(strlist.begin(), QString::null);
+	list->insertStringList(strlist);
 	list->setCurrentText(altnick);
 	QObject::connect(list, SIGNAL(activated(const QString&)), this, SLOT(updateRecipient(const QString &)));
 	grid->addWidget(list, 0, 3);
