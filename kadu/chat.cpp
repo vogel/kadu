@@ -778,7 +778,8 @@ void Chat::unregisterButton(const QString& name)
 			RegisteredButtons.remove(button);
 			break;
 		}
-	CONST_FOREACH(chat, chat_manager->chats())
+	const ChatList &chatList = chat_manager->chats();
+	CONST_FOREACH(chat, chatList)
 		if ((*chat)->Buttons.contains(name))
 		{
 			delete (*chat)->Buttons[name];
