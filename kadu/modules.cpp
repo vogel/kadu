@@ -147,7 +147,7 @@ void ModulesDialog::loadItem()
 {
 	if(modules_manager->activateModule(lv_modules->selectedItem()->text(0)))
 	{
-		refreshLists();
+		lv_modules->selectedItem()->setText(2, tr("Loaded"));
 		modules_manager->saveLoadedModules();
 	}	
 }
@@ -155,7 +155,7 @@ void ModulesDialog::loadItem()
 void ModulesDialog::unloadItem()
 {
 	modules_manager->deactivateModule(lv_modules->selectedItem()->text(0));
-	refreshLists();
+	lv_modules->selectedItem()->setText(2, tr("Not loaded"));
 	modules_manager->saveLoadedModules();
 }
 
