@@ -169,7 +169,7 @@ void HintManager::addHintNewMsg(const QString &nick, const QString &msg)
 			cite = msg;
 		else
 			cite = msg.left(config_file.readNumEntry("Hints","CiteSign"))+"...";
-		addHint(tr("New message from")+" <b>"+nick+"<br></b><small> "+cite+"</small>", *icons->loadIcon("message"), QFont(config[10][0], config[10][1].toInt()), QColor(config[10][2]), QColor(config[10][3]), config[10][4].toInt());
+		addHint(tr("New message from")+" <b>"+nick+"<br></b> <small>"+cite+"</small>", *icons->loadIcon("message"), QFont(config[10][0], config[10][1].toInt()), QColor(config[10][2]), QColor(config[10][3]), config[10][4].toInt());
 	}
 	else
 		addHint(tr("New message from")+" <b>"+nick+"</b>", *icons->loadIcon("message"), QFont(config[10][0], config[10][1].toInt()), QColor(config[10][2]), QColor(config[10][3]), config[10][4].toInt());
@@ -184,7 +184,7 @@ void HintManager::addHintNewChat(const QString &nick, const QString &msg)
 			cite = QStyleSheet::escape(msg);
 		else
 			cite = QStyleSheet::escape(msg.left(config_file.readNumEntry("Hints","CiteSign"))+"...");
-		addHint(tr("Chat with")+" <b>"+nick+"<br></b><small> "+cite+"</small>",*icons->loadIcon("message"), QFont(config[9][0], config[9][1].toInt()), QColor(config[9][2]), QColor(config[9][3]), config[9][4].toInt());
+		addHint(tr("Chat with")+" <b>"+nick+"<br></b> <small>"+cite+"</small>",*icons->loadIcon("message"), QFont(config[9][0], config[9][1].toInt()), QColor(config[9][2]), QColor(config[9][3]), config[9][4].toInt());
 	}
 	else
 		addHint(tr("Chat with")+" <b>"+nick+"</b>",*icons->loadIcon("message"), QFont(config[9][0], config[9][1].toInt()), QColor(config[9][2]), QColor(config[9][3]), config[9][4].toInt());
@@ -207,7 +207,7 @@ void HintManager::addHintStatus(const UserListElement &ule, unsigned int status,
 				addHint(parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true), *icons->loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
 				return;
 			}
-			addHint("<b>"+ule.altnick+" </b>"+tr("is available")+"<br><small> "+QStyleSheet::escape(ule.description)+"</small>", *icons->loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
+			addHint("<b>"+ule.altnick+" </b>"+tr("is available")+"<br> <small>"+QStyleSheet::escape(ule.description)+"</small>", *icons->loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
 		}
 		else
 			addHint("<b>"+ule.altnick+" </b>"+tr("is available"), *icons->loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
@@ -222,7 +222,7 @@ void HintManager::addHintStatus(const UserListElement &ule, unsigned int status,
 				addHint(parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true), *icons->loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
 				return;
 			}
-			addHint("<b>"+ule.altnick+" </b>"+tr("changed status to")+" <i>"+statustext[statusnr]+"</i><br><small> "+QStyleSheet::escape(ule.description)+"</small>", *icons->loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
+			addHint("<b>"+ule.altnick+" </b>"+tr("changed status to")+" <i>"+statustext[statusnr]+"</i><br> <small>"+QStyleSheet::escape(ule.description)+"</small>", *icons->loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
 		}
 		else
 			addHint("<b>"+ule.altnick+" </b>"+tr("changed status to")+" <i>"+statustext[statusnr]+"</i>", *icons->loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
