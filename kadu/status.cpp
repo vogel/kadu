@@ -220,14 +220,15 @@ void AutoAwayTimer::initModule()
 
 	kdebug("AutoAwayTimer::initModule() \n");
 	ConfigDialog::registerTab("General");
-	ConfigDialog::addCheckBox("General", "General", "Enable autoaway", "AutoAway", false);
-	ConfigDialog::addHGroupBox("General", "General", "--");
+	ConfigDialog::addVGroupBox("General", "General", "Status");
+	ConfigDialog::addCheckBox("General", "Status", "Enable autoaway", "AutoAway", false);
+	ConfigDialog::addHBox("General", "Status", "--");
 	ConfigDialog::addLineEdit("General", "--", "Set status to away after ", "AutoAwayTime", "300");
 	ConfigDialog::addLabel("General", "--", " seconds");
-	ConfigDialog::addHGroupBox("General", "General", "Default Status");
-	ConfigDialog::addComboBox("General", "Default Status", "", "", "cb_defstatus");
-	ConfigDialog::addCheckBox("General", "General", "On shutdown, set description:", "DisconnectWithDescription", false);
-	ConfigDialog::addLineEdit("General", "General", "", "DisconnectDescription", "", "", "e_defaultstatus");
+	ConfigDialog::addComboBox("General", "Status", "Default status", "", "cb_defstatus");
+	ConfigDialog::addHBox("General", "Status", "discstatus");
+	ConfigDialog::addCheckBox("General", "discstatus", "On shutdown, set description:", "DisconnectWithDescription", false);
+	ConfigDialog::addLineEdit("General", "discstatus", "", "DisconnectDescription", "", "", "e_defaultstatus");
 	AutoAwaySlots *autoawayslots= new AutoAwaySlots();
 	ConfigDialog::registerSlotOnCreate(autoawayslots, SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnDestroy(autoawayslots, SLOT(onDestroyConfigDialog()));
@@ -238,24 +239,24 @@ void AutoAwayTimer::initModule()
 	ConfigDialog::addCheckBox("General", "grid", "Private status", "PrivateStatus", false);
 	ConfigDialog::addCheckBox("General", "grid", "Check for updates", "CheckUpdates", true);
 	ConfigDialog::addCheckBox("General", "grid", "Add to description", "AddToDescription", false);
-	ConfigDialog::connectSlot("General", "Enable dock icon", SIGNAL(toggled(bool)), autoawayslots, SLOT(ifDockEnabled(bool)));
 
 };
 
 void AutoAwaySlots::onCreateConfigDialog()
 {
 	kdebug("AutoAwayTimer::onCreateConfigDialog() \n");
-	QHGroupBox *awygrp = ConfigDialog::getHGroupBox("General", "--");
+	QHBox *awygrp = ConfigDialog::getHBox("General", "--");
 	QCheckBox * b_autoaway= ConfigDialog::getCheckBox("General", "Enable autoaway");
 	awygrp->setEnabled(b_autoaway->isChecked());
 	connect(b_autoaway,SIGNAL(toggled(bool)),awygrp,SLOT(setEnabled(bool)));
 	
 	QCheckBox *b_disconnectdesc= ConfigDialog::getCheckBox("General", "On shutdown, set description:");
 	QLineEdit *e_disconnectdesc= ConfigDialog::getLineEdit("General", "", "e_defaultstatus");
+	e_disconnectdesc->setMaxLength(GG_STATUS_DESCR_MAXSIZE);
 	e_disconnectdesc->setEnabled(b_disconnectdesc->isChecked());
 	connect(b_disconnectdesc, SIGNAL(toggled(bool)), e_disconnectdesc, SLOT(setEnabled(bool)));
 
-	QComboBox* cb_defstatus= ConfigDialog::getComboBox("General", "", "cb_defstatus");
+	QComboBox* cb_defstatus= ConfigDialog::getComboBox("General", "Default status", "cb_defstatus");
 	int statusnr=config_file.readNumEntry("General", "DefaultStatus", GG_STATUS_NOT_AVAIL);
 	cb_defstatus->clear();
 	int i;
@@ -271,22 +272,12 @@ void AutoAwaySlots::onCreateConfigDialog()
 void AutoAwaySlots::onDestroyConfigDialog()
 {
 	kdebug("AutoAwayTimer::onDestroyConfigDialog() \n");
-	QComboBox* cb_defstatus= ConfigDialog::getComboBox("General", "", "cb_defstatus");
+	QComboBox* cb_defstatus= ConfigDialog::getComboBox("General", "Default status", "cb_defstatus");
 	config_file.writeEntry("General", "DefaultStatus", gg_statuses[cb_defstatus->currentItem()]);
+
+	if (config_file.readBoolEntry("General", "AutoAway"))
+	        AutoAwayTimer::on();
+	else
+                AutoAwayTimer::off();
 };
 
-void AutoAwaySlots::ifDockEnabled(bool value)
-{
-
-	kdebug("AutoAwaySlots::ifDockEnabled() \n");
-	
-	if (!value) {
-//		b_notifyhint->setChecked(false);
-//		b_notifyhint->setEnabled(false);
-		}
-//	else
-//		b_notifyhint->setEnabled(true);
-
-
-
-};
