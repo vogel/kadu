@@ -31,11 +31,14 @@ class Kadu : public QMainWindow
 	Q_OBJECT
 
 	private:
-		QFrame *centralFrame;
-		QGridLayout *grid;
-		QMenuBar *mmb;
-		QTextBrowser *descrtb;
-		QToolButton *mutebtn;
+		QFrame* centralFrame;
+		QGridLayout* grid;
+		QMenuBar* mmb;
+		QTextBrowser* descrtb;
+		QToolButton* mutebtn;
+		KaduTabBar* GroupBar;
+		UserBox* Userbox;
+
 		int commencing_startup;
 		
 		void createMenu();
@@ -67,14 +70,14 @@ class Kadu : public QMainWindow
 		void addUser(UserListElement &ule);
 		void removeUser(QStringList &, bool);
 		void refreshGroupTabBar();
+    		KaduTabBar* groupBar();
+		UserBox* userbox();
     
 		// te zmienne s± tylko chwilowo publiczne.
 		// trzeba to uporz±dkowaæ
 		bool autohammer;
 		bool doBlink;
-		UserBox *userbox;
 		AutoStatusTimer* autostatus_timer;
-		KaduTabBar *group_bar;    
 
 	public slots:
 		void blink();

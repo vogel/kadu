@@ -62,8 +62,8 @@ void UserInfo::setUserInfo(UserListElement &ule) {
 void UserInfo::setupTab1() {
 	QString tmp;
 	QStringList list;
-	for (int i=0; i < kadu->group_bar->count(); i++)
-		list << kadu->group_bar->tabAt(i)->text();
+	for (int i=0; i < kadu->groupBar()->count(); i++)
+		list << kadu->groupBar()->tabAt(i)->text();
 
 	QVBox *box = new QVBox(this);
 	box->setMargin(10);

@@ -134,12 +134,12 @@ void Kadu::keyPressEvent(QKeyEvent *e) {
 	}
 	else if (HotKey::shortCut(e,"kadu_deleteuser"))
 	{
-	if (userbox->getSelectedAltNicks().count())
+	if (Userbox->getSelectedAltNicks().count())
 		deleteUsers();
 	}
 	else if (HotKey::shortCut(e,"kadu_persinfo"))
 	{
-	if (userbox->getSelectedAltNicks().count() == 1)
+	if (Userbox->getSelectedAltNicks().count() == 1)
 	        showUserInfo();
 	}	
 	else if (HotKey::shortCut(e,"kadu_sendsms"))
@@ -156,7 +156,7 @@ void Kadu::keyPressEvent(QKeyEvent *e) {
 	}	
 	else if (HotKey::shortCut(e,"kadu_showinactive"))
 	{
-		userbox->showHideInactive();
+		Userbox->showHideInactive();
 	}
 	else if (HotKey::shortCut(e, "kadu_voicechat")) {
 		makeVoiceChat();
@@ -412,37 +412,29 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	QSplitter *split = new QSplitter(Qt::Vertical, centralFrame);
 
 	QHBox *hbox1 = new QHBox(split);
+
 	/* initialize group tabbar */
-//	QVBox *vbox1 = new QVBox(hbox1);
-//	vbox1->setMinimumWidth(10);
-	group_bar = new KaduTabBar(hbox1, "groupbar");
-	group_bar->setShape(QTabBar::RoundedBelow);
-	group_bar->addTab(new QTab(tr("All")));
-	group_bar->setFont(QFont(config_file.readFontEntry("Look", "UserboxFont").family(), config_file.readFontEntry("Look", "UserboxFont").pointSize(),75));
-//	group_bar->setMinimumWidth(group_bar->sizeHint().width());
-	connect(group_bar, SIGNAL(selected(int)), this, SLOT(groupTabSelected(int)));
-
-//	QHBox *hbox2 = new QHBox(vbox1);
-//	hbox2->setMinimumWidth(10);
-
-//	vbox1->setStretchFactor(group_bar, 1);
-//	vbox1->setStretchFactor(hbox2, 100);
+	GroupBar = new KaduTabBar(hbox1, "groupbar");
+	GroupBar->setShape(QTabBar::RoundedBelow);
+	GroupBar->addTab(new QTab(tr("All")));
+	GroupBar->setFont(QFont(config_file.readFontEntry("Look", "UserboxFont").family(), config_file.readFontEntry("Look", "UserboxFont").pointSize(),75));
+	connect(GroupBar, SIGNAL(selected(int)), this, SLOT(groupTabSelected(int)));
 
 	/* connect userlist modified signal */
 	connect(&userlist, SIGNAL(modified()), this, SLOT(userListModified()));
 	connect(&userlist, SIGNAL(statusModified(UserListElement *)), this, SLOT(userListStatusModified(UserListElement *)));
 
 	/* initialize and configure userbox */
-	userbox = new UserBox(hbox1, "userbox");
+	Userbox = new UserBox(hbox1, "userbox");
 	if (config_file.readBoolEntry("Look", "MultiColumnUserbox"))
-		userbox->setColumnMode(QListBox::FitToWidth);
-	userbox->setPaletteBackgroundColor(config_file.readColorEntry("Look", "UserboxBgColor"));
-	userbox->setPaletteForegroundColor(config_file.readColorEntry("Look", "UserboxFgColor"));
-	userbox->QListBox::setFont(config_file.readFontEntry("Look", "UserboxFont"));
-	userbox->setMinimumWidth(20);
+		Userbox->setColumnMode(QListBox::FitToWidth);
+	Userbox->setPaletteBackgroundColor(config_file.readColorEntry("Look", "UserboxBgColor"));
+	Userbox->setPaletteForegroundColor(config_file.readColorEntry("Look", "UserboxFgColor"));
+	Userbox->QListBox::setFont(config_file.readFontEntry("Look", "UserboxFont"));
+	Userbox->setMinimumWidth(20);
 
-	hbox1->setStretchFactor(group_bar, 1);
-	hbox1->setStretchFactor(userbox, 100);
+	hbox1->setStretchFactor(GroupBar, 1);
+	hbox1->setStretchFactor(Userbox, 100);
 
 	/* add all users to userbox */
 	setActiveGroup("");
@@ -479,16 +471,16 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 
 	connect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(popupMenu()));
-	connect(userbox, SIGNAL(rightButtonClicked(QListBoxItem *, const QPoint &)),
+	connect(Userbox, SIGNAL(rightButtonClicked(QListBoxItem *, const QPoint &)),
 		UserBox::userboxmenu, SLOT(show(QListBoxItem *)));
 	//
 	
-	connect(userbox, SIGNAL(doubleClicked(QListBoxItem *)), this, SLOT(sendMessage(QListBoxItem *)));
-	connect(userbox, SIGNAL(returnPressed(QListBoxItem *)), this, SLOT(sendMessage(QListBoxItem *)));
+	connect(Userbox, SIGNAL(doubleClicked(QListBoxItem *)), this, SLOT(sendMessage(QListBoxItem *)));
+	connect(Userbox, SIGNAL(returnPressed(QListBoxItem *)), this, SLOT(sendMessage(QListBoxItem *)));
 	
-	connect(userbox, SIGNAL(mouseButtonClicked(int, QListBoxItem *, const QPoint &)),
+	connect(Userbox, SIGNAL(mouseButtonClicked(int, QListBoxItem *, const QPoint &)),
 		this, SLOT(mouseButtonClicked(int, QListBoxItem *)));
-	connect(userbox, SIGNAL(currentChanged(QListBoxItem *)), this, SLOT(currentChanged(QListBoxItem *)));
+	connect(Userbox, SIGNAL(currentChanged(QListBoxItem *)), this, SLOT(currentChanged(QListBoxItem *)));
 
 	statuslabeltxt = new MyLabel(centralFrame, "statuslabeltxt");
 	statuslabeltxt->setText(tr("Offline"));
@@ -548,7 +540,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	toolbar->setLabel(tr("Main toolbar"));
 
 	QToolButton *inactivebtn = new QToolButton(*icons->loadIcon("offline"), tr("Show / hide inactive users"),
-	QString::null, userbox, SLOT(showHideInactive()), toolbar, "ShowHideInactive");
+	QString::null, Userbox, SLOT(showHideInactive()), toolbar, "ShowHideInactive");
 
 	
 	QIconSet *mu;
@@ -632,7 +624,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 void Kadu::popupMenu()
 {	
 	UserList users;
-	users =userbox->getSelectedUsers();
+	users = Userbox->getSelectedUsers();
 	UserListElement user = users.first();
 
 	if (!user.mobile.length() || (users.count() !=1))
@@ -685,7 +677,7 @@ void Kadu::popupMenu()
 		}
 	else {
 		UinsList uins;
-		uins = userbox->getSelectedUins();
+		uins = Userbox->getSelectedUins();
 		if (isIgnored(uins))
 			UserBox::userboxmenu->setItemChecked(ignoreuseritem, true);
 		if (user.blocking)
@@ -742,7 +734,7 @@ void Kadu::sendSms()
 void Kadu::sendSmsToUser()
 {
 	UserList users;
-	users= userbox->getSelectedUsers();
+	users= Userbox->getSelectedUsers();
 	if (users.count() != 1)
 		return;
 	if (users.first().mobile.length())
@@ -754,7 +746,7 @@ void Kadu::sendSmsToUser()
 
 
 void Kadu::viewHistory() {
-	UinsList uins= userbox->getSelectedUins();
+	UinsList uins= Userbox->getSelectedUins();
 		if (uins.count()) {
 			History *hb = new History(uins);
 			hb->show();
@@ -767,7 +759,7 @@ void Kadu::sendFile()
 		if (config_dccip.isIp4Addr()) {
 			struct gg_dcc *dcc_new;
 			UserList users;
-			users= userbox->getSelectedUsers();
+			users= Userbox->getSelectedUsers();
 			if (users.count() != 1)
 				return;
 			UserListElement user = users.first();
@@ -791,7 +783,7 @@ void Kadu::makeVoiceChat()
 		if (config_dccip.isIp4Addr()) {
 			struct gg_dcc *dcc_new;
 			UserList users;
-			users= userbox->getSelectedUsers();
+			users = Userbox->getSelectedUsers();
 			if (users.count() != 1)
 				return;
 			UserListElement user = users.first();
@@ -811,7 +803,7 @@ void Kadu::makeVoiceChat()
 
 void Kadu::lookupInDirectory() {
 	UserList users;
-	users= userbox->getSelectedUsers();
+	users = Userbox->getSelectedUsers();
 	if (users.count() == 1) {
 		SearchDialog *sd = new SearchDialog(0, tr("User info"),
 			userlist.byAltNick(users.first().altnick).uin);
@@ -822,7 +814,7 @@ void Kadu::lookupInDirectory() {
 
 void Kadu::showUserInfo() {
 	UserList users;
-	users= userbox->getSelectedUsers();
+	users= Userbox->getSelectedUsers();
 	if (users.count() == 1) 
 		{
 		UserInfo *ui = new UserInfo("user info", 0, users.first().altnick);
@@ -832,9 +824,9 @@ void Kadu::showUserInfo() {
 
 void Kadu::deleteUsers() 
 {
-	QStringList  users =userbox->getSelectedAltNicks();
+	QStringList  users = Userbox->getSelectedAltNicks();
 	removeUser(users, false);
-	if (!userbox->isSelected(userbox->currentItem()))
+	if (!Userbox->isSelected(Userbox->currentItem()))
 		descrtb->setText("");
 }
 
@@ -867,7 +859,7 @@ void Kadu::sendKey()
 		mykey = t.read();
 		keyfile.close();
 		QCString tmp(mykey.local8Bit());
-		gg_send_message(sess, GG_CLASS_MSG, userbox->getSelectedUins().first(), (unsigned char *)tmp.data());
+		gg_send_message(sess, GG_CLASS_MSG, Userbox->getSelectedUins().first(), (unsigned char *)tmp.data());
 		QMessageBox::information(this, "Kadu",
 			tr("Your public key has been sent"), tr("OK"), QString::null, 0);
 		}
@@ -877,7 +869,7 @@ void Kadu::sendKey()
 void Kadu::deleteHistory()
 {
     
-	history.removeHistory(userbox->getSelectedUins());
+	history.removeHistory(Userbox->getSelectedUins());
 }
 
 void Kadu::manageIgnored()
@@ -888,7 +880,7 @@ void Kadu::manageIgnored()
 
 void Kadu::openChat()
 {
-	chat_manager->openPendingMsgs(userbox->getSelectedUins());
+	chat_manager->openPendingMsgs(Userbox->getSelectedUins());
 }
 
 void Kadu::searchInDirectory()
@@ -960,7 +952,7 @@ void Kadu::hideKadu()
 
 void Kadu::ignoreUser()
 {
-	UinsList uins = userbox->getSelectedUins();
+	UinsList uins = Userbox->getSelectedUins();
 	if (isIgnored(uins))
 		delIgnored(uins);
 	else
@@ -970,7 +962,7 @@ void Kadu::ignoreUser()
 
 void Kadu::blockUser()
 {
-	UserListElement *puser = &userlist.byAltNick(userbox->getSelectedUsers().first().altnick);
+	UserListElement *puser = &userlist.byAltNick(Userbox->getSelectedUsers().first().altnick);
 	puser->blocking = !puser->blocking;
 	gg_remove_notify_ex(sess, puser->uin, puser->blocking ? GG_USER_NORMAL : GG_USER_BLOCKED);
 	gg_add_notify_ex(sess, puser->uin, puser->blocking ? GG_USER_BLOCKED : GG_USER_NORMAL);
@@ -979,14 +971,14 @@ void Kadu::blockUser()
 
 void Kadu::notifyUser()
 {
-	UserListElement *puser = &userlist.byAltNick(userbox->getSelectedUsers().first().altnick);
+	UserListElement *puser = &userlist.byAltNick(Userbox->getSelectedUsers().first().altnick);
 	puser->notify = !puser->notify;
 	userlist.writeToFile();
 }
 
 void Kadu::offlineToUser()
 {
-	UserListElement *puser = &userlist.byAltNick(userbox->getSelectedUsers().first().altnick);
+	UserListElement *puser = &userlist.byAltNick(Userbox->getSelectedUsers().first().altnick);
 	puser->offline_to_user = !puser->offline_to_user;
 	gg_remove_notify_ex(sess, puser->uin, puser->offline_to_user ? GG_USER_NORMAL : GG_USER_OFFLINE);
 	gg_add_notify_ex(sess, puser->uin, puser->offline_to_user ? GG_USER_OFFLINE : GG_USER_NORMAL);
@@ -1000,11 +992,11 @@ void Kadu::resizeEvent(QResizeEvent *e) {
 void Kadu::changeAppearance() {
 	kdebug("kadu::changeAppearance()\n");
 
-	userbox->setPaletteBackgroundColor(config_file.readColorEntry("Look", "UserboxBgColor"));
-	userbox->setPaletteForegroundColor(config_file.readColorEntry("Look", "UserboxFgColor"));
-	userbox->QListBox::setFont(config_file.readFontEntry("Look", "UserboxFont"));
+	Userbox->setPaletteBackgroundColor(config_file.readColorEntry("Look", "UserboxBgColor"));
+	Userbox->setPaletteForegroundColor(config_file.readColorEntry("Look", "UserboxFgColor"));
+	Userbox->QListBox::setFont(config_file.readFontEntry("Look", "UserboxFont"));
 
-	group_bar->setFont(QFont(config_file.readFontEntry("Look", "UserboxFont").family(), config_file.readFontEntry("Look", "UserboxFont").pointSize(),75));
+	GroupBar->setFont(QFont(config_file.readFontEntry("Look", "UserboxFont").family(), config_file.readFontEntry("Look", "UserboxFont").pointSize(),75));
 
 	descrtb->setPaletteBackgroundColor(config_file.readColorEntry("Look", "UserboxDescBgColor"));
 	descrtb->setPaletteForegroundColor(config_file.readColorEntry("Look", "UserboxDescTextColor"));
@@ -1025,7 +1017,7 @@ void Kadu::refreshGroupTabBar()
 {
 	if (!config_file.readBoolEntry("Look", "DisplayGroupTabs"))
 	{
-		group_bar->hide();
+		GroupBar->hide();
 		return;
 	};	
 	/* budujemy listê grup */
@@ -1042,34 +1034,34 @@ void Kadu::refreshGroupTabBar()
 	//
 	if (group_list.count() == 0)
 	{
-		group_bar->hide();
+		GroupBar->hide();
 		setActiveGroup("");
 		return;
 	};
 	/* usuwamy wszystkie niepotrzebne zakladki - od tylu,
 	   bo indeksy sie przesuwaja po usunieciu */
-	for (int i = group_bar->count() - 1; i >= 1; i--)
-		if(!group_list.contains(group_bar->tabAt(i)->text()))
-			group_bar->removeTab(group_bar->tabAt(i));
+	for (int i = GroupBar->count() - 1; i >= 1; i--)
+		if(!group_list.contains(GroupBar->tabAt(i)->text()))
+			GroupBar->removeTab(GroupBar->tabAt(i));
 	/* dodajemy nowe zakladki */
 	for (int i = 0; i < group_list.count(); i++)
 		{
 		bool createNewTab = true;
-		for (int j = 0; j < group_bar->count(); j++)
-			if (group_bar->tabAt(j)->text() == group_list[i])
+		for (int j = 0; j < GroupBar->count(); j++)
+			if (GroupBar->tabAt(j)->text() == group_list[i])
 				createNewTab = false;
 		if(createNewTab)
-			group_bar->addTab(new QTab(group_list[i]));
+			GroupBar->addTab(new QTab(group_list[i]));
 		}
-	kdebug("%i group tabs\n", group_bar->count());
-	group_bar->show();
+	kdebug("%i group tabs\n", GroupBar->count());
+	GroupBar->show();
 	/* odswiezamy - dziala tylko jesli jest widoczny */
-	group_bar->update();
+	GroupBar->update();
 };
 
 void Kadu::setActiveGroup(const QString& group)
 {
-	userbox->clearUsers();
+	Userbox->clearUsers();
 	for (int i = 0; i < userlist.count(); i++)
 		{
 		bool belongsToGroup;
@@ -1085,7 +1077,7 @@ void Kadu::setActiveGroup(const QString& group)
 					belongsToGroup = true;
 			}
 		if (belongsToGroup && (!userlist[i].anonymous || !trayicon))
-			userbox->addUser(userlist[i].altnick);
+			Userbox->addUser(userlist[i].altnick);
 		}
 	UserBox::all_refresh();
 };
@@ -1095,7 +1087,7 @@ void Kadu::groupTabSelected(int id)
 	if (id == 0)
 		setActiveGroup("");
 	else
-		setActiveGroup(group_bar->tab(id)->text());
+		setActiveGroup(GroupBar->tab(id)->text());
 };
 
 void Kadu::userListModified()
@@ -1109,13 +1101,6 @@ void Kadu::userListStatusModified(UserListElement *user)
 	if ((user->status == GG_STATUS_NOT_AVAIL)
 	    || (user->status == GG_STATUS_NOT_AVAIL_DESCR))
 		descrtb->setText("");
-//	int index = userbox->currentItem();
-//	if (index >= 0) {
-//		QListBoxItem *lbi = userbox->item(index);
-//		UserListElement &u = userlist.byAltNick(lbi->text());
-//		if (u.uin == user->uin)
-//			currentChanged(lbi);
-//		}
 	chat_manager->refreshTitlesForUin(user->uin);
 };
 
@@ -1244,7 +1229,7 @@ void Kadu::addUser(UserListElement &ule)
 		}
 	userlist.writeToFile();
 
-	userbox->addUser(ule.altnick);
+	Userbox->addUser(ule.altnick);
 	UserBox::all_refresh();
 
 	refreshGroupTabBar();
@@ -1280,7 +1265,7 @@ void Kadu::mouseButtonClicked(int button, QListBoxItem *item) {
 void Kadu::sendMessage(QListBoxItem *item) {
 	chat_manager->sendMessage(
 		userlist.byAltNick(item->text()).uin,
-		userbox->getSelectedUins());
+		Userbox->getSelectedUins());
 }
 
 /* when we want to change the status */
@@ -1483,18 +1468,12 @@ void Kadu::setStatus(int status) {
 			server_nr = 0;
 		}
 	else {
-//		if (server_nr) {
-//			loginparams.server_addr = htonl(gg_servers[server_nr - 1].ip4Addr());
-//			loginparams.server_port = config_file.readNumEntry("Network", "DefaultPort");
-//			}
-//		else {
-			loginparams.server_addr = 0;
-			loginparams.server_port = 0;
-//			}
+		loginparams.server_addr = 0;
+		loginparams.server_port = 0;
 		server_nr++;
 		if (server_nr > 7)
 			server_nr = 0;
-		}
+	}
 //	polaczenia TLS z serwerami GG na razie nie dzialaja
 //	loginparams.tls = config_file.readBoolEntry("Network", "UseTLS");
 	loginparams.tls = 0;
@@ -1532,14 +1511,6 @@ void Kadu::setStatus(int status) {
 			tr("Couldn't connect.\nCheck your internet connection."));
 		}
 }
-
-/* patrz plik events.cpp
-void Kadu::checkConnection(void) {
-	// Since it doesnt work anymore...
-	readevent->start(10000, TRUE);
-	return;	
-}
-*/
 
 void Kadu::dataReceived(void) {
 	kdebug("Kadu::dataReceived()\n");
@@ -1741,7 +1712,7 @@ bool Kadu::close(bool quit) {
 		if (config_file.readBoolEntry("Look", "ShowDesc"))
 		    {
 			QSize split;
-			    split.setWidth(userbox->size().height());
+			    split.setWidth(Userbox->size().height());
 			    split.setHeight(descrtb->size().height());
 			    config_file.writeEntry("General", "SplitSize",split);
 		    }
@@ -1773,7 +1744,6 @@ bool Kadu::close(bool quit) {
 		disconnectNetwork();
 		kdebug("Kadu::close(): Saved config, disconnect and ignored\n");
 		QWidget::close(true);
-//		a->quit();
 		kdebug("Kadu::close(): Graceful shutdown...\n");
 		return true;
 	}
@@ -1829,7 +1799,6 @@ void Kadu::createMenu() {
 	ppm->insertItem(loadIcon("exit.png"), tr("&Exit Kadu"), this, SLOT(quit()));
 
 	mmb->insertItem(tr("&Kadu"), ppm);
-//	mmb->polish();
 }
 
 void Kadu::statusMenuAboutToHide() {
@@ -1880,7 +1849,7 @@ void Kadu::showdesc(bool show) {
 	else
 	    {
 		QSize split;
-		split.setWidth(userbox->size().height());
+		split.setWidth(Userbox->size().height());
 		split.setHeight(descrtb->size().height());
 		config_file.writeEntry("General", "SplitSize",split);
 		descrtb->hide();
@@ -1891,9 +1860,20 @@ void Kadu::infopanelUpdate(uin_t uin) {
 	if (!config_file.readBoolEntry("Look", "ShowDesc"))
 		return;
 	kdebug("Kadu::infopanelUpdate(%d)\n", uin);
-	if (userbox->currentItem() != -1 && uin == userlist.byAltNick(userbox->currentText()).uin)
+	if (Userbox->currentItem() != -1 && uin == userlist.byAltNick(Userbox->currentText()).uin)
 		descrtb->setText(parse(config_file.readEntry("Look", "PanelContents"),userlist.byUin(uin)));
 }
+
+KaduTabBar* Kadu::groupBar()
+{
+	return GroupBar;
+}
+
+UserBox* Kadu::userbox()
+{
+	return Userbox;
+}
+
 
 void KaduSlots::onCreateConfigDialog()
 {
@@ -1947,9 +1927,9 @@ void KaduSlots::onDestroyConfigDialog()
 	kadu->showdesc(config_file.readBoolEntry("Look", "ShowDesc"));
 	
 	if (config_file.readBoolEntry("Look", "MultiColumnUserbox"))
-		kadu->userbox->setColumnMode(QListBox::FitToWidth);
+		kadu->userbox()->setColumnMode(QListBox::FitToWidth);
 	else
-		kadu->userbox->setColumnMode(1);
+		kadu->userbox()->setColumnMode(1);
 
 
 	/* I odswiez okno Kadu */

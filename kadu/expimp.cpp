@@ -144,10 +144,10 @@ void UserlistImport::makeUserlist() {
 	userlist = importedUserlist;
 	
 	clearIgnored();
-	kadu->userbox->clear();
-	kadu->userbox->clearUsers();
+	kadu->userbox()->clear();
+	kadu->userbox()->clearUsers();
 	for (i = 0; i < userlist.count(); i++)
-		kadu->userbox->addUser(userlist[i].altnick);
+		kadu->userbox()->addUser(userlist[i].altnick);
 		
 	UserBox::all_refresh();
 
@@ -184,10 +184,10 @@ void UserlistImport::updateUserlist() {
 
 	userlist.merge(importedUserlist);
 	
-	kadu->userbox->clear();
-	kadu->userbox->clearUsers();
+	kadu->userbox()->clear();
+	kadu->userbox()->clearUsers();
 	for (i = 0; i < userlist.count(); i++)
-		kadu->userbox->addUser(userlist[i].altnick);
+		kadu->userbox()->addUser(userlist[i].altnick);
 		
 	UserBox::all_refresh();
 

@@ -3,7 +3,7 @@ lub rozbudowy. Postaæ (x/y) oznacza, ¿e x jest pomys³odawc± lub
 podes³a³ patcha, a zrobi³ to kto¶ oznaczony przez y. Je¶li jest
 w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
-+++ wersha 0.3.7-cvs
++++ wersja 0.3.7-cvs
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
 * okno konfiguracji: mo¿liwo¶æ wy³±czenia zmian statusu w historii (demsik/chilek)
 * porz±dki w configure + dodane wykrywanie nag³ówków XFree,
@@ -18,6 +18,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   na oknach Chat. spore porzadki w kodzie. nie zabijacie jesli zepsulem ;)
   (adrian)
 * dalsze prace nad ChatManager'em i porzadki w kodzie obslugi Chatow (adrian)
+* spore porzadki w kadu.cpp/h, wydzielenie klasy GaduProtocol - gadu.cpp/h,
+  w ktorej beda wszystkie funkcje specyficzne dla gg (adrian)
 
 +++ wersja 0.3.6 (22.11.2003)
 * je¶li klikniemy na jaki¶ kontakt w userboxie, od którego otrzymali¶my jak±¶
