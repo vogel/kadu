@@ -36,7 +36,7 @@ class ChatManager : public QObject
 		QValueList<ChatInfo> sizes;
 		
 	public:	
-		ChatManager(QObject *parent=NULL, const char *name=NULL);
+		ChatManager(QObject* parent=NULL, const char* name=NULL);
 		~ChatManager();
 		void closeAllWindows();
 		/**
@@ -73,16 +73,26 @@ extern ChatManager* chat_manager;
 class EmoticonSelector;
 class ColorSelector;
 
-class CustomInput : public QMultiLineEdit {
+class CustomInput : public QMultiLineEdit
+{
 	Q_OBJECT
-	public:
-		CustomInput(QWidget *parent = 0, const char *name = 0);
 
-		enum {
+	protected:
+		bool autosend_enabled;
+		void keyPressEvent(QKeyEvent *e);
+
+	public:
+		enum
+		{
 			KEY_BOLD,
 			KEY_ITALIC,
 			KEY_UNDERLINE
-			};
+		};
+		CustomInput(QWidget* parent = 0, const char* name = 0);
+
+	public slots:
+		void paste();
+		void setAutosend(bool);
 
 	signals:
 		void sendMessage();
@@ -91,27 +101,19 @@ class CustomInput : public QMultiLineEdit {
 			Dowolny przycisk klawiatury zostal nacisniety.
 			Przekazany zostaje tak¿e obiekt, który wywo³a³ akcjê - czyli this.
 		**/
-		void keyPressed(QKeyEvent*, CustomInput *sender);
-
-	public slots:
-		void paste();
-		void setAutosend(bool);
-
-	protected:
-		void keyPressEvent(QKeyEvent *e);
-
-		bool autosend_enabled;
+		void keyPressed(QKeyEvent* e, CustomInput* sender);
 };
 
 class KaduSplitter : public QSplitter
 {
-	public:
-		KaduSplitter(QWidget * parent = 0, const char * name = 0);
-		KaduSplitter(Orientation o, QWidget * parent = 0, const char * name = 0 );
 	protected:
-		QValueList<KaduTextBrowser *> list;
-		void drawContents(QPainter *p);
-		void childEvent(QChildEvent *c);
+		QValueList<KaduTextBrowser*> list;
+		void drawContents(QPainter* p);
+		void childEvent(QChildEvent* c);
+
+	public:
+		KaduSplitter(QWidget* parent = 0, const char* name = 0);
+		KaduSplitter(Orientation o, QWidget* parent = 0, const char* name = 0);
 };
 
 /**
@@ -121,8 +123,8 @@ class Chat : public QWidget
 {
 	Q_OBJECT
 
-	friend class ChatManager;
 	private:
+		friend class ChatManager;
 		struct RegisteredButton
 		{
 			QString name;
@@ -136,80 +138,79 @@ class Chat : public QWidget
 		int index;
 		int totaloccurences;
 		QString title_buffer;
-		QTimer *title_timer;  
+		QTimer* title_timer;  
 		QColor actcolor;
 		
-		EmoticonSelector *emoticon_selector;
-		ColorSelector *color_selector;
-		QPushButton *boldbtn;
-		QPushButton *italicbtn;
-		QPushButton *underlinebtn;
-		QPushButton *colorbtn;
-		QPushButton *iconsel;
-		QPushButton *autosend;
-		QPushButton *lockscroll;
-		QAccel *acc;
-		QPushButton *sendbtn;
-		UserBox *userbox;
+		EmoticonSelector* emoticon_selector;
+		ColorSelector* color_selector;
+		QPushButton* boldbtn;
+		QPushButton* italicbtn;
+		QPushButton* underlinebtn;
+		QPushButton* colorbtn;
+		QPushButton* iconsel;
+		QPushButton* autosend;
+		QPushButton* lockscroll;
+		QAccel* acc;
+		QPushButton* sendbtn;
+		UserBox* userbox;
 		QString myLastMessage;
 		int myLastFormatsLength;
-		void *myLastFormats;
+		void* myLastFormats;
 		int seq;
-
-		void pruneWindow(void);
 		KaduSplitter *vertSplit, *horizSplit;
 
+		void pruneWindow();
+
 	private slots:
-		void userWhois(void);
-		void emoticonSelectorClicked(void);
-		void changeColor(void);
-		void addMyMessageToHistory(void);
-		void clearChatWindow(void);
+		void userWhois();
+		void emoticonSelectorClicked();
+		void changeColor();
+		void addMyMessageToHistory();
+		void clearChatWindow();
 		void pageUp();
 		void pageDown();
 		void insertImage();
 		void imageReceivedAndSaved(UinType sender,uint32_t size,uint32_t crc32,const QString& path);
 
 	protected:
-		void closeEvent(QCloseEvent *);
+		void closeEvent(QCloseEvent*);
 		QString convertCharacters(QString,bool me);
 		virtual void windowActivationChange(bool oldActive);
-		void keyPressEvent(QKeyEvent *e);
+		void keyPressEvent(QKeyEvent* e);
 
 	public:
 		// FIXME - nie powinno byc publicznych zmiennych
 		QTextBrowser *body;
 		CustomInput *edit;
 		QHBox *buttontray;
-		//
 		/**
 			Rejestruje opcje modulu Chat w oknie konfiguracji.
 		**/
 		static void initModule();
-		Chat(UinsList uins, QWidget *parent = 0, const char *name = 0);
+		Chat(UinsList uins, QWidget* parent = 0, const char* name = 0);
 		~Chat();
 		static void registerButton(const QString& name,QObject* receiver,const QString& slot);
 		static void unregisterButton(const QString& name);
 		QPushButton* button(const QString& name);
 		void changeAppearance();
-		void setTitle(void);
-		void formatMessage(bool, const QString &, const QString &, const QString &, QString &);
-		void checkPresence(UinsList, const QString &, time_t, QString &);
+		void setTitle();
+		void formatMessage(bool, const QString&, const QString&, const QString&, QString&);
+		void checkPresence(UinsList, const QString&, time_t, QString&);
 		void writeMessagesFromHistory(UinsList, time_t);
 		void addEmoticon(QString);
-		void scrollMessages(QString &);
-		void alertNewMessage(void);
+		void scrollMessages(QString&);
+		void alertNewMessage();
 		/**
 			Zwraca liste numerow rozmowcow.
 		**/
 		const UinsList& uins();
 
 	public slots:
-		void HistoryBox(void);
-		void sendMessage(void);
-		void cancelMessage(void);
-		void writeMyMessage(void);
-		void changeTitle(void);
+		void HistoryBox();
+		void sendMessage();
+		void cancelMessage();
+		void writeMyMessage();
+		void changeTitle();
 		void toggledBold(bool on);
 		void toggledItalic(bool on);
 		void toggledUnderline(bool on);
@@ -263,15 +264,16 @@ class ColorSelectorButton : public QToolButton
 class ColorSelector : public QWidget
 {
 	Q_OBJECT
+
 	private slots:
 		void iconClicked(const QColor& color);
 
-	public:
-		ColorSelector(QWidget* parent = 0, const char *name = 0);
-		void alignTo(QWidget* w);
-
 	protected:
-		void closeEvent(QCloseEvent *);
+		void closeEvent(QCloseEvent*);
+
+	public:
+		ColorSelector(QWidget* parent = 0, const char* name = 0);
+		void alignTo(QWidget* w);
 
 	signals:
 		void aboutToClose();
@@ -281,10 +283,13 @@ class ColorSelector : public QWidget
 class ChatSlots :public QObject
 {
 	Q_OBJECT
-	public:
-		ChatSlots(QObject *parent=0, const char *name=0);
+
 	private:
 		void updatePreview();
+
+	public:
+		ChatSlots(QObject* parent=0, const char* name=0);
+
 	public slots:
 		void onCreateConfigDialog();
 		void onDestroyConfigDialog();
@@ -292,8 +297,8 @@ class ChatSlots :public QObject
 		void onDefWebBrowser(bool toggled);
 		void onPruneChat(bool toggled);
 		void onFoldLink(bool toggled);
-		void chooseColor(const char *name, const QColor &color);
-		void chooseFont(const char *name, const QFont &font);
+		void chooseColor(const char* name, const QColor& color);
+		void chooseFont(const char* name, const QFont& font);
 };
 
 #endif

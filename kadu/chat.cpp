@@ -26,7 +26,7 @@
 #include <math.h>
 #include <sys/stat.h>
 #include <stdlib.h>
-//
+
 #include "misc.h"
 #include "config_dialog.h"
 #include "config_file.h"
@@ -43,7 +43,8 @@
 #include "status.h"
 #include "message_box.h"
 
-ChatManager::ChatManager(QObject *parent, const char *name) : QObject(parent, name)
+ChatManager::ChatManager(QObject* parent, const char* name)
+	: QObject(parent, name)
 {
 }
 
@@ -307,17 +308,19 @@ void ChatManager::chatMsgReceived(UinsList senders,const QString& msg,time_t tim
 
 ChatManager* chat_manager=NULL;
 
-
 const char *colors[16] = {"#FF0000", "#A00000", "#00FF00", "#00A000", "#0000FF", "#0000A0", "#FFFF00",
 	"#A0A000", "#FF00FF", "#A000A0", "#00FFFF", "#00A0A0", "#FFFFFF", "#A0A0A0", "#808080", "#000000"};
 
-CustomInput::CustomInput(QWidget *parent, const char *name) : QMultiLineEdit(parent, name) {
+CustomInput::CustomInput(QWidget* parent, const char* name)
+	: QMultiLineEdit(parent, name)
+{
 	QStyleSheet *style=styleSheet();
 	style->item("p")->setMargin(QStyleSheetItem::MarginVertical, 0);
 	setStyleSheet(style);
 }
 
-void CustomInput::keyPressEvent(QKeyEvent * e) {
+void CustomInput::keyPressEvent(QKeyEvent* e)
+{
 //	kdebugf();
 	emit keyPressed(e, this);
 	if (autosend_enabled && ((HotKey::shortCut(e,"ShortCuts", "chat_newline")) || e->key()==Key_Enter)&& !(e->state() & ShiftButton))
@@ -359,21 +362,25 @@ void CustomInput::keyPressEvent(QKeyEvent * e) {
 	QWidget::keyPressEvent(e);
 }
 
-void CustomInput::setAutosend(bool on) {
+void CustomInput::setAutosend(bool on)
+{
 	autosend_enabled = on;
 }
 
-void CustomInput::paste() {
+void CustomInput::paste()
+{
 	pasteSubType("plain");
 }
 
 QValueList<Chat::RegisteredButton> Chat::RegisteredButtons;
 
-KaduSplitter::KaduSplitter(QWidget *parent, const char *name) : QSplitter (parent, name)
+KaduSplitter::KaduSplitter(QWidget* parent, const char* name)
+	: QSplitter (parent, name)
 {
 }
 
-KaduSplitter::KaduSplitter(Orientation o, QWidget *parent, const char *name) : QSplitter(o,parent,name)
+KaduSplitter::KaduSplitter(Orientation o, QWidget* parent, const char* name)
+	: QSplitter(o,parent,name)
 {
 }
 
@@ -401,10 +408,9 @@ void KaduSplitter::childEvent(QChildEvent *c)
 //	kdebugm(KDEBUG_INFO, "%d %d %p %p %s %s\n", c->inserted(), c->removed(), this, o, o->className(), o->name());
 }
 
-Chat::Chat(UinsList uins, QWidget *parent, const char *name)
- : QWidget(parent, name, Qt::WDestructiveClose),Uins(uins)
+Chat::Chat(UinsList uins, QWidget* parent, const char* name)
+	: QWidget(parent, name, Qt::WDestructiveClose), Uins(uins)
 {
-//	int i;
 	QValueList<int> sizes;
 
 	emoticon_selector = NULL;
@@ -607,7 +613,8 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	edit->setFocus();
 }
 
-Chat::~Chat() {
+Chat::~Chat()
+{
 	kdebugf();
 	chat_manager->unregisterChat(this);
 
@@ -659,9 +666,11 @@ QPushButton* Chat::button(const QString& name)
 	return NULL;
 }
 
-void Chat::specialKeyPressed(int key) {
+void Chat::specialKeyPressed(int key)
+{
 	kdebugf();
-	switch (key) {
+	switch (key)
+	{
 		case CustomInput::KEY_BOLD:
 			boldbtn->setOn(!boldbtn->isOn());
 			edit->setBold(boldbtn->isOn());
@@ -674,25 +683,29 @@ void Chat::specialKeyPressed(int key) {
 			underlinebtn->setOn(!underlinebtn->isOn());
 			edit->setUnderline(underlinebtn->isOn());
 			break;
-		}
+	}
 }
 
-void Chat::toggledBold(bool on) {
+void Chat::toggledBold(bool on)
+{
 	kdebugf();
 	edit->setBold(on);
 }
 
-void Chat::toggledItalic(bool on) {
+void Chat::toggledItalic(bool on)
+{
 	kdebugf();
 	edit->setItalic(on);
 }
 
-void Chat::toggledUnderline(bool on) {
+void Chat::toggledUnderline(bool on)
+{
 	kdebugf();
 	edit->setUnderline(on);
 }
 
-void Chat::curPosChanged(int para, int pos) {
+void Chat::curPosChanged(int para, int pos)
+{
 	int i;
 
 	kdebugf();
@@ -716,11 +729,13 @@ void Chat::curPosChanged(int para, int pos) {
 	
 }
 
-void Chat::pageUp() {
+void Chat::pageUp()
+{
 	body->scrollBy(0, (body->height() * -2) / 3);
 }
 
-void Chat::pageDown() {
+void Chat::pageDown()
+{
 	body->scrollBy(0, (body->height() * 2) / 3);
 }
 
@@ -743,34 +758,39 @@ void Chat::imageReceivedAndSaved(UinType sender,uint32_t size,uint32_t crc32,con
 	kdebugf2();
 }
 
-void Chat::changeAppearance() {
-	if (Uins.count() > 1 && userbox) {
+void Chat::changeAppearance()
+{
+	if (Uins.count() > 1 && userbox)
+	{
 		userbox->setPaletteBackgroundColor(config_file.readColorEntry("Look","UserboxBgColor"));
 		userbox->setPaletteForegroundColor(config_file.readColorEntry("Look","UserboxFgColor"));
 		userbox->QListBox::setFont(config_file.readFontEntry("Look","UserboxFont"));
-		}
+	}
 	body->setFont(config_file.readFontEntry("Look","ChatFont"));
 	edit->setFont(config_file.readFontEntry("Look","ChatFont"));
 }
 
-void Chat::setTitle() {
-
+void Chat::setTitle()
+{
 	QString title;
 
-	if (Uins.size() > 1) {
+	if (Uins.size() > 1)
+	{
 		kdebugm(KDEBUG_INFO, "Chat::setTitle(): Uins.size() > 1\n");
 		if (config_file.readEntry("Look","ConferencePrefix").isEmpty())
 			title = tr("Conference with ");
 		else
 			title = config_file.readEntry("Look","ConferencePrefix");
 		title.append(parse(config_file.readEntry("Look","ConferenceContents"),userlist.byUinValue(Uins[0]),false));
-		for (unsigned int k = 1; k < Uins.size(); k++) {
+		for (unsigned int k = 1; k < Uins.size(); k++)
+		{
 			title.append(", ");
 			title.append(parse(config_file.readEntry("Look","ConferenceContents"),userlist.byUinValue(Uins[k]),false));
 		}
 		setIcon(icons_manager.loadIcon("Online"));
 	}
-	else {
+	else
+	{
 		kdebugm(KDEBUG_INFO, "Chat::setTitle()\n");
 		if (config_file.readEntry("Look","ChatContents").isEmpty())
 			title = parse(tr("Chat with ")+"%a (%s[: %d])",userlist.byUinValue(Uins[0]),false);
@@ -786,8 +806,10 @@ void Chat::setTitle() {
 	title_buffer = title;
 }
 
-void Chat::changeTitle() {
-	if(!isActiveWindow()){
+void Chat::changeTitle()
+{
+	if(!isActiveWindow())
+	{
 		if (caption() == "  ")
 			setCaption(title_buffer);
 		else
@@ -796,14 +818,17 @@ void Chat::changeTitle() {
 	}
 }
 
-void Chat::windowActivationChange(bool oldActive) {
-	if (isActiveWindow() && title_timer->isActive()){
+void Chat::windowActivationChange(bool oldActive)
+{
+	if (isActiveWindow() && title_timer->isActive())
+	{
 		title_timer->stop();
 		setCaption(title_buffer);
 	}
 }
 
-void Chat::keyPressEvent(QKeyEvent *e) {
+void Chat::keyPressEvent(QKeyEvent* e)
+{
 	if (HotKey::shortCut(e,"ShortCuts", "chat_clear"))
 		clearChatWindow();
 	else if (HotKey::shortCut(e,"ShortCuts", "chat_close"))
@@ -816,8 +841,8 @@ void Chat::keyPressEvent(QKeyEvent *e) {
 }
 
 /* convert special characters into emoticons, HTML into plain text and so forth */
-QString Chat::convertCharacters(QString edit, bool me) {
-
+QString Chat::convertCharacters(QString edit, bool me)
+{
 	// zmieniamy windowsowe \r\n na unixowe \n
 	edit.replace( QRegExp("\r\n"), "<br/>" );
 	edit.replace( QRegExp("\n"), "<br/>" );
@@ -842,13 +867,15 @@ QString Chat::convertCharacters(QString edit, bool me) {
 }
 
 /* unregister us */
-void Chat::closeEvent(QCloseEvent *e) {
+void Chat::closeEvent(QCloseEvent* e)
+{
 	kdebugf();	
 	QWidget::closeEvent(e);
 }
 
 /* look up party's info */
-void Chat::userWhois(void) {
+void Chat::userWhois()
+{
 	UinType uin;
 	
 	if (!userbox)
@@ -863,7 +890,8 @@ void Chat::userWhois(void) {
 	sd->firstSearch();
 }
 
-void Chat::formatMessage(bool me, const QString &altnick, const QString &msg, const QString &time, QString &toadd) {
+void Chat::formatMessage(bool me, const QString &altnick, const QString &msg, const QString &time, QString &toadd)
+{
 	QString editext = convertCharacters(msg,me);
 
 	toadd.append("<table width=\"100%\"><tr><td bgcolor=\"");
@@ -958,20 +986,22 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time)
 }
 
 /* invoked from outside when new message arrives, this is the window to the world */
-void Chat::checkPresence(UinsList senders, const QString &msg, time_t time, QString &toadd) {
+void Chat::checkPresence(UinsList senders, const QString &msg, time_t time, QString &toadd)
+{
 	formatMessage(false, userlist.byUin(senders[0]).altnick, msg, timestamp(time), toadd);
 
 	scrollMessages(toadd);
 }
 
-void Chat::alertNewMessage(void) {
-
+void Chat::alertNewMessage()
+{
 	if (config_file.readBoolEntry("Chat","BlinkChatTitle"))
 		if (!isActiveWindow() && !title_timer->isActive())
 			changeTitle();
 }
 
-void Chat::writeMyMessage() {
+void Chat::writeMyMessage()
+{
 	QString toadd;
 	formatMessage(true,config_file.readEntry("General","Nick"), myLastMessage, timestamp(), toadd);
 	scrollMessages(toadd);
@@ -986,20 +1016,20 @@ void Chat::writeMyMessage() {
 		edit->setUnderline(true);
 }
 
-void Chat::addMyMessageToHistory() {
-	int uin;
-
-	uin = Uins[0];
+void Chat::addMyMessageToHistory()
+{
 	if (config_file.readBoolEntry("General","Logging"))
-		history.appendMessage(Uins, uin, myLastMessage, true);
+		history.appendMessage(Uins, Uins[0], myLastMessage, true);
 }
 
-void Chat::clearChatWindow(void) {
+void Chat::clearChatWindow()
+{
 	body->clear();
 	totaloccurences = 0;
 }
 
-void Chat::cancelMessage(void) {
+void Chat::cancelMessage()
+{
 	seq = 0;
 	disconnect(&event_manager, SIGNAL(ackReceived(int)),
 		this, SLOT(ackReceivedSlot(int)));
@@ -1012,20 +1042,22 @@ void Chat::cancelMessage(void) {
 	sendbtn->setText(tr("&Send"));
 }
 
-void Chat::ackReceivedSlot(int Seq) {
+void Chat::ackReceivedSlot(int Seq)
+{
 	kdebugf();
 	if (seq != Seq)
 		return;
 	kdebugm(KDEBUG_INFO, "Chat::ackReceivedSlot(): This is my ack.\n");
 	writeMyMessage();
+	addMyMessageToHistory();
 	seq = 0;
 	disconnect(&event_manager, SIGNAL(ackReceived(int)),
 		this, SLOT(ackReceivedSlot(int)));
 }
 
 /* sends the message typed */
-void Chat::sendMessage(void) {
-
+void Chat::sendMessage()
+{
 	if (edit->text() == "")
 		return;
 	
@@ -1060,8 +1092,6 @@ void Chat::sendMessage(void) {
 		return;
 	}
 
-	addMyMessageToHistory();
-
 	QCString msg = unicode2cp(mesg);
 	
 	bool stop=false;
@@ -1074,7 +1104,6 @@ void Chat::sendMessage(void) {
 		MessageBox::wrn(tr("Filtered message too long (%1>=%2)").arg(mesg.length()).arg(2000));
 		return;
 	}
-
 
 	if (config_file.readBoolEntry("Chat","MessageAcks")) {
 		edit->setReadOnly(true);	
@@ -1090,22 +1119,26 @@ void Chat::sendMessage(void) {
 	else
 		seq = gadu->sendMessage(Uins, msg);
 
- 	if (config_file.readBoolEntry("Chat","MessageAcks"))
-		connect(&event_manager, SIGNAL(ackReceived(int)), this, SLOT(ackReceivedSlot(int)));
-	else
-		writeMyMessage();
-
 	if (myLastFormats)
 		delete [](char *)myLastFormats;
 
 	if (sess->check & GG_CHECK_WRITE)
 		kadusnw->setEnabled(true);
-		
+
+ 	if (config_file.readBoolEntry("Chat","MessageAcks"))
+		connect(&event_manager, SIGNAL(ackReceived(int)), this, SLOT(ackReceivedSlot(int)));
+	else
+	{
+		writeMyMessage();
+		addMyMessageToHistory();
+	}
+	
 	emit messageSent(this);
 }
 
 /* prunes messages */
-void Chat::pruneWindow(void) {
+void Chat::pruneWindow()
+{
 	int index,occurences;
 
 	occurences = 0;
@@ -1138,14 +1171,15 @@ void Chat::pruneWindow(void) {
 }
 
 /* opens messages history */
-void Chat::HistoryBox(void) {
+void Chat::HistoryBox()
+{
 	History *hb;
 
 	hb = new History(Uins);
 	hb->show();
 }
 
-void Chat::emoticonSelectorClicked(void)
+void Chat::emoticonSelectorClicked()
 {
 	//emoticons_selector zawsze bêdzie NULLem gdy wchodzimy do tej funkcji
 	//bo EmoticonSelector ma ustawione flagi Qt::WDestructiveClose i Qt::WType_Popup
@@ -1155,7 +1189,7 @@ void Chat::emoticonSelectorClicked(void)
 	emoticon_selector->show();
 }
 
-void Chat::changeColor(void)
+void Chat::changeColor()
 {
 	//sytuacja podobna jak w przypadku emoticon_selectora
 	color_selector = new ColorSelector(this, "color_selector");
@@ -1165,7 +1199,8 @@ void Chat::changeColor(void)
 	connect(color_selector, SIGNAL(aboutToClose()), this, SLOT(colorSelectorAboutToClose()));
 }
 
-void Chat::colorSelectorAboutToClose() {
+void Chat::colorSelectorAboutToClose()
+{
 	kdebugf();
 	color_selector = NULL;
 }
@@ -1324,7 +1359,8 @@ void ColorSelectorButton::buttonClicked()
 	emit clicked(color);
 }
 
-ColorSelector::ColorSelector(QWidget *parent, const char *name) : QWidget (parent, name,Qt::WType_Popup|Qt::WDestructiveClose)
+ColorSelector::ColorSelector(QWidget* parent, const char* name)
+	: QWidget (parent, name,Qt::WType_Popup|Qt::WDestructiveClose)
 {
 	QValueList<QColor> qcolors;
 	int i;
@@ -1352,7 +1388,8 @@ void ColorSelector::iconClicked(const QColor& color)
 	close();
 }
 
-void ColorSelector::closeEvent(QCloseEvent *e) {
+void ColorSelector::closeEvent(QCloseEvent* e)
+{
 	kdebugf();
 	emit aboutToClose();
 	QWidget::closeEvent(e);
@@ -1388,7 +1425,8 @@ void ColorSelector::alignTo(QWidget* w)
 	move(x, y);
 }
 
-ChatSlots::ChatSlots(QObject *parent, const char *name) : QObject(parent, name)
+ChatSlots::ChatSlots(QObject* parent, const char* name)
+	: QObject(parent, name)
 {
 }
 
@@ -1479,7 +1517,7 @@ void ChatSlots::onDestroyConfigDialog()
 		config_file.writeEntry("Look", "ConferencePrefix", "");
 }
 
-void ChatSlots::chooseColor(const char *name, const QColor &color)
+void ChatSlots::chooseColor(const char* name, const QColor& color)
 {
 	kdebugf();
 	QLabel *preview1= ConfigDialog::getLabel("Look", "<b>Me</b> 00:00:00", "chat_me");
@@ -1496,7 +1534,7 @@ void ChatSlots::chooseColor(const char *name, const QColor &color)
 		kdebugm(KDEBUG_ERROR, "chooseColor: label '%s' not known!\n", name);
 }
 
-void ChatSlots::chooseFont(const char *name, const QFont &font)
+void ChatSlots::chooseFont(const char* name, const QFont& font)
 {
 	kdebugf();
 	QLabel *preview1= ConfigDialog::getLabel("Look", "<b>Me</b> 00:00:00", "chat_me");
@@ -1508,7 +1546,8 @@ void ChatSlots::chooseFont(const char *name, const QFont &font)
 	}
 }
 
-void ChatSlots::chooseEmoticonsStyle(int index) {
+void ChatSlots::chooseEmoticonsStyle(int index)
+{
 	QComboBox *emotheme_box= ConfigDialog::getComboBox("Chat","Emoticons theme");
 	emotheme_box->setEnabled(index!=0);
 }
