@@ -127,16 +127,16 @@ class SelectFont : public QHBox
 		QLineEdit *fontEdit;
 };
 
-class SelectPaths : public QDialog
+class SelectPaths : public QHBox
 {	
 	Q_OBJECT
 	protected:
 		QStringList releaseList;
 		QListBox *pathListBox;
-		QPushButton *ok, *cancel;
-		QPushButton *add, *change, *remove;
+		QPushButton *pb_ok, *pb_cancel;
+		QPushButton *pb_add, *pb_change, *pb_remove;
 		QLineEdit *pathEdit;
-		QPushButton *findPath;
+		QPushButton *pb_choose;
 	protected slots:
 		void okButton();
 		void cancelButton();
@@ -173,7 +173,7 @@ class SelectPaths : public QDialog
 /**
 	Okno z konfiguracj± Kadu
 **/
-class ConfigDialog : public QDialog	{
+class ConfigDialog : public QVBox {
 	Q_OBJECT
 
 	private:

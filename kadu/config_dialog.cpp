@@ -19,7 +19,6 @@
 #include "config_dialog.h"
 #include "misc.h"
 #include "debug.h"
-#include "kadu.h"
 
 QString ConfigDialog::acttab = QT_TRANSLATE_NOOP("@default", "General");
 ConfigDialog *ConfigDialog::configdialog = NULL;
@@ -35,9 +34,9 @@ bool ConfigDialog::ElementConnections::operator== (const ElementConnections& r) 
 	return (signal==r.signal && receiver==r.receiver && slot==r.slot);
 }
 
-void ConfigDialog::showConfigDialog(QApplication* application) {
+void ConfigDialog::showConfigDialog(QApplication* application) 
+{
 	kdebugf();
-	ConfigDialog *cd;
 	
 	if (configdialog)
 	{
@@ -45,10 +44,7 @@ void ConfigDialog::showConfigDialog(QApplication* application) {
 		configdialog->raise();
 	}
 	else 	
-	{
-		cd = new ConfigDialog(application, kadu, "config_dialog");
-		cd->show();
-	}
+		(new ConfigDialog(application))->show();
 	kdebugf2();
 }
 
@@ -63,38 +59,53 @@ void ConfigDialog::closeDialog()
 	kdebugf2();
 }
 
-ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const char *name) : QDialog(parent, name) {
+ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const char *name)
+{
 	kdebugf();
 
 	ConfigDialog::appHandle=application;
 	setWFlags(Qt::WDestructiveClose);
-	QGridLayout* dialogLayout=new QGridLayout(this, 1, 1, 11, 6);
-	listBox= new QListBox(this);
-	view = new QScrollView(this);
+	
+	configdialog = this;
+	
+	setCaption(tr("Kadu configuration"));
+		
+	QHBox *center = new QHBox(this);
+	center->setMargin(10);
+	center->setSpacing(10);
+	
+	QVBox *left = new QVBox(center);
+	
+	listBox = new QListBox(left);
+	listBox->setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)0, (QSizePolicy::SizeType)7, 0, 0, 
+	listBox->sizePolicy().hasHeightForWidth()));
+	
+	QVGroupBox* vgb_viewcontainer = new QVGroupBox(center);
+	
+	view = new QScrollView(vgb_viewcontainer);
 	view->setResizePolicy(QScrollView::AutoOneFit);
-
+	view->setFrameStyle(QFrame::NoFrame);
+ 
 	QVGroupBox* box= new QVGroupBox(view);
+	box->setFrameStyle(QFrame::NoFrame);
 	view->addChild(box);
+	
+	int actualtab = 0;
+	int nexttab = 0;
+	int actualparent = 0;
+	QString actualparentname = "";
+	int num = 0;
 
-	dialogLayout->addWidget(listBox, 0, 0);
-	dialogLayout->addWidget(view, 0, 1);
-
-	int actualtab= 0;
-	int nexttab= 0;
-	int actualparent=0;
-	QString actualparentname= "";
-	int num=0;
-
-	QValueList<RegisteredControl>::iterator i=RegisteredControls.begin();
-	while (i!=RegisteredControls.end())
+	QValueList<RegisteredControl>::iterator i = RegisteredControls.begin();
+	while (i != RegisteredControls.end())
 	{
-		if((*i).type==CONFIG_DELETED)
-			i=RegisteredControls.remove(i);
+		if((*i).type == CONFIG_DELETED)
+			i = RegisteredControls.remove(i);
 		else
 			i++;
 	}
 
-	for(QValueList<RegisteredControl>::iterator i=RegisteredControls.begin(); i!=RegisteredControls.end(); i++, num++)
+	for(QValueList<RegisteredControl>::iterator i = RegisteredControls.begin(); i != RegisteredControls.end(); i++, num++)
 	{
 // wyswietla cala liste 
 //		kdebugm(KDEBUG_DUMP, "%d: (%d) "+(*i).group+"->"+(*i).parent+"->"+(*i).caption+"->"+(*i).name+"\n", num, (*i).nrOfControls);
@@ -336,30 +347,32 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 
 
 	listBox->setCurrentItem(listBox->findItem(appHandle->translate("@default",acttab)));
+	
+	// buttons
+	QHBox *bottom = new QHBox(this);
+	bottom->setMargin(10);
+	bottom->setSpacing(5);
+	QWidget *blank2 = new QWidget(bottom);
+	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 
-	listBox->setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)0, (QSizePolicy::SizeType)7, 0, 0, listBox->sizePolicy().hasHeightForWidth()));
-	
-	QHBox* buttonbox= new QHBox(this);
-	okButton= new QPushButton(tr("Ok"), buttonbox, "configdialog_ok_button");
-	applyButton = new QPushButton(tr("Apply"), buttonbox, "configdialog_apply_button");
-	cancelButton= new QPushButton(tr("Cancel"), buttonbox, "configdialog_cancel_button");
-	
-	dialogLayout->addWidget(buttonbox, 1, 1,Qt::AlignRight);
+	okButton = new QPushButton(icons_manager.loadIcon("OkWindowButton"), tr("Ok"), bottom);
+	applyButton = new QPushButton(icons_manager.loadIcon("ApplyWindowButton"), tr("Apply"), bottom);
+	cancelButton = new QPushButton(icons_manager.loadIcon("CloseWindowButton"), tr("Cancel"), bottom);
 	
 	connect(okButton, SIGNAL(clicked()), this, SLOT(updateAndCloseConfig()));
 	connect(applyButton, SIGNAL(clicked()), this, SLOT(updateConfig()));
 	connect(cancelButton, SIGNAL(clicked()), this, SLOT(close()));
 
+	// end buttons
+	
 	connect(listBox, SIGNAL(highlighted(const QString&)), this, SLOT(changeTab(const QString&)));
 	
-	setCaption(tr("Kadu configuration"));
-
-	loadGeometry(this, "General", "ConfigGeometry", 0, 0, 790, 480);
-
+	changeTab(appHandle->translate("@default",acttab));
+ 
 	configdialog = this;
 	emit create();
 
-	changeTab(appHandle->translate("@default",acttab));
+	loadGeometry(this, "General", "ConfigGeometry", 0, 0, 790, 480);
 	kdebugf2();
 }
 
@@ -1331,42 +1344,76 @@ void ColorButton::setColor(const QColor &color)
 	}	
 }
 
-SelectPaths::SelectPaths(QWidget *parent, const char* name): QDialog(parent, name)
-{	
+SelectPaths::SelectPaths(QWidget *parent, const char* name)
+{
 	kdebugf();
+	setWFlags(Qt::WDestructiveClose);
 	setCaption(tr("Select paths"));
-	QGridLayout *layout= new QGridLayout(this, 1,0, 5, 10);
-	
-	QVBox *vertical=new QVBox(this);
-	pathListBox= new QListBox(vertical);
-	pathListBox->setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding));
-	QHBox *buttons= new QHBox(vertical);
-	add= new QPushButton(tr("Add"), buttons);
-	change= new QPushButton(tr("Replace"), buttons);
-	remove= new QPushButton(tr("Remove"), buttons);
 
-	QHBox *editpath=new QHBox(this);
-	pathEdit= new QLineEdit(editpath);
-	findPath= new QPushButton(tr("Choose"), editpath);
-
-	QHBox *okcancel=new QHBox(this);
-	ok= new QPushButton(tr("Ok"), okcancel);
-	ok->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
-	cancel= new QPushButton(tr("Cancel"), okcancel);
-	cancel->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
+	// create main QLabel widgets (icon and app info)
+	QVBox *left=new QVBox(this);
+	left->setMargin(10);
+	left->setSpacing(10);
 	
-	layout->addWidget(vertical, 0, 0);
-	layout->addWidget(editpath, 1, 0);
-	layout->addWidget(okcancel, 2, 0, Qt::AlignRight);
-	connect(cancel, SIGNAL(clicked()), this, SLOT(hide()));
-	connect(ok, SIGNAL(clicked()), this, SLOT(okButton()));
-	connect(cancel, SIGNAL(clicked()), this, SLOT(cancelButton()));
-	connect(change, SIGNAL(clicked()), this, SLOT(replacePath()));
-	connect(add, SIGNAL(clicked()), this, SLOT(addPath()));
-	connect(remove, SIGNAL(clicked()), this, SLOT(deletePath()));
-	connect(findPath, SIGNAL(clicked()), this, SLOT(choosePath()));
-	connect(pathEdit, SIGNAL(returnPressed()), this, SLOT(addPath()));
-	resize(330,330);
+	QLabel *l_icon = new QLabel(left);
+	QWidget *blank=new QWidget(left);
+	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
+	
+	QVBox *center=new QVBox(this);
+	center->setMargin(10);
+	center->setSpacing(10);
+	
+	QLabel *l_info = new QLabel(center);
+	l_icon->setPixmap(icons_manager.loadIcon("SelectPathWindowIcon"));
+	l_info->setText(tr("This dialog box allows you to choose directories in which kadu will look for icons or sounds."));
+	l_info->setAlignment(Qt::WordBreak);
+	// end create main QLabel widgets (icon and app info)
+	
+	//our QVGroupBox
+	QVGroupBox *vgb_pathlist = new QVGroupBox(center);
+	vgb_pathlist->setTitle(tr("Paths"));
+	QVGroupBox *vgb_pathtoadd = new QVGroupBox(center);
+	vgb_pathtoadd->setTitle(tr("Path to add"));
+	center->setStretchFactor(vgb_pathlist, 1);
+	//end our QGroupBox
+	
+	// create needed fields
+	QHBox *hb_pathlist = new QHBox(vgb_pathlist);
+	hb_pathlist->setSpacing(5);
+	pathListBox = new QListBox(hb_pathlist);
+	hb_pathlist->setStretchFactor(pathListBox, 1);
+	QVBox *vb_managebuttons = new QVBox(hb_pathlist);
+	vb_managebuttons->setSpacing(5);
+	pb_add = new QPushButton(icons_manager.loadIcon("AddSelectPathDialogButton"), tr("Add"), vb_managebuttons, "add");
+	pb_change = new QPushButton(icons_manager.loadIcon("ChangeSelectPathDialogButton"), tr("Change"), vb_managebuttons, "change");
+	pb_remove = new QPushButton(icons_manager.loadIcon("RemoveSelectPathDialogButton"), tr("Remove"), vb_managebuttons, "remove");
+	QWidget *w_managebuttons = new QWidget(vb_managebuttons);
+	vb_managebuttons->setStretchFactor(w_managebuttons, 1);
+	
+	QHBox *hb_selectpath = new QHBox(vgb_pathtoadd);
+	hb_selectpath ->setSpacing(5);
+	pathEdit = new QLineEdit(hb_selectpath);
+	pb_choose = new QPushButton(icons_manager.loadIcon("ChooseSelectPathDialogButton"), tr("Choose"), hb_selectpath, "choose");
+	hb_selectpath->setStretchFactor(pathEdit, 1);
+	// end create needed fields
+
+	// buttons
+	QHBox *bottom = new QHBox(center);
+	QWidget *blank2 = new QWidget(bottom);
+	bottom->setSpacing(5);
+	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
+	pb_ok = new QPushButton(icons_manager.loadIcon("OkWindowButton"), tr("OK"), bottom, "ok");
+	pb_cancel = new QPushButton(icons_manager.loadIcon("CancelWindowButton"), tr("&Cancel"), bottom, "cancel");
+	// end buttons
+
+	connect(pb_ok, SIGNAL(clicked()), this, SLOT(okButton()));
+	connect(pb_cancel, SIGNAL(clicked()), this, SLOT(cancelButton()));
+	connect(pb_choose, SIGNAL(clicked()), this, SLOT(choosePath()));
+	connect(pb_change, SIGNAL(clicked()), this, SLOT(replacePath()));
+	connect(pb_add, SIGNAL(clicked()), this, SLOT(addPath()));
+	connect(pb_remove, SIGNAL(clicked()), this, SLOT(deletePath()));
+
+	loadGeometry(this, "General", "SelectPathDialogGeometry", 0, 0, 330, 330);
 	kdebugf2();
 }
 
@@ -1401,6 +1448,7 @@ void SelectPaths::addPath()
 				pathListBox->insertItem(dirtoadd);
 		}
 	pathListBox->setSelected(pathListBox->currentItem(),true);
+	pathEdit->setText(NULL);
 	kdebugf2();
 }
 
@@ -1474,6 +1522,7 @@ void SelectPaths::cancelButton()
 void SelectPaths::closeEvent(QCloseEvent *e)
 {
 	e->ignore();
+	saveGeometry(this, "General", "SelectPathDialogGeometry");
 	cancelButton();
 }
 
