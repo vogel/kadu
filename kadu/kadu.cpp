@@ -957,6 +957,7 @@ void Kadu::openChat()
 					timestamp(elem.time), toadd);
 				pending.deleteMsg(i);
 				i--;
+				uins = elem.uins;
 				stop = true;
 				}
 		}
@@ -1393,8 +1394,6 @@ void Kadu::sendMessage(QListBoxItem *item) {
 	QString tmp;
 	int i, j, k = -1, l;
 	bool stop = false;
-/*	rMessage *rmsg;
-	Message *msg; */
 	UinsList uins;
 	PendingMsgs::Element elem;
 	UserListElement e;
@@ -1403,7 +1402,6 @@ void Kadu::sendMessage(QListBoxItem *item) {
 	QString toadd;
 	bool msgsFromHist = false;
 
-	uins = userbox->getSelectedUins();
 	uin = userlist.byAltNick(item->text()).uin;
 
 	if (!uin) {
@@ -1460,19 +1458,6 @@ void Kadu::sendMessage(QListBoxItem *item) {
 				i--;
 				stop = true;
 				}
-	    	/*	else {
-				if (!stop) {
-  		    			rmsg = new rMessage(item->text(),
-						elem.msgclass, elem.uins, elem.msg);
-					deletePendingMessage(i);
-					UserBox::all_refresh();
-					rmsg->init();
-					rmsg->show();
-					}
-				else
-					chats[k].ptr->scrollMessages(toadd);
-				return;
-				}*/
 		}
 
 	if (stop) {
@@ -1480,23 +1465,14 @@ void Kadu::sendMessage(QListBoxItem *item) {
 		UserBox::all_refresh();
 		return;
 		}
-
-//	if (!uins.count())
-//		uins.append(userlist.byAltNick(item->text()).uin);
-
-/*	if (uins.count() > 1 || (userlist.byUin(uins[0]).status != GG_STATUS_NOT_AVAIL
-		&& userlist.byUin(uins[0]).status != GG_STATUS_NOT_AVAIL_DESCR))
-		openChat(uins);
 	else {
-		msg = new Message(item->text());
-		msg->init();
-		msg->show();
-		}*/
-//	zawsze otwieraja sie czaty
-	l = chats.count();
-	k = openChat(uins);
-	if (!msgsFromHist && l < chats.count())
-		chats[k].ptr->writeMessagesFromHistory(uins, 0);
+		// zawsze otwieraja sie czaty
+		uins = userbox->getSelectedUins();
+		l = chats.count();
+		k = openChat(uins);
+		if (!msgsFromHist && l < chats.count())
+			chats[k].ptr->writeMessagesFromHistory(uins, 0);
+		}
 }
 
 /* when we want to change the status */
