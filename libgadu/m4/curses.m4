@@ -1,5 +1,5 @@
 dnl Rewritten from scratch. --wojtekka
-dnl $Id: curses.m4,v 1.4 2002/09/22 19:23:37 chilek Exp $
+dnl $Id: curses.m4,v 1.5 2002/09/28 00:13:01 chilek Exp $
 
 AC_DEFUN(AC_CHECK_NCURSES,[
   AC_SUBST(CURSES_LIBS)
@@ -23,7 +23,7 @@ AC_DEFUN(AC_CHECK_NCURSES,[
 		/usr/contrib/include:-L/usr/contrib/lib \
 		/usr/freeware/include:-L/usr/freeware/lib32 \
     		/sw/include:-L/sw/lib \
-    		/cw/include:-L/sw/lib; do
+    		/cw/include:-L/cw/lib; do
 	
       incl=`echo "$i" | sed 's/:.*//'`
       lib=`echo "$i" | sed 's/.*://'`
@@ -41,7 +41,7 @@ AC_DEFUN(AC_CHECK_NCURSES,[
 	have_ncurses=true
 	ldflags_old="$LDFLAGS"
 	LDFLAGS="$CURSES_LIBS"
-	AC_DEFINE(HAVE_NCURSES)
+	AC_DEFINE(HAVE_NCURSES, 1, [define if You want ncurses])
 	AC_CHECK_LIB(ncurses, initscr,
 	  [CURSES_LIBS="$CURSES_LIBS -lncurses"],
 	  [AC_CHECK_LIB(curses, initscr,

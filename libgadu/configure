@@ -2873,6 +2873,7 @@ echo "$as_me: error: You need ncurses and ncurses-devel packages." >&2;}
     fi
 
     LIBS="$LIBS $CURSES_LIBS"
+    LDFLAGS="$LDFLAGS $CURSES_LIBS"
     CFLAGS="$CFLAGS $CURSES_INCLUDES"
   fi
 
@@ -2943,15 +2944,17 @@ fi
 echo "$as_me:$LINENO: result: $ac_cv_lib_termcap_tgetent" >&5
 echo "${ECHO_T}$ac_cv_lib_termcap_tgetent" >&6
 if test $ac_cv_lib_termcap_tgetent = yes; then
-  TERMCAP_LIB=-ltermcap
+  TERMCAP_LIB="-ltermcap"
 fi
 
       LIBS="$LIBS $TERMCAP_LIB"
+      LDFLAGS="$LDFLAGS $TERMCAP_LIB"
     fi
 
     if test "x$TERMCAP_LIB" = "x" -a "x$CURSES_LIBS" = "x"; then
       AC_CHECK_NCURSES
       LIBS="$LIBS $CURSES_LIBS"
+      LDFLAGS="$LDFLAGS $CURSES_LIBS"
       CFLAGS="$CFLAGS $CURSES_INCLUDES"
     fi
 
@@ -2964,6 +2967,7 @@ echo "$as_me: error: You need both readline and readline-devel packages." >&2;}
     fi
 
     LIBS="$READLINE_LIBS $LIBS"
+    LDFLAGS="$READLINE_LIBS $LDFLAGS"
     CFLAGS="$CFLAGS $READLINE_INCLUDES"
 
 
@@ -3758,9 +3762,9 @@ fi
   AC_CHECK_PYTHON
 
   if test "x$have_python" = "xtrue"; then
-      python_o="python.o"
-      LIBS="$LIBS $PYTHON_LIBS"
-      CFLAGS="$CFLAGS $PYTHON_INCLUDES"
+    python_o="python.o"
+    LIBS="$LIBS $PYTHON_LIBS"
+    CFLAGS="$CFLAGS $PYTHON_INCLUDES"
   fi
 
   # sprawdzamy libz.so, <zlib.h>

@@ -1,4 +1,4 @@
-/* $Id: libgadu.h,v 1.8 2002/09/22 19:23:37 chilek Exp $ */
+/* $Id: libgadu.h,v 1.9 2002/09/28 00:13:01 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>,
@@ -650,7 +650,7 @@ uint16_t gg_fix16(uint16_t x);
 #define GG_DEFAULT_PROTOCOL_VERSION 0x18
 #define GG_DEFAULT_TIMEOUT 30
 #define GG_HAS_AUDIO_MASK 0x40000000
-#define GG_LIBGADU_VERSION "20020921"
+#define GG_LIBGADU_VERSION "20020927"
 
 #define GG_DEFAULT_DCC_PORT 1550
 
@@ -713,7 +713,7 @@ struct gg_login_ext {
 
 #define GG_STATUS_FRIENDS_MASK 0x8000		/* tylko dla znajomych (4.6) */
 
-#define GG_STATUS_DESCR_MAXSIZE 40
+#define GG_STATUS_DESCR_MAXSIZE 45
 
 /*
  * makra do szybkiego sprawdzania stanu. ich znaczenie powinno byæ jasne.
