@@ -252,6 +252,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   debuguj±cych (joi)
 * przy instalacji usuwane s± stare modu³y z docelowego katalogu (adrian)
 * modu³y zgodne z funkcjonalno¶ci± kadu 0.3.7 domy¶lnie statyczne (adrian)
+* obs³uga konfliktów pomiêdzy modu³ami (Conflicts= w nazwa_modu³u.desc) (joi)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

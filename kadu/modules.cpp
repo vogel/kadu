@@ -186,8 +186,9 @@ void ModulesDialog::getInfo()
 				"<b>Module:</b>"
 				"<br/>%1<br/>"
 				"<b>Depends on:</b><br/>").arg(item->text());
-		for (QStringList::Iterator it = info.depends.begin(); it != info.depends.end(); ++it)
-			message+=QString("%1\n").arg((*it));
+		message+=info.depends.join("\n");
+		message+=tr("<br/><b>Conflicts with:</b><br/>");
+		message+=info.conflicts.join("\n");
 		message+=tr(
 				"<br/><b>Author:</b><br/>"
 				"%1<br/>"
@@ -321,7 +322,7 @@ void ModulesManager::registerStaticModule(const QString& module_name,
 	StaticModules.insert(module_name,m);
 }
 
-QStringList ModulesManager::staticModules()
+QStringList ModulesManager::staticModules() const
 {
 	QStringList static_modules;
 	for (QMap<QString,StaticModule>::const_iterator i=StaticModules.begin(); i!=StaticModules.end(); i++)
@@ -329,7 +330,7 @@ QStringList ModulesManager::staticModules()
 	return static_modules;
 }
 
-QStringList ModulesManager::installedModules()
+QStringList ModulesManager::installedModules() const
 {
 	QDir dir(dataPath("kadu/modules"),"*.so");
 	dir.setFilter(QDir::Files);
@@ -342,7 +343,7 @@ QStringList ModulesManager::installedModules()
 	return installed;
 }
 
-QStringList ModulesManager::loadedModules()
+QStringList ModulesManager::loadedModules() const
 {
 	QStringList loaded;
 	for (QMap<QString,Module>::const_iterator i=Modules.begin(); i!=Modules.end(); i++)
@@ -351,7 +352,7 @@ QStringList ModulesManager::loadedModules()
 	return loaded;
 }
 
-QStringList ModulesManager::unloadedModules()
+QStringList ModulesManager::unloadedModules() const
 {
 	QStringList installed=installedModules();
 	QStringList loaded=loadedModules();
@@ -365,7 +366,7 @@ QStringList ModulesManager::unloadedModules()
 	return unloaded;
 }
 
-QStringList ModulesManager::activeModules()
+QStringList ModulesManager::activeModules() const
 {
 	QStringList active;
 	for (QMap<QString,Module>::const_iterator i=Modules.begin(); i!=Modules.end(); i++)
@@ -373,7 +374,7 @@ QStringList ModulesManager::activeModules()
 	return active;
 }
 
-bool ModulesManager::moduleInfo(const QString& module_name, ModuleInfo& info)
+bool ModulesManager::moduleInfo(const QString& module_name, ModuleInfo& info) const
 {
 	if(Modules.contains(module_name))
 	{
@@ -394,25 +395,28 @@ bool ModulesManager::moduleInfo(const QString& module_name, ModuleInfo& info)
 	info.depends = QStringList::split(" ",
 		desc_file.readEntry("Module", "Dependencies"));
 
+	info.conflicts=QStringList::split(" ",
+		desc_file.readEntry("Module", "Conflicts"));
+
 	return true;
 }
 
-bool ModulesManager::moduleIsStatic(const QString& module_name)
+bool ModulesManager::moduleIsStatic(const QString& module_name) const
 {
 	return staticModules().contains(module_name);
 }
 
-bool ModulesManager::moduleIsInstalled(const QString& module_name)
+bool ModulesManager::moduleIsInstalled(const QString& module_name) const
 {
 	return installedModules().contains(module_name);
 }
 
-bool ModulesManager::moduleIsLoaded(const QString& module_name)
+bool ModulesManager::moduleIsLoaded(const QString& module_name) const
 {
 	return loadedModules().contains(module_name);
 }
 
-bool ModulesManager::moduleIsActive(const QString& module_name)
+bool ModulesManager::moduleIsActive(const QString& module_name) const
 {
 	return Modules.contains(module_name);
 }
@@ -421,6 +425,24 @@ void ModulesManager::saveLoadedModules()
 {
 	config_file.writeEntry("General", "LoadedModules",loadedModules().join(","));
 	config_file.sync();
+}
+
+bool ModulesManager::conflictsWithLoaded(const QString &module_name, const ModuleInfo& module_info) const
+{
+	for (QStringList::ConstIterator it = module_info.conflicts.begin(); it != module_info.conflicts.end(); ++it)
+		if(moduleIsActive(*it))
+		{
+			MessageBox::msg(tr("Module %1 conflicts with: %2").arg(module_name).arg(*it));
+			return true;
+		}
+	for (QMap<QString, Module>::const_iterator it=Modules.begin(); it!=Modules.end(); it++)
+		for (QStringList::const_iterator sit=(*it).info.conflicts.begin(); sit!=(*it).info.conflicts.end(); sit++)
+			if ((*sit)==module_name)
+			{
+				MessageBox::msg(tr("Module %1 conflicts with: %2").arg(module_name).arg(it.key()));
+				return true;
+			}
+	return false;
 }
 
 bool ModulesManager::activateModule(const QString& module_name)
@@ -435,8 +457,12 @@ bool ModulesManager::activateModule(const QString& module_name)
 	}
 
 	if(moduleInfo(module_name,m.info))
+	{
+		if (conflictsWithLoaded(module_name, m.info))
+			return false;
 		if(!satisfyModuleDependencies(m.info))
 			return false;
+	}
 
 	typedef int InitModuleFunc();
 	InitModuleFunc* init;

@@ -31,15 +31,19 @@ class Library
 struct ModuleInfo
 {
 	/**
-	 jakie inne moduly sa wymagane przez ten modul
+	 jakie inne modu³y s± wymagane przez ten modu³
 	**/
 	QStringList depends;
+	/**
+	 z jakimi modu³ami ten modu³ konfliktuje
+	**/
+	QStringList conflicts;
 	/**
 	 opis
 	**/
 	QString description;
 	/**
-	 autor modulu
+	 autor modu³u
 	**/
 	QString author;
 };
@@ -150,65 +154,65 @@ class ModulesManager : public QObject
 			Zwraca listê modu³ów wkompilowanych
 			statycznie w plik wykonywalny kadu
 		**/
-		QStringList staticModules();
+		QStringList staticModules() const;
 		/**
 			Zwraca listê modu³ów zainstalowanych jako
 			dzielone biblioteki (shared libraries)
 		**/
-		QStringList installedModules();
+		QStringList installedModules() const;
 		/**
 			Zwraca listê modu³ów za³adowanych do pamiêci
 			jako dzielone biblioteki (shared libraries)
 		**/
-		QStringList loadedModules();
+		QStringList loadedModules() const;
 		/**
 			Zwraca listê modu³ów zainstalowanych jako
 			dzielone biblioteki (shared libraries)
 			i nie za³adowanych aktualnie do pamiêci
 		**/		
-		QStringList unloadedModules();
+		QStringList unloadedModules() const;
 		/**
 			Zwraca listê aktywnych modu³ów.
 			Uwzglêdniane s± zarówno aktywne modu³y
 			statyczne jak i zewnêtrzne.
 		**/
-		QStringList activeModules();
+		QStringList activeModules() const;
 		/**
 			Pobiera do info informacje o module module_name jesli
 			sie to udalo zwraca true w przeciwnym wypadku false		 
 		**/		
-		bool moduleInfo(const QString& module_name, ModuleInfo& info);
+		bool moduleInfo(const QString& module_name, ModuleInfo& info) const;
 		/**
 			Sprawdza czy podany modu³ jest wkompilowany statycznie.
-			@param module_name nazwa modulu
+			@param module_name nazwa modu³u
 		**/
-		bool moduleIsStatic(const QString& module_name);
+		bool moduleIsStatic(const QString& module_name) const;
 		/**
 			Sprawdza czy podany modu³ jest zainstalowany
 			w katalogu z modu³ami zewnêtrznymi.
-			@param module_name nazwa modulu
+			@param module_name nazwa modu³u
 		**/
-		bool moduleIsInstalled(const QString& module_name);
+		bool moduleIsInstalled(const QString& module_name) const;
 		/**
 			Sprawdza czy podany modu³ zewnêtrzny jest za³adowany
-			@param module_name nazwa modulu
+			@param module_name nazwa modu³u
 		**/		
-		bool moduleIsLoaded(const QString& module_name);
+		bool moduleIsLoaded(const QString& module_name) const;
 		/**
 			Sprawdza czy podany modu³ jest aktywny.
 			Dzia³a dla modu³ów statycznych i za³adowanych
 			zewnêtrznych.
-			@param module_name nazwa modulu
+			@param module_name nazwa modu³u
 		**/
-		bool moduleIsActive(const QString& module_name);
+		bool moduleIsActive(const QString& module_name) const;
 		/**
 		 	Zwiêksza licznik u¿ycia modu³u o 1
-			@param module_name nazwa modulu
+			@param module_name nazwa modu³u
 		**/
 		void moduleIncUsageCount(const QString& module_name);
 		/**
 		 	Zmniejsza licznik u¿ycia modu³u o 1
-			@param module_name nazwa modulu
+			@param module_name nazwa modu³u
 		**/
 		void moduleDecUsageCount(const QString& module_name);
 		/**
@@ -219,15 +223,22 @@ class ModulesManager : public QObject
 		/**
 			Aktywuje modu³ statyczny je¶li jest dostêpny
 			lub ³aduje do pamiêci i aktywuje modu³ zewnêtrzny.
-			@param module_name nazwa modulu
+			@param module_name nazwa modu³u
 		**/
 		bool activateModule(const QString& module_name);
 		/**
 			Deaktywuje modu³ statyczny lub
 			deaktywuje i usuwa z pamiêci modu³ zewnêtrzny.
-			@param module_name nazwa modulu
+			@param module_name nazwa modu³u
 		**/		
 		bool deactivateModule(const QString& module_name, bool force=false);
+		/**
+			Sprawdza czy podany modu³ konfliktuje
+			z jakim¶ innym za³adowanym modu³em
+			@param module_name nazwa modu³u
+			@param module_info informacje o module
+		**/
+		bool conflictsWithLoaded(const QString &module_name, const ModuleInfo& module_info) const;
 		
 	public slots:
 		void showDialog();
