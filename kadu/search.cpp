@@ -431,8 +431,20 @@ void SearchDialog::updateInfoClicked()
 		tr("&Yes"), tr("&No")) != 0)
 		return;
 
-	userlist.changeUserInfo(ule.altnick, firstname, "", nickname, ule.altnick,
-		ule.mobile, QString::number(ule.uin), ule.status, ule.image_size,
-		ule.blocking, ule.offline_to_user, ule.notify, ule.group(), ule.email);
+	UserListElement e;
+	e.first_name = firstname;
+	e.last_name = "";
+	e.nickname = nickname;
+	e.altnick = ule.altnick;
+	e.mobile = ule.mobile;
+	e.uin = ule.uin;
+	e.status = ule.status;
+	e.image_size = ule.image_size;
+	e.blocking = ule.blocking;
+	e.offline_to_user = ule.offline_to_user;
+	e.notify = ule.notify;
+	e.setGroup(ule.group());
+	e.email = ule.email;
+	userlist.changeUserInfo(ule.altnick, e);
 	userlist.writeToFile();
 }

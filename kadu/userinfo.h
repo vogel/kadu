@@ -47,6 +47,9 @@ class UserInfo : public QTabDialog {
 
 	private slots:
 		void updateUserlist();
+
+	protected slots:
+		void accept();
 };
 
 #endif

@@ -92,7 +92,7 @@ Adduser::Adduser(QDialog* parent, const char *name) {
 }
 
 void Adduser::Add() {
-	kdebug("Adduser::Add()\n");
+/*	kdebug("Adduser::Add()\n");
 
 	if (e_altnick->text().length()) {
 		kadu->addUser(e_fname->text(), e_lname->text(), e_nickname->text(),
@@ -104,6 +104,6 @@ void Adduser::Add() {
 		QMessageBox::warning(this, tr("Add user problem"),
 			tr("Altnick field cannot be empty."));
 
-	kdebug("Adduser::Add(): finished\n");
+	kdebug("Adduser::Add(): finished\n");*/
 }
 

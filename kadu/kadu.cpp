@@ -1024,36 +1024,50 @@ void Kadu::prepareDcc(void) {
 
 // code for addUser has been moved from adduser.cpp
 // for sharing with search.cpp
-void Kadu::addUser(const QString &FirstName, const QString &LastName,
-	const QString &NickName, const QString &AltNick,
-	const QString &Mobile, const QString &Uin, const int Status,
-	const int Image_size,
-	const QString &Group, const QString &Description, const QString &Email,
-	const bool Anonymous)
+void Kadu::addUser(UserListElement &ule)
+//	const QString &FirstName, const QString &LastName,
+//	const QString &NickName, const QString &AltNick,
+//	const QString &Mobile, const QString &Uin, const int Status,
+//	const int Image_size,
+//	const QString &Group, const QString &Description, const QString &Email,
+//	const bool Anonymous)
 {
-	uint32_t uin = Uin.toUInt();
-
-	if (!userlist.containsUin(uin) || (!uin && !userlist.containsAltNick(AltNick)))
-		userlist.addUser(FirstName, LastName, NickName, AltNick, Mobile, Uin, Status, 
-			Image_size, false, false, true, Group, Description, Email, Anonymous);
+	UserListElement e;
+	e.first_name = ule.first_name;
+	e.last_name = ule.last_name;
+	e.nickname = ule.nickname;
+	e.altnick = ule.altnick;
+	e.mobile = ule.mobile;
+	e.uin = ule.uin;
+	e.setGroup(ule.group());
+	e.email = ule.email;
+	if (!userlist.containsUin(ule.uin) || (!ule.uin && !userlist.containsAltNick(ule.altnick))) {
+		e.status = ule.status;
+		e.image_size = ule.image_size;
+		e.description = ule.description;
+		e.anonymous = ule.anonymous;
+		userlist.addUser(e);
+		}
 	else {
-		UserListElement &ule = userlist.byUin(uin);
-		if (!uin)
-			ule = userlist.byAltNick(AltNick);
-		userlist.changeUserInfo(ule.altnick,
-			FirstName, LastName, NickName, AltNick, Mobile, Uin, ule.status,
-			ule.image_size,
-			ule.blocking, ule.offline_to_user, ule.notify, Group, Email);
+		UserListElement &oldule = userlist.byUin(ule.uin);
+		if (!ule.uin)
+			oldule = userlist.byAltNick(ule.altnick);
+		e.status = oldule.status;
+		e.image_size = oldule.image_size;
+		e.blocking = oldule.blocking;
+		e.offline_to_user = oldule.offline_to_user;
+		e.notify = oldule.notify;
+		userlist.changeUserInfo(ule.altnick, e);
 		}
 	userlist.writeToFile();
 
-	userbox->addUser(AltNick);
+	userbox->addUser(ule.altnick);
 	UserBox::all_refresh();
 
 	refreshGroupTabBar();
 
-	if (!Anonymous && uin)
-		gg_add_notify(sess, uin);
+	if (!ule.anonymous && ule.uin)
+		gg_add_notify(sess, ule.uin);
 };
 
 int Kadu::openChat(UinsList senders) {
@@ -1229,6 +1243,8 @@ void Kadu::sendMessage(QListBoxItem *item) {
 	Message *msg; */
 	UinsList uins;
 	PendingMsgs::Element elem;
+	UserListElement e;
+	bool ok;
 	uin_t uin;
 	QString toadd;
 	bool msgsFromHist = false;
@@ -1251,12 +1267,22 @@ void Kadu::sendMessage(QListBoxItem *item) {
 				for (j = 0; j < elem.uins.count(); j++)
 					if (!userlist.containsUin(elem.uins[j])) {
 						tmp = QString::number(pending[i].uins[j]);
+						e.first_name = "";
+						e.last_name = "";
+						e.nickname = tmp;
+						e.altnick = tmp;
+						e.uin = tmp.toUInt(&ok);
+						if (!ok)
+							e.uin = 0;
+						e.mobile = "";
+						e.setGroup("");
+						e.description = "";
+						e.email = "";
+						e.anonymous = true;
 						if (trayicon)
-							userlist.addUser("", "", tmp, tmp, "", tmp, GG_STATUS_NOT_AVAIL,
-								0, false, false, true, "", "", "", true);
+							userlist.addUser(e);
 						else
-							addUser("", "", tmp, tmp, "", tmp, GG_STATUS_NOT_AVAIL,
-								0, "", "", "", true);
+							addUser(e);
 						}
 				
 				l = chats.count();

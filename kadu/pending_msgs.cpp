@@ -174,6 +174,8 @@ void PendingMsgs::openMessages() {
 	QString toadd;
 	bool msgsFromHist = false;
 	bool stop = false;
+	UserListElement e;
+	bool ok;
 
 	kdebug("PendingMsgs::openMessages()\n");
 
@@ -187,12 +189,20 @@ void PendingMsgs::openMessages() {
 				for (j = 0; j < elem.uins.count(); j++)
 					if (!userlist.containsUin(elem.uins[j])) {
 						tmp = QString::number(elem.uins[j]);
-						if (config_file.readBoolEntry("Global","UseDocking"))
-							userlist.addUser("", "", tmp, tmp, "", tmp, GG_STATUS_NOT_AVAIL,
-								0, false, false, true, "", "", "", true);
+						e.first_name = "";
+						e.last_name = "";
+						e.nickname = tmp;
+						e.altnick = tmp;
+						e.mobile = "";
+						e.uin = elem.uins[j];
+						e.setGroup("");
+						e.description = "";
+						e.email = "";
+						e.anonymous = true;
+						if (config_file.readBoolEntry("Global", "UseDocking"))
+							userlist.addUser(e);
 						else
-							kadu->addUser("", "", tmp, tmp, "", tmp, GG_STATUS_NOT_AVAIL,
-								0, "", "", "", true);
+							kadu->addUser(e);
 					}
 				k = kadu->openChat(elem.uins);
 				QValueList<UinsList>::iterator it = wasFirstMsgs.begin();

@@ -280,15 +280,28 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 	mamy w³±czon± ikonke w trayu to dodajemy tylko do userlisty(ale chyba nie zapisujemy)
 	lub dodajemy automatycznie do naszej userlisty.
 */
-
  
-	if(!userlist.containsUin(senders[0]))
-		if (config_file.readBoolEntry("Global","UseDocking"))
-			userlist.addUser("", "", ule.altnick, ule.altnick, "", ule.altnick, GG_STATUS_NOT_AVAIL,
-				0, false, false, true, "", "", "", true);
+	UserListElement e;
+	bool ok;
+
+	if(!userlist.containsUin(senders[0])) {
+		e.first_name = "";
+		e.last_name = "";
+		e.nickname = ule.altnick;
+		e.altnick = ule.altnick;
+		e.uin = ule.altnick.toUInt(&ok);
+		if (!ok)
+			e.uin = 0;
+		e.mobile = "";
+		e.setGroup("");
+		e.description = "";
+		e.email = "";
+		e.anonymous = true;
+		if (config_file.readBoolEntry("Global", "UseDocking"))
+			userlist.addUser(e);
 		else
-			kadu->addUser("", "", ule.altnick, ule.altnick, "", ule.altnick, GG_STATUS_NOT_AVAIL,
-				0, "", "", "", true);
+			kadu->addUser(e);
+		}
 
 	if (config_file.readBoolEntry("Global","Logging"))	
 		history.appendMessage(senders, senders[0], mesg, FALSE, time);

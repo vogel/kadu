@@ -54,13 +54,25 @@ UserListElement::UserListElement(UserList* parent)
 {
 	Parent = parent;
 	version = 0;
-};
+	status = GG_STATUS_NOT_AVAIL;
+	image_size = 0;
+	blocking = false;
+	offline_to_user = false;
+	notify = true;
+	anonymous = false;
+}
 
 UserListElement::UserListElement()
 {
 	Parent = NULL;
 	version = 0;
-};
+	status = GG_STATUS_NOT_AVAIL;
+	image_size = 0;
+	blocking = false;
+	offline_to_user = false;
+	notify = true;
+	anonymous = false;
+}
 
 QString UserListElement::group()
 {
@@ -73,7 +85,8 @@ void UserListElement::setGroup(const QString& group)
 		Group="";
 	else
 		Group=group;
-	emit Parent->modified();
+	if (Parent)
+		emit Parent->modified();
 };
 
 UserList::UserList() : QObject(), QValueList<UserListElement>()
@@ -181,74 +194,58 @@ bool UserList::containsAltNick(const QString &altnick) {
 	return false;
 }
 
-void UserList::addUser(const QString &FirstName,const QString &LastName,
-	const QString &NickName,const QString &AltNick,
-	const QString &Mobile,const QString &Uin,const int Status,
-	const int Image_size,
-	const bool Blocking, const bool Offline_to_user, const bool Notify,
-	const QString &Group,const QString &Description, const QString &Email,
-	const bool Anonymous)
+void UserList::addUser(UserListElement &ule)
 {
 	UserListElement e(this);
-	e.first_name = FirstName;
-	e.last_name = LastName;
-	e.nickname = NickName;
-	e.altnick = AltNick;
-	e.mobile = Mobile;
-	e.uin = Uin.toUInt();
-	e.status = Status;
-	e.image_size = Image_size;
-	e.blocking = Blocking;
-	e.offline_to_user = Offline_to_user;
-	e.notify = Notify;
-	if (Group != tr("All"))
-		e.Group = Group;
+	e.first_name = ule.first_name;
+	e.last_name = ule.last_name;
+	e.nickname = ule.nickname;
+	e.altnick = ule.altnick;
+	e.mobile = ule.mobile;
+	e.uin = ule.uin;
+	e.status = ule.status;
+	e.image_size = ule.image_size;
+	e.blocking = ule.blocking;
+	e.offline_to_user = ule.offline_to_user;
+	e.notify = ule.notify;
+	if (e.group() != tr("All"))
+		e.setGroup(ule.Group);
 	else
-		e.Group = "";
-	e.description = Description;
-	e.email = Email;
-	e.anonymous = Anonymous;
-	e.port = 0;
+		e.setGroup("");
+	e.description = ule.description;
+	e.email = ule.email;
+	e.anonymous = ule.anonymous;
+	e.port = ule.port;
 	append(e);
 	emit modified();
-};
+}
 
-void UserList::changeUserInfo(const QString &OldAltNick,
-	const QString &FirstName, const QString &LastName,
-	const QString &NickName, const QString &AltNick,
-	const QString &Mobile, const QString &Uin, int Status,
-	const int Image_size,
-	const bool Blocking, const bool Offline_to_user, const bool Notify,
-	const QString &Group, const QString &Email)
+void UserList::changeUserInfo(const QString &oldaltnick, UserListElement &ule)
 {
-	UserListElement &e = byAltNick(OldAltNick);
-	e.first_name = FirstName;
-	e.last_name = LastName;
-	e.nickname = NickName;
-	e.altnick = AltNick;
-	e.mobile = Mobile;
-	e.email = Email;
-	bool ok;
-	uin_t uin;
-	uin = Uin.toUInt(&ok);
-	if (ok)
-		e.uin = uin;
+	UserListElement &e = byAltNick(oldaltnick);
+	e.first_name = ule.first_name;
+	e.last_name = ule.last_name;
+	e.nickname = ule.nickname;
+	e.altnick = ule.altnick;
+	e.mobile = ule.mobile;
+	e.email = ule.email;
+	e.uin = ule.uin;
 	e.anonymous = false;
-	e.status = Status;
-	e.image_size = Image_size;
-	e.blocking = Blocking;
-	e.offline_to_user = Offline_to_user;
-	e.notify = Notify;
-	if (Group != tr("All"))
-		e.Group = Group;
+	e.status = ule.status;
+	e.image_size = ule.image_size;
+	e.blocking = ule.blocking;
+	e.offline_to_user = ule.offline_to_user;
+	e.notify = ule.notify;
+	if (e.group() != tr("All"))
+		e.setGroup(ule.Group);
 	else
-		e.Group = "";
-	if (AltNick != OldAltNick) {
-		UserBox::all_renameUser(OldAltNick,AltNick);
+		e.setGroup("");
+	if (ule.altnick != oldaltnick) {
+		UserBox::all_renameUser(oldaltnick, ule.altnick);
 		UserBox::all_refresh();			
 		}
 	emit modified();
-};
+}
 
 void UserList::changeUserStatus(const uin_t uin, const unsigned int status)
 {
@@ -258,7 +255,7 @@ void UserList::changeUserStatus(const uin_t uin, const unsigned int status)
 //		UserBox::all_refresh();			
 		emit statusModified(&e);
 		}
-};
+}
 
 void UserList::removeUser(const QString &altnick)
 {
@@ -358,6 +355,8 @@ bool UserList::readFromFile()
 	QString path;
 	QValueList<QStringList> ualist;
 	QString line;
+	UserListElement e;
+	bool ok;
 
 	path = ggPath("userattribs");
 	kdebug("UserList::readFromFile(): Opening userattribs file: %s\n",
@@ -401,48 +400,57 @@ bool UserList::readFromFile()
 			QString uin = line.section(' ',1,1);
 			if (uin == "")
 				continue;
-			addUser("" , "", nickname, nickname,
-				"", uin, GG_STATUS_NOT_AVAIL, 0, "", "");
+			e.first_name = "";
+			e.last_name = "";
+			e.nickname = nickname;
+			e.altnick = nickname;
+			e.mobile = "";
+			e.uin = uin.toUInt(&ok);
+			if (!ok)
+				e.uin = 0;
+			e.setGroup("");
+			e.description = "";
+			e.email = "";
+			e.blocking = false;
+			e.offline_to_user = false;
+			e.notify = true;
+			addUser(e);
 			}
 		else {	    
-			QString first_name = line.section(';', 0, 0);
-			QString last_name = line.section(';', 1, 1);
-			QString nickname = line.section(';', 2, 2);
-			QString altnick = line.section(';', 3, 3);
-			QString mobile = line.section(';', 4, 4);
-			QString group = line.section(';', 5, 5);
-			QString uin = line.section(';', 6, 6);
-			QString email = line.section(';', 7, 7);
+			e.first_name = line.section(';', 0, 0);
+			e.last_name = line.section(';', 1, 1);
+			e.nickname = line.section(';', 2, 2);
+			e.altnick = line.section(';', 3, 3);
+			e.mobile = line.section(';', 4, 4);
+			e.setGroup(line.section(';', 5, 5));
+			e.uin = line.section(';', 6, 6).toUInt(&ok);
+			if (!ok)
+				e.uin = 0;
+			e.email = line.section(';', 7, 7);
 
-			if (uin == "")
-				uin = "0";
-				
-			if (altnick == "") {
-				if (nickname == "")
-					altnick = first_name;
+			if (e.altnick == "") {
+				if (e.nickname == "")
+					e.altnick = e.first_name;
 				else
-					altnick = nickname;
+					e.altnick = e.nickname;
 				}
-
-			bool blocking, offline_to_user, notify;
 
 			QValueList<QStringList>::Iterator i = ualist.begin();
-			while ((*i)[0] != uin && i != ualist.end())
+			while ((*i)[0] != e.uin && i != ualist.end())
 				i++;
 			if (i != ualist.end()) {
-				blocking = ((*i)[1] == "true" ? true : false);
-				offline_to_user = ((*i)[2] == "true" ? true : false);
-				notify = ((*i)[3] == "true" ? true : false);
+				e.blocking = ((*i)[1] == "true" ? true : false);
+				e.offline_to_user = ((*i)[2] == "true" ? true : false);
+				e.notify = ((*i)[3] == "true" ? true : false);
 				}
 			else {
-				blocking = false;
-				offline_to_user = false;
-				notify = true;
+				e.blocking = false;
+				e.offline_to_user = false;
+				e.notify = true;
 				}
 
-			addUser(first_name, last_name, nickname, altnick,
-				mobile, uin, GG_STATUS_NOT_AVAIL, 0, blocking, offline_to_user,
-				notify, group, "", email);
+			e.description = "";
+			addUser(e);
 			}
 		}
 

@@ -59,10 +59,11 @@ UserlistImport::UserlistImport(QWidget *parent, const char *name)
 }
 
 void UserlistImport::fromfile(){
-
+	UserListElement e;
+	bool ok;
 	QStringList lines,userlist;
-	QListViewItem * qlv;
-	QString line;    
+	QListViewItem *qlv;
+	QString line;
 	QString fname = QFileDialog::getOpenFileName("/", QString::null, this);
 	if (fname.length()) {
 		QFile file(fname);
@@ -76,11 +77,18 @@ void UserlistImport::fromfile(){
 				lines = QStringList::split(";", line, true);
 				if (lines[6] == "0")
 					lines[6].truncate(0);
-				importedUserlist.addUser(lines[0], lines[1],
-					lines[2], lines[3], lines[4],
-					lines[6], GG_STATUS_NOT_AVAIL, 0,
-					false, false, true, lines[5],
-					QString::null, lines[7]);
+				e.first_name = lines[0];
+				e.last_name = lines[1];
+				e.nickname = lines[2];
+				e.altnick = lines[3];
+				e.mobile = lines[4];
+				e.uin = lines[6].toUInt(&ok);
+				if (!ok)
+					e.uin = 0;
+				e.setGroup(lines[5]);
+				e.description = QString::null;
+				e.email = lines[7];
+				importedUserlist.addUser(e);
 				qlv = new QListViewItem(results, lines[6],
 					lines[2], lines[3], lines[0],
 					lines[1], lines[4], lines[5],
@@ -201,6 +209,8 @@ void UserlistImport::userlistReplyReceivedSlot(char type, char *reply) {
 	QString tmparray[16];
 	QListViewItem *qlv;
 	QStringList::Iterator it;
+	UserListElement e;
+	bool ok;
 
 	results->clear();
 	importedUserlist.clear();
@@ -210,11 +220,18 @@ void UserlistImport::userlistReplyReceivedSlot(char type, char *reply) {
 		fieldlist = QStringList::split(";", *it, true);
 		if (fieldlist[6] == "0")
 			fieldlist[6].truncate(0);
-		importedUserlist.addUser(fieldlist[0], fieldlist[1],
-			fieldlist[2], fieldlist[3], fieldlist[4],
-			fieldlist[6], GG_STATUS_NOT_AVAIL, 0,
-			false, false, true, fieldlist[5], QString::null,
-			fieldlist[7]);
+		e.first_name = fieldlist[0];
+		e.last_name = fieldlist[1];
+		e.nickname = fieldlist[2];
+		e.altnick = fieldlist[3];
+		e.mobile = fieldlist[4];
+		e.uin = fieldlist[6].toUInt(&ok);
+		if (!ok)
+			e.uin = 0;
+		e.setGroup(fieldlist[5]);
+		e.description = QString::null;
+		e.email = fieldlist[7];
+		importedUserlist.addUser(e);
 		qlv = new QListViewItem(results, fieldlist[6],
 			fieldlist[2], fieldlist[3], fieldlist[0],
 			fieldlist[1], fieldlist[4], fieldlist[5],
