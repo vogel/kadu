@@ -15,7 +15,7 @@
 #include "debug.h"
 #include "config_file.h"
 
-template<class T, class X> QValueList<T> keys(const QMap<T, X> &m)
+template<class T, class X> QValueList<T> keys2(const QMap<T, X> &m)
 {
 #if QT_VERSION < 0x030005
     QValueList<T> ret;
@@ -105,7 +105,7 @@ void ConfigFile::write(const QString &f) const
 
 QStringList ConfigFile::getGroupList() const
 {
-	return QStringList(keys(groups));
+	return QStringList(keys2(groups));
 //	return QStringList(groups.keys());
 }
 
