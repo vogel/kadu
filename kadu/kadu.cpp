@@ -216,7 +216,6 @@ unsigned long getMyIP(void) {
 	FILE *file;
 	char buf[256],name[32];
 	bool stopped = false;
-	char *iface;
 	struct ifreq ifr;
 
 	file = fopen("/proc/net/route", "r");
@@ -699,7 +698,6 @@ void Kadu::userListStatusModified(UserListElement *user)
 };
 
 void Kadu::removeUser(QString &username, bool permanently = false) {
-	int i = 0;
 
 	UserBox::all_removeUser(username);	
 	UserBox::all_refresh();
@@ -815,7 +813,7 @@ void Kadu::addUser(const QString& FirstName, const QString& LastName,
 };
 
 int Kadu::openChat(UinsList senders) {
-	int i,j;
+	int i;
 	UinsList uins;
 
 	i = 0;
@@ -846,8 +844,6 @@ int Kadu::openChat(UinsList senders) {
 /* menu and popup menu parser */
 void Kadu::commandParser (int command) {
 	int i = 0;
-	char buf1[255];
-	uin_t uin;
 	SearchDialog *sd;
 	UinsList uins;
 	UserListElement user;
@@ -1853,7 +1849,6 @@ ppm->insertSeparator();
 
 void Kadu::createStatusPopupMenu() {
 
-	KIconLoader *loader = KGlobal::iconLoader();
 	QPixmap pixmap;
 	QIconSet icon;
 

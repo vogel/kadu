@@ -102,7 +102,7 @@ void UserBox::mousePressEvent(QMouseEvent *e) {
 }
 
 void UserBox::sortUsersByAltNick(QStringList &users) {
-	int i, j, count;
+	int i, count;
 	QString tmp;
 	bool stop;
 

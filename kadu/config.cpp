@@ -517,7 +517,7 @@ void ConfigDialog::setupTab2(void) {
 }
 
 void ConfigDialog::setupTab3(void) {
-	KIconLoader *loader = KGlobal::iconLoader();
+//	KIconLoader *loader = KGlobal::iconLoader();
 	QVBox *box3 = new QVBox(this);
 	box3->setMargin(5);	
 
@@ -637,7 +637,7 @@ void ConfigDialog::setupTab3(void) {
 
 void ConfigDialog::setupTab4(void) {
 	int i;
-	uin_t uin;
+//	uin_t uin;
 
 	KIconLoader *loader = KGlobal::iconLoader();
 	QVBox *box4 = new QVBox(this);
@@ -732,9 +732,9 @@ void ConfigDialog::setupTab4(void) {
 }
 
 void ConfigDialog::setupTab5(void) {
-	int i;
+//	int i;
 
-	KIconLoader *loader = KGlobal::iconLoader();
+//	KIconLoader *loader = KGlobal::iconLoader();
 
 	QVBox *box5 = new QVBox(this);
 	box5->setMargin(2);	
@@ -852,7 +852,7 @@ void ConfigDialog::setupTab6(void) {
 	QFontDatabase fdb;
 	QValueList<int> vl;
 
-	KIconLoader *loader = KGlobal::iconLoader();
+//	KIconLoader *loader = KGlobal::iconLoader();
 
 	QVBox *box6 = new QVBox(this);
 	box6->setMargin(2);
@@ -1238,7 +1238,7 @@ void ConfigDialog::generateMyKeys(void) {
 
 void ConfigDialog::updateConfig(void) {
 	QString tmp;
-	int i, j;
+	int i;//, j;
 
 	config.uin = atoi(e_uin->text().latin1());
 	config.password = e_password->text();

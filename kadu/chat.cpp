@@ -235,7 +235,7 @@ Chat::~Chat() {
 void Chat::setTitle() {
 	QString name;
 	QString title;
-	int i,j,k;
+	int j,k;
 	UserListElement user;
 
 	title = i18n("Chat with ");

@@ -70,7 +70,7 @@ void DockWidget::dockletChange(int id)
 }
 
 void DockWidget::mousePressEvent(QMouseEvent * e) {
-	bool message = false;
+//	bool message = false;
 	int i,j, k = -1;
 	QString tmp;
 	PendingMsgs::Element elem;

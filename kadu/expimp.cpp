@@ -163,7 +163,7 @@ void UserlistImport::dataSent() {
 }
 
 void UserlistImport::socketEvent() {
-	bool dis2 = false;
+//	bool dis2 = false;
 
 	fprintf(stderr, "KK ImportUserlist::socketEvent(): data on socket\n");			
 

@@ -18,7 +18,7 @@
 #include "about.h"
 //
 
-static char * shade_sun_xpm[] = {
+static const char * shade_sun_xpm[] = {
 "167 122 17 1",
 " 	c None",
 ".	c #020202",

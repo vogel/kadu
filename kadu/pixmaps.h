@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-static char *scroll_lock[]={
+static const char *scroll_lock[]={
 "16 16 6 1",
 ". c None",
 "c c #000000",
@@ -32,7 +32,7 @@ static char *scroll_lock[]={
 "......bddc......",
 "......dddc......"}; 
 
-static char *reply_ico[]={
+static const char *reply_ico[]={
 "16 16 4 1",
 ". c None",
 "a c #000000",
@@ -55,7 +55,7 @@ static char *reply_ico[]={
 "...ab...........",
 "....a..........."};
 
-static char * new_user[] = {
+static const char * new_user[] = {
 "16 16 65 1",
 " 	c None",
 ".	c #020202",
@@ -139,7 +139,7 @@ static char * new_user[] = {
 "  +l6le%kdx00!  ",
 "  +!!!!!!!!!!!  "};
 
-static char * gg_stop_alt_xpm[] = {
+static const char * gg_stop_alt_xpm[] = {
 "16 16 22 1",
 " 	c None",
 ".	c #A0A0A0",
@@ -181,7 +181,7 @@ static char * gg_stop_alt_xpm[] = {
 "       @@       "};
 
 
-static char * gg_stop_xpm[] = {
+static const char * gg_stop_xpm[] = {
 "16 16 33 1",
 " 	c None",
 ".	c #82262A",
@@ -234,7 +234,7 @@ static char * gg_stop_xpm[] = {
 "                "};
 
 
-static char *gg_msg_xpm[]={
+static const char *gg_msg_xpm[]={
 "16 16 142 2",
 "Qt c None",
 ".M c #000000",
@@ -397,7 +397,7 @@ static char *gg_msg_xpm[]={
 
 
 
-static char *gg_info_xpm[]={
+static const char *gg_info_xpm[]={
 "8 14 4 1",
 ". c None",
 "# c #000000",
@@ -489,7 +489,7 @@ static const char * history_xpm[] = {
 
 
 /* XPM */
-static char * snd_mute_xpm[] = {
+static const char * snd_mute_xpm[] = {
 "16 16 67 1",
 " 	c None",
 ".	c #5A595A",
@@ -575,7 +575,7 @@ static char * snd_mute_xpm[] = {
 "     &z&AB      ",
 "       ##       "};
 
-static char * snd_unmute_xpm[] = {
+static const char * snd_unmute_xpm[] = {
 "16 16 18 1",
 " 	c None",
 ".	c #5A595A",
@@ -613,7 +613,7 @@ static char * snd_unmute_xpm[] = {
 "       ##       "};
 
 /* XPM */
-static char *gg_act_xpm[]={
+static const char *gg_act_xpm[]={
 "16 16 18 1",
 ". c None",
 "j c #000000",
@@ -650,7 +650,7 @@ static char *gg_act_xpm[]={
 "......#ccb......",
 ".......bb......."};
 /* XPM */
-static char *gg_busydescr_xpm[]={
+static const char *gg_busydescr_xpm[]={
 "16 16 22 1",
 ". c None",
 "l c #000000",
@@ -691,7 +691,7 @@ static char *gg_busydescr_xpm[]={
 ".......bbhtttti.",
 ".......cchniiii."};
 /* XPM */
-static char *gg_inact_xpm[]={
+static const char *gg_inact_xpm[]={
 "16 16 11 1",
 ". c None",
 "i c #000000",
@@ -721,7 +721,7 @@ static char *gg_inact_xpm[]={
 "......abb#......",
 ".......aa......."};
 /* XPM */
-static char *gg_inactdescr_xpm[]={
+static const char *gg_inactdescr_xpm[]={
 "16 16 16 1",
 ". c None",
 "l c #000000",
@@ -756,7 +756,7 @@ static char *gg_inactdescr_xpm[]={
 "......#aagnnnnk.",
 ".......##gkkkkk."};
 /* XPM */
-static char *gg_invi_xpm[]={
+static const char *gg_invi_xpm[]={
 "16 16 13 1",
 ". c None",
 "j c #0000c0",
@@ -787,7 +787,7 @@ static char *gg_invi_xpm[]={
 "..#a#.#aa#.#a#..",
 "......#aa#......",
 ".......##......."};
-static char *gg_busy_xpm[]={
+static const char *gg_busy_xpm[]={
 "16 16 19 1",
 ". c None",
 "j c #000000",
@@ -825,7 +825,7 @@ static char *gg_busy_xpm[]={
 "......#cca......",
 ".......aa......."};
 /* XPM */
-static char *gg_invidescr_xpm[]={
+static const char *gg_invidescr_xpm[]={
 "16 16 18 1",
 ". c None",
 "m c #000000",
@@ -862,7 +862,7 @@ static char *gg_invidescr_xpm[]={
 "......#aaeppppi.",
 ".......##eiiiii."};
 
-static char *gg_actdescr_xpm[]={
+static const char *gg_actdescr_xpm[]={
 "16 16 24 1",
 ". c None",
 "l c #000000",
@@ -905,7 +905,7 @@ static char *gg_actdescr_xpm[]={
 "......#cchuuuui.",
 ".......bbhviiii."};
 
-static char *cellphone[]={
+static const char *cellphone[]={
 "16 16 7 1",
 ". c None",
 "e c #303030",

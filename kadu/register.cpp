@@ -187,7 +187,7 @@ void Register::socketEvent() {
 }
 
 void createKonfig() {
-	FILE *f;
+//	FILE *f;
 	char *home = getenv("HOME");
 	struct passwd *pw;
 
