@@ -1028,7 +1028,7 @@ void Chat::initModule()
 	QT_TRANSLATE_NOOP("@default", "Open chat window on new message");
 	QT_TRANSLATE_NOOP("@default", "Scroll chat window downward, not upward");
 	QT_TRANSLATE_NOOP("@default", "\"Enter\" key in chat sends message by default");
-	QT_TRANSLATE_NOOP("@default", "Message acknowledgements (wait for delivery");
+	QT_TRANSLATE_NOOP("@default", "Message acknowledgements (wait for delivery)");
 	QT_TRANSLATE_NOOP("@default", "Flash chat title on new message");
 	QT_TRANSLATE_NOOP("@default", "Ignore messages from anonymous users");
 

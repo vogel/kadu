@@ -425,7 +425,7 @@ void HintManager::initModule(void)
 	QT_TRANSLATE_NOOP("@default", "Show connection errors in hints");
 	QT_TRANSLATE_NOOP("@default", "Notify about new message");
 	QT_TRANSLATE_NOOP("@default", "Notify about new chat");
-	QT_TRANSLATE_NOOP("@default", "Show message contents in hint");
+	QT_TRANSLATE_NOOP("@default", "Show message content in hint");
 	QT_TRANSLATE_NOOP("@default", "Message content in hint");
 	QT_TRANSLATE_NOOP("@default", "Enable status notification by hint");
 	QT_TRANSLATE_NOOP("@default", "Notification options");
