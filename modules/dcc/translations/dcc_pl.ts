@@ -78,10 +78,10 @@ plików lub oba komputery są za NAT-em.</translation>
 IP address (%2) differs from what GG server returned
 as his/her IP address (%3). It may be spoofing
 or he/she has port forwarding. Continue connection?</source>
-        <translation>%1 prosi o bezpośrednie połączenie ale jego /jej
-adres IP (%2 ) różni się od tego jaki serwer GG 
-zwrócił to jest IP: (%3 ). To może jest *spoofing* 
-albo on /ona ma port przekiewrowujący.
+        <translation>%1 prosi o bezpośrednie połączenie ale jego / jej
+adres IP (%2) różni się od tego jaki zwrócił serwer GG 
+jako jego / jej adres IP: (%3). To może być próba podszycia
+się albo on / ona ma przekierowanie portów.
 Kontynuować połączenie?</translation>
     </message>
 </context>

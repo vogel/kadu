@@ -163,7 +163,7 @@
     </message>
     <message>
         <source>Could not spawn Web browser process. Check if the Web browser is functional</source>
-        <translation>Nie można otworzyć przeglądarki. Sprawdź czy Twoja przeglądarka działa poprawnie</translation>
+        <translation>Nie można uruchomić przeglądarki. Sprawdź czy Twoja przeglądarka działa poprawnie</translation>
     </message>
     <message>
         <source>Emoticons</source>
@@ -293,7 +293,7 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     </message>
     <message>
         <source>Show description in userbox</source>
-        <translation>Pokaż opis w liście kontaktów</translation>
+        <translation>Pokaż opis na liście kontaktów</translation>
     </message>
     <message>
         <source>Align icon next to contact name</source>
@@ -557,7 +557,7 @@ Jest to wysoce ryzykowne!</translation>
     </message>
     <message>
         <source>Debugging mask</source>
-        <translation>Maska debugera</translation>
+        <translation>Maska debugowania</translation>
     </message>
     <message>
         <source>Receive images during invisibility</source>
@@ -1352,7 +1352,7 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     </message>
     <message>
         <source>Module initialization routine for %1 failed.</source>
-        <translation>Inicjacja modułu dla %1 nieudana.</translation>
+        <translation>Inicjacja modułu %1 nieudana.</translation>
     </message>
 </context>
 <context>
@@ -1644,7 +1644,7 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     <name>ToolBar</name>
     <message>
         <source>Main toolbar</source>
-        <translation>Mój pasek narzędziowy</translation>
+        <translation>Główny pasek narzędziowy</translation>
     </message>
 </context>
 <context>
@@ -1655,7 +1655,7 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     </message>
     <message>
         <source>The newest Kadu version is %1</source>
-        <translation>Najnowszą wersją kadu jest %1</translation>
+        <translation>Najnowszą wersją Kadu jest %1</translation>
     </message>
 </context>
 <context>
@@ -1713,7 +1713,7 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     </message>
     <message>
         <source>Address IP and Port</source>
-        <translation>Adres IP</translation>
+        <translation>Adres IP i port</translation>
     </message>
     <message>
         <source>Protocol version</source>
@@ -1805,7 +1805,7 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     </message>
     <message>
         <source>You can&apos;t add so many groups at one stroke. Close this dialog and open one more time.</source>
-        <translation>Nie można dodawać tak wielu grNie można dodawać takup naraz. Zamknij to okno i otwórz jeszcze raz.</translation>
+        <translation>Nie można dodawać tak wielu grup naraz. Zamknij to okno i otwórz jeszcze raz.</translation>
     </message>
 </context>
 <context>

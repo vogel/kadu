@@ -138,7 +138,7 @@
     </message>
     <message>
         <source>Testing sample playing. You should hear some sound now.</source>
-        <translation>Test odtwarzania. Powinien być teraz słyszalny.</translation>
+        <translation>Test odtwarzania dźwięku. Powinien on być teraz słyszalny.</translation>
     </message>
     <message>
         <source>Testing sample recording. Please talk now (3 seconds).</source>
@@ -151,8 +151,8 @@
     <message>
         <source>Testing fullduplex. Please talk now.
 You should here it with one second delay.</source>
-        <translation>Test FullDuplex. Proszę teraz mówić. Dźwięk powinien
-być słyszalny z 1 sekundowym opuźnieniem.</translation>
+        <translation>Test full dupleksu. Proszę teraz mówić. Dźwięk powinien
+być słyszalny z 1 sekundowym opóźnieniem.</translation>
     </message>
 </context>
 </TS>

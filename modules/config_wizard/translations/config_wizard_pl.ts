@@ -131,7 +131,7 @@
     </message>
     <message>
         <source>Choose your browser</source>
-        <translation>Wybierz przeglądarke</translation>
+        <translation>Wybierz przeglądarkę</translation>
     </message>
     <message>
         <source>Browser options</source>
@@ -187,7 +187,7 @@
     </message>
     <message>
         <source>Show contacts that you are blocking</source>
-        <translation>Pokaż które blokujesz</translation>
+        <translation>Pokaż kontakty które blokujesz</translation>
     </message>
     <message>
         <source>Start docked</source>
@@ -263,7 +263,7 @@
     </message>
     <message>
         <source>Qt Look</source>
-        <translation>Wygląd QT</translation>
+        <translation>Wygląd Qt</translation>
     </message>
     <message>
         <source>Congratulations</source>
@@ -274,11 +274,12 @@
 
 Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new password&quot;) should be the same!</source>
         <translation>Błędnie wprowadzone dane.
+
 Hasło powinno w obu polach być takie same!</translation>
     </message>
     <message>
         <source>An error has occured while registration. Please try again later.</source>
-        <translation>Wystąpił błąd podczas rejestracji. Spróbuj znowu później.</translation>
+        <translation>Wystąpił błąd podczas rejestracji. Spróbuj ponownie później.</translation>
     </message>
     <message>
         <source>Finish</source>
@@ -298,7 +299,7 @@ Hasło powinno w obu polach być takie same!</translation>
     </message>
     <message>
         <source>&lt;b&gt;Error&lt;/b&gt;: (192.168.0.1) Disconnection has occured</source>
-        <translation>&lt;b&gt;Błąd&lt;/b&gt;: (192.168.0.1) Rozłączony</translation>
+        <translation>&lt;b&gt;Błąd&lt;/b&gt;: (192.168.0.1) Nastąpiło rozłączenie</translation>
     </message>
     <message>
         <source>Unknown</source>
@@ -322,7 +323,7 @@ Hasło powinno w obu polach być takie same!</translation>
     </message>
     <message>
         <source>Friends</source>
-        <translation>Kumple</translation>
+        <translation>Znajomi</translation>
     </message>
     <message>
         <source>changed status to</source>
@@ -350,19 +351,19 @@ Hasło powinno w obu polach być takie same!</translation>
     </message>
     <message>
         <source>Please fill all fields</source>
-        <translation>Proszę wypełnic wszystkie pola</translation>
+        <translation>Proszę wypełnić wszystkie pola</translation>
     </message>
     <message>
         <source>&lt;h2&gt;Welcome in Kadu&lt;/h2&gt;&lt;h3&gt; the Gadu-gadu network client for *nix and MacOS X.&lt;/h3&gt;&lt;br&gt;&lt;br&gt;&lt;font size=+1&gt;This is first time you launch Kadu. This wizard will help you to configure the basic settings of Kadu. If you are experienced Kadu user you may omit the wizard by clicking Cancel. Otherwise click Next.&lt;/font&gt;</source>
-        <translation>&lt;h2&gt;Witamy w Kadu&lt;/h2&gt;&lt;h3&gt; kliencie  Gadu-Gadu dla *nixów i MacOS X.&lt;/h3&gt;&lt;br&gt;&lt;br&gt;&lt;font size=+1&gt;Uruchomiłeś Kadu poraz pierwszy. Ten kreator pomoże ci ustawić podstawową konfigurację programu. Jeżeli jesteś doświadczonym użytkownikiem możesz go pominąć klikając na przycisk Anuluj. W przeciwnym razie naciśnij Dalej&lt;/font&gt;</translation>
+        <translation>&lt;h2&gt;Witamy w Kadu&lt;/h2&gt;&lt;h3&gt; kliencie  Gadu-Gadu dla *nixów i MacOS X.&lt;/h3&gt;&lt;br&gt;&lt;br&gt;&lt;font size=+1&gt;Uruchomiłeś Kadu po raz pierwszy. Ten kreator pomoże ci ustawić podstawową konfigurację programu. Jeżeli jesteś doświadczonym użytkownikiem możesz go pominąć klikając na przycisk Anuluj. W przeciwnym razie naciśnij Dalej&lt;/font&gt;</translation>
     </message>
     <message>
         <source>&lt;h3&gt;You decided to use your existing account. Please configure it&lt;/h3&gt;</source>
-        <translation>&lt;h3&gt;Zdecydowałeś o użyciu istniejącego konta. Proszę go skonfigurować&lt;/h3&gt;</translation>
+        <translation>&lt;h3&gt;Zdecydowałeś o użyciu istniejącego konta. Proszę je skonfigurować&lt;/h3&gt;</translation>
     </message>
     <message>
         <source>&lt;h3&gt;Please enter your valid e-mail address and password you want to secure your new Gadu-gadu number&lt;/h3&gt;</source>
-        <translation>&lt;h3&gt;Proszę wpisać twój poprawny e-mail i hasło chroniące twój numer Gadu_Gadu&lt;/h3&gt;</translation>
+        <translation>&lt;h3&gt;Proszę wpisać swój poprawny e-mail i hasło chroniące twój nowy numer Gadu-gadu&lt;/h3&gt;</translation>
     </message>
     <message>
         <source>Sound module</source>
@@ -386,11 +387,11 @@ Hasło powinno w obu polach być takie same!</translation>
     </message>
     <message>
         <source>This module uses libao to produce sounds. This is third-party module not supported by Kadu Team.</source>
-        <translation>Ten moduł używa libao do wytwarzania dźwięku. Nie jest on wspierany przez Kadu Team.</translation>
+        <translation>Ten moduł używa libao do odtwarzania dźwięku. Nie jest on wspierany przez Kadu Team.</translation>
     </message>
     <message>
         <source>This module uses KDE&apos;s aRts daemon which mixes multiple digital sources at real time.&lt;br&gt; When your soundcard doesn&apos;t handle that, this module is for you.</source>
-        <translation>Ten moduł używa serwera dźwięku aRts (KDE), który miksuje programowo różne żródła dźwieku w czasie  rzeczywistym.&lt;br&gt; Jeżeli twoja karta dźwiekowa nie obługuje tego sprzętowo to ten moduł jest dla ciebie. </translation>
+        <translation>Ten moduł używa serwera dźwięku aRts (KDE), który miksuje programowo różne żródła dźwięku w czasie rzeczywistym.&lt;br&gt; Jeżeli twoja karta dźwiękowa nie obsługuje tego sprzętowo to ten moduł jest dla ciebie. </translation>
     </message>
     <message>
         <source>This module uses OSS kernel module to produce sounds.</source>
@@ -398,11 +399,11 @@ Hasło powinno w obu polach być takie same!</translation>
     </message>
     <message>
         <source>This module uses GNOME&apos;s Enlightened Sound Daemon which mixes multiple digital sources at real time.&lt;br&gt; When your soundcard doesn&apos;t handle that, this module is for you.</source>
-        <translation>Ten moduł używa Enlightened Sound Daemon (Gnome), który miksuje programowo różne żródła dźwieku w czasie  rzeczywistym.&lt;br&gt; Jeżeli twoja karta dźwiekowa nie obługuje tego sprzętowo to ten moduł jest dla ciebie. </translation>
+        <translation>Ten moduł używa Enlightened Sound Daemon (GNOME), który miksuje programowo różne źródła dźwięku w czasie rzeczywistym.&lt;br&gt; Jeżeli twoja karta dźwiękowa nie obsługuje tego sprzętowo to ten moduł jest dla ciebie. </translation>
     </message>
     <message>
         <source>This module uses external application to produce sounds. You must specify path to external program in configuration.</source>
-        <translation>Ten moduł używa zewnętrznego programu do obsługi dźwięku. Musisz podać ścieżkę dostepu do niego.</translation>
+        <translation>Ten moduł używa zewnętrznego programu do obsługi dźwięku. Musisz podać ścieżkę dostępu do niego.</translation>
     </message>
     <message>
         <source>This module uses Network Audio System to produce sounds. Use it when you use NAS sound system.</source>
@@ -434,7 +435,8 @@ Hasło powinno w obu polach być takie same!</translation>
     </message>
     <message>
         <source>&lt;h2&gt;Congratulations&lt;/h2&gt;&lt;h3&gt;You have just configured Kadu&lt;/h3&gt;You can adjust settings using the configuration icon on toolbar or simply by pressing F2. It&apos;s recomended to read the documentation before changing some advanced settings. If you have questions or problems with Kadu look at &lt;b&gt;www.kadu.net/forum&lt;/b&gt; and be our guest.&lt;br&gt;&lt;h3&gt;Enjoy using Kadu ;)&lt;br&gt;Kadu Team&lt;/h3&gt;</source>
-        <translation>&lt;h2&gt;Gratulacje&lt;/h2&gt;&lt;h3&gt;Kadu jest zkonfigurowane&lt;/h3&gt;Jeżeli będziesz mieć ochotę zmienić ustawienia będziesz mieć do nich dostęp poprzez ikonę konfiguracji na pasku narzędziowym lub poprzez skrót klawiaturowy F2. Rekomendujemy przeczytanie dokumentacji online &lt;b&gt;www.kadu.net/doc.php&lt;/b&gt; przed dokonywaniem zmian w zaawanowanych ustawieniach. Jeśli masz jakieś pytania lub problemy z Kadu zajrzyj na &lt;b&gt;www.kadu.net/forum&lt;/b&gt;&lt;br&gt;&lt;h3&gt;Cieszymy się że używasz Kadu ;)&lt;br&gt;Kadu Team&lt;/h3&gt;</translation>
+        <translation>&lt;h2&gt;Gratulacje&lt;/h2&gt;&lt;h3&gt;Właśnie skonfigurowałeś Kadu&lt;/h3&gt;Jeżeli będziesz mieć ochotę zmienić ustawienia będziesz mieć do nich dostęp poprzez ikonę konfiguracji na pasku narzędziowym lub poprzez skrót klawiaturowy F2. Zalecamy przeczytanie dokumentacji online &lt;b&gt;www.kadu.net/doc.php&lt;/b&gt; przed dokonywaniem zmian w zaawanowanych ustawieniach. Jeśli masz jakieś pytania lub problemy z Kadu zajrzyj na &lt;b&gt;www.kadu.net/forum&lt;/b&gt;&lt;br&gt;
+&lt;h3&gt;Miłego użytkowania Kadu ;)&lt;br&gt;Kadu Team&lt;/h3&gt;</translation>
     </message>
     <message>
         <source>There will be no sounds in Kadu</source>
