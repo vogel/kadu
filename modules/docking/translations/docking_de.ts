@@ -13,19 +13,26 @@
 
 Current status:
 %1</source>
-        <translation type="unfinished"></translation>
+        <translation>
+
+gegenwärtiger Status:
+%1</translation>
     </message>
     <message>
         <source>
 
 Description:
 %2</source>
-        <translation type="unfinished"></translation>
+        <translation>
+
+Beschreibung:
+%2</translation>
     </message>
     <message>
         <source>Left click - hide/show window
 Middle click or Left click- open message</source>
-        <translation type="unfinished"></translation>
+        <translation>Linke Maustauste: zeige/verstecke Fenster
+Mittlere Maustaste oder linke Maustaste: Nachricht öffnen</translation>
     </message>
 </context>
 </TS>

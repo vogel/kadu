@@ -7,15 +7,15 @@
     </message>
     <message>
         <source>Enable autoaway</source>
-        <translation>Automatisch &quot;Beschäftigt&quot;-Status</translation>
+        <translation>Schalte automatisch den &quot;Beschäftigt&quot;-Status ein</translation>
     </message>
     <message>
         <source>Set status to away after </source>
-        <translation>Ändere den Status nach</translation>
+        <translation>Ändere zu &quot;Beschäftigt&quot; nach</translation>
     </message>
     <message>
         <source>Check idle every </source>
-        <translation type="unfinished"></translation>
+        <translation>Überprüfe auf Abwesenheit alle</translation>
     </message>
 </context>
 </TS>

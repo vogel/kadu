@@ -3,98 +3,98 @@
     <name>@default</name>
     <message>
         <source>Sounds</source>
-        <translation type="unfinished"></translation>
+        <translation>Klänge</translation>
     </message>
     <message>
         <source>Play sounds</source>
-        <translation type="unfinished"></translation>
+        <translation>Klänge abspielen</translation>
     </message>
     <message>
         <source>Enable volume control (player must support it)</source>
-        <translation type="unfinished"></translation>
+        <translation>Schalte Lautstärkeregelung ein (das Abspielprogramm muß dies unterstützen)</translation>
     </message>
     <message>
         <source>Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Test</translation>
     </message>
     <message>
         <source>Play sounds from a person whilst chatting</source>
-        <translation type="unfinished"></translation>
+        <translation>Klänge während eines Gesprächs</translation>
     </message>
     <message>
         <source>Play chat sounds only when window is invisible</source>
-        <translation type="unfinished"></translation>
+        <translation>Klänge beim Chat, nur wenn das Fenster unsichtbar ist</translation>
     </message>
     <message>
         <source>Volume</source>
-        <translation type="unfinished"></translation>
+        <translation>Lautstärke</translation>
     </message>
     <message>
         <source>Choose</source>
-        <translation type="unfinished"></translation>
+        <translation>Wähle</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation type="unfinished"></translation>
+        <translation>Leeren</translation>
     </message>
     <message>
         <source>Sound paths</source>
-        <translation type="unfinished"></translation>
+        <translation>Pfad zu den Klangdateien</translation>
     </message>
     <message>
         <source>Sound theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Thema der Klänge</translation>
     </message>
     <message>
         <source>Notify</source>
-        <translation type="unfinished"></translation>
+        <translation>Benachrichtigung</translation>
     </message>
     <message>
         <source>Notify options</source>
-        <translation type="unfinished"></translation>
+        <translation>Benachrichtigungsoptionen</translation>
     </message>
     <message>
         <source>Notify by sound</source>
-        <translation type="unfinished"></translation>
+        <translation>Benachrichtigung durch Klang</translation>
     </message>
 </context>
 <context>
     <name>SoundSlots</name>
     <message>
         <source>Unmute sounds</source>
-        <translation type="unfinished"></translation>
+        <translation>Klänge einschalten</translation>
     </message>
     <message>
         <source>Mute sounds</source>
-        <translation type="unfinished"></translation>
+        <translation>Klänge ausschalten</translation>
     </message>
     <message>
         <source>Custom</source>
-        <translation type="unfinished"></translation>
+        <translation>Eigene Einstellungen</translation>
     </message>
     <message>
         <source>default</source>
-        <translation type="unfinished"></translation>
+        <translation>Standard</translation>
     </message>
     <message>
         <source>Event</source>
-        <translation type="unfinished"></translation>
+        <translation>Ereignis</translation>
     </message>
     <message>
         <source>Sound file</source>
-        <translation type="unfinished"></translation>
+        <translation>Klangdatei</translation>
     </message>
     <message>
         <source>Chat sound</source>
-        <translation type="unfinished"></translation>
+        <translation>Klang beim Chaten</translation>
     </message>
     <message>
         <source>Message sound</source>
-        <translation type="unfinished"></translation>
+        <translation>Klang bei einer Nachricht</translation>
     </message>
     <message>
         <source>Notify sound</source>
-        <translation type="unfinished"></translation>
+        <translation>Klang der Benachrichtigung</translation>
     </message>
 </context>
 </TS>

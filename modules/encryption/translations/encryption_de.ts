@@ -3,93 +3,93 @@
     <name>@default</name>
     <message>
         <source>Use encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutze Verschlüsselung</translation>
     </message>
     <message>
         <source>Encryption properties</source>
-        <translation type="unfinished"></translation>
+        <translation>Einstellungen der Verschlüsselung</translation>
     </message>
     <message>
         <source>Keys length</source>
-        <translation type="unfinished"></translation>
+        <translation>Schlüssellänge</translation>
     </message>
     <message>
         <source>Generate keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Erstelle Schlüssel</translation>
     </message>
 </context>
 <context>
     <name>EncryptionManager</name>
     <message>
         <source>Send my public key</source>
-        <translation type="unfinished"></translation>
+        <translation>Sende meinen öffentlichen Schlüssel</translation>
     </message>
     <message>
         <source>Keys exist. Do you want to overwrite them?</source>
-        <translation type="unfinished"></translation>
+        <translation>Schlüssel existiert schon. Soll er überschrieben werden?</translation>
     </message>
     <message>
         <source>Yes</source>
-        <translation type="unfinished"></translation>
+        <translation>Ja</translation>
     </message>
     <message>
         <source>No</source>
-        <translation type="unfinished"></translation>
+        <translation>Nein</translation>
     </message>
     <message>
         <source>Error generating keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler beim Erstellen der Schlüssel</translation>
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>OK</translation>
     </message>
     <message>
         <source>Keys have been generated and written</source>
-        <translation type="unfinished"></translation>
+        <translation>Schlüssel wurden erstellt und geschrieben</translation>
     </message>
     <message>
         <source>Disable encryption for this conversation</source>
-        <translation type="unfinished"></translation>
+        <translation>Verschlüsseleung für dieses Gespräch ausschalten</translation>
     </message>
     <message>
         <source>Enable encryption for this conversation</source>
-        <translation type="unfinished"></translation>
+        <translation>Verschlüsselung für dieses Gespräch einschalten</translation>
     </message>
     <message>
         <source>Your public key has been sent</source>
-        <translation type="unfinished"></translation>
+        <translation>Ihr öffentlicher Schlüssel wurde gesendet</translation>
     </message>
 </context>
 <context>
     <name>SavePublicKey</name>
     <message>
         <source>Save public key</source>
-        <translation type="unfinished"></translation>
+        <translation>Speichern der öffentlichen Schlüssels</translation>
     </message>
     <message>
         <source>User %1 is sending you his public key. Do you want to save it?</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzer %1 sendet Ihnen seinen öffentlichen Schlüssel. Soll ich ihn speichern?</translation>
     </message>
     <message>
         <source>Yes</source>
-        <translation type="unfinished"></translation>
+        <translation>Ja</translation>
     </message>
     <message>
         <source>No</source>
-        <translation type="unfinished"></translation>
+        <translation>Nein</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler</translation>
     </message>
     <message>
         <source>Error writting the key</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler beim schreiben des Schlüssels</translation>
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>OK</translation>
     </message>
 </context>
 </TS>

@@ -3,42 +3,42 @@
     <name>@default</name>
     <message>
         <source>Autoresponder</source>
-        <translation type="unfinished"></translation>
+        <translation>Auto-Antwort</translation>
     </message>
     <message>
         <source>Autoresponder options</source>
-        <translation type="unfinished"></translation>
+        <translation>Optionen von Auto-Antwort </translation>
     </message>
     <message>
         <source>Autoanswer text:</source>
-        <translation type="unfinished"></translation>
+        <translation>Antwort-Text:</translation>
     </message>
     <message>
         <source>Thanks for your message. User is not currently available.</source>
-        <translation type="unfinished"></translation>
+        <translation>Danke für die Nachricht. Benutzer ist momentan unerreichbar.</translation>
     </message>
     <message>
         <source>Choose status:</source>
-        <translation type="unfinished"></translation>
+        <translation>Status wählen:</translation>
     </message>
     <message>
         <source>Status invisible</source>
-        <translation type="unfinished"></translation>
+        <translation>Status &quot;Versteckt&quot;</translation>
     </message>
     <message>
         <source>Status busy</source>
-        <translation type="unfinished"></translation>
+        <translation>Status &quot;Beschäftigt&quot;</translation>
     </message>
     <message>
         <source>Status available</source>
-        <translation type="unfinished"></translation>
+        <translation>Status &quot;Online&quot;</translation>
     </message>
 </context>
 <context>
     <name>AutoResponder</name>
     <message>
         <source>KADU AUTORESPONDER:</source>
-        <translation type="unfinished"></translation>
+        <translation>KADU AUTORESPONDER:</translation>
     </message>
 </context>
 </TS>

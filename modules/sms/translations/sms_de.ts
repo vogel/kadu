@@ -33,15 +33,15 @@ nicht versteht. Gib hier die Argumente ein, getrennt mit Komma. %n=Tel.; %m=Nach
     </message>
     <message>
         <source>Gateways priority</source>
-        <translation type="unfinished"></translation>
+        <translation>Priorität der gateways</translation>
     </message>
     <message>
         <source>Up</source>
-        <translation type="unfinished"></translation>
+        <translation>nach oben</translation>
     </message>
     <message>
         <source>Down</source>
-        <translation type="unfinished"></translation>
+        <translation>nach unten</translation>
     </message>
 </context>
 <context>
@@ -121,14 +121,14 @@ nicht versteht. Gib hier die Argumente ein, getrennt mit Komma. %n=Tel.; %m=Nach
     </message>
     <message>
         <source>Mobile number is incorrect or gateway is not available</source>
-        <translation type="unfinished"></translation>
+        <translation>Die Nummer des Handys ist falsch oder gateway ist unerreichbar</translation>
     </message>
 </context>
 <context>
     <name>SmsSlots</name>
     <message>
         <source>Send SMS</source>
-        <translation type="unfinished">Sende SMS</translation>
+        <translation>Sende SMS</translation>
     </message>
 </context>
 </TS>

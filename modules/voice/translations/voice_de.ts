@@ -1,5 +1,12 @@
 <!DOCTYPE TS><TS>
 <context>
+    <name>@default</name>
+    <message>
+        <source>Voice chat</source>
+        <translation>Telephonat</translation>
+    </message>
+</context>
+<context>
     <name>DccVoiceDialog</name>
     <message>
         <source>Voice chat</source>
