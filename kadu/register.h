@@ -23,6 +23,7 @@
 #include <qlineedit.h>
 #include <qlabel.h>
 #include <qcheckbox.h>
+#include <qsocketnotifier.h>
 #include "../libgadu/lib/libgadu.h"
 
 class Register : public QDialog {
@@ -32,18 +33,26 @@ class Register : public QDialog {
 		Register(QDialog* parent=0, const char *name=0);
 
 	private:
-		QTimer * sokiet;
 		struct gg_http *h;
 		struct gg_pubdir *p;
-		QLineEdit * pwd, * pwd2, * mail;
-		QLabel * status;
+		QLineEdit *pwd, *pwd2, *mail;
+		QLabel *status;
 		uin_t uin;
-		QCheckBox * updateconfig;
+		QCheckBox *updateconfig;
+		QSocketNotifier *snr;
+		QSocketNotifier *snw;
+
 	  	void ask();	
+		void deleteSocketNotifiers();
 
 	private slots:
 		void doRegister();
-		void watchSocket();
+		void socketEvent();
+		void dataReceived();
+		void dataSent();
+
+	protected:
+		void closeEvent(QCloseEvent *e);
 };
 
 #endif

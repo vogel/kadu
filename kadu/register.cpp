@@ -33,7 +33,7 @@
 #include "register.h"
 //
 
-Register::Register(QDialog *parent, const char *name) : QDialog (parent, name) {
+Register::Register(QDialog *parent, const char *name) : QDialog (parent, name, FALSE, Qt::WDestructiveClose) {
 	QGridLayout *grid = new QGridLayout(this, 5, 2, 6, 5);
 
 	QLabel *l_pwd = new QLabel(this);
@@ -77,6 +77,9 @@ Register::Register(QDialog *parent, const char *name) : QDialog (parent, name) {
 
 	setCaption(i18n("Register user"));
 	resize(240, 150);
+
+	snr = snw = NULL;
+	h = NULL;
 }
 
 void Register::doRegister() {
@@ -98,65 +101,86 @@ void Register::doRegister() {
 		return;
 		}
 
-	sokiet = new QTimer;
-	QObject::connect(sokiet, SIGNAL(timeout()), this, SLOT(watchSocket()));		
-	sokiet->start(50);
+	snr = new QSocketNotifier(h->fd, QSocketNotifier::Read, kadu);
+	QObject::connect(snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
+
+	snw = new QSocketNotifier(h->fd, QSocketNotifier::Write, kadu);
+	QObject::connect(snw, SIGNAL(activated(int)), this, SLOT(dataSent()));
+
 	status->setText(i18n("Registering"));
 }
 
-void Register::watchSocket() {
-	fd_set rd, wr, ex;
-
-	FD_ZERO(&rd);
-	FD_ZERO(&wr);
-	FD_ZERO(&ex);
-
-	if ((h->check & GG_CHECK_READ))
-		FD_SET(h->fd, &rd);
-	if ((h->check & GG_CHECK_WRITE))
-        	FD_SET(h->fd, &wr);
-	FD_SET(h->fd, &ex);
-
-	if (select(h->fd + 1, &rd, &wr, &ex, NULL) == -1 || FD_ISSET(h->fd, &ex)) {
-		if (errno == EINTR)
-			return;
+void Register::closeEvent(QCloseEvent *e) {
+	deleteSocketNotifiers();
+	if (h) {
 		gg_free_register(h);
-		perror("select");
+		h = NULL;
+		}
+	QWidget::closeEvent(e);
+}
+
+void Register::deleteSocketNotifiers() {
+	if (snr) {
+		snr->setEnabled(false);
+		snr->deleteLater();
+		snr = NULL;
+		}
+	if (snw) {
+		snw->setEnabled(false);
+		snw->deleteLater();
+		snw = NULL;
+		}
+}
+
+void Register::dataReceived() {
+	fprintf(stderr, "KK Register::dataReceived()\n");
+	if (h->check && GG_CHECK_READ)
+		socketEvent();
+}
+
+void Register::dataSent() {
+	fprintf(stderr, "KK Register::dataSent()\n");
+	snw->setEnabled(false);
+	if (h->check && GG_CHECK_WRITE)
+		socketEvent();
+}
+
+void Register::socketEvent() {
+	if (gg_register_watch_fd(h) == -1) {
+		deleteSocketNotifiers();
+		gg_free_register(h);
+		h = NULL;
+		fprintf(stderr, "KK error registering\n");
 		status->setText(i18n("Error"));
-		sokiet->stop();
 		return;
 		}
-
-	if (FD_ISSET(h->fd, &rd) || FD_ISSET(h->fd, &wr)) {
-		if (gg_register_watch_fd(h) == -1) {
-			gg_free_register(h);
-			fprintf(stderr, "KK error registering\n");
-			status->setText(i18n("Error"));
-			sokiet->stop();
-			return;
-			}
-		if (h->state == GG_STATE_ERROR) {
-			gg_free_register(h);
-			fprintf(stderr, "KK error registering\n");
-			status->setText(i18n("Error"));
-			sokiet->stop();
-			return;
-			}
-		if (h->state == GG_STATE_DONE) {													
-			p = (struct gg_pubdir *) h->data;
-			fprintf(stderr, "KK register success=%d, uin=%ld\n", p->success, p->uin);
-			status->setText(i18n("Success!"));
-			sokiet->stop();											
-			uin = p->uin;
-			gg_free_register(h);
-			QMessageBox::information( 0, "Kadu",i18n("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(uin),"OK", 0, 0, 1);
-			ask();
-			Adduser *au;
-			au = new Adduser(0,"add_user");
-			au->show();
-			close(true);
-			}
+	if (h->state == GG_STATE_ERROR) {
+		deleteSocketNotifiers();
+		gg_free_register(h);
+		h = NULL;
+		fprintf(stderr, "KK error registering\n");
+		status->setText(i18n("Error"));
+		return;
 		}
+	if (h->state == GG_STATE_DONE) {													
+		deleteSocketNotifiers();
+		p = (struct gg_pubdir *) h->data;
+		fprintf(stderr, "KK register success=%d, uin=%ld\n", p->success, p->uin);
+		status->setText(i18n("Success!"));
+		uin = p->uin;
+		gg_free_register(h);
+		h = NULL;
+		QMessageBox::information( 0, "Kadu",i18n("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(uin),"OK", 0, 0, 1);
+		ask();
+//		Adduser *au;
+//		au = new Adduser(0,"add_user");
+//		au->show();
+		fprintf(stderr, "KK socketEvent() before close()\n");
+		close();
+		}
+	else
+		if (h->check & GG_CHECK_WRITE)
+			snw->setEnabled(true);
 }
 
 void createKonfig() {
@@ -185,14 +209,14 @@ void createKonfig() {
 		}
 
 	char path3[1023];
-	snprintf(path3, sizeof(path3), "%s/config", path2);
+	snprintf(path3, sizeof(path3), "%s/kadu.conf", path2);
 
 	fprintf(stderr,"KK createKonfig(): Writing config files...\n");
 	KConfig *konf;
 	konf = new KConfig(path3);
 	konf->setGroup("Global");
-	konf->writeEntry("UIN",config.uin);
-	konf->writeEntry("Password",config.password);
+	konf->writeEntry("UIN", config.uin);
+	konf->writeEntry("Password", pwHash(config.password));
 	konf->sync();
 
 	fprintf(stderr,"KK createKonfig(): Config file created\n");
@@ -204,7 +228,7 @@ void Register::ask() {
 //		createKonfig();
 		config.uin = uin;
 		config.password = pwd->text();
-		kadu->setCaption(i18n("Kadu: new user"));
+//		kadu->setCaption(i18n("Kadu: new user"));
 		createKonfig();
 		}
 }
