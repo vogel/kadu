@@ -10,7 +10,7 @@ extern "C" {
 #include "libgsm/inc/gsm.h"
 };
 
-#include "dcc.h"
+#include "../dcc/dcc.h"
 
 class PlayThread;
 class RecordThread;
