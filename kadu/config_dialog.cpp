@@ -1369,7 +1369,7 @@ void ConfigDialog::setupTab7() {
 
 	QHBox *hbox1 = new QHBox(vbox1);
 	QLabel *l_qcount = new QLabel(i18n("Count:"), hbox1);
-	s_qcount = new QSpinBox(0, 50, 1, hbox1);
+	s_qcount = new QSpinBox(0, 200, 1, hbox1);
 	s_qcount->setValue(config.chathistorycitation);
 
 	QLabel *l_qtime = new QLabel(i18n("Don't quote phrases older than:"), vbox1);

@@ -14,6 +14,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   i wywalenie plików message.* (mast3r)
 * poprawka segfault w opcji wysy³aniu pliku je¶li ¿aden kontakt
   nie jest zaznaczony, np. po starcie kadu (hutta/adrian)
+* mo¿na cytowaæ max. 200 fraz (chilek)
 
 +++ wersja 0.3.4-rc4
 * kadu nie pokazuje fa³szywych statusów ukrytych w userboksie (chilek)
