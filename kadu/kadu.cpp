@@ -932,7 +932,9 @@ void Kadu::commandParser (int command) {
 			sms->show();
 			break;
 		case KADU_CMD_REMIND_PASSWORD:
-			remindPassword();
+			remindPassword *rp;	
+			rp = new remindPassword();
+			rp->start();
 			break;
 		case KADU_CMD_REGISTER_USER:
 			Register *reg;
