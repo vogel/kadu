@@ -10,6 +10,7 @@
 #include <qlayout.h>
 #include <qmessagebox.h>
 #include <klocale.h>
+#include <qregexp.h>
 
 //
 #include "kadu.h"
@@ -110,8 +111,8 @@ int Sms::sendSms(void) {
 	{
 		smsProcess->addArgument(SmsAppPath);
 		QString args=config.smsconf;
-		args.replace("%n",recipient->text());
-		args.replace("%m",body->text());
+		args.replace(QRegExp("%n"),recipient->text());
+		args.replace(QRegExp("%m"),body->text());
 		smsProcess->addArgument(args);
 	}
 	else
