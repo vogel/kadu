@@ -1674,6 +1674,11 @@ QValueList<ChatMessage*>& Chat::chatMessages()
 	return ChatMessages;
 }
 
+const QString& Chat::getTitle()
+{
+	return title_buffer;
+}
+
 ColorSelectorButton::ColorSelectorButton(QWidget* parent, const QColor& qcolor, int width, const char *name) : QPushButton(parent, name)
 {
 #define WIDTH1 15

@@ -300,6 +300,10 @@ class Chat : public QWidget
 			dodanie nowych wiadomo¶ci lub usuniêcie istniej±cych.
 		**/
 		void repaintMessages();
+		/**
+			Zwraca aktualny tytu³ okna
+		**/
+		const QString& getTitle();
 
 	public slots:
 		void changeAppearance();
