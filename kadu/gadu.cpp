@@ -23,6 +23,44 @@ GaduProtocol::GaduProtocol() : QObject()
 {
 }
 
+int GaduProtocol::sendMessage(const UinsList& uins,char* msg)
+{
+	int seq;
+	if(uins.count()>1)
+	{
+		uin_t* users = new (uin_t)[uins.count()];
+		for (int i = 0; i < uins.count(); i++)
+			users[i] = uins[i];
+		seq=gg_send_message_confer(sess, GG_CLASS_CHAT,
+			uins.count(), users, (unsigned char*)msg);
+		delete[] users;
+	}
+	else
+		seq=gg_send_message(sess, GG_CLASS_CHAT, uins[0],
+			(unsigned char*)msg);
+	return seq;
+}
+
+int GaduProtocol::sendMessageRichText(const UinsList& uins,char* msg,unsigned char* myLastFormats,int myLastFormatsLength)
+{
+	int seq;
+	if(uins.count()>1)
+	{
+		uin_t* users = new (uin_t)[uins.count()];
+		for (int i = 0; i < uins.count(); i++)
+			users[i] = uins[i];
+		seq = gg_send_message_confer_richtext(sess, GG_CLASS_CHAT,
+				uins.count(), users, (unsigned char*)msg,
+				myLastFormats, myLastFormatsLength);
+		delete[] users;
+	}
+	else
+		seq = gg_send_message_richtext(sess, GG_CLASS_CHAT,
+				uins[0], (unsigned char*)msg,
+				myLastFormats, myLastFormatsLength);
+	return seq;
+}
+
 void GaduProtocol::sendUserList()
 {
 	uin_t *uins;

@@ -109,7 +109,7 @@ class Chat : public QWidget {
 		QString myLastMessage;
 		int myLastFormatsLength;
 		void *myLastFormats;
-		int seq, acks;
+		int seq;
 
 		void pruneWindow(void);
 

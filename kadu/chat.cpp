@@ -38,6 +38,7 @@
 #include "dock_widget.h"
 #include "debug.h"
 #include "sound.h"
+#include "gadu.h"
 #ifdef HAVE_OPENSSL
 extern "C"
 {
@@ -935,9 +936,6 @@ void Chat::ackReceivedSlot(int Seq) {
 	kdebug("Chat::ackReceivedSlot()\n");
 	if (seq != Seq)
 		return;
-	acks--;
-	if (acks)
-		return;
 	kdebug("Chat::ackReceivedSlot(): This is my ack.\n");
 	writeMyMessage();
 	seq = 0;
@@ -947,8 +945,6 @@ void Chat::ackReceivedSlot(int Seq) {
 
 /* sends the message typed */
 void Chat::sendMessage(void) {
-	int i, j, online;
-	uin_t *users;
 	QString mesg;
 
 	if (getActualStatus() == GG_STATUS_NOT_AVAIL) {
@@ -986,104 +982,39 @@ void Chat::sendMessage(void) {
 		sendbtn->setText(tr("&Cancel"));
 		}
 
-	unsigned char *utmp = (unsigned char *)strdup(unicode2cp(mesg).data());
+	char* tmp = strdup(unicode2cp(mesg).data());
+	
+#ifdef HAVE_OPENSSL
+	if (uins.count()==1 && encrypt_enabled)
+	{
+		char* encrypted = sim_message_encrypt((unsigned char *)tmp, uins[0]);
+		free(tmp);
+		tmp=encrypted;		
+	}	
+#endif
 
-	users = new (uin_t)[uins.count()];
-	for (j = 0, online = 0; j < uins.count(); j++) {
-		UserListElement &ule = userlist.byUin(uins[j]);
-		if (ule.status == GG_STATUS_AVAIL || ule.status == GG_STATUS_AVAIL_DESCR ||
-			ule.status == GG_STATUS_BUSY || ule.status == GG_STATUS_BUSY_DESCR)
-			online++;
-		}
-	online = uins.count();
- 	if (config_file.readBoolEntry("Chat","MessageAcks") && online) {
-		if (uins.count() > 1) {
-			for (j = 0; j < uins.count(); j++)
-				users[j] = uins[j];
-			if (myLastFormatsLength)
-				seq = gg_send_message_confer_richtext(sess, GG_CLASS_CHAT,
-					uins.count(), users, (unsigned char *)utmp,
-					(unsigned char *)myLastFormats, myLastFormatsLength);
-			else
-				seq = gg_send_message_confer(sess, GG_CLASS_CHAT,
-					uins.count(), users, (unsigned char *)utmp);
-			acks = online;
-			}
-		else {
-#ifdef HAVE_OPENSSL
-			if (encrypt_enabled) {
-				char* encrypted = sim_message_encrypt((unsigned char *)utmp, uins[0]);
-				if (encrypted != NULL) {
-					if (myLastFormatsLength)
-						seq = gg_send_message_richtext(sess, GG_CLASS_CHAT,
-							uins[0], (unsigned char *)encrypted,
-							(unsigned char *)myLastFormats, myLastFormatsLength);
-					else
-						seq = gg_send_message(sess, GG_CLASS_CHAT,
-							uins[0], (unsigned char *)encrypted);
-					acks = 1;
-					free(encrypted);
-				}
-			} else {
-#endif
-				if (myLastFormatsLength)
-					seq = gg_send_message_richtext(sess, GG_CLASS_CHAT, uins[0],
-						(unsigned char *)utmp,
-						(unsigned char *)myLastFormats, myLastFormatsLength);
-				else
-					seq = gg_send_message(sess, GG_CLASS_CHAT, uins[0],
-						(unsigned char *)utmp);
-				acks = 1;
-#ifdef HAVE_OPENSSL
-				}
-#endif
-			}
+	if (tmp != NULL)
+	{
+		if (myLastFormatsLength)
+			seq = gadu->sendMessageRichText(uins, tmp,
+				(unsigned char *)myLastFormats, myLastFormatsLength);
+		else
+			seq = gadu->sendMessage(uins, tmp);
+		free(tmp);
+	}
+
+ 	if (config_file.readBoolEntry("Chat","MessageAcks"))
+	{
 		connect(&event_manager, SIGNAL(ackReceived(int)),
 			this, SLOT(ackReceivedSlot(int)));
-		}
-	else {
-		if (uins.count() > 1) {
-			for (j = 0; j < uins.count(); j++)
-				users[j] = uins[j];
-			if (myLastFormatsLength)
-				gg_send_message_confer_richtext(sess, GG_CLASS_CHAT,
-					uins.count(), users, (unsigned char *)utmp,
-					(unsigned char *)myLastFormats, myLastFormatsLength);
-			else
-				gg_send_message_confer(sess, GG_CLASS_CHAT,
-					uins.count(), users, (unsigned char *)utmp);
-			}
-		else {
-#ifdef HAVE_OPENSSL
-			if (encrypt_enabled) {
-				char* encrypted = sim_message_encrypt((unsigned char *)utmp, uins[0]);
-				if (encrypted != NULL) {
-					if (myLastFormatsLength)
-						gg_send_message_richtext(sess, GG_CLASS_CHAT, uins[0],
-							(unsigned char *)encrypted,
-							(unsigned char *)myLastFormats, myLastFormatsLength);
-					else
-						gg_send_message(sess, GG_CLASS_CHAT, uins[0],
-							(unsigned char *)encrypted);
-					free(encrypted);
-				}
-			} else {
-#endif
-				if (myLastFormatsLength)
-					gg_send_message_richtext(sess, GG_CLASS_CHAT, uins[0], (unsigned char *)utmp,
-						(unsigned char *)myLastFormats, myLastFormatsLength);
-				else
-					gg_send_message(sess, GG_CLASS_CHAT, uins[0], (unsigned char *)utmp);
-#ifdef HAVE_OPENSSL
-			}
-#endif
-		}
-		writeMyMessage();
 	}
+	else
+	{
+		writeMyMessage();
+	}	
+
 	if (myLastFormats)
 		delete [](char *)myLastFormats;
-	delete []users;
-	free(utmp);
 
 	if (sess->check & GG_CHECK_WRITE)
 		kadusnw->setEnabled(true);		
