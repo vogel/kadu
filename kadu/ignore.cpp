@@ -8,45 +8,97 @@
  ***************************************************************************/
 
 #include <qpushbutton.h>
-#include <qlayout.h>
+#include <qvbox.h>
 #include <qfile.h>
 #include <qtextstream.h>
 #include <qstringlist.h>
-#include <qtooltip.h>
+#include <qvgroupbox.h>
 
 #include <sys/stat.h>
 #include "ignore.h"
 #include "userlist.h"
+#include "debug.h"
 //
 
 QValueList<UinsList> ignored;
 
-Ignored::Ignored(QDialog *parent, const char *name) : QDialog (parent, name) {
-	resize(180,260);
+Ignored::Ignored(QDialog *parent, const char *name)
+{
+	kdebugf();
+	setWFlags(Qt::WDestructiveClose);
 	setCaption(tr("Manage ignored users"));
-	QLabel *descr = new QLabel(tr("Ignored Uins:"),this);
-
-	list = new QListBox(this);
-
+	
+	// create main QLabel widgets (icon and app info)
+	QVBox *left=new QVBox(this);
+	left->setMargin(10);
+	left->setSpacing(10);
+	
+	QLabel *l_icon = new QLabel(left);
+	QWidget *blank=new QWidget(left);
+	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
+	
+	QVBox *center=new QVBox(this);
+	center->setMargin(10);
+	center->setSpacing(10);
+	
+	QLabel *l_info = new QLabel(center);
+	l_icon->setPixmap(icons_manager.loadIcon("ManageIgnoredWindowIcon"));
+	l_info->setText(tr("This dialog box allows you to manage your ignored contacts."));
+	l_info->setAlignment(Qt::WordBreak);
+	// end create main QLabel widgets (icon and app info)
+	
+	// our QListBox
+	lb_list = new QListBox(center);
 	getList();
+	// end our QListBox
+	
+	//our QVGroupBox
+	QVGroupBox *vgb_uin = new QVGroupBox(center);
+	vgb_uin->setTitle(tr("Uin"));
+	//end our QGroupBox
+	
+	QLabel *l_uin = new QLabel(tr("Type here the UIN of the person you want to ignore."), vgb_uin);
+	l_uin->setAlignment(Qt::WordBreak);
+	
+	QHBox *hb_uin = new QHBox(vgb_uin);
+	hb_uin->setMargin(5);
+	hb_uin->setSpacing(3);
+	
+	QLabel *l_uinlabel = new QLabel(tr("Uin:"), hb_uin);
+	// chyba tylko po to zeby nie pokazywal sie warning kompilatora ;)
+	l_uinlabel->setAlignment(Qt::WordBreak);
+	e_uin = new QLineEdit(hb_uin);
+	hb_uin->setStretchFactor(e_uin, 1);
+	
+	// buttons
+	QHBox *bottom=new QHBox(center);
+	QWidget *blank2=new QWidget(bottom);
+	bottom->setSpacing(5);
+	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
+	QPushButton *pb_del = new QPushButton(icons_manager.loadIcon("DeleteIgnoredButton"), tr("Delete"), bottom);
+	QPushButton *pb_add = new QPushButton(icons_manager.loadIcon("AddIgnoredButton"), tr("Add"), bottom);
+	QPushButton *pb_close = new QPushButton(icons_manager.loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
+	// end buttons
+	
+	connect(pb_add, SIGNAL(clicked()), this, SLOT(add()));
+	connect(pb_del, SIGNAL(clicked()), this, SLOT(remove()));
+	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
+	
+ 	loadGeometry(this, "General", "IgnoredDialogGeometry", 0, 0, 450, 400);
+}
 
-	QPushButton *b_del = new QPushButton(tr("Delete"),this);
-	QObject::connect(b_del, SIGNAL(clicked()), this, SLOT(remove()));
+Ignored::~Ignored()
+{
+	kdebugf();
+	saveGeometry(this, "General", "IgnoredDialogGeometry");
+}
 
-	QPushButton *b_add = new QPushButton(tr("Add"),this);
-	QObject::connect(b_add, SIGNAL(clicked()), this, SLOT(add()));
-
-	e_uin = new QLineEdit(this);
-	QToolTip::add(e_uin, "Type here the UIN of the person you want to ignore");
-	QLabel *l_uin = new QLabel(tr("Uin"),this);
-
-	QGridLayout *grid = new QGridLayout(this, 4,2,6,6);
-	grid->addWidget(descr,0,0);
-	grid->addMultiCellWidget(list,1,1,0,1);
-	grid->addWidget(l_uin,2,0, Qt::AlignRight);
-	grid->addWidget(e_uin,2,1);
-	grid->addWidget(b_del,3,0);
-	grid->addWidget(b_add,3,1);
+void Ignored::keyPressEvent(QKeyEvent *ke_event)
+{
+	if (ke_event->key() == Qt::Key_Escape)
+		close();
+	if ((ke_event->key() == Qt::Key_Return || ke_event->key() == Qt::Key_Enter) && e_uin->hasFocus())
+		add(); 
 }
 
 void Ignored::add() {
@@ -69,7 +121,7 @@ void Ignored::add() {
 
 void Ignored::getList() {
 	unsigned int i, j, k;
-	list->clear();
+	lb_list->clear();
 	for (i = 0; i < ignored.count(); i++) {
 		QStringList strlist;
 		for (j = 0; j < ignored[i].count(); j++) {
@@ -81,15 +133,15 @@ void Ignored::getList() {
 			else
 				strlist.append(QString("%1").arg(QString::number(ignored[i][j])));
 			}
-		list->insertItem(strlist.join(";"));
+		lb_list->insertItem(icons_manager.loadIcon("Blocking"), strlist.join(";"));
 		}
 }
 
 void Ignored::remove() {
-	if (list->currentItem() == -1)
+	if (lb_list->currentItem() == -1)
 		return;
 	QStringList strlist;
-	strlist = QStringList::split(";", list->currentText());
+	strlist = QStringList::split(";", lb_list->currentText());
 	UinsList uins;
 	for (unsigned int i = 0; i < strlist.count(); i++) {
 		QString str;

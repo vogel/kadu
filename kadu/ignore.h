@@ -1,7 +1,7 @@
 #ifndef IGNORE_H
 #define IGNORE_H
 
-#include <qdialog.h>
+#include <qhbox.h>
 #include <qlistbox.h>
 #include <qlineedit.h>
 #include <qvaluelist.h>
@@ -11,19 +11,22 @@
 /**
 	Dialog umo¿liwiaj±cy zarz±dzanie list± ignorowanych
 **/
-class Ignored : public QDialog {
+class Ignored : public QHBox 
+{
 	Q_OBJECT
 	public:
 		Ignored(QDialog *parent = 0, const char *name = 0);
+		~Ignored();
 
 	private:
-		QListBox *list;
+		QListBox *lb_list;
 		QLineEdit *e_uin;
 
 	private slots:
 		void remove();
 		void add();
-		void getList();	
+		void getList();
+		void keyPressEvent(QKeyEvent *);
 };
 
 int readIgnored();
