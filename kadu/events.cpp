@@ -126,11 +126,16 @@ EventManager::EventManager()
 {
 	connect(this,SIGNAL(connected()),this,SLOT(connectedSlot()));
 	connect(this,SIGNAL(connectionFailed()),this,SLOT(connectionFailedSlot()));
+	connect(this,SIGNAL(connectionBroken()),this,SLOT(connectionBrokenSlot()));
 	connect(this,SIGNAL(disconnected()),this,SLOT(disconnectedSlot()));
 	connect(this,SIGNAL(userStatusChanged(struct gg_event*)),this,SLOT(userStatusChangedSlot(struct gg_event*)));
 	connect(this,SIGNAL(userlistReceived(struct gg_event*)),this,SLOT(userlistReceivedSlot(struct gg_event*)));
 	connect(this,SIGNAL(messageReceived(int,UinsList,unsigned char*,time_t,int,struct gg_msg_format*)),this,SLOT(messageReceivedSlot(int,UinsList,unsigned char*,time_t,int,struct gg_msg_format*)));
 	connect(this,SIGNAL(ackReceived(int)),this,SLOT(ackReceivedSlot(int)));
+	connect(this,SIGNAL(dccConnectionReceived(const UserListElement&)),
+		this,SLOT(dccConnectionReceivedSlot(const UserListElement&)));
+	connect(this,SIGNAL(pubdirReplyReceived(gg_pubdir50_t)),
+		this,SLOT(pubdirReplyReceivedSlot(gg_pubdir50_t)));
 };
 
 void EventManager::connectedSlot()
@@ -158,8 +163,20 @@ void EventManager::connectedSlot()
 void EventManager::connectionFailedSlot()
 {
 	char error[512];
-	snprintf(error, sizeof(error), "EventManager::eventHandler(): Unable to connect, the following error has occured:\n%s\nEventManager::eventHandler(): Keep trying to connect?\n", strerror(errno));
+	snprintf(error, sizeof(error), "Unable to connect, the following error has occured:\n%s\nKeep trying to connect?\n", strerror(errno));
 	kdebug(error);
+	if (kadu->autohammer)
+		kadu->setStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
+};
+
+void EventManager::connectionBrokenSlot()
+{
+	kdebug("Connection broken unexpectedly!\n");
+	char error[512];
+	kadu->disconnectNetwork();
+	snprintf(error, sizeof(error), "Unscheduled connection termination\n");
+	kdebug(error);
+	kadu->setCurrentStatus(GG_STATUS_NOT_AVAIL);
 	if (kadu->autohammer)
 		kadu->setStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
 };
@@ -167,7 +184,7 @@ void EventManager::connectionFailedSlot()
 void EventManager::disconnectedSlot()
 {
 	trayicon->showErrorHint(i18n("Disconnection has been occured"));
-	kdebug("EventManager::eventHandler(): Disconnection has been occured\n");
+	kdebug("Disconnection has been occured\n");
 	kadu->disconnectNetwork();
 	kadu->setCurrentStatus(GG_STATUS_NOT_AVAIL);
 // Wykomentowa³em, bo to zawsze jest prawdziwe!
@@ -437,7 +454,7 @@ void EventManager::userlistReceivedSlot(struct gg_event *e) {
 
 		n++;		
 		}
-
+	UserBox::all_refresh();
 }
 
 void EventManager::userStatusChangedSlot(struct gg_event * e) {
@@ -475,8 +492,9 @@ void EventManager::userStatusChangedSlot(struct gg_event * e) {
 	for (i = 0; i < chats.count(); i++)
 		if (chats[i].uins.contains(e->event.status.uin))
 			chats[i].ptr->setTitle();
-
+			
 	ifNotify(e->event.status.uin, e->event.status.status, oldstatus);
+	UserBox::all_refresh();
 };
 
 void EventManager::ackReceivedSlot(int seq)
@@ -505,6 +523,40 @@ void EventManager::ackReceivedSlot(int seq)
 		}
 };
 
+void EventManager::dccConnectionReceivedSlot(const UserListElement& sender)
+{
+	struct gg_dcc *dcc_new;
+	dccSocketClass *dcc;
+	if (dccSocketClass::count < 8)
+	{
+		dcc_new = gg_dcc_get_file(htonl(sender.ip.ip4Addr()), sender.port, config.uin, sender.uin);
+		if (dcc_new)
+		{
+			dcc = new dccSocketClass(dcc_new);
+			connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), this, SLOT(dccFinished(dccSocketClass *)));
+			dcc->initializeNotifiers();
+		}
+	}
+};
+
+void EventManager::pubdirReplyReceivedSlot(gg_pubdir50_t res)
+{
+	uint32_t seq = gg_pubdir50_seq(res);
+	int i = 0;
+	while (i < SearchList.count() && SearchList[i].seq != seq)
+		i++;
+	if (i < SearchList.count())
+		switch (SearchList[i].type)
+		{
+			case DIALOG_SEARCH:
+				((SearchDialog *)SearchList[i].ptr)->showResults(res);
+				break;
+			case DIALOG_PERSONAL:
+				((PersonalInfoDialog *)SearchList[i].ptr)->fillFields(res);
+				break;
+		};
+};
+
 void EventManager::eventHandler(gg_session* sess)
 {
 	static int calls = 0;
@@ -517,15 +569,8 @@ void EventManager::eventHandler(gg_session* sess)
 	gg_event* e;
 	if (!(e = gg_watch_fd(sess)))
 	{
-		kdebug("EventManager::eventHandler(): Connection broken unexpectedly!\n");
-		char error[512];
-		kadu->disconnectNetwork();
-		snprintf(error, sizeof(error), "EventManager::eventHandler(): Unscheduled connection termination\n");
-		kdebug(error);
-		kadu->setCurrentStatus(GG_STATUS_NOT_AVAIL);
+		emit connectionBroken();
 		gg_free_event(e);
-		if (kadu->autohammer)
-			kadu->setStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
 		calls--;
 		return;	
 	};
@@ -582,23 +627,7 @@ void EventManager::eventHandler(gg_session* sess)
 	if (e->type == GG_EVENT_MSG)
 	{
 		if (e->event.msg.msgclass == GG_CLASS_CTCP)
-		{
-			struct gg_dcc *dcc_new;
-
-			UserListElement user;
-			user = userlist.byUin(e->event.msg.sender);
-			dccSocketClass *dcc;
-			if (dccSocketClass::count < 8)
-			{
-				dcc_new = gg_dcc_get_file(htonl(user.ip.ip4Addr()), user.port, config.uin, e->event.msg.sender);
-				if (dcc_new)
-				{
-					dcc = new dccSocketClass(dcc_new);
-					connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), this, SLOT(dccFinished(dccSocketClass *)));
-					dcc->initializeNotifiers();
-				}
-			}
-		}
+			emit dccConnectionReceived(userlist.byUin(e->event.msg.sender));
 		else
 		{
 			UinsList uins;
@@ -615,10 +644,7 @@ void EventManager::eventHandler(gg_session* sess)
 	};
 
 	if (e->type == GG_EVENT_STATUS)
-	{
 		emit event_manager.userStatusChanged(e);
-		UserBox::all_refresh();
-	};
 
 	if (e->type == GG_EVENT_ACK)
 	{
@@ -627,30 +653,11 @@ void EventManager::eventHandler(gg_session* sess)
 	};
 
 	if (e->type == GG_EVENT_NOTIFY_DESCR || e->type == GG_EVENT_NOTIFY)
-	{
 		emit event_manager.userlistReceived(e);
-		UserBox::all_refresh();
-	};
 	
 	if (e->type == GG_EVENT_PUBDIR50_SEARCH_REPLY
 		|| e->type == GG_EVENT_PUBDIR50_READ || e->type == GG_EVENT_PUBDIR50_WRITE)
-	{
-		gg_pubdir50_t res = e->event.pubdir50;
-		uint32_t seq = gg_pubdir50_seq(res);
-		int i = 0;
-		while (i < SearchList.count() && SearchList[i].seq != seq)
-			i++;
-		if (i < SearchList.count())
-			switch (SearchList[i].type)
-			{
-				case DIALOG_SEARCH:
-					((SearchDialog *)SearchList[i].ptr)->showResults(res);
-					break;
-				case DIALOG_PERSONAL:
-					((PersonalInfoDialog *)SearchList[i].ptr)->fillFields(res);
-					break;
-			};
-	};
+		emit pubdirReplyReceived(e->event.pubdir50);
 	
 	if (e->type == GG_EVENT_CONN_SUCCESS)
 		emit connected();
@@ -665,15 +672,9 @@ void EventManager::eventHandler(gg_session* sess)
 	{
 		if (sess->state == GG_STATE_IDLE && userlist_sent)
 		{
-			char error[512];
 			socket_active = false;
 			UserBox::all_changeAllToInactive();
-			snprintf(error, sizeof(error), "EventManager::eventHandler(): Unscheduled connection termination\n");
-			kdebug(error);
-			kadu->disconnectNetwork();			
-			kadu->setCurrentStatus(GG_STATUS_NOT_AVAIL);
-			if (kadu->autohammer)
-				kadu->setStatus(config.defaultstatus & (~GG_STATUS_FRIENDS_MASK));
+			emit connectionBroken();
 		}
 		else
 			if (sess->check & GG_CHECK_WRITE)

@@ -37,11 +37,14 @@ class EventManager : public QObject
 	private slots:
 		void connectedSlot();
 		void connectionFailedSlot();
+		void connectionBrokenSlot();
 		void disconnectedSlot();
 		void userStatusChangedSlot(struct gg_event*);
 		void userlistReceivedSlot(struct gg_event *);
 		void messageReceivedSlot(int, UinsList,unsigned char* msg,time_t,int,struct gg_msg_format*);
 		void ackReceivedSlot(int seq);
+		void dccConnectionReceivedSlot(const UserListElement& sender);
+		void pubdirReplyReceivedSlot(gg_pubdir50_t res);
 		
 	public:
 		EventManager();
@@ -56,6 +59,10 @@ class EventManager : public QObject
 			B³±d po³±czenia z serwerem
 		**/
 		void connectionFailed();
+		/**
+			Po³±czenia z serwerem zosta³o przerwane
+		**/
+		void connectionBroken();
 		/**
 			Otrzymano polecenie roz³±czenia
 		**/
@@ -82,6 +89,15 @@ class EventManager : public QObject
 			Otrzymano potwierdzenie wiadomo¶ci
 		**/
 		void ackReceived(int seq);
+		/**
+			Otrzymano DCC CTCP
+		**/
+		void dccConnectionReceived(const UserListElement& sender);
+		/**
+			Otrzymano z serwera rezultat operacji wyszukiwania
+			w katalogu publicznym
+		**/		
+		void pubdirReplyReceived(gg_pubdir50_t res);
 };
 
 extern EventManager event_manager;

@@ -12,6 +12,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * nie mo¿na otwieraæ wielu okien konfiguracji (chilek)
 * zapamiêtywanie ostatnio wybranej zak³adki z okna konfiguracji (chilek)
 * dodane do parsera %p - port (mast3r)
+* dalsze porz±dki w EventManager - wydzielenie sygna³ów
+  connectionBroken, dccConnectionReceived, pubdirReplyReceived (adrian)
 
 +++ wersja 0.3.4-pre3
 * dodane przeszukiwanie historii (chilek)
