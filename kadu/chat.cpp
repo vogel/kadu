@@ -144,13 +144,6 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 
 	buttontray = new QHBox(edtbuttontray);
 
-	boldbtn = new QPushButton("B", buttontray);
-	boldbtn->setToggleButton(true);
-	italicbtn = new QPushButton("I", buttontray);
-	italicbtn->setToggleButton(true);
-	underlinebtn = new QPushButton("U", buttontray);
-	underlinebtn->setToggleButton(true);
-
 	autosend = new QPushButton(buttontray);
 	autosend->setPixmap(loadIcon("key_enter.png"));
 	autosend->setToggleButton(true);
@@ -214,6 +207,13 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 
 	QHBox *btnpart = new QHBox(downpart);
 
+	boldbtn = new QPushButton("B", btnpart);
+	boldbtn->setToggleButton(true);
+	italicbtn = new QPushButton("I", btnpart);
+	italicbtn->setToggleButton(true);
+	underlinebtn = new QPushButton("U", btnpart);
+	underlinebtn->setToggleButton(true);
+
 	QHBox *fillerbox = new QHBox(btnpart);
 
 	cancelbtn = new QPushButton(QIconSet(loadIcon("stop.png")),i18n("&Cancel"),btnpart);
@@ -232,6 +232,9 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	acc = new QAccel(this);
 	acc->connectItem(acc->insertItem(Key_PageDown + SHIFT), this, SLOT(pageDown()));
 
+	btnpart->setStretchFactor(boldbtn, 1);
+	btnpart->setStretchFactor(italicbtn, 1);
+	btnpart->setStretchFactor(underlinebtn, 1);
 	btnpart->setStretchFactor(fillerbox, 50);
 	btnpart->setStretchFactor(cancelbtn, 1);
 	btnpart->setStretchFactor(sendbtn, 1);
