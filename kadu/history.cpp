@@ -1408,11 +1408,11 @@ void History::initModule()
 	kdebugf();
 	HistorySlots *historyslots=new HistorySlots();
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "History"));
-	ConfigDialog::addVGroupBox("History", "History", QT_TRANSLATE_NOOP("@default", "Quoted phrases during chat open"));
-	ConfigDialog::addSpinBox("History", "Quoted phrases during chat open", QT_TRANSLATE_NOOP("@default", "Count:"), "ChatHistoryCitation", 0, 200, 1, 10);
-	ConfigDialog::addLabel("History", "Quoted phrases during chat open", QT_TRANSLATE_NOOP("@default", "Don't quote phrases older than:"));
-	ConfigDialog::addSlider("History", "Quoted phrases during chat open", "historyslider", "ChatHistoryQuotationTime", -744, -1, 24, -336);
-	ConfigDialog::addLabel("History", "Quoted phrases during chat open", "", "dayhour");
+	ConfigDialog::addVGroupBox("History", "History", QT_TRANSLATE_NOOP("@default","Message citation in chat window"));
+	ConfigDialog::addSpinBox("History", "Message citation in chat window", QT_TRANSLATE_NOOP("@default", "Count:"), "ChatHistoryCitation", 0, 200, 1, 10);
+	ConfigDialog::addLabel("History", "Message citation in chat window", QT_TRANSLATE_NOOP("@default", "Don't cite messages older than:"));
+	ConfigDialog::addSlider("History", "Message citation in chat window", "historyslider", "ChatHistoryQuotationTime", -744, -1, 24, -336);
+	ConfigDialog::addLabel("History", "Message citation in chat window", "", "dayhour");
 	ConfigDialog::addCheckBox("History", "History", QT_TRANSLATE_NOOP("@default", "Don't show status changes"), "DontShowStatusChanges", false);
 	ConfigDialog::addCheckBox("History", "History", QT_TRANSLATE_NOOP("@default", "Don't save status changes"), "DontSaveStatusChanges", true);
 
