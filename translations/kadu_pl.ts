@@ -558,10 +558,11 @@ Jest to wysoce ryzykowne!</translation>
 %r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
 %v - revDNS, %p - port %e - email
 If you leave blank, default settings will be used</source>
-        <translation>Składnia: %s - status, %d - opis, %i - IP, %n - nick, %a - wyświetl, %f - imię
-%r - nazwisko, %m - telefon, %u - nr GG, %g - grupa, %o - zwraca spacjie jeżeli kontakt nie ma cię na liście
-%v - DNS, %p - port %e - email
-Jeżeli pole to zostanie puste, używane będą ustawienia domyślne</translation>
+        <translation>Składnia: %s - status, %d - opis, %i - IP, %n - nick, %a - wyświetl,
+%f - imię, %r - nazwisko, %m - telefon, %u - nr GG, %g - grupa, 
+%o - zwraca spację jeżeli kontakt nie ma cię na liście, %v - DNS, 
+%p - port %e - email. Jeżeli pole to zostanie puste, używane będą 
+ustawienia domyślne</translation>
     </message>
 </context>
 <context>
