@@ -11,10 +11,14 @@
 * emotikony: kadu nie zapêtla siê jesli mamy ustawiony nie istniej±cy juz zestaw
 * okno rozmowy: mo¿liwo¶æ zmieniania proporcji pomiêdzy widokiem historii rozmowy,
   a reszt± okna
-* sms: znowu powinny dzia³aæ era i plus. Idea w przygotowaniu
+* sms: znowu powinny dzia³aæ era i plus (standardowo przez zewnêtrzny
+  program kadusms).
 * szyfrowanie: odbierania klucza publicznego nie powoduje padów aplikacji, a ponadto
   zatwierdzenie jego zapisania powoduje uaktywnienie guzika "encryption" w rozmowie
   prowadzonej z osob±, która do nas przys³a³a swój klucz publiczny
+* sms: wysy³anie sms'ów (Idea) wewnêtrznym mechanizmem kadu (z wy¶wietlaniem
+  obrazka ze strony sms.idea.pl). Dwie pozosta³e sieci zostan± równie¿ w krótce
+  zaimplementowane.
 
 +++ wersja 0.3.3-pre4
 * przy imporcie listy u¿ytkowników ustawiamy domy¶lne atrybuty u¿ytkowników
