@@ -1025,13 +1025,13 @@ void HistoryManager::chatMsgReceived(UinsList senders,const QString& msg,time_t 
 		history.appendMessage(senders, senders[0], msg, false, time);
 }
 
-UinsListBoxText::UinsListBoxText(UinsList &uins)
-	: QListBoxText(), uins(uins)
+UinsListViewText::UinsListViewText(QListView *parent, UinsList &uins)
+	: QListViewItem(parent), uins(uins)
 {
 	QString name;
 
 	if (!uins.count())
-		setText("SMS");
+		setText(0, "SMS");
 	else {
 		for (int i = 0; i < uins.count(); i++) {
 			if (userlist.containsUin(uins[i]))
@@ -1041,12 +1041,22 @@ UinsListBoxText::UinsListBoxText(UinsList &uins)
 			if (i < uins.count() - 1)
 				name.append(",");
 			}
-		setText(name);
+		setText(0, name);
 		}
 }
 
-UinsList &UinsListBoxText::getUinsList() {
+UinsList &UinsListViewText::getUinsList() {
 	return uins;
+}
+
+DateListViewText::DateListViewText(QListViewItem *parent, HistoryDate &date)
+	: QListViewItem(parent), date(date)
+{
+	setText(0, date.date.toString("yyyy.MM.dd"));
+}
+
+HistoryDate &DateListViewText::getDate() {
+	return date;
 }
 
 History::History(UinsList uins): uins(uins), closeDemand(false), finding(false) {
@@ -1060,11 +1070,11 @@ History::History(UinsList uins): uins(uins), closeDemand(false), finding(false) 
 
 	QSplitter *split1 = new QSplitter(Qt::Horizontal, this);
 
-	uinslb = new QListBox(split1, "History uins");
-	QHBox *hbox1 = new QHBox(split1);
-	dates = new QListBox(hbox1, "History dates");
+	uinslv = new QListView(split1, "History uins");
+	uinslv->addColumn(tr("Uins"));
+	uinslv->setRootIsDecorated(TRUE);
 
-	QVBox *vbox1 = new QVBox(hbox1);
+	QVBox *vbox1 = new QVBox(split1);
 	body = new QTextBrowser(vbox1, "History browser");
 	body->setReadOnly(true);
 	body->setFont(config_file.readFontEntry("Look","ChatFont"));
@@ -1077,17 +1087,14 @@ History::History(UinsList uins): uins(uins), closeDemand(false), finding(false) 
 	QPushButton *searchprevbtn = new QPushButton(btnbox);
 	searchprevbtn->setText(tr("Find &previous"));
 
-	hbox1->setStretchFactor(dates, 1);
-	hbox1->setStretchFactor(vbox1, 10);
 	QValueList<int> sizes;
 	sizes.append(1);
-	sizes.append(5);
+	sizes.append(3);
 	split1->setSizes(sizes);
 	grid->addMultiCellWidget(split1, 0, 1, 0, 4);
-//	grid->setColStretch(4, 100);
 
-	connect(uinslb, SIGNAL(highlighted(QListBoxItem *)), this, SLOT(uinsClicked(QListBoxItem *)));
-	connect(dates, SIGNAL(highlighted(int)), this, SLOT(dateClicked(int)));
+	connect(uinslv, SIGNAL(expanded(QListViewItem *)), this, SLOT(uinsChanged(QListViewItem *)));
+	connect(uinslv, SIGNAL(currentChanged(QListViewItem *)), this, SLOT(dateChanged(QListViewItem *)));
 	connect(searchbtn, SIGNAL(clicked()), this, SLOT(searchBtnClicked()));
 	connect(searchnextbtn, SIGNAL(clicked()), this, SLOT(searchNextBtnClicked()));
 	connect(searchprevbtn, SIGNAL(clicked()), this, SLOT(searchPrevBtnClicked()));
@@ -1098,47 +1105,55 @@ History::History(UinsList uins): uins(uins), closeDemand(false), finding(false) 
 	findrec.reverse = 0;
 	findrec.actualrecord = -1;
 
-	UinsListBoxText *uinslbt, *selecteduinslbt = NULL;
+	UinsListViewText *uinslvt, *selecteduinslvt = NULL;
+	QListViewItem *datelvt;
 	int i;
 	QValueList<UinsList> uinsentries = history.getUinsLists();
 	for (i = 0; i < uinsentries.count(); i++) {
-		uinslbt = new UinsListBoxText(uinsentries[i]);
-		uinslb->insertItem(uinslbt);
+		uinslvt = new UinsListViewText(uinslv, uinsentries[i]);
+		uinslvt->setExpandable(TRUE);
 		if (uinsentries[i].equals(uins))
-			selecteduinslbt = uinslbt;
+			selecteduinslvt = uinslvt;
 		}
-	uinslb->sort();
-	if (selecteduinslbt) {
-		uinslb->setCurrentItem(selecteduinslbt);
-		uinslb->setSelected(selecteduinslbt, TRUE);
-		}
-}
-
-void History::uinsClicked(QListBoxItem *item) {
-	uins = ((UinsListBoxText *)item)->getUinsList();
-	refreshHistoryEntries(uins);
-}
-
-void History::refreshHistoryEntries(UinsList &uins) {
-	int count = history.getHistoryEntriesCount(uins);
-	dates->clear();
-	if (count) {
-		dateentries = history.getHistoryDates(uins);
-		for (int i = 0; i < dateentries.count(); i++)
-			dates->insertItem(dateentries[i].date.toString("dd.MM.yyyy"));
-		dates->setCurrentItem(dateentries.count() - 1);
-		dates->setSelected(dateentries.count() - 1, TRUE);
+	uinslv->sort();
+	if (selecteduinslvt) {
+		selecteduinslvt->setOpen(TRUE);
+		datelvt = selecteduinslvt->firstChild();
+		if (datelvt) {
+			while (datelvt->nextSibling())
+				datelvt = datelvt->nextSibling();
+			uinslv->setCurrentItem(datelvt);
+			uinslv->setSelected(datelvt, TRUE);
+			uinslv->ensureItemVisible(datelvt);
+			}
 		}
 }
 
-void History::dateClicked(int index) {
-	int count = history.getHistoryEntriesCount(uins);
-	start = dateentries[index].idx;
-	if (index < dateentries.count() - 1)
-		count = dateentries[index + 1].idx - start;
-	else
-		count -= start;
-	showHistoryEntries(start, count);
+void History::uinsChanged(QListViewItem *item) {
+	kdebug("History::uinsChanged()\n");
+	QValueList<HistoryDate> dateentries;
+	if (item->depth() == 0) {
+		uins = ((UinsListViewText *)item)->getUinsList();
+		if (!item->childCount()) {
+			dateentries = history.getHistoryDates(uins);
+			for (int i = 0; i < dateentries.count(); i++)
+				(new DateListViewText(item, dateentries[i]))->setExpandable(FALSE);
+			}
+		}
+}
+
+void History::dateChanged(QListViewItem *item) {
+	if (item->depth() == 1) {
+		uinsChanged(item->parent());
+		int count = history.getHistoryEntriesCount(uins);
+		start = ((DateListViewText *)item)->getDate().idx;
+		item = item->nextSibling();
+		if (item)
+			count = ((DateListViewText *)item)->getDate().idx - start;
+		else
+			count -= start;
+		showHistoryEntries(start, count);			
+		}
 }
 
 void History::formatHistoryEntry(QString &text, const HistoryEntry &entry) {

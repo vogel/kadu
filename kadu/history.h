@@ -15,6 +15,7 @@
 #include <qvbuttongroup.h>
 #include <qevent.h>
 #include <qlistbox.h>
+#include <qlistview.h>
 
 #include "libgadu.h"
 #include "misc.h"
@@ -55,13 +56,22 @@ struct HistoryDate {
 	uint idx;
 };
 
-class UinsListBoxText : public QListBoxText {
+class UinsListViewText : public QListViewItem {
 	public:
-		UinsListBoxText(UinsList &uins);
+		UinsListViewText(QListView *parent, UinsList &uins);
 		UinsList &getUinsList();
 
 	private:
 		UinsList uins;
+};
+
+class DateListViewText : public QListViewItem {
+	public:
+		DateListViewText(QListViewItem *parent, HistoryDate &date);
+		HistoryDate &getDate();
+
+	private:
+		HistoryDate date;
 };
 
 /**
@@ -74,8 +84,8 @@ class History : public QDialog {
 		static void initModule();
 
 	public slots:
-		void uinsClicked(QListBoxItem *item);
-		void dateClicked(int index);
+		void uinsChanged(QListViewItem *item);
+		void dateChanged(QListViewItem *item);
 		void searchBtnClicked();
 		void searchNextBtnClicked();
 		void searchPrevBtnClicked();
@@ -84,11 +94,10 @@ class History : public QDialog {
 		void formatHistoryEntry(QString &text, const HistoryEntry &entry);
 		void showHistoryEntries(int from, int count);
 		void searchHistory();
-		void refreshHistoryEntries(UinsList &uins);
 		QString gaduStatus2symbol(unsigned int status);
 		void closeEvent(QCloseEvent *e);
 
-		QListBox *uinslb, *dates;
+		QListView *uinslv;
 		QTextBrowser *body;
 		UinsList uins;
 		int start;
