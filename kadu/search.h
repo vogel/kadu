@@ -10,7 +10,8 @@
 #include <qlistview.h>
 #include <qlabel.h>
 #include <qvaluelist.h>
-#include "libgadu.h"
+
+#include "gadu.h"
 
 /**
 	Dialog umo¿liwiaj±cy wyszukiwanie w katalogu publicznym
@@ -23,9 +24,11 @@ class SearchDialog : public QDialog {
 
 	private:
 		QCheckBox *only_active;
+		QLineEdit *e_uin;
 		QLineEdit *e_name;
 		QLineEdit *e_nick;
-		QLineEdit *e_byr;
+		QLineEdit *e_byrFrom;
+		QLineEdit *e_byrTo;
 		QLineEdit *e_surname;
 		QComboBox *c_gender;
 		QLineEdit *e_city;
@@ -40,9 +43,8 @@ class SearchDialog : public QDialog {
 		uin_t _whoisSearchUin;
 		uint32_t seq;
 
-		QLineEdit *e_uin;
+		SearchRecord *searchRecord;
 
-		uin_t fromUin;
 		bool searchhidden;
 
 	private slots:
@@ -57,7 +59,7 @@ class SearchDialog : public QDialog {
 	public slots:
 		void firstSearch(void);
 		void nextSearch(void);
-		void showResults(gg_pubdir50_t res);
+		void newSearchResults(SearchResults& searchResults, int seq, int fromUin);
 		void selectionChanged(QListViewItem *);
 
 	protected:
@@ -66,3 +68,4 @@ class SearchDialog : public QDialog {
 };
 
 #endif
+

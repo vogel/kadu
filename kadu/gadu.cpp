@@ -10,6 +10,7 @@
 #include "gadu.h"
 #include "userlist.h"
 #include "debug.h"
+#include "events.h"
 #include "kadu.h"
 
 #include <stdlib.h>
@@ -28,6 +29,82 @@ bool timeout_connected = true;
 QTimer* pingtimer;
 QValueList<QHostAddress> config_servers;
 bool i_wanna_be_invisible = true;
+SearchResult::SearchResult() {
+}
+
+SearchResult::SearchResult(const SearchResult& copyFrom) {
+	this->uin = copyFrom.uin;
+	this->first = copyFrom.first;
+	this->nick = copyFrom.nick;
+	this->born = copyFrom.born;
+	this->city = copyFrom.city;
+	this->status = copyFrom.status;
+}
+
+void SearchResult::setData(const char *uin, const char *first, const char *nick, const char *born, const char *city, const char *status) {
+	this->uin = cp2unicode((unsigned char *)uin);
+	this->first = cp2unicode((unsigned char *)first);
+	this->nick = cp2unicode((unsigned char *)nick);
+	this->born = cp2unicode((unsigned char *)born);
+	this->city = cp2unicode((unsigned char *)city);
+	this->status = atoi(status) & 127;
+}
+
+SearchRecord::SearchRecord() {
+	kdebugf();
+	clearData();
+	kdebugf2();
+}
+
+SearchRecord::~SearchRecord() {
+}
+
+void SearchRecord::reqUin(const QString& uin) {
+	this->uin = uin;
+}
+
+void SearchRecord::reqFirstName(const QString& firstName) {
+	this->firstName = firstName;
+}
+
+void SearchRecord::reqLastName(const QString& lastName) {
+	this->lastName = lastName;
+}
+
+void SearchRecord::reqNickName(const QString& nickName) {
+	this->nickName = nickName;
+}
+
+void SearchRecord::reqCity(const QString& city) {
+	this->city = city;
+}
+
+void SearchRecord::reqBirthYear(const QString& birthYearFrom, const QString& birthYearTo) {
+	this->birthYearFrom = birthYearFrom;
+	this->birthYearTo = birthYearTo;
+}
+
+void SearchRecord::reqGender(bool female) {
+	this->gender = (female ? 2 : 1);
+}
+
+void SearchRecord::reqActive() {
+	this->active = true;
+};
+
+void SearchRecord::clearData() {
+	kdebugf();
+	fromUin = 0;
+	uin = "";
+	firstName = "";
+	lastName = "";
+	nickName = "";
+	city = "";
+	birthYearFrom = "";
+	birthYearTo = "";
+	gender = 0;
+	active = false;
+}
 
 void GaduProtocol::initModule()
 {
@@ -37,6 +114,14 @@ void GaduProtocol::initModule()
 
 GaduProtocol::GaduProtocol() : QObject()
 {
+	connect(&event_manager, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)),
+		this, SLOT(newResults(gg_pubdir50_t)));
+}
+
+GaduProtocol::~GaduProtocol()
+{
+	disconnect(&event_manager, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)),
+		this, SLOT(newResults(gg_pubdir50_t)));
 }
 
 int GaduProtocol::sendMessage(const UinsList& uins,const char* msg)
@@ -142,4 +227,76 @@ bool GaduProtocol::sendImage(uin_t uin,const QString& file_name,uint32_t size,ch
 	return (res==0);
 }
 
+
+void GaduProtocol::searchInPubdir(SearchRecord& searchRecord) {
+	searchRecord.fromUin = 0;
+	searchNextInPubdir(searchRecord);
+}
+
+void GaduProtocol::searchNextInPubdir(SearchRecord& searchRecord) {
+	QString bufYear;
+	gg_pubdir50_t req;
+
+	req = gg_pubdir50_new(GG_PUBDIR50_SEARCH);
+
+	if (searchRecord.uin.length())
+		gg_pubdir50_add(req, GG_PUBDIR50_UIN, (const char *)unicode2cp(searchRecord.uin).data());
+	if (searchRecord.firstName.length())
+		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)unicode2cp(searchRecord.firstName).data());
+	if (searchRecord.lastName.length())
+		gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, (const char *)unicode2cp(searchRecord.lastName).data());
+	if (searchRecord.nickName.length())
+		gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)unicode2cp(searchRecord.nickName).data());
+	if (searchRecord.city.length())
+		gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)unicode2cp(searchRecord.city).data());
+	if (searchRecord.birthYearFrom.length() && searchRecord.birthYearTo.length()) {
+		QString bufYear = searchRecord.birthYearFrom + " " + searchRecord.birthYearTo;
+		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)unicode2cp(bufYear).data());
+	}
+
+	switch (searchRecord.gender) {
+		case 1:
+			gg_pubdir50_add(req, GG_PUBDIR50_GENDER, GG_PUBDIR50_GENDER_MALE);
+			break;
+		case 2:
+			gg_pubdir50_add(req, GG_PUBDIR50_GENDER, GG_PUBDIR50_GENDER_FEMALE);
+			break;
+	}
+
+	QString s = QString::number(searchRecord.fromUin);
+	gg_pubdir50_add(req, GG_PUBDIR50_START, s.local8Bit());
+
+	searchRecord.seq = gg_pubdir50(sess, req);
+	gg_pubdir50_free(req);
+}
+
+void GaduProtocol::newResults(gg_pubdir50_t res) {
+	int count, statusCode, fromUin;
+	const char *uin, *first, *nick, *born, *city, *status;
+	SearchResult searchResult;
+	SearchResults searchResults;
+
+	count = gg_pubdir50_count(res);
+
+	if (count < 1)
+		return;
+
+	for (int i = 0; i < count; i++) {
+		searchResult.setData(
+			gg_pubdir50_get(res, i, GG_PUBDIR50_UIN),
+			gg_pubdir50_get(res, i, GG_PUBDIR50_FIRSTNAME),
+			gg_pubdir50_get(res, i, GG_PUBDIR50_NICKNAME),
+			gg_pubdir50_get(res, i, GG_PUBDIR50_BIRTHYEAR),
+			gg_pubdir50_get(res, i, GG_PUBDIR50_CITY),
+			gg_pubdir50_get(res, i, GG_PUBDIR50_STATUS)
+		);
+		searchResults.append(searchResult);
+	}
+		
+	fromUin = gg_pubdir50_next(res);
+
+	emit newSearchResults(searchResults, res->seq, fromUin);
+}
+
 GaduProtocol* gadu;
+

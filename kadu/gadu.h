@@ -22,6 +22,51 @@ extern QTimer* pingtimer;
 extern QValueList<QHostAddress> config_servers;
 extern bool i_wanna_be_invisible;
 
+struct SearchResult {
+	QString uin;
+	QString first;
+	QString nick;
+	QString born;
+	QString city;
+	int status;
+
+	SearchResult();
+	SearchResult(const SearchResult&);
+	void setData(const char *uin, const char *first, const char *nick, const char *born, const char *city, const char *status);
+};
+
+typedef QValueList<SearchResult> SearchResults;
+
+struct SearchRecord
+{
+	int seq;
+	int fromUin;
+	QString uin;
+	QString firstName;
+	QString lastName;
+	QString nickName;
+	QString city;
+	QString birthYearFrom;
+	QString birthYearTo;
+	int gender;
+	bool active;
+
+	SearchRecord();
+	virtual ~SearchRecord();
+
+	void reqUin(const QString& uin);
+	void reqFirstName(const QString& firstName);
+	void reqLastName(const QString& lastName);
+	void reqNickName(const QString& nickName);
+	void reqCity(const QString& city);
+	void reqBirthYear(const QString& birthYearFrom, const QString& birthYearTo);
+	void reqGender(bool female);
+	void reqActive();
+
+	void clearData();
+
+};
+
 class GaduProtocol : public QObject
 {
 	Q_OBJECT
@@ -29,6 +74,7 @@ class GaduProtocol : public QObject
 	public:	
 		static void initModule();
 		GaduProtocol();
+		virtual ~GaduProtocol();
 		/**
 			Wysyla wiadomosc. bez formatowania tekstu.
 			Jesli adresatow jest wiecej niz
@@ -51,10 +97,21 @@ class GaduProtocol : public QObject
 		bool sendImageRequest(uin_t uin,int size,uint32_t crc32);
 		bool sendImage(uin_t uin,const QString& file_name,uint32_t size,char* data);
 
+		/**
+		  	Szuka ludzi w katalogu publicznym
+		 **/
+		void searchInPubdir(SearchRecord& searchRecord);
+		void searchNextInPubdir(SearchRecord& searchRecord);
+
 	public slots:
-		void sendUserList();	
+		void sendUserList();
+		void newResults(gg_pubdir50_t res);
+
+	signals:
+		void newSearchResults(SearchResults& searchResults, int seq, int lastUin);
 };
 
 extern GaduProtocol* gadu;
 
 #endif
+

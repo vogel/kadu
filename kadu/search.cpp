@@ -32,6 +32,8 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchU
 	QLabel *l_name;
 	QLabel *l_nick;
 	QLabel *l_byr;
+	QLabel *l_byrFrom;
+	QLabel *l_byrTo;
 	QLabel *l_surname;
 	QLabel *l_gender;
 	QLabel *l_city;
@@ -81,8 +83,12 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchU
 	connect(c_gender, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
 
 	l_byr = new QLabel(tr("Birthyear"),this);
-	e_byr = new QLineEdit(this);
-	connect(e_byr, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
+	l_byrFrom = new QLabel(tr("from"),this);
+	e_byrFrom = new QLineEdit(this);
+	connect(e_byrFrom, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
+	l_byrTo = new QLabel(tr("to"),this);
+	e_byrTo = new QLineEdit(this);
+	connect(e_byrTo, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
 
 	l_city = new QLabel(tr("City"),this);
 	e_city = new QLineEdit(this);
@@ -114,26 +120,28 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchU
 
 	only_active = new QCheckBox(tr("Only active users"),this);
 
-	QGridLayout * grid = new QGridLayout (this, 7, 8, 3, 3);
+	QGridLayout * grid = new QGridLayout (this, 7, 12, 3, 3);
 	grid->addMultiCellWidget(only_active, 0, 0, 0, 2);
 	grid->addWidget(l_nick, 1, 0, Qt::AlignRight); grid->addWidget(e_nick, 1, 1);
-	grid->addWidget(l_name, 1, 3, Qt::AlignRight); grid->addWidget(e_name, 1, 4);
-	grid->addWidget(l_surname, 1, 6, Qt::AlignRight); grid->addWidget(e_surname, 1, 7);
+	grid->addWidget(l_name, 1, 7, Qt::AlignRight); grid->addWidget(e_name, 1, 8);
+	grid->addWidget(l_surname, 2, 7, Qt::AlignRight); grid->addWidget(e_surname, 2, 8);
 	grid->addWidget(l_gender, 2, 0, Qt::AlignRight); grid->addWidget(c_gender, 2, 1);
-	grid->addWidget(l_byr, 2, 3, Qt::AlignRight); grid->addWidget(e_byr, 2, 4);
-	grid->addWidget(l_city, 2, 6, Qt::AlignRight); grid->addWidget(e_city, 2, 7);
+	grid->addWidget(l_byr, 1, 3, Qt::AlignRight);
+	grid->addWidget(l_byrFrom, 1, 4, Qt::AlignRight); grid->addWidget(e_byrFrom, 1, 5);
+	grid->addWidget(l_byrTo, 2, 4, Qt::AlignRight); grid->addWidget(e_byrTo, 2, 5);
+	grid->addWidget(l_city, 1, 10, Qt::AlignRight); grid->addWidget(e_city, 1, 11);
 
 	grid->addMultiCellWidget(qgrp1, 3, 3, 0, 3);
 
-	grid->addMultiCellWidget(btngrp, 3, 3, 4, 7);
+	grid->addMultiCellWidget(btngrp, 3, 3, 4, 11);
 
-	grid->addMultiCellWidget(results, 5, 5, 0, 7);
-	grid->addMultiCell(CommandLayout,6,6,2,7);
+	grid->addMultiCellWidget(results, 5, 5, 0, 11);
+	grid->addMultiCell(CommandLayout, 6, 6, 2, 11);
 	grid->addMultiCellWidget(progress, 6, 6, 0, 1);
 
 	grid->addColSpacing(2, 10);
-	grid->addColSpacing(5, 10);
-	grid->addColSpacing(0, 10);
+	grid->addColSpacing(6, 10);
+	grid->addColSpacing(9, 10);
 
 	results->addColumn(tr("Status"));
 	results->addColumn(tr("Uin"));
@@ -147,17 +155,22 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchU
 		results->setColumnWidthMode(i, QListView::Maximum);
 
 //	searchhidden = false;
-	fromUin = 0;
 	if (_whoisSearchUin) {
 		r_uin->setChecked(true);
 		e_uin->setText(QString::number(_whoisSearchUin));
 		}
 	resize(450,330);
 	setCaption(tr("Search in directory"));
+
+	searchRecord = new SearchRecord;
+	connect(gadu, SIGNAL(newSearchResults(SearchResults &, int, int)), this, SLOT(newSearchResults(SearchResults &, int, int)));
 }
 
 SearchDialog::~SearchDialog() {
 	kdebug("SearchDialog::~SearchDialog()\n");
+
+	disconnect(gadu, SIGNAL(newSearchResults(SearchResults&, int, int)), this, SLOT(newSearchResults(SearchResults&, int, int)));
+	delete searchRecord;
 }
 
 void SearchDialog::selectionChanged(QListViewItem *item) {
@@ -206,128 +219,92 @@ void SearchDialog::clearResults(void) {
 void SearchDialog::firstSearch(void) {
 	if (results->childCount())
 		clearResults();
-	fromUin = 0;
-	nextSearch();
+
+	searchRecord->clearData();
+
+	if (r_pers->isChecked()) {
+		searchRecord->reqFirstName(e_name->text());
+		searchRecord->reqLastName(e_surname->text());
+		searchRecord->reqNickName(e_nick->text());
+		searchRecord->reqCity(e_city->text());
+		searchRecord->reqBirthYear(e_byrFrom->text(), e_byrTo->text());
+
+		switch (c_gender->currentItem()) {
+			case 1:
+				searchRecord->reqGender(false);
+				break;
+			case 2:
+				searchRecord->reqGender(true);
+				break;
+		}
+		
+	}
+	else
+		if (r_uin->isChecked())
+			searchRecord->reqUin(e_uin->text());
+			
+	if (only_active->isChecked())
+		searchRecord->reqActive();
+
+	gadu->searchInPubdir(*searchRecord);
+
+	b_sendbtn->setEnabled(false);
+	b_nextbtn->setEnabled(false);
+
+	progress->setText(tr("Searching..."));
+	kdebug("SearchDialog::doSearch(): let the search begin\n");
+
 }
 
 void SearchDialog::nextSearch(void) {
-//	int i;
-	gg_pubdir50_t req;
-	QString bufyear;
-
 	if (getActualStatus() == GG_STATUS_NOT_AVAIL)
 		return;
 
 	b_sendbtn->setEnabled(false);
 	b_nextbtn->setEnabled(false);
 
-	req = gg_pubdir50_new(GG_PUBDIR50_SEARCH);
-
-	if (r_pers->isChecked()) {
-		if (e_name->text().length())
-			gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)unicode2cp(e_name->text()).data());
-		if (e_surname->text().length())
-			gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, (const char *)unicode2cp(e_surname->text()).data());
-		if (e_nick->text().length())
-			gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)unicode2cp(e_nick->text()).data());
-		if (e_city->text().length())
-			gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)unicode2cp(e_city->text()).data());
-		if (e_byr->text().length()) {
-			bufyear = e_byr->text() + " " + e_byr->text();
-			gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)unicode2cp(bufyear).data());
-			}
-		switch (c_gender->currentItem()) {
-			case 1:
-				gg_pubdir50_add(req, GG_PUBDIR50_GENDER, GG_PUBDIR50_GENDER_MALE);
-				break;
-			case 2:
-				gg_pubdir50_add(req, GG_PUBDIR50_GENDER, GG_PUBDIR50_GENDER_FEMALE);
-				break;
-			}
-		}
-	else
-		if (r_uin->isChecked()) {
-			if (e_uin->text().length())
-				gg_pubdir50_add(req, GG_PUBDIR50_UIN, (const char *)unicode2cp(e_uin->text()).data());
-//			if (searchhidden) {
-//				bufyear = "qwertyuiopasdfghjklzxcvbnm";
-//				gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)unicode2cp(bufyear.data()));
-//				}
-			}
-
-	if (only_active->isChecked())
-		gg_pubdir50_add(req, GG_PUBDIR50_ACTIVE, GG_PUBDIR50_ACTIVE_TRUE);
-	QString s;
-	s = QString::number(fromUin);
-	gg_pubdir50_add(req, GG_PUBDIR50_START, s.local8Bit());
+	gadu->searchNextInPubdir(*searchRecord);
 
 	progress->setText(tr("Searching..."));
 	kdebug("SearchDialog::doSearch(): let the search begin\n");
-
-	seq = gg_pubdir50(sess, req);
-	gg_pubdir50_free(req);
-	connect(&event_manager, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)),
-		this, SLOT(showResults(gg_pubdir50_t)));
 }
 
-void SearchDialog::showResults(gg_pubdir50_t res) {
-	int i, count, statuscode;
-	const char *uin, *first, *nick, *born, *city, *status;
-	
-	if (res->seq != seq)
-		return;
+void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int fromUin) {
 
-	disconnect(&event_manager, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)),
-		this, SLOT(showResults(gg_pubdir50_t)));
-
-	count = gg_pubdir50_count(res);
-
-	if (count < 1) {
-		kdebug("SearchDialog::showResults(): No results. Exit.\n");
-		progress->setText(tr("Done searching"));
-		QMessageBox::information(this, tr("No results"),
-			tr("There were no results of your search"));
-//		searchhidden = false;
-		b_sendbtn->setEnabled(true);
-		b_nextbtn->setEnabled(true);
-		return;
-		}
-
-	kdebug("SearchDialog::showResults(): Done searching. count=%d\n", count);
-	QListViewItem * qlv;
+	QListViewItem *qlv = NULL;
 	QPixmap pix;
-	qlv = NULL;
+	SearchResults::iterator searchIterator;
 
-	for (i = 0; i < count; i++) {
-		uin = gg_pubdir50_get(res, i, GG_PUBDIR50_UIN);
-		first = gg_pubdir50_get(res, i, GG_PUBDIR50_FIRSTNAME);
-		nick = gg_pubdir50_get(res, i, GG_PUBDIR50_NICKNAME);
-		born = gg_pubdir50_get(res, i, GG_PUBDIR50_BIRTHYEAR);
-		city = gg_pubdir50_get(res, i, GG_PUBDIR50_CITY);
-		status = gg_pubdir50_get(res, i, GG_PUBDIR50_STATUS);
-		if ((status && atoi(status) <= 1 && only_active->isChecked()) || !status)
-			continue;
-		qlv = results->findItem(uin, 1);
-		statuscode = atoi(status) & 127;
-		if (statuscode)
-			pix = icons_manager.loadIcon(gg_icons[statusGGToStatusNr(statuscode)]);
+	if (seq != searchRecord->seq)
+		return;
+
+	searchRecord->fromUin = fromUin;
+
+	// ??	if ((status && atoi(status) <= 1 && only_active->isChecked()) || !status)
+
+	for (searchIterator = searchResults.begin(); searchIterator != searchResults.end(); searchIterator++) {
+		
+		qlv = results->findItem((*searchIterator).uin, 1);
+
+		if ((*searchIterator).status)
+			pix = icons_manager.loadIcon(gg_icons[statusGGToStatusNr((*searchIterator).status)]);
 		else
 			pix = icons_manager.loadIcon("Offline");
+
 		if (qlv) {
 //			if (!searchhidden) {
-				qlv->setText(1, cp2unicode((unsigned char *)uin));
-				qlv->setText(2, cp2unicode((unsigned char *)first));
-				qlv->setText(3, cp2unicode((unsigned char *)city));
-				qlv->setText(4, cp2unicode((unsigned char *)nick));
-				qlv->setText(5, cp2unicode((unsigned char *)born));
-//				}
+			qlv->setText(1, (*searchIterator).uin);
+			qlv->setText(2, (*searchIterator).first);
+			qlv->setText(3, (*searchIterator).city);
+			qlv->setText(4, (*searchIterator).nick);
+			qlv->setText(5, (*searchIterator).born);
+//	}
 //			else
 //				searchhidden = false;
-			}
-		else {
-			qlv = new QListViewItem(results, QString::null, cp2unicode((unsigned char *)uin),
-				cp2unicode((unsigned char *)first), cp2unicode((unsigned char *)city),
-				cp2unicode((unsigned char *)nick), cp2unicode((unsigned char *)born));
+		} else {
+			qlv = new QListViewItem(results, QString::null, (*searchIterator).uin,
+				(*searchIterator).first, (*searchIterator).city,
+				(*searchIterator).nick, (*searchIterator).born);
 //			if (count == 1 && r_uin->isChecked() && !searchhidden
 //				&& (statuscode == GG_STATUS_NOT_AVAIL || statuscode == GG_STATUS_NOT_AVAIL_DESCR)) {
 //				qlv->setPixmap(0, pix);
@@ -335,14 +312,14 @@ void SearchDialog::showResults(gg_pubdir50_t res) {
 //				nextSearch();
 //				return;
 //				}
-			}
-		qlv->setPixmap(0, pix);
-		qlv = NULL;
+		//	}
+			qlv->setPixmap(0, pix);
+			qlv = NULL;
 		}
+}
 
 	progress->setText(tr("Done searching"));
 
-	fromUin = gg_pubdir50_next(res);
 	if (!results->selectedItem())
 		results->setSelected(results->firstChild(), true);
 	else
@@ -351,11 +328,11 @@ void SearchDialog::showResults(gg_pubdir50_t res) {
 //	searchhidden = false;
 	b_sendbtn->setEnabled(true);
 	b_nextbtn->setEnabled(true);
+
+	
 }
 
 void SearchDialog::closeEvent(QCloseEvent * e) {
-	disconnect(&event_manager, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)),
-		this, SLOT(showResults(gg_pubdir50_t)));
 	QWidget::closeEvent(e);
 }
 
