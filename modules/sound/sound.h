@@ -6,12 +6,48 @@
 #include <qdatetime.h>
 #include <qstringlist.h>
 #include <qmap.h>
+#include <qthread.h>
 
 #include "config_file.h"
 #include "modules.h"
 #include "gadu.h"
 #include "userlist.h"
 #include "misc.h"
+#include "message_box.h"
+
+/**
+	Uogólniony deskryptor urz±dzenia d¼wiêkowego.
+**/
+typedef void* SoundDevice;
+
+/**
+	To jest klasa uzywana wewnetrznie przez klase SoundManager
+	i nie powinienes miec potrzeby jej uzywania.
+**/
+class SoundPlayThread : public QObject, public QThread
+{
+	Q_OBJECT
+
+	private:
+		SoundDevice Device;
+		const int16_t* Sample;
+		int SampleLen;
+		bool Stopped;
+		QSemaphore PlayingSemaphore;
+		QSemaphore SampleSemaphore;
+
+	protected:
+		virtual void run();
+		virtual void customEvent(QCustomEvent* event);
+
+	public:
+		SoundPlayThread(SoundDevice device);
+		void playSample(const int16_t* data, int length);
+		void stop();
+		
+	signals:
+		void samplePlayed(SoundDevice device);
+};
 
 class SoundSlots : public QObject
 {
@@ -21,6 +57,10 @@ class SoundSlots : public QObject
 		QMap<QString, QString> soundfiles;
 		QStringList soundNames;
 		QStringList soundTexts;
+		MessageBox* FullDuplexTestMsgBox;
+		SoundDevice FullDuplexTestDevice;
+		int16_t* FullDuplexTestSample;
+		int FullDuplexTestSampleLen;
 
 	private slots:
 		void soundPlayer(bool value, bool toolbarChanged=false);
@@ -35,23 +75,22 @@ class SoundSlots : public QObject
 		void testSamplePlaying();
 		void testSampleRecording();
 		void testFullDuplex();
+		void fullDuplexTestSamplePlayed(SoundDevice);
+		void closeFullDuplexTest();
 
 	public:
 		SoundSlots(QObject *parent=0, const char *name=0);
 		~SoundSlots();
 };
 
-/**
-	Uogólniony deskryptor urz±dzenia d¼wiêkowego.
-**/
-typedef void* SoundDevice;
-
 class SoundManager : public Themes
 {
     Q_OBJECT
 	private:
+		friend class SoundPlayThread;
 		QTime lastsoundtime;
 		bool mute;
+		QMap<SoundDevice, SoundPlayThread*> PlayingThreads;
 
 	private slots:
 		void newChat(const UinsList &senders, const QString& msg, time_t time);
@@ -106,6 +145,9 @@ class SoundManager : public Themes
 		**/
 		void closeDevice(SoundDevice device);
 		/**
+		**/
+		void enableThreading(SoundDevice device);
+		/**
 			Odtwarza próbkê d¼wiêkow±. Operacja blokuj±ca.
 			Mo¿e byæ wywo³ana z innego w±tku (a nawet powinna).
 			Emituje sygna³ playSampleImpl() w celu
@@ -132,6 +174,7 @@ class SoundManager : public Themes
 
 	signals:
 		void playSound(const QString &sound, bool volCntrl, double vol);
+		void samplePlayed(SoundDevice device);
 		/**
 			Pod ten sygna³ powinien podpi±æ siê modu³
 			d¼wiêkowy je¶li obs³uguje funkcjê odtwarzania
