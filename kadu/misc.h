@@ -147,8 +147,8 @@ class HtmlDocument
 			bool tag;
 		};
 		QValueList<Element> Elements;
-		void escapeText(QString& text);
-		void unescapeText(QString& text);
+		static void escapeText(QString& text);
+		static void unescapeText(QString& text);
 		void addElement(Element e);
 
 	public:
@@ -195,16 +195,16 @@ class HtmlDocument
 			Zwraca ilo¶æ elementów wchodz±cych w sk³ad
 			dokumentu.
 		**/
-		int countElements();
+		int countElements() const;
 		/**
 			Sprawdza czy element o podanym indeksie jest
 			tagiem html czy zwyk³ym tekstem.
 		**/
-		bool isTagElement(int index);
+		bool isTagElement(int index) const;
 		/**
 			Zwraca tekst elementu o podanym indeksie.
 		**/
-		QString elementText(int index);
+		QString elementText(int index) const;
 		/**
 			Ustawia tekst i typ elementu o podanym indeksie.
 		**/			
