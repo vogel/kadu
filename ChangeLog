@@ -9,6 +9,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * drobne porz±dki w oknie konfiguracji - nowa zak³adka SMS,
   zlikwidowana zak³adka Inne (adrian)
 * zmiana internacjonalizacji z gettext na zgodn± z Qt (chilek)
+* configure: zmiana z gettext na internacjonalizacjê z QT (adrian)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci
