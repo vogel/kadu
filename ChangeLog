@@ -428,6 +428,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   poprawki niezainicjowanych zmiennych (joi)
 * Dorregaray: poprawiony blad kasowania UIN-a pobranego z serwera GG przy rejestracji podczas 
   kontynuacji config_wizarda (Ron_K)
+* Dorregaray: doadano okienko potwierdzajace ze rejestracja przebiegla prawidowo w config_wizard
+  i UIN zostal zapisany (Ron_K)
+  
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
   gdy tak rzeczywi¶cie jest (joi)
