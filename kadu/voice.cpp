@@ -121,10 +121,16 @@ void VoiceManager::playGsmSampleReceived(char *data, int length) {
 	pos++;
 	length--;
 	while (pos <= (data + length - 65)) {
-		gsm_decode(voice_dec, (gsm_byte *) pos, output);
+		if (gsm_decode(voice_dec, (gsm_byte *) pos, output)) {
+			kdebug("VoiceManager::playGsmSampleReceived(): gsm_decode() error\n");
+			return;
+			}
 		pos += 33;
 		emit playSample((char *) output, outlen);
-		gsm_decode(voice_dec, (gsm_byte *) pos, output);
+		if (gsm_decode(voice_dec, (gsm_byte *) pos, output)) {
+			kdebug("VoiceManager::playGsmSampleReceived(): gsm_decode() error\n");
+			return;
+			}
 		pos += 32;
 		emit playSample((char *) output, outlen);
 		}
