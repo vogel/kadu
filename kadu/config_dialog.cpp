@@ -1184,19 +1184,19 @@ void ConfigDialog::setupTab7() {
 	s_qcount->setValue(config.chathistorycitation);
 
 	QLabel *l_qtime = new QLabel(i18n("Don't quote phrases older than:"), vbox1);
-	s_qtime = new QSlider(1, 744, 24, 336, Qt::Horizontal, vbox1);
-	s_qtime->setValue(config.chathistorycitationtime);
+	s_qtime = new QSlider(-744, -1, 24, -336, Qt::Horizontal, vbox1);
+	s_qtime->setValue(-config.chathistorycitationtime);
 	s_qtime->setTickmarks(QSlider::Below);
 	l_qtimeinfo = new QLabel(vbox1);
 	l_qtimeinfo->setAlignment(Qt::AlignHCenter);
-	updateQuoteTimeLabel(config.chathistorycitationtime);
+	updateQuoteTimeLabel(-config.chathistorycitationtime);
 	connect(s_qtime, SIGNAL(valueChanged(int)), this, SLOT(updateQuoteTimeLabel(int)));
 
 	addTab(box7, i18n("History"));
 }
 
 void ConfigDialog::updateQuoteTimeLabel(int value) {
-	l_qtimeinfo->setText(QString(i18n("%1 day(s) %2 hour(s)")).arg(value / 24).arg(value % 24));
+	l_qtimeinfo->setText(QString(i18n("%1 day(s) %2 hour(s)")).arg(-value / 24).arg((-value) % 24));
 }
 
 void ConfigDialog::onSmsBuildInCheckToogle(bool toggled)
@@ -1702,7 +1702,7 @@ void ConfigDialog::updateConfig(void) {
 		}
 
 	config.chathistorycitation = s_qcount->value();
-	config.chathistorycitationtime = s_qtime->value();
+	config.chathistorycitationtime = -s_qtime->value();
 
 	/* and now, save it */
 	saveKaduConfig();

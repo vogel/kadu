@@ -572,16 +572,16 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time) {
 		}
 
 	from = (entries.count() < config.chathistorycitation) ? 0 : entries.count() - config.chathistorycitation;
-	for (i = from; i < entries.count(); i++) {
-		if (entries[i].type == HISTORYMANAGER_ENTRY_MSGSEND
-			|| entries[i].type == HISTORYMANAGER_ENTRY_CHATSEND)
-			formatMessage(true, config.nick, entries[i].message,
-				entries[i].date.toString(":: dd.MM.yyyy (hh:mm:ss)"), toadd);
-		else
-			formatMessage(false, entries[i].nick, entries[i].message,
-				entries[i].date.toString(":: dd.MM.yyyy (hh:mm:ss / S ")
-				+ entries[i].sdate.toString("hh:mm:ss)"), toadd);
-		}
+	for (i = from; i < entries.count(); i++)
+		if (entries[i].date.secsTo(QDateTime::currentDateTime()) <= config.chathistorycitationtime * 3600)
+			if (entries[i].type == HISTORYMANAGER_ENTRY_MSGSEND
+				|| entries[i].type == HISTORYMANAGER_ENTRY_CHATSEND)
+				formatMessage(true, config.nick, entries[i].message,
+					entries[i].date.toString(":: dd.MM.yyyy (hh:mm:ss)"), toadd);
+			else
+				formatMessage(false, entries[i].nick, entries[i].message,
+					entries[i].date.toString(":: dd.MM.yyyy (hh:mm:ss / S ")
+					+ entries[i].sdate.toString("hh:mm:ss)"), toadd);
 	if (toadd.length())
 		scrollMessages(toadd);
 }
