@@ -3,4 +3,4 @@ MODULE_MOC_HEADERS=wmaker_docking.h
 MODULE_INCLUDES=X11/Xlib.h
 MODULE_INCLUDES_PATH="/usr/X11R6/include /usr/include /usr/local/include"
 MODULE_LIBS=X11
-MODULE_LIBS_PATH="/usr/X11R6/lib /usr/lib /usr/local/X11R6/lib"
+MODULE_LIBS_PATH="/usr/X11R6/lib /usr/lib /usr/local/X11R6/lib /usr/X11R6/lib64"
