@@ -7,9 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DEBUG_ENABLED
-#define KADU_SIGNAL_HANDLING
-#endif
 
 #include <qapplication.h>
 #include <qtranslator.h>
@@ -20,6 +17,10 @@
 
 #include "kadu.h"
 #include "kadu-config.h"
+
+#ifndef DEBUG_ENABLED
+#define KADU_SIGNAL_HANDLING
+#endif
 
 #ifdef VOICE_ENABLED
 #include "voice.h"
