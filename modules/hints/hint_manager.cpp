@@ -49,7 +49,7 @@ HintManager::HintManager()
 	ConfigDialog::addVGroupBox("Hints", "Hints", QT_TRANSLATE_NOOP("@default", "Status change"));
 		ConfigDialog::addCheckBox("Hints", "Status change", QT_TRANSLATE_NOOP("@default", "Add description to hint if exists"), "NotifyHintDescription", false);
 		ConfigDialog::addCheckBox("Hints", "Status change", QT_TRANSLATE_NOOP("@default", "Use custom syntax"), "NotifyHintUseSyntax", false);
-		ConfigDialog::addLineEdit("Hints", "Status change", QT_TRANSLATE_NOOP("@default", "Hint syntax"), "NotifyHintSyntax", "");
+		ConfigDialog::addLineEdit("Hints", "Status change", QT_TRANSLATE_NOOP("@default", "Hint syntax"), "NotifyHintSyntax", "", Kadu::SyntaxText);
 
 	QStringList options=toStringList(tr("Nothing"),tr("Open chat"),tr("Delete hint"),tr("Delete all hints"));
 	QStringList values=toStringList("0","1","2","3");
@@ -408,7 +408,7 @@ void HintManager::newChat(const UinsList &senders, const QString& msg, time_t ti
 		else
 			cite = msg.left(citeSign)+"...";
 		addHint(tr("Chat with <b>%1</b><br/> <small>%2</small>")
-			.arg(userlist.byUinValue(senders[0]).altNick()).arg(cite),
+			.arg(QStyleSheet::escape(userlist.byUinValue(senders[0]).altNick())).arg(cite),
 			icons_manager.loadIcon("Message"),
 			config_file.readFontEntry("Hints", "HintNewChat_font"),
 			config_file.readColorEntry("Hints", "HintNewChat_fgcolor"),
@@ -417,7 +417,7 @@ void HintManager::newChat(const UinsList &senders, const QString& msg, time_t ti
 			senders);
 	}
 	else
-		addHint(tr("Chat with <b>%1</b>").arg(userlist.byUinValue(senders[0]).altNick()),
+		addHint(tr("Chat with <b>%1</b>").arg(QStyleSheet::escape(userlist.byUinValue(senders[0]).altNick())),
 			icons_manager.loadIcon("Message"),
 			config_file.readFontEntry("Hints", "HintNewChat_font"),
 			config_file.readColorEntry("Hints", "HintNewChat_fgcolor"),
@@ -448,7 +448,7 @@ void HintManager::newMessage(const UinsList &senders, const QString& msg, time_t
 			else
 				cite = msg.left(citeSign)+"...";
 			addHint(tr("New message from <b>%1</b><br/> <small>%2</small>")
-				.arg(userlist.byUinValue(senders[0]).altNick()).arg(cite),
+				.arg(QStyleSheet::escape(userlist.byUinValue(senders[0]).altNick())).arg(cite),
 				icons_manager.loadIcon("Message"),
 				config_file.readFontEntry("Hints", "HintNewMessage_font"),
 				config_file.readColorEntry("Hints", "HintNewMessage_fgcolor"),
@@ -456,7 +456,8 @@ void HintManager::newMessage(const UinsList &senders, const QString& msg, time_t
 				config_file.readUnsignedNumEntry("Hints", "HintNewMessage_timeout"));
 		}
 		else
-			addHint(tr("New message from <b>%1</b>").arg(userlist.byUinValue(senders[0]).altNick()),
+			addHint(tr("New message from <b>%1</b>")
+				.arg(QStyleSheet::escape(userlist.byUinValue(senders[0]).altNick())),
 				icons_manager.loadIcon("Message"),
 				config_file.readFontEntry("Hints", "HintNewMessage_font"),
 				config_file.readColorEntry("Hints", "HintNewMessage_fgcolor"),
@@ -504,7 +505,7 @@ void HintManager::userStatusChanged(const UserListElement &ule, const UserStatus
 	else
 		if (ule.status().hasDescription() && config_file.readBoolEntry("Hints","NotifyHintDescription"))
 			addHint(tr("<b>%1</b> changed status to <i>%2</i><br/> <small>%3</small>")
-				.arg(ule.altNick())
+				.arg(QStyleSheet::escape(ule.altNick()))
 				.arg(qApp->translate("@default", ule.status().name()))
 				.arg(QStyleSheet::escape(ule.status().description())),
 				ule.status().pixmap(),
@@ -513,7 +514,8 @@ void HintManager::userStatusChanged(const UserListElement &ule, const UserStatus
 				config_file.readColorEntry("Hints", "Hint"+stat+"D_bgcolor"),
 				config_file.readUnsignedNumEntry("Hints", "Hint"+stat+"D_timeout"), ulist);
 		else
-			addHint(tr("<b>%1</b> changed status to <i>%2</i>").arg(ule.altNick())
+			addHint(tr("<b>%1</b> changed status to <i>%2</i>")
+				.arg(QStyleSheet::escape(ule.altNick()))
 				.arg(qApp->translate("@default", ule.status().name())),
 				ule.status().pixmap(),
 				config_file.readFontEntry("Hints", "Hint"+stat+"_font"),
@@ -540,14 +542,16 @@ void HintManager::userChangedStatusToAvailable(const UserListElement &ule)
 	else
 		if (ule.status().hasDescription() && config_file.readBoolEntry("Hints","NotifyHintDescription"))
 			addHint(tr("<b>%1</b> is available<br/> <small>%2</small>")
-				.arg(ule.altNick()).arg(QStyleSheet::escape(ule.status().description())),
+				.arg(QStyleSheet::escape(ule.altNick()))
+				.arg(QStyleSheet::escape(ule.status().description())),
 				ule.status().pixmap(),
 				config_file.readFontEntry("Hints", "HintOnlineD_font"),
 				config_file.readColorEntry("Hints", "HintOnlineD_fgcolor"),
 				config_file.readColorEntry("Hints", "HintOnlineD_bgcolor"),
 				config_file.readUnsignedNumEntry("Hints", "HintOnlineD_timeout"), ulist);
 		else
-			addHint(tr("<b>%1</b> is available").arg(ule.altNick()),
+			addHint(tr("<b>%1</b> is available")
+				.arg(QStyleSheet::escape(ule.altNick())),
 				ule.status().pixmap(),
 				config_file.readFontEntry("Hints", "HintOnline_font"),
 				config_file.readColorEntry("Hints", "HintOnline_fgcolor"),
@@ -573,14 +577,16 @@ void HintManager::userChangedStatusToBusy(const UserListElement &ule)
 	else
 		if (ule.status().hasDescription() && config_file.readBoolEntry("Hints","NotifyHintDescription"))
 			addHint(tr("<b>%1</b> is busy<br/> <small>%2</small>")
-				.arg(ule.altNick()).arg(QStyleSheet::escape(ule.status().description())),
+				.arg(QStyleSheet::escape(ule.altNick()))
+				.arg(QStyleSheet::escape(ule.status().description())),
 				ule.status().pixmap(),
 				config_file.readFontEntry("Hints", "HintBusyD_font"),
 				config_file.readColorEntry("Hints", "HintBusyD_fgcolor"),
 				config_file.readColorEntry("Hints", "HintBusyD_bgcolor"),
 				config_file.readUnsignedNumEntry("Hints", "HintBusyD_timeout"), ulist);
 		else
-			addHint(tr("<b>%1</b> is busy").arg(ule.altNick()),
+			addHint(tr("<b>%1</b> is busy")
+				.arg(QStyleSheet::escape(ule.altNick())),
 				ule.status().pixmap(),
 				config_file.readFontEntry("Hints", "HintBusy_font"),
 				config_file.readColorEntry("Hints", "HintBusy_fgcolor"),
@@ -606,14 +612,16 @@ void HintManager::userChangedStatusToNotAvailable(const UserListElement &ule)
 	else
 		if (ule.status().hasDescription() && config_file.readBoolEntry("Hints","NotifyHintDescription"))
 			addHint(tr("<b>%1</b> is not available<br/> <small>%2</small>")
-				.arg(ule.altNick()).arg(QStyleSheet::escape(ule.status().description())),
+				.arg(QStyleSheet::escape(ule.altNick()))
+				.arg(QStyleSheet::escape(ule.status().description())),
 				ule.status().pixmap(),
 				config_file.readFontEntry("Hints", "HintOfflineD_font"),
 				config_file.readColorEntry("Hints", "HintOfflineD_fgcolor"),
 				config_file.readColorEntry("Hints", "HintOfflineD_bgcolor"),
 				config_file.readUnsignedNumEntry("Hints", "HintOfflineD_timeout"), ulist);
 		else
-			addHint(tr("<b>%1</b> is not available").arg(ule.altNick()),
+			addHint(tr("<b>%1</b> is not available")
+				.arg(QStyleSheet::escape(ule.altNick())),
 				ule.status().pixmap(),
 				config_file.readFontEntry("Hints", "HintOffline_font"),
 				config_file.readColorEntry("Hints", "HintOffline_fgcolor"),
