@@ -12,19 +12,17 @@ module_so_list = $(foreach dir,$(module_dir_list),$(dir)/$(dir).so)
 
 all:
 	@for dir in $(module_dir_list); do \
-		echo; \
-		echo "Compiling $$dir module..."; \
 		MODULE_SOURCES=; \
 		MODULE_MOC_HEADERS=; \
 		MODULE_HEADERS=; \
 		MODULE_CXXFLAGS=; \
 		MODULE_LDFLAGS=; \
 		source $$dir/spec; \
-		echo MODULE_SOURCES: $$MODULE_SOURCES; \
-		echo MODULE_MOC_HEADERS: $$MODULE_MOC_HEADERS; \
-		echo MODULE_HEADERS: $$MODULE_HEADERS; \
-		echo MODULE_CXXFLAGS: $$MODULE_CXXFLAGS; \
-		echo MODULE_LDFLAGS: $$MODULE_LDFLAGS; \
+		MODULE_CXXFLAGS="$$MODULE_CXXFLAGS "`cat $$dir/cxxflags`; \
+		MODULE_LDFLAGS="$$MODULE_LDFLAGS "`cat $$dir/ldflags`; \
+		echo; \
+		echo ">>> Compiling $$dir module [LD=$$MODULE_LDFLAGS,CXX=$$MODULE_CXXFLAGS] ..."; \
+		echo; \
 		obj_files=" "; \
 		h_files=""; \
 		for src_file in $$MODULE_SOURCES; do \
@@ -47,13 +45,13 @@ all:
 	done
 
 %.so: $(module_obj_files)
-	$(CC) -shared -o $@ $(module_obj_files) $(module_ldflags) `cat $(<D)/ldflags`
+	$(CC) -shared -o $@ $(module_obj_files) $(module_ldflags)
 
 %_moc.o: %_moc.cpp
-	$(CC) -o $@ -c -fPIC $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) `cat $(<D)/cxxflags`
+	$(CC) -o $@ -c -fPIC $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)
 
 %.o: %.cpp $(module_h_files)
-	$(CC) -o $@ -c -fPIC $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) `cat $(<D)/cxxflags`
+	$(CC) -o $@ -c -fPIC $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)
 
 %_moc.cpp: %.h
 	$(QT_MOC_DIR)/moc -o $@ $<
@@ -66,4 +64,4 @@ install-data-local:
 	done
 
 uninstall-local:
-	rm -f "$(DESTDIR)/$(datadir)/kadu/modules/*.so"
+	rm -f $(DESTDIR)/$(datadir)/kadu/modules/*.so
