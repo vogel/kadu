@@ -7,11 +7,11 @@
 #include <qlineedit.h>
 #include <qdialog.h>
 
-class remindPassword : public QObject {
+class RemindPassword : public QObject {
 	Q_OBJECT
 	public:
-		remindPassword();
-		~remindPassword();
+		RemindPassword();
+		~RemindPassword();
 
 	private:
 		void deleteSocketNotifiers();
@@ -33,10 +33,10 @@ class remindPassword : public QObject {
 		void dataSent();
 };
 
-class changePassword : public QDialog {
+class ChangePassword : public QDialog {
 	Q_OBJECT
 	public:
-		changePassword(QDialog *parent = 0, const char *name = 0);
+		ChangePassword(QDialog *parent = 0, const char *name = 0);
 
 	private:
 		void deleteSocketNotifiers();

@@ -35,7 +35,6 @@
 #include "hints.h"
 #include "dock_widget.h"
 #include "debug.h"
-#include "sound.h"
 #include "dcc.h"
 #include "config_dialog.h"
 #include "config_file.h"
@@ -336,16 +335,7 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 
 void EventManager::chatMsgReceived2Slot(UinsList senders,const QString& msg,time_t time)
 {
-	UserListElement ule = userlist.byUinValue(senders[0]);
-
-	QString messagesound;
-	if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
-		messagesound=parse(config_file.readEntry("Sounds","Message_sound"),ule);
-	else 
-		messagesound=soundmanager.themePath()+"/"+soundmanager.getThemeEntry("Message");
-	
-	soundmanager.playSound(messagesound);
-		
+	UserListElement ule = userlist.byUinValue(senders[0]);		
 
 	pending.addMsg(senders, msg, GG_CLASS_CHAT, time);
 	
@@ -398,19 +388,7 @@ void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)
 			msgbox->show();
 			}
 
-		if (config_file.readBoolEntry("Notify","NotifyWithSound")) {
-			if (soundmanager.timeAfterLastSound()>500)
-			{
-			    QString notifysound;
-			    if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
-				notifysound=parse(config_file.readEntry("Notify","NotifySound"),userlist.byUin(uin),false);
-			    else 
-				notifysound=soundmanager.themePath()+"/"+soundmanager.getThemeEntry("Notify");
-	
-		    	    soundmanager.playSound(notifysound);
 			}
-			}
-		}
 }
 
 void EventManager::userlistReceivedSlot(struct gg_event *e) {
@@ -757,9 +735,6 @@ void EventConfigSlots::initModule()
 	QT_TRANSLATE_NOOP("@default", "Available");
 	QT_TRANSLATE_NOOP("@default", "Tracked");
 	QT_TRANSLATE_NOOP("@default", "Notify options");
-	QT_TRANSLATE_NOOP("@default", "Notify by sound");
-	QT_TRANSLATE_NOOP("@default", "Path:");
-	QT_TRANSLATE_NOOP("@default", "Test");
 	QT_TRANSLATE_NOOP("@default", "Notify by dialog box");
 
 // zakladka "powiadom"
@@ -781,7 +756,6 @@ void EventConfigSlots::initModule()
 	ConfigDialog::addListBox("Notify", "listbox3", "track");
 	
 	ConfigDialog::addVGroupBox("Notify", "Notify", "Notify options");
-	ConfigDialog::addCheckBox("Notify", "Notify options", "Notify by sound", "NotifyWithSound", false);
 	ConfigDialog::addCheckBox("Notify", "Notify options", "Notify by dialog box", "NotifyWithDialogBox", false);
 	
 

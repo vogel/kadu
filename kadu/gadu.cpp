@@ -10,6 +10,7 @@
 #include "gadu.h"
 #include "userlist.h"
 #include "debug.h"
+#include "kadu.h"
 
 #include <stdlib.h>
 
@@ -31,6 +32,7 @@ bool i_wanna_be_invisible = true;
 void GaduProtocol::initModule()
 {
 	gadu=new GaduProtocol();
+	kadu->mainMenu()->insertItem(loadIcon("reload.png"), tr("Resend &userlist"), gadu, SLOT(sendUserList()),0,-1,2);
 }
 
 GaduProtocol::GaduProtocol() : QObject()

@@ -14,6 +14,9 @@
 #include <qframe.h>
 #include <qlayout.h>
 #include <qtoolbutton.h>
+#include <qtoolbar.h>
+#include <qmenubar.h>
+#include <qvaluelist.h>
 
 #include "libgadu.h"
 #include "misc.h"
@@ -34,15 +37,28 @@ class Kadu : public QMainWindow
 		QFrame* centralFrame;
 		QGridLayout* grid;
 		QTextBrowser* descrtb;
-		QToolButton* mutebtn;
 		QMenuBar* MenuBar;
-		QPopupMenu* MainMenu;		
+		QPopupMenu* MainMenu;
+		QToolBar* ToolBar;
 		KaduTabBar* GroupBar;
 		UserBox* Userbox;
-
-		int commencing_startup;
 		
+		int commencing_startup;
+
+		struct ToolButton
+		{
+			QIconSet iconfile;
+			QString caption, name;
+			QObject* receiver;
+			QString slot;
+			QToolButton* button;
+			int position;
+
+		};
+		
+		static QValueList <ToolButton> RegisteredToolButtons;
 		void createMenu();
+		void createToolBar();
 		void createStatusPopupMenu();
 		void setActiveGroup(const QString& group);
 
@@ -66,6 +82,11 @@ class Kadu : public QMainWindow
 	public:
 		Kadu(QWidget* parent=0, const char *name=0);
 		~Kadu();
+		static void InitModules();
+		static void addToolButton(const QIconSet& iconfile, const QString& caption, 
+		    QObject* receiver, const char* slot, const int position=-1, const char* name="");
+		static QToolButton* getToolButton(const char* name);
+		static void addToolButtonSeparator(int position=-1);
 		void changeAppearance();
 		bool userInActiveGroup(uin_t uin);
 		void removeUser(QStringList &, bool);
@@ -78,6 +99,10 @@ class Kadu : public QMainWindow
 			Zwraca wskaznik do glownego menu programu.
 		**/
 		QPopupMenu* mainMenu();
+		/**
+			Zwraca wskaznik do paska z narzedziami
+		**/
+		QToolBar* toolBar();
 		/**
 			Zwraca wskaznik do zakladek z nazwami grup.
 		**/		
@@ -121,7 +146,7 @@ class Kadu : public QMainWindow
 		void addUserAction();
 		void blockUser();
 		void configure();
-		void changePassword1();
+		void changePassword();
 		void deleteHistory();
 		void deleteUsers();
 		void exportUserlist();
@@ -131,13 +156,12 @@ class Kadu : public QMainWindow
 		void importUserlist();
 		void lookupInDirectory();
 		void manageIgnored();
-		void muteUnmuteSounds();
 		void notifyUser();
 		void offlineToUser();
 		void personalInfo();
 		void quit();
 		void registerUser();
-		void remindPassword1();
+		void remindPassword();
 		void searchInDirectory();
 		void sendFile();
 		void makeVoiceChat();

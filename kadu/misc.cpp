@@ -1190,3 +1190,130 @@ void TokenDialog::tokenErrorReceived() {
 	setEnabled(true);
 	done(-1);
 }
+
+Themes::Themes(const QString& name, const QString& configname)
+{
+    Name= name;
+    ConfigName= configname;
+};
+
+QStringList Themes::getSubDirs(const QString& path)
+{
+	QDir dir(path);
+	dir.setFilter(QDir::Dirs);
+	QStringList subdirs=dir.entryList();
+	subdirs.remove(".");
+	subdirs.remove("..");
+	for (QStringList::Iterator it= subdirs.begin(); it!=subdirs.end(); it++)
+		{
+		QFile s(path+"/"+(*it)+"/"+ConfigName);
+		if (!s.exists())
+		    subdirs.remove((*it));
+		}
+	return subdirs;
+};
+
+const QStringList Themes::themes()
+{
+	return ThemesList;
+};
+
+void Themes::setTheme(const QString& theme)
+{
+	if(ThemesList.contains(theme)|| (theme == "Custom"))
+	{
+		entries.clear();
+		ActualTheme= theme;
+		if (theme != "Custom")
+		{
+		    ConfigFile theme_file(themePath()+fixFileName(themePath(),ConfigName));
+		    entries=theme_file.getGroupSection(Name);
+		}
+		emit themeChanged(ActualTheme);
+	}
+	kdebug("Theme: "+ActualTheme+"\n");
+};
+
+QString Themes::theme()
+{
+    return ActualTheme;
+}
+
+
+QString Themes::fixFileName(const QString& path,const QString& fn)
+{
+	// sprawd¼ czy oryginalna jest ok
+	if(QFile::exists(path+"/"+fn))
+		return fn;
+	// mo¿e ca³o¶æ lowercase?
+	if(QFile::exists(path+"/"+fn.lower()))
+		return fn.lower();	
+	// rozbij na nazwê i rozszerzenie
+	QString name=fn.section('.',0,0);
+	QString ext=fn.section('.',1);
+	// mo¿e rozszerzenie uppercase?
+	if(QFile::exists(path+"/"+name+"."+ext.upper()))
+		return name+"."+ext.upper();
+	// nie umiemy poprawiæ, zwracamy oryginaln±
+	return fn;
+};
+
+void Themes::setPaths(const QStringList& paths)
+{
+    ThemesList.clear();
+    QStringList add, temp=paths;
+	QFile s;
+	for (QStringList::Iterator it= temp.begin(); it!=temp.end(); it++)
+		{
+		s.setName((*it)+"/"+ConfigName);
+		if (s.exists())
+		  {
+		    add.append(*it);
+		    ThemesList.append((*it).section("/", -2));
+		  }
+		}
+	ThemesPaths+=add;
+	emit pathsChanged(ThemesPaths);
+};
+
+QStringList Themes::defaultKaduPathsWithThemes()
+{
+	QStringList default1, default2;
+	default1=getSubDirs(QString(DATADIR)+"/kadu/themes/"+Name);
+	default2=getSubDirs(ggPath(Name));
+
+	for (QStringList::Iterator it= default1.begin(); it!=default1.end(); it++)
+		(*it)=QString(DATADIR)+"/kadu/themes/"+Name+"/"+(*it)+"/";
+
+	for (QStringList::Iterator it= default2.begin(); it!=default2.end(); it++)
+		(*it)=ggPath(Name)+"/"+(*it)+"/";
+
+return default1+default2;    
+}
+
+QStringList Themes::paths()
+{
+    return ThemesPaths;
+}
+
+QString Themes::themePath(const QString& theme)
+{
+    QString t=theme;
+    if (theme == "")
+	t= ActualTheme;
+    if (theme == "Custom")
+	return "";
+
+    return ThemesPaths.grep(t).first();
+	
+};
+
+QString Themes::getThemeEntry(const QString& name)
+{
+    for (unsigned int i=0;i<entries.count();i++)
+    {
+        if (entries[i].name == name)
+		return entries[i].value;
+    }
+return QString("");
+}

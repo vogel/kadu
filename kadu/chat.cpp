@@ -37,7 +37,6 @@
 #include "pending_msgs.h"
 #include "dock_widget.h"
 #include "debug.h"
-#include "sound.h"
 #include "gadu.h"
 #include "hints.h"
 #ifdef HAVE_OPENSSL
@@ -879,24 +878,6 @@ void Chat::alertNewMessage(void) {
 	if (config_file.readBoolEntry("Chat","BlinkChatTitle"))
 		if (!isActiveWindow() && !title_timer->isActive())
 			changeTitle();
-
-
-	if (config_file.readBoolEntry("Sounds","PlaySoundChat"))
-		{
-		    if (config_file.readBoolEntry("Sounds","PlaySoundChatInvisible")){
-			if (isActiveWindow())
-				return;
-										     }
-
-	QString chatsound;
-	if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
-		chatsound=config_file.readEntry("Sounds", "Chat_sound");
-	else 
-		chatsound=soundmanager.themePath()+ "/" +soundmanager.getThemeEntry("Chat");
-
-	soundmanager.playSound(chatsound);
-			
-		}
 }
 
 void Chat::writeMyMessage() {

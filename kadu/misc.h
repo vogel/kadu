@@ -11,9 +11,11 @@
 #include <qdatetime.h>
 #include <qlineedit.h>
 #include <qimage.h>
+#include <qstringlist.h>
 
 #include "libgadu.h"
 #include "userlist.h"
+#include "config_file.h"
 
 #define __c2q(__char_pointer__) QString::fromLocal8Bit(__char_pointer__)
 
@@ -221,5 +223,33 @@ class TokenDialog : public QDialog {
 		QLineEdit *tokenedit;
 		QString tokenid;
 };
+
+class Themes : public QObject
+{
+	Q_OBJECT
+	private:
+		QStringList ThemesList;
+		QStringList ThemesPaths;
+		QString ConfigName, Name, ActualTheme;
+		QValueList<ConfigFileEntry> entries;
+		QStringList getSubDirs(const QString& path);
+		QString fixFileName(const QString& path,const QString& fn);
+
+	public:
+		Themes(const QString& name, const QString& configname);
+		QStringList defaultKaduPathsWithThemes();
+		const QStringList themes();
+		void setTheme(const QString& theme);
+		QString theme();
+		void setPaths(const QStringList& paths);
+		QStringList paths();
+		QString themePath(const QString& theme="");
+		QString getThemeEntry(const QString& name);
+
+	signals:
+		void themeChanged(const QString& theme);
+		void pathsChanged(const QStringList& list);
+};
+
 
 #endif

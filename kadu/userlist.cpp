@@ -281,6 +281,7 @@ void UserList::changeUserStatus(const uin_t uin, const unsigned int status)
 {
 	UserListElement &e = byUin(uin);
 	if (status != e.status) {
+		emit changingStatus(uin, e.status, status);
 		e.status = status;
 //		UserBox::all_refresh();			
 		emit statusModified(&e);

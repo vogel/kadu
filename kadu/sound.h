@@ -2,15 +2,21 @@
 #define SOUND_H
 
 #include <qobject.h>
+#include <qstring.h>
 #include <qdatetime.h>
 #include <qstringlist.h>
 #include "config_file.h"
 
+#include "events.h"
+#include "misc.h"
+
 class SoundSlots: public QObject
 {
 	Q_OBJECT
-	
-	public slots:
+	private:
+		int muteitem;
+
+	private slots:
 		void soundPlayer(bool value);
 		void onCreateConfigDialog();
 		void onDestroyConfigDialog();
@@ -20,29 +26,43 @@ class SoundSlots: public QObject
 		void clearSoundFile();
 		void testSoundFile();
 		void selectedPaths(const QStringList& paths);
+		void muteUnmuteSounds();
+		void playMessage(UinsList senders);
+		void playChat(UinsList senders);
+		void playNotify(const uin_t uin);
+	public:
+		SoundSlots();
 
+		
 };
 
-class SoundManager
+extern SoundSlots* soundslots;
+
+class SoundManager : public Themes
 {
+    Q_OBJECT
 	private:
-		QStringList ThemesList;
-		QStringList ThemesPaths;
-		QValueList<ConfigFileEntry> entries;
-		QStringList getSubDirs(const QString& path);
-		QString fixFileName(const QString& path,const QString& fn);
 		QTime lastsoundtime;
-	public:
-		SoundManager();
-		static void initModule();
 		bool mute;
+
+	private slots:
+		void chatSound(UinsList senders,const QString& msg,time_t time, bool& grab);
+		void messageSound(UinsList senders,const QString& msg,time_t time);
+		void notifySound(const uin_t uin, const unsigned int oldstatus, const unsigned int status);
+
+	public:
+		SoundManager(const QString& name, const QString& configname);
+		bool getMute();
+		void setMute(const bool& enable);
 		void playSound(const QString &sound, const QString player = QString::null);
-		const QStringList& themes();
-		void setSoundTheme(const QString& theme);
-		void setSoundPaths(const QStringList& paths);
-		QString themePath(const QString& theme="");
-		QString getThemeEntry(const QString& name);
-		int timeAfterLastSound();
+		int timeAfterLastSound();		
+		static void initModule();
+
+	signals:
+		void playOnMessage(UinsList senders);
+		void playOnChat(UinsList senders);
+		void playOnNotify(const uin_t uin);
+
 };
 
 extern SoundManager soundmanager;

@@ -107,6 +107,10 @@ class UserList : public QObject, public QValueList<UserListElement>
 
 	signals:
 		void modified();
+		/**
+		  Przesyla obecny i przyszly status uzytkonika
+		**/
+		void changingStatus(const uin_t uin, const unsigned int oldstatus, const unsigned int status);
 		void statusModified(UserListElement *);
 		void userAdded(const UserListElement& user);
 		void dnsNameReady(uin_t);

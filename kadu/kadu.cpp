@@ -79,6 +79,8 @@ QLabel* statuslabeltxt;
 
 UpdatesClass* uc;
 
+QValueList <Kadu::ToolButton> Kadu::RegisteredToolButtons;
+
 QValueList<QHostAddress> gg_servers;
 const char *gg_servers_ip[7] = {"217.17.41.82", "217.17.41.83", "217.17.41.84", "217.17.41.85",
 	"217.17.41.86", "217.17.41.87", "217.17.41.88"};
@@ -182,16 +184,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	ConfigDialog::addCheckBox("General", "grid", "Restore window geometry", "SaveGeometry", true);
 	ConfigDialog::addCheckBox("General", "grid", "Check for updates", "CheckUpdates", true);
 
-	GaduProtocol::initModule();
-	Sms::initModule();
-	Chat::initModule();
-	UserBox::initModule();
-	History::initModule();
-	HintManager::initModule();
-	AutoAwayTimer::initModule();
-	SoundManager::initModule();
-	EventConfigSlots::initModule();
-
 	ConfigDialog::registerSlotOnCreate(kaduslots, SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnDestroy(kaduslots, SLOT(onDestroyConfigDialog()));
 
@@ -220,8 +212,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Send file", "kadu_sendfile", "F8");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Configuration", "kadu_configure", "F2");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Add user", "kadu_adduser", "Ctrl+N");
-
-
+    
 	//zaladowanie wartosci domyslnych (pierwsze uruchomienie)
 	QRect def_rect(0, 0, 145, 465);
 	config_file.addVariable("General", "Geometry", def_rect);
@@ -316,6 +307,17 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	/* add all users to userbox */
 	setActiveGroup("");
 
+	// dodanie przyciskow do paska narzedzi
+	Kadu::addToolButton(*icons->loadIcon("offline"), tr("Show / hide inactive users"), Userbox, SLOT(showHideInactive()));
+	Kadu::addToolButton(loadIcon("configure.png"), tr("Configuration"), this, SLOT(configure()));
+	Kadu::addToolButtonSeparator();
+	Kadu::addToolButton(loadIcon("history.png"), tr("View history"), this, SLOT(viewHistory()));
+	Kadu::addToolButton(loadIcon("identity.png"), tr("View/edit user info"), this, SLOT(showUserInfo()));
+	Kadu::addToolButton(loadIcon("viewmag.png"), tr("Lookup in directory"), this, SLOT(lookupInDirectory()));
+	Kadu::addToolButtonSeparator();
+	Kadu::addToolButton(*icons->loadIcon("online"), tr("Add user"), this, SLOT(addUserAction()));
+
+
 	// popupmenu
 	UserBox::userboxmenu->addItem(tr("Open chat window") ,this, SLOT(openChat()));
 	UserBox::userboxmenu->addItem("mobile.png", tr("Send SMS"), this, SLOT(sendSmsToUser()),
@@ -409,42 +411,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	split->setSizes(splitsizes);
 
 //	tworzymy pasek narzedziowy
-	QToolBar *toolbar = new QToolBar(this, "main toolbar");
-	setRightJustification(true);
-	setDockEnabled(Qt::DockBottom, false);
-	setAppropriate(toolbar, true);
-	toolbar->setCloseMode(QDockWindow::Undocked);
-	toolbar->setLabel(tr("Main toolbar"));
-
-	QToolButton *inactivebtn = new QToolButton(*icons->loadIcon("offline"), tr("Show / hide inactive users"),
-	QString::null, Userbox, SLOT(showHideInactive()), toolbar, "ShowHideInactive");
-
-	
-	QIconSet *mu;
-	if (soundmanager.mute)
-	{mu= new QIconSet(loadIcon("mute.png"));}
-	else
-	{mu= new QIconSet(loadIcon("unmute.png"));}
-	mutebtn = new QToolButton((*mu), tr("Mute sounds"),
-	QString::null, this, SLOT(muteUnmuteSounds()), toolbar, "mute");
-
-	QToolButton *configbtn = new QToolButton(loadIcon("configure.png"), tr("Configuration"),
-		QString::null, this, SLOT(configure()), toolbar, "configure");
-		
-	toolbar->addSeparator();
-	QToolButton *viewhistorybtn = new QToolButton(loadIcon("history.png"), tr("View history"),
-		QString::null, this, SLOT(viewHistory()), toolbar, "viewhistory");
-	QToolButton *userinfobtn = new QToolButton(loadIcon("identity.png"), tr("View/edit user info"),
-		QString::null, this, SLOT(showUserInfo()), toolbar, "userinfo");
-	QToolButton *lookupbtn = new QToolButton(loadIcon("viewmag.png"),tr("Lookup in directory"),
-		QString::null, this, SLOT(lookupInDirectory()), toolbar, "lookup");
-	toolbar->addSeparator();
-	QToolButton *adduserbtn = new QToolButton(*icons->loadIcon("online"), tr("Add user"),
-		QString::null, this, SLOT(addUserAction()), toolbar, "adduser");
-	QFrame *toolbarfiller = new QFrame(toolbar);
-	toolbar->setStretchableWidget(toolbarfiller);
-	toolbar->setVerticallyStretchable(true);
-
 	if (config_file.readEntry("General", "DockWindows") != QString::null) {
 		QString dockwindows=config_file.readEntry("General", "DockWindows").replace(QRegExp("\\\\n"), "\n");
 		QTextStream stream(&dockwindows, IO_ReadOnly);
@@ -497,6 +463,71 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		uc->run();
 		}
 }
+
+QToolButton* Kadu::getToolButton(const char* name)
+{
+	for(QValueList<ToolButton>::iterator j=RegisteredToolButtons.begin(); j!=RegisteredToolButtons.end(); j++)
+			if ((*j).name == name) return (*j).button;
+return NULL;
+}
+
+void Kadu::addToolButtonSeparator(int position)
+{
+        ToolButton RToolButton;
+	RToolButton.caption="--separator--";
+
+    if (((RegisteredToolButtons.count()-1)<position) || (position == -1))
+	RegisteredToolButtons.append(RToolButton);
+    else
+	RegisteredToolButtons.insert(RegisteredToolButtons.at(position), RToolButton);
+
+};
+
+void Kadu::addToolButton(const QIconSet& iconfile, const QString& caption, 
+		    QObject* receiver, const char* slot, int position, const char* name)
+{
+    ToolButton RToolButton;
+    
+    RToolButton.iconfile= iconfile;
+    RToolButton.caption= caption;
+    RToolButton.receiver= receiver;
+    RToolButton.slot= slot;
+    RToolButton.position= position;
+    RToolButton.name= name;
+    
+    if (((RegisteredToolButtons.count()-1)<position) || (position == -1))
+	RegisteredToolButtons.append(RToolButton);
+    else
+	RegisteredToolButtons.insert(RegisteredToolButtons.at(position), RToolButton);
+
+};
+
+void Kadu::createToolBar()
+{
+	ToolBar = new QToolBar(this, "main toolbar");
+	setRightJustification(true);
+	setDockEnabled(Qt::DockBottom, false);
+	setAppropriate(ToolBar, true);
+	ToolBar->setCloseMode(QDockWindow::Undocked);
+	ToolBar->setLabel(tr("Main toolbar"));
+
+
+	for(QValueList<ToolButton>::iterator j=RegisteredToolButtons.begin(); j!=RegisteredToolButtons.end(); j++)
+		if ((*j).caption== "--separator--")
+			 ToolBar->addSeparator();
+		else 
+		    (*j).button= new QToolButton((*j).iconfile, (*j).caption,
+			QString::null, (*j).receiver, (*j).slot, ToolBar, (*j).name);
+		    
+
+
+
+	QFrame *toolbarfiller = new QFrame(ToolBar);
+	ToolBar->setStretchableWidget(toolbarfiller);
+	ToolBar->setVerticallyStretchable(true);
+
+};
+
 
 void Kadu::popupMenu()
 {	
@@ -582,20 +613,6 @@ void Kadu::popupMenu()
 	if (!user.uin)	UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("Open chat window")), false);
 }
 
-void Kadu::muteUnmuteSounds()
-{
-	soundmanager.mute = !soundmanager.mute;
-	if (soundmanager.mute) {
-		mutebtn->setIconSet(loadIcon("mute.png"));
-		mutebtn->setTextLabel(tr("Unmute sounds"));
-		MenuBar->changeItem(muteitem, loadIcon("mute.png"), tr("Unmute sounds"));
-		}
-	else {
-		MenuBar->changeItem(muteitem, loadIcon("unmute.png"), tr("Mute sounds"));
-		mutebtn->setTextLabel(tr("Mute sounds"));
-		mutebtn->setIconSet(loadIcon("unmute.png"));
-		}
-}
 
 void Kadu::configure() 
 {
@@ -782,25 +799,25 @@ void Kadu::about()
 	about->show();
 }
 
-void Kadu::remindPassword1()
+void Kadu::remindPassword()
 {
-	remindPassword *rp = new remindPassword();
+	RemindPassword *rp = new RemindPassword();
 	rp->start();
 }
 
-void Kadu::changePassword1()
+void Kadu::changePassword()
 {
-	changePassword *cp = new changePassword();
+	new ChangePassword();
 }
 
 void Kadu::registerUser()
 {
-	Register *reg = new Register;
+	new Register();
 }
 
 void Kadu::unregisterUser()
 {
-	Unregister *ureg = new Unregister;
+	new Unregister();
 }
 
 void Kadu::quit()
@@ -1612,17 +1629,10 @@ void Kadu::createMenu() {
 	MainMenu = new QPopupMenu(this, "MainMenu");
 	MainMenu->insertItem(tr("Manage &ignored"), this, SLOT(manageIgnored()));
 	MainMenu->insertItem(loadIcon("configure.png"), tr("&Configuration"), this, SLOT(configure()),HotKey::shortCutFromFile("ShortCuts", "kadu_configure"));
-	MainMenu->insertItem(loadIcon("reload.png"), tr("Resend &userlist"), gadu, SLOT(sendUserList()));
-	if (soundmanager.mute) {
-		muteitem= MainMenu->insertItem(loadIcon("mute.png"), tr("Unmute sounds"), this, SLOT(muteUnmuteSounds()));
-		}
-	else {
-		muteitem= MainMenu->insertItem(loadIcon("unmute.png"), tr("Mute sounds"), this, SLOT(muteUnmuteSounds()));
-		}
 	MainMenu->insertSeparator();
 
-	MainMenu->insertItem(tr("Remind &password"), this, SLOT(remindPassword1()));
-	MainMenu->insertItem(tr("&Change password/email"), this, SLOT(changePassword1()));
+	MainMenu->insertItem(tr("Remind &password"), this, SLOT(remindPassword()));
+	MainMenu->insertItem(tr("&Change password/email"), this, SLOT(changePassword()));
 	MainMenu->insertItem(loadIcon("newuser.png"),tr("Register &new user"), this, SLOT(registerUser()));
 	MainMenu->insertItem(tr("Unregister user"), this, SLOT(unregisterUser()));
 	MainMenu->insertItem(tr("Personal information"), this,SLOT(personalInfo()));
@@ -1642,6 +1652,21 @@ void Kadu::createMenu() {
 	MainMenu->insertItem(loadIcon("exit.png"), tr("&Exit Kadu"), this, SLOT(quit()));
 
 	MenuBar->insertItem(tr("&Kadu"), MainMenu);
+}
+
+void Kadu::InitModules()
+{
+
+	GaduProtocol::initModule();
+	Sms::initModule();
+	Chat::initModule();
+	UserBox::initModule();
+	History::initModule();
+	HintManager::initModule();
+	AutoAwayTimer::initModule();
+	EventConfigSlots::initModule();
+	SoundManager::initModule();
+	kadu->createToolBar();
 }
 
 void Kadu::statusMenuAboutToHide() {
@@ -1717,6 +1742,10 @@ QPopupMenu* Kadu::mainMenu()
 	return MainMenu;
 }
 
+QToolBar* Kadu::toolBar()
+{
+	return ToolBar;
+}
 KaduTabBar* Kadu::groupBar()
 {
 	return GroupBar;

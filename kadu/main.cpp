@@ -59,6 +59,7 @@ int main(int argc, char *argv[])
 	dir = QString(DATADIR) + "/kadu/icons";
 	icons = new IconsManager(dir);
 	kadu = new Kadu(0, "Kadu");
+	Kadu::InitModules();
 	QPixmap *pix = icons->loadIcon("offline");
 	kadu->setIcon(*pix);
 	qApp->setMainWidget(kadu);
@@ -97,6 +98,8 @@ int main(int argc, char *argv[])
 #endif
 
 	QObject::connect(qApp, SIGNAL(aboutToQuit()), kadu, SLOT(quitApplication()));
+
+
 
 #ifdef MODULES_ENABLED
 	ModulesManager::initModule();
