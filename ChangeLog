@@ -62,6 +62,10 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * zachowywanie polskich znaków przez modu³y autoresponder i echo (joi)
 * wys³ane przez nas obrazki pokazuj± siê w oknie rozmowy (adrian)
 * drobna optymalizacja funkcji ggPath() (joi)
+* modu³ encryption dodaj±æ znacznik [SSL] b³êdnie przesuwa³ formaty tekstu,
+  teraz zamiast tego stara siê zaznaczaæ szyfrowan± wiadomo¶æ na niebiesko,
+  mo¿e siê dorobi do tego konfiguracjê. konieczna by³a kolejna przebudowa
+  filtrów przychodz±cych wiadomo¶ci (adrian)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

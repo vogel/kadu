@@ -93,7 +93,7 @@ EventManager::EventManager()
 	connect(this,SIGNAL(disconnected()),this,SLOT(disconnectedSlot()));
 	connect(this,SIGNAL(userStatusChanged(struct gg_event*)),this,SLOT(userStatusChangedSlot(struct gg_event*)));
 	connect(this,SIGNAL(userlistReceived(struct gg_event*)),this,SLOT(userlistReceivedSlot(struct gg_event*)));
-	connect(this,SIGNAL(messageReceived(int,UinsList,QCString&,time_t, int, void *)),this,SLOT(messageReceivedSlot(int,UinsList,QCString&,time_t, int, void *)));
+	connect(this,SIGNAL(messageReceived(int,UinsList,QCString&,time_t, QByteArray&)),this,SLOT(messageReceivedSlot(int,UinsList,QCString&,time_t, QByteArray&)));
 	connect(this,SIGNAL(systemMessageReceived(QString &, QDateTime &, int, void *)),
 		this, SLOT(systemMessageReceivedSlot(QString &, QDateTime &, int, void *)));
 	connect(this,SIGNAL(chatMsgReceived2(UinsList,const QString&,time_t)),
@@ -213,7 +213,7 @@ void EventManager::systemMessageReceivedSlot(QString &msg, QDateTime &time,
 }
 
 void EventManager::messageReceivedSlot(int msgclass, UinsList senders,QCString& msg, time_t time,
-	int formats_length, void *formats)
+	QByteArray& formats)
 {
 /*
 	sprawdzamy czy user jest na naszej liscie, jezeli nie to .anonymous zwroci true
@@ -232,7 +232,7 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,QCString& 
 		return;
 
 	bool block = false;
-	emit messageFiltering(senders,msg,block);
+	emit messageFiltering(senders,msg,formats,block);
 	if(block)
 		return;
 
@@ -251,11 +251,11 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,QCString& 
 		config_file.writeEntry("General", "SystemMsgIndex", msgclass);
 		kdebug("System message index %d\n", msgclass);
 		
-		emit systemMessageReceived(mesg, datetime, formats_length, formats);
+		emit systemMessageReceived(mesg, datetime, formats.size(), formats.data());
 		return;
 		}
 
-	mesg = formatGGMessage(mesg, formats_length, formats, senders[0]);
+	mesg = formatGGMessage(mesg, formats.size(), formats.data(), senders[0]);
 
 	if(!userlist.containsUin(senders[0]))
 		userlist.addAnonymous(senders[0]);
@@ -630,8 +630,10 @@ void EventManager::eventHandler(gg_session* sess)
 			else
 				uins.append(e->event.msg.sender);
 			QCString msg((char*)e->event.msg.message);
+			QByteArray formats;
+			formats.duplicate((const char*)e->event.msg.formats, e->event.msg.formats_length);
 			emit messageReceived(e->event.msg.msgclass, uins, msg,
-				e->event.msg.time, e->event.msg.formats_length, e->event.msg.formats);
+				e->event.msg.time, formats);
 			}
 		}
 

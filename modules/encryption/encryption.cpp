@@ -43,7 +43,7 @@ EncryptionManager::EncryptionManager()
 	ConfigDialog::connectSlot("Chat", "Use encryption", SIGNAL(toggled(bool)), this, SLOT(onUseEncryption(bool)));
 
 	connect(chat_manager,SIGNAL(chatCreated(const UinsList&)),this,SLOT(chatCreated(const UinsList&)));
-	connect(&event_manager,SIGNAL(messageFiltering(const UinsList&,QCString&,bool&)),this,SLOT(receivedMessageFilter(const UinsList&,QCString&,bool&)));
+	connect(&event_manager,SIGNAL(messageFiltering(const UinsList&,QCString&,QByteArray&,bool&)),this,SLOT(receivedMessageFilter(const UinsList&,QCString&,QByteArray&,bool&)));
 	connect(UserBox::userboxmenu,SIGNAL(popup()),this,SLOT(userBoxMenuPopup()));
 	
 	Chat::registerButton("encryption_button",this,SLOT(encryptionButtonClicked()));
@@ -59,7 +59,7 @@ EncryptionManager::~EncryptionManager()
 	ConfigDialog::disconnectSlot("Chat", "Use encryption", SIGNAL(toggled(bool)), this, SLOT(onUseEncryption(bool)));
 
 	disconnect(chat_manager,SIGNAL(chatCreated(const UinsList&)),this,SLOT(chatCreated(const UinsList&)));
-	disconnect(&event_manager,SIGNAL(messageFiltering(const UinsList&,QCString&,bool&)),this,SLOT(receivedMessageFilter(const UinsList&,QCString&,bool&)));
+	disconnect(&event_manager,SIGNAL(messageFiltering(const UinsList&,QCString&,QByteArray&,bool&)),this,SLOT(receivedMessageFilter(const UinsList&,QCString&,QByteArray&,bool&)));
 	disconnect(UserBox::userboxmenu,SIGNAL(popup()),this,SLOT(userBoxMenuPopup()));
 
 	Chat::unregisterButton("encryption_button");
@@ -154,7 +154,7 @@ void EncryptionManager::encryptionButtonClicked()
 	setupEncryptButton(chat,!EncryptionEnabled[chat]);
 }
 
-void EncryptionManager::receivedMessageFilter(const UinsList& senders,QCString& msg,bool& stop)
+void EncryptionManager::receivedMessageFilter(const UinsList& senders,QCString& msg,QByteArray& formats,bool& stop)
 {
 	if (config_file.readBoolEntry("Chat","Encryption"))
 	{
@@ -183,9 +183,26 @@ void EncryptionManager::receivedMessageFilter(const UinsList& senders,QCString& 
 	kdebug("Decrypted message is: %s\n",decoded);
 	if (decoded != NULL)
 	{
-		msg="[SSL]\n";
-		msg+=decoded;
+		msg=decoded;
 		free(decoded);
+
+		gg_msg_richtext_format format;
+		format.position = 0;
+		format.font = GG_FONT_COLOR;
+		gg_msg_richtext_color color;
+		color.red = 0;
+		color.green = 0;
+		color.blue = 255;
+		
+		QByteArray new_formats(
+			formats.size()+sizeof(format)+sizeof(color));
+		char* dst = new_formats.data();
+		memcpy(dst, &format, sizeof(format));
+		dst += sizeof(format);
+		memcpy(dst, &color, sizeof(color));
+		dst += sizeof(color);
+		memcpy(dst, formats.data(), formats.size());
+		formats = new_formats;
 	}
 }
 
