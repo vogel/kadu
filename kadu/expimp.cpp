@@ -65,7 +65,8 @@ UserlistImport::UserlistImport(QWidget *parent, const char *name)
 void UserlistImport::fromfile(){
 	UserListElement e;
 	bool ok;
-	QStringList lines,userlist;
+	int groups, i;
+	QStringList lines, userlist, groupnames;
 	QListViewItem *qlv;
 	QString line;
 	QString fname = QFileDialog::getOpenFileName("/", QString::null, this);
@@ -86,17 +87,24 @@ void UserlistImport::fromfile(){
 				e.nickname = lines[2];
 				e.altnick = lines[3];
 				e.mobile = lines[4];
-				e.uin = lines[6].toUInt(&ok);
+				if (lines.count() >= 12)
+					groups = lines.count() - 11;
+				else
+					groups = lines.count() - 7;
+				groupnames.clear();
+				for (i = 0; i < groups; i++)
+					groupnames.append(lines[5 + i]);
+				e.setGroup(groupnames.join(","));
+				e.uin = lines[5 + groups].toUInt(&ok);
 				if (!ok)
 					e.uin = 0;
-				e.setGroup(lines[5]);
 				e.description = QString::null;
-				e.email = lines[7];
+				e.email = lines[6 + groups];
 				importedUserlist.addUser(e);
-				qlv = new QListViewItem(results, lines[6],
+				qlv = new QListViewItem(results, lines[5 + groups],
 					lines[2], lines[3], lines[0],
-					lines[1], lines[4], lines[5],
-					lines[7]);
+					lines[1], lines[4], groupnames.join(","),
+					lines[6 + groups]);
 	  			}
 			file.close();
 			}
@@ -215,16 +223,17 @@ void UserlistImport::userlistReplyReceivedSlot(char type, char *reply)
 
 	kdebug("ImportUserlist::userlistReplyReceivedSlot()\n%s\n",
 		unicode2latin(importreply).data());
-	QStringList fieldlist;
+	QStringList fieldlist, groupnames;
 	QListViewItem *qlv;
 	QStringList::Iterator it;
 	UserListElement e;
 	bool ok;
+	int groups, i;
 
 	results->clear();
 	importedUserlist.clear();
 	for ((it = strlist.begin()); it != strlist.end(); it++) {
-		if ((*it).contains(';') != 11)
+		if ((*it).contains(';') < 11)
 			continue;
 		fieldlist = QStringList::split(";", *it, true);
 		if (fieldlist[6] == "0")
@@ -234,17 +243,26 @@ void UserlistImport::userlistReplyReceivedSlot(char type, char *reply)
 		e.nickname = fieldlist[2];
 		e.altnick = fieldlist[3];
 		e.mobile = fieldlist[4];
-		e.uin = fieldlist[6].toUInt(&ok);
+		kdebug("ImportUserlist::userlistReplyReceivedSlot(): fieldlist.count() = %d\n",
+			fieldlist.count());
+		if (fieldlist.count() >= 12)
+			groups = fieldlist.count() - 11;
+		else
+			groups = fieldlist.count() - 7;
+		groupnames.clear();
+		for (i = 0 ; i < groups; i++)
+			groupnames.append(fieldlist[5 + i]);
+		e.setGroup(groupnames.join(","));
+		e.uin = fieldlist[5 + groups].toUInt(&ok);
 		if (!ok)
 			e.uin = 0;
-		e.setGroup(fieldlist[5]);
 		e.description = QString::null;
-		e.email = fieldlist[7];
+		e.email = fieldlist[6 + groups];
 		importedUserlist.addUser(e);
-		qlv = new QListViewItem(results, fieldlist[6],
+		qlv = new QListViewItem(results, fieldlist[5 + groups],
 			fieldlist[2], fieldlist[3], fieldlist[0],
-			fieldlist[1], fieldlist[4], fieldlist[5],
-			fieldlist[7]);
+			fieldlist[1], fieldlist[4], groupnames.join(","),
+			fieldlist[6 + groups]);
 		}
 	disconnect(&event_manager, SIGNAL(userlistReplyReceived(char, char *)),
 		this, SLOT(userlistReplyReceivedSlot(char, char *)));
@@ -288,7 +306,7 @@ UserlistExport::UserlistExport(QWidget *parent, const char *name)
 }
 
 QString UserlistExport::saveContacts(){
-	QString contacts;
+	QString contacts, tmp;
 	int i = 0;
 	contacts="";
 	while (i < userlist.count())
@@ -303,7 +321,9 @@ QString UserlistExport::saveContacts(){
 			contacts += ";";
 			contacts += userlist[i].mobile;
 			contacts += ";";
-			contacts += userlist[i].group();
+			tmp = userlist[i].group();
+			tmp.replace(QRegExp(","), ";");
+			contacts += tmp;
 			contacts += ";";
 			if (userlist[i].uin)
 				contacts += QString::number(userlist[i].uin);

@@ -11,6 +11,7 @@
 #include <qtextstream.h>
 #include <qtextcodec.h>
 #include <qdns.h>
+#include <qregexp.h>
 
 #include <sys/stat.h>
 
@@ -82,7 +83,7 @@ UserListElement::UserListElement()
 QString UserListElement::group() const
 {
 	return Group;
-}
+};
 
 void UserListElement::setGroup(const QString& group)
 {
@@ -92,18 +93,18 @@ void UserListElement::setGroup(const QString& group)
 		Group=group;
 	if (Parent)
 		emit Parent->modified();
-}
+};
 
 UserList::UserList(const UserList& source)
 {
 	for(const_iterator i=source.begin(); i!=source.end(); i++)
 		append(*i);
-}
+};
 
 UserList::UserList() : QObject(), QValueList<UserListElement>()
 {
 	dnslookups.setAutoDelete(true);
-}
+};
 
 UserList::~UserList()
 {
@@ -158,7 +159,7 @@ UserListElement& UserList::byUin(uin_t uin)
 		if((*i).uin==uin)
 			return (*i);
 	kdebug("UserList::byUin(): Panic!\n");
-}
+};
 
 UserListElement& UserList::byNick(const QString& nickname)
 {
@@ -167,7 +168,7 @@ UserListElement& UserList::byNick(const QString& nickname)
 			return (*i);
 	kdebug("UserList::byNick(): Panic! %s not exists\n",
 		(const char*)nickname.lower().local8Bit());
-}
+};
 
 UserListElement& UserList::byAltNick(const QString& altnick)
 {
@@ -176,7 +177,7 @@ UserListElement& UserList::byAltNick(const QString& altnick)
 			return (*i);
 	kdebug("UserList::byAltNick(): Panic! %s not exists\n",
 		(const char*)altnick.lower().local8Bit());
-}
+};
 
 //Zwraca elementy userlisty, jezeli nie mamy danego
 //uin na liscie, zwracany jest UserListElement tylko z uin i altnick == uin
@@ -190,7 +191,7 @@ UserListElement UserList::byUinValue(uin_t uin)
 	ule.altnick = QString::number(uin);
 	ule.anonymous = true;
 	return ule;
-}
+};
 
 bool UserList::containsUin(uin_t uin) const {
 	for (const_iterator i = begin(); i != end(); i++)
@@ -299,8 +300,8 @@ void UserList::removeUser(const QString &altnick)
 			remove(i);
 			emit modified();
 			break;
-		}
-}
+		};
+};
 
 bool UserList::writeToFile(QString filename)
 {
@@ -339,7 +340,9 @@ bool UserList::writeToFile(QString filename)
 		s.append(QString(";"));
 		s.append((*i).mobile);
 		s.append(QString(";"));
-		s.append((*i).group());
+		tmp = (*i).group();
+		tmp.replace(QRegExp(","), ";");
+		s.append(tmp);
 		s.append(QString(";"));
 		if ((*i).uin)
 			s.append(QString::number((*i).uin));
@@ -388,8 +391,10 @@ bool UserList::readFromFile()
 {
 	QString path;
 	QValueList<QStringList> ualist;
+	QStringList userattribs,groupnames;
 	QString line;
 	UserListElement e;
+	int groups, i;
 	bool ok;
 
 	path = ggPath("userattribs");
@@ -451,16 +456,25 @@ bool UserList::readFromFile()
 			addUser(e);
 			}
 		else {
-			e.first_name = line.section(';', 0, 0);
-			e.last_name = line.section(';', 1, 1);
-			e.nickname = line.section(';', 2, 2);
-			e.altnick = line.section(';', 3, 3);
-			e.mobile = line.section(';', 4, 4);
-			e.setGroup(line.section(';', 5, 5));
-			e.uin = line.section(';', 6, 6).toUInt(&ok);
+			userattribs = QStringList::split(";", line, TRUE);
+			kdebug("UserList::readFromFile(): userattribs = %d\n", userattribs.count());
+			if (userattribs.count() >= 12)
+				groups = userattribs.count() - 11;
+			else
+				groups = userattribs.count() - 7;
+			e.first_name = userattribs[0];
+			e.last_name = userattribs[1];
+			e.nickname = userattribs[2];
+			e.altnick = userattribs[3];
+			e.mobile = userattribs[4];
+			groupnames.clear();
+			for (i = 0; i < groups; i++)
+				groupnames.append(userattribs[5 + i]);
+			e.setGroup(groupnames.join(","));
+			e.uin = userattribs[5 + groups].toUInt(&ok);
 			if (!ok)
 				e.uin = 0;
-			e.email = line.section(';', 7, 7);
+			e.email = userattribs[6 + groups];
 
 			if (e.altnick == "") {
 				if (e.nickname == "")
@@ -490,7 +504,7 @@ bool UserList::readFromFile()
 
 	f.close();
 	emit modified();
-	return true;
+    	return true;
 }
 
 UserList& UserList::operator=(const UserList& userlist)
