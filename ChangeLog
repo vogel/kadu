@@ -164,6 +164,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * wlasne informacje w panelu informacyjnym sa pokazywane prawidlowo (michal)
 * opcja niezapisywania zmian statusow do historii (Ron_K/joi)
 * male porzadki w config dialog-u (michal)
+* emotikony l±duj± tam gdzie trzeba przy przesuwaniu splittera (joi)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

@@ -329,6 +329,41 @@ void CustomInput::paste() {
 
 QValueList<Chat::RegisteredButton> Chat::RegisteredButtons;
 
+class KaduSplitter : public QSplitter
+{
+	public:
+		KaduSplitter(QWidget * parent = 0, const char * name = 0) : QSplitter (parent, name)
+		{
+		}
+		KaduSplitter(Orientation o, QWidget * parent = 0, const char * name = 0 ) : QSplitter(o,parent,name)
+		{
+		}
+	protected:
+		QValueList<KaduTextBrowser *> list;
+		virtual void drawContents ( QPainter * p)
+		{
+			QSplitter::drawContents(p);
+			kdebugf();
+			for (QValueList<KaduTextBrowser *>::iterator i=list.begin(); i!=list.end(); i++)
+				(*i)->viewport()->repaint();
+		}
+
+		virtual void childEvent(QChildEvent *c)
+		{
+			QSplitter::childEvent(c);
+			kdebugf();
+			QObject *o=c->child();
+			if (o->inherits("KaduTextBrowser"))
+			{
+				if (c->inserted())
+					list.append((KaduTextBrowser*)o);
+				else 
+					list.remove((KaduTextBrowser*)o);
+			}
+//			kdebug("%d %d %p %p %s %s\n", c->inserted(), c->removed(), this, o, o->className(), o->name());
+		}
+};
+
 Chat::Chat(UinsList uins, QWidget *parent, const char *name)
  : QWidget(parent, name, Qt::WDestructiveClose), Uins(uins)
 {
@@ -344,12 +379,12 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	/* register us in the chats registry... */
 	index=chat_manager->registerChat(this);
 
-	QSplitter *split1, *split2;
+	KaduSplitter *split1, *split2;
 
-	split1 = new QSplitter(Qt::Vertical, this);
+	split1 = new KaduSplitter(Qt::Vertical, this);
 
 	if (uins.count() > 1) {
-		split2 = new QSplitter(Qt::Horizontal, split1);
+		split2 = new KaduSplitter(Qt::Horizontal, split1);
 		body = new KaduTextBrowser(split2);
 		}
 	else 
