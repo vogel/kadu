@@ -201,6 +201,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * usuniêcie paru ostrze¿eñ przy kompilacji zwi±zanych z porównywaniem liczb ca³kowitych
   ze znakiem i bez znaku (chilek)
 * po co u¿ywacie QString::latin1()?! (chilek)
+* poprawne ustawienie wysoko¶ci pojedynczego elementu listy kontaktów gdy obrazek
+  jest wiêkszy od czcionki (joi)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

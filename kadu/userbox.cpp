@@ -163,7 +163,7 @@ int KaduListBoxPixmap::height(const QListBox* lb) const
 		calculateSize(descr, width(lb)-5-pm.width(), out, h);
 		height+=h;
 	}
-	return height;
+	return QMAX(pm.height(), height);
 }
 
 int KaduListBoxPixmap::width(const QListBox* lb) const
@@ -171,7 +171,7 @@ int KaduListBoxPixmap::width(const QListBox* lb) const
 	if (config_file.readBoolEntry("Look", "MultiColumnUserbox"))
 		return config_file.readNumEntry("Look", "MultiColumnUserboxWidth", 230);
 	else
-		return lb->width()-5-scrollWidth;
+		return QMAX(pm.width(), lb->width()-5-scrollWidth);
 }
 
 //#include <sys/time.h>
