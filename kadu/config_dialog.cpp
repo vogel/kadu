@@ -309,11 +309,13 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 	
 	QHBox* buttonbox= new QHBox(this);
 	okButton= new QPushButton(tr("Ok"), buttonbox);
+	applyButton = new QPushButton(tr("Apply"), buttonbox);
 	cancelButton= new QPushButton(tr("Cancel"), buttonbox);
 	
 	dialogLayout->addWidget(buttonbox, 1, 1,Qt::AlignRight);
 	
-	connect(okButton, SIGNAL(clicked()), this, SLOT(updateConfig()));
+	connect(okButton, SIGNAL(clicked()), this, SLOT(updateAndCloseConfig()));
+	connect(applyButton, SIGNAL(clicked()), this, SLOT(updateConfig()));
 	connect(cancelButton, SIGNAL(clicked()), this, SLOT(close()));
 
 	connect(listBox, SIGNAL(highlighted(const QString&)), this, SLOT(changeTab(const QString&)));
@@ -417,6 +419,11 @@ void ConfigDialog::updateConfig(void)
 	emit destroy();
 	kdebug("ConfigDialog: Configuration saved\n");
 	config_file.sync();
+}
+
+void ConfigDialog::updateAndCloseConfig()
+{
+	updateConfig();
 	close();
 }
 

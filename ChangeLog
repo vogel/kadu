@@ -178,6 +178,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * kadu podpina sie pod sygnaly tylko gdy jest skompilowane bez debuga (michal)
 * dodana kontrola g³o¶no¶ci w module nas_sound (joi)
 * je¿eli wywróci siê demon arts to Kadu siê tym nie przejmie ;) (joi)
+* przycisk "Zastosuj" w konfiguracji (joi)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

@@ -698,28 +698,37 @@ class ConfigDialog : public QDialog	{
 		QListBox* listBox;
 		QScrollView* view;
 		QPushButton* okButton;
+		QPushButton* applyButton;
 		QPushButton* cancelButton;
 		static ConfigDialog *configdialog;
 		static QString acttab;
 
 	signals:
 		/**
-		    Sygnal jest emitowany przy otwieraniu okna
+		    Sygna³ jest emitowany przy otwieraniu okna
 		**/
 		void create();
+		
 		/**
-		    Sygnal jest emitowany przy zamykaniu okna
+		    Sygna³ jest emitowany przy zamykaniu okna
 		**/
 		void destroy();
 
 	protected slots:
 		/**
-		    Zapisuje wartosci kontrolek do pliku i zamyka okno
+		    Zapisuje warto¶ci kontrolek do pliku
 		**/
 
 		void updateConfig();
+
 		/**
-		    Zmienia zakladke na "name"
+		    Zapisuje warto¶ci kontrolek do pliku i zamyka okno
+		**/
+
+		void updateAndCloseConfig();
+		
+		/**
+		    Zmienia zak³adkê na "name"
 		**/
 		void changeTab(const QString& name);
 };
