@@ -639,15 +639,15 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
     </message>
     <message>
         <source>Icon theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Thema icone</translation>
     </message>
     <message>
         <source>Icon paths</source>
-        <translation type="unfinished"></translation>
+        <translation>Percorso icone</translation>
     </message>
     <message>
         <source>Multiline description in userbox</source>
-        <translation type="unfinished"></translation>
+        <translation>Descrizione multilinea nella Lista contatti</translation>
     </message>
 </context>
 <context>
@@ -1142,7 +1142,7 @@ La password è errata!!!</translation>
     </message>
     <message>
         <source>Uins</source>
-        <translation type="unfinished"></translation>
+        <translation>Numero GG</translation>
     </message>
 </context>
 <context>
@@ -1242,15 +1242,15 @@ La password è errata!!!</translation>
     <name>IconsManager</name>
     <message>
         <source>Default</source>
-        <translation type="unfinished"></translation>
+        <translation>Predefinito</translation>
     </message>
     <message>
         <source>Icons</source>
-        <translation type="unfinished"></translation>
+        <translation>Icone</translation>
     </message>
     <message>
         <source>Please restart kadu to apply new icon theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Per applicare cambiamenti devi chiudere e riaprire Kadu</translation>
     </message>
 </context>
 <context>
@@ -1517,7 +1517,7 @@ Controllare connessione a Internet.</translation>
     <name>KaduTextBrowser</name>
     <message>
         <source>Copy link &amp;location</source>
-        <translation type="unfinished"></translation>
+        <translation>Copy link &amp;location</translation>
     </message>
 </context>
 <context>
@@ -1563,15 +1563,15 @@ Controllare connessione a Internet.</translation>
     </message>
     <message>
         <source>Info</source>
-        <translation type="unfinished"></translation>
+        <translation>Informazioni</translation>
     </message>
     <message>
         <source>&lt;b&gt;Module:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;b&gt;Depends on:&lt;/b&gt;&lt;br&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Modulo:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;b&gt;Dipende da:&lt;/b&gt;&lt;br&gt;</translation>
     </message>
     <message>
         <source>&lt;br&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;b&gt;Description&lt;/b&gt;:&lt;br&gt;%2</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;br&gt;&lt;b&gt;Autore:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;b&gt;Descrizione&lt;/b&gt;:&lt;br&gt;%2</translation>
     </message>
 </context>
 <context>
@@ -1593,19 +1593,20 @@ Probabilmente Modulo non è compatibile.</translation>
     <message>
         <source>Cannot load %1 module library.
 Maybe it&apos;s incorrecty compiled.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile caricre libreria modulo %1.
+Probbabilmente è stato compilato male.</translation>
     </message>
     <message>
         <source>Module %1 is loaded</source>
-        <translation type="unfinished"></translation>
+        <translation>Modulo %1 e stato attivato</translation>
     </message>
     <message>
         <source>Required module %1 was not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Module %1 non trovato</translation>
     </message>
     <message>
         <source>Module %1 cannot be unloaded because it is used by another module</source>
-        <translation type="unfinished"></translation>
+        <translation>Modulo %1 non può essere disattivato perchè in uso da altro modulo</translation>
     </message>
 </context>
 <context>
@@ -1863,15 +1864,7 @@ Ora è possibile aggiungere i vostri amici alla lista dei contatti.</translation
     </message>
     <message>
         <source>&amp;Chat</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source></source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source> </source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Chat</translation>
     </message>
 </context>
 <context>
@@ -2093,7 +2086,7 @@ Probabilmente è temporaneamente disattivata, o sono state cambiate le reole acc
     <name>ToolBar</name>
     <message>
         <source>Main toolbar</source>
-        <translation type="unfinished">Toolbar principale</translation>
+        <translation>Toolbar principale</translation>
     </message>
 </context>
 <context>
