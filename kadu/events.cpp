@@ -279,7 +279,12 @@ void eventGotUserlist(struct gg_event * e) {
 			else
 				user.status = GG_STATUS_NOT_AVAIL;
 
+		for (i = 0; i < chats.count(); i++)
+			if ((*chats[i].uins).contains(n->uin))
+				chats[i].ptr->setTitle();
+
 		ifNotify(n->uin, n->status, oldstatus);
+
 		n++;
 
 		if (user.description)
@@ -329,7 +334,12 @@ void eventGotUserlistWithDescription(struct gg_event *e) {
 					if (n->status == GG_STATUS_INVISIBLE_DESCR)
 						fprintf(stderr, "KK eventGotUserlistWithDescription(): User %d went invisible with descr.\n", n->uin);
 
+		for (i = 0; i < chats.count(); i++)
+			if ((*chats[i].uins).contains(n->uin))
+				chats[i].ptr->setTitle();
+
 		ifNotify(n->uin, n->status, oldstatus);
+
 		n++;
 		}
 
@@ -341,6 +351,7 @@ void eventStatusChange(struct gg_event * e) {
 	fprintf(stderr, "KK eventStatusChange(): User %d went %d\n", e->event.status.uin,  e->event.status.status);
 
 	unsigned int oldstatus;
+	int i;
 	
 	UserListElement &user = userlist.byUin(e->event.status.uin);
 
@@ -364,7 +375,10 @@ void eventStatusChange(struct gg_event * e) {
 		user.port = 0;
 		}
 
-//	kadu->userbox->refresh();
+	for (i = 0; i < chats.count(); i++)
+		if ((*chats[i].uins).contains(e->event.status.uin))
+			chats[i].ptr->setTitle();
+
 	ifNotify(e->event.status.uin, e->event.status.status, oldstatus);
 }
 
