@@ -42,7 +42,7 @@ class PersonalInfoDialog : public QDialog
 
 	public:
 		PersonalInfoDialog(QDialog *parent=0, const char *name=0);
-		void fillFields(gg_search50_t res);
+		void fillFields(gg_pubdir50_t res);
 };
 
 #endif

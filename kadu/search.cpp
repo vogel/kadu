@@ -297,7 +297,7 @@ void SearchDialog::nextSearch(void) {
 	gg_pubdir50_free(req);
 }
 
-void SearchDialog::showResults(gg_search50_t res) {
+void SearchDialog::showResults(gg_pubdir50_t res) {
 	int i, count;
 	const char *uin, *first, *nick, *born, *city, *status;
 	

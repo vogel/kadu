@@ -61,7 +61,7 @@ class SearchDialog : public QDialog {
 	public slots:
 		void firstSearch(void);
 		void nextSearch(void);
-		void showResults(gg_search50_t res);
+		void showResults(gg_pubdir50_t res);
 		void selectionChanged(QListViewItem *);
 
 	protected:
