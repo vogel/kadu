@@ -1,1097 +1,262 @@
+############################################################################
+#    Copyright (C) 2004 by Sad Mephisto                                    #
+#    sad@antisocial.com                                                    #
+#                                                                          #
+#    This program is free software; you can redistribute it and#or modify  #
+#    it under the terms of the GNU General Public License as published by  #
+#    the Free Software Foundation; either version 2 of the License, or     #
+#    (at your option) any later version.                                   #
+#                                                                          #
+#    This program is distributed in the hope that it will be useful,       #
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of        #
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         #
+#    GNU General Public License for more details.                          #
+#                                                                          #
+#    You should have received a copy of the GNU General Public License     #
+#    along with this program; if not, write to the                         #
+#    Free Software Foundation, Inc.,                                       #
+#    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
+############################################################################
 #!/bin/bash
-##############################################################################
-# Ten program jest wolnym oprogramowaniem. Mo¿na go rozprowadzaæ i modyfikowaæ#
-# zgodnie z licencj± GNU General Public License opublikowan± przez           #
-# Free Software Foundation w wersji 2 z pó¼niejszymi zmianami                 #
-##############################################################################
-function Wyb_Dystr()
+# $Id: Instaluj,v 1.27 2004/04/09 17:30:53 romek Exp $
+# KaduInstaller - Copyright (C) 2004 Sad Mephisto <sad@antisocial.com>
+
+# ./configure, make, make install....  tylko ¿eby ³adnie wygl±da³o
+zainstaluj()
 {
-clear
-dialog --msgbox "\n\nWitaj w skrypcie instalacyjnym v0.1.4 \
-Skrypt ten konfiguruje, kompiluje, instaluje lub odinstalowywuje \
-$APP_NAME oraz $LIB_NAME." 10 80
-
-dialog --menu "WYBIERZ RODZAJ DYSTRYBUCJI" 0 80 0 R "RedHat - Aurox" I "Inna" E "Zakoncz program instalacyjny"  2> /tmp/dist_sel
-}
-function RedHat()
-{
-
-function AskForPath()
-{
-# $1 - nazwy katalog=F3w
-# $2 - wartoÅ›ci domyÅ›lne
-	echo -n "ProszÄ™, podaÄ‡ Å›cieÅ¼kÄ™ do $1 : "
-	read -e
-	if [ "$REPLY" == "" ]; then
-		REPLY="$2"
-	fi;
-}
-
-
-function CheckPath()
-{
-# $1 - Å›cieÅ¼ka
-# $2 - plik sprawdzany
-# $3 - prawidÅ‚owy string
-# $4 - nieprawidÅ‚owy string
-	if [ -e $1/$2 ]; then
-		CORRECT="$3"
-	else
-		CORRECT="$4"
-	fi;
-}
-
-function Konfiguruj()
-{
-	QTDIR="$QT_DIR"
-	LD_LIBRARY_PATH="$QT_DIR/lib:$LD_LIBRARY_PATH"
-	export QTDIR
-	KDEDIR="$KDE_DIR"
-	export KDEDIR
-	OPER="Configure"
-	echo "==============================================================================="
-	echo "                Uruchamiam plik configure z domyÅ›lnymi ustawieniami"
-	echo "==============================================================================="
-	./configure "--prefix=$APP_DIR"
-if test ! -f libgadu/Makefile; then
-        Error
-	exit
- fi;
-  if test ! -f Makefile; then
-        Error
-	exit
- fi;
-}
-
-function Konfiguruj_voice()
-{
-	QTDIR="$QT_DIR"
-	LD_LIBRARY_PATH="$QT_DIR/lib:$LD_LIBRARY_PATH"
-	export QTDIR
-	KDEDIR="$KDE_DIR"
-	export KDEDIR
-	OPER="Configure"
-	echo "==============================================================================="
-	echo "                Uruchamiam plik configure bez rozmow glosowych"
-	echo "==============================================================================="
-	./configure "--prefix=$APP_DIR" "--disable-voice"
-if test ! -f libgadu/Makefile; then
-        Error
-	exit
- fi;
-  if test ! -f Makefile; then
-        Error
-	exit
- fi;
-}
-
-function Konfiguruj_Modules()
-{
-	QTDIR="$QT_DIR"
-	LD_LIBRARY_PATH="$QT_DIR/lib:$LD_LIBRARY_PATH"
-	export QTDIR
-	KDEDIR="$KDE_DIR"
-	export KDEDIR
-	OPER="Configure"
-	echo "==============================================================================="
-	echo "                Uruchamiam plik configure bez modulow"
-	echo "==============================================================================="
-	./configure "--prefix=$APP_DIR"  "--disable-modules"
-if test ! -f libgadu/Makefile; then
-        Error
-	exit
- fi;
-  if test ! -f Makefile; then
-        Error
-	exit
- fi;
-}
-
-
-function Konfiguruj_bez_libgadu()
-{
-	QTDIR="$QT_DIR"
-	LD_LIBRARY_PATH="$QT_DIR/lib:$LD_LIBRARY_PATH"
-	export QTDIR
-	KDEDIR="$KDE_DIR"
-	export KDEDIR
-	OPER="Configure"
-	echo "==============================================================================="
-	echo "                Uruchamiam plik configure z opcjÄ… linkowania z istniejacym LibGadu"
-	echo "==============================================================================="
-	./configure "--prefix=$APP_DIR" "--with-existing-libgadu"
-  if test ! -f Makefile; then
-        Error
-	exit
- fi;
-}
-
-function Konfiguruj_bez_ssl()
-{
-	QTDIR="$QT_DIR"
-	LD_LIBRARY_PATH="$QT_DIR/lib:$LD_LIBRARY_PATH"
-	export QTDIR
-	KDEDIR="$KDE_DIR"
-	export KDEDIR
-	OPER="Configure"
-	echo "==============================================================================="
-	echo "                Uruchamiam plik configure z opcjÄ… bez SSL"
-	echo "==============================================================================="
-	./configure "--prefix=$APP_DIR" "--without-openssl"
-if test ! -f libgadu/Makefile; then
-        Error
-	exit
- fi;
-  if test ! -f Makefile; then
-        Error
-	exit
- fi;
-}
-
-function Konfiguruj_z_debug()
-{
-	QTDIR="$QT_DIR"
-	LD_LIBRARY_PATH="$QT_DIR/lib:$LD_LIBRARY_PATH"
-	export QTDIR
-	KDEDIR="$KDE_DIR"
-	export KDEDIR
-	OPER="Configure"
-	echo "==============================================================================="
-	echo "                Uruchamiam plik configure z opcjÄ… Debug"
-	echo "==============================================================================="
-	./configure "--prefix=$APP_DIR" "--enable-debug"
-if test ! -f libgadu/Makefile; then
-        Error
-	exit
- fi;
-  if test ! -f Makefile; then
-        Error
-	exit
- fi;
-}
-
-function Kompiluj()
-{
-	echo "==============================================================================="
-	echo "          Operacja $OPER zakoÅ„czona powodzeniem"
-        echo "          Teraz bÄ™dziemy wszystko kompilowaÄ‡"
-	echo "==============================================================================="
-	OPER="Kompiluj"
-	make
-	WYK=$?
-if test "$WYK" -ne 0; then
-        Error
-	exit
- fi;
-}
-
-function Zainstaluj()
-{
-	echo "==============================================================================="
-	echo "          Operacja $OPER zakoÅ„czona powodzeniem"
-        echo "          Teraz $APP_NAME zostanie zainstalowane"
-	echo "==============================================================================="
-	OPER="Zainstaluj"
-	make install
-	WYK=$?
- if test "$WYK" ;then
-        Gratulacje
-        exit
-        else
-        Error
-        exit
- fi;
-}
-
-function Odinstaluj()
-{
-	OPER="Odinstaluj"
-	make uninstall
-	WYK=$?
- if test "$WYK" ;then
-        Deinstal
-        exit
-        else
-        Error
-        exit
- fi;
-}
-
-function Gratulacje()
-{
-	clear
-	echo " ============================================================================="
-	echo " 		Gratulacje $APP_NAME zostaÅ‚o zainstalowane do katalogu $APP_DIR"
-	echo " ============================================================================="
-}
-
-function Deinstal()
-{
-	clear
-	echo " ============================================================================="
-	echo " 		$APP_NAME zostaÅ‚o pomyÅ›lnie usuniÄ™te z  katalogu $APP_DIR"
-	echo " ============================================================================="
-}
-
-function Aktualizuj_ldsoconf()
-{
-GREP_RESULT=`grep $LIB_DIR /etc/ld.so.conf`
-if [ -z "$GREP_RESULT" ]; then
-	echo >> /etc/ld.so.conf
-	echo $LIB_DIR >> /etc/ld.so.conf
-	/sbin/ldconfig
-	echo "Plik ld.so.conf zosta? zaktualizowany"
-fi
-}
-
-function Error()
-{
-	echo -e "\a"
-	echo " ============================================================================="
-	echo " 		WystÄ…piÅ‚ bÅ‚Ä…d operacja $OPER nie powiodÅ‚a siÄ™"
-	echo " ============================================================================="
-}
-
-
-function ShowInfo()
-{
-	rm -fr /tmp/kadu_info
-	echo " ============================================================================" >> /tmp/kadu_info
-	echo "                 PROGRAM BÄ˜DZIE KORZYSTAÅ Z PODANYCH ÅšCIEÅ»EK :" >> /tmp/kadu_info
-	CheckPath "$APP_DIR" bin/kadu "ZAINSTALOWANE" "NIE ZAINSTALOWANE" >> /tmp/kadu_info
-	echo "  * Lokalizacja $APP_NAME w katalogu: [$APP_DIR], $CORRECT" >> /tmp/kadu_info
-	CheckPath "$LIB_DIR" /libgadu.a "ZAINSTALOWANE" "NIE ZAINSTALOWANE uÅ¼yj opcji standardowej" >> /tmp/kadu_info
-	echo "  * Lokalizacja $LIB_NAME w katalogu: [$LIB_DIR], $CORRECT" >> /tmp/kadu_info
-	CheckPath "$QT_DIR" include/qapplication.h "ZNALEZIONA." "NIE ZNALEZIONA!" >> /tmp/kadu_info
-	echo "  * Biblioteka QT wersja >=3.0.1, w katalogu: [$QT_DIR], $CORRECT" >> /tmp/kadu_info
-	CheckPath "$KDE_DIR" include/kde/kapp.h "ZNALEZIONE." "NIE ZNALEZIONE!" >> /tmp/kadu_info
-	echo "  * KDE Desktop wersja >=3.0.0, w katalogu: [$KDE_DIR], $CORRECT" >> /tmp/kadu_info
-	echo "  KDE NIE JEST WYMAGANE DO INSTALACJI NA INNYCH MENADZERACH OKEN" >> /tmp/kadu_info
-        echo "\nUWAGA!!! musisz mieÄ‡ uprawnienia administratora"	
-	dialog --msgbox "`cat /tmp/kadu_info`" 15 80
-	rm -fr /tmp/kadu_info
-
-    
-        dialog --menu "MENU PROGRAMU" 0 80 0 \
-	L  "Zobaczyæ licencje GNU" \
-	Q  "Zmieniæ ¶cie¿kê do biblioteki QT" \
-	K  "Zmieniæ ¶cie¿kê do KDE Desktop" \
-	D  "Zmieniæ lokalizacje $APP_NAME" \
-	I  "Rozpocz±æ instalacjê standardow±" \
-	U  "Odinstalowaæ $APP_NAME" \
-	B  "Rozpocz±æ instalacjê bez libgadu" \
-	V  "Rozpocz±æ instalacjê bez rozmowi glosowych" \
-	S  "Rozpocz±æ instalacjê bez szyfrowania w SSL" \
-	M  "Rozpocz±æ instalacjê bez modulow"\
-	G  "Rozpocz±æ instalacjê z debug"\
-	P  "Uzyskaæ Pomoc za pomoc± programu Mozilla."\
-	E  "Zakoñczyæ program instalacyjny" 2> /tmp/mainmenu
-
-
-}
-
-function Szuk_kadu()
-{
-APP_DIR=`find /usr -path */bin/kadu -type f | sed -e 's/\/bin\/kadu$//' -e q`
-echo " ####"
-if [ "$APP_DIR" == "" ]; then
-APP_DIR=`find /usr/local -path */bin/kadu -type f | sed -e 's/\/bin\/kadu$//' -e q`
-echo " ####"
-fi;
-if [ "$APP_DIR" == "" ]; then
-APP_DIR=`find $HOME -path */bin/kadu -type f | sed -e 's/\/bin\/kadu$//' -e q`
-echo " ####"
-fi;
-if [ "$APP_DIR" == "" ]; then
-APP_DIR=`find /opt -path */bin/kadu -type f | sed -e 's/\/bin\/kadu$//' -e q`
-echo " ####"
-fi;
-if [ "$APP_DIR" == "" ]; then
-APP_DIR="$APP_DEF_DIR"
-echo  " ####"
-fi;
-}
-
-function Szuk_LibGadu()
-{
-LIB_DIR=`find /usr/lib -path */libgadu.a -type l | sed -e 's/\/libgadu.a$//' -e q`
-echo " ####"
-if [ "$LIB_DIR" == "" ]; then
-LIB_DIR=`find /usr/local -path */libgadu.a -type l | sed -e 's/\/libgadu.a$//' -e q`
-echo " ####"
-fi;
-if [ "$LIB_DIR" == "" ]; then
-LIB_DIR=`find $HOME -path */libgadu.a -type l | sed -e 's/\/libgadu.a$//' -e q`
-echo " ####"
-fi;
-if [ "$LIB_DIR" == "" ]; then
-LIB_DIR=`find /opt -path */libgadu.a -type l | sed -e 's/\/libgadu.a$//' -e q`
-echo " ####"
-fi;
-if [ "$LIB_DIR" == "" ]; then
-LIB_DIR="$LIB_DEF_DIR"
-echo " ####"
-fi;
-}
-
-
-function Szuk_QT()
-{
-QT_DIR=`find /usr/lib -path */include/qapplication.h -type f | sed -e 's/\/include\/qapplication.h$//' -e q`
-echo " ####"
-if [ "$QT_DIR" == "" ]; then
-QT_DIR=`find /usr -path */include/qapplication.h -type f | sed -e 's/\/include\/qapplication.h$//' -e q`
-echo " ####"
-fi;
-if [ "$QT_DIR" == "" ]; then
-QT_DIR=`find /opt -path */include/qapplication.h -type f | sed -e 's/\/include\/qapplication.h$//' -e q`
-echo " ####"
-fi;
-}
-
-function Szuk_KDE()
-{
-KDE_DIR=`find /usr/include -path */kde/kapp.h -type f | sed -e 's/\/include\/kde\/kapp.h$//' -e q`
-echo " ####"
-if [ "$KDE_DIR" == "" ]; then
-KDE_DIR=`find /usr/lib -path */include/kde/kapp.h -type f | sed -e 's/\/include\/kde\/kapp.h$//' -e q`
-echo " ####"
-fi;
-if [ "$KDE_DIR" == "" ]; then
-KDE_DIR=`find /opt -path */include/kde/kapp.h -type f | sed -e 's/\/include\/kde\/kapp.h$//' -e q`
-echo " ####"
-fi;
-}
-
-#########################################################################################
-#                                                       START PROGRAMU                                                                     #
-#########################################################################################
-clear
-	echo
-		echo " =============================================================================="
-	echo
-	echo " Ten program jest wolnym oprogramowniem. MoÅ¼na go rozprowadzaÄ‡ i modyfikowaÄ‡"
-	echo " zgodnie z licencjÄ… GNU General Public License opublikowanÄ… przez Free Software"
-	echo " Foundation w wersji 2 z pÃ³Åºniejszymi zmianami"
-	echo
-        echo " =============================================================================="
-	echo
-        echo " =============================================================================="
-        echo
-        echo " KonfigurujÄ™ program instalacyjny to moÅ¼e chwilÄ™ potrwaÄ‡ bÄ…dÅº cierpliwy"
-	echo
-	echo " Szukam poprzedniej instalacji $APP_NAME ..........................................."
-		Szuk_kadu
-	echo " Szukam poprzedniej instalacji $LIB_NAME ........................................"
-		Szuk_LibGadu
-	echo " Szukam  QT biblioteka ta jest niezbÄ™dna do kompilacji i dziaÅ‚ania Kadu........"
-		Szuk_QT
-	echo " Szukam KDE potrzebne do instalacji pod KDE ..................................."
-		Szuk_KDE
-
-########################################################################################
-#					SEKCJA WYBORU MENU										#
-########################################################################################
-
-dialog --separate-output --checklist "Wybierz moduly do zainstalowania" 0 80 0 \
-    encryption "Obsluga szyfrowania SSL" on \
-    speech "Obsluga syntezatora mowy" 0 \
-    sound "Ogolne wsparcie dla dzwieku" on \
-    ext_sound "Obsluga zewnetrznego programu obslugujacego dzwiek" on \
-    dsp_sound "Wsparcie DSP dla dzwieku" 0 \
-    arts_sound "Wsparcie aRts! dla dzwieku" 0 \
-    esd_sound "Wsparcie ESD dla dzwieku" 0 \
-    nas_sound "Wsparcie Network Audio System dla dzwieku" 0 \
-    "echo" "Przykladowy modul Echo" 0 \
-    autoresponder "Przykladowy modul Autoresponder" 0 2>/tmp/selectedmodule
-
-rm -fr .config
-
-if [[ `cat /tmp/selectedmodule |grep encryption` != "" ]]; then
-	echo "module_encryption=m" >> .config
-    else
-	echo "module_encryption=n" >> .config
-fi;
-
-if [[ `cat /tmp/selectedmodule |grep speech` != "" ]]; then
-	echo "module_speech=m" >> .config
-    else
-	echo "module_speech=n" >> .config
-fi;
-
-if [[ `cat /tmp/selectedmodule |grep sound` != "" ]]; then
-	echo "module_sound=m" >> .config
-    else
-	echo "module_sound=n" >> .config
-fi;
-
-if [[ `cat /tmp/selectedmodule |grep ext_sound` != "" ]]; then
-	echo "module_ext_sound=m" >> .config
-    else
-	echo "module_ext_sound=n" >> .config
-fi;
-
-if [[ `cat /tmp/selectedmodule |grep dsp_sound` != "" ]]; then
-	echo "module_dsp_sound=m" >> .config
-    else
-	echo "module_dsp_sound=n" >> .config
-fi;
-
-if [[ `cat /tmp/selectedmodule |grep arts_sound` != "" ]]; then
-	echo "module_arts_sound=m" >> .config
-    else
-	echo "module_arts_sound=n" >> .config
-fi;
-
-if [[ `cat /tmp/selectedmodule |grep esd_sound` != "" ]]; then
-	echo "module_esd_sound=m" >> .config
-    else
-	echo "module_esd_sound=n" >> .config
-fi;
-
-if [[ `cat /tmp/selectedmodule |grep nas_sound` != "" ]]; then
-	echo "module_nas_sound=m" >> .config
-    else
-	echo "module_nas_sound=n" >> .config
-fi;
-
-
-if [[ `cat /tmp/selectedmodule |grep "echo"` != "" ]]; then
-	echo "module_echo=m" >> .config
-    else
-	echo "module_echo=n" >> .config
-fi;
-
-if [[ `cat /tmp/selectedmodule |grep autoresponder` != "" ]]; then
-	echo "module_autoresponder=m" >> .config
-    else
-	echo "module_autoresponder=n" >> .config
-fi;
-
-
-
-while [ 1 ]; do
-	ShowInfo
-	clear
-	export REPLY=`cat /tmp/mainmenu`
-	while [ 1 ]; do
+	rm -fr log_install
+	./configure `cat log_prefix 2> /dev/null` `cat log_configureoptions 2>/dev/null` > log_install 2> log_install && make >> log_install 2>>log_install && make install 2>> log_install >> log_install && gotowe &
+	sleep 3
+	dialog --backtitle "Instalator Kadu" --begin 3 2 --infobox "Instalowanie Kadu... czekaj cierpliwie" 3 45  --and-widget --begin 10 2 --exit-label "Zaczekaj..." --tailbox log_install 13 75 
 		
-		if [[ ("$REPLY" == "L") || ("$REPLY" == "l") ]]; then
-			clear
-			cat COPYING | more
-			break
-		fi;
-		if [[ ("$REPLY" == "Q") || ("$REPLY" == "q") ]]; then
-			AskForPath "biblioteki QT"
-			QT_DIR="$REPLY"
-			break
-		fi;
-		if [[ ("$REPLY" == "K") || ("$REPLY" == "k") ]]; then
-			AskForPath "KDE Desktop"
-			KDE_DIR="$REPLY"
-			break
-		fi;
-		if [[ ("$REPLY" == "D") || ("$REPLY" == "d") ]]; then
-			AskForPath "$APP_NAME"
-			APP_DIR="$REPLY"
-                        break
-		fi;
-		if [[ ("$REPLY" == "I") || ("$REPLY" == "i") ]]; then
-			Konfiguruj
-			Kompiluj
-			Zainstaluj
-			Aktualizuj_ldsoconf
-		fi;
-		if [[ ("$REPLY" == "V") || ("$REPLY" == "v") ]]; then
-			Konfiguruj_voice
-			Kompiluj
-			Zainstaluj
-			Aktualizuj_ldsoconf
-		fi;
-		if [[ ("$REPLY" == "M") || ("$REPLY" == "m") ]]; then
-			Konfiguruj_Modules
-			Kompiluj
-			Zainstaluj
-			Aktualizuj_ldsoconf
-		fi;
-		if [[ ("$REPLY" == "B") || ("$REPLY" == "b") ]]; then
-			Konfiguruj_bez_libgadu
-			Kompiluj
-			Zainstaluj
-		fi;
-		if [[ ("$REPLY" == "S") || ("$REPLY" == "s") ]]; then
-			Konfiguruj_bez_ssl
-			Kompiluj
-			Zainstaluj
-			Aktualizuj_ldsoconf
-		fi;
-		if [[ ("$REPLY" == "G") || ("$REPLY" == "g") ]]; then
-			Konfiguruj_z_debug
-			Kompiluj
-			Zainstaluj
-			Aktualizuj_ldsoconf
-		fi;
-		if [[ ("$REPLY" == "U") || ("$REPLY" == "u") ]]; then
-			Odinstaluj
-		fi;
-		if [[ ("$REPLY" == "E") || ("$REPLY" == "e") ]]; then
-			exit
-		fi;
-		if [[ ("$REPLY" == "P") || ("$REPLY" == "p") ]]; then
-			mozilla http://kadu.net/doc.php
-			break
-		fi;
-	done
-done
-#####################################  KONIEC RedHat  #########################
 }
 
-function Inne()
+# make uninstall
+odinstaluj()
 {
+	$?=0
+	dialog --stdout --defaultno --backtitle "Instalator Kadu" --title "Deinstalacja" --yesno "Czy na pewno chcesz odinstalowaæ Kadu?" 6 50
+		if [ $? == "0" ]; then
+			dialog --stdout --backtitle "Instalator Kadu" --infobox "Deinstalacja... zaczekaj" 3 30
+			make uninstall > log_uninstall 2>> log_uninstall &
+			dialog --backtitle "Instalator Kadu" --ok-label "OK" --msgbox "Kadu zosta³o odinstalowane" 5 30 
+		fi;
+}
 
-function AskForPath()
+# Wybór modu³ów do kompilacji.
+# Usuwa plik .config, i zapisuje go po swojemu.
+# TODO: Statyczna kompilacja
+wybierzmoduly()
 {
-# $1 - nazwy katalogów
-# $2 - warto¶ci domy¶lne
-	echo -n "Proszê, podaæ ¶cie¶kê do $1 : "
-	read -e
-	if [ "$REPLY" == "" ]; then
-		REPLY="$2"
+	CONFIGMENUCHOICE=`dialog --stdout --backtitle "Instalator Kadu" --menu "Menu konfiguracji" 10 75 4 \
+	Statyczne	"Moduly beda kompilowane statycznie" \
+	Dynamicznie	"Moduly beda kompilowane dynamicznie" \
+	Wróæ		"Powrót do menu g³ównego"`
+	
+	if [ $CONFIGMENUCHOICE == "Statyczne" ]; then
+		statyczne
+	elif [ $CONFIGMENUCHOICE == "Dynamiczne" ]; then
+		dynamiczne
+	elif [ $CONFIGMENUCHOICE == "Wróæ" ]; then
+		mainmenu
+	fi;
+	
+}
+
+statyczne()
+{
+	rm -fr log_selectedmodule
+	dialog --separate-output --checklist "Wybierz modu³y do zainstalowania" 0 75 0 \
+    		encryption "Obs³uga szyfrowania SSL" on \
+    		speech "Obs³uga syntezatora mowy" 0 \
+    		sound "Ogolne wsparcie dla d¼wiêku" on \
+    		ext_sound "Obs³uga zewnêtrznego programu obs³ugujacego d¼wiêk" on \
+    		dsp_sound "Wsparcie DSP dla d¼wiêku" 0 \
+    		arts_sound "Wsparcie aRts! dla d¼wiêku" 0 \
+    		esd_sound "Wsparcie ESD dla d¼wiêku" 0 \
+    		nas_sound "Wsparcie Network Audio System dla d¼wiêku" 0 \
+		sms "Obs³uga wsys³ania SMS" on \
+		default_sms "Obs³uga standardowych bramek SMS" on \
+    		"echo" "Przyk³adowy modu³ Echo" 0 \
+		autoaway "Obs³uga automatycznej zmiany statusu" on \
+    		autoresponder "Przyk³adowy modu³ Autoresponder" 0 2>log_selectedmodule
+
+	rm -fr .config
+	
+	MODULY="encryption speech sound ext_sound dsp_sound arts_sound esd_sound nas_sound echo autoresponder sms default_sms autoaway"
+	for MODUL in $MODULY; do
+		if [[ `cat log_selectedmodule |grep $MODUL` != "" ]]; then
+			echo "module_$MODUL=y" >> .config
+		else
+			echo "module_$MODUL=n" >> .config
+		fi;
+	done;
+}
+dynamiczne()
+{
+	rm -fr log_selectedmodule
+	dialog --separate-output --checklist "Wybierz modu³y do zainstalowania" 0 75 0 \
+    		encryption "Obs³uga szyfrowania SSL" on \
+    		speech "Obs³uga syntezatora mowy" 0 \
+    		sound "Ogolne wsparcie dla d¼wiêku" on \
+    		ext_sound "Obs³uga zewnêtrznego programu obs³ugujacego d¼wiêk" on \
+    		dsp_sound "Wsparcie DSP dla d¼wiêku" 0 \
+    		arts_sound "Wsparcie aRts! dla d¼wiêku" 0 \
+    		esd_sound "Wsparcie ESD dla d¼wiêku" 0 \
+    		nas_sound "Wsparcie Network Audio System dla d¼wiêku" 0 \
+		sms "Obs³uga wsys³ania SMS" on \
+		default_sms "Obs³uga standardowych bramek SMS" on \
+    		"echo" "Przyk³adowy modu³ Echo" 0 \
+		autoaway "Obs³uga automatycznej zmiany statusu" on \
+    		autoresponder "Przyk³adowy modu³ Autoresponder" 0 2>log_selectedmodule
+
+	rm -fr .config
+	
+	MODULY="encryption speech sound ext_sound dsp_sound arts_sound esd_sound nas_sound echo autoresponder sms default_sms autoaway"
+	for MODUL in $MODULY; do
+		if [[ `cat log_selectedmodule |grep $MODUL` != "" ]]; then
+			echo "module_$MODUL=m" >> .config
+		else
+			echo "module_$MODUL=n" >> .config
+		fi;
+	done;
+}
+
+# Menu z opcjami uruchomienia ./configure
+dodatkoweopcje()
+{
+	rm -fr log_configureoptions
+	dialog --checklist "Wybierz modu³y do zainstalowania" 0 75 0 \
+    		"--enable-debug" 	"W³±cza tryb debug" 0 \
+    		"--disable-modules"	"Wy³±cza obs³ugê modu³ów" 0 \
+		"--disable-voice"	"Wy³±cza obs³ugê rozmów g³osowych" 0 \
+		"--with-existing-libgadu" "Linkuje z istniej±cym libgadu" 0 \
+    		 2>log_configureoptions
+}
+
+# Szuka mo¿liwych przyczyn nieudanej kompilacji (jeszcze zanim wszystko zaczniemy)
+szukajproblemow()
+{
+	# Sprawd¼, czy na pewno masz roota:
+	if [ $UID != "0" ]; then
+		dialog --stdout --defaultno --backtitle "Instalator Kadu" --title "Brak uprawnieñ administratora" --yesno "Nie pracujesz jako root\nCzy chcesz kontynuowaæ instalacjê?" 6 50
+		if [ $? == "1" ]; then
+			goodbye
+		fi;
+	fi;
+	
+	# Sprawd¼, czy czy masz ustawion± zmienn± QTDIR
+	if [ $QTDIR == $TAKIEJZMIENNEJNIEMA ]; then
+		dialog --stdout --defaultno --backtitle "Instalator Kadu" --title "Brak ustawionej zmiennej \$QTDIR" --yesno "Zmienna \$QTDIR nie jest ustawiona. Mo¿esz mieæ problemy z kompilacj±\nCzy chcesz kontynuowaæ instalacjê?" 6 75
+		if [ $? == "1" ]; then
+			goodbye
+		fi;
 	fi;
 }
 
-
-function CheckPath()
+hello()
 {
-# $1 - ¶cie¿ka
-# $2 - plik sprawdzany
-# $3 - prawid³owy string
-# $4 - nieprawid³owy string
-	if [ -e $1/$2 ]; then
-		CORRECT="$3"
-	else
-		CORRECT="$4"
+	dialog --backtitle "Instalator Kadu" --ok-label "Kontynuuj" --msgbox "Witaj w programie instalacyjnym Kadu! \
+	\nInstalator pomo¿e Ci zainstalowaæ lub uaktualniæ Kadu" 6 75
+		
+}
+
+pathmenu()
+{
+	PREFIXPATH=`dialog --stdout --backtitle "Instalator Kadu" --inputbox  "Podaj ¶cie¿kê instalacji Kadu" 7 50 "/usr/local/"`
+	#grunt to dobre escape'owanie backslashy :P
+	echo -e -n "--prefix=\\\"$PREFIXPATH\\\"" > log_prefix
+}
+
+configmenu()
+{
+	CONFIGMENUCHOICE=`dialog --stdout --backtitle "Instalator Kadu" --menu "Menu konfiguracji" 10 75 4 \
+	Modu³y		"Wybierz modu³y do instalacji" \
+	Kompilacja	"Dodatkowe opcje kompilacji" \
+	¦cie¿ka		"Ustaw docelow± ¶cie¿kê instalacji" \
+	Wróæ		"Powrót do menu g³ównego"`
+	
+	if [ $CONFIGMENUCHOICE == "Modu³y" ]; then
+		wybierzmoduly
+	elif [ $CONFIGMENUCHOICE == "Kompilacja" ]; then
+		dodatkoweopcje
+	elif [ $CONFIGMENUCHOICE == "¦cie¿ka" ]; then
+		pathmenu	
+	elif [ $CONFIGMENUCHOICE == "Wróæ" ]; then
+		mainmenu
 	fi;
+	
 }
 
-function Konfiguruj()
+
+
+mainmenu(){
+	MENUCHOICE=`dialog --stdout --no-cancel --backtitle "Instalator Kadu" --menu "Menu g³ówne" 12 65 6 \
+	Pomoc		"Przeczytaj pomoc dotycz±c± instalacji" \
+	Aktualizacja	"¦ci±gnij najnowsz± wersjê CVS" \
+	Konfiguracja	"Ustaw parametry instalacyjne Kadu" \
+	Instalacja	"Rozpocznij standardow± instalacjê" \
+	Deinstalacja	"Odinstaluj Kadu" \
+	Koniec		"Zakoñcz instalacjê"`
+	
+	if [ $MENUCHOICE == "Instalacja" ]; then
+		zainstaluj
+	elif [ $MENUCHOICE == "Aktualizacja" ]; then
+		dialog --backtitle "Instalator Kadu" --infobox "Gdy zostaniesz poproszony o has³o, naci¶nij <ENTER>" 0 0
+		cd ..
+		cvs -d:pserver:anonymous@kadu.net:/usr/src/kadu login
+		cvs -z3 -d:pserver:anonymous@kadu.net:/usr/src/kadu co kadu	
+		cd kadu
+		dialog --beep --backtitle "Instalator Kadu" --msgbox "¬ród³a Kadu zosta³y zaktualizowane!" 0 0
+	elif [ $MENUCHOICE == "Konfiguracja" ]; then
+		configmenu
+	elif [ $MENUCHOICE == "Koniec" ]; then
+		goodbye
+	elif [ $MENUCHOICE == "Deinstalacja" ]; then
+		odinstaluj
+	elif [ $MENUCHOICE == "Pomoc" ]; then 
+		pomoc
+	fi;
+	
+
+}
+
+pomoc()
 {
-	QTDIR="$QT_DIR"
-	LD_LIBRARY_PATH="$QT_DIR/lib:$LD_LIBRARY_PATH"
-	export QTDIR
-	KDEDIR="$KDE_DIR"
-	export KDEDIR
-	OPER="Configure"
-	echo "==============================================================================="
-	echo "                Uruchamiam plik configure z domy¶lnymi ustawieniami"
-	echo "==============================================================================="
-	./configure "--prefix=$APP_DIR"
-if test ! -f libgadu/Makefile; then
-        Error
+	dialog --backtitle "Instalator Kadu" --ok-label "Zrozumia³em" --msgbox  " \
+	Szczegó³owe informacje dotycz±ce wymagañ programowych i sprzêtowych \n \
+	znajduj± siê na stronie http://kadu.net/\n\n \
+	W wiêkszo¶ci przypadków nie jest konieczne dodatkowe konfigurowanie \n \
+	parametrów instalacyjnych Kadu. Warto jednak zajrzeæ do sekcji \n \
+	\"Modu³y\" i wybraæ te, które uwa¿asz za potrzebne.\n \
+	W okienku listy wyboru modu³u klikniêcie na przycisku\n \
+	\"Anuluj\" powoduje rezygnacjê z instalowania *wszystkich* modu³ów. \n\n \
+	Po wybraniu opcji \"Instaluj\" rozpoczyna siê proces kompilacji\n \
+	i instalacji Kadu. Je¶li proces instalacji siê zatrzyma z \n \
+	komunikatem o b³êdzie, przeczytaj plik \"log_install\" I sprawd¼ \n \
+	w dokumentacji czy podobny problem nie zosta³ opisany.\n \
+	Je¶li nie znajdziesz wskazówek, to przeszukaj \n \
+	forum Kadu (http://kadu.net/forum) w poszukiwaniu odpowiedzi. \
+	" 20 75
+}
+
+goodbye()
+{
+	dialog --backtitle "Instalator Kadu" --title "Koniec" --infobox "Pozdrowienia od\n   Kadu Team!" 0 0
 	exit
- fi;
-  if test ! -f Makefile; then
-        Error
+}
+
+gotowe()
+{
+	dialog --backtitle "Instalator Kadu" --title "Instalacja zakoñczona" --infobox "Instalacja zakoñczona. Je¶li Kadu siê nie zainstalowa³o, to przejrzyj plik \"log_install\"" 4 50
 	exit
- fi;
 }
 
-function Konfiguruj_bez_libgadu()
-{
-	QTDIR="$QT_DIR"
-	LD_LIBRARY_PATH="$QT_DIR/lib:$LD_LIBRARY_PATH"
-	export QTDIR
-	KDEDIR="$KDE_DIR"
-	export KDEDIR
-	OPER="Configure"
-	echo "==============================================================================="
-	echo "                Uruchamiam plik configure z opcj± linkowania z istniej±cym LibGadu"
-	echo "==============================================================================="
-	./configure "--prefix=$APP_DIR" "--with-existing-libgadu"
-  if test ! -f Makefile; then
-        Error
-	exit
- fi;
-}
-
-function Konfiguruj_voice()
-{
-	QTDIR="$QT_DIR"
-	LD_LIBRARY_PATH="$QT_DIR/lib:$LD_LIBRARY_PATH"
-	export QTDIR
-	KDEDIR="$KDE_DIR"
-	export KDEDIR
-	OPER="Configure"
-	echo "==============================================================================="
-	echo "                Uruchamiam plik configure bez rozmow glosowych"
-	echo "==============================================================================="
-	./configure "--prefix=$APP_DIR" "--disable-voice"
-if test ! -f libgadu/Makefile; then
-        Error
-	exit
- fi;
-  if test ! -f Makefile; then
-        Error
-	exit
- fi;
-}
-
-function Konfiguruj_Modules()
-{
-	QTDIR="$QT_DIR"
-	LD_LIBRARY_PATH="$QT_DIR/lib:$LD_LIBRARY_PATH"
-	export QTDIR
-	KDEDIR="$KDE_DIR"
-	export KDEDIR
-	OPER="Configure"
-	echo "==============================================================================="
-	echo "                Uruchamiam plik configure bez modulow"
-	echo "==============================================================================="
-	./configure "--prefix=$APP_DIR" "--disable-modules"
-if test ! -f libgadu/Makefile; then
-        Error
-	exit
- fi;
-  if test ! -f Makefile; then
-        Error
-	exit
- fi;
-}
-
-
-function Konfiguruj_bez_ssl()
-{
-	QTDIR="$QT_DIR"
-	LD_LIBRARY_PATH="$QT_DIR/lib:$LD_LIBRARY_PATH"
-	export QTDIR
-	KDEDIR="$KDE_DIR"
-	export KDEDIR
-	OPER="Configure"
-	echo "==============================================================================="
-	echo "                Uruchamiam plik configure z opcj± bez SSL"
-	echo "==============================================================================="
-	./configure "--prefix=$APP_DIR" "--without-openssl"
-if test ! -f libgadu/Makefile; then
-        Error
-	exit
- fi;
-  if test ! -f Makefile; then
-        Error
-	exit
- fi;
-}
-
-function Konfiguruj_z_debug()
-{
-	QTDIR="$QT_DIR"
-	LD_LIBRARY_PATH="$QT_DIR/lib:$LD_LIBRARY_PATH"
-	export QTDIR
-	KDEDIR="$KDE_DIR"
-	export KDEDIR
-	OPER="Configure"
-	echo "==============================================================================="
-	echo "                Uruchamiam plik configure z opcj± Debug"
-	echo "==============================================================================="
-	./configure "--prefix=$APP_DIR" "--enable-debug" "--enable-voice" "--enable-modules"
-
-if test ! -f libgadu/Makefile; then
-        Error
-	exit
- fi;
-  if test ! -f Makefile; then
-        Error
-	exit
- fi;
-}
-
-function Kompiluj()
-{
-	echo "==============================================================================="
-	echo "          Operacja $OPER zakoñczona powodzeniem"
-        echo "          Teraz bêdziemy wszystko kompilowaæ"
-	echo "==============================================================================="
-	OPER="Kompiluj"
-	make
-	WYK=$?
-if test "$WYK" -ne 0; then
-        Error
-	exit
- fi;
-}
-
-function Zainstaluj()
-{
-	echo "==============================================================================="
-	echo "          Operacja $OPER zakoñczona powodzeniem"
-        echo "          Teraz $APP_NAME zostanie zainstalowane"
-	echo "==============================================================================="
-	OPER="Zainstaluj"
-	make install
-	WYK=$?
- if test "$WYK" ;then
-        Gratulacje
-        exit
-        else
-        Error
-        exit
- fi;
-}
-
-function Odinstaluj()
-{
-	OPER="Odinstaluj"
-	make uninstall
-	WYK=$?
- if test "$WYK" ;then
-        Deinstal
-        exit
-        else
-        Error
-        exit
- fi;
-}
-
-function Gratulacje()
-{
-	clear
-	echo " ============================================================================="
-	echo " 		Gratulacje $APP_NAME zosta³o zainstalowane do katalogu $APP_DIR"
-	echo " ============================================================================="
-}
-
-function Deinstal()
-{
-	clear
-	echo " ============================================================================="
-	echo " 		$APP_NAME zosta³o pomy¶lnie usuniête z  katalogu $APP_DIR"
-	echo " ============================================================================="
-}
-
-function Aktualizuj_ldsoconf()
-{
-GREP_RESULT=`grep $LIB_DIR /etc/ld.so.conf`
-if [ -z "$GREP_RESULT" ]; then
-	echo >> /etc/ld.so.conf
-	echo $LIB_DIR >> /etc/ld.so.conf
-	/sbin/ldconfig
-	echo "Plik ld.so.conf zosta³ zaktualizowany"
-fi
-}
-
-function Error()
-{
-	echo -e "\a"
-	echo " ============================================================================="
-	echo " 		Wyst±pi³ b³±d operacja $OPER nie powiod³a siê"
-	echo " ============================================================================="
-}
-
-
-function ShowInfo()
-{
-
-	rm -fr /tmp/kadu_info
-	echo "                 PROGRAM BÊDZIE KORZYSTA£ Z PODANYCH ¦CIE¯EK :"  >> /tmp/kadu_info
-	CheckPath "$APP_DIR" /bin/kadu "ZAINSTALOWANE" "NIE ZAINSTALOWANE"  >> /tmp/kadu_info
-	echo "\n  * Lokalizacja $APP_NAME w katalogu: [$APP_DIR], $CORRECT"  >> /tmp/kadu_info
-	CheckPath "$LIB_DIR" /libgadu.a "ZAINSTALOWANE" "NIE ZAINSTALOWANE u¿yj opcji standardowej"  >> /tmp/kadu_info
-	echo "\n  * Lokalizacja $LIB_NAME w katalogu: [$LIB_DIR], $CORRECT"  >> /tmp/kadu_info
-	CheckPath "$QT_DIR" include/qapplication.h "ZNALEZIONA." "NIE ZNALEZIONA!"  >> /tmp/kadu_info
-	echo "\n  * Biblioteka QT wersja >=3.0.1, w katalogu: [$QT_DIR], $CORRECT"  >> /tmp/kadu_info
-	CheckPath "$KDE_DIR" include/kapp.h "ZNALEZIONE." "NIE ZNALEZIONE!"  >> /tmp/kadu_info
-	echo "\n  * KDE Desktop wersja >=3.0.0, w katalogu: [$KDE_DIR], $CORRECT"  >> /tmp/kadu_info
-	echo "\n  KDE NIE JEST WYMAGANE DO INSTALACJI NA INNYCH MENADZERACH OKEN"  >> /tmp/kadu_info
-	echo "\n\n\nMusisz miec uprawnienia administratora!!!" >> /tmp/kadu_info
-	dialog --msgbox "`cat /tmp/kadu_info`" 15 80
-	rm -fr /tmp/kadu_info
-
-        dialog --menu "MENU PROGRAMU" 0 80 0 \
-	L  "Zobaczyæ licencje GNU" \
-	Q  "Zmieniæ ¶cie¿kê do biblioteki QT" \
-	K  "Zmieniæ ¶cie¿kê do KDE Desktop" \
-	D  "Zmieniæ lokalizacje $APP_NAME" \
-	I  "Rozpocz±æ instalacjê standardow±" \
-	U  "Odinstalowaæ $APP_NAME" \
-	B  "Rozpocz±æ instalacjê bez libgadu" \
-	V  "Rozpocz±æ instalacjê bez rozmowi glosowych" \
-	S  "Rozpocz±æ instalacjê bez szyfrowania w SSL" \
-	M  "Rozpocz±æ instalacjê bez modulow"\
-	G  "Rozpocz±æ instalacjê z debug"\
-	P  "Uzyskaæ Pomoc za pomoc± programu Mozilla."\
-	E  "Zakoñczyæ program instalacyjny" 2> /tmp/mainmenu
-}
-
-function Szuk_kadu()
-{
-echo " Szukam poprzedniej instalacji $APP_NAME ..........................................."
-APP_DIR=`find /usr -path */bin/kadu -type f | sed -e 's/\/bin\/kadu$//' -e q`
-echo " ####"
-if [ "$APP_DIR" == "" ]; then
-APP_DIR=`find /usr/local -path */bin/kadu -type f | sed -e 's/\/bin\/kadu$//' -e q`
-echo " ####"
-fi;
-if [ "$APP_DIR" == "" ]; then
-APP_DIR=`find $HOME -path */bin/kadu -type f | sed -e 's/\/bin\/kadu$//' -e q`
-echo " ####"
-fi;
-if [ "$APP_DIR" == "" ]; then
-APP_DIR=`find /opt -path */bin/kadu -type f | sed -e 's/\/bin\/kadu$//' -e q`
-echo " ####"
-fi;
-if [ "$APP_DIR" == "" ]; then
-APP_DIR="$APP_DEF_DIR"
-echo  " ####"
-fi;
-}
-
-function Szuk_LibGadu()
-{
-echo " Szukam poprzedniej instalacji $LIB_NAME ........................................"
-LIB_DIR=`find /usr/lib -path */libgadu.a -type l | sed -e 's/\/libgadu.a$//' -e q`
-echo " ####"
-if [ "$LIB_DIR" == "" ]; then
-LIB_DIR=`find /usr/local -path */libgadu.a -type l | sed -e 's/\/libgadu.a$//' -e q`
-echo " ####"
-fi;
-if [ "$LIB_DIR" == "" ]; then
-LIB_DIR=`find $HOME -path */libgadu.a -type l | sed -e 's/\/libgadu.a$//' -e q`
-echo " ####"
-fi;
-if [ "$LIB_DIR" == "" ]; then
-LIB_DIR=`find /opt -path */libgadu.a -type l | sed -e 's/\/libgadu.a$//' -e q`
-echo " ####"
-fi;
-if [ "$LIB_DIR" == "" ]; then
-LIB_DIR="$LIB_DEF_DIR"
-echo " ####"
-fi;
-}
-
-
-function Szuk_QT()
-{
-echo " Szukam  QT biblioteka ta jest niezbêdna do kompilacji i dzia³ania Kadu........"
-QT_DIR=`find /usr/lib -path */include/qapplication.h -type f | sed -e 's/\/include\/qapplication.h$//' -e q`
-echo " ####"
-if [ "$QT_DIR" == "" ]; then
-QT_DIR=`find /usr -path */include/qapplication.h -type f | sed -e 's/\/include\/qapplication.h$//' -e q`
-echo " ####"
-fi;
-if [ "$QT_DIR" == "" ]; then
-QT_DIR=`find /opt -path */include/qapplication.h -type f | sed -e 's/\/include\/qapplication.h$//' -e q`
-echo " ####"
-fi;
-}
-
-function Szuk_KDE()
-{
-echo " Szukam KDE potrzebne do instalacji pod KDE ..................................."
-KDE_DIR=`find /usr/include -path */kapp.h -type f | sed -e 's/\/include\/kapp.h$//' -e q`
-echo " ####"
-if [ "$KDE_DIR" == "" ]; then
-KDE_DIR=`find /usr/lib -path */include/kapp.h -type f | sed -e 's/\/include\/kapp.h$//' -e q`
-echo " ####"
-fi;
-if [ "$KDE_DIR" == "" ]; then
-KDE_DIR=`find /opt -path */include/kapp.h -type f | sed -e 's/\/include\/kapp.h$//' -e q`
-echo " ####"
-fi;
-}
-
-#########################################################################################
-#                                                       START PROGRAMU                                                                     #
-#########################################################################################
-clear
-	echo
-		echo " =============================================================================="
-	echo
-	echo " Ten program jest wolnym oprogramowaniem. Mo¿na go rozprowadzaæ i modyfikowaæ"
-	echo " zgodnie z licencj± GNU General Public License opublikowan± przez Free Software"
-	echo " Foundation w wersji 2 z pó¼niejszymi zmianami"
-	echo
-        echo " =============================================================================="
-	echo
-		Szuk_kadu
-		Szuk_LibGadu
-		Szuk_QT
-		Szuk_KDE
-
-########################################################################################
-#					SEKCJA WYBORU MENU										#
-########################################################################################
-
-dialog --separate-output --checklist "Wybierz moduly do zainstalowania" 0 80 0 \
-    encryption "Obsluga szyfrowania SSL" on \
-    speech "Obsluga syntezatora mowy" 0 \
-    sound "Ogolne wsparcie dla dzwieku" on \
-    ext_sound "Obsluga zewnetrznego programu obslugujacego dzwiek" on \
-    dsp_sound "Wsparcie DSP dla dzwieku" 0 \
-    arts_sound "Wsparcie aRts! dla dzwieku" 0 \
-    esd_sound "Wsparcie ESD dla dzwieku" 0 \
-    nas_sound "Wsparcie Network Audio System dla dzwieku" 0 \
-    "echo" "Przykladowy modul Echo" 0 \
-    autoresponder "Przykladowy modul Autoresponder" 0 2>/tmp/selectedmodule
-
-rm -fr .config
-
-if [[ `cat /tmp/selectedmodule |grep encryption` != "" ]]; then
-	echo "module_encryption=m" >> .config
-    else
-	echo "module_encryption=n" >> .config
-fi;
-
-if [[ `cat /tmp/selectedmodule |grep speech` != "" ]]; then
-	echo "module_speech=m" >> .config
-    else
-	echo "module_speech=n" >> .config
-fi;
-
-if [[ `cat /tmp/selectedmodule |grep sound` != "" ]]; then
-	echo "module_sound=m" >> .config
-    else
-	echo "module_sound=n" >> .config
-fi;
-
-if [[ `cat /tmp/selectedmodule |grep ext_sound` != "" ]]; then
-	echo "module_ext_sound=m" >> .config
-    else
-	echo "module_ext_sound=n" >> .config
-fi;
-
-if [[ `cat /tmp/selectedmodule |grep dsp_sound` != "" ]]; then
-	echo "module_dsp_sound=m" >> .config
-    else
-	echo "module_dsp_sound=n" >> .config
-fi;
-
-if [[ `cat /tmp/selectedmodule |grep arts_sound` != "" ]]; then
-	echo "module_arts_sound=m" >> .config
-    else
-	echo "module_arts_sound=n" >> .config
-fi;
-
-if [[ `cat /tmp/selectedmodule |grep esd_sound` != "" ]]; then
-	echo "module_esd_sound=m" >> .config
-    else
-	echo "module_esd_sound=n" >> .config
-fi;
-
-if [[ `cat /tmp/selectedmodule |grep nas_sound` != "" ]]; then
-	echo "module_nas_sound=m" >> .config
-    else
-	echo "module_nas_sound=n" >> .config
-fi;
-
-
-if [[ `cat /tmp/selectedmodule |grep "echo"` != "" ]]; then
-	echo "module_echo=m" >> .config
-    else
-	echo "module_echo=n" >> .config
-fi;
-
-if [[ `cat /tmp/selectedmodule |grep autoresponder` != "" ]]; then
-	echo "module_autoresponder=m" >> .config
-    else
-	echo "module_autoresponder=n" >> .config
-fi;
-
+# URUCHOM PROGRAM
+hello
+szukajproblemow
 while [ 1 ]; do
-	ShowInfo
-	export REPLY=`cat /tmp/mainmenu`
-	clear
-    while [ 1 ]; do	
-	if [[ ("$REPLY" == "L") || ("$REPLY" == "l") ]]; then
-		clear
-		cat COPYING | more
-		break
-	fi;
-	if [[ ("$REPLY" == "Q") || ("$REPLY" == "q") ]]; then
-		AskForPath "biblioteki QT"
-		QT_DIR="$REPLY"
-		break
-	fi;
-	if [[ ("$REPLY" == "K") || ("$REPLY" == "k") ]]; then
-		AskForPath "KDE Desktop"
-		KDE_DIR="$REPLY"
-		break
-	fi;
-	if [[ ("$REPLY" == "D") || ("$REPLY" == "d") ]]; then
-		AskForPath "$APP_NAME"
-		APP_DIR="$REPLY"
-                    break
-	fi;
-	if [[ ("$REPLY" == "I") || ("$REPLY" == "i") ]]; then
-		Konfiguruj
-		Kompiluj
-		Zainstaluj
-		Aktualizuj_ldsoconf
-	fi;
-	if [[ ("$REPLY" == "V") || ("$REPLY" == "v") ]]; then
-		Konfiguruj_voice
-		Kompiluj
-		Zainstaluj
-		Aktualizuj_ldsoconf
-	fi;
-	if [[ ("$REPLY" == "M") || ("$REPLY" == "m") ]]; then
-		Konfiguruj_Modules
-		Kompiluj
-		Zainstaluj
-		Aktualizuj_ldsoconf
-	fi;
-	if [[ ("$REPLY" == "B") || ("$REPLY" == "b") ]]; then
-		Konfiguruj_bez_libgadu
-		Kompiluj
-		Zainstaluj
-	fi;
-	if [[ ("$REPLY" == "S") || ("$REPLY" == "s") ]]; then
-		Konfiguruj_bez_ssl
-		Kompiluj
-		Zainstaluj
-		Aktualizuj_ldsoconf
-	fi;
-	if [[ ("$REPLY" == "G") || ("$REPLY" == "g") ]]; then
-		Konfiguruj_z_debug
-		Kompiluj
-		Zainstaluj
-		Aktualizuj_ldsoconf
-	fi;
-	if [[ ("$REPLY" == "U") || ("$REPLY" == "u") ]]; then
-		Odinstaluj
-	fi;
-	if [[ ("$REPLY" == "E") || ("$REPLY" == "e") ]]; then
-		exit
-	fi;
-	if [[ ("$REPLY" == "P") || ("$REPLY" == "p") ]]; then
-		mozilla http://kadu.net/doc.php
-		break
-	fi;
-	exit
-    done
-done
+	mainmenu
+done;
 
-#################################    KONIEC Inne  ####################################
-}
 
-####################################
-#      DEKLARACJA ZMIENNYCH        #
-####################################
-APP_NAME=KADU
-APP_DEF_DIR=/usr
-LIB_NAME=LibGadu
-LIB_DEF_DIR=/usr/lib
-
-while [ 1 ]; do
-	Wyb_Dystr
-	if [[ ( `cat /tmp/dist_sel` == "R") ]]; then
-		rm -fr /tmp/dist_sel
-		RedHat
-	fi;
-	if [[ ( `cat /tmp/dist_sel` == "E") ]]; then
-		rm -fr /tmp/dist_sel
-		exit
-	fi;
-	if [[ ( `cat /tmp/dist_sel` == "I") ]]; then
-		rm -fr /tmp/dist_sel
-		Inne
-	fi;
-done

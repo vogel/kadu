@@ -228,6 +228,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * estetyczna poprawka okna transferu pliku (michal)
 * zunifikowany sposób inicjowania i rozwi±zywania zale¿no¶ci dla
   modu³ów statycznych i zewnêtrznych, ³adowalnych (adrian)
+* Skrypt kaduinstaller.sh przemianowany na Instaluj dodane menu
+  wyboru metody kompilacji modulow (Ron_K)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
