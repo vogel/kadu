@@ -1674,7 +1674,7 @@ QValueList<ChatMessage*>& Chat::chatMessages()
 	return ChatMessages;
 }
 
-const QString& Chat::getTitle()
+const QString& Chat::title()
 {
 	return title_buffer;
 }

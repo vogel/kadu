@@ -303,7 +303,7 @@ class Chat : public QWidget
 		/**
 			Zwraca aktualny tytu³ okna
 		**/
-		const QString& getTitle();
+		const QString& title();
 
 	public slots:
 		void changeAppearance();
