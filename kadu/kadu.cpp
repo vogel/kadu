@@ -1647,7 +1647,7 @@ void DockWidget::mousePressEvent(QMouseEvent * e) {
 					j = kadu->openChat(elem.uins);
 					chats[j].ptr->checkPresence(elem.uins,
 						elem.msg, elem.time);	    
-					deltePendingMessage(i);
+					deletePendingMessage(i);
 					stop = true;
 					}		
 				else {

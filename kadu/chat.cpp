@@ -335,12 +335,12 @@ void Chat::timerReset(void) {
 }	
 
 /* invoked from outside when new message arrives, this is the window to the world */
-int Chat::checkPresence(UinsList senders, QString *msg, time_t time) {
+int Chat::checkPresence(UinsList senders, QString &msg, time_t time) {
 	kadu->autoaway->stop();
 	kadu->autoaway->start(config.autoawaytime * 1000, TRUE);
 
 	QString toadd;
-	QString editext = convertCharacters(*msg);
+	QString editext = convertCharacters(msg);
 	toadd.append("<TABLE width=\"100%\"><TR><TD bgcolor=\"#F0F0F0\"><B>");
 	toadd.append(userlist.byUin(senders[0]).altnick);
 	toadd.append(" ");

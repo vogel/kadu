@@ -79,7 +79,7 @@ rMessage::rMessage(const QString & nick, int msgclass, UinsList uins, QString &m
 			if (uins[0] == config.uin)
 				msgclasse->setText(i18n("System"));
 			else
-				if (pending[i].msgclass == GG_CLASS_OFFLINE)
+				if (msgclass == GG_CLASS_OFFLINE)
 					msgclasse->setText(i18n("Queued"));
 				else
 					msgclasse->setText(i18n("Unknown"));		
@@ -100,7 +100,7 @@ rMessage::rMessage(const QString & nick, int msgclass, UinsList uins, QString &m
 	body->setReadOnly(true);
 	body->setWordWrap(QMultiLineEdit::WidgetWidth);
 
-	fprintf(stderr,"KK rMessage::rMessage(): message in slot %d\n", i);
+	fprintf(stderr,"KK rMessage::rMessage(): message in slot\n");
 
 //	deletePendingMessage(i);
 

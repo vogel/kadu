@@ -53,7 +53,7 @@ class Chat : public QDialog {
 		void setTitle(void);
 
 		KTextBrowser *body;
-		int checkPresence(UinsList, QString *, time_t);
+		int checkPresence(UinsList, QString &, time_t);
 		void addEmoticon(QString);
 		CustomInput *edit;
 		QHBox *buttontray;

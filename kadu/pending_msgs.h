@@ -3,12 +3,12 @@
 #define PENDING_MSGS_H
 
 #include <qvaluelist.h>
+#include "misc.h"
 #include "../libgadu/lib/libgadu.h"
 
 class PendingMsgs
 {
 	public:
-		typedef QValueList<uin_t> UinsList;
 		struct Element
 		{
 			UinsList uins;
@@ -27,12 +27,9 @@ class PendingMsgs
 		void deleteMsg(int index);
 		bool pendingMsgs(uin_t uin);
 		bool pendingMsgs();
-		Element& accessNextMsg(uin_t uin);
-		Element& accessNextMsg();
-		void deleteNextMsg(uin_t uin);
-		void deleteNextMsg();
-		void addMsg(uin_t sender,QString msg,int msgclass,time_t time);
-		void addUin(uin_t uin);
+		int count();
+		Element &operator[](int index);
+		void addMsg(UinsList uins, QString msg, int msgclass, time_t time);
 		bool loadFromFile();
 };
 

@@ -27,53 +27,24 @@ bool PendingMsgs::pendingMsgs()
 	return (msgs.size()>0);
 };
 
-PendingMsgs::Element& PendingMsgs::accessNextMsg(uin_t uin)
+int PendingMsgs::count()
 {
-	for(PendingMsgsList::iterator i=msgs.begin(); i!=msgs.end(); i++)
-		if((*i).uins[0]==uin)
-			return (*i);
-	fprintf(stderr, "KK PendingMsgs::accessNextMsg(): Panic!\n");
-	// Kadu Panic :) What we should do here???
+	return msgs.count();
 };
 
-PendingMsgs::Element& PendingMsgs::accessNextMsg()
+PendingMsgs::Element &PendingMsgs::operator[](int index)
 {
-	if(msgs.size()>0)
-		return (*msgs.begin());
-	fprintf(stderr, "KK PendingMsgs::accessNextMsg(): Panic!\n");
-	// Kadu Panic :) What we should do here???
+	return msgs[index];
 };
 
-void PendingMsgs::deleteNextMsg(uin_t uin)
-{
-	for(PendingMsgsList::iterator i=msgs.begin(); i!=msgs.end(); i++)
-		if((*i).uins[0]==uin)
-		{
-			msgs.remove(i);
-			break;
-		};
-};
-
-void PendingMsgs::deleteNextMsg()
-{
-	if(msgs.size()>0)
-		msgs.remove(msgs.begin());
-};
-
-void PendingMsgs::addMsg(uin_t sender,QString msg,int msgclass,time_t time)
+void PendingMsgs::addMsg(UinsList uins, QString msg, int msgclass, time_t time)
 {
 	Element e;
-	e.uins.append(sender);
-	e.msg=msg;
-	e.msgclass=msgclass;
-	e.time=time;
+	e.uins = uins;
+	e.msg = msg;
+	e.msgclass = msgclass;
+	e.time = time;
 	msgs.append(e);
-};
-
-void PendingMsgs::addUin(uin_t uin)
-{
-	if(msgs.size()>0)
-		(*msgs.end()).uins.append(uin);
 };
 
 void PendingMsgs::saveToFile()

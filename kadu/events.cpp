@@ -92,7 +92,7 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 
 	if (msgclass == GG_CLASS_CHAT && i < chats.count()) {
 		tmp = __c2q((const char *)msg);
-		chats[i].ptr->checkPresence(senders, &tmp, time);
+		chats[i].ptr->checkPresence(senders, tmp, time);
 		chats[i].ptr->playChatSound();
 
 		return;
@@ -116,9 +116,12 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 		kadu->setFocus();
 		}
 
+	PendingMsgs::Element elem;
+	
 	if (senders[0] == config.uin) {
 		rMessage *rmsg;
-		rmsg = new rMessage("System", i);
+		elem = pending[i];
+		rmsg = new rMessage("System", elem.msgclass, elem.uins, elem.msg);
 		rmsg->init();
 		rmsg->show();
 		}

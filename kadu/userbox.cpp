@@ -138,7 +138,7 @@ void UserBox::refresh()
 	for(int i=0; i<a_users.count(); i++)
 	{
 		UserListElement& user=userlist.byUin(a_users[i]);
-		if (ifPendingMessages(user.uin))
+		if (pending.pendingMsgs(user.uin))
 		{
 	    		insertItem(QPixmap((const char **)gg_msg_xpm), user.altnick);
 		}
@@ -165,7 +165,7 @@ void UserBox::refresh()
 	for(int i=0; i<i_users.count(); i++)
 	{
 		UserListElement& user=userlist.byUin(i_users[i]);
-		if (ifPendingMessages(user.uin))
+		if (pending.pendingMsgs(user.uin))
 		{
 	    		insertItem(QPixmap((const char **)gg_msg_xpm), user.altnick);
 		}
@@ -186,7 +186,7 @@ void UserBox::refresh()
 	for(int i=0; i<n_users.count(); i++)
 	{
 		UserListElement& user=userlist.byUin(n_users[i]);
-		if (ifPendingMessages(user.uin))
+		if (pending.pendingMsgs(user.uin))
 		{
 	    		insertItem(QPixmap((const char **)gg_msg_xpm), user.altnick);
 		}
