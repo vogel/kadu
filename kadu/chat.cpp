@@ -370,6 +370,7 @@ void Chat::hyperlinkClicked(const QString &link) {
 			}
 		cmd = QString(config.webbrowser).arg(link);
 		}
+	fprintf(stderr, "KK Chat::hyperlinkClicked(): %s\n", cmd.latin1());
 	args = QStringList::split(" ", cmd);
 	browser = new QProcess(this);
 	browser->setArguments(args);
@@ -377,6 +378,7 @@ void Chat::hyperlinkClicked(const QString &link) {
 		QMessageBox::critical(this, i18n("WWW error"),
 			i18n("Could not spawn Web browser process. Check if the Web browser is functional"));
 //	QObject::connect(smsProcess, SIGNAL(processExited()), this, SLOT(smsSigHandler()));
+	delete browser;
 }
 
 void Chat::formatMessage(bool me, QString &altnick, QString &msg, const char *time, QString &toadd) {
