@@ -77,15 +77,19 @@ PersonalInfoDialog::PersonalInfoDialog(QDialog *parent, const char *name)
 	GridLayout->addMultiCellWidget(CancelButton,3,3,3,4);	
 	connect(CancelButton, SIGNAL(clicked()), this, SLOT(reject()));
 
-	http = gg_search(gg_search_request_mode_3(config.uin,FALSE,0),TRUE);
-	if (http == NULL) {
-		QMessageBox::critical(this,i18n("Error"),i18n("Public directory read failed"));
-		return;	
-		}
-	
-	setEnabled(false);
-	State = READING;
-	createSocketNotifiers();
+	SocketReadNotifier = SocketWriteNotifier = NULL;
+	http = NULL;
+
+	struct SearchIdStruct sid;
+	gg_search50_t req;
+	req = gg_search50_new();
+	gg_search50_add(req, GG_SEARCH50_UIN, (const char *)QString::number(config.uin).latin1());
+	gg_search50_add(req, GG_SEARCH50_START, "0");
+	sid.ptr = this;
+	sid.seq = gg_search50(sess, req);
+	sid.type = DIALOG_PERSONAL;
+	SearchList.append(sid);
+	gg_search50_free(req);
 };
 
 void PersonalInfoDialog::OkButtonClicked()
@@ -101,8 +105,8 @@ void PersonalInfoDialog::OkButtonClicked()
 	iso_to_cp((unsigned char *)city);
 
 	struct gg_change_info_request* request=
-		gg_change_info_request_new(firstname,lastname,
-			nick,"",BirthyearEdit->text().toUInt(),
+		gg_change_info_request_new(firstname, lastname,
+			nick, "", BirthyearEdit->text().toUInt(),
 			GenderCombo->currentItem(),city);
 	if(request==NULL)
 	{
@@ -126,7 +130,6 @@ void PersonalInfoDialog::OkButtonClicked()
 	delete lastname;
 	delete city;
 
-	State=WRITTING;
 	createSocketNotifiers();		
 };
 
@@ -147,23 +150,13 @@ void PersonalInfoDialog::socketEvent()
 	fprintf(stderr,"PersonalInfoDialog::socketEvent()\n");
 
 	int res;
-	if(State == WRITTING)
-		res = gg_pubdir_watch_fd(http);
-	else
-		res = gg_search_watch_fd(http);
+	res = gg_pubdir_watch_fd(http);
 		
 	if(res<0) {
 		setEnabled(true);
 		deleteSocketNotifiers();
-		if (State == WRITTING) {
-			QMessageBox::critical(this,i18n("Error"),i18n("Public directory write failed"));
-			gg_pubdir_free(http);
-			}
-		else {
-			QMessageBox::critical(this,i18n("Error"),i18n("Public directory read failed"));		
-			gg_free_search(http);
-			}
-		State = READY;
+		QMessageBox::critical(this,i18n("Error"),i18n("Public directory write failed"));
+		gg_pubdir_free(http);
 		return;
 		}
 
@@ -176,30 +169,16 @@ void PersonalInfoDialog::socketEvent()
 	if (http->state == GG_STATE_ERROR) {
 		setEnabled(true);
 		deleteSocketNotifiers();
-		if (State == WRITTING) {
-			QMessageBox::critical(this,i18n("Error"),i18n("Public directory write failed"));
-			gg_pubdir_free(http);
-			}
-		else {
-			QMessageBox::critical(this,i18n("Error"),i18n("Public directory read failed"));		
-			gg_free_search(http);
-			}
-		State = READY;
+		QMessageBox::critical(this,i18n("Error"),i18n("Public directory write failed"));
+		gg_pubdir_free(http);
 		return;
 		}
 
 	if (http->state == GG_STATE_DONE) {
 		setEnabled(true);
 		deleteSocketNotifiers();
-		if (State == WRITTING) {
-			gg_pubdir_free(http);
-			accept();
-			}
-		else {
-			fillFields();
-			gg_free_search(http);
-			}	
-		State = READY;
+		gg_pubdir_free(http);
+		accept();
 		return;
 		}
 }
@@ -217,44 +196,56 @@ void PersonalInfoDialog::createSocketNotifiers()
 
 void PersonalInfoDialog::deleteSocketNotifiers()
 {
-	SocketReadNotifier->setEnabled(false);
-	delete SocketReadNotifier;
-	SocketWriteNotifier->setEnabled(false);
-	delete SocketWriteNotifier;
+	if (SocketReadNotifier) {
+		SocketReadNotifier->setEnabled(false);
+		delete SocketReadNotifier;
+		}
+	if (SocketWriteNotifier) {
+		SocketWriteNotifier->setEnabled(false);
+		delete SocketWriteNotifier;
+		}
 }
 
-void PersonalInfoDialog::fillFields()
+void PersonalInfoDialog::fillFields(gg_search50_t res)
 {
-	struct gg_search_result* search_res=((struct gg_search*)http->data)->results;
+	int count;
+	const char *uin, *first, *nick, *born, *city, *status;
 
-	if (search_res) {
-		cp_to_iso((unsigned char *)search_res->nickname);
-		cp_to_iso((unsigned char *)search_res->first_name);
-		cp_to_iso((unsigned char *)search_res->last_name);
-		cp_to_iso((unsigned char *)search_res->city);
+	count = gg_search50_count(res);
+	if (count < 1)
+		return;
 
-		NicknameEdit->setText(__c2q(search_res->nickname));
-		NameEdit->setText(__c2q(search_res->first_name));
-		SurnameEdit->setText(__c2q(search_res->last_name));
-		GenderCombo->setCurrentItem(search_res->gender);
-		QCString BirthyearString;
-		BirthyearString.setNum(search_res->born);
-		BirthyearEdit->setText(BirthyearString);
-		CityEdit->setText(__c2q(search_res->city));
-		}
+	fprintf(stderr, "KK PersonalInfoDialog::fillFields(): Done searching. count=%d\n", count);
+
+	uin = gg_search50_get(res, 0, GG_SEARCH50_UIN);
+	first = gg_search50_get(res, 0, GG_SEARCH50_FIRSTNAME);
+	nick = gg_search50_get(res, 0, GG_SEARCH50_NICKNAME);
+	born = gg_search50_get(res, 0, GG_SEARCH50_BIRTHYEAR);
+	city = gg_search50_get(res, 0, GG_SEARCH50_CITY);
+	if (first)
+		cp_to_iso((unsigned char *)first);
+	if (nick)
+		cp_to_iso((unsigned char *)nick);
+	if (city)
+		cp_to_iso((unsigned char *)city);
+
+	NicknameEdit->setText(__c2q(nick));
+	NameEdit->setText(__c2q(first));
+//	SurnameEdit->setText(__c2q(search_res->last_name));
+//	GenderCombo->setCurrentItem(_res->gender);
+	BirthyearEdit->setText(__c2q(born));
+	CityEdit->setText(__c2q(city));
+
+	deleteSearchIdStruct(this);
+	setEnabled(true);
 }
 
 void PersonalInfoDialog::closeEvent(QCloseEvent * e)
 {
-	if (State == WRITTING) {
+	if (http)
 		gg_pubdir_free(http);
-		deleteSocketNotifiers();
-		}
-	else
-		if (State == READING) {
-			gg_free_search(http);
-			deleteSocketNotifiers();
-			}
+	deleteSocketNotifiers();
+	deleteSearchIdStruct(this);
 	QWidget::closeEvent(e);
 }
 

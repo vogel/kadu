@@ -18,6 +18,7 @@
 * usprawnienia w oknie poszukiwañ u¿ytkowników:
   - szukanie u¿ytkowników najpierw powoduje wyczyszczenie listy u¿ytkowników,
   - szukanie kolejnych u¿ytkowników nie powoduje dodawania do listy ju¿ wcze¶niej znalezionych.
+* dane osobiste: pobieranie o nas informacji wykorzystuje wyszukiwanie zgodne z GG 5.0
 
 +++ wersja 0.3.3-pre3
 * CTRL + klik dowolnego przycisku myszki na ikonce w tray'u powoduje

@@ -34,7 +34,6 @@ class PersonalInfoDialog : public QDialog
 		void socketEvent();
 		void createSocketNotifiers();
 		void deleteSocketNotifiers();
-		void fillFields();
 
 	private slots:
 		void OkButtonClicked();
@@ -46,6 +45,7 @@ class PersonalInfoDialog : public QDialog
 
 	public:
 		PersonalInfoDialog(QDialog *parent=0, const char *name=0);
+		void fillFields(gg_search50_t res);
 };
 
 #endif

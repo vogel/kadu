@@ -13,6 +13,8 @@
 #include "pixmaps.h"
 #include "kadu.h"
 
+QValueList<struct SearchIdStruct> SearchList;
+
 QString ggPath(QString subpath)
 {
 	QString path;
@@ -107,6 +109,14 @@ QString pwHash(const QString tekst) {
 		nowytekst[ile] = znak;
 		}
 	return nowytekst;
+}
+
+void deleteSearchIdStruct(QDialog *ptr) {
+	int i = 0;
+	while (i < SearchList.count() && SearchList[i].ptr != ptr)
+		i++;
+	if (i < SearchList.count())
+		SearchList.remove(SearchList.at(i));
 }
 
 bool UinsList::equals(UinsList &uins) {

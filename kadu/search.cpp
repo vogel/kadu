@@ -23,8 +23,6 @@
 #include "message.h"
 //
 
-QValueList<struct SearchIdStruct> SearchList;
-
 SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchUin)
 : QDialog (parent, name, FALSE, Qt::WDestructiveClose) {
 
@@ -292,8 +290,9 @@ void SearchDialog::nextSearch(void) {
 	fprintf(stderr, "KK SearchDialog::doSearch(): let the search begin\n");
 
 	struct SearchIdStruct sid;
-	sid.sd = this;
+	sid.ptr = this;
 	sid.seq = gg_search50(sess, req);
+	sid.type = DIALOG_SEARCH;
 	SearchList.append(sid);
 	gg_search50_free(req);
 }
@@ -350,21 +349,13 @@ void SearchDialog::showResults(gg_search50_t res) {
 	else
 		selectionChanged(results->selectedItem());
 
-	deleteSearchIdStruct();
+	deleteSearchIdStruct(this);
 	b_sendbtn->setEnabled(true);
 	b_nextbtn->setEnabled(true);
 }
 
-void SearchDialog::deleteSearchIdStruct() {
-	int i = 0;
-	while (i < SearchList.count() && SearchList[i].sd != this)
-		i++;
-	if (i < SearchList.count())
-		SearchList.remove(SearchList.at(i));
-}
-
 void SearchDialog::closeEvent(QCloseEvent * e) {
-	deleteSearchIdStruct();
+	deleteSearchIdStruct(this);
 	QWidget::closeEvent(e);
 }
 

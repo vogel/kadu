@@ -19,6 +19,20 @@ void cp_to_iso(unsigned char *);
 void iso_to_cp(unsigned char *);
 char *timestamp(time_t = 0);
 QString pwHash(const QString tekst);
+void deleteSearchIdStruct(QDialog *ptr);
+
+enum {
+	DIALOG_SEARCH,
+	DIALOG_PERSONAL
+};
+
+struct SearchIdStruct {
+	QDialog *ptr;
+	uint32_t seq;
+	int type;
+};
+
+extern QValueList<struct SearchIdStruct> SearchList;
 
 class UinsList : public QValueList<uin_t>
 {

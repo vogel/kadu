@@ -1616,7 +1616,14 @@ void Kadu::eventHandler(int state) {
 		while (i < SearchList.count() && SearchList[i].seq != seq)
 			i++;
 		if (i < SearchList.count())
-			SearchList[i].sd->showResults(res);
+			switch (SearchList[i].type) {
+				case DIALOG_SEARCH:
+					((SearchDialog *)SearchList[i].ptr)->showResults(res);
+					break;
+				case DIALOG_PERSONAL:
+					((PersonalInfoDialog *)SearchList[i].ptr)->fillFields(res);
+					break;
+				}
 		}
 
 	if (e->type == GG_EVENT_NOTIFY_DESCR || e->type == GG_EVENT_NOTIFY) {

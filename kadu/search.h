@@ -21,13 +21,6 @@
 #include <qlabel.h>
 #include <qvaluelist.h>
 
-class SearchDialog;
-
-struct SearchIdStruct {
-	SearchDialog *sd;
-	uint32_t seq;
-};
-	
 class SearchDialog : public QDialog {
 	Q_OBJECT
 	public:
@@ -67,7 +60,6 @@ class SearchDialog : public QDialog {
 	public slots:
 		void firstSearch(void);
 		void nextSearch(void);
-		void deleteSearchIdStruct(void);
 		void showResults(gg_search50_t res);
 		void selectionChanged(QListViewItem *);
 
@@ -75,7 +67,5 @@ class SearchDialog : public QDialog {
 		void closeEvent(QCloseEvent * e);
 
 };
-
-extern QValueList<struct SearchIdStruct> SearchList;
 
 #endif
