@@ -65,6 +65,7 @@ UserListElement::UserListElement(UserList* parent)
 	OfflineTo = false;
 	Notify = true;
 	Anonymous = false;
+	Uin = 0;
 	// TODO: zuniwersalizowaæ
 	Stat = new GaduStatus();
 	kdebugf2();
@@ -91,6 +92,7 @@ UserListElement::UserListElement()
 	OfflineTo = false;
 	Notify = true;
 	Anonymous = false;
+	Uin = 0;
 	// TODO: zuniwersalizowaæ
 	Stat = new GaduStatus();
 	kdebugf2();
