@@ -2,6 +2,7 @@
 #include <qfile.h>
 #include "pending_msgs.h"
 #include "misc.h"
+#include "debug.h"
 
 PendingMsgs::PendingMsgs()
 {
@@ -53,7 +54,7 @@ void PendingMsgs::writeToFile()
 	QFile f(path);
 	if(!f.open(IO_WriteOnly))
 	{
-		fprintf(stderr,"KK PendingMsgs::saveToFile(): Cannot open file kadu.msgs\n");
+		kdebug("PendingMsgs::saveToFile(): Cannot open file kadu.msgs\n");
 		return;
 	};
 	// Najpierw zapisujemy ilosc wiadomosci
@@ -87,13 +88,13 @@ bool PendingMsgs::loadFromFile()
 	QString path = ggPath("kadu.msgs");
 	QFile f(path);
 	if (!f.open(IO_ReadOnly)) {
-		fprintf(stderr,"KK PendingMsgs::loadFromFile(): Cannot open file kadu.msgs\n");
+		kdebug("PendingMsgs::loadFromFile(): Cannot open file kadu.msgs\n");
 		return false;
 		}
 	// Najpierw wczytujemy ilosc wiadomosci
 	int msgs_size;
 	if (f.readBlock((char*)&msgs_size,sizeof(int)) <= 0) {
-		fprintf(stderr,"KK PendingMsgs::loadFromFile(): kadu.msgs is corrupted\n");
+		kdebug("PendingMsgs::loadFromFile(): kadu.msgs is corrupted\n");
 		return false;
 		}
 	// Teraz w petli dla kazdej wiadomosci

@@ -5,16 +5,17 @@
 #include "misc.h"
 #include "kadu.h"
 #include "config.h"
+#include "debug.h"
 #include "password.h"
 
 remindPassword::remindPassword() {
-	fprintf(stderr, "KK remindPassword::remindPassword()\n");
+	kdebug("remindPassword::remindPassword()\n");
 	snr = snw = NULL;
 	h = NULL;
 }
 
 remindPassword::~remindPassword() {
-	fprintf(stderr, "KK remindPassword::~remindPassword()\n");
+	kdebug("remindPassword::~remindPassword()\n");
 	
 	deleteSocketNotifiers();
 	if (h) {
@@ -24,7 +25,7 @@ remindPassword::~remindPassword() {
 }
 
 void remindPassword::start() {
-	fprintf(stderr, "KK remindPassword::start()\n");
+	kdebug("remindPassword::start()\n");
 	if (!(h = gg_remind_passwd(config.uin, 1))) {
 		showErrorMessageBox();
 		deleteLater();
@@ -35,13 +36,13 @@ void remindPassword::start() {
 }
 
 void remindPassword::showErrorMessageBox() {
-	fprintf(stderr, "KK remindPassword::showErrorMessageBox()\n");
+	kdebug("remindPassword::showErrorMessageBox()\n");
 	QMessageBox::information(0, i18n("Remind password"),
 		i18n("Error during remind password"), i18n("OK"), 0, 0, 1);
 }
 
 void remindPassword::createSocketNotifiers() {
-	fprintf(stderr, "KK remindPassword::createSocketNotifiers()\n");
+	kdebug("remindPassword::createSocketNotifiers()\n");
 
 	snr = new QSocketNotifier(h->fd, QSocketNotifier::Read, kadu);
 	QObject::connect(snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
@@ -51,7 +52,7 @@ void remindPassword::createSocketNotifiers() {
 }
 
 void remindPassword::deleteSocketNotifiers() {
-	fprintf(stderr, "KK remindPassword::deleteSocketNotifiers()\n");
+	kdebug("remindPassword::deleteSocketNotifiers()\n");
 	if (snr) {
 		snr->setEnabled(false);
 		snr->deleteLater();
@@ -65,23 +66,23 @@ void remindPassword::deleteSocketNotifiers() {
 }
 
 void remindPassword::dataReceived() {
-	fprintf(stderr, "KK remindPassword::dataReceived()\n");
+	kdebug("remindPassword::dataReceived()\n");
 	if (h->check & GG_CHECK_READ)
 		socketEvent();
 }
 
 void remindPassword::dataSent() {
-	fprintf(stderr, "KK remindPassword::dataSent()\n");
+	kdebug("remindPassword::dataSent()\n");
 	snw->setEnabled(false);
 	if (h->check & GG_CHECK_WRITE)
 		socketEvent();
 }
 
 void remindPassword::socketEvent() {
-	fprintf(stderr, "KK remindPassword::socketEvent()\n");
+	kdebug("remindPassword::socketEvent()\n");
 	if (gg_remind_passwd_watch_fd(h) == -1) {
 		deleteSocketNotifiers();
-		fprintf(stderr, "KK remindPassword::socketEvent(): error reminding password!\n");
+		kdebug("remindPassword::socketEvent(): error reminding password!\n");
 		showErrorMessageBox();
 		deleteLater();
 		return;
@@ -89,23 +90,23 @@ void remindPassword::socketEvent() {
 	struct gg_pubdir *p = (struct gg_pubdir *)h->data;
 	switch (h->state) {
 		case GG_STATE_CONNECTING:
-			fprintf(stderr, "KK remindPassword::socketEvent(): changing QSocketNotifiers.\n");
+			kdebug("remindPassword::socketEvent(): changing QSocketNotifiers.\n");
 			deleteSocketNotifiers();
 			createSocketNotifiers();
 			if (h->check & GG_CHECK_WRITE)
 				snw->setEnabled(true);
 			break;
 		case GG_STATE_ERROR:
-			fprintf(stderr, "KK remindPassword::socketEvent(): error reminding password!\n");
+			kdebug("remindPassword::socketEvent(): error reminding password!\n");
 			deleteSocketNotifiers();
 			showErrorMessageBox();
 			deleteLater();
 			break;
 		case GG_STATE_DONE:
-			fprintf(stderr, "KK remindPassword::socketEvent(): success!\n");
+			kdebug("remindPassword::socketEvent(): success!\n");
 			deleteSocketNotifiers();
 			if (!p->success) {
-				fprintf(stderr, "KK remindPassword::socketEvent(): error reminding password!\n");
+				kdebug("remindPassword::socketEvent(): error reminding password!\n");
 				showErrorMessageBox();
 				}
 			deleteLater();
@@ -117,7 +118,7 @@ void remindPassword::socketEvent() {
 }
 
 changePassword::changePassword(QDialog *parent, const char *name) : QDialog(parent, name, FALSE, Qt::WDestructiveClose) {
-	fprintf(stderr, "KK changePassword::changePassword()\n");
+	kdebug("changePassword::changePassword()\n");
 	snr = snw = NULL;
 	h = NULL;
 
@@ -171,7 +172,7 @@ changePassword::changePassword(QDialog *parent, const char *name) : QDialog(pare
 }
 
 void changePassword::closeEvent(QCloseEvent *e) {
-	fprintf(stderr, "KK changePassword::closeEvent()\n");
+	kdebug("changePassword::closeEvent()\n");
 	
 	deleteSocketNotifiers();
 	if (h) {
@@ -182,7 +183,7 @@ void changePassword::closeEvent(QCloseEvent *e) {
 }
 
 void changePassword::start() {
-	fprintf(stderr, "KK changePassword::start()\n");
+	kdebug("changePassword::start()\n");
 	if (!actpwd->text().length() || !actemail->text().length() || !newpwd->text().length() ||
 		newpwd->text() != newpwd2->text() || !newemail->text().length()) {
 		status->setText(i18n("Bad data"));
@@ -198,7 +199,7 @@ void changePassword::start() {
 }
 
 void changePassword::createSocketNotifiers() {
-	fprintf(stderr, "KK changePassword::createSocketNotifiers()\n");
+	kdebug("changePassword::createSocketNotifiers()\n");
 
 	snr = new QSocketNotifier(h->fd, QSocketNotifier::Read, kadu);
 	QObject::connect(snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
@@ -208,7 +209,7 @@ void changePassword::createSocketNotifiers() {
 }
 
 void changePassword::deleteSocketNotifiers() {
-	fprintf(stderr, "KK changePassword::deleteSocketNotifiers()\n");
+	kdebug("changePassword::deleteSocketNotifiers()\n");
 	if (snr) {
 		snr->setEnabled(false);
 		snr->deleteLater();
@@ -222,25 +223,25 @@ void changePassword::deleteSocketNotifiers() {
 }
 
 void changePassword::dataReceived() {
-	fprintf(stderr, "KK changePassword::dataReceived()\n");
+	kdebug("changePassword::dataReceived()\n");
 	if (h->check & GG_CHECK_READ)
 		socketEvent();
 }
 
 void changePassword::dataSent() {
-	fprintf(stderr, "KK changePassword::dataSent()\n");
+	kdebug("changePassword::dataSent()\n");
 	snw->setEnabled(false);
 	if (h->check & GG_CHECK_WRITE)
 		socketEvent();
 }
 
 void changePassword::socketEvent() {
-	fprintf(stderr, "KK changePassword::socketEvent()\n");
+	kdebug("changePassword::socketEvent()\n");
 	if (gg_remind_passwd_watch_fd(h) == -1) {
 		deleteSocketNotifiers();
 		gg_change_passwd_free(h);
 		h = NULL;
-		fprintf(stderr, "KK changePassword::socketEvent(): error changing password!\n");
+		kdebug("changePassword::socketEvent(): error changing password!\n");
 		status->setText(i18n("Error"));
 		setEnabled(true);
 		return;
@@ -248,14 +249,14 @@ void changePassword::socketEvent() {
 	struct gg_pubdir *p = (struct gg_pubdir *)h->data;
 	switch (h->state) {
 		case GG_STATE_CONNECTING:
-			fprintf(stderr, "KK changePassword::socketEvent(): changing QSocketNotifiers.\n");
+			kdebug("changePassword::socketEvent(): changing QSocketNotifiers.\n");
 			deleteSocketNotifiers();
 			createSocketNotifiers();
 			if (h->check & GG_CHECK_WRITE)
 				snw->setEnabled(true);
 			break;
 		case GG_STATE_ERROR:
-			fprintf(stderr, "KK changePassword::socketEvent(): error changing password!\n");
+			kdebug("changePassword::socketEvent(): error changing password!\n");
 			deleteSocketNotifiers();
 			gg_change_passwd_free(h);
 			h = NULL;
@@ -263,12 +264,12 @@ void changePassword::socketEvent() {
 			setEnabled(true);
 			break;
 		case GG_STATE_DONE:
-			fprintf(stderr, "KK changePassword::socketEvent(): success!\n");
+			kdebug("changePassword::socketEvent(): success!\n");
 			deleteSocketNotifiers();
 			if (!p->success) {
 				gg_change_passwd_free(h);
 				h = NULL;
-				fprintf(stderr, "KK changePassword::socketEvent(): error changing password!\n");
+				kdebug("changePassword::socketEvent(): error changing password!\n");
 				status->setText(i18n("Error"));
 				setEnabled(true);
 				}

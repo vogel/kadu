@@ -17,13 +17,14 @@
 // kadu.h dolaczony tylko ze wzgl. na zmienna config
 // w przyszlosci trzeba bedzie chyba to zmienic
 #include "kadu.h"
-#include "personal_info.h"
 //
+#include "debug.h"
+#include "personal_info.h"
 
 PersonalInfoDialog::PersonalInfoDialog(QDialog *parent, const char *name)
 	: QDialog (parent, name)
 {
-	fprintf(stderr,"PersonalInfoDialog::PersonalInfoDialog()\n");
+	kdebug("PersonalInfoDialog::PersonalInfoDialog()\n");
 
 	resize(400, 150);
 	setCaption(i18n("Personal Information"));	
@@ -164,7 +165,7 @@ void PersonalInfoDialog::fillFields(gg_pubdir50_t res)
 
 	switch (State) {
 		case READING:
-			fprintf(stderr, "KK PersonalInfoDialog::fillFields(): Done reading info,\n");
+			kdebug("PersonalInfoDialog::fillFields(): Done reading info,\n");
 
 			first = gg_pubdir50_get(res, 0, GG_PUBDIR50_FIRSTNAME);
 			last = gg_pubdir50_get(res, 0, GG_PUBDIR50_LASTNAME);
@@ -196,7 +197,7 @@ void PersonalInfoDialog::fillFields(gg_pubdir50_t res)
 			FamilyCityEdit->setText(__c2q(family_city));
 			break;
 		case WRITTING:
-			fprintf(stderr, "KK PersonalInfoDialog::fillFields(): Done writing info.\n");
+			kdebug("PersonalInfoDialog::fillFields(): Done writing info.\n");
 			accept();
 			break;
 		}
