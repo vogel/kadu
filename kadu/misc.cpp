@@ -2668,6 +2668,7 @@ QString narg(const QString &s, const QString **tab, int count)
 			j++;
 		d++;
 	}
+	out.append(QString(d-j, j));
 //	kdebugm(KDEBUG_DUMP, "out: '%s'\n", out.local8Bit().data());
 	kdebugf2();
 	
