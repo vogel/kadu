@@ -40,6 +40,8 @@ dccSocketClass::dccSocketClass(struct gg_dcc *dcc_sock, int type) : QObject(), t
 		voicedialog = new DccVoiceDialog();
 		connect(voicedialog, SIGNAL(cancelVoiceChat()), this, SLOT(cancelVoiceChatReceived()));
 		}
+	else
+		voicedialog = NULL;
 	in_watchDcc = false;
 	count++;
 	kdebug("dccSocketClass::dccSocketClass(): dcc sockets count = %d\n", count);
@@ -314,6 +316,8 @@ void dccSocketClass::askAcceptVoiceChat() {
 		QString::null, 0, 1)) {
 		case 0: // Yes?
 			kdebug("dccSocketClass::askAcceptVoiceChat(): accepted\n");
+			voicedialog = new DccVoiceDialog();
+			connect(voicedialog, SIGNAL(cancelVoiceChat()), this, SLOT(cancelVoiceChatReceived()));
 			voice_manager->setup();
 			break;
 		case 1:
