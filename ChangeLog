@@ -155,6 +155,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   dodanie nowego "typu danych" do ConfigDialogu - ujednolicona obs³uga
   konfiguracji czcionek (joi)
 * obs³uga starego formatu kolorów w pliku konfiguracyjnym (joi)
+* ¼ród³a modu³ów rêcznie skopiowanych do katalogu modules nie s± usuwane
+  przez mechanizm autodownload, maj± "wy¿szy priorytet" (adrian)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

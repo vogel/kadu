@@ -186,9 +186,11 @@ AC_DEFUN(PROCESS_MODULE_SPEC_FILES,[
 	static_modules_cxxflags=
 	for mod in $static_modules $shared_modules; do \
 		if test -f modules/$mod.web; then \
-			cd modules; \
-			./download_module $mod; \
-			cd ..; \
+			if test -f modules/$mod/.autodownloaded -o ! -f modules/$mod/spec; then \
+				cd modules; \
+				./download_module $mod; \
+				cd ..; \
+			fi; \
 		fi; \
 		if test -f modules/$mod/spec; then \
 			echo; \
