@@ -298,6 +298,7 @@ void VoiceManager::setup()
 			MessageBox::wrn(tr("Opening sound device failed."));
 			return;
 		}
+		sound_manager->setFlushingEnabled(device, false);
 		pt->rsem--;
 		pt->start();
 	}
