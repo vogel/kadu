@@ -603,9 +603,8 @@ void Chat::sendMessage(void) {
 #ifdef HAVE_OPENSSL
 			}
 #endif
-
-		writeMyMessage();	
 		}
+		writeMyMessage();	
 	}
 	delete users;
 
