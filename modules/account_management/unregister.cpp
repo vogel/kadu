@@ -75,7 +75,7 @@ Unregister::Unregister(QDialog *parent, const char *name)
 	connect(pb_unregister, SIGNAL(clicked()), this, SLOT(doUnregister()));
 	connect(gadu, SIGNAL(unregistered(bool)), this, SLOT(unregistered(bool)));
 
- 	loadGeometry(this, "General", "UnregisterDialogGeometry", 0, 0, 355, 230);
+ 	loadGeometry(this, "General", "UnregisterDialogGeometry", 0, 0, 355, 340);
 	kdebugf2();
 }
 

@@ -99,7 +99,7 @@ About::About(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopL
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 	// end close button
 
-	loadGeometry(this, "General", "AboutGeometry", 20, 20, 580, 400);
+	loadGeometry(this, "General", "AboutGeometry", 0, 0, 640, 420);
 	kdebugf2();
 }
 

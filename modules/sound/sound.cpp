@@ -52,7 +52,7 @@ SoundManager::SoundManager(const QString& name, const QString& configname)
 	
 	ConfigDialog::addCheckBox("Sounds", "Sounds",
 			QT_TRANSLATE_NOOP("@default","Enable volume control (player must support it)"), 
-			"VolumeControl", false);
+			"VolumeControl", true);
 	ConfigDialog::addGrid("Sounds", "Sounds", "volume", 2);
 	ConfigDialog::addLabel("Sounds", "volume", QT_TRANSLATE_NOOP("@default","Volume"));
 	ConfigDialog::addSlider("Sounds", "volume", "slider", "SoundVolume", 0, 100, 20, 50);

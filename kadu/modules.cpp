@@ -117,7 +117,7 @@ ModulesDialog::ModulesDialog()
 	connect(lv_modules, SIGNAL(selectionChanged()), this, SLOT(itemsChanging()));
 	connect(lv_modules, SIGNAL(doubleClicked(QListViewItem *)), this, SLOT(moduleAction(QListViewItem *)));
 	
- 	loadGeometry(this, "General", "ModulesDialogGeometry", 0, 0, 450, 400);
+ 	loadGeometry(this, "General", "ModulesDialogGeometry", 0, 0, 600, 620);
 	refreshList();
 	kdebugf2();
 }
