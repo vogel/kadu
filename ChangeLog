@@ -28,6 +28,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * pierwszy krok ku integracji z Mozill± - instalowany automatycznie
   skrypcik kadu-mozilla, docelowo chcia³bym zrobiæ w konfiguracji
   wybór przegl±darki Konqueror/Mozilla/Inna (adrian)
+* dodanie w libgadu kodu b³êdu GG_FAILURE_NEED_EMAIL przy GG_EVENT_FAILURE (chilek)
+* porz±dki w metodzie EventManager::connectionFailedSlot() (chilek)
 
 +++ wersja 0.3.5 (05.11.2003)
 * dalsza czê¶æ przeróbek mechanizmu konfiguracji. brakuje jeszcze
