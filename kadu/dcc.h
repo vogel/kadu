@@ -56,6 +56,7 @@ class dccSocketClass : public QObject {
 		void watchDcc(int check);
 
 		int state;
+		static int count;
 
 	public slots:
 		void setState(int pstate);

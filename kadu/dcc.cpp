@@ -23,6 +23,8 @@
 #include "dcc.h"
 #include "debug.h"
 
+int dccSocketClass::count = 0;
+
 dccSocketClass::dccSocketClass(struct gg_dcc *dcc_sock) : QObject() {
 	dccsock = dcc_sock;
 	dccevent = NULL;
@@ -31,6 +33,8 @@ dccSocketClass::dccSocketClass(struct gg_dcc *dcc_sock) : QObject() {
 	dialog = NULL;
 	recordprocess = playprocess = NULL;
 	in_watchDcc = false;
+	count++;
+	kdebug("dccSocketClass::dccSocketClass(): dcc sockets count = %d\n", count);
 }
 
 dccSocketClass::~dccSocketClass() {
@@ -76,7 +80,9 @@ dccSocketClass::~dccSocketClass() {
 			}
 		gg_dcc_free(dccsock);
 		dccsock = NULL;
+		count--;
 		}
+	kdebug("dccSocketClass::~dccSocketClass(): dcc sockets count = %d\n", count);
 }
 
 void dccSocketClass::initializeNotifiers() {

@@ -1624,14 +1624,21 @@ void Kadu::watchDcc(void) {
 		case GG_EVENT_NONE:
 			break;
 		case GG_EVENT_DCC_ERROR:
-			kdebug("GG_EVENT_DCC_ERROR\n");
+			kdebug("Kadu::watchDcc(): GG_EVENT_DCC_ERROR\n");
 			break;
 		case GG_EVENT_DCC_NEW:
-			dccSocketClass *dcc;    
-			dcc = new dccSocketClass(dcc_e->event.dcc_new);
-			connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), this, SLOT(dccFinished(dccSocketClass *)));
-			dcc->initializeNotifiers();
-			kdebug("GG_EVENT_DCC_NEW: spawning object\n");
+			if (dccSocketClass::count < 8) {
+				dccSocketClass *dcc;    
+				dcc = new dccSocketClass(dcc_e->event.dcc_new);
+				connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), this, SLOT(dccFinished(dccSocketClass *)));
+				dcc->initializeNotifiers();
+				kdebug("Kadu::watchDcc(): GG_EVENT_DCC_NEW: spawning object\n");
+				}
+			else {
+				if (dcc_e->event.dcc_new->file_fd > 0)
+					close(dcc_e->event.dcc_new->file_fd);
+				gg_dcc_free(dcc_e->event.dcc_new);
+				}
 			break;
 		default:
 			break;
