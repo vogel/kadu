@@ -961,7 +961,11 @@ void Kadu::openChat()
 				stop = true;
 				}
 		}
-	if (!stop) {
+	if (stop) {
+		chats[k].ptr->scrollMessages(toadd);
+		UserBox::all_refresh();
+		}
+	else {
 		k = openChat(uins);
 		chats[k].ptr->writeMessagesFromHistory(uins, 0);
 		}

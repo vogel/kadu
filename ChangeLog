@@ -4,8 +4,11 @@ podes³a³ patcha, a zrobi³ to kto¶ oznaczony przez y. Je¶li jest
 w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
 +++ wersja 0.3.6-cvs
-* je¶li klikniemy na jaki¶ kontakt w userboxie, od którego otrzymali¶my jak±¶ wiadomo¶æ
-  konferencyjn±, to otwiera siê okno konferencji (chilek)
+* je¶li klikniemy na jaki¶ kontakt w userboxie, od którego otrzymali¶my jak±¶
+  wiadomo¶æ konferencyjn±, to otwiera siê okno konferencji (chilek)
+* je¶li wybierzemy w menu podrêcznym "rozpocznij rozmowê" z jakim¶ kontaktem
+  w userboxie  i otrzymali¶my od niego jak±¶ wiadomo¶æ, to wiadomo¶æ zostanie
+  umieszczona w otwieranym oknie rozmowy (chilek)
 
 +++ wersja 0.3.5
 * dalsza czê¶æ przeróbek mechanizmu konfiguracji. brakuje jeszcze
