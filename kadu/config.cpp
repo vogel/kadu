@@ -182,6 +182,16 @@ void saveKaduConfig(void) {
 	konf->writeEntry("NotifyWithDialogBox",config.notifydialog);
 	konf->writeEntry("NotifyWithSound",config.notifysound);
 
+	konf->setGroup("Colors");
+	konf->writeEntry("UserboxBgR", config.colors.userboxBgR);
+	konf->writeEntry("UserboxBgG", config.colors.userboxBgG);
+	konf->writeEntry("UserboxBgB", config.colors.userboxBgB);
+	konf->writeEntry("UserboxFgR", config.colors.userboxFgR);
+	konf->writeEntry("UserboxFgG", config.colors.userboxFgG);
+	konf->writeEntry("UserboxFgB", config.colors.userboxFgB);
+	konf->writeEntry("UserboxFont", config.colors.userboxFont);
+	konf->writeEntry("UserboxFontSize", config.colors.userboxFontSize);
+
 	konf->sync();
 	delete konf;
 }
