@@ -120,7 +120,6 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	QToolTip::add(edt, i18n("This is where you type in the text to be sent"));
 
 	buttontray = new QHBox(this);
-
 	autosend = new QPushButton(buttontray);
 	autosend->setPixmap(loader->loadIcon("key_enter", KIcon::Small));
 	autosend->setToggleButton(true);
@@ -166,8 +165,6 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 
 	iconsel = new QPushButton(buttontray);
 	iconsel->setPixmap(loader->loadIcon("icons", KIcon::Small));
-	//iconsel->setToggleButton(true);
-
 	if (config.emoticons)
 		QToolTip::add(iconsel, i18n("Insert emoticon"));
 	else {
@@ -193,17 +190,16 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	connect(clearchat, SIGNAL(clicked()), this, SLOT(clearChatWindow()));
 
 	QGridLayout *grid = new QGridLayout (this, 5, 4, 3, 3);
-//	QHBoxLayout *subgrid = new QHBoxLayout();
-//	subgrid->addWidget(body, 3);
-//	if (userbox)
-//		subgrid->addWidget(userbox, 1);
+	QHBoxLayout *subgrid = new QHBoxLayout();
+	subgrid->addWidget(edt, 1);
+	subgrid->addWidget(buttontray, 1);
 	if (userbox)
 		grid->addMultiCellWidget(split1, 0, 0, 0, 3);
 	else
 		grid->addMultiCellWidget(body, 0, 0, 0, 3);
-//	grid->addMultiCellLayout(subgrid, 0, 0, 0, 3);
-	grid->addWidget(buttontray, 2,3,Qt::AlignRight);
-	grid->addMultiCellWidget(edt, 2, 2, 0, 2, Qt::AlignLeft);
+	grid->addMultiCellLayout(subgrid, 2, 2, 0, 3);
+//	grid->addWidget(buttontray, 2,3,Qt::AlignRight);
+//	grid->addMultiCellWidget(edt, 2, 2, 0, 2, Qt::AlignLeft);
 	grid->addMultiCellWidget(edit, 3, 3, 0, 3);
 	grid->addWidget(cancelbtn, 4, 2);
 	grid->addWidget(sendbtn, 4, 3);
