@@ -1444,7 +1444,7 @@ Direkte Verbindungen ausgeschaltet.</translation>
     </message>
     <message>
         <source>Manage &amp;ignored</source>
-        <translation>Verwalte die &amp;Ignorierten</translation>
+        <translation>Verwalte die &amp;Ignoriertenliste</translation>
     </message>
     <message>
         <source>&amp;Configuration</source>
@@ -2080,7 +2080,7 @@ Das Passwort, das Sie angegeben haben, sollte in beiden Feldern (&quot;Neues Pas
     <name>Themes</name>
     <message>
         <source>does not contain any theme configuration file</source>
-        <translation type="unfinished"></translation>
+        <translation>enthält keine Datei mit Design-Konfiguration</translation>
     </message>
 </context>
 <context>
@@ -2501,19 +2501,19 @@ Die Anwendung hat einen Fehler zurückgemeldet</translation>
     </message>
     <message>
         <source>Cannot import user list from server in offline mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Kann die Benutzerliste vom Server nicht importieren, wenn sie offline sind</translation>
     </message>
     <message>
         <source>This operation will delete your current user list. Are you sure you want this?</source>
-        <translation type="unfinished"></translation>
+        <translation>Diese Aktion löscht Ihre jetzige Benutzerliste. Sind Sie sich sicher?</translation>
     </message>
     <message>
         <source>Cannot export user list to server in offline mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Kann die Benutzerliste zum Server nicht exportieren, wenn sie offline sind</translation>
     </message>
     <message>
         <source>Cannot clear user list on server in offline mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Kann die Benutzerliste auf dem Server nicht löschen, solange Sie offline sind</translation>
     </message>
 </context>
 <context>
