@@ -17,6 +17,7 @@
 #include <qlayout.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
+#include <qtextcodec.h>
 
 ModulesDialog::ModulesDialog()
 	: QDialog(NULL,NULL)
@@ -152,34 +153,42 @@ bool ModulesManager::loadModule(const QString& module_name)
 {
 	Module m;
 	m.lib=new QLibrary(QString(DATADIR)+"/kadu/modules/"+module_name+".so");
-	if(m.lib->load())
-	{
-		typedef int InitModuleFunc();
-		InitModuleFunc* init=(InitModuleFunc*)m.lib->resolve(module_name+"_init");
-		m.close=(CloseModuleFunc*)m.lib->resolve(module_name+"_close");
-		if(init!=NULL&&m.close!=NULL)
-		{
-			int res=init();
-			if(res!=0)
-			{
-				MessageBox::msg(tr("Module initialization routine failed."));
-				delete m.lib;
-				return false;		
-			}
-		}
-		else
-		{
-			MessageBox::msg(tr("Cannot find required functions.\nMaybe it's not Kadu-compatible Module."));
-			delete m.lib;
-			return false;
-		}
-		Modules.insert(module_name,m);
-	}
-	else
+	if(!m.lib->load())
 	{
 		MessageBox::msg(tr("Cannot load module library.\nMaybe it's incorrecty compiled."));
 		return false;
 	}
+		
+	typedef int InitModuleFunc();
+	InitModuleFunc* init=(InitModuleFunc*)m.lib->resolve(module_name+"_init");
+	m.close=(CloseModuleFunc*)m.lib->resolve(module_name+"_close");
+	if(init==NULL||m.close==NULL)
+	{
+		MessageBox::msg(tr("Cannot find required functions.\nMaybe it's not Kadu-compatible Module."));
+		delete m.lib;
+		return false;
+	}
+
+	m.translator=new QTranslator(0);
+	if(m.translator->load(QString(DATADIR) + QString("/kadu/modules/translations/")+module_name+QString("_") + config_file.readEntry("General", "Language", QTextCodec::locale()), "."))
+	{
+		qApp->installTranslator(m.translator);
+	}
+	else
+	{
+		delete m.translator;
+		m.translator=NULL;
+	}
+
+	int res=init();
+	if(res!=0)
+	{
+		MessageBox::msg(tr("Module initialization routine failed."));
+		delete m.lib;
+		return false;		
+	}
+	
+	Modules.insert(module_name,m);
 	return true;
 }
 
@@ -187,6 +196,11 @@ void ModulesManager::unloadModule(const QString& module_name)
 {
 	Module m=Modules[module_name];
 	m.close();
+	if(m.translator!=NULL)
+	{
+		qApp->removeTranslator(m.translator);
+		delete m.translator;
+	}
 	delete m.lib;
 	Modules.remove(module_name);
 }

@@ -7,6 +7,7 @@
 #include <qstringlist.h>
 #include <qdialog.h>
 #include <qlistbox.h>
+#include <qtranslator.h>
 
 class ModulesDialog : public QDialog
 {
@@ -36,6 +37,7 @@ class ModulesManager : public QObject
 		{
 			QLibrary* lib;
 			CloseModuleFunc* close;
+			QTranslator* translator;
 		};
 		QMap<QString,Module> Modules;	
 		ModulesDialog* Dialog;

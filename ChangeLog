@@ -128,6 +128,11 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawka libgadu zwiazana z GG_FAILURE_NEED_EMAIL (chilek)
 * je¶li pojawi siê informacja o konieczno¶ci zmiany emaila, kadu przestaje ³±czyæ
   siê cyklicznie z serwerami GG (chilek)
+* obsluga translacji w modulach - w katalogu modulu nalezy umiescic podkatalog
+  "translations" a w nim pliki <nazwa_modulu>_<kod_jezyka>.qm i
+  <nazwa_modulu>_<kod_jezyka>.ts np autoresponder_pl.qm i autoresponder_pl.ts.
+  translacja przez funkcje "tr" obslugiwana jest rowniez w
+  funkcji inicjalizujacej i zamykajacej modulu (adrian)
 
 +++ wersja 0.3.6 (22.11.2003)
 * je¶li klikniemy na jaki¶ kontakt w userboxie, od którego otrzymali¶my jak±¶
