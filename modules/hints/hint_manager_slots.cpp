@@ -69,6 +69,7 @@ HintManagerSlots::~HintManagerSlots()
 void HintManagerSlots::onCreateConfigDialog()
 {
 	kdebugf();
+	ConfigDialog::getSpinBox("Hints", "Hint timeout")->setSuffix(" s");
 	ConfigDialog::getLabel("Hints", "<b>Text</b> preview")->setAlignment(Qt::AlignCenter);;
 
 	toggled_ShowMessageContent(config_file.readBoolEntry("Hints", "ShowContentMessage"));
