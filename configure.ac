@@ -1,9 +1,9 @@
 # configure.ac for Kadu written by A.Smarzewski
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([Kadu],[0.3.3-pre4])
+AC_INIT([Kadu],[0.3.3-pre5])
 AC_COPYRIGHT([configure.ac written by A.Smarzewski])
-AC_REVISION([0.3.3-pre4])
+AC_REVISION([0.3.3-pre5])
 AC_PREREQ(2.53)
 
 echo
@@ -16,7 +16,7 @@ AC_CONFIG_SRCDIR([kadu/kadu.cpp])
 AC_CONFIG_AUX_DIR([admin])
 AM_CONFIG_HEADER([config.h])
 AC_CANONICAL_SYSTEM
-AM_INIT_AUTOMAKE([kadu-0.3.3-pre4],[0.3.3-pre4])
+AM_INIT_AUTOMAKE([kadu-0.3.3-pre5],[0.3.3-pre5])
 
 KDE_SET_PREFIX
 
@@ -93,16 +93,6 @@ if test "$enable_doc" = "yes"; then
 	MY_SUBDIRS="$MY_SUBDIRS doc"
 fi
 
-# sms support
-AC_ARG_ENABLE(sms,[  --disable-sms           do not compile and install built-in sms application])
-if test -z "$enable_sms"; then
-	enable_sms=yes
-fi
-if test "$enable_sms" = "yes"; then
-	AC_DEFINE(HAVE_SMS,1,[Define if built-in sms application is compiled and installed])
-	MY_SUBDIRS="$MY_SUBDIRS sms"
-fi
-
 # pthread support
 AC_ARG_WITH(pthread,[  --without-pthread       do not use pthread in libgadu resolver])
 if test -z "$with_pthread"; then
@@ -154,22 +144,18 @@ AC_SUBST(MY_SUBDIRS)
 
 
 ########################################################################
-# configure libgadu and sms application
+# configure libgadu
 ########################################################################
 
 echo
-echo " ***************************************************************"
-echo " * Configuring libgadu and sms (if enabled), please wait . . . *"
-echo " ***************************************************************"
+echo " ******************************************"
+echo " * Configuring libgadu, please wait . . . *"
+echo " ******************************************"
 echo
 
 if test "$with_existing_libgadu" = "no"; then
 	ac_configure_args="$ac_configure_args --disable-static --enable-shared"
 	AC_CONFIG_SUBDIRS([libgadu])
-fi
-
-if test "$enable_sms" = "yes"; then
-	AC_CONFIG_SUBDIRS([sms])
 fi
 
 ########################################################################
@@ -193,7 +179,6 @@ echo " Kadu was configured using options specified below:"
 echo
 echo "    Installation prefix:                          $prefix" 
 echo "    Install Kadu documentation:                   $enable_doc"
-echo "    Compile and install built-in sms application: $enable_sms"
 echo "    Use pthread resolving in libgadu:             $with_pthread"
 echo "    Compile with debug symbols:                   $enable_debug"
 echo "    Link with existing libgadu:                   $with_existing_libgadu"
