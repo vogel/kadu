@@ -1318,6 +1318,23 @@ QString History::gaduStatus2symbol(unsigned int status) {
 		}
 }
 
+void History::setDateListViewText(QDateTime &datetime) {
+	QListViewItem *actlvi;
+	actlvi = uinslv->firstChild();
+	while (actlvi && !((UinsListViewText *)actlvi)->getUinsList().equals(uins))
+		actlvi = actlvi->nextSibling();
+	if (actlvi) {
+		actlvi->setOpen(TRUE);
+		actlvi = actlvi->firstChild();
+		while (actlvi && ((DateListViewText *)actlvi)->getDate().date.date() != datetime.date())
+			actlvi = actlvi->nextSibling();
+		if (actlvi) {
+			uinslv->setCurrentItem(actlvi);
+			body->setSelection(0, 0, 1, 10);
+			}
+		}
+}
+
 void History::searchHistory() {
 	kdebugf();
 	int start, end, count, total, len;
@@ -1373,9 +1390,10 @@ void History::searchHistory() {
 					(findrec.type == 2 &&
 					(entries[entries.count() - i - 1].type & HISTORYMANAGER_ENTRY_STATUS)
 					&& findrec.data == gaduStatus2symbol(entries[entries.count() - i - 1].status))) {
-					showHistoryEntries(findrec.actualrecord - i,
-						findrec.actualrecord - i + 99 < count ? 100
-						: count - findrec.actualrecord + i);
+					setDateListViewText(entries[entries.count() - i - 1].date);
+					//showHistoryEntries(findrec.actualrecord - i,
+					//	findrec.actualrecord - i + 99 < count ? 100
+					//	: count - findrec.actualrecord + i);
 					History::start = findrec.actualrecord - i;
 					break;
 					}
@@ -1395,9 +1413,10 @@ void History::searchHistory() {
 					(findrec.type == 2 &&
 					(entries[i].type & HISTORYMANAGER_ENTRY_STATUS) &&
 					findrec.data == gaduStatus2symbol(entries[i].status))) {
-					showHistoryEntries(findrec.actualrecord + i,
-						findrec.actualrecord + 99 < count ? 100
-						: count - findrec.actualrecord - i);
+					setDateListViewText(entries[i].date);
+					//showHistoryEntries(findrec.actualrecord + i,
+					//	findrec.actualrecord + 99 < count ? 100
+					//	: count - findrec.actualrecord - i);
 					History::start = findrec.actualrecord + i;
 					break;
 					}

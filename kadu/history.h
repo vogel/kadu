@@ -92,6 +92,7 @@ class History : public QDialog {
 	protected:
 		void formatHistoryEntry(QString &text, const HistoryEntry &entry);
 		void showHistoryEntries(int from, int count);
+		void setDateListViewText(QDateTime &datetime);
 		void searchHistory();
 		QString gaduStatus2symbol(unsigned int status);
 		void closeEvent(QCloseEvent *e);
