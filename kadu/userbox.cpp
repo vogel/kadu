@@ -152,7 +152,12 @@ int KaduListBoxPixmap::width(const QListBox* lb) const
 	if (text().isEmpty())
 		return QMAX(pm.width() + 6, QApplication::globalStrut().width());
 
-	return QMAX(pm.width() + lb->fontMetrics().width(text()) + 6, QApplication::globalStrut().width());
+	QFont font = lb->font();
+	if (bold)
+		font.setWeight(QFont::Bold);
+	QFontMetrics fm(font);
+
+	return QMAX(pm.width() + fm.width(text()) + 6, QApplication::globalStrut().width());
 }
 
 UserBoxMenu *UserBox::userboxmenu = NULL;
@@ -551,9 +556,9 @@ UserBox* UserBox::getActiveUserBox()
 QStringList UserBox::getSelectedAltNicks()
 {
 	QStringList nicks;
-			for (int i=0; i< count(); i++)
-				if (isSelected(i))
-					nicks.append(text(i));
+	for (int i=0; i< count(); i++)
+		if (isSelected(i))
+			nicks.append(text(i));
 	return nicks;
 }
 /////////////////////////////////////////////////////////
