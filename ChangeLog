@@ -61,6 +61,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * konfiguracja odpowiedzi autorespondera (mkey/joi)
 * zachowywanie polskich znaków przez modu³y autoresponder i echo (joi)
 * wys³ane przez nas obrazki pokazuj± siê w oknie rozmowy (adrian)
+* drobna optymalizacja funkcji ggPath() (joi)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

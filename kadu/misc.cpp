@@ -33,19 +33,22 @@ QTextCodec *codec_latin2 = QTextCodec::codecForName("ISO8859-2");
 
 QString ggPath(const QString &subpath)
 {
-	QString path;
-	char *home;
-	struct passwd *pw;
-	if ((pw = getpwuid(getuid())))
-		home = pw->pw_dir;
-	else
-		home = getenv("HOME");
-	char *config_dir = getenv("CONFIG_DIR");
-	if (config_dir == NULL)
-		path = QString("%1/.gg/%2").arg(home).arg(subpath);
-	else
-		path = QString("%1/%2/gg/%3").arg(home).arg(config_dir).arg(subpath);
-	return path;
+	static QString path=QString::null;
+	if (path==QString::null)
+	{
+		char *home;
+		struct passwd *pw;
+		if ((pw = getpwuid(getuid())))
+			home = pw->pw_dir;
+		else
+			home = getenv("HOME");
+		char *config_dir = getenv("CONFIG_DIR");
+		if (config_dir == NULL)
+			path = QString("%1/.gg/").arg(home);
+		else
+			path = QString("%1/%2/gg/").arg(home).arg(config_dir);
+	}
+	return path+subpath;
 }
 
 QString dataPath(const QString &p)

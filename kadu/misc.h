@@ -25,9 +25,9 @@
 	na ¶cie¿kê bezwzgledn± uwzglêdniaj±c zmienne ¶rodowiskowe
 	$HOME i $CONFIG_DIR
 */
-QString ggPath(const QString &subpath);
+QString ggPath(const QString &subpath="");
 
-QString dataPath(const QString &);
+QString dataPath(const QString &path="");
 
 QString cp2unicode(const unsigned char *);
 QCString unicode2cp(const QString &);
