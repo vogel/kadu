@@ -210,9 +210,6 @@ SoundManager::SoundManager(const QString& name, const QString& configname)
 			QT_TRANSLATE_NOOP("@default","Sound paths"));
 
 	ConfigDialog::addCheckBox("Sounds", "Sounds",
-			QT_TRANSLATE_NOOP("@default","Play sounds from a person whilst chatting"),
-			"PlaySoundChat", true);
-	ConfigDialog::addCheckBox("Sounds", "Sounds",
 			QT_TRANSLATE_NOOP("@default","Play chat sounds only when window is invisible"),
 			"PlaySoundChatInvisible", true);
 	
@@ -303,7 +300,6 @@ SoundManager::~SoundManager()
 	ConfigDialog::removeControl("Sounds", "sound_files");
 	ConfigDialog::removeControl("Sounds", "sound_box");
 	ConfigDialog::removeControl("Sounds", "Play chat sounds only when window is invisible");
-	ConfigDialog::removeControl("Sounds", "Play sounds from a person whilst chatting");
 	ConfigDialog::removeControl("Sounds", "Sound paths");
 	ConfigDialog::removeControl("Sounds", "Sound theme");
 	ConfigDialog::removeControl("Sounds", "sound_theme");
@@ -355,21 +351,18 @@ void SoundManager::newChat(const UinsList &/*senders*/, const QString& /*msg*/, 
 		return;
 	}
 
-	if (config_file.readBoolEntry("Sounds","PlaySoundChat"))
+	QString chatsound;
+	if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
+		chatsound=config_file.readEntry("Sounds", "Chat_sound");
+	else 
+		chatsound=themePath(config_file.readEntry("Sounds", "SoundTheme"))+getThemeEntry("Chat");
+	if (QFile::exists(chatsound))
 	{
-		QString chatsound;
-		if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
-			chatsound=config_file.readEntry("Sounds", "Chat_sound");
-		else 
-			chatsound=themePath(config_file.readEntry("Sounds", "SoundTheme"))+getThemeEntry("Chat");
-		if (QFile::exists(chatsound))
-		{
-			play(chatsound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
-			lastsoundtime.restart();
-		}
-		else
-			kdebugm(KDEBUG_WARNING, "file (%s) not found\n", chatsound.local8Bit().data());
+		play(chatsound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
+		lastsoundtime.restart();
 	}
+	else
+		kdebugm(KDEBUG_WARNING, "file (%s) not found\n", chatsound.local8Bit().data());
 	kdebugf2();
 }
 
