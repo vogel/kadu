@@ -56,6 +56,7 @@ void ChatManager::closeAllWindows()
 		Chat *chat=Chats.first();
 		delete chat;
 	}
+	kdebugf2();
 }
 
 ChatManager::~ChatManager()
@@ -76,6 +77,7 @@ int ChatManager::registerChat(Chat* chat)
 
 void ChatManager::unregisterChat(Chat* chat)
 {
+	kdebugf();
 	for(unsigned int i=0; i<Chats.count(); i++)
 		if(Chats[i]==chat)
 		{
@@ -103,8 +105,10 @@ void ChatManager::unregisterChat(Chat* chat)
 			emit chatDestroying(chat->uins());
 			Chats.remove(Chats.at(i));
 			emit chatDestroyed(chat->uins());
+			kdebugf2();
 			return;
 		}
+	kdebugm(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "void ChatManager::unregisterChat(): NOT found\n");
 }
 
 void ChatManager::refreshTitles()
@@ -137,6 +141,7 @@ Chat* ChatManager::findChatByUins(UinsList uins)
 
 int ChatManager::openChat(UinsList senders,time_t time)
 {
+	kdebugf();
 	for (unsigned int i = 0; i < Chats.count(); i++)
 		if (Chats[i]->uins().equals(senders))
 		{
@@ -170,11 +175,13 @@ int ChatManager::openChat(UinsList senders,time_t time)
 	chat->show();
 	chat->writeMessagesFromHistory(senders, time);
 	emit chatCreated(senders);
+	kdebugf2();
 	return Chats.count()-1;
 }
 
 int ChatManager::openPendingMsg(int index,QString& to_add)
 {
+	kdebugf();
 	PendingMsgs::Element p = pending[index];
 	// jesli ktoregos z nadawcow nie mamy na liscie to dodajemy
 	// go tam jako anonymous
@@ -188,11 +195,13 @@ int ChatManager::openPendingMsg(int index,QString& to_add)
 	// kasujemy wiadomosc z pending
 	pending.deleteMsg(index);
 	// zwracamy indeks okna chat
+	kdebugf2();
 	return k;
 }
 
 void ChatManager::openPendingMsgs(UinsList uins)
 {
+	kdebugf();
 	PendingMsgs::Element elem;
 	int k;
 	bool stop = false;
@@ -218,10 +227,12 @@ void ChatManager::openPendingMsgs(UinsList uins)
 	}
 	else
 		k = openChat(uins,0);
+	kdebugf2();
 }
 
 void ChatManager::openPendingMsgs()
 {
+	kdebugf();
 	UinsList uins;
 	int i, k = -1;
 	PendingMsgs::Element elem;
@@ -257,6 +268,7 @@ void ChatManager::openPendingMsgs()
 
 void ChatManager::sendMessage(UinType uin,UinsList selected_uins)
 {
+	kdebugf();
 	QString tmp;
 	int i, k = -1;
 	bool stop = false;
@@ -290,6 +302,7 @@ void ChatManager::sendMessage(UinType uin,UinsList selected_uins)
 		uins = selected_uins;
 		k = openChat(uins,0);
 	}
+	kdebugf2();
 }
 
 void ChatManager::chatMsgReceived(UinsList senders,const QString& msg,time_t time,bool& grab)
@@ -360,6 +373,7 @@ void CustomInput::keyPressEvent(QKeyEvent* e)
 	// przekazanie event'a do qwidget 
 	// aby obsluzyc skroty klawiszowe (definiowane sa dla okna chat)
 	QWidget::keyPressEvent(e);
+//	kdebugf2();
 }
 
 void CustomInput::setAutosend(bool on)
@@ -411,6 +425,7 @@ void KaduSplitter::childEvent(QChildEvent *c)
 Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 	: QWidget(parent, name, Qt::WDestructiveClose), Uins(uins)
 {
+	kdebugf();
 	QValueList<int> sizes;
 
 	emoticon_selector = NULL;
@@ -611,6 +626,7 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 	totaloccurences = 0;
 
 	edit->setFocus();
+	kdebugf2();
 }
 
 Chat::~Chat()
@@ -684,6 +700,7 @@ void Chat::specialKeyPressed(int key)
 			edit->setUnderline(underlinebtn->isOn());
 			break;
 	}
+	kdebugf2();
 }
 
 void Chat::toggledBold(bool on)
@@ -728,6 +745,7 @@ void Chat::curPosChanged(int para, int pos)
 		p.fill(actcolor);
 		colorbtn->setPixmap(p);
 	}
+	kdebugf2();
 }
 
 void Chat::pageUp()
@@ -742,12 +760,14 @@ void Chat::pageDown()
 
 void Chat::insertImage()
 {
+	kdebugf();
 	ImageDialog* id = new ImageDialog(this);
 	id->setCaption(tr("Insert image"));
 	if(id->exec() == QDialog::Accepted)
 		edit->insert(QString("[IMAGE ")+id->selectedFile()+"]");
 	delete id;
 	edit->setFocus();
+	kdebugf2();
 }
 
 void Chat::imageReceivedAndSaved(UinType sender,uint32_t size,uint32_t crc32,const QString& path)
@@ -773,6 +793,7 @@ void Chat::changeAppearance()
 
 void Chat::setTitle()
 {
+	kdebugf();
 	QString title;
 
 	if (Uins.size() > 1)
@@ -805,6 +826,7 @@ void Chat::setTitle()
 
 	setCaption(title);
 	title_buffer = title;
+	kdebugf2();
 }
 
 void Chat::changeTitle()
@@ -984,6 +1006,7 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time)
 					+ printDateTime(entries[i].sdate), toadd);
 	if (toadd.length())
 		scrollMessages(toadd);
+	kdebugf2();
 }
 
 /* invoked from outside when new message arrives, this is the window to the world */
@@ -1054,13 +1077,18 @@ void Chat::ackReceivedSlot(int Seq)
 	seq = 0;
 	disconnect(&event_manager, SIGNAL(ackReceived(int)),
 		this, SLOT(ackReceivedSlot(int)));
+	kdebugf2();
 }
 
 /* sends the message typed */
 void Chat::sendMessage()
 {
+	kdebugf();
 	if (edit->text() == "")
+	{
+		kdebugf2();
 		return;
+	}
 	
 	emit messageSendRequested(this);
 
@@ -1069,8 +1097,9 @@ void Chat::sendMessage()
 	if (getCurrentStatus() == GG_STATUS_NOT_AVAIL) {
 		QMessageBox::critical(this, tr("Send message error"),
 			tr("Application encountered network error."));
+		kdebugm(KDEBUG_FUNCTION_END, "void Chat::sendMessage() end: not connected!\n");
 		return;
-		}
+	}
 
 	myLastMessage = edit->text();
 
@@ -1090,6 +1119,7 @@ void Chat::sendMessage()
 	if (mesg.length() >= 2000)
 	{
 		MessageBox::wrn(tr("Message too long (%1>=%2)").arg(mesg.length()).arg(2000));
+		kdebugm(KDEBUG_FUNCTION_END, "void Chat::sendMessage() end: message too long\n");
 		return;
 	}
 
@@ -1098,11 +1128,15 @@ void Chat::sendMessage()
 	bool stop=false;
 	emit messageFiltering(Uins,msg,stop);
 	if(stop)
+	{
+		kdebugm(KDEBUG_FUNCTION_END, "void Chat::sendMessage() end: filter stopped processing\n");
 		return;
+	}
 
 	if (mesg.length() >= 2000)
 	{
 		MessageBox::wrn(tr("Filtered message too long (%1>=%2)").arg(mesg.length()).arg(2000));
+		kdebugm(KDEBUG_FUNCTION_END, "void Chat::sendMessage() end: filtered message too long\n");
 		return;
 	}
 
@@ -1135,6 +1169,7 @@ void Chat::sendMessage()
 	}
 	
 	emit messageSent(this);
+	kdebugf2();
 }
 
 /* prunes messages */
@@ -1174,10 +1209,9 @@ void Chat::pruneWindow()
 /* opens messages history */
 void Chat::HistoryBox()
 {
-	History *hb;
-
-	hb = new History(Uins);
-	hb->show();
+	kdebugf();
+	(new History(Uins))->show();
+	kdebugf2();
 }
 
 void Chat::emoticonSelectorClicked()
@@ -1204,6 +1238,7 @@ void Chat::colorSelectorAboutToClose()
 {
 	kdebugf();
 	color_selector = NULL;
+	kdebugf2();
 }
 
 void Chat::colorChanged(const QColor& color)
@@ -1336,6 +1371,7 @@ void Chat::initModule()
 	chat_manager=new ChatManager(kadu, "chat_manager");
 	connect(&event_manager,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
 		chat_manager,SLOT(chatMsgReceived(UinsList,const QString&,time_t,bool&)));
+	kdebugf2();
 }
 
 const UinsList& Chat::uins()
@@ -1366,6 +1402,7 @@ void ColorSelectorButton::buttonClicked()
 ColorSelector::ColorSelector(const QColor &defColor, QWidget* parent, const char* name)
 	: QWidget (parent, name,Qt::WType_Popup|Qt::WDestructiveClose)
 {
+	kdebugf();
 	QValueList<QColor> qcolors;
 	int i;
 
@@ -1388,6 +1425,7 @@ ColorSelector::ColorSelector(const QColor &defColor, QWidget* parent, const char
 		grid->addMultiCellWidget(btn, 4, 4, 0, 3);
 		connect(btn,SIGNAL(clicked(const QColor&)),this,SLOT(iconClicked(const QColor&)));
 	}
+	kdebugf2();
 }
 
 void ColorSelector::iconClicked(const QColor& color)
@@ -1401,10 +1439,12 @@ void ColorSelector::closeEvent(QCloseEvent* e)
 	kdebugf();
 	emit aboutToClose();
 	QWidget::closeEvent(e);
+	kdebugf2();
 }
 
 void ColorSelector::alignTo(QWidget* w)
 {
+	kdebugf();
 	// oblicz pozycjê widgetu do którego równamy
 	QPoint w_pos = w->mapToGlobal(QPoint(0,0));
 	// oblicz rozmiar selektora
@@ -1431,6 +1471,7 @@ void ColorSelector::alignTo(QWidget* w)
 		y = 0;
 	// ustawiamy selektor na wyliczonej pozycji
 	move(x, y);
+	kdebugf2();
 }
 
 ChatSlots::ChatSlots(QObject* parent, const char* name)
@@ -1474,6 +1515,7 @@ void ChatSlots::onCreateConfigDialog()
 	h_fold->setEnabled(c_foldlink->isChecked());
 
 	updatePreview();
+	kdebugf2();
 }
 
 void ChatSlots::onPruneChat(bool toggled)
@@ -1523,6 +1565,7 @@ void ChatSlots::onDestroyConfigDialog()
 	
 	if (e_conferenceprefix->text() == tr("Conference with ") || e_conferenceprefix->text() == "Conference with ")
 		config_file.writeEntry("Look", "ConferencePrefix", "");
+	kdebugf2();
 }
 
 void ChatSlots::chooseColor(const char* name, const QColor& color)
@@ -1540,6 +1583,7 @@ void ChatSlots::chooseColor(const char* name, const QColor& color)
 		preview2->setPaletteForegroundColor(color);
 	else
 		kdebugm(KDEBUG_ERROR, "chooseColor: label '%s' not known!\n", name);
+	kdebugf2();
 }
 
 void ChatSlots::chooseFont(const char* name, const QFont& font)
@@ -1552,6 +1596,7 @@ void ChatSlots::chooseFont(const char* name, const QFont& font)
 		preview1->setFont(font);
 		preview2->setFont(font);
 	}
+	kdebugf2();
 }
 
 void ChatSlots::chooseEmoticonsStyle(int index)
@@ -1573,4 +1618,5 @@ void ChatSlots::updatePreview()
 	preview2->setPaletteForegroundColor(config_file.readColorEntry("Look", "ChatUsrFontColor"));
 	preview2->setPaletteBackgroundColor(config_file.readColorEntry("Look", "ChatUsrBgColor"));
 	preview2->setAlignment(Qt::AlignLeft);
+	kdebugf2();
 }
