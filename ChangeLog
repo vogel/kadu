@@ -1,20 +1,23 @@
 +++ wersja 0.3.3-rc2
-* sporo poprawek dla FreeBSD
-* gdy mamy status domy¶lny "niedostêpny" to nie ginie nam zapamiêtany opis statusu (chilek)
+* sporo poprawek dla FreeBSD (adrian)
+* gdy mamy status domy¶lny "niedostêpny" to nie ginie nam zapamiêtany
+  opis statusu (chilek)
 * okno rozmowy: PAGEUP i PAGEDOWN nie przesuwaj± historii rozmowy (chilek)
 * je¶li okno wyboru statusu jest otwarte to klikniêcie informacji o statusie
   zamyka to okno (chilek)
-* Geometry w kadu.conf zgodne z wersjami kadu wcze¶niejszymi ni¿ 0.3.3-rc1 (chilek)
-* okno rozmowy: poprawione podpowiedzi (hinty) do guzika w³±czaj±cego/wy³±czaj±cego
-  szyfrowanie (chilek)
+* Geometry w kadu.conf zgodne z wersjami kadu wcze¶niejszymi
+  ni¿ 0.3.3-rc1 (chilek)
+* okno rozmowy: poprawione podpowiedzi (hinty) do guzika
+  w³±czaj±cego/wy³±czaj±cego szyfrowanie (chilek)
 * byæ mo¿e rozwi±zanie problemu z t³em ikonki w tray'u
 * ESC w glownym oknie je minimalizuje
-* Wsparcie dla Window Maker'a (dokowanie). Trzeba ustawic UseWMakerStyleDocking
-  w kadu.conf (sekcja [Global]). Uwaga: pod KDE wystepuja dziwne efekty.
+* Wsparcie dla Window Maker'a (dokowanie).
+  Trzeba ustawic UseWMakerStyleDocking w kadu.conf (sekcja [Global]).
+  Uwaga: pod KDE wystepuja dziwne efekty (adrian)
 * escape'owanie znaków '<' i '>' w pokazywanych hintach w userbox (scooty)
-* prawdopodobnie rozwi±zany problem z zapisywaniem has³a
+* prawdopodobnie rozwi±zany problem z zapisywaniem has³a (adrian)
 * poprawiony b³±d wystêpuj±cy gdy ustawiony jest nieistniej±cy ju¿
-  zestaw emotów.
+  zestaw emotów (adrian)
 * dockhint->trayhint(poprawki, ulepszenia i przygotowania do dodania powiadomieñ
   o dostêpnych osobach i ew. b³êdach podczas ³±czenia siê z serwerem GG.
 * informacja o dostêpno¶ci przez hinta w tray'u i wy¶wietlanie niektórych
@@ -39,7 +42,7 @@
   ró¿nych mened¿erów okien (chilek)
 * mo¿liwo¶æ w³±czenia/wy³±czenia TrayIcon w trakcie dzia³ania programu (chilek)
 * obs³uga dokowania (TrayIcon) bez po¶rednictwa KDE. Powinno dzia³aæ
-  miêdzy innymi pod GNOME
+  miêdzy innymi pod GNOME (adrian)
 * okno informacji o u¿ytkowniku: zmiana pola "Wy¶wietl" aktualizuje
   okna rozmów które maj± w tytule star± nazwê u¿ytkownika (chilek)
 * okno wyboru statusu (pojawiaj±ce siê po klikniêciu pola z naszym
@@ -58,66 +61,76 @@
 * mo¿liwo¶æ usuniêcia z listy wielu u¿ytkowników na raz (chilek)
 * okno dodawania u¿ytkownika: nie mo¿na dodaæ do listy u¿ytkownika, który
   ma puste pole "altnick" (chilek)
-* emotikony: kadu nie zapêtla siê jesli mamy ustawiony nie istniej±cy juz zestaw
-* okno rozmowy: mo¿liwo¶æ zmieniania proporcji pomiêdzy widokiem historii rozmowy,
-  a reszt± okna (chilek)
+* emotikony: kadu nie zapêtla siê jesli mamy ustawiony
+  nie istniej±cy juz zestaw (adrian)
+* okno rozmowy: mo¿liwo¶æ zmieniania proporcji pomiêdzy widokiem
+  historii rozmowy, a reszt± okna (chilek)
 * sms: znowu powinny dzia³aæ era i plus (standardowo przez zewnêtrzny
-  program kadusms).
-* szyfrowanie: odbierania klucza publicznego nie powoduje padów aplikacji, a ponadto
-  zatwierdzenie jego zapisania powoduje uaktywnienie guzika "encryption" w rozmowie
-  prowadzonej z osob±, która do nas przys³a³a swój klucz publiczny
-* powiadamianie d¼wiêkiem o zmianie statusu kontaktów nastêpuje tylko wtedy, gdy
-  czas jaki min±³ od ostatniego takiego zdarzenia przekracza 500ms (chilek)
+  program kadusms) (adrian)
+* szyfrowanie: odbierania klucza publicznego nie powoduje padów aplikacji,
+  a ponadto zatwierdzenie jego zapisania powoduje uaktywnienie guzika
+  "encryption" w rozmowie prowadzonej z osob±, która do nas przys³a³a
+  swój klucz publiczny
+* powiadamianie d¼wiêkiem o zmianie statusu kontaktów nastêpuje tylko wtedy,
+  gdy czas jaki min±³ od ostatniego takiego zdarzenia przekracza 500ms (chilek)
 * okno rozmowy: SHIFT+PageUp, PageUp - przesuwaj± historiê rozmowy do góry,
   SHIFT+PageDown, PageDown - przesuwaj± historiê rozmowy do do³u (chilek)
 * sms: wysy³anie smsów wewnêtrznym mechanizmem kadu (z ew. wy¶wietlaniem
   obrazka ze strony sms.idea.pl). Program SMS Miko³aja Rydzewskiego
-  zosta³ usuniêty ze ¼róde³
+  zosta³ usuniêty ze ¼róde³ (adrian)
 
 +++ wersja 0.3.3-pre4
-* przy imporcie listy u¿ytkowników ustawiamy domy¶lne atrybuty u¿ytkowników (chilek)
-* poprawki zwi±zane z zarz±dzaniem widoczno¶ci± ikony programu w tray'u (chilek)
+* przy imporcie listy u¿ytkowników ustawiamy domy¶lne
+  atrybuty u¿ytkowników (chilek)
+* poprawki zwi±zane z zarz±dzaniem widoczno¶ci±
+  ikony programu w tray'u (chilek)
 * je¶li ikona programu jest widoczna w tray'u to wiadomo¶ci od u¿ytkowniów
-  anonimowych nie powoduj± dodawania tych u¿ytkowników do listy; w przeciwnym przypadku
-  u¿ytkownicy s± dodawani do listy (serwer GG nie jest o tym informowany!) (chilek)
-* w oknie rozmowy dodano guzik blokuj±cy przewijanie rozmowy (mo¿na spokojnie przeczytaæ
-  co kto¶ do nas napisa³ du¿o wcze¶niej) (chilek)
+  anonimowych nie powoduj± dodawania tych u¿ytkowników do listy;
+  w przeciwnym przypadku u¿ytkownicy s± dodawani do listy
+  (serwer GG nie jest o tym informowany!) (chilek)
+* w oknie rozmowy dodano guzik blokuj±cy przewijanie rozmowy
+  (mo¿na spokojnie przeczytaæ co kto¶ do nas napisa³ du¿o wcze¶niej) (chilek)
 * mo¿liwo¶æ rezygnacji ze zmiany statusu na status opisowy (chilek)
 * usuniête wywalanie siê kadu po otwarciu okna z danymi osobistymi
-  (w momencie gdy nie znaleziono informacji o nas w katalogu publicznym) (chilek)
+  (w momencie gdy nie znaleziono informacji
+  o nas w katalogu publicznym) (chilek)
 * mo¿liwo¶æ regulacji wielko¶ci panela informacyjnego (chilek)
 * wyszukiwanie u¿ytkowników zgodne z GG 5.0 (chilek)
-* w oknie rozmowy: mo¿na zmieniæ proporcjê pomiêdzy rozmiarem okna historii rozmowy,
-  a list± u¿ytkowników (gdy prowadzimy konferencjê) (chilek)
+* w oknie rozmowy: mo¿na zmieniæ proporcjê pomiêdzy rozmiarem okna historii
+  rozmowy, a list± u¿ytkowników (gdy prowadzimy konferencjê) (chilek)
 * chyba poprawiony pad przy wiadomo¶ciach systemowych. UWAGA! teraz lec±
-  tylko na konsolê. Je¶li chcecie ogl±daæ reklamy to dajcie znaæ ;)
+  tylko na konsolê. Je¶li chcecie ogl±daæ reklamy to dajcie znaæ ;) (adrian)
 * usprawnienia w oknie poszukiwañ u¿ytkowników (chilek):
   - szukanie u¿ytkowników najpierw powoduje wyczyszczenie listy u¿ytkowników,
-  - szukanie kolejnych u¿ytkowników nie powoduje dodawania do listy ju¿ wcze¶niej znalezionych.
-* dane osobiste: pobieranie o nas informacji wykorzystuje wyszukiwanie zgodne z GG 5.0 (chilek)
-* dane osobiste: dzia³aj± w standardzie GG 5.0 (nie ma problemów z poszczególnymi polami
-  naszego opisu) (chilek)
-* dane osobiste: obs³uga FamilyName i FamilyCity (chilek)
+  - szukanie kolejnych u¿ytkowników nie powoduje dodawania do listy
+    ju¿ wcze¶niej znalezionych.
+* dane osobiste: pobieranie o nas informacji wykorzystuje
+  wyszukiwanie zgodne z GG 5.0 (chilek)
+* dane osobiste: dzia³aj± w standardzie GG 5.0
+  (nie ma problemów z poszczególnymi polami naszego opisu) (chilek)
+* dane osobiste: obs³uga FamilyName i FamilyCity (chilek,adrian)
 * szyfrowanie: gruntowna poprawka - przejscie na simlite z ekg. dziala juz
-  kadu<=>kadu, ale kod wymaga jeszcze troszke pracy
+  kadu<=>kadu, ale kod wymaga jeszcze troszke pracy (adrian)
 * przypominanie has³a nie blokuje kadu (chilek)
 * dodane okno zmiany has³a GG (chilek)
 * porz±dki zwi±zane z oknem rejestracji u¿ytkownika GG (chilek)
 * zapisywanie pozycji podzia³u userlist(userbox) i opisu + poprawki zapisywania
   geometrii okna i warto¶ci domy¶lnych (chilek)
 * udoskonalenie zak³adki wygl±d i dodanie mo¿liwo¶ci ustawienia wygl±du widgetu
-  w userboxie, który pokazuje dane u¼ytkownika + zmiany w sposobie zapisu konfiguracji
-  kolorów i czcionek.
+  w userboxie, który pokazuje dane u¼ytkownika + zmiany w sposobie zapisu
+  konfiguracji kolorów i czcionek.
 * dodane okno wyrejestrowania u¿ytkownika GG (chilek)
 * dane osobiste: kosmetyka wygl±du okna (chilek)
-* konfiguracja: testowanie d¼wiêków uwzglêdnia zmiany dokonane w polach konfiguracji
-  plików d¼wiêkowych (chilek)
+* konfiguracja: testowanie d¼wiêków uwzglêdnia zmiany dokonane w polach
+  konfiguracji plików d¼wiêkowych (chilek)
 * konfiguracja: dodano guzik testowania przy wyborze d¼wiêku powiadamiania o
   obecno¶ci uzytkownika (chilek)
 * konfiguracja: zmiana konfiguracji wygl±du nie wymaga zrestartowania kadu, aby
   zasz³y zmiany w wygl±dzie (chilek)
-* szyfrowanie: generowanie tylko kluczy 1024 bity (innych nie obs³uguje protokó³)
-* szyfrowanie: poprawki kosmetyczne interfejsu u¿ytkownika i samego kodu
+* szyfrowanie: generowanie tylko kluczy 1024 bity
+  (innych nie obs³uguje protokó³) (adrian)
+* szyfrowanie: poprawki kosmetyczne interfejsu u¿ytkownika
+  i samego kodu (adrian)
 * dodanie opcji usuwania userlisty z serwera, import/export userlisty z 
   pliku
 
@@ -125,28 +138,33 @@
 * CTRL + klik dowolnego przycisku myszki na ikonce w tray'u powoduje
   wy¶wietlenie wiadomo¶ci/rozmowy
 * szyfrowanie wiadomo¶ci przy u¿yciu OpenSSL (scooty) +
-  configure: opcja --with-openssl (ca³o¶æ eksperymentalna)
+  configure: opcja --with-openssl (ca³o¶æ eksperymentalna) (adrian)
 * dodanie do kodu domy¶lnych serwerów GG. Kadu ³±czy siê najpierw
   z hubem, dostaje ip serwera z którym sie próbuje po³±czyæ.
-  Je¿eli to siê nie uda, ³±czy siê z 217.17.41.85, pó¼niej .84 i .83 na porcie 8074
+  Je¿eli to siê nie uda, ³±czy siê z 217.17.41.85, pó¼niej .84 i .83
+  na porcie 8074.
   Natomiast gdy uda siê po³±czyæ i z jakiej¶ przyczyny po³±czenie zostanie 
   zerwane lub po prostu osoba sama siê roz³±czy (status: niedostêpny)
   - cykl ³±czenia siê z serwerami GG zaczyna siê od pocz±tku czyli jw.
 * informacja o b³êdzie sieciowym podczas próby wys³ania wiadomo¶ci
   przy braku po³±czenia z serwerem GG (chilek)
-* ikonka w tray'u powinna sygnalizowaæ wiadomo¶æ do odczytania po restarcie kadu (chilek)
-* u do³u pojawia siê informacja o u¿ytkowniku
-* dostêpno¶æ nowych wersji kadu nie jest sprawdzana, gdy nie mamy przydzielonego
-  numeru GG (chilek)
-* prawid³owe wy¶wietlanie polskich literek w opisach osób niedostêpnych (chilek)
-* poprawka domy¶lnej geometrii g³ównego okna
-* po zmianie powiadomieñ w oknie konfiguracji ustawienia powiadomieñ s± zapamiêtywane (chilek)
-* poprawione automatyczne otwieranie wszystkich oczekuj±cych wiadomo¶ci konferencyjnych (chilek)
+* ikonka w tray'u powinna sygnalizowaæ wiadomo¶æ do odczytania
+  po restarcie kadu (chilek)
+* u do³u pojawia siê informacja o u¿ytkowniku (chilek,adrian)
+* dostêpno¶æ nowych wersji kadu nie jest sprawdzana, gdy nie mamy
+  przydzielonego numeru GG (chilek)
+* prawid³owe wy¶wietlanie polskich literek
+  w opisach osób niedostêpnych (chilek)
+* poprawka domy¶lnej geometrii g³ównego okna (adrian)
+* po zmianie powiadomieñ w oknie konfiguracji ustawienia
+  powiadomieñ s± zapamiêtywane (chilek)
+* poprawione automatyczne otwieranie wszystkich oczekuj±cych
+  wiadomo¶ci konferencyjnych (chilek)
 
 +++ wersja 0.3.3-pre2
-* dostosowanie do QT 3.1.0 i KDE 3.1-rc5
+* dostosowanie do QT 3.1.0 i KDE 3.1-rc5 (adrian)
 * lepszy selektor emotow - potrafi wystawac za chat
-  i zachowuje sie jak popup-menu
+  i zachowuje sie jak popup-menu (adrian)
 * mo¿na anulowaæ oczekiwanie na potwierdzenie dostarczenia wiadomosci (chilek)
 * wyszukiwanie u¿ytkowników: pierwszy znaleziony u¿ytkownik staje siê wybranym
   - teraz nie mo¿na ju¿ dodaæ drugi raz tego samego u¿ytkownika (chilek)
@@ -161,58 +179,66 @@
 * okno rozmowy: chmurki z opisem emotikonek w oknie wyboru emotikonki
 * playSound(): fork() -> QProcess (chilek)
 * u¿ytkownicy na li¶cie s± sortowani z uwglêdnieniem polskich literek (chilek)
-* okno informacji o u¿ytkowniku: wydzielenie zak³adek z poszczególnymi opcjami (chilek)
-* poprawiono wy¶wietlanie emotikonów
+* okno informacji o u¿ytkowniku: wydzielenie zak³adek z poszczególnymi
+  opcjami (chilek)
+* poprawiono wy¶wietlanie emotikonów (adrian)
 * mo¿liwo¶æ blokowania u¿ytkowników (chilek)
-* mo¿liwo¶æ ukrycia siê przed u¿ytkownikami, których mamy na li¶cie przy statusie
-  "tylko dla znajomych" (chilek)
+* mo¿liwo¶æ ukrycia siê przed u¿ytkownikami, których mamy na li¶cie
+  przy statusie "tylko dla znajomych" (chilek)
 * poprawione wysy³anie smsów (przez bramka.org) - znowu dzia³a idea,
-  oraz lepsza obsluga argumentów u¿ytkownika do programu sms
+  oraz lepsza obsluga argumentów u¿ytkownika do programu sms (adrian)
 * wy¶wietlanie hintów przy ikonce w docku - experimental
-* mo¿liwo¶æ ignorowania wiadomo¶ci od u¿ytkowników spoza listy kontaktów (chilek)
+* mo¿liwo¶æ ignorowania wiadomo¶ci od u¿ytkowników
+  spoza listy kontaktów (chilek)
 * obs³uga zmiennej CONFIG_DIR - funkcja ggPath ogólnego zastosowania do
-  konwersji scie¿ek ze wzglêdnych w katalogu gg do bezwzglêdnych
+  konwersji scie¿ek ze wzglêdnych w katalogu gg do bezwzglêdnych (adrian)
 * u¿ytkownicy anonimowi nie s± dodawani do listy. (chilek)
 * configure: mo¿liwo¶æ wy³±czenia kompilacji libgadu i zlinkowania z ju¿
-  istniej±c± w systemie instalacj± (--with-existing-libgadu)
+  istniej±c± w systemie instalacj± (--with-existing-libgadu) (adrian)
 * configure: wkompilowywana informacja o typie dystrybucji, np. ¼ród³a, paczka
-  dla okre¶lonego systemu itp. (--enable-dist-info=DIST)
+  dla okre¶lonego systemu itp. (--enable-dist-info=DIST) (adrian)
 
 +++ wersja 0.3.3-pre1
-* automatyczna kompilacja programu sms
+* automatyczna kompilacja programu sms (adrian)
 * porz±dki w opcji wysy³ania sms: brak opcji, je¶li osoba nie ma
   numeru, osobna opcja w menu g³ównym do wysy³ania sms'a pod wpisany z
-  klawiatury numer.
+  klawiatury numer (adrian)
 * ustawienia kolorów i czcionek listy u¿ytkowników i okna rozmowy
-* domy¶lna opcja wywo³anie wbudowanego programu kadusms
-* dynamiczne emotikony z mo¿liwo¶ci± wyboru zestawu (+do³±czony kadubis)
+* domy¶lna opcja wywo³anie wbudowanego programu kadusms (adrian)
+* dynamiczne emotikony z mo¿liwo¶ci± wyboru zestawu
+  (+do³±czony kadubis) (adrian)
 * has³o nie pokazuje siê na konsoli (chilek)
 * wiadomo¶ci typu message "wpadaj±" do okna rozmowy (chilek)
-* historia wys³anych sms'ów
-* ograniczenie statusu opisowego do 40 znaków i przejscie na QLineEdit
+* historia wys³anych sms'ów (adrian)
+* ograniczenie statusu opisowego do 40 znaków i przejscie na QLineEdit (adrian)
 * mo¿liwo¶æ konfiguracji serwera proxy w oknie konfiguracji (chilek)
 * w strukturze config: char *password -> QString password (chilek)
 * autoryzacja proxy (chilek)
-* ENTER/RETURN w li¶cie u¿ytkowników dzia³a tak jak podwójne klikniêcie myszk± (chilek)
+* ENTER/RETURN w li¶cie u¿ytkowników dzia³a tak
+  jak podwójne klikniêcie myszk± (chilek)
 * opcja powiadamiania o zmianie statusu wszystkich u¿ytkowników (chilek)
 * kadu nie wysypuje siê jak mamy w³±czone "autoaway" i jeste¶my offline (chilek)
-* w oknie poszukiwañ: gdy znaleziono jednego u¿ytkownika nie trzeba go zaznaczaæ,
-  aby dodaæ go do listy, albo uaktualniæ informacjê o nim (chilek)
-* w oknie konfiguracji: gdy odznaczymy domy¶lny serwer GG i nie wpiszemy ¿adnego
-  serwera GG to kadu ju¿ nie wywala siê przy próbie ponownego ³±czenia siê (chilek)
-* Autostatus z pliku ~/.gg/description je¶li istnieje - do zastosowañ zwi±zanych
-  z XMMS i innymi.
+* w oknie poszukiwañ: gdy znaleziono jednego u¿ytkownika nie trzeba go
+  zaznaczaæ, aby dodaæ go do listy, albo uaktualniæ informacjê o nim (chilek)
+* w oknie konfiguracji: gdy odznaczymy domy¶lny serwer GG i nie wpiszemy
+  ¿adnego serwera GG to kadu ju¿ nie wywala siê przy próbie ponownego
+  ³±czenia siê (chilek)
+* Autostatus z pliku ~/.gg/description je¶li istnieje - do
+  zastosowañ zwi±zanych z XMMS i innymi (adrian)
 * okno rejestracji: przej¶cie na QSocketNotifier (chilek)
 * status opisowy: bardziej restrykcyjne (zmienna sess) sprawdzanie czy jeste¶my
   od³±czeni od serwera
-* status opisowy: kasowanie pliku description po jego odczytaniu
-* configure: pare pomocniczych komunikatów
-* configure: mo¿liwo¶æ wy³±czenia kompilacji kadusms (--disable-sms)
-* configure: instalacja dokumentacji wraz z Kadu (i opcja --disable-doc)
-* configure: symbole dla debugera nie sa wkompilowywane (i opcja --enable-debug)
-* opcja Pomoc w menu - otwiera Konqueror'a z zainstalowan± dokumentacj±
+* status opisowy: kasowanie pliku description po jego odczytaniu (adrian)
+* configure: pare pomocniczych komunikatów (adrian)
+* configure: mo¿liwo¶æ wy³±czenia kompilacji kadusms (--disable-sms) (adrian)
+* configure: instalacja dokumentacji wraz z Kadu
+  (i opcja --disable-doc) (adrian)
+* configure: symbole dla debugera nie sa wkompilowywane
+  (i opcja --enable-debug) (adrian)
+* opcja Pomoc w menu - otwiera Konqueror'a z
+  zainstalowan± dokumentacj± (adrian)
 * usuneli¶my z kodów ¼ród³owych poszczególnych modu³ów informacje
-  o autorach - wystarczy plik AUTHORS
+  o autorach - wystarczy plik AUTHORS (adrian)
 * mrugaj±cy tytu³ okna chat (zminimalizowanego te¿)
   przy doj¶ciu nowej wiadomo¶ci (mast3r)
 * status zmienia siê prawid³owo
@@ -224,7 +250,7 @@
 * ikonka okna rozmowy jest aktualnym stanem rozmowcy
 * doklejanie ~/.gg/description do statusu jesli chcemy (por.
   XMMS - libsongchange.so)
-* kompilowanie libgadu jako .so i linkowanie dynamiczne
+* kompilowanie libgadu jako .so i linkowanie dynamiczne (adrian)
 * dodane #define HAVE_PTHREAD 1 w libgadu.h - teraz kadu operuje na tej
   samej strukturze gg_search co libgadu.so
 * powiadamianie o update'ach u¿ywa sta³ej VERSION (chilek)
