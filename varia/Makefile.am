@@ -24,5 +24,5 @@ install-data-local:
 	$(INSTALL_DATA) images/bye.gif $(kde_datadir)/kadu/images/
 
 uninstall-local:
-	rm -f $(kde_datadir)/kadu/*
+	rm -f $(kde_datadir)/kadu/msg.wav
 	rm -f $(kde_datadir)/kadu/images/*
