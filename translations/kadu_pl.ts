@@ -481,7 +481,7 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     </message>
     <message>
         <source>Show / hide users without description</source>
-        <translation>Filtruj kontakty z opisami</translation>
+        <translation>Pokaż / ukryj kontakty bez opisu</translation>
     </message>
     <message>
         <source>Force use of paragraphs (VERY experimental)</source>
@@ -1175,7 +1175,7 @@ Wybierz jedną z poniższych opcji:</translation>
     </message>
     <message>
         <source>Show / hide users without description</source>
-        <translation>Filtruj kontakty z opisami</translation>
+        <translation>Pokaż / ukryj kontakty bez opisu</translation>
     </message>
     <message>
         <source>Connection will be stoped
