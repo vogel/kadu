@@ -25,114 +25,113 @@
 #include "sms.h"
 //
 
-Sms::Sms (unsigned int gsmno,const QString & name, QDialog* parent) : QDialog (parent, name) {
-    int i;
+Sms::Sms(unsigned int gsmno,const QString & name, QDialog* parent) : QDialog (parent, name) {
+	int i;
 
-    QGridLayout * grid = new QGridLayout(this,3,4,10,3);
+	QGridLayout * grid = new QGridLayout(this, 3, 4, 10, 3);
 
-    body = new QMultiLineEdit(this);
-    grid->addMultiCellWidget(body,1,1,0,3);
-    body->setWordWrap(QMultiLineEdit::WidgetWidth);
-    QObject::connect(body, SIGNAL( textChanged() ), this, SLOT( updateCounter() ));
+	body = new QMultiLineEdit(this);
+	grid->addMultiCellWidget(body, 1, 1, 0, 3);
+	body->setWordWrap(QMultiLineEdit::WidgetWidth);
+	QObject::connect(body, SIGNAL(textChanged()), this, SLOT(updateCounter()));
 
-    recipient = new QLineEdit(this);
+	recipient = new QLineEdit(this);
 
-    grid->addWidget(recipient,0,1);
+	grid->addWidget(recipient, 0, 1);
 
-    QComboBox * list = new QComboBox(this);
-    QObject::connect(list, SIGNAL(activated(const QString&)), this, SLOT(updateRecipient(const QString &)));
-    i = 0;
-    while (i < userlist.size()) {
-	if (QString::compare(userlist[i].mobile,""))
-	    list->insertItem(__c2q(userlist[i].nickname));
-	i++;
-	}
-    grid->addWidget(list,0,3);
+	QComboBox *list = new QComboBox(this);
+	QObject::connect(list, SIGNAL(activated(const QString&)), this, SLOT(updateRecipient(const QString &)));
+	i = 0;
+ 	while (i < userlist.count()) {
+		if (QString::compare(userlist[i].mobile,""))
+			list->insertItem(userlist[i].comment);
+		i++;
+		}
+	grid->addWidget(list, 0, 3);
 
-    i = 0;
-    while (i < list->count() && name != list->text(i))
-	i++;
+	i = 0;
+	while (i < list->count() && name != list->text(i))
+		i++;
 
-    QString myuin;
-    if (i < list->count()) {
-	list->setCurrentItem(i);
-	myuin = list->text(i);
-	recipient->setText(UserToMobile(&myuin));
-	}
-    else
-	if (list->count()) {
-	    myuin = list->text(0);
-	    recipient->setText(UserToMobile(&myuin));
-	    }
-  
-    QLabel * recilabel = new QLabel(this);
-    recilabel->setText(i18n("Recipient"));
-    grid->addWidget(recilabel,0,0);
+	QString myuin;
+	if (i < list->count()) {
+		list->setCurrentItem(i);
+		myuin = list->text(i);
+		recipient->setText(userlist.byComment(myuin).mobile);
+		}
+	else
+		if (list->count()) {
+			myuin = list->text(0);
+			recipient->setText(userlist.byComment(myuin).mobile);
+			}
 
-    b_send = new QPushButton(this);
-    b_send->setText(i18n("Send"));
-    grid->addWidget(b_send,3,3);
-    QObject::connect(b_send, SIGNAL(clicked()), this, SLOT(sendSms()));
+	QLabel *recilabel = new QLabel(this);
+	recilabel->setText(i18n("Recipient"));
+	grid->addWidget(recilabel, 0, 0);
 
-    smslen = new QLabel(this);
-    smslen->setText("0");
-    grid->addWidget(smslen,3,0);
+	b_send = new QPushButton(this);
+	b_send->setText(i18n("Send"));
+	grid->addWidget(b_send, 3, 3);
+	QObject::connect(b_send, SIGNAL(clicked()), this, SLOT(sendSms()));
 
-    resize(300,200);
-    setCaption(i18n("Send SMS"));
+	smslen = new QLabel(this);
+	smslen->setText("0");
+	grid->addWidget(smslen, 3, 0);
+
+	resize(300,200);
+	setCaption(i18n("Send SMS"));
 }
 
 void Sms::updateRecipient(const QString &newtext) {
-    int i = 0;
-    while (i < userlist.size() && newtext.compare(__c2q(userlist[i].nickname)))
-	i++;
-    recipient->setText(userlist[i].mobile);
+	int i = 0;
+	while (i < userlist.count() && newtext.compare(userlist[i].nickname))
+		i++;
+	recipient->setText(userlist[i].mobile);
 }
 
 int Sms::sendSms(void) {
-    b_send->setEnabled(false);
-    body->setEnabled(false);
+	b_send->setEnabled(false);
+	body->setEnabled(false);
 
-    if (QString::compare(config.smsapp,"")) {
-	smsProcess = new QProcess(this);
-	if (config.smscustomconf) {
-	    QString jakisstring;
-	    jakisstring.sprintf(config.smsconf, config.smsapp, recipient->text().toInt(), (const char *)body->text().local8Bit());
-	    smsProcess->addArgument(jakisstring);
-	    }
+	if (QString::compare(config.smsapp,"")) {
+		smsProcess = new QProcess(this);
+		if (config.smscustomconf) {
+			QString jakisstring;
+			jakisstring.sprintf(config.smsconf, config.smsapp, recipient->text().toInt(), (const char *)body->text().local8Bit());
+			smsProcess->addArgument(jakisstring);
+			}
+		else {
+			smsProcess->addArgument(config.smsapp);
+			smsProcess->addArgument(recipient->text());
+			smsProcess->addArgument(body->text());
+			}
+		}
 	else {
-	    smsProcess->addArgument(config.smsapp);
-	    smsProcess->addArgument(recipient->text());
-	    smsProcess->addArgument(body->text());
-	    }
+		QMessageBox::warning(this, i18n("SMS error"), i18n("Sms application was not specified. Visit the configuration section") );
+		fprintf(stderr,"KK SMS application NOT specified. Exit.\n");
+		return -1;
+		}
 
-	}
-    else {
-	QMessageBox::warning(this, i18n("SMS error"), i18n("Sms application was not specified. Visit the configuration section") );
-	fprintf(stderr,"KK SMS application NOT specified. Exit.\n");
-	return -1;
-	}
-
-    if (!smsProcess->start())
-	QMessageBox::critical(this, i18n("SMS error"), i18n("Could not spawn child process. Check if the program is functional") );
-    QObject::connect(smsProcess, SIGNAL(processExited()), this, SLOT(smsSigHandler()));
+	if (!smsProcess->start())
+		QMessageBox::critical(this, i18n("SMS error"), i18n("Could not spawn child process. Check if the program is functional") );
+	QObject::connect(smsProcess, SIGNAL(processExited()), this, SLOT(smsSigHandler()));
 }
 
 void Sms::smsSigHandler() {
-    if (smsProcess->normalExit())
-	QMessageBox::information(this, i18n("SMS sent"), i18n("The process exited normally. The SMS should be on its way"));
-    else
-	QMessageBox::warning(this, i18n("SMS not sent"), i18n("The process exited abnormally. The SMS may not be sent"));
+	if (smsProcess->normalExit())
+		QMessageBox::information(this, i18n("SMS sent"), i18n("The process exited normally. The SMS should be on its way"));
+	else
+		QMessageBox::warning(this, i18n("SMS not sent"), i18n("The process exited abnormally. The SMS may not be sent"));
 
-    b_send->setEnabled(true);
-    body->setEnabled(true);
-    body->clear();
+	b_send->setEnabled(true);
+	body->setEnabled(true);
+	body->clear();
 }
 
 void Sms::updateCounter() {
-    char len[10];
-    snprintf(len, sizeof(len), "%d", body->text().length());
-    smslen->setText(len);
+	char len[10];
+	snprintf(len, sizeof(len), "%d", body->text().length());
+	smslen->setText(len);
 }
 
 #include "sms.moc"

@@ -48,17 +48,4 @@ class UserBox : public QListBox , QToolTip
 		static void all_changeAllToInactive();		
 };
 
-// The code below will be removed soon
-
-class MyListBox : public QListBox , QToolTip {
-    Q_OBJECT
-    public:
-        MyListBox ( QWidget * parent=0, const char * name=0, WFlags f=0 );
-        virtual void clear() { QListBox::clear(); };
-
-    protected:
-        virtual void maybeTip(const QPoint&);
-        int descriptionForUser(QListBoxItem *);
-};
-
 #endif

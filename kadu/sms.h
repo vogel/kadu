@@ -33,18 +33,17 @@ class Sms : public QDialog {
 		Sms(unsigned int gsmno = 0, const QString & = "sms", QDialog* parent=0);
 
 	private:
-		QMultiLineEdit * body;
-		QLineEdit * recipient;
-		QLabel * smslen;
-		QPushButton * b_send;
-		QProcess * smsProcess;
+		QMultiLineEdit *body;
+		QLineEdit *recipient;
+		QLabel *smslen;
+		QPushButton *b_send;
+		QProcess *smsProcess;
 
 	private slots:
 		void updateRecipient(const QString &);
 		int sendSms();
 		void updateCounter();
 		void smsSigHandler();
-
 };
 
 #endif
