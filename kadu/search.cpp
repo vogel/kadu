@@ -450,6 +450,4 @@ void SearchDialog::updateInfoClicked()
 	UserInfo *ui = new UserInfo("user info", 0, QString::null);
 	ui->setUserInfo(e);
 	ui->show();
-//	userlist.changeUserInfo(ule.altnick, e);
-//	userlist.writeToFile();
 }
