@@ -138,7 +138,6 @@ Wizard::~Wizard()
 void Wizard::finishClicked()
 {
 	kdebugf();
-	setOldGaduAccount();
 	setGeneralOptions();
 	setChatOptions();
 	setColorsAndIcons();
