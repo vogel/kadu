@@ -1620,7 +1620,7 @@ const QString &History::gaduStatus2symbol(unsigned int status)
 	}
 }
 
-void History::setDateListViewText(QDateTime &datetime)
+void History::setDateListViewText(const QDateTime &datetime)
 {
 	kdebugf();
 	QListViewItem *actlvi;
@@ -1691,24 +1691,35 @@ void History::searchHistory()
 	if (findrec.reverse)
 		do
 		{
-			len = total > 100 ? 100 : total;
+			len = total > 1000 ? 1000 : total;
 			entries = history.getHistoryEntries(uins, findrec.actualrecord - len + 1, len);
 			entriesCount = entries.count();
-			for (i = 0; i < entriesCount; ++i)
+			//ehh, szkoda, ¿e w Qt nie ma reverse iteratorów...
+			QValueList<HistoryEntry>::const_iterator entry = entries.fromLast();
+			QValueList<HistoryEntry>::const_iterator firstEntry = entries.begin();
+			bool end;
+			i = 0;
+			do
+			{
 				if ((findrec.type == 1 &&
-					(entries[entriesCount - i - 1].type & HISTORYMANAGER_ENTRY_ALL_MSGS)
-					&& entries[entriesCount - i - 1].message.contains(rxp)) ||
+					((*entry).type & HISTORYMANAGER_ENTRY_ALL_MSGS)
+					&& (*entry).message.contains(rxp)) ||
 					(findrec.type == 2 &&
-					(entries[entriesCount - i - 1].type & HISTORYMANAGER_ENTRY_STATUS)
-					&& findrec.data == gaduStatus2symbol(entries[entriesCount - i - 1].status)))
+					((*entry).type & HISTORYMANAGER_ENTRY_STATUS)
+					&& findrec.data == gaduStatus2symbol((*entry).status)))
 				{
-					setDateListViewText(entries[entries.count() - i - 1].date);
+					setDateListViewText((*entry).date);
 					//showHistoryEntries(findrec.actualrecord - i,
 					//	findrec.actualrecord - i + 99 < count ? 100
 					//	: count - findrec.actualrecord + i);
 					History::start = findrec.actualrecord - i;
 					break;
 				}
+				end = entry == firstEntry;
+				if (!end)
+					--entry;
+				++i;
+			}while (!end);
 			findrec.actualrecord -= i + (i < entriesCount);
 			total -= i + (i < entriesCount);
 			kdebugmf(KDEBUG_INFO, "actualrecord = %d, i = %d, total = %d\n",
@@ -1718,23 +1729,27 @@ void History::searchHistory()
 	else
 		do
 		{
-			len = total > 100 ? 100 : total;
+			len = total > 1000 ? 1000 : total;
 			entries = history.getHistoryEntries(uins, findrec.actualrecord, len);
 			entriesCount = entries.count();
-			for (i = 0; i < entriesCount; ++i)
-				if ((findrec.type == 1 && (entries[i].type & HISTORYMANAGER_ENTRY_ALL_MSGS)
-					&& entries[i].message.contains(rxp)) ||
+			i = 0;
+			CONST_FOREACH(entry, entries)
+			{
+				if ((findrec.type == 1 && ((*entry).type & HISTORYMANAGER_ENTRY_ALL_MSGS)
+					&& (*entry).message.contains(rxp)) ||
 					(findrec.type == 2 &&
-					(entries[i].type & HISTORYMANAGER_ENTRY_STATUS) &&
-					findrec.data == gaduStatus2symbol(entries[i].status)))
+					((*entry).type & HISTORYMANAGER_ENTRY_STATUS) &&
+					findrec.data == gaduStatus2symbol((*entry).status)))
 				{
-					setDateListViewText(entries[i].date);
+					setDateListViewText((*entry).date);
 					//showHistoryEntries(findrec.actualrecord + i,
 					//	findrec.actualrecord + 99 < count ? 100
 					//	: count - findrec.actualrecord - i);
 					History::start = findrec.actualrecord + i;
 					break;
 				}
+				++i;
+			}
 			findrec.actualrecord += i + (i < entriesCount);
 			total -= i + (i < entriesCount);
 			kdebugmf(KDEBUG_INFO, "actualrecord = %d, i = %d, total = %d\n",
