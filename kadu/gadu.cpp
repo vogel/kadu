@@ -745,7 +745,8 @@ void GaduSocketNotifiers::connectionFailed(int failure)
 		case GG_FAILURE_PASSWORD:	err = ConnectionIncorrectPassword; break;
 		case GG_FAILURE_TLS:		err = ConnectionTlsError; break;
 		default:
-			kdebugm(KDEBUG_ERROR, "ERROR: unhandled connection error! %d\n", failure);
+			kdebugm(KDEBUG_ERROR, "ERROR: unhandled/unknown connection error! %d\n", failure);
+			err=ConnectionUnknow;
 	}
 
 	emit error(err);
