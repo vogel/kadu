@@ -47,7 +47,7 @@ class changePassword : public QDialog {
 		void showMessage(QString &msg);
 
 		ImageWidget *tokenimage;
-		QLineEdit *emailedit, *pwdedit, *newpwd, *newpwd2, *tokenedit;
+		QLineEdit *emailedit, *newpwd, *newpwd2, *tokenedit;
 		QLabel *status;
 		QString token_id;
 		token token_handle;

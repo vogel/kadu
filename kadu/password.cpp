@@ -123,16 +123,12 @@ changePassword::changePassword(QDialog *parent, const char *name) : QDialog(pare
 	snr = snw = NULL;
 	h = NULL;
 
-	QGridLayout *grid = new QGridLayout(this, 8, 2, 6, 5);
+	QGridLayout *grid = new QGridLayout(this, 7, 2, 6, 5);
 	
 	tokenimage = new ImageWidget(this);
 
 	QLabel *l_email = new QLabel(tr("E-email"),this);
 	emailedit = new QLineEdit(this);
-
-	QLabel *l_pwd = new QLabel(tr("Actual password"),this);
-	pwdedit = new QLineEdit(this);
-	pwdedit->setEchoMode(QLineEdit::Password);
 
 	QLabel *l_newpwd = new QLabel(tr("New password"),this);
 	newpwd = new QLineEdit(this);
@@ -142,7 +138,10 @@ changePassword::changePassword(QDialog *parent, const char *name) : QDialog(pare
 	newpwd2 = new QLineEdit(this);
 	newpwd2->setEchoMode(QLineEdit::Password);
 
-	QLabel *l_token = new QLabel(tr("Text from the top"),this);
+	QLabel *l_tokenimage = new QLabel(tr("Read this code ..."), this);
+	tokenimage = new ImageWidget(this);
+
+	QLabel *l_token = new QLabel(tr("and type here"), this);
 	tokenedit = new QLineEdit(this);
 
 	status = new QLabel(this);
@@ -151,19 +150,18 @@ changePassword::changePassword(QDialog *parent, const char *name) : QDialog(pare
 	okbtn->setText(tr("OK"));
 	QObject::connect(okbtn, SIGNAL(clicked()), this, SLOT(start()));
 
-	grid->addMultiCellWidget(tokenimage, 0, 0, 0, 1, Qt::AlignHCenter);
-	grid->addWidget(l_email, 1, 0);
-	grid->addWidget(emailedit, 1, 1);
-	grid->addWidget(l_pwd, 2, 0);
-	grid->addWidget(pwdedit, 2, 1);
-	grid->addWidget(l_newpwd, 3, 0);
-	grid->addWidget(newpwd, 3, 1);
-	grid->addWidget(l_newpwd2, 4, 0);
-	grid->addWidget(newpwd2, 4, 1);
-	grid->addWidget(l_token, 5, 0);
-	grid->addWidget(tokenedit, 5, 1);
-	grid->addWidget(status, 7, 0);
-	grid->addWidget(okbtn, 7, 1);
+	grid->addWidget(l_email, 0, 0);
+	grid->addWidget(emailedit, 0, 1);
+	grid->addWidget(l_newpwd, 1, 0);
+	grid->addWidget(newpwd, 1, 1);
+	grid->addWidget(l_newpwd2, 2, 0);
+	grid->addWidget(newpwd2, 2, 1);
+	grid->addWidget(l_tokenimage, 3, 0);
+	grid->addWidget(tokenimage, 3, 1);
+	grid->addWidget(l_token, 4, 0);
+	grid->addWidget(tokenedit, 4, 1);
+	grid->addWidget(status, 6, 0);
+	grid->addWidget(okbtn, 6, 1);
 	grid->addRowSpacing(3, 20);
 
 	setCaption(tr("Change password"));
@@ -217,13 +215,12 @@ void changePassword::closeEvent(QCloseEvent *e) {
 
 void changePassword::start() {
 	kdebug("changePassword::start()\n");
-	if (!pwdedit->text().length() || !emailedit->text().length() || !newpwd->text().length() ||
-		newpwd->text() != newpwd2->text()) {
+	if (!newpwd->text().length() ||	newpwd->text() != newpwd2->text()) {
 		status->setText(tr("Bad data"));
 		return;
 		}
 	char *passwd, *newpasswd, *mail, *tokenid, *tokenval;
-	passwd = strdup(unicode2cp(pwdedit->text()).data());
+	passwd = strdup(unicode2cp(pwHash(config_file.readEntry("General", "Password"))).data());
 	newpasswd = strdup(unicode2cp(newpwd->text()).data());
 	mail = strdup(unicode2cp(emailedit->text()).data());
 	tokenid = strdup(unicode2cp(token_id).data());
@@ -323,6 +320,7 @@ void changePassword::socketEvent() {
 				setEnabled(true);
 				}
 			else {
+				config_file.writeEntry("General", "Password", pwHash(newpwd->text()));
 				config_file.sync();
 				accept();
 				}

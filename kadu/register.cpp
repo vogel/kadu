@@ -63,8 +63,6 @@ Register::Register(QDialog *parent, const char *name) : QDialog (parent, name, F
 
 	QGridLayout *grid = new QGridLayout(this, 7, 2, 6, 5);
 
-	tokenimage = new ImageWidget(this);
-
 	QLabel *l_pwd = new QLabel(tr("Password"),this);
 	pwd = new QLineEdit(this);
 	pwd->setEchoMode(QLineEdit::Password);
@@ -76,7 +74,10 @@ Register::Register(QDialog *parent, const char *name) : QDialog (parent, name, F
 	QLabel *l_mail = new QLabel(tr("E-mail"), this);
 	mailedit = new QLineEdit(this);
 
-	QLabel *l_token = new QLabel(tr("Text from the top"), this);
+	QLabel *l_tokenimage = new QLabel(tr("Read this code ..."), this);
+	tokenimage = new ImageWidget(this);
+
+	QLabel *l_token = new QLabel(tr("and type here"), this);
 	tokenedit = new QLineEdit(this);
 
 	QPushButton *snd = new QPushButton(this);
@@ -90,13 +91,14 @@ Register::Register(QDialog *parent, const char *name) : QDialog (parent, name, F
 	updateconfig->setChecked(true);
 	QToolTip::add(l_updateconfig, tr("Write the newly obtained UIN and password into a clean configuration file\nThis will erase your current config file contents if you have one"));
 
-	grid->addMultiCellWidget(tokenimage, 0, 0, 0, 1, Qt::AlignHCenter);
-	grid->addWidget(l_pwd, 1, 0);
-	grid->addWidget(pwd, 1, 1);
-	grid->addWidget(l_pwd2, 2, 0);
-	grid->addWidget(pwd2, 2, 1);
-	grid->addWidget(l_mail, 3, 0);
-	grid->addWidget(mailedit, 3, 1);
+	grid->addWidget(l_pwd, 0, 0);
+	grid->addWidget(pwd, 0, 1);
+	grid->addWidget(l_pwd2, 1, 0);
+	grid->addWidget(pwd2, 1, 1);
+	grid->addWidget(l_mail, 2, 0);
+	grid->addWidget(mailedit, 2, 1);
+	grid->addWidget(l_tokenimage, 3, 0);
+	grid->addWidget(tokenimage, 3, 1);
 	grid->addWidget(l_token, 4, 0);
 	grid->addWidget(tokenedit, 4, 1);
 	grid->addWidget(updateconfig, 5, 0, Qt::AlignRight);
