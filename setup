@@ -1,6 +1,6 @@
 #!/bin/bash
 #################################################################
-# Application Setup Script v0.1.1   (c) 2002 Kadu Team          #
+# Application Setup Script v0.1.3   (c) 2002 Kadu Team          #
 # This program is free software. You can redistribute it and/or #
 # modify it under the terms of the GNU General Public License   #
 #################################################################
@@ -151,6 +151,17 @@ function Deinstal()
 	echo " ============================================================================="
 }
 
+function Aktualizuj_ldsoconf()
+{
+GREP_RESULT=`grep $LIB_DIR /etc/ld.so.conf`
+if [ -z "$GREP_RESULT" ]; then
+	echo >> /etc/ld.so.conf
+	echo $LIB_DIR >> /etc/ld.so.conf
+	/sbin/ldconfig
+	echo "Plik ld.so.conf zosta? zaktualizowany"
+fi
+}
+
 function Error()
 {
 	echo -e "\a"
@@ -226,7 +237,7 @@ fi;
 clear
 	echo
 	echo "==============================================================================="
-	echo "          Welcome To $APP_NAME  Application Setup Script v0.1.2"
+	echo "          Welcome To $APP_NAME  Application Setup Script v0.1.3"
 	echo "==============================================================================="
 	echo
 	echo "  This program is free software; you can redistribute it and/or modify"
@@ -276,6 +287,7 @@ while [ 1 ]; do
 			Konfiguruj
 			Kompiluj
 			Zainstaluj
+			Aktualizuj_ldsoconf
 		fi;
 		if [[ ("$REPLY" == "B") || ("$REPLY" == "b") ]]; then
 			Konfiguruj_bez_libgadu
@@ -286,11 +298,13 @@ while [ 1 ]; do
 			Konfiguruj_bez_ssl
 			Kompiluj
 			Zainstaluj
+			Aktualizuj_ldsoconf
 		fi;
 		if [[ ("$REPLY" == "G") || ("$REPLY" == "g") ]]; then
 			Konfiguruj_z_debug
 			Kompiluj
 			Zainstaluj
+			Aktualizuj_ldsoconf
 		fi;
 		if [[ ("$REPLY" == "U") || ("$REPLY" == "u") ]]; then
 			Odinstaluj

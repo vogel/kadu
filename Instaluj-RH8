@@ -182,6 +182,17 @@ function Deinstal()
 	echo " ============================================================================="
 }
 
+function Aktualizuj_ldsoconf()
+{
+GREP_RESULT=`grep $LIB_DIR /etc/ld.so.conf`
+if [ -z "$GREP_RESULT" ]; then
+	echo >> /etc/ld.so.conf
+	echo $LIB_DIR >> /etc/ld.so.conf
+	/sbin/ldconfig
+	echo "Plik ld.so.conf zosta? zaktualizowany"
+fi
+}
+
 function Error()
 {
 	echo -e "\a"
@@ -329,6 +340,7 @@ while [ 1 ]; do
 			Konfiguruj
 			Kompiluj
 			Zainstaluj
+			Aktualizuj_ldsoconf
 		fi;
 		if [[ ("$REPLY" == "B") || ("$REPLY" == "b") ]]; then
 			Konfiguruj_bez_libgadu
@@ -339,11 +351,13 @@ while [ 1 ]; do
 			Konfiguruj_bez_ssl
 			Kompiluj
 			Zainstaluj
+			Aktualizuj_ldsoconf
 		fi;
 		if [[ ("$REPLY" == "G") || ("$REPLY" == "g") ]]; then
 			Konfiguruj_z_debug
 			Kompiluj
 			Zainstaluj
+			Aktualizuj_ldsoconf
 		fi;
 		if [[ ("$REPLY" == "U") || ("$REPLY" == "u") ]]; then
 			Odinstaluj
