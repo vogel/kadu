@@ -141,7 +141,7 @@ void DockWidget::mousePressEvent(QMouseEvent * e) {
 		}
 }
 
-DockHint::DockHint(QWidget *parent) : QLabel(parent,"docktip",WStyle_Splash)
+DockHint::DockHint(QWidget *parent) : QLabel(parent,"docktip",WStyle_NoBorder|WStyle_StaysOnTop|WStyle_Tool|WX11BypassWM|WWinOwnDC)
 {
 	fprintf(stderr,"KK DockHint::DockHint\n");
 	remove_timer = new QTimer(this);

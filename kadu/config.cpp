@@ -397,7 +397,7 @@ void ConfigDialog::setupTab1(void) {
 	QToolTip::add(b_addtodescription,i18n("If a file ~/.gg/description is present, its contents will be added\nto the status description and then the file will be deleted."));
 
 	b_showhint = new QCheckBox(grid);
-	b_showhint->setText(i18n("Show hint(experymental)"));
+	b_showhint->setText(i18n("Dock hint(experimental)"));
 	if (config.showhint)
 		b_showhint->setChecked(true);		
 
