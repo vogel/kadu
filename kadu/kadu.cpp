@@ -1772,6 +1772,9 @@ void Kadu::createMenu() {
 	QPopupMenu *ppm = new QPopupMenu(this, "ppm");
 	ppm->insertItem(tr("Manage &ignored"), this, SLOT(manageIgnored()));
 	ppm->insertItem(loadIcon("configure.png"), tr("&Configuration"), this, SLOT(configure()),HotKey::shortCutFromFile("kadu_configure"));
+#ifdef MODULES_ENABLED
+	ppm->insertItem(loadIcon("configure.png"), tr("&Manage Modules"), modules_manager, SLOT(showDialog()));
+#endif
 	ppm->insertItem(loadIcon("reload.png"), tr("Resend &userlist"), gadu, SLOT(sendUserList()));
 	if (mute) {
 		muteitem= ppm->insertItem(loadIcon("mute.png"), tr("Unmute sounds"), this, SLOT(muteUnmuteSounds()));

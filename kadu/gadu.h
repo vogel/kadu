@@ -21,7 +21,7 @@ class GaduProtocol : public QObject
 			Zwracany jest numer sekwencyjny wiadomosci, jesli
 			przypadkiem mysli chcieli sledzic jej potwierdzenie.
 		**/
-		int sendMessage(const UinsList& uins,char* msg);
+		int sendMessage(const UinsList& uins,const char* msg);
 		/**
 			Wysyla wiadomosc z formatowaniem tekstu.
 			Jesli adresatow jest wiecej niz
@@ -29,7 +29,7 @@ class GaduProtocol : public QObject
 			Zwracany jest numer sekwencyjny wiadomosci, jesli
 			przypadkiem mysli chcieli sledzic jej potwierdzenie.
 		**/
-		int sendMessageRichText(const UinsList& uins,char* msg,unsigned char* myLastFormats,int myLastFormatsLength);
+		int sendMessageRichText(const UinsList& uins,const char* msg,unsigned char* myLastFormats,int myLastFormatsLength);
 
 	public slots:
 		void sendUserList();	

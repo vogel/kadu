@@ -23,7 +23,7 @@ GaduProtocol::GaduProtocol() : QObject()
 {
 }
 
-int GaduProtocol::sendMessage(const UinsList& uins,char* msg)
+int GaduProtocol::sendMessage(const UinsList& uins,const char* msg)
 {
 	int seq;
 	if(uins.count()>1)
@@ -41,7 +41,7 @@ int GaduProtocol::sendMessage(const UinsList& uins,char* msg)
 	return seq;
 }
 
-int GaduProtocol::sendMessageRichText(const UinsList& uins,char* msg,unsigned char* myLastFormats,int myLastFormatsLength)
+int GaduProtocol::sendMessageRichText(const UinsList& uins,const char* msg,unsigned char* myLastFormats,int myLastFormatsLength)
 {
 	int seq;
 	if(uins.count()>1)
