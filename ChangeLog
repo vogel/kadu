@@ -12,6 +12,7 @@
 * nowe libgadu, zwiêkszenie tymczasowo wysoko¶ci okna konfiguracji (chilek)
 * uaktualnione wysy³anie smsów do telefonów komórkowych w sieci era (chilek)
 * poprawka w oknie about - Kadu ju¿ przecie¿ nie bazuje na KDE (adrian)
+* zawsze otwiera siê okno czatu niezale¿nie od statusu u¿ytkownika (chilek)
 
 +++ wersja 0.3.3-rc4
 * dodatkowe opcje dostêpne w menu podrêcznym u¿ytkownika (blokowanie, ignorowanie,

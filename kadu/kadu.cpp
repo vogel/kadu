@@ -1278,14 +1278,16 @@ void Kadu::sendMessage(QListBoxItem *item) {
 	if (!uins.count())
 		uins.append(userlist.byAltNick(item->text()).uin);
 
-	if (uins.count() > 1 || (userlist.byUin(uins[0]).status != GG_STATUS_NOT_AVAIL
+/*	if (uins.count() > 1 || (userlist.byUin(uins[0]).status != GG_STATUS_NOT_AVAIL
 		&& userlist.byUin(uins[0]).status != GG_STATUS_NOT_AVAIL_DESCR))
 		openChat(uins);
 	else {
 		msg = new Message(item->text());
 		msg->init();
 		msg->show();
-		}    
+		}*/
+//	zawsze otwieraja sie czaty
+	openChat(uins);
 }
 
 /* when we want to change the status */
