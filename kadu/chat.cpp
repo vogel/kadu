@@ -877,14 +877,44 @@ void Chat::insertImage()
 {
 	kdebugf();
 	ImageDialog* id = new ImageDialog(this);
-	id->setDir(config_file.readEntry("Chat", "LastImagePath", "~"));
+	id->setDir(config_file.readEntry("Chat", "LastImagePath"));
 	id->setCaption(tr("Insert image"));
-	if(id->exec() == QDialog::Accepted)
+	if (id->exec() == QDialog::Accepted)
 	{
-		edit->insert(QString("[IMAGE ")+id->selectedFile()+"]");
 		config_file.writeEntry("Chat", "LastImagePath", id->dirPath());
+		QString selectedFile = id->selectedFile();
+		QFileInfo f(selectedFile);
+		delete id;id = NULL;
+		if (!f.isReadable())
+		{
+			MessageBox::wrn(tr("This file is not readable"), true);
+			QTimer::singleShot(0, this, SLOT(insertImage()));
+			kdebugf2();
+			return;
+		}
+		
+		CONST_FOREACH(uin, Uins)
+		{
+			unsigned int maximagesize = userlist.byUinValue(*uin).maxImageSize();
+			if (f.size() >= maximagesize * 1024)
+			{
+				MessageBox::wrn(tr("This file is too big (%1 >= %2)").arg(f.size()).arg(maximagesize * 1024), true);
+				QTimer::singleShot(0, this, SLOT(insertImage()));
+				kdebugf2();
+				return;
+			}
+		}
+		if (f.size() >= (1 << 18)) // 256kB
+		{
+			MessageBox::wrn(tr("This file is too big (%1 >= %2)").arg(f.size()).arg(1<<18), true);
+			QTimer::singleShot(0, this, SLOT(insertImage()));
+			kdebugf2();
+			return;
+		}
+		edit->insert(QString("[IMAGE ") + selectedFile + "]");
 	}
-	delete id;
+	else
+		delete id;
 	edit->setFocus();
 	kdebugf2();
 }
@@ -1618,6 +1648,8 @@ void Chat::initModule()
 	config_file.addVariable("Look", "ChatUsrFontColor", QColor("#000000"));
 
 	config_file.addVariable("Look", "ChatFont", defaultFont);
+
+	config_file.addVariable("Chat", "LastImagePath", QString(getenv("HOME"))+"/");
 
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Look"), "LookTab");
 
