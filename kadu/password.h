@@ -5,7 +5,7 @@
 #include <qsocketnotifier.h>
 
 class remindPassword : public QObject {
-	Q_OBJECT:
+	Q_OBJECT
 
 	public:
 		remindPassword();
