@@ -81,7 +81,7 @@ Wizard::Wizard(QWidget * /*parent*/, const char * /*name*/)
 	cancelButton()->setText(tr("Cancel"));
 	
 	noNewAccount=false;	/* normalnie to jest false */
-	menuPos=kadu->mainMenu()->insertItem(icons_manager.loadIcon("Configuration"), tr("Configuration Wizard"), this, SLOT(wizardStart()), 0, -1, 0);
+	menuPos=kadu->mainMenu()->insertItem(icons_manager.loadIcon("ConfigurationWizard"), tr("Configuration Wizard"), this, SLOT(wizardStart()), 0, -1, 0);
 	
 	connect(gadu, SIGNAL(userListImported(bool, UserList&)), this, SLOT(userListImported(bool, UserList&)));
 	connect(gadu, SIGNAL(registered(bool, UinType)), this, SLOT(registeredAccount(bool, UinType)));
