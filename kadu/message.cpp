@@ -15,6 +15,7 @@
 #include <qcstring.h>
 #include <qaccel.h>
 #include <qmessagebox.h>
+#include <stdlib.h>
 
 //
 #include "misc.h"
