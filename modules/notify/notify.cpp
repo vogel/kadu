@@ -120,9 +120,6 @@ Notify::~Notify()
 	ConfigDialog::unregisterSlotOnApply(notify_slots, SLOT(onApplyConfigDialog()));
 	ConfigDialog::unregisterSlotOnApply(this, SLOT(updateConnections()));
 
-	delete notify_slots;
-	notify_slots=NULL;
-
 			ConfigDialog::removeControl("Notify", "track");
 			ConfigDialog::removeControl("Notify", "Tracked");
 		ConfigDialog::removeControl("Notify", "listbox3");
@@ -169,6 +166,10 @@ Notify::~Notify()
 	ConfigDialog::removeTab("Notify");
 
 	notifySignals.clear();
+
+	delete notify_slots;
+	notify_slots=NULL;
+
 	kdebugf2();
 }
 
