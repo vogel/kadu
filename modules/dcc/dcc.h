@@ -12,37 +12,6 @@
 #include "kadu-config.h"
 #include "gadu.h"
 
-class FileDccSocket;
-
-class DccFileDialog : public QDialog
-{
-	Q_OBJECT
-
-	public:
-		enum TransferType {
-			TRANSFER_TYPE_GET,
-			TRANSFER_TYPE_SEND
-		};
-
-	protected:
-		FileDccSocket* dccsocket;
-		QLabel *l_offset;
-		QProgressBar *p_progress;
-		QVBoxLayout* vlayout1;
-		long long int prevPercent;
-		QTime *time;
-		int prevOffset;
-		int type;
-		void closeEvent(QCloseEvent *e);
-
-	public:
-		DccFileDialog(FileDccSocket* dccsocket, TransferType type, QDialog* parent=NULL, const char* name=NULL);
-		~DccFileDialog();
-		void printFileInfo(struct gg_dcc* dccsock);
-		void updateFileInfo(struct gg_dcc* dccsock);
-
-		bool dccFinished;		
-};
 
 enum dccSocketState {
 	DCC_SOCKET_TRANSFERRING,
@@ -58,7 +27,7 @@ class DccSocket : public QObject
 {
 	Q_OBJECT
 
-	protected:
+	private:
 		QSocketNotifier* snr;
 		QSocketNotifier* snw;
 		struct gg_dcc* dccsock;
@@ -67,17 +36,6 @@ class DccSocket : public QObject
 		int State;
 		static int Count;
 
-		virtual void connectionBroken();
-		virtual void dccError();
-		virtual void dccEvent();
-		virtual void needFileAccept();
-		virtual void needFileInfo();
-		virtual void noneEvent();
-		virtual void dccDone();
-		virtual void tranferDiscarded();
-		virtual void callbackReceived();
-		virtual void setState(int pstate);
-
 	protected slots:
 		void dccDataReceived();
 		void dccDataSent();
@@ -85,36 +43,16 @@ class DccSocket : public QObject
 	public:
 		DccSocket(struct gg_dcc* dcc_sock);
 		~DccSocket();
+		struct gg_dcc* ggDccStruct();
+		struct gg_event* ggDccEvent();
 		virtual void initializeNotifiers();
 		virtual void watchDcc(int check);
 		int state();
 		static int count();
+		virtual void setState(int pstate);
 
 	signals:
 		void dccFinished(DccSocket* dcc);
-};
-
-class FileDccSocket : public DccSocket
-{
-	Q_OBJECT
-
-	private:
-		DccFileDialog* filedialog;
-		QString selectFile();
-	
-	protected:
-		virtual void connectionBroken();
-		virtual void dccError();
-		virtual void needFileAccept();
-		virtual void needFileInfo();
-		virtual void noneEvent();
-		virtual void dccDone();
-		virtual void callbackReceived();
-		virtual void setState(int pstate);
-
-	public:
-		FileDccSocket(struct gg_dcc* dcc_sock);
-		~FileDccSocket();
 };
 
 class DccManager : public QObject
@@ -122,6 +60,7 @@ class DccManager : public QObject
 	Q_OBJECT
 
 	private:
+		friend class DccSocket;
 		gg_dcc* DccSock;
 		QSocketNotifier* DccSnr;
 		QSocketNotifier* DccSnw;
@@ -132,9 +71,6 @@ class DccManager : public QObject
 	private slots:
 		void setupDcc();
 		void closeDcc();
-		void userboxMenuPopup();
-		void sendFile();
-		void kaduKeyPressed(QKeyEvent* e);
 		/**
 			Otrzymano wiadomo¶æ CTCP.
 			Kto¶ nas prosi o po³±czenie dcc, poniewa¿
@@ -158,6 +94,18 @@ class DccManager : public QObject
 		void ifDccIpEnabled(bool value);
 		void configDialogCreated();
 		void configDialogApply();
+
+	signals:
+		void dccEvent(DccSocket* socket);
+		void connectionBroken(DccSocket* socket);
+		void dccError(DccSocket* socket);
+		void needFileAccept(DccSocket* socket);
+		void needFileInfo(DccSocket* socket);
+		void noneEvent(DccSocket* socket);
+		void dccDone(DccSocket* socket);
+		void callbackReceived(DccSocket* socket);
+		void setState(DccSocket* socket);
+		void socketDestroying(DccSocket* socket);
 };
 
 extern DccManager* dcc_manager;

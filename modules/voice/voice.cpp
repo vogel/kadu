@@ -105,6 +105,14 @@ VoiceManager::VoiceManager(QObject *parent, const char *name) : QObject(parent, 
 		SLOT(makeVoiceChat()), HotKey::shortCutFromFile("ShortCuts", "kadu_voicechat"));
 	connect(UserBox::userboxmenu,SIGNAL(popup()),this,SLOT(userBoxMenuPopup()));
 	connect(kadu,SIGNAL(keyPressed(QKeyEvent*)),this,SLOT(mainDialogKeyPressed(QKeyEvent*)));
+	connect(dcc_manager, SIGNAL(connectionBroken(DccSocket*)),
+		this, SLOT(connectionBroken(DccSocket*)));
+	connect(dcc_manager, SIGNAL(dccError(DccSocket*)),
+		this, SLOT(dccError(DccSocket*)));
+	connect(dcc_manager, SIGNAL(callbackReceived(DccSocket*)),
+		this, SLOT(callbackReceived(DccSocket*)));
+	connect(dcc_manager, SIGNAL(dccEvent(DccSocket*)),
+		this, SLOT(dccEvent(DccSocket*)));
 	kdebugf2();
 }
 
@@ -116,6 +124,20 @@ VoiceManager::~VoiceManager()
 	UserBox::userboxmenu->removeItem(voice_chat_item);
 	disconnect(UserBox::userboxmenu,SIGNAL(popup()),this,SLOT(userBoxMenuPopup()));
 	disconnect(kadu,SIGNAL(keyPressed(QKeyEvent*)),this,SLOT(mainDialogKeyPressed(QKeyEvent*)));
+	disconnect(dcc_manager, SIGNAL(connectionBroken(DccSocket*)),
+		this, SLOT(connectionBroken(DccSocket*)));
+	disconnect(dcc_manager, SIGNAL(dccError(DccSocket*)),
+		this, SLOT(dccError(DccSocket*)));
+	disconnect(dcc_manager, SIGNAL(callbackReceived(DccSocket*)),
+		this, SLOT(callbackReceived(DccSocket*)));
+	disconnect(dcc_manager, SIGNAL(dccEvent(DccSocket*)),
+		this, SLOT(dccEvent(DccSocket*)));
+// FIXME: Segfaultuje gdy wcze¶niej zamkniemy okno rozm. g³os. rêcznie.
+/*	for (QMap<DccSocket*, DccVoiceDialog*>::const_iterator i = VoiceDialogs.begin();
+		i != VoiceDialogs.end(); i++)
+	{
+		i.data()->close();
+	}*/
 	kdebugf2();
 }
 
@@ -132,7 +154,7 @@ void VoiceManager::setup()
 	{
 		rt->rsem--;
 		rt->start();
-	}
+	}	
 	kdebugf2();
 }
 
@@ -240,7 +262,28 @@ void VoiceManager::recordSampleReceived(char *data, int length)
 		gsm_encode(voice_enc, input, (gsm_byte *) pos);
 		pos += 33;
 	}
-	emit gsmSampleRecorded(data - 1, length + 1);
+	for (QMap<DccSocket*, DccVoiceDialog*>::const_iterator i = VoiceDialogs.begin();
+		i != VoiceDialogs.end(); i++)
+	{
+		gadu->dccVoiceSend(i.key()->ggDccStruct(), data - 1, length + 1);
+	}
+	kdebugf2();
+}
+
+void VoiceManager::cancelVoiceChatReceived()
+{
+	kdebugf();
+	for (QMap<DccSocket*, DccVoiceDialog*>::const_iterator i = VoiceDialogs.begin();
+		i != VoiceDialogs.end(); i++)
+	{
+		if (i.data() == sender())
+		{
+			i.key()->deleteLater();
+			VoiceDialogs.remove(i.key());
+			break;
+		}
+	}
+	voice_manager->free();
 	kdebugf2();
 }
 
@@ -277,26 +320,46 @@ void VoiceManager::makeVoiceChat()
 				kdebugm(KDEBUG_INFO, "ip: %s, port: %d, uin: %d\n", user.ip().toString().local8Bit().data(), user.port(), user.uin());
 				if ((dcc_new = gadu->dccVoiceChat(htonl(user.ip().ip4Addr()), user.port(),
 					config_file.readNumEntry("General", "UIN"), user.uin())) != NULL) {
-					VoiceSocket* dcc = new VoiceSocket(dcc_new);
-					connect(dcc, SIGNAL(dccFinished(DccSocket *)), this,
+					DccSocket* socket = new DccSocket(dcc_new);
+					connect(socket, SIGNAL(dccFinished(DccSocket *)), dcc_manager,
 						SLOT(dccFinished(DccSocket *)));
-					dcc->initializeNotifiers();
+					socket->initializeNotifiers();
 				}
 			}
 			else
 			{
 				kdebugm(KDEBUG_INFO, "user.port()<10, asking for connection (uin: %d)\n", user.uin());
 				dcc_manager->startTimeout();
+				Requests.insert(user.uin(), true);
 				gadu->dccRequest(user.uin());
 			}
 		}
 	kdebugf2();
 }
 
-void VoiceManager::dccFinished(DccSocket* dcc)
+void VoiceManager::askAcceptVoiceChat(DccSocket* socket)
 {
 	kdebugf();
-	delete dcc;
+	QString text=tr("User %1 wants to talk with you. Do you accept it?");
+	if (userlist.containsUin(socket->ggDccStruct()->peer_uin))
+		text=text.arg(userlist.byUin(socket->ggDccStruct()->peer_uin).altNick());
+	else
+		text=text.arg(socket->ggDccStruct()->peer_uin);
+
+	switch (QMessageBox::information(0, tr("Incoming voice chat"), text, tr("Yes"), tr("No"),
+		QString::null, 0, 1))
+	{
+		case 0: // Yes?
+			kdebugmf(KDEBUG_INFO, "accepted\n");
+			VoiceDialogs.insert(socket, new DccVoiceDialog());
+			connect(VoiceDialogs[socket], SIGNAL(cancelVoiceChat()), this, SLOT(cancelVoiceChatReceived()));
+			voice_manager->setup();
+			break;
+		case 1:
+			kdebugmf(KDEBUG_INFO, "discarded\n");
+			socket->setState(DCC_SOCKET_VOICECHAT_DISCARDED);
+			break;
+	}
 	kdebugf2();
 }
 
@@ -331,6 +394,72 @@ void VoiceManager::userBoxMenuPopup()
 	kdebugf2();
 }
 
+void VoiceManager::connectionBroken(DccSocket* socket)
+{
+	kdebugf();
+	if (VoiceDialogs.contains(socket))
+	{
+		voice_manager->free();
+		disconnect(VoiceDialogs[socket], SIGNAL(cancelVoiceChat()), this, SLOT(cancelVoiceChatReceived()));
+		socket->setState(DCC_SOCKET_VOICECHAT_DISCARDED);
+	}
+	kdebugf2();
+}
+
+void VoiceManager::callbackReceived(DccSocket* socket)
+{
+	kdebugf();
+	if (Requests.contains(socket->ggDccStruct()->peer_uin))
+	{
+		gadu->dccSetType(socket->ggDccStruct(), GG_SESSION_DCC_VOICE);
+		Requests.remove(socket->ggDccStruct()->peer_uin);
+	}
+	kdebugf2();
+}
+
+void VoiceManager::dccError(DccSocket* socket)
+{
+	kdebugf();
+	if (VoiceDialogs.contains(socket))
+	{
+		voice_manager->free();
+		disconnect(VoiceDialogs[socket], SIGNAL(cancelVoiceChat()), this, SLOT(cancelVoiceChatReceived()));
+		socket->setState(DCC_SOCKET_VOICECHAT_DISCARDED);
+	}
+	kdebugf2();
+}
+
+void VoiceManager::dccEvent(DccSocket* socket)
+{
+	char* voice_buf;
+	switch (socket->ggDccEvent()->type)
+	{
+		case GG_EVENT_DCC_NEED_VOICE_ACK:
+			kdebugmf(KDEBUG_INFO, "GG_EVENT_DCC_NEED_VOICE_ACK! %d %d\n",
+				socket->ggDccStruct()->uin, socket->ggDccStruct()->peer_uin);
+			askAcceptVoiceChat(socket);
+			break;
+		case GG_EVENT_DCC_ACK:
+			kdebugmf(KDEBUG_INFO, "GG_EVENT_DCC_ACK\n");
+			if (socket->ggDccStruct()->type == GG_SESSION_DCC_VOICE)
+			{	
+				VoiceDialogs.insert(socket, new DccVoiceDialog());
+				connect(VoiceDialogs[socket], SIGNAL(cancelVoiceChat()), this, SLOT(cancelVoiceChatReceived()));
+				setup();
+			}
+			break;
+		case GG_EVENT_DCC_VOICE_DATA:
+			kdebugmf(KDEBUG_INFO, "GG_EVENT_DCC_VOICE_DATA\n");
+			voice_buf = new char[socket->ggDccEvent()->event.dcc_voice_data.length];
+			memcpy(voice_buf, socket->ggDccEvent()->event.dcc_voice_data.data,
+				socket->ggDccEvent()->event.dcc_voice_data.length);
+			voice_manager->addGsmSample(voice_buf,
+				socket->ggDccEvent()->event.dcc_voice_data.length);
+			break;
+	}
+}
+
+
 DccVoiceDialog::DccVoiceDialog(QDialog *parent, const char *name)
 	: QDialog (parent, name, FALSE, Qt::WDestructiveClose)
 {
@@ -354,125 +483,6 @@ void DccVoiceDialog::closeEvent(QCloseEvent *e)
 	emit cancelVoiceChat();
 	QDialog::closeEvent(e);
 	kdebugf2();
-}
-
-VoiceSocket::VoiceSocket(struct gg_dcc* dcc_sock)
-	: DccSocket(dcc_sock)
-{
-	voicedialog = new DccVoiceDialog();
-	connect(voicedialog, SIGNAL(cancelVoiceChat()), this, SLOT(cancelVoiceChatReceived()));
-}
-
-VoiceSocket::~VoiceSocket()
-{
-	if (voicedialog)
-	{
-		voicedialog->close();
-		voicedialog = NULL;
-	}
-}
-
-void VoiceSocket::connectionBroken()
-{
-	kdebugf();
-	DccSocket::connectionBroken();
-	voice_manager->free();
-	if (voicedialog)
-		disconnect(voicedialog, SIGNAL(cancelVoiceChat()), this, SLOT(cancelVoiceChatReceived()));
-	setState(DCC_SOCKET_VOICECHAT_DISCARDED);
-	kdebugf2();
-}
-
-void VoiceSocket::callbackReceived()
-{
-	kdebugf();
-	DccSocket::callbackReceived();
-	gadu->dccSetType(dccsock, GG_SESSION_DCC_VOICE);
-	kdebugf2();
-}
-
-void VoiceSocket::dccError()
-{
-	kdebugf();
-	DccSocket::dccError();
-	voice_manager->free();
-	if (voicedialog)
-		disconnect(voicedialog, SIGNAL(cancelVoiceChat()), this, SLOT(cancelVoiceChatReceived()));
-	setState(DCC_SOCKET_VOICECHAT_DISCARDED);
-	kdebugf2();
-}
-
-void VoiceSocket::dccEvent()
-{
-	DccSocket::dccEvent();
-	char* voice_buf;
-	switch(dccevent->type)
-	{
-		case GG_EVENT_DCC_NEED_VOICE_ACK:
-			kdebugmf(KDEBUG_INFO, "GG_EVENT_DCC_NEED_VOICE_ACK! %d %d\n",
-				dccsock->uin, dccsock->peer_uin);
-			askAcceptVoiceChat();
-			break;
-		case GG_EVENT_DCC_ACK:
-			kdebugmf(KDEBUG_INFO, "GG_EVENT_DCC_ACK\n");
-			voice_manager->setup();
-			break;
-		case GG_EVENT_DCC_VOICE_DATA:
-			kdebugmf(KDEBUG_INFO, "GG_EVENT_DCC_VOICE_DATA\n");
-			voice_buf = new char[dccevent->event.dcc_voice_data.length];
-			memcpy(voice_buf, dccevent->event.dcc_voice_data.data,
-				dccevent->event.dcc_voice_data.length);
-			voice_manager->addGsmSample(voice_buf,
-				dccevent->event.dcc_voice_data.length);
-			break;
-	}
-}
-
-void VoiceSocket::askAcceptVoiceChat()
-{
-	kdebugf();
-	QString text=tr("User %1 wants to talk with you. Do you accept it?");
-	if (userlist.containsUin(dccsock->peer_uin))
-		text=text.arg(userlist.byUin(dccsock->peer_uin).altNick());
-	else
-		text=text.arg(dccsock->peer_uin);
-
-	switch (QMessageBox::information(0, tr("Incoming voice chat"), text, tr("Yes"), tr("No"),
-		QString::null, 0, 1))
-	{
-		case 0: // Yes?
-			kdebugmf(KDEBUG_INFO, "accepted\n");
-			voicedialog = new DccVoiceDialog();
-			connect(voicedialog, SIGNAL(cancelVoiceChat()), this, SLOT(cancelVoiceChatReceived()));
-			voice_manager->setup();
-			break;
-		case 1:
-			kdebugmf(KDEBUG_INFO, "discarded\n");
-			setState(DCC_SOCKET_VOICECHAT_DISCARDED);
-			break;
-	}
-	kdebugf2();
-}
-
-void VoiceSocket::initializeNotifiers()
-{
-	DccSocket::initializeNotifiers();
-	connect(voice_manager, SIGNAL(gsmSampleRecorded(char *, int)), this, SLOT(voiceDataRecorded(char *, int)));
-}
-
-void VoiceSocket::cancelVoiceChatReceived()
-{
-	kdebugf();
-	voicedialog = NULL;
-	voice_manager->free();
-	deleteLater();
-	kdebugf2();
-}
-
-void VoiceSocket::voiceDataRecorded(char *data, int length)
-{
-	kdebugf();
-	gadu->dccVoiceSend(dccsock, data, length);
 }
 
 VoiceManager* voice_manager = NULL;

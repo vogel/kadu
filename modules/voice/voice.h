@@ -20,8 +20,57 @@ struct gsm_sample {
 	int length;
 };
 
-class VoiceManager : public QObject {
+class DccVoiceDialog : public QDialog
+{
 	Q_OBJECT
+
+	public:
+		DccVoiceDialog(QDialog *parent = 0, const char *name = 0);
+
+	protected:
+		void closeEvent(QCloseEvent *e);
+
+	signals:
+		void cancelVoiceChat();
+};
+
+class VoiceManager : public QObject
+{
+	Q_OBJECT
+
+	private:
+		friend class PlayThread;
+		friend class RecordThread;
+		PlayThread* pt;
+		RecordThread* rt;
+		gsm voice_enc;
+		gsm voice_dec;
+		/**
+			Przechowuje informacje o wys³anych
+			request'ach CTCP. Je¶li kto¶ jest
+			za nat'em i chcemy rozpocz±æ z nim
+			rozmowê g³osow± to wysy³amy pro¶bê
+			o po³±czenie a jego numer uin jest
+			zapamiêtywany.
+		**/
+		QMap<UinType, bool> Requests;
+		QMap<DccSocket*, DccVoiceDialog*> VoiceDialogs;
+
+		void resetCoder();
+		void resetDecoder();
+		void askAcceptVoiceChat(DccSocket* socket);
+
+	private slots:
+		void playGsmSampleReceived(char *data, int length);
+		void recordSampleReceived(char *data, int length);
+		void cancelVoiceChatReceived();
+		void mainDialogKeyPressed(QKeyEvent* e);
+		void userBoxMenuPopup();
+		void makeVoiceChat();
+		void connectionBroken(DccSocket* socket);
+		void callbackReceived(DccSocket* socket);
+		void dccError(DccSocket* socket);
+		void dccEvent(DccSocket* socket);
 
 	public:
 		VoiceManager(QObject *parent=0, const char *name=0);
@@ -34,29 +83,8 @@ class VoiceManager : public QObject {
 	signals:
 		void setupSoundDevice();
 		void freeSoundDevice();
-		void gsmSampleRecorded(char *data, int length);
 		void playSample(char *data, int length);
 		void recordSample(char *data, int length);
-
-	private slots:
-		void playGsmSampleReceived(char *data, int length);
-		void recordSampleReceived(char *data, int length);
-		void mainDialogKeyPressed(QKeyEvent* e);
-		void userBoxMenuPopup();
-		void makeVoiceChat();
-		void dccFinished(DccSocket* dcc);
-
-	private:
-		void resetCoder();
-		void resetDecoder();
-
-		PlayThread *pt;
-		gsm voice_enc;
-		RecordThread *rt;
-		gsm voice_dec;
-
-	friend class PlayThread;
-	friend class RecordThread;
 };
 
 class PlayThread : public QObject, public QThread
@@ -95,44 +123,6 @@ class RecordThread : public QObject, public QThread
 		QMutex mutex;
 
 	friend class VoiceManager;
-};
-
-class DccVoiceDialog : public QDialog
-{
-	Q_OBJECT
-
-	public:
-		DccVoiceDialog(QDialog *parent = 0, const char *name = 0);
-
-	protected:
-		void closeEvent(QCloseEvent *e);
-
-	signals:
-		void cancelVoiceChat();
-};
-
-class VoiceSocket : public DccSocket
-{
-	Q_OBJECT
-	
-	private:
-		DccVoiceDialog *voicedialog;
-		void askAcceptVoiceChat();
-		
-	private slots:
-		void voiceDataRecorded(char *data, int length);
-		void cancelVoiceChatReceived();
-
-	protected:
-		virtual void connectionBroken();
-		virtual void callbackReceived();
-		virtual void dccError();
-		virtual void dccEvent();
-
-	public:
-		VoiceSocket(struct gg_dcc *dcc_sock);
-		~VoiceSocket();
-		virtual void initializeNotifiers();
 };
 
 extern VoiceManager *voice_manager;
