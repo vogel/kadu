@@ -67,8 +67,8 @@ CLEANFILES = *_moc.cpp
 	$(QT_MOC_DIR)/moc -o $@ $<
 
 install-data-local:
-	$(mkinstalldirs) "$(includedir)/kadu/"
-	$(INSTALL_DATA) *.h "$(includedir)/kadu/"
+	$(mkinstalldirs) "$(DESTDIR)/$(includedir)/kadu/"
+	$(INSTALL_DATA) *.h "$(DESTDIR)/$(includedir)/kadu/"
 	@if test -w "/usr/share"; then \
 		$(mkinstalldirs) "$(DESTDIR)/usr/share/applnk/Internet/"; \
 		echo "[Desktop Entry]" > "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop"; \
@@ -98,7 +98,7 @@ install-data-local:
 	fi;
 
 uninstall-local:
-	rm -f "$(includedir)/kadu"/*.h
+	rm -f "$(DESTDIR)/$(includedir)/kadu"/*.h
 	rm -f "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop"
 	rm -f "$(DESTDIR)/usr/share/pixmaps/kadu-48.png"
 	rm -f "$(DESTDIR)/usr/share/pixmaps/kadu.png"
