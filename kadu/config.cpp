@@ -420,7 +420,7 @@ void ConfigDialog::setupTab1(void) {
 	l_trayhint2->setText(i18n(" seconds"));
 
 	b_hinterror = new QCheckBox(hintgrp);
-	b_hinterror->setText(i18n("Show errors connection in tray hints"));
+	b_hinterror->setText(i18n("Show connection errors in tray hints"));
 	b_hinterror->setChecked(config.hinterror);
 
 	if (config.trayhint)
