@@ -23,6 +23,7 @@
   serwera GG to kadu ju¿ nie wywala siê przy próbie ponownego ³±czenia siê
 * Autostatus z pliku ~/.gg/description je¶li istnieje - do zastosowañ zwi±zanych
   z XMMS i innymi.
+* okno rejestracji: przej¶cie na QSocketNotifier
 
 +++ wersja 0.3.2
 * dalsze porz±dki w kodzie
