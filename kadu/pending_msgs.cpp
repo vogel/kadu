@@ -1,5 +1,7 @@
 
 #include <qfile.h>
+#include <qtextcodec.h>
+
 #include "pending_msgs.h"
 #include "misc.h"
 #include "debug.h"
@@ -73,7 +75,8 @@ void PendingMsgs::writeToFile()
 		t=(*i).msg.length();
 		f.writeBlock((char*)&t,sizeof(int));
 		// i tresc
-		f.writeBlock((*i).msg.local8Bit(),t);
+		QCString cmsg = QTextCodec::codecForName("ISO 8859-2")->fromUnicode((*i).msg);
+		f.writeBlock(cmsg, cmsg.length());
 		// na koniec jeszcze klase wiadomosci
 		f.writeBlock((char*)&(*i).msgclass,sizeof(int));
 		// i czas
@@ -124,14 +127,14 @@ bool PendingMsgs::loadFromFile()
 			return false;
 			}		
 		// i tresc
-		char* buf = new char[msg_size + 1];
+		char *buf = new char[msg_size + 1];
 		if (f.readBlock(buf, msg_size) <= 0) {
 			msgs_size--;
 			delete [] buf;
 			return false;
 			}				
 		buf[msg_size] = 0;
-		e.msg = __c2q(buf);
+		e.msg = QTextCodec::codecForName("ISO 8859-2")->toUnicode(buf);
 		delete[] buf;
 		// na koniec jeszcze klase wiadomosci
 		if (f.readBlock((char*)&e.msgclass, sizeof(int)) <= 0) {

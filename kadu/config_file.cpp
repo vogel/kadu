@@ -8,6 +8,7 @@
 #include <qfont.h>
 #include <qstringlist.h>
 #include <qapplication.h>
+#include <qtextcodec.h>
 #include <stdio.h>
 
 #include "misc.h"
@@ -30,6 +31,7 @@ void ConfigFile::read() {
 	kdebug("ConfigFile::read()\n");
 	if (file.open(IO_ReadWrite)) {
 		QTextStream stream(&file);
+		stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
 		while ((line = stream.readLine()) != QString::null) {
 			line.stripWhiteSpace();
 			if (line.startsWith("[") && line.endsWith("]")) {
@@ -65,6 +67,7 @@ void ConfigFile::write() {
 	kdebug("ConfigFile::write()\n");
 	if (file.open(IO_WriteOnly | IO_Truncate)) {
 		QTextStream stream(&file);
+		stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
 		for (int i = 0; i < groups.count(); i++) {
 			stream << '[' << groups[i].name << "]\n";
 			for (int j = 0; j < groups[i].entries.count(); j++)
