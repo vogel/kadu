@@ -12,20 +12,6 @@
 #include <qimage.h>
 #include <qmap.h>
 
-class SmsImageWidget : public QWidget
-{
-	Q_OBJECT
-
-	private:
-		QImage Image;
-
-	protected:
-		virtual void paintEvent(QPaintEvent* e);
-
-	public:
-		SmsImageWidget(QWidget* parent,const QByteArray& image);
-};
-
 class SmsImageDialog : public QDialog
 {
 	Q_OBJECT

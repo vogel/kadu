@@ -10,7 +10,7 @@
 #include <qcstring.h>
 #include <qdatetime.h>
 #include <qlineedit.h>
-//#include <libintl.h>
+#include <qimage.h>
 
 #include "libgadu.h"
 #include "userlist.h"
@@ -142,6 +142,22 @@ class HtmlDocument
 			indeks wydzielonego elementu by³ aktualny.
 		**/
 		void splitElement(int& index,int start,int length);
+};
+
+class ImageWidget : public QWidget
+{
+        Q_OBJECT
+
+        private:
+                QImage Image;
+
+        protected:
+                virtual void paintEvent(QPaintEvent *e);
+
+        public:
+		ImageWidget(QWidget *parent);
+                ImageWidget(QWidget *parent,const QByteArray &image);
+		void setImage(const QByteArray &image);
 };
 
 #endif

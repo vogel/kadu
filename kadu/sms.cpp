@@ -20,28 +20,13 @@
 #include "history.h"
 #include "debug.h"
 
-/********** SmsImageWidget **********/
-
-SmsImageWidget::SmsImageWidget(QWidget* parent,const QByteArray& image)
-	: QWidget(parent, "SmsImageWidget"), Image(image)
-{
-	setCaption(tr("Send SMS"));
-	setMinimumSize(Image.width(),Image.height());
-};
-
-void SmsImageWidget::paintEvent(QPaintEvent* e)
-{
-	QPainter p(this);
-	p.drawImage(0,0,Image);
-};
-
 /********** SmsImageDialog **********/
 
 SmsImageDialog::SmsImageDialog(QDialog* parent,const QByteArray& image)
 	: QDialog (parent, "SmsImageDialog")
 {
-	QGridLayout * grid = new QGridLayout(this, 2, 2, 10, 10);
-	SmsImageWidget* image_widget=new SmsImageWidget(this,image);
+	QGridLayout *grid = new QGridLayout(this, 2, 2, 10, 10);
+	ImageWidget *image_widget = new ImageWidget(this, image);
 	grid->addMultiCellWidget(image_widget, 0, 0, 0, 1);
 	QLabel* label=new QLabel(tr("Enter text from the picture:"),this);
 	grid->addWidget(label, 1, 0);

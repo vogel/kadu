@@ -7,6 +7,7 @@
 #include <qdatetime.h>
 #include <qregexp.h>
 #include <qcolor.h>
+#include <qpainter.h>
 #include <qaccel.h>
 
 #include <pwd.h>
@@ -783,4 +784,31 @@ void HtmlDocument::splitElement(int& index,int start,int length)
 			Elements.append(post);
 	};
 	e.text=e.text.mid(start,length);
+};
+
+ImageWidget::ImageWidget(QWidget *parent)
+	: QWidget(parent, "ImageWidget")
+{
+}
+
+ImageWidget::ImageWidget(QWidget *parent,const QByteArray &image)
+        : QWidget(parent, "ImageWidget"), Image(image)
+{
+        setMinimumSize(Image.width(), Image.height());
+}
+
+void ImageWidget::setImage(const QByteArray &image)
+{
+	Image.loadFromData(image);
+	setMinimumSize(Image.width(), Image.height());
+}
+
+void ImageWidget::paintEvent(QPaintEvent *e)
+{
+	kdebug("ImageWidget::paintEvent()\n");
+	if (!Image.isNull()) {
+	        QPainter p(this);
+	        p.drawImage(0,0,Image);
+		}
+	kdebug("ImageWidget::paintEvent(): finished\n");
 };
