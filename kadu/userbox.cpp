@@ -85,6 +85,8 @@ void UserBox::maybeTip(const QPoint &c)
 
 void UserBox::refresh()
 {
+	fprintf(stderr, "KK UserBox::refresh()\n");
+	
 	// Najpierw dzielimy uzytkownikow na trzy grupy
 	QValueList<uin_t> a_users;
 	QValueList<uin_t> i_users;
