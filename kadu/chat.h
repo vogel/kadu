@@ -97,12 +97,14 @@ class KaduTextBrowser : public QTextBrowser {
 
 	protected:
 		QPopupMenu *createPopupMenu(const QPoint &point);
+		void drawContents(QPainter * p, int clipx, int clipy, int clipw, int cliph);
 
 	public slots:
 		void copyLinkLocation();
 
 	private:
 		QString anchor;
+		int level;
 };
 
 /**

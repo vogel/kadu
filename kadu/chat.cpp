@@ -253,7 +253,7 @@ const char *colors[16] = {"#FF0000", "#A00000", "#00FF00", "#00A000", "#0000FF",
 	"#A0A000", "#FF00FF", "#A000A0", "#00FFFF", "#00A0A0", "#FFFFFF", "#A0A0A0", "#808080", "#000000"};
 
 KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
-	: QTextBrowser(parent, name) {
+	: QTextBrowser(parent, name), level(0) {
 
 }
 
@@ -275,6 +275,22 @@ QPopupMenu *KaduTextBrowser::createPopupMenu(const QPoint &point) {
 		popupmenu->insertItem(tr("Copy link &location"), this, SLOT(copyLinkLocation()), CTRL+Key_L, -1, 0);
 
 	return popupmenu;
+}
+
+void KaduTextBrowser::drawContents(QPainter * p, int clipx, int clipy, int clipw, int cliph)
+{
+	/*
+		z nie do koñca wiadomych przyczyn, Qt czasami wpada w pêtle i drawContents
+		jeszcze	raz wywo³uje sam± siebie, co powoduje wypisanie:
+			QPixmap::operator=: Cannot assign to pixmap during painting
+			QPaintDevice: Cannot destroy paint device that is being painted
+		oraz zawieszenie Kadu (http://www.kadu.net/forum/viewtopic.php?t=2486)
+	*/
+//	kdebug("KaduTextBrowser::drawContents(): level: %d\n", level);
+	level++;
+	if (level==1)
+		QTextBrowser::drawContents(p, clipx, clipy, clipw, cliph);
+	level--;
 }
 
 CustomInput::CustomInput(QWidget *parent, const char *name) : QMultiLineEdit(parent, name) {
