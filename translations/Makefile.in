@@ -88,12 +88,12 @@ PNG_LIBS = @PNG_LIBS@
 PTHREAD_CPPFLAGS = @PTHREAD_CPPFLAGS@
 PTHREAD_LDFLAGS = @PTHREAD_LDFLAGS@
 PTHREAD_LIBS = @PTHREAD_LIBS@
-QTINCDIR = @QTINCDIR@
-QTLIBDIR = @QTLIBDIR@
-QTMOCDIR = @QTMOCDIR@
-QTMT = @QTMT@
+QT_INCLUDES = @QT_INCLUDES@
+QT_LIBS = @QT_LIBS@
+QT_MOC_DIR = @QT_MOC_DIR@
 STRIP = @STRIP@
 VERSION = @VERSION@
+XFREE_INCLUDES = @XFREE_INCLUDES@
 am__include = @am__include@
 am__quote = @am__quote@
 install_sh = @install_sh@
@@ -228,7 +228,7 @@ uninstall-local:
 	rm -f "$(DESTDIR)/$(datadir)/kadu/translations/kadu_de.qm"; \
 	rm -f "$(DESTDIR)/$(datadir)/kadu/translations/qt_en.qm"; \
 	rm -f "$(DESTDIR)/$(datadir)/kadu/translations/qt_pl.qm";
-	rm -f "$(DESTDIR)/$(datadir)/kadu/translations/qt_it.qm"; \
+	rm -f "$(DESTDIR)/$(datadir)/kadu/translations/qt_it.qm";
 	rm -f "$(DESTDIR)/$(datadir)/kadu/translations/qt_de.qm";
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

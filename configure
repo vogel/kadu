@@ -855,9 +855,9 @@ Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
   --with-qt-dir=DIR       qt-dir in DIR
-  --with-qt-moc=DIR       qt-moc in DIR
   --with-qt-includes=DIR  qt-includes in DIR
   --with-qt-libs=DIR      qt-libs in DIR
+  --with-qt-moc=DIR       qt-moc in DIR
   --with-existing-libgadu do not compile libgadu, link with existing one
   --without-pthread       do not use pthread in libgadu resolver
   --without-openssl       Compile without OpenSSL
@@ -3005,9 +3005,10 @@ echo "${ECHO_T}$am_cv_CC_dependencies_compiler_type" >&6
 CCDEPMODE=depmode=$am_cv_CC_dependencies_compiler_type
 
 
-# AM_PROG_LIBTOOL
 
-# pthread
+##################
+# PTHREAD Library
+##################
 
 
 
@@ -3140,7 +3141,9 @@ fi
 
 
 
-# png
+#################
+# PNG Library
+#################
 
 PNG_LIBS="-lpng"
 
@@ -3228,18 +3231,101 @@ rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
 
 
 
-# QT
+#################
+# XFREE Headers
+#################
+
+
+	echo "$as_me:$LINENO: checking if X11/Xlib.h header is in system directories" >&5
+echo $ECHO_N "checking if X11/Xlib.h header is in system directories... $ECHO_C" >&6
+	cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+#include "confdefs.h"
+
+		#include <X11/Xlib.h>
+
+#ifdef F77_DUMMY_MAIN
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+#endif
+int
+main ()
+{
+
+		return 0;
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+
+		echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6
+
+else
+  echo "$as_me: failed program was:" >&5
+cat conftest.$ac_ext >&5
+
+		echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+
+	echo "$as_me:$LINENO: checking for X11/Xlib.h in specified directiories" >&5
+echo $ECHO_N "checking for X11/Xlib.h in specified directiories... $ECHO_C" >&6
+	FILE_DIR=
+	for dir in /usr/X11R6/include /usr/include /usr/local/include
+	do
+		if test -f $dir/X11/Xlib.h
+		then
+			FILE_DIR=$dir
+			echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
+echo "${ECHO_T}found in $FILE_DIR" >&6
+
+	XFREE_INCLUDES="-I$FILE_DIR"
+
+			break
+		fi
+	done
+	if test "X$FILE_DIR" = "X"
+	then
+		echo "$as_me:$LINENO: result: not found" >&5
+echo "${ECHO_T}not found" >&6
+		if test "X" = "X"
+		then
+			{ { echo "$as_me:$LINENO: error: X11/Xlib.h not found!" >&5
+echo "$as_me: error: X11/Xlib.h not found!" >&2;}
+   { (exit 1); exit 1; }; }
+		fi
+
+	fi
+
+
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+
+
+
+#################
+# QT Headers
+#################
 
 
 # Check whether --with-qt-dir or --without-qt-dir was given.
 if test "${with_qt_dir+set}" = set; then
   withval="$with_qt_dir"
-
-fi;
-
-# Check whether --with-qt-moc or --without-qt-moc was given.
-if test "${with_qt_moc+set}" = set; then
-  withval="$with_qt_moc"
 
 fi;
 
@@ -3249,129 +3335,230 @@ if test "${with_qt_includes+set}" = set; then
 
 fi;
 
+
+	echo "$as_me:$LINENO: checking if qwidget.h header is in system directories" >&5
+echo $ECHO_N "checking if qwidget.h header is in system directories... $ECHO_C" >&6
+	cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+#include "confdefs.h"
+
+		#include <qwidget.h>
+
+#ifdef F77_DUMMY_MAIN
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+#endif
+int
+main ()
+{
+
+		return 0;
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+
+		echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6
+
+else
+  echo "$as_me: failed program was:" >&5
+cat conftest.$ac_ext >&5
+
+		echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+
+	echo "$as_me:$LINENO: checking for qwidget.h in specified directiories" >&5
+echo $ECHO_N "checking for qwidget.h in specified directiories... $ECHO_C" >&6
+	FILE_DIR=
+	for dir in $with_qt_includes $with_qt_dir/include $QTDIR/include /usr/lib/qt/include /usr/lib/qt3/include /usr/local/qt/include /usr/include /usr/include/qt /usr/include/qt3 /usr/local/include /usr/X11R6/include /usr/X11R6/include/qt /usr/X11R6/include/qt3
+	do
+		if test -f $dir/qwidget.h
+		then
+			FILE_DIR=$dir
+			echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
+echo "${ECHO_T}found in $FILE_DIR" >&6
+
+	QT_INCLUDES="-I$FILE_DIR"
+
+			break
+		fi
+	done
+	if test "X$FILE_DIR" = "X"
+	then
+		echo "$as_me:$LINENO: result: not found" >&5
+echo "${ECHO_T}not found" >&6
+		if test "X" = "X"
+		then
+			{ { echo "$as_me:$LINENO: error: qwidget.h not found!" >&5
+echo "$as_me: error: qwidget.h not found!" >&2;}
+   { (exit 1); exit 1; }; }
+		fi
+
+	fi
+
+
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+
+
+
+#################
+# QT Library
+#################
+
+
 # Check whether --with-qt-libs or --without-qt-libs was given.
 if test "${with_qt_libs+set}" = set; then
   withval="$with_qt_libs"
 
 fi;
 
+QT_LIBS="-lqt-mt"
 
-	echo "$as_me:$LINENO: checking for QT moc" >&5
-echo $ECHO_N "checking for QT moc... $ECHO_C" >&6
+	echo "$as_me:$LINENO: checking if libqt-mt.so library is in system directories" >&5
+echo $ECHO_N "checking if libqt-mt.so library is in system directories... $ECHO_C" >&6
+	save_CFLAGS="$CFLAGS"
+	CFLAGS="$CFLAGS -lqt-mt"
+	cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+#include "confdefs.h"
 
-	for dir in $with_qt_moc $with_qt_dir $QTDIR /usr/lib/qt3 /usr/local/qt /usr/lib/qt /usr/bin /bin /usr/local /usr/X11R6
+#ifdef F77_DUMMY_MAIN
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+#endif
+int
+main ()
+{
+
+		return 0;
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+
+		CFLAGS="$save_CFLAGS"
+		echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6
+
+else
+  echo "$as_me: failed program was:" >&5
+cat conftest.$ac_ext >&5
+
+		CFLAGS="$save_CFLAGS"
+		echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+
+	echo "$as_me:$LINENO: checking for libqt-mt.so in specified directiories" >&5
+echo $ECHO_N "checking for libqt-mt.so in specified directiories... $ECHO_C" >&6
+	FILE_DIR=
+	for dir in $with_qt_libs $with_qt_dir/lib $QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib
+	do
+		if test -f $dir/libqt-mt.so
+		then
+			FILE_DIR=$dir
+			echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
+echo "${ECHO_T}found in $FILE_DIR" >&6
+
+	QT_LIBS="$QT_LIBS -L$FILE_DIR"
+
+			break
+		fi
+	done
+	if test "X$FILE_DIR" = "X"
+	then
+		echo "$as_me:$LINENO: result: not found" >&5
+echo "${ECHO_T}not found" >&6
+		if test "X" = "X"
+		then
+			{ { echo "$as_me:$LINENO: error: libqt-mt.so not found!" >&5
+echo "$as_me: error: libqt-mt.so not found!" >&2;}
+   { (exit 1); exit 1; }; }
+		fi
+
+	fi
+
+
+fi
+rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
+
+
+
+#################
+# QT MOC
+#################
+
+
+# Check whether --with-qt-moc or --without-qt-moc was given.
+if test "${with_qt_moc+set}" = set; then
+  withval="$with_qt_moc"
+
+fi;
+
+
+	echo "$as_me:$LINENO: checking for moc in specified directiories" >&5
+echo $ECHO_N "checking for moc in specified directiories... $ECHO_C" >&6
+	FILE_DIR=
+	for dir in $with_qt_moc $with_qt_dir/bin $QTDIR/bin /usr/lib/qt3/bin /usr/local/qt/bin /usr/lib/qt/bin /usr/bin /bin /usr/local/bin /usr/X11R6/bin
 	do
 		if test -f $dir/moc
 		then
-			QTMOCDIR=$dir
-			echo "$as_me:$LINENO: result: found in $QTMOCDIR" >&5
-echo "${ECHO_T}found in $QTMOCDIR" >&6
+			FILE_DIR=$dir
+			echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
+echo "${ECHO_T}found in $FILE_DIR" >&6
+
+	QT_MOC_DIR="$FILE_DIR"
+
 			break
-		else
-			if test -f $dir/bin/moc
-			then
-				QTMOCDIR=$dir/bin
-				echo "$as_me:$LINENO: result: found in $QTMOCDIR" >&5
-echo "${ECHO_T}found in $QTMOCDIR" >&6
-				break
-			fi
 		fi
 	done
-
-if test "X$QTMOCDIR" = "X"
-then
-	echo ""
-	echo "Qt's moc not found! If you have installed Qt in an"
-	echo "unusual place, please use the \"--with-qt-moc=\"" option
-	echo ""
-	exit
-fi
-
-
-	echo "$as_me:$LINENO: checking for QT libraries" >&5
-echo $ECHO_N "checking for QT libraries... $ECHO_C" >&6
-
-	if test "$enable_sharp" = "yes"
+	if test "X$FILE_DIR" = "X"
 	then
-		QTLIBS="qpe"
-	else
-		QTLIBS="qt2-mt qt-mt"
+		echo "$as_me:$LINENO: result: not found" >&5
+echo "${ECHO_T}not found" >&6
+		if test "X" = "X"
+		then
+			{ { echo "$as_me:$LINENO: error: moc not found!" >&5
+echo "$as_me: error: moc not found!" >&2;}
+   { (exit 1); exit 1; }; }
+		fi
+
 	fi
 
-	for dir in $with_qt_libs $with_qt_dir $QTDIR /usr/lib/qt3 /usr/local/qt /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib
-	do
-		for i in $QTLIBS
-		do
-			if test -f $dir/lib$i.so
-			then
-				QTLIBDIR=$dir
-				echo "$as_me:$LINENO: result: found in $QTLIBDIR" >&5
-echo "${ECHO_T}found in $QTLIBDIR" >&6
-				QTMT=$i
-				break 2
-			else
-				if test -f $dir/lib/lib$i.so
-				then
-					QTLIBDIR=$dir/lib
-					echo "$as_me:$LINENO: result: found in $QTLIBDIR" >&5
-echo "${ECHO_T}found in $QTLIBDIR" >&6
-					QTMT=$i
-					break 2
-				fi
-			fi
-		done
-	done
-
-if test "X$QTLIBDIR" = "X"
-then
-	echo ""
-	echo "Qt libs not found! If you have installed Qt in an"
-	echo "unusual place, please use the \"--with-qt-libs=\"" option
-	echo ""
-	exit
-else
-	QTLIBDIR="-L$QTLIBDIR"
-fi
 
 
-	echo "$as_me:$LINENO: checking for QT include files" >&5
-echo $ECHO_N "checking for QT include files... $ECHO_C" >&6
-
-	for dir in $with_qt_includes $with_qt_dir $QTDIR /usr/lib/qt3 /usr/local/qt /usr/lib/qt /usr/include /usr/include/qt /usr/include/qt3 /usr/local/include /usr/X11R6/include /usr/X11R6/include/qt /usr/X11R6/include/qt3
-	do
-		if test -f $dir/qwidget.h
-		then
-			QTINCDIR=$dir
-			echo "$as_me:$LINENO: result: found in $QTINCDIR" >&5
-echo "${ECHO_T}found in $QTINCDIR" >&6
-			break
-		else
-			if test -f $dir/include/qwidget.h
-			then
-				QTINCDIR=$dir/include
-				echo "$as_me:$LINENO: result: found in $QTINCDIR" >&5
-echo "${ECHO_T}found in $QTINCDIR" >&6
-				break
-			fi
-		fi
-	done
-
-if test "X$QTINCDIR" = "X"
-then
-	echo ""
-	echo "Qt headers not found! If you have installed Qt in an"
-	echo "unusual place, please use the \"--with-qt-includes=\"" option
-	echo ""
-	exit
-else
-	QTINCDIR="-I$QTINCDIR"
-fi
-
-
-
-
-
-
+########################################################################
 
 # Checks for header files.
 ac_ext=c
@@ -6514,10 +6701,10 @@ s,@PTHREAD_CPPFLAGS@,$PTHREAD_CPPFLAGS,;t t
 s,@PTHREAD_LDFLAGS@,$PTHREAD_LDFLAGS,;t t
 s,@PTHREAD_LIBS@,$PTHREAD_LIBS,;t t
 s,@PNG_LIBS@,$PNG_LIBS,;t t
-s,@QTMOCDIR@,$QTMOCDIR,;t t
-s,@QTMT@,$QTMT,;t t
-s,@QTLIBDIR@,$QTLIBDIR,;t t
-s,@QTINCDIR@,$QTINCDIR,;t t
+s,@XFREE_INCLUDES@,$XFREE_INCLUDES,;t t
+s,@QT_INCLUDES@,$QT_INCLUDES,;t t
+s,@QT_LIBS@,$QT_LIBS,;t t
+s,@QT_MOC_DIR@,$QT_MOC_DIR,;t t
 s,@CPP@,$CPP,;t t
 s,@LIBOBJS@,$LIBOBJS,;t t
 s,@GADU_LIBS@,$GADU_LIBS,;t t

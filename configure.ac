@@ -103,81 +103,6 @@ AC_DEFUN(FIND_LIBRARY,[
 	])
 ])
 
-AC_DEFUN(FIND_MOC,[
-	AC_MSG_CHECKING([for QT moc])
-
-	for dir in $1
-	do
-		if test -f $dir/moc
-		then
-			QTMOCDIR=$dir
-			AC_MSG_RESULT([found in $QTMOCDIR])
-			break
-		else
-			if test -f $dir/bin/moc
-			then
-				QTMOCDIR=$dir/bin
-				AC_MSG_RESULT([found in $QTMOCDIR])
-				break
-			fi
-		fi
-	done
-])
-
-AC_DEFUN(FIND_QT_LIBS,[
-	AC_MSG_CHECKING([for QT libraries])
-
-	if test "$enable_sharp" = "yes"
-	then
-		QTLIBS="qpe"
-	else
-		QTLIBS="qt2-mt qt-mt"
-	fi
-
-	for dir in $1
-	do
-		for i in $QTLIBS
-		do
-			if test -f $dir/lib$i.so
-			then
-				QTLIBDIR=$dir
-				AC_MSG_RESULT([found in $QTLIBDIR])
-				QTMT=$i
-				break 2
-			else
-				if test -f $dir/lib/lib$i.so
-				then
-					QTLIBDIR=$dir/lib
-					AC_MSG_RESULT([found in $QTLIBDIR])
-					QTMT=$i
-					break 2
-				fi
-			fi
-		done
-	done
-])
-
-AC_DEFUN(FIND_QT_INCLUDES,[
-	AC_MSG_CHECKING([for QT include files])
-
-	for dir in $1
-	do
-		if test -f $dir/qwidget.h
-		then
-			QTINCDIR=$dir
-			AC_MSG_RESULT([found in $QTINCDIR])
-			break
-		else
-			if test -f $dir/include/qwidget.h
-			then
-				QTINCDIR=$dir/include
-				AC_MSG_RESULT([found in $QTINCDIR])
-				break
-			fi
-		fi
-	done
-])
-
 ########################################################################
 
 AC_INIT([Kadu],[])
@@ -208,16 +133,19 @@ CXXFLAGS="-fno-exceptions -pipe $user_cxxflags"
 # Checks for programs.
 AC_PROG_CXX
 AC_PROG_CC
-# AM_PROG_LIBTOOL
 
-# pthread
+##################
+# PTHREAD Library
+##################
 
 CHECK_PTHREAD
 AC_SUBST(PTHREAD_CPPFLAGS)
 AC_SUBST(PTHREAD_LDFLAGS)
 AC_SUBST(PTHREAD_LIBS)
 
-# png
+#################
+# PNG Library
+#################
 
 PNG_LIBS="-lpng"
 FIND_LIBRARY([png],[/usr/lib /usr/local/lib],
@@ -226,52 +154,55 @@ FIND_LIBRARY([png],[/usr/lib /usr/local/lib],
 ])
 AC_SUBST(PNG_LIBS)
 
-# QT
+#################
+# XFREE Headers
+#################
+
+FIND_HEADER([X11/Xlib.h],[/usr/X11R6/include /usr/include /usr/local/include],
+[
+	XFREE_INCLUDES="-I$FILE_DIR"
+])
+AC_SUBST(XFREE_INCLUDES)
+
+#################
+# QT Headers
+#################
 
 AC_ARG_WITH(qt-dir,        [  --with-qt-dir=DIR       qt-dir in DIR])
-AC_ARG_WITH(qt-moc,        [  --with-qt-moc=DIR       qt-moc in DIR])
 AC_ARG_WITH(qt-includes,   [  --with-qt-includes=DIR  qt-includes in DIR])
+
+FIND_HEADER([qwidget.h],[$with_qt_includes $with_qt_dir/include $QTDIR/include /usr/lib/qt/include /usr/lib/qt3/include /usr/local/qt/include /usr/include /usr/include/qt /usr/include/qt3 /usr/local/include /usr/X11R6/include /usr/X11R6/include/qt /usr/X11R6/include/qt3],
+[
+	QT_INCLUDES="-I$FILE_DIR"
+])
+AC_SUBST(QT_INCLUDES)
+
+#################
+# QT Library
+#################
+
 AC_ARG_WITH(qt-libs,       [  --with-qt-libs=DIR      qt-libs in DIR])
 
-FIND_MOC($with_qt_moc $with_qt_dir $QTDIR /usr/lib/qt3 /usr/local/qt /usr/lib/qt /usr/bin /bin /usr/local /usr/X11R6)
-if test "X$QTMOCDIR" = "X"
-then
-	echo ""
-	echo "Qt's moc not found! If you have installed Qt in an"
-	echo "unusual place, please use the \"--with-qt-moc=\"" option
-	echo ""
-	exit
-fi
+QT_LIBS="-lqt-mt"
+FIND_LIBRARY([qt-mt],[$with_qt_libs $with_qt_dir/lib $QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib],
+[
+	QT_LIBS="$QT_LIBS -L$FILE_DIR"
+])
+AC_SUBST(QT_LIBS)
 
-FIND_QT_LIBS($with_qt_libs $with_qt_dir $QTDIR /usr/lib/qt3 /usr/local/qt /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib)
-if test "X$QTLIBDIR" = "X"
-then
-	echo ""
-	echo "Qt libs not found! If you have installed Qt in an"
-	echo "unusual place, please use the \"--with-qt-libs=\"" option
-	echo ""
-	exit
-else
-	QTLIBDIR="-L$QTLIBDIR"
-fi
+#################
+# QT MOC
+#################
 
-FIND_QT_INCLUDES($with_qt_includes $with_qt_dir $QTDIR /usr/lib/qt3 /usr/local/qt /usr/lib/qt /usr/include /usr/include/qt /usr/include/qt3 /usr/local/include /usr/X11R6/include /usr/X11R6/include/qt /usr/X11R6/include/qt3)
-if test "X$QTINCDIR" = "X"
-then
-	echo ""
-	echo "Qt headers not found! If you have installed Qt in an"
-	echo "unusual place, please use the \"--with-qt-includes=\"" option
-	echo ""
-	exit
-else
-	QTINCDIR="-I$QTINCDIR"
-fi
+AC_ARG_WITH(qt-moc,        [  --with-qt-moc=DIR       qt-moc in DIR])
 
-AC_SUBST(QTMOCDIR)
-AC_SUBST(QTMT)
-AC_SUBST(QTLIBDIR)
-AC_SUBST(QTINCDIR)
+FIND_FILE([moc],[$with_qt_moc $with_qt_dir/bin $QTDIR/bin /usr/lib/qt3/bin /usr/local/qt/bin /usr/lib/qt/bin /usr/bin /bin /usr/local/bin /usr/X11R6/bin],
+[
+	QT_MOC_DIR="$FILE_DIR"
+])
+AC_SUBST(QT_MOC_DIR)
 
+########################################################################
 
 # Checks for header files.
 AC_HEADER_STDC

@@ -54,8 +54,8 @@ endif
 
 #kadu_METASOURCES = AUTO
 
-INCLUDES = $(QTINCDIR) $(OPENSSL_INCLUDES) $(GSM_INCLUDES) $(GADU_INCLUDES)
-kadu_LDADD = $(VOICE_OBJS) $(SIM) $(PTHREAD_LIBS) $(PNG_LIBS) $(QTLIBDIR) -l$(QTMT) $(LIBINTL) $(GSM_LIBS) $(GADU_LIBS)
+INCLUDES = $(XFREE_INCLUDES) $(QT_INCLUDES) $(OPENSSL_INCLUDES) $(GSM_INCLUDES) $(GADU_INCLUDES)
+kadu_LDADD = $(VOICE_OBJS) $(SIM) $(PTHREAD_LIBS) $(PNG_LIBS) $(QT_LIBS) $(GSM_LIBS) $(GADU_LIBS)
 kadu_LDFLAGS = $(PTHREAD_LDFLAGS) $(OPENSSL_LIBS)
 kadu_DEPENDENCIES = $(VOICE_OBJS) $(SIM)
 
@@ -66,7 +66,7 @@ EXTRA_DIST = hi16-app-kadu.png hi32-app-kadu.png hi48-app-kadu.png kadu.desktop
 CLEANFILES = *_moc.cpp
 
 %_moc.cpp: %.h
-	$(QTMOCDIR)/moc -o $@ $<
+	$(QT_MOC_DIR)/moc -o $@ $<
 
 install-data-local:
 	@if test -w "/usr/share"; then \
