@@ -314,29 +314,29 @@ bool ifStatusWithDescription(int status) {
 /* reading only ignore file right now */
 void readConfig(void)
 {
-    FILE *f;
-    char buf[256];
+	FILE *f;
+	const int BUF_SIZE=256;
+	char buf[BUF_SIZE];
 
-    char *path = getenv("HOME");
-    char *path3 = "/.gg/ignore";
-    char buffer[255], buffer2[256];
-    snprintf(buffer2,256,"%s%s",path,path3);	
+	snprintf(buf,BUF_SIZE,"%s%s",getenv("HOME"),"/.gg/ignore");
 
-    ignore: if (!(f = fopen(buffer2, "r"))) {
-	fprintf(stderr, "readConfig(): Failed to open ignore file. Ignore list empty. Need to read manual?\n");
-	return;
-	}
+	if(!(f=fopen(buf,"r")))
+	{
+		fprintf(stderr,"readConfig(): Failed to open ignore file. Ignore list empty. Need to read manual?\n");
+		return;
+	};
 
-    while (fgets(buf, sizeof(buf) -1, f)) {
-	if (buf[strlen(buf) - 1] == '\n')
-	    buf[strlen(buf) - 1] = 0;
-
-	if (buf[0] == '#')
-	    continue;
-
-	addIgnored(atoi(buf));
-	}
-}
+	while(fgets(buf,BUF_SIZE-1,f))
+	{
+		if(buf[strlen(buf)-1]=='\n')
+			buf[strlen(buf)-1]=0;
+		if(buf[0]=='#')
+			continue;
+		addIgnored(atoi(buf));
+	};
+	
+	fclose(f);
+};
 
 char *pwHash(const char *tekst) {
     char *nowytekst;
