@@ -15,6 +15,9 @@
   a list± u¿ytkowników (gdy prowadzimy konferencjê)
 * chyba poprawiony pad przy wiadomo¶ciach systemowych. UWAGA! teraz lec±
   tylko na konsolê. Je¶li chcecie ogl±daæ reklamy to dajcie znaæ ;)
+* usprawnienia w oknie poszukiwañ u¿ytkowników:
+  - szukanie u¿ytkowników najpierw powoduje wyczyszczenie listy u¿ytkowników,
+  - szukanie kolejnych u¿ytkowników nie powoduje dodawania do listy ju¿ wcze¶niej znalezionych.
 
 +++ wersja 0.3.3-pre3
 * CTRL + klik dowolnego przycisku myszki na ikonce w tray'u powoduje

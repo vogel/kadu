@@ -213,6 +213,8 @@ void SearchDialog::clearResults(void) {
 }
 
 void SearchDialog::firstSearch(void) {
+	if (results->childCount())
+		clearResults();
 	fromUin = 0;
 	nextSearch();
 }
@@ -324,6 +326,8 @@ void SearchDialog::showResults(gg_search50_t res) {
 		city = gg_search50_get(res, i, GG_SEARCH50_CITY);
 		status = gg_search50_get(res, i, GG_SEARCH50_STATUS);
 		if ((status && atoi(status) <= 1 && only_active->isChecked()) || !status)
+			continue;
+		if (results->findItem(uin, 1))
 			continue;
 		if (atoi(status))
 			qpx = new QPixmap((const char **)gg_xpm[statusGGToStatusNr(atoi(status) & 127)]);
