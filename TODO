@@ -24,7 +24,16 @@
  + dopracowaæ grupy
  + wywoywanie domyslnego klienta e-mail i pozycja e-mail w info o kontaktach
  + wysy³anie smsów do wielu osób jednoczesnie
-
+ - mo¿liwo¶æ formatowania tekstu
+ ! poprawic opis osób z userlisty, gdy jestesmy niedostêpni
+ ? ustawienie miejsca wyskakiwania hinta zamiast ko³o tray'a
+ + je¿eli siê da to pionowe zak³adki grup
+ ? podrêczne menu w oknie rozmowy
+ + mo¿liwo¶æ ustawienia czy historia rozmowy ma znikaæ po zamkniêciu okna
+ - intelegenta data w oknie rozmowy
+ + lepsza ob³uga historii
+ ! przyspieszyæ wykrywanie emotikonek
+ 
  TODO dla wersji 0.4.0
 -----------------------
 
@@ -53,3 +62,4 @@
  ? przechowywanie adresów pocztowych u¿ytkowników i uruchamianie klienta pocztowego
  - mechanizm plugin-ów
  + obs³uga unikodu
+ ? przezroczysto¶æ
