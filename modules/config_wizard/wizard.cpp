@@ -411,7 +411,7 @@ void Wizard::createGGNewNumberPage()
 	ggNewNumberPage=new QVBox(this);
 	
 	new QLabel(tr("<h3>Please enter your valid e-mail address and password you want "
-				"to secure your new Gadu-gadu number<h3>"), ggNewNumberPage);
+				"to secure your new Gadu-gadu number</h3>"), ggNewNumberPage);
 
 	QGroupBox *grp_dontHaveNumber=new QGroupBox("", ggNewNumberPage);
 	grp_dontHaveNumber->setInsideMargin(10);
