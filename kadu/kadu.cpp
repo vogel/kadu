@@ -518,22 +518,11 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	/* initialize group tabbar */
 	group_bar=new QTabBar(this);
 	group_bar->addTab(new QTab("Wszyscy"));
-	for(int i=0; i<userlist.count(); i++)
-	{
-		if(userlist[i].group!="")
-		{
-			bool createNewTab=true;
-			for(int j=0; j<group_bar->count(); j++)
-				if(group_bar->tab(j)->text()==userlist[i].group)
-					createNewTab=false;
-			if(createNewTab)
-				group_bar->addTab(new QTab(userlist[i].group));
-		};
-	};
-	if(group_bar->count()==1)
-		group_bar->hide();
-	else
-		connect(group_bar,SIGNAL(selected(int)),this,SLOT(groupTabSelected(int)));
+	refreshGroupTabBar();
+	connect(group_bar,SIGNAL(selected(int)),this,SLOT(groupTabSelected(int)));
+
+	/* connect userlist modified signal */
+	connect(&userlist,SIGNAL(modified()),this,SLOT(userListModified()));
 		
 	/* initialize and configure userbox */
 	userbox = new UserBox(this);
@@ -598,6 +587,33 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		show();
 }
 
+void Kadu::refreshGroupTabBar()
+{
+	/* usuwamy wszystkie zakladki - od tylu,
+	   bo indeksy sie przesuwaja po usunieciu */
+	for(int i=group_bar->count()-1; i>=1; i--)
+		group_bar->removeTab(group_bar->tabAt(i));
+	/* dodajemy nowe zakladki */
+	for(int i=0; i<userlist.count(); i++)
+	{
+		if(userlist[i].group!="")
+		{
+			bool createNewTab=true;
+			for(int j=0; j<group_bar->count(); j++)
+				if(group_bar->tabAt(j)->text()==userlist[i].group)
+					createNewTab=false;
+			if(createNewTab)
+				group_bar->addTab(new QTab(userlist[i].group));
+		};
+	};
+	if(group_bar->count()==1)
+		group_bar->hide();
+	else
+		group_bar->show();
+	/* odswiezamy - dziala tylko jesli jest widoczny */
+	group_bar->update();
+};
+
 void Kadu::setActiveGroup(const QString& group)
 {
 	userbox->clearUsers();
@@ -617,6 +633,11 @@ void Kadu::groupTabSelected(int id)
 		setActiveGroup(group_bar->tab(id)->text());
 };
 
+void Kadu::userListModified()
+{
+	refreshGroupTabBar();
+};
+
 void Kadu::removeUser(QString &username, bool permanently = false) {
 	int i = 0;
 
@@ -634,6 +655,7 @@ void Kadu::removeUser(QString &username, bool permanently = false) {
 		case 1:
 			break;
 		}
+	refreshGroupTabBar();
 }
 
 void Kadu::blink() {
@@ -734,9 +756,10 @@ void Kadu::addUser(const QString& FirstName, const QString& LastName,
 	userbox->addUser(AltNick);
 	UserBox::all_refresh();
 
+	refreshGroupTabBar();
+
 	gg_add_notify(&sess, Uin.toInt());
 };
-
 
 /* cancel autoaway, we're alive */
 void Kadu::enterEvent (QEvent * e) {

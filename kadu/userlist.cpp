@@ -21,8 +21,9 @@
 #include "userlist.h"
 #include "misc.h"
 #include "kadu.h"
+#include "userbox.h"
 
-UserList::UserList() : QValueList<UserListElement>()
+UserList::UserList() : QObject(), QValueList<UserListElement>()
 {
 };
 
@@ -82,6 +83,29 @@ void UserList::addUser(const QString FirstName,const QString LastName,
 	e.ip = 0;
 	e.port = 0;
 	append(e);
+};
+
+void UserList::changeUserInfo(const QString OldAltNick,
+	const QString& FirstName, const QString& LastName,
+	const QString& NickName, const QString& AltNick,
+	const QString& Mobile,const QString& Group)
+{
+	UserListElement& e=byAltNick(OldAltNick);
+	e.first_name = FirstName;
+	e.last_name = LastName;
+	e.nickname = NickName;
+	if (AltNick != e.altnick)
+	{
+		UserBox::all_renameUser(e.altnick,AltNick);
+		UserBox::all_refresh();			
+	};	
+	e.altnick=AltNick;
+	e.mobile=Mobile;
+	e.foreign=false;		
+	e.group=Group;
+//			if (!userlist[this_index].anonymous)
+//				userlist[this_index].mobile = e_mobile->text();
+	emit modified();
 };
 
 void UserList::removeUser(const QString &altnick)
@@ -186,26 +210,6 @@ bool UserList::readFromFile()
 			QString group = line.section(';',5,5);
 			QString uin = line.section(';',6,6);
 
-      /* load groups */
-/*
-      if (group != NULL && QString::compare(group, "") != 0) {
-        bool already = false;
-        for (int f = 0; f < grouplist.size(); f++) {
-          if (QString::compare(__c2q(grouplist[f].name), __c2q(group)) == 0) {
-            already = true;
-            break;
-            }
-          }
-        if (!already) {
-          grouplist.resize(grouplist.size()+1);
-          if (grouplist.size() > 1)
-            grouplist[grouplist.size()-1].number = grouplist[grouplist.size()-2].number + 1;
-          else
-            grouplist[grouplist.size()-1].number = 601;
-          grouplist[grouplist.size()-1].name = strdup(group);
-        }
-      } */
-
 			if(uin=="")
 				continue;
 				
@@ -237,4 +241,21 @@ bool UserList::readFromFile()
     	return true;
 }
 
-//#include "userlist.moc"
+UserList& UserList::operator=(const UserList& userlist)
+{
+	QValueList<UserListElement>::operator=(userlist);
+	return *this;
+};
+
+/*
+int UserList::count()
+{
+	return List.count();
+};
+
+UserListElement& UserList::operator[](const int i)
+{
+	return List[i];
+};*/
+
+#include "userlist.moc"

@@ -39,9 +39,9 @@ struct UserListElement
 	short port;
 };
 
-class UserList : public QValueList<UserListElement>
+class UserList : public QObject,public QValueList<UserListElement>
 {
-//	Q_OBJECT
+	Q_OBJECT
 	
 	public:
 		UserList();
@@ -54,9 +54,19 @@ class UserList : public QValueList<UserListElement>
 			const QString Mobile,const QString Uin,
 			const int Status=GG_STATUS_NOT_AVAIL,
 			const QString Group="",const QString Description="", const bool Foreign = false);
+		void changeUserInfo(const QString OldAltNick,
+			const QString& FirstName, const QString& LastName,
+			const QString& NickName, const QString& AltNick,
+			const QString& Mobile, const QString& Group);
 		void removeUser(const QString &altnick);
 		bool writeToFile(char *filename = NULL);
 		bool readFromFile();
+		UserList& operator=(const UserList& userlist);
+/*		int count();
+		UserListElement& operator[](const int i);*/
+		
+	signals:
+		void modified();
 };
 
 #endif

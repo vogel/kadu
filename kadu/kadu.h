@@ -186,12 +186,14 @@ class Kadu : public QMainWindow
 		int commencing_startup;
 		void createMenu();
 		void createStatusPopupMenu();
+		void refreshGroupTabBar();
 		void setActiveGroup(const QString& group);
 		bool close_permitted;
 		friend class DockWidget;
 	
 	private slots:
 		void groupTabSelected(int id);
+		void userListModified();
 };
 
 struct acks {
