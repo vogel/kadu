@@ -1984,7 +1984,7 @@ void Kadu::cleanUp(void) {
 }
 
 Kadu::~Kadu(void) {
-	QApplication::desktop()->releaseMouse();
+	kdebug("Kadu::~Kadu()\n");
 }
 
 void Kadu::createMenu() {

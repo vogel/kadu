@@ -95,14 +95,14 @@ class Kadu : public QMainWindow
 		int openChat(UinsList);
 		void gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op);
 		void currentChanged(QListBoxItem *item);
-		void showdesc(void);
-		void hidedesc(void);
+		void showdesc(bool);
 		void statusMenuAboutToHide(void);
 		void mouseButtonClicked(int, QListBoxItem *);
 		void viewHistory();
 		void lookupInDirectory();
 		void showUserInfo();
 		void addUserAction();
+		void infopanelUpdate(uin_t uin);
 
 	private:
 		QFrame *centralFrame;
