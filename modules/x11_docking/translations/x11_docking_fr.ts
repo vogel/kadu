@@ -3,7 +3,7 @@
     <name>@default</name>
     <message>
         <source>Remove from taskbar (experimental)</source>
-        <translation>Usuń z paska zadań (experymentalne)</translation>
+        <translation>Élimine de la barre des tâches (fonction expérimentale)</translation>
     </message>
 </context>
 </TS>

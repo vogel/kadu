@@ -1293,7 +1293,7 @@ en
     <name>QMainWindow</name>
     <message>
         <source>Line up</source>
-        <translation>Aligner</translation>
+        <translation>Enroule</translation>
     </message>
     <message>
         <source>Customize...</source>

@@ -15,7 +15,7 @@
     </message>
     <message>
         <source>Remind &amp;password</source>
-        <translation>Rapelle&amp;mot de passe</translation>
+        <translation>&amp;Rapelle mot de passe</translation>
     </message>
 </context>
 <context>
@@ -90,7 +90,7 @@ L&apos;ancien fichier sera effacé.</translation>
     </message>
     <message>
         <source>Register user</source>
-        <translation>Enregistrement de nouveau utilisateur</translation>
+        <translation>Enregistre le nouveau utilisateur</translation>
     </message>
     <message>
         <source>OK</source>

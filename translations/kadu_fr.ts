@@ -107,7 +107,7 @@
     </message>
     <message>
         <source>ShortCuts</source>
-        <translation>Les raccurcies</translation>
+        <translation>Les raccourcis</translation>
     </message>
     <message>
         <source>Remove from userlist</source>
@@ -594,7 +594,7 @@ Attention danger!
     </message>
     <message>
         <source>&quot;%1&quot; in chat sends message by default</source>
-        <translation type="unfinished"></translation>
+        <translation>par défault %1 envoie le message</translation>
     </message>
 </context>
 <context>
@@ -728,7 +728,7 @@ Attention danger!
     </message>
     <message>
         <source>%1 sends message</source>
-        <translation type="unfinished"></translation>
+        <translation>touche %1 envoie le message</translation>
     </message>
 </context>
 <context>
@@ -1006,7 +1006,7 @@ Mot de passe incorrect !</translation>
     <name>HistorySlots</name>
     <message>
         <source>%1 day(s) %2 hour(s)</source>
-        <translation>dni: %1 godzin: %2</translation>
+        <translation>jours:%1 heures:%2</translation>
     </message>
 </context>
 <context>
@@ -1134,7 +1134,7 @@ Mot de passe incorrect !</translation>
     </message>
     <message>
         <source>Open chat window</source>
-        <translation>Commence la conversation</translation>
+        <translation>Ouvre la fenêtre de conversation</translation>
     </message>
     <message>
         <source>Ignore user</source>
@@ -1162,7 +1162,7 @@ Mot de passe incorrect !</translation>
     </message>
     <message>
         <source>Manage &amp;ignored</source>
-        <translation>Administre et&amp;ignore</translation>
+        <translation>Administre les &amp;ignore</translation>
     </message>
     <message>
         <source>&amp;Configuration</source>
@@ -1174,7 +1174,7 @@ Mot de passe incorrect !</translation>
     </message>
     <message>
         <source>&amp;Search for users</source>
-        <translation>Trouve&amp;Contact</translation>
+        <translation>Cherc&amp;he contact</translation>
     </message>
     <message>
         <source>&amp;Add user</source>
@@ -1336,7 +1336,7 @@ Mot de passe incorrect !</translation>
     <name>ModulesManager</name>
     <message>
         <source>&amp;Manage Modules</source>
-        <translation>&amp;Administrateur de modules</translation>
+        <translation>A&amp;dministration des modules</translation>
     </message>
     <message>
         <source>Required module %1 was not found</source>
@@ -1580,7 +1580,7 @@ Peut être module incompatible avec Kadu.</translation>
     <name>SelectFont</name>
     <message>
         <source>Select</source>
-        <translation>Wybierz</translation>
+        <translation>Choisir</translation>
     </message>
 </context>
 <context>
@@ -1660,7 +1660,7 @@ Peut être module incompatible avec Kadu.</translation>
     <name>ToolBar</name>
     <message>
         <source>Main toolbar</source>
-        <translation>Mój pasek narzędziowy</translation>
+        <translation>Ma barre de tâches</translation>
     </message>
 </context>
 <context>
@@ -1825,7 +1825,7 @@ Peut être module incompatible avec Kadu.</translation>
     </message>
     <message>
         <source>Numbers are prohibited</source>
-        <translation type="unfinished"></translation>
+        <translation>Les numéros sont interdit</translation>
     </message>
 </context>
 <context>

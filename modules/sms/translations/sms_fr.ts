@@ -3,7 +3,7 @@
     <name>@default</name>
     <message>
         <source>Send SMS</source>
-        <translation>Envoie le SMS</translation>
+        <translation>Envoi le SMS</translation>
     </message>
     <message>
         <source>SMS</source>
@@ -130,7 +130,7 @@ est fonctionnel</translation>
     </message>
     <message>
         <source>Signature can&apos;t be empty</source>
-        <translation type="unfinished"></translation>
+        <translation>Le champ de la signature ne doit pas être vide</translation>
     </message>
 </context>
 <context>
