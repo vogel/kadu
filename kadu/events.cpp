@@ -81,41 +81,35 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 		if (!strncmp((char *)msg, "-----BEGIN RSA PUBLIC KEY-----", 20)) {
 			QFile keyfile;
 			QString keyfile_path;
-			QString key_data;
-			switch(QMessageBox::information(kadu, "Kadu", i18n("User") +  (const char *) + i18n("is sending you public key. Do you want to save them ?"), i18n("Yes"), i18n("No"), QString::null, 0, 1)) {
-				case 0: // Yes ? ;)
-					keyfile_path.append(ggPath("keys/"));
-					keyfile_path.append(QString::number(senders[0]));
-					keyfile_path.append(".pem");
 
-					keyfile.setName(keyfile_path);
+			if(QMessageBox::information(kadu, "Kadu", i18n("User %1 is sending you his public key. Do you want to save it?").arg(userlist.byUin(senders[0]).altnick), i18n("Yes"), i18n("No"), QString::null, 0, 1)!=0)
+				return;
+				
+			keyfile_path.append(ggPath("keys/"));
+			keyfile_path.append(QString::number(senders[0]));
+			keyfile_path.append(".pem");
 
-					if(!(keyfile.open(IO_WriteOnly))) {
-						QMessageBox::critical(kadu, "Kadu", i18n("Nie mozna zapisa. klucza"), i18n("OK"), QString::null, 0);
-						fprintf(stderr, "eventRecvMsg(): Error opening key file %s\n", (const char *)keyfile_path.local8Bit());
-						return;
-					}
+			keyfile.setName(keyfile_path);
 
-					key_data.append(__c2q((const char *)msg));
-
-					keyfile.writeBlock(key_data.local8Bit(), key_data.length());
-
-					keyfile.close();
-
-					//SIM_KC_Free(SIM_KC_Find(senders[0]));
-
-					return;
-				case 1: // No ? ;)
-					return;
+			if(!(keyfile.open(IO_WriteOnly))) {
+				QMessageBox::critical(kadu, "Kadu", i18n("Error writting the key"), i18n("OK"), QString::null, 0);
+				fprintf(stderr, "eventRecvMsg(): Error opening key file %s\n", (const char *)keyfile_path.local8Bit());
+				return;
 			}
+
+			QString key_data=__c2q((const char *)msg);
+			keyfile.writeBlock(key_data.local8Bit(), key_data.length());
+
+			keyfile.close();
+			return;
 		}
 	};
 
 	if(msg != NULL)
 	{
-		fprintf(stderr,"DECRYPTING\n");
+		fprintf(stderr,"KK Decrypting encrypted message...\n");
 		char* decoded = sim_message_decrypt(msg, senders[0]);
-		fprintf(stderr,"DECODED: %s\n",decoded);
+		fprintf(stderr,"KK Decrypted message is: %s\n",decoded);
 		if (decoded != NULL)
 			strcpy((char *)msg, decoded);
 	};
