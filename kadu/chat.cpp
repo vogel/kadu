@@ -1277,10 +1277,8 @@ void ColorSelectorButton::buttonClicked()
 	emit clicked(color);
 }
 
-ColorSelector::ColorSelector(QWidget *parent, const char *name) : QWidget (parent, name,Qt::WType_Popup)
+ColorSelector::ColorSelector(QWidget *parent, const char *name) : QWidget (parent, name,Qt::WType_Popup|Qt::WDestructiveClose)
 {
-	setWFlags(Qt::WDestructiveClose);
-
 	QValueList<QColor> qcolors;
 	int i;
 
