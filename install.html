@@ -1,0 +1,300 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD>
+<TITLE>Kadu Klient Gadu-Gadu dla Linuxa</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=ISO-8859-2">
+<META http-equiv=EXPIRES content=0>
+<META content=DOCUMENT name=RESOURCE-TYPE>
+<META content=GLOBAL name=DISTRIBUTION>
+<META content="Kadu Klient Gadu-Gadu dla Linuxa" name=AUTHOR>
+<META content="Copyright (c) 2003 by Kadu Team"  name=COPYRIGHT>
+<META content="Linux, linux,Software, software, Download, download, Downloads, downloads, Free, FREE, free, Forum, forum, Forums, forums, Open Source, OpenSource, Opensource, opensource, open source, Free Software, FreeSoftware, Freesoftware, free software, GNU, gnu, GPL, gpl, License, license, Unix, UNIX, *nix, unix, Mandrake, mandrake, Red Hat, RedHat, red hat, Slackware, slackware, SUSE, SuSE, suse, Debian, debian, Gnome, GNOME, gnome, Kde, KDE, kde, Program, program" name=KEYWORDS>
+<META content="Kadu - Klient Gadu-Gadu dla Linuxa" name=DESCRIPTION>
+<META content="INDEX, FOLLOW" name=ROBOTS>
+<META content="1 DAYS" name=REVISIT-AFTER>
+<META content=GENERAL name=RATING>
+<STYLE MEDIA="all" TYPE="text/css">@import url( css/style.css );
+</STYLE>
+</HEAD>
+<BODY>
+<HR>
+<H1>Instrukcja obsługi</H1>
+  <H3><A NAME="faq">HOWTO - Czyli jak zainstalować Kadu ze źr&oacute;deł.</A></H3>
+<P><EM style="color:#000000">Ten dokument opisuje jak
+zainstalować program Kadu od wersji 0.3.2 do najnowszych.</EM>
+</P>
+<hr>
+<TABLE>
+ <TR>
+  <TD STYLE="VALGIN: middle; border-style: ridge; WIDTH:100%"> <BR>
+<H2><A NAME="top"></A>Spis treści:</H2>
+<OL>
+	<LI><A HREF="#wstep">Wstęp</A></LI>
+	<LI><A HREF="#wymag">Wymagane pakiety</A></LI>
+	<LI><A HREF="#jtz">Jak to zrobić - instalacja</A></LI>
+	<LI><A HREF="#KDEDIR">Jak to zrobić - ustawianie zmiennej QTDIR</A></LI>
+	<LI><A HREF="#emots">Jak to zrobić - instalacja dodatkowych emotikonów</A></LI>
+	<LI><A HREF="#szyfr">Jak to zrobić - szyfrowanie rozm&oacute;w</A></LI>
+	<LI><A HREF="#lang">Jak to zrobić - polska wersja językowa</A></LI>
+	<LI><A HREF="index_doc.html">Powrót do spisu treści Instrukcji</A></LI>
+</OL>
+
+<TABLE>
+	<TR>
+		<TD STYLE="VALGIN: middle; Background-COLOR:#FFFFF0; WIDTH:100%">
+			<H2><A NAME="wstep">1. Wstęp</A>
+			</H2>
+		</TD>
+	</TR>
+	<TR>
+  <TD>
+                       <BR>
+			<P>W dokumencie tym postaram się wyjaśnić jak
+			zainstalować z pakietu źr&oacute;dłowego program Kadu. System
+			bazowy to dystrybucja Mandrake 9.0. W innych dystrybucjach może to
+			wyglądać podobnie ale nie koniecznie. Dotyczy on wersji 0.3.2 i
+			nowszych. Starsze wersje nie będą omawiane.</P>
+   <BR>
+   		</TD>
+	</TR>
+	<TR>
+  <TD STYLE="VALGIN: middle; Background-COLOR:#FFFFF0; WIDTH:100%">
+			<H2><A NAME="wymag">2. Wymagane pakiety:</A></H2>
+		</TD>
+	</TR>
+	<TR>
+  <TD> <BR>
+
+			<UL>
+				<LI>Glibc 2.2.5</LI>
+				<LI>Glibc-devel 2.2.5</LI>
+				<LI>glibc_lsb 2.2.90</LI>
+				<LI>libarts-devel 1.0.3</LI>
+				<LI>freetype2 2.0.9</LI>
+				<LI>freetype2-devel 2.0.9 </LI>
+				<LI>libgcc1 3.3</LI>
+				<LI>XFree86-libs 4.2.1 </LI>
+				<LI>XFree86-devel 4.2.1</LI>
+				<LI>libjpeg62 6b </LI>
+				<LI>libjpeg62-devel 6b</LI>
+				<LI>liblcms1 1.09</LI>
+				<LI>libmng1 1.0.3</LI>
+				<LI>libpng3 1.2.4</LI>
+				<LI>libpng3-devel 1.2.4</LI>
+				<LI>libqt3 3.0.5</LI>
+				<LI>libqt3-devel 3.0.5</LI>
+				<LI>libstdc++5 3.2</LI>
+				<LI>libstdc++5-devel 3.2</LI>
+				<LI>zlib1 1.1.4</LI>
+				<LI>zlib1-devel 1.1.4</LI>
+				<LI>libopenssl0</LI>
+				<LI>libopenssl0.9.7</LI>
+				<LI>libopenssl0.9.7-devel</LI>
+			</UL>
+			<P>Większość z tych pakiet&oacute;w na pewno będzie
+			już zainstalowane w twoim systemie. Niekt&oacute;re będą wymagały
+			spełnienia innych zależności. Oczywiście są minimalne wersje pakietów dla wersji 0.3.2.
+			Obecnie napewno są to wyższe wersje, aczkolwiek nazwy pakietów są te same.
+			Chciałbym uczulić na obecność w systemie pakiet&oacute;w developerskich czyli pakietów
+			z bibliotekami nagł&oacute;wkowymi. Częste pytania typu:
+			&quot;./configure nie znajduje Qt lub KDE&quot; to brak nie
+			wspomnianych program&oacute;w ale właśnie bibliotek nagł&oacute;wkowych.
+			Więcej szczeg&oacute;ł&oacute;w znajdziesz w rozdziale poniżej.</P>
+			<P STYLE="TEXT-ALIGN:right"><A HREF="#top">Z powrotem na g&oacute;rę dokumentu</A></P>
+		</TD>
+	</TR>
+	<TR>
+   <TD STYLE="VALGIN: middle; Background-COLOR:#FFFFF0; WIDTH:100%">
+			<H2 ><A NAME="jtz">3. Jak To Zrobić - instalacja</A></H2>
+		</TD>
+	</TR>
+	<TR>
+  <TD>                  <BR>
+			<P>Postępuj zgodnie z instrukcją podaną poniżej.</P>
+			<OL>
+				<LI>Pierwszym krokiem będzie rozpakowanie źr&oacute;deł.
+				Oczywiście można to zrobić poleceniem: 
+				<PRE>gunzip kadu-nr_wersji.tar.gz
+tar -xf kadu-nr_wersji.tar</PRE>
+				ale można oczywiście prościej np.: w Midnight Commander lub w
+				X-ach ark-iem. Wyb&oacute;r należy do użytkownika.</LI>
+				<LI>Logujemy się w systemie z uprawnieniami administratora
+				poleceniem:
+				<PRE>su</PRE></LI>
+				<LI>W powstałym katalogu korzystamy ze skryptu <B>Instaluj</B>, który w większości
+				przypadk&oacute;w jest najlepszym rozwiązaniem, lub wydajemy polecenia:
+				<PRE>./configure
+make
+make install</PRE> Można również spróbować graficznego instalator
+				o nazwie <B>Instaluj.tcl</B> należy wtedy mieć zainstalowane w systemie <B>TCL
+				w wersji conajmniej 8.3</B>.</P>
+				<P><img src="img/instalator.png" alt="instalator.png"></P>
+				<P>Instalator ten jest jeszcze w fazie tworzenia i może
+				mieć błędy. Problemy z nim należy zgłaszać na <A href="http://kadu.net/forum/viewtopic.php?t=866&sid=3d30a737ee0d124639a72825db4cfed9">Forum</A> "Googiemu"<BR><BR></LI>
+				<LI><B>Problem z LibGadu - </B> Kadu domyślnie zainstalowane w
+				usr/local/. Instalacja przebiega pomyślnie, natomiast pr&oacute;ba
+				startu powoduje wyrzucenie błędu:<I> nie znaleziono libgadu.so.2</I>
+				<BR>Lekarstwo: zrobić link symboliczny do libgadu.so.2, kt&oacute;re
+				zainstalowało się w /usr/local/lib/, w katalogu /usr/lib w
+				następujący spos&oacute;b:
+				<PRE>         ln -s /usr/local/lib/libgadu.so.2 /usr/lib/</PRE>
+				lub zaktualizowanie pliku <I> /etc/ld.so.conf</I> o ścieżke do istniejącego LibGadu i wydanie polecenia:
+				<PRE>         /sbin/ldconfig</PRE>
+				Wszystko oczywiście z uprawnieniami root-a.<BR><BR></LI>
+				<LI>Pomocnym rozwiązaniem jest też wydanie polecenia:
+				<PRE>         ./configure --help |less</PRE>
+				i przeczytanie wszystkich możliwych opcji konfiguracyjnych.<BR><BR>
+                                A to nie kt&oacute;re z nich:<BR><BR>
+                                * instalacja do wybranego przez siebie katalogu
+				<PRE>         ./configure --prefix=/twoj_podany_katalog</PRE>
+				* możliwość wyłączenia instalacji dokumentacji wraz z Kadu 
+                                <PRE>         ./configure --disable-doc</PRE>
+				* symbole dla debugera nie są wkompilowywane aby je włączyć 
+                                <PRE>         ./configure --enable-debug</PRE>
+				* możliwość wyłączenia kompilacji libgadu i zlinkowania z już
+				istniejącą w systemie instalacją
+				<PRE>         ./configure --with-existing-libgadu</PRE>
+				* wkompilowywana informacja o typie dystrybucji, np. źr&oacute;dła,
+				paczka dla określonego systemu itp.
+				<PRE>         ./configure --enable-dist-info=DIST</PRE>
+				*bez szyfrowania wiadomości w ssl
+				<PRE>         ./configure --without-openssl</PRE>
+			</OL>
+			<P STYLE="TEXT-ALIGN:right"><A HREF="#top">Z powrotem na g&oacute;rę dokumentu</A></P>
+		</TD>
+	</TR>
+	<TR>
+  <TD STYLE="VALGIN: middle; Background-COLOR:#FFFFF0; WIDTH:100%">
+			<H2><A NAME="KDEDIR">4. Jak To Zrobić - ustawianie zmiennej QTDIR</A></H2>
+		</TD>
+	</TR>
+	<TR>
+	<TD><BR>
+		<P>Często zdarzają się problemy ze zmienną QTDIR
+		(zwłaszcza w RedHat lub Mandrake) co skutkuje
+		nieznalezieniem biblioteki Qt. Zakładam ze masz zainstalowane
+		QT3.0.x Oto przykładowe rozwiązanie tego problemu. Jako
+		root w /etc/profile dopisać na końcu pliku:</P>
+	<PRE>
+	QTDIR=/usr/local/qt
+	PATH=$QTDIR/bin:$PATH
+	MANPATH=$QTDIR/doc/man:$MANPATH
+	LD_LIBRARY_PATH=$QTDIR/lib:$LD_LIBRARY_PATH
+	export QTDIR PATH MANPATH LD_LIBRARY_PATH
+	</PRE>
+	<P>
+	Oczywiście takie katalogi muszą istnieć jeżeli są gdzie indziej
+	ścieżka musi prowadzić do nich</P>
+	<P STYLE="TEXT-ALIGN:right"><A HREF="#top">Z powrotem na g&oacute;rę dokumentu</A></P>
+	</TD>
+	</TR>
+	<TR>
+        <TD STYLE="VALGIN: middle; Background-COLOR:#FFFFF0; WIDTH:100%">
+		<H2><A NAME="emots">5. Jak to zrobić - instalacja dodatkowych zestawów emotikon</A></H2>
+		</TD>
+	</TR>
+	<TR>
+  		<TD> <BR>
+			<P>Dla wersji Kadu 0.3.3 final, na stronie <A HREF="http://kadu.net/download.php">Kadu.net</A>
+			jest do pobrania thems kompatybilny z Gadu-Gadu 5.0. Wystarczy go
+			rozpakować do katalogu z emotikonami
+		<PRE>gunzip kadu-gg5.0.tar.gz
+tar -xf kadu-gg5.0.tar
+cp -P -r -v ./GG5.0/  $PREFIX/share/apps/kadu/themes/emoticons</PRE>
+			Oczywiście $PREFIX to ścieżka jaką narzuciłeś przy instalacji. W instalatorze
+			 domyslnie $PREFIX=/usr, konfigurujac "ręcznie" ./configure domyślnie jest
+			  $PREFIX=/usr/local</P>
+			  <P>Najnowsze wersje rozwojowe 0.3.4-cvs posiadają już zestaw kompatybilny z Windows Gadu-Gadu 5.0.4
+			   i nie wymagaja dodatkowej instalacji. Natomiast istnieje możliwość instalowania nowych zestawów, które
+			   są zgodne z Windows Gadu-Gadu, gdyż obecnie Kadu stosuje tą samą metodę sterownia emotikonami. Dodatkowe
+			   emotikony wystarczy skopiować do katalogu z emotikonami jak wyżej i wówczas będą dostępne jako oddzielny zestaw,
+			    bądź do katalogu ../gadu-gadu/3 lub kolejny nr, wtedy będą dołączone do istniejącego zestawu.</P>
+				<P><B>STARE ZESTAWY KADUBIS, ORGINAL I GG5.0 NIE BĘDĄ JUŻ DZIAŁAŁY</B></P>
+			<P STYLE="TEXT-ALIGN:right"><A HREF="#top">Z powrotem na g&oacute;rę dokumentu</A></P>
+		</TD>
+	</TR>
+	<TR>
+          <TD STYLE="VALGIN: middle; Background-COLOR:#FFFFF0; WIDTH:100%">
+	 <H2><A NAME="szyfr">6. Jak to zrobić - szyfrowanie rozm&oacute;w</A></H2>
+		</TD>
+	</TR>
+	<TR>
+  <TD>                  <BR>
+			<P>W Kadu jest dostępna opcja szyfrowania rozm&oacute;w w ssl. Aby m&oacute;c
+			go używać musimy wykonać następujące czynności:</P>
+			<UL>
+				<LI>Kadu kompilujesz z opcja
+				--with-openssl, (od wersji 0.3.3.rc2 opcja ta jest domyślną)
+    </LI>
+				<LI>generujesz sobie klucz
+				publiczny (w oknie konfiguracyjnym), Tylko długość1024 jest
+				obsługiwana przez protok&oacute;ł, jeżeli jeszcze masz możliwość
+				(kt&oacute;ra będzie w najbliższym czasie zablokowana) korzystaj
+				tylko z niej,
+    </LI>
+				<LI>w menu kontekstowym w oknie
+				listy kontakt&oacute;w, dla konkretnego kontaktu z listy
+				wybieramy opcje <B>Wyślij m&oacute;j klucz publiczny</B> (taka z
+				kł&oacute;dka). Tw&oacute;j klucz zostanie wysłany adresatowi.
+    </LI>
+				<LI>jeśli masz czyjś klucz
+				publiczny, to w oknie chat możesz manipulować klawiszem z kł&oacute;dką.
+				Jeśli jest zamknięta to wysyłasz wiadomość zaszyfrowaną,
+    </LI>
+				<LI>szyfrowanie ssl jest kompatybilne z
+				szyfrowaniem z PowerGG z pod Windows. Klucze publiczne są przenośne z Windows do Linux-a.
+				Z Linux-a do Windows niestety nie ze względu na różnice w znaku końca lini.
+    </LI>
+			</UL>
+			<P STYLE="TEXT-ALIGN:right"><A HREF="#top">Z powrotem na g&oacute;rę dokumentu</A></P>
+	</TD>
+	</TR>
+	<TR>
+		<TD STYLE="VALGIN: middle; Background-COLOR:#FFFFF0; WIDTH:100%">
+		<H2><A NAME="lang">7. Jak to zrobić - polska wersja językowa</A></H2>
+		</TD>
+	</TR>
+	<TR>
+	<TD><BR>
+	<P>Aby Kadu było w polskiej wersji językowej <I>locale</I> w systemie muszą być ustawione na <I>pl_PL</I>.
+	Można to sprawdzić wykonując polecenie:
+	<PRE>[root@localhost]$ locale
+
+LANG=pl_PL
+LC_CTYPE=pl_PL
+LC_NUMERIC=pl_PL
+LC_TIME=pl_PL
+LC_COLLATE=pl_PL
+LC_MONETARY=pl_PL
+LC_MESSAGES=pl_PL
+LC_PAPER=pl_PL
+LC_NAME=pl_PL
+LC_ADDRESS=pl_PL
+LC_TELEPHONE=pl_PL
+LC_MEASUREMENT=pl_PL
+LC_IDENTIFICATION=pl_PL
+LC_ALL=
+</PRE>
+	Jeżeli zamiast <I>pl_PL</I> zobaczymy cos innego to znaczy że system nasz nie jest ustawiony na język polski.
+	W zależności od dystrybucji (w Mandrake musisz mieć zainstalowany pakiet locales-pl***.mdk.rpm, w Debianie wykonaj <I>dpkg-reconfigure locales</I>)
+	zmiany dokonuje się za pomoca różnych narzędzi lub edytując pliki konfiguracyjne.
+	W jaki sposób musisz poszukac w HOWTO do swojej dystrybucji.<BR>
+	Jeżeli już mamy zainstalowane Kadu i locale ustawione na pl_PL i nie ma polskiej wersji to doraźnie można
+	zrobić to przekopiowując ze źr&oacute;deł plik kadu/po/pl/kadu.mo
+	do katalogu z localami, np. w Mandrake 9.0 jest to
+	/usr/share/locale/pl/LC_MESSAGES/kadu.mo</P>
+	<P STYLE="TEXT-ALIGN:right"><A HREF="#top">Z powrotem na g&oacute;rę dokumentu</A></P>
+	<P>
+      <a href="http://validator.w3.org/check/referer"><img border="0"
+          src="http://www.w3.org/Icons/valid-html401"
+          alt="Valid HTML 4.01!" height="31" width="88"></a>
+    </p>
+
+		</TD>
+	</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</BODY>
+</HTML>
+<!--ISO-->

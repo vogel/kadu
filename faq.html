@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD>
+<TITLE>Kadu Klient Gadu-Gadu dla Linuxa</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=ISO-8859-2">
+<META http-equiv=EXPIRES content=0>
+<META content=DOCUMENT name=RESOURCE-TYPE>
+<META content=GLOBAL name=DISTRIBUTION>
+<META content="Kadu Klient Gadu-Gadu dla Linuxa" name=AUTHOR>
+<META content="Copyright (c) 2003 by Kadu Team"  name=COPYRIGHT>
+<META content="Linux, linux,Software, software, Download, download, Downloads, downloads, Free, FREE, free, Forum, forum, Forums, forums, Open Source, OpenSource, Opensource, opensource, open source, Free Software, FreeSoftware, Freesoftware, free software, GNU, gnu, GPL, gpl, License, license, Unix, UNIX, *nix, unix, Mandrake, mandrake, Red Hat, RedHat, red hat, Slackware, slackware, SUSE, SuSE, suse, Debian, debian, Gnome, GNOME, gnome, Kde, KDE, kde, Program, program" name=KEYWORDS>
+<META content="Kadu - Klient Gadu-Gadu dla Linuxa" name=DESCRIPTION>
+<META content="INDEX, FOLLOW" name=ROBOTS>
+<META content="1 DAYS" name=REVISIT-AFTER>
+<META content=GENERAL name=RATING>
+<STYLE MEDIA="all" TYPE="text/css">@import url( css/style.css );
+</STYLE>
+</HEAD>
+<BODY>
+<HR>
+<H1>Instrukcja obsługi</H1>
+<HR>
+<TABLE>
+ <tr>
+  <TD STYLE="VALGIN: middle; border-style: ridge; Background-COLOR:#FFFFF0; WIDTH:100%">
+  <H3><A NAME="faq">FAQ - Czyli częste pytania i odpowiedzi na nie.</A></H3></td>
+ </tr>
+ </Table>
+ <TABLE>
+ <TR>
+  <TD STYLE="VALGIN: middle; border-style: ridge; WIDTH:100%">
+  <TABLE>
+    <TR>
+     <TD>
+      <BR>
+      <P><B><FONT COLOR="#66FF00">Pytanie: </FONT>
+      </B>Skrypt nie znajduje mojego QT. Dlaczego?!</P>
+	<P><B><FONT COLOR="#FB7B7B">Odpowiedź: </FONT>
+      </B>Wypr&oacute;buj skryptu <B>Instaluj</B> albo <B>Instaluj.tcl</B> jeżeli masz <B>TCL </B>
+	  zainstalowane w systemie lub ustaw zmienną QTDIR, w jaki spos&oacute;b
+	patrz <A HREF="install.html#KDEDIR">tutaj.</A><br>W przypadku <B>RedHata</B> pomocne jest
+	stworzenie link&oacute;w symbolicznych do QT3.</P>
+
+	<P><B><FONT COLOR="#66FF00">Pytanie: </FONT>
+        </B>Jestem za firewallem. Czy mogę używać Kadu?</P>
+	<P><B><FONT COLOR="#FB7B7B">Odpowiedź: </FONT>
+        </B>Tak, możesz użyć proxy. Obejrzyj zmienne w sekcji Proxy w pliku kadu.conf</P>
+        <P><B><FONT COLOR="#66FF00">Pytanie: </FONT>
+                             </B> Kadu m&oacute;wi, coś o &quot;Permission denied&quot; albo &quot;Connection
+			reset by peer&quot;, ale pod Windows GG działa. O co chodzi?</P>
+			<P><B><FONT COLOR="#FB7B7B">Odpowiedź: </FONT>
+                             </B>Prawdopodobnie masz źle wpisane hasło. Nawet, jeśli dotąd
+			działało, to w wersjach 0.3.0 i nowszych jest inaczej kodowane i
+			dlatego należy wpisać je od nowa.</P>
+           <P><B><FONT COLOR="#66FF00">Pytanie: </FONT>
+                             </B> Nie działa mi logowanie i historia. Co jest nie tak?</P>
+			<P><B><FONT COLOR="#FB7B7B">Odpowiedź: </FONT>
+                             </B>Najprawdopodobniej nie masz włączonej opcji &quot;Log messages&quot;
+			w konfiguracji. Sprawdź też, czy masz katalog ~/.gg/history/ i czy
+			ma on odpowiednie prawa (tzn. zapisu dla użytkownika)</P>
+      <P><B><FONT COLOR="#66FF00">Pytanie: </FONT>
+                             </B>Jak mogę przenieść listę użytkownik&oacute;w z Windowsowego GG?</P>
+			<P><B><FONT COLOR="#FB7B7B">Odpowiedź: </FONT>
+                             </B>Są dwa sposoby - bądź zaimportować ją z serwera (po uprzednim
+			wyeksportowaniu w GG), bądź po prostu skopiować wyeksportowany na
+			dysk plik z listą użytkownik&oacute;w do ~/.gg/userlist -- Kadu i
+			EKG używają takiego samego formatu plik&oacute;w z listą
+			użytkownik&oacute;w jak GG. 
+			</P>
+<P><B><FONT COLOR="#66FF00">Pytanie: </FONT>
+                             </B> Czy działa przesyłanie plik&oacute;w?</P>
+			<P><B><FONT COLOR="#FB7B7B">Odpowiedź: </FONT>
+                             </B>Tak ale kod nie jest do końca stabilny! Szczeg&oacute;ły <A HREF="przes_plik.html#przesylanie_plikow">tutaj.</A></P>
+<P><B><FONT COLOR="#66FF00">Pytanie: </FONT>
+                             </B>Zamiast obrazk&oacute;w pojawiają mi się kwadraciki. Co jest źle?</P>
+			<P><B><FONT COLOR="#FB7B7B">Odpowiedź: </FONT>
+                             </B>Nie masz ustawionej ścieżki do obrazk&oacute;w lub brakuje tam
+			niekt&oacute;rych (lub wszystkich) z nich. W kadu.conf jest to
+			pozycja EmoticonsPath. Jeżeli ścieżka jest na pewno prawidłowa to
+			znaczy, że masz źle skompilowane QT. Przekompiluj upewniając się,
+			że używasz w configure opcji --system-png</P>
+<P><B><FONT COLOR="#66FF00">Pytanie: </FONT>
+                             </B>Kadu w og&oacute;le nie chce się kompilować. Co robić?</P>
+			<P><B><FONT COLOR="#FB7B7B">Odpowiedź: </FONT>
+                             </B>Możesz np. spr&oacute;bować ściągnąć RPM-a. Szczeg&oacute;ły na
+			stronie w dziale <A HREF="http://kadu.net/download.php">&quot;pobierz&quot;</A>.</P>
+<P><B><FONT COLOR="#66FF00">Pytanie: </FONT>
+                             </B>Podczas kompilacji mam komunikaty, że brakuje plik&oacute;w *.moc</P>
+			<P><B><FONT COLOR="#FB7B7B">Odpowiedź: </FONT>
+                             </B>Na systemie FreeBSD pomaga używanie gmake zamiast make</P>
+<P><B><FONT COLOR="#66FF00">Pytanie: </FONT>
+                             </B> Problem z połączeniem się do serwera GG</P>
+			<P><B><FONT COLOR="#FB7B7B">Odpowiedź: </FONT>
+                             </B>W większości przypadk&oacute;w wina leży po stronie przeciążonego
+			huba/serwera GG. Można pr&oacute;bować łączyć się poprzez serwery
+			alternatywne. W tym celu w pliku kadu.conf zmieniamy standardową
+			wartość parametru Server=0.0.0.0 na jeden lub kilka z podanych
+			poniżej adres&oacute;w IP. Jeśli chcesz, żeby Kadu łączyło się
+			cyklicznie z r&oacute;żnymi serwerami GG podajesz ich wszystkie
+			adresy IP oddzielając je średnikami.</P>
+			<UL>
+				<LI><P>217.17.41.82
+				</P>
+				<LI><P>217.17.41.83
+				</P>
+				<LI><P>217.17.41.84
+				</P>
+				<LI><P>217.17.41.85
+				</P>
+				<LI><P>217.17.41.88
+				</P>
+			</UL>
+			<P>W naszym przypadku będzie to wyglądać w ten
+			spos&oacute;b:<BR>Server=217.17.41.82;217.17.41.83;217.17.41.84;217.17.41.85<BR>W
+			nowszych wersjach opcja ta jest dostępna w oknie konfiguracji.
+			Skuteczne na 90%!</P>
+<P><B><FONT COLOR="#66FF00">Pytanie: </FONT>
+                             </B>Język	polski w Kadu</P>
+			<P><B><FONT COLOR="#FB7B7B">Odpowiedź: </FONT>
+                             </B>Trzeba mieć locales w systemie ustawione na <FONT COLOR="#66FF00">pl</FONT>
+			przed kompilacja i instalacją Kadu. Doraźnie można zrobić to
+			przekopiowując ze źr&oacute;deł plik kadu/po/pl/kadu.mo do
+			katalogu z localami, np. w Mandrake 9.0 jest to
+			/usr/share/locale/pl/LC_MESSAGES/kadu.mo</P>
+<P><B><FONT COLOR="#66FF00">Pytanie: </FONT>
+                             </B>Jak się tworzy i usuwa grupy kontakt&oacute;w w Kadu?</P>
+			<P><B><FONT COLOR="#FB7B7B">Odpowiedź: </FONT>
+                             </B>Nie tworzy się. Po prostu, jeśli komuś wpiszesz przynależność do
+			grupy &quot;abc&quot; to powstanie taka grupa. Możesz też jedną
+			osobę dodać do kilku grup - nazwy grup oddzielasz od siebie
+			przecinkiem.</P>
+<P><B><FONT COLOR="#66FF00">Pytanie: </FONT>
+                             </B>Mam Free BSD i nie mam polskich czcionek w Kadu</P>
+			<P><B><FONT COLOR="#FB7B7B">Odpowiedź: </FONT>
+                             </B>Ten problem z polskimi znakami występuje nie tylko w Kadu ale we
+			wszystkich programach pod KDE (i pewnie Gnome też) jeśli ustawione
+			w systemie jest na iso8859-1 mimo że niby widać polskie czcionki.
+			Proponujemy takie rozwiązanie: wpisać w /etc/profile dla FreeBSD
+			następujący tekst:
+			<PRE>export LANG=pl</PRE>
+			<B>Od wersji finalnej 0.3.3 Kadu obsługuje UTF-8</B></P>
+<H4>Dodatkowe informacje znajdziesz <A HREF="install.html">tutaj</A></H4>
+			<P style="TEXT-ALIGN:RIGHT"><A HREF="index_doc.html">Z powrotem do spisu treści</A></P>
+    <p>
+      <a href="http://validator.w3.org/check/referer"><img border="0"
+          src="http://www.w3.org/Icons/valid-html401"
+          alt="Valid HTML 4.01!" height="31" width="88"></a>
+    </p>
+		</TD>
+	</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</BODY>
+</HTML>
+<!--ISO-->
