@@ -28,6 +28,8 @@ class DockingManager : public QObject
 		~DockingManager();
 		void trayMousePressEvent(QMouseEvent * e);
 		QPixmap defaultPixmap();
+
+	public slots:
 		/**
 			Modu³ implementuj±cy dokowanie powinien to ustawic
 			na true przy starcie i false przy zamknieciu, aby

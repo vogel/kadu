@@ -46,11 +46,11 @@ class SoundManager : public Themes
 
 	public slots:
 		void play(const QString &path, bool force=false);
+		void setMute(const bool& enable);
 
 	public:
 		SoundManager(const QString& name, const QString& configname);
 		bool isMuted();
-		void setMute(const bool& enable);
 		int timeAfterLastSound();		
 
 	signals:
