@@ -779,8 +779,8 @@ void HistoryManager::buildIndexPrivate(const QString &filename) {
 	if (outbufoffs)
 		written = fout.writeBlock((char *)outbuf, outbufoffs * sizeof(int));
 
-	delete inbuf;
-	delete outbuf;
+	delete []inbuf;
+	delete []outbuf;
 
 	fin.close();
 	fout.close();
