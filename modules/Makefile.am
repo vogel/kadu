@@ -66,10 +66,12 @@ all:
 
 
 install-data-local:
+	$(mkinstalldirs) "$(DESTDIR)/$(includedir)/kadu/modules/"
 	$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/modules/"
 	$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/modules/translations"
 	@for dir in $(shared_modules); do \
 		echo ">>> Installing $$dir module ..."; \
+		$(INSTALL_DATA) $$dir/*.h "$(DESTDIR)/$(includedir)/kadu/modules"; \
 		$(INSTALL_DATA) $$dir/$$dir.so "$(DESTDIR)/$(datadir)/kadu/modules/"; \
 		if test -d $$dir/translations; then \
 			$(INSTALL_DATA) $$dir/translations/*.qm "$(DESTDIR)/$(datadir)/kadu/modules/translations/"; \

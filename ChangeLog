@@ -139,6 +139,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * nowy, szybszy i czytelniejszy parser - `komenda` zamienione na `komenda',
   {plik tekst} - je¿eli plik istnieje, to jest wstawiany "tekst",
   {~plik tekst} - je¿eli plik nie istnieje, to jest wstawiany "tekst" (joi)
+* instalacja naglowkow modulow do $PREFIX/include/kadu/modules (adrian)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
