@@ -443,7 +443,7 @@ AutoAwaySlots::AutoAwaySlots(QObject *parent, const char *name) : QObject(parent
 	ConfigDialog::addCheckBox("General", "Status",
 			QT_TRANSLATE_NOOP("@default", "Enable AutoStatus"), "AutoChange", false);
 	ConfigDialog::addSpinBox("General", "Status",
-			QT_TRANSLATE_NOOP("@default", "Check idle every "), "AutoAwayCheckTime", 1, 10000, 1, 1);
+			QT_TRANSLATE_NOOP("@default", "Check idle every "), "AutoAwayCheckTime", 1, 10000, 1, 5);
 	ConfigDialog::addCheckBox("General", "Status",
 			QT_TRANSLATE_NOOP("@default", "Autorestore status"), "AutoRestoreStatus", true);
 	ConfigDialog::addHGroupBox("General", "General", 
