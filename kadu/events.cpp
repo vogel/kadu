@@ -233,53 +233,6 @@ void playSound(char *sound) {
 	delete sndprocess;
 }
 
-void ChangeUserStatus(uin_t uin, unsigned int new_status) {
-	int num = kadu->userbox->numItemsVisible();
-	QString tmpstr;
-
-	for (int i = 0; i < num; i++) {
-		tmpstr = kadu->userbox->text(i);
-
-		if (pending.pendingMsgs(uin))
-			return;
-
-		if (!tmpstr.compare(userlist.byUin(uin).altnick)) {
-			QPixmap * gg_st;
-			if (new_status == GG_STATUS_AVAIL)
-				gg_st = new QPixmap((const char**)gg_act_xpm);
-			else
-				if (new_status == GG_STATUS_BUSY)
-					gg_st = new QPixmap((const char**)gg_busy_xpm);
-				else
-					if (new_status == GG_STATUS_BUSY_DESCR)
-						gg_st = new QPixmap((const char**)gg_busydescr_xpm);
-					else
-						if (new_status == GG_STATUS_NOT_AVAIL)
-							gg_st = new QPixmap((const char**)gg_inact_xpm);
-						else
-							if (new_status == GG_STATUS_NOT_AVAIL_DESCR)
-								gg_st = new QPixmap((const char**)gg_inactdescr_xpm);
-							else
-								if (new_status == GG_STATUS_AVAIL_DESCR)
-									gg_st = new QPixmap((const char**)gg_actdescr_xpm);
-								else
-									if (new_status == GG_STATUS_INVISIBLE2)
-										gg_st = new QPixmap((const char**)gg_invi_xpm);
-									else
-										if (new_status == GG_STATUS_INVISIBLE_DESCR)
-											gg_st = new QPixmap((const char**)gg_invidescr_xpm);
-										else
-											if (new_status == GG_STATUS_BLOCKED)	
-												gg_st = new QPixmap((const char**)gg_stop_xpm);
-											else
-												gg_st = new QPixmap((const char**)gg_inact_xpm);
-
-			kadu->userbox->changeItem(*gg_st, userlist.byUin(uin).altnick, i);
-			delete gg_st;
-			}
-		}
-}
-
 void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)
 {
 	if (userlist.containsUin(uin)) {
@@ -310,6 +263,57 @@ void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)
 
 		}
 }
+
+void ChangeUserStatus(uin_t uin, unsigned int new_status) {
+	int num = kadu->userbox->numItemsVisible();
+	QString tmpstr;
+
+	for (int i = 0; i < num; i++) {
+		tmpstr = kadu->userbox->text(i);
+
+		if (pending.pendingMsgs(uin))
+			return;
+
+		if (!tmpstr.compare(userlist.byUin(uin).altnick)) {
+			QPixmap * gg_st;
+			switch (new_status) {
+				case GG_STATUS_AVAIL:
+					gg_st = new QPixmap((const char**)gg_act_xpm);
+					break;
+				case GG_STATUS_BUSY:
+					gg_st = new QPixmap((const char**)gg_busy_xpm);
+					break;
+				case GG_STATUS_BUSY_DESCR:
+					gg_st = new QPixmap((const char**)gg_busydescr_xpm);
+					break;
+				case GG_STATUS_NOT_AVAIL:
+					gg_st = new QPixmap((const char**)gg_inact_xpm);
+					break;
+				case GG_STATUS_NOT_AVAIL_DESCR:
+					gg_st = new QPixmap((const char**)gg_inactdescr_xpm);
+					break;
+				case GG_STATUS_AVAIL_DESCR:
+					gg_st = new QPixmap((const char**)gg_actdescr_xpm);
+					break;
+				case GG_STATUS_INVISIBLE2:
+					gg_st = new QPixmap((const char**)gg_invi_xpm);
+					break;
+				case GG_STATUS_INVISIBLE_DESCR:
+					gg_st = new QPixmap((const char**)gg_invidescr_xpm);
+					break;
+				case GG_STATUS_BLOCKED:
+					gg_st = new QPixmap((const char**)gg_stop_xpm);
+					break;
+				default:
+					gg_st = new QPixmap((const char**)gg_inact_xpm);
+					break;
+				}
+			kadu->userbox->changeItem(*gg_st, userlist.byUin(uin).altnick, i);
+			delete gg_st;
+			}
+		}
+}
+
 
 void eventGotUserlist(struct gg_event * e) {
 	struct gg_notify_reply *n;
