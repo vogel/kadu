@@ -185,11 +185,22 @@ void changePassword::start() {
 		return;
 		}
 	char *actpasswd, *newpasswd, *actmail, *newmail;
-	if (!(h = gg_change_passwd2(config.uin, iso_to_cp(actpwd->text()).data(), iso_to_cp(newpwd->text()).data(),
-		iso_to_cp(actemail->text()).data(), iso_to_cp(newemail->text()).data(), 1))) {
+	actpasswd = strdup(iso_to_cp(actpwd->text()).data());
+	newpasswd = strdup(iso_to_cp(newpwd->text()).data());
+	actmail = strdup(iso_to_cp(actemail->text()).data());
+	newmail = strdup(iso_to_cp(newemail->text()).data());
+	if (!(h = gg_change_passwd2(config.uin, actpasswd, newpasswd, actmail, newmail, 1))) {
 		status->setText(i18n("Error"));
+		free(actpasswd);
+		free(newpasswd);
+		free(actmail);
+		free(newmail);
 		return;
 		}
+	free(actpasswd);
+	free(newpasswd);
+	free(actmail);
+	free(newmail);
 	setEnabled(false);
 	createSocketNotifiers();
 }

@@ -84,10 +84,17 @@ void Register::doRegister() {
 		return;
 		}
 
-	if (!(h = gg_register(iso_to_cp(mail->text()).data(), iso_to_cp(pwd->text()).data(), 1))) {
+	char *passwd, *email;
+	passwd = strdup(iso_to_cp(pwd->text()).data());
+	email = strdup(iso_to_cp(mail->text()).data());
+	if (!(h = gg_register(email, passwd, 1))) {
 		status->setText(i18n("Error"));
+		free(passwd);
+		free(email);
 		return;
 		}
+	free(passwd);
+	free(email);
 
 	status->setText(i18n("Registering"));
 
@@ -293,10 +300,17 @@ void Unregister::doUnregister() {
 		return;
 		}
 
-	if (!(h = gg_unregister(uin->text().toUInt(), pwd->text().local8Bit(), mail->text().local8Bit(), 1))) {
+	char *passwd, *email;
+	passwd = strdup(iso_to_cp(pwd->text()).data());
+	email = strdup(iso_to_cp(mail->text()).data());
+	if (!(h = gg_unregister(uin->text().toUInt(), passwd, email, 1))) {
 		status->setText(i18n("Error"));
+		free(passwd);
+		free(email);
 		return;
 		}
+	free(passwd);
+	free(email);
 
 	status->setText(i18n("Unregistering"));
 
