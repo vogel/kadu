@@ -191,6 +191,8 @@ void EncryptionManager::receivedMessageFilter(const UinsList& senders,QCString& 
 			SavePublicKey *spk = new SavePublicKey(senders[0], msg, NULL);
 			spk->show();
 			stop = true;
+
+			kdebugf2();
 			return;
 		}
 	}
@@ -229,11 +231,21 @@ void EncryptionManager::receivedMessageFilter(const UinsList& senders,QCString& 
 
 void EncryptionManager::enableEncryptionBtnForUins(UinsList uins)
 {
+	kdebugf();
 	Chat* chat=chat_manager->findChatByUins(uins);
 	if (chat==NULL)
+	{
+		kdebugf2();
 		return;
-	QPushButton* encryption_btn=chat->button("encryption_button");	
+	}
+	QPushButton* encryption_btn=chat->button("encryption_button");
+	if (encryption_btn==NULL)
+	{
+		kdebugf2();
+		return;
+	}
 	encryption_btn->setEnabled(true);
+	kdebugf2();
 }
 
 void EncryptionManager::sendMessageFilter(const UinsList& uins,QCString& msg,bool& stop)
@@ -330,10 +342,10 @@ SavePublicKey::SavePublicKey(UinType uin, QString keyData, QWidget *parent, cons
 }
 
 void SavePublicKey::yesClicked() {
+	kdebugf();
+
 	QFile keyfile;
 	QString keyfile_path;
-
-	kdebugf();
 
 	keyfile_path.append(ggPath("keys/"));
 	keyfile_path.append(QString::number(uin));
@@ -359,4 +371,3 @@ void SavePublicKey::yesClicked() {
 
 	kdebugf2();
 }
-
