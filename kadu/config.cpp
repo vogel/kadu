@@ -580,7 +580,7 @@ void ConfigDialog::setupTab4(void) {
 		}
 	/* end two panes */
 
-	QVGroupBox *notifybox = new QVGroupBox(box4);
+	notifybox = new QVGroupBox(box4);
 	notifybox->setTitle(i18n("Notify options"));
 	notifybox->setMargin(2);
 
@@ -622,9 +622,7 @@ void ConfigDialog::setupTab4(void) {
 
 	QObject::connect(b_notifysound, SIGNAL(toggled(bool)), soundbox, SLOT(setEnabled(bool)));
 	QObject::connect(b_notifyall, SIGNAL(toggled(bool)), this, SLOT(ifNotifyAll(bool)));
-	QObject::connect(b_notifyglobal, SIGNAL(toggled(bool)), notifybox, SLOT(setEnabled(bool)));
-	QObject::connect(b_notifyglobal, SIGNAL(toggled(bool)), panebox, SLOT(setEnabled(bool)));
-	QObject::connect(b_notifyglobal, SIGNAL(toggled(bool)), b_notifyall, SLOT(setEnabled(bool)));
+	QObject::connect(b_notifyglobal, SIGNAL(toggled(bool)), this, SLOT(ifNotifyGlobal(bool)));
 
 	addTab(box4, i18n("Users"));
 }
@@ -743,6 +741,7 @@ void ConfigDialog::setupTab5(void) {
 
 	addTab(box5, i18n("Network"));
 }
+
 void ConfigDialog::setupTab6(void) {
 
 	QPixmap pm_buttoncolor(30,7);
@@ -920,6 +919,12 @@ void ConfigDialog::ifDccEnabled(bool toggled) {
 		if (b_dccfwd->isChecked())
 			g_fwdprop->setEnabled(toggled);
 		}
+}
+
+void ConfigDialog::ifNotifyGlobal(bool toggled) {
+	b_notifyall->setEnabled(toggled);
+	panebox->setEnabled(toggled && !b_notifyall->isChecked());
+	notifybox->setEnabled(toggled);
 }
 
 void ConfigDialog::ifNotifyAll(bool toggled) {

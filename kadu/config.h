@@ -82,6 +82,7 @@ class ConfigDialog : public QTabDialog	{
 		QLineEdit *e_chatprunelen;
 		QCheckBox *b_msgacks;
 		
+		QVGroupBox *notifybox;
 		QHBox *panebox;
 		QListBox *e_notifies;
 		QListBox *e_availusers;
@@ -144,6 +145,7 @@ class ConfigDialog : public QTabDialog	{
 		void chooseUserboxFgColorGet();
 		void chooseChatFontGet(int index);
 		void chooseUserboxFontGet(int index);
+		void ifNotifyGlobal(bool);
 		void ifNotifyAll(bool);
 		void ifDccEnabled(bool);
 		void ifDccIpEnabled(bool);
