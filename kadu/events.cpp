@@ -723,9 +723,6 @@ void EventManager::eventHandler(gg_session* sess)
 			break;
 		case GG_STATE_CONNECTING_GG:
 			kdebug("EventManager::eventHandler(): Connecting to server\n");
-			ConnectionTimeoutTimer::on();
-			ConnectionTimeoutTimer::connectTimeoutRoutine(this,
-				SLOT(connectionTimeoutSlot()));
 			break;
 		case GG_STATE_READING_KEY:
 			kdebug("EventManager::eventHandler(): Waiting for hash key\n");

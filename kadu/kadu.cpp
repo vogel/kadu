@@ -1706,6 +1706,8 @@ void Kadu::setStatus(int status) {
 		}
 	else
 		loginparams.server_port = config_file.readNumEntry("Network", "DefaultPort");
+	ConnectionTimeoutTimer::on();
+	ConnectionTimeoutTimer::connectTimeoutRoutine(&event_manager, SLOT(connectionTimeoutSlot()));
 	sess = gg_login(&loginparams);
 	free(loginparams.client_version);
 	free(loginparams.password);
