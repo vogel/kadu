@@ -92,6 +92,7 @@ ModulesDialog::ModulesDialog()
 	lv_modules->addColumn(tr("Module name"), 160);
 	lv_modules->addColumn(tr("Module type"), 150);
 	lv_modules->addColumn(tr("State"), 120);
+	lv_modules->setAllColumnsShowFocus(true);
 	// end our QListView
 	
 	//our QVGroupBox
@@ -116,7 +117,7 @@ ModulesDialog::ModulesDialog()
 	connect(lv_modules, SIGNAL(doubleClicked(QListViewItem *)), this, SLOT(moduleAction(QListViewItem *)));
 	
  	loadGeometry(this, "General", "ModulesDialogGeometry", 0, 0, 450, 400);
-	refreshLists();
+	refreshList();
 }
 
 ModulesDialog::~ModulesDialog()
@@ -147,7 +148,7 @@ void ModulesDialog::loadItem()
 {
 	if(modules_manager->activateModule(lv_modules->selectedItem()->text(0)))
 	{
-		lv_modules->selectedItem()->setText(2, tr("Loaded"));
+		refreshList();
 		modules_manager->saveLoadedModules();
 	}	
 }
@@ -155,13 +156,19 @@ void ModulesDialog::loadItem()
 void ModulesDialog::unloadItem()
 {
 	modules_manager->deactivateModule(lv_modules->selectedItem()->text(0));
-	lv_modules->selectedItem()->setText(2, tr("Not loaded"));
+	refreshList();
 	modules_manager->saveLoadedModules();
 }
 
-void ModulesDialog::refreshLists()
+void ModulesDialog::refreshList()
 {
 	kdebugf();
+	
+	QString s_selected;
+	
+	if (lv_modules->selectedItem() != NULL)
+		s_selected = lv_modules->selectedItem()->text(0);
+	
 	lv_modules->clear();
 
 	QStringList sl_list = modules_manager->staticModules();
@@ -175,6 +182,8 @@ void ModulesDialog::refreshLists()
 	sl_list = modules_manager->unloadedModules();
 	for(unsigned int i = 0; i < sl_list.size(); i++)
 		(void) new QListViewItem(lv_modules, sl_list[i], tr("Dynamic"), tr("Not loaded"));
+	
+	lv_modules->setSelected(lv_modules->findItem(s_selected, 0), true);
 }
 
 void ModulesDialog::getInfo()
@@ -291,7 +300,7 @@ bool ModulesManager::satisfyModuleDependencies(const ModuleInfo& module_info)
 			{
 				if(!activateModule(*it))
 					return false;
-			}			
+			}
 			else
 			{
 				MessageBox::msg(tr("Required module %1 was not found").arg(*it));

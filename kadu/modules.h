@@ -68,7 +68,7 @@ class ModulesDialog : public QHBox
 		void moduleAction(QListViewItem *);
 		void itemsChanging();
 		void getInfo();
-		void refreshLists();
+		void refreshList();
 	
 	public:
 		ModulesDialog();
