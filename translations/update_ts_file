@@ -1,3 +1,4 @@
 #!/bin/bash
 /usr/lib/qt3/bin/lupdate -noobsolete -verbose ../kadu/*.cpp -ts kadu_it.ts
 /usr/lib/qt3/bin/lupdate -noobsolete -verbose ../kadu/*.cpp -ts kadu_pl.ts
+/usr/lib/qt3/bin/lupdate -noobsolete -verbose ../kadu/*.cpp -ts kadu_en.ts

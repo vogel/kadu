@@ -6,10 +6,6 @@
         <translation>Powiadomienie</translation>
     </message>
     <message>
-        <source> is available</source>
-        <translation> jest dostępny</translation>
-    </message>
-    <message>
         <source>You don&apos;t have a config file.
 What would you like to do?</source>
         <translation>Brak pliku konfiguracyjnego.
@@ -66,6 +62,320 @@ Wybierz jedną z poniższych opcji:</translation>
     <message>
         <source>Blocking</source>
         <translation>Blokuje</translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation>Ogólne</translation>
+    </message>
+    <message>
+        <source>Open chat window on new message</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Define keys</source>
+        <translation>Definiuj klawisze</translation>
+    </message>
+    <message>
+        <source>New line / send message:</source>
+        <translation>Nowa linia / wyślij wiadomość:</translation>
+    </message>
+    <message>
+        <source>Clear Chat:</source>
+        <translation>Wyczyść Okno:</translation>
+    </message>
+    <message>
+        <source>Close Chat:</source>
+        <translation>Zamknij Okno:</translation>
+    </message>
+    <message>
+        <source>Bold text:</source>
+        <translation>Pogrubiony:</translation>
+    </message>
+    <message>
+        <source>Italic text:</source>
+        <translation>Kursywa:</translation>
+    </message>
+    <message>
+        <source>Underline text:</source>
+        <translation>Podkreślony:</translation>
+    </message>
+    <message>
+        <source>History</source>
+        <translation>Historia</translation>
+    </message>
+    <message>
+        <source>Quoted phrases during chat open</source>
+        <translation>Cytowanie fraz przy otwieraniu rozmowy</translation>
+    </message>
+    <message>
+        <source>Count:</source>
+        <translation>Ilość:</translation>
+    </message>
+    <message>
+        <source>Don&apos;t quote phrases older than:</source>
+        <translation>Nie wyświetlaj wierszy starszych niż:</translation>
+    </message>
+    <message>
+        <source>User data</source>
+        <translation>Dane użytkownika</translation>
+    </message>
+    <message>
+        <source>Uin</source>
+        <translation>Numer GG</translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation>Hasło</translation>
+    </message>
+    <message>
+        <source>Nick</source>
+        <translation>Pseudonim</translation>
+    </message>
+    <message>
+        <source>Log messages</source>
+        <translation>Przechowuj wiadomości</translation>
+    </message>
+    <message>
+        <source>Restore window geometry</source>
+        <translation>Przywróć kształt okna</translation>
+    </message>
+    <message>
+        <source>Check for updates</source>
+        <translation>Sprawdzaj uaktualnienia</translation>
+    </message>
+    <message>
+        <source>Network</source>
+        <translation>Sieć</translation>
+    </message>
+    <message>
+        <source>DCC enabled</source>
+        <translation>DCC włączone (Połączenia bezpośrednie)</translation>
+    </message>
+    <message>
+        <source>DCC IP autodetection</source>
+        <translation>Wykrywanie adresu IP dla DCC</translation>
+    </message>
+    <message>
+        <source>DCC IP</source>
+        <translation>Adres IP dla DCC</translation>
+    </message>
+    <message>
+        <source>IP address:</source>
+        <translation>Adresy IP:</translation>
+    </message>
+    <message>
+        <source>DCC forwarding enabled</source>
+        <translation>Przekierowywanie portów przy DCC</translation>
+    </message>
+    <message>
+        <source>DCC forwarding properties</source>
+        <translation>Ustawienia przekierowań DCC</translation>
+    </message>
+    <message>
+        <source>External IP address:</source>
+        <translation>Zewnętrzny adres IP:</translation>
+    </message>
+    <message>
+        <source>External TCP port:</source>
+        <translation>Zewnętrzny port TCP:</translation>
+    </message>
+    <message>
+        <source>Servers properties</source>
+        <translation>Ustawienia serwerów</translation>
+    </message>
+    <message>
+        <source>Use default servers</source>
+        <translation>Użyj domyślnych serwerów</translation>
+    </message>
+    <message>
+        <source>Use TLSv1</source>
+        <translation>Użyj TLSv1</translation>
+    </message>
+    <message>
+        <source>Default port to connect to servers</source>
+        <translation>Domyślny port do połączeń z serwerami</translation>
+    </message>
+    <message>
+        <source>Use proxy server</source>
+        <translation>Użyj serwera proxy</translation>
+    </message>
+    <message>
+        <source>Proxy server</source>
+        <translation>Serwer Proxy</translation>
+    </message>
+    <message>
+        <source>Port:</source>
+        <translation>Port:</translation>
+    </message>
+    <message>
+        <source>IP addresses:</source>
+        <translation>Adresy IP:</translation>
+    </message>
+    <message>
+        <source>Username:</source>
+        <translation>Użytkownik:</translation>
+    </message>
+    <message>
+        <source>Password:</source>
+        <translation>Hasło:</translation>
+    </message>
+    <message>
+        <source>ShortCuts</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Remove from userlist</source>
+        <translation>Usuń z listy kontaktów</translation>
+    </message>
+    <message>
+        <source>View/edit user info</source>
+        <translation>Pokaż/Zmień informacje o kontakcie</translation>
+    </message>
+    <message>
+        <source>Send SMS</source>
+        <translation>Wyślij SMS</translation>
+    </message>
+    <message>
+        <source>View history</source>
+        <translation>Pokaż historię</translation>
+    </message>
+    <message>
+        <source>Lookup in directory</source>
+        <translation>Szukaj w katalogu</translation>
+    </message>
+    <message>
+        <source>Show / hide inactive users</source>
+        <translation>Pokaż / ukryj niedostępnych</translation>
+    </message>
+    <message>
+        <source>Send file</source>
+        <translation>Wyślij plik</translation>
+    </message>
+    <message>
+        <source>Configuration</source>
+        <translation>Konfiguracja</translation>
+    </message>
+    <message>
+        <source>Add user</source>
+        <translation>Dodaj kontakt</translation>
+    </message>
+    <message>
+        <source>SMS</source>
+        <translation>SMS</translation>
+    </message>
+    <message>
+        <source>SMS options</source>
+        <translation>Opcje SMS</translation>
+    </message>
+    <message>
+        <source>Use built-in SMS application</source>
+        <translation>Użyj wbudowanej aplikacji SMS</translation>
+    </message>
+    <message>
+        <source>Custom SMS application</source>
+        <translation>Aplikacja SMS użytkownika</translation>
+    </message>
+    <message>
+        <source>SMS custom string</source>
+        <translation>Ciąg formatujący SMS</translation>
+    </message>
+    <message>
+        <source>Check this box if your sms application doesn&apos;t understand arguments: number &quot;message&quot;
+Arguments should be separated with spaces. %n argument is converted to number, %m to message</source>
+        <translation>Jeśli twoja aplikacja SMS nie rozumie argumentów &quot;numer tel. treść wiadomości&quot;
+Zaznacz i wpisz w to pole poprawny ciąg. Argumenty oddziel spacjami. Argument %n jest zamieniany na numer, %m na wiadomość</translation>
+    </message>
+    <message>
+        <source>SMS Era Gateway</source>
+        <translation>Bramka SMS Era GSM</translation>
+    </message>
+    <message>
+        <source>User ID</source>
+        <translation>ID Użytkownika</translation>
+    </message>
+    <message>
+        <source>Sounds</source>
+        <translation>Dźwięki</translation>
+    </message>
+    <message>
+        <source>Play sounds</source>
+        <translation>Ottwarzaj dźwięki</translation>
+    </message>
+    <message>
+        <source>Play sounds using aRts! server</source>
+        <translation>Używaj serwera dźwięku aRts!</translation>
+    </message>
+    <message>
+        <source>Sound player</source>
+        <translation>Odtwarzacz dźwięków</translation>
+    </message>
+    <message>
+        <source>Path:</source>
+        <translation>Ścieżka:</translation>
+    </message>
+    <message>
+        <source>Enable volume control (player must support it)</source>
+        <translation>Reg. głośności (gdy odtwarzacz obsługuje)</translation>
+    </message>
+    <message>
+        <source>Message sound</source>
+        <translation>Dźwięk wiadomości</translation>
+    </message>
+    <message>
+        <source>Test</source>
+        <translation>Test</translation>
+    </message>
+    <message>
+        <source>Play sounds from a person whilst chatting</source>
+        <translation>Dźwięki w trakcie rozmowy</translation>
+    </message>
+    <message>
+        <source>Play chat sounds only when window is invisible</source>
+        <translation>Dźwięki rozmowy tylko gdy okno nieaktywne</translation>
+    </message>
+    <message>
+        <source>Chat sound</source>
+        <translation>Dźwięk rozmowy</translation>
+    </message>
+    <message>
+        <source>Enable autoaway</source>
+        <translation>Automatyczny status &quot;zaraz wracam&quot;</translation>
+    </message>
+    <message>
+        <source>Set status to away after </source>
+        <translation>Zmień status po</translation>
+    </message>
+    <message>
+        <source> seconds</source>
+        <translation> sekundach</translation>
+    </message>
+    <message>
+        <source>Default Status</source>
+        <translation>Status domyślny</translation>
+    </message>
+    <message>
+        <source>On shutdown, set description:</source>
+        <translation>Wyłączając ustaw opis:</translation>
+    </message>
+    <message>
+        <source>Enable dock icon</source>
+        <translation>Ikona w panelu dokującym</translation>
+    </message>
+    <message>
+        <source>Start docked</source>
+        <translation>Uruchom zminimalizowany</translation>
+    </message>
+    <message>
+        <source>Private status</source>
+        <translation>Tylko dla znajomych</translation>
+    </message>
+    <message>
+        <source>Add to description</source>
+        <translation>Dodaj do opisu</translation>
+    </message>
+    <message>
+        <source>Show Inactive users</source>
+        <translation>Wystapiło rozłaczenie</translation>
     </message>
 </context>
 <context>
@@ -181,10 +491,6 @@ wiadomości</translation>
 <context>
     <name>ConfigDialog</name>
     <message>
-        <source>General</source>
-        <translation>Ogólne</translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <translation>Anuluj</translation>
     </message>
@@ -231,20 +537,134 @@ wiadomości</translation>
 <context>
     <name>EventManager</name>
     <message>
-        <source>Disconnection has occured</source>
-        <translation>Nastąpiło rozłączenie</translation>
+        <source>Disconnection been occured</source>
+        <translation>Wystapiło rozłaczenie</translation>
+    </message>
+</context>
+<context>
+    <name>HintManager</name>
+    <message>
+        <source>Error:</source>
+        <translation>Błąd:</translation>
     </message>
     <message>
-        <source>New message from: </source>
-        <translation>Nowa wiadomość od: </translation>
+        <source>New message from</source>
+        <translation>Nowa wiadomość od</translation>
     </message>
     <message>
-        <source>Chat with: </source>
-        <translation>Rozmowa z: </translation>
+        <source>Chat with</source>
+        <translation>Rozmowa z</translation>
     </message>
     <message>
-        <source>Message from: </source>
-        <translation>Wiadomość od: </translation>
+        <source>is available</source>
+        <translation>jest dostępny</translation>
+    </message>
+    <message>
+        <source>changed status to</source>
+        <translation>zmień status na</translation>
+    </message>
+</context>
+<context>
+    <name>HintManagerSlots</name>
+    <message>
+        <source>Number cited sign</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New hints add to hint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Auto</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Under up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Under down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use my hints position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hints position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Online</source>
+        <translation>Dostępny</translation>
+    </message>
+    <message>
+        <source>Online (d.)</source>
+        <translation>Dostępny (opis)</translation>
+    </message>
+    <message>
+        <source>Busy</source>
+        <translation>Zaraz wracam</translation>
+    </message>
+    <message>
+        <source>Busy (d.)</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Invisible</source>
+        <translation>Ukryty</translation>
+    </message>
+    <message>
+        <source>Invisible (d.)</source>
+        <translation>Ukryty (opis)</translation>
+    </message>
+    <message>
+        <source>Offline</source>
+        <translation>Niedostępny</translation>
+    </message>
+    <message>
+        <source>Offline (d.)</source>
+        <translation>Niedostępny (opis)</translation>
+    </message>
+    <message>
+        <source>Blocking</source>
+        <translation>Blokuje</translation>
+    </message>
+    <message>
+        <source>New chat</source>
+        <translation>Nowa rozmowa</translation>
+    </message>
+    <message>
+        <source>New message in chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Błąd</translation>
+    </message>
+    <message>
+        <source>Preview</source>
+        <translation>Podgląd</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Text&lt;/b&gt; to preview</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change font color</source>
+        <translation>Zmień kolor czcionki</translation>
+    </message>
+    <message>
+        <source>Change background color</source>
+        <translation>Zmień kolor tła</translation>
+    </message>
+    <message>
+        <source>Change font</source>
+        <translation>Zmień czcionkę</translation>
+    </message>
+    <message>
+        <source>Color dialog</source>
+        <translation>Kolory</translation>
     </message>
 </context>
 <context>
@@ -1103,10 +1523,6 @@ Middle click or Left click- next message</source>
         <translation>Lewy przycisk - Ukryj/Pokaż Kadu
 Lewy lub Środ. przycisk - Odbierz wiadomość
 Prawy przycisk - Ustaw status</translation>
-    </message>
-    <message>
-        <source>Error: </source>
-        <translation>Błąd: </translation>
     </message>
 </context>
 <context>

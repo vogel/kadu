@@ -6,10 +6,6 @@
         <translation>L&apos;utente informa</translation>
     </message>
     <message>
-        <source> is available</source>
-        <translation> è disponibile</translation>
-    </message>
-    <message>
         <source>You don&apos;t have a config file.
 What would you like to do?</source>
         <translation>Non avete una lima di config.
@@ -66,6 +62,319 @@ Che cosa gradite fare?</translation>
     <message>
         <source>Blocking</source>
         <translation>Ostruire</translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation type="unfinished">Generalità</translation>
+    </message>
+    <message>
+        <source>Open chat window on new message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Define keys</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New line / send message:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear Chat:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close Chat:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bold text:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Italic text:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Underline text:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>History</source>
+        <translation type="unfinished">Storia</translation>
+    </message>
+    <message>
+        <source>Quoted phrases during chat open</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Count:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Don&apos;t quote phrases older than:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uin</source>
+        <translation type="unfinished">Uin</translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation type="unfinished">Password</translation>
+    </message>
+    <message>
+        <source>Nick</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Log messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Restore window geometry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check for updates</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Network</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DCC enabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DCC IP autodetection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DCC IP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>IP address:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DCC forwarding enabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DCC forwarding properties</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>External IP address:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>External TCP port:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Servers properties</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use default servers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use TLSv1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default port to connect to servers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use proxy server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Proxy server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Port:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>IP addresses:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Username:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ShortCuts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove from userlist</source>
+        <translation type="unfinished">Rimuova dalla lista del contatto</translation>
+    </message>
+    <message>
+        <source>View/edit user info</source>
+        <translation type="unfinished">Pubblichi l&apos;utente Info</translation>
+    </message>
+    <message>
+        <source>Send SMS</source>
+        <translation type="unfinished">Trasmetta SMS</translation>
+    </message>
+    <message>
+        <source>View history</source>
+        <translation type="unfinished">Storia di vista</translation>
+    </message>
+    <message>
+        <source>Lookup in directory</source>
+        <translation type="unfinished">Occhiata nell&apos;indice</translation>
+    </message>
+    <message>
+        <source>Show / hide inactive users</source>
+        <translation type="unfinished">Mostri / pellame utenti inattivi</translation>
+    </message>
+    <message>
+        <source>Send file</source>
+        <translation type="unfinished">Trasmetta la lima</translation>
+    </message>
+    <message>
+        <source>Configuration</source>
+        <translation type="unfinished">Configurazione</translation>
+    </message>
+    <message>
+        <source>Add user</source>
+        <translation type="unfinished">Aggiunga il contatto</translation>
+    </message>
+    <message>
+        <source>SMS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SMS options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use built-in SMS application</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Custom SMS application</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SMS custom string</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check this box if your sms application doesn&apos;t understand arguments: number &quot;message&quot;
+Arguments should be separated with spaces. %n argument is converted to number, %m to message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SMS Era Gateway</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sounds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Play sounds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Play sounds using aRts! server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sound player</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Path:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable volume control (player must support it)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Message sound</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Test</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Play sounds from a person whilst chatting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Play chat sounds only when window is invisible</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat sound</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable autoaway</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set status to away after </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> seconds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>On shutdown, set description:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable dock icon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start docked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Private status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add to description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Inactive users</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -180,10 +489,6 @@ Che cosa gradite fare?</translation>
 <context>
     <name>ConfigDialog</name>
     <message>
-        <source>General</source>
-        <translation>Generalità</translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <translation>Annulla</translation>
     </message>
@@ -230,20 +535,134 @@ Che cosa gradite fare?</translation>
 <context>
     <name>EventManager</name>
     <message>
-        <source>Disconnection has occured</source>
-        <translation>La sconnessione ha accaduto</translation>
+        <source>Disconnection been occured</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>HintManager</name>
+    <message>
+        <source>Error:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>New message from: </source>
-        <translation>Nuovo messaggio da: </translation>
+        <source>New message from</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Chat with: </source>
-        <translation>Chiacchierata con: </translation>
+        <source>Chat with</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Message from: </source>
-        <translation>Messaggio da: </translation>
+        <source>is available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>changed status to</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>HintManagerSlots</name>
+    <message>
+        <source>Number cited sign</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New hints add to hint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Auto</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Under up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Under down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use my hints position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hints position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Online</source>
+        <translation type="unfinished">In linea</translation>
+    </message>
+    <message>
+        <source>Online (d.)</source>
+        <translation type="unfinished">In linea (d.)</translation>
+    </message>
+    <message>
+        <source>Busy</source>
+        <translation type="unfinished">Occupato</translation>
+    </message>
+    <message>
+        <source>Busy (d.)</source>
+        <translation type="unfinished">Occupato (d.)</translation>
+    </message>
+    <message>
+        <source>Invisible</source>
+        <translation type="unfinished">Invisibile</translation>
+    </message>
+    <message>
+        <source>Invisible (d.)</source>
+        <translation type="unfinished">Invisibile (d.)</translation>
+    </message>
+    <message>
+        <source>Offline</source>
+        <translation type="unfinished">Fuori linea</translation>
+    </message>
+    <message>
+        <source>Offline (d.)</source>
+        <translation type="unfinished">Fuori linea (d.)</translation>
+    </message>
+    <message>
+        <source>Blocking</source>
+        <translation type="unfinished">Ostruire</translation>
+    </message>
+    <message>
+        <source>New chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New message in chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished">Errore</translation>
+    </message>
+    <message>
+        <source>Preview</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Text&lt;/b&gt; to preview</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change font color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change font</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color dialog</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -963,6 +1382,10 @@ Ora aggiunga i vostri amici al lista del contatto.</translation>
         <source>Select user first</source>
         <translation>Selezioni l&apos;utente primo</translation>
     </message>
+    <message>
+        <source> </source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Sms</name>
@@ -1101,10 +1524,6 @@ or has beed changed too much to parse it correctly.</source>
 Middle click or Left click- next message</source>
         <translation>Scatto di sinistra - pellame/finestra di esposizione
 Messaggio seguente di scatto di sinistra o di scatto centrale</translation>
-    </message>
-    <message>
-        <source>Error: </source>
-        <translation>Errore: </translation>
     </message>
 </context>
 <context>
