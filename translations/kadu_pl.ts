@@ -221,7 +221,7 @@ Wybierz jedną z poniższych opcji:</translation>
     </message>
     <message>
         <source>ShortCuts</source>
-        <translation>Skróty Klawiszowe</translation>
+        <translation>Skróty</translation>
     </message>
     <message>
         <source>Remove from userlist</source>
@@ -457,6 +457,214 @@ Zaznacz i wpisz w to pole poprawny ciąg. Argumenty oddziel spacjami. Argument %
         <source>Could not spawn Web browser process. Check if the Web browser is functional</source>
         <translation>Nie można otworzyć przeglądarki. Sprawdź czy Twoja przeglądarka działa poprawnie</translation>
     </message>
+    <message>
+        <source>Emoticons</source>
+        <translation>Emotikony</translation>
+    </message>
+    <message>
+        <source>Emoticons:</source>
+        <translation>Emotikony:</translation>
+    </message>
+    <message>
+        <source>Emoticons theme</source>
+        <translation>Zestaw emotikon</translation>
+    </message>
+    <message>
+        <source>WWW options</source>
+        <translation>Opcje WWW</translation>
+    </message>
+    <message>
+        <source>Use default Web browser</source>
+        <translation>Użyj domyślnej przeglądarki</translation>
+    </message>
+    <message>
+        <source>Custom Web browser</source>
+        <translation>Własna przeglądarka</translation>
+    </message>
+    <message>
+        <source>Automatically prune chat messages</source>
+        <translation>Automatyczne skracanie wiadomości</translation>
+    </message>
+    <message>
+        <source>Message pruning</source>
+        <translation>Skracanie wiadomości</translation>
+    </message>
+    <message>
+        <source>Reduce the number of visible messages to</source>
+        <translation>Zmniejsz ilość widocznych wiadomości do</translation>
+    </message>
+    <message>
+        <source>Use encryption</source>
+        <translation>Użyj szyfrowania</translation>
+    </message>
+    <message>
+        <source>Encryption properties</source>
+        <translation>Właściwości szyfrowania</translation>
+    </message>
+    <message>
+        <source>Keys length</source>
+        <translation>Długość kluczy</translation>
+    </message>
+    <message>
+        <source>Generate keys</source>
+        <translation>Generuj klucze</translation>
+    </message>
+    <message>
+        <source>Scroll chat window downward, not upward</source>
+        <translation>Przewijaj okno rozmowy w dół</translation>
+    </message>
+    <message>
+        <source>&quot;Enter&quot; key in chat sends message by default</source>
+        <translation>Klawisz &quot;Enter&quot; domyślnie wysyła wiadomość</translation>
+    </message>
+    <message>
+        <source>Message acknowledgements (wait for delivery</source>
+        <translation>Czekaj na potwierdzenie odebrania wiadomości</translation>
+    </message>
+    <message>
+        <source>Flash chat title on new message</source>
+        <translation>Miganie paska tytułowego</translation>
+    </message>
+    <message>
+        <source>Ignore messages from anonymous users</source>
+        <translation>Ignoruj wiadomości od anonimów</translation>
+    </message>
+    <message>
+        <source>Look</source>
+        <translation>Wygląd</translation>
+    </message>
+    <message>
+        <source>Chat properties</source>
+        <translation>Własciwości okna rozmowy</translation>
+    </message>
+    <message>
+        <source>Font</source>
+        <translation>Czcionka</translation>
+    </message>
+    <message>
+        <source>Font size</source>
+        <translation>Rozmiar czcionki</translation>
+    </message>
+    <message>
+        <source>Other</source>
+        <translation>Pozostałe</translation>
+    </message>
+    <message>
+        <source>Information panel syntax:</source>
+        <translation>Składnia panela informacyjnego:</translation>
+    </message>
+    <message>
+        <source>Chat window title syntax:</source>
+        <translation>Składnia tytułu okna rozmowy:</translation>
+    </message>
+    <message>
+        <source>Conference window title prefix:</source>
+        <translation>Prefix tytułu okna konferencji:</translation>
+    </message>
+    <message>
+        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - frist name
+%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
+%v - revDNS, %p - port %e - email
+If you leave blank, default settings will be used</source>
+        <translation>Składnia: %s - status, %d - opis, %i - IP, %n - nick, %a - altnick, %f - imię
+%r - nazwisko, %m - telefon, %u - uin, %g - grupa, %o - wstawia spacje
+jeśli kontakt nie ma cie na liście, %v - DNS, %p - port %e - email
+Jeśli to pole pozostanie puste, będą użyte ustawienia domyślne</translation>
+    </message>
+    <message>
+        <source>This text will be before syntax.
+If you leave blank, default settings will be used.</source>
+        <translation>Ten tekst będzie wyświetlany przed składnią.
+Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation>
+    </message>
+    <message>
+        <source>Conference window title prefix</source>
+        <translation>Prefix tytułu okna konferencji</translation>
+    </message>
+    <message>
+        <source>syntax:</source>
+        <translation> składnia:</translation>
+    </message>
+    <message>
+        <source>Preview chat</source>
+        <translation>Podgląd rozmowy</translation>
+    </message>
+    <message>
+        <source>Notify</source>
+        <translation>Powiadamianie</translation>
+    </message>
+    <message>
+        <source>Notify when users become available</source>
+        <translation>Powiadom kiedu kontakt będzie dostępny</translation>
+    </message>
+    <message>
+        <source>Notify about all users</source>
+        <translation>Powiadom o wszystkich kontaktach</translation>
+    </message>
+    <message>
+        <source>Available</source>
+        <translation>Dostępny</translation>
+    </message>
+    <message>
+        <source>Tracked</source>
+        <translation>Śledzeni</translation>
+    </message>
+    <message>
+        <source>Notify options</source>
+        <translation>Opcje powiadamiania</translation>
+    </message>
+    <message>
+        <source>Notify by sound</source>
+        <translation>Powiadamianie dźwiękiem</translation>
+    </message>
+    <message>
+        <source>Notify by dialog box</source>
+        <translation>Powiadamianie oknem</translation>
+    </message>
+    <message>
+        <source>Notify sound</source>
+        <translation>Dźwięk powiadomienia</translation>
+    </message>
+    <message>
+        <source>Set language:</source>
+        <translation>Ustaw język:</translation>
+    </message>
+    <message>
+        <source>English</source>
+        <translation>Angielski</translation>
+    </message>
+    <message>
+        <source>Italian</source>
+        <translation>Włoski</translation>
+    </message>
+    <message>
+        <source>Polish</source>
+        <translation>Polski</translation>
+    </message>
+    <message>
+        <source>Userbox properties</source>
+        <translation>Właściwosci listy kontaktów</translation>
+    </message>
+    <message>
+        <source>Preview userbox</source>
+        <translation>Podgląd listy kontaktów</translation>
+    </message>
+    <message>
+        <source>Preview desc.</source>
+        <translation>Podgląd opisu</translation>
+    </message>
+    <message>
+        <source>Show userbox-desc.</source>
+        <translation>Pokaż panel informacyjny</translation>
+    </message>
+    <message>
+        <source>Display group tabs</source>
+        <translation>Wyświetl zakładki grup</translation>
+    </message>
+    <message>
+        <source>Multicolumn userbox</source>
+        <translation>Lista w kolumnach</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -508,11 +716,6 @@ Zaznacz i wpisz w to pole poprawny ciąg. Argumenty oddziel spacjami. Argument %
         <translation>&amp;Anuluj</translation>
     </message>
     <message>
-        <source>Cancel waiting for delivery</source>
-        <translation>Anuluj oczekiwanie na potwierdzenie dostarczenia
-wiadomości</translation>
-    </message>
-    <message>
         <source>&amp;Send</source>
         <translation>&amp;Wyślij</translation>
     </message>
@@ -542,6 +745,73 @@ wiadomości</translation>
     </message>
 </context>
 <context>
+    <name>ChatSlots</name>
+    <message>
+        <source>None</source>
+        <translation>Bez emotów</translation>
+    </message>
+    <message>
+        <source>Static</source>
+        <translation>Statyczne</translation>
+    </message>
+    <message>
+        <source>Animated</source>
+        <translation>Animowane</translation>
+    </message>
+    <message>
+        <source>Your background color</source>
+        <translation>Twój kolor tła</translation>
+    </message>
+    <message>
+        <source>Your font color</source>
+        <translation>Twój kolor czcionki</translation>
+    </message>
+    <message>
+        <source>User background color</source>
+        <translation>Kolor tła kontaktu</translation>
+    </message>
+    <message>
+        <source>User font color</source>
+        <translation>Kolor czcionki kontaktu</translation>
+    </message>
+    <message>
+        <source>Font in chat window</source>
+        <translation>Czcionka w oknie rozmowy</translation>
+    </message>
+    <message>
+        <source>Chat with </source>
+        <translation>Rozmowa z </translation>
+    </message>
+    <message>
+        <source>Conference with </source>
+        <translation>Konferencja z </translation>
+    </message>
+    <message>
+        <source>Keys exist. Do you want to overwrite them?</source>
+        <translation>Klucze istnieją. Czy chcesz je nadpisać?</translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation>Tak</translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation>Nie</translation>
+    </message>
+    <message>
+        <source>Error generating keys</source>
+        <translation>Błąd podczas generowania kluczy</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <source>Keys have been generated and written</source>
+        <translation>Klucze zostały wygenerowane i zapisane</translation>
+    </message>
+</context>
+<context>
     <name>ChooseDescription</name>
     <message>
         <source>Select description</source>
@@ -557,6 +827,13 @@ wiadomości</translation>
     </message>
 </context>
 <context>
+    <name>ColorButton</name>
+    <message>
+        <source>Color dialog</source>
+        <translation>Kolory</translation>
+    </message>
+</context>
+<context>
     <name>ConfigDialog</name>
     <message>
         <source>Cancel</source>
@@ -568,7 +845,7 @@ wiadomości</translation>
     </message>
 </context>
 <context>
-    <name>DccGet</name>
+    <name>DccFileDialog</name>
     <message>
         <source>Sender: </source>
         <translation>Nadawca: </translation>
@@ -600,6 +877,24 @@ wiadomości</translation>
     <message>
         <source>(stalled)</source>
         <translation>(zatrzymana)</translation>
+    </message>
+</context>
+<context>
+    <name>DccVoiceDialog</name>
+    <message>
+        <source>Voice chat</source>
+        <translation>Rozmowa głosowa</translation>
+    </message>
+    <message>
+        <source>&amp;Stop</source>
+        <translation>&amp;Stop</translation>
+    </message>
+</context>
+<context>
+    <name>EventConfigSlots</name>
+    <message>
+        <source>I am busy.</source>
+        <translation>Jestem zajęty.</translation>
     </message>
 </context>
 <context>
@@ -766,7 +1061,7 @@ Twoje hasło jest nieprawidłowe!!!</translation>
     </message>
     <message>
         <source>&lt;b&gt;Text&lt;/b&gt; preview</source>
-        <translation>&lt;b&gt;Tekst&lt;/b&gt; w dymku</translation>
+        <translation>&lt;b&gt;Podgląd&lt;/b&gt; tekstu</translation>
     </message>
     <message>
         <source>Hint timeout (in seconds)</source>
@@ -1179,24 +1474,15 @@ Sprawdź swoje połączenie internetowe.</translation>
         <translation>Jestem zajęty.</translation>
     </message>
     <message>
-        <source>Keys exist. Do you want to overwrite them?</source>
-        <translation>Klucze istnieją. Czy chcesz je nadpisać?</translation>
+        <source>Voice chat</source>
+        <translation>Rozmowa głosowa</translation>
     </message>
+</context>
+<context>
+    <name>KaduSlots</name>
     <message>
-        <source>Yes</source>
-        <translation>Tak</translation>
-    </message>
-    <message>
-        <source>No</source>
-        <translation>Nie</translation>
-    </message>
-    <message>
-        <source>Error generating keys</source>
-        <translation>Błąd podczas generowania kluczy</translation>
-    </message>
-    <message>
-        <source>Keys have been generated and written</source>
-        <translation>Klucze zostały wygenerowane i zapisane</translation>
+        <source>Kadu: %1</source>
+        <translation>Kadu: %1</translation>
     </message>
 </context>
 <context>
@@ -1746,6 +2032,25 @@ Prawy przycisk - Ustaw status</translation>
     </message>
 </context>
 <context>
+    <name>UserBoxSlots</name>
+    <message>
+        <source>Userbox background color</source>
+        <translation>Kolor tła listy kontaktów</translation>
+    </message>
+    <message>
+        <source>Desc. background color</source>
+        <translation>Kolor tła opisu</translation>
+    </message>
+    <message>
+        <source>Font in userbox window</source>
+        <translation>Czcionka listy kontaktów</translation>
+    </message>
+    <message>
+        <source>Font in desc.</source>
+        <translation>Czcionka w opisie.</translation>
+    </message>
+</context>
+<context>
     <name>UserInfo</name>
     <message>
         <source>User info on %1</source>
@@ -2136,6 +2441,14 @@ o rozmiarze </translation>
     <message>
         <source>open file</source>
         <translation>otwórz plik</translation>
+    </message>
+    <message>
+        <source> wants to talk with you. Do you accept it?</source>
+        <translation>chce rozmawiać z toba. Akceptujesz?</translation>
+    </message>
+    <message>
+        <source>Incoming voice chat</source>
+        <translation>Przychodzaca rozmowa głosowa</translation>
     </message>
 </context>
 <context>

@@ -456,6 +456,210 @@ Arguments should be separated with spaces. %n argument is converted to number, %
         <source>Could not spawn Web browser process. Check if the Web browser is functional</source>
         <translation type="unfinished">Non ha potuto deporre le uova il processo di web browser. Controlli se il web browser è funzionale </translation>
     </message>
+    <message>
+        <source>Emoticons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Emoticons:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Emoticons theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>WWW options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use default Web browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Custom Web browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Automatically prune chat messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Message pruning</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reduce the number of visible messages to</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use encryption</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Encryption properties</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Keys length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Generate keys</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scroll chat window downward, not upward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&quot;Enter&quot; key in chat sends message by default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Message acknowledgements (wait for delivery</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Flash chat title on new message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ignore messages from anonymous users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Look</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat properties</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Font</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Font size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Other</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Information panel syntax:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat window title syntax:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Conference window title prefix:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - frist name
+%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
+%v - revDNS, %p - port %e - email
+If you leave blank, default settings will be used</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This text will be before syntax.
+If you leave blank, default settings will be used.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Conference window title prefix</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>syntax:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preview chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify when users become available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about all users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tracked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify by sound</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify by dialog box</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify sound</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set language:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>English</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Italian</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Polish</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Userbox properties</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preview userbox</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preview desc.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show userbox-desc.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display group tabs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Multicolumn userbox</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -507,10 +711,6 @@ Arguments should be separated with spaces. %n argument is converted to number, %
         <translation>&amp;Annulla</translation>
     </message>
     <message>
-        <source>Cancel waiting for delivery</source>
-        <translation>Annulli la consegna attendente</translation>
-    </message>
-    <message>
         <source>&amp;Send</source>
         <translation>&amp;Trasmetta</translation>
     </message>
@@ -540,6 +740,73 @@ Arguments should be separated with spaces. %n argument is converted to number, %
     </message>
 </context>
 <context>
+    <name>ChatSlots</name>
+    <message>
+        <source>None</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Static</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Animated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your font color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User font color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Font in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat with </source>
+        <translation type="unfinished">Chiacchierata con </translation>
+    </message>
+    <message>
+        <source>Conference with </source>
+        <translation type="unfinished">Congresso con </translation>
+    </message>
+    <message>
+        <source>Keys exist. Do you want to overwrite them?</source>
+        <translation type="unfinished">Le chiavi esistono. Desiderate scriverli sopra?</translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation type="unfinished">Sì</translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation type="unfinished">No</translation>
+    </message>
+    <message>
+        <source>Error generating keys</source>
+        <translation type="unfinished">Errore che genera le chiavi</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Keys have been generated and written</source>
+        <translation type="unfinished">Le chiavi sono state generate e scritto state</translation>
+    </message>
+</context>
+<context>
     <name>ChooseDescription</name>
     <message>
         <source>Select description</source>
@@ -555,6 +822,13 @@ Arguments should be separated with spaces. %n argument is converted to number, %
     </message>
 </context>
 <context>
+    <name>ColorButton</name>
+    <message>
+        <source>Color dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ConfigDialog</name>
     <message>
         <source>Cancel</source>
@@ -566,38 +840,56 @@ Arguments should be separated with spaces. %n argument is converted to number, %
     </message>
 </context>
 <context>
-    <name>DccGet</name>
+    <name>DccFileDialog</name>
     <message>
         <source>Sender: </source>
-        <translation>Mittente: </translation>
+        <translation type="unfinished">Mittente: </translation>
     </message>
     <message>
         <source>Receiver: </source>
-        <translation>Ricevente: </translation>
+        <translation type="unfinished">Ricevente: </translation>
     </message>
     <message>
         <source>Filename: </source>
-        <translation>Nome di schedario: </translation>
+        <translation type="unfinished">Nome di schedario: </translation>
     </message>
     <message>
         <source>File size: </source>
-        <translation>Formato di lima: </translation>
+        <translation type="unfinished">Formato di lima: </translation>
     </message>
     <message>
         <source>Speed: 0KB/s (not started)  </source>
-        <translation>Velocità: 0KB/s (non iniziato) </translation>
+        <translation type="unfinished">Velocità: 0KB/s (non iniziato) </translation>
     </message>
     <message>
         <source>File transfer</source>
-        <translation>Trasferimento di file</translation>
+        <translation type="unfinished">Trasferimento di file</translation>
     </message>
     <message>
         <source>Speed: </source>
-        <translation>Velocità: </translation>
+        <translation type="unfinished">Velocità: </translation>
     </message>
     <message>
         <source>(stalled)</source>
-        <translation>(arrestato)</translation>
+        <translation type="unfinished">(arrestato)</translation>
+    </message>
+</context>
+<context>
+    <name>DccVoiceDialog</name>
+    <message>
+        <source>Voice chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Stop</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>EventConfigSlots</name>
+    <message>
+        <source>I am busy.</source>
+        <translation type="unfinished">Sono occupato.</translation>
     </message>
 </context>
 <context>
@@ -1176,24 +1468,15 @@ Controlli il vostro collegamento del Internet.</translation>
         <translation>Sono occupato.</translation>
     </message>
     <message>
-        <source>Keys exist. Do you want to overwrite them?</source>
-        <translation>Le chiavi esistono. Desiderate scriverli sopra?</translation>
+        <source>Voice chat</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>KaduSlots</name>
     <message>
-        <source>Yes</source>
-        <translation>Sì</translation>
-    </message>
-    <message>
-        <source>No</source>
-        <translation>No</translation>
-    </message>
-    <message>
-        <source>Error generating keys</source>
-        <translation>Errore che genera le chiavi</translation>
-    </message>
-    <message>
-        <source>Keys have been generated and written</source>
-        <translation>Le chiavi sono state generate e scritto state</translation>
+        <source>Kadu: %1</source>
+        <translation type="unfinished">Kadu: %1</translation>
     </message>
 </context>
 <context>
@@ -1746,6 +2029,25 @@ Messaggio seguente di scatto di sinistra o di scatto centrale</translation>
     </message>
 </context>
 <context>
+    <name>UserBoxSlots</name>
+    <message>
+        <source>Userbox background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Desc. background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Font in userbox window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Font in desc.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>UserInfo</name>
     <message>
         <source>User info on %1</source>
@@ -2136,6 +2438,14 @@ del formato </translation>
     <message>
         <source>open file</source>
         <translation>apra la lima</translation>
+    </message>
+    <message>
+        <source> wants to talk with you. Do you accept it?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Incoming voice chat</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
