@@ -37,6 +37,16 @@ void Status::operator = (const Status &copyMe)
 	FriendsOnly = copyMe.FriendsOnly;
 }
 
+bool Status::operator == (const Status &compare) const
+{
+	return (Stat == compare.Stat) && (Description == compare.Description);
+}
+
+bool Status::operator != (const Status &compare) const
+{
+	return (Stat != compare.Stat) || (Description != compare.Description);
+}
+
 QPixmap Status::pixmap(bool mobile) const
 {
 	return pixmap(Stat, hasDescription(), mobile);

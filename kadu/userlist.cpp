@@ -327,13 +327,12 @@ void UserList::changeUserStatus(const UinType uin, const Status &status, bool on
 {
 	kdebugf();
 	UserListElement &e = byUin(uin);
-	// TODO: dodaæ
-	// if (status != (*e.status)) {
+	if (status != *(e.status)) {
 		emit changingStatus(uin, *(e.status), status, onConnection);
 		e.status->setStatus(status);
 		UserBox::all_refresh();
 		emit statusModified(&e, onConnection);
-	// }
+	}
 	kdebugf2();
 }
 

@@ -23,6 +23,8 @@
 
 #include <stdlib.h>
 
+#define GG_STATUS_INVISIBLE2 0x0009 /* g³upy... */
+
 QValueList<QHostAddress> gg_servers;
 const char *gg_servers_ip[7] = {"217.17.41.82", "217.17.41.83", "217.17.41.84", "217.17.41.85",
 	"217.17.41.86", "217.17.41.87", "217.17.41.88"};

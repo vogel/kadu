@@ -5,8 +5,6 @@
 #include <qstring.h>
 #include <qstringlist.h>
 
-#define GG_STATUS_INVISIBLE2 0x0009 /* g³upy... */
-
 enum eStatus
 {
 	Online,
@@ -32,6 +30,8 @@ class Status : public QObject
 		Status();
 		Status(const Status &copyMe);
 		void operator = (const Status &copyMe);
+		bool operator == (const Status &compare) const;
+		bool operator != (const Status &compare) const;
 		virtual ~Status();
 
 		bool isOnline() const;
