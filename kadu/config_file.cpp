@@ -249,7 +249,7 @@ QRect ConfigFile::readRectEntry(const QString &name, const QRect *def) const {
 	b = stringlist[3].toInt(&ok);
 	if (!ok)
 		return def ? *def : QRect(0, 0, 0, 0);
-	rect.setRect(l, t, r, b);
+	rect.setCoords(l, t, r, b);
 	return rect;
 }
 
