@@ -813,27 +813,58 @@ void SoundSlots::testSamplePlaying()
 	SoundDevice device = sound_manager->openDevice(11025);
 	if (device == NULL)
 	{
-		MessageBox::wrn(tr("Opening test sample file failed."));
+		MessageBox::wrn(tr("Opening sound device failed."));
 		delete[] buf;
 		return;
 	}
+//	MessageBox::status(tr("Playing test sample, you should hear it now"));
 	if (!sound_manager->playSample(device, buf, file.size()))
 	{
+//		MessageBox::close(tr("Playing test sample, you should hear it now"));
 		MessageBox::wrn(tr("Playing test sample failed."));
 		sound_manager->closeDevice(device);
 		delete[] buf;
 		return;	
 	}
 	sound_manager->closeDevice(device);
+//	MessageBox::close(tr("Playing test sample, you should hear it now"));
 	delete[] buf;
 }
 
 void SoundSlots::testSampleRecording()
 {
-	MessageBox::msg("test sample recording");
+	SoundDevice device = sound_manager->openDevice(8000);
+	if (device == NULL)
+	{
+		MessageBox::wrn(tr("Opening sound device failed."));
+		return;
+	}
+	int16_t* buf = new int16_t[8000 * 3];
+//	MessageBox::status(tr("Recording test sample, you can talk now"));
+	if (!sound_manager->recordSample(device, buf, sizeof(int16_t) * 8000 * 3))
+	{
+//		MessageBox::close(tr("Recording test sample, you can talk now"));
+		MessageBox::wrn(tr("Recording test sample failed."));
+		sound_manager->closeDevice(device);
+		delete[] buf;
+		return;	
+	}
+//	MessageBox::close(tr("Recording test sample, you can talk now"));
+//	MessageBox::status(tr("You should now hear recorded sample"));
+	if (!sound_manager->playSample(device, buf, sizeof(int16_t) * 8000 * 3))
+	{
+//		MessageBox::close(tr("You should now hear recorded sample"));
+		MessageBox::wrn(tr("Playing recorded test sample failed."));
+		sound_manager->closeDevice(device);
+		delete[] buf;
+		return;
+	}
+	sound_manager->closeDevice(device);
+//	MessageBox::close(tr("You should now hear recorded sample"));
+	delete buf;
 }
 
 void SoundSlots::testFullDuplex()
 {
-	MessageBox::msg("test full duplex");
+	MessageBox::msg(tr("Full duplex test not implemented yet."));
 }
