@@ -60,6 +60,7 @@
 #include "debug.h"
 #include "gadu.h"
 #include "modules.h"
+#include "message_box.h"
 
 #include "kadu-config.h"
 
@@ -1418,23 +1419,17 @@ bool Kadu::event(QEvent *e) {
 		dcc = *data;
 		switch (dcc->state) {
 			case DCC_SOCKET_TRANSFER_FINISHED:
-				QMessageBox::information(0, tr("Information"),
-					tr("File has been transferred sucessfully."),
-					tr("&OK"));
+				MessageBox::msg(tr("File has been transferred sucessfully."));
 				break;
 			case DCC_SOCKET_TRANSFER_DISCARDED:
 				break;
 			case DCC_SOCKET_TRANSFER_ERROR:
-				QMessageBox::information(0, tr("Error"),
-					tr("File transfer error!"),
-					tr("&OK"));
+				MessageBox::msg(tr("File transfer error!"));
 				break;
 			case DCC_SOCKET_CONNECTION_BROKEN:
 				break;
 			case DCC_SOCKET_COULDNT_OPEN_FILE:
-				QMessageBox::information(0, tr("Error"),
-					tr("Couldn't open file!"),
-					tr("&OK"));
+				MessageBox::msg(tr("Couldn't open file!"));
 				break;
 			}
 		delete data;
