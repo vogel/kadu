@@ -125,7 +125,7 @@ struct config {
 	struct fonts fonts;
 #ifdef HAVE_OPENSSL
 	bool encryption;
-	int keyslen;
+	//int keyslen;
 #endif
 };
 

@@ -40,6 +40,8 @@
   obecno¶ci uzytkownika
 * konfiguracja: zmiana konfiguracji wygl±du nie wymaga zrestartowania kadu, aby
   zasz³y zmiany w wygl±dzie
+* szyfrowanie: generowanie tylko kluczy 1024 bity (innych nie obs³uguje protokó³)
+* szyfrowanie: poprawki kosmetyczne interfejsu u¿ytkownika i samego kodu
 
 +++ wersja 0.3.3-pre3
 * CTRL + klik dowolnego przycisku myszki na ikonce w tray'u powoduje

@@ -120,7 +120,7 @@ void loadKaduConfig(void) {
 	config.ignoreanonusers = konf->readBoolEntry("IgnoreAnonymousUsers", false);
 #ifdef HAVE_OPENSSL
 	config.encryption = konf->readBoolEntry("Encryption", false);
-	config.keyslen = konf->readNumEntry("KeysLength", 1024);
+//	config.keyslen = konf->readNumEntry("KeysLength", 1024);
 #endif
 
 	konf->setGroup("Notify");
@@ -242,7 +242,7 @@ void saveKaduConfig(void) {
 	konf->writeEntry("IgnoreAnonymousUsers", config.ignoreanonusers);
 #ifdef HAVE_OPENSSL
         konf->writeEntry("Encryption", config.encryption);
-        konf->writeEntry("KeysLength", config.keyslen);
+        //konf->writeEntry("KeysLength", config.keyslen);
 #endif
 
 	konf->setGroup("Proxy");
@@ -628,7 +628,10 @@ void ConfigDialog::setupTab3(void) {
 
 	cb_keyslen = new QComboBox(encryptbox);
 	cb_keyslen->insertStrList(keyslens);
-	cb_keyslen->setCurrentText(QString::number(config.keyslen));
+	//cb_keyslen->setCurrentText(QString::number(config.keyslen));
+	// Protokó³ nie obs³uguje narazie innych d³ugo¶ci klucza
+	cb_keyslen->setCurrentText("1024");
+	cb_keyslen->setEnabled(false);
 
 	QPushButton *pb_genkeys = new QPushButton(encryptbox);
 	pb_genkeys->setText(i18n("Generate keys"));
@@ -1248,30 +1251,22 @@ void ConfigDialog::generateMyKeys(void) {
 	
 	QFileInfo keyfile(keyfile_path);
 	
-	if (keyfile.permission(QFileInfo::WriteUser)) {
-		switch(QMessageBox::warning(this, "Kadu", i18n("Keys exist. Do you want to overwrite them ?"), i18n("Yes"), i18n("No"), QString::null, 0, 1)) {
-			case 1: // No
+	if (keyfile.permission(QFileInfo::WriteUser))
+		if(QMessageBox::warning(this, "Kadu",
+			i18n("Keys exist. Do you want to overwrite them?"),
+			i18n("Yes"), i18n("No"),QString::null, 0, 1)==1)
 				return;
-		}
-	}
 	
-	char fname[PATH_MAX];
-
-	QCString tmp;
-
-	tmp = ggPath("keys").local8Bit();
+	QCString tmp=ggPath("keys").local8Bit();
 	mkdir(tmp.data(), 0700);
 
 	fprintf(stderr,"KK Generating my keys, len: %d\n", atoi(cb_keyslen->currentText()));
 	if (sim_key_generate(config.uin) < 0) {
-		QMessageBox::critical(this, "Kadu", i18n("B..d przy generowaniu klucza"), i18n("OK"), QString::null, 0);
+		QMessageBox::critical(this, "Kadu", i18n("Error generating keys"), i18n("OK"), QString::null, 0);
 		return;
 	}
 
-
 	QMessageBox::information(this, "Kadu", i18n("Keys have been generated and written"), i18n("OK"), QString::null, 0);
-
-	return;
 #endif
 }
 
@@ -1355,7 +1350,7 @@ void ConfigDialog::updateConfig(void) {
 	config.webbrowser = e_webbrowser->text();
 #ifdef HAVE_OPENSSL
 	config.encryption = b_encryption->isChecked();
-	config.keyslen = atoi(cb_keyslen->currentText());
+	//config.keyslen = atoi(cb_keyslen->currentText());
 #endif
 
 	config.colors.mychatBg = vl_chatcolor[0];
