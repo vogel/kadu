@@ -8,11 +8,13 @@
  ***************************************************************************/
 
 #include <qfiledialog.h>
-#include <fcntl.h>
 #include <qmessagebox.h>
-#include <unistd.h>
+#include <qpushbutton.h>
 #include <qfileinfo.h>
+#include <qlayout.h>
 
+#include <fcntl.h>
+#include <unistd.h>
 #include <sys/socket.h>
 #include <sys/un.h>
 //
@@ -32,7 +34,11 @@ dccSocketClass::dccSocketClass(struct gg_dcc *dcc_sock, int type) : QObject(), t
 	dccevent = NULL;
 	snr = snw = NULL;
 	state = DCC_SOCKET_TRANSFERRING;
-	dialog = NULL;
+	filedialog = NULL;
+	if (type == DCC_TYPE_VOICE) {
+		voicedialog = new DccVoiceDialog();
+		connect(voicedialog, SIGNAL(cancelVoiceChat()), this, SLOT(cancelVoiceChatReceived()));
+		}
 	in_watchDcc = false;
 	count++;
 	kdebug("dccSocketClass::dccSocketClass(): dcc sockets count = %d\n", count);
@@ -40,14 +46,18 @@ dccSocketClass::dccSocketClass(struct gg_dcc *dcc_sock, int type) : QObject(), t
 
 dccSocketClass::~dccSocketClass() {
 	kdebug("dccSocketClass::~dccSocketClass\n");
-	if (dialog) {
-		if (dialog->dccFinished) {
-			if (dialog->isVisible())
-				dialog->close();
+	if (filedialog) {
+		if (filedialog->dccFinished) {
+			if (filedialog->isVisible())
+				filedialog->close();
 			else
-				delete dialog;    
-			dialog = NULL;
+				delete filedialog;    
+			filedialog = NULL;
 			}
+		}
+	if (voicedialog) {
+		voicedialog->close();
+		voicedialog = NULL;
 		}
 	if (snr) {
 		snr->setEnabled(false);
@@ -85,15 +95,23 @@ void dccSocketClass::initializeNotifiers() {
 #endif	
 }
 
+void dccSocketClass::cancelVoiceChatReceived() {
+	kdebug("dccSocketClass::cancelVoiceChatReceived()\n");
+	voicedialog = NULL;
+#ifdef VOICE_ENABLED
+	voice_manager->free();
+#endif
+	deleteLater();
+}
+
 void dccSocketClass::voiceDataRecorded(char *data, int length) {
 	kdebug("dccSocketClass::voiceDataRecorded()\n");
 	gg_dcc_voice_send(dccsock, data, length);
 }
 
 void dccSocketClass::dccDataReceived() {
-	if (!in_watchDcc) {
+	if (!in_watchDcc)
 		watchDcc(GG_CHECK_READ);
-		}
 }
 
 void dccSocketClass::dccDataSent() {
@@ -119,14 +137,17 @@ void dccSocketClass::watchDcc(int check) {
 #ifdef VOICE_ENABLED
 		voice_manager->free();
 #endif
-		setState(dialog ? DCC_SOCKET_TRANSFER_ERROR : DCC_SOCKET_CONNECTION_BROKEN);
+		if (type == DCC_TYPE_FILE)
+			setState(filedialog ? DCC_SOCKET_TRANSFER_ERROR : DCC_SOCKET_CONNECTION_BROKEN);
+		else
+			setState(DCC_SOCKET_VOICECHAT_DISCARDED);
 		return;
 		}
 
 	switch (dccevent->type) {
 		case GG_EVENT_NONE:	    
-			if (dialog && dialog->isVisible())
-				dialog->updateFileInfo(dccsock);
+			if (filedialog && filedialog->isVisible())
+				filedialog->updateFileInfo(dccsock);
 			break;
 		case GG_EVENT_DCC_CALLBACK:
 			gg_dcc_set_type(dccsock, GG_SESSION_DCC_SEND);
@@ -146,8 +167,8 @@ void dccSocketClass::watchDcc(int check) {
 				return;
 				}
 			gg_dcc_fill_file_info(dccsock, f.local8Bit());
-			dialog = new DccGet(this, DCC_TYPE_SEND);
-			dialog->printFileInfo(dccsock);
+			filedialog = new DccFileDialog(this, DCC_TYPE_SEND);
+			filedialog->printFileInfo(dccsock);
 			break;
 #ifdef VOICE_ENABLED
 		case GG_EVENT_DCC_NEED_VOICE_ACK:
@@ -156,8 +177,6 @@ void dccSocketClass::watchDcc(int check) {
 			askAcceptVoiceChat();
 			break;
 		case GG_EVENT_DCC_CLIENT_ACCEPT:
-//			if (type == DCC_TYPE_VOICE)
-//				voice_manager->setup();
 			break;
 		case GG_EVENT_DCC_VOICE_DATA:
 			voice_manager->setup();
@@ -173,12 +192,15 @@ void dccSocketClass::watchDcc(int check) {
 #ifdef VOICE_ENABLED
 			voice_manager->free();
 #endif
-			setState(dialog ? DCC_SOCKET_TRANSFER_ERROR : DCC_SOCKET_CONNECTION_BROKEN);
+			if (type == DCC_TYPE_FILE)
+				setState(filedialog ? DCC_SOCKET_TRANSFER_ERROR : DCC_SOCKET_CONNECTION_BROKEN);
+			else
+				setState(DCC_SOCKET_VOICECHAT_DISCARDED);
 			return;
 		case GG_EVENT_DCC_DONE:
 			kdebug("dccSocketClass::watchDcc(): GG_EVENT_DCC_DONE\n");
-			if (dialog && dialog->isVisible())
-				dialog->updateFileInfo(dccsock);
+			if (filedialog && filedialog->isVisible())
+				filedialog->updateFileInfo(dccsock);
 			setState(DCC_SOCKET_TRANSFER_FINISHED);
 			return;
 		default:
@@ -268,8 +290,8 @@ void dccSocketClass::askAccept(void) {
 				dccsock->offset = 0;
 				}
 
-			dialog = new DccGet(this);
-			dialog->printFileInfo(dccsock);
+			filedialog = new DccFileDialog(this);
+			filedialog->printFileInfo(dccsock);
 			break;
 		case 1:
 			kdebug("dccSocketClass::askAccept(): discarded\n");
@@ -317,15 +339,15 @@ void dccSocketClass::setState(int pstate) {
 	snr->setEnabled(false);
 	snw->setEnabled(false);
 	state = pstate;
-	if (dialog)
-		dialog->dccFinished = true;
+	if (filedialog)
+		filedialog->dccFinished = true;
 	dccSocketClass **me = new (dccSocketClass *);
 	*me = this;
 	a->postEvent((QObject *)kadu, new QCustomEvent(QEvent::User, me));
 	kdebug("dccSocketClass::setState()\n");
 }
 
-DccGet::DccGet(dccSocketClass *dccsocket, int type, QDialog *parent, const char *name)
+DccFileDialog::DccFileDialog(dccSocketClass *dccsocket, int type, QDialog *parent, const char *name)
 	: QDialog (parent, name), type(type), dccsocket(dccsocket) {
 	vbox1 = new QVBox(this);
 	vbox1->setMargin(5);
@@ -334,19 +356,19 @@ DccGet::DccGet(dccSocketClass *dccsocket, int type, QDialog *parent, const char 
 	dccFinished = false;
 }
 
-DccGet::~DccGet() {
+DccFileDialog::~DccFileDialog() {
 	delete time;
 }
 
-void DccGet::closeEvent(QCloseEvent *e) {
+void DccFileDialog::closeEvent(QCloseEvent *e) {
 	QWidget::closeEvent(e);
 	if (!dccFinished) {
-		kdebug("DccGet::closeEvent(): DCC transfer has not finished yet!\n");
+		kdebug("DccFileDialog::closeEvent(): DCC transfer has not finished yet!\n");
 		delete dccsocket;
 		}
 }
 
-void DccGet::printFileInfo(struct gg_dcc *dccsock) {
+void DccFileDialog::printFileInfo(struct gg_dcc *dccsock) {
 	long long int percent;
  	long double fpercent;
 
@@ -402,7 +424,7 @@ void DccGet::printFileInfo(struct gg_dcc *dccsock) {
 	show();
 }
 
-void DccGet::updateFileInfo(struct gg_dcc *dccsock) {
+void DccFileDialog::updateFileInfo(struct gg_dcc *dccsock) {
 	long long int percent;
  	long double fpercent;
 	int diffOffset,diffTime;
@@ -427,3 +449,19 @@ void DccGet::updateFileInfo(struct gg_dcc *dccsock) {
 		}
 }
 
+DccVoiceDialog::DccVoiceDialog(QDialog *parent, const char *name)
+	: QDialog (parent, name, FALSE, Qt::WDestructiveClose) {
+	setCaption(tr("Voice chat"));
+	resize(200, 100);
+	QGridLayout *grid = new QGridLayout(this, 1, 1, 3, 3);
+	QPushButton *b_stop = new QPushButton(tr("&Stop"), this);
+	grid->addWidget(b_stop, 0, 0, Qt::AlignCenter);
+	connect(b_stop, SIGNAL(clicked()), this, SLOT(close()));
+	show();
+}
+
+void DccVoiceDialog::closeEvent(QCloseEvent *e) {
+	kdebug("DccVoiceDialog::closeEvent()\n");
+	emit cancelVoiceChat();
+	QWidget::closeEvent(e);
+}
