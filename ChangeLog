@@ -108,6 +108,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   zwraca 0 jesli funkcja sie powiodla, albo nr bledu (narazie cokolwiek innego)
   w przeciwnym wypadku. "void close_module"->"void <nazwa_mod.>_close()".
   zmiana nazewnictwa potrzebna do przyszlego kompilowania statycznego modulow.
+* libgadu z 09.01.2004 (chilek)
+* ShowInfoPanel odpowiada za wy¶wietlanie panela informacyjnego (chilek)
+* mo¿liwo¶æ wy¶wietlania statusów opisowych przy nazwach kontaktów ala GG6 (wojtekka/chilek)
 
 +++ wersja 0.3.6 (22.11.2003)
 * je¶li klikniemy na jaki¶ kontakt w userboxie, od którego otrzymali¶my jak±¶
@@ -210,7 +213,6 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawka wykrywania nag³ówków QT - katalog /usr/X11R6/include/qt (adrian)
 * wyeliminowane "pykniêcia" przy nadawaniu g³osu (chilek)
 * poprawki poprawek pawla_p ;) (pawel_p/adrian)
-* libgadu z 16.10.2003 (chilek)
 * konfiguracja: logika zak³adki notify i drobne poprawki (pawel_p/adrian)
 * konfiguracja: optymalizacja i kolejne poprawki (pawel_p/adrian)
 * poprawki w kodzie dymków, powinno kompilowaæ sie na qt 3.0.x (mast3r)

@@ -410,7 +410,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	descrtb->setPaletteBackgroundColor(config_file.readColorEntry("Look", "UserboxDescBgColor"));
 	descrtb->setPaletteForegroundColor(config_file.readColorEntry("Look", "UserboxDescTextColor"));
 	descrtb->setFont(config_file.readFontEntry("Look", "UserboxDescFont"));
-	if (!config_file.readBoolEntry("Look", "ShowDesc"))
+	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		descrtb->hide();
 	QObject::connect(&userlist, SIGNAL(dnsNameReady(uin_t)), this, SLOT(infopanelUpdate(uin_t)));
 
@@ -913,7 +913,7 @@ void Kadu::currentChanged(QListBoxItem *item) {
 
 	kdebug("Kadu::currentChanged(): %s\n", (const char *)item->text().local8Bit());
 
-	if (config_file.readBoolEntry("Look", "ShowDesc"))
+	if (config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		descrtb->setText(parse(config_file.readEntry("Look", "PanelContents"),userlist.byAltNick(item->text())));
 }
 
@@ -1583,7 +1583,7 @@ bool Kadu::close(bool quit) {
 	
 	    if (config_file.readBoolEntry("General", "SaveGeometry"))
 	    {
-		if (config_file.readBoolEntry("Look", "ShowDesc"))
+		if (config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		    {
 			QSize split;
 			    split.setWidth(Userbox->size().height());
@@ -1727,7 +1727,7 @@ void Kadu::showdesc(bool show) {
 }
 
 void Kadu::infopanelUpdate(uin_t uin) {
-	if (!config_file.readBoolEntry("Look", "ShowDesc"))
+	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		return;
 	kdebug("Kadu::infopanelUpdate(%d)\n", uin);
 	if (Userbox->currentItem() != -1 && uin == userlist.byAltNick(Userbox->currentText()).uin)
@@ -1802,7 +1802,7 @@ void KaduSlots::onDestroyConfigDialog()
 		kadu->autostatus_timer->start(1000, true);
 	else
 		kadu->autostatus_timer->stop();
-	kadu->showdesc(config_file.readBoolEntry("Look", "ShowDesc"));
+	kadu->showdesc(config_file.readBoolEntry("Look", "ShowInfoPanel"));
 	
 	if (config_file.readBoolEntry("Look", "MultiColumnUserbox"))
 		kadu->userbox()->setColumnMode(QListBox::FitToWidth);

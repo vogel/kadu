@@ -24,8 +24,19 @@
 #include "config_file.h"
 
 KaduListBoxPixmap::KaduListBoxPixmap(const QPixmap &pix, const QString &text)
-	: QListBoxPixmap(pix, text)
+	: QListBoxItem()
 {
+	pm = pix;
+	setText(text);
+}
+
+KaduListBoxPixmap::KaduListBoxPixmap(const QPixmap &pix, const QString &text, const QString &descr, bool bold)
+	: QListBoxItem()
+{
+	pm = pix;
+	setText(text);
+	setDescription(descr);
+	setBold(bold);
 }
 
 void KaduListBoxPixmap::paint(QPainter *painter) {
@@ -51,7 +62,73 @@ void KaduListBoxPixmap::paint(QPainter *painter) {
 					painter->setPen(pen);
 					}
 		}
-	QListBoxPixmap::paint(painter);
+	
+	int itemHeight = height(listBox());
+	int yPos;
+
+	if (!pm.isNull()) {
+		yPos = (itemHeight - pm.height()) / 2;
+		painter->drawPixmap(3, yPos, pm);
+	}
+
+	if (!text().isEmpty()) {
+		QFont oldFont = painter->font();
+
+		if (bold) {
+			QFont newFont = QFont(oldFont);
+			newFont.setWeight(QFont::Bold);
+			painter->setFont(newFont);
+		}
+
+		QFontMetrics fm = painter->fontMetrics();
+
+		if (description().isEmpty() || !config_file.readBoolEntry("Look", "ShowDesc"))
+			yPos = ((itemHeight - fm.height()) / 2) + fm.ascent();
+		else
+			yPos = fm.ascent() + 1;
+
+		painter->drawText(pm.width() + 5, yPos, text());
+
+		if (bold)
+			painter->setFont(oldFont);
+
+		if (!description().isEmpty() && config_file.readBoolEntry("Look", "ShowDesc")) {
+			yPos += fm.height() - fm.descent();
+
+			QFont newFont = QFont(oldFont);
+			newFont.setPointSize(oldFont.pointSize() - 2);
+			painter->setFont(newFont);
+
+			painter->drawText(pm.width() + 5, yPos, description());
+
+			painter->setFont(oldFont);
+		}
+	}
+}
+
+int KaduListBoxPixmap::height(const QListBox* lb) const
+{
+	int h, lh;
+
+	if (description().isEmpty() || !config_file.readBoolEntry("Look", "ShowDesc"))
+		lh = lb->fontMetrics().lineSpacing() + 2;
+	else
+		lh = lb->fontMetrics().lineSpacing() * 2 - 2;
+
+	if (text().isEmpty())
+		h = pm.height();
+	else
+		h = QMAX(pm.height(), lh);
+
+	return QMAX(h, QApplication::globalStrut().height());
+}
+
+int KaduListBoxPixmap::width(const QListBox* lb) const
+{
+	if (text().isEmpty())
+		return QMAX(pm.width() + 6, QApplication::globalStrut().width());
+
+	return QMAX(pm.width() + lb->fontMetrics().width(text()) + 6, QApplication::globalStrut().width());
 }
 
 UserBoxMenu *UserBox::userboxmenu = NULL;
@@ -256,8 +333,9 @@ void UserBox::refresh()
 	{
 		UserListElement &user = userlist.byAltNick(a_users[i]);
 		bool has_mobile = user.mobile.length();
+		bool active = (user.status == GG_STATUS_AVAIL || user.status == GG_STATUS_AVAIL_DESCR || user.status == GG_STATUS_BUSY || user.status == GG_STATUS_BUSY_DESCR);
 		if (pending.pendingMsgs(user.uin)) {
-			lbp = new KaduListBoxPixmap(*icons->loadIcon("message"), user.altnick);
+			lbp = new KaduListBoxPixmap(*icons->loadIcon("message"), user.altnick, user.description, active);
 			insertItem(lbp);
 //			insertItem(*icons->loadIcon("message"), user.altnick);
 			}
@@ -294,10 +372,10 @@ void UserBox::refresh()
 					break;
 				};
 			if (pix != NULL)
-				lbp = new KaduListBoxPixmap(*pix, user.altnick);
+				lbp = new KaduListBoxPixmap(*pix, user.altnick, user.description, active);
 //				insertItem(*pix, user.altnick);
 			else
-				lbp = new KaduListBoxPixmap(*icons->loadIcon("online"), user.altnick);
+				lbp = new KaduListBoxPixmap(*icons->loadIcon("online"), user.altnick, user.description, active);
 //				insertItem(*icons->loadIcon("online"), user.altnick);
 			insertItem(lbp);
 		};
@@ -307,7 +385,7 @@ void UserBox::refresh()
 		UserListElement &user = userlist.byAltNick(i_users[i]);
 		bool has_mobile = user.mobile.length();
 		if (pending.pendingMsgs(user.uin)) {
-			lbp = new KaduListBoxPixmap(*icons->loadIcon("message"), user.altnick);
+			lbp = new KaduListBoxPixmap(*icons->loadIcon("message"), user.altnick, user.description, 0);
 			insertItem(lbp);
 //	    		insertItem(*icons->loadIcon("message"), user.altnick);
 			}
@@ -327,7 +405,7 @@ void UserBox::refresh()
 						pix = icons->loadIcon("invisible");
 		    			break;
 				}
-			lbp = new KaduListBoxPixmap(*pix, user.altnick);
+			lbp = new KaduListBoxPixmap(*pix, user.altnick, user.description, 0);
 			insertItem(lbp);
 //			insertItem(*pix, user.altnick);			
 			}
@@ -339,7 +417,7 @@ void UserBox::refresh()
 		UserListElement &user = userlist.byAltNick(n_users[i]);
 		bool has_mobile = user.mobile.length();
 		if (pending.pendingMsgs(user.uin)) {		
-			lbp = new KaduListBoxPixmap(*icons->loadIcon("message"), user.altnick);
+			lbp = new KaduListBoxPixmap(*icons->loadIcon("message"), user.altnick, user.description, 0);
 			insertItem(lbp);
 //	    		insertItem(*icons->loadIcon("message"), user.altnick);
 			}
@@ -361,10 +439,10 @@ void UserBox::refresh()
 		    			break;
 				};
 			if (pix != NULL)
-				lbp = new KaduListBoxPixmap(*pix, user.altnick);
+				lbp = new KaduListBoxPixmap(*pix, user.altnick, user.description, 0);
 //				insertItem(*pix, user.altnick);
 			else
-				lbp = new KaduListBoxPixmap(*icons->loadIcon("online"), user.altnick);
+				lbp = new KaduListBoxPixmap(*icons->loadIcon("online"), user.altnick, user.description, 0);
 //				insertItem(*icons->loadIcon("online"), user.altnick);
 			insertItem(lbp);
 		};
@@ -372,7 +450,7 @@ void UserBox::refresh()
 	// Dodajemy uzytkownikow bez numerow GG
 	for (i = 0; i < b_users.count(); i++) {
 		UserListElement &user = userlist.byAltNick(b_users[i]);
-		lbp = new KaduListBoxPixmap(*icons->loadIcon("mobile"), user.altnick);
+		lbp = new KaduListBoxPixmap(*icons->loadIcon("mobile"), user.altnick, user.description, 0);
 		insertItem(lbp);
 //		insertItem(*icons->loadIcon("mobile"), user.altnick);
 		}
@@ -516,7 +594,8 @@ void UserBox::initModule()
 	QT_TRANSLATE_NOOP("@default", "Font");
 	QT_TRANSLATE_NOOP("@default", "Font size");
 	QT_TRANSLATE_NOOP("@default", "Other");	
-	QT_TRANSLATE_NOOP("@default", "Show userbox-desc.");	
+	QT_TRANSLATE_NOOP("@default", "Show info-panel");	
+	QT_TRANSLATE_NOOP("@default", "Show userbox-descr.");	
 	QT_TRANSLATE_NOOP("@default", "Display group tabs");	
 	QT_TRANSLATE_NOOP("@default", "Multicolumn userbox");	
 	
@@ -537,10 +616,11 @@ void UserBox::initModule()
 	ConfigDialog::addComboBox("Look", "font&size", "Font size");
 	
 	ConfigDialog::addVGroupBox("Look", "Look", "Other");
-	ConfigDialog::addCheckBox("Look", "Other", "Show userbox-desc.", "ShowDesc", true);
-	ConfigDialog::addCheckBox("Look", "Other", "Display group tabs", "DisplayGroupTabs", true);
-	ConfigDialog::addCheckBox("Look", "Other", "Multicolumn userbox", "MultiColumnUserbox", true);
-
+	ConfigDialog::addGrid("Look", "Other", "grid", 2);
+	ConfigDialog::addCheckBox("Look", "grid", "Show info-panel", "ShowInfoPanel", true);
+	ConfigDialog::addCheckBox("Look", "grid", "Display group tabs", "DisplayGroupTabs", true);
+	ConfigDialog::addCheckBox("Look", "grid", "Multicolumn userbox", "MultiColumnUserbox", true);
+	ConfigDialog::addCheckBox("Look", "grid", "Show userbox-descr.", "ShowDesc", true);
 	
 	UserBoxSlots *userboxslots= new UserBoxSlots();
 	ConfigDialog::registerSlotOnCreate(userboxslots, SLOT(onCreateConfigDialog()));
