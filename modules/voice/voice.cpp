@@ -81,12 +81,8 @@ void RecordThread::run()
 	kdebugf();
 	char data[GG_DCC_VOICE_FRAME_LENGTH_505];
 	int length = GG_DCC_VOICE_FRAME_LENGTH_505;
-	while (true)
-	{
-		if (!rsem.available())
-			break;
+	while (rsem.available())
 		emit recordSample(data, length);
-	}
 	kdebugf2();
 }
 
@@ -130,17 +126,16 @@ VoiceChatDialog* VoiceChatDialog::bySocket(DccSocket* socket)
 
 void VoiceChatDialog::destroyAll()
 {
-	for (QMap<DccSocket*, VoiceChatDialog*>::const_iterator i = Dialogs.begin();
-		i != Dialogs.end(); i++)
-	{
-		delete i.data();
-	}
+	kdebugf();
+	while (!Dialogs.empty())
+		delete Dialogs.begin().data();
+	kdebugf2();
 }
 
 void VoiceChatDialog::sendDataToAll(char* data, int length)
 {
 	for (QMap<DccSocket*, VoiceChatDialog*>::const_iterator i = Dialogs.begin();
-		i != Dialogs.end(); i++)
+		i != Dialogs.end(); ++i)
 	{
 		gadu->dccVoiceSend(i.key()->ggDccStruct(), data, length);
 	}
@@ -484,8 +479,9 @@ void VoiceManager::dccEvent(DccSocket* socket)
 void VoiceManager::socketDestroying(DccSocket* socket)
 {
 	kdebugf();
-	if (VoiceChatDialog::bySocket(socket) != NULL)
-		delete VoiceChatDialog::bySocket(socket);
+	VoiceChatDialog *dialog=VoiceChatDialog::bySocket(socket);
+	if (dialog)
+		delete dialog;
 	kdebugf2();
 }
 

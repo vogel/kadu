@@ -138,11 +138,10 @@ FileTransferDialog* FileTransferDialog::bySocket(DccSocket* socket)
 
 void FileTransferDialog::destroyAll()
 {
-	for (QMap<DccSocket*, FileTransferDialog*>::const_iterator i = Dialogs.begin();
-		i != Dialogs.end(); i++)
-	{
-		delete i.data();
-	}
+	kdebugf();
+	while (!Dialogs.empty())
+		delete Dialogs.begin().data();
+	kdebugf2();
 }
 
 QMap<DccSocket*, FileTransferDialog*> FileTransferDialog::Dialogs;
