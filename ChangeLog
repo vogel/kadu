@@ -203,6 +203,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * po co u¿ywacie QString::latin1()?! (chilek)
 * poprawne ustawienie wysoko¶ci pojedynczego elementu listy kontaktów gdy obrazek
   jest wiêkszy od czcionki (joi)
+* obej¶cie b³êdu w niektórych stylach Qt (które zwracaj± zbyt du¿± szeroko¶æ
+  scrollbara), powoduj±cych z³e wy¶wietlanie opisów pod kontaktami (joi)
+* zabezpieczenie przed zawieszeniem w zawijaniu opisów przy bardzo w±skim oknie (joi)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

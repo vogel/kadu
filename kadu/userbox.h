@@ -34,7 +34,6 @@ class KaduListBoxPixmap : public QListBoxItem {
 		QString descr;
 		bool bold;
 		static QFontMetrics *descriptionFontMetrics;
-		static int scrollWidth;
 		
 		mutable QString buf_text;
 		mutable int buf_width;

@@ -25,7 +25,6 @@
 #include "misc.h"
 
 QFontMetrics* KaduListBoxPixmap::descriptionFontMetrics=NULL;
-int KaduListBoxPixmap::scrollWidth;
 
 void KaduListBoxPixmap::setFont(const QFont &f)
 {
@@ -36,11 +35,6 @@ void KaduListBoxPixmap::setFont(const QFont &f)
 		delete descriptionFontMetrics;
 	descriptionFontMetrics= new QFontMetrics(newFont);
 	kdebugf2();
-}
-
-void KaduListBoxPixmap::setVerticalScrollWidth(int w)
-{
-	scrollWidth=w;
 }
 
 KaduListBoxPixmap::KaduListBoxPixmap(const QPixmap &pix, const QString &text)
@@ -171,7 +165,7 @@ int KaduListBoxPixmap::width(const QListBox* lb) const
 	if (config_file.readBoolEntry("Look", "MultiColumnUserbox"))
 		return config_file.readNumEntry("Look", "MultiColumnUserboxWidth", 230);
 	else
-		return QMAX(pm.width(), lb->width()-5-scrollWidth);
+		return QMAX(pm.width(), lb->visibleWidth());
 }
 
 //#include <sys/time.h>
@@ -200,6 +194,14 @@ void KaduListBoxPixmap::calculateSize(const QString &text, int width, QStringLis
 	QStringList tmpout=QStringList::split('\n', text, true);
 	int wsize=descriptionFontMetrics->width('W'); //zdaje siê najszersza litera to 'w'
 	int initialLength=width/wsize; // spróbujmy przewidzieæ szeroko¶æ
+
+	if (initialLength<1) //sytuacja tragiczna: nie uda³o siê ani jednego znaku zmie¶ciæ
+	{
+		kdebugm(KDEBUG_PANIC, "PANIC: no space for description!\n");
+		height=0;
+		out=QStringList();
+		return;
+	}
 
 	while (tmpout.size())
 	{
@@ -248,9 +250,9 @@ void KaduListBoxPixmap::calculateSize(const QString &text, int width, QStringLis
 	buf_width=width;
 	buf_out=out;
 	buf_height=height;
-//	kdebugm(KDEBUG_INFO, "h:%d txt:%s\n", height, text.local8Bit().data());
+//	kdebugm(KDEBUG_DUMP, "h:%d txt:%s\n", height, text.local8Bit().data());
 //	for(QStringList::Iterator it = out.begin(); it != out.end(); ++it )
-//		kdebugm(KDEBUG_INFO, ">>%s\n", (*it).local8Bit().data());
+//		kdebugm(KDEBUG_DUMP, ">>%s\n", (*it).local8Bit().data());
 }
 
 UserBoxMenu *UserBox::userboxmenu = NULL;
@@ -265,7 +267,6 @@ UserBox::UserBox(QWidget* parent,const char* name,WFlags f)
 
 	UserBoxes.append(this);
 	setSelectionMode(QListBox::Extended);
-	KaduListBoxPixmap::setVerticalScrollWidth(verticalScrollBar()->sliderRect().width());
 	kdebugf2();
 }
 
