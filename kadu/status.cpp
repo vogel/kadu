@@ -124,16 +124,39 @@ void AutoAwayTimer::onTimeout()
 		beforeAutoAway = getActualStatus() & (~GG_STATUS_FRIENDS_MASK);;
 		fprintf(stderr, "KK AutoAwayTimer::onTimeout(): checking whether to go auto away, beforeAutoAway = %d\n", beforeAutoAway);
 		switch (beforeAutoAway) {
-			case GG_STATUS_AVAIL_DESCR: kadu->setStatus(GG_STATUS_BUSY_DESCR); break;
-			case GG_STATUS_AVAIL: kadu->setStatus(GG_STATUS_BUSY); break;
-			default: start(config.autoawaytime * 1000, TRUE); return;
+			case GG_STATUS_AVAIL_DESCR:
+				kadu->setStatus(GG_STATUS_BUSY_DESCR);
+				QApplication::desktop()->grabMouse();
+				QApplication::desktop()->grabKeyboard();
+				autoawayed = true;
+				break;
+			case GG_STATUS_AVAIL:
+				kadu->setStatus(GG_STATUS_BUSY);
+				QApplication::desktop()->grabMouse();
+				QApplication::desktop()->grabKeyboard();
+				autoawayed = true;
+				break;
+			default:
+				start(config.autoawaytime * 1000, TRUE);
+				return;
 			}
 		fprintf(stderr, "KK AutoAwayTimer::onTimeout(): I am away!\n");
-		QApplication::desktop()->grabMouse();
-		QApplication::desktop()->grabKeyboard();
-		autoawayed = true;
 		}
 //potrzebne na wypadek zerwania polaczenia i ponownego polaczenia sie z statusem innym niz busy*
 	start(config.autoawaytime * 1000, TRUE);
 }
 
+void AutoAwayTimer::on() {
+	if (autoaway_object == NULL) {
+		autoaway_object = new AutoAwayTimer();
+		stop();
+		start(config.autoawaytime * 1000, TRUE;
+		}
+}
+
+void AutoAwayTimer::off(){
+	if (autoaway_object != NULL){
+		delete autoaway_object;
+		autoaway_object = NULL;
+		}
+}

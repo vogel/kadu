@@ -43,23 +43,15 @@ class AutoAwayTimer : private QTimer
 		void onTimeout();
 
 	public:
-		static void on(){
-			if(autoaway_object==NULL)
-				autoaway_object=new AutoAwayTimer();
-		};
-		static void off(){
-			if(autoaway_object!=NULL){
-				delete autoaway_object;
-				autoaway_object=NULL;
-				}
-			};
+		static void on();
+		static void off();
 
 	protected:
 		bool eventFilter(QObject *, QEvent *);
 
 	private:
-    AutoAwayTimer(QObject *parent = 0);
-    static AutoAwayTimer* autoaway_object;
+		AutoAwayTimer(QObject *parent = 0);
+		static AutoAwayTimer* autoaway_object;
 		bool autoawayed;
 		int beforeAutoAway;
 };
