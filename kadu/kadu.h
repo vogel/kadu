@@ -85,7 +85,6 @@ class Kadu : public QMainWindow
 		void groupTabSelected(int id);
 		void userListModified();
 		void userListStatusModified(UserListElement *);
-		void userStatusChanged(UserListElement &, int oldstatus);
 		void openChat();
 		void userListUserAdded(const UserListElement& user);
 
@@ -125,12 +124,15 @@ class Kadu : public QMainWindow
 		void startupProcedure();
 
 	private slots:
+		void chatMsgReceived(UinsList senders, const QString &msg, time_t time);
 		void connected();
 		void connecting();
 		void dccSetupFailed();
 		void disconnected();
 		void error(GaduError);
 		void systemMessageReceived(QString &);
+		void userListChanged();
+		void userStatusChanged(UserListElement &, int oldstatus);
 
 	public slots:
 		/**

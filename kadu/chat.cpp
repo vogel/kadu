@@ -83,7 +83,7 @@ void ChatManager::unregisterChat(Chat* chat)
 		{
 			ChatInfo info;
 			info.uins=chat->uins();
-			
+
 			info.geometry.setX(chat->pos().x());
 			info.geometry.setY(chat->pos().y());
 			info.geometry.setWidth(chat->size().width());
@@ -147,7 +147,7 @@ int ChatManager::openChat(UinsList senders,time_t time)
 		{
 			Chats[i]->raise();
 			Chats[i]->setActiveWindow();
-			return i;	
+			return i;
 		}
 	Chat* chat = new Chat(senders, 0, "chat");
 	chat->setTitle();
@@ -214,7 +214,7 @@ void ChatManager::openPendingMsgs(UinsList uins)
 				|| (elem.msgclass & GG_CLASS_MSG) == GG_CLASS_MSG
 				|| !elem.msgclass)
 			{
-				k=openPendingMsg(i,toadd);				
+				k=openPendingMsg(i,toadd);
 				i--;
 				uins = elem.uins;
 				stop = true;
@@ -285,7 +285,7 @@ void ChatManager::sendMessage(UinType uin,UinsList selected_uins)
 				|| !elem.msgclass)
 			{
 				if (!uins.count())
-					uins = elem.uins;					
+					uins = elem.uins;
 				k=openPendingMsg(i,toadd);
 				i--;
 				stop = true;
@@ -343,17 +343,17 @@ void CustomInput::keyPressEvent(QKeyEvent* e)
 	}
 	else
 	{
-		if (e->key() == Key_Minus) 
+		if (e->key() == Key_Minus)
 		{
 			insert("-");
 			return;
 		}
-		if (e->text() == "*") 
+		if (e->text() == "*")
 		{
 			insert("*");
 			return;
 		}
-		if (HotKey::shortCut(e,"ShortCuts", "chat_bold"))	
+		if (HotKey::shortCut(e,"ShortCuts", "chat_bold"))
 		{
 			emit specialKeyPressed(CustomInput::KEY_BOLD);
 			return;
@@ -370,7 +370,7 @@ void CustomInput::keyPressEvent(QKeyEvent* e)
 		}
 		QMultiLineEdit::keyPressEvent(e);
 	}
-	// przekazanie event'a do qwidget 
+	// przekazanie event'a do qwidget
 	// aby obsluzyc skroty klawiszowe (definiowane sa dla okna chat)
 	QWidget::keyPressEvent(e);
 //	kdebugf2();
@@ -416,7 +416,7 @@ void KaduSplitter::childEvent(QChildEvent *c)
 	{
 		if (c->inserted())
 			list.append((KaduTextBrowser*)o);
-		else 
+		else
 			list.remove((KaduTextBrowser*)o);
 	}
 //	kdebugm(KDEBUG_INFO, "%d %d %p %p %s %s\n", c->inserted(), c->removed(), this, o, o->className(), o->name());
@@ -444,20 +444,20 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 		horizSplit = new KaduSplitter(Qt::Horizontal, vertSplit);
 		body = new KaduTextBrowser(horizSplit);
 	}
-	else 
+	else
 	{
 		horizSplit=NULL;
 		body = new KaduTextBrowser(vertSplit);
 	}
-		
+
 	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")==EMOTS_ANIMATED)
 		body->setStyleSheet(new AnimStyleSheet(body,emoticons->themePath()));
-	
+
 	body->setMinimumSize(QSize(100,100));
 	body->setFont(config_file.readFontEntry("Look","ChatFont"));
 
 	QPoint pos = QCursor::pos();
-	
+
 	if (uins.count() > 1)
 	{
 		userbox = new UserBox(horizSplit);
@@ -479,7 +479,7 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 	}
 	else
 		userbox = NULL;
-		
+
 	QVBox *downpart = new QVBox(vertSplit);
 	QHBox *edtbuttontray = new QHBox(downpart);
 
@@ -505,7 +505,7 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 		connect(btn, SIGNAL(clicked()), b.receiver, b.slot.local8Bit().data());
 		Buttons.insert(b.name,btn);
 	}
-	
+
 	QPushButton *clearchat= new QPushButton(buttontray);
 	clearchat->setPixmap(icons_manager.loadIcon("ClearChat"));
 	QToolTip::add(clearchat, tr("Clear messages in chat window"));
@@ -641,7 +641,7 @@ Chat::~Chat()
 
 	if (userbox)
 		delete userbox;
-		
+
 	kdebugm(KDEBUG_FUNCTION_END, "Chat::~Chat: chat destroyed: index %d\n", index);
 }
 
@@ -884,7 +884,7 @@ QString Chat::convertCharacters(QString edit, bool me)
 		else
 			emoticons->expandEmoticons(doc,config_file.readColorEntry("Look","ChatUsrBgColor"));
 	}
-	
+
 	edit=doc.generateHtml();
 	return edit;
 }
@@ -892,7 +892,7 @@ QString Chat::convertCharacters(QString edit, bool me)
 /* unregister us */
 void Chat::closeEvent(QCloseEvent* e)
 {
-	kdebugf();	
+	kdebugf();
 	QWidget::closeEvent(e);
 }
 
@@ -900,7 +900,7 @@ void Chat::closeEvent(QCloseEvent* e)
 void Chat::userWhois()
 {
 	UinType uin;
-	
+
 	if (!userbox)
 		uin = Uins[0];
 	else
@@ -958,13 +958,13 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time)
 	QValueList<HistoryEntry> entriestmp;
 	QDateTime date;
 	unsigned int from, end, count;
-	
+
 	kdebugf();
 
 	date.setTime_t(time);
 	count = history.getHistoryEntriesCount(senders);
 	end = count - 1;
-	
+
 	from = count;
 	while (from >= 1 && entries.count() < config_file.readUnsignedNumEntry("History","ChatHistoryCitation")) {
 		from = (end < config_file.readUnsignedNumEntry("History", "ChatHistoryCitation")) ? 0 : end - config_file.readUnsignedNumEntry("History","ChatHistoryCitation") + 1;
@@ -1089,7 +1089,7 @@ void Chat::sendMessage()
 		kdebugf2();
 		return;
 	}
-	
+
 	emit messageSendRequested(this);
 
 	QString mesg;
@@ -1124,7 +1124,7 @@ void Chat::sendMessage()
 	}
 
 	QCString msg = unicode2cp(mesg);
-	
+
 	bool stop=false;
 	emit messageFiltering(Uins,msg,stop);
 	if(stop)
@@ -1141,7 +1141,7 @@ void Chat::sendMessage()
 	}
 
 	if (config_file.readBoolEntry("Chat","MessageAcks")) {
-		edit->setReadOnly(true);	
+		edit->setReadOnly(true);
 		edit->setEnabled(false);
 		disconnect(sendbtn, SIGNAL(clicked()), this, SLOT(sendMessage()));
 		connect(sendbtn, SIGNAL(clicked()), this, SLOT(cancelMessage()));
@@ -1167,7 +1167,7 @@ void Chat::sendMessage()
 		writeMyMessage();
 		addMyMessageToHistory();
 	}
-	
+
 	emit messageSent(this);
 	kdebugf2();
 }
@@ -1187,7 +1187,7 @@ void Chat::pruneWindow()
 			}
 		totaloccurences++;
 
-		body->setText(body->text().right(body->text().length() - index));	
+		body->setText(body->text().right(body->text().length() - index));
 		}
 	else {
 		index = 0;
@@ -1276,7 +1276,7 @@ void Chat::initModule()
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Bold text:"), "chat_bold", "Ctrl+B");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Italic text:"), "chat_italic", "Ctrl+I");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Underline text:"), "chat_underline", "Ctrl+U");
-	
+
 	ConfigDialog::addTab("Chat");
 	ConfigDialog::addVGroupBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Emoticons"));
 	ConfigDialog::addComboBox("Chat", "Emoticons", QT_TRANSLATE_NOOP("@default", "Emoticons:"));
@@ -1296,9 +1296,9 @@ void Chat::initModule()
 	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Message acknowledgements (wait for delivery)"), "MessageAcks", true);
 	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Flash chat title on new message"), "BlinkChatTitle", true);
 	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Ignore messages from anonymous users"), "IgnoreAnonymousUsers", false);
-	ConfigDialog::addSpinBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Max image size"), 
+	ConfigDialog::addSpinBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Max image size"),
 			"MaxImageSize", 0, 255, 5, 20);
-	
+
 
 // pierwsze uruchomienie kadu
 	config_file.addVariable("Look", "ChatMyBgColor", QColor("#E0E0E0"));
@@ -1311,7 +1311,7 @@ void Chat::initModule()
 	config_file.addVariable("Look", "ChatFont", &def_font);
 
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Look"));
-	
+
 	ConfigDialog::addGrid("Look", "Look", "varOpts", 2);
 		ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Show status button"), "ShowStatusButton", true);
 		ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Multiline description in userbox"), "ShowMultilineDesc", true);
@@ -1319,7 +1319,7 @@ void Chat::initModule()
 		ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Show available users in bold"), "ShowBold", true, QT_TRANSLATE_NOOP("@default","Displays users that are not offline using a bold font"));
 		ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Show description in userbox"), "ShowDesc", true);
 	ConfigDialog::addVBox("Look", "Look", "varOpts2");//potrzebne userboksowi
-	
+
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Colors"));
 		ConfigDialog::addVGroupBox("Look", "Colors", QT_TRANSLATE_NOOP("@default", "Chat window"));
 			ConfigDialog::addHBox("Look", "Chat window", "own_bg_color_box");
@@ -1334,7 +1334,7 @@ void Chat::initModule()
 			ConfigDialog::addHBox("Look", "Chat window", "his_font_color_box");
 				ConfigDialog::addLabel("Look", "his_font_color_box", QT_TRANSLATE_NOOP("@default", "User font color"));
 				ConfigDialog::addColorButton("Look", "his_font_color_box", "", "ChatUsrFontColor", config_file.readColorEntry("Look","ChatUsrFontColor"), "", "his_font_color");
-	
+
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Fonts"));
 		ConfigDialog::addSelectFont("Look", "Fonts", QT_TRANSLATE_NOOP("@default", "Font in chat window"), "ChatFont", def_font.toString(), "", "chat_font_box");
 
@@ -1352,7 +1352,7 @@ void Chat::initModule()
 
 	config_file.addVariable("Chat", "EmoticonsStyle", EMOTS_ANIMATED);
 	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
-	
+
 	ChatSlots *chatslots =new ChatSlots(kadu, "chat_slots");
 	ConfigDialog::registerSlotOnCreate(chatslots,SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnApply(chatslots,SLOT(onDestroyConfigDialog()));
@@ -1360,16 +1360,16 @@ void Chat::initModule()
 	ConfigDialog::connectSlot("Chat", "Use default Web browser", SIGNAL(toggled(bool)), chatslots, SLOT(onDefWebBrowser(bool)));
 	ConfigDialog::connectSlot("Chat", "Automatically prune chat messages", SIGNAL(toggled(bool)), chatslots, SLOT(onPruneChat(bool)));
 	ConfigDialog::connectSlot("Chat", "Automatically fold links", SIGNAL(toggled(bool)), chatslots, SLOT(onFoldLink(bool)));
-	
+
 	ConfigDialog::connectSlot("Look", "", SIGNAL(changed(const char *, const QColor&)), chatslots, SLOT(chooseColor(const char *, const QColor&)), "own_bg_color");
 	ConfigDialog::connectSlot("Look", "", SIGNAL(changed(const char *, const QColor&)), chatslots, SLOT(chooseColor(const char *, const QColor&)), "his_bg_color");
 	ConfigDialog::connectSlot("Look", "", SIGNAL(changed(const char *, const QColor&)), chatslots, SLOT(chooseColor(const char *, const QColor&)), "own_font_color");
 	ConfigDialog::connectSlot("Look", "", SIGNAL(changed(const char *, const QColor&)), chatslots, SLOT(chooseColor(const char *, const QColor&)), "his_font_color");
 
 	ConfigDialog::connectSlot("Look", "Font in chat window", SIGNAL(changed(const char *, const QFont&)), chatslots, SLOT(chooseFont(const char *, const QFont&)), "chat_font_box");
-	
+
 	chat_manager=new ChatManager(kadu, "chat_manager");
-	connect(&event_manager,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
+	connect(gadu,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
 		chat_manager,SLOT(chatMsgReceived(UinsList,const QString&,time_t,bool&)));
 	kdebugf2();
 }
@@ -1497,13 +1497,13 @@ void ChatSlots::onCreateConfigDialog()
 
 	QCheckBox *c_defweb= ConfigDialog::getCheckBox("Chat", "Use default Web browser");
 	QLineEdit *l_webbrow= ConfigDialog::getLineEdit("Chat", "Custom Web browser");
-	
+
 	if (c_defweb->isChecked())
 		((QHBox*)l_webbrow->parent())->setEnabled(false);
-	
+
 	QCheckBox *c_prunechat= ConfigDialog::getCheckBox("Chat", "Automatically prune chat messages");
 	QHGroupBox *h_prune= ConfigDialog::getHGroupBox("Chat", "Message pruning");
-	
+
 	h_prune->setEnabled(c_prunechat->isChecked());
 
 	QCheckBox *c_foldlink= ConfigDialog::getCheckBox("Chat", "Automatically fold links");
@@ -1511,7 +1511,7 @@ void ChatSlots::onCreateConfigDialog()
 	QToolTip::add(h_fold, tr("URLs longer than this value will be shown truncated to this length"));
 	QToolTip::add(c_foldlink, tr("This will show a long URL as http://www.start...end.com/\nto protect the chat window from a mess"));
 	ConfigDialog::getSpinBox("Chat", "Max image size")->setSuffix(" kB");
-	
+
 	h_fold->setEnabled(c_foldlink->isChecked());
 
 	updatePreview();
@@ -1537,7 +1537,7 @@ void ChatSlots::onDefWebBrowser(bool toggled)
 void ChatSlots::onDestroyConfigDialog()
 {
 	kdebugf();
-	
+
 	QComboBox* cb_emoticons_theme= ConfigDialog::getComboBox("Chat", "Emoticons theme");
 	config_file.writeEntry("Chat", "EmoticonsTheme",cb_emoticons_theme->currentText());
 	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
@@ -1562,7 +1562,7 @@ void ChatSlots::onDestroyConfigDialog()
 
 	if (e_chatsyntax->text() == tr("Chat with ")+"%a (%s[: %d])" || e_chatsyntax->text() == "Chat with %a (%s[: %d])")
 		config_file.writeEntry("Look", "ChatContents", "");
-	
+
 	if (e_conferenceprefix->text() == tr("Conference with ") || e_conferenceprefix->text() == "Conference with ")
 		config_file.writeEntry("Look", "ConferencePrefix", "");
 	kdebugf2();

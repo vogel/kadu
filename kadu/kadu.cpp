@@ -503,13 +503,18 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	if ( configTab >= 0 && configTab < GroupBar -> count() )
 		((QTabBar*) GroupBar) -> setCurrentTab( configTab );
 
+	connect(gadu, SIGNAL(chatMsgReceived2(UinsList, const QString &, time_t)),
+		this, SLOT(chatMsgReceived(UinsList, const QString &, time_t)));
 	connect(gadu, SIGNAL(connecting()), this, SLOT(connecting()));
 	connect(gadu, SIGNAL(connected()), this, SLOT(connected()));
 	connect(gadu, SIGNAL(dccSetupFailed()), this, SLOT(dccSetupFailed()));
 	connect(gadu, SIGNAL(disconnected()), this, SLOT(disconnected()));
 	connect(gadu, SIGNAL(error(GaduError)), this, SLOT(error(GaduError)));
 	connect(gadu, SIGNAL(statusChanged(int)), this, SLOT(setCurrentStatus(int)));
-	connect(gadu, SIGNAL(userStatusChanged(UserListElement&, int)), this, SLOT(userStatusChanged(UserListElement&, int)));
+	connect(gadu, SIGNAL(systemMessageReceived(QString &)), this, SLOT(systemMessageReceived(QString &)));
+	connect(gadu, SIGNAL(userListChanged()), this, SLOT(userListChanged()));
+	connect(gadu, SIGNAL(userStatusChanged(UserListElement&, int)),
+		this, SLOT(userStatusChanged(UserListElement&, int)));
 
 	dccsock = NULL;
 	kdebugf2();
@@ -1055,16 +1060,20 @@ void Kadu::ifNotify(UinType uin, unsigned int status, unsigned int oldstatus)
 
 }
 
+void Kadu::userListChanged()
+{
+	kdebugf();
+	UserBox::all_refresh();
+	kdebugf2();
+}
+
 void Kadu::userStatusChanged(UserListElement &user, int oldstatus)
 {
 	kdebugf();
 
 	history.appendStatus(user.uin, user.status, user.description.length() ? user.description : QString::null);
-
 	chat_manager->refreshTitlesForUin(user.uin);
-
 	ifNotify(user.uin, user.status, oldstatus);
-	UserBox::all_refresh();
 
 	kdebugf2();
 }
@@ -1311,6 +1320,29 @@ void Kadu::connecting()
 	}
 
 	blinktimer->start(1000, true);
+	kdebugf2();
+}
+
+void Kadu::chatMsgReceived(UinsList senders, const QString &msg, time_t time)
+{
+	kdebugf();
+//	UserListElement ule = userlist.byUinValue(senders[0]);
+
+	pending.addMsg(senders, msg, GG_CLASS_CHAT, time);
+
+	UserBox::all_refresh();
+
+	if (config_file.readBoolEntry("General","AutoRaise"))
+	{
+		kadu->showNormal();
+		kadu->setFocus();
+	}
+
+	hintmanager->addHintNewChat(senders, msg);
+
+	if(config_file.readBoolEntry("Chat","OpenChatOnMessage"))
+		pending.openMessages();
+
 	kdebugf2();
 }
 

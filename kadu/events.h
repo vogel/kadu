@@ -48,12 +48,6 @@ class EventManager : public QObject
 	Q_OBJECT
 
 	private slots:
-		void userlistReceivedSlot(struct gg_event *);
-		void messageReceivedSlot(int, UinsList,QCString& msg,time_t,
-			QByteArray& formats);
-		void systemMessageReceivedSlot(QString &msg, QDateTime &time,
-			int formats_length, void *formats);
-		void chatMsgReceived2Slot(UinsList senders,const QString& msg,time_t time);
 		void imageRequestReceivedSlot(UinType sender,uint32_t size,uint32_t crc32);
 		void imageReceivedSlot(UinType sender,uint32_t size,uint32_t crc32,const QString& filename,const char* data);
 		void imageReceivedAndSavedSlot(UinType sender,uint32_t size,uint32_t crc32,const QString& path);
@@ -98,34 +92,6 @@ class EventManager : public QObject
 		**/
 		void messageReceived(int,UinsList,QCString& msg,time_t,
 			QByteArray& formats);
-		/**
-			Sygnal daje mozliwosc operowania na wiadomoci
-			ktora przyszla z serwera jeszcze w jej oryginalnej
-			formie przed konwersja na unicode i innymi zabiegami.
-			Tresc wiadomosci mozna zmienic grzebiac w buforze msg,
-			ale uwaga: mo¿na zepsuæ formatowanie tekstu zapisane
-			w formats. Oczywi¶cie je równie¿ mo¿na zmieniaæ, wed³ug
-			opisu protoko³u GG ;)
-			Mozna tez przerwac dalsza obrobke wiadomo¶ci ustawiajac
-			stop na true.
-		**/
-		void messageFiltering(const UinsList& senders,QCString& msg,
-			QByteArray& formats,bool& stop);
-		/**
-			Otrzymano wiadomo¶æ, któr± trzeba pokazaæ (klasa chat lub msg,
-			nadawca nie jest ignorowany, itp)
-			Tre¶æ zdeszyfrowana i zdekodowana do unicode.
-			Jesli ktorys ze slotow sygna³u chatMsgReceived1 ustawi zmienna
-			grab na true to sygnal chatReceived2 nie zostanie wygenerowany.
-			Je¶li natomiast zmienna grab zostanie ustawiona przez slot
-			chatMsgReceived0, to ¿adna czynno¶æ zwi±zana z obs³ug± tego
-			zdarzenia nie zostanie podjêta (tj. wy¶wietlanie wiadomo¶ci
-			w oknie, dodanie jej do historii, etc.), poza przekonwertowaniem
-			kodowania wiadomo¶ci z CP1250 na Unicode.
-		**/
-		void chatMsgReceived0(UinsList senders,const QString& msg,time_t time,bool& grab);
-		void chatMsgReceived1(UinsList senders,const QString& msg,time_t time,bool& grab);
-		void chatMsgReceived2(UinsList senders,const QString& msg,time_t time);
 		/**
 			Otrzymano pro¶bê o wys³anie danych obrazka
 		**/

@@ -353,11 +353,18 @@ GaduSocketNotifiers::GaduSocketNotifiers()
 	connect(&event_manager, SIGNAL(connectionFailed(int)), this, SLOT(proteza_connectionFailed(int)));
 	connect(&event_manager, SIGNAL(connectionBroken()), this, SLOT(proteza_connectionBroken()));
 	connect(&event_manager, SIGNAL(disconnected()), this, SIGNAL(disconnected()));
-	connect(&event_manager, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)), this, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)));
-	connect(&event_manager, SIGNAL(systemMessageReceived(QString &, QDateTime &, int, void *)), this,
-		SLOT(proteza_systemMessageReceived(QString &, QDateTime &, int, void *)));
-	connect(&event_manager, SIGNAL(userlistReplyReceived(char, char *)), this, SIGNAL(userlistReplyReceived(char, char *)));
-	connect(&event_manager, SIGNAL(userStatusChanged(struct gg_event* )), this, SIGNAL(userStatusChanged(struct gg_event *)));
+	connect(&event_manager, SIGNAL(messageReceived(int, UinsList, QCString &, time_t, QByteArray &)),
+		this, SIGNAL(messageReceived(int, UinsList, QCString &, time_t, QByteArray &)));
+	connect(&event_manager, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)),
+		this, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)));
+	connect(&event_manager, SIGNAL(systemMessageReceived(QString &, QDateTime &, int, void *)),
+		this, SIGNAL(systemMessageReceived(QString &, QDateTime &, int, void *)));
+	connect(&event_manager, SIGNAL(userlistReceived(struct gg_event *)),
+		this, SIGNAL(userlistReceived(struct gg_event *)));
+	connect(&event_manager, SIGNAL(userlistReplyReceived(char, char *)),
+		this, SIGNAL(userlistReplyReceived(char, char *)));
+	connect(&event_manager, SIGNAL(userStatusChanged(struct gg_event *)),
+		this, SIGNAL(userStatusChanged(struct gg_event *)));
 	kdebugf2();
 }
 
@@ -390,14 +397,6 @@ void GaduSocketNotifiers::proteza_connectionBroken()
 {
 	kdebugf();
 	emit error(ConnectionUnknow);
-	kdebugf2();
-}
-
-void GaduSocketNotifiers::proteza_systemMessageReceived(QString &message, QDateTime &time, int formats_length, void *formats)
-{
-	kdebugf();
-	QString mesg = time.toString("hh:mm:ss (dd.MM.yyyy): ") + message;
-	emit systemMessageReceived(mesg);
 	kdebugf2();
 }
 
@@ -435,10 +434,17 @@ GaduProtocol::GaduProtocol(QObject *parent, const char *name) : QObject(parent, 
 	connect(SocketNotifiers, SIGNAL(connected()), this, SLOT(connectedSlot()));
 	connect(SocketNotifiers, SIGNAL(disconnected()), this, SLOT(disconnectedSlot()));
 	connect(SocketNotifiers, SIGNAL(error(GaduError)), this, SLOT(errorSlot(GaduError)));
+	connect(SocketNotifiers, SIGNAL(messageReceived(int, UinsList, QCString &, time_t, QByteArray &)),
+		this, SLOT(messageReceived(int, UinsList, QCString &, time_t, QByteArray &)));
 	connect(SocketNotifiers, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)), this, SLOT(newResults(gg_pubdir50_t)));
-	connect(SocketNotifiers, SIGNAL(systemMessageReceived(QString &)), this, SIGNAL(systemMessageReceived(QString &)));
-	connect(SocketNotifiers, SIGNAL(userlistReplyReceived(char, char *)), this, SLOT(userListReplyReceived(char, char *)));
-	connect(SocketNotifiers, SIGNAL(userStatusChanged(struct gg_event *)), this, SLOT(userStatusChanged(struct gg_event *)));
+	connect(SocketNotifiers, SIGNAL(systemMessageReceived(QString &, QDateTime &, int, void *)),
+		this, SLOT(systemMessageReceived(QString &, QDateTime &, int, void *)));
+	connect(SocketNotifiers, SIGNAL(userlistReceived(struct gg_event *)),
+		this, SLOT(userListReceived(struct gg_event *)));
+	connect(SocketNotifiers, SIGNAL(userlistReplyReceived(char, char *)),
+		this, SLOT(userListReplyReceived(char, char *)));
+	connect(SocketNotifiers, SIGNAL(userStatusChanged(struct gg_event *)),
+		this, SLOT(userStatusChanged(struct gg_event *)));
 
 	kdebugf2();
 }
@@ -575,6 +581,71 @@ void GaduProtocol::errorSlot(GaduError err)
 	kdebugf2();
 }
 
+void GaduProtocol::messageReceived(int msgclass, UinsList senders, QCString &msg, time_t time,
+	QByteArray &formats)
+{
+/*
+	sprawdzamy czy user jest na naszej liscie, jezeli nie to anonymous zwroci true
+	i czy jest wlaczona opcja ignorowania nieznajomych
+	jezeli warunek jest spelniony przerywamy dzialanie funkcji.
+*/
+	if (userlist.byUinValue(senders[0]).anonymous && config_file.readBoolEntry("Chat","IgnoreAnonymousUsers"))
+	{
+		kdebugm(KDEBUG_INFO, "EventManager::messageReceivedSlot(): Ignored anonymous. %d is ignored\n", senders[0]);
+		return;
+	}
+
+	// ignorujemy, jesli nick na liscie ignorowanych
+	// PYTANIE CZY IGNORUJEMY CALA KONFERENCJE
+	// JESLI PIERWSZY SENDER JEST IGNOROWANY????
+	if (isIgnored(senders))
+		return;
+
+	bool block = false;
+	emit messageFiltering(senders,msg,formats,block);
+	if(block)
+		return;
+
+	const char* msg_c = msg;
+	QString mesg = cp2unicode((const unsigned char*)msg_c);
+	QDateTime datetime;
+	datetime.setTime_t(time);
+
+	bool grab=false;
+	emit chatMsgReceived0(senders, mesg, time, grab);
+	if (grab)
+		return;
+
+	// wiadomosci systemowe maja sensers[0] = 0
+	// FIX ME!!!
+	if (senders[0] == 0)
+	{
+		if (msgclass <= config_file.readNumEntry("General", "SystemMsgIndex", 0))
+		{
+			kdebugm(KDEBUG_INFO, "Already had this message, ignoring\n");
+			return;
+		}
+
+		config_file.writeEntry("General", "SystemMsgIndex", msgclass);
+		kdebugm(KDEBUG_INFO, "System message index %d\n", msgclass);
+
+		emit systemMessageReceived(mesg, datetime, formats.size(), formats.data());
+		return;
+	}
+
+	mesg = formatGGMessage(mesg, formats.size(), formats.data(), senders[0]);
+
+	if(!userlist.containsUin(senders[0]))
+		userlist.addAnonymous(senders[0]);
+
+	kdebugm(KDEBUG_INFO, "eventRecvMsg(): Got message from %d saying \"%s\"\n",
+			senders[0], (const char *)mesg.local8Bit());
+
+	emit chatMsgReceived1(senders, mesg, time, grab);
+	if(!grab)
+		emit chatMsgReceived2(senders, mesg, time);
+}
+
 void GaduProtocol::pingNetwork()
 {
 	kdebugf();
@@ -600,6 +671,16 @@ void GaduProtocol::setStatus(int status)
 		login(status);
 
 	//emit statusChanged(int);
+
+	kdebugf2();
+}
+
+void GaduProtocol::systemMessageReceived(QString &message, QDateTime &time, int formats_length, void *formats)
+{
+	kdebugf();
+
+	QString mesg = time.toString("hh:mm:ss (dd.MM.yyyy): ") + message;
+	emit systemMessageReceived(mesg);
 
 	kdebugf2();
 }
@@ -1329,6 +1410,91 @@ bool GaduProtocol::doImportUserList()
 	return success;
 }
 
+void GaduProtocol::userListReceived(struct gg_event *e)
+{
+	kdebugf();
+
+	unsigned int oldStatus;
+	int nr = 0;
+
+	while (e->event.notify60[nr].uin)
+	{
+		if (!userlist.containsUin(e->event.notify60[nr].uin))
+		{
+			kdebugm(KDEBUG_INFO, "eventGotUserlist(): buddy %d not in list. Damned server!\n",
+				e->event.notify60[nr].uin);
+			gg_remove_notify(sess, e->event.notify60[nr].uin);
+			nr++;
+			continue;
+		}
+
+		UserListElement &user = userlist.byUin(e->event.notify60[nr].uin);
+
+		user.ip.setAddress(ntohl(e->event.notify60[nr].remote_ip));
+		userlist.addDnsLookup(user.uin, user.ip);
+		user.port = e->event.notify60[nr].remote_port;
+		user.version = e->event.notify60[nr].version;
+		user.image_size = e->event.notify60[nr].image_size;
+
+		oldStatus = user.status;
+
+		if (user.description)
+			user.description.truncate(0);
+
+		if (e->event.notify60[nr].descr)
+			user.description.append(cp2unicode((unsigned char *)e->event.notify60[nr].descr));
+
+		switch (e->event.notify60[nr].status)
+		{
+			case GG_STATUS_AVAIL:
+				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventGotUserlist(): User %d went online\n",
+					e->event.notify60[nr].uin);
+				break;
+			case GG_STATUS_BUSY:
+				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventGotUserlist(): User %d went busy\n",
+					e->event.notify60[nr].uin);
+				break;
+			case GG_STATUS_NOT_AVAIL:
+				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventGotUserlist(): User %d went offline\n",
+					e->event.notify60[nr].uin);
+				break;
+			case GG_STATUS_BLOCKED:
+				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventGotUserlist(): User %d has blocked us\n",
+					e->event.notify60[nr].uin);
+				break;
+			case GG_STATUS_BUSY_DESCR:
+				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventGotUserlist(): User %d went busy with descr.\n",
+					e->event.notify60[nr].uin);
+				break;
+			case GG_STATUS_NOT_AVAIL_DESCR:
+				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventGotUserlist(): User %d went offline with descr.\n",
+					e->event.notify60[nr].uin);
+				break;
+			case GG_STATUS_AVAIL_DESCR:
+				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventGotUserlist(): User %d went online with descr.\n",
+					e->event.notify60[nr].uin);
+				break;
+			case GG_STATUS_INVISIBLE_DESCR:
+				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventGotUserlist(): User %d went invisible with descr.\n",
+					e->event.notify60[nr].uin);
+				break;
+			default:
+				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventGotUserlist(): Unknown status for user %d: %d\n",
+					e->event.notify60[nr].uin, e->event.notify60[nr].status);
+				break;
+		}
+
+		userlist.changeUserStatus(e->event.notify60[nr].uin, e->event.notify60[nr].status);
+		emit userStatusChanged(user, oldStatus);
+
+		nr++;
+	}
+
+	emit userListChanged();
+
+	kdebugf2();
+}
+
 void GaduProtocol::userListReplyReceived(char type, char *reply)
 {
 	kdebugf();
@@ -1375,6 +1541,7 @@ void GaduProtocol::userListReplyReceived(char type, char *reply)
 
 		emit userListImported(true, importedUserList);
 	}
+
 	kdebugf2();
 }
 
@@ -1450,6 +1617,7 @@ void GaduProtocol::userStatusChanged(struct gg_event *e)
 	}
 
 	emit userStatusChanged(user, oldStatus);
+	emit userListChanged();
 
 	kdebugf2();
 }

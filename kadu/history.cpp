@@ -50,7 +50,7 @@ QString HistoryManager::text2csv(const QString &text) {
 	csv.replace(QRegExp("\r\n"), "\\n");
 	csv.replace(QRegExp("\n"), "\\n");
 	if (csv != text || text.find(QRegExp(","), 0) != -1)
-		csv = QString("\"") + csv + QString("\"");	
+		csv = QString("\"") + csv + QString("\"");
 	return csv;
 }
 
@@ -79,7 +79,7 @@ void HistoryManager::appendMessage(UinsList uins, UinType uin, const QString &ms
 
 	convHist2ekgForm(uins);
 	fname.append(getFileNameByUinsList(uins));
-		
+
 	if (own)
 		if (chat)
 			linelist.append("chatsend");
@@ -133,7 +133,7 @@ void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 	int offs;
 
 	kdebugm(KDEBUG_INFO, "HistoryManager::appendSms(): appending sms to history (%s)\n", mobile.local8Bit().data());
-	
+
 	convSms2ekgForm();
 
 	linelist.append("smssend");
@@ -311,7 +311,7 @@ void HistoryManager::convHist2ekgForm(UinsList uins) {
 	UinType uin;
 
 	fname = getFileNameByUinsList(uins);
-	
+
 	f.setName(path + fname);
 	if (!(f.open(IO_ReadWrite))) {
 		kdebugm(KDEBUG_ERROR, "HistoryManager::convHist2ekgForm(): Error opening history file %s\n", (const char *)fname.local8Bit());
@@ -554,7 +554,7 @@ int HistoryManager::getHistoryEntriesCountPrivate(const QString &filename) {
 //	buffer = f.readAll();
 	f.close();
 //	lines = buffer.contains('\n');
-	
+
 	kdebugm(KDEBUG_INFO, "HistoryManager::getHistoryEntriesCountPrivate(): %d lines\n", lines);
 	return lines;
 }
@@ -605,7 +605,7 @@ QValueList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int fr
 
 	QTextStream stream(&f);
 	stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
-	
+
 	int linenr = from;
 
 	struct HistoryEntry entry;
@@ -995,7 +995,7 @@ int HistoryManager::getHistoryEntryIndexByDate(UinsList uins, QDateTime &date, b
 	QValueList<HistoryEntry> entries;
 	int count = getHistoryEntriesCount(uins);
 	int start, end;
-	
+
 	start = 0;
 	end = count - 1;
 	while (end - start >= 0) {
@@ -1012,7 +1012,7 @@ int HistoryManager::getHistoryEntryIndexByDate(UinsList uins, QDateTime &date, b
 		}
 	if (end < 0) {
 		kdebugm(KDEBUG_FUNCTION_END, "HistoryManager::getHistoryEntryIndexByDate(): return 0\n");
-		return 0;		
+		return 0;
 		}
 	if (start >= count) {
 		kdebugm(KDEBUG_FUNCTION_END, "HistoryManager::getHistoryEntryIndexByDate(): return count\n");
@@ -1029,7 +1029,7 @@ int HistoryManager::getHistoryEntryIndexByDate(UinsList uins, QDateTime &date, b
 
 void HistoryManager::chatMsgReceived(UinsList senders,const QString& msg,time_t time,bool& grab)
 {
-	if (config_file.readBoolEntry("General","Logging"))	
+	if (config_file.readBoolEntry("General","Logging"))
 		history.appendMessage(senders, senders[0], msg, false, time);
 }
 
@@ -1167,7 +1167,7 @@ void History::dateChanged(QListViewItem *item) {
 			if (item)
 				item = item->nextSibling();
 			break;
-		}		
+		}
 	count = history.getHistoryEntriesCount(uins);
 	if (depth < 2) {
 		if (item)
@@ -1204,7 +1204,7 @@ void History::formatHistoryEntry(QString &text, const HistoryEntry &entry, QStri
 		text.append(config_file.readEntry("General","Nick"));
 	else
 		text.append(entry.nick);
-	
+
 	text.append(QString(" :: ") + printDateTime(entry.date));
 	if (entry.type & (HISTORYMANAGER_ENTRY_CHATRCV | HISTORYMANAGER_ENTRY_MSGRCV))
 		text.append(QString(" / S ") + printDateTime(entry.sdate));
@@ -1243,7 +1243,7 @@ void History::formatHistoryEntry(QString &text, const HistoryEntry &entry, QStri
 			body->mimeSourceFactory()->addFilePath(emoticons->themePath());
 			emoticons->expandEmoticons(doc, bgcolor);
 		}
-		
+
 		text.append(doc.generateHtml());
 	}
 	text.append("</font></td></tr></table>");
@@ -1364,7 +1364,7 @@ void History::searchHistory() {
 	entries = history.getHistoryEntries(uins, start, 1);
 	fromdate = entries[0].date;
 	entries = history.getHistoryEntries(uins, end, 1);
-	todate = entries[0].date;	
+	todate = entries[0].date;
 	kdebugm(KDEBUG_INFO, "History::searchHistory(): start = %s, end = %s\n",
 		fromdate.toString("dd.MM.yyyy hh:mm:ss").latin1(),
 		todate.toString("dd.MM.yyyy hh:mm:ss").latin1());
@@ -1466,7 +1466,7 @@ void History::initModule()
 	ConfigDialog::registerSlotOnApply(historyslots, SLOT(onDestroyConfigDialog()));
 	ConfigDialog::connectSlot("History", "historyslider", SIGNAL(valueChanged(int)), historyslots, SLOT(updateQuoteTimeLabel(int)));
 
-	connect(&event_manager,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
+	connect(gadu,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
 		&history,SLOT(chatMsgReceived(UinsList,const QString&,time_t,bool&)));
 }
 
@@ -1480,7 +1480,7 @@ HistorySearch::HistorySearch(QWidget *parent, UinsList uins) : QDialog(parent), 
 		sprintf(buf, "%02d", i);
 		numslist.append(QString(buf));
 		}
-	
+
 	QStringList yearslist;
 	for (i = 2000; i <= 2020; i++)
 		yearslist.append(QString::number(i));
@@ -1496,7 +1496,7 @@ HistorySearch::HistorySearch(QWidget *parent, UinsList uins) : QDialog(parent), 
 	QStringList minslist;
 	for (i = 0; i <= 59; i++)
 		minslist.append(numslist[i]);
-	
+
 	QHBox *from_hb = new QHBox(this);
 	from_chb = new QCheckBox(tr("&From:") ,from_hb);
 	from_hgb = new QHGroupBox(from_hb);
@@ -1570,7 +1570,7 @@ HistorySearch::HistorySearch(QWidget *parent, UinsList uins) : QDialog(parent), 
 	grid->addMultiCellWidget(to_hb, 1, 1, 0, 3);
 	grid->addMultiCellWidget(criteria_bg, 2, 3, 0, 1);
 	grid->addMultiCellWidget(phrase_hgb, 2, 2, 2, 3);
-	grid->addMultiCellWidget(status_hgb, 3, 3, 2, 3);	
+	grid->addMultiCellWidget(status_hgb, 3, 3, 2, 3);
 	grid->addMultiCellWidget(reverse_chb, 4, 4, 0, 3, Qt::AlignLeft);
 	grid->addWidget(find_btn, 5, 1);
 	grid->addWidget(reset_btn, 5, 2);
@@ -1630,7 +1630,7 @@ void HistorySearch::cancelBtnClicked() {
 
 void HistorySearch::resetFromDate() {
 	QValueList<HistoryEntry> entries;
-	
+
 	entries = history.getHistoryEntries(uins, 0, 1);
 	if (entries.count()) {
 		from_day_cob->setCurrentItem(entries[0].date.date().day() - 1);
@@ -1644,7 +1644,7 @@ void HistorySearch::resetFromDate() {
 
 void HistorySearch::resetToDate() {
 	QValueList<HistoryEntry> entries;
-	
+
 	entries = history.getHistoryEntries(uins, history.getHistoryEntriesCount(uins) - 1, 1);
 	if (entries.count()) {
 		to_day_cob->setCurrentItem(entries[0].date.date().day() - 1);

@@ -167,7 +167,6 @@ class GaduSocketNotifiers : public QObject //SocketNotifiers
 	private slots:
 		void proteza_connectionFailed(int);
 		void proteza_connectionBroken();
-		void proteza_systemMessageReceived(QString &, QDateTime &, int, void *);
 
 	public:
 		GaduSocketNotifiers();
@@ -177,8 +176,10 @@ class GaduSocketNotifiers : public QObject //SocketNotifiers
 		void connected();
 		void disconnected();
 		void error(GaduError);
+		void messageReceived(int, UinsList, QCString& msg, time_t, QByteArray &formats);
 		void pubdirReplyReceived(gg_pubdir50_t);
-		void systemMessageReceived(QString &);
+		void systemMessageReceived(QString &, QDateTime &, int, void *);
+		void userlistReceived(struct gg_event *);
 		void userlistReplyReceived(char, char *);
 		void userStatusChanged(struct gg_event *);
 };
@@ -211,8 +212,11 @@ class GaduProtocol : public QObject
 		void disconnectedSlot();
 		void connectionTimeoutTimerSlot();
 		void errorSlot(GaduError);
+		void messageReceived(int, UinsList, QCString& msg, time_t, QByteArray &formats);
 		void pingNetwork();
 		void newResults(gg_pubdir50_t res);
+		void systemMessageReceived(QString &, QDateTime &, int, void *);
+		void userListReceived(struct gg_event *);
 		void userListReplyReceived(char, char *);
 		void userStatusChanged(struct gg_event *);
 
@@ -324,6 +328,7 @@ class GaduProtocol : public QObject
 		void connecting();
 		void disconnected();
 		void error(GaduError);
+		void userListChanged();
 		void userStatusChanged(UserListElement &, int oldstatus);
 		void systemMessageReceived(QString &);
 
@@ -338,6 +343,36 @@ class GaduProtocol : public QObject
 		void userListExported(bool ok);
 		void userListCleared(bool ok);
 		void userListImported(bool ok, UserList&);
+
+		/**
+			Sygnal daje mozliwosc operowania na wiadomoci
+			ktora przyszla z serwera jeszcze w jej oryginalnej
+			formie przed konwersja na unicode i innymi zabiegami.
+			Tresc wiadomosci mozna zmienic grzebiac w buforze msg,
+			ale uwaga: mo¿na zepsuæ formatowanie tekstu zapisane
+			w formats. Oczywi¶cie je równie¿ mo¿na zmieniaæ, wed³ug
+			opisu protoko³u GG ;)
+			Mozna tez przerwac dalsza obrobke wiadomo¶ci ustawiajac
+			stop na true.
+		**/
+		void messageFiltering(const UinsList& senders,QCString& msg,
+			QByteArray& formats,bool& stop);
+		/**
+			Otrzymano wiadomo¶æ, któr± trzeba pokazaæ (klasa chat lub msg,
+			nadawca nie jest ignorowany, itp)
+			Tre¶æ zdeszyfrowana i zdekodowana do unicode.
+			Jesli ktorys ze slotow sygna³u chatMsgReceived1 ustawi zmienna
+			grab na true to sygnal chatReceived2 nie zostanie wygenerowany.
+			Je¶li natomiast zmienna grab zostanie ustawiona przez slot
+			chatMsgReceived0, to ¿adna czynno¶æ zwi±zana z obs³ug± tego
+			zdarzenia nie zostanie podjêta (tj. wy¶wietlanie wiadomo¶ci
+			w oknie, dodanie jej do historii, etc.), poza przekonwertowaniem
+			kodowania wiadomo¶ci z CP1250 na Unicode.
+		**/
+		void chatMsgReceived0(UinsList senders,const QString& msg,time_t time,bool& grab);
+		void chatMsgReceived1(UinsList senders,const QString& msg,time_t time,bool& grab);
+		void chatMsgReceived2(UinsList senders,const QString& msg,time_t time);
+
 };
 
 extern GaduProtocol* gadu;
