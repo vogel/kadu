@@ -344,7 +344,22 @@ void saveKaduConfig(void) {
 	delete konf;
 }
 
+QString ConfigDialog::acttab = "tab1";
+ConfigDialog *ConfigDialog::configdialog = NULL;
+
+void ConfigDialog::showConfigDialog() {
+	ConfigDialog *cd;
+	if (configdialog)
+		configdialog->setActiveWindow();
+	else {
+		cd = new ConfigDialog;
+		cd->show();
+		}
+}
+
 ConfigDialog::ConfigDialog(QWidget *parent, const char *name) : QTabDialog(parent, name) {
+	int i;
+
 	setWFlags(Qt::WDestructiveClose);
 
 	setupTab1();
@@ -360,15 +375,28 @@ ConfigDialog::ConfigDialog(QWidget *parent, const char *name) : QTabDialog(paren
 	connect(this, SIGNAL(cancelButtonPressed()), this, SLOT(close()));
 	setCaption(i18n("Kadu configuration"));
 	resize(480,500);
+
+	configdialog = this;
+	for (i = 0; i < 7; i++)
+		if (QString(box[i]->name()) == acttab)
+			break;
+	if (i)
+		showPage(box[i]);
 }
+
+ConfigDialog::~ConfigDialog() {
+	configdialog = NULL;
+	acttab = QString(currentPage()->name());
+};
 
 void ConfigDialog::setupTab1(void) {
 	int i;
 
-	QVBox *box = new QVBox(this);
-	box->setMargin(5);
+	box[0] = new QVBox(this, "tab1");
+	QVBox *box1 = box[0];
+	box1->setMargin(5);
 
-	QHGroupBox *userinfo = new QHGroupBox(box);
+	QHGroupBox *userinfo = new QHGroupBox(box1);
 	userinfo->setTitle(i18n("User data"));
 
 	QLabel *l_uin = new QLabel(i18n("Uin"),userinfo);
@@ -385,7 +413,7 @@ void ConfigDialog::setupTab1(void) {
 	e_nick = new QLineEdit(config.nick,userinfo);
 	
 	/* SMS begin */
-	QVGroupBox *smsvgrp = new QVGroupBox(box);
+	QVGroupBox *smsvgrp = new QVGroupBox(box1);
 	smsvgrp->setTitle(i18n("SMS options"));
 
 	b_smsbuildin = new QCheckBox(i18n("Use built-in SMS application"),smsvgrp);
@@ -418,9 +446,9 @@ void ConfigDialog::setupTab1(void) {
 	QObject::connect(b_smscustomconf, SIGNAL(toggled(bool)), e_smsconf, SLOT(setEnabled(bool)));
 	/* SMS end */
 
-	b_autoaway = new QCheckBox(i18n("Enable autoaway"),box);
+	b_autoaway = new QCheckBox(i18n("Enable autoaway"),box1);
 
-	QHGroupBox *awygrp = new QHGroupBox(box);
+	QHGroupBox *awygrp = new QHGroupBox(box1);
 	QLabel *l_autoaway = new QLabel(i18n("Set status to away after "),awygrp);
 	e_autoawaytime = new QLineEdit(QString::number(config.autoawaytime),awygrp);
 	QLabel *l_autoaway2 = new QLabel(i18n(" seconds"),awygrp);
@@ -432,9 +460,9 @@ void ConfigDialog::setupTab1(void) {
 
 	QObject::connect(b_autoaway, SIGNAL(toggled(bool)), awygrp, SLOT(setEnabled(bool)));
 
-	b_trayhint = new QCheckBox(i18n("Enable tray hints"),box);
+	b_trayhint = new QCheckBox(i18n("Enable tray hints"),box1);
 
-	QVGroupBox *hintgrp = new QVGroupBox(box);
+	QVGroupBox *hintgrp = new QVGroupBox(box1);
 	QHBox *box_time = new QHBox(hintgrp);
 	QLabel *l_trayhint = new QLabel(i18n("Tray hints timeout "),box_time);
 
@@ -451,7 +479,7 @@ void ConfigDialog::setupTab1(void) {
 
 	QObject::connect(b_trayhint, SIGNAL(toggled(bool)), hintgrp, SLOT(setEnabled(bool)));
 
-	QVGroupBox *gb_defstatus = new QVGroupBox(box);
+	QVGroupBox *gb_defstatus = new QVGroupBox(box1);
 	gb_defstatus->setTitle(i18n("Default Status"));
 	cb_defstatus = new QComboBox(gb_defstatus);
 	for (i = 0;i < 7; i++)
@@ -461,7 +489,7 @@ void ConfigDialog::setupTab1(void) {
 		i++;
 	cb_defstatus->setCurrentItem(i);
 
-	QGrid* grid = new QGrid(3, box);
+	QGrid* grid = new QGrid(3, box1);
 
 	b_logging = new QCheckBox(i18n("Log messages"),grid);
 	if (config.logmessages)
@@ -493,11 +521,12 @@ void ConfigDialog::setupTab1(void) {
 		b_addtodescription->setChecked(true);		
 	QToolTip::add(b_addtodescription,i18n("If a file description in gg settings directory is present, its contents will be added\nto the status description and then the file will be deleted."));
 	
-	addTab(box, i18n("General"));
+	addTab(box1, i18n("General"));
 }
 
 void ConfigDialog::setupTab2(void) {
-	QVBox *box2 = new QVBox(this);
+	box[1] = new QVBox(this, "tab2");
+	QVBox *box2 = box[1];
 	box2->setMargin(5);
 
 	b_playsound = new QCheckBox(i18n("Play sounds"),box2);
@@ -582,7 +611,8 @@ void ConfigDialog::setupTab2(void) {
 }
 
 void ConfigDialog::setupTab3(void) {
-	QVBox *box3 = new QVBox(this);
+	box[2] = new QVBox(this, "tab3");
+	QVBox *box3 = box[2];
 	box3->setMargin(5);	
 
 	QVGroupBox *emogroup = new QVGroupBox(box3);
@@ -703,9 +733,9 @@ void ConfigDialog::setupTab3(void) {
 
 void ConfigDialog::setupTab4(void) {
 	int i;
-//	uin_t uin;
 
-	QVBox *box4 = new QVBox(this);
+	box[3] = new QVBox(this, "tab4");
+	QVBox *box4 = box[3];
 	box4->setMargin(2);	
 	
 	b_notifyglobal = new QCheckBox(i18n("Notify when users become available"),box4);
@@ -803,7 +833,8 @@ void ConfigDialog::setupTab4(void) {
 void ConfigDialog::setupTab5(void) {
 	QHostAddress ip;
 
-	QVBox *box5 = new QVBox(this);
+	box[4] = new QVBox(this, "tab5");
+	QVBox *box5 = box[4];
 	box5->setMargin(2);	
 
 	b_dccenabled = new QCheckBox(i18n("DCC enabled"),box5);
@@ -983,7 +1014,8 @@ void ConfigDialog::setupTab6(void) {
 //Comboboxy innych - fonty
 	vl_otherfont.append(config.fonts.trayhint);
 
-	QVBox *box6 = new QVBox(this);
+	box[5] = new QVBox(this, "tab6");
+	QVBox *box6 = box[5];
 	box6->setMargin(2);
 
 	QVGroupBox *chatprop = new QVGroupBox(box6);
@@ -1181,7 +1213,8 @@ void ConfigDialog::setupTab6(void) {
 };
 
 void ConfigDialog::setupTab7() {
-	QVBox *box7 = new QVBox(this);
+	box[6] = new QVBox(this, "tab7");
+	QVBox *box7 = box[6];
 	box7->setMargin(2);
 
 	QVGroupBox *vbox1 = new QVGroupBox(i18n("Quoted phrases during chat open"), box7); 

@@ -17,6 +17,7 @@
 #include <qslider.h>
 #include <qvgroupbox.h>
 #include <qhbox.h>
+#include <qvbox.h>
 #include <qvaluelist.h>
 #include <qstringlist.h>
 #include <qhostaddress.h>
@@ -34,7 +35,9 @@ class ConfigDialog : public QTabDialog	{
 	Q_OBJECT
 
 	public:
-		ConfigDialog(QWidget *parent=0, const char *name=0);
+		ConfigDialog(QWidget *parent = 0, const char *name = 0);
+		~ConfigDialog();
+		static void showConfigDialog();
 
 	protected:
 		void setupTab1();
@@ -44,6 +47,11 @@ class ConfigDialog : public QTabDialog	{
 		void setupTab5();
 		void setupTab6();
 		void setupTab7();
+
+		static ConfigDialog *configdialog;
+		static QString acttab;
+
+		QVBox *box[10];
 
 		QComboBox *cb_defstatus;
 		QCheckBox *b_geometry;

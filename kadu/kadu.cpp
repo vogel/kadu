@@ -1033,9 +1033,7 @@ void Kadu::commandParser (int command) {
 			uli->show();
 			break;
 		case KADU_CMD_CONFIG:
-			ConfigDialog *cd;
-			cd = new ConfigDialog;
-			cd->show();
+			ConfigDialog::showConfigDialog();
 			break;
 		case KADU_CMD_EXPORT_USERLIST:
 			UserlistExport *ule;
