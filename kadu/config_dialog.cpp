@@ -82,6 +82,7 @@ void loadKaduConfig(void) {
 	config.extip = strdup(konf->readEntry("ExternalIP", "0.0.0.0"));
 	config.extport = konf->readNumEntry("ExternalPort", 0);
 	config.servers = QStringList::split(";", konf->readEntry("Server", ""));
+	config.default_servers = konf->readBoolEntry("isDefServers",true);
 	server_nr = 0;
 
 	config.dock = konf->readBoolEntry("UseDocking",true);
@@ -217,6 +218,7 @@ void saveKaduConfig(void) {
 	konf->writeEntry("DccIP", config.dccip);
 	konf->writeEntry("ExternalIP", config.extip);
 	konf->writeEntry("ExternalPort", config.extport);
+	konf->writeEntry("isDefServers",config.default_servers);
 	konf->writeEntry("Server", config.servers.join(";"));
 
 	konf->writeEntry("UseDocking",config.dock);
@@ -801,16 +803,19 @@ void ConfigDialog::setupTab5(void) {
 	e_extport = new QLineEdit(extportbox);
 
 	b_defserver = new QCheckBox(i18n("Use default servers"),box5);
+	b_defserver->setChecked(config.default_servers);
 
 	g_server = new QVGroupBox(box5);
 	g_server->setTitle(i18n("Servers"));
 	g_server->setMargin(2);
+	g_server->setEnabled(!config.default_servers && config.servers.count() && inet_addr(config.servers[0].latin1()) != INADDR_NONE);
 
 	QHBox *serverbox = new QHBox(g_server);
 	serverbox->setSpacing(5);
 	QLabel *l3 = new QLabel(i18n("IP addresses:"),serverbox);
 	e_server = new QLineEdit(serverbox);
-
+	e_server->setText(config.servers.join(";"));
+	
 	b_useproxy = new QCheckBox(i18n("Use proxy server"),box5);
 
 	g_proxy = new QVGroupBox(box5);
@@ -837,11 +842,11 @@ void ConfigDialog::setupTab5(void) {
 		e_extip->setText(config.extip);
 		e_extport->setText(QString::number(config.extport));	
 		}
-	g_server->setEnabled(config.servers.count() && inet_addr(config.servers[0].latin1()) != INADDR_NONE);
-	if (!g_server->isEnabled())
-		b_defserver->setChecked(true);
-	else
-		e_server->setText(config.servers.join(";"));
+//	g_server->setEnabled(!config.default_servers && config.servers.count() && inet_addr(config.servers[0].latin1()) != INADDR_NONE);
+//	if (!g_server->isEnabled())
+//		b_defserver->setChecked(true);
+//	else
+//		e_server->setText(config.servers.join(";"));
 	g_proxy->setEnabled(inet_addr(config.proxyaddr) && config.proxyport > 1023 && config.useproxy);
 	b_useproxy->setChecked(g_proxy->isEnabled());
 	if (g_proxy->isEnabled()) {
@@ -1087,6 +1092,8 @@ void ConfigDialog::ifDccIpEnabled(bool toggled) {
 
 void ConfigDialog::ifDefServerEnabled(bool toggled) {
 	g_server->setEnabled(!toggled);
+//	if (!toggled)
+//	    e_server->setText(config.servers.join(";"));
 }
 
 void ConfigDialog::ifUseProxyEnabled(bool toggled) {
@@ -1515,8 +1522,9 @@ void ConfigDialog::updateConfig(void) {
 			break;
 	if (!b_defserver->isChecked() && i == tmpservers.count())
 		config.servers = QStringList::split(";", e_server->text());
-	else
-		config.servers = "";
+	config.default_servers = b_defserver->isChecked();
+//	else
+//		config.servers = "";
 	server_nr = 0;
 
 	config.useproxy = b_useproxy->isChecked() && inet_addr(e_proxyserver->text().latin1()) != INADDR_NONE

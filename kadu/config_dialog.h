@@ -232,6 +232,7 @@ struct config {
 	char *extip;
 	int extport;
 	QStringList servers;
+	bool default_servers;
 
 	bool dock;
 	bool rundocked;
