@@ -235,6 +235,7 @@ bool UserList::readFromFile()
 {
 	char *path;
 	QValueList<QStringList> ualist;
+	QString line;
 
 	path = preparePath("userattribs");
 	fprintf(stderr, "KK UserList::readFromFile(): Opening userattribs file: %s\n", path);
@@ -244,7 +245,6 @@ bool UserList::readFromFile()
 		}
 	else {
 		QTextStream s(&fa);
-		QString line;
 		while ((line = s.readLine()).length()) {
 			QStringList slist;
 			slist = QStringList::split(';', line);
