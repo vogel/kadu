@@ -49,6 +49,35 @@ class SoundPlayThread : public QObject, public QThread
 		void samplePlayed(SoundDevice device);
 };
 
+/**
+	To jest klasa u¿ywana wewnêtrznie przez klasê SoundManager
+	i nie powiniene¶ mieæ potrzeby jej u¿ywania.
+**/
+class SoundRecordThread : public QObject, public QThread
+{
+	Q_OBJECT
+
+	private:
+		SoundDevice Device;
+		int16_t* Sample;
+		int SampleLen;
+		bool Stopped;
+		QSemaphore RecordingSemaphore;
+		QSemaphore SampleSemaphore;
+
+	protected:
+		virtual void run();
+		virtual void customEvent(QCustomEvent* event);
+
+	public:
+		SoundRecordThread(SoundDevice device);
+		void recordSample(int16_t* data, int length);
+		void stop();
+		
+	signals:
+		void sampleRecorded(SoundDevice device);
+};
+
 class SoundSlots : public QObject
 {
 	Q_OBJECT
@@ -57,6 +86,9 @@ class SoundSlots : public QObject
 		QMap<QString, QString> soundfiles;
 		QStringList soundNames;
 		QStringList soundTexts;
+		SoundDevice SampleRecordingTestDevice;
+		int16_t* SampleRecordingTestSample;
+		int SampleRecordingTestSampleLen;
 		MessageBox* FullDuplexTestMsgBox;
 		SoundDevice FullDuplexTestDevice;
 		int16_t* FullDuplexTestSample;
@@ -74,8 +106,10 @@ class SoundSlots : public QObject
 		void muteUnmuteSounds();
 		void testSamplePlaying();
 		void testSampleRecording();
+		void sampleRecordingTestSampleRecorded(SoundDevice device);
+		void sampleRecordingTestSamplePlayed(SoundDevice device);
 		void testFullDuplex();
-		void fullDuplexTestSamplePlayed(SoundDevice);
+		void fullDuplexTestSamplePlayed(SoundDevice device);
 		void closeFullDuplexTest();
 
 	public:
@@ -88,9 +122,11 @@ class SoundManager : public Themes
     Q_OBJECT
 	private:
 		friend class SoundPlayThread;
+		friend class SoundRecordThread;
 		QTime lastsoundtime;
 		bool mute;
 		QMap<SoundDevice, SoundPlayThread*> PlayingThreads;
+		QMap<SoundDevice, SoundRecordThread*> RecordingThreads;
 
 	private slots:
 		void newChat(const UinsList &senders, const QString& msg, time_t time);
@@ -148,9 +184,11 @@ class SoundManager : public Themes
 		**/
 		void closeDevice(SoundDevice device);
 		/**
-			Powo³uje do ¿ycia w±tek zajmuj±cy siê odtwarzaniem
-			próbek dla danego po³±czenia z urz±dzeniem d¼wiêkowym.
-			Od tej chwili playSample() bêdzie operacj± nieblokuj±c±.
+			Powo³uje do ¿ycia w±tki zajmuj±ce siê odtwarzaniem
+			i nagrywaniem próbek dla danego po³±czenia z
+			urz±dzeniem d¼wiêkowym.
+			Od tej chwili playSample() i recordSample()
+			bêd± operacjami nieblokuj±cymi.
 			@param device uogólniony deskryptor urz±dzenia.
 		**/
 		void enableThreading(SoundDevice device);
@@ -174,11 +212,18 @@ class SoundManager : public Themes
 		**/
 		bool playSample(SoundDevice device, const int16_t* data, int length);
 		/**
-			Nagrywa próbkê d¼wiêkow±. Operacja blokuj±ca.
-			Mo¿e byæ wywo³ana z innego w±tku (a nawet powinna).
+			Nagrywa próbkê d¼wiêkow±. Standardowo jest to
+			operacja blokuj±ca. Mo¿e byæ wywo³ana z innego
+			w±tku (a nawet powinna).
 			Emituje sygna³ recordSampleImpl() w celu
 			przekazania ¿±dania do konkrentego modu³u
 			d¼wiêkowego.
+			Po uprzednim wywo³aniu enableThreading() dzia³anie
+			metoda jest nieblokuj±ca i przekazuje jedynie polecenie
+			nagrywania do w±tku.
+			W takim wypadku nale¿y uwa¿aæ, aby nie zwolniæ pamiêci
+			bufora na dane sampla zanim nagrywanie siê nie
+			zakoñczy.			
 			@param device uogólniony deskryptor urz±dzenia
 			@data wska¼nik na bufor dla danych sampla
 			@length d³ugo¶æ sampla do nagrania (wielko¶æ bufora)
@@ -191,9 +236,15 @@ class SoundManager : public Themes
 		/**
 			Sygna³ emitowany gdy odtwarzanie sampla siê
 			zakoñczy³o (odnosi siê tylko do sytuacji gdy
-			w³±czony jest nieblokuj±cy tryb odtwarzania).
+			w³±czone s± operacje nieblokuj±ce).
 		**/
 		void samplePlayed(SoundDevice device);
+		/**
+			Sygna³ emitowany gdy nagrywanie sampla siê
+			zakoñczy³o (odnosi siê tylko do sytuacji gdy
+			w³±czone s± operacje nieblokuj±ce).
+		**/
+		void sampleRecorded(SoundDevice device);
 		/**
 			Pod ten sygna³ powinien podpi±æ siê modu³
 			d¼wiêkowy je¶li obs³uguje funkcjê odtwarzania

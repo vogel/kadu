@@ -112,6 +112,66 @@ void SoundPlayThread::stop()
 }
 
 
+SoundRecordThread::SoundRecordThread(SoundDevice device)
+	: RecordingSemaphore(1), SampleSemaphore(1)
+{
+	kdebugf();
+	Device = device;
+	Sample = NULL;
+	SampleLen = 0;
+	Stopped = false;
+	RecordingSemaphore++;
+	kdebugf2();
+}
+
+void SoundRecordThread::run()
+{
+	kdebugf();
+	for(;;)
+	{
+		RecordingSemaphore++;
+		if (Stopped)
+		{
+			SampleSemaphore--;
+			break;
+		}
+		bool result;
+		emit sound_manager->recordSampleImpl(Device, Sample, SampleLen, result);	
+		QApplication::postEvent(this, new QCustomEvent(QEvent::User, Device));
+		SampleSemaphore--;
+	}
+	kdebugf2();
+}
+
+void SoundRecordThread::customEvent(QCustomEvent* event)
+{
+	if (event->type() == QEvent::User)
+	{
+		emit sampleRecorded((SoundDevice)event->data());
+	}
+}
+
+void SoundRecordThread::recordSample(int16_t* data, int length)
+{
+	kdebugf();
+	SampleSemaphore++;
+	Sample = data;
+	SampleLen = length;
+	RecordingSemaphore--;
+	kdebugf2();
+}
+
+void SoundRecordThread::stop()
+{
+	kdebugf();
+	SampleSemaphore++;
+	Stopped = true;
+	RecordingSemaphore--;
+	wait();
+	kdebugf2();
+}
+
+
 SoundManager::SoundManager(const QString& name, const QString& configname)
 	:Themes(name, configname, "sound_manager")
 {
@@ -552,6 +612,13 @@ void SoundManager::closeDevice(SoundDevice device)
 		PlayingThreads.remove(playing_thread);
 		delete playing_thread;
 	}
+	if (RecordingThreads.contains(device))
+	{
+		SoundRecordThread* recording_thread = RecordingThreads[device];
+		recording_thread->stop();
+		RecordingThreads.remove(recording_thread);
+		delete recording_thread;
+	}
 	emit closeDeviceImpl(device);
 	kdebugf2();
 }
@@ -565,6 +632,13 @@ void SoundManager::enableThreading(SoundDevice device)
 		connect(playing_thread, SIGNAL(samplePlayed(SoundDevice)), this, SIGNAL(samplePlayed(SoundDevice)));
 		playing_thread->start();
 		PlayingThreads.insert(device, playing_thread);
+	}
+	if (!RecordingThreads.contains(device))
+	{
+		SoundRecordThread* recording_thread = new SoundRecordThread(device);
+		connect(recording_thread, SIGNAL(sampleRecorded(SoundDevice)), this, SIGNAL(sampleRecorded(SoundDevice)));
+		recording_thread->start();
+		RecordingThreads.insert(device, recording_thread);
 	}
 	kdebugf2();
 }
@@ -588,12 +662,16 @@ bool SoundManager::recordSample(SoundDevice device, int16_t* data, int length)
 {
 	kdebugf();
 	bool result;
-	emit recordSampleImpl(device, data, length, result);
+	if (RecordingThreads.contains(device))
+	{
+		RecordingThreads[device]->recordSample(data, length);
+		result = true;
+	}
+	else
+		emit recordSampleImpl(device, data, length, result);
 	kdebugf2();
 	return result;
 }
-
-
 
 
 SoundSlots::SoundSlots(QObject *parent, const char *name) : QObject(parent, name)
@@ -937,29 +1015,36 @@ void SoundSlots::testSampleRecording()
 		MessageBox::wrn(tr("Opening sound device failed."));
 		return;
 	}
-	int16_t* buf = new int16_t[8000 * 3];
+	SampleRecordingTestSample = new int16_t[8000 * 3];
+	SampleRecordingTestSampleLen = 8000 * 3;
+	
+	sound_manager->enableThreading(device);
+	connect(sound_manager, SIGNAL(sampleRecorded(SoundDevice)), this, SLOT(sampleRecordingTestSampleRecorded(SoundDevice)));
+	connect(sound_manager, SIGNAL(samplePlayed(SoundDevice)), this, SLOT(sampleRecordingTestSamplePlayed(SoundDevice)));
+
 //	MessageBox::status(tr("Recording test sample, you can talk now"));
-	if (!sound_manager->recordSample(device, buf, sizeof(int16_t) * 8000 * 3))
+	SampleRecordingTestDevice = device;
+	sound_manager->recordSample(device, SampleRecordingTestSample, sizeof(int16_t) * 8000 * 3);
+}
+
+void SoundSlots::sampleRecordingTestSampleRecorded(SoundDevice device)
+{
+	if (device == SampleRecordingTestDevice)
 	{
-//		MessageBox::close(tr("Recording test sample, you can talk now"));
-		MessageBox::wrn(tr("Recording test sample failed."));
-		sound_manager->closeDevice(device);
-		delete[] buf;
-		return;	
+//		MessageBox::status(tr("You should now hear recorded sample"));
+		sound_manager->playSample(device, SampleRecordingTestSample, sizeof(int16_t) * 8000 * 3);
 	}
-//	MessageBox::close(tr("Recording test sample, you can talk now"));
-//	MessageBox::status(tr("You should now hear recorded sample"));
-	if (!sound_manager->playSample(device, buf, sizeof(int16_t) * 8000 * 3))
+}
+
+void SoundSlots::sampleRecordingTestSamplePlayed(SoundDevice device)
+{
+	if (device == SampleRecordingTestDevice)
 	{
-//		MessageBox::close(tr("You should now hear recorded sample"));
-		MessageBox::wrn(tr("Playing recorded test sample failed."));
+		disconnect(sound_manager, SIGNAL(sampleRecorded(SoundDevice)), this, SLOT(sampleRecordingTestSampleRecorded(SoundDevice)));
+		disconnect(sound_manager, SIGNAL(samplePlayed(SoundDevice)), this, SLOT(sampleRecordingTestSamplePlayed(SoundDevice)));
 		sound_manager->closeDevice(device);
-		delete[] buf;
-		return;
+		delete[] SampleRecordingTestSample;
 	}
-	sound_manager->closeDevice(device);
-//	MessageBox::close(tr("You should now hear recorded sample"));
-	delete[] buf;
 }
 
 void SoundSlots::testFullDuplex()
