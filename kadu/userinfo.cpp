@@ -9,7 +9,6 @@
 
 #include <qmessagebox.h>
 #include <qvbox.h>
-#include <qhbox.h>
 
 //
 #include "gadu.h"
@@ -23,34 +22,69 @@
 CreateNotifier UserInfo::createNotifier;
 
 UserInfo::UserInfo(const QString &name, QDialog *parent, const QString &altnick, bool fAddUser)
-: QTabDialog(parent, name), fAddUser(fAddUser) {
-	resize(350,200);
+: fAddUser(fAddUser) 
+{
+	kdebugf();
 	setWFlags(Qt::WDestructiveClose);
 	
 	unsigned int i = 0;
-	if (fAddUser) {
+	if (fAddUser)
+	{
 		puser = NULL;
 		setCaption(tr("Add user"));
-		setOkButton(tr("Add"));
-		}
-	else {
+	}
+	else 
+	{
 		while (i < userlist.size() && userlist[i].altnick != altnick)
 			i++;
 		puser = &userlist[i];
 		setCaption(tr("User info on %1").arg(altnick));
-		setOkButton(tr("Update"));
-		}
-
+	}
+	
+	// create main QLabel widgets (icon and app info)
+	QVBox *left=new QVBox(this);
+	left->setMargin(10);
+	left->setSpacing(10);
+	
+	QLabel *l_icon = new QLabel(left);
+	QWidget *w_icoblankwidget=new QWidget(left);
+	w_icoblankwidget->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
+	
+	QVBox *center=new QVBox(this);
+	center->setMargin(10);
+	center->setSpacing(10);
+	
+	QLabel *l_info = new QLabel(center);
+	l_icon->setPixmap(icons_manager.loadIcon("ManageUsersWindowIcon"));
+	l_info->setText(tr("This dialog box allows you to edit your informations about selected contact."));
+	l_info->setAlignment(Qt::WordBreak);
+	// end create main QLabel widgets (icon and app info)
+	
+	tw_main = new QTabWidget(center);
+	
+	// create our Tabs
 	setupTab1();
 	setupTab2();
 
-	setCancelButton(tr("Close"));
-
-	disconnect(this, SIGNAL(applyButtonPressed()), this, SLOT(accept()));
-	connect(this, SIGNAL(applyButtonPressed()), this, SLOT(updateUserlist()));
-	connect(this, SIGNAL(cancelButtonPressed()), this, SLOT(close()));
+	// buttons
+	QHBox *bottom=new QHBox(center);
+	QWidget *w_blankwidget=new QWidget(bottom);
+	bottom->setSpacing(5);
+	w_blankwidget->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
+	if (fAddUser)
+		pb_addapply = new QPushButton(icons_manager.loadIcon("AddUserButton"), tr("Add"), bottom, "add");
+	else
+		pb_addapply = new QPushButton(icons_manager.loadIcon("UpdateUserButton"), tr("Update"), bottom, "update");
+	
+	QPushButton *pb_close = new QPushButton(icons_manager.loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
+	// end buttons
+	
+	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));	
+	connect(pb_addapply, SIGNAL(clicked()), this, SLOT(updateUserlist()));
 	
 	createNotifier.notify(this);
+	
+	loadGeometry(this, "General", "ManageUsersDialogGeometry", 0, 0, 450, 400);
 }
 
 void UserInfo::setUserInfo(UserListElement &ule) {
@@ -64,79 +98,116 @@ void UserInfo::setUserInfo(UserListElement &ule) {
 	e_email->setText(ule.email);
 }
 
-void UserInfo::setupTab1() {
-	QString tmp;
+void UserInfo::setupTab1()
+{
+	// our QVGroupBox
+	vgb_general = new QVGroupBox(tw_main);
+	vgb_general->setFrameStyle(QFrame::NoFrame);
+	// end our QGroupBox
+	
+	tw_main->addTab(vgb_general, tr("General"));
+	
+	// info panel
+	
+	// UIN and STATUS
+	QHBox *hb_uinstate = new QHBox(vgb_general);
+	QVBox *vb_uin = new QVBox(hb_uinstate);
+	QVBox *vb_state = new QVBox(hb_uinstate);
+	hb_uinstate->setSpacing(3);
+	vb_uin->setSpacing(3);
+	vb_state->setSpacing(3);
+	
+	new QLabel(tr("Uin"), vb_uin);
+	e_uin = new QLineEdit(vb_uin);
+	new QLabel(tr("Status"), vb_state);
+	QLineEdit *e_status = new QLineEdit(vb_state);
+	// end UIN and STATUS
+	
+	// Nick and Disp. nick
+	QHBox *hb_dispnick = new QHBox(vgb_general);
+	QVBox *vb_nick = new QVBox(hb_dispnick);
+	QVBox *vb_disp = new QVBox(hb_dispnick);
+	hb_dispnick->setSpacing(3);
+	vb_nick->setSpacing(3);
+	vb_disp->setSpacing(3);
+	
+	new QLabel(tr("Nickname"), vb_nick);
+	e_nickname = new QLineEdit(vb_nick);
+	new QLabel(tr("AltNick"), vb_disp);
+	e_altnick = new QLineEdit(vb_disp);
+	// end Nick and Disp. nick
+	
+	// Name and Surname
+	QHBox *hb_namesurname = new QHBox(vgb_general);
+	QVBox *vb_name = new QVBox(hb_namesurname);
+	QVBox *vb_surname = new QVBox(hb_namesurname);
+	hb_namesurname->setSpacing(3);
+	vb_name->setSpacing(3);
+	vb_surname->setSpacing(3);
+	
+	new QLabel(tr("First name"), vb_name);
+	e_firstname = new QLineEdit(vb_name);
+	new QLabel(tr("Surname"), vb_surname);
+	e_lastname = new QLineEdit(vb_surname);
+	// end Name and Surname
+	
+	// Mobile and Group
+	QHBox *hb_mobilegroup = new QHBox(vgb_general);
+	QVBox *vb_mobile = new QVBox(hb_mobilegroup);
+	QVBox *vb_group = new QVBox(hb_mobilegroup);
+	hb_mobilegroup->setSpacing(3);
+	vb_mobile->setSpacing(3);
+	vb_group->setSpacing(3);
+	
+	// get available groups
 	QStringList list;
 	for (int i=0; i < kadu->groupBar()->count(); i++)
 		list << kadu->groupBar()->tabAt(i)->text();
-
-	QVBox *box = new QVBox(this);
-	box->setMargin(10);
-
-	QHBox *hbox1 = new QHBox(box);
-	hbox1->setSpacing(10);
-	QVBox *vbox11 = new QVBox(hbox1);
-	/*QLabel *l_uin =*/ new QLabel(tr("Uin"), vbox11);
-	e_uin = new QLineEdit(vbox11);
-	QVBox *vbox12 = new QVBox(hbox1);
-	/*QLabel *l_status =*/ new QLabel(tr("Status"), vbox12);
-	QLineEdit *e_status = new QLineEdit(vbox12);
-
-	QHBox *hbox2 = new QHBox(box);
-	hbox2->setSpacing(10);
-	QVBox *vbox21 = new QVBox(hbox2);
-	/*QLabel *l_nickname =*/ new QLabel(tr("Nickname"), vbox21);
-	e_nickname = new QLineEdit(vbox21);
-	QVBox *vbox22 = new QVBox(hbox2);
-	/*QLabel *l_altnick =*/ new QLabel(tr("AltNick"), vbox22);
-	e_altnick = new QLineEdit(vbox22);
-
-	QHBox *hbox3 = new QHBox(box);
-	hbox3->setSpacing(10);
-	QVBox *vbox31 = new QVBox(hbox3);
-	/*QLabel *l_firstname =*/ new QLabel(tr("First name"), vbox31);
-	e_firstname = new QLineEdit(vbox31);
-	QVBox *vbox32 = new QVBox(hbox3);
-	/*QLabel *l_lastname =*/ new QLabel(tr("Surname"), vbox32);
-	e_lastname = new QLineEdit(vbox32);
-
-	QHBox *hbox4 = new QHBox(box);
-	hbox4->setSpacing(10);
-	QVBox *vbox41 = new QVBox(hbox4);
-	/*QLabel *l_mobile =*/ new QLabel(tr("Mobile"), vbox41);
-	e_mobile = new QLineEdit(vbox41);
-	QVBox *vbox42 = new QVBox(hbox4);
-	/*QLabel *l_group =*/ new QLabel(tr("Group"), vbox42);
-	cb_group = new QComboBox(vbox42);
+	// end get available groups
+	
+	new QLabel(tr("Mobile"), vb_mobile);
+	e_mobile = new QLineEdit(vb_mobile);
+	new QLabel(tr("Group"), vb_group);
+	cb_group = new QComboBox(vb_group);
 	cb_group->insertStringList(list);
 	cb_group->setEditable(true);
 	cb_group->setAutoCompletion(true);
-	hbox4->setStretchFactor(vbox41, 1);
-	hbox4->setStretchFactor(vbox42, 1);
-
-	QHBox *hbox5 = new QHBox(box);
-	hbox5->setSpacing(10);
-	QVBox *vbox51 = new QVBox(hbox5);
-	/*QLabel *l_addr =*/ new QLabel(tr("Address IP and Port"), vbox51);
-	e_addr = new QLineEdit(vbox51);
-	QVBox *vbox52 = new QVBox(hbox5);
-	/*QLabel *l_ver =*/ new QLabel(tr("Protocol version"), vbox52);
-	e_ver = new QLineEdit(vbox52);
+	hb_mobilegroup->setStretchFactor(vb_mobile, 1);
+	hb_mobilegroup->setStretchFactor(vb_group, 1);
+	// end Mobile and Group
 	
-	QHBox *hbox6 = new QHBox(box);
-	hbox6->setSpacing(10);
-	QVBox *vbox61 = new QVBox(hbox6);
-	/*QLabel *l_dnsname =*/ new QLabel(tr("DNS name"), vbox61);
-	e_dnsname = new QLineEdit(vbox61);
-	QVBox *vbox62 = new QVBox(hbox6);
-	/*QLabel *l_email =*/ new QLabel(tr("Email"), vbox62);
-	e_email = new QLineEdit(vbox62);
-
+	// IP and Protocol Version
+	QHBox *hb_ipprotversion = new QHBox(vgb_general);
+	QVBox *vb_ip = new QVBox(hb_ipprotversion);
+	QVBox *vb_protversion = new QVBox(hb_ipprotversion);
+	hb_ipprotversion->setSpacing(3);
+	vb_ip->setSpacing(3);
+	vb_protversion->setSpacing(3);
+	
+	new QLabel(tr("Address IP and Port"), vb_ip);
+	e_addr = new QLineEdit(vb_ip);
+	new QLabel(tr("Protocol version"), vb_protversion);
+	e_ver = new QLineEdit(vb_protversion);
+	// end IP and Protocol Version
+	
+	// DNS and Email
+	QHBox *hb_dnsemail = new QHBox(vgb_general);
+	QVBox *vb_dns = new QVBox(hb_dnsemail);
+	QVBox *vb_email = new QVBox(hb_dnsemail);
+	hb_dnsemail->setSpacing(3);
+	vb_dns->setSpacing(3);
+	vb_email->setSpacing(3);
+	
+	new QLabel(tr("DNS name"), vb_dns);
+	e_dnsname = new QLineEdit(vb_dns);
+	new QLabel(tr("Email"), vb_email);
+	e_email = new QLineEdit(vb_email);
+	// end DNS and Email
+	
 	if (!userlist_sent)
 		e_status->setText(tr("(Unknown)"));
-
-	addTab(box, tr("General"));
-
+		
+	QString s_temp;
 	dns = new QDns();
 
 	e_status->setReadOnly(true);	
@@ -173,55 +244,68 @@ void UserInfo::setupTab1() {
 			e_addr->setText(e_addr->text()+":"+tr("(Unknown)"));
 
 		if (puser->version) {
-			tmp.sprintf("0x%02x", puser->version & 0x0000ffff);
-			e_ver->setText(tmp);
+			s_temp.sprintf("0x%02x", puser->version & 0x0000ffff);
+			e_ver->setText(s_temp);
 			}
 		else
 			e_ver->setText(tr("(Unknown)"));
 
 		switch (puser->status) {
 			case GG_STATUS_AVAIL:
-				e_status->setText(tr("Online")); break;
+				e_status->setText(tr("Online"));
+				tw_main->setTabIconSet(vgb_general, icons_manager.loadIcon("Online"));
+				break;
 			case GG_STATUS_AVAIL_DESCR:
-				e_status->setText(tr("Online (d.)")); break;
+				e_status->setText(tr("Online (d.)"));
+				tw_main->setTabIconSet(vgb_general, icons_manager.loadIcon("OnlineWithDescription"));
+				break;
 			case GG_STATUS_NOT_AVAIL:
-				e_status->setText(tr("Offline")); break;
+				e_status->setText(tr("Offline"));
+				tw_main->setTabIconSet(vgb_general, icons_manager.loadIcon("Offline"));
+				break;
 			case GG_STATUS_NOT_AVAIL_DESCR:
-				e_status->setText(tr("Offline (d.)")); break;
+				e_status->setText(tr("Offline (d.)"));
+				tw_main->setTabIconSet(vgb_general, icons_manager.loadIcon("OfflineWithDescription"));
+				break;
 			case GG_STATUS_BUSY:
-				e_status->setText(tr("Busy")); break;
+				e_status->setText(tr("Busy"));
+				tw_main->setTabIconSet(vgb_general, icons_manager.loadIcon("Busy"));
+				break;
 			case GG_STATUS_BUSY_DESCR:
-				e_status->setText(tr("Busy (d.)")); break;
+				e_status->setText(tr("Busy (d.)"));
+				tw_main->setTabIconSet(vgb_general, icons_manager.loadIcon("BusyWithDescription"));
+				break;
 			case GG_STATUS_INVISIBLE:
 			case GG_STATUS_INVISIBLE2:
-				e_status->setText(tr("Invisible")); break;
+				e_status->setText(tr("Invisible"));
+				tw_main->setTabIconSet(vgb_general, icons_manager.loadIcon("Invisible"));
+				break;
 			case GG_STATUS_INVISIBLE_DESCR:
-				e_status->setText(tr("Invisible (d.)")); break;
+				e_status->setText(tr("Invisible (d.)"));
+				tw_main->setTabIconSet(vgb_general, icons_manager.loadIcon("InvisibleWithDescription"));
+				break;
 			case GG_STATUS_BLOCKED:
-				e_status->setText(tr("Blocks us")); break;
+				e_status->setText(tr("Blocks us"));
+				tw_main->setTabIconSet(vgb_general, icons_manager.loadIcon("Blocking"));
+				break;
 			}
 		dns->setLabel(puser->ip);
 		dns->setRecordType(QDns::Ptr);
 		connect(dns, SIGNAL(resultsReady()), this, SLOT(resultsReady()));
-		}
+	}
 }
 
-UserInfo::~UserInfo() {
-	delete dns;
-	kdebug("UserInfo::~UserInfo()\n");
-}
-
-void UserInfo::resultsReady() {
-	e_dnsname->setText(dns->hostNames()[0]);
-}
-
-void UserInfo::setupTab2() {
-	QVBox *box = new QVBox(this);
-	box->setMargin(10);
-
-	c_blocking = new QCheckBox(tr("Block user"), box);
-	c_offtouser = new QCheckBox(tr("Offline to user"), box);
-	c_notify = new QCheckBox(tr("Notify about status changes"), box);
+void UserInfo::setupTab2()
+{
+	// Misc options
+	QVGroupBox *vgb_others = new QVGroupBox(vgb_general);
+	vgb_others->setFrameStyle(QFrame::NoFrame);
+	
+	tw_main->addTab(vgb_others, tr("Others"));
+	
+	c_blocking = new QCheckBox(tr("Block user"), vgb_others);
+	c_offtouser = new QCheckBox(tr("Offline to user"), vgb_others);
+	c_notify = new QCheckBox(tr("Notify about status changes"), vgb_others);
 
 	if (!fAddUser) {
 		c_blocking->setChecked(puser->blocking);
@@ -230,11 +314,18 @@ void UserInfo::setupTab2() {
 		}
 	else
 		c_notify->setChecked(true);
-
-	addTab(box, tr("Others"));
+	// end Misc options	
 }
 
-void UserInfo::accept() {
+UserInfo::~UserInfo() 
+{
+	kdebug("UserInfo::~UserInfo()\n");
+	saveGeometry(this, "General", "ManageUsersDialogGeometry");
+	delete dns;
+}
+
+void UserInfo::resultsReady() {
+	e_dnsname->setText(dns->hostNames()[0]);
 }
 
 void UserInfo::addNewUser(UserListElement& e)

@@ -1,11 +1,13 @@
 #ifndef USERINFO_H
 #define USERINFO_H
 
-#include <qtabdialog.h>
+#include <qhbox.h>
 #include <qlineedit.h>
 #include <qcheckbox.h>
 #include <qdns.h>
 #include <qcombobox.h>
+#include <qtabwidget.h>
+#include <qvgroupbox.h>
 
 #include "userlist.h"
 #include "misc.h"
@@ -13,7 +15,7 @@
 /**
 	Dialog pokazuj±cy informacje o wybranym kontakcie
 **/
-class UserInfo : public QTabDialog {
+class UserInfo : public QHBox {
 	Q_OBJECT
 	public:
 		/**
@@ -45,6 +47,9 @@ class UserInfo : public QTabDialog {
 		QCheckBox *c_blocking;
 		QCheckBox *c_offtouser;
 		QCheckBox *c_notify;
+		QPushButton *pb_addapply;
+		QTabWidget *tw_main;
+		QVGroupBox *vgb_general;
 		QDns *dns;
 		bool fAddUser;
 		void addNewUser(UserListElement& e);
@@ -59,9 +64,6 @@ class UserInfo : public QTabDialog {
 
 	private slots:
 		void updateUserlist();
-
-	protected slots:
-		void accept();
 };
 
 #endif
