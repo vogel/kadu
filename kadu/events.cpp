@@ -69,8 +69,8 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 		config.sysmsgidx = msgclass;
 		fprintf(stderr, "KK System message index %d\n", msgclass);
 		senders[0] = config.uin;
-		} else
-		cp_to_iso(msg);
+		} else if (msg != NULL)
+			cp_to_iso(msg);	
 
 	QString nick;
 	if(userlist.containsUin(senders[0]))
