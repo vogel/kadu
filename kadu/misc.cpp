@@ -1092,7 +1092,7 @@ void IconsManager::onDestroyConfigDialog()
 	else
 	    theme= cb_icontheme->currentText();
 
-	config_file.writeEntry("Look", "IconsPaths", icons_manager.paths().join(";"));
+	config_file.writeEntry("Look", "IconsPaths", icons_manager.additionalPaths().join(";"));
 	config_file.writeEntry("Look", "IconTheme", theme);
 }
 
@@ -1123,7 +1123,7 @@ void IconsManager::onCreateConfigDialog()
 void IconsManager::initModule()
 {
 	kdebugf();
-	config_file.addVariable("Look", "IconsPaths", icons_manager.defaultKaduPathsWithThemes().join(";"));
+	config_file.addVariable("Look", "IconsPaths", "");
 	config_file.addVariable("Look", "IconTheme", "default");
 	
 	icons_manager.setPaths(QStringList::split(";", config_file.readEntry("Look", "IconsPaths")));
@@ -1396,16 +1396,14 @@ QString HttpClient::encode(const QString& text)
 
 void HtmlDocument::escapeText(QString& text)
 {
-	text.replace(QRegExp("&"), "&amp;");
+	text.replace(QRegExp("&[^nbsp;]"), "&amp;");
 	text.replace(QRegExp("<"), "&lt;");
 	text.replace(QRegExp(">"), "&gt;");
 	text.replace(QRegExp("\""), "&quot;");
-	text.replace(QRegExp("  "), "&nbsp; ");
 }
 
 void HtmlDocument::unescapeText(QString& text)
 {
-	text.replace(QRegExp("&nbsp;"), " ");
 	text.replace(QRegExp("&amp;"), "&");
 	text.replace(QRegExp("&lt;"), "<");
 	text.replace(QRegExp("&gt;"), ">");
@@ -1499,17 +1497,17 @@ QString HtmlDocument::generateHtml()
 	return html;
 }
 
-int HtmlDocument::countElements() const
+int HtmlDocument::countElements()
 {
 	return Elements.size();
 }
 
-bool HtmlDocument::isTagElement(int index) const
+bool HtmlDocument::isTagElement(int index)
 {
 	return Elements[index].tag;
 }
 
-QString HtmlDocument::elementText(int index) const
+QString HtmlDocument::elementText(int index)
 {
 	return Elements[index].text;
 }
@@ -1993,18 +1991,21 @@ void Themes::setPaths(const QStringList& paths)
 {
 	ThemesList.clear();
 	ThemesPaths.clear();
-	QStringList add, temp=paths;
+	additional.clear();
+	QStringList add, temp=paths+defaultKaduPathsWithThemes();
 	QFile s;
 	for (QStringList::Iterator it= temp.begin(); it!=temp.end(); it++)
 		{
 		s.setName((*it)+"/"+ConfigName);
 		if (s.exists())
 			{
-			add.append(*it);
+			if (paths.findIndex(*it)!=-1)
+			    additional.append(*it);
+
+			ThemesPaths.append(*it);
 			ThemesList.append((*it).section("/", -2));
 			}
 		}
-	ThemesPaths+=add;
 	emit pathsChanged(ThemesPaths);
 }
 
@@ -2026,6 +2027,10 @@ QStringList Themes::defaultKaduPathsWithThemes()
 QStringList Themes::paths()
 {
     return ThemesPaths;
+}
+QStringList Themes::additionalPaths()
+{
+    return additional;
 }
 
 QString Themes::themePath(const QString& theme)

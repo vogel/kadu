@@ -90,7 +90,7 @@ extern "C" int sound_init()
 	
 	config_file.addVariable("Sounds", "SoundTheme", "default");
 	
-	config_file.addVariable("Sounds", "SoundPaths",sound_manager->defaultKaduPathsWithThemes().join(";"));
+	config_file.addVariable("Sounds", "SoundPaths","");
 	
 	sound_manager->setPaths(QStringList::split(";", config_file.readEntry("Sounds", "SoundPaths")));
 	sound_manager->setTheme(config_file.readEntry("Sounds","SoundTheme"));
@@ -519,6 +519,6 @@ void SoundSlots::onApplyConfigDialog()
 	if (theme == tr("default"))
 		theme= "default";
 
-	config_file.writeEntry("Sounds", "SoundPaths", sound_manager->paths().join(";"));
+	config_file.writeEntry("Sounds", "SoundPaths", sound_manager->additionalPaths().join(";"));
 	config_file.writeEntry("Sounds", "SoundTheme", theme);
 }

@@ -147,8 +147,8 @@ class HtmlDocument
 			bool tag;
 		};
 		QValueList<Element> Elements;
-		static void escapeText(QString& text);
-		static void unescapeText(QString& text);
+		void escapeText(QString& text);
+		void unescapeText(QString& text);
 		void addElement(Element e);
 
 	public:
@@ -195,16 +195,16 @@ class HtmlDocument
 			Zwraca ilo¶æ elementów wchodz±cych w sk³ad
 			dokumentu.
 		**/
-		int countElements() const;
+		int countElements();
 		/**
 			Sprawdza czy element o podanym indeksie jest
 			tagiem html czy zwyk³ym tekstem.
 		**/
-		bool isTagElement(int index) const;
+		bool isTagElement(int index);
 		/**
 			Zwraca tekst elementu o podanym indeksie.
 		**/
-		QString elementText(int index) const;
+		QString elementText(int index);
 		/**
 			Ustawia tekst i typ elementu o podanym indeksie.
 		**/			
@@ -297,6 +297,7 @@ class Themes : public QObject
 	private:
 		QStringList ThemesList;
 		QStringList ThemesPaths;
+		QStringList additional;
 		QString ConfigName, Name, ActualTheme;
 		QMap<QString, QString> entries;
 		QStringList getSubDirs(const QString& path);
@@ -310,6 +311,7 @@ class Themes : public QObject
 		QString theme();
 		void setPaths(const QStringList& paths);
 		QStringList paths();
+		QStringList additionalPaths();
 		QString themePath(const QString& theme="");
 		QString getThemeEntry(const QString& name);
 
