@@ -10,6 +10,11 @@
 #include <qobject.h>
 #include <qthread.h>
 #include <qsemaphore.h>
+#include <kde/artsc/artsc.h>
+#include <fcntl.h>
+#include <sys/ioctl.h>
+//#include <linux/soundcard.h>
+//#include <unistd.h>
 
 #include "sound.h"
 
@@ -24,10 +29,13 @@ PlayThread::~PlayThread() {
 }
 
 void PlayThread::run() {
+	fprintf(stderr, "KK PlayThread::run()\n");
 	while (true) {
 		(*semwait)++;
+		fprintf(stderr, "KK PlayThread::run(): wokenUp\n");
 		(*semplay)++;
 		snddev->doPlaying();
+		snddev->playfinished = true;
 		(*semplay)--;
 		}
 }
@@ -43,10 +51,12 @@ RecordThread::~RecordThread() {
 }
 
 void RecordThread::run() {
+	fprintf(stderr, "KK RecordThread::run()\n");
 	while (true) {
 		(*semwait)++;		
 		(*semrec)++;
 		snddev->doRecording();
+		snddev->recfinished = true;
 		(*semrec)--;
 		}
 }
@@ -99,3 +109,61 @@ bool SoundDevice::recordFinished() {
 	(*rt->semrec)--;
 	return ret;
 }
+
+/*ArtsSoundDevice::ArtsSoundDevice(const int freq, const int bits, const int chans, QObject *parent, const char *name)
+	: SoundDevice(freq, bits, chans, parent, name) {
+	arts_init();
+	playstream = arts_play_stream(freq, bits, chans, "kaduplayvoice");
+	fprintf(stderr, "KK ArtsSoundDevice::ArtsSoundDevice(): playstream=%d\n", playstream);
+	arts_stream_set(playstream, ARTS_P_BUFFER_SIZE, 1024);
+	recstream = arts_record_stream(freq, bits, chans, "kadurecordvoice");
+	fprintf(stderr, "KK ArtsSoundDevice::ArtsSoundDevice(): recstream=%d\n", recstream);
+}
+
+ArtsSoundDevice::~ArtsSoundDevice() {
+	arts_close_stream(playstream);
+	arts_close_stream(recstream);
+	arts_free();
+}
+
+void ArtsSoundDevice::doPlaying() {
+	fprintf(stderr, "KK ArtsSoundDevice::doPlaying(): playstream=%d\n", playstream);
+	arts_write(playstream, playbuf, playbufsize);
+}
+
+void ArtsSoundDevice::doRecording() {
+	fprintf(stderr, "KK ArtsSoundDevice::doRecording(): recstream=%d\n", recstream);
+	arts_read(recstream, recbuf, recbufsize);
+}*/
+
+/*DspSoundDevice::DspSoundDevice(const int freq, const int bits, const int chans, QObject *parent, const char *name)
+	: SoundDevice(freq, bits, chans, parent, name) {
+	int value;	
+	fd = open("/dev/dsp", O_RDWR);
+	value = freq;
+	ioctl(fd, SNDCTL_DSP_SPEED, &value);
+//	value = bits;
+//	ioctl(fd, SNDCTL_DSP_SAMPLESIZE, &value);
+	value = chans;
+	ioctl(fd, SNDCTL_DSP_CHANNELS, &value);
+//	value = 16000;
+//	ioctl(fd, SNDCTL_DSP_SETFRAGMENT, &value);
+//	value = AFMT_S16_LE;
+	value = AFMT_U8;
+	ioctl(fd, SNDCTL_DSP_SETFMT, &value);
+	fprintf(stderr, "KK DspSoundDevice::DspSoundDevice(): fd=%d\n", fd);
+}
+
+DspSoundDevice::~DspSoundDevice() {
+	close(fd);
+}
+
+void DspSoundDevice::doPlaying() {
+	fprintf(stderr, "KK DspSoundDevice::doPlaying(): fd=%d\n", fd);
+	write(fd, playbuf, playbufsize);
+}
+
+void DspSoundDevice::doRecording() {
+	fprintf(stderr, "KK DspSoundDevice::doRecording(): fd=%d\n", fd);
+	read(fd, recbuf, recbufsize);
+}*/

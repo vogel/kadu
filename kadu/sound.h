@@ -4,6 +4,7 @@
 #include <qobject.h>
 #include <qthread.h>
 #include <qsemaphore.h>
+//#include <kde/artsc/artsc.h>
 
 class SoundDevice;
 
@@ -49,11 +50,7 @@ class SoundDevice : public QObject
 		bool recordFinished();
 
 	private:
-		char *playbuf;
-		int playbufsize;
 		bool playfinished;
-		char *recbuf;
-		int recbufsize;
 		bool recfinished;
 
 	protected:
@@ -65,9 +62,51 @@ class SoundDevice : public QObject
 		int freq;
 		int bits;
 		int chans;
+		char *playbuf;
+		int playbufsize;
+		char *recbuf;
+		int recbufsize;
 
 	friend class PlayThread;
 	friend class RecordThread;
 };
+
+
+/*class DspSoundDevice : public SoundDevice
+{
+	Q_OBJECT
+	public:
+		DspSoundDevice(const int freq, const int bits, const int chans, QObject *parent = 0, const char *name = 0);
+		~DspSoundDevice();
+
+	private:
+		int fd;
+
+	protected:
+		void doPlaying();
+		void doRecording();
+
+	friend class PlayThread;
+	friend class RecordThread;
+};*/
+
+/*class ArtsSoundDevice : public SoundDevice
+{
+	Q_OBJECT
+	public:
+		ArtsSoundDevice(const int freq, const int bits, const int chans, QObject *parent = 0, const char *name = 0);
+		~ArtsSoundDevice();
+
+	private:
+		arts_stream_t playstream;
+		arts_stream_t recstream;
+
+	protected:
+		void doPlaying();
+		void doRecording();
+
+	friend class PlayThread;
+	friend class RecordThread;
+};*/
 
 #endif

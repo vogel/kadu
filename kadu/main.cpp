@@ -14,6 +14,8 @@
 #include <sys/types.h>
 #include <locale.h>
 #include <libintl.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 //
 #include "kadu.h"
@@ -24,6 +26,7 @@
 #ifdef HAVE_OPENSSL
 #include "simlite.h"
 #endif
+#include "sound.h"
 //
 
 Kadu *kadu;	
@@ -84,5 +87,15 @@ int main(int argc, char *argv[])
 #endif
 
 	QObject::connect(a, SIGNAL(aboutToQuit()), kadu, SLOT(cleanUp()));
+	
+//	ArtsSoundDevice *snd = new ArtsSoundDevice(11000, 8, 1);
+/*	DspSoundDevice *snd = new DspSoundDevice(11000, 8, 1);
+	char buf[65536];
+	int file = open("/usr/share/licq/sounds/icq/Online.wav", O_RDONLY);
+	int size = read(file, buf, 65536);
+	close(file);
+	fprintf(stderr, "KK main(): size=%d\n", size);
+	snd->play(buf, size);*/
+
 	return a->exec();
 }
