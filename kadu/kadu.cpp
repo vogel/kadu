@@ -1575,7 +1575,7 @@ void KaduSlots::onDestroyConfigDialog()
 {
 	kdebugf();
 	QLineEdit *e_password=ConfigDialog::getLineEdit("General", "Password");
-	e_password->setEchoMode(QLineEdit::Password);
+//	e_password->setEchoMode(QLineEdit::Password);
 	config_file.writeEntry("General", "Password",pwHash(e_password->text()));
 
 	kadu->showdesc(config_file.readBoolEntry("Look", "ShowInfoPanel"));

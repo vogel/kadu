@@ -124,7 +124,7 @@ void AutoAwayTimer::checkIdleTime()
 		QTextStream stream(&f);
 		while (!stream.atEnd() && (line = stream.readLine()) != QString::null)
 		{
-			if (line.contains(QRegExp("i8042")) || line.contains(QRegExp("keyboard")) || line.contains(QRegExp("(M|m)ouse")))
+			if (line.contains("i8042") || line.contains("keyboard") || line.contains("mouse", false))
 			{
 				strlist = QStringList::split(" ", line);
 				

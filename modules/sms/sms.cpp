@@ -477,7 +477,7 @@ void SmsSlots::onCreateConfigDialog()
 	connect(b_smscustomconf,SIGNAL(toggled(bool)),e_smsconf,SLOT(setEnabled(bool)));
 
 	QListBox* lb_gws=ConfigDialog::getListBox("SMS", "gateways");
-	QMap<QString,isValidFunc*>::Iterator it;
+//	QMap<QString,isValidFunc*>::Iterator it;
 	QStringList priority=QStringList::split(";", config_file.readEntry("SMS", "Priority"));
 
 	CONST_FOREACH(gate, priority)

@@ -108,7 +108,7 @@ void SoundSlots::onCreateConfigDialog()
 			soundfiles[*name] = sound_manager->themePath()+sound_manager->getThemeEntry(*name);
 	}
 	
-	QStringList::iterator text = soundTexts.begin();
+	QStringList::const_iterator text = soundTexts.begin();
 	CONST_FOREACH(name, soundNames)
 		new QListViewItem(lv_soundfiles, *text++, soundfiles[*name]);
 
@@ -120,11 +120,10 @@ void SoundSlots::onCreateConfigDialog()
 	g_volume->setEnabled(b_playsound->isChecked() && b_volumectrl->isChecked());
 	b_playinvisible->setEnabled(b_playsound->isChecked());
 
-	connect(b_volumectrl,SIGNAL(toggled(bool)), g_volume, SLOT(setEnabled(bool)));
+	connect(b_volumectrl, SIGNAL(toggled(bool)), g_volume, SLOT(setEnabled(bool)));
 
-	SelectPaths *selpaths= ConfigDialog::getSelectPaths("Sounds", "Sound paths");
-	QStringList pl(QStringList::split(";", config_file.readEntry("Sounds", "SoundPaths")));
-	selpaths->setPathList(pl);
+	SelectPaths *selpaths = ConfigDialog::getSelectPaths("Sounds", "Sound paths");
+	selpaths->setPathList(QStringList::split(";", config_file.readEntry("Sounds", "SoundPaths")));
 	kdebugf2();
 }
 
@@ -251,7 +250,7 @@ void SoundSlots::chooseSoundTheme(const QString& string)
 		clear->setEnabled(false);
 	}
 
-	QStringList::iterator text = soundTexts.begin();
+	QStringList::const_iterator text = soundTexts.begin();
 	CONST_FOREACH(name, soundNames)
 		new QListViewItem(lv_soundfiles, *text++, soundfiles[*name]);
 	kdebugf2();
@@ -289,7 +288,7 @@ void SoundSlots::onApplyConfigDialog()
 		QListView* lv_soundfiles=ConfigDialog::getListView("Sounds", "sound_files");
 		theme= "Custom";
 
-		QStringList::iterator text = soundTexts.begin();
+		QStringList::const_iterator text = soundTexts.begin();
 		CONST_FOREACH(name, soundNames)
 			config_file.writeEntry("Sounds", (*name)+"_sound", lv_soundfiles->findItem(*text++, 0)->text(1));
 	}
