@@ -918,18 +918,20 @@ void Chat::setTitle()
 	kdebugf();
 	QString title;
 
-	kdebugmf(KDEBUG_FUNCTION_START, "Uins.size() = %d\n", Uins.size());
-	if (Uins.size() > 1)
+	int uinsSize = Uins.size();
+	kdebugmf(KDEBUG_FUNCTION_START, "Uins.size() = %d\n", uinsSize);
+	if (uinsSize > 1)
 	{
 		if (config_file.readEntry("Look","ConferencePrefix").isEmpty())
 			title = tr("Conference with ");
 		else
 			title = config_file.readEntry("Look","ConferencePrefix");
-		title.append(parse(config_file.readEntry("Look","ConferenceContents"),userlist.byUinValue(Uins[0]),false));
+		int i = 0;
 		CONST_FOREACH(uin, Uins)
 		{
-			title.append(", ");
-			title.append(parse(config_file.readEntry("Look","ConferenceContents"),userlist.byUinValue(*uin),false));
+			title.append(parse(config_file.readEntry("Look","ConferenceContents"), userlist.byUinValue(*uin), false));
+			if (++i < uinsSize)
+				title.append(", ");
 		}
 		setIcon(icons_manager.loadIcon("Online"));
 	}
