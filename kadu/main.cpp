@@ -115,6 +115,7 @@ int main(int argc, char *argv[])
 	QTranslator kadu_qm(0);
 	kadu_qm.load(dataPath(QString("kadu/translations/kadu_") + lang), ".");
 	qApp->installTranslator(&kadu_qm);
+	qApp->setStyle(config_file.readEntry("Look", "QTStyle"));
 
 	lockFile=new QFile(ggPath("lock"));
 	if (lockFile->open(IO_ReadWrite))
