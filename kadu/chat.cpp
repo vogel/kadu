@@ -173,7 +173,7 @@ void Chat::setTitle() {
 		if (k)
 			title.append(", ");
 	    
-		name = userlist.byUin(uins[k]).comment;
+		name = userlist.byUin(uins[k]).altnick;
 		title.append(name);
 		user = userlist.byUin(uins[k]);
 		j = statusGGToStatusNr(user.status);
@@ -315,7 +315,7 @@ int Chat::checkPresence(QArray<uin_t> senders, QString *msg, time_t time) {
 	QString toadd;
 	QString editext = convertCharacters(*msg);
 	toadd.append("<TABLE width=\"100%\"><TR><TD bgcolor=\"#F0F0F0\"><B>");
-	toadd.append(userlist.byUin(senders[0]).comment);
+	toadd.append(userlist.byUin(senders[0]).altnick);
 	toadd.append(" ");
 	toadd.append(__c2q(timestamp(time)));
 	toadd.append("</B><BR>");

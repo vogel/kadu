@@ -198,7 +198,7 @@ void SearchDialog::deleteSocketNotifiers() {
 
 void SearchDialog::prepareMessage(QListViewItem *item) {
 	Message *msg;
-	msg = new Message(userlist.byUin(atoi(item->text(1).local8Bit())).comment);
+	msg = new Message(userlist.byUin(atoi(item->text(1).local8Bit())).altnick);
 	msg->show();
 }
 
@@ -416,23 +416,23 @@ void SearchDialog::AddButtonClicked()
 	QString uin = selected->text(1);
 	QString firstname = selected->text(2);
 	QString lastname = selected->text(3);
-	QString altnick = selected->text(5);
+	QString nickname = selected->text(5);
 
-	// Build nickname. Try user nick first.
-	QString nickname=altnick;
+	// Build altnick. Try user nick first.
+	QString altnick=nickname;
 	// If nick is empty, try firstname+lastname.
-	if (nickname == "") {
-		nickname = firstname;
+	if (altnick == "") {
+		altnick = firstname;
 		if (firstname !="" && lastname != "")
-			nickname += " ";
-		nickname += lastname;
+			altnick += " ";
+		altnick += lastname;
 		}
 	// If nick is empty, use uin.
-	if (nickname == "")
-		nickname = uin;
+	if (altnick == "")
+		altnick = uin;
 
 	if (QMessageBox::information(this,i18n("Add User"),
-		i18n("Do you want to add user %1 to user list?").arg(nickname),
+		i18n("Do you want to add user %1 to user list?").arg(altnick),
 		i18n("&Yes"),i18n("&No")) != 0)
 		return;
 

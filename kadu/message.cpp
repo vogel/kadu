@@ -148,7 +148,7 @@ void rMessage::cleanUp(void) {
 /* let's chat some more */
 void rMessage::openChat(void) {
 	QString tmp = __c2q(tmprcvr);    
-	kadu->openChat(userlist.byComment(tmp).uin);
+	kadu->openChat(userlist.byAltNick(tmp).uin);
 	close(true);
 }
 
@@ -189,7 +189,7 @@ Message::Message (const QString & nick, bool tchat, QDialog* parent , const char
 	statusedit = new QLineEdit(this);
 	statusedit->setGeometry(230, 5, 60, 20);
 
-	unsigned int status = GetStatusFromUserlist(userlist.byComment(nicksnd).uin);
+	unsigned int status = GetStatusFromUserlist(userlist.byAltNick(nicksnd).uin);
 	if (status != -1)
 		statusedit->setText(i18n(statustext[statusGGToStatusNr(status)]));
 	else	
@@ -268,7 +268,7 @@ void Message::commitSend(void) {
 	unsigned char *utmp = (unsigned char *) tmp.data();	
 
 	body->setReadOnly(true);
-	uin = userlist.byComment(nicksnd).uin;
+	uin = userlist.byAltNick(nicksnd).uin;
 
 	int seq;
 	if (config.logmessages)
@@ -322,7 +322,7 @@ void Message::reject() {
 
 void Message::HistoryBox (void) {
 	History *hb;
-	hb = new History(userlist.byComment(nicksnd).uin);
+	hb = new History(userlist.byAltNick(nicksnd).uin);
 	hb->show();
 }
 

@@ -470,7 +470,7 @@ void ConfigDialog::setupTab4(void) {
 	i = 0;
 	while (i < userlist.count()) {
 		if (!config.notifies.contains(QString::number(userlist[i].uin)))
-			e_availusers->insertItem(userlist[i].comment);
+			e_availusers->insertItem(userlist[i].altnick);
 		i++;
 		}
 
@@ -492,7 +492,7 @@ void ConfigDialog::setupTab4(void) {
 	QStringList::Iterator it;
 	for (it = config.notifies.begin(); it != config.notifies.end(); ++it) {
 		QString nick;
-		nick = userlist.byUin(atoi((const char *)(*it).local8Bit())).comment;
+		nick = userlist.byUin(atoi((const char *)(*it).local8Bit())).altnick;
 		e_notifies->insertItem(nick);
 		}
 	/* end two panes */
@@ -710,7 +710,7 @@ void ConfigDialog::updateConfig(void) {
 	config.notifies.clear();
 	for (int i = 0; i < e_notifies->count(); i++) {
 		tmp = e_notifies->text(i);
-		config.notifies.append(QString::number(userlist.byComment(tmp).uin));
+		config.notifies.append(QString::number(userlist.byAltNick(tmp).uin));
 		}
 
 	delete config.extip;

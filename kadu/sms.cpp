@@ -44,7 +44,7 @@ Sms::Sms(unsigned int gsmno,const QString & name, QDialog* parent) : QDialog (pa
 	i = 0;
  	while (i < userlist.count()) {
 		if (userlist[i].mobile.length())
-			list->insertItem(userlist[i].comment);
+			list->insertItem(userlist[i].altnick);
 		i++;
 		}
 	grid->addWidget(list, 0, 3);
@@ -57,12 +57,12 @@ Sms::Sms(unsigned int gsmno,const QString & name, QDialog* parent) : QDialog (pa
 	if (i < list->count()) {
 		list->setCurrentItem(i);
 		myuin = list->text(i);
-		recipient->setText(userlist.byComment(myuin).mobile);
+		recipient->setText(userlist.byAltNick(myuin).mobile);
 		}
 	else
 		if (list->count()) {
 			myuin = list->text(0);
-			recipient->setText(userlist.byComment(myuin).mobile);
+			recipient->setText(userlist.byAltNick(myuin).mobile);
 			}
 
 	QLabel *recilabel = new QLabel(this);

@@ -278,7 +278,7 @@ void UserlistExport::startTransfer() {
 		contacts += ";";
 		contacts += userlist[i].nickname;
 		contacts += ";";
-		contacts += userlist[i].comment;
+		contacts += userlist[i].altnick;
 		contacts += ";";
 		contacts += userlist[i].mobile;
 		contacts += ";";

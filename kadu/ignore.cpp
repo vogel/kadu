@@ -88,7 +88,7 @@ void Ignored::getList() {
 					}
 				}
 			if (userlist_entry)
-				snprintf(buf, sizeof(buf), "%d (%s)", userlist[k].uin, (const char *)userlist[k].comment.local8Bit());	
+				snprintf(buf, sizeof(buf), "%d (%s)", userlist[k].uin, (const char *)userlist[k].altnick.local8Bit());	
 			else
 				snprintf(buf, sizeof(buf), "%d (?)", ignored[i]);			
 			userlist_entry = false;

@@ -112,7 +112,7 @@ void appendHistory(unsigned int uin, unsigned char * msg, bool own, time_t time)
 	char nick[255];
 	
 	if (!own) {
-		strncpy(nick, userlist.byUin(uin).comment, 255);
+		strncpy(nick, userlist.byUin(uin).altnick, 255);
 		fputs(nick,f);
 		}
 	else

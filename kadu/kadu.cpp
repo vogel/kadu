@@ -358,7 +358,7 @@ void confirmHistoryDeletion (const char *user) {
     switch(QMessageBox::information( kadu, "Kadu",i18n("Clear history?"), i18n("Yes"), i18n("No"), QString::null, 1, 1)) {
 	case 1: // Yes?
 	    s = __c2q(user);
-	    snprintf(buf1, sizeof(buf1), "%s/.gg/history/%d",getenv("HOME"), userlist.byComment(s).uin);
+	    snprintf(buf1, sizeof(buf1), "%s/.gg/history/%d",getenv("HOME"), userlist.byAltNick(s).uin);
 	    fprintf(stderr, "KK History(): unlinking %s\n", buf1);
 	    unlink(buf1);
 	    break;
@@ -413,7 +413,7 @@ void Kadu::removeUser(QString &username, bool permanently = false) {
 	userbox->removeUser(username);	
 	userbox->refresh();
 	
-	UserListElement ule = userlist.byComment(username);
+	UserListElement ule = userlist.byAltNick(username);
 	gg_remove_notify(&sess, ule.uin);
     	userlist.removeUser(ule.uin);
 
@@ -766,7 +766,7 @@ void Kadu::commandParser (int command) {
 			msg->show();
 			break;
 		case 2:
-			uin = userlist.byComment(userbox->currentText()).uin;
+			uin = userlist.byAltNick(userbox->currentText()).uin;
 			uins.resize(1);
 			uins[0] = uin;
 			openChat(uins);
@@ -780,12 +780,12 @@ void Kadu::commandParser (int command) {
 			break;
 		case 5:
 			History *hb;
-			hb =new History(userlist.byComment(userbox->currentText()).uin);
+			hb =new History(userlist.byAltNick(userbox->currentText()).uin);
 			hb->show();
 			break;
 		case 6:
 			UserInfo *ui;
-			ui = new UserInfo("user info", 0, userlist.byComment(userbox->currentText()).uin);
+			ui = new UserInfo("user info", 0, userlist.byAltNick(userbox->currentText()).uin);
 			ui->show();
 			break;
 		case 7:
@@ -842,7 +842,7 @@ void Kadu::commandParser (int command) {
 			close(true);
 			break;
 		case 17:
-			sd = new SearchDialog(0,i18n("User info"), userlist.byComment(userbox->currentText()).uin);
+			sd = new SearchDialog(0,i18n("User info"), userlist.byAltNick(userbox->currentText()).uin);
 			sd->show();
 			sd->doSearch();
 			break;
@@ -867,7 +867,7 @@ void Kadu::commandParser (int command) {
 			break;
 		case 22:
 			struct gg_dcc *dcc_new;		
-			user = userlist.byComment(userbox->currentText());
+			user = userlist.byAltNick(userbox->currentText());
 			
 			dccSocketClass *dcc;
 			if (user.port >= 10) {
@@ -917,7 +917,7 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 	msg = loader->loadIcon("mail_generic", KIcon::Small);
 
 	UserListElement user;
-	user = userlist.byComment(item->text());
+	user = userlist.byAltNick(item->text());
 
 	pm->insertItem(msg, i18n("Send message"), 1);
 	pm->insertItem(i18n("Open chat window"), 2);
@@ -953,7 +953,7 @@ void Kadu::sendMessage(QListBoxItem *item) {
 	rMessage *rmsg;
 	Message *msg;
     
-	uin_t uin = userlist.byComment(item->text()).uin;
+	uin_t uin = userlist.byAltNick(item->text()).uin;
 	for (i = 0; i < pending.size(); i++)
 		if ((*pending[i].uins)[0] == uin)
 			if (pending[i].msgclass == GG_CLASS_CHAT) {
@@ -1594,7 +1594,7 @@ void DockWidget::mousePressEvent(QMouseEvent * e) {
 					if (!stop) {
 						rMessage *rmsg;
 						rmsg = new rMessage(
-							userlist.byUin((*pending[i].uins)[0]).comment, i);
+							userlist.byUin((*pending[i].uins)[0]).altnick, i);
 						rmsg->show();
 						}
 					return;

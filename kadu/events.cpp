@@ -71,7 +71,7 @@ void eventRecvMsg(int msgclass, QArray<uin_t> senders, unsigned char * msg, time
 	cp_to_iso(msg);
 
 	QString nick;
-	nick = userlist.byUin(senders[0]).comment;
+	nick = userlist.byUin(senders[0]).altnick;
 
 	if (config.logmessages && senders[0] != config.uin)
 		appendHistory(senders[0], msg, FALSE, time);
@@ -178,7 +178,7 @@ void ChangeUserStatus(uin_t uin, unsigned int new_status) {
 			if ((*pending[j].uins)[0] == uin)
 				return;
 
-	if (!tmpstr.compare(userlist.byUin(uin).comment)) {
+	if (!tmpstr.compare(userlist.byUin(uin).altnick)) {
 	    QPixmap * gg_st;
 	    if (new_status == GG_STATUS_AVAIL)
 		gg_st = new QPixmap((const char**)gg_act_xpm);
@@ -206,7 +206,7 @@ void ChangeUserStatus(uin_t uin, unsigned int new_status) {
 					else
 					    gg_st = new QPixmap((const char**)gg_inact_xpm);
 
-	    kadu->userbox->changeItem(*gg_st, userlist.byUin(uin).comment, i);
+	    kadu->userbox->changeItem(*gg_st, userlist.byUin(uin).altnick, i);
 	    delete gg_st;
 	    }
 		}
@@ -222,7 +222,7 @@ void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)
 
 		if (config.notifydialog) {		
 			char mes[512];
-			snprintf(mes, sizeof(mes), i18n("User %s is available"), (const char *)userlist.byUin(uin).comment.local8Bit());
+			snprintf(mes, sizeof(mes), i18n("User %s is available"), (const char *)userlist.byUin(uin).altnick.local8Bit());
 			QMessageBox::information(0, i18n("User notify"), mes);		
 			}
 

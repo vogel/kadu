@@ -151,7 +151,7 @@ void dccSocketClass::askAccept(void) {
 
 	fprintf(stderr,"KK dccSocketClass::askAccept\n");
 	str.append(i18n("User "));
-	str.append(userlist.byUin(dccsock->peer_uin).comment);
+	str.append(userlist.byUin(dccsock->peer_uin).altnick);
 	str.append(i18n(" wants to send us a file "));
 	str.append((char *)dccsock->file_info.filename);
 	str.append(i18n("\nof size "));
@@ -252,7 +252,7 @@ void DccGet::printFileInfo(struct gg_dcc *dccsock) {
 		sender.append(i18n("Sender: "));
 	else
 		sender.append(i18n("Receiver: "));
-	sender.append(userlist.byUin(dccsock->peer_uin).comment);
+	sender.append(userlist.byUin(dccsock->peer_uin).altnick);
 	l_sender->setText(sender);
 
 	QLabel *l_filename = new QLabel(vbox1);
