@@ -21,7 +21,7 @@
 
 UserInfo::UserInfo (const QString &name, QDialog *parent , const QString &altnick)
 : QTabDialog(parent, name) {
-	resize(200,200);
+	resize(350,200);
 	setCaption(i18n("User info on %1").arg(altnick));
 	setWFlags(Qt::WDestructiveClose);
 
@@ -38,36 +38,47 @@ UserInfo::UserInfo (const QString &name, QDialog *parent , const QString &altnic
 
 	connect(this, SIGNAL(applyButtonPressed()), this, SLOT(writeUserlist()));
 	connect(this, SIGNAL(cancelButtonPressed()), this, SLOT(close()));
-
 }
 
 void UserInfo::setupTab1() {
 	QVBox *box = new QVBox(this);
 	box->setMargin(10);
 
-	QLabel *l_uin = new QLabel(i18n("Uin"),box);
-	e_uin = new QLineEdit(box);
+	QHBox *hbox1 = new QHBox(box);
+	hbox1->setSpacing(10);
+	QVBox *vbox11 = new QVBox(hbox1);
+	QLabel *l_uin = new QLabel(i18n("Uin"), vbox11);
+	e_uin = new QLineEdit(vbox11);
+	QVBox *vbox12 = new QVBox(hbox1);
+	QLabel *l_status = new QLabel(i18n("Status"), vbox12);
+	QLineEdit *e_status = new QLineEdit(vbox12);
 
-	QLabel *l_status = new QLabel(i18n("Status"),box);
-	QLineEdit *e_status = new QLineEdit(box);
+	QHBox *hbox2 = new QHBox(box);
+	hbox2->setSpacing(10);
+	QVBox *vbox21 = new QVBox(hbox2);
+	QLabel *l_nickname = new QLabel(i18n("Nickname"), vbox21);
+	e_nickname = new QLineEdit(puser->nickname, vbox21);
+	QVBox *vbox22 = new QVBox(hbox2);
+	QLabel *l_altnick = new QLabel(i18n("AltNick"), vbox22);
+	e_altnick = new QLineEdit(puser->altnick, vbox22);
 
-	QLabel *l_nickname = new QLabel(i18n("Nickname"),box);
-	e_nickname = new QLineEdit(puser->nickname,box);
+	QHBox *hbox3 = new QHBox(box);
+	hbox3->setSpacing(10);
+	QVBox *vbox31 = new QVBox(hbox3);
+	QLabel *l_firstname = new QLabel(i18n("First name"), vbox31);
+	e_firstname = new QLineEdit(puser->first_name, vbox31);
+	QVBox *vbox32 = new QVBox(hbox3);
+	QLabel *l_lastname = new QLabel(i18n("Surname"), vbox32);
+	e_lastname = new QLineEdit(puser->last_name, vbox32);
 
-	QLabel *l_firstname = new QLabel(i18n("First name"),box);
-	e_firstname = new QLineEdit(puser->first_name,box);
-
-	QLabel *l_lastname = new QLabel(i18n("Surname"),box);
-	e_lastname = new QLineEdit(puser->last_name,box);
-
-	QLabel *l_altnick = new QLabel(i18n("AltNick"),box);
-	e_altnick = new QLineEdit(puser->altnick,box);
-
-	QLabel *l_mobile = new QLabel(i18n("Mobile"),box);
-	e_mobile = new QLineEdit(puser->mobile,box);
-
-	QLabel *l_group = new QLabel(i18n("Group"),box);
-	e_group = new QLineEdit(puser->group,box);
+	QHBox *hbox4 = new QHBox(box);
+	hbox4->setSpacing(10);
+	QVBox *vbox41 = new QVBox(hbox4);
+	QLabel *l_mobile = new QLabel(i18n("Mobile"), vbox41);
+	e_mobile = new QLineEdit(puser->mobile, vbox41);
+	QVBox *vbox42 = new QVBox(hbox4);
+	QLabel *l_group = new QLabel(i18n("Group"), vbox42);
+	e_group = new QLineEdit(puser->group, vbox42);
 
 	QLabel *l_addr = new QLabel(i18n("Address IP and Port"),box);
 	e_addr = new QLineEdit(box);
