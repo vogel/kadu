@@ -181,6 +181,7 @@ ModulesManager::ModulesManager() : QObject()
 	//
 	Dialog=NULL;
 	//
+	loadStaticModulesTranslations();
 	initStaticModules();
 	//
 	QString loaded_str=config_file.readEntry("General", "LoadedModules");
@@ -203,6 +204,28 @@ ModulesManager::~ModulesManager()
 		unloadModule(loaded[i], true);
 	//
 	closeStaticModules();
+}
+
+QTranslator* ModulesManager::loadModuleTranslation(const QString& module_name)
+{
+	QTranslator* translator=new QTranslator(0);
+	if(translator->load(QString(DATADIR) + QString("/kadu/modules/translations/")+module_name+QString("_") + config_file.readEntry("General", "Language", QTextCodec::locale()), "."))
+	{
+		qApp->installTranslator(translator);
+		return translator;
+	}
+	else
+	{
+		delete translator;
+		return NULL;
+	}
+}
+
+void ModulesManager::loadStaticModulesTranslations()
+{
+	QStringList modules=staticModules();
+	for(QStringList::const_iterator i=modules.begin(); i!=modules.end(); i++)
+		loadModuleTranslation(*i);
 }
 
 QStringList ModulesManager::staticModules()
@@ -336,16 +359,7 @@ bool ModulesManager::loadModule(const QString& module_name)
 		m.info=modinfo;
 	}
 
-	m.translator=new QTranslator(0);
-	if(m.translator->load(QString(DATADIR) + QString("/kadu/modules/translations/")+module_name+QString("_") + config_file.readEntry("General", "Language", QTextCodec::locale()), "."))
-	{
-		qApp->installTranslator(m.translator);
-	}
-	else
-	{
-		delete m.translator;
-		m.translator=NULL;
-	}
+	m.translator = loadModuleTranslation(module_name);
 
 	int res=init();
 	if(res!=0)

@@ -64,6 +64,16 @@ class ModulesManager : public QObject
 		ModulesDialog* Dialog;
 		void initStaticModules();
 		void closeStaticModules();
+		/**
+			£aduje plik z t³umaczeniem. Zwraca NULL je¶li wyst±pi³
+			b³±d.
+		**/
+		QTranslator* loadModuleTranslation(const QString& module_name);
+		/**
+			£aduje pliki t³umaczeñ dla wszystkich wkompilowanych
+			modu³ów.
+		**/
+		void loadStaticModulesTranslations();
 
 	private slots:
 		void dialogDestroyed();
