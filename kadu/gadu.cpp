@@ -57,6 +57,9 @@ ConnectionTimeoutTimer *ConnectionTimeoutTimer::connectiontimeout_object = NULL;
 
 AutoConnectionTimer::AutoConnectionTimer(QObject *parent, const char *name) : QTimer(parent, name)
 {
+	doConnect(); // czasami GaduSocketNotifiers::dataSent wywolywane 
+		     // jest przed doConnect() (Snw== NULL) co powoduje 
+    		     // segfaulta
 	connect(this, SIGNAL(timeout()), SLOT(doConnect()));
 	start(1000, TRUE);
 }
