@@ -762,6 +762,8 @@ void ConfigDialog::setupTab4(void) {
 		i++;
 		}
 
+	e_availusers->sort();
+	e_notifies->sort();
 
 	QObject::connect(_goRight, SIGNAL(clicked()), this, SLOT(_Right()));
 	QObject::connect(_goLeft, SIGNAL(clicked()), this, SLOT(_Left()));
@@ -1184,6 +1186,7 @@ void ConfigDialog::_Left(void) {
 	if (e_notifies->currentItem() != -1) {
 		e_availusers->insertItem(e_notifies->text(e_notifies->currentItem()));
 		e_notifies->removeItem(e_notifies->currentItem());
+		e_availusers->sort();
 		}
 }
 
@@ -1191,6 +1194,7 @@ void ConfigDialog::_Right(void) {
 	if (e_availusers->currentItem() != -1) {
 		e_notifies->insertItem(e_availusers->text(e_availusers->currentItem()));
 		e_availusers->removeItem(e_availusers->currentItem());
+		e_notifies->sort();
 		}
 }
 
