@@ -1,4 +1,4 @@
-/* $Id: common.c,v 1.14 2002/12/16 22:54:39 adrian Exp $ */
+/* $Id: common.c,v 1.15 2002/12/26 16:18:40 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>,
@@ -84,7 +84,7 @@ char *gg_vsaprintf(const char *format, va_list ap)
 
 	start = format; 
 
-#ifndef HAVE_C99_VSNPRINTF
+#ifndef __GG_LIBGADU_HAVE_C99_VSNPRINTF
 	{
 		int res;
 		char *tmp;
