@@ -14,7 +14,9 @@ ignore.cpp ignore.h \
 kadu.cpp kadu.h \
 main.cpp \
 message.cpp message.h \
+misc.cpp misc.h \
 network.cpp \
+pending_msgs.cpp pending_msgs.h \
 personal_info.cpp personal_info.h \
 pixmaps.h \
 register.cpp register.h \
@@ -22,7 +24,7 @@ search.cpp search.h \
 sms.cpp sms.h \
 userbox.cpp userbox.h \
 userinfo.cpp userinfo.h \
-userlist.cpp
+userlist.cpp userlist.h
 
 METASOURCES = AUTO
 
