@@ -1915,7 +1915,7 @@ void Kadu::cleanUp(void) {
 	config.splitsize.setHeight(descrtb->size().height());
 	config.geometry = geometry();
 	saveKaduConfig();
-	printf("cleanUp(): Saved config and ...\n");
+	kdebug("cleanUp(): Saved config and ...\n");
 	writeIgnored(NULL);
 }
 
@@ -2013,7 +2013,7 @@ void Kadu::closeEvent(QCloseEvent *e) {
 		hide();
 		}
 	else {
-		printf("closeEvent(): Graceful shutdown...\n");
+		kdebug("closeEvent(): Graceful shutdown...\n");
 		e->accept();
 		}
 }
