@@ -207,6 +207,7 @@ void OSSPlayThread::run()
 		}//end if (sound->isOk())
 		mutex.unlock();
 		kdebugm(KDEBUG_INFO, "unlocked\n");
+		delete sound;
 	}//end while(!end)
 	kdebugf2();
 }
