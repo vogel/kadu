@@ -232,7 +232,7 @@ void UserlistImportExport::userListImported(bool ok, UserList& userList)
 	pb_fetch->setEnabled(true);
 
 	if (ok)
-		FOREACH(user, userlist)
+		FOREACH(user, userList)
 			new QListViewItem(lv_userlist, (*user).uin() ? QString::number((*user).uin()) : QString(), (*user).nickName(),
 				(*user).altNick(), (*user).firstName(), (*user).lastName(), (*user).mobile(), (*user).group(), (*user).email());
 	kdebugf2();

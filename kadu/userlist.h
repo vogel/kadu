@@ -30,6 +30,12 @@ class DnsHandler : public QObject
 		void result(const QString &hostname);
 };
 
+enum NotifyType {
+	GLOBAL = 0,
+	OFF = 1,
+	OWN = 2
+};
+
 class UserListElement : public QObject
 {
 	Q_OBJECT
@@ -52,6 +58,14 @@ class UserListElement : public QObject
 		bool Blocking;
 		bool OfflineTo;
 		bool Notify;
+		
+		NotifyType AliveSound;
+		QString OwnAliveSound;
+
+		NotifyType MessageSound;
+		QString OwnMessageSound;
+		
+		QString HomePhone;
 
 		UserList *Parent;
 		friend class UserList;
@@ -73,6 +87,10 @@ class UserListElement : public QObject
 		void setOfflineTo(const bool offlineTo);
 		void setNotify(const bool notify);
 
+		void setHomePhone(const QString &phone);
+		void setAliveSound(NotifyType type, const QString &file="");
+		void setMessageSound(NotifyType type, const QString &file="");
+
 	public:
 		UserListElement(UserList* parent);
 		UserListElement(const UserListElement &copyMe);
@@ -91,6 +109,9 @@ class UserListElement : public QObject
 		QString mobile() const;
 		QString email() const;
 		UinType uin() const;
+		QString homePhone() const;
+		QString aliveSound(NotifyType &type) const;
+		QString messageSound(NotifyType &type) const;
 
 		const UserStatus & status() const;
 		UserStatus & status();

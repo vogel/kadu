@@ -65,6 +65,8 @@ UserListElement::UserListElement(UserList* parent)
 	Notify = true;
 	Anonymous = false;
 	Uin = 0;
+	AliveSound = GLOBAL;
+	MessageSound = GLOBAL;
 	// TODO: zuniwersalizowaæ
 	Stat = new GaduStatus();
 //	kdebugf2();
@@ -92,6 +94,8 @@ UserListElement::UserListElement()
 	Notify = true;
 	Anonymous = false;
 	Uin = 0;
+	AliveSound = GLOBAL;
+	MessageSound = GLOBAL;
 	// TODO: zuniwersalizowaæ
 	Stat = new GaduStatus();
 //	kdebugf2();
@@ -100,6 +104,66 @@ UserListElement::UserListElement()
 UserListElement::~UserListElement()
 {
 	delete Stat;
+}
+
+QString UserListElement::homePhone() const
+{
+	return HomePhone;
+}
+
+void UserListElement::setHomePhone(const QString &phone)
+{
+	if (phone == HomePhone)
+		return;
+
+	UserListElement old = *this;
+	HomePhone = phone;
+	if (Parent)
+		emit Parent->userDataChanged(&old, this);
+}
+
+QString UserListElement::aliveSound(NotifyType &type) const
+{
+	type = AliveSound;
+	return OwnAliveSound;
+}
+
+void UserListElement::setAliveSound(NotifyType type, const QString &file)
+{
+	if (type == AliveSound && file == OwnAliveSound)
+		return;
+
+	UserListElement old = *this;
+	AliveSound = type;
+	if (type == OWN)
+		OwnAliveSound = file;
+	else
+		OwnAliveSound = QString::null;
+
+	if (Parent)
+		emit Parent->userDataChanged(&old, this);
+}
+
+QString UserListElement::messageSound(NotifyType &type) const
+{
+	type = MessageSound;
+	return OwnMessageSound;
+}
+
+void UserListElement::setMessageSound(NotifyType type, const QString &file)
+{
+	if (type == MessageSound && file == OwnMessageSound)
+		return;
+
+	UserListElement old = *this;
+	MessageSound = type;
+	if (type == OWN)
+		OwnMessageSound = file;
+	else
+		OwnMessageSound = QString::null;
+
+	if (Parent)
+		emit Parent->userDataChanged(&old, this);
 }
 
 QString UserListElement::group() const
@@ -411,6 +475,13 @@ void UserListElement::operator = (const UserListElement &copyMe)
 	Mobile = copyMe.Mobile;
 	Email = copyMe.Email;
 	Uin = copyMe.Uin;
+
+	AliveSound = copyMe.AliveSound;
+	OwnAliveSound = copyMe.OwnAliveSound;
+	MessageSound = copyMe.MessageSound;
+	OwnMessageSound = copyMe.OwnMessageSound;
+	HomePhone = copyMe.HomePhone;
+	
 //	kdebugf2();
 }
 
@@ -541,6 +612,7 @@ void UserList::addAnonymous(UinType uin)
 	e.setUin(uin);
 	e.setGroup("");
 	e.setEmail("");
+	e.setHomePhone("");
 	e.setAnonymous(true);
 	addUser(e);
 	kdebugf2();
@@ -596,55 +668,24 @@ bool UserList::writeToFile(QString filename)
 	kdebugmf(KDEBUG_INFO, "%s\n", filename.local8Bit().data());
 
 	QFile f(filename);
-
 	if (!f.open(IO_WriteOnly))
 	{
 		kdebugmf(KDEBUG_ERROR, "Error opening file :(\n");
 		return false;
 	}
-
-	QString s;
-	QCString str;
-	for (Iterator i = begin(); i != end(); ++i)
-	{
-		s.truncate(0);
-		s.append((*i).firstName())
-			.append(QString(";"))
-			.append((*i).lastName())
-			.append(QString(";"))
-			.append((*i).nickName())
-			.append(QString(";"))
-			.append((*i).altNick())
-			.append(QString(";"))
-			.append((*i).mobile())
-			.append(QString(";"));
-		tmp = (*i).group();
-		tmp.replace(QRegExp(","), ";");
-		s.append(tmp)
-			.append(QString(";"));
-		if ((*i).uin())
-			s.append(QString::number((*i).uin()));
-		s.append(QString(";"))
-			.append((*i).email())
-			.append(QString("\r\n"));
-
-		if (!(*i).isAnonymous())
-		{
-			kdebugm(KDEBUG_INFO, "%s", s.local8Bit().data());
-			str = QTextCodec::codecForName("ISO 8859-2")->fromUnicode(s);
-			f.writeBlock(str, str.length());
-		}
-	}
+	QCString str = QTextCodec::codecForName("ISO 8859-2")->fromUnicode(gadu->userListToString(*this));
+	f.writeBlock(str, str.length());
 	f.close();
 
-	QFile fa(faname);
 
+	QFile fa(faname);
 	if (!fa.open(IO_WriteOnly))
 	{
 		kdebugmf(KDEBUG_ERROR, "Error opening file :(\n");
 		return false;
 	}
 
+	QString s;
 	for (Iterator i = begin(); i != end(); ++i)
 	{
 		s.truncate(0);
@@ -674,12 +715,10 @@ bool UserList::readFromFile()
 {
 	kdebugf();
 	QString path;
-	QValueList<QStringList> ualist;
+	QMap<UinType, QStringList> attrs;
 	QStringList userattribs,groupnames;
 	QString line;
 	UserListElement e;
-	int groups, i;
-	bool ok;
 
 	path = ggPath("userattribs");
 	kdebugmf(KDEBUG_INFO, "Opening userattribs file: %s\n",
@@ -695,7 +734,7 @@ bool UserList::readFromFile()
 			QStringList slist;
 			slist = QStringList::split(';', line);
 			if (slist.count() == 4)
-				ualist.append(slist);
+				attrs[slist[0].toULong()] = slist;
 		}
 		fa.close();
 	}
@@ -712,83 +751,24 @@ bool UserList::readFromFile()
 
 	kdebugmf(KDEBUG_INFO, "File opened successfuly\n");
 
-	clear();
-
 	QTextStream t(&f);
 	t.setCodec(QTextCodec::codecForName("ISO 8859-2"));
-	while ((line = t.readLine()).length())
-	{
-		if (line[0] == '#')
-			continue;
+	gadu->streamToUserList(t, *this);
 
-		if (line.find(';') < 0)
+	FOREACH(user, *this)
+	{
+		UinType uin = user.data().uin();
+		if (attrs.contains(uin))
 		{
-			QString nickname = line.section(' ',0,0);
-			QString uin = line.section(' ',1,1);
-			if (uin.isEmpty())
-				continue;
-			e.setFirstName("");
-			e.setLastName("");
-			e.setNickName(nickname);
-			e.setAltNick(nickname);
-			e.setMobile("");
-			e.setUin(uin.toUInt(&ok));
-			if (!ok)
-				e.setUin(0);
-			e.setGroup("");
-			e.setEmail("");
-			e.setBlocking(false);
-			e.setOfflineTo(false);
-			e.setNotify(true);
-			e.status().setOffline();
-			addUser(e);
+			user.data().setBlocking(attrs[uin][1]=="true");
+			user.data().setOfflineTo(attrs[uin][2]=="true");
+			user.data().setNotify(attrs[uin][3]=="true");
 		}
 		else
 		{
-			userattribs = QStringList::split(";", line, true);
-			kdebugmf(KDEBUG_INFO, "userattribs = %d\n", userattribs.count());
-			if (userattribs.count() >= 12)
-				groups = userattribs.count() - 11;
-			else
-				groups = userattribs.count() - 7;
-			e.setFirstName(userattribs[0]);
-			e.setLastName(userattribs[1]);
-			e.setNickName(userattribs[2]);
-			e.setAltNick(userattribs[3]);
-			e.setMobile(userattribs[4]);
-			groupnames.clear();
-			for (i = 0; i < groups; ++i)
-				groupnames.append(userattribs[5 + i]);
-			e.setGroup(groupnames.join(","));
-			e.setUin(userattribs[5 + groups].toUInt(&ok));
-			if (!ok)
-				e.setUin(0);
-			e.setEmail(userattribs[6 + groups]);
-
-			if (e.altNick().isEmpty())
-				if (e.nickName().isEmpty())
-					e.setAltNick(e.firstName());
-				else
-					e.setAltNick(e.nickName());
-
-			QValueList<QStringList>::Iterator i = ualist.begin();
-			while ((*i)[0].toUInt() != e.uin() && i != ualist.end())
-				++i;
-			if (i != ualist.end())
-			{
-				e.setBlocking(((*i)[1] == "true"));
-				e.setOfflineTo(((*i)[2] == "true"));
-				e.setNotify(((*i)[3] == "true"));
-			}
-			else
-			{
-				e.setBlocking(false);
-				e.setOfflineTo(false);
-				e.setNotify(false);
-			}
-
-			e.status().setOffline();
-			addUser(e);
+			user.data().setBlocking(false);
+			user.data().setOfflineTo(false);
+			user.data().setNotify(false);
 		}
 	}
 

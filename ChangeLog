@@ -415,6 +415,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   oraz poprawne ustawianie domy¶lnych kolorów dymków (joi)
 * Dorregaray: checkbox w oknie wysy³ania smsa okre¶laj±cy czy powinien zostaæ
   zapisany do historii (joi)
+* poprawiony import listy kontaktów z serwera (przepisane od nowa parsowanie
+  pliku listu - teraz czytamy j± zawsze od lewej do prawej; warto¶ci nowych pól
+  s± zachowywane przy imporcie/eksporcie, mimo ¿e nie wykorzystywane) (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,

@@ -985,6 +985,13 @@ void GaduProtocol::iWantGoOffline(const QString &desc)
 {
 	kdebugf();
 
+/* joi: jeszcze siê zastanawiam nad tym kawa³kiem kodu...
+	if (CurrentStatus->isOffline() && whileConnecting)
+	{
+		logout();//ustawia m.in. whileConnecting na false
+		return;
+	}*/
+
 	if (CurrentStatus->isOffline())
 		return;
 
@@ -2023,34 +2030,38 @@ void GaduProtocol::gotToken(QString tokenId, QPixmap tokenImage)
 QString GaduProtocol::userListToString(const UserList& userList) const
 {
 	kdebugf();
-	QString contacts(""), tmp;
+	NotifyType type;
+	QString file;
+	QString contacts, tmp;
 
 	for (UserList::ConstIterator i = userList.begin(); i != userList.end(); ++i)
 		if (!(*i).isAnonymous())
 		{
-			contacts += (*i).firstName();
-			contacts += ";";
-			contacts += (*i).lastName();
-			contacts += ";";
-			contacts += (*i).nickName();
-			contacts += ";";
-			contacts += (*i).altNick();
-			contacts += ";";
-			contacts += (*i).mobile();
-			contacts += ";";
+			contacts += (*i).firstName();					contacts += ";";
+			contacts += (*i).lastName();					contacts += ";";
+			contacts += (*i).nickName();					contacts += ";";
+			contacts += (*i).altNick();						contacts += ";";
+			contacts += (*i).mobile();						contacts += ";";
 			tmp = (*i).group();
 			tmp.replace(QRegExp(","), ";");
-			contacts += tmp;
-			contacts += ";";
+			contacts += tmp;								contacts += ";";
 			if ((*i).uin())
-				contacts += QString::number((*i).uin());
-			contacts += ";";
-			contacts += (*i).email();
-			contacts += ";0;;0;\r\n";
+				contacts += QString::number((*i).uin());	contacts += ";";
+			contacts += (*i).email();						contacts += ";";
+			file = (*i).aliveSound(type);
+			contacts += QString::number(type);				contacts += ";";
+			contacts += file;								contacts += ";";
+			file = (*i).messageSound(type);
+			contacts += QString::number(type);				contacts += ";";
+			contacts += file;								contacts += ";";
+			contacts += QString::number((*i).offlineTo());	contacts += ";";
+			contacts += (*i).homePhone();					//contacts += ";";
+			contacts += "\r\n";
 		}
 
 	contacts.replace(QRegExp("(null)"), "");
 
+//	kdebugm(KDEBUG_DUMP, "%s\n", contacts.local8Bit().data());
 	kdebugf2();
 	return contacts;
 }
@@ -2068,46 +2079,73 @@ void GaduProtocol::streamToUserList(QTextStream& stream, UserList& userList) con
 	UserListElement e;
 	QStringList sections, groupNames;
 	QString line;
-	int groups, i;
+	unsigned int i, secCount;
 	bool ok;
 
+	userList.clear();
 	stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
 
 	while (!stream.eof())
 	{
 		line = stream.readLine();
+//		kdebugm(KDEBUG_DUMP, ">>%s\n", line.local8Bit().data());
 		sections = QStringList::split(";", line, true);
+		secCount = sections.count();
 
-		// patrz kilka linijek ni¿ej...
-		if (sections.count() < 12)
+		if (sections.count() < 8)
 			continue;
 
-		if (sections[6] == "0")
-			sections[6].truncate(0);
 		e.setFirstName(sections[0]);
 		e.setLastName(sections[1]);
 		e.setNickName(sections[2]);
 		e.setAltNick(sections[3]);
 		e.setMobile(sections[4]);
 
-		// w gg 6.1 dosz³y nowe pola
-		if (sections.count() >= 14)
-			groups = sections.count() - 13;
-		else
-			groups = sections.count() - 11;
-		// patrz kilka linijek wy¿ej
-//		else
-//			groups = sections.count() - 7;
-
 		groupNames.clear();
-		for (i = 0; i < groups; ++i)
-			groupNames.append(sections[5 + i]);
-		e.setGroup(groupNames.join(","));
-		e.setUin(sections[5 + groups].toUInt(&ok));
-		if (!ok)
-			e.setUin(0);
+		if (!sections[5].isEmpty())
+			groupNames.append(sections[5]);
 
-		e.setEmail(sections[6 + groups]);
+		i = 6;
+		ok = false;
+		while (!ok && i < secCount)
+		{
+//			kdebugm(KDEBUG_DUMP, "checking: '%s'\n", sections[i].local8Bit().data());
+			sections[i].toULong(&ok);
+			ok = ok || sections[i].isEmpty();
+			if (!ok)
+			{
+//				kdebugm(KDEBUG_DUMP, "adding: '%s'\n", sections[i].local8Bit().data());
+				groupNames.append(sections[i]);
+			}
+			++i;
+		}
+		e.setGroup(groupNames.join(","));
+		--i;
+
+		if (i < secCount)
+		{
+			e.setUin(sections[i++].toULong(&ok));
+			if (!ok)
+				e.setUin(0);
+		}
+
+		if (i < secCount)
+			e.setEmail(sections[i++]);
+		if (i+1 < secCount)
+		{
+			e.setAliveSound((NotifyType)sections[i].toInt(), sections[i+1]);
+			i+=2;
+		}
+		if (i+1 < secCount)
+		{
+			e.setMessageSound((NotifyType)sections[i].toInt(), sections[i+1]);
+			i+=2;
+		}
+		if (i < secCount)
+			e.setOfflineTo(sections[i++].toInt());
+		if (i < secCount)
+			e.setHomePhone(sections[i++]);
+
 		userList.addUser(e);
 	}
 	kdebugf2();
