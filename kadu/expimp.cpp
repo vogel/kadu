@@ -169,31 +169,28 @@ void UserlistImport::socketEvent() {
 
 	if (gg_userlist_get_watch_fd(gg_http) < 0) {
 		fetchbtn->setEnabled(true);
+		deleteSocketNotifiers();
 		fprintf(stderr,"KK ImportUserlist::socketEvent(): gg_userlist_get_watch_fd() error. bailing out.\n");
 		QMessageBox::critical(this, "Import error", i18n("The application encountered a network error\nThe import was unsuccessful") );
-		deleteSocketNotifiers();
 		gg_userlist_get_free(gg_http);
 		gg_http = NULL;
 		return;
 		}
 
 	if (gg_http->state == GG_STATE_CONNECTING) {
-		fprintf(stderr, "KK ImportUserlist::socketEvent(): changing QSocketNotifiers.\n");
-
+		fprintf(stderr, "KK ImportUserlist::socketEvent(): changing QSocketNotifiers.\n");		
 		deleteSocketNotifiers();
-
 		snr = new QSocketNotifier(gg_http->fd, QSocketNotifier::Read, this);
 		connect(snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
-
 		snw = new QSocketNotifier(gg_http->fd, QSocketNotifier::Write, this);
 		connect(snw, SIGNAL(activated(int)), this, SLOT(dataSent()));
 		}
 
 	if (gg_http->state == GG_STATE_DONE && gg_http->data == NULL) {
 		fprintf(stderr, "KK ImportUserlist::socketEvent(): No results. Exit.\n");
+		deleteSocketNotifiers();
 		QMessageBox::information(this, "No results", i18n("Your action yielded no results") );
 		fetchbtn->setEnabled(true);
-		deleteSocketNotifiers();
 		gg_userlist_get_free(gg_http);
 		gg_http = NULL;
 		return;
@@ -201,9 +198,9 @@ void UserlistImport::socketEvent() {
 
 	if (gg_http->state == GG_STATE_ERROR) {
 		fetchbtn->setEnabled(true);
+		deleteSocketNotifiers();
 		fprintf(stderr,"KK ImportUserlist::socketEvent(): gg_userlist_get_watch_fd() error. bailing out.\n");
 		QMessageBox::critical(this, "Import error", i18n("The application encountered a network error\nThe import was unsuccessful") );
-		deleteSocketNotifiers();
 		gg_userlist_get_free(gg_http);
 		gg_http = NULL;
 		return;
@@ -371,9 +368,9 @@ void UserlistExport::socketEvent() {
 
 	if (gg_userlist_put_watch_fd(gg_http) < 0) {
 		sendbtn->setEnabled(true);
+		deleteSocketNotifiers();
 		fprintf(stderr,"KK ExportUserlist::socketEvent(): gg_userlist_put_watch_fd() error. bailing out.\n");
 		QMessageBox::critical(this, "Export error", i18n("The application encountered a network error\nThe export was unsuccessful") );
-		deleteSocketNotifiers();
 		gg_userlist_put_free(gg_http);
 		gg_http = NULL;
 		return;
@@ -383,7 +380,6 @@ void UserlistExport::socketEvent() {
 		fprintf(stderr, "KK ExportUserlist::socketEvent(): changing QSocketNotifiers.\n");
 
 		deleteSocketNotifiers();
-
 		snr = new QSocketNotifier(gg_http->fd, QSocketNotifier::Read, this);
 		connect(snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
 
@@ -393,9 +389,9 @@ void UserlistExport::socketEvent() {
 
 	if (gg_http->state == GG_STATE_ERROR) {
 		sendbtn->setEnabled(true);
+		deleteSocketNotifiers();
 		fprintf(stderr,"KK ExportUserlist::socketEvent(): gg_userlist_put_watch_fd() error. bailing out.\n");
 		QMessageBox::critical(this, "Export error", i18n("The application encountered a network error\nThe export was unsuccessful") );
-		deleteSocketNotifiers();
 		gg_userlist_put_free(gg_http);
 		gg_http = NULL;
 		return;
@@ -404,8 +400,8 @@ void UserlistExport::socketEvent() {
 	if (gg_http->state == GG_STATE_DONE) {
 		sendbtn->setEnabled(true);
 		fprintf(stderr,"KK Export Done\n");
+		deleteSocketNotifiers();
 		QMessageBox::information(this, "Export complete", i18n("Your userlist has been successfully exported to server") );
-		deleteSocketNotifiers();				
 		gg_userlist_put_free(gg_http);
 		gg_http = NULL;
 		return;
