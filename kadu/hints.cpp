@@ -155,14 +155,14 @@ Hint::~Hint(void)
 
 	if (icon != NULL)
 	{
-		#if QT_VERSION < 0x030100
-			icon->hide();
-		#endif
+#if QT_VERSION < 0x030100
+		icon->hide();
+#endif
 		icon->deleteLater();
 	}
-	#if QT_VERSION < 0x030100
+#if QT_VERSION < 0x030100
 	label->hide();
-	#endif
+#endif
 	label->deleteLater();
 }
 
@@ -233,10 +233,7 @@ void HintManager::oneSecond(void)
 
 	for (unsigned int i = 0; i < hints.count(); i++)
 		if (!(hints.at(i)->nextSecond()))
-		{
-			deleteHint(i);
-			i--;
-		}
+			deleteHint(i--);
 }
 
 void HintManager::leftButtonSlot(unsigned int id)
@@ -291,9 +288,8 @@ void HintManager::openChat(unsigned int id)
 {
 	kdebugf();
 	UinsList senders=hints.at(id)->getUins();
-	if(senders.size()!=0){	
+	if(senders.size()!=0)
 		chat_manager->openPendingMsgs(senders);
-	}
 	deleteHint(id);
 }
 
@@ -352,7 +348,7 @@ void HintManager::addHintNewMsg(const QString &nick, const QString &msg)
 			cite = msg;
 		else
 			cite = msg.left(citeSign)+"...";
-		addHint(tr("New message from")+" <b>"+nick+"<br></b> <small>"+cite+"</small>", icons_manager.loadIcon("Message"), QFont(config[10][0], config[10][1].toInt()), QColor(config[10][2]), QColor(config[10][3]), config[10][4].toInt());
+		addHint(tr("New message from")+" <b>"+nick+"<br/></b> <small>"+cite+"</small>", icons_manager.loadIcon("Message"), QFont(config[10][0], config[10][1].toInt()), QColor(config[10][2]), QColor(config[10][3]), config[10][4].toInt());
 	}
 	else
 		addHint(tr("New message from")+" <b>"+nick+"</b>", icons_manager.loadIcon("Message"), QFont(config[10][0], config[10][1].toInt()), QColor(config[10][2]), QColor(config[10][3]), config[10][4].toInt());
@@ -373,7 +369,7 @@ void HintManager::addHintNewChat(UinsList& senders, const QString &msg)
 			cite = msg;
 		else
 			cite = msg.left(citeSign)+"...";
-		addHint(tr("Chat with")+" <b>"+nick+"<br></b> <small>"+cite+"</small>",icons_manager.loadIcon("Message"), QFont(config[9][0], config[9][1].toInt()), QColor(config[9][2]), QColor(config[9][3]), config[9][4].toInt(), &senders);
+		addHint(tr("Chat with")+" <b>"+nick+"<br/></b> <small>"+cite+"</small>",icons_manager.loadIcon("Message"), QFont(config[9][0], config[9][1].toInt()), QColor(config[9][2]), QColor(config[9][3]), config[9][4].toInt(), &senders);
 	}
 	else
 		addHint(tr("Chat with")+" <b>"+nick+"</b>",icons_manager.loadIcon("Message"), QFont(config[9][0], config[9][1].toInt()), QColor(config[9][2]), QColor(config[9][3]), config[9][4].toInt(), &senders);
@@ -406,7 +402,7 @@ void HintManager::addHintStatus(const UserListElement &ule, unsigned int status,
 			addHint(parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true), icons_manager.loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
 		else
 			if (ifStatusWithDescription(status) && config_file.readBoolEntry("Hints","NotifyHintDescription"))
-				addHint("<b>"+ule.altnick+" </b>"+tr("changed status to")+" <i>"+qApp->translate("@default", statustext[statusnr])+"</i><br> <small>"+QStyleSheet::escape(ule.description)+"</small>", icons_manager.loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
+				addHint("<b>"+ule.altnick+" </b>"+tr("changed status to")+" <i>"+qApp->translate("@default", statustext[statusnr])+"</i><br/> <small>"+QStyleSheet::escape(ule.description)+"</small>", icons_manager.loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
 			else
 				addHint("<b>"+ule.altnick+" </b>"+tr("changed status to")+" <i>"+qApp->translate("@default", statustext[statusnr])+"</i>", icons_manager.loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
 		return;
@@ -418,7 +414,7 @@ void HintManager::addHintStatus(const UserListElement &ule, unsigned int status,
 			addHint(parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true), icons_manager.loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
 		else
 			if (ifStatusWithDescription(status) && config_file.readBoolEntry("Hints","NotifyHintDescription"))
-				addHint("<b>"+ule.altnick+" </b>"+tr("is unavailable")+"<br> <small>"+QStyleSheet::escape(ule.description)+"</small>", icons_manager.loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
+				addHint("<b>"+ule.altnick+" </b>"+tr("is unavailable")+"<br/> <small>"+QStyleSheet::escape(ule.description)+"</small>", icons_manager.loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
 			else
 				addHint("<b>"+ule.altnick+" </b>"+tr("is unavailable"), icons_manager.loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
 		return;
