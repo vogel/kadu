@@ -53,7 +53,7 @@ all:
 			"module_cxxflags=$$MODULE_CXXFLAGS" \
 			"module_ldflags=$$MODULE_LDFLAGS" \
 			$$dir/$$file_name && \
-		eval "$$MODULE_MAKE_CMD" || \
+		cd $$dir && eval "$$MODULE_MAKE_CMD" && cd .. || \
 		exit 1; \
 	done && \
 	echo && \
@@ -99,13 +99,18 @@ $(module_moc_cpp_files):
 install-data-local: uninstall-local
 	$(mkinstalldirs) "$(DESTDIR)/$(includedir)/kadu/modules/"
 	$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/modules/"
-	$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/modules/translations"
+	$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/modules/translations/"
+	$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/modules/data/"
 	@for dir in $(static_modules) $(shared_modules); do \
 		echo -e "\033[32m>>>\033[0m Installing $$dir module ..."; \
 		$(INSTALL_DATA) $$dir/$$dir.desc "$(DESTDIR)/$(datadir)/kadu/modules"; \
 		$(INSTALL_DATA) $$dir/*.h "$(DESTDIR)/$(includedir)/kadu/modules"; \
 		if test -d $$dir/translations; then \
 			$(INSTALL_DATA) $$dir/translations/*.qm "$(DESTDIR)/$(datadir)/kadu/modules/translations/"; \
+		fi; \
+		if test -d $$dir/data; then \
+			$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/modules/data/$$dir"; \
+			cp -r $$dir/data/* "$(DESTDIR)/$(datadir)/kadu/modules/data/$$dir"; \
 		fi; \
 		if test -z `expr " $(static_modules) " : ".* \($$dir\) "`; then \
 			$(INSTALL_DATA) $$dir/$$dir.so "$(DESTDIR)/$(datadir)/kadu/modules/"; \
@@ -117,3 +122,4 @@ uninstall-local:
 	rm -f $(DESTDIR)/$(datadir)/kadu/modules/*.desc
 	rm -f $(DESTDIR)/$(datadir)/kadu/modules/*.so
 	rm -f $(DESTDIR)/$(datadir)/kadu/modules/translations/*.qm
+	rm -rf $(DESTDIR)/$(datadir)/kadu/modules/data/*
