@@ -56,7 +56,7 @@ UserInfo::UserInfo(const QString &name, QDialog *parent, const QString &altnick,
 	
 	QLabel *l_info = new QLabel(center);
 	l_icon->setPixmap(icons_manager.loadIcon("ManageUsersWindowIcon"));
-	l_info->setText(tr("This dialog box allows you to edit your informations about selected contact."));
+	l_info->setText(tr("This dialog box allows you to view and edit information about the selected contact."));
 	l_info->setAlignment(Qt::WordBreak);
 	// end create main QLabel widgets (icon and app info)
 	
