@@ -20,6 +20,8 @@
 #include "ignore.h"
 #include "debug.h"
 #include "pending_msgs.h"
+#include "config_dialog.h"
+#include "config_file.h"
 
 KaduListBoxPixmap::KaduListBoxPixmap(const QPixmap &pix, const QString &text)
 	: QListBoxPixmap(pix, text)
@@ -316,6 +318,8 @@ void UserBox::refresh()
 			}
 		}
 	// Dodajemy nieaktywnych
+	config_file.setGroup("Other");
+	if (config_file.readBoolEntry("ShowHideInactive"))
 	for (i = 0; i < n_users.count(); i++)
 	{
 		UserListElement &user = userlist.byAltNick(n_users[i]);
@@ -389,6 +393,13 @@ void UserBox::changeAllToInactive()
 		changeItem(*qp_inact,item(i)->text(),i);
 };
 
+void UserBox::showHideInactive()
+{	
+	config_file.setGroup("Other");
+	config_file.writeEntry("ShowHideInactive",!config_file.readBoolEntry("ShowHideInactive"));
+	refresh();
+}
+
 /////////////////////////////////////////////////////////
 
 void UserBox::all_refresh()
@@ -413,6 +424,12 @@ void UserBox::all_renameUser(const QString &oldaltnick, const QString &newaltnic
 {
 	for(int i = 0; i < UserBoxes.size(); i++)
 		UserBoxes[i]->renameUser(oldaltnick, newaltnick);	
+};
+
+void UserBox::initModule()
+{
+	ConfigDialog::registerTab(i18n("Other"));
+	ConfigDialog::registerCheckBox(i18n("Other"),i18n("Show Inactive users"),"Other","ShowHideInactive",true);
 };
 
 QValueList<UserBox *> UserBox::UserBoxes;

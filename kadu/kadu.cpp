@@ -82,6 +82,7 @@
 
 //
 #include "config_dialog.h"
+#include "config_file.h"
 #include "misc.h"
 #include "kadu.h"
 #include "userbox.h"
@@ -311,9 +312,9 @@ void Kadu::keyPressEvent(QKeyEvent *e) {
 /* a monstrous constructor so Kadu would take longer to start up */
 Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 {
+	UserBox::initModule();
 	Chat::initModule();
 	Sms::initModule();
-
 	closestatusppmtime.start();
 	lastsoundtime.start();
 
@@ -481,6 +482,13 @@ Po jakiego czorta to ?
 	setAppropriate(toolbar, true);
 	toolbar->setCloseMode(QDockWindow::Undocked);
 	toolbar->setLabel(i18n("Main toolbar"));
+
+	config_file.setGroup("Other");
+
+	QToolButton *inactivebtn = new QToolButton(*icons->loadIcon("offline"), i18n("Show / hide inactive users"),
+	QString::null, this, SLOT(showHideInactive()), toolbar, "ShowHideInactive");
+
+	
 	QIconSet *mu;
 	if (mute)
 	{mu= new QIconSet(loadIcon("mute.png"));}
@@ -559,9 +567,15 @@ Po jakiego czorta to ?
 		}
 }
 
+void Kadu::showHideInactive() 
+{
+userbox->showHideInactive();
+}
+
 void Kadu::muteUnmuteSounds()
 {
 	commandParser(KADU_CMD_MUTE);
+
 }
 
 void Kadu::configure() {

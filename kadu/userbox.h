@@ -55,6 +55,8 @@ class UserBox : public QListBox , QToolTip
 		static void all_removeUser(QString &altnick);		
 		static void all_changeAllToInactive();
 		static void all_renameUser(const QString &oldaltnick, const QString &newaltnick);		
+		static void initModule();
+		void showHideInactive();
 };
 
 #endif

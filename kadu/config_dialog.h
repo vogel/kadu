@@ -57,7 +57,7 @@ class ConfigDialog : public QTabDialog	{
 			const QString& parent,const QString& caption);
 		static void registerCheckBox(
 			const QString& parent,const QString& caption,
-			const QString& group,const QString& entry);
+			const QString& group,const QString& entry,const bool defaultS=false);
 		static void registerLineEdit(
 			const QString& parent,const QString& caption,
 			const QString& group,const QString& entry,const QString& defaultS="");

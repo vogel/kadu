@@ -21,6 +21,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   oraz obs³uga tego mechanizmu dla okien z rozmow± (pawel_p/adrian)
 * wydzielenie reszty ikonek do plików png (pawel_p/adrian)
 * ikonka wy³±czenia d¼wiêków na toolbarze (pawel_p/adrian)
+* obs³uga %e (e-mail) w panelu informacyjnym itp. (pawel_p/adrian)
+* pokazywanie niedostêpnych jako opcja i guzik na toolbarze (pawel_p/adrian)
 
 +++ wersja 0.3.4-rc3
 * je¶li u¿ywamy po³±czenia TLSv1 i wpisujemy jawnie serwery GG to domy¶lnym

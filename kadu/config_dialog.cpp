@@ -469,7 +469,7 @@ void ConfigDialog::registerGroupBox(
 
 void ConfigDialog::registerCheckBox(
 			const QString& parent,const QString& caption,
-			const QString& group,const QString& entry)
+			const QString& group,const QString& entry,const bool defaultS)
 {
 	RegisteredControl c;
 	c.type=CONFIG_CHECKBOX;
@@ -477,6 +477,12 @@ void ConfigDialog::registerCheckBox(
 	c.caption=caption;
 	c.group=group;
 	c.entry=entry;
+	c.defaultS=QString::number(defaultS);
+	config_file.setGroup(group);
+	if (config_file.readEntry(entry)=="")
+	{		
+		config_file.writeEntry(entry,defaultS);
+	}
 	RegisteredControls.append(c);
 };
 
@@ -491,6 +497,9 @@ void ConfigDialog::registerLineEdit(
 	c.group=group;
 	c.entry=entry;
 	c.defaultS=defaultS;
+	config_file.setGroup(group);
+	if (config_file.readEntry(entry)=="")
+	config_file.writeEntry(entry,defaultS);
 	RegisteredControls.append(c);
 };
 
@@ -510,6 +519,7 @@ void ConfigDialog::registerHotKeyEdit(
 	// zapisujemy warto¶æ domy¶ln±, aby ju¿ wiêcej nie musieæ
 	// jej podawaæ przy czytaniu z pliku conf
 	config_file.setGroup(group);
+	if (config_file.readEntry(entry)=="")
 	config_file.writeEntry(entry,defaultS);
 };
 
@@ -1303,7 +1313,7 @@ void ConfigDialog::setupTab6(void) {
 	QLabel *l_panel = new QLabel(i18n("Information panel syntax:"), panelbox);
 	e_panelsyntax = new QLineEdit(config.panelsyntax, panelbox);
 
-	QToolTip::add(e_panelsyntax,i18n("Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - frist name\n%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist\n%v - revDNS, %p - port\nIf you leave blank, default settings will be used"));
+	QToolTip::add(e_panelsyntax,i18n("Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - frist name\n%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist\n%v - revDNS, %p - port %e - email\nIf you leave blank, default settings will be used"));
 
 	QHBox *chatsyntaxbox = new QHBox(syntaxprop);
 	chatsyntaxbox->setSpacing(5);
