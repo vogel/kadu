@@ -919,7 +919,7 @@ void Kadu::commandParser (int command) {
 			QProcess *help;
 			help = new QProcess();
 			help->addArgument("konqueror");
-			help->addArgument(QString(DATADIR)+"/apps/kadu/doc/index_doc.html");
+			help->addArgument(QString(DOCDIR)+"/index_doc.html");
 			help->start();
 			delete help;
 			break;

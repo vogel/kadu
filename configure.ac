@@ -331,14 +331,22 @@ fi
 MY_SUBDIRS="$MY_SUBDIRS kadu po varia"
 
 # doc support
-AC_ARG_ENABLE(doc,[  --disable-doc           do not install Kadu documentation])
+AC_ARG_ENABLE(doc,[  --enable-doc=DIR        install doc in DIR [[DATADIR/apps/kadu/doc]]])
+AC_ARG_ENABLE(doc,[  --disable-doc           do not install documentation])
 if test -z "$enable_doc"; then
 	enable_doc=yes
 fi
-if test "$enable_doc" = "yes"; then
-	AC_DEFINE(HAVE_DOC,1,[Define if Kadu documentation is installed])
+if test "$enable_doc" != "no"; then
+	AC_DEFINE(HAVE_DOC,1,[Define if documentation is installed])
 	MY_SUBDIRS="$MY_SUBDIRS doc"
+	if test "$enable_doc" = "yes"; then
+		docdir="$datadir/apps/kadu/doc"
+	else
+		docdir="$enable_doc"
+		enable_doc=yes
+	fi;
 fi
+AC_SUBST(docdir)
 
 # pthread support
 AC_ARG_WITH(pthread,[  --without-pthread       do not use pthread in libgadu resolver])
@@ -420,13 +428,13 @@ echo " **************************************"
 echo
 echo " Kadu was configured using options specified below:"
 echo
-echo "    Installation prefix:                          $prefix" 
-echo "    Install Kadu documentation:                   $enable_doc"
-echo "    Use pthread resolving in libgadu:             $with_pthread"
-echo "    Compile with debug symbols:                   $enable_debug"
-echo "    Link with existing libgadu:                   $with_existing_libgadu"
-echo "    OpenSSL encryption support:                   $with_openssl"
-echo "    Distribution type information:                $enable_dist_info"
+echo "   Installation prefix:                [[$prefix]]" 
+echo "   Install Kadu documentation:         $enable_doc [[$docdir]]"
+echo "   Use pthread resolving in libgadu:   $with_pthread"
+echo "   Compile with debug symbols:         $enable_debug"
+echo "   Link with existing libgadu:         $with_existing_libgadu"
+echo "   OpenSSL encryption support:         $with_openssl"
+echo "   Distribution type information:      $enable_dist_info"
 echo
-echo " Run make now (gmake on FreeBSD) to compile Kadu."
+echo " Run make now (Linux) or gmake (FreeBSD and others) to compile Kadu."
 echo

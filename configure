@@ -850,7 +850,8 @@ Optional Features:
   --enable-dependency-tracking  Do not reject slow dependency extractors
   --disable-rpath         do not hardcode runtime library paths
   --disable-nls           do not use Native Language Support
-  --disable-doc           do not install Kadu documentation
+  --enable-doc=DIR        install doc in DIR [DATADIR/apps/kadu/doc]
+  --disable-doc           do not install documentation
   --enable-debug          compile with debug symbols
   --enable-dist-info=DIST enable distribution type information, default: sources
 
@@ -7290,17 +7291,29 @@ if test "${enable_doc+set}" = set; then
   enableval="$enable_doc"
 
 fi;
+# Check whether --enable-doc or --disable-doc was given.
+if test "${enable_doc+set}" = set; then
+  enableval="$enable_doc"
+
+fi;
 if test -z "$enable_doc"; then
 	enable_doc=yes
 fi
-if test "$enable_doc" = "yes"; then
+if test "$enable_doc" != "no"; then
 
 cat >>confdefs.h <<\_ACEOF
 #define HAVE_DOC 1
 _ACEOF
 
 	MY_SUBDIRS="$MY_SUBDIRS doc"
+	if test "$enable_doc" = "yes"; then
+		docdir="$datadir/apps/kadu/doc"
+	else
+		docdir="$enable_doc"
+		enable_doc=yes
+	fi;
 fi
+
 
 # pthread support
 
@@ -8319,6 +8332,7 @@ s,@INTLLIBS@,$INTLLIBS,;t t
 s,@LIBINTL@,$LIBINTL,;t t
 s,@LTLIBINTL@,$LTLIBINTL,;t t
 s,@POSUB@,$POSUB,;t t
+s,@docdir@,$docdir,;t t
 s,@OPENSSL_TRUE@,$OPENSSL_TRUE,;t t
 s,@OPENSSL_FALSE@,$OPENSSL_FALSE,;t t
 s,@MY_SUBDIRS@,$MY_SUBDIRS,;t t
@@ -9161,13 +9175,13 @@ echo " **************************************"
 echo
 echo " Kadu was configured using options specified below:"
 echo
-echo "    Installation prefix:                          $prefix"
-echo "    Install Kadu documentation:                   $enable_doc"
-echo "    Use pthread resolving in libgadu:             $with_pthread"
-echo "    Compile with debug symbols:                   $enable_debug"
-echo "    Link with existing libgadu:                   $with_existing_libgadu"
-echo "    OpenSSL encryption support:                   $with_openssl"
-echo "    Distribution type information:                $enable_dist_info"
+echo "   Installation prefix:                [$prefix]"
+echo "   Install Kadu documentation:         $enable_doc [$docdir]"
+echo "   Use pthread resolving in libgadu:   $with_pthread"
+echo "   Compile with debug symbols:         $enable_debug"
+echo "   Link with existing libgadu:         $with_existing_libgadu"
+echo "   OpenSSL encryption support:         $with_openssl"
+echo "   Distribution type information:      $enable_dist_info"
 echo
-echo " Run make now (gmake on FreeBSD) to compile Kadu."
+echo " Run make now (Linux) or gmake (FreeBSD and others) to compile Kadu."
 echo

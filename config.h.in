@@ -14,7 +14,7 @@
    */
 #undef HAVE_DCGETTEXT
 
-/* Define if Kadu documentation is installed */
+/* Define if documentation is installed */
 #undef HAVE_DOC
 
 /* Define to 1 if you have the <fcntl.h> header file. */
