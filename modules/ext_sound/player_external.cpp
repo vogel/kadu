@@ -11,6 +11,7 @@
 #include "player_external.h"
 #include "debug.h"
 #include "config_dialog.h"
+#include <stdlib.h>
 
 extern "C" int ext_sound_init()
 {
