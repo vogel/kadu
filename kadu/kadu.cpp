@@ -528,11 +528,10 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	connect(dockppm, SIGNAL(activated(int)), dw, SLOT(dockletChange(int)));
 
 	descrtb = new QTextBrowser(centralFrame, "descrtb");
-//	descrtb->setFrameStyle(QFrame::Box | QFrame::Plain);
 	descrtb->setFrameStyle(QFrame::NoFrame);
-	descrtb->setFixedHeight(70);
+	descrtb->setFixedHeight(int(1.5*QFontMetrics(descrtb->currentFont()).height()));
 	descrtb->setTextFormat(Qt::RichText);
-	descrtb->setAlignment(Qt::AlignAuto | Qt::AlignTop | Qt::WordBreak | Qt::DontClip);
+	descrtb->setAlignment(Qt::AlignVCenter | Qt::WordBreak | Qt::DontClip);
 	descrtb->setVScrollBarMode(QScrollView::AlwaysOff);
 	descrtb->setPaper(QBrush(lightGray));
 
@@ -574,10 +573,30 @@ void Kadu::currentChanged(QListBoxItem *item) {
 	fprintf(stderr, "KK Kadu::currentChanged(): %s\n", (const char *)item->text().local8Bit());
 	UserListElement &ule = userlist.byAltNick(item->text());
 	QString s;
+	// uin
 	if (ule.uin)
-		s = QString("UIN: %1").arg(ule.uin);
-	s = s + "<BR>";
-	s = s + QString("%2 %3<BR>%4").arg(ule.first_name).arg(ule.last_name).arg(ule.description);
+		s+=QString("#")+QString::number(ule.uin);
+	// name
+	QString name=ule.first_name;
+	if(!ule.last_name.isEmpty())
+	{
+		if(!name.isEmpty())
+			name+=" ";
+		name+=ule.last_name;
+	};
+	if(!name.isEmpty())
+	{
+		if(!s.isEmpty())
+			s+=", ";
+		s+=name;
+	};
+	// description
+	if(!ule.description.isEmpty())
+	{
+		if(!s.isEmpty())
+			s+=" - ";
+		s+=ule.description;
+	};	
 	descrtb->setText(s);
 }
 
