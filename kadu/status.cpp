@@ -80,41 +80,38 @@ void AutoStatusTimer::onTimeout()
 	start(1000, TRUE);
 }
 
-AutoAwayTimer::AutoAwayTimer(QObject* parent)
-  : QTimer(parent,"AutoStatus")
-{
-  autoawayed = false;
-  a->installEventFilter(this);
-  connect(this, SIGNAL(timeout()), SLOT(onTimeout()));
-  start(config.autoawaytime * 1000,TRUE);
+AutoAwayTimer::AutoAwayTimer(QObject* parent) : QTimer(parent,"AutoStatus") {
+	autoawayed = false;
+	a->installEventFilter(this);
+	connect(this, SIGNAL(timeout()), SLOT(onTimeout()));
 }
 
 bool AutoAwayTimer::eventFilter(QObject *o,QEvent *e)
 {
-  if ( e->type() == QEvent::KeyPress || e->type() == QEvent::Enter){
-    stop();
-    start(config.autoawaytime * 1000,TRUE);
-    if (autoawayed && kadu->returnVar(1) && kadu->returnVar(2)) {
-		  fprintf(stderr, "KK Kadu::enterEvent(): auto away cancelled\n");
-		  autoawayed = false;
-		  switch (beforeAutoAway) {
-			  case GG_STATUS_AVAIL:
-			  case GG_STATUS_AVAIL_DESCR:
-			  case GG_STATUS_INVISIBLE:
-			  case GG_STATUS_INVISIBLE_DESCR:
-				  kadu->returnVar(4);
-				  break;
-			 }
-		  kadu->setStatus(beforeAutoAway);
-    }
-  }
-  return QObject::eventFilter(o, e);
+	if (e->type() == QEvent::KeyPress || e->type() == QEvent::Enter) {
+		stop();
+		start(config.autoawaytime * 1000, TRUE);
+		if (autoawayed && kadu->returnVar(1) && kadu->returnVar(2)) {
+			fprintf(stderr, "KK Kadu::enterEvent(): auto away cancelled\n");
+			autoawayed = false;
+			switch (beforeAutoAway) {
+				case GG_STATUS_AVAIL:
+				case GG_STATUS_AVAIL_DESCR:
+				case GG_STATUS_INVISIBLE:
+				case GG_STATUS_INVISIBLE_DESCR:
+					kadu->returnVar(4);
+					break;
+				}
+			kadu->setStatus(beforeAutoAway);
+			}
+		}
+	return QObject::eventFilter(o, e);
 }
 
 void AutoAwayTimer::onTimeout()
 {
 	beforeAutoAway = getActualStatus() & (~GG_STATUS_FRIENDS_MASK);;
-	fprintf(stderr, "KK Kadu::autoAway(): checking whether to go auto away, beforeAutoAway=%d\n",beforeAutoAway);
+	fprintf(stderr, "KK Kadu::autoAway(): checking whether to go auto away, beforeAutoAway = %d\n", beforeAutoAway);
 	switch (beforeAutoAway) {
 		case GG_STATUS_AVAIL_DESCR: kadu->setStatus(GG_STATUS_BUSY_DESCR); break;
 		case GG_STATUS_AVAIL: kadu->setStatus(GG_STATUS_BUSY); break;
@@ -125,12 +122,5 @@ void AutoAwayTimer::onTimeout()
 	autoawayed = true;
 //	start(config.autoawaytime * 1000, TRUE);
 }
+
 #include "status.moc"
-
-
-
-
-
-
-
-
