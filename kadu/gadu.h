@@ -170,7 +170,6 @@ class GaduSocketNotifiers : public QObject //SocketNotifiers
 	private slots:
 		void proteza_connectionFailed(int);
 		void proteza_connectionBroken();
-		void proteza_connectionTimeout();
 		void proteza_systemMessageReceived(QString &, QDateTime &, int, void *);
 
 	public:
@@ -195,6 +194,8 @@ class GaduProtocol : public QObject
 		
 		bool userListClear;
 		QString importReply;
+		int RequestedStatusForLogin;
+		QHostAddress* ActiveServer;
 
 		void setupProxy();
 		void setupDcc();
@@ -208,12 +209,20 @@ class GaduProtocol : public QObject
 
 		void connectedSlot();
 		void disconnectedSlot();
+		void connectionTimeoutTimerSlot();
 		void errorSlot(GaduError);
 
 	public:	
 		static void initModule();
 		GaduProtocol();
 		virtual ~GaduProtocol();
+
+		/**
+			Zwraca serwer z ktorym jestesmy polaczeni
+			lub do ktorego sie wlasnie laczymy.
+			NULL = hub.
+		**/
+		QHostAddress* activeServer();
 
 		/**
 			Zamienia listê u¿ytkowników na ³añcuch i na odwrót

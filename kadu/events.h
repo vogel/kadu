@@ -48,7 +48,6 @@ class EventManager : public QObject
 	Q_OBJECT
 	
 	private slots:
-		void connectionTimeoutTimerSlot();
 		void userStatusChangedSlot(struct gg_event*);
 		void userlistReceivedSlot(struct gg_event *);
 		void messageReceivedSlot(int, UinsList,QCString& msg,time_t,
@@ -79,11 +78,6 @@ class EventManager : public QObject
 			Po³±czenie z serwerem zosta³o przerwane
 		**/
 		void connectionBroken();
-		/**
-			Po³±czenie z serwerem zosta³o przerwane z powodu zbyt d³ugiego
-			czasu nieaktywno¶ci w trakcie ³±czenia
-		**/
-		void connectionTimeout();
 		/**
 			Otrzymano polecenie roz³±czenia
 		**/

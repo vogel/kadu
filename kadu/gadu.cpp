@@ -335,7 +335,6 @@ GaduSocketNotifiers::GaduSocketNotifiers()
 	connect(&event_manager, SIGNAL(connected()), this, SIGNAL(connected()));
 	connect(&event_manager, SIGNAL(connectionFailed(int)), this, SLOT(proteza_connectionFailed(int)));
 	connect(&event_manager, SIGNAL(connectionBroken()), this, SLOT(proteza_connectionBroken()));
-	connect(&event_manager, SIGNAL(connectionTimeout()), this, SLOT(proteza_connectionTimeout()));
 	connect(&event_manager, SIGNAL(disconnected()), this, SIGNAL(disconnected()));
 	connect(&event_manager, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)), this, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)));
 	connect(&event_manager, SIGNAL(systemMessageReceived(QString &, QDateTime &, int, void *)), this,
@@ -371,11 +370,6 @@ void GaduSocketNotifiers::proteza_connectionBroken()
 	emit error(ConnectionUnknow);
 }
 
-void GaduSocketNotifiers::proteza_connectionTimeout()
-{
-	emit error(ConnectionTimeout);
-}
-
 void GaduSocketNotifiers::proteza_systemMessageReceived(QString &message, QDateTime &time, int formats_length, void *formats)
 {
 	QString mesg = time.toString("hh:mm:ss (dd.MM.yyyy): ") + message;
@@ -407,6 +401,7 @@ GaduProtocol::GaduProtocol() : QObject()
 	kdebugf();
 	
 	SocketNotifiers = new GaduSocketNotifiers();
+	ActiveServer = NULL;
 
 	connect(SocketNotifiers, SIGNAL(connected()), this, SLOT(connectedSlot()));
 	connect(SocketNotifiers, SIGNAL(disconnected()), this, SIGNAL(disconnected()));
@@ -421,6 +416,11 @@ GaduProtocol::~GaduProtocol()
 	kdebugf();
 
 	delete SocketNotifiers;
+}
+
+QHostAddress* GaduProtocol::activeServer()
+{
+	return ActiveServer;
 }
 
 void GaduProtocol::connectedSlot()
@@ -512,12 +512,27 @@ void GaduProtocol::disconnectedSlot()
 	emit disconnected();
 }
 
+void GaduProtocol::connectionTimeoutTimerSlot()
+{
+	kdebugf();
+	ConnectionTimeoutTimer::off();
+	if (sess->state == GG_STATE_CONNECTING_HUB ||
+		sess->state == GG_STATE_CONNECTING_GG)
+	{
+		kdebug("Timeout, breaking connection\n");
+		emit error(ConnectionTimeout);
+		logout();
+		login(RequestedStatusForLogin);
+	}
+}
+
 void GaduProtocol::errorSlot(GaduError err)
 {
 	kdebugf();
 
 	disconnectedSlot();
 	emit error(err);
+	login(RequestedStatusForLogin);
 }
 
 void GaduProtocol::setStatus(int status)
@@ -584,6 +599,7 @@ void GaduProtocol::changeStatus(int status)
 void GaduProtocol::login(int status)
 {
 	kdebugf();
+	RequestedStatusForLogin = status;
 
 	emit connecting();
 
@@ -626,8 +642,7 @@ void GaduProtocol::login(int status)
 	
 	if (config_servers.count() && !config_file.readBoolEntry("Network", "isDefServers") && config_servers[server_nr].ip4Addr())
 	{
-		loginparams.server_addr = htonl(config_servers[server_nr].ip4Addr());
-		loginparams.server_port = config_file.readNumEntry("Network", "DefaultPort");
+		ActiveServer = &config_servers[server_nr];
 		server_nr++;
 		if (server_nr >= config_servers.count())
 			server_nr = 0;
@@ -635,18 +650,23 @@ void GaduProtocol::login(int status)
 	else
 	{
 		if (server_nr)
-		{
-			loginparams.server_addr = htonl(gg_servers[server_nr - 1].ip4Addr());
-			loginparams.server_port = config_file.readNumEntry("Network", "DefaultPort");
-		}			
+			ActiveServer = &gg_servers[server_nr - 1];
 		else
-		{
-			loginparams.server_addr = 0;
-			loginparams.server_port = 0;
-		}
+			ActiveServer = NULL;
 		server_nr++;
 		if (server_nr > gg_servers.count())
 			server_nr = 0;
+	}
+
+	if (ActiveServer != NULL)
+	{
+		loginparams.server_addr = htonl(ActiveServer->ip4Addr());
+		loginparams.server_port = config_file.readNumEntry("Network", "DefaultPort");
+	}
+	else
+	{
+		loginparams.server_addr = 0;
+		loginparams.server_port = 0;
 	}
 	
 //	polaczenia TLS z serwerami GG na razie nie dzialaja
@@ -666,7 +686,7 @@ void GaduProtocol::login(int status)
 		loginparams.server_port = config_file.readNumEntry("Network", "DefaultPort");
 
 	ConnectionTimeoutTimer::on();
-	ConnectionTimeoutTimer::connectTimeoutRoutine(&event_manager, SLOT(connectionTimeoutTimerSlot()));
+	ConnectionTimeoutTimer::connectTimeoutRoutine(this, SLOT(connectionTimeoutTimerSlot()));
 	sess = gg_login(&loginparams);
 //	free(loginparams.client_version);
 	free(loginparams.password);

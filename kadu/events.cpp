@@ -65,7 +65,7 @@ void AutoConnectionTimer::off() {
 }
 
 ConnectionTimeoutTimer::ConnectionTimeoutTimer(QObject *parent) : QTimer(parent, "ConnectionTimeoutTimer") {
-	start(3000, TRUE);
+	start(5000, TRUE);
 }
 
 bool ConnectionTimeoutTimer::connectTimeoutRoutine(const QObject *receiver, const char *member) {
@@ -420,26 +420,6 @@ void EventManager::dccConnectionReceivedSlot(const UserListElement& sender)
 			dcc->initializeNotifiers();
 		}
 	}
-}
-
-void EventManager::connectionTimeoutTimerSlot() {
-	kdebugf();
-	ConnectionTimeoutTimer::off();
-	if (sess->state == GG_STATE_CONNECTING_GG && sess->port != GG_HTTPS_PORT) {
-		gg_event* e;
-		sess->timeout = 0;
-		if (!(e = gg_watch_fd(sess))) {
-			emit connectionTimeout();
-			gg_free_event(e);
-			return;
-			}
-		ConnectionTimeoutTimer::on();
-		ConnectionTimeoutTimer::connectTimeoutRoutine(this,
-			SLOT(connectionTimeoutTimerSlot()));
-		}
-	else
-		if (sess->state == GG_STATE_READING_KEY)
-			emit connectionTimeout();
 }
 
 void EventManager::eventHandler(gg_session* sess)

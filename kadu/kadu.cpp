@@ -1235,7 +1235,7 @@ void Kadu::error(GaduError err)
 			break;
 
 		case ConnectionTimeout:
-			kdebugm(KDEBUG_INFO, "Connection timeout!\nUnscheduled connection termination\n");
+			msg = QString(tr("Connection timeout!"));
 			break;
 
 		case Disconnected:
@@ -1250,6 +1250,13 @@ void Kadu::error(GaduError err)
 
 	if (msg != QString::null)
 	{
+		QHostAddress* server = gadu->activeServer();
+		QString host;
+		if (server != NULL)
+			host = server->toString();
+		else
+			host = "HUB";
+		msg = QString("(") + host + ") " + msg;
 		kdebugm(KDEBUG_INFO, "%s\n", unicode2latin(msg).data());
 		hintmanager->addHintError(msg);
 	}
