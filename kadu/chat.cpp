@@ -184,7 +184,7 @@ void Chat::setTitle() {
 	for (k = 0; k < uins.size(); k++) {
 		if (k)
 			title.append(", ");
-	    
+    
 		name = userlist.byUin(uins[k]).altnick;
 		title.append(name);
 		user = userlist.byUin(uins[k]);
@@ -200,27 +200,27 @@ void Chat::setTitle() {
 	title.replace(QRegExp("\n"), " ");
 
 	setCaption(title);
-  title_buffer=title;
+	title_buffer=title;
 }
 
 void Chat::changeTitle() {
-  if(!isActiveWindow()){
-    if (caption() == "  "){
-      setCaption(title_buffer);
-      title_timer->start(1000,TRUE);
-    }
-    else{    
-      setCaption("  ");
-      title_timer->start(1000,TRUE);
-    }
-  }
+	if(!isActiveWindow()){
+		if (caption() == "  "){
+			setCaption(title_buffer);
+			title_timer->start(500,TRUE);
+		}
+		else{    
+			setCaption("  ");
+			title_timer->start(500,TRUE);
+		}
+	}
 }
 
 void Chat::windowActivationChange(bool oldActive) {
-  if (isActiveWindow() && title_timer->isActive()){
-    title_timer->stop();
-    setCaption(title_buffer);
-  }
+	if (isActiveWindow() && title_timer->isActive()){
+		title_timer->stop();
+		setCaption(title_buffer);
+	}
 }
 
 /* register/unregister sending with Return key */
@@ -369,16 +369,17 @@ void Chat::checkPresence(UinsList senders, QString &msg, time_t time, QString &t
 }
 
 void Chat::alertNewMessage(void) {
-  if (config.playsoundchatinvisible){
-    if (!isActiveWindow())
-      playSound(config.soundchat);
-    }
-  else
-  if (config.playsoundchat)
-    playSound(config.soundchat);
+	if (config.playsoundchatinvisible){
+		if (!isActiveWindow())
+			playSound(config.soundchat);
+		}
+	else
+		if (config.playsoundchat)
+			playSound(config.soundchat);
 
-  if (!isActiveWindow() && !title_timer->isActive())
-    changeTitle();
+	if (config.blinkchattitle)
+		if (!isActiveWindow() && !title_timer->isActive())
+			changeTitle();
 }
 
 void Chat::writeMyMessage() {

@@ -84,7 +84,8 @@ struct config {
 	int chatprunelen;
 	bool chatprune;
 	bool msgacks;
-
+	bool blinkchattitle;
+ 
 	bool autoaway;
 	int autoawaytime;
 

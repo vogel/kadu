@@ -98,7 +98,8 @@ void loadKaduConfig(void) {
 	config.chatprune = konf->readBoolEntry("ChatPrune",false);
 	config.chatprunelen = konf->readNumEntry("ChatPruneLen",20);
 	config.msgacks = konf->readBoolEntry("MessageAcks", true);
-	
+	config.blinkchattitle = konf->readBoolEntry("BlinkChatTitle", true);
+
 	konf->setGroup("Notify");
 	config.soundnotify = strdup(konf->readEntry("NotifySound", ""));
 	config.notifyglobal = konf->readBoolEntry("NotifyStatusChange", false);
@@ -185,7 +186,8 @@ void saveKaduConfig(void) {
 	konf->writeEntry("ChatPrune",config.chatprune);
 	konf->writeEntry("ChatPruneLen",config.chatprunelen);
 	konf->writeEntry("MessageAcks", config.msgacks);
-	
+	konf->writeEntry("BlinkChatTitle", config.blinkchattitle);
+
 	konf->setGroup("Proxy");
 	konf->writeEntry("UseProxy",config.useproxy);
 	konf->writeEntry("ProxyHost",config.proxyaddr);
@@ -519,7 +521,11 @@ void ConfigDialog::setupTab3(void) {
 	b_msgacks = new QCheckBox(box3);
 	b_msgacks->setText(i18n("Message acknowledgements (wait for delivery)"));
 	b_msgacks->setChecked(config.msgacks);
-	
+
+	b_blinkchattitle = new QCheckBox(box3);
+	b_blinkchattitle->setText(i18n("Blinking chat title when new message"));
+	b_blinkchattitle->setChecked(config.blinkchattitle);
+
 	addTab(box3, i18n("Chat"));
 }
 
@@ -1114,6 +1120,8 @@ void ConfigDialog::updateConfig(void) {
 	config.chatprune = b_chatprune->isChecked();
 	config.chatprunelen = atoi(e_chatprunelen->text().latin1());
 	config.msgacks = b_msgacks->isChecked();
+	config.blinkchattitle = b_blinkchattitle->isChecked();
+
 	config.colors.chatMyBgColor = e_chatmybgcolor->text();
 	config.colors.chatUsrBgColor = e_chatusrbgcolor->text();
 	config.colors.chatMyFontColor = e_chatmyfontcolor->text();
