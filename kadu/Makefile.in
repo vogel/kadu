@@ -117,10 +117,8 @@ main.cpp \
 message_box.cpp message_box.h message_box_moc.cpp \
 misc.cpp misc.h misc_moc.cpp \
 modules.cpp modules.h modules_moc.cpp \
-password.cpp password.h password_moc.cpp \
 pending_msgs.cpp pending_msgs.h pending_msgs_moc.cpp \
 personal_info.cpp personal_info.h personal_info_moc.cpp \
-register.cpp register.h register_moc.cpp \
 search.cpp search.h search_moc.cpp \
 status.cpp status.h status_moc.cpp \
 tabbar.cpp tabbar.h tabbar_moc.cpp \
@@ -173,10 +171,9 @@ am_kadu_OBJECTS = about.$(OBJEXT) about_moc.$(OBJEXT) chat.$(OBJEXT) \
 	ignore_moc.$(OBJEXT) kadu.$(OBJEXT) kadu_moc.$(OBJEXT) \
 	main.$(OBJEXT) message_box.$(OBJEXT) message_box_moc.$(OBJEXT) \
 	misc.$(OBJEXT) misc_moc.$(OBJEXT) modules.$(OBJEXT) \
-	modules_moc.$(OBJEXT) password.$(OBJEXT) password_moc.$(OBJEXT) \
-	pending_msgs.$(OBJEXT) pending_msgs_moc.$(OBJEXT) \
-	personal_info.$(OBJEXT) personal_info_moc.$(OBJEXT) \
-	register.$(OBJEXT) register_moc.$(OBJEXT) search.$(OBJEXT) \
+	modules_moc.$(OBJEXT) pending_msgs.$(OBJEXT) \
+	pending_msgs_moc.$(OBJEXT) personal_info.$(OBJEXT) \
+	personal_info_moc.$(OBJEXT) search.$(OBJEXT) \
 	search_moc.$(OBJEXT) status.$(OBJEXT) status_moc.$(OBJEXT) \
 	tabbar.$(OBJEXT) tabbar_moc.$(OBJEXT) userbox.$(OBJEXT) \
 	userbox_moc.$(OBJEXT) userinfo.$(OBJEXT) userinfo_moc.$(OBJEXT) \
@@ -208,13 +205,11 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/message_box.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/message_box_moc.Po ./$(DEPDIR)/misc.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/misc_moc.Po ./$(DEPDIR)/modules.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/modules_moc.Po ./$(DEPDIR)/password.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/password_moc.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/modules_moc.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/pending_msgs.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/pending_msgs_moc.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/personal_info.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/personal_info_moc.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/register.Po ./$(DEPDIR)/register_moc.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/search.Po ./$(DEPDIR)/search_moc.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/status.Po ./$(DEPDIR)/status_moc.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/tabbar.Po ./$(DEPDIR)/tabbar_moc.Po \
@@ -311,14 +306,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/misc_moc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/modules.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/modules_moc.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/password.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/password_moc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pending_msgs.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pending_msgs_moc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/personal_info.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/personal_info_moc.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/register.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/register_moc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/search.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/search_moc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/status.Po@am__quote@

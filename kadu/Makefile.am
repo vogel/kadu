@@ -18,10 +18,8 @@ main.cpp \
 message_box.cpp message_box.h message_box_moc.cpp \
 misc.cpp misc.h misc_moc.cpp \
 modules.cpp modules.h modules_moc.cpp \
-password.cpp password.h password_moc.cpp \
 pending_msgs.cpp pending_msgs.h pending_msgs_moc.cpp \
 personal_info.cpp personal_info.h personal_info_moc.cpp \
-register.cpp register.h register_moc.cpp \
 search.cpp search.h search_moc.cpp \
 status.cpp status.h status_moc.cpp \
 tabbar.cpp tabbar.h tabbar_moc.cpp \

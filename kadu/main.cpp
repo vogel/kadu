@@ -26,7 +26,6 @@
 
 #include "config_file.h"
 #include "config_dialog.h"
-#include "register.h"
 #include "misc.h"
 #include "debug.h"
 #include "modules.h"
