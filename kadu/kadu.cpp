@@ -517,7 +517,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	/* initialize group tabbar */
 	group_bar=new QTabBar(this);
-	group_bar->addTab(new QTab(i18n("Everybody")));
+	group_bar->addTab(new QTab(i18n("All")));
 	refreshGroupTabBar();
 	connect(group_bar,SIGNAL(selected(int)),this,SLOT(groupTabSelected(int)));
 
@@ -589,6 +589,11 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 void Kadu::refreshGroupTabBar()
 {
+	if(!config.grouptabs)
+	{
+		group_bar->hide();
+		return;
+	};
 	/* usuwamy wszystkie zakladki - od tylu,
 	   bo indeksy sie przesuwaja po usunieciu */
 	for(int i=group_bar->count()-1; i>=1; i--)

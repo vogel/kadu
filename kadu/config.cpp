@@ -80,6 +80,7 @@ void loadKaduConfig(void) {
 	config.raise = konf->readBoolEntry("AutoRaise",false);
 	config.privatestatus = konf->readBoolEntry("PrivateStatus", false);
 	config.rundocked = konf->readBoolEntry("RunDocked", false);
+	config.grouptabs = konf->readBoolEntry("DisplayGroupTabs",true);
 
 	if (config.savegeometry)
 		config.geometry = konf->readRectEntry("Geometry");
@@ -158,6 +159,7 @@ void saveKaduConfig(void) {
 	konf->writeEntry("AutoRaise",config.raise);
 	konf->writeEntry("PrivateStatus",config.privatestatus);
 	konf->writeEntry("RunDocked",config.rundocked);
+	konf->writeEntry("DisplayGroupTabs",config.grouptabs);
 
 	konf->setGroup("SMS");
 	konf->writeEntry("SmsApp",config.smsapp);
@@ -334,6 +336,11 @@ void ConfigDialog::setupTab1(void) {
 	b_rdocked->setText(i18n("Run docked"));
 	if (config.rundocked)
 		b_rdocked->setChecked(true);
+
+	b_grptabs = new QCheckBox(grid);
+	b_grptabs->setText(i18n("Display group tabs"));
+	if (config.grouptabs)
+		b_grptabs->setChecked(true);
 
 	addTab(box, i18n("General"));
 }
@@ -737,6 +744,7 @@ void ConfigDialog::updateConfig(void) {
 		kadu->setStatus(sess.status & (~GG_STATUS_FRIENDS_MASK));
 		}
 	config.rundocked=b_rdocked->isChecked();
+	config.grouptabs=b_grptabs->isChecked();
 
 	config.smsapp = strdup(e_smsapp->text().latin1());
 	config.smsconf = strdup(e_smsconf->text().latin1());
@@ -780,6 +788,8 @@ void ConfigDialog::updateConfig(void) {
 
 	/* and now, save it */
 	saveKaduConfig();
+	/* I odswiez okno Kadu */
+	kadu->refreshGroupTabBar();
 }
 
 #include "config.moc"

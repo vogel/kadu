@@ -81,6 +81,7 @@ struct config {
 	bool dock;
 	bool privatestatus;
 	bool rundocked;
+	bool grouptabs;
 	QRect geometry;
 
 	char * smsapp;
@@ -139,6 +140,7 @@ class Kadu : public QMainWindow
 			const QString& Mobile,const QString& Uin,const int Status,
 			const QString& Group,const QString& Description, const bool Foreign = false);
 		void removeUser(QString &, bool);
+		void refreshGroupTabBar();
 		
 		UserBox *userbox;
 
@@ -186,7 +188,6 @@ class Kadu : public QMainWindow
 		int commencing_startup;
 		void createMenu();
 		void createStatusPopupMenu();
-		void refreshGroupTabBar();
 		void setActiveGroup(const QString& group);
 		bool close_permitted;
 		friend class DockWidget;
