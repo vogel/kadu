@@ -498,11 +498,11 @@ void SmsEraGateway::httpFinished()
 	else if(State==SMS_LOADING_LOGIN_RESULTS)
 	{
 		QString Page=Http.data();
-		kdebug("SMS Provider Authentication Results Page:\n%s\n",Page.local8Bit().data());
+		kdebug("SMS Provider Authorization Results Page:\n%s\n",Page.local8Bit().data());
 		if(Page.find("Wyloguj siê")<0)
 		{
-			kdebug("Authentication error\n");
-			QMessageBox::critical(p,"SMS",i18n("Authentication error. Incorrect login or password?"));
+			kdebug("Authorization error\n");
+			QMessageBox::critical(p,"SMS",i18n("Authorization error. Incorrect login or password."));
 			emit finished(false);
 			return;
 		};
