@@ -493,6 +493,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	QToolBar *toolbar = new QToolBar(this, "main toolbar");
 //	toolbar->setMovingEnabled(false);
+	toolbar->setCaption(i18n("Main toolbar"));
 	historyaction->addTo(toolbar);
 	userinfoaction->addTo(toolbar);
 	searchaction->addTo(toolbar);
