@@ -1590,7 +1590,7 @@ void Chat::initModule()
 	ConfigDialog::addSpinBox("Chat", "Link folding", QT_TRANSLATE_NOOP("@default", "Automatically fold links longer than"), "LinkFoldTreshold", 1,500,1,50);
 	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Open chat window on new message"), "OpenChatOnMessage", false);
 	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Scroll chat window downward, not upward"), "ScrollDown", true);
-	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "\"Enter\" key in chat sends message by default"), "AutoSend", true);
+	ConfigDialog::addCheckBox("Chat", "Chat", "", "AutoSend", true, "", "auto_send");
 	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Message acknowledgements (wait for delivery)"), "MessageAcks", true);
 	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Flash chat title on new message"), "BlinkChatTitle", true);
 	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Ignore messages from anonymous users"), "IgnoreAnonymousUsers", false);
@@ -1885,6 +1885,9 @@ void ChatSlots::onCreateConfigDialog()
 	QSpinBox *blockCloseTime=ConfigDialog::getSpinBox("Chat", "Max time to block window close");
 	blockCloseTime->setEnabled(config_file.readBoolEntry("Chat", "ChatCloseTimer"));
 	blockCloseTime->setSuffix(" s");
+	ConfigDialog::getCheckBox("Chat", "", "auto_send")->
+		setText(QString(QT_TRANSLATE_NOOP("@default", "\"%1\" in chat sends message by default"))
+				.arg(config_file.readEntry("ShortCuts", "chat_newline")));
 
 	h_fold->setEnabled(c_foldlink->isChecked());
 	updatePreview();
