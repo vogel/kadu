@@ -28,6 +28,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   teraz o po³owê mniejsze (mast3r/adrian)
 * wyrównane ikonki statusów (jz)
 * nowy "image" okna informacji o u¿ytkowniku (chilek)
+* w oknie informacji o u¿ytkowniku dodane pole z nazw± dnsow± (chilek)
 
 +++ wersja 0.3.4-pre2
 * graficzny instalator - instaluj.tcl (googie)

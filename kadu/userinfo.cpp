@@ -11,6 +11,8 @@
 #include <qlayout.h>
 #include <qmessagebox.h>
 #include <qvbox.h>
+#include <qhbox.h>
+#include <qdns.h>
 
 //
 #include "kadu.h"
@@ -80,10 +82,14 @@ void UserInfo::setupTab1() {
 	QLabel *l_group = new QLabel(i18n("Group"), vbox42);
 	e_group = new QLineEdit(puser->group, vbox42);
 
-	QLabel *l_addr = new QLabel(i18n("Address IP and Port"),box);
+	QLabel *l_addr = new QLabel(i18n("Address IP and Port"), box);
 	e_addr = new QLineEdit(box);
 	e_addr->setReadOnly(true);
 	
+	QLabel *l_dnsname = new QLabel(i18n("DNS name"), box);
+	e_dnsname = new QLineEdit(box);
+	e_dnsname->setReadOnly(true);
+
 	if (puser->ip.ip4Addr())
 		e_addr->setText(puser->ip.toString());
 	else
@@ -123,6 +129,17 @@ void UserInfo::setupTab1() {
 		e_uin->setText(QString::number(puser->uin));
 
 	addTab(box, i18n("General"));
+
+	dns = new QDns(puser->ip);
+	connect(dns, SIGNAL(resultsReady()), this, SLOT(resultsReady()));
+}
+
+UserInfo::~UserInfo() {
+	delete dns;
+}
+
+void UserInfo::resultsReady() {
+	e_dnsname->setText(dns->hostNames()[0]);
 }
 
 void UserInfo::setupTab2() {
