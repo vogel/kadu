@@ -43,7 +43,7 @@ WAV49	= -DWAV49
 # CC		= /usr/lang/acc
 # CCFLAGS 	= -c -O
 
-CC		= gcc -ansi -pedantic
+CC		:= $(CC) -ansi -pedantic
 CCFLAGS 	= -c -O2 -DNeedFunctionPrototypes=1
 
 LD 		= $(CC)
