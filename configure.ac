@@ -188,7 +188,9 @@ AC_DEFUN(PROCESS_MODULE_SPEC_FILES,[
 		if test -f modules/$mod.web; then \
 			if test -f modules/$mod/.autodownloaded -o ! -f modules/$mod/spec; then \
 				cd modules; \
-				./download_module $mod; \
+				if ! ./download_module $mod; then \
+					AC_MSG_ERROR([$mod download failed!]); \
+				fi; \
 				cd ..; \
 			fi; \
 		fi; \
