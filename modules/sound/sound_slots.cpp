@@ -383,7 +383,7 @@ void SoundSlots::testSampleRecording()
 		MessageBox::wrn(tr("Opening sound device failed."));
 		return;
 	}
-	SampleRecordingTestSample = new int16_t[8000 * 3];
+	SampleRecordingTestSample = new int16_t[8000 * 3];//3 sekundy 16-bitowego d¼wiêku o czêstotliwo¶ci próbkowania 8000Hz
 
 	sound_manager->enableThreading(SampleRecordingTestDevice);
 	sound_manager->setFlushingEnabled(SampleRecordingTestDevice, true);
@@ -402,10 +402,24 @@ void SoundSlots::sampleRecordingTestSampleRecorded(SoundDevice device)
 	if (device == SampleRecordingTestDevice)
 	{
 		delete SampleRecordingTestMsgBox;
+		SampleRecordingTestMsgBox = NULL;
+		disconnect(sound_manager, SIGNAL(sampleRecorded(SoundDevice)), this, SLOT(sampleRecordingTestSampleRecorded(SoundDevice)));
+
+		sound_manager->closeDevice(device);
+		SampleRecordingTestDevice = device = sound_manager->openDevice(PLAY_ONLY, 8000);
+		if (device == NULL)
+		{
+			delete[] SampleRecordingTestSample;
+			MessageBox::wrn(tr("Cannot open sound device for playing!"));
+			kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "end: cannot open play device\n");
+			return;
+		}
+
+		sound_manager->enableThreading(SampleRecordingTestDevice);
+		sound_manager->setFlushingEnabled(SampleRecordingTestDevice, true);
 		SampleRecordingTestMsgBox = new MessageBox(tr("You should hear your recorded sample now."));
 		SampleRecordingTestMsgBox->show();
 
-		disconnect(sound_manager, SIGNAL(sampleRecorded(SoundDevice)), this, SLOT(sampleRecordingTestSampleRecorded(SoundDevice)));
 		connect(sound_manager, SIGNAL(samplePlayed(SoundDevice)), this, SLOT(sampleRecordingTestSamplePlayed(SoundDevice)));
 
 		sound_manager->playSample(device, SampleRecordingTestSample, sizeof(int16_t) * 8000 * 3);
