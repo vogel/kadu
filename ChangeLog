@@ -14,6 +14,7 @@
 * ikonka Kadu instaluje sie w menu KDE w grupie Internet (adrian)
 * configure: obs³uga --enable-doc=DIR z mo¿liwo¶ci± ustawienia
   docelowego katalogu dla dokumentacji (adrian)
+* uzupe³nienie i uporz±dkowanie listy domy¶lnych serwerów GG (chilek)
 
 +++ wersja 0.3.3-rc2
 * sporo poprawek dla FreeBSD (adrian)

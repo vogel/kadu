@@ -164,6 +164,9 @@ QSocketNotifier *dccsnr = NULL;
 QSocketNotifier *dccsnw = NULL;
 UpdatesClass *uc;
 
+const char *gg_servers[7] = {"217.17.41.82", "217.17.41.83", "217.17.41.84", "217.17.41.85",
+	"217.17.41.86", "217.17.41.87", "217.17.41.88"};
+
 const char **gg_xpm[] = {gg_act_xpm, gg_actdescr_xpm, gg_busy_xpm, gg_busydescr_xpm,
 	gg_invi_xpm, gg_invidescr_xpm, gg_inact_xpm, gg_inactdescr_xpm, gg_stop_xpm};
 enum {
@@ -1394,14 +1397,18 @@ void Kadu::setStatus(int status) {
 		}
 	else {
 		switch (server_nr) {
-			case 0: loginparams.server_addr = 0;loginparams.server_port = 0; break;
-			case 1: loginparams.server_addr = inet_addr("217.17.41.85");loginparams.server_port = 8074; break;
-			case 2: loginparams.server_addr = inet_addr("217.17.41.84");loginparams.server_port = 8074; break;
-			case 3: loginparams.server_addr = inet_addr("217.17.41.83");loginparams.server_port = 8074; break;
+			case 0:
+				loginparams.server_addr = 0;
+				loginparams.server_port = 0;
+				break;
+			default:
+				loginparams.server_addr = inet_addr(gg_servers[server_nr + 1]);
+				loginparams.server_port = 8074;
+				break;
 			}
 		server_nr++;
-		if (server_nr > 3)
-			server_nr=0;
+		if (server_nr > 7)
+			server_nr = 0;
 		}
 	sess = gg_login(&loginparams);
 
