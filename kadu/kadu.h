@@ -191,7 +191,6 @@ class Kadu : public QMainWindow
 		int openChat(UinsList);
 		void gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op);
 		void currentChanged(QListBoxItem *item);
-		void selectionChanged(void);
 
 	private:
 		QMenuBar *mmb;

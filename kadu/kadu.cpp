@@ -571,9 +571,6 @@ void Kadu::currentChanged(QListBoxItem *item) {
 		QString("UIN: %1<BR>%2 %3<BR>%4").arg(ule.uin).arg(ule.first_name).arg(ule.last_name).arg(ule.description));
 }
 
-void Kadu::selectionChanged() {
-}
-
 void Kadu::refreshGroupTabBar()
 {
 	if(!config.grouptabs)
