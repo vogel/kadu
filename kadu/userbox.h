@@ -32,6 +32,7 @@ class KaduListBoxPixmap : public QListBoxItem
 
 		void changeText(const QString &text);
 		friend class UserBox;
+		friend class UserBoxSlots;
 
 		/*funkcje wprowadzone ¿eby zaoszczêdziæ na odwo³aniach do pliku konfiguracyjnego*/
 		static void setFont(const QFont &f);
@@ -131,7 +132,7 @@ class UserBox : public QListBox , QToolTip
 		/**
 			Funkcja sprawdza czy dany altnick, znajduje siê na liscie w UserBox
 		**/
-		bool containsAltNick(const QString &altnick);
+		bool containsAltNick(const QString &altnick) const;
 		static void initModule();
 		/**
 			Funkcja zwraca liste zaznaczonych uzytkownikow 
@@ -139,18 +140,18 @@ class UserBox : public QListBox , QToolTip
 			uzytkownikami posiadajacymi numer GG
 		**/
 
-		UinsList getSelectedUins();
+		UinsList getSelectedUins() const;
 		/**
 			Funkcja zwraca liste zaznaczonych uzytkownikow
 			@return UserList z zaznaczonymi uzytkownikami
 		**/
 
-		UserList getSelectedUsers();
+		UserList getSelectedUsers() const;
 		/**
 			Funkcja zwraca liste zaznaczonych uzytkownikow
 			@return QStringList z AltNick'ami
 		**/
-		QStringList getSelectedAltNicks();
+		QStringList getSelectedAltNicks() const;
 		/**
 			Funkcja znajdujaca aktywny UserBox.
 			@return wskaznik do aktywnego UserBox'a, 

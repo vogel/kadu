@@ -467,16 +467,7 @@ void UserBox::refresh()
 	unsigned int i;
 	KaduListBoxPixmap *lbp;
 
-	KaduListBoxPixmap::setFont(config_file.readFontEntry("Look","UserboxFont"));
-	KaduListBoxPixmap::setShowDesc(config_file.readBoolEntry("Look", "ShowDesc"));
-	KaduListBoxPixmap::setAlignTop(config_file.readBoolEntry("Look", "AlignUserboxIconsTop"));
-	KaduListBoxPixmap::setShowMultilineDesc(config_file.readBoolEntry("Look", "ShowMultilineDesc"));
-	KaduListBoxPixmap::setMultiColumn(config_file.readBoolEntry("Look", "MultiColumnUserbox"));
-	KaduListBoxPixmap::setMultiColumnWidth(config_file.readNumEntry("Look", "MultiColumnUserboxWidth", 230));
-	KaduListBoxPixmap::setMyUIN(config_file.readNumEntry("General", "UIN"));
-	KaduListBoxPixmap::setDescriptionColor(config_file.readColorEntry("Look", "DescriptionColor"));
-
-	// Zapamietujemy zaznaczonych uzytkownikow
+	// Zapamiêtujemy zaznaczonych u¿ytkowników
 	QStringList s_users;
 	for (i = 0; i < count(); ++i)
 		if (isSelected(i))
@@ -484,7 +475,7 @@ void UserBox::refresh()
 	QString s_user = currentText();
 
 	//zapamiêtajmy po³o¿enie pionowego suwaka
-	int vScrollValue=verticalScrollBar()->value();
+	int vScrollValue = verticalScrollBar()->value();
 
 	// Najpierw dzielimy uzytkownikow na cztery grupy
 	QStringList a_users;
@@ -492,10 +483,10 @@ void UserBox::refresh()
 	QStringList n_users;
 	QStringList b_users;
 
-	UinType myUin=config_file.readNumEntry("General", "UIN");
-	for (i = 0; i < Users.count(); ++i)
+	UinType myUin = config_file.readNumEntry("General", "UIN");
+	FOREACH(username, Users)
 	{
-		UserListElement &user = userlist.byAltNick(Users[i]);
+		UserListElement &user = userlist.byAltNick(*username);
 		if (user.uin())
 		{
 			if (user.uin() == myUin)
@@ -525,16 +516,18 @@ void UserBox::refresh()
 	// Czyscimy listê
 	clear();
 
-	// Dodajemy aktywnych
-	bool showBold=config_file.readBoolEntry("Look", "ShowBold");
-	bool showOnlyDesc=config_file.readBoolEntry("General", "ShowOnlyDescriptionUsers");
+	bool showBold = config_file.readBoolEntry("Look", "ShowBold");
+	bool showOnlyDesc = config_file.readBoolEntry("General", "ShowOnlyDescriptionUsers");
+	bool showBlocking = config_file.readBoolEntry("General", "ShowBlocking");
+	bool showBlocked = config_file.readBoolEntry("General", "ShowBlocked");
 
-	for (i = 0; i < a_users.count(); ++i)
+	// Dodajemy aktywnych
+	FOREACH(username, a_users)
 	{
-		UserListElement &user = userlist.byAltNick(a_users[i]);
-		if (user.blocking() && !config_file.readBoolEntry("General", "ShowBlocked"))
+		UserListElement &user = userlist.byAltNick(*username);
+		if (user.blocking() && !showBlocked)
 			continue;
-		if (user.status().isBlocking() && !config_file.readBoolEntry("General", "ShowBlocking"))
+		if (user.status().isBlocking() && !showBlocking)
 			continue;
 
 		if (!showOnlyDesc || user.status().hasDescription())
@@ -546,7 +539,7 @@ void UserBox::refresh()
 					user.status().description(), bold);
 			else
 			{
-				QPixmap pix = user.status().pixmap(has_mobile);
+				const QPixmap &pix = user.status().pixmap(has_mobile);
 				if (!pix.isNull())
 					lbp = new KaduListBoxPixmap(pix, user.altNick(), user.status().description(), bold);
 				else
@@ -558,10 +551,10 @@ void UserBox::refresh()
 	}
 
 	// Dodajemy niewidocznych
-	for (i = 0; i < i_users.count(); ++i)
+	FOREACH(username, i_users)
 	{
-		UserListElement &user = userlist.byAltNick(i_users[i]);
-		if (user.blocking() && !config_file.readBoolEntry("General", "ShowBlocked"))
+		UserListElement &user = userlist.byAltNick(*username);
+		if (user.blocking() && !showBlocked)
 			continue;
 
 		if (!showOnlyDesc || user.status().hasDescription())
@@ -572,8 +565,12 @@ void UserBox::refresh()
 					user.status().description(), 0);
 			else
 			{
-				QPixmap pix = user.status().pixmap(has_mobile);
-				lbp = new KaduListBoxPixmap(pix, user.altNick(), user.status().description(), 0);
+				const QPixmap &pix = user.status().pixmap(has_mobile);
+				if (!pix.isNull())
+					lbp = new KaduListBoxPixmap(pix, user.altNick(), user.status().description(), 0);
+				else
+					lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Invisible"), user.altNick(),
+						user.status().description(), 0);
 			}
 			insertItem(lbp);
 		}
@@ -581,26 +578,25 @@ void UserBox::refresh()
 
 	// Dodajemy nieaktywnych
 	if (config_file.readBoolEntry("General","ShowHideInactive"))
-	for (i = 0; i < n_users.count(); ++i)
+	FOREACH(username, n_users)
 	{
-		UserListElement &user = userlist.byAltNick(n_users[i]);
-		if (user.blocking() && !config_file.readBoolEntry("General", "ShowBlocked"))
+		UserListElement &user = userlist.byAltNick(*username);
+		if (user.blocking() && !showBlocked)
 			continue;
 
 		if (!showOnlyDesc || user.status().hasDescription())
 		{
-
 			bool has_mobile = user.mobile().length();
 			if (pending.pendingMsgs(user.uin()))
 				lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Message"), user.altNick(),
 					user.status().description(), 0);
 			else
 			{
-				QPixmap pix = user.status().pixmap(has_mobile);
+				const QPixmap &pix = user.status().pixmap(has_mobile);
 				if (!pix.isNull())
 					lbp = new KaduListBoxPixmap(pix, user.altNick(), user.status().description(), 0);
 				else
-					lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Online"), user.altNick(),
+					lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Offline"), user.altNick(),
 						user.status().description(), 0);
 			}
 			insertItem(lbp);
@@ -609,17 +605,17 @@ void UserBox::refresh()
 
 	// Dodajemy uzytkownikow bez numerow GG
 	if(!showOnlyDesc)
-		for (i = 0; i < b_users.count(); ++i)
+		FOREACH(username, b_users)
 		{
-			UserListElement &user = userlist.byAltNick(b_users[i]);
+			UserListElement &user = userlist.byAltNick(*username);
 			lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Mobile"), user.altNick(),
 				user.status().description(), 0);
 			insertItem(lbp);
 		}
 
 	// Przywracamy zaznaczenie wczesniej zaznaczonych uzytkownikow
-	for (i = 0; i < s_users.count(); ++i)
-		setSelected(findItem(s_users[i]), true);
+	FOREACH(username, s_users)
+		setSelected(findItem(*username), true);
 	setCurrentItem(findItem(s_user));
 
 	//przywracamy po³o¿enie pionowego suwaka
@@ -656,7 +652,7 @@ void UserBox::renameUser(const QString &oldaltnick, const QString &newaltnick)
 	kdebugf2();
 }
 
-bool UserBox::containsAltNick(const QString &altnick)
+bool UserBox::containsAltNick(const QString &altnick) const
 {
 	kdebugf();
 	FOREACH(username, Users)
@@ -690,14 +686,14 @@ void UserBox::showHideDescriptions()
 	all_refresh();
 }
 
-UinsList UserBox::getSelectedUins()
+UinsList UserBox::getSelectedUins() const
 {
 	kdebugf();
 	UinsList uins;
 	for (unsigned int i = 0; i < count(); ++i)
 		if (isSelected(i))
 		{
-			UserListElement user = userlist.byAltNick(text(i));
+			UserListElement &user = userlist.byAltNick(text(i));
 			if (user.uin())
 				uins.append(user.uin());
 		}
@@ -705,7 +701,7 @@ UinsList UserBox::getSelectedUins()
 	return uins;
 }
 
-UserList UserBox::getSelectedUsers()
+UserList UserBox::getSelectedUsers() const
 {
 	kdebugf();
 	UserList users;
@@ -719,20 +715,19 @@ UserList UserBox::getSelectedUsers()
 UserBox* UserBox::getActiveUserBox()
 {
 	kdebugf();
-	for (unsigned int i=0; i<UserBoxes.size(); ++i)
+	FOREACH(box, UserBoxes)
 	{
-		UserBox *box=UserBoxes[i];
-		if (box->isActiveWindow())
+		if ((*box)->isActiveWindow())
 		{
 			kdebugf2();
-			return box;
+			return *box;
 		}
 	}
 	kdebugmf(KDEBUG_PANIC, "return NULL!\n");
 	return NULL;
 }
 
-QStringList UserBox::getSelectedAltNicks()
+QStringList UserBox::getSelectedAltNicks() const
 {
 	kdebugf();
 	QStringList nicks;
@@ -747,31 +742,31 @@ QStringList UserBox::getSelectedAltNicks()
 void UserBox::all_refresh()
 {
 	kdebugf();
-	for(unsigned int i=0; i<UserBoxes.size(); ++i)
-		UserBoxes[i]->refresh();
+	FOREACH(box, UserBoxes)
+		(*box)->refresh();
 }
 
 void UserBox::all_removeUser(QString &altnick)
 {
 	kdebugf();
-	for(unsigned int i=0; i<UserBoxes.size(); ++i)
-		UserBoxes[i]->removeUser(altnick);
+	FOREACH(box, UserBoxes)
+		(*box)->removeUser(altnick);
 	kdebugf2();
 }
 
 void UserBox::all_changeAllToInactive()
 {
 	kdebugf();
-	for(unsigned int i=0; i<UserBoxes.size(); ++i)
-		UserBoxes[i]->changeAllToInactive();
+	FOREACH(box, UserBoxes)
+		(*box)->changeAllToInactive();
 	kdebugf2();
 }
 
 void UserBox::all_renameUser(const QString &oldaltnick, const QString &newaltnick)
 {
 	kdebugf();
-	for(unsigned int i = 0; i < UserBoxes.size(); ++i)
-		UserBoxes[i]->renameUser(oldaltnick, newaltnick);
+	FOREACH(box, UserBoxes)
+		(*box)->renameUser(oldaltnick, newaltnick);
 	kdebugf2();
 }
 
@@ -823,6 +818,15 @@ void UserBox::initModule()
 				ConfigDialog::addLabel("Look", "Preview panel", "<b>Text</b> preview", "preview_panel");
 
 	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show tooltip on userbox"), "ShowTooltipOnUserbox", true);
+
+	KaduListBoxPixmap::setFont(config_file.readFontEntry("Look","UserboxFont"));
+	KaduListBoxPixmap::setShowDesc(config_file.readBoolEntry("Look", "ShowDesc"));
+	KaduListBoxPixmap::setAlignTop(config_file.readBoolEntry("Look", "AlignUserboxIconsTop"));
+	KaduListBoxPixmap::setShowMultilineDesc(config_file.readBoolEntry("Look", "ShowMultilineDesc"));
+	KaduListBoxPixmap::setMultiColumn(config_file.readBoolEntry("Look", "MultiColumnUserbox"));
+	KaduListBoxPixmap::setMultiColumnWidth(config_file.readNumEntry("Look", "MultiColumnUserboxWidth", 230));
+	KaduListBoxPixmap::setMyUIN(config_file.readNumEntry("General", "UIN"));
+	KaduListBoxPixmap::setDescriptionColor(config_file.readColorEntry("Look", "DescriptionColor"));
 
 	UserBoxSlots *userboxslots= new UserBoxSlots();
 	ConfigDialog::registerSlotOnCreate(userboxslots, SLOT(onCreateConfigDialog()));
@@ -951,6 +955,15 @@ void UserBoxSlots::onDestroyConfigDialog()
 	userbox->setPaletteBackgroundColor(config_file.readColorEntry("Look", "UserboxBgColor"));
 	userbox->setPaletteForegroundColor(config_file.readColorEntry("Look", "UserboxFgColor"));
 	userbox->QListBox::setFont(config_file.readFontEntry("Look", "UserboxFont"));
+
+	KaduListBoxPixmap::setFont(config_file.readFontEntry("Look","UserboxFont"));
+	KaduListBoxPixmap::setShowDesc(config_file.readBoolEntry("Look", "ShowDesc"));
+	KaduListBoxPixmap::setAlignTop(config_file.readBoolEntry("Look", "AlignUserboxIconsTop"));
+	KaduListBoxPixmap::setShowMultilineDesc(config_file.readBoolEntry("Look", "ShowMultilineDesc"));
+	KaduListBoxPixmap::setMultiColumn(config_file.readBoolEntry("Look", "MultiColumnUserbox"));
+	KaduListBoxPixmap::setMultiColumnWidth(config_file.readNumEntry("Look", "MultiColumnUserboxWidth", 230));
+	KaduListBoxPixmap::setMyUIN(config_file.readNumEntry("General", "UIN"));
+	KaduListBoxPixmap::setDescriptionColor(config_file.readColorEntry("Look", "DescriptionColor"));
 
 	UserBox::all_refresh();
 	kdebugf2();
