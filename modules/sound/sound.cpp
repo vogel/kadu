@@ -400,11 +400,14 @@ SoundSlots::SoundSlots(QObject *parent, const char *name) : QObject(parent, name
 	if (sound_manager->isMuted())
 	{
 		muteitem= kadu->mainMenu()->insertItem(icons_manager.loadIcon("Mute"), tr("Unmute sounds"), this, SLOT(muteUnmuteSounds()), 0, -1, 3);
+		icons_manager.registerMenuItem(kadu->mainMenu(), tr("Unmute sounds"), "Mute");
+
 		ToolBar::registerButton("Mute", tr("Unmute sounds"), this, SLOT(muteUnmuteSounds()), 0, "mute");
 	}
 	else
 	{
 		muteitem= kadu->mainMenu()->insertItem(icons_manager.loadIcon("Unmute"), tr("Mute sounds"), this, SLOT(muteUnmuteSounds()), 0, -1, 3);
+		icons_manager.registerMenuItem(kadu->mainMenu(), tr("Mute sounds"), "Unmute");
 		ToolBar::registerButton("Unmute", tr("Mute sounds"), this, SLOT(muteUnmuteSounds()), 0, "mute");
 	}
 

@@ -243,6 +243,10 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager")
 	// to samo z menu - moduly powinny sie ladowac na samym koncu
 	modules_manager=this;
 	kadu->mainMenu()->insertItem(icons_manager.loadIcon("ManageModules"), tr("&Manage Modules"), this, SLOT(showDialog()), HotKey::shortCutFromFile("ShortCuts", "kadu_modulesmanager"), -1, 2);
+
+	icons_manager.registerMenuItem(kadu->mainMenu(), tr("&Manage Modules"), "ManageModules");
+
+	
 	//
 	Dialog=NULL;
 	//

@@ -261,6 +261,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   nie od¶wie¿a³ siê adres ip, port, maksymalny rozmiar obrazka - poprawione (joi)
 * dokowanie dla fvwm-crystal: WM_CLASS="kadudock" (joi)
 * dodane brakuj±ce ikonki w menu modulu accound_managment config_wizard (Ron_K)
+* poprawka w od¶wierzaniu ikon po zmianie tematu (michal)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
