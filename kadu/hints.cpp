@@ -50,8 +50,6 @@ bool Hint::nextSecond(void)
 {
 	kdebug("Hint::nextSecond()\n");
 	secs--;
-	if (!secs)
-		delete this;
 	return secs;
 }
 
@@ -127,6 +125,7 @@ void HintManager::deleteHint(void)
 	for ( int i = 0; i < hints.count(); i++ )
 		if (!(hints[i]->nextSecond()))
 		{
+			delete hints[i];
 			hints.remove(hints.at(i));
 			i--;
 			if (!hints.count())
@@ -181,9 +180,9 @@ void HintManager::addHintNewChat(const QString &nick, const QString &msg)
 	{
 		QString cite;
 		if (msg.length() <= config_file.readNumEntry("Hints","CiteSign"))
-			cite = QStyleSheet::escape(msg);
+			cite = msg;
 		else
-			cite = QStyleSheet::escape(msg.left(config_file.readNumEntry("Hints","CiteSign"))+"...");
+			cite = msg.left(config_file.readNumEntry("Hints","CiteSign"))+"...";
 		addHint(tr("Chat with")+" <b>"+nick+"<br></b> <small>"+cite+"</small>",*icons->loadIcon("message"), QFont(config[9][0], config[9][1].toInt()), QColor(config[9][2]), QColor(config[9][3]), config[9][4].toInt());
 	}
 	else
