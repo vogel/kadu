@@ -331,7 +331,7 @@ void VoiceManager::makeVoiceChat()
 {
 	kdebugf();
 	if (config_file.readBoolEntry("Network", "AllowDCC"))
-		if (dcc_manager->configDccIp().isIp4Addr())
+		if (dcc_manager->dccEnabled())
 		{
 			UserBox *activeUserBox=UserBox::getActiveUserBox();
 			UserList users;
@@ -346,7 +346,7 @@ void VoiceManager::makeVoiceChat()
 				user.port(),
 				config_file.readNumEntry("General", "UIN"),
 				user.uin(),
-				SLOT(dccVoiceChat(uint32_t, uint16_t, UinType, UinType, struct gg_dcc *&)),
+				SLOT(dccVoiceChat(uint32_t, uint16_t, UinType, UinType, struct gg_dcc **)),
 				GG_SESSION_DCC_VOICE);
 		}
 	kdebugf2();

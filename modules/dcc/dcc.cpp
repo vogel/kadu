@@ -96,12 +96,12 @@ DccSocket::~DccSocket()
 	kdebugmf(KDEBUG_INFO|KDEBUG_FUNCTION_END, "end: dcc sockets count = %d\n", Count);
 }
 
-struct gg_dcc* DccSocket::ggDccStruct()
+struct gg_dcc* DccSocket::ggDccStruct() const
 {
 	return dccsock;
 }
 
-struct gg_event* DccSocket::ggDccEvent()
+struct gg_event* DccSocket::ggDccEvent() const
 {
 	return dccevent;
 }
@@ -264,7 +264,7 @@ void DccSocket::setState(int pstate)
 	kdebugf2();
 }
 
-int DccSocket::state()
+int DccSocket::state() const
 {
 	return State;
 }
@@ -289,7 +289,7 @@ DccManager::DccManager(QObject *parent, const char *name) : QObject(parent, name
 
 	ConfigDialog::addVGroupBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "DCC forwarding properties"));
 	ConfigDialog::addLineEdit("Network", "DCC forwarding properties", QT_TRANSLATE_NOOP("@default", "External IP address:"), "ExternalIP");
-	ConfigDialog::addLineEdit("Network", "DCC forwarding properties", QT_TRANSLATE_NOOP("@default", "External TCP port:"), "ExternalPort", "0");
+	ConfigDialog::addLineEdit("Network", "DCC forwarding properties", QT_TRANSLATE_NOOP("@default", "External TCP port:"), "ExternalPort", "1550");
 	ConfigDialog::addLineEdit("Network", "DCC forwarding properties", QT_TRANSLATE_NOOP("@default", "Local TCP port:"), "LocalPort", "1550");
 
 	ConfigDialog::connectSlot("Network", "DCC enabled", SIGNAL(toggled(bool)), this, SLOT(ifDccEnabled(bool)));
@@ -302,16 +302,6 @@ DccManager::DccManager(QObject *parent, const char *name) : QObject(parent, name
 	DCCReadSocketNotifier = NULL;
 	DCCWriteSocketNotifier = NULL;
 
-	if (!config_file.readBoolEntry("Network","DccIpDetect"))
-		ConfigDccIp.setAddress(config_file.readEntry("Network","DccIP", ""));
-
-	QHostAddress ext_ip;
-	if (config_file.readBoolEntry("Network","DccForwarding"))
-		if (ext_ip.setAddress(config_file.readEntry("Network","ExternalIP", "")))
-		{
-			gadu->setDccExternalIP(ext_ip);
-			ConfigDccPort=config_file.readNumEntry("Network", "ExternalPort", 1550);
-		}
 
 	connect(&TimeoutTimer, SIGNAL(timeout()), this, SLOT(timeout()));
 
@@ -353,9 +343,9 @@ DccManager::~DccManager()
 	kdebugf2();
 }
 
-QHostAddress DccManager::configDccIp()
+bool DccManager::dccEnabled() const
 {
-	return ConfigDccIp;
+	return DccEnabled;
 }
 
 void DccManager::watchDcc()
@@ -456,41 +446,52 @@ void DccManager::setupDcc()
 		return;
 	}
 
-	QHostAddress dccIp;
-	short int dccPort;
-
-	gadu->dccSocketCreate(config_file.readNumEntry("General", "UIN"), config_file.readNumEntry("Network", "LocalPort", 1550), DccSock);
+	gadu->dccSocketCreate(config_file.readNumEntry("General", "UIN"),
+							config_file.readNumEntry("Network", "LocalPort"),
+							&DccSock);
 
 	if (!DccSock)
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Couldn't bind DCC socket.\n");
-		gadu->dccFree(DccSock);
 
 		MessageBox::wrn(tr("Couldn't create DCC socket.\nDirect connections disabled."));
 		kdebugf2();
 		return;
 	}
 
-	if (ConfigDccIp == QHostAddress())
+	QHostAddress DCCIP;
+	short int DCCPort;
+
+	if (config_file.readBoolEntry("Network", "DccIpDetect"))
+		DCCIP.setAddress("255.255.255.255");
+	else
+		DCCIP.setAddress(config_file.readEntry("Network", "DccIP"));
+
+	QHostAddress ext_ip;
+	bool forwarding = config_file.readBoolEntry("Network", "DccForwarding") &&
+					ext_ip.setAddress(config_file.readEntry("Network", "ExternalIP"));
+	if (forwarding)
 	{
-		dccIp.setAddress("255.255.255.255");
-		dccPort = DccSock->port;
+		gadu->setDccExternalIP(ext_ip);
+		DCCPort = config_file.readNumEntry("Network", "ExternalPort");
 	}
 	else
 	{
-		dccIp = ConfigDccIp;
-		dccPort = ConfigDccPort;
+		gadu->setDccExternalIP(QHostAddress());
+		DCCPort = DccSock->port;
 	}
 
-	gadu->setDccIpAndPort(htonl(dccIp.ip4Addr()), dccPort);
+	gadu->setDccIpAndPort(htonl(DCCIP.ip4Addr()), DCCPort);
 
-	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "DCC_IP=%s DCC_PORT=%d\n", dccIp.toString().latin1(), dccPort);
+	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "DCC_IP=%s DCC_PORT=%d\n", DCCIP.toString().local8Bit().data(), DCCPort);
 
-	DCCReadSocketNotifier = new QSocketNotifier(DccSock->fd, QSocketNotifier::Read, kadu);
+	DCCReadSocketNotifier = new QSocketNotifier(DccSock->fd, QSocketNotifier::Read, this, "dcc_read_socket_notifier");
 	connect(DCCReadSocketNotifier, SIGNAL(activated(int)), this, SLOT(dccReceived()));
 
-	DCCWriteSocketNotifier = new QSocketNotifier(DccSock->fd, QSocketNotifier::Write, kadu);
+	DCCWriteSocketNotifier = new QSocketNotifier(DccSock->fd, QSocketNotifier::Write, this, "dcc_write_socket_notifier");
 	connect(DCCWriteSocketNotifier, SIGNAL(activated(int)), this, SLOT(dccSent()));
+
+	DccEnabled=true;
 
 	kdebugf2();
 }
@@ -516,69 +517,62 @@ void DccManager::closeDcc()
 		DccSock = NULL;
 		gadu->setDccIpAndPort(0, 0);
 	}
+	DccEnabled=false;
 	kdebugf2();
 }
 
 
-void DccManager::ifDccEnabled(bool value)
+void DccManager::ifDccEnabled(bool dccEnabled)
 {
 	kdebugf();
 
-	QCheckBox *b_dccip= ConfigDialog::getCheckBox("Network", "DCC IP autodetection");
-	QVGroupBox *g_dccip = ConfigDialog::getVGroupBox("Network", "DCC IP");
-	QVGroupBox *g_fwdprop = ConfigDialog::getVGroupBox("Network", "DCC forwarding properties");
-	QCheckBox *b_dccfwd = ConfigDialog::getCheckBox("Network", "DCC forwarding enabled");
+	QCheckBox *autodetectIP= ConfigDialog::getCheckBox("Network", "DCC IP autodetection");
+	QVGroupBox *dccIP = ConfigDialog::getVGroupBox("Network", "DCC IP");
+	QCheckBox *forwarding = ConfigDialog::getCheckBox("Network", "DCC forwarding enabled");
+	QVGroupBox *forwardingProperties = ConfigDialog::getVGroupBox("Network", "DCC forwarding properties");
 
-	b_dccip->setEnabled(value);
-	g_dccip->setEnabled(!b_dccip->isChecked() && value);
-	b_dccfwd->setEnabled(value);
-	g_fwdprop->setEnabled(b_dccfwd->isChecked() && value);
+	autodetectIP->setEnabled(dccEnabled);
+	dccIP->setEnabled(!autodetectIP->isChecked() && dccEnabled);
+	forwarding->setEnabled(dccEnabled);
+	forwardingProperties->setEnabled(forwarding->isChecked() && dccEnabled);
+
 	kdebugf2();
 }
 
-void DccManager::ifDccIpEnabled(bool value)
+void DccManager::ifDccIpEnabled(bool autodetect)
 {
 	kdebugf();
-	ConfigDialog::getVGroupBox("Network", "DCC IP")->setEnabled(!value);
+	ConfigDialog::getVGroupBox("Network", "DCC IP")->setEnabled(!autodetect);
 	kdebugf2();
 }
 
 void DccManager::configDialogCreated()
 {
 	kdebugf();
-	QCheckBox *b_dccenabled = ConfigDialog::getCheckBox("Network", "DCC enabled");
-	QCheckBox *b_dccip= ConfigDialog::getCheckBox("Network", "DCC IP autodetection");
-	QVGroupBox *g_dccip = ConfigDialog::getVGroupBox("Network", "DCC IP");
-	QVGroupBox *g_fwdprop = ConfigDialog::getVGroupBox("Network", "DCC forwarding properties");
-	QCheckBox *b_dccfwd = ConfigDialog::getCheckBox("Network", "DCC forwarding enabled");
+	QCheckBox *dccEnabled = ConfigDialog::getCheckBox("Network", "DCC enabled");
+	QCheckBox *autodetectIP = ConfigDialog::getCheckBox("Network", "DCC IP autodetection");
+	QVGroupBox *dccIP = ConfigDialog::getVGroupBox("Network", "DCC IP");
+	QVGroupBox *forwardingProperties = ConfigDialog::getVGroupBox("Network", "DCC forwarding properties");
+	QCheckBox *forwarding = ConfigDialog::getCheckBox("Network", "DCC forwarding enabled");
 
-	b_dccip->setEnabled(b_dccenabled->isChecked());
-	g_dccip->setEnabled(!b_dccip->isChecked()&& b_dccenabled->isChecked());
-	b_dccfwd->setEnabled(b_dccenabled->isChecked());
-	g_fwdprop->setEnabled(b_dccenabled->isChecked() && b_dccfwd->isChecked());
-	connect(b_dccfwd, SIGNAL(toggled(bool)), g_fwdprop, SLOT(setEnabled(bool)));
+	autodetectIP->setEnabled(dccEnabled->isChecked());
+	dccIP->setEnabled(!autodetectIP->isChecked() && dccEnabled->isChecked());
+	forwarding->setEnabled(dccEnabled->isChecked());
+	forwardingProperties->setEnabled(dccEnabled->isChecked() && forwarding->isChecked());
+	connect(forwarding, SIGNAL(toggled(bool)), forwardingProperties, SLOT(setEnabled(bool)));
 	kdebugf2();
 }
 
 void DccManager::configDialogApply()
 {
 	kdebugf();
-	if (config_file.readBoolEntry("Network","DccIpDetect"))
-		ConfigDccIp = QHostAddress();
-	else
-		if (!ConfigDccIp.setAddress(config_file.readEntry("Network", "DccIP")))
-		{
-			config_file.writeEntry("Network", "DccIP", "0.0.0.0");
-			ConfigDccIp = QHostAddress();
-		}
-	QHostAddress ext_ip;
-	if (!ext_ip.setAddress(config_file.readEntry("Network", "ExternalIP")))	
+
+	QHostAddress host;
+	if (!host.setAddress(config_file.readEntry("Network", "DccIP")))
+		config_file.writeEntry("Network", "DccIP", "0.0.0.0");
+	if (!host.setAddress(config_file.readEntry("Network", "ExternalIP")))	
 		config_file.writeEntry("Network", "ExternalIP", "0.0.0.0");
-	if (!config_file.readBoolEntry("Network","DccForwarding"))
-		ext_ip = QHostAddress();
-	gadu->setDccExternalIP(ext_ip);
-	if (config_file.readNumEntry("Network", "ExternalPort")<=1023)
-		config_file.writeEntry("Network", "ExternalPort", 0);
+
 	kdebugf2();
 }
 
@@ -588,7 +582,7 @@ void DccManager::dccConnectionReceived(const UserListElement& sender)
 	struct gg_dcc* dcc_new;
 	if (DccSocket::count() < 8)
 	{
-		gadu->dccGetFile(htonl(sender.ip().ip4Addr()), sender.port(), config_file.readNumEntry("General","UIN"), sender.uin(), dcc_new);
+		gadu->dccGetFile(htonl(sender.ip().ip4Addr()), sender.port(), config_file.readNumEntry("General","UIN"), sender.uin(), &dcc_new);
 		if (dcc_new)
 		{
 			DccSocket* dcc_socket = new DccSocket(dcc_new);
@@ -600,15 +594,22 @@ void DccManager::dccConnectionReceived(const UserListElement& sender)
 	kdebugf2();
 }
 
-void DccManager::initDCCConnection(uint32_t ip, uint16_t port, UinType my_uin, UinType peer_uin, const char *gadu_slot, int dcc_type)
+void DccManager::initDCCConnection(uint32_t ip, uint16_t port, UinType my_uin,
+							UinType peer_uin, const char *gadu_slot, int dcc_type)
 {
 	kdebugf();
 	if (port>=10)
 	{
 		struct gg_dcc *sock=NULL;
-		connect(this, SIGNAL(dccSig(uint32_t, uint16_t, UinType, UinType, struct gg_dcc *&)), gadu, gadu_slot);
-		emit dccSig(htonl(ip), port, my_uin, peer_uin, sock);
-		disconnect(this, SIGNAL(dccSig(uint32_t, uint16_t, UinType, UinType, struct gg_dcc *&)), gadu, gadu_slot);
+
+		connect(this, SIGNAL(dccSig(uint32_t, uint16_t, UinType, UinType, struct gg_dcc **)),
+				gadu, gadu_slot);
+
+		emit dccSig(htonl(ip), port, my_uin, peer_uin, &sock);
+
+		disconnect(this, SIGNAL(dccSig(uint32_t, uint16_t, UinType, UinType, struct gg_dcc **)),
+				gadu, gadu_slot);
+
 		if (sock)
 		{
 			DccSocket* dcc_socket = new DccSocket(sock);

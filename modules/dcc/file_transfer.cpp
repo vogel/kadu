@@ -71,7 +71,7 @@ void FileTransferDialog::printFileInfo()
 		sender=tr("Receiver: %1");
 	new QLabel(sender.arg(userlist.byUin(Socket->ggDccStruct()->peer_uin).altNick()), this);
 
-	new QLabel(tr("Filename: %1").arg((char *)Socket->ggDccStruct()->file_info.filename), this);
+	new QLabel(tr("Filename: %1").arg(cp2unicode(Socket->ggDccStruct()->file_info.filename)), this);
 
 	new QLabel(tr("File size: %1B").arg(QString::number(Socket->ggDccStruct()->file_info.size)), this);
 
@@ -208,14 +208,14 @@ void FileTransferManager::sendFile(UinType receiver)
 {
 	kdebugf();
 	if (config_file.readBoolEntry("Network", "AllowDCC"))
-		if (dcc_manager->configDccIp().isIp4Addr())
+		if (dcc_manager->dccEnabled())
 		{
 			const UserListElement& user = userlist.byUin(receiver);
 			dcc_manager->initDCCConnection(user.ip().ip4Addr(),
 				user.port(),
 				config_file.readNumEntry("General", "UIN"),
 				user.uin(),
-				SLOT(dccSendFile(uint32_t, uint16_t, UinType, UinType, struct gg_dcc *&)),
+				SLOT(dccSendFile(uint32_t, uint16_t, UinType, UinType, struct gg_dcc **)),
 				GG_SESSION_DCC_SEND);
 		}
 	kdebugf2();
@@ -230,7 +230,7 @@ QString FileTransferManager::selectFile(DccSocket* socket)
 	{
 		f = QFileDialog::getOpenFileName(
 			config_file.readEntry("Network", "LastUploadDirectory")
-			+(char *)socket->ggDccStruct()->file_info.filename,
+			+cp2unicode(socket->ggDccStruct()->file_info.filename),
 			QString::null, 0, tr("open file"), tr("Select file location"));
 		fi.setFile(f);
 		if (f!=QString::null && !fi.isReadable())
@@ -339,7 +339,7 @@ void FileTransferManager::needFileAccept(DccSocket* socket)
 
 	str=narg(tr("User %1 wants to send us a file %2\nof size %3kB. Accept transfer?"),
 		userlist.byUin(socket->ggDccStruct()->peer_uin).altNick(),
-		QString((char *)socket->ggDccStruct()->file_info.filename),
+		cp2unicode(socket->ggDccStruct()->file_info.filename),
 		QString(fsize));
 
 	switch (QMessageBox::information(0, tr("Incoming transfer"), str, tr("Yes"), tr("No"),
@@ -349,7 +349,7 @@ void FileTransferManager::needFileAccept(DccSocket* socket)
 			kdebugmf(KDEBUG_INFO, "accepted\n");
 			f = QFileDialog::getSaveFileName(
 				config_file.readEntry("Network", "LastDownloadDirectory")
-					+(char *)socket->ggDccStruct()->file_info.filename,
+					+cp2unicode(socket->ggDccStruct()->file_info.filename),
 				QString::null, 0, tr("save file"), tr("Select file location"));
 			if (f.isEmpty())
 			{
@@ -368,9 +368,9 @@ void FileTransferManager::needFileAccept(DccSocket* socket)
 					tr("Cancel"), 0, 2))
 				{
 					case 0:
-						kdebugmf(KDEBUG_INFO, "truncating file %s\n", f.latin1());
+						kdebugmf(KDEBUG_INFO, "truncating file %s\n", f.local8Bit().data());
 
-						if ((socket->ggDccStruct()->file_fd = open(f.latin1(), O_WRONLY | O_CREAT | O_TRUNC, 0600)) == -1)
+						if ((socket->ggDccStruct()->file_fd = open(f.local8Bit().data(), O_WRONLY | O_CREAT | O_TRUNC, 0600)) == -1)
 						{
 							MessageBox::wrn(tr("Could not open file"));
 							socket->setState(DCC_SOCKET_COULDNT_OPEN_FILE);
@@ -380,9 +380,9 @@ void FileTransferManager::needFileAccept(DccSocket* socket)
 						socket->ggDccStruct()->offset = 0;
 						break;
 					case 1:
-						kdebugmf(KDEBUG_INFO, "appending to file %s\n", f.latin1());
+						kdebugmf(KDEBUG_INFO, "appending to file %s\n", f.local8Bit().data());
 
-						if ((socket->ggDccStruct()->file_fd = open(f.latin1(), O_WRONLY | O_APPEND, 0600)) == -1)
+						if ((socket->ggDccStruct()->file_fd = open(f.local8Bit().data(), O_WRONLY | O_APPEND, 0600)) == -1)
 						{
 							MessageBox::wrn(tr("Could not open file"));
 							socket->setState(DCC_SOCKET_COULDNT_OPEN_FILE);
@@ -400,9 +400,9 @@ void FileTransferManager::needFileAccept(DccSocket* socket)
 			}
 			else
 			{
-				kdebugmf(KDEBUG_INFO, "creating file %s\n", f.latin1());
+				kdebugmf(KDEBUG_INFO, "creating file %s\n", f.local8Bit().data());
 
-				if ((socket->ggDccStruct()->file_fd = open(f.latin1(), O_WRONLY | O_CREAT, 0600)) == -1)
+				if ((socket->ggDccStruct()->file_fd = open(f.local8Bit().data(), O_WRONLY | O_CREAT, 0600)) == -1)
 				{
 					MessageBox::wrn(tr("Could not open file"));
 					socket->setState(DCC_SOCKET_COULDNT_OPEN_FILE);

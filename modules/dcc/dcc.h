@@ -1,5 +1,5 @@
-#ifndef DCC_H
-#define DCC_H
+#ifndef KADU_DCC_H
+#define KADU_DCC_H
 
 #include <qhostaddress.h>
 
@@ -38,11 +38,11 @@ class DccSocket : public QObject
 	public:
 		DccSocket(struct gg_dcc* dcc_sock);
 		~DccSocket();
-		struct gg_dcc* ggDccStruct();
-		struct gg_event* ggDccEvent();
+		struct gg_dcc* ggDccStruct() const;
+		struct gg_event* ggDccEvent() const;
 		virtual void initializeNotifiers();
 		virtual void watchDcc(int check);
-		int state();
+		int state() const;
 		static int count();
 		virtual void setState(int pstate);
 
@@ -60,16 +60,17 @@ class DccManager : public QObject
 		QSocketNotifier* DCCReadSocketNotifier;
 		QSocketNotifier* DCCWriteSocketNotifier;
 		
-		QHostAddress ConfigDccIp;
-		short int ConfigDccPort;
-		
 		QTimer TimeoutTimer;
 		void watchDcc();
 		QMap<UinType, int> requests;
+		bool DccEnabled;
 
 	private slots:
+		void startTimeout();
+		void cancelTimeout();
 		void setupDcc();
 		void closeDcc();
+
 		/**
 			Otrzymano wiadomo¶æ CTCP.
 			Kto¶ nas prosi o po³±czenie dcc, poniewa¿
@@ -78,19 +79,7 @@ class DccManager : public QObject
 		void dccConnectionReceived(const UserListElement& sender);
 		void timeout();
 		void callbackReceived(DccSocket *socket);
-	signals:
-		/* nie dotykaæ */
-		void dccSig(uint32_t ip, uint16_t port, UinType my_uin, UinType peer_uin, struct gg_dcc *&out);
 
-	public:
-		DccManager(QObject *parent=0, const char *name=0);
-		virtual ~DccManager();
-		QHostAddress configDccIp();
-		void startTimeout();
-		void cancelTimeout();
-		void initDCCConnection(uint32_t ip, uint16_t port, UinType my_uin, UinType peer_uin, const char *gadu_slot, int dcc_type);
-
-	public slots:
 		void dccFinished(DccSocket* dcc);
 		void dccReceived();
 		void dccSent();
@@ -98,6 +87,12 @@ class DccManager : public QObject
 		void ifDccIpEnabled(bool value);
 		void configDialogCreated();
 		void configDialogApply();
+
+	public:
+		DccManager(QObject *parent=0, const char *name=0);
+		virtual ~DccManager();
+		void initDCCConnection(uint32_t ip, uint16_t port, UinType my_uin, UinType peer_uin, const char *gadu_slot, int dcc_type);
+		bool dccEnabled() const;
 
 	signals:
 		void dccEvent(DccSocket* socket);
@@ -109,6 +104,9 @@ class DccManager : public QObject
 		void dccDone(DccSocket* socket);
 		void setState(DccSocket* socket);
 		void socketDestroying(DccSocket* socket);
+
+		/* nie dotykaæ */
+		void dccSig(uint32_t ip, uint16_t port, UinType my_uin, UinType peer_uin, struct gg_dcc **out);
 };
 
 extern DccManager* dcc_manager;

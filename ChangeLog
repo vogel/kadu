@@ -367,6 +367,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   + ignorowanie po³±czeñ bezpo¶rednich od anonimów (joi)
 * poprawka Analyzera w kodzie dotycz±cym ignorowania - b³êdny zapis listy
   ignorowanych do pliku (joi)
+* dcc: porz±dki, usuniêty b³±d powoduj±cy przes³anie serwerowi b³êdnego numeru portu (joi)
+* dcc + libgadu: poprawne przesy³anie nazw plików zawieraj±cych polskie znaki (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,

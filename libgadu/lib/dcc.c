@@ -1,4 +1,4 @@
-/* $Id: dcc.c,v 1.30 2004/12/21 20:23:54 joi Exp $ */
+/* $Id: dcc.c,v 1.31 2004/12/26 03:41:15 joi Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -124,31 +124,47 @@ void gg_dcc_fill_filetime(uint32_t ut, uint32_t *ft)
  */
 int gg_dcc_fill_file_info(struct gg_dcc *d, const char *filename)
 {
+	return gg_dcc_fill_file_info2(d, filename, filename);
+}
+
+/*
+ * gg_dcc_fill_file_info2()
+ *
+ * wype³nia pola struct gg_dcc niezbêdne do wys³ania pliku.
+ *
+ *  - d - struktura opisuj±ca po³±czenie DCC
+ *  - filename - nazwa pliku
+ *  - local_filename - nazwa na lokalnym systemie plików
+ *
+ * 0, -1.
+ */
+int gg_dcc_fill_file_info2(struct gg_dcc *d, const char *filename, const char *local_filename)
+{
 	struct stat st;
 	const char *name, *ext, *p;
 	int i, j;
-	
-	gg_debug(GG_DEBUG_FUNCTION, "** gg_dcc_fill_file_info(%p, \"%s\");\n", d, filename);
-	
+
+	gg_debug(GG_DEBUG_FUNCTION, "** gg_dcc_fill_file_info2(%p, \"%s\", \"%s\");\n", d, filename, local_filename);
+
 	if (!d || d->type != GG_SESSION_DCC_SEND) {
-		gg_debug(GG_DEBUG_MISC, "// gg_dcc_fill_file_info() invalid arguments\n");
+		gg_debug(GG_DEBUG_MISC, "// gg_dcc_fill_file_info2() invalid arguments\n");
 		errno = EINVAL;
 		return -1;
 	}
-		
-	if (stat(filename, &st) == -1) {
-		gg_debug(GG_DEBUG_MISC, "// gg_dcc_fill_file_info() stat() failed (%s)\n", strerror(errno));
+
+	if (stat(local_filename, &st) == -1) {
+		gg_debug(GG_DEBUG_MISC, "// gg_dcc_fill_file_info2() stat() failed (%s)\n", strerror(errno));
 		return -1;
 	}
 
 	if ((st.st_mode & S_IFDIR)) {
-		gg_debug(GG_DEBUG_MISC, "// gg_dcc_fill_file_info() that's a directory\n");
+		gg_debug(GG_DEBUG_MISC, "// gg_dcc_fill_file_info2() that's a directory\n");
 		errno = EINVAL;
 		return -1;
 	}
 
-	if ((d->file_fd = open(filename, O_RDONLY)) == -1) {
-		gg_debug(GG_DEBUG_MISC, "// gg_dcc_fill_file_info() open() failed (%s)\n", strerror(errno));
+	if ((d->file_fd = open(local_filename, O_RDONLY)) == -1) {
+		gg_debug(GG_DEBUG_MISC, "// gg_dcc_fill_file_info2() open() failed (%s)\n", strerror(errno));
 		return -1;
 	}
 
@@ -160,7 +176,7 @@ int gg_dcc_fill_file_info(struct gg_dcc *d, const char *filename)
 	gg_dcc_fill_filetime(st.st_atime, d->file_info.atime);
 	gg_dcc_fill_filetime(st.st_mtime, d->file_info.mtime);
 	gg_dcc_fill_filetime(st.st_ctime, d->file_info.ctime);
-	
+
 	d->file_info.size = gg_fix32(st.st_size);
 	d->file_info.mode = gg_fix32(0x20);	/* FILE_ATTRIBUTE_ARCHIVE */
 
@@ -174,14 +190,13 @@ int gg_dcc_fill_file_info(struct gg_dcc *d, const char *filename)
 
 	for (i = 0, p = name; i < 8 && p < ext; i++, p++)
 		d->file_info.short_filename[i] = toupper(name[i]);
-	
+
 	if (strlen(ext) > 0) {
 		for (j = 0; *ext && j < 4; j++, p++)
 			d->file_info.short_filename[i + j] = toupper(ext[j]);
-		
 	}
 
-	gg_debug(GG_DEBUG_MISC, "// gg_dcc_fill_file_info() short name \"%s\", dos name \"%s\"\n", name, d->file_info.short_filename);
+	gg_debug(GG_DEBUG_MISC, "// gg_dcc_fill_file_info2() short name \"%s\", dos name \"%s\"\n", name, d->file_info.short_filename);
 	strncpy(d->file_info.filename, name, sizeof(d->file_info.filename) - 1);
 
 	return 0;

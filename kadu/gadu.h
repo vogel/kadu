@@ -1007,10 +1007,10 @@ class GaduProtocol : public QObject
 		struct gg_event* dccWatchFd(struct gg_dcc* d);
 		void dccSetType(struct gg_dcc* d, int type);
 		int dccFillFileInfo(struct gg_dcc* d, const QString& filename);
-		void dccSocketCreate(UinType uin, uint16_t port, struct gg_dcc *&out);
-		void dccSendFile(uint32_t ip, uint16_t port, UinType my_uin, UinType peer_uin, struct gg_dcc *&out);
-		void dccGetFile(uint32_t ip, uint16_t port, UinType my_uin, UinType peer_uin, struct gg_dcc *&out);
-		void dccVoiceChat(uint32_t ip, uint16_t port, UinType my_uin, UinType peer_uin, struct gg_dcc *&out);
+		void dccSocketCreate(UinType uin, uint16_t port, struct gg_dcc **out);
+		void dccSendFile(uint32_t ip, uint16_t port, UinType my_uin, UinType peer_uin, struct gg_dcc **out);
+		void dccGetFile(uint32_t ip, uint16_t port, UinType my_uin, UinType peer_uin, struct gg_dcc **out);
+		void dccVoiceChat(uint32_t ip, uint16_t port, UinType my_uin, UinType peer_uin, struct gg_dcc **out);
 		int dccVoiceSend(struct gg_dcc* d, char* buf, int length);
 		void setDccIpAndPort(unsigned long dcc_ip, int dcc_port);
 

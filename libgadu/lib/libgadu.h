@@ -1,4 +1,4 @@
-/* $Id: libgadu.h,v 1.55 2004/11/01 14:12:56 adrian Exp $ */
+/* $Id: libgadu.h,v 1.56 2004/12/26 03:41:15 joi Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -809,6 +809,7 @@ struct gg_dcc *gg_dcc_get_file(uint32_t ip, uint16_t port, uin_t my_uin, uin_t p
 struct gg_dcc *gg_dcc_voice_chat(uint32_t ip, uint16_t port, uin_t my_uin, uin_t peer_uin);
 void gg_dcc_set_type(struct gg_dcc *d, int type);
 int gg_dcc_fill_file_info(struct gg_dcc *d, const char *filename);
+int gg_dcc_fill_file_info2(struct gg_dcc *d, const char *filename, const char *local_filename);
 int gg_dcc_voice_send(struct gg_dcc *d, char *buf, int length);
 
 #define GG_DCC_VOICE_FRAME_LENGTH 195
