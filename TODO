@@ -1,4 +1,4 @@
-* TODO, stan na 03/07/2003.
+* TODO, stan na 15/08/2003.
 
 * Legenda
 
@@ -9,14 +9,17 @@
 
 * TODO dla wersji 0.3.4
 
- ! dopracowaæ animowane emotikony na ile siê da
- ! dopracowaæ ob³ugê historii
- ! dopracowaæ wysy³anie SMS'ów do ERY
- ! wyja¶niæ problemy z autoaway'em albo przynajmniej umo¿liwiæ u¿ywanie poprzedniej metody
+ ! wyja¶niæ wpadanie w pêtlê przekierowañ przy wysy³aniu sms'ów do Idei
  ! poprawiæ escapowanie znaków specjalnych, m.in. ¼le escape'uje <<
+ ! naprawiæ b³êdy przy problemach z po³±czeniem
+ + ikonka wy³±czenia d¼wiêków w toolbarze
 
 * TODO dla wersji 0.3.5 lub pó¼niejszych
 
+ ! wyja¶niæ problemy z autoaway'em albo przynajmniej umo¿liwiæ u¿ywanie poprzedniej metody
+ ! dopracowaæ animowane emotikony na ile siê da
+ ! dopracowaæ ob³ugê historii
+ ! dopracowaæ wysy³anie SMS'ów do ERY (prêdko¶æ)
  + po³±czenia ssl z serwerami gadu
  + ca³kowite przej¶cie na nowy mechanizm budowania okna konfiguracji i uporz±dkowanie go
  + konfigurowanie klawiszologii kadu

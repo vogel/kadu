@@ -78,12 +78,13 @@ void HttpClient::onConnected()
 	if ((Path == "" || Path[0] != '/')&&Path.left(7)!="http://")
 		query += '/';
 	query += Path;
-	query += " HTTP/1.1\n";
-//	query+="Connection: Keep-Alive\n";
-	query += "User-Agent: Mozilla/5.0 (X11; U; Linux i686; pl-PL; rv:1.2)\n";
+	query += " HTTP/1.1\r\n";
+	query += "Host: " + Host + "\r\n";
+	query += "User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4) Gecko/20030617\r\n";
+//	query += "Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8\r\n";
+//	query += "Connection: keep-alive\r\n";
 	if(Referer!="")
-		query += "Referer: "+Referer+"\n";
-	query += "Host: " + Host + "\n";
+		query += "Referer: "+Referer+"\r\n";
 	if (Cookies.size() > 0) {
 		query += "Cookie: ";
 
@@ -100,13 +101,13 @@ void HttpClient::onConnected()
 //			query+=Cookies.keys()[i]+"="+Cookies[Cookies.keys()[i]];
 			query += keys[i] + "=" + Cookies[keys[i]];
 			}
-		query+="\n";
+		query+="\r\n";
 		}
 	if (PostData.size() > 0) {
-		query += "Content-Type: application/x-www-form-urlencoded\n";
-		query += "Content-Length: " + QString::number(PostData.size()) + "\n";
+		query += "Content-Type: application/x-www-form-urlencoded\r\n";
+		query += "Content-Length: " + QString::number(PostData.size()) + "\r\n";
 		}
-	query+="\n";
+	query+="\r\n";
 	if (PostData.size() > 0)
 		query += QString(PostData);
 	kdebug("HttpClient: Sending query:\n%s\n", query.local8Bit().data());
@@ -298,7 +299,7 @@ void SmsIdeaGateway::send(const QString& number,const QString& message)
 	Number=number;
 	Message=message;
 	State=SMS_LOADING_PAGE;
-	Http.setHost("213.218.116.131");
+	Http.setHost("sms.idea.pl");
 	Http.get("/");
 };
 
@@ -314,7 +315,7 @@ void SmsIdeaGateway::httpFinished()
 	{
 		QString Page=Http.data();
 		kdebug("SMS Provider Page:\n%s\n",Page.local8Bit().data());
-		QRegExp pic_regexp("rotate_vt\\.asp\\?token=([^\"]+)");
+		QRegExp pic_regexp("rotate_token\\.aspx\\?token=([^\"]+)");
 		int pic_pos=pic_regexp.search(Page);
 		if(pic_pos<0)
 		{
@@ -346,7 +347,7 @@ void SmsIdeaGateway::httpFinished()
 			QMessageBox::critical(p,"SMS",i18n("You exceeded your daily limit"));
 			emit finished(false);
 		}
-		else if(Page.find("B³êdne has³o")>=0)
+		else if(Page.find("Podano b³êdne has³o")>=0)
 		{
 			kdebug("Text from the picture is incorrect\n");
 			QMessageBox::critical(p,"SMS",i18n("Text from the picture is incorrect"));
@@ -358,7 +359,7 @@ void SmsIdeaGateway::httpFinished()
 			QMessageBox::critical(p,"SMS",i18n("The receiver has to enable SMS STANDARD service"));
 			emit finished(false);				
 		}			
-		else if(Page.find("wiadomo¶æ tekstowa zosta³a wys³ana")>=0)
+		else if(Page.find("Twój SMS zosta³ wys³any")>=0)
 		{
 			kdebug("SMS was sent succesfully\n");
 			emit finished(true);
@@ -384,7 +385,7 @@ void SmsIdeaGateway::onCodeEntered(const QString& code)
 	kdebug("SMS User entered the code\n");
 	State=SMS_LOADING_RESULTS;
 	QString post_data=QString("token=")+Token+"&SENDER="+config.nick+"&RECIPIENT="+Number+"&SHORT_MESSAGE="+Http.encode(Message)+"&pass="+code;
-	Http.post("sendsms.asp",post_data);
+	Http.post("sendsms.aspx",post_data);
 };
 
 /********** SmsPlusGateway **********/
