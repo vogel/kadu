@@ -899,7 +899,9 @@ GaduProtocol::GaduProtocol(QObject *parent, const char *name) : QObject(parent, 
 	connect(SocketNotifiers, SIGNAL(imageReceived(UinType, uint32_t, uint32_t, const QString &, const char *)),
 		this, SLOT(imageReceived(UinType, uint32_t, uint32_t, const QString &, const char *)));
 	connect(SocketNotifiers, SIGNAL(imageRequestReceived(UinType, uint32_t, uint32_t)),
-		this, SLOT(imageRequestReceived(UinType, uint32_t, uint32_t)));
+		this, SLOT(imageRequestReceivedSlot(UinType, uint32_t, uint32_t)));
+	connect(SocketNotifiers, SIGNAL(imageRequestReceived(UinType, uint32_t, uint32_t)),
+		this, SIGNAL(imageRequestReceived(UinType, uint32_t, uint32_t)));
 	connect(SocketNotifiers, SIGNAL(messageReceived(int, UinsList, QCString &, time_t, QByteArray &)),
 		this, SLOT(messageReceived(int, UinsList, QCString &, time_t, QByteArray &)));
 	connect(SocketNotifiers, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)), this, SLOT(newResults(gg_pubdir50_t)));
@@ -1210,7 +1212,7 @@ void GaduProtocol::imageReceived(UinType sender, uint32_t size, uint32_t crc32,
 	emit imageReceivedAndSaved(sender, size, crc32, full_path);
 }
 
-void GaduProtocol::imageRequestReceived(UinType sender, uint32_t size, uint32_t crc32)
+void GaduProtocol::imageRequestReceivedSlot(UinType sender, uint32_t size, uint32_t crc32)
 {
 	kdebugm(KDEBUG_INFO, QString("Received image request. sender: %1, size: %2, crc32: %3\n")
 		.arg(sender).arg(size).arg(crc32).local8Bit().data());

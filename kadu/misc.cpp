@@ -475,6 +475,10 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, U
 
 	bold = italic = underline = color = inspan = false;
 	unsigned int pos = 0;
+	
+	const UserStatus &curStat=gadu->currentStatus();
+	bool receiveImage=(curStat.isOnline() || curStat.isBusy() || (curStat.isInvisible() && config_file.readBoolEntry("Chat", "ReceiveImagesDuringInvisibility")));
+	
 	if (formats_length)
 	{
 		while (formats_length)
@@ -522,7 +526,11 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, U
 					
 					//ukrywamy siê przed spy'em i ekg2
 					if (actimage->size == 20 && (actimage->crc32 == 4567 || actimage->crc32==99))
+					{
 						kdebugm(KDEBUG_INFO, "scanning for invisibility detected ;)\n");
+						if (receiveImage)
+							gadu->sendImageRequest(sender, actimage->size, actimage->crc32);
+					}
 					else if (sender!=0)
 					{
 						kdebugm(KDEBUG_INFO, "Someone sends us an image\n");
@@ -538,11 +546,12 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, U
 						else
 						{
 							if (actimage->size<(config_file.readUnsignedNumEntry("Chat", "MaxImageSize")*1024))
-								gadu->sendImageRequest(sender,
-									actimage->size,
-									actimage->crc32);
+								if (receiveImage)
+									gadu->sendImageRequest(sender, actimage->size, actimage->crc32);
+								else
+									;//mo¿naby tu zrobiæ jaki¶ dialog...
 							mesg.append(GaduImagesManager::loadingImageHtml(
-								sender,actimage->size,actimage->crc32));
+									sender,actimage->size,actimage->crc32));
 						}
 					}
 					else

@@ -620,7 +620,7 @@ class GaduProtocol : public QObject
 		/**
 			Slot wywo³ywany po otrzymaniu pro¶by o obrazek od serwera. Wysy³a obrazek.
 		**/
-		void imageRequestReceived(UinType, uint32_t, uint32_t);
+		void imageRequestReceivedSlot(UinType, uint32_t, uint32_t);
 		/**
 			Slot wywo³ywany po otrzymaniu wiadomo¶ci od serwera.
 		**/
@@ -1130,6 +1130,7 @@ class GaduProtocol : public QObject
 		void connecting();
 		void disconnected();
 		void error(GaduError);
+		void imageRequestReceived(UinType, uint32_t, uint32_t);
 		/**
 			Otrzymano dane obrazka i zapisano go do pliku.
 		**/
