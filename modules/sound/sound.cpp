@@ -318,10 +318,19 @@ void SoundManager::userChangedStatusToNotAvailable(const UserListElement &ule)
 	kdebugf2();
 }
 
-void SoundManager::message(const QString &, const QString &message, const QMap<QString, QVariant> *, const UserListElement *)
+void SoundManager::message(const QString &, const QString &message, const QMap<QString, QVariant> *parameters, const UserListElement *)
 {
 	kdebugf();
-	if (isMuted())
+	bool force=false;
+	if (parameters)
+	{
+		QMap<QString, QVariant>::const_iterator end=(*parameters).end();
+		QMap<QString, QVariant>::const_iterator fit=(*parameters).find("Force");
+		if (fit!=end)
+			force=fit.data().toBool();
+	}
+	
+	if (isMuted() && !force)
 	{
 		kdebugm(KDEBUG_FUNCTION_END, "SoundManager::message() end: muted\n");
 		return;

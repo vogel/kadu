@@ -50,7 +50,10 @@ class SoundManager : public Themes
 		void userChangedStatusToBusy(const UserListElement &ule);
 		void userChangedStatusToNotAvailable(const UserListElement &ule);
 		/* from, parameters i ule s± ignorowane, message wskazuje na plik z d¼wiêkiem do odtworzenia
-		 * je¿eli message==QString::null, to odtwarzany jest standardowy d¼wiêk dla tego typu */
+		 * je¿eli message==QString::null, to odtwarzany jest standardowy d¼wiêk dla tego typu 
+		 * je¿eli mapa jest!=NULL brane s± z niej nastêpuj±ce warto¶ci:
+		 *		"Force"           - bool (wymuszenie odtwarzania mimo wyciszenia)
+		 */
 		void message(const QString &from, const QString &message, const QMap<QString, QVariant> *parameters, const UserListElement *ule);
 
 	public slots:
