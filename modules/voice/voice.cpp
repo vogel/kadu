@@ -274,6 +274,7 @@ void VoiceManager::makeVoiceChat()
 			UserListElement user = (*users.begin());
 			if (user.port() >= 10)
 			{
+				kdebugm(KDEBUG_INFO, "ip: %s, port: %d, uin: %d\n", user.ip().toString().local8Bit().data(), user.port(), user.uin());
 				if ((dcc_new = gadu->dccVoiceChat(htonl(user.ip().ip4Addr()), user.port(),
 					config_file.readNumEntry("General", "UIN"), user.uin())) != NULL) {
 					VoiceSocket* dcc = new VoiceSocket(dcc_new);
@@ -283,7 +284,10 @@ void VoiceManager::makeVoiceChat()
 				}
 			}
 			else
+			{
+				kdebugm(KDEBUG_INFO, "user.port()<10, asking for connection (uin: %d)\n", user.uin());
 				gadu->dccRequest(user.uin());
+			}
 		}
 	kdebugf2();
 }
@@ -401,9 +405,11 @@ void VoiceSocket::dccEvent()
 			askAcceptVoiceChat();
 			break;
 		case GG_EVENT_DCC_ACK:
+			kdebugm(KDEBUG_INFO, "VoiceSocket::dccEvent(): GG_EVENT_DCC_ACK\n");
 			voice_manager->setup();
 			break;
 		case GG_EVENT_DCC_VOICE_DATA:
+			kdebugm(KDEBUG_INFO, "VoiceSocket::dccEvent(): GG_EVENT_DCC_VOICE_DATA\n");
 			voice_buf = new char[dccevent->event.dcc_voice_data.length];
 			memcpy(voice_buf, dccevent->event.dcc_voice_data.data,
 				dccevent->event.dcc_voice_data.length);
@@ -416,9 +422,13 @@ void VoiceSocket::dccEvent()
 void VoiceSocket::askAcceptVoiceChat()
 {
 	kdebugf();
-	QString str=tr("User %1 wants to talk with you. Do you accept it?").arg(userlist.byUin(dccsock->peer_uin).altNick());
+	QString text=tr("User %1 wants to talk with you. Do you accept it?");
+	if (userlist.containsUin(dccsock->peer_uin))
+		text=text.arg(userlist.byUin(dccsock->peer_uin).altNick());
+	else
+		text=text.arg(dccsock->peer_uin);
 
-	switch (QMessageBox::information(0, tr("Incoming voice chat"), str, tr("Yes"), tr("No"),
+	switch (QMessageBox::information(0, tr("Incoming voice chat"), text, tr("Yes"), tr("No"),
 		QString::null, 0, 1))
 	{
 		case 0: // Yes?

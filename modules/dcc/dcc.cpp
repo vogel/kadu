@@ -99,12 +99,14 @@ void DccSocket::initializeNotifiers()
 	kdebugf2();
 }
 
-void DccSocket::dccDataReceived() {
+void DccSocket::dccDataReceived()
+{
 	if (!in_watchDcc)
 		watchDcc(GG_CHECK_READ);
 }
 
-void DccSocket::dccDataSent() {
+void DccSocket::dccDataSent()
+{
 	kdebugf();
 	snw->setEnabled(false);
 	if (dccsock->check & GG_CHECK_WRITE)
@@ -129,24 +131,28 @@ void DccSocket::watchDcc(int /*check*/)
 	switch (dccevent->type)
 	{
 		case GG_EVENT_DCC_CLIENT_ACCEPT:
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "DccSocket::watchDcc():  GG_EVENT_DCC_CLIENT_ACCEPT! uin:%d peer_uin:%d\n",
+				dccsock->uin, dccsock->peer_uin);
 			uins.append(dccsock->peer_uin);
 			if (dccsock->uin != (UinType)config_file.readNumEntry("General", "UIN")
 				|| !userlist.containsUin(dccsock->peer_uin) || isIgnored(uins))
-			tranferDiscarded();
+				tranferDiscarded();
 			break;
 		case GG_EVENT_NONE:
 			noneEvent();
 			break;
 		case GG_EVENT_DCC_CALLBACK:
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "DccSocket::watchDcc():  GG_EVENT_DCC_CALLBACK! uin:%d peer_uin:%d\n",
+				dccsock->uin, dccsock->peer_uin);
 			callbackReceived();
 			break;
 		case GG_EVENT_DCC_NEED_FILE_ACK:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "DccSocket::watchDcc():  GG_EVENT_DCC_NEED_FILE_ACK! %d %d\n",
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "DccSocket::watchDcc():  GG_EVENT_DCC_NEED_FILE_ACK! uin:%d peer_uin:%d\n",
 				dccsock->uin, dccsock->peer_uin);
 			needFileAccept();
 			break;
 		case GG_EVENT_DCC_NEED_FILE_INFO:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "DccSocket::watchDcc():  GG_EVENT_DCC_NEED_FILE_INFO! %d %d\n",
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "DccSocket::watchDcc():  GG_EVENT_DCC_NEED_FILE_INFO! uin:%d peer_uin:%d\n",
 				dccsock->uin, dccsock->peer_uin);
 			needFileInfo();
 			break;
@@ -177,7 +183,6 @@ void DccSocket::watchDcc(int /*check*/)
 	kdebugf2();
 }
 
-
 void DccSocket::setState(int pstate)
 {
 	kdebugf();
@@ -191,11 +196,13 @@ void DccSocket::setState(int pstate)
 			MessageBox::msg(tr("File has been transferred sucessfully."));
 			break;
 		case DCC_SOCKET_TRANSFER_DISCARDED:
+			kdebugm(KDEBUG_INFO, "state: DCC_SOCKET_TRANSFER_DISCARDED\n");
 			break;
 		case DCC_SOCKET_TRANSFER_ERROR:
 			MessageBox::msg(tr("File transfer error!"));
 			break;
 		case DCC_SOCKET_CONNECTION_BROKEN:
+			kdebugm(KDEBUG_INFO, "state: DCC_SOCKET_CONNECTION_BROKEN\n");
 			break;
 		case DCC_SOCKET_COULDNT_OPEN_FILE:
 			MessageBox::msg(tr("Couldn't open file!"));
@@ -827,6 +834,7 @@ void DccManager::sendFile()
 			UserListElement user = (*users.begin());
 			if (user.port() >= 10)
 			{
+				kdebugm(KDEBUG_INFO, "ip: %s, port: %d, uin: %d\n", user.ip().toString().local8Bit().data(), user.port(), user.uin());
 				if ((dcc_new = gadu->dccSendFile(htonl(user.ip().ip4Addr()), user.port(),
 					config_file.readNumEntry("General", "UIN"), user.uin())) != NULL)
 				{
@@ -838,6 +846,7 @@ void DccManager::sendFile()
 			}
 			else
 			{
+				kdebugm(KDEBUG_INFO, "user.port()<10, asking for connection (uin: %d)\n", user.uin());
 				TimeoutTimer.start(15000, TRUE);
 				gadu->dccRequest(user.uin());
 			}
