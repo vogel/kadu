@@ -12,10 +12,11 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * wywalenie starych(qt2?) headers z chat.h i kadu.h (mast3r)
 * poprawka statycznego linkowania libgadu (adrian)
 * poprawiono wysylanie smsow do ery (bramka podstawowa / omnix / platna)
-  poprawiono wysylanie smsow do ideii
-  dodano pole kontaktu oraz podpisu w oknie wysylania smsow (pawel_p)
+  poprawiono wysylanie smsow do ideii (pawel_p)
+* dodano pole kontaktu oraz podpisu w oknie wysylania smsow (pawel_p)
+* poprawna obs³uga UseTLS (chilek)
 
-+++ wersja 0.3.5
++++ wersja 0.3.5 (05.11.2003)
 * dalsza czê¶æ przeróbek mechanizmu konfiguracji. brakuje jeszcze
   kilku zak³adek (pawel_p/adrian)
 * drobne porz±dki w oknie konfiguracji - nowa zak³adka SMS,
@@ -135,7 +136,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   gg_notify*() (chilek)
 * poprawiono wybieranie zestawu emotek (zmiany nie byly wprowadzane w zycie) (pawel_p)
 
-+++ wersja 0.3.4
++++ wersja 0.3.4 (19.09.2003)
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci
   (klasa HtmlDocument) i wy³awiania emotów i url-i. Naprawione
   problemy z emotikonami w url-ach i w napisach takich jak "<<" (adrian)

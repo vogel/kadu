@@ -273,7 +273,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	config_file.addVariable("Network", "ExternalPort", config_file.readEntry("Global", "ExternalPort"));
 	config_file.addVariable("Network", "isDefServers", config_file.readEntry("Global", "isDefServers"));
 	config_file.addVariable("Network", "Server", config_file.readEntry("Global", "Server"));
-	config_file.addVariable("Network", "UseTLS", config_file.readBoolEntry("Global", "UseTLS", false));
+	config_file.addVariable("Network", "UseTLS", config_file.readBoolEntry("Network", "UseTLS", false));
 	config_file.addVariable("Network", "DefaultPort", config_file.readNumEntry("Global", "DefaultPort",8074));
 	config_file.addVariable("History", "ChatHistoryQuotationTime",-config_file.readNumEntry("Other", "ChatHistoryQuotationTime",336));
 	config_file.addVariable("History", "ChatHistoryQuotation", config_file.readNumEntry("Other", "ChatHistoryQuotation", 10));
@@ -1692,10 +1692,11 @@ void Kadu::setStatus(int status) {
 		if (server_nr > 7)
 			server_nr = 0;
 		}
-	loginparams.tls = config_file.readNumEntry("Network", "UseTLS");
+	loginparams.tls = config_file.readBoolEntry("Network", "UseTLS");
 	loginparams.protocol_version = 0x21;
 	loginparams.client_version = strdup("6, 0, 0, 135");
-	if (config_file.readNumEntry("Network", "UseTLS")) {
+	if (loginparams.tls) {
+		kdebug("Kadu::setStatus(): using TLS\n");
 		loginparams.server_port = 0;
 		if (config_file.readBoolEntry("Network", "isDefServers"))
 			loginparams.server_addr = 0;
