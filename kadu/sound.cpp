@@ -284,7 +284,7 @@ void SoundSlots::onCreateConfigDialog()
 	lv_soundfiles->setColumnWidthMode(0, QListView::Maximum);
 	lv_soundfiles->setColumnWidthMode(1, QListView::Maximum);
 	lv_soundfiles->setResizeMode(QListView::AllColumns);
-	lv_soundfiles->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Maximum);
+	lv_soundfiles->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Maximum));
 	    
 	QString chatfile, messagefile, notifyfile;
 	if (cb_soundtheme->currentText() == tr("Custom"))
@@ -310,7 +310,7 @@ void SoundSlots::onCreateConfigDialog()
 
 	
 	QVBox* util_box=ConfigDialog::getVBox("Sounds","util_box");
-	util_box->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+	util_box->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum));
 	
 	soundPlayer(b_playsound->isChecked());
 	

@@ -1065,7 +1065,7 @@ QString HotKey::getShortCutString()
 void HotKey::setShortCut(const QString& shortcut)
 {
     QKeySequence str(shortcut);
-    if (str.isEmpty())
+    if (str == QKeySequence())
 	setText("");
     else
 	setText(shortcut);
