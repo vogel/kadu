@@ -11,6 +11,8 @@
 
 #include "events.h"
 #include "status.h"
+#include "gadu.h"
+#include "chat.h"
 #include "config_dialog.h"
 #include "debug.h"
 
@@ -30,7 +32,7 @@ AutoResponder::AutoResponder() : QObject(NULL, "autoresponder")
 {
 	kdebugf();
 	config=new ConfigFile(ggPath(QString("autoresponder.conf")));
-	QObject::connect(&event_manager,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
+	QObject::connect(chat_manager,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
 		this,SLOT(chatReceived(UinsList,const QString&,time_t)));
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Autoresponder"));
 	ConfigDialog::addVGroupBox( "Autoresponder", "Autoresponder", QT_TRANSLATE_NOOP( "@default", "Autoresponder options" ));
@@ -48,7 +50,7 @@ AutoResponder::AutoResponder() : QObject(NULL, "autoresponder")
 AutoResponder::~AutoResponder()
 {
 	kdebugf();
-	QObject::disconnect(&event_manager,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
+	QObject::disconnect(chat_manager,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
 		this,SLOT(chatReceived(UinsList,const QString&,time_t)));
 	ConfigDialog::removeControl("Autoresponder", "Choose status:");
 	ConfigDialog::removeControl("Autoresponder", "Status invisible");
