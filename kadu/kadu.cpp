@@ -1145,7 +1145,6 @@ void Kadu::connecting()
 
 	DoBlink = true;
 
-	status.setOnline();
 	if (!blinktimer)
 	{
 		blinktimer = new QTimer;
@@ -1715,13 +1714,14 @@ void Kadu::startupProcedure()
 		status.setOffline(descr);
 	else
 		status.setIndex(statusIndex, descr);
-	status.setFriendsOnly(config_file.readBoolEntry("General", "PrivateStatus") == 1);
+	status.setFriendsOnly(config_file.readBoolEntry("General", "PrivateStatus"));
 
 	if (!status.isOffline())
 	{
 		Autohammer = true;
 		gadu->status().setStatus(status);
 	}
+
 	kdebugf2();
 }
 
