@@ -72,7 +72,7 @@ void AutoResponder::chatReceived(UinsList senders, const QString& msg, time_t ti
 	{
 		bool was=false;					//to pamieta czy okienko juz otwarte czy nie
 		if (!UserList.isEmpty())
-			FOREACH(sender, senders)
+			CONST_FOREACH(sender, senders)
 				if (UserList.findIndex(*sender)!=-1)
 					was=true;						//jak bylo to bylo=true
 
@@ -94,7 +94,7 @@ void AutoResponder::chatReceived(UinsList senders, const QString& msg, time_t ti
 		{
 			gadu->sendMessage(senders, unicode2cp(tr("KADU AUTORESPONDER:")+"\n"+
 						config->readEntry("Autoresponder", "Autotext")));
-			FOREACH(sender, senders)
+			CONST_FOREACH(sender, senders)
 				UserList += *sender;	//doda kolesi do listy (jednego jak jeden albo wszystkich z konferencji
 		}
 	}
@@ -104,7 +104,7 @@ void AutoResponder::chatReceived(UinsList senders, const QString& msg, time_t ti
 void AutoResponder::chatOpened(const UinsList& senders)
 {
 	int indexx;
-	FOREACH(sender, senders)
+	CONST_FOREACH(sender, senders)
 	{
 		indexx=UserList.findIndex(*sender);
 		if (indexx!=-1)

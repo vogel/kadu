@@ -144,8 +144,8 @@ Notify::~Notify()
 	if (notifiers.size()>0)
 	{
 		kdebugm(KDEBUG_WARNING, "WARNING: not unregistered notifiers found! (%d)\n", notifiers.size());
-		QValueList<QString> notifierNames=keys(notifiers);
-		FOREACH(name, notifierNames)
+		QValueList<QString> notifierNames = keys(notifiers);
+		CONST_FOREACH(name, notifierNames)
 			unregisterNotifier(*name);
 	}
 
@@ -235,7 +235,7 @@ void Notify::addConfigColumn(const QString &name, const QMap<QString, QString> &
 	t<<"ConnError"<<"NewChat"<<"NewMessage"<<"StatusChanged"<<"toAvailable"<<"toBusy"<<"toInvisible"<<"toNotAvailable"<<"Message";
 
 	int i = 1;
-	FOREACH(it, t)
+	CONST_FOREACH(it, t)
 	{
 		ConfigDialog::addCheckBox("Notify", name+"_vbox", " ", (*it)+"_"+name, false, "", name+QString::number(i));
 		if (!notifierSlots.contains(*it))
@@ -253,7 +253,7 @@ void Notify::removeConfigColumn(const QString &name, const QMap<QString, QPair<Q
 	t<<"ConnError"<<"NewChat"<<"NewMessage"<<"StatusChanged"<<"toAvailable"<<"toBusy"<<"toInvisible"<<"toNotAvailable"<<"Message";
 
 	int i = 1;
-	FOREACH(it, t)
+	CONST_FOREACH(it, t)
 	{
 		ConfigDialog::removeControl("Notify", " ", name+QString::number(i));
 		if (!notifierSlots.contains(*it))
@@ -305,7 +305,7 @@ void Notify::registerNotifier(const QString &name, QObject *notifier,
 	}
 	notifiers[name]=Notifier(notifier, notifierSlots);
 
-	FOREACH(i, notifySignals)
+	CONST_FOREACH(i, notifySignals)
 		if (config_file.readBoolEntry("Notify", i.key()+"_"+name) && notifierSlots.contains(i.key()))
 			connectSlot(name, i.key());
 	addConfigColumn(name, notifierSlots);
@@ -322,7 +322,7 @@ void Notify::unregisterNotifier(const QString &name)
 	}
 	Notifier notifier=notifiers[name];
 	removeConfigColumn(name, notifier.notifierSlots);
-	FOREACH(i, notifySignals)
+	CONST_FOREACH(i, notifySignals)
 		if (config_file.readBoolEntry("Notify", i.key()+"_"+name) && notifier.notifierSlots.contains(i.key()))
 			disconnectSlot(name, i.key());
 	notifiers.remove(name);
@@ -386,7 +386,7 @@ Notify::Notifier::Notifier() : notifier(NULL)
 Notify::Notifier::Notifier(QObject *o, const QMap<QString, QString> &notifierSlots) : notifier(o)
 {
 	kdebugf();
-	FOREACH(i, notifierSlots)
+	CONST_FOREACH(i, notifierSlots)
 		this->notifierSlots[i.key()]=qMakePair(i.data(), false);
 	kdebugf2();
 }

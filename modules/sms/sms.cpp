@@ -246,7 +246,7 @@ Sms::Sms(const QString& altnick, QDialog* parent, const char *name) : QDialog (p
 
 	QStringList strlist;
 	list = new QComboBox(this);
-	FOREACH(user, userlist)
+	CONST_FOREACH(user, userlist)
 		if ((*user).mobile().length())
 		 	strlist.append((*user).altNick());
 	strlist.sort();
@@ -314,7 +314,7 @@ void Sms::updateRecipient(const QString &newtext)
 void Sms::updateList(const QString &newnumber)
 {
 	kdebugf();
-	FOREACH(user, userlist)
+	CONST_FOREACH(user, userlist)
 		if ((*user).mobile() == newnumber)
 		{
 			list->setCurrentText((*user).altNick());
@@ -480,11 +480,11 @@ void SmsSlots::onCreateConfigDialog()
 	QMap<QString,isValidFunc*>::Iterator it;
 	QStringList priority=QStringList::split(";", config_file.readEntry("SMS", "Priority"));
 
-	FOREACH(gate, priority)
+	CONST_FOREACH(gate, priority)
 		if (gateways.contains(*gate))
 			lb_gws->insertItem(*gate);
 
-	FOREACH(gate, gateways)
+	CONST_FOREACH(gate, gateways)
 		if (lb_gws->index(lb_gws->findItem(gate.key()))==-1)
 			lb_gws->insertItem(gate.key());
 
@@ -580,7 +580,7 @@ SmsGateway* SmsSlots::getGateway(const QString& number)
 	kdebugf();
 	QStringList priorities = QStringList::split(";", config_file.readEntry("SMS", "Priority"));
 
-	FOREACH(gate, priorities)
+	CONST_FOREACH(gate, priorities)
 	{
 		if (gateways.contains(*gate))
 		{

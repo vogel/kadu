@@ -38,7 +38,7 @@ HintManagerSlots::HintManagerSlots(QObject *parent, const char *name) : QObject(
 	config_opts_prefixes<<"HintOnline"<<"HintOnlineD"<<"HintBusy"<<"HintBusyD"<<
 					"HintInvisible"<<"HintInvisibleD"<<"HintOffline"<<"HintOfflineD"<<
 					"HintBlocking"<<"HintNewChat"<<"HintNewMessage"<<"HintError"<<"HintMessage";
-	FOREACH(prefix, config_opts_prefixes)
+	CONST_FOREACH(prefix, config_opts_prefixes)
 	{
 		//wczytanie starego configa
 		HintProperties prop=HintProperties::fromString(config_file.readEntry("Hints", *prefix));
@@ -83,7 +83,7 @@ void HintManagerSlots::onCreateConfigDialog()
 	
 	config_hint_properties.clear();
 
-	FOREACH(prefix, config_opts_prefixes)
+	CONST_FOREACH(prefix, config_opts_prefixes)
 	{
 		HintProperties prop;
 		prop.font=config_file.readFontEntry("Hints", (*prefix)+"_font");
@@ -105,7 +105,7 @@ void HintManagerSlots::onApplyConfigDialog()
 {
 	kdebugf();
 	
-	FOREACH(prop, config_hint_properties)
+	CONST_FOREACH(prop, config_hint_properties)
 	{
 		config_file.writeEntry("Hints", prop.key()+"_font", prop.data().font);
 		config_file.writeEntry("Hints", prop.key()+"_fgcolor", prop.data().fgcolor);

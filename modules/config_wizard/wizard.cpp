@@ -252,7 +252,7 @@ void WizardStarter::userListImported(bool ok, UserList& userList)
 	kadu->userbox()->clear();
 	kadu->userbox()->clearUsers();
 
-	FOREACH(user, userlist)
+	CONST_FOREACH(user, userlist)
 		kadu->userbox()->addUser((*user).altNick());
 
 	UserBox::all_refresh();

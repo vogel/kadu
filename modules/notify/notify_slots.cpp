@@ -23,7 +23,7 @@ void NotifySlots::onCreateConfigDialog()
 
 	QListBox *e_availusers= ConfigDialog::getListBox("Notify", "available");
 	QListBox *e_notifies= ConfigDialog::getListBox("Notify", "track");
-	FOREACH(user, userlist)
+	CONST_FOREACH(user, userlist)
 	{
 		if ((*user).uin())
 			if (!(*user).notify())
@@ -45,7 +45,7 @@ void NotifySlots::onCreateConfigDialog()
 
 	connect(b_notifyall, SIGNAL(toggled(bool)), this, SLOT(ifNotifyAll(bool)));
 
-	FOREACH(name, disabledControls)
+	CONST_FOREACH(name, disabledControls)
 	{
 		ConfigDialog::getCheckBox("Notify", " ", *name)->setDisabled(true);
 		ConfigDialog::getCheckBox("Notify", " ", *name)->setDown(true);
@@ -121,7 +121,7 @@ void NotifySlots::_Left(void)
 		if (e_notifies->isSelected(i))
 			tomove+=e_notifies->text(i);
 
-	FOREACH(elem, tomove)
+	CONST_FOREACH(elem, tomove)
 	{
 		e_availusers->insertItem(*elem);
 		e_notifies->removeItem(e_notifies->index(e_notifies->findItem(*elem)));
@@ -143,7 +143,7 @@ void NotifySlots::_Right(void)
 		if (e_availusers->isSelected(i))
 			tomove+=e_availusers->text(i);
 
-	FOREACH(elem, tomove)
+	CONST_FOREACH(elem, tomove)
 	{
 		e_notifies->insertItem(*elem);
 		e_availusers->removeItem(e_availusers->index(e_availusers->findItem(*elem)));
