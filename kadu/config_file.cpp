@@ -271,9 +271,10 @@ QSize ConfigFile::readSizeEntry(const QString &group,const QString &name, const 
 
 QColor ConfigFile::readColorEntry(const QString &group,const QString &name, const QColor *def) const
 {
+	QColor col(0,0,0);
 	QString str = getEntry(group, name);
 	if (str==QString::null)
-		return *def;
+		return def ? *def : col;
 	else
 		return QColor(str);
 }
