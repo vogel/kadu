@@ -47,6 +47,11 @@ void* Library::resolve(const QString& symbol_name)
 	return dlsym(Handle, symbol_name.local8Bit().data());
 }
 
+QString Library::error()
+{
+	return QString(dlerror());
+}
+
 ModulesDialog::ModulesDialog()
 	: QDialog(NULL,NULL)
 {
@@ -354,7 +359,7 @@ bool ModulesManager::loadModule(const QString& module_name)
 	m.lib=new Library(QString(DATADIR)+"/kadu/modules/"+module_name+".so");
 	if(!m.lib->load())
 	{
-		MessageBox::msg(tr("Cannot load %1 module library.\nMaybe it's incorrecty compiled.").arg(module_name));
+		MessageBox::msg(tr("Cannot load %1 module library.:\n%2").arg(module_name).arg(m.lib->error()));
 		return false;
 	}
 		

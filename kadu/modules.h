@@ -24,6 +24,7 @@ class Library
 		~Library();
 		bool load();
 		void* resolve(const QString& symbol_name);
+		QString error();
 };
 
 /**

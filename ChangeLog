@@ -197,6 +197,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * przyspieszenie (x2) dzia³ania obs³ugi plików konfiguracyjnych + optymalizacje
   (w ró¿nych miejscach kodu) dotycz±ce obs³ugi pliku konfiguracyjnego (joi)
 * opis modu³ów w plikach desc zamiast w funkcjach *_info (adrian)
+* jesli wystapi blad przy ladowaniu modulu to zostana pokazane informacje o
+  bledzie (michal)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
