@@ -104,6 +104,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   kontaktów (demsik/chilek)
 * import: przy zapisie listy kontaktów lista ignorowanych jest czyszczona,
   a przy ³±czeniu nie jest czyszczona (chilek)
+* na 3.0.x niestety zostawa³y puste pola po usunietych dymkach - teraz
+  powinno byæ ju¿ dobrze (mast3r)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci

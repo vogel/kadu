@@ -152,10 +152,14 @@ Hint::~Hint(void)
 
 	if (icon != NULL)
 	{
-		icon->hide();
+		#if QT_VERSION < 0x030100
+			icon->hide();
+		#endif
 		icon->deleteLater();
 	}
+	#if QT_VERSION < 0x030100
 	label->hide();
+	#endif
 	label->deleteLater();
 }
 
@@ -204,11 +208,9 @@ void HintManager::setHint(void) {
 void HintManager::deleteHint(unsigned int id)
 {
 	kdebug("HintManager::deleteHint() id=%d\n", id);
-/*
 #if QT_VERSION >= 0x030100
 	grid->removeItem(hints.at(id));
 #endif
-*/
 	hints.remove(id);
 	if (!hints.count())
 	{
@@ -245,12 +247,10 @@ void HintManager::rightButtonSlot(void)
 	kdebug("HintManager::rightButtonSlot()\n");
 
 	hint_timer->stop();
-/*
 #if QT_VERSION >= 0x030100
 	for (int i = 0; i < hints.count(); i++)
 		grid->removeItem(hints.at(i));
 #endif
-*/
 	hints.clear();
 	hide();
 }
