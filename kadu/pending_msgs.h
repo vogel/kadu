@@ -3,6 +3,7 @@
 #define PENDING_MSGS_H
 
 #include <qvaluelist.h>
+#include "gadu.h"
 #include "misc.h"
 
 class PendingMsgs : public QObject
@@ -25,7 +26,7 @@ class PendingMsgs : public QObject
 	public:
 		PendingMsgs();
 		void deleteMsg(int index);
-		bool pendingMsgs(uin_t uin);
+		bool pendingMsgs(UinType uin);
 		bool pendingMsgs();
 		int count();
 		Element &operator[](int index);

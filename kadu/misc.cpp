@@ -24,6 +24,7 @@
 #include "status.h"
 #include "gadu.h"
 #include "debug.h"
+#include "userlist.h"
 #include "kadu-config.h"
 
 #define GG_FONT_IMAGE	0x80
@@ -335,7 +336,7 @@ void escapeSpecialCharacters(QString &msg) {
 	msg.replace(QRegExp(">"), "&gt;");
 }
 
-QString formatGGMessage(const QString &msg, int formats_length, void *formats, uin_t sender)
+QString formatGGMessage(const QString &msg, int formats_length, void *formats, UinType sender)
 {
 	QString mesg, tmp;
 	bool bold, italic, underline, color, inspan;
@@ -651,7 +652,7 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 	searchChars[(unsigned char)'}']=true;
 	searchChars[(unsigned char)']']=true;
 	
-	uin_t myUin=config_file.readNumEntry("General", "UIN");
+	UinType myUin=config_file.readNumEntry("General", "UIN");
 	while (index<len)
 	{
 		ParseElem pe1, pe;
@@ -1998,7 +1999,7 @@ QString GaduImagesManager::imageHtml(const QString& file_name)
 	return QString("<img src=\"%1\" static=\"1\"/>").arg(file_name);
 }
 
-QString GaduImagesManager::loadingImageHtml(uin_t uin,uint32_t size,uint32_t crc32)
+QString GaduImagesManager::loadingImageHtml(UinType uin,uint32_t size,uint32_t crc32)
 {
 	return QString("<img src=\"%1\" static=\"1\" gg_sender=\"%2\" gg_size=\"%3\" gg_crc=\"%4\"/>")
 		.arg(icons_manager.iconPath("LoadingImage")).arg(uin).arg(size).arg(crc32);
@@ -2027,7 +2028,7 @@ void GaduImagesManager::addImageToSend(const QString& file_name,uint32_t& size,u
 	crc32 = img.crc32;
 }
 
-void GaduImagesManager::sendImage(uin_t uin,uint32_t size,uint32_t crc32)
+void GaduImagesManager::sendImage(UinType uin,uint32_t size,uint32_t crc32)
 {
 	kdebugf();
 	kdebug("Searching images to send: size=%u, crc32=%u\n",size,crc32);
@@ -2046,7 +2047,7 @@ void GaduImagesManager::sendImage(uin_t uin,uint32_t size,uint32_t crc32)
 	kdebug("Image data not found\n");
 }
 
-QString GaduImagesManager::saveImage(uin_t sender,uint32_t size,uint32_t crc32,const QString& filename,const char* data)
+QString GaduImagesManager::saveImage(UinType sender,uint32_t size,uint32_t crc32,const QString& filename,const char* data)
 {
 	kdebugf();
 	QString path = ggPath("images");
@@ -2099,7 +2100,7 @@ QString GaduImagesManager::getSavedImageFileName(uint32_t size,uint32_t crc32)
 	return "";
 }
 
-QString GaduImagesManager::replaceLoadingImages(const QString& text,uin_t sender,uint32_t size,uint32_t crc32)
+QString GaduImagesManager::replaceLoadingImages(const QString& text, UinType sender, uint32_t size, uint32_t crc32)
 {
 	kdebugf();
 	QString loading_string =

@@ -14,10 +14,12 @@
 #include <qimage.h>
 #include <qstringlist.h>
 #include <qsocket.h>
+#include <qsocketnotifier.h>
 #include <qfiledialog.h>
 
-#include "libgadu.h"
-#include "userlist.h"
+#include <inttypes.h>
+
+#include "gadu.h"
 #include "config_file.h"
 
 /*
@@ -44,6 +46,8 @@ QString dataPath(const QString &f="", const char *argv0=0);
 */
 char *findMe(const char *argv0, char *path, int len);
 
+class UserListElement;
+
 QString cp2unicode(const unsigned char *);
 QCString unicode2cp(const QString &);
 QString latin2unicode(const unsigned char *);
@@ -56,12 +60,12 @@ QString pwHash(const QString &tekst);
 QString translateLanguage(const QApplication *application, const QString &locale, const bool l2n);
 void openWebBrowser(const QString &link);
 void escapeSpecialCharacters(QString &msg);
-QString formatGGMessage(const QString &msg, int formats_length, void *formats,uin_t sender);
+QString formatGGMessage(const QString &msg, int formats_length, void *formats, UinType sender);
 QString unformatGGMessage(const QString &msg, int &formats_length, void *&formats);
 QString parse(const QString &s, const UserListElement &ule, bool escape = true);
 void stringHeapSort(QStringList &c);
 
-class UinsList : public QValueList<uin_t>
+class UinsList : public QValueList<UinType>
 {
 	public:
 		UinsList();
@@ -386,10 +390,10 @@ class GaduImagesManager
 		QValueList<SavedImage> SavedImages;
 
 	public:
-		static QString loadingImageHtml(uin_t uin,uint32_t size,uint32_t crc32);
+		static QString loadingImageHtml(UinType uin,uint32_t size,uint32_t crc32);
 		static QString imageHtml(const QString& file_name);
 		void addImageToSend(const QString& file_name,uint32_t& size,uint32_t& crc32);
-		void sendImage(uin_t uin,uint32_t size,uint32_t crc32);
+		void sendImage(UinType uin,uint32_t size,uint32_t crc32);
 		/**
 			Szuka zakolejkowanego obrazka i zwraca jego nazwê pliku
 			Zwraca ci±g pusty, je¶li obrazek nie zosta³ w tej sesji
@@ -400,14 +404,14 @@ class GaduImagesManager
 			Zapisuje obrazek w katalogu .gg/images.
 			Zwraca pe³n± ¶cie¿kê do zapisanego obrazka.
 		**/
-		QString saveImage(uin_t sender,uint32_t size,uint32_t crc32,const QString& filename,const char* data);
+		QString saveImage(UinType sender,uint32_t size,uint32_t crc32,const QString& filename,const char* data);
 		/**
 			Szuka zapisanego obrazka i zwraca jego nazwê pliku
 			wraz ze ¶cie¿k±. Zwraca ci±g pusty, je¶li obrazek
 			nie zosta³ w tej sesji zapisany.
 		**/
 		QString getSavedImageFileName(uint32_t size,uint32_t crc32);
-		QString replaceLoadingImages(const QString& text,uin_t sender,uint32_t size,uint32_t crc32);
+		QString replaceLoadingImages(const QString& text,UinType sender,uint32_t size,uint32_t crc32);
 };
 
 extern GaduImagesManager gadu_images_manager;
@@ -426,3 +430,4 @@ class ImageDialog : public QFileDialog
 };
 
 #endif
+

@@ -20,7 +20,7 @@
 #include "userbox.h"
 #include "debug.h"
 
-DnsHandler::DnsHandler(uin_t uin) : uin(uin) {
+DnsHandler::DnsHandler(UinType uin) : uin(uin) {
 	UserListElement &ule = userlist.byUin(uin);
 	completed = false;
 	connect(&dnsresolver, SIGNAL(resultsReady()), this, SLOT(resultsReady()));
@@ -124,7 +124,7 @@ UserList::~UserList()
 	*/
 }
 
-void UserList::addDnsLookup(uin_t uin, const QHostAddress &ip) {
+void UserList::addDnsLookup(UinType  uin, const QHostAddress &ip) {
 	DnsHandler *dnshandler;
 	dnshandler = dnslookups.first();
 	while (dnshandler) {
@@ -142,7 +142,7 @@ void UserList::addDnsLookup(uin_t uin, const QHostAddress &ip) {
 	dnslookups.append(dnshandler);
 }
 
-void UserList::setDnsName(uin_t uin, const QString &name) {
+void UserList::setDnsName(UinType  uin, const QString &name) {
 	if (!containsUin(uin))
 		return;
 	UserListElement &ule = byUin(uin);
@@ -153,7 +153,7 @@ void UserList::setDnsName(uin_t uin, const QString &name) {
 		}
 }
 
-UserListElement& UserList::byUin(uin_t uin)
+UserListElement& UserList::byUin(UinType  uin)
 {
 	for(iterator i=begin(); i!=end(); i++)
 		if((*i).uin==uin)
@@ -184,7 +184,7 @@ UserListElement& UserList::byAltNick(const QString& altnick)
 
 //Zwraca elementy userlisty, jezeli nie mamy danego
 //uin na liscie, zwracany jest UserListElement tylko z uin i altnick == uin
-UserListElement UserList::byUinValue(uin_t uin)
+UserListElement UserList::byUinValue(UinType  uin)
 {
 	for (iterator i = begin(); i != end(); i++)
 		if ((*i).uin == uin)
@@ -196,7 +196,7 @@ UserListElement UserList::byUinValue(uin_t uin)
 	return ule;
 }
 
-bool UserList::containsUin(uin_t uin) const {
+bool UserList::containsUin(UinType  uin) const {
 	for (const_iterator i = begin(); i != end(); i++)
 		if ((*i).uin == uin)
 			return true;
@@ -242,7 +242,7 @@ void UserList::addUser(UserListElement& ule)
 	emit modified();
 }
 
-void UserList::addAnonymous(uin_t uin)
+void UserList::addAnonymous(UinType uin)
 {
 	kdebugf();
 	QString tmp = QString::number(uin);
@@ -287,7 +287,7 @@ void UserList::changeUserInfo(const QString oldaltnick, UserListElement &ule)
 	emit modified();
 }
 
-void UserList::changeUserStatus(const uin_t uin, const unsigned int status)
+void UserList::changeUserStatus(const UinType uin, const unsigned int status)
 {
 	UserListElement &e = byUin(uin);
 	if (status != e.status) {
@@ -579,3 +579,4 @@ void UserList::merge(UserList &userlist) {
 }
 
 UserList userlist;
+

@@ -24,7 +24,7 @@
 #include "debug.h"
 #include "kadu.h"
 
-SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchUin)
+SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearchUin)
 : QDialog (parent, name, FALSE, Qt::WDestructiveClose) {
 
 	_whoisSearchUin = whoisSearchUin;
@@ -63,9 +63,18 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchU
 	CommandLayout->addWidget(b_clrbtn);
 	CommandLayout->addWidget(b_addbtn);
 
+	only_active = new QCheckBox(tr("Only active users"),this);
+
 	l_nick = new QLabel(tr("Nickname"),this);
 	e_nick = new QLineEdit(this);
 	connect(e_nick, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
+
+	l_gender = new QLabel(tr("Gender"),this);
+	c_gender = new QComboBox(this);
+	c_gender->insertItem(" ", 0);
+	c_gender->insertItem(tr("Male"), 1);
+	c_gender->insertItem(tr("Female"), 2);
+	connect(c_gender, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
 
 	l_name = new QLabel(tr("Name"),this);
 	e_name = new QLineEdit(this);
@@ -74,13 +83,6 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchU
 	l_surname = new QLabel(tr("Surname"),this);
 	e_surname = new QLineEdit(this);
 	connect(e_surname, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
-
-	l_gender = new QLabel(tr("Gender"),this);
-	c_gender = new QComboBox(this);
-	c_gender->insertItem(" ", 0);
-	c_gender->insertItem(tr("Male"), 1);
-	c_gender->insertItem(tr("Female"), 2);
-	connect(c_gender, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
 
 	l_byr = new QLabel(tr("Birthyear"),this);
 	l_byrFrom = new QLabel(tr("from"),this);
@@ -118,17 +120,15 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchU
 	btngrp->insert(r_pers, 1);
 	btngrp->insert(r_uin, 2);
 
-	only_active = new QCheckBox(tr("Only active users"),this);
-
 	QGridLayout * grid = new QGridLayout (this, 7, 12, 3, 3);
 	grid->addMultiCellWidget(only_active, 0, 0, 0, 2);
 	grid->addWidget(l_nick, 1, 0, Qt::AlignRight); grid->addWidget(e_nick, 1, 1);
-	grid->addWidget(l_name, 1, 7, Qt::AlignRight); grid->addWidget(e_name, 1, 8);
-	grid->addWidget(l_surname, 2, 7, Qt::AlignRight); grid->addWidget(e_surname, 2, 8);
 	grid->addWidget(l_gender, 2, 0, Qt::AlignRight); grid->addWidget(c_gender, 2, 1);
-	grid->addWidget(l_byr, 1, 3, Qt::AlignRight);
-	grid->addWidget(l_byrFrom, 1, 4, Qt::AlignRight); grid->addWidget(e_byrFrom, 1, 5);
-	grid->addWidget(l_byrTo, 2, 4, Qt::AlignRight); grid->addWidget(e_byrTo, 2, 5);
+	grid->addWidget(l_name, 1, 3, Qt::AlignRight); grid->addWidget(e_name, 1, 4);
+	grid->addWidget(l_surname, 2, 3, Qt::AlignRight); grid->addWidget(e_surname, 2, 4);
+	grid->addWidget(l_byr, 1, 6, Qt::AlignRight);
+	grid->addWidget(l_byrFrom, 1, 7, Qt::AlignRight); grid->addWidget(e_byrFrom, 1, 8);
+	grid->addWidget(l_byrTo, 2, 7, Qt::AlignRight); grid->addWidget(e_byrTo, 2, 8);
 	grid->addWidget(l_city, 1, 10, Qt::AlignRight); grid->addWidget(e_city, 1, 11);
 
 	grid->addMultiCellWidget(qgrp1, 3, 3, 0, 3);
@@ -140,7 +140,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchU
 	grid->addMultiCellWidget(progress, 6, 6, 0, 1);
 
 	grid->addColSpacing(2, 10);
-	grid->addColSpacing(6, 10);
+	grid->addColSpacing(5, 10);
 	grid->addColSpacing(9, 10);
 
 	results->addColumn(tr("Status"));
@@ -174,7 +174,7 @@ SearchDialog::~SearchDialog() {
 }
 
 void SearchDialog::selectionChanged(QListViewItem *item) {
-	uin_t uin;
+	UinType uin;
 
 	kdebug("SearchDialog::selectionChanged()\n");
 
@@ -316,7 +316,7 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 			qlv->setPixmap(0, pix);
 			qlv = NULL;
 		}
-}
+	}
 
 	progress->setText(tr("Done searching"));
 
@@ -329,7 +329,12 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 	b_sendbtn->setEnabled(true);
 	b_nextbtn->setEnabled(true);
 
-	
+	if (!searchResults.count()) {
+		kdebug("SearchDialog::newSearchResults(): No results. Exit.\n");
+		QMessageBox::information(this, tr("No results"),
+			tr("There were no results of your search"));
+//		searchhidden = false;
+	}
 }
 
 void SearchDialog::closeEvent(QCloseEvent * e) {
@@ -412,7 +417,7 @@ void SearchDialog::updateInfoClicked()
 //	QString lastname = selected->text(3);
 	QString nickname = selected->text(4);
 
-	uin_t uin = suin.toUInt();
+	UinType uin = suin.toUInt();
 	UserListElement &ule = userlist.byUin(uin);
 
 	// Build altnick. Try user nick first.
@@ -458,7 +463,7 @@ void SearchDialog::openChat()
 	QString uin = selected->text(1);
 	UinsList uins;
 
-	uins.append((uin_t)uin.toInt());
+	uins.append((UinType)uin.toInt());
 
 	if (uins.findIndex(config_file.readNumEntry("General", "UIN")) == -1)
 		chat_manager->openChat(uins);

@@ -13,6 +13,7 @@
 #include "events.h"
 #include "kadu.h"
 
+#include <qsocketnotifier.h>
 #include <stdlib.h>
 
 struct gg_session* sess = NULL;
@@ -29,10 +30,13 @@ bool timeout_connected = true;
 QTimer* pingtimer;
 QValueList<QHostAddress> config_servers;
 bool i_wanna_be_invisible = true;
-SearchResult::SearchResult() {
+
+SearchResult::SearchResult()
+{
 }
 
-SearchResult::SearchResult(const SearchResult& copyFrom) {
+SearchResult::SearchResult(const SearchResult& copyFrom)
+{
 	this->uin = copyFrom.uin;
 	this->first = copyFrom.first;
 	this->nick = copyFrom.nick;
@@ -41,7 +45,8 @@ SearchResult::SearchResult(const SearchResult& copyFrom) {
 	this->status = copyFrom.status;
 }
 
-void SearchResult::setData(const char *uin, const char *first, const char *nick, const char *born, const char *city, const char *status) {
+void SearchResult::setData(const char *uin, const char *first, const char *nick, const char *born, const char *city, const char *status)
+{
 	this->uin = cp2unicode((unsigned char *)uin);
 	this->first = cp2unicode((unsigned char *)first);
 	this->nick = cp2unicode((unsigned char *)nick);
@@ -50,20 +55,24 @@ void SearchResult::setData(const char *uin, const char *first, const char *nick,
 	this->status = atoi(status) & 127;
 }
 
-SearchRecord::SearchRecord() {
+SearchRecord::SearchRecord()
+{
 	kdebugf();
 	clearData();
 	kdebugf2();
 }
 
-SearchRecord::~SearchRecord() {
+SearchRecord::~SearchRecord()
+{
 }
 
-void SearchRecord::reqUin(const QString& uin) {
+void SearchRecord::reqUin(const QString& uin)
+{
 	this->uin = uin;
 }
 
-void SearchRecord::reqFirstName(const QString& firstName) {
+void SearchRecord::reqFirstName(const QString& firstName)
+{
 	this->firstName = firstName;
 }
 
@@ -71,28 +80,34 @@ void SearchRecord::reqLastName(const QString& lastName) {
 	this->lastName = lastName;
 }
 
-void SearchRecord::reqNickName(const QString& nickName) {
+void SearchRecord::reqNickName(const QString& nickName)
+{
 	this->nickName = nickName;
 }
 
-void SearchRecord::reqCity(const QString& city) {
+void SearchRecord::reqCity(const QString& city)
+{
 	this->city = city;
 }
 
-void SearchRecord::reqBirthYear(const QString& birthYearFrom, const QString& birthYearTo) {
+void SearchRecord::reqBirthYear(const QString& birthYearFrom, const QString& birthYearTo)
+{
 	this->birthYearFrom = birthYearFrom;
 	this->birthYearTo = birthYearTo;
 }
 
-void SearchRecord::reqGender(bool female) {
+void SearchRecord::reqGender(bool female)
+{
 	this->gender = (female ? 2 : 1);
 }
 
-void SearchRecord::reqActive() {
+void SearchRecord::reqActive()
+{
 	this->active = true;
 };
 
-void SearchRecord::clearData() {
+void SearchRecord::clearData()
+{
 	kdebugf();
 	fromUin = 0;
 	uin = "";
@@ -114,6 +129,12 @@ void GaduProtocol::initModule()
 
 GaduProtocol::GaduProtocol() : QObject()
 {
+	registerSNR = registerSNW = NULL;
+	registerHttp = NULL;
+
+	unregisterSNR = unregisterSNW = NULL;
+	unregisterHttp = NULL;
+
 	connect(&event_manager, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)),
 		this, SLOT(newResults(gg_pubdir50_t)));
 }
@@ -130,7 +151,7 @@ int GaduProtocol::sendMessage(const UinsList& uins,const char* msg)
 	int seq;
 	if(uins.count()>1)
 	{
-		uin_t* users = new uin_t[uins.count()];
+		UinType* users = new UinType[uins.count()];
 		for (unsigned int i = 0; i < uins.count(); i++)
 			users[i] = uins[i];
 		seq=gg_send_message_confer(sess, GG_CLASS_CHAT,
@@ -150,7 +171,7 @@ int GaduProtocol::sendMessageRichText(const UinsList& uins,const char* msg,unsig
 	int seq;
 	if(uins.count()>1)
 	{
-		uin_t* users = new uin_t[uins.count()];
+		UinType* users = new UinType[uins.count()];
 		for (unsigned int i = 0; i < uins.count(); i++)
 			users[i] = uins[i];
 		seq = gg_send_message_confer_richtext(sess, GG_CLASS_CHAT,
@@ -169,7 +190,7 @@ int GaduProtocol::sendMessageRichText(const UinsList& uins,const char* msg,unsig
 void GaduProtocol::sendUserList()
 {
 	kdebugf();
-	uin_t *uins;
+	UinType *uins;
 	char *types;
 	unsigned int i, j;
 
@@ -183,7 +204,7 @@ void GaduProtocol::sendUserList()
 		return;
 		}
 
-	uins = (uin_t *) malloc(j * sizeof(uin_t));
+	uins = (UinType *) malloc(j * sizeof(UinType));
 	types = (char *) malloc(j * sizeof(char));
 
 	for (i = 0, j = 0; i < userlist.count(); i++)
@@ -211,7 +232,7 @@ void GaduProtocol::sendUserList()
 	kdebugf2();
 }
 
-bool GaduProtocol::sendImageRequest(uin_t uin,int size,uint32_t crc32)
+bool GaduProtocol::sendImageRequest(UinType uin,int size,uint32_t crc32)
 {
 	kdebugf();
 	int res = gg_image_request(sess, uin, size, crc32);
@@ -219,7 +240,7 @@ bool GaduProtocol::sendImageRequest(uin_t uin,int size,uint32_t crc32)
 	return (res==0);
 }
 
-bool GaduProtocol::sendImage(uin_t uin,const QString& file_name,uint32_t size,char* data)
+bool GaduProtocol::sendImage(UinType uin,const QString& file_name,uint32_t size,char* data)
 {
 	kdebugf();
 	int res = gg_image_reply(sess, uin, file_name.local8Bit().data(), data, size);
@@ -227,6 +248,7 @@ bool GaduProtocol::sendImage(uin_t uin,const QString& file_name,uint32_t size,ch
 	return (res==0);
 }
 
+/* wyszukiwanie w katalogu publicznym */
 
 void GaduProtocol::searchInPubdir(SearchRecord& searchRecord) {
 	searchRecord.fromUin = 0;
@@ -271,15 +293,11 @@ void GaduProtocol::searchNextInPubdir(SearchRecord& searchRecord) {
 }
 
 void GaduProtocol::newResults(gg_pubdir50_t res) {
-	int count, statusCode, fromUin;
-	const char *uin, *first, *nick, *born, *city, *status;
+	int count, fromUin;
 	SearchResult searchResult;
 	SearchResults searchResults;
 
 	count = gg_pubdir50_count(res);
-
-	if (count < 1)
-		return;
 
 	for (int i = 0; i < count; i++) {
 		searchResult.setData(
@@ -296,6 +314,247 @@ void GaduProtocol::newResults(gg_pubdir50_t res) {
 	fromUin = gg_pubdir50_next(res);
 
 	emit newSearchResults(searchResults, res->seq, fromUin);
+}
+
+/* rejestrowanie u¿ytkownika */
+
+bool GaduProtocol::doRegister(QString& mail, QString& password, QString& token_id, QString& token_value)
+{
+	// po co by³y te strdup'y ??
+	registerHttp = gg_register3(unicode2cp(mail).data(), unicode2cp(password).data(), unicode2cp(token_id).data(), unicode2cp(token_value).data(), 1);
+	if (registerHttp)
+	{
+		createRegisterSocketNotifiers();
+		return true;
+	}
+	else
+		return false;
+}
+
+void GaduProtocol::createRegisterSocketNotifiers()
+{
+	kdebug("GaduProtocol::createRegisterSocketNotifiers()\n");
+
+	// qApp->mainWidget ??
+	registerSNR = new QSocketNotifier(registerHttp->fd, QSocketNotifier::Read);
+	connect(registerSNR, SIGNAL(activated(int)), this, SLOT(registerDataReceived()));
+
+	registerSNW = new QSocketNotifier(registerHttp->fd, QSocketNotifier::Write);
+	connect(registerSNW, SIGNAL(activated(int)), this, SLOT(registerDataSent()));
+}
+
+void GaduProtocol::deleteRegisterSocketNotifiers()
+{
+	kdebug("GaduProtocol::deleteRegisterSocketNotifiers()\n");
+
+	if (registerSNR)
+	{
+		registerSNR->setEnabled(false);
+		registerSNR->deleteLater();
+		registerSNR = NULL;
+	}
+
+	if (registerSNW)
+	{
+		registerSNW->setEnabled(false);
+		registerSNW->deleteLater();
+		registerSNW = NULL;
+	}
+}
+
+void GaduProtocol::registerDataReceived()
+{
+	kdebug("GaduProtocol::registerDataReceived()\n");
+
+	// da³em & zamiast &&
+	if (registerHttp->check & GG_CHECK_READ)
+		registerSocketEvent();
+}
+
+void GaduProtocol::registerDataSent()
+{
+	kdebug("GaduProtocol::registerDataSent()\n");
+
+	registerSNW->setEnabled(false);
+	// da³em & zamiast &&
+	if (registerHttp->check & GG_CHECK_WRITE)
+		registerSocketEvent();
+}
+
+void GaduProtocol::registerSocketEvent()
+{
+	kdebug("GaduProtocol::registerSocketEvent()\n");
+
+	if (gg_register_watch_fd(registerHttp) == -1)
+	{
+		deleteRegisterSocketNotifiers();
+		gg_free_register(registerHttp);
+		registerHttp = NULL;
+		kdebug("GaduProtocol::registerSocketEvent(): error registering\n");
+		emit registered(false, 0);
+		return;
+	}
+
+	struct gg_pubdir *p = (struct gg_pubdir *)registerHttp->data;
+
+	switch (registerHttp->state)
+	{
+		case GG_STATE_CONNECTING:
+			kdebug("GaduProtocol::registerSocketEvent(): changing QSocketNotifiers.\n");
+			deleteRegisterSocketNotifiers();
+			createRegisterSocketNotifiers();
+			if (registerHttp->check & GG_CHECK_WRITE)
+				registerSNW->setEnabled(true);
+			break;
+
+		case GG_STATE_ERROR:
+			deleteRegisterSocketNotifiers();
+			gg_free_register(registerHttp);
+			registerHttp = NULL;
+			kdebug("GaduProtocol::registerSocketEvent(): error registering\n");
+			emit registered (false, 0);
+			break;
+
+		case GG_STATE_DONE:
+			deleteRegisterSocketNotifiers();
+			kdebug("GaduProtocol::registerSocketEvent(): success=%d, uin=%ld\n", p->success, p->uin);
+			if (p->success)
+			{
+				gg_free_register(registerHttp);
+				registerHttp = NULL;
+				emit registered(true, p->uin);
+			}
+			else
+			{
+				kdebug("GaduProtocol::registerSocketEvent(): error registering\n");
+				gg_free_register(registerHttp);
+				registerHttp = NULL;
+				emit registered(false, 0);
+			}
+			break;
+
+		default:
+			if (registerHttp->check & GG_CHECK_WRITE)
+				registerSNW->setEnabled(true);
+	}
+}
+
+/* wyrejestrowywanie u¿ytkownika */
+
+bool GaduProtocol::doUnregister(UinType uin, QString &password, QString& token_id, QString& token_value)
+{
+	// po co by³y te strdup'y ?
+	unregisterHttp = gg_unregister3(uin, unicode2cp(password).data(), unicode2cp(token_id).data(), unicode2cp(token_value).data(), 1);
+	if (unregisterHttp)
+	{
+		createUnregisterSocketNotifiers();
+		return true;
+	}
+	else
+		return false;
+}
+
+void GaduProtocol::createUnregisterSocketNotifiers()
+{
+	kdebug("GaduProtocol::createUnregisterSocketNotifiers()\n");
+
+	unregisterSNR = new QSocketNotifier(unregisterHttp->fd, QSocketNotifier::Read);
+	connect(unregisterSNR, SIGNAL(activated(int)), this, SLOT(unregisterDataReceived()));
+
+	unregisterSNW = new QSocketNotifier(unregisterHttp->fd, QSocketNotifier::Write);
+	connect(unregisterSNW, SIGNAL(activated(int)), this, SLOT(unregisterDataSent()));
+}
+
+void GaduProtocol::deleteUnregisterSocketNotifiers()
+{
+	kdebug("GaduProtocol::deleteUnregisterSocketNotifiers()\n");
+
+	if (unregisterSNR)
+	{
+		unregisterSNR->setEnabled(false);
+		unregisterSNR->deleteLater();
+		unregisterSNR = NULL;
+	}
+
+	if (unregisterSNW)
+	{
+		unregisterSNW->setEnabled(false);
+		unregisterSNW->deleteLater();
+		unregisterSNW = NULL;
+	}
+}
+
+void GaduProtocol::unregisterDataReceived()
+{
+	kdebug("GaduProtocol::unregisterDataReceived()\n");
+	if (unregisterHttp->check & GG_CHECK_READ)
+		unregisterSocketEvent();
+}
+
+void GaduProtocol::unregisterDataSent()
+{
+	kdebug("GaduProtocol::unregisterDataSent()\n");
+	unregisterSNW->setEnabled(false);
+	if (unregisterHttp->check & GG_CHECK_WRITE)
+		unregisterSocketEvent();
+}
+
+void GaduProtocol::unregisterSocketEvent()
+{
+	kdebug("GaduProtocol::unregisterSocketEvent()\n");
+
+	if (gg_register_watch_fd(unregisterHttp) == -1 )
+	{
+		deleteUnregisterSocketNotifiers();
+		gg_free_register(unregisterHttp);
+		unregisterHttp = NULL;
+		kdebug("GaduProtocol::unregisterSocketEvent(): error unregistering\n");
+		emit unregistered(false);
+		return;
+	}
+
+	struct gg_pubdir *p = (struct gg_pubdir *)unregisterHttp->data;
+
+	switch (unregisterHttp->state)
+	{
+		case GG_STATE_CONNECTING:
+			kdebug("GaduProtocol::unregisterSocketEvent(): changing QSocketNotifiers.\n");
+			deleteUnregisterSocketNotifiers();
+			createUnregisterSocketNotifiers();
+			if (unregisterHttp->check & GG_CHECK_WRITE)
+				unregisterSNW->setEnabled(true);
+			break;
+
+		case GG_STATE_ERROR:
+			deleteUnregisterSocketNotifiers();
+			gg_free_register(unregisterHttp);
+			unregisterHttp = NULL;
+			kdebug("GaduProtocol::unregisterSocketEvent(): error unregistering\n");
+			emit unregistered(false);
+			break;
+
+		case GG_STATE_DONE:
+			deleteUnregisterSocketNotifiers();
+			kdebug("GaduProtocol::unregisterSocketEvenet(): success\n");
+			if (p->success)
+			{
+				gg_free_register(unregisterHttp);
+				unregisterHttp = NULL;
+				emit unregistered(true);
+			}
+			else
+			{
+				kdebug("GaduProtocol::unregisterSocketEvent(): error unregistering\n");
+				gg_free_register(unregisterHttp);
+				unregisterHttp = NULL;
+				emit unregistered(false);
+			}
+			break;
+			
+		default:
+			if (unregisterHttp->check & GG_CHECK_WRITE)
+				unregisterSNW->setEnabled(true);
+	}
 }
 
 GaduProtocol* gadu;

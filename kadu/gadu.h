@@ -1,11 +1,17 @@
 #ifndef GADU_H
 #define GADU_H
 
-#include <qstring.h>
+#include <qhostaddress.h>
 #include <qobject.h>
+#include <qstring.h>
+#include <qtimer.h>
+#include <qvaluelist.h>
+
 #include "libgadu.h"
 
-#include "misc.h"
+class UinsList;
+
+class QSocketNotifier;
 
 extern struct gg_session* sess;
 extern struct gg_login_params loginparams;
@@ -22,7 +28,8 @@ extern QTimer* pingtimer;
 extern QValueList<QHostAddress> config_servers;
 extern bool i_wanna_be_invisible;
 
-struct SearchResult {
+struct SearchResult
+{
 	QString uin;
 	QString first;
 	QString nick;
@@ -67,9 +74,37 @@ struct SearchRecord
 
 };
 
+typedef uin_t UinType;
+
 class GaduProtocol : public QObject
 {
 	Q_OBJECT
+
+	private:
+		struct gg_http *registerHttp;
+		QSocketNotifier *registerSNR;
+		QSocketNotifier *registerSNW;
+
+		void createRegisterSocketNotifiers();
+		void deleteRegisterSocketNotifiers();
+
+		void registerSocketEvent();
+
+		struct gg_http *unregisterHttp;
+		QSocketNotifier *unregisterSNR;
+		QSocketNotifier *unregisterSNW;
+
+		void createUnregisterSocketNotifiers();
+		void deleteUnregisterSocketNotifiers();
+
+		void unregisterSocketEvent();
+		
+	private slots:
+		void registerDataReceived();
+		void registerDataSent();
+
+		void unregisterDataReceived();
+		void unregisterDataSent();
 
 	public:	
 		static void initModule();
@@ -94,21 +129,35 @@ class GaduProtocol : public QObject
 		/**
 			Wysy³a pro¶bê o przys³anie obrazka.
 		**/
-		bool sendImageRequest(uin_t uin,int size,uint32_t crc32);
-		bool sendImage(uin_t uin,const QString& file_name,uint32_t size,char* data);
+		bool sendImageRequest(UinType uin,int size,uint32_t crc32);
+		bool sendImage(UinType uin,const QString& file_name,uint32_t size,char* data);
 
 		/**
 		  	Szuka ludzi w katalogu publicznym
-		 **/
+		**/
 		void searchInPubdir(SearchRecord& searchRecord);
 		void searchNextInPubdir(SearchRecord& searchRecord);
 
+		/**
+		 	Rejestruje nowego u¿ytkownika
+		**/
+		bool doRegister(QString& mail, QString& password, QString& token_id, QString& token_val);
+
+		/**
+		 	Wyrejestrowuje u¿ytkownika
+		**/
+		bool doUnregister(UinType uin, QString& password, QString& token_id, QString& token_val);
+	
+	private slots:
+		void newResults(gg_pubdir50_t res);
+
 	public slots:
 		void sendUserList();
-		void newResults(gg_pubdir50_t res);
 
 	signals:
 		void newSearchResults(SearchResults& searchResults, int seq, int lastUin);
+		void registered(bool ok, UinType uin);
+		void unregistered(bool ok);
 };
 
 extern GaduProtocol* gadu;

@@ -97,6 +97,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   oraz usuniêty b³±d powoduj±cy znikanie paska narzêdziowego przy powy¿szych warunkach
   i za³adowanym module sound (joi)
 * wydzielenie dokowania dla WindowMakera do oddzielnego modu³u (joi)
+* drugi patch porz±dkuj±cy vogela: szukanie i (wy)rejestrowanie (adrian)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

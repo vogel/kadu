@@ -16,6 +16,7 @@
 
 #include <sys/stat.h>
 #include "ignore.h"
+#include "userlist.h"
 //
 
 QValueList<UinsList> ignored;
@@ -54,7 +55,7 @@ void Ignored::add() {
 	bool ok;
 	UinsList uins;
 	for (unsigned int i = 0; i < strlist.count(); i++) {
-		uin_t uin = strlist[i].toUInt(&ok);
+		UinType uin = strlist[i].toUInt(&ok);
 		if (ok)
 			uins.append(uin);
 		}

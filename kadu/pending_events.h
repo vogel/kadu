@@ -3,6 +3,7 @@
 #define PENDING_EVENTS_H
 
 #include <qptrlist.h>
+#include "gadu.h"
 #include "misc.h"
 
 /**
@@ -14,7 +15,7 @@ class PendingEvent
 		/**
 			Sprawdza czy zdarzenie dotyczy podanego numeru uin.
 		**/
-		virtual bool sendBy(uin_t uin)=0;
+		virtual bool sendBy(UinType uin)=0;
 		/**
 			Aktywuje zdarzenie.
 		**/
@@ -37,7 +38,7 @@ class PendingMessage : public PendingEvent
 			Jest to prawda jesli podany uin jest jednym z
 			nadawcow wiadomosci.
 		**/
-		virtual bool sendBy(uin_t uin);
+		virtual bool sendBy(UinType uin);
 		/**
 			Aktywuje zdarzenie. Wyswietla wiadomosc w oknie Chat.
 		**/		
@@ -78,7 +79,7 @@ class PendingEvents : public QObject
 			Sprawdza czy istnieja zakolejkowane zdarzenia
 			dotyczace podanego numeru uin.
 		**/		
-		bool pendingEvents(uin_t uin);
+		bool pendingEvents(UinType uin);
 		/**
 			Sprawdza czy istnieja zakolejkowane zdarzenia.
 		**/				

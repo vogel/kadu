@@ -5,13 +5,13 @@
 #include <qurloperator.h>
 #include <qstring.h>
 
-#include "libgadu.h"
+#include "gadu.h"
 
 class UpdatesClass
 {
 
 	public:
-		UpdatesClass(uin_t uin);
+		UpdatesClass(UinType uin);
 		bool ifNewerVersion(QString &newestversion);
 		void run();
 

@@ -46,7 +46,7 @@ class ChatManager : public QObject
 		int registerChat(Chat* chat);
 		void unregisterChat(Chat* chat);
 		void refreshTitles();
-		void refreshTitlesForUin(uin_t uin);
+		void refreshTitlesForUin(UinType uin);
 		void changeAppearance();
 		Chat* findChatByUins(UinsList uins);
 		/**
@@ -57,7 +57,7 @@ class ChatManager : public QObject
 		int openChat(UinsList senders,time_t time=0);		
 		void openPendingMsgs(UinsList uins);
 		void openPendingMsgs();
-		void sendMessage(uin_t uin,UinsList selected_uins);
+		void sendMessage(UinType uin,UinsList selected_uins);
 		
 	public slots:
 		void chatMsgReceived(UinsList senders,const QString& msg,time_t time,bool& grab);
@@ -186,7 +186,7 @@ class Chat : public QWidget
 		void pageUp();
 		void pageDown();
 		void insertImage();
-		void imageReceivedAndSaved(uin_t sender,uint32_t size,uint32_t crc32,const QString& path);
+		void imageReceivedAndSaved(UinType sender,uint32_t size,uint32_t crc32,const QString& path);
 
 	protected:
 		void closeEvent(QCloseEvent *);

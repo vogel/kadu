@@ -62,9 +62,9 @@ class EventManager : public QObject
 		void systemMessageReceivedSlot(QString &msg, QDateTime &time,
 			int formats_length, void *formats);
 		void chatMsgReceived2Slot(UinsList senders,const QString& msg,time_t time);
-		void imageRequestReceivedSlot(uin_t sender,uint32_t size,uint32_t crc32);
-		void imageReceivedSlot(uin_t sender,uint32_t size,uint32_t crc32,const QString& filename,const char* data);
-		void imageReceivedAndSavedSlot(uin_t sender,uint32_t size,uint32_t crc32,const QString& path);
+		void imageRequestReceivedSlot(UinType sender,uint32_t size,uint32_t crc32);
+		void imageReceivedSlot(UinType sender,uint32_t size,uint32_t crc32,const QString& filename,const char* data);
+		void imageReceivedAndSavedSlot(UinType sender,uint32_t size,uint32_t crc32,const QString& path);
 		void ackReceivedSlot(int seq);
 		void dccConnectionReceivedSlot(const UserListElement& sender);
 		void pubdirReplyReceivedSlot(gg_pubdir50_t res);
@@ -144,15 +144,15 @@ class EventManager : public QObject
 		/**
 			Otrzymano pro¶bê o wys³anie danych obrazka
 		**/
-		void imageRequestReceived(uin_t sender,uint32_t size,uint32_t crc32);
+		void imageRequestReceived(UinType sender,uint32_t size,uint32_t crc32);
 		/**
 			Otrzymano dane obrazka
 		**/
-		void imageReceived(uin_t sender,uint32_t size,uint32_t crc32,const QString& filename,const char* data);
+		void imageReceived(UinType sender,uint32_t size,uint32_t crc32,const QString& filename,const char* data);
 		/**
 			Otrzymano dane obrazka i zapisano go do pliku.
 		**/		
-		void imageReceivedAndSaved(uin_t sender,uint32_t size,uint32_t crc32,const QString& path);
+		void imageReceivedAndSaved(UinType sender,uint32_t size,uint32_t crc32,const QString& path);
 		/**
 			Otrzymano potwierdzenie wiadomo¶ci
 		**/

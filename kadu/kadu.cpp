@@ -256,7 +256,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	showMainWindowOnStart=true;
 
 	KaduSlots *kaduslots=new KaduSlots();
-	uin_t myUin=config_file.readNumEntry("General", "UIN");
+	UinType myUin=config_file.readNumEntry("General", "UIN");
 
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "General"));
 	ConfigDialog::addHGroupBox("General", "General", QT_TRANSLATE_NOOP("@default", "User data"));
@@ -448,7 +448,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	descrtb->setFont(config_file.readFontEntry("Look", "UserboxDescFont"));
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		descrtb->hide();
-	QObject::connect(&userlist, SIGNAL(dnsNameReady(uin_t)), this, SLOT(infopanelUpdate(uin_t)));
+	QObject::connect(&userlist, SIGNAL(dnsNameReady(UinType)), this, SLOT(infopanelUpdate(UinType)));
 
 	statusbutton = new QPushButton(QIconSet(icons_manager.loadIcon("Offline")), tr("Offline"), vbox, "statusbutton");
 	statusbutton->setPopup(statusppm);
@@ -1035,7 +1035,7 @@ void Kadu::sendMessage(QListBoxItem *item)
 	UserBox *activeUserBox=UserBox::getActiveUserBox();
 	if (activeUserBox==NULL)
 		return;
-	uin_t uin = userlist.byAltNick(item->text()).uin;
+	UinType uin = userlist.byAltNick(item->text()).uin;
 	if (uin) {
 		UinsList uins = activeUserBox->getSelectedUins();
 		if (uins.findIndex(config_file.readNumEntry("General", "UIN")) == -1)
@@ -1142,7 +1142,7 @@ void Kadu::setStatus(int status) {
 
 	if (!updateChecked)
 	{
-		uin_t myUin=(uin_t)config_file.readNumEntry("General", "UIN");
+		UinType myUin=(UinType)config_file.readNumEntry("General", "UIN");
 		if (myUin) {
 			uc = new UpdatesClass(myUin);
 			QObject::connect(uc->op, SIGNAL(data(const QByteArray &, QNetworkOperation *)),
@@ -1249,7 +1249,7 @@ void Kadu::setStatus(int status) {
 	char *tmp = strdup((const char *)unicode2latin(pwHash(config_file.readEntry("General", "Password"))));
 	kdebug("Kadu::setStatus(): password = %s\n", tmp);
 	free(tmp);
-	loginparams.uin = (uin_t)config_file.readNumEntry("General", "UIN");
+	loginparams.uin = (UinType)config_file.readNumEntry("General", "UIN");
 	loginparams.has_audio = config_file.readBoolEntry("Network", "AllowDCC");
 	loginparams.last_sysmsg = config_file.readNumEntry("Global", "SystemMsgIndex");
 
@@ -1659,7 +1659,7 @@ void Kadu::showdesc(bool show) {
 		descrtb->hide();
 }
 
-void Kadu::infopanelUpdate(uin_t uin) {
+void Kadu::infopanelUpdate(UinType uin) {
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		return;
 	kdebug("Kadu::infopanelUpdate(%d)\n", uin);
@@ -1770,7 +1770,7 @@ void KaduSlots::onDestroyConfigDialog()
 	kadu->changeAppearance();
 	chat_manager->changeAppearance();
 	kadu->refreshGroupTabBar();
-	kadu->setCaption(tr("Kadu: %1").arg((uin_t)config_file.readNumEntry("General", "UIN")));
+	kadu->setCaption(tr("Kadu: %1").arg((UinType)config_file.readNumEntry("General", "UIN")));
 
 	QComboBox *cb_language= ConfigDialog::getComboBox("General", "Set language:");
 	config_file.writeEntry("General", "Language", translateLanguage(qApp, cb_language->currentText(),false));

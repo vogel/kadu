@@ -98,12 +98,12 @@ EventManager::EventManager()
 		this, SLOT(systemMessageReceivedSlot(QString &, QDateTime &, int, void *)));
 	connect(this,SIGNAL(chatMsgReceived2(UinsList,const QString&,time_t)),
 		this,SLOT(chatMsgReceived2Slot(UinsList,const QString&,time_t)));
-	connect(this,SIGNAL(imageRequestReceived(uin_t,uint32_t,uint32_t)),
-		this,SLOT(imageRequestReceivedSlot(uin_t,uint32_t,uint32_t)));
-	connect(this,SIGNAL(imageReceived(uin_t,uint32_t,uint32_t,const QString&,const char*)),
-		this,SLOT(imageReceivedSlot(uin_t,uint32_t,uint32_t,const QString&,const char*)));
-	connect(this, SIGNAL(imageReceivedAndSaved(uin_t,uint32_t,uint32_t,const QString&)),
-		this, SLOT(imageReceivedAndSavedSlot(uin_t,uint32_t,uint32_t,const QString&)));
+	connect(this,SIGNAL(imageRequestReceived(UinType,uint32_t,uint32_t)),
+		this,SLOT(imageRequestReceivedSlot(UinType,uint32_t,uint32_t)));
+	connect(this,SIGNAL(imageReceived(UinType,uint32_t,uint32_t,const QString&,const char*)),
+		this,SLOT(imageReceivedSlot(UinType,uint32_t,uint32_t,const QString&,const char*)));
+	connect(this, SIGNAL(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)),
+		this, SLOT(imageReceivedAndSavedSlot(UinType,uint32_t,uint32_t,const QString&)));
 	connect(this,SIGNAL(ackReceived(int)),this,SLOT(ackReceivedSlot(int)));
 	connect(this,SIGNAL(dccConnectionReceived(const UserListElement&)),
 		this,SLOT(dccConnectionReceivedSlot(const UserListElement&)));
@@ -294,20 +294,20 @@ void EventManager::chatMsgReceived2Slot(UinsList senders,const QString& msg,time
 		pending.openMessages();
 }
 
-void EventManager::imageRequestReceivedSlot(uin_t sender,uint32_t size,uint32_t crc32)
+void EventManager::imageRequestReceivedSlot(UinType sender,uint32_t size,uint32_t crc32)
 {
 	kdebug(QString("Received image request. sender: %1, size: %2, crc32: %3\n").arg(sender).arg(size).arg(crc32).local8Bit().data());
 	gadu_images_manager.sendImage(sender,size,crc32);
 }	
 
-void EventManager::imageReceivedSlot(uin_t sender,uint32_t size,uint32_t crc32,const QString& filename,const char* data)
+void EventManager::imageReceivedSlot(UinType sender,uint32_t size,uint32_t crc32,const QString& filename,const char* data)
 {
 	kdebug(QString("Received image. sender: %1, size: %2, crc32: %3,filename: %4\n").arg(sender).arg(size).arg(crc32).arg(filename).local8Bit().data());
 	QString full_path = gadu_images_manager.saveImage(sender,size,crc32,filename,data);
 	emit imageReceivedAndSaved(sender,size,crc32,full_path);
 }	
 
-void EventManager::imageReceivedAndSavedSlot(uin_t sender,uint32_t size,uint32_t crc32,const QString& path)
+void EventManager::imageReceivedAndSavedSlot(UinType sender,uint32_t size,uint32_t crc32,const QString& path)
 {
 	for (int i = 0; i < pending.count(); i++)
 	{
@@ -316,7 +316,7 @@ void EventManager::imageReceivedAndSavedSlot(uin_t sender,uint32_t size,uint32_t
 	}
 }
 
-void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)
+void ifNotify(UinType uin, unsigned int status, unsigned int oldstatus)
 {
 	if (!config_file.readBoolEntry("Notify","NotifyStatusChange"))
 			return;

@@ -112,7 +112,7 @@ void ChatManager::refreshTitles()
 		Chats[i]->setTitle();
 }
 
-void ChatManager::refreshTitlesForUin(uin_t uin)
+void ChatManager::refreshTitlesForUin(UinType uin)
 {
 	for (unsigned int i = 0; i < Chats.count(); i++)
 		if (Chats[i]->uins().contains(uin))
@@ -253,7 +253,7 @@ void ChatManager::openPendingMsgs()
 	}
 }
 
-void ChatManager::sendMessage(uin_t uin,UinsList selected_uins)
+void ChatManager::sendMessage(UinType uin,UinsList selected_uins)
 {
 	QString tmp;
 	int i, k = -1;
@@ -634,8 +634,8 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	connect(edit, SIGNAL(sendMessage()), this, SLOT(sendMessage()));
 	connect(edit, SIGNAL(specialKeyPressed(int)), this, SLOT(specialKeyPressed(int)));
 
-	connect(&event_manager, SIGNAL(imageReceivedAndSaved(uin_t,uint32_t,uint32_t,const QString&)),
-		this, SLOT(imageReceivedAndSaved(uin_t,uint32_t,uint32_t,const QString&)));
+	connect(&event_manager, SIGNAL(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)),
+		this, SLOT(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)));
 
 	totaloccurences = 0;
 
@@ -647,8 +647,8 @@ Chat::~Chat() {
 
 	disconnect(&event_manager, SIGNAL(ackReceived(int)),
 		this, SLOT(ackReceivedSlot(int)));
-	disconnect(&event_manager, SIGNAL(imageReceivedAndSaved(uin_t,uint32_t,uint32_t,const QString&)),
-		this, SLOT(imageReceivedAndSaved(uin_t,uint32_t,uint32_t,const QString&)));
+	disconnect(&event_manager, SIGNAL(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)),
+		this, SLOT(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)));
 
 	if (userbox)
 		delete userbox;
@@ -768,7 +768,7 @@ void Chat::insertImage()
 	edit->setFocus();
 }
 
-void Chat::imageReceivedAndSaved(uin_t sender,uint32_t size,uint32_t crc32,const QString& path)
+void Chat::imageReceivedAndSaved(UinType sender,uint32_t size,uint32_t crc32,const QString& path)
 {
 	kdebugf();
 	body->setText(
@@ -896,7 +896,7 @@ void Chat::closeEvent(QCloseEvent *e) {
 
 /* look up party's info */
 void Chat::userWhois(void) {
-	uin_t uin;
+	UinType uin;
 	
 	if (!userbox)
 		uin = Uins[0];

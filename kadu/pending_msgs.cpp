@@ -21,7 +21,7 @@ void PendingMsgs::deleteMsg(int index)
 	emit messageDeleted();
 }
 
-bool PendingMsgs::pendingMsgs(uin_t uin)
+bool PendingMsgs::pendingMsgs(UinType uin)
 {
 	if(uin==0)
 		return pendingMsgs();
@@ -78,7 +78,7 @@ void PendingMsgs::writeToFile()
 		f.writeBlock((char*)&t,sizeof(int));
 		// teraz dane
 		for(UinsList::iterator j=(*i).uins.begin(); j!=(*i).uins.end(); j++)
-			f.writeBlock((char*)&(*j),sizeof(uin_t));
+			f.writeBlock((char*)&(*j),sizeof(UinType));
 		// nastepnie wiadomosc - dlugosc
 		t=(*i).msg.length();
 		f.writeBlock((char*)&t,sizeof(int));
@@ -122,7 +122,7 @@ bool PendingMsgs::loadFromFile()
 		for (int j = 0; j < uins_size; j++)
 		{
 			int uin;
-			if (f.readBlock((char*)&uin, sizeof(uin_t)) <= 0) {
+			if (f.readBlock((char*)&uin, sizeof(UinType)) <= 0) {
 				msgs_size--;
 				return false;
 				}

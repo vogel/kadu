@@ -7,6 +7,7 @@
 #include <qpainter.h>
 #include <qpopupmenu.h>
 
+#include "userlist.h"
 #include "misc.h"
 
 class KaduListBoxPixmap : public QListBoxItem {

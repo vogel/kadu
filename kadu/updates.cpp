@@ -2,7 +2,7 @@
 #include "kadu-config.h"
 #include "updates.h"
 
-UpdatesClass::UpdatesClass(uin_t uin) {
+UpdatesClass::UpdatesClass(UinType uin) {
 	qInitNetworkProtocols();
 	query = QString("update.php?uin=%1&version=%2").arg(uin).arg(QString(VERSION));
 	op = new QUrlOperator("http://www.kadu.net");
@@ -16,3 +16,4 @@ void UpdatesClass::run() {
 bool UpdatesClass::ifNewerVersion(QString &newestversion) {
 	return (newestversion != QString(VERSION));
 }
+

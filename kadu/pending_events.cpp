@@ -18,7 +18,7 @@ PendingMessage::PendingMessage(const UinsList uins,const QString& msg,
 	Time=time;
 }
 
-bool PendingMessage::sendBy(uin_t uin)
+bool PendingMessage::sendBy(UinType uin)
 {
 	for(UinsList::iterator i=Uins.begin(); i!=Uins.end(); i++)
 		if((*i)==uin)
@@ -99,7 +99,7 @@ PendingEvent* PendingEvents::operator[](int index)
 	return Events.at(index);
 }
 
-bool PendingEvents::pendingEvents(uin_t uin)
+bool PendingEvents::pendingEvents(UinType uin)
 {
 	for(PendingEventsList::iterator i=Events.begin(); i!=Events.end(); i++)
 		if((*i)->sendBy(uin))

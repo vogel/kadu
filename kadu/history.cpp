@@ -65,7 +65,7 @@ QString HistoryManager::getFileNameByUinsList(UinsList &uins) {
 	return fname;
 }
 
-void HistoryManager::appendMessage(UinsList uins, uin_t uin, const QString &msg, bool own, time_t czas, bool chat) {
+void HistoryManager::appendMessage(UinsList uins, UinType uin, const QString &msg, bool own, time_t czas, bool chat) {
 	QFile f, fidx;
 	QString fname = ggPath("history/");
 	QString line, nick;
@@ -124,7 +124,7 @@ void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 	QTextStream stream;
 	QStringList linelist;
 	QString altnick, line, fname;
-	uin_t uin = 0;
+	UinType uin = 0;
 	int offs;
 
 	kdebug("HistoryManager::appendSms(): appending sms to history (%s)\n", mobile.local8Bit().data());
@@ -194,7 +194,7 @@ void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 		}
 }
 
-void HistoryManager::appendStatus(uin_t uin, unsigned int status, QString description) {
+void HistoryManager::appendStatus(UinType uin, unsigned int status, QString description) {
 	QFile f, fidx;
 	QString fname = ggPath("history/");
 	QString line, nick, addr;
@@ -302,7 +302,7 @@ void HistoryManager::convHist2ekgForm(UinsList uins) {
 	QString path = ggPath("history/");
 	QString fname, fnameout, line, nick;
 	QStringList linelist;
-	uin_t uin;
+	UinType uin;
 
 	fname = getFileNameByUinsList(uins);
 	
@@ -330,7 +330,7 @@ void HistoryManager::convHist2ekgForm(UinsList uins) {
 	QDateTime datetime, sdatetime;
 	QRegExp sep("\\s"), sep2("::");
 	our = foreign = false;
-	uin_t myUin=config_file.readNumEntry("General","UIN");
+	UinType myUin=config_file.readNumEntry("General","UIN");
 	while ((line = stream.readLine()) != QString::null) {
 //		our = !line.find(QRegExp("^\\S+\\s::\\s\\d{2,2}\\s\\d{2,2}\\s\\d{4,4},\\s\\(\\d{2,2}:\\d{2,2}:\\d{2,2}\\)$"));
 		our = !line.find(QRegExp("^(\\S|\\s)+\\s::\\s\\d{2,2}\\s\\d{2,2}\\s\\d{4,4},\\s\\(\\d{2,2}:\\d{2,2}:\\d{2,2}\\)$"));
@@ -435,7 +435,7 @@ void HistoryManager::convSms2ekgForm() {
 	QString path = ggPath("history/");
 	QString fname, fnameout, line, nick;
 	QStringList linelist;
-	uin_t uin;
+	UinType uin;
 	unsigned int i;
 
 	fname = "sms";

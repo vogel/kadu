@@ -8,7 +8,7 @@
 #include <qcheckbox.h>
 #include <qsocketnotifier.h>
 
-#include "libgadu.h"
+#include "gadu.h"
 
 /**
 	Dialog umo¿liwiaj±cy rejestracjê nowego u¿ytkownika
@@ -20,27 +20,19 @@ class Register : public QDialog {
 		Register(QDialog* parent = 0, const char *name = 0);
 
 	private:
-		struct gg_http *h;
-		struct gg_pubdir *p;
 		QLineEdit *pwd, *pwd2, *mailedit;
 		QLabel *status;
-		uin_t uin;
+		UinType uin;
 		QCheckBox *updateconfig;
-		QSocketNotifier *snr;
-		QSocketNotifier *snw;
 
 		void ask();	
-		void deleteSocketNotifiers();
-		void createSocketNotifiers();
 
 	private slots:
 		void doRegister();
-		void socketEvent();
-		void dataReceived();
-		void dataSent();
 
-	protected:
-		void closeEvent(QCloseEvent *e);
+	public slots:
+		void registered(bool ok, UinType uin);
+
 };
 
 class Unregister : public QDialog {
@@ -50,26 +42,19 @@ class Unregister : public QDialog {
 		Unregister(QDialog* parent = 0, const char *name = 0);
 
 	private:
-		struct gg_http *h;
-		struct gg_pubdir *p;
 		QLineEdit *uin, *pwd;
 		QLabel *status;
 		QCheckBox *updateconfig;
-		QSocketNotifier *snr;
-		QSocketNotifier *snw;
 
-		void deleteSocketNotifiers();
-		void createSocketNotifiers();
 		void deleteConfig();
 
 	private slots:
 		void doUnregister();
-		void socketEvent();
-		void dataReceived();
-		void dataSent();
+	
+	public slots:
+		void unregistered(bool ok);
 
-	protected:
-		void closeEvent(QCloseEvent *e);
 };
 
 #endif
+

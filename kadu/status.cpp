@@ -8,7 +8,6 @@
  ***************************************************************************/
 
 #include "status.h"
-#include "libgadu.h"
 #include "gadu.h"
 #include <qobject.h>
 

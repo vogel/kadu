@@ -100,7 +100,7 @@ class Kadu : public QMainWindow
 		~Kadu();
 		static void InitModules();
 		void changeAppearance();
-		bool userInActiveGroup(uin_t uin);
+		bool userInActiveGroup(UinType uin);
 		void removeUser(QStringList &, bool);
 		void refreshGroupTabBar();
 		/**
@@ -156,7 +156,7 @@ class Kadu : public QMainWindow
 		void showdesc(bool show = true);
 		void statusMenuAboutToHide(void);
 		void mouseButtonClicked(int, QListBoxItem *);
-		void infopanelUpdate(uin_t);
+		void infopanelUpdate(UinType);
 		virtual bool close(bool quit = false);
 		void quitApplication();
 

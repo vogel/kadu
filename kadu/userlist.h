@@ -8,14 +8,14 @@
 #include <qdns.h>
 #include <qptrlist.h>
 
-#include "libgadu.h"
+#include "gadu.h"
 
 class DnsHandler : public QObject
 {
 	Q_OBJECT
 
 	public:
-		DnsHandler(uin_t uin);
+		DnsHandler(UinType uin);
 		~DnsHandler();
 		bool isCompleted();
 
@@ -23,7 +23,7 @@ class DnsHandler : public QObject
 
 	private:
 		QDns dnsresolver;
-		uin_t uin;
+		UinType uin;
 		bool completed;
 
 	public slots:
@@ -56,7 +56,7 @@ struct UserListElement
 		QString mobile;
 		QString description;
 		QString email;
-		uin_t uin;
+		UinType uin;
 		unsigned int status;
 		int image_size;
 		bool anonymous;
@@ -86,16 +86,16 @@ class UserList : public QObject, public QValueList<UserListElement>
 		~UserList();
 		UserList& operator=(const UserList& userlist);
 
-		UserListElement& byUin(uin_t uin);
+		UserListElement& byUin(UinType uin);
 		UserListElement& byNick(const QString& nickname);
 		UserListElement& byAltNick(const QString& altnick);
-		UserListElement byUinValue(uin_t uin);
+		UserListElement byUinValue(UinType uin);
 
-		bool containsUin(uin_t uin) const;
+		bool containsUin(UinType uin) const;
 		bool containsAltNick(const QString& altnick) const;
 
 		void addUser(UserListElement &ule);
-		void addAnonymous(uin_t uin);
+		void addAnonymous(UinType uin);
 		void removeUser(const QString &altnick);
 		/**
 			oldaltnick nie moze byc referencji, chcemy skopiowac
@@ -104,11 +104,11 @@ class UserList : public QObject, public QValueList<UserListElement>
 			(wazna przy zmianie altnicka)
 		**/
 		void changeUserInfo(const QString oldaltnick, UserListElement &ule);
-		void changeUserStatus(const uin_t uin, const unsigned int status);
+		void changeUserStatus(const UinType uin, const unsigned int status);
 		bool writeToFile(QString filename = "");
 		bool readFromFile();
-		void setDnsName(uin_t uin, const QString &name);
-		void addDnsLookup(uin_t uin, const QHostAddress &ip);
+		void setDnsName(UinType uin, const QString &name);
+		void addDnsLookup(UinType uin, const QHostAddress &ip);
 		void merge(UserList &userlist);
 
 	signals:
@@ -116,12 +116,13 @@ class UserList : public QObject, public QValueList<UserListElement>
 		/**
 		  Przesyla obecny i przyszly status uzytkonika
 		**/
-		void changingStatus(const uin_t uin, const unsigned int oldstatus, const unsigned int status);
+		void changingStatus(const UinType uin, const unsigned int oldstatus, const unsigned int status);
 		void statusModified(UserListElement *);
 		void userAdded(const UserListElement& user);
-		void dnsNameReady(uin_t);
+		void dnsNameReady(UinType);
 };
 
 extern UserList userlist;
 
 #endif
+

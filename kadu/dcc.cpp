@@ -120,7 +120,7 @@ void dccSocketClass::watchDcc(int check) {
 	switch (dccevent->type) {
 		case GG_EVENT_DCC_CLIENT_ACCEPT:
 			uins.append(dccsock->peer_uin);
-			if (dccsock->uin != (uin_t)config_file.readNumEntry("General", "UIN")
+			if (dccsock->uin != (UinType)config_file.readNumEntry("General", "UIN")
 				|| !userlist.containsUin(dccsock->peer_uin) || isIgnored(uins)) {
 				kdebug("dccSocketClass::watchDcc(): strange uins!\n");
 				setState(DCC_SOCKET_TRANSFER_DISCARDED);

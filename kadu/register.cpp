@@ -57,7 +57,7 @@ void createConfig() {
 //	config_file.writeEntry("Password", pwHash(config.password));
 	config_file.sync();
 
-	qApp->mainWidget()->setCaption(QString("Kadu: %1").arg((uin_t)config_file.readNumEntry("General","UIN")));
+	qApp->mainWidget()->setCaption(QString("Kadu: %1").arg((UinType)config_file.readNumEntry("General","UIN")));
 
 	kdebug("createConfig(): Config file created\n");
 }
@@ -104,157 +104,69 @@ Register::Register(QDialog *parent, const char *name) : QDialog (parent, name, F
 	setCaption(tr("Register user"));
 	resize(240, 150);
 
-	snr = snw = NULL;
-	h = NULL;
+	connect(gadu, SIGNAL(registered(bool,UinType)), this, SLOT(registered(bool,UinType)));
 
 	show();
 }
 
 void Register::doRegister() {
 	kdebug("Register::doRegister()\n");
-	if (pwd->text() != pwd2->text()) {
+	
+	if (pwd->text() != pwd2->text()) 
+	{
 		QMessageBox::warning(this, "Kadu", tr("Passwords do not match"), tr("OK"), 0, 0, 1);
 		return;
-		}
+	}
 
-	if (!pwd->text().length()) {
+	if (!pwd->text().length()) 
+	{
 		QMessageBox::warning(this, "Kadu", tr("Please fill out all fields"), tr("OK"), 0, 0, 1);
 		return;
-		}
+	}
 
 	TokenDialog *tokendialog = new TokenDialog();
-	if (tokendialog->exec() != QDialog::Accepted) {
+	if (tokendialog->exec() != QDialog::Accepted) 
+	{
 		delete tokendialog;
 		return;
-		}
-	QString Tokenid, Tokenval;
+	}
+	
+	QString Password, Email, Tokenid, Tokenval;
 	tokendialog->getToken(Tokenid, Tokenval);
 	delete tokendialog;
 
-	char *passwd, *token_id, *token_value, *mail;
-	passwd = strdup(unicode2cp(pwd->text()).data());
-	mail = strdup(unicode2cp(mailedit->text()).data());
-	token_id = strdup(unicode2cp(Tokenid).data());
-	token_value = strdup(unicode2cp(Tokenval).data());
-	h = gg_register3(mail, passwd, token_id, token_value, 1);
-	free(passwd);
-	free(mail);
-	free(token_id);
-	free(token_value);
-	if (!h) {
+	Password = pwd->text();
+	Email = mailedit->text();
+
+	if (!gadu->doRegister(Password, Email, Tokenid, Tokenval))
+	{
 		status->setText(tr("Error"));
 		return;
-		}
+	}
 
 	status->setText(tr("Registering"));
 
 	setEnabled(false);
-	createSocketNotifiers();
+	
 }
 
-void Register::closeEvent(QCloseEvent *e) {
-	kdebug("Register::closeEvent()\n");
-	deleteSocketNotifiers();
-	if (h) {
-		gg_free_register(h);
-		h = NULL;
-		}
-	QDialog::closeEvent(e);
-	kdebug("Register::closeEvent(): end\n");
-}
-
-void Register::createSocketNotifiers() {
-	kdebug("Register::createSocketNotifiers()\n");
-
-	snr = new QSocketNotifier(h->fd, QSocketNotifier::Read, qApp->mainWidget());
-	QObject::connect(snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
-
-	snw = new QSocketNotifier(h->fd, QSocketNotifier::Write, qApp->mainWidget());
-	QObject::connect(snw, SIGNAL(activated(int)), this, SLOT(dataSent()));
-}
-
-void Register::deleteSocketNotifiers() {
-	kdebug("Register::deleteSocketNotifiers()\n");
-	if (snr) {
-		snr->setEnabled(false);
-		snr->deleteLater();
-		snr = NULL;
-		}
-	if (snw) {
-		snw->setEnabled(false);
-		snw->deleteLater();
-		snw = NULL;
-		}
-}
-
-void Register::dataReceived() {
-	kdebug("Register::dataReceived()\n");
-	if (h->check && GG_CHECK_READ)
-		socketEvent();
-}
-
-void Register::dataSent() {
-	kdebug("Register::dataSent()\n");
-	snw->setEnabled(false);
-	if (h->check && GG_CHECK_WRITE)
-		socketEvent();
-}
-
-void Register::socketEvent() {
-	kdebug("Register::socketEvent()\n");
-	if (gg_register_watch_fd(h) == -1) {
-		deleteSocketNotifiers();
-		gg_free_register(h);
-		h = NULL;
-		kdebug("Register::socketEvent(): error registering\n");
+void Register::registered(bool ok, UinType uin)
+{
+	if (ok)
+	{	
+		status->setText(tr("Success!"));
+		this->uin = uin;
+		QMessageBox::information(this, "Kadu", tr("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(uin), tr("OK"), 0, 0, 1);
+		ask();
+		close();
+	}
+	else
+	{
 		status->setText(tr("Error"));
 		setEnabled(true);
-		return;
-		}
-	struct gg_pubdir *p = (struct gg_pubdir *)h->data;
-	switch (h->state) {
-		case GG_STATE_CONNECTING:
-			kdebug("Register::socketEvent(): changing QSocketNotifiers.\n");
-			deleteSocketNotifiers();
-			createSocketNotifiers();
-			if (h->check & GG_CHECK_WRITE)
-				snw->setEnabled(true);
-			break;
-		case GG_STATE_ERROR:
-			deleteSocketNotifiers();
-			gg_free_register(h);
-			h = NULL;
-			kdebug("Register::socketEvent(): error registering\n");
-			status->setText(tr("Error"));
-			setEnabled(true);
-			break;
-		case GG_STATE_DONE:
-			deleteSocketNotifiers();
-			kdebug("Register::socketEvent(): success=%d, uin=%ld\n", p->success, p->uin);
-			if (p->success) {
-				status->setText(tr("Success!"));
-				uin = p->uin;
-				QMessageBox::information(this, "Kadu", tr("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(uin),
-					tr("OK"), 0, 0, 1);
-				ask();
-				gg_free_register(h);
-				h = NULL;
-				kdebug("Register::socketEvent(): before close()\n");
-				close();
-				}
-			else {
-				gg_free_register(h);
-				h = NULL;
-				kdebug("Register::socketEvent(): error registering\n");
-				status->setText(tr("Error"));
-				setEnabled(true);
-				}
-			break;
-		default:
-			if (h->check & GG_CHECK_WRITE)
-				snw->setEnabled(true);
-		}
+	}
 }
+
 
 void Register::ask() {
 	kdebug("Register::ask()\n");
@@ -294,146 +206,57 @@ Unregister::Unregister(QDialog *parent, const char *name) : QDialog (parent, nam
 	setCaption(tr("Unregister user"));
 	resize(240, 100);
 
-	snr = snw = NULL;
-	h = NULL;
+	connect(gadu, SIGNAL(unregistered(bool)), this, SLOT(unregistered(bool)));
 	show();
 }
 
 void Unregister::doUnregister() {
 	kdebug("Unregister::doUnregister()\n");
 
-	if (!uin->text().toUInt() || !pwd->text().length()) {
+	if (!uin->text().toUInt() || !pwd->text().length()) 
+	{
 		QMessageBox::warning(this, "Kadu", tr("Please fill out all fields"), tr("OK"), 0, 0, 1);
 		return;
-		}
+	}
 
 	TokenDialog *tokendialog = new TokenDialog();
-	if (tokendialog->exec() != QDialog::Accepted) {
+	if (tokendialog->exec() != QDialog::Accepted) 
+	{
 		delete tokendialog;
 		return;
-		}
+	}
+	
 	QString Tokenid, Tokenval;
 	tokendialog->getToken(Tokenid, Tokenval);
 	delete tokendialog;
+	
+	QString Password = pwd->text();
 
-	char *passwd, *token_id, *token_val;
-	passwd = strdup(unicode2cp(pwd->text()).data());
-	token_id = strdup(unicode2cp(Tokenid).data());
-	token_val = strdup(unicode2cp(Tokenval).data());
-	h = gg_unregister3(uin->text().toUInt(), passwd, token_id, token_val, 1);
-	free(passwd);
-	free(token_id);
-	free(token_val);
-	if (!h) {
+	if (!gadu->doUnregister(uin->text().toUInt(), Password, Tokenid, Tokenval))
+	{
 		status->setText(tr("Error"));
 		return;
-		}
+	}
 
 	status->setText(tr("Unregistering"));
 
 	setEnabled(false);
-	createSocketNotifiers();
+
 }
 
-void Unregister::closeEvent(QCloseEvent *e) {
-	kdebug("Unregister::closeEvent()\n");
-	deleteSocketNotifiers();
-	if (h) {
-		gg_free_register(h);
-		h = NULL;
-		}
-	QDialog::closeEvent(e);
-	kdebug("Unregister::closeEvent(): end\n");
-}
-
-void Unregister::createSocketNotifiers() {
-	kdebug("Unregister::createSocketNotifiers()\n");
-
-	snr = new QSocketNotifier(h->fd, QSocketNotifier::Read, qApp->mainWidget());
-	QObject::connect(snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
-
-	snw = new QSocketNotifier(h->fd, QSocketNotifier::Write, qApp->mainWidget());
-	QObject::connect(snw, SIGNAL(activated(int)), this, SLOT(dataSent()));
-}
-
-void Unregister::deleteSocketNotifiers() {
-	kdebug("Unregister::deleteSocketNotifiers()\n");
-	if (snr) {
-		snr->setEnabled(false);
-		snr->deleteLater();
-		snr = NULL;
-		}
-	if (snw) {
-		snw->setEnabled(false);
-		snw->deleteLater();
-		snw = NULL;
-		}
-}
-
-void Unregister::dataReceived() {
-	kdebug("Unregister::dataReceived()\n");
-	if (h->check && GG_CHECK_READ)
-		socketEvent();
-}
-
-void Unregister::dataSent() {
-	kdebug("Unregister::dataSent()\n");
-	snw->setEnabled(false);
-	if (h->check && GG_CHECK_WRITE)
-		socketEvent();
-}
-
-void Unregister::socketEvent() {
-	kdebug("Unregister::socketEvent()\n");
-	if (gg_register_watch_fd(h) == -1) {
-		deleteSocketNotifiers();
-		gg_free_register(h);
-		h = NULL;
-		kdebug("Unregister::socketEvent(): error unregistering\n");
+void Unregister::unregistered(bool ok)
+{
+	if (ok)
+	{
+		status->setText(tr("Success!"));
+		QMessageBox::information(this, "Kadu", tr("Unregistation was successful. Now you don't have any GG number :("));
+		close();
+	}
+	else
+	{
 		status->setText(tr("Error"));
 		setEnabled(true);
-		return;
-		}
-	struct gg_pubdir *p = (struct gg_pubdir *)h->data;
-	switch (h->state) {
-		case GG_STATE_CONNECTING:
-			kdebug("Unregister::socketEvent(): changing QSocketNotifiers.\n");
-			deleteSocketNotifiers();
-			createSocketNotifiers();
-			if (h->check & GG_CHECK_WRITE)
-				snw->setEnabled(true);
-			break;
-		case GG_STATE_ERROR:
-			deleteSocketNotifiers();
-			gg_free_register(h);
-			h = NULL;
-			kdebug("Unregister::socketEvent(): error unregistering\n");
-			status->setText(tr("Error"));
-			setEnabled(true);
-			break;
-		case GG_STATE_DONE:
-			deleteSocketNotifiers();
-			kdebug("Unregister::socketEvent(): success\n");
-			if (p->success) {
-				gg_free_register(h);
-				h = NULL;
-				status->setText(tr("Success!"));
-				deleteConfig();
-				kdebug("Unregister::socketEvent(): before close()\n");
-				close();
-				}
-			else {
-				gg_free_register(h);
-				h = NULL;
-				kdebug("Unregister::socketEvent(): error unregistering\n");
-				status->setText(tr("Error"));
-				setEnabled(true);
-				}
-			break;
-		default:
-			if (h->check & GG_CHECK_WRITE)
-				snw->setEnabled(true);
-		}
+	}
 }
 
 void Unregister::deleteConfig() {

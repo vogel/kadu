@@ -42,7 +42,7 @@ KaduListBoxPixmap::KaduListBoxPixmap(const QPixmap &pix, const QString &text, co
 
 void KaduListBoxPixmap::paint(QPainter *painter) {
 	UserListElement &user = userlist.byAltNick(text());
-	bool isOurUin=((uin_t)config_file.readNumEntry("General", "UIN") == user.uin);
+	bool isOurUin=((UinType)config_file.readNumEntry("General", "UIN") == user.uin);
 	if (user.uin) {
 		UinsList uins;
 		uins.append(user.uin);
@@ -125,7 +125,7 @@ void KaduListBoxPixmap::paint(QPainter *painter) {
 int KaduListBoxPixmap::height(const QListBox* lb) const
 {
 	UserListElement &user = userlist.byAltNick(text());
-	bool isOurUin=((uin_t)config_file.readNumEntry("General", "UIN") == user.uin);
+	bool isOurUin=((UinType)config_file.readNumEntry("General", "UIN") == user.uin);
 	QString descr=isOurUin ? own_description : description();
 	bool hasDescription=isOurUin ? ifStatusWithDescription(getActualStatus()) : !descr.isEmpty();
 	int h, lh;
@@ -309,7 +309,7 @@ void UserBox::refresh()
 	QStringList n_users;
 	QStringList b_users;
 	
-	uin_t myUin=config_file.readNumEntry("General", "UIN");
+	UinType myUin=config_file.readNumEntry("General", "UIN");
 	for (i = 0; i < Users.count(); i++) {
 		UserListElement &user = userlist.byAltNick(Users[i]);
 		if (user.uin) {
