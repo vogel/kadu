@@ -33,6 +33,10 @@ UserInfo::UserInfo (const QString & name, QDialog* parent , const QString &altni
 	setCaption(i18n("User info on %1").arg(altnick));
 	setWFlags(Qt::WDestructiveClose);
 
+	e_uin = new QLineEdit(this);
+	QLabel *l_uin = new QLabel(this);
+	l_uin->setText(i18n("Uin"));
+
 	QLineEdit *e_status = new QLineEdit(this);
 	QLabel *l_status = new QLabel(this);
 	l_status->setText(i18n("Status"));
@@ -44,10 +48,6 @@ UserInfo::UserInfo (const QString & name, QDialog* parent , const QString &altni
 	e_firstname = new QLineEdit(this);
 	QLabel *l_firstname = new QLabel(this);
 	l_firstname->setText(i18n("First name"));
-
-	e_uin = new QLineEdit(this);
-	QLabel *l_uin = new QLabel(this);
-	l_uin->setText(i18n("Uin"));
 
 	e_lastname = new QLineEdit(this);
 	QLabel *l_lastname = new QLabel(this);
