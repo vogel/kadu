@@ -196,8 +196,15 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	sendbtn->setFixedWidth(120);
 	sendbtn->setIconSet(QIconSet(loader->loadIcon("forward", KIcon::Small)));
 	connect(sendbtn, SIGNAL(clicked()), this, SLOT(sendMessage()));
-	QAccel *acc = new QAccel( this );
-	acc->connectItem(acc->insertItem(Key_Return+CTRL), this, SLOT(sendMessage()));
+	QAccel *acc = new QAccel(this);
+	acc->connectItem(acc->insertItem(Key_Return + CTRL), this, SLOT(sendMessage()));
+
+	acc = new QAccel(this);
+	acc->connectItem(acc->insertItem(Key_PageUp + SHIFT), this, SLOT(pageUp()));
+	acc->connectItem(acc->insertItem(Key_PageUp), this, SLOT(pageUp()));
+	acc = new QAccel(this);
+	acc->connectItem(acc->insertItem(Key_PageDown + SHIFT), this, SLOT(pageDown()));
+	acc->connectItem(acc->insertItem(Key_PageDown), this, SLOT(pageDown()));
 
 	btnpart->setStretchFactor(fillerbox, 50);
 	btnpart->setStretchFactor(cancelbtn, 1);
@@ -266,6 +273,14 @@ Chat::~Chat() {
 		delete userbox;
 		
 	fprintf(stderr, "KK Chat::~Chat: chat destroyed: index %d\n", index);
+}
+
+void Chat::pageUp() {
+	body->scrollBy(0, (body->height() * -2) / 3);
+}
+
+void Chat::pageDown() {
+	body->scrollBy(0, (body->height() * 2) / 3);
 }
 
 void Chat::setEncryptionBtnEnabled(bool enabled) {

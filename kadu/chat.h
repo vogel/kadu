@@ -93,6 +93,8 @@ class Chat : public QWidget {
 		void regAutosend(void);
 		void addMyMessageToHistory(void);
 		void clearChatWindow(void);
+		void pageUp();
+		void pageDown();
 
 	private:
 		QString title_buffer;

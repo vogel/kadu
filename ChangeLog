@@ -21,6 +21,8 @@
   zaimplementowane.
 * powiadamianie d¼wiêkiem o zmianie statusu kontaktów nastêpuje tylko wtedy, gdy
   czas jaki min±³ od ostatniego takiego zdarzenia przekracza 500ms
+* okno rozmowy: SHIFT+PageUp, PageUp - przesuwaj± historiê rozmowy do góry,
+  SHIFT+PageDown, PageDown - przesuwaj± historiê rozmowy do do³u
 
 +++ wersja 0.3.3-pre4
 * przy imporcie listy u¿ytkowników ustawiamy domy¶lne atrybuty u¿ytkowników
