@@ -52,9 +52,9 @@ SmsIdeaGateway::~SmsIdeaGateway()
 	modules_manager->moduleDecUsageCount("default_sms");
 }
 
-void SmsIdeaGateway::httpRedirected(QString /*link*/)
+void SmsIdeaGateway::httpRedirected(QString link)
 {
-	kdebugf();
+	kdebugmf(KDEBUG_FUNCTION_START, "link: %s\n", link.local8Bit().data());
 }
 
 void SmsIdeaGateway::send(const QString& number,const QString& message, const QString& /*contact*/, const QString& signature)
@@ -171,8 +171,9 @@ SmsPlusGateway::~SmsPlusGateway()
 	modules_manager->moduleDecUsageCount("default_sms");
 }
 
-void SmsPlusGateway::httpRedirected(QString /*link*/)
+void SmsPlusGateway::httpRedirected(QString link)
 {
+	kdebugmf(KDEBUG_FUNCTION_START, "link: %s\n", link.local8Bit().data());
 }
 
 void SmsPlusGateway::send(const QString& number, const QString& message, const QString& /*contact*/, const QString& signature)
@@ -282,7 +283,7 @@ void SmsEraGateway::send(const QString& number,const QString& message, const QSt
 		return;
 	}
 	
-	Http.post(path,post_data);
+	Http.post(path, post_data);
 	kdebugf2();
 }
 
@@ -296,7 +297,7 @@ bool SmsEraGateway::isNumberCorrect(const QString& number)
 
 void SmsEraGateway::httpRedirected(QString link)
 {
-	kdebugf();
+	kdebugmf(KDEBUG_FUNCTION_START, "link: %s\n", link.local8Bit().data());
 	QWidget* p=(QWidget*)(parent()->parent());
 	if (link.find("ok.html")> 0)
 		emit finished(true);
@@ -320,10 +321,10 @@ QString SmsEraGateway::errorNumber(int nr)
 		case 3: return tr("Access forbidden");
 		case 5: return tr("Syntax error");
 		case 7: return tr("Limit of the sms run-down");
-		case 8: return tr("Wrong receiver adress");
+		case 8: return tr("Wrong receiver address");
 		case 9: return tr("Message too long");
 	}
-	return tr("Unknown error");
+	return tr("Unknown error (%d)").arg(nr);
 }
 
 void SmsEraGateway::httpFinished()
