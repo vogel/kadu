@@ -21,55 +21,54 @@
 //
 #include "kadu.h"
 
-TrayIcon::TrayIcon(QWidget *parent, const char *name) {
-	dw = new DockWidget(parent);
-}
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#include <X11/Xatom.h>
 
-TrayIcon::~TrayIcon() {
-	if (dw)
-		delete dw;
-}
-
-void TrayIcon::setType(char **gg_xpm) {
-	dw->setType(gg_xpm);
-}
-
-void TrayIcon::changeIcon() {
-	dw->changeIcon();
-}
-
-void TrayIcon::dockletChange(int id) {
-	dw->dockletChange(id);
-}
-
-void TrayIcon::show() {
-	dw->show();
-}
-
-void TrayIcon::connectSignals() {
-	QObject::connect(dockppm, SIGNAL(activated(int)), dw, SLOT(dockletChange(int)));
-}
-
-DockWidget::DockWidget(QWidget *parent, const char *name ) : KSystemTray( parent, name )
+TrayIcon::TrayIcon(QWidget *parent, const char *name)
+	: QLabel(0,"psidock",WMouseNoMask)
 {
 	if (!config.dock)
 		return;
 
-	setPixmap( QPixmap((const char**)gg_inact_xpm) );
+	setWFlags(WRepaintNoErase);
+	setPixmap(QPixmap((const char**)gg_inact_xpm));
 	QToolTip::add(this, i18n("Left click - hide/show window\nMiddle click or CTRL+any click- next message"));
+	resize(22,22);
+	update();
+
+	Display *dsp = x11Display();
+	WId win = winId();
+	int r;
+	int data = 1;
+	r = XInternAtom(dsp, "KWM_DOCKWINDOW", false);
+	XChangeProperty(dsp, win, r, r, 32, 0, (uchar *)&data, 1);
+	r = XInternAtom(dsp, "_KDE_NET_WM_SYSTEM_TRAY_WINDOW_FOR", false);
+	XChangeProperty(dsp, win, r, XA_WINDOW, 32, 0, (uchar *)&data, 1);
+
 	icon_timer = new QTimer(this);
 	blink = FALSE;
 	QObject::connect(icon_timer, SIGNAL(timeout()), this, SLOT(changeIcon()));
 }
 
-void DockWidget::setType(char **gg_xpm) {
+TrayIcon::~TrayIcon()
+{
+}
+
+void TrayIcon::setPixmap(const QPixmap& pixmap)
+{
+	QLabel::setPixmap(pixmap);
+	repaint();
+};
+
+void TrayIcon::setType(char **gg_xpm)
+{
 	if (!config.dock)
 		return;
-	
 	setPixmap(QPixmap((const char**)gg_xpm));
 }
 
-void DockWidget::changeIcon() {
+void TrayIcon::changeIcon() {
 	if (pending.pendingMsgs() && config.dock && !icon_timer->isActive()) {
 		if (!blink) {
 			setPixmap(QPixmap((const char**)gg_msg_xpm));
@@ -87,7 +86,7 @@ void DockWidget::changeIcon() {
 		}
 }
 
-void DockWidget::dockletChange(int id)
+void TrayIcon::dockletChange(int id)
 {
 	if (id < 9)
 		kadu->slotHandleState(id);
@@ -96,12 +95,19 @@ void DockWidget::dockletChange(int id)
 		kadu->setClosePermitted(true);
 		kadu->disconnectNetwork();
 		kadu->close();
-//		a->quit();
 		}
 }
 
-void DockWidget::mousePressEvent(QMouseEvent * e) {
-//	bool message = false;
+void TrayIcon::show() {
+	QLabel::show();
+}
+
+void TrayIcon::connectSignals() {
+	QObject::connect(dockppm, SIGNAL(activated(int)), this, SLOT(dockletChange(int)));
+}
+
+void TrayIcon::mousePressEvent(QMouseEvent * e)
+{
 	int i,j, k = -1;
 	QString tmp;
 	PendingMsgs::Element elem;
@@ -188,9 +194,7 @@ DockHint::DockHint(QWidget *parent) : QLabel(parent,"docktip",WStyle_NoBorder|WS
 	setAlignment(Qt::AlignCenter);
 	setPaletteBackgroundColor(QColor(255,255,230));
 	setFrameStyle(QFrame::Box|QFrame::Plain);
-	setLineWidth(1);
-//	setMargin(2);
-	
+	setLineWidth(1);	
 	connect(remove_timer,SIGNAL(timeout()),this,SLOT(remove_hint()));
 }
 
@@ -202,7 +206,7 @@ void DockHint::Show(QString Text) {
 		setText(text()+"\n"+Text);
 	
 //Zamotany kod, nie probowac nawet go zrozumiec ;)
-	QPoint p = trayicon->dw->mapToGlobal(QPoint(0, 0));
+	QPoint p = trayicon->mapToGlobal(QPoint(0, 0));
 	QSize size = QFontMetrics(config.fonts.userbox).size(Qt::ExpandTabs, text());
 //trzeba dodac kilka pixeli bo to gowno wyzej nie dziala jak trzeba, na przyszlosc trzeba bedzie cos lepszego wymyslec
 	size = QSize(size.width() + 5, size.height() + 5);
@@ -212,20 +216,20 @@ void DockHint::Show(QString Text) {
 
 	if (p.x() + size.width() > desksize.width()) {
 		if (p.x() - size.width() <0)
-			p.setX(p.x() + trayicon->dw->rect().width());
+			p.setX(p.x() + trayicon->rect().width());
 		else
 			p.setX(p.x() - size.width());
 	}
 	else {
 		if (p.x() - size.width() < 0)
-			p.setX(p.x() + trayicon->dw->rect().width());
+			p.setX(p.x() + trayicon->rect().width());
 		else
 			p.setX(p.x() - size.width());
 	}
-	if (p.y() - size.height() - trayicon->dw->rect().height() < 0)
-		p.setY(p.y() + trayicon->dw->rect().height() / 2 + size.height());
+	if (p.y() - size.height() - trayicon->rect().height() < 0)
+		p.setY(p.y() + trayicon->rect().height() / 2 + size.height());
 	else
-		p.setY(p.y() - trayicon->dw->rect().height() / 2 - size.height());
+		p.setY(p.y() - trayicon->rect().height() / 2 - size.height());
 //Koniec zamotanego kodu, otrzymalismy calkiem dobre wspolrzedne na docktip
 	
 	move(p);
@@ -247,7 +251,7 @@ void DockHint::remove_hint() {
 		return;
 	}
 //zamotany kod
-	QPoint p = trayicon->dw->mapToGlobal(QPoint(0, 0));
+	QPoint p = trayicon->mapToGlobal(QPoint(0, 0));
 	QSize size = QFontMetrics(config.fonts.userbox).size(Qt::ExpandTabs,text());
 //trzeba dodac kilka pixeli bo to gowno wyzej nie dziala jak trzeba, na przyszlosc trzeba bedzie cos lepszego wymyslec
 	size = QSize(size.width() + 5, size.height() + 5);
@@ -257,20 +261,20 @@ void DockHint::remove_hint() {
 
 	if (p.x() + size.width() > desksize.width()) {
 		if (p.x() - size.width() <0)
-			p.setX(p.x() + trayicon->dw->rect().width());
+			p.setX(p.x() + trayicon->rect().width());
 		else
 			p.setX(p.x() - size.width());
 	}
 	else {
 		if (p.x() - size.width() < 0)
-			p.setX(p.x() + trayicon->dw->rect().width());
+			p.setX(p.x() + trayicon->rect().width());
 		else
 			p.setX(p.x() - size.width());
 	}
-	if (p.y() - size.height() - trayicon->dw->rect().height() < 0)
-		p.setY(p.y() + trayicon->dw->rect().height() / 2 + size.height());
+	if (p.y() - size.height() - trayicon->rect().height() < 0)
+		p.setY(p.y() + trayicon->rect().height() / 2 + size.height());
 	else
-		p.setY(p.y() - trayicon->dw->rect().height() / 2 - size.height());
+		p.setY(p.y() - trayicon->rect().height() / 2 - size.height());
 //Koniec zamotanego kodu, otrzymalismy calkiem dobre wspolrzedne na docktip
 	
 	move(p);

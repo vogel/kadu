@@ -10,30 +10,34 @@
 #ifndef DOCKAPP_H
 #define DOCKAPP_H
 
-#include <ksystemtray.h>
+#include <qlabel.h>
 
-
-class DockWidget : public KSystemTray
+class TrayIcon : protected QLabel
 {
 	Q_OBJECT
-
-	protected:
-		void mousePressEvent (QMouseEvent*);
-	
-	public:
-		DockWidget(QWidget *parent=0, const char *name=0);
-		void DockWidget::setType(char **gg_xpm);
-	public slots:
-		// Status change slots
-		void dockletChange(int id);
-		//Funkcja do migania koperty
-		void changeIcon(void);
 
 	private:
 		QTimer *icon_timer;
 		bool blink;
-};
+		friend class DockHint;
 
+	protected:
+		void setPixmap(const QPixmap& pixmap);
+		void mousePressEvent(QMouseEvent*);
+
+	public:
+		TrayIcon(QWidget *parent = 0, const char *name = 0);
+		~TrayIcon();
+		void setType(char **gg_xpm);
+		void show();
+		void connectSignals();
+
+	public slots:
+		// Status change slots
+		void dockletChange(int id);
+		//Funkcja do migania koperty
+		void changeIcon();
+};
 
 class DockHint : public QLabel
 {
@@ -45,25 +49,7 @@ class DockHint : public QLabel
 		DockHint(QWidget *parent=0);
 		void Show(QString Text);
 	public slots:
-		void remove_hint(void);
-};
-
-class TrayIcon {
-	public:
-		TrayIcon(QWidget *parent = 0, const char *name = 0);
-		~TrayIcon();
-		void setType(char **gg_xpm);
-		// Status change slots
-		void dockletChange(int id);
-		//Funkcja do migania koperty
-		void changeIcon(void);
-		void show(void);
-		void connectSignals(void);
-
-	private:
-		DockWidget *dw;
-
-	friend class DockHint;
+		void remove_hint();
 };
 
 extern DockHint* tip;
