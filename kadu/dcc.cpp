@@ -181,10 +181,11 @@ void dccSocketClass::watchDcc(int check) {
 				dccsock->uin, dccsock->peer_uin);
 			askAcceptVoiceChat();
 			break;
-		case GG_EVENT_DCC_CLIENT_ACCEPT:
+		case GG_EVENT_DCC_ACK:
+			if (type == DCC_TYPE_VOICE)
+				voice_manager->setup();
 			break;
 		case GG_EVENT_DCC_VOICE_DATA:
-			voice_manager->setup();
 			voice_buf = new char[dccevent->event.dcc_voice_data.length];
 			memcpy(voice_buf, dccevent->event.dcc_voice_data.data,
 				dccevent->event.dcc_voice_data.length);
