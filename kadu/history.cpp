@@ -204,6 +204,11 @@ void HistoryManager::appendStatus(uin_t uin, unsigned int status, QString descri
 //	struct in_addr in;
 
 	kdebug("HistoryManager::appendStatus()\n");
+	if (config_file.readBoolEntry("History", "DontSaveStatusChanges"))
+	{
+		kdebug("not appending...\n");
+		return;
+	}
 
 	UinsList uins;
 	uins.append(uin);
@@ -1422,7 +1427,8 @@ void History::initModule()
 	ConfigDialog::addSlider("History", "Quoted phrases during chat open", "historyslider", "ChatHistoryQuotationTime", -744, -1, 24, -336);
 	ConfigDialog::addLabel("History", "Quoted phrases during chat open", "", "dayhour");
 	ConfigDialog::addCheckBox("History", "History", "Don't show status changes", "DontShowStatusChanges", false);
-    
+	ConfigDialog::addCheckBox("History", "History", "Don't save status changes", "DontSaveStatusChanges", true);
+
 	ConfigDialog::registerSlotOnCreate(historyslots, SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnDestroy(historyslots, SLOT(onDestroyConfigDialog()));
 	ConfigDialog::connectSlot("History", "historyslider", SIGNAL(valueChanged(int)), historyslots, SLOT(updateQuoteTimeLabel(int)));
