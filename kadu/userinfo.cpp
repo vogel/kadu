@@ -169,6 +169,7 @@ void UserInfo::writeUserlist() {
 				userlist[this_index].altnick = "";
 			if (!userlist[this_index].anonymous)
 				userlist[this_index].mobile = e_mobile->text();
+			userlist[this_index].foreign = false;
 			userlist.writeToFile();
 
 			for (int i = 0; i < grouplist.size(); i++) {
@@ -187,7 +188,7 @@ void UserInfo::writeUserlist() {
 				grouplist[grouplist.size()-1].name = strdup(userlist[this_index].group);
 				}
 
-			kadu->userbox->refresh();
+			kadu->userbox->refresh();			
 			break;
 		case 1:
 			return;	
