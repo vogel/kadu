@@ -18,6 +18,7 @@ class UserInfo : public QTabDialog {
 		UserInfo(const QString &, QDialog* parent,
 			const QString &altnick, bool fAddUser = false);
 		~UserInfo();
+		void setUserInfo(UserListElement &ule);
 
 	private:
 		UserListElement *puser;

@@ -143,38 +143,37 @@ UserListElement& UserList::byUin(uin_t uin)
 		if((*i).uin==uin)
 			return (*i);
 	kdebug("UserList::byUin(): Panic!\n");
-	// Kadu Panic :) What we should do here???
 };
 
 UserListElement& UserList::byNick(const QString& nickname)
 {
-	for(iterator i=begin(); i!=end(); i++)
-		if((*i).nickname==nickname)
+	for (iterator i = begin(); i != end(); i++)
+		if ((*i).nickname.lower() == nickname.lower())
 			return (*i);
-	kdebug("UserList::byNick(): Panic! %s not exists\n",(const char*)nickname.local8Bit());
-	// Kadu Panic :) What we should do here???
+	kdebug("UserList::byNick(): Panic! %s not exists\n",
+		(const char*)nickname.lower().local8Bit());
 };
 
 UserListElement& UserList::byAltNick(const QString& altnick)
 {
-	for(iterator i=begin(); i!=end(); i++)
-		if((*i).altnick==altnick)
+	for (iterator i = begin(); i != end(); i++)
+		if ((*i).altnick.lower() == altnick.lower())
 			return (*i);
-	kdebug("UserList::byAltNick(): Panic! %s not exists\n",(const char*)altnick.local8Bit());
-	// Kadu Panic :) What we should do here???
+	kdebug("UserList::byAltNick(): Panic! %s not exists\n",
+		(const char*)altnick.lower().local8Bit());
 };
 
 //Zwraca elementy userlisty, jezeli nie mamy danego
 //uin na liscie, zwracany jest UserListElement tylko z uin i altnick == uin
 UserListElement UserList::byUinValue(uin_t uin)
 {
-	for(iterator i=begin(); i!=end(); i++)
-		if((*i).uin==uin)
+	for (iterator i = begin(); i != end(); i++)
+		if ((*i).uin == uin)
 			return (*i);
 	UserListElement ule;
-	ule.uin=uin;
-	ule.altnick=QString::number(uin);
-	ule.anonymous=true;
+	ule.uin = uin;
+	ule.altnick = QString::number(uin);
+	ule.anonymous = true;
 	return ule;
 };
 
@@ -188,9 +187,10 @@ bool UserList::containsUin(uin_t uin) {
 
 bool UserList::containsAltNick(const QString &altnick) {
 	for (iterator i = begin(); i != end(); i++)
-		if ((*i).altnick == altnick)
+		if ((*i).altnick.lower() == altnick.lower())
 			return true;
-	kdebug("UserList::containsAltNick(): userlist doesnt contain %s\n", (const char *)altnick.local8Bit());
+	kdebug("UserList::containsAltNick(): userlist doesnt contain %s\n",
+		(const char *)altnick.lower().local8Bit());
 	return false;
 }
 

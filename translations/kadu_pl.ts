@@ -2,10 +2,6 @@
 <context>
     <name>@default</name>
     <message>
-        <source>I am busy.</source>
-        <translation>Jestem zajęty.</translation>
-    </message>
-    <message>
         <source>User notify</source>
         <translation>Powiadomienie</translation>
     </message>
@@ -125,14 +121,6 @@ Wybierz jedną z poniższych opcji:</translation>
         <source>&amp;Cancel</source>
         <translation>&amp;Anuluj</translation>
     </message>
-    <message>
-        <source>Add user problem</source>
-        <translation>Problem z dodaniem kontaktu</translation>
-    </message>
-    <message>
-        <source>Altnick field cannot be empty.</source>
-        <translation>Pole Wyświetl nie może być puste.</translation>
-    </message>
 </context>
 <context>
     <name>AutoAwaySlots</name>
@@ -151,6 +139,18 @@ Wybierz jedną z poniższych opcji:</translation>
     <message>
         <source>Default Status</source>
         <translation>Status domyślny</translation>
+    </message>
+    <message>
+        <source>Enable tray hints</source>
+        <translation>Włącz dymki w zasobniku systemowym</translation>
+    </message>
+    <message>
+        <source>---</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show connection errors in tray hints</source>
+        <translation>Pokaż błędy połączeń w dymkach</translation>
     </message>
 </context>
 <context>
@@ -178,6 +178,26 @@ Wybierz jedną z poniższych opcji:</translation>
     <message>
         <source>On shutdown, set description:</source>
         <translation>Wyłączając ustaw opis:</translation>
+    </message>
+    <message>
+        <source>Enable dock icon</source>
+        <translation>Ikona w panelu dokującym</translation>
+    </message>
+    <message>
+        <source>Start docked</source>
+        <translation>Uruchom zminimalizowany</translation>
+    </message>
+    <message>
+        <source>Private status</source>
+        <translation>Tylko dla znajomych</translation>
+    </message>
+    <message>
+        <source>Check for updates</source>
+        <translation>Sprawdzaj uaktualnienia</translation>
+    </message>
+    <message>
+        <source>Add to description</source>
+        <translation>Dodaj do opisu</translation>
     </message>
 </context>
 <context>
@@ -370,24 +390,8 @@ wiadomości</translation>
         <translation>Przywróć kształt okna</translation>
     </message>
     <message>
-        <source>Enable dock icon</source>
-        <translation>Ikona w panelu dokującym</translation>
-    </message>
-    <message>
-        <source>Private status</source>
-        <translation>Tylko dla znajomych</translation>
-    </message>
-    <message>
-        <source>Start docked</source>
-        <translation>Uruchom zminimalizowany</translation>
-    </message>
-    <message>
         <source>Check for updates</source>
         <translation>Sprawdzaj uaktualnienia</translation>
-    </message>
-    <message>
-        <source>Add to description</source>
-        <translation>Dodaj do opisu</translation>
     </message>
     <message>
         <source>Network</source>
@@ -1008,6 +1012,10 @@ Sprawdź swoje połączenie internetowe.</translation>
         <source>Private</source>
         <translation>Tylko dla znajomych</translation>
     </message>
+    <message>
+        <source>I am busy.</source>
+        <translation>Jestem zajęty.</translation>
+    </message>
 </context>
 <context>
     <name>KaduSlots</name>
@@ -1318,10 +1326,6 @@ Teraz możesz dodać znajomych do listy kontaktów.</translation>
     <message>
         <source>Select user first</source>
         <translation>Zaznacz użytkownika</translation>
-    </message>
-    <message>
-        <source>Do you want to add user %1 to user list?</source>
-        <translation>Czy chcesz dodać użytkownika %1 do listy kontaktów?</translation>
     </message>
     <message>
         <source>&amp;Yes</source>
@@ -1683,10 +1687,6 @@ Prawy przycisk - Ustaw status</translation>
         <translation>Informacje o %1</translation>
     </message>
     <message>
-        <source>Write userlist</source>
-        <translation>Zapisz listę</translation>
-    </message>
-    <message>
         <source>Close</source>
         <translation>Zamknij</translation>
     </message>
@@ -1803,24 +1803,32 @@ Prawy przycisk - Ustaw status</translation>
         <translation>Inne</translation>
     </message>
     <message>
-        <source>This will write current userlist</source>
-        <translation>Nastąpi zapisanie listy kontaktów</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Anuluj</translation>
-    </message>
-    <message>
         <source>Bad UIN</source>
         <translation>Zły nr UIN</translation>
     </message>
     <message>
         <source>User is already in userlist</source>
-        <translation>Kontakt już istnieje</translation>
+        <translation>Kontakt już istnieje.</translation>
+    </message>
+    <message>
+        <source>Add user</source>
+        <translation>Dodaj kontakt</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation>Dodaj</translation>
+    </message>
+    <message>
+        <source>Update</source>
+        <translation>Uaktualnij</translation>
+    </message>
+    <message>
+        <source>Add user problem</source>
+        <translation>Problem z dodaniem kontaktu.</translation>
+    </message>
+    <message>
+        <source>Altnick field cannot be empty.</source>
+        <translation>Pole Wyświetl nie może być puste.</translation>
     </message>
 </context>
 <context>

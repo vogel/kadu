@@ -19,8 +19,7 @@
 #include "tabbar.h"
 //
 
-UserInfo::UserInfo (const QString &name, QDialog *parent,
-	const QString &altnick, bool fAddUser)
+UserInfo::UserInfo(const QString &name, QDialog *parent, const QString &altnick, bool fAddUser)
 : QTabDialog(parent, name), fAddUser(fAddUser) {
 	resize(350,200);
 	setWFlags(Qt::WDestructiveClose);
@@ -47,6 +46,17 @@ UserInfo::UserInfo (const QString &name, QDialog *parent,
 	disconnect(this, SIGNAL(applyButtonPressed()), this, SLOT(accept()));
 	connect(this, SIGNAL(applyButtonPressed()), this, SLOT(updateUserlist()));
 	connect(this, SIGNAL(cancelButtonPressed()), this, SLOT(close()));
+}
+
+void UserInfo::setUserInfo(UserListElement &ule) {
+	e_firstname->setText(ule.first_name);
+	e_lastname->setText(ule.last_name);
+	e_nickname->setText(ule.nickname);
+	e_altnick->setText(ule.altnick);
+	e_mobile->setText(ule.mobile);
+	if (ule.uin)
+		e_uin->setText(QString::number(ule.uin));
+	e_email->setText(ule.email);
 }
 
 void UserInfo::setupTab1() {
@@ -238,13 +248,18 @@ void UserInfo::updateUserlist() {
 	e.description = "";
 	e.email = e_email->text();
 	if (fAddUser) {
-		if (e_altnick->text().length()) {
-			kadu->addUser(e);
-			close(true);
-			}
-		else
+		if (!e_altnick->text().length()) {
 			QMessageBox::warning(this, tr("Add user problem"),
 				tr("Altnick field cannot be empty."));
+			return;
+			}
+		if (userlist.containsAltNick(e_altnick->text())) {
+			QMessageBox::information(this, "Kadu",
+				tr("User is already in userlist"), QMessageBox::Ok);
+			return;
+			}
+		kadu->addUser(e);
+		close(true);
 		}
 	else {
 		if (e_uin->text().length() && !e.uin) {

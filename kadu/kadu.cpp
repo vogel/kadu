@@ -42,7 +42,6 @@
 #include "personal_info.h"
 #include "register.h"
 #include "sms.h"
-#include "adduser.h"
 #include "about.h"
 #include "ignore.h"
 #include "history.h"
@@ -1025,12 +1024,6 @@ void Kadu::prepareDcc(void) {
 // code for addUser has been moved from adduser.cpp
 // for sharing with search.cpp
 void Kadu::addUser(UserListElement &ule)
-//	const QString &FirstName, const QString &LastName,
-//	const QString &NickName, const QString &AltNick,
-//	const QString &Mobile, const QString &Uin, const int Status,
-//	const int Image_size,
-//	const QString &Group, const QString &Description, const QString &Email,
-//	const bool Anonymous)
 {
 	UserListElement e;
 	e.first_name = ule.first_name;

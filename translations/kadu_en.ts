@@ -2,10 +2,6 @@
 <context>
     <name>@default</name>
     <message>
-        <source>I am busy.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>User notify</source>
         <translation type="unfinished"></translation>
     </message>
@@ -124,14 +120,6 @@ What would you like to do?</source>
         <source>&amp;Cancel</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Add user problem</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Altnick field cannot be empty.</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>AutoAwaySlots</name>
@@ -149,6 +137,18 @@ What would you like to do?</source>
     </message>
     <message>
         <source>Default Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable tray hints</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>---</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show connection errors in tray hints</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -176,6 +176,26 @@ What would you like to do?</source>
     </message>
     <message>
         <source>On shutdown, set description:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable dock icon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start docked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Private status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check for updates</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add to description</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -368,23 +388,7 @@ What would you like to do?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Enable dock icon</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Private status</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start docked</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Check for updates</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add to description</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1004,6 +1008,10 @@ Check your internet connection.</source>
         <source>Private</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>I am busy.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>KaduSlots</name>
@@ -1229,10 +1237,6 @@ Now add your friends to the userlist.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source> </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Male</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1317,10 +1321,6 @@ Now add your friends to the userlist.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Do you want to add user %1 to user list?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Yes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1334,6 +1334,10 @@ Now add your friends to the userlist.</source>
     </message>
     <message>
         <source>Do you want to update user info for %1?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> </source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1672,10 +1676,6 @@ Middle click or Left click- next message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Write userlist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1792,23 +1792,31 @@ Middle click or Left click- next message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>This will write current userlist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Bad UIN</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>User is already in userlist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add user</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Update</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add user problem</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Altnick field cannot be empty.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

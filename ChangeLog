@@ -12,6 +12,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * configure: zmiana z gettext na internacjonalizacjê z QT (adrian)
 * dostêpno¶æ w hincie wy¶wietla siê w jêzyku ojczystym (chilek)
 * Qt internationale kadu_it.ts (Ron_K)
+* przebudowane dodawanie kontaktów (jest case insensitive) (chilek)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci
