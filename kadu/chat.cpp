@@ -894,7 +894,7 @@ void Chat::sendMessage(void) {
 		writeMyMessage();
 	}
 	if (myLastFormats)
-		delete (char *)myLastFormats;
+		delete [](char *)myLastFormats;
 	delete []users;
 	free(utmp);
 
