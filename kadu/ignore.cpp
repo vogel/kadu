@@ -122,12 +122,12 @@ int writeIgnored(char *filename = NULL)
 	char *tmp;
 	FILE *f;
 
-	if (!(tmp = preparePath("")))
+	if (!(tmp = ggPath("")))
 		return -1;
 	mkdir(tmp, 0700);
 
 	if (filename == NULL) {
-		if (!(filename = preparePath("ignore")))
+		if (!(filename = ggPath("ignore")))
 			return -1;
 		}
 

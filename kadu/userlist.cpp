@@ -159,16 +159,16 @@ bool UserList::writeToFile(char *filename)
 	QString faname;
 	char *tmp;
 
-	if (!(tmp = preparePath("")))
+	if (!(tmp = ggPath("")))
 		return false;
 	mkdir(tmp, 0700);
 
 	if (!filename) {
-		if (!(filename = preparePath("userlist")))
+		if (!(filename = ggPath("userlist")))
 			return false;
 		}
 
-	if (!(faname = preparePath("userattribs")))
+	if (!(faname = ggPath("userattribs")))
 		return false;
 
 	QFile f(filename);
@@ -237,7 +237,7 @@ bool UserList::readFromFile()
 	QValueList<QStringList> ualist;
 	QString line;
 
-	path = preparePath("userattribs");
+	path = ggPath("userattribs");
 	fprintf(stderr, "KK UserList::readFromFile(): Opening userattribs file: %s\n", path);
 	QFile fa(path);
 	if (!fa.open(IO_ReadOnly)) {
@@ -254,7 +254,7 @@ bool UserList::readFromFile()
 		fa.close();
 		}
 
-	path = preparePath("userlist");
+	path = ggPath("userlist");
 	fprintf(stderr, "KK UserList::readFromFile(): Opening userlist file: %s\n", path);
 	QFile f(path);
 	if (!f.open(IO_ReadOnly)) {

@@ -49,7 +49,7 @@ void PendingMsgs::addMsg(UinsList uins, QString msg, int msgclass, time_t time)
 
 void PendingMsgs::writeToFile()
 {
-	char* path=preparePath("kadu.msgs");
+	char* path=ggPath("kadu.msgs");
 	QFile f(path);
 	if(!f.open(IO_WriteOnly))
 	{
@@ -84,7 +84,7 @@ void PendingMsgs::writeToFile()
 
 bool PendingMsgs::loadFromFile()
 {
-	char* path = preparePath("kadu.msgs");
+	char* path = ggPath("kadu.msgs");
 	QFile f(path);
 	if (!f.open(IO_ReadOnly)) {
 		fprintf(stderr,"KK PendingMsgs::loadFromFile(): Cannot open file kadu.msgs\n");

@@ -361,7 +361,7 @@ VUserScript::VUserScript(QString filename)
 	shell_process_uin=0;
 	shell_process_class=0;
 	QString path=QString("vuser/")+filename;
-	QFile f(preparePath(path.local8Bit().data()));
+	QFile f(ggPath(path.local8Bit().data()));
 	if(!f.open(IO_ReadOnly))
 	{
 		fprintf(stderr,"VUSER: Cannot open script file\n");

@@ -26,6 +26,8 @@
   oraz lepsza obsluga argumentów u¿ytkownika do programu sms
 * wy¶wietlanie hintów przy ikonce w docku - experimental
 * mo¿liwo¶æ ignorowania wiadomo¶ci od u¿ytkowników spoza listy kontaktów
+* obs³uga zmiennej CONFIG_DIR - funkcja ggPath ogólnego zastosowania do
+  konwersji scie¿ek ze wzglêdnych w katalogu gg do bezwzglêdnych
 
 +++ wersja 0.3.3-pre1
 * automatyczna kompilacja programu sms

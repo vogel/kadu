@@ -41,7 +41,7 @@ void loadKaduConfig(void) {
 	/* first read our own config file... */
 	fprintf(stderr,"KK loadKaduConfig(): Reading config file...\n");
 	KConfig * konf;
-	konf = new KConfig(preparePath("kadu.conf"));
+	konf = new KConfig(ggPath("kadu.conf"));
 
 	konf->setGroup("Global");
 	config.uin = konf->readNumEntry("UIN",0);
@@ -145,7 +145,7 @@ void loadKaduConfig(void) {
 void saveKaduConfig(void) {
 	fprintf(stderr,"KK saveKaduConfig(): Writing config files...\n");
 	KConfig * konf;
-	konf = new KConfig(preparePath("kadu.conf"));
+	konf = new KConfig(ggPath("kadu.conf"));
 
 	konf->setGroup("Global");
 	konf->writeEntry("UIN",config.uin);
@@ -396,7 +396,7 @@ void ConfigDialog::setupTab1(void) {
 	b_addtodescription->setText(i18n("Add to description"));
 	if (config.addtodescription)
 		b_addtodescription->setChecked(true);		
-	QToolTip::add(b_addtodescription,i18n("If a file ~/.gg/description is present, its contents will be added\nto the status description and then the file will be deleted."));
+	QToolTip::add(b_addtodescription,i18n("If a file description in gg settings directory is present, its contents will be added\nto the status description and then the file will be deleted."));
 
 	b_showhint = new QCheckBox(grid);
 	b_showhint->setText(i18n("Dock hint(experimental)"));

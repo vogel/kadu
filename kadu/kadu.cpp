@@ -252,9 +252,7 @@ void readIgnore(void)
 	const int BUF_SIZE=256;
 	char buf[BUF_SIZE];
 
-	snprintf(buf,BUF_SIZE,"%s%s",getenv("HOME"),"/.gg/ignore");
-
-	if(!(f=fopen(buf,"r")))
+	if(!(f=fopen(ggPath("ignore"),"r")))
 	{
 		fprintf(stderr,"readIgnore(): Failed to open ignore file. Ignore list empty. Need to read manual?\n");
 		return;
@@ -279,8 +277,7 @@ void confirmHistoryDeletion(UinsList &uins) {
 
 	switch(QMessageBox::information( kadu, "Kadu",i18n("Clear history?"), i18n("Yes"), i18n("No"), QString::null, 1, 1)) {
 		case 0: // Yes?
-			fname = getenv("HOME");
-			fname.append("/.gg/history/");
+			fname = ggPath("history/");
 			uins.sort();
 			for (i = 0; i < uins.count(); i++) {
 				fname.append(QString::number(uins[i]));
@@ -432,7 +429,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	/* a newbie? */
 	if (!config.uin) {
 		QString path_;
-		path_ = preparePath("");
+		path_ = ggPath("");
 		mkdir(path_.local8Bit(), 0700);
 		path_.append("/history/");
 		mkdir(path_.local8Bit(), 0700);

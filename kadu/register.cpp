@@ -198,25 +198,21 @@ void createKonfig() {
 		}
 
 	struct stat *buf;	
-	char path2[1023];
-	snprintf(path2, sizeof(path2), "%s/.gg", home);	
-	stat(path2, buf);
+	char* ggpath=ggPath("");
+	stat(ggpath, buf);
 	if (S_ISDIR(buf->st_mode))
-		fprintf(stderr, "KK createKonfig(): Directory %s exists\n", path2);
+		fprintf(stderr, "KK createKonfig(): Directory %s exists\n", ggpath);
 	else {
 		fprintf(stderr, "KK createKonfig(): Creating directory\n");
-		if (mkdir(path2, 0700) != 0 ) {
+		if (mkdir(ggpath, 0700) != 0 ) {
 			perror("mkdir");
 			return;
 			}
 		}
 
-	char path3[1023];
-	snprintf(path3, sizeof(path3), "%s/kadu.conf", path2);
-
 	fprintf(stderr,"KK createKonfig(): Writing config files...\n");
 	KConfig *konf;
-	konf = new KConfig(path3);
+	konf = new KConfig(ggPath("kadu.conf"));
 	konf->setGroup("Global");
 	konf->writeEntry("UIN", config.uin);
 	konf->writeEntry("Password", pwHash(config.password));

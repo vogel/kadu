@@ -65,7 +65,7 @@ AutoStatusTimer::AutoStatusTimer(QObject* parent)
 void AutoStatusTimer::onTimeout()
 {
 	if (sess && ifStatusWithDescription(sess->status) && config.addtodescription) {
-		QFile f(preparePath("description"));
+		QFile f(ggPath("description"));
 		if (!f.open(IO_ReadOnly)) {
 			start(1000, TRUE);
 			return;
@@ -74,7 +74,7 @@ void AutoStatusTimer::onTimeout()
 		QString new_description;
 		new_description = s.readLine();
 		f.close();
-		f.remove(preparePath("description"));
+		f.remove(ggPath("description"));
 		//if (new_description != own_description) {
 			fprintf(stderr, "AutoStatus: adding \"%s\" to description\n", new_description.local8Bit().data());
 			//own_description = new_description;

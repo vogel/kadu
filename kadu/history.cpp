@@ -38,7 +38,7 @@ void appendHistory(UinsList uins, uin_t uin,unsigned char* msg, bool own, time_t
 	
 	QFile f;
 
-	char * path2 = preparePath("history/");
+	char * path2 = ggPath("history/");
 
 	QString fname;
 	
@@ -110,7 +110,7 @@ void appendSMSHistory(const QString& mobile,const QString& msg)
 			break;
 		};
 	// Oprocz tego zawsze do pliku history/sms
-	QFile f(preparePath("history/sms"));
+	QFile f(ggPath("history/sms"));
 	if(!(f.open(IO_WriteOnly|IO_Append)))
 	{
 		fprintf(stderr, "appendSMSHistory(): Error opening sms history file\n");
@@ -147,8 +147,7 @@ History::History(UinsList uins) {
 	closebtn->setText(i18n("&Close"));
 
 	QString fname;
-	fname.append(getenv("HOME"));
-	fname.append("/.gg/history/");
+	fname.append(ggPath("history/"));
 	uins.sort();
 	for (i = 0; i < uins.count(); i++) {
 		fname.append(QString::number(uins[i]));	

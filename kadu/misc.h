@@ -7,7 +7,14 @@
 #include "../libgadu/lib/libgadu.h"
 
 #define __c2q(__char_pointer__) QString::fromLocal8Bit(__char_pointer__)
-char* preparePath(char* filename);
+
+/*
+	Zmienia sciezke relatywna do katalogu z ustawieniami gg
+	na sciezke bezwzgledna uwzgledniajac zmienne srodowiskowe
+	$HOME i $CONFIG_DIR
+*/
+char* ggPath(char* subpath);
+
 void cp_to_iso(unsigned char *);
 void iso_to_cp(unsigned char *);
 char *timestamp(time_t = 0);

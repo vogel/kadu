@@ -13,7 +13,7 @@
 #include "pixmaps.h"
 #include "kadu.h"
 
-char* preparePath(char* filename)
+char* ggPath(char* subpath)
 {
 	static char path[1023];
 	char* home;
@@ -22,7 +22,11 @@ char* preparePath(char* filename)
 		home=pw->pw_dir;
 	else
 		home=getenv("HOME");
-	snprintf(path, sizeof(path), "%s/.gg/%s", home, filename);
+	char* config_dir=getenv("CONFIG_DIR");
+	if(config_dir==NULL)
+		snprintf(path, sizeof(path), "%s/.gg/%s", home, subpath);
+	else
+		snprintf(path, sizeof(path), "%s/%s/gg/%s", home, config_dir, subpath);
 	return path;
 };
 
