@@ -222,6 +222,9 @@ void UserInfo::setupTab2() {
 		c_offtouser->setChecked(puser->offline_to_user);
 		c_notify->setChecked(puser->notify);
 		}
+	else
+		c_notify->setChecked(true);
+
 	addTab(box, tr("Others"));
 }
 
