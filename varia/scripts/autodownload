@@ -27,20 +27,26 @@ if test -z $ITEM_WEBSITES; then
 	exit 1
 fi
 
-ITEM_HREF=
+ITEM_HREFS=
 for ITEM_WEBSITE in $ITEM_WEBSITES; do
 	if wget -T 20 -t 2 -N $ITEM_WEBSITE/kadu-$KADU_VERSION-$1.href; then
-		ITEM_HREF=`cat kadu-$KADU_VERSION-$1.href`
+		ITEM_HREFS=`cat kadu-$KADU_VERSION-$1.href`
 		break
 	fi
 done
-if test -z $ITEM_HREF; then
+if test -z $ITEM_HREFS; then
 	echo -e "\033[31m!!!\033[0m ERROR: Downloading of $1 $2 href-file failed"
 	echo
 	exit 1
 fi
 
-if ! wget -T 30 -t 2 -N $ITEM_HREF; then
+for ITEM_HREF in $ITEM_HREFS; do
+	if wget -T 30 -t 2 -N $ITEM_HREF; then
+		ITEM_HREF_NAME=`basename $ITEM_HREF`
+		break
+	fi
+done
+if test -z $ITEM_HREF_NAME; then
 	echo -e "\033[31m!!!\033[0m ERROR: Downloading of $1 $2 package failed"
 	echo
 	exit 1
@@ -51,7 +57,7 @@ echo -e "\033[32m>>>\033[0m Unpacking $1 $2"
 echo
 
 rm -rf $1
-ITEM_HREF_EXT=`expr "$ITEM_HREF" : '.*\.\(.*\)'`
+ITEM_HREF_EXT=`expr "$ITEM_HREF_NAME" : '.*\.\(.*\)'`
 if test "$ITEM_HREF_EXT" = gz; then
 	TAR_OPTION=z
 elif test "$ITEM_HREF_EXT" = bz2; then
@@ -61,7 +67,6 @@ else
 	echo
 	exit 1
 fi
-ITEM_HREF_NAME=`basename $ITEM_HREF`
 if ! tar -x${TAR_OPTION}f "$ITEM_HREF_NAME"; then
 	echo -e "\033[31m!!!\033[0m ERROR: Unpacking $1 $2 package failed"
 	echo
