@@ -305,7 +305,10 @@ if test -z "$with_existing_libgadu"; then
 fi
 if test "$with_existing_libgadu" = "yes"; then
 	AC_CHECK_HEADER(libgadu.h,[
-		AC_CHECK_LIB(gadu,gg_libgadu_version,,[
+		AC_CHECK_LIB(gadu,gg_libgadu_version,[
+			GADU_LIBS=-lgadu
+			GADU_INCLUDES=
+		],[
 			AC_MSG_ERROR([existing libgadu was not found!])
 		],[$PTHREAD_CPPFLAGS $PTHREAD_LIBS])
 	],[
@@ -313,9 +316,11 @@ if test "$with_existing_libgadu" = "yes"; then
 	])
 else
 	MY_SUBDIRS="$MY_SUBDIRS libgadu"
-	LIBS="$LIBS -L../libgadu/lib"
-	CPPFLAGS="$CPPFLAGS -I../libgadu/lib"
+	GADU_LIBS="../libgadu/lib/libgadu.a"
+	GADU_INCLUDES="-I../libgadu/lib"
 fi
+AC_SUBST(GADU_LIBS)
+AC_SUBST(GADU_INCLUDES)
 
 # Voice talk support
 AC_ARG_ENABLE(voice,[  --enable-voice          compile with experimental voice talk support])

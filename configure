@@ -5479,8 +5479,7 @@ echo "${ECHO_T}$ac_cv_header_libgadu_h" >&6
 fi
 if test $ac_cv_header_libgadu_h = yes; then
 
-
-echo "$as_me:$LINENO: checking for gg_libgadu_version in -lgadu" >&5
+		echo "$as_me:$LINENO: checking for gg_libgadu_version in -lgadu" >&5
 echo $ECHO_N "checking for gg_libgadu_version in -lgadu... $ECHO_C" >&6
 if test "${ac_cv_lib_gadu_gg_libgadu_version+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -5536,11 +5535,9 @@ fi
 echo "$as_me:$LINENO: result: $ac_cv_lib_gadu_gg_libgadu_version" >&5
 echo "${ECHO_T}$ac_cv_lib_gadu_gg_libgadu_version" >&6
 if test $ac_cv_lib_gadu_gg_libgadu_version = yes; then
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_LIBGADU 1
-_ACEOF
 
-  LIBS="-lgadu $LIBS"
+			GADU_LIBS=-lgadu
+			GADU_INCLUDES=
 
 else
 
@@ -5562,9 +5559,11 @@ fi
 
 else
 	MY_SUBDIRS="$MY_SUBDIRS libgadu"
-	LIBS="$LIBS -L../libgadu/lib"
-	CPPFLAGS="$CPPFLAGS -I../libgadu/lib"
+	GADU_LIBS="../libgadu/lib/libgadu.a"
+	GADU_INCLUDES="-I../libgadu/lib"
 fi
+
+
 
 # Voice talk support
 # Check whether --enable-voice or --disable-voice was given.
@@ -6521,6 +6520,8 @@ s,@QTLIBDIR@,$QTLIBDIR,;t t
 s,@QTINCDIR@,$QTINCDIR,;t t
 s,@CPP@,$CPP,;t t
 s,@LIBOBJS@,$LIBOBJS,;t t
+s,@GADU_LIBS@,$GADU_LIBS,;t t
+s,@GADU_INCLUDES@,$GADU_INCLUDES,;t t
 s,@VOICE_TRUE@,$VOICE_TRUE,;t t
 s,@VOICE_FALSE@,$VOICE_FALSE,;t t
 s,@GSM_LIBS@,$GSM_LIBS,;t t
