@@ -88,6 +88,7 @@ TrayIcon::TrayIcon(QWidget *parent, const char *name)
 	if (!config.dock)
 		return;
 
+	icon = NULL;
 	QPixmap pix = *icons->loadIcon("offline");
 
 	setMinimumSize(pix.size());
@@ -96,16 +97,11 @@ TrayIcon::TrayIcon(QWidget *parent, const char *name)
 	setMouseTracking(true);
 	setWFlags(WRepaintNoErase);
 
-	icon=new QLabel(this);
-	icon->setBackgroundMode(X11ParentRelative);
-	icon->setAlignment(Qt::AlignVCenter);
-	icon->setPixmap(pix);
-	QToolTip::add(icon, i18n("Left click - hide/show window\nMiddle click or CTRL+any click- next message"));
-	icon->show();
-
 	// Aby zapobiec pozostaj±cej "klepsydrze" pod KDE
 	// pokazujemy okno przed zadokowaniem, aby KDE wiedzia³o,
 	// ¿e aplikacja uruchomi³a siê prawid³owo
+	kdebug("TrayIcon::TrayIcon()\n");
+
 	show();
 
 	icon_timer = new QTimer(this);
@@ -137,11 +133,24 @@ TrayIcon::TrayIcon(QWidget *parent, const char *name)
 	// SPOSÓB DRUGI
 	// Dzia³a na KDE 3.x i pewnie na starszych
 	// oraz pod GNOME 1.x
-	Atom kde_net_system_tray_window_for_atom = XInternAtom(dsp, "_KDE_NET_WM_SYSTEM_TRAY_WINDOW_FOR", false);
+	Atom xatom;
 	long data[1];
-	data[0] = 0;
-	XChangeProperty(dsp, win, kde_net_system_tray_window_for_atom, XA_WINDOW,
+	xatom = XInternAtom(dsp, "KWM_DOCKWINDOW", false);
+	data[0] = 1;
+	XChangeProperty(dsp, win, xatom, xatom,
 		32, PropModeReplace,(unsigned char*)data, 1);
+	xatom = XInternAtom(dsp, "_KDE_NET_WM_SYSTEM_TRAY_WINDOW_FOR", false);
+	data[0] = 0;
+	XChangeProperty(dsp, win, xatom, XA_WINDOW,
+		32, PropModeReplace,(unsigned char*)data, 1);
+
+	kdebug("TrayIcon::TrayIcon(): after way 2\n");
+	icon = new QLabel(this);
+	icon->setBackgroundMode(X11ParentRelative);
+	icon->setAlignment(Qt::AlignVCenter);
+	icon->setPixmap(pix);
+	QToolTip::add(icon, i18n("Left click - hide/show window\nMiddle click or CTRL+any click- next message"));
+	icon->show();
 
 	// SPOSÓB TRZECI
 	// Dzia³a pod Window Maker'em
@@ -216,7 +225,8 @@ void TrayIcon::connectSignals() {
 
 void TrayIcon::resizeEvent(QResizeEvent* e)
 {
-	icon->resize(size());
+	if (icon)
+		icon->resize(size());
 };
 
 void TrayIcon::enterEvent(QEvent* e)
