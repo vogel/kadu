@@ -1036,6 +1036,7 @@ void Kadu::slotHandleState(int command)
 	kdebugf();
 	ChooseDescription *cd;
 	QString desc;
+	bool accepted = true;
 
 	status.setStatus(gadu->status());
 	switch (command)
@@ -1045,7 +1046,8 @@ void Kadu::slotHandleState(int command)
 			break;
 		case 1:
 			cd = new ChooseDescription(1);
-			if (cd->exec() == QDialog::Accepted)
+			accepted = cd->exec() == QDialog::Accepted;
+			if (accepted)
 			{
 				cd->getDescription(desc);
 				status.setOnline(desc);
@@ -1057,7 +1059,8 @@ void Kadu::slotHandleState(int command)
 			break;
 		case 3:
 			cd = new ChooseDescription(3);
-			if (cd->exec() == QDialog::Accepted)
+			accepted = cd->exec() == QDialog::Accepted;
+			if (accepted)
 			{
 				cd->getDescription(desc);
 				status.setBusy(desc);
@@ -1069,7 +1072,8 @@ void Kadu::slotHandleState(int command)
 			break;
 		case 5:
 			cd = new ChooseDescription(5);
-			if (cd->exec() == QDialog::Accepted)
+			accepted = cd->exec() == QDialog::Accepted;
+			if (accepted)
 			{
 				cd->getDescription(desc);
 				status.setInvisible(desc);
@@ -1081,7 +1085,8 @@ void Kadu::slotHandleState(int command)
 			break;
 		case 7:
 			cd = new ChooseDescription(7);
-			if (cd->exec() == QDialog::Accepted)
+			accepted = cd->exec() == QDialog::Accepted;
+			if (accepted)
 			{
 				cd->getDescription(desc);
 				status.setOffline(desc);
@@ -1094,6 +1099,11 @@ void Kadu::slotHandleState(int command)
 			config_file.writeEntry("General", "PrivateStatus",statusMenu->isItemChecked(8));
 			status.setFriendsOnly(statusMenu->isItemChecked(8));
 			break;
+	}
+	if (!accepted)
+	{
+		kdebugmf(KDEBUG_FUNCTION_END, "end: not accepted\n");
+		return;
 	}
 
 	bool stop = false;
