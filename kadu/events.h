@@ -47,7 +47,7 @@ class EventManager : public QObject
 
 	private slots:
 		void connectedSlot();
-		void connectionFailedSlot();
+		void connectionFailedSlot(int);
 		void connectionBrokenSlot();
 		void disconnectedSlot();
 		void userStatusChangedSlot(struct gg_event*);
@@ -72,7 +72,7 @@ class EventManager : public QObject
 		/**
 			B³±d po³±czenia z serwerem
 		**/
-		void connectionFailed();
+		void connectionFailed(int);
 		/**
 			Po³±czenia z serwerem zosta³o przerwane
 		**/
