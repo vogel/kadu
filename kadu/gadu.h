@@ -14,8 +14,6 @@
 
 typedef uin_t UinType;
 
-#include "misc.h"
-
 class UserList;
 class UserListElement;
 
@@ -29,6 +27,14 @@ extern bool userlist_sent;
 extern bool socket_active;
 extern unsigned int server_nr;
 extern QValueList<QHostAddress> config_servers;
+
+class UinsList : public QValueList<UinType>
+{
+	public:
+		UinsList();
+		bool equals(const UinsList &uins) const;
+		void sort();
+};
 
 struct SearchResult
 {
@@ -177,7 +183,7 @@ class GaduSocketNotifiers : public QObject //SocketNotifiers
 		void connected();
 		void disconnected();
 		void error(GaduError);
-		void messageReceived(int, class UinsList, QCString& msg, time_t, QByteArray &formats);
+		void messageReceived(int, UinsList, QCString& msg, time_t, QByteArray &formats);
 		void pubdirReplyReceived(gg_pubdir50_t);
 		void systemMessageReceived(QString &, QDateTime &, int, void *);
 		void userlistReceived(struct gg_event *);

@@ -38,6 +38,23 @@ QValueList<QHostAddress> gg_servers;
 const char *gg_servers_ip[7] = {"217.17.41.82", "217.17.41.83", "217.17.41.84", "217.17.41.85",
 	"217.17.41.86", "217.17.41.87", "217.17.41.88"};
 
+bool UinsList::equals(const UinsList &uins) const
+{
+	if (count() != uins.count())
+		return false;
+	for (UinsList::const_iterator i = begin(); i != end(); i++)
+		if(!uins.contains(*i))
+			return false;
+	return true;
+}
+
+UinsList::UinsList() {
+}
+
+void UinsList::sort() {
+	qHeapSort(*this);
+}
+
 SearchResult::SearchResult()
 {
 }

@@ -69,14 +69,6 @@ void stringHeapSort(QStringList &c);
 void saveGeometry(QWidget *w, QString section, QString name);
 void loadGeometry(QWidget *w, QString section, QString name, int defaultX, int defaultY, int defaultWidth, int defaultHeight);
 
-class UinsList : public QValueList<UinType>
-{
-	public:
-		UinsList();
-		bool equals(const UinsList &uins) const;
-		void sort();
-};
-
 class ChooseDescription : public QDialog {
 	Q_OBJECT
 	public:

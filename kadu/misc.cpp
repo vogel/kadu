@@ -975,23 +975,6 @@ void stringHeapSort(QStringList &c)
 	stringHeapSortHelper(c.begin(), c.end(), *(c.begin()), (uint)c.count());
 }
 
-bool UinsList::equals(const UinsList &uins) const
-{
-	if (count() != uins.count())
-		return false;
-	for (UinsList::const_iterator i = begin(); i != end(); i++)
-		if(!uins.contains(*i))
-			return false;
-	return true;
-}
-
-UinsList::UinsList() {
-}
-
-void UinsList::sort() {
-	qHeapSort(*this);
-}
-
 ChooseDescription::ChooseDescription ( int nr, QWidget * parent, const char * name)
 : QDialog(parent, name, true) {
 	kdebugf();
