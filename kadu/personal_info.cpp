@@ -24,7 +24,7 @@
 PersonalInfoDialog::PersonalInfoDialog(QDialog *parent, const char *name)
 	: QDialog (parent, name)
 {
-	kdebug("PersonalInfoDialog::PersonalInfoDialog()\n");
+	kdebugf();
 
 	resize(400, 150);
 	setCaption(tr("Personal Information"));	
@@ -91,11 +91,13 @@ PersonalInfoDialog::PersonalInfoDialog(QDialog *parent, const char *name)
 			this, SLOT(fillFields(gg_pubdir50_t)));
 		gg_pubdir50_free(req);
 		State = READING;
-		}
+	}
+	kdebugf2();
 }
 
 void PersonalInfoDialog::OkButtonClicked()
 {
+	kdebugf();
 	if (getCurrentStatus() == GG_STATUS_NOT_AVAIL)
 		return;
 
@@ -149,10 +151,12 @@ void PersonalInfoDialog::OkButtonClicked()
 	State = WRITTING;
 
 	setEnabled(false);
+	kdebugf2();
 }
 
 void PersonalInfoDialog::fillFields(gg_pubdir50_t res)
 {
+	kdebugf();
 //	int count;
 	const char *first, *last, *nick, *born, *city,
 		*gender, *family_name, *family_city;
@@ -200,6 +204,7 @@ void PersonalInfoDialog::fillFields(gg_pubdir50_t res)
 		}
 
 	setEnabled(true);
+	kdebugf2();
 }
 
 void PersonalInfoDialog::closeEvent(QCloseEvent * e)
