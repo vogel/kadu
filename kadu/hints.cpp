@@ -489,9 +489,9 @@ void HintManager::initModule(void)
 	ConfigDialog::addCheckBox("Hints", "Hints options", QT_TRANSLATE_NOOP("@default", "Enable status notification by hint"), "NotifyHint", true);
 	ConfigDialog::addVGroupBox("Hints", "Hints options", QT_TRANSLATE_NOOP("@default", "Notification options"));
 	ConfigDialog::addGrid("Hints", "Notification options", "grid-notify-status", 1);
-	ConfigDialog::addCheckBox("Hints", "grid-notify-status", QT_TRANSLATE_NOOP("@default", "Notify about user status change"), "NotifyHintChange", false);
-	ConfigDialog::addCheckBox("Hints", "grid-notify-status", QT_TRANSLATE_NOOP("@default", "Notify about user becoming available"), "NotifyHintAvailable", true);
-	ConfigDialog::addCheckBox("Hints", "grid-notify-status", QT_TRANSLATE_NOOP("@default", "Notify about user becoming unavailable"), "NotifyHintUnavailable", false);
+	ConfigDialog::addCheckBox("Hints", "grid-notify-status", QT_TRANSLATE_NOOP("@default", "Notify about users' status changes"), "NotifyHintChange", false);
+	ConfigDialog::addCheckBox("Hints", "grid-notify-status", QT_TRANSLATE_NOOP("@default", "Notify about users becoming available"), "NotifyHintAvailable", true);
+	ConfigDialog::addCheckBox("Hints", "grid-notify-status", QT_TRANSLATE_NOOP("@default", "Notify about users becoming unavailable"), "NotifyHintUnavailable", false);
 	//ConfigDialog::addCheckBox("grid-notify-status", "Prevent autoaway notify",  "NotifyHintPreventAutoaway", true);
 	ConfigDialog::addCheckBox("Hints", "grid-notify-status", QT_TRANSLATE_NOOP("@default", "Add description to hint if exists"), "NotifyHintDescription", false);
 	ConfigDialog::addCheckBox("Hints", "grid-notify-status", QT_TRANSLATE_NOOP("@default", "Use custom syntax"), "NotifyHintUseSyntax", false);

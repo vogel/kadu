@@ -734,7 +734,7 @@ void UserBox::initModule()
 {
 	kdebugf();
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "General"));
-	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show inactive users"), "ShowHideInactive", true);
+	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show inactive users"), "ShowHideInactive", true, QT_TRANSLATE_NOOP("@default","Display users that are offline"));
 
 // dodanie wpisow do konfiga (pierwsze uruchomienie)
 	QWidget w;
