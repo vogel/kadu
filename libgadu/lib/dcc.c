@@ -1,4 +1,4 @@
-/* $Id: dcc.c,v 1.33 2005/01/27 00:34:29 joi Exp $ */
+/* $Id: dcc.c,v 1.34 2005/02/18 14:43:23 joi Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -522,7 +522,7 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 	struct gg_event *e;
 	int foo;
 
-        gg_debug(GG_DEBUG_FUNCTION, "** gg_dcc_watch_fd(%p);\n", h);
+	gg_debug(GG_DEBUG_FUNCTION, "** gg_dcc_watch_fd(%p);\n", h);
 	
 	if (!h || (h->type != GG_SESSION_DCC && h->type != GG_SESSION_DCC_SOCKET && h->type != GG_SESSION_DCC_SEND && h->type != GG_SESSION_DCC_GET && h->type != GG_SESSION_DCC_VOICE)) {
 		gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() invalid argument\n");

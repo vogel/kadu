@@ -1,4 +1,4 @@
-/* $Id: libgadu.c,v 1.44 2005/01/27 00:34:29 joi Exp $ */
+/* $Id: libgadu.c,v 1.45 2005/02/18 14:43:23 joi Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -72,7 +72,7 @@ static char rcsid[]
 #ifdef __GNUC__
 __attribute__ ((unused))
 #endif
-= "$Id: libgadu.c,v 1.44 2005/01/27 00:34:29 joi Exp $";
+= "$Id: libgadu.c,v 1.45 2005/02/18 14:43:23 joi Exp $";
 #endif 
 
 /*
@@ -107,9 +107,9 @@ uint32_t gg_fix32(uint32_t x)
 #else
 	return (uint32_t)
 		(((x & (uint32_t) 0x000000ffU) << 24) |
-                 ((x & (uint32_t) 0x0000ff00U) << 8) |
-                 ((x & (uint32_t) 0x00ff0000U) >> 8) |
-                 ((x & (uint32_t) 0xff000000U) >> 24));
+		((x & (uint32_t) 0x0000ff00U) << 8) |
+		((x & (uint32_t) 0x00ff0000U) >> 8) |
+		((x & (uint32_t) 0xff000000U) >> 24));
 #endif		
 }
 
@@ -131,7 +131,7 @@ uint16_t gg_fix16(uint16_t x)
 #else
 	return (uint16_t)
 		(((x & (uint16_t) 0x00ffU) << 8) |
-                 ((x & (uint16_t) 0xff00U) >> 8));
+		((x & (uint16_t) 0xff00U) >> 8));
 #endif
 }
 

@@ -1,4 +1,4 @@
-/* $Id: libgadu.h,v 1.57 2005/01/27 00:34:30 joi Exp $ */
+/* $Id: libgadu.h,v 1.58 2005/02/18 14:43:23 joi Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -53,10 +53,10 @@ typedef uint32_t uin_t;
  * ogólna struktura opisuj±ca ró¿ne sesje. przydatna w klientach.
  */
 #define gg_common_head(x) \
-        int fd;                 /* podgl±dany deskryptor */ \
-        int check;              /* sprawdzamy zapis czy odczyt */ \
-        int state;              /* aktualny stan maszynki */ \
-        int error;              /* kod b³êdu dla GG_STATE_ERROR */ \
+	int fd;			/* podgl±dany deskryptor */ \
+	int check;		/* sprawdzamy zapis czy odczyt */ \
+	int state;		/* aktualny stan maszynki */ \
+	int error;		/* kod b³êdu dla GG_STATE_ERROR */ \
 	int type;		/* rodzaj sesji */ \
 	int id;			/* identyfikator */ \
 	int timeout;		/* sugerowany timeout w sekundach */ \

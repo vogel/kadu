@@ -1,4 +1,4 @@
-/* $Id: common.c,v 1.35 2005/01/27 00:34:29 joi Exp $ */
+/* $Id: common.c,v 1.36 2005/02/18 14:43:23 joi Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -91,7 +91,7 @@ cleanup:
  */
 char *gg_vsaprintf(const char *format, va_list ap)
 {
-        int size = 0;
+	int size = 0;
 	const char *start;
 	char *buf = NULL;
 	
@@ -193,23 +193,23 @@ char *gg_saprintf(const char *format, ...)
  */
 char *gg_get_line(char **ptr)
 {
-        char *foo, *res;
+	char *foo, *res;
 
-        if (!ptr || !*ptr || !strcmp(*ptr, ""))
-                return NULL;
+	if (!ptr || !*ptr || !strcmp(*ptr, ""))
+		return NULL;
 
-        res = *ptr;
+	res = *ptr;
 
-        if (!(foo = strchr(*ptr, '\n')))
-                *ptr += strlen(*ptr);
-        else {
-                *ptr = foo + 1;
-                *foo = 0;
-                if (strlen(res) > 1 && res[strlen(res) - 1] == '\r')
-                        res[strlen(res) - 1] = 0;
-        }
+	if (!(foo = strchr(*ptr, '\n')))
+		*ptr += strlen(*ptr);
+	else {
+		*ptr = foo + 1;
+		*foo = 0;
+		if (strlen(res) > 1 && res[strlen(res) - 1] == '\r')
+			res[strlen(res) - 1] = 0;
+	}
 
-        return res;
+	return res;
 }
 
 /*
