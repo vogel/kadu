@@ -3,21 +3,21 @@
     <name>@default</name>
     <message>
         <source>User notify</source>
-        <translation>L&apos;utente informa</translation>
+        <translation>Informazione</translation>
     </message>
     <message>
         <source>You don&apos;t have a config file.
 What would you like to do?</source>
-        <translation>Non avete una lima di config.
-Che cosa gradite fare?</translation>
+        <translation>Manca file di configurazione.
+Cosa vogliamo fare?</translation>
     </message>
     <message>
         <source>New UIN</source>
-        <translation>Nuovo UIN</translation>
+        <translation>Nuovo no GG</translation>
     </message>
     <message>
         <source>Configure</source>
-        <translation>Configuri</translation>
+        <translation>Ho già numero GG</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -29,11 +29,11 @@ Che cosa gradite fare?</translation>
     </message>
     <message>
         <source>Online</source>
-        <translation>In linea</translation>
+        <translation>Accessibile</translation>
     </message>
     <message>
         <source>Online (d.)</source>
-        <translation>In linea (d.)</translation>
+        <translation>Accessibile (desc.)</translation>
     </message>
     <message>
         <source>Busy</source>
@@ -41,63 +41,63 @@ Che cosa gradite fare?</translation>
     </message>
     <message>
         <source>Busy (d.)</source>
-        <translation>Occupato (d.)</translation>
+        <translation>Occupato (desc.)</translation>
     </message>
     <message>
         <source>Invisible</source>
-        <translation>Invisibile</translation>
+        <translation>Nascosto</translation>
     </message>
     <message>
         <source>Invisible (d.)</source>
-        <translation>Invisibile (d.)</translation>
+        <translation>Nascosto (desc.)</translation>
     </message>
     <message>
         <source>Offline</source>
-        <translation>Fuori linea</translation>
+        <translation>Non presente</translation>
     </message>
     <message>
         <source>Offline (d.)</source>
-        <translation>Fuori linea (d.)</translation>
+        <translation>Non presente (desc.)</translation>
     </message>
     <message>
         <source>Blocking</source>
-        <translation>Ostruire</translation>
+        <translation>Bloccato</translation>
     </message>
     <message>
         <source>General</source>
-        <translation>Generalità</translation>
+        <translation>Generale</translation>
     </message>
     <message>
         <source>Open chat window on new message</source>
-        <translation>Apra la finestra di chiacchierata sul nuovo messaggio</translation>
+        <translation>Nuovo messaggio apre la finestra del chat</translation>
     </message>
     <message>
         <source>Define keys</source>
-        <translation>Definisca le chiavi</translation>
+        <translation>Definizione tasti</translation>
     </message>
     <message>
         <source>New line / send message:</source>
-        <translation>La nuova linea / trasmette il messaggio:</translation>
+        <translation>INVIO / manda il messaggio:</translation>
     </message>
     <message>
         <source>Clear Chat:</source>
-        <translation>Chiacchierata Libera:</translation>
+        <translation>Pulisci finestra:</translation>
     </message>
     <message>
         <source>Close Chat:</source>
-        <translation>Chiacchierata Vicina:</translation>
+        <translation>Chiudi finestra:</translation>
     </message>
     <message>
         <source>Bold text:</source>
-        <translation>Testo grassetto:</translation>
+        <translation>Grassetto:</translation>
     </message>
     <message>
         <source>Italic text:</source>
-        <translation>Testo di corsivo:</translation>
+        <translation>Corsivo:</translation>
     </message>
     <message>
         <source>Underline text:</source>
-        <translation>Testo del underline:</translation>
+        <translation>Sottolinea:</translation>
     </message>
     <message>
         <source>History</source>
@@ -105,15 +105,15 @@ Che cosa gradite fare?</translation>
     </message>
     <message>
         <source>Quoted phrases during chat open</source>
-        <translation>Le frasi citate durante la chiacchierata si aprono</translation>
+        <translation>?? citazione delle frasi durante apertura chat</translation>
     </message>
     <message>
         <source>Count:</source>
-        <translation>Conteggio:</translation>
+        <translation>Quantità:</translation>
     </message>
     <message>
         <source>Don&apos;t quote phrases older than:</source>
-        <translation>Non citi le frasi più vecchie di:</translation>
+        <translation>Non visualizza le righe più vecchie di:</translation>
     </message>
     <message>
         <source>User data</source>
@@ -121,7 +121,7 @@ Che cosa gradite fare?</translation>
     </message>
     <message>
         <source>Uin</source>
-        <translation>Uin</translation>
+        <translation>Numero GG</translation>
     </message>
     <message>
         <source>Password</source>
@@ -133,15 +133,15 @@ Che cosa gradite fare?</translation>
     </message>
     <message>
         <source>Log messages</source>
-        <translation>Messaggi del ceppo</translation>
+        <translation>Conserva messaggi</translation>
     </message>
     <message>
         <source>Restore window geometry</source>
-        <translation>La geometria della finestra di restore</translation>
+        <translation>Ripristina dimensioni finestra</translation>
     </message>
     <message>
         <source>Check for updates</source>
-        <translation>Controlli per vedere se ci sono aggiornamenti</translation>
+        <translation>Controlla aggiornamenti</translation>
     </message>
     <message>
         <source>Network</source>
@@ -149,27 +149,27 @@ Che cosa gradite fare?</translation>
     </message>
     <message>
         <source>DCC enabled</source>
-        <translation>il DCC ha permesso</translation>
+        <translation>DCC attivo (Colegamento diretto)</translation>
     </message>
     <message>
         <source>DCC IP autodetection</source>
-        <translation>Autodetection del IP di DCC</translation>
+        <translation>Autorilevamento del IP per DCC</translation>
     </message>
     <message>
         <source>DCC IP</source>
-        <translation>DCC IP</translation>
+        <translation>Indirizzo IP per DCC</translation>
     </message>
     <message>
         <source>IP address:</source>
-        <translation>IP indirizzo:</translation>
+        <translation>Indirizzi IP:</translation>
     </message>
     <message>
         <source>DCC forwarding enabled</source>
-        <translation>Spedizione di DCC permessa</translation>
+        <translation>traslazione porte per DCC</translation>
     </message>
     <message>
         <source>DCC forwarding properties</source>
-        <translation>Proprietà di spedizione di DCC</translation>
+        <translation>Proprietà della traslazione per DCC</translation>
     </message>
     <message>
         <source>External IP address:</source>
@@ -177,15 +177,15 @@ Che cosa gradite fare?</translation>
     </message>
     <message>
         <source>External TCP port:</source>
-        <translation>Orificio esterno di TCP:</translation>
+        <translation>Porta TCP esterna:</translation>
     </message>
     <message>
         <source>Servers properties</source>
-        <translation>Proprietà degli assistenti</translation>
+        <translation>Proprietà degli servers</translation>
     </message>
     <message>
         <source>Use default servers</source>
-        <translation>Utilizzi gli assistenti di difetto</translation>
+        <translation>Usi i servers predefiniti</translation>
     </message>
     <message>
         <source>Use TLSv1</source>
@@ -193,23 +193,23 @@ Che cosa gradite fare?</translation>
     </message>
     <message>
         <source>Default port to connect to servers</source>
-        <translation>Orificio di difetto da collegare agli assistenti</translation>
+        <translation>Porta predefinita per colegamenti con i servers</translation>
     </message>
     <message>
         <source>Use proxy server</source>
-        <translation>Usi il proxy assistenti</translation>
+        <translation>Usi il proxy server</translation>
     </message>
     <message>
         <source>Proxy server</source>
-        <translation>Proxy assistenti</translation>
+        <translation>Proxy server</translation>
     </message>
     <message>
         <source>Port:</source>
-        <translation>Orificio:</translation>
+        <translation>Porta:</translation>
     </message>
     <message>
         <source>IP addresses:</source>
-        <translation>IP indirizzi:</translation>
+        <translation>Indirizzi IP:</translation>
     </message>
     <message>
         <source>Username:</source>
@@ -225,31 +225,31 @@ Che cosa gradite fare?</translation>
     </message>
     <message>
         <source>Remove from userlist</source>
-        <translation>Rimuova dalla lista del contatto</translation>
+        <translation>Rimuova dalla lista dei contatti</translation>
     </message>
     <message>
         <source>View/edit user info</source>
-        <translation>Pubblichi l&apos;utente Info</translation>
+        <translation>Vedi/Cambia info contatto</translation>
     </message>
     <message>
         <source>Send SMS</source>
-        <translation>Trasmetta SMS</translation>
+        <translation>Manda SMS</translation>
     </message>
     <message>
         <source>View history</source>
-        <translation>Storia di vista</translation>
+        <translation>Vedi la storia</translation>
     </message>
     <message>
         <source>Lookup in directory</source>
-        <translation>Occhiata nell&apos;indice</translation>
+        <translation>Cerca nell&apos;indice</translation>
     </message>
     <message>
         <source>Show / hide inactive users</source>
-        <translation>Mostri / pellame utenti inattivi</translation>
+        <translation>Mostri / nascondi contatti inattivi</translation>
     </message>
     <message>
         <source>Send file</source>
-        <translation>Trasmetta la lima</translation>
+        <translation>Manda il file</translation>
     </message>
     <message>
         <source>Configuration</source>
@@ -257,7 +257,7 @@ Che cosa gradite fare?</translation>
     </message>
     <message>
         <source>Add user</source>
-        <translation>Aggiunga il contatto</translation>
+        <translation>Aggiungi il contatto</translation>
     </message>
     <message>
         <source>SMS</source>
@@ -265,7 +265,7 @@ Che cosa gradite fare?</translation>
     </message>
     <message>
         <source>SMS options</source>
-        <translation>Opzioni di SMS</translation>
+        <translation>Opzioni SMS</translation>
     </message>
     <message>
         <source>Use built-in SMS application</source>
@@ -273,17 +273,17 @@ Che cosa gradite fare?</translation>
     </message>
     <message>
         <source>Custom SMS application</source>
-        <translation>Applicazione su ordinazione di SMS</translation>
+        <translation>Applicazione SMS esterna</translation>
     </message>
     <message>
         <source>SMS custom string</source>
-        <translation>Stringa di abitudine di SMS</translation>
+        <translation>Stringa di SMS</translation>
     </message>
     <message>
         <source>Check this box if your sms application doesn&apos;t understand arguments: number &quot;message&quot;
 Arguments should be separated with spaces. %n argument is converted to number, %m to message</source>
-        <translation>Controlli questa scatola se la vostra applicazione degli sms non capisce le discussioni: numeri &quot;il messaggio&quot;
-Le discussioni dovrebbero essere separate con gli spazi. la discussione di %n è convertita in numero, %m al messaggio</translation>
+        <translation>Se il tuo programma non capisce argomenti: &quot;numero_tel_cell. il messaggio&quot;
+segna questo campo e scrivi la stringa corretta. Argomenti devono essere separati con spazi.Argomento %n viene sostituito con numero, %m con messaggio</translation>
     </message>
     <message>
         <source>SMS Era Gateway</source>
@@ -291,7 +291,7 @@ Le discussioni dovrebbero essere separate con gli spazi. la discussione di %n è
     </message>
     <message>
         <source>User ID</source>
-        <translation>L&apos;utente ID</translation>
+        <translation>ID dell&apos;utente</translation>
     </message>
     <message>
         <source>Sounds</source>
@@ -299,15 +299,15 @@ Le discussioni dovrebbero essere separate con gli spazi. la discussione di %n è
     </message>
     <message>
         <source>Play sounds</source>
-        <translation>Suoni del gioco</translation>
+        <translation>Riproduci Suoni</translation>
     </message>
     <message>
         <source>Play sounds using aRts! server</source>
-        <translation>Suoni del gioco usando le aRrts! assistente</translation>
+        <translation>Riproduci suoni usando aRts! server </translation>
     </message>
     <message>
         <source>Sound player</source>
-        <translation>Giocatore sano</translation>
+        <translation>Riproduttore suoni</translation>
     </message>
     <message>
         <source>Path:</source>
@@ -315,7 +315,7 @@ Le discussioni dovrebbero essere separate con gli spazi. la discussione di %n è
     </message>
     <message>
         <source>Enable volume control (player must support it)</source>
-        <translation>Permetta il controllo di volume (giocatore deve sostenerlo)</translation>
+        <translation>Attiva controllo volume (Se riproduttore lo permette)</translation>
     </message>
     <message>
         <source>Message sound</source>
@@ -327,23 +327,23 @@ Le discussioni dovrebbero essere separate con gli spazi. la discussione di %n è
     </message>
     <message>
         <source>Play sounds from a person whilst chatting</source>
-        <translation>Suoni del gioco da una persona mentre chiacchierando</translation>
+        <translation>Suoni durante chat</translation>
     </message>
     <message>
         <source>Play chat sounds only when window is invisible</source>
-        <translation>Gioc i suoni di chiacchierata soltanto quando la finestra è invisibile</translation>
+        <translation>Suoni chiamata solo se finestra chat non attiva</translation>
     </message>
     <message>
         <source>Chat sound</source>
-        <translation>Suono di chiacchierata</translation>
+        <translation>Suono di chat</translation>
     </message>
     <message>
         <source>Enable autoaway</source>
-        <translation>Permetta autoaway</translation>
+        <translation>&quot;Torno subito&quot; automatico</translation>
     </message>
     <message>
         <source>Set status to away after </source>
-        <translation>Regoli la condizione a via dopo </translation>
+        <translation>cambia a &quot;Torno subito&quot; dopo</translation>
     </message>
     <message>
         <source> seconds</source>
@@ -355,15 +355,15 @@ Le discussioni dovrebbero essere separate con gli spazi. la discussione di %n è
     </message>
     <message>
         <source>Enable dock icon</source>
-        <translation>Permetta l&apos;icona del bacino</translation>
+        <translation>Attiva l&apos;icona del panello</translation>
     </message>
     <message>
         <source>Start docked</source>
-        <translation>L&apos;inizio ha attracco</translation>
+        <translation>Parti minimizzato</translation>
     </message>
     <message>
         <source>Private status</source>
-        <translation>Condizione riservata</translation>
+        <translation>Solo per amici</translation>
     </message>
     <message>
         <source>Add to description</source>
@@ -371,7 +371,7 @@ Le discussioni dovrebbero essere separate con gli spazi. la discussione di %n è
     </message>
     <message>
         <source>Show Inactive users</source>
-        <translation>Mostri gli utenti inattivi</translation>
+        <translation>Mostri contatti inattivi</translation>
     </message>
     <message>
         <source>Hints</source>
@@ -383,11 +383,11 @@ Le discussioni dovrebbero essere separate con gli spazi. la discussione di %n è
     </message>
     <message>
         <source>Hints options</source>
-        <translation>Suggerisce le opzioni</translation>
+        <translation>opzioni dei suggerimenti</translation>
     </message>
     <message>
         <source>Enable icons in hints</source>
-        <translation>Permetta le icone nei suggerimenti</translation>
+        <translation>Attiva le icone nei suggerimenti</translation>
     </message>
     <message>
         <source>Show connection errors in hints</source>
@@ -395,7 +395,7 @@ Le discussioni dovrebbero essere separate con gli spazi. la discussione di %n è
     </message>
     <message>
         <source>Enable status notification by hint</source>
-        <translation>Permetta la notifica di condizione tramite il suggerimento</translation>
+        <translation>Attiva le notifiche status tramite il suggerimento</translation>
     </message>
     <message>
         <source>Notification options</source>
@@ -403,7 +403,7 @@ Le discussioni dovrebbero essere separate con gli spazi. la discussione di %n è
     </message>
     <message>
         <source>Use custom syntax</source>
-        <translation>Usi la sintassi su ordinazione</translation>
+        <translation>Usi la sintassi</translation>
     </message>
     <message>
         <source>Hint syntax</source>
@@ -411,19 +411,19 @@ Le discussioni dovrebbero essere separate con gli spazi. la discussione di %n è
     </message>
     <message>
         <source>Notify about new message</source>
-        <translation>Informi circa il nuovo messaggio</translation>
+        <translation>Notifica il nuovo messaggio</translation>
     </message>
     <message>
         <source>Notify about new chat</source>
-        <translation>Informi circa nuova chiacchierata</translation>
+        <translation>Notifica nuovo chat</translation>
     </message>
     <message>
         <source>Notify about user status change</source>
-        <translation>Informi circa il cambiamento di condizione dell&apos;utente</translation>
+        <translation>Notifica il cambiamento di status contatto</translation>
     </message>
     <message>
         <source>Add description to hint if exists</source>
-        <translation>Aggiunga la descrizione al suggerimento se esiste</translation>
+        <translation>Aggiungi la descrizione al suggerimento se esiste</translation>
     </message>
     <message>
         <source>WWW error</source>
@@ -431,11 +431,11 @@ Le discussioni dovrebbero essere separate con gli spazi. la discussione di %n è
     </message>
     <message>
         <source>Web browser was not specified. Visit the configuration section</source>
-        <translation>Il web browser non è stato specificato. Visiti la sezione di con</translation>
+        <translation>Il web browser non è stato specificato. Devi impostarlo nel panello configurazione</translation>
     </message>
     <message>
         <source>Could not spawn Web browser process. Check if the Web browser is functional</source>
-        <translation>Non ha potuto deporre le uova il processo di web browser. Controlli se il web browser è funzionale </translation>
+        <translation>Non ho potuto lanciare il web browser. Controlli se è funzionante </translation>
     </message>
     <message>
         <source>Emoticons</source>
@@ -447,7 +447,7 @@ Le discussioni dovrebbero essere separate con gli spazi. la discussione di %n è
     </message>
     <message>
         <source>Emoticons theme</source>
-        <translation>Tema dei emoticons</translation>
+        <translation>Set dei emoticons</translation>
     </message>
     <message>
         <source>WWW options</source>
@@ -455,19 +455,19 @@ Le discussioni dovrebbero essere separate con gli spazi. la discussione di %n è
     </message>
     <message>
         <source>Use default Web browser</source>
-        <translation>Usi il web browser di difetto</translation>
+        <translation>Usi il web browser predefinito</translation>
     </message>
     <message>
         <source>Custom Web browser</source>
-        <translation>Web browser su ordinazione</translation>
+        <translation>Web browser preferito</translation>
     </message>
     <message>
         <source>Automatically prune chat messages</source>
-        <translation>Automaticamente messaggi di chiacchierata della prugna</translation>
+        <translation>Limitazione automatica messaggi</translation>
     </message>
     <message>
         <source>Message pruning</source>
-        <translation>Potatura del messaggio</translation>
+        <translation>Limitazione messaggi</translation>
     </message>
     <message>
         <source>Reduce the number of visible messages to</source>
@@ -483,7 +483,7 @@ Le discussioni dovrebbero essere separate con gli spazi. la discussione di %n è
     </message>
     <message>
         <source>Keys length</source>
-        <translation>Chiude a chiave la lunghezza</translation>
+        <translation>Lunghezza delle chiavi</translation>
     </message>
     <message>
         <source>Generate keys</source>
@@ -491,15 +491,15 @@ Le discussioni dovrebbero essere separate con gli spazi. la discussione di %n è
     </message>
     <message>
         <source>Scroll chat window downward, not upward</source>
-        <translation>Finestra di chiacchierata del rotolo verso il basso, non verso l&apos;alto</translation>
+        <translation>Scorri la finestra chat verso il basso</translation>
     </message>
     <message>
         <source>&quot;Enter&quot; key in chat sends message by default</source>
-        <translation>a chiave &quot;Enter&quot; nella chiacchierata trasmette il messaggio per difetto</translation>
+        <translation>tasto &quot;Invio&quot; manda il messaggio</translation>
     </message>
     <message>
         <source>Flash chat title on new message</source>
-        <translation>Titolo istantaneo di chiacchierata sul nuovo messaggio</translation>
+        <translation>Titolo finestra chat lampeggia all&apos;arrivo del nuovo messaggio</translation>
     </message>
     <message>
         <source>Ignore messages from anonymous users</source>
@@ -507,11 +507,11 @@ Le discussioni dovrebbero essere separate con gli spazi. la discussione di %n è
     </message>
     <message>
         <source>Look</source>
-        <translation>Sguardo</translation>
+        <translation>Aspetto</translation>
     </message>
     <message>
         <source>Chat properties</source>
-        <translation>Proprietà di chiacchierata</translation>
+        <translation>Proprietà della finesta chat</translation>
     </message>
     <message>
         <source>Font</source>
@@ -527,35 +527,35 @@ Le discussioni dovrebbero essere separate con gli spazi. la discussione di %n è
     </message>
     <message>
         <source>Information panel syntax:</source>
-        <translation>Sintassi del pannello di informazion:</translation>
+        <translation>Sintassi del pannello di informazione:</translation>
     </message>
     <message>
         <source>Chat window title syntax:</source>
-        <translation>Sintassi di titolo della finestra di chiacchierata:</translation>
+        <translation>Sintassi di titolo della finestra di chat:</translation>
     </message>
     <message>
         <source>Conference window title prefix:</source>
-        <translation>Prefisso di titolo della finestra di congresso:</translation>
+        <translation>Prefisso di titolo della finestra di conferenza:</translation>
     </message>
     <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - frist name
 %r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
 %v - revDNS, %p - port %e - email
 If you leave blank, default settings will be used</source>
-        <translation>Sintassi: %s - condizione, %d - descrizione, %i - IP, %n - scalfittura, %a - altnick, %f - nome di frist
-%r - cognome, %m - mobile, %u - uin, %g - gruppo, %o - restituisca _ lo spazio _ se l&apos;utente non li ha in userlist
+        <translation>Sintassi: %s - status, %d - descrizione, %i - IP, %n - nick, %a - altnick, %f - nome
+%r - cognome, %m - cell, %u - no GG, %g - gruppo, %o - inserisce lo spazio se non sei inserito nella lista dei contatti
 %v - revDNS, %p - port, %e - email
-Se lasciate lo spazio in bianco, le regolazioni di difetto saranno usate</translation>
+Se lasciate lo spazio vuoto, sarà usata impostazione predefinita</translation>
     </message>
     <message>
         <source>This text will be before syntax.
 If you leave blank, default settings will be used.</source>
-        <translation>Questo testo sarà prima di sintassi.
-Se lasciate lo spazio in bianco, le regolazioni di difetto saranno usate.</translation>
+        <translation>Questo testo sarà inserito prima  di sintassi.
+Se lasciate lo spazio vuoto, sarà inserita stringa predefinita.</translation>
     </message>
     <message>
         <source>Conference window title prefix</source>
-        <translation>Prefisso di titolo della finestra di congresso</translation>
+        <translation>Prefisso di titolo della finestra di conferenza</translation>
     </message>
     <message>
         <source>syntax:</source>
@@ -563,19 +563,19 @@ Se lasciate lo spazio in bianco, le regolazioni di difetto saranno usate.</trans
     </message>
     <message>
         <source>Preview chat</source>
-        <translation>Chiacchierata di previsione</translation>
+        <translation>monitoragio chat</translation>
     </message>
     <message>
         <source>Notify</source>
-        <translation>Informi</translation>
+        <translation>Notifica</translation>
     </message>
     <message>
         <source>Notify when users become available</source>
-        <translation>Informi quando gli utenti diventano disponibili</translation>
+        <translation>Notifica quando gli contatti diventano disponibili</translation>
     </message>
     <message>
         <source>Notify about all users</source>
-        <translation>Informi circa tutti gli utenti</translation>
+        <translation>Notifica tutti gli contatti</translation>
     </message>
     <message>
         <source>Available</source>
@@ -583,27 +583,27 @@ Se lasciate lo spazio in bianco, le regolazioni di difetto saranno usate.</trans
     </message>
     <message>
         <source>Tracked</source>
-        <translation>Rintracciato</translation>
+        <translation>Tracciato</translation>
     </message>
     <message>
         <source>Notify options</source>
-        <translation>Informi le opzioni</translation>
+        <translation>Opzioni notifica</translation>
     </message>
     <message>
         <source>Notify by sound</source>
-        <translation>Informi dal suono</translation>
+        <translation>Notifica con suono</translation>
     </message>
     <message>
         <source>Notify by dialog box</source>
-        <translation>Informi dalla finestra di dialogo</translation>
+        <translation>Notifica aprendo la finestra</translation>
     </message>
     <message>
         <source>Notify sound</source>
-        <translation>Informi il suono</translation>
+        <translation>Il suono di notifica</translation>
     </message>
     <message>
         <source>Set language:</source>
-        <translation>Regoli la lingua:</translation>
+        <translation>Scegli la lingua:</translation>
     </message>
     <message>
         <source>English</source>
@@ -619,15 +619,15 @@ Se lasciate lo spazio in bianco, le regolazioni di difetto saranno usate.</trans
     </message>
     <message>
         <source>Userbox properties</source>
-        <translation>Proprietà di Userbox</translation>
+        <translation>Proprietà di ista Contatti</translation>
     </message>
     <message>
         <source>Preview userbox</source>
-        <translation>Userbox di previsione</translation>
+        <translation>Monitoraggio  Lista Contatti</translation>
     </message>
     <message>
         <source>Preview desc.</source>
-        <translation>Descrizione di previsione</translation>
+        <translation>Monitoraggio desc.</translation>
     </message>
     <message>
         <source>Show userbox-desc.</source>
@@ -635,39 +635,39 @@ Se lasciate lo spazio in bianco, le regolazioni di difetto saranno usate.</trans
     </message>
     <message>
         <source>Display group tabs</source>
-        <translation>Linguette del gruppo di esposizione</translation>
+        <translation>Visualizza gruppi</translation>
     </message>
     <message>
         <source>Multicolumn userbox</source>
-        <translation>Userbox multicolumn</translation>
+        <translation>Lista a colonne</translation>
     </message>
     <message>
         <source>Message content in hint</source>
-        <translation>Soddisfare del messaggio nel suggerimento</translation>
+        <translation>Il contenuto del messaggio nel suggerimento</translation>
     </message>
     <message>
         <source>Notify about user becoming available</source>
-        <translation>Informi circa l&apos;utente che diventa disponibile</translation>
+        <translation>Notifica se il contatto diventa disponibile</translation>
     </message>
     <message>
         <source>Notify about user becoming unavailable</source>
-        <translation>Informi circa l&apos;utente che diventa non disponibile</translation>
+        <translation>Notifica se il contatto diventa non disponibile</translation>
     </message>
     <message>
         <source>Message acknowledgements (wait for delivery)</source>
-        <translation>Ringraziamenti del messaggio (aspett la consegna)</translation>
+        <translation>Conferma la consegna del messaggio (aspetta conferma)</translation>
     </message>
     <message>
         <source>Show message content in hint</source>
-        <translation>Mostri il soddisfare del messaggio nel suggerimento</translation>
+        <translation>Mostri il contenuto del messaggio nel suggerimento</translation>
     </message>
     <message>
         <source>Syntax the same as in information panel.</source>
-        <translation>Sintassi lo stessi di nel pannello di informazioni.</translation>
+        <translation>La stessa sintassi  che nel pannello di informazioni.</translation>
     </message>
     <message>
         <source>%1 - Url clicked in chat window</source>
-        <translation>%1 Url scatto in chiacchierarata finestra</translation>
+        <translation>%1 Url cliccato nella finestra chat</translation>
     </message>
     <message>
         <source>&lt;b&gt;Me&lt;/b&gt; 00:00:00</source>
@@ -718,15 +718,15 @@ Se lasciate lo spazio in bianco, le regolazioni di difetto saranno usate.</trans
     </message>
     <message>
         <source>&amp;Thanks</source>
-        <translation>&amp;Grazie</translation>
+        <translation>&amp;Ringraziamenti</translation>
     </message>
     <message>
         <source>&amp;History</source>
-        <translation>&amp;Storia</translation>
+        <translation>&amp;La Storia</translation>
     </message>
     <message>
         <source>&amp;ChangeLog</source>
-        <translation>&amp;Conto cambiamento</translation>
+        <translation>&amp;Lista Cambiamenti</translation>
     </message>
     <message>
         <source>&amp;License</source>
@@ -737,27 +737,27 @@ Se lasciate lo spazio in bianco, le regolazioni di difetto saranno usate.</trans
     <name>Chat</name>
     <message>
         <source>Edit window:</source>
-        <translation>Pubblichi la finestra:</translation>
+        <translation>Finestra Edit:</translation>
     </message>
     <message>
         <source>This is where you type in the text to be sent</source>
-        <translation>Ciò è dove scrivete dentro il testo a macchina da trasmettere</translation>
+        <translation>Inserisci qui il testo del messaggio da spedire</translation>
     </message>
     <message>
         <source>Enter key sends message</source>
-        <translation>Entri nella chiave trasmette il messaggio</translation>
+        <translation>Tasto Invio manda il messaggio</translation>
     </message>
     <message>
         <source>Blocks scrolling</source>
-        <translation>Arrotolare dei blocchi</translation>
+        <translation>Ferma scorimento del chat</translation>
     </message>
     <message>
         <source>Clear messages in chat window</source>
-        <translation>Messaggi chiari nella finestra di chiacchierata</translation>
+        <translation>Pulisci la storia del chat</translation>
     </message>
     <message>
         <source>Insert emoticon - enable in configuration</source>
-        <translation>Emoticon dell&apos;inserto - permetta nella configurazione</translation>
+        <translation>Inserisci Emoticon - attiva nella configurazione</translation>
     </message>
     <message>
         <source>Insert emoticon</source>
@@ -769,7 +769,7 @@ Se lasciate lo spazio in bianco, le regolazioni di difetto saranno usate.</trans
     </message>
     <message>
         <source>Lookup user info</source>
-        <translation>Utente Info di occhiata</translation>
+        <translation>Visualizza info contatto</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
@@ -777,31 +777,31 @@ Se lasciate lo spazio in bianco, le regolazioni di difetto saranno usate.</trans
     </message>
     <message>
         <source>&amp;Send</source>
-        <translation>&amp;Trasmetta</translation>
+        <translation>&amp;Manda</translation>
     </message>
     <message>
         <source>Disable encryption for this conversation</source>
-        <translation>Inabiliti la crittografia per questa conversazione</translation>
+        <translation>Disattiva la crittografia per questa conversazione</translation>
     </message>
     <message>
         <source>Enable encryption for this conversation</source>
-        <translation>Permetta la crittografia per questa conversazione</translation>
+        <translation>Attiva la crittografia per questa conversazione</translation>
     </message>
     <message>
         <source>Conference with </source>
-        <translation>Congresso con </translation>
+        <translation>Conferenza con </translation>
     </message>
     <message>
         <source>Chat with </source>
-        <translation>Chiacchierata con </translation>
+        <translation>Chat con </translation>
     </message>
     <message>
         <source>Send message error</source>
-        <translation>Trasmetta l&apos;errore del messaggio</translation>
+        <translation>Errore trasferimento del messaggio</translation>
     </message>
     <message>
         <source>Application encountered network error.</source>
-        <translation>L&apos;applicazione ha incontrato l&apos;errore della rete.</translation>
+        <translation>L&apos;applicazione ha incontrato l&apos;errore di rete.</translation>
     </message>
 </context>
 <context>
@@ -860,7 +860,7 @@ Se lasciate lo spazio in bianco, le regolazioni di difetto saranno usate.</trans
     </message>
     <message>
         <source>Error generating keys</source>
-        <translation>Errore che genera le chiavi</translation>
+        <translation>Errore durante generazione delle chiavi</translation>
     </message>
     <message>
         <source>OK</source>
@@ -868,14 +868,14 @@ Se lasciate lo spazio in bianco, le regolazioni di difetto saranno usate.</trans
     </message>
     <message>
         <source>Keys have been generated and written</source>
-        <translation>Le chiavi sono state generate e scritto state</translation>
+        <translation>Le chiavi sono state generate e salvate</translation>
     </message>
 </context>
 <context>
     <name>ChooseDescription</name>
     <message>
         <source>Select description</source>
-        <translation>Selezioni la descrizione</translation>
+        <translation>Descrizione</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -890,7 +890,7 @@ Se lasciate lo spazio in bianco, le regolazioni di difetto saranno usate.</trans
     <name>ColorButton</name>
     <message>
         <source>Color dialog</source>
-        <translation>Dialogo di colore</translation>
+        <translation>Colori</translation>
     </message>
 </context>
 <context>
@@ -901,7 +901,7 @@ Se lasciate lo spazio in bianco, le regolazioni di difetto saranno usate.</trans
     </message>
     <message>
         <source>Kadu configuration</source>
-        <translation>Configurazione di Kadu</translation>
+        <translation>Configurazione Kadu</translation>
     </message>
 </context>
 <context>
@@ -916,11 +916,11 @@ Se lasciate lo spazio in bianco, le regolazioni di difetto saranno usate.</trans
     </message>
     <message>
         <source>Filename: </source>
-        <translation>Nome di schedario: </translation>
+        <translation>Nome File: </translation>
     </message>
     <message>
         <source>File size: </source>
-        <translation>Formato di lima: </translation>
+        <translation>Dimensione File: </translation>
     </message>
     <message>
         <source>Speed: 0KB/s (not started)  </source>
@@ -936,14 +936,14 @@ Se lasciate lo spazio in bianco, le regolazioni di difetto saranno usate.</trans
     </message>
     <message>
         <source>(stalled)</source>
-        <translation>(arrestato)</translation>
+        <translation>(in stallo)</translation>
     </message>
 </context>
 <context>
     <name>DccVoiceDialog</name>
     <message>
         <source>Voice chat</source>
-        <translation>Chiacchierata di voce</translation>
+        <translation>Chat a voce</translation>
     </message>
     <message>
         <source>&amp;Stop</source>
@@ -961,45 +961,49 @@ Se lasciate lo spazio in bianco, le regolazioni di difetto saranno usate.</trans
     <name>EventManager</name>
     <message>
         <source>Unable to connect, server has not been found</source>
-        <translation>Incapace collegare, l&apos;assistente non è stato trovato</translation>
+        <translation>Impossibile collegarsi, il server non è stato trovato</translation>
     </message>
     <message>
         <source>Unable to connect</source>
-        <translation>Incapace collegare</translation>
+        <translation>Collegamento impossibile</translation>
     </message>
     <message>
         <source>Unable to connect, server has returned unknown data</source>
-        <translation>Incapace collegare, l&apos;assistente ha restituito i dati sconosciuti</translation>
+        <translation>Impossibile collegarsi, il server ha restituito i dati sconosciuti</translation>
     </message>
     <message>
         <source>Unable to connect, connection break during reading</source>
-        <translation>Incapace collegare, rottura del collegamento durante la lettura</translation>
+        <translation>Impossibile collegarsi, rottura del collegamento durante la lettura</translation>
     </message>
     <message>
         <source>Unable to connect, connection break during writing</source>
-        <translation>Incapace collegare, rottura del collegamento durante la scrittura</translation>
+        <translation>Imossibile collegarsi, interruzione del collegamento durante la scrittura</translation>
     </message>
     <message>
         <source>Unable to connect, incorrect password</source>
-        <translation>Incapace collegare, parola d&apos;accesso errata</translation>
+        <translation>Impossibile collegarsi, password errata</translation>
     </message>
     <message>
         <source>Incorrect password</source>
-        <translation>Parola d&apos;accesso errata</translation>
+        <translation>Passwoed errata</translation>
     </message>
     <message>
         <source>Connection will be stoped
 Your password is incorrect !!!</source>
-        <translation>Il collegamento stoped.
-La vostra parola d&apos;accesso è errata!!!</translation>
+        <translation>La conessione viene interrotta.
+La vostra password è errata!!!</translation>
     </message>
     <message>
         <source>Unable to connect, error of negotiation TLS</source>
-        <translation>Incapace collegare, errore della trattativa TLS</translation>
+        <translation>Impossibile collegarsi, errore della trattativa TLS</translation>
     </message>
     <message>
         <source>Disconnection has occured</source>
-        <translation>La sconnessione ha accaduto</translation>
+        <translation>Sconessione</translation>
+    </message>
+    <message>
+        <source>Please change your email in &quot;Change password/email&quot; window. Leave new password field blank.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1014,7 +1018,7 @@ La vostra parola d&apos;accesso è errata!!!</translation>
     </message>
     <message>
         <source>Chat with</source>
-        <translation>Chiacchierata con </translation>
+        <translation>Chat con </translation>
     </message>
     <message>
         <source>is available</source>
@@ -1022,18 +1026,18 @@ La vostra parola d&apos;accesso è errata!!!</translation>
     </message>
     <message>
         <source>changed status to</source>
-        <translation> condizione cambiata a</translation>
+        <translation> cambiato status a</translation>
     </message>
     <message>
         <source>is unavailable</source>
-        <translation> è non disponibile</translation>
+        <translation> non è disponibile</translation>
     </message>
 </context>
 <context>
     <name>HintManagerSlots</name>
     <message>
         <source>New hints add to hint</source>
-        <translation>I nuovi suggerimenti aggiungono al suggerimento</translation>
+        <translation>unione suggerimenti</translation>
     </message>
     <message>
         <source>Auto</source>
@@ -1045,11 +1049,11 @@ La vostra parola d&apos;accesso è errata!!!</translation>
     </message>
     <message>
         <source>Online</source>
-        <translation>In linea</translation>
+        <translation>Accessibile</translation>
     </message>
     <message>
         <source>Online (d.)</source>
-        <translation>In linea (d.)</translation>
+        <translation>Accessibile (desc.)</translation>
     </message>
     <message>
         <source>Busy</source>
@@ -1057,7 +1061,7 @@ La vostra parola d&apos;accesso è errata!!!</translation>
     </message>
     <message>
         <source>Busy (d.)</source>
-        <translation>Occupato (d.)</translation>
+        <translation>Occupato (desc.)</translation>
     </message>
     <message>
         <source>Invisible</source>
@@ -1065,7 +1069,7 @@ La vostra parola d&apos;accesso è errata!!!</translation>
     </message>
     <message>
         <source>Invisible (d.)</source>
-        <translation>Invisibile (d.)</translation>
+        <translation>Invisibile (desc.)</translation>
     </message>
     <message>
         <source>Offline</source>
@@ -1073,19 +1077,19 @@ La vostra parola d&apos;accesso è errata!!!</translation>
     </message>
     <message>
         <source>Offline (d.)</source>
-        <translation>Fuori linea (d.)</translation>
+        <translation>Fuori linea (desc.)</translation>
     </message>
     <message>
         <source>Blocking</source>
-        <translation>Ostruire</translation>
+        <translation>Bloccato</translation>
     </message>
     <message>
         <source>New chat</source>
-        <translation>Nuova chiacchierata</translation>
+        <translation>Nuovo chat</translation>
     </message>
     <message>
         <source>New message in chat</source>
-        <translation>Nuovo messaggio nella chiacchierata</translation>
+        <translation>Nuovo messaggio nell chat</translation>
     </message>
     <message>
         <source>Error</source>
@@ -1093,47 +1097,47 @@ La vostra parola d&apos;accesso è errata!!!</translation>
     </message>
     <message>
         <source>Preview</source>
-        <translation>Previsione</translation>
+        <translation>Visualizza</translation>
     </message>
     <message>
         <source>Change font color</source>
-        <translation>Cambi il colore della serie completa di caratteri</translation>
+        <translation>Cambi il colore dell Font</translation>
     </message>
     <message>
         <source>Change background color</source>
-        <translation>Cambi il colore della priorità bassa</translation>
+        <translation>Cambi il colore sfondo</translation>
     </message>
     <message>
         <source>Change font</source>
-        <translation>Cambi la serie completa di caratteri</translation>
+        <translation>Cambi caratteri</translation>
     </message>
     <message>
         <source>Color dialog</source>
-        <translation>Dialogo di colore</translation>
+        <translation>Colori</translation>
     </message>
     <message>
         <source>Number of quoted characters</source>
-        <translation>Numero di caratteri citati</translation>
+        <translation>Quantità caratteri</translation>
     </message>
     <message>
         <source>Use custom hints position</source>
-        <translation>Use custom hints position</translation>
+        <translation>Posizione suggerimenti</translation>
     </message>
     <message>
         <source>&lt;b&gt;Text&lt;/b&gt; preview</source>
-        <translation>&lt;b&gt;Previsione&lt;/b&gt; del testo</translation>
+        <translation>&lt;b&gt;anteprima&lt;/b&gt; del testo</translation>
     </message>
     <message>
         <source>Hint timeout (in seconds)</source>
-        <translation>Prespegnimento di suggerimento (nei secondi)</translation>
+        <translation>Scomparsa suggerimento (secondi)</translation>
     </message>
     <message>
         <source>In top</source>
-        <translation>Nella parte superiore</translation>
+        <translation>In su</translation>
     </message>
     <message>
         <source>In bottom</source>
-        <translation>Nella parte inferiore</translation>
+        <translation>In giù</translation>
     </message>
 </context>
 <context>
@@ -1144,19 +1148,19 @@ La vostra parola d&apos;accesso è errata!!!</translation>
     </message>
     <message>
         <source>&amp;Find</source>
-        <translation>&amp;Ritrovamento</translation>
+        <translation>&amp;Trova</translation>
     </message>
     <message>
         <source>Find &amp;next</source>
-        <translation>Ritrovamento &amp;dopo</translation>
+        <translation>Trova &amp;successivo</translation>
     </message>
     <message>
         <source>Find &amp;previous</source>
-        <translation>Ritrovamento &amp;precedente</translation>
+        <translation>Trova &amp;precedente</translation>
     </message>
     <message>
         <source>Online</source>
-        <translation>In linea</translation>
+        <translation>Accessibile</translation>
     </message>
     <message>
         <source>Busy</source>
@@ -1175,7 +1179,7 @@ La vostra parola d&apos;accesso è errata!!!</translation>
     <name>HistoryManager</name>
     <message>
         <source>Clear history?</source>
-        <translation>Storia libera?</translation>
+        <translation>Cancellare Storia?</translation>
     </message>
     <message>
         <source>Yes</source>
@@ -1190,7 +1194,7 @@ La vostra parola d&apos;accesso è errata!!!</translation>
     <name>HistorySearch</name>
     <message>
         <source>Search history</source>
-        <translation>Storia di ricerca</translation>
+        <translation>Cerca ne storico</translation>
     </message>
     <message>
         <source>&amp;From:</source>
@@ -1222,7 +1226,7 @@ La vostra parola d&apos;accesso è errata!!!</translation>
     </message>
     <message>
         <source>Find Criteria</source>
-        <translation>Test di verifica Del Ritrovamento</translation>
+        <translation>Parametri Rcerca</translation>
     </message>
     <message>
         <source>&amp;Pattern</source>
@@ -1230,7 +1234,7 @@ La vostra parola d&apos;accesso è errata!!!</translation>
     </message>
     <message>
         <source>&amp;Status</source>
-        <translation>&amp;Condizione</translation>
+        <translation>&amp;Status</translation>
     </message>
     <message>
         <source>Pattern</source>
@@ -1238,19 +1242,19 @@ La vostra parola d&apos;accesso è errata!!!</translation>
     </message>
     <message>
         <source>Status</source>
-        <translation>Condizione</translation>
+        <translation>Status</translation>
     </message>
     <message>
         <source>&amp;Reverse find</source>
-        <translation>&amp;Ritrovamento d&apos;inversione</translation>
+        <translation>&amp;Ricerca all&apos;indietro</translation>
     </message>
     <message>
         <source>&amp;Find</source>
-        <translation>&amp;Ritrovamento</translation>
+        <translation>&amp;Trova</translation>
     </message>
     <message>
         <source>Reset</source>
-        <translation>Risistemazione</translation>
+        <translation>Reset</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
@@ -1268,15 +1272,15 @@ La vostra parola d&apos;accesso è errata!!!</translation>
     <name>Ignored</name>
     <message>
         <source>Manage ignored users</source>
-        <translation>Controlli gli utenti ignorati </translation>
+        <translation>Lista contatti ignorati </translation>
     </message>
     <message>
         <source>Ignored Uins:</source>
-        <translation>UIN Ignorato:</translation>
+        <translation>no GG Ignorato:</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Cancellazione</translation>
+        <translation>Cancella</translation>
     </message>
     <message>
         <source>Add</source>
@@ -1284,7 +1288,7 @@ La vostra parola d&apos;accesso è errata!!!</translation>
     </message>
     <message>
         <source>Uin</source>
-        <translation>Uin</translation>
+        <translation>numero GG</translation>
     </message>
 </context>
 <context>
@@ -1295,7 +1299,7 @@ La vostra parola d&apos;accesso è errata!!!</translation>
     </message>
     <message>
         <source>The newest Kadu version is %1</source>
-        <translation>La più nuova versione di Kadu è %1</translation>
+        <translation>La versione più nuova  di Kadu è %1</translation>
     </message>
     <message>
         <source>Me</source>
@@ -1303,31 +1307,31 @@ La vostra parola d&apos;accesso è errata!!!</translation>
     </message>
     <message>
         <source>Remove from userlist</source>
-        <translation>Rimuova dalla lista del contatto</translation>
+        <translation>Rimuova dalla lista dei contatti</translation>
     </message>
     <message>
         <source>View/edit user info</source>
-        <translation>Pubblichi l&apos;utente Info</translation>
+        <translation>Mostra/edita Info delcontatto</translation>
     </message>
     <message>
         <source>Send SMS</source>
-        <translation>Trasmetta SMS</translation>
+        <translation>Manda SMS</translation>
     </message>
     <message>
         <source>View history</source>
-        <translation>Storia di vista</translation>
+        <translation>Vedi storico</translation>
     </message>
     <message>
         <source>Lookup in directory</source>
-        <translation>Occhiata nell&apos;indice</translation>
+        <translation>Cerca nell catalogo</translation>
     </message>
     <message>
         <source>Show / hide inactive users</source>
-        <translation>Mostri / pellame utenti inattivi</translation>
+        <translation>Mostri/nascondi contatti inattivi</translation>
     </message>
     <message>
         <source>Send file</source>
-        <translation>Trasmetta la lima</translation>
+        <translation>Manda File</translation>
     </message>
     <message>
         <source>Configuration</source>
@@ -1351,7 +1355,7 @@ La vostra parola d&apos;accesso è errata!!!</translation>
     </message>
     <message>
         <source>&amp;Exit Kadu</source>
-        <translation>Ri&amp;muova Kadu</translation>
+        <translation>&amp;Termina Kadu</translation>
     </message>
     <message>
         <source>Main toolbar</source>
@@ -1359,15 +1363,15 @@ La vostra parola d&apos;accesso è errata!!!</translation>
     </message>
     <message>
         <source>Mute sounds</source>
-        <translation>Suoni muti</translation>
+        <translation>Disattiva Suoni</translation>
     </message>
     <message>
         <source>Unmute sounds</source>
-        <translation>Suoni di Unmute</translation>
+        <translation>Attiva Suoni</translation>
     </message>
     <message>
         <source>User info</source>
-        <translation>Utente Info</translation>
+        <translation>Info contatto</translation>
     </message>
     <message>
         <source>Your public key has been sent</source>
@@ -1379,7 +1383,7 @@ La vostra parola d&apos;accesso è errata!!!</translation>
     </message>
     <message>
         <source>Selected users will be deleted. Are you sure?</source>
-        <translation>Gli utenti selezionati saranno cancellati. Siete sicuri?</translation>
+        <translation>Gli contatti selezionati saranno cancellati. Siete sicuri?</translation>
     </message>
     <message>
         <source>&amp;Yes</source>
@@ -1392,36 +1396,36 @@ La vostra parola d&apos;accesso è errata!!!</translation>
     <message>
         <source>Couldn&apos;t create DCC socket.
 Direct connections disabled.</source>
-        <translation>Non ha potuto generare lo zoccolo di DCC.
+        <translation>Non ha potuto creare socket di DCC.
 Collegamenti diretti inabilitati.</translation>
     </message>
     <message>
         <source>Open chat window</source>
-        <translation>Apra la finestra di chiacchierata</translation>
+        <translation>Apra la finestra di Chat</translation>
     </message>
     <message>
         <source>Send my public key</source>
-        <translation>Trasmetta la mia chiave pubblica</translation>
+        <translation>Manda la mia chiave pubblica</translation>
     </message>
     <message>
         <source>Ignore user</source>
-        <translation>Ignori l&apos;utente</translation>
+        <translation>Ignori contatto</translation>
     </message>
     <message>
         <source>Block user</source>
-        <translation>Utente del blocco</translation>
+        <translation>Blocca contatto</translation>
     </message>
     <message>
         <source>Notify about user</source>
-        <translation>Informi circa l&apos;utente</translation>
+        <translation>Notifica contatto</translation>
     </message>
     <message>
         <source>Offline to user</source>
-        <translation>Fuori linea all&apos;utente</translation>
+        <translation>Inaccessibile per contatto</translation>
     </message>
     <message>
         <source>Clear history</source>
-        <translation>Storia libera</translation>
+        <translation>Cancella Storia</translation>
     </message>
     <message>
         <source>About...</source>
@@ -1434,16 +1438,16 @@ Collegamenti diretti inabilitati.</translation>
     <message>
         <source>Couldn&apos;t connect.
 Check your internet connection.</source>
-        <translation>Non ha potuto collegare.
-Controlli il vostro collegamento del Internet.</translation>
+        <translation>Problemi di collegamento con GG.
+Controlli collegamenti  Internet.</translation>
     </message>
     <message>
         <source>Information</source>
-        <translation>Le informazioni</translation>
+        <translation>Informazione</translation>
     </message>
     <message>
         <source>File has been transferred sucessfully.</source>
-        <translation>La lima è stata trasferita sucessfully.</translation>
+        <translation>Il trasferimento del file completato con successo.</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -1459,11 +1463,11 @@ Controlli il vostro collegamento del Internet.</translation>
     </message>
     <message>
         <source>Couldn&apos;t open file!</source>
-        <translation>Non ha potuto aprire la lima!</translation>
+        <translation>Problemi con apertura file!</translation>
     </message>
     <message>
         <source>Manage &amp;ignored</source>
-        <translation>Controlli &amp;ignorato</translation>
+        <translation>Controlli &amp;ignorati</translation>
     </message>
     <message>
         <source>&amp;Configuration</source>
@@ -1471,19 +1475,19 @@ Controlli il vostro collegamento del Internet.</translation>
     </message>
     <message>
         <source>Resend &amp;userlist</source>
-        <translation>&amp;Resend la lista del contatto</translation>
+        <translation>&amp;Manda la lista dei contatti</translation>
     </message>
     <message>
         <source>Remind &amp;password</source>
-        <translation>Ricordi alla &amp;password</translation>
+        <translation>Ricordi lla &amp;password</translation>
     </message>
     <message>
         <source>Register &amp;new user</source>
-        <translation>&amp;Nuovo utente del registro</translation>
+        <translation>&amp;Registra nuovo utente</translation>
     </message>
     <message>
         <source>Unregister user</source>
-        <translation>Utente di Unregister</translation>
+        <translation>Elimina utente</translation>
     </message>
     <message>
         <source>Personal information</source>
@@ -1491,15 +1495,15 @@ Controlli il vostro collegamento del Internet.</translation>
     </message>
     <message>
         <source>&amp;Search for users</source>
-        <translation>Nuo&amp;vi contatti di ricerca</translation>
+        <translation>Tro&amp;va contatto</translation>
     </message>
     <message>
         <source>I&amp;mport userlist</source>
-        <translation>&amp;Lista di importazione del contatto</translation>
+        <translation>&amp;Importazione lista dei contatti</translation>
     </message>
     <message>
         <source>E&amp;xport userlist</source>
-        <translation>Lista di e&amp;sportazione del contatto</translation>
+        <translation>E&amp;sportazione lista dei contatti</translation>
     </message>
     <message>
         <source>&amp;Add user</source>
@@ -1515,7 +1519,7 @@ Controlli il vostro collegamento del Internet.</translation>
     </message>
     <message>
         <source>&amp;Hide Kadu</source>
-        <translation>&amp;Pellame Kadu</translation>
+        <translation>&amp;Nascondi Kadu</translation>
     </message>
     <message>
         <source>&amp;Kadu</source>
@@ -1531,7 +1535,7 @@ Controlli il vostro collegamento del Internet.</translation>
     </message>
     <message>
         <source>Voice chat</source>
-        <translation>Chiacchierata di voce</translation>
+        <translation>Chat a voce</translation>
     </message>
     <message>
         <source>&amp;Change password/email</source>
@@ -1579,11 +1583,11 @@ Controlli il vostro collegamento del Internet.</translation>
     <name>PersonalInfoDialog</name>
     <message>
         <source>Personal Information</source>
-        <translation>Le informazioni personali</translation>
+        <translation>Dati personali</translation>
     </message>
     <message>
         <source>Nickname</source>
-        <translation>Soprannome</translation>
+        <translation>Sopranome(NICK)</translation>
     </message>
     <message>
         <source>Name</source>
@@ -1595,7 +1599,7 @@ Controlli il vostro collegamento del Internet.</translation>
     </message>
     <message>
         <source>Gender</source>
-        <translation>Genere</translation>
+        <translation>Sesso</translation>
     </message>
     <message>
         <source>Male</source>
@@ -1615,7 +1619,7 @@ Controlli il vostro collegamento del Internet.</translation>
     </message>
     <message>
         <source>Family Name</source>
-        <translation>Nome Di Famiglia</translation>
+        <translation>Cognome di Famiglia</translation>
     </message>
     <message>
         <source>Family City</source>
@@ -1646,25 +1650,25 @@ Controlli il vostro collegamento del Internet.</translation>
     </message>
     <message>
         <source>Register</source>
-        <translation>Registro</translation>
+        <translation>Registra</translation>
     </message>
     <message>
         <source>Create config file</source>
-        <translation>Generi la lima di config</translation>
+        <translation>Crea file di configurazione</translation>
     </message>
     <message>
         <source>Write the newly obtained UIN and password into a clean configuration file
 This will erase your current config file contents if you have one</source>
-        <translation>Scriva il UIN e la parola d&apos;accesso recentemente ottenuti in una lima pulita di configurazione
-Ciò cancellerà i vostri bollettini segnaletici della lima di config se avete uno</translation>
+        <translation>Nuovo numero GG e password saranno salvati nell file di configurazione
+Il vecchio file, se esiste, sarà sovrascritto</translation>
     </message>
     <message>
         <source>Register user</source>
-        <translation>Utente del registro</translation>
+        <translation>Registra nuovo utente</translation>
     </message>
     <message>
         <source>Passwords do not match</source>
-        <translation>Le password non abbinano</translation>
+        <translation>Le passwords non combaciano</translation>
     </message>
     <message>
         <source>OK</source>
@@ -1680,7 +1684,7 @@ Ciò cancellerà i vostri bollettini segnaletici della lima di config se avete u
     </message>
     <message>
         <source>Registering</source>
-        <translation>Registro</translation>
+        <translation>Registrazione</translation>
     </message>
     <message>
         <source>Success!</source>
@@ -1690,20 +1694,20 @@ Ciò cancellerà i vostri bollettini segnaletici della lima di config se avete u
         <source>Registration was successful. Your new number is %1.
 Store it in a safe place along with the password.
 Now add your friends to the userlist.</source>
-        <translation>Il registro riusciva. Il vostro nuovo numero è %1.
-Immagazzinilo in un posto sicuro con la parola d&apos;accesso.
-Ora aggiunga i vostri amici al lista del contatto.</translation>
+        <translation>La registrazione riuscita. Il vostro nuovo numero è %1.
+Conservilo insieme con la password nell posto sicuro
+Ora aggiunga i vostri amici al lista dei contatti.</translation>
     </message>
 </context>
 <context>
     <name>SavePublicKey</name>
     <message>
         <source>Save public key</source>
-        <translation>Risparmi la chiave pubblica</translation>
+        <translation>Salva la chiave pubblica</translation>
     </message>
     <message>
         <source>User %1 is sending you his public key. Do you want to save it?</source>
-        <translation>L&apos;utente %1 sta trasmettendovi la sua chiave pubblica. Desiderate conservarli?</translation>
+        <translation>L&apos;utente %1 sta trasmettendovi la sua chiave pubblica. Desiderate conservarla?</translation>
     </message>
     <message>
         <source>Yes</source>
@@ -1719,7 +1723,7 @@ Ora aggiunga i vostri amici al lista del contatto.</translation>
     </message>
     <message>
         <source>Error writting the key</source>
-        <translation>Errore che scrive la chiave</translation>
+        <translation>Errore di salvataggio chiave</translation>
     </message>
     <message>
         <source>OK</source>
@@ -1730,7 +1734,7 @@ Ora aggiunga i vostri amici al lista del contatto.</translation>
     <name>SearchDialog</name>
     <message>
         <source>&amp;Search</source>
-        <translation>&amp;Ricerca</translation>
+        <translation>C&amp;erca</translation>
     </message>
     <message>
         <source>&amp;Next results</source>
@@ -1738,7 +1742,7 @@ Ora aggiunga i vostri amici al lista del contatto.</translation>
     </message>
     <message>
         <source>C&amp;lear list</source>
-        <translation>&amp;Lista libera</translation>
+        <translation>&amp;Cancella lista</translation>
     </message>
     <message>
         <source>&amp;Add User</source>
@@ -1758,7 +1762,7 @@ Ora aggiunga i vostri amici al lista del contatto.</translation>
     </message>
     <message>
         <source>Gender</source>
-        <translation>Genere</translation>
+        <translation>Sesso</translation>
     </message>
     <message>
         <source>Male</source>
@@ -1778,11 +1782,11 @@ Ora aggiunga i vostri amici al lista del contatto.</translation>
     </message>
     <message>
         <source>Uin</source>
-        <translation>Uin</translation>
+        <translation>Numero GG</translation>
     </message>
     <message>
         <source>Search criteria</source>
-        <translation>Test di verifica di ricerca</translation>
+        <translation>Componenti Ricerca</translation>
     </message>
     <message>
         <source>&amp;Personal data</source>
@@ -1794,11 +1798,11 @@ Ora aggiunga i vostri amici al lista del contatto.</translation>
     </message>
     <message>
         <source>&amp;Uin number</source>
-        <translation>Numero di &amp;UIN</translation>
+        <translation>Numero di &amp;GG</translation>
     </message>
     <message>
         <source>Search for this UIN exclusively</source>
-        <translation>Ricerca di questo UIN esclusivamente</translation>
+        <translation>Cerca proprio questo numero GG</translation>
     </message>
     <message>
         <source>Only active users</source>
@@ -1806,7 +1810,7 @@ Ora aggiunga i vostri amici al lista del contatto.</translation>
     </message>
     <message>
         <source>Status</source>
-        <translation>Condizione</translation>
+        <translation>Status</translation>
     </message>
     <message>
         <source>Birth year</source>
@@ -1826,15 +1830,15 @@ Ora aggiunga i vostri amici al lista del contatto.</translation>
     </message>
     <message>
         <source>Done searching</source>
-        <translation>Ricerca fatta</translation>
+        <translation>Ricerca completata</translation>
     </message>
     <message>
         <source>No results</source>
-        <translation>Nessun risultati</translation>
+        <translation>Nessun risultato</translation>
     </message>
     <message>
         <source>There were no results of your search</source>
-        <translation>Non ci erano risultati della vostra ricerca</translation>
+        <translation>Esito negativo della vostra ricerca</translation>
     </message>
     <message>
         <source>Add User</source>
@@ -1842,7 +1846,11 @@ Ora aggiunga i vostri amici al lista del contatto.</translation>
     </message>
     <message>
         <source>Select user first</source>
-        <translation>Selezioni l&apos;utente primo</translation>
+        <translation>Prona devi selezionare l&apos;utente</translation>
+    </message>
+    <message>
+        <source> </source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1853,15 +1861,15 @@ Ora aggiunga i vostri amici al lista del contatto.</translation>
     </message>
     <message>
         <source>Send</source>
-        <translation>Trasmetta</translation>
+        <translation>Manda</translation>
     </message>
     <message>
         <source>Send SMS</source>
-        <translation>Trasmetta SMS</translation>
+        <translation>Manda SMS</translation>
     </message>
     <message>
         <source>SMS error</source>
-        <translation>Errore di SMS</translation>
+        <translation>Errore trassmissione SMS</translation>
     </message>
     <message>
         <source>Sms application was not specified. Visit the configuration section</source>
@@ -1869,7 +1877,7 @@ Ora aggiunga i vostri amici al lista del contatto.</translation>
     </message>
     <message>
         <source>Could not spawn child process. Check if the program is functional</source>
-        <translation>Non ha potuto deporre le uova il processo del bambino. Controlli se il programma è funzionale </translation>
+        <translation>Problemi con lancio del programa SMS. Controlli se il programma è funzionale </translation>
     </message>
     <message>
         <source>SMS sent</source>
@@ -1877,19 +1885,19 @@ Ora aggiunga i vostri amici al lista del contatto.</translation>
     </message>
     <message>
         <source>The process exited normally. The SMS should be on its way</source>
-        <translation>Il processo ha rimosso normalmente. Lo SMS dovrebbe essere sul relativo senso</translation>
+        <translation>Il processo terminato con successo. Lo SMS dovrebbe essere in viaggio</translation>
     </message>
     <message>
         <source>SMS not sent</source>
-        <translation>SMS non trasmesso</translation>
+        <translation>SMS non è stato trasmesso</translation>
     </message>
     <message>
         <source>The process exited abnormally. The SMS may not be sent</source>
-        <translation>Il processo rimosso anormalmente. Lo SMS non può essere trasmesso</translation>
+        <translation>Il processo SMS terminato con errore. Lo SMS non può essere trasmesso</translation>
     </message>
     <message>
         <source>The SMS was sent and should be on its way</source>
-        <translation>Lo SMS è stato trasmesso e dovrebbe essere sul relativo senso</translation>
+        <translation>Lo SMS è stato trasmesso e dovrebbe essere in viaggio</translation>
     </message>
     <message>
         <source>Contact</source>
@@ -1904,7 +1912,7 @@ Ora aggiunga i vostri amici al lista del contatto.</translation>
     <name>SmsEraGateway</name>
     <message>
         <source>Provider gateway results page looks strange. SMS was probably NOT sent.</source>
-        <translation>La pagina di risultati del Gateway del fornitore sembra sconosciuta. SMS probabilmente NON è stato trasmesso.</translation>
+        <translation>La pagina dei risultati del Gateway di operatore GSM sembra sconosciuta. SMS probabilmente NON è stato trasmesso.</translation>
     </message>
     <message>
         <source>Error: </source>
@@ -1924,7 +1932,7 @@ Ora aggiunga i vostri amici al lista del contatto.</translation>
     </message>
     <message>
         <source>Access forbidden</source>
-        <translation>Accedi a proibito a</translation>
+        <translation>Accesso proibito</translation>
     </message>
     <message>
         <source>Syntax error</source>
@@ -1932,15 +1940,15 @@ Ora aggiunga i vostri amici al lista del contatto.</translation>
     </message>
     <message>
         <source>Limit of the sms run-down</source>
-        <translation>Il limite SMS si è fermato</translation>
+        <translation>limite quantitativo SMS esaurito</translation>
     </message>
     <message>
         <source>Wrong receiver adress</source>
-        <translation>Adress errati della ricevente</translation>
+        <translation>Indirizzo del ricevente SMS errato</translation>
     </message>
     <message>
         <source>Message too long</source>
-        <translation>Messaggio troppo lungamente</translation>
+        <translation>Messaggio troppo lungo</translation>
     </message>
     <message>
         <source>Unknown error</source>
@@ -1960,23 +1968,23 @@ Ora aggiunga i vostri amici al lista del contatto.</translation>
         <source>Provider gateway page looks strange. It&apos;s probably temporary disabled
 or has beed changed too much to parse it correctly.</source>
         <translation>La pagina del Gateway del fornitore sembra sconosciuta.
-È probabilmente disabled provvisorio o ha beed ha cambiato troppo per analizzarla correttamente.</translation>
+Probabilmente è temporaneamente disabilitata, o sono state cambiate le regole accesso.</translation>
     </message>
     <message>
         <source>You exceeded your daily limit</source>
-        <translation>Avete ecceduto il vostro limite quotidiano</translation>
+        <translation>Avete ragiunto limite quotidiano dei SMS</translation>
     </message>
     <message>
         <source>Text from the picture is incorrect</source>
-        <translation>Il testo dall&apos;immagine è errato</translation>
+        <translation>Il testo dall&apos;immagine errato</translation>
     </message>
     <message>
         <source>The receiver has to enable SMS STANDARD service</source>
-        <translation>La ricevente deve permettere il servizio di STANDARD SMS</translation>
+        <translation>Il ricevente deve permettere il servizio di STANDARD SMS</translation>
     </message>
     <message>
         <source>Provider gateway results page looks strange. SMS was probably NOT sent.</source>
-        <translation>La pagina di risultati del Gateway del fornitore sembra sconosciuta. SMS probabilmente NON è stato trasmesso.</translation>
+        <translation>La pagina di risultati del Gateway del operatore GSM sembra sconosciuta. SMS probabilmente NON è stato trasmesso.</translation>
     </message>
 </context>
 <context>
@@ -1991,12 +1999,12 @@ or has beed changed too much to parse it correctly.</source>
     <message>
         <source>Provider gateway page looks strange. It&apos;s probably temporary disabled
 or has beed changed too much to parse it correctly.</source>
-        <translation>La pagina del Gateway del fornitore sembra sconosciuta.
-È probabilmente disabled provvisorio o ha beed ha cambiato troppo per analizzarla correttamente.</translation>
+        <translation>La pagina del Gateway del operatore GSM sembra sconosciuta.
+Probabilmente è temporaneamente disattivata, o sono state cambiate le reole accesso.</translation>
     </message>
     <message>
         <source>Provider gateway results page looks strange. SMS was probably NOT sent.</source>
-        <translation>La pagina di risultati del Gateway del fornitore sembra sconosciuta. SMS probabilmente NON è stato trasmesso.</translation>
+        <translation>La pagina di risultati del Gateway del operatore GSM sembra sconosciuta. SMS probabilmente NON è stato trasmesso.</translation>
     </message>
 </context>
 <context>
@@ -2014,7 +2022,7 @@ or has beed changed too much to parse it correctly.</source>
     </message>
     <message>
         <source>and type here</source>
-        <translation>e tipo qui</translation>
+        <translation>e risscriva lo qui</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -2030,15 +2038,16 @@ or has beed changed too much to parse it correctly.</source>
     <message>
         <source>Left click - hide/show window
 Middle click or Left click- next message</source>
-        <translation>Scatto di sinistra - pellame/finestra di esposizione
-Messaggio seguente di scatto di sinistra o di scatto centrale</translation>
+        <translation>Tasto sx - nascondi/vedi finestra Kadu
+Tasto sx/centrale - ricevi messaggio
+tasto dx - cambia status</translation>
     </message>
 </context>
 <context>
     <name>Unregister</name>
     <message>
         <source>UIN</source>
-        <translation>UIN</translation>
+        <translation>Numero GG</translation>
     </message>
     <message>
         <source>Password</source>
@@ -2046,11 +2055,11 @@ Messaggio seguente di scatto di sinistra o di scatto centrale</translation>
     </message>
     <message>
         <source>Unregister</source>
-        <translation>Cancellare dal registro</translation>
+        <translation>Sconnetti utente</translation>
     </message>
     <message>
         <source>Unregister user</source>
-        <translation>Utente di Unregister</translation>
+        <translation>Sconnetti utente</translation>
     </message>
     <message>
         <source>Please fill out all fields</source>
@@ -2066,7 +2075,7 @@ Messaggio seguente di scatto di sinistra o di scatto centrale</translation>
     </message>
     <message>
         <source>Unregistering</source>
-        <translation>Cancellare dal registro</translation>
+        <translation>Sconessione utente</translation>
     </message>
     <message>
         <source>Success!</source>
@@ -2089,7 +2098,7 @@ Messaggio seguente di scatto di sinistra o di scatto centrale</translation>
     </message>
     <message>
         <source>&lt;I&gt;Mobile:&lt;/I&gt;&lt;B&gt; </source>
-        <translation>&lt;I&gt;Telefono:&lt;/I&gt;&lt;B&gt; </translation>
+        <translation>&lt;I&gt;Cell:&lt;/I&gt;&lt;B&gt; </translation>
     </message>
     <message>
         <source>&lt;nobr&gt;&lt;I&gt;Not available&lt;/I&gt;&lt;/nobr&gt;</source>
@@ -2101,11 +2110,11 @@ Messaggio seguente di scatto di sinistra o di scatto centrale</translation>
     </message>
     <message>
         <source>&lt;I&gt;Invisible &lt;B&gt;(d.)&lt;/B&gt;&lt;/I&gt;</source>
-        <translation>&lt;I&gt;Invisibile &lt;B&gt;(d.)&lt;/B&gt;&lt;/I&gt;</translation>
+        <translation>&lt;I&gt;Invisibile &lt;B&gt;(desc.)&lt;/B&gt;&lt;/I&gt;</translation>
     </message>
     <message>
         <source>&lt;nobr&gt;&lt;I&gt;Busy &lt;B&gt;(d.)&lt;/B&gt;&lt;/I&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;I&gt;Occupato &lt;B&gt;(d.)&lt;/B&gt;&lt;/I&gt;&lt;/nobr&gt;</translation>
+        <translation>&lt;nobr&gt;&lt;I&gt;Occupato &lt;B&gt;(desc.)&lt;/B&gt;&lt;/I&gt;&lt;/nobr&gt;</translation>
     </message>
     <message>
         <source>&lt;nobr&gt;&lt;I&gt;Not available &lt;B&gt;(d.)&lt;/B&gt;&lt;/I&gt;&lt;/nobr&gt;</source>
@@ -2117,7 +2126,7 @@ Messaggio seguente di scatto di sinistra o di scatto centrale</translation>
     </message>
     <message>
         <source>&lt;nobr&gt;&lt;I&gt;Blocking&lt;/I&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;I&gt;Ostruire&lt;/I&gt;&lt;/nobr&gt;</translation>
+        <translation>&lt;nobr&gt;&lt;I&gt;Bloccato&lt;/I&gt;&lt;/nobr&gt;</translation>
     </message>
     <message>
         <source>&lt;nobr&gt;&lt;I&gt;Unknown status&lt;/I&gt;&lt;/nobr&gt;</source>
@@ -2132,26 +2141,26 @@ Messaggio seguente di scatto di sinistra o di scatto centrale</translation>
     <name>UserBoxSlots</name>
     <message>
         <source>Userbox background color</source>
-        <translation>Colore della priorità bassa dell&apos;utente</translation>
+        <translation>Colore di sottofondo della lista contatti</translation>
     </message>
     <message>
         <source>Desc. background color</source>
-        <translation>Colore della priorità bassa di descrizione</translation>
+        <translation>Colore sottofondo di descrizione</translation>
     </message>
     <message>
         <source>Font in userbox window</source>
-        <translation>Serie completa di caratteri nella finestra del userbox</translation>
+        <translation>Caratteri lista contatti</translation>
     </message>
     <message>
         <source>Font in desc.</source>
-        <translation>Serie completa di caratteri nella descrizione</translation>
+        <translation>Caratteri nella desc.</translation>
     </message>
 </context>
 <context>
     <name>UserInfo</name>
     <message>
         <source>User info on %1</source>
-        <translation>Utente Info su %1</translation>
+        <translation>Info di %1</translation>
     </message>
     <message>
         <source>Close</source>
@@ -2159,11 +2168,11 @@ Messaggio seguente di scatto di sinistra o di scatto centrale</translation>
     </message>
     <message>
         <source>Uin</source>
-        <translation>Uin</translation>
+        <translation>Numero GG</translation>
     </message>
     <message>
         <source>Status</source>
-        <translation>Condizione</translation>
+        <translation>Status</translation>
     </message>
     <message>
         <source>Nickname</source>
@@ -2171,7 +2180,7 @@ Messaggio seguente di scatto di sinistra o di scatto centrale</translation>
     </message>
     <message>
         <source>AltNick</source>
-        <translation>AltNick</translation>
+        <translation>Visualizza</translation>
     </message>
     <message>
         <source>First name</source>
@@ -2183,7 +2192,7 @@ Messaggio seguente di scatto di sinistra o di scatto centrale</translation>
     </message>
     <message>
         <source>Mobile</source>
-        <translation>Telefono</translation>
+        <translation>Cell</translation>
     </message>
     <message>
         <source>Group</source>
@@ -2195,7 +2204,7 @@ Messaggio seguente di scatto di sinistra o di scatto centrale</translation>
     </message>
     <message>
         <source>Address IP and Port</source>
-        <translation>IP indirizzo ed orificio</translation>
+        <translation>Indirizzo IP e Porta</translation>
     </message>
     <message>
         <source>Protocol version</source>
@@ -2215,11 +2224,11 @@ Messaggio seguente di scatto di sinistra o di scatto centrale</translation>
     </message>
     <message>
         <source>Online</source>
-        <translation>In linea</translation>
+        <translation>disponibile</translation>
     </message>
     <message>
         <source>Online (d.)</source>
-        <translation>In linea (d.)</translation>
+        <translation>disponibile (desc.)</translation>
     </message>
     <message>
         <source>Offline</source>
@@ -2227,7 +2236,7 @@ Messaggio seguente di scatto di sinistra o di scatto centrale</translation>
     </message>
     <message>
         <source>Offline (d.)</source>
-        <translation>Fuori linea (d.)</translation>
+        <translation>Fuori linea (desc.)</translation>
     </message>
     <message>
         <source>Busy</source>
@@ -2235,7 +2244,7 @@ Messaggio seguente di scatto di sinistra o di scatto centrale</translation>
     </message>
     <message>
         <source>Busy (d.)</source>
-        <translation>Occupato (d.)</translation>
+        <translation>Occupato (desc.)</translation>
     </message>
     <message>
         <source>Invisible</source>
@@ -2243,39 +2252,39 @@ Messaggio seguente di scatto di sinistra o di scatto centrale</translation>
     </message>
     <message>
         <source>Invisible (d.)</source>
-        <translation>Invisibile (d.)</translation>
+        <translation>Invisibile (desc.)</translation>
     </message>
     <message>
         <source>Blocks us</source>
-        <translation>Li ostruisce</translation>
+        <translation>Blocca accesso</translation>
     </message>
     <message>
         <source>General</source>
-        <translation>Generalità</translation>
+        <translation>Principale</translation>
     </message>
     <message>
         <source>Block user</source>
-        <translation>Utente del blocco</translation>
+        <translation>Blocca contatto</translation>
     </message>
     <message>
         <source>Offline to user</source>
-        <translation>Fuori linea all&apos;utente</translation>
+        <translation>Fuori linea per contatto</translation>
     </message>
     <message>
         <source>Notify about status changes</source>
-        <translation>Informi circa i cambiamenti di condizione</translation>
+        <translation>Notificacambiamento di status</translation>
     </message>
     <message>
         <source>Others</source>
-        <translation>Altri</translation>
+        <translation>Altro</translation>
     </message>
     <message>
         <source>Bad UIN</source>
-        <translation>UIN Difettoso</translation>
+        <translation>Numero GG errato</translation>
     </message>
     <message>
         <source>User is already in userlist</source>
-        <translation>L&apos;utente è già nella lista del contatto</translation>
+        <translation>Contatto è già nella lista dei contatti</translation>
     </message>
     <message>
         <source>Add user</source>
@@ -2291,11 +2300,11 @@ Messaggio seguente di scatto di sinistra o di scatto centrale</translation>
     </message>
     <message>
         <source>Add user problem</source>
-        <translation>Aggiunga il problema dell&apos;utente</translation>
+        <translation>Problemi con aggiungimento del contatto</translation>
     </message>
     <message>
         <source>Altnick field cannot be empty.</source>
-        <translation>Il campo di Altnick non può essere vuoto.</translation>
+        <translation>Il campo di visualizza non può essere vuoto.</translation>
     </message>
 </context>
 <context>
@@ -2316,61 +2325,61 @@ Messaggio seguente di scatto di sinistra o di scatto centrale</translation>
     <name>UserlistExport</name>
     <message>
         <source>%1 entries will be exported</source>
-        <translation>%1 voce sarà esportata</translation>
+        <translation>%1 contatti sarà esportato</translation>
     </message>
     <message>
         <source>&amp;Send userlist</source>
-        <translation>&amp;Trasmetta la lista del contatto</translation>
+        <translation>&amp;Manda la lista dei contatti</translation>
     </message>
     <message>
         <source>&amp;Delete userlist</source>
-        <translation>&amp;Lista di cancellazione del contatto</translation>
+        <translation>&amp;Cancella la lista  dei contatti</translation>
     </message>
     <message>
         <source>&amp;Export to file</source>
-        <translation>&amp;Esportazione alla lima</translation>
+        <translation>Salva in fil&amp;e</translation>
     </message>
     <message>
         <source>&amp;Close window</source>
-        <translation>&amp;Finestra vicina</translation>
+        <translation>Chiudi &amp;finestra</translation>
     </message>
     <message>
         <source>Export userlist</source>
-        <translation>Lista di esportazione del contatto</translation>
+        <translation>Esportazione lista dei contatti</translation>
     </message>
     <message>
         <source>Export error</source>
-        <translation>Error de la exportación</translation>
+        <translation>Errore di espotazione</translation>
     </message>
     <message>
         <source>The application encountered an internal error
 The export was unsuccessful</source>
         <translation>L&apos;applicazione ha incontrato un errore interno
-L&apos;esportazione era infruttuosa </translation>
+L&apos;esportazione fallita</translation>
     </message>
     <message>
         <source>Export completed</source>
-        <translation>Exportación terminada</translation>
+        <translation>Esportazione completata</translation>
     </message>
     <message>
         <source>Your userlist has been successfully exported to file</source>
-        <translation>La vostra lista del contatto è stata esportata con successo alla lima</translation>
+        <translation>La vostra lista dei contatti è stata salvata con successo nel file</translation>
     </message>
     <message>
         <source>The application encountered an internal error
 The export userlist to file was unsuccessful</source>
         <translation>L&apos;applicazione ha incontrato un errore interno
-Il userlist dell&apos;esportazione alla lima era infruttuoso</translation>
+Salvataggio lista contatti fallito</translation>
     </message>
     <message>
         <source>The application encountered an internal error
 The delete userlist on server was unsuccessful</source>
         <translation>L&apos;applicazione ha incontrato un errore interno
-La lista di cancellazione del contatto sull&apos;assistente era infruttuosa</translation>
+La cancellazione della lista dei contatti su server GG fallita</translation>
     </message>
     <message>
         <source>Your userlist has been successfully exported to server</source>
-        <translation>La vostra lista del contatto è stata esportata con successo all&apos;assistente</translation>
+        <translation>La vostra lista dei contatti è stata esportata con successo su server GG</translation>
     </message>
 </context>
 <context>
@@ -2381,15 +2390,15 @@ La lista di cancellazione del contatto sull&apos;assistente era infruttuosa</tra
     </message>
     <message>
         <source>&amp;Save results</source>
-        <translation>&amp;Risparmi i risultati</translation>
+        <translation>&amp;Salva i risultati</translation>
     </message>
     <message>
         <source>&amp;Import from file</source>
-        <translation>&amp;Importazione dalla lima</translation>
+        <translation>&amp;Importazione dal file</translation>
     </message>
     <message>
         <source>UIN</source>
-        <translation>UIN</translation>
+        <translation>Numero GG</translation>
     </message>
     <message>
         <source>Nickname</source>
@@ -2397,7 +2406,7 @@ La lista di cancellazione del contatto sull&apos;assistente era infruttuosa</tra
     </message>
     <message>
         <source>Disp. nick</source>
-        <translation>Scalfittura dell&apos;esposizione</translation>
+        <translation>Visualizza</translation>
     </message>
     <message>
         <source>Name</source>
@@ -2409,7 +2418,7 @@ La lista di cancellazione del contatto sull&apos;assistente era infruttuosa</tra
     </message>
     <message>
         <source>Mobile no.</source>
-        <translation>Numero di telefono</translation>
+        <translation>Cell no.</translation>
     </message>
     <message>
         <source>Group</source>
@@ -2421,7 +2430,7 @@ La lista di cancellazione del contatto sull&apos;assistente era infruttuosa</tra
     </message>
     <message>
         <source>Import userlist</source>
-        <translation>Lista di importazione del contatto</translation>
+        <translation>importazione della lista dei contatti</translation>
     </message>
     <message>
         <source>Import error</source>
@@ -2431,17 +2440,17 @@ La lista di cancellazione del contatto sull&apos;assistente era infruttuosa</tra
         <source>The application encountered an internal error
 The import userlist from file was unsuccessful</source>
         <translation>L&apos;applicazione ha incontrato un errore interno
-Il userlist dell&apos;importazione dalla lima era infruttuoso</translation>
+L&apos;importazione della lista contatti fallita</translation>
     </message>
     <message>
         <source>The application encountered an internal error
 The import was unsuccessful</source>
         <translation>L&apos;applicazione ha incontrato un errore interno
-L&apos;importazione era infruttuosa</translation>
+L&apos;importazione fallita</translation>
     </message>
     <message>
         <source>&amp;Merge results</source>
-        <translation>&amp;Risultati di fusione</translation>
+        <translation>&amp;Unisci risultati</translation>
     </message>
 </context>
 <context>
@@ -2483,13 +2492,13 @@ L&apos;importazione era infruttuosa</translation>
     </message>
     <message>
         <source> wants to send us a file </source>
-        <translation> desidera trasmetterci una lima </translation>
+        <translation> desidera trasmetterci un file</translation>
     </message>
     <message>
         <source>
 of size </source>
         <translation>
-del formato </translation>
+di</translation>
     </message>
     <message>
         <source>. Accept transfer?</source>
@@ -2497,7 +2506,7 @@ del formato </translation>
     </message>
     <message>
         <source>Incoming transfer</source>
-        <translation>Trasferimento ricevuto</translation>
+        <translation>Trasferimento entrante</translation>
     </message>
     <message>
         <source>Yes</source>
@@ -2509,19 +2518,19 @@ del formato </translation>
     </message>
     <message>
         <source>save file</source>
-        <translation>risparmi la lima</translation>
+        <translation>salva il file</translation>
     </message>
     <message>
         <source>Select file location</source>
-        <translation>Selezioni la posizione della lima</translation>
+        <translation>Selezioni percorso del file</translation>
     </message>
     <message>
         <source>File %1 already exists.</source>
-        <translation>La lima %1 già esiste.</translation>
+        <translation>Il file %1 già esiste.</translation>
     </message>
     <message>
         <source>Overwrite</source>
-        <translation>Scriva sopra</translation>
+        <translation>Sovrascrivere</translation>
     </message>
     <message>
         <source>Resume</source>
@@ -2533,34 +2542,34 @@ del formato </translation>
     </message>
     <message>
         <source>Connect error</source>
-        <translation>Colleghi l&apos;errore</translation>
+        <translation>Errore collegamento</translation>
     </message>
     <message>
         <source>Could not open file</source>
-        <translation>Non ha potuto aprire la lima</translation>
+        <translation>Errore apertura file</translation>
     </message>
     <message>
         <source>open file</source>
-        <translation>apra la lima</translation>
+        <translation>apri file</translation>
     </message>
     <message>
         <source> wants to talk with you. Do you accept it?</source>
-        <translation> desidera comunicare con voi. Lo accettate?</translation>
+        <translation> desidera parlare a voce. Lo accetti?</translation>
     </message>
     <message>
         <source>Incoming voice chat</source>
-        <translation>Chiacchierata ricevuta di voce</translation>
+        <translation>Chat a voce entrante</translation>
     </message>
 </context>
 <context>
     <name>remindPassword</name>
     <message>
         <source>Remind password</source>
-        <translation>Ricordi alla password</translation>
+        <translation>Ricordi password</translation>
     </message>
     <message>
         <source>Error during remind password</source>
-        <translation>L&apos;errore durante ricorda alla password</translation>
+        <translation>L&apos;errore durante ricorda  password</translation>
     </message>
     <message>
         <source>OK</source>

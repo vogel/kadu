@@ -1001,6 +1001,10 @@ Dein Passwort ist falsch!!!</translation>
         <source>Disconnection has occured</source>
         <translation>Verbindung wurde getrennt</translation>
     </message>
+    <message>
+        <source>Please change your email in &quot;Change password/email&quot; window. Leave new password field blank.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>HintManager</name>

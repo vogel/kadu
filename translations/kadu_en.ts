@@ -996,6 +996,10 @@ Your password is incorrect !!!</source>
         <source>Disconnection has occured</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Please change your email in &quot;Change password/email&quot; window. Leave new password field blank.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>HintManager</name>
