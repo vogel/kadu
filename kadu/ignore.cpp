@@ -11,16 +11,10 @@
 #include <qlayout.h>
 #include <qfile.h>
 #include <qtextstream.h>
-#include <qvaluelist.h>
 #include <qstringlist.h>
+#include <qtooltip.h>
 
 #include <sys/stat.h>
-#include <sys/types.h>
-#include <stdlib.h>
-
-//
-#include "kadu.h"
-#include "misc.h"
 #include "ignore.h"
 //
 

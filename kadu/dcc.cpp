@@ -8,14 +8,11 @@
  ***************************************************************************/
 
 #include <qfiledialog.h>
-#include <iostream>
 #include <fcntl.h>
 #include <qmessagebox.h>
 #include <unistd.h>
-#include <qprocess.h>
 #include <qfileinfo.h>
 
-#include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/un.h>
 //

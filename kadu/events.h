@@ -3,7 +3,6 @@
 
 #include <qdialog.h>
 #include <qstring.h>
-#include <qdatetime.h>
 #include <qtimer.h>
 
 #include "libgadu.h"

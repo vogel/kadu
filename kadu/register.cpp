@@ -14,13 +14,9 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <pwd.h>
-#include <errno.h>
-#include <stdlib.h>
 #include <qfile.h>
 
 #include "kadu.h"
-#include "config_dialog.h"
-#include "adduser.h"
 #include "config_file.h"
 #include "debug.h"
 #include "register.h"
@@ -51,12 +47,13 @@ void createConfig() {
 		}
 
 	kdebug("createConfig(): Writing config files...\n");
-	config_file.setGroup("Global");
-	config_file.writeEntry("UIN", int(config.uin));
-	config_file.writeEntry("Password", pwHash(config.password));
+//	hmm wydaje mi sie ze przy obecnym config_file nie potrzebne jest to 
+//	config_file.setGroup("Global");
+//	config_file.writeEntry("UIN", int(config.uin));
+//	config_file.writeEntry("Password", pwHash(config.password));
 	config_file.sync();
 
-	kadu->setCaption(QString("Kadu: %1").arg(config.uin));
+	kadu->setCaption(QString("Kadu: %1").arg(config_file.readNumEntry("Global","UIN")));
 
 	kdebug("createConfig(): Config file created\n");
 }
@@ -243,8 +240,8 @@ void Register::socketEvent() {
 void Register::ask() {
 	kdebug("Register::ask()\n");
 	if (updateconfig->isChecked()) {
-		config.uin = uin;
-		config.password = pwd->text();
+		config_file.writeEntry("Global","UIN",(int)uin);
+		config_file.writeEntry("Global","Password",pwHash(pwd->text()));
 		createConfig();
 		}
 }
@@ -421,7 +418,7 @@ void Unregister::deleteConfig() {
 
 	kdebug("Unregister::deleteConfig(): Deleting config file...\n");
 	QFile::remove(ggPath("kadu.conf"));
-	config.uin = 0;
+	config_file.writeEntry("Global","UIN",0);
 
 	kadu->setCaption(i18n("No user"));
 

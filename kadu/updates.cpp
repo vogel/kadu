@@ -1,12 +1,6 @@
 #include <qnetwork.h>
-#include <qurloperator.h>
-#include <qnetworkprotocol.h>
-#include <qcstring.h>
-
 #include "../config.h"
 #include "updates.h"
-#include "misc.h"
-#include "kadu.h"
 
 UpdatesClass::UpdatesClass(uin_t uin) {
 	qInitNetworkProtocols();

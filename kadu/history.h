@@ -56,7 +56,7 @@ class History : public QDialog {
 	Q_OBJECT
 	public:
 		History(UinsList uins);
-
+		static void initModule();
 	public slots:
 		void prevBtnClicked();
 		void nextBtnClicked();
@@ -140,5 +140,14 @@ class HistoryManager {
 };
 
 extern HistoryManager history;
+
+class HistorySlots: public QObject
+{
+	Q_OBJECT
+	public slots:
+	    void onCreateConfigDialog();
+	    void onDestroyConfigDialog();
+	    void updateQuoteTimeLabel(int);
+};
 
 #endif

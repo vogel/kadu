@@ -7,18 +7,13 @@
 #include <qregexp.h>
 #include <qcolor.h>
 #include <qaccel.h>
-#include <stdio.h>
-#include <stdlib.h>
+
 #include <pwd.h>
-#include <sys/stat.h>
 #include <unistd.h>
-#include <time.h>
-#include <string.h>
 
 #include "misc.h"
-#include "config_dialog.h"
 #include "config_file.h"
-#include "kadu.h"
+#include "status.h"
 #include "debug.h"
 
 #define GG_FONT_IMAGE	0x80
@@ -550,7 +545,7 @@ ChooseDescription::ChooseDescription ( int nr, QWidget * parent, const char * na
 
   	desc = new QComboBox(TRUE,this,own_description);
 
-	desc->insertStringList(config.defaultdescription);
+	desc->insertStringList(defaultdescriptions);
 	QLineEdit *ss;
 	ss= new QLineEdit(this,"LineEdit");
 	desc->setLineEdit(ss);
@@ -597,17 +592,17 @@ ChooseDescription::ChooseDescription ( int nr, QWidget * parent, const char * na
 
 void ChooseDescription::okbtnPressed() {
 
-    if (config.defaultdescription.contains(desc->currentText())==0)
+    if (defaultdescriptions.contains(desc->currentText())==0)
 {
-if (config.defaultdescription.count()==4) config.defaultdescription.remove(config.defaultdescription.last());
+if (defaultdescriptions.count()==4) defaultdescriptions.remove(defaultdescriptions.last());
 
 }
 else 
 {
-config.defaultdescription.remove(desc->currentText());
+defaultdescriptions.remove(desc->currentText());
 }
-config.defaultdescription.prepend(desc->currentText());
-own_description=config.defaultdescription.first();
+defaultdescriptions.prepend(desc->currentText());
+own_description=defaultdescriptions.first();
 	accept();
 }
 
@@ -662,8 +657,7 @@ IconsManager *icons = NULL;
 
 QKeySequence HotKey::shortCutFromFile(const QString &name)
 {
-    config_file.setGroup("ShortCuts");
-return QKeySequence(config_file.readEntry(name));
+return QKeySequence(config_file.readEntry("ShortCuts",name));
 }
 
 

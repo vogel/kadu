@@ -8,21 +8,19 @@
  ***************************************************************************/
 
 #include <qapplication.h>
-#include <qtextcodec.h>
 #include <qmessagebox.h>
+
 #include <sys/stat.h>
-#include <sys/types.h>
 #include <locale.h>
-#include <libintl.h>
 
 #include "kadu.h"
+#include "config_file.h"
 #include "config_dialog.h"
 #include "register.h"
 #include "../config.h"
 #ifdef HAVE_OPENSSL
 #include "simlite.h"
 #endif
-#include "sound.h"
 
 Kadu *kadu;	
 QApplication *a;
@@ -45,8 +43,7 @@ int main(int argc, char *argv[])
 	QPixmap *pix = icons->loadIcon("offline");
 	kadu->setIcon(*pix);
 	a->setMainWidget(kadu);
-
-	if (!config.uin) {
+	if (!config_file.readNumEntry("Global","UIN")) {
 		QString path_;
 		path_ = ggPath("");
 		mkdir(path_.local8Bit(), 0700);
@@ -71,10 +68,10 @@ int main(int argc, char *argv[])
 		kadu->setCaption(i18n("Kadu: new user"));
 		}
 
-	own_description = config.defaultdescription.first();
-	if (config.defaultstatus != GG_STATUS_NOT_AVAIL && config.defaultstatus != GG_STATUS_NOT_AVAIL_DESCR) {
+	own_description = defaultdescriptions.first();
+	if (config_file.readNumEntry("Global","DefaultStatus") != GG_STATUS_NOT_AVAIL && config_file.readNumEntry("Global","DefaultStatus") != GG_STATUS_NOT_AVAIL_DESCR) {
 		kadu->autohammer = true;
-		kadu->setStatus(config.defaultstatus);	
+		kadu->setStatus(config_file.readNumEntry("Global","DefaultStatus"));
 		}
 #ifdef HAVE_OPENSSL
 	sim_key_path = strdup(ggPath("keys/").local8Bit());

@@ -13,7 +13,6 @@
 #include <qlineedit.h>
 #include <libintl.h>
 
-
 #include "libgadu.h"
 #include "userlist.h"
 

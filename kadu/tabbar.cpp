@@ -7,12 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qrect.h>
-#include <qbitmap.h>
-#include <qtoolbutton.h>
-#include <qtooltip.h>
 #include <qapplication.h>
-#include <qpainter.h>
 #include <qstyle.h>
 #include <qiconset.h>
 #include <qcursor.h>

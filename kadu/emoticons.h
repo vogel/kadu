@@ -3,7 +3,6 @@
 
 #include <qvaluelist.h>
 #include <qstringlist.h>
-#include <qregexp.h>
 #include <qtextedit.h>
 #include <private/qrichtext_p.h>
 #include <qlabel.h>
@@ -121,6 +120,14 @@ public:
 		const QString& name, const QMap<QString,QString>& attr,
 		const QString& context, const QMimeSourceFactory& factory,
 		bool emptyTag, QTextDocument* doc) const;
+};
+
+
+enum EmoticonsStyle
+{
+	EMOTS_NONE,
+	EMOTS_STATIC,
+	EMOTS_ANIMATED
 };
 
 #endif

@@ -6,7 +6,7 @@
 #include "debug.h"
 #include "dock_widget.h"
 #include "kadu.h"
-#include "config_dialog.h"
+#include "config_file.h"
 #include "chat.h"
 
 PendingMsgs::PendingMsgs(): QObject()
@@ -187,7 +187,7 @@ void PendingMsgs::openMessages() {
 				for (j = 0; j < elem.uins.count(); j++)
 					if (!userlist.containsUin(elem.uins[j])) {
 						tmp = QString::number(elem.uins[j]);
-						if (config.dock)
+						if (config_file.readBoolEntry("Global","UseDocking"))
 							userlist.addUser("", "", tmp, tmp, "", tmp, GG_STATUS_NOT_AVAIL,
 								0, false, false, true, "", "", "", true);
 						else

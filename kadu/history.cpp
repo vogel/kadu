@@ -9,43 +9,19 @@
 
 
 #include <qwidget.h>
-#include <qdialog.h>
-#include <qtextbrowser.h>
 #include <qpushbutton.h>
 #include <qlabel.h>
-#include <qlistbox.h>
-#include <qstring.h>
-#include <qcstring.h>
-#include <qfont.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <qlayout.h>
 #include <qfile.h>
 #include <qtextcodec.h>
 #include <qregexp.h>
 #include <qdir.h>
-#include <qvaluelist.h>
-#include <qstringlist.h>
 #include <qmessagebox.h>
-#include <qlayout.h>
 #include <qhbox.h>
-#include <qcheckbox.h>
-#include <qhgroupbox.h>
-#include <qradiobutton.h>
-#include <qvbuttongroup.h>
 #include <qtooltip.h>
 
-#include <time.h>
-//#include <sys/socket.h>
-//#include <net/if.h>
-//#include <netinet/in.h>
-//#include <arpa/inet.h>
-
 #include "kadu.h"
+#include "config_file.h"
 #include "config_dialog.h"
-#include "misc.h"
 #include "debug.h"
 #include "history.h"
 
@@ -380,10 +356,11 @@ void HistoryManager::convHist2ekgForm(UinsList uins) {
 				linelist.append("chatrcv");
 				}
 			if (our) {
+
 				if (uins.count() > 1)
 					uin = 0;
 				else
-					if (config.uin != uins[0])
+					if (config_file.readNumEntry("Global","UIN") != uins[0])
 						uin = uins[0];
 					else
 						uin = uins[1];
@@ -397,7 +374,7 @@ void HistoryManager::convHist2ekgForm(UinsList uins) {
 					if (uins.count() > 1)
 						uin = 0;
 					else
-						if (config.uin != uins[0])
+						if (config_file.readNumEntry("Global","UIN") != uins[0])
 							uin = uins[0];
 						else
 							uin = uins[1];
@@ -918,7 +895,7 @@ History::History(UinsList uins): uins(uins), closeDemand(false), finding(false) 
 
 	body = new QTextBrowser(this, "History browser");
 	body->setReadOnly(true);
-	body->setFont(config.fonts.chat);
+	body->setFont(config_file.readFontEntry("Fonts","ChatFont"));
 
 //	QPushButton *closebtn = new QPushButton(this);
 //	closebtn->setText(i18n("&Close"));
@@ -991,24 +968,28 @@ void History::formatHistoryEntry(QString &text, const HistoryEntry &entry) {
 	text.append("<TABLE width=\"100%\"><TR><TD bgcolor=\"");
 	if (entry.type & (HISTORYMANAGER_ENTRY_CHATSEND | HISTORYMANAGER_ENTRY_MSGSEND
 		| HISTORYMANAGER_ENTRY_SMSSEND)) {
-		bgcolor = config.colors.mychatBg.name();
-		textcolor = config.colors.mychatText.name();
+		bgcolor = config_file.readColorEntry("Colors","ChatMyBgColor").name();
+		textcolor = config_file.readColorEntry("Colors","ChatMyFontColor").name();
 		}
 	else {
-		bgcolor = config.colors.usrchatBg.name();
-		textcolor = config.colors.usrchatText.name();
+		bgcolor = config_file.readColorEntry("Colors","ChatUsrBgColor").name();
+		textcolor = config_file.readColorEntry("Colors","ChatUsrFontColor").name();
 		}
 	text.append(bgcolor);
 	text.append("\"><FONT color=\"");
 	text.append(textcolor);
 	text.append("\"><B>");
+
 	if (entry.type == HISTORYMANAGER_ENTRY_SMSSEND)
 		text.append(entry.mobile + " SMS");
 	else
 		if (entry.type & (HISTORYMANAGER_ENTRY_CHATSEND | HISTORYMANAGER_ENTRY_MSGSEND))
-			text.append(config.nick);
+		{
+			text.append(config_file.readEntry("Global","Nick"));
+		}
 		else
 			text.append(entry.nick);
+	
 	text.append(QString(" :: ") + printDateTime(entry.date));
 	if (entry.type & (HISTORYMANAGER_ENTRY_CHATRCV | HISTORYMANAGER_ENTRY_MSGRCV))
 		text.append(QString(" / S ") + printDateTime(entry.sdate));
@@ -1202,6 +1183,21 @@ void History::closeEvent(QCloseEvent *e) {
 		}
 	else
 		e->accept();
+}
+
+void History::initModule()
+{
+	HistorySlots *historyslots=new HistorySlots();
+	ConfigDialog::registerTab(i18n("History"));
+	ConfigDialog::registerVGroupBox(i18n("History"),i18n("Quoted phrases during chat open"));
+	ConfigDialog::registerSpinBox(i18n("Quoted phrases during chat open"),i18n("Count:"),"Other","ChatHistoryCitation",0,200,1);
+	ConfigDialog::registerLabel(i18n("Quoted phrases during chat open"),i18n("Don't quote phrases older than:"));
+	ConfigDialog::registerSlider(i18n("Quoted phrases during chat open"),"historyslider","Other","ChatHistoryQuotationTime",-744,-1,24,-336);
+	ConfigDialog::registerLabel(i18n("Quoted phrases during chat open"),"","dayhour");
+
+	ConfigDialog::registerSlotOnCreate(historyslots,SLOT(onCreateConfigDialog()));
+	ConfigDialog::registerSlotOnDestroy(historyslots,SLOT(onDestroyConfigDialog()));
+	ConfigDialog::connectSlot("historyslider",SIGNAL(valueChanged(int)),historyslots,SLOT(updateQuoteTimeLabel(int)));
 }
 
 HistorySearch::HistorySearch(QWidget *parent, UinsList uins) : QDialog(parent), uins(uins) {
@@ -1491,5 +1487,32 @@ HistoryFindRec HistorySearch::getDialogValues() {
 	findrec.reverse = reverse_chb->isChecked();
 	return findrec;
 }
+
+void HistorySlots::onCreateConfigDialog()
+{
+	kdebug("HistorySlots::onCreateConfigDialog() \n");
+	QLabel *l_qtimeinfo=(QLabel*)(ConfigDialog::getWidget(i18n("Quoted phrases during chat open"),"","dayhour"));
+	l_qtimeinfo->setAlignment(Qt::AlignHCenter);
+	updateQuoteTimeLabel(-config_file.readNumEntry("Other","ChatHistoryQuotationTime",336));
+
+};
+
+void HistorySlots::onDestroyConfigDialog()
+{
+	kdebug("HistorySlots::onDestroyConfigDialog() \n");
+	QSlider *sl_quotation=(QSlider*)(ConfigDialog::getWidget(i18n("Quoted phrases during chat open"),"historyslider"));
+	config_file.writeEntry("Other","ChatHistoryQuotationTime",-sl_quotation->value());
+
+};
+
+
+void HistorySlots::updateQuoteTimeLabel(int value)
+{
+	kdebug("HistorySlots::updateQuoteTimeLabel() \n");
+    	QLabel *l_qtimeinfo=(QLabel*)(ConfigDialog::getWidget(i18n("Quoted phrases during chat open"),"","dayhour"));
+	l_qtimeinfo->setText(QString(i18n("%1 day(s) %2 hour(s)")).arg(-value / 24).arg((-value) % 24));
+};
+
+
 
 HistoryManager history;

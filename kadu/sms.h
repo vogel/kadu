@@ -201,5 +201,14 @@ class Sms : public QDialog {
 		void onSmsSenderFinished(bool success);
 };
 
+class SmsSlots: public QObject
+{
+	Q_OBJECT
+	
+	public slots:
+		void onSmsBuildInCheckToggle(bool);
+		void onCreateConfigDialog();
+
+};
 
 #endif

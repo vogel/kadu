@@ -8,12 +8,8 @@
  ***************************************************************************/
 
 #include <qgroupbox.h>
-#include <qpushbutton.h>
-#include <qlistview.h>
 #include <qmessagebox.h>
-#include <qlayout.h>
 #include <qhbuttongroup.h>
-#include <stdlib.h>
 
 //
 #include "kadu.h"

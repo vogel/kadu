@@ -4,7 +4,6 @@
 #include <qdialog.h>
 #include <qlistview.h>
 #include <qstring.h>
-#include <qsocketnotifier.h>
 #include "libgadu.h"
 #include "userlist.h"
 
@@ -22,7 +21,6 @@ class UserlistImport : public QDialog {
 		QArray<struct userlist> importedusers;
 		QPushButton *fetchbtn;
 		UserList importedUserlist;
-		QString importreply;
 
 	protected:
 		QListView *results;

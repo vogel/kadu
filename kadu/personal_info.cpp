@@ -7,17 +7,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <stdlib.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include <qmessagebox.h>
 #include <qvbox.h>
 #include <qlayout.h>
 
-// kadu.h dolaczony tylko ze wzgl. na zmienna config
-// w przyszlosci trzeba bedzie chyba to zmienic
 #include "kadu.h"
-//
 #include "debug.h"
 #include "events.h"
 #include "personal_info.h"

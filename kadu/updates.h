@@ -2,12 +2,10 @@
 #ifndef UPDATES_H
 #define UPDATES_H
 
-#include <qnetwork.h>
 #include <qurloperator.h>
-#include <qnetworkprotocol.h>
-#include <qcstring.h>
+#include <qstring.h>
 
-#include "misc.h"
+#include "libgadu.h"
 
 class UpdatesClass
 {

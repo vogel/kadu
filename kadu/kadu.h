@@ -167,6 +167,18 @@ struct chats {
     };
 };
 
+class KaduSlots : public QObject
+{
+
+    Q_OBJECT
+    
+	public slots:
+	    void onCreateConfigDialog();
+	    void onDestroyConfigDialog();
+
+
+};
+
 extern QApplication *a;
 
 extern Kadu *kadu;
@@ -203,5 +215,12 @@ extern bool timeout_connected;
 extern struct gg_login_params loginparams;
 extern QTimer *pingtimer;
 //extern QTimer *readevent; - patrz plik events.cpp
+
+
+extern QHostAddress config_dccip;
+extern QHostAddress config_extip;
+extern QHostAddress config_proxyaddr;
+extern QValueList<QHostAddress> config_servers;
+
 
 #endif

@@ -8,14 +8,11 @@
  ***************************************************************************/
 
 #include <qmap.h>
-#include <qregexp.h>
 #include <qdragobject.h>
-#include <qpainter.h>
 #include <qpen.h>
+#include <qregexp.h>
 
-//
-#include "kadu.h"
-//
+#include "status.h"
 #include "userbox.h"
 #include "ignore.h"
 #include "debug.h"
@@ -324,8 +321,7 @@ void UserBox::refresh()
 			}
 		}
 	// Dodajemy nieaktywnych
-	config_file.setGroup("Other");
-	if (config_file.readBoolEntry("ShowHideInactive"))
+	if (config_file.readBoolEntry("Other","ShowHideInactive"))
 	for (i = 0; i < n_users.count(); i++)
 	{
 		UserListElement &user = userlist.byAltNick(n_users[i]);
@@ -401,8 +397,7 @@ void UserBox::changeAllToInactive()
 
 void UserBox::showHideInactive()
 {	
-	config_file.setGroup("Other");
-	config_file.writeEntry("ShowHideInactive",!config_file.readBoolEntry("ShowHideInactive"));
+	config_file.writeEntry("Other","ShowHideInactive",!config_file.readBoolEntry("Other","ShowHideInactive"));
 	refresh();
 }
 

@@ -7,12 +7,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qpushbutton.h>
-#include <qlayout.h>
 #include <qmessagebox.h>
 #include <qvbox.h>
 #include <qhbox.h>
-#include <qdns.h>
 
 //
 #include "kadu.h"

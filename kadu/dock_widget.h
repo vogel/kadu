@@ -36,7 +36,8 @@ class TrayIcon : public QLabel
 		void showHint(const QString&, const QString&, int index);
 		void showErrorHint(const QString&);
 		void reconfigHint();
-
+		static void initModule();
+		
 	public slots:
 		// Status change slots
 		void dockletChange(int id);
@@ -71,5 +72,13 @@ class TrayHint : public QWidget
 };
 
 extern TrayIcon *trayicon;
+
+class TraySlots: public QObject
+{
+	Q_OBJECT
+
+	public slots:
+		void onCreateConfigDialog();
+};
 
 #endif

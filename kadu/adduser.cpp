@@ -16,9 +16,9 @@
 //
 #include "kadu.h"
 #include "tabbar.h"
-//
 #include "adduser.h"
 #include "debug.h"
+#include "libgadu.h"
 
 Adduser::Adduser(QDialog* parent, const char *name) {
 	kdebug("Adduser::Adduser()\n");

@@ -13,9 +13,8 @@
 #include <qtimer.h>
 
 #include "dock_widget.h"
+#include "config_file.h"
 #include "config_dialog.h"
-#include "misc.h"
-#include "chat.h"
 #include "debug.h"
 #include "pending_msgs.h"
 #include "status.h"
@@ -83,7 +82,7 @@ static bool send_message(
 TrayIcon::TrayIcon(QWidget *parent, const char *name)
 	: QLabel(0,"TrayIcon", WMouseNoMask | WRepaintNoErase | WType_TopLevel | WStyle_Customize | WStyle_NoBorder | WStyle_StaysOnTop)
 {
-	if (!config.dock)
+	if (!config_file.readBoolEntry("Global","UseDocking"))
 		return;
 
 	QPixmap pix = *icons->loadIcon("offline");
@@ -183,13 +182,13 @@ void TrayIcon::setPixmap(const QPixmap& pixmap)
 
 void TrayIcon::setType(QPixmap &pixmap)
 {
-	if (!config.dock)
+	if (!config_file.readBoolEntry("Global","UseDocking"))
 		return;
 	setPixmap(pixmap);
 }
 
 void TrayIcon::changeIcon() {
-	if (pending.pendingMsgs() && config.dock && !icon_timer->isActive()) {
+	if (pending.pendingMsgs() && config_file.readBoolEntry("Global","UseDocking") && !icon_timer->isActive()) {
 		if (!blink) {
 			setPixmap(*icons->loadIcon("message"));
 			icon_timer->start(500,TRUE);
@@ -246,7 +245,7 @@ void TrayIcon::enterEvent(QEvent* e)
 
 void TrayIcon::mousePressEvent(QMouseEvent * e) {
 
-	if (!config.dock)
+	if (!config_file.readBoolEntry("Global","UseDocking"))
 		return;
 
 	if (e->button() == MidButton) {
@@ -280,7 +279,7 @@ void TrayIcon::mousePressEvent(QMouseEvent * e) {
 }
 
 void TrayIcon::showHint(const QString &str, const QString &nick, int index) {
-	if (!config.trayhint || !config.dock)
+	if (!config_file.readBoolEntry("Global","TrayHint") || !config_file.readBoolEntry("Global","UseDocking"))
 		return;
 
 	kdebug("TrayIcon::showHint()\n");
@@ -293,10 +292,22 @@ void TrayIcon::reconfigHint() {
 }
 
 void TrayIcon::showErrorHint(const QString &str) {
-	if (!config.hinterror)
+	if (!config_file.readBoolEntry("Global","HintError"))
 		return;
 	kdebug("TrayIcon::showErrorHint()\n");
 	hint->show_hint(str, i18n("Error: "), 1);
+}
+
+void TrayIcon::initModule()
+{
+	ConfigDialog::registerTab(i18n("General"));
+	ConfigDialog::registerCheckBox(i18n("General"),i18n("Enable tray hints"),"Global","TrayHint",true);
+	ConfigDialog::registerVGroupBox(i18n("General"),"---");
+	ConfigDialog::registerLineEdit("---",i18n("Tray hints timeout "),"Global","TimeoutHint","5");
+	ConfigDialog::registerCheckBox("---",i18n("Show connection errors in tray hints"),"Global","HintError",true);
+	TraySlots *trayslots=new TraySlots();
+	ConfigDialog::registerSlotOnCreate(trayslots,SLOT(onCreateConfigDialog()));
+
 }
 
 TrayHint::TrayHint(QWidget *parent, const char *name)
@@ -307,9 +318,9 @@ TrayHint::TrayHint(QWidget *parent, const char *name)
 	hint = new QTextBrowser(this);
 	hint->setVScrollBarMode(QScrollView::AlwaysOff);
 	hint->setHScrollBarMode(QScrollView::AlwaysOff);
-	hint->setFont(config.fonts.trayhint);
-	hint->setPaletteBackgroundColor(config.colors.trayhintBg);
-	hint->setPaletteForegroundColor(config.colors.trayhintText);
+	hint->setFont(config_file.readFontEntry("Fonts","TrayHintFont"));
+	hint->setPaletteBackgroundColor(config_file.readColorEntry("Colors","TrayHintBgColor"));
+	hint->setPaletteForegroundColor(config_file.readColorEntry("Colors","TrayHintTextColor"));
 
 	hint_timer = new QTimer(this);
 	
@@ -323,7 +334,7 @@ void TrayHint::set_hint(void) {
 	QString text_hint; 
 	for (QStringList::Iterator points = hint_list.begin(); points != hint_list.end(); ++points)
 		text_hint.append(*points);
-	size_hint = QFontMetrics(config.fonts.trayhint).size(Qt::ExpandTabs, text_hint);
+	size_hint = QFontMetrics(config_file.readFontEntry("Fonts","TrayHintFont")).size(Qt::ExpandTabs, text_hint);
 	size_hint = QSize(size_hint.width()+35,size_hint.height()+10);
 	resize(size_hint);
 	hint->resize(size_hint);
@@ -376,7 +387,7 @@ void TrayHint::show_hint(const QString &str, const QString &nick, int index) {
 	set_hint();
 	show();
 	if (!hint_timer->isActive())
-		hint_timer->start(config.hinttime * 1000);
+		hint_timer->start(config_file.readNumEntry("Global","TimeoutHint") * 1000);
 }
 
 void TrayHint::remove_hint() {
@@ -402,10 +413,22 @@ void TrayHint::restart() {
 	hint->clear();
 	hint_timer->stop();
 	hint_list.clear();
-	hint->setFont(config.fonts.trayhint);
-	hint->setPaletteBackgroundColor(config.colors.trayhintBg);
-	hint->setPaletteForegroundColor(config.colors.trayhintText);
+	hint->setFont(config_file.readFontEntry("Fonts","TrayHintFont"));
+	hint->setPaletteBackgroundColor(config_file.readColorEntry("Colors","TrayHintBgColor"));
+	hint->setPaletteForegroundColor(config_file.readColorEntry("Colors","TrayHintTextColor"));
 	kdebug("TrayHint::restart()\n");
 }
 
+
+
 TrayIcon *trayicon = NULL;
+
+void TraySlots::onCreateConfigDialog()
+{
+	kdebug("TraySlots::onCreateConfigDialog()\n");
+	QCheckBox* b_trayhint=(QCheckBox*)(ConfigDialog::getWidget(i18n("General"),i18n("Enable tray hints")));
+	QVGroupBox* hintgrp=(QVGroupBox*)(ConfigDialog::getWidget(i18n("General"),"---"));
+	
+	hintgrp->setEnabled(b_trayhint->isChecked());
+	connect(b_trayhint,SIGNAL(toggled(bool)),hintgrp,SLOT(setEnabled(bool)));
+}

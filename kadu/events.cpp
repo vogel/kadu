@@ -7,7 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-//#include <signal.h>
 #include <qwidget.h>
 #include <qdialog.h>
 #include <qpushbutton.h>
@@ -15,37 +14,21 @@
 #include <qstring.h>
 #include <qfile.h>
 #include <qlayout.h>
-#include <qdatetime.h>
 #include <qmessagebox.h>
 
-#define _USE_BSD
-#include <sys/time.h>
-#include <sys/types.h>
-#include <sys/resource.h>
-#include <sys/wait.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <pwd.h>
 #include <netinet/in.h>
 #include <errno.h>
-#include <time.h>
 
 #include "kadu.h"
 #include "ignore.h"
-#include "config_dialog.h"
 #include "events.h"
 #include "chat.h"
 #include "history.h"
-#include "misc.h"
 #include "pending_msgs.h"
 #include "dock_widget.h"
 #include "debug.h"
 #include "sound.h"
 #include "dcc.h"
-#include "search.h"
-#include "personal_info.h"
 #include "config_file.h"
 #include "../config.h"
 #ifdef HAVE_OPENSSL
@@ -165,12 +148,10 @@ void EventManager::connectedSlot()
 	sendUserlist();
 	kadu->setCurrentStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
 	userlist_sent = true;
-
 	if (ifStatusWithDescription(loginparams.status))
 		kadu->setStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
-
 	/* uruchamiamy autoawaya(jezeli wlaczony) po wyslaniu userlisty i ustawieniu statusu */
-	if (config.autoaway)
+	if (config_file.readBoolEntry("Global","AutoAway"))
 		AutoAwayTimer::on();
 	/* jezeli sie rozlaczymy albo stracimy polaczenie, proces laczenia sie z serwerami zaczyna sie od poczatku */
 	server_nr = 0;
@@ -225,7 +206,7 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 	i czy jest wlaczona opcja ignorowania nieznajomych
 	jezeli warunek jest spelniony przerywamy dzialanie funkcji.
 */
-	if (userlist.byUinValue(senders[0]).anonymous && config.ignoreanonusers) {
+	if (userlist.byUinValue(senders[0]).anonymous && config_file.readBoolEntry("Other","IgnoreAnonymousUsers")) {
 		kdebug("EventManager::messageReceivedSlot(): Ignored anonymous. %d is ignored\n",senders[0]);
 		return;
 		}
@@ -234,7 +215,7 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 	podejrzewam ze to juz nie jest potrzebne(ale na wszelki wypadek zostawie), gdyz kiedys to
 	sluzylo co oznaczania wiadomosci systemowych,ktore obecnie sa ignorowane, w dalszej czesci kodu.
 */
-	if (senders[0] == config.uin)
+	if (senders[0] == config_file.readNumEntry("Global","UIN"))
 		return;
 
 	// ignorujemy, jesli nick na liscie ignorowanych
@@ -246,15 +227,14 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 	// ignorujemy wiadomosci systemowe
 	if (senders[0] == 0)
 	{
-		if (msgclass <= config.sysmsgidx)
+		if (msgclass <= config_file.readNumEntry("Global","SystemMsgIndex"))
 		{
 			kdebug("Already had this message, ignoring\n");
 			return;
 		}
-		config.sysmsgidx = msgclass;
+		config_file.writeEntry("Global","SystemMsgIndex",msgclass);
 		kdebug("System message index %d\n", msgclass);
 		return;
-		//senders[0] = config.uin;
 	}
 
 	QString mesg = cp2unicode(msg);
@@ -262,7 +242,7 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 	int i;
 
 #ifdef HAVE_OPENSSL
-	if (config.encryption) {
+	if (config_file.readBoolEntry("Other","Encryption")) {
 		if (!strncmp((char *)msg, "-----BEGIN RSA PUBLIC KEY-----", 20)) {
 			QFile keyfile;
 			QString keyfile_path;
@@ -300,15 +280,18 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 	mamy w³±czon± ikonke w trayu to dodajemy tylko do userlisty(ale chyba nie zapisujemy)
 	lub dodajemy automatycznie do naszej userlisty.
 */
-	if (!userlist.containsUin(senders[0]))
-		if (config.dock)
+
+ 
+ 	//script.eventMsg(senders[0],msgclass,(char*)msg);
+	
+		if (config_file.readBoolEntry("Global","UseDocking"))
 			userlist.addUser("", "", ule.altnick, ule.altnick, "", ule.altnick, GG_STATUS_NOT_AVAIL,
 				0, false, false, true, "", "", "", true);
 		else
 			kadu->addUser("", "", ule.altnick, ule.altnick, "", ule.altnick, GG_STATUS_NOT_AVAIL,
 				0, "", "", "", true);
 
-	if (config.logmessages)
+	if (config_file.readBoolEntry("Global","Logging"))	
 		history.appendMessage(senders, senders[0], mesg, FALSE, time);
 
 	//script.eventMsg(senders[0],msgclass,(char*)msg);
@@ -323,12 +306,12 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 
 		chats[i].ptr->checkPresence(senders, mesg, time, toadd);
 		chats[i].ptr->alertNewMessage();
-		if (!chats[i].ptr->isActiveWindow() && config.hintalert)
+		if (!chats[i].ptr->isActiveWindow() && config_file.readBoolEntry("Other","HintAlert"))
 			trayicon->showHint(i18n("New message from: "), ule.altnick,0);
 		return;
 		}
 
-	playSound(parse(config.soundmsg,ule));
+	playSound(parse(config_file.readEntry("Global","Message_sound"),ule));
 
 	pending.addMsg(senders, mesg, msgclass, time);
 	
@@ -339,7 +322,7 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 	UserBox::all_refresh();
 	trayicon->changeIcon();
 
-	if (config.raise) {
+	if (config_file.readBoolEntry("Global","AutoRaise")) {
 		kadu->showNormal();
 		kadu->setFocus();
 		}
@@ -364,8 +347,7 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 
 void EventManager::chatReceivedSlot(UinsList senders,const QString& msg,time_t time)
 {
-	config_file.setGroup("Other");
-	if(config_file.readBoolEntry("OpenChatOnMessage"))
+	if(config_file.readBoolEntry("Other","OpenChatOnMessage"))
 		pending.openMessages();
 };
 
@@ -373,21 +355,21 @@ void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)
 {
 	if (userlist.containsUin(uin)) {
 		UserListElement ule = userlist.byUin(uin);
-		if (!ule.notify && !config.notifyall)
+		if (!ule.notify && !config_file.readBoolEntry("Notify","NotifyAboutAll"))
 			return;
 		}
 	else
-		if (!config.notifyall)
+		if (!config_file.readBoolEntry("Notify","NotifyAboutAll"))
 			return;
 
-	if (config.notifyglobal && (status == GG_STATUS_AVAIL ||
+	if (config_file.readBoolEntry("Notify","NotifyStatusChange") && (status == GG_STATUS_AVAIL ||
 		status == GG_STATUS_AVAIL_DESCR || status == GG_STATUS_BUSY || status == GG_STATUS_BUSY_DESCR
 		|| status == GG_STATUS_BLOCKED) &&
 		(oldstatus == GG_STATUS_NOT_AVAIL || oldstatus == GG_STATUS_NOT_AVAIL_DESCR || oldstatus == GG_STATUS_INVISIBLE ||
 		oldstatus == GG_STATUS_INVISIBLE_DESCR || oldstatus == GG_STATUS_INVISIBLE2)) {
 		kdebug("Notify about user\n");
 
-		if (config.notifydialog) {		
+		if (config_file.readBoolEntry("Notify","NotifyWithDialogBox")) {		
 			// FIXME convert into a regular QMessageBox
 			QString msg;
 			msg = i18n("User %1 is available").arg(userlist.byUin(uin).altnick);
@@ -398,13 +380,14 @@ void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)
 			msgbox->show();
 			}
 
-		if (config.notifysound) {
+
+
+		if (config_file.readBoolEntry("Notify","NotifyWithSound")) {
 			if (lastsoundtime.elapsed() >= 500)
-				playSound(parse(config.soundnotify,userlist.byUin(uin),false));
+				playSound(parse(config_file.readEntry("Notify","NotifySound"),userlist.byUin(uin),false));
 			lastsoundtime.restart();
 			}
-		
-		if (config.notifyhint)
+		if (config_file.readBoolEntry("Notify","NotifyWithHint"))		
 			trayicon->showHint(i18n(" is available"),userlist.byUin(uin).altnick,1);
 		}
 }
@@ -575,7 +558,7 @@ void EventManager::dccConnectionReceivedSlot(const UserListElement& sender)
 	dccSocketClass *dcc;
 	if (dccSocketClass::count < 8)
 	{
-		dcc_new = gg_dcc_get_file(htonl(sender.ip.ip4Addr()), sender.port, config.uin, sender.uin);
+		dcc_new = gg_dcc_get_file(htonl(sender.ip.ip4Addr()), sender.port, config_file.readNumEntry("Global","UIN"), sender.uin);
 		if (dcc_new)
 		{
 			dcc = new dccSocketClass(dcc_new);

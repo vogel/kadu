@@ -12,8 +12,8 @@
 #include <qregexp.h>
 #include <qpainter.h>
 #include <qurl.h>
+#include <qgrid.h>
 
-#include "kadu.h"
 #include "config_dialog.h"
 #include "config_file.h"
 #include "sms.h"
@@ -391,7 +391,7 @@ void SmsIdeaGateway::onCodeEntered(const QString& code)
 	};
 	kdebug("SMS User entered the code\n");
 	State=SMS_LOADING_RESULTS;
-	QString post_data=QString("token=")+Token+"&SENDER="+config.nick+"&RECIPIENT="+Number+"&SHORT_MESSAGE="+Http.encode(Message)+"&pass="+code;
+	QString post_data=QString("token=")+Token+"&SENDER="+config_file.readEntry("Global","Nick")+"&RECIPIENT="+Number+"&SHORT_MESSAGE="+Http.encode(Message)+"&pass="+code;
 	Http.post("sendsms.aspx",post_data);
 };
 
@@ -408,7 +408,7 @@ void SmsPlusGateway::send(const QString& number,const QString& message)
 	Message=message;
 	State=SMS_LOADING_RESULTS;
 	Http.setHost("212.2.96.57");
-	QString post_data="tprefix="+Number.left(3)+"&numer="+Number.right(6)+"&odkogo="+config.nick+"&tekst="+Message;
+	QString post_data="tprefix="+Number.left(3)+"&numer="+Number.right(6)+"&odkogo="+config_file.readEntry("Global","Nick")+"&tekst="+Message;
 	Http.post("sms/sendsms.php",post_data);
 };
 
@@ -440,7 +440,7 @@ void SmsPlusGateway::httpFinished()
 		QString num = code_regexp2.cap(1);
 		QString code2 = code_regexp2.cap(2);
 		State = SMS_LOADING_RESULTS;
-		QString post_data = "bookopen=&numer="+Number+"&ksiazka=ksi%B1%BFka+telefoniczna&message="+Http.encode(Message)+"&podpis="+config.nick+"&kontakt=&Send=++tak-nada%E6++&Kod"+num+"="+code2+"&kod="+code;
+		QString post_data = "bookopen=&numer="+Number+"&ksiazka=ksi%B1%BFka+telefoniczna&message="+Http.encode(Message)+"&podpis="+config_file.readEntry("Global","Nick")+"&kontakt=&Send=++tak-nada%E6++&Kod"+num+"="+code2+"&kod="+code;
 		Http.post("sms/sendsms.asp", post_data);
 	}
 	else if(State==SMS_LOADING_RESULTS)
@@ -496,10 +496,9 @@ void SmsEraGateway::httpFinished()
 			return;
 		};
 		State = SMS_LOADING_LOGIN_RESULTS;
-		config_file.setGroup("SMS");
 		QString post_data=
-			"j_username="+config_file.readEntry("EraGatewayUser")+
-			"&j_password="+config_file.readEntry("EraGatewayPassword")+
+			"j_username="+config_file.readEntry("SMS","EraGatewayUser")+
+			"&j_password="+config_file.readEntry("SMS","EraGatewayPassword")+
 			"&x=46&y=6";
 		Http.post("j_security_check", post_data);
 	}
@@ -528,12 +527,13 @@ void SmsEraGateway::httpFinished()
 			return;
 		};	
 		State=SMS_LOADING_PREVIEW;
-		config_file.setGroup("SMS");
+
+		QString nick=config_file.readEntry("Global","Nick");		
 		QString post_data=
 			"phoneNumber="+Number+
 			"&smsContent="+Http.encode(Message)+
-			"&reply="+config_file.readEntry("EraGatewayUser")+
-			"&signature="+Http.encode(config.nick);
+			"&reply="+config_file.readEntry("SMS","EraGatewayUser")+
+			"&signature="+Http.encode(nick);
 		Http.post("sms/do/previewSMS", post_data);	
 	}
 	else if(State==SMS_LOADING_PREVIEW)
@@ -617,24 +617,22 @@ Sms::Sms(const QString& altnick, QDialog* parent) : QDialog (parent, "Sms")
 	body = new QMultiLineEdit(this);
 	grid->addMultiCellWidget(body, 1, 1, 0, 3);
 	body->setWordWrap(QMultiLineEdit::WidgetWidth);
-	body->setFont(config.fonts.chat);
+	body->setFont(config_file.readFontEntry("Fonts","ChatFont"));
 	QObject::connect(body, SIGNAL(textChanged()), this, SLOT(updateCounter()));
 
 	recipient = new QLineEdit(this);
-	if (altnick != "")
+	if(altnick!="")
 		recipient->setText(userlist.byAltNick(altnick).mobile);
 	QObject::connect(recipient,SIGNAL(textChanged(const QString&)),this,SLOT(updateList(const QString&)));
 	grid->addWidget(recipient, 0, 1);
 
-	QStringList strlist;
 	list = new QComboBox(this);
-	for (int i = 0; i < userlist.count(); i++) {
+	list->insertItem("");
+	for(int i=0; i<userlist.count(); i++)
+	{
 		if (userlist[i].mobile.length())
-			strlist.append(userlist[i].altnick);
-		}
-	strlist.sort();
-	strlist.insert(strlist.begin(), QString::null);
-	list->insertStringList(strlist);
+			list->insertItem(userlist[i].altnick);
+	};
 	list->setCurrentText(altnick);
 	QObject::connect(list, SIGNAL(activated(const QString&)), this, SLOT(updateRecipient(const QString &)));
 	grid->addWidget(list, 0, 3);
@@ -688,24 +686,26 @@ void Sms::sendSms(void) {
 
 	history.appendSms(recipient->text(), body->text());
 
-	if(config.smsbuildin)
+	if(config_file.readBoolEntry("SMS","BuiltInApp"))
 	{
 		Sender.send(recipient->text(),body->text());
 	}
 	else
 	{
-		if(config.smsapp=="")
+		if(config_file.readEntry("SMS","SmsApp")=="")
+		
 		{
 			QMessageBox::warning(this, i18n("SMS error"), i18n("Sms application was not specified. Visit the configuration section") );
 			kdebug("SMS application NOT specified. Exit.\n");
 			return;
 		};
-		QString SmsAppPath=config.smsapp;
+		QString SmsAppPath=config_file.readEntry("SMS","SmsApp");
 		
 		smsProcess = new QProcess(this);
-		if(config.smscustomconf&&(!config.smsbuildin))
+		if(config_file.readBoolEntry("SMS","UseCustomString")&&
+		(!config_file.readBoolEntry("SMS","BuiltInApp")))
 		{
-			QStringList args=QStringList::split(' ',config.smsconf);
+			QStringList args=QStringList::split(' ',config_file.readEntry("SMS","SmsString"));
 			if(args.find("%n")!=args.end())
 				*args.find("%n")=recipient->text();
 			if(args.find("%m")!=args.end())
@@ -752,8 +752,59 @@ void Sms::onSmsSenderFinished(bool success)
 
 void Sms::initModule()
 {
+	kdebug("Sms::initModule \n");	
+
+	SmsSlots *smsslots=new SmsSlots();
+	ConfigDialog::registerTab(i18n("General"));
+	ConfigDialog::registerVGroupBox(i18n("General"),i18n("SMS options"));
+	ConfigDialog::registerCheckBox(i18n("SMS options"),i18n("Use built-in SMS application"),"SMS","BuiltInApp",true);
+	ConfigDialog::registerLineEdit(i18n("SMS options"),i18n("Custom SMS application"),"SMS","SmsApp","");
+	ConfigDialog::registerGrid(i18n("SMS options"),"sms",2);
+	ConfigDialog::registerCheckBox("sms",i18n("SMS custom string"),"SMS","UseCustomString",false
+	,i18n("Check this box if your sms application doesn't understand arguments: number \"message\"\nArguments should be separated with spaces. %n argument is converted to number, %m to message"));
+	ConfigDialog::registerLineEdit("sms","","SMS","SmsString","");
+    	ConfigDialog::connectSlot(i18n("Use built-in SMS application"), SIGNAL(toggled(bool)), smsslots, SLOT(onSmsBuildInCheckToggle(bool)));
+	ConfigDialog::registerSlotOnCreate(smsslots,SLOT(onCreateConfigDialog()));
+	
 	ConfigDialog::registerTab(i18n("Other"));
-	ConfigDialog::registerGroupBox(i18n("Other"),i18n("SMS Era Gateway"));
-	ConfigDialog::registerLineEdit(i18n("SMS Era Gateway"),i18n("User ID"),"SMS","EraGatewayUser");
-	ConfigDialog::registerLineEdit(i18n("SMS Era Gateway"),i18n("Password"),"SMS","EraGatewayPassword");
+	ConfigDialog::registerVGroupBox(i18n("Other"),i18n("SMS Era Gateway"));
+	ConfigDialog::registerLineEdit(i18n("SMS Era Gateway"),i18n("User ID"),"SMS","EraGatewayUser","");
+	ConfigDialog::registerLineEdit(i18n("SMS Era Gateway"),i18n("Password"),"SMS","EraGatewayPassword","");
+	
+};
+
+void SmsSlots::onSmsBuildInCheckToggle(bool value)
+{
+	kdebug("SmsSlots::onSmsBuildInCheckToggle \n");
+
+	QLineEdit *e_smsapp=((QLineEdit*)ConfigDialog::getWidget(i18n("SMS options"),i18n("Custom SMS application")));
+	QCheckBox *b_smscustomconf=((QCheckBox*)ConfigDialog::getWidget("sms",i18n("SMS custom string")));
+	QLineEdit *e_smsconf=((QLineEdit*)ConfigDialog::getWidget("sms",""));
+
+		((QHBox*)(e_smsapp->parent()))->setEnabled(!value);
+		b_smscustomconf->setEnabled(!value);
+		e_smsconf->setEnabled(b_smscustomconf->isChecked()&& !value);
+
+};
+
+void SmsSlots::onCreateConfigDialog()
+{
+	kdebug("SmsSlots::onCreateConfigDialog \n");
+	
+	QCheckBox *b_smsbuildin=((QCheckBox*)ConfigDialog::getWidget(i18n("SMS options"),i18n("Use built-in SMS application")));
+	QLineEdit *e_smsapp=((QLineEdit*)ConfigDialog::getWidget(i18n("SMS options"),i18n("Custom SMS application")));
+	QCheckBox *b_smscustomconf=((QCheckBox*)ConfigDialog::getWidget("sms",i18n("SMS custom string")));
+	QLineEdit *e_smsconf=((QLineEdit*)ConfigDialog::getWidget("sms",""));
+	
+		if (b_smsbuildin->isChecked())
+			{
+			((QHBox*)(e_smsapp->parent()))->setEnabled(false);
+			b_smscustomconf->setEnabled(false);
+			e_smsconf->setEnabled(false);
+			}	
+			
+		if (!b_smscustomconf->isChecked())
+			e_smsconf->setEnabled(false);
+			    
+	connect(b_smscustomconf,SIGNAL(toggled(bool)),e_smsconf,SLOT(setEnabled(bool)));
 };

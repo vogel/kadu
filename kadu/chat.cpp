@@ -21,17 +21,16 @@
 #include <qvbox.h>
 #include <qvaluelist.h>
 
-#include <stdlib.h>
 #include <math.h>
 
 //
 #include "config_dialog.h"
+#include "config_file.h"
 #include "kadu.h"
 #include "events.h"
 #include "chat.h"
 #include "search.h"
 #include "history.h"
-#include "misc.h"
 #include "emoticons.h"
 #include "debug.h"
 #include "sound.h"
@@ -131,11 +130,11 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	else 
 		body = new KaduTextBrowser(split1);
 		
-	if(config.emoticons_style==EMOTS_ANIMATED)
+	if((EmoticonsStyle)config_file.readNumEntry("Other","EmoticonsStyle")==EMOTS_ANIMATED)
 		body->setStyleSheet(new AnimStyleSheet(body,emoticons.themePath()));
 	
 	body->setMinimumSize(QSize(100,100));
-	body->setFont(config.fonts.chat);
+	body->setFont(config_file.readFontEntry("Fonts","ChatFont"));
 	QObject::connect(body, SIGNAL(linkClicked(const QString &)), this, SLOT(hyperlinkClicked(const QString &)));
 
 	QPoint pos = QCursor::pos();
@@ -144,9 +143,9 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 		setGeometry((pos.x() + 550) / 2, (pos.y() + 400) / 2, 550, 400);
 		userbox = new UserBox(split2);
 		userbox->setMinimumSize(QSize(30,30));
-		userbox->setPaletteBackgroundColor(config.colors.userboxBg);
-		userbox->setPaletteForegroundColor(config.colors.userboxFg);
-		userbox->QListBox::setFont(config.fonts.userbox);
+		userbox->setPaletteBackgroundColor(config_file.readColorEntry("Colors","UserboxBgColor"));
+		userbox->setPaletteForegroundColor(config_file.readColorEntry("Colors","UserboxFgColor"));
+		userbox->QListBox::setFont(config_file.readFontEntry("Fonts","UserboxFont"));
 
 		for (i = 0; i < uins.count(); i++)
 			userbox->addUser(userlist.byUin(uins[i]).altnick);
@@ -190,7 +189,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	bool encryption_possible =
 		(keyfile.permission(QFileInfo::ReadUser) && uins.count() == 1);
 
-	setupEncryptButton(config.encryption && encryption_possible);
+	setupEncryptButton(config_file.readBoolEntry("Other","Encryption") && encryption_possible);
 	
 	encryption->setEnabled(encryption_possible);	
 #endif
@@ -201,7 +200,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 
 	iconsel = new QPushButton(buttontray);
 	iconsel->setPixmap(loadIcon("icons.png"));
-	if(config.emoticons_style==EMOTS_NONE)
+	if((EmoticonsStyle)config_file.readNumEntry("Other","EmoticonsStyle")==EMOTS_NONE)
 	{
 		QToolTip::add(iconsel, i18n("Insert emoticon - enable in configuration"));
 		iconsel->setEnabled(false);
@@ -223,11 +222,11 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	edit = new CustomInput(downpart);
 	edit->setMinimumHeight(1);
 	edit->setWordWrap(QMultiLineEdit::WidgetWidth);
-	edit->setFont(config.fonts.chat);
+	edit->setFont(config_file.readFontEntry("Fonts","ChatFont"));
 
-	if (config.autosend)
+	if (config_file.readBoolEntry("Other","AutoSend"))
 		autosend->setOn(true);
-	edit->setAutosend(config.autosend);
+	edit->setAutosend(config_file.readBoolEntry("Other","AutoSend"));
 
 	QHBox *btnpart = new QHBox(downpart);
 
@@ -426,18 +425,18 @@ void Chat::pageDown() {
 
 void Chat::setEncryptionBtnEnabled(bool enabled) {
 #ifdef HAVE_OPENSSL
-	encryption->setEnabled(enabled && config.encryption);
+	encryption->setEnabled(enabled && config_file.readBoolEntry("Other","Encryption"));
 #endif
 }
 
 void Chat::changeAppearance() {
 	if (uins.count() > 1 && userbox) {
-		userbox->setPaletteBackgroundColor(config.colors.userboxBg);
-		userbox->setPaletteForegroundColor(config.colors.userboxFg);
-		userbox->QListBox::setFont(config.fonts.userbox);
+		userbox->setPaletteBackgroundColor(config_file.readColorEntry("Colors","UserboxBgColor"));
+		userbox->setPaletteForegroundColor(config_file.readColorEntry("Colors","UserboxFgColor"));
+		userbox->QListBox::setFont(config_file.readFontEntry("Fonts","UserboxFont"));
 		}
-	body->setFont(config.fonts.chat);
-	edit->setFont(config.fonts.chat);
+	body->setFont(config_file.readFontEntry("Fonts","ChatFont"));
+	edit->setFont(config_file.readFontEntry("Fonts","ChatFont"));
 }
 
 void Chat::setTitle() {
@@ -446,23 +445,23 @@ void Chat::setTitle() {
 
 	if (uins.size() > 1) {
 		kdebug("Chat::setTitle(): uins.size() > 1\n");
-		if (config.conferenceprefix.isEmpty())
+		if (config_file.readEntry("Other","ConferencePrefix").isEmpty())
 			title = i18n("Conference with ");
 		else
-			title = config.conferenceprefix;
+			title = config_file.readEntry("Other","ConferencePrefix");
 		for (int k = 0; k < uins.size(); k++) {
 			if (k)
 				title.append(", ");
-			title.append(parse(config.conferencesyntax,userlist.byUinValue(uins[k]),false));
+			title.append(parse(config_file.readEntry("Other","ConferenceContents"),userlist.byUinValue(uins[k]),false));
 		}
 		setIcon(*icons->loadIcon("online"));
 	}
 	else {
 		kdebug("Chat::setTitle()\n");
-		if (config.chatsyntax.isEmpty())
+		if (config_file.readEntry("Other","ChatContents").isEmpty())
 			title = parse(i18n("Chat with ")+"%a (%s[: %d])",userlist.byUinValue(uins[0]),false);
 		else
-			title = parse(config.chatsyntax,userlist.byUinValue(uins[0]),false);
+			title = parse(config_file.readEntry("Other","ChatContents"),userlist.byUinValue(uins[0]),false);
 		setIcon(*icons->loadIcon(gg_icons[statusGGToStatusNr(userlist.byUinValue(uins[0]).status)]));
 	}
 
@@ -541,13 +540,13 @@ QString Chat::convertCharacters(QString edit, bool me) {
 		doc.setElementValue(i,link,true);
 	};
 
-	if(config.emoticons_style!=EMOTS_NONE)
+	if((EmoticonsStyle)config_file.readNumEntry("Other","EmoticonsStyle")!=EMOTS_NONE)
 	{
 		body->mimeSourceFactory()->addFilePath(emoticons.themePath());
 		if (me)
-			emoticons.expandEmoticons(doc,config.colors.mychatBg);
+			emoticons.expandEmoticons(doc,config_file.readColorEntry("Colors","ChatMyBgColor"));
 		else
-			emoticons.expandEmoticons(doc,config.colors.usrchatBg);
+			emoticons.expandEmoticons(doc,config_file.readColorEntry("Colors","ChatUsrBgColor"));
 	};
 	
 	edit=doc.generateHtml();
@@ -581,16 +580,16 @@ void Chat::hyperlinkClicked(const QString &link) {
 	QString cmd;
 	QStringList args;
 
-	if (config.defaultwebbrowser)
+	if (config_file.readBoolEntry("WWW","DefaultWebBrowser"))
 		cmd = QString("konqueror %1").arg(link);
 	else {
-                if (config.webbrowser == "") {
+                if (config_file.readEntry("WWW","WebBrowser") == "") {
 			QMessageBox::warning(this, i18n("WWW error"),
 				i18n("Web browser was not specified. Visit the configuration section"));
 			kdebug("Chat::hyperlinkClicked(): Web browser NOT specified.\n");
 			return;
 			}
-		cmd = QString(config.webbrowser).arg(link);
+		cmd = QString(config_file.readEntry("WWW","WebBrowser")).arg(link);
 		}
 	args = QStringList::split(" ", cmd);
 	for (QStringList::iterator i = args.begin(); i != args.end(); i++)
@@ -609,14 +608,14 @@ void Chat::formatMessage(bool me, const QString &altnick, const QString &msg, co
 
 	toadd.append("<TABLE width=\"100%\"><TR><TD bgcolor=\"");
 	if (me)
-	    	toadd.append(config.colors.mychatBg.name());
+	    	toadd.append(config_file.readColorEntry("Colors","ChatMyBgColor").name());
 	else
-	    	toadd.append(config.colors.usrchatBg.name());
+	    	toadd.append(config_file.readColorEntry("Colors","ChatUsrBgColor").name());
 	toadd.append("\"><FONT color=\"");
 	if (me)
-		toadd.append(config.colors.mychatText.name());
+		toadd.append(config_file.readColorEntry("Colors","ChatMyFontColor").name());
 	else
-		toadd.append(config.colors.usrchatText.name());
+		toadd.append(config_file.readColorEntry("Colors","ChatUsrFontColor").name());
 	toadd.append("\"><B>");
 	toadd.append(altnick);
 	toadd.append(" :: ");
@@ -624,11 +623,11 @@ void Chat::formatMessage(bool me, const QString &altnick, const QString &msg, co
 }
 
 void Chat::scrollMessages(QString &toadd) {
-	if (config.chatprune)
+	if (config_file.readBoolEntry("Other","ChatPrune"))
 		pruneWindow();
 
 	body->viewport()->setUpdatesEnabled(false);
-	if (!config.scrolldown)
+	if (!config_file.readBoolEntry("Other","ScrollDown"))
 		body->setText(toadd + body->text());
 	else {
 		body->setText(body->text() + toadd);
@@ -660,8 +659,8 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time) {
 	count = history.getHistoryEntriesCount(senders);
 	end = count - 1;
 	
-	while (end >= 0 && entries.count() < config.chathistorycitation) {
-		from = (end < config.chathistorycitation) ? 0 : end - config.chathistorycitation + 1;
+	while (end >= 0 && entries.count() < config_file.readNumEntry("Other","ChatHistoryCitation")) {
+		from = (end < config_file.readNumEntry("Other","ChatHistoryCitation")) ? 0 : end - config_file.readNumEntry("Other","ChatHistoryCitation") + 1;
 		entriestmp = history.getHistoryEntries(senders, from, end - from + 1, HISTORYMANAGER_ENTRY_CHATSEND
 			| HISTORYMANAGER_ENTRY_MSGSEND | HISTORYMANAGER_ENTRY_CHATRCV | HISTORYMANAGER_ENTRY_MSGRCV);
 		kdebug("Chat::writeMessageFromHistory(): temp entries = %d\n", entriestmp.count());
@@ -687,13 +686,12 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time) {
 		kdebug("Chat::writeMessageFromHistory(): entries = %d\n", entries.count());
 		end = from - 1;
 		}
-
-	from = (entries.count() < config.chathistorycitation) ? 0 : entries.count() - config.chathistorycitation;
+	from = (entries.count() < config_file.readNumEntry("Other","ChatHistoryCitation")) ? 0 : entries.count() - config_file.readNumEntry("Other","ChatHistoryCitation");
 	for (i = from; i < entries.count(); i++)
-		if (entries[i].date.secsTo(QDateTime::currentDateTime()) <= config.chathistorycitationtime * 3600)
+		if (entries[i].date.secsTo(QDateTime::currentDateTime()) <= config_file.readNumEntry("Other","ChatHistoryQuotationTime") * 3600)
 			if (entries[i].type == HISTORYMANAGER_ENTRY_MSGSEND
 				|| entries[i].type == HISTORYMANAGER_ENTRY_CHATSEND)
-				formatMessage(true, config.nick, entries[i].message,
+				formatMessage(true, config_file.readEntry("Global","Nick"), entries[i].message,
 					printDateTime(entries[i].date), toadd);
 			else
 				formatMessage(false, entries[i].nick, entries[i].message,
@@ -711,23 +709,22 @@ void Chat::checkPresence(UinsList senders, QString &msg, time_t time, QString &t
 }
 
 void Chat::alertNewMessage(void) {
-	if (config.playsoundchatinvisible){
+	if (config_file.readBoolEntry("Global","PlaySoundChatInvisible")){
 		if (!isActiveWindow())
-			playSound(config.soundchat);
+			playSound(config_file.readEntry("Global","Chat_sound"));
 		}
 	else
-		if (config.playsoundchat)
-			playSound(config.soundchat);
+		if (config_file.readBoolEntry("Global","PlaySoundChat"))
+			playSound(config_file.readEntry("Global","Chat_sound"));
 
-	if (config.blinkchattitle)
+	if (config_file.readBoolEntry("Other","BlinkChatTitle"))
 		if (!isActiveWindow() && !title_timer->isActive())
 			changeTitle();
 }
 
 void Chat::writeMyMessage() {
 	QString toadd;
-
-	formatMessage(true, config.nick, myLastMessage, timestamp(), toadd);
+	formatMessage(true,config_file.readEntry("Global","Nick"), myLastMessage, timestamp(), toadd);
 	scrollMessages(toadd);
 	if (!edit->isEnabled())
 		cancelMessage();
@@ -744,7 +741,7 @@ void Chat::addMyMessageToHistory() {
 	int uin;
 
 	uin = uins[0];
-	if (config.logmessages)
+	if (config_file.readBoolEntry("Global","Logging"))
 		history.appendMessage(uins, uin, myLastMessage, true);
 }
 
@@ -810,7 +807,7 @@ void Chat::sendMessage(void) {
 	addMyMessageToHistory();
 	// zmieniamy unixowe \n na windowsowe \r\n
 
-	if (config.msgacks) {
+	if (config_file.readBoolEntry("Other","MessageAcks")) {
 		edit->setReadOnly(true);	
 		edit->setEnabled(false);
 		sendbtn->setEnabled(false);
@@ -827,7 +824,7 @@ void Chat::sendMessage(void) {
 			online++;
 		}
 	online = uins.count();
-	if (config.msgacks && online) {
+ 	if (config_file.readBoolEntry("Other","MessageAcks") && online) {
 //		acks.resize(acks.size() + 1);
 //		i = acks.size() - 1;
 		if (uins.count() > 1) {
@@ -929,9 +926,9 @@ void Chat::pruneWindow(void) {
 	int index,occurences;
 
 	occurences = 0;
-	if (config.scrolldown) {
+	if (config_file.readBoolEntry("Other","ScrollDown")) {
 		index = -1;
-		while (occurences != config.chatprunelen && totaloccurences > config.chatprunelen - 1) {
+		while (occurences != config_file.readNumEntry("Other","ChatPruneLen") && totaloccurences > config_file.readNumEntry("Other","ChatPruneLen") - 1) {
 			index = body->text().findRev(QString("<TABLE"), index - 8);
 			occurences++;
 			}
@@ -941,7 +938,7 @@ void Chat::pruneWindow(void) {
 		}
 	else {
 		index = 0;
-		while (occurences != config.chatprunelen && totaloccurences > config.chatprunelen ) {
+		while (occurences != config_file.readNumEntry("Other","ChatPruneLen") && totaloccurences > config_file.readNumEntry("Other","ChatPruneLen") ) {
 			if (occurences == 0)
 				index = body->text().find(QString("<TABLE"), 0);
 			else
@@ -951,7 +948,7 @@ void Chat::pruneWindow(void) {
 			}
 		totaloccurences++;
 
-		if (totaloccurences > config.chatprunelen && index != -1 && index != 0)
+		if (totaloccurences > config_file.readNumEntry("Other","ChatPruneLen") && index != -1 && index != 0)
 			body->setText(body->text().left(index));
 		}
 }
@@ -1024,7 +1021,7 @@ void Chat::initModule()
 	ConfigDialog::registerTab(i18n("Other"));
 	ConfigDialog::registerCheckBox(i18n("Other"),i18n("Open chat window on new message"),"Other","OpenChatOnMessage");
 	ConfigDialog::registerTab(i18n("ShortCuts"));
-	ConfigDialog::registerGroupBox(i18n("ShortCuts"),i18n("Define keys"));
+	ConfigDialog::registerVGroupBox(i18n("ShortCuts"),i18n("Define keys"));
 	ConfigDialog::registerHotKeyEdit(i18n("Define keys"),i18n("New line / send message:"),"ShortCuts","chat_newline","Return");
 	ConfigDialog::registerHotKeyEdit(i18n("Define keys"),i18n("Clear Chat:"),"ShortCuts","chat_clear","F9");
 	ConfigDialog::registerHotKeyEdit(i18n("Define keys"),i18n("Close Chat:"),"ShortCuts","chat_close","Esc");

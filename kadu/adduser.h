@@ -5,7 +5,6 @@
 #include <qlineedit.h>
 #include <qlabel.h>
 #include <qcombobox.h>
-#include "libgadu.h"
 
 /**
 	Dialog dodaj±cy nowy kontakt do listy kontaktów

@@ -4,7 +4,6 @@
 #include <qobject.h>
 #include <qthread.h>
 #include <qsemaphore.h>
-//#include <kde/artsc/artsc.h>
 
 extern bool mute;
 

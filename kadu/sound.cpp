@@ -7,24 +7,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qobject.h>
-#include <qthread.h>
 #include <qprocess.h>
-#include <qsemaphore.h>
-//#include <kde/artsc/artsc.h>
-//#include <fcntl.h>
-//#include <sys/ioctl.h>
-//#include <linux/soundcard.h>
-//#include <unistd.h>
 
 #include "sound.h"
 #include "debug.h"
-#include "config_dialog.h"
+#include "config_file.h"
 
 bool mute = false;
 
 void playSound(const QString &sound, const QString player) {
-	if (!config.playsound || mute)
+	if (!config_file.readBoolEntry("Global","PlaySound") || mute)
 		return;
 
 	QStringList args;
@@ -32,14 +24,14 @@ void playSound(const QString &sound, const QString player) {
 		kdebug("No sound file specified?\n");
 		return;
 		}
-	if (config.playartsdsp)
+	if (config_file.readBoolEntry("Global","PlaySoundArtsDsp"))
 		args.append("artsdsp");
 	if (player == QString::null)
-		args.append(config.soundprog);
+		args.append(config_file.readEntry("Global","SoundPlayer"));
 	else
 		args.append(player);
-	if (config.soundvolctrl)
-		args.append(QString("-v %1").arg(config.soundvol));
+	if (config_file.readBoolEntry("Global","VolumeControl"))
+		args.append(QString("-v %1").arg(config_file.readDoubleNumEntry("Global","SoundVolume")));
 	args.append(sound);
 	for (QStringList::Iterator it = args.begin(); it != args.end(); ++it ) {
        		kdebug("playSound(): %s\n", (const char *)(*it).local8Bit());

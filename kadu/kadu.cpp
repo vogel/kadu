@@ -7,84 +7,32 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qradiobutton.h>
-#include <qevent.h>
 #include <qwidget.h>
 #include <qdialog.h>
-#include <qmultilineedit.h>
-#include <qpushbutton.h>
 #include <qlabel.h>
 #include <qlistbox.h>
 #include <qstring.h>
-#include <qpopupmenu.h>
 #include <qtextstream.h>
 #include <qpoint.h>
-#include <qlayout.h>
-#include <qslider.h>
-#include <qapplication.h>
-#include <qhbuttongroup.h>
-#include <qtextview.h>
-#include <qtooltip.h>
 #include <qfile.h>
 #include <qfileinfo.h>
 #include <qhbox.h>
-#include <qvbox.h>
 #include <qfont.h>
 #include <qcursor.h>
 #include <qmessagebox.h>
-#include <qhgroupbox.h>
 #include <qprocess.h>
-#include <qsocketnotifier.h>
-#include <qprogressdialog.h>
 #include <qregexp.h>
-#include <qlistview.h>
-#include <qtabdialog.h>
-#include <qstrlist.h>
-#include <qgroupbox.h>
-#include <qcheckbox.h>
-#include <qtextcodec.h>
 #include <qtimer.h>
-#include <qpainter.h>
 #include <qmenubar.h>
-#include <qnetworkprotocol.h>
-#include <qstringlist.h>
 #include <qsplitter.h>
-#include <qdatetime.h>
-#include <qframe.h>
 #include <qtoolbar.h>
 
-//#include <arpa/inet.h>
-#include <libintl.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <signal.h>
-#include <sys/types.h>
-#include <sys/time.h>
-#include <time.h>
-//#include <iostream>
-
-#include <ctype.h>
-#include <errno.h>
-
-#include <pwd.h>
-#include <sys/stat.h>
-
-#include <sys/wait.h>
-//#include <sys/socket.h>
-//#include <sys/ioctl.h>
-//#include <net/if.h>
 #include <netinet/in.h>
-
-#include "libgadu.h"
 
 //
 #include "config_dialog.h"
 #include "config_file.h"
-#include "misc.h"
 #include "kadu.h"
-#include "userbox.h"
 #include "events.h"
 #include "chat.h"
 #include "search.h"
@@ -136,6 +84,11 @@ QPopupMenu *dockppm;
 QLabel *statuslabel;
 QLabel *statuslabeltxt;
 QPopupMenu *grpmenu;
+
+QHostAddress config_dccip;
+QHostAddress config_extip;
+QHostAddress config_proxyaddr;
+QValueList<QHostAddress> config_servers;
 
 QValueList<struct chats> chats;
 struct gg_session *sess = NULL;
@@ -213,7 +166,6 @@ void Kadu::gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op) {
 }
 
 void Kadu::keyPressEvent(QKeyEvent *e) {
-	config_file.setGroup("ShortCuts");
 	if (e->key() == Key_Escape && trayicon) {
 		kdebug("Kadu::keyPressEvent(Key_Escape): Kadu hide\n");
 		hide();
@@ -260,8 +212,24 @@ void Kadu::keyPressEvent(QKeyEvent *e) {
 /* a monstrous constructor so Kadu would take longer to start up */
 Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 {
+	KaduSlots *kaduslots=new KaduSlots();
+	
+	ConfigDialog::registerTab(i18n("General"));
+	ConfigDialog::registerHGroupBox(i18n("General"),i18n("User data"));
+	ConfigDialog::registerLineEdit(i18n("User data"),i18n("Uin"),"Global","UIN","0");
+	ConfigDialog::registerLineEdit(i18n("User data"),i18n("Password"),"Global","Password","");
+	ConfigDialog::registerLineEdit(i18n("User data"),i18n("Nick"),"Global","Nick",i18n("Me"));
+	ConfigDialog::registerSlotOnCreate(kaduslots,SLOT(onCreateConfigDialog()));
+	ConfigDialog::registerSlotOnDestroy(kaduslots,SLOT(onDestroyConfigDialog()));
+
+	Sms::initModule();
+	TrayIcon::initModule();		
+	AutoAwayTimer::initModule();
+
+	ConfigDialog::initModule();
 	UserBox::initModule();
 	Chat::initModule();
+	History::initModule();
 	
 	ConfigDialog::registerHotKeyEdit(i18n("Define keys"),i18n("Remove from userlist"),  "ShortCuts","kadu_deleteuser","Del");
 	ConfigDialog::registerHotKeyEdit(i18n("Define keys"),i18n("View/edit user info"),"ShortCuts","kadu_persinfo","Ins");
@@ -272,7 +240,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	ConfigDialog::registerHotKeyEdit(i18n("Define keys"), i18n("Send file"),"ShortCuts","kadu_sendfile","F8");
 	ConfigDialog::registerHotKeyEdit(i18n("Define keys"), i18n("Configuration"),"ShortCuts","kadu_configure","F2");
 	ConfigDialog::registerHotKeyEdit(i18n("Define keys"), i18n("Add user"),"ShortCuts","kadu_adduser","F3");
-	Sms::initModule();
 	closestatusppmtime.start();
 	lastsoundtime.start();
 
@@ -298,13 +265,15 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	loadKaduConfig();
         
+	QRect geom;
+	geom=config_file.readRectEntry("Global","Geometry");
 	kdebug("Setting size: width=%d, height=%d and setting position: x=%d, y=%d\n",
-		config.geometry.width(),config.geometry.height(),
-		config.geometry.x(), config.geometry.y());
-	resize(config.geometry.width(),config.geometry.height());
-	move(config.geometry.x(),config.geometry.y());
+		geom.width(),geom.height(),
+		geom.x(), geom.y());
+	resize(geom.width(),geom.height());
+	move(geom.x(),geom.y());
 
-	if (config.dock) {
+	if (config_file.readBoolEntry("Global","UseDocking")) {
 		trayicon = new TrayIcon(this);
 		trayicon->show();
 		}
@@ -322,13 +291,14 @@ Po jakiego czorta to ?
 */
 
 	/* a newbie? */
-	if (config.uin)
-		setCaption(i18n("Kadu: %1").arg(config.uin));
+
+	if (config_file.readNumEntry("Global","UIN"))
+		setCaption(i18n("Kadu: %1").arg(config_file.readNumEntry("Global","UIN")));
 
 	pending.loadFromFile();
 
 	/* use dock icon? */
-	if (config.dock) {
+	if (config_file.readBoolEntry("Global","UseDocking")) {
 		trayicon->changeIcon();
 		}
 
@@ -344,7 +314,7 @@ Po jakiego czorta to ?
 	group_bar = new KaduTabBar(hbox1, "groupbar");
 	group_bar->setShape(QTabBar::RoundedBelow);
 	group_bar->addTab(new QTab(i18n("All")));
-	group_bar->setFont(QFont(config.fonts.userbox.family(),config.fonts.userbox.pointSize(),75));
+	group_bar->setFont(QFont(config_file.readFontEntry("Fonts","UserboxFont").family(),config_file.readFontEntry("Fonts","UserboxFont").pointSize(),75));
 //	group_bar->setMinimumWidth(group_bar->sizeHint().width());
 	connect(group_bar, SIGNAL(selected(int)), this, SLOT(groupTabSelected(int)));
 
@@ -360,11 +330,11 @@ Po jakiego czorta to ?
 
 	/* initialize and configure userbox */
 	userbox = new UserBox(hbox1, "userbox");
-	if (config.multicoluserbox)
+	if (config_file.readBoolEntry("Global","MultiColumnUserbox"))
 		userbox->setColumnMode(QListBox::FitToWidth);
-	userbox->setPaletteBackgroundColor(config.colors.userboxBg);
-	userbox->setPaletteForegroundColor(config.colors.userboxFg);
-	userbox->QListBox::setFont(config.fonts.userbox);
+	userbox->setPaletteBackgroundColor(config_file.readColorEntry("Colors","UserboxBgColor"));
+	userbox->setPaletteForegroundColor(config_file.readColorEntry("Colors","UserboxFgColor"));
+	userbox->QListBox::setFont(config_file.readFontEntry("Fonts","UserboxFont"));
 	userbox->setMinimumWidth(20);
 
 	hbox1->setStretchFactor(group_bar, 1);
@@ -406,7 +376,7 @@ Po jakiego czorta to ?
 
 	dockppm->insertSeparator();
 	dockppm->insertItem(loadIcon("exit.png"), i18n("&Exit Kadu"), 9);
-	if (config.dock)
+	if (config_file.readBoolEntry("Global","UseDocking"))
 		trayicon->connectSignals();
 //		connect(dockppm, SIGNAL(activated(int)), trayicon, SLOT(dockletChange(int)));
 
@@ -417,17 +387,17 @@ Po jakiego czorta to ?
 	descrtb->setTextFormat(Qt::RichText);
 	descrtb->setAlignment(Qt::AlignVCenter | Qt::WordBreak | Qt::DontClip);
 	descrtb->setVScrollBarMode(QScrollView::AlwaysOff);
-	descrtb->setPaletteBackgroundColor(config.colors.userboxDescBg);
-	descrtb->setPaletteForegroundColor(config.colors.userboxDescText);
-	descrtb->setFont(config.fonts.userboxDesc);
-	if (!config.showdesc)
+	descrtb->setPaletteBackgroundColor(config_file.readColorEntry("Colors","UserboxDescBgColor"));
+	descrtb->setPaletteForegroundColor(config_file.readColorEntry("Colors","UserboxDescTextColor"));
+	descrtb->setFont(config_file.readFontEntry("Fonts","UserboxDescFont"));
+	if (!config_file.readBoolEntry("Global","ShowDesc"))
 		descrtb->hide();
 	QObject::connect(&userlist, SIGNAL(dnsNameReady(uin_t)), this, SLOT(infopanelUpdate(uin_t)));
 
 	QValueList<int> splitsizes;
 	
-	splitsizes.append(config.splitsize.width());
-	splitsizes.append(config.splitsize.height());
+	splitsizes.append(config_file.readSizeEntry("Global","SplitSize").width());
+	splitsizes.append(config_file.readSizeEntry("Global","SplitSize").height());
 	split->setSizes(splitsizes);
 
 //	tworzymy pasek narzedziowy
@@ -437,8 +407,6 @@ Po jakiego czorta to ?
 	setAppropriate(toolbar, true);
 	toolbar->setCloseMode(QDockWindow::Undocked);
 	toolbar->setLabel(i18n("Main toolbar"));
-
-	config_file.setGroup("Other");
 
 	QToolButton *inactivebtn = new QToolButton(*icons->loadIcon("offline"), i18n("Show / hide inactive users"),
 	QString::null, this, SLOT(showHideInactive()), toolbar, "ShowHideInactive");
@@ -469,9 +437,9 @@ Po jakiego czorta to ?
 	toolbar->setStretchableWidget(toolbarfiller);
 	toolbar->setVerticallyStretchable(true);
 
-	if (config.dockwindows != QString::null) {
-		config.dockwindows.replace(QRegExp("\\\\n"), "\n");
-		QTextStream stream(&config.dockwindows, IO_ReadOnly);
+	if (config_file.readEntry("Global","DockWindows") != QString::null) {
+		QString dockwindows=config_file.readEntry("Global","DockWindows").replace(QRegExp("\\\\n"), "\n");
+		QTextStream stream(&dockwindows, IO_ReadOnly);
 		stream >> *this;
 		}
 
@@ -506,16 +474,16 @@ Po jakiego czorta to ?
 	commencing_startup = true;
 
 	/* pokaz okno jesli RunDocked jest wylaczone lub dock wylaczone */
-	if ((!config.rundocked) || (!config.dock))
+	if ((!config_file.readBoolEntry("Global","RunDocked")) || (!config_file.readBoolEntry("Global","UseDocking")))
 		show();
 
 	autostatus_timer = new AutoStatusTimer(this);
-	if (config.addtodescription)
+	if (config_file.readBoolEntry("Global","AddToDescription"))
 		autostatus_timer->start(1000,TRUE);
 
-	if (config.uin) {
-		uc = new UpdatesClass(config.uin);
-		if (config.checkupdates)
+	if (config_file.readNumEntry("Global","UIN")) {
+		uc = new UpdatesClass(config_file.readNumEntry("Global","UIN"));
+		if (config_file.readBoolEntry("Global","CheckUpdates"))
 			QObject::connect(uc->op, SIGNAL(data(const QByteArray &, QNetworkOperation *)),
 				this, SLOT(gotUpdatesInfo(const QByteArray &, QNetworkOperation *)));
 		uc->run();
@@ -581,7 +549,7 @@ void Kadu::sendFile()
 		return;
 	UserListElement user = userlist.byAltNick(userbox->currentText());
 	if (user.port >= 10) {
-		if ((dcc_new = gg_dcc_send_file(htonl(user.ip.ip4Addr()), user.port, config.uin, user.uin)) != NULL) {
+		if ((dcc_new = gg_dcc_send_file(htonl(user.ip.ip4Addr()), user.port, config_file.readNumEntry("Global","UIN"), user.uin)) != NULL) {
 			dccSocketClass *dcc = new dccSocketClass(dcc_new);
 			connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), this, SLOT(dccFinished(dccSocketClass *)));
 			dcc->initializeNotifiers();
@@ -638,7 +606,7 @@ void Kadu::sendKey()
 	QFile keyfile;
 
 	keyfile_path.append(ggPath("keys/"));
-	keyfile_path.append(QString::number(config.uin));
+	keyfile_path.append(config_file.readNumEntry("Global","UIN"));
 	keyfile_path.append(".pem");
 
 	keyfile.setName(keyfile_path);
@@ -824,15 +792,15 @@ void Kadu::resizeEvent(QResizeEvent *e) {
 void Kadu::changeAppearance() {
 	kdebug("kadu::changeAppearance()\n");
 
-	userbox->setPaletteBackgroundColor(config.colors.userboxBg);
-	userbox->setPaletteForegroundColor(config.colors.userboxFg);
-	userbox->QListBox::setFont(config.fonts.userbox);
+	userbox->setPaletteBackgroundColor(config_file.readColorEntry("Colors","UserboxBgColor"));
+	userbox->setPaletteForegroundColor(config_file.readColorEntry("Colors","UserboxFgColor"));
+	userbox->QListBox::setFont(config_file.readFontEntry("Fonts","UserboxFont"));
 
-	group_bar->setFont(QFont(config.fonts.userbox.family(),config.fonts.userbox.pointSize(),75));
+	group_bar->setFont(QFont(config_file.readFontEntry("Fonts","UserboxFont").family(),config_file.readFontEntry("Fonts","UserboxFont").pointSize(),75));
 
-	descrtb->setPaletteBackgroundColor(config.colors.userboxDescBg);
-	descrtb->setPaletteForegroundColor(config.colors.userboxDescText);
-	descrtb->setFont(config.fonts.userboxDesc);
+	descrtb->setPaletteBackgroundColor(config_file.readColorEntry("Colors","UserboxDescBgColor"));
+	descrtb->setPaletteForegroundColor(config_file.readColorEntry("Colors","UserboxDescTextColor"));
+	descrtb->setFont(config_file.readFontEntry("Fonts","UserboxDescFont"));
 }
 
 void Kadu::currentChanged(QListBoxItem *item) {
@@ -841,35 +809,35 @@ void Kadu::currentChanged(QListBoxItem *item) {
 
 	kdebug("Kadu::currentChanged(): %s\n", (const char *)item->text().local8Bit());
 
-	if (config.showdesc)
-		descrtb->setText(parse(config.panelsyntax, userlist.byAltNick(item->text())));
+	if (config_file.readBoolEntry("Global","ShowDesc"))
+		descrtb->setText(parse(config_file.readEntry("Other","PanelContents"),userlist.byAltNick(item->text())));
 }
 
 void Kadu::refreshGroupTabBar()
 {
-	if (!config.grouptabs)
-		{
+	if (!config_file.readBoolEntry("Global","DisplayGroupTabs"))
+	{
 		group_bar->hide();
 		return;
-		}
+	};	
 	/* budujemy listê grup */
 	QValueList<QString> group_list;
 	for (int i = 0; i < userlist.count(); i++)
-		{
+	{
 		QString groups = userlist[i].group();
 		QString group;
 		for (int g = 0; (group = groups.section(',' ,g ,g)) != ""; g++)
 			if(!group_list.contains(group))
 				group_list.append(group);
-		}
+	};
 	kdebug("%i groups found\n",group_list.count());
 	//
 	if (group_list.count() == 0)
-		{
+	{
 		group_bar->hide();
 		setActiveGroup("");
 		return;
-		}
+	};
 	/* usuwamy wszystkie niepotrzebne zakladki - od tylu,
 	   bo indeksy sie przesuwaja po usunieciu */
 	for (int i = group_bar->count() - 1; i >= 1; i--)
@@ -1007,12 +975,12 @@ void Kadu::blink() {
 void Kadu::prepareDcc(void) {
 	QHostAddress dccip;
 
-	if (!config.dccip.ip4Addr())
+	if (!config_dccip.ip4Addr())
 		dccip.setAddress("255.255.255.255");
 	else
-		dccip = config.dccip;
+		dccip = config_dccip;
 
-	dccsock = gg_dcc_socket_create(config.uin, 0);
+	dccsock = gg_dcc_socket_create(config_file.readNumEntry("Global","UIN"), 0);
 
 	if (!dccsock) {
 		kdebug("Kadu::prepareDcc(): Couldn't bind DCC socket.\n");
@@ -1174,7 +1142,7 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 	QString keyfile_path;
 
 	keyfile_path.append(ggPath("keys/"));
-	keyfile_path.append(QString::number(config.uin));
+	keyfile_path.append(QString::number(config_file.readNumEntry("Global","UIN")));
 	keyfile_path.append(".pem");
 
 	QFileInfo keyfile(keyfile_path);
@@ -1203,10 +1171,10 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 			pm->setItemChecked(ignoreuseritem, true);
 		if (user.blocking)
 			pm->setItemChecked(blockuseritem, true);
-		pm->setItemEnabled(offlinetouseritem, config.privatestatus);
+		pm->setItemEnabled(offlinetouseritem, config_file.readBoolEntry("Global","PrivateStatus"));
 		if (user.offline_to_user)
 			pm->setItemChecked(offlinetouseritem, true);
-		pm->setItemEnabled(notifyuseritem, config.notifyglobal && !config.notifyall);
+		pm->setItemEnabled(notifyuseritem, config_file.readBoolEntry("Notify","NotifyStatusChange") && !config_file.readBoolEntry("Notify","NotifyAboutAll"));
 		if (user.notify)
 			pm->setItemChecked(notifyuseritem, true);
 		}
@@ -1391,7 +1359,7 @@ void Kadu::slotHandleState(int command) {
 		case 8:
 			statusppm->setItemChecked(8, !statusppm->isItemChecked(8));
 			dockppm->setItemChecked(8, !dockppm->isItemChecked(8));	    
-			config.privatestatus = statusppm->isItemChecked(8);
+			config_file.writeEntry("Global","PrivateStatus",statusppm->isItemChecked(8));
 			if (!statusppm->isItemChecked(6) && !statusppm->isItemChecked(7))
 				setStatus(sess->status & (~GG_STATUS_FRIENDS_MASK));
 			break;
@@ -1431,10 +1399,9 @@ void Kadu::setStatus(int status) {
 	QHostAddress ip;
 
 	kdebug("Kadu::setStatus(): setting status: %d\n",
-		status | (GG_STATUS_FRIENDS_MASK * config.privatestatus));
+		status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("Global","PrivateStatus")));
 
 	bool with_description;
-	unsigned char *descr;
     
 	with_description = ifStatusWithDescription(status);
 	status &= ~GG_STATUS_FRIENDS_MASK;
@@ -1456,16 +1423,17 @@ void Kadu::setStatus(int status) {
 	if (socket_active) {
 		doBlink = false;
 		if (with_description) {
+			unsigned char *descr;
 			descr = (unsigned char *)strdup(unicode2cp(own_description).data());
 			if (status == GG_STATUS_NOT_AVAIL_DESCR)
 				gg_change_status_descr(sess, status, (const char *)descr);
 			else
 				gg_change_status_descr(sess,
-					status | (GG_STATUS_FRIENDS_MASK * config.privatestatus), (const char *)descr);
+					status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("Global","PrivateStatus")), (const char *)descr);
 			free(descr);
 			}
 		else
-			gg_change_status(sess, status | (GG_STATUS_FRIENDS_MASK * config.privatestatus));
+			gg_change_status(sess, status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("Global","PrivateStatus")));
 		if (sess->check & GG_CHECK_WRITE)
 			kadusnw->setEnabled(true);
 	
@@ -1477,23 +1445,24 @@ void Kadu::setStatus(int status) {
 				samym, co by³ ostatnio ustawiony(oprócz niedostêpny i niedostêpny z opisem).
 		**/
 		if (status != GG_STATUS_NOT_AVAIL && status != GG_STATUS_NOT_AVAIL_DESCR)
-			loginparams.status = status | (GG_STATUS_FRIENDS_MASK * config.privatestatus);
+			loginparams.status = status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("Global","PrivateStatus"));
 		return;
 		}
 
-	if (config.allowdcc)
+
+	if (config_file.readBoolEntry("Global","AllowDCC"))
 		prepareDcc();
 
-	if (config.useproxy) {
+	if (config_file.readBoolEntry("Proxy","UseProxy")) {
 		char *gg_proxy_username;
 		char *gg_proxy_password;
 		if (gg_proxy_host)
 			delete gg_proxy_host;
-		gg_proxy_host = strdup(config.proxyaddr.toString().latin1());
-		gg_proxy_port = config.proxyport;
-		if (config.proxyuser.length()) {
-			gg_proxy_username = (char *)config.proxyuser.latin1();
-			gg_proxy_password = (char *)config.proxypassword.latin1();
+		gg_proxy_host = strdup(config_proxyaddr.toString().latin1());
+		gg_proxy_port = config_file.readNumEntry("Proxy","ProxyPort");
+		if (pwHash(config_file.readEntry("Proxy","ProxyUser")).length()) {
+			gg_proxy_username = strdup(pwHash(config_file.readEntry("Proxy","ProxyUser")).latin1());
+			gg_proxy_password = strdup(pwHash(config_file.readEntry("Proxy","ProxyPassword")).latin1());
 			}
 		else
 			gg_proxy_username = gg_proxy_password = NULL;
@@ -1501,36 +1470,32 @@ void Kadu::setStatus(int status) {
 		}
 	else
 		gg_proxy_enabled = 0;
-
-	loginparams.status = status | (GG_STATUS_FRIENDS_MASK * config.privatestatus);
-	loginparams.password = (char *)config.password.latin1();
-	loginparams.uin = config.uin;
+		
+	loginparams.status = status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("Global","PrivateStatus"));
+        loginparams.password =	strdup(pwHash(config_file.readEntry("Global","Password")).latin1());
+	loginparams.uin = config_file.readNumEntry("Global","UIN");
 	loginparams.client_version = GG_DEFAULT_CLIENT_VERSION;
 	loginparams.has_audio = 1;
-//	if (with_description)
-//		descr = (unsigned char *)strdup(unicode2cp(own_description).data());
-//	else
-//		descr = NULL;
 	
-	if (config.allowdcc && config.extip.ip4Addr() && config.extport > 1023) {
-		loginparams.external_addr = htonl(config.extip.ip4Addr());
-		loginparams.external_port = config.extport;
+	if (config_file.readBoolEntry("Global","AllowDCC") && config_extip.ip4Addr() && config_file.readNumEntry("Global","ExternalPort") > 1023) {
+		loginparams.external_addr = htonl(config_extip.ip4Addr());
+		loginparams.external_port = config_file.readNumEntry("Global","ExternalPort");
 		}
 	else {
 		loginparams.external_addr = 0;
 		loginparams.external_port = 0;
 		}	
-	if (config.servers.count() && !config.default_servers && config.servers[server_nr].ip4Addr()) {
-		loginparams.server_addr = htonl(config.servers[server_nr].ip4Addr());
-		loginparams.server_port = config.default_port;
+	if (config_servers.count() && !config_file.readBoolEntry("Global","isDefServers") && config_servers[server_nr].ip4Addr()) {
+		loginparams.server_addr = htonl(config_servers[server_nr].ip4Addr());
+		loginparams.server_port = config_file.readNumEntry("Global","DefaultPort");
 		server_nr++;
-		if (server_nr >= config.servers.count())
+		if (server_nr >= config_servers.count())
 			server_nr = 0;
 		}
 	else {
 		if (server_nr) {
 			loginparams.server_addr = htonl(gg_servers[server_nr - 1].ip4Addr());
-			loginparams.server_port = config.default_port;
+			loginparams.server_port = config_file.readNumEntry("Global","DefaultPort");
 			}
 		else {
 			loginparams.server_addr = 0;
@@ -1540,17 +1505,17 @@ void Kadu::setStatus(int status) {
 		if (server_nr > 7)
 			server_nr = 0;
 		}
-	loginparams.tls = config.tls;
+	loginparams.tls = config_file.readNumEntry("Global","UseTLS");
 	loginparams.protocol_version = 0x21;
 	loginparams.client_version = strdup("6, 0, 0, 135");
-	if (config.tls) {
+	if (config_file.readNumEntry("Global","UseTLS")) {
 		loginparams.server_port = 0;
-		if (config.default_servers)
+		if (config_file.readBoolEntry("Global","isDefServers"))
 			loginparams.server_addr = 0;
 		loginparams.server_port = 443;
 		}
 	else
-		loginparams.server_port = config.default_port;
+		loginparams.server_port = config_file.readNumEntry("Global","DefaultPort");
 	sess = gg_login(&loginparams);
 	free(loginparams.client_version);
 //	if (descr)
@@ -1608,7 +1573,7 @@ void Kadu::disconnectNetwork() {
 
 	kdebug("Kadu::disconnectNetwork(): calling offline routines\n");
 
-	if (config.autoaway)
+	if (config_file.readBoolEntry("Global","AutoAway"))
 		AutoAwayTimer::off();
 	if (pingtimer) {
 		pingtimer->stop();
@@ -1741,7 +1706,7 @@ void Kadu::watchDcc(void) {
 	kdebug("Kadu::watchDcc(): data on socket\n");			
 	if (!(dcc_e = gg_dcc_watch_fd(dccsock))) {
 		kdebug("Kadu::watchDcc(): Connection broken unexpectedly!\n");
-		config.allowdcc = false;
+		config_file.writeEntry("Global","AllowDCC",false);
 		delete dccsnr;
 		dccsnr = NULL;
 		delete dccsnw;
@@ -1786,18 +1751,19 @@ bool Kadu::close(bool quit) {
 		return false;
 		}
 	else {
-		config.splitsize.setWidth(userbox->size().height());
-		config.splitsize.setHeight(descrtb->size().height());
-		config.geometry.setX(pos().x());
-		config.geometry.setY(pos().y());
-		config.geometry.setWidth(size().width());
-		config.geometry.setHeight(size().height());
+		config_file.readSizeEntry("Global","SplitSize").setWidth(userbox->size().height());
+		config_file.readSizeEntry("Global","SplitSize").setHeight(descrtb->size().height());
+		QRect geom=config_file.readRectEntry("Global","Geometry");
+		geom.setX(pos().x());
+		geom.setY(pos().y());
+		geom.setWidth(size().width());
+		geom.setHeight(size().height());
 		saveKaduConfig();
 		pending.writeToFile();
 		writeIgnored();
-		if (config.disconnectwithdesc && getActualStatus() != GG_STATUS_NOT_AVAIL) {
-			kdebug("Kadu::close(): Set status NOT_AVAIL_DESCR with disconnect description(%s)\n",(const char *)config.disconnectdesc.local8Bit());
-			own_description = config.disconnectdesc;
+		if (config_file.readBoolEntry("Other","DisconnectWithDescription") && getActualStatus() != GG_STATUS_NOT_AVAIL) {
+			kdebug("Kadu::close(): Set status NOT_AVAIL_DESCR with disconnect description(%s)\n",(const char *)config_file.readEntry("Other","DisconnectDescription").local8Bit());
+			own_description = config_file.readEntry("Other","DisconnectDescription");
 			setStatus(GG_STATUS_NOT_AVAIL_DESCR);
 		}
 		disconnectNetwork();
@@ -1884,9 +1850,9 @@ void Kadu::createStatusPopupMenu() {
 	statusppm->insertSeparator();
 	dockppm->insertSeparator();
 	statusppm->insertItem(i18n("Private"), 8);
-	statusppm->setItemChecked(8, config.privatestatus);
+	statusppm->setItemChecked(8, config_file.readBoolEntry("Global","PrivateStatus"));
 	dockppm->insertItem(i18n("Private"), 8);
-	dockppm->setItemChecked(8, config.privatestatus);
+	dockppm->setItemChecked(8, config_file.readBoolEntry("Global","PrivateStatus"));
 
 	statusppm->setCheckable(true);
 	dockppm->setCheckable(true);
@@ -1912,9 +1878,26 @@ void Kadu::showdesc(bool show) {
 }
 
 void Kadu::infopanelUpdate(uin_t uin) {
-	if (!config.showdesc)
+	if (!config_file.readBoolEntry("Global","ShowDesc"))
 		return;
 	kdebug("Kadu::infopanelUpdate(%d)\n", uin);
 	if (userbox->currentItem() != -1 && uin == userlist.byAltNick(userbox->currentText()).uin)
-		descrtb->setText(parse(config.panelsyntax,userlist.byUin(uin)));
+		descrtb->setText(parse(config_file.readEntry("Other","PanelContents"),userlist.byUin(uin)));
+}
+
+
+void KaduSlots::onCreateConfigDialog()
+{
+	kdebug("KaduSlots::onCreateConfigDialog() \n");
+	QLineEdit *e_password=((QLineEdit*)ConfigDialog::getWidget(i18n("User data"),i18n("Password")));
+	e_password->setEchoMode(QLineEdit::Password);
+	e_password->setText(pwHash(config_file.readEntry("Global","Password","")));
+}
+
+void KaduSlots::onDestroyConfigDialog()
+{
+	kdebug("KaduSlots::onDestroyConfigDialog() \n");
+	QLineEdit *e_password=((QLineEdit*)ConfigDialog::getWidget(i18n("User data"),i18n("Password")));
+	e_password->setEchoMode(QLineEdit::Password);
+	config_file.writeEntry("Global","Password",pwHash(e_password->text()));
 }

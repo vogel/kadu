@@ -2,14 +2,14 @@
 #define STATUS_H
 
 #include <qtimer.h>
-
+#include <qstringlist.h>
 #define GG_STATUS_INVISIBLE2 0x0009 /* g³upy... */
 
 extern QString gg_icons[];
 extern int gg_statuses[];
 extern const char *statustext[];
 extern QString own_description;
-
+extern QStringList defaultdescriptions;
 bool ifStatusWithDescription(int status);
 int getActualStatus();
 int statusGGToStatusNr(int);
@@ -38,6 +38,7 @@ class AutoAwayTimer : private QTimer
 	public:
 		static void on();
 		static void off();
+		static void initModule();
 
 	protected:
 		bool eventFilter(QObject *, QEvent *);
@@ -50,4 +51,13 @@ class AutoAwayTimer : private QTimer
 		int idletime;
 };
 
+class AutoAwaySlots :public QObject
+{
+	Q_OBJECT
+	
+	public slots:
+		void onCreateConfigDialog();
+		void onDestroyConfigDialog();
+	
+};
 #endif
