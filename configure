@@ -7204,7 +7204,7 @@ if test "${ac_cv_lib_gadu_gg_libgadu_version+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
   ac_check_lib_save_LIBS=$LIBS
-LIBS="-lgadu -lpthread $LIBS"
+LIBS="-lgadu $PTHREAD_CPPFLAGS $PTHREAD_LIBS $LIBS"
 cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
 #include "confdefs.h"

@@ -319,7 +319,7 @@ if test "$with_existing_libgadu" = "yes"; then
 	AC_CHECK_HEADER(libgadu.h,[
 		AC_CHECK_LIB(gadu,gg_libgadu_version,,[
 			AC_MSG_ERROR([existing libgadu was not found!])
-		],[-lpthread])
+		],[$PTHREAD_CPPFLAGS $PTHREAD_LIBS])
 	],[
 		AC_MSG_ERROR([existing libgadu was not found!])
 	])
