@@ -53,7 +53,7 @@
 #include <qframe.h>
 #include <qtoolbar.h>
 
-#include <arpa/inet.h>
+//#include <arpa/inet.h>
 #include <libintl.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -63,8 +63,7 @@
 #include <sys/types.h>
 #include <sys/time.h>
 #include <time.h>
-#include <iostream>
-#define RTF_GATEWAY 0x2
+//#include <iostream>
 
 #include <ctype.h>
 #include <errno.h>
@@ -73,9 +72,9 @@
 #include <sys/stat.h>
 
 #include <sys/wait.h>
-#include <sys/socket.h>
-#include <sys/ioctl.h>
-#include <net/if.h>
+//#include <sys/socket.h>
+//#include <sys/ioctl.h>
+//#include <net/if.h>
 #include <netinet/in.h>
 
 #include "libgadu.h"
