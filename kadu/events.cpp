@@ -387,7 +387,8 @@ void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)
 			lastsoundtime.restart();
 			}
 		if (config_file.readBoolEntry("Notify","NotifyWithHint"))		
-			trayicon->showHint(QT_TR_NOOP(" is available"),userlist.byUin(uin).altnick,1);
+			trayicon->showHint(qApp->translate("@default", QT_TR_NOOP(" is available")),
+				userlist.byUin(uin).altnick,1);
 		}
 }
 

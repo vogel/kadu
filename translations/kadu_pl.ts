@@ -11,7 +11,7 @@
     </message>
     <message>
         <source> is available</source>
-        <translation>jest dostępny</translation>
+        <translation> jest dostępny</translation>
     </message>
     <message>
         <source>You don&apos;t have a config file.
