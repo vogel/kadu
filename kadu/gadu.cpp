@@ -845,7 +845,6 @@ void GaduProtocol::iWantGoOnline(const QString &desc)
 	else
 		gg_change_status(Sess, GG_STATUS_AVAIL | friends);
 
-	NextStatus->setOnline(desc);
 	CurrentStatus->setStatus(*NextStatus);
 
 	kdebugf2();
@@ -873,7 +872,6 @@ void GaduProtocol::iWantGoBusy(const QString &desc)
 	else
 		gg_change_status(Sess, GG_STATUS_BUSY | friends);
 
-	NextStatus->setBusy(desc);
 	CurrentStatus->setStatus(*NextStatus);
 
 	kdebugf2();
@@ -901,7 +899,6 @@ void GaduProtocol::iWantGoInvisible(const QString &desc)
 	else
 		gg_change_status(Sess, GG_STATUS_INVISIBLE | friends);
 
-	NextStatus->setInvisible(desc);
 	CurrentStatus->setStatus(*NextStatus);
 
 	kdebugf2();
@@ -927,7 +924,6 @@ void GaduProtocol::iWantGoOffline(const QString &desc)
 	else
 		gg_change_status(Sess, GG_STATUS_NOT_AVAIL);
 
-	NextStatus->setOffline(desc);
 	CurrentStatus->setStatus(*NextStatus);
 	logout();
 
@@ -998,8 +994,12 @@ void GaduProtocol::connectedSlot()
 	connect(PingTimer, SIGNAL(timeout()), this, SLOT(pingNetwork()));
 	PingTimer->start(60000, TRUE);
 
-	emit connected();
 	CurrentStatus->setStatus(*NextStatus);
+	emit connected();
+	
+	// po po³±czeniu z sewerem niestety trzeba ponownie ustawiæ
+	// status, inaczej nie bêdziemy widoczni - raczej b³±d serwerów
+	NextStatus->refresh();
 
 	kdebugf2();
 }
@@ -1182,13 +1182,9 @@ void GaduProtocol::login()
 
 	setupProxy();
 
-	LoginParams.status = NextStatus->statusNumber();
-	if (config_file.readBoolEntry("General", "PrivateStatus") == 1)
-	{
-		CurrentStatus->setFriendsOnly(true);
+	LoginParams.status = RequestedStatusForLogin;
+	if (NextStatus->isFriendsOnly())
 		LoginParams.status |= GG_STATUS_FRIENDS_MASK;
-	}
-
 	if (NextStatus->hasDescription())
 		LoginParams.status_descr = strdup((const char *)unicode2cp(NextStatus->description()));
 
@@ -2501,6 +2497,12 @@ void Status::setStatus(eStatus stat, const QString& desc)
 		case Invisible: setInvisible(desc); break;
 		case Offline: setOffline(desc); break;
 	}
+}
+
+void Status::refresh()
+{
+	Changed = true;
+	setStatus(*this);
 }
 
 eStatus Status::fromString(const QString& stat)

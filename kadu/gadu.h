@@ -280,6 +280,8 @@ class Status : public QObject
 		static int initCount();
 		static QString name(int nr);
 
+		void refresh();
+
 	public slots:
 		void setOnline(const QString& desc = "");
 		void setBusy(const QString& desc = "");
@@ -324,8 +326,15 @@ class GaduProtocol : public QObject
 		struct gg_login_params LoginParams;
 		gg_session* Sess;
 
-		GaduStatus *CurrentStatus;
-		GaduStatus *NextStatus;
+		/**
+			rzeczywisty bierz±cy status
+		**/
+		GaduStatus* CurrentStatus;
+		/**
+			status docelowy, który niekoniecznie zosta³
+			jeszcze przyjêty przez serwer
+		**/
+		GaduStatus* NextStatus;
 
 		GaduSocketNotifiers *SocketNotifiers;
 		QTimer* PingTimer;
