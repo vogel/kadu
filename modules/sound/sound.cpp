@@ -38,51 +38,45 @@ extern "C" int sound_init()
 		sound_manager, SLOT(notifySound(const uin_t, const unsigned int, const unsigned int)));
 
 	//potrzebne do translacji
-	QT_TRANSLATE_NOOP("@default","Sounds");
-	QT_TRANSLATE_NOOP("@default","Play sounds");
-	QT_TRANSLATE_NOOP("@default","Enable volume control (player must support it)");
-	QT_TRANSLATE_NOOP("@default","Play sounds from a person whilst chatting");
-	QT_TRANSLATE_NOOP("@default","Play chat sounds only when window is invisible");
-	QT_TRANSLATE_NOOP("@default","Chat sound");
-	QT_TRANSLATE_NOOP("@default","Message sound");
-	QT_TRANSLATE_NOOP("@default","Notify sound");
-	QT_TRANSLATE_NOOP("@default","Volume");
-	QT_TRANSLATE_NOOP("@default","Choose");
-	QT_TRANSLATE_NOOP("@default","Clear");
-	QT_TRANSLATE_NOOP("@default","Test");
-	QT_TRANSLATE_NOOP("@default","Sound paths");
-	QT_TRANSLATE_NOOP("@default","Sound theme");
-	QT_TRANSLATE_NOOP("@default", "Notify");
-	QT_TRANSLATE_NOOP("@default", "Notify options");
-	QT_TRANSLATE_NOOP("@default", "Notify by sound");
-
-	ConfigDialog::addTab("Notify");
-	ConfigDialog::addVGroupBox("Notify", "Notify", "Notify options");
-	ConfigDialog::addCheckBox("Notify", "Notify options", "Notify by sound", "NotifyWithSound", false);
 	
+//	QT_TRANSLATE_NOOP("@default","Message sound");
+//	QT_TRANSLATE_NOOP("@default","Notify sound");
+						
+	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Notify"));
+	ConfigDialog::addVGroupBox("Notify", "Notify", QT_TRANSLATE_NOOP("@default", "Notify options"));
+	ConfigDialog::addCheckBox("Notify", "Notify options",
+			QT_TRANSLATE_NOOP("@default", "Notify by sound"), "NotifyWithSound", false);	
 	
-	ConfigDialog::addTab("Sounds");
-	ConfigDialog::addCheckBox("Sounds", "Sounds", "Play sounds", "PlaySound", false);
+	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default","Sounds"));
+	ConfigDialog::addCheckBox("Sounds", "Sounds",
+			QT_TRANSLATE_NOOP("@default","Play sounds"), "PlaySound", false);
 	
-	ConfigDialog::addCheckBox("Sounds", "Sounds", "Enable volume control (player must support it)", "VolumeControl", false);
+	ConfigDialog::addCheckBox("Sounds", "Sounds",
+			QT_TRANSLATE_NOOP("@default","Enable volume control (player must support it)"), 
+			"VolumeControl", false);
 	ConfigDialog::addGrid("Sounds", "Sounds", "volume", 2);
-	ConfigDialog::addLabel("Sounds", "volume", "Volume");
+	ConfigDialog::addLabel("Sounds", "volume", QT_TRANSLATE_NOOP("@default","Volume"));
 	ConfigDialog::addSlider("Sounds", "volume", "slider", "SoundVolume", 0, 100, 20, 50);
 	
 	ConfigDialog::addHBox("Sounds", "Sounds", "sound_theme");
-	ConfigDialog::addComboBox("Sounds", "sound_theme", "Sound theme");
-	ConfigDialog::addSelectPaths("Sounds", "sound_theme", "Sound paths");
+	ConfigDialog::addComboBox("Sounds", "sound_theme",
+			QT_TRANSLATE_NOOP("@default","Sound theme"));
+	ConfigDialog::addSelectPaths("Sounds", "sound_theme",
+			QT_TRANSLATE_NOOP("@default","Sound paths"));
 
-	ConfigDialog::addCheckBox("Sounds", "Sounds", "Play sounds from a person whilst chatting", "PlaySoundChat", true);
-	ConfigDialog::addCheckBox("Sounds", "Sounds", "Play chat sounds only when window is invisible", "PlaySoundChatInvisible", true);
+	ConfigDialog::addCheckBox("Sounds", "Sounds",
+			QT_TRANSLATE_NOOP("@default","Play sounds from a person whilst chatting"),
+			"PlaySoundChat", true);
+	ConfigDialog::addCheckBox("Sounds", "Sounds",
+			QT_TRANSLATE_NOOP("@default","Play chat sounds only when window is invisible"),
+			"PlaySoundChatInvisible", true);
 	
 	ConfigDialog::addHBox("Sounds", "Sounds", "sound_box");
 	ConfigDialog::addListView("Sounds", "sound_box", "sound_files");
 	ConfigDialog::addVBox("Sounds", "sound_box", "util_box");
-	ConfigDialog::addPushButton("Sounds", "util_box", "Choose");
-	ConfigDialog::addPushButton("Sounds", "util_box", "Clear");
-	ConfigDialog::addPushButton("Sounds", "util_box", "Test");
-
+	ConfigDialog::addPushButton("Sounds", "util_box", QT_TRANSLATE_NOOP("@default","Choose"));
+	ConfigDialog::addPushButton("Sounds", "util_box", QT_TRANSLATE_NOOP("@default","Clear"));
+	ConfigDialog::addPushButton("Sounds", "util_box", QT_TRANSLATE_NOOP("@default","Test"));
 	soundslots= new SoundSlots();
 
 	ConfigDialog::registerSlotOnCreate(soundslots, SLOT(onCreateConfigDialog()));

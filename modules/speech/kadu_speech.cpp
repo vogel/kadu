@@ -21,31 +21,12 @@
 extern "C" int speech_init()
 {
 	kdebugf();
-	QT_TRANSLATE_NOOP("@default","Speech");
-	QT_TRANSLATE_NOOP("@default","Notify by speech");
-	QT_TRANSLATE_NOOP("@default","Say only when chat window is not active");
-	QT_TRANSLATE_NOOP("@default","Frequency");
-	QT_TRANSLATE_NOOP("@default","Tempo");
-	QT_TRANSLATE_NOOP("@default","Base frequency");
-	QT_TRANSLATE_NOOP("@default","Melody");
-	QT_TRANSLATE_NOOP("@default","Klatt synthesizer (requires dsp)");
-	QT_TRANSLATE_NOOP("@default","Use aRts");
-	QT_TRANSLATE_NOOP("@default","Use Esd");
-	QT_TRANSLATE_NOOP("@default","Use Dsp");
-	QT_TRANSLATE_NOOP("@default","Dsp device:");
-	QT_TRANSLATE_NOOP("@default","Speech program:");
-	QT_TRANSLATE_NOOP("@default","Chat format (male):");
-	QT_TRANSLATE_NOOP("@default","Chat format (female):");
-	QT_TRANSLATE_NOOP("@default","Message format (male):");
-	QT_TRANSLATE_NOOP("@default","Message format (female):");
-	QT_TRANSLATE_NOOP("@default","Notify format (male):");
-	QT_TRANSLATE_NOOP("@default","Notify format (female):");
-	QT_TRANSLATE_NOOP("@default","Test");
-	QT_TRANSLATE_NOOP("@default","Program");
-	QT_TRANSLATE_NOOP("@default", "man %a said %1");
-	QT_TRANSLATE_NOOP("@default", "woman %a said %1");
-	QT_TRANSLATE_NOOP("@default", "man %a changed status to %s %d");
-	QT_TRANSLATE_NOOP("@default", "woman %a changed status to %s %d");
+
+
+	//QT_TRANSLATE_NOOP("@default", "man %a said %1");
+	//QT_TRANSLATE_NOOP("@default", "woman %a said %1");
+	//QT_TRANSLATE_NOOP("@default", "man %a changed status to %s %d");
+	//QT_TRANSLATE_NOOP("@default", "woman %a changed status to %s %d");
 
 	speechObj=new SpeechSlots();
 
@@ -58,46 +39,67 @@ extern "C" int speech_init()
 
 	ConfigDialog::addTab("Notify");
 	ConfigDialog::addVGroupBox("Notify", "Notify", "Notify options");
-	ConfigDialog::addCheckBox("Notify", "Notify options", "Notify by speech", "NotifyWithSpeech", true);
+	ConfigDialog::addCheckBox("Notify", "Notify options",
+			QT_TRANSLATE_NOOP("@default","Notify by speech"), "NotifyWithSpeech", true);
 
-	ConfigDialog::addTab("Speech");
+	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default","Speech"));
 
-	ConfigDialog::addCheckBox("Speech", "Speech", "Say only when chat window is not active", "SayWhenWinNotActive", true);
+	ConfigDialog::addCheckBox("Speech", "Speech",
+			QT_TRANSLATE_NOOP("@default","Say only when chat window is not active"),
+			"SayWhenWinNotActive", true);
 
 	ConfigDialog::addGrid("Speech", "Speech", "freq", 2);
-	ConfigDialog::addLabel("Speech", "freq", "Frequency");
+	ConfigDialog::addLabel("Speech", "freq", QT_TRANSLATE_NOOP("@default","Frequency"));
 	ConfigDialog::addSlider("Speech", "freq", "slider1", "Frequency", 5000, 22050, 500, 8000);
 
 	ConfigDialog::addGrid("Speech", "Speech", "tempo", 2);
-	ConfigDialog::addLabel("Speech", "tempo", "Tempo");
+	ConfigDialog::addLabel("Speech", "tempo", QT_TRANSLATE_NOOP("@default","Tempo"));
 	ConfigDialog::addSlider("Speech", "tempo", "slider2", "Tempo", 0, 10, 1, 5);
 
 	ConfigDialog::addGrid("Speech", "Speech", "basefreq", 2);
-	ConfigDialog::addLabel("Speech", "basefreq", "Base frequency");
+	ConfigDialog::addLabel("Speech", "basefreq", QT_TRANSLATE_NOOP("@default","Base frequency"));
 	ConfigDialog::addSlider("Speech", "basefreq", "slider3", "BaseFrequency", 60, 440, 10, 133);
 
-	ConfigDialog::addCheckBox("Speech", "Speech", "Melody", "Melody", true);
-	ConfigDialog::addCheckBox("Speech", "Speech", "Klatt synthesizer (requires dsp)", "KlattSynt", false);
-	ConfigDialog::addCheckBox("Speech", "Speech", "Use aRts", "UseArts", false, "", "usearts");
-	ConfigDialog::addCheckBox("Speech", "Speech", "Use Esd", "UseEsd", false, "", "useesd");
-	ConfigDialog::addCheckBox("Speech", "Speech", "Use Dsp", "UseDsp", true, "", "usedsp");
-	ConfigDialog::addLineEdit("Speech", "Speech", "Dsp device:", "DspDev","/dev/dsp");
+	ConfigDialog::addCheckBox("Speech", "Speech", QT_TRANSLATE_NOOP("@default","Melody"), "Melody", true);
+	ConfigDialog::addCheckBox("Speech", "Speech", 
+			QT_TRANSLATE_NOOP("@default","Klatt synthesizer (requires dsp)"), "KlattSynt", false);
+	ConfigDialog::addCheckBox("Speech", "Speech",
+			QT_TRANSLATE_NOOP("@default","Use aRts"), "UseArts", false, "", "usearts");
+	ConfigDialog::addCheckBox("Speech", "Speech", 
+			QT_TRANSLATE_NOOP("@default","Use Esd"), "UseEsd", false, "", "useesd");
+	ConfigDialog::addCheckBox("Speech", "Speech",
+			QT_TRANSLATE_NOOP("@default","Use Dsp"), "UseDsp", true, "", "usedsp");
+	ConfigDialog::addLineEdit("Speech", "Speech",
+			QT_TRANSLATE_NOOP("@default","Dsp device:"), "DspDev","/dev/dsp");
 
-	ConfigDialog::addHGroupBox("Speech", "Speech", "Program");
-	ConfigDialog::addLineEdit("Speech", "Program", "Speech program:", "SpeechProgram","powiedz");
+	ConfigDialog::addHGroupBox("Speech", "Speech", QT_TRANSLATE_NOOP("@default","Program"));
+	ConfigDialog::addLineEdit("Speech", "Program",
+			QT_TRANSLATE_NOOP("@default","Speech program:"), "SpeechProgram","powiedz");
 	ConfigDialog::addPushButton("Speech", "Program", "", "OpenFile","","speech_fileopen");
 	ConfigDialog::connectSlot("Speech", "", SIGNAL(clicked()), speechObj, SLOT(chooseSpeechProgram()), "speech_fileopen");
 	
-	ConfigDialog::addLineEdit("Speech", "Speech", "Chat format (male):", "ChatFormatMale", qApp->translate("@default", "man %a said %1"));
-	ConfigDialog::addLineEdit("Speech", "Speech", "Chat format (female):", "ChatFormatFemale", qApp->translate("@default", "woman %a said %1"));
+	ConfigDialog::addLineEdit("Speech", "Speech",
+			QT_TRANSLATE_NOOP("@default","Chat format (male):"),
+			"ChatFormatMale", SpeechSlots::tr("man %a said %1"));
+	ConfigDialog::addLineEdit("Speech", "Speech", 
+			QT_TRANSLATE_NOOP("@default","Chat format (female):"),
+			"ChatFormatFemale", SpeechSlots::tr("woman %a said %1"));
 
-	ConfigDialog::addLineEdit("Speech", "Speech", "Message format (male):", "MessageFormatMale", qApp->translate("@default", "man %a said %1"));
-	ConfigDialog::addLineEdit("Speech", "Speech", "Message format (female):", "MessageFormatFemale", qApp->translate("@default", "woman %a said %1"));
+	ConfigDialog::addLineEdit("Speech", "Speech", 
+			QT_TRANSLATE_NOOP("@default","Message format (male):"),
+			"MessageFormatMale", SpeechSlots::tr("man %a said %1"));
+	ConfigDialog::addLineEdit("Speech", "Speech", 
+			QT_TRANSLATE_NOOP("@default","Message format (female):"),
+			"MessageFormatFemale", SpeechSlots::tr("woman %a said %1"));
 
-	ConfigDialog::addLineEdit("Speech", "Speech", "Notify format (male):", "NotifyFormatMale", qApp->translate("@default", "man %a changed status to %s %d"));
-	ConfigDialog::addLineEdit("Speech", "Speech", "Notify format (female):", "NotifyFormatFemale", qApp->translate("@default", "woman %a changed status to %s %d"));
+	ConfigDialog::addLineEdit("Speech", "Speech", 
+			QT_TRANSLATE_NOOP("@default","Notify format (male):"),
+			"NotifyFormatMale", SpeechSlots::tr("man %a changed status to %s %d"));
+	ConfigDialog::addLineEdit("Speech", "Speech", 
+			QT_TRANSLATE_NOOP("@default","Notify format (female):"),
+			"NotifyFormatFemale", SpeechSlots::tr("woman %a changed status to %s %d"));
 	
-	ConfigDialog::addPushButton("Speech", "Speech", "Test", "", "", "testspeech");
+	ConfigDialog::addPushButton("Speech", "Speech",	QT_TRANSLATE_NOOP("@default","Test"), "", "", "testspeech");
 
 	ConfigDialog::connectSlot("Speech", "Test", SIGNAL(clicked()), speechObj, SLOT(testSpeech()), "testspeech");
 	ConfigDialog::connectSlot("Speech", "Use aRts", SIGNAL(toggled(bool)), speechObj, SLOT(useArts(bool)), "usearts");

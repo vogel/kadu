@@ -24,34 +24,29 @@
 #include "userbox.h"
 
 extern "C" int sms_init()
-{
-	QT_TRANSLATE_NOOP("@default", "SMS");
-	QT_TRANSLATE_NOOP("@default", "SMS options");
-	QT_TRANSLATE_NOOP("@default", "Use built-in SMS application");
-	QT_TRANSLATE_NOOP("@default", "Custom SMS application");
-	QT_TRANSLATE_NOOP("@default", "SMS custom string");
-	QT_TRANSLATE_NOOP("@default", "Check this box if your sms application doesn't understand arguments: number \"message\"\nArguments should be separated with spaces. %n argument is converted to number, %m to message");
-	QT_TRANSLATE_NOOP("@default", "Gateways priority");
-	QT_TRANSLATE_NOOP("@default", "Up");
-	QT_TRANSLATE_NOOP("@default", "Down");
-	QT_TRANSLATE_NOOP("@default", "Send SMS");
-
+{				
 	kdebug("sms_init \n");	
 	
-	ConfigDialog::addTab("SMS");
-	ConfigDialog::addVGroupBox("SMS", "SMS", "SMS options");
-	ConfigDialog::addCheckBox("SMS", "SMS options", "Use built-in SMS application", "BuiltInApp", true);
-	ConfigDialog::addLineEdit("SMS", "SMS options", "Custom SMS application", "SmsApp");
+	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "SMS"));
+	ConfigDialog::addVGroupBox("SMS", "SMS",
+			QT_TRANSLATE_NOOP("@default", "SMS options"));
+	ConfigDialog::addCheckBox("SMS", "SMS options",
+			QT_TRANSLATE_NOOP("@default", "Use built-in SMS application"), "BuiltInApp", true);
+	ConfigDialog::addLineEdit("SMS", "SMS options",
+			QT_TRANSLATE_NOOP("@default", "Custom SMS application"), "SmsApp");
 	ConfigDialog::addGrid("SMS", "SMS options", "smsgrid", 2);
-	ConfigDialog::addCheckBox("SMS", "smsgrid", "SMS custom string", "UseCustomString", false
-	,"Check this box if your sms application doesn't understand arguments: number \"message\"\nArguments should be separated with spaces. %n argument is converted to number, %m to message");
+	ConfigDialog::addCheckBox("SMS", "smsgrid",
+			QT_TRANSLATE_NOOP("@default", "SMS custom string"), "UseCustomString", false ,
+			QT_TRANSLATE_NOOP("@default", "Check this box if your sms application doesn't understand arguments: number \"message\"\nArguments should be separated with spaces. %n argument is converted to number, %m to message"));
 	ConfigDialog::addLineEdit("SMS", "smsgrid", "", "SmsString", "", "", "smsstring");
-	ConfigDialog::addHGroupBox("SMS", "SMS", "Gateways priority");
+	ConfigDialog::addHGroupBox("SMS", "SMS",
+			QT_TRANSLATE_NOOP("@default", "Gateways priority"));
 	ConfigDialog::addListBox("SMS", "Gateways priority", "gateways");
 	ConfigDialog::addVBox("SMS", "Gateways priority", "button");
-	ConfigDialog::addPushButton("SMS", "button", "Up");
-	ConfigDialog::addPushButton("SMS", "button", "Down");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Send SMS", "kadu_sendsms", "Ctrl+S");
+	ConfigDialog::addPushButton("SMS", "button", QT_TRANSLATE_NOOP("@default", "Up"));
+	ConfigDialog::addPushButton("SMS", "button", QT_TRANSLATE_NOOP("@default", "Down"));
+	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys",
+			QT_TRANSLATE_NOOP("@default", "Send SMS"), "kadu_sendsms", "Ctrl+S");
 
 	
 	smsslots=new SmsSlots();

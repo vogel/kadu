@@ -15,8 +15,6 @@
 extern "C" int ext_sound_init()
 {
 	kdebugf();
-	QT_TRANSLATE_NOOP("@default","Sound player");
-	QT_TRANSLATE_NOOP("@default","Path:");
 
 	externalPlayerObj=new ExternalPlayerSlots();
 
@@ -29,8 +27,9 @@ extern "C" int ext_sound_init()
 	QObject::connect(sound_manager, SIGNAL(playOnNotify(const uin_t, const QString &, bool, double)),
 					 externalPlayerObj, SLOT(playNotify(const uin_t, const QString &, bool, double)));
 
-	ConfigDialog::addHGroupBox("Sounds", "Sounds", "Sound player");
-	ConfigDialog::addLineEdit("Sounds", "Sound player", "Path:", "SoundPlayer","","","soundplayer_path");
+	ConfigDialog::addHGroupBox("Sounds", "Sounds", 	QT_TRANSLATE_NOOP("@default","Sound player"));	
+	ConfigDialog::addLineEdit("Sounds", "Sound player",
+			QT_TRANSLATE_NOOP("@default","Path:"), "SoundPlayer","","","soundplayer_path");
 	ConfigDialog::addPushButton("Sounds", "Sound player", "", "OpenFile","","soundplayer_fileopen");
 	ConfigDialog::connectSlot("Sounds", "", SIGNAL(clicked()), externalPlayerObj, SLOT(choosePlayerFile()), "soundplayer_fileopen");
 
