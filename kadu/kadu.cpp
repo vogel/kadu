@@ -109,6 +109,7 @@
 #include "dock_widget.h"
 #include "updates.h"
 #include "password.h"
+#include "tabbar.h"
 #ifdef HAVE_OPENSSL
 #include "simlite.h"
 #endif
@@ -443,7 +444,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	setCentralWidget(centralFrame);
 
 	/* initialize group tabbar */
-	group_bar = new QTabBar(centralFrame, "groupbar");
+	group_bar = new KaduTabBar(centralFrame, "groupbar");
 	group_bar->addTab(new QTab(i18n("All")));
 	refreshGroupTabBar();
 	connect(group_bar, SIGNAL(selected(int)), this, SLOT(groupTabSelected(int)));

@@ -20,7 +20,6 @@
 #include <qsocketnotifier.h>
 #include <qarray.h>
 #include <qmainwindow.h>
-#include <qtabbar.h>
 #include <qpopupmenu.h>
 #include <qnetworkprotocol.h>
 #include <qstringlist.h>
@@ -34,6 +33,7 @@
 #include "pending_msgs.h"
 #include "misc.h"
 #include "status.h"
+#include "tabbar.h"
 #include "../config.h"
 
 struct colors {
@@ -220,7 +220,7 @@ class Kadu : public QMainWindow
 		QFrame *centralFrame;
 		QGridLayout *grid;
 		QMenuBar *mmb;
-		QTabBar *group_bar;
+		KaduTabBar *group_bar;
 		QTextBrowser *descrtb;
 		int commencing_startup;
 		void createMenu();
