@@ -300,9 +300,16 @@ void HintManager::deleteHint(unsigned int id)
 		hide();
 		return;
 	}
+
+#if QT_VERSION >= 0x030200
 	unsigned int i = 0;
 	CONST_FOREACH(hint, hints)
 		(*hint)->setId(i++);
+#else
+	for (unsigned int i = id, count = hints.count(); i < count; ++i)
+		hints.at(i)->setId(i);
+#endif
+
 	setHint();
 	kdebugf2();
 }
@@ -384,9 +391,12 @@ void HintManager::deleteAllHints()
 {
 	kdebugf();
 	hint_timer->stop();
-#if QT_VERSION >= 0x030100
+#if QT_VERSION >= 0x030200
 	CONST_FOREACH(hint, hints)
 		grid->removeItem(*hint);
+#elif QT_VERSION >= 0x030100
+	for (unsigned int i = 0, count = hints.count(); i < count; ++i)
+		grid->removeItem(hints.at(i));
 #endif
 	hints.clear();
 #if QT_VERSION < 0x030100
