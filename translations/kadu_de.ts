@@ -701,6 +701,18 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
         <source>User %1 is available</source>
         <translation>Benutzer %1 ist erreichbar</translation>
     </message>
+    <message>
+        <source>Choose</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sound paths</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -910,6 +922,10 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     <message>
         <source>Kadu configuration</source>
         <translation>Kadu Konfiguration</translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1549,10 +1565,6 @@ Check your internet connection.</source>
         <source>&amp;Change password/email</source>
         <translation>Passwort/Email &amp;ändern</translation>
     </message>
-    <message>
-        <source>&amp;Manage Modules</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>KaduSlots</name>
@@ -1624,6 +1636,10 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     <message>
         <source>Cannot load module library.
 Maybe it&apos;s incorrecty compiled.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Manage Modules</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1902,6 +1918,41 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
     </message>
 </context>
 <context>
+    <name>SelectPaths</name>
+    <message>
+        <source>Select paths</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Füge hinzu</translation>
+    </message>
+    <message>
+        <source>Replace</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose a directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Sms</name>
     <message>
         <source>Recipient</source>
@@ -2060,6 +2111,33 @@ oder änderte die Zugangserlaubnis.</translation>
     <message>
         <source>Mobile number is incorrect</source>
         <translation>Falsche Telefonnummer</translation>
+    </message>
+</context>
+<context>
+    <name>SoundSlots</name>
+    <message>
+        <source>Custom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sound file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat sound</source>
+        <translation type="unfinished">Chat-Ton</translation>
+    </message>
+    <message>
+        <source>Message sound</source>
+        <translation type="unfinished">Ton-Benachrichtigung</translation>
+    </message>
+    <message>
+        <source>Notify sound</source>
+        <translation type="unfinished">Benachrichtigungston</translation>
     </message>
 </context>
 <context>

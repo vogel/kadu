@@ -701,6 +701,18 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
         <source>User %1 is available</source>
         <translation>%1 è disponibile</translation>
     </message>
+    <message>
+        <source>Choose</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sound paths</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -910,6 +922,10 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
     <message>
         <source>Kadu configuration</source>
         <translation>Configurazione Kadu</translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1549,10 +1565,6 @@ Controllare connessione a Internet.</translation>
         <source>&amp;Change password/email</source>
         <translation>&amp;Cambia la password/email</translation>
     </message>
-    <message>
-        <source>&amp;Manage Modules</source>
-        <translation>Gestione &amp;Moduli</translation>
-    </message>
 </context>
 <context>
     <name>KaduSlots</name>
@@ -1627,6 +1639,10 @@ Probabilmente il modulo non è conmpatibile con Kadu.</translation>
 Maybe it&apos;s incorrecty compiled.</source>
         <translation>Impossibile caricare libreria del modulo.
 Propbabilmente è stata compilata male.</translation>
+    </message>
+    <message>
+        <source>&amp;Manage Modules</source>
+        <translation type="unfinished">Gestione &amp;Moduli</translation>
     </message>
 </context>
 <context>
@@ -1898,6 +1914,45 @@ Ora è possibile aggiungere i vostri amici alla lista dei contatti.</translation
         <source>Select user first</source>
         <translation>Prima scegli l&apos;utente</translation>
     </message>
+    <message>
+        <source> </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SelectPaths</name>
+    <message>
+        <source>Select paths</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Aggiungi</translation>
+    </message>
+    <message>
+        <source>Replace</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Annulla</translation>
+    </message>
+    <message>
+        <source>Choose a directory</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Sms</name>
@@ -2058,6 +2113,33 @@ Probabilmente è temporaneamente disattivata, o sono state cambiate le reole acc
     <message>
         <source>Mobile number is incorrect</source>
         <translation>Il numero di telefono è errato</translation>
+    </message>
+</context>
+<context>
+    <name>SoundSlots</name>
+    <message>
+        <source>Custom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sound file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat sound</source>
+        <translation type="unfinished">Suono di chat</translation>
+    </message>
+    <message>
+        <source>Message sound</source>
+        <translation type="unfinished">Suono messaggio</translation>
+    </message>
+    <message>
+        <source>Notify sound</source>
+        <translation type="unfinished">Suono di notifica</translation>
     </message>
 </context>
 <context>

@@ -701,6 +701,18 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <source>User %1 is available</source>
         <translation>Kontakt %1 jest dostępny</translation>
     </message>
+    <message>
+        <source>Choose</source>
+        <translation>Wybierz</translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation>Wyczyść</translation>
+    </message>
+    <message>
+        <source>Sound paths</source>
+        <translation>Ścieżki do dźwięków</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -910,6 +922,10 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     <message>
         <source>Kadu configuration</source>
         <translation>Konfiguracja Kadu</translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
@@ -1479,11 +1495,11 @@ Sprawdź swoje połączenie internetowe.</translation>
     </message>
     <message>
         <source>&amp;Configuration</source>
-        <translation>Konfi&amp;guracja</translation>
+        <translation>&amp;Konfiguracja</translation>
     </message>
     <message>
         <source>Resend &amp;userlist</source>
-        <translation>Wyślij listę &amp;kontaktów</translation>
+        <translation>&amp;Wyślij listę kontaktów</translation>
     </message>
     <message>
         <source>Remind &amp;password</source>
@@ -1547,11 +1563,7 @@ Sprawdź swoje połączenie internetowe.</translation>
     </message>
     <message>
         <source>&amp;Change password/email</source>
-        <translation>&amp;Zmień hasło/email</translation>
-    </message>
-    <message>
-        <source>&amp;Manage Modules</source>
-        <translation>Zarządca &amp;modułów</translation>
+        <translation>Zmień &amp;hasło/email</translation>
     </message>
 </context>
 <context>
@@ -1627,6 +1639,10 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
 Maybe it&apos;s incorrecty compiled.</source>
         <translation>Nie mogę załadować bibloteki modułów.
 Być może jest nieprawidłowo skompilowana.</translation>
+    </message>
+    <message>
+        <source>&amp;Manage Modules</source>
+        <translation>Z&amp;arządca Modułów</translation>
     </message>
 </context>
 <context>
@@ -1900,6 +1916,41 @@ Teraz możesz dodać znajomych do listy kontaktów.</translation>
     </message>
 </context>
 <context>
+    <name>SelectPaths</name>
+    <message>
+        <source>Select paths</source>
+        <translation>Wybierz Ścierzki</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation>Dodaj</translation>
+    </message>
+    <message>
+        <source>Replace</source>
+        <translation>Zastąp</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation>Usuń</translation>
+    </message>
+    <message>
+        <source>Choose</source>
+        <translation>Wybierz</translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Anuluj</translation>
+    </message>
+    <message>
+        <source>Choose a directory</source>
+        <translation>Wybierz katalog</translation>
+    </message>
+</context>
+<context>
     <name>Sms</name>
     <message>
         <source>Recipient</source>
@@ -2058,6 +2109,33 @@ czasowo wyłączona lub zmieniła zasady dostępu.</translation>
     <message>
         <source>Mobile number is incorrect</source>
         <translation>Numer telefonu jest nieprawidłowy</translation>
+    </message>
+</context>
+<context>
+    <name>SoundSlots</name>
+    <message>
+        <source>Custom</source>
+        <translation>Samodzielnie</translation>
+    </message>
+    <message>
+        <source>Event</source>
+        <translation>Zdarzenie</translation>
+    </message>
+    <message>
+        <source>Sound file</source>
+        <translation>Plik dźwiekowy</translation>
+    </message>
+    <message>
+        <source>Chat sound</source>
+        <translation>Dźwięk rozmowy</translation>
+    </message>
+    <message>
+        <source>Message sound</source>
+        <translation>Dźwięk wiadomości</translation>
+    </message>
+    <message>
+        <source>Notify sound</source>
+        <translation>Dźwięk powiadomienia</translation>
     </message>
 </context>
 <context>

@@ -695,6 +695,18 @@ Arguments should be separated with spaces. %n argument is converted to number, %
         <source>Multicolumn userbox</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Choose</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sound paths</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -903,6 +915,10 @@ Arguments should be separated with spaces. %n argument is converted to number, %
     </message>
     <message>
         <source>Kadu configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1540,10 +1556,6 @@ Check your internet connection.</source>
         <source>Private</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>&amp;Manage Modules</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>KaduSlots</name>
@@ -1615,6 +1627,10 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     <message>
         <source>Cannot load module library.
 Maybe it&apos;s incorrecty compiled.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Manage Modules</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1890,6 +1906,41 @@ Now add your friends to the userlist.</source>
     </message>
 </context>
 <context>
+    <name>SelectPaths</name>
+    <message>
+        <source>Select paths</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Replace</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose a directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Sms</name>
     <message>
         <source>Recipient</source>
@@ -2045,6 +2096,33 @@ or has beed changed too much to parse it correctly.</source>
     <name>SmsSender</name>
     <message>
         <source>Mobile number is incorrect</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SoundSlots</name>
+    <message>
+        <source>Custom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sound file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat sound</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Message sound</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify sound</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
