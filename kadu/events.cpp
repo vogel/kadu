@@ -226,6 +226,7 @@ void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)
 		fprintf(stderr, "KK Notify about user\n");
 
 		if (config.notifydialog) {		
+			// FIXME convert into a regular QMessageBox
 			QString msg;
 			msg = i18n("User %1 is available").arg(userlist.byUin(uin).altnick);
 			QMessageBox::information(0, i18n("User notify"), msg);		
