@@ -262,10 +262,10 @@ class GaduSocketNotifiers : public SocketNotifiers
 //            GaduProtocol
 // ------------------------------------
 
-/*!
+/**
 	@class GaduProtocol
 	@short Klasa do obs³ugi protoko³u Gadu-Gadu
- */
+ **/
 class GaduProtocol : public QObject
 {
 	Q_OBJECT
@@ -274,7 +274,7 @@ class GaduProtocol : public QObject
 
 	private:
 
-		/*!
+		/**
 			@enum Mode
 			@short Tryb pracy obiektu
 			@see TokenSocketNotifiers
@@ -298,7 +298,7 @@ class GaduProtocol : public QObject
 			i ustalaj± warto¶æ pola Mode. Pobieranie obrazka realizowane jest przez klasê
 			TokenSocketNotifiers. Po pobraniu wywo³ywany jest slot gotToken, który na podstawie warto¶ci
 			pola Mode wywo³uje jedn± z funkjci doRegister, doUnregister, doRemindPassword i doChangePassword.
-		 */
+		 **/
 		enum
 		{
 			//! Rejestrowanie nowego u¿ytkownika
@@ -336,7 +336,7 @@ class GaduProtocol : public QObject
 		//! Sesja po³±czenia - wymagane przez bibliotekê libgg
 		gg_session* Sess;
 
-		/*!
+		/**
 			Bie¿acy status. Zmieniany po po³±czeniu, oraz w przypadku zmiany statusu kiedy po³±czenie
 			jest ju¿ zainicjowane.
 
@@ -349,10 +349,10 @@ class GaduProtocol : public QObject
 			@see NextStatus
 			@see UserStatus
 			@see status
-		*/
+		**/
 		GaduStatus* CurrentStatus;
 
-		/*!
+		/**
 			Nastêpny status. Ustalany zewnêtrznie przy wykorzystaniu metody status i odpowiednich
 			slotów klasy UserStatus. Zmiana wywo³uje jedn± z metod iWantGo... i w konsekwencji zmianê
 			statusu (w razie konieczno¶ci te¿ zalogowanie).
@@ -366,62 +366,201 @@ class GaduProtocol : public QObject
 			@see CurrentStatus
 			@see UserStatus
 			@see status
-		 */
+		 **/
 		GaduStatus* NextStatus;
 
-		/*!
+		/**
 			Klasa gniazdek ³±cz±ca siê z serwerem. Wysy³a sygna³y po wyst±pieniu zdarzenia protoko³u
 			(po³±czenie, zerwanie po³±czenia, nowa wiadomo¶æ).
 
 			@see GaduSocketNotifiers
-		 */
+		 **/
 		GaduSocketNotifiers *SocketNotifiers;
 
-		/*!
+		/**
 			Zegar pinguj±cy serwer.
-		 */
+		 **/
 		QTimer* PingTimer;
 
-		/*!
+		/**
 			Okre¶la, czy lista u¿ytkowników zosta³a ju¿ wys³ana.
 
-			@todo okre¶liæ znaczenie
-		 */
+			@todo Wywaliæ, zamieniæ na connected
+		 **/
 		bool UserListSent;
-		/*!
-			Nie wiem co to jest.
+		/**
+			Zmienna ustawiana w zale¿no¶ci od tego, czy wysy³amy listê kontaktów na serwer
+			czy te¿ usuwamy j± z tego serwera. Zakoñczenie obydwu tych czynno¶ci wywo³uje
+			sygna³ podpiêty do slotu userListReplyReceived, który w zale¿no¶ci od warto¶ci
+			tego pola wywo³uje userListCleared albo userListExported.
 
-			@todo okre¶liæ znaczenie
-		 */
+			@see userListReplyReceived
+			@see userListCleared
+			@see userListExported
+		 **/
 		bool UserListClear;
 
-		/*!
-			Lista u¿ytkowników pobrana z serwera w postaci ³añcucha.
-		 */
+		/**
+			Lista u¿ytkowników pobrana z serwera w postaci ³añcucha. Warto¶c ustalana w slocie
+			userListReplyReceived.
+
+			@see userListReplyReceived
+		 **/
 		QString ImportReply;
 
-		/*!
-			Ustawianie parametrów po³±czenia proxy.
-		 */
+		/**
+			Ustawianie parametrów po³±czenia proxy. Metoda wywo³ywana podczas logowania.
+
+			@see login
+		 **/
 		void setupProxy();
 
+		/**
+			Loguje siê do serwera Gadu-Gadu. Po uruchomieniu emituje sygna³ connecting. Parametry
+			logowania odczytuje z konfiguracji, status logowania pobiera z pola NextStatus.
+			£±cz±c siê, wybiera kolejne serwery (w przypadku nieudanego po³±czenia) wykorzystuj±c
+			pola ConfigServers i i ServerNr.
+
+			Po poprawnym zalogowaniu wywo³ywany jest slot connectedSlot, który emituje sygna³
+			GaduProtocol::connected
+
+			Metodê mo¿na uruchomiæ po¶rednio poprzez wywo³anie typu gadu->status().setOnline(),
+			które wywo³a slot iWantToGoOnline, który z kolei (gdy stwierdzi, ¿e nie jeste¶my zalogowani)
+			wywo³a procedurê.
+
+			Metoda jest te¿ wywo³ywana przez obiekt statyczny klasy AutoConnectionTimer, która
+			jest zaprzyja¼niona z GaduProtocol.
+
+			@see connecting
+			@see connected
+			@see connectedSlot
+			@see NextStatus
+			@see ConfigServers
+			@see ServerNr
+			@see AutoConnectionTimer
+		 **/
 		void login();
+		/**
+			Metoda wywo³ywana w razie roz³±czenie siê z serwerem. Wywo³ywana przez iWantGoOffline
+			albo przez connectionTimeoutTimerSlot. Wywo³uje disconnectedSlot, który z kolei
+			emituje sygna³ disconnected
+
+			@see disconnected
+			@see disconnectedSlot
+			@see connectionTimeoutTimerSlot
+			@see iWantGoOffline
+			@todo Wywaliæ i zast±piæ wywo³aniami disconnectedSlot?
+		 **/
 		void logout();
 
+		/**
+			Za pomoc± klasy TokenSocketNotifiers metoda pobiera z serwera GaduGadu token wraz
+			z identyfikatorem. Pobrany token jest obs³ugiwany za pomoc± slota gotToken,
+			który pobiera warto¶æ tokena emituj±c sygna³ needTokenValue i nastêpnie wywo³uj±c
+			jedn± z metod  doRegisterAccount, doUnregisterAccount(), doRemindPassword(),
+			doChangePassword() na podstawie warto¶ci pola Mode.
+
+			@see TokenSocketNotifiers
+			@see gotToken
+			@see doRegisterAccount
+			@see doUnregisterAccount
+			@see doRemindPassword
+			@see doChangePassword
+			@see Mode
+		 **/
 		void getToken();
 
+		/**
+			Rejestruje nowe konto. Wywo³ywane przez gotToken (które jest wywo³ane po¶rednio przez
+			registerAccount). Korzysta z pomocy PubdirSocketNotifiers oraz slotu registerDone,
+			który emituje sygna³ registered.
+
+			@see registerAccount
+			@see registered
+			@see registerDone
+			@see gotToken
+		 **/
 		void doRegisterAccount();
+		/**
+			Wyrejestrowuje konto. Wywo³ywane przez gotToken (które jest wywo³ane po¶rednio przez
+			unregisterAccount). Korzysta z pomocy PubdirSocketNotifiers oraz slotu unregisterDone,
+			który emituje sygna³ unregistered.
+
+			@see unregisterAccount
+			@see unregistered
+			@see unregisterDone
+			@see gotToken
+		 **/
 		void doUnregisterAccount();
+		/**
+			Przypomina has³o. Wywo³ywane przez gotToken (które jest wywo³ane po¶rednio przez
+			remindPassword). Korzysta z pomocy PubdirSocketNotifiers oraz slotu remindDone,
+			który emituje sygna³ reminded.
+
+			@see remindPassword
+			@see reminded
+			@see remindDone
+			@see gotToken
+		 **/
 		void doRemindPassword();
+		/**
+			Zmienia has³o. Wywo³ywane przez gotToken (które jest wywo³ane po¶rednio przez
+			changePassword). Korzysta z pomocy PubdirSocketNotifiers oraz slotu changePasswordDone,
+			który emituje sygna³ passwordChanged.
+
+			@see changePassword
+			@see passwordChanged
+			@see changePasswordDone
+			@see gotToken
+		 **/
 		void doChangePassword();
 
 	private slots:
+		/**
+			Wywo³ywany po zarejestrowaniu konta. Emituje registered/
+
+			@see registerAccount
+			@see doRegisterAccount
+			@see registered
+		 **/
 		void registerDone(bool ok, struct gg_http *);
+		/**
+			Wywo³ywany po wyrejestrowaniu konta. Emituje unregistered.
+
+			@see unregisterAccount
+			@see doUnregisterAccount
+			@see unregistered
+		 **/
 		void unregisterDone(bool ok, struct gg_http *);
+		/**
+			Wywo³ywany po przypomnieniu has³a. Emituje reminded.
+
+			@see remindPassword
+			@see doRemindPassword
+			@see reminded
+		 **/
 		void remindDone(bool ok, struct gg_http *);
+		/**
+			Wywo³ywany po zmianie has³a. Emituje passwordChanged.
+
+			@see changePassword
+			@see doChangePassword
+			@see passwordChanged
+		 **/
 		void changePasswordDone(bool ok, struct gg_http *);
 
+		/**
+			Slot wywo³ywany, gdy pobieranie tokena siê nie uda³o.
+
+			@see getToken
+		**/
 		void tokenError();
+		/**
+			Slot wywo³ywany, gdy pobieranie tokena siê powiod³o. Emituje needTokenValue
+
+			@see getToken
+			@see needTokenValue
+		 **/
 		void gotToken(QString, QPixmap);
 
 		void connectedSlot();
