@@ -215,104 +215,101 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 {
 
 	//zachowanie wstecznej kompatybilnosci ze starym konfigiem
-	config_file.addVariable("General","UIN",config_file.readEntry("Global","UIN"));
-	config_file.addVariable("General","Password",config_file.readEntry("Global","Password"));
-	config_file.addVariable("General","Nick",config_file.readEntry("Global","Nick"));
-	config_file.addVariable("General","Geometry",config_file.readEntry("Global","Geometry"));
-	config_file.addVariable("General","DefaultStatus",config_file.readEntry("Global","DefaultStatus"));
-	config_file.addVariable("General","DefaultDescription",config_file.readEntry("Global","DefaultDescription"));
-	config_file.addVariable("General","ShowHideInactive", config_file.readEntry("Other", "ShowHideInactive"));
-	config_file.addVariable("General","OpenChatOnMessage",config_file.readEntry("Other","OpenChatOnMessage"));
-	config_file.addVariable("General","AutoSend",config_file.readEntry("Other","AutoSend"));
-	config_file.addVariable("General","DisconnectWithDescription",config_file.readEntry("Other","DisconnectWithDescription"));
-	config_file.addVariable("General","DisconnectDescription",config_file.readEntry("Other","DisconnectDescription"));
-	config_file.addVariable("General","AutoSend",config_file.readEntry("Global","AutoSend"));
-	config_file.addVariable("General","DockWindows",config_file.readEntry("Global","DockWindows"));
-	config_file.addVariable("General","SplitSize",config_file.readEntry("Global","SplitSize"));
-	config_file.addVariable("Sounds","Message_sound",config_file.readEntry("Global","Message_sound"));
-	config_file.addVariable("Sounds","Chat_sound",config_file.readEntry("Global","Chat_sound"));
-	config_file.addVariable("General","Logging",config_file.readEntry("Global","Logging"));
-	config_file.addVariable("General","SystemMsgIndex",config_file.readEntry("Global","SystemMsgIndex"));
-	config_file.addVariable("General","SaveGeometry",config_file.readEntry("Global","SaveGeometry"));
-	config_file.addVariable("Sounds","PlaySoundChat",config_file.readEntry("Global","PlaySoundChat"));
-	config_file.addVariable("Sounds","PlaySoundChatInvisible",config_file.readEntry("Global","PlaySoundChatInvisible"));
-	config_file.addVariable("Sounds","SoundPlayer",config_file.readEntry("Global","SoundPlayer"));
-	config_file.addVariable("Sounds","PlaySound",config_file.readEntry("Global","PlaySound"));
-	config_file.addVariable("Sounds","PlaySoundArtsDsp",config_file.readEntry("Global","PlaySoundArtsDsp"));
-	config_file.addVariable("Sounds","SoundVolume",config_file.readDoubleNumEntry("Global","SoundVolume")*100);
-	config_file.addVariable("Sounds","VolumeControl",config_file.readEntry("Global","VolumeControl"));
-	config_file.addVariable("General","AutoAway",config_file.readEntry("Global","AutoAway"));
-	config_file.addVariable("General","AutoAwayTime",config_file.readEntry("Global","AutoAwayTime"));
-	config_file.addVariable("General","UseDocking",config_file.readEntry("Global","UseDocking"));
-	config_file.addVariable("General","RunDocked",config_file.readEntry("Global","RunDocked"));
-	config_file.addVariable("General","AutoRaise",config_file.readEntry("Global","AutoRaise"));
-	config_file.addVariable("General","PrivateStatus",config_file.readEntry("Global","PrivateStatus"));
-	config_file.addVariable("General","CheckUpdates",config_file.readEntry("Global","CheckUpdates"));
-	config_file.addVariable("General","DisplayGroupTabs",config_file.readEntry("Global","DisplayGroupTabs"));
-	config_file.addVariable("General","AddToDescription",config_file.readEntry("Global","AddToDescription"));
-	config_file.addVariable("General","ShowDesc",config_file.readEntry("Global","ShowDesc"));
-	config_file.addVariable("General","MultiColumnUserbox",config_file.readEntry("Global","MultiColumnUserbox"));
-	config_file.addVariable("Network","UseProxy",config_file.readEntry("Proxy","UseProxy"));
-	config_file.addVariable("Network","ProxyHost",config_file.readEntry("Proxy","ProxyHost"));
-	config_file.addVariable("Network","ProxyPort",config_file.readNumEntry("Proxy","ProxyPort"));
-	config_file.addVariable("Network","ProxyUser",config_file.readEntry("Proxy","ProxyUser"));
-	config_file.addVariable("Network","ProxyPassword",config_file.readEntry("Proxy","ProxyPassword"));
-	config_file.addVariable("Network","AllowDCC",config_file.readEntry("Global","AllowDCC"));
-	config_file.addVariable("Network","DccIP",config_file.readEntry("Global","DccIP"));
-	config_file.addVariable("Network","DccForwarding",config_file.readEntry("Global","DccForwarding"));
-	config_file.addVariable("Network","ExternalIP",config_file.readEntry("Global","ExternalIP"));
-	config_file.addVariable("Network","ExternalPort",config_file.readEntry("Global","ExternalPort"));
-	config_file.addVariable("Network","isDefServers",config_file.readEntry("Global","isDefServers"));
-	config_file.addVariable("Network","Server",config_file.readEntry("Global","Server"));
-	config_file.addVariable("Network","UseTLS",config_file.readEntry("Global","UseTLS"));
-	config_file.addVariable("Network","DefaultPort",config_file.readEntry("Global","DefaultPort"));
-	config_file.addVariable("History","ChatHistoryQuotationTime",-config_file.readNumEntry("Other","ChatHistoryQuotationTime"));
-	config_file.addVariable("History","ChatHistoryQuotation",config_file.readEntry("Other","ChatHistoryQuotation"));
-	config_file.addVariable("Chat","ChatPrune",config_file.readEntry("Other","ChatPrune"));
-	config_file.addVariable("Chat","ChatPruneLen",config_file.readEntry("Other","ChatPruneLen"));
-	config_file.addVariable("Chat","EmoticonsStyle",config_file.readEntry("Other","ChatEmoticonsStyle"));
-	config_file.addVariable("Chat","EmoticonsTheme",config_file.readEntry("Other","ChatEmoticonsTheme"));
-	config_file.addVariable("Chat","ScrollDown",config_file.readEntry("Other","ScrollDown"));
-	config_file.addVariable("Chat","IgnoreAnonymousUser",config_file.readEntry("Other","IgnoreAnonymousUser"));
-	config_file.addVariable("Chat","Encryption",config_file.readEntry("Other","Encryption"));
-	config_file.addVariable("Chat","MessageAcks",config_file.readEntry("Other","MessageAcks"));
-	config_file.addVariable("Chat","BlinkChatTitle",config_file.readEntry("Other","BlinkChatTitle"));
+	//mysle ze zaraz po wydaniu 0.3.5 powinno to zniknac
+	config_file.addVariable("General", "UIN", config_file.readEntry("Global", "UIN"));
+	config_file.addVariable("General", "Password", config_file.readEntry("Global", "Password"));
+	config_file.addVariable("General", "Nick", config_file.readEntry("Global", "Nick"));
+	config_file.addVariable("General", "Geometry", config_file.readEntry("Global", "Geometry"));
+	config_file.addVariable("General", "DefaultStatus", config_file.readNumEntry("Global", "DefaultStatus", GG_STATUS_NOT_AVAIL));
+	config_file.addVariable("General", "DefaultDescription", config_file.readEntry("Global", "DefaultDescription",tr("I am busy.")));
+	config_file.addVariable("General", "ShowHideInactive", config_file.readBoolEntry("Other", "ShowHideInactive", true));
+	config_file.addVariable("General", "OpenChatOnMessage", config_file.readBoolEntry("Other", "OpenChatOnMessage", false));
+	config_file.addVariable("General", "AutoSend", config_file.readBoolEntry("Other", "AutoSend", false));
+	config_file.addVariable("General", "DisconnectWithDescription", config_file.readBoolEntry("Other", "DisconnectWithDescription", false));
+	config_file.addVariable("General", "DisconnectDescription", config_file.readEntry("Other", "DisconnectDescription"));
+	config_file.addVariable("General", "DockWindows", config_file.readEntry("Global", "DockWindows", QString::null));
+	config_file.addVariable("General", "SplitSize", config_file.readEntry("Global", "SplitSize"));
+	config_file.addVariable("Sounds", "Message_sound", config_file.readEntry("Global", "Message_sound"));
+	config_file.addVariable("Sounds", "Chat_sound", config_file.readEntry("Global", "Chat_sound"));
+	config_file.addVariable("General", "Logging", config_file.readBoolEntry("Global", "Logging", true));
+	config_file.addVariable("General", "SystemMsgIndex", config_file.readEntry("Global", "SystemMsgIndex"));
+	config_file.addVariable("General", "SaveGeometry", config_file.readBoolEntry("Global", "SaveGeometry", true));
+	config_file.addVariable("Sounds", "PlaySoundChat", config_file.readBoolEntry("Global", "PlaySoundChat", true));
+	config_file.addVariable("Sounds", "PlaySoundChatInvisible", config_file.readBoolEntry("Global", "PlaySoundChatInvisible", true));
+	config_file.addVariable("Sounds", "SoundPlayer", config_file.readEntry("Global", "SoundPlayer"));
+	config_file.addVariable("Sounds", "PlaySound", config_file.readEntry("Global", "PlaySound"));
+	config_file.addVariable("Sounds", "PlaySoundArtsDsp", config_file.readEntry("Global", "PlaySoundArtsDsp", false));
+	config_file.addVariable("Sounds", "SoundVolume", config_file.readDoubleNumEntry("Global", "SoundVolume")*100);
+	config_file.addVariable("Sounds", "VolumeControl", config_file.readBoolEntry("Global", "VolumeControl", false));
+	config_file.addVariable("General", "AutoAway", config_file.readBoolEntry("Global", "AutoAway", false));
+	config_file.addVariable("General", "AutoAwayTime", config_file.readNumEntry("Global", "AutoAwayTime", 300));
+	config_file.addVariable("General", "UseDocking", config_file.readBoolEntry("Global", "UseDocking", true));
+	config_file.addVariable("General", "RunDocked", config_file.readBoolEntry("Global", "RunDocked", false));
+	config_file.addVariable("General", "AutoRaise", config_file.readBoolEntry("Global", "AutoRaise", false));
+	config_file.addVariable("General", "PrivateStatus", config_file.readBoolEntry("Global", "PrivateStatus", false));
+	config_file.addVariable("General", "CheckUpdates", config_file.readBoolEntry("Global", "CheckUpdates", true));
+	config_file.addVariable("Look", "DisplayGroupTabs", config_file.readBoolEntry("Global", "DisplayGroupTabs", true));
+	config_file.addVariable("General", "AddToDescription", config_file.readBoolEntry("Global", "AddToDescription", false));
+	config_file.addVariable("Look", "ShowDesc", config_file.readBoolEntry("Global", "ShowDesc", true));
+	config_file.addVariable("Look", "MultiColumnUserbox", config_file.readBoolEntry("Global", "MultiColumnUserbox", true));
+	config_file.addVariable("Network", "UseProxy", config_file.readBoolEntry("Proxy", "UseProxy", false));
+	config_file.addVariable("Network", "ProxyHost", config_file.readEntry("Proxy", "ProxyHost"));
+	config_file.addVariable("Network", "ProxyPort", config_file.readNumEntry("Proxy", "ProxyPort"));
+	config_file.addVariable("Network", "ProxyUser", config_file.readEntry("Proxy", "ProxyUser"));
+	config_file.addVariable("Network", "ProxyPassword", config_file.readEntry("Proxy", "ProxyPassword"));
+	config_file.addVariable("Network", "AllowDCC", config_file.readBoolEntry("Global", "AllowDCC", false));
+	config_file.addVariable("Network", "DccIP", config_file.readEntry("Global", "DccIP"));
+	config_file.addVariable("Network", "DccForwarding", config_file.readBoolEntry("Global", "DccForwarding", false));
+	config_file.addVariable("Network", "ExternalIP", config_file.readEntry("Global", "ExternalIP"));
+	config_file.addVariable("Network", "ExternalPort", config_file.readEntry("Global", "ExternalPort"));
+	config_file.addVariable("Network", "isDefServers", config_file.readEntry("Global", "isDefServers"));
+	config_file.addVariable("Network", "Server", config_file.readEntry("Global", "Server"));
+	config_file.addVariable("Network", "UseTLS", config_file.readBoolEntry("Global", "UseTLS", false));
+	config_file.addVariable("Network", "DefaultPort", config_file.readNumEntry("Global", "DefaultPort",8074));
+	config_file.addVariable("History", "ChatHistoryQuotationTime",-config_file.readNumEntry("Other", "ChatHistoryQuotationTime",336));
+	config_file.addVariable("History", "ChatHistoryQuotation", config_file.readNumEntry("Other", "ChatHistoryQuotation", 10));
+	config_file.addVariable("Chat", "ChatPrune", config_file.readBoolEntry("Other", "ChatPrune", false));
+	config_file.addVariable("Chat", "ChatPruneLen", config_file.readNumEntry("Other", "ChatPruneLen", 20));
+	config_file.addVariable("Chat", "EmoticonsStyle", config_file.readNumEntry("Other", "ChatEmoticonsStyle", EMOTS_ANIMATED));
+	config_file.addVariable("Chat", "EmoticonsTheme", config_file.readEntry("Other", "ChatEmoticonsTheme"));
+	config_file.addVariable("Chat", "ScrollDown", config_file.readBoolEntry("Other", "ScrollDown", true));
+	config_file.addVariable("Chat", "IgnoreAnonymousUser", config_file.readBoolEntry("Other", "IgnoreAnonymousUser", false));
+	config_file.addVariable("Chat", "Encryption", config_file.readBoolEntry("Other", "Encryption", false));
+	config_file.addVariable("Chat", "MessageAcks", config_file.readBoolEntry("Other", "MessageAcks", true));
+	config_file.addVariable("Chat", "BlinkChatTitle", config_file.readBoolEntry("Other", "BlinkChatTitle", true));
+	config_file.addVariable("Chat", "DefaultWebBrowser", config_file.readBoolEntry("WWW", "DefaultWebBrowser", true));
+	config_file.addVariable("Chat", "WebBrowser", config_file.readEntry("WWW", "WebBrowser"));
+	config_file.addVariable("Look", "PanelContents", 
+	config_file.readEntry("Other", "PanelContents", "[#%u][, %f] %r [- %d] [ (%i)]"));
+	config_file.addVariable("Chat", "ConferenceContents", config_file.readEntry("Other", "ConferenceContents", "%a (%s[: %d])"));
+	config_file.addVariable("Chat", "ChatContents", config_file.readEntry("Other", "ChatContents"));
+	config_file.addVariable("Chat", "ConferencePrefix", config_file.readEntry("Other", "ConferencePrefix"));
 
-	config_file.addVariable("Look", "UserboxBgColor", 
-	config_file.readEntry("Colors", "UserboxBgColor"));
-	
-	config_file.addVariable("Look", "UserboxFgColor",
-	config_file.readEntry("Colors", "UserboxFgColor"));
+	QColor color;
+	color=QColor("#FFFFFF");
+	config_file.addVariable("Look", "UserboxBgColor", config_file.readColorEntry("Colors", "UserboxBgColor",&color));
+	color=QColor("#000000");
+	config_file.addVariable("Look", "UserboxFgColor", config_file.readColorEntry("Colors", "UserboxFgColor", &color));    
+	color=QColor("#E0E0E0");
+	config_file.addVariable("Look", "ChatMyBgColor", config_file.readColorEntry("Colors", "ChatMyBgColor", &color));
+	color=QColor("#F0F0F0");
+	config_file.addVariable("Look", "ChatUsrBgColor", config_file.readColorEntry("Colors", "ChatUsrBgColor", &color));
+	color=QColor("#000000");
+	config_file.addVariable("Look", "ChatMyFontColor", config_file.readColorEntry("Colors", "ChatMyFontColor", &color));
+	color=QColor("#000000");
+	config_file.addVariable("Look", "ChatUsrFontColor", config_file.readColorEntry("Colors", "ChatUsrFontColor", &color));
+	color=QColor("#C0C0C0");
+	config_file.addVariable("Look", "UserboxDescBgColor", config_file.readColorEntry("Colors", "UserboxDescBgColor", &color));
+	color=QColor("#000000");
+	config_file.addVariable("Look", "UserboxDescTextColor", config_file.readColorEntry("Colors", "UserboxDescTextColor", &color));
 
-	config_file.addVariable("Look", "ChatMyBgColor",
-	config_file.readEntry("Colors", "ChatMyBgColor"));
-
-	config_file.addVariable("Look", "ChatUsrBgColor",
-	config_file.readEntry("Colors", "ChatUsrBgColor"));
-
-	config_file.addVariable("Look", "ChatMyFontColor",
-	config_file.readEntry("Colors", "ChatMyFontColor"));
-
-	config_file.addVariable("Look", "ChatUsrFontColor",
-	config_file.readEntry("Colors", "ChatUsrFontColor"));
-
-	config_file.addVariable("Look", "UserboxDescBgColor",
-	config_file.readEntry("Colors", "UserboxDescBgColor"));
-
-	config_file.addVariable("Look", "UserboxDescTextColor",
-	config_file.readEntry("Colors", "UserboxDescTextColor"));
-
-	config_file.addVariable("Look", "UserboxFont",
-	config_file.readEntry("Fonts",  "UserboxFont"));
-
-	config_file.addVariable("Look", "ChatFont",
-	config_file.readEntry("Fonts",  "ChatFont"));
-
-	config_file.addVariable("Look", "UserboxDescFont",
-	config_file.readEntry("Fonts",  "UserboxDescFont"));
-	
+	QFontInfo info0(a->font());
+	QFont def_font0(info0.family(),info0.pointSize());
+	config_file.addVariable("Look", "UserboxFont", config_file.readFontEntry("Fonts", "UserboxFont", &def_font0));
+	config_file.addVariable("Look", "ChatFont", config_file.readFontEntry("Fonts", "ChatFont", &def_font0));
+	config_file.addVariable("Look", "UserboxDescFont", config_file.readFontEntry("Fonts", "UserboxDescFont", &def_font0));
 	//koniec wstecznej kompatybilnosci
-
+	//
 
 	//potrzebne do translacji
 	QT_TRANSLATE_NOOP("@default", "General");
@@ -336,19 +333,19 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	ConfigDialog::addCheckBox("General", "grid", "Restore window geometry", "SaveGeometry", true);
 	ConfigDialog::addCheckBox("General", "grid", "Check for updates", "CheckUpdates", true);
 
-	ConfigDialog::registerSlotOnCreate(kaduslots, SLOT(onCreateConfigDialog()));
-	ConfigDialog::registerSlotOnDestroy(kaduslots, SLOT(onDestroyConfigDialog()));
-
 
 	Sms::initModule();
-	UserBox::initModule();
 	Chat::initModule();
+	UserBox::initModule();
 	History::initModule();
 	HintManager::initModule();
 	AutoAwayTimer::initModule();
 	SoundSlots::initModule();
 	EventConfigSlots::initModule();
 
+
+	ConfigDialog::registerSlotOnCreate(kaduslots, SLOT(onCreateConfigDialog()));
+	ConfigDialog::registerSlotOnDestroy(kaduslots, SLOT(onDestroyConfigDialog()));
 
 	//potrzebne do translacji
 	QT_TRANSLATE_NOOP("@default", "ShortCuts");
@@ -364,6 +361,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	QT_TRANSLATE_NOOP("@default", "Add user");
 
 	ConfigDialog::registerTab("ShortCuts");
+	ConfigDialog::addVGroupBox("ShortCuts", "ShortCuts", "Define keys");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Remove from userlist", "kadu_deleteuser", "Del");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "View/edit user info", "kadu_persinfo", "Ins");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Send SMS", "kadu_sendsms", "Ctrl+S");
@@ -376,86 +374,17 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Add user", "kadu_adduser", "Ctrl+N");
 
 
+
 	//zaladowanie wartosci domyslnych (pierwsze uruchomienie)
 	QRect def_rect(0, 0, 145, 465);
 	config_file.addVariable("General", "Geometry", def_rect);
 	QSize def_size(340, 60);
 	config_file.addVariable("General", "SplitSize", def_size);
-	config_file.addVariable("General", "DockWindows", QString::null);
-	config_file.addVariable("General", "AutoRaise", false);
 
-
-
-	QString temp;
-	temp=config_file.readEntry("General","DisplayGroupTabs");
-	if (temp=="")
-	config_file.writeEntry("General","DisplayGroupTabs", true);
-	
-	
-	
-	temp=config_file.readEntry("General","ShowDesc");
-	if (temp=="")
-	config_file.writeEntry("General","ShowDesc", true);
-	
-	temp=config_file.readEntry("General","MultiColumnUserbox");
-	if (temp=="")
-	config_file.writeEntry("General","MultiColumnUserbox", true);
-
-	temp=config_file.readEntry("Look","PanelContents");
-	if (temp=="")
-	config_file.writeEntry("Look","PanelContents", "[#%u][, %f] %r [- %d] [ (%i)]");
-
-
-	QColor def_color("#FFFFFF");
-	temp=config_file.readEntry("Look","UserboxBgColor");
-	if (temp=="")
-	config_file.writeEntry("Look","UserboxBgColor",def_color);
-	def_color.setNamedColor("#000000");
-	temp=config_file.readEntry("Look","UserboxFgColor");
-	if (temp=="")
-	config_file.writeEntry("Look","UserboxFgColor",def_color);
-	def_color.setNamedColor("#E0E0E0");
-	temp=config_file.readEntry("Look","ChatMyBgColor");
-	if (temp=="")
-	config_file.writeEntry("Look","ChatMyBgColor",def_color);
-	def_color.setNamedColor("#F0F0F0");
-	temp=config_file.readEntry("Look","ChatUsrBgColor");
-	if (temp=="")
-	config_file.writeEntry("Look","ChatUsrBgColor",def_color);	
-	def_color.setNamedColor("#000000");
-	temp=config_file.readEntry("Look","ChatMyFontColor");
-	if (temp=="")
-	config_file.writeEntry("Look","ChatMyFontColor",def_color);
-	def_color.setNamedColor("#000000");
-	temp=config_file.readEntry("Look","ChatUsrFontColor");
-	if (temp=="")
-	config_file.writeEntry("Look","ChatUsrFontColor",def_color);
-	def_color.setNamedColor("#C0C0C0");
-	temp=config_file.readEntry("Look","UserboxDescBgColor");
-	if (temp=="")
-	config_file.writeEntry("Look","UserboxDescBgColor",def_color);
-	def_color.setNamedColor("#000000");
-	temp=config_file.readEntry("Look","UserboxDescTextColor");
-	if (temp=="")
-	config_file.writeEntry("Look","UserboxDescTextColor",def_color);
-
-//
 	QFontInfo info(a->font());
 	QFont def_font(info.family(),info.pointSize());
-	temp=config_file.readEntry("Look","UserboxFont");
-	if (temp=="")
-	config_file.writeEntry("Look","UserboxFont", def_font);
-	temp=config_file.readEntry("Look","ChatFont");
-	if (temp=="")
-	config_file.writeEntry("Look","ChatFont", def_font);
-	temp=config_file.readEntry("Look","UserboxDescFont");
-	if (temp=="")
-	config_file.writeEntry("Look","UserboxDescFont", def_font);
-
-	
-
-	//---------------------------------
-
+	config_file.addVariable("Look", "UserboxFont", &def_font);
+	config_file.addVariable("Look", "UserboxDescFont", &def_font);
 	
 	closestatusppmtime.start();
 	lastsoundtime.start();
@@ -481,14 +410,14 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
         
 	QRect geom;
-	geom=config_file.readRectEntry("General","Geometry");
+	geom=config_file.readRectEntry("General", "Geometry");
 	kdebug("Setting size: width=%d, height=%d and setting position: x=%d, y=%d\n",
 		geom.width(),geom.height(),
 		geom.x(), geom.y());
 	resize(geom.width(),geom.height());
 	move(geom.x(),geom.y());
 
-	if (config_file.readBoolEntry("General","UseDocking")) {
+	if (config_file.readBoolEntry("General", "UseDocking")) {
 		trayicon = new TrayIcon(this);
 		trayicon->show();
 		trayicon->changeIcon();
@@ -504,12 +433,12 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	/* a newbie? */
 
-	if (config_file.readNumEntry("General","UIN"))
-		setCaption(tr("Kadu: %1").arg(config_file.readNumEntry("General","UIN")));
+	if (config_file.readNumEntry("General", "UIN"))
+		setCaption(tr("Kadu: %1").arg(config_file.readNumEntry("General", "UIN")));
 
 	pending.loadFromFile();
 
-	if (config_file.readBoolEntry("General","UseDocking"))
+	if (config_file.readBoolEntry("General", "UseDocking"))
 		trayicon->changeIcon();
 
 	centralFrame = new QFrame(this);
@@ -524,7 +453,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	group_bar = new KaduTabBar(hbox1, "groupbar");
 	group_bar->setShape(QTabBar::RoundedBelow);
 	group_bar->addTab(new QTab(tr("All")));
-	group_bar->setFont(QFont(config_file.readFontEntry("Look","UserboxFont").family(),config_file.readFontEntry("Look","UserboxFont").pointSize(),75));
+	group_bar->setFont(QFont(config_file.readFontEntry("Look", "UserboxFont").family(), config_file.readFontEntry("Look", "UserboxFont").pointSize(),75));
 //	group_bar->setMinimumWidth(group_bar->sizeHint().width());
 	connect(group_bar, SIGNAL(selected(int)), this, SLOT(groupTabSelected(int)));
 
@@ -540,11 +469,11 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	/* initialize and configure userbox */
 	userbox = new UserBox(hbox1, "userbox");
-	if (config_file.readBoolEntry("General","MultiColumnUserbox"))
+	if (config_file.readBoolEntry("Look", "MultiColumnUserbox"))
 		userbox->setColumnMode(QListBox::FitToWidth);
-	userbox->setPaletteBackgroundColor(config_file.readColorEntry("Look","UserboxBgColor"));
-	userbox->setPaletteForegroundColor(config_file.readColorEntry("Look","UserboxFgColor"));
-	userbox->QListBox::setFont(config_file.readFontEntry("Look","UserboxFont"));
+	userbox->setPaletteBackgroundColor(config_file.readColorEntry("Look", "UserboxBgColor"));
+	userbox->setPaletteForegroundColor(config_file.readColorEntry("Look", "UserboxFgColor"));
+	userbox->QListBox::setFont(config_file.readFontEntry("Look", "UserboxFont"));
 	userbox->setMinimumWidth(20);
 
 	hbox1->setStretchFactor(group_bar, 1);
@@ -586,7 +515,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	dockppm->insertSeparator();
 	dockppm->insertItem(loadIcon("exit.png"), tr("&Exit Kadu"), 9);
-	if (config_file.readBoolEntry("General","UseDocking"))
+	if (config_file.readBoolEntry("General", "UseDocking"))
 		trayicon->connectSignals();
 //		connect(dockppm, SIGNAL(activated(int)), trayicon, SLOT(dockletChange(int)));
 
@@ -597,17 +526,17 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	descrtb->setTextFormat(Qt::RichText);
 	descrtb->setAlignment(Qt::AlignVCenter | Qt::WordBreak | Qt::DontClip);
 	descrtb->setVScrollBarMode(QScrollView::AlwaysOff);
-	descrtb->setPaletteBackgroundColor(config_file.readColorEntry("Look","UserboxDescBgColor"));
-	descrtb->setPaletteForegroundColor(config_file.readColorEntry("Look","UserboxDescTextColor"));
-	descrtb->setFont(config_file.readFontEntry("Look","UserboxDescFont"));
-	if (!config_file.readBoolEntry("General","ShowDesc"))
+	descrtb->setPaletteBackgroundColor(config_file.readColorEntry("Look", "UserboxDescBgColor"));
+	descrtb->setPaletteForegroundColor(config_file.readColorEntry("Look", "UserboxDescTextColor"));
+	descrtb->setFont(config_file.readFontEntry("Look", "UserboxDescFont"));
+	if (!config_file.readBoolEntry("Look", "ShowDesc"))
 		descrtb->hide();
 	QObject::connect(&userlist, SIGNAL(dnsNameReady(uin_t)), this, SLOT(infopanelUpdate(uin_t)));
 
 	QValueList<int> splitsizes;
 	
-	splitsizes.append(config_file.readSizeEntry("General","SplitSize").width());
-	splitsizes.append(config_file.readSizeEntry("General","SplitSize").height());
+	splitsizes.append(config_file.readSizeEntry("General", "SplitSize").width());
+	splitsizes.append(config_file.readSizeEntry("General", "SplitSize").height());
 	split->setSizes(splitsizes);
 
 //	tworzymy pasek narzedziowy
@@ -647,8 +576,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	toolbar->setStretchableWidget(toolbarfiller);
 	toolbar->setVerticallyStretchable(true);
 
-	if (config_file.readEntry("General","DockWindows") != QString::null) {
-		QString dockwindows=config_file.readEntry("General","DockWindows").replace(QRegExp("\\\\n"), "\n");
+	if (config_file.readEntry("General", "DockWindows") != QString::null) {
+		QString dockwindows=config_file.readEntry("General", "DockWindows").replace(QRegExp("\\\\n"), "\n");
 		QTextStream stream(&dockwindows, IO_ReadOnly);
 		stream >> *this;
 		}
@@ -684,16 +613,16 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	commencing_startup = true;
 
 	/* pokaz okno jesli RunDocked jest wylaczone lub dock wylaczone */
-	if ((!config_file.readBoolEntry("General","RunDocked")) || (!config_file.readBoolEntry("General","UseDocking")))
+	if ((!config_file.readBoolEntry("General", "RunDocked")) || (!config_file.readBoolEntry("General", "UseDocking")))
 		show();
 
 	autostatus_timer = new AutoStatusTimer(this);
-	if (config_file.readBoolEntry("General","AddToDescription"))
-		autostatus_timer->start(1000,TRUE);
+	if (config_file.readBoolEntry("General", "AddToDescription"))
+		autostatus_timer->start(1000, true);
 
-	if (config_file.readNumEntry("General","UIN")) {
-		uc = new UpdatesClass(config_file.readNumEntry("General","UIN"));
-		if (config_file.readBoolEntry("General","CheckUpdates"))
+	if (config_file.readNumEntry("General", "UIN")) {
+		uc = new UpdatesClass(config_file.readNumEntry("General", "UIN"));
+		if (config_file.readBoolEntry("General", "CheckUpdates"))
 			QObject::connect(uc->op, SIGNAL(data(const QByteArray &, QNetworkOperation *)),
 				this, SLOT(gotUpdatesInfo(const QByteArray &, QNetworkOperation *)));
 		uc->run();
@@ -819,7 +748,7 @@ void Kadu::deleteUsers()
 	for (int i = 0; i < userbox->count(); i++)
 		if (userbox->isSelected(i))
 			users.append(userbox->text(i));
-	removeUser(users,false);
+	removeUser(users, false);
 }
 
 void Kadu::personalInfo()
@@ -842,7 +771,7 @@ void Kadu::sendKey()
 	QFile keyfile;
 
 	keyfile_path.append(ggPath("keys/"));
-	keyfile_path.append(config_file.readEntry("General","UIN"));
+	keyfile_path.append(config_file.readEntry("General", "UIN"));
 	keyfile_path.append(".pem");
 
 	keyfile.setName(keyfile_path);
@@ -1024,15 +953,15 @@ void Kadu::resizeEvent(QResizeEvent *e) {
 void Kadu::changeAppearance() {
 	kdebug("kadu::changeAppearance()\n");
 
-	userbox->setPaletteBackgroundColor(config_file.readColorEntry("Look","UserboxBgColor"));
-	userbox->setPaletteForegroundColor(config_file.readColorEntry("Look","UserboxFgColor"));
-	userbox->QListBox::setFont(config_file.readFontEntry("Look","UserboxFont"));
+	userbox->setPaletteBackgroundColor(config_file.readColorEntry("Look", "UserboxBgColor"));
+	userbox->setPaletteForegroundColor(config_file.readColorEntry("Look", "UserboxFgColor"));
+	userbox->QListBox::setFont(config_file.readFontEntry("Look", "UserboxFont"));
 
-	group_bar->setFont(QFont(config_file.readFontEntry("Look","UserboxFont").family(),config_file.readFontEntry("Look","UserboxFont").pointSize(),75));
+	group_bar->setFont(QFont(config_file.readFontEntry("Look", "UserboxFont").family(), config_file.readFontEntry("Look", "UserboxFont").pointSize(),75));
 
-	descrtb->setPaletteBackgroundColor(config_file.readColorEntry("Look","UserboxDescBgColor"));
-	descrtb->setPaletteForegroundColor(config_file.readColorEntry("Look","UserboxDescTextColor"));
-	descrtb->setFont(config_file.readFontEntry("Look","UserboxDescFont"));
+	descrtb->setPaletteBackgroundColor(config_file.readColorEntry("Look", "UserboxDescBgColor"));
+	descrtb->setPaletteForegroundColor(config_file.readColorEntry("Look", "UserboxDescTextColor"));
+	descrtb->setFont(config_file.readFontEntry("Look", "UserboxDescFont"));
 }
 
 void Kadu::currentChanged(QListBoxItem *item) {
@@ -1041,13 +970,13 @@ void Kadu::currentChanged(QListBoxItem *item) {
 
 	kdebug("Kadu::currentChanged(): %s\n", (const char *)item->text().local8Bit());
 
-	if (config_file.readBoolEntry("General","ShowDesc"))
-		descrtb->setText(parse(config_file.readEntry("Look","PanelContents"),userlist.byAltNick(item->text())));
+	if (config_file.readBoolEntry("Look", "ShowDesc"))
+		descrtb->setText(parse(config_file.readEntry("Look", "PanelContents"),userlist.byAltNick(item->text())));
 }
 
 void Kadu::refreshGroupTabBar()
 {
-	if (!config_file.readBoolEntry("General","DisplayGroupTabs"))
+	if (!config_file.readBoolEntry("Look", "DisplayGroupTabs"))
 	{
 		group_bar->hide();
 		return;
@@ -1212,7 +1141,7 @@ void Kadu::prepareDcc(void) {
 	else
 		dccip = config_dccip;
 
-	dccsock = gg_dcc_socket_create(config_file.readNumEntry("General","UIN"), 0);
+	dccsock = gg_dcc_socket_create(config_file.readNumEntry("General", "UIN"), 0);
 
 	if (!dccsock) {
 		kdebug("Kadu::prepareDcc(): Couldn't bind DCC socket.\n");
@@ -1366,7 +1295,7 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 	smsitem = pm->insertItem(tr("Send SMS"), this, SLOT(sendSmsToUser()),
 		HotKey::shortCutFromFile("kadu_sendsms"));
 	if (!user.mobile.length())
-		pm->setItemEnabled(smsitem,false);
+		pm->setItemEnabled(smsitem, false);
 
 	sendfile = pm->insertItem(loadIcon("filesave.png"), tr("Send file"), this,
 		SLOT(sendFile()), HotKey::shortCutFromFile("kadu_sendfile"));
@@ -1394,7 +1323,7 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 	QString keyfile_path;
 
 	keyfile_path.append(ggPath("keys/"));
-	keyfile_path.append(QString::number(config_file.readNumEntry("General","UIN")));
+	keyfile_path.append(QString::number(config_file.readNumEntry("General", "UIN")));
 	keyfile_path.append(".pem");
 
 	QFileInfo keyfile(keyfile_path);
@@ -1423,10 +1352,10 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 			pm->setItemChecked(ignoreuseritem, true);
 		if (user.blocking)
 			pm->setItemChecked(blockuseritem, true);
-		pm->setItemEnabled(offlinetouseritem, config_file.readBoolEntry("General","PrivateStatus"));
+		pm->setItemEnabled(offlinetouseritem, config_file.readBoolEntry("General", "PrivateStatus"));
 		if (user.offline_to_user)
 			pm->setItemChecked(offlinetouseritem, true);
-		pm->setItemEnabled(notifyuseritem, config_file.readBoolEntry("Notify","NotifyStatusChange") && !config_file.readBoolEntry("Notify","NotifyAboutAll"));
+		pm->setItemEnabled(notifyuseritem, config_file.readBoolEntry("Notify", "NotifyStatusChange") && !config_file.readBoolEntry("Notify", "NotifyAboutAll"));
 		if (user.notify)
 			pm->setItemChecked(notifyuseritem, true);
 		}
@@ -1622,7 +1551,7 @@ void Kadu::slotHandleState(int command) {
 		case 8:
 			statusppm->setItemChecked(8, !statusppm->isItemChecked(8));
 			dockppm->setItemChecked(8, !dockppm->isItemChecked(8));	    
-			config_file.writeEntry("General","PrivateStatus",statusppm->isItemChecked(8));
+			config_file.writeEntry("General", "PrivateStatus",statusppm->isItemChecked(8));
 			if (!statusppm->isItemChecked(6) && !statusppm->isItemChecked(7))
 				setStatus(sess->status & (~GG_STATUS_FRIENDS_MASK));
 			break;
@@ -1662,7 +1591,7 @@ void Kadu::setStatus(int status) {
 	QHostAddress ip;
 
 	kdebug("Kadu::setStatus(): setting status: %d\n",
-		status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General","PrivateStatus")));
+		status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General", "PrivateStatus")));
 
 	bool with_description;
     
@@ -1692,11 +1621,11 @@ void Kadu::setStatus(int status) {
 				gg_change_status_descr(sess, status, (const char *)descr);
 			else
 				gg_change_status_descr(sess,
-					status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General","PrivateStatus")), (const char *)descr);
+					status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General", "PrivateStatus")), (const char *)descr);
 			free(descr);
 			}
 		else
-			gg_change_status(sess, status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General","PrivateStatus")));
+			gg_change_status(sess, status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General", "PrivateStatus")));
 		if (sess->check & GG_CHECK_WRITE)
 			kadusnw->setEnabled(true);
 	
@@ -1708,12 +1637,12 @@ void Kadu::setStatus(int status) {
 				samym, co by³ ostatnio ustawiony(oprócz niedostêpny i niedostêpny z opisem).
 		**/
 		if (status != GG_STATUS_NOT_AVAIL && status != GG_STATUS_NOT_AVAIL_DESCR)
-			loginparams.status = status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General","PrivateStatus"));
+			loginparams.status = status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General", "PrivateStatus"));
 		return;
 		}
 
 
-	if (config_file.readBoolEntry("Network","AllowDCC"))
+	if (config_file.readBoolEntry("Network", "AllowDCC"))
 		prepareDcc();
 
 	if (gg_proxy_host) {
@@ -1725,42 +1654,42 @@ void Kadu::setStatus(int status) {
 		free(gg_proxy_password);
 		gg_proxy_username = gg_proxy_password = NULL;
 		}
-	if (config_file.readBoolEntry("Network","UseProxy")) {
-		gg_proxy_host = strdup((char *)unicode2latin(config_file.readEntry("Network","ProxyHost")).data());
+	if (config_file.readBoolEntry("Network", "UseProxy")) {
+		gg_proxy_host = strdup((char *)unicode2latin(config_file.readEntry("Network", "ProxyHost")).data());
 		kdebug("Kadu::setStatus(): gg_proxy_host = %s\n", gg_proxy_host);
-		gg_proxy_port = config_file.readNumEntry("Network","ProxyPort");
+		gg_proxy_port = config_file.readNumEntry("Network", "ProxyPort");
 		kdebug("Kadu::setStatus(): gg_proxy_port = %d\n", gg_proxy_port);
-		if (config_file.readEntry("Network","ProxyUser").length()) {
-			gg_proxy_username = strdup((char *)unicode2latin(config_file.readEntry("Network","ProxyUser")).data());
-			gg_proxy_password = strdup((char *)unicode2latin(config_file.readEntry("Network","ProxyPassword")).data());
+		if (config_file.readEntry("Network", "ProxyUser").length()) {
+			gg_proxy_username = strdup((char *)unicode2latin(config_file.readEntry("Network", "ProxyUser")).data());
+			gg_proxy_password = strdup((char *)unicode2latin(config_file.readEntry("Network", "ProxyPassword")).data());
 			}
 		gg_proxy_enabled = 1;
 		}
 	else
 		gg_proxy_enabled = 0;
 		
-	loginparams.status = status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General","PrivateStatus"));
+	loginparams.status = status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General", "PrivateStatus"));
         loginparams.password =
-		strdup(unicode2cp(pwHash(config_file.readEntry("General","Password"))).data());
+		strdup(unicode2cp(pwHash(config_file.readEntry("General", "Password"))).data());
 	char *tmp =
 		strdup(unicode2latin(pwHash(config_file.readEntry("General", "Password"))).data());
 	kdebug("Kadu::setStatus(): password = %s\n", tmp);
 	free(tmp);
-	loginparams.uin = config_file.readNumEntry("General","UIN");
+	loginparams.uin = config_file.readNumEntry("General", "UIN");
 	loginparams.client_version = GG_DEFAULT_CLIENT_VERSION;
 	loginparams.has_audio = 1;
 	
-	if (config_file.readBoolEntry("Network","AllowDCC") && config_extip.ip4Addr() && config_file.readNumEntry("Network","ExternalPort") > 1023) {
+	if (config_file.readBoolEntry("Network", "AllowDCC") && config_extip.ip4Addr() && config_file.readNumEntry("Network", "ExternalPort") > 1023) {
 		loginparams.external_addr = htonl(config_extip.ip4Addr());
-		loginparams.external_port = config_file.readNumEntry("Network","ExternalPort");
+		loginparams.external_port = config_file.readNumEntry("Network", "ExternalPort");
 		}
 	else {
 		loginparams.external_addr = 0;
 		loginparams.external_port = 0;
 		}	
-	if (config_servers.count() && !config_file.readBoolEntry("Network","isDefServers") && config_servers[server_nr].ip4Addr()) {
+	if (config_servers.count() && !config_file.readBoolEntry("Network", "isDefServers") && config_servers[server_nr].ip4Addr()) {
 		loginparams.server_addr = htonl(config_servers[server_nr].ip4Addr());
-		loginparams.server_port = config_file.readNumEntry("Network","DefaultPort");
+		loginparams.server_port = config_file.readNumEntry("Network", "DefaultPort");
 		server_nr++;
 		if (server_nr >= config_servers.count())
 			server_nr = 0;
@@ -1768,7 +1697,7 @@ void Kadu::setStatus(int status) {
 	else {
 		if (server_nr) {
 			loginparams.server_addr = htonl(gg_servers[server_nr - 1].ip4Addr());
-			loginparams.server_port = config_file.readNumEntry("Network","DefaultPort");
+			loginparams.server_port = config_file.readNumEntry("Network", "DefaultPort");
 			}
 		else {
 			loginparams.server_addr = 0;
@@ -1778,17 +1707,17 @@ void Kadu::setStatus(int status) {
 		if (server_nr > 7)
 			server_nr = 0;
 		}
-	loginparams.tls = config_file.readNumEntry("Network","UseTLS");
+	loginparams.tls = config_file.readNumEntry("Network", "UseTLS");
 	loginparams.protocol_version = 0x21;
 	loginparams.client_version = strdup("6, 0, 0, 135");
-	if (config_file.readNumEntry("Network","UseTLS")) {
+	if (config_file.readNumEntry("Network", "UseTLS")) {
 		loginparams.server_port = 0;
-		if (config_file.readBoolEntry("Network","isDefServers"))
+		if (config_file.readBoolEntry("Network", "isDefServers"))
 			loginparams.server_addr = 0;
 		loginparams.server_port = 443;
 		}
 	else
-		loginparams.server_port = config_file.readNumEntry("Network","DefaultPort");
+		loginparams.server_port = config_file.readNumEntry("Network", "DefaultPort");
 	sess = gg_login(&loginparams);
 	free(loginparams.client_version);
 	free(loginparams.password);
@@ -1845,7 +1774,7 @@ void Kadu::disconnectNetwork() {
 
 	kdebug("Kadu::disconnectNetwork(): calling offline routines\n");
 
-	if (config_file.readBoolEntry("General","AutoAway"))
+	if (config_file.readBoolEntry("General", "AutoAway"))
 		AutoAwayTimer::off();
 	if (pingtimer) {
 		pingtimer->stop();
@@ -1973,7 +1902,7 @@ void Kadu::watchDcc(void) {
 	kdebug("Kadu::watchDcc(): data on socket\n");			
 	if (!(dcc_e = gg_dcc_watch_fd(dccsock))) {
 		kdebug("Kadu::watchDcc(): Connection broken unexpectedly!\n");
-		config_file.writeEntry("Network","AllowDCC",false);
+		config_file.writeEntry("Network", "AllowDCC", false);
 		delete dccsnr;
 		dccsnr = NULL;
 		delete dccsnw;
@@ -2019,13 +1948,13 @@ bool Kadu::close(bool quit) {
 		}
 	else {
 	
-	    if (config_file.readBoolEntry("General","SaveGeometry"))
+	    if (config_file.readBoolEntry("General", "SaveGeometry"))
 	    {
 		QSize split;
 		    split.setWidth(userbox->size().height());
 		    split.setHeight(descrtb->size().height());
 		
-		config_file.writeEntry("General","SplitSize",split);
+		config_file.writeEntry("General", "SplitSize",split);
 		
 		QRect geom;
 		    geom.setX(pos().x());
@@ -2033,23 +1962,23 @@ bool Kadu::close(bool quit) {
 		    geom.setWidth(size().width());
 		    geom.setHeight(size().height());
 		
-		config_file.writeEntry("General","Geometry",geom);
+		config_file.writeEntry("General", "Geometry",geom);
 	    }
-		config_file.writeEntry("General","DefaultDescription", defaultdescriptions.join("<-->"));
+		config_file.writeEntry("General", "DefaultDescription", defaultdescriptions.join("<-->"));
 		
-		QString dockwindows=config_file.readEntry("General","DockWindows");
+		QString dockwindows=config_file.readEntry("General", "DockWindows");
 		QTextStream stream(&dockwindows, IO_WriteOnly);
 		stream << *kadu;
 		dockwindows.replace(QRegExp("\\n"), "\\n");
 		
-		config_file.writeEntry("General","DockWindows", dockwindows);
+		config_file.writeEntry("General", "DockWindows", dockwindows);
 		config_file.sync();
 		
 		pending.writeToFile();
 		writeIgnored();
-		if (config_file.readBoolEntry("General","DisconnectWithDescription") && getActualStatus() != GG_STATUS_NOT_AVAIL) {
-			kdebug("Kadu::close(): Set status NOT_AVAIL_DESCR with disconnect description(%s)\n",(const char *)config_file.readEntry("General","DisconnectDescription").local8Bit());
-			own_description = config_file.readEntry("General","DisconnectDescription");
+		if (config_file.readBoolEntry("General", "DisconnectWithDescription") && getActualStatus() != GG_STATUS_NOT_AVAIL) {
+			kdebug("Kadu::close(): Set status NOT_AVAIL_DESCR with disconnect description(%s)\n",(const char *)config_file.readEntry("General", "DisconnectDescription").local8Bit());
+			own_description = config_file.readEntry("General", "DisconnectDescription");
 			setStatus(GG_STATUS_NOT_AVAIL_DESCR);
 		}
 		disconnectNetwork();
@@ -2136,9 +2065,9 @@ void Kadu::createStatusPopupMenu() {
 	statusppm->insertSeparator();
 	dockppm->insertSeparator();
 	statusppm->insertItem(tr("Private"), 8);
-	statusppm->setItemChecked(8, config_file.readBoolEntry("General","PrivateStatus"));
+	statusppm->setItemChecked(8, config_file.readBoolEntry("General", "PrivateStatus"));
 	dockppm->insertItem(tr("Private"), 8);
-	dockppm->setItemChecked(8, config_file.readBoolEntry("General","PrivateStatus"));
+	dockppm->setItemChecked(8, config_file.readBoolEntry("General", "PrivateStatus"));
 
 	statusppm->setCheckable(true);
 	dockppm->setCheckable(true);
@@ -2164,11 +2093,11 @@ void Kadu::showdesc(bool show) {
 }
 
 void Kadu::infopanelUpdate(uin_t uin) {
-	if (!config_file.readBoolEntry("General","ShowDesc"))
+	if (!config_file.readBoolEntry("Look", "ShowDesc"))
 		return;
 	kdebug("Kadu::infopanelUpdate(%d)\n", uin);
 	if (userbox->currentItem() != -1 && uin == userlist.byAltNick(userbox->currentText()).uin)
-		descrtb->setText(parse(config_file.readEntry("Look","PanelContents"),userlist.byUin(uin)));
+		descrtb->setText(parse(config_file.readEntry("Look", "PanelContents"),userlist.byUin(uin)));
 }
 
 void KaduSlots::onCreateConfigDialog()
@@ -2176,7 +2105,7 @@ void KaduSlots::onCreateConfigDialog()
 	kdebug("KaduSlots::onCreateConfigDialog() \n");
 	QLineEdit *e_password=ConfigDialog::getLineEdit("General", "Password");
 	e_password->setEchoMode(QLineEdit::Password);
-	e_password->setText(pwHash(config_file.readEntry("General", "Password","")));
+	e_password->setText(pwHash(config_file.readEntry("General", "Password", "")));
 	
 }
 
@@ -2185,14 +2114,14 @@ void KaduSlots::onDestroyConfigDialog()
 	kdebug("KaduSlots::onDestroyConfigDialog() \n");
 	QLineEdit *e_password=ConfigDialog::getLineEdit("General", "Password");
 	e_password->setEchoMode(QLineEdit::Password);
-	config_file.writeEntry("General","Password",pwHash(e_password->text()));
+	config_file.writeEntry("General", "Password",pwHash(e_password->text()));
 
-	if (config_file.readBoolEntry("General","AutoAway"))
+	if (config_file.readBoolEntry("General", "AutoAway"))
 	        AutoAwayTimer::on();
 	else
                 AutoAwayTimer::off();
 	    
-	if (config_file.readBoolEntry("General","UseDocking") && !trayicon) {
+	if (config_file.readBoolEntry("General", "UseDocking") && !trayicon) {
 			trayicon = new TrayIcon(kadu);
 			trayicon->show();
 			trayicon->connectSignals();
@@ -2200,25 +2129,25 @@ void KaduSlots::onDestroyConfigDialog()
 			trayicon->changeIcon();
 				       }
 		    else
-			    if (!config_file.readBoolEntry("General","UseDocking") && trayicon) {
+			    if (!config_file.readBoolEntry("General", "UseDocking") && trayicon) {
 				delete trayicon;
 				trayicon = NULL;
 							  }
 
 	if (!statusppm->isItemChecked(6) && !statusppm->isItemChecked(7)
-		    && /*prevprivatestatus !=*/ config_file.readBoolEntry("General","PrivateStatus")) {
-			    statusppm->setItemChecked(8, config_file.readBoolEntry("General","PrivateStatus"));
+		    && /*prevprivatestatus !=*/ config_file.readBoolEntry("General", "PrivateStatus")) {
+			    statusppm->setItemChecked(8, config_file.readBoolEntry("General", "PrivateStatus"));
 			    kadu->setStatus(sess->status & (~GG_STATUS_FRIENDS_MASK));
 												}
 
-	if (config_file.readBoolEntry("General","AddToDescription") && !kadu->autostatus_timer->isActive())
-		kadu->autostatus_timer->start(1000,TRUE);
+	if (config_file.readBoolEntry("General", "AddToDescription") && !kadu->autostatus_timer->isActive())
+		kadu->autostatus_timer->start(1000, true);
 	else
 		kadu->autostatus_timer->stop();
 
-	kadu->showdesc(config_file.readBoolEntry("General","ShowDesc"));
+	kadu->showdesc(config_file.readBoolEntry("Look", "ShowDesc"));
 	
-	if (config_file.readBoolEntry("General","MultiColumnUserbox"))
+	if (config_file.readBoolEntry("Look", "MultiColumnUserbox"))
 		kadu->userbox->setColumnMode(QListBox::FitToWidth);
 	else
 		kadu->userbox->setColumnMode(1);
@@ -2231,5 +2160,6 @@ void KaduSlots::onDestroyConfigDialog()
 		chats[z].ptr->changeAppearance();
 	kadu->refreshGroupTabBar();
 
+	kadu->setCaption(tr("Kadu: %1").arg(config_file.readNumEntry("General", "UIN")));
 	
 };

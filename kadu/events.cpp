@@ -814,7 +814,7 @@ void EventConfigSlots::initModule()
 	
 	ConfigDialog::addHGroupBox("Notify", "Notify options","Notify sound");
 	ConfigDialog::addLineEdit("Notify", "Notify sound", "Path:", "NotifySound");
-	ConfigDialog::addPushButton("Notify", "Notify sound","","fileopen.png");
+	ConfigDialog::addPushButton("Notify", "Notify sound","","fileopen.png","","notifysoundfile");
 	ConfigDialog::addPushButton("Notify", "Notify sound", "Test");
 	ConfigDialog::addCheckBox("Notify", "Notify options", "Notify by dialog box", "NotifyWithDialogBox", false);
 	
@@ -908,7 +908,7 @@ void EventConfigSlots::initModule()
 	ConfigDialog::connectSlot("Notify", "", SIGNAL(clicked()), eventconfigslots, SLOT(_Left()), "back");
 	ConfigDialog::connectSlot("Notify", "available", SIGNAL(doubleClicked(QListBoxItem *)), eventconfigslots, SLOT(_Right2(QListBoxItem *)));
 	ConfigDialog::connectSlot("Notify", "track", SIGNAL(doubleClicked(QListBoxItem *)), eventconfigslots, SLOT(_Left2(QListBoxItem *)));
-	ConfigDialog::connectSlot("Notify", "", SIGNAL(clicked()), eventconfigslots, SLOT(chooseNotifyFile()));
+	ConfigDialog::connectSlot("Notify", "", SIGNAL(clicked()), eventconfigslots, SLOT(chooseNotifyFile()), "notifysoundfile");
 	ConfigDialog::connectSlot("Notify", "Test", SIGNAL(clicked()), eventconfigslots, SLOT(chooseNotifyTest()));
 }
 

@@ -86,6 +86,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   dymków(segfaultuje) (mast3r)
 * podswietlanie poszczególnych dymków - u³atwia usuwanie pojedynczych dymków (mast3r)
 * poprawka tlumaczeñ w zak³adce konfiguracji dymków (mast3r)
+* konfiguracja: zak³adka Look wed³ug nowego mechanizmu (pawel_p/adrian)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci

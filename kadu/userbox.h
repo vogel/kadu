@@ -60,4 +60,21 @@ class UserBox : public QListBox , QToolTip
 		void showHideInactive();
 };
 
+class UserBoxSlots : public QObject
+{
+	Q_OBJECT
+	private:
+		QValueList<QColor> vl_userboxcolor;
+		QValueList<QFont> vl_userboxfont;
+
+	public slots:
+		void onCreateConfigDialog();
+		void onDestroyConfigDialog();
+		void chooseColorGet();
+		void chooseColorGet(const QString& text);
+		void chooseUserBoxSelect(int nr);
+		void chooseUserBoxFont(int nr);
+		void chooseUserBoxFontSize(int nr);
+};
+
 #endif

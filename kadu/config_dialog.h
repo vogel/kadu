@@ -19,6 +19,7 @@
 #include <qstringlist.h>
 #include <qtabdialog.h>
 #include <qvaluelist.h>
+#include <qvbox.h>
 #include <qvgroupbox.h>
 
 
@@ -35,6 +36,22 @@ class HotKey : public QLineEdit
 
 };
 
+class ColorButton : public QPushButton
+{
+	Q_OBJECT
+	private:
+	       QColor actualcolor;
+	public:
+	       ColorButton::ColorButton(const QColor &color, QWidget *parent =0, const char* name =0);	
+	       QColor color();
+	       void setColor(const QColor &color);
+	private slots:
+	       void onClick();
+	signals:
+		void changed();
+
+
+};
 
 
 /**
@@ -48,6 +65,7 @@ class ConfigDialog : public QTabDialog	{
 		enum RegisteredControlType
 		{
 			CONFIG_CHECKBOX,
+			CONFIG_COLORBUTTON,
 			CONFIG_COMBOBOX,
 			CONFIG_GRID,
 			CONFIG_HBOX,
@@ -55,6 +73,7 @@ class ConfigDialog : public QTabDialog	{
 			CONFIG_HOTKEYEDIT,
 			CONFIG_LABEL,
 			CONFIG_LINEEDIT,
+			CONFIG_LINEEDIT2,
 			CONFIG_LISTBOX,
 			CONFIG_PUSHBUTTON,
 			CONFIG_SLIDER,
@@ -108,12 +127,20 @@ class ConfigDialog : public QTabDialog	{
 		    	    const QString& parent, const QString& caption,
 			    const QString& entry, const bool defaultS=false, const QString &tip="", const QString& name="");
 			    			    
+			    
+		static void addColorButton(const QString& groupname,
+			    const QString& parent, const QString& caption,
+			    const QColor& color, const QString& tip="", const QString& name="");
+			    
 		static void addComboBox(const QString& groupname, 
 			    const QString& parent, const QString& caption,
 			    const QString& tip="", const QString& name="");
 			    
 		static void addGrid(const QString& groupname, 
 			    const QString& parent, const QString& caption, const int nrColumns=3, const QString& name="");
+
+		static void addHBox(const QString& groupname, 
+			    const QString& parent, const QString& caption, const QString& name="");
 
 		static void addHGroupBox(const QString& groupname, 
 			    const QString& parent, const QString& caption, const QString& name="");
@@ -128,6 +155,10 @@ class ConfigDialog : public QTabDialog	{
 		static void addLineEdit(const QString& groupname,
 			    const QString& parent, const QString& caption,
 			    const QString& entry, const QString& defaultS="", const QString& tip="",const QString& name="");
+
+		static void addLineEdit2(const QString& groupname,
+			    const QString& parent, const QString& caption,
+			    const QString& defaultS="", const QString& tip="",const QString& name="");
 			    
 		static void addListBox(const QString& groupname, 
 			    const QString& parent, const QString& caption, const QString& tip= "", const QString& name="");
@@ -150,6 +181,9 @@ class ConfigDialog : public QTabDialog	{
 			    
 		static void registerTab(const QString& caption);
 		
+		static void addVBox(const QString& groupname, 
+			    const QString& parent, const QString& caption, const QString& name="");
+
 		static void addVGroupBox(const QString& groupname,
 			    const QString& parent, const QString& caption, const QString& name="");
 
@@ -161,8 +195,10 @@ class ConfigDialog : public QTabDialog	{
 		
 
 		static QCheckBox*   getCheckBox(const QString& groupname, const QString& caption, const QString& name="");
+		static ColorButton* getColorButton(const QString& groupname, const QString& caption, const QString& name="");
 		static QComboBox*   getComboBox(const QString& groupname, const QString& caption, const QString& name="");
 		static QGrid*       getGrid(const QString& groupname, const QString& caption, const QString& name="");
+		static QHBox* 	    getHBox(const QString& groupname, const QString& caption, const QString& name="");
 		static QHGroupBox*  getHGroupBox(const QString& groupname, const QString& caption, const QString& name="");
 		static HotKey* 	    getHotKeyEdit(const QString& groupname, const QString& caption, const QString& name="");
 		static QLineEdit*   getLineEdit(const QString& groupname, const QString& caption, const QString& name="");
@@ -171,6 +207,7 @@ class ConfigDialog : public QTabDialog	{
 		static QPushButton* getPushButton(const QString& groupname, const QString& caption, const QString& name="");
 		static QSlider*     getSlider(const QString& groupname, const QString& caption, const QString& name="");
 		static QSpinBox*    getSpinBox(const QString& groupname, const QString& caption, const QString& name="");
+		static QVBox*  	    getVBox(const QString& groupname, const QString& caption, const QString& name="");
 		static QVGroupBox*  getVGroupBox(const QString& groupname, const QString& caption, const QString& name="");
 		static QWidget*     getWidget(const QString& groupname, const QString& caption, const QString& name="");
 

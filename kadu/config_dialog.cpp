@@ -8,9 +8,9 @@
  ***************************************************************************/
 
 #include <qaccel.h>
-#include <qhbox.h>
-#include <qvbox.h>
 #include <qtooltip.h>
+#include <qcolordialog.h>
+#include <qcolor.h>
 
 #include "config_dialog.h"
 #include "config_file.h"
@@ -82,7 +82,18 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				check->setChecked(config_file.readBoolEntry((*i).group, (*i).entry, (*i).defaultS));
 				(*i).widget=check;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
-				(*i).widget->adjustSize();
+				break;
+			}
+			
+			case CONFIG_COLORBUTTON:
+			{
+				ColorButton* colorbutton=new ColorButton(QColor((*i).defaultS), parent, (*i).name);
+				QPixmap pm(35,10);
+				pm.fill(QColor((*i).defaultS));
+				colorbutton->setPixmap(pm);
+				colorbutton->setMaximumSize(QSize(50,25));
+				(*i).widget=colorbutton;
+				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				break;
 			}
 			case CONFIG_COMBOBOX:
@@ -92,14 +103,12 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				QComboBox* combo=new QComboBox(hbox, (*i).name);
 				(*i).widget=combo;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
-				(*i).widget->adjustSize();
 				break;
 			}
 			case CONFIG_GRID:
 				{
 				QGrid* grid=new QGrid((*i).defaultS.toInt(), parent, (*i).caption);
 				(*i).widget=grid;
-				(*i).widget->adjustSize();
 				break;
 			}
 			case CONFIG_HBOX:
@@ -107,7 +116,6 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				QHBox* box = new QHBox(parent,(*i).caption);
 				box->setSpacing(2);
 				(*i).widget=box;
-				(*i).widget->adjustSize();
 				break;
 
 			}
@@ -115,7 +123,6 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 			{
 				QHGroupBox* box = new QHGroupBox(appHandle->translate("@default",(*i).caption), parent, (*i).name);
 				(*i).widget=box;
-				(*i).widget->adjustSize();
 				break;
 			}
 			case CONFIG_HOTKEYEDIT:
@@ -126,14 +133,12 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				hotkey->setText(config_file.readEntry((*i).group, (*i).entry, (*i).defaultS));
 				(*i).widget=hotkey;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
-				(*i).widget->adjustSize();
 				break;
 			}
 			case CONFIG_LABEL:
 			{
 				QLabel* label=new QLabel(appHandle->translate("@default",(*i).caption), parent, (*i).name);
 				(*i).widget=label;
-				(*i).widget->adjustSize();
 				break;
 			}	
 			case CONFIG_LINEEDIT:
@@ -144,7 +149,16 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				line->setText(config_file.readEntry((*i).group, (*i).entry, (*i).defaultS));
 				(*i).widget=line;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
-				(*i).widget->adjustSize();
+				break;
+			}
+			case CONFIG_LINEEDIT2:
+			{
+				QHBox* hbox=new QHBox(parent);
+				QLabel* label=new QLabel(appHandle->translate("@default",(*i).caption), hbox);
+				QLineEdit* line=new QLineEdit(hbox, (*i).name);
+				line->setText((*i).defaultS);
+				(*i).widget=line;
+				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				break;
 			}
 			case CONFIG_LISTBOX:
@@ -152,7 +166,6 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				QListBox* listbox= new QListBox(parent, (*i).caption);
 				(*i).widget=listbox;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
-				(*i).widget->adjustSize();
 				break;
 			}
 			case CONFIG_PUSHBUTTON:
@@ -161,7 +174,6 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				button->setIconSet(QPixmap(QString(DATADIR)+ "/apps/kadu/icons/" + (*i).defaultS));
 				(*i).widget=button;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
-				(*i).widget->adjustSize();
 				break;
 			}
 			case CONFIG_SLIDER:
@@ -181,7 +193,6 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				slider->setTickmarks(QSlider::Below);
 				(*i).widget=slider;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
-				(*i).widget->adjustSize();
 				break;
 			}
 			case CONFIG_SPINBOX:
@@ -199,7 +210,6 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				spinbox->setValue(value);
 				(*i).widget=spinbox;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
-				(*i).widget->adjustSize();
 				break;
 			}
 			case CONFIG_TAB:
@@ -219,14 +229,12 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				QVBox* box = new QVBox(parent,(*i).caption);
 				(*i).widget=box;
 				box->setSpacing(2);
-				(*i).widget->adjustSize();
 				break;
 			}
 			case CONFIG_VGROUPBOX:
 			{
 				QVGroupBox* box = new QVGroupBox(appHandle->translate("@default",(*i).caption), parent, (*i).name);
 				(*i).widget=box;
-				(*i).widget->adjustSize();
 				break;
 			}
 
@@ -234,7 +242,8 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 		};
 			for(QValueList<ElementConnections>::iterator k=(*i).ConnectedSlots.begin(); k!=(*i).ConnectedSlots.end(); k++)
 			{
-				connect((*i).widget, (*k).signal, (*k).receiver, (*k).slot);
+				if (!connect((*i).widget, (*k).signal, (*k).receiver, (*k).slot))
+				    kdebug("unable to connect signal: "+(*k).signal+" slot: "+(*k).slot+"\n");
 			}
 		
 	};
@@ -331,6 +340,25 @@ void ConfigDialog::addCheckBox(const QString& groupname,
 };
 
 
+void ConfigDialog::addColorButton(const QString& groupname,
+			    const QString& parent, const QString& caption,
+			    const QColor& color, const QString& tip, const QString& name)
+{
+	if (existControl(groupname, caption, name) == -1){
+		RegisteredControl c;
+		c.type=CONFIG_COLORBUTTON;
+		c.parent=parent;
+		c.name=name;
+		c.caption=caption;
+		c.group=groupname;
+		c.defaultS=color.name();
+	    	c.tip=tip;
+		c.nrOfControls=0;
+		addControl(groupname,c);
+						}
+};
+
+
 
 void ConfigDialog::addComboBox(const QString& groupname,
 			const QString& parent, const QString& caption,
@@ -366,6 +394,22 @@ void ConfigDialog::addGrid(const QString& groupname,
 						}
 
 }
+
+void ConfigDialog::addHBox(const QString& groupname,
+	const QString& parent, const QString& caption, const QString& name)
+{
+	if (existControl(groupname, caption, name) == -1){
+		RegisteredControl c;
+		c.type=CONFIG_HBOX;
+		c.parent=parent;
+		c.name=name;
+		c.caption=caption;
+		c.group=groupname;		
+		c.nrOfControls=0;
+		addControl(groupname,c);
+							  }
+};
+
 
 void ConfigDialog::addHGroupBox(const QString& groupname,
 	const QString& parent, const QString& caption, const QString& name)
@@ -405,6 +449,25 @@ void ConfigDialog::addHotKeyEdit(const QString& groupname,
 			  config_file.writeEntry(groupname, entry, defaultS);
 						}
 };
+
+void ConfigDialog::addLineEdit2(const QString& groupname,
+			const QString& parent, const QString& caption,
+			const QString& defaultS, const QString& tip, const QString& name)
+{
+	if (existControl(groupname, caption, name) == -1){
+		RegisteredControl c;
+		c.type=CONFIG_LINEEDIT2;
+		c.parent=parent;
+		c.name=name;
+		c.caption=caption;
+		c.group=groupname;
+		c.defaultS=defaultS;
+	    	c.tip=tip;
+		c.nrOfControls=0;
+		addControl(groupname,c);
+							 }
+}
+
 
 void ConfigDialog::addLineEdit(const QString& groupname,
 			const QString& parent, const QString& caption,
@@ -541,6 +604,22 @@ void ConfigDialog::registerTab(const QString& caption)
 			RegisteredControls.append(c);
 		    }	
 };
+
+void ConfigDialog::addVBox(const QString& groupname,
+	const QString& parent, const QString& caption, const QString& name)
+{
+	if (existControl(groupname, caption, name) == -1){
+		RegisteredControl c;
+		c.type=CONFIG_VBOX;
+		c.parent=parent;
+		c.name=name;
+		c.caption=caption;
+		c.group=groupname;		
+		c.nrOfControls=0;
+		addControl(groupname,c);
+							  }
+};
+
 
 void ConfigDialog::addVGroupBox(const QString& groupname,
 	const QString& parent, const QString& caption, const QString& name)
@@ -721,6 +800,12 @@ QCheckBox* ConfigDialog::getCheckBox(const QString& groupname, const QString& ca
 	    return dynamic_cast<QCheckBox*>(getWidget(groupname,caption,name));
 }
 
+ColorButton* ConfigDialog::getColorButton(const QString& groupname, const QString& caption, const QString& name)
+{	
+	    return dynamic_cast<ColorButton*>(getWidget(groupname,caption,name));
+}
+
+
 QComboBox* ConfigDialog::getComboBox(const QString& groupname, const QString& caption, const QString& name)
 {	
 	    return dynamic_cast<QComboBox*>(getWidget(groupname,caption,name));
@@ -731,6 +816,10 @@ QGrid* ConfigDialog::getGrid(const QString& groupname, const QString& caption, c
 	    return dynamic_cast<QGrid*>(getWidget(groupname,caption,name));
 }
 
+QHBox* ConfigDialog::getHBox(const QString& groupname, const QString& caption, const QString& name)
+{	
+	    return dynamic_cast<QHBox*>(getWidget(groupname,caption,name));
+}
 
 QHGroupBox* ConfigDialog::getHGroupBox(const QString& groupname, const QString& caption, const QString& name)
 {	
@@ -774,6 +863,12 @@ QSlider* ConfigDialog::getSlider(const QString& groupname, const QString& captio
 QSpinBox* ConfigDialog::getSpinBox(const QString& groupname, const QString& caption, const QString& name)
 {	
 	    return dynamic_cast<QSpinBox*>(getWidget(groupname,caption,name));
+}
+
+
+QVBox* ConfigDialog::getVBox(const QString& groupname, const QString& caption, const QString& name)
+{	
+	    return dynamic_cast<QVBox*>(getWidget(groupname,caption,name));
 }
 
 
@@ -860,3 +955,39 @@ void HotKey::keyReleaseEvent(QKeyEvent *e)
 		setText("");
 }
 
+
+ColorButton::ColorButton(const QColor &color, QWidget *parent, const char* name): QPushButton(parent, name)
+{
+	setColor(color);
+	connect(this, SIGNAL(released()), this, SLOT(onClick()));
+}
+
+void ColorButton::onClick()
+{
+	QColor color = QColorDialog::getColor(this->color(), this, tr("Color dialog"));
+	if ( color.isValid() ) {
+		QPixmap pm(35,10);
+		pm.fill(QColor(color.name()));
+		setPixmap(pm);
+		actualcolor=color;
+		emit changed();
+			      }
+			      
+}
+
+QColor ColorButton::color()
+{
+    return actualcolor;
+}
+
+void ColorButton::setColor(const QColor &color )
+{
+
+    if (color.isValid())
+	    {
+		actualcolor=color;
+		QPixmap pm(35,10);
+		pm.fill(QColor(color.name()));
+		setPixmap(pm);
+	    }	
+}

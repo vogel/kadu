@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include <qpushbutton.h>
+#include <qfontdatabase.h>
 #include <qregexp.h>
 #include <qlayout.h>
 #include <qaccel.h>
@@ -1037,8 +1038,6 @@ void Chat::initModule()
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Underline text:", "chat_underline", "Ctrl+U");
 	
 
-	
-
 	ConfigDialog::registerTab("Chat");
 	ConfigDialog::addVGroupBox("Chat", "Chat", "Emoticons");
 	ConfigDialog::addComboBox("Chat", "Emoticons", "Emoticons:");
@@ -1062,9 +1061,59 @@ void Chat::initModule()
 	ConfigDialog::addCheckBox("Chat", "Chat", "Flash chat title on new message", "BlinkChatTitle", true);
 	ConfigDialog::addCheckBox("Chat", "Chat", "Ignore messages from anonymous users", "IgnoreAnonymousUsers", false);
 
-    	config_file.addVariable("Chat", "ConferenceContents", "%a (%s[: %d])");
-	config_file.addVariable("Chat", "EmoticonsStyle", EMOTS_ANIMATED);
 
+// pierwsze uruchomienie kadu
+	QColor color;
+	color=QColor("#E0E0E0");
+	config_file.addVariable("Look", "ChatMyBgColor", &color);
+	color=QColor("#F0F0F0");
+	config_file.addVariable("Look", "ChatUsrBgColor", &color);
+	color=QColor("#000000");
+	config_file.addVariable("Look", "ChatMyFontColor", &color);
+	color=QColor("#000000");
+	config_file.addVariable("Look", "ChatUsrFontColor", &color);
+
+	QFontInfo info(a->font());
+	QFont def_font(info.family(),info.pointSize());
+	config_file.addVariable("Look", "ChatFont", &def_font);
+//
+
+	QT_TRANSLATE_NOOP("@default", "Look");
+	QT_TRANSLATE_NOOP("@default", "Chat properties");
+	QT_TRANSLATE_NOOP("@default", "Font");
+	QT_TRANSLATE_NOOP("@default", "Font size");
+	QT_TRANSLATE_NOOP("@default", "Other");
+	QT_TRANSLATE_NOOP("@default", "Information panel syntax:");
+	QT_TRANSLATE_NOOP("@default", "Chat window title syntax:");
+	QT_TRANSLATE_NOOP("@default", "Conference window title prefix:");
+	QT_TRANSLATE_NOOP("@default", "Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - frist name\n%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist\n%v - revDNS, %p - port %e - email\nIf you leave blank, default settings will be used");
+	QT_TRANSLATE_NOOP("@default", "This text will be before syntax.\nIf you leave blank, default settings will be used.");
+	QT_TRANSLATE_NOOP("@default", "Conference window title prefix");
+	QT_TRANSLATE_NOOP("@default", "syntax:");
+	QT_TRANSLATE_NOOP("@default", "Preview chat");
+
+	ConfigDialog::registerTab("Look");
+	ConfigDialog::addVGroupBox("Look","Look","Chat properties");
+	ConfigDialog::addGrid("Look", "Chat properties", "previewgrid2", 2);
+	ConfigDialog::addVGroupBox("Look","previewgrid2","Preview chat");
+	ConfigDialog::addLabel("Look","Preview chat", "<b>Me</b> 00:00:00", "chat");
+	ConfigDialog::addLabel("Look","Preview chat", "<b>He</b> 00:00:02", "chat2");
+	ConfigDialog::addHBox("Look", "Chat properties", "--");
+	ConfigDialog::addComboBox("Look", "--", "", "", "combobox1");
+	ConfigDialog::addLineEdit2("Look", "--", "", "", "", "line1");
+	ConfigDialog::addColorButton("Look", "--","ColorButton1", QColor(config_file.readEntry("Look","ChatMyBgColor")));
+	ConfigDialog::addHBox("Look", "Chat properties", "font&size2");
+	ConfigDialog::addComboBox("Look", "font&size2", "Font", "", "font");
+	ConfigDialog::addComboBox("Look", "font&size2", "Font size", "", "size");
+	ConfigDialog::addVGroupBox("Look", "Look", "Other");
+	ConfigDialog::addVBox("Look", "Other", "syntax");
+	ConfigDialog::addLineEdit("Look", "syntax", "Information panel syntax:", "PanelContents", "[#%u][, %f] %r [- %d] [ (%i)]", "Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - frist name\n%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist\n%v - revDNS, %p - port %e - email\nIf you leave blank, default settings will be used");
+	ConfigDialog::addLineEdit("Look", "syntax", "Chat window title syntax:", "ChatContents", "", "Syntax the same as in information panel.");
+	ConfigDialog::addHBox("Look", "syntax", "conference");
+	ConfigDialog::addLineEdit("Look", "conference", "Conference window title prefix:", "ConferencePrefix", "", "This text will be before syntax.\nIf you leave blank, default settings will be used.");
+	ConfigDialog::addLineEdit("Look", "conference", "syntax:", "ConferenceContents", "%a (%s[: %d])", "Syntax the same as in information panel.");
+
+	config_file.addVariable("Chat", "EmoticonsStyle", EMOTS_ANIMATED);
 	emoticons.setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
 	
 	ChatSlots *chatslots =new ChatSlots();
@@ -1079,6 +1128,10 @@ void Chat::initModule()
 	ConfigDialog::connectSlot("Chat", "Use default Web browser", SIGNAL(toggled(bool)), chatslots, SLOT(onDefWebBrowser(bool)));
 
 	ConfigDialog::connectSlot("Chat", "Automatically prune chat messages", SIGNAL(toggled(bool)), chatslots, SLOT(onPruneChat(bool)));
+	
+	ConfigDialog::connectSlot("Look", "ColorButton1", SIGNAL(changed()), chatslots, SLOT(chooseColorGet()));
+	ConfigDialog::connectSlot("Look", "", SIGNAL(textChanged(const QString&)), chatslots, SLOT(chooseColorGet(const QString&)), "line1");
+	ConfigDialog::connectSlot("Look", "", SIGNAL(activated(int)), chatslots, SLOT(chooseChatSelect(int)), "combobox1");
 };
 
 ColorSelectorButton::ColorSelectorButton(QWidget* parent, const QColor& qcolor) : QToolButton(parent)
@@ -1202,6 +1255,53 @@ void ChatSlots::onCreateConfigDialog()
 	
 	h_prune->setEnabled(c_prunechat->isChecked());
 
+
+	vl_chatcolor.clear();
+	vl_chatcolor.append(config_file.readColorEntry("Look", "ChatMyBgColor"));
+	vl_chatcolor.append(config_file.readColorEntry("Look", "ChatMyFontColor"));
+	vl_chatcolor.append(config_file.readColorEntry("Look", "ChatUsrBgColor"));
+	vl_chatcolor.append(config_file.readColorEntry("Look", "ChatUsrFontColor"));
+	
+	vl_chatfont.clear();
+	vl_chatcolor.append(config_file.readColorEntry("Look", "ChatFont"));
+
+	QLineEdit *l_color= ConfigDialog::getLineEdit("Look", "", "line1");
+	l_color->setMaxLength(7);
+	l_color->setText(vl_chatcolor[0].name());
+	ColorButton *colorbutton= ConfigDialog::getColorButton("Look", "ColorButton1");
+	colorbutton->setColor(vl_chatcolor[0]);
+	QComboBox *cb_chatselect= ConfigDialog::getComboBox("Look", "","combobox1");
+
+	cb_chatselect->insertItem(tr("Your background color"));
+	cb_chatselect->insertItem(tr("Your font color"));
+	cb_chatselect->insertItem(tr("User background color"));
+	cb_chatselect->insertItem(tr("User font color"));
+	cb_chatselect->insertItem(tr("Font in chat window"));
+	cb_chatselect->setCurrentItem(0);
+
+	updatePreview();
+
+	QHBox *h_fontsize= ConfigDialog::getHBox("Look", "font&size2");
+	h_fontsize->hide();
+
+	QComboBox *cb_chatfont= ConfigDialog::getComboBox("Look", "Font", "font");
+	QComboBox *cb_chatfontsize= ConfigDialog::getComboBox("Look", "Font size", "size");
+
+	QFontDatabase fdb;
+	QValueList<int> vl;
+	
+	vl = fdb.pointSizes(vl_chatfont[0].family(),"Normal");
+	for (QValueList<int>::Iterator points = vl.begin(); points != vl.end(); ++points)
+		cb_chatfontsize->insertItem(QString::number(*points));
+	
+	cb_chatfontsize->setCurrentText(QString::number(vl_chatfont[0].pointSize()));
+	cb_chatfont->insertStringList(fdb.families());
+	cb_chatfont->setCurrentText(vl_chatfont[0].family());
+	
+	connect(cb_chatfont, SIGNAL(activated(int)), this, SLOT(chooseChatFont(int)));
+	connect(cb_chatfontsize, SIGNAL(activated(int)), this, SLOT(chooseChatFontSize(int)));
+
+
 }
 
 void ChatSlots::onPruneChat(bool toggled)
@@ -1237,6 +1337,34 @@ void ChatSlots::onDestroyConfigDialog()
 	
 	QComboBox *cb_emoticons_style= ConfigDialog::getComboBox("Chat", "Emoticons:");
 	config_file.writeEntry("Chat", "EmoticonsStyle", cb_emoticons_style->currentItem());
+
+	config_file.writeEntry("Look","ChatMyBgColor",vl_chatcolor[0]);
+	config_file.writeEntry("Look","ChatMyFontColor",vl_chatcolor[1]);
+	config_file.writeEntry("Look","ChatUsrBgColor", vl_chatcolor[2]);
+	config_file.writeEntry("Look","ChatUsrFontColor", vl_chatcolor[3]);
+	config_file.writeEntry("Look", "ChatFont", vl_chatfont[0]);
+	int z;
+	for (z = 0; z < chats.count(); z++)
+		chats[z].ptr->changeAppearance();
+/*
+	Aby unikn±c problemów z niepoprawnymi localesami i pozniejszymi
+	k³opotami które moga wynikn±c z tego, musimy zamienic dwie mozliwe
+	mozliwo¶ci na _puste_pole_ przez co uzyskamy ze kadu i tak bedzie
+	dynamicznie reagowac na zmiany localesów nie zaleznie jaka wersja
+	by³a zapisana przed ustawieniem ustawien domyslnych(moze nie za
+	dobrze to wyjasnione, ale konieczne. Nie dotyczy to dwóch zmiennych
+	config.panelsyntax i config.conferencesyntax, bo pierwotnie zawieraj
+	TYLKO sam± sk³adnie)
+*/
+
+	QLineEdit *e_chatsyntax= ConfigDialog::getLineEdit("Look", "Chat window title syntax:");
+	QLineEdit *e_conferenceprefix= ConfigDialog::getLineEdit("Look", "Conference window title prefix:");
+
+	if (e_chatsyntax->text() == tr("Chat with ")+"%a (%s[: %d])" || e_chatsyntax->text() == "Chat with %a (%s[: %d])")
+		config_file.writeEntry("Look", "ChatContents", "");
+	
+	if (e_conferenceprefix->text() == tr("Conference with ") || e_conferenceprefix->text() == "Conference with ")
+		config_file.writeEntry("Look", "ConferencePrefix", "");
 
 }
 
@@ -1278,3 +1406,107 @@ void ChatSlots::generateMyKeys(void) {
 #endif
 }
 
+void ChatSlots::chooseChatSelect(int nr)
+{
+	kdebug("ChatSlots::chooseChatSelect() item: %d\n", nr);
+	ColorButton *colorbutton= ConfigDialog::getColorButton("Look", "ColorButton1");
+	QLineEdit *l_color= ConfigDialog::getLineEdit("Look", "", "line1");
+	colorbutton->setColor(vl_chatcolor[nr]);
+	l_color->setText(colorbutton->color().name());
+
+	QHBox *h_fontsize= ConfigDialog::getHBox("Look", "font&size2");
+	QComboBox *cb_chatfont= ConfigDialog::getComboBox("Look", "Font", "font");
+	QComboBox *cb_chatfontsize= ConfigDialog::getComboBox("Look", "Font size", "size");
+
+	if (nr == 4)
+	{
+	    h_fontsize->show();
+	    cb_chatfontsize->setCurrentText(QString::number(vl_chatfont[0].pointSize()));
+	    cb_chatfont->setCurrentText(vl_chatfont[0].family());
+	    colorbutton->setEnabled(false);
+	    l_color->setEnabled(false);
+
+	}
+	else
+	{
+	    h_fontsize->hide();
+	    colorbutton->setEnabled(true);
+	    l_color->setEnabled(true);
+
+	}
+}
+
+void ChatSlots::chooseChatFont(int nr)
+{
+	kdebug("ChatSlots::chooseChatFont()\n");
+
+	QFontDatabase fdb;
+	QValueList<int> vl;
+	QComboBox *cb_chatfont= ConfigDialog::getComboBox("Look", "Font", "font");
+	QComboBox *cb_chatfontsize= ConfigDialog::getComboBox("Look", "Font size", "size");
+	QComboBox *cb_chatselect= ConfigDialog::getComboBox("Look", "","combobox1");
+	
+	vl = fdb.pointSizes(cb_chatfont->text(nr),"Normal");
+	cb_chatfontsize->clear();
+	for (QValueList<int>::Iterator points = vl.begin(); points != vl.end(); ++points)
+		cb_chatfontsize->insertItem(QString::number(*points));
+	if (cb_chatfontsize->count() > 0) {
+		cb_chatfontsize->setCurrentItem(0);
+		vl_chatfont[0] = 
+		    QFont(cb_chatfont->text(nr), cb_chatfontsize->currentText().toInt());
+					     }
+	updatePreview();
+
+}
+
+void ChatSlots::chooseChatFontSize(int nr)
+{
+	QComboBox *cb_chatfontsize= ConfigDialog::getComboBox("Look", "Font size", "size");
+	QComboBox *cb_chatfont= ConfigDialog::getComboBox("Look", "Font", "font");
+	QComboBox *cb_chatselect= ConfigDialog::getComboBox("Look", "","combobox1");
+	
+	vl_chatfont[0]= 
+	    QFont(cb_chatfont->currentText(), cb_chatfontsize->currentText().toInt());
+	updatePreview();
+}
+
+void ChatSlots::chooseColorGet(const QString &text)
+{
+	kdebug("ChatSlots::chooseColorGet(QString)\n");
+	if ((text.length() == 7)&& (QColor(text).isValid()))
+	    {
+	    	ColorButton *colorbutton= ConfigDialog::getColorButton("Look", "ColorButton1");
+		QLineEdit *l_color= ConfigDialog::getLineEdit("Look", "", "line1");
+		colorbutton->setColor(QColor(text));
+		int pos=l_color->cursorPosition();
+		chooseColorGet();
+		l_color->setCursorPosition(pos);
+		updatePreview();
+	    }
+}
+
+void ChatSlots::chooseColorGet()
+{
+	kdebug("ChatSlots::chooseColorGet()\n");
+	ColorButton *colorbutton= ConfigDialog::getColorButton("Look", "ColorButton1");
+	QLineEdit *l_color= ConfigDialog::getLineEdit("Look", "", "line1");
+	QComboBox *cb_chatselect= ConfigDialog::getComboBox("Look", "","combobox1");
+	
+	l_color->setText(colorbutton->color().name());
+	vl_chatcolor[cb_chatselect->currentItem()]=colorbutton->color();
+	updatePreview();
+}
+
+void ChatSlots::updatePreview()
+{
+	QLabel *preview= ConfigDialog::getLabel("Look", "<b>Me</b> 00:00:00", "chat");
+	QLabel *preview2= ConfigDialog::getLabel("Look", "<b>He</b> 00:00:02", "chat2");
+	preview->setFont(vl_chatfont[0]);
+	preview->setPaletteForegroundColor(vl_chatcolor[1]);
+	preview->setPaletteBackgroundColor(vl_chatcolor[0]);
+	preview->setAlignment(Qt::AlignLeft);
+	preview2->setFont(vl_chatfont[0]);
+	preview2->setPaletteForegroundColor(vl_chatcolor[3]);
+	preview2->setPaletteBackgroundColor(vl_chatcolor[2]);
+	preview2->setAlignment(Qt::AlignLeft);
+}
