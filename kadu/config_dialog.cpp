@@ -28,6 +28,11 @@ QValueList<ConfigDialog::RegisteredControl> ConfigDialog::RegisteredControls;
 QValueList<ConfigDialog::ElementConnections> ConfigDialog::SlotsOnCreate;
 QValueList<ConfigDialog::ElementConnections> ConfigDialog::SlotsOnDestroy;
 
+bool ConfigDialog::ElementConnections::operator== (const ElementConnections& r) const
+{
+	return (signal==r.signal && receiver==r.receiver && slot==r.slot);
+}
+
 void ConfigDialog::showConfigDialog(QApplication* application) {
 	ConfigDialog *cd;
 	
@@ -721,19 +726,43 @@ void ConfigDialog::addVGroupBox(const QString& groupname,
 						}
 };
 
+void ConfigDialog::removeControl(const QString& groupname, const QString& caption,const QString& name)
+{
+	int i=existControl(groupname, caption, name);
+	if(i>=0)
+	{
+//		RegisteredControls.remove(RegisteredControls.at(i));
+	}
+}
+
 void ConfigDialog::connectSlot(const QString& groupname, const QString& caption, const char* signal, const QObject* receiver, const char* slot,const QString& name)
 {
-		for(QValueList<RegisteredControl>::iterator j=RegisteredControls.begin(); j!=RegisteredControls.end(); j++)
-				if(((*j).group == groupname)&& ((*j).caption == caption)&& ((*j).name == name))
-			{
-	ElementConnections c;
-	c.signal=signal;
-	c.receiver=(QObject *)receiver;
-	c.slot=slot;
-	(*j).ConnectedSlots.append(c);
-	kdebug("Slot connected:: %s\n",slot);
-		    break;
-			}
+	for(QValueList<RegisteredControl>::iterator j=RegisteredControls.begin(); j!=RegisteredControls.end(); j++)
+		if(((*j).group == groupname) && ((*j).caption == caption) && ((*j).name == name))
+		{
+			ElementConnections c;
+			c.signal=signal;
+			c.receiver=(QObject *)receiver;
+			c.slot=slot;
+			(*j).ConnectedSlots.append(c);
+			kdebug("Slot connected:: %s\n",slot);
+			break;
+		}
+}
+
+void ConfigDialog::disconnectSlot(const QString& groupname, const QString& caption, const char* signal, const QObject* receiver, const char* slot,const QString& name)
+{
+	for(QValueList<RegisteredControl>::iterator j=RegisteredControls.begin(); j!=RegisteredControls.end(); j++)
+		if(((*j).group == groupname) && ((*j).caption == caption) && ((*j).name == name))
+		{
+			ElementConnections c;
+			c.signal=signal;
+			c.receiver=(QObject *)receiver;
+			c.slot=slot;
+			(*j).ConnectedSlots.remove((*j).ConnectedSlots.find(c));
+			kdebug("Slot disconnected:: %s\n",slot);
+			break;
+		}
 }
 
 void ConfigDialog::registerSlotOnCreate(const QObject* receiver, const char* name)
@@ -742,8 +771,15 @@ void ConfigDialog::registerSlotOnCreate(const QObject* receiver, const char* nam
 	c.receiver=(QObject *)receiver;
 	c.slot=name;
 	SlotsOnCreate.append(c);
-
 };
+
+void ConfigDialog::unregisterSlotOnCreate(const QObject* receiver, const char* name)
+{
+	ElementConnections c;
+	c.receiver=(QObject *)receiver;
+	c.slot=name;
+	SlotsOnCreate.remove(SlotsOnCreate.find(c));
+}
 
 void ConfigDialog::registerSlotOnDestroy(const QObject* receiver, const char* name)
 {
@@ -751,8 +787,15 @@ void ConfigDialog::registerSlotOnDestroy(const QObject* receiver, const char* na
 	c.receiver=(QObject *)receiver;
 	c.slot=name;
 	SlotsOnDestroy.append(c);
-
 };
+
+void ConfigDialog::unregisterSlotOnDestroy(const QObject* receiver, const char* name)
+{
+	ElementConnections c;
+	c.receiver=(QObject *)receiver;
+	c.slot=name;
+	SlotsOnDestroy.remove(SlotsOnDestroy.find(c));
+}
 
 int ConfigDialog::findPreviousTab(const int startpos)
 {

@@ -42,6 +42,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * IconManager::loadIcon oprocz nazwy pliku z zestawu moze przyjmowac
   bezposrednia sciezke do pliku (adrian)
 * wydzielenie obslugi dzwieku jako modulu "sound" (adrian)
+* funkcje unregisterSlotOnCreate, unregisterSlotOnDestroy, disconnectSlot,
+  umozliwiajace modulom odlaczenie sygnalow od okna konfiguracji (adrian)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

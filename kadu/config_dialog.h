@@ -184,6 +184,7 @@ class ConfigDialog : public QDialog	{
 			QString signal;
 			QObject* receiver;
 			QString slot;
+			bool operator== (const ElementConnections& r) const;
 		};
 
 		struct RegisteredControl
@@ -478,6 +479,11 @@ class ConfigDialog : public QDialog	{
 			    const int value=50, const QString& tip="", const QString& name="");
 
 		/**
+		    Usuwa kontrolke (groupname, caption, name)
+		**/
+		static void removeControl(const QString& groupname, const QString& caption,const QString& name="");
+
+		/**
 		    Dodaje zakladke o nazwie "caption"
 		    @param iconname nazwa ikony z zestawu lub sciezka do pliku
 		**/
@@ -504,24 +510,42 @@ class ConfigDialog : public QDialog	{
 			    const QString& parent, const QString& caption, const QString& name="");
 
 		/**
-		    Podlacza slot "slot" kontrolki (groupname, caption, name) 
-			pod sygnal "signal" obiektu "receiver"
+			Podlacza slot "slot" obiektu "receiver"
+			pod sygnal "signal" kontrolki (groupname, caption, name) 
 		**/
 		static void connectSlot(const QString& groupname, const QString& caption, const char* signal,
 			    const QObject* receiver, const char* slot,const QString& name="");
 
 		/**
-		    Rejestruje slot "slot" obiektu "receiver",
+			Odlacza slot "slot" obiektu "receiver"
+			od sygnalu "signal" kontrolki (groupname, caption, name) 
+		**/
+		static void disconnectSlot(const QString& groupname, const QString& caption, const char* signal,
+			    const QObject* receiver, const char* slot,const QString& name="");
+
+		/**
+			Rejestruje slot "slot" obiektu "receiver",
 			ktory jest wywolywany przy otwieraniu okna konfiguracji
 		**/
 		static void registerSlotOnCreate(const QObject* receiver, const char* slot);
 
 		/**
-		    Rejestruje slot "slot" obiektu "receiver",
+			Wyrejestrowuje slot "slot" obiektu "receiver",
+			ktory jest wywolywany przy otwieraniu okna konfiguracji
+		**/
+		static void unregisterSlotOnCreate(const QObject* receiver, const char* slot);
+
+		/**
+			Rejestruje slot "slot" obiektu "receiver",
 			ktory jest wywolywany przy zamykaniu okna konfiguracji
 		**/
 		static void registerSlotOnDestroy(const QObject* receiver, const char* slot);
 		
+		/**
+			Wyrejestrowuje slot "slot" obiektu "receiver",
+			ktory jest wywolywany przy zamykaniu okna konfiguracji
+		**/
+		static void unregisterSlotOnDestroy(const QObject* receiver, const char* slot);
 
 		/**
 		    Pobiera wskaznik do kontrolki CheckBox(groupname, caption, name)

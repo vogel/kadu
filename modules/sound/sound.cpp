@@ -122,6 +122,18 @@ extern "C" void sound_close()
 
 	QObject::disconnect(sound_manager, SIGNAL(playFile(const QString&)), soundslots, SLOT(playingSound(const QString&)));
 
+	ConfigDialog::unregisterSlotOnCreate(soundslots, SLOT(onCreateConfigDialog()));
+	ConfigDialog::unregisterSlotOnDestroy(soundslots, SLOT(onDestroyConfigDialog()));
+	ConfigDialog::disconnectSlot("Sounds", "Play sounds", SIGNAL(toggled(bool)), soundslots, SLOT(soundPlayer(bool)));
+	ConfigDialog::disconnectSlot("Sounds", "", SIGNAL(clicked()), soundslots, SLOT(choosePlayerFile()), "soundplayer_fileopen");
+	ConfigDialog::disconnectSlot("Sounds", "Choose", SIGNAL(released()), soundslots, SLOT(chooseSoundFile()));
+	ConfigDialog::disconnectSlot("Sounds", "Clear", SIGNAL(released()), soundslots, SLOT(clearSoundFile()));
+	ConfigDialog::disconnectSlot("Sounds", "Test", SIGNAL(released()), soundslots, SLOT(testSoundFile()));
+	ConfigDialog::disconnectSlot("Sounds", "Sound theme", SIGNAL(activated(const QString&)), soundslots, SLOT(chooseSoundTheme(const QString&)));
+	ConfigDialog::disconnectSlot("Sounds", "Sound paths", SIGNAL(changed(const QStringList&)), soundslots, SLOT(selectedPaths(const QStringList&)));
+
+	ConfigDialog::removeControl("Notify", "Notify by sound");
+
 	delete sound_manager;
 	delete soundslots;
 }
