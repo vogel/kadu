@@ -205,7 +205,7 @@ void UserlistImport::socketEvent() {
 		fprintf(stderr, "! %d !\n", strlist.count());		
 		fprintf(stderr, "%s\n", gg_http->data);
 		QStringList fieldlist;
-		QString tmparray[7];
+		QString tmparray[16];
 		QListViewItem * qlv;
 		int i, j;
 		QStringList::Iterator it, it2;
