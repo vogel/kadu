@@ -180,7 +180,7 @@ void HintManager::addHint(const QString& text, const QPixmap& pixmap,  const QFo
 	kdebug("HintManager::addHint()\n");
 	hints.append(new Hint(this, text, pixmap, timeout));
 	int i = hints.count()-1;
-	grid->addItem(hints.at(i));
+	grid->addLayout(hints.at(i), i, 0);
 	hints.at(i)->set(font, color, bgcolor, i);
 	connect(hints.at(i), SIGNAL(clicked(unsigned int)), this, SLOT(deleteHint(unsigned int)));
 	setHint();
