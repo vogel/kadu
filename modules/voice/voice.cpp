@@ -286,6 +286,7 @@ void VoiceManager::makeVoiceChat()
 			else
 			{
 				kdebugm(KDEBUG_INFO, "user.port()<10, asking for connection (uin: %d)\n", user.uin());
+				dcc_manager->startTimeout();
 				gadu->dccRequest(user.uin());
 			}
 		}

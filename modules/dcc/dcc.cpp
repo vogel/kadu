@@ -755,6 +755,11 @@ void DccManager::timeout()
 	MessageBox::wrn(tr("Direct connection timeout!\nThe receiver doesn't support direct connections or\nboth machines are behind routers with NAT."));
 }
 
+void DccManager::startTimeout()
+{
+	TimeoutTimer.start(15000, TRUE);
+}
+
 void DccManager::cancelTimeout()
 {
 	TimeoutTimer.stop();
@@ -863,7 +868,7 @@ void DccManager::sendFile()
 			else
 			{
 				kdebugm(KDEBUG_INFO, "user.port()<10, asking for connection (uin: %d)\n", user.uin());
-				TimeoutTimer.start(15000, TRUE);
+				startTimeout();
 				gadu->dccRequest(user.uin());
 			}
 		}

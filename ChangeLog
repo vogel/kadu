@@ -271,6 +271,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * ikony w dockmenu poprawnie od¶wie¿aj± siê przy zmianie zestawu ikon (joi)
 * ograniczenie ilo¶ci czytanych przez modu³ speech znaków (joi)
 * prawid³owa obs³uga wywo³ywania rozmowy g³osowej z osob± za nat'em (adrian)
+* timeout i informacja, ¿e nie mo¿na nawi±zaæ po³±czenia dcc dzia³a
+  równie¿ w obs³udze rozmów g³osowych (adrian)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,

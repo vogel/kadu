@@ -142,6 +142,7 @@ class DccManager : public QObject
 		DccManager();
 		virtual ~DccManager();
 		QHostAddress configDccIp();
+		void startTimeout();
 		void cancelTimeout();
 
 	public slots:
