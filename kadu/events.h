@@ -42,6 +42,7 @@ class EventManager : public QObject
 		void userStatusChangedSlot(struct gg_event*);
 		void userlistReceivedSlot(struct gg_event *);
 		void messageReceivedSlot(int, UinsList,unsigned char* msg,time_t,int,struct gg_msg_format*);
+		void chatReceivedSlot(UinsList senders,const QString& msg,time_t time);
 		void ackReceivedSlot(int seq);
 		void dccConnectionReceivedSlot(const UserListElement& sender);
 		void pubdirReplyReceivedSlot(gg_pubdir50_t res);

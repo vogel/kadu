@@ -54,6 +54,7 @@
 #include "dcc.h"
 #include "search.h"
 #include "personal_info.h"
+#include "config_file.h"
 #include "../config.h"
 #ifdef HAVE_OPENSSL
 extern "C"
@@ -132,6 +133,8 @@ EventManager::EventManager()
 	connect(this,SIGNAL(userStatusChanged(struct gg_event*)),this,SLOT(userStatusChangedSlot(struct gg_event*)));
 	connect(this,SIGNAL(userlistReceived(struct gg_event*)),this,SLOT(userlistReceivedSlot(struct gg_event*)));
 	connect(this,SIGNAL(messageReceived(int,UinsList,unsigned char*,time_t,int,struct gg_msg_format*)),this,SLOT(messageReceivedSlot(int,UinsList,unsigned char*,time_t,int,struct gg_msg_format*)));
+	connect(this,SIGNAL(chatReceived(UinsList,const QString&,time_t)),
+		this,SLOT(chatReceivedSlot(UinsList,const QString&,time_t)));
 	connect(this,SIGNAL(ackReceived(int)),this,SLOT(ackReceivedSlot(int)));
 	connect(this,SIGNAL(dccConnectionReceived(const UserListElement&)),
 		this,SLOT(dccConnectionReceivedSlot(const UserListElement&)));
@@ -323,6 +326,13 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 		rmsg->show();
 		}*/
 }
+
+void EventManager::chatReceivedSlot(UinsList senders,const QString& msg,time_t time)
+{
+	config_file.setGroup("Other");
+	if(config_file.readBoolEntry("OpenChatOnMessage"))
+		pending.openMessages();
+};
 
 void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)
 {

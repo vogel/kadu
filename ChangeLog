@@ -16,6 +16,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   connectionBroken, dccConnectionReceived, pubdirReplyReceived (adrian)
 * jeden, globalny obiekt config_file i pocz±tki nowego mechanizmu
   budowania okna konfiguracyjnego (adrian)
+* opcja automatycznego otwierania siê okna rozmowy,
+  gdy nadejdzie wiadomo¶æ (adrian)
 
 +++ wersja 0.3.4-pre3
 * dodane przeszukiwanie historii (chilek)
