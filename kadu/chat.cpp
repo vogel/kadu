@@ -1722,11 +1722,13 @@ ColorSelector::ColorSelector(const QColor &defColor, QWidget* parent, const char
 	int selector_width = 4; //sqrt(16)
 	QGridLayout *grid = new QGridLayout(this, 0, selector_width, 0, 0);
 
+	i = 0;
 	CONST_FOREACH(color, qcolors)
 	{
 		ColorSelectorButton* btn = new ColorSelectorButton(this, *color, 1, QString("color_selector:%1").arg((*color).name()).local8Bit().data());
 		grid->addWidget(btn, i / selector_width, i % selector_width);
 		connect(btn, SIGNAL(clicked(const QColor&)), this, SLOT(iconClicked(const QColor&)));
+		++i;
 	}
 	if (!qcolors.contains(defColor))
 	{
