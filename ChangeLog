@@ -3,6 +3,9 @@ lub rozbudowy. Postaæ (x/y) oznacza, ¿e x jest pomys³odawc± lub
 podes³a³ patcha, a zrobi³ to kto¶ oznaczony przez y. Je¶li jest
 w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
++++ wersha 0.3.7-cvs
+* poprawka podpinania siê pod sygna³ dccFinished() (chilek)
+
 +++ wersja 0.3.6 (22.11.2003)
 * je¶li klikniemy na jaki¶ kontakt w userboxie, od którego otrzymali¶my jak±¶
   wiadomo¶æ konferencyjn±, to otwiera siê okno konferencji (chilek)

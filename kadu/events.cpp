@@ -619,7 +619,7 @@ void EventManager::dccConnectionReceivedSlot(const UserListElement& sender)
 		if (dcc_new)
 		{
 			dcc = new dccSocketClass(dcc_new);
-			connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), this, SLOT(dccFinished(dccSocketClass *)));
+			connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), kadu, SLOT(dccFinished(dccSocketClass *)));
 			dcc->initializeNotifiers();
 		}
 	}
