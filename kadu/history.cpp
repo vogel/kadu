@@ -1018,7 +1018,7 @@ History::History(UinsList uins): uins(uins), closeDemand(false), finding(false) 
 	QPushButton *searchprevbtn = new QPushButton(this);
 	searchprevbtn->setText(tr("Find &previous"));
 
-	grid->addMultiCellWidget(dates, 0, 0, 0, 0);
+	grid->addMultiCellWidget(dates, 0, 1, 0, 0);
 	grid->addMultiCellWidget(body, 0, 0, 1, 3);
 	grid->addWidget(searchbtn, 1, 1);
 	grid->addWidget(searchnextbtn, 1, 2);
