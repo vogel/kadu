@@ -15,6 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <signal.h>
 #include <qwidget.h>
 #include <qdialog.h>
 #include <qmultilineedit.h>
@@ -161,7 +162,7 @@ void playSound(char * sound) {
 			struct sigaction sigact;
 			sigact.sa_handler = sigchldHndl;
 			sigact.sa_flags = 0;
-			sigact.sa_restorer = NULL;
+//			sigact.sa_restorer = NULL;
 			if (sigaction(SIGCHLD,&sigact,NULL) < 0)
       				perror("sigaction");
 			}
