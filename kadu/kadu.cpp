@@ -706,13 +706,18 @@ void Kadu::makeVoiceChat()
 }
 
 void Kadu::lookupInDirectory() {
+	SearchDialog *sd;
 	UserList users;
 	users = Userbox->getSelectedUsers();
 	if (users.count() == 1) {
-		SearchDialog *sd = new SearchDialog(0, tr("User info"),
+		sd = new SearchDialog(0, tr("User info"),
 			userlist.byAltNick(users.first().altnick).uin);
 		sd->show();
 		sd->firstSearch();
+		}
+	else {
+		sd = new SearchDialog();
+		sd->show();
 		}
 }
 
