@@ -175,6 +175,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * zapisywanie pliku konfiguracyjnego w przypadku wywrotki (joi)
 * zapis tak¿e przy standardowych sygna³ach zakoñczenia procesu (SIGINT,SIGTERM) (joi)
 * instalacja i u¿ycie plików translacji statycznych modu³ów (adrian)
+* kadu podpina sie pod sygnaly tylko gdy jest skompilowane bez debuga (michal)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

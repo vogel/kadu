@@ -32,6 +32,7 @@
 
 Kadu *kadu;	
 
+#ifndef DEBUG_ENABLED
 #include <signal.h>
 #include "debug.h"
 void kadu_signal_handler(int s)
@@ -51,14 +52,17 @@ void kadu_signal_handler(int s)
 		exit(0);
 	}
 }
+#endif
 
 int main(int argc, char *argv[])
 {
 	gg_debug_level = 255;
 
+#ifndef DEBUG_ENABLED
 	signal(SIGSEGV, kadu_signal_handler);
 	signal(SIGINT, kadu_signal_handler);
 	signal(SIGTERM, kadu_signal_handler);
+#endif
 
 	new QApplication(argc, argv);
 
