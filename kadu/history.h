@@ -78,7 +78,6 @@ class HistoryManager {
 
 	private:
 		QString text2csv(const QString &text);
-		int typeOfLine(const QString &line);
 		int getHistoryEntriesCountPrivate(const QString &filename);
 		void buildIndexPrivate(const QString &filename);
 };
