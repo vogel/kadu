@@ -53,7 +53,7 @@
 */
 #ifdef DEBUG_ENABLED
 void _kdebug_with_mask(int mask, const char* file,const int line,const char* format,...);
-extern int debug_mask;
 #endif
+extern int debug_mask;
 
 #endif
