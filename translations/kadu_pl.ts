@@ -69,7 +69,7 @@ Wybierz jedną z poniższych opcji:</translation>
     </message>
     <message>
         <source>Open chat window on new message</source>
-        <translation></translation>
+        <translation>Nowa wiadomość otwiera okno rozmowy </translation>
     </message>
     <message>
         <source>Define keys</source>
