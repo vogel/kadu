@@ -168,6 +168,7 @@ class UserBoxSlots : public QObject
 		void onDestroyConfigDialog();
 		void chooseColor(const char *name, const QColor& color);
 		void chooseFont(const char *name, const QFont& font);
+		void onMultiColumnUserbox(bool toggled);
 		void updatePreview();
 };
 

@@ -745,10 +745,14 @@ void UserBox::initModule()
 
 	QFontInfo info(qApp->font());
 	QFont def_font(info.family(),info.pointSize());
+	
+	int defUserboxWidth=int(QFontMetrics(def_font).width("Imie i Nazwisko")*1.5);
 
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Look"));
 
-	ConfigDialog::addSpinBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Userbox width when multi column"), "MultiColumnUserboxWidth", 1, 1000, 1, 230);
+	ConfigDialog::addVGroupBox("Look", "varOpts2", QT_TRANSLATE_NOOP("@default", "Columns"));
+	ConfigDialog::addCheckBox("Look", "Columns", QT_TRANSLATE_NOOP("@default", "Multicolumn userbox"), "MultiColumnUserbox", false);
+	ConfigDialog::addSpinBox("Look", "Columns", QT_TRANSLATE_NOOP("@default", "Userbox width when multi column"), "MultiColumnUserboxWidth", 1, 1000, 1, defUserboxWidth);
 
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Colors"));
 		ConfigDialog::addVGroupBox("Look", "Colors", QT_TRANSLATE_NOOP("@default", "Main window"));
@@ -777,6 +781,8 @@ void UserBox::initModule()
 	ConfigDialog::connectSlot("Look", "", SIGNAL(changed(const char *, const QColor&)), userboxslots, SLOT(chooseColor(const char *, const QColor&)), "userbox_font_color");
 
 	ConfigDialog::connectSlot("Look", "Font in userbox", SIGNAL(changed(const char *, const QFont&)), userboxslots, SLOT(chooseFont(const char *, const QFont&)), "userbox_font_box");
+
+	ConfigDialog::connectSlot("Look", "Multicolumn userbox", SIGNAL(toggled(bool)), userboxslots, SLOT(onMultiColumnUserbox(bool)));
 	kdebugf2();
 }
 
@@ -831,6 +837,11 @@ void UserBoxMenu::show(QListBoxItem *item)
 void UserBoxSlots::onCreateConfigDialog()
 {
 	kdebugf();
+
+	QSpinBox *multi=ConfigDialog::getSpinBox("Look", "Userbox width when multi column");
+	multi->setSuffix(" px");
+	multi->setEnabled(config_file.readBoolEntry("Look", "MultiColumnUserbox"));
+
 	updatePreview();
 }
 
@@ -871,6 +882,11 @@ void UserBoxSlots::updatePreview()
 	preview->setPaletteBackgroundColor(config_file.readColorEntry("Look", "UserboxBgColor"));
 	preview->setAlignment(Qt::AlignLeft);
 	kdebugf2();
+}
+
+void UserBoxSlots::onMultiColumnUserbox(bool toggled)
+{
+	ConfigDialog::getSpinBox("Look", "Userbox width when multi column")->setEnabled(toggled);
 }
 
 QValueList<UserBox *> UserBox::UserBoxes;

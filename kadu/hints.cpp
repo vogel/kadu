@@ -615,10 +615,11 @@ void HintManagerSlots::onCreateConfigDialog()
 	cb_notify->insertItem(tr("New message in chat"));
 	cb_notify->insertItem(tr("Error"));
 
-	/*QLabel *l_timeout = */new QLabel(tr("Hint timeout (in seconds)"), hb_0);
+	/*QLabel *l_timeout = */new QLabel(tr("Hint timeout"), hb_0);
 
 	sb_timeout = new QSpinBox(1,600,1,hb_0);
 	sb_timeout->setValue(hint[cb_notify->currentItem()][4].toInt());
+	sb_timeout->setSuffix(" s");
 
 	QHBox *hb_1 = new QHBox(hintgrp);
 	hb_1->setSpacing(2);

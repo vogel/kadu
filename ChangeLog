@@ -216,6 +216,10 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   dzia³aj± 5-cio sekundowe timeouty, informacje o b³êdach i timeoutach w
   dymkach wraz z informacj± o serwerze z którym próbowa³o siê kadu po³±czyæ,
   jednostajnie migaj±ce s³oneczko nios³o ze sob± zbyt ma³o informacji (adrian)
+* w oknie konfiguracji opcje, które s± liczbami ustawiane s± przy pomocy
+  spinboksa, a nie zwyk³ego pola edycyjnego (joi)
+* lepsza (bo obliczana na podstawie czcionki) warto¶æ domy¶lna szeroko¶ci
+  userboksa przy wielokolumnowsej li¶cie kontaktów (joi)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

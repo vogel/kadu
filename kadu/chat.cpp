@@ -1212,7 +1212,7 @@ void Chat::initModule()
 	ConfigDialog::addLineEdit("Chat", "WWW options", QT_TRANSLATE_NOOP("@default", "Custom Web browser"), "WebBrowser", "", QT_TRANSLATE_NOOP("@default", "%1 - Url clicked in chat window"));
 	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Automatically prune chat messages"), "ChatPrune", true);
 	ConfigDialog::addHGroupBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Message pruning"));
-	ConfigDialog::addLineEdit("Chat", "Message pruning", QT_TRANSLATE_NOOP("@default", "Reduce the number of visible messages to"), "ChatPruneLen", "20");
+	ConfigDialog::addSpinBox("Chat", "Message pruning", QT_TRANSLATE_NOOP("@default", "Reduce the number of visible messages to"), "ChatPruneLen", 1,255,1,20);
 	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Automatically fold links"), "FoldLink", false);
 	ConfigDialog::addHGroupBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Link folding"));
 	ConfigDialog::addLineEdit("Chat", "Link folding", QT_TRANSLATE_NOOP("@default", "Automatically fold links longer than"), "LinkFoldTreshold", "50");
@@ -1241,10 +1241,10 @@ void Chat::initModule()
 	ConfigDialog::addGrid("Look", "Look", "varOpts", 2);
 		ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Show status button"), "ShowStatusButton", true);
 		ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Display group tabs"), "DisplayGroupTabs", true);
-		ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Multicolumn userbox"), "MultiColumnUserbox", false);
 		ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Show description in userbox"), "ShowDesc", true);
 		ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Multiline description in userbox"), "ShowMultilineDesc", true);
 		ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Show available users in bold"), "ShowBold", true, QT_TRANSLATE_NOOP("@default","Displays users that are not offline using a bold font"));
+	ConfigDialog::addVBox("Look", "Look", "varOpts2");//potrzebne userboksowi
 	
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Colors"));
 		ConfigDialog::addVGroupBox("Look", "Colors", QT_TRANSLATE_NOOP("@default", "Chat window"));
@@ -1416,6 +1416,7 @@ void ChatSlots::onCreateConfigDialog()
 	QHGroupBox *h_fold= ConfigDialog::getHGroupBox("Chat", "Link folding");
 	QToolTip::add(h_fold, tr("URLs longer than this value will be shown truncated to this length"));
 	QToolTip::add(c_foldlink, tr("This will show a long URL as http://www.start...end.com/\nto protect the chat window from a mess"));
+	ConfigDialog::getSpinBox("Chat", "Max image size")->setSuffix(" kB");
 	
 	h_fold->setEnabled(c_foldlink->isChecked());
 
@@ -1424,14 +1425,12 @@ void ChatSlots::onCreateConfigDialog()
 
 void ChatSlots::onPruneChat(bool toggled)
 {
-	QHGroupBox *h_prune= ConfigDialog::getHGroupBox("Chat", "Message pruning");
-	h_prune->setEnabled(toggled);
+	ConfigDialog::getHGroupBox("Chat", "Message pruning")->setEnabled(toggled);
 }
 
 void ChatSlots::onFoldLink(bool toggled)
 {
-	QHGroupBox *h_fold= ConfigDialog::getHGroupBox("Chat", "Link folding");
-	h_fold->setEnabled(toggled);
+	ConfigDialog::getHGroupBox("Chat", "Link folding")->setEnabled(toggled);
 }
 
 void ChatSlots::onDefWebBrowser(bool toggled)
