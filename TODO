@@ -20,7 +20,6 @@
  + dokoñczyæ rozmowy g³osowe
  + mrugaj±cy tytu³ okna chat (zminimalizowanego te¿) przy doj¶ciu nowej wiad.
  + mrugaj±ca koperta nowej wiadomo¶ci
- + autoryzacja proxy
  ? wykrywanie niewidocznych jako opcja
  + usun±æ z kodów ¼ród³owych poszczególnych modu³ów informacje
    o autorach - wystarczy plik AUTHORS
@@ -69,4 +68,4 @@
    (kontynuowanie prac nad jêzykiem skryptowym v-user) 
  ? przechowywanie maili userów i uruchamianie klienta mail
  - wybór przegl±darki obs³uguj±cej linki
- - mechanizm plugin'ów
+ - mechanizm plugin-ów
