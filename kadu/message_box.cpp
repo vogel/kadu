@@ -16,7 +16,11 @@ const int MessageBox::PROGRESS = 16; // 10000
 MessageBox::MessageBox(const QString& message,int components,bool modal)
 	: QDialog(NULL,NULL,modal,WType_TopLevel|WStyle_Customize|WStyle_DialogBorder|WStyle_Title|WStyle_SysMenu)
 {
-	QVBoxLayout* vbox=new QVBoxLayout(this);
+	_pixmap = 0;
+	_grid=new QGridLayout(this,1,2);
+	
+	QVBoxLayout* vbox=new QVBoxLayout(0);
+	_grid->addLayout(vbox,0,1);
 	vbox->setMargin(20);
 	vbox->setSpacing(20);
 	if(message.length()>0)
@@ -67,6 +71,16 @@ MessageBox::MessageBox(const QString& message,int components,bool modal)
 	buttons->setMaximumSize(buttons->sizeHint());
 }
 
+void MessageBox::setIcon(const QPixmap & pixmap)
+{
+	if (_pixmap == 0) {
+		_pixmap = new QLabel(this);
+		_pixmap->setPixmap(pixmap);
+		_grid->addWidget(_pixmap,0,0);
+		}
+
+}
+
 void MessageBox::okClicked()
 {
 	emit okPressed();
@@ -114,6 +128,13 @@ void MessageBox::status(const QString& message)
 void MessageBox::msg(const QString& message)
 {
 	MessageBox* m=new MessageBox(message,OK);
+	m->show();
+}
+
+void MessageBox::wrn(const QString& message)
+{
+	MessageBox* m=new MessageBox(message,OK);
+	m->setIcon(icons_manager.loadIcon("Warning"));
 	m->show();
 }
 

@@ -4,6 +4,8 @@
 #include <qdialog.h>
 #include <qmap.h>
 #include <qprogressbar.h>
+#include <qlabel.h>
+#include <qlayout.h>
 
 /**
 	Odpowiednik klasy QMessageBox z QT. W zamierzeniu ma
@@ -17,7 +19,9 @@ class MessageBox : public QDialog
 	private:
 		static QMap<QString,MessageBox*> Boxes;
 		QProgressBar* Progress;
-		
+		QLabel * _pixmap;
+		QGridLayout * _grid;
+				
 	private slots:
 		void okClicked();
 		void cancelClicked();
@@ -34,8 +38,10 @@ class MessageBox : public QDialog
 		//
 		MessageBox(const QString& message,int components = 0
 			,bool modal=false);
+
 		void setTotalSteps(int s);
 		void setProgress(int p);
+		void setIcon(const QPixmap & pixmap);
 		//
 		/**
 			Informuje u¿ytkownika o wykonywanej przez
@@ -61,6 +67,10 @@ class MessageBox : public QDialog
 			Nie blokuje wykonywania programu.
 		**/
 		static void msg(const QString& message);
+		/**
+			Jak wy¿ej, ale w formie ostrze¿enia
+		**/
+		static void wrn(const QString& message);
 		/**
 			Informuje u¿ytkownika o postêpie wykonywanej
 			przez program czynno¶ci. Tworzy dialog zawieraj±cy
