@@ -1195,8 +1195,8 @@ void History::formatHistoryEntry(QString &text, const HistoryEntry &entry, QStri
 		bgcolor = config_file.readColorEntry("Look","ChatUsrBgColor").name();
 		textcolor = config_file.readColorEntry("Look","ChatUsrFontColor").name();
 		}
-//	text.append(QString("<table width=\"100%\"><tr><td bgcolor=\"") + bgcolor + "\"><font color=\"" + textcolor + "\"><b>");
-	text.append(QString("<p style=\"color:") + textcolor + "\"><b>");
+	text.append(QString("<table width=\"100%\"><tr><td bgcolor=\"") + bgcolor + "\"><font color=\"" + textcolor + "\"><b>");
+//	text.append(QString("<p style=\"color:") + textcolor + "\"><b>");
 	paracolors.append(bgcolor);
 
 	if (entry.type == HISTORYMANAGER_ENTRY_SMSSEND)
@@ -1247,8 +1247,8 @@ void History::formatHistoryEntry(QString &text, const HistoryEntry &entry, QStri
 		
 		text.append(doc.generateHtml());
 	}
-//	text.append("</font></td></tr></table>");
-	text.append("</p>");
+	text.append("</font></td></tr></table>");
+//	text.append("</p>");
 }
 
 void History::showHistoryEntries(int from, int count) {
@@ -1265,8 +1265,8 @@ void History::showHistoryEntries(int from, int count) {
 		if ( ! (noStatus && entries[i].type & HISTORYMANAGER_ENTRY_STATUS))
 			formatHistoryEntry(text, entries[i], paracolors);
 	body->setText(text);
-	for (i = 0; i < paracolors.count(); i++)
-		body->setParagraphBackgroundColor(i, paracolors[i]);
+//	for (i = 0; i < paracolors.count(); i++)
+//		body->setParagraphBackgroundColor(i, paracolors[i]);
 
 	//obej¶cie buga w qt - dziêki zeskrolowaniu okna animowane emotikony l±duj± tam gdzie trzeba
 	if (config_file.readBoolEntry("General", "ShowEmotHist"))
