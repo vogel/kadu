@@ -1252,7 +1252,13 @@ int ConfigDialog::addControl(const QString& groupname, const ConfigDialog::Regis
 }
 
 QWidget* ConfigDialog::getWidget(const QString& groupname, const QString& caption, const QString& name)
-{	
+{
+	if (configdialog==NULL)
+	{
+		kdebugm(KDEBUG_PANIC, "ConfigDialog is closed! Can't get widget! (%s,%s,%s)\n",
+			groupname.local8Bit().data(), caption.local8Bit().data(), name.local8Bit().data());
+		return NULL;
+	}
 	int nr=existControl(groupname,caption,name);
 	if (nr!=-1)
 		return (RegisteredControls[nr].widget);
@@ -1276,27 +1282,27 @@ QCheckBox* ConfigDialog::getCheckBox(const QString& groupname, const QString& ca
 }
 
 ColorButton* ConfigDialog::getColorButton(const QString& groupname, const QString& caption, const QString& name)
-{	
+{
 	return dynamic_cast<ColorButton*>(getWidget(groupname,caption,name));
 }
 
 QComboBox* ConfigDialog::getComboBox(const QString& groupname, const QString& caption, const QString& name)
-{	
+{
 	return dynamic_cast<QComboBox*>(getWidget(groupname,caption,name));
 }
 
 QGrid* ConfigDialog::getGrid(const QString& groupname, const QString& caption, const QString& name)
-{	
+{
 	return dynamic_cast<QGrid*>(getWidget(groupname,caption,name));
 }
 
 QHBox* ConfigDialog::getHBox(const QString& groupname, const QString& caption, const QString& name)
-{	
+{
 	return dynamic_cast<QHBox*>(getWidget(groupname,caption,name));
 }
 
 QHGroupBox* ConfigDialog::getHGroupBox(const QString& groupname, const QString& caption, const QString& name)
-{	
+{
 	return dynamic_cast<QHGroupBox*>(getWidget(groupname,caption,name));
 }
 
@@ -1306,67 +1312,67 @@ QHButtonGroup* ConfigDialog::getHButtonGroup(const QString& groupname, const QSt
 }
 
 HotKey* ConfigDialog::getHotKeyEdit(const QString& groupname, const QString& caption, const QString& name)
-{	
+{
 	return dynamic_cast<HotKey*>(getWidget(groupname,caption,name));
 }
 
 QLineEdit* ConfigDialog::getLineEdit(const QString& groupname, const QString& caption, const QString& name)
-{	
+{
 	return dynamic_cast<QLineEdit*>(getWidget(groupname,caption,name));
 }
 
 QTextEdit* ConfigDialog::getTextEdit(const QString& groupname, const QString& caption, const QString& name)
-{	
+{
 	return dynamic_cast<QTextEdit*>(getWidget(groupname,caption,name));
 }
 
 QLabel* ConfigDialog::getLabel(const QString& groupname, const QString& caption, const QString& name)
-{	
+{
 	return dynamic_cast<QLabel*>(getWidget(groupname,caption,name));
 }
 
 QListBox* ConfigDialog::getListBox(const QString& groupname, const QString& caption, const QString& name)
-{	
+{
 	return dynamic_cast<QListBox*>(getWidget(groupname,caption,name));
 }
 
 QListView* ConfigDialog::getListView(const QString& groupname, const QString& caption, const QString& name)
-{	
+{
 	return dynamic_cast<QListView*>(getWidget(groupname,caption,name));
 }
 
 QPushButton* ConfigDialog::getPushButton(const QString& groupname, const QString& caption, const QString& name)
-{	
+{
 	return dynamic_cast<QPushButton*>(getWidget(groupname,caption,name));
 }
 
 SelectFont* ConfigDialog::getSelectFont(const QString& groupname, const QString& caption, const QString& name)
-{	
+{
 	return dynamic_cast<SelectFont*>(getWidget(groupname,caption,name));
 }
 
 SelectPaths* ConfigDialog::getSelectPaths(const QString& groupname, const QString& caption, const QString& name)
-{	
+{
 	return dynamic_cast<SelectPaths*>(getWidget(groupname,caption,name));
 }
 
 QSlider* ConfigDialog::getSlider(const QString& groupname, const QString& caption, const QString& name)
-{	
+{
 	return dynamic_cast<QSlider*>(getWidget(groupname,caption,name));
 }
 
 QSpinBox* ConfigDialog::getSpinBox(const QString& groupname, const QString& caption, const QString& name)
-{	
+{
 	return dynamic_cast<QSpinBox*>(getWidget(groupname,caption,name));
 }
 
 QVBox* ConfigDialog::getVBox(const QString& groupname, const QString& caption, const QString& name)
-{	
+{
 	return dynamic_cast<QVBox*>(getWidget(groupname,caption,name));
 }
 
 QVGroupBox* ConfigDialog::getVGroupBox(const QString& groupname, const QString& caption, const QString& name)
-{	
+{
 	return dynamic_cast<QVGroupBox*>(getWidget(groupname,caption,name));
 }
 
