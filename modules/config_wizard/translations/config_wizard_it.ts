@@ -22,14 +22,6 @@
         <translation>Anulla</translation>
     </message>
     <message>
-        <source>Configuration Wizard</source>
-        <translation>Creatore di configurazione</translation>
-    </message>
-    <message>
-        <source>&lt;h2&gt;Welcome in Kadu&lt;/h2&gt;&lt;h3&gt; the Gadu-gadu network client for *nix and MacOS X.&lt;/h3&gt;&lt;br&gt;&lt;br&gt;&lt;font size=+1&gt;This is first time you launch Kadu. This wizard will help you to configure the basic settings of Kadu. If you are experienced kadu user you may omit the wizard clicking Cancel. Otherwise click Next.&lt;/font&gt;</source>
-        <translation>&lt;h2&gt;Benvenuti in KADU&lt;/h2&gt;&lt;h3&gt; cliente per reti Gadu-Gadu su sistemi unixoidi e MacOS X.&lt;/h3&gt;&lt;br&gt;&lt;br&gt;&lt;font size=+1&gt;Questa è la prima volta che hai lanciato Kadu. Questo creatore ti aiuta di configurare correttamente i principali settaggi Kadu. Se hai già la esperienza con Kadu, puoi scavacare questa procedura premendo pulsante Anulla. Altrimenti premi Avanti.&lt;/font&gt;</translation>
-    </message>
-    <message>
         <source>Welcome</source>
         <translation>Benvenuti</translation>
     </message>
@@ -54,10 +46,6 @@
         <translation>Account Gadu-Gadu</translation>
     </message>
     <message>
-        <source>&lt;h3&gt;You decided to use your existing account.Please configure it&lt;/h3&gt;</source>
-        <translation>&lt;h3&gt;Hai scelto l&apos;uso di account già esistente. Devi configurarlo&lt;/h3&gt;</translation>
-    </message>
-    <message>
         <source>Please enter your account settings</source>
         <translation>Inesrisci dati account</translation>
     </message>
@@ -72,10 +60,6 @@
     <message>
         <source>Import contacts</source>
         <translation>Importa contatti</translation>
-    </message>
-    <message>
-        <source>&lt;h3&gt;Please enter your valid e-mail address and password you want to secure your new Gadu-gadu number&lt;h3&gt;</source>
-        <translation>&lt;h3&gt;Inserisci indirizzo e-mail e password per creare nuovo account Gadu-Gadu&lt;/h3&gt;</translation>
     </message>
     <message>
         <source>Password</source>
@@ -302,14 +286,6 @@
         <translation>Colori e icone</translation>
     </message>
     <message>
-        <source>&lt;h3&gt;Choose your Info panel look&lt;/h3&gt;</source>
-        <translation>&lt;h3&gt;Scegli aspetto panello informazioni&lt;/h3&gt;</translation>
-    </message>
-    <message>
-        <source>Information panel Theme</source>
-        <translation>Aspetto panello informazion</translation>
-    </message>
-    <message>
         <source>Show information panel</source>
         <translation>Visualizza panello informazioni</translation>
     </message>
@@ -318,32 +294,12 @@
         <translation>Visualizza panello di scorimento verticale</translation>
     </message>
     <message>
-        <source>Info panel Look</source>
-        <translation>Aspetto panello informazioni</translation>
-    </message>
-    <message>
-        <source>&lt;h3&gt;Choose Qt3 theme for Kadu&lt;/h3&gt;</source>
-        <translation>&lt;h3&gt;Scegli tema QT3 per Kadu&lt;/h3&gt;</translation>
-    </message>
-    <message>
-        <source>Qt Theme</source>
-        <translation>Tema QT</translation>
-    </message>
-    <message>
-        <source>Please choose Qt3 design for Kadu</source>
-        <translation>Scegli disegno QT3 per Kadu</translation>
-    </message>
-    <message>
         <source>Unknown</source>
         <translation>Sconosciuto</translation>
     </message>
     <message>
         <source>Qt Look</source>
         <translation>Aspetto QT</translation>
-    </message>
-    <message>
-        <source>&lt;h2&gt;Congratulations&lt;/h2&gt;&lt;h3&gt;You have just configured Kadu&lt;/h3&gt;You can adjust settings using the configuration icon on toolbar or simply by pressing F2. It&apos;s recomended to read the documentation before changing some advanced settings. If you have questions or problems with Kadu look at &lt;b&gt;www.kadu.net/forum&lt;/b&gt; and be our guest.&lt;br&gt;&lt;h3&gt;Enjoi using Kadu ;)&lt;br&gt;Kadu Team&lt;/h3&gt;</source>
-        <translation>&lt;h2&gt;Congratulazioni&lt;/h2&gt;&lt;h3&gt;Hai configurato Kadu&lt;/h3&gt;Puoi sempre cambiare questi settagi premendo F2 oppure scegliendo  opzione configura dal menu. Raccomandiamo la laettura della  documentazione prima di cambiare settagi avanzati. sea hai qualche domanda o problemi con Kadu - visita  &lt;b&gt;www.kadu.net/forum&lt;/b&gt;(in polacco).&lt;br&gt;&lt;h3&gt;Buon divertimento con Kadu ;)&lt;br&gt;Kadu Team&lt;/h3&gt;</translation>
     </message>
     <message>
         <source>Congratulations</source>
@@ -362,20 +318,12 @@ Password in entrambi campi deve essere la stessa!</translation>
         <translation>OK</translation>
     </message>
     <message>
-        <source>Please fill out all fields</source>
-        <translation>Riempire tutti campi</translation>
-    </message>
-    <message>
         <source>Register user</source>
         <translation>Registrazione utente</translation>
     </message>
     <message>
         <source>An error has occured while registration. Please try again later.</source>
         <translation>Errore durante la registrazione. Riprova più tardi.</translation>
-    </message>
-    <message>
-        <source>User list wasn&apos;t imported becouse of some error</source>
-        <translation>Errore. Lista dei contatti non è stata importata</translation>
     </message>
     <message>
         <source>Busy</source>
@@ -404,6 +352,113 @@ Password in entrambi campi deve essere la stessa!</translation>
     <message>
         <source>You are not on the list</source>
         <translation>Non sei nella lista</translation>
+    </message>
+    <message>
+        <source>User list wasn&apos;t imported because of some error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please fill all fields</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;h2&gt;Welcome in Kadu&lt;/h2&gt;&lt;h3&gt; the Gadu-gadu network client for *nix and MacOS X.&lt;/h3&gt;&lt;br&gt;&lt;br&gt;&lt;font size=+1&gt;This is first time you launch Kadu. This wizard will help you to configure the basic settings of Kadu. If you are experienced Kadu user you may omit the wizard by clicking Cancel. Otherwise click Next.&lt;/font&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;h3&gt;You decided to use your existing account. Please configure it&lt;/h3&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;h3&gt;Please enter your valid e-mail address and password you want to secure your new Gadu-gadu number&lt;/h3&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sound module</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose sound module</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Description:&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kadu uses various sound modules to play its sounds. Choosing appropriate module is quite important. Browse installed sound modules and choose the best for you.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This module uses libao to produce sounds. This is third-party module not supported by Kadu Team.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This module uses KDE&apos;s aRts daemon which mixes multiple digital sources at real time.&lt;br&gt; When your soundcard doesn&apos;t handle that, this module is for you.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This module uses OSS kernel module to produce sounds.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This module uses GNOME&apos;s Enlightened Sound Daemon which mixes multiple digital sources at real time.&lt;br&gt; When your soundcard doesn&apos;t handle that, this module is for you.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This module uses external application to produce sounds. You must specify path to external program in configuration.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This module uses Network Audio System to produce sounds. Use it when you use NAS sound system.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;h3&gt;Choose your information panel look&lt;/h3&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Information panel theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Information panel look</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;h3&gt;Choose Qt theme for Kadu&lt;/h3&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Qt theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please choose Qt design for Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;h2&gt;Congratulations&lt;/h2&gt;&lt;h3&gt;You have just configured Kadu&lt;/h3&gt;You can adjust settings using the configuration icon on toolbar or simply by pressing F2. It&apos;s recomended to read the documentation before changing some advanced settings. If you have questions or problems with Kadu look at &lt;b&gt;www.kadu.net/forum&lt;/b&gt; and be our guest.&lt;br&gt;&lt;h3&gt;Enjoy using Kadu ;)&lt;br&gt;Kadu Team&lt;/h3&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There will be no sounds in Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;font color=red&gt;Module is not installed! If you want to use it download and install it first.&lt;/font&gt;&lt;br&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>WizardStarter</name>
+    <message>
+        <source>Configuration Wizard</source>
+        <translation type="unfinished">Creatore di configurazione</translation>
     </message>
 </context>
 </TS>

@@ -130,7 +130,7 @@ plików lub oba komputery są za NAT-em.</translation>
     <message>
         <source>User %1 wants to send us a file %2
 of size %3kB. Accept transfer?</source>
-        <translation>Użytkownik %1 wysyła ci plik %2
+        <translation>Użytkownik %1  chciałby przesłać Tobie plik %2
 o rozmiarze %3kB. Akceptujesz?</translation>
     </message>
     <message>

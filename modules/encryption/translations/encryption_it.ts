@@ -64,6 +64,10 @@
         <source>Your public key has been sent</source>
         <translation>La tua chive pubblica è stata spedita</translation>
     </message>
+    <message>
+        <source>Cannot encrypt message. sim_message_encrypt returned: &quot;%1&quot; (sim_errno=%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SavePublicKey</name>

@@ -64,6 +64,10 @@
         <source>Your public key has been sent</source>
         <translation>Twój klucz publiczny został wysłany</translation>
     </message>
+    <message>
+        <source>Cannot encrypt message. sim_message_encrypt returned: &quot;%1&quot; (sim_errno=%2)</source>
+        <translation>Nie mogę zaszyfrować wiadomości. sim_message_encrypt zwrócił: &quot;%1&quot; (sim_errno=%2)</translation>
+    </message>
 </context>
 <context>
     <name>SavePublicKey</name>
