@@ -146,8 +146,10 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 			}
 			case CONFIG_COLORBUTTON:
 			{
+				QHBox* hbox=new QHBox(parent);
+				new QLabel(appHandle->translate("@default",(*i).caption), hbox);
 				QColor col((*i).defaultS);
-				ColorButton* colorbutton=new ColorButton((*i).config->readColorEntry((*i).group, (*i).entry, &col), parent, (*i).name);
+				ColorButton* colorbutton=new ColorButton((*i).config->readColorEntry((*i).group, (*i).entry, &col), hbox, (*i).name);
 				colorbutton->setMaximumSize(QSize(50,25));
 				(*i).widget=colorbutton;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));

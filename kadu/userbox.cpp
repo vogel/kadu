@@ -827,12 +827,8 @@ void UserBox::initModule()
 
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Colors"));
 		ConfigDialog::addVGroupBox("Look", "Colors", QT_TRANSLATE_NOOP("@default", "Main window"));
-			ConfigDialog::addHBox("Look", "Main window", "userbox_bg_color_box");
-				ConfigDialog::addLabel("Look", "userbox_bg_color_box", QT_TRANSLATE_NOOP("@default", "Userbox background color"));
-				ConfigDialog::addColorButton("Look", "userbox_bg_color_box", "", "UserboxBgColor", config_file.readColorEntry("Look","UserboxBgColor"), "", "userbox_bg_color");
-			ConfigDialog::addHBox("Look", "Main window", "userbox_font_color_box");
-				ConfigDialog::addLabel("Look", "userbox_font_color_box", QT_TRANSLATE_NOOP("@default", "Userbox font color"));
-				ConfigDialog::addColorButton("Look", "userbox_font_color_box", "", "UserboxFgColor", config_file.readColorEntry("Look","UserboxFgColor"), "", "userbox_font_color");
+			ConfigDialog::addColorButton("Look", "Main window", QT_TRANSLATE_NOOP("@default", "Userbox background color"), "UserboxBgColor", config_file.readColorEntry("Look","UserboxBgColor"), "", "userbox_bg_color");
+			ConfigDialog::addColorButton("Look", "Main window", QT_TRANSLATE_NOOP("@default", "Userbox font color"), "UserboxFgColor", config_file.readColorEntry("Look","UserboxFgColor"), "", "userbox_font_color");
 
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Fonts"));
 		ConfigDialog::addSelectFont("Look", "Fonts", QT_TRANSLATE_NOOP("@default", "Font in userbox"), "UserboxFont", def_font.toString(), "", "userbox_font_box");

@@ -1422,18 +1422,10 @@ void Chat::initModule()
 
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Colors"));
 		ConfigDialog::addVGroupBox("Look", "Colors", QT_TRANSLATE_NOOP("@default", "Chat window"));
-			ConfigDialog::addHBox("Look", "Chat window", "own_bg_color_box");
-				ConfigDialog::addLabel("Look", "own_bg_color_box", QT_TRANSLATE_NOOP("@default", "Your background color"));
-				ConfigDialog::addColorButton("Look", "own_bg_color_box", "", "ChatMyBgColor", config_file.readColorEntry("Look","ChatMyBgColor"), "", "own_bg_color");
-			ConfigDialog::addHBox("Look", "Chat window", "his_bg_color_box");
-				ConfigDialog::addLabel("Look", "his_bg_color_box", QT_TRANSLATE_NOOP("@default", "User background color"));
-				ConfigDialog::addColorButton("Look", "his_bg_color_box", "", "ChatUsrBgColor", config_file.readColorEntry("Look","ChatUsrBgColor"), "", "his_bg_color");
-			ConfigDialog::addHBox("Look", "Chat window", "own_font_color_box");
-				ConfigDialog::addLabel("Look", "own_font_color_box", QT_TRANSLATE_NOOP("@default", "Your font color"));
-				ConfigDialog::addColorButton("Look", "own_font_color_box", "", "ChatMyFontColor", config_file.readColorEntry("Look","ChatMyFontColor"), "", "own_font_color");
-			ConfigDialog::addHBox("Look", "Chat window", "his_font_color_box");
-				ConfigDialog::addLabel("Look", "his_font_color_box", QT_TRANSLATE_NOOP("@default", "User font color"));
-				ConfigDialog::addColorButton("Look", "his_font_color_box", "", "ChatUsrFontColor", config_file.readColorEntry("Look","ChatUsrFontColor"), "", "his_font_color");
+			ConfigDialog::addColorButton("Look", "Chat window", QT_TRANSLATE_NOOP("@default", "Your background color"), "ChatMyBgColor", config_file.readColorEntry("Look","ChatMyBgColor"), "", "own_bg_color");
+			ConfigDialog::addColorButton("Look", "Chat window", QT_TRANSLATE_NOOP("@default", "User background color"), "ChatUsrBgColor", config_file.readColorEntry("Look","ChatUsrBgColor"), "", "his_bg_color");
+			ConfigDialog::addColorButton("Look", "Chat window", QT_TRANSLATE_NOOP("@default", "Your font color"), "ChatMyFontColor", config_file.readColorEntry("Look","ChatMyFontColor"), "", "own_font_color");
+			ConfigDialog::addColorButton("Look", "Chat window", QT_TRANSLATE_NOOP("@default", "User font color"), "ChatUsrFontColor", config_file.readColorEntry("Look","ChatUsrFontColor"), "", "his_font_color");
 
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Fonts"));
 		ConfigDialog::addSelectFont("Look", "Fonts", QT_TRANSLATE_NOOP("@default", "Font in chat window"), "ChatFont", def_font.toString(), "", "chat_font_box");
