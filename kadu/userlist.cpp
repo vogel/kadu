@@ -389,7 +389,10 @@ void UserListElement::operator = (const UserListElement &copyMe)
 	OfflineTo = copyMe.OfflineTo;
 	Notify = copyMe.Notify;
 	Anonymous = copyMe.Anonymous;
+
+	kdebugm(KDEBUG_DUMP, "setting status (%p <- %p)\n", Stat, copyMe.Stat);
 	Stat->setStatus(*(copyMe.Stat));
+	kdebugm(KDEBUG_DUMP, "done\n");
 
 	Group = copyMe.Group;
 	FirstName = copyMe.FirstName;
@@ -399,6 +402,7 @@ void UserListElement::operator = (const UserListElement &copyMe)
 	Mobile = copyMe.Mobile;
 	Email = copyMe.Email;
 	Uin = copyMe.Uin;
+	kdebugf2();
 }
 
 UserList::UserList(const UserList &source)
@@ -452,7 +456,7 @@ UserListElement& UserList::byNick(const QString& nickname)
 		if ((*i).nickName().lower() == nickname.lower())
 			return (*i);
 	kdebugm(KDEBUG_PANIC, "UserList::byNick(): Panic! %s not exists\n",
-		(const char*)nickname.lower().local8Bit());
+		nickname.lower().local8Bit().data());
 	return *((UserListElement*)NULL);
 }
 
@@ -462,7 +466,7 @@ UserListElement& UserList::byAltNick(const QString& altnick)
 	if(contains(altnick_norm))
 		return (*this)[altnick_norm];
 	kdebugm(KDEBUG_PANIC, "UserList::byAltNick(): Panic! %s not exists\n",
-		(const char*)altnick_norm.local8Bit());
+		altnick_norm.local8Bit().data());
 	return *((UserListElement*)NULL);
 }
 
@@ -493,7 +497,7 @@ bool UserList::containsAltNick(const QString &altnick) const
 	if(contains(altnick_norm))
 		return true;
 	kdebugm(KDEBUG_INFO, "UserList::containsAltNick(): userlist doesn't contain %s\n",
-		(const char *)altnick_norm.local8Bit());
+		altnick_norm.local8Bit().data());
 	return false;
 }
 
@@ -538,14 +542,14 @@ void UserList::removeUser(const QString &altnick)
 {
 	kdebugf();
 	QString altnick_norm = altnick.lower();
-	for (Iterator i = begin(); i != end(); ++i)
-		if((*i).altNick().lower() == altnick_norm)
-		{
-			emit userDataChanged(&(i.data()), NULL);
-			remove(i);
-			emit modified();
-			break;
-		}
+	Iterator elem=find(altnick_norm);
+	if (elem!=end())
+	{
+		emit userDataChanged(&(*elem), NULL);
+		remove(elem);
+		emit modified();
+	}
+	
 	kdebugf2();
 }
 
@@ -574,14 +578,14 @@ bool UserList::writeToFile(QString filename)
 	QString tmp;
 
 	tmp = ggPath("");
-	mkdir(tmp.local8Bit(), 0700);
+	mkdir(tmp.local8Bit().data(), 0700);
 
 	if (!filename.length())
 		filename = ggPath("userlist");
 
 	faname = ggPath("userattribs");
 
-	kdebugm(KDEBUG_INFO, "UserList::writeToFile(): %s\n", (const char *)filename.local8Bit());
+	kdebugm(KDEBUG_INFO, "UserList::writeToFile(): %s\n", filename.local8Bit().data());
 
 	QFile f(filename);
 
@@ -671,7 +675,7 @@ bool UserList::readFromFile()
 
 	path = ggPath("userattribs");
 	kdebugm(KDEBUG_INFO, "UserList::readFromFile(): Opening userattribs file: %s\n",
-		(const char *)path.local8Bit());
+		path.local8Bit().data());
 	QFile fa(path);
 	if (!fa.open(IO_ReadOnly))
 		kdebugm(KDEBUG_ERROR, "UserList::readFromFile(): Error opening userattribs file\n");
@@ -690,7 +694,7 @@ bool UserList::readFromFile()
 
 	path = ggPath("userlist");
 	kdebugm(KDEBUG_INFO, "UserList::readFromFile(): Opening userlist file: %s\n",
-		(const char *)path.local8Bit());
+		path.local8Bit().data());
 	QFile f(path);
 	if (!f.open(IO_ReadOnly))
 	{
