@@ -309,11 +309,12 @@ void UserlistExport::startTransfer() {
 		contacts += ";\r\n";
 		i++;
 		}
-	contacts.replace(QRegExp("(null)"), "" );
+	contacts.replace(QRegExp("(null)"), "");
 
 	char *con2;
-	con2 = strdup(contacts.local8Bit());
-
+	con2 = strdup((const char *)contacts.local8Bit());
+	iso_to_cp((unsigned char *)con2);
+	
 	if (!(gg_http = gg_userlist_put(config.uin, config.password, con2, 1))) {
 		fprintf(stderr, "KK UserlistExport: gg_userlist_put() failed\n");
 		QMessageBox::critical(this, "Export error", i18n("The application encountered an internal error\nThe export was unsuccessful") );

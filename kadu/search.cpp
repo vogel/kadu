@@ -47,22 +47,23 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchU
 
 	b_sendbtn = new QPushButton(this);
 	b_sendbtn->setText(i18n("&Search"));
-	connect(b_sendbtn, SIGNAL(clicked()), this, SLOT(doSearchWithoutStart()));
 	b_sendbtn->setAccel(Key_Return);	
+	connect(b_sendbtn, SIGNAL(clicked()), this, SLOT(doSearchWithoutStart()));
 
 	b_nextbtn = new QPushButton(this);
-	connect(b_nextbtn, SIGNAL(clicked()), this, SLOT(doSearch()));
 	b_nextbtn->setText(i18n("&Next results"));
+	connect(b_nextbtn, SIGNAL(clicked()), this, SLOT(doSearch()));
 
 	QPushButton *b_clrbtn;
 	b_clrbtn = new QPushButton(this);
 	b_clrbtn->setText(i18n("C&lear list"));
+	connect(b_clrbtn, SIGNAL(clicked()), this, SLOT(clearResults()));
 
 	QPushButton* b_addbtn=new QPushButton(this);
 	b_addbtn->setText(i18n("&Add User"));
 	connect(b_addbtn, SIGNAL(clicked()), this, SLOT(AddButtonClicked()));
 
-	QHBoxLayout* CommandLayout=new QHBoxLayout(5);
+	QHBoxLayout* CommandLayout = new QHBoxLayout(5);
 	CommandLayout->addWidget(b_sendbtn);
 	CommandLayout->addWidget(b_nextbtn);
 	CommandLayout->addWidget(b_clrbtn);
@@ -108,7 +109,6 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchU
 	progress = new QLabel(this);
 
 	results = new QListView(this);
-	connect(b_clrbtn, SIGNAL(clicked()), this, SLOT(clearResults()));
 	connect(results, SIGNAL(doubleClicked(QListViewItem *)), this, SLOT(prepareMessage(QListViewItem *)));
 
 	QHButtonGroup * btngrp = new QHButtonGroup(this);
@@ -229,9 +229,17 @@ int SearchDialog::doSearch(void) {
 
 	if (r_pers->isChecked()) {
 		r.first_name = e_name->text().length() ? strdup(e_name->text().local8Bit()) : NULL;
+		if (r.first_name)
+			iso_to_cp((unsigned char *)r.first_name);
 		r.last_name = e_surname->text().length() ? strdup(e_surname->text().local8Bit()) : NULL;
+		if (r.last_name)
+			iso_to_cp((unsigned char *)r.last_name);
 		r.nickname = e_nick->text().length() ? strdup(e_nick->text().local8Bit()) : NULL;
+		if (r.nickname)
+			iso_to_cp((unsigned char *)r.nickname);
 		r.city = e_city->text().length() ? strdup(e_city->text().local8Bit()) : NULL;
+		if (r.city)
+			iso_to_cp((unsigned char *)r.city);
 		r.min_birth = e_byr->text().length() ? atoi(e_byr->text().local8Bit()) : 0;
 		r.max_birth = e_byr->text().length() ? atoi(e_byr->text().local8Bit()) : 0;
 		if (!strcmp(c_gender->currentText().latin1(), " "))
@@ -356,34 +364,33 @@ void SearchDialog::socketEvent(void) {
 	if (foo->state == GG_STATE_DONE) {
 		fprintf(stderr, "KK SearchDialog::socketEvent(): Done searching\n");
 		progress->setText(i18n("Done searching"));
-		char born[8];
-		char uin[32];
+		QString born;
 		QListViewItem * qlv;
 		QPixmap * qpx;
+		qlv = NULL;
+
 		for (i = 0; i < res->count; i++) {
-			fprintf(stderr, "KK %d: %s %s (%s), %d, %s, status %d\n", res->results[i].uin, res->results[i].first_name, res->results[i].last_name, res->results[i].nickname, res->results[i].born, res->results[i].city, res->results[i].active);
-			if (res->results[i].born)
-				snprintf(born, sizeof(born), "%d", res->results[i].born);
-			else
-				snprintf(born, sizeof(born), "?");
-
-			snprintf(uin, sizeof(uin), "%d", res->results[i].uin);
-
-			if (res->results[i].active != 0)
+			if (res->results[i].active)
 				qpx = new QPixmap((const char **)gg_act_xpm);
 			else
-				if (res->results[i].active == 0 && only_active->isChecked())
+				if (!res->results[i].active && only_active->isChecked())
 					qpx = new QPixmap((const char **)gg_busy_xpm);
 				else
 					qpx = new QPixmap((const char **)gg_inact_xpm);
 
-			/* /me stoopid, or some fields break the conversion? */
+			if (res->results[i].born)
+				born = QString::number(res->results[i].born);
+			else
+				born = "?";
+
 			cp_to_iso((unsigned char *)res->results[i].first_name);
 			cp_to_iso((unsigned char *)res->results[i].last_name);
 			cp_to_iso((unsigned char *)res->results[i].nickname);
 			cp_to_iso((unsigned char *)res->results[i].city);
-			qlv = new QListViewItem(results, QString::null, uin, __c2q(res->results[i].first_name), __c2q(res->results[i].last_name), __c2q(res->results[i].city), __c2q(res->results[i].nickname), born);
-			qlv->setPixmap(0, *qpx);	
+			qlv = new QListViewItem(results, QString::null, QString::number(res->results[i].uin),
+				__c2q(res->results[i].first_name), __c2q(res->results[i].last_name),
+				__c2q(res->results[i].city), __c2q(res->results[i].nickname), born);
+			qlv->setPixmap(0, *qpx);
 			}
 		r.start = res->results[res->count-1].uin;
 
@@ -417,7 +424,7 @@ void SearchDialog::uinTyped(void) {
 
 void SearchDialog::AddButtonClicked()
 {
-	QListViewItem* selected = results->selectedItem();
+	QListViewItem *selected = results->selectedItem();
 	if (!selected) {
 		QMessageBox::information(this,i18n("Add User"),i18n("Select user first"));
 		return;
@@ -431,14 +438,14 @@ void SearchDialog::AddButtonClicked()
 	// Build altnick. Try user nick first.
 	QString altnick = nickname;
 	// If nick is empty, try firstname+lastname.
-	if (altnick == "") {
+	if (!altnick.length()) {
 		altnick = firstname;
-		if (firstname !="" && lastname != "")
+		if (firstname.length() && lastname.length())
 			altnick += " ";
 		altnick += lastname;
 		}
 	// If nick is empty, use uin.
-	if (altnick == "")
+	if (!altnick.length())
 		altnick = uin;
 
 	if (QMessageBox::information(this, i18n("Add User"),
