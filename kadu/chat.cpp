@@ -19,6 +19,7 @@
 #include <qmessagebox.h>
 #include <qfileinfo.h>
 #include <math.h>
+#include <qsplitter.h>
 
 //
 #include "kadu.h"
@@ -58,7 +59,14 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	chats.append(chat);
 	index = chats.count() - 1;
 
-	body = new KaduTextBrowser(this);
+	QSplitter *split1;
+
+	if (uins.count() > 1) {
+		split1 = new QSplitter(Qt::Horizontal, this);
+		body = new KaduTextBrowser(split1);
+		}
+	else 
+		body = new KaduTextBrowser(this);
 	body->setFont(QFont(config.fonts.chatFont, config.fonts.chatFontSize));
 	QObject::connect(body, SIGNAL(linkClicked(const QString &)), this, SLOT(hyperlinkClicked(const QString &)));
 
@@ -66,8 +74,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	
 	if (uins.count() > 1) {
 		setGeometry((pos.x()+550)/2,(pos.y()+400)/2,550,400);
-		userbox = new UserBox(this);
-
+		userbox = new UserBox(split1);
 		userbox->setPaletteBackgroundColor(QColor(config.colors.userboxBgColor));
 		userbox->setPaletteForegroundColor(QColor(config.colors.userboxFgColor));
 		userbox->QListBox::setFont(QFont(config.fonts.userboxFont, config.fonts.userboxFontSize));
@@ -75,6 +82,10 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 		for (i = 0; i < uins.count(); i++)
 			userbox->addUser(userlist.byUin(uins[i]).altnick);
 		userbox->refresh();
+		QValueList<int> sizes;
+		sizes.append(3);
+		sizes.append(1);
+		split1->setSizes(sizes);
 		}
 	else {
 		setGeometry((pos.x()+400)/2,(pos.y()+400)/2,400,400);
@@ -182,11 +193,15 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	connect(clearchat, SIGNAL(clicked()), this, SLOT(clearChatWindow()));
 
 	QGridLayout *grid = new QGridLayout (this, 5, 4, 3, 3);
-	QHBoxLayout *subgrid = new QHBoxLayout();
-	subgrid->addWidget(body, 3);
+//	QHBoxLayout *subgrid = new QHBoxLayout();
+//	subgrid->addWidget(body, 3);
+//	if (userbox)
+//		subgrid->addWidget(userbox, 1);
 	if (userbox)
-		subgrid->addWidget(userbox, 1);
-	grid->addMultiCellLayout(subgrid, 0, 0, 0, 3);
+		grid->addMultiCellWidget(split1, 0, 0, 0, 3);
+	else
+		grid->addMultiCellWidget(body, 0, 0, 0, 3);
+//	grid->addMultiCellLayout(subgrid, 0, 0, 0, 3);
 	grid->addWidget(buttontray, 2,3,Qt::AlignRight);
 	grid->addMultiCellWidget(edt, 2, 2, 0, 2, Qt::AlignLeft);
 	grid->addMultiCellWidget(edit, 3, 3, 0, 3);
