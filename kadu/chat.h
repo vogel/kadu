@@ -349,9 +349,9 @@ class ChatSlots :public QObject
 		void findAndSetWebBrowser(int selectedBrowser);
 		void findAndSetBrowserOption(int selectedOption);
 
-		void initBrowserOptions(QComboBox *browserCombo, QComboBox *browserOptionsCombo, QLineEdit *browserPath);
-		void findBrowser(int selectedBrowser, QComboBox *browserCombo, QComboBox *browserOptionsCombo, QLineEdit *browserPath);
-		void setBrowserOption(int selectedOption, QLineEdit *browserPathEdit, int chosenBrowser);
+		static void initBrowserOptions(QComboBox *browserCombo, QComboBox *browserOptionsCombo, QLineEdit *browserPath);
+		static void findBrowser(int selectedBrowser, QComboBox *browserCombo, QComboBox *browserOptionsCombo, QLineEdit *browserPath);
+		static void setBrowserOption(int selectedOption, QLineEdit *browserPathEdit, int chosenBrowser);
 };
 
 #endif
