@@ -116,7 +116,7 @@ int main(int argc, char *argv[])
 	new QApplication(argc, argv);
 
 	// ³adowanie t³umaczenia
-	config_file.addVariable("General", "Language", QTextCodec::locale());
+	config_file.addVariable("General", "Language", QString(QTextCodec::locale()).mid(0,2));
 	QTranslator qt_qm(0, "Translator_qt");
 	QString lang=config_file.readEntry("General", "Language");
 	qt_qm.load(dataPath(QString("kadu/translations/qt_") + lang), ".");
