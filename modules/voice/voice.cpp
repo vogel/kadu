@@ -9,6 +9,7 @@
 
 #include "voice.h"
 
+#include <qcheckbox.h>
 #include <qpushbutton.h>
 #include <qlayout.h>
 #include <qmessagebox.h>
