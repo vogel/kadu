@@ -12,6 +12,7 @@
 * informacja o b³êdzie sieciowym podczas próby wys³ania wiadomo¶ci
   przy braku po³±czenia z serwerem GG
 * ikonka w tray'u powinna sygnalizowaæ wiadomo¶æ do odczytania po restarcie kadu
+* u do³u pojawia siê informacja o u¿ytkowniku
 
 +++ wersja 0.3.3-pre2
 * dostosowanie do QT 3.1.0 i KDE 3.1-rc5

@@ -499,7 +499,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	connect(userbox, SIGNAL(returnPressed(QListBoxItem *)), this, SLOT(sendMessage(QListBoxItem *)));
 	connect(userbox, SIGNAL(rightButtonClicked(QListBoxItem *, const QPoint &)),
 		this, SLOT(listPopupMenu(QListBoxItem *)));
-	connect(userbox, SIGNAL(selectionChanged()), this, SLOT(selectionChanged()));
+	connect(userbox, SIGNAL(currentChanged(QListBoxItem *)), this, SLOT(currentChanged(QListBoxItem *)));
 
 	statuslabeltxt = new MyLabel(centralFrame, "statuslabeltxt");
 	statuslabeltxt->setText(i18n("Offline"));
@@ -530,6 +530,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	descrlabel = new QLabel(centralFrame, "descrlabel", WStyle_Tool);
 	descrlabel->setFrameStyle(QFrame::Box | QFrame::Sunken);
 	descrlabel->setFixedHeight(70);
+	descrlabel->setTextFormat(Qt::RichText);
 
 	QGridLayout * grid = new QGridLayout(centralFrame, 4, 3);
 	grid->addMultiCellWidget(group_bar, 0, 0, 0, 2);
@@ -561,12 +562,16 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	ut->start();
 }
 
-void Kadu::selectionChanged() {
-//	if (!item)
-//		return;
-	fprintf(stderr, "KK Kadu::selectionChanged(): %d\n", userbox->currentItem());
-//	UserListElement &ule = userlist.byAltNick(userbox->item(userbox->currentItem())->text());
+void Kadu::currentChanged(QListBoxItem *item) {
+	if (!item || !item->isSelected())
+		return;
+	fprintf(stderr, "KK Kadu::currentChanged(): %s\n", (const char *)item->text().local8Bit());
+	UserListElement &ule = userlist.byAltNick(item->text());
+	descrlabel->setText(
+		QString("UIN: %1<BR>%2 %3<BR>%4").arg(ule.uin).arg(ule.first_name).arg(ule.last_name).arg(ule.description));
+}
 
+void Kadu::selectionChanged() {
 }
 
 void Kadu::refreshGroupTabBar()

@@ -190,6 +190,7 @@ class Kadu : public QMainWindow
 		void changeGroup(int);
 		int openChat(UinsList);
 		void gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op);
+		void currentChanged(QListBoxItem *item);
 		void selectionChanged(void);
 
 	private:
