@@ -43,8 +43,9 @@ DockingManager::DockingManager()
 	changeIcon();
 	emit trayTooltipChanged(tr("Left click - hide/show window\nMiddle click or Left click- next message"));
 
-	QT_TRANSLATE_NOOP("@default", "Start docked");
-	ConfigDialog::addCheckBox("General", "grid", "Start docked", "RunDocked", false);
+	
+	ConfigDialog::addCheckBox("General", "grid", 
+			QT_TRANSLATE_NOOP("@default", "Start docked"), "RunDocked", false);
 	
 	connect(kadu, SIGNAL(connectingBlinkShowOffline()), this, SLOT(showOffline()));
 	connect(kadu, SIGNAL(connectingBlinkShowStatus(int)), this, SLOT(showStatus(int)));
