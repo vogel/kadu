@@ -12,7 +12,7 @@
 #define kdebug(format,args...) \
 	_kdebug(__FILE__,__LINE__,format,##args)
 #else
-#define kdebug(format,...)
+#define kdebug(format,args...)
 #endif
 	
 /*
