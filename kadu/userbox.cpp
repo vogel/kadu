@@ -56,7 +56,9 @@ KaduListBoxPixmap::KaduListBoxPixmap(const QPixmap &pix, const QString &text, co
 }
 
 void KaduListBoxPixmap::paint(QPainter *painter) {
+//	kdebugf();
 	UserListElement &user = userlist.byAltNick(text());
+//	kdebugm(KDEBUG_INFO, "%d\n", (int)&user);
 	bool isOurUin=((UinType)config_file.readNumEntry("General", "UIN") == user.uin);
 	if (user.uin)
 	{
@@ -138,16 +140,18 @@ void KaduListBoxPixmap::paint(QPainter *painter) {
 			painter->setFont(oldFont);
 		}
 	}
+//	kdebugf2();
 }
 
 int KaduListBoxPixmap::height(const QListBox* lb) const
 {
+//	kdebugf();
 	UserListElement &user = userlist.byAltNick(text());
 	bool isOurUin=((UinType)config_file.readNumEntry("General", "UIN") == user.uin);
 	QString descr=isOurUin ? own_description : description();
 	bool hasDescription=isOurUin ? ifStatusWithDescription(getCurrentStatus()) : !descr.isEmpty();
 
-	int height=lb->fontMetrics().lineSpacing()+2;
+	int height=lb->fontMetrics().lineSpacing()+3;
 	if (hasDescription && config_file.readBoolEntry("Look", "ShowDesc"))
 	{
 		if (!config_file.readBoolEntry("Look", "ShowMultilineDesc"))
@@ -157,11 +161,13 @@ int KaduListBoxPixmap::height(const QListBox* lb) const
 		calculateSize(descr, width(lb)-5-pm.width(), out, h);
 		height+=h;
 	}
+//	kdebugf2();
 	return QMAX(pm.height(), height);
 }
 
 int KaduListBoxPixmap::width(const QListBox* lb) const
 {
+//	kdebugf();
 	if (config_file.readBoolEntry("Look", "MultiColumnUserbox"))
 		return config_file.readNumEntry("Look", "MultiColumnUserboxWidth", 230);
 	else
@@ -255,6 +261,11 @@ void KaduListBoxPixmap::calculateSize(const QString &text, int width, QStringLis
 //		kdebugm(KDEBUG_DUMP, ">>%s\n", (*it).local8Bit().data());
 }
 
+void KaduListBoxPixmap::changeText(const QString &text)
+{
+	setText(text);
+}
+
 UserBoxMenu *UserBox::userboxmenu = NULL;
 
 UserBox::UserBox(QWidget* parent,const char* name,WFlags f)
@@ -279,6 +290,7 @@ UserBox::~UserBox()
 
 void UserBox::maybeTip(const QPoint &c)
 {
+	kdebugf();
 	QListBoxItem* item = static_cast<QListBoxItem*>(itemAt(c));
 
 	if(item)
@@ -338,6 +350,7 @@ void UserBox::maybeTip(const QPoint &c)
 }
 
 void UserBox::mousePressEvent(QMouseEvent *e) {
+	kdebugf();
 	if (e->button() != RightButton)
 		QListBox::mousePressEvent(e);
 	else {
@@ -357,6 +370,7 @@ void UserBox::mousePressEvent(QMouseEvent *e) {
 
 void UserBox::mouseMoveEvent(QMouseEvent* e)
 {
+//	kdebugf();
 	if ((e->state() & LeftButton)&&itemAt(e->pos()))
 	{
 		QString drag_text;
@@ -376,6 +390,7 @@ void UserBox::mouseMoveEvent(QMouseEvent* e)
 
 void UserBox::keyPressEvent(QKeyEvent *e)
 {
+//	kdebugf();
 	QListBox::keyPressEvent(e);
 	QWidget::keyPressEvent(e);
 	emit currentChanged(item(currentItem()));
@@ -388,10 +403,10 @@ void UserBox::sortUsersByAltNick(QStringList &users) {
 
 void UserBox::refresh()
 {
+	kdebugf();
 	unsigned int i;
 	KaduListBoxPixmap *lbp;
 
-	kdebugf();
 	this->setPaletteBackgroundColor(config_file.readColorEntry("Look","UserboxBgColor"));
 	this->setPaletteForegroundColor(config_file.readColorEntry("Look","UserboxFgColor"));
 	this->QListBox::setFont(config_file.readFontEntry("Look","UserboxFont"));
@@ -580,11 +595,13 @@ void UserBox::refresh()
 
 void UserBox::addUser(const QString &altnick)
 {
+	kdebugf();
 	Users.append(altnick);
 }
 
 void UserBox::removeUser(const QString &altnick)
 {
+	kdebugf();
 	Users.remove(altnick);
 }
 
@@ -593,13 +610,17 @@ void UserBox::renameUser(const QString &oldaltnick, const QString &newaltnick)
 	kdebugf();
 	QStringList::iterator it = Users.find(oldaltnick);
 	if (it != Users.end())
+	{
 		(*it) = newaltnick;
+		((KaduListBoxPixmap*)findItem(oldaltnick, Qt::ExactMatch|Qt::CaseSensitive))->changeText(newaltnick);
+	}
 	else
 		kdebugm(KDEBUG_WARNING, "Userbox::renameUser(): userbox doesnt contain: %s\n", (const char *)oldaltnick.local8Bit());
 }
 
 bool UserBox::containsAltNick(const QString &altnick)
 {
+	kdebugf();
 	for (QStringList::iterator it = Users.begin(); it != Users.end(); it++)
 		if ((*it).lower() == altnick.lower())
 			return true;
@@ -618,6 +639,7 @@ void UserBox::changeAllToInactive()
 
 void UserBox::showHideInactive()
 {
+	kdebugf();
 	config_file.writeEntry("General","ShowHideInactive",!config_file.readBoolEntry("General","ShowHideInactive"));
 	all_refresh();
 }
@@ -678,24 +700,28 @@ QStringList UserBox::getSelectedAltNicks()
 
 void UserBox::all_refresh()
 {
+	kdebugf();
 	for(unsigned int i=0; i<UserBoxes.size(); i++)
 		UserBoxes[i]->refresh();
 }
 
 void UserBox::all_removeUser(QString &altnick)
 {
+	kdebugf();
 	for(unsigned int i=0; i<UserBoxes.size(); i++)
 		UserBoxes[i]->removeUser(altnick);
 }
 
 void UserBox::all_changeAllToInactive()
 {
+	kdebugf();
 	for(unsigned int i=0; i<UserBoxes.size(); i++)
 		UserBoxes[i]->changeAllToInactive();
 }
 
 void UserBox::all_renameUser(const QString &oldaltnick, const QString &newaltnick)
 {
+	kdebugf();
 	for(unsigned int i = 0; i < UserBoxes.size(); i++)
 		UserBoxes[i]->renameUser(oldaltnick, newaltnick);
 }

@@ -21,12 +21,16 @@ class KaduListBoxPixmap : public QListBoxItem {
 		int height(const QListBox *lb) const;
 		int width(const QListBox *lb) const;
 		static void setFont(const QFont &f);
+		
 
 	protected:
 		void paint(QPainter *painter);
 		void setDescription(const QString &d) { descr = d; }
 		void setBold(bool b) { bold = b; }
 		void calculateSize(const QString &text, int width, QStringList &out, int &height) const;
+
+		void changeText(const QString &text);
+		friend class UserBox;
 
 	private:
 		QPixmap pm;
