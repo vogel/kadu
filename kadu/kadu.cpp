@@ -402,7 +402,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		path_.append("/history/");
 		mkdir(path_.local8Bit(), 0700);
 		switch (QMessageBox::information( kadu, "Kadu",
-	    		i18n("You don't have a config file.\nWhat would you like to do?"),"New UIN", "Configure", "Cancel", 0, 1) ) {
+	    		i18n("You don't have a config file.\nWhat would you like to do?"),
+			i18n("New UIN"), i18n("Configure"), i18n("Cancel"), 0, 1) ) {
 			case 1: // Configure
 				ConfigDialog *cd;
 				cd = new ConfigDialog;
