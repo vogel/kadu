@@ -44,17 +44,17 @@ void AutoResponder::chatReceived(UinsList senders,const QString& msg,time_t time
 {
 	int status = getActualStatus();
 
-	if(status == (GG_STATUS_FRIENDS_MASK | GG_STATUS_BUSY)
+	if (msg.left(5)!="KADU ")
+		if(status == (GG_STATUS_FRIENDS_MASK | GG_STATUS_BUSY)
 			|| status == (GG_STATUS_FRIENDS_MASK | GG_STATUS_BUSY_DESCR)
 			|| status == GG_STATUS_BUSY 
 			|| status == GG_STATUS_BUSY_DESCR) {
 		
-		ConfigFile config(ggPath(QString("autoresponder.conf")));
-		QString message = config.readEntry("General", "Response", 
+			ConfigFile config(ggPath(QString("autoresponder.conf")));
+			QString message = config.readEntry("General", "Response", 
 				tr("KADU AUTORESPONDER: Thanks for your message. User is not currently available."));
-		
-		gadu->sendMessage(senders, message);
-	}
+			gadu->sendMessage(senders, message);
+		}
 	
 }
 

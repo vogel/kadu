@@ -40,8 +40,11 @@ Echo::~Echo()
 
 void Echo::chatReceived(UinsList senders,const QString& msg,time_t time)
 {
-	QString resp=QString("KADU ECHO: ")+msg;
-	gadu->sendMessage(senders,resp);
+	if (msg.left(5)!="KADU ")
+	{
+		QString resp=QString("KADU ECHO: ")+msg;
+		gadu->sendMessage(senders,resp);
+	}
 }
 
 Echo* echo;
