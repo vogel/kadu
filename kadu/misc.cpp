@@ -236,7 +236,7 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 	mesg.replace(QRegExp("<p>"), "");
 	mesg.replace(QRegExp("</p>"), "");
 	regexp.setMinimal(true);
-	regexp.setPattern("<font (face=\"(\\S)+\"\\s)?size=\"\\d{1,2}\" style=\"font-size:\\d{1,2}pt\">");
+	regexp.setPattern("<font (face=\"(\\S)+\"\\s)?(size=\"\\d{1,2}\"(\\s)?)?(style=\"font-size:\\d{1,2}pt\"(\\s)?)?>");
 	mesg.replace(regexp, "");
 	mesg.replace(QRegExp("</font>"), "");
 	mesg.replace(QRegExp("&quot;"), "\"");
