@@ -83,7 +83,7 @@ AutoStatusTimer::AutoStatusTimer(QObject* parent)
 
 void AutoStatusTimer::onTimeout()
 {
-	if (sess && ifStatusWithDescription(sess->status) && config_file.readBoolEntry("Global","AddToDescription")) {
+	if (sess && ifStatusWithDescription(sess->status) && config_file.readBoolEntry("General","AddToDescription")) {
 		QFile f(ggPath("description"));
 		if (!f.open(IO_ReadOnly)) {
 			start(1000, TRUE);
@@ -156,7 +156,7 @@ void AutoAwayTimer::checkIdleTime()
 		idletime++;
 
 //	czy mamy stac sie "zajeci" po config.autoawaytime sekund nieaktywnosci
-	if (idletime >= config_file.readNumEntry("Global","AutoAwayTime") && !autoawayed) {
+	if (idletime >= config_file.readNumEntry("General","AutoAwayTime") && !autoawayed) {
 		beforeAutoAway = getActualStatus() & (~GG_STATUS_FRIENDS_MASK);;
 		kdebug("AutoAwayTimer::checkIdleTime(): checking whether to go auto away, beforeAutoAway = %d\n", beforeAutoAway);
 		switch (beforeAutoAway) {
@@ -176,7 +176,7 @@ void AutoAwayTimer::checkIdleTime()
 		}
 	else
 //		jesli bylismy "zajeci" to stajemy sie z powrotem "dostepni"
-		if (idletime < config_file.readNumEntry("Global","AutoAwayTime") && autoawayed) {
+		if (idletime < config_file.readNumEntry("General","AutoAwayTime") && autoawayed) {
 			kdebug("AutoAwayTimer::checkIdleTime(): auto away cancelled\n");
 			autoawayed = false;
 			kadu->setStatus(beforeAutoAway);
@@ -201,44 +201,44 @@ void AutoAwayTimer::off() {
 void AutoAwayTimer::initModule()
 {
 	kdebug("AutoAwayTimer::initModule() \n");
-	ConfigDialog::registerTab(tr("General"));
-	ConfigDialog::registerCheckBox(tr("General"),tr("Enable autoaway"),"Global","AutoAway",false);
-	ConfigDialog::registerHGroupBox(tr("General"),"--");
-	ConfigDialog::registerLineEdit("--",tr("Set status to away after "),"Global","AutoAwayTime","300");
-	ConfigDialog::registerLabel("--",tr(" seconds"));	
-	ConfigDialog::registerHGroupBox(tr("General"),tr("Default Status"));
-	ConfigDialog::registerComboBox(tr("Default Status"),"","Global","DefaultStatus","","cb_defstatus");
-	ConfigDialog::registerCheckBox(tr("General"),tr("On shutdown, set description:"),"Other","DisconnectWithDescription",false);
-	ConfigDialog::registerLineEdit(tr("General"),"","Other","DisconnectDescription","","","e_defaultstatus");	
-	AutoAwaySlots *autoawayslots=new AutoAwaySlots();
-	ConfigDialog::registerSlotOnCreate(autoawayslots,SLOT(onCreateConfigDialog()));
-	ConfigDialog::registerSlotOnDestroy(autoawayslots,SLOT(onDestroyConfigDialog()));
+	ConfigDialog::registerTab("General");
+	ConfigDialog::addCheckBox("General", "General", "Enable autoaway", "AutoAway", false);
+	ConfigDialog::addHGroupBox("General", "General", "--");
+	ConfigDialog::addLineEdit("General", "--", "Set status to away after ", "AutoAwayTime", "300");
+	ConfigDialog::addLabel("General", "--", " seconds");
+	ConfigDialog::addHGroupBox("General", "General", "Default Status");
+	ConfigDialog::addComboBox("General", "Default Status", "", "DefaultStatus", "", "cb_defstatus");
+	ConfigDialog::addCheckBox("General", "General", "On shutdown, set description:", "DisconnectWithDescription", false);
+	ConfigDialog::addLineEdit("General", "General", "", "DisconnectDescription", "", "", "e_defaultstatus");
+	AutoAwaySlots *autoawayslots= new AutoAwaySlots();
+	ConfigDialog::registerSlotOnCreate(autoawayslots, SLOT(onCreateConfigDialog()));
+	ConfigDialog::registerSlotOnDestroy(autoawayslots, SLOT(onDestroyConfigDialog()));
 	
-	ConfigDialog::registerGrid(tr("General"),"grid",3);
-	ConfigDialog::registerCheckBox("grid",tr("Enable dock icon"),"Global","UseDocking",true);
-	ConfigDialog::registerCheckBox("grid",tr("Start docked"),"Global","RunDocked",false);
-	ConfigDialog::registerCheckBox("grid",tr("Private status"),"Global","PrivateStatus",false);
-	ConfigDialog::registerCheckBox("grid",tr("Check for updates"),"Global","CheckUpdates",true);
-	ConfigDialog::registerCheckBox("grid",tr("Add to description"),"Global","AddToDescription",false);
-	ConfigDialog::connectSlot(tr("Enable dock icon"), SIGNAL(toggled(bool)), autoawayslots, SLOT(ifDockEnabled(bool)));
+	ConfigDialog::addGrid("General", "General", "grid", 3);
+	ConfigDialog::addCheckBox("General", "grid", "Enable dock icon", "UseDocking", true);
+	ConfigDialog::addCheckBox("General", "grid", "Start docked", "RunDocked", false);
+	ConfigDialog::addCheckBox("General", "grid", "Private status", "PrivateStatus", false);
+	ConfigDialog::addCheckBox("General", "grid", "Check for updates", "CheckUpdates", true);
+	ConfigDialog::addCheckBox("General", "grid", "Add to description", "AddToDescription", false);
+	ConfigDialog::connectSlot("General", "Enable dock icon", SIGNAL(toggled(bool)), autoawayslots, SLOT(ifDockEnabled(bool)));
 
 };
 
 void AutoAwaySlots::onCreateConfigDialog()
 {
 	kdebug("AutoAwayTimer::onCreateConfigDialog() \n");
-	QHGroupBox *awygrp = (QHGroupBox*)(ConfigDialog::getWidget(tr("General"),"--"));
-	QCheckBox * b_autoaway= (QCheckBox*)(ConfigDialog::getWidget(tr("General"),tr("Enable autoaway")));
+	QHGroupBox *awygrp = ConfigDialog::getHGroupBox("General", "--");
+	QCheckBox * b_autoaway= ConfigDialog::getCheckBox("General", "Enable autoaway");
 	awygrp->setEnabled(b_autoaway->isChecked());
 	connect(b_autoaway,SIGNAL(toggled(bool)),awygrp,SLOT(setEnabled(bool)));
 	
-	QCheckBox *b_disconnectdesc=(QCheckBox*)(ConfigDialog::getWidget(tr("General"),tr("On shutdown, set description:")));
-	QLineEdit *e_disconnectdesc=(QLineEdit*)(ConfigDialog::getWidget(tr("General"),"","e_defaultstatus"));
+	QCheckBox *b_disconnectdesc= ConfigDialog::getCheckBox("General", "On shutdown, set description:");
+	QLineEdit *e_disconnectdesc= ConfigDialog::getLineEdit("General", "", "e_defaultstatus");
 	e_disconnectdesc->setEnabled(b_disconnectdesc->isChecked());
-	connect(b_disconnectdesc,SIGNAL(toggled(bool)),e_disconnectdesc,SLOT(setEnabled(bool)));
+	connect(b_disconnectdesc, SIGNAL(toggled(bool)), e_disconnectdesc, SLOT(setEnabled(bool)));
 
-	QComboBox* cb_defstatus=(QComboBox*)(ConfigDialog::getWidget(tr("Default Status"),"","cb_defstatus"));
-	int statusnr=config_file.readNumEntry("Global","DefaultStatus",GG_STATUS_NOT_AVAIL);
+	QComboBox* cb_defstatus= ConfigDialog::getComboBox("General", "", "cb_defstatus");
+	int statusnr=config_file.readNumEntry("General", "DefaultStatus", GG_STATUS_NOT_AVAIL);
 	cb_defstatus->clear();
 	int i;
 	for (i = 0;i < 7; i++)
@@ -253,8 +253,8 @@ void AutoAwaySlots::onCreateConfigDialog()
 void AutoAwaySlots::onDestroyConfigDialog()
 {
 	kdebug("AutoAwayTimer::onDestroyConfigDialog() \n");
-	QComboBox* cb_defstatus=(QComboBox*)(ConfigDialog::getWidget(tr("Default Status"),"","cb_defstatus"));
-	config_file.writeEntry("Global","DefaultStatus",gg_statuses[cb_defstatus->currentItem()]);
+	QComboBox* cb_defstatus= ConfigDialog::getComboBox("General", "", "cb_defstatus");
+	config_file.writeEntry("General", "DefaultStatus", gg_statuses[cb_defstatus->currentItem()]);
 	config_file.sync();	
 };
 
@@ -263,8 +263,8 @@ void AutoAwaySlots::ifDockEnabled(bool value)
 
 	kdebug("AutoAwaySlots::ifDockEnabled() \n");
 	
-	QCheckBox *b_trayhint=(QCheckBox*)(ConfigDialog::getWidget(tr("General"),tr("Enable tray hints")));
-	QCheckBox *b_hinterror=(QCheckBox*)(ConfigDialog::getWidget(tr("---"),tr("Show connection errors in tray hints")));
+	QCheckBox *b_trayhint= ConfigDialog::getCheckBox("General", "Enable tray hints");
+	QCheckBox *b_hinterror= ConfigDialog::getCheckBox("General", "Show connection errors in tray hints");
 	if (!value) {
 		b_trayhint->setChecked(false);
 		b_hinterror->setChecked(false);

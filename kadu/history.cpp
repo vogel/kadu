@@ -360,7 +360,7 @@ void HistoryManager::convHist2ekgForm(UinsList uins) {
 				if (uins.count() > 1)
 					uin = 0;
 				else
-					if (config_file.readNumEntry("Global","UIN") != uins[0])
+					if (config_file.readNumEntry("General","UIN") != uins[0])
 						uin = uins[0];
 					else
 						uin = uins[1];
@@ -374,7 +374,7 @@ void HistoryManager::convHist2ekgForm(UinsList uins) {
 					if (uins.count() > 1)
 						uin = 0;
 					else
-						if (config_file.readNumEntry("Global","UIN") != uins[0])
+						if (config_file.readNumEntry("General","UIN") != uins[0])
 							uin = uins[0];
 						else
 							uin = uins[1];
@@ -985,7 +985,7 @@ void History::formatHistoryEntry(QString &text, const HistoryEntry &entry) {
 	else
 		if (entry.type & (HISTORYMANAGER_ENTRY_CHATSEND | HISTORYMANAGER_ENTRY_MSGSEND))
 		{
-			text.append(config_file.readEntry("Global","Nick"));
+			text.append(config_file.readEntry("General","Nick"));
 		}
 		else
 			text.append(entry.nick);
@@ -1189,16 +1189,16 @@ void History::initModule()
 {
 	kdebug("History::initModule() \n");
 	HistorySlots *historyslots=new HistorySlots();
-	ConfigDialog::registerTab(tr("History"));
-	ConfigDialog::registerVGroupBox(tr("History"),tr("Quoted phrases during chat open"));
-	ConfigDialog::registerSpinBox(tr("Quoted phrases during chat open"),tr("Count:"),"Other","ChatHistoryCitation",0,200,1,10);
-	ConfigDialog::registerLabel(tr("Quoted phrases during chat open"),tr("Don't quote phrases older than:"));
-	ConfigDialog::registerSlider(tr("Quoted phrases during chat open"),"historyslider","Other","ChatHistoryQuotationTime",-744,-1,24,-336);
-	ConfigDialog::registerLabel(tr("Quoted phrases during chat open"),"","dayhour");
+	ConfigDialog::registerTab("History");
+	ConfigDialog::addVGroupBox("History", "History", "Quoted phrases during chat open");
+	ConfigDialog::addSpinBox("History", "Quoted phrases during chat open", "Count:", "ChatHistoryCitation", 0, 200, 1, 10);
+	ConfigDialog::addLabel("History", "Quoted phrases during chat open", "Don't quote phrases older than:");
+	ConfigDialog::addSlider("History", "Quoted phrases during chat open", "historyslider", "ChatHistoryQuotationTime", -744, -1, 24, -336);
+	ConfigDialog::addLabel("History", "Quoted phrases during chat open", "", "dayhour");
 
-	ConfigDialog::registerSlotOnCreate(historyslots,SLOT(onCreateConfigDialog()));
-	ConfigDialog::registerSlotOnDestroy(historyslots,SLOT(onDestroyConfigDialog()));
-	ConfigDialog::connectSlot("historyslider",SIGNAL(valueChanged(int)),historyslots,SLOT(updateQuoteTimeLabel(int)));
+	ConfigDialog::registerSlotOnCreate(historyslots, SLOT(onCreateConfigDialog()));
+	ConfigDialog::registerSlotOnDestroy(historyslots, SLOT(onDestroyConfigDialog()));
+	ConfigDialog::connectSlot("History", "historyslider", SIGNAL(valueChanged(int)), historyslots, SLOT(updateQuoteTimeLabel(int)));
 }
 
 HistorySearch::HistorySearch(QWidget *parent, UinsList uins) : QDialog(parent), uins(uins) {
@@ -1492,9 +1492,9 @@ HistoryFindRec HistorySearch::getDialogValues() {
 void HistorySlots::onCreateConfigDialog()
 {
 	kdebug("HistorySlots::onCreateConfigDialog() \n");
-	QLabel *l_qtimeinfo=(QLabel*)(ConfigDialog::getWidget(tr("Quoted phrases during chat open"),"","dayhour"));
+	QLabel *l_qtimeinfo=(QLabel*)(ConfigDialog::getWidget("History", "", "dayhour"));
 	l_qtimeinfo->setAlignment(Qt::AlignHCenter);
-	updateQuoteTimeLabel(config_file.readNumEntry("Other","ChatHistoryQuotationTime"));
+	updateQuoteTimeLabel(config_file.readNumEntry("History", "ChatHistoryQuotationTime"));
 
 };
 
@@ -1508,7 +1508,7 @@ void HistorySlots::onDestroyConfigDialog()
 void HistorySlots::updateQuoteTimeLabel(int value)
 {
 	kdebug("HistorySlots::updateQuoteTimeLabel() \n");
-    	QLabel *l_qtimeinfo=(QLabel*)(ConfigDialog::getWidget(tr("Quoted phrases during chat open"),"","dayhour"));
+    	QLabel *l_qtimeinfo= ConfigDialog::getLabel("History", "", "dayhour");
 	l_qtimeinfo->setText(QString(tr("%1 day(s) %2 hour(s)")).arg(-value / 24).arg((-value) % 24));
 };
 

@@ -9,7 +9,6 @@
 #include <qlabel.h>
 #include <qcstring.h>
 #include <qdatetime.h>
-#include <qkeysequence.h>
 #include <qlineedit.h>
 //#include <libintl.h>
 
@@ -84,21 +83,6 @@ class IconsManager {
 };
 
 extern IconsManager *icons;
-
-
-
-class HotKey : public QLineEdit
-{
-public:
-    HotKey::HotKey(QWidget *parent =0,const char* name =0);
-    static QString keyEventToString(QKeyEvent *e);    
-    static QKeySequence shortCutFromFile(const QString &name);
-    static bool shortCut(QKeyEvent *e,const QString &name);    
-protected:
-    virtual void keyPressEvent(QKeyEvent *e);
-    virtual void keyReleaseEvent(QKeyEvent *e);
-
-};
 
 /**
 	Klasa reprezentuj±ca dokument html. Przechowuje

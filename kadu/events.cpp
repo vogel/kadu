@@ -151,7 +151,7 @@ void EventManager::connectedSlot()
 	if (ifStatusWithDescription(loginparams.status))
 		kadu->setStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
 	/* uruchamiamy autoawaya(jezeli wlaczony) po wyslaniu userlisty i ustawieniu statusu */
-	if (config_file.readBoolEntry("Global","AutoAway"))
+	if (config_file.readBoolEntry("General","AutoAway"))
 		AutoAwayTimer::on();
 	/* jezeli sie rozlaczymy albo stracimy polaczenie, proces laczenia sie z serwerami zaczyna sie od poczatku */
 	server_nr = 0;
@@ -215,7 +215,7 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 	podejrzewam ze to juz nie jest potrzebne(ale na wszelki wypadek zostawie), gdyz kiedys to
 	sluzylo co oznaczania wiadomosci systemowych,ktore obecnie sa ignorowane, w dalszej czesci kodu.
 */
-	if (senders[0] == config_file.readNumEntry("Global","UIN"))
+	if (senders[0] == config_file.readNumEntry("General","UIN"))
 		return;
 
 	// ignorujemy, jesli nick na liscie ignorowanych
@@ -227,12 +227,12 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 	// ignorujemy wiadomosci systemowe
 	if (senders[0] == 0)
 	{
-		if (msgclass <= config_file.readNumEntry("Global","SystemMsgIndex",0))
+		if (msgclass <= config_file.readNumEntry("General","SystemMsgIndex",0))
 		{
 			kdebug("Already had this message, ignoring\n");
 			return;
 		}
-		config_file.writeEntry("Global","SystemMsgIndex",msgclass);
+		config_file.writeEntry("General","SystemMsgIndex",msgclass);
 		kdebug("System message index %d\n", msgclass);
 		return;
 	}
@@ -297,13 +297,13 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 		e.description = "";
 		e.email = "";
 		e.anonymous = true;
-		if (config_file.readBoolEntry("Global", "UseDocking"))
+		if (config_file.readBoolEntry("General", "UseDocking"))
 			userlist.addUser(e);
 		else
 			kadu->addUser(e);
 		}
 
-	if (config_file.readBoolEntry("Global","Logging"))	
+	if (config_file.readBoolEntry("General","Logging"))	
 		history.appendMessage(senders, senders[0], mesg, FALSE, time);
 
 	//script.eventMsg(senders[0],msgclass,(char*)msg);
@@ -323,7 +323,7 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 		return;
 		}
 
-	playSound(parse(config_file.readEntry("Global","Message_sound"),ule));
+	playSound(parse(config_file.readEntry("Sounds","Message_sound"),ule));
 
 	pending.addMsg(senders, mesg, msgclass, time);
 	
@@ -334,7 +334,7 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 	UserBox::all_refresh();
 	trayicon->changeIcon();
 
-	if (config_file.readBoolEntry("Global","AutoRaise")) {
+	if (config_file.readBoolEntry("General","AutoRaise")) {
 		kadu->showNormal();
 		kadu->setFocus();
 		}
@@ -359,7 +359,7 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 
 void EventManager::chatReceivedSlot(UinsList senders,const QString& msg,time_t time)
 {
-	if(config_file.readBoolEntry("Other","OpenChatOnMessage"))
+	if(config_file.readBoolEntry("General","OpenChatOnMessage"))
 		pending.openMessages();
 };
 
@@ -571,7 +571,7 @@ void EventManager::dccConnectionReceivedSlot(const UserListElement& sender)
 	dccSocketClass *dcc;
 	if (dccSocketClass::count < 8)
 	{
-		dcc_new = gg_dcc_get_file(htonl(sender.ip.ip4Addr()), sender.port, config_file.readNumEntry("Global","UIN"), sender.uin);
+		dcc_new = gg_dcc_get_file(htonl(sender.ip.ip4Addr()), sender.port, config_file.readNumEntry("General","UIN"), sender.uin);
 		if (dcc_new)
 		{
 			dcc = new dccSocketClass(dcc_new);

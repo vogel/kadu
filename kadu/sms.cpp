@@ -391,7 +391,7 @@ void SmsIdeaGateway::onCodeEntered(const QString& code)
 	};
 	kdebug("SMS User entered the code\n");
 	State=SMS_LOADING_RESULTS;
-	QString post_data=QString("token=")+Token+"&SENDER="+config_file.readEntry("Global","Nick")+"&RECIPIENT="+Number+"&SHORT_MESSAGE="+Http.encode(Message)+"&pass="+code;
+	QString post_data=QString("token=")+Token+"&SENDER="+config_file.readEntry("General","Nick")+"&RECIPIENT="+Number+"&SHORT_MESSAGE="+Http.encode(Message)+"&pass="+code;
 	Http.post("sendsms.aspx",post_data);
 };
 
@@ -408,7 +408,7 @@ void SmsPlusGateway::send(const QString& number,const QString& message)
 	Message=message;
 	State=SMS_LOADING_RESULTS;
 	Http.setHost("212.2.96.57");
-	QString post_data="tprefix="+Number.left(3)+"&numer="+Number.right(6)+"&odkogo="+config_file.readEntry("Global","Nick")+"&tekst="+Message;
+	QString post_data="tprefix="+Number.left(3)+"&numer="+Number.right(6)+"&odkogo="+config_file.readEntry("General","Nick")+"&tekst="+Message;
 	Http.post("sms/sendsms.php",post_data);
 };
 
@@ -440,7 +440,7 @@ void SmsPlusGateway::httpFinished()
 		QString num = code_regexp2.cap(1);
 		QString code2 = code_regexp2.cap(2);
 		State = SMS_LOADING_RESULTS;
-		QString post_data = "bookopen=&numer="+Number+"&ksiazka=ksi%B1%BFka+telefoniczna&message="+Http.encode(Message)+"&podpis="+config_file.readEntry("Global","Nick")+"&kontakt=&Send=++tak-nada%E6++&Kod"+num+"="+code2+"&kod="+code;
+		QString post_data = "bookopen=&numer="+Number+"&ksiazka=ksi%B1%BFka+telefoniczna&message="+Http.encode(Message)+"&podpis="+config_file.readEntry("General","Nick")+"&kontakt=&Send=++tak-nada%E6++&Kod"+num+"="+code2+"&kod="+code;
 		Http.post("sms/sendsms.asp", post_data);
 	}
 	else if(State==SMS_LOADING_RESULTS)
@@ -528,7 +528,7 @@ void SmsEraGateway::httpFinished()
 		};	
 		State=SMS_LOADING_PREVIEW;
 
-		QString nick=config_file.readEntry("Global","Nick");		
+		QString nick=config_file.readEntry("General","Nick");		
 		QString post_data=
 			"phoneNumber="+Number+
 			"&smsContent="+Http.encode(Message)+
@@ -754,29 +754,30 @@ void Sms::initModule()
 {
 	kdebug("Sms::initModule \n");	
 
+	ConfigDialog::registerTab("SMS");
+	ConfigDialog::addVGroupBox("SMS", "SMS", "SMS options");
+	ConfigDialog::addCheckBox("SMS", "SMS options", "Use built-in SMS application", "BuiltInApp", true);
+	ConfigDialog::addLineEdit("SMS", "SMS options", "Custom SMS application", "SmsApp");
+	ConfigDialog::addGrid("SMS", "SMS options", "smsgrid", 2);
+	ConfigDialog::addCheckBox("SMS", "smsgrid", "SMS custom string", "UseCustomString", false
+	,"Check this box if your sms application doesn't understand arguments: number \"message\"\nArguments should be separated with spaces. %n argument is converted to number, %m to message");
+	ConfigDialog::addLineEdit("SMS", "smsgrid", "", "SmsString", "", "", "smsstring");
+	ConfigDialog::addVGroupBox("SMS", "SMS", "SMS Era Gateway");
+	ConfigDialog::addLineEdit("SMS", "SMS Era Gateway", "User ID", "EraGatewayUser");
+	ConfigDialog::addLineEdit("SMS", "SMS Era Gateway", "Password", "EraGatewayPassword");
+	
 	SmsSlots *smsslots=new SmsSlots();
-	ConfigDialog::registerTab(tr("SMS"));
-	ConfigDialog::registerVGroupBox(tr("SMS"),tr("SMS options"));
-	ConfigDialog::registerCheckBox(tr("SMS options"),tr("Use built-in SMS application"),"SMS","BuiltInApp",true);
-	ConfigDialog::registerLineEdit(tr("SMS options"),tr("Custom SMS application"),"SMS","SmsApp","");
-	ConfigDialog::registerGrid(tr("SMS options"),"sms",2);
-	ConfigDialog::registerCheckBox("sms",tr("SMS custom string"),"SMS","UseCustomString",false
-	,tr("Check this box if your sms application doesn't understand arguments: number \"message\"\nArguments should be separated with spaces. %n argument is converted to number, %m to message"));
-	ConfigDialog::registerLineEdit("sms","","SMS","SmsString","");
-    	ConfigDialog::connectSlot(tr("Use built-in SMS application"), SIGNAL(toggled(bool)), smsslots, SLOT(onSmsBuildInCheckToggle(bool)));
-	ConfigDialog::registerSlotOnCreate(smsslots,SLOT(onCreateConfigDialog()));
-	ConfigDialog::registerVGroupBox(tr("SMS"),tr("SMS Era Gateway"));
-	ConfigDialog::registerLineEdit(tr("SMS Era Gateway"),tr("User ID"),"SMS","EraGatewayUser","");
-	ConfigDialog::registerLineEdit(tr("SMS Era Gateway"),tr("Password"),"SMS","EraGatewayPassword","");
+	ConfigDialog::registerSlotOnCreate(smsslots, SLOT(onCreateConfigDialog()));
+    	ConfigDialog::connectSlot("SMS", "Use built-in SMS application", SIGNAL(toggled(bool)), smsslots, SLOT(onSmsBuildInCheckToggle(bool)));
 };
 
 void SmsSlots::onSmsBuildInCheckToggle(bool value)
 {
 	kdebug("SmsSlots::onSmsBuildInCheckToggle \n");
 
-	QLineEdit *e_smsapp=((QLineEdit*)ConfigDialog::getWidget(tr("SMS options"),tr("Custom SMS application")));
-	QCheckBox *b_smscustomconf=((QCheckBox*)ConfigDialog::getWidget("sms",tr("SMS custom string")));
-	QLineEdit *e_smsconf=((QLineEdit*)ConfigDialog::getWidget("sms",""));
+	QLineEdit *e_smsapp= ConfigDialog::getLineEdit("SMS", "Custom SMS application");
+	QCheckBox *b_smscustomconf= ConfigDialog::getCheckBox("SMS", "SMS custom string");
+	QLineEdit *e_smsconf= ConfigDialog::getLineEdit("SMS","","smsstring");
 
 	((QHBox*)(e_smsapp->parent()))->setEnabled(!value);
 	b_smscustomconf->setEnabled(!value);
@@ -787,10 +788,10 @@ void SmsSlots::onCreateConfigDialog()
 {
 	kdebug("SmsSlots::onCreateConfigDialog \n");
 	
-	QCheckBox *b_smsbuildin=((QCheckBox*)ConfigDialog::getWidget(tr("SMS options"),tr("Use built-in SMS application")));
-	QLineEdit *e_smsapp=((QLineEdit*)ConfigDialog::getWidget(tr("SMS options"),tr("Custom SMS application")));
-	QCheckBox *b_smscustomconf=((QCheckBox*)ConfigDialog::getWidget("sms",tr("SMS custom string")));
-	QLineEdit *e_smsconf=((QLineEdit*)ConfigDialog::getWidget("sms",""));
+	QCheckBox *b_smsbuildin= ConfigDialog::getCheckBox("SMS", "Use built-in SMS application");
+	QLineEdit *e_smsapp= ConfigDialog::getLineEdit("SMS", "Custom SMS application");
+	QCheckBox *b_smscustomconf= ConfigDialog::getCheckBox("SMS", "SMS custom string");
+	QLineEdit *e_smsconf= ConfigDialog::getLineEdit("SMS","","smsstring");
 	
 	if (b_smsbuildin->isChecked())
 	{

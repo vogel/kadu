@@ -60,6 +60,18 @@ class ConfigFile {
 		QColor readColorEntry(const QString &group,const QString &name, const QColor *def = 0L);
 		QFont readFontEntry(const QString &group,const QString &name, const QFont *def = 0L);
 		QPoint readPointEntry(const QString &group,const QString &name, const QPoint *def = 0L);
+		
+		void addVariable(const QString &group,const QString &name, const QString &value);
+		void addVariable(const QString &group,const QString &name, const char *value);
+		void addVariable(const QString &group,const QString &name, const int value);
+		void addVariable(const QString &group,const QString &name, const double value);
+		void addVariable(const QString &group,const QString &name, const bool value);
+		void addVariable(const QString &group,const QString &name, const QRect &value);
+		void addVariable(const QString &group,const QString &name, const QSize &value);
+		void addVariable(const QString &group,const QString &name, const QColor &value);
+		void addVariable(const QString &group,const QString &name, const QFont &value);
+		void addVariable(const QString &group,const QString &name, const QPoint &value);
+
 
 };
 

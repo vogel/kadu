@@ -82,7 +82,7 @@ static bool send_message(
 TrayIcon::TrayIcon(QWidget *parent, const char *name)
 	: QLabel(0,"TrayIcon", WMouseNoMask | WRepaintNoErase | WType_TopLevel | WStyle_Customize | WStyle_NoBorder | WStyle_StaysOnTop)
 {
-	if (!config_file.readBoolEntry("Global","UseDocking"))
+	if (!config_file.readBoolEntry("General","UseDocking"))
 		return;
 
 	QPixmap pix = *icons->loadIcon("offline");
@@ -182,13 +182,13 @@ void TrayIcon::setPixmap(const QPixmap& pixmap)
 
 void TrayIcon::setType(QPixmap &pixmap)
 {
-	if (!config_file.readBoolEntry("Global","UseDocking"))
+	if (!config_file.readBoolEntry("General","UseDocking"))
 		return;
 	setPixmap(pixmap);
 }
 
 void TrayIcon::changeIcon() {
-	if (pending.pendingMsgs() && config_file.readBoolEntry("Global","UseDocking") && !icon_timer->isActive()) {
+	if (pending.pendingMsgs() && config_file.readBoolEntry("General","UseDocking") && !icon_timer->isActive()) {
 		if (!blink) {
 			setPixmap(*icons->loadIcon("message"));
 			icon_timer->start(500,TRUE);
@@ -245,7 +245,7 @@ void TrayIcon::enterEvent(QEvent* e)
 
 void TrayIcon::mousePressEvent(QMouseEvent * e) {
 
-	if (!config_file.readBoolEntry("Global","UseDocking"))
+	if (!config_file.readBoolEntry("General","UseDocking"))
 		return;
 
 	if (e->button() == MidButton) {
@@ -279,7 +279,7 @@ void TrayIcon::mousePressEvent(QMouseEvent * e) {
 }
 
 void TrayIcon::showHint(const QString &str, const QString &nick, int index) {
-	if (!config_file.readBoolEntry("Global","TrayHint") || !config_file.readBoolEntry("Global","UseDocking"))
+	if (!config_file.readBoolEntry("General","TrayHint") || !config_file.readBoolEntry("General","UseDocking"))
 		return;
 
 	kdebug("TrayIcon::showHint()\n");
@@ -292,7 +292,7 @@ void TrayIcon::reconfigHint() {
 }
 
 void TrayIcon::showErrorHint(const QString &str) {
-	if (!config_file.readBoolEntry("Global","HintError"))
+	if (!config_file.readBoolEntry("General","HintError"))
 		return;
 	kdebug("TrayIcon::showErrorHint()\n");
 	hint->show_hint(str, tr("Error: "), 1);
@@ -301,13 +301,13 @@ void TrayIcon::showErrorHint(const QString &str) {
 void TrayIcon::initModule()
 {
 	kdebug("TrayIcon::initModule() \n");
-	ConfigDialog::registerTab(tr("General"));
-	ConfigDialog::registerCheckBox(tr("General"),tr("Enable tray hints"),"Global","TrayHint",true);
-	ConfigDialog::registerVGroupBox(tr("General"),"---");
-	ConfigDialog::registerLineEdit("---",tr("Tray hints timeout "),"Global","TimeoutHint","5");
-	ConfigDialog::registerCheckBox("---",tr("Show connection errors in tray hints"),"Global","HintError",true);
-	TraySlots *trayslots=new TraySlots();
-	ConfigDialog::registerSlotOnCreate(trayslots,SLOT(onCreateConfigDialog()));
+	ConfigDialog::registerTab("General");
+	ConfigDialog::addCheckBox("General", "General", "Enable tray hints", "TrayHint", true);
+	ConfigDialog::addVGroupBox("General", "General", "---");
+	ConfigDialog::addLineEdit("General", "---", "Tray hints timeout ", "TimeoutHint", "5");
+	ConfigDialog::addCheckBox("General", "---", "Show connection errors in tray hints","HintError", true);
+	TraySlots *trayslots= new TraySlots();
+	ConfigDialog::registerSlotOnCreate(trayslots, SLOT(onCreateConfigDialog()));
 
 }
 
@@ -388,7 +388,7 @@ void TrayHint::show_hint(const QString &str, const QString &nick, int index) {
 	set_hint();
 	show();
 	if (!hint_timer->isActive())
-		hint_timer->start(config_file.readNumEntry("Global","TimeoutHint") * 1000);
+		hint_timer->start(config_file.readNumEntry("General","TimeoutHint") * 1000);
 }
 
 void TrayHint::remove_hint() {
@@ -427,8 +427,8 @@ TrayIcon *trayicon = NULL;
 void TraySlots::onCreateConfigDialog()
 {
 	kdebug("TraySlots::onCreateConfigDialog()\n");
-	QCheckBox* b_trayhint=(QCheckBox*)(ConfigDialog::getWidget(tr("General"),tr("Enable tray hints")));
-	QVGroupBox* hintgrp=(QVGroupBox*)(ConfigDialog::getWidget(tr("General"),"---"));
+	QCheckBox* b_trayhint= ConfigDialog::getCheckBox("General", "Enable tray hints");
+	QVGroupBox* hintgrp= ConfigDialog::getVGroupBox("General", "---");
 	
 	hintgrp->setEnabled(b_trayhint->isChecked());
 	connect(b_trayhint,SIGNAL(toggled(bool)),hintgrp,SLOT(setEnabled(bool)));

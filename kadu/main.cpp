@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
 	QPixmap *pix = icons->loadIcon("offline");
 	kadu->setIcon(*pix);
 	a->setMainWidget(kadu);
-	if (!config_file.readNumEntry("Global","UIN")) {
+	if (!config_file.readNumEntry("General","UIN")) {
 		QString path_;
 		path_ = ggPath("");
 		mkdir(path_.local8Bit(), 0700);
@@ -64,9 +64,7 @@ int main(int argc, char *argv[])
 			qApp->translate("@default", QT_TR_NOOP("Configure")),
 			qApp->translate("@default", QT_TR_NOOP("Cancel")), 0, 1) ) {
 			case 1: // Configure
-				ConfigDialog *cd;
-				cd = new ConfigDialog;
-				cd->show();
+				ConfigDialog::showConfigDialog(a);
 				break;
 			case 0: // Register
 				Register *reg;
@@ -80,9 +78,9 @@ int main(int argc, char *argv[])
 		}
 
 	own_description = defaultdescriptions.first();
-	if (config_file.readNumEntry("Global","DefaultStatus") != GG_STATUS_NOT_AVAIL && config_file.readNumEntry("Global","DefaultStatus") != GG_STATUS_NOT_AVAIL_DESCR) {
+	if (config_file.readNumEntry("General","DefaultStatus",GG_STATUS_NOT_AVAIL) != GG_STATUS_NOT_AVAIL && config_file.readNumEntry("General","DefaultStatus",GG_STATUS_NOT_AVAIL) != GG_STATUS_NOT_AVAIL_DESCR) {
 		kadu->autohammer = true;
-		kadu->setStatus(config_file.readNumEntry("Global","DefaultStatus"));
+		kadu->setStatus(config_file.readNumEntry("General","DefaultStatus",GG_STATUS_NOT_AVAIL));
 		}
 #ifdef HAVE_OPENSSL
 	sim_key_path = strdup(ggPath("keys/").local8Bit());

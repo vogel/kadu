@@ -74,6 +74,22 @@ class SoundDevice : public QObject
 	friend class RecordThread;
 };
 
+class SoundSlots: public QObject
+{
+	Q_OBJECT
+	
+	public:
+		static void initModule();
+	public slots:
+		void soundPlayer(bool value);
+		void onCreateConfigDialog();
+		void choosePlayerFile();
+		void chooseMsgFile();
+		void chooseMsgTest();
+		void chooseChatFile();
+		void chooseChatTest();	
+
+};
 
 /*class DspSoundDevice : public SoundDevice
 {

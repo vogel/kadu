@@ -127,7 +127,7 @@ class Kadu : public QMainWindow
 		void showUserInfo();
 		void unregisterUser();
 		void viewHistory();
-
+		void generateMyKeys();
 
 	private:
 		QFrame *centralFrame;
@@ -176,7 +176,10 @@ class KaduSlots : public QObject
 	public slots:
 	    void onCreateConfigDialog();
 	    void onDestroyConfigDialog();
-
+	    void ifDccEnabled(bool value);
+	    void ifDccIpEnabled(bool value);
+	    void ifDefServerEnabled(bool value);
+	    void useTlsEnabled(bool value);
 
 };
 

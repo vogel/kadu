@@ -199,7 +199,7 @@ void PendingMsgs::openMessages() {
 						e.description = "";
 						e.email = "";
 						e.anonymous = true;
-						if (config_file.readBoolEntry("Global", "UseDocking"))
+						if (config_file.readBoolEntry("General", "UseDocking"))
 							userlist.addUser(e);
 						else
 							kadu->addUser(e);

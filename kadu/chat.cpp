@@ -659,8 +659,8 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time) {
 	count = history.getHistoryEntriesCount(senders);
 	end = count - 1;
 	
-	while (end >= 0 && entries.count() < config_file.readNumEntry("Other","ChatHistoryCitation")) {
-		from = (end < config_file.readNumEntry("Other","ChatHistoryCitation")) ? 0 : end - config_file.readNumEntry("Other","ChatHistoryCitation") + 1;
+	while (end >= 0 && entries.count() < config_file.readNumEntry("History","ChatHistoryCitation")) {
+		from = (end < config_file.readNumEntry("History", "ChatHistoryCitation")) ? 0 : end - config_file.readNumEntry("History","ChatHistoryCitation") + 1;
 		entriestmp = history.getHistoryEntries(senders, from, end - from + 1, HISTORYMANAGER_ENTRY_CHATSEND
 			| HISTORYMANAGER_ENTRY_MSGSEND | HISTORYMANAGER_ENTRY_CHATRCV | HISTORYMANAGER_ENTRY_MSGRCV);
 		kdebug("Chat::writeMessageFromHistory(): temp entries = %d\n", entriestmp.count());
@@ -686,12 +686,12 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time) {
 		kdebug("Chat::writeMessageFromHistory(): entries = %d\n", entries.count());
 		end = from - 1;
 		}
-	from = (entries.count() < config_file.readNumEntry("Other","ChatHistoryCitation")) ? 0 : entries.count() - config_file.readNumEntry("Other","ChatHistoryCitation");
+	from = (entries.count() < config_file.readNumEntry("History","ChatHistoryCitation")) ? 0 : entries.count() - config_file.readNumEntry("History","ChatHistoryCitation");
 	for (i = from; i < entries.count(); i++)
-		if (entries[i].date.secsTo(QDateTime::currentDateTime()) <= -config_file.readNumEntry("Other","ChatHistoryQuotationTime") * 3600)
+		if (entries[i].date.secsTo(QDateTime::currentDateTime()) <= -config_file.readNumEntry("History","ChatHistoryQuotationTime") * 3600)
 			if (entries[i].type == HISTORYMANAGER_ENTRY_MSGSEND
 				|| entries[i].type == HISTORYMANAGER_ENTRY_CHATSEND)
-				formatMessage(true, config_file.readEntry("Global","Nick"), entries[i].message,
+				formatMessage(true, config_file.readEntry("General","Nick"), entries[i].message,
 					printDateTime(entries[i].date), toadd);
 			else
 				formatMessage(false, entries[i].nick, entries[i].message,
@@ -709,13 +709,13 @@ void Chat::checkPresence(UinsList senders, QString &msg, time_t time, QString &t
 }
 
 void Chat::alertNewMessage(void) {
-	if (config_file.readBoolEntry("Global","PlaySoundChatInvisible")){
+	if (config_file.readBoolEntry("Sounds","PlaySoundChatInvisible")){
 		if (!isActiveWindow())
-			playSound(config_file.readEntry("Global","Chat_sound"));
+			playSound(config_file.readEntry("Sounds","Chat_sound"));
 		}
 	else
-		if (config_file.readBoolEntry("Global","PlaySoundChat"))
-			playSound(config_file.readEntry("Global","Chat_sound"));
+		if (config_file.readBoolEntry("Sounds","PlaySoundChat"))
+			playSound(config_file.readEntry("Sounds","Chat_sound"));
 
 	if (config_file.readBoolEntry("Other","BlinkChatTitle"))
 		if (!isActiveWindow() && !title_timer->isActive())
@@ -724,7 +724,7 @@ void Chat::alertNewMessage(void) {
 
 void Chat::writeMyMessage() {
 	QString toadd;
-	formatMessage(true,config_file.readEntry("Global","Nick"), myLastMessage, timestamp(), toadd);
+	formatMessage(true,config_file.readEntry("General","Nick"), myLastMessage, timestamp(), toadd);
 	scrollMessages(toadd);
 	if (!edit->isEnabled())
 		cancelMessage();
@@ -741,7 +741,7 @@ void Chat::addMyMessageToHistory() {
 	int uin;
 
 	uin = uins[0];
-	if (config_file.readBoolEntry("Global","Logging"))
+	if (config_file.readBoolEntry("General","Logging"))
 		history.appendMessage(uins, uin, myLastMessage, true);
 }
 
@@ -1018,16 +1018,17 @@ void Chat::addEmoticon(QString string) {
 
 void Chat::initModule()
 {
-	ConfigDialog::registerTab(tr("General"));
-	ConfigDialog::registerCheckBox(tr("General"),tr("Open chat window on new message"),"Other","OpenChatOnMessage");
-	ConfigDialog::registerTab(tr("ShortCuts"));
-	ConfigDialog::registerVGroupBox(tr("ShortCuts"),tr("Define keys"));
-	ConfigDialog::registerHotKeyEdit(tr("Define keys"),tr("New line / send message:"),"ShortCuts","chat_newline","Return");
-	ConfigDialog::registerHotKeyEdit(tr("Define keys"),tr("Clear Chat:"),"ShortCuts","chat_clear","F9");
-	ConfigDialog::registerHotKeyEdit(tr("Define keys"),tr("Close Chat:"),"ShortCuts","chat_close","Esc");
-	ConfigDialog::registerHotKeyEdit(tr("Define keys"),tr("Bold text:"),"ShortCuts","chat_bold","Ctrl+B");
-	ConfigDialog::registerHotKeyEdit(tr("Define keys"),tr("Italic text:"),"ShortCuts","chat_italic","Ctrl+I");
-	ConfigDialog::registerHotKeyEdit(tr("Define keys"),tr("Underline text:"),"ShortCuts","chat_underline","Ctrl+U");
+	ConfigDialog::registerTab("General");
+	ConfigDialog::addCheckBox("General", "General", "Open chat window on new message", "OpenChatOnMessage");
+	
+	ConfigDialog::registerTab("ShortCuts");
+	ConfigDialog::addVGroupBox("ShortCuts", "ShortCuts", "Define keys");
+	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "New line / send message:", "chat_newline", "Return");
+	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Clear Chat:", "chat_clear", "F9");
+	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Close Chat:", "chat_close", "Esc");
+	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Bold text:", "chat_bold", "Ctrl+B");
+	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Italic text:", "chat_italic", "Ctrl+I");
+	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Underline text:", "chat_underline", "Ctrl+U");
 };
 
 ColorSelectorButton::ColorSelectorButton(QWidget* parent, const QColor& qcolor) : QToolButton(parent)

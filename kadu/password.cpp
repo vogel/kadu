@@ -27,7 +27,7 @@ remindPassword::~remindPassword() {
 
 void remindPassword::start() {
 	kdebug("remindPassword::start()\n");
-	if (!(h = gg_remind_passwd(config_file.readNumEntry("Global","UIN"), 1))) {
+	if (!(h = gg_remind_passwd(config_file.readNumEntry("General","UIN"), 1))) {
 		showErrorMessageBox();
 		deleteLater();
 		return;
@@ -190,7 +190,7 @@ void changePassword::start() {
 	newpasswd = strdup(unicode2cp(newpwd->text()).data());
 	actmail = strdup(unicode2cp(actemail->text()).data());
 	newmail = strdup(unicode2cp(newemail->text()).data());
-	if (!(h = gg_change_passwd2(config_file.readNumEntry("Global","UIN"), actpasswd, newpasswd, actmail, newmail, 1))) {
+	if (!(h = gg_change_passwd2(config_file.readNumEntry("General","UIN"), actpasswd, newpasswd, actmail, newmail, 1))) {
 		status->setText(tr("Error"));
 		free(actpasswd);
 		free(newpasswd);

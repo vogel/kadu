@@ -321,7 +321,7 @@ void UserBox::refresh()
 			}
 		}
 	// Dodajemy nieaktywnych
-	if (config_file.readBoolEntry("Other","ShowHideInactive"))
+	if (config_file.readBoolEntry("General","ShowHideInactive"))
 	for (i = 0; i < n_users.count(); i++)
 	{
 		UserListElement &user = userlist.byAltNick(n_users[i]);
@@ -397,7 +397,7 @@ void UserBox::changeAllToInactive()
 
 void UserBox::showHideInactive()
 {	
-	config_file.writeEntry("Other","ShowHideInactive",!config_file.readBoolEntry("Other","ShowHideInactive"));
+	config_file.writeEntry("General","ShowHideInactive",!config_file.readBoolEntry("General","ShowHideInactive"));
 	refresh();
 }
 
@@ -429,8 +429,8 @@ void UserBox::all_renameUser(const QString &oldaltnick, const QString &newaltnic
 
 void UserBox::initModule()
 {
-	ConfigDialog::registerTab(tr("General"));
-	ConfigDialog::registerCheckBox(tr("General"),tr("Show Inactive users"),"Other","ShowHideInactive",true);
+	ConfigDialog::registerTab("General");
+	ConfigDialog::addCheckBox("General", "General", "Show Inactive users", "ShowHideInactive", true);
 };
 
 QValueList<UserBox *> UserBox::UserBoxes;
