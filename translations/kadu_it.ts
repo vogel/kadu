@@ -665,6 +665,10 @@ Se lasciate lo spazio in bianco, le regolazioni di difetto saranno usate.</trans
         <source>Show message content in hint</source>
         <translation>Mostri il soddisfare del messaggio nel suggerimento</translation>
     </message>
+    <message>
+        <source>Syntax the same as in information panel.</source>
+        <translation>Sintassi lo stessi di nel pannello di informazioni.</translation>
+    </message>
 </context>
 <context>
     <name>About</name>

@@ -665,6 +665,10 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <source>Show message content in hint</source>
         <translation>Pokaż zawartość wiadomości w dymku</translation>
     </message>
+    <message>
+        <source>Syntax the same as in information panel.</source>
+        <translation>Składnia taka sama jak w panelu info.</translation>
+    </message>
 </context>
 <context>
     <name>About</name>

@@ -661,6 +661,10 @@ If you leave blank, default settings will be used.</source>
         <source>Show message content in hint</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Syntax the same as in information panel.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
