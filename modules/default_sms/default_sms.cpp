@@ -141,18 +141,6 @@ void SmsIdeaGateway::onCodeEntered(const QString& code)
 	Http.post("sendsms.aspx",post_data);
 };
 
-SmsGateway::SmsGateway(QObject* parent) : QObject(parent,"SmsGateway"){
-	QObject::connect(&Http,SIGNAL(finished()),this,SLOT(httpFinished()));
-	QObject::connect(&Http,SIGNAL(redirected(QString)),this,SLOT(httpRedirected(QString)));
-	QObject::connect(&Http,SIGNAL(error()),this,SLOT(httpError()));
-}
-
-void SmsGateway::httpError() {
-	kdebug("SmsGateway::httpError()\n");
-	QMessageBox::critical((QDialog*)(parent()->parent()), "SMS",tr("Network error. Provider gateway page is probably unavailable"));
-	emit finished(false);
-}
-
 /********** SmsPlusGateway **********/
 
 SmsPlusGateway::SmsPlusGateway(QObject* parent)
