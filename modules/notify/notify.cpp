@@ -72,6 +72,9 @@ Notify::Notify()
 		QT_TRANSLATE_NOOP("@default", "Ignore changes on connection to server"), "NotifyIgnoreOnConnection", true, QT_TRANSLATE_NOOP("@default","This option will supersede tooltips with users' status\n changes upon establishing connection to the server"));
 	ConfigDialog::addCheckBox("Notify", "Notify",
 		QT_TRANSLATE_NOOP("@default", "Notify about all users"), "NotifyAboutAll", false);
+	ConfigDialog::addCheckBox("Notify", "Notify",
+		QT_TRANSLATE_NOOP("@default", "Ignore status change if old status is available/busy (and new is available/busy also)"),
+		"IgnoreOnlineToOnline", true);
 
 	ConfigDialog::addGrid("Notify", "Notify" ,"listboxy",3);
 
@@ -130,6 +133,7 @@ Notify::~Notify()
 		ConfigDialog::removeControl("Notify", "listbox1");
 	ConfigDialog::removeControl("Notify", "listboxy");
 
+	ConfigDialog::removeControl("Notify", "Ignore status change if old status is online/busy (and new is online/busy also)");
 	ConfigDialog::removeControl("Notify", "Notify about all users");
 	ConfigDialog::removeControl("Notify", "Ignore changes on connection to server");
 
@@ -182,6 +186,11 @@ void Notify::userStatusChanged(const UserListElement &ule, const UserStatus &old
 			"Notify::userStatusChanged() end: not notifying user AND not notifying all users\n");
 		return;
 	}
+
+	if (config_file.readBoolEntry("Notify", "IgnoreOnlineToOnline"))
+		if (ule.status().isOnline() || ule.status().isBusy())
+			if (oldStatus.isOnline() || oldStatus.isBusy())
+				return;
 
 	emit userStatusChanged(ule, oldStatus);
 

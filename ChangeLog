@@ -242,6 +242,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dymki nie pojawiaj± siê poza ekranem gdy panel jest ukryty (joi)
 * dymki z informacjami o zmianach statusów domy¶lnie nie otwieraj± okna chat
   (mo¿liwo¶æ w³±czenia w konfiguracji) (joi)
+* opcja ignorowania zmian statusów dostêpny->dostêpny, itp. (domy¶lnie w³±czona) (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
