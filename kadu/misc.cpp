@@ -714,6 +714,7 @@ void HtmlDocument::escapeText(QString& text)
 	text.replace(QRegExp("&"), "&amp;");
 	text.replace(QRegExp("<"), "&lt;");
 	text.replace(QRegExp(">"), "&gt;");
+	text.replace(QRegExp("\""), "&quot;");
 };
 
 void HtmlDocument::unescapeText(QString& text)
@@ -721,6 +722,7 @@ void HtmlDocument::unescapeText(QString& text)
 	text.replace(QRegExp("&amp;"), "&");
 	text.replace(QRegExp("&lt;"), "<");
 	text.replace(QRegExp("&gt;"), ">");
+	text.replace(QRegExp("&quot;"), "\"");
 };
 
 void HtmlDocument::addElement(Element e)
