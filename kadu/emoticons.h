@@ -71,6 +71,7 @@ class EmoticonSelectorButton : public QToolButton
 		EmoticonSelectorButton(
 			QWidget* parent,const QString& emoticon_string,
 			const QString& static_path,const QString& anim_path);	
+		~EmoticonSelectorButton();
 	signals:
 		void clicked(const QString& emoticon_string);
 };

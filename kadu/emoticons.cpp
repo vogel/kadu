@@ -310,6 +310,15 @@ EmoticonSelectorButton::EmoticonSelectorButton(
 	connect(this, SIGNAL(clicked()), this, SLOT(buttonClicked()));
 }
 
+EmoticonSelectorButton::~EmoticonSelectorButton()
+{
+	if (Movie)
+	{
+		delete Movie;
+		Movie=NULL;
+	}
+}
+
 void EmoticonSelectorButton::buttonClicked()
 {
 	emit clicked(EmoticonString);
