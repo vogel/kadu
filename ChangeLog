@@ -195,7 +195,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dziesi±ty patch porz±dkuj±cy vogela: drobne porz±dki (adrian)
 * ======= API FREEZE =======
   zostanie wygenerowana dokumentacja api na stronie i kadu powinno ju¿ byæ z
-  ni± kompatybilne - modu³opisarze mog± szykowaæ finalne wersje modu³ów (a
+  ni± kompatybilne - modu³opisarze mog± szykowaæ finalne wersje modu³ów (adrian)
 * wszystkie pliki przerobione na nowy mechanizm debugowania (joi)
 
 +++ wersja 0.3.8 (20.04.2004)
