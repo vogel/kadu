@@ -190,6 +190,7 @@ static char * sun_xpm[] = {
 "                                                                                                                                                                       "};
 
 About::About() : QTabDialog(0) {
+	setWFlags(Qt::WDestructiveClose);
 	setCaption(tr("About"));
 
 	addTab1();
