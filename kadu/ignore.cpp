@@ -135,7 +135,7 @@ void Ignored::getList()
 	CONST_FOREACH(ignoredList, ignored)
 	{
 		QStringList strlist;
-		CONST_FOREACH(uin, ignoredList)
+		CONST_FOREACH(uin, *ignoredList)
 		{
 			if (userlist.containsUin(*uin))
 				strlist.append(QString("%1 (%2)").arg(QString::number(*uin)).arg(userlist.byUin(*uin).altNick()));
