@@ -1727,6 +1727,10 @@ Now add your friends to the userlist.</source>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Password reminded</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SearchDialog</name>
@@ -1850,6 +1854,14 @@ Now add your friends to the userlist.</source>
         <source>to</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>No results</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There were no results of your search</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SelectPaths</name>
@@ -1952,6 +1964,10 @@ Now add your friends to the userlist.</source>
     </message>
     <message>
         <source>No user</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unregistation was successful. Now you don&apos;t have any GG number :(</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

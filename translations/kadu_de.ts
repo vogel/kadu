@@ -1739,6 +1739,10 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
         <source>OK</source>
         <translation>OK</translation>
     </message>
+    <message>
+        <source>Password reminded</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SearchDialog</name>
@@ -1862,6 +1866,14 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
         <source>to</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>No results</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There were no results of your search</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SelectPaths</name>
@@ -1965,6 +1977,10 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
     <message>
         <source>No user</source>
         <translation>Kein Benutzer</translation>
+    </message>
+    <message>
+        <source>Unregistation was successful. Now you don&apos;t have any GG number :(</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

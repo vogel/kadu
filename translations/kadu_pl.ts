@@ -621,7 +621,7 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     </message>
     <message>
         <source>Show inactive users</source>
-        <translation>Pokaż nie aktywne kontakty</translation>
+        <translation>Pokaż nieaktywne kontakty</translation>
     </message>
 </context>
 <context>
@@ -1741,6 +1741,10 @@ Teraz możesz dodać znajomych do listy kontaktów.</translation>
         <source>OK</source>
         <translation>OK</translation>
     </message>
+    <message>
+        <source>Password reminded</source>
+        <translation>Przypomnij hasło</translation>
+    </message>
 </context>
 <context>
     <name>SearchDialog</name>
@@ -1864,6 +1868,14 @@ Teraz możesz dodać znajomych do listy kontaktów.</translation>
         <source>to</source>
         <translation>do</translation>
     </message>
+    <message>
+        <source>No results</source>
+        <translation>Brak wyników</translation>
+    </message>
+    <message>
+        <source>There were no results of your search</source>
+        <translation>Nie było żadnych wyników twojego poszukiwana</translation>
+    </message>
 </context>
 <context>
     <name>SelectPaths</name>
@@ -1967,6 +1979,11 @@ Teraz możesz dodać znajomych do listy kontaktów.</translation>
     <message>
         <source>No user</source>
         <translation>Brak użytkownika</translation>
+    </message>
+    <message>
+        <source>Unregistation was successful. Now you don&apos;t have any GG number :(</source>
+        <translation>Wyrejestrowanie przebiegło prawidłowo.
+Teraz już nie masz numeru GG :(</translation>
     </message>
 </context>
 <context>

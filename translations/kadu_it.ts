@@ -1740,6 +1740,10 @@ Ora è possibile aggiungere i vostri amici alla lista dei contatti.</translation
         <source>OK</source>
         <translation>OK</translation>
     </message>
+    <message>
+        <source>Password reminded</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SearchDialog</name>
@@ -1863,6 +1867,14 @@ Ora è possibile aggiungere i vostri amici alla lista dei contatti.</translation
         <source>to</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>No results</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There were no results of your search</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SelectPaths</name>
@@ -1966,6 +1978,10 @@ Ora è possibile aggiungere i vostri amici alla lista dei contatti.</translation
     <message>
         <source>No user</source>
         <translation>Nessun utente</translation>
+    </message>
+    <message>
+        <source>Unregistation was successful. Now you don&apos;t have any GG number :(</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
