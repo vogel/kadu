@@ -103,37 +103,68 @@ AC_DEFUN(FIND_LIBRARY,[
 	])
 ])
 
+AC_DEFUN(FIND_AVAILABLE_MODULES,[
+	available_modules=
+	cd modules
+	for dir in *; do \
+		if test -f $dir/spec; then \
+			available_modules="$available_modules $dir"; \
+		fi; \
+	done
+	cd ..
+])
+
+AC_DEFUN(CHECK_MODULES_CONFIGURATION,[
+	static_modules=
+	shared_modules=
+	disabled_modules=
+	source .config; \
+	for mod in $available_modules; do \
+		echo "option=\$module_$mod" > .temp; \
+		source .temp; \
+		if test -z "$option"; then \
+			option=m; \
+		fi; \
+		case "$option" in
+			y) static_modules="$static_modules $mod";; \
+			m) shared_modules="$shared_modules $mod";; \
+			*) disabled_modules="$disabled_modules $mod";; \
+		esac; \
+	done; \
+	rm .temp
+])
+
 AC_DEFUN(PROCESS_MODULE_SPEC_FILES,[
 	echo
 	echo " ******************************************"
 	echo " * Configuring modules, please wait . . . *"
 	echo " ******************************************"
-	for mod_dir in modules/*; do \
-		if test -f $mod_dir/spec; then \
+	for mod in $shared_modules; do \
+		if test -f modules/$mod/spec; then \
 			echo; \
-			echo ">>> Configuring $mod_dir..."; \
+			echo ">>> Configuring $mod module..."; \
 			MODULE_LIBS=; \
 			MODULE_LIBS_PATH=; \
 			MODULE_INCLUDES=; \
 			MODULE_INCLUDES_PATH=; \
-			source $mod_dir/spec; \
+			source modules/$mod/spec; \
 			echo "MODULE_LIBS:          $MODULE_LIBS"; \
 			echo "MODULE_LIBS_PATH:     $MODULE_LIBS_PATH"; \
 			echo "MODULE_INCLUDES:      $MODULE_INCLUDES"; \
 			echo "MODULE_INCLUDES_PATH: $MODULE_INCLUDES_PATH"; \
-			echo -n > $mod_dir/ldflags; \
-			echo -n > $mod_dir/cxxflags; \
+			echo -n > modules/$mod/ldflags; \
+			echo -n > modules/$mod/cxxflags; \
 			for lib in $MODULE_LIBS; do \
 				FIND_LIBRARY([$lib],[$MODULE_LIBS_PATH],
 				[
-					echo -n "-L$FILE_DIR " >> $mod_dir/ldflags
+					echo -n "-L$FILE_DIR " >> modules/$mod/ldflags
 				]) \
-				echo -n "-l$lib " >> $mod_dir/ldflags; \
+				echo -n "-l$lib " >> modules/$mod/ldflags; \
 			done; \
 			for hdr in $MODULE_INCLUDES; do \
 				FIND_HEADER([$hdr],[$MODULE_INCLUDES_PATH],
 				[
-					echo -n "-I$FILE_DIR " >> $mod_dir/cxxflags
+					echo -n "-I$FILE_DIR " >> modules/$mod/cxxflags
 				]) \
 			done; \
 		fi; \
@@ -352,10 +383,14 @@ if test "$enable_modules" = "yes"; then
 	AC_DEFINE(MODULES_ENABLED,1,[Define if loadable modules support is enabled])
 	MODULES_LDFLAGS=-rdynamic
 	MY_SUBDIRS="$MY_SUBDIRS modules"
+	FIND_AVAILABLE_MODULES()
+	CHECK_MODULES_CONFIGURATION()
 	PROCESS_MODULE_SPEC_FILES()
 fi
 AM_CONDITIONAL(MODULES,[test "$enable_modules" = "yes"])
 AC_SUBST(MODULES_LDFLAGS)
+AC_SUBST(shared_modules)
+AC_SUBST(static_modules)
 
 AC_SUBST(MY_SUBDIRS)
 
@@ -398,6 +433,14 @@ echo "   Loadable modules support:           $enable_modules"
 echo "   OpenSSL encryption support:         $have_openssl"
 echo "   Distribution type information:      $enable_dist_info"
 echo "   Additional c++ compiler flags:      $user_cxxflags"
+echo
+
+if test "$enable_modules" == "yes"; then \
+	echo "   Static modules:   $static_modules"; \
+	echo "   Shared modules:   $shared_modules"; \
+	echo "   Disabled modules: $disabled_modules"; \
+fi
+
 echo
 echo " Run make now (Linux) or gmake (FreeBSD and others) to compile Kadu."
 echo

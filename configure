@@ -314,7 +314,7 @@ ac_includes_default="\
 #endif"
 
 ac_subdirs_all="$ac_subdirs_all libgadu"
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE CXX CXXFLAGS LDFLAGS CPPFLAGS ac_ct_CXX EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CXXDEPMODE CC CFLAGS ac_ct_CC CCDEPMODE PTHREAD_CPPFLAGS PTHREAD_LDFLAGS PTHREAD_LIBS PNG_LIBS XFREE_INCLUDES QT_INCLUDES QT_LIBS QT_MOC_DIR CPP EGREP LIBOBJS GADU_LIBS GADU_INCLUDES VOICE_TRUE VOICE_FALSE GSM_LIBS GSM_INCLUDES OPENSSL_LIBS OPENSSL_INCLUDES PKGCONFIG OPENSSL_TRUE OPENSSL_FALSE MODULES_TRUE MODULES_FALSE MODULES_LDFLAGS MY_SUBDIRS subdirs LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE CXX CXXFLAGS LDFLAGS CPPFLAGS ac_ct_CXX EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CXXDEPMODE CC CFLAGS ac_ct_CC CCDEPMODE PTHREAD_CPPFLAGS PTHREAD_LDFLAGS PTHREAD_LIBS PNG_LIBS XFREE_INCLUDES QT_INCLUDES QT_LIBS QT_MOC_DIR CPP EGREP LIBOBJS GADU_LIBS GADU_INCLUDES VOICE_TRUE VOICE_FALSE GSM_LIBS GSM_INCLUDES OPENSSL_LIBS OPENSSL_INCLUDES PKGCONFIG OPENSSL_TRUE OPENSSL_FALSE MODULES_TRUE MODULES_FALSE MODULES_LDFLAGS shared_modules static_modules MY_SUBDIRS subdirs LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -6274,25 +6274,54 @@ _ACEOF
 	MODULES_LDFLAGS=-rdynamic
 	MY_SUBDIRS="$MY_SUBDIRS modules"
 
+	available_modules=
+	cd modules
+	for dir in *; do \
+		if test -f $dir/spec; then \
+			available_modules="$available_modules $dir"; \
+		fi; \
+	done
+	cd ..
+
+
+	static_modules=
+	shared_modules=
+	disabled_modules=
+	source .config; \
+	for mod in $available_modules; do \
+		echo "option=\$module_$mod" > .temp; \
+		source .temp; \
+		if test -z "$option"; then \
+			option=m; \
+		fi; \
+		case "$option" in
+			y) static_modules="$static_modules $mod";; \
+			m) shared_modules="$shared_modules $mod";; \
+			*) disabled_modules="$disabled_modules $mod";; \
+		esac; \
+	done; \
+	rm .temp
+
+
 	echo
 	echo " ******************************************"
 	echo " * Configuring modules, please wait . . . *"
 	echo " ******************************************"
-	for mod_dir in modules/*; do \
-		if test -f $mod_dir/spec; then \
+	for mod in $shared_modules; do \
+		if test -f modules/$mod/spec; then \
 			echo; \
-			echo ">>> Configuring $mod_dir..."; \
+			echo ">>> Configuring $mod module..."; \
 			MODULE_LIBS=; \
 			MODULE_LIBS_PATH=; \
 			MODULE_INCLUDES=; \
 			MODULE_INCLUDES_PATH=; \
-			source $mod_dir/spec; \
+			source modules/$mod/spec; \
 			echo "MODULE_LIBS:          $MODULE_LIBS"; \
 			echo "MODULE_LIBS_PATH:     $MODULE_LIBS_PATH"; \
 			echo "MODULE_INCLUDES:      $MODULE_INCLUDES"; \
 			echo "MODULE_INCLUDES_PATH: $MODULE_INCLUDES_PATH"; \
-			echo -n > $mod_dir/ldflags; \
-			echo -n > $mod_dir/cxxflags; \
+			echo -n > modules/$mod/ldflags; \
+			echo -n > modules/$mod/cxxflags; \
 			for lib in $MODULE_LIBS; do \
 
 	echo "$as_me:$LINENO: checking if lib$lib.so library is in system directories" >&5
@@ -6363,7 +6392,7 @@ echo $ECHO_N "checking for lib$lib.so in specified directiories... $ECHO_C" >&6
 			echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
 echo "${ECHO_T}found in $FILE_DIR" >&6
 
-					echo -n "-L$FILE_DIR " >> $mod_dir/ldflags
+					echo -n "-L$FILE_DIR " >> modules/$mod/ldflags
 
 			break
 		fi
@@ -6386,7 +6415,7 @@ fi
 rm -f conftest.err conftest.$ac_objext \
       conftest$ac_exeext conftest.$ac_ext
  \
-				echo -n "-l$lib " >> $mod_dir/ldflags; \
+				echo -n "-l$lib " >> modules/$mod/ldflags; \
 			done; \
 			for hdr in $MODULE_INCLUDES; do \
 
@@ -6456,7 +6485,7 @@ echo $ECHO_N "checking for $hdr in specified directiories... $ECHO_C" >&6
 			echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
 echo "${ECHO_T}found in $FILE_DIR" >&6
 
-					echo -n "-I$FILE_DIR " >> $mod_dir/cxxflags
+					echo -n "-I$FILE_DIR " >> modules/$mod/cxxflags
 
 			break
 		fi
@@ -6492,6 +6521,8 @@ else
   MODULES_TRUE='#'
   MODULES_FALSE=
 fi
+
+
 
 
 
@@ -7250,6 +7281,8 @@ s,@OPENSSL_FALSE@,$OPENSSL_FALSE,;t t
 s,@MODULES_TRUE@,$MODULES_TRUE,;t t
 s,@MODULES_FALSE@,$MODULES_FALSE,;t t
 s,@MODULES_LDFLAGS@,$MODULES_LDFLAGS,;t t
+s,@shared_modules@,$shared_modules,;t t
+s,@static_modules@,$static_modules,;t t
 s,@MY_SUBDIRS@,$MY_SUBDIRS,;t t
 s,@subdirs@,$subdirs,;t t
 s,@LTLIBOBJS@,$LTLIBOBJS,;t t
@@ -8143,6 +8176,14 @@ echo "   Loadable modules support:           $enable_modules"
 echo "   OpenSSL encryption support:         $have_openssl"
 echo "   Distribution type information:      $enable_dist_info"
 echo "   Additional c++ compiler flags:      $user_cxxflags"
+echo
+
+if test "$enable_modules" == "yes"; then \
+	echo "   Static modules:   $static_modules"; \
+	echo "   Shared modules:   $shared_modules"; \
+	echo "   Disabled modules: $disabled_modules"; \
+fi
+
 echo
 echo " Run make now (Linux) or gmake (FreeBSD and others) to compile Kadu."
 echo

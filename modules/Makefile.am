@@ -6,12 +6,8 @@ AM_CPPFLAGS = $(PTHREAD_CPPFLAGS) -DQT_THREAD_SUPPORT -D_REENTRANT \
 
 CLEANFILES = */*.so */*.o */*_moc.cpp
 
-module_spec_list = $(wildcard */spec)
-module_dir_list = $(patsubst %/spec,%,$(module_spec_list))
-module_so_list = $(foreach dir,$(module_dir_list),$(dir)/$(dir).so)
-
 all:
-	@for dir in $(module_dir_list); do \
+	@for dir in $(shared_modules); do \
 		MODULE_SOURCES=; \
 		MODULE_MOC_HEADERS=; \
 		MODULE_HEADERS=; \

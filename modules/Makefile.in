@@ -98,6 +98,8 @@ XFREE_INCLUDES = @XFREE_INCLUDES@
 am__include = @am__include@
 am__quote = @am__quote@
 install_sh = @install_sh@
+shared_modules = @shared_modules@
+static_modules = @static_modules@
 
 INCLUDES = -I../kadu $(XFREE_INCLUDES) $(QT_INCLUDES) $(OPENSSL_INCLUDES) $(GSM_INCLUDES) $(GADU_INCLUDES)
 
@@ -106,10 +108,6 @@ AM_CPPFLAGS = $(PTHREAD_CPPFLAGS) -DQT_THREAD_SUPPORT -D_REENTRANT \
 
 
 CLEANFILES = */*.so */*.o */*_moc.cpp
-
-module_spec_list = $(wildcard */spec)
-module_dir_list = $(patsubst %/spec,%,$(module_spec_list))
-module_so_list = $(foreach dir,$(module_dir_list),$(dir)/$(dir).so)
 subdir = modules
 mkinstalldirs = $(SHELL) $(top_srcdir)/admin/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h
@@ -233,7 +231,7 @@ uninstall-am: uninstall-info-am uninstall-local
 
 
 all:
-	@for dir in $(module_dir_list); do \
+	@for dir in $(shared_modules); do \
 		MODULE_SOURCES=; \
 		MODULE_MOC_HEADERS=; \
 		MODULE_HEADERS=; \
