@@ -86,6 +86,7 @@ class Chat : public QWidget {
 		void keyPressEvent(QKeyEvent *e);
 
 	private slots:
+		void setupEncryptButton(bool enabled);
 		void userWhois(void);
 		void insertEmoticon(void);
 		void regEncryptSend(void);

@@ -130,20 +130,11 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	keyfile_path.append(".pem");
 	QFileInfo keyfile(keyfile_path);
 	bool encryption_possible =
-		(keyfile.permission(QFileInfo::ReadUser)&&uins.count() == 1);
+		(keyfile.permission(QFileInfo::ReadUser) && uins.count() == 1);
 
-	if(config.encryption&&encryption_possible) {
-		QToolTip::add(encryption, i18n("Disable encryption for this conversation"));
-		encryption->setPixmap(loadIcon("encrypted.png"));
-		encrypt_enabled = true;
-	} else {
-		QToolTip::add(encryption, i18n("Enable encryption for this conversation"));
-		encryption->setPixmap(loadIcon("encrypted.png"));
-		encrypt_enabled = false;
-	}
+	setupEncryptButton(config.encryption && encryption_possible);
 	
-	encryption->setEnabled(encryption_possible);
-	
+	encryption->setEnabled(encryption_possible);	
 #endif
 	
 	QPushButton *clearchat= new QPushButton(buttontray);
@@ -271,6 +262,19 @@ Chat::~Chat() {
 	fprintf(stderr, "KK Chat::~Chat: chat destroyed: index %d\n", index);
 }
 
+void Chat::setupEncryptButton(bool enabled) {
+	encrypt_enabled = enabled;
+	QToolTip::remove(encryption);
+	if (enabled) {
+		QToolTip::add(encryption, i18n("Disable encryption for this conversation"));
+		encryption->setPixmap(loadIcon("encrypted.png"));
+		}
+	else {
+		QToolTip::add(encryption, i18n("Enable encryption for this conversation"));
+		encryption->setPixmap(loadIcon("decrypted.png"));
+		}
+}
+
 void Chat::pageUp() {
 	body->scrollBy(0, (body->height() * -2) / 3);
 }
@@ -365,13 +369,8 @@ void Chat::keyPressEvent(QKeyEvent *e) {
 
 void Chat::regEncryptSend(void) {
 #ifdef HAVE_OPENSSL
-	if (encrypt_enabled) {
-		encryption->setPixmap(loadIcon("decrypted.png"));
-		encrypt_enabled = false;
-	} else {
-		encryption->setPixmap(loadIcon("encrypted.png"));
-		encrypt_enabled = true;
-	}
+	encrypt_enabled = !encrypt_enabled;
+	setupEncryptButton(encrypt_enabled);
 #endif
 }
 
