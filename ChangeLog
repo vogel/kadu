@@ -109,7 +109,10 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   lista wymaganych dostêpnych plików wykonywalnych, sprawdzane w $PATH,
   MODULE_CONFIGURE_CMD - dodatkowa komenda wykonywana na koniec konfigurowania
   modu³u, mo¿e byæ z³o¿ona np. z u¿yciem &&. "exit code" brany pod uwagê,
-  wiêc mo¿na u¿ywaæ polecenia test i tym podobnych.
+  wiêc mo¿na u¿ywaæ polecenia test i tym podobnych (adrian)
+* make: rozszerzenie dla modu³ów, w pliku spec: MODULE_MAKE_CMD - dodatkowa
+  komenda wykonywana na koniec kompilowania modu³u, dok³adny odpowiednik
+  MODULE_CONFIGURE_CMD (adrian)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

@@ -15,6 +15,7 @@ all:
 		MODULE_CXXFLAGS= && \
 		MODULE_LDFLAGS= && \
 		MODULE_3RDPARTY= && \
+		MODULE_MAKE_CMD= && \
 		MODULE_DIR=../modules/$$dir && \
 		. ./$$dir/spec && \
 		MODULE_CXXFLAGS=`cat $$dir/cxxflags` && \
@@ -51,7 +52,8 @@ all:
 			"module_moc_cpp_files=$$moc_cpp_files" \
 			"module_cxxflags=$$MODULE_CXXFLAGS" \
 			"module_ldflags=$$MODULE_LDFLAGS" \
-			$$dir/$$file_name || \
+			$$dir/$$file_name && \
+		eval "$$MODULE_MAKE_CMD" || \
 		exit 1; \
 	done && \
 	echo && \
@@ -60,7 +62,7 @@ all:
 
 module_d_files = $(addsuffix .d,$(basename $(module_o_files)))
 
-# dirty hack - leading space required becouse od automake "if" support
+# dirty hack - leading space required because od automake "if" support
 # time to say automake goodbye?
  ifneq (,$(module_d_files))
 -include $(module_d_files)
