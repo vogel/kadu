@@ -196,7 +196,28 @@ class SoundManager : public Themes
 			@param device uogólniony deskryptor urz±dzenia.
 		**/
 		void enableThreading(SoundDevice device);
+		/**
+			Standardowo po przekazaniu odtwarzanego sampla
+			do sterownika d¼wiêkowego program (w trybie blokuj±cym)
+			lub w±tek odtwarzaj±cy (w trybie nieblokuj±cym) czeka
+			na zakoñczenie emitowania d¼wiêku przez sterownik, aby
+			zagwarantowaæ, ¿e wyj¶cie z funkcji playSample() (w trybie
+			blokuj±cym) lub wyemitowanie sygna³u samplePlayed() (w
+			trybie nieblokuj±cym) nast±pi dopiero po fizycznym
+			odegraniu d¼wiêku. Inaczej mog³o by to nast±piæ dopiero
+			przy wywo³aniu metody closeDevice() co ma ró¿ne nieprzyjemne
+			efekty uboczne.
+			Czasem przy odtwarzaniu kilku ma³ych sampli jeden po drugim
+			powoduje to powstanie przerw miêdzy nimi. Aby tego unikn±æ
+			mo¿emy u¿yæ setFlushingEnabled(device, false) umo¿liwiaj±c
+			w ten sposób p³ynne odtwarzanie kilku sampli bezpo¶rednio
+			po sobie.
+		**/
 		void setFlushingEnabled(SoundDevice device, bool enabled);
+		/**
+			Zwraca aktualne ustawienie dokonane przy pomocy
+			setFlushingEnabled. Standardowo jest to true.
+		**/
 		bool flushingEnabled(SoundDevice device);
 		/**
 			Odtwarza próbkê d¼wiêkow±. Standardowo jest to
