@@ -9,6 +9,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * je¶li wybierzemy w menu podrêcznym "rozpocznij rozmowê" z jakim¶ kontaktem
   w userboxie  i otrzymali¶my od niego jak±¶ wiadomo¶æ, to wiadomo¶æ zostanie
   umieszczona w otwieranym oknie rozmowy (chilek)
+* wywalenie starych(qt2?) headers z chat.h i kadu.h (mast3r)
 
 +++ wersja 0.3.5
 * dalsza czê¶æ przeróbek mechanizmu konfiguracji. brakuje jeszcze

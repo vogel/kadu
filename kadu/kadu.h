@@ -5,7 +5,6 @@
 #include <qprogressdialog.h>
 #include <qmultilineedit.h>
 #include <qsocketnotifier.h>
-#include <qarray.h>
 #include <qmainwindow.h>
 #include <qpopupmenu.h>
 #include <qnetworkprotocol.h>

@@ -6,7 +6,6 @@
 #include <qhbox.h>
 #include <qmultilineedit.h>
 #include <qpushbutton.h>
-#include <qarray.h>
 #include <qtoolbutton.h>
 #include <qvaluelist.h>
 
