@@ -16,6 +16,7 @@
 #include "userbox.h"
 #include "pixmaps.h"
 #include "debug.h"
+#include "pending_msgs.h"
 
 UserBox::UserBox(QWidget* parent,const char* name,WFlags f)
 	: QListBox(parent,name),QToolTip(viewport())

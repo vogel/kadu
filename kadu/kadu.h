@@ -24,16 +24,12 @@
 #include <qframe.h>
 #include <qlayout.h>
 
-#include "userlist.h"
-#include "userbox.h"
-#include "pending_msgs.h"
+#include "libgadu.h"
+#include "misc.h"
 #include "status.h"
-/*
-struct groups {
-  int number;
-  char * name;
-};
-*/
+#include "userbox.h"
+#include "userlist.h"
+
 class dccSocketClass;
 
 class KaduTabBar;
@@ -162,7 +158,6 @@ struct chats {
     };
 };
 
-extern QString gg_icons[];
 extern QApplication *a;
 
 extern Kadu *kadu;
@@ -172,17 +167,13 @@ extern struct gg_session *sess;
 static QValueList<chats> chats_gcc32_bug;
 ////////////////////////////
 extern QValueList<chats> chats;
-extern UserList userlist;
 extern QValueList<uin_t> ignored;
-extern PendingMsgs pending;
-extern bool mute;
 extern bool userlist_sent;
 extern int server_nr;
 // Ominiecie bledu w gcc 3.2
 static QArray<acks> acks_gcc32_bug;
 ////////////////////////////
 extern QArray<acks> acks;
-extern QString own_description;
 
 extern QPopupMenu *statusppm;
 extern QSocketNotifier *kadusnr;
@@ -193,15 +184,11 @@ extern QSocketNotifier *dccsnw;
 void deletePendingMessage(int nr);
 void sendUserlist(void);
 
-void createConfig();
 void addIgnored(uin_t);
 void delIgnored(uin_t);
 bool isIgnored(uin_t);
 int writeIgnored(QString filename = "");
 void *watch_socket(void *);
-void kadu_debug(int, char*);
-void playSound(const QString &sound, const QString player = QString::null);
-void readConfig(void);
 QString pwHash(const QString);
 void confirmHistoryDeletion(const char *);
 extern QPopupMenu *dockppm;

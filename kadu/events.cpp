@@ -47,6 +47,7 @@
 #include "pending_msgs.h"
 #include "dock_widget.h"
 #include "debug.h"
+#include "sound.h"
 #include "../config.h"
 #ifdef HAVE_OPENSSL
 extern "C"
@@ -245,32 +246,6 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char *msg, time_t tim
 		rmsg->init();
 		rmsg->show();
 		}*/
-}
-
-void playSound(const QString &sound, const QString player) {
-	if (!config.playsound || mute)
-		return;
-
-	QStringList args;
-	if ((QString::compare(sound, NULL) == 0) || (QString::compare(sound, "") == 0)) {
-		kdebug("No sound file specified?\n");
-		return;
-		}
-	if (config.playartsdsp)
-		args.append("artsdsp");
-	if (player == QString::null)
-		args.append(config.soundprog);
-	else
-		args.append(player);
-	if (config.soundvolctrl)
-		args.append(QString("-v %1").arg(config.soundvol));
-	args.append(sound);
-	for (QStringList::Iterator it = args.begin(); it != args.end(); ++it ) {
-       		kdebug("playSound(): %s\n", (const char *)(*it).local8Bit());
-		}
-	QProcess *sndprocess = new QProcess(args, kadu);
-	sndprocess->start();
-	delete sndprocess;
 }
 
 void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)

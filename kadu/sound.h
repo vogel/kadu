@@ -6,6 +6,10 @@
 #include <qsemaphore.h>
 //#include <kde/artsc/artsc.h>
 
+extern bool mute;
+
+void playSound(const QString &sound, const QString player = QString::null);
+
 class SoundDevice;
 
 class PlayThread : public QThread

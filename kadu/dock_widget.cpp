@@ -12,6 +12,7 @@
 #include <qobject.h>
 #include <qpopupmenu.h>
 #include <qpixmap.h>
+#include <qtimer.h>
 
 #include "dock_widget.h"
 #include "config_dialog.h"
@@ -20,8 +21,8 @@
 #include "message.h"
 #include "chat.h"
 #include "debug.h"
-
-//
+#include "pending_msgs.h"
+#include "status.h"
 #include "kadu.h"
 
 #include <X11/Xlib.h>

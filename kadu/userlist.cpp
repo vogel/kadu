@@ -353,3 +353,4 @@ UserList& UserList::operator=(const UserList& userlist)
 	return *this;
 };
 
+UserList userlist;

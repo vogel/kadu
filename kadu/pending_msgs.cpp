@@ -155,3 +155,5 @@ bool PendingMsgs::loadFromFile()
 	f.close();
 	return true;
 };
+
+PendingMsgs pending;

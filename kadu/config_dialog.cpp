@@ -36,6 +36,7 @@
 #include "dock_widget.h"
 #include "config_file.h"
 #include "debug.h"
+#include "sound.h"
 #ifdef HAVE_OPENSSL
 extern "C"
 {

@@ -77,4 +77,6 @@ class UserList : public QObject, public QValueList<UserListElement>
 		void statusModified(UserListElement *);
 };
 
+extern UserList userlist;
+
 #endif

@@ -9,6 +9,7 @@
 
 #include <qobject.h>
 #include <qthread.h>
+#include <qprocess.h>
 #include <qsemaphore.h>
 //#include <kde/artsc/artsc.h>
 //#include <fcntl.h>
@@ -18,6 +19,35 @@
 
 #include "sound.h"
 #include "debug.h"
+#include "config_dialog.h"
+
+bool mute = false;
+
+void playSound(const QString &sound, const QString player) {
+	if (!config.playsound || mute)
+		return;
+
+	QStringList args;
+	if ((QString::compare(sound, NULL) == 0) || (QString::compare(sound, "") == 0)) {
+		kdebug("No sound file specified?\n");
+		return;
+		}
+	if (config.playartsdsp)
+		args.append("artsdsp");
+	if (player == QString::null)
+		args.append(config.soundprog);
+	else
+		args.append(player);
+	if (config.soundvolctrl)
+		args.append(QString("-v %1").arg(config.soundvol));
+	args.append(sound);
+	for (QStringList::Iterator it = args.begin(); it != args.end(); ++it ) {
+       		kdebug("playSound(): %s\n", (const char *)(*it).local8Bit());
+		}
+	QProcess *sndprocess = new QProcess(args);
+	sndprocess->start();
+	delete sndprocess;
+}
 
 PlayThread::PlayThread(SoundDevice *snddev) : QThread(), snddev(snddev) {
 	semwait = new QSemaphore(1);

@@ -25,6 +25,7 @@
 #include "message.h"
 #include "history.h"
 #include "debug.h"
+#include "pending_msgs.h"
 #ifdef HAVE_OPENSSL
 extern "C"
 {

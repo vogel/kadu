@@ -14,6 +14,8 @@
 * emotikony w selektorze animuj± siê po "najechaniu" kursorem myszy,
   przy okazji porz±dki: IconSelector,IconSelectorButton z chat.cpp/h =>
   EmoticonSelector,EmoticonSelectorButton w emoticons.cpp/h (adrian)
+* porz±dki: rozbijanie kadu.cpp/h, przenoszenie kodu w bardziej
+  odpowiednie miejsca (adrian)
 
 +++ wersja 0.3.3-final
 * ikonka wiadomo¶ci i ikon statusu "ukryty" z telefonikiem

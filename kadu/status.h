@@ -14,8 +14,10 @@
 
 #define GG_STATUS_INVISIBLE2 0x0009 /* g³upy... */
 
+extern QString gg_icons[];
 extern int gg_statuses[];
 extern const char *statustext[];
+extern QString own_description;
 
 bool ifStatusWithDescription(int status);
 int getActualStatus();

@@ -27,8 +27,6 @@
 
 Kadu *kadu;	
 QApplication *a;
-//KApplication * a;
-bool mute = false;
 
 int main(int argc, char *argv[])
 {
@@ -49,8 +47,6 @@ int main(int argc, char *argv[])
 	kadu->setIcon(*pix);
 	a->setMainWidget(kadu);
 
-	// pokazanie okna przeniesione do konstruktora z powodu RunDocked
-//	kadu->show();
 	if (!config.uin) {
 		QString path_;
 		path_ = ggPath("");

@@ -110,6 +110,7 @@
 #include "password.h"
 #include "tabbar.h"
 #include "debug.h"
+#include "sound.h"
 #include "../config.h"
 #ifdef HAVE_OPENSSL
 #include "simlite.h"
@@ -149,8 +150,6 @@ QLabel *statuslabel;
 QLabel *statuslabeltxt;
 QPopupMenu *grpmenu;
 
-UserList userlist;
-PendingMsgs pending;
 QValueList<struct chats> chats;
 struct gg_session *sess = NULL;
 struct sigaction sigact;
@@ -166,8 +165,6 @@ UpdatesClass *uc;
 
 const char *gg_servers[7] = {"217.17.41.82", "217.17.41.83", "217.17.41.84", "217.17.41.85",
 	"217.17.41.86", "217.17.41.87", "217.17.41.88"};
-QString gg_icons[] = {"online", "online_d", "busy", "busy_d", "invisible", "invisible_d",
-	"offline", "offline_d", "blocking"};
 
 enum {
 	KADU_CMD_SEND_MESSAGE,
@@ -205,9 +202,6 @@ enum {
 	KADU_CMD_NOTIFY_USER,
 	KADU_CMD_OFFLINE_TO_USER		     
 };
-
-/* our own description container */
-QString own_description;
 
 unsigned long getMyIP(void) {
 	unsigned long dest, gw;

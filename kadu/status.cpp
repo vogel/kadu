@@ -19,6 +19,9 @@
 
 AutoAwayTimer* AutoAwayTimer::autoaway_object=NULL;
 
+QString gg_icons[] = {"online", "online_d", "busy", "busy_d", "invisible", "invisible_d",
+	"offline", "offline_d", "blocking"};
+
 int gg_statuses[] = {GG_STATUS_AVAIL, GG_STATUS_AVAIL_DESCR, GG_STATUS_BUSY, GG_STATUS_BUSY_DESCR,
 	GG_STATUS_INVISIBLE, GG_STATUS_INVISIBLE_DESCR, GG_STATUS_NOT_AVAIL, GG_STATUS_NOT_AVAIL_DESCR,
 	GG_STATUS_BLOCKED};
@@ -27,6 +30,9 @@ const char *statustext[] = {"Online", "Online (d.)",
 	"Busy", "Busy (d.)",
 	"Invisible", "Invisible (d.)",
 	"Offline", "Offline (d.)", "Blocking"};
+
+/* our own description container */
+QString own_description;
 
 /* sprawdza czy nasz status jest opisowy
  odporne na podanie status'u z maska dla przyjaciol */

@@ -33,6 +33,7 @@
 #include "misc.h"
 #include "emoticons.h"
 #include "debug.h"
+#include "sound.h"
 #ifdef HAVE_OPENSSL
 extern "C"
 {

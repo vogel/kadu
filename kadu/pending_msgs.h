@@ -32,4 +32,6 @@ class PendingMsgs
 		void writeToFile();
 };
 
+extern PendingMsgs pending;
+
 #endif

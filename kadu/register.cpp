@@ -25,6 +25,45 @@
 #include "debug.h"
 #include "register.h"
 
+void createConfig() {
+	kdebug("createConfig()\n");
+	char *home = getenv("HOME");
+	struct passwd *pw;
+
+	kdebug("createConfig(): $HOME=%s\n", home);
+	if (!home) {
+		if (!(pw = getpwuid(getuid())))
+			return;
+		home = pw->pw_dir;
+		}
+
+	struct stat buf;	
+	QString ggpath = ggPath("");
+	stat(ggpath.local8Bit(), &buf);
+	if (S_ISDIR(buf.st_mode))
+		kdebug("createConfig(): Directory %s exists\n", (const char *)ggpath.local8Bit());
+	else {
+		kdebug("createConfig(): Creating directory\n");
+		if (mkdir(ggpath.local8Bit(), 0700) != 0 ) {
+			perror("mkdir");
+			return;
+			}
+		}
+
+	kdebug("createConfig(): Writing config files...\n");
+	ConfigFile *konf;
+	konf = new ConfigFile(ggPath("kadu.conf"));
+	konf->setGroup("Global");
+	konf->writeEntry("UIN", int(config.uin));
+	konf->writeEntry("Password", pwHash(config.password));
+	konf->sync();
+	delete konf;
+
+	kadu->setCaption(QString("Kadu: %1").arg(config.uin));
+
+	kdebug("createConfig(): Config file created\n");
+}
+
 Register::Register(QDialog *parent, const char *name) : QDialog (parent, name, FALSE, Qt::WDestructiveClose) {
 	kdebug("Register::Register()\n");
 
@@ -211,46 +250,6 @@ void Register::ask() {
 		config.password = pwd->text();
 		createConfig();
 		}
-}
-
-
-void createConfig() {
-	kdebug("createConfig()\n");
-	char *home = getenv("HOME");
-	struct passwd *pw;
-
-	kdebug("createConfig(): $HOME=%s\n", home);
-	if (!home) {
-		if (!(pw = getpwuid(getuid())))
-			return;
-		home = pw->pw_dir;
-		}
-
-	struct stat buf;	
-	QString ggpath = ggPath("");
-	stat(ggpath.local8Bit(), &buf);
-	if (S_ISDIR(buf.st_mode))
-		kdebug("createConfig(): Directory %s exists\n", (const char *)ggpath.local8Bit());
-	else {
-		kdebug("createConfig(): Creating directory\n");
-		if (mkdir(ggpath.local8Bit(), 0700) != 0 ) {
-			perror("mkdir");
-			return;
-			}
-		}
-
-	kdebug("createConfig(): Writing config files...\n");
-	ConfigFile *konf;
-	konf = new ConfigFile(ggPath("kadu.conf"));
-	konf->setGroup("Global");
-	konf->writeEntry("UIN", int(config.uin));
-	konf->writeEntry("Password", pwHash(config.password));
-	konf->sync();
-	delete konf;
-
-	kadu->setCaption(QString("Kadu: %1").arg(config.uin));
-
-	kdebug("createConfig(): Config file created\n");
 }
 
 Unregister::Unregister(QDialog *parent, const char *name) : QDialog (parent, name, FALSE, Qt::WDestructiveClose) {
