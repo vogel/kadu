@@ -33,7 +33,6 @@ Chat::Chat(UinsList uins, QWidget *parent)
 
 	iconsel_ptr = NULL;
 	autosend_enabled = false;
-  isrun_changetitle = false;
 
   title_timer = new QTimer(this);
   connect(title_timer,SIGNAL(timeout()),this,SLOT(changeTitle()));
@@ -203,6 +202,7 @@ void Chat::setTitle() {
 	title.replace(QRegExp("\n"), " ");
 
 	setCaption(title);
+  title_buffer=title;
 }
 
 void Chat::changeTitle() {
@@ -212,7 +212,6 @@ void Chat::changeTitle() {
       title_timer->start(1000,TRUE);
     }
     else{    
-      title_buffer = caption();
       setCaption("  ");
       title_timer->start(1000,TRUE);
     }
@@ -220,15 +219,9 @@ void Chat::changeTitle() {
 }
 
 void Chat::windowActivationChange(bool oldActive) {
-  if (isActiveWindow()){
-    if (isrun_changetitle){
-      title_timer->stop();
-      isrun_changetitle=false;
-      }
-    if (title_buffer.isNull())
-      setTitle();
-    else
-      setCaption(title_buffer);
+  if (isActiveWindow() && title_timer->isActive()){
+    title_timer->stop();
+    setCaption(title_buffer);
   }
 }
 
@@ -392,10 +385,8 @@ void Chat::alertNewMessage(void) {
   if (config.playsoundchat)
     playSound(config.soundchat);
 
-  if (!isActiveWindow() && !isrun_changetitle){
-    isrun_changetitle=true;
+  if (!isActiveWindow() && !title_timer->isActive())
     changeTitle();
-  }
 }
 
 void Chat::writeMyMessage() {

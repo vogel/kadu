@@ -76,7 +76,6 @@ class Chat : public QDialog {
 		void addMyMessageToHistory(void);
 
   private:
-    bool isrun_changetitle;
     QString title_buffer;
     QTimer *title_timer;  
 };
