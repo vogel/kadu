@@ -158,6 +158,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * nie wysy³amy dwóch zmian statusu przy statusie opisowym (chilek)
 * nie wy¶wietla siê ju¿ pusty wiersz w oknie chatu przy przechodzeniu 
   do nowej linii (joi)
+* drobne porz±dki przy htmlu (joi)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

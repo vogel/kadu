@@ -1170,9 +1170,9 @@ void History::formatHistoryEntry(QString &text, const HistoryEntry &entry) {
 	QString message;
 
 	message = entry.message;
-	message.replace(QRegExp("\n"), "<BR>");
+	message.replace(QRegExp("\n"), "<br/>");
 
-	text.append("<TABLE width=\"100%\"><TR><TD bgcolor=\"");
+	text.append("<table width=\"100%\"><tr><td bgcolor=\"");
 	if (entry.type & (HISTORYMANAGER_ENTRY_CHATSEND | HISTORYMANAGER_ENTRY_MSGSEND
 		| HISTORYMANAGER_ENTRY_SMSSEND)) {
 		bgcolor = config_file.readColorEntry("Look","ChatMyBgColor").name();
@@ -1183,9 +1183,9 @@ void History::formatHistoryEntry(QString &text, const HistoryEntry &entry) {
 		textcolor = config_file.readColorEntry("Look","ChatUsrFontColor").name();
 		}
 	text.append(bgcolor);
-	text.append("\"><FONT color=\"");
+	text.append("\"><font color=\"");
 	text.append(textcolor);
-	text.append("\"><B>");
+	text.append("\"><b>");
 
 	if (entry.type == HISTORYMANAGER_ENTRY_SMSSEND)
 		text.append(entry.mobile + " SMS");
@@ -1200,7 +1200,7 @@ void History::formatHistoryEntry(QString &text, const HistoryEntry &entry) {
 	text.append(QString(" :: ") + printDateTime(entry.date));
 	if (entry.type & (HISTORYMANAGER_ENTRY_CHATRCV | HISTORYMANAGER_ENTRY_MSGRCV))
 		text.append(QString(" / S ") + printDateTime(entry.sdate));
-	text.append("</B><BR>");
+	text.append("</b><br/>");
 	if (entry.type & HISTORYMANAGER_ENTRY_STATUS) {
 		switch (entry.status) {
 			case GG_STATUS_AVAIL:
@@ -1226,7 +1226,7 @@ void History::formatHistoryEntry(QString &text, const HistoryEntry &entry) {
 		}
 	else
 		text.append(message);
-	text.append("</TD></TR></TABLE></FONT>");
+	text.append("</font></td></tr></table>");
 }
 
 void History::showHistoryEntries(int from, int count) {

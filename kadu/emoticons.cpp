@@ -457,7 +457,7 @@ AnimStyleSheet::AnimStyleSheet(
 	: QStyleSheet(parent, name)
 {
 	Path=path;
-};
+}
 
 QTextCustomItem* AnimStyleSheet::tag(
 	const QString& name, const QMap<QString,QString>& attr,
@@ -467,7 +467,7 @@ QTextCustomItem* AnimStyleSheet::tag(
 	if(name!="img")
 		return QStyleSheet::tag(name,attr,context,factory,emptyTag,doc);
 	return new AnimTextItem(doc,(QTextEdit*)parent(),Path+"/"+attr["src"],QColor(attr["bgcolor"]),attr["title"]);
-};
+}
 
 
 /** create fresh emoticons dictionary, which will allow easy finding of occurrences

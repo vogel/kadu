@@ -307,6 +307,7 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 	QValueList<struct richtext_formant> formants;
 	char *cformats, *tmpformats;
 
+//	kdebug("unformatGGMessage():\n%s\n", msg.latin1());
 	mesg = msg;
 //	mesg.replace(QRegExp("^<html><head><meta\\sname=\"qrichtext\"\\s*\\s/></head>"), "");
 	mesg.replace(QRegExp("^<html><head>.*<body\\s.*\">\\r\\n"), "");
@@ -504,7 +505,7 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 				 	if (escape)
 			 			escapeSpecialCharacters(pe.str);
 					if(config_file.readBoolEntry("Look", "ShowMultilineDecs")) {
-						pe.str.replace(QRegExp("\n"), QString("<br>"));
+						pe.str.replace(QRegExp("\n"), QString("<br/>"));
 						pe.str.replace(QRegExp("\\s\\s"), QString(" &nbsp;"));
 					}
 					break;
@@ -991,7 +992,7 @@ void HtmlDocument::parseHtml(const QString& html)
 						addElement(e);
 					e.tag=true;
 					e.text="<";
-				};
+				}
 				break;
 			case '>':
 				if(e.tag)
@@ -1000,7 +1001,7 @@ void HtmlDocument::parseHtml(const QString& html)
 					addElement(e);
 					e.tag=false;
 					e.text="";
-				};
+				}
 				break;
 			default:
 				e.text+=ch;

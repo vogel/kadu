@@ -185,48 +185,48 @@ void UserBox::maybeTip(const QPoint &c)
 		switch (userlist.byAltNick(item->text()).status)
 		{
 			case GG_STATUS_AVAIL:
-				s = tr("<I>Available</I>");
+				s = tr("<i>Available</i>");
 				break;
 			case GG_STATUS_BUSY:
-				s = tr("<I>Busy</I>");
+				s = tr("<i>Busy</i>");
 				break;
 			case GG_STATUS_NOT_AVAIL:
 				if (!userlist.byAltNick(item->text()).uin)
-				    s = tr("<I>Mobile:</I><B> ")+userlist.byAltNick(item->text()).mobile+"</B>";
+				    s = tr("<i>Mobile:</i><b> ")+userlist.byAltNick(item->text()).mobile+"</b>";
 				else
-				    s = tr("<nobr><I>Not available</I></nobr>");
+				    s = tr("<nobr><i>Not available</i></nobr>");
 				break;
 			case GG_STATUS_INVISIBLE:
 			case GG_STATUS_INVISIBLE2:
-				s = tr("<I>Invisible</I>");
+				s = tr("<i>Invisible</i>");
 				break;
 			case GG_STATUS_INVISIBLE_DESCR:
-				s = tr("<I>Invisible <B>(d.)</B></I>");
+				s = tr("<i>Invisible <b>(d.)</b></i>");
 				break;
 			case GG_STATUS_BUSY_DESCR:
-				s = tr("<nobr><I>Busy <B>(d.)</B></I></nobr>");
+				s = tr("<nobr><i>Busy <b>(d.)</b></i></nobr>");
 				break;
 			case GG_STATUS_NOT_AVAIL_DESCR:
-				s = tr("<nobr><I>Not available <B>(d.)</B></I></nobr>");
+				s = tr("<nobr><i>Not available <b>(d.)</b></i></nobr>");
 				break;
 			case GG_STATUS_AVAIL_DESCR:
-				s = tr("<nobr><I>Available <B>(d.)</B></I></nobr>");
+				s = tr("<nobr><i>Available <b>(d.)</b></i></nobr>");
 				break;
 			case GG_STATUS_BLOCKED:
-				s = tr("<nobr><I>Blocking</I></nobr>");
+				s = tr("<nobr><i>Blocking</i></nobr>");
 				break;
 			default:
-				s = tr("<nobr><I>Unknown status</I></nobr>");
+				s = tr("<nobr><i>Unknown status</i></nobr>");
 				break;
 		};
 		QString desc = userlist.byAltNick(item->text()).description;
 		if (desc != "")
 		{
-			s += "<BR><BR>";
-			s += tr("<B>Description:</B><BR>");
+			s += "<br/><br/>";
+			s += tr("<b>Description:</b><br/>");
 			escapeSpecialCharacters(desc);
 			desc.replace(QRegExp(" "), "&nbsp;");
-			desc.replace(QRegExp("\n"), "<br>");
+			desc.replace(QRegExp("\n"), "<br/>");
 			s += desc;
 		};
 		tip(r, s);
@@ -262,7 +262,7 @@ void UserBox::mouseMoveEvent(QMouseEvent* e)
 			if(drag_text!="")
 				drag_text+="\n";
 			drag_text+=item(i)->text();
-		};
+		}
         QDragObject* d = new QTextDrag(drag_text,this);
 	d->dragCopy();
     }
@@ -287,7 +287,7 @@ void UserBox::refresh()
 	int i;
 	KaduListBoxPixmap *lbp;
 
-	kdebug("UserBox::refresh()\n");
+	kdebugf();
 
 	this->setPaletteBackgroundColor(config_file.readColorEntry("Look","UserboxBgColor"));
 	this->setPaletteForegroundColor(config_file.readColorEntry("Look","UserboxFgColor"));
@@ -468,27 +468,27 @@ void UserBox::refresh()
 	setCurrentItem(findItem(s_user));
 
 	kdebug("UserBox::refresh() exit\n");
-};
+}
 
 void UserBox::addUser(const QString &altnick)
 {
 	Users.append(altnick);
-};
+}
 
 void UserBox::removeUser(const QString &altnick)
 {
 	Users.remove(altnick);
-};
+}
 
 void UserBox::renameUser(const QString &oldaltnick, const QString &newaltnick)
 {
-	kdebug("UserBox::renameUser()\n");
+	kdebugf();
 	QStringList::iterator it = Users.find(oldaltnick);
 	if (it != Users.end())
 		(*it) = newaltnick;
 	else
 		kdebug("Userbox::renameUser(): userbox doesnt contain: %s\n", (const char *)oldaltnick.local8Bit());
-};
+}
 
 bool UserBox::containsAltNick(const QString &altnick)
 {
@@ -497,14 +497,14 @@ bool UserBox::containsAltNick(const QString &altnick)
 			return true;
 	kdebug("UserBox::containsAltNick(): userbox doesnt contain: %s\n", (const char *)altnick.lower().local8Bit());
 	return false;
-};
+}
 
 void UserBox::changeAllToInactive()
 {
 	QPixmap qp_inact = icons_manager.loadIcon("Offline");
 	for(int i=0; i<count(); i++)
 		changeItem(qp_inact,item(i)->text(),i);
-};
+}
 
 void UserBox::showHideInactive()
 {
@@ -561,29 +561,28 @@ void UserBox::all_refresh()
 {
 	for(int i=0; i<UserBoxes.size(); i++)
 		UserBoxes[i]->refresh();
-};
+}
 
 void UserBox::all_removeUser(QString &altnick)
 {
 	for(int i=0; i<UserBoxes.size(); i++)
 		UserBoxes[i]->removeUser(altnick);
-};
+}
 
 void UserBox::all_changeAllToInactive()
 {
 	for(int i=0; i<UserBoxes.size(); i++)
 		UserBoxes[i]->changeAllToInactive();
-};
+}
 
 void UserBox::all_renameUser(const QString &oldaltnick, const QString &newaltnick)
 {
 	for(int i = 0; i < UserBoxes.size(); i++)
 		UserBoxes[i]->renameUser(oldaltnick, newaltnick);
-};
+}
 
 void UserBox::initModule()
 {
-
 	QT_TRANSLATE_NOOP("@default", "General");
 	QT_TRANSLATE_NOOP("@default", "Show Inactive users");
 
@@ -650,8 +649,7 @@ void UserBox::initModule()
 	ConfigDialog::connectSlot("Look", "ColorButton0", SIGNAL(changed(const QColor&)), userboxslots, SLOT(chooseColorGet(const QColor&)));
 	ConfigDialog::connectSlot("Look", "", SIGNAL(textChanged(const QString&)), userboxslots, SLOT(chooseColorGet(const QString&)), "line0");
 	ConfigDialog::connectSlot("Look", "", SIGNAL(activated(int)), userboxslots, SLOT(chooseUserBoxSelect(int)), "combobox0");
-};
-
+}
 
 UserBoxMenu::UserBoxMenu(QWidget *parent, const char *name): QPopupMenu(parent, name)
 {
@@ -675,11 +673,9 @@ int UserBoxMenu::addItemAtPos(int index,const QString &iconname, const QString &
 
 int UserBoxMenu::getItem(const QString &caption)
 {
-    for (int i=0; i<=count(); i++)
-	if (!QString::localeAwareCompare(caption,text(idAt(i)).left(caption.length())))
-	{
-		return idAt(i);
-	}
+	for (int i=0; i<=count(); i++)
+		if (!QString::localeAwareCompare(caption,text(idAt(i)).left(caption.length())))
+			return idAt(i);
 	return -1;
 }
 
@@ -701,18 +697,16 @@ void UserBoxMenu::show(QListBoxItem *item)
 
 	emit popup();
 	exec(QCursor::pos());
-
 }
 
 void UserBoxSlots::onCreateConfigDialog()
 {
-	kdebug("UserBoxSlots::onCreateConfigDialog()\n");
+	kdebugf();
 	vl_userboxcolor.clear();
 	vl_userboxcolor.append(config_file.readColorEntry("Look","UserboxBgColor"));
 	vl_userboxcolor.append(config_file.readColorEntry("Look","UserboxDescBgColor"));
 	vl_userboxcolor.append(config_file.readColorEntry("Look","UserboxFgColor"));
 	vl_userboxcolor.append(config_file.readColorEntry("Look","UserboxDescTextColor"));
-
 
 	QLineEdit *l_color= ConfigDialog::getLineEdit("Look", "", "line0");
 	l_color->setMaxLength(7);
@@ -735,7 +729,6 @@ void UserBoxSlots::onCreateConfigDialog()
 	preview->setPaletteForegroundColor(vl_userboxcolor[2]);
 	preview->setPaletteBackgroundColor(vl_userboxcolor[0]);
 	preview->setAlignment(Qt::AlignCenter);
-
 
 	QHGroupBox *hgb_1 = ConfigDialog::getHGroupBox("Look", "Preview desc.");
 	hgb_1->setAlignment(Qt::AlignCenter);
@@ -767,14 +760,13 @@ void UserBoxSlots::onCreateConfigDialog()
 	cb_userboxfont->insertStringList(fdb.families());
 	cb_userboxfont->setCurrentText(vl_userboxfont[0].family());
 
-
 	connect(cb_userboxfont, SIGNAL(activated(int)), this, SLOT(chooseUserBoxFont(int)));
 	connect(cb_userboxfontsize, SIGNAL(activated(int)), this, SLOT(chooseUserBoxFontSize(int)));
 }
 
 void UserBoxSlots::onDestroyConfigDialog()
 {
-	kdebug("UserBoxSlots::onDestroyConfigDialog()\n");
+	kdebugf();
 	config_file.writeEntry("Look","UserboxBgColor",vl_userboxcolor[0]);
 	config_file.writeEntry("Look","UserboxDescBgColor",vl_userboxcolor[1]);
 	config_file.writeEntry("Look","UserboxFgColor", vl_userboxcolor[2]);
@@ -813,7 +805,7 @@ void UserBoxSlots::chooseUserBoxSelect(int nr)
 
 void UserBoxSlots::chooseUserBoxFont(int nr)
 {
-	kdebug("UserBoxSlots::chooseUserBoxFont()\n");
+	kdebugf();
 
 	QFontDatabase fdb;
 	QValueList<int> vl;
@@ -860,10 +852,10 @@ void UserBoxSlots::chooseUserBoxFontSize(int nr)
 
 void UserBoxSlots::chooseColorGet(const QString &text)
 {
-	kdebug("UserBoxSlots::chooseColorGet(QString)\n");
+	kdebugf();
 	if ((text.length() == 7)&& (QColor(text).isValid()))
 	    {
-	    	ColorButton *colorbutton= ConfigDialog::getColorButton("Look", "ColorButton0");
+		ColorButton *colorbutton= ConfigDialog::getColorButton("Look", "ColorButton0");
 		QLineEdit *l_color= ConfigDialog::getLineEdit("Look", "", "line0");
 		colorbutton->setColor(QColor(text));
 		int pos=l_color->cursorPosition();
@@ -874,7 +866,7 @@ void UserBoxSlots::chooseColorGet(const QString &text)
 
 void UserBoxSlots::chooseColorGet(const QColor& color)
 {
-	kdebug("UserBoxSlots::chooseColorGet()\n");
+	kdebugf();
 	QLineEdit *l_color= ConfigDialog::getLineEdit("Look", "", "line0");
 	QComboBox *cb_userboxselect= ConfigDialog::getComboBox("Look", "","combobox0");
 

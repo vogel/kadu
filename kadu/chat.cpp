@@ -157,9 +157,7 @@ void ChatManager::openPendingMsgs(UinsList uins)
 		UserBox::all_refresh();
 	}
 	else
-	{
 		k = openChat(uins,0);
-	}
 }
 
 void ChatManager::openPendingMsgs()
@@ -171,7 +169,7 @@ void ChatManager::openPendingMsgs()
 	bool stop = false;
 	UserListElement e;
 
-	kdebug("ChatManager::openPendingMsgs()\n");
+	kdebugf();
 
 	for(i = 0; i<pending.count(); i++)
 	{
@@ -269,7 +267,7 @@ void KaduTextBrowser::copyLinkLocation() {
 QPopupMenu *KaduTextBrowser::createPopupMenu(const QPoint &point) {
 	QPopupMenu *popupmenu;
 
-	kdebug("KaduTextBrowser::createPopupMenu()\n");
+	kdebugf();
 	
 	anchor = anchorAt(point);
 	popupmenu = QTextBrowser::createPopupMenu(point);
@@ -286,7 +284,7 @@ CustomInput::CustomInput(QWidget *parent, const char *name) : QMultiLineEdit(par
 }
 
 void CustomInput::keyPressEvent(QKeyEvent * e) {
-	kdebug("CustomInput::keyPressEvent()\n");
+	kdebugf();
 	emit keyPressed(e, this);
 	if (autosend_enabled && ((HotKey::shortCut(e,"ShortCuts", "chat_newline")) || e->key()==Key_Enter)&& !(e->state() & ShiftButton)) {
 		kdebug("CustomInput::keyPressEvent(): emit enterPressed()\n");
@@ -572,16 +570,15 @@ void Chat::unregisterButton(const QString& name)
 
 QPushButton* Chat::button(const QString& name)
 {
-	if(!Buttons.contains(name))
-	{
-		kdebug("return NULL\n");
-		return NULL;
-	}
-	return Buttons[name];
+	if(Buttons.contains(name))
+		return Buttons[name];
+
+	kdebug("return NULL\n");
+	return NULL;
 }
 
 void Chat::specialKeyPressed(int key) {
-	kdebug("Chat::specialKeyPressed()\n");
+	kdebugf();
 	switch (key) {
 		case CustomInput::KEY_BOLD:
 			boldbtn->setOn(!boldbtn->isOn());
@@ -599,24 +596,24 @@ void Chat::specialKeyPressed(int key) {
 }
 
 void Chat::toggledBold(bool on) {
-	kdebug("Chat::toggledBold()\n");
+	kdebugf();
 	edit->setBold(on);
 }
 
 void Chat::toggledItalic(bool on) {
-	kdebug("Chat::toggledItalic()\n");
+	kdebugf();
 	edit->setItalic(on);
 }
 
 void Chat::toggledUnderline(bool on) {
-	kdebug("Chat::toggledUnderline()\n");
+	kdebugf();
 	edit->setUnderline(on);
 }
 
 void Chat::curPosChanged(int para, int pos) {
 	int i;
 
-	kdebug("Chat::curPosChanged()\n");
+	kdebugf();
 	if (edit->bold() != boldbtn->isOn())
 		boldbtn->setOn(edit->bold());
 	if (edit->italic() != italicbtn->isOn())
@@ -681,7 +678,7 @@ void Chat::setTitle() {
 		setIcon(icons_manager.loadIcon(gg_icons[statusGGToStatusNr(userlist.byUinValue(Uins[0]).status)]));
 	}
 
-	title.replace(QRegExp("<br>"), " ");
+	title.replace(QRegExp("<br/>"), " ");
 	title.replace(QRegExp("&nbsp;"), " ");
 
 	setCaption(title);
@@ -727,8 +724,8 @@ void Chat::keyPressEvent(QKeyEvent *e) {
 QString Chat::convertCharacters(QString edit, bool me) {
 
 	// zmieniamy windowsowe \r\n na unixowe \n
-	edit.replace( QRegExp("\r\n"), "\n" );
-	edit.replace( QRegExp("\n"), "<BR>" );
+	edit.replace( QRegExp("\r\n"), "<br/>" );
+	edit.replace( QRegExp("\n"), "<br/>" );
 
 	HtmlDocument doc;
 	doc.parseHtml(edit);
@@ -765,7 +762,7 @@ QString Chat::convertCharacters(QString edit, bool me) {
 
 /* unregister us */
 void Chat::closeEvent(QCloseEvent *e) {
-	kdebug("Chat::closeEvent()\n");	
+	kdebugf();	
 	QWidget::closeEvent(e);
 }
 
@@ -792,20 +789,20 @@ void Chat::hyperlinkClicked(const QString &link) {
 void Chat::formatMessage(bool me, const QString &altnick, const QString &msg, const QString &time, QString &toadd) {
 	QString editext = convertCharacters(msg,me);
 
-	toadd.append("<TABLE width=\"100%\"><TR><TD bgcolor=\"");
+	toadd.append("<table width=\"100%\"><tr><td bgcolor=\"");
 	if (me)
 	    	toadd.append(config_file.readColorEntry("Look","ChatMyBgColor").name());
 	else
 	    	toadd.append(config_file.readColorEntry("Look","ChatUsrBgColor").name());
-	toadd.append("\"><FONT color=\"");
+	toadd.append("\"><font color=\"");
 	if (me)
 		toadd.append(config_file.readColorEntry("Look","ChatMyFontColor").name());
 	else
 		toadd.append(config_file.readColorEntry("Look","ChatUsrFontColor").name());
-	toadd.append("\"><B>");
+	toadd.append("\"><b>");
 	toadd.append(altnick);
 	toadd.append(" :: ");
-	toadd.append(time + "</B><BR>" + editext + "</TD></TR></TABLE></FONT>");
+	toadd.append(time + "</b><br/>" + editext + "</font></td></tr></table>");
 }
 
 void Chat::scrollMessages(QString &toadd) {
@@ -831,7 +828,7 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time) {
 	QDateTime date;
 	int i, from, end, count;
 	
-	kdebug("Chat::writeMessageFromHistory()\n");
+	kdebugf();
 
 	date.setTime_t(time);
 	count = history.getHistoryEntriesCount(senders);
@@ -935,7 +932,7 @@ void Chat::cancelMessage(void) {
 }
 
 void Chat::ackReceivedSlot(int Seq) {
-	kdebug("Chat::ackReceivedSlot()\n");
+	kdebugf();
 	if (seq != Seq)
 		return;
 	kdebug("Chat::ackReceivedSlot(): This is my ack.\n");
@@ -1001,14 +998,9 @@ void Chat::sendMessage(void) {
 	free(tmp);
 
  	if (config_file.readBoolEntry("Chat","MessageAcks"))
-	{
-		connect(&event_manager, SIGNAL(ackReceived(int)),
-			this, SLOT(ackReceivedSlot(int)));
-	}
+		connect(&event_manager, SIGNAL(ackReceived(int)), this, SLOT(ackReceivedSlot(int)));
 	else
-	{
 		writeMyMessage();
-	}	
 
 	if (myLastFormats)
 		delete [](char *)myLastFormats;
@@ -1027,7 +1019,7 @@ void Chat::pruneWindow(void) {
 	if (config_file.readBoolEntry("Chat","ScrollDown")) {
 		index = -1;
 		while (occurences != config_file.readNumEntry("Chat","ChatPruneLen") && totaloccurences > config_file.readNumEntry("Chat","ChatPruneLen") - 1) {
-			index = body->text().findRev(QString("<TABLE"), index - 8);
+			index = body->text().findRev(QString("<table"), index - 8);
 			occurences++;
 			}
 		totaloccurences++;
@@ -1038,9 +1030,9 @@ void Chat::pruneWindow(void) {
 		index = 0;
 		while (occurences != config_file.readNumEntry("Chat","ChatPruneLen") && totaloccurences > config_file.readNumEntry("Chat","ChatPruneLen") ) {
 			if (occurences == 0)
-				index = body->text().find(QString("<TABLE"), 0);
+				index = body->text().find(QString("<table"), 0);
 			else
-				index = body->text().find(QString("<TABLE"), index + 8);
+				index = body->text().find(QString("<table"), index + 8);
 
 			occurences++;
 			}
@@ -1088,7 +1080,7 @@ void Chat::changeColor(void)
 }
 
 void Chat::aboutToClose() {
-	kdebug("Chat::aboutToClose()\n");
+	kdebugf();
 	color_selector = NULL;
 }
 
@@ -1266,7 +1258,7 @@ ColorSelectorButton::ColorSelectorButton(QWidget* parent, const QColor& qcolor) 
 void ColorSelectorButton::buttonClicked()
 {
 	emit clicked(color);
-};
+}
 
 ColorSelector::ColorSelector(QWidget *parent, const char *name) : QWidget (parent, name,Qt::WType_Popup)
 {
@@ -1289,7 +1281,7 @@ ColorSelector::ColorSelector(QWidget *parent, const char *name) : QWidget (paren
 		btn_width=btn->sizeHint().width();
 		grid->addWidget(btn, i/selector_width, i%selector_width);
 		connect(btn,SIGNAL(clicked(const QColor&)),this,SLOT(iconClicked(const QColor&)));
-	};
+	}
 }
 
 void ColorSelector::iconClicked(const QColor& color)
@@ -1299,7 +1291,7 @@ void ColorSelector::iconClicked(const QColor& color)
 };
 
 void ColorSelector::closeEvent(QCloseEvent *e) {
-	kdebug("ColorSelector::closeEvent()\n");
+	kdebugf();
 	emit aboutToClose();
 	QWidget::closeEvent(e);
 }
@@ -1332,11 +1324,11 @@ void ColorSelector::alignTo(QWidget* w)
 		y = 0;
 	// ustawiamy selektor na wyliczonej pozycji
 	move(x, y);
-};
+}
 
 void ChatSlots::onCreateConfigDialog()
 {
-	kdebug("ChatSlots::onCreateConfigDialog()\n");
+	kdebugf();
 	QComboBox *cb_emoticons_style= ConfigDialog::getComboBox("Chat", "Emoticons:");
 	cb_emoticons_style->insertItem(tr("None"));
 	cb_emoticons_style->insertItem(tr("Static"));
@@ -1405,29 +1397,23 @@ void ChatSlots::onCreateConfigDialog()
 	
 	connect(cb_chatfont, SIGNAL(activated(int)), this, SLOT(chooseChatFont(int)));
 	connect(cb_chatfontsize, SIGNAL(activated(int)), this, SLOT(chooseChatFontSize(int)));
-
-
 }
 
 void ChatSlots::onPruneChat(bool toggled)
 {
 	QHGroupBox *h_prune= ConfigDialog::getHGroupBox("Chat", "Message pruning");
 	h_prune->setEnabled(toggled);
-
-
 }
 
 void ChatSlots::onDefWebBrowser(bool toggled)
 {
 	QLineEdit *l_webbrow= ConfigDialog::getLineEdit("Chat", "Custom Web browser");
-	    ((QHBox*)l_webbrow->parent())->setEnabled(!toggled);
-	
+	((QHBox*)l_webbrow->parent())->setEnabled(!toggled);
 }
-
 
 void ChatSlots::onDestroyConfigDialog()
 {
-	kdebug("ChatSlots::onDestroyConfigDialog()\n");
+	kdebugf();
 	
 	QComboBox* cb_emoticons_theme= ConfigDialog::getComboBox("Chat", "Emoticons theme");
 	config_file.writeEntry("Chat", "EmoticonsTheme",cb_emoticons_theme->currentText());
@@ -1462,15 +1448,11 @@ void ChatSlots::onDestroyConfigDialog()
 	
 	if (e_conferenceprefix->text() == tr("Conference with ") || e_conferenceprefix->text() == "Conference with ")
 		config_file.writeEntry("Look", "ConferencePrefix", "");
-
 }
 
 void ChatSlots::chooseEmoticonsStyle(int index) {
     QComboBox *emotheme_box= ConfigDialog::getComboBox("Chat","Emoticons theme");
-	if (!index)
-	    emotheme_box->setEnabled(false);
-	else
-	    emotheme_box->setEnabled(true);
+	emotheme_box->setEnabled(index!=0);
 }
 
 void ChatSlots::chooseChatSelect(int nr)
@@ -1492,20 +1474,18 @@ void ChatSlots::chooseChatSelect(int nr)
 	    cb_chatfont->setCurrentText(vl_chatfont[0].family());
 	    colorbutton->setEnabled(false);
 	    l_color->setEnabled(false);
-
 	}
 	else
 	{
 	    h_fontsize->hide();
 	    colorbutton->setEnabled(true);
 	    l_color->setEnabled(true);
-
 	}
 }
 
 void ChatSlots::chooseChatFont(int nr)
 {
-	kdebug("ChatSlots::chooseChatFont()\n");
+	kdebugf();
 
 	QFontDatabase fdb;
 	QValueList<int> vl;
@@ -1533,29 +1513,28 @@ void ChatSlots::chooseChatFontSize(int nr)
 	QComboBox *cb_chatfontsize= ConfigDialog::getComboBox("Look", "Font size", "size");
 	QComboBox *cb_chatfont= ConfigDialog::getComboBox("Look", "Font", "font");
 	
-	vl_chatfont[0]= 
-	    QFont(cb_chatfont->currentText(), cb_chatfontsize->currentText().toInt());
+	vl_chatfont[0]=QFont(cb_chatfont->currentText(), cb_chatfontsize->currentText().toInt());
 	updatePreview();
 }
 
 void ChatSlots::chooseColorGet(const QString &text)
 {
-	kdebug("ChatSlots::chooseColorGet(QString)\n");
-	if ((text.length() == 7)&& (QColor(text).isValid()))
-	    {
-	    	ColorButton *colorbutton= ConfigDialog::getColorButton("Look", "ColorButton1");
+	kdebugf();
+	if ((text.length()==7) && (QColor(text).isValid()))
+	{
+		ColorButton *colorbutton= ConfigDialog::getColorButton("Look", "ColorButton1");
 		QLineEdit *l_color= ConfigDialog::getLineEdit("Look", "", "line1");
 		colorbutton->setColor(QColor(text));
 		int pos=l_color->cursorPosition();
 		chooseColorGet(QColor(text));
 		l_color->setCursorPosition(pos);
 		updatePreview();
-	    }
+	}
 }
 
 void ChatSlots::chooseColorGet(const QColor& color)
 {
-	kdebug("ChatSlots::chooseColorGet()\n");
+	kdebugf();
 	QLineEdit *l_color= ConfigDialog::getLineEdit("Look", "", "line1");
 	QComboBox *cb_chatselect= ConfigDialog::getComboBox("Look", "","combobox1");
 	
