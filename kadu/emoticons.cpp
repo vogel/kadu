@@ -51,7 +51,16 @@ void EmoticonsManager::loadEmoticonsRegexpList()
 		EmoticonsRegexpListItem item;
 		item.regexp=regexp;
 		item.picname=picname;
-		EmoticonsRegexpList.append(item);
+		bool added=false;
+		for(QValueList<EmoticonsRegexpListItem>::iterator i=EmoticonsRegexpList.begin(); i!=EmoticonsRegexpList.end(); i++)
+			if(regexp.length()>=(*i).regexp.length())
+			{
+				EmoticonsRegexpList.insert(i,item);
+				added=true;
+				break;
+			};
+		if(!added)
+			EmoticonsRegexpList.append(item);
 		fprintf(stderr,"EMOTICON REGEXP: %s=%s\n",(const char*)regexp.local8Bit(),(const char*)picname.local8Bit());
 	};
 };
@@ -82,9 +91,25 @@ QString EmoticonsManager::themePath()
 
 void EmoticonsManager::expandEmoticons(QString& text)
 {
+	QString new_text;
 	fprintf(stderr,"Expanding emoticons...\n");
-	for(QValueList<EmoticonsRegexpListItem>::iterator i=EmoticonsRegexpList.begin(); i!=EmoticonsRegexpList.end(); i++)
-		text.replace(QRegExp((*i).regexp),QString("__escaped_lt__IMG SRC=")+(*i).picname+"__escaped_gt__");
+	for(int j=0; j<text.length(); j++)
+	{
+		bool emoticonFound=false;
+		for(QValueList<EmoticonsRegexpListItem>::iterator i=EmoticonsRegexpList.begin(); i!=EmoticonsRegexpList.end(); i++)
+		{
+			QRegExp r=QRegExp((*i).regexp);
+			if(r.search(text,j)==j)
+			{
+				new_text+=QString("__escaped_lt__IMG SRC=")+(*i).picname+"__escaped_gt__";
+				j+=r.matchedLength()-1;
+				emoticonFound=true;
+			};
+		};
+		if(!emoticonFound)
+			new_text+=text[j];
+	};
+	text=new_text;
 	fprintf(stderr,"Emoticons expanded...\n");
 };
 
