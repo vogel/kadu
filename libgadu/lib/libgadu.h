@@ -1,4 +1,4 @@
-/* $Id: libgadu.h,v 1.37 2003/09/09 22:20:45 chilek Exp $ */
+/* $Id: libgadu.h,v 1.38 2003/09/10 07:54:19 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -517,7 +517,7 @@ struct gg_event {
 			int image_size;	/* maksymalny rozmiar grafiki */
 			char *descr;		/* opis stanu */
 			int time;		/* czas powrotu */
-		} *notify60;
+		} notify60;
 		
 		struct {			/* @ack potwierdzenie wiadomo¶ci -- GG_EVENT_ACK */
 			uin_t recipient;	/* numer odbiorcy */
