@@ -39,6 +39,7 @@
 #include <qvbuttongroup.h>
 #include <qlineedit.h>
 #include <qtooltip.h>
+#include <qevent.h>
 
 #include <time.h>
 //#include <sys/socket.h>
@@ -908,7 +909,7 @@ int HistoryManager::getHistoryEntryIndexByDate(UinsList uins, QDateTime &date, b
 	return start;
 }
 
-History::History(UinsList uins): uins(uins) {
+History::History(UinsList uins): uins(uins), closeDemand(false), finding(false) {
 	int i;
 	
 	history.convHist2ekgForm(uins);
@@ -1130,6 +1131,7 @@ void History::searchHistory() {
 	kdebug("History::searchHistory(): findrec.type = %d\n", findrec.type);
 	rxp.setPattern(findrec.data);
 	setEnabled(false);
+	finding = true;
 	if (findrec.reverse)
 		do {
 			len = total > 100 ? 100 : total;
@@ -1152,7 +1154,7 @@ void History::searchHistory() {
 			kdebug("History::searchHistory(): actualrecord = %d, i = %d, total = %d\n",
 				findrec.actualrecord, i, total);
 			a->processEvents();
-		} while (total > 0 && i == entries.count());
+		} while (total > 0 && i == entries.count() && !closeDemand);
 	else
 		do {
 			len = total > 100 ? 100 : total;
@@ -1174,10 +1176,24 @@ void History::searchHistory() {
 			kdebug("History::searchHistory(): actualrecord = %d, i = %d, total = %d\n",
 				findrec.actualrecord, i, total);
 			a->processEvents();
-		} while (total > 0 && i == entries.count());
+		} while (total > 0 && i == entries.count() && !closeDemand);
+	if (closeDemand) {
+		reject();
+		return;
+		}
 	if (findrec.actualrecord < 0)
 		findrec.actualrecord = 0;
 	setEnabled(true);
+	finding = false;
+}
+
+void History::closeEvent(QCloseEvent *e) {
+	if (finding) {
+		e->ignore();
+		closeDemand = true;
+		}
+	else
+		e->accept();
 }
 
 HistorySearch::HistorySearch(QWidget *parent, UinsList uins) : QDialog(parent), uins(uins) {

@@ -22,6 +22,7 @@
 #include <qradiobutton.h>
 #include <qlineedit.h>
 #include <qvbuttongroup.h>
+#include <qevent.h>
 
 #include "libgadu.h"
 #include "misc.h"
@@ -73,11 +74,14 @@ class History : public QDialog {
 		void showHistoryEntries(int from, int count);
 		void searchHistory();
 		QString gaduStatus2symbol(unsigned int status);
+		void closeEvent(QCloseEvent *e);
 
 		QTextBrowser *body;
 		UinsList uins;
 		int start;
 		HistoryFindRec findrec;
+		bool closeDemand;
+		bool finding;
 };
 
 class HistorySearch : public QDialog {

@@ -29,6 +29,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * wyrównane ikonki statusów (jz)
 * nowy "image" okna informacji o u¿ytkowniku (chilek)
 * w oknie informacji o u¿ytkowniku dodane pole z nazw± dnsow± (chilek)
+* program nie wywala siê, gdy zamykamy okno historii w czasie jej przeszukiwania (jz/chilek)
 
 +++ wersja 0.3.4-pre2
 * graficzny instalator - instaluj.tcl (googie)
