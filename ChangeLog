@@ -110,6 +110,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   (przystosowanie menu do modularnosci) (pawel_p)
 * wy³±czenie ikonki w panelu dokuj±cym nie powoduje wywalenia
   Kadu poprzez dymki (mast3r)
+* poprawiono zapamietywanie wybranego jezyka (pawel_p)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci
