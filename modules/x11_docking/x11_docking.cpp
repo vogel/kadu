@@ -17,10 +17,13 @@
 #include "debug.h"
 #include "config_file.h"
 #include "kadu.h"
+#include "config_dialog.h"
 
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/Xatom.h>
+
+#define DISABLE_HIDING
 
 extern Time qt_x_time;
 
@@ -80,11 +83,17 @@ static bool send_message(
 extern "C" int x11_docking_init()
 {
 	x11_tray_icon = new X11TrayIcon();
+#ifndef DISABLE_HIDING
+	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Remove from taskbar (experimental)"), "HideTaskbar", false);
+#endif
 	return 0;
 }
 
 extern "C" void x11_docking_close()
 {
+#ifndef DISABLE_HIDING
+	ConfigDialog::removeControl("General", "Remove from taskbar (experimental)");
+#endif
 	delete x11_tray_icon;
 	x11_tray_icon = NULL;
 }
@@ -133,17 +142,20 @@ X11TrayIcon::X11TrayIcon()
 	int r;
 	int data = 1;
 	r = XInternAtom(dsp, "KWM_DOCKWINDOW", false);
-	/*int r1=*/XChangeProperty(dsp, win, r, r, 32, 0, (uchar *)&data, 1);
+	XChangeProperty(dsp, win, r, r, 32, 0, (uchar *)&data, 1);
 	r = XInternAtom(dsp, "_KDE_NET_WM_SYSTEM_TRAY_WINDOW_FOR", false);
-	/*int r2=*/XChangeProperty(dsp, win, r, XA_WINDOW, 32, 0, (uchar *)&data, 1);
+	XChangeProperty(dsp, win, r, XA_WINDOW, 32, 0, (uchar *)&data, 1);
 	
+#ifndef DISABLE_HIDING
 	//wy³±czamy pokazywanie Kadu na pasku zadañ
 	disableTaskbar();
+	connect(kadu, SIGNAL(shown()), this, SLOT(disableTaskbar()));
+//	connect(kadu, SIGNAL(minimized()), kadu, SLOT(hide()));
+#endif
 	
 	connect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap&)), this, SLOT(setTrayPixmap(const QPixmap&)));
 	connect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
 	connect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
-	connect(kadu, SIGNAL(shown()), this, SLOT(disableTaskbar()));
 
 	if (config_file.readBoolEntry("General", "RunDocked"))
 		kadu->showMainWindowOnStart=false;
@@ -152,15 +164,22 @@ X11TrayIcon::X11TrayIcon()
 
 void X11TrayIcon::disableTaskbar()
 {
-	enableTaskbar(false);
+#ifndef DISABLE_HIDING
+	if (config_file.readBoolEntry("General", "HideTaskbar"))
+		enableTaskbar(false);
+#endif
 }
 
 void X11TrayIcon::enableTaskbar(bool enable)
 {
+#ifndef DISABLE_HIDING
 	static Display *dsp = x11Display();
 	static XEvent e;
 	static bool set=false;
-	static WId rootWindow=QApplication::desktop()->screen()->winId();
+
+	Screen *screen = XDefaultScreenOfDisplay(dsp);
+	int screen_id = XScreenNumberOfScreen(screen);
+	WId rootWindow=QApplication::desktop()->screen(screen_id)->winId();
 	
 	if (!set)
 	{
@@ -176,18 +195,20 @@ void X11TrayIcon::enableTaskbar(bool enable)
 	e.xclient.data.l[0] = (!enable);
 
 	trap_errors();
-//	if (manager_window != None)
-//		XSendEvent(dsp, manager_window, False, (SubstructureRedirectMask|SubstructureNotifyMask), &e);
 	XSendEvent(dsp, rootWindow, False, (SubstructureRedirectMask|SubstructureNotifyMask), &e);
 	XSync(dsp, False);
 	untrap_errors();
+#endif
 }
 
 X11TrayIcon::~X11TrayIcon()
 {
 	kdebugf();
+#ifndef DISABLE_HIDING
+//	disconnect(kadu, SIGNAL(minimized()), kadu, SLOT(hide()));
 	disconnect(kadu, SIGNAL(shown()), this, SLOT(disableTaskbar()));
 	enableTaskbar();
+#endif
 	disconnect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap&)), this, SLOT(setTrayPixmap(const QPixmap&)));
 	disconnect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
 	disconnect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
