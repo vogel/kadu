@@ -188,7 +188,7 @@ void SearchDialog::selectionChanged(QListViewItem *item) {
 	disconnect(b_addbtn, SIGNAL(clicked()), 0, 0);
 	if (item) {
 		uin = item->text(1).toUInt();
-		if (userlist.containsUin(uin) && !userlist.byUin(uin).foreign) {
+		if (userlist.containsUin(uin) && !userlist.byUin(uin).anonymous) {
 			b_addbtn->setText(i18n("&Update Info"));
 			connect(b_addbtn, SIGNAL(clicked()), this, SLOT(updateInfoClicked()));
 			}

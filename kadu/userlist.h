@@ -27,7 +27,6 @@ struct UserListElement
 	uin_t uin;
 	unsigned int status;
 	bool anonymous;
-	bool foreign;
 	int ip;
 	short port;
 	int time_to_death;
@@ -52,7 +51,7 @@ class UserList : public QObject, public QValueList<UserListElement>
 			const QString Mobile, const QString Uin,
 			const int Status = GG_STATUS_NOT_AVAIL,
 			const bool Blocking = false, const bool Offline_to_user = false,
-			const bool Notify = true, const QString Group = "", const QString Description = "", const bool Foreign = false);
+			const bool Notify = true, const QString Group = "", const QString Description = "", const bool anonymous = false);
 		void changeUserInfo(const QString OldAltNick,
 			const QString &FirstName, const QString &LastName,
 			const QString &NickName, const QString &AltNick,

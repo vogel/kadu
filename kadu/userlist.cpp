@@ -85,7 +85,7 @@ void UserList::addUser(const QString FirstName,const QString LastName,
 	const QString NickName,const QString AltNick,
 	const QString Mobile,const QString Uin,const int Status,
 	const bool Blocking, const bool Offline_to_user, const bool Notify,
-	const QString Group,const QString Description, const bool Foreign)
+	const QString Group,const QString Description, const bool Anonymous)
 {
 	UserListElement e;
 	e.first_name = FirstName;
@@ -100,8 +100,7 @@ void UserList::addUser(const QString FirstName,const QString LastName,
 	e.notify = Notify;
 	e.group = Group;
 	e.description = Description;
-	e.anonymous = false;
-	e.foreign = Foreign;
+	e.anonymous = Anonymous;
 	e.ip = 0;
 	e.port = 0;
 	e.time_to_death = 300;
@@ -121,7 +120,7 @@ void UserList::changeUserInfo(const QString OldAltNick,
 	e.nickname = NickName;
 	e.altnick = AltNick;
 	e.mobile = Mobile;
-	e.foreign = false;
+	e.anonymous = false;
 	e.blocking = Blocking;
 	e.offline_to_user = Offline_to_user;
 	e.notify = Notify;
@@ -195,7 +194,7 @@ bool UserList::writeToFile(QString filename)
 		s.append(QString::number((*i).uin));
 		s.append(QString("\r\n"));
 		
-		if (!(*i).foreign) {
+		if (!(*i).anonymous) {
 			fprintf(stderr, s.local8Bit());
 			f.writeBlock(s.local8Bit(), s.length());
 			}
@@ -220,7 +219,7 @@ bool UserList::writeToFile(QString filename)
 		s.append((*i).notify ? QString("true") : QString("false"));
 		s.append(QString("\r\n"));
 		
-		if (!(*i).foreign && (*i).uin) {
+		if (!(*i).anonymous && (*i).uin) {
 			fprintf(stderr, s.local8Bit());
 			fa.writeBlock(s.local8Bit(), s.length());
 			}

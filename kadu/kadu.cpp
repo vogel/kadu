@@ -590,7 +590,7 @@ void Kadu::setActiveGroup(const QString& group)
 				if(user_group==group)
 					belongsToGroup=true;
 		};
-		if(belongsToGroup && !userlist[i].foreign)
+		if (belongsToGroup && !userlist[i].anonymous)
 			userbox->addUser(userlist[i].altnick);
 	};
 	UserBox::all_refresh();
@@ -706,11 +706,11 @@ void Kadu::prepareDcc(void) {
 void Kadu::addUser(const QString& FirstName, const QString& LastName,
 	const QString& NickName, const QString& AltNick,
 	const QString& Mobile, const QString& Uin, const int Status,
-	const QString& Group, const QString& Description, const bool Foreign)
+	const QString& Group, const QString& Description, const bool Anonymous)
 {
 	if (!userlist.containsUin(Uin.toUInt()))
 		userlist.addUser(FirstName, LastName, NickName, AltNick, Mobile, Uin, Status, 
-			false, false, true, Group, Description, Foreign);
+			false, false, true, Group, Description, Anonymous);
 	else {
 		UserListElement &ule = userlist.byUin(Uin.toUInt());
 		userlist.changeUserInfo(ule.altnick,

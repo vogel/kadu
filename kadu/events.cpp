@@ -69,7 +69,7 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 	QString nick;
 	if (userlist.containsUin(senders[0])) {
 		UserListElement &ule = userlist.byUin(senders[0]);
-		if (ule.foreign && config.ignoreanonusers)
+		if (ule.anonymous && config.ignoreanonusers)
 			return;
 		nick = ule.altnick;
 		}
