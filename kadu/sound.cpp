@@ -241,13 +241,11 @@ void SoundSlots::onCreateConfigDialog()
 	cb_soundtheme->insertStringList(soundmanager.themes());
 	cb_soundtheme->setCurrentText(config_file.readEntry("Sounds", "SoundTheme"));
 	cb_soundtheme->changeItem(tr("Custom"), 0);// dodanie translacji 
-	cb_soundtheme->setEnabled(b_playsound->isChecked());
 
 	QHBox* box=ConfigDialog::getHBox("Sounds","sound_box");
+	QHBox* soundtheme=ConfigDialog::getHBox("Sounds", "sound_theme");
 	box->setEnabled(b_playsound->isChecked());
-
-	QComboBox* combobox=ConfigDialog::getComboBox("Sounds","Sound theme");
-	combobox->setEnabled(b_playsound->isChecked());
+	soundtheme->setEnabled(b_playsound->isChecked());
 
 	QListView* lv_soundfiles=ConfigDialog::getListView("Sounds","sound_files");
 	lv_soundfiles->addColumn(tr("Event"));
@@ -261,7 +259,7 @@ void SoundSlots::onCreateConfigDialog()
 	soundmanager.setSoundTheme(config_file.readEntry("Sounds","SoundTheme"));
 	    
 	QString chatfile, messagefile, notifyfile;
-	if (combobox->currentText() == tr("Custom"))
+	if (cb_soundtheme->currentText() == tr("Custom"))
 	    {
 	    chatfile= config_file.readEntry("Sounds", "Chat_sound");
 	    messagefile= config_file.readEntry("Sounds", "Message_sound");
@@ -314,7 +312,7 @@ void SoundSlots::soundPlayer(bool value)
 
 	QHBox* box=ConfigDialog::getHBox("Sounds","sound_box");
 	box->setEnabled(value);
-	QComboBox* combobox=ConfigDialog::getComboBox("Sounds","Sound theme");
+	QHBox* combobox=ConfigDialog::getHBox("Sounds","sound_theme");
 	combobox->setEnabled(value);
 
 
