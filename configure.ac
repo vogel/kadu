@@ -292,18 +292,6 @@ AC_FUNC_STRFTIME
 AC_FUNC_WAIT3
 AC_CHECK_FUNCS([floor inet_ntoa memset mkdir select strchr strdup strerror strtol])
 
-# gettext
-
-FIND_HEADER([libintl.h],[/usr/include /usr/local/include],
-[
-	CPPFLAGS="$CPPFLAGS -I$FILE_DIR"
-])
-FIND_LIBRARY([intl],[/usr/lib /usr/local/lib],
-[
-	LIBS="$LIBS -L$FILE_DIR"
-],[ ])
-AM_GNU_GETTEXT([external])
-
 ########################################################################
 # parse configuration options
 ########################################################################
@@ -329,7 +317,7 @@ else
 	CPPFLAGS="$CPPFLAGS -I../libgadu/lib"
 fi
 
-MY_SUBDIRS="$MY_SUBDIRS kadu po varia"
+MY_SUBDIRS="$MY_SUBDIRS kadu translations varia"
 
 # doc support
 AC_ARG_ENABLE(doc,[  --enable-doc=DIR        install doc in DIR [[DATADIR/apps/kadu/doc]]])
@@ -407,7 +395,7 @@ fi
 # finalize configure
 ########################################################################
 
-AC_CONFIG_FILES([./Makefile kadu/Makefile po/Makefile varia/Makefile])
+AC_CONFIG_FILES([./Makefile kadu/Makefile translations/Makefile varia/Makefile])
 if test "$enable_doc" = "yes"; then
 	AC_CONFIG_FILES([doc/Makefile])
 fi
