@@ -399,7 +399,7 @@ Zaznacz i wpisz w to pole poprawny ciąg. Argumenty oddziel spacjami. Argument %
     </message>
     <message>
         <source>Notify of new message in inactive chat window</source>
-        <translation>Powiadom o nowej wiadomości gdy okno rozmowy nieaktywne</translation>
+        <translation>Powiadom o wiadomości gdy okno nieaktywne</translation>
     </message>
     <message>
         <source>Notify of new chat</source>
@@ -633,7 +633,7 @@ wiadomości</translation>
     </message>
     <message>
         <source>is unavailable</source>
-        <translation>nie osiągalny</translation>
+        <translation>niedostępny</translation>
     </message>
 </context>
 <context>
