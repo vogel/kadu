@@ -1566,11 +1566,6 @@ Być może nie jest to moduł kompatybilny z Kadu</translation>
         <translation>Wynagany moduł %1 nie został znaleziony</translation>
     </message>
     <message>
-        <source>Module %1 cannot be unloaded because it is used by another module</source>
-        <translation>Moduł %1 nie może być wyłączony
-ponieważ jest używany  przez inny moduł</translation>
-    </message>
-    <message>
         <source>Module %1 is already active</source>
         <translation>Moduł %1 jest aktywny</translation>
     </message>
@@ -1579,6 +1574,10 @@ ponieważ jest używany  przez inny moduł</translation>
 %2</source>
         <translation>Nie mogę załadować biblioteki modułu %1:
 %2</translation>
+    </message>
+    <message>
+        <source>Module %1 cannot be deactivated because it is used now</source>
+        <translation>Moduł %1 nie może być zdeaktywowany ponieważ jest obecnie w użyciu</translation>
     </message>
 </context>
 <context>
@@ -1837,10 +1836,6 @@ Teraz możesz dodać znajomych do listy kontaktów.</translation>
     <message>
         <source>&amp;Chat</source>
         <translation>&amp;Rozmowa</translation>
-    </message>
-    <message>
-        <source></source>
-        <translation></translation>
     </message>
 </context>
 <context>

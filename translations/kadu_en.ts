@@ -1556,16 +1556,16 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Module %1 cannot be unloaded because it is used by another module</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Module %1 is already active</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Cannot load %1 module library.:
 %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Module %1 cannot be deactivated because it is used now</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1821,14 +1821,6 @@ Now add your friends to the userlist.</source>
     </message>
     <message>
         <source>&amp;Chat</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source></source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source> </source>
         <translation type="unfinished"></translation>
     </message>
 </context>

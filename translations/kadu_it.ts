@@ -1565,16 +1565,16 @@ Probabilmente Modulo non è compatibile.</translation>
         <translation>Module %1 non trovato</translation>
     </message>
     <message>
-        <source>Module %1 cannot be unloaded because it is used by another module</source>
-        <translation>Modulo %1 non può essere disattivato perchè in uso da altro modulo</translation>
-    </message>
-    <message>
         <source>Module %1 is already active</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Cannot load %1 module library.:
 %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Module %1 cannot be deactivated because it is used now</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1834,14 +1834,6 @@ Ora è possibile aggiungere i vostri amici alla lista dei contatti.</translation
     <message>
         <source>&amp;Chat</source>
         <translation>&amp;Chat</translation>
-    </message>
-    <message>
-        <source></source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source> </source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
