@@ -1246,7 +1246,7 @@ void Chat::initModule()
 	ConfigDialog::addVGroupBox("Chat", "Chat", "WWW options");
 	ConfigDialog::addCheckBox("Chat", "WWW options", "Use default Web browser", "DefaultWebBrowser", true);
 	ConfigDialog::addLineEdit("Chat", "WWW options", "Custom Web browser", "WebBrowser", "", "%1 - Url clicked in chat window");
-	ConfigDialog::addCheckBox("Chat", "Chat", "Automatically prune chat messages", "ChatPrune", false);
+	ConfigDialog::addCheckBox("Chat", "Chat", "Automatically prune chat messages", "ChatPrune", true);
 	ConfigDialog::addHGroupBox("Chat", "Chat", "Message pruning");
 	ConfigDialog::addLineEdit("Chat", "Message pruning", "Reduce the number of visible messages to", "ChatPruneLen", "20");
 	ConfigDialog::addCheckBox("Chat", "Chat", "Open chat window on new message", "OpenChatOnMessage");
