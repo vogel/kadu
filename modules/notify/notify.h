@@ -84,6 +84,8 @@ class Notify : public QObject
 	 */
 	void unregisterNotifier(const QString &name);
 
+	QStringList notifiersList();
+	
 	public slots:
 	/*
 	 * aktualizuje wszystkie po³±czenia

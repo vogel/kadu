@@ -361,6 +361,11 @@ void Notify::emitMessage(const QString &from, const QString &to, const QString &
 	kdebugf2();
 }
 
+QStringList Notify::notifiersList()
+{
+	return QStringList(notifiers.keys());
+}
+
 Notify::Notifier::Notifier() : notifier(NULL)
 {
 }
