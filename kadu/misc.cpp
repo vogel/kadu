@@ -1891,6 +1891,11 @@ const QString & HtmlDocument::elementText(int index) const
 	return Elements[index].text;
 }
 
+QString & HtmlDocument::elementText(int index)
+{
+	return Elements[index].text;
+}
+
 void HtmlDocument::setElementValue(int index,const QString& text,bool tag)
 {
 	Element& e=Elements[index];

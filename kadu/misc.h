@@ -205,6 +205,10 @@ class HtmlDocument
 		**/
 		const QString &elementText(int index) const;
 		/**
+			Zwraca tekst elementu o podanym indeksie.
+		**/
+		QString &elementText(int index);
+		/**
 			Ustawia tekst i typ elementu o podanym indeksie.
 		**/
 		void setElementValue(int index,const QString& text,bool tag=false);
