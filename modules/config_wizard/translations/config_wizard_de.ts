@@ -362,10 +362,6 @@ Kennwörter in beiden Feldern (&quot;Kennwort&quot; und &quot;Kennwort erneut ei
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;h3&gt;Please enter your valid e-mail address and password you want to secure your new Gadu-gadu number&lt;/h3&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Sound module</source>
         <translation type="unfinished"></translation>
     </message>
@@ -470,6 +466,11 @@ You UIN is: </source>
         <source>
 Account configuration was saved.
 Press Next to continue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;h3&gt;Please enter your valid e-mail address and password you want to secure your new Gadu-gadu number&lt;/h3&gt;
+Password must contain at least 5 signs (only letters and numbers)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

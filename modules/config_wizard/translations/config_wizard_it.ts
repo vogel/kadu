@@ -362,10 +362,6 @@ Password in entrambi campi deve essere la stessa!</translation>
         <translation>&lt;h3&gt; Hai deciso di usare account esistente. Prego di configurarlo&lt;/h3&gt;</translation>
     </message>
     <message>
-        <source>&lt;h3&gt;Please enter your valid e-mail address and password you want to secure your new Gadu-gadu number&lt;/h3&gt;</source>
-        <translation>&lt;h3&gt; Prego inserire valido indirizzo e-mail e password che userai per connessione sicura ai servers Gadu-Gadu&lt;/h3&gt;</translation>
-    </message>
-    <message>
         <source>Sound module</source>
         <translation>Il modulo sonoro</translation>
     </message>
@@ -472,6 +468,11 @@ Account configuration was saved.
 Press Next to continue</source>
         <translation>Configurazione account è stata salvata.
 Premi Avanti per continuare</translation>
+    </message>
+    <message>
+        <source>&lt;h3&gt;Please enter your valid e-mail address and password you want to secure your new Gadu-gadu number&lt;/h3&gt;
+Password must contain at least 5 signs (only letters and numbers)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

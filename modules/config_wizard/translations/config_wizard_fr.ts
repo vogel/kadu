@@ -362,10 +362,6 @@ Le mot de passe devrait être le même dans les deux champs!</translation>
         <translation>&lt;h3&gt; Vous avez decidé d&apos;utiliser le compte existant. Veuillez configurer ce compte&lt;/h3&gt;</translation>
     </message>
     <message>
-        <source>&lt;h3&gt;Please enter your valid e-mail address and password you want to secure your new Gadu-gadu number&lt;/h3&gt;</source>
-        <translation>&lt;h3&gt;Veuillez inscrire votre adresse e-mail valide et le mot de passe numéro Gadu_Gadu&lt;/h3&gt;</translation>
-    </message>
-    <message>
         <source>Sound module</source>
         <translation>Modules de son</translation>
     </message>
@@ -470,6 +466,11 @@ You UIN is: </source>
         <source>
 Account configuration was saved.
 Press Next to continue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;h3&gt;Please enter your valid e-mail address and password you want to secure your new Gadu-gadu number&lt;/h3&gt;
+Password must contain at least 5 signs (only letters and numbers)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
