@@ -205,6 +205,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   uwzglêdniane s± modu³y wkompilowane statycznie w kadu (adrian)
 * problem z kompilacj± modu³u powoduje przerwanie procesu budowania kadu (adrian)
 * bramki SMS sa wydzielowe do modulow (michal)
+* ³apanie do linków w chacie tak¿e: sftp:// smb:// file:/ rsync:// mailto: (joi)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

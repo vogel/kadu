@@ -760,7 +760,7 @@ QString Chat::convertCharacters(QString edit, bool me) {
 	doc.parseHtml(edit);
 
 	// detekcja adresow url
-	QRegExp url_regexp("(http://|https://|www\\.|ftp://)[a-zA-Z0-9\\-\\._/~?=&#\\+%:;,!\\\\]+");
+	QRegExp url_regexp("(http://|https://|www\\.|ftp://|ftp\\.|sftp://|smb://|file:/|rsync://|mailto:)[a-zA-Z0-9\\-\\._/~?=&#\\+%:;,!@\\\\]+");
 	for(int i=0; i<doc.countElements(); i++)
 	{
 		if(doc.isTagElement(i))
