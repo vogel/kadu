@@ -29,6 +29,7 @@
 //
 #include "kadu.h"
 #include "misc.h"
+#include "debug.h"
 #include "history.h"
 //
 
@@ -53,7 +54,7 @@ void appendHistory(UinsList uins, uin_t uin,unsigned char* msg, bool own, time_t
 	f.setName(fname);
 	
 	if (!(f.open(IO_WriteOnly | IO_Append))) {
-		fprintf(stderr, "appendHistory(): Error opening history file %s\n", (const char *)fname.local8Bit());
+		kdebug("appendHistory(): Error opening history file %s\n", (const char *)fname.local8Bit());
 		return;
 		}
 
@@ -90,7 +91,7 @@ void appendHistory(UinsList uins, uin_t uin,unsigned char* msg, bool own, time_t
 
 void appendSMSHistory(const QString& mobile,const QString& msg)
 {
-	fprintf(stderr,"Appending sms to history (%s)\n",mobile.local8Bit().data());
+	kdebug("Appending sms to history (%s)\n",mobile.local8Bit().data());
 	QString altnick;
 	// Jesli user posiada uin to loguj to normalnej historii
 	for(int i=0; i<userlist.count(); i++)
@@ -112,7 +113,7 @@ void appendSMSHistory(const QString& mobile,const QString& msg)
 	QFile f(ggPath("history/sms"));
 	if(!(f.open(IO_WriteOnly|IO_Append)))
 	{
-		fprintf(stderr, "appendSMSHistory(): Error opening sms history file\n");
+		kdebug("appendSMSHistory(): Error opening sms history file\n");
 		return;
 	};
 	QString target;
@@ -160,7 +161,7 @@ History::History(UinsList uins) {
 		body->setText(t.read());
 		}
 	else {
-		fprintf(stderr, "KK History(): Error opening history file %s\n", (const char *)fname.local8Bit());
+		kdebug("History(): Error opening history file %s\n", (const char *)fname.local8Bit());
 		body->setText(i18n("Error opening history file"));
 		}
 	grid->addWidget(body,0,0);

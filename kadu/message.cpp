@@ -22,6 +22,7 @@
 #include "pixmaps.h"
 #include "message.h"
 #include "history.h"
+#include "debug.h"
 #ifdef HAVE_OPENSSL
 extern "C"
 {
@@ -117,7 +118,7 @@ rMessage::rMessage(const QString & nick, int msgclass, UinsList uins, QString &m
 	body->setWordWrap(QMultiLineEdit::WidgetWidth);
 	body->setFont(config.fonts.chat);
 
-	fprintf(stderr,"KK rMessage::rMessage(): message in slot\n");
+	kdebug("rMessage::rMessage(): message in slot\n");
 
 //	deletePendingMessage(i);
 
@@ -339,11 +340,11 @@ void Message::commitSend(void) {
                if (b_encryptmsg->isEnabled() && b_encryptmsg->isChecked()) {
                        seq = gg_send_message(sess, GG_CLASS_CHAT, uin, (unsigned char *)encrypted);
 		       free(encrypted);
-                       fprintf(stderr,"seq: %d\n", seq);
+                       kdebug("seq: %d\n", seq);
                } else {
 #endif
                        seq = gg_send_message(sess, GG_CLASS_CHAT, uin, utmp);
-                       fprintf(stderr,"seq: %d\n", seq);
+                       kdebug("seq: %d\n", seq);
 #ifdef HAVE_OPENSSL
 		}
 #endif
@@ -366,13 +367,13 @@ void Message::commitSend(void) {
 	acks[index].ptr = this;
 	acks[index].type = 1;
 
-	fprintf(stderr,"KK Message::commitSend(): Message to uin %i queued for delivery\n", uin);
+	kdebug("Message::commitSend(): Message to uin %i queued for delivery\n", uin);
 	setCaption(i18n("Message for ") + nicksnd + i18n(" [sending...]"));
 	body->setReadOnly(false);	
 }
 
 Message::~Message() {
-	fprintf(stderr, "KK Message::~Message()\n");
+	kdebug("Message::~Message()\n");
 	for (int i = index + 1; i < acks.size(); i++) {
 		acks[i-1].ack = acks[i].ack;
 		acks[i-1].seq = acks[i].seq;

@@ -16,6 +16,7 @@
 #include <stdlib.h>
 
 #include "kadu.h"
+#include "debug.h"
 #include "expimp.h"
 
 UserlistImport::UserlistImport(QWidget *parent, const char *name)
@@ -109,7 +110,7 @@ void UserlistImport::deleteSocketNotifiers() {
 
 void UserlistImport::startTransfer() {
 	if (!(gg_http = gg_userlist_get(config.uin, config.password, 1))) {
-		fprintf(stderr, "KK UserlistImport: gg_userlist_get() failed\n");
+		kdebug("UserlistImport: gg_userlist_get() failed\n");
 		QMessageBox::critical(this, "Import error", i18n("The application encountered an internal error\nThe import was unsuccessful") );
 		return;
 		}
@@ -144,7 +145,7 @@ void UserlistImport::closeEvent(QCloseEvent * e) {
 void UserlistImport::updateUserlist() {
 	int i;
 	
-	fprintf(stderr, "KK UserlistImport::updateUserlist()\n");
+	kdebug("UserlistImport::updateUserlist()\n");
 	
 	i = 0;
 	while (i < userlist.count()) {
@@ -174,22 +175,22 @@ void UserlistImport::updateUserlist() {
 		uins[i] = userlist[i].uin;
 
 	gg_notify(sess, uins, userlist.count());
-	fprintf(stderr, "KK UserlistImport::updateUserlist(): Userlist sent\n");
+	kdebug("UserlistImport::updateUserlist(): Userlist sent\n");
 
 	userlist.writeToFile();
-	fprintf(stderr, "KK UserlistImport::updateUserlist(): Wrote userlist\n");
+	kdebug("UserlistImport::updateUserlist(): Wrote userlist\n");
 
 	free(uins);			
 }
 
 void UserlistImport::dataReceived() {
-	fprintf(stderr, "KK UserlistImport::dataReceived()\n");
+	kdebug("UserlistImport::dataReceived()\n");
 	if (gg_http->check & GG_CHECK_READ)
 		socketEvent();
 }
 
 void UserlistImport::dataSent() {
-	fprintf(stderr, "KK UserlistImport::dataSent()\n");
+	kdebug("UserlistImport::dataSent()\n");
 	snw->setEnabled(false);
 	if (gg_http->check & GG_CHECK_WRITE)
 		socketEvent();
@@ -198,12 +199,12 @@ void UserlistImport::dataSent() {
 void UserlistImport::socketEvent() {
 //	bool dis2 = false;
 
-	fprintf(stderr, "KK ImportUserlist::socketEvent(): data on socket\n");			
+	kdebug("ImportUserlist::socketEvent(): data on socket\n");			
 
 	if (gg_userlist_get_watch_fd(gg_http) < 0) {
 		fetchbtn->setEnabled(true);
 		deleteSocketNotifiers();
-		fprintf(stderr,"KK ImportUserlist::socketEvent(): gg_userlist_get_watch_fd() error. bailing out.\n");
+		kdebug("ImportUserlist::socketEvent(): gg_userlist_get_watch_fd() error. bailing out.\n");
 		QMessageBox::critical(this, "Import error", i18n("The application encountered a network error\nThe import was unsuccessful") );
 		gg_userlist_get_free(gg_http);
 		gg_http = NULL;
@@ -211,7 +212,7 @@ void UserlistImport::socketEvent() {
 		}
 
 	if (gg_http->state == GG_STATE_CONNECTING) {
-		fprintf(stderr, "KK ImportUserlist::socketEvent(): changing QSocketNotifiers.\n");		
+		kdebug("ImportUserlist::socketEvent(): changing QSocketNotifiers.\n");		
 		deleteSocketNotifiers();
 		snr = new QSocketNotifier(gg_http->fd, QSocketNotifier::Read, this);
 		connect(snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
@@ -220,7 +221,7 @@ void UserlistImport::socketEvent() {
 		}
 
 	if (gg_http->state == GG_STATE_DONE && gg_http->data == NULL) {
-		fprintf(stderr, "KK ImportUserlist::socketEvent(): No results. Exit.\n");
+		kdebug("ImportUserlist::socketEvent(): No results. Exit.\n");
 		deleteSocketNotifiers();
 		QMessageBox::information(this, "No results", i18n("Your action yielded no results") );
 		fetchbtn->setEnabled(true);
@@ -232,7 +233,7 @@ void UserlistImport::socketEvent() {
 	if (gg_http->state == GG_STATE_ERROR) {
 		fetchbtn->setEnabled(true);
 		deleteSocketNotifiers();
-		fprintf(stderr,"KK ImportUserlist::socketEvent(): gg_userlist_get_watch_fd() error. bailing out.\n");
+		kdebug("ImportUserlist::socketEvent(): gg_userlist_get_watch_fd() error. bailing out.\n");
 		QMessageBox::critical(this, "Import error", i18n("The application encountered a network error\nThe import was unsuccessful") );
 		gg_userlist_get_free(gg_http);
 		gg_http = NULL;
@@ -241,12 +242,12 @@ void UserlistImport::socketEvent() {
 
 	if (gg_http->state == GG_STATE_DONE) {
 		fetchbtn->setEnabled(true);
-		fprintf(stderr,"KK ImportUserlist::socketEvent(): Done\n");
+		kdebug("ImportUserlist::socketEvent(): Done\n");
 		QStringList strlist;
 		cp_to_iso((unsigned char *)gg_http->data);
 		strlist = QStringList::split("\r\n",__c2q((const char *)gg_http->data),true);
-		fprintf(stderr, "! %d !\n", strlist.count());		
-		fprintf(stderr, "%s\n", gg_http->data);
+		kdebug("! %d !\n", strlist.count());		
+		kdebug("%s\n", gg_http->data);
 		QStringList fieldlist;
 		QString tmparray[16];
 		QListViewItem * qlv;
@@ -258,7 +259,7 @@ void UserlistImport::socketEvent() {
 		for ((it = strlist.begin()), (i = 1); it != strlist.end(), i < strlist.count(); ++it, i++ ) {
 			fieldlist = QStringList::split(";",*it,true);
 			for ((it2 = fieldlist.begin()), (j = 1); it2 != fieldlist.end(), j < fieldlist.count(); ++it2, j++) {
-				fprintf(stderr, "%s ",(const char *)(*it2).local8Bit());
+				kdebug("%s ",(const char *)(*it2).local8Bit());
 				tmparray[j-1] = (*it2);
 				}
 			importedUserlist.addUser(tmparray[0], tmparray[1], tmparray[2],
@@ -270,7 +271,7 @@ void UserlistImport::socketEvent() {
 			qlv = new QListViewItem(results, tmparray[6], tmparray[2], tmparray[3],
 				tmparray[0], tmparray[1], tmparray[4], tmparray[5]);
 
-			fprintf(stderr, "\n%s \n", (const char *)(*it).local8Bit());
+			kdebug("\n%s \n", (const char *)(*it).local8Bit());
 			}
 
 		deleteSocketNotifiers();
@@ -377,7 +378,7 @@ void UserlistExport::startTransfer() {
 	iso_to_cp((unsigned char *)con2);
 	
 	if (!(gg_http = gg_userlist_put(config.uin, config.password, con2, 1))) {
-		fprintf(stderr, "KK UserlistExport: gg_userlist_put() failed\n");
+		kdebug("UserlistExport: gg_userlist_put() failed\n");
 		QMessageBox::critical(this, "Export error", i18n("The application encountered an internal error\nThe export was unsuccessful") );
 		return;
 		}
@@ -438,7 +439,7 @@ void UserlistExport::clean(){
 	sendbtn->setEnabled(false);
 	tofilebtn->setEnabled(false);
 	if (!(gg_http = gg_userlist_put(config.uin, config.password, con2, 1))) {
-		fprintf(stderr, "KK UserlistExport: Delete failed\n");
+		kdebug("UserlistExport: Delete failed\n");
 		QMessageBox::critical(this, "Export error", i18n("The application encountered an internal error\nThe delete userlist on server was unsuccessful") );
 		deletebtn->setEnabled(true);		
 		sendbtn->setEnabled(true);
@@ -455,27 +456,27 @@ void UserlistExport::clean(){
 }
 
 void UserlistExport::dataReceived() {
-	fprintf(stderr, "KK UserlistExport::dataReceived()\n");
+	kdebug("UserlistExport::dataReceived()\n");
 	if (gg_http->check & GG_CHECK_READ)
 		socketEvent();
 }
 
 void UserlistExport::dataSent() {
-	fprintf(stderr, "KK UserlistExport::dataSent()\n");
+	kdebug("UserlistExport::dataSent()\n");
 	snw->setEnabled(false);
 	if (gg_http->check & GG_CHECK_WRITE)
 		socketEvent();
 }
 
 void UserlistExport::socketEvent() {
-	fprintf(stderr, "KK ExportUserlist::socketEvent(): data on socket\n");			
+	kdebug("ExportUserlist::socketEvent(): data on socket\n");			
 
 	if (gg_userlist_put_watch_fd(gg_http) < 0) {
 		deletebtn->setEnabled(true);
 		sendbtn->setEnabled(true);
 		tofilebtn->setEnabled(true);
 		deleteSocketNotifiers();
-		fprintf(stderr,"KK ExportUserlist::socketEvent(): gg_userlist_put_watch_fd() error. bailing out.\n");
+		kdebug("ExportUserlist::socketEvent(): gg_userlist_put_watch_fd() error. bailing out.\n");
 		QMessageBox::critical(this, "Export error", i18n("The application encountered a network error\nThe export was unsuccessful") );
 		gg_userlist_put_free(gg_http);
 		gg_http = NULL;
@@ -483,7 +484,7 @@ void UserlistExport::socketEvent() {
 		}
 
 	if (gg_http->state == GG_STATE_CONNECTING) {
-		fprintf(stderr, "KK ExportUserlist::socketEvent(): changing QSocketNotifiers.\n");
+		kdebug("ExportUserlist::socketEvent(): changing QSocketNotifiers.\n");
 		deleteSocketNotifiers();
 		snr = new QSocketNotifier(gg_http->fd, QSocketNotifier::Read, this);
 		connect(snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
@@ -497,7 +498,7 @@ void UserlistExport::socketEvent() {
 		deletebtn->setEnabled(true);
 		tofilebtn->setEnabled(true);
 		deleteSocketNotifiers();
-		fprintf(stderr,"KK ExportUserlist::socketEvent(): gg_userlist_put_watch_fd() error. bailing out.\n");
+		kdebug("ExportUserlist::socketEvent(): gg_userlist_put_watch_fd() error. bailing out.\n");
 		QMessageBox::critical(this, "Export error", i18n("The application encountered a network error\nThe export was unsuccessful") );
 		gg_userlist_put_free(gg_http);
 		gg_http = NULL;
@@ -508,7 +509,7 @@ void UserlistExport::socketEvent() {
 		sendbtn->setEnabled(true);
 		tofilebtn->setEnabled(true);
 		deletebtn->setEnabled(true);
-		fprintf(stderr,"KK Export Done\n");
+		kdebug("Export Done\n");
 		deleteSocketNotifiers();
 		QMessageBox::information(this, "Export complete", i18n("Your userlist has been successfully exported to server") );
 		gg_userlist_put_free(gg_http);
