@@ -277,8 +277,11 @@ if test -z "$enable_modules"; then
 fi
 if test "$enable_modules" = "yes"; then
 	AC_DEFINE(MODULES_ENABLED,1,[Define if loadable modules support is enabled])
+	MODULES_LDFLAGS=-rdynamic
+	MY_SUBDIRS="$MY_SUBDIRS modules"
 fi
 AM_CONDITIONAL(MODULES,[test "$enable_modules" = "yes"])
+AC_SUBST(MODULES_LDFLAGS)
 
 # pthread support
 AC_ARG_WITH(pthread,[  --without-pthread       do not use pthread in libgadu resolver])
@@ -339,7 +342,7 @@ fi
 # finalize configure
 ########################################################################
 
-AC_CONFIG_FILES([./Makefile kadu/Makefile translations/Makefile varia/Makefile])
+AC_CONFIG_FILES([./Makefile kadu/Makefile translations/Makefile varia/Makefile modules/Makefile])
 AC_OUTPUT
 
 echo
