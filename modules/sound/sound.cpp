@@ -620,6 +620,10 @@ void SoundManager::closeDevice(SoundDevice device)
 		delete recording_thread;
 	}
 	emit closeDeviceImpl(device);
+
+	if (FlushingEnabled.contains(device))
+		FlushingEnabled.remove(device);
+
 	kdebugf2();
 }
 
