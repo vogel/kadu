@@ -238,7 +238,7 @@ void dccSocketClass::askAccept(void) {
 				}
 
 			fi.setFile(f);
-			if (fi.exists() && fi.size() > dccsock->file_info.size) {
+			if (fi.exists() && fi.size() < dccsock->file_info.size) {
 				switch (QMessageBox::information(0, i18n("save file"),
 					i18n("File exists."), i18n("Overwrite"), i18n("Resume"),
 					i18n("Cancel"), 0, 2)) {
