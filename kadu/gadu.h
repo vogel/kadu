@@ -7,6 +7,21 @@
 
 #include "misc.h"
 
+extern struct gg_session* sess;
+extern struct gg_login_params loginparams;
+
+extern QSocketNotifier* kadusnr;
+extern QSocketNotifier* kadusnw;
+
+extern bool userlist_sent;
+extern bool socket_active;
+extern int last_read_event;
+extern int server_nr;
+extern bool timeout_connected;
+extern QTimer* pingtimer;
+extern QValueList<QHostAddress> config_servers;
+extern bool i_wanna_be_invisible;
+
 class GaduProtocol : public QObject
 {
 	Q_OBJECT

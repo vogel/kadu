@@ -1198,7 +1198,7 @@ void Chat::initModule()
 	color=QColor("#000000");
 	config_file.addVariable("Look", "ChatUsrFontColor", &color);
 
-	QFontInfo info(a->font());
+	QFontInfo info(qApp->font());
 	QFont def_font(info.family(),info.pointSize());
 	config_file.addVariable("Look", "ChatFont", &def_font);
 //

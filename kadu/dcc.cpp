@@ -28,6 +28,12 @@
 #include "voice.h"
 #endif
 
+QSocketNotifier *dccsnr = NULL;
+QSocketNotifier *dccsnw = NULL;
+QHostAddress config_dccip;
+QHostAddress config_extip;
+struct gg_dcc* dccsock;
+
 int dccSocketClass::count = 0;
 
 dccSocketClass::dccSocketClass(struct gg_dcc *dcc_sock, int type) : QObject(), type(type) {
@@ -353,7 +359,7 @@ void dccSocketClass::setState(int pstate) {
 		filedialog->dccFinished = true;
 	dccSocketClass **me = new (dccSocketClass *);
 	*me = this;
-	a->postEvent((QObject *)kadu, new QCustomEvent(QEvent::User, me));
+	qApp->postEvent((QObject *)kadu, new QCustomEvent(QEvent::User, me));
 	kdebug("dccSocketClass::setState()\n");
 }
 

@@ -1154,7 +1154,7 @@ void History::searchHistory() {
 			total -= i + (i < entries.count());
 			kdebug("History::searchHistory(): actualrecord = %d, i = %d, total = %d\n",
 				findrec.actualrecord, i, total);
-			a->processEvents();
+			qApp->processEvents();
 		} while (total > 0 && i == entries.count() && !closeDemand);
 	else
 		do {
@@ -1177,7 +1177,7 @@ void History::searchHistory() {
 			total -= i + (i < entries.count());
 			kdebug("History::searchHistory(): actualrecord = %d, i = %d, total = %d\n",
 				findrec.actualrecord, i, total);
-			a->processEvents();
+			qApp->processEvents();
 		} while (total > 0 && i == entries.count() && !closeDemand);
 	if (closeDemand) {
 		reject();

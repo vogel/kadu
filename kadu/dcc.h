@@ -6,9 +6,16 @@
 #include <qprogressbar.h>
 #include <qlabel.h>
 #include <qsocketnotifier.h>
+#include <qhostaddress.h>
 
 #include "libgadu.h"
 #include "../config.h"
+
+extern QSocketNotifier* dccsnr;
+extern QSocketNotifier* dccsnw;
+extern QHostAddress config_dccip;
+extern QHostAddress config_extip;
+extern struct gg_dcc* dccsock;
 
 enum DccFileDialogType {
 	DCC_TYPE_SEND,

@@ -61,13 +61,12 @@ class Kadu : public QMainWindow
 
 		struct gg_event *dcc_e;
 		int dcc_ret;
-		int activegrpno;
 		bool blinkOn;
 	 
 	public:
 		Kadu(QWidget* parent=0, const char *name=0);
-		void changeAppearance();
 		~Kadu();
+		void changeAppearance();
 		bool userInActiveGroup(uin_t uin);
 		void removeUser(QStringList &, bool);
 		void refreshGroupTabBar();
@@ -109,7 +108,6 @@ class Kadu : public QMainWindow
 		void pingNetwork(void);
 		void setStatus(int);
 		void disconnectNetwork(void);
-		void changeGroup(int);
 		void gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op);
 		void currentChanged(QListBoxItem *item);
 		void showdesc(bool show = true);
@@ -152,10 +150,10 @@ class Kadu : public QMainWindow
 		void popupMenu();		
 };
 
-class MyLabel : public QLabel {
+class StatusLabel : public QLabel {
 	Q_OBJECT
 	public:
-		MyLabel(QWidget *parent, const char *name): QLabel(parent, name) {};
+		StatusLabel(QWidget *parent, const char *name): QLabel(parent, name) {};
 
 	protected:
 		void mousePressEvent (QMouseEvent * e);
@@ -171,27 +169,9 @@ class KaduSlots : public QObject
 	    void onDestroyConfigDialog();
 };
 
-extern QApplication *a;
-extern Kadu *kadu;
-
-extern QSocketNotifier* kadusnr;
-extern QSocketNotifier* kadusnw;
-extern QSocketNotifier* dccsnr;
-extern QSocketNotifier* dccsnw;
+extern Kadu* kadu;
 
 extern QPopupMenu* statusppm;
 extern QPopupMenu* dockppm;
-
-extern struct gg_session* sess;
-extern bool userlist_sent;
-extern bool socket_active;
-extern int last_read_event;
-extern int server_nr;
-extern bool timeout_connected;
-extern struct gg_login_params loginparams;
-extern QTimer *pingtimer;
-extern QHostAddress config_dccip;
-extern QHostAddress config_extip;
-extern QValueList<QHostAddress> config_servers;
 
 #endif

@@ -12,10 +12,13 @@
 #include <qregexp.h>
 #include <qhgroupbox.h>
 
+#include "gadu.h"
 #include "config_file.h"
 #include "config_dialog.h"
-#include "kadu.h"
 #include "debug.h"
+#include "kadu.h"
+
+#include "status.h"
 
 AutoAwayTimer* AutoAwayTimer::autoaway_object=NULL;
 
@@ -113,7 +116,7 @@ void AutoStatusTimer::onTimeout()
 
 AutoAwayTimer::AutoAwayTimer(QObject* parent) : QTimer(parent,"AutoAwayTimer"), idletime(0) {
 	autoawayed = false;
-	a->installEventFilter(this);
+	qApp->installEventFilter(this);
 	connect(this, SIGNAL(timeout()), SLOT(checkIdleTime()));
 	start(1000, TRUE);
 }

@@ -16,6 +16,7 @@
 #include <qtextcodec.h>
 #include <stdlib.h>
 
+#include "gadu.h"
 #include "kadu.h"
 #include "config_dialog.h"
 #include "debug.h"
@@ -155,19 +156,8 @@ void UserlistImport::makeUserlist() {
 		if (userlist[i].uin)
 			gg_add_notify(sess, userlist[i].uin);
 
-//	uin_t *uins;
-//	uins = (uin_t *) malloc(userlist.count() * sizeof(uin_t));
-
-//	for (i = 0; i < userlist.count(); i++)
-//		uins[i] = userlist[i].uin;
-
-//	gg_notify(sess, uins, userlist.count());
-//	kdebug("UserlistImport::makeUserlist(): Userlist sent\n");
-
 	userlist.writeToFile();
 	kdebug("UserlistImport::makeUserlist(): Wrote userlist\n");
-
-//	free(uins);			
 }
 
 void UserlistImport::updateUserlist() {
@@ -195,42 +185,12 @@ void UserlistImport::updateUserlist() {
 		if (userlist[i].uin)
 			gg_add_notify(sess, userlist[i].uin);
 
-//	uin_t *uins;
-//	uins = (uin_t *) malloc(userlist.count() * sizeof(uin_t));
-
-//	for (i = 0; i < userlist.count(); i++)
-//		uins[i] = userlist[i].uin;
-
-//	gg_notify(sess, uins, userlist.count());
-//	kdebug("UserlistImport::updateUserlist(): Userlist sent\n");
-
 	userlist.writeToFile();
 	kdebug("UserlistImport::updateUserlist(): Wrote userlist\n");
-
-//	free(uins);			
 }
 
-void UserlistImport::userlistReplyReceivedSlot(char type, char *reply) {
-/*	if (gg_http->state == GG_STATE_DONE && gg_http->data == NULL) {
-		kdebug("ImportUserlist::socketEvent(): No results. Exit.\n");
-		deleteSocketNotifiers();
-		QMessageBox::information(this, "No results", tr("Your action yielded no results") );
-		fetchbtn->setEnabled(true);
-		gg_userlist_get_free(gg_http);
-		gg_http = NULL;
-		return;
-		}
-
-	if (gg_http->state == GG_STATE_ERROR) {
-		fetchbtn->setEnabled(true);
-		deleteSocketNotifiers();
-		kdebug("ImportUserlist::socketEvent(): gg_userlist_get_watch_fd() error. bailing out.\n");
-		QMessageBox::critical(this, "Import error", tr("The application encountered a network error\nThe import was unsuccessful") );
-		gg_userlist_get_free(gg_http);
-		gg_http = NULL;
-		return;
-		}*/
-
+void UserlistImport::userlistReplyReceivedSlot(char type, char *reply)
+{
 	kdebug("ImportUserlist::userlistReplyReceivedSlot()\n");
 	if (type != GG_USERLIST_GET_REPLY && type != GG_USERLIST_GET_MORE_REPLY)
 		return;
@@ -442,25 +402,12 @@ void UserlistExport::userlistReplyReceivedSlot(char type, char *reply) {
 		return;
 	kdebug("ExportUserlist::userlistReplyReceivedSlot(): Done\n");
 	
-/*	if (gg_http->state == GG_STATE_ERROR) {
-		sendbtn->setEnabled(true);
-		deletebtn->setEnabled(true);
-		tofilebtn->setEnabled(true);
-		deleteSocketNotifiers();
-		kdebug("ExportUserlist::socketEvent(): gg_userlist_put_watch_fd() error. bailing out.\n");
-		QMessageBox::critical(this, "Export error", tr("The application encountered a network error\nThe export was unsuccessful") );
-		gg_userlist_put_free(gg_http);
-		gg_http = NULL;
-		return;
-		}*/
-
 	disconnect(&event_manager, SIGNAL(userlistReplyReceived(char, char *)),
 		this, SLOT(userlistReplyReceivedSlot(char, char *)));
 	sendbtn->setEnabled(true);
 	tofilebtn->setEnabled(true);
 	deletebtn->setEnabled(true);
-//	QMessageBox::information(this, tr("Export complete"),
-//		tr("Your userlist has been successfully exported to server"));
+
 	MessageBox::msg(tr("Your userlist has been successfully exported to server"));
 }
 

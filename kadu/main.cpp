@@ -35,13 +35,12 @@
 #endif
 
 Kadu *kadu;	
-QApplication *a;
 
 int main(int argc, char *argv[])
 {
 	gg_debug_level = 255;
 
-	a = new QApplication(argc, argv);
+	new QApplication(argc, argv);
 
 #ifdef VOICE_ENABLED
 	voice_manager = new VoiceManager();
@@ -51,10 +50,10 @@ int main(int argc, char *argv[])
 	// ladowanie tlumaczenia
 	QTranslator qt_qm(0);
 	qt_qm.load(QString(DATADIR) + QString("/kadu/translations/qt_") + config_file.readEntry("General", "Language", QTextCodec::locale()), ".");
-	a->installTranslator(&qt_qm);
+	qApp->installTranslator(&qt_qm);
 	QTranslator kadu_qm(0);
 	kadu_qm.load(QString(DATADIR) + QString("/kadu/translations/kadu_") + config_file.readEntry("General", "Language", QTextCodec::locale()), ".");
-	a->installTranslator(&kadu_qm);
+	qApp->installTranslator(&kadu_qm);
 
 	QString dir;
 	dir = QString(DATADIR) + "/kadu/icons";
@@ -62,7 +61,7 @@ int main(int argc, char *argv[])
 	kadu = new Kadu(0, "Kadu");
 	QPixmap *pix = icons->loadIcon("offline");
 	kadu->setIcon(*pix);
-	a->setMainWidget(kadu);
+	qApp->setMainWidget(kadu);
 	if (!config_file.readNumEntry("General","UIN")) {
 		QString path_;
 		path_ = ggPath("");
@@ -75,7 +74,7 @@ int main(int argc, char *argv[])
 			qApp->translate("@default", QT_TR_NOOP("Configure")),
 			qApp->translate("@default", QT_TR_NOOP("Cancel")), 0, 1) ) {
 			case 1: // Configure
-				ConfigDialog::showConfigDialog(a);
+				ConfigDialog::showConfigDialog(qApp);
 				break;
 			case 0: // Register
 				Register *reg;
@@ -97,11 +96,11 @@ int main(int argc, char *argv[])
 	sim_key_path = strdup(ggPath("keys/").local8Bit());
 #endif
 
-	QObject::connect(a, SIGNAL(aboutToQuit()), kadu, SLOT(quitApplication()));
+	QObject::connect(qApp, SIGNAL(aboutToQuit()), kadu, SLOT(quitApplication()));
 
 #ifdef MODULES_ENABLED
 	ModulesManager::initModule();
 #endif
 
-	return a->exec();
+	return qApp->exec();
 }

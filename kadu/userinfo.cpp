@@ -12,6 +12,7 @@
 #include <qhbox.h>
 
 //
+#include "gadu.h"
 #include "kadu.h"
 #include "userinfo.h"
 #include "chat.h"

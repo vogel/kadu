@@ -67,38 +67,17 @@
 #define	GG_USER_NORMAL	0x03
 #define GG_USER_BLOCKED	0x04
 
-bool userlist_sent = FALSE;
-bool socket_active = FALSE;
-int last_read_event = -1;
-int server_nr = 0;
 int muteitem;
-bool timeout_connected = true;
-bool i_wanna_be_invisible = true;
-struct gg_event *e;
+struct gg_event* e;
 
 QTime closestatusppmtime;
-QTimer *blinktimer;
-QTimer *pingtimer;
-//QTimer *readevent; - patrz plik events.cpp
-QPopupMenu *statusppm;
-QPopupMenu *dockppm;
-QLabel *statuslabel;
-QLabel *statuslabeltxt;
-QPopupMenu *grpmenu;
+QTimer* blinktimer;
+QPopupMenu* statusppm;
+QPopupMenu* dockppm;
+QLabel* statuslabel;
+QLabel* statuslabeltxt;
 
-QHostAddress config_dccip;
-QHostAddress config_extip;
-QValueList<QHostAddress> config_servers;
-
-struct gg_session *sess = NULL;
-
-struct gg_dcc * dccsock;
-struct gg_login_params loginparams;
-QSocketNotifier *kadusnr = NULL;
-QSocketNotifier *kadusnw = NULL;
-QSocketNotifier *dccsnr = NULL;
-QSocketNotifier *dccsnw = NULL;
-UpdatesClass *uc;
+UpdatesClass* uc;
 
 QValueList<QHostAddress> gg_servers;
 const char *gg_servers_ip[7] = {"217.17.41.82", "217.17.41.83", "217.17.41.84", "217.17.41.85",
@@ -268,7 +247,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	color=QColor("#000000");
 	config_file.addVariable("Look", "UserboxDescTextColor", config_file.readColorEntry("Colors", "UserboxDescTextColor", &color));
 
-	QFontInfo info0(a->font());
+	QFontInfo info0(qApp->font());
 	QFont def_font0(info0.family(),info0.pointSize());
 	config_file.addVariable("Look", "UserboxFont", config_file.readFontEntry("Fonts", "UserboxFont", &def_font0));
 	config_file.addVariable("Look", "ChatFont", config_file.readFontEntry("Fonts", "ChatFont", &def_font0));
@@ -346,7 +325,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	QSize def_size(340, 60);
 	config_file.addVariable("General", "SplitSize", def_size);
 
-	QFontInfo info(a->font());
+	QFontInfo info(qApp->font());
 	QFont def_font(info.family(),info.pointSize());
 	config_file.addVariable("Look", "UserboxFont", &def_font);
 	config_file.addVariable("Look", "UserboxDescFont", &def_font);
@@ -368,11 +347,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	/* another API change, another hack */
 	memset(&loginparams, 0, sizeof(loginparams));
 	loginparams.async = 1;
-
-	/* active group, 600 is all groups */
-	activegrpno = 600;
-
-
         
 	QRect geom;
 	geom=config_file.readRectEntry("General", "Geometry");
@@ -483,7 +457,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		this, SLOT(mouseButtonClicked(int, QListBoxItem *)));
 	connect(Userbox, SIGNAL(currentChanged(QListBoxItem *)), this, SLOT(currentChanged(QListBoxItem *)));
 
-	statuslabeltxt = new MyLabel(centralFrame, "statuslabeltxt");
+	statuslabeltxt = new StatusLabel(centralFrame, "statuslabeltxt");
 	statuslabeltxt->setText(tr("Offline"));
 	statuslabeltxt->setFrameStyle(QFrame::WinPanel | QFrame::Sunken);
 	statuslabeltxt->setFont(QFont("Verdana", 9));
@@ -495,7 +469,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		qGreen(statuslabeltxt->paletteBackgroundColor().rgb()) - 20,
 		qBlue(statuslabeltxt->paletteBackgroundColor().rgb()) - 20));
 
-	statuslabel = new MyLabel(centralFrame, "statuslabel");
+	statuslabel = new StatusLabel(centralFrame, "statuslabel");
 	QPixmap *pix = icons->loadIcon("offline");
 	statuslabel->setPixmap(*pix);
 	statuslabel->setFixedWidth(pix->width());
@@ -723,7 +697,7 @@ void Kadu::muteUnmuteSounds()
 
 void Kadu::configure() 
 {
-	ConfigDialog::showConfigDialog(a);
+	ConfigDialog::showConfigDialog(qApp);
 }
 
 void Kadu::sendSms()
@@ -1211,15 +1185,6 @@ void Kadu::userListUserAdded(const UserListElement& user)
 	if (user.uin)
 		gg_add_notify(sess, user.uin);
 };
-
-/* changes the active group */
-void Kadu::changeGroup(int group) {
-	activegrpno = group;
-	grpmenu->setItemChecked(true, group - 600);
-	grpmenu->updateItem(group - 600);
-	grpmenu->repaint();
-	kdebug("Kadu::changeGroup(): group = %d\n", group - 600);
-}
 
 void Kadu::mouseButtonClicked(int button, QListBoxItem *item) {
 	kdebug("Kadu::mouseButtonClicked(): button=%d\n", button);
@@ -1751,10 +1716,6 @@ void Kadu::createMenu() {
 		}
 	MainMenu->insertSeparator();
 
-	grpmenu = new QPopupMenu(this);
-	grpmenu->insertItem(tr("All"), 600);
-	grpmenu->insertSeparator();
-
 	MainMenu->insertItem(tr("Remind &password"), this, SLOT(remindPassword1()));
 	MainMenu->insertItem(tr("&Change password/email"), this, SLOT(changePassword1()));
 	MainMenu->insertItem(loadIcon("newuser.png"),tr("Register &new user"), this, SLOT(registerUser()));
@@ -1815,7 +1776,7 @@ void Kadu::createStatusPopupMenu() {
 	connect(statusppm, SIGNAL(activated(int)), this, SLOT(slotHandleState(int)));
 }
 
-void MyLabel::mousePressEvent (QMouseEvent * e) {
+void StatusLabel::mousePressEvent (QMouseEvent * e) {
 	if (e->button() == Qt::LeftButton && closestatusppmtime.elapsed() >= 100)
 		kadu->slotShowStatusMenu();
 }
@@ -1874,10 +1835,10 @@ void KaduSlots::onCreateConfigDialog()
 	QStringList files=locale.entryList();
 
 	  for ( QStringList::Iterator it = files.begin(); it != files.end(); ++it ) {
-	         *it=translateLanguage(a, (*it).mid(5, (*it).length()-8), true);
+	         *it=translateLanguage(qApp, (*it).mid(5, (*it).length()-8), true);
 		      }
 	cb_language->insertStringList(files);
-	cb_language->setCurrentText(translateLanguage(a, 
+	cb_language->setCurrentText(translateLanguage(qApp, 
 	       config_file.readEntry("General", "Language", QTextCodec::locale()),true));
 }
 
@@ -1920,6 +1881,6 @@ void KaduSlots::onDestroyConfigDialog()
 	kadu->setCaption(tr("Kadu: %1").arg(config_file.readNumEntry("General", "UIN")));
 
 	QComboBox *cb_language= ConfigDialog::getComboBox("General", "Set language:");
-	config_file.writeEntry("General", "Language", translateLanguage(a, cb_language->currentText(),false));
+	config_file.writeEntry("General", "Language", translateLanguage(qApp, cb_language->currentText(),false));
 
 };

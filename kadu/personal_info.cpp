@@ -15,7 +15,8 @@
 
 #include <stdlib.h>
 
-#include "kadu.h"
+#include "gadu.h"
+#include "status.h"
 #include "debug.h"
 #include "events.h"
 #include "personal_info.h"

@@ -13,8 +13,20 @@
 
 #include <stdlib.h>
 
-extern struct gg_session* sess;
-extern bool i_wanna_be_invisible;
+struct gg_session* sess = NULL;
+struct gg_login_params loginparams;
+
+QSocketNotifier* kadusnr = NULL;
+QSocketNotifier* kadusnw = NULL;
+
+bool userlist_sent = false;
+bool socket_active = false;
+int last_read_event = -1;
+int server_nr = 0;
+bool timeout_connected = true;
+QTimer* pingtimer;
+QValueList<QHostAddress> config_servers;
+bool i_wanna_be_invisible = true;
 
 void GaduProtocol::initModule()
 {

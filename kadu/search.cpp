@@ -10,10 +10,13 @@
 #include <qgroupbox.h>
 #include <qmessagebox.h>
 #include <qhbuttongroup.h>
+#include <qlayout.h>
+#include <qtooltip.h>
 
 #include <stdlib.h>
 //
-#include "kadu.h"
+#include "gadu.h"
+#include "status.h"
 #include "search.h"
 #include "events.h"
 #include "userinfo.h"
