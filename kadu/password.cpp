@@ -168,7 +168,7 @@ changePassword::changePassword(QDialog *parent, const char *name) : QDialog(pare
 	grid->addWidget(okbtn, 3, 1);
 	grid->addRowSpacing(3, 20);
 
-	setCaption(tr("Change password"));
+	setCaption(tr("Change password/email"));
 	resize(300, 120);
 	show();
 }

@@ -2007,7 +2007,7 @@ void Kadu::createMenu() {
 	grpmenu->insertSeparator();
 
 	ppm->insertItem(tr("Remind &password"), this, SLOT(remindPassword1()));
-	ppm->insertItem(tr("&Change password"), this, SLOT(changePassword1()));
+	ppm->insertItem(tr("&Change password/email"), this, SLOT(changePassword1()));
 	ppm->insertItem(loadIcon("newuser.png"),tr("Register &new user"), this, SLOT(registerUser()));
 	ppm->insertItem(tr("Unregister user"), this, SLOT(unregisterUser()));
 	ppm->insertItem(tr("Personal information"), this,SLOT(personalInfo()));
