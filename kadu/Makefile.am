@@ -82,7 +82,7 @@ CLEANFILES = *_moc.cpp $(PHEADERS_CLEANFILES)
 install-data-local:
 	$(mkinstalldirs) "$(DESTDIR)/$(includedir)/kadu/"
 	$(INSTALL_DATA) *.h "$(DESTDIR)/$(includedir)/kadu/"
-	@if test -w "/usr/share"; then \
+	@if test -w "$(DESTDIR)/usr/share"; then \
 		$(mkinstalldirs) "$(DESTDIR)/usr/share/applnk/Internet/"; \
 		echo "[Desktop Entry]" > "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop"; \
 		echo "Type=Application" >> "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop"; \
