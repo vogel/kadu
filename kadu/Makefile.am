@@ -3,7 +3,6 @@ bin_PROGRAMS = kadu
 
 kadu_SOURCES = \
 about.cpp about.h about_moc.cpp \
-adduser.cpp adduser.h adduser_moc.cpp \
 chat.cpp chat.h chat_moc.cpp \
 config_dialog.cpp config_dialog.h config_dialog_moc.cpp \
 config_file.cpp config_file.h \
