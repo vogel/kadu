@@ -227,7 +227,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc,const QColor& bgcolor)
 						new_text += Aliases[lastEmot].anim;
 					else
 						new_text += Aliases[lastEmot].stat;
-					new_text += "\" bgcolor=\"" + bgcolor.name() + "\">";
+					new_text += "\" bgcolor=\"" + bgcolor.name() + "\"/>";
 					doc.splitElement( e_i, lastBegin, 
 					Aliases[lastEmot].alias.length() );
 					doc.setElementValue( e_i, new_text, true );
@@ -251,7 +251,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc,const QColor& bgcolor)
 				new_text += Aliases[lastEmot].anim;
 			else
 				new_text += Aliases[lastEmot].stat;
-			new_text += "\" bgcolor=\"" + bgcolor.name() + "\">";
+			new_text += "\" bgcolor=\"" + bgcolor.name() + "\"/>";
 			doc.splitElement( e_i, lastBegin, 
 			Aliases[lastEmot].alias.length() );
 			doc.setElementValue( e_i, new_text, true );
