@@ -92,11 +92,13 @@ ToolBar::ToolBar(QMainWindow* parent) : QToolBar(parent, "main toolbar")
 {
 	setCloseMode(QDockWindow::Undocked);
 	setLabel(tr("Main toolbar"));
-	setVerticallyStretchable(true);
 
 	config_file.addVariable("General", "ToolBarHidden", false);
 	if (config_file.readBoolEntry("General", "ToolBarHidden"))
 		hide();
+
+	setVerticallyStretchable(true);
+	setHorizontallyStretchable(true);
 
 	createControls();	
 	instance=this;
@@ -117,8 +119,7 @@ void ToolBar::createControls()
 			(*j).button = new QToolButton((*j).iconfile, (*j).caption,
 				QString::null, (*j).receiver, (*j).slot, this, (*j).name);
 
-	QFrame *toolbarfiller = new QFrame(this);
-	setStretchableWidget(toolbarfiller);
+	setStretchableWidget(new QWidget(this));
 }
 
 void ToolBar::registerSeparator(int position)
@@ -252,6 +253,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 {
 	updateChecked=false;
 	Docked=false;
+	showMainWindowOnStart=true;
 
 	KaduSlots *kaduslots=new KaduSlots();
 	uin_t myUin=config_file.readNumEntry("General", "UIN");
@@ -484,8 +486,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	dccsock = NULL;
 	/* dirty workaround for multiple showEvents */
 	commencing_startup = true;
-
-	show();
 }
 
 void Kadu::createToolBar()

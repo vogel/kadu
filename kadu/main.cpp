@@ -134,6 +134,9 @@ int main(int argc, char *argv[])
 
 	ModulesManager::initModule();
 
+	if (kadu->showMainWindowOnStart)
+		kadu->show();
+
 	if (!config_file.readNumEntry("General","UIN")) {
 		QString path_;
 		path_ = ggPath("");

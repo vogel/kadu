@@ -133,6 +133,9 @@ class Kadu : public QMainWindow
 		// trzeba to uporz±dkowaæ
 		bool autohammer;
 		bool doBlink;
+		
+		//potrzebne dla modu³u dokuj±cego ¿eby g³ówne okno nie miga³o przy starcie...
+		bool showMainWindowOnStart;
 
 	public slots:
 		void blink();

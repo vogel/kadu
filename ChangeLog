@@ -90,8 +90,12 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   servera proxy (michal)
 * uaktualnienie libgadu do wersji z dnia 02.05.2004 (michal)
 * mechanizm ¶ci±gania odpowiednich ¼róde³ i rozpakowywania ich dla
-  popularnych zewnêtrznych modu³ów. przygotowane: tcl_scripting, xmms (adrian)
+  popularnych zewnêtrznych modu³ów, przygotowane: tcl_scripting, xmms (adrian)
 * ³atka googiego dodaj±ca sygna³y chatMsgReceived0 i changingStatus (adrian)
+* pasek narzêdziowy zajmuje ca³± szeroko¶æ okna (joi)
+* usuniête miganie okna przy w³±czonym module x11_docking i opcji RunDocked
+  oraz usuniêty b³±d powoduj±cy znikanie paska narzêdziowego przy powy¿szych warunkach
+  i za³adowanym module sound (joi)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

@@ -153,8 +153,7 @@ X11TrayIcon::X11TrayIcon()
 	connect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
 
 	if (config_file.readBoolEntry("General", "RunDocked"))
-		kadu->hide();
-
+		kadu->showMainWindowOnStart=false;
 	show();
 }
 
