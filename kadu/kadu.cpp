@@ -108,7 +108,6 @@
 #include "search.h"
 #include "expimp.h"
 #include "userinfo.h"
-#include "chat.h"
 #include "personal_info.h"
 #include "register.h"
 #include "sms.h"
@@ -376,16 +375,17 @@ char *preparePath(char *filename)
 
 void deletePendingMessage(int nr) {
     int j;
+    
+    delete pending[nr].uins;
     if (nr != pending.size() - 1) {
 	for (j = nr; j < pending.size() - 1; j++) {
-	    pending[j].uin = pending[j+1].uin;
+	    pending[j].uins->duplicate(*pending[j+1].uins);
 	    pending[j].msg = pending[j+1].msg;
 	    pending[j].msgclass = pending[j+1].msgclass;
 	    pending[j].time = pending[j+1].time;
 	    }
 	}
     else {
-	pending[nr].uin = 0;
 	delete pending[nr].msg;
 	pending[nr].time = 0;
 	pending[nr].msgclass = 0;
@@ -507,7 +507,7 @@ bool ifPendingMessages(int uin) {
 	    break;
 	default:
 	    for (i = 0; i < pending.size(); i++)
-    		if (pending[i].uin == uin)
+    		if ((*pending[i].uins)[0] == uin)
 		    pendings = true;
 	}
     return pendings;
@@ -587,7 +587,7 @@ void UinToUserlistEntry (uin_t uin, int new_status) {
         if (userlist[i].uin == uin) {
             userlist[i].status = new_status;
             j = 0;
-	    while (j < chats.size() && chats[j].uin != uin)
+	    while (j < chats.size() && (*chats[j].uins)[0] != uin)
 		j++;
 	    if (j < chats.size() && chats[j].ptr)
 		chats[j].ptr->setTitle();
@@ -630,14 +630,14 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget (parent, name)
     for (g = 0; g < userlist.size(); g++)
 	userlist[g].description = NULL;
 
-    for (g = 0; g < pending.size(); g++)
-	pending[g].uin = 0;
+//    for (g = 0; g < pending.size(); g++)
+//	pending[g].uin = 0;
 
     for (g = 0; g < acks.size(); g++)
 	acks[g].seq = 0;
 
-    for (g = 0; g < chats.size(); g++)
-	chats[g].uin = 0;
+//    for (g = 0; g < chats.size(); g++)
+//	chats[g].uin = 0;
 
     for (g = 0; g < ignored.size(); g++)
 	ignored[g] = 0;
@@ -1107,25 +1107,25 @@ void Kadu::autoAway(void) {
     setStatus(GG_STATUS_BUSY);
     i_am_busy = true;
     autoawayed = true;
-//    setCurrentStatus(GG_STATUS_BUSY);
     autoaway->start(config.autoawaytime * 1000, TRUE);
 }
 
-int Kadu::openChat(uin_t uin) {
+int Kadu::openChat(QArray<uin_t> senders) {
     int i,j;
-    QString text;
+    QArray<uin_t> uins;
     
     i = 0;
-    while (i < chats.size() && chats[i].uin != uin)
+    while (i < chats.size() && (*chats[i].uins) != senders)
 	i++;
     
     if (i == chats.size()) {
-        j = 0;
-	while (j < userlist.size() && userlist[j].uin != uin)
-	    j++;
-	text = __c2q(userlist[j].nickname);
+//        j = 0;
+//	while (j < userlist.size() && userlist[j].uin != uin)
+//	    j++;
 	Chat *chat;
-	chat = new Chat(text, 0, "chat window");
+	uins.duplicate(senders);
+//	uins[0] = userlist[j].uin;
+	chat = new Chat(uins, 0);
 	chat->show();
 	}
     else {
@@ -1134,7 +1134,7 @@ int Kadu::openChat(uin_t uin) {
 	}
     
     i = 0;
-    while (i < chats.size() && chats[i].uin != uin)
+    while (i < chats.size() && (*chats[i].uins) != senders)
 	i++;
 
     return i;
@@ -1146,8 +1146,9 @@ void Kadu::commandParser (int command) {
     char buf1[255];
     uin_t uin;
     SearchDialog *sd;
-    
-    QString tmp;		
+    QArray<uin_t> uins;
+    QString tmp;
+    		
     switch (command) {
 	case 1:
 	    Message *msg;
@@ -1157,7 +1158,9 @@ void Kadu::commandParser (int command) {
 	case 2:
 	    tmp = mylist->currentText();
 	    uin = UserToUin(&tmp);
-	    openChat(uin);
+	    uins.resize(1);
+	    uins[0] = uin;
+	    openChat(uins);
 	    break;
 	case 3:
 	    tmp = mylist->currentText();
@@ -1282,6 +1285,7 @@ void Kadu::commandParser (int command) {
 		else {
 		    acks.resize(acks.size() + 1);
 		    i = acks.size() - 1;
+		    acks[i].ack = 0;
 		    acks[i].seq = gg_dcc_request(&sess, uin);
 		    acks[i].type = 0;
 		    acks[i].ptr = NULL;
@@ -1363,10 +1367,10 @@ void Kadu::sendMessage (QListBoxItem * item) {
     tmp = item->text();
     uin_t uin = (unsigned int)UserToUin((const QString *)&tmp);
     for (i = 0; i < pending.size(); i++)
-	if (pending[i].uin == uin)
+	if ((*pending[i].uins)[0] == uin)
 	    if (pending[i].msgclass == GG_CLASS_CHAT) {
-		j = openChat(pending[i].uin);
-		chats[j].ptr->checkPresence(pending[i].uin, pending[i].msg, pending[i].time);	    
+		j = openChat(*pending[i].uins);
+		chats[j].ptr->checkPresence(*pending[i].uins, pending[i].msg, pending[i].time);	    
 		deletePendingMessage(i);
 		i--;
 		stop = true;
@@ -1385,12 +1389,16 @@ void Kadu::sendMessage (QListBoxItem * item) {
 	return;
 	}
 
-  if (GetStatusFromUserlist(uin) != GG_STATUS_NOT_AVAIL && GetStatusFromUserlist(uin) != GG_STATUS_NOT_AVAIL_DESCR)
-    openChat(uin);	
-  else {
-    msg = new Message(item->text());
-    msg->show();
-    }
+    if (GetStatusFromUserlist(uin) != GG_STATUS_NOT_AVAIL && GetStatusFromUserlist(uin) != GG_STATUS_NOT_AVAIL_DESCR)
+	{
+	QArray<uin_t> uins(1);
+	uins[0] = uin;
+	openChat(uins);
+	}	
+    else {
+	msg = new Message(item->text());
+	msg->show();
+	}
     
     return;
 }
@@ -1776,8 +1784,21 @@ void Kadu::nConnect(int state) {
 		dcc->initializeNotifiers();
 		}
 	    }
-	else
-	    eventRecvMsg(e->event.msg.msgclass, e->event.msg.sender, e->event.msg.message, e->event.msg.time, 0, NULL);
+	else {
+	    QArray<uin_t> uins;
+	    fprintf(stderr, "KK nConnect(): %d\n", e->event.msg.recipients_count);
+	    if (e->event.msg.msgclass == GG_CLASS_CHAT) {
+		uins.resize(e->event.msg.recipients_count + 1);
+		uins[0] = e->event.msg.sender;
+		for (i = 1; i < e->event.msg.recipients_count + 1; i++)
+		    uins[i] = e->event.msg.recipients[i - 1];
+		}
+	    else {
+		uins.resize(1);
+		uins[0] = e->event.msg.sender;
+		}
+	    eventRecvMsg(e->event.msg.msgclass, uins, e->event.msg.message, e->event.msg.time, 0, NULL);
+	    }
 	}
 
     if (e->type == GG_EVENT_NOTIFY_DESCR) {
@@ -1997,11 +2018,11 @@ void DockWidget::mousePressEvent(QMouseEvent * e) {
 	
 	uin_t uin = 0;
 	for (i = 0; i < pending.size(); i++) {
-	    if (!uin || pending[i].uin == uin)
+	    if (!uin || (*pending[i].uins)[0] == uin)
 		if (pending[i].msgclass == GG_CLASS_CHAT) {
-		    uin = pending[i].uin;
-		    j = kadu->openChat(pending[i].uin);
-		    chats[j].ptr->checkPresence(pending[i].uin, pending[i].msg, pending[i].time);	    
+		    uin = (*pending[i].uins)[0];
+		    j = kadu->openChat(*pending[i].uins);
+		    chats[j].ptr->checkPresence(*pending[i].uins, pending[i].msg, pending[i].time);	    
 		    deletePendingMessage(i);
 	    	    i--;
 		    stop = true;
@@ -2009,7 +2030,7 @@ void DockWidget::mousePressEvent(QMouseEvent * e) {
 		else {
 		    if (!stop) {
 			rMessage *rmsg;
-			rmsg = new rMessage(UinToUser(pending[i].uin).local8Bit(), i);
+			rmsg = new rMessage(UinToUser((*pending[i].uins)[0]).local8Bit(), i);
 			rmsg->show();
 			}
 		    return;

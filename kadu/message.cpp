@@ -78,7 +78,7 @@ rMessage::rMessage (const QString & nick, int i, QDialog* parent , const char *n
 	    tchat = true;
 	    }
 	else
-	    if (pending[i].uin == config.uin)
+	    if ((*pending[i].uins)[0] == config.uin)
 		msgclasse->setText(i18n("System"));
 	    else
 		if (pending[i].msgclass == GG_CLASS_OFFLINE)
@@ -166,6 +166,7 @@ Message::Message (const QString & nick, bool tchat, QDialog* parent , const char
 
     acks.resize(acks.size() + 1);
     index = acks.size() - 1;
+    acks[index].ack = 1;
     acks[index].seq = 0;
     acks[index].type = 0;
     acks[index].ptr = NULL;
@@ -285,6 +286,7 @@ void Message::commitSend(void) {
     if (sess.check & GG_CHECK_WRITE)
         kadusnw->setEnabled(true);
 	
+    acks[index].ack = 1;
     acks[index].seq = seq;
     acks[index].ptr = this;
     acks[index].type = 1;
@@ -297,6 +299,7 @@ void Message::commitSend(void) {
 Message::~Message() {
     fprintf(stderr, "KK Message::~Message()\n");
     for (int i = index + 1; i < acks.size(); i++) {
+	acks[i-1].ack = acks[i].ack;
 	acks[i-1].seq = acks[i].seq;
 	acks[i-1].ptr = acks[i].ptr;
 	acks[i-1].type = acks[i].type;

@@ -32,6 +32,7 @@
 #include <qmultilineedit.h>
 #include <kapp.h>
 #include <qsocketnotifier.h>
+#include <qarray.h>
 #include "userbox.h"
 
 #define GG_STATUS_INVISIBLE2 0x0009 /* g³upy... */
@@ -49,7 +50,7 @@ struct userlist {
 };
 
 struct pending {
-    uin_t uin;
+    QArray<uin_t> *uins;
     QString * msg;
     int msgclass;
     time_t time;
@@ -188,7 +189,7 @@ class Kadu : public QWidget
 	void setStatus(int);
 	void disconnectNetwork(void);
 	void changeGroup(int);
-	int openChat(uin_t);
+	int openChat(QArray<uin_t>);
 	
     private:
 	KMenuBar *mmb;
@@ -202,6 +203,7 @@ class Kadu : public QWidget
 };
 
 struct acks {
+    int ack;
     int seq;
     int type;
     QDialog *ptr;
@@ -270,7 +272,7 @@ class MyLabel : public QLabel {
 class Chat;
 
 struct chats {
-    unsigned int uin;
+    QArray<uin_t> *uins;
     Chat *ptr;
 };
 

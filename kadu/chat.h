@@ -22,6 +22,7 @@
 #include <ktextbrowser.h>
 #include <qhbox.h>
 #include <qmultilineedit.h>
+#include <qarray.h>
 #include "../libgadu/lib/libgadu.h"
 
 class IconSelector;
@@ -34,7 +35,7 @@ class Chat : public QDialog {
         int totaloccurences;
         QString nick;
         QDialog *chatdlg;
-	uin_t uin;
+	QArray<uin_t> uins;
         IconSelector *iconsel_ptr;
         QPushButton *iconsel;
         QPushButton *autosend;
@@ -43,12 +44,12 @@ class Chat : public QDialog {
 	void pruneWindow(void);
 
     public:
-	Chat(const QString &, QDialog *parent = 0, const char *name = 0);
+	Chat(QArray<uin_t> uins, QDialog *parent = 0);
 	~Chat();
 	void setTitle(void);
 	
 	KTextBrowser *body;
-  	int checkPresence(uin_t, QString *, time_t);
+  	int checkPresence(QArray<uin_t>, QString *, time_t);
 	void addEmoticon(QString);
 	CustomInput *edit;
 	QHBox *buttontray;

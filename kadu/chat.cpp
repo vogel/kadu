@@ -32,25 +32,24 @@
 #include "history.h"
 //
 
-Chat::Chat(const QString & nname, QDialog* parent , const char *name) : QDialog (parent, name) {
+Chat::Chat(QArray<uin_t> _uins, QDialog *parent) : QDialog (parent) {
     int i;
     
-    nick = nname;
+    uins.duplicate(_uins);
     setWFlags(Qt::WDestructiveClose);
     iconsel_ptr = NULL;
     autosend_enabled = false;
-
-	/* register us in the chats registry... */
+    
+    /* register us in the chats registry... */
     chats.resize(chats.size() + 1);
     i = chats.size() - 1;
-    chats[i].uin = UserToUin(&nname);
+    chats[i].uins = new QArray<uin_t>;
+    chats[i].uins->duplicate(_uins);
     chats[i].ptr = this;
     index = i;
-  /* we don't chat with more than MAX_CHATS people at once we hope */
 
     resize(400,400);
     
-    uin = chats[i].uin;
     setTitle();
 
     body = new KTextBrowser(this);
@@ -141,46 +140,54 @@ Chat::Chat(const QString & nname, QDialog* parent , const char *name) : QDialog 
 
 Chat::~Chat() {
     int i,j;
-    fprintf(stderr, "KK Chat::~Chat: chat destroyed: index %d\n", index);
     for (i = index + 1; i < chats.size(); i++) {
-	chats[i-1].uin = chats[i].uin;
+	chats[i-1].uins->duplicate(*chats[i].uins);
 	chats[i-1].ptr = chats[i].ptr;
 	}
+    delete chats[chats.size()-1].uins;	
     chats.resize(chats.size() - 1);	
-    
     i = 0;
     while (i < acks.size() && acks[i].ptr != this)
 	i++;
     if (i < acks.size()) {
 	for (j = i + 1; j < acks.size(); j++) {
+	    acks[j-1].ack = acks[j].ack;
 	    acks[j-1].seq = acks[j].seq;
 	    acks[j-1].ptr = acks[j].ptr;
 	    acks[j-1].type = acks[j].type;
 	    }
 	acks.resize(acks.size() - 1);
 	}
+    fprintf(stderr, "KK Chat::~Chat: chat destroyed: index %d\n", index);
 }
 
 void Chat::setTitle() {
     QString name;
     QString title;
-    int i,j;
+    int i,j,k;
     
-    name = UinToUser(uin);
-    title = i18n("Chat with %1").arg(name);
+    title = i18n("Chat with ");
     
-    i = 0;
-    while (i < userlist.size() && userlist[i].uin != uin)
-	i++;
-    j = statusGGToStatusNr(userlist[i].status);
+    for (k = 0; k < uins.size(); k++) {
+	if (k)
+	    title.append(", ");
+	    
+        name = UinToUser(uins[k]);
+	title.append(name);
+	i = 0;
+	while (i < userlist.size() && userlist[i].uin != uins[k])
+	    i++;
+	j = statusGGToStatusNr(userlist[i].status);
         
-    title.append(" (");
-    title.append(i18n(statustext[j]));
-    if (j & 1)
-	title.append(i18n(": %1)").arg(*userlist[i].description));
-    else
-	title.append(")");
-  title.replace(QRegExp("\n"), " ");
+        title.append(" (");
+        title.append(i18n(statustext[j]));
+        if (j & 1)
+	    title.append(i18n(": %1)").arg(*userlist[i].description));
+        else
+	    title.append(")");
+	}
+    title.replace(QRegExp("\n"), " ");
+    
     setCaption(title);
 }
 
@@ -286,7 +293,7 @@ void Chat::userWhois(void) {
     SearchDialog *sd;
     QString tmp;
         
-    sd = new SearchDialog(0, "User info", UserToUin(&nick));
+    sd = new SearchDialog(0, "User info", uins[0]);
     sd->show();
     sd->doSearch();
 }
@@ -304,7 +311,7 @@ void Chat::timerReset(void) {
 }	
 
 /* invoked from outside when new message arrives, this is the window to the world */
-int Chat::checkPresence(uin_t uin, QString *msg, time_t time) {
+int Chat::checkPresence(QArray<uin_t> senders, QString *msg, time_t time) {
     kadu->autoaway->stop();
     kadu->autoaway->start(config.autoawaytime * 1000, TRUE);
 
@@ -313,7 +320,7 @@ int Chat::checkPresence(uin_t uin, QString *msg, time_t time) {
 //printf("Numformats %d\n", formats_count);
 //getFormatting(editext,formats_count,formats);
     toadd.append("<TABLE width=\"100%\"><TR><TD bgcolor=\"#F0F0F0\"><B>");
-    toadd.append(__c2q(UinToUser(uin)));
+    toadd.append(__c2q(UinToUser(senders[0])));
     toadd.append(" ");
     toadd.append(__c2q(timestamp(time)));
     toadd.append("</B><BR>");
@@ -380,16 +387,14 @@ void Chat::addMyMessageToHistory() {
     QCString tmp(text.local8Bit());
     unsigned char *utmp = (unsigned char *) tmp.data();
 
-    uin = UserToUin(&nick);
+    uin = uins[0];
     if (config.logmessages)
 	appendHistory(uin, (unsigned char *)utmp, true);
-    if (sess.check & GG_CHECK_WRITE)
-	kadusnw->setEnabled(true);
 }
 
 /* sends the message typed */
 void Chat::sendMessage(void) {
-    int i,uin;
+    int i,j;
     
     kadu->autoaway->stop();
     kadu->autoaway->start(config.autoawaytime * 1000, TRUE);
@@ -410,14 +415,25 @@ void Chat::sendMessage(void) {
 
     addMyMessageToHistory();
 
-    uin = UserToUin(&nick);
-
     iso_to_cp(utmp);
     acks.resize(acks.size() + 1);
     i = acks.size() - 1;
-    acks[i].seq = gg_send_message(&sess, GG_CLASS_CHAT, uin, (unsigned char *)utmp);
+    uin_t users[32];
+    if (uins.size() > 1) {
+        for (j = 0; j < uins.size(); j++)
+	    users[j] = uins[j];
+	acks[i].seq = gg_send_message_to_users(&sess, GG_CLASS_CHAT, uins.size(), users, (unsigned char *)utmp);    
+	acks[i].ack = uins.size();
+	}
+    else {
+        acks[i].seq = gg_send_message(&sess, GG_CLASS_CHAT, uins[0], (unsigned char *)utmp);
+	acks[i].ack = 1;
+	}
     acks[i].type = 2;
     acks[i].ptr = this;
+
+    if (sess.check & GG_CHECK_WRITE)
+	kadusnw->setEnabled(true);
 }
 
 /* prunes messages */
@@ -453,10 +469,10 @@ void Chat::pruneWindow(void) {
 }
 
 /* opens messages history */
-void Chat::HistoryBox (void) {
+void Chat::HistoryBox(void) {
     History *hb;
     
-    hb = new History(UserToUin(&nick));
+    hb = new History(uins[0]);
     hb->show();
 }
 

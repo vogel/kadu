@@ -24,6 +24,7 @@
 #include <qpixmap.h>
 #include <qcombobox.h>
 #include <qstring.h>
+#include <qarray.h>
 #include <iostream>
 #include <klocale.h>
 #include <qmessagebox.h>
@@ -243,75 +244,78 @@ void sigchldHndl (int whatever) {
 }
 
 
-void eventRecvMsg(int msgclass, uin_t sender, unsigned char * msg, time_t time,int formats_count=0,struct gg_msg_format * formats=NULL) {
+void eventRecvMsg(int msgclass, QArray<uin_t> senders, unsigned char * msg, time_t time,int formats_count=0,struct gg_msg_format * formats=NULL) {
     QString tmp;
     
-	if (isIgnored(sender)) return;
+    fprintf(stderr, "KK eventRecvMsg()\n");
+    
+    if (isIgnored(senders[0]))
+	return;
 
-	/* check whether it's a system message */
-	if (sender == 0) {
-		if (msgclass <= config.sysmsgidx) {
-		        std::cout << "KK Already had this message, ignoring" << std::endl;
-			return;
-			}
-     config.sysmsgidx = msgclass;
-			printf("KK System message index %d\n", msgclass);
-			sender = config.uin;
-		}
+    /* check whether it's a system message */
+    if (senders[0] == 0) {
+	if (msgclass <= config.sysmsgidx) {
+	    std::cout << "KK Already had this message, ignoring" << std::endl;
+	    return;
+	    }
+	config.sysmsgidx = msgclass;
+	printf("KK System message index %d\n", msgclass);
+	senders[0] = config.uin;
+	}
 
-	QString nick;
-	nick = UinToUser(sender);
-	cp_to_iso(msg);
+    cp_to_iso(msg);
 
-	if (config.logmessages && sender != config.uin)
-		appendHistory(sender,msg,FALSE,time);
+    QString nick;
+    nick = UinToUser(senders[0]);
 
- 
-	int i; bool yup = FALSE;
-	i = 0;
-	while (i < chats.size() && chats[i].uin != (unsigned int)sender)
-	    i++;
+    if (config.logmessages && senders[0] != config.uin)
+	appendHistory(senders[0], msg, FALSE, time);
 
-	if (msgclass == GG_CLASS_CHAT && i < chats.size()) {
+    int i; bool yup = FALSE;
+    i = 0;
+    while (i < chats.size() && (*chats[i].uins) != senders)
+	i++;
+
+    if (msgclass == GG_CLASS_CHAT && i < chats.size()) {
 	    tmp = __c2q((const char *)msg);
-	    chats[i].ptr->checkPresence(sender, &tmp, time);
+	    chats[i].ptr->checkPresence(senders, &tmp, time);
   	    chats[i].ptr->playChatSound();
 	    
 	    return;
 	    }
 
-	playSound(config.soundmsg);
+    playSound(config.soundmsg);
 
-	for (i = 0; i < pending.size(); i++)
-		if (pending[i].uin == 0)
-			break;
+    for (i = 0; i < pending.size(); i++)
+	if (!pending[i].uins->size())
+	    break;
 
-	if (i == pending.size()) {
-		pending.resize(pending.size() + 1);
-		fprintf(stderr, "KK eventRecvMsg(): New buffer size: %d\n",pending.size());
-		i = pending.size()-1;
-		}
+    if (i == pending.size()) {
+	pending.resize(pending.size() + 1);
+	fprintf(stderr, "KK eventRecvMsg(): New buffer size: %d\n",pending.size());
+	i = pending.size()-1;
+	}
 
-	pending[i].uin = sender;
-	pending[i].msgclass = msgclass;
-	pending[i].msg = new QString;
-	pending[i].msg->append(__c2q((const char *)msg));
-	pending[i].time = time;
+    pending[i].uins = new QArray<uin_t>;
+    pending[i].uins->duplicate(senders);
+    pending[i].msgclass = msgclass;
+    pending[i].msg = new QString;
+    pending[i].msg->append(__c2q((const char *)msg));
+    pending[i].time = time;
 	
-	fprintf(stderr, "KK eventRecvMsg(): Message allocated to slot %d\n", i);
-	fprintf(stderr, "KK eventRecvMsg(): Got message from %d (%s) saying \"%s\"\n", sender, (const char *)nick.local8Bit(), msg);
+    fprintf(stderr, "KK eventRecvMsg(): Message allocated to slot %d\n", i);
+    fprintf(stderr, "KK eventRecvMsg(): Got message from %d (%s) saying \"%s\"\n", senders[0], (const char *)nick.local8Bit(), msg);
 
-	kadu->syncUserlist();
-	kadu->sortUsers();
-	dw->setType((char **)gg_msg_xpm);
-
+    kadu->syncUserlist();
+    kadu->sortUsers();
+    dw->setType((char **)gg_msg_xpm);
 
     if (config.raise) {
 	kadu->showNormal();
 	kadu->setFocus();
         }
 
-    if (sender == config.uin) {
+    if (senders[0] == config.uin) {
 	rMessage *rmsg;
 	rmsg = new rMessage("System", i);
 	rmsg->show();
@@ -366,7 +370,7 @@ void ChangeUserStatus (unsigned int uin, int new_status) {
 	tmpstr = mylist->text(i);
 	
 	for (int j = 0; j < pending.size(); j++)
-	    if (pending[j].uin == uin)
+	    if ((*pending[j].uins)[0] == uin)
 		return;
 
 	if (!tmpstr.compare(__c2q(UinToUser(uin)))) {
@@ -707,16 +711,19 @@ void ackHandler(int seq) {
 	    if (acks[i].type < 2)
 		((Message *)acks[i].ptr)->gotAck();
 	    else {
+		acks[i].ack--;
 		j = 0;
 		while (j < chats.size() && chats[j].ptr != acks[i].ptr)
-		    j++;
-		if (j < chats.size())
+		    j++;		
+		if (j < chats.size() && !acks[i].ack)
 		    ((Chat *)acks[i].ptr)->writeMyMessage();
-		for (k = i + 1; k < acks.size(); k++) {
-		    acks[i-1].seq = acks[i].seq;
-		    acks[i-1].type = acks[i].type;
-		    acks[i-1].ptr = acks[i].ptr;
+		if (j == chats.size() || !acks[i].ack) {
+		    for (k = i + 1; k < acks.size(); k++) {
+			acks[i-1].seq = acks[i].seq;
+			acks[i-1].type = acks[i].type;
+			acks[i-1].ptr = acks[i].ptr;
+			}
+		    acks.resize(acks.size() - 1);
 		    }
-		acks.resize(acks.size() - 1);
 		}
 }
