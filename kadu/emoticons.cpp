@@ -410,6 +410,7 @@ AnimTextItem::AnimTextItem(
 	const QString& filename, const QColor& bgcolor, const QString& tip)
 	: QTextCustomItem(p)
 {
+	FileName=filename;
 	text=tip;
 	Edit=edit;
 	Label=new QLabel(Edit->viewport());
@@ -421,10 +422,12 @@ AnimTextItem::AnimTextItem(
 	if(Movies->contains(filename))
 	{
 		md=(*Movies)[filename];
+		(*Movies)[filename].count++;
 		kdebugm(KDEBUG_INFO, "Movie %s loaded from cache\n",filename.local8Bit().data());
 	}
 	else
 	{
+		md.count=1;
 		md.movie=QMovie(filename);
 		if(SizeCheckImage==NULL)
 			SizeCheckImage=new QImage();
@@ -444,7 +447,13 @@ AnimTextItem::AnimTextItem(
 
 AnimTextItem::~AnimTextItem()
 {
+	kdebugf();
 	delete Label;
+	MovieCacheData &md=(*Movies)[FileName];
+	md.count--;
+	if (md.count==0)
+		Movies->remove(FileName);
+	kdebugf2();
 }
 
 void AnimTextItem::draw(

@@ -98,6 +98,7 @@ class AnimTextItem : public QTextCustomItem
 		{
 			QMovie movie;
 			QSize size;
+			int count;
 		};
 		typedef QMap<QString,MovieCacheData> MoviesCache;
 		static MoviesCache* Movies;
@@ -105,6 +106,7 @@ class AnimTextItem : public QTextCustomItem
 		QLabel* Label;
 		QSize EditSize;
 		QString text;
+		QString FileName;
 	public:
 		AnimTextItem(
 			QTextDocument *p, QTextEdit* edit,
