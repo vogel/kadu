@@ -41,6 +41,7 @@
 #include "debug.h"
 #include "gadu.h"
 #include "hints.h"
+#include "status.h"
 
 ChatManager::ChatManager() : QObject()
 {

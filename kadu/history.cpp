@@ -28,6 +28,7 @@
 #include "events.h"
 #include "debug.h"
 #include "history.h"
+#include "status.h"
 
 enum {
 	HISTORYMANAGER_ORDINARY_LINE,

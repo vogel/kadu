@@ -24,6 +24,7 @@
 #include "message_box.h"
 #include "ignore.h"
 #include "expimp.h"
+#include "status.h"
 
 UserlistImport::UserlistImport(QWidget *parent, const char *name)
  : QDialog(parent, name, FALSE, Qt::WDestructiveClose) {

@@ -39,6 +39,7 @@
 #include "config_dialog.h"
 #include "config_file.h"
 #include "gadu.h"
+#include "status.h"
 
 AutoConnectionTimer *AutoConnectionTimer::autoconnection_object = NULL;
 ConnectionTimeoutTimer *ConnectionTimeoutTimer::connectiontimeout_object = NULL;
@@ -117,9 +118,6 @@ void EventManager::connectedSlot()
 //	if (ifStatusWithDescription(loginparams.status))
 //		kadu->setStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
 
-	/* uruchamiamy autoawaya(jezeli wlaczony) po wyslaniu userlisty i ustawieniu statusu */
-	if (config_file.readBoolEntry("General","AutoAway"))
-		AutoAwayTimer::on();
 	/* jezeli sie rozlaczymy albo stracimy polaczenie, proces laczenia sie z serwerami zaczyna sie od poczatku */
 	server_nr = 0;
 	pingtimer = new QTimer;
@@ -273,7 +271,8 @@ void EventManager::chatMsgReceived2Slot(UinsList senders,const QString& msg,time
 	pending.addMsg(senders, msg, GG_CLASS_CHAT, time);
 	
 	UserBox::all_refresh();
-	trayicon->changeIcon();
+	if (trayicon)
+		trayicon->changeIcon();
 
 	if (config_file.readBoolEntry("General","AutoRaise")) {
 		kadu->showNormal();

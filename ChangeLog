@@ -210,6 +210,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * opisy modulow w plikach .desc moga byc wielojezyczne (michal)
 * metody moduleIncUsageCount i moduleDecUsageCount w ModulesManager (michal)
 * bramka ery obsuguje siec hejah (owczi/michal)
+* autoaway do modu³u (+trochê porz±dków) (joi)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

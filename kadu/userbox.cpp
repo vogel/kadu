@@ -589,7 +589,7 @@ void UserBox::initModule()
 
 
 	ConfigDialog::addTab("General");
-	ConfigDialog::addCheckBox("General", "General", "Show Inactive users", "ShowHideInactive", true);
+	ConfigDialog::addCheckBox("General", "grid", "Show Inactive users", "ShowHideInactive", true);
 
 // dodanie wpisow do konfiga (pierwsze uruchomienie)
 	config_file.addVariable("Look", "UserboxDescBgColor", QColor("#C0C0C0"));

@@ -20,11 +20,11 @@
 
 #include "libgadu.h"
 #include "misc.h"
-#include "status.h"
 #include "userbox.h"
 #include "userlist.h"
 #include "tabbar.h"
 #include "dcc.h"
+#include "status.h"
 
 /**
 	Toolbar Kadu
@@ -173,6 +173,9 @@ class Kadu : public QMainWindow
 		void unregisterUser();
 		void viewHistory();
 		void popupMenu();
+	signals:
+		void disconnectingNetwork();
+		void disconnectedNetwork();
 };
 
 class KaduSlots : public QObject

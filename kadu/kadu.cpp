@@ -188,29 +188,29 @@ QToolButton* ToolBar::getButton(const char* name)
 	return NULL;
 }
 
-
-
 void Kadu::gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op) {
 	char buf[32];
 	int i;
 	QString newestversion;
 
-	if (data.size() > 31) {
-		kdebug("Kadu::gotUpdatesInfo(): cannot obtain update info\n");
-		delete uc;
-		return;
+	if (config_file.readBoolEntry("General", "CheckUpdates"))
+	{
+		if (data.size() > 31) {
+			kdebug("Kadu::gotUpdatesInfo(): cannot obtain update info\n");
+			delete uc;
+			return;
 		}
-	for (i = 0; i < data.size(); i++)
-		buf[i] = data[i];
-	buf[data.size()] = 0;
-	newestversion = buf;
+		for (i = 0; i < data.size(); i++)
+			buf[i] = data[i];
+		buf[data.size()] = 0;
+		newestversion = buf;
 
-	kdebug("Kadu::gotUpdatesInfo(): %s\n", buf);
+		kdebug("Kadu::gotUpdatesInfo(): %s\n", buf);
 
-	if (uc->ifNewerVersion(newestversion)) {
-		QMessageBox::information(this, tr("Update information"),
-			tr("The newest Kadu version is %1").arg(newestversion), QMessageBox::Ok);
-		}
+		if (uc->ifNewerVersion(newestversion))
+			QMessageBox::information(this, tr("Update information"),
+				tr("The newest Kadu version is %1").arg(newestversion), QMessageBox::Ok);
+	}
 	delete uc;
 }
 
@@ -258,6 +258,12 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	QT_TRANSLATE_NOOP("@default", "Restore window geometry");
 	QT_TRANSLATE_NOOP("@default", "Check for updates");
 	QT_TRANSLATE_NOOP("@default", "Set language:");
+	QT_TRANSLATE_NOOP("@default", "Enable dock icon");
+	QT_TRANSLATE_NOOP("@default", "Start docked");
+	QT_TRANSLATE_NOOP("@default", "Private status");
+
+	QT_TRANSLATE_NOOP("@default", "Default status");
+	QT_TRANSLATE_NOOP("@default", "On shutdown, set description:");
 
 	KaduSlots *kaduslots=new KaduSlots();
 	int myUin=config_file.readNumEntry("General", "UIN");
@@ -272,6 +278,16 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	ConfigDialog::addCheckBox("General", "grid", "Log messages", "Logging", true);
 	ConfigDialog::addCheckBox("General", "grid", "Restore window geometry", "SaveGeometry", true);
 	ConfigDialog::addCheckBox("General", "grid", "Check for updates", "CheckUpdates", true);
+
+	ConfigDialog::addCheckBox("General", "grid", "Enable dock icon", "UseDocking", true);
+	ConfigDialog::addCheckBox("General", "grid", "Start docked", "RunDocked", false);
+	ConfigDialog::addCheckBox("General", "grid", "Private status", "PrivateStatus", false);
+
+	ConfigDialog::addVGroupBox("General", "General", "Status");
+	ConfigDialog::addComboBox("General", "Status", "Default status", "", "cb_defstatus");
+	ConfigDialog::addHBox("General", "Status", "discstatus");
+	ConfigDialog::addCheckBox("General", "discstatus", "On shutdown, set description:", "DisconnectWithDescription", false);
+	ConfigDialog::addLineEdit("General", "discstatus", "", "DisconnectDescription", "", "", "e_defaultstatus");
 
 	ConfigDialog::registerSlotOnCreate(kaduslots, SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnDestroy(kaduslots, SLOT(onDestroyConfigDialog()));
@@ -305,7 +321,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	UserBox::initModule();
 	History::initModule();
 	HintManager::initModule();
-	AutoAwayTimer::initModule();
 	EventConfigSlots::initModule();
 
 
@@ -521,11 +536,10 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	if (myUin) {
 		uc = new UpdatesClass(myUin);
-		if (config_file.readBoolEntry("General", "CheckUpdates"))
-			QObject::connect(uc->op, SIGNAL(data(const QByteArray &, QNetworkOperation *)),
+		QObject::connect(uc->op, SIGNAL(data(const QByteArray &, QNetworkOperation *)),
 				this, SLOT(gotUpdatesInfo(const QByteArray &, QNetworkOperation *)));
 		uc->run();
-		}
+	}
 }
 
 void Kadu::createToolBar()
@@ -1395,8 +1409,8 @@ void Kadu::disconnectNetwork() {
 
 	kdebug("Kadu::disconnectNetwork(): calling offline routines\n");
 
-	if (config_file.readBoolEntry("General", "AutoAway"))
-		AutoAwayTimer::off();
+	emit disconnectingNetwork();
+	
 	ConnectionTimeoutTimer::off();
 	if (pingtimer) {
 		pingtimer->stop();
@@ -1455,6 +1469,8 @@ void Kadu::disconnectNetwork() {
 	socket_active = false;
 
 	setCurrentStatus(GG_STATUS_NOT_AVAIL);
+	
+	emit disconnectedNetwork();
 }
 
 
@@ -1620,12 +1636,22 @@ bool Kadu::close(bool quit) {
 }
 
 void Kadu::quitApplication() {
-	kdebug("Kadu::quitApplication()\n");
+	kdebugf();
 	close(true);
 }
 
 Kadu::~Kadu(void) {
-	kdebug("Kadu::~Kadu()\n");
+	kdebugf();
+	if (trayicon)
+	{
+		delete trayicon;
+		trayicon=NULL;
+	}
+	if (hintmanager)
+	{
+		delete hintmanager;
+		hintmanager=NULL;
+	}
 }
 
 void Kadu::createMenu() {
@@ -1752,6 +1778,23 @@ void KaduSlots::onCreateConfigDialog()
 	cb_language->insertStringList(files);
 	cb_language->setCurrentText(translateLanguage(qApp,
 	config_file.readEntry("General", "Language", QTextCodec::locale()),true));
+
+	QCheckBox *b_disconnectdesc= ConfigDialog::getCheckBox("General", "On shutdown, set description:");
+	QLineEdit *e_disconnectdesc= ConfigDialog::getLineEdit("General", "", "e_defaultstatus");
+	e_disconnectdesc->setMaxLength(GG_STATUS_DESCR_MAXSIZE);
+	e_disconnectdesc->setEnabled(b_disconnectdesc->isChecked());
+	connect(b_disconnectdesc, SIGNAL(toggled(bool)), e_disconnectdesc, SLOT(setEnabled(bool)));
+
+	QComboBox* cb_defstatus= ConfigDialog::getComboBox("General", "Default status", "cb_defstatus");
+	int statusnr=config_file.readNumEntry("General", "DefaultStatus", GG_STATUS_NOT_AVAIL);
+	cb_defstatus->clear();
+	int i;
+	for (i = 0;i < 7; i++)
+		cb_defstatus->insertItem(qApp->translate("@default", statustext[i]));
+	i=0;	
+	while (i<7 && statusnr !=gg_statuses[i])
+		i++;
+	cb_defstatus->setCurrentItem(i);
 }
 
 void KaduSlots::onDestroyConfigDialog()
@@ -1788,6 +1831,20 @@ void KaduSlots::onDestroyConfigDialog()
 	else
 		kadu->userbox()->setColumnMode(1);
 
+	QComboBox* cb_defstatus= ConfigDialog::getComboBox("General", "Default status", "cb_defstatus");
+	config_file.writeEntry("General", "DefaultStatus", gg_statuses[cb_defstatus->currentItem()]);
+
+	int status = getActualStatus();
+
+	bool privateStatus=config_file.readBoolEntry("General", "PrivateStatus");
+	
+	if (status != GG_STATUS_NOT_AVAIL)
+	if ((!(status & GG_STATUS_FRIENDS_MASK)&& privateStatus)
+		|| ((status & GG_STATUS_FRIENDS_MASK) && !privateStatus))
+		kadu->setStatus(status & (~GG_STATUS_FRIENDS_MASK));
+
+	statusppm->setItemChecked(8, privateStatus);
+
 
 	/* I odswiez okno Kadu */
 	kadu->changeAppearance();
@@ -1797,5 +1854,4 @@ void KaduSlots::onDestroyConfigDialog()
 
 	QComboBox *cb_language= ConfigDialog::getComboBox("General", "Set language:");
 	config_file.writeEntry("General", "Language", translateLanguage(qApp, cb_language->currentText(),false));
-
 }
