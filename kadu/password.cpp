@@ -127,7 +127,7 @@ changePassword::changePassword(QDialog *parent, const char *name) : QDialog(pare
 	
 	tokenimage = new ImageWidget(this);
 
-	QLabel *l_email = new QLabel(tr("E-mail"),this);
+	QLabel *l_email = new QLabel(tr("New email"),this);
 	emailedit = new QLineEdit(this);
 
 	QLabel *l_newpwd = new QLabel(tr("New password"),this);
