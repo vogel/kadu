@@ -82,7 +82,7 @@ void ConfigFile::write() {
 void ConfigFile::sync() {
 	kdebug("ConfigFile::sync()\n");
 	write();
-	kdebug("ConfigFile::sync()(): finished\n");
+	kdebug("ConfigFile::sync(): finished\n");
 }
 
 void ConfigFile::setGroup(const QString &name) {

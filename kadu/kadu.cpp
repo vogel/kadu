@@ -311,9 +311,9 @@ void Kadu::gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op) {
 
 void Kadu::keyPressEvent(QKeyEvent *e) {
 	if (e->key() == Key_Escape) {
-			close_permitted = false;
-			close(true);
-			}
+		kdebug("Kadu::keyPressEvent(Key_Escape)\n");
+		close();
+	}
 	QWidget::keyPressEvent(e);
 }
 
@@ -329,9 +329,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	/* timers, cause event loops and QSocketNotifiers suck. */
 	pingtimer = blinktimer = readevent = NULL;
-
-	/* initalize our closeEvent workaround */
-	close_permitted = false;
 
 	/* blinker */
 	blinkOn = false;
@@ -1015,10 +1012,7 @@ void Kadu::commandParser (int command) {
 			ureg->show();
 			break;
 		case KADU_CMD_QUIT:
-			pending.writeToFile();
-			close_permitted = true;
-			disconnectNetwork();
-			a->quit();
+			close(true);
 			break;
 		case KADU_CMD_SEARCH_USER:
 			if (userbox->currentItem() != -1) {
@@ -1045,8 +1039,8 @@ void Kadu::commandParser (int command) {
 			ule->show();
 			break;
 		case KADU_CMD_HIDE:
-			close_permitted = false;
-			close(true);
+			if (trayicon)
+				close();
 			break;
 		case KADU_CMD_SEND_FILE:
 			struct gg_dcc *dcc_new;
@@ -1758,13 +1752,26 @@ void Kadu::watchDcc(void) {
 	gg_free_event(dcc_e);
 }
 
-void Kadu::cleanUp(void) {
-	config.splitsize.setWidth(userbox->size().height());
-	config.splitsize.setHeight(descrtb->size().height());
-	config.geometry = geometry();
-	saveKaduConfig();
-	writeIgnored();
-	kdebug("Kadu::cleanUp(): Saved config and ignored\n");
+bool Kadu::close(bool quit) {
+	if (!quit && trayicon) {
+		kdebug("Kadu::close(): Kadu hide\n");
+		hide();
+		return false;
+		}
+	else {
+		config.splitsize.setWidth(userbox->size().height());
+		config.splitsize.setHeight(descrtb->size().height());
+		config.geometry = geometry();
+		saveKaduConfig();
+		writeIgnored();
+		pending.writeToFile();
+		kadu->disconnectNetwork();
+		kdebug("Kadu::close(): Saved config, ignored and disconnect\n");
+		QMainWindow::close();
+		a->quit();
+		kdebug("Kadu::close(): Graceful shutdown...\n");
+		return true;
+	}
 }
 
 Kadu::~Kadu(void) {
@@ -1858,22 +1865,6 @@ void Kadu::createStatusPopupMenu() {
 
 	connect(statusppm, SIGNAL(activated(int)), this, SLOT(slotHandleState(int)));
 }
-
-void Kadu::closeEvent(QCloseEvent *e) {
-	if (!close_permitted && trayicon) {
-		e->ignore();
-		hide();
-		}
-	else {
-		kdebug("closeEvent(): Graceful shutdown...\n");
-		e->accept();
-		}
-}
-
-void Kadu::setClosePermitted(bool permitted)
-{
-	close_permitted=permitted;
-};
 
 void MyLabel::mousePressEvent (QMouseEvent * e) {
 	if (e->button() == Qt::LeftButton && closestatusppmtime.elapsed() >= 100)

@@ -49,7 +49,6 @@ class Kadu : public QMainWindow
 			const QString& Group,const QString& Description, const bool Anonymous = false);
 		void removeUser(QStringList &, bool);
 		void refreshGroupTabBar();
-		void setClosePermitted(bool permitted);
     
 		// te zmienne s± tylko chwilowo publiczne.
 		// trzeba to uporz±dkowaæ
@@ -59,7 +58,6 @@ class Kadu : public QMainWindow
 		AutoStatusTimer* autostatus_timer;    
 
 	protected:
-		void closeEvent(QCloseEvent *);	
 		bool event(QEvent *e);
 		void watchDcc(void);
 		void keyPressEvent(QKeyEvent *e);
@@ -84,7 +82,6 @@ class Kadu : public QMainWindow
 		void dccReceived();
 		void dccSent();
 		void prepareDcc(void);
-		void cleanUp(void);
 		void pingNetwork(void);
 		void checkConnection(void);
 		void setStatus(int);
@@ -102,6 +99,7 @@ class Kadu : public QMainWindow
 		void showUserInfo();
 		void addUserAction();
 		void infopanelUpdate(uin_t);
+		virtual bool close(bool quit = false);
 
 	private:
 		QFrame *centralFrame;
@@ -114,7 +112,6 @@ class Kadu : public QMainWindow
 		void createMenu();
 		void createStatusPopupMenu();
 		void setActiveGroup(const QString& group);
-		bool close_permitted;
 		UinsList getSelectedUins();
 
 	private slots:

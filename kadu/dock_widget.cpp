@@ -214,12 +214,8 @@ void TrayIcon::dockletChange(int id)
 {
 	if (id < 9)
 		kadu->slotHandleState(id);
-	else {
-		pending.writeToFile();
-		kadu->setClosePermitted(true);
-		kadu->disconnectNetwork();
-		kadu->close();
-		}
+	else
+		kadu->close(true);
 }
 
 void TrayIcon::connectSignals() {
