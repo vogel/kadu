@@ -190,6 +190,7 @@ QString EmoticonsManager::themePath()
 
 void EmoticonsManager::expandEmoticons(HtmlDocument& doc,const QColor& bgcolor)
 {
+	kdebugf();
 	// check in config if user wants animated emots
 	bool animated = (EmoticonsStyle) config_file.readNumEntry("Chat", "EmoticonsStyle") == EMOTS_ANIMATED;
 
@@ -258,7 +259,8 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc,const QColor& bgcolor)
 			doc.setElementValue( e_i, new_text, true );
 		}
 	}
-	kdebug("Emoticons expanded...\n");
+	kdebug("Emoticons expanded, html is below:\n%s\n",doc.generateHtml().local8Bit().data());
+	kdebugf2();
 }
 
 int EmoticonsManager::selectorCount()
@@ -466,8 +468,8 @@ QTextCustomItem* AnimStyleSheet::tag(
 	const QString& context, const QMimeSourceFactory& factory,
 	bool emptyTag, QTextDocument* doc) const
 {
-	if(name!="img")
-		return QStyleSheet::tag(name,attr,context,factory,emptyTag,doc);
+	if(name!="img" || attr["static"]=="1")
+		return QStyleSheet::tag(name,attr,context,factory,emptyTag,doc);	
 	return new AnimTextItem(doc,(QTextEdit*)parent(),Path+"/"+attr["src"],QColor(attr["bgcolor"]),attr["title"]);
 }
 

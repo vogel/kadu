@@ -248,7 +248,7 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, u
 			{
 				if (inspan)
 					mesg.append("</span>");
-				if (actformat->font)
+				if (actformat->font & (~GG_FONT_IMAGE))
 				{
 					inspan = true;
 					mesg.append("<span style=\"");
@@ -274,12 +274,11 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, u
 				if (actformat->font & GG_FONT_IMAGE)
 				{
 					kdebug("formatGGMessage(): I got image probably\n");
+					actimage = (struct gg_msg_richtext_image*)(cformats);
+					kdebug(QString("Image size: %1, crc32: %2\n").arg(actimage->size).arg(actimage->crc32).local8Bit().data());
 					if (sender!=0)
 					{
-						kdebug("Someone sends us an image\n");	
-						actimage = (struct gg_msg_richtext_image*)(cformats
-								/*+ sizeof(struct gg_msg_richtext_color)*/);
-						kdebug(QString("Image size: %1, crc32: %2\n").arg(actimage->size).arg(actimage->crc32).local8Bit().data());
+						kdebug("Someone sends us an image\n");							
 						gadu->sendImageRequest(sender,
 							actimage->size,
 							actimage->crc32);
@@ -288,7 +287,11 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, u
 					else
 					{
 						kdebug("It is my message and my image\n");
-						mesg.append("[[[MY IMAGE]]]");
+						QString file_name =
+							image_queue.getImageFileName(
+								actimage->size,
+								actimage->crc32);
+						mesg.append("<img src=\""+file_name+"\" static=\"1\"/>");
 					}
 					cformats += sizeof(gg_msg_richtext_image);
 					formats_length -= sizeof(gg_msg_richtext_image);
@@ -1848,6 +1851,7 @@ void CreateNotifier::notify(QObject* new_object)
 
 void ImageQueue::addImage(const QString& file_name,uint32_t& size,uint32_t& crc32)
 {
+	kdebugf();
 	QueuedImage img;
 	QFile f(file_name);
 	kdebug("Opening file \"%s\"\n",file_name.local8Bit().data());
@@ -1862,7 +1866,7 @@ void ImageQueue::addImage(const QString& file_name,uint32_t& size,uint32_t& crc3
 	kdebug("Reading file\n");
 	f.readBlock(img.data,img.size);
 	img.crc32 = gg_crc32(0,(const unsigned char*)img.data,img.size);
-	kdebug("Inserting into images queue\n");
+	kdebug("Inserting into images queue: filename=%s, size=%i, crc32=%i\n\n",img.file_name.local8Bit().data(),img.size,img.crc32);
 	QueuedImages.append(img);
 	size = img.size;
 	crc32 = img.crc32;
@@ -1870,7 +1874,8 @@ void ImageQueue::addImage(const QString& file_name,uint32_t& size,uint32_t& crc3
 
 void ImageQueue::sendImage(uin_t uin,uint32_t size,uint32_t crc32)
 {
-	kdebug("Searching images queue\n");
+	kdebugf();
+	kdebug("Searching images queue: size=%i, crc32=%i\n",size,crc32);
 	for(QValueList<QueuedImage>::Iterator i=QueuedImages.begin(); i!=QueuedImages.end(); i++)
 	{
 		if ((*i).size==size && (*i).crc32==crc32)
@@ -1884,6 +1889,22 @@ void ImageQueue::sendImage(uin_t uin,uint32_t size,uint32_t crc32)
 		}
 	}
 	kdebug("Image data not found\n");
+}
+
+QString ImageQueue::getImageFileName(uint32_t size,uint32_t crc32)
+{
+	kdebugf();
+	kdebug("Searching images queue: size=%i, crc32=%i\n",size,crc32);
+	for(QValueList<QueuedImage>::Iterator i=QueuedImages.begin(); i!=QueuedImages.end(); i++)
+	{
+		if ((*i).size==size && (*i).crc32==crc32)
+		{
+			kdebug("Image data found\n");
+			return (*i).file_name;
+		}
+	}
+	kdebug("Image data not found\n");
+	return "";
 }
 
 ImageQueue image_queue;
