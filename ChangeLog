@@ -22,7 +22,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * configure: usuniêcie poszukiwania xlib.h, opcji --disable-modules,
   dodana wersja kadu w podsumowaniu (adrian)
 * usuniêcie ok. 150 ostrze¿eñ przy CXXFLAGS="-Wall -std=c++98 -ansi"
-  (nadal jest ich mnóstwo, ale o te kilkadziesi±t mniej) (joi)
+  (nadal jest ich mnóstwo, ale o te 150 mniej) (joi)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
