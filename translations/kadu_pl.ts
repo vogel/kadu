@@ -1003,7 +1003,7 @@ Twoje hasło jest nieprawidłowe!!!</translation>
     </message>
     <message>
         <source>Please change your email in &quot;Change password/email&quot; window. Leave new password field blank.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zmień swój e-mail w oknie &quot;Zmień hasło/e-mail&quot;. Pole nowe hasło pozostaw puste.</translation>
     </message>
 </context>
 <context>
@@ -1471,7 +1471,7 @@ Sprawdź swoje połączenie internetowe.</translation>
     </message>
     <message>
         <source>&amp;Configuration</source>
-        <translation>&amp;Konfiguracja</translation>
+        <translation>Konfi&amp;guracja</translation>
     </message>
     <message>
         <source>Resend &amp;userlist</source>
@@ -1847,10 +1847,6 @@ Teraz możesz dodać znajomych do listy kontaktów.</translation>
     <message>
         <source>Select user first</source>
         <translation>Zaznacz użytkownika</translation>
-    </message>
-    <message>
-        <source> </source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
