@@ -143,10 +143,17 @@ void dccSocketClass::watchDcc(int check) {
 			playprocess->start();
 			break;
 		case GG_EVENT_DCC_VOICE_DATA:
-			if (!playprocess->isRunning())
-				break;
+//			if (!playprocess->isRunning())
+//				break;
+			fprintf(stderr,"KK dccSocketClass::watchDcc: buf.setRawData() 1\n");
+			buf.setRawData((const char *)&dccevent->event.dcc_voice_data.length,
+				sizeof(int));
+			fprintf(stderr,"KK dccSocketClass::watchDcc: playprocess->writeToStdin() 1\n");
+			playprocess->writeToStdin(buf);
+			fprintf(stderr,"KK dccSocketClass::watchDcc: buf.setRawData() 2\n");
 			buf.setRawData((const char *)dccevent->event.dcc_voice_data.data,
 				dccevent->event.dcc_voice_data.length);
+			fprintf(stderr,"KK dccSocketClass::watchDcc: playprocess->writeToStdin() 2\n");
 			playprocess->writeToStdin(buf);
 			break;
 		case GG_EVENT_DCC_ERROR:
