@@ -1367,6 +1367,12 @@ void Kadu::slotHandleState(int command) {
 		}
 }
 
+void Kadu::slotShowStatusMenu() {
+	QPoint point = statuslabeltxt->mapToGlobal(QPoint(0, 0));
+	point.setY(point.y() - statusppm->sizeHint().height());
+	statusppm->popup(point);
+}
+
 void Kadu::setCurrentStatus(int status) {
 	int statusnr;
 	int i;
@@ -1388,12 +1394,6 @@ void Kadu::setCurrentStatus(int status) {
 	setIcon(*pix);
 	if (!pending.pendingMsgs() && trayicon)
 		trayicon->setType(*pix);
-}
-
-void Kadu::slotShowStatusMenu() {
-	QPoint point = statuslabeltxt->mapToGlobal(QPoint(0, 0));
-	point.setY(point.y() - statusppm->sizeHint().height());
-	statusppm->popup(point);
 }
 
 void Kadu::setStatus(int status) {
@@ -1444,19 +1444,9 @@ void Kadu::setStatus(int status) {
 		return;
 		}
 
-/*    if (!autohammer) {
-	if (progresswindow) {
-//	    if (progresswindow->isVisible())
-//		progresswindow->close();
-	    delete progresswindow;
-	    }
-	progresswindow = new Operation(i18n("Connecting to network"), i18n("Cancel"), 7 ); // <-- this is the progress bar, in case the name misleads you ;)
-	}*/
-
 	if (config.allowdcc)
 		prepareDcc();
 
-	/* use proxy? */
 	if (config.useproxy) {
 		char * gg_proxy_username;
 		char * gg_proxy_password;
@@ -1531,104 +1521,6 @@ void Kadu::checkConnection(void) {
 	return;	
 }
 
-void Kadu::dccFinished(dccSocketClass *dcc) {
-	kdebug("dccFinished\n");
-	delete dcc;
-}
-
-bool Kadu::event(QEvent *e) {
-	QCustomEvent *ce;
-	dccSocketClass *dcc;
-	dccSocketClass **data;
-
-	if (e->type() == QEvent::User) {
-		kdebug("Kadu::event()\n");
-		ce = (QCustomEvent *)e;
-		data = (dccSocketClass **)ce->data();
-		dcc = *data;
-		switch (dcc->state) {
-			case DCC_SOCKET_TRANSFER_FINISHED:
-				QMessageBox::information(0, i18n("Information"),
-					i18n("File has been transferred sucessfully."),
-					i18n("&OK"));
-				break;
-			case DCC_SOCKET_TRANSFER_DISCARDED:
-				QMessageBox::information(0, i18n("Information"), 
-					i18n("File transfer has been discarded."), i18n("&OK"));
-				break;
-			case DCC_SOCKET_TRANSFER_ERROR:
-			case DCC_SOCKET_CONNECTION_BROKEN:
-				QMessageBox::information(0, i18n("Error"),
-					i18n("File transfer error!"),
-					i18n("&OK"));
-				break;
-			case DCC_SOCKET_COULDNT_OPEN_FILE:
-				QMessageBox::information(0, i18n("Error"),
-					i18n("Couldn't open file!"),
-					i18n("&OK"));
-				break;
-			}
-		delete data;
-		delete dcc;
-		ce->setData(NULL);
-		}
-	return QWidget::event(e);
-}
-
-void Kadu::dccReceived(void) {
-	kdebug("Kadu::dccReceived()\n");
-	watchDcc();
-}
-
-void Kadu::dccSent(void) {
-	kdebug("Kadu::dccSent()\n");
-	dccsnw->setEnabled(false);
-	if (dccsock->check & GG_CHECK_WRITE)
-		watchDcc();
-}
-
-void Kadu::watchDcc(void) {
-	kdebug("Kadu::watchDcc(): data on socket\n");			
-	if (!(dcc_e = gg_dcc_watch_fd(dccsock))) {
-		kdebug("Kadu::watchDcc(): Connection broken unexpectedly!\n");
-		config.allowdcc = false;
-		delete dccsnr;
-		dccsnr = NULL;
-		delete dccsnw;
-		dccsnw = NULL;
-		return;
-		}
-
-	switch (dcc_e->type) {
-		case GG_EVENT_NONE:
-			break;
-		case GG_EVENT_DCC_ERROR:
-			kdebug("Kadu::watchDcc(): GG_EVENT_DCC_ERROR\n");
-			break;
-		case GG_EVENT_DCC_NEW:
-			if (dccSocketClass::count < 8) {
-				dccSocketClass *dcc;    
-				dcc = new dccSocketClass(dcc_e->event.dcc_new);
-				connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), this, SLOT(dccFinished(dccSocketClass *)));
-				dcc->initializeNotifiers();
-				kdebug("Kadu::watchDcc(): GG_EVENT_DCC_NEW: spawning object\n");
-				}
-			else {
-				if (dcc_e->event.dcc_new->file_fd > 0)
-					close(dcc_e->event.dcc_new->file_fd);
-				gg_dcc_free(dcc_e->event.dcc_new);
-				}
-			break;
-		default:
-			break;
-		}
-
-	if (dccsock->check == GG_CHECK_WRITE)
-		dccsnw->setEnabled(true);
-
-	gg_free_event(dcc_e);
-}
-
 void Kadu::dataReceived(void) {
 	kdebug("Kadu::dataReceived()\n");
 	if (sess->check && GG_CHECK_READ)
@@ -1642,7 +1534,7 @@ void Kadu::dataSent(void) {
 		eventHandler(GG_CHECK_WRITE);
 }
 
-/* the main network function called every n msec from QTimer */
+/* the main network function */
 void Kadu::eventHandler(int state) {
 	int i;
 	static int calls = 0;
@@ -1658,7 +1550,6 @@ void Kadu::eventHandler(int state) {
 		snprintf(error, sizeof(error), "Kadu::eventHandler(): Unscheduled connection termination\n");
 		kdebug(error);
 		setCurrentStatus(GG_STATUS_NOT_AVAIL);
-		//QMessageBox::warning(kadu, "Connect error", error );
 		gg_free_event(e);
 		if (autohammer)
 			setStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
@@ -1789,7 +1680,7 @@ void Kadu::eventHandler(int state) {
 		if (config.autoaway)
 			AutoAwayTimer::on();
 /* jezeli sie rozlaczymy albo stracimy polaczenie, proces laczenia sie z serwerami zaczyna sie od poczatku */
-		server_nr=0;
+		server_nr = 0;
 		pingtimer = new QTimer;
 		QObject::connect(pingtimer, SIGNAL(timeout()), kadu, SLOT(pingNetwork()));
 		pingtimer->start(60000, TRUE);
@@ -1926,6 +1817,105 @@ void Kadu::disconnectNetwork() {
 		trayicon->setType(*pix);
 	setIcon(*pix);
 
+}
+
+
+void Kadu::dccFinished(dccSocketClass *dcc) {
+	kdebug("dccFinished\n");
+	delete dcc;
+}
+
+bool Kadu::event(QEvent *e) {
+	QCustomEvent *ce;
+	dccSocketClass *dcc;
+	dccSocketClass **data;
+
+	if (e->type() == QEvent::User) {
+		kdebug("Kadu::event()\n");
+		ce = (QCustomEvent *)e;
+		data = (dccSocketClass **)ce->data();
+		dcc = *data;
+		switch (dcc->state) {
+			case DCC_SOCKET_TRANSFER_FINISHED:
+				QMessageBox::information(0, i18n("Information"),
+					i18n("File has been transferred sucessfully."),
+					i18n("&OK"));
+				break;
+			case DCC_SOCKET_TRANSFER_DISCARDED:
+				QMessageBox::information(0, i18n("Information"), 
+					i18n("File transfer has been discarded."), i18n("&OK"));
+				break;
+			case DCC_SOCKET_TRANSFER_ERROR:
+			case DCC_SOCKET_CONNECTION_BROKEN:
+				QMessageBox::information(0, i18n("Error"),
+					i18n("File transfer error!"),
+					i18n("&OK"));
+				break;
+			case DCC_SOCKET_COULDNT_OPEN_FILE:
+				QMessageBox::information(0, i18n("Error"),
+					i18n("Couldn't open file!"),
+					i18n("&OK"));
+				break;
+			}
+		delete data;
+		delete dcc;
+		ce->setData(NULL);
+		}
+	return QWidget::event(e);
+}
+
+void Kadu::dccReceived(void) {
+	kdebug("Kadu::dccReceived()\n");
+	watchDcc();
+}
+
+void Kadu::dccSent(void) {
+	kdebug("Kadu::dccSent()\n");
+	dccsnw->setEnabled(false);
+	if (dccsock->check & GG_CHECK_WRITE)
+		watchDcc();
+}
+
+void Kadu::watchDcc(void) {
+	kdebug("Kadu::watchDcc(): data on socket\n");			
+	if (!(dcc_e = gg_dcc_watch_fd(dccsock))) {
+		kdebug("Kadu::watchDcc(): Connection broken unexpectedly!\n");
+		config.allowdcc = false;
+		delete dccsnr;
+		dccsnr = NULL;
+		delete dccsnw;
+		dccsnw = NULL;
+		return;
+		}
+
+	switch (dcc_e->type) {
+		case GG_EVENT_NONE:
+			break;
+		case GG_EVENT_DCC_ERROR:
+			kdebug("Kadu::watchDcc(): GG_EVENT_DCC_ERROR\n");
+			break;
+		case GG_EVENT_DCC_NEW:
+			if (dccSocketClass::count < 8) {
+				dccSocketClass *dcc;    
+				dcc = new dccSocketClass(dcc_e->event.dcc_new);
+				connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), this, SLOT(dccFinished(dccSocketClass *)));
+				dcc->initializeNotifiers();
+				kdebug("Kadu::watchDcc(): GG_EVENT_DCC_NEW: spawning object\n");
+				}
+			else {
+				if (dcc_e->event.dcc_new->file_fd > 0)
+					close(dcc_e->event.dcc_new->file_fd);
+				gg_dcc_free(dcc_e->event.dcc_new);
+				}
+			break;
+		default:
+			break;
+		}
+
+	if (dccsock->check == GG_CHECK_WRITE)
+		dccsnw->setEnabled(true);
+
+	gg_free_event(dcc_e);
 }
 
 void Kadu::cleanUp(void) {
