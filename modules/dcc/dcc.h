@@ -91,7 +91,10 @@ class DccManager : public QObject
 	public:
 		DccManager(QObject *parent=0, const char *name=0);
 		virtual ~DccManager();
-		void initDCCConnection(uint32_t ip, uint16_t port, UinType my_uin, UinType peer_uin, const char *gadu_slot, int dcc_type);
+		enum TryType {DIRECT, REQUEST};
+		TryType initDCCConnection(uint32_t ip, uint16_t port,
+								UinType my_uin, UinType peer_uin, const char *gadu_slot,
+								int dcc_type, bool force_request=false);
 		bool dccEnabled() const;
 
 	signals:

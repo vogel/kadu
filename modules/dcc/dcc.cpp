@@ -594,11 +594,13 @@ void DccManager::dccConnectionReceived(const UserListElement& sender)
 	kdebugf2();
 }
 
-void DccManager::initDCCConnection(uint32_t ip, uint16_t port, UinType my_uin,
-							UinType peer_uin, const char *gadu_slot, int dcc_type)
+DccManager::TryType DccManager::initDCCConnection(uint32_t ip, uint16_t port,
+								UinType my_uin, UinType peer_uin,
+								const char *gadu_slot, int dcc_type,
+								bool force_request)
 {
 	kdebugf();
-	if (port>=10)
+	if (port>=10 && !force_request)
 	{
 		struct gg_dcc *sock=NULL;
 
@@ -619,6 +621,8 @@ void DccManager::initDCCConnection(uint32_t ip, uint16_t port, UinType my_uin,
 		}
 		else
 			kdebugm(KDEBUG_WARNING, "socket is null (ip:%d port:%d my:%d peer:%d type:%d)\n", ip, port, my_uin, peer_uin, dcc_type);
+		kdebugf2();
+		return DIRECT;
 	}
 	else
 	{
@@ -626,8 +630,9 @@ void DccManager::initDCCConnection(uint32_t ip, uint16_t port, UinType my_uin,
 		dcc_manager->startTimeout();
 		requests.insert(peer_uin, dcc_type);
 		gadu->dccRequest(peer_uin);
+		kdebugf2();
+		return REQUEST;
 	}
-	kdebugf2();
 }
 
 void DccManager::callbackReceived(DccSocket *sock)

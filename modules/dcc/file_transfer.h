@@ -4,6 +4,7 @@
 #include "dcc.h"
 
 #include <qdialog.h>
+#include <qvaluelist.h>
 
 class QLabel;
 class QProgressBar;
@@ -46,6 +47,7 @@ class FileTransferManager : public QObject
 	Q_OBJECT
 
 	private:
+		QValueList<UinType> direct;
 		QString selectFile(DccSocket* socket);
 
 	private slots:

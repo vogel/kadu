@@ -211,12 +211,14 @@ void FileTransferManager::sendFile(UinType receiver)
 		if (dcc_manager->dccEnabled())
 		{
 			const UserListElement& user = userlist.byUin(receiver);
-			dcc_manager->initDCCConnection(user.ip().ip4Addr(),
+			DccManager::TryType type=dcc_manager->initDCCConnection(user.ip().ip4Addr(),
 				user.port(),
 				config_file.readNumEntry("General", "UIN"),
 				user.uin(),
 				SLOT(dccSendFile(uint32_t, uint16_t, UinType, UinType, struct gg_dcc **)),
 				GG_SESSION_DCC_SEND);
+			if (type==DccManager::DIRECT)
+				direct.push_front(receiver);
 		}
 	kdebugf2();
 }
@@ -308,6 +310,18 @@ void FileTransferManager::dccError(DccSocket* socket)
 {
 	kdebugf();
 	socket->setState(FileTransferDialog::bySocket(socket) != NULL ? DCC_SOCKET_TRANSFER_ERROR : DCC_SOCKET_CONNECTION_BROKEN);
+	UinType peer_uin=socket->ggDccStruct()->peer_uin;
+	if (direct.contains(peer_uin))
+	{
+		direct.remove(peer_uin);
+		const UserListElement& user = userlist.byUin(peer_uin);
+		dcc_manager->initDCCConnection(user.ip().ip4Addr(),
+				user.port(),
+				config_file.readNumEntry("General", "UIN"),
+				user.uin(),
+				SLOT(dccSendFile(uint32_t, uint16_t, UinType, UinType, struct gg_dcc **)),
+				GG_SESSION_DCC_SEND, true);
+	}
 	kdebugf2();
 }
 
@@ -324,6 +338,13 @@ void FileTransferManager::needFileInfo(DccSocket* socket)
 	gadu->dccFillFileInfo(socket->ggDccStruct(), f);
 	FileTransferDialog* filedialog = new FileTransferDialog(socket, FileTransferDialog::TRANSFER_TYPE_SEND);
 	filedialog->printFileInfo();
+
+	//je¿eli druga strona prosi o plik, to znaczy,
+	//¿e nie bêdziemy potrzebowali po³±czenia zwrotnego
+	UinType peer_uin=socket->ggDccStruct()->peer_uin;
+	if (direct.contains(peer_uin))
+		direct.remove(peer_uin);
+
 	kdebugf2();
 }
 
@@ -426,36 +447,48 @@ void FileTransferManager::needFileAccept(DccSocket* socket)
 void FileTransferManager::noneEvent(DccSocket* socket)
 {
 	kdebugf();
+
 	FileTransferDialog *dialog=FileTransferDialog::bySocket(socket);
 	if (dialog != NULL)
 		dialog->updateFileInfo();
+
 	kdebugf2();
 }
 
 void FileTransferManager::dccDone(DccSocket* socket)
 {
 	kdebugf();
+
 	FileTransferDialog *dialog=FileTransferDialog::bySocket(socket);
 	if (dialog != NULL)
 		dialog->updateFileInfo();
+
 	kdebugf2();
 }
 
 void FileTransferManager::setState(DccSocket* socket)
 {
 	kdebugf();
+
 	FileTransferDialog *dialog=FileTransferDialog::bySocket(socket);
 	if (dialog != NULL)
 		dialog->dccFinished = true;
+
 	kdebugf2();
 }
 
 void FileTransferManager::socketDestroying(DccSocket* socket)
 {
 	kdebugf();
+
 	FileTransferDialog *dialog=FileTransferDialog::bySocket(socket);
 	if (dialog != NULL)
 		delete dialog;
+
+	UinType peer_uin=socket->ggDccStruct()->peer_uin;
+	if (direct.contains(peer_uin))
+		direct.remove(peer_uin);
+
 	kdebugf2();
 }
 

@@ -47,6 +47,7 @@ class VoiceManager : public QObject
 		RecordThread* rt;
 		gsm voice_enc;
 		gsm voice_dec;
+		QValueList<UinType> direct;
 		
 		void resetCoder();
 		void resetDecoder();
@@ -70,6 +71,8 @@ class VoiceManager : public QObject
 		void free();
 		void resetCodec();
 		void addGsmSample(char *data, int length);
+	public slots:
+		void makeVoiceChat(UinType dest);
 
 	signals:
 		void setupSoundDevice();
