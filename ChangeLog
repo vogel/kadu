@@ -10,6 +10,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   je¶li co¶ zepsu³em to krzyczcie :P (adrian)
 * je¶li nie mo¿emy po³±czyæ siê z serwerem GG port 8074 po 3 sekundach próbujemy po³±czyæ
   siê z portem 443 (Ron_K/chilek)
+* zmiana wygladu okna konfiguracji "zakladke" wybiera sie po lewej stronie okna
+  natomiast opcje wyswietlaja sie po prawej stronie okna (pawel_p)
 
 +++ wersja 0.3.6 (22.11.2003)
 * je¶li klikniemy na jaki¶ kontakt w userboxie, od którego otrzymali¶my jak±¶
