@@ -782,13 +782,13 @@ void GaduProtocol::initModule()
 
 	ConfigDialog::addVGroupBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "Proxy server"));
 	ConfigDialog::addGrid("Network", "Proxy server", "proxygrid", 2);
-	ConfigDialog::addLineEdit("Network", "proxygrid", "IP address:", "ProxyHost", "","","proxyhost");
+	ConfigDialog::addLineEdit("Network", "proxygrid", QT_TRANSLATE_NOOP("@default", "IP address: "), "ProxyHost", "","","proxyhost");
 	ConfigDialog::addLineEdit("Network", "proxygrid",
-		QT_TRANSLATE_NOOP("@default", "Port:"), "ProxyPort", "0");
+		QT_TRANSLATE_NOOP("@default", " Port: "), "ProxyPort", "0");
 	ConfigDialog::addLineEdit("Network", "proxygrid",
-		QT_TRANSLATE_NOOP("@default", "Username:"), "ProxyUser");
+		QT_TRANSLATE_NOOP("@default", "Username: "), "ProxyUser");
 	ConfigDialog::addLineEdit("Network", "proxygrid",
-		QT_TRANSLATE_NOOP("@default", "Password:"), "ProxyPassword");
+		QT_TRANSLATE_NOOP("@default", " Password: "), "ProxyPassword");
 
 	ConfigDialog::registerSlotOnCreate(gadu, SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnApply(gadu, SLOT(onDestroyConfigDialog()));

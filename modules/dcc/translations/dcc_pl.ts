@@ -15,7 +15,7 @@
     </message>
     <message>
         <source>IP address:</source>
-        <translation>Adresy IP:</translation>
+        <translation>Adresy IP: </translation>
     </message>
     <message>
         <source>DCC forwarding enabled</source>

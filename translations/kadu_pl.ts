@@ -142,20 +142,8 @@
         <translation>Serwer proxy</translation>
     </message>
     <message>
-        <source>Port:</source>
-        <translation>Port:</translation>
-    </message>
-    <message>
         <source>IP addresses:</source>
         <translation>Adresy IP: </translation>
-    </message>
-    <message>
-        <source>Username:</source>
-        <translation>Użytkownik:</translation>
-    </message>
-    <message>
-        <source>Password:</source>
-        <translation>Hasło:</translation>
     </message>
     <message>
         <source>ShortCuts</source>
@@ -402,10 +390,6 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <translation>Maksymalny rozmiar obrazu</translation>
     </message>
     <message>
-        <source>Show inactive users</source>
-        <translation>Pokaż nieaktywne kontakty</translation>
-    </message>
-    <message>
         <source>Show emoticons in panel</source>
         <translation>Pokaż emotikony w panelu informacyjnym</translation>
     </message>
@@ -542,20 +526,12 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <translation>Kiedy włączone, jesteś widoczny tylko do użytkowników na twojej liście</translation>
     </message>
     <message>
-        <source>Display users that are offline</source>
-        <translation>Wyświetlaj kontakty gdy są niedostępne</translation>
-    </message>
-    <message>
         <source>Columns</source>
         <translation>Kolumny</translation>
     </message>
     <message>
         <source>Show / hide users without description</source>
         <translation>Filtruj kontakty z opisami</translation>
-    </message>
-    <message>
-        <source>Display only users that have desciption</source>
-        <translation>Wyświetl tylko kontakty, które mają opisy</translation>
     </message>
     <message>
         <source>Force use of paragraphs (VERY experimental)</source>
@@ -574,6 +550,50 @@ Jest to wysoce ryzykowne!</translation>
     <message>
         <source>Show tooltip on userbox</source>
         <translation>Włacz dymki w liście kontaktów</translation>
+    </message>
+    <message>
+        <source>Number of kept descriptions</source>
+        <translation>Liczba pamiętanych opisów</translation>
+    </message>
+    <message>
+        <source>Show inactive contacts</source>
+        <translation>Pokaż nieaktywne kontakty</translation>
+    </message>
+    <message>
+        <source>Display contacts who are offline</source>
+        <translation>Wyświetl kotakty, któe są niedostępne</translation>
+    </message>
+    <message>
+        <source>Show contacts with description</source>
+        <translation>Pokaż kontakty z opisem</translation>
+    </message>
+    <message>
+        <source>Display contacts who has a desciption</source>
+        <translation>Wyświetlaj kontakty z opisami</translation>
+    </message>
+    <message>
+        <source>Show contacts who you are blocking</source>
+        <translation>Pokaż kontakty, które blokujesz</translation>
+    </message>
+    <message>
+        <source>Show contacts who are blocking you</source>
+        <translation>Pokaż kontakty, które blokują ciebie</translation>
+    </message>
+    <message>
+        <source>IP address: </source>
+        <translation>Adres IP: </translation>
+    </message>
+    <message>
+        <source> Port: </source>
+        <translation> Port: </translation>
+    </message>
+    <message>
+        <source>Username: </source>
+        <translation>Użytkownik: </translation>
+    </message>
+    <message>
+        <source> Password: </source>
+        <translation> Hasło: </translation>
     </message>
 </context>
 <context>
@@ -1752,10 +1772,6 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
         <translation>Telefon</translation>
     </message>
     <message>
-        <source>Group</source>
-        <translation>Grupa</translation>
-    </message>
-    <message>
         <source>All</source>
         <translation>Wszyscy</translation>
     </message>
@@ -1870,6 +1886,26 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     <message>
         <source>This dialog box allows you to view and edit information about the selected contact.</source>
         <translation>To okno dialogowe pozwala redagować informacje o wybranym kontakcie.</translation>
+    </message>
+    <message>
+        <source>Groups</source>
+        <translation>Grupy</translation>
+    </message>
+    <message>
+        <source>Add new group</source>
+        <translation>Dodaj nową grupę</translation>
+    </message>
+    <message>
+        <source>&apos;%1&apos; is prohibited</source>
+        <translation>&apos;%1&apos; jest zabroniony</translation>
+    </message>
+    <message>
+        <source>This group already exists!</source>
+        <translation>Taka grupa już istnieje!</translation>
+    </message>
+    <message>
+        <source>You can&apos;t add so many groups at one stroke. Close this dialog and open one more time.</source>
+        <translation>Nie można dodawać tak wiele gup naraz. Zamknij to okno i otwórz jeszcze raz.</translation>
     </message>
 </context>
 <context>

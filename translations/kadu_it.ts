@@ -138,20 +138,8 @@
         <translation>Proxy server</translation>
     </message>
     <message>
-        <source>Port:</source>
-        <translation>Porta:</translation>
-    </message>
-    <message>
         <source>IP addresses:</source>
         <translation>Indirizzi IP:</translation>
-    </message>
-    <message>
-        <source>Username:</source>
-        <translation>Nome dell&apos;utente:</translation>
-    </message>
-    <message>
-        <source>Password:</source>
-        <translation>Password:</translation>
     </message>
     <message>
         <source>ShortCuts</source>
@@ -398,10 +386,6 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
         <translation>Dimensioni max. file</translation>
     </message>
     <message>
-        <source>Show inactive users</source>
-        <translation>Visualizza contatti inattivi</translation>
-    </message>
-    <message>
         <source>Show emoticons in panel</source>
         <translation>Visualizza emoticons nell panello</translation>
     </message>
@@ -538,10 +522,6 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
         <translation>Quando abilitato, sei disponibile solo per contatti nella tua lista</translation>
     </message>
     <message>
-        <source>Display users that are offline</source>
-        <translation>Visualizza contatti, quando non sono disponibili</translation>
-    </message>
-    <message>
         <source>Columns</source>
         <translation>Colonne</translation>
     </message>
@@ -563,15 +543,55 @@ It&apos;s a high security risk!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Display only users that have desciption</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Align icon next to contact name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Show tooltip on userbox</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Number of kept descriptions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show inactive contacts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display contacts who are offline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show contacts with description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display contacts who has a desciption</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show contacts who you are blocking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show contacts who are blocking you</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>IP address: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> Port: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Username: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> Password: </source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1747,10 +1767,6 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
         <translation>Cell</translation>
     </message>
     <message>
-        <source>Group</source>
-        <translation>Gruppo</translation>
-    </message>
-    <message>
         <source>All</source>
         <translation>Tutti</translation>
     </message>
@@ -1865,6 +1881,26 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     <message>
         <source>This dialog box allows you to view and edit information about the selected contact.</source>
         <translation>Questa finestra di dialogo permette di cambiare informazioni circa il contatto.</translation>
+    </message>
+    <message>
+        <source>Groups</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add new group</source>
+        <translation type="unfinished">Aggiungi nuovo gruppo</translation>
+    </message>
+    <message>
+        <source>&apos;%1&apos; is prohibited</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This group already exists!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You can&apos;t add so many groups at one stroke. Close this dialog and open one more time.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

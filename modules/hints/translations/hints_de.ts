@@ -89,6 +89,14 @@
         <source>Change font</source>
         <translation>Schriftart ändern</translation>
     </message>
+    <message>
+        <source>Corner</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hint timeout</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>HintManager</name>
@@ -226,6 +234,22 @@
     </message>
     <message>
         <source>From &lt;b&gt;%1&lt;/b&gt;: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Top left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Top right</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bottom left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bottom right</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

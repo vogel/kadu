@@ -89,6 +89,14 @@
         <source>Change font</source>
         <translation>Zmień czcionkę</translation>
     </message>
+    <message>
+        <source>Corner</source>
+        <translation>Narożnik</translation>
+    </message>
+    <message>
+        <source>Hint timeout</source>
+        <translation>Dymek zniknie po: </translation>
+    </message>
 </context>
 <context>
     <name>HintManager</name>
@@ -227,6 +235,22 @@
     <message>
         <source>From &lt;b&gt;%1&lt;/b&gt;: %2</source>
         <translation>Od &lt;b&gt;%1&lt;/b&gt;: %2</translation>
+    </message>
+    <message>
+        <source>Top left</source>
+        <translation>Lewy górny</translation>
+    </message>
+    <message>
+        <source>Top right</source>
+        <translation>Prawy górny</translation>
+    </message>
+    <message>
+        <source>Bottom left</source>
+        <translation>Lewy dolny</translation>
+    </message>
+    <message>
+        <source>Bottom right</source>
+        <translation>Prawy dolny</translation>
     </message>
 </context>
 <context>
