@@ -11,6 +11,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   umieszczona w otwieranym oknie rozmowy (chilek)
 * wywalenie starych(qt2?) headers z chat.h i kadu.h (mast3r)
 * poprawka statycznego linkowania libgadu (adrian)
+* poprawiono wysylanie smsow do ery (bramka podstawowa / omnix / platna)
+  poprawiono wysylanie smsow do ideii
+  dodano pole kontaktu oraz podpisu w oknie wysylania smsow (pawel_p)
 
 +++ wersja 0.3.5
 * dalsza czê¶æ przeróbek mechanizmu konfiguracji. brakuje jeszcze
