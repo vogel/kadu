@@ -10,8 +10,8 @@
 #include <klocale.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
-#include <qlayout.h>
 #include <qmessagebox.h>
+#include <qvbox.h>
 #include <qlayout.h>
 
 // kadu.h dolaczony tylko ze wzgl. na zmienna config
@@ -25,61 +25,61 @@ PersonalInfoDialog::PersonalInfoDialog(QDialog *parent, const char *name)
 {
 	fprintf(stderr,"PersonalInfoDialog::PersonalInfoDialog()\n");
 
-	resize(650, 150);
+	resize(450, 150);
 	setCaption(i18n("Personal Information"));	
 	setWFlags(Qt::WDestructiveClose);
 	
-	QGridLayout *GridLayout = new QGridLayout(this, 5, 6, 10, 10);
+	QGridLayout *GridLayout = new QGridLayout(this, 8, 3, 10, 10);
 
-	QLabel *NicknameLabel = new QLabel(i18n("Nickname"), this);
-	GridLayout->addWidget(NicknameLabel, 0, 0);
-	NicknameEdit = new QLineEdit(this);
-	GridLayout->addWidget(NicknameEdit, 0, 1);
+	QVBox *NicknameBox = new QVBox(this);
+	QLabel *NicknameLabel = new QLabel(i18n("Nickname"), NicknameBox);
+	NicknameEdit = new QLineEdit(NicknameBox);
+	GridLayout->addMultiCellWidget(NicknameBox, 0, 1, 0, 0);
 
-	QLabel *NameLabel = new QLabel(i18n("Name"), this);
-	GridLayout->addWidget(NameLabel, 0, 2);
-	NameEdit = new QLineEdit(this);
-	GridLayout->addWidget(NameEdit, 0, 3);
+	QVBox *NameBox = new QVBox(this);
+	QLabel *NameLabel = new QLabel(i18n("Name"), NameBox);
+	NameEdit = new QLineEdit(NameBox);
+	GridLayout->addMultiCellWidget(NameBox, 0, 1, 1, 1);
 	
-	QLabel *SurnameLabel = new QLabel(i18n("Surname"), this);
-	GridLayout->addWidget(SurnameLabel, 0, 4);
-	SurnameEdit = new QLineEdit(this);
-	GridLayout->addWidget(SurnameEdit, 0, 5);
+	QVBox *SurnameBox = new QVBox(this);
+	QLabel *SurnameLabel = new QLabel(i18n("Surname"), SurnameBox);
+	SurnameEdit = new QLineEdit(SurnameBox);
+	GridLayout->addMultiCellWidget(SurnameBox, 0, 1, 2, 2);
 
-	QLabel *GenderLabel = new QLabel(i18n("Gender"),this);
-	GridLayout->addWidget(GenderLabel, 1, 0);
-	GenderCombo = new QComboBox(this);
+	QVBox *GenderBox = new QVBox(this);
+	QLabel *GenderLabel = new QLabel(i18n("Gender"), GenderBox);
+	GenderCombo = new QComboBox(GenderBox);
 	GenderCombo->insertItem("");	
 	GenderCombo->insertItem(i18n("Male"));
 	GenderCombo->insertItem(i18n("Female"));
-	GridLayout->addWidget(GenderCombo, 1, 1);
+	GridLayout->addMultiCellWidget(GenderBox, 2, 3, 0, 0);
 
-	QLabel *BirthyearLabel = new QLabel(i18n("Birthyear"), this);
-	GridLayout->addWidget(BirthyearLabel, 1, 2);
-	BirthyearEdit = new QLineEdit(this);
-	GridLayout->addWidget(BirthyearEdit, 1, 3);
+	QVBox *BirthyearBox = new QVBox(this);
+	QLabel *BirthyearLabel = new QLabel(i18n("Birthyear"), BirthyearBox);
+	BirthyearEdit = new QLineEdit(BirthyearBox);
+	GridLayout->addMultiCellWidget(BirthyearBox, 2, 3, 1, 1);
 
-	QLabel *CityLabel = new QLabel(i18n("City"), this);
-	GridLayout->addWidget(CityLabel, 1, 4);
-	CityEdit = new QLineEdit(this);
-	GridLayout->addWidget(CityEdit, 1, 5);
+	QVBox *CityBox = new QVBox(this);
+	QLabel *CityLabel = new QLabel(i18n("City"), CityBox);
+	CityEdit = new QLineEdit(CityBox);
+	GridLayout->addMultiCellWidget(CityBox, 2, 3, 2, 2);
 
-	QLabel *FamilyNameLabel = new QLabel(i18n("Family Name"), this);
-	GridLayout->addWidget(FamilyNameLabel, 2, 0);
-	FamilyNameEdit = new QLineEdit(this);
-	GridLayout->addWidget(FamilyNameEdit, 2, 1);
+	QVBox *FamilyNameBox = new QVBox(this);
+	QLabel *FamilyNameLabel = new QLabel(i18n("Family Name"), FamilyNameBox);
+	FamilyNameEdit = new QLineEdit(FamilyNameBox);
+	GridLayout->addMultiCellWidget(FamilyNameBox, 4, 5, 0, 0);
 
-	QLabel *FamilyCityLabel = new QLabel(i18n("Family City"), this);
-	GridLayout->addWidget(FamilyCityLabel, 2, 2);
-	FamilyCityEdit = new QLineEdit(this);
-	GridLayout->addWidget(FamilyCityEdit, 2, 3);
+	QVBox *FamilyCityBox = new QVBox(this);
+	QLabel *FamilyCityLabel = new QLabel(i18n("Family City"), FamilyCityBox);
+	FamilyCityEdit = new QLineEdit(FamilyCityBox);
+	GridLayout->addMultiCellWidget(FamilyCityBox, 4, 5, 1, 1);
 
 	QPushButton* OkButton = new QPushButton(i18n("&OK"), this);
-	GridLayout->addMultiCellWidget(OkButton, 4, 4, 1, 2);
+	GridLayout->addWidget(OkButton, 7, 1);
 	connect(OkButton, SIGNAL(clicked()), this, SLOT(OkButtonClicked()));
 
 	QPushButton* CancelButton = new QPushButton(i18n("&Cancel"), this);
-	GridLayout->addMultiCellWidget(CancelButton, 4, 4, 3, 4);	
+	GridLayout->addWidget(CancelButton, 7, 2);	
 	connect(CancelButton, SIGNAL(clicked()), this, SLOT(reject()));
 
 	if (getActualStatus() != GG_STATUS_NOT_AVAIL) {
