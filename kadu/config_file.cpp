@@ -28,7 +28,7 @@ void ConfigFile::read() {
 	struct ConfigFileEntry activeentry;
 
 	kdebug("ConfigFile::read()\n");
-	if (file.open(IO_ReadWrite)) {
+	if (file.open(IO_ReadOnly)) {
 		QTextStream stream(&file);
 		stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
 		while ((line = stream.readLine()) != QString::null) {

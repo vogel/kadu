@@ -212,6 +212,16 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Send file", "kadu_sendfile", "F8");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Configuration", "kadu_configure", "F2");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Add user", "kadu_adduser", "Ctrl+N");
+
+
+	Sms::initModule();
+	Chat::initModule();
+	UserBox::initModule();
+	History::initModule();
+	HintManager::initModule();
+	AutoAwayTimer::initModule();
+	EventConfigSlots::initModule();
+
     
 	//zaladowanie wartosci domyslnych (pierwsze uruchomienie)
 	QRect def_rect(0, 0, 145, 465);
@@ -1656,15 +1666,7 @@ void Kadu::createMenu() {
 
 void Kadu::InitModules()
 {
-
 	GaduProtocol::initModule();
-	Sms::initModule();
-	Chat::initModule();
-	UserBox::initModule();
-	History::initModule();
-	HintManager::initModule();
-	AutoAwayTimer::initModule();
-	EventConfigSlots::initModule();
 	SoundManager::initModule();
 	kadu->createToolBar();
 }

@@ -1261,6 +1261,7 @@ QString Themes::fixFileName(const QString& path,const QString& fn)
 void Themes::setPaths(const QStringList& paths)
 {
     ThemesList.clear();
+    ThemesPaths.clear();
     QStringList add, temp=paths;
 	QFile s;
 	for (QStringList::Iterator it= temp.begin(); it!=temp.end(); it++)

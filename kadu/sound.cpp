@@ -77,7 +77,7 @@ void SoundManager::messageSound(UinsList senders,const QString& msg,time_t time)
 	if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
 		messagesound=parse(config_file.readEntry("Sounds","Message_sound"),ule);
 	else 
-		messagesound=sound_manager.themePath()+sound_manager.getThemeEntry("Message");
+		messagesound=sound_manager.themePath(config_file.readEntry("Sounds", "SoundTheme"))+sound_manager.getThemeEntry("Message");
 	emit playFile(messagesound);
 }
 
@@ -97,7 +97,7 @@ void SoundManager::chatSound(UinsList senders,const QString& msg,time_t time, bo
 	if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
 		chatsound=config_file.readEntry("Sounds", "Chat_sound");
 	else 
-		chatsound=sound_manager.themePath()+sound_manager.getThemeEntry("Chat");	    
+		chatsound=sound_manager.themePath(config_file.readEntry("Sounds", "SoundTheme"))+sound_manager.getThemeEntry("Chat");
 	emit playFile(chatsound);
 
 		}
@@ -132,7 +132,7 @@ void SoundManager::notifySound(const uin_t uin, const unsigned int oldstatus, co
 				if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
 					notifysound=parse(config_file.readEntry("Notify","NotifySound"),userlist.byUin(uin),false);
 				else 
-					notifysound=sound_manager.themePath()+sound_manager.getThemeEntry("Notify");
+					notifysound=sound_manager.themePath(config_file.readEntry("Sounds", "SoundTheme"))+sound_manager.getThemeEntry("Notify");
 
 			    	emit playFile(notifysound);
 			}
@@ -453,6 +453,7 @@ void SoundSlots::chooseSoundTheme(const QString& string)
 		}
 	    else 
 		{
+
 		 chatfile= sound_manager.themePath()+sound_manager.getThemeEntry("Chat");
 	         messagefile= sound_manager.themePath()+sound_manager.getThemeEntry("Message");
 	         notifyfile= sound_manager.themePath()+sound_manager.getThemeEntry("Notify");
