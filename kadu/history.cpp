@@ -10,7 +10,7 @@
 
 #include <qwidget.h>
 #include <qdialog.h>
-#include <qmultilineedit.h>
+#include <qtextbrowser.h>
 #include <qpushbutton.h>
 #include <qlabel.h>
 #include <qlistbox.h>
@@ -879,7 +879,7 @@ QStringList HistoryManager::mySplit(const QChar &sep, const QString &str) {
 	return strlist;
 }
 
-History::History(UinsList uins) {
+History::History(UinsList uins): uins(uins) {
 	int i;
 	
 	history.convHist2ekgForm(uins);
@@ -888,81 +888,122 @@ History::History(UinsList uins) {
 	setCaption(i18n("History"));
 	setWFlags(Qt::WDestructiveClose);
 
-	QGridLayout *grid = new QGridLayout(this, 2,1,3,3);
+	QGridLayout *grid = new QGridLayout(this, 2, 4, 3, 3);
 
-	body = new QMultiLineEdit(this, "History browser");
+	body = new QTextBrowser(this, "History browser");
 	body->setReadOnly(true);
-	body->setWordWrap(QMultiLineEdit::WidgetWidth);
-	body->setWrapPolicy(QMultiLineEdit::Anywhere);
+	body->setFont(config.fonts.chat);
+
 	QPushButton *closebtn = new QPushButton(this);
 	closebtn->setText(i18n("&Close"));
+	QPushButton *prevbtn = new QPushButton(this);
+	prevbtn->setText(i18n("<<"));
+	QPushButton *nextbtn = new QPushButton(this);
+	nextbtn->setText(i18n(">>"));
+	
+	grid->addMultiCellWidget(body, 0, 0, 0, 3);
+	grid->addWidget(prevbtn, 1, 0);
+	grid->addWidget(nextbtn, 1, 1);
+	grid->addWidget(closebtn, 1, 3, Qt::AlignRight);
 
-	QString fname;
-	fname.append(ggPath("history/"));
-	fname.append(HistoryManager::getFileNameByUinsList(uins));
-		
-	grid->addWidget(body,0,0);
-	grid->addWidget(closebtn,1,0, Qt::AlignRight);
-
+	connect(prevbtn, SIGNAL(clicked()), this, SLOT(prevBtnClicked()));
+	connect(nextbtn, SIGNAL(clicked()), this, SLOT(nextBtnClicked()));
 	connect(closebtn, SIGNAL(clicked()), this, SLOT(close()));
 
 	resize(500,400);
 
-	int count;
-	QString text;
+	int count = history.getHistoryEntriesCount(uins);
+	start = count - 100 < 0 ? 0 : count - 100;
+	count -= start;
+	showHistoryEntries(start, count);
+}
 
-	kdebug("History(): lines = %d\n", count = history.getHistoryEntriesCount(uins));
-	QValueList<HistoryEntry> entries;
-	entries = history.getHistoryEntries(uins, 0, count);
-	for (i = 0; i < entries.count(); i++) {
-		switch (entries[i].type) {
-			case HISTORYMANAGER_ENTRY_CHATSEND:
-			case HISTORYMANAGER_ENTRY_MSGSEND:
-				text.append(config.nick);
-				text.append(entries[i].date.toString(" (dd.MM.yyyy hh:mm:ss)\n"));
-				text.append(entries[i].message + "\n\n");
+void History::prevBtnClicked() {
+	int count = history.getHistoryEntriesCount(uins) - start;
+	start -= 100;
+	if (start < 0)
+		start = 0;
+	if (count > 100)
+		count = 100;
+	showHistoryEntries(start, count);
+}
+
+void History::nextBtnClicked() {
+	int count = history.getHistoryEntriesCount(uins);
+	start += 100;
+	if (start > count - 100)
+		start = count - 100;
+	if (start < 0)
+		start = 0;
+	count = count - start > 100 ? 100 : count - start;
+	showHistoryEntries(start, count);
+}
+
+void History::formatHistoryEntry(QString &text, const HistoryEntry &entry) {
+	QString bgcolor, textcolor;
+
+	text.append("<TABLE width=\"100%\"><TR><TD bgcolor=\"");
+	if (entry.type & (HISTORYMANAGER_ENTRY_CHATSEND | HISTORYMANAGER_ENTRY_MSGSEND
+		| HISTORYMANAGER_ENTRY_SMSSEND)) {
+		bgcolor = config.colors.mychatBg.name();
+		textcolor = config.colors.mychatText.name();
+		}
+	else {
+		bgcolor = config.colors.usrchatBg.name();
+		textcolor = config.colors.usrchatText.name();
+		}
+	text.append(bgcolor);
+	text.append("\"><FONT color=\"");
+	text.append(textcolor);
+	text.append("\"><B>");
+	if (entry.type == HISTORYMANAGER_ENTRY_SMSSEND)
+		text.append(entry.mobile + " SMS");
+	else
+		if (entry.type & (HISTORYMANAGER_ENTRY_CHATSEND | HISTORYMANAGER_ENTRY_MSGSEND))
+			text.append(config.nick);
+		else
+			text.append(entry.nick);
+	text.append(entry.date.toString(" :: dd.MM.yyyy (hh:mm:ss"));
+	if (entry.type & (HISTORYMANAGER_ENTRY_CHATRCV | HISTORYMANAGER_ENTRY_MSGRCV))
+		text.append(entry.sdate.toString(" / S hh:mm:ss)</B><BR>"));
+	else
+		text.append(")</B><BR>");
+	if (entry.type & HISTORYMANAGER_ENTRY_STATUS) {
+		switch (entry.status) {
+			case GG_STATUS_AVAIL:
+			case GG_STATUS_AVAIL_DESCR:
+				text.append(i18n("Online"));
 				break;
-			case HISTORYMANAGER_ENTRY_CHATRCV:
-			case HISTORYMANAGER_ENTRY_MSGRCV:
-				text.append(entries[i].nick);
-				text.append(entries[i].date.toString(" (dd.MM.yyyy hh:mm:ss / S "));
-				text.append(entries[i].sdate.toString("dd.MM.yyyy hh:mm:ss)\n"));
-				text.append(entries[i].message + "\n\n");
+			case GG_STATUS_BUSY:
+			case GG_STATUS_BUSY_DESCR:
+				text.append(i18n("Busy"));
 				break;
-			case HISTORYMANAGER_ENTRY_STATUS:
-				text.append(entries[i].nick);
-				text.append(entries[i].date.toString(" (dd.MM.yyyy hh:mm:ss) ip="));
-				text.append(entries[i].ip + "\n");
-				switch (entries[i].status) {
-					case GG_STATUS_AVAIL:
-					case GG_STATUS_AVAIL_DESCR:
-						text.append(i18n("Online"));
-						break;
-					case GG_STATUS_BUSY:
-					case GG_STATUS_BUSY_DESCR:
-						text.append(i18n("Busy"));
-						break;
-					case GG_STATUS_INVISIBLE:
-					case GG_STATUS_INVISIBLE_DESCR:
-						text.append(i18n("Invisible"));
-						break;
-					case GG_STATUS_NOT_AVAIL:
-					case GG_STATUS_NOT_AVAIL_DESCR:
-						text.append(i18n("Offline"));
-						break;
-					}
-				if (entries[i].description.length())
-					text.append(QString(" (") + entries[i].description + ")\n\n");
-				else
-					text.append("\n\n");
+			case GG_STATUS_INVISIBLE:
+			case GG_STATUS_INVISIBLE_DESCR:
+				text.append(i18n("Invisible"));
 				break;
-			case HISTORYMANAGER_ENTRY_SMSSEND:
-				text.append(entries[i].mobile + " SMS");
-				text.append(entries[i].date.toString(" (dd.MM.yyyy hh:mm:ss)\n"));
-				text.append(entries[i].message + "\n\n");
+			case GG_STATUS_NOT_AVAIL:
+			case GG_STATUS_NOT_AVAIL_DESCR:
+				text.append(i18n("Offline"));
 				break;
 			}
+		if (entry.description.length())
+			text.append(QString(" (") + entry.description + ")");
+		text.append(QString(" ip=") + entry.ip);
 		}
+	else
+		text.append(entry.message);
+	text.append("</TD></TR></TABLE></FONT>");
+}
+
+void History::showHistoryEntries(int from, int count) {
+	int i;
+	QString text;
+
+	QValueList<HistoryEntry> entries;
+	entries = history.getHistoryEntries(uins, from, count);
+	for (i = 0; i < entries.count(); i++)
+		formatHistoryEntry(text, entries[i]);
 	body->setText(text);
 }
 

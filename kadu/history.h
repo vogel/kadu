@@ -11,7 +11,7 @@
 #define HISTORY_H
 
 #include <qdialog.h>
-#include <qmultilineedit.h>
+#include <qtextbrowser.h>
 #include <qstring.h>
 #include <qdatetime.h>
 #include <qvaluelist.h>
@@ -46,8 +46,17 @@ class History : public QDialog {
 	public:
 		History(UinsList uins);
 
+	public slots:
+		void prevBtnClicked();
+		void nextBtnClicked();
+
 	protected:
-		QMultiLineEdit *body;
+		void formatHistoryEntry(QString &text, const HistoryEntry &entry);
+		void showHistoryEntries(int from, int count);
+
+		QTextBrowser *body;
+		UinsList uins;
+		int start;
 };
 
 class HistoryManager {
