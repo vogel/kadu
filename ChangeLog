@@ -9,6 +9,7 @@
 * dynamiczne emotikony z mo¿liwo¶ci± wyboru zestawu (+do³±czony kadubis)
 * has³o nie pokazuje siê na konsoli
 * wiadomo¶ci typu message "wpadaj±" do okna rozmowy
+* historia wys³anych sms'ów
 
 +++ wersja 0.3.2
 * dalsze porz±dki w kodzie
@@ -19,8 +20,6 @@
 * czê¶ciowe uporz±dkowanie kodu
 * przesy³anie plików (DCC)
 * sporo drobiazgów
-
-* CVS!
 * zmiany w metodach eventGot... (Chilek)
 * dodanie obs³ugi w³asnego opisowego (Chilek)
 * mo¿liwo¶æ wyboru statusu (tylko dla znajomych) (Chilek)
