@@ -44,6 +44,7 @@
 #include "sms.h"
 #include "about.h"
 #include "ignore.h"
+#include "hints.h"
 #include "emoticons.h"
 #include "history.h"
 #include "pending_msgs.h"
@@ -436,7 +437,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	UserBox::initModule();
 	Chat::initModule();
 	History::initModule();
-	TrayIcon::initModule();
+	HintManager::initModule();
 	AutoAwayTimer::initModule();
 	SoundSlots::initModule();
 	
@@ -732,19 +733,16 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	if (config_file.readBoolEntry("General","UseDocking")) {
 		trayicon = new TrayIcon(this);
 		trayicon->show();
+		trayicon->changeIcon();
 		}
+
+	if (config_file.readBoolEntry("Hints", "Hints"))
+		hintmanager = new HintManager();
 
 	/* read the userlist */
 	userlist.readFromFile();
 
 	readIgnored();
-
-/*	DCC
-Po jakiego czorta to ?
-	QString buf;
-	buf.append("Kadu: ");
-	buf.append(QString::number(config.uin));
-*/
 
 	/* a newbie? */
 
@@ -753,10 +751,8 @@ Po jakiego czorta to ?
 
 	pending.loadFromFile();
 
-	/* use dock icon? */
-	if (config_file.readBoolEntry("General","UseDocking")) {
+	if (config_file.readBoolEntry("General","UseDocking"))
 		trayicon->changeIcon();
-		}
 
 	centralFrame = new QFrame(this);
 	setCentralWidget(centralFrame);
@@ -2541,16 +2537,6 @@ void KaduSlots::onDestroyConfigDialog()
 		kadu->autostatus_timer->start(1000,TRUE);
 	else
 		kadu->autostatus_timer->stop();
-			    					    
-
-	if (trayicon) 
-	    	    trayicon->reconfigHint();
-
-	else
-	    {
-		    config_file.writeEntry("General","TrayHint",false);
-		    config_file.writeEntry("General","HintError",false);
-	    }
 
 	kadu->showdesc(config_file.readBoolEntry("General","ShowDesc"));
 	
@@ -2576,7 +2562,6 @@ void KaduSlots::onDestroyConfigDialog()
 
 	
 };
-
 
 void KaduSlots::ifDccEnabled(bool value)
 {

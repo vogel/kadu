@@ -1,0 +1,97 @@
+#ifndef HINTS_H
+#define HINTS_H
+
+#include "userlist.h"
+
+#include <qlabel.h>
+#include <qpixmap.h>
+#include <qtimer.h>
+#include <qlayout.h>
+#include <qcombobox.h>
+#include <qlineedit.h>
+#include <qcheckbox.h>
+#include <qspinbox.h>
+#include <qpushbutton.h>
+
+class Hint : public QHBoxLayout
+{
+ Q_OBJECT
+
+	private:
+		QLabel *icon;
+		QLabel *label;
+		unsigned int secs;
+
+	public:
+		Hint(QWidget *parent, const QString&, const QPixmap&, unsigned int);
+		~Hint();
+
+	public slots:
+		bool nextSecond();
+		void show();
+		void setLookHint(const QFont&, const QColor&, const QColor&);
+};
+
+class HintManager : public QFrame
+{
+	Q_OBJECT
+
+	private:
+		QTimer *hint_timer;
+		QGridLayout *grid;
+		QValueList<Hint*> hints;
+		bool useposition;
+		QPoint position;
+		QValueList<QStringList> config;
+
+	public:
+		HintManager();
+		static void initModule();
+
+	public slots:
+		void addHint(const QString &, const QPixmap &, const QFont &, const QColor &, const QColor &, unsigned int);
+		void addHintError(const QString &);
+		void addHintNewMsg(const QString &, const QString &);
+		void addHintNewChat(const QString &, const QString &);
+		void addHintStatus(const UserListElement &, unsigned int status, unsigned int oldstatus);
+		void loadConfig();
+
+	private slots:
+		void deleteHint();
+		void setHint();
+};
+
+class HintManagerSlots: public QObject
+{
+	Q_OBJECT
+
+	private:
+		QComboBox *combobox2;
+		QComboBox *cb_notify;
+		QSpinBox *sb_timeout;
+		QSpinBox *sb_citesign;
+		QLabel *preview;
+		QLineEdit *e_posx;
+		QLineEdit *e_posy;
+		QCheckBox *b_useposition;
+		QCheckBox *b_hint;
+		QValueList<QStringList> hint;
+		int newhintunder;
+		bool useposition;
+		QPoint hintsposition;
+
+	private slots:
+		void activatedChanged(int);
+		void changeFontColor();
+		void changeBackgroundColor();
+		void changeFont();
+		void changeTimeout(int);
+
+	public slots:
+		void onCreateConfigDialog();
+		void onDestroyConfigDialog();
+};
+
+extern HintManager *hintmanager;
+
+#endif

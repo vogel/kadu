@@ -98,8 +98,6 @@ TrayIcon::TrayIcon(QWidget *parent, const char *name)
 	blink = FALSE;
 	QObject::connect(icon_timer, SIGNAL(timeout()), this, SLOT(changeIcon()));
 
-	hint = new TrayHint(0);
-
 	Display *dsp = x11Display();
 	WId win = winId();
 
@@ -155,7 +153,6 @@ TrayIcon::~TrayIcon()
 {
 	kdebug("TrayIcon::~TrayIcon()\n");
 	delete WMakerMasterWidget;
-	delete hint;
 }
 
 QPoint TrayIcon::trayPosition()
@@ -278,164 +275,4 @@ void TrayIcon::mousePressEvent(QMouseEvent * e) {
 		}
 }
 
-void TrayIcon::showHint(const QString &str, const QString &nick, int index) {
-	if (!config_file.readBoolEntry("General","TrayHint") || !config_file.readBoolEntry("General","UseDocking"))
-		return;
-
-	kdebug("TrayIcon::showHint()\n");
-	hint->show_hint(str,nick,index);
-}
-
-void TrayIcon::reconfigHint() {
-	kdebug("TrayIcon::reconfigHint()\n");
-	hint->restart();
-}
-
-void TrayIcon::showErrorHint(const QString &str) {
-	if (!config_file.readBoolEntry("General","HintError"))
-		return;
-	kdebug("TrayIcon::showErrorHint()\n");
-	hint->show_hint(str, tr("Error: "), 1);
-}
-
-void TrayIcon::initModule()
-{
-	kdebug("TrayIcon::initModule() \n");
-
-	QT_TRANSLATE_NOOP("@default", "General");
-	QT_TRANSLATE_NOOP("@default", "Enable tray hints");
-	QT_TRANSLATE_NOOP("@default", "Tray hints timeout ");
-	QT_TRANSLATE_NOOP("@default", "Show connection errors in tray hints");
-	
-	ConfigDialog::registerTab("General");
-	ConfigDialog::addCheckBox("General", "General", "Enable tray hints", "TrayHint", true);
-	ConfigDialog::addVGroupBox("General", "General", "---");
-	ConfigDialog::addLineEdit("General", "---", "Tray hints timeout ", "TimeoutHint", "5");
-	ConfigDialog::addCheckBox("General", "---", "Show connection errors in tray hints","HintError", true);
-	TraySlots *trayslots= new TraySlots();
-	ConfigDialog::registerSlotOnCreate(trayslots, SLOT(onCreateConfigDialog()));
-
-}
-
-TrayHint::TrayHint(QWidget *parent, const char *name)
-	: QWidget(parent,"TrayHint",WStyle_NoBorder | WStyle_StaysOnTop | WStyle_Tool | WX11BypassWM | WWinOwnDC)
-{
-	kdebug("TrayHint::TrayHint\n");
-	
-	hint = new QTextBrowser(this);
-	hint->setVScrollBarMode(QScrollView::AlwaysOff);
-	hint->setHScrollBarMode(QScrollView::AlwaysOff);
-	hint->setFont(config_file.readFontEntry("Fonts","TrayHintFont"));
-	hint->setPaletteBackgroundColor(config_file.readColorEntry("Colors","TrayHintBgColor"));
-	hint->setPaletteForegroundColor(config_file.readColorEntry("Colors","TrayHintTextColor"));
-
-	hint_timer = new QTimer(this);
-	
-	QObject::connect(hint_timer,SIGNAL(timeout()),this,SLOT(remove_hint()));
-}
-
-void TrayHint::set_hint(void) {
-	QPoint pos_hint;
-	QSize size_hint;
-	QPoint pos_tray = trayicon->trayPosition();
-	QString text_hint; 
-	for (QStringList::Iterator points = hint_list.begin(); points != hint_list.end(); ++points)
-		text_hint.append(*points);
-	size_hint = QFontMetrics(config_file.readFontEntry("Fonts","TrayHintFont")).size(Qt::ExpandTabs, text_hint);
-	size_hint = QSize(size_hint.width()+35,size_hint.height()+10);
-	resize(size_hint);
-	hint->resize(size_hint);
-	QSize size_desk = QApplication::desktop()->size();
-	if (pos_tray.x() < size_desk.width()/2)
-		pos_hint.setX(pos_tray.x()+32);
-	else
-		pos_hint.setX(pos_tray.x()-size_hint.width());
-	if (pos_tray.y() < size_desk.height()/2)
-		pos_hint.setY(pos_tray.y()+32);
-	else
-		pos_hint.setY(pos_tray.y()-size_hint.height());
-	move(pos_hint);
-	kdebug("TrayHint::set_hint()\n");
-}
-
-void TrayHint::show_hint(const QString &str, const QString &nick, int index) {
-	kdebug("TrayHint::show_hint(%s,%s,%d)\n", 
-		 (const char *)str.local8Bit(), (const char *)nick.local8Bit(), index);
-	if (hint_list.last() == str + nick || hint_list.last() == "\n" + str + nick)
-		return;
-	QString text;
-	text.append("<CENTER>");
-	switch(index) {
-		case 0:
-			text.append(str);
-			text.append("<B>");
-			text.append(nick);
-			text.append("</B>");
-			break;
-
-		case 1:
-			text.append("<B>");
-			text.append(nick);
-			text.append("</B>");
-			text.append(str);
-			break;
-	}
-
-	text.append("</CENTER></FONT>");
-
-	if (hint->text()=="") {
-		hint->setText(text);
-		hint_list.append(str+nick);
-		}
-	else {
-		hint->setText(hint->text()+"\n"+text);
-		hint_list.append("\n"+str+nick);
-		}
-	set_hint();
-	show();
-	if (!hint_timer->isActive())
-		hint_timer->start(config_file.readNumEntry("General","TimeoutHint") * 1000);
-}
-
-void TrayHint::remove_hint() {
-	int len = hint->text().find("\n");
-	if ( len > 0) {
-		hint->setText(hint->text().remove(0, len + 1));
-		hint_list.erase(hint_list.fromLast());
-		kdebug("TrayHint::remove_hint() hint_list counts=%d\n",hint_list.count());
-		}
-	else {
-		hide();
-		hint->clear();
-		hint_timer->stop();
-		hint_list.clear();
-		kdebug("TrayHint::remove_hint() hint and hint_list is cleared\n");
-		return;
-	}
-	set_hint();
-}
-
-void TrayHint::restart() {
-	hide();
-	hint->clear();
-	hint_timer->stop();
-	hint_list.clear();
-	hint->setFont(config_file.readFontEntry("Fonts","TrayHintFont"));
-	hint->setPaletteBackgroundColor(config_file.readColorEntry("Colors","TrayHintBgColor"));
-	hint->setPaletteForegroundColor(config_file.readColorEntry("Colors","TrayHintTextColor"));
-	kdebug("TrayHint::restart()\n");
-}
-
-
-
 TrayIcon *trayicon = NULL;
-
-void TraySlots::onCreateConfigDialog()
-{
-	kdebug("TraySlots::onCreateConfigDialog()\n");
-	QCheckBox* b_trayhint= ConfigDialog::getCheckBox("General", "Enable tray hints");
-	QVGroupBox* hintgrp= ConfigDialog::getVGroupBox("General", "---");
-	
-	hintgrp->setEnabled(b_trayhint->isChecked());
-	connect(b_trayhint,SIGNAL(toggled(bool)),hintgrp,SLOT(setEnabled(bool)));
-}

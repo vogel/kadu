@@ -25,6 +25,7 @@
 #include "chat.h"
 #include "history.h"
 #include "pending_msgs.h"
+#include "hints.h"
 #include "dock_widget.h"
 #include "debug.h"
 #include "sound.h"
@@ -185,7 +186,8 @@ void EventManager::connectionBrokenSlot()
 
 void EventManager::disconnectedSlot()
 {
-	trayicon->showErrorHint(tr("Disconnection has occured"));
+	if (hintmanager != NULL)
+		hintmanager->addHintError(tr("Disconnection been occured"));
 	kdebug("Disconnection been occured\n");
 	kadu->autohammer = false;
 	kadu->disconnectNetwork();
@@ -318,8 +320,8 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 
 		chats[i].ptr->checkPresence(senders, mesg, time, toadd);
 		chats[i].ptr->alertNewMessage();
-		if (!chats[i].ptr->isActiveWindow() && config_file.readBoolEntry("Other","HintAlert"))
-			trayicon->showHint(tr("New message from: "), ule.altnick,0);
+		if (!chats[i].ptr->isActiveWindow() && config_file.readBoolEntry("Hints","NotifyNewMessage") && hintmanager != NULL)
+			hintmanager->addHintNewMsg(ule.altnick, mesg);
 		return;
 		}
 
@@ -339,10 +341,8 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 		kadu->setFocus();
 		}
 
-	if (msgclass == GG_CLASS_CHAT)
-		trayicon->showHint(tr("Chat with: "), ule.altnick,0);
-	if (msgclass == GG_CLASS_MSG)
-		trayicon->showHint(tr("Message from: "), ule.altnick,0);
+	if ((msgclass == GG_CLASS_CHAT || msgclass == GG_CLASS_MSG) && hintmanager != NULL)
+		hintmanager->addHintNewChat(ule.altnick, mesg);
 
 	emit chatReceived(senders,mesg,time);
 
@@ -374,6 +374,9 @@ void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)
 		if (!config_file.readBoolEntry("Notify","NotifyAboutAll"))
 			return;
 
+	if (config_file.readBoolEntry("Hints","NotifyHint") && hintmanager != NULL)
+		hintmanager->addHintStatus(userlist.byUinValue(uin), status, oldstatus);
+
 	if (config_file.readBoolEntry("Notify","NotifyStatusChange") && (status == GG_STATUS_AVAIL ||
 		status == GG_STATUS_AVAIL_DESCR || status == GG_STATUS_BUSY || status == GG_STATUS_BUSY_DESCR
 		|| status == GG_STATUS_BLOCKED) &&
@@ -381,7 +384,7 @@ void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)
 		oldstatus == GG_STATUS_INVISIBLE_DESCR || oldstatus == GG_STATUS_INVISIBLE2)) {
 		kdebug("Notify about user\n");
 
-		if (config_file.readBoolEntry("Notify","NotifyWithDialogBox")) {		
+		if (config_file.readBoolEntry("Notify","NotifyWithDialogBox")) {
 			// FIXME convert into a regular QMessageBox
 			QString msg;
 			msg = QT_TR_NOOP(QString("User %1 is available")).arg(userlist.byUin(uin).altnick);
@@ -392,16 +395,11 @@ void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)
 			msgbox->show();
 			}
 
-
-
 		if (config_file.readBoolEntry("Notify","NotifyWithSound")) {
 			if (lastsoundtime.elapsed() >= 500)
 				playSound(parse(config_file.readEntry("Notify","NotifySound"),userlist.byUin(uin),false));
 			lastsoundtime.restart();
 			}
-		if (config_file.readBoolEntry("Notify","NotifyWithHint"))		
-			trayicon->showHint(qApp->translate("@default", QT_TR_NOOP(" is available")),
-				userlist.byUin(uin).altnick,1);
 		}
 }
 

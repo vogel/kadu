@@ -22,6 +22,11 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   siê (ReGiS/chilek)
 * kolejna przebudowa mechanizmu konfiguracji + zakladka z ustawieniami
   dzwieku (pawel_p/adrian)
+* nowe hinty druga wersja.. dok³adnie nie testowane, ale powinny dzialaæ
+  wymagaj± jeszcze optymalizacji. Nowa zak³adka.. stara konfiguracja nie jest
+  kompatybilna z now±(zadzia³aj± ustawienia domy¶lne, które to mog± ulec
+  zmianie jak i inne nazwy zmiennych w pliku konfiguracyjnym) trzeba jeszcze
+  zrobiæ porz±dki w konfiguracji, wywaliæ nieaktualne kontrolki (mast3r)
   
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci

@@ -51,6 +51,11 @@ bool ifStatusWithDescription(int status) {
 		status == GG_STATUS_BUSY_DESCR || status == GG_STATUS_INVISIBLE_DESCR);
 }
 
+bool isAvailableStatus(unsigned int status)
+{
+	return (status != GG_STATUS_NOT_AVAIL && status != GG_STATUS_NOT_AVAIL_DESCR);
+}
+
 /* zwraca nasz aktualny status 
  jesli stan sesji jest inny niz polaczone to znaczy
  ze jestesmy niedostepni */
