@@ -83,128 +83,36 @@ void UserBox::maybeTip(const QPoint &c)
 	};
 }
 
-/* don't worry if you can't follow this. I can't either. */
-/* should brew beer, sorts users instead */
-/*void Userbox::sortUsers()
-{
-    unsigned int i, j, k = 0;
-    bool item_selected = 0;
-    
-    for (i = 0; i < mylist->count(); i++) {
-	if (mylist->isSelected(i)) {
-	    item_selected = i;
-	    break;
-	    }
-	} // int i
-
-    for (i = 0; i < mylist->count(); i++) {
-	j = 0;
-	while (j < userlist.size() && QString::compare(__c2q(userlist[j].nickname), mylist->item(i)->text()))
-	    j++;
-    
-	if (userlist[j].status == GG_STATUS_NOT_AVAIL_DESCR) {
-	    QPixmap * gg_st;
-	    if (ifPendingMessages(userlist[j].uin))
-		gg_st = new QPixmap((const char**)gg_msg_xpm);
-	    else
-		gg_st = new QPixmap((const char**)gg_inactdescr_xpm);		
-	    QString tmpstr;
-	    tmpstr = mylist->item(i)->text();
-	    mylist->changeItem(*gg_st, tmpstr, i);
-	    delete gg_st;				
-	    }
-	else
-	    if (userlist[j].status == GG_STATUS_AVAIL || userlist[j].status == GG_STATUS_AVAIL_DESCR) {
-		QPixmap * gg_st;
-
-		if (ifPendingMessages(userlist[j].uin))
-		    gg_st = new QPixmap((const char**)gg_msg_xpm);
-		else
-		    if (userlist[j].status == GG_STATUS_AVAIL_DESCR)
-			gg_st = new QPixmap((const char**)gg_actdescr_xpm);
-    		    else
-			gg_st = new QPixmap((const char**)gg_act_xpm);
-
-		QPixmap * gg_st2;
-		QString tmpstr, tmpstr2;
-		tmpstr = mylist->item(i)->text();
-		tmpstr2 = mylist->item(k)->text();
-		fprintf(stderr, "KK Kadu::sortUsers(): k: %d, i: %d, j: %d\n", k, i, j);
-		gg_st2 = new QPixmap(*mylist->item(k)->pixmap());
-		mylist->changeItem(*gg_st, tmpstr, k);
-		mylist->changeItem(*gg_st2, tmpstr2, i);
-		delete gg_st;
-		delete gg_st2;
-		struct userlist tmpustr;
-		tmpustr = userlist[k];
-		userlist[k] = userlist[i];
-		userlist[i] = tmpustr;
-		k++;
-		}
-	    else
-		if (userlist[j].status == GG_STATUS_BUSY || userlist[j].status == GG_STATUS_BUSY_DESCR) {
-		    QPixmap * gg_st;
-		    if (ifPendingMessages(userlist[j].uin))
-			gg_st = new QPixmap((const char**)gg_msg_xpm);
-		    else
-			if (userlist[j].status == GG_STATUS_BUSY_DESCR)
-			    gg_st = new QPixmap((const char**)gg_busydescr_xpm);
-			else
-			    gg_st = new QPixmap((const char**)gg_busy_xpm);
-
-		    QPixmap * gg_st2;
-		    QString tmpstr, tmpstr2;
-		    tmpstr = mylist->item(i)->text();
-		    tmpstr2 = mylist->item(k)->text();
-		    fprintf(stderr, "KK Kadu::sortUsers(): k: %d, i: %d, j: %d\n", k, i, j);
-		    gg_st2 = new QPixmap(*mylist->item(k)->pixmap());
-		    mylist->changeItem(*gg_st, tmpstr, k);
-		    mylist->changeItem(*gg_st2, tmpstr2, i);
-		    delete gg_st;
-		    delete gg_st2;
-		    struct userlist tmpustr;
-		    tmpustr = userlist[k];
-		    userlist[k] = userlist[i];
-		    userlist[i] = tmpustr;
-		    k++;
-		    }
-		else
-		    if (userlist[j].status == GG_STATUS_INVISIBLE2) {
-			QPixmap * gg_st;
-			if (ifPendingMessages(userlist[j].uin))
-			    gg_st = new QPixmap((const char**)gg_msg_xpm);
-			else
-			    gg_st = new QPixmap((const char**)gg_invi_xpm);
-			QPixmap * gg_st2;
-			QString tmpstr, tmpstr2;
-			tmpstr = mylist->item(i)->text();
-			tmpstr2 = mylist->item(k)->text();
-			fprintf(stderr, "KK Kadu::sortUsers(): k: %d, i: %d, j: %d\n", k, i, j);
-			gg_st2 = new QPixmap(*mylist->item(k)->pixmap());
-			mylist->changeItem(*gg_st, tmpstr, k);
-			mylist->changeItem(*gg_st2, tmpstr2, i);
-			delete gg_st;
-			delete gg_st2;
-			struct userlist tmpustr;
-			tmpustr = userlist[k];
-			userlist[k] = userlist[i];
-			userlist[i] = tmpustr;
-			k++;
-			}
-
-	mylist->setSelected(i, false);
-	} //int i
-
-    mylist->setSelected(item_selected, true);
-}
-*/
 void UserBox::refresh()
 {
-	clear();	
+	// Najpierw dzielimy uzytkownikow na trzy grupy
+	QValueList<uint_t> a_users;
+	QValueList<uint_t> i_users;
+	QValueList<uint_t> n_users;
 	for(int i=0; i<Uins.count(); i++)
 	{
-		UserListElement& user=userlist.byUin(Uins[i]);
-		if (ifPendingMessages(Uins[i]))
+		switch(userlist.byUin(Uins[i]).status)
+		{
+			case GG_STATUS_AVAIL:
+			case GG_STATUS_AVAIL_DESCR:
+			case GG_STATUS_BUSY:
+			case GG_STATUS_BUSY_DESCR:
+				a_users.append(Uins[i]);
+				break;
+			case GG_STATUS_INVISIBLE_DESCR:
+			case GG_STATUS_INVISIBLE2:
+				i_users.append(Uins[i]);
+			default:
+				n_users.append(Uins[i]);			
+		};
+	};
+	// Czyscimy liste
+	clear();
+	// Dodajemy aktywnych
+	for(int i=0; i<a_users.count(); i++)
+	{
+		UserListElement& user=userlist.byUin(a_users[i]);
+		if (ifPendingMessages(user.uin))
 		{
 	    		insertItem(QPixmap((const char **)gg_msg_xpm), __c2q(user.nickname));
 		}
@@ -218,26 +126,54 @@ void UserBox::refresh()
 				case GG_STATUS_AVAIL_DESCR:
 		    			insertItem(QPixmap((const char **)gg_actdescr_xpm), __c2q(user.nickname));			
 		    			break;
-				case GG_STATUS_NOT_AVAIL:
-		    			insertItem(QPixmap((const char **)gg_inact_xpm), __c2q(user.nickname));			
-		    			break;
 				case GG_STATUS_BUSY:
 		    			insertItem(QPixmap((const char **)gg_busy_xpm), __c2q(user.nickname));			
 		    			break;
 				case GG_STATUS_BUSY_DESCR:
 		    			insertItem(QPixmap((const char **)gg_busydescr_xpm), __c2q(user.nickname));			
 		    			break;
-				case GG_STATUS_NOT_AVAIL_DESCR:
-		    			insertItem(QPixmap((const char **)gg_inactdescr_xpm), __c2q(user.nickname));			
-		    			break;
+			};
+		};
+	};	
+	// Dodajemy niewidocznych
+	for(int i=0; i<i_users.count(); i++)
+	{
+		UserListElement& user=userlist.byUin(i_users[i]);
+		if (ifPendingMessages(user.uin))
+		{
+	    		insertItem(QPixmap((const char **)gg_msg_xpm), __c2q(user.nickname));
+		}
+		else
+		{
+			switch (user.status)
+			{
 				case GG_STATUS_INVISIBLE_DESCR:
 		    			insertItem(QPixmap((const char **)gg_invidescr_xpm), __c2q(user.nickname));			
     		    			break;
 				case GG_STATUS_INVISIBLE2:
 		    			insertItem(QPixmap((const char **)gg_invi_xpm), __c2q(user.nickname));			
 		    			break;
+			};
+		};
+	};	
+	// Dodajemy nieaktywnych
+	for(int i=0; i<n_users.count(); i++)
+	{
+		UserListElement& user=userlist.byUin(n_users[i]);
+		if (ifPendingMessages(user.uin))
+		{
+	    		insertItem(QPixmap((const char **)gg_msg_xpm), __c2q(user.nickname));
+		}
+		else
+		{
+			switch (user.status)
+			{
+				case GG_STATUS_INACTIVE_DESCR:
+		    			insertItem(QPixmap((const char **)gg_inactdescr_xpm), __c2q(user.nickname));			
+    		    			break;
 				default:
 		    			insertItem(QPixmap((const char **)gg_inact_xpm), __c2q(user.nickname));			
+		    			break;
 			};
 		};
 	};	
