@@ -40,6 +40,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * okno rozmowy: mo¿liwo¶æ wybrania koloru tekstu (chilek)
 * okno rozmowy: wstawienie znaku "*" nie powinno powodowaæ wstawiania nadinteligentnych
   znaków wyliczania (chilek)
+* porz±dki w sms.cpp/h - obs³uga ka¿dej bramki w oddzielnej klasie. Wszystkie
+  dziedzicz± z podstawowej SmsGateway. Mo¿na bêdzie ³atwo dok³adaæ nowe bramki.
+  Przymiarki do nowej ERY (adrian)
 
 +++ wersja 0.3.4-pre3
 * dodane przeszukiwanie historii (chilek)

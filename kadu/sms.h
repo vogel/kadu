@@ -86,34 +86,84 @@ class HttpClient : public QObject
 		void error();
 };
 
-class SmsSender : public QObject
+class SmsGateway : public QObject
 {
 	Q_OBJECT
-
-	private:
-		QString Number;
-		QString Message;
-		QString Token;
-		HttpClient Http;
-		enum SmsSenderProvider
-		{
-			SMS_IDEA,
-			SMS_ERA,
-			SMS_PLUS
-		};
-		SmsSenderProvider Provider;
-		enum SmsSenderState
+	
+	protected:
+		enum GatewayState
 		{
 			SMS_LOADING_PAGE,
 			SMS_LOADING_PICTURE,
 			SMS_LOADING_RESULTS
 		};
-		SmsSenderState State;
+		GatewayState State;
+		QString Number;
+		QString Message;
+		HttpClient Http;
 
 	private slots:
-		void onFinished();
-		void onError();
+		void httpError();
+
+	protected slots:
+		virtual void httpFinished()=0;
+		
+	public:
+		SmsGateway(QObject* parent);
+		virtual void send(const QString& number,const QString& message)=0;
+
+	signals:
+		void finished(bool success);
+};
+
+class SmsIdeaGateway : public SmsGateway
+{
+	Q_OBJECT
+	
+	private:
+		QString Token;
+
+	private slots:
 		void onCodeEntered(const QString& code);
+
+	protected:
+		virtual void httpFinished();
+
+	public:
+		SmsIdeaGateway(QObject* parent);
+		virtual void send(const QString& number,const QString& message);
+		static bool isNumberCorrect(const QString& number);
+};
+
+class SmsPlusGateway : public SmsGateway
+{
+	protected:
+		virtual void httpFinished();
+
+	public:
+		SmsPlusGateway(QObject* parent);
+		virtual void send(const QString& number,const QString& message);
+		static bool isNumberCorrect(const QString& number);
+};
+
+class SmsEraGateway : public SmsGateway
+{
+	protected:
+		virtual void httpFinished();
+
+	public:
+		SmsEraGateway(QObject* parent);
+		virtual void send(const QString& number,const QString& message);
+		static bool isNumberCorrect(const QString& number);
+};
+
+
+class SmsSender : public QObject
+{
+	Q_OBJECT
+
+	private slots:
+		void onFinished(bool success);
 
 	public:
 		SmsSender(QObject* parent=0);
