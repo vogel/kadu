@@ -476,6 +476,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * skrypt Instaluj: ostrze¿enie je¿eli skrypt nie jest odpalany bezpo¶rednio
   ze ¼róde³ (SadMephisto/joi)
 * przy zajêtej alsie, alsa_sound nie zablokuje siê (joi)
+* dodany do autodownloadu modu³ miastoplusa_sms,
+  przet³umaczenie opisów w pliku .config na jêzyk polski (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
