@@ -857,9 +857,13 @@ void Chat::insertImage()
 {
 	kdebugf();
 	ImageDialog* id = new ImageDialog(this);
+	id->setDir(config_file.readEntry("Chat", "LastImagePath", "~"));
 	id->setCaption(tr("Insert image"));
 	if(id->exec() == QDialog::Accepted)
+	{
 		edit->insert(QString("[IMAGE ")+id->selectedFile()+"]");
+		config_file.writeEntry("Chat", "LastImagePath", id->dirPath());
+	}
 	delete id;
 	edit->setFocus();
 	kdebugf2();

@@ -255,6 +255,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   dzia³ania programu mo¿na zmieniæ w konfiguracji warto¶æ DEBUG_MASK +
   mo¿liwo¶æ wy³±czenia obs³ugi sygna³ów systemowych poprzez ustawienie
   zmiennej ¶rodowiskowej SIGNAL_HANDLING na 0 (joi)
+* ostatnio wybrane katalogi przy przesyle plików oraz przy wyborze obrazków
+  s± zapamiêtywane (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,

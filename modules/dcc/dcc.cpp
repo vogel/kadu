@@ -401,13 +401,17 @@ QString FileDccSocket::selectFile()
 	QFileInfo fi;
 	do
 	{
-		f = QFileDialog::getOpenFileName((char *)dccsock->file_info.filename,
+		f = QFileDialog::getOpenFileName(
+			config_file.readEntry("Network", "LastUploadDirectory", "~/")
+			+(char *)dccsock->file_info.filename,
 			QString::null, 0, tr("open file"), tr("Select file location"));
 		fi.setFile(f);
 		if (f!=QString::null && !fi.isReadable())
 			MessageBox::msg(tr("This file is not readable"), true);
 	}
 	while (f != QString::null && !fi.isReadable());
+	if (f!=QString::null && fi.isReadable())
+		config_file.writeEntry("Network", "LastUploadDirectory", fi.dirPath()+"/");
 	kdebugf2();
 	return f;
 }
@@ -463,7 +467,9 @@ void FileDccSocket::needFileAccept()
 	{
 		case 0: // Yes?
 			kdebugm(KDEBUG_INFO, "DccSocket::askAccept(): accepted\n");
-			f = QFileDialog::getSaveFileName((char *)dccsock->file_info.filename,
+			f = QFileDialog::getSaveFileName(
+				config_file.readEntry("Network", "LastDownloadDirectory", "~/")
+					+(char *)dccsock->file_info.filename,
 				QString::null, 0, tr("save file"), tr("Select file location"));
 			if (f.isEmpty())
 			{
@@ -471,7 +477,7 @@ void FileDccSocket::needFileAccept()
 				setState(DCC_SOCKET_TRANSFER_DISCARDED);
 				return;
 			}
-
+			config_file.writeEntry("Network", "LastDownloadDirectory", QFileInfo(f).dirPath()+"/");
 			fi.setFile(f);
 			if (fi.exists() && fi.size() < dccsock->file_info.size)
 			{
