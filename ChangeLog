@@ -75,47 +75,47 @@
   zosta³ usuniêty ze ¼róde³
 
 +++ wersja 0.3.3-pre4
-* przy imporcie listy u¿ytkowników ustawiamy domy¶lne atrybuty u¿ytkowników
-* poprawki zwi±zane z zarz±dzaniem widoczno¶ci± ikony programu w tray'u
+* przy imporcie listy u¿ytkowników ustawiamy domy¶lne atrybuty u¿ytkowników (chilek)
+* poprawki zwi±zane z zarz±dzaniem widoczno¶ci± ikony programu w tray'u (chilek)
 * je¶li ikona programu jest widoczna w tray'u to wiadomo¶ci od u¿ytkowniów
   anonimowych nie powoduj± dodawania tych u¿ytkowników do listy; w przeciwnym przypadku
-  u¿ytkownicy s± dodawani do listy (serwer GG nie jest o tym informowany!)
+  u¿ytkownicy s± dodawani do listy (serwer GG nie jest o tym informowany!) (chilek)
 * w oknie rozmowy dodano guzik blokuj±cy przewijanie rozmowy (mo¿na spokojnie przeczytaæ
-  co kto¶ do nas napisa³ du¿o wcze¶niej)
-* mo¿liwo¶æ rezygnacji ze zmiany statusu na status opisowy
+  co kto¶ do nas napisa³ du¿o wcze¶niej) (chilek)
+* mo¿liwo¶æ rezygnacji ze zmiany statusu na status opisowy (chilek)
 * usuniête wywalanie siê kadu po otwarciu okna z danymi osobistymi
-  (w momencie gdy nie znaleziono informacji o nas w katalogu publicznym)
-* mo¿liwo¶æ regulacji wielko¶ci panela informacyjnego
-* wyszukiwanie u¿ytkowników zgodne z GG 5.0
+  (w momencie gdy nie znaleziono informacji o nas w katalogu publicznym) (chilek)
+* mo¿liwo¶æ regulacji wielko¶ci panela informacyjnego (chilek)
+* wyszukiwanie u¿ytkowników zgodne z GG 5.0 (chilek)
 * w oknie rozmowy: mo¿na zmieniæ proporcjê pomiêdzy rozmiarem okna historii rozmowy,
-  a list± u¿ytkowników (gdy prowadzimy konferencjê)
+  a list± u¿ytkowników (gdy prowadzimy konferencjê) (chilek)
 * chyba poprawiony pad przy wiadomo¶ciach systemowych. UWAGA! teraz lec±
   tylko na konsolê. Je¶li chcecie ogl±daæ reklamy to dajcie znaæ ;)
-* usprawnienia w oknie poszukiwañ u¿ytkowników:
+* usprawnienia w oknie poszukiwañ u¿ytkowników (chilek):
   - szukanie u¿ytkowników najpierw powoduje wyczyszczenie listy u¿ytkowników,
   - szukanie kolejnych u¿ytkowników nie powoduje dodawania do listy ju¿ wcze¶niej znalezionych.
-* dane osobiste: pobieranie o nas informacji wykorzystuje wyszukiwanie zgodne z GG 5.0
+* dane osobiste: pobieranie o nas informacji wykorzystuje wyszukiwanie zgodne z GG 5.0 (chilek)
 * dane osobiste: dzia³aj± w standardzie GG 5.0 (nie ma problemów z poszczególnymi polami
-  naszego opisu)
-* dane osobiste: obs³uga FamilyName i FamilyCity
+  naszego opisu) (chilek)
+* dane osobiste: obs³uga FamilyName i FamilyCity (chilek)
 * szyfrowanie: gruntowna poprawka - przejscie na simlite z ekg. dziala juz
   kadu<=>kadu, ale kod wymaga jeszcze troszke pracy
-* przypominanie has³a nie blokuje kadu
-* dodane okno zmiany has³a GG
-* porz±dki zwi±zane z oknem rejestracji u¿ytkownika GG
+* przypominanie has³a nie blokuje kadu (chilek)
+* dodane okno zmiany has³a GG (chilek)
+* porz±dki zwi±zane z oknem rejestracji u¿ytkownika GG (chilek)
 * zapisywanie pozycji podzia³u userlist(userbox) i opisu + poprawki zapisywania
-  geometrii okna i warto¶ci domy¶lnych
+  geometrii okna i warto¶ci domy¶lnych (chilek)
 * udoskonalenie zak³adki wygl±d i dodanie mo¿liwo¶ci ustawienia wygl±du widgetu
   w userboxie, który pokazuje dane u¼ytkownika + zmiany w sposobie zapisu konfiguracji
   kolorów i czcionek.
-* dodane okno wyrejestrowania u¿ytkownika GG
-* dane osobiste: kosmetyka wygl±du okna
+* dodane okno wyrejestrowania u¿ytkownika GG (chilek)
+* dane osobiste: kosmetyka wygl±du okna (chilek)
 * konfiguracja: testowanie d¼wiêków uwzglêdnia zmiany dokonane w polach konfiguracji
-  plików d¼wiêkowych
+  plików d¼wiêkowych (chilek)
 * konfiguracja: dodano guzik testowania przy wyborze d¼wiêku powiadamiania o
-  obecno¶ci uzytkownika
+  obecno¶ci uzytkownika (chilek)
 * konfiguracja: zmiana konfiguracji wygl±du nie wymaga zrestartowania kadu, aby
-  zasz³y zmiany w wygl±dzie
+  zasz³y zmiany w wygl±dzie (chilek)
 * szyfrowanie: generowanie tylko kluczy 1024 bity (innych nie obs³uguje protokó³)
 * szyfrowanie: poprawki kosmetyczne interfejsu u¿ytkownika i samego kodu
 * dodanie opcji usuwania userlisty z serwera, import/export userlisty z 
@@ -133,46 +133,46 @@
   zerwane lub po prostu osoba sama siê roz³±czy (status: niedostêpny)
   - cykl ³±czenia siê z serwerami GG zaczyna siê od pocz±tku czyli jw.
 * informacja o b³êdzie sieciowym podczas próby wys³ania wiadomo¶ci
-  przy braku po³±czenia z serwerem GG
-* ikonka w tray'u powinna sygnalizowaæ wiadomo¶æ do odczytania po restarcie kadu
+  przy braku po³±czenia z serwerem GG (chilek)
+* ikonka w tray'u powinna sygnalizowaæ wiadomo¶æ do odczytania po restarcie kadu (chilek)
 * u do³u pojawia siê informacja o u¿ytkowniku
 * dostêpno¶æ nowych wersji kadu nie jest sprawdzana, gdy nie mamy przydzielonego
-  numeru GG
-* prawid³owe wy¶wietlanie polskich literek w opisach osób niedostêpnych
-* poprawka domy¶lnej geometri g³ównego okna
-* po zmianie powiadomieñ w oknie konfiguracji ustawienia powiadomieñ s± zapamiêtywane
-* poprawione automatyczne otwieranie wszystkich oczekuj±cych wiadomo¶ci konferencyjnych
+  numeru GG (chilek)
+* prawid³owe wy¶wietlanie polskich literek w opisach osób niedostêpnych (chilek)
+* poprawka domy¶lnej geometrii g³ównego okna
+* po zmianie powiadomieñ w oknie konfiguracji ustawienia powiadomieñ s± zapamiêtywane (chilek)
+* poprawione automatyczne otwieranie wszystkich oczekuj±cych wiadomo¶ci konferencyjnych (chilek)
 
 +++ wersja 0.3.3-pre2
 * dostosowanie do QT 3.1.0 i KDE 3.1-rc5
 * lepszy selektor emotow - potrafi wystawac za chat
   i zachowuje sie jak popup-menu
-* mo¿na anulowaæ oczekiwanie na potwierdzenie dostarczenia wiadomosci
+* mo¿na anulowaæ oczekiwanie na potwierdzenie dostarczenia wiadomosci (chilek)
 * wyszukiwanie u¿ytkowników: pierwszy znaleziony u¿ytkownik staje siê wybranym
-  - teraz nie mo¿na ju¿ dodaæ drugi raz tego samego u¿ytkownika
+  - teraz nie mo¿na ju¿ dodaæ drugi raz tego samego u¿ytkownika (chilek)
 * w oknie rozmowy: zast±pienie guzika "Zamknij" guzikiem "Anuluj"
   - guzik "Anuluj" powoduje anulowanie oczekiwania na potwierdzenie 
-  dostarczenia wiadomosci
-* okno rozmowy: KTextBrowser -> QTextBrowser
+  dostarczenia wiadomosci (chilek)
+* okno rozmowy: KTextBrowser -> QTextBrowser (chilek)
 * przycisk "Testuj" w oknie konfiguracji powoduj±cy przetestowanie ustawieñ
   dzwiêkowych
 * mo¿liwo¶æ wyboru przegl±darki www w jakiej ma pokazywaæ siê wybrany
-  w oknie rozmowy hyperlink
+  w oknie rozmowy hyperlink (chilek)
 * okno rozmowy: chmurki z opisem emotikonek w oknie wyboru emotikonki
-* playSound(): fork() -> QProcess
-* u¿ytkownicy na li¶cie s± sortowani z uwglêdnieniem polskich literek
-* okno informacji o u¿ytkowniku: wydzielenie zak³adek z poszczególnymi opcjami
+* playSound(): fork() -> QProcess (chilek)
+* u¿ytkownicy na li¶cie s± sortowani z uwglêdnieniem polskich literek (chilek)
+* okno informacji o u¿ytkowniku: wydzielenie zak³adek z poszczególnymi opcjami (chilek)
 * poprawiono wy¶wietlanie emotikonów
-* mo¿liwo¶æ blokowania u¿ytkowników
+* mo¿liwo¶æ blokowania u¿ytkowników (chilek)
 * mo¿liwo¶æ ukrycia siê przed u¿ytkownikami, których mamy na li¶cie przy statusie
-  "tylko dla znajomych"
+  "tylko dla znajomych" (chilek)
 * poprawione wysy³anie smsów (przez bramka.org) - znowu dzia³a idea,
   oraz lepsza obsluga argumentów u¿ytkownika do programu sms
 * wy¶wietlanie hintów przy ikonce w docku - experimental
-* mo¿liwo¶æ ignorowania wiadomo¶ci od u¿ytkowników spoza listy kontaktów
+* mo¿liwo¶æ ignorowania wiadomo¶ci od u¿ytkowników spoza listy kontaktów (chilek)
 * obs³uga zmiennej CONFIG_DIR - funkcja ggPath ogólnego zastosowania do
   konwersji scie¿ek ze wzglêdnych w katalogu gg do bezwzglêdnych
-* u¿ytkownicy anonimowi nie s± dodawani do listy.
+* u¿ytkownicy anonimowi nie s± dodawani do listy. (chilek)
 * configure: mo¿liwo¶æ wy³±czenia kompilacji libgadu i zlinkowania z ju¿
   istniej±c± w systemie instalacj± (--with-existing-libgadu)
 * configure: wkompilowywana informacja o typie dystrybucji, np. ¼ród³a, paczka
@@ -186,23 +186,23 @@
 * ustawienia kolorów i czcionek listy u¿ytkowników i okna rozmowy
 * domy¶lna opcja wywo³anie wbudowanego programu kadusms
 * dynamiczne emotikony z mo¿liwo¶ci± wyboru zestawu (+do³±czony kadubis)
-* has³o nie pokazuje siê na konsoli
-* wiadomo¶ci typu message "wpadaj±" do okna rozmowy
+* has³o nie pokazuje siê na konsoli (chilek)
+* wiadomo¶ci typu message "wpadaj±" do okna rozmowy (chilek)
 * historia wys³anych sms'ów
 * ograniczenie statusu opisowego do 40 znaków i przejscie na QLineEdit
-* mo¿liwo¶æ konfiguracji serwera proxy w oknie konfiguracji
-* w strukturze config: char *password -> QString password
-* autoryzacja proxy
-* ENTER/RETURN w li¶cie u¿ytkowników dzia³a tak jak podwójne klikniêcie myszk±
-* opcja powiadamiania o zmianie statusu wszystkich u¿ytkowników
-* kadu nie wysypuje siê jak mamy w³±czone "autoaway" i jeste¶my offline
+* mo¿liwo¶æ konfiguracji serwera proxy w oknie konfiguracji (chilek)
+* w strukturze config: char *password -> QString password (chilek)
+* autoryzacja proxy (chilek)
+* ENTER/RETURN w li¶cie u¿ytkowników dzia³a tak jak podwójne klikniêcie myszk± (chilek)
+* opcja powiadamiania o zmianie statusu wszystkich u¿ytkowników (chilek)
+* kadu nie wysypuje siê jak mamy w³±czone "autoaway" i jeste¶my offline (chilek)
 * w oknie poszukiwañ: gdy znaleziono jednego u¿ytkownika nie trzeba go zaznaczaæ,
-  aby dodaæ go do listy, albo uaktualniæ informacjê o nim
+  aby dodaæ go do listy, albo uaktualniæ informacjê o nim (chilek)
 * w oknie konfiguracji: gdy odznaczymy domy¶lny serwer GG i nie wpiszemy ¿adnego
-  serwera GG to kadu ju¿ nie wywala siê przy próbie ponownego ³±czenia siê
+  serwera GG to kadu ju¿ nie wywala siê przy próbie ponownego ³±czenia siê (chilek)
 * Autostatus z pliku ~/.gg/description je¶li istnieje - do zastosowañ zwi±zanych
   z XMMS i innymi.
-* okno rejestracji: przej¶cie na QSocketNotifier
+* okno rejestracji: przej¶cie na QSocketNotifier (chilek)
 * status opisowy: bardziej restrykcyjne (zmienna sess) sprawdzanie czy jeste¶my
   od³±czeni od serwera
 * status opisowy: kasowanie pliku description po jego odczytaniu
@@ -214,12 +214,12 @@
 * usuneli¶my z kodów ¼ród³owych poszczególnych modu³ów informacje
   o autorach - wystarczy plik AUTHORS
 * mrugaj±cy tytu³ okna chat (zminimalizowanego te¿)
-  przy doj¶ciu nowej wiadomo¶ci (Mast3r)
+  przy doj¶ciu nowej wiadomo¶ci (mast3r)
 * status zmienia siê prawid³owo
 * Instalator w jezyku polskim - Instaluj
 * Dodano funkcje warunkowe do skryptu Instaluj
 * mrugaj±ca koperta nowej wiadomo¶ci
-* sprawdzanie dostêpnych aktualizacji
+* sprawdzanie dostêpnych aktualizacji (chilek)
 * F9 - czy¶ci zawarto¶æ okna rozmowy
 * ikonka okna rozmowy jest aktualnym stanem rozmowcy
 * doklejanie ~/.gg/description do statusu jesli chcemy (por.
@@ -227,7 +227,7 @@
 * kompilowanie libgadu jako .so i linkowanie dynamiczne
 * dodane #define HAVE_PTHREAD 1 w libgadu.h - teraz kadu operuje na tej
   samej strukturze gg_search co libgadu.so
-* powiadamianie o update'ach u¿ywa sta³ej VERSION
+* powiadamianie o update'ach u¿ywa sta³ej VERSION (chilek)
 
 +++ wersja 0.3.2
 * dalsze porz±dki w kodzie
