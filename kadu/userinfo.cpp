@@ -488,10 +488,12 @@ void UserInfo::changeUserData(UserListElement& e)
 	e.setPort(puser->port());
 	e.setDnsName(puser->dnsName());
 
-	userlist.changeUserInfo(puser->altNick(), e);
+	UinType uin = puser->uin();
+	userlist.changeUserInfo(puser->altNick(), e); //po tej linii NIE wolno korzystaæ z puser, bo jego ju¿ nie ma!
+	puser = NULL;
 	userlist.writeToFile();
 
-	chat_manager->refreshTitlesForUin(puser->uin());
+	chat_manager->refreshTitlesForUin(uin);
 	close(true);
 	kdebugf2();
 }
