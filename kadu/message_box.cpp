@@ -6,6 +6,7 @@
 #include <qpushbutton.h>
 #include <qapplication.h>
 #include "misc.h"
+#include "debug.h"
 
 const int MessageBox::OK       = 1;  // 00001
 const int MessageBox::CANCEL   = 2;  // 00010
@@ -16,6 +17,7 @@ const int MessageBox::PROGRESS = 16; // 10000
 MessageBox::MessageBox(const QString& message,int components,bool modal)
 	: QDialog(NULL,NULL,modal,WType_TopLevel|WStyle_Customize|WStyle_DialogBorder|WStyle_Title|WStyle_SysMenu)
 {
+	kdebugf();
 	_pixmap = 0;
 	_grid=new QGridLayout(this,1,2);
 	
@@ -69,6 +71,7 @@ MessageBox::MessageBox(const QString& message,int components,bool modal)
 		connect(b,SIGNAL(clicked()),this,SLOT(cancelClicked()));
 	}
 	buttons->setMaximumSize(buttons->sizeHint());
+	kdebugf2();
 }
 
 void MessageBox::setIcon(const QPixmap & pixmap)
@@ -153,6 +156,7 @@ bool MessageBox::ask(const QString& message)
 void MessageBox::progress(const QString& message, const QObject* receiver,
 	const char* slot, int total_steps)
 {
+	kdebugf();
 	MessageBox* m;
 	if(receiver!=0&&slot!=0)
 	{
@@ -165,6 +169,7 @@ void MessageBox::progress(const QString& message, const QObject* receiver,
 	m->show();
 	Boxes.insert(message,m);	
 	qApp->processEvents();
+	kdebugf2();
 }
 
 void MessageBox::progress(const QString& message,int progress)
