@@ -123,6 +123,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * patch zmieniajacy pogrubienie nickow uzytkownikow dostepnych z poprzedniego
   patcha w opcje ustawialna w konfiguracji (uto/adrian)
 * nowy, porzadny mechanizm --with-existing-libgadu (jotpel,sajmon / adrian)
+* dodany nowy sygna³ EventManager::systemMessageReceived(); mo¿liwe, ¿e wiadomo¶ci
+  systemowe pochodz±ce od serwerów GG bêd± pojawiaæ siê w oddzielnym oknie ;) (chilek)
 
 +++ wersja 0.3.6 (22.11.2003)
 * je¶li klikniemy na jaki¶ kontakt w userboxie, od którego otrzymali¶my jak±¶

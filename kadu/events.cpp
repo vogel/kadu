@@ -156,6 +156,8 @@ EventManager::EventManager()
 	connect(this,SIGNAL(userStatusChanged(struct gg_event*)),this,SLOT(userStatusChangedSlot(struct gg_event*)));
 	connect(this,SIGNAL(userlistReceived(struct gg_event*)),this,SLOT(userlistReceivedSlot(struct gg_event*)));
 	connect(this,SIGNAL(messageReceived(int,UinsList,unsigned char*,time_t, int, void *)),this,SLOT(messageReceivedSlot(int,UinsList,unsigned char*,time_t, int, void *)));
+	connect(this,SIGNAL(systemMessageReceived(QString &, time_t, int, void *)),
+		this, SLOT(systemMessageReceivedSlot(QString &, time_t, int, void *)));
 	connect(this,SIGNAL(chatMsgReceived2(UinsList,const QString&,time_t)),
 		this,SLOT(chatMsgReceived2Slot(UinsList,const QString&,time_t)));
 	connect(this,SIGNAL(ackReceived(int)),this,SLOT(ackReceivedSlot(int)));
@@ -257,6 +259,13 @@ void EventManager::disconnectedSlot()
 	AutoConnectionTimer::off();
 };
 
+void EventManager::systemMessageReceivedSlot(QString &msg, time_t time,
+	int formats_length, void *formats)
+{
+	kdebug("EventManager::systemMessageReceivedSlot()\n");
+	MessageBox::msg(msg);
+}
+
 void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned char* msg, time_t time,
 	int formats_length, void *formats)
 {
@@ -276,19 +285,20 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 	if (isIgnored(senders))
 		return;
 
-	// ignorujemy wiadomosci systemowe
+	QString mesg = cp2unicode(msg);
+
+	// wiadomosci systemowe maja sensers[0] = 0
 	// FIX ME!!!
-	if (senders[0] == config_file.readNumEntry("General","UIN")) {
+	if (senders[0] == 0) {
 		if (msgclass <= config_file.readNumEntry("General", "SystemMsgIndex", 0)) {
 			kdebug("Already had this message, ignoring\n");
 			return;
 			}
 		config_file.writeEntry("General", "SystemMsgIndex", msgclass);
 		kdebug("System message index %d\n", msgclass);
+		emit systemMessageReceived(mesg, time, formats_length, formats);
 		return;
 		}
-
-	QString mesg = cp2unicode(msg);
 
 #ifdef HAVE_OPENSSL
 	if (config_file.readBoolEntry("Chat","Encryption")) {
