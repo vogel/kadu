@@ -553,7 +553,11 @@ void Kadu::popupMenu()
 		return;
 	users = activeUserBox->getSelectedUsers();
 	UserListElement user = users.first();
-	bool isOurUin = (user.uin == config_file.readNumEntry("General", "UIN"));
+
+	bool isOurUin=false;
+	
+	if(users.containsUin(config_file.readNumEntry("General", "UIN")))
+		isOurUin = true;
 
 	if (!user.mobile.length() || users.count() != 1)
 		UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("Send SMS")), false);

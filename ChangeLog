@@ -190,6 +190,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   i ColorSelectorem, nadal gdzie¶ tam jest wyciek pamiêci :( (joi)
 * klikniecie na dymek w przypadku konferencji otwiera okno konferencji nie
   chat z osoba ktora ja rozpoczela (michal)
+* usuniety blad pozwalajacy na konferencje z samym soba jesli pierwsza osoba w
+  konferencji jest na liscie ponad wlasnym numerem w userbox-ie (michal)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
