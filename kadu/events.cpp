@@ -303,7 +303,7 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 
 	UserListElement ule = userlist.byUinValue(senders[0]);
 
-	if (userlist.containsUin(senders[0]))
+	if (!userlist.containsUin(senders[0]))
 		if (trayicon)
 			userlist.addUser("", "", ule.altnick, ule.altnick, "", ule.altnick, GG_STATUS_NOT_AVAIL,
 				false, false, true, "", "", true);
