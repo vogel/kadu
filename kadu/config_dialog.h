@@ -155,6 +155,7 @@ class ConfigDialog : public QTabDialog	{
 		QLineEdit *e_extip;
 		QLineEdit *e_extport;
 		QCheckBox *b_defserver;
+		QCheckBox *b_tls;
 		QHBox	*serverbox;
 		QLineEdit *e_server;
 		QCheckBox *b_useproxy;
@@ -162,6 +163,7 @@ class ConfigDialog : public QTabDialog	{
 		QLineEdit *e_proxyport;
 		QLineEdit *e_proxyuser;
 		QLineEdit *e_proxypassword;
+		QHBox	*portbox;
 		QComboBox *cb_portselect;
 
 		QComboBox *cb_chatfont;
@@ -239,6 +241,7 @@ class ConfigDialog : public QTabDialog	{
 		void ifDccEnabled(bool);
 		void ifDccIpEnabled(bool);
 		void ifDefServerEnabled(bool);
+		void useTlsEnabled(bool);
 		void onSmsBuildInCheckToogle(bool);
 		void onDefWebBrowserToogle(bool);
 		void updateQuoteTimeLabel(int);
@@ -296,6 +299,7 @@ struct config {
 	QValueList<QHostAddress> servers;
 	bool default_servers;
 	int default_port;
+	int tls;
 
 	bool dock;
 	bool rundocked;

@@ -29,6 +29,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * wiadomo¶ci których klasa jest inna ni¿ msg lub chat póki co, s± ignorwane (mast3r)
 * poprawka zapamiêtywania i wczytywania polo¿enia Kadu(przy pierwszym uruchomieniu
   Kadu troszke sie przesunie) (ReGIs/mast3r)
+* mo¿liwo¶æ po³±czeñ szyfrowanych TLSv1 zgodnych z GG 5.7 beta (chilek)
 
 +++ wersja 0.3.4-rc1
 * wiêkszo¶æ kodu dotycz±cego obs³ugi zdarzeñ sieciowych przeniesiona z

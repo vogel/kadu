@@ -1554,6 +1554,14 @@ void Kadu::setStatus(int status) {
 		if (server_nr > 7)
 			server_nr = 0;
 		}
+	loginparams.tls = config.tls;
+	if (config.tls) {
+		loginparams.server_port = 0;
+		if (config.default_servers)
+			loginparams.server_addr = 0;
+		}
+	else
+		loginparams.server_port = config.default_port;
 	sess = gg_login(&loginparams);
 
 	AutoConnectionTimer::off();

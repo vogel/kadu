@@ -94,6 +94,7 @@ void loadKaduConfig(void) {
 			config.servers.append(ip);
 		}
 	config.default_servers = config_file.readBoolEntry("isDefServers",true);
+	config.tls = config_file.readNumEntry("UseTLS", 0);
 	config.default_port = config_file.readNumEntry("DefaultPort", 8074);
 	server_nr = 0;
 
@@ -242,6 +243,7 @@ void saveKaduConfig(void) {
 	for (int i = 0; i < config.servers.count(); i++)
 		servers.append(config.servers[i].toString());
 	config_file.writeEntry("Server", servers.join(";"));
+	config_file.writeEntry("UseTLS", config.tls);
 	config_file.writeEntry("DefaultPort",config.default_port);
 
 	config_file.writeEntry("UseDocking",config.dock);
@@ -927,6 +929,16 @@ void ConfigDialog::setupTab4(void) {
 	addTab(box4, i18n("Users"));
 }
 
+void ConfigDialog::ifNotifyGlobal(bool toggled) {
+	b_notifyall->setEnabled(toggled);
+	panebox->setEnabled(toggled && !b_notifyall->isChecked());
+	notifybox->setEnabled(toggled);
+}
+
+void ConfigDialog::ifNotifyAll(bool toggled) {
+	panebox->setEnabled(!toggled);
+}
+
 void ConfigDialog::setupTab5(void) {
 	QHostAddress ip;
 
@@ -973,14 +985,19 @@ void ConfigDialog::setupTab5(void) {
 	g_server->setMargin(2);
 //	g_server->setEnabled(!config.default_servers && config.servers.count() && inet_addr(config.servers[0].latin1()) != INADDR_NONE);
 
-	b_defserver = new QCheckBox(i18n("Use default servers"),g_server);
+	QHBox *servertypebox = new QHBox(g_server);
+	b_defserver = new QCheckBox(i18n("Use default servers"), servertypebox);
 	b_defserver->setChecked(config.default_servers);
-	       
+#ifdef HAVE_OPENSSL
+	b_tls = new QCheckBox(i18n("Use TLSv1"), servertypebox);
+	b_tls->setChecked(config.tls);
+#endif
+
 	serverbox = new QHBox(g_server);
 	serverbox->setSpacing(5);
 	ip = config.servers[0];
 	serverbox->setEnabled(!config.default_servers && config.servers.count() && ip.ip4Addr());
-	
+
 	QLabel *l3 = new QLabel(i18n("IP addresses:"),serverbox);
 	e_server = new QLineEdit(serverbox);
 	QStringList servers;
@@ -988,15 +1005,19 @@ void ConfigDialog::setupTab5(void) {
 		servers.append(config.servers[i].toString());
 	e_server->setText(servers.join(";"));
 
-	QHBox *portserverbox = new QHBox(g_server);
-	serverbox->setSpacing(5);
-	QLabel *lserverport = new QLabel(i18n("Default port to connect to servers"),portserverbox);
+	portbox = new QHBox(g_server);
+	portbox->setSpacing(5);
+	QLabel *lserverport = new QLabel(i18n("Default port to connect to servers"), portbox);
 	
-	cb_portselect = new QComboBox(portserverbox);
+	cb_portselect = new QComboBox(portbox);
         cb_portselect->insertItem("8074");
 	cb_portselect->insertItem("443");
         cb_portselect->setCurrentText(QString::number(config.default_port));
-						
+
+#ifdef HAVE_OPENSSL
+	portbox->setEnabled(!config.tls);
+#endif
+
 	b_useproxy = new QCheckBox(i18n("Use proxy server"),box5);
 	b_useproxy->setChecked(config.useproxy);
 
@@ -1035,6 +1056,7 @@ void ConfigDialog::setupTab5(void) {
 	QObject::connect(b_dccip, SIGNAL(toggled(bool)), this, SLOT(ifDccIpEnabled(bool)));
 	QObject::connect(b_dccfwd, SIGNAL(toggled(bool)), g_fwdprop, SLOT(setEnabled(bool)));
 	QObject::connect(b_defserver, SIGNAL(toggled(bool)), this, SLOT(ifDefServerEnabled(bool)));
+	QObject::connect(b_tls, SIGNAL(toggled(bool)), this, SLOT(useTlsEnabled(bool)));
 	QObject::connect(b_useproxy, SIGNAL(toggled(bool)), g_proxy, SLOT(setEnabled(bool)));
 
 	addTab(box5, i18n("Network"));
@@ -1055,22 +1077,16 @@ void ConfigDialog::ifDccEnabled(bool toggled) {
 		}
 }
 
-void ConfigDialog::ifNotifyGlobal(bool toggled) {
-	b_notifyall->setEnabled(toggled);
-	panebox->setEnabled(toggled && !b_notifyall->isChecked());
-	notifybox->setEnabled(toggled);
-}
-
-void ConfigDialog::ifNotifyAll(bool toggled) {
-	panebox->setEnabled(!toggled);
-}
-
 void ConfigDialog::ifDccIpEnabled(bool toggled) {
 	g_dccip->setEnabled(!toggled);
 }
 
 void ConfigDialog::ifDefServerEnabled(bool toggled) {
 	serverbox->setEnabled(!toggled);
+}
+
+void ConfigDialog::useTlsEnabled(bool toggled) {
+	portbox->setEnabled(!toggled);
 }
 
 void ConfigDialog::setupTab6(void) {
@@ -1813,6 +1829,10 @@ void ConfigDialog::updateConfig(void) {
 		config.servers = servers;
 	config.default_servers = b_defserver->isChecked();
 	server_nr = 0;
+
+#ifdef HAVE_OPENSSL
+	config.tls = b_tls->isChecked();
+#endif
 
 	config.default_port = atoi(cb_portselect->currentText().latin1());
 	config.useproxy = b_useproxy->isChecked();
