@@ -392,16 +392,10 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	
 	loadKaduConfig();
         
-	if (config.savegeometry&&(!config.geometry.isNull())) {
-		fprintf(stderr,"KK Setting geometry to %d %d %d %d\n",
+	fprintf(stderr,"KK Setting geometry to %d %d %d %d\n",
 			config.geometry.x(), config.geometry.y(),
 			config.geometry.width(), config.geometry.height());
-		setGeometry(config.geometry);
-		}
-	else {
-		resize(200,300);
-		move(maximumSize().width() - x(), maximumSize().height() - y());
-		}
+	setGeometry(config.geometry);
 
 	if (config.dock) {
 		dw = new DockWidget(this);
@@ -503,11 +497,15 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	descrtb->setVScrollBarMode(QScrollView::AlwaysOff);
 	descrtb->setPaper(QBrush(lightGray));
 
-	QValueList<int> splitsizes;
-	splitsizes.append(100);
-	splitsizes.append(1);
-	split->setSizes(splitsizes);
+	QValueList<int> *splitsizes;
+	splitsizes = new QValueList<int>;
+	
+	splitsizes->append(config.splitsize.width());
+	splitsizes->append(config.splitsize.height());
+	split->setSizes(*splitsizes);
 
+	delete splitsizes;
+	
 	QGridLayout * grid = new QGridLayout(centralFrame, 3, 3);
 	grid->addMultiCellWidget(group_bar, 0, 0, 0, 2);
 	grid->addMultiCellWidget(split, 1, 1, 0, 2);
@@ -1853,6 +1851,9 @@ void Kadu::closeEvent(QCloseEvent *e) {
 		hide();
 		}
 	else {
+		config.splitsize.setWidth(userbox->size().height());
+		config.splitsize.setHeight(descrtb->size().height());
+		config.geometry = geometry();
 		saveKaduConfig();
 		fprintf(stderr,"KK closeEvent(): Graceful shutdown...\n");
 		e->accept();

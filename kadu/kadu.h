@@ -80,7 +80,8 @@ struct config {
 	bool addtodescription;
 	bool showhint;
 	QRect geometry;
-
+	QSize splitsize;
+	
 	bool defaultwebbrowser;
 	QString webbrowser;
 

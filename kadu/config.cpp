@@ -30,7 +30,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <stdlib.h>
-
+#include <qrect.h>
 //
 #include "kadu.h"
 #include "misc.h"
@@ -91,9 +91,8 @@ void loadKaduConfig(void) {
 	config.checkupdates = konf->readBoolEntry("CheckUpdates", true);
 	config.addtodescription = konf->readBoolEntry("AddToDescription", false);
 	config.showhint = konf->readBoolEntry("ShowHint",false);
-
-	if (config.savegeometry)
-		config.geometry = konf->readRectEntry("Geometry");
+	config.geometry = konf->readRectEntry("Geometry",&QRect(0,0,145,465));
+	config.splitsize = konf->readSizeEntry("SplitSize",&QSize(340,60));
 
 	konf->setGroup("WWW");
 	config.defaultwebbrowser = konf->readBoolEntry("DefaultWebBrowser", true);
@@ -193,6 +192,11 @@ void saveKaduConfig(void) {
 	konf->writeEntry("DisplayGroupTabs",config.grouptabs);
 	konf->writeEntry("AddToDescription",config.addtodescription);
 	konf->writeEntry("ShowHint",config.showhint);
+	
+	if (config.savegeometry) {
+		konf->writeEntry("SplitSize",config.splitsize);
+		konf->writeEntry("Geometry",config.geometry);
+	}
 
 	konf->setGroup("WWW");
 	konf->writeEntry("DefaultWebBrowser", config.defaultwebbrowser);	
