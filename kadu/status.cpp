@@ -92,9 +92,9 @@ void AutoStatusTimer::onTimeout()
 
 AutoAwayTimer::AutoAwayTimer(QObject* parent) : QTimer(parent,"AutoAwayTimer") {
 	autoawayed = false;
-	QApplication::desktop()->installEventFilter(this);
+//	QApplication::desktop()->installEventFilter(this);
 //	QApplication::desktop()->grabMouse();
-//	a->installEventFilter(this);
+	a->installEventFilter(this);
 	connect(this, SIGNAL(timeout()), SLOT(onTimeout()));
 	start(config.autoawaytime * 1000,TRUE);
 }
@@ -109,12 +109,11 @@ bool AutoAwayTimer::eventFilter(QObject *o,QEvent *e)
 			fprintf(stderr, "KK AutoAwayTimer::eventFilter(type = QEvent::KeyPress or QEvent::Enter): auto away cancelled\n");
 			autoawayed = false;
 			kadu->setStatus(beforeAutoAway);
-			QApplication::desktop()->releaseMouse();
-			QApplication::desktop()->releaseKeyboard();
-			a->sendEvent(o, e);
+//			QApplication::desktop()->releaseMouse();
+//			QApplication::desktop()->releaseKeyboard();
+//			a->sendEvent(o, e);
 			}
 		}
-//	return false;
 	return QObject::eventFilter(o, e);
 }
 
@@ -126,14 +125,14 @@ void AutoAwayTimer::onTimeout()
 		switch (beforeAutoAway) {
 			case GG_STATUS_AVAIL_DESCR:
 				kadu->setStatus(GG_STATUS_BUSY_DESCR);
-				QApplication::desktop()->grabMouse();
-				QApplication::desktop()->grabKeyboard();
+//				QApplication::desktop()->grabMouse();
+//				QApplication::desktop()->grabKeyboard();
 				autoawayed = true;
 				break;
 			case GG_STATUS_AVAIL:
 				kadu->setStatus(GG_STATUS_BUSY);
-				QApplication::desktop()->grabMouse();
-				QApplication::desktop()->grabKeyboard();
+//				QApplication::desktop()->grabMouse();
+//				QApplication::desktop()->grabKeyboard();
 				autoawayed = true;
 				break;
 			default:
