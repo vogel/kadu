@@ -145,9 +145,7 @@ void Wizard::finishClicked()
 	setPanelTheme();
 	setSoundOptions();
 	setBrowser();
-	connect(gadu, SIGNAL(userListImported(bool, UserList&)), this, SLOT(userListImported(bool, UserList&)));
 	tryImport();
-	disconnect(gadu, SIGNAL(userListImported(bool, UserList&)), this, SLOT(userListImported(bool, UserList&)));
 	
 	startWizardObj=NULL;
 	deleteLater();
@@ -189,7 +187,8 @@ void Wizard::nextClicked()
 	else if (currentPage()==ggCurrentNumberPage && rb_dontHaveNumber->isChecked())
 	{	
 		QWizard::showPage(ggNewNumberPage);	
-		if (!registered) nextButton()->setEnabled(false);
+		if (!registered)
+			nextButton()->setEnabled(false);
 	}
 	else if (currentPage()==ggNewNumberPage && rb_haveNumber->isChecked())
 		QWizard::showPage(generalOptionsPage);
@@ -236,12 +235,19 @@ void Wizard::wizardStart()
 /**
 	po zaimportowaniu listy kontaktów siê wywo³uje
 **/
-void Wizard::userListImported(bool /*ok*/, UserList& userList)
+void WizardStarter::userListImported(bool ok, UserList& userList)
 {
 	kdebugf();
+	disconnect(gadu, SIGNAL(userListImported(bool, UserList&)), this, SLOT(userListImported(bool, UserList&)));
+
+	if (!ok)
+	{
+		kdebugf2();
+		return;
+	}
 
 	userlist.merge(userList);
-	userlist.writeToFile();	//zaraz zapisuje liste bo kadu zaraz pewnie poleci
+	userlist.writeToFile();
 
 	kadu->userbox()->clear();
 	kadu->userbox()->clearUsers();
@@ -257,10 +263,13 @@ void Wizard::userListImported(bool /*ok*/, UserList& userList)
 /**
 	po polaczeniu sie z siecia robi import - podpinane tylko gdy kadu nie jest polaczone w momencie nacisniecia Finish
 **/
-void Wizard::connected()
+void WizardStarter::connected()
 {
-	if (!gadu->doImportUserList()) 
-	MessageBox::msg(tr("User list wasn't imported because of some error"));	
+	if (!gadu->doImportUserList())
+	{
+		MessageBox::msg(tr("User list wasn't imported because of some error"));	
+		disconnect(gadu, SIGNAL(userListImported(bool, UserList&)), this, SLOT(userListImported(bool, UserList&)));
+	}
 
 	disconnect(gadu, SIGNAL(connected()), this, SLOT(connected()));
 }
@@ -334,13 +343,17 @@ void Wizard::tryImport()
 	kdebugf();
 	if (c_importContacts->isChecked())
 	{
+		connect(gadu, SIGNAL(userListImported(bool, UserList&)), wizardStarter, SLOT(userListImported(bool, UserList&)));
 		if (gadu->status().isOffline())
 		{
 			gadu->status().setOnline();	//kaze sie polaczyc i podpina sie pod sygnal polaczenia sie z siecia
-			connect(gadu, SIGNAL(connected()), this, SLOT(connected()));
+			connect(gadu, SIGNAL(connected()), wizardStarter, SLOT(connected()));
 		}	//jak polaczony to bez cyrkow robi import
 		else if (!gadu->doImportUserList())
+		{
 			MessageBox::msg(tr("User list wasn't imported because of some error"));
+			disconnect(gadu, SIGNAL(userListImported(bool, UserList&)), wizardStarter, SLOT(userListImported(bool, UserList&)));
+		}
 	}
 	kdebugf2();
 }

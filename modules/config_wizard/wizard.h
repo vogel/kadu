@@ -94,9 +94,6 @@ class Wizard : public QWizard
 		void findAndSetWebBrowser(int selectedBrowser);
 		void findAndSetBrowserOption(int selectedOption);
 		void setSoundModule(int);
-
-		void userListImported(bool ok, UserList& userList);
-		void connected();
 };
 
 class WizardStarter : public QObject
@@ -109,6 +106,9 @@ class WizardStarter : public QObject
 		~WizardStarter();
 	public slots:
 		void start();
+
+		void userListImported(bool ok, UserList& userList);
+		void connected();
 };
 
 extern WizardStarter *wizardStarter;

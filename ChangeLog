@@ -413,8 +413,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   + drobne porz±dki w obs³udze sytuacji awaryjnych (joi)
 * ³ata Dorregaraya na config_wizard: zapisywanie uina i has³a przy "mam ju¿ numer"
   oraz poprawne ustawianie domy¶lnych kolorów dymków (joi)
-* Dorregaray: checkbox w oknie wysy³ania smsa okre¶laj±cy czy powinien zostaæ
-  zapisany do historii (joi)
+* ³ata Dorregaraya: checkbox w oknie wysy³ania smsa okre¶laj±cy czy powinien
+  zostaæ zapisany do historii (joi)
 * poprawiony import listy kontaktów z serwera (przepisane od nowa parsowanie
   pliku listu - teraz czytamy j± zawsze od lewej do prawej; warto¶ci nowych pól
   s± zachowywane przy imporcie/eksporcie, mimo ¿e nie wykorzystywane) (joi)
@@ -426,11 +426,12 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * usuniête 2 wycieki pamiêci: w sound i voice (joi)
 * dsp_sound: kompatybilno¶æ z niektórymi starymi kartami d¼wiêkowymi,
   poprawki niezainicjowanych zmiennych (joi)
-* Dorregaray: poprawiony blad kasowania UIN-a pobranego z serwera GG przy rejestracji podczas 
-  kontynuacji config_wizarda (Ron_K)
-* Dorregaray: doadano okienko potwierdzajace ze rejestracja przebiegla prawidowo w config_wizard
-  i UIN zostal zapisany (Ron_K)
-  
+* ³ata Dorregaraya: poprawiony b³±d kasowania UIN-a pobranego z serwera GG przy
+  rejestracji podczas kontynuacji config_wizarda (Ron_K)
+* ³ata Dorregaraya: dodano okienko potwierdzaj±ce, ¿e rejestracja przebieg³a
+  prawid³owo w config_wizard i UIN zosta³ zapisany (Ron_K)
+* config_wizard: dzia³aj±cy automatyczny import listy kontaktów (joi)
+
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
   gdy tak rzeczywi¶cie jest (joi)
