@@ -454,6 +454,17 @@ if test "$enable_sig_handling" = "yes"; then
 	AC_DEFINE(SIG_HANDLING_ENABLED,1,[Define if you want system signals handling])
 fi
 
+# precompiled headers support
+AC_ARG_ENABLE(pheaders,[  --enable-pheaders       enable precompiled headers support])
+if test -z "$enable_pheaders"; then
+	enable_pheaders=no
+fi
+if test "$enable_pheaders" = "yes"; then
+	grep -h "include [[\"<]].*\.h" kadu/*.cpp kadu/*.h | sort -u > kadu/kadu-headers.h
+fi
+AC_SUBST(enable_pheaders)
+AM_CONDITIONAL(PHEADERS_ENABLED,test "$enable_pheaders" = "yes")
+
 # dist-info support
 AC_ARG_ENABLE(dist-info,[  --enable-dist-info=DIST enable distribution type information, default: sources])
 if test -z "$enable_dist_info"; then
@@ -529,6 +540,7 @@ echo "   Installation prefix:                [[$prefix]]"
 echo "   Use pthread resolving in libgadu:   $with_pthread"
 echo "   Compile with debug symbols:         $enable_debug"
 echo "   System signals handling:            $enable_sig_handling"
+echo "   Precompiled headers support:        $enable_pheaders"
 echo "   Link with existing libgadu:         $with_existing_libgadu"
 # Maybe it will be back when GG servers have SSL support finally
 #echo "   OpenSSL encryption support:         $have_openssl"

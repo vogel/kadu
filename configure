@@ -314,7 +314,7 @@ ac_includes_default="\
 #endif"
 
 ac_subdirs_all="$ac_subdirs_all libgadu"
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE CXX CXXFLAGS LDFLAGS CPPFLAGS ac_ct_CXX EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CXXDEPMODE CC CFLAGS ac_ct_CC CCDEPMODE CPP EGREP PTHREAD_CPPFLAGS PTHREAD_LDFLAGS PTHREAD_LIBS PNG_LIBS QT_INCLUDES QT_LIBS QT_MOC_DIR LIBOBJS GADU_LIBS GADU_INCLUDES shared_modules static_modules static_modules_ldflags STATIC_MODULES_DECLS STATIC_MODULES_REGRS MY_SUBDIRS subdirs LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE CXX CXXFLAGS LDFLAGS CPPFLAGS ac_ct_CXX EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CXXDEPMODE CC CFLAGS ac_ct_CC CCDEPMODE CPP EGREP PTHREAD_CPPFLAGS PTHREAD_LDFLAGS PTHREAD_LIBS PNG_LIBS QT_INCLUDES QT_LIBS QT_MOC_DIR LIBOBJS GADU_LIBS GADU_INCLUDES enable_pheaders PHEADERS_ENABLED_TRUE PHEADERS_ENABLED_FALSE shared_modules static_modules static_modules_ldflags STATIC_MODULES_DECLS STATIC_MODULES_REGRS MY_SUBDIRS subdirs LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -867,6 +867,7 @@ Optional Features:
   --enable-dependency-tracking  Do not reject slow dependency extractors
   --enable-debug          compile with debug symbols
   --disable-sig-handling  disable system signals handling
+  --enable-pheaders       enable precompiled headers support
   --enable-dist-info=DIST enable distribution type information, default: sources
 
 Optional Packages:
@@ -6431,6 +6432,30 @@ _ACEOF
 
 fi
 
+# precompiled headers support
+# Check whether --enable-pheaders or --disable-pheaders was given.
+if test "${enable_pheaders+set}" = set; then
+  enableval="$enable_pheaders"
+
+fi;
+if test -z "$enable_pheaders"; then
+	enable_pheaders=no
+fi
+if test "$enable_pheaders" = "yes"; then
+	grep -h "include [\"<].*\.h" kadu/*.cpp kadu/*.h | sort -u > kadu/kadu-headers.h
+fi
+
+
+
+if test "$enable_pheaders" = "yes"; then
+  PHEADERS_ENABLED_TRUE=
+  PHEADERS_ENABLED_FALSE='#'
+else
+  PHEADERS_ENABLED_TRUE='#'
+  PHEADERS_ENABLED_FALSE=
+fi
+
+
 # dist-info support
 # Check whether --enable-dist-info or --disable-dist-info was given.
 if test "${enable_dist_info+set}" = set; then
@@ -6927,6 +6952,13 @@ if test -z "${AMDEP_TRUE}" && test -z "${AMDEP_FALSE}"; then
   { { echo "$as_me:$LINENO: error: conditional \"AMDEP\" was never defined.
 Usually this means the macro was only invoked conditionally." >&5
 echo "$as_me: error: conditional \"AMDEP\" was never defined.
+Usually this means the macro was only invoked conditionally." >&2;}
+   { (exit 1); exit 1; }; }
+fi
+if test -z "${PHEADERS_ENABLED_TRUE}" && test -z "${PHEADERS_ENABLED_FALSE}"; then
+  { { echo "$as_me:$LINENO: error: conditional \"PHEADERS_ENABLED\" was never defined.
+Usually this means the macro was only invoked conditionally." >&5
+echo "$as_me: error: conditional \"PHEADERS_ENABLED\" was never defined.
 Usually this means the macro was only invoked conditionally." >&2;}
    { (exit 1); exit 1; }; }
 fi
@@ -7527,6 +7559,9 @@ s,@QT_MOC_DIR@,$QT_MOC_DIR,;t t
 s,@LIBOBJS@,$LIBOBJS,;t t
 s,@GADU_LIBS@,$GADU_LIBS,;t t
 s,@GADU_INCLUDES@,$GADU_INCLUDES,;t t
+s,@enable_pheaders@,$enable_pheaders,;t t
+s,@PHEADERS_ENABLED_TRUE@,$PHEADERS_ENABLED_TRUE,;t t
+s,@PHEADERS_ENABLED_FALSE@,$PHEADERS_ENABLED_FALSE,;t t
 s,@shared_modules@,$shared_modules,;t t
 s,@static_modules@,$static_modules,;t t
 s,@static_modules_ldflags@,$static_modules_ldflags,;t t
@@ -8420,6 +8455,7 @@ echo "   Installation prefix:                [$prefix]"
 echo "   Use pthread resolving in libgadu:   $with_pthread"
 echo "   Compile with debug symbols:         $enable_debug"
 echo "   System signals handling:            $enable_sig_handling"
+echo "   Precompiled headers support:        $enable_pheaders"
 echo "   Link with existing libgadu:         $with_existing_libgadu"
 # Maybe it will be back when GG servers have SSL support finally
 #echo "   OpenSSL encryption support:         $have_openssl"

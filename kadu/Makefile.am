@@ -32,7 +32,29 @@ userinfo.cpp userinfo.h userinfo_moc.cpp \
 userlist.cpp userlist.h userlist_moc.cpp \
 updates.cpp updates.h
 
-INCLUDES = $(XFREE_INCLUDES) $(QT_INCLUDES) $(OPENSSL_INCLUDES) $(GSM_INCLUDES) $(GADU_INCLUDES)
+###########################################################################
+# Precompiled headers support
+###########################################################################
+
+if PHEADERS_ENABLED
+PHEADERS_INCLUDES = -I.. -include kadu-headers.h
+PHEADERS_CLEANFILES = *.h.gch
+endif
+
+# dirty hack - leading space required because od automake "if" support
+# time to say automake goodbye?
+ ifeq ($(enable_pheaders),yes)
+
+%.h.gch: %.h
+	$(CXX) -o $@ -c $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)  $(CXXFLAGS)
+
+$(kadu_OBJECTS): kadu-headers.h.gch
+
+ endif
+
+###########################################################################
+
+INCLUDES = $(PHEADERS_INCLUDES) $(XFREE_INCLUDES) $(QT_INCLUDES) $(OPENSSL_INCLUDES) $(GSM_INCLUDES) $(GADU_INCLUDES)
 
 kadu_LDADD = \
 $(PTHREAD_LIBS) $(PNG_LIBS) \
@@ -46,7 +68,7 @@ $(PTHREAD_LDFLAGS) -rdynamic $(OPENSSL_LIBS)
 AM_CPPFLAGS = $(PTHREAD_CPPFLAGS) -DQT_THREAD_SUPPORT -D_REENTRANT
 
 EXTRA_DIST = hi16-app-kadu.png hi32-app-kadu.png hi48-app-kadu.png kadu.desktop
-CLEANFILES = *_moc.cpp
+CLEANFILES = *_moc.cpp $(PHEADERS_CLEANFILES)
 
 %_moc.cpp: %.h
 	$(QT_MOC_DIR)/moc -o $@ $<
