@@ -44,21 +44,16 @@ AC_DEFUN(FIND_FILE,[
 	FILE_DIR=
 	for dir in $2
 	do
-		if test -f $dir/$1
-		then
+		if test -f $dir/$1; then
 			FILE_DIR=$dir
 			AC_MSG_RESULT([found in $FILE_DIR])
 			$3
 			break
 		fi
 	done
-	if test "X$FILE_DIR" = "X"
-	then
+	if test -z "$FILE_DIR"; then
 		AC_MSG_RESULT([not found])
-		if test "X$4" = "X"
-		then
-			AC_MSG_ERROR([$1 not found!])
-		fi
+		m4_if($4,,AC_MSG_ERROR([$1 not found!]))
 		$4
 	fi
 ])
@@ -86,10 +81,11 @@ AC_DEFUN(FIND_HEADER,[
 # $2 - directories
 # $3 - action if found but not in system dirs
 # $4 - action if not found (default is error message)
+# $5 - additional flags
 AC_DEFUN(FIND_LIBRARY,[
 	AC_MSG_CHECKING([if lib$1.so/dylib library is in system directories])
 	save_CFLAGS="$CFLAGS"
-	CFLAGS="$CFLAGS -l$1"
+	CFLAGS="$CFLAGS $5 -l$1"
 	AC_TRY_LINK([],
 	[
 		return 0;
@@ -163,7 +159,8 @@ AC_DEFUN(PROCESS_MODULE_SPEC_FILES,[
 				FIND_LIBRARY([$lib],[$MODULE_LIBS_PATH],
 				[
 					MODULE_LDFLAGS="$MODULE_LDFLAGS -L$FILE_DIR"
-				]) \
+				],,
+				[$MODULE_LDFLAGS]) \
 				MODULE_LDFLAGS="$MODULE_LDFLAGS -l$lib"; \
 			done; \
 			for hdr in $MODULE_INCLUDES; do \
@@ -380,6 +377,15 @@ else
 	libgadu_CFLAGS="-DGG_DEBUG_DISABLE -s"
 fi
 
+# signal handling support
+AC_ARG_ENABLE(sig-handling,[  --disable-sig-handling  disable system signals handling])
+if test -z "$enable_sig_handling"; then
+	enable_sig_handling=yes
+fi
+if test "$enable_sig_handling" = "yes"; then
+	AC_DEFINE(SIG_HANDLING_ENABLED,1,[Define if you want system signals handling])
+fi
+
 # dist-info support
 AC_ARG_ENABLE(dist-info,[  --enable-dist-info=DIST enable distribution type information, default: sources])
 if test -z "$enable_dist_info"; then
@@ -462,6 +468,7 @@ echo
 echo "   Installation prefix:                [[$prefix]]" 
 echo "   Use pthread resolving in libgadu:   $with_pthread"
 echo "   Compile with debug symbols:         $enable_debug"
+echo "   System signals handling:            $enable_sig_handling"
 echo "   Link with existing libgadu:         $with_existing_libgadu"
 echo "   Voice talk (libgsm) support:        $enable_voice"
 echo "   Loadable modules support:           $enable_modules"

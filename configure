@@ -867,6 +867,7 @@ Optional Features:
   --enable-dependency-tracking  Do not reject slow dependency extractors
   --disable-voice         compile without voice talk support
   --enable-debug          compile with debug symbols
+  --disable-sig-handling  disable system signals handling
   --enable-dist-info=DIST enable distribution type information, default: sources
   --disable-modules       compile without loadable modules support
 
@@ -3598,7 +3599,7 @@ PNG_LIBS="-lpng"
 	echo "$as_me:$LINENO: checking if libpng.so/dylib library is in system directories" >&5
 echo $ECHO_N "checking if libpng.so/dylib library is in system directories... $ECHO_C" >&6
 	save_CFLAGS="$CFLAGS"
-	CFLAGS="$CFLAGS -lpng"
+	CFLAGS="$CFLAGS  -lpng"
 	cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
 _ACEOF
@@ -3657,8 +3658,7 @@ echo $ECHO_N "checking for libpng.so in specified directiories... $ECHO_C" >&6
 	FILE_DIR=
 	for dir in /usr/lib /usr/local/lib
 	do
-		if test -f $dir/libpng.so
-		then
+		if test -f $dir/libpng.so; then
 			FILE_DIR=$dir
 			echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
 echo "${ECHO_T}found in $FILE_DIR" >&6
@@ -3668,47 +3668,10 @@ echo "${ECHO_T}found in $FILE_DIR" >&6
 			break
 		fi
 	done
-	if test "X$FILE_DIR" = "X"
-	then
+	if test -z "$FILE_DIR"; then
 		echo "$as_me:$LINENO: result: not found" >&5
 echo "${ECHO_T}not found" >&6
-		if test "X
 
-	echo "$as_me:$LINENO: checking for libpng.dylib in specified directiories" >&5
-echo $ECHO_N "checking for libpng.dylib in specified directiories... $ECHO_C" >&6
-	FILE_DIR=
-	for dir in /usr/lib /usr/local/lib
-	do
-		if test -f $dir/libpng.dylib
-		then
-			FILE_DIR=$dir
-			echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
-echo "${ECHO_T}found in $FILE_DIR" >&6
-
-	PNG_LIBS="$PNG_LIBS -L$FILE_DIR"
-
-			break
-		fi
-	done
-	if test "X$FILE_DIR" = "X"
-	then
-		echo "$as_me:$LINENO: result: not found" >&5
-echo "${ECHO_T}not found" >&6
-		if test "X" = "X"
-		then
-			{ { echo "$as_me:$LINENO: error: libpng.dylib not found!" >&5
-echo "$as_me: error: libpng.dylib not found!" >&2;}
-   { (exit 1); exit 1; }; }
-		fi
-
-	fi
-
-		" = "X"
-		then
-			{ { echo "$as_me:$LINENO: error: libpng.so not found!" >&5
-echo "$as_me: error: libpng.so not found!" >&2;}
-   { (exit 1); exit 1; }; }
-		fi
 
 
 	echo "$as_me:$LINENO: checking for libpng.dylib in specified directiories" >&5
@@ -3716,8 +3679,7 @@ echo $ECHO_N "checking for libpng.dylib in specified directiories... $ECHO_C" >&
 	FILE_DIR=
 	for dir in /usr/lib /usr/local/lib
 	do
-		if test -f $dir/libpng.dylib
-		then
+		if test -f $dir/libpng.dylib; then
 			FILE_DIR=$dir
 			echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
 echo "${ECHO_T}found in $FILE_DIR" >&6
@@ -3727,16 +3689,12 @@ echo "${ECHO_T}found in $FILE_DIR" >&6
 			break
 		fi
 	done
-	if test "X$FILE_DIR" = "X"
-	then
+	if test -z "$FILE_DIR"; then
 		echo "$as_me:$LINENO: result: not found" >&5
 echo "${ECHO_T}not found" >&6
-		if test "X" = "X"
-		then
-			{ { echo "$as_me:$LINENO: error: libpng.dylib not found!" >&5
+		{ { echo "$as_me:$LINENO: error: libpng.dylib not found!" >&5
 echo "$as_me: error: libpng.dylib not found!" >&2;}
    { (exit 1); exit 1; }; }
-		fi
 
 	fi
 
@@ -3815,8 +3773,7 @@ echo $ECHO_N "checking for X11/Xlib.h in specified directiories... $ECHO_C" >&6
 	FILE_DIR=
 	for dir in /usr/X11R6/include /usr/include /usr/local/include
 	do
-		if test -f $dir/X11/Xlib.h
-		then
+		if test -f $dir/X11/Xlib.h; then
 			FILE_DIR=$dir
 			echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
 echo "${ECHO_T}found in $FILE_DIR" >&6
@@ -3826,16 +3783,12 @@ echo "${ECHO_T}found in $FILE_DIR" >&6
 			break
 		fi
 	done
-	if test "X$FILE_DIR" = "X"
-	then
+	if test -z "$FILE_DIR"; then
 		echo "$as_me:$LINENO: result: not found" >&5
 echo "${ECHO_T}not found" >&6
-		if test "X" = "X"
-		then
-			{ { echo "$as_me:$LINENO: error: X11/Xlib.h not found!" >&5
+		{ { echo "$as_me:$LINENO: error: X11/Xlib.h not found!" >&5
 echo "$as_me: error: X11/Xlib.h not found!" >&2;}
    { (exit 1); exit 1; }; }
-		fi
 
 	fi
 
@@ -3923,8 +3876,7 @@ echo $ECHO_N "checking for qwidget.h in specified directiories... $ECHO_C" >&6
 	FILE_DIR=
 	for dir in $with_qt_includes $with_qt_dir/include $QTDIR/include /usr/lib/qt/include /usr/lib/qt3/include /usr/local/qt/include /usr/include /usr/include/qt /usr/include/qt3 /usr/local/include /usr/X11R6/include /usr/X11R6/include/qt /usr/X11R6/include/qt3 /sw/include/qt
 	do
-		if test -f $dir/qwidget.h
-		then
+		if test -f $dir/qwidget.h; then
 			FILE_DIR=$dir
 			echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
 echo "${ECHO_T}found in $FILE_DIR" >&6
@@ -3934,16 +3886,12 @@ echo "${ECHO_T}found in $FILE_DIR" >&6
 			break
 		fi
 	done
-	if test "X$FILE_DIR" = "X"
-	then
+	if test -z "$FILE_DIR"; then
 		echo "$as_me:$LINENO: result: not found" >&5
 echo "${ECHO_T}not found" >&6
-		if test "X" = "X"
-		then
-			{ { echo "$as_me:$LINENO: error: qwidget.h not found!" >&5
+		{ { echo "$as_me:$LINENO: error: qwidget.h not found!" >&5
 echo "$as_me: error: qwidget.h not found!" >&2;}
    { (exit 1); exit 1; }; }
-		fi
 
 	fi
 
@@ -3969,7 +3917,7 @@ QT_LIBS="-lqt-mt"
 	echo "$as_me:$LINENO: checking if libqt-mt.so/dylib library is in system directories" >&5
 echo $ECHO_N "checking if libqt-mt.so/dylib library is in system directories... $ECHO_C" >&6
 	save_CFLAGS="$CFLAGS"
-	CFLAGS="$CFLAGS -lqt-mt"
+	CFLAGS="$CFLAGS  -lqt-mt"
 	cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
 _ACEOF
@@ -4028,8 +3976,7 @@ echo $ECHO_N "checking for libqt-mt.so in specified directiories... $ECHO_C" >&6
 	FILE_DIR=
 	for dir in $with_qt_libs $with_qt_dir/lib $QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib /sw/lib
 	do
-		if test -f $dir/libqt-mt.so
-		then
+		if test -f $dir/libqt-mt.so; then
 			FILE_DIR=$dir
 			echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
 echo "${ECHO_T}found in $FILE_DIR" >&6
@@ -4039,47 +3986,10 @@ echo "${ECHO_T}found in $FILE_DIR" >&6
 			break
 		fi
 	done
-	if test "X$FILE_DIR" = "X"
-	then
+	if test -z "$FILE_DIR"; then
 		echo "$as_me:$LINENO: result: not found" >&5
 echo "${ECHO_T}not found" >&6
-		if test "X
 
-	echo "$as_me:$LINENO: checking for libqt-mt.dylib in specified directiories" >&5
-echo $ECHO_N "checking for libqt-mt.dylib in specified directiories... $ECHO_C" >&6
-	FILE_DIR=
-	for dir in $with_qt_libs $with_qt_dir/lib $QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib /sw/lib
-	do
-		if test -f $dir/libqt-mt.dylib
-		then
-			FILE_DIR=$dir
-			echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
-echo "${ECHO_T}found in $FILE_DIR" >&6
-
-	QT_LIBS="$QT_LIBS -L$FILE_DIR"
-
-			break
-		fi
-	done
-	if test "X$FILE_DIR" = "X"
-	then
-		echo "$as_me:$LINENO: result: not found" >&5
-echo "${ECHO_T}not found" >&6
-		if test "X" = "X"
-		then
-			{ { echo "$as_me:$LINENO: error: libqt-mt.dylib not found!" >&5
-echo "$as_me: error: libqt-mt.dylib not found!" >&2;}
-   { (exit 1); exit 1; }; }
-		fi
-
-	fi
-
-		" = "X"
-		then
-			{ { echo "$as_me:$LINENO: error: libqt-mt.so not found!" >&5
-echo "$as_me: error: libqt-mt.so not found!" >&2;}
-   { (exit 1); exit 1; }; }
-		fi
 
 
 	echo "$as_me:$LINENO: checking for libqt-mt.dylib in specified directiories" >&5
@@ -4087,8 +3997,7 @@ echo $ECHO_N "checking for libqt-mt.dylib in specified directiories... $ECHO_C" 
 	FILE_DIR=
 	for dir in $with_qt_libs $with_qt_dir/lib $QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib /sw/lib
 	do
-		if test -f $dir/libqt-mt.dylib
-		then
+		if test -f $dir/libqt-mt.dylib; then
 			FILE_DIR=$dir
 			echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
 echo "${ECHO_T}found in $FILE_DIR" >&6
@@ -4098,16 +4007,12 @@ echo "${ECHO_T}found in $FILE_DIR" >&6
 			break
 		fi
 	done
-	if test "X$FILE_DIR" = "X"
-	then
+	if test -z "$FILE_DIR"; then
 		echo "$as_me:$LINENO: result: not found" >&5
 echo "${ECHO_T}not found" >&6
-		if test "X" = "X"
-		then
-			{ { echo "$as_me:$LINENO: error: libqt-mt.dylib not found!" >&5
+		{ { echo "$as_me:$LINENO: error: libqt-mt.dylib not found!" >&5
 echo "$as_me: error: libqt-mt.dylib not found!" >&2;}
    { (exit 1); exit 1; }; }
-		fi
 
 	fi
 
@@ -4138,8 +4043,7 @@ echo $ECHO_N "checking for moc in specified directiories... $ECHO_C" >&6
 	FILE_DIR=
 	for dir in $with_qt_moc $with_qt_dir/bin $QTDIR/bin /usr/lib/qt3/bin /usr/local/qt/bin /usr/lib/qt/bin /usr/bin /bin /usr/local/bin /usr/X11R6/bin
 	do
-		if test -f $dir/moc
-		then
+		if test -f $dir/moc; then
 			FILE_DIR=$dir
 			echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
 echo "${ECHO_T}found in $FILE_DIR" >&6
@@ -4149,16 +4053,12 @@ echo "${ECHO_T}found in $FILE_DIR" >&6
 			break
 		fi
 	done
-	if test "X$FILE_DIR" = "X"
-	then
+	if test -z "$FILE_DIR"; then
 		echo "$as_me:$LINENO: result: not found" >&5
 echo "${ECHO_T}not found" >&6
-		if test "X" = "X"
-		then
-			{ { echo "$as_me:$LINENO: error: moc not found!" >&5
+		{ { echo "$as_me:$LINENO: error: moc not found!" >&5
 echo "$as_me: error: moc not found!" >&2;}
    { (exit 1); exit 1; }; }
-		fi
 
 	fi
 
@@ -5961,8 +5861,7 @@ echo $ECHO_N "checking for libgadu.h in specified directiories... $ECHO_C" >&6
 	FILE_DIR=
 	for dir in $with_existing_libgadu $with_existing_libgadu/include
 	do
-		if test -f $dir/libgadu.h
-		then
+		if test -f $dir/libgadu.h; then
 			FILE_DIR=$dir
 			echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
 echo "${ECHO_T}found in $FILE_DIR" >&6
@@ -5972,16 +5871,12 @@ echo "${ECHO_T}found in $FILE_DIR" >&6
 			break
 		fi
 	done
-	if test "X$FILE_DIR" = "X"
-	then
+	if test -z "$FILE_DIR"; then
 		echo "$as_me:$LINENO: result: not found" >&5
 echo "${ECHO_T}not found" >&6
-		if test "X" = "X"
-		then
-			{ { echo "$as_me:$LINENO: error: libgadu.h not found!" >&5
+		{ { echo "$as_me:$LINENO: error: libgadu.h not found!" >&5
 echo "$as_me: error: libgadu.h not found!" >&2;}
    { (exit 1); exit 1; }; }
-		fi
 
 	fi
 
@@ -5994,7 +5889,7 @@ rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
 	echo "$as_me:$LINENO: checking if libgadu.so/dylib library is in system directories" >&5
 echo $ECHO_N "checking if libgadu.so/dylib library is in system directories... $ECHO_C" >&6
 	save_CFLAGS="$CFLAGS"
-	CFLAGS="$CFLAGS -lgadu"
+	CFLAGS="$CFLAGS  -lgadu"
 	cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
 _ACEOF
@@ -6053,8 +5948,7 @@ echo $ECHO_N "checking for libgadu.so in specified directiories... $ECHO_C" >&6
 	FILE_DIR=
 	for dir in $with_existing_libgadu $with_existing_libgadu/lib
 	do
-		if test -f $dir/libgadu.so
-		then
+		if test -f $dir/libgadu.so; then
 			FILE_DIR=$dir
 			echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
 echo "${ECHO_T}found in $FILE_DIR" >&6
@@ -6064,47 +5958,10 @@ echo "${ECHO_T}found in $FILE_DIR" >&6
 			break
 		fi
 	done
-	if test "X$FILE_DIR" = "X"
-	then
+	if test -z "$FILE_DIR"; then
 		echo "$as_me:$LINENO: result: not found" >&5
 echo "${ECHO_T}not found" >&6
-		if test "X
 
-	echo "$as_me:$LINENO: checking for libgadu.dylib in specified directiories" >&5
-echo $ECHO_N "checking for libgadu.dylib in specified directiories... $ECHO_C" >&6
-	FILE_DIR=
-	for dir in $with_existing_libgadu $with_existing_libgadu/lib
-	do
-		if test -f $dir/libgadu.dylib
-		then
-			FILE_DIR=$dir
-			echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
-echo "${ECHO_T}found in $FILE_DIR" >&6
-
-		GADU_LIBS="$GADU_LIBS -L$FILE_DIR"
-
-			break
-		fi
-	done
-	if test "X$FILE_DIR" = "X"
-	then
-		echo "$as_me:$LINENO: result: not found" >&5
-echo "${ECHO_T}not found" >&6
-		if test "X" = "X"
-		then
-			{ { echo "$as_me:$LINENO: error: libgadu.dylib not found!" >&5
-echo "$as_me: error: libgadu.dylib not found!" >&2;}
-   { (exit 1); exit 1; }; }
-		fi
-
-	fi
-
-		" = "X"
-		then
-			{ { echo "$as_me:$LINENO: error: libgadu.so not found!" >&5
-echo "$as_me: error: libgadu.so not found!" >&2;}
-   { (exit 1); exit 1; }; }
-		fi
 
 
 	echo "$as_me:$LINENO: checking for libgadu.dylib in specified directiories" >&5
@@ -6112,8 +5969,7 @@ echo $ECHO_N "checking for libgadu.dylib in specified directiories... $ECHO_C" >
 	FILE_DIR=
 	for dir in $with_existing_libgadu $with_existing_libgadu/lib
 	do
-		if test -f $dir/libgadu.dylib
-		then
+		if test -f $dir/libgadu.dylib; then
 			FILE_DIR=$dir
 			echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
 echo "${ECHO_T}found in $FILE_DIR" >&6
@@ -6123,16 +5979,12 @@ echo "${ECHO_T}found in $FILE_DIR" >&6
 			break
 		fi
 	done
-	if test "X$FILE_DIR" = "X"
-	then
+	if test -z "$FILE_DIR"; then
 		echo "$as_me:$LINENO: result: not found" >&5
 echo "${ECHO_T}not found" >&6
-		if test "X" = "X"
-		then
-			{ { echo "$as_me:$LINENO: error: libgadu.dylib not found!" >&5
+		{ { echo "$as_me:$LINENO: error: libgadu.dylib not found!" >&5
 echo "$as_me: error: libgadu.dylib not found!" >&2;}
    { (exit 1); exit 1; }; }
-		fi
 
 	fi
 
@@ -6216,6 +6068,23 @@ _ACEOF
 else
 	CXXFLAGS="$CXXFLAGS -s"
 	libgadu_CFLAGS="-DGG_DEBUG_DISABLE -s"
+fi
+
+# signal handling support
+# Check whether --enable-sig-handling or --disable-sig-handling was given.
+if test "${enable_sig_handling+set}" = set; then
+  enableval="$enable_sig_handling"
+
+fi;
+if test -z "$enable_sig_handling"; then
+	enable_sig_handling=yes
+fi
+if test "$enable_sig_handling" = "yes"; then
+
+cat >>confdefs.h <<\_ACEOF
+#define SIG_HANDLING_ENABLED 1
+_ACEOF
+
 fi
 
 # dist-info support
@@ -6518,7 +6387,7 @@ _ACEOF
 	echo "$as_me:$LINENO: checking if lib$lib.so/dylib library is in system directories" >&5
 echo $ECHO_N "checking if lib$lib.so/dylib library is in system directories... $ECHO_C" >&6
 	save_CFLAGS="$CFLAGS"
-	CFLAGS="$CFLAGS -l$lib"
+	CFLAGS="$CFLAGS $MODULE_LDFLAGS -l$lib"
 	cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
 _ACEOF
@@ -6577,8 +6446,7 @@ echo $ECHO_N "checking for lib$lib.so in specified directiories... $ECHO_C" >&6
 	FILE_DIR=
 	for dir in $MODULE_LIBS_PATH
 	do
-		if test -f $dir/lib$lib.so
-		then
+		if test -f $dir/lib$lib.so; then
 			FILE_DIR=$dir
 			echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
 echo "${ECHO_T}found in $FILE_DIR" >&6
@@ -6588,47 +6456,10 @@ echo "${ECHO_T}found in $FILE_DIR" >&6
 			break
 		fi
 	done
-	if test "X$FILE_DIR" = "X"
-	then
+	if test -z "$FILE_DIR"; then
 		echo "$as_me:$LINENO: result: not found" >&5
 echo "${ECHO_T}not found" >&6
-		if test "X
 
-	echo "$as_me:$LINENO: checking for lib$lib.dylib in specified directiories" >&5
-echo $ECHO_N "checking for lib$lib.dylib in specified directiories... $ECHO_C" >&6
-	FILE_DIR=
-	for dir in $MODULE_LIBS_PATH
-	do
-		if test -f $dir/lib$lib.dylib
-		then
-			FILE_DIR=$dir
-			echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
-echo "${ECHO_T}found in $FILE_DIR" >&6
-
-					MODULE_LDFLAGS="$MODULE_LDFLAGS -L$FILE_DIR"
-
-			break
-		fi
-	done
-	if test "X$FILE_DIR" = "X"
-	then
-		echo "$as_me:$LINENO: result: not found" >&5
-echo "${ECHO_T}not found" >&6
-		if test "X" = "X"
-		then
-			{ { echo "$as_me:$LINENO: error: lib$lib.dylib not found!" >&5
-echo "$as_me: error: lib$lib.dylib not found!" >&2;}
-   { (exit 1); exit 1; }; }
-		fi
-
-	fi
-
-		" = "X"
-		then
-			{ { echo "$as_me:$LINENO: error: lib$lib.so not found!" >&5
-echo "$as_me: error: lib$lib.so not found!" >&2;}
-   { (exit 1); exit 1; }; }
-		fi
 
 
 	echo "$as_me:$LINENO: checking for lib$lib.dylib in specified directiories" >&5
@@ -6636,8 +6467,7 @@ echo $ECHO_N "checking for lib$lib.dylib in specified directiories... $ECHO_C" >
 	FILE_DIR=
 	for dir in $MODULE_LIBS_PATH
 	do
-		if test -f $dir/lib$lib.dylib
-		then
+		if test -f $dir/lib$lib.dylib; then
 			FILE_DIR=$dir
 			echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
 echo "${ECHO_T}found in $FILE_DIR" >&6
@@ -6647,16 +6477,12 @@ echo "${ECHO_T}found in $FILE_DIR" >&6
 			break
 		fi
 	done
-	if test "X$FILE_DIR" = "X"
-	then
+	if test -z "$FILE_DIR"; then
 		echo "$as_me:$LINENO: result: not found" >&5
 echo "${ECHO_T}not found" >&6
-		if test "X" = "X"
-		then
-			{ { echo "$as_me:$LINENO: error: lib$lib.dylib not found!" >&5
+		{ { echo "$as_me:$LINENO: error: lib$lib.dylib not found!" >&5
 echo "$as_me: error: lib$lib.dylib not found!" >&2;}
    { (exit 1); exit 1; }; }
-		fi
 
 	fi
 
@@ -6732,8 +6558,7 @@ echo $ECHO_N "checking for $hdr in specified directiories... $ECHO_C" >&6
 	FILE_DIR=
 	for dir in $MODULE_INCLUDES_PATH
 	do
-		if test -f $dir/$hdr
-		then
+		if test -f $dir/$hdr; then
 			FILE_DIR=$dir
 			echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
 echo "${ECHO_T}found in $FILE_DIR" >&6
@@ -6743,16 +6568,12 @@ echo "${ECHO_T}found in $FILE_DIR" >&6
 			break
 		fi
 	done
-	if test "X$FILE_DIR" = "X"
-	then
+	if test -z "$FILE_DIR"; then
 		echo "$as_me:$LINENO: result: not found" >&5
 echo "${ECHO_T}not found" >&6
-		if test "X" = "X"
-		then
-			{ { echo "$as_me:$LINENO: error: $hdr not found!" >&5
+		{ { echo "$as_me:$LINENO: error: $hdr not found!" >&5
 echo "$as_me: error: $hdr not found!" >&2;}
    { (exit 1); exit 1; }; }
-		fi
 
 	fi
 
@@ -8464,6 +8285,7 @@ echo
 echo "   Installation prefix:                [$prefix]"
 echo "   Use pthread resolving in libgadu:   $with_pthread"
 echo "   Compile with debug symbols:         $enable_debug"
+echo "   System signals handling:            $enable_sig_handling"
 echo "   Link with existing libgadu:         $with_existing_libgadu"
 echo "   Voice talk (libgsm) support:        $enable_voice"
 echo "   Loadable modules support:           $enable_modules"
