@@ -27,6 +27,7 @@ class DockingManager : public QObject
 		~DockingManager();
 		void trayMousePressEvent(QMouseEvent * e);
 		QPixmap defaultPixmap();
+		void defaultToolTip();
 
 	signals:
 		void trayPixmapChanged(const QPixmap& pixmap);

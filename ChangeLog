@@ -131,6 +131,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * Instalator dodano obs³uge modu³ów zewnetrznych amarok, mail, filedesc
  i opis do Pomocy (Ron_K)
 * Instalator poprawiny b³±d podawania z³ych parametrów do configure (Ron_K)
+* dymek w tray-u pokazuje sie takrze przed zmiana statusu (michal)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

@@ -42,6 +42,7 @@ DockingManager::DockingManager()
 	QObject::connect(icon_timer, SIGNAL(timeout()), this, SLOT(changeIcon()));
 	changeIcon();
 	
+	// i tak to nic nie daje bo nic nie ma za³adowanego do obs³ugi tego/
 	//emit trayTooltipChanged(tr("Left click - hide/show window\nMiddle click or Left click- next message"));
 	
 	ConfigDialog::addCheckBox("General", "grid", 
@@ -133,17 +134,26 @@ void DockingManager::showStatus(int status)
 	emit trayPixmapChanged(icons_manager.loadIcon(gg_icons[i]));
 }
 
+void DockingManager::defaultToolTip()
+{
+	showCurrentStatus(getActualStatus());
+}
+
 void DockingManager::showCurrentStatus(int status)
 {
 	int statusnr = statusGGToStatusNr(status);
 	QPixmap pix = icons_manager.loadIcon(gg_icons[statusnr]);
+	QString tiptext=tr("Left click - hide/show window\nMiddle click or Left click- next message");
+		
 	if (!pending.pendingMsgs())
 		emit trayPixmapChanged(pix);
 
+	tiptext+=tr("\n\nCurrent status:\n%1").arg(qApp->translate("@default", statustext[statusnr]));
+
 	if(ifStatusWithDescription(status))
-		emit trayTooltipChanged(tr("Current status:\n%1\nDescrition:\n%2").arg(tr(statustext[statusnr])).arg(own_description));
-	else
-		emit trayTooltipChanged(tr("Current status:\n%1").arg(tr(statustext[statusnr])));
+		tiptext+=tr("\n\nDescrition:\n%2").arg(own_description);
+
+	emit trayTooltipChanged(tiptext);
 }
 
 void DockingManager::findTrayPosition(QPoint& pos)
