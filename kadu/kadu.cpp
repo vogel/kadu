@@ -30,6 +30,7 @@
 #include <qtoolbar.h>
 #include <qtranslator.h>
 
+#include <sys/file.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -79,8 +80,8 @@ QPopupMenu* dockppm;
 QPushButton* statusbutton;
 
 UpdatesClass* uc;
-
-
+int lockFileHandle;
+QFile *lockFile;
 
 QValueList<QHostAddress> gg_servers;
 const char *gg_servers_ip[7] = {"217.17.41.82", "217.17.41.83", "217.17.41.84", "217.17.41.85",
@@ -1642,7 +1643,9 @@ bool Kadu::close(bool quit) {
 		disconnectNetwork();
 		kdebug("Kadu::close(): Saved config, disconnect and ignored\n");
 		QWidget::close(true);
-		QFile::remove(ggPath("lock"));
+		flock(lockFileHandle, LOCK_UN);
+		lockFile->close();
+		delete lockFile;
 		kdebug("Kadu::close(): Graceful shutdown...\n");
 		return true;
 	}

@@ -3,7 +3,11 @@ lub rozbudowy. Postaæ (x/y) oznacza, ¿e x jest pomys³odawc± lub
 podes³a³ patcha, a zrobi³ to kto¶ oznaczony przez y. Je¶li jest
 w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
-+++ wersja 0.3.8
++++ wersja 0.3.9
+* ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
+  gdy tak rzeczywi¶cie jest (joi)
+
++++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
   moze powinnismy zmienic nazwe projektu na FastKadu? ;) (adrian)
 * zaaplikowany patch nazgula powodujacy zapamietywanie przez Kadu

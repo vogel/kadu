@@ -17,6 +17,7 @@
 #include <qtoolbar.h>
 #include <qmenubar.h>
 #include <qvaluelist.h>
+#include <qfile.h>
 
 #include "libgadu.h"
 #include "misc.h"
@@ -192,4 +193,6 @@ extern Kadu* kadu;
 extern QPopupMenu* statusppm;
 extern QPopupMenu* dockppm;
 
+extern int lockFileHandle;
+extern QFile *lockFile;
 #endif

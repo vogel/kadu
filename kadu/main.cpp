@@ -13,7 +13,10 @@
 #include <qtextcodec.h>
 #include <qmessagebox.h>
 
+#include <errno.h>
+#include <string.h>
 #include <sys/stat.h>
+#include <sys/file.h>
 
 #include "kadu.h"
 #include "kadu-config.h"
@@ -41,7 +44,9 @@ Kadu *kadu;
 void kadu_signal_handler(int s)
 {
 	kdebug("kadu_signal_handler: %d\n", s);
-	QFile::remove(ggPath("lock"));
+	flock(lockFileHandle, LOCK_UN);
+	lockFile->close();
+	
 	QString f=QString("kadu.conf.backup.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
 	if (s==SIGSEGV)
 	{
@@ -81,19 +86,19 @@ int main(int argc, char *argv[])
 	kadu_qm.load(dataPath(QString("kadu/translations/kadu_") + lang), ".");
 	qApp->installTranslator(&kadu_qm);
 
-	QFile f(ggPath("lock"));
-	if (f.exists())
+	lockFile=new QFile(ggPath("lock"));
+	if (lockFile->open(IO_ReadWrite))
 	{
-		if (QMessageBox::warning(NULL, "Kadu lock",
-			qApp->translate("@default", QT_TR_NOOP("Lock file in profile directory exists. Another Kadu probably running.")),
-			qApp->translate("@default", QT_TR_NOOP("Force running Kadu (not recommended).")),
-			qApp->translate("@default", QT_TR_NOOP("Quit.")), 0, 1)==1 )
-		return 1;
-	}
-	else
-	{
-		f.open(IO_WriteOnly);
-		f.close();
+		lockFileHandle=lockFile->handle();
+		if (flock(lockFileHandle, LOCK_EX|LOCK_NB)!=0)
+		{
+			kdebug("flock: %s\n", strerror(errno));
+			if (QMessageBox::warning(NULL, "Kadu lock",
+				qApp->translate("@default", QT_TR_NOOP("Lock file in profile directory exists. Another Kadu probably running.")),
+				qApp->translate("@default", QT_TR_NOOP("Force running Kadu (not recommended).")),
+				qApp->translate("@default", QT_TR_NOOP("Quit.")), 0, 1)==1 )
+			return 1;
+		}
 	}
 
 	IconsManager::initModule();
