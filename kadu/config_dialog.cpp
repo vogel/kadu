@@ -387,6 +387,8 @@ void ConfigDialog::updateConfig(void)
 {
 	for(QValueList<RegisteredControl>::iterator i=RegisteredControls.begin(); i!=RegisteredControls.end(); i++)
 	{
+		if (!(*i).widget)
+			continue;
 		switch((*i).type)
 		{
 			case CONFIG_CHECKBOX:

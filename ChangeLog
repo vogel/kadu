@@ -178,6 +178,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * patch KID-a poprawiaj±cy wygl±d okna zmianu has³o/adresu email (KID/michal)
 * ósmy patch porz±dkuj±cy vogela: czê¶æ sygna³ów z EventManager przeniesiona
   do GaduProtocol (adrian)
+* je¿eli za³adujemy modu³ gdy okno konfiguracji jest otwarte i zamkniemy
+  konfiguracjê, Kadu siê nie wywróci (joi)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
