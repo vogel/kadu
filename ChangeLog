@@ -12,6 +12,7 @@
 * Wsparcie dla Window Maker'a (dokowanie). Trzeba ustawic UseWMakerStyleDocking
   w kadu.conf (sekcja [Global]). Uwaga: pod KDE wystepuja dziwne efekty.
 * escape'owanie znaków '<' i '>' w pokazywanych hintach w userbox (scooty)
+* prawdopodobnie rozwi±zany problem z zapisywaniem has³a
 
 +++ wersja 0.3.3-rc1
 * sms.cpp ma szansê kompilowaæ siê na Qt < 3.0.5
