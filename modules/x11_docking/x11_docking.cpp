@@ -103,13 +103,6 @@ X11TrayIcon::X11TrayIcon()
 	Display *dsp = x11Display();
 	WId win = winId();
 
-	// Okno potrzebne dla WindowMakera, ale przydaje
-	// siê te¿ w KDE 3.1, gdzie je¶li chocia¿ na chwilê
-	// nie poka¿emy okna g³ównego na ekranie wystêpuje
-	// "efekt klepsydry"
-	WMakerMasterWidget=new QWidget(0,"WMakerMasterWidget");
-	WMakerMasterWidget->setGeometry(-10,-10,0,0);
-
 	// SPOSÓB PIERWSZY
 	// System Tray Protocol Specification
 	// Dzia³a pod KDE 3.1 i GNOME 2.x
@@ -137,17 +130,6 @@ X11TrayIcon::X11TrayIcon()
 	r = XInternAtom(dsp, "_KDE_NET_WM_SYSTEM_TRAY_WINDOW_FOR", false);
 	/*int r2=*/XChangeProperty(dsp, win, r, XA_WINDOW, 32, 0, (uchar *)&data, 1);
 			
-	// SPOSÓB TRZECI
-	// Dzia³a pod Window Maker'em
-	WId w_id = WMakerMasterWidget->winId();
-	XWMHints *hints;
-	hints = XGetWMHints(dsp, w_id);
-	hints->icon_window = win;
-	hints->window_group = w_id;
-	hints->flags |= WindowGroupHint | IconWindowHint;
-	XSetWMHints(dsp, w_id, hints);
-	XFree( hints );
-
 	connect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap&)), this, SLOT(setTrayPixmap(const QPixmap&)));
 	connect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
 	connect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
@@ -159,11 +141,10 @@ X11TrayIcon::X11TrayIcon()
 
 X11TrayIcon::~X11TrayIcon()
 {
-	kdebug("X11TrayIcon::~X11TrayIcon()\n");
+	kdebugf();
 	disconnect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap&)), this, SLOT(setTrayPixmap(const QPixmap&)));
 	disconnect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
 	disconnect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
-	delete WMakerMasterWidget;	
 	kadu->show();
 }
 
@@ -175,17 +156,11 @@ void X11TrayIcon::findTrayPosition(QPoint& pos)
 void X11TrayIcon::show()
 {
 	QLabel::show();
-	WMakerMasterWidget->show();
-	// Je¶li WindowMaker nie jest aktywny okno
-	// nie powinno zostaæ widoczne
-	if(XInternAtom(x11Display(),"_WINDOWMAKER_WM_PROTOCOLS",true)==0)
-		WMakerMasterWidget->hide();
 }
 
 void X11TrayIcon::setTrayPixmap(const QPixmap& pixmap)
 {
 	QLabel::setPixmap(pixmap);
-	WMakerMasterWidget->setIcon(pixmap);
 	repaint();
 }
 

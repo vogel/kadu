@@ -1,0 +1,4 @@
+MODULE_SOURCES=wmaker_docking.cpp
+MODULE_MOC_HEADERS=wmaker_docking.h
+MODULE_INCLUDES=X11/Xlib.h
+MODULE_INCLUDES_PATH="/usr/X11R6/include /usr/include /usr/local/include"

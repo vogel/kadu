@@ -96,6 +96,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * usuniête miganie okna przy w³±czonym module x11_docking i opcji RunDocked
   oraz usuniêty b³±d powoduj±cy znikanie paska narzêdziowego przy powy¿szych warunkach
   i za³adowanym module sound (joi)
+* wydzielenie dokowania dla WindowMakera do oddzielnego modu³u (joi)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

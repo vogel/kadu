@@ -1,13 +1,16 @@
-#ifndef X11_DOCKING_H
-#define X11_DOCKING_H
+#ifndef WMAKER_DOCKING_H
+#define WMAKER_DOCKING_H
 
 #include <qlabel.h>
 #include <qpixmap.h>
 
-class X11TrayIcon : public QLabel
+class WMakerTrayIcon : public QLabel
 {
 	Q_OBJECT
 
+	private:
+		QWidget* WMakerMasterWidget;
+		
 	private slots:
 		void setTrayPixmap(const QPixmap& pixmap);
 		void setTrayTooltip(const QString& tooltip);
@@ -18,11 +21,11 @@ class X11TrayIcon : public QLabel
 		virtual void mousePressEvent(QMouseEvent* e);
 
 	public:
-		X11TrayIcon();
-		~X11TrayIcon();
+		WMakerTrayIcon();
+		~WMakerTrayIcon();
 		void show();
 };
 
-extern X11TrayIcon* x11_tray_icon;
+extern WMakerTrayIcon* wmaker_tray_icon;
 
 #endif
