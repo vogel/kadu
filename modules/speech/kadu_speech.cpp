@@ -102,6 +102,7 @@ extern "C" int speech_init()
 
 	ConfigDialog::registerSlotOnCreate(speechObj, SLOT(onCreateConfigDialog()));
 
+	kdebugf2();
 	return 0;
 }
 
@@ -156,6 +157,7 @@ extern "C" void speech_close()
 
 	delete speechObj;
 	speechObj=NULL;
+	kdebugf2();
 }
 
 bool isFemale(QString s)
@@ -180,6 +182,7 @@ void SpeechSlots::useArts(bool b)
 		ConfigDialog::getCheckBox("Speech", "Use Esd", "useesd")->setEnabled(true);
 		ConfigDialog::getCheckBox("Speech", "Use Dsp", "usedsp")->setEnabled(true);
 	}
+	kdebugf2();
 }
 
 void SpeechSlots::useEsd(bool b)
@@ -195,6 +198,7 @@ void SpeechSlots::useEsd(bool b)
 		ConfigDialog::getCheckBox("Speech", "Use aRts", "usearts")->setEnabled(true);
 		ConfigDialog::getCheckBox("Speech", "Use Dsp", "usedsp")->setEnabled(true);
 	}
+	kdebugf2();
 }
 
 void SpeechSlots::useDsp(bool b)
@@ -210,6 +214,7 @@ void SpeechSlots::useDsp(bool b)
 		ConfigDialog::getCheckBox("Speech", "Use Esd", "useesd")->setEnabled(true);
 		ConfigDialog::getCheckBox("Speech", "Use aRts", "usearts")->setEnabled(true);
 	}
+	kdebugf2();
 }
 
 
@@ -218,6 +223,7 @@ SpeechSlots::SpeechSlots()
 	kdebugf();
 	srand(time(NULL));
 	lastSpeech.start();
+	kdebugf2();
 }
 
 void SpeechSlots::say(const QString &s, const QString &path,
@@ -226,7 +232,7 @@ void SpeechSlots::say(const QString &s, const QString &path,
 						int freq, int tempo, int basefreq)
 {
 	kdebugf();
-//	kdebug("%s\n", (const char *)s.local8Bit());
+//	kdebugm(KADU_DEBUG_INFO, "%s\n", (const char *)s.local8Bit());
 	QString t,dev;
 	QStringList list;
 
@@ -270,10 +276,11 @@ void SpeechSlots::say(const QString &s, const QString &path,
 	list.append("-f");
 	list.append(QString::number(basefreq));
 
-	kdebug("%s\n", (const char *)list.join(" ").local8Bit());
+	kdebugm(KADU_DEBUG_INFO, "%s\n", (const char *)list.join(" ").local8Bit());
 	QProcess *p=new QProcess(list);
 	p->launch(s.local8Bit());
 //	delete p;
+	kdebugf2();
 }
 
 void SpeechSlots::testSpeech()
@@ -290,7 +297,7 @@ void SpeechSlots::testSpeech()
 	bool esd=ConfigDialog::getCheckBox("Speech", "Use Esd", "useesd")->isChecked();
 	bool dsp=ConfigDialog::getCheckBox("Speech", "Use Dsp", "usedsp")->isChecked();
 	
-	kdebug("%d %d %d %d %d\n", mel, klatt, arts, esd, dsp);
+	kdebugm(KADU_DEBUG_INFO, "flags: %d %d %d %d %d\n", mel, klatt, arts, esd, dsp);
 	
 	int freq=ConfigDialog::getSlider("Speech", "slider1")->value();
 	int tempo=ConfigDialog::getSlider("Speech", "slider2")->value();
@@ -300,12 +307,13 @@ void SpeechSlots::testSpeech()
 	if (i>0) i--;
 	UserListElement ule=userlist[i];
 
-	kdebug("%d %d %d %d\n", freq, tempo, basefreq, i);
+	kdebugm(KADU_DEBUG_INFO, "%d %d %d %d\n", freq, tempo, basefreq, i);
 	
 	if (isFemale(ule.first_name))
 		say(parse(formatF, ule).arg("Test"), program, klatt, mel, arts, esd, dsp, device, freq, tempo, basefreq);
 	else
 		say(parse(formatM, ule).arg("Test"), program, klatt, mel, arts, esd, dsp, device, freq, tempo, basefreq);
+	kdebugf2();
 }
 
 void SpeechSlots::chat(UinsList senders,const QString& msg,time_t time, bool& grab)
@@ -324,6 +332,7 @@ void SpeechSlots::chat(UinsList senders,const QString& msg,time_t time, bool& gr
 			say(parse(config_file.readEntry("Speech", "ChatFormatMale"), ule).arg(msg));
 		lastSpeech.restart();
 	}
+	kdebugf2();
 }
 
 void SpeechSlots::message(UinsList senders,const QString& msg,time_t time)
@@ -374,6 +383,7 @@ void SpeechSlots::notify(UserListElement *ule)
 				say(t);
 				lastSpeech.restart();
 			}
+	kdebugf2();
 }
 
 void SpeechSlots::onCreateConfigDialog()
@@ -388,6 +398,7 @@ void SpeechSlots::onCreateConfigDialog()
 	b=ConfigDialog::getCheckBox("Speech", "Use Esd", "useesd");
 	if (b->isChecked())
 		b->setEnabled(false);
+	kdebugf2();
 }
 
 void SpeechSlots::chooseSpeechProgram()
@@ -398,6 +409,7 @@ void SpeechSlots::chooseSpeechProgram()
 	QString s(QFileDialog::getOpenFileName( e_speechprog->text(), "All Files (*)"));
 	if (s.length())
 		e_speechprog->setText(s);
+	kdebugf2();
 }
 
 SpeechSlots *speechObj;

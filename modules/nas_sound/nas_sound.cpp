@@ -37,7 +37,7 @@ extern "C" int nas_sound_init()
 					 nasPlayerObj, SLOT(playChat(UinsList, const QString &, const QString &, bool, double)));
 	QObject::connect(sound_manager, SIGNAL(playOnNotify(const UinType, const QString &, bool, double)),
 					 nasPlayerObj, SLOT(playNotify(const UinType, const QString &, bool, double)));
-
+	kdebugf2();
 	return 0;
 }
 extern "C" void nas_sound_close()
@@ -54,10 +54,12 @@ extern "C" void nas_sound_close()
 						nasPlayerObj, SLOT(playNotify(const UinType, const QString &, bool, double)));
 	delete nasPlayerObj;
 	nasPlayerObj=NULL;
+	kdebugf2();
 }
 
 NASPlayerSlots::NASPlayerSlots()
 {
+	kdebugf();
 #ifndef INTERNAL_QT_SOUND_SUPPORT
 	auserver=audiolib::AuOpenServer(NULL, 0, NULL, 0, NULL, NULL);
 	if (auserver)
@@ -66,10 +68,12 @@ NASPlayerSlots::NASPlayerSlots()
 		QObject::connect(sn, SIGNAL(activated(int)), this, SLOT(dataReceived()));
 	}
 #endif
+	kdebugf2();
 }
 
 NASPlayerSlots::~NASPlayerSlots()
 {
+	kdebugf();
 #ifndef INTERNAL_QT_SOUND_SUPPORT
 	if (auserver)
 	{
@@ -78,6 +82,7 @@ NASPlayerSlots::~NASPlayerSlots()
 		delete sn;
 	}
 #endif
+	kdebugf2();
 }
 
 bool NASPlayerSlots::isConnected()
@@ -108,7 +113,8 @@ void NASPlayerSlots::playSound(const QString &s, bool volCntrl, double vol)
 #endif
 	}
 	else
-		kdebug("not connected\n");
+		kdebugm(KADU_DEBUG_WARNING, "not connected\n");
+	kdebugf2();
 }
 
 void NASPlayerSlots::dataReceived()

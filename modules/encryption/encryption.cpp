@@ -27,7 +27,8 @@ extern "C" void encryption_close()
 }
 
 EncryptionManager::EncryptionManager()
-{			
+{
+	kdebugf();
 	ConfigDialog::addCheckBox("Chat", "Chat",
 			QT_TRANSLATE_NOOP("@default", "Use encryption"), "Encryption", false);	
 	ConfigDialog::addHGroupBox("Chat", "Chat", 
@@ -49,10 +50,12 @@ EncryptionManager::EncryptionManager()
 	UserBox::userboxmenu->addItemAtPos(2,"SendPublicKey", tr("Send my public key"), this, SLOT(sendPublicKey()));
 
 	sim_key_path = strdup(ggPath("keys/").local8Bit());
+	kdebugf2();
 }
 
 EncryptionManager::~EncryptionManager()
 {
+	kdebugf();
 	ConfigDialog::unregisterSlotOnCreate(this,SLOT(createConfigDialogSlot()));
 	ConfigDialog::disconnectSlot("Chat", "Generate keys", SIGNAL(clicked()), this, SLOT(generateMyKeys()));
 	ConfigDialog::disconnectSlot("Chat", "Use encryption", SIGNAL(toggled(bool)), this, SLOT(onUseEncryption(bool)));
@@ -64,20 +67,24 @@ EncryptionManager::~EncryptionManager()
 	Chat::unregisterButton("encryption_button");
 	int sendkeyitem = UserBox::userboxmenu->getItem(tr("Send my public key"));
 	UserBox::userboxmenu->removeItem(sendkeyitem);
+	kdebugf2();
 }
 
 void EncryptionManager::createConfigDialogSlot()
 {
+	kdebugf();
 	QComboBox* cb_keylength= ConfigDialog::getComboBox("Chat", "Keys length");
 	cb_keylength->insertItem("1024");
 
 	QCheckBox *c_useencryption= ConfigDialog::getCheckBox("Chat", "Use encryption");
 	QHGroupBox *h_encryption= ConfigDialog::getHGroupBox("Chat", "Encryption properties");
 	h_encryption->setEnabled(c_useencryption->isChecked());
+	kdebugf2();
 }
 
 void EncryptionManager::generateMyKeys()
 {
+	kdebugf();
 	int myUin=config_file.readNumEntry("General","UIN");
 	QString keyfile_path;	
 	keyfile_path.append(ggPath("keys/"));
@@ -95,12 +102,14 @@ void EncryptionManager::generateMyKeys()
 	// uzywamy mkdir z sys/stat.h - nie ma w QT mozliwosci ustawienia praw do kat.
 	mkdir(tmp.data(), 0700);
 
-	if (sim_key_generate(myUin) < 0) {
+	if (sim_key_generate(myUin) < 0)
+	{
 		QMessageBox::critical(0, "Kadu", tr("Error generating keys"), tr("OK"), QString::null, 0);
 		return;
 	}
 
 	QMessageBox::information(0, "Kadu", tr("Keys have been generated and written"), tr("OK"), QString::null, 0);
+	kdebugf2();
 }
 
 void EncryptionManager::onUseEncryption(bool toggled)
@@ -111,7 +120,7 @@ void EncryptionManager::onUseEncryption(bool toggled)
 
 void EncryptionManager::chatCreated(const UinsList& uins)
 {
-
+	kdebugf();
 	QString keyfile_path;
 	keyfile_path.append(ggPath("keys/"));
 	keyfile_path.append(QString::number(uins[0]));
@@ -128,10 +137,12 @@ void EncryptionManager::chatCreated(const UinsList& uins)
 	encryption_btn->setEnabled(encryption_possible);
 
 	EncryptionButtonChat[encryption_btn]=chat;
+	kdebugf2();
 }
 
 void EncryptionManager::setupEncryptButton(Chat* chat,bool enabled)
 {
+	kdebugf();
 	EncryptionEnabled[chat] = enabled;
 	QPushButton* encryption_btn=chat->button("encryption_button");		
 	QToolTip::remove(encryption_btn);
@@ -145,6 +156,7 @@ void EncryptionManager::setupEncryptButton(Chat* chat,bool enabled)
 		QToolTip::add(encryption_btn, tr("Enable encryption for this conversation"));
 		encryption_btn->setPixmap(icons_manager.loadIcon("DecryptedChat"));
 	}
+	kdebugf2();
 }
 
 void EncryptionManager::encryptionButtonClicked()
@@ -155,6 +167,7 @@ void EncryptionManager::encryptionButtonClicked()
 
 void EncryptionManager::receivedMessageFilter(const UinsList& senders,QCString& msg,QByteArray& formats,bool& stop)
 {
+	kdebugf();
 	if (config_file.readBoolEntry("Chat","Encryption"))
 	{
 		if (!strncmp(msg, "-----BEGIN RSA PUBLIC KEY-----", 20))
@@ -176,10 +189,10 @@ void EncryptionManager::receivedMessageFilter(const UinsList& senders,QCString& 
 		}
 	}
 
-	kdebug("Decrypting encrypted message...\n");
+	kdebugm(KADU_DEBUG_INFO, "Decrypting encrypted message...\n");
 	const char* msg_c = msg;
 	char* decoded = sim_message_decrypt((const unsigned char*)msg_c, senders[0]);
-	kdebug("Decrypted message is: %s\n",decoded);
+	kdebugm(KADU_DEBUG_DUMP, "Decrypted message is: %s\n", decoded);
 	if (decoded != NULL)
 	{
 		msg=decoded;
@@ -203,6 +216,7 @@ void EncryptionManager::receivedMessageFilter(const UinsList& senders,QCString& 
 		memcpy(dst, formats.data(), formats.size());
 		formats = new_formats;
 	}
+	kdebugf2();
 }
 
 void EncryptionManager::enableEncryptionBtnForUins(UinsList uins)
@@ -226,6 +240,7 @@ void EncryptionManager::sendMessageFilter(const UinsList& uins,QCString& msg,boo
 
 void EncryptionManager::userBoxMenuPopup()
 {
+	kdebugf();
 	int sendkeyitem = UserBox::userboxmenu->getItem(tr("Send my public key"));
 
 	UserBox *activeUserBox=UserBox::getActiveUserBox();
@@ -245,10 +260,12 @@ void EncryptionManager::userBoxMenuPopup()
 		UserBox::userboxmenu->setItemEnabled(sendkeyitem, true);
 	else
 		UserBox::userboxmenu->setItemEnabled(sendkeyitem, false);
+	kdebugf2();
 }
 
 void EncryptionManager::sendPublicKey()
 {
+	kdebugf();
 	QString keyfile_path;
 	QString mykey;
 	QFile keyfile;
@@ -275,12 +292,13 @@ void EncryptionManager::sendPublicKey()
 		QMessageBox::information(kadu, "Kadu",
 			tr("Your public key has been sent"), tr("OK"), QString::null, 0);
 	}
+	kdebugf2();
 }
 
 SavePublicKey::SavePublicKey(UinType uin, QString keyData, QWidget *parent, const char *name) :
 	QDialog(parent, name, Qt::WDestructiveClose), uin(uin), keyData(keyData) {
 	
-	kdebug("SavePublicKey::SavePublicKey()\n");
+	kdebugf();
 
 	setCaption(tr("Save public key"));
 	resize(200, 80);
@@ -300,14 +318,14 @@ SavePublicKey::SavePublicKey(UinType uin, QString keyData, QWidget *parent, cons
 	grid->addWidget(yesbtn, 1, 0);
 	grid->addWidget(nobtn, 1, 1);
 
-	kdebug("SavePublicKey::SavePublicKey(): finished\n");
+	kdebugf2();
 }
 
 void SavePublicKey::yesClicked() {
 	QFile keyfile;
 	QString keyfile_path;
 
-	kdebug("SavePublicKey::yesClicked()\n");
+	kdebugf();
 
 	keyfile_path.append(ggPath("keys/"));
 	keyfile_path.append(QString::number(uin));
@@ -315,20 +333,22 @@ void SavePublicKey::yesClicked() {
 
 	keyfile.setName(keyfile_path);
 
-	if (!(keyfile.open(IO_WriteOnly))) {
+	if (!(keyfile.open(IO_WriteOnly)))
+	{
 		QMessageBox::critical(this, tr("Error"), tr("Error writting the key"), tr("OK"), QString::null, 0);
-		kdebug("eventRecvMsg(): Error opening key file %s\n", (const char *)keyfile_path.local8Bit());
+		kdebugm(KADU_DEBUG_ERROR, "SavePublicKey::yesClicked(): Error opening key file %s\n", (const char *)keyfile_path.local8Bit());
 		return;
-		}
-	else {
+	}
+	else
+	{
 		keyfile.writeBlock(keyData.local8Bit(), keyData.length());
 		keyfile.close();
 		UinsList uins;
 		uins.append(uin);
 		encryption_manager->enableEncryptionBtnForUins(uins);
-		}
+	}
 	accept();
 
-	kdebug("SavePublicKey::yesClicked(): finished\n");
+	kdebugf2();
 }
 

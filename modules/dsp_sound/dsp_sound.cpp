@@ -37,7 +37,7 @@ extern "C" int dsp_sound_init()
 			QT_TRANSLATE_NOOP("@default","Output device"));
 	ConfigDialog::addLineEdit("Sounds", "Output device", 
 			QT_TRANSLATE_NOOP("@default","Path:"), "OutputDevice","/dev/dsp","","device_path");
-
+	kdebugf2();
 	return 0;
 }
 extern "C" void dsp_sound_close()
@@ -56,6 +56,7 @@ extern "C" void dsp_sound_close()
 	ConfigDialog::removeControl("Sounds", "Output device");
 	delete directPlayerObj;
 	directPlayerObj=NULL;
+	kdebugf2();
 }
 
 DirectPlayerSlots::DirectPlayerSlots():thread(NULL)
@@ -67,6 +68,7 @@ DirectPlayerSlots::DirectPlayerSlots():thread(NULL)
 		return;
 	thread->start();
 	error=false;
+	kdebugf2();
 }
 
 DirectPlayerSlots::~DirectPlayerSlots()
@@ -82,6 +84,7 @@ DirectPlayerSlots::~DirectPlayerSlots()
 		delete thread;
 		thread=NULL;
 	}
+	kdebugf2();
 }
 
 void DirectPlayerSlots::play(const QString &s, bool volCntrl, double vol, const QString &device)
@@ -101,6 +104,7 @@ void DirectPlayerSlots::play(const QString &s, bool volCntrl, double vol, const 
 		thread->mutex.unlock();
 		(*(thread->semaphore))--;
 	}
+	kdebugf2();
 }
 
 void DirectPlayerSlots::playSound(const QString &s, bool volCntrl, double vol)
@@ -153,7 +157,7 @@ void DirectPlayThread::run()
 	{
 		(*semaphore)++;
 		mutex.lock();
-		kdebug("locked\n");
+		kdebugm(KADU_DEBUG_INFO, "locked\n");
 		if (end)
 		{
 			mutex.unlock();
@@ -228,8 +232,9 @@ void DirectPlayThread::run()
 			close(fd);
 		}//end if (sound->isOk())
 		mutex.unlock();
-		kdebug("unlocked\n");
+		kdebugm(KADU_DEBUG_INFO, "unlocked\n");
 	}//end while(!end)
+	kdebugf2();
 }
 
 DirectPlayerSlots *directPlayerObj;

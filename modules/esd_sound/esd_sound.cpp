@@ -30,7 +30,7 @@ extern "C" int esd_sound_init()
 					 esdPlayerObj, SLOT(playChat(UinsList, const QString &, const QString &, bool, double)));
 	QObject::connect(sound_manager, SIGNAL(playOnNotify(const UinType, const QString &, bool, double)),
 					 esdPlayerObj, SLOT(playNotify(const UinType, const QString &, bool, double)));
-
+	kdebugf2();
 	return 0;
 }
 extern "C" void esd_sound_close()
@@ -47,12 +47,14 @@ extern "C" void esd_sound_close()
 						esdPlayerObj, SLOT(playNotify(const UinType, const QString &, bool, double)));
 	delete esdPlayerObj;
 	esdPlayerObj=NULL;
+	kdebugf2();
 }
 
 ESDPlayerSlots::ESDPlayerSlots()
 {
 	kdebugf();
 	sock=esd_open_sound(NULL);
+	kdebugf2();
 }
 
 ESDPlayerSlots::~ESDPlayerSlots()
@@ -60,6 +62,7 @@ ESDPlayerSlots::~ESDPlayerSlots()
 	kdebugf();
 	esd_close(sock);
 	sock=-1;
+	kdebugf2();
 }
 
 void ESDPlayerSlots::play(const QString &s, bool volCntrl, double vol)
@@ -75,6 +78,7 @@ void ESDPlayerSlots::play(const QString &s, bool volCntrl, double vol)
 
 	esd_sample_play(sock, id);
 	esd_sample_free(sock, id);
+	kdebugf2();
 }
 
 void ESDPlayerSlots::playSound(const QString &s, bool volCntrl, double vol)

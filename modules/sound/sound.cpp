@@ -88,7 +88,8 @@ extern "C" int sound_init()
 	
 	sound_manager->setPaths(QStringList::split(";", config_file.readEntry("Sounds", "SoundPaths")));
 	sound_manager->setTheme(config_file.readEntry("Sounds","SoundTheme"));
-		
+
+	kdebugf2();
 	return 0;
 }
 
@@ -132,6 +133,7 @@ extern "C" void sound_close()
 
 	delete sound_manager;
 	delete soundslots;
+	kdebugf2();
 }
 
 
@@ -156,7 +158,10 @@ void SoundManager::messageSound(UinsList senders,const QString& msg,time_t time)
 {
 	kdebugf();
 	if (isMuted())
+	{
+		kdebugm(KADU_DEBUG_FUNCTION_END, "muted\n");
 		return;
+	}
 	UserListElement ule = userlist.byUinValue(senders[0]);
 	QString messagesound;
 	if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
@@ -166,13 +171,18 @@ void SoundManager::messageSound(UinsList senders,const QString& msg,time_t time)
 	if (QFile::exists(messagesound))
 		emit playOnMessage(senders, messagesound, msg, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
 	lastsoundtime.restart();
+	kdebugf2();
 }
 
 void SoundManager::chatSound(UinsList senders,const QString& msg,time_t time, bool& grab)
 {
 	kdebugf();
 	if (isMuted())
+	{
+		kdebugm(KADU_DEBUG_FUNCTION_END, "muted\n");
 		return;
+	}
+
 	Chat* chat= chat_manager->findChatByUins(senders);
 	if (config_file.readBoolEntry("Sounds","PlaySoundChat") && grab)
 	{
@@ -189,13 +199,17 @@ void SoundManager::chatSound(UinsList senders,const QString& msg,time_t time, bo
 			emit playOnChat(senders, chatsound, msg, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
 		lastsoundtime.restart();
 	}
+	kdebugf2();
 }
 
 void SoundManager::notifySound(const UinType uin, const unsigned int oldstatus, const unsigned int status)
 {
 	kdebugf();
 	if (isMuted())
+	{
+		kdebugm(KADU_DEBUG_FUNCTION_END, "muted\n");
 		return;
+	}
 	UserListElement &user = userlist.byUin(uin);
 
 	if (!config_file.readBoolEntry("Notify","NotifyStatusChange"))
@@ -226,6 +240,7 @@ void SoundManager::notifySound(const UinType uin, const unsigned int oldstatus, 
 					emit playOnNotify(uin, notifysound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
 				lastsoundtime.restart();
 			}
+	kdebugf2();
 }
 
 void SoundManager::play(const QString &path, bool force)
@@ -235,7 +250,10 @@ void SoundManager::play(const QString &path, bool force)
 	float vol;
 	
 	if (isMuted() && !force)
+	{
+		kdebugm(KADU_DEBUG_FUNCTION_END, "muted\n");
 		return;
+	}
 	if (ConfigDialog::dialogOpened())
 	{
 		volCntrl=ConfigDialog::getCheckBox("Sounds", "Enable volume control (player must support it)")->isChecked();
@@ -248,6 +266,7 @@ void SoundManager::play(const QString &path, bool force)
 	}
 	if (QFile::exists(path))
 		emit playSound(path, volCntrl, vol);
+	kdebugf2();
 }
 
 int SoundManager::timeAfterLastSound()
@@ -270,6 +289,7 @@ SoundSlots::SoundSlots()
 	}
 
 	ToolBar::registerButton(mu, tr("Mute sounds"), this, SLOT(muteUnmuteSounds()), 0, "mute");
+	kdebugf2();
 }
 
 SoundSlots::~SoundSlots()
@@ -277,6 +297,7 @@ SoundSlots::~SoundSlots()
 	kdebugf();
 	kadu->mainMenu()->removeItem(muteitem);
 	ToolBar::unregisterButton("mute");
+	kdebugf2();
 }
 
 void SoundSlots::onCreateConfigDialog()
@@ -311,12 +332,14 @@ void SoundSlots::onCreateConfigDialog()
 	lv_soundfiles->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Ignored));
 	
 	QString chatfile, messagefile, notifyfile;
-	if (cb_soundtheme->currentText() == tr("Custom")) {
+	if (cb_soundtheme->currentText() == tr("Custom"))
+	{
 		chatfile= config_file.readEntry("Sounds", "Chat_sound");
 		messagefile= config_file.readEntry("Sounds", "Message_sound");
 		notifyfile= config_file.readEntry("Notify", "NotifySound");
 	}
-	else {
+	else
+	{
 		QPushButton *choose = ConfigDialog::getPushButton("Sounds","Choose");
 		QPushButton *clear = ConfigDialog::getPushButton("Sounds","Clear");
 		choose->setEnabled(false);
@@ -345,6 +368,7 @@ void SoundSlots::onCreateConfigDialog()
 	SelectPaths *selpaths= ConfigDialog::getSelectPaths("Sounds", "Sound paths");
 	QStringList pl(QStringList::split(";", config_file.readEntry("Sounds", "SoundPaths")));
 	selpaths->setPathList(pl);
+	kdebugf2();
 }
 
 void SoundSlots::muteUnmuteSounds()
@@ -374,6 +398,7 @@ void SoundSlots::muteUnmuteSounds()
 		mutebtn->setTextLabel(tr("Mute sounds"));
 		mutebtn->setIconSet(icons_manager.loadIcon("Unmute"));
 	}
+	kdebugf2();
 }
 
 
@@ -399,6 +424,7 @@ void SoundSlots::soundPlayer(bool value, bool toolbarChanged)
 	b_playinvisible->setEnabled(value && b_playchatting->isChecked());
 	if (value==sound_manager->isMuted() && !toolbarChanged)
 		muteUnmuteSounds();
+	kdebugf2();
 }
 
 void SoundSlots::clearSoundFile()
@@ -409,6 +435,7 @@ void SoundSlots::clearSoundFile()
 	if (!item->isSelected())
 		return;
 	item->setText(1, "");
+	kdebugf2();
 }
 
 void SoundSlots::chooseSoundFile()
@@ -427,6 +454,7 @@ void SoundSlots::chooseSoundFile()
 	QString s(QFileDialog::getOpenFileName( start, "Audio Files (*.wav *.au *.raw)"));
 	if (s.length())
 		item->setText(1,s);
+	kdebugf2();
 }
 
 
@@ -438,6 +466,7 @@ void SoundSlots::testSoundFile()
 	if (!item->isSelected())
 		return;
 	sound_manager->play(item->text(1), true);
+	kdebugf2();
 }
 
 void SoundSlots::chooseSoundTheme(const QString& string)
@@ -477,6 +506,7 @@ void SoundSlots::chooseSoundTheme(const QString& string)
 	new QListViewItem(lv_soundfiles, tr("Chat sound"), chatfile);
 	new QListViewItem(lv_soundfiles, tr("Message sound"), messagefile);
 	new QListViewItem(lv_soundfiles, tr("Notify sound"), notifyfile);
+	kdebugf2();
 }
 
 void SoundSlots::selectedPaths(const QStringList& paths)
@@ -493,6 +523,7 @@ void SoundSlots::selectedPaths(const QStringList& paths)
 
 	if (paths.contains("default"))
 		cb_soundtheme->changeItem(tr("default"), paths.findIndex("default")+1);
+	kdebugf2();
 }
 
 void SoundSlots::onApplyConfigDialog()
@@ -515,4 +546,5 @@ void SoundSlots::onApplyConfigDialog()
 
 	config_file.writeEntry("Sounds", "SoundPaths", sound_manager->additionalPaths().join(";"));
 	config_file.writeEntry("Sounds", "SoundTheme", theme);
+	kdebugf2();
 }

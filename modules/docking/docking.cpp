@@ -37,6 +37,7 @@ extern "C" void docking_close()
 
 DockingManager::DockingManager()
 {
+	kdebugf();
 	icon_timer = new QTimer(this);
 	blink = false;
 	QObject::connect(icon_timer, SIGNAL(timeout()), this, SLOT(changeIcon()));
@@ -58,6 +59,7 @@ DockingManager::DockingManager()
 	connect(this, SIGNAL(mousePressMidButton()), &pending, SLOT(openMessages()));
 
 	kadu->setDocked(true);	
+	kdebugf2();
 }
 
 DockingManager::~DockingManager()
@@ -78,10 +80,12 @@ DockingManager::~DockingManager()
 	kadu->setDocked(false);
 	delete icon_timer;
 	icon_timer=NULL;
+	kdebugf2();
 }
 
 void DockingManager::changeIcon()
 {
+	kdebugf();
 	if (pending.pendingMsgs() && !icon_timer->isActive())
 	{
 		if (!blink)
@@ -98,7 +102,8 @@ void DockingManager::changeIcon()
 		}
 	}
 	else
-		kdebug("DockWidget::changeIcon() OFF\n");
+		kdebug("DockingManager::changeIcon() OFF\n");
+	kdebugf2();
 }
 
 void DockingManager::dockletChange(int id)
@@ -141,6 +146,7 @@ void DockingManager::defaultToolTip()
 
 void DockingManager::showCurrentStatus(int status)
 {
+	kdebugf();
 	int statusnr = statusGGToStatusNr(status);
 	QPixmap pix = icons_manager.loadIcon(gg_icons[statusnr]);
 	QString tiptext=tr("Left click - hide/show window\nMiddle click or Left click- open message");
@@ -154,6 +160,7 @@ void DockingManager::showCurrentStatus(int status)
 		tiptext+=tr("\n\nDescription:\n%2").arg(own_description);
 
 	emit trayTooltipChanged(tiptext);
+	kdebugf2();
 }
 
 void DockingManager::findTrayPosition(QPoint& pos)
@@ -163,18 +170,23 @@ void DockingManager::findTrayPosition(QPoint& pos)
 
 void DockingManager::trayMousePressEvent(QMouseEvent * e)
 {
-	if (e->button() == MidButton) {
+	kdebugf();
+	if (e->button() == MidButton)
+	{
 		emit mousePressMidButton();
 		return;
 	}
 
-	if (e->button() == LeftButton) {
+	if (e->button() == LeftButton)
+	{
 		emit mousePressLeftButton();
-		if (pending.pendingMsgs() && e->state() != ControlButton) {
+		if (pending.pendingMsgs() && e->state() != ControlButton)
+		{
 			pending.openMessages();
 			return;
-			}
-		switch (kadu->isVisible()) {
+		}
+		switch (kadu->isVisible())
+		{
 			case 0:
 				kadu->show();
 				kadu->setFocus();
@@ -182,15 +194,16 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 			case 1:
 				kadu->hide();
 				break;
-			}
-		return;
 		}
+		return;
+	}
 
 	if (e->button() == RightButton) {
 		emit mousePressRightButton();
 		dockppm->exec(QCursor::pos());
 		return;
-		}
+	}
+	kdebugf2();
 }
 
 QPixmap DockingManager::defaultPixmap()

@@ -80,6 +80,7 @@ WMakerTrayIcon::WMakerTrayIcon()
 	if (config_file.readBoolEntry("General", "RunDocked"))
 		kadu->showMainWindowOnStart=false;
 	show();
+	kdebugf2();
 }
 
 WMakerTrayIcon::~WMakerTrayIcon()
@@ -90,6 +91,7 @@ WMakerTrayIcon::~WMakerTrayIcon()
 	disconnect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
 	delete WMakerMasterWidget;	
 	kadu->show();
+	kdebugf2();
 }
 
 void WMakerTrayIcon::findTrayPosition(QPoint& pos)
@@ -110,6 +112,7 @@ void WMakerTrayIcon::setTrayPixmap(const QPixmap& pixmap)
 	QLabel::setPixmap(pixmap);
 	WMakerMasterWidget->setIcon(pixmap);
 	repaint();
+	kdebugf2();
 }
 
 void WMakerTrayIcon::setTrayTooltip(const QString& tooltip)
@@ -117,6 +120,7 @@ void WMakerTrayIcon::setTrayTooltip(const QString& tooltip)
 	kdebugf();
 	QToolTip::add(this,tooltip);
 	QToolTip::add(WMakerMasterWidget,tooltip);
+	kdebugf2();
 }
 
 void WMakerTrayIcon::enterEvent(QEvent* e)
@@ -137,12 +141,14 @@ void WMakerTrayIcon::enterEvent(QEvent* e)
 		qt_x_time = time;
 	}
 	QWidget::enterEvent(e);
+	kdebugf2();
 }
 
 void WMakerTrayIcon::mousePressEvent(QMouseEvent * e)
 {
 	kdebugf();
 	docking_manager->trayMousePressEvent(e);
+	kdebugf2();
 }
 
 WMakerTrayIcon* wmaker_tray_icon = NULL;

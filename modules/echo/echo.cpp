@@ -12,6 +12,7 @@
 #include "events.h"
 //#include "message_box.h"
 #include "gadu.h"
+#include "debug.h"
 
 extern "C" int echo_init()
 {
@@ -40,11 +41,13 @@ Echo::~Echo()
 
 void Echo::chatReceived(UinsList senders,const QString& msg,time_t time)
 {
+	kdebugf();
 	if (msg.left(5)!="KADU ")
 	{
 		QString resp=QString("KADU ECHO: ")+msg;
 		gadu->sendMessage(senders,unicode2cp(resp));
 	}
+	kdebugf2();
 }
 
 Echo* echo;

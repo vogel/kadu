@@ -44,6 +44,7 @@ extern "C" int autoaway_init()
 	
 	QObject::connect(kadu, SIGNAL(disconnectingNetwork()), autoawayslots, SLOT(off()));
 	QObject::connect(&event_manager, SIGNAL(connected()), autoawayslots, SLOT(on()));
+	kdebugf2();
 	return 0;
 }
 
@@ -62,6 +63,7 @@ extern "C" void autoaway_close()
 	ConfigDialog::removeControl("General", "times");
 	ConfigDialog::removeControl("General", "Enable autoaway");
 	ConfigDialog::removeControl("General", "Status");
+	kdebugf2();
 }
 
 AutoAwayTimer::AutoAwayTimer(QObject* parent) : QTimer(parent,"AutoAwayTimer"), idletime(0) {
@@ -139,7 +141,7 @@ void AutoAwayTimer::checkIdleTime()
 //	czy mamy stac sie "zajeci" po config.autoawaytime sekund nieaktywnosci
 	if (idletime >= autoAwayTime && !autoawayed) {
 		beforeAutoAway = getCurrentStatus() & (~GG_STATUS_FRIENDS_MASK);;
-		kdebug("AutoAwayTimer::checkIdleTime(): checking whether to go auto away, beforeAutoAway = %d\n", beforeAutoAway);
+		kdebugm(KADU_DEBUG_INFO, "AutoAwayTimer::checkIdleTime(): checking whether to go auto away, beforeAutoAway = %d\n", beforeAutoAway);
 		switch (beforeAutoAway) {
 			case GG_STATUS_AVAIL_DESCR:
 				kadu->setStatus(GG_STATUS_BUSY_DESCR);
@@ -152,16 +154,16 @@ void AutoAwayTimer::checkIdleTime()
 			default:
 				start(autoAwayCheckTime*1000, TRUE);
 				return;
-			}
-		kdebug("AutoAwayTimer::checkIdleTime(): I am away!\n");
 		}
+		kdebugm(KADU_DEBUG_INFO, "AutoAwayTimer::checkIdleTime(): I am away!\n");
+	}
 	else
 //		jesli bylismy "zajeci" to stajemy sie z powrotem "dostepni"
 		if (idletime < autoAwayTime && autoawayed) {
-			kdebug("AutoAwayTimer::checkIdleTime(): auto away cancelled\n");
+			kdebugm(KADU_DEBUG_INFO, "AutoAwayTimer::checkIdleTime(): auto away cancelled\n");
 			autoawayed = false;
 			kadu->setStatus(beforeAutoAway);
-			}
+		}
 
 //potrzebne na wypadek zerwania polaczenia i ponownego polaczenia sie z statusem innym niz busy*
 	start(autoAwayCheckTime*1000, TRUE);
@@ -190,6 +192,7 @@ void AutoAwaySlots::onCreateConfigDialog()
 	
 	ConfigDialog::getSpinBox("General", "Set status to away after ")->setSuffix(" s");
 	ConfigDialog::getSpinBox("General", "Check idle every ")->setSuffix(" s");
+	kdebugf2();
 }
 
 void AutoAwaySlots::onApplyConfigDialog()
@@ -200,4 +203,5 @@ void AutoAwaySlots::onApplyConfigDialog()
 		on();
 	else
 		off();
+	kdebugf2();
 }

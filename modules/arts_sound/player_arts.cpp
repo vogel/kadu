@@ -29,7 +29,7 @@ extern "C" int arts_sound_init()
 					 artsPlayerObj, SLOT(playChat(UinsList, const QString &, const QString &, bool, double)));
 	QObject::connect(sound_manager, SIGNAL(playOnNotify(const UinType, const QString &, bool, double)),
 					 artsPlayerObj, SLOT(playNotify(const UinType, const QString &, bool, double)));
-
+	kdebugf2();
 	return 0;
 }
 extern "C" void arts_sound_close()
@@ -45,6 +45,7 @@ extern "C" void arts_sound_close()
 	QObject::disconnect(sound_manager, SIGNAL(playOnNotify(const UinType, const QString &, bool, double)),
 						artsPlayerObj, SLOT(playNotify(const UinType, const QString &, bool, double)));
 	delete artsPlayerObj;
+	kdebugf2();
 	artsPlayerObj=NULL;
 }
 
@@ -52,6 +53,7 @@ ArtsPlayerSlots::ArtsPlayerSlots()
 {
 	kdebugf();
 	server=Arts::Reference("global:Arts_SoundServerV2");
+	kdebugf2();
 }
 
 void ArtsPlayerSlots::play(const QString &s, bool volCntrl, double vol)
@@ -59,10 +61,10 @@ void ArtsPlayerSlots::play(const QString &s, bool volCntrl, double vol)
 	//warunku server.isNull() i server.audioMethod()=="" nie mo¿na sprawdzaæ
 	//jednocze¶nie, bo je¿eli najpierw zostanie sprawdzony drugi, a pierwszy
 	//jest prawd±, to program siê wywróci
-	kdebug("ArtsPlayerSlots::play(): null: %d\n",server.isNull());
+	kdebugm(KADU_DEBUG_INFO, "ArtsPlayerSlots::play(): null: %d\n",server.isNull());
 
 	if (!server.isNull())
-		kdebug("audioMethod: %s audioDevice: %s\n", server.audioMethod().c_str(), server.audioDevice().c_str());
+		kdebugm(KADU_DEBUG_INFO, "audioMethod: %s audioDevice: %s\n", server.audioMethod().c_str(), server.audioDevice().c_str());
 
 	if (server.isNull())
 		server=Arts::Reference("global:Arts_SoundServerV2");
@@ -76,6 +78,7 @@ void ArtsPlayerSlots::play(const QString &s, bool volCntrl, double vol)
 				server.outVolume().scaleFactor(vol);
 			server.play(std::string(s.ascii()));
 		}
+	kdebugf2();
 }
 
 void ArtsPlayerSlots::playSound(const QString &s, bool volCntrl, double vol)

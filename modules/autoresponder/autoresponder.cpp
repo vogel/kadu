@@ -12,6 +12,7 @@
 #include "events.h"
 #include "status.h"
 #include "config_dialog.h"
+#include "debug.h"
 
 extern "C" int autoresponder_init()
 {
@@ -27,6 +28,7 @@ extern "C" void autoresponder_close()
 
 AutoResponder::AutoResponder() : QObject()
 {
+	kdebugf();
 	config=new ConfigFile(ggPath(QString("autoresponder.conf")));
 	QObject::connect(&event_manager,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
 		this,SLOT(chatReceived(UinsList,const QString&,time_t)));
@@ -40,10 +42,12 @@ AutoResponder::AutoResponder() : QObject()
 	ConfigDialog::addCheckBox(config, "Autoresponder", "Autoresponder options", QT_TRANSLATE_NOOP( "@default","Status invisible" ),"StatusInvisible",false );
 	ConfigDialog::addCheckBox(config, "Autoresponder", "Autoresponder options", QT_TRANSLATE_NOOP( "@default","Status busy" ),"StatusBusy",true );
 	ConfigDialog::addCheckBox(config, "Autoresponder", "Autoresponder options", QT_TRANSLATE_NOOP( "@default","Status available" ),"StatusAvailable",false );
+	kdebugf2();
 }
 
 AutoResponder::~AutoResponder()
 {
+	kdebugf();
 	QObject::disconnect(&event_manager,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
 		this,SLOT(chatReceived(UinsList,const QString&,time_t)));
 	ConfigDialog::removeControl("Autoresponder", "Choose status:");
@@ -55,10 +59,12 @@ AutoResponder::~AutoResponder()
 	ConfigDialog::removeTab("Autoresponder");
 	config->sync();
 	delete config;
+	kdebugf2();
 }
 
 void AutoResponder::chatReceived(UinsList senders, const QString& msg, time_t time)
 {
+	kdebugf();
 	if (msg.left(5)!="KADU ")
 	{
 		int status=getCurrentStatus() & ~GG_STATUS_FRIENDS_MASK; //pozbywamy siê flagi "Tylko dla przyjació³"
@@ -78,7 +84,7 @@ void AutoResponder::chatReceived(UinsList senders, const QString& msg, time_t ti
 			gadu->sendMessage(senders, unicode2cp(tr("KADU AUTORESPONDER:")+"\n"+
 							config->readEntry("Autoresponder", "Autotext")));
 	}
-
+	kdebugf2();
 }
 
 AutoResponder* autoresponder;

@@ -101,6 +101,7 @@ extern "C" void x11_docking_close()
 X11TrayIcon::X11TrayIcon()
 	: QLabel(0,"X11TrayIcon", WMouseNoMask | WRepaintNoErase | WType_TopLevel | WStyle_Customize | WStyle_NoBorder | WStyle_StaysOnTop)
 {
+	kdebugf();
 	setBackgroundMode(X11ParentRelative);
 	QPixmap pix = docking_manager->defaultPixmap();
 	setMinimumSize(pix.size());
@@ -162,6 +163,7 @@ X11TrayIcon::X11TrayIcon()
 	if (config_file.readBoolEntry("General", "RunDocked"))
 		kadu->showMainWindowOnStart=false;
 	show();
+	kdebugf2();
 }
 
 void X11TrayIcon::disableTaskbar()
@@ -215,6 +217,7 @@ X11TrayIcon::~X11TrayIcon()
 	disconnect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
 	disconnect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
 	kadu->show();
+	kdebugf2();
 }
 
 void X11TrayIcon::findTrayPosition(QPoint& pos)

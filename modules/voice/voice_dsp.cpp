@@ -17,11 +17,12 @@
 #include "voice_dsp.h"
 
 VoiceDsp::VoiceDsp() {
-	kdebug("VoiceDsp::VoiceDsp()\n");
+	kdebugf();
 	connect(voice_manager, SIGNAL(setupSoundDevice()), this, SLOT(setup()));
 	connect(voice_manager, SIGNAL(freeSoundDevice()), this, SLOT(free()));
 	connect(voice_manager, SIGNAL(playSample(char *, int)), this, SLOT(playSample(char *, int)));
 	connect(voice_manager, SIGNAL(recordSample(char *, int)), this, SLOT(recordSample(char *, int)));
+	kdebugf2();
 }
 
 VoiceDsp::~VoiceDsp() {
@@ -31,27 +32,27 @@ void VoiceDsp::setup() {
 	kdebugf();
 	int value;
 	
-	kdebug("Opening /dev/dsp\n");
+	kdebugm(KADU_DEBUG_INFO, "Opening /dev/dsp\n");
 	fd = open("/dev/dsp", O_RDWR);
 	if(fd<0)
 	{
-		kdebug("Error opening /dev/dsp\n");
+		kdebugm(KADU_DEBUG_ERROR, "Error opening /dev/dsp\n");
 		return;
 	}
 
-	kdebug("Setting speed for /dev/dsp\n");
+	kdebugm(KADU_DEBUG_INFO, "Setting speed for /dev/dsp\n");
 	value = 8000;
 	if(ioctl(fd, SNDCTL_DSP_SPEED, &value)<0)
 	{
-		kdebug("Error setting speed for /dev/dsp\n");
+		kdebugm(KADU_DEBUG_ERROR, "Error setting speed for /dev/dsp\n");
 		return;
 	}
 
-	kdebug("Setting sample size for /dev/dsp\n");
+	kdebugm(KADU_DEBUG_INFO, "Setting sample size for /dev/dsp\n");
 	value = 16;
 	if(ioctl(fd, SNDCTL_DSP_SAMPLESIZE, &value)<0)
 	{
-		kdebug("Error setting sample size for /dev/dsp\n");
+		kdebugm(KADU_DEBUG_ERROR, "Error setting sample size for /dev/dsp\n");
 		return;
 	}
 
@@ -63,14 +64,14 @@ void VoiceDsp::setup() {
 		return;
 	}
 	
-	kdebug("Setting ftm for /dev/dsp\n");
+	kdebugm(KADU_DEBUG_INFO, "Setting ftm for /dev/dsp\n");
 	value = AFMT_S16_LE;
 	if(ioctl(fd, SNDCTL_DSP_SETFMT, &value)<0)
 	{
-		kdebug("Error setting ftm for /dev/dsp\n");
+		kdebugm(KADU_DEBUG_ERROR, "Error setting ftm for /dev/dsp\n");
 		return;
 	}
-	kdebug("Setup successful, fd=%d\n", fd);
+	kdebugm(KADU_DEBUG_FUNCTION_END, "Setup successful, fd=%d\n", fd);
 }
 
 void VoiceDsp::free() {
@@ -80,12 +81,12 @@ void VoiceDsp::free() {
 }
 
 void VoiceDsp::playSample(char *data, int length) {
-	kdebug("VoiceDsp::playSample()\n");
+	kdebugf();
 	write(fd, data, length);
 }
 
 void VoiceDsp::recordSample(char *data, int length) {
-	kdebug("VoiceDsp::recordSample()\n");
+	kdebugf();
 	read(fd, data, length);
 }
 
