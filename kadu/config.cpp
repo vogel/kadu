@@ -124,10 +124,13 @@ void loadKaduConfig(void) {
 	config.colors.chatUsrBgColor = konf->readEntry("ChatUsrBgColor", "#F0F0F0");
 	config.colors.chatMyFontColor = konf->readEntry("ChatMyFontColor", "#000000");
 	config.colors.chatUsrFontColor = konf->readEntry("ChatUsrFontColor", "#000000");
-  config.userboxFont = konf->readEntry("UserboxFont","Helvetica");
-	config.userboxFontSize = konf->readNumEntry("UserboxFontSize",12);
-	config.chatFont = konf->readEntry("ChatFont","Helvetica");
-	config.chatFontSize = konf->readNumEntry("ChatFontSize",12);
+	
+	QFont font = a->font();
+
+	config.userboxFont = konf->readEntry("UserboxFont", font.family());
+	config.userboxFontSize = konf->readNumEntry("UserboxFontSize", font.pointSize());
+	config.chatFont = konf->readEntry("ChatFont", font.family());
+	config.chatFontSize = konf->readNumEntry("ChatFontSize", font.pointSize());
 
 	/* no need for it anymore */
 	delete konf;
