@@ -12,7 +12,7 @@ A: Tak, mo¿esz u¿yæ proxy, popatrz na zmienne w sekcji Proxy
 Q: Kadu mówi, co¶ o "Permission denied" albo "Connection reset
    by peer", ale pod Windows GG dzia³a. O co chodzi?
 A: Prawdopodobnie masz ¼le wpisane has³o. Nawet, je¶li dot±d
-   dzia³a³o, to w wersjach 0.3.0 i wzwy¿ jest inaczej kodowane
+   dzia³a³o, to w wersjach 0.3.0 i nowszych jest inaczej kodowane
    i dlatego nale¿y wpisaæ je od nowa.
 
 Q: Nie dzia³a mi logowanie i historia. Co jest nie tak?
@@ -21,10 +21,10 @@ A: Najprawdopodobniej nie masz w³±czonej opcji "Log messages" w
    czy ma on odpowiednie prawa (tzn. zapisu dla u¿ytkownika)
 
 Q: Jak mogê przenie¶æ listê u¿ytkowników z Windowsowego GG?
-A: S± dwa sposoby - b±d¼ zaimporowaæ j± z serwera (po uprzednim
+A: S± dwa sposoby - b±d¼ zaimportowaæ j± z serwera (po uprzednim
    wyeksportowaniu w GG), b±d¼ po prostu skopiowaæ wyeksportowany
-   na dysk plik userlisty do ~/.gg/userlist -- Kadu i EKG jest
-   zgodne z formatem u¿ywanym przez GG.
+   na dysk plik z userlist± do ~/.gg/userlist -- Kadu i EKG u¿ywaj± takiego
+   samego formatu plików z list± u¿ytkowników jak GG.
 
 Q: Czy dzia³a przesy³anie plików?
 A: Tak. Spójrz do konfiguracji. UWAGA: to nie jest stabilny kod.
