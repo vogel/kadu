@@ -119,7 +119,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 		autosend_enabled = true;
 		}
 	lockscroll = new QPushButton(buttontray);
-	lockscroll->setPixmap(loader->loadIcon("lock", KIcon::Small));
+	lockscroll->setPixmap(QPixmap((const char**)scroll_lock));
 	lockscroll->setToggleButton(true);
 	QToolTip::add(lockscroll, i18n("Blocks scrolling"));
 
