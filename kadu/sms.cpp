@@ -162,6 +162,13 @@ void HttpClient::onReadyRead()
 			};
 			QString location=location_regexp.cap(1);
 			kdebug("Jumping to %s\n",location.local8Bit().data());
+			// czekamy. zbyt szybkie przekierowanie konczy sie
+			// czasem petla. nie wiem dlaczego.
+			QTime* t=new QTime();
+			t->start();
+			while (t->elapsed()<500) {};
+			delete t;
+			//
 			get(location);
 			return;
 		};

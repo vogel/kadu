@@ -9,7 +9,6 @@
 
 * TODO dla wersji 0.3.4
 
- ! wyja¶niæ wpadanie w pêtlê przekierowañ przy wysy³aniu sms'ów do Idei
  ! poprawiæ escapowanie znaków specjalnych, m.in. ¼le escape'uje <<
  ! naprawiæ b³êdy przy problemach z po³±czeniem
  + ikonka wy³±czenia d¼wiêków w toolbarze
