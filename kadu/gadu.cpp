@@ -1242,7 +1242,6 @@ void GaduProtocol::systemMessageReceived(QString &message, QDateTime &time, int 
 void GaduProtocol::login()
 {
 	kdebugf();
-	RequestedStatusForLogin = NextStatus->toStatusNumber();
 
 	emit connecting();
 
@@ -1254,7 +1253,7 @@ void GaduProtocol::login()
 
 	setupProxy();
 
-	LoginParams.status = RequestedStatusForLogin;
+	LoginParams.status = NextStatus->toStatusNumber();
 	if (NextStatus->isFriendsOnly())
 		LoginParams.status |= GG_STATUS_FRIENDS_MASK;
 	if (NextStatus->hasDescription())

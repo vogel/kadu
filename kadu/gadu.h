@@ -262,6 +262,10 @@ class GaduSocketNotifiers : public SocketNotifiers
 //            GaduProtocol
 // ------------------------------------
 
+/*!
+	@class GaduProtocol
+	@short Klasa do obs³ugi protoko³u Gadu-Gadu
+ */
 class GaduProtocol : public QObject
 {
 	Q_OBJECT
@@ -270,46 +274,135 @@ class GaduProtocol : public QObject
 
 	private:
 
-		enum {
+		/*!
+			@enum Mode
+			@short Tryb pracy obiektu
+			@see TokenSocketNotifiers
+			@see gotToken
+			@see needTokenValue
+			@see register
+			@see doRegister
+			@see unregister
+			@see doUnregister
+			@see remindPassword
+			@see doRemindPassword
+			@see changePassword
+			@see doChangePassword
+
+			Kilka operacja w protokole Gadu-Gadu wymaga od klienta wys³ania do serwera, oprócz
+			standardowych pakietów, tak zwanego 'tokena'. Najpierw pobierany jest z serwera identyfikator
+			tokena oraz obrazek. Nastêpnie z obrazka odczytywana jest warto¶c tokena (w za³o¿eniach
+			mia³o to zapobiegaæ rejestrowaniu nowych u¿ytkowników przez automaty.
+
+			Sloty register, unregister, remindPassword i changePassword inicjuj± pobieranie tokena
+			i ustalaj± warto¶æ pola Mode. Pobieranie obrazka realizowane jest przez klasê
+			TokenSocketNotifiers. Po pobraniu wywo³ywany jest slot gotToken, który na podstawie warto¶ci
+			pola Mode wywo³uje jedn± z funkjci doRegister, doUnregister, doRemindPassword i doChangePassword.
+		 */
+		enum
+		{
+			//! Rejestrowanie nowego u¿ytkownika
 			Register,
+			//! Wyrejestrowywanie istniej±cego u¿ytkownika
 			Unregister,
+			//! Przypominanie has³a
 			RemindPassword,
+			//! Zmienianie has³a
 			ChangePassword
 		} Mode;
 
+		//! Identyfikator u¿ytkownika
 		UinType DataUin;
+		//! e-mail u¿ytkownika
 		QString DataEmail;
+		//! stare has³o u¿ytkownika
 		QString DataPassword;
+		//! nowe has³o u¿ytkownika
 		QString DataNewPassword;
+		//! identyfikator tokena
 		QString TokenId;
+		//! warto¶æ tokena
 		QString TokenValue;
 
+		//! Serwery, z którymi ³aczy siê obiekt.
 		static QValueList<QHostAddress> ConfigServers;
-
-		struct gg_login_params LoginParams;
-		gg_session* Sess;
-
-		/**
-			rzeczywisty bie¿±cy status
-		**/
-		GaduStatus* CurrentStatus;
-		/**
-			status docelowy, który niekoniecznie zosta³
-			jeszcze przyjêty przez serwer
-		**/
-		GaduStatus* NextStatus;
-
-		GaduSocketNotifiers *SocketNotifiers;
-		QTimer* PingTimer;
-
+		//! Numer serwera, do którego obiekt ostatnio próbowa³ siê pod³±czyæ.
 		unsigned int ServerNr;
-
-		bool UserListSent;
-		bool UserListClear;
-		QString ImportReply;
-		int RequestedStatusForLogin;
+		//! Adres serwera, do którego obiekt jest pod³±czony.
 		QHostAddress* ActiveServer;
 
+		//! Parametry logowania - wymagane przez bibliotekê libgg
+		struct gg_login_params LoginParams;
+		//! Sesja po³±czenia - wymagane przez bibliotekê libgg
+		gg_session* Sess;
+
+		/*!
+			Bie¿acy status. Zmieniany po po³±czeniu, oraz w przypadku zmiany statusu kiedy po³±czenie
+			jest ju¿ zainicjowane.
+
+			@see login
+			@see connected
+			@see iWantGoOnline
+			@see iWantGoBusy
+			@see iWantGoInvisible
+			@see iWantGoOffline
+			@see NextStatus
+			@see Status
+			@see status
+		*/
+		GaduStatus* CurrentStatus;
+
+		/*!
+			Nastêpny status. Ustalany zewnêtrznie przy wykorzystaniu metody status i odpowiednich
+			slotów klasy Status. Zmiana wywo³uje jedn± z metod iWantGo... i w konsekwencji zmianê
+			statusu (w razie konieczno¶ci te¿ zalogowanie).
+
+			@see login
+			@see connected
+			@see iWantGoOnline
+			@see iWantGoBusy
+			@see iWantGoInvisible
+			@see iWantGoOffline
+			@see CurrentStatus
+			@see Status
+			@see status
+		 */
+		GaduStatus* NextStatus;
+
+		/*!
+			Klasa gniazdek ³±cz±ca siê z serwerem. Wysy³a sygna³y po wyst±pieniu zdarzenia protoko³u
+			(po³±czenie, zerwanie po³±czenia, nowa wiadomo¶æ).
+
+			@see GaduSocketNotifiers
+		 */
+		GaduSocketNotifiers *SocketNotifiers;
+
+		/*!
+			Zegar pinguj±cy serwer.
+		 */
+		QTimer* PingTimer;
+
+		/*!
+			Okre¶la, czy lista u¿ytkowników zosta³a ju¿ wys³ana.
+
+			@todo okre¶liæ znaczenie
+		 */
+		bool UserListSent;
+		/*!
+			Nie wiem co to jest.
+
+			@todo okre¶liæ znaczenie
+		 */
+		bool UserListClear;
+
+		/*!
+			Lista u¿ytkowników pobrana z serwera w postaci ³añcucha.
+		 */
+		QString ImportReply;
+
+		/*!
+			Ustawianie parametrów po³±czenia proxy.
+		 */
 		void setupProxy();
 
 		void login();
