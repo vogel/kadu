@@ -1,20 +1,21 @@
-dnl aclocal.m4 generated automatically by aclocal 1.4-p6
+# aclocal.m4 generated automatically by aclocal 1.5
 
-dnl Copyright (C) 1994, 1995-8, 1999, 2001 Free Software Foundation, Inc.
-dnl This file is free software; the Free Software Foundation
-dnl gives unlimited permission to copy and/or distribute it,
-dnl with or without modifications, as long as this notice is preserved.
+# Copyright 1996, 1997, 1998, 1999, 2000, 2001
+# Free Software Foundation, Inc.
+# This file is free software; the Free Software Foundation
+# gives unlimited permission to copy and/or distribute it,
+# with or without modifications, as long as this notice is preserved.
 
-dnl This program is distributed in the hope that it will be useful,
-dnl but WITHOUT ANY WARRANTY, to the extent permitted by law; without
-dnl even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-dnl PARTICULAR PURPOSE.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY, to the extent permitted by law; without
+# even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
 
 dnl Based on AC_NEED_STDINT_H by Guido Draheim <guidod@gmx.de> that can be
 dnl found at http://www.gnu.org/software/ac-archive/. Do not complain him
 dnl about this macro.
 dnl
-dnl $Id: aclocal.m4,v 1.19 2003/10/11 18:17:47 romek Exp $
+dnl $Id: aclocal.m4,v 1.20 2004/01/10 18:52:17 adrian Exp $
 
 AC_DEFUN([AC_NEED_STDINT_H],
  [AC_MSG_CHECKING([for uintXX_t types])
@@ -268,7 +269,7 @@ AC_LANG_RESTORE
 ])dnl ACX_PTHREAD
 
 dnl based on curses.m4 
-dnl $Id: aclocal.m4,v 1.19 2003/10/11 18:17:47 romek Exp $
+dnl $Id: aclocal.m4,v 1.20 2004/01/10 18:52:17 adrian Exp $
 
 AC_DEFUN(AC_CHECK_OPENSSL,[
   AC_SUBST(OPENSSL_LIBS)
