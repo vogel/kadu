@@ -63,6 +63,7 @@ struct colors {
 struct config {
 	uin_t uin;
 	char *password;
+	QString nick;
 	char *soundmsg;
 	char *soundchat;
 	char *soundprog;

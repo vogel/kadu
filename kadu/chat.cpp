@@ -383,7 +383,7 @@ void Chat::writeMyMessage() {
 	QString editext = convertCharacters(edit->text());
 
 	toadd.append("<TABLE WIDTH=\"100%\"><TR><TD bgcolor=\"#E0E0E0\"><B>");
-	toadd.append(i18n("Me"));
+	toadd.append(config.nick);
 	toadd.append(" ");
 	toadd.append(__c2q(timestamp()));
 	toadd.append("</B><BR>");

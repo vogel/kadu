@@ -47,6 +47,7 @@ class ConfigDialog : public QTabDialog	{
 		QCheckBox *b_logging;
 		QLineEdit *e_password;
 		QLineEdit *e_uin;
+		QLineEdit *e_nick;
 		QLineEdit *e_smsapp;
 		QLineEdit *e_smsconf;
 		QCheckBox *b_smscustomconf;

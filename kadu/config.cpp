@@ -53,7 +53,8 @@ void loadKaduConfig(void) {
 	config.soundvolctrl = konf->readBoolEntry("VolumeControl",false);
 	config.soundvol = konf->readDoubleNumEntry("SoundVolume",1.0);
 	config.soundchat = strdup(konf->readEntry("Chat_sound",""));
-
+	config.nick = konf->readEntry("Nick", i18n("Me"));
+	
 	config.defaultstatus = konf->readNumEntry("DefaultStatus", GG_STATUS_NOT_AVAIL);
 
 	if (!config.defaultstatus)
@@ -128,6 +129,7 @@ void saveKaduConfig(void) {
 	konf->setGroup("Global");
 	konf->writeEntry("UIN",config.uin);
 	konf->writeEntry("Password",pwHash(config.password));
+	konf->writeEntry("Nick", config.nick);
 	konf->writeEntry("Geometry",kadu->geometry());
 	konf->writeEntry("Message_sound",config.soundmsg);
 	konf->writeEntry("Chat_sound",config.soundchat);
@@ -223,6 +225,12 @@ void ConfigDialog::setupTab1(void) {
 	e_password->setEchoMode(QLineEdit::Password);
 	e_password->setText(config.password);
 
+	QLabel *l_nick = new QLabel(userinfo);
+	l_nick->setText(i18n("Nick"));
+	
+	e_nick = new QLineEdit(userinfo);
+	e_nick->setText(config.nick);
+	
 	/* SMS begin */
 	QVGroupBox *smsvgrp = new QVGroupBox(box);
 	smsvgrp->setTitle(i18n("SMS options"));
@@ -675,6 +683,10 @@ void ConfigDialog::updateConfig(void) {
 	config.uin = atoi(e_uin->text().latin1());
 	free(config.password);
 	config.password = strdup(e_password->text().local8Bit());
+	if (e_nick->text().length())
+		config.nick = e_nick->text();
+	else
+		config.nick = i18n("Me");
 	config.savegeometry = b_geometry->isChecked();
 	config.logmessages = b_logging->isChecked();
 	config.playsoundchat = b_playchat->isChecked();
