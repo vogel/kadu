@@ -57,6 +57,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * przycisk do wstawiania obrazków w oknie chat, dialog wyboru obrazka (adrian)
 * lekka przebudowa filtrowania wysy³anych wiadomo¶ci, teraz dopuszczamy
   równie¿ wiadomo¶ci z pust± tre¶ci± - np same obrazki (adrian)
+* poprawa obs³ugi plików konfiguracyjnych przy tworzeniu nowej sekcji (joi)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
