@@ -425,7 +425,7 @@
     <name>QFileDialog</name>
     <message>
         <source>Copy or Move a File</source>
-        <translation type="unfinished"></translation>
+        <translation>Skopiuj lub Przenieś plik</translation>
     </message>
     <message>
         <source>Read: %1</source>
@@ -445,15 +445,15 @@
     </message>
     <message>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nazwa</translation>
     </message>
     <message>
         <source>Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Rozmiar</translation>
     </message>
     <message>
         <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Typ</translation>
     </message>
     <message>
         <source>Date</source>
@@ -461,7 +461,7 @@
     </message>
     <message>
         <source>Attributes</source>
-        <translation>Atrybuty</translation>
+        <translation>Prawa dostępu</translation>
     </message>
     <message>
         <source>OK</source>
@@ -469,35 +469,35 @@
     </message>
     <message>
         <source>Look &amp;in:</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Przeglądaj w:</translation>
     </message>
     <message>
         <source>File &amp;name:</source>
-        <translation>&amp;Nazwa pliku</translation>
+        <translation>&amp;Lokacja:</translation>
     </message>
     <message>
         <source>File &amp;type:</source>
-        <translation>&amp;Typ pliku</translation>
+        <translation>&amp;Filtr:</translation>
     </message>
     <message>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>W tył</translation>
     </message>
     <message>
         <source>One directory up</source>
-        <translation type="unfinished"></translation>
+        <translation>Katalog wyżej</translation>
     </message>
     <message>
         <source>Create New Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Nowy katalog</translation>
     </message>
     <message>
         <source>List View</source>
-        <translation type="unfinished"></translation>
+        <translation>Skrócony widok</translation>
     </message>
     <message>
         <source>Detail View</source>
-        <translation type="unfinished"></translation>
+        <translation>Szczegółowy widok</translation>
     </message>
     <message>
         <source>Preview File Info</source>
@@ -509,15 +509,15 @@
     </message>
     <message>
         <source>Read-write</source>
-        <translation type="unfinished"></translation>
+        <translation>Pełny dostęp</translation>
     </message>
     <message>
         <source>Read-only</source>
-        <translation type="unfinished"></translation>
+        <translation>Tylko do odczytu</translation>
     </message>
     <message>
         <source>Write-only</source>
-        <translation type="unfinished"></translation>
+        <translation>Tylko do zapisu</translation>
     </message>
     <message>
         <source>Inaccessible</source>
@@ -525,15 +525,15 @@
     </message>
     <message>
         <source>Symlink to File</source>
-        <translation type="unfinished"></translation>
+        <translation>Dowiązanie do Pliku</translation>
     </message>
     <message>
         <source>Symlink to Directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Dowiązanie do Katalogu</translation>
     </message>
     <message>
         <source>Symlink to Special</source>
-        <translation type="unfinished"></translation>
+        <translation>Dowiązanie do Specjalnego</translation>
     </message>
     <message>
         <source>File</source>
@@ -541,11 +541,11 @@
     </message>
     <message>
         <source>Dir</source>
-        <translation>Fold</translation>
+        <translation>Kat</translation>
     </message>
     <message>
         <source>Special</source>
-        <translation type="unfinished"></translation>
+        <translation>Specjalny</translation>
     </message>
     <message>
         <source>Open</source>
@@ -577,47 +577,47 @@
     </message>
     <message>
         <source>Sort by &amp;Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Wg &amp;nazwy</translation>
     </message>
     <message>
         <source>Sort by &amp;Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Wg &amp;rozmiaru</translation>
     </message>
     <message>
         <source>Sort by &amp;Date</source>
-        <translation type="unfinished"></translation>
+        <translation>Wg &amp;daty</translation>
     </message>
     <message>
         <source>&amp;Unsorted</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie&amp;uporządkowane</translation>
     </message>
     <message>
         <source>Sort</source>
-        <translation>Uporządkuj</translation>
+        <translation>Sortowanie</translation>
     </message>
     <message>
         <source>Show &amp;hidden files</source>
-        <translation>Pokaż &amp;ukryte pliki</translation>
+        <translation>Wyświetlaj &amp;ukryte pliki</translation>
     </message>
     <message>
         <source>the file</source>
-        <translation type="unfinished"></translation>
+        <translation>plik</translation>
     </message>
     <message>
         <source>the directory</source>
-        <translation type="unfinished"></translation>
+        <translation>katalog</translation>
     </message>
     <message>
         <source>the symlink</source>
-        <translation type="unfinished"></translation>
+        <translation>dowiązanie</translation>
     </message>
     <message>
         <source>Delete %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń %1</translation>
     </message>
     <message>
         <source>&lt;qt&gt;Are you sure you wish to delete %1 &quot;%2&quot;?&lt;/qt&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;qt&gt;Czy chcesz skasować %1 &quot;%2&quot;?&lt;/qt&gt;</translation>
     </message>
     <message>
         <source>&amp;Yes</source>
@@ -629,15 +629,15 @@
     </message>
     <message>
         <source>New Folder 1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nowy Katalog 1</translation>
     </message>
     <message>
         <source>New Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Nowy katalog</translation>
     </message>
     <message>
         <source>New Folder %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nowy Katalog %1</translation>
     </message>
     <message>
         <source>Find Directory</source>
@@ -645,7 +645,7 @@
     </message>
     <message>
         <source>Directories</source>
-        <translation type="unfinished"></translation>
+        <translation>Katalogi</translation>
     </message>
     <message>
         <source>Save</source>
