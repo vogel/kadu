@@ -496,7 +496,7 @@ void GaduSocketNotifiers::socketEvent()
 	if (!(e = gg_watch_fd(Sess)))
 	{
 		emit error(ConnectionUnknow);
-		gg_free_event(e);
+//		gg_free_event(e);//nulla nie zwalniamy, bo i po co?
 		calls--;
 		return;
 	}
@@ -548,14 +548,10 @@ void GaduSocketNotifiers::socketEvent()
 		else
 		{
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduSocketNotifiers::socketEvent(): recipients_count: %d\n", e->event.msg.recipients_count);
+			uins.append(e->event.msg.sender);
 			if ((e->event.msg.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT)
-			{
-				uins.append(e->event.msg.sender);
 				for (int i = 0; i < e->event.msg.recipients_count; i++)
 					uins.append(e->event.msg.recipients[i]);
-			}
-			else
-				uins.append(e->event.msg.sender);
 			QCString msg((char*)e->event.msg.message);
 			QByteArray formats;
 			formats.duplicate((const char*)e->event.msg.formats, e->event.msg.formats_length);
@@ -564,7 +560,7 @@ void GaduSocketNotifiers::socketEvent()
 		}
 	}
 
-	if (e->type == GG_EVENT_IMAGE_REQUEST)
+	else if (e->type == GG_EVENT_IMAGE_REQUEST)
 	{
 		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "Image request received\n");
 		emit imageRequestReceived(
@@ -573,7 +569,7 @@ void GaduSocketNotifiers::socketEvent()
 			e->event.image_request.crc32);
 	}
 
-	if (e->type == GG_EVENT_IMAGE_REPLY)
+	else if (e->type == GG_EVENT_IMAGE_REPLY)
 	{
 		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "Image reply received\n");
 		emit imageReceived(
@@ -584,33 +580,33 @@ void GaduSocketNotifiers::socketEvent()
 			e->event.image_reply.image);
 	}
 
-	if (e->type == GG_EVENT_STATUS60 || e->type == GG_EVENT_STATUS)
+	else if (e->type == GG_EVENT_STATUS60 || e->type == GG_EVENT_STATUS)
 		emit userStatusChanged(e);
 
-	if (e->type == GG_EVENT_ACK)
+	else if (e->type == GG_EVENT_ACK)
 	{
 		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduSocketNotifiers::socketEvent(): message reached %d (seq %d)\n",
 			e->event.ack.recipient, e->event.ack.seq);
 		emit ackReceived(e->event.ack.seq);
 	}
 
-	if (e->type == GG_EVENT_NOTIFY60)
+	else if (e->type == GG_EVENT_NOTIFY60)
 		emit userlistReceived(e);
 
-	if (e->type == GG_EVENT_PUBDIR50_SEARCH_REPLY
+	else if (e->type == GG_EVENT_PUBDIR50_SEARCH_REPLY
 		|| e->type == GG_EVENT_PUBDIR50_READ || e->type == GG_EVENT_PUBDIR50_WRITE)
 		emit pubdirReplyReceived(e->event.pubdir50);
 
-	if (e->type == GG_EVENT_USERLIST)
+	else if (e->type == GG_EVENT_USERLIST)
 		emit userlistReplyReceived(e->event.userlist.type, e->event.userlist.reply);
 
-	if (e->type == GG_EVENT_CONN_SUCCESS)
+	else if (e->type == GG_EVENT_CONN_SUCCESS)
 		emit connected();
 
-	if (e->type == GG_EVENT_CONN_FAILED)
+	else if (e->type == GG_EVENT_CONN_FAILED)
 		connectionFailed(e->event.failure);
 
-	if (e->type == GG_EVENT_DISCONNECT)
+	else if (e->type == GG_EVENT_DISCONNECT)
 		emit disconnected();
 
 	// TODO: to mi siê nie podoba
@@ -800,12 +796,12 @@ GaduProtocol::GaduProtocol(QObject *parent, const char *name) : QObject(parent, 
 	connect(SocketNotifiers, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)), this, SLOT(newResults(gg_pubdir50_t)));
 	connect(SocketNotifiers, SIGNAL(systemMessageReceived(QString &, QDateTime &, int, void *)),
 		this, SLOT(systemMessageReceived(QString &, QDateTime &, int, void *)));
-	connect(SocketNotifiers, SIGNAL(userlistReceived(struct gg_event *)),
-		this, SLOT(userListReceived(struct gg_event *)));
+	connect(SocketNotifiers, SIGNAL(userlistReceived(const struct gg_event *)),
+		this, SLOT(userListReceived(const struct gg_event *)));
 	connect(SocketNotifiers, SIGNAL(userlistReplyReceived(char, char *)),
 		this, SLOT(userListReplyReceived(char, char *)));
-	connect(SocketNotifiers, SIGNAL(userStatusChanged(struct gg_event *)),
-		this, SLOT(userStatusChanged(struct gg_event *)));
+	connect(SocketNotifiers, SIGNAL(userStatusChanged(const struct gg_event *)),
+		this, SLOT(userStatusChanged(const struct gg_event *)));
 
 	kdebugf2();
 }
@@ -1362,10 +1358,10 @@ int GaduProtocol::sendMessageRichText(const UinsList& uins,const char* msg,unsig
 		seq = gg_send_message_richtext(Sess, GG_CLASS_CHAT,
 				uins[0], (unsigned char*)msg,
 				myLastFormats, myLastFormatsLength);
-	kdebugf2();
 
 	SocketNotifiers->checkWrite();
 
+	kdebugf2();
 	return seq;
 }
 
@@ -1382,11 +1378,12 @@ void GaduProtocol::sendUserList()
 		if ((*i).uin)
 			j++;
 
-	if (!j) {
+	if (!j)
+	{
 		gg_notify_ex(Sess, NULL, NULL, 0);
 		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "send_userlist(): Userlist is empty\n");
 		return;
-		}
+	}
 
 	uins = (UinType *) malloc(j * sizeof(UinType));
 	types = (char *) malloc(j * sizeof(char));
@@ -1824,7 +1821,7 @@ bool GaduProtocol::doImportUserList()
 	return success;
 }
 
-void GaduProtocol::userListReceived(struct gg_event *e)
+void GaduProtocol::userListReceived(const struct gg_event *e)
 {
 	kdebugf();
 
@@ -1959,7 +1956,7 @@ void GaduProtocol::userListReplyReceived(char type, char *reply)
 	kdebugf2();
 }
 
-void GaduProtocol::userStatusChanged(struct gg_event *e)
+void GaduProtocol::userStatusChanged(const struct gg_event *e)
 {
 	kdebugf();
 
@@ -2016,7 +2013,6 @@ void GaduProtocol::userStatusChanged(struct gg_event *e)
 	if (user.status == GG_STATUS_NOT_AVAIL || user.status == GG_STATUS_NOT_AVAIL_DESCR)
 	{
 		user.ip.setAddress((unsigned int)0);
-		userlist.addDnsLookup(user.uin, user.ip);
 		user.port = 0;
 		user.version = 0;
 		user.image_size = 0;
@@ -2024,11 +2020,11 @@ void GaduProtocol::userStatusChanged(struct gg_event *e)
 	else
 	{
 		user.ip.setAddress(ntohl(remote_ip));
-		userlist.addDnsLookup(user.uin, user.ip);
 		user.port = remote_port;
 		user.version = version;
 		user.image_size = image_size;
 	}
+	userlist.addDnsLookup(user.uin, user.ip);
 
 	emit userStatusChanged(user, oldStatus);
 	emit userListChanged();
@@ -2151,11 +2147,11 @@ void GaduProtocol::onCreateConfigDialog()
 		panebox->setEnabled(false);
 
 	if (!config_file.readBoolEntry("Notify", "NotifyStatusChange"))
-		{
+	{
 		b_notifyall->setEnabled(false);
 		panebox->setEnabled(false);
 		notifybox->setEnabled(false);
-		}
+	}
 
 	QObject::connect(b_notifyall, SIGNAL(toggled(bool)), this, SLOT(ifNotifyAll(bool)));
 	QObject::connect(b_notifyglobal, SIGNAL(toggled(bool)), this, SLOT(ifNotifyGlobal(bool)));
@@ -2203,15 +2199,10 @@ void GaduProtocol::onDestroyConfigDialog()
 	QListBox *e_availusers= ConfigDialog::getListBox("Notify", "available");
 	QListBox *e_notifies= ConfigDialog::getListBox("Notify", "track");
 
-	QString tmp;
-	for (i = 0; i < e_notifies->count(); i++) {
-		tmp = e_notifies->text(i);
-		userlist.byAltNick(tmp).notify = true;
-		}
-	for (i = 0; i < e_availusers->count(); i++) {
-		tmp = e_availusers->text(i);
-		userlist.byAltNick(tmp).notify = false;
-		}
+	for (i = 0; i < e_notifies->count(); i++)
+		userlist.byAltNick(e_notifies->text(i)).notify = true;
+	for (i = 0; i < e_availusers->count(); i++)
+		userlist.byAltNick(e_availusers->text(i)).notify = false;
 
 	/* and now, save it */
 	userlist.writeToFile();
@@ -2222,18 +2213,15 @@ void GaduProtocol::onDestroyConfigDialog()
 void GaduProtocol::ifNotifyGlobal(bool toggled)
 {
 	QCheckBox *b_notifyall= ConfigDialog::getCheckBox("Notify", "Notify about all users");
-	QVGroupBox *notifybox= ConfigDialog::getVGroupBox("Notify", "Notify options");
-	QGrid *panebox = ConfigDialog::getGrid("Notify","listboxy");
 
 	b_notifyall->setEnabled(toggled);
-	panebox->setEnabled(toggled && !b_notifyall->isChecked());
-	notifybox->setEnabled(toggled);
+	ConfigDialog::getGrid("Notify","listboxy")->setEnabled(toggled && !b_notifyall->isChecked());
+	ConfigDialog::getVGroupBox("Notify", "Notify options")->setEnabled(toggled);
 }
 
 void GaduProtocol::ifNotifyAll(bool toggled)
 {
-	QGrid *panebox = ConfigDialog::getGrid("Notify","listboxy");
-	panebox->setEnabled(!toggled);
+	ConfigDialog::getGrid("Notify","listboxy")->setEnabled(!toggled);
 }
 
 void GaduProtocol::_Left2( QListBoxItem *item)
@@ -2254,12 +2242,12 @@ void GaduProtocol::_Left(void)
 	QStringList tomove;
 	unsigned int i;
 
-	for(i=0;i<e_notifies->count();i++){
+	for(i=0; i<e_notifies->count(); i++)
 		if (e_notifies->isSelected(i))
 			tomove+=e_notifies->text(i);
-	}
 
-	for(i=0;i<tomove.size();i++){
+	for(i=0; i<tomove.size(); i++)
+	{
 		e_availusers->insertItem(tomove[i]);
 		e_notifies->removeItem(e_notifies->index(e_notifies->findItem(tomove[i])));
 	}
@@ -2276,12 +2264,12 @@ void GaduProtocol::_Right(void)
 	QStringList tomove;
 	unsigned int i;
 
-	for(i=0;i<e_availusers->count();i++){
+	for(i=0; i<e_availusers->count(); i++)
 		if (e_availusers->isSelected(i))
 			tomove+=e_availusers->text(i);
-	}
 
-	for(i=0;i<tomove.size();i++){
+	for(i=0; i<tomove.size(); i++)
+	{
 		e_notifies->insertItem(tomove[i]);
 		e_availusers->removeItem(e_availusers->index(e_availusers->findItem(tomove[i])));
 	}

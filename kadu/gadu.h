@@ -225,9 +225,9 @@ class GaduSocketNotifiers : public SocketNotifiers
 		void messageReceived(int, UinsList, QCString &, time_t, QByteArray &);
 		void pubdirReplyReceived(gg_pubdir50_t);
 		void systemMessageReceived(QString &, QDateTime &, int, void *);
-		void userlistReceived(struct gg_event *);
+		void userlistReceived(const struct gg_event *);
 		void userlistReplyReceived(char, char *);
-		void userStatusChanged(struct gg_event *);
+		void userStatusChanged(const struct gg_event *);
 };
 
 // ------------------------------------
@@ -372,9 +372,9 @@ class GaduProtocol : public QObject
 		void pingNetwork();
 		void newResults(gg_pubdir50_t res);
 		void systemMessageReceived(QString &, QDateTime &, int, void *);
-		void userListReceived(struct gg_event *);
+		void userListReceived(const struct gg_event *);
 		void userListReplyReceived(char, char *);
-		void userStatusChanged(struct gg_event *);
+		void userStatusChanged(const struct gg_event *);
 
 		void iWantGoOnline(const QString &);
 		void iWantGoBusy(const QString &);
