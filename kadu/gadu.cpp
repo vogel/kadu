@@ -2042,11 +2042,11 @@ bool GaduProtocol::doExportUserList(const UserList& userList)
 	char *dup = strdup(unicode2latin(contacts));
 
 	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::exportUserList():\n%s\n", dup);
-	free(dup);
+//	free(dup);
 
 	UserListClear = false;
 
-	dup = strdup(unicode2std(contacts));
+//	dup = strdup(unicode2std(contacts));
 	bool success=(gg_userlist_request(Sess, GG_USERLIST_PUT, dup)!=-1);
 	if (!success)
 	{
