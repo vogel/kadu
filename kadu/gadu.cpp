@@ -12,6 +12,7 @@
 #include "debug.h"
 #include "events.h"
 #include "kadu.h"
+#include "chat.h"
 
 #include <netinet/in.h>
 
