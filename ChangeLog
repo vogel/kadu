@@ -4,6 +4,7 @@
 * okno rozmowy: PAGEUP i PAGEDOWN nie przesuwaj± historii rozmowy
 * je¶li okno wyboru statusu jest otwarte to klikniêcie informacji o statusie
   zamyka to okno
+* Geometry w kadu.conf zgodne z wersjami kadu wcze¶niejszymi ni¿ 0.3.3-rc1
 
 +++ wersja 0.3.3-rc1
 * sms.cpp ma szansê kompilowaæ siê na Qt < 3.0.5

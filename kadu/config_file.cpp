@@ -163,8 +163,8 @@ void ConfigFile::writeEntry(const QString &name, const QRect &value) {
 	QStringList string;
 	string.append(QString::number(value.left()));
 	string.append(QString::number(value.top()));
-	string.append(QString::number(value.right()));
-	string.append(QString::number(value.bottom()));
+	string.append(QString::number(value.width()));
+	string.append(QString::number(value.height()));
 	changeEntry(name, string.join(","));
 }
 
@@ -234,7 +234,7 @@ QRect ConfigFile::readRectEntry(const QString &name, const QRect *def) const {
 	QString string = getEntry(name);
 	QStringList stringlist;
 	QRect rect;
-	int l, t, r, b;
+	int l, t, w, h;
 	bool ok;
 
 	if (string == QString::null)
@@ -248,13 +248,13 @@ QRect ConfigFile::readRectEntry(const QString &name, const QRect *def) const {
 	t = stringlist[1].toInt(&ok);
 	if (!ok)
 		return def ? *def : QRect(0, 0, 0, 0);
-	r = stringlist[2].toInt(&ok);
+	w = stringlist[2].toInt(&ok);
 	if (!ok)
 		return def ? *def : QRect(0, 0, 0, 0);
-	b = stringlist[3].toInt(&ok);
+	h = stringlist[3].toInt(&ok);
 	if (!ok)
 		return def ? *def : QRect(0, 0, 0, 0);
-	rect.setCoords(l, t, r, b);
+	rect.setRect(l, t, w, h);
 	return rect;
 }
 
