@@ -3,19 +3,19 @@
     <name>@default</name>
     <message>
         <source>General</source>
-        <translation>Ogólne</translation>
+        <translation>Generale</translation>
     </message>
     <message>
         <source>Enable autoaway</source>
-        <translation>Automatyczny status &quot;zaraz wracam&quot;</translation>
+        <translation>&quot;Torno subito&quot; automatico</translation>
     </message>
     <message>
         <source>Set status to away after </source>
-        <translation>Zmień status po</translation>
+        <translation>cambia a &quot;Torno subito&quot; dopo</translation>
     </message>
     <message>
         <source>Check idle every </source>
-        <translation> Sprawdź bezczynność co:</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
