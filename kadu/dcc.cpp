@@ -114,6 +114,11 @@ void dccSocketClass::watchDcc(int check) {
 	case GG_EVENT_DCC_NEED_FILE_INFO:
 	    fprintf(stderr,"KK dccSocketClass::watchDcc:  GG_EVENT_DCC_NEED_FILE_INFO! %d %d\n", dccsock->uin, dccsock->peer_uin);
 	    f = selectFile();
+      if (f == NULL) {
+  	    fprintf(stderr, "KK dccSocketClass::watchDcc: Abort transfer\n");
+  	    setState(DCC_SOCKET_TRANSFER_ERROR);
+  	    return;
+        }
 	    gg_dcc_fill_file_info(dccsock, f.local8Bit());
 	    dialog = new DccGet(this, DCC_TYPE_SEND);
 	    dialog->printFileInfo(dccsock);
@@ -190,8 +195,13 @@ QString dccSocketClass::selectFile(void) {
     do {
 	f = QFileDialog::getOpenFileName((char *)dccsock->file_info.filename, QString::null, 0, i18n("open file"), i18n("Select file location"));
 	if (f.isEmpty())
-	    QMessageBox::warning(kadu, i18n("File not specified"), i18n("Please specify a file") );
-    } while (f.isEmpty());
+    switch (QMessageBox::warning(kadu, i18n("File not specified"), i18n("Please specify a file"), i18n("OK"), i18n("Abort"), QString::null, 0, 1) ) {
+    	case 0: // Yes?
+  	    break;
+    	case 1:
+  	    return NULL;
+     }
+      } while (f.isEmpty());
 
     return f;
 }
