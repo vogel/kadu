@@ -135,6 +135,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawione wy¶wietlanie emotikonów i obrazków w panelu + konfiguracja
   emotikonów (domy¶lnie wy³±czone) (joi)
 * przwrócone dzia³anie powiadomieñ po zmianach Vogela (joi)
+* usuniêcie pojawiaj±cego siê czasem &nbsp; w panelu (joi)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

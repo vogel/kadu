@@ -1396,7 +1396,7 @@ QString HttpClient::encode(const QString& text)
 
 void HtmlDocument::escapeText(QString& text)
 {
-	text.replace(QRegExp("&"), "&amp;");
+	text.replace(QRegExp("&[^nbsp;]"), "&amp;");
 	text.replace(QRegExp("<"), "&lt;");
 	text.replace(QRegExp(">"), "&gt;");
 	text.replace(QRegExp("\""), "&quot;");
