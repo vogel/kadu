@@ -270,6 +270,16 @@ AC_SUBST(GSM_INCLUDES)
 
 MY_SUBDIRS="$MY_SUBDIRS kadu translations varia"
 
+# Loadable modules support
+AC_ARG_ENABLE(modules,[  --enable-modules        compile with experimental loadable modules support])
+if test -z "$enable_modules"; then
+	enable_modules=no
+fi
+if test "$enable_modules" = "yes"; then
+	AC_DEFINE(MODULES_ENABLED,1,[Define if loadable modules support is enabled])
+fi
+AM_CONDITIONAL(MODULES,[test "$enable_modules" = "yes"])
+
 # pthread support
 AC_ARG_WITH(pthread,[  --without-pthread       do not use pthread in libgadu resolver])
 if test -z "$with_pthread"; then
@@ -344,6 +354,7 @@ echo "   Use pthread resolving in libgadu:   $with_pthread"
 echo "   Compile with debug symbols:         $enable_debug"
 echo "   Link with existing libgadu:         $with_existing_libgadu"
 echo "   Voice talk (libgsm) support:        $enable_voice"
+echo "   Loadable modules support:           $enable_modules"
 echo "   OpenSSL encryption support:         $have_openssl"
 echo "   Distribution type information:      $enable_dist_info"
 echo "   Additional c++ compiler flags:      $user_cxxflags"

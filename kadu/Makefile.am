@@ -19,7 +19,7 @@ ignore.cpp ignore.h ignore_moc.cpp \
 kadu.cpp kadu.h kadu_moc.cpp \
 main.cpp \
 message_box.cpp message_box.h message_box_moc.cpp \
-misc.cpp misc.h misc_moc.cpp\
+misc.cpp misc.h misc_moc.cpp \
 password.cpp password.h password_moc.cpp \
 pending_msgs.cpp pending_msgs.h pending_msgs_moc.cpp \
 personal_info.cpp personal_info.h personal_info_moc.cpp \
@@ -35,9 +35,17 @@ userlist.cpp userlist.h userlist_moc.cpp \
 updates.cpp updates.h
 
 EXTRA_kadu_SOURCES = \
+modules.cpp modules.h modules_moc.cpp \
 voice.cpp voice.h voice_moc.cpp \
 voice_dsp.cpp voice_dsp.h voice_dsp_moc.cpp \
 simlite.c simlite.h
+
+if MODULES
+MODULES_OBJS = \
+modules.$(OBJEXT) modules_moc.$(OBJEXT)
+else
+MODULES_OBJS =
+endif
 
 if VOICE
 VOICE_OBJS = \
@@ -56,7 +64,7 @@ endif
 #kadu_METASOURCES = AUTO
 
 INCLUDES = $(XFREE_INCLUDES) $(QT_INCLUDES) $(OPENSSL_INCLUDES) $(GSM_INCLUDES) $(GADU_INCLUDES)
-kadu_LDADD = $(VOICE_OBJS) $(SIM) $(PTHREAD_LIBS) $(PNG_LIBS) $(QT_LIBS) $(GSM_LIBS) $(GADU_LIBS)
+kadu_LDADD = $(MODULES_OBJS) $(VOICE_OBJS) $(SIM) $(PTHREAD_LIBS) $(PNG_LIBS) $(QT_LIBS) $(GSM_LIBS) $(GADU_LIBS)
 kadu_LDFLAGS = $(PTHREAD_LDFLAGS) $(OPENSSL_LIBS)
 kadu_DEPENDENCIES = $(VOICE_OBJS) $(SIM)
 

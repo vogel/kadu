@@ -20,6 +20,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dalsze prace nad ChatManager'em i porzadki w kodzie obslugi Chatow (adrian)
 * spore porzadki w kadu.cpp/h, wydzielenie klasy GaduProtocol - gadu.cpp/h,
   w ktorej beda wszystkie funkcje specyficzne dla gg (adrian)
+* eksperymentalna obs³uga loadable modules. nowa opcja --enable-modules
+  w configure (adrian)
 
 +++ wersja 0.3.6 (22.11.2003)
 * je¶li klikniemy na jaki¶ kontakt w userboxie, od którego otrzymali¶my jak±¶

@@ -61,6 +61,9 @@
 #include "gadu.h"
 #include "../config.h"
 
+#ifdef MODULES_ENABLED
+#include "modules.h"
+#endif
 
 #define GG_USER_OFFLINE	0x01
 #define	GG_USER_NORMAL	0x03
@@ -308,7 +311,9 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	AutoAwayTimer::initModule();
 	SoundSlots::initModule();
 	EventConfigSlots::initModule();
-
+#ifdef MODULES_ENABLED
+	ModulesManager::initModule();
+#endif
 
 	ConfigDialog::registerSlotOnCreate(kaduslots, SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnDestroy(kaduslots, SLOT(onDestroyConfigDialog()));
