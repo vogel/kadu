@@ -113,6 +113,7 @@
 #include "message.h"
 #include "pending_msgs.h"
 #include "dock_widget.h"
+#include "updates.h"
 //
 
 extern void ackHandler(int);
@@ -159,6 +160,7 @@ QSocketNotifier *kadusnr = NULL;
 QSocketNotifier *kadusnw = NULL;
 QSocketNotifier *dccsnr = NULL;
 QSocketNotifier *dccsnw = NULL;
+UpdatesThread *ut;
 
 char **gg_xpm[] = {gg_act_xpm, gg_actdescr_xpm, gg_busy_xpm, gg_busydescr_xpm,
 	gg_invi_xpm, gg_invidescr_xpm, gg_inact_xpm, gg_inactdescr_xpm, gg_stop_xpm};
@@ -495,6 +497,9 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	autostatus_timer=new AutoStatusTimer(this);
   if(config.autoaway)
     autoaway_timer=new AutoAwayTimer(this);
+	
+	ut = new UpdatesThread(config.uin, QString("0.3.3"));
+	ut->start();
 }
 
 void Kadu::refreshGroupTabBar()
