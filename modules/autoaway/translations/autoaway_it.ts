@@ -15,14 +15,10 @@
     </message>
     <message>
         <source>Check idle every </source>
-        <translation type="unfinished"></translation>
+        <translation>Controlla  Iddle ogni</translation>
     </message>
 </context>
 <context>
     <name>SearchDialog</name>
-    <message>
-        <source></source>
-        <translation></translation>
-    </message>
 </context>
 </TS>

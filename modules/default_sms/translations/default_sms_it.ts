@@ -20,10 +20,6 @@
 </context>
 <context>
     <name>SearchDialog</name>
-    <message>
-        <source></source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>SmsEraGateway</name>
@@ -76,7 +72,7 @@
     <name>SmsGateway</name>
     <message>
         <source>Network error. Provider gateway page is probably unavailable</source>
-        <translation>Errore della rete. La pagina del Gateway del fornitore è probabilmente non disponibile</translation>
+        <translation>Errore della rete. La pagina del Gateway del fornitore probabilmente non è disponibile</translation>
     </message>
 </context>
 <context>

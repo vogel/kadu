@@ -593,27 +593,27 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
     </message>
     <message>
         <source>Local TCP port:</source>
-        <translation type="unfinished"></translation>
+        <translation>Porta TCP locale:</translation>
     </message>
     <message>
         <source>Don&apos;t save status changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Non memorizzi cambiamenti di status</translation>
     </message>
     <message>
         <source>Lock file in profile directory exists. Another Kadu probably running.</source>
-        <translation type="unfinished"></translation>
+        <translation>Trovato file bloccante. Probabilmente Kadu è già in esecuzione.</translation>
     </message>
     <message>
         <source>Force running Kadu (not recommended).</source>
-        <translation type="unfinished"></translation>
+        <translation>Lanciare Kadu comunque (non raccomandato).</translation>
     </message>
     <message>
         <source>Quit.</source>
-        <translation type="unfinished"></translation>
+        <translation>Esci.</translation>
     </message>
     <message>
         <source>Show status button</source>
-        <translation type="unfinished"></translation>
+        <translation>Visualizza pulsante status</translation>
     </message>
 </context>
 <context>
@@ -830,7 +830,7 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
     </message>
     <message>
         <source>Apply</source>
-        <translation type="unfinished"></translation>
+        <translation>Applica</translation>
     </message>
 </context>
 <context>
@@ -1533,15 +1533,15 @@ Controllare connessione a Internet.</translation>
     </message>
     <message>
         <source>Static</source>
-        <translation type="unfinished">Statico</translation>
+        <translation>Statico</translation>
     </message>
     <message>
         <source>Installed</source>
-        <translation type="unfinished"></translation>
+        <translation>Istallato</translation>
     </message>
     <message>
         <source>Loaded</source>
-        <translation type="unfinished"></translation>
+        <translation>Caricato</translation>
     </message>
 </context>
 <context>
@@ -1566,16 +1566,17 @@ Probabilmente Modulo non è compatibile.</translation>
     </message>
     <message>
         <source>Module %1 is already active</source>
-        <translation type="unfinished"></translation>
+        <translation>Modulo %1 è già attivo</translation>
     </message>
     <message>
         <source>Cannot load %1 module library.:
 %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile caricare modulo libreria %1:
+%2</translation>
     </message>
     <message>
         <source>Module %1 cannot be deactivated because it is used now</source>
-        <translation type="unfinished"></translation>
+        <translation>Modulo %1 non può essere disattivato perchè in uso</translation>
     </message>
 </context>
 <context>
@@ -1954,51 +1955,51 @@ Click dx - cambia status</translation>
     <name>UserBox</name>
     <message>
         <source>&lt;i&gt;Available&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;Disponibile&lt;/i&gt;</translation>
     </message>
     <message>
         <source>&lt;i&gt;Busy&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;Occupato&lt;/i&gt;</translation>
     </message>
     <message>
         <source>&lt;i&gt;Mobile:&lt;/i&gt;&lt;b&gt; </source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;Cell:&lt;/i&gt;&lt;b&gt;</translation>
     </message>
     <message>
         <source>&lt;nobr&gt;&lt;i&gt;Not available&lt;/i&gt;&lt;/nobr&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;nobr&gt;&lt;i&gt;Non disponibile&lt;/i&gt;&lt;/nobr&gt;</translation>
     </message>
     <message>
         <source>&lt;i&gt;Invisible&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;Invisibile&lt;/i&gt;</translation>
     </message>
     <message>
         <source>&lt;i&gt;Invisible &lt;b&gt;(d.)&lt;/b&gt;&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;Invisibile&lt;b&gt;(desc.)&lt;/b&gt;&lt;/i&gt;</translation>
     </message>
     <message>
         <source>&lt;nobr&gt;&lt;i&gt;Busy &lt;b&gt;(d.)&lt;/b&gt;&lt;/i&gt;&lt;/nobr&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;nobr&gt;&lt;i&gt;Occupato &lt;b&gt;(desc.)&lt;/b&gt;&lt;/nobr&gt;</translation>
     </message>
     <message>
         <source>&lt;nobr&gt;&lt;i&gt;Not available &lt;b&gt;(d.)&lt;/b&gt;&lt;/i&gt;&lt;/nobr&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;nobr&gt;&lt;i&gt;Non disponibile &lt;b&gt;(desc.)&lt;/b&gt;&lt;/i&gt;&lt;/nobr&gt;</translation>
     </message>
     <message>
         <source>&lt;nobr&gt;&lt;i&gt;Available &lt;b&gt;(d.)&lt;/b&gt;&lt;/i&gt;&lt;/nobr&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;nobr&gt;&lt;i&gt;Disponibile &lt;b&gt;(desc.)&lt;/b&gt;&lt;/i&gt;&lt;/nobr&gt;</translation>
     </message>
     <message>
         <source>&lt;nobr&gt;&lt;i&gt;Blocking&lt;/i&gt;&lt;/nobr&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;nobr&gt;&lt;i&gt;Bloccato&lt;/i&gt;&lt;/nobr&gt;</translation>
     </message>
     <message>
         <source>&lt;nobr&gt;&lt;i&gt;Unknown status&lt;/i&gt;&lt;/nobr&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;nobr&gt;&lt;i&gt;Status sconosciuto&lt;/i&gt;&lt;/nobr&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Descrizione:&lt;/b&gt;&lt;br/&gt;</translation>
     </message>
 </context>
 <context>

@@ -33,23 +33,19 @@ e scrivi la stringa corretta. I parametri devono essere separati da spazio. Il p
     </message>
     <message>
         <source>Gateways priority</source>
-        <translation type="unfinished"></translation>
+        <translation>Priorità delle Gateway</translation>
     </message>
     <message>
         <source>Up</source>
-        <translation type="unfinished"></translation>
+        <translation>Sposta Sù</translation>
     </message>
     <message>
         <source>Down</source>
-        <translation type="unfinished"></translation>
+        <translation>Sposta giù</translation>
     </message>
 </context>
 <context>
     <name>SearchDialog</name>
-    <message>
-        <source></source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>Sms</name>
@@ -124,18 +120,18 @@ e scrivi la stringa corretta. I parametri devono essere separati da spazio. Il p
     <name>SmsSender</name>
     <message>
         <source>Mobile number is incorrect</source>
-        <translation>Il numero di telefono è errato</translation>
+        <translation>Il numero di telefono errato</translation>
     </message>
     <message>
         <source>Mobile number is incorrect or gateway is not available</source>
-        <translation type="unfinished"></translation>
+        <translation>Numero telefono errato o gateway non è disponibile</translation>
     </message>
 </context>
 <context>
     <name>SmsSlots</name>
     <message>
         <source>Send SMS</source>
-        <translation type="unfinished"></translation>
+        <translation>Manda SMS</translation>
     </message>
 </context>
 </TS>

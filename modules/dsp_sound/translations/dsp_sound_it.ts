@@ -3,11 +3,11 @@
     <name>@default</name>
     <message>
         <source>Output device</source>
-        <translation type="unfinished"></translation>
+        <translation>Dispositivo uscita</translation>
     </message>
     <message>
         <source>Path:</source>
-        <translation type="unfinished"></translation>
+        <translation>Percorso:</translation>
     </message>
 </context>
 </TS>
