@@ -203,7 +203,7 @@ void UserlistImport::userlistReplyReceivedSlot(char type, char *reply) {
 	QStringList strlist;
 	strlist = QStringList::split("\r\n", importreply, true);
 	kdebug("ImportUserlist::userlistReplyReceivedSlot()\n%s\n",
-		importreply.latin1());
+		unicode2latin(importreply).data());
 	QStringList fieldlist;
 	// this is temporary array dedicated to Adrian
 	QString tmparray[16];
@@ -315,8 +315,11 @@ void UserlistExport::startTransfer() {
 
 	QString contacts;
 	contacts = saveContacts();
-	
-	char *con2;	
+
+	char *con2;
+	con2 = (char *)strdup(unicode2latin(contacts).data());
+	kdebug("UserlistExport::startTransfer():\n%s\n", con2);
+	free(con2);
 	con2 = (char *)strdup(unicode2cp(contacts).data());
 	
 	if (gg_userlist_request(sess, GG_USERLIST_PUT, con2) == -1) {
