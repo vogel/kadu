@@ -371,7 +371,7 @@ void VoiceManager::resetDecoder()
 void VoiceManager::playGsmSampleReceived(char *data, int length)
 {
 	kdebugf();
-	const char *pos = data;
+	char *pos = data;
 	int outlen = 320;
 	gsm_signal output[160];
 	resetDecoder();
@@ -401,7 +401,7 @@ void VoiceManager::playGsmSampleReceived(char *data, int length)
 void VoiceManager::recordSampleReceived(char *data, int length)
 {
 	kdebugf();
-	const char *pos = data;
+	char *pos = data;
 	int inlen = 320;
 	gsm_signal input[160];
 	resetCoder();
@@ -409,7 +409,8 @@ void VoiceManager::recordSampleReceived(char *data, int length)
 	++data;
 	++pos;
 	--length;
-	while (pos <= (data + length - 65)) {
+	while (pos <= (data + length - 65))
+	{
 		sound_manager->recordSample(device, input, inlen);
 		gsm_encode(voice_enc, input, (gsm_byte *) pos);
 		pos += 32;
@@ -533,6 +534,8 @@ void VoiceManager::connectionBroken(DccSocket* socket)
 	VoiceChatDialog *dialog = VoiceChatDialog::bySocket(socket);
 	if (dialog != NULL)
 		socket->setState(DCC_SOCKET_VOICECHAT_DISCARDED);
+	else
+		kdebugm(KDEBUG_INFO, "not my socket\n");
 	kdebugf2();
 }
 
@@ -558,6 +561,8 @@ void VoiceManager::dccError(DccSocket* socket)
 					GG_SESSION_DCC_VOICE, true);
 		}
 	}
+	else
+		kdebugm(KDEBUG_INFO, "not my socket\n");
 	kdebugf2();
 }
 
@@ -607,6 +612,8 @@ void VoiceManager::socketDestroying(DccSocket* socket)
 			direct.remove(peer_uin);
 		delete dialog;
 	}
+	else
+		kdebugm(KDEBUG_INFO, "not my socket\n");
 
 	kdebugf2();
 }
@@ -618,6 +625,8 @@ void VoiceManager::setState(DccSocket* socket)
 	VoiceChatDialog *dialog = VoiceChatDialog::bySocket(socket);
 	if (dialog != NULL)
 		dialog->chatFinished = true;
+	else
+		kdebugm(KDEBUG_INFO, "not my socket\n");
 
 	kdebugf2();
 }

@@ -315,6 +315,8 @@ void FileTransferManager::connectionBroken(DccSocket* socket)
 	kdebugf();
 	if (FileTransferDialog::bySocket(socket) != NULL)
 		socket->setState(DCC_SOCKET_TRANSFER_ERROR);
+	else
+		kdebugm(KDEBUG_INFO, "not my socket\n");
 	kdebugf2();
 }
 
@@ -337,6 +339,8 @@ void FileTransferManager::dccError(DccSocket* socket)
 					GG_SESSION_DCC_SEND, true);
 		}
 	}
+	else
+		kdebugm(KDEBUG_INFO, "not my socket\n");
 	kdebugf2();
 }
 
@@ -477,6 +481,8 @@ void FileTransferManager::noneEvent(DccSocket* socket)
 	FileTransferDialog *dialog=FileTransferDialog::bySocket(socket);
 	if (dialog != NULL)
 		dialog->updateFileInfo();
+	else
+		kdebugm(KDEBUG_INFO, "not my socket\n");
 
 	kdebugf2();
 }
@@ -488,6 +494,8 @@ void FileTransferManager::dccDone(DccSocket* socket)
 	FileTransferDialog *dialog=FileTransferDialog::bySocket(socket);
 	if (dialog != NULL)
 		dialog->updateFileInfo();
+	else
+		kdebugm(KDEBUG_INFO, "not my socket\n");
 
 	kdebugf2();
 }
@@ -499,6 +507,8 @@ void FileTransferManager::setState(DccSocket* socket)
 	FileTransferDialog *dialog=FileTransferDialog::bySocket(socket);
 	if (dialog != NULL)
 		dialog->dccFinished = true;
+	else
+		kdebugm(KDEBUG_INFO, "not my socket\n");
 
 	kdebugf2();
 }
@@ -515,6 +525,8 @@ void FileTransferManager::socketDestroying(DccSocket* socket)
 			direct.remove(peer_uin);
 		delete dialog;
 	}
+	else
+		kdebugm(KDEBUG_INFO, "not my socket\n");
 
 	kdebugf2();
 }
