@@ -147,7 +147,15 @@ void UserBox::mouseMoveEvent(QMouseEvent* e)
 {
     if ((e->state() & LeftButton)&&itemAt(e->pos()))
     {
-        QDragObject* d = new QTextDrag(itemAt(e->pos())->text(),this);
+    	QString drag_text;
+	for(int i=0; i<count(); i++)
+		if(isSelected(i))
+		{
+			if(drag_text!="")
+				drag_text+="\n";
+			drag_text+=item(i)->text();
+		};
+        QDragObject* d = new QTextDrag(drag_text,this);
 	d->dragCopy();
     }
     else

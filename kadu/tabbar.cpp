@@ -273,10 +273,11 @@ void KaduTabBar::dragEnterEvent(QDragEnterEvent* e)
 void KaduTabBar::dropEvent(QDropEvent* e)
 {
 	kdebug("KaduTabBar::dropEvent()\n");
-	QString altnick;
-	if(dynamic_cast<UserBox*>(e->source()) && QTextDrag::decode(e,altnick)) {
+	QString altnicks;
+	if(dynamic_cast<UserBox*>(e->source()) && QTextDrag::decode(e,altnicks)) {
+		QString group;
 		if(selectTab(e->pos()))
-			userlist.byAltNick(altnick).setGroup(selectTab(e->pos())->text());
+			group=selectTab(e->pos())->text();
 		else {
 			bool ok;
 			QStringList list;
@@ -284,11 +285,15 @@ void KaduTabBar::dropEvent(QDropEvent* e)
 				list << tabAt(i)->text();
 			QString text = QInputDialog::getItem(i18n("Add new group"), i18n("Name of new group:"),
 				list, 0, true, &ok, 0);
-			if (ok && !text.isEmpty())
-				userlist.byAltNick(altnick).setGroup(text);
+			if ((!ok) || text.isEmpty())
+				return;
+			group=text;		
 		}
-//bardzo nie wygodne, trzeba poprawiæ writeToFile !! ta funkcja jest za wolna
-//trzeba dodaæ mozliwo¶æ zmiany danych tylko jednego user !!
-	userlist.writeToFile();
+		QStringList altnick_list=QStringList::split("\n",altnicks);
+		for(int i=0; i<altnick_list.count(); i++)
+			userlist.byAltNick(altnick_list[i]).setGroup(group);
+		// bardzo niewygodne, trzeba poprawiæ writeToFile !! ta funkcja jest za wolna
+		// trzeba dodaæ mozliwo¶æ zmiany danych tylko jednego user !!
+		userlist.writeToFile();
 	}
 };
