@@ -337,7 +337,7 @@
     </message>
     <message>
         <source>A&amp;lpha channel:</source>
-        <translation type="unfinished"></translation>
+        <translation>Kanał al&amp;fa:</translation>
     </message>
     <message>
         <source>&amp;Basic colors</source>
@@ -349,7 +349,7 @@
     </message>
     <message>
         <source>&amp;Define Custom Colors &gt;&gt;</source>
-        <translation>&amp;Definiuj Własny Kolor &gt;&gt;</translation>
+        <translation>&amp;Definiuj własny kolor &gt;&gt;</translation>
     </message>
     <message>
         <source>OK</source>
@@ -361,7 +361,7 @@
     </message>
     <message>
         <source>&amp;Add to Custom Colors</source>
-        <translation>&amp;Dodaj do Własnych Kolorów</translation>
+        <translation>&amp;Dodaj do własnych kolorów</translation>
     </message>
     <message>
         <source>Select color</source>
@@ -425,7 +425,7 @@
     <name>QFileDialog</name>
     <message>
         <source>Copy or Move a File</source>
-        <translation>Skopiuj lub Przenieś plik</translation>
+        <translation>Skopiuj lub przenieś plik</translation>
     </message>
     <message>
         <source>Read: %1</source>
@@ -525,15 +525,15 @@
     </message>
     <message>
         <source>Symlink to File</source>
-        <translation>Dowiązanie do Pliku</translation>
+        <translation>Dowiązanie do pliku</translation>
     </message>
     <message>
         <source>Symlink to Directory</source>
-        <translation>Dowiązanie do Katalogu</translation>
+        <translation>Dowiązanie do katalogu</translation>
     </message>
     <message>
         <source>Symlink to Special</source>
-        <translation>Dowiązanie do Specjalnego</translation>
+        <translation>Dowiązanie do specjalnego</translation>
     </message>
     <message>
         <source>File</source>
@@ -629,7 +629,7 @@
     </message>
     <message>
         <source>New Folder 1</source>
-        <translation>Nowy Katalog 1</translation>
+        <translation>Nowy katalog 1</translation>
     </message>
     <message>
         <source>New Folder</source>
@@ -637,7 +637,7 @@
     </message>
     <message>
         <source>New Folder %1</source>
-        <translation>Nowy Katalog %1</translation>
+        <translation>Nowy katalog %1</translation>
     </message>
     <message>
         <source>Find Directory</source>
@@ -684,11 +684,11 @@ Sprawdź ścieżkę i nazwę pliku.</translation>
     <name>QFont</name>
     <message>
         <source>Latin</source>
-        <translation>Wschodnio-europejski</translation>
+        <translation>Łacińskie</translation>
     </message>
     <message>
         <source>Greek</source>
-        <translation>Grecki</translation>
+        <translation>Greckie</translation>
     </message>
     <message>
         <source>Cyrillic</source>
@@ -696,15 +696,15 @@ Sprawdź ścieżkę i nazwę pliku.</translation>
     </message>
     <message>
         <source>Armenian</source>
-        <translation type="unfinished"></translation>
+        <translation>Armeńskie</translation>
     </message>
     <message>
         <source>Georgian</source>
-        <translation type="unfinished"></translation>
+        <translation>Gruzińskie</translation>
     </message>
     <message>
         <source>Runic</source>
-        <translation type="unfinished"></translation>
+        <translation>Runiczne</translation>
     </message>
     <message>
         <source>Ogham</source>
@@ -712,11 +712,11 @@ Sprawdź ścieżkę i nazwę pliku.</translation>
     </message>
     <message>
         <source>Hebrew</source>
-        <translation>Hebrajski</translation>
+        <translation>Hebrajskie</translation>
     </message>
     <message>
         <source>Arabic</source>
-        <translation type="unfinished">Arabski</translation>
+        <translation>Arabskie</translation>
     </message>
     <message>
         <source>Syriac</source>
@@ -732,7 +732,7 @@ Sprawdź ścieżkę i nazwę pliku.</translation>
     </message>
     <message>
         <source>Bengali</source>
-        <translation type="unfinished"></translation>
+        <translation>Bengalskie</translation>
     </message>
     <message>
         <source>Gurmukhi</source>
@@ -748,7 +748,7 @@ Sprawdź ścieżkę i nazwę pliku.</translation>
     </message>
     <message>
         <source>Tamil</source>
-        <translation type="unfinished"></translation>
+        <translation>Tamilskie</translation>
     </message>
     <message>
         <source>Telugu</source>
@@ -768,7 +768,7 @@ Sprawdź ścieżkę i nazwę pliku.</translation>
     </message>
     <message>
         <source>Thai</source>
-        <translation type="unfinished"></translation>
+        <translation>Tajskie</translation>
     </message>
     <message>
         <source>Lao</source>
@@ -776,7 +776,7 @@ Sprawdź ścieżkę i nazwę pliku.</translation>
     </message>
     <message>
         <source>Tibetan</source>
-        <translation type="unfinished"></translation>
+        <translation>Tybetańskie</translation>
     </message>
     <message>
         <source>Myanmar</source>
@@ -812,7 +812,7 @@ Sprawdź ścieżkę i nazwę pliku.</translation>
     </message>
     <message>
         <source>Ethiopic</source>
-        <translation type="unfinished"></translation>
+        <translation>Etiopskie</translation>
     </message>
     <message>
         <source>Cherokee</source>
@@ -824,7 +824,7 @@ Sprawdź ścieżkę i nazwę pliku.</translation>
     </message>
     <message>
         <source>Mongolian</source>
-        <translation type="unfinished"></translation>
+        <translation>Mongolskie</translation>
     </message>
     <message>
         <source>Currency Symbols</source>
@@ -860,7 +860,7 @@ Sprawdź ścieżkę i nazwę pliku.</translation>
     </message>
     <message>
         <source>Braille</source>
-        <translation type="unfinished"></translation>
+        <translation>Braila</translation>
     </message>
     <message>
         <source>Unicode</source>
@@ -923,7 +923,7 @@ Sprawdź ścieżkę i nazwę pliku.</translation>
     </message>
     <message>
         <source>Select Font</source>
-        <translation>Wybór Czcionki</translation>
+        <translation>Wybór czcionki</translation>
     </message>
 </context>
 <context>

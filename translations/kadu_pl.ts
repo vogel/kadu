@@ -1390,7 +1390,7 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     </message>
     <message>
         <source>This dialog box allows you to manage your personal information, for example your name, surname or age.</source>
-        <translation>To okno dialogowe daje możliwość zarządzania Twoimi danymi personalnymi takimi jak imi� nazwisko, wiek, płeć.</translation>
+        <translation>To okno dialogowe daje możliwość zarządzania Twoimi danymi personalnymi takimi jak imię, nazwisko, wiek, płeć.</translation>
     </message>
     <message>
         <source>Your personal information</source>
