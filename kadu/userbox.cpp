@@ -260,7 +260,7 @@ void KaduListBoxPixmap::calculateSize(const QString &text, int width, QStringLis
 
 	if (initialLength<1) //sytuacja tragiczna: nie uda³o siê ani jednego znaku zmie¶ciæ
 	{
-		kdebugm(KDEBUG_PANIC, "PANIC: no space for description!\n");
+		kdebugm(KDEBUG_WARNING, "no space for description!\n");
 		height=0;
 		out=QStringList();
 		return;
@@ -289,6 +289,13 @@ void KaduListBoxPixmap::calculateSize(const QString &text, int width, QStringLis
 				--len;
 			if (len==0)//no ale mo¿e kto¶ wpisa³ bez spacji?
 				len=tmplen-1;
+		}
+		if (len<1)
+		{
+			kdebugm(KDEBUG_WARNING, "no space for description ! (2)\n");
+			height=0;
+			out=QStringList();
+			return;
 		}
 		QString next=curtext.mid(len);//przenosimy do nastêpnego wiersza
 		out.push_back(curtext.left(len));
