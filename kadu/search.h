@@ -48,6 +48,7 @@ class SearchDialog : public QDialog {
 		QLineEdit *e_uin;
 
 		uin_t fromUin;
+		bool searchhidden;
 
 	private slots:
 		void clearResults(void);
