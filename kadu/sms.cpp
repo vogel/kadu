@@ -66,36 +66,42 @@ HttpClient::HttpClient()
 
 void HttpClient::onConnected()
 {
-	QString query=(PostData.size()>0?"POST":"GET");
-	query+=" ";
-	if(Path==""||Path[0]!='/')
-		query+='/';
-	query+=Path;
-	query+=" HTTP/1.1\n";
-	query+="Host: "+Host+"\n";
-	query+="User-Agent: Mozilla/5.0 (X11; U; Linux i686; pl-PL; rv:1.2)\n";
+	QString query = (PostData.size() > 0 ? "POST" : "GET");
+	query += " ";
+	if (Path == "" || Path[0] != '/')
+		query += '/';
+	query += Path;
+	query += " HTTP/1.1\n";
+	query += "Host: " + Host + "\n";
+	query += "User-Agent: Mozilla/5.0 (X11; U; Linux i686; pl-PL; rv:1.2)\n";
 //	query+="Connection: keep-alive\n";
-	if(Cookies.size()>0)
-	{
-		query+="Cookie: ";
-		for(int i=0; i<Cookies.keys().size(); i++)
-		{
-			if(i>0)
+	if (Cookies.size() > 0) {
+		query += "Cookie: ";
+
+		QValueList<QString> keys;
+		for (QMap<QString, QString>::const_iterator it = Cookies.begin(); it != Cookies.end(); ++it)
+			keys.append(it.key());
+		
+//		wywolanie Cookies.keys() zostaje na lepsze czasu jak juz
+//		wszyscy beda mieli Qt >= 3.0.5		
+//    		for(int i=0; i<Cookies.keys().size(); i++)
+		for (int i = 0; i < keys.size(); i++) {
+			if (i > 0)
 				query+="; ";
-			query+=Cookies.keys()[i]+"="+Cookies[Cookies.keys()[i]];
-		};
+//			query+=Cookies.keys()[i]+"="+Cookies[Cookies.keys()[i]];
+			query += keys[i] + "=" + Cookies[keys[i]];
+			}
 		query+="\n";
-	};
-	if(PostData.size()>0)
-	{
-		query+="Content-Type: application/x-www-form-urlencoded\n";
-		query+="Content-Length: "+QString::number(PostData.size())+"\n";
-	};
+		}
+	if (PostData.size() > 0) {
+		query += "Content-Type: application/x-www-form-urlencoded\n";
+		query += "Content-Length: " + QString::number(PostData.size()) + "\n";
+		}
 	query+="\n";
-	if(PostData.size()>0)
-		query+=QString(PostData);
-	fprintf(stderr,"HttpClient: Sending query:\n%s\n",query.local8Bit().data());	
-	Socket.writeBlock(query.local8Bit().data(),query.length());
+	if (PostData.size() > 0)
+		query += QString(PostData);
+	fprintf(stderr, "HttpClient: Sending query:\n%s\n", query.local8Bit().data());
+	Socket.writeBlock(query.local8Bit().data(), query.length());
 };
 
 void HttpClient::onReadyRead()
