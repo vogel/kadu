@@ -591,8 +591,7 @@ void Wizard::createSoundOptionsPage()
 	if (modules_manager->moduleIsLoaded("alsa_sound"))
 	{	
 		cb_soundModule->setCurrentItem(1);
-		moduleInfo->setText(tr("This module play sounds using ALSA - Advanced Linux Sound Architecture driver."
-								"This is third-party module not supported by Kadu Team."));
+		moduleInfo->setText(tr("This module play sounds using ALSA - Advanced Linux Sound Architecture driver."));
 	}
 	else if (modules_manager->moduleIsLoaded("ao_sound"))
 	{
