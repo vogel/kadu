@@ -49,6 +49,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * wydzielenie modu³u dcc, domy¶lnie statyczny (adrian)
 * po uruchomieniu jako root kadu wy¶wietla ostrze¿enie (adrian)
 * ³atka vogela usuwaj±ca wiêkszo¶æ zmiennych globalnych z gadu.h (adrian)
+* modu³y dcc i voice nie korzystaj± ju¿ z funkcji libgadu, jedynie z metod
+  klasy GaduProtocol, wywalone zbêdne zmienne globalne z modu³u dcc (adrian)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,

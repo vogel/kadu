@@ -22,7 +22,6 @@
 #include "userlist.h"
 #include "config_file.h"
 #include "debug.h"
-#include "libgadu.h"
 #include "config_dialog.h"
 #include "kadu.h"
 #include "gadu.h"
@@ -252,7 +251,7 @@ void VoiceManager::makeVoiceChat()
 {
 	kdebugf();
 	if (config_file.readBoolEntry("Network", "AllowDCC"))
-		if (config_dccip.isIp4Addr())
+		if (dcc_manager->configDccIp().isIp4Addr())
 		{
 			struct gg_dcc *dcc_new;
 			UserBox *activeUserBox=UserBox::getActiveUserBox();
@@ -265,7 +264,7 @@ void VoiceManager::makeVoiceChat()
 			UserListElement user = (*users.begin());
 			if (user.port >= 10)
 			{
-				if ((dcc_new = gg_dcc_voice_chat(htonl(user.ip.ip4Addr()), user.port,
+				if ((dcc_new = gadu->dccVoiceChat(htonl(user.ip.ip4Addr()), user.port,
 					config_file.readNumEntry("General", "UIN"), user.uin)) != NULL) {
 					VoiceSocket* dcc = new VoiceSocket(dcc_new);
 					connect(dcc, SIGNAL(dccFinished(DccSocket *)), this,
@@ -453,7 +452,7 @@ void VoiceSocket::cancelVoiceChatReceived()
 void VoiceSocket::voiceDataRecorded(char *data, int length)
 {
 	kdebugf();
-	gg_dcc_voice_send(dccsock, data, length);
+	gadu->dccVoiceSend(dccsock, data, length);
 }
 
 VoiceManager* voice_manager = NULL;

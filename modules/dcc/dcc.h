@@ -12,11 +12,6 @@
 #include "kadu-config.h"
 #include "gadu.h"
 
-extern QSocketNotifier* dccsnr;
-extern QSocketNotifier* dccsnw;
-extern QHostAddress config_dccip;
-extern struct gg_dcc* dccsock;
-
 class FileDccSocket;
 
 class DccFileDialog : public QDialog
@@ -124,6 +119,10 @@ class DccManager : public QObject
 	Q_OBJECT
 
 	private:
+		gg_dcc* DccSock;
+		QSocketNotifier* DccSnr;
+		QSocketNotifier* DccSnw;
+		QHostAddress ConfigDccIp;
 		void watchDcc();
 
 	private slots:
@@ -140,6 +139,7 @@ class DccManager : public QObject
 	public:
 		DccManager();
 		virtual ~DccManager();
+		QHostAddress configDccIp();
 
 	public slots:
 		void dccFinished(DccSocket* dcc);

@@ -382,23 +382,36 @@ class GaduProtocol : public QObject
 		**/
 		void setPersonalInfo(SearchRecord& searchRecord, SearchResult& newData);
 
+		// to raczej chwilowo
+		void freeEvent(struct gg_event* e);
+		
 		// --------------------
 		//  DCC
 		// --------------------
 
-		void dccRequest(UinType &);
+		void dccRequest(UinType);
+		void dccFree(struct gg_dcc* d);
+		struct gg_event* dccWatchFd(struct gg_dcc* d);
+		void dccSetType(struct gg_dcc* d, int type);
+		int dccFillFileInfo(struct gg_dcc* d, const QString& filename);
+		struct gg_dcc* dccSocketCreate(UinType uin, uint16_t port);
+		struct gg_dcc* dccSendFile(uint32_t ip, uint16_t port, UinType my_uin, UinType peer_uin);
+		struct gg_dcc* dccGetFile(uint32_t ip, uint16_t port, UinType my_uin, UinType peer_uin);
+		struct gg_dcc* dccVoiceChat(uint32_t ip, uint16_t port, UinType my_uin, UinType peer_uin);
+		int dccVoiceSend(struct gg_dcc* d, char* buf, int length);
+		void setDccIpAndPort(unsigned long dcc_ip, int dcc_port);
 
 		// przeniesione z events.h
-	    void onCreateConfigDialog();
-	    void onDestroyConfigDialog();
-	    void ifDefServerEnabled(bool value);
-	    void useTlsEnabled(bool value);
-	    void _Left();
-	    void _Right();
-	    void _Left2(QListBoxItem *item);
-	    void _Right2(QListBoxItem *item);
-	    void ifNotifyGlobal(bool toggled);
-	    void ifNotifyAll(bool toggled);
+		void onCreateConfigDialog();
+		void onDestroyConfigDialog();
+		void ifDefServerEnabled(bool value);
+		void useTlsEnabled(bool value);
+		void _Left();
+		void _Right();
+		void _Left2(QListBoxItem *item);
+		void _Right2(QListBoxItem *item);
+		void ifNotifyGlobal(bool toggled);
+		void ifNotifyAll(bool toggled);
 
 	signals:
 		void ackReceived(int);
