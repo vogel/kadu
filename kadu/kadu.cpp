@@ -1213,7 +1213,7 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 
 	pm->insertSeparator();
 	pm->insertItem(loadIcon("remove.png"), i18n("Remove from userlist"), this, SLOT(deleteUsers()),HotKey::shortCutFromFile("kadu_deleteuser"));
-	deletehistoryitem= pm->insertItem(loadIcon("eraser.png"), i18n("Clear history"));
+	deletehistoryitem= pm->insertItem(loadIcon("eraser.png"), i18n("Clear history"), this, SLOT(deleteHistory()));
 	QPixmap history;
 	history = loadIcon("history.png");
 	historyitem= pm->insertItem(history, i18n("View history"),this,SLOT(viewHistory()),HotKey::shortCutFromFile("kadu_viewhistory"));
