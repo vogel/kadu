@@ -466,8 +466,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * prawid³owa akcja przy wybraniu opcji Powiadom o kontakcie/Blokuj/Niedostêpny
   dla kontaktu przy zaznaczonej grupie osób (joi)
 * make install instaluje ikony 22x22 i 24x24 (adrian)
-* poprawki budowania modulow: nas_sound (gentoo) i voice (amd64) (joi)
-* dodano dokumentacje plikow userlist.h oraz userinfo.h (googie/pawel_p)
+* poprawki budowania modu³ów: nas_sound (gentoo) i voice (amd64) (joi)
+* dodano dokumentacjê plików userlist.h oraz userinfo.h (googie/pawel_p)
+* poprawki w wykrywaniu ¶cie¿ki do firefoksa na gentoo (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
