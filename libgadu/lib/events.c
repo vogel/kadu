@@ -1,4 +1,4 @@
-/* $Id: events.c,v 1.30 2003/10/05 22:12:57 chilek Exp $ */
+/* $Id: events.c,v 1.31 2003/10/05 23:03:46 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -514,8 +514,9 @@ static int gg_watch_fd_connected(struct gg_session *sess, struct gg_event *e)
 			}
 
 			if (h->length > 1) {
-				char *tmp, len = (sess->userlist_reply) ? strlen(sess->userlist_reply) : 0;
-				
+				char *tmp;
+				int len = (sess->userlist_reply) ? strlen(sess->userlist_reply) : 0;
+
 				gg_debug(GG_DEBUG_MISC, "userlist_reply=%p, len=%d\n", sess->userlist_reply, len);
 				
 				if (!(tmp = realloc(sess->userlist_reply, len + h->length))) {
