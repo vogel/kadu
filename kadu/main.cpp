@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
 	textdomain("kadu");
 
 	a = new QApplication(argc, argv);
-	a->setDefaultCodec( QTextCodec::codecForName("ISO 8859-2"));
+//	a->setDefaultCodec( QTextCodec::codecForName("ISO 8859-2"));
 	QString dir;
 	dir = QString(DATADIR) + "/apps/kadu/icons";
 	icons = new IconsManager(dir);

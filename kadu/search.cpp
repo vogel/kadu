@@ -206,8 +206,7 @@ void SearchDialog::firstSearch(void) {
 void SearchDialog::nextSearch(void) {
 	int i;
 	gg_pubdir50_t req;
-	char *reqbuf;
-	char bufyear[32];
+	QString bufyear;
 
 	if (getActualStatus() == GG_STATUS_NOT_AVAIL)
 		return;
@@ -218,35 +217,17 @@ void SearchDialog::nextSearch(void) {
 	req = gg_pubdir50_new(GG_PUBDIR50_SEARCH);
 
 	if (r_pers->isChecked()) {
-		reqbuf = e_name->text().length() ? strdup(e_name->text().local8Bit()) : NULL;
-		if (reqbuf) {
-			iso_to_cp((unsigned char *)reqbuf);
-			gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)reqbuf);
-			free(reqbuf);
-			}
-		reqbuf = e_surname->text().length() ? strdup(e_surname->text().local8Bit()) : NULL;
-		if (reqbuf) {
-			iso_to_cp((unsigned char *)reqbuf);
-			gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, (const char *)reqbuf);
-			free(reqbuf);			
-			}
-		reqbuf = e_nick->text().length() ? strdup(e_nick->text().local8Bit()) : NULL;
-		if (reqbuf) {
-			iso_to_cp((unsigned char *)reqbuf);
-			gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)reqbuf);
-			free(reqbuf);			
-			}
-		reqbuf = e_city->text().length() ? strdup(e_city->text().local8Bit()) : NULL;
-		if (reqbuf) {
-			iso_to_cp((unsigned char *)reqbuf);
-			gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)reqbuf);
-			free(reqbuf);			
-			}
-		reqbuf = e_byr->text().length() ? strdup(e_byr->text().local8Bit()) : NULL;
-		if (reqbuf) {
-			sprintf(bufyear, "%s %s", reqbuf, reqbuf);
-			free(reqbuf);
-			gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)bufyear);
+		if (e_name->text().length())
+			gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)iso_to_cp(e_name->text()).data());
+		if (e_surname->text().length())
+			gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, (const char *)iso_to_cp(e_surname->text()).data());
+		if (e_nick->text().length())
+			gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)iso_to_cp(e_nick->text()).data());
+		if (e_city->text().length())
+			gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)iso_to_cp(e_city->text()).data());
+		if (e_byr->text().length()) {
+			bufyear = e_byr->text() + " " + e_byr->text();
+			gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)iso_to_cp(bufyear).data());
 			}
 		switch (c_gender->currentItem()) {
 			case 1:
@@ -259,11 +240,8 @@ void SearchDialog::nextSearch(void) {
 		}
 	else
 		if (r_uin->isChecked()) {
-			reqbuf = e_uin->text().length() ? strdup(e_uin->text().local8Bit()) : NULL;
-			if (reqbuf) {
-				gg_pubdir50_add(req, GG_PUBDIR50_UIN, (const char *)reqbuf);
-				free(reqbuf);
-				}
+			if (e_uin->text().length())
+				gg_pubdir50_add(req, GG_PUBDIR50_UIN, (const char *)iso_to_cp(e_uin->text()).data());
 			}
 
 	if (only_active->isChecked())
@@ -318,14 +296,9 @@ void SearchDialog::showResults(gg_pubdir50_t res) {
 			pix = icons->loadIcon(gg_icons[statusGGToStatusNr(atoi(status) & 127)]);
 		else
 			pix = icons->loadIcon("offline");
-		if (first)
-			cp_to_iso((unsigned char *)first);
-		if (nick)
-			cp_to_iso((unsigned char *)nick);
-		if (city)
-			cp_to_iso((unsigned char *)city);
-		qlv = new QListViewItem(results, QString::null, __c2q(uin),
-			__c2q(first), __c2q(city), __c2q(nick), __c2q(born));
+		qlv = new QListViewItem(results, QString::null, cp_to_iso((unsigned char *)uin),
+			cp_to_iso((unsigned char *)first), cp_to_iso((unsigned char *)city),
+			cp_to_iso((unsigned char *)nick), cp_to_iso((unsigned char *)born));
 		qlv->setPixmap(0, *pix);
 		}
 

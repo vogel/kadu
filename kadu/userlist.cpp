@@ -10,6 +10,8 @@
 #include <qfile.h>
 #include <stdlib.h>
 #include <sys/stat.h>
+#include <qtextstream.h>
+#include <qtextcodec.h>
 
 #include "userlist.h"
 #include "misc.h"
@@ -192,6 +194,7 @@ bool UserList::writeToFile(QString filename)
 		}
 
 	QString s;
+	QCString str;
 	for (Iterator i = begin(); i != end(); i++) {
 		s.truncate(0);
 		s.append((*i).first_name);
@@ -211,7 +214,8 @@ bool UserList::writeToFile(QString filename)
 		
 		if (!(*i).anonymous) {
 			kdebug(s.local8Bit());
-			f.writeBlock(s.local8Bit(), s.length());
+			str = QTextCodec::codecForName("ISO 8859-2")->fromUnicode(s);
+			f.writeBlock(str, str.length());
 			}
 		}
 	f.close();
@@ -236,7 +240,8 @@ bool UserList::writeToFile(QString filename)
 		
 		if (!(*i).anonymous && (*i).uin) {
 			kdebug(s.local8Bit());
-			fa.writeBlock(s.local8Bit(), s.length());
+			str = QTextCodec::codecForName("ISO 8859-2")->fromUnicode(s);
+			fa.writeBlock(str, str.length());
 			}
 		}
 	fa.close();
@@ -282,6 +287,7 @@ bool UserList::readFromFile()
 	clear();
 
 	QTextStream t(&f);
+	t.setCodec(QTextCodec::codecForName("ISO 8859-2"));
 	while ((line = t.readLine()).length()) {
 		if (line[0] == '#')
 			continue;

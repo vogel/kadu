@@ -84,7 +84,7 @@ void Register::doRegister() {
 		return;
 		}
 
-	if (!(h = gg_register(mail->text().local8Bit(), pwd->text().local8Bit(), 1))) {
+	if (!(h = gg_register(iso_to_cp(mail->text()).data(), iso_to_cp(pwd->text()).data(), 1))) {
 		status->setText(i18n("Error"));
 		return;
 		}

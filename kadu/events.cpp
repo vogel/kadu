@@ -116,7 +116,7 @@ void SavePublicKey::yesClicked() {
 	kdebug("SavePublicKey::yesClicked(): finished\n");
 }
 
-void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t time,int formats_count,struct gg_msg_format * formats)
+void eventRecvMsg(int msgclass, UinsList senders, unsigned char *msg, time_t time,int formats_count,struct gg_msg_format * formats)
 {
 	int i;
 
@@ -128,6 +128,7 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 	if (isIgnored(senders[0]))
 		return;
 
+	QString mesg = cp_to_iso(msg);
 	// ignorujemy wiadomosci systemowe (tylko na konsole)
 	if (senders[0] == 0)
 	{
@@ -159,24 +160,21 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 			else
 				parent = chats[i].ptr;
 
-			SavePublicKey *spk = new SavePublicKey(senders[0], __c2q((const char *)msg), NULL);
+			SavePublicKey *spk = new SavePublicKey(senders[0], mesg, NULL);
 			spk->show();
 			return;
 		}
 	};
 
-	if(msg != NULL)
-	{
+	if (msg != NULL)	{
 		kdebug("Decrypting encrypted message...\n");
 		char* decoded = sim_message_decrypt(msg, senders[0]);
 		kdebug("Decrypted message is: %s\n",decoded);
 		if (decoded != NULL)
 			strcpy((char *)msg, decoded);
-	};
+		mesg = cp_to_iso(msg);
+		}
 #endif
-
-	if (msg != NULL)
-		cp_to_iso(msg);
 
 	QString nick;
 	if (userlist.containsUin(senders[0])) {
@@ -198,7 +196,7 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 					"", "", true);
 			}
 	if (config.logmessages && senders[0] != config.uin)
-		appendHistory(senders, senders[0], msg, FALSE, time);
+		appendHistory(senders, senders[0], mesg, FALSE, time);
 
 	//script.eventMsg(senders[0],msgclass,(char*)msg);
 
@@ -208,9 +206,8 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 
 	if (((msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT || (msgclass & GG_CLASS_MSG) == GG_CLASS_MSG) && i < chats.count()) {
 		QString toadd;
-		tmp = __c2q((const char *)msg);
 
-		chats[i].ptr->checkPresence(senders, tmp, time, toadd);
+		chats[i].ptr->checkPresence(senders, mesg, time, toadd);
 		chats[i].ptr->alertNewMessage();
 		if (!chats[i].ptr->isActiveWindow() && config.hintalert)
 			trayicon->showHint(i18n("New message from: "), nick,0);
@@ -220,11 +217,11 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 	playSound(config.soundmsg);
 
 	if (senders[0] != config.uin)
-		pending.addMsg(senders, __c2q((const char*)msg), msgclass, time);
+		pending.addMsg(senders, mesg, msgclass, time);
 
 	kdebug("eventRecvMsg(): Message allocated to slot %d\n", i);
 	kdebug("eventRecvMsg(): Got message from %d (%s) saying \"%s\"\n",
-			senders[0], (const char *)nick.local8Bit(), msg);
+			senders[0], (const char *)nick.local8Bit(), (const char *)mesg.local8Bit());
 											  
 	UserBox::all_refresh();
 	trayicon->changeIcon();
@@ -345,8 +342,7 @@ void eventGotUserlist(struct gg_event *e) {
 			user.description.truncate(0);
 
 		if (e->type == GG_EVENT_NOTIFY_DESCR) {
-			cp_to_iso((unsigned char *)e->event.notify_descr.descr);
-			user.description.append(__c2q(e->event.notify_descr.descr));
+			user.description.append(cp_to_iso((unsigned char *)e->event.notify_descr.descr));
 			}
 
 		switch (n->status) {
@@ -428,8 +424,7 @@ void eventStatusChange(struct gg_event * e) {
 	if (user.description)
 		user.description.truncate(0);
 	if (ifStatusWithDescription(e->event.status.status)) {
-		cp_to_iso((unsigned char *)e->event.status.descr);
-		user.description.append(__c2q(e->event.status.descr));
+		user.description.append(cp_to_iso((unsigned char *)e->event.status.descr));
 		}
 	userlist.changeUserStatus(e->event.status.uin, e->event.status.status);
 	

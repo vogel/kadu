@@ -7,6 +7,7 @@
 #include <qstring.h>
 #include <qpixmap.h>
 #include <qlabel.h>
+#include <qcstring.h>
 #include <libintl.h>
 
 #include "libgadu.h"
@@ -22,8 +23,8 @@ QString ggPath(QString subpath);
 
 #define i18n(String) __c2q(gettext(String))
 
-void cp_to_iso(unsigned char *);
-void iso_to_cp(unsigned char *);
+QString cp_to_iso(unsigned char *);
+QCString iso_to_cp(const QString &);
 QPixmap loadIcon(const QString &filename);
 char *timestamp(time_t = 0);
 QString pwHash(const QString tekst);

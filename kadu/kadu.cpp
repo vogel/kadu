@@ -1409,14 +1409,13 @@ void Kadu::setStatus(int status) {
 		doBlink = false;
 		if (with_description) {
 			unsigned char *descr;
-			descr = (unsigned char *)strdup((const char *)own_description.local8Bit());
-			iso_to_cp(descr);
+			descr = (unsigned char *)strdup(iso_to_cp(own_description).data());
 			if (status == GG_STATUS_NOT_AVAIL_DESCR)
 				gg_change_status_descr(sess, status, (const char *)descr);
 			else
 				gg_change_status_descr(sess,
 					status | (GG_STATUS_FRIENDS_MASK * config.privatestatus), (const char *)descr);
-			delete descr;
+			free(descr);
 			}
 		else
 			gg_change_status(sess, status | (GG_STATUS_FRIENDS_MASK * config.privatestatus));

@@ -24,6 +24,7 @@
 #include <unistd.h>
 #include <qlayout.h>
 #include <qfile.h>
+#include <qtextcodec.h>
 #include <time.h>
 
 //
@@ -33,7 +34,7 @@
 #include "history.h"
 //
 
-void appendHistory(UinsList uins, uin_t uin,unsigned char* msg, bool own, time_t time) {
+void appendHistory(UinsList uins, uin_t uin, const QString &msg, bool own, time_t time) {
 	int i;
 	
 	QFile f;
@@ -60,36 +61,33 @@ void appendHistory(UinsList uins, uin_t uin,unsigned char* msg, bool own, time_t
 
 	QString nick;
 	
+	QTextStream stream(&f);
+	stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
 	if (!own) {
 		if (userlist.containsUin(uin))
 			nick = userlist.byUin(uin).altnick;
 		else
 			nick = QString::number(uin); 
-		f.writeBlock(nick.local8Bit(), nick.length());
+		stream << nick;
 		}
 	else
-		f.writeBlock(config.nick.local8Bit(), config.nick.length());
+		stream << config.nick;
 
-	f.putch(' ');
+	stream << ' ';
 
 	char *ctime;	
 	if (!time)
 		ctime = timestamp();
 	else
 		ctime = timestamp(time);
-	f.writeBlock(ctime, strlen(ctime));
+	stream << ctime << '\n';
 
-	f.putch('\n');
-	
-	QString mesg;
-	mesg.append(__c2q((const char *)msg));
-	mesg.append("\n\n");
-	f.writeBlock(mesg.local8Bit(), mesg.length());
+	stream << msg << "\n\n";
 
 	f.close();
 }
 
-void appendSMSHistory(const QString& mobile,const QString& msg)
+void appendSMSHistory(const QString& mobile, const QString& msg)
 {
 	kdebug("Appending sms to history (%s)\n",mobile.local8Bit().data());
 	QString altnick;
@@ -103,9 +101,8 @@ void appendSMSHistory(const QString& mobile,const QString& msg)
 			{
 				UinsList uins;
 				uins.append(userlist[i].uin);
-				QCString cmsg=(QString("[SMS: ")+mobile+"]\n"+msg).local8Bit();
-				unsigned char* umsg=(unsigned char*)cmsg.data();
-				appendHistory(uins,userlist[i].uin,umsg,true);
+				QString tmpmsg = QString("[SMS: ") + mobile + "]\n" + msg;
+				appendHistory(uins, userlist[i].uin, tmpmsg, true);
 			};
 			break;
 		};
@@ -121,13 +118,12 @@ void appendSMSHistory(const QString& mobile,const QString& msg)
 		target=altnick+" ("+mobile+")";
 	else
 		target=mobile;
-	f.writeBlock(target.local8Bit(),target.length());
-	f.putch(' ');
+	QTextStream stream(&f);
+	stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
+	stream << target << ' ';
 	char *ctime=timestamp();
-	f.writeBlock(ctime, strlen(ctime));
-	f.putch('\n');
-	QString log=msg+"\n\n";
-	f.writeBlock(log.local8Bit(),log.length());
+	stream << ctime << '\n' << msg << "\n\n";
+
 	f.close();
 };
 
@@ -158,6 +154,7 @@ History::History(UinsList uins) {
 	QFile f(fname);
 	if (f.open(IO_ReadOnly)) {
 		QTextStream t(&f);
+		t.setCodec(QTextCodec::codecForName("ISO 8859-2"));
 		body->setText(t.read());
 		}
 	else {
@@ -171,4 +168,3 @@ History::History(UinsList uins) {
 
 	resize(500,400);
 }
-

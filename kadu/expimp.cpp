@@ -13,6 +13,7 @@
 #include <qfiledialog.h>
 #include <qmessagebox.h>
 #include <qregexp.h>
+#include <qtextcodec.h>
 #include <stdlib.h>
 
 #include "kadu.h"
@@ -65,6 +66,7 @@ void UserlistImport::fromfile(){
 		QFile file(fname);
  		if (file.open(IO_ReadOnly)) {
 			QTextStream stream(&file);
+			stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
 			importedUserlist.clear();
 			results->clear();
 			while ( !stream.eof() ) {
@@ -239,7 +241,7 @@ void UserlistImport::socketEvent() {
 		kdebug("ImportUserlist::socketEvent(): Done\n");
 		QStringList strlist;
 		cp_to_iso((unsigned char *)gg_http->data);
-		strlist = QStringList::split("\r\n",__c2q((const char *)gg_http->data),true);
+		strlist = QStringList::split("\r\n", cp_to_iso((unsigned char *)gg_http->data), true);
 		kdebug("! %d !\n", strlist.count());		
 		kdebug("%s\n", gg_http->data);
 		QStringList fieldlist;
@@ -359,14 +361,15 @@ void UserlistExport::startTransfer() {
 	contacts=saveContacts();
 	
 	char *con2;	
-	con2 = strdup((const char *)contacts.local8Bit());
-	iso_to_cp((unsigned char *)con2);
+	con2 = (char *)strdup(iso_to_cp(contacts).data());
 	
 	if (!(gg_http = gg_userlist_put(config.uin, config.password, con2, 1))) {
 		kdebug("UserlistExport: gg_userlist_put() failed\n");
 		QMessageBox::critical(this, "Export error", i18n("The application encountered an internal error\nThe export was unsuccessful") );
+		free(con2);
 		return;
 		}
+	free(con2);
 
 /*	int ret;
 	while ((ret = gg_userlist_put_watch_fd(gg_http)) >=0 && gg_http->state != GG_STATE_CONNECTING);
@@ -392,33 +395,29 @@ void UserlistExport::ExportToFile(void) {
 	sendbtn->setEnabled(false);
 	deletebtn->setEnabled(false);
 	tofilebtn->setEnabled(false);	
-	
-    QString fname = QFileDialog::getSaveFileName("/", QString::null,this);
-	if (fname.length()){
 
+	QString fname = QFileDialog::getSaveFileName("/", QString::null,this);
+	if (fname.length()) {
+		contacts = saveContacts();
 
-	contacts=saveContacts();
-
-	    QFile file(fname);
-	    if (file.open(IO_WriteOnly)) {
-	    QTextStream stream(&file);
-		            stream << contacts << "\n";
-	        file.close();
-		QMessageBox::information(this, "Export completed", i18n("Your userlist has been successfully exported to file"));
-			    }else
-		QMessageBox::critical(this, "Export error", i18n("The application encountered an internal error\nThe export userlist to file was unsuccessful") );
-
-
-			    }
+		QFile file(fname);
+		if (file.open(IO_WriteOnly)) {
+			QTextStream stream(&file);
+			stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
+			stream << contacts << "\n";
+			file.close();
+			QMessageBox::information(this, "Export completed", i18n("Your userlist has been successfully exported to file"));
+			}
+		else
+			QMessageBox::critical(this, "Export error", i18n("The application encountered an internal error\nThe export userlist to file was unsuccessful") );
+		}
 
 	sendbtn->setEnabled(true);
 	deletebtn->setEnabled(true);
-	tofilebtn->setEnabled(true);	
-			    
-
+	tofilebtn->setEnabled(true);
 }
 
-void UserlistExport::clean(){
+void UserlistExport::clean() {
 	const char *con2="";
 	deletebtn->setEnabled(false);
 	sendbtn->setEnabled(false);

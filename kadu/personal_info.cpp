@@ -101,20 +101,15 @@ void PersonalInfoDialog::OkButtonClicked()
 	if (getActualStatus() == GG_STATUS_NOT_AVAIL)
 		return;
 
-	char *nick = strdup(NicknameEdit->text().local8Bit());
-	char *first = strdup(NameEdit->text().local8Bit());
-	char *last = strdup(SurnameEdit->text().local8Bit());
-	char *city = strdup(CityEdit->text().local8Bit());
-	char *born = strdup(BirthyearEdit->text().local8Bit());
-	char *family_name = strdup(FamilyNameEdit->text().local8Bit());
-	char *family_city = strdup(FamilyCityEdit->text().local8Bit());
+	char *nick, *first, *last, *city, *born, *family_name, *family_city;
 
-	iso_to_cp((unsigned char *)nick);
-	iso_to_cp((unsigned char *)first);
-	iso_to_cp((unsigned char *)last);
-	iso_to_cp((unsigned char *)city);
-	iso_to_cp((unsigned char *)family_name);
-	iso_to_cp((unsigned char *)family_city);
+	nick = strdup(iso_to_cp(NicknameEdit->text()).data());
+	first = strdup(iso_to_cp(NameEdit->text()).data());
+	last = strdup(iso_to_cp(SurnameEdit->text()).data());
+	city = strdup(iso_to_cp(CityEdit->text()).data());
+	born = strdup(iso_to_cp(BirthyearEdit->text()).data());
+	family_name = strdup(iso_to_cp(FamilyNameEdit->text()).data());
+	family_city = strdup(iso_to_cp(FamilyCityEdit->text()).data());
 
 	struct SearchIdStruct sid;
 	gg_pubdir50_t req;
@@ -176,25 +171,18 @@ void PersonalInfoDialog::fillFields(gg_pubdir50_t res)
 			family_name = gg_pubdir50_get(res, 0, GG_PUBDIR50_FAMILYNAME);
 			family_city = gg_pubdir50_get(res, 0, GG_PUBDIR50_FAMILYCITY);
 			if (first)
-				cp_to_iso((unsigned char *)first);
+				NameEdit->setText(cp_to_iso((unsigned char *)first));
 			if (last)
-				cp_to_iso((unsigned char *)last);
+				SurnameEdit->setText(cp_to_iso((unsigned char *)last));
 			if (nick)
-				cp_to_iso((unsigned char *)nick);
+				NicknameEdit->setText(cp_to_iso((unsigned char *)nick));
 			if (city)
-				cp_to_iso((unsigned char *)city);
+				CityEdit->setText(cp_to_iso((unsigned char *)city));
 			if (family_name)
-				cp_to_iso((unsigned char *)family_name);
+				FamilyNameEdit->setText(cp_to_iso((unsigned char *)family_name));
 			if (family_city)
-				cp_to_iso((unsigned char *)family_city);
-			NicknameEdit->setText(__c2q(nick));
-			NameEdit->setText(__c2q(first));
-			SurnameEdit->setText(__c2q(last));
+				FamilyCityEdit->setText(cp_to_iso((unsigned char *)family_city));
 			GenderCombo->setCurrentItem(gender ? atoi(gender) : 0);
-			BirthyearEdit->setText(__c2q(born));
-			CityEdit->setText(__c2q(city));
-			FamilyNameEdit->setText(__c2q(family_name));
-			FamilyCityEdit->setText(__c2q(family_city));
 			break;
 		case WRITTING:
 			kdebug("PersonalInfoDialog::fillFields(): Done writing info.\n");

@@ -10,6 +10,8 @@
 #include <qlayout.h>
 #include <qpixmap.h>
 #include <qstring.h>
+#include <qtextcodec.h>
+#include <qcstring.h>
 
 #include "misc.h"
 #include "pixmaps.h"
@@ -34,33 +36,20 @@ QString ggPath(QString subpath)
 	return path;
 };
 
-void cp_to_iso(unsigned char *buf)
+QString cp_to_iso(unsigned char *buf)
 {
-	while (*buf)
-	{
-		if (*buf == (unsigned char)'¥') *buf = '¡';
-		if (*buf == (unsigned char)'¹') *buf = '±';
-		if (*buf == 140) *buf = '¦';
-		if (*buf == 156) *buf = '¶';
-		if (*buf == 143) *buf = '¬';
-		if (*buf == 159) *buf = '¼';
-        	buf++;
-        };
-};
+	QTextCodec *codec = QTextCodec::codecForName("CP1250");
+	if (buf)
+		return codec->toUnicode((const char*)buf);
+	else
+		return QString::null;
+}
 
-void iso_to_cp(unsigned char *buf)
+QCString iso_to_cp(const QString &buf)
 {
-	while (*buf)
-	{
-		if (*buf == (unsigned char)'¡') *buf = '¥';
-		if (*buf == (unsigned char)'±') *buf = '¹';
-		if (*buf == (unsigned char)'¦') *buf = 140;
-		if (*buf == (unsigned char)'¶') *buf = 156;
-		if (*buf == (unsigned char)'¬') *buf = 143;
-		if (*buf == (unsigned char)'¼') *buf = 159;
-		buf++;
-	};
-};
+	QTextCodec *codec = QTextCodec::codecForName("CP1250");
+	return codec->fromUnicode(buf);
+}
 
 QPixmap loadIcon(const QString &filename) {
 	QPixmap icon;

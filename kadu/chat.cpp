@@ -549,12 +549,9 @@ void Chat::writeMyMessage() {
 void Chat::addMyMessageToHistory() {
 	int uin;
 
-	QCString tmp(myLastMessage.local8Bit());		
-	unsigned char *utmp = (unsigned char *) tmp.data();
-
 	uin = uins[0];
 	if (config.logmessages)
-		appendHistory(uins, uin, (unsigned char *)utmp, true);
+		appendHistory(uins, uin, myLastMessage, true);
 }
 
 void Chat::clearChatWindow(void) {
@@ -600,11 +597,8 @@ void Chat::sendMessage(void) {
 	// zmieniamy unixowe \n na windowsowe \r\n
 	myLastMessage.replace(QRegExp("\n"), "\r\n");
 			
-	QCString tmp(myLastMessage.local8Bit());
-	unsigned char *utmp = (unsigned char *) tmp.data();
+	unsigned char *utmp = (unsigned char *)strdup(iso_to_cp(myLastMessage).data());
 
-	iso_to_cp(utmp);
-	
 	users = new (uin_t)[uins.count()];
 	if (config.msgacks) {
 		acks.resize(acks.size() + 1);
@@ -662,6 +656,7 @@ void Chat::sendMessage(void) {
 		writeMyMessage();	
 	}
 	delete users;
+	free(utmp);
 
 	if (sess->check & GG_CHECK_WRITE)
 		kadusnw->setEnabled(true);		

@@ -184,8 +184,9 @@ void changePassword::start() {
 		status->setText(i18n("Bad data"));
 		return;
 		}
-	if (!(h = gg_change_passwd2(config.uin, actpwd->text().local8Bit(), newpwd->text().local8Bit(),
-		actemail->text().local8Bit(), newemail->text().local8Bit(), 1))) {
+	char *actpasswd, *newpasswd, *actmail, *newmail;
+	if (!(h = gg_change_passwd2(config.uin, iso_to_cp(actpwd->text()).data(), iso_to_cp(newpwd->text()).data(),
+		iso_to_cp(actemail->text()).data(), iso_to_cp(newemail->text()).data(), 1))) {
 		status->setText(i18n("Error"));
 		return;
 		}

@@ -51,9 +51,10 @@ rMessage::rMessage(const QString & nick, int msgclass, UinsList uins, QString &m
 	int j;
 #ifdef HAVE_OPENSSL
 	QCString tmp(msg.local8Bit());
-	unsigned char *utmp = (unsigned char *)tmp.data();
+	unsigned char *utmp = (unsigned char *)strdup(tmp.data());
 
-	char* decrypted=sim_message_decrypt((unsigned char *)utmp, uins[0]);
+	char* decrypted = sim_message_decrypt((unsigned char *)utmp, uins[0]);
+	free(utmp);
 #endif
 
 	PendingMsgs::Element elem;
@@ -102,14 +103,13 @@ rMessage::rMessage(const QString & nick, int msgclass, UinsList uins, QString &m
 	body = new QMultiLineEdit(this);
 	body->setGeometry(5,20,305,170);
 #ifdef HAVE_OPENSSL
-	if (decrypted != NULL)
-	{
-               body->setText(decrypted);
-	       free(decrypted);
-	}       
+	if (decrypted != NULL) {
+		body->setText(cp_to_iso((unsigned char *)decrypted));
+		free(decrypted);
+		}
 	else
 #endif
-               body->setText(msg);
+		body->setText(msg);
 
 	body->setReadOnly(true);
 	body->setWordWrap(QMultiLineEdit::WidgetWidth);
@@ -300,10 +300,9 @@ void Message::commitSend(void) {
 	if ((text.compare("") == 0) || (text.compare(" ") == 0))
 		return;
 
+	unsigned char *utmp;
 	// zmieniamy unixowe \n na windowsowe \r\n
 	text.replace(QRegExp("\n"), "\r\n");
-	QCString tmp(text.local8Bit());
-	unsigned char *utmp = (unsigned char *) tmp.data();	
 
 	body->setReadOnly(true);
 	uin = userlist.byAltNick(nicksnd).uin;
@@ -312,8 +311,8 @@ void Message::commitSend(void) {
 	UinsList uins;
 	uins.append(uin);
 	if (config.logmessages)
-		appendHistory(uins, uin, utmp, TRUE);
-	iso_to_cp(utmp);
+		appendHistory(uins, uin, text, TRUE);
+	utmp = (unsigned char *)strdup(iso_to_cp(text).data());
 
 #ifdef HAVE_OPENSSL
 	char* encrypted = sim_message_encrypt((unsigned char *)utmp, uin);
@@ -341,7 +340,9 @@ void Message::commitSend(void) {
 		else
 #endif
 		seq = gg_send_message(sess, GG_CLASS_MSG, uin, utmp);
-	
+
+	free(utmp);
+
 	if (sess->check & GG_CHECK_WRITE)
 		kadusnw->setEnabled(true);
 
