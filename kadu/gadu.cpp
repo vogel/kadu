@@ -902,7 +902,7 @@ void GaduProtocol::iWantGoOnline(const QString &desc)
 	kdebugf();
 
 	//nie pozwalamy na zmianê statusu lub ponowne logowanie gdy jeste¶my
-	//w trakcie ³aczenia siê z serwerem, bo serwer zwróci nam g³upoty
+	//w trakcie ³±czenia siê z serwerem, bo serwer zwróci nam g³upoty
 	if (whileConnecting)
 		return;
 
@@ -992,12 +992,11 @@ void GaduProtocol::iWantGoOffline(const QString &desc)
 {
 	kdebugf();
 
-/* joi: jeszcze siê zastanawiam nad tym kawa³kiem kodu...
 	if (CurrentStatus->isOffline() && whileConnecting)
 	{
 		logout();//ustawia m.in. whileConnecting na false
 		return;
-	}*/
+	}
 
 	if (CurrentStatus->isOffline())
 		return;
@@ -1120,8 +1119,9 @@ void GaduProtocol::connectedSlot()
 
 	// po po³±czeniu z sewerem niestety trzeba ponownie ustawiæ
 	// status, inaczej nie bêdziemy widoczni - raczej b³±d serwerów
-	NextStatus->refresh();
-	
+	if (NextStatus->isInvisible() || (LoginParams.status&~GG_STATUS_FRIENDS_MASK) != NextStatus->toStatusNumber())
+		NextStatus->refresh();
+
 	/*
 		UWAGA: je¿eli robimy refresh(), to przy przechodzeniu z niedostêpnego z opisem
 		na niewidoczny z opisem ta zmiana jest ujawniana naszym kontaktom!
@@ -1136,7 +1136,7 @@ void GaduProtocol::connectedSlot()
 	/*
 		UWAGA 2: procedura ³±czenia siê z serwerem w chwili obecnej wykorzystuje
 		fakt ponownego ustawienia statusu po zalogowaniu, bo iWantGo* blokuj±
-		zmiany statusów w trakcie ³aczenia siê z serwerem
+		zmiany statusów w trakcie ³±czenia siê z serwerem
 	*/
 	
 	kdebugf2();
