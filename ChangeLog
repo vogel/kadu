@@ -34,6 +34,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * w konstruktorze kopiuj±cym UserList nie by³y uaktualniane pola Parent
   w UserListElementach (chilek)
 * Hinty: <, > i & s± wy¶wietlane poprawnie w cytowanej wiadomo¶ci (mast3r)
+* Hinty: poprawienie angielskiego w konfiguracji+ma³a przebudowa (mast3r)
+* Hinty: zmiana domy¶lnej warto¶ci cytownych znaków na 50 (mast3r)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci

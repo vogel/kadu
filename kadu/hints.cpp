@@ -197,7 +197,7 @@ void HintManager::addHintStatus(const UserListElement &ule, unsigned int status,
 	bool availoldstatus = isAvailableStatus(oldstatus);
 	int statusnr = statusGGToStatusNr(status);
 
-	if (availstatus && !availoldstatus)
+	if (config_file.readBoolEntry("Hints", "NotifyHintAvailable") && (availstatus && !availoldstatus))
 	{
 		if (ifStatusWithDescription(status) && config_file.readBoolEntry("Hints","NotifyHintDescription"))
 		{
@@ -213,7 +213,8 @@ void HintManager::addHintStatus(const UserListElement &ule, unsigned int status,
 		return;
 	}
 
-	if (config_file.readBoolEntry("Hints","NotifyHintAlways") && (availstatus && availoldstatus))
+	if (config_file.readBoolEntry("Hints","NotifyHintChange") && (availstatus && availoldstatus))
+	{
 		if (ifStatusWithDescription(status) && config_file.readBoolEntry("Hints","NotifyHintDescription"))
 		{
 			if (config_file.readBoolEntry("Hints","NotifyHintUseSyntax"))
@@ -225,6 +226,24 @@ void HintManager::addHintStatus(const UserListElement &ule, unsigned int status,
 		}
 		else
 			addHint("<b>"+ule.altnick+" </b>"+tr("changed status to")+" <i>"+statustext[statusnr]+"</i>", *icons->loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
+		return;
+	}
+
+	if (config_file.readBoolEntry("Hints", "NotifyHintUnavailable") && (!availstatus && availoldstatus))
+	{
+		if (ifStatusWithDescription(status) && config_file.readBoolEntry("Hints","NotifyHintDescription"))
+		{
+			if (config_file.readBoolEntry("Hints","NotifyHintUseSyntax"))
+			{
+				addHint(parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true), *icons->loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
+				return;
+			}
+			addHint("<b>"+ule.altnick+" </b>"+tr("is unavailable")+"<br> <small>"+QStyleSheet::escape(ule.description)+"</small>", *icons->loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
+		}
+		else
+			addHint("<b>"+ule.altnick+" </b>"+tr("is unavailable"), *icons->loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
+		return;
+	}
 }
 
 void HintManager::loadConfig(void)
@@ -281,22 +300,24 @@ void HintManager::initModule(void)
 	ConfigDialog::addGrid("Hints", "Hints options", "grid-options", 2);
 	ConfigDialog::addCheckBox("Hints", "grid-options", "Enable icons in hints", "Icons", true);
 	ConfigDialog::addCheckBox("Hints", "grid-options", "Show connection errors in hints" ,"Errors", true);
-	ConfigDialog::addCheckBox("Hints", "grid-options", "Notify of new message in unactive chat window", "NotifyNewMessage", false);
+	ConfigDialog::addCheckBox("Hints", "grid-options", "Notify of new message in inactive chat window", "NotifyNewMessage", false);
 	ConfigDialog::addCheckBox("Hints", "grid-options", "Notify of new chat", "NotifyNewChat", true);
-	ConfigDialog::addCheckBox("Hints", "grid-options", "In notify show content message", "ShowContentMessage", false);
+	ConfigDialog::addCheckBox("Hints", "grid-options", "Show in notify content message", "ShowContentMessage", false);
 	ConfigDialog::addVGroupBox("Hints", "Hints options", "Content message in hint");
-	ConfigDialog::addCheckBox("Hints", "Hints options", "Enable notify by hint of change user status", "NotifyHint", true);
-	ConfigDialog::addVGroupBox("Hints", "Hints options", "Notify by hint options");
-	ConfigDialog::addGrid("Hints", "Notify by hint options", "grid-notify-status", 2);
-	ConfigDialog::addCheckBox("Hints", "grid-notify-status", "Notify of each change user status", "NotifyHintAlways", false);
+	ConfigDialog::addCheckBox("Hints", "Hints options", "Enable status notification by hint", "NotifyHint", true);
+	ConfigDialog::addVGroupBox("Hints", "Hints options", "Notification options");
+	ConfigDialog::addGrid("Hints", "Notification options", "grid-notify-status", 2);
+	ConfigDialog::addCheckBox("Hints", "grid-notify-status", "Notify of user status change", "NotifyHintChange", false);
+	ConfigDialog::addCheckBox("Hints", "grid-notify-status", "Notify of user become available", "NotifyHintAvailable", true);
+	ConfigDialog::addCheckBox("Hints", "grid-notify-status", "Notify of user become unavailable", "NotifyHintUnavailable", false);
 	//ConfigDialog::addCheckBox("grid-notify-status", "Prevent autoaway notify",  "NotifyHintPreventAutoaway", true);
-	ConfigDialog::addCheckBox("Hints", "grid-notify-status", "Add description to hint if is", "NotifyHintDescription", false);
-	ConfigDialog::addCheckBox("Hints", "grid-notify-status", "Use syntax", "NotifyHintUseSyntax", false);
-	ConfigDialog::addLineEdit("Hints",  "Notify by hint options", "Hint syntax", "NotifyHintSyntax", "");
+	ConfigDialog::addCheckBox("Hints", "grid-notify-status", "Add description to hint if exist", "NotifyHintDescription", false);
+	ConfigDialog::addCheckBox("Hints", "grid-notify-status", "Use custom syntax", "NotifyHintUseSyntax", false);
+	ConfigDialog::addLineEdit("Hints",  "Notification options", "Hint syntax", "NotifyHintSyntax", "");
 	config_file.addVariable("Hints","NewHintUnder",0);
 	config_file.addVariable("Hints","UseUserPosition",false);
 	config_file.addVariable("Hints","HintsPosition",QPoint(0,0));
-	config_file.addVariable("Hints","CiteSign",100);
+	config_file.addVariable("Hints","CiteSign",50);
 	QFontInfo info(QApplication::font());
 	QFont def_font(info.family(),info.pointSize());
 	config_file.addVariable("Hints","HintOnline",def_font.family()+","+QString::number(def_font.pointSize())+",#000000,#F0F0F0,10");
@@ -337,22 +358,18 @@ void HintManagerSlots::onCreateConfigDialog()
 	hint.append(QStringList::split(",",config_file.readEntry("Hints","HintError")));
 	b_hint = ConfigDialog::getCheckBox("Hints", "Enable hints");
 	QVGroupBox *hintgrp = ConfigDialog::getVGroupBox("Hints", "Hints options");
-	QCheckBox *b_notify = ConfigDialog::getCheckBox("Hints", "Enable notify by hint of change user status");
-	QCheckBox *b_syntax = ConfigDialog::getCheckBox("Hints", "Use syntax");
-	QVGroupBox *notifygrp = ConfigDialog::getVGroupBox("Hints", "Notify by hint options");
+	QCheckBox *b_notify = ConfigDialog::getCheckBox("Hints", "Enable status notification by hint");
+	QCheckBox *b_syntax = ConfigDialog::getCheckBox("Hints", "Use custom syntax");
+	QVGroupBox *notifygrp = ConfigDialog::getVGroupBox("Hints", "Notification options");
 	QLineEdit *e_syntax = ConfigDialog::getLineEdit("Hints", "Hint syntax");
-	QCheckBox *b_notifyalways = ConfigDialog::getCheckBox("Hints", "Notify of each change user status");
-	QCheckBox *b_newchat = ConfigDialog::getCheckBox("Hints", "Notify of new chat");
-	QCheckBox *b_newmessage = ConfigDialog::getCheckBox("Hints", "Notify of new message in unactive chat window");
-	QCheckBox *b_error = ConfigDialog::getCheckBox("Hints", "Show connection errors in hints");
-	QCheckBox *b_showcontent = ConfigDialog::getCheckBox("Hints", "In notify show content message");
+	QCheckBox *b_showcontent = ConfigDialog::getCheckBox("Hints", "Show in notify content message");
 	QVGroupBox *messagegrp = ConfigDialog::getVGroupBox("Hints", "Content message in hint");
 
 	messagegrp->setEnabled(b_showcontent->isChecked());
 	QHBox *h_msg = new QHBox(messagegrp);
 	h_msg->setSpacing(2);
 	
-	QLabel *l_citesign = new QLabel(tr("Number cited sign"),h_msg);
+	QLabel *l_citesign = new QLabel(tr("Number of quoted characters"),h_msg);
 
 	sb_citesign = new QSpinBox(10, 1000, 1, h_msg);
 	sb_citesign->setValue(config_file.readNumEntry("Hints","CiteSign"));
@@ -368,7 +385,7 @@ void HintManagerSlots::onCreateConfigDialog()
 
 	QVBox *vbox = new QVBox(hbox);
 	
-	b_useposition = new QCheckBox(tr("Use my hints position"),vbox);
+	b_useposition = new QCheckBox(tr("Use custom hints position"),vbox);
 	b_useposition->setChecked(useposition);
 	
 	QVGroupBox *vboxgrp2 = new QVGroupBox(tr("Hints position"), vbox);
@@ -402,7 +419,7 @@ void HintManagerSlots::onCreateConfigDialog()
 	cb_notify->insertItem(tr("New message in chat"));
 	cb_notify->insertItem(tr("Error"));
 
-	QLabel *l_timeout = new QLabel("Hint timeout(in second)",hb_0);
+	QLabel *l_timeout = new QLabel("Hint timeout (in seconds)",hb_0);
 
 	sb_timeout = new QSpinBox(1,600,1,hb_0);
 	sb_timeout->setValue(hint[cb_notify->currentItem()][4].toInt());
@@ -413,7 +430,7 @@ void HintManagerSlots::onCreateConfigDialog()
 	QHGroupBox *hgb_0 = new QHGroupBox(tr("Preview"),hb_1);
 	hgb_0->setAlignment(Qt::AlignCenter);
 
-	preview = new QLabel(tr("<b>Text</b> to preview"),hgb_0);
+	preview = new QLabel(tr("<b>Text</b> preview"),hgb_0);
 	preview->setFont(QFont(hint[cb_notify->currentItem()][0],hint[cb_notify->currentItem()][1].toInt()));
 	preview->setPaletteForegroundColor(QColor(hint[cb_notify->currentItem()][2]));
 	preview->setPaletteBackgroundColor(QColor(hint[cb_notify->currentItem()][3]));
