@@ -1417,6 +1417,7 @@ void History::initModule()
 	QT_TRANSLATE_NOOP("@default", "Count:");
 	QT_TRANSLATE_NOOP("@default", "Don't quote phrases older than:");
 	QT_TRANSLATE_NOOP("@default", "Don't show status changes");
+	QT_TRANSLATE_NOOP("@default", "Don't save status changes");
 
 	kdebug("History::initModule() \n");
 	HistorySlots *historyslots=new HistorySlots();
