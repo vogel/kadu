@@ -683,7 +683,7 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>German</source>
-        <translation>deutsch</translation>
+        <translation>Deutsch</translation>
     </message>
     <message>
         <source>Type of gateway</source>
@@ -692,6 +692,10 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     <message>
         <source>Default status</source>
         <translation>Standard-Status</translation>
+    </message>
+    <message>
+        <source>Don&apos;t show status changes</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1000,6 +1004,10 @@ Dein Passwort ist falsch!!!</translation>
     <message>
         <source>Disconnection has occured</source>
         <translation>Verbindung wurde getrennt</translation>
+    </message>
+    <message>
+        <source>Please change your email in &quot;Change password/email&quot; window. Leave new password field blank.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1634,11 +1642,11 @@ Check your internet connection.</source>
     <name>Register</name>
     <message>
         <source>Password</source>
-        <translation>Hasło</translation>
+        <translation>Passwort</translation>
     </message>
     <message>
         <source>Retype password</source>
-        <translation>Powtórz hasło</translation>
+        <translation>Passwort wiederholen</translation>
     </message>
     <message>
         <source>E-mail</source>
@@ -1646,7 +1654,7 @@ Check your internet connection.</source>
     </message>
     <message>
         <source>Register</source>
-        <translation>Zarejestruj</translation>
+        <translation>Registriere</translation>
     </message>
     <message>
         <source>Create config file</source>
@@ -1844,16 +1852,20 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
         <source>Select user first</source>
         <translation>Markiere zuerst Benutzer</translation>
     </message>
+    <message>
+        <source> </source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Sms</name>
     <message>
         <source>Recipient</source>
-        <translation>Odbiorca</translation>
+        <translation>Empfänger</translation>
     </message>
     <message>
         <source>Send</source>
-        <translation>Wyślij</translation>
+        <translation>Sende</translation>
     </message>
     <message>
         <source>Send SMS</source>
@@ -2284,7 +2296,7 @@ Rechte Maustaste - Setze Status</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation>Dodaj</translation>
+        <translation>Füge hinzu</translation>
     </message>
     <message>
         <source>Update</source>
@@ -2376,15 +2388,15 @@ zostało zakończone niepowodzeniem.</translation>
     <name>UserlistImport</name>
     <message>
         <source>&amp;Fetch userlist</source>
-        <translation>&amp;Pobierz listę</translation>
+        <translation>&amp;Hole Liste</translation>
     </message>
     <message>
         <source>&amp;Save results</source>
-        <translation>&amp;Zapisz wyniki</translation>
+        <translation>Ergebnisse &amp;spiechern</translation>
     </message>
     <message>
         <source>&amp;Import from file</source>
-        <translation>&amp;Import z pliku</translation>
+        <translation>&amp;Import aus Datei</translation>
     </message>
     <message>
         <source>UIN</source>
@@ -2396,7 +2408,7 @@ zostało zakończone niepowodzeniem.</translation>
     </message>
     <message>
         <source>Disp. nick</source>
-        <translation>Wyświetl</translation>
+        <translation>Zeige Nick</translation>
     </message>
     <message>
         <source>Name</source>

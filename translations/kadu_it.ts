@@ -693,6 +693,10 @@ Se lasciate lo spazio vuoto, sarà inserita stringa predefinita.</translation>
         <source>German</source>
         <translation>Tedesco</translation>
     </message>
+    <message>
+        <source>Don&apos;t show status changes</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1847,6 +1851,10 @@ Ora aggiunga i vostri amici al lista dei contatti.</translation>
     <message>
         <source>Select user first</source>
         <translation>Prona devi selezionare l&apos;utente</translation>
+    </message>
+    <message>
+        <source> </source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
