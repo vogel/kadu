@@ -369,16 +369,16 @@ void eventGotUserlist(struct gg_event * e) {
 				fprintf(stderr, "KK eventGotUserlist(): User %d has blocked us\n", n->uin);
 				break;
 			case GG_STATUS_BUSY_DESCR:
-				fprintf(stderr, "KK eventGotUserlistWithDescription(): User %d went busy with descr.\n", n->uin);
+				fprintf(stderr, "KK eventGotUserlist(): User %d went busy with descr.\n", n->uin);
 				break;
 			case GG_STATUS_NOT_AVAIL_DESCR:
-				fprintf(stderr, "KK eventGotUserlistWithDescription(): User %d went offline with descr.\n", n->uin);
+				fprintf(stderr, "KK eventGotUserlist(): User %d went offline with descr.\n", n->uin);
 				break;
 			case GG_STATUS_AVAIL_DESCR:
-				fprintf(stderr, "KK eventGotUserlistWithDescription(): User %d went online with descr.\n", n->uin);
+				fprintf(stderr, "KK eventGotUserlist(): User %d went online with descr.\n", n->uin);
 				break;
 			case GG_STATUS_INVISIBLE_DESCR:
-				fprintf(stderr, "KK eventGotUserlistWithDescription(): User %d went invisible with descr.\n", n->uin);
+				fprintf(stderr, "KK eventGotUserlist(): User %d went invisible with descr.\n", n->uin);
 				break;
 			default:
 				fprintf(stderr, "KK eventGotUserlist(): Unknown status for user %d: %d\n", n->uin, n->status);
