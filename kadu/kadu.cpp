@@ -1269,10 +1269,13 @@ void Kadu::mouseButtonClicked(int button, QListBoxItem *item) {
 
 
 /* if something's pending, open it, if not, open new message */
-void Kadu::sendMessage(QListBoxItem *item) {
-	chat_manager->sendMessage(
-		userlist.byAltNick(item->text()).uin,
-		Userbox->getSelectedUins());
+void Kadu::sendMessage(QListBoxItem *item)
+{
+	uin_t uin=userlist.byAltNick(item->text()).uin;
+	if(uin!=0)
+		chat_manager->sendMessage(uin,Userbox->getSelectedUins());
+	else
+		sendSmsToUser();
 }
 
 /* when we want to change the status */
