@@ -6724,6 +6724,7 @@ rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
 
 	echo "$as_me:$LINENO: checking if $tool tool is available" >&5
 echo $ECHO_N "checking if $tool tool is available... $ECHO_C" >&6
+	TOOL_DIRS=
 	tmp_TOOL_DIR=
 	for dir in $with_apps `echo $PATH | sed "s/:/ /g"`
 	do
