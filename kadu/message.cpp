@@ -268,15 +268,10 @@ Message::Message (const QString & nick, bool tchat, QWidget *parent, const char 
 
 	QFileInfo keyfile(keyfile_path);
 
-	if (config.encryption) {
-		b_encryptmsg->setChecked(true);
-	}
-	if (!keyfile.permission(QFileInfo::ReadUser)) {
+	if (keyfile.permission(QFileInfo::ReadUser))
+		b_encryptmsg->setChecked(config.encryption);
+	else
 		b_encryptmsg->setEnabled(false);
-	} else if (config.encryption) {
-		b_encryptmsg->setEnabled(true);
-		;
-	}
 	btngrp->insert(b_encryptmsg, 3);
 #endif
 
