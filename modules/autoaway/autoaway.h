@@ -22,6 +22,7 @@ class AutoAwaySlots :public QObject
 		void correctAutoDisconnectTime(int i);
 		void checkAutoInvisibleTime(bool b);
 		void checkAutoDisconnectTime(bool b);
+		void setTextLength(const QString &str);
 };
 
 class AutoAwayTimer : private QTimer
@@ -39,8 +40,10 @@ class AutoAwayTimer : private QTimer
 		bool autoawayed;
 		bool autoinvisibled;		/* zapamietuje czy przeszedl na autoinvisible - potrzebne do autodisconnect */
 		bool autodisconnected;		/* zapamietuje czy rozlaczylismy sie juz */
+		bool autodescription;		/* zapamietuje czy juz zmienil opis */
 		int beforeAutoAway;
 		int idletime;
+		QString oldStatus;
 		friend class AutoAwaySlots;
 };
 
