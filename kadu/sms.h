@@ -63,6 +63,7 @@ class HttpClient : public QObject
 		
 	signals:
 		void finished();
+		void redirected(QString link);
 		void error();
 };
 
@@ -73,15 +74,13 @@ class SmsGateway : public QObject
 	protected:
 		enum GatewayState
 		{
-			SMS_LOADING_LOGIN_PAGE,
-			SMS_LOADING_LOGIN_RESULTS,
 			SMS_LOADING_PAGE,
 			SMS_LOADING_PICTURE,
-			SMS_LOADING_PREVIEW,
 			SMS_LOADING_RESULTS
 		};
 		GatewayState State;
 		QString Number;
+		QString Signature;
 		QString Message;
 		HttpClient Http;
 
@@ -90,10 +89,11 @@ class SmsGateway : public QObject
 
 	protected slots:
 		virtual void httpFinished()=0;
+		virtual void httpRedirected(QString)=0;
 		
 	public:
 		SmsGateway(QObject* parent);
-		virtual void send(const QString& number,const QString& message)=0;
+		virtual void send(const QString& number,const QString& message, const QString& contact, const QString& signature)=0;
 
 	signals:
 		void finished(bool success);
@@ -111,10 +111,11 @@ class SmsIdeaGateway : public SmsGateway
 
 	protected:
 		virtual void httpFinished();
+		virtual void httpRedirected(QString);
 
 	public:
 		SmsIdeaGateway(QObject* parent);
-		virtual void send(const QString& number,const QString& message);
+		virtual void send(const QString& number,const QString& message, const QString& contact, const QString& signature);
 		static bool isNumberCorrect(const QString& number);
 };
 
@@ -122,10 +123,11 @@ class SmsPlusGateway : public SmsGateway
 {
 	protected:
 		virtual void httpFinished();
+		virtual void httpRedirected(QString);
 
 	public:
 		SmsPlusGateway(QObject* parent);
-		virtual void send(const QString& number,const QString& message);
+		virtual void send(const QString& number,const QString& message, const QString& contact, const QString& signature);
 		static bool isNumberCorrect(const QString& number);
 };
 
@@ -133,11 +135,13 @@ class SmsEraGateway : public SmsGateway
 {
 	protected:
 		virtual void httpFinished();
+		virtual void httpRedirected(QString link);
 
 	public:
 		SmsEraGateway(QObject* parent);
-		virtual void send(const QString& number,const QString& message);
+		virtual void send(const QString& number,const QString& message, const QString& contact, const QString& signature);
 		static bool isNumberCorrect(const QString& number);
+		static QString errorNumber(int nr);
 };
 
 
@@ -150,7 +154,7 @@ class SmsSender : public QObject
 
 	public:
 		SmsSender(QObject* parent=0);
-		void send(const QString& number,const QString& message);
+		void send(const QString& number,const QString& message, const QString& contact, const QString& signature);
 		
 	signals:
 		void finished(bool success);
@@ -174,6 +178,10 @@ class Sms : public QDialog {
 		QLineEdit *recipient;
 		QComboBox* list;
 		QLabel *smslen;
+		QLabel *l_contact;
+		QLineEdit *e_contact;
+		QLabel *l_signature;
+		QLineEdit *e_signature;
 		QPushButton *b_send;
 		QProcess *smsProcess;
 		SmsSender Sender;
@@ -191,9 +199,14 @@ class SmsSlots: public QObject
 {
 	Q_OBJECT
 	
+	private:
+		QString actualEraGateway;
+	
 	public slots:
 		void onSmsBuildInCheckToggle(bool);
 		void onCreateConfigDialog();
+		void onDestroyConfigDialog();
+		void onChangeEraGateway(int gateway);
 
 };
 

@@ -154,6 +154,7 @@ void HttpClient::onReadyRead()
 			while (t->elapsed()<500) {};
 			delete t;
 			//
+			emit redirected(location);
 			get(location);
 			return;
 		};
@@ -270,6 +271,7 @@ SmsGateway::SmsGateway(QObject* parent)
 	: QObject(parent,"SmsGateway")
 {
 	QObject::connect(&Http,SIGNAL(finished()),this,SLOT(httpFinished()));
+	QObject::connect(&Http,SIGNAL(redirected(QString)),this,SLOT(httpRedirected(QString)));
 	QObject::connect(&Http,SIGNAL(error()),this,SLOT(httpError()));
 };
 
@@ -286,10 +288,15 @@ SmsIdeaGateway::SmsIdeaGateway(QObject* parent)
 {
 };
 
-void SmsIdeaGateway::send(const QString& number,const QString& message)
+void SmsIdeaGateway::httpRedirected(QString link)
+{
+};
+
+void SmsIdeaGateway::send(const QString& number,const QString& message, const QString& contact, const QString& signature)
 {
 	Number=number;
 	Message=message;
+	Signature= signature;
 	State=SMS_LOADING_PAGE;
 	Http.setHost("sms.idea.pl");
 	Http.get("/");
@@ -376,7 +383,7 @@ void SmsIdeaGateway::onCodeEntered(const QString& code)
 	};
 	kdebug("SMS User entered the code\n");
 	State=SMS_LOADING_RESULTS;
-	QString post_data=QString("token=")+Token+"&SENDER="+config_file.readEntry("General","Nick")+"&RECIPIENT="+Number+"&SHORT_MESSAGE="+Http.encode(Message)+"&pass="+code;
+	QString post_data=QString("token=")+Token+"&SENDER="+Signature+"&RECIPIENT="+Number+"&SHORT_MESSAGE="+Http.encode(Message)+"&pass="+code+"&CHK_RESP=FALSE"+"&respInfo=1";
 	Http.post("sendsms.aspx",post_data);
 };
 
@@ -387,13 +394,17 @@ SmsPlusGateway::SmsPlusGateway(QObject* parent)
 {
 };
 
-void SmsPlusGateway::send(const QString& number,const QString& message)
+void SmsPlusGateway::httpRedirected(QString link)
+{
+};
+
+void SmsPlusGateway::send(const QString& number,const QString& message, const QString& contact, const QString& signature)
 {
 	Number=number;
 	Message=message;
 	State=SMS_LOADING_RESULTS;
 	Http.setHost("212.2.96.57");
-	QString post_data="tprefix="+Number.left(3)+"&numer="+Number.right(6)+"&odkogo="+config_file.readEntry("General","Nick")+"&tekst="+Message;
+	QString post_data="tprefix="+Number.left(3)+"&numer="+Number.right(6)+"&odkogo="+signature+"&tekst="+Message;
 	Http.post("sms/sendsms.php",post_data);
 };
 
@@ -453,13 +464,39 @@ SmsEraGateway::SmsEraGateway(QObject* parent)
 {
 };
 
-void SmsEraGateway::send(const QString& number,const QString& message)
+void SmsEraGateway::send(const QString& number,const QString& message, const QString& contact, const QString& signature)
 {
 	Number=number;
 	Message=message;
-	State=SMS_LOADING_LOGIN_PAGE;
-	Http.setHost("sms.era.pl");
-	Http.get("sms");
+	Http.setHost("www.eraomnix.pl");
+	
+	QString path;
+	QString post_data="login="+config_file.readEntry("SMS","EraGateway_"+config_file.readEntry("SMS", "EraGateway")+"_User")+
+	    "&password="+config_file.readEntry("SMS","EraGateway_"+config_file.readEntry("SMS", "EraGateway")+"_Password")+
+	    "&numbers="+number+ "&message="+message+
+	    "&contact="+contact+ "&signature="+signature+
+	    "&success=http://moj.serwer.pl/ok.html&failure=http://moj.serwer.pl/blad.html";
+	    
+	QString gateway= config_file.readEntry("SMS", "EraGateway");
+
+	if ( gateway == "Basic")
+		{
+		    path= "sms/do/extern/tinker/free/send";
+		    post_data.replace("&numbers=", "&number=");
+		}
+	else if (gateway == "Charge")
+		    path= "sms/do/extern/tinker/super/send";
+	else if (gateway == "Omnix")
+		    path= "sms/do/extern/tinker/multi/send";
+	else 
+	    {
+		emit finished(false);
+		return;
+	    }
+	
+	
+	Http.post(path,post_data);
+
 };
 
 bool SmsEraGateway::isNumberCorrect(const QString& number)
@@ -467,90 +504,45 @@ bool SmsEraGateway::isNumberCorrect(const QString& number)
 	return (number[0]=='6'&&((QChar(number[2])-'0')%2)==0);
 };
 
-void SmsEraGateway::httpFinished()
+void SmsEraGateway::httpRedirected(QString link)
 {
 	QWidget* p=(QWidget*)(parent()->parent());
-	if(State==SMS_LOADING_LOGIN_PAGE)
-	{
-		QString Page=Http.data();
-		kdebug("SMS Provider Login Page:\n%s\n",Page.local8Bit().data());
-		if(Page.find("Zaloguj siê") < 0)
-		{
-			QMessageBox::critical(p,"SMS",tr("Provider gateway page looks strange. It's probably temporary disabled\nor has beed changed too much to parse it correctly."));
-			emit finished(false);
-			return;
-		};
-		State = SMS_LOADING_LOGIN_RESULTS;
-		QString post_data=
-			"j_username="+config_file.readEntry("SMS","EraGatewayUser")+
-			"&j_password="+config_file.readEntry("SMS","EraGatewayPassword")+
-			"&x=46&y=6";
-		Http.post("j_security_check", post_data);
-	}
-	else if(State==SMS_LOADING_LOGIN_RESULTS)
-	{
-		QString Page=Http.data();
-		kdebug("SMS Provider Authorization Results Page:\n%s\n",Page.local8Bit().data());
-		if(Page.find("Wyloguj siê")<0)
-		{
-			kdebug("Authorization error\n");
-			QMessageBox::critical(p,"SMS",tr("Authorization error. Incorrect login or password."));
-			emit finished(false);
-			return;
-		};
-		State=SMS_LOADING_PAGE;
-		Http.get("sms/do/singleSignonFromXAction");
-	}
-	else if(State==SMS_LOADING_PAGE)
-	{
-		QString Page=Http.data();
-		kdebug("SMS Provider Page:\n%s\n",Page.local8Bit().data());
-		if(Page.find("Bramka podstawowa") < 0)
-		{
-			QMessageBox::critical(p,"SMS",tr("Provider gateway page looks strange. It's probably temporary disabled\nor has beed changed too much to parse it correctly."));
-			emit finished(false);
-			return;
-		};	
-		State=SMS_LOADING_PREVIEW;
-
-		QString nick=config_file.readEntry("General","Nick");		
-		QString post_data=
-			"phoneNumber="+Number+
-			"&smsContent="+Http.encode(Message)+
-			"&reply="+config_file.readEntry("SMS","EraGatewayUser")+
-			"&signature="+Http.encode(nick);
-		Http.post("sms/do/previewSMS", post_data);	
-	}
-	else if(State==SMS_LOADING_PREVIEW)
-	{
-		QString Page=Http.data();
-		kdebug("SMS Provider Preview Page:\n%s\n",Page.local8Bit().data());
-		QRegExp token_regexp("sms\\/do\\/sendSMS\\?org\\.apache\\.struts\\.taglib\\.html\\.TOKEN=([^\"]+)");
-		if(token_regexp.search(Page)<0)
-		{
-			QMessageBox::critical(p,"SMS",tr("Provider gateway page looks strange. It's probably temporary disabled\nor has beed changed too much to parse it correctly."));
-			emit finished(false);
-			return;
-		};
-		State=SMS_LOADING_RESULTS;
-		Http.get(token_regexp.cap(0));
-	}
-	else if(State==SMS_LOADING_RESULTS)
-	{
-		QString Page=Http.data();
-		kdebug("SMS Provider Results Page:\n%s\n",Page.local8Bit().data());	
-		if(Page.find("Wiadomo¶æ zosta³a przekazana do wys³ania")>=0)
-		{
+		if(link.find("ok.html")> 0)
 			emit finished(true);
-		}
-		else
+		else if(link.find("blad.html")> 0)
 		{
-			QMessageBox::critical(p,"SMS",tr("Provider gateway results page looks strange. SMS was probably NOT sent."));
+			QMessageBox::critical(p,"SMS",tr("Error: ")+ SmsEraGateway::errorNumber(link.replace("http://moj.serwer.pl/blad.html?X-ERA-error=", "").toInt()));
 			emit finished(false);
-		};		
-	}
-	else
-		kdebug("SMS Panic! Unknown state\n");	
+		}		
+		else 
+			QMessageBox::critical(p,"SMS",tr("Provider gateway results page looks strange. SMS was probably NOT sent."));
+};
+
+QString SmsEraGateway::errorNumber(int nr)
+{
+    switch(nr){
+	case 0: return tr("No error");
+		break;
+	case 1: return tr("System failure");
+		break;
+	case 2: return tr("Unauthorised user");
+		break;
+	case 3: return tr("Access forbidden");
+		break;
+	case 5: return tr("Syntax error");
+		break;
+	case 7: return tr("Limit of the sms run-down");
+		break;
+	case 8: return tr("Wrong receiver adress");
+		break;
+	case 9: return tr("Message too long");
+		break;
+	   }
+	 return tr("Unknown error");
+}
+
+void SmsEraGateway::httpFinished()
+{
 };
 
 /********** SmsSender **********/
@@ -565,14 +557,14 @@ void SmsSender::onFinished(bool success)
 	emit finished(success);
 };
 
-void SmsSender::send(const QString& number,const QString& message)
+void SmsSender::send(const QString& number,const QString& message, const QString& contact, const QString& signature)
 {
 	QString Number=number;
 	if(Number.length()==12&&Number.left(3)=="+48")
 		Number=Number.right(9);
 	if(Number.length()!=9)
 	{
-		QMessageBox::critical((QWidget*)parent(),"SMS",tr("Mobile number is incorrect"));
+		QMessageBox::critical((QWidget*)parent(), "SMS", tr("Mobile number is incorrect"));
 		emit finished(false);
 		return;
 	};
@@ -589,8 +581,8 @@ void SmsSender::send(const QString& number,const QString& message)
 		emit finished(false);
 		return;
 	};	
-	QObject::connect(Gateway,SIGNAL(finished(bool)),this,SLOT(onFinished(bool)));
-	Gateway->send(Number,message);
+	QObject::connect(Gateway, SIGNAL(finished(bool)), this, SLOT(onFinished(bool)));
+	Gateway->send(Number, message, contact, signature);
 };
 
 /********** Sms **********/
@@ -606,6 +598,7 @@ Sms::Sms(const QString& altnick, QDialog* parent) : QDialog (parent, "Sms")
 	QObject::connect(body, SIGNAL(textChanged()), this, SLOT(updateCounter()));
 
 	recipient = new QLineEdit(this);
+	recipient->setMinimumWidth(140);
 	if(altnick!="")
 		recipient->setText(userlist.byAltNick(altnick).mobile);
 	QObject::connect(recipient,SIGNAL(textChanged(const QString&)),this,SLOT(updateList(const QString&)));
@@ -626,15 +619,28 @@ Sms::Sms(const QString& altnick, QDialog* parent) : QDialog (parent, "Sms")
 	QLabel *recilabel = new QLabel(tr("Recipient"),this);
 	grid->addWidget(recilabel, 0, 0);
 
-	b_send = new QPushButton(this);
-	b_send->setText(tr("Send"));
-	grid->addWidget(b_send, 3, 3);
-	QObject::connect(b_send, SIGNAL(clicked()), this, SLOT(sendSms()));
-
 	smslen = new QLabel("0",this);
 	grid->addWidget(smslen, 3, 0);
 
-	resize(300,200);
+	b_send = new QPushButton(this);
+	b_send->setText(tr("Send"));
+	b_send->setMaximumWidth(200);
+	grid->addWidget(b_send, 3, 3, Qt::AlignRight);
+	
+	l_contact= new QLabel(tr("Contact"), this);
+	grid->addWidget(l_contact, 4, 0);
+	e_contact= new QLineEdit(this);
+	grid->addWidget(e_contact, 4, 1);
+	
+	l_signature= new QLabel(tr("Signature"),this);
+	grid->addWidget(l_signature, 5, 0);
+	e_signature= new QLineEdit(config_file.readEntry("General", "Nick"), this);
+	grid->addWidget(e_signature, 5, 1);
+	
+	QObject::connect(b_send, SIGNAL(clicked()), this, SLOT(sendSms()));
+
+
+	resize(400,250);
 	setCaption(tr("Send SMS"));
 
 	connect(&Sender,SIGNAL(finished(bool)),this,SLOT(onSmsSenderFinished(bool)));
@@ -669,12 +675,16 @@ void Sms::updateList(const QString &newnumber)
 void Sms::sendSms(void) {
 	b_send->setEnabled(false);
 	body->setEnabled(false);
+	e_contact->setEnabled(false);
+	l_contact->setEnabled(false);
+	e_signature->setEnabled(false);
+	l_signature->setEnabled(false);
 
 	history.appendSms(recipient->text(), body->text());
 
 	if(config_file.readBoolEntry("SMS","BuiltInApp"))
 	{
-		Sender.send(recipient->text(),body->text());
+		Sender.send(recipient->text(), body->text(), e_contact->text(), e_signature->text());
 	}
 	else
 	{
@@ -717,6 +727,11 @@ void Sms::smsSigHandler() {
 		QMessageBox::information(this, tr("SMS sent"), tr("The process exited normally. The SMS should be on its way"));
 	else
 		QMessageBox::warning(this, tr("SMS not sent"), tr("The process exited abnormally. The SMS may not be sent"));
+
+	e_contact->setEnabled(true);
+	l_contact->setEnabled(true);
+	e_signature->setEnabled(true);
+	l_signature->setEnabled(true);
 	b_send->setEnabled(true);
 	body->setEnabled(true);
 	body->clear();
@@ -729,11 +744,16 @@ void Sms::updateCounter() {
 void Sms::onSmsSenderFinished(bool success)
 {
 	if(success)
+	    {	
 		QMessageBox::information(this, tr("SMS sent"), tr("The SMS was sent and should be on its way"));
+		body->clear();
+	    }
 	b_send->setEnabled(true);
 	body->setEnabled(true);
-	if(success)
-		body->clear();
+	e_contact->setEnabled(true);
+	l_contact->setEnabled(true);
+	e_signature->setEnabled(true);
+	l_signature->setEnabled(true);
 };
 
 void Sms::initModule()
@@ -748,7 +768,7 @@ void Sms::initModule()
 	QT_TRANSLATE_NOOP("@default", "SMS Era Gateway");
 	QT_TRANSLATE_NOOP("@default", "User ID");
 	QT_TRANSLATE_NOOP("@default", "Password");
-
+	QT_TRANSLATE_NOOP("@default", "Type of gateway");
 
 
 	kdebug("Sms::initModule \n");	
@@ -762,12 +782,23 @@ void Sms::initModule()
 	,"Check this box if your sms application doesn't understand arguments: number \"message\"\nArguments should be separated with spaces. %n argument is converted to number, %m to message");
 	ConfigDialog::addLineEdit("SMS", "smsgrid", "", "SmsString", "", "", "smsstring");
 	ConfigDialog::addVGroupBox("SMS", "SMS", "SMS Era Gateway");
-	ConfigDialog::addLineEdit("SMS", "SMS Era Gateway", "User ID", "EraGatewayUser");
-	ConfigDialog::addLineEdit("SMS", "SMS Era Gateway", "Password", "EraGatewayPassword");
+	ConfigDialog::addComboBox("SMS", "SMS Era Gateway", "Type of gateway");
+
+	config_file.addVariable("SMS", "EraGateway", "Omnix");
+	//przepisanie starego hasla
+	config_file.addVariable("SMS", "EraGateway_Omnix_User", config_file.readEntry("SMS", "EraGatewayUser"));
+	config_file.addVariable("SMS", "EraGateway_Omnix_Password", config_file.readEntry("SMS", "EraGatewayPassword"));
+	//
+
+	ConfigDialog::addLineEdit2("SMS", "SMS Era Gateway", "User ID");
+	ConfigDialog::addLineEdit2("SMS", "SMS Era Gateway", "Password");
+
 	
 	SmsSlots *smsslots=new SmsSlots();
 	ConfigDialog::registerSlotOnCreate(smsslots, SLOT(onCreateConfigDialog()));
+	ConfigDialog::registerSlotOnDestroy(smsslots, SLOT(onDestroyConfigDialog()));
     	ConfigDialog::connectSlot("SMS", "Use built-in SMS application", SIGNAL(toggled(bool)), smsslots, SLOT(onSmsBuildInCheckToggle(bool)));
+	ConfigDialog::connectSlot("SMS", "Type of gateway", SIGNAL(activated(int)), smsslots, SLOT(onChangeEraGateway(int)));
 };
 
 void SmsSlots::onSmsBuildInCheckToggle(bool value)
@@ -803,4 +834,48 @@ void SmsSlots::onCreateConfigDialog()
 		e_smsconf->setEnabled(false);
 			    
 	connect(b_smscustomconf,SIGNAL(toggled(bool)),e_smsconf,SLOT(setEnabled(bool)));
+	
+
+	
+	QComboBox *cb_typegateway= ConfigDialog::getComboBox("SMS","Type of gateway");
+	cb_typegateway->insertItem("Basic");
+	cb_typegateway->insertItem("Omnix");
+	cb_typegateway->insertItem("Charge");
+	cb_typegateway->setCurrentText(config_file.readEntry("SMS", "EraGateway"));
+	actualEraGateway=cb_typegateway->currentText();
+	
+	QLineEdit *e_erauser= ConfigDialog::getLineEdit("SMS", "User ID");
+	QLineEdit *e_erapassword= ConfigDialog::getLineEdit("SMS", "Password");
+	e_erapassword->setEchoMode(QLineEdit::Password);
+	
+	e_erapassword->setText(config_file.readEntry("SMS", "EraGateway_"+config_file.readEntry("SMS", "EraGateway")+"_Password"));
+	e_erauser->setText(config_file.readEntry("SMS", "EraGateway_"+config_file.readEntry("SMS", "EraGateway")+"_User"));
+
+	
+};
+
+void SmsSlots::onDestroyConfigDialog()
+{
+	QComboBox *cb_typegateway= ConfigDialog::getComboBox("SMS","Type of gateway");
+	config_file.writeEntry("SMS", "EraGateway",cb_typegateway->currentText());
+
+	QLineEdit *e_erauser= ConfigDialog::getLineEdit("SMS", "User ID");
+	QLineEdit *e_erapassword= ConfigDialog::getLineEdit("SMS", "Password");
+	config_file.writeEntry("SMS", "EraGateway_"+config_file.readEntry("SMS", "EraGateway")+"_Password", e_erapassword->text());
+	config_file.writeEntry("SMS", "EraGateway_"+config_file.readEntry("SMS", "EraGateway")+"_User", e_erauser->text());
+
+};
+
+void SmsSlots::onChangeEraGateway(int gateway)
+{
+	QLineEdit *e_erauser= ConfigDialog::getLineEdit("SMS", "User ID");
+	QLineEdit *e_erapassword= ConfigDialog::getLineEdit("SMS", "Password");
+	QComboBox *cb_typegateway= ConfigDialog::getComboBox("SMS","Type of gateway");
+	
+	config_file.writeEntry("SMS", "EraGateway_"+actualEraGateway+"_Password", e_erapassword->text());
+	config_file.writeEntry("SMS", "EraGateway_"+actualEraGateway+"_User", e_erauser->text());
+
+	e_erauser->setText(config_file.readEntry("SMS", "EraGateway_"+cb_typegateway->currentText()+"_User"));
+	e_erapassword->setText(config_file.readEntry("SMS", "EraGateway_"+cb_typegateway->currentText()+"_Password"));
+	actualEraGateway=cb_typegateway->text(gateway);
 };
