@@ -43,27 +43,29 @@ KaduListBoxPixmap::KaduListBoxPixmap(const QPixmap &pix, const QString &text, co
 void KaduListBoxPixmap::paint(QPainter *painter) {
 	UserListElement &user = userlist.byAltNick(text());
 	bool isOurUin=((UinType)config_file.readNumEntry("General", "UIN") == user.uin);
-	if (user.uin) {
+	if (user.uin)
+	{
 		UinsList uins;
 		uins.append(user.uin);
-		if (user.blocking) {
+		if (user.blocking)
+		{
 			QPen &pen = (QPen &)painter->pen();
 			pen.setColor(QColor(255, 0, 0));
 			painter->setPen(pen);
-			}
-		else
-			if (isIgnored(uins)) {
-				QPen &pen = (QPen &)painter->pen();
-				pen.setColor(QColor(192, 192, 0));
-				painter->setPen(pen);
-				}
-			else
-				if (user.offline_to_user) {
-					QPen &pen = (QPen &)painter->pen();
-					pen.setColor(QColor(128, 128, 128));
-					painter->setPen(pen);
-					}
 		}
+		else if (isIgnored(uins))
+		{
+			QPen &pen = (QPen &)painter->pen();
+			pen.setColor(QColor(192, 192, 0));
+			painter->setPen(pen);
+		}
+		else if (user.offline_to_user)
+		{
+			QPen &pen = (QPen &)painter->pen();
+			pen.setColor(QColor(128, 128, 128));
+			painter->setPen(pen);
+		}
+	}
 
 	int itemHeight = height(listBox());
 	int yPos;
@@ -134,9 +136,9 @@ int KaduListBoxPixmap::height(const QListBox* lb) const
 		lh = lb->fontMetrics().lineSpacing() + 2;
 	else{
 		if(config_file.readBoolEntry("Look", "ShowMultilineDesc"))
-			lh = lb->fontMetrics().lineSpacing() * (2 + descr.contains('\n')) -2;
+			lh = lb->fontMetrics().lineSpacing() * (2 + descr.contains('\n'));
 		else
-			lh = lb->fontMetrics().lineSpacing() * 2 - 2;
+			lh = lb->fontMetrics().lineSpacing() * 2;
 	}
 
 	if (text().isEmpty())
