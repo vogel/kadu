@@ -17,7 +17,7 @@ Wybierz jedną z poniższych opcji:</translation>
     </message>
     <message>
         <source>Configure</source>
-        <translation>Posiadam już numer GG</translation>
+        <translation>Mam już nr GG</translation>
     </message>
     <message>
         <source>Cancel</source>
