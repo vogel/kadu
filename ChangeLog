@@ -97,7 +97,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawki w debian/ dotycz±ce poprawek z miejscem instalacji
   niektórych plików kadu (mast3r)
 * ma³e poprawki w kodzie dymków i kodzie korzystaj±cym z dymków (mast3r)
-
+* opcja Voice w instalatorze Instaluj
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci
   (klasa HtmlDocument) i wy³awiania emotów i url-i. Naprawione

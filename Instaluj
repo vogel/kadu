@@ -70,6 +70,25 @@ function Konfiguruj()
  fi;
 }
 
+function Konfiguruj_voice()
+{
+	QTDIR="$QT_DIR"
+	LD_LIBRARY_PATH="$QT_DIR/lib:$LD_LIBRARY_PATH"
+	export QTDIR
+	KDEDIR="$KDE_DIR"
+	export KDEDIR
+	OPER="Configure"
+	echo "==============================================================================="
+	echo "                Uruchamiam plik configure z rozmowami glosowymi"
+	echo "==============================================================================="
+	./configure "--prefix=$APP_DIR" "--enable-voice"
+	WYK=$?
+ if test "$WYK" -ne 0; then
+        Error
+	exit
+ fi;
+}
+
 function Konfiguruj_bez_libgadu()
 {
 	QTDIR="$QT_DIR"
@@ -237,6 +256,7 @@ function ShowInfo()
 	echo " |          NaciÅ›nij   I  aby rozpoczÄ…Ä‡ instalacjÄ™ standardowÄ….               |"
 	echo " |          NaciÅ›nij   U  aby odinstalowaÄ‡ $APP_NAME.                              |"
 	echo " |          NaciÅ›nij   B  aby rozpoczÄ…Ä‡ instalacjÄ™ bez libgadu.               |"
+	echo " |          NaciÅ›nij   V  aby rozpoczÄ…Ä‡ instalacjÄ™ z rozmowami glosowymi.     |"
 	echo " |          NaciÅ›nij   S  aby rozpoczÄ…Ä‡ instalacjÄ™ bez szyfrowania w SSL.     |"
 	echo " |          NaciÅ›nij   G  rozpoczÄ…Ä‡ instalacjÄ™ z debug.                      |"
 	echo " |          NaciÅ›nij   P  aby uzyskaÄ‡ Pomoc za pomocÄ… programu Mozilla.       |"
@@ -377,6 +397,13 @@ while [ 1 ]; do
 			Zainstaluj
 			Aktualizuj_ldsoconf
 		fi;
+		if [[ ("$REPLY" == "V") || ("$REPLY" == "v") ]]; then
+			Konfiguruj_voice
+			Kompiluj
+			Zainstaluj
+			Aktualizuj_ldsoconf
+		fi;
+
 		if [[ ("$REPLY" == "B") || ("$REPLY" == "b") ]]; then
 			Konfiguruj_bez_libgadu
 			Kompiluj
@@ -474,6 +501,26 @@ function Konfiguruj_bez_libgadu()
 	exit
  fi;
 }
+
+function Konfiguruj_voice()
+{
+	QTDIR="$QT_DIR"
+	LD_LIBRARY_PATH="$QT_DIR/lib:$LD_LIBRARY_PATH"
+	export QTDIR
+	KDEDIR="$KDE_DIR"
+	export KDEDIR
+	OPER="Configure"
+	echo "==============================================================================="
+	echo "                Uruchamiam plik configure z rozmowami glosowymi"
+	echo "==============================================================================="
+	./configure "--prefix=$APP_DIR" "--enable-voice"
+	WYK=$?
+ if test "$WYK" -ne 0; then
+        Error
+	exit
+ fi;
+}
+
 
 function Konfiguruj_bez_ssl()
 {
@@ -623,6 +670,7 @@ function ShowInfo()
 	echo " |          Naci¶nij   I  aby rozpocz±æ instalacjê standardow±                |"
 	echo " |          Naci¶nij   U  aby odinstalowaæ $APP_NAME.                              |"
 	echo " |          Naci¶nij   B  aby rozpocz±æ instalacjê bez libgadu.               |"
+	echo " |          Naci¶nij   V  aby rozpocz±æ instalacjê z rozmowami glosowymi.          |"
 	echo " |          Naci¶nij   S  aby rozpocz±æ instalacjê bez szyfrowania w SSL.     |"
 	echo " |          Naci¶nij   G  aby rozpocz±æ instalacjê z debug.                   |"
 	echo " |          Naci¶nij   P  aby uzyskaæ Pomoc za pomoc± programu Mozilla.       |"
@@ -759,6 +807,13 @@ while [ 1 ]; do
 			Zainstaluj
 			Aktualizuj_ldsoconf
 		fi;
+		if [[ ("$REPLY" == "V") || ("$REPLY" == "v") ]]; then
+			Konfiguruj_voice
+			Kompiluj
+			Zainstaluj
+			Aktualizuj_ldsoconf
+		fi;
+
 		if [[ ("$REPLY" == "B") || ("$REPLY" == "b") ]]; then
 			Konfiguruj_bez_libgadu
 			Kompiluj
