@@ -5,6 +5,9 @@
 * ³adowanie pliku emoticons_selector w standardzie ISO-8859-2 (chilek)
 * poprawka zachowania animowanych emotikonów przy
   zawijaniu tekstu i wstêpna optymalizacja (adrian)
+* historie zapisuj± siê w formacie zgodnym z EKG (chilek)
+* historie w starym formacie konwertuj± siê automatycznie (on-demand) do nowego
+  formatu (chilek)
 
 +++ wersja 0.3.3-final
 * ikonka wiadomo¶ci i ikon statusu "ukryty" z telefonikiem
