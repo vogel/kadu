@@ -645,6 +645,10 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
         <source>Icon paths</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Multiline description in userbox</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>

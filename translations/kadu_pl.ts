@@ -645,6 +645,10 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <source>Icon paths</source>
         <translation>Ścieżka do ikon</translation>
     </message>
+    <message>
+        <source>Multiline description in userbox</source>
+        <translation>Wielolinijkowy opis w liście kontaktów</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1549,15 +1553,15 @@ Sprawdź swoje połączenie internetowe.</translation>
     </message>
     <message>
         <source>Info</source>
-        <translation type="unfinished"></translation>
+        <translation>Informacje</translation>
     </message>
     <message>
         <source>&lt;b&gt;Module:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;b&gt;Depends on:&lt;/b&gt;&lt;br&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Moduł:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;b&gt;Jest zależny od:&lt;/b&gt;&lt;br&gt;</translation>
     </message>
     <message>
         <source>&lt;br&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;b&gt;Description&lt;/b&gt;:&lt;br&gt;%2</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;br&gt;&lt;b&gt;Autor:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;b&gt;Opis:&lt;/b&gt;&lt;br&gt;%2</translation>
     </message>
 </context>
 <context>
@@ -1584,15 +1588,16 @@ Być może jest nieprawidłowo skompilowany.</translation>
     </message>
     <message>
         <source>Module %1 is loaded</source>
-        <translation type="unfinished"></translation>
+        <translation>Moduł %1 zastał włączony</translation>
     </message>
     <message>
         <source>Required module %1 was not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Wynagany moduł %1 nie został znaleziony</translation>
     </message>
     <message>
         <source>Module %1 cannot be unloaded because it is used by another module</source>
-        <translation type="unfinished"></translation>
+        <translation>Moduł %1 nie może być wyłączony
+ponieważ jest używany  przez inny moduł</translation>
     </message>
 </context>
 <context>
@@ -1850,11 +1855,7 @@ Teraz możesz dodać znajomych do listy kontaktów.</translation>
     </message>
     <message>
         <source>&amp;Chat</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source> </source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Rozmowa</translation>
     </message>
 </context>
 <context>
@@ -2076,7 +2077,7 @@ czasowo wyłączona lub zmieniła zasady dostępu.</translation>
     <name>ToolBar</name>
     <message>
         <source>Main toolbar</source>
-        <translation type="unfinished">Mój pasek narzędziowy</translation>
+        <translation>Mój pasek narzędziowy</translation>
     </message>
 </context>
 <context>

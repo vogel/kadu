@@ -639,6 +639,10 @@ Arguments should be separated with spaces. %n argument is converted to number, %
         <source>Icon paths</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Multiline description in userbox</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>

@@ -645,6 +645,10 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
         <source>Icon paths</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Multiline description in userbox</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
