@@ -146,7 +146,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchU
 	for (int i = 1; i < 5; i++)
 		results->setColumnWidthMode(i, QListView::Maximum);
 
-	searchhidden = false;
+//	searchhidden = false;
 	fromUin = 0;
 	if (_whoisSearchUin) {
 		r_uin->setChecked(true);
@@ -249,10 +249,10 @@ void SearchDialog::nextSearch(void) {
 		if (r_uin->isChecked()) {
 			if (e_uin->text().length())
 				gg_pubdir50_add(req, GG_PUBDIR50_UIN, (const char *)unicode2cp(e_uin->text()).data());
-			if (searchhidden) {
-				bufyear = "qwertyuiopasdfghjklzxcvbnm";
-				gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)unicode2cp(bufyear.data()));
-				}
+//			if (searchhidden) {
+//				bufyear = "qwertyuiopasdfghjklzxcvbnm";
+//				gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)unicode2cp(bufyear.data()));
+//				}
 			}
 
 	if (only_active->isChecked())
@@ -287,7 +287,7 @@ void SearchDialog::showResults(gg_pubdir50_t res) {
 		progress->setText(tr("Done searching"));
 		QMessageBox::information(this, tr("No results"),
 			tr("There were no results of your search"));
-		searchhidden = false;
+//		searchhidden = false;
 		b_sendbtn->setEnabled(true);
 		b_nextbtn->setEnabled(true);
 		return;
@@ -314,27 +314,27 @@ void SearchDialog::showResults(gg_pubdir50_t res) {
 		else
 			pix = icons_manager.loadIcon("Offline");
 		if (qlv) {
-			if (!searchhidden) {
+//			if (!searchhidden) {
 				qlv->setText(1, cp2unicode((unsigned char *)uin));
 				qlv->setText(2, cp2unicode((unsigned char *)first));
 				qlv->setText(3, cp2unicode((unsigned char *)city));
 				qlv->setText(4, cp2unicode((unsigned char *)nick));
 				qlv->setText(5, cp2unicode((unsigned char *)born));
-				}
-			else
-				searchhidden = false;
+//				}
+//			else
+//				searchhidden = false;
 			}
 		else {
 			qlv = new QListViewItem(results, QString::null, cp2unicode((unsigned char *)uin),
 				cp2unicode((unsigned char *)first), cp2unicode((unsigned char *)city),
 				cp2unicode((unsigned char *)nick), cp2unicode((unsigned char *)born));
-			if (count == 1 && r_uin->isChecked() && !searchhidden
-				&& (statuscode == GG_STATUS_NOT_AVAIL || statuscode == GG_STATUS_NOT_AVAIL_DESCR)) {
-				qlv->setPixmap(0, pix);
-				searchhidden = true;
-				nextSearch();
-				return;
-				}
+//			if (count == 1 && r_uin->isChecked() && !searchhidden
+//				&& (statuscode == GG_STATUS_NOT_AVAIL || statuscode == GG_STATUS_NOT_AVAIL_DESCR)) {
+//				qlv->setPixmap(0, pix);
+//				searchhidden = true;
+//				nextSearch();
+//				return;
+//				}
 			}
 		qlv->setPixmap(0, pix);
 		qlv = NULL;
@@ -348,7 +348,7 @@ void SearchDialog::showResults(gg_pubdir50_t res) {
 	else
 		selectionChanged(results->selectedItem());
 
-	searchhidden = false;
+//	searchhidden = false;
 	b_sendbtn->setEnabled(true);
 	b_nextbtn->setEnabled(true);
 }

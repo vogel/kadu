@@ -68,6 +68,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dodany modul joi'a do obslugi serwera dzwieku arts + moje przerobki (adrian)
 * dodane pozostale trzy moduly joi'a do obslugi serwerow dzwieku:
   dsp_sound, esd_sound i nas_sound (adrian)
+* nie dzia³a wyszkukiwanie niewidocznych - kod w search.cpp zakomentowany (chilek)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
