@@ -96,14 +96,25 @@ void VoiceManager::free() {
 
 void VoiceManager::resetCodec() {
 	kdebug("VoiceManager::resetCodec()\n");
+	resetEncoder();
+	resetDecoder();
+}
+
+void VoiceManager::resetEncoder() {
+	kdebug("VoiceManager::resetEncoder()\n");
 	int value = 1;
 	if (voice_enc)
 		gsm_destroy(voice_enc);
-	if (voice_dec)
-		gsm_destroy(voice_dec);
 	voice_enc = gsm_create();
 	gsm_option(voice_enc, GSM_OPT_FAST, &value);
 	gsm_option(voice_enc, GSM_OPT_WAV49, &value);
+}
+
+void VoiceManager::resetDecoder() {
+	kdebug("VoiceManager::resetDecoder()\n");
+	int value = 1;
+	if (voice_dec)
+		gsm_destroy(voice_dec);
 	voice_dec = gsm_create();
 	gsm_option(voice_dec, GSM_OPT_FAST, &value);
 	gsm_option(voice_dec, GSM_OPT_WAV49, &value);
@@ -116,7 +127,7 @@ void VoiceManager::playGsmSampleReceived(char *data, int length) {
 	const char *pos = data;
 	int outlen = 320;
 	gsm_signal output[160];
-	resetCodec();
+	resetDecoder();
 	data++;
 	pos++;
 	length--;
@@ -141,7 +152,7 @@ void VoiceManager::recordSampleReceived(char *data, int length) {
 	const char *pos = data;
 	int inlen = 320;
 	gsm_signal input[160];
-	resetCodec();
+	resetEncoder();
 	*data = 0;
 	data++;
 	pos++;

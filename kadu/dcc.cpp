@@ -458,9 +458,12 @@ DccVoiceDialog::DccVoiceDialog(QDialog *parent, const char *name)
 	: QDialog (parent, name, FALSE, Qt::WDestructiveClose) {
 	setCaption(tr("Voice chat"));
 	resize(200, 100);
-	QGridLayout *grid = new QGridLayout(this, 1, 1, 3, 3);
+
 	QPushButton *b_stop = new QPushButton(tr("&Stop"), this);
+
+	QGridLayout *grid = new QGridLayout(this, 1, 1, 3, 3);
 	grid->addWidget(b_stop, 0, 0, Qt::AlignCenter);
+
 	connect(b_stop, SIGNAL(clicked()), this, SLOT(close()));
 	show();
 }
