@@ -50,7 +50,8 @@ class Kadu : public QMainWindow
 		bool autohammer;
 		bool doBlink;
 		UserBox *userbox;
-		AutoStatusTimer* autostatus_timer;    
+		AutoStatusTimer* autostatus_timer;
+		KaduTabBar *group_bar;    
 
 	protected:
 		bool event(QEvent *e);
@@ -101,7 +102,6 @@ class Kadu : public QMainWindow
 		QFrame *centralFrame;
 		QGridLayout *grid;
 		QMenuBar *mmb;
-		KaduTabBar *group_bar;
 		QTextBrowser *descrtb;
 		int commencing_startup;
 

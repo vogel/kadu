@@ -19,6 +19,7 @@
 #include "userinfo.h"
 #include "chat.h"
 #include "debug.h"
+#include "tabbar.h"
 //
 
 UserInfo::UserInfo (const QString &name, QDialog *parent , const QString &altnick)
@@ -44,6 +45,9 @@ UserInfo::UserInfo (const QString &name, QDialog *parent , const QString &altnic
 
 void UserInfo::setupTab1() {
 	QString tmp;
+	QStringList list;
+	for (int i=0; i < kadu->group_bar->count(); i++)
+		list << kadu->group_bar->tabAt(i)->text();
 
 	QVBox *box = new QVBox(this);
 	box->setMargin(10);
@@ -82,7 +86,14 @@ void UserInfo::setupTab1() {
 	e_mobile = new QLineEdit(puser->mobile, vbox41);
 	QVBox *vbox42 = new QVBox(hbox4);
 	QLabel *l_group = new QLabel(i18n("Group"), vbox42);
-	e_group = new QLineEdit(puser->group(), vbox42);
+	cb_group = new QComboBox(vbox42);
+	cb_group->insertStringList(list);
+	if (puser->group().isEmpty())
+		cb_group->setCurrentText(i18n("All"));
+	else
+		cb_group->setCurrentText(puser->group());
+	cb_group->setEditable(true);
+	cb_group->setAutoCompletion(true);
 
 	QHBox *hbox5 = new QHBox(box);
 	hbox5->setSpacing(10);
@@ -245,7 +256,7 @@ void UserInfo::writeUserlist() {
 				e_mobile->text(), e_uin->text().length() ? e_uin->text() : QString("0"),
 				uin != puser->uin ? GG_STATUS_NOT_AVAIL : puser->status,
 				c_blocking->isChecked(), c_offtouser->isChecked(),
-				c_notify->isChecked(), e_group->text(), e_email->text());
+				c_notify->isChecked(), cb_group->currentText(), e_email->text());
 			puser->anonymous = false;
 			userlist.writeToFile();
 			UserBox::all_refresh();

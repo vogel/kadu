@@ -15,12 +15,17 @@
 
 //
 #include "kadu.h"
+#include "tabbar.h"
 //
 #include "adduser.h"
 #include "debug.h"
 
 Adduser::Adduser(QDialog* parent, const char *name) {
 	kdebug("Adduser::Adduser()\n");
+
+	QStringList list;
+	for (int i=0; i < kadu->group_bar->count(); i++)
+		list << kadu->group_bar->tabAt(i)->text();
 
 	resize(350, 250);
 	setCaption(i18n("Add user"));
@@ -34,7 +39,12 @@ Adduser::Adduser(QDialog* parent, const char *name) {
 
 	QVBox *vbox12 = new QVBox(this);
 	QLabel *l_group = new QLabel(i18n("Group"), vbox12);
-	e_group = new QLineEdit(vbox12);
+	cb_group = new QComboBox(vbox12);
+	cb_group->insertStringList(list);
+	cb_group->setCurrentItem(0);
+	cb_group->setEditable(true);
+	cb_group->setAutoCompletion(true);
+	
 	grid->addMultiCellWidget(vbox12, 0, 1, 1, 1);
 
 	QVBox *vbox21 = new QVBox(this);
@@ -87,7 +97,7 @@ void Adduser::Add() {
 	if (e_altnick->text().length()) {
 		kadu->addUser(e_fname->text(), e_lname->text(), e_nickname->text(),
 			e_altnick->text(), e_tel->text(), e_uin->text(),
-			GG_STATUS_NOT_AVAIL, e_group->text(), "", e_email->text());
+			GG_STATUS_NOT_AVAIL, cb_group->currentText(), "", e_email->text());
 		close(true);
 		}
 	else

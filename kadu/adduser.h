@@ -4,6 +4,7 @@
 #include <qdialog.h>
 #include <qlineedit.h>
 #include <qlabel.h>
+#include <qcombobox.h>
 #include "libgadu.h"
 
 /**
@@ -16,8 +17,8 @@ class Adduser : public QDialog {
 		Adduser(QDialog* parent=0, const char *name=0);
 
 	protected:
-		QLineEdit *e_nickname, *e_uin, *e_fname, *e_lname, *e_altnick, *e_tel;
-		QLineEdit *e_group, *e_email;
+		QLineEdit *e_nickname, *e_uin, *e_fname, *e_lname, *e_altnick, *e_tel, *e_email;
+		QComboBox *cb_group;
 
 	protected slots:
 		void Add();

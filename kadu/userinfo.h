@@ -5,6 +5,7 @@
 #include <qlineedit.h>
 #include <qcheckbox.h>
 #include <qdns.h>
+#include <qcombobox.h>
 
 #include "userlist.h"
 
@@ -27,7 +28,7 @@ class UserInfo : public QTabDialog {
 		QLineEdit *e_uin;
 		QLineEdit *e_addr;
 		QLineEdit *e_ver;
-		QLineEdit *e_group;		
+		QComboBox *cb_group;
 		QLineEdit *e_email;
 		QLineEdit *e_dnsname;
 		QCheckBox *c_blocking;
