@@ -45,8 +45,6 @@ void Updates::initModule()
 
 	QDateTime actualtime = QDateTime::currentDateTime();
 	LastUpdateCheck.setTime_t(config_file.readNumEntry("General", "LastUpdateCheck"));
-	kdebugmf(KDEBUG_INFO, "LastUpdateCheck = %s\n", (const char *)unicode2latin(LastUpdateCheck.toString("dd.MM.yyyy")));
-	kdebugmf(KDEBUG_INFO, "actualtime = %s\n", (const char *)unicode2latin(actualtime.toString("dd.MM.yyyy")));
 
 	if (!UpdateChecked && LastUpdateCheck.secsTo(actualtime) >= 3600)
 	{
