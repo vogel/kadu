@@ -31,6 +31,7 @@ fi
 exec wish "$0" "$@"
 
 ### I teraz juz TCL/TK :)
+set scriptversion 1.0.1
 
 ### Sprawdzanie kompatybilnosci TCL/TK:
 if {$tk_version < 8.3} {
@@ -64,9 +65,13 @@ set geomy [expr [expr [winfo screenheight .] - $winheight] / 2]
 wm maxsize . $winwidth $winheight
 wm minsize . $winwidth $winheight
 wm geometry . +$geomx+$geomy
-wm title . "Instalator Kadu"
+wm title . "Instalator Kadu v$scriptversion"
 
 ### Slonko :)
+if {![info exists IIK]} {
+# ^^^^^ jesli instalator startuje z internetowego instalatora,
+# to nie trzeba kreaowac obrazka 2 raz.
+
 image create photo kadu -format gif -data {
 R0lGODlhZABJAOcAAAICAubaBrqyBoJ+Bu4mCmpmAlJOAlYSBkJCBjIyAiYm
 AhoaAuYmCpaOBureBhYWAsK6Bg4OAu7iBvLmBl5eXgYGAvaqBs7CBpqSBkIK
@@ -114,6 +119,27 @@ GGc4R73QixKQiEQhBFKIStiBEKSLCgi0GCLiEQiEZkEkFxlVyJsE4gONJCBD
 OLgVRdrwL9g7zL7qqDQccrKT8ZMkKO/zOeh8cpQEcZ8hDTMXVG5kgBNJmiuX
 GLxXWnKWAjlLVl6HSzp2Lzi/7OWHVglMYSLwlGK8pSuDGRZRonJwuwyKMWf4
 kUIic5rAJCY2O1jLbXpzIQEBADs=
+}}
+
+### Lokalizacja przegladarki www
+if {![info exists IIK]} {
+    # ^^^ to samo co ze slonkiem.
+    foreach browser {konqueror galeon mozilla netscape} {
+        catch {exec which $browser} res
+        if {[llength $res] == 1} {
+            set webbrowser $res
+            break
+        }
+    }
+    if {![info exists webbrowser]} {
+        foreach browser {links lynx} {
+            catch {exec which $browser} res
+            if {[llength $res] == 1} {
+                set webbrowser "[exec which xterm] -fg grey -bg black -e $res"
+                break
+            }
+        }
+    }
 }
 
 ### Kolorystyka
@@ -124,7 +150,6 @@ set themeopts "-background grey87 -activebackground white -foreground black -act
 
 global kdedir qtdir installdir var cwin pad
 set cwin 1
-set maxwins 7          
 if {[info exists env(QTDIR)]} {
     set qtdir $env(QTDIR)
 } else {
@@ -135,13 +160,40 @@ if {[info exists env(KDEDIR)]} {
 } else {
     set kdedir /opt/kde
 }
-set installdir /usr/local
+set installdir /usr
 set var(makedoc) 1
 set var(makedeb) 0
 set var(makessl) 1
+set var(libgadu) 0
 set var(makekde) 1
 set var(default) 1
 set var(os) "other"
+set maxwins 1
+
+#########
+### Dymki
+proc tips {w msg} {
+    bind $w <Enter> "after 1000 \"tips_aux %W [list $msg]\""
+    bind $w <Leave> "after cancel \"tips_aux %W [list $msg]\"
+                     after 100 {catch {destroy .tips_help}}"
+}
+
+proc tips_aux {w msg} {
+    set t .tips_help
+    catch {destroy $t}
+    toplevel $t
+    wm overrideredirect $t 1
+    if {$::tcl_platform(platform) == "macintosh"} {
+     unsupported1 style $t floating sideTitlebar
+    }
+    pack [label $t.l -text $msg -relief raised -bd 1 -bg lightyellow] -fill both
+    set x [expr [winfo rootx $w]+6+[winfo width $w]/2]
+    set y [expr [winfo rooty $w]+6+[winfo height $w]/2]
+    wm geometry $t +$x\+$y
+    bind $t <Enter> {after cancel {catch {destroy .tips_help}}}
+    bind $t <Leave> "catch {destroy .tips_help}"
+}
+
 
 ###############
 ### Glowne okno
@@ -151,8 +203,8 @@ frame .r
 frame .r.u
 frame .r.d
 frame .l.c
-label .l.c.img -image kadu
-label .l.c.txt -text "Instalator\nKadu v$kadu_ver"
+eval button .l.c.img -image kadu -bd 0 -command {"catch {exec $webbrowser http://kadu.net &}"} $themeopts
+label .l.c.txt -text "Kadu\nv$kadu_ver"
 
 pack .r -side right -fill both -expand yes
 pack .l -side left -fill y
@@ -162,11 +214,13 @@ pack .l.c.txt -side top
 pack .r.u -side top -fill both -expand yes
 pack .r.d -side bottom -fill x
 
+label .r.d.status -padx 0.5c
+tips .r.d.status "Liczba bierzacego kroku,\nw stosunku do wszystkich krokow."
 eval button .r.d.close -text "Zaniechaj" -borderwidth 1 -command exit $themeopts
 eval button .r.d.next -text {"Dalej >>"} -borderwidth 1 -command next $themeopts
 eval button .r.d.prev -text {"<< Wstecz"} -borderwidth 1 -command prev -state disabled $themeopts
 
-pack .r.d.next .r.d.prev -side right
+pack .r.d.next .r.d.prev .r.d.status -side right
 pack .r.d.close -side left
 
 bind . <Escape> exit
@@ -174,7 +228,7 @@ bind . <Escape> exit
 
 
 ### Okno 1 (Instalacja domyslna lub reczna)
-set w .r.u.1
+set w .r.u.$maxwins
 set pad($w) 3c
 frame $w
 frame $w.1
@@ -187,33 +241,15 @@ foreach b "$w.1.def $w.2.def" {
 pack $w.1 $w.2 -side top -fill x
 pack $w.1.def -side left
 pack $w.2.def -side left
+tips $w.1.def "Wszystkie ustawienia beda\nwybrane domyslnie. Przejdziesz\nautomatycznie do ostatniego kroku."
+tips $w.2.def "Bedziesz mogl wybrac opcje,\nktore najbardziej Ci odpowiadaja\nw kolejnych krokach instalacji."
 
 
 
-### Okno 2 (Wybor systemu)
-set w .r.u.2
-set pad($w) 2c
-frame $w
-frame $w.0
-frame $w.1
-frame $w.2
-label $w.0.lab -text "Wybierz Twoj system:"
-radiobutton $w.1.def -text "RedHat8.0/Aurox" -variable var(os) -value rh -bd 1 -selectcolor "blue"
-radiobutton $w.2.def -text "Inny" -variable var(os) -value other -bd 1 -selectcolor "blue"
-$w.2.def select
-foreach b "$w.1.def $w.2.def $w.0.lab" {
-    eval $b configure $themeopts
-}
-pack $w.0 $w.1 $w.2 -side top -fill x
-pack $w.0.lab -side top
-pack $w.1.def -side left
-pack $w.2.def -side left
-
-
-
-### Okno 3 (Sciezka do katalogu QT)
-set w .r.u.3
-set pad($w) 3c
+### Okno 2 (Sciezka do katalogu QT)
+incr maxwins
+set w .r.u.$maxwins
+set pad($w) 2.5c
 frame $w
 label $w.l -text "Katalog QT:"
 frame $w.o
@@ -225,14 +261,23 @@ button $w.o.b -text "Przegladaj" -borderwidth 1 -command {
     }
 }
 eval $w.o.b configure $themeopts
+frame $w.f
+button $w.f.find -text "Znajdz automatycznie" -bd 1 -command {
+    set tmp [findQT /usr]
+    if {"$tmp" != "" && "$tmp" != "$qtdir"} {
+        set qtdir $tmp
+    }
+}
 pack $w.o.b $w.o.e -side right
 pack $w.l $w.o -side top
+tips $w.o.b "Kliknij aby znalezc i wybrac\nodpowiedni katalog"
 
 
 
-### Okno 4 (Sciezka do katalogu KDE)
-set w .r.u.4
-set pad($w) 2c
+### Okno 3 (Sciezka do katalogu KDE)
+incr maxwins
+set w .r.u.$maxwins
+set pad($w) 1.5c
 frame $w
 
 set ww $w.check
@@ -253,10 +298,12 @@ button $ww.o.b -text "Przegladaj" -borderwidth 1 -command {
     }
 }
 eval $ww.o.b configure $themeopts
+
 pack $ww.o.b $ww.o.e -side right
 pack $ww.l $ww.o -side top
 pack $w.check -side top
 pack $w.kde -side top -pady 0.5c
+tips $ww.o.b "Kliknij aby znalezc i wybrac\nodpowiedni katalog"
 
 proc EnDisKde {sw} {
     foreach path {.r.u.4.kde.l .r.u.4.kde.o.e .r.u.4.kde.o.b} {
@@ -270,9 +317,10 @@ proc EnDisKde {sw} {
 
 
 
-### Okno 5 (Katalog instalacji)
-set w .r.u.5
-set pad($w) 3c
+### Okno 4 (Katalog instalacji)
+incr maxwins
+set w .r.u.$maxwins
+set pad($w) 2.5c
 frame $w
 label $w.l -text "Katalog instalacji:"
 frame $w.o
@@ -286,14 +334,17 @@ button $w.o.b -text "Przegladaj" -borderwidth 1 -command {
 eval $w.o.b configure $themeopts
 pack $w.o.b $w.o.e -side right
 pack $w.l $w.o -side top
+tips $w.o.b "Kliknij aby znalezc i wybrac\nodpowiedni katalog"
 
 
 
-### Okno 6 (Dodatkowe opcje)
-set w .r.u.6
-set pad($w) 2c
+### Okno 5 (Dodatkowe opcje)
+incr maxwins
+set w .r.u.$maxwins
+set pad($w) 1c
 frame $w
-foreach {path varname text} {deb makedeb "Kompiluj z debugowaniem" doc makedoc "Zainstaluj dokumentacje"} {
+foreach {path varname text} {deb makedeb "Kompiluj z debugowaniem" doc makedoc "Zainstaluj dokumentacje" \
+ssl makessl "Obsluga szyfrowania SSL" lib libgadu "Zlinkuj z istniejaca\nbiblioteka libgadu"} {
     set ww $w.$path
     frame $ww
     checkbutton $ww.c -variable var($varname) -selectcolor blue -text "$text"
@@ -301,11 +352,16 @@ foreach {path varname text} {deb makedeb "Kompiluj z debugowaniem" doc makedoc "
     pack $ww.c -side left
     pack $w.$path -side top -fill x -pady 2
 }
+tips $w.deb "Jesli Kadu napotka krytyczny blad\ni nieoczekiwanie zakonczy dzialanie,\nto ta opcja spowoduje, ze bedzien\nmozna latwo zlokalizowac usterke\ni wyslac raport do autorow."
+tips $w.doc "Zainstaluje dokumentacje Kadu,\naby byla ona dostepna w kazdym momencie."
+tips $w.ssl "Dzieki tej opcji bedzie\nmozliwe szyfrowanie rozmow."
+tips $w.lib "Instalator nie bedzie kompilowal biblioteki\nlibgadu od nowa, lecz wykozysta isteniejaca\n(musisz byc pewien, ze masz juz te biblioteke)."
 
 
 
-### Okno 7 (Podsumowanie i instalacja)
-set w .r.u.7
+### Okno 6 (Podsumowanie i instalacja)
+incr maxwins
+set w .r.u.$maxwins
 frame $w
 scrollbar $w.s -command "$w.txt yview" -bd 1
 text $w.txt -wrap word -width 37 -height 12 -yscrollcommand "$w.s set"
@@ -317,8 +373,9 @@ pack $w.s -side right -fill y
 
 ### Procedury instalacyjne
 proc install {} {
-    upvar #0 kdedir kdedir qtdir qtdir installdir installdir var var maxwins mw
+    upvar #0 kdedir kdedir qtdir qtdir installdir installdir var var maxwins mw env env
     .r.d.next configure -state disabled
+    .r.d.prev configure -state disabled
     set p .r.u.progress
     label $p
     pack $p -pady 6 -side top
@@ -329,34 +386,77 @@ proc install {} {
     if {$var(makedeb)} {
         lappend args --with-debug
     }
+    if {!$var(makessl)} {
+        lappend args --without-openssl
+    }
+    if {$var(libgadu)} {
+        lappend args --with-existing-libgadu
+    }
     set env(KDEDIR) "$kdedir"
     set env(QTDIR) "$qtdir"
     append env(LD_LIBRARY_PATH) ":$qtdir/lib"
     
     $p configure -text "Status:\nKonfiguracja: ./configure --prefix=$installdir\n$args"
-    wm title . "Konfiguracja..."
     set fd [open "|./configure --prefix=$installdir $args" r]
     fileevent $fd readable "Install $fd"
     vwait var(ins)
+    if {[string match {*Run make now*} $var(ins)]} {
+        $p configure -text "Status:\nBlad krytyczny!\nSprawdz ostatnie informacje\nz okna powyzej."
+        vwait forever
+    }
     unset var(ins)
     
     $p configure -text "Status:\nKompilacja... (make)"
-    wm title . "Kompilacja..."
     set fd [open "|make" r]
     fileevent $fd readable "Install $fd"
     vwait var(ins)
+    if {[string match {make[1]: * * `*`} $var(ins)]} {
+        $p configure -text "Status:\nBlad krytyczny!\nSprawdz ostatnie informacje\nz okna powyzej."
+        vwait forever
+    }
     unset var(ins)
     
-    if {"[exec whoami]" == "root"} {
+    if {"$env(USER)" == "root"} {
         $p configure -text "Status:\nKopiowanie plikow... (make install)"
-        wm title . "Kopiowanie plikow..."
+        wm title . "Kopiowanie plikow... $scriptversion"
         set fd [open "|make install" r]
         fileevent $fd readable "Install $fd"
-        $p configure -text "Status:\nInstalacja zakonczona."
     } else {
-        $p configure -text "Status:\nNie masz uprawnien do zainstalowaina\nkadu w systemie. Zaloguj sie na root'a\ni wykonaj 'make install'. Instalacja zakonczona."
+        toplevel .info
+        set winheight 134
+        set winwidth 380
+        set geomx [expr [expr [winfo screenwidth .] - $winwidth] / 2]
+        set geomy [expr [expr [winfo screenheight .] - $winheight] / 2]
+        wm maxsize .info $winwidth $winheight
+        wm minsize .info $winwidth $winheight
+        wm geometry .info +$geomx+$geomy
+        wm title .info "Instalacja"
+        if {$var(libgadu)} {
+            label .info.txt -text "Nie masz uprawnien administratora. Zaloguj sie jako
+administrator (komenda: su), wejdz do katalogu
+kadu ([pwd]) i wykonaj komende
+'make install'."
+            set winheight 84
+            set geomx [expr [expr [winfo screenwidth .] - $winwidth] / 2]
+            set geomy [expr [expr [winfo screenheight .] - $winheight] / 2]
+            wm maxsize .info $winwidth $winheight
+            wm minsize .info $winwidth $winheight
+            wm geometry .info +$geomx+$geomy
+        } else {
+            label .info.txt -text "Nie masz uprawnien administratora. Zaloguj sie jako
+administrator (komenda: su), wejdz do katalogu
+kadu ([pwd]) i wykonaj komende
+'make install'. Nastepnie edytuj plik /etc/ld.so.conf
+i dodaj do niego linie (o ile takiej nie zawiera):
+$installdir/lib
+i na koniec wykonaj komende: ldconfig" -justify left
+        }
+        button .info.bt -text "  OK  " -bd 1 -command {set ok 1; destroy .info}
+        pack .info.txt .info.bt -side top
+        bind .info <Return> {set ok 1; destroy .info}
+        vwait ok
     }
-    wm title . "Instalacja zakonczona"
+    $p configure -text "Status:\nInstalacja zakonczona."
     .r.d.close configure -text "Zamknij"
 }
 
@@ -364,6 +464,9 @@ proc Install {fd} {
     upvar #0 maxwins mw var var
     if {[gets $fd data] != -1} {
         .r.u.$mw.txt insert end "$data\n" smallfont
+        if {"$data" != ""} {
+            set var(lastdata) "$data"
+        }
         if {"[.r.u.$mw.s activate]" == ""} {
             .r.u.$mw.txt see end
         }
@@ -371,7 +474,7 @@ proc Install {fd} {
         if {[eof $fd]} {
             fileevent $fd readable {}
             catch {close $fd}
-            set var(ins) 1
+            set var(ins) $var(lastdata)
         }
     }
 }
@@ -379,7 +482,7 @@ proc next {} {
     upvar #0 cwin cwin var var installdir installdir kdedir kdedir qtdir qtdir maxwins mw pad pad
     pack forget .r.u.$cwin
     if {$cwin == 1 && $var(default)} {
-        set cwin 7
+        set cwin $mw
     } else {
         incr cwin
     }
@@ -405,12 +508,22 @@ proc next {} {
         if {$var(makedeb)} {
             lappend args --with-debug
         }
-        .r.u.$mw.txt insert end "Dodatkowe opcje konfiguracji: $args\n"
+        if {!$var(makessl)} {
+            lappend args --without-openssl
+        }
+        if {$var(libgadu)} {
+            lappend args --with-existing-libgadu
+        }
+        .r.u.$mw.txt insert end "Dodatkowe opcje konfiguracji:\n"
+        foreach arg "$args" {
+            .r.u.$mw.txt insert end "$arg\n"
+        }
         update
     }
     if {$cwin > 1} {
         .r.d.prev configure -state normal
     }
+    .r.d.status configure -text "\[$cwin/$mw\]"
 }
 proc prev {} {
     upvar #0 cwin cwin var var maxwins mw pad pad
@@ -431,8 +544,10 @@ proc prev {} {
     if {$cwin == 1} {
         .r.d.prev configure -state disabled
     }
+    .r.d.status configure -text "\[$cwin/$mw\]"
 }
 eval pack .r.u.1 -pady $pad(.r.u.1)
+.r.d.status configure -text "\[$cwin/$maxwins\]"
 
 ### KDE 3.x tego potrzebuje do sprawnego dzialania :)
 pack propagate . false
