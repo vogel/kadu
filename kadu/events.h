@@ -49,8 +49,6 @@ class EventConfigSlots : public QObject
 	public slots:
 	    void onCreateConfigDialog();
 	    void onDestroyConfigDialog();
-	    void ifDccEnabled(bool value);
-	    void ifDccIpEnabled(bool value);
 	    void ifDefServerEnabled(bool value);
 	    void useTlsEnabled(bool value);
 	    void _Left();

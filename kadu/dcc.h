@@ -144,6 +144,10 @@ class DccManager : public QObject
 		void dccFinished(DccSocket* dcc);
 		void dccReceived();
 		void dccSent();
+		void ifDccEnabled(bool value);
+		void ifDccIpEnabled(bool value);
+		void configDialogCreated();
+		void configDialogApply();
 };
 
 extern DccManager* dcc_manager;

@@ -511,6 +511,32 @@ void DccManager::initModule()
 DccManager::DccManager() : QObject(NULL,"dcc_manager")
 {
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Send file"), "kadu_sendfile", "F8");
+
+	ConfigDialog::addCheckBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "DCC enabled"), "AllowDCC", false);
+	ConfigDialog::addCheckBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "DCC IP autodetection"), "DccIpDetect", false);
+
+	ConfigDialog::addVGroupBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "DCC IP"));
+	ConfigDialog::addLineEdit("Network", "DCC IP", QT_TRANSLATE_NOOP("@default", "IP address:"),"DccIP");
+	ConfigDialog::addCheckBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "DCC forwarding enabled"), "DccForwarding", false);
+
+	ConfigDialog::addVGroupBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "DCC forwarding properties"));
+	ConfigDialog::addLineEdit("Network", "DCC forwarding properties", QT_TRANSLATE_NOOP("@default", "External IP address:"), "ExternalIP");
+	ConfigDialog::addLineEdit("Network", "DCC forwarding properties", QT_TRANSLATE_NOOP("@default", "External TCP port:"), "ExternalPort", "0");
+	ConfigDialog::addLineEdit("Network", "DCC forwarding properties", QT_TRANSLATE_NOOP("@default", "Local TCP port:"), "LocalPort", "1550");
+
+	ConfigDialog::connectSlot("Network", "DCC enabled", SIGNAL(toggled(bool)), this, SLOT(ifDccEnabled(bool)));
+	ConfigDialog::connectSlot("Network", "DCC IP autodetection", SIGNAL(toggled(bool)), this, SLOT(ifDccIpEnabled(bool)));
+
+	ConfigDialog::registerSlotOnCreate(this, SLOT(configDialogCreated()));
+	ConfigDialog::registerSlotOnApply(this, SLOT(configDialogApply()));
+
+	if (!config_file.readBoolEntry("Network","DccIpDetect"))
+		if (!config_dccip.setAddress(config_file.readEntry("Network","DccIP", "")))
+			config_dccip.setAddress((unsigned int)0);
+
+	if (!config_extip.setAddress(config_file.readEntry("Network","ExternalIP", "")))
+		config_extip.setAddress((unsigned int)0);
+
 	connect(gadu, SIGNAL(dccSetupFailed()), this, SLOT(dccSetupFailed()));
 	UserBox::userboxmenu->addItemAtPos(1, "SendFile", tr("Send file"),
 		this,SLOT(sendFile()),
@@ -690,6 +716,61 @@ bool DccManager::event(QEvent* e)
 		ce->setData(NULL);
 	}
 	return QObject::event(e);
+}
+
+void DccManager::ifDccEnabled(bool value)
+{
+	kdebugf();
+
+	QCheckBox *b_dccip= ConfigDialog::getCheckBox("Network", "DCC IP autodetection");
+	QVGroupBox *g_dccip = ConfigDialog::getVGroupBox("Network", "DCC IP");
+	QVGroupBox *g_fwdprop = ConfigDialog::getVGroupBox("Network", "DCC forwarding properties");
+	QCheckBox *b_dccfwd = ConfigDialog::getCheckBox("Network", "DCC forwarding enabled");
+
+	b_dccip->setEnabled(value);
+	g_dccip->setEnabled(!b_dccip->isChecked()&& value);
+	b_dccfwd->setEnabled(value);
+	g_fwdprop->setEnabled(b_dccfwd->isChecked() &&value);
+	kdebugf2();
+}
+
+void DccManager::ifDccIpEnabled(bool value)
+{
+	kdebugf();
+	QVGroupBox *g_dccip = ConfigDialog::getVGroupBox("Network", "DCC IP");
+	g_dccip->setEnabled(!value);
+	kdebugf2();
+}
+
+void DccManager::configDialogCreated()
+{
+	QCheckBox *b_dccenabled = ConfigDialog::getCheckBox("Network", "DCC enabled");
+	QCheckBox *b_dccip= ConfigDialog::getCheckBox("Network", "DCC IP autodetection");
+	QVGroupBox *g_dccip = ConfigDialog::getVGroupBox("Network", "DCC IP");
+	QVGroupBox *g_fwdprop = ConfigDialog::getVGroupBox("Network", "DCC forwarding properties");
+	QCheckBox *b_dccfwd = ConfigDialog::getCheckBox("Network", "DCC forwarding enabled");
+
+	b_dccip->setEnabled(b_dccenabled->isChecked());
+	g_dccip->setEnabled(!b_dccip->isChecked()&& b_dccenabled->isChecked());
+	b_dccfwd->setEnabled(b_dccenabled->isChecked());
+	g_fwdprop->setEnabled(b_dccenabled->isChecked() && b_dccfwd->isChecked());
+	connect(b_dccfwd, SIGNAL(toggled(bool)), g_fwdprop, SLOT(setEnabled(bool)));
+}
+
+void DccManager::configDialogApply()
+{
+	if (!config_dccip.setAddress(config_file.readEntry("Network","DccIP")))
+	{
+		config_file.writeEntry("Network","DccIP","0.0.0.0");
+		config_dccip.setAddress((unsigned int)0);
+	}
+	if (!config_extip.setAddress(config_file.readEntry("Network","ExternalIP")))
+	{
+		config_file.writeEntry("Network","ExternalIP","0.0.0.0");
+		config_extip.setAddress((unsigned int)0);
+	}
+	if (config_file.readNumEntry("Network","ExternalPort")<=1023)
+		config_file.writeEntry("Network","ExternalPort",0);
 }
 
 DccManager* dcc_manager = NULL;

@@ -34,7 +34,6 @@
 #include "pending_msgs.h"
 #include "hints.h"
 #include "debug.h"
-#include "dcc.h"
 #include "config_dialog.h"
 #include "config_file.h"
 #include "gadu.h"
@@ -117,17 +116,6 @@ void EventConfigSlots::initModule()
 
 //zakladka "siec"
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Network"));
-	ConfigDialog::addCheckBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "DCC enabled"), "AllowDCC", false);
-	ConfigDialog::addCheckBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "DCC IP autodetection"), "DccIpDetect", false);
-
-	ConfigDialog::addVGroupBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "DCC IP"));
-	ConfigDialog::addLineEdit("Network", "DCC IP", QT_TRANSLATE_NOOP("@default", "IP address:"),"DccIP");
-	ConfigDialog::addCheckBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "DCC forwarding enabled"), "DccForwarding", false);
-
-	ConfigDialog::addVGroupBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "DCC forwarding properties"));
-	ConfigDialog::addLineEdit("Network", "DCC forwarding properties", QT_TRANSLATE_NOOP("@default", "External IP address:"), "ExternalIP");
-	ConfigDialog::addLineEdit("Network", "DCC forwarding properties", QT_TRANSLATE_NOOP("@default", "External TCP port:"), "ExternalPort", "0");
-	ConfigDialog::addLineEdit("Network", "DCC forwarding properties", QT_TRANSLATE_NOOP("@default", "Local TCP port:"), "LocalPort", "1550");
 
 	ConfigDialog::addVGroupBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "Servers properties"));
 	ConfigDialog::addGrid("Network", "Servers properties", "servergrid", 2);
@@ -151,20 +139,12 @@ void EventConfigSlots::initModule()
 	ConfigDialog::registerSlotOnCreate(eventconfigslots, SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnApply(eventconfigslots, SLOT(onDestroyConfigDialog()));
 
-	ConfigDialog::connectSlot("Network", "DCC enabled", SIGNAL(toggled(bool)), eventconfigslots, SLOT(ifDccEnabled(bool)));
-	ConfigDialog::connectSlot("Network", "DCC IP autodetection", SIGNAL(toggled(bool)), eventconfigslots, SLOT(ifDccIpEnabled(bool)));
 	ConfigDialog::connectSlot("Network", "Use default servers", SIGNAL(toggled(bool)), eventconfigslots, SLOT(ifDefServerEnabled(bool)));
 #ifdef HAVE_OPENSSL
 	ConfigDialog::connectSlot("Network", "Use TLSv1", SIGNAL(toggled(bool)), eventconfigslots, SLOT(useTlsEnabled(bool)));
 #endif
 
 	defaultdescriptions = QStringList::split(QRegExp("<-->"), config_file.readEntry("General","DefaultDescription", tr("I am busy.")), true);
-	if (!config_file.readBoolEntry("Network","DccIpDetect"))
-		if (!config_dccip.setAddress(config_file.readEntry("Network","DccIP", "")))
-			config_dccip.setAddress((unsigned int)0);
-
-	if (!config_extip.setAddress(config_file.readEntry("Network","ExternalIP", "")))
-		config_extip.setAddress((unsigned int)0);
 
 	QStringList servers;
 	QHostAddress ip2;
@@ -189,12 +169,7 @@ void EventConfigSlots::onCreateConfigDialog()
 {
 	kdebugf();
 
-	QCheckBox *b_dccenabled = ConfigDialog::getCheckBox("Network", "DCC enabled");
-	QCheckBox *b_dccip= ConfigDialog::getCheckBox("Network", "DCC IP autodetection");
-	QVGroupBox *g_dccip = ConfigDialog::getVGroupBox("Network", "DCC IP");
 	QVGroupBox *g_proxy = ConfigDialog::getVGroupBox("Network", "Proxy server");
-	QVGroupBox *g_fwdprop = ConfigDialog::getVGroupBox("Network", "DCC forwarding properties");
-	QCheckBox *b_dccfwd = ConfigDialog::getCheckBox("Network", "DCC forwarding enabled");
 	QCheckBox *b_useproxy= ConfigDialog::getCheckBox("Network", "Use proxy server");
 
 #ifdef HAVE_OPENSSL
@@ -205,10 +180,6 @@ void EventConfigSlots::onCreateConfigDialog()
 	QHBox *serverbox=(QHBox*)(ConfigDialog::getLineEdit("Network", "IP addresses:","server")->parent());
 	QCheckBox* b_defaultserver= ConfigDialog::getCheckBox("Network", "Use default servers");
 
-	b_dccip->setEnabled(b_dccenabled->isChecked());
-	g_dccip->setEnabled(!b_dccip->isChecked()&& b_dccenabled->isChecked());
-	b_dccfwd->setEnabled(b_dccenabled->isChecked());
-	g_fwdprop->setEnabled(b_dccenabled->isChecked() && b_dccfwd->isChecked());
 	g_proxy->setEnabled(b_useproxy->isChecked());
 
 #ifdef HAVE_OPENSSL
@@ -219,7 +190,6 @@ void EventConfigSlots::onCreateConfigDialog()
 #endif
 	serverbox->setEnabled(!b_defaultserver->isChecked());
 
-	connect(b_dccfwd, SIGNAL(toggled(bool)), g_fwdprop, SLOT(setEnabled(bool)));
 	connect(b_useproxy, SIGNAL(toggled(bool)), g_proxy, SLOT(setEnabled(bool)));
 
 // notify
@@ -289,21 +259,6 @@ void EventConfigSlots::onDestroyConfigDialog()
 	config_file.writeEntry("Network","Server",server.join(";"));
 	config_servers=servers;
 	server_nr = 0;
-
-	if (!config_dccip.setAddress(config_file.readEntry("Network","DccIP")))
-	{
-		config_file.writeEntry("Network","DccIP","0.0.0.0");
-		config_dccip.setAddress((unsigned int)0);
-	}
-
-	if (!config_extip.setAddress(config_file.readEntry("Network","ExternalIP")))
-	{
-		config_file.writeEntry("Network","ExternalIP","0.0.0.0");
-		config_extip.setAddress((unsigned int)0);
-	}
-
-	if (config_file.readNumEntry("Network","ExternalPort")<=1023)
-		config_file.writeEntry("Network","ExternalPort",0);
 
 	if (!ip.setAddress(config_file.readEntry("Network","ProxyHost")))
 		config_file.writeEntry("Network","ProxyHost","0.0.0.0");
@@ -395,31 +350,6 @@ void EventConfigSlots::_Right(void) {
 	}
 
 	e_notifies->sort();
-	kdebugf2();
-}
-
-
-void EventConfigSlots::ifDccEnabled(bool value)
-{
-	kdebugf();
-
-	QCheckBox *b_dccip= ConfigDialog::getCheckBox("Network", "DCC IP autodetection");
-	QVGroupBox *g_dccip = ConfigDialog::getVGroupBox("Network", "DCC IP");
-	QVGroupBox *g_fwdprop = ConfigDialog::getVGroupBox("Network", "DCC forwarding properties");
-	QCheckBox *b_dccfwd = ConfigDialog::getCheckBox("Network", "DCC forwarding enabled");
-
-	b_dccip->setEnabled(value);
-	g_dccip->setEnabled(!b_dccip->isChecked()&& value);
-	b_dccfwd->setEnabled(value);
-	g_fwdprop->setEnabled(b_dccfwd->isChecked() &&value);
-	kdebugf2();
-}
-
-void EventConfigSlots::ifDccIpEnabled(bool value)
-{
-	kdebugf();
-	QVGroupBox *g_dccip = ConfigDialog::getVGroupBox("Network", "DCC IP");
-	g_dccip->setEnabled(!value);
 	kdebugf2();
 }
 
