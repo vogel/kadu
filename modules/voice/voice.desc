@@ -2,5 +2,5 @@
 Description=Voice chat support module
 Description[pl]=Modu³ obs³ugi rozmów g³osowych
 Author=Kadu Team
-Dependencies=dcc
+Dependencies=dcc sound
 LoadByDefault=true

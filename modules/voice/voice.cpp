@@ -17,7 +17,6 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-#include "voice_dsp.h"
 #include "userbox.h"
 #include "userlist.h"
 #include "config_file.h"
@@ -25,18 +24,16 @@
 #include "config_dialog.h"
 #include "kadu.h"
 #include "gadu.h"
+#include "message_box.h"
 
 extern "C" int voice_init()
 {
 	voice_manager = new VoiceManager(NULL, "voice_manager");
-	voice_dsp = new VoiceDsp(NULL, "voice_dsp");
 	return 0;
 }
 
 extern "C" void voice_close()
 {
-	delete voice_dsp;
-	voice_dsp = NULL;
 	delete voice_manager;
 	voice_manager = NULL;
 }
@@ -194,7 +191,12 @@ void VoiceManager::setup()
 	kdebugf();
 	if (!pt->running())
 	{
-		emit setupSoundDevice();
+		device = sound_manager->openDevice(8000);
+		if (device == NULL)
+		{
+			MessageBox::wrn(tr("Opening sound device failed."));
+			return;
+		}
 		pt->rsem--;
 		pt->start();
 	}
@@ -223,7 +225,7 @@ void VoiceManager::free()
 			delete gsmsample.data;
 		}
 		pt->mutex.unlock();
-		emit freeSoundDevice();
+		sound_manager->closeDevice(device);
 	}
 	kdebugf2();
 }
@@ -279,14 +281,14 @@ void VoiceManager::playGsmSampleReceived(char *data, int length)
 			return;
 		}
 		pos += 33;
-		emit playSample((char *) output, outlen);
+		sound_manager->playSample(device, output, outlen);
 		if (gsm_decode(voice_dec, (gsm_byte *) pos, output))
 		{
 			kdebugmf(KDEBUG_ERROR, "gsm_decode() error\n");
 			return;
 		}
 		pos += 32;
-		emit playSample((char *) output, outlen);
+		sound_manager->playSample(device, output, outlen);
 	}
 	kdebugf2();
 }
@@ -303,10 +305,10 @@ void VoiceManager::recordSampleReceived(char *data, int length)
 	++pos;
 	--length;
 	while (pos <= (data + length - 65)) {
-		emit recordSample((char *) input, inlen);
+		sound_manager->recordSample(device, input, inlen);
 		gsm_encode(voice_enc, input, (gsm_byte *) pos);
 		pos += 32;
-		emit recordSample((char *) input, inlen);
+		sound_manager->recordSample(device, input, inlen);
 		gsm_encode(voice_enc, input, (gsm_byte *) pos);
 		pos += 33;
 	}

@@ -11,6 +11,7 @@ extern "C" {
 };
 
 #include "../dcc/dcc.h"
+#include "../sound/sound.h"
 
 class PlayThread;
 class RecordThread;
@@ -43,6 +44,7 @@ class VoiceManager : public QObject
 	private:
 		friend class PlayThread;
 		friend class RecordThread;
+		SoundDevice device;
 		PlayThread* pt;
 		RecordThread* rt;
 		gsm voice_enc;
@@ -71,14 +73,9 @@ class VoiceManager : public QObject
 		void free();
 		void resetCodec();
 		void addGsmSample(char *data, int length);
+
 	public slots:
 		void makeVoiceChat(UinType dest);
-
-	signals:
-		void setupSoundDevice();
-		void freeSoundDevice();
-		void playSample(char *data, int length);
-		void recordSample(char *data, int length);
 };
 
 class PlayThread : public QObject, public QThread
