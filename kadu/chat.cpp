@@ -197,6 +197,7 @@ int ChatManager::openChat(UinsList senders,time_t time)
 int ChatManager::openPendingMsg(int index, ChatMessage &msg)
 {
 	kdebugf();
+	// TODO: sprawdzaæ czy pending[index] czy nie wykracza poza istniej±cy zakres
 	PendingMsgs::Element p = pending[index];
 	// jesli ktoregos z nadawcow nie mamy na liscie to dodajemy
 	// go tam jako anonymous
