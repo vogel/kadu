@@ -397,15 +397,7 @@ Arguments should be separated with spaces. %n argument is converted to number, %
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Notify of new chat</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Show in notify content message</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Content message in hint</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -417,22 +409,6 @@ Arguments should be separated with spaces. %n argument is converted to number, %
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Notify of user status change</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Notify of user become available</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Notify of user become unavailable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add description to hint if exist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Use custom syntax</source>
         <translation type="unfinished"></translation>
     </message>
@@ -441,8 +417,44 @@ Arguments should be separated with spaces. %n argument is converted to number, %
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Notify of new message</source>
+        <source>Notify about new message</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about new chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show message contents in hint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about user status change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about user become available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about user become unavailable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add description to hint if exists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>WWW error</source>
+        <translation type="unfinished">Errore di WWW</translation>
+    </message>
+    <message>
+        <source>Web browser was not specified. Visit the configuration section</source>
+        <translation type="unfinished">Il web browser non è stato specificato. Visiti la sezione di con</translation>
+    </message>
+    <message>
+        <source>Could not spawn Web browser process. Check if the Web browser is functional</source>
+        <translation type="unfinished">Non ha potuto deporre le uova il processo di web browser. Controlli se il web browser è funzionale </translation>
     </message>
 </context>
 <context>
@@ -517,18 +529,6 @@ Arguments should be separated with spaces. %n argument is converted to number, %
     <message>
         <source>Chat with </source>
         <translation>Chiacchierata con </translation>
-    </message>
-    <message>
-        <source>WWW error</source>
-        <translation>Errore di WWW</translation>
-    </message>
-    <message>
-        <source>Web browser was not specified. Visit the configuration section</source>
-        <translation>Il web browser non è stato specificato. Visiti la sezione di con</translation>
-    </message>
-    <message>
-        <source>Could not spawn Web browser process. Check if the Web browser is functional</source>
-        <translation>Non ha potuto deporre le uova il processo di web browser. Controlli se il web browser è funzionale </translation>
     </message>
     <message>
         <source>Send message error</source>
@@ -682,14 +682,6 @@ Your password is incorrect !!!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Under up</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Under down</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Hints position</source>
         <translation type="unfinished"></translation>
     </message>
@@ -775,6 +767,14 @@ Your password is incorrect !!!</source>
     </message>
     <message>
         <source>Hint timeout (in seconds)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>In top</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>In bottom</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

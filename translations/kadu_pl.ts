@@ -398,16 +398,8 @@ Zaznacz i wpisz w to pole poprawny ciąg. Argumenty oddziel spacjami. Argument %
         <translation>Pokaż błędy połączeń w dymkach</translation>
     </message>
     <message>
-        <source>Notify of new chat</source>
-        <translation>Powiadom o nowej rozmowie</translation>
-    </message>
-    <message>
         <source>Show in notify content message</source>
         <translation>Powiadom z treścią wiadomości</translation>
-    </message>
-    <message>
-        <source>Content message in hint</source>
-        <translation>Treść wiadomości w dymku</translation>
     </message>
     <message>
         <source>Enable status notification by hint</source>
@@ -418,22 +410,6 @@ Zaznacz i wpisz w to pole poprawny ciąg. Argumenty oddziel spacjami. Argument %
         <translation>Opcje powiadomienia</translation>
     </message>
     <message>
-        <source>Notify of user status change</source>
-        <translation>Powiadom o zmianie statusu</translation>
-    </message>
-    <message>
-        <source>Notify of user become available</source>
-        <translation>Powiadom o dostępności</translation>
-    </message>
-    <message>
-        <source>Notify of user become unavailable</source>
-        <translation>Powiadom o niedostepności </translation>
-    </message>
-    <message>
-        <source>Add description to hint if exist</source>
-        <translation>Dodaj opis do dymku jeśli istnieje</translation>
-    </message>
-    <message>
         <source>Use custom syntax</source>
         <translation>Użyj własnej składni</translation>
     </message>
@@ -442,8 +418,44 @@ Zaznacz i wpisz w to pole poprawny ciąg. Argumenty oddziel spacjami. Argument %
         <translation>Składnia dymku</translation>
     </message>
     <message>
-        <source>Notify of new message</source>
+        <source>Notify about new message</source>
         <translation>Powiadom o nowej wiadomości</translation>
+    </message>
+    <message>
+        <source>Notify about new chat</source>
+        <translation>Powiadom o nowej rozmowie</translation>
+    </message>
+    <message>
+        <source>Show message contents in hint</source>
+        <translation>Pokaż treść wiadomości w dymku</translation>
+    </message>
+    <message>
+        <source>Notify about user status change</source>
+        <translation>Powiadom kiedy kontakt zmieni status</translation>
+    </message>
+    <message>
+        <source>Notify about user become available</source>
+        <translation>Powiadom kiedu kontakt będzie dostępny</translation>
+    </message>
+    <message>
+        <source>Notify about user become unavailable</source>
+        <translation>Powiadom kiedu kontakt będzie niedostępny</translation>
+    </message>
+    <message>
+        <source>Add description to hint if exists</source>
+        <translation>Dodaj opis do dymka jeśli istnieje</translation>
+    </message>
+    <message>
+        <source>WWW error</source>
+        <translation>Błąd WWW</translation>
+    </message>
+    <message>
+        <source>Web browser was not specified. Visit the configuration section</source>
+        <translation>Przeglądarka WWW nie została określona. Wybierz przeglądarkę WWW w oknie konfiguracji</translation>
+    </message>
+    <message>
+        <source>Could not spawn Web browser process. Check if the Web browser is functional</source>
+        <translation>Nie można otworzyć przeglądarki. Sprawdź czy Twoja przeglądarka działa poprawnie</translation>
     </message>
 </context>
 <context>
@@ -519,18 +531,6 @@ wiadomości</translation>
     <message>
         <source>Chat with </source>
         <translation>Rozmowa z </translation>
-    </message>
-    <message>
-        <source>WWW error</source>
-        <translation>Błąd WWW</translation>
-    </message>
-    <message>
-        <source>Web browser was not specified. Visit the configuration section</source>
-        <translation>Przeglądarka WWW nie została określona. Wybierz przeglądarkę WWW w oknie konfiguracji.</translation>
-    </message>
-    <message>
-        <source>Could not spawn Web browser process. Check if the Web browser is functional</source>
-        <translation>Nie można otworzyć przeglądarki. Sprawdź czy Twoja przeglądarka działa poprawnie.</translation>
     </message>
     <message>
         <source>Send message error</source>
@@ -685,14 +685,6 @@ Twoje hasło jest nieprawidłowe!!!</translation>
         <translation>Auto</translation>
     </message>
     <message>
-        <source>Under up</source>
-        <translation>Na górze</translation>
-    </message>
-    <message>
-        <source>Under down</source>
-        <translation>Pod spodem</translation>
-    </message>
-    <message>
         <source>Hints position</source>
         <translation>Pozycja dymków</translation>
     </message>
@@ -779,6 +771,14 @@ Twoje hasło jest nieprawidłowe!!!</translation>
     <message>
         <source>Hint timeout (in seconds)</source>
         <translation>Zanik po (w sekundach)</translation>
+    </message>
+    <message>
+        <source>In top</source>
+        <translation>W górę</translation>
+    </message>
+    <message>
+        <source>In bottom</source>
+        <translation>W dół</translation>
     </message>
 </context>
 <context>

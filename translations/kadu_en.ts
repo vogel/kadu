@@ -398,15 +398,7 @@ Arguments should be separated with spaces. %n argument is converted to number, %
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Notify of new chat</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Show in notify content message</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Content message in hint</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -418,22 +410,6 @@ Arguments should be separated with spaces. %n argument is converted to number, %
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Notify of user status change</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Notify of user become available</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Notify of user become unavailable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add description to hint if exist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Use custom syntax</source>
         <translation type="unfinished"></translation>
     </message>
@@ -442,8 +418,44 @@ Arguments should be separated with spaces. %n argument is converted to number, %
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Notify of new message</source>
+        <source>Notify about new message</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about new chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show message contents in hint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about user status change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about user become available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about user become unavailable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add description to hint if exists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>WWW error</source>
+        <translation type="unfinished">WWW error</translation>
+    </message>
+    <message>
+        <source>Web browser was not specified. Visit the configuration section</source>
+        <translation type="unfinished">Web browser was not specified. Visit the configuration section</translation>
+    </message>
+    <message>
+        <source>Could not spawn Web browser process. Check if the Web browser is functional</source>
+        <translation type="unfinished">Could not spawn Web browser process. Check if the Web browser is functional</translation>
     </message>
 </context>
 <context>
@@ -518,18 +530,6 @@ Arguments should be separated with spaces. %n argument is converted to number, %
     <message>
         <source>Chat with </source>
         <translation>Chat with </translation>
-    </message>
-    <message>
-        <source>WWW error</source>
-        <translation>WWW error</translation>
-    </message>
-    <message>
-        <source>Web browser was not specified. Visit the configuration section</source>
-        <translation>Web browser was not specified. Visit the configuration section</translation>
-    </message>
-    <message>
-        <source>Could not spawn Web browser process. Check if the Web browser is functional</source>
-        <translation>Could not spawn Web browser process. Check if the Web browser is functional</translation>
     </message>
     <message>
         <source>Send message error</source>
@@ -683,14 +683,6 @@ Your password is incorrect !!!</source>
         <translation>Auto</translation>
     </message>
     <message>
-        <source>Under up</source>
-        <translation>Under up</translation>
-    </message>
-    <message>
-        <source>Under down</source>
-        <translation>Under down</translation>
-    </message>
-    <message>
         <source>Hints position</source>
         <translation>Hints position</translation>
     </message>
@@ -776,6 +768,14 @@ Your password is incorrect !!!</source>
     </message>
     <message>
         <source>Hint timeout (in seconds)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>In top</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>In bottom</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
