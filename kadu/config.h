@@ -17,6 +17,7 @@
 #include <qslider.h>
 #include <qvgroupbox.h>
 #include <qhbox.h>
+#include <qvaluelist.h>
 #include "../config.h"
 
 void loadKaduConfig(void);
