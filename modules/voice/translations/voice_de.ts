@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Test GSM Encoding</source>
-        <translation type="unfinished"></translation>
+        <translation>Teste Kodierung GSM</translation>
     </message>
 </context>
 <context>
@@ -45,19 +45,19 @@
     </message>
     <message>
         <source>Opening DSP Encoder failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Öffnen des DSP-Kodierers fehlgeschlagen.</translation>
     </message>
     <message>
         <source>Opening sound device failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Öffnen des Sound-Gerätes fehlgeschlagen.</translation>
     </message>
     <message>
         <source>Testing GSM Encoding. Please talk now (3 seconds).</source>
-        <translation type="unfinished"></translation>
+        <translation>Teste Kodierung GSM. Sprechen Sie bitte jetzt (3 Sekunden lang).</translation>
     </message>
     <message>
         <source>You should hear your recorded sample now.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sie sollten jetzt die Aufnahme hören.</translation>
     </message>
 </context>
 </TS>

@@ -100,7 +100,7 @@ nicht versteht. Gib hier die Argumente ein, getrennt mit Komma. %n=Tel.; %m=Nach
     </message>
     <message>
         <source>Save SMS in history</source>
-        <translation type="unfinished"></translation>
+        <translation>SMS im Verlauf speichern</translation>
     </message>
 </context>
 <context>
@@ -129,7 +129,7 @@ nicht versteht. Gib hier die Argumente ein, getrennt mit Komma. %n=Tel.; %m=Nach
     </message>
     <message>
         <source>Signature can&apos;t be empty</source>
-        <translation type="unfinished"></translation>
+        <translation>Unterschrift darf nicht leer sein</translation>
     </message>
 </context>
 <context>

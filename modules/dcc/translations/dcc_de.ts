@@ -78,7 +78,10 @@ oder beide Computer sind hinter NAT.</translation>
 IP address (%2) differs from what GG server returned
 as his/her IP address (%3). It may be spoofing
 or he/she has port forwarding. Continue connection?</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 fragt hat um direkte Verbindung angefragt, doch seine/ihre
+Adresse IP (%2) ist andersals die auf dem Server-GG eingetragene,
+die da wäre (%3). Es kann sowohl Spoofing als auch 
+Port-Weiterleitung bedeuten. Soll ich trotzdem verbinden?</translation>
     </message>
 </context>
 <context>

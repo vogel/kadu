@@ -3,7 +3,7 @@
     <name>@default</name>
     <message>
         <source>Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Fenster</translation>
     </message>
 </context>
 <context>

@@ -347,142 +347,146 @@ Kennwörter in beiden Feldern (&quot;Kennwort&quot; und &quot;Kennwort erneut ei
     </message>
     <message>
         <source>User list wasn&apos;t imported because of some error</source>
-        <translation type="unfinished"></translation>
+        <translation>Bekanntenliste wurde wegen Fehler nicht importiert</translation>
     </message>
     <message>
         <source>Please fill all fields</source>
-        <translation type="unfinished"></translation>
+        <translation>Füllen Sie bitte alle Felder aus</translation>
     </message>
     <message>
         <source>&lt;h2&gt;Welcome in Kadu&lt;/h2&gt;&lt;h3&gt; the Gadu-gadu network client for *nix and MacOS X.&lt;/h3&gt;&lt;br&gt;&lt;br&gt;&lt;font size=+1&gt;This is first time you launch Kadu. This wizard will help you to configure the basic settings of Kadu. If you are experienced Kadu user you may omit the wizard by clicking Cancel. Otherwise click Next.&lt;/font&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;h2&gt;Willkommen in Kadu&lt;/h2&gt;&lt;h3&gt;dem Gadu-gadu Programm für *nix und MacOS.&lt;/h3&gt;&lt;br&gt;&lt;br&gt;&lt;font size=+1&gt;Die starten Kadu zum ersten mal. Dieser Asistent hilft Ihnen, die Grundkonfiguration für Kadu zu erstellen. Wenn Sie bereits ein erfahrener Benutzer sind, können sie es mit &quot;Abbruch&quot; wegklicken. Im anderen Fall klicken Sie auf weiter.&lt;/font&gt;</translation>
     </message>
     <message>
         <source>&lt;h3&gt;You decided to use your existing account. Please configure it&lt;/h3&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;h3&gt;Sie habe sich entschieden, Ihren existierenden Zugang zu nutzen. Konfiguriere ihn bitte&lt;/h3&gt;</translation>
     </message>
     <message>
         <source>Sound module</source>
-        <translation type="unfinished"></translation>
+        <translation>Das Sound-Modul</translation>
     </message>
     <message>
         <source>Choose sound module</source>
-        <translation type="unfinished"></translation>
+        <translation>Wähne einen Sound-Modul</translation>
     </message>
     <message>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation>keiner</translation>
     </message>
     <message>
         <source>&lt;b&gt;Description:&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Beschreibung:&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Kadu uses various sound modules to play its sounds. Choosing appropriate module is quite important. Browse installed sound modules and choose the best for you.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kadu nutzt verschiedene Sound-Module, um Klänge abzuspielen. Die Wahl des richtigen Moduls ist ganz wichtig. Wähle einen Sound-modul, der Ihnen entspricht.</translation>
     </message>
     <message>
         <source>This module uses libao to produce sounds. This is third-party module not supported by Kadu Team.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dieses Modul nutzt libao für die Klangausgabe. Das ist ein third-party-Modult - wird von Kadu-Team nicht unterstätzt.</translation>
     </message>
     <message>
         <source>This module uses KDE&apos;s aRts daemon which mixes multiple digital sources at real time.&lt;br&gt; When your soundcard doesn&apos;t handle that, this module is for you.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dieses Modul nutzt KDE&apos;s aRts Dämon, um viele digitale Quellen in Echtzeit zu verbinden.&lt;br&gt; Wenn Ihre Soundkarte dies nicht unterstützt, wählen Sie dieses Modul.</translation>
     </message>
     <message>
         <source>This module uses OSS kernel module to produce sounds.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dieses Modul nutzt OSS-Kernel-Module für Klangausgabe.</translation>
     </message>
     <message>
         <source>This module uses GNOME&apos;s Enlightened Sound Daemon which mixes multiple digital sources at real time.&lt;br&gt; When your soundcard doesn&apos;t handle that, this module is for you.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dieses Modul nutzt GNOME&apos;s Enlightened-Sound-Dämon, um viele digitale Quellen in Echtzeit zu verbinden.&lt;br&gt; Wenn Ihre Soundkarte dies nicht unterstützt, wählen Sie dieses Modul.</translation>
     </message>
     <message>
         <source>This module uses external application to produce sounds. You must specify path to external program in configuration.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dieses Modul nutzt anderes Program um Klänge auszugeben. Sie müssen den Pfad zu diesem Programm in der Konfiguration bestimmen.</translation>
     </message>
     <message>
         <source>This module uses Network Audio System to produce sounds. Use it when you use NAS sound system.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dieses Modul nutzt Networt Audio System für die Klangausgebe. Wählen Sie dieses Modul, wenn Sie NAS benutzen.</translation>
     </message>
     <message>
         <source>&lt;h3&gt;Choose your information panel look&lt;/h3&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;h3&gt;Wählen Sie das Aussehen des Info-Panels&lt;/h3&gt;</translation>
     </message>
     <message>
         <source>Information panel theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Thema für Info-Panel</translation>
     </message>
     <message>
         <source>Information panel look</source>
-        <translation type="unfinished"></translation>
+        <translation>Aussehen des Info-Panels</translation>
     </message>
     <message>
         <source>&lt;h3&gt;Choose Qt theme for Kadu&lt;/h3&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;h3&gt;Wähle Qt-Thema für Kadu&lt;/h3&gt;</translation>
     </message>
     <message>
         <source>Qt theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Qt-Thema</translation>
     </message>
     <message>
         <source>Please choose Qt design for Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation>Wählen Sie das Qt-Aussehen für Kadu</translation>
     </message>
     <message>
         <source>&lt;h2&gt;Congratulations&lt;/h2&gt;&lt;h3&gt;You have just configured Kadu&lt;/h3&gt;You can adjust settings using the configuration icon on toolbar or simply by pressing F2. It&apos;s recomended to read the documentation before changing some advanced settings. If you have questions or problems with Kadu look at &lt;b&gt;www.kadu.net/forum&lt;/b&gt; and be our guest.&lt;br&gt;&lt;h3&gt;Enjoy using Kadu ;)&lt;br&gt;Kadu Team&lt;/h3&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;h2&gt;Gratulation&lt;/h2&gt;&lt;h3&gt;Sie haben gerade Kadu konfiguriert&lt;/h3&gt;Sie können die Einstellungen später durch Anklicken der &quot;Konfiguration&quot;-Ikone oder durch Drücken von &quot;F2&quot; verändern. Es wird empfohlen, die Dokumentation zu lesen, bevor Sie weitere Einstellungen ändern. Wenn Sie Probleme mit Kadu haben, schauen Sie mal auf &lt;b&gt;www.kadu.net/forum&lt;/b&gt; nach und seien Sie unser Gast.&lt;br&gt;&lt;h3&gt;Enjoy using Kadu ;)&lt;br&gt;Kadu Team&lt;/h3&gt;</translation>
     </message>
     <message>
         <source>There will be no sounds in Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation>Im Kadu wird es keine Klänge geben</translation>
     </message>
     <message>
         <source>&lt;font color=red&gt;Module is not installed! If you want to use it download and install it first.&lt;/font&gt;&lt;br&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;font color=red&gt;Modul ist nicht installiert! Wenn Sie es nutzen wollen, laden Sie es herunter und installieren Sie es.&lt;/font&gt;&lt;br&gt;</translation>
     </message>
     <message>
         <source>Current</source>
-        <translation type="unfinished"></translation>
+        <translation>aktuelles</translation>
     </message>
     <message>
         <source>French</source>
-        <translation type="unfinished"></translation>
+        <translation>Französich</translation>
     </message>
     <message>
         <source>Register</source>
-        <translation type="unfinished"></translation>
+        <translation>Anmalden</translation>
     </message>
     <message>
         <source>This module play sounds using ALSA - Advanced Linux Sound Architecture driver.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dieses Modul spiel Klänge über ALSA ab.</translation>
     </message>
     <message>
         <source>Registration was successful.
 You UIN is: </source>
-        <translation type="unfinished"></translation>
+        <translation>Anmeldung ist gelungen.
+Ihre UIN lautet:</translation>
     </message>
     <message>
         <source>
 Account configuration was saved.
 Press Next to continue</source>
-        <translation type="unfinished"></translation>
+        <translation>
+Konfiguration des Zugangs wurde gespeichert.
+Klicken Sie bitte auf &quot;weiter&quot;</translation>
     </message>
     <message>
         <source>&lt;h3&gt;Please enter your valid e-mail address and password you want to secure your new Gadu-gadu number&lt;/h3&gt;
 Password must contain at least 5 signs (only letters and numbers)</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;h3&gt;Geben Sie bitte eine gültige Email-Adresse und das gewünschte Passwort zum Schützen Ihrer Gadu-gadu UIN&lt;/h3&gt;
+Das Passwort muß zumindest 5 Zeichen enthalten (nur Ziffern uns Zahlen)</translation>
     </message>
 </context>
 <context>
     <name>WizardStarter</name>
     <message>
         <source>Configuration Wizard</source>
-        <translation type="unfinished">Konfigurationsassistent</translation>
+        <translation>Konfigurationsassistent</translation>
     </message>
     <message>
         <source>User list wasn&apos;t imported because of some error</source>
-        <translation type="unfinished"></translation>
+        <translation>Bekanntenliste wurde wegen Fehler nicht importiert</translation>
     </message>
 </context>
 </TS>

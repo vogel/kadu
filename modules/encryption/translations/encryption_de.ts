@@ -66,7 +66,7 @@
     </message>
     <message>
         <source>Cannot encrypt message. sim_message_encrypt returned: &quot;%1&quot; (sim_errno=%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Kann die Nachricht nicht verschlüsseln. sim_message_encrypt lieferte &quot;%1&quot; zurück (sim_errno=%2)</translation>
     </message>
 </context>
 <context>

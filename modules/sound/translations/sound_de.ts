@@ -47,23 +47,23 @@
     </message>
     <message>
         <source>Samples</source>
-        <translation type="unfinished"></translation>
+        <translation>Beispiel</translation>
     </message>
     <message>
         <source>Test sample playing</source>
-        <translation type="unfinished"></translation>
+        <translation>Abspieltest</translation>
     </message>
     <message>
         <source>Test sample recording</source>
-        <translation type="unfinished"></translation>
+        <translation>Beispielaufnahme</translation>
     </message>
     <message>
         <source>Test full duplex</source>
-        <translation type="unfinished"></translation>
+        <translation>Teste full duplex</translation>
     </message>
     <message>
         <source>Sound</source>
-        <translation type="unfinished"></translation>
+        <translation>Klang</translation>
     </message>
 </context>
 <context>
@@ -122,36 +122,41 @@
     </message>
     <message>
         <source>Status invisible sound</source>
-        <translation type="unfinished"></translation>
+        <translation>Klang für Unsichtbarkeit</translation>
     </message>
     <message>
         <source>Opening test sample file failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Öffnen des Beispielklangs fehlgeschlagen.</translation>
     </message>
     <message>
         <source>Reading test sample file failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lesen des Beispielklangs fehlgeschlagen.</translation>
     </message>
     <message>
         <source>Opening sound device failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Öffnen des Sound-Gerätes fehlgeschlagen.</translation>
     </message>
     <message>
         <source>Testing sample playing. You should hear some sound now.</source>
-        <translation type="unfinished"></translation>
+        <translation>Testklang wird abgespielt. Sie sollten jetzt einen Klang hören.</translation>
     </message>
     <message>
         <source>Testing sample recording. Please talk now (3 seconds).</source>
-        <translation type="unfinished"></translation>
+        <translation>Test der Klangaufnahem. Sprechen Sie bitte jetzt (3 Sekunden lang).</translation>
     </message>
     <message>
         <source>You should hear your recorded sample now.</source>
-        <translation type="unfinished"></translation>
+        <translation>Jetzt sollten Sie die Aufnahme hören.</translation>
     </message>
     <message>
         <source>Testing fullduplex. Please talk now.
 You should here it with one second delay.</source>
-        <translation type="unfinished"></translation>
+        <translation>Teste full duplex. Bitte Sprechen.
+Sie sollten sich mir einer Sekunde Verspätung hören.</translation>
+    </message>
+    <message>
+        <source>Cannot open sound device for playing!</source>
+        <translation>Kann das Sound-Gerät für&apos;s Abspielen nicht öffnen!</translation>
     </message>
 </context>
 </TS>

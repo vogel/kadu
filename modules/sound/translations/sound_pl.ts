@@ -154,5 +154,9 @@ You should here it with one second delay.</source>
         <translation>Test full dupleksu. Proszę teraz mówić. Dźwięk powinien
 być słyszalny z 1 sekundowym opóźnieniem.</translation>
     </message>
+    <message>
+        <source>Cannot open sound device for playing!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

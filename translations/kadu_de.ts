@@ -305,7 +305,7 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>Lock file in profile directory exists. Another Kadu probably running.</source>
-        <translation>Loockdatei im Profilverzeichnis besteht bereits. Vermutlich läuft Kadu schon.</translation>
+        <translation>Im Profilverzeichnis existiert eine Lockdatei. Vermutlich läuft Kadu schon.</translation>
     </message>
     <message>
         <source>Force running Kadu (not recommended).</source>
@@ -389,11 +389,11 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>Information panel</source>
-        <translation>Informationspanel</translation>
+        <translation>Info-Panel</translation>
     </message>
     <message>
         <source>Show information panel</source>
-        <translation>Zeige Informationspanel</translation>
+        <translation>Zeige Info-Panel</translation>
     </message>
     <message>
         <source>Userbox background color</source>
@@ -449,7 +449,7 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>Remember window size and position between startups</source>
-        <translation>Fenstergröße und Position merken beim Neustart</translation>
+        <translation>Beim ausschalten die Fenstergröße und Position beibehalten</translation>
     </message>
     <message>
         <source>Automatically checks whether a new version is available</source>
@@ -511,7 +511,7 @@ Es ist ein sehr hohes Risiko!</translation>
     </message>
     <message>
         <source> Password: </source>
-        <translation>Kennwort:</translation>
+        <translation>Passwort:</translation>
     </message>
     <message>
         <source>Display contacts that have a desciption</source>
@@ -535,7 +535,7 @@ Es ist ein sehr hohes Risiko!</translation>
     </message>
     <message>
         <source>Debugging mask</source>
-        <translation>Dabug-Maske</translation>
+        <translation>Debug-Maske</translation>
     </message>
     <message>
         <source>Receive images during invisibility</source>
@@ -588,11 +588,11 @@ Es ist ein sehr hohes Risiko!</translation>
     </message>
     <message>
         <source>Port to connect to servers</source>
-        <translation type="unfinished"></translation>
+        <translation>Port für Verbindung zum Server</translation>
     </message>
     <message>
         <source>&quot;%1&quot; in chat sends message by default</source>
-        <translation type="unfinished"></translation>
+        <translation>&quot;%1&quot; im Chat sendet Nachricht (Voreinstellung)</translation>
     </message>
 </context>
 <context>
@@ -726,7 +726,7 @@ Es ist ein sehr hohes Risiko!</translation>
     </message>
     <message>
         <source>%1 sends message</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 senet Nachricht</translation>
     </message>
 </context>
 <context>
@@ -746,7 +746,7 @@ Es ist ein sehr hohes Risiko!</translation>
     <message>
         <source>This will show a long URL as http://www.start...end.com/
 to protect the chat window from a mess</source>
-        <translation>Dieses zeigt ein langes URL als http://www.start... end.com/,
+        <translation>Dieses zeigt ein langes URL als http://www.start... ende.com/,
 um das Chatfenster vor einer Unordnung zu schützen</translation>
     </message>
     <message>
@@ -867,11 +867,11 @@ Ihr Passwort stimmt nicht!</translation>
     </message>
     <message>
         <source>UIN or password not set!</source>
-        <translation>Benutzernummer (UIN) oder Passwort fehlt!</translation>
+        <translation>Nummer-GG (UIN) oder Passwort fehlt!</translation>
     </message>
     <message>
         <source>Default</source>
-        <translation type="unfinished">Default</translation>
+        <translation>Voreinstellung</translation>
     </message>
 </context>
 <context>
@@ -910,7 +910,7 @@ Ihr Passwort stimmt nicht!</translation>
     </message>
     <message>
         <source>Uins</source>
-        <translation>Nummern GG</translation>
+        <translation>GG-Nummern</translation>
     </message>
 </context>
 <context>
@@ -1010,7 +1010,7 @@ Ihr Passwort stimmt nicht!</translation>
     <name>IconsManager</name>
     <message>
         <source>Default</source>
-        <translation>Default</translation>
+        <translation>Voreingestellt</translation>
     </message>
     <message>
         <source>Icons</source>
@@ -1025,7 +1025,7 @@ Ihr Passwort stimmt nicht!</translation>
     <name>Ignored</name>
     <message>
         <source>Manage ignored users</source>
-        <translation>Verwalte Ignorierten</translation>
+        <translation>Verwalte Ignorierte</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -1041,7 +1041,7 @@ Ihr Passwort stimmt nicht!</translation>
     </message>
     <message>
         <source>This dialog box allows you to manage your ignored contacts.</source>
-        <translation>Dieses Fenster ermöglicht die Verwaltung der ignorierten Kontakte.</translation>
+        <translation>Dieses Fenster ermöglicht die Verwaltung der zu ignorierenden Kontakte.</translation>
     </message>
     <message>
         <source>Type here the UIN of the person you want to ignore.</source>
@@ -1199,7 +1199,7 @@ Ihr Passwort stimmt nicht!</translation>
     </message>
     <message>
         <source>I&amp;mport / Export userlist</source>
-        <translation>I&amp;mportieren / Exportieren Benutzerlistet</translation>
+        <translation>I&amp;mportieren / Exportieren der Benutzerlistet</translation>
     </message>
     <message>
         <source>Show / hide users without description</source>
@@ -1346,7 +1346,7 @@ Ihr Passwort stimmt nicht!</translation>
     <message>
         <source>Cannot load %1 module library.:
 %2</source>
-        <translation>Kann nicht die Bibliothek %1 mit Modulen laden:
+        <translation>Kann die Bibliothek %1 mit Modulen nicht laden:
 %2</translation>
     </message>
     <message>
@@ -1360,12 +1360,12 @@ Ihr Passwort stimmt nicht!</translation>
     <message>
         <source>Cannot find required functions in module %1.
 Maybe it&apos;s not Kadu-compatible Module.</source>
-        <translation>Ich kann die verlangte Funktion im Modul %1 finden.
+        <translation>Ich kann die verlangte Funktion im Modul %1 nicht finden.
 Vielleicht ist das kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>Module initialization routine for %1 failed.</source>
-        <translation>Initialisationroutigen für Modul %1 fehlgeschlagen.</translation>
+        <translation>Initialisationroutinen für Modul %1 fehlgeschlagen.</translation>
     </message>
 </context>
 <context>
@@ -1392,11 +1392,11 @@ Vielleicht ist das kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>Male</source>
-        <translation>Mann</translation>
+        <translation>Männlich</translation>
     </message>
     <message>
         <source>Female</source>
-        <translation>Frau</translation>
+        <translation>Weiblich</translation>
     </message>
     <message>
         <source>Birthyear</source>
@@ -1502,11 +1502,11 @@ Vielleicht ist das kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>&amp;Personal data</source>
-        <translation>Persönliche &amp;Daten</translation>
+        <translation>&amp;Persönliche Daten</translation>
     </message>
     <message>
         <source>Search using the personal data typed above (name, nickname)...</source>
-        <translation>Suche nach Personen mit den oben angegebenen Daten...</translation>
+        <translation>Suche nach Personen mit den oben angegebenen Daten (Name, Nick)...</translation>
     </message>
     <message>
         <source>&amp;Uin number</source>
@@ -1550,7 +1550,7 @@ Vielleicht ist das kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>Select user first</source>
-        <translation>Markiere zuerst Benutzer</translation>
+        <translation>Markieren Sie zuerst einen Benutzer</translation>
     </message>
     <message>
         <source>&amp;Chat</source>
@@ -1683,7 +1683,7 @@ Vielleicht ist das kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>&lt;nobr&gt;&lt;i&gt;%1&lt;/i&gt; &lt;b&gt;(d.)&lt;/b&gt;&lt;/nobr&gt;&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;%2</source>
-        <translation>&lt;i&gt;Handy:&lt;/i&gt; &lt;b&gt;%1&lt;/b&gt;</translation>
+        <translation>&lt;nobr&gt;&lt;i&gt;Handy:&lt;/i&gt; &lt;b&gt;%1&lt;/b&gt;&lt;/nobr&gt;&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Beschreibung:&lt;/b&gt;&lt;/br&gt;%2</translation>
     </message>
 </context>
 <context>

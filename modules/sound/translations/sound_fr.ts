@@ -154,5 +154,9 @@ You should here it with one second delay.</source>
         <translation>Test pour fullduplex. Parlez.
 Le délai est une seconde.</translation>
     </message>
+    <message>
+        <source>Cannot open sound device for playing!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

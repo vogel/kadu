@@ -69,7 +69,7 @@ Zustandsänderungen während des Verbindens zum Server</translation>
     </message>
     <message>
         <source>User changed status to &quot;Invisible&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontankt änderte Zustand auf &quot;Unsichtbar&quot;</translation>
     </message>
 </context>
 </TS>
