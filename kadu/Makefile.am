@@ -45,6 +45,12 @@ endif
 # time to say automake goodbye?
  ifeq ($(enable_pheaders),yes)
 
+-include kadu-headers.d
+
+kadu-headers.d: kadu-headers.h
+	$(CXX) -M $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS) $< | \
+	sed "s,\(.*\):,$(basename $@).h.gch $@:," > $@
+
 %.h.gch: %.h
 	$(CXX) -o $@ -c $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)  $(CXXFLAGS)
 
