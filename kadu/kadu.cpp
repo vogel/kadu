@@ -55,8 +55,8 @@
 #include <qsplitter.h>
 #include <qdatetime.h>
 #include <qframe.h>
-#include <qaction.h>
 #include <qtoolbar.h>
+#include <qtoolbutton.h>
 
 #include <arpa/inet.h>
 #include <libintl.h>
@@ -502,30 +502,25 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	splitsizes.append(config.splitsize.height());
 	split->setSizes(splitsizes);
 
-	QAction *historyaction = new QAction(i18n("View history"), loadIcon("history.png"), QString::null,
-		CTRL+Key_H, this, "save");
-	QAction *userinfoaction = new QAction(i18n("View/edit user info"), loadIcon("identity.png"),
-		QString::null, CTRL+Key_I, this, "userinfo");
-	QAction *searchaction = new QAction(i18n("Lookup in directory"), loadIcon("viewmag.png"),
-		QString::null, CTRL+Key_L, this, "lookup");
-	QAction *adduseraction = new QAction(i18n("Add user"), *icons->loadIcon("online"),
-		QString::null, CTRL+Key_A, this, "adduser");
-	connect(historyaction, SIGNAL(activated()), this, SLOT(viewHistory()));
-	connect(userinfoaction, SIGNAL(activated()), this, SLOT(showUserInfo()));
-	connect(searchaction, SIGNAL(activated()), this, SLOT(lookupInDirectory()));
-	connect(adduseraction, SIGNAL(activated()), this, SLOT(addUserAction()));
-
+//	tworzymy pasek narzedziowy
 	QToolBar *toolbar = new QToolBar(this, "main toolbar");
-//	toolbar->setMovingEnabled(false);
+	setDockEnabled(Qt::DockBottom, false);
+	setAppropriate(toolbar, true);
+	toolbar->setCloseMode(QDockWindow::Undocked);
 	toolbar->setCaption(i18n("Main toolbar"));
-	historyaction->addTo(toolbar);
-	userinfoaction->addTo(toolbar);
-	searchaction->addTo(toolbar);
-	toolbar->addSeparator();
-	adduseraction->addTo(toolbar);
 
+	QToolButton *viewhistorybtn = new QToolButton(loadIcon("history.png"), i18n("View history"),
+		QString::null, this, SLOT(viewHistory()), toolbar, "viewhistory");
+	QToolButton *userinfobtn = new QToolButton(loadIcon("identity.png"), i18n("View/edit user info"),
+		QString::null, this, SLOT(showUserInfo()), toolbar, "userinfo");
+	QToolButton *lookupbtn = new QToolButton(loadIcon("viewmag.png"),i18n("Lookup in directory"),
+		QString::null, this, SLOT(lookupInDirectory()), toolbar, "lookup");
+	toolbar->addSeparator();
+	QToolButton *adduserbtn = new QToolButton(*icons->loadIcon("online"), i18n("Add user"),
+		QString::null, this, SLOT(addUserAction()), toolbar, "adduser");
+
+//	tworzymy gridlayout
 	grid = new QGridLayout(centralFrame, 2, 6);
-//	grid->addMultiCellWidget(group_bar, 0, 0, 0, 2);
 	grid->addMultiCellWidget(split, 0, 0, 0, 5);
 	grid->addWidget(statuslabeltxt, 1, 0, Qt::AlignLeft);
 	grid->addWidget(statuslabel, 1, 5, Qt::AlignRight);
