@@ -26,6 +26,7 @@
 #define	HISTORYMANAGER_ENTRY_MSGRCV	0x00000008
 #define	HISTORYMANAGER_ENTRY_STATUS	0x00000010
 #define	HISTORYMANAGER_ENTRY_SMSSEND	0x00000020
+#define HISTORYMANAGER_ENTRY_ALL	0x0000003f
 
 struct HistoryEntry {
 	int type;
@@ -59,7 +60,7 @@ class HistoryManager {
 		void convSms2ekgForm();
 		int getHistoryEntriesCount(UinsList uins);
 		int getHistoryEntriesCount(QString mobile = QString::null);
-		QValueList<HistoryEntry> getHistoryEntries(UinsList uins, int from, int count);
+		QValueList<HistoryEntry> getHistoryEntries(UinsList uins, int from, int count, int mask = HISTORYMANAGER_ENTRY_ALL);
 
 		static QString getFileNameByUinsList(UinsList &uins);
 		static QStringList mySplit(const QChar &sep, const QString &str);

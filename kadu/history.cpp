@@ -554,7 +554,7 @@ int HistoryManager::getHistoryEntriesCount(QString mobile) {
 		return getHistoryEntriesCountPrivate(mobile);
 }
 
-QValueList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int from, int count) {
+QValueList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int from, int count, int mask) {
 	kdebug("HistoryManager::getHistoryEntries(UinsList uins, int from, int count)\n");
 
 	QValueList<HistoryEntry> entries;
@@ -597,6 +597,8 @@ QValueList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int fr
 			entry.type = HISTORYMANAGER_ENTRY_STATUS;
 		else if (tokens[0] == "smssend")
 			entry.type = HISTORYMANAGER_ENTRY_SMSSEND;
+		if (!(entry.type & mask))
+			continue;
 		switch (entry.type) {
 			case HISTORYMANAGER_ENTRY_CHATSEND:
 			case HISTORYMANAGER_ENTRY_MSGSEND:
@@ -682,7 +684,6 @@ QValueList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int fr
 					}
 				break;
 			}
-//		kdebug("HistoryManager::getHistoryEntries(UinsList uins, int from, int count): %d\n", tokens.count());
 		}
 
 	f.close();
