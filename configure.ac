@@ -44,6 +44,7 @@ AC_DEFUN(FIND_FILE,[
 	FILE_DIR=
 	for dir in $2
 	do
+		echo DIR: $dir
 		if test -f $dir/$1
 		then
 			FILE_DIR=$dir
@@ -271,16 +272,15 @@ AC_ARG_WITH(existing-libgadu,[  --with-existing-libgadu do not compile libgadu, 
 if test -z "$with_existing_libgadu"; then
 	with_existing_libgadu=no
 fi
-if test "$with_existing_libgadu" = "yes"; then
-	AC_CHECK_HEADER(libgadu.h,[
-		AC_CHECK_LIB(gadu,gg_libgadu_version,[
-			GADU_LIBS=-lgadu
-			GADU_INCLUDES=
-		],[
-			AC_MSG_ERROR([existing libgadu was not found!])
-		],[$PTHREAD_CPPFLAGS $PTHREAD_LIBS])
-	],[
-		AC_MSG_ERROR([existing libgadu was not found!])
+if test "$with_existing_libgadu" != "no"; then
+	FIND_HEADER([libgadu.h],[$with_existing_libgadu $with_existing_libgadu/include],
+	[
+		GADU_INCLUDES="-I$FILE_DIR"
+	])
+	GADU_LIBS=-lgadu
+	FIND_LIBRARY([gadu],[$with_existing_libgadu $with_existing_libgadu/lib],
+	[
+		GADU_LIBS="$GADU_LIBS -L$FILE_DIR"
 	])
 else
 	MY_SUBDIRS="$MY_SUBDIRS libgadu"

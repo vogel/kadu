@@ -122,6 +122,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dodano sygnal chatDestroyed() w klasie ChatManager (googie/pawel_p)
 * patch zmieniajacy pogrubienie nickow uzytkownikow dostepnych z poprzedniego
   patcha w opcje ustawialna w konfiguracji (uto/adrian)
+* nowy, porzadny mechanizm --with-existing-libgadu (jotpel,sajmon / adrian)
 
 +++ wersja 0.3.6 (22.11.2003)
 * je¶li klikniemy na jaki¶ kontakt w userboxie, od którego otrzymali¶my jak±¶
