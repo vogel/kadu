@@ -23,15 +23,18 @@ bezpo¶rednich.
  * wysy³anie SMSów
  * wiele innych...
  * DCC: wysy³anie, odbieranie
+ * rozmowy konferencyjne
 
 +++ LICENCJA
 GPL
 
-+++ AUTOR
-Tomek ``tomee`` Jarzynka, <tomee at cpi.pl>
++++ AUTORZY
+Tomek ``tomee`` Jarzynka
+Tomek ``chilek`` Chiliñski
+Adrian ``adrians`` Smarzewski
 Wielkie dziêki dla Wojtka Kaniewskiego oraz
 ¿yczliwych ludzi z pl.comp.os.linux.programming
 i innych.
 
 +++ KONTAKT
-<tomee at cpi dot pl>, http://cpi.pl/Kadu
+http://kadu.net/
