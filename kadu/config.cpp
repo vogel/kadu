@@ -76,7 +76,7 @@ void loadKaduConfig(void) {
 	config.autoaway = konf->readBoolEntry("AutoAway", false);
 	config.autoawaytime = konf->readNumEntry("AutoAwayTime", 300);
 	config.allowdcc = konf->readBoolEntry("AllowDCC",false);
-	config.dccip = strdup(konf->readEntry("DccIP", "0.0.0.0"));
+	config.dccip = konf->readEntry("DccIP", "0.0.0.0");
 	config.extip = strdup(konf->readEntry("ExternalIP", "0.0.0.0"));
 	config.extport = konf->readNumEntry("ExternalPort", 0);
 	config.servers = QStringList::split(";", konf->readEntry("Server", ""));
@@ -809,7 +809,7 @@ void ConfigDialog::setupTab5(void) {
 
 	b_dccip = new QCheckBox(box5);
 	b_dccip->setText(i18n("DCC IP autodetection"));
-	b_dccip->setChecked(!inet_addr(config.dccip));
+	b_dccip->setChecked(config.dccip == "0.0.0.0");
 
 	g_dccip = new QVGroupBox(box5);
 	g_dccip->setTitle(i18n("DCC IP"));
@@ -1426,13 +1426,12 @@ void ConfigDialog::updateConfig(void) {
 		userlist.byAltNick(tmp).notify = false;
 		}
 
-	delete config.dccip;
 	delete config.extip;
 	config.allowdcc = b_dccenabled->isChecked();
 	if (config.allowdcc && !b_dccip->isChecked() && inet_addr(e_dccip->text().latin1()) != INADDR_NONE)
-		config.dccip = strdup(e_dccip->text().latin1());
+		config.dccip = e_dccip->text();
 	else
-		config.dccip = strdup("0.0.0.0");
+		config.dccip = "0.0.0.0";
 	if (config.allowdcc && b_dccfwd->isChecked() && inet_addr(e_extip->text().latin1()) != INADDR_NONE
 		&& atoi(e_extport->text().latin1()) > 1023) {
 		config.extip = strdup(e_extip->text().latin1());

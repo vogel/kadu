@@ -75,7 +75,7 @@ struct config {
 	QString defaultdescription;
 	int sysmsgidx;
 	bool allowdcc;
-	char *dccip;
+	QString dccip;
 	char *extip;
 	int extport;
 	QStringList servers;

@@ -739,17 +739,19 @@ void Kadu::blink() {
 /* dcc initials */
 void Kadu::prepareDcc(void) {
 	struct in_addr in;
-	
-	if (!strcmp(config.dccip, "0.0.0.0")) {
+	QString dccip;
+
+	if (config.dccip == "0.0.0.0") {
 		in.s_addr = getMyIP();
 		if (!in.s_addr) {
 			fprintf(stderr, "KK Cannot determine IP address!\n");
 			return;
 			}
-		delete config.dccip;
-		config.dccip = strdup(inet_ntoa(in));
+		dccip = inet_ntoa(in);
 		fprintf(stderr, "KK My IP address: %s\n", inet_ntoa(in));
 		}
+	else
+		dccip = config.dccip;
 
 	dccsock = gg_dcc_socket_create(config.uin, 0);
 
@@ -761,11 +763,11 @@ void Kadu::prepareDcc(void) {
 		return;
 		}
 
-	gg_dcc_ip = inet_addr(config.dccip);
+	gg_dcc_ip = inet_addr(dccip.latin1());
 	gg_dcc_port = dccsock->port;
-    
-	fprintf(stderr, "KK Kadu::prepareDcc() DCC_IP=%s DCC_PORT=%d\n", config.dccip, dccsock->port);
-    
+
+	fprintf(stderr, "KK Kadu::prepareDcc() DCC_IP=%s DCC_PORT=%d\n", dccip.latin1(), dccsock->port);
+
 	dccsnr = new QSocketNotifier(dccsock->fd, QSocketNotifier::Read, kadu);
 	QObject::connect(dccsnr, SIGNAL(activated(int)), kadu, SLOT(dccReceived()));
 

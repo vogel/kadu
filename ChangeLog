@@ -1,6 +1,8 @@
 +++ wersja 0.3.3-rc3
 * sensowne potwierdzenie usuniêcia kontaktu (adrian)
 * próba nowego "porz±dnego" autoaway'a (chilek)
+* autodetekcja adresu IP dla DCC jest robiona przy ka¿dym po³±czeniu o ile
+  nie wpiszemy adresu IP jawnie (chilek)
 
 +++ wersja 0.3.3-rc2
 * sporo poprawek dla FreeBSD (adrian)
