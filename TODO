@@ -1,4 +1,4 @@
-/** TODO, stan na 22/03/2003. **/
+/** TODO, stan na 31/03/2003. **/
 (TODO mo¿e byæ nieaktualne... zapraszamy na kadu.net/forum)
 
 
@@ -37,6 +37,10 @@
  + mo¿liwo¶æ ustawienia czy historia rozmowy ma znikaæ po zamkniêciu okna
  - intelegenta data w oknie rozmowy
  + lepsza ob³uga historii
+ + okno rozmowy "wyp³ywa na wierzch" za ka¿d± now± wiadomo¶ci± (je¶li
+   odpowiednia opcja w oknie rozmowy jest w³±czona)
+ + okno rozmowy otwiera siê automatycznie, gdy nadejdzie wiadomo¶æ (opcja)
+ + zmiany statusu u¿ytkowników zapisuj± siê w oknie rozmowy i historii (opcja)
  ! przyspieszyæ wykrywanie emotikonek
  + mo¿liwo¶æ wznowienia transmisji plików
 
@@ -66,5 +70,4 @@
    (kontynuowanie prac nad jêzykiem skryptowym v-user) 
  ? przechowywanie adresów pocztowych u¿ytkowników i uruchamianie klienta pocztowego
  - mechanizm plugin-ów
- + obs³uga unikodu
  ? przezroczysto¶æ
