@@ -192,10 +192,6 @@ Das Passwort, das Sie angegeben haben, sollte in beiden Feldern (&quot;Neues Pas
         <translation>Unregistation war erfolgreich. Jetzt haben Sie keine GG Nummer mehr :(</translation>
     </message>
     <message>
-        <source>This dialog box allows you to unregister your account. Be aware of using this option. It will permanently delete your UIN and you will not be able to use it later!</source>
-        <translation>Dieses Fenster ermöglicht Ihnen das Entfernen Ihres Zugangs. Seien Sie bitte vorsichtig bei dieser Option. Sie löschen damit Ihre UIN und Sie werden es später nicht mehr nutzen können!</translation>
-    </message>
-    <message>
         <source>UIN and password</source>
         <translation>UIN und Passwort</translation>
     </message>
@@ -214,6 +210,10 @@ Das Passwort, das Sie angegeben haben, sollte in beiden Feldern (&quot;Neues Pas
     <message>
         <source>An error has occured while unregistration. Please try again later.</source>
         <translation>Ein Fehler ist während des Entfernens Ihres Zugans aufgetreten. Versuchen Sie, bitte, später noch einmal.</translation>
+    </message>
+    <message>
+        <source>This dialog box allows you to unregister your account. Be aware of using this option. &lt;font color=&quot;red&quot;&gt;&lt;b&gt;It will permanently delete your UIN and you will not be able to use it later!&lt;/b&gt;&lt;/font&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

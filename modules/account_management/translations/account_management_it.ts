@@ -190,10 +190,6 @@ Le password devo esser identiche !</translation>
         <translation>Cancellazione account terminata con successo. Adesso no hai più numero GG:(</translation>
     </message>
     <message>
-        <source>This dialog box allows you to unregister your account. Be aware of using this option. It will permanently delete your UIN and you will not be able to use it later!</source>
-        <translation>Questa finestra di dialogo permette di cancellare it tuo account GG. Devi essere consapevole, che il tuo account GG sarà cancellato e non potrai più utilizzarlo !</translation>
-    </message>
-    <message>
         <source>UIN and password</source>
         <translation>Numero GG e password</translation>
     </message>
@@ -212,6 +208,10 @@ Le password devo esser identiche !</translation>
     <message>
         <source>An error has occured while unregistration. Please try again later.</source>
         <translation>Errore durante cancellazione account. Devi riprovare più tardi.</translation>
+    </message>
+    <message>
+        <source>This dialog box allows you to unregister your account. Be aware of using this option. &lt;font color=&quot;red&quot;&gt;&lt;b&gt;It will permanently delete your UIN and you will not be able to use it later!&lt;/b&gt;&lt;/font&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

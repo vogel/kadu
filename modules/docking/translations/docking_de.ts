@@ -5,6 +5,10 @@
         <source>Start docked</source>
         <translation>Starte minimiert</translation>
     </message>
+    <message>
+        <source>Show tooltip in tray</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DockingManager</name>

@@ -45,18 +45,6 @@
         <source>Sound theme</source>
         <translation>Thema di suoni</translation>
     </message>
-    <message>
-        <source>Notify</source>
-        <translation>Notifica</translation>
-    </message>
-    <message>
-        <source>Notify options</source>
-        <translation>Opzioni di notifica</translation>
-    </message>
-    <message>
-        <source>Notify by sound</source>
-        <translation>Notifica con suono</translation>
-    </message>
 </context>
 <context>
     <name>SoundSlots</name>
@@ -93,8 +81,24 @@
         <translation>Suono di messaggio</translation>
     </message>
     <message>
-        <source>Notify sound</source>
-        <translation>Suono di notifica</translation>
+        <source>Status available sound</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Status busy sound</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Status not available sound</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Conection error sound</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Other message</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

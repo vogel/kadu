@@ -2,10 +2,6 @@
 <context>
     <name>@default</name>
     <message>
-        <source>Notify by speech</source>
-        <translation>Powiadamiaj mową</translation>
-    </message>
-    <message>
         <source>Say only when chat window is not active</source>
         <translation>Mów tylko gdy okno nieaktywne</translation>
     </message>
@@ -85,6 +81,10 @@
         <source>Melody</source>
         <translation>Melodia</translation>
     </message>
+    <message>
+        <source>Connection error:</source>
+        <translation>Błąd połączenia: </translation>
+    </message>
 </context>
 <context>
     <name>SpeechSlots</name>
@@ -103,6 +103,10 @@
     <message>
         <source>woman %a changed status to %s %d</source>
         <translation>%a zmieniła status na %s %d</translation>
+    </message>
+    <message>
+        <source>Connection error - %1</source>
+        <translation>Błąd połączenia - %1</translation>
     </message>
 </context>
 </TS>

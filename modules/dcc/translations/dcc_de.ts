@@ -90,16 +90,25 @@ Direct connections disabled.</source>
 Direkte Verbindungen ausgeschaltet.</translation>
     </message>
     <message>
+        <source>Direct connection timeout!
+The receiver doesn&apos;t support direct connections or
+both machines are behind routers with nat.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DccSocket</name>
+    <message>
         <source>File has been transferred sucessfully.</source>
-        <translation>Transfer der Datei gelungen.</translation>
+        <translation type="unfinished">Transfer der Datei gelungen.</translation>
     </message>
     <message>
         <source>File transfer error!</source>
-        <translation>Fehler beim Senden der Datei!</translation>
+        <translation type="unfinished">Fehler beim Senden der Datei!</translation>
     </message>
     <message>
         <source>Couldn&apos;t open file!</source>
-        <translation>Konnte die Datei nicht öffnen!</translation>
+        <translation type="unfinished">Konnte die Datei nicht öffnen!</translation>
     </message>
 </context>
 <context>

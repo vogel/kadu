@@ -17,6 +17,10 @@
         <source>Generate keys</source>
         <translation>Erstelle Schlüssel</translation>
     </message>
+    <message>
+        <source>Color of encrypted messages</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EncryptionManager</name>

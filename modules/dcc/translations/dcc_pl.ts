@@ -90,6 +90,17 @@ Direct connections disabled.</source>
 Połączenia bezpośrednie wyłączone.</translation>
     </message>
     <message>
+        <source>Direct connection timeout!
+The receiver doesn&apos;t support direct connections or
+both machines are behind routers with nat.</source>
+        <translation>Czas na połączenie upłynął!
+Odbiorca nie ma właczonego DCC lub
+oba komputery są za NAT-em.</translation>
+    </message>
+</context>
+<context>
+    <name>DccSocket</name>
+    <message>
         <source>File has been transferred sucessfully.</source>
         <translation>Transfer pliku zakończony pomyślnie.</translation>
     </message>

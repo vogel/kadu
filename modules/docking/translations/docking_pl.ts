@@ -5,6 +5,10 @@
         <source>Start docked</source>
         <translation>Uruchom zminimalizowany</translation>
     </message>
+    <message>
+        <source>Show tooltip in tray</source>
+        <translation>Wyświetlaj dymki w zasobniku systemowym</translation>
+    </message>
 </context>
 <context>
     <name>DockingManager</name>

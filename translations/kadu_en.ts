@@ -146,34 +146,6 @@ If you leave blank, default settings will be used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Notify</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Notify when users become available</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Notify about all users</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Available</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Tracked</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Notify options</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Notify by dialog box</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Network</source>
         <translation type="unfinished"></translation>
     </message>
@@ -215,62 +187,6 @@ If you leave blank, default settings will be used.</source>
     </message>
     <message>
         <source>Password:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Hints</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enable hints</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Hints options</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enable icons in hints</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show connection errors in hints</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Notify about new message</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Notify about new chat</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show message content in hint</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Message content in hint</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enable status notification by hint</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Notification options</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add description to hint if exists</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Use custom syntax</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Hint syntax</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -478,22 +394,6 @@ If you leave blank, default settings will be used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Mouse buttons</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Left button</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Middle button</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Right button</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Show inactive users</source>
         <translation type="unfinished"></translation>
     </message>
@@ -622,18 +522,6 @@ If you leave blank, default settings will be used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Notify about users&apos; status changes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Notify about users becoming available</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Notify about users becoming unavailable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Remember window size and position between startups</source>
         <translation type="unfinished"></translation>
     </message>
@@ -676,6 +564,10 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>Align icon next to contact name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show tooltip on userbox</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -862,160 +754,6 @@ to protect the chat window from a mess</source>
     <name>GaduProtocol</name>
     <message>
         <source>I am busy.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>HintManager</name>
-    <message>
-        <source>Error:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>New message from</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Chat with</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>is available</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>changed status to</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>is unavailable</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>HintManagerSlots</name>
-    <message>
-        <source>Number of quoted characters</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>New hints add to hint</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Auto</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>In top</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>In bottom</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Use custom hints position</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Hints position</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Online</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Online (d.)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Busy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Busy (d.)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Invisible</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Invisible (d.)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Offline</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Offline (d.)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Blocking</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>New chat</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>New message in chat</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Preview</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Text&lt;/b&gt; preview</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Change font color</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Change background color</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Change font</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Color dialog</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Nothing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open chat</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete hint</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete all hints</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Hint timeout</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set for all</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1383,15 +1121,6 @@ to protect the chat window from a mess</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Incorrect password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Connection will be stoped
-Your password is incorrect !!!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Unable to connect, error of negotiation TLS</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1429,11 +1158,8 @@ What would you like to do?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>User %1 is available</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>User notify</source>
+        <source>Connection will be stoped
+Your password is incorrect !</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1857,6 +1583,45 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     </message>
 </context>
 <context>
+    <name>Status</name>
+    <message>
+        <source>Online</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Online (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Busy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Busy (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invisible</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invisible (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Offline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Offline (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Blocking</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Themes</name>
     <message>
         <source>does not contain any theme configuration file</source>
@@ -1900,10 +1665,6 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;i&gt;Mobile:&lt;/i&gt;&lt;b&gt; </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&lt;nobr&gt;&lt;i&gt;Not available&lt;/i&gt;&lt;/nobr&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1937,6 +1698,10 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     </message>
     <message>
         <source>&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;i&gt;Mobile:&lt;/i&gt; &lt;b&gt;%1&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

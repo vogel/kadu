@@ -202,54 +202,6 @@
         <translation>Tylko dla znajomych</translation>
     </message>
     <message>
-        <source>Hints</source>
-        <translation>Dymki</translation>
-    </message>
-    <message>
-        <source>Enable hints</source>
-        <translation>Włącz dymki</translation>
-    </message>
-    <message>
-        <source>Hints options</source>
-        <translation>Opcje</translation>
-    </message>
-    <message>
-        <source>Enable icons in hints</source>
-        <translation>Włącz ikony w dymkach</translation>
-    </message>
-    <message>
-        <source>Show connection errors in hints</source>
-        <translation>Pokaż błędy połączeń w dymkach</translation>
-    </message>
-    <message>
-        <source>Enable status notification by hint</source>
-        <translation>Włącz powiadomienie o zmianie statusu w dymku</translation>
-    </message>
-    <message>
-        <source>Notification options</source>
-        <translation>Opcje powiadomienia</translation>
-    </message>
-    <message>
-        <source>Use custom syntax</source>
-        <translation>Użyj własnej składni</translation>
-    </message>
-    <message>
-        <source>Hint syntax</source>
-        <translation>Składnia dymka </translation>
-    </message>
-    <message>
-        <source>Notify about new message</source>
-        <translation>Powiadom o nowej wiadomości</translation>
-    </message>
-    <message>
-        <source>Notify about new chat</source>
-        <translation>Powiadom o nowej rozmowie</translation>
-    </message>
-    <message>
-        <source>Add description to hint if exists</source>
-        <translation>Dodaj opis do dymka jeśli istnieje</translation>
-    </message>
-    <message>
         <source>WWW error</source>
         <translation>Błąd WWW</translation>
     </message>
@@ -354,34 +306,6 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <translation> składnia: </translation>
     </message>
     <message>
-        <source>Notify</source>
-        <translation>Powiadamianie</translation>
-    </message>
-    <message>
-        <source>Notify when users become available</source>
-        <translation>Powiadom kiedy kontakt będzie dostępny</translation>
-    </message>
-    <message>
-        <source>Notify about all users</source>
-        <translation>Powiadom o wszystkich kontaktach</translation>
-    </message>
-    <message>
-        <source>Available</source>
-        <translation>Dostępny</translation>
-    </message>
-    <message>
-        <source>Tracked</source>
-        <translation>Śledzeni</translation>
-    </message>
-    <message>
-        <source>Notify options</source>
-        <translation>Opcje powiadamiania</translation>
-    </message>
-    <message>
-        <source>Notify by dialog box</source>
-        <translation>Powiadamianie oknem</translation>
-    </message>
-    <message>
         <source>Set language:</source>
         <translation>Ustaw język:</translation>
     </message>
@@ -410,16 +334,8 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <translation>Lista w kolumnach</translation>
     </message>
     <message>
-        <source>Message content in hint</source>
-        <translation>Treść wiadomości w dymku</translation>
-    </message>
-    <message>
         <source>Message acknowledgements (wait for delivery)</source>
         <translation>Potwierdzenie wysłania wiadomości (czekaj na dostarczenie)</translation>
-    </message>
-    <message>
-        <source>Show message content in hint</source>
-        <translation>Pokaż zawartość wiadomości w dymku</translation>
     </message>
     <message>
         <source>Syntax the same as in information panel.</source>
@@ -484,22 +400,6 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     <message>
         <source>Max image size</source>
         <translation>Maksymalny rozmiar obrazu</translation>
-    </message>
-    <message>
-        <source>Mouse buttons</source>
-        <translation>Klawisze myszy</translation>
-    </message>
-    <message>
-        <source>Left button</source>
-        <translation>Lewy klawisz</translation>
-    </message>
-    <message>
-        <source>Middle button</source>
-        <translation>Środkowy klawisz</translation>
-    </message>
-    <message>
-        <source>Right button</source>
-        <translation>Prawy klawisz</translation>
     </message>
     <message>
         <source>Show inactive users</source>
@@ -630,18 +530,6 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <translation>Wyświetla kontakty, które są aktywne używając pogrubionej czcionki</translation>
     </message>
     <message>
-        <source>Notify about users&apos; status changes</source>
-        <translation>Powiadom o zmianie statusu kontaktu</translation>
-    </message>
-    <message>
-        <source>Notify about users becoming available</source>
-        <translation>Powiadom kiedy kontakt będzie dostępny</translation>
-    </message>
-    <message>
-        <source>Notify about users becoming unavailable</source>
-        <translation>Powiadom kiedy kontakt będzie niedostępny</translation>
-    </message>
-    <message>
         <source>Remember window size and position between startups</source>
         <translation>Pamietaj rozmiar i pozycje okien po restarcie</translation>
     </message>
@@ -682,6 +570,10 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
 It&apos;s a high security risk!</source>
         <translation>Proszę nie uruchamiać Kadu jako root!
 Jest to wysoce ryzykowne!</translation>
+    </message>
+    <message>
+        <source>Show tooltip on userbox</source>
+        <translation>Włacz dymki w liście kontaktów</translation>
     </message>
 </context>
 <context>
@@ -869,160 +761,6 @@ aby uchronić okno rozmowy przed bałaganem</translation>
     <message>
         <source>I am busy.</source>
         <translation>Jestem zajęty.</translation>
-    </message>
-</context>
-<context>
-    <name>HintManager</name>
-    <message>
-        <source>Error:</source>
-        <translation>Błąd:</translation>
-    </message>
-    <message>
-        <source>New message from</source>
-        <translation>Nowa wiadomość od</translation>
-    </message>
-    <message>
-        <source>Chat with</source>
-        <translation>Rozmowa z</translation>
-    </message>
-    <message>
-        <source>is available</source>
-        <translation>jest dostępny</translation>
-    </message>
-    <message>
-        <source>changed status to</source>
-        <translation>zmienił status na</translation>
-    </message>
-    <message>
-        <source>is unavailable</source>
-        <translation>jest niedostępny</translation>
-    </message>
-</context>
-<context>
-    <name>HintManagerSlots</name>
-    <message>
-        <source>New hints add to hint</source>
-        <translation>Łączenie dymków</translation>
-    </message>
-    <message>
-        <source>Auto</source>
-        <translation>Auto</translation>
-    </message>
-    <message>
-        <source>Hints position</source>
-        <translation>Pozycja dymków</translation>
-    </message>
-    <message>
-        <source>Online</source>
-        <translation>Dostępny</translation>
-    </message>
-    <message>
-        <source>Online (d.)</source>
-        <translation>Dostępny (opis)</translation>
-    </message>
-    <message>
-        <source>Busy</source>
-        <translation>Zaraz wracam</translation>
-    </message>
-    <message>
-        <source>Busy (d.)</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Invisible</source>
-        <translation>Ukryty</translation>
-    </message>
-    <message>
-        <source>Invisible (d.)</source>
-        <translation>Ukryty (opis)</translation>
-    </message>
-    <message>
-        <source>Offline</source>
-        <translation>Niedostępny</translation>
-    </message>
-    <message>
-        <source>Offline (d.)</source>
-        <translation>Niedostępny (opis)</translation>
-    </message>
-    <message>
-        <source>Blocking</source>
-        <translation>Blokuje</translation>
-    </message>
-    <message>
-        <source>New chat</source>
-        <translation>Nowa rozmowa</translation>
-    </message>
-    <message>
-        <source>New message in chat</source>
-        <translation>Nowa wiadomość w oknie rozmowy</translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation>Błąd</translation>
-    </message>
-    <message>
-        <source>Preview</source>
-        <translation>Podgląd</translation>
-    </message>
-    <message>
-        <source>Change font color</source>
-        <translation>Zmień kolor czcionki</translation>
-    </message>
-    <message>
-        <source>Change background color</source>
-        <translation>Zmień kolor tła</translation>
-    </message>
-    <message>
-        <source>Change font</source>
-        <translation>Zmień czcionkę</translation>
-    </message>
-    <message>
-        <source>Color dialog</source>
-        <translation>Kolory</translation>
-    </message>
-    <message>
-        <source>Number of quoted characters</source>
-        <translation>Liczba znaków</translation>
-    </message>
-    <message>
-        <source>Use custom hints position</source>
-        <translation>Własna pozycja dla dymków</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Text&lt;/b&gt; preview</source>
-        <translation>&lt;b&gt;Podgląd&lt;/b&gt; tekstu</translation>
-    </message>
-    <message>
-        <source>In top</source>
-        <translation>W górę</translation>
-    </message>
-    <message>
-        <source>In bottom</source>
-        <translation>W dół</translation>
-    </message>
-    <message>
-        <source>Nothing</source>
-        <translation>Nic</translation>
-    </message>
-    <message>
-        <source>Open chat</source>
-        <translation>Otwórz okno rozmowy</translation>
-    </message>
-    <message>
-        <source>Delete hint</source>
-        <translation>Kasuj dymek</translation>
-    </message>
-    <message>
-        <source>Delete all hints</source>
-        <translation>Kasuj wszystkie dymki</translation>
-    </message>
-    <message>
-        <source>Hint timeout</source>
-        <translation>Dymek zniknie po: </translation>
-    </message>
-    <message>
-        <source>Set for all</source>
-        <translation>Ustaw wszystkie</translation>
     </message>
 </context>
 <context>
@@ -1390,16 +1128,6 @@ by zmiany odniosły skutek</translation>
         <translation>Połączenia niemożliwe, nieprawidłowe hasło</translation>
     </message>
     <message>
-        <source>Incorrect password</source>
-        <translation>Niepoprawne hasło</translation>
-    </message>
-    <message>
-        <source>Connection will be stoped
-Your password is incorrect !!!</source>
-        <translation>Połączenie zostało zatrzymane
-Twoje hasło jest nieprawidłowe!!!</translation>
-    </message>
-    <message>
         <source>Unable to connect, error of negotiation TLS</source>
         <translation>Połączenie niemożliwe, błąd negocjacji TLS</translation>
     </message>
@@ -1439,12 +1167,10 @@ Wybierz jedną z poniższych opcji:</translation>
         <translation>Filtruj kontakty z opisami</translation>
     </message>
     <message>
-        <source>User %1 is available</source>
-        <translation>Kontakt %1 jest dostępny</translation>
-    </message>
-    <message>
-        <source>User notify</source>
-        <translation>Powiadomienie</translation>
+        <source>Connection will be stoped
+Your password is incorrect !</source>
+        <translation>Połączenie zostało przerwane
+Twoje hasło jest nieprawidłowe!</translation>
     </message>
 </context>
 <context>
@@ -1869,6 +1595,45 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     </message>
 </context>
 <context>
+    <name>Status</name>
+    <message>
+        <source>Online</source>
+        <translation>Dostępny</translation>
+    </message>
+    <message>
+        <source>Online (d.)</source>
+        <translation>Dostępny z opisem</translation>
+    </message>
+    <message>
+        <source>Busy</source>
+        <translation>Zaraz wracam</translation>
+    </message>
+    <message>
+        <source>Busy (d.)</source>
+        <translation>Zaraz wracam z opisem</translation>
+    </message>
+    <message>
+        <source>Invisible</source>
+        <translation>Ukryty</translation>
+    </message>
+    <message>
+        <source>Invisible (d.)</source>
+        <translation>Ukryty z opisem</translation>
+    </message>
+    <message>
+        <source>Offline</source>
+        <translation>Niedostępny</translation>
+    </message>
+    <message>
+        <source>Offline (d.)</source>
+        <translation>Niedostępny z opisem</translation>
+    </message>
+    <message>
+        <source>Blocking</source>
+        <translation>Blokuje</translation>
+    </message>
+</context>
+<context>
     <name>Themes</name>
     <message>
         <source>does not contain any theme configuration file</source>
@@ -1912,10 +1677,6 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
         <translation>&lt;i&gt;Zaraz wracam&lt;/i&gt;</translation>
     </message>
     <message>
-        <source>&lt;i&gt;Mobile:&lt;/i&gt;&lt;b&gt; </source>
-        <translation>&lt;i&gt;Telefon:&lt;/i&gt;&lt;b&gt; </translation>
-    </message>
-    <message>
         <source>&lt;nobr&gt;&lt;i&gt;Not available&lt;/i&gt;&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;&lt;i&gt;Niedostępny&lt;/i&gt;&lt;/nobr&gt;</translation>
     </message>
@@ -1950,6 +1711,10 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     <message>
         <source>&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;</source>
         <translation>&lt;b&gt;Opis:&lt;/b&gt;&lt;br/&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;i&gt;Mobile:&lt;/i&gt; &lt;b&gt;%1&lt;/b&gt;</source>
+        <translation>&lt;i&gt;Telefon:&lt;/i&gt; &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
 </context>
 <context>

@@ -2,10 +2,6 @@
 <context>
     <name>@default</name>
     <message>
-        <source>Notify by speech</source>
-        <translation>Benachrichtige mit Sprache</translation>
-    </message>
-    <message>
         <source>Speech</source>
         <translation>Sprache</translation>
     </message>
@@ -85,6 +81,10 @@
         <source>Test</source>
         <translation>Test</translation>
     </message>
+    <message>
+        <source>Connection error:</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SpeechSlots</name>
@@ -103,6 +103,10 @@
     <message>
         <source>woman %a changed status to %s %d</source>
         <translation>Frau %a ändert Status auf %s %d</translation>
+    </message>
+    <message>
+        <source>Connection error - %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

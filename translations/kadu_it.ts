@@ -194,54 +194,6 @@
         <translation>Solo per amici</translation>
     </message>
     <message>
-        <source>Hints</source>
-        <translation>Suggerimenti</translation>
-    </message>
-    <message>
-        <source>Enable hints</source>
-        <translation>Attiva suggerimenti</translation>
-    </message>
-    <message>
-        <source>Hints options</source>
-        <translation>opzioni dei suggerimenti</translation>
-    </message>
-    <message>
-        <source>Enable icons in hints</source>
-        <translation>Attiva le icone nei suggerimenti</translation>
-    </message>
-    <message>
-        <source>Show connection errors in hints</source>
-        <translation>Mostra errori di connessione nei suggerimenti</translation>
-    </message>
-    <message>
-        <source>Enable status notification by hint</source>
-        <translation>Attiva notifica di status tramite il suggerimento</translation>
-    </message>
-    <message>
-        <source>Notification options</source>
-        <translation>Opzioni di notifica</translation>
-    </message>
-    <message>
-        <source>Use custom syntax</source>
-        <translation>Usi la sintassi</translation>
-    </message>
-    <message>
-        <source>Hint syntax</source>
-        <translation>Sintassi di suggerimento</translation>
-    </message>
-    <message>
-        <source>Notify about new message</source>
-        <translation>Notifica arrivo nuovo messaggio</translation>
-    </message>
-    <message>
-        <source>Notify about new chat</source>
-        <translation>Notifica nuova chat</translation>
-    </message>
-    <message>
-        <source>Add description to hint if exists</source>
-        <translation>Aggiungi la descrizione al suggerimento se esiste</translation>
-    </message>
-    <message>
         <source>WWW error</source>
         <translation>Errore di WWW</translation>
     </message>
@@ -346,34 +298,6 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
         <translation>sintassi:</translation>
     </message>
     <message>
-        <source>Notify</source>
-        <translation>Notifica</translation>
-    </message>
-    <message>
-        <source>Notify when users become available</source>
-        <translation>Notifica quando i contatti diventano disponibili</translation>
-    </message>
-    <message>
-        <source>Notify about all users</source>
-        <translation>Notifica tutti i contatti</translation>
-    </message>
-    <message>
-        <source>Available</source>
-        <translation>Disponibili</translation>
-    </message>
-    <message>
-        <source>Tracked</source>
-        <translation>Controllati</translation>
-    </message>
-    <message>
-        <source>Notify options</source>
-        <translation>Opzioni notifica</translation>
-    </message>
-    <message>
-        <source>Notify by dialog box</source>
-        <translation>Notifica aprendo la finestra</translation>
-    </message>
-    <message>
         <source>Set language:</source>
         <translation>Scegli la lingua:</translation>
     </message>
@@ -402,16 +326,8 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
         <translation>Lista a colonne</translation>
     </message>
     <message>
-        <source>Message content in hint</source>
-        <translation>Il contenuto messaggio nel suggerimento</translation>
-    </message>
-    <message>
         <source>Message acknowledgements (wait for delivery)</source>
         <translation>Conferma la consegna del messaggio (aspetta conferma)</translation>
-    </message>
-    <message>
-        <source>Show message content in hint</source>
-        <translation>Mostra il contenuto del messaggio nel suggerimento</translation>
     </message>
     <message>
         <source>Syntax the same as in information panel.</source>
@@ -480,22 +396,6 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
     <message>
         <source>Max image size</source>
         <translation>Dimensioni max. file</translation>
-    </message>
-    <message>
-        <source>Mouse buttons</source>
-        <translation>Bottoni del mause</translation>
-    </message>
-    <message>
-        <source>Left button</source>
-        <translation>Bottone sx</translation>
-    </message>
-    <message>
-        <source>Middle button</source>
-        <translation>Bottone centrale</translation>
-    </message>
-    <message>
-        <source>Right button</source>
-        <translation>Bottone dx</translation>
     </message>
     <message>
         <source>Show inactive users</source>
@@ -626,18 +526,6 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
         <translation>Visualizza contatti attivi con frassetto</translation>
     </message>
     <message>
-        <source>Notify about users&apos; status changes</source>
-        <translation>Notifica cambiamento dello status contatto</translation>
-    </message>
-    <message>
-        <source>Notify about users becoming available</source>
-        <translation>Notifica quando il contatto sarà disponibile</translation>
-    </message>
-    <message>
-        <source>Notify about users becoming unavailable</source>
-        <translation>Notifica quando il contatto sarà non disponibile</translation>
-    </message>
-    <message>
         <source>Remember window size and position between startups</source>
         <translation>Memorizza le dimensioni e posizioni delle finestre dopo restart</translation>
     </message>
@@ -680,6 +568,10 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>Align icon next to contact name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show tooltip on userbox</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -868,160 +760,6 @@ per salvare finestra di chat da disordine</translation>
     <message>
         <source>I am busy.</source>
         <translation type="unfinished">Sono occupato.</translation>
-    </message>
-</context>
-<context>
-    <name>HintManager</name>
-    <message>
-        <source>Error:</source>
-        <translation>Errore:</translation>
-    </message>
-    <message>
-        <source>New message from</source>
-        <translation>Nuovo messaggio da</translation>
-    </message>
-    <message>
-        <source>Chat with</source>
-        <translation>Chat con </translation>
-    </message>
-    <message>
-        <source>is available</source>
-        <translation> è disponibile</translation>
-    </message>
-    <message>
-        <source>changed status to</source>
-        <translation> ha cambiato status in</translation>
-    </message>
-    <message>
-        <source>is unavailable</source>
-        <translation> non è disponibile</translation>
-    </message>
-</context>
-<context>
-    <name>HintManagerSlots</name>
-    <message>
-        <source>New hints add to hint</source>
-        <translation>Unione suggerimenti</translation>
-    </message>
-    <message>
-        <source>Auto</source>
-        <translation>Auto</translation>
-    </message>
-    <message>
-        <source>Hints position</source>
-        <translation>Posizione suggerimenti</translation>
-    </message>
-    <message>
-        <source>Online</source>
-        <translation>Accessibile</translation>
-    </message>
-    <message>
-        <source>Online (d.)</source>
-        <translation>Accessibile (desc.)</translation>
-    </message>
-    <message>
-        <source>Busy</source>
-        <translation>Occupato</translation>
-    </message>
-    <message>
-        <source>Busy (d.)</source>
-        <translation>Occupato (desc.)</translation>
-    </message>
-    <message>
-        <source>Invisible</source>
-        <translation>Invisibile</translation>
-    </message>
-    <message>
-        <source>Invisible (d.)</source>
-        <translation>Invisibile (desc.)</translation>
-    </message>
-    <message>
-        <source>Offline</source>
-        <translation>Fuori linea</translation>
-    </message>
-    <message>
-        <source>Offline (d.)</source>
-        <translation>Fuori linea (desc.)</translation>
-    </message>
-    <message>
-        <source>Blocking</source>
-        <translation>Bloccato</translation>
-    </message>
-    <message>
-        <source>New chat</source>
-        <translation>Nuova chat</translation>
-    </message>
-    <message>
-        <source>New message in chat</source>
-        <translation>Nuovo messaggio di chat</translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation>Errore</translation>
-    </message>
-    <message>
-        <source>Preview</source>
-        <translation>Anteprima</translation>
-    </message>
-    <message>
-        <source>Change font color</source>
-        <translation>Cambi il colore dei caratteri</translation>
-    </message>
-    <message>
-        <source>Change background color</source>
-        <translation>Camba il colore dello sfondo</translation>
-    </message>
-    <message>
-        <source>Change font</source>
-        <translation>Cambi caratteri</translation>
-    </message>
-    <message>
-        <source>Color dialog</source>
-        <translation>Colori</translation>
-    </message>
-    <message>
-        <source>Number of quoted characters</source>
-        <translation>Quantità caratteri</translation>
-    </message>
-    <message>
-        <source>Use custom hints position</source>
-        <translation>Posizione suggerimenti personalizzata</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Text&lt;/b&gt; preview</source>
-        <translation>&lt;b&gt;Anteprima&lt;/b&gt; del testo</translation>
-    </message>
-    <message>
-        <source>In top</source>
-        <translation>In su</translation>
-    </message>
-    <message>
-        <source>In bottom</source>
-        <translation>In giù</translation>
-    </message>
-    <message>
-        <source>Nothing</source>
-        <translation>Nienete</translation>
-    </message>
-    <message>
-        <source>Open chat</source>
-        <translation>Apri la finestra chat</translation>
-    </message>
-    <message>
-        <source>Delete hint</source>
-        <translation>Cancella fumetto</translation>
-    </message>
-    <message>
-        <source>Delete all hints</source>
-        <translation>Cancella tutti fumetti</translation>
-    </message>
-    <message>
-        <source>Hint timeout</source>
-        <translation>Scomparsa fumetto dopo </translation>
-    </message>
-    <message>
-        <source>Set for all</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1388,16 +1126,6 @@ per salvare finestra di chat da disordine</translation>
         <translation>Impossibile collegarsi, password errata</translation>
     </message>
     <message>
-        <source>Incorrect password</source>
-        <translation>Password errata</translation>
-    </message>
-    <message>
-        <source>Connection will be stoped
-Your password is incorrect !!!</source>
-        <translation>La conessione sarà interrotta.
-La password è errata!!!</translation>
-    </message>
-    <message>
         <source>Unable to connect, error of negotiation TLS</source>
         <translation>Impossibile collegarsi, errore in fase di negoziazione TLS</translation>
     </message>
@@ -1436,12 +1164,9 @@ Cosa vogliamo fare?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>User %1 is available</source>
-        <translation type="unfinished">%1 è disponibile</translation>
-    </message>
-    <message>
-        <source>User notify</source>
-        <translation type="unfinished">Informazione</translation>
+        <source>Connection will be stoped
+Your password is incorrect !</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1865,6 +1590,45 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     </message>
 </context>
 <context>
+    <name>Status</name>
+    <message>
+        <source>Online</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Online (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Busy</source>
+        <translation type="unfinished">Occupato</translation>
+    </message>
+    <message>
+        <source>Busy (d.)</source>
+        <translation type="unfinished">Occupato (desc.)</translation>
+    </message>
+    <message>
+        <source>Invisible</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invisible (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Offline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Offline (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Blocking</source>
+        <translation type="unfinished">Bloccato</translation>
+    </message>
+</context>
+<context>
     <name>Themes</name>
     <message>
         <source>does not contain any theme configuration file</source>
@@ -1908,10 +1672,6 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
         <translation>&lt;i&gt;Occupato&lt;/i&gt;</translation>
     </message>
     <message>
-        <source>&lt;i&gt;Mobile:&lt;/i&gt;&lt;b&gt; </source>
-        <translation>&lt;i&gt;Cell:&lt;/i&gt;&lt;b&gt;</translation>
-    </message>
-    <message>
         <source>&lt;nobr&gt;&lt;i&gt;Not available&lt;/i&gt;&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;&lt;i&gt;Non disponibile&lt;/i&gt;&lt;/nobr&gt;</translation>
     </message>
@@ -1946,6 +1706,10 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     <message>
         <source>&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;</source>
         <translation>&lt;b&gt;Descrizione:&lt;/b&gt;&lt;br/&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;i&gt;Mobile:&lt;/i&gt; &lt;b&gt;%1&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

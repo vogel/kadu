@@ -17,6 +17,10 @@
         <source>Generate keys</source>
         <translation>Generuj klucze</translation>
     </message>
+    <message>
+        <source>Color of encrypted messages</source>
+        <translation>Kolor szyfrowanej wiadomości</translation>
+    </message>
 </context>
 <context>
     <name>EncryptionManager</name>
