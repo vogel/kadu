@@ -258,7 +258,8 @@ struct chats {
 };
 
 extern const char **gg_xpm[];
-extern KApplication *a;
+//extern KApplication *a;
+extern QApplication *a;
 extern Kadu *kadu;
 extern struct gg_session *sess;
 extern struct config config;

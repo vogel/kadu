@@ -1311,8 +1311,8 @@ void ConfigDialog::updateConfig(void) {
 	if (!config.addtodescription)
 		kadu->autostatus_timer->stop();
 		
-	if (!b_showhint->isChecked() && config.showhint)
-		tip = NULL;
+//	if (!b_showhint->isChecked() && config.showhint)
+//		tip = NULL;
 	config.showhint = b_showhint->isChecked();
 	
 	if (!b_showdesc->isChecked() && config.showdesc) {

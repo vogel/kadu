@@ -12,6 +12,7 @@
 
 #include <ksystemtray.h>
 
+
 class DockWidget : public KSystemTray
 {
 	Q_OBJECT
@@ -27,10 +28,12 @@ class DockWidget : public KSystemTray
 		void dockletChange(int id);
 		//Funkcja do migania koperty
 		void changeIcon(void);
+
 	private:
 		QTimer *icon_timer;
 		bool blink;
 };
+
 
 class DockHint : public QLabel
 {
@@ -45,7 +48,25 @@ class DockHint : public QLabel
 		void remove_hint(void);
 };
 
-extern DockWidget* dw;
+class TrayIcon {
+	public:
+		TrayIcon(QWidget *parent = 0, const char *name = 0);
+		~TrayIcon();
+		void setType(char **gg_xpm);
+		// Status change slots
+		void dockletChange(int id);
+		//Funkcja do migania koperty
+		void changeIcon(void);
+		void show(void);
+		void connectSignals(void);
+
+	private:
+		DockWidget *dw;
+
+	friend class DockHint;
+};
+
 extern DockHint* tip;
+extern TrayIcon *trayicon;
 
 #endif

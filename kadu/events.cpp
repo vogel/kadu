@@ -63,11 +63,6 @@ SavePublicKey::SavePublicKey(uin_t uin, QString keyData, QWidget *parent, const 
 	setCaption(i18n("Save public key"));
 	resize(200, 80);
 	
-//	QTextBrowser *qtext = new QTextBrowser(this);
-//	qtext->setText(
-//		i18n("User %1 is sending you his public key. Do you want to save it?").arg(userlist.byUin(uin).altnick));
-//	qtext->setAlignment(Qt::AlignCenter);
-
 	QLabel *l_info = new QLabel(
 		i18n("User %1 is sending you his public key. Do you want to save it?").arg(userlist.byUin(uin).altnick),
 		this);
@@ -162,31 +157,9 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 			else
 				parent = chats[i].ptr;
 
-//			if (QMessageBox::information(parent, i18n("Save public key"),
-//				i18n("User %1 is sending you his public key. Do you want to save it?").arg(userlist.byUin(senders[0]).altnick),
-//				i18n("Yes"), i18n("No"), QString::null, 0, 1) != 0)
-//				return;
 			SavePublicKey *spk = new SavePublicKey(senders[0], __c2q((const char *)msg), NULL);
 			spk->show();
 			return;
-
-/*			keyfile_path.append(ggPath("keys/"));
-			keyfile_path.append(QString::number(senders[0]));
-			keyfile_path.append(".pem");
-
-			keyfile.setName(keyfile_path);
-
-			if(!(keyfile.open(IO_WriteOnly))) {
-				QMessageBox::critical(kadu, "Kadu", i18n("Error writting the key"), i18n("OK"), QString::null, 0);
-				fprintf(stderr, "eventRecvMsg(): Error opening key file %s\n", (const char *)keyfile_path.local8Bit());
-				return;
-			}
-
-			QString key_data=__c2q((const char *)msg);
-			keyfile.writeBlock(key_data.local8Bit(), key_data.length());
-
-			keyfile.close();
-			return;*/
 		}
 	};
 
@@ -215,7 +188,7 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 			if (config.ignoreanonusers)
 				return;
 			nick = QString::number(senders[0]);
-			if (dw)
+			if (trayicon)
 				userlist.addUser("", "", nick, nick, "", nick, GG_STATUS_NOT_AVAIL,
 					false, false, true, "", "", true);
 			else
@@ -253,7 +226,7 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 			senders[0], (const char *)nick.local8Bit(), msg);
 											  
 	UserBox::all_refresh();
-	dw->changeIcon();
+	trayicon->changeIcon();
 
 	if (config.raise) {
 		kadu->showNormal();
@@ -261,12 +234,12 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 		}
 
 	if (config.showhint) {
-		if (!tip)
-			tip = new DockHint(0);
-		if (msgclass == GG_CLASS_CHAT)
-			tip->Show(i18n("Chat with: ")+nick.latin1());
-		if (msgclass == GG_CLASS_MSG)
-			tip->Show(i18n("Message from: ")+nick.latin1());
+//		if (!tip)
+//			tip = new DockHint(0);
+//		if (msgclass == GG_CLASS_CHAT)
+//			tip->Show(i18n("Chat with: ")+nick.latin1());
+//		if (msgclass == GG_CLASS_MSG)
+//			tip->Show(i18n("Message from: ")+nick.latin1());
 	}
 
 	PendingMsgs::Element elem;

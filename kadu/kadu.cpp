@@ -7,7 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <ksystemtray.h>
 #include <qradiobutton.h>
 #include <qevent.h>
 #include <qwidget.h>
@@ -248,8 +247,8 @@ void deletePendingMessage(int nr) {
 	fprintf(stderr, "KK deletePendingMessage(%d), counts: %d\n",nr,pending.count());
 	if (!pending.pendingMsgs()) {
 		fprintf(stderr, "KK pendingMessage is false\n");
-		if (dw)
-			dw->setType((char **)gg_xpm[statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]);
+		if (trayicon)
+			trayicon->setType((char **)gg_xpm[statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]);
 		}
 }
 
@@ -391,8 +390,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	setGeometry(config.geometry);
 
 	if (config.dock) {
-		dw = new DockWidget(this);
-		dw->show();
+		trayicon = new TrayIcon(this);
+		trayicon->show();
 		}
 
 	/* use dock hint? */
@@ -421,7 +420,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	/* use dock icon? */
 	if (config.dock) {
-		dw->changeIcon();
+		trayicon->changeIcon();
 		}
 
 	QFrame *centralFrame = new QFrame(this);
@@ -477,7 +476,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	dockppm->insertItem(loadIcon("exit.png"), i18n("&Exit Kadu"), 9);
 	if (config.dock)
-		connect(dockppm, SIGNAL(activated(int)), dw, SLOT(dockletChange(int)));
+		trayicon->connectSignals();
+//		connect(dockppm, SIGNAL(activated(int)), trayicon, SLOT(dockletChange(int)));
 
 	descrtb = new QTextBrowser(split, "descrtb");
 	descrtb->setFrameStyle(QFrame::NoFrame);
@@ -628,7 +628,7 @@ void Kadu::setActiveGroup(const QString& group)
 				if(user_group==group)
 					belongsToGroup=true;
 		};
-		if (belongsToGroup && (!userlist[i].anonymous || !dw))
+		if (belongsToGroup && (!userlist[i].anonymous || !trayicon))
 			userbox->addUser(userlist[i].altnick);
 	};
 	UserBox::all_refresh();
@@ -698,22 +698,22 @@ void Kadu::blink() {
 	else
 		if (!doBlink && !socket_active) {
 	    		statuslabel->setPixmap(QPixmap((const char**)gg_inact_xpm) );
-	    		if (dw)
-				dw->setType((char **)gg_inact_xpm);
+	    		if (trayicon)
+				trayicon->setType((char **)gg_inact_xpm);
 	    		return;
 	    		}
 
 	if (blinkOn) {
 		statuslabel->setPixmap(QPixmap((const char**)gg_inact_xpm) );
-		if (dw)
-			dw->setType((char **)gg_inact_xpm);
+		if (trayicon)
+			trayicon->setType((char **)gg_inact_xpm);
 		blinkOn = false;
 		}
 	else {
 		i = statusGGToStatusNr(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
 		statuslabel->setPixmap(QPixmap((const char **)gg_xpm[i]));
-		if (dw)
-			dw->setType((char **)gg_xpm[i]);
+		if (trayicon)
+			trayicon->setType((char **)gg_xpm[i]);
 		blinkOn = true;
 		}
 
@@ -1132,7 +1132,7 @@ void Kadu::sendMessage(QListBoxItem *item) {
 				for (j = 0; j < elem.uins.count(); j++)
 					if (!userlist.containsUin(elem.uins[j])) {
 						tmp = QString::number(pending[i].uins[j]);
-						if (dw)
+						if (trayicon)
 							userlist.addUser("", "", tmp, tmp, "", tmp, GG_STATUS_NOT_AVAIL,
 								false, false, true, "", "", true);
 						else
@@ -1266,8 +1266,8 @@ void Kadu::setCurrentStatus(int status) {
 	dockppm->setItemEnabled(7, statusnr != 6);
 	statuslabel->setPixmap(QPixmap((const char**)gg_xpm[statusnr]));
 	setIcon(QPixmap((const char**)gg_xpm[statusnr]));
-	if (!pending.pendingMsgs() && dw)
-		dw->setType((char **)gg_xpm[statusnr]);
+	if (!pending.pendingMsgs() && trayicon)
+		trayicon->setType((char **)gg_xpm[statusnr]);
 }
 
 void Kadu::slotShowStatusMenu() {
@@ -1787,8 +1787,8 @@ void Kadu::disconnectNetwork() {
 
 	socket_active = false;
 	statuslabel->setPixmap(QPixmap((const char**)gg_inact_xpm));
-	if (dw)
-		dw->setType((char **)gg_inact_xpm);
+	if (trayicon)
+		trayicon->setType((char **)gg_inact_xpm);
 	setIcon(QPixmap((const char**)gg_inact_xpm));
 
 }
@@ -1881,7 +1881,7 @@ void Kadu::createStatusPopupMenu() {
 }
 
 void Kadu::closeEvent(QCloseEvent *e) {
-	if (!close_permitted && dw) {
+	if (!close_permitted && trayicon) {
 		e->ignore();
 		hide();
 		}
