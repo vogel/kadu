@@ -842,11 +842,11 @@ Das Passwort, das Sie angegeben haben, sollte in beiden Feldern (&quot;Neues Pas
     </message>
     <message>
         <source>Message too long (%1&gt;=%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Die Nachricht ist zu lang (%1&gt;=%2)</translation>
     </message>
     <message>
         <source>Filtered message too long (%1&gt;=%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Die gefilterte Nachricht ist zu lang (%1&gt;=%2)</translation>
     </message>
 </context>
 <context>
