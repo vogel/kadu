@@ -44,7 +44,7 @@ DesktopDockWindow::DesktopDockWindow()
 	QDesktopWidget *fullDesktop = QApplication::desktop();	/* ekran */
 
 	ConfigDialog::addTab("Desktop Dock");
-	ConfigDialog::addHBox("Desktop Dock", "Desktop Dock", "MainDesktop");
+	ConfigDialog::addVBox("Desktop Dock", "Desktop Dock", "MainDesktop");
 	ConfigDialog::addSpinBox("Desktop Dock", "MainDesktop", QT_TRANSLATE_NOOP("@default", "Horizontal position"), "PositionX", 0, fullDesktop->width()-DesktopDockPixmap.size().width(), 1, 0,
         QT_TRANSLATE_NOOP("@default", "Put the position in pixels"));
 	ConfigDialog::addSpinBox("Desktop Dock", "MainDesktop", QT_TRANSLATE_NOOP("@default", "Vertical position"), "PositionY", 0, fullDesktop->height()-DesktopDockPixmap.size().height(), 1, 0,
