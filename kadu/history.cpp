@@ -1187,6 +1187,12 @@ void History::closeEvent(QCloseEvent *e) {
 
 void History::initModule()
 {
+
+	QT_TRANSLATE_NOOP("@default", "History");
+	QT_TRANSLATE_NOOP("@default", "Quoted phrases during chat open");
+	QT_TRANSLATE_NOOP("@default", "Count:");
+	QT_TRANSLATE_NOOP("@default", "Don't quote phrases older than:");
+
 	kdebug("History::initModule() \n");
 	HistorySlots *historyslots=new HistorySlots();
 	ConfigDialog::registerTab("History");

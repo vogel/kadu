@@ -216,7 +216,7 @@ void Kadu::keyPressEvent(QKeyEvent *e) {
 Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 {
 
-	//zachowanie wsteczmek kompatybilnosci ze starym konfigiem
+	//zachowanie wstecznej kompatybilnosci ze starym konfigiem
 	config_file.addVariable("General","UIN",config_file.readEntry("Global","UIN"));
 	config_file.addVariable("General","Password",config_file.readEntry("Global","Password"));
 	config_file.addVariable("General","Nick",config_file.readEntry("Global","Nick"));
@@ -276,11 +276,15 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	config_file.readEntry("Other","ChatHistoryCitation")));
 	//koniec wstecznej kompatybilnosci
 
-
-
-
-
-
+	//potrzebne do translacji
+	QT_TRANSLATE_NOOP("@default", "General");
+	QT_TRANSLATE_NOOP("@default", "User data");
+	QT_TRANSLATE_NOOP("@default", "Uin");
+	QT_TRANSLATE_NOOP("@default", "Password");
+	QT_TRANSLATE_NOOP("@default", "Nick");
+	QT_TRANSLATE_NOOP("@default", "Log messages");
+	QT_TRANSLATE_NOOP("@default", "Restore window geometry");
+	QT_TRANSLATE_NOOP("@default", "Check for updates");
 
 	KaduSlots *kaduslots=new KaduSlots();
 	
@@ -367,6 +371,27 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 */
 
 //zakladka "siec"
+	//potrzebne do translacji
+	QT_TRANSLATE_NOOP("@default", "Network");
+	QT_TRANSLATE_NOOP("@default",  "DCC enabled");
+	QT_TRANSLATE_NOOP("@default", "DCC IP autodetection");
+	QT_TRANSLATE_NOOP("@default", "DCC IP");
+	QT_TRANSLATE_NOOP("@default", "IP address:");
+	QT_TRANSLATE_NOOP("@default", "DCC forwarding enabled");
+	QT_TRANSLATE_NOOP("@default", "DCC forwarding properties");
+	QT_TRANSLATE_NOOP("@default", "External IP address:");
+	QT_TRANSLATE_NOOP("@default", "External TCP port:");
+	QT_TRANSLATE_NOOP("@default", "Servers properties");
+	QT_TRANSLATE_NOOP("@default", "Use default servers");
+	QT_TRANSLATE_NOOP("@default", "Use TLSv1");
+	QT_TRANSLATE_NOOP("@default", "Default port to connect to servers");
+	QT_TRANSLATE_NOOP("@default", "Use proxy server");
+	QT_TRANSLATE_NOOP("@default", "Proxy server");
+	QT_TRANSLATE_NOOP("@default", "Port:");
+	QT_TRANSLATE_NOOP("@default", "IP addresses:");
+	QT_TRANSLATE_NOOP("@default", "Username:");
+	QT_TRANSLATE_NOOP("@default", "Password:");
+
 
 	ConfigDialog::registerTab("Network");
 	ConfigDialog::addCheckBox("Network", "Network", "DCC enabled", "AllowDCC", false);
@@ -391,7 +416,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	ConfigDialog::addVGroupBox("Network", "Network", "Proxy server");
 	ConfigDialog::addGrid("Network", "Proxy server", "proxygrid", 2);
-	ConfigDialog::addLineEdit("Network", "proxygrid", "IP addresses:", "ProxyHost", "","","proxyhost");
+	ConfigDialog::addLineEdit("Network", "proxygrid", "IP address:", "ProxyHost", "","","proxyhost");
 	ConfigDialog::addLineEdit("Network", "proxygrid", "Port:", "ProxyPort", "0");
 	ConfigDialog::addLineEdit("Network", "proxygrid", "Username:", "ProxyUser");
 	ConfigDialog::addLineEdit("Network", "proxygrid", "Password:", "ProxyPassword");
@@ -414,6 +439,21 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	TrayIcon::initModule();
 	AutoAwayTimer::initModule();
 	SoundSlots::initModule();
+	
+
+	//potrzebne do translacji
+	QT_TRANSLATE_NOOP("@default", "ShortCuts");
+	QT_TRANSLATE_NOOP("@default", "Define keys");
+	QT_TRANSLATE_NOOP("@default", "Remove from userlist");
+	QT_TRANSLATE_NOOP("@default", "View/edit user info");
+	QT_TRANSLATE_NOOP("@default", "Send SMS");
+	QT_TRANSLATE_NOOP("@default", "View history");
+	QT_TRANSLATE_NOOP("@default", "Lookup in directory");
+	QT_TRANSLATE_NOOP("@default", "Show / hide inactive users");
+	QT_TRANSLATE_NOOP("@default", "Send file");
+	QT_TRANSLATE_NOOP("@default", "Configuration");
+	QT_TRANSLATE_NOOP("@default", "Add user");
+
 	
 	ConfigDialog::registerTab("ShortCuts");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Remove from userlist", "kadu_deleteuser", "Del");

@@ -200,6 +200,19 @@ void AutoAwayTimer::off() {
 
 void AutoAwayTimer::initModule()
 {
+	QT_TRANSLATE_NOOP("@default", "General");
+	QT_TRANSLATE_NOOP("@default", "Enable autoaway");
+	QT_TRANSLATE_NOOP("@default", "Set status to away after ");
+	QT_TRANSLATE_NOOP("@default", " seconds");
+	QT_TRANSLATE_NOOP("@default", "Default Status");
+	QT_TRANSLATE_NOOP("@default", "On shutdown, set description:");
+	QT_TRANSLATE_NOOP("@default", "Enable dock icon");
+	QT_TRANSLATE_NOOP("@default", "Start docked");
+	QT_TRANSLATE_NOOP("@default", "Private status");
+	QT_TRANSLATE_NOOP("@default", "Check for updates");
+	QT_TRANSLATE_NOOP("@default", "Add to description");
+
+
 	kdebug("AutoAwayTimer::initModule() \n");
 	ConfigDialog::registerTab("General");
 	ConfigDialog::addCheckBox("General", "General", "Enable autoaway", "AutoAway", false);

@@ -16,7 +16,7 @@
 #include "config_file.h"
 #include "debug.h"
 
-QString ConfigDialog::acttab = QT_TR_NOOP("General");
+QString ConfigDialog::acttab = QT_TRANSLATE_NOOP("@default", "General");
 ConfigDialog *ConfigDialog::configdialog = NULL;
 QApplication *ConfigDialog::appHandle = NULL;
 
@@ -204,8 +204,54 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 ConfigDialog::~ConfigDialog() {
 	configdialog = NULL;
 	acttab = QString(currentPage()->name());
-
 };
+
+
+void ConfigDialog::updateConfig(void) 
+{
+
+	for(QValueList<RegisteredControl>::iterator i=RegisteredControls.begin(); i!=RegisteredControls.end(); i++)
+	{
+		switch((*i).type)
+		{
+			case CONFIG_CHECKBOX:
+			{
+				config_file.writeEntry((*i).group, (*i).entry, ((QCheckBox*)((*i).widget))->isChecked());
+				break;
+			}
+			case CONFIG_HOTKEYEDIT:
+			{
+				config_file.writeEntry((*i).group, (*i).entry, ((HotKey*)((*i).widget))->text());
+				break;
+			}
+			case CONFIG_LINEEDIT:
+			{
+				config_file.writeEntry((*i).group, (*i).entry, ((QLineEdit*)((*i).widget))->text());
+				break;
+			}
+			case CONFIG_LISTBOX:
+			{
+				break;
+			}
+			case CONFIG_SLIDER:
+			{
+				config_file.writeEntry((*i).group, (*i).entry, ((QSlider*)((*i).widget))->value());
+				break;
+			}
+			case CONFIG_SPINBOX:
+			{
+				config_file.writeEntry((*i).group, (*i).entry, ((QSpinBox*)((*i).widget))->value());
+				break;
+			}
+		}
+	}
+		for(QValueList<ElementConnections>::iterator a=SlotsOnDestroy.begin(); a!=SlotsOnDestroy.end(); a++)
+			connect(this, SIGNAL(destroy()), (*a).receiver, (*a).slot);
+
+	
+    emit destroy();
+}
+
 
 void ConfigDialog::addCheckBox(const QString& groupname,
 			const QString& parent, const QString& caption,
@@ -670,50 +716,6 @@ int ConfigDialog::existControl(const QString& groupname, const QString& caption,
 	return -1;
 }
 
-void ConfigDialog::updateConfig(void) 
-{
-
-	for(QValueList<RegisteredControl>::iterator i=RegisteredControls.begin(); i!=RegisteredControls.end(); i++)
-	{
-		switch((*i).type)
-		{
-			case CONFIG_CHECKBOX:
-			{
-				config_file.writeEntry((*i).group, (*i).entry, ((QCheckBox*)((*i).widget))->isChecked());
-				break;
-			}
-			case CONFIG_HOTKEYEDIT:
-			{
-				config_file.writeEntry((*i).group, (*i).entry, ((HotKey*)((*i).widget))->text());
-				break;
-			}
-			case CONFIG_LINEEDIT:
-			{
-				config_file.writeEntry((*i).group, (*i).entry, ((QLineEdit*)((*i).widget))->text());
-				break;
-			}
-			case CONFIG_LISTBOX:
-			{
-				break;
-			}
-			case CONFIG_SLIDER:
-			{
-				config_file.writeEntry((*i).group, (*i).entry, ((QSlider*)((*i).widget))->value());
-				break;
-			}
-			case CONFIG_SPINBOX:
-			{
-				config_file.writeEntry((*i).group, (*i).entry, ((QSpinBox*)((*i).widget))->value());
-				break;
-			}
-		}
-	}
-		for(QValueList<ElementConnections>::iterator a=SlotsOnDestroy.begin(); a!=SlotsOnDestroy.end(); a++)
-			connect(this, SIGNAL(destroy()), (*a).receiver, (*a).slot);
-
-	
-    emit destroy();
-}
 
 
 

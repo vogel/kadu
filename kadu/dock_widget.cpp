@@ -301,6 +301,12 @@ void TrayIcon::showErrorHint(const QString &str) {
 void TrayIcon::initModule()
 {
 	kdebug("TrayIcon::initModule() \n");
+
+	QT_TRANSLATE_NOOP("@default", "General");
+	QT_TRANSLATE_NOOP("@default", "Enable tray hints");
+	QT_TRANSLATE_NOOP("@default", "Tray hints timeout ");
+	QT_TRANSLATE_NOOP("@default", "Show connection errors in tray hints");
+	
 	ConfigDialog::registerTab("General");
 	ConfigDialog::addCheckBox("General", "General", "Enable tray hints", "TrayHint", true);
 	ConfigDialog::addVGroupBox("General", "General", "---");

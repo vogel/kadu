@@ -138,19 +138,19 @@ bool SoundDevice::recordFinished() {
 
 void SoundSlots::initModule()
 {
-/*
-QT_TRANSLATE_NOOP("@default","Sounds");
-QT_TRANSLATE_NOOP("@default","Play sounds");
-QT_TRANSLATE_NOOP("@default","Play sounds using aRts! server");
-QT_TRANSLATE_NOOP("@default","Sound player");
-QT_TRANSLATE_NOOP("@default","Path:");
-QT_TRANSLATE_NOOP("@default","Enable volume control (player must support it)");
-QT_TRANSLATE_NOOP("@default","Message sound");
-QT_TRANSLATE_NOOP("@default","Test");
-QT_TRANSLATE_NOOP("@default","Play sounds from a person whilst chatting");
-QT_TRANSLATE_NOOP("@default","Play chat sounds only when window is invisible");
-QT_TRANSLATE_NOOP("@default","Chat sound");
-*/
+	//potrzebne do translacji
+	QT_TRANSLATE_NOOP("@default","Sounds");
+	QT_TRANSLATE_NOOP("@default","Play sounds");
+	QT_TRANSLATE_NOOP("@default","Play sounds using aRts! server");
+	QT_TRANSLATE_NOOP("@default","Sound player");
+	QT_TRANSLATE_NOOP("@default","Path:");
+	QT_TRANSLATE_NOOP("@default","Enable volume control (player must support it)");
+	QT_TRANSLATE_NOOP("@default","Message sound");
+	QT_TRANSLATE_NOOP("@default","Test");
+	QT_TRANSLATE_NOOP("@default","Play sounds from a person whilst chatting");
+	QT_TRANSLATE_NOOP("@default","Play chat sounds only when window is invisible");
+	QT_TRANSLATE_NOOP("@default","Chat sound");
+
 
 	ConfigDialog::registerTab("Sounds");
 	ConfigDialog::addCheckBox("Sounds", "Sounds", "Play sounds", "PlaySound", false);

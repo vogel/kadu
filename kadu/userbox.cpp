@@ -429,6 +429,11 @@ void UserBox::all_renameUser(const QString &oldaltnick, const QString &newaltnic
 
 void UserBox::initModule()
 {
+
+	QT_TRANSLATE_NOOP("@default", "General");
+	QT_TRANSLATE_NOOP("@default", "Show Inactive users");
+	
+	
 	ConfigDialog::registerTab("General");
 	ConfigDialog::addCheckBox("General", "General", "Show Inactive users", "ShowHideInactive", true);
 };

@@ -753,8 +753,21 @@ void Sms::onSmsSenderFinished(bool success)
 
 void Sms::initModule()
 {
-	kdebug("Sms::initModule \n");	
 
+	QT_TRANSLATE_NOOP("@default", "SMS");
+	QT_TRANSLATE_NOOP("@default", "SMS options");
+	QT_TRANSLATE_NOOP("@default", "Use built-in SMS application");
+	QT_TRANSLATE_NOOP("@default", "Custom SMS application");
+	QT_TRANSLATE_NOOP("@default", "SMS custom string");
+	QT_TRANSLATE_NOOP("@default", "Check this box if your sms application doesn't understand arguments: number \"message\"\nArguments should be separated with spaces. %n argument is converted to number, %m to message");
+	QT_TRANSLATE_NOOP("@default", "SMS Era Gateway");
+	QT_TRANSLATE_NOOP("@default", "User ID");
+	QT_TRANSLATE_NOOP("@default", "Password");
+
+
+
+	kdebug("Sms::initModule \n");	
+	
 	ConfigDialog::registerTab("SMS");
 	ConfigDialog::addVGroupBox("SMS", "SMS", "SMS options");
 	ConfigDialog::addCheckBox("SMS", "SMS options", "Use built-in SMS application", "BuiltInApp", true);

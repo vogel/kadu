@@ -1018,9 +1018,18 @@ void Chat::addEmoticon(QString string) {
 
 void Chat::initModule()
 {
+	QT_TRANSLATE_NOOP("@default", "General");
+	QT_TRANSLATE_NOOP("@default", "Open chat window on new message");
+	QT_TRANSLATE_NOOP("@default", "Define keys");
+	QT_TRANSLATE_NOOP("@default", "New line / send message:");
+	QT_TRANSLATE_NOOP("@default", "Clear Chat:");
+	QT_TRANSLATE_NOOP("@default", "Close Chat:");
+	QT_TRANSLATE_NOOP("@default", "Bold text:");
+	QT_TRANSLATE_NOOP("@default", "Italic text:");
+	QT_TRANSLATE_NOOP("@default", "Underline text:");
+
 	ConfigDialog::registerTab("General");
-	ConfigDialog::addCheckBox("General", "General", "Open chat window on new message", "OpenChatOnMessage");
-	
+	ConfigDialog::addCheckBox("General", "General", "Open chat window on new message", "OpenChatOnMessage");	
 	ConfigDialog::registerTab("ShortCuts");
 	ConfigDialog::addVGroupBox("ShortCuts", "ShortCuts", "Define keys");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "New line / send message:", "chat_newline", "Return");
