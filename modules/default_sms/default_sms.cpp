@@ -120,7 +120,7 @@ void SmsIdeaGateway::httpFinished()
 			QMessageBox::critical(p,"SMS",tr("Text from the picture is incorrect"));
 			emit finished(false);				
 		}
-		else if (Page.find("Odbiorca nie ma aktywnej uslugi")>=0)
+		else if (Page.find("U¿ytkownik nie ma aktywnej us³ugi")>=0)
 		{
 			kdebugm(KDEBUG_INFO, "The receiver has to enable SMS STANDARD service\n");
 			QMessageBox::critical(p,"SMS",tr("The receiver has to enable SMS STANDARD service"));

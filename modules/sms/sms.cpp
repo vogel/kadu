@@ -200,6 +200,13 @@ void SmsSender::send(const QString& number,const QString& message, const QString
 		kdebugf2();
 		return;
 	}
+	if (signature.isEmpty())
+	{
+		QMessageBox::critical((QWidget*)parent(), "SMS", tr("Signature can't be empty"));
+		emit finished(false);
+		kdebugf2();
+		return;
+	}
 	Gateway=smsslots->getGateway(Number);
 
 	if (Gateway==NULL)
