@@ -149,14 +149,13 @@ void dccSocketClass::watchDcc(int check) {
 			dialog = new DccGet(this, DCC_TYPE_SEND);
 			dialog->printFileInfo(dccsock);
 			break;
+#ifdef VOICE_ENABLED
 		case GG_EVENT_DCC_NEED_VOICE_ACK:
 			kdebug("dccSocketClass::watchDcc():  GG_EVENT_DCC_NEED_VOICE_ACK! %d %d\n",
 				dccsock->uin, dccsock->peer_uin);
 			askAcceptVoiceChat();
 			break;
-#ifdef VOICE_ENABLED
 		case GG_EVENT_DCC_VOICE_DATA:
-			voice_manager->setup();
 			voice_buf = new char[dccevent->event.dcc_voice_data.length];
 			memcpy(voice_buf, dccevent->event.dcc_voice_data.data,
 				dccevent->event.dcc_voice_data.length);
@@ -286,6 +285,7 @@ void dccSocketClass::askAcceptVoiceChat() {
 		QString::null, 0, 1)) {
 		case 0: // Yes?
 			kdebug("dccSocketClass::askAcceptVoiceChat(): accepted\n");
+			voice_manager->setup();
 			break;
 		case 1:
 			kdebug("dccSocketClass::askAcceptVoiceChat(): discarded\n");
