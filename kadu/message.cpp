@@ -6,7 +6,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+/*
 #include <qpushbutton.h>
 #include <qhbuttongroup.h>
 #include <qfileinfo.h>
@@ -34,9 +34,12 @@ extern "C"
 #endif
 //
 
+
+patrz plik message.h
+
 QString tmprcvr;
 
-/* is it a chat or is it not? */
+// is it a chat or is it not?
 void rMessage::replyMessage(void) {
 	Message *msg;
 	if (tchat)
@@ -47,7 +50,7 @@ void rMessage::replyMessage(void) {
 	close(true);
 }
 
-/* a message! someone loves us! */
+// a message! someone loves us!
 rMessage::rMessage(const QString & nick, int msgclass, UinsList uins, QString &msg, QWidget *parent, const char *name)
  : QDialog(parent, name, Qt::WDestructiveClose) {
 	bool sysmsg = false;
@@ -94,14 +97,14 @@ rMessage::rMessage(const QString & nick, int msgclass, UinsList uins, QString &m
 					msgclasse->setText(i18n("Unknown"));		
 	msgclasse->setReadOnly(true);
 
-/*    bool __chat = false;
-    QPushButton * chatbtn;
-    if (pending[i].msgclass == GG_CLASS_CHAT) {
-	chatbtn = new QPushButton (this);
-	chatbtn->setText(i18n("C&hat"));
-	connect(chatbtn, SIGNAL( clicked() ), this, SLOT( openChat() ));
-	 __chat = true;
-	}*/
+//    bool __chat = false;
+//    QPushButton * chatbtn;
+//    if (pending[i].msgclass == GG_CLASS_CHAT) {
+//	chatbtn = new QPushButton (this);
+//	chatbtn->setText(i18n("C&hat"));
+//	connect(chatbtn, SIGNAL( clicked() ), this, SLOT( openChat() ));
+//	 __chat = true;
+//	}
 
 	body = new QMultiLineEdit(this);
 	body->setGeometry(5,20,305,170);
@@ -155,13 +158,13 @@ void rMessage::init(void) {
 	setCaption(i18n("Message from ") + sender);
 }
 
-/* clean up the mess */
+// clean up the mess
 void rMessage::cleanUp(void) {
-	/* should we add some more? */
+	// should we add some more?
 	close(true);
 }
 
-/* let's chat some more */
+// let's chat some more
 void rMessage::openChat(void) {
 	QString tmp = tmprcvr;
 	UinsList uins;
@@ -171,7 +174,7 @@ void rMessage::openChat(void) {
 	close(true);
 }
 
-/* send a message, send me a message */
+// send a message, send me a message
 Message::Message (const QString & nick, bool tchat, QWidget *parent, const char *name)
  : QDialog(parent, name) {
 	QAccel *acc = new QAccel( this );
@@ -287,7 +290,7 @@ void Message::init(void) {
 	setCaption(i18n("Message for ") + nicksnd);
 }
 
-/* the actual send */
+// the actual send
 void Message::commitSend(void) {
 	if (getActualStatus() == GG_STATUS_NOT_AVAIL) {
 		QMessageBox::critical(this, i18n("Send message error"),
@@ -370,21 +373,20 @@ Message::~Message() {
 	acks.resize(acks.size() - 1);
 }
 
-/* KGB informs: the message was delivered. let's close the window */
-/* this function is called back from the network events handler */
+// KGB informs: the message was delivered. let's close the window
+// this function is called back from the network events handler
 void Message::gotAck(void) {
 	accept();
 }
 
-/* for sanity's sake 
-void Message::accept() {
-	close(true);
-}
+// for sanity's sake 
+//void Message::accept() {
+//	close(true);
+//}
 
-void Message::reject() {
-	close(true);
-}
-*/
+//void Message::reject() {
+//	close(true);
+//}
 
 void Message::HistoryBox (void) {
 	History *hb;
@@ -394,4 +396,4 @@ void Message::HistoryBox (void) {
 	hb = new History(uins);
 	hb->show();
 }
-
+*/

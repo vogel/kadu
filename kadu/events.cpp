@@ -43,7 +43,7 @@
 #include "events.h"
 #include "pixmaps.h"
 #include "chat.h"
-#include "message.h"
+//#include "message.h"
 #include "history.h"
 #include "misc.h"
 #include "pending_msgs.h"
@@ -221,7 +221,7 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char *msg, time_t tim
 
 	if (senders[0] != config.uin)
 		pending.addMsg(senders, mesg, msgclass, time);
-
+	
 	kdebug("eventRecvMsg(): Message allocated to slot %d\n", i);
 	kdebug("eventRecvMsg(): Got message from %d (%s) saying \"%s\"\n",
 			senders[0], (const char *)nick.local8Bit(), (const char *)mesg.local8Bit());
@@ -426,10 +426,10 @@ void eventStatusChange(struct gg_event * e) {
 void ackHandler(int seq) {
 	int i,j,k;
 	for (i = 0; i < acks.size(); i++)
-		if (acks[i].seq == seq && acks[i].ptr)
-			if (acks[i].type < 2)
-				((Message *)acks[i].ptr)->gotAck();
-			else {
+		if (acks[i].seq == seq && acks[i].ptr) {
+//			if (acks[i].type < 2)
+//				((Message *)acks[i].ptr)->gotAck();
+			if (acks[i].type > 1) {
 				acks[i].ack--;
 				j = 0;
 				while (j < chats.count() && chats[j].ptr != acks[i].ptr)
@@ -443,7 +443,8 @@ void ackHandler(int seq) {
 						acks[i-1].ptr = acks[i].ptr;
 						}
 					acks.resize(acks.size() - 1);
-					}
 				}
+			}
+		}
 }
 

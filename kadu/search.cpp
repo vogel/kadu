@@ -19,7 +19,7 @@
 #include "kadu.h"
 #include "pixmaps.h"
 #include "search.h"
-#include "message.h"
+//#include "message.h"
 #include "debug.h"
 //
 
@@ -181,7 +181,8 @@ void SearchDialog::init() {
 }
 
 void SearchDialog::prepareMessage(QListViewItem *item) {
-	Message *msg;
+//Tu trzeba dodaæ kod który otwiera³by okno rozmowy.
+/*	Message *msg;
 
 	if (!userlist.containsUin(atoi(item->text(1).local8Bit())))
 		AddButtonClicked();
@@ -190,6 +191,8 @@ void SearchDialog::prepareMessage(QListViewItem *item) {
 		msg->init();
 		msg->show();
 		}
+*/
+
 }
 
 void SearchDialog::clearResults(void) {

@@ -9,7 +9,7 @@
 
 #ifndef MESSAGE_H
 #define MESSAGE_H
-
+/*
 #include <qdialog.h>
 #include <qmultilineedit.h>
 #include <qlabel.h>
@@ -19,6 +19,14 @@
 #include "libgadu.h"
 #include "misc.h"
 #include "../config.h"
+
+	Mysle ze to juz nam sie nie przyda i tak otwieramy chat, a wyslij wiadomosc
+	z prawego menu na userze w userboxi'ie tez wywalic(obecnie zdeaktywowane)
+	lub po³±czyæ razem z otwieraniem okna chat.
+
+	Proponuje wywaliæ ten kod wraz z plikami i caly kod dotycz±cy tych klas z:
+	kadu.cpp, search.cpp(koniecznie patrz komentarz w ¶rodku), events.cpp i
+	dock_widget.cpp - który zosta³ zakomentowany.
 
 class Message : public QDialog {
 	Q_OBJECT
@@ -42,10 +50,10 @@ class Message : public QDialog {
 		void gotAck(void);
 		void commitSend(void);
 		void HistoryBox(void);		
-/*
-	protected slots:
-		void accept();
-		void reject();*/
+
+//	protected slots:
+//		void accept();
+//		void reject();
 };
 
 class rMessage : public QDialog {
@@ -67,5 +75,5 @@ class rMessage : public QDialog {
 		void openChat(void);
 		void cleanUp(void);
 };
-
+*/
 #endif

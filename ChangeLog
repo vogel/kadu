@@ -46,6 +46,10 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * guzik "Konfiguracja" na pasku narzêdziowym (chilek)
 * okno historii: escape'owanie znaków < i > (chilek)
 * pod *bsd powinno sie ju¿ kompilowaæ (pawe³/mast3r)
+* akcja czyszczenia kodu, zakomentowanie kodu 2 klass rMessage i Message
+  - od dluzszego czasu nie uzywamy tego. Propozycja (patrz plik message.h)
+  usuniecia message.cpp i message.h, deaktywacja "Wyslij wiadomo¶æ" z
+  prawego menu na userze w userbox'ie (mast3r)
 
 +++ wersja 0.3.4-pre2
 * graficzny instalator - instaluj.tcl (googie)

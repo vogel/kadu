@@ -95,7 +95,6 @@
 #include "chat.h"
 #include "search.h"
 #include "dcc.h"
-#include "search.h"
 #include "expimp.h"
 #include "userinfo.h"
 #include "personal_info.h"
@@ -105,7 +104,7 @@
 #include "about.h"
 #include "ignore.h"
 #include "history.h"
-#include "message.h"
+//#include "message.h"
 #include "pending_msgs.h"
 #include "dock_widget.h"
 #include "updates.h"
@@ -770,7 +769,6 @@ void Kadu::blink() {
 
 /* dcc initials */
 void Kadu::prepareDcc(void) {
-	struct in_addr in;
 	QHostAddress dccip;
 
 	if (!config.dccip.ip4Addr()) {
@@ -894,12 +892,12 @@ void Kadu::commandParser (int command) {
 	bool stop = false;
 
 	switch (command) {
-		case KADU_CMD_SEND_MESSAGE:
+/*		case KADU_CMD_SEND_MESSAGE:
 			Message *msg;
 			msg = new Message(userbox->currentText());
 			msg->init();
 			msg->show();
-			break;
+			break;*/
 		case KADU_CMD_OPEN_CHAT:
 			uins = getSelectedUins();
 			for (i = 0; i < pending.count(); i++) {
@@ -1182,6 +1180,7 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 	user = userlist.byAltNick(item->text());
 
 	pm->insertItem(msg, i18n("Send message"), KADU_CMD_SEND_MESSAGE);
+	pm->setItemEnabled(KADU_CMD_SEND_MESSAGE, false);
 	pm->insertItem(i18n("Open chat window"), KADU_CMD_OPEN_CHAT);
 	pm->insertItem(i18n("Send SMS"), KADU_CMD_SMS);
 	if (!user.mobile.length())
@@ -1249,7 +1248,7 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 		pm->setItemEnabled(KADU_CMD_DELETE_HISTORY, false);
 		pm->setItemEnabled(KADU_CMD_SHOW_HISTORY, false);
 		pm->setItemEnabled(KADU_CMD_SEARCH_USER, false);
-		pm->setItemEnabled(KADU_CMD_SEND_MESSAGE, false);
+//		pm->setItemEnabled(KADU_CMD_SEND_MESSAGE, false);
 		pm->setItemEnabled(KADU_CMD_OPEN_CHAT, false);
 		}
 	pm->insertSeparator();
@@ -1264,8 +1263,8 @@ void Kadu::sendMessage(QListBoxItem *item) {
 	QString tmp;
 	int i, j, k = -1, l;
 	bool stop = false;
-	rMessage *rmsg;
-	Message *msg;
+/*	rMessage *rmsg;
+	Message *msg; */
 	UinsList uins;
 	PendingMsgs::Element elem;
 	uin_t uin;
@@ -1319,7 +1318,7 @@ void Kadu::sendMessage(QListBoxItem *item) {
 				i--;
 				stop = true;
 				}
-	    		else {
+	    	/*	else {
 				if (!stop) {
   		    			rmsg = new rMessage(item->text(),
 						elem.msgclass, elem.uins, elem.msg);
@@ -1331,7 +1330,7 @@ void Kadu::sendMessage(QListBoxItem *item) {
 				else
 					chats[k].ptr->scrollMessages(toadd);
 				return;
-				}
+				}*/
 		}
 
 	if (stop) {

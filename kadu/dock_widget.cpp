@@ -18,7 +18,7 @@
 #include "config_dialog.h"
 #include "misc.h"
 #include "pixmaps.h"
-#include "message.h"
+//#include "message.h"
 #include "chat.h"
 #include "debug.h"
 #include "pending_msgs.h"
@@ -297,8 +297,8 @@ void TrayIcon::mousePressEvent(QMouseEvent * e)
 					deletePendingMessage(i);
 					i--;
 					stop = true;
-					}		
-				else {
+					}
+				/*else {
 					if (!stop) {
 						rMessage *rmsg;
 						rmsg = new rMessage(userlist.byUin(elem.uins[0]).altnick,
@@ -312,7 +312,7 @@ void TrayIcon::mousePressEvent(QMouseEvent * e)
 						chats[k].ptr->scrollMessages(toadd);
 
 					return;
-					}
+					}*/
 			}
 		if (stop) {
 			chats[k].ptr->scrollMessages(toadd);
