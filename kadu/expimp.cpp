@@ -72,12 +72,12 @@ void UserlistImport::fromfile(){
 			results->clear();
 			while ( !stream.eof() ) {
 				line = stream.readLine();
-				lines = QStringList::split(";",line,true);
+				lines = QStringList::split(";", line, true);
 				if (lines[6] == "0")
 					lines[6].truncate(0);
 				importedUserlist.addUser(lines[0], lines[1], lines[2],
 					lines[3], lines[4], lines[6], GG_STATUS_NOT_AVAIL,
-					false, false, true, lines[5]);
+					false, false, true, lines[5], "", lines[7]);
 				qlv = new QListViewItem(results, lines[6], lines[2], lines[3],
 					lines[0], lines[1], lines[4], lines[5]);				
 	  			}
@@ -261,12 +261,12 @@ void UserlistImport::socketEvent() {
 				kdebug("%s ",(const char *)(*it2).local8Bit());
 				tmparray[j-1] = (*it2);
 				}
+			if (tmparray[6] == "0")
+				tmparray[6].truncate(0);
 			importedUserlist.addUser(tmparray[0], tmparray[1], tmparray[2],
 				tmparray[3], tmparray[4], tmparray[6], GG_STATUS_NOT_AVAIL,
-				false, false, true, tmparray[5]);
+				false, false, true, tmparray[5], "", tmparray[7]);
 
-			if (tmparray[6] == "0")
-				tmparray[6].truncate(0);	
 			qlv = new QListViewItem(results, tmparray[6], tmparray[2], tmparray[3],
 				tmparray[0], tmparray[1], tmparray[4], tmparray[5]);
 
@@ -350,8 +350,12 @@ QString UserlistExport::saveContacts(){
 		contacts += ";";
 		contacts += userlist[i].group();
 		contacts += ";";
-		contacts += QString::number(userlist[i].uin);
-		contacts += ";\r\n";
+		if (userlist[i].uin)
+			contacts += QString::number(userlist[i].uin);
+		contacts += ";";
+		contacts += userlist[i].email;
+		contacts += ";0;;0;";
+		contacts += "\r\n";
 		i++;
 		}
 	contacts.replace(QRegExp("(null)"), "");
