@@ -514,8 +514,6 @@ QString Chat::convertCharacters(QString edit, bool me) {
 
 	HtmlDocument doc;
 	doc.parseHtml(edit);
-	fprintf(stderr,(QString("1: ")+edit+"\n").local8Bit().data());
-	fprintf(stderr,(QString("2: ")+doc.generateHtml()+"\n").local8Bit().data());
 
 	// detekcja adresow url
 	QRegExp url_regexp("(http://|www\\.|ftp://)[a-zA-Z0-9\\-\\._/~?=&#\\+%:;,!]+");
