@@ -1321,7 +1321,8 @@ void GaduProtocol::login()
 
 	LoginParams.uin = (UinType)config_file.readNumEntry("General", "UIN");
 	LoginParams.has_audio = config_file.readBoolEntry("Network", "AllowDCC");
-	LoginParams.last_sysmsg = config_file.readNumEntry("General", "SystemMsgIndex");
+	// GG 6.0 build 147 ustawia indeks ostatnio odczytanej wiadomosci systemowej na 1389
+	LoginParams.last_sysmsg = config_file.readNumEntry("General", "SystemMsgIndex", 1389);
 
 	if (config_file.readBoolEntry("Network", "AllowDCC") && config_extip.ip4Addr() && config_file.readNumEntry("Network", "ExternalPort") > 1023)
 	{
