@@ -3,11 +3,26 @@
 
 #include "config_file.h"
 
-KaduConfig::KaduConfig(const QString &filaname) {
+ConfigFile::ConfigFile(const QString &filaname) {
+
 }
 
-void KaduConfig::sync() {
+void ConfigFile::sync() {
 }
 
-void KaduConfig::setGroup(const QString &name) {
+void ConfigFile::setGroup(const QString &name) {
+	struct KaduConfigGroup newgroup;
+	int i;
+
+	for (i = 0; i < groups.count(); i++)
+		if (name == groups[i].name)
+			break;
+	if (i == groups.count()) {
+		newgroup.name = name;
+		groups.append(newgroup);
+		for (i = 0; i < groups.count(); i++)
+			if (name == groups[i].name)
+				break;
+		}
+	activegroup = &(groups[i]);
 }

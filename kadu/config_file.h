@@ -13,25 +13,25 @@
 #include <qvaluelist.h>
 #include <qstring.h>
 
-struct KaduConfigParam {
+struct ConfigFileParam {
 	QString name;
 	QString value;
 };
 	
-struct KaduConfigGroup {
+struct ConfigFileGroup {
 	QString name;
-	QValueList<KaduConfigParam> params;
+	QValueList<ConfigFileParam> params;
 };
 
-class KaduConfig {
+class ConfigFile {
 	public:
-		KaduConfig(const QString &filename);
+		ConfigFile(const QString &filename);
 		void sync();
 		void setGroup(const QString &name);
 
 	private:
-		QValueList<KaduConfigGroup> groups;
-		KaduConfigGroup activegroup;
+		QValueList<ConfigFileGroup> groups;
+		struct ConfigFileGroup *activegroup;
 };
 
 #endif
