@@ -103,6 +103,43 @@ AC_DEFUN(FIND_LIBRARY,[
 	])
 ])
 
+AC_DEFUN(PROCESS_MODULE_SPEC_FILES,[
+	echo
+	echo " ******************************************"
+	echo " * Configuring modules, please wait . . . *"
+	echo " ******************************************"
+	for mod_dir in modules/*; do \
+		if test -f $mod_dir/spec; then \
+			echo; \
+			echo "Configuring $mod_dir..."; \
+			MODULE_LIBS=; \
+			MODULE_LIBS_PATH=; \
+			MODULE_INCLUDES=; \
+			MODULE_INCLUDES_PATH=; \
+			source $mod_dir/spec; \
+			echo "MODULE_LIBS:          $MODULE_LIBS"; \
+			echo "MODULE_LIBS_PATH:     $MODULE_LIBS_PATH"; \
+			echo "MODULE_INCLUDES:      $MODULE_INCLUDES"; \
+			echo "MODULE_INCLUDES_PATH: $MODULE_INCLUDES_PATH"; \
+			echo -n > $mod_dir/ldflags; \
+			echo -n > $mod_dir/cxxflags; \
+			for lib in $MODULE_LIBS; do \
+				FIND_LIBRARY([$lib],[$MODULE_LIBS_PATH],
+				[
+					echo -n "-L$FILE_DIR " >> $mod_dir/ldflags
+				]) \
+				echo -n "-l$lib " >> $mod_dir/ldflags; \
+			done; \
+			for hdr in $MODULE_INCLUDES; do \
+				FIND_HEADER([$hdr],[$MODULE_INCLUDES_PATH],
+				[
+					echo -n "-I$FILE_DIR " >> $mod_dir/cxxflags
+				]) \
+			done; \
+		fi; \
+	done
+])
+
 ########################################################################
 
 AC_INIT([Kadu],[])
@@ -114,7 +151,7 @@ version=`cat VERSION`
 
 echo
 echo " ***************************************"
-echo " * Configuring Kadu  please wait . . . *"
+echo " * Configuring Kadu, please wait . . . *"
 echo " ***************************************"
 
 AC_CONFIG_SRCDIR([kadu/kadu.cpp])
@@ -270,19 +307,6 @@ AC_SUBST(GSM_INCLUDES)
 
 MY_SUBDIRS="$MY_SUBDIRS kadu translations varia"
 
-# Loadable modules support
-AC_ARG_ENABLE(modules,[  --enable-modules        compile with experimental loadable modules support])
-if test -z "$enable_modules"; then
-	enable_modules=no
-fi
-if test "$enable_modules" = "yes"; then
-	AC_DEFINE(MODULES_ENABLED,1,[Define if loadable modules support is enabled])
-	MODULES_LDFLAGS=-rdynamic
-	MY_SUBDIRS="$MY_SUBDIRS modules"
-fi
-AM_CONDITIONAL(MODULES,[test "$enable_modules" = "yes"])
-AC_SUBST(MODULES_LDFLAGS)
-
 # pthread support
 AC_ARG_WITH(pthread,[  --without-pthread       do not use pthread in libgadu resolver])
 if test -z "$with_pthread"; then
@@ -319,6 +343,20 @@ fi
 AM_CONDITIONAL(OPENSSL,[test "$have_openssl" = "yes"])
 AC_SUBST(OPENSSL_LIBS)
 AC_SUBST(OPENSSL_INCLUDES)
+
+# Loadable modules support
+AC_ARG_ENABLE(modules,[  --enable-modules        compile with experimental loadable modules support])
+if test -z "$enable_modules"; then
+	enable_modules=no
+fi
+if test "$enable_modules" = "yes"; then
+	AC_DEFINE(MODULES_ENABLED,1,[Define if loadable modules support is enabled])
+	MODULES_LDFLAGS=-rdynamic
+	MY_SUBDIRS="$MY_SUBDIRS modules"
+	PROCESS_MODULE_SPEC_FILES()
+fi
+AM_CONDITIONAL(MODULES,[test "$enable_modules" = "yes"])
+AC_SUBST(MODULES_LDFLAGS)
 
 AC_SUBST(MY_SUBDIRS)
 

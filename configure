@@ -313,7 +313,7 @@ ac_includes_default="\
 #endif"
 
 ac_subdirs_all="$ac_subdirs_all libgadu"
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE CXX CXXFLAGS LDFLAGS CPPFLAGS ac_ct_CXX EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CXXDEPMODE CC CFLAGS ac_ct_CC CCDEPMODE PTHREAD_CPPFLAGS PTHREAD_LDFLAGS PTHREAD_LIBS PNG_LIBS XFREE_INCLUDES QT_INCLUDES QT_LIBS QT_MOC_DIR CPP EGREP LIBOBJS GADU_LIBS GADU_INCLUDES VOICE_TRUE VOICE_FALSE GSM_LIBS GSM_INCLUDES MODULES_TRUE MODULES_FALSE MODULES_LDFLAGS OPENSSL_LIBS OPENSSL_INCLUDES PKGCONFIG OPENSSL_TRUE OPENSSL_FALSE MY_SUBDIRS subdirs LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE CXX CXXFLAGS LDFLAGS CPPFLAGS ac_ct_CXX EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CXXDEPMODE CC CFLAGS ac_ct_CC CCDEPMODE PTHREAD_CPPFLAGS PTHREAD_LDFLAGS PTHREAD_LIBS PNG_LIBS XFREE_INCLUDES QT_INCLUDES QT_LIBS QT_MOC_DIR CPP EGREP LIBOBJS GADU_LIBS GADU_INCLUDES VOICE_TRUE VOICE_FALSE GSM_LIBS GSM_INCLUDES OPENSSL_LIBS OPENSSL_INCLUDES PKGCONFIG OPENSSL_TRUE OPENSSL_FALSE MODULES_TRUE MODULES_FALSE MODULES_LDFLAGS MY_SUBDIRS subdirs LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -865,9 +865,9 @@ Optional Features:
   --disable-dependency-tracking Speeds up one-time builds
   --enable-dependency-tracking  Do not reject slow dependency extractors
   --enable-voice          compile with experimental voice talk support
-  --enable-modules        compile with experimental loadable modules support
   --enable-debug          compile with debug symbols
   --enable-dist-info=DIST enable distribution type information, default: sources
+  --enable-modules        compile with experimental loadable modules support
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -1307,7 +1307,7 @@ version=`cat VERSION`
 
 echo
 echo " ***************************************"
-echo " * Configuring Kadu  please wait . . . *"
+echo " * Configuring Kadu, please wait . . . *"
 echo " ***************************************"
 
 
@@ -6093,36 +6093,6 @@ fi
 
 MY_SUBDIRS="$MY_SUBDIRS kadu translations varia"
 
-# Loadable modules support
-# Check whether --enable-modules or --disable-modules was given.
-if test "${enable_modules+set}" = set; then
-  enableval="$enable_modules"
-
-fi;
-if test -z "$enable_modules"; then
-	enable_modules=no
-fi
-if test "$enable_modules" = "yes"; then
-
-cat >>confdefs.h <<\_ACEOF
-#define MODULES_ENABLED 1
-_ACEOF
-
-	MODULES_LDFLAGS=-rdynamic
-	MY_SUBDIRS="$MY_SUBDIRS modules"
-fi
-
-
-if test "$enable_modules" = "yes"; then
-  MODULES_TRUE=
-  MODULES_FALSE='#'
-else
-  MODULES_TRUE='#'
-  MODULES_FALSE=
-fi
-
-
-
 # pthread support
 
 # Check whether --with-pthread or --without-pthread was given.
@@ -6369,6 +6339,226 @@ fi
 
 
 
+# Loadable modules support
+# Check whether --enable-modules or --disable-modules was given.
+if test "${enable_modules+set}" = set; then
+  enableval="$enable_modules"
+
+fi;
+if test -z "$enable_modules"; then
+	enable_modules=no
+fi
+if test "$enable_modules" = "yes"; then
+
+cat >>confdefs.h <<\_ACEOF
+#define MODULES_ENABLED 1
+_ACEOF
+
+	MODULES_LDFLAGS=-rdynamic
+	MY_SUBDIRS="$MY_SUBDIRS modules"
+
+	echo
+	echo " ******************************************"
+	echo " * Configuring modules, please wait . . . *"
+	echo " ******************************************"
+	for mod_dir in modules/*; do \
+		if test -f $mod_dir/spec; then \
+			echo; \
+			echo "Configuring $mod_dir..."; \
+			MODULE_LIBS=; \
+			MODULE_LIBS_PATH=; \
+			MODULE_INCLUDES=; \
+			MODULE_INCLUDES_PATH=; \
+			source $mod_dir/spec; \
+			echo "MODULE_LIBS:          $MODULE_LIBS"; \
+			echo "MODULE_LIBS_PATH:     $MODULE_LIBS_PATH"; \
+			echo "MODULE_INCLUDES:      $MODULE_INCLUDES"; \
+			echo "MODULE_INCLUDES_PATH: $MODULE_INCLUDES_PATH"; \
+			echo -n > $mod_dir/ldflags; \
+			echo -n > $mod_dir/cxxflags; \
+			for lib in $MODULE_LIBS; do \
+
+	echo "$as_me:$LINENO: checking if lib$lib.so library is in system directories" >&5
+echo $ECHO_N "checking if lib$lib.so library is in system directories... $ECHO_C" >&6
+	save_CFLAGS="$CFLAGS"
+	CFLAGS="$CFLAGS -l$lib"
+	cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+		return 0;
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+
+		CFLAGS="$save_CFLAGS"
+		echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6
+
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+
+		CFLAGS="$save_CFLAGS"
+		echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+
+	echo "$as_me:$LINENO: checking for lib$lib.so in specified directiories" >&5
+echo $ECHO_N "checking for lib$lib.so in specified directiories... $ECHO_C" >&6
+	FILE_DIR=
+	for dir in $MODULE_LIBS_PATH
+	do
+		if test -f $dir/lib$lib.so
+		then
+			FILE_DIR=$dir
+			echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
+echo "${ECHO_T}found in $FILE_DIR" >&6
+
+					echo -n "-L$FILE_DIR " >> $mod_dir/ldflags
+
+			break
+		fi
+	done
+	if test "X$FILE_DIR" = "X"
+	then
+		echo "$as_me:$LINENO: result: not found" >&5
+echo "${ECHO_T}not found" >&6
+		if test "X" = "X"
+		then
+			{ { echo "$as_me:$LINENO: error: lib$lib.so not found!" >&5
+echo "$as_me: error: lib$lib.so not found!" >&2;}
+   { (exit 1); exit 1; }; }
+		fi
+
+	fi
+
+
+fi
+rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
+ \
+				echo -n "-l$lib " >> $mod_dir/ldflags; \
+			done; \
+			for hdr in $MODULE_INCLUDES; do \
+
+	echo "$as_me:$LINENO: checking if $hdr header is in system directories" >&5
+echo $ECHO_N "checking if $hdr header is in system directories... $ECHO_C" >&6
+	cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+		#include <$hdr>
+
+int
+main ()
+{
+
+		return 0;
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+
+		echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6
+
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+
+		echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+
+	echo "$as_me:$LINENO: checking for $hdr in specified directiories" >&5
+echo $ECHO_N "checking for $hdr in specified directiories... $ECHO_C" >&6
+	FILE_DIR=
+	for dir in $MODULE_INCLUDES_PATH
+	do
+		if test -f $dir/$hdr
+		then
+			FILE_DIR=$dir
+			echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
+echo "${ECHO_T}found in $FILE_DIR" >&6
+
+					echo -n "-I$FILE_DIR " >> $mod_dir/cxxflags
+
+			break
+		fi
+	done
+	if test "X$FILE_DIR" = "X"
+	then
+		echo "$as_me:$LINENO: result: not found" >&5
+echo "${ECHO_T}not found" >&6
+		if test "X" = "X"
+		then
+			{ { echo "$as_me:$LINENO: error: $hdr not found!" >&5
+echo "$as_me: error: $hdr not found!" >&2;}
+   { (exit 1); exit 1; }; }
+		fi
+
+	fi
+
+
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+ \
+			done; \
+		fi; \
+	done
+
+fi
+
+
+if test "$enable_modules" = "yes"; then
+  MODULES_TRUE=
+  MODULES_FALSE='#'
+else
+  MODULES_TRUE='#'
+  MODULES_FALSE=
+fi
+
+
+
 
 
 
@@ -6501,17 +6691,17 @@ echo "$as_me: error: conditional \"VOICE\" was never defined.
 Usually this means the macro was only invoked conditionally." >&2;}
    { (exit 1); exit 1; }; }
 fi
-if test -z "${MODULES_TRUE}" && test -z "${MODULES_FALSE}"; then
-  { { echo "$as_me:$LINENO: error: conditional \"MODULES\" was never defined.
-Usually this means the macro was only invoked conditionally." >&5
-echo "$as_me: error: conditional \"MODULES\" was never defined.
-Usually this means the macro was only invoked conditionally." >&2;}
-   { (exit 1); exit 1; }; }
-fi
 if test -z "${OPENSSL_TRUE}" && test -z "${OPENSSL_FALSE}"; then
   { { echo "$as_me:$LINENO: error: conditional \"OPENSSL\" was never defined.
 Usually this means the macro was only invoked conditionally." >&5
 echo "$as_me: error: conditional \"OPENSSL\" was never defined.
+Usually this means the macro was only invoked conditionally." >&2;}
+   { (exit 1); exit 1; }; }
+fi
+if test -z "${MODULES_TRUE}" && test -z "${MODULES_FALSE}"; then
+  { { echo "$as_me:$LINENO: error: conditional \"MODULES\" was never defined.
+Usually this means the macro was only invoked conditionally." >&5
+echo "$as_me: error: conditional \"MODULES\" was never defined.
 Usually this means the macro was only invoked conditionally." >&2;}
    { (exit 1); exit 1; }; }
 fi
@@ -7114,14 +7304,14 @@ s,@VOICE_TRUE@,$VOICE_TRUE,;t t
 s,@VOICE_FALSE@,$VOICE_FALSE,;t t
 s,@GSM_LIBS@,$GSM_LIBS,;t t
 s,@GSM_INCLUDES@,$GSM_INCLUDES,;t t
-s,@MODULES_TRUE@,$MODULES_TRUE,;t t
-s,@MODULES_FALSE@,$MODULES_FALSE,;t t
-s,@MODULES_LDFLAGS@,$MODULES_LDFLAGS,;t t
 s,@OPENSSL_LIBS@,$OPENSSL_LIBS,;t t
 s,@OPENSSL_INCLUDES@,$OPENSSL_INCLUDES,;t t
 s,@PKGCONFIG@,$PKGCONFIG,;t t
 s,@OPENSSL_TRUE@,$OPENSSL_TRUE,;t t
 s,@OPENSSL_FALSE@,$OPENSSL_FALSE,;t t
+s,@MODULES_TRUE@,$MODULES_TRUE,;t t
+s,@MODULES_FALSE@,$MODULES_FALSE,;t t
+s,@MODULES_LDFLAGS@,$MODULES_LDFLAGS,;t t
 s,@MY_SUBDIRS@,$MY_SUBDIRS,;t t
 s,@subdirs@,$subdirs,;t t
 s,@LTLIBOBJS@,$LTLIBOBJS,;t t

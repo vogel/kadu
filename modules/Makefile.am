@@ -14,6 +14,11 @@ all:
 	@for dir in $(module_dir_list); do \
 		echo; \
 		echo "Compiling $$dir module..."; \
+		MODULE_SOURCES=; \
+		MODULE_MOC_HEADERS=; \
+		MODULE_HEADERS=; \
+		MODULE_CXXFLAGS=; \
+		MODULE_LDFLAGS=; \
 		source $$dir/spec; \
 		echo MODULE_SOURCES: $$MODULE_SOURCES; \
 		echo MODULE_MOC_HEADERS: $$MODULE_MOC_HEADERS; \
@@ -42,13 +47,13 @@ all:
 	done
 
 %.so: $(module_obj_files)
-	$(CC) -shared -o $@ $(module_obj_files) $(module_ldflags)
+	$(CC) -shared -o $@ $(module_obj_files) $(module_ldflags) `cat $(<D)/ldflags`
 
 %_moc.o: %_moc.cpp
-	$(CC) -o $@ -c -fPIC $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)
+	$(CC) -o $@ -c -fPIC $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) `cat $(<D)/cxxflags`
 
 %.o: %.cpp $(module_h_files)
-	$(CC) -o $@ -c -fPIC $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)
+	$(CC) -o $@ -c -fPIC $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) `cat $(<D)/cxxflags`
 
 %_moc.cpp: %.h
 	$(QT_MOC_DIR)/moc -o $@ $<
