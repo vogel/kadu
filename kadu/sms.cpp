@@ -153,7 +153,7 @@ void Sms::updateCounter() {
 
 void Sms::sendSmsInternal()
 {
-	(new SmsSender(this,"502387781","xxx"))->run();
+	(new SmsSender(this,recipient->text(),body->text()))->run();
 };
 
 /********** SmsImageWidget **********/
