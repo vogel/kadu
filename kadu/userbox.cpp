@@ -595,7 +595,7 @@ void UserBox::initModule()
 	QT_TRANSLATE_NOOP("@default", "Font size");
 	QT_TRANSLATE_NOOP("@default", "Other");	
 	QT_TRANSLATE_NOOP("@default", "Show info-panel");	
-	QT_TRANSLATE_NOOP("@default", "Show userbox-descr.");	
+	QT_TRANSLATE_NOOP("@default", "Show description in userbox");	
 	QT_TRANSLATE_NOOP("@default", "Display group tabs");	
 	QT_TRANSLATE_NOOP("@default", "Multicolumn userbox");	
 	
@@ -620,7 +620,7 @@ void UserBox::initModule()
 	ConfigDialog::addCheckBox("Look", "grid", "Show info-panel", "ShowInfoPanel", true);
 	ConfigDialog::addCheckBox("Look", "grid", "Display group tabs", "DisplayGroupTabs", true);
 	ConfigDialog::addCheckBox("Look", "grid", "Multicolumn userbox", "MultiColumnUserbox", true);
-	ConfigDialog::addCheckBox("Look", "grid", "Show userbox-descr.", "ShowDesc", true);
+	ConfigDialog::addCheckBox("Look", "grid", "Show description in userbox", "ShowDesc", true);
 	
 	UserBoxSlots *userboxslots= new UserBoxSlots();
 	ConfigDialog::registerSlotOnCreate(userboxslots, SLOT(onCreateConfigDialog()));
