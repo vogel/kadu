@@ -206,6 +206,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * problem z kompilacj± modu³u powoduje przerwanie procesu budowania kadu (adrian)
 * bramki SMS sa wydzielowe do modulow (michal)
 * ³apanie do linków w chacie tak¿e: sftp:// smb:// file:/ rsync:// mailto: (joi)
+* Nowy instalator kaduinstaller.sh Sad Mephisto (Ron_K)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
