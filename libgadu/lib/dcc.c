@@ -1,4 +1,4 @@
-/* $Id: dcc.c,v 1.18 2003/03/22 08:56:13 chilek Exp $ */
+/* $Id: dcc.c,v 1.19 2003/03/26 15:49:20 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -796,7 +796,7 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 						gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() peer breaking connection\n");
 						/* XXX zwracaæ odpowiedni event */
 					default:
-						gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() unknown request (%.2f)\n", tiny.type);
+						gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() unknown request (%.2x)\n", tiny.type);
 						e->type = GG_EVENT_DCC_ERROR;
 						e->event.dcc_error = GG_ERROR_DCC_HANDSHAKE;
 				}
@@ -1023,12 +1023,14 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 			case GG_STATE_SENDING_FILE_HEADER:
 				gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() GG_STATE_SENDING_FILE_HEADER\n");
 				
-				if ((h->chunk_size = h->file_info.size - h->offset) > 4096)
-					h->chunk_size = 4096;
-
 				h->chunk_offset = 0;
 				
-				big.type = gg_fix32(0x0003);	/* XXX */
+				if ((h->chunk_size = h->file_info.size - h->offset) > 4096) {
+					h->chunk_size = 4096;
+					big.type = gg_fix32(0x0003);  /* XXX */
+				} else
+					big.type = gg_fix32(0x0002);  /* XXX */
+
 				big.dunno1 = gg_fix32(h->chunk_size);
 				big.dunno2 = 0;
 				
@@ -1114,21 +1116,6 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 
 				return e;
 
-			case 1000:
-				gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() GG_STATE_AFTERLIFE\n");
-
-				size = read(h->fd, buf, sizeof(buf));
-
-				gg_dcc_debug_data("read", h->fd, buf, size);
-
-				if (size == 0) {
-					e->type = GG_EVENT_DCC_DONE;
-					return e;
-				}
-
-				break;
-				
-				
 			case GG_STATE_GETTING_FILE:
 				gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() GG_STATE_GETTING_FILE\n");
 				
@@ -1170,12 +1157,7 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 				h->offset += size;
 				
 				if (h->offset >= h->file_info.size) {
-#if 0
 					e->type = GG_EVENT_DCC_DONE;
-					return e;
-#endif
-					h->state = 1000;
-					h->check = GG_CHECK_READ;
 					return e;
 				}
 
