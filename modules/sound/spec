@@ -1,4 +1,6 @@
 MODULE_SOURCES="sound.cpp sound_file.cpp"
 MODULE_MOC_HEADERS="sound.h"
 MODULE_INCLUDES="sndfile.h"
+MODULE_INCLUDES_PATH="/usr/local/include /usr/include"
 MODULE_LIBS=sndfile
+MODULE_LIBS_PATH="/usr/local/lib /usr/lib"
