@@ -240,7 +240,7 @@ void TrayIcon::reconfigHint() {
 
 void TrayIcon::showErrorHint(const QString &str) {
 	if (!config.hinterror)
-		return
+		return;
 	fprintf(stderr,"KK TrayIcon::showErrorHint()\n");
 	hint->show_hint(str, i18n("Error: "), 1);
 }
