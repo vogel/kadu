@@ -73,9 +73,9 @@ void AutoResponder::chatReceived(UinsList senders, const QString& msg, time_t ti
 	{
 		bool was=false;					//to pamieta czy okienko juz otwarte czy nie
 		if (!UserList.isEmpty())
-		for (unsigned int l=0; l<senders.count(); ++l)
-			if (UserList.findIndex(senders[l])!=-1)
-				was=true;						//jak bylo to bylo=true
+			FOREACH(sender, senders)
+				if (UserList.findIndex(*sender)!=-1)
+					was=true;						//jak bylo to bylo=true
 
 		bool respond=config->readBoolEntry("Autoresponder", "StatusInvisible") &&
 					gadu->status().isInvisible();
@@ -95,18 +95,19 @@ void AutoResponder::chatReceived(UinsList senders, const QString& msg, time_t ti
 		{
 			gadu->sendMessage(senders, unicode2cp(tr("KADU AUTORESPONDER:")+"\n"+
 						config->readEntry("Autoresponder", "Autotext")));
-			for (unsigned int l=0; l<senders.count(); ++l)
-				UserList+=senders[l];	//doda kolesi do listy (jednego jak jeden albo wszystkich z konferencji
+			FOREACH(sender, senders)
+				UserList += *sender;	//doda kolesi do listy (jednego jak jeden albo wszystkich z konferencji
 		}
 	}
 	kdebugf2();
 }
 
 void AutoResponder::chatOpened(const UinsList& senders)
-{	int indexx;
-	for (unsigned int l=0; l<UserList.count(); ++l)
+{
+	int indexx;
+	FOREACH(sender, senders)
 	{
-		indexx=UserList.findIndex(senders[l]);
+		indexx=UserList.findIndex(*sender);
 		if (indexx!=-1)
 			UserList.remove(indexx);
 	}

@@ -145,8 +145,8 @@ Notify::~Notify()
 	{
 		kdebugm(KDEBUG_WARNING, "WARNING: not unregistered notifiers found! (%d)\n", notifiers.size());
 		QValueList<QString> notifierNames=keys(notifiers);
-		for (QValueList<QString>::iterator i=notifierNames.begin(); i!=notifierNames.end(); ++i)
-			unregisterNotifier(*i);
+		FOREACH(name, notifierNames)
+			unregisterNotifier(*name);
 	}
 
 	//pierwsza kolumna - nazwy
@@ -234,12 +234,13 @@ void Notify::addConfigColumn(const QString &name, const QMap<QString, QString> &
 	QStringList t;
 	t<<"ConnError"<<"NewChat"<<"NewMessage"<<"StatusChanged"<<"toAvailable"<<"toBusy"<<"toInvisible"<<"toNotAvailable"<<"Message";
 
-	int i=1;
-	for (QStringList::iterator it=t.begin(); it!=t.end(); ++it, ++i)
+	int i = 1;
+	FOREACH(it, t)
 	{
 		ConfigDialog::addCheckBox("Notify", name+"_vbox", " ", (*it)+"_"+name, false, "", name+QString::number(i));
 		if (!notifierSlots.contains(*it))
 			notify_slots->registerDisabledControl(name+QString::number(i));
+		++i;
 	}
 	kdebugf2();
 }
@@ -251,12 +252,13 @@ void Notify::removeConfigColumn(const QString &name, const QMap<QString, QPair<Q
 	QStringList t;
 	t<<"ConnError"<<"NewChat"<<"NewMessage"<<"StatusChanged"<<"toAvailable"<<"toBusy"<<"toInvisible"<<"toNotAvailable"<<"Message";
 
-	int i=1;
-	for (QStringList::iterator it=t.begin(); it!=t.end(); ++it, ++i)
+	int i = 1;
+	FOREACH(it, t)
 	{
 		ConfigDialog::removeControl("Notify", " ", name+QString::number(i));
 		if (!notifierSlots.contains(*it))
 			notify_slots->unregisterDisabledControl(name+QString::number(i));
+		++i;
 	}
 
 	ConfigDialog::removeControl("Notify", name);
@@ -268,11 +270,11 @@ void Notify::updateConnections()
 {
 	kdebugf();
 
-	for(QMap<QString, Notifier>::iterator i=notifiers.begin(); i!=notifiers.end(); ++i)
+	FOREACH(i, notifiers)
 	{
 		QString notifierName=i.key();
 		Notifier &notifier=i.data();
-		for(QMap<QString, QPair<QString, bool> >::iterator j=notifier.notifierSlots.begin(); j!=notifier.notifierSlots.end(); ++j)
+		FOREACH(j, notifier.notifierSlots)
 		{
 			QString signalName=j.key();
 			QPair<QString, bool> &connection=j.data();
@@ -303,7 +305,7 @@ void Notify::registerNotifier(const QString &name, QObject *notifier,
 	}
 	notifiers[name]=Notifier(notifier, notifierSlots);
 
-	for (QMap<QString, QString>::iterator i=notifySignals.begin(); i!=notifySignals.end(); ++i)
+	FOREACH(i, notifySignals)
 		if (config_file.readBoolEntry("Notify", i.key()+"_"+name) && notifierSlots.contains(i.key()))
 			connectSlot(name, i.key());
 	addConfigColumn(name, notifierSlots);
@@ -320,7 +322,7 @@ void Notify::unregisterNotifier(const QString &name)
 	}
 	Notifier notifier=notifiers[name];
 	removeConfigColumn(name, notifier.notifierSlots);
-	for (QMap<QString, QString>::iterator i=notifySignals.begin(); i!=notifySignals.end(); ++i)
+	FOREACH(i, notifySignals)
 		if (config_file.readBoolEntry("Notify", i.key()+"_"+name) && notifier.notifierSlots.contains(i.key()))
 			disconnectSlot(name, i.key());
 	notifiers.remove(name);
@@ -384,7 +386,7 @@ Notify::Notifier::Notifier() : notifier(NULL)
 Notify::Notifier::Notifier(QObject *o, const QMap<QString, QString> &notifierSlots) : notifier(o)
 {
 	kdebugf();
-	for (QMap<QString, QString>::const_iterator i=notifierSlots.begin(); i!=notifierSlots.end(); ++i)
+	FOREACH(i, notifierSlots)
 		this->notifierSlots[i.key()]=qMakePair(i.data(), false);
 	kdebugf2();
 }

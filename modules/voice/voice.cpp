@@ -131,11 +131,8 @@ void VoiceChatDialog::destroyAll()
 
 void VoiceChatDialog::sendDataToAll(char* data, int length)
 {
-	for (QMap<DccSocket*, VoiceChatDialog*>::const_iterator i = Dialogs.begin();
-		i != Dialogs.end(); ++i)
-	{
+	FOREACH(i, Dialogs)
 		gadu->dccVoiceSend(i.key()->ggDccStruct(), data, length);
-	}
 }
 
 QMap<DccSocket*, VoiceChatDialog*> VoiceChatDialog::Dialogs;

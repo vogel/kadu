@@ -239,9 +239,9 @@ Sms::Sms(const QString& altnick, QDialog* parent, const char *name) : QDialog (p
 
 	QStringList strlist;
 	list = new QComboBox(this);
-	for (UserList::ConstIterator i = userlist.begin(); i != userlist.end(); ++i)
-		if ((*i).mobile().length())
-		 	strlist.append((*i).altNick());
+	FOREACH(user, userlist)
+		if ((*user).mobile().length())
+		 	strlist.append((*user).altNick());
 	strlist.sort();
 	strlist.insert(strlist.begin(), QString::null);
 	list->insertStringList(strlist);
@@ -305,10 +305,10 @@ void Sms::updateRecipient(const QString &newtext)
 void Sms::updateList(const QString &newnumber)
 {
 	kdebugf();
-	for(UserList::ConstIterator i = userlist.begin(); i != userlist.end(); ++i)
-		if ((*i).mobile() == newnumber)
+	FOREACH(user, userlist)
+		if ((*user).mobile() == newnumber)
 		{
-			list->setCurrentText((*i).altNick());
+			list->setCurrentText((*user).altNick());
 			kdebugf2();
 			return;
 		}
@@ -467,13 +467,13 @@ void SmsSlots::onCreateConfigDialog()
 	QMap<QString,isValidFunc*>::Iterator it;
 	QStringList priority=QStringList::split(";", config_file.readEntry("SMS", "Priority"));
 
-	for(QStringList::ConstIterator it=priority.begin(); it!=priority.end(); ++it)
-		if (gateways.contains(*it))
-			lb_gws->insertItem(*it);
+	FOREACH(gate, priority)
+		if (gateways.contains(*gate))
+			lb_gws->insertItem(*gate);
 
-	for(it = gateways.begin(); it != gateways.end(); ++it)
-		if (lb_gws->index(lb_gws->findItem(it.key()))==-1)
-			lb_gws->insertItem(it.key());
+	FOREACH(gate, gateways)
+		if (lb_gws->index(lb_gws->findItem(gate.key()))==-1)
+			lb_gws->insertItem(gate.key());
 
 	modules_manager->moduleIncUsageCount("sms");
 	kdebugf2();
@@ -565,13 +565,13 @@ void SmsSlots::unregisterGateway(QString name)
 SmsGateway* SmsSlots::getGateway(const QString& number)
 {
 	kdebugf();
-	QStringList priority=QStringList::split(";", config_file.readEntry("SMS", "Priority"));
+	QStringList priorities = QStringList::split(";", config_file.readEntry("SMS", "Priority"));
 
-	for (QStringList::Iterator it=priority.begin(); it != priority.end(); ++it)
+	FOREACH(gate, priorities)
 	{
-		if (gateways.contains(*it))
+		if (gateways.contains(*gate))
 		{
-			isValidFunc *f=gateways[*it];
+			isValidFunc *f=gateways[*gate];
 			SmsGateway *Gateway=f(number, this);
 			if (Gateway)
 			{

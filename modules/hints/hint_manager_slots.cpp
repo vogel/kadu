@@ -18,7 +18,7 @@
 #include "config_dialog.h"
 #include "config_file.h"
 #include "debug.h"
-
+#include "misc.h"
 
 HintManagerSlots::HintManagerSlots(QObject *parent, const char *name) : QObject(parent, name)
 {
@@ -38,14 +38,14 @@ HintManagerSlots::HintManagerSlots(QObject *parent, const char *name) : QObject(
 	config_opts_prefixes<<"HintOnline"<<"HintOnlineD"<<"HintBusy"<<"HintBusyD"<<
 					"HintInvisible"<<"HintInvisibleD"<<"HintOffline"<<"HintOfflineD"<<
 					"HintBlocking"<<"HintNewChat"<<"HintNewMessage"<<"HintError"<<"HintMessage";
-	for (QStringList::iterator it=config_opts_prefixes.begin(); it!=config_opts_prefixes.end(); ++it)
+	FOREACH(prefix, config_opts_prefixes)
 	{
 		//wczytanie starego configa
-		HintProperties prop=HintProperties::fromString(config_file.readEntry("Hints", *it));
-		config_file.addVariable("Hints", (*it)+"_font", prop.font);
-		config_file.addVariable("Hints", (*it)+"_fgcolor", prop.fgcolor);
-		config_file.addVariable("Hints", (*it)+"_bgcolor", prop.bgcolor);
-		config_file.addVariable("Hints", (*it)+"_timeout", (int)prop.timeout);
+		HintProperties prop=HintProperties::fromString(config_file.readEntry("Hints", *prefix));
+		config_file.addVariable("Hints", (*prefix)+"_font", prop.font);
+		config_file.addVariable("Hints", (*prefix)+"_fgcolor", prop.fgcolor);
+		config_file.addVariable("Hints", (*prefix)+"_bgcolor", prop.bgcolor);
+		config_file.addVariable("Hints", (*prefix)+"_timeout", (int)prop.timeout);
 	}
 
 	kdebugf2();
@@ -83,15 +83,15 @@ void HintManagerSlots::onCreateConfigDialog()
 	
 	config_hint_properties.clear();
 
-	for (QStringList::iterator it=config_opts_prefixes.begin(); it!=config_opts_prefixes.end(); ++it)
+	FOREACH(prefix, config_opts_prefixes)
 	{
 		HintProperties prop;
-		prop.font=config_file.readFontEntry("Hints", (*it)+"_font");
-		prop.fgcolor=config_file.readColorEntry("Hints", (*it)+"_fgcolor");
-		prop.bgcolor=config_file.readColorEntry("Hints", (*it)+"_bgcolor");
-		prop.timeout=config_file.readUnsignedNumEntry("Hints", (*it)+"_timeout");
+		prop.font=config_file.readFontEntry("Hints", (*prefix)+"_font");
+		prop.fgcolor=config_file.readColorEntry("Hints", (*prefix)+"_fgcolor");
+		prop.bgcolor=config_file.readColorEntry("Hints", (*prefix)+"_bgcolor");
+		prop.timeout=config_file.readUnsignedNumEntry("Hints", (*prefix)+"_timeout");
 		
-		config_hint_properties[*it]=prop;
+		config_hint_properties[*prefix]=prop;
 	}
 	currentOptionPrefix="";
 	
@@ -104,14 +104,13 @@ void HintManagerSlots::onCreateConfigDialog()
 void HintManagerSlots::onApplyConfigDialog()
 {
 	kdebugf();
-	for (QMap<QString, HintProperties>::iterator it=config_hint_properties.begin();
-		it!=config_hint_properties.end();
-		++it)
+	
+	FOREACH(prop, config_hint_properties)
 	{
-		config_file.writeEntry("Hints", it.key()+"_font", it.data().font);
-		config_file.writeEntry("Hints", it.key()+"_fgcolor", it.data().fgcolor);
-		config_file.writeEntry("Hints", it.key()+"_bgcolor", it.data().bgcolor);
-		config_file.writeEntry("Hints", it.key()+"_timeout", (int)it.data().timeout);
+		config_file.writeEntry("Hints", prop.key()+"_font", prop.data().font);
+		config_file.writeEntry("Hints", prop.key()+"_fgcolor", prop.data().fgcolor);
+		config_file.writeEntry("Hints", prop.key()+"_bgcolor", prop.data().bgcolor);
+		config_file.writeEntry("Hints", prop.key()+"_timeout", (int)prop.data().timeout);
 	}
 	kdebugf2();
 }
@@ -150,10 +149,8 @@ void HintManagerSlots::clicked_ChangeFont()
 	{
 		preview->setFont(font);
 		if (ConfigDialog::getCheckBox("Hints", "Set for all")->isChecked())
-			for (QMap<QString, HintProperties>::iterator it=config_hint_properties.begin();
-				it!=config_hint_properties.end();
-				++it)
-				it.data().font=font;
+			FOREACH(prop, config_hint_properties)
+				prop.data().font = font;
 		else
 			config_hint_properties[currentOptionPrefix].font = font;
 	}
@@ -170,10 +167,8 @@ void HintManagerSlots::clicked_ChangeFgColor()
 	{
 		preview->setPaletteForegroundColor(color);
 		if (ConfigDialog::getCheckBox("Hints", "Set for all")->isChecked())
-			for (QMap<QString, HintProperties>::iterator it=config_hint_properties.begin();
-				it!=config_hint_properties.end();
-				++it)
-				it.data().fgcolor=color;
+			FOREACH(prop, config_hint_properties)
+				prop.data().fgcolor = color;
 		else
 			config_hint_properties[currentOptionPrefix].fgcolor = color;
 	}
@@ -189,10 +184,8 @@ void HintManagerSlots::clicked_ChangeBgColor()
 	{
 		preview->setPaletteBackgroundColor(color);
 		if (ConfigDialog::getCheckBox("Hints", "Set for all")->isChecked())
-			for (QMap<QString, HintProperties>::iterator it=config_hint_properties.begin();
-				it!=config_hint_properties.end();
-				++it)
-				it.data().bgcolor=color;
+			FOREACH(prop, config_hint_properties)
+				prop.data().bgcolor = color;
 		else
 			config_hint_properties[currentOptionPrefix].bgcolor = color;
 	}
@@ -204,10 +197,8 @@ void HintManagerSlots::changed_Timeout(int value)
 	kdebugf();
 
 	if (ConfigDialog::getCheckBox("Hints", "Set for all")->isChecked())
-		for (QMap<QString, HintProperties>::iterator it=config_hint_properties.begin();
-			it!=config_hint_properties.end();
-			++it)
-			it.data().timeout=value;
+		FOREACH(prop, config_hint_properties)
+			prop.data().timeout = value;
 	else
 		config_hint_properties[currentOptionPrefix].timeout=value;
 

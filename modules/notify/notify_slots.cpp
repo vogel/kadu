@@ -15,6 +15,7 @@
 #include "notify.h"
 #include "config_dialog.h"
 #include "userlist.h"
+#include "misc.h"
 
 void NotifySlots::onCreateConfigDialog()
 {
@@ -22,13 +23,13 @@ void NotifySlots::onCreateConfigDialog()
 
 	QListBox *e_availusers= ConfigDialog::getListBox("Notify", "available");
 	QListBox *e_notifies= ConfigDialog::getListBox("Notify", "track");
-	for (UserList::ConstIterator i = userlist.begin(); i != userlist.end(); ++i)
+	FOREACH(user, userlist)
 	{
-		if ((*i).uin())
-			if (!(*i).notify())
-				e_availusers->insertItem((*i).altNick());
+		if ((*user).uin())
+			if (!(*user).notify())
+				e_availusers->insertItem((*user).altNick());
 			else
-				e_notifies->insertItem((*i).altNick());
+				e_notifies->insertItem((*user).altNick());
 	}
 
 	e_availusers->sort();
@@ -44,10 +45,10 @@ void NotifySlots::onCreateConfigDialog()
 
 	connect(b_notifyall, SIGNAL(toggled(bool)), this, SLOT(ifNotifyAll(bool)));
 
-	for (QStringList::iterator it=disabledControls.begin(); it!=disabledControls.end(); ++it)
+	FOREACH(name, disabledControls)
 	{
-		ConfigDialog::getCheckBox("Notify", " ", *it)->setDisabled(true);
-		ConfigDialog::getCheckBox("Notify", " ", *it)->setDown(true);
+		ConfigDialog::getCheckBox("Notify", " ", *name)->setDisabled(true);
+		ConfigDialog::getCheckBox("Notify", " ", *name)->setDown(true);
 	}
 
 	kdebugf2();
@@ -120,10 +121,10 @@ void NotifySlots::_Left(void)
 		if (e_notifies->isSelected(i))
 			tomove+=e_notifies->text(i);
 
-	for(i=0; i<tomove.size(); ++i)
+	FOREACH(elem, tomove)
 	{
-		e_availusers->insertItem(tomove[i]);
-		e_notifies->removeItem(e_notifies->index(e_notifies->findItem(tomove[i])));
+		e_availusers->insertItem(*elem);
+		e_notifies->removeItem(e_notifies->index(e_notifies->findItem(*elem)));
 	}
 
 	e_availusers->sort();
@@ -142,10 +143,10 @@ void NotifySlots::_Right(void)
 		if (e_availusers->isSelected(i))
 			tomove+=e_availusers->text(i);
 
-	for(i=0; i<tomove.size(); ++i)
+	FOREACH(elem, tomove)
 	{
-		e_notifies->insertItem(tomove[i]);
-		e_availusers->removeItem(e_availusers->index(e_availusers->findItem(tomove[i])));
+		e_notifies->insertItem(*elem);
+		e_availusers->removeItem(e_availusers->index(e_availusers->findItem(*elem)));
 	}
 
 	e_notifies->sort();
