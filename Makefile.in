@@ -447,11 +447,6 @@ install-data-local:
 	@echo " * Kadu is now successfully installed *"
 	@echo " **************************************"
 	@echo
-	@echo " Configuration file /etc/ld.so.conf must contain"
-	@echo " this path: $(libdir)"
-	@echo " If you have to add it there please remember to run"
-	@echo " ldconfig afterwards."
-	@echo
 	@echo " Thanks for choosing Kadu Communicator and ENJOY!!!"
 	@echo
 	@echo "                                  Kadu Team"
