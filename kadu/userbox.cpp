@@ -117,14 +117,21 @@ void UserBox::sortUsersByAltNick(QStringList &users) {
 void UserBox::refresh()
 {
 	char **gg_xpm;
-	
+	int i;
+
 	fprintf(stderr, "KK UserBox::refresh()\n");
-	
+
+	// Zapamietujemy zaznaczonych uzytkownikow
+	QStringList s_users;
+	for (i = 0; i < count(); i++)
+		if (isSelected(i))
+			s_users.append(item(i)->text());
+	QString s_user = currentText();
 	// Najpierw dzielimy uzytkownikow na trzy grupy
 	QStringList a_users;
 	QStringList i_users;
 	QStringList n_users;
-	for (int i = 0; i < Users.count(); i++)
+	for (i = 0; i < Users.count(); i++)
 	{
 		UserListElement &user = userlist.byAltNick(Users[i]);
 		switch (user.status)
@@ -149,7 +156,7 @@ void UserBox::refresh()
 	// Czyscimy liste
 	clear();
 	// Dodajemy aktywnych
-	for (int i = 0; i < a_users.count(); i++)
+	for (i = 0; i < a_users.count(); i++)
 	{
 		UserListElement &user = userlist.byAltNick(a_users[i]);
 		if (pending.pendingMsgs(user.uin))
@@ -179,7 +186,7 @@ void UserBox::refresh()
 		};
 	};	
 	// Dodajemy niewidocznych
-	for (int i = 0; i < i_users.count(); i++)
+	for (i = 0; i < i_users.count(); i++)
 	{
 		UserListElement &user = userlist.byAltNick(i_users[i]);
 		if (pending.pendingMsgs(user.uin))
@@ -203,7 +210,7 @@ void UserBox::refresh()
 		};
 	};	
 	// Dodajemy nieaktywnych
-	for (int i = 0; i < n_users.count(); i++)
+	for (i = 0; i < n_users.count(); i++)
 	{
 		UserListElement &user = userlist.byAltNick(n_users[i]);
 		if (pending.pendingMsgs(user.uin))
@@ -225,7 +232,11 @@ void UserBox::refresh()
 			else
 				insertItem(user.altnick);
 		};
-	};	
+	};
+	// Przywracamy zaznaczenie wczesniej zaznaczonych uzytkownikow
+	for (i = 0; i < s_users.count(); i++)
+		setSelected(findItem(s_users[i]), true);
+	setCurrentItem(findItem(s_user));
 };
 
 void UserBox::addUser(const QString &altnick)
