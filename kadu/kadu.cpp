@@ -404,14 +404,14 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	
 	loadKaduConfig();
         
-	if (config.savegeometry) {
+	if (config.savegeometry&&(!config.geometry.isNull())) {
 		fprintf(stderr,"KK Setting geometry to %d %d %d %d\n",
 			config.geometry.x(), config.geometry.y(),
 			config.geometry.width(), config.geometry.height());
 		setGeometry(config.geometry);
 		}
 	else {
-		resize(130,250);
+		resize(200,300);
 		move(maximumSize().width() - x(), maximumSize().height() - y());
 		}
 

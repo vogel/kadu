@@ -16,6 +16,7 @@
 * dostêpno¶æ nowych wersji kadu nie jest sprawdzana, gdy nie mamy przydzielonego
   numeru GG
 * prawid³owe wy¶wietlanie polskich literek w opisach osób niedostêpnych
+* poprawka domy¶lnej geometri g³ównego okna
 
 +++ wersja 0.3.3-pre2
 * dostosowanie do QT 3.1.0 i KDE 3.1-rc5
