@@ -1446,20 +1446,12 @@ void HttpClient::onConnected()
 	if (Cookies.size() > 0)
 	{
 		query += "Cookie: ";
-
-		QValueList<QString> keys;
-		for (QMap<QString, QString>::const_iterator it = Cookies.begin(); it != Cookies.end(); ++it)
-			keys.append(it.key());
-
-//		wywolanie Cookies.keys() zostaje na lepsze czasu jak juz
-//		wszyscy beda mieli Qt >= 3.0.5
-//    		for(int i=0; i<Cookies.keys().size(); ++i)
-		for (unsigned int i = 0; i < keys.size(); ++i)
+		for (QMap<QString, QString>::const_iterator it=Cookies.begin(); it!=Cookies.end();)
 		{
-			if (i > 0)
+			query += it.key() + "=" +it.data();
+			it++;
+			if (it!=Cookies.end())
 				query+="; ";
-//			query+=Cookies.keys()[i]+"="+Cookies[Cookies.keys()[i]];
-			query += keys[i] + "=" + Cookies[keys[i]];
 		}
 		query+="\r\n";
 	}
