@@ -61,6 +61,8 @@ QString unicode2std(const QString &);
 
 //zamienia kodowanie polskich znaków przekonwertowane z utf-8 przy pomocy QUrl::encode na kodowanie latin-2
 QString unicodeUrl2latinUrl(const QString &buf);
+//zamienia polskie znaki na format latin2 "url" (czyli do postaci %XY)
+QString unicode2latinUrl(const QString &buf)
 
 QString printDateTime(const QDateTime &datetime);
 QString timestamp(time_t = 0);
@@ -129,7 +131,7 @@ class HttpClient : public QObject
 		HttpClient();
 		int status();
 		const QByteArray& data();
-		QString encode(const QString& text);
+		static QString encode(const QString& text);
 
 	signals:
 		void finished();

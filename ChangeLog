@@ -195,6 +195,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawki w UserList dotycz±ce ma³ych/du¿ych liter i dokumentowanie (adrian)
 * powiadamianie o nowej rozmowie przy w³±czonej opcji "Nowa wiadomo¶æ otwiera
   okno rozmowy" znowu dzia³a (NKG/joi)
+* obej¶cie problemów z otwieraniem linków ze spacjami w operze
+  + poprawne t³umaczenie pliterek w linkach (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,

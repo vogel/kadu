@@ -273,6 +273,30 @@ QString unicode2std(const QString &buf)
 	return tmp;
 }
 
+QString unicode2latinUrl(const QString &buf)
+{
+	QString tmp = buf;
+	tmp.replace(QRegExp("\\x0119"), "%EA");
+	tmp.replace(QRegExp("\\x00f3"), "%F3");
+	tmp.replace(QRegExp("\\x0105"), "%B1");
+	tmp.replace(QRegExp("\\x015b"), "%B6");
+	tmp.replace(QRegExp("\\x0142"), "%B3");
+	tmp.replace(QRegExp("\\x017c"), "%BF");
+	tmp.replace(QRegExp("\\x017a"), "%BC");
+	tmp.replace(QRegExp("\\x0107"), "%E6");
+	tmp.replace(QRegExp("\\x0144"), "%F1");
+	tmp.replace(QRegExp("\\x0118"), "%CA");
+	tmp.replace(QRegExp("\\x00d3"), "%D3");
+	tmp.replace(QRegExp("\\x0104"), "%A1");
+	tmp.replace(QRegExp("\\x015a"), "%A6");
+	tmp.replace(QRegExp("\\x0141"), "%A3");
+	tmp.replace(QRegExp("\\x017b"), "%AF");
+	tmp.replace(QRegExp("\\x0179"), "%AC");
+	tmp.replace(QRegExp("\\x0106"), "%C3");
+	tmp.replace(QRegExp("\\x0143"), "%D1");
+	return tmp;
+}
+
 //wygl±da magicznie, nie? :D
 QString unicodeUrl2latinUrl(const QString &buf)
 {
@@ -419,9 +443,11 @@ void openWebBrowser(const QString &link)
 	}
 	if (!webBrowser.contains("%1"))
 		webBrowser.append(" \"%1\"");
-	while (webBrowser.contains("%1"))
-		webBrowser=webBrowser.arg(link);
 
+	QString linkNorm=unicode2latinUrl(link);
+	while (webBrowser.contains(QRegExp("%1[^0-9]")))
+		webBrowser=webBrowser.arg(linkNorm);
+	
 	args=toStringList("sh", "-c", webBrowser);
 
 	for (QStringList::iterator i = args.begin(); i != args.end(); ++i)
@@ -999,7 +1025,7 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 			kdebugm(KDEBUG_WARNING, "Incorrect parse string! %d\n", last.type);
 		parseStack.pop_back();
 	}
-	kdebugm(KDEBUG_DUMP, "%s\n", (const char *)ret.local8Bit());
+	kdebugm(KDEBUG_DUMP, "%s\n", ret.local8Bit().data());
 	return ret;
 }
 
@@ -1782,10 +1808,12 @@ void HtmlDocument::convertUrlsToHtml()
 		int l=url_regexp.matchedLength();
 		QString link;
 		int lft = config_file.readNumEntry("Chat","LinkFoldTreshold");
+		QString link2=text.mid(p,l);
+		link2.replace(QRegExp("%"), "%25");
 		if (l-p > lft && config_file.readBoolEntry("Chat","FoldLink"))
-			link="<a href=\""+text.mid(p,l)+"\">"+text.mid(p,p+(lft/2))+"..."+text.mid(l-(lft/2),lft/2)+"</a>";
+			link="<a href=\""+link2+"\">"+text.mid(p,p+(lft/2))+"..."+text.mid(l-(lft/2),lft/2)+"</a>";
 		else
-			link="<a href=\""+text.mid(p,l)+"\">"+text.mid(p,l)+"</a>";
+			link="<a href=\""+link2+"\">"+text.mid(p,l)+"</a>";
 		splitElement(i,p,l);
 		setElementValue(i,link,true);
 	}
