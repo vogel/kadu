@@ -211,12 +211,21 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 
 	QHBox *btnpart = new QHBox(downpart);
 
+	QFont afont = QApplication::font();
 	boldbtn = new QPushButton("B", btnpart);
 	boldbtn->setToggleButton(true);
+	afont.setBold(true);
+	boldbtn->setFont(afont);
 	italicbtn = new QPushButton("I", btnpart);
 	italicbtn->setToggleButton(true);
+	afont.setBold(false);
+	afont.setItalic(true);
+	italicbtn->setFont(afont);
 	underlinebtn = new QPushButton("U", btnpart);
 	underlinebtn->setToggleButton(true);
+	afont.setItalic(false);
+	afont.setUnderline(true);
+	underlinebtn->setFont(afont);
 
 	QHBox *fillerbox = new QHBox(btnpart);
 
