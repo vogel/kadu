@@ -247,17 +247,39 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager")
 	for (QStringList::ConstIterator i=static_list.begin(); i!=static_list.end(); ++i)
 		if(!moduleIsActive(*i))
 			activateModule(*i);
-	//
-	QString loaded_str=config_file.readEntry("General", "LoadedModules");
-	QStringList loaded_list=QStringList::split(',',loaded_str);
-	bool all_loaded=true;
-	for(QStringList::ConstIterator i=loaded_list.begin(); i!=loaded_list.end(); ++i)
-		if(!moduleIsActive(*i))
-			if(!activateModule(*i))
-				all_loaded=false;
+
+	// za³aduj modu³y wed³ug pliku konfiguracyjnego
+	// i ew. zmiennej
+	QStringList installed_list = installedModules();
+	QString loaded_str = config_file.readEntry("General", "LoadedModules");
+	QStringList loaded_list = QStringList::split(',',loaded_str);
+	QString unloaded_str = config_file.readEntry("General", "UnloadedModules");
+	QStringList unloaded_list = QStringList::split(',',unloaded_str);
+	bool load_error = false;
+	for(QStringList::ConstIterator i = installed_list.begin(); i != installed_list.end(); i++)
+		if (!moduleIsActive(*i))
+		{
+			bool load_module;
+			if (loaded_list.contains(*i))
+				load_module = true;
+			else if (unloaded_list.contains(*i))
+				load_module = false;
+			else
+			{
+				ModuleInfo m_info;
+				if (moduleInfo(*i, m_info))
+					load_module = m_info.load_by_def;
+				else
+					load_module = false;
+			}
+			if (load_module)
+				if(!activateModule(*i))
+					load_error = true;
+		}
+
 	// jesli nie wszystkie moduly zostaly przy starcie prawidlowo
 	// zaladowane to zapisz nowa liste zaladowanych modulow
-	if(!all_loaded)
+	if(load_error)
 		saveLoadedModules();
 
 	ConfigDialog::addTab("ShortCuts", "ShortCutsTab");
@@ -430,6 +452,8 @@ bool ModulesManager::moduleInfo(const QString& module_name, ModuleInfo& info) co
 	info.provides=QStringList::split(" ",
 		desc_file.readEntry("Module", "Provides"));
 
+	info.load_by_def = desc_file.readBoolEntry("Module", "LoadByDefault");
+
 	return true;
 }
 
@@ -456,6 +480,7 @@ bool ModulesManager::moduleIsActive(const QString& module_name) const
 void ModulesManager::saveLoadedModules()
 {
 	config_file.writeEntry("General", "LoadedModules",loadedModules().join(","));
+	config_file.writeEntry("General", "UnloadedModules",unloadedModules().join(","));
 	config_file.sync();
 }
 

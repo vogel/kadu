@@ -33,25 +33,29 @@ class Library : public QObject
 struct ModuleInfo
 {
 	/**
-	 jakie inne modu³y s± wymagane przez ten modu³
+		jakie inne modu³y s± wymagane przez ten modu³
 	**/
 	QStringList depends;
 	/**
-	 z jakimi modu³ami ten modu³ konfliktuje
+		z jakimi modu³ami ten modu³ konfliktuje
 	**/
 	QStringList conflicts;
 	/**
-	 jak± cechê dostarcza ten modu³
+		jak± cechê dostarcza ten modu³
 	**/
 	QStringList provides;
 	/**
-	 opis
+		opis
 	**/
 	QString description;
 	/**
-	 autor modu³u
+		autor modu³u
 	**/
 	QString author;
+	/**
+		czy modu³ jest domy¶lnie ³adowany
+	**/
+	bool load_by_def;
 };
 
 class ModulesDialog : public QHBox
