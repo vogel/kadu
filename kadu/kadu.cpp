@@ -962,13 +962,11 @@ void Kadu::sendMessage(QListBoxItem *item) {
 	Message *msg;
 	UinsList uins;
 	
-	for (i = 0; i < userbox->count(); i++)
-		if (userbox->isSelected(i))
-			uins.append(userlist.byAltNick(userbox->text(i)).uin);
-	
 	for (i = 0; i < pending.count(); i++)
-		if (pending[i].uins.equals(uins))
+		if (!uins.count() || pending[i].uins.equals(uins))
 			if (pending[i].msgclass == GG_CLASS_CHAT) {
+				if (!uins.count())
+					uins = pending[i].uins;
 				j = openChat(pending[i].uins);
 				chats[j].ptr->checkPresence(pending[i].uins, pending[i].msg, pending[i].time);	    
 				deletePendingMessage(i);
@@ -989,7 +987,15 @@ void Kadu::sendMessage(QListBoxItem *item) {
 		return;
 		}
 
-	if (GetStatusFromUserlist(uins[0]) != GG_STATUS_NOT_AVAIL && GetStatusFromUserlist(uins[0]) != GG_STATUS_NOT_AVAIL_DESCR)
+	uins.clear();
+	for (i = 0; i < userbox->count(); i++)
+		if (userbox->isSelected(i))
+			uins.append(userlist.byAltNick(userbox->text(i)).uin);
+	if (!uins.count())
+		uins.append(userlist.byAltNick(item->text()).uin);
+
+	if (uins.count() > 1 || (GetStatusFromUserlist(uins[0]) != GG_STATUS_NOT_AVAIL
+		&& GetStatusFromUserlist(uins[0]) != GG_STATUS_NOT_AVAIL_DESCR))
 		openChat(uins);
 	else {
 		msg = new Message(item->text());
