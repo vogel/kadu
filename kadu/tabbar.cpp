@@ -282,7 +282,7 @@ void KaduTabBar::dropEvent(QDropEvent* e)
 			QStringList list;
 			for (int i=0; i < count(); i++)
 				list << tabAt(i)->text();
-			QString text = QInputDialog::getItem(i18n("Add new group"), i18n("Enter name new group:"),
+			QString text = QInputDialog::getItem(i18n("Add new group"), i18n("Name of new group:"),
 				list, 0, true, &ok, 0);
 			if (ok && !text.isEmpty())
 				userlist.byAltNick(altnick).setGroup(text);
