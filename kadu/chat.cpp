@@ -399,17 +399,19 @@ void CustomInput::keyPressEvent(QKeyEvent * e) {
 /* convert special characters into emoticons, HTML into plain text and so forth */
 QString Chat::convertCharacters(QString edit) {
 
-	// escape'ujemy http:// zeby emotikony nie bruzdzily
-	edit.replace(QRegExp("http://"),"___dupabiskupa___");
-
+	// escape'ujemy http:// i ftp:// zeby emotikony nie bruzdzily
+	edit.replace(QRegExp("http://"),"___escaped_http___");
+	edit.replace(QRegExp("ftp://"),"___escaped_ftp___");
+	
 	if(config.emoticons)
 	{
 		body->mimeSourceFactory()->addFilePath(emoticons.themePath());
 		emoticons.expandEmoticons(edit);
 	};
 	
-	// przywracamy http://
-	edit.replace(QRegExp("___dupabiskupa___"),"http://");
+	// przywracamy http:// i ftp://
+	edit.replace(QRegExp("___escaped_http___"),"http://");
+	edit.replace(QRegExp("___escaped_ftp___"),"ftp://");
 	
 	// zmieniamy windowsowe \r\n na unixowe \n
 	edit.replace( QRegExp("\r\n"), "\n" );
@@ -420,33 +422,19 @@ QString Chat::convertCharacters(QString edit) {
 	edit.replace( QRegExp("  "), " &nbsp;" );
 	edit.replace( QRegExp("\n"), "<BR>" );
 
-	int s = 0;
-	int p,l,q;
-	for (;;) {
-		// find next url
-		if (s >= (int)edit.length())
+	// detekcja adresow url
+	QRegExp url_regexp("(http://|www\\.|ftp://)[a-zA-Z0-9\\-\\._/]+");
+	for (int s=0; s<edit.length(); s++)
+	{
+		int p=url_regexp.search(edit,s);
+		if (p < 0)
 			break;
-		p = edit.find(QRegExp("(http://|www\\.|ftp://ftp\\.)[a-zA-Z0-9\\-\\.]+\\.[a-zA-Z]{1,4}"), s);
-
-		if (p < 0) 
-			break;
-
-		// clean up;
-		l = (edit.find(" ", p) < 0) ? edit.length() - p : edit.find(" ", p) - p;
-		QChar c = edit[l+p-1];
-		while ( !( ((c >= 'a') && (c <= 'z')) || ((c >= 'A') && (c <= 'Z')) || ((c >= '0') && (c <= '9')) ) )
-			c = edit [p - 1 + (--l)];
-
-		// urlize
-		q = edit.find("http://", p);
-
-		edit = edit.left(p) + "<a href=\"" + ((q < 0) ? "http://" : "") + edit.mid(p,l) + "\">" +
-		edit.mid(p,l) + "</a>" + edit.mid(p+l);
-		if (q < 0)
-			s = p + 2*l + 22;
-		else
-			s = p + 2*l + 15;
-		}
+		int l=url_regexp.matchedLength();
+		QString link="<a href=\""+edit.mid(p,l)+"\">"+
+			edit.mid(p,l)+"</a>";
+		edit=edit.left(p)+link+edit.mid(p+l);
+		s+=link.length();
+	};
 
 	return edit;
 }
