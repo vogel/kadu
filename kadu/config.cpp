@@ -447,6 +447,10 @@ void ConfigDialog::setupTab2(void) {
 	msgsnd->setPixmap(icon);
 	connect(msgsnd, SIGNAL(clicked()), this, SLOT(chooseMsgFile()));
 
+	QPushButton *testsoundmsg = new QPushButton(msggroup);
+	testsoundmsg->setText(i18n("Testing"));
+	connect(testsoundmsg, SIGNAL(clicked()), this, SLOT(chooseMsgTest()));
+
 	b_playchat = new QCheckBox(box2);
 	b_playchat->setText(i18n("Play sounds from a person whilst chatting"));
 	b_playchatinvisible = new QCheckBox(box2);
@@ -470,6 +474,13 @@ void ConfigDialog::setupTab2(void) {
 	QPushButton *chatsnd = new QPushButton(chatgroup);
 	chatsnd->setPixmap(icon);
 	connect(chatsnd, SIGNAL(clicked()), this, SLOT(chooseChatFile()));
+
+	QPushButton *testsoundchat = new QPushButton(chatgroup);
+	testsoundchat->setText(i18n("Testing"));
+	connect(testsoundchat, SIGNAL(clicked()), this, SLOT(chooseChatTest()));
+
+	QObject::connect(b_playsound, SIGNAL(toggled(bool)), testsoundmsg, SLOT(setEnabled(bool)));
+	QObject::connect(b_playsound, SIGNAL(toggled(bool)), testsoundchat, SLOT(setEnabled(bool)));
 
 	addTab(box2, i18n("Sounds"));
 }
@@ -1008,12 +1019,12 @@ void ConfigDialog::chooseChatMyBgColorGet(void) {
 }
 
 void ConfigDialog::chooseChatUsrBgColorGet(void) {
-        QColor color = QColorDialog::getColor(QColor(config.colors.chatUsrBgColor), this, i18n("Color dialog"));
-        if ( color.isValid() ) {
+	QColor color = QColorDialog::getColor(QColor(config.colors.chatUsrBgColor), this, i18n("Color dialog"));
+	if ( color.isValid() ) {
 		e_chatusrbgcolor->setText(color.name());
 		QPixmap pm(30,7);
-                pm.fill(QColor(color.name()));
-                pb_chatusrbgcolor->setPixmap(pm);
+		pm.fill(QColor(color.name()));
+		pb_chatusrbgcolor->setPixmap(pm);
 		}
 }
 
@@ -1022,39 +1033,39 @@ void ConfigDialog::chooseUserboxBgColorGet(void) {
 	if ( color.isValid() ) {
 		e_userboxbgcolor->setText(color.name());
 		QPixmap pm(30,7);
-                pm.fill(QColor(color.name()));
-                pb_userboxbgcolor->setPixmap(pm);
+		pm.fill(QColor(color.name()));
+		pb_userboxbgcolor->setPixmap(pm);
 		}
 }
 
 void ConfigDialog::chooseUserboxFgColorGet(void) {
-        QColor color = QColorDialog::getColor(QColor(e_userboxfgcolor->text()), this, i18n("Color dialog"));
-        if ( color.isValid() ) {
-                e_userboxfgcolor->setText(color.name());
+	QColor color = QColorDialog::getColor(QColor(e_userboxfgcolor->text()), this, i18n("Color dialog"));
+	if ( color.isValid() ) {
+		e_userboxfgcolor->setText(color.name());
 		QPixmap pm(30,7);
-                pm.fill(QColor(color.name()));
-                pb_userboxfgcolor->setPixmap(pm);
+		pm.fill(QColor(color.name()));
+		pb_userboxfgcolor->setPixmap(pm);
 		}
 }
 
 void ConfigDialog::chooseChatMyFontColorGet(void) {
-        QColor color = QColorDialog::getColor(QColor(e_chatmyfontcolor->text()), this, i18n("Color dialog"));
-        if ( color.isValid() ) {
-                e_chatmyfontcolor->setText(color.name());
-                QPixmap pm(30,7);
-                pm.fill(QColor(color.name()));
-                pb_chatmyfontcolor->setPixmap(pm);
-                }
+	QColor color = QColorDialog::getColor(QColor(e_chatmyfontcolor->text()), this, i18n("Color dialog"));
+	if ( color.isValid() ) {
+		e_chatmyfontcolor->setText(color.name());
+		QPixmap pm(30,7);
+		pm.fill(QColor(color.name()));
+		pb_chatmyfontcolor->setPixmap(pm);
+		}
 }
 
 void ConfigDialog::chooseChatUsrFontColorGet(void) {
-        QColor color = QColorDialog::getColor(QColor(e_chatusrfontcolor->text()), this, i18n("Color dialog"));
-        if ( color.isValid() ) {
-                e_chatusrfontcolor->setText(color.name());
-                QPixmap pm(30,7);
-                pm.fill(QColor(color.name()));
-                pb_chatusrfontcolor->setPixmap(pm);
-                }
+	QColor color = QColorDialog::getColor(QColor(e_chatusrfontcolor->text()), this, i18n("Color dialog"));
+	if ( color.isValid() ) {
+		e_chatusrfontcolor->setText(color.name());
+		QPixmap pm(30,7);
+		pm.fill(QColor(color.name()));
+		pb_chatusrfontcolor->setPixmap(pm);
+		}
 }
 
 void ConfigDialog::chooseChatFontGet(int index) {
@@ -1063,7 +1074,7 @@ void ConfigDialog::chooseChatFontGet(int index) {
 	vl = fdb.pointSizes(cb_chatfont->text(index),"Normal");
 	cb_chatfontsize->clear();
 	for (QValueList<int>::Iterator points = vl.begin(); points != vl.end(); ++points)
-	cb_chatfontsize->insertItem(QString::number( *points));
+		cb_chatfontsize->insertItem(QString::number( *points));
 }
 
 void ConfigDialog::chooseUserboxFontGet(int index) {
@@ -1072,7 +1083,15 @@ void ConfigDialog::chooseUserboxFontGet(int index) {
 	vl = fdb.pointSizes(cb_userboxfont->text(index),"Normal");
 	cb_userboxfontsize->clear();
 	for (QValueList<int>::Iterator points = vl.begin(); points != vl.end(); ++points)
-	cb_userboxfontsize->insertItem(QString::number( *points));
+		cb_userboxfontsize->insertItem(QString::number( *points));
+}
+
+void ConfigDialog::chooseMsgTest(void) {
+	playSound(config.soundmsg);
+}
+
+void ConfigDialog::chooseChatTest(void) {
+	playSound(config.soundchat);
 }
 
 void ConfigDialog::updateConfig(void) {

@@ -10,6 +10,8 @@
   - guzik "Anuluj" powoduje anulowanie oczekiwania na potwierdzenie 
   dostarczenia wiadomosci
 * okno rozmowy: KTextBrowser -> QTextBrowser
+* przycisk "Testuj" w oknie konfiguracji powoduj±cy przetestowanie ustawieñ
+  dzwiêkowych
 
 +++ wersja 0.3.3-pre1
 * automatyczna kompilacja programu sms
