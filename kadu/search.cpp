@@ -18,7 +18,6 @@
 //
 #include "kadu.h"
 #include "search.h"
-//#include "message.h"
 #include "events.h"
 #include "debug.h"
 //

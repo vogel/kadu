@@ -37,7 +37,6 @@
 #include "config_dialog.h"
 #include "events.h"
 #include "chat.h"
-//#include "message.h"
 #include "history.h"
 #include "misc.h"
 #include "pending_msgs.h"
