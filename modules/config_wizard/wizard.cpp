@@ -87,7 +87,7 @@ Wizard::Wizard( QWidget *parent, const char *name)
 	noNewAccount=false;	/* normalnie to jest false */
 	menuPos=kadu->mainMenu()->insertItem(icons_manager.loadIcon("Configuration"), tr("Configuration Wizard"), this, SLOT(wizardStart()), 0, -1, 0);
 	
-//	connect(gadu, SIGNAL(userListImported(bool, UserList&)), this, SLOT(userListImported(bool, UserList&)));
+	connect(gadu, SIGNAL(userListImported(bool, UserList&)), this, SLOT(userListImported(bool, UserList&)));
 	connect(gadu, SIGNAL(registered(bool, UinType)), this, SLOT(registeredAccount(bool, UinType)));
 	//connect(gadu, SIGNAL(connected(), this, SLOT(connected())));
 }
@@ -97,7 +97,7 @@ Wizard::Wizard( QWidget *parent, const char *name)
 **/
 Wizard::~Wizard()
 {	kadu->mainMenu()->removeItem(menuPos);
-//	disconnect(gadu, SIGNAL(userListImported(bool, UserList&)), this, SLOT(userListImported(bool, UserList&)));
+	disconnect(gadu, SIGNAL(userListImported(bool, UserList&)), this, SLOT(userListImported(bool, UserList&)));
 	disconnect(gadu, SIGNAL(registered(bool, UinType)), this, SLOT(registeredAccount(bool, UinType)));
 	//disconnect(gadu, SIGNAL(connected(), this, SLOT(connected())));
 
