@@ -717,9 +717,7 @@ void Chat::insertEmoticon(void)
 	if (emoticon_selector == NULL)
 	{
 		emoticon_selector = new EmoticonSelector(NULL, "Emoticon selector", this);
-		QPoint pos=iconsel->mapToGlobal(QPoint(0,0));
-		emoticon_selector->move(pos.x() - emoticon_selector->sizeHint().width(),
-			pos.y() + iconsel->height()/2 - emoticon_selector->sizeHint().height()/2 );
+		emoticon_selector->alignTo(iconsel);
 		emoticon_selector->show();
 	}
 	else

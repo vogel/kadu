@@ -259,7 +259,6 @@ void EmoticonSelectorButton::leaveEvent(QEvent* e)
 	};
 };
 
-/* the icon selector itself */
 EmoticonSelector::EmoticonSelector(QWidget *parent, const char *name, Chat * caller) : QWidget (parent, name,Qt::WType_Popup)
 {
 	callingwidget = caller;
@@ -291,6 +290,36 @@ void EmoticonSelector::iconClicked(const QString& emoticon_string)
 {
 	callingwidget->addEmoticon(emoticon_string);
 	close();
+};
+
+void EmoticonSelector::alignTo(QWidget* w)
+{
+	// oblicz pozycjê widgetu do którego równamy
+	QPoint w_pos = w->mapToGlobal(QPoint(0,0));
+	// oblicz rozmiar selektora
+	QSize e_size = sizeHint();
+	// oblicz rozmiar pulpitu
+	QSize s_size = QApplication::desktop()->size();
+	// oblicz dystanse od widgetu do lewego brzegu i do prawego
+	int l_dist = w_pos.x();
+	int r_dist = s_size.width() - (w_pos.x() + w->width());
+	// oblicz pozycjê w zale¿no¶ci od tego czy po lewej stronie
+	// jest wiêcej miejsca czy po prawej
+	int x;
+	if (l_dist >= r_dist)
+		x = w_pos.x() - e_size.width();
+	else
+		x = w_pos.x() + w->width();
+	// oblicz pozycjê y - centrujemy w pionie
+	int y = w_pos.y() + w->height()/2 - e_size.height()/2;
+	// je¶li wychodzi poza doln± krawêd¼ to równamy do niej
+	if (y + e_size.height() > s_size.height())
+		y = s_size.height() - e_size.height();
+	// je¶li wychodzi poza górn± krawêd¼ to równamy do niej
+	if (y < 0)
+		y = 0;
+	// ustawiamy selektor na wyliczonej pozycji
+	move(x, y);
 };
 
 AnimTextItem::AnimTextItem(

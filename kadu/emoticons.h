@@ -78,14 +78,15 @@ class EmoticonSelectorButton : public QToolButton
 class EmoticonSelector : public QWidget
 {
 	Q_OBJECT
-	public:
-		EmoticonSelector(QWidget* parent = 0, const char *name = 0, Chat *caller = 0);
 	private:
 		Chat *callingwidget;
-	protected:
-		void closeEvent(QCloseEvent *e);
 	private slots:
 		void iconClicked(const QString& emoticon_string);
+	protected:
+		void closeEvent(QCloseEvent *e);
+	public:
+		EmoticonSelector(QWidget* parent = 0, const char *name = 0, Chat *caller = 0);
+		void alignTo(QWidget* w);
 };
 
 class AnimTextItem : public QTextCustomItem

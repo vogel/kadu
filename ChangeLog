@@ -30,8 +30,10 @@
   szybsza detekcja emotów w tek¶cie - nie ma ju¿ regexpów (adrian)
 * zamiast zwyk³ego w³±czania/wy³±czania emotikonów mo¿liwo¶æ ustawienia
   w oknie konfiguracji stylu emotikonów: brak/statyczne/animowane (adrian)
-* poprawka rozpoznawania adresów w tek¶cie. poprawka algorytmu dla d³u¿szych
-  napisów oraz rozpoznaje dodatkowo znaki ':','%' i '+' (adrian)
+* poprawka rozpoznawania adresów url w tek¶cie. poprawka algorytmu dla
+  d³u¿szych napisów oraz rozpoznaje dodatkowo znaki ':','%' i '+' (adrian)
+* selektor emotikonów jest bardziej inteligentny i bardzo
+  siê stara nie wystawaæ poza krawêdzie ekranu (adrian)
 
 +++ wersja 0.3.3-final
 * ikonka wiadomo¶ci i ikon statusu "ukryty" z telefonikiem
