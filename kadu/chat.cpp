@@ -21,6 +21,7 @@
 #include <qsplitter.h>
 #include <qhbox.h>
 #include <qvbox.h>
+#include <stdlib.h>
 
 //
 #include "kadu.h"
