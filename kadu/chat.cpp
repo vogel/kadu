@@ -104,8 +104,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	QVBox *downpart = new QVBox(split1);
 	QHBox *edtbuttontray = new QHBox(downpart);
 
-	QLabel *edt = new QLabel(edtbuttontray);
-	edt->setText(i18n("Edit window:"));
+	QLabel *edt = new QLabel(i18n("Edit window:"),edtbuttontray);
 	QToolTip::add(edt, i18n("This is where you type in the text to be sent"));
 
 	buttontray = new QHBox(edtbuttontray);

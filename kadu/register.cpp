@@ -31,18 +31,15 @@ Register::Register(QDialog *parent, const char *name) : QDialog (parent, name, F
 
 	QGridLayout *grid = new QGridLayout(this, 5, 2, 6, 5);
 
-	QLabel *l_pwd = new QLabel(this);
-	l_pwd->setText(i18n("Password"));
+	QLabel *l_pwd = new QLabel(i18n("Password"),this);
 	pwd = new QLineEdit(this);
 	pwd->setEchoMode(QLineEdit::Password);
 
-	QLabel *l_pwd2 = new QLabel(this);
-	l_pwd2->setText(i18n("Retype password"));
+	QLabel *l_pwd2 = new QLabel(i18n("Retype password"),this);
 	pwd2 = new QLineEdit(this);
 	pwd2->setEchoMode(QLineEdit::Password);
 
-	QLabel *l_mail = new QLabel(this);
-	l_mail->setText(i18n("E-mail"));
+	QLabel *l_mail = new QLabel(i18n("E-mail"),this);
 	mail = new QLineEdit(this);
 
 	QPushButton *snd = new QPushButton(this);
@@ -52,8 +49,7 @@ Register::Register(QDialog *parent, const char *name) : QDialog (parent, name, F
 	status = new QLabel(this);
 
 	updateconfig = new QCheckBox(this);
-	QLabel *l_updateconfig = new QLabel(this);
-	l_updateconfig->setText(i18n("Create config file"));
+	QLabel *l_updateconfig = new QLabel(i18n("Create config file"),this);
 	updateconfig->setChecked(true);
 	QToolTip::add(l_updateconfig, i18n("Write the newly obtained UIN and password into a clean configuration file\nThis will erase your current config file contents if you have one"));
 
@@ -256,17 +252,14 @@ Unregister::Unregister(QDialog *parent, const char *name) : QDialog (parent, nam
 
 	QGridLayout *grid = new QGridLayout(this, 4, 2, 6, 5);
 
-	QLabel *l_uin = new QLabel(this);
-	l_uin->setText(i18n("UIN"));
+	QLabel *l_uin = new QLabel(i18n("UIN"),this);
 	uin = new QLineEdit(this);
 
-	QLabel *l_pwd = new QLabel(this);
-	l_pwd->setText(i18n("Password"));
+	QLabel *l_pwd = new QLabel(i18n("Password"),this);
 	pwd = new QLineEdit(this);
 	pwd->setEchoMode(QLineEdit::Password);
 
-	QLabel *l_mail = new QLabel(this);
-	l_mail->setText(i18n("E-mail"));
+	QLabel *l_mail = new QLabel(i18n("E-mail"),this);
 	mail = new QLineEdit(this);
 
 	QPushButton *snd = new QPushButton(this);

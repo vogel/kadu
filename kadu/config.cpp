@@ -328,21 +328,18 @@ void ConfigDialog::setupTab1(void) {
 	QHGroupBox *userinfo = new QHGroupBox(box);
 	userinfo->setTitle(i18n("User data"));
 
-	QLabel *l_uin = new QLabel(userinfo);
-	l_uin->setText(i18n("Uin"));
+	QLabel *l_uin = new QLabel(i18n("Uin"),userinfo);
 
 	e_uin = new QLineEdit(userinfo);
 	e_uin->setText(QString::number(config.uin));
 
-	QLabel *l_password = new QLabel(userinfo);
-	l_password->setText(i18n("Password"));
+	QLabel *l_password = new QLabel(i18n("Password"),userinfo);
 
 	e_password = new QLineEdit(userinfo);
 	e_password->setEchoMode(QLineEdit::Password);
 	e_password->setText(config.password);
 
-	QLabel *l_nick = new QLabel(userinfo);
-	l_nick->setText(i18n("Nick"));
+	QLabel *l_nick = new QLabel(i18n("Nick"),userinfo);
 	
 	e_nick = new QLineEdit(userinfo);
 	e_nick->setText(config.nick);
@@ -351,20 +348,17 @@ void ConfigDialog::setupTab1(void) {
 	QVGroupBox *smsvgrp = new QVGroupBox(box);
 	smsvgrp->setTitle(i18n("SMS options"));
 
-	b_smsbuildin = new QCheckBox(smsvgrp);
-	b_smsbuildin->setText(i18n("Use built-in SMS application"));
+	b_smsbuildin = new QCheckBox(i18n("Use built-in SMS application"),smsvgrp);
 
 	smshbox1 = new QHBox(smsvgrp);
 	smshbox1->setSpacing(5);
-	QLabel *l_smsapp = new QLabel(smshbox1);
-	l_smsapp->setText(i18n("Custom SMS application"));
+	QLabel *l_smsapp = new QLabel(i18n("Custom SMS application"),smshbox1);
 	e_smsapp = new QLineEdit(smshbox1);
 	e_smsapp->setText(config.smsapp);
 
 	smshbox2 = new QHBox(smsvgrp);
 	smshbox2->setSpacing(5);
-	b_smscustomconf = new QCheckBox(smshbox2);
-	b_smscustomconf->setText(i18n("SMS custom string"));
+	b_smscustomconf = new QCheckBox(i18n("SMS custom string"),smshbox2);
 	QToolTip::add(b_smscustomconf,i18n("Check this box if your sms application doesn't understand arguments: number \"message\"\nArguments should be separated with spaces. %n argument is converted to number, %m to message"));
 
 	e_smsconf = new QLineEdit(smshbox2);
@@ -386,18 +380,15 @@ void ConfigDialog::setupTab1(void) {
 	QObject::connect(b_smscustomconf, SIGNAL(toggled(bool)), e_smsconf, SLOT(setEnabled(bool)));
 	/* SMS end */
 
-	b_autoaway = new QCheckBox(box);
-	b_autoaway->setText(i18n("Enable autoaway"));
+	b_autoaway = new QCheckBox(i18n("Enable autoaway"),box);
 
 	QHGroupBox *awygrp = new QHGroupBox(box);
-	QLabel *l_autoaway = new QLabel(awygrp);
-	l_autoaway->setText(i18n("Set status to away after "));
+	QLabel *l_autoaway = new QLabel(i18n("Set status to away after "),awygrp);
 
 	e_autoawaytime = new QLineEdit(awygrp);
 	e_autoawaytime->setText(QString::number(config.autoawaytime));
 
-	QLabel *l_autoaway2 = new QLabel(awygrp);
-	l_autoaway2->setText(i18n(" seconds"));
+	QLabel *l_autoaway2 = new QLabel(i18n(" seconds"),awygrp);
 
 	if (config.autoaway)
 		b_autoaway->setChecked(true);
@@ -406,22 +397,18 @@ void ConfigDialog::setupTab1(void) {
 
 	QObject::connect(b_autoaway, SIGNAL(toggled(bool)), awygrp, SLOT(setEnabled(bool)));
 
-	b_trayhint = new QCheckBox(box);
-	b_trayhint->setText(i18n("Enable tray hints"));
+	b_trayhint = new QCheckBox(i18n("Enable tray hints"),box);
 
 	QVGroupBox *hintgrp = new QVGroupBox(box);
 	QHBox *box_time = new QHBox(hintgrp);
-	QLabel *l_trayhint = new QLabel(box_time);
-	l_trayhint->setText(i18n("Tray hints timeout "));
+	QLabel *l_trayhint = new QLabel(i18n("Tray hints timeout "),box_time);
 
 	e_hinttime = new QLineEdit(box_time);
 	e_hinttime->setText(QString::number(config.hinttime));
 
-	QLabel *l_trayhint2 = new QLabel(box_time);
-	l_trayhint2->setText(i18n(" seconds"));
+	QLabel *l_trayhint2 = new QLabel(i18n(" seconds"),box_time);
 
-	b_hinterror = new QCheckBox(hintgrp);
-	b_hinterror->setText(i18n("Show connection errors in tray hints"));
+	b_hinterror = new QCheckBox(i18n("Show connection errors in tray hints"),hintgrp);
 	b_hinterror->setChecked(config.hinterror);
 
 	if (config.trayhint)
@@ -443,50 +430,41 @@ void ConfigDialog::setupTab1(void) {
 
 	QGrid* grid = new QGrid(3, box);
 
-	b_logging = new QCheckBox(grid);
-	b_logging->setText(i18n("Log messages"));
+	b_logging = new QCheckBox(i18n("Log messages"),grid);
 	if (config.logmessages)
 		b_logging->setChecked(true);
 
-	b_geometry = new QCheckBox(grid);
-	b_geometry->setText(i18n("Restore window geometry"));
+	b_geometry = new QCheckBox(i18n("Restore window geometry"),grid);
 	if (config.savegeometry)
 		b_geometry->setChecked(true);
 
-	b_dock = new QCheckBox(grid);
-	b_dock->setText(i18n("Enable dock icon"));
+	b_dock = new QCheckBox(i18n("Enable dock icon"),grid);
 	if (config.dock)
 		b_dock->setChecked(true);
 	QObject::connect(b_dock, SIGNAL(toggled(bool)), this, SLOT(ifDockEnabled(bool)));
 
-	b_private = new QCheckBox(grid);
-	b_private->setText(i18n("Private status"));
+	b_private = new QCheckBox(i18n("Private status"),grid);
 	if (config.privatestatus)
 		b_private->setChecked(true);
 
-	b_rdocked = new QCheckBox(grid);
-	b_rdocked->setText(i18n("Start docked"));
+	b_rdocked = new QCheckBox(i18n("Start docked"),grid);
 	if (config.rundocked)
 		b_rdocked->setChecked(true);
 
-	b_grptabs = new QCheckBox(grid);
-	b_grptabs->setText(i18n("Display group tabs"));
+	b_grptabs = new QCheckBox(i18n("Display group tabs"),grid);
 	if (config.grouptabs)
 		b_grptabs->setChecked(true);
 
-	b_checkupdates = new QCheckBox(grid);
-	b_checkupdates->setText(i18n("Check for updates"));
+	b_checkupdates = new QCheckBox(i18n("Check for updates"),grid);
 	if (config.checkupdates)
 		b_checkupdates->setChecked(true);
 		
-	b_addtodescription = new QCheckBox(grid);
-	b_addtodescription->setText(i18n("Add to description"));
+	b_addtodescription = new QCheckBox(i18n("Add to description"),grid);
 	if (config.addtodescription)
 		b_addtodescription->setChecked(true);		
 	QToolTip::add(b_addtodescription,i18n("If a file description in gg settings directory is present, its contents will be added\nto the status description and then the file will be deleted."));
 	
-	b_showdesc = new QCheckBox(grid);
-	b_showdesc->setText(i18n("Show userbox-desc."));
+	b_showdesc = new QCheckBox(i18n("Show userbox-desc."),grid);
 	b_showdesc->setChecked(config.showdesc);
 
 	addTab(box, i18n("General"));
@@ -496,11 +474,9 @@ void ConfigDialog::setupTab2(void) {
 	QVBox *box2 = new QVBox(this);
 	box2->setMargin(5);
 
-	b_playsound = new QCheckBox(box2);
-	b_playsound->setText(i18n("Play sounds"));
+	b_playsound = new QCheckBox(i18n("Play sounds"),box2);
 
-	b_playartsdsp = new QCheckBox(box2);
-	b_playartsdsp->setText(i18n("Play sounds using aRts! server"));
+	b_playartsdsp = new QCheckBox(i18n("Play sounds using aRts! server"),box2);
 	if (config.playartsdsp)
 		b_playartsdsp->setChecked(true);
 
@@ -520,13 +496,11 @@ void ConfigDialog::setupTab2(void) {
 	f_soundprog->setPixmap(loadIcon("fileopen.png"));
 	connect(f_soundprog, SIGNAL(clicked()), this, SLOT(choosePlayerFile()));
 
-	b_soundvolctrl = new QCheckBox(box2);
-	b_soundvolctrl->setText(i18n("Enable volume control (player must support it)"));
+	b_soundvolctrl = new QCheckBox(i18n("Enable volume control (player must support it)"),box2);
 
 	QHBox *volbox = new QHBox(box2);
 	volbox->setSpacing(5);
-	QLabel *l_vol = new QLabel(volbox);
-	l_vol->setText(i18n("Volume"));
+	QLabel *l_vol = new QLabel(i18n("Volume"),volbox);
 	s_volume = new QSlider(0,400,1,(int)floor(config.soundvol * 100),Qt::Horizontal,volbox);
 	s_volume->setTickmarks(QSlider::Below);
 	s_volume->setTickInterval(50);
@@ -554,10 +528,8 @@ void ConfigDialog::setupTab2(void) {
 	testsoundmsg->setText(i18n("Test"));
 	connect(testsoundmsg, SIGNAL(clicked()), this, SLOT(chooseMsgTest()));
 
-	b_playchat = new QCheckBox(box2);
-	b_playchat->setText(i18n("Play sounds from a person whilst chatting"));
-	b_playchatinvisible = new QCheckBox(box2);
-	b_playchatinvisible->setText(i18n("Play chat sounds only when window is invisible"));
+	b_playchat = new QCheckBox(i18n("Play sounds from a person whilst chatting"),box2);
+	b_playchatinvisible = new QCheckBox(i18n("Play chat sounds only when window is invisible"),box2);
 	QObject::connect(b_playchat, SIGNAL(toggled(bool)), b_playchatinvisible, SLOT(setEnabled(bool)));
 
 	if (config.playsoundchat)
@@ -595,12 +567,10 @@ void ConfigDialog::setupTab3(void) {
 	QVGroupBox *emogroup = new QVGroupBox(box3);
 	emogroup->setTitle(i18n("Emoticons"));
 
-	b_emoticons = new QCheckBox(emogroup);
-	b_emoticons->setText(i18n("Enable emoticons in chat window"));
+	b_emoticons = new QCheckBox(i18n("Enable emoticons in chat window"),emogroup);
 
 	QHBox* emotheme_box = new QHBox(emogroup);
-	QLabel* l_emoticons_theme=new QLabel(emotheme_box);
-	l_emoticons_theme->setText(i18n("Emoticons theme"));
+	QLabel* l_emoticons_theme=new QLabel(i18n("Emoticons theme"),emotheme_box);
 	cb_emoticons_theme=new QComboBox(emotheme_box);
 	cb_emoticons_theme->insertStringList(emoticons.themes());
 	cb_emoticons_theme->setCurrentText(config.emoticons_theme);
@@ -616,13 +586,11 @@ void ConfigDialog::setupTab3(void) {
 	QVGroupBox *webvgrp = new QVGroupBox(box3);
 	webvgrp->setTitle(i18n("WWW options"));
 
-	b_defwebbrowser = new QCheckBox(webvgrp);
-	b_defwebbrowser->setText(i18n("Use default Web browser"));
+	b_defwebbrowser = new QCheckBox(i18n("Use default Web browser"),webvgrp);
 
 	webhbox1 = new QHBox(webvgrp);
 	webhbox1->setSpacing(5);
-	QLabel *l_webbrowser = new QLabel(webhbox1);
-	l_webbrowser->setText(i18n("Custom Web browser"));
+	QLabel *l_webbrowser = new QLabel(i18n("Custom Web browser"),webhbox1);
 	e_webbrowser = new QLineEdit(webhbox1);
 	e_webbrowser->setText(config.webbrowser);
 
@@ -634,14 +602,12 @@ void ConfigDialog::setupTab3(void) {
 	QObject::connect(b_defwebbrowser, SIGNAL(toggled(bool)), this, SLOT(onDefWebBrowserToogle(bool)));
 	/* WWW end */
 
-	b_chatprune = new QCheckBox(box3);
-	b_chatprune->setText(i18n("Automatically prune chat messages"));
+	b_chatprune = new QCheckBox(i18n("Automatically prune chat messages"),box3);
 
 	QHGroupBox *prunebox = new QHGroupBox(box3);
 	prunebox->setTitle(i18n("Message pruning"));
 
-	QLabel *l_chatprunedsc1 = new QLabel(prunebox);
-	l_chatprunedsc1->setText(i18n("Reduce the number of visible messages to"));
+	QLabel *l_chatprunedsc1 = new QLabel(i18n("Reduce the number of visible messages to"),prunebox);
 
 	e_chatprunelen = new QLineEdit(prunebox);
 	e_chatprunelen->setText(QString::number(config.chatprunelen));
@@ -656,13 +622,11 @@ void ConfigDialog::setupTab3(void) {
 #ifdef HAVE_OPENSSL
 	const char* keyslens[] = { "128", "256", "512", "768", "1024", 0 };
 
-	b_encryption = new QCheckBox(box3);
-	b_encryption->setText(i18n("Use encryption"));
+	b_encryption = new QCheckBox(i18n("Use encryption"),box3);
 
 	QHGroupBox *encryptbox = new QHGroupBox(box3);
 	encryptbox->setTitle(i18n("Encryption properties"));
-	QLabel *l_lenencrypt = new QLabel(encryptbox);
-	l_lenencrypt->setText(i18n("Keys length"));
+	QLabel *l_lenencrypt = new QLabel(i18n("Keys length"),encryptbox);
 
 	cb_keyslen = new QComboBox(encryptbox);
 	cb_keyslen->insertStrList(keyslens);
@@ -684,30 +648,24 @@ void ConfigDialog::setupTab3(void) {
 	QObject::connect(pb_genkeys, SIGNAL(clicked()), this, SLOT(generateMyKeys()));
 #endif
 
-	b_scrolldown = new QCheckBox(box3);
-	b_scrolldown->setText(i18n("Scroll chat window downward, not upward"));
+	b_scrolldown = new QCheckBox(i18n("Scroll chat window downward, not upward"),box3);
 	if (config.scrolldown)
 		b_scrolldown->setChecked(true);
 
-	b_autosend = new QCheckBox(box3);
-	b_autosend->setText(i18n("\"Enter\" key in chat sends message by default"));
+	b_autosend = new QCheckBox(i18n("\"Enter\" key in chat sends message by default"),box3);
 	if (config.autosend)
 		b_autosend->setChecked(true);
 	
-	b_msgacks = new QCheckBox(box3);
-	b_msgacks->setText(i18n("Message acknowledgements (wait for delivery)"));
+	b_msgacks = new QCheckBox(i18n("Message acknowledgements (wait for delivery)"),box3);
 	b_msgacks->setChecked(config.msgacks);
 
-	b_blinkchattitle = new QCheckBox(box3);
-	b_blinkchattitle->setText(i18n("Flash chat title on new message"));
+	b_blinkchattitle = new QCheckBox(i18n("Flash chat title on new message"),box3);
 	b_blinkchattitle->setChecked(config.blinkchattitle);
 
-	b_ignoreanonusers = new QCheckBox(box3);
-	b_ignoreanonusers->setText(i18n("Ignore messages from anonymous users"));
+	b_ignoreanonusers = new QCheckBox(i18n("Ignore messages from anonymous users"),box3);
 	b_ignoreanonusers->setChecked(config.ignoreanonusers);
 
-	b_hintalert = new QCheckBox(box3);
-	b_hintalert->setText(i18n("Show tray hint on new message"));
+	b_hintalert = new QCheckBox(i18n("Show tray hint on new message"),box3);
 	if (config.trayhint)
 		b_hintalert->setChecked(config.hintalert);
 	else {
@@ -728,18 +686,15 @@ void ConfigDialog::setupTab4(void) {
 	QVBox *box4 = new QVBox(this);
 	box4->setMargin(2);	
 	
-	b_notifyglobal = new QCheckBox(box4);
-	b_notifyglobal->setText(i18n("Notify when users become available"));
+	b_notifyglobal = new QCheckBox(i18n("Notify when users become available"),box4);
 
-	b_notifyall = new QCheckBox(box4);
-	b_notifyall->setText(i18n("Notify about all users"));
+	b_notifyall = new QCheckBox(i18n("Notify about all users"),box4);
 
 	/* two nice panes */
 	panebox = new QHBox(box4);
 
 	QVBox *vbox1 = new QVBox(panebox);
-	QLabel *_l1 = new QLabel(vbox1);
-	_l1->setText(i18n("Available"));
+	QLabel *_l1 = new QLabel(i18n("Available"),vbox1);
 	e_availusers = new QListBox(vbox1);
 
 	QVBox *vbox2 = new QVBox(panebox);
@@ -750,8 +705,7 @@ void ConfigDialog::setupTab4(void) {
 	_goLeft->setPixmap(loadIcon("back.png"));
 
 	QVBox *vbox3 = new QVBox(panebox);
-	QLabel *_l2 = new QLabel(vbox3);
-	_l2->setText(i18n("Tracked"));
+	QLabel *_l2 = new QLabel(i18n("Tracked"),vbox3);
 	e_notifies = new QListBox(vbox3);
 
 	i = 0;
@@ -776,8 +730,7 @@ void ConfigDialog::setupTab4(void) {
 	notifybox->setTitle(i18n("Notify options"));
 	notifybox->setMargin(2);
 
-	b_notifysound = new QCheckBox(notifybox);
-	b_notifysound->setText(i18n("Notify by sound"));
+	b_notifysound = new QCheckBox(i18n("Notify by sound"),notifybox);
 
 	QHGroupBox *soundbox = new QHGroupBox(notifybox);
 	soundbox->setTitle(i18n("Notify sound"));
@@ -793,11 +746,9 @@ void ConfigDialog::setupTab4(void) {
 	testsoundnotify->setText(i18n("Test"));
 	connect(testsoundnotify, SIGNAL(clicked()), this, SLOT(chooseNotifyTest()));
 
-	b_notifydialog = new QCheckBox(notifybox);
-	b_notifydialog->setText(i18n("Notify by dialog box"));
-	
-	b_notifyhint = new QCheckBox(notifybox);
-	b_notifyhint->setText(i18n("Notify by hint"));
+	b_notifydialog = new QCheckBox(i18n("Notify by dialog box"),notifybox);
+
+	b_notifyhint = new QCheckBox(i18n("Notify by hint"),notifybox);
 	b_notifyhint->setChecked(config.notifyhint);
 
 	if (config.notifyglobal)
@@ -835,12 +786,10 @@ void ConfigDialog::setupTab5(void) {
 	QVBox *box5 = new QVBox(this);
 	box5->setMargin(2);	
 
-	b_dccenabled = new QCheckBox(box5);
-	b_dccenabled->setText(i18n("DCC enabled"));
+	b_dccenabled = new QCheckBox(i18n("DCC enabled"),box5);
 	b_dccenabled->setChecked(config.allowdcc);
 
-	b_dccip = new QCheckBox(box5);
-	b_dccip->setText(i18n("DCC IP autodetection"));
+	b_dccip = new QCheckBox(i18n("DCC IP autodetection"),box5);
 	b_dccip->setChecked(config.dccip == "0.0.0.0");
 
 	g_dccip = new QVGroupBox(box5);
@@ -849,14 +798,12 @@ void ConfigDialog::setupTab5(void) {
 
 	QHBox *dccipbox = new QHBox(g_dccip);
 	dccipbox->setSpacing(5);
-	QLabel *l4 = new QLabel(dccipbox);
-	l4->setText(i18n("IP address:"));
+	QLabel *l4 = new QLabel(i18n("IP address:"),dccipbox);
 	e_dccip = new QLineEdit(dccipbox);
 	if (g_dccip->isEnabled())
 		e_dccip->setText(config.dccip);
 
-	b_dccfwd = new QCheckBox(box5);
-	b_dccfwd->setText(i18n("DCC forwarding enabled"));
+	b_dccfwd = new QCheckBox(i18n("DCC forwarding enabled"),box5);
 	b_dccfwd->setEnabled(config.allowdcc);
 
 	g_fwdprop = new QVGroupBox(box5);
@@ -865,18 +812,15 @@ void ConfigDialog::setupTab5(void) {
 
 	QHBox *extipbox = new QHBox(g_fwdprop);
 	extipbox->setSpacing(5);
-	QLabel *l1 = new QLabel(extipbox);
-	l1->setText(i18n("External IP address:"));
+	QLabel *l1 = new QLabel(i18n("External IP address:"),extipbox);
 	e_extip = new QLineEdit(extipbox);
 
 	QHBox *extportbox = new QHBox(g_fwdprop);
 	extportbox->setSpacing(5);
-	QLabel *l2 = new QLabel(extportbox);
-	l2->setText(i18n("External TCP port:"));
+	QLabel *l2 = new QLabel(i18n("External TCP port:"),extportbox);
 	e_extport = new QLineEdit(extportbox);
 
-	b_defserver = new QCheckBox(box5);
-	b_defserver->setText(i18n("Use default servers"));
+	b_defserver = new QCheckBox(i18n("Use default servers"),box5);
 
 	g_server = new QVGroupBox(box5);
 	g_server->setTitle(i18n("Servers"));
@@ -884,32 +828,26 @@ void ConfigDialog::setupTab5(void) {
 
 	QHBox *serverbox = new QHBox(g_server);
 	serverbox->setSpacing(5);
-	QLabel *l3 = new QLabel(serverbox);
-	l3->setText(i18n("IP addresses:"));
+	QLabel *l3 = new QLabel(i18n("IP addresses:"),serverbox);
 	e_server = new QLineEdit(serverbox);
 
-	b_useproxy = new QCheckBox(box5);
-	b_useproxy->setText(i18n("Use proxy server"));
+	b_useproxy = new QCheckBox(i18n("Use proxy server"),box5);
 
 	g_proxy = new QVGroupBox(box5);
 	g_proxy->setTitle(i18n("Proxy server"));
 
 	QHBox *proxyserverbox = new QHBox(g_proxy);
 	proxyserverbox->setSpacing(5);
-	QLabel *l5 = new QLabel(proxyserverbox);
-	l5->setText(i18n("IP address:"));
+	QLabel *l5 = new QLabel(i18n("IP address:"),proxyserverbox);
 	e_proxyserver = new QLineEdit(proxyserverbox);
-	QLabel *l6 = new QLabel(proxyserverbox);
-	l6->setText(i18n("Port:"));
+	QLabel *l6 = new QLabel(i18n("Port:"),proxyserverbox);
 	e_proxyport = new QLineEdit(proxyserverbox);
 
 	QHBox *proxyuserbox = new QHBox(g_proxy);
 	proxyuserbox->setSpacing(5);
-	QLabel *l7 = new QLabel(proxyuserbox);
-	l7->setText(i18n("Username:"));
+	QLabel *l7 = new QLabel(i18n("Username:"),proxyuserbox);
 	e_proxyuser = new QLineEdit(proxyuserbox);
-	QLabel *l8 = new QLabel(proxyuserbox);
-	l8->setText(i18n("Password:"));
+	QLabel *l8 = new QLabel(i18n("Password:"),proxyuserbox);
 	e_proxypassword = new QLineEdit(proxyuserbox);
 	e_proxypassword->setEchoMode(QLineEdit::Password);
 
@@ -1000,16 +938,14 @@ void ConfigDialog::setupTab6(void) {
 	chatselectfont = new QHBox(chatprop);
 	chatselectfont->setSpacing(5);
 	
-	QLabel *l_chatfont = new QLabel(chatselectfont);
-	l_chatfont->setText(i18n("Font"));
+	QLabel *l_chatfont = new QLabel(i18n("Font"),chatselectfont);
 	
 	cb_chatfont = new QComboBox(chatselectfont);
 	cb_chatfont->insertStringList(fdb.families());
 	cb_chatfont->setCurrentText(vl_chatfont[0].family());
 	connect(cb_chatfont, SIGNAL(activated(int)), this, SLOT(chooseChatFontGet(int)));
 	
-	QLabel *l_chatfontsize = new QLabel(chatselectfont);
-	l_chatfontsize->setText(i18n("Font size"));
+	QLabel *l_chatfontsize = new QLabel(i18n("Font size"),chatselectfont);
 
 	cb_chatfontsize = new QComboBox(chatselectfont);
 
@@ -1050,16 +986,14 @@ void ConfigDialog::setupTab6(void) {
 	userboxselectfont = new QHBox(userboxprop);
 	userboxselectfont->setSpacing(5);
 
-	QLabel *l_userboxfont = new QLabel(userboxselectfont);
-	l_userboxfont->setText(i18n("Font"));
+	QLabel *l_userboxfont = new QLabel(i18n("Font"),userboxselectfont);
 
 	cb_userboxfont = new QComboBox(userboxselectfont);
 	cb_userboxfont->insertStringList(fdb.families());
 	cb_userboxfont->setCurrentText(vl_userboxfont[0].family());
 	connect(cb_userboxfont, SIGNAL(activated(int)), this, SLOT(chooseUserboxFontGet(int)));
 
-	QLabel *l_userboxfontsize = new QLabel(userboxselectfont);
-	l_userboxfontsize->setText(i18n("Font size"));
+	QLabel *l_userboxfontsize = new QLabel(i18n("Font size"),userboxselectfont);
 
 	cb_userboxfontsize = new QComboBox(userboxselectfont);
 
@@ -1098,16 +1032,14 @@ void ConfigDialog::setupTab6(void) {
 	otherselectfont = new QHBox(otherprop);
 	otherselectfont->setSpacing(5);
 
-	QLabel *l_otherfont = new QLabel(otherselectfont);
-	l_otherfont->setText(i18n("Font"));
+	QLabel *l_otherfont = new QLabel(i18n("Font"),otherselectfont);
 
 	cb_otherfont = new QComboBox(otherselectfont);
 	cb_otherfont->insertStringList(fdb.families());
 	cb_otherfont->setCurrentText(vl_otherfont[0].family());
 	connect(cb_otherfont, SIGNAL(activated(int)), this, SLOT(chooseOtherFontGet(int)));
 
-	QLabel *l_otherfontsize = new QLabel(otherselectfont);
-	l_otherfontsize->setText(i18n("Font size"));
+	QLabel *l_otherfontsize = new QLabel(i18n("Font size"),otherselectfont);
 
 	cb_otherfontsize = new QComboBox(otherselectfont);
 

@@ -124,27 +124,22 @@ changePassword::changePassword(QDialog *parent, const char *name) : QDialog(pare
 
 	QGridLayout *grid = new QGridLayout(this, 7, 2, 6, 5);
 	
-	QLabel *l_actpwd = new QLabel(this);
-	l_actpwd->setText(i18n("Actual password"));
+	QLabel *l_actpwd = new QLabel(i18n("Actual password"),this);
 	actpwd = new QLineEdit(this);
 	actpwd->setEchoMode(QLineEdit::Password);
 
-	QLabel *l_actemail = new QLabel(this);
-	l_actemail->setText(i18n("Actual email"));
+	QLabel *l_actemail = new QLabel(i18n("Actual email"),this);
 	actemail = new QLineEdit(this);
 
-	QLabel *l_newpwd = new QLabel(this);
-	l_newpwd->setText(i18n("New password"));
+	QLabel *l_newpwd = new QLabel(i18n("New password"),this);
 	newpwd = new QLineEdit(this);
 	newpwd->setEchoMode(QLineEdit::Password);
 	
-	QLabel *l_newpwd2 = new QLabel(this);
-	l_newpwd2->setText(i18n("Retype new password"));
+	QLabel *l_newpwd2 = new QLabel(i18n("Retype new password"),this);
 	newpwd2 = new QLineEdit(this);
 	newpwd2->setEchoMode(QLineEdit::Password);
 
-	QLabel *l_newemail = new QLabel(this);
-	l_newemail->setText(i18n("New email"));
+	QLabel *l_newemail = new QLabel(i18n("New email"),this);
 	newemail = new QLineEdit(this);
 
 	status = new QLabel(this);

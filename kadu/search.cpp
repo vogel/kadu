@@ -60,42 +60,35 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchU
 	CommandLayout->addWidget(b_clrbtn);
 	CommandLayout->addWidget(b_addbtn);
 
-	l_nick = new QLabel(this);
-	l_nick->setText(i18n("Nickname"));
+	l_nick = new QLabel(i18n("Nickname"),this);
 	e_nick = new QLineEdit(this);
 	connect(e_nick, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
 
-	l_name = new QLabel(this);
-	l_name->setText(i18n("Name"));
+	l_name = new QLabel(i18n("Name"),this);
 	e_name = new QLineEdit(this);
 	connect(e_name, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
 
-	l_surname = new QLabel(this);
-	l_surname->setText(i18n("Surname"));
+	l_surname = new QLabel(i18n("Surname"),this);
 	e_surname = new QLineEdit(this);
 	connect(e_surname, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
 
-	l_gender = new QLabel(this);
-	l_gender->setText(i18n("Gender"));
+	l_gender = new QLabel(i18n("Gender"),this);
 	c_gender = new QComboBox(this);
 	c_gender->insertItem(i18n(" "), 0);
 	c_gender->insertItem(i18n("Male"), 1);
 	c_gender->insertItem(i18n("Female"), 2);
 	connect(c_gender, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
 
-	l_byr = new QLabel(this);
-	l_byr->setText(i18n("Birthyear"));
+	l_byr = new QLabel(i18n("Birthyear"),this);
 	e_byr = new QLineEdit(this);
 	connect(e_byr, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
 
-	l_city = new QLabel(this);
-	l_city->setText(i18n("City"));
+	l_city = new QLabel(i18n("City"),this);
 	e_city = new QLineEdit(this);
 	connect(e_city, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
 
 	QGroupBox * qgrp1 = new QGroupBox(2, Qt::Horizontal, i18n("Uin"), this);
-	l_uin = new QLabel(qgrp1);
-	l_uin->setText(i18n("Uin"));
+	l_uin = new QLabel(i18n("Uin"),qgrp1);
 	e_uin = new QLineEdit(qgrp1);
 	connect(e_uin, SIGNAL(textChanged(const QString &)), this, SLOT(uinTyped()));
 
@@ -120,8 +113,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchU
 	btngrp->insert(r_pers, 1);
 	btngrp->insert(r_uin, 2);
 
-	only_active = new QCheckBox(this);
-	only_active->setText(i18n("Only active users"));
+	only_active = new QCheckBox(i18n("Only active users"),this);
 
 	QGridLayout * grid = new QGridLayout (this, 7, 8, 3, 3);
 	grid->addMultiCellWidget(only_active, 0, 0, 0, 2);

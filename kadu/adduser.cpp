@@ -23,33 +23,26 @@ Adduser::Adduser(QDialog* parent, const char *name) {
 	resize(400,150);
 	setCaption(i18n("Add user"));
 
-	QLabel *descr = new QLabel(this);
-	descr->setText(i18n("ATTENTION! As of version 0.3.1, Kadu identifies users by the ALTNICK,\n"
-		"not Nickname field. This is similar to EKG, GG and GNU Gadu"));
+	QLabel *descr = new QLabel(i18n("ATTENTION! As of version 0.3.1, Kadu identifies users by the ALTNICK,\n"
+		"not Nickname field. This is similar to EKG, GG and GNU Gadu"), this);
 
-	QLabel *l_nickname = new QLabel(this);
-	l_nickname->setText(i18n("Nickname"));
+	QLabel *l_nickname = new QLabel(i18n("Nickname"),this);
 	e_nickname = new QLineEdit(this);
 
-	QLabel *l_uin = new QLabel(this);
-	l_uin->setText(i18n("Uin"));
+	QLabel *l_uin = new QLabel(i18n("Uin"),this);
 	e_uin = new QLineEdit(this);
 
 	e_fname = new QLineEdit(this);
-	QLabel *l_fname = new QLabel(this);
-	l_fname->setText(i18n("Name"));
+	QLabel *l_fname = new QLabel(i18n("Name"),this);
 
 	e_lname = new QLineEdit(this);
-	QLabel *l_lname = new QLabel(this);
-	l_lname->setText(i18n("Surname"));
+	QLabel *l_lname = new QLabel(i18n("Surname"),this);
 
 	e_altnick = new QLineEdit(this);
-	QLabel *l_altnick = new QLabel(this);
-	l_altnick->setText(i18n("AltNick"));
+	QLabel *l_altnick = new QLabel(i18n("AltNick"),this);
 
 	e_tel = new QLineEdit(this);
-	QLabel *l_tel = new QLabel(this);
-	l_tel->setText(i18n("Cell #"));
+	QLabel *l_tel = new QLabel(i18n("Cell #"),this);
 
 	effect = new QLabel(this);
 

@@ -62,16 +62,14 @@ rMessage::rMessage(const QString & nick, int msgclass, UinsList uins, QString &m
 	if (sender.compare("System")==0)
 		sysmsg = true;
 
-	lejbel = new QLabel(this);
-	lejbel->setText(i18n("Sender: "));
+	lejbel = new QLabel(i18n("Sender: "),this);
 	lejbel->setGeometry(5,5,200,10);
 
 	QLineEdit *sendere = new QLineEdit(this);
 	sendere->setText(sender);
 	sendere->setReadOnly(true);
 
-	QLabel *klejbel = new QLabel(this);
-	klejbel->setText(i18n("Class: "));
+	QLabel *klejbel = new QLabel(i18n("Class: "),this);
 
 	QLineEdit *msgclasse = new QLineEdit(this);
 	if (msgclass == GG_CLASS_MSG) {
@@ -194,8 +192,7 @@ Message::Message (const QString & nick, bool tchat, QWidget *parent, const char 
 	acks[index].type = 0;
 	acks[index].ptr = NULL;
 
-	nicknamelab = new QLabel(this);
-	nicknamelab->setText(i18n("Recipient"));
+	nicknamelab = new QLabel(i18n("Recipient"),this);
 	nicknamelab->setGeometry(5,5,65,20);
 
 	nickedit = new QLineEdit(this);
@@ -203,8 +200,7 @@ Message::Message (const QString & nick, bool tchat, QWidget *parent, const char 
 	nickedit->setText(nicksnd);
 	nickedit->setReadOnly(true);
 
-	statuslab = new QLabel(this);
-	statuslab->setText(i18n("Status"));
+	statuslab = new QLabel(i18n("Status"),this);
 	statuslab->setGeometry(180, 5, 55, 20);
 
 	statusedit = new QLineEdit(this);
@@ -254,8 +250,7 @@ Message::Message (const QString & nick, bool tchat, QWidget *parent, const char 
 
 	uin = userlist.byAltNick(nick).uin;
 
-	b_encryptmsg = new QCheckBox(btngrp);
-	b_encryptmsg->setText(i18n("Encrypted"));
+	b_encryptmsg = new QCheckBox(i18n("Encrypted"),btngrp);
 
 	keyfile_path.append(ggPath("keys/"));
 	keyfile_path.append(QString::number(uin));

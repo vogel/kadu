@@ -317,8 +317,7 @@ void DccGet::printFileInfo(struct gg_dcc *dccsock) {
 
 	l_filesize->setText(sender);
 
-	l_offset = new QLabel(vbox1);			
-	l_offset->setText(i18n("Speed: 0KB/s (not started)  "));
+	l_offset = new QLabel(i18n("Speed: 0KB/s (not started)  "),vbox1);
 
 	p_progress = new QProgressBar(100, vbox1);
 	p_progress->setProgress(0);

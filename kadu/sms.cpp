@@ -42,8 +42,7 @@ SmsImageDialog::SmsImageDialog(QDialog* parent,const QByteArray& image)
 	QGridLayout * grid = new QGridLayout(this, 2, 2, 10, 10);
 	SmsImageWidget* image_widget=new SmsImageWidget(this,image);
 	grid->addMultiCellWidget(image_widget, 0, 0, 0, 1);
-	QLabel* label=new QLabel(this);
-	label->setText(i18n("Enter text from the picture:"));
+	QLabel* label=new QLabel(i18n("Enter text from the picture:"),this);
 	grid->addWidget(label, 1, 0);
 	code_edit=new QLineEdit(this);
 	grid->addWidget(code_edit, 1, 1);
@@ -423,8 +422,7 @@ Sms::Sms(const QString& altnick, QDialog* parent) : QDialog (parent, "Sms")
 	QObject::connect(list, SIGNAL(activated(const QString&)), this, SLOT(updateRecipient(const QString &)));
 	grid->addWidget(list, 0, 3);
 
-	QLabel *recilabel = new QLabel(this);
-	recilabel->setText(i18n("Recipient"));
+	QLabel *recilabel = new QLabel(i18n("Recipient"),this);
 	grid->addWidget(recilabel, 0, 0);
 
 	b_send = new QPushButton(this);
@@ -432,8 +430,7 @@ Sms::Sms(const QString& altnick, QDialog* parent) : QDialog (parent, "Sms")
 	grid->addWidget(b_send, 3, 3);
 	QObject::connect(b_send, SIGNAL(clicked()), this, SLOT(sendSms()));
 
-	smslen = new QLabel(this);
-	smslen->setText("0");
+	smslen = new QLabel("0",this);
 	grid->addWidget(smslen, 3, 0);
 
 	resize(300,200);

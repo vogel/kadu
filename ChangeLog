@@ -18,6 +18,7 @@
 * debug: kadu kompilowane tradycyjnie (bez --enable-debug) nie zawiera
   komunikatów debuguj±cych, dziêki czemu jest mniejsze i szybsze (adrian)
 * configure: poprawka wykrywania QT (adrian)
+* poprawki kosmetyczne i optymalizacja (mast3r)
 
 +++ wersja 0.3.3-rc3
 * sensowne potwierdzenie usuniêcia kontaktu (adrian)

@@ -23,8 +23,7 @@
 Ignored::Ignored(QDialog *parent, const char *name) : QDialog (parent, name) {
 	resize(180,260);
 	setCaption(i18n("Manage ignored users"));
-	QLabel *descr = new QLabel(this);
-	descr->setText(i18n("Ignored Uins:"));
+	QLabel *descr = new QLabel(i18n("Ignored Uins:"),this);
 
 	list = new QListBox(this);
 
@@ -40,8 +39,7 @@ Ignored::Ignored(QDialog *parent, const char *name) : QDialog (parent, name) {
 
 	e_uin = new QLineEdit(this);
 	QToolTip::add(e_uin, "Type here the UIN of the person you want to ignore");
-	QLabel *l_uin = new QLabel(this);
-	l_uin->setText(i18n("Uin"));
+	QLabel *l_uin = new QLabel(i18n("Uin"),this);
 
 	QGridLayout *grid = new QGridLayout(this, 4,2,6,6);
 	grid->addWidget(descr,0,0);

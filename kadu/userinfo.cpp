@@ -49,40 +49,31 @@ void UserInfo::setupTab1() {
 	QVBox *box = new QVBox(this);
 	box->setMargin(10);
 
-	QLabel *l_uin = new QLabel(box);
-	l_uin->setText(i18n("Uin"));
+	QLabel *l_uin = new QLabel(i18n("Uin"),box);
 	e_uin = new QLineEdit(box);
 
-	QLabel *l_status = new QLabel(box);
-	l_status->setText(i18n("Status"));
+	QLabel *l_status = new QLabel(i18n("Status"),box);
 	QLineEdit *e_status = new QLineEdit(box);
 
-	QLabel *l_nickname = new QLabel(box);
-	l_nickname->setText(i18n("Nickname"));
+	QLabel *l_nickname = new QLabel(i18n("Nickname"),box);
 	e_nickname = new QLineEdit(box);
 
-	QLabel *l_firstname = new QLabel(box);
-	l_firstname->setText(i18n("First name"));
+	QLabel *l_firstname = new QLabel(i18n("First name"),box);
 	e_firstname = new QLineEdit(box);
 
-	QLabel *l_lastname = new QLabel(box);
-	l_lastname->setText(i18n("Surname"));
+	QLabel *l_lastname = new QLabel(i18n("Surname"),box);
 	e_lastname = new QLineEdit(box);
 
-	QLabel *l_altnick = new QLabel(box);
-	l_altnick->setText(i18n("AltNick"));
+	QLabel *l_altnick = new QLabel(i18n("AltNick"),box);
 	e_altnick = new QLineEdit(box);
 
-	QLabel *l_mobile = new QLabel(box);
-	l_mobile->setText(i18n("Mobile"));
+	QLabel *l_mobile = new QLabel(i18n("Mobile"),box);
 	e_mobile = new QLineEdit(box);
 
-	QLabel *l_group = new QLabel(box);
-	l_group->setText(i18n("Group"));
+	QLabel *l_group = new QLabel(i18n("Group"),box);
 	e_group = new QLineEdit(box);
 
-	QLabel *l_addr = new QLabel(box);
-	l_addr->setText(i18n("Address"));
+	QLabel *l_addr = new QLabel(i18n("Address"),box);
 	e_addr = new QLineEdit(box);
 	e_addr->setReadOnly(true);
 
