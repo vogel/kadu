@@ -314,7 +314,7 @@ ac_includes_default="\
 #endif"
 
 ac_subdirs_all="$ac_subdirs_all libgadu"
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE CXX CXXFLAGS LDFLAGS CPPFLAGS ac_ct_CXX EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CXXDEPMODE CC CFLAGS ac_ct_CC CCDEPMODE PTHREAD_CPPFLAGS PTHREAD_LDFLAGS PTHREAD_LIBS PNG_LIBS QT_INCLUDES QT_LIBS QT_MOC_DIR CPP EGREP LIBOBJS GADU_LIBS GADU_INCLUDES OPENSSL_LIBS OPENSSL_INCLUDES PKGCONFIG OPENSSL_TRUE OPENSSL_FALSE shared_modules static_modules static_modules_ldflags STATIC_MODULES_DECLS STATIC_MODULES_REGRS MY_SUBDIRS subdirs LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE CXX CXXFLAGS LDFLAGS CPPFLAGS ac_ct_CXX EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CXXDEPMODE CC CFLAGS ac_ct_CC CCDEPMODE PTHREAD_CPPFLAGS PTHREAD_LDFLAGS PTHREAD_LIBS PNG_LIBS QT_INCLUDES QT_LIBS QT_MOC_DIR CPP EGREP LIBOBJS GADU_LIBS GADU_INCLUDES shared_modules static_modules static_modules_ldflags STATIC_MODULES_DECLS STATIC_MODULES_REGRS MY_SUBDIRS subdirs LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -878,7 +878,6 @@ Optional Packages:
   --with-qt-moc=DIR       qt-moc in DIR
   --with-existing-libgadu do not compile libgadu, link with existing one
   --without-pthread       do not use pthread in libgadu resolver
-  --without-openssl       Compile without OpenSSL
 
 Some influential environment variables:
   CXX         C++ compiler command
@@ -1816,7 +1815,7 @@ INSTALL_STRIP_PROGRAM="\${SHELL} \$(install_sh) -c -s"
 ########################################################################
 
 user_cxxflags="$CXXFLAGS"
-CXXFLAGS="-fno-exceptions -pipe $user_cxxflags"
+CXXFLAGS="-fno-exceptions -pipe -Wall $user_cxxflags"
 
 # Checks for programs.
 ac_ext=cc
@@ -3882,7 +3881,7 @@ echo "${ECHO_T}no" >&6
 	echo "$as_me:$LINENO: checking for libqt-mt.so in specified directiories" >&5
 echo $ECHO_N "checking for libqt-mt.so in specified directiories... $ECHO_C" >&6
 	FILE_DIR=
-	for dir in $with_qt_libs $with_qt_dir/lib $QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib /sw/lib
+	for dir in $with_qt_libs $with_qt_dir/lib $QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib /usr/lib/qt3/lib64 /sw/lib
 	do
 		if test -f $dir/libqt-mt.so; then
 			FILE_DIR=$dir
@@ -3903,7 +3902,7 @@ echo "${ECHO_T}not found" >&6
 	echo "$as_me:$LINENO: checking for libqt-mt.dylib in specified directiories" >&5
 echo $ECHO_N "checking for libqt-mt.dylib in specified directiories... $ECHO_C" >&6
 	FILE_DIR=
-	for dir in $with_qt_libs $with_qt_dir/lib $QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib /sw/lib
+	for dir in $with_qt_libs $with_qt_dir/lib $QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib /usr/lib/qt3/lib64 /sw/lib
 	do
 		if test -f $dir/libqt-mt.dylib; then
 			FILE_DIR=$dir
@@ -5979,211 +5978,14 @@ _ACEOF
 
 
 # OpenSSL support
-
-
-
-
-
-# Check whether --with-openssl or --without-openssl was given.
-if test "${with_openssl+set}" = set; then
-  withval="$with_openssl"
-  if test "x$withval" = "xno" ; then
-        without_openssl=yes
-      elif test "x$withval" != "xyes" ; then
-        with_arg=$withval/include:-L$withval/lib
-      fi
-fi;
-
-  if test "x$without_openssl" != "xyes" -a "x$with_arg" = "x"; then
-    # Extract the first word of "pkg-config", so it can be a program name with args.
-set dummy pkg-config; ac_word=$2
-echo "$as_me:$LINENO: checking for $ac_word" >&5
-echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
-if test "${ac_cv_prog_PKGCONFIG+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  if test -n "$PKGCONFIG"; then
-  ac_cv_prog_PKGCONFIG="$PKGCONFIG" # Let the user override the test.
-else
-as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-  for ac_exec_ext in '' $ac_executable_extensions; do
-  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
-    ac_cv_prog_PKGCONFIG="pkg-config"
-    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-done
-
-  test -z "$ac_cv_prog_PKGCONFIG" && ac_cv_prog_PKGCONFIG="no"
-fi
-fi
-PKGCONFIG=$ac_cv_prog_PKGCONFIG
-if test -n "$PKGCONFIG"; then
-  echo "$as_me:$LINENO: result: $PKGCONFIG" >&5
-echo "${ECHO_T}$PKGCONFIG" >&6
-else
-  echo "$as_me:$LINENO: result: no" >&5
-echo "${ECHO_T}no" >&6
-fi
-
-    if test "x$PKGCONFIG" != "xno"; then
-      echo "$as_me:$LINENO: checking for OpenSSL" >&5
-echo $ECHO_N "checking for OpenSSL... $ECHO_C" >&6
-      OPENSSL_LIBS=$($PKGCONFIG --libs openssl)
-      OPENSSL_INCLUDES=$($PKGCONFIG --cflags openssl)
-      if test "x$OPENSSL_LIBS" != "x" -o "x$OPENSSL_INCLUDES" != "x"; then
-
-cat >>confdefs.h <<\_ACEOF
-#define HAVE_OPENSSL 1
-_ACEOF
-
-	echo "$as_me:$LINENO: result: yes" >&5
-echo "${ECHO_T}yes" >&6
-        without_openssl=yes
-	have_openssl=yes
-      else
-        echo "$as_me:$LINENO: result: no" >&5
-echo "${ECHO_T}no" >&6
-      fi
-    fi
-  fi
-
-  if test "x$without_openssl" != "xyes" ; then
-    echo "$as_me:$LINENO: checking for ssl.h" >&5
-echo $ECHO_N "checking for ssl.h... $ECHO_C" >&6
-
-    for i in $with_arg \
-    		/usr/include: \
-		/usr/local/include:"-L/usr/local/lib" \
-		/usr/local/ssl/include:"-L/usr/local/ssl/lib" \
-		/usr/pkg/include:"-L/usr/pkg/lib" \
-		/usr/contrib/include:"-L/usr/contrib/lib" \
-		/usr/freeware/include:"-L/usr/freeware/lib32" \
-    		/sw/include:"-L/sw/lib" \
-    		/cw/include:"-L/cw/lib" \
-		/boot/home/config/include:"-L/boot/home/config/lib"; do
-
-      incl=`echo "$i" | sed 's/:.*//'`
-      lib=`echo "$i" | sed 's/.*://'`
-
-      if test -f $incl/openssl/ssl.h; then
-        echo "$as_me:$LINENO: result: $incl/openssl/ssl.h" >&5
-echo "${ECHO_T}$incl/openssl/ssl.h" >&6
-	ldflags_old="$LDFLAGS"
-	LDFLAGS="$lib -lssl -lcrypto"
-	save_LIBS="$LIBS"
-	LIBS="-lssl -lcrypto $LIBS"
-	echo "$as_me:$LINENO: checking for RSA_new in -lssl" >&5
-echo $ECHO_N "checking for RSA_new in -lssl... $ECHO_C" >&6
-if test "${ac_cv_lib_ssl_RSA_new+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-lssl  $LIBS"
-cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-/* Override any gcc2 internal prototype to avoid an error.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-/* We use char because int might match the return type of a gcc2
-   builtin and then its argument prototype would still apply.  */
-char RSA_new ();
-int
-main ()
-{
-RSA_new ();
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext conftest$ac_exeext
-if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
-  (eval $ac_link) 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_c_werror_flag"
-			 || test ! -s conftest.err'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; } &&
-	 { ac_try='test -s conftest$ac_exeext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_cv_lib_ssl_RSA_new=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_cv_lib_ssl_RSA_new=no
-fi
-rm -f conftest.err conftest.$ac_objext \
-      conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-echo "$as_me:$LINENO: result: $ac_cv_lib_ssl_RSA_new" >&5
-echo "${ECHO_T}$ac_cv_lib_ssl_RSA_new" >&6
-if test $ac_cv_lib_ssl_RSA_new = yes; then
-
-
-cat >>confdefs.h <<\_ACEOF
-#define HAVE_OPENSSL 1
-_ACEOF
-
-	  have_openssl=yes
-	  OPENSSL_LIBS="$lib -lssl -lcrypto"
-	  if test "x$incl" != "x/usr/include"; then
-    	    OPENSSL_INCLUDES="-I$incl"
-	  fi
-
-fi
-
-	LIBS="$save_LIBS"
-	LDFLAGS="$ldflags_old"
-	break
-      fi
-    done
-
-    if test "x$have_openssl" != "xyes"; then
-      echo "$as_me:$LINENO: result: not found" >&5
-echo "${ECHO_T}not found" >&6
-    fi
-  fi
-
-if test -z "$have_openssl"; then
-	have_openssl=no
-fi
-
-
-if test "$have_openssl" = "yes"; then
-  OPENSSL_TRUE=
-  OPENSSL_FALSE='#'
-else
-  OPENSSL_TRUE='#'
-  OPENSSL_FALSE=
-fi
-
-
-
+# Maybe it will be back when GG servers have SSL support finally
+#AC_CHECK_OPENSSL
+#if test -z "$have_openssl"; then
+#	have_openssl=no
+#fi
+#AM_CONDITIONAL(OPENSSL,[test "$have_openssl" = "yes"])
+#AC_SUBST(OPENSSL_LIBS)
+#AC_SUBST(OPENSSL_INCLUDES)
 
 # Loadable modules support
 
@@ -6455,7 +6257,7 @@ rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
 	STATIC_MODULES_DECLS=
 	STATIC_MODULES_REGRS=
 	for mod in $static_modules; do \
-		STATIC_MODULES_DECLS="$STATIC_MODULES_DECLS extern \"C\" int ${mod}_init(); extern \"C\" void ${mod}_close();"; \
+		STATIC_MODULES_DECLS="$STATIC_MODULES_DECLS extern \"C\" int ${mod}_init(void); extern \"C\" void ${mod}_close(void);"; \
 		STATIC_MODULES_REGRS="$STATIC_MODULES_REGRS registerStaticModule(\"${mod}\",${mod}_init,${mod}_close);"; \
 	done
 
@@ -6478,6 +6280,9 @@ echo " ******************************************"
 echo " * Configuring libgadu, please wait . . . *"
 echo " ******************************************"
 echo
+
+# Maybe it will be back when GG servers have SSL support finally
+ac_configure_args="$ac_configure_args --without-openssl"
 
 if test "$with_existing_libgadu" = "no"; then
 	ac_configure_args="$ac_configure_args 'CFLAGS_LIBGADU=$libgadu_CFLAGS' --enable-static --disable-shared"
@@ -6603,13 +6408,6 @@ if test -z "${AMDEP_TRUE}" && test -z "${AMDEP_FALSE}"; then
   { { echo "$as_me:$LINENO: error: conditional \"AMDEP\" was never defined.
 Usually this means the macro was only invoked conditionally." >&5
 echo "$as_me: error: conditional \"AMDEP\" was never defined.
-Usually this means the macro was only invoked conditionally." >&2;}
-   { (exit 1); exit 1; }; }
-fi
-if test -z "${OPENSSL_TRUE}" && test -z "${OPENSSL_FALSE}"; then
-  { { echo "$as_me:$LINENO: error: conditional \"OPENSSL\" was never defined.
-Usually this means the macro was only invoked conditionally." >&5
-echo "$as_me: error: conditional \"OPENSSL\" was never defined.
 Usually this means the macro was only invoked conditionally." >&2;}
    { (exit 1); exit 1; }; }
 fi
@@ -7210,11 +7008,6 @@ s,@EGREP@,$EGREP,;t t
 s,@LIBOBJS@,$LIBOBJS,;t t
 s,@GADU_LIBS@,$GADU_LIBS,;t t
 s,@GADU_INCLUDES@,$GADU_INCLUDES,;t t
-s,@OPENSSL_LIBS@,$OPENSSL_LIBS,;t t
-s,@OPENSSL_INCLUDES@,$OPENSSL_INCLUDES,;t t
-s,@PKGCONFIG@,$PKGCONFIG,;t t
-s,@OPENSSL_TRUE@,$OPENSSL_TRUE,;t t
-s,@OPENSSL_FALSE@,$OPENSSL_FALSE,;t t
 s,@shared_modules@,$shared_modules,;t t
 s,@static_modules@,$static_modules,;t t
 s,@static_modules_ldflags@,$static_modules_ldflags,;t t
@@ -8109,7 +7902,8 @@ echo "   Use pthread resolving in libgadu:   $with_pthread"
 echo "   Compile with debug symbols:         $enable_debug"
 echo "   System signals handling:            $enable_sig_handling"
 echo "   Link with existing libgadu:         $with_existing_libgadu"
-echo "   OpenSSL encryption support:         $have_openssl"
+# Maybe it will be back when GG servers have SSL support finally
+#echo "   OpenSSL encryption support:         $have_openssl"
 echo "   Distribution type information:      $enable_dist_info"
 echo "   Additional c++ compiler flags:      $user_cxxflags"
 echo

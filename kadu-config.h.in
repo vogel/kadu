@@ -40,9 +40,6 @@
 /* Define to 1 if you have the <netinet/in.h> header file. */
 #undef HAVE_NETINET_IN_H
 
-/* define if you have OpenSSL */
-#undef HAVE_OPENSSL
-
 /* Define to 1 if you have the `sqrt' function. */
 #undef HAVE_SQRT
 

@@ -188,7 +188,7 @@ AC_DEFUN(GENERATE_STATIC_MODULES_CODE,[
 	STATIC_MODULES_DECLS=
 	STATIC_MODULES_REGRS=
 	for mod in $static_modules; do \
-		STATIC_MODULES_DECLS="$STATIC_MODULES_DECLS extern \"C\" int ${mod}_init(); extern \"C\" void ${mod}_close();"; \
+		STATIC_MODULES_DECLS="$STATIC_MODULES_DECLS extern \"C\" int ${mod}_init(void); extern \"C\" void ${mod}_close(void);"; \
 		STATIC_MODULES_REGRS="$STATIC_MODULES_REGRS registerStaticModule(\"${mod}\",${mod}_init,${mod}_close);"; \
 	done	
 ])
@@ -218,7 +218,7 @@ AM_INIT_AUTOMAKE([kadu-$version],[$version])
 ########################################################################
 
 user_cxxflags="$CXXFLAGS"
-CXXFLAGS="-fno-exceptions -pipe $user_cxxflags"
+CXXFLAGS="-fno-exceptions -pipe -Wall $user_cxxflags"
 
 # Checks for programs.
 AC_PROG_CXX
@@ -266,7 +266,7 @@ AC_SUBST(QT_INCLUDES)
 AC_ARG_WITH(qt-libs,       [  --with-qt-libs=DIR      qt-libs in DIR])
 
 QT_LIBS="-lqt-mt"
-FIND_LIBRARY([qt-mt],[$with_qt_libs $with_qt_dir/lib $QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib /sw/lib],
+FIND_LIBRARY([qt-mt],[$with_qt_libs $with_qt_dir/lib $QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib /usr/lib/qt3/lib64 /sw/lib],
 [
 	QT_LIBS="$QT_LIBS -L$FILE_DIR"
 ])
@@ -370,13 +370,14 @@ fi
 AC_DEFINE_UNQUOTED(DIST_TYPE,"$enable_dist_info",[Define distribution type of this copy of application])
 
 # OpenSSL support
-AC_CHECK_OPENSSL
-if test -z "$have_openssl"; then
-	have_openssl=no
-fi
-AM_CONDITIONAL(OPENSSL,[test "$have_openssl" = "yes"])
-AC_SUBST(OPENSSL_LIBS)
-AC_SUBST(OPENSSL_INCLUDES)
+# Maybe it will be back when GG servers have SSL support finally
+#AC_CHECK_OPENSSL
+#if test -z "$have_openssl"; then
+#	have_openssl=no
+#fi
+#AM_CONDITIONAL(OPENSSL,[test "$have_openssl" = "yes"])
+#AC_SUBST(OPENSSL_LIBS)
+#AC_SUBST(OPENSSL_INCLUDES)
 
 # Loadable modules support
 FIND_AVAILABLE_MODULES()
@@ -402,6 +403,9 @@ echo " ******************************************"
 echo " * Configuring libgadu, please wait . . . *"
 echo " ******************************************"
 echo
+
+# Maybe it will be back when GG servers have SSL support finally
+ac_configure_args="$ac_configure_args --without-openssl"
 
 if test "$with_existing_libgadu" = "no"; then
 	ac_configure_args="$ac_configure_args 'CFLAGS_LIBGADU=$libgadu_CFLAGS' --enable-static --disable-shared"
@@ -434,7 +438,8 @@ echo "   Use pthread resolving in libgadu:   $with_pthread"
 echo "   Compile with debug symbols:         $enable_debug"
 echo "   System signals handling:            $enable_sig_handling"
 echo "   Link with existing libgadu:         $with_existing_libgadu"
-echo "   OpenSSL encryption support:         $have_openssl"
+# Maybe it will be back when GG servers have SSL support finally
+#echo "   OpenSSL encryption support:         $have_openssl"
 echo "   Distribution type information:      $enable_dist_info"
 echo "   Additional c++ compiler flags:      $user_cxxflags"
 echo

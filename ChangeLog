@@ -83,6 +83,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   Swoj± drog± w kodzie przyda³oby siê poprzerabiaæ wszystkie QMessageBox
   na wrn(), msg() lub ask()... (tomee)
 * nowe okienko wyboru obrazka do wys³ania z podgl±dem (adrian)
+* configure: kompatybilno¶æ z gcc 2.95, ¶cie¿ka do qt dla Amd64,
+  wylaczona obs³uga openssl - mo¿e wróci kiedy w koñcu serwery GG
+  bêd± to obs³ugiwaæ, domy¶lnie w³±czone ostrze¿enia -Wall (adrian)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
