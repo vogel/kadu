@@ -62,6 +62,10 @@ void CustomInput::keyPressEvent(QKeyEvent * e) {
 		emit sendMessage();
 		}
 	else {
+		if (e->key() == Key_Minus) {
+			insert("-");
+			return;
+			}
 		if (e->state() & ControlButton) {
 			if (e->key() == Key_B) {
 				emit specialKeyPressed(CustomInput::KEY_BOLD);
@@ -73,12 +77,9 @@ void CustomInput::keyPressEvent(QKeyEvent * e) {
 				}
 			else if (e->key() == Key_U)
 				emit specialKeyPressed(CustomInput::KEY_UNDERLINE);
-			}
-		else
-			if (e->key() == Key_Minus) {
-				insert("-");
-				return;
+			else if (e->key() == Key_Minus) {
 				}
+			}
 		QMultiLineEdit::keyPressEvent(e);
 		}
 }
