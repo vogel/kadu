@@ -254,6 +254,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * przy od¶wie¿aniu listy kontaktów pozycja pionowego suwaka siê nie zmienia (joi)
 * argument "%1" w polu "W³asna przegl±darka" nie jest konieczny (joi)
 * poprawki "make uninstall", nie wszystkie pliki kadu by³y usuwane (adrian)
+* przeróbki instalatora by Sad Mephisto - postaæ wizarda i automatyczne
+  sprawdzenie dostêpnych modu³ów (adrian)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
