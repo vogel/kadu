@@ -17,6 +17,8 @@
 * ENTER/RETURN w li¶cie u¿ytkowników dzia³a tak jak podwójne klikniêcie myszk±
 * opcja powiadamiania o zmianie statusu wszystkich u¿ytkowników
 * kadu nie wysypuje siê jak mamy w³±czone "autoaway" i jeste¶my offline
+* w oknie poszukiwañ: gdy znaleziono jednego u¿ytkownika nie trzeba go zaznaczaæ,
+  aby dodaæ go do listy, albo uaktualniæ informacjê o nim
 
 +++ wersja 0.3.2
 * dalsze porz±dki w kodzie
