@@ -1383,6 +1383,22 @@ void Kadu::eventHandler(int state) {
 		calls--;
 		return;	
 		}
+	if (sess->state == GG_STATE_CONNECTING_HUB || sess->state == GG_STATE_CONNECTING_GG) {
+		fprintf(stderr, "KK Kadu::eventHandler(): changing QSocketNotifiers.\n");
+
+		kadusnw->setEnabled(false);
+		delete kadusnw;
+
+		kadusnr->setEnabled(false);
+		delete kadusnr;
+
+		kadusnw = new QSocketNotifier(sess->fd, QSocketNotifier::Write, this); 
+		QObject::connect(kadusnw, SIGNAL(activated(int)), kadu, SLOT(dataSent()));
+
+		kadusnr = new QSocketNotifier(sess->fd, QSocketNotifier::Read, this); 
+		QObject::connect(kadusnr, SIGNAL(activated(int)), kadu, SLOT(dataReceived()));    
+		}
+
 	switch (sess->state) {
 		case GG_STATE_RESOLVING:
 			fprintf(stderr, "KK Kadu::eventHandler(): Resolving address\n");
