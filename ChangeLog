@@ -52,6 +52,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * porzadki w kodzie dodawania userow zwyklych i anonimowych. wszystko
   w funkcjach UserList::addUser() i UserList::addAnonymous() (adrian)
 * ladniejsze, podrasowane okienko zarzadzania modulami (adrian)
+* poprawione ustawianie statusu "tylko dla znajomych w oknie konfiguracji (pawel_p)
+* przy zmianie czcionki w oknie rozmowy, rozmiar czcionki zostaje taki jaki byl
+  wybrany w poprzedniej czcionce (pawel_p)
 
 +++ wersja 0.3.6 (22.11.2003)
 * je¶li klikniemy na jaki¶ kontakt w userboxie, od którego otrzymali¶my jak±¶
