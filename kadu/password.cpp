@@ -32,13 +32,7 @@ void RemindPassword::start() {
 	tokendialog->getToken(Tokenid, Tokenval);
 	delete tokendialog;
 
-	if (!gadu->doRemind(config_file.readNumEntry("General", "UIN"), Tokenid, Tokenval))
-	{
-		reminded(false);
-		deleteLater();
-		return;
-	}
-
+	gadu->doRemind(config_file.readNumEntry("General", "UIN"), Tokenid, Tokenval);
 }
 
 void RemindPassword::reminded(bool ok)
@@ -49,6 +43,8 @@ void RemindPassword::reminded(bool ok)
 	else
 		QMessageBox::information(0, tr("Remind password"),
 				tr("Error during remind password"), tr("OK"), 0, 0, 1);
+
+	deleteLater();
 }
 
 ChangePassword::ChangePassword(QDialog *parent, const char *name) : QDialog(parent, name, FALSE, Qt::WDestructiveClose) {
@@ -116,8 +112,6 @@ void ChangePassword::start() {
 	
 	if (gadu->doChangePassword(config_file.readNumEntry("General", "UIN"), mail, password, newpassword, Tokenid, Tokenval))
 		setEnabled(false);
-	else
-		passwordChanged(false);
 }
 
 void ChangePassword::passwordChanged(bool ok)

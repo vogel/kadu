@@ -13,7 +13,10 @@
 #include "events.h"
 #include "kadu.h"
 
+#include <qregexp.h>
 #include <qsocketnotifier.h>
+#include <qtextcodec.h>
+
 #include <stdlib.h>
 
 struct gg_session* sess = NULL;
@@ -123,12 +126,11 @@ void SearchRecord::clearData()
 
 /* SocketNotifiers */
 
-SocketNotifiers::SocketNotifiers()
+SocketNotifiers::SocketNotifiers(struct gg_http* nh)
 {
 	kdebug("SocketNotifiers::SocketNotifiers()\n");
 
-	snr = snw = NULL;
-	h = NULL;
+	h = nh;
 }
 
 SocketNotifiers::~SocketNotifiers()
@@ -138,22 +140,15 @@ SocketNotifiers::~SocketNotifiers()
 	deleteSocketNotifiers();
 }
 
-void SocketNotifiers::setGGHttp(struct gg_http *nh)
+void SocketNotifiers::start()
 {
-	h = nh;
+	createSocketNotifiers();
 }
 
-struct gg_http *SocketNotifiers::getGGHttp()
-{
-	return h;
-}
-
-void SocketNotifiers::createSocketNotifiers(struct gg_http *nh)
+void SocketNotifiers::createSocketNotifiers()
 {
 	kdebug("SocketNotifiers::createSocketNotifiers()\n");
 
-	h = nh;
-	
 	snr = new QSocketNotifier(h->fd, QSocketNotifier::Read);
 	connect(snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
 
@@ -187,16 +182,11 @@ void SocketNotifiers::recreateSocketNotifiers()
 	kdebug("SocketNotifiers::recreateSocketNotifiers()\n");
 
 	deleteSocketNotifiers();
-	createSocketNotifiers(h);
-	checkWrite();
-}
-
-void SocketNotifiers::checkWrite()
-{
-	kdebug("SocketNotifiers::checkWrite()\n");
+	createSocketNotifiers();
 
 	if (h->check & GG_CHECK_WRITE)
 		snw->setEnabled(true);
+
 }
 
 void SocketNotifiers::dataReceived()
@@ -204,7 +194,7 @@ void SocketNotifiers::dataReceived()
 	kdebug("SocketNotifiers::dataReceived()\n");
 
 	if (h->check & GG_CHECK_READ)
-		emit socketEvent();
+		socketEvent();
 }
 
 void SocketNotifiers::dataSent()
@@ -213,36 +203,81 @@ void SocketNotifiers::dataSent()
 
 	snw->setEnabled(false);
 	if (h->check & GG_CHECK_WRITE)
-		emit socketEvent();
+		socketEvent();
 }
+
+void SocketNotifiers::socketEvent()
+{
+	kdebug("SocketNotifiers::socketEvent()\n");
+
+	if (gg_pubdir_watch_fd(h) == -1)
+	{
+		deleteSocketNotifiers();
+		emit done(false, h);
+		gg_pubdir_free(h);
+		deleteLater();
+		return;
+	}
+
+	struct gg_pubdir *p = (struct gg_pubdir *)h->data;
+
+	switch (h->state)
+	{
+		case GG_STATE_CONNECTING:
+			kdebug("SocketNotifiers::socketEvent(): changing QSocketNotifiers\n");
+			recreateSocketNotifiers();
+			break;
+
+		case GG_STATE_ERROR:
+			kdebug("SocketNotifiers::socketEvent(): error!\n");
+			deleteSocketNotifiers();
+			emit done(false, h);
+			gg_pubdir_free(h);
+			deleteLater();
+			return;
+
+		case GG_STATE_DONE:
+			kdebug("SocketNotifiers::socketEvent(): success!\n");
+			deleteSocketNotifiers();
+
+			if (p->success)
+				emit done(true, h);
+			else
+			{
+				kdebug("SocketNotifiers::socketEvent(): error!\n");
+				emit done(false, h);
+			}
+			gg_pubdir_free(h);
+			break;
+
+		default:
+			if (h->check & GG_CHECK_WRITE)
+				snw->setEnabled(true);
+	}
+}
+
+/* GaduProtocol */
 
 void GaduProtocol::initModule()
 {
 	gadu=new GaduProtocol();
-	kadu->mainMenu()->insertItem(icons_manager.loadIcon("ResendUserlist"), tr("Resend &userlist"), gadu, SLOT(sendUserList()),0,-1,2);
+//	kadu->mainMenu()->insertItem(icons_manager.loadIcon("ResendUserlist"), tr("Resend &userlist"), gadu, SLOT(sendUserList()),0,-1,2);
 }
 
 GaduProtocol::GaduProtocol() : QObject()
 {
-	registerSN = new SocketNotifiers();
-	unregisterSN = new SocketNotifiers();
-	remindSN = new SocketNotifiers();
-
-	connect(registerSN, SIGNAL(socketEvent()), this, SLOT(registerSocketEvent()));
-	connect(unregisterSN, SIGNAL(socketEvent()), this, SLOT(unregisterSocketEvent()));
-	connect(remindSN, SIGNAL(socketEvent()), this, SLOT(remindSocketEvent()));
-
 	connect(&event_manager, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)),
 		this, SLOT(newResults(gg_pubdir50_t)));
+	connect(&event_manager, SIGNAL(userlistReplyReceived(char, char *)),
+		this, SLOT(userListReplyReceived(char, char *)));
 }
 
 GaduProtocol::~GaduProtocol()
 {
-	delete registerSN;
-	delete unregisterSN;
-
 	disconnect(&event_manager, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)),
 		this, SLOT(newResults(gg_pubdir50_t)));
+	disconnect(&event_manager, SIGNAL(userlistReplyReceived(char, char *)),
+		this, SLOT(userListReplyReceived(char, char *)));
 }
 
 int GaduProtocol::sendMessage(const UinsList& uins,const char* msg)
@@ -320,7 +355,7 @@ void GaduProtocol::sendUserList()
 			j++;
 			}
 
-	/* we were popping up sometimes, so let's keep the server informed */
+	/** we were popping up sometimes, so let's keep the server informed **/
 	if (i_wanna_be_invisible)
 		gg_change_status(sess, GG_STATUS_INVISIBLE);
 
@@ -420,128 +455,51 @@ void GaduProtocol::newResults(gg_pubdir50_t res) {
 
 bool GaduProtocol::doRegister(QString& mail, QString& password, QString& token_id, QString& token_value)
 {
-	// po co by³y te strdup'y ??
-	struct gg_http *registerHttp = gg_register3(unicode2cp(mail).data(), unicode2cp(password).data(), unicode2cp(token_id).data(), unicode2cp(token_value).data(), 1);
-	if (registerHttp)
+	struct gg_http *h = gg_register3(unicode2cp(mail).data(), unicode2cp(password).data(), unicode2cp(token_id).data(), unicode2cp(token_value).data(), 1);
+	if (h)
 	{
-		registerSN->createSocketNotifiers(registerHttp);
+		SocketNotifiers *sn = new SocketNotifiers(h);
+		connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(registerDone(bool, struct gg_http *)));
+		sn->start();
 		return true;
 	}
 	else
+	{
+		emit registered(false, 0);
 		return false;
+	}
 }
 
-void GaduProtocol::registerSocketEvent()
+void GaduProtocol::registerDone(bool ok, struct gg_http *h)
 {
-	kdebug("GaduProtocol::registerSocketEvent()\n");
-
-	struct gg_http *registerHttp = registerSN->getGGHttp();
-
-	if (gg_register_watch_fd(registerHttp) == -1)
-	{
-		registerSN->deleteSocketNotifiers();
-		gg_free_register(registerHttp);
-		kdebug("GaduProtocol::registerSocketEvent(): error registering\n");
+	if (ok)
+		emit registered(true, ((struct gg_pubdir *)h->data)->uin);
+	else
 		emit registered(false, 0);
-		return;
-	}
-
-	struct gg_pubdir *p = (struct gg_pubdir *)registerHttp->data;
-
-	switch (registerHttp->state)
-	{
-		case GG_STATE_CONNECTING:
-			kdebug("GaduProtocol::registerSocketEvent(): changing QSocketNotifiers.\n");
-			registerSN->recreateSocketNotifiers();
-			break;
-
-		case GG_STATE_ERROR:
-			registerSN->deleteSocketNotifiers();
-			gg_free_register(registerHttp);
-			kdebug("GaduProtocol::registerSocketEvent(): error registering\n");
-			emit registered (false, 0);
-			break;
-
-		case GG_STATE_DONE:
-			registerSN->deleteSocketNotifiers();
-			kdebug("GaduProtocol::registerSocketEvent(): success=%d, uin=%ld\n", p->success, p->uin);
-			if (p->success)
-				emit registered(true, p->uin);
-			else
-			{
-				kdebug("GaduProtocol::registerSocketEvent(): error registering\n");
-				emit registered(false, 0);
-			}
-			gg_free_register(registerHttp);
-			break;
-
-		default:
-			registerSN->checkWrite();
-	}
 }
 
 /* wyrejestrowywanie u¿ytkownika */
 
 bool GaduProtocol::doUnregister(UinType uin, QString &password, QString& token_id, QString& token_value)
 {
-	// po co by³y te strdup'y ?
-	struct gg_http* unregisterHttp = gg_unregister3(uin, unicode2cp(password).data(), unicode2cp(token_id).data(), unicode2cp(token_value).data(), 1);
-	if (unregisterHttp)
+	struct gg_http* h = gg_unregister3(uin, unicode2cp(password).data(), unicode2cp(token_id).data(), unicode2cp(token_value).data(), 1);
+	if (h)
 	{
-		unregisterSN->createSocketNotifiers(unregisterHttp);
+		SocketNotifiers *sn = new SocketNotifiers(h);
+		connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(unregisterDone(bool, struct gg_http *)));
+		sn->start();
 		return true;
 	}
 	else
+	{
+		emit unregistered(false);
 		return false;
+	}
 }
 
-void GaduProtocol::unregisterSocketEvent()
+void GaduProtocol::unregisterDone(bool ok, struct gg_http *)
 {
-	kdebug("GaduProtocol::unregisterSocketEvent()\n");
-
-	struct gg_http *unregisterHttp = unregisterSN->getGGHttp();
-
-	if (gg_register_watch_fd(unregisterHttp) == -1 )
-	{
-		unregisterSN->deleteSocketNotifiers();
-		gg_free_register(unregisterHttp);
-		kdebug("GaduProtocol::unregisterSocketEvent(): error unregistering\n");
-		emit unregistered(false);
-		return;
-	}
-
-	struct gg_pubdir *p = (struct gg_pubdir *)unregisterHttp->data;
-
-	switch (unregisterHttp->state)
-	{
-		case GG_STATE_CONNECTING:
-			kdebug("GaduProtocol::unregisterSocketEvent(): changing QSocketNotifiers.\n");
-			unregisterSN->recreateSocketNotifiers();
-			break;
-
-		case GG_STATE_ERROR:
-			unregisterSN->deleteSocketNotifiers();
-			gg_free_register(unregisterHttp);
-			kdebug("GaduProtocol::unregisterSocketEvent(): error unregistering\n");
-			emit unregistered(false);
-			break;
-
-		case GG_STATE_DONE:
-			unregisterSN->deleteSocketNotifiers();
-			kdebug("GaduProtocol::unregisterSocketEvent(): success\n");
-			if (p->success)
-				emit unregistered(true);
-			else
-			{
-				kdebug("GaduProtocol::unregisterSocketEvent(): error unregistering\n");
-				emit unregistered(false);
-			}
-			gg_free_register(unregisterHttp);
-			break;
-			
-		default:
-			unregisterSN->checkWrite();
-	}
+	emit unregistered(ok);
 }
 
 /* przypomnienie hasla */
@@ -550,62 +508,24 @@ bool GaduProtocol::doRemind(UinType uin, QString& token_id, QString& token_value
 {
 	kdebug("GaduProtocol::remindPassword()\n");
 
-	struct gg_http *remindHttp = gg_remind_passwd2(uin, unicode2cp(token_id).data(), unicode2cp(token_value).data(), 1);
-	if (remindHttp)
+	struct gg_http *h = gg_remind_passwd2(uin, unicode2cp(token_id).data(), unicode2cp(token_value).data(), 1);
+	if (h)
 	{
-		remindSN->createSocketNotifiers(remindHttp);
+		SocketNotifiers *sn = new SocketNotifiers(h);
+		connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(remindDone(bool, struct gg_http *)));
+		sn->start();
 		return true;
 	}
 	else
+	{
+		emit reminded(false);
 		return false;
+	}
 }
 
-void GaduProtocol::remindSocketEvent()
+void GaduProtocol::remindDone(bool ok, struct gg_http *)
 {
-	kdebug("GaduProtocol::remindSocketEvent()\n");
-
-	struct gg_http *remindHttp = remindSN->getGGHttp();
-
-	if (gg_remind_passwd_watch_fd(remindHttp) == -1)
-	{
-		remindSN->deleteSocketNotifiers();
-		emit reminded(false);
-		return;
-	}
-
-	struct gg_pubdir *p = (struct gg_pubdir *)remindHttp->data;
-
-	switch (remindHttp->state)
-	{
-		case GG_STATE_CONNECTING:
-			kdebug("GaduProtocol::remindSocketEvent(): changing QSocketNotifiers.\n");
-			remindSN->recreateSocketNotifiers();
-			break;
-
-		case GG_STATE_ERROR:
-			kdebug("GaduProtocol::remindSocketEvent(): error reminding password!\n");
-			remindSN->deleteSocketNotifiers();
-			gg_free_remind_passwd(remindHttp);
-			emit reminded(false);
-			break;
-
-		case GG_STATE_DONE:
-			kdebug("GaduProtocol::remindSocketEvent(): success!\n");
-			remindSN->deleteSocketNotifiers();
-
-			if (p->success)
-				emit reminded(true);
-			{
-				kdebug("GaduProtocol::remindSocketEvent(): error reminding password!\n");
-				emit reminded(false);
-			}
-			gg_free_remind_passwd(remindHttp);
-			break;
-
-		default:
-			remindSN->checkWrite();
-	}
-
+	emit reminded(ok);
 }
 
 /* zmiana has³a */
@@ -614,63 +534,218 @@ bool GaduProtocol::doChangePassword(UinType uin, QString& mail, QString& passwor
 {
 	kdebug("GaduProtocol::doChangePassword()\n");
 
-	struct gg_http *changePasswordHttp = gg_change_passwd4(uin, unicode2cp(mail).data(), unicode2cp(password).data(), 
+	struct gg_http *h = gg_change_passwd4(uin, unicode2cp(mail).data(), unicode2cp(password).data(), 
 			unicode2cp(new_password).data(), unicode2cp(token_id).data(), unicode2cp(token_val).data(), 1);
-	if (changePasswordHttp)
+	if (h)
 	{
-		changePasswordSN->createSocketNotifiers(changePasswordHttp);
+		SocketNotifiers *sn = new SocketNotifiers(h);
+		connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(changePasswordDone(bool, struct gg_http *)));
+		sn->start();
 		return true;
 	}
 	else
+	{
+		emit passwordChanged(false);
 		return false;
+	}
 }
 
-void GaduProtocol::changePasswordSocketEvent()
+void GaduProtocol::changePasswordDone(bool ok, struct gg_http *)
 {
-	kdebug("GaduProtocol::changePasswordSocketEvent()\n");
+	emit passwordChanged(ok);
+}
 
-	struct gg_http *changePasswordHttp = changePasswordSN->getGGHttp();
+/* lista u¿ytkowników */
 
-	if (gg_remind_passwd_watch_fd(changePasswordHttp) == -1)
+QString GaduProtocol::userListToString(const UserList& userList) const
+{
+	kdebugf();
+	QString contacts(""), tmp;
+
+	for (unsigned int i = 0; i < userList.count(); i++)
+		if (!userList[i].anonymous)
+		{
+			contacts += userList[i].first_name;
+			contacts += ";";
+			contacts += userList[i].last_name;
+			contacts += ";";
+			contacts += userList[i].nickname;
+			contacts += ";";
+			contacts += userList[i].altnick;
+			contacts += ";";
+			contacts += userList[i].mobile;
+			contacts += ";";
+			tmp = userList[i].group();
+			tmp.replace(QRegExp(","), ";");
+			contacts += tmp;
+			contacts += ";";
+			if (userList[i].uin)
+				contacts += QString::number(userList[i].uin);
+			contacts += ";";
+			contacts += userList[i].email;
+			contacts += ";0;;0;\r\n";
+		}
+
+	contacts.replace(QRegExp("(null)"), "");
+
+	return contacts;
+}
+
+void GaduProtocol::stringToUserList(QString &string, UserList& userList) const
+{
+	QTextStream stream(&string, IO_ReadOnly);
+	streamToUserList(stream, userList);
+}
+
+void GaduProtocol::streamToUserList(QTextStream& stream, UserList& userList) const
+{
+	kdebugf();
+
+	UserListElement e;
+	QStringList sections, groupNames;
+	QString line;
+	int groups, i;
+	bool ok;
+
+	stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
+
+	while (!stream.eof())
 	{
-		changePasswordSN->deleteSocketNotifiers();
-		emit passwordChanged(false);
-		return;
+		line = stream.readLine();
+		sections = QStringList::split(";", line, true);
+		if (sections.count() < 12)
+			continue;
+		if (sections[6] == "0")
+			sections[6].truncate(0);
+		e.first_name = sections[0];
+		e.last_name = sections[1];
+		e.nickname = sections[2];
+		e.altnick = sections[3];
+		e.mobile = sections[4];
+		if (sections.count() >= 12)
+			groups = sections.count() - 11;
+		else
+			groups = sections.count() - 7;
+		groupNames.clear();
+		for (i = 0; i < groups; i++)
+			groupNames.append(sections[5 + i]);
+		e.setGroup(groupNames.join(","));
+		e.uin = sections[5 + groups].toUInt(&ok);
+		if (!ok)
+			e.uin = 0;
+		e.description = QString::null;
+		e.email = sections[6 + groups];
+		userList.addUser(e);
 	}
+}
 
-	struct gg_pubdir *p = (struct gg_pubdir *)changePasswordHttp->data;
+bool GaduProtocol::doExportUserList(const UserList& userList)
+{
+	kdebugf();
 
-	switch (changePasswordHttp->state)
+	QString contacts = userListToString(userList);
+	char *dup = strdup(unicode2latin(contacts));
+
+	kdebug("GaduProtocol::exportUserList():\n%s\n", dup);
+	free(dup);
+
+	userListClear = false;
+
+	dup = strdup(unicode2std(contacts));
+	if (gg_userlist_request(sess, GG_USERLIST_PUT, dup) == -1)
 	{
-		case GG_STATE_CONNECTING:
-			kdebug("GaduProtocol::changePasswordSocketEvent(): changing QSocketNotifiers\n");
-			changePasswordSN->recreateSocketNotifiers();
-			break;
+		free(dup);
+		kdebug("GaduProtocol:: gg_userlist_put() failed\n");
+		emit userListExported(false);
+		return false;
+	}
+	else
+	{
+		free(dup);
+		return true;
+	}
+}
 
-		case GG_STATE_ERROR:
-			kdebug("GaduProtocol::changePasswordSocketEvent(): error changing password!\n");
-			changePasswordSN->deleteSocketNotifiers();
-			gg_change_passwd_free(changePasswordHttp);
-			emit passwordChanged(false);
-			break;
+bool GaduProtocol::doClearUserList()
+{
+	kdebugf();
 
-		case GG_STATE_DONE:
-			kdebug("GaduProtocol::changePasswordSocketEvent(): success!\n");
-			changePasswordSN->deleteSocketNotifiers();
+	userListClear = true;
 
-			if (p->success)
-				emit passwordChanged(true);
-			else
-			{
-				kdebug("GaduProtocol::changePasswordSocketEvent(): error changing password!\n");
-				emit passwordChanged(false);
-			}
-			gg_free_change_passwd(changePasswordHttp);
-			break;
+	char *dup = "";
+	if (gg_userlist_request(sess, GG_USERLIST_PUT, dup) == -1)
+	{
+		kdebug("GaduProtocol:: gg_userlist_out() failed\n");
+		emit userListCleared(false);
+		return false;
+	}
+	else
+		return true;
+}
 
-		default:
-			changePasswordSN->checkWrite();
-			
+bool GaduProtocol::doImportUserList()
+{
+	kdebugf();
+
+	importReply = "";
+
+	if (gg_userlist_request(sess, GG_USERLIST_GET, NULL) == -1)
+	{
+		UserList empty;
+		emit userListImported(false, empty);
+		return false;
+	}
+	else
+		return true;
+}
+
+void GaduProtocol::userListReplyReceived(char type, char *reply)
+{
+	kdebugf();
+	kdebug("GaduProtocol::userlistReplyReceived()\n");
+
+	if (type == GG_USERLIST_PUT_REPLY)
+	{
+		kdebug("GaduProtocol::userlistReplyReceived(): put\n");
+		kdebug("GaduProtocol::userlistReplyReceived(): Done\n");
+
+		if (userListClear)
+			emit userListCleared(true);
+		else
+			emit userListExported(true);
+
+	}
+	else if ((type == GG_USERLIST_GET_REPLY) || (type == GG_USERLIST_GET_MORE_REPLY))
+	{
+		kdebug("GaduProtocol::userlistReplyReceived(): get\n");
+
+		if (!reply)
+		{
+			kdebug("GaduProtocol::userlistReplyReceived(): error!\n");
+
+			UserList empty;
+			emit userListImported(false, empty);
+			return;
+		}
+
+		if (strlen(reply))
+			importReply += cp2unicode((unsigned char *)reply);
+
+		if (type == GG_USERLIST_GET_MORE_REPLY)
+		{
+			kdebug("GaduProtocol::userListReplyReceived(): next portion\n");
+			return;
+		}
+
+		kdebug("GaduProtocol::userListReplyReceived(): Done.\n");
+		kdebug("GaduProtocol::userListReplyReceived()\n%s\n",
+			unicode2latin(importReply).data());
+
+		//QTextStream stream(&importReply, IO_ReadOnly);
+		UserList importedUserList;
+		stringToUserList(importReply, importedUserList);
+
+		emit userListImported(true, importedUserList);
 	}
 }
 

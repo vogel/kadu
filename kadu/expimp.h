@@ -5,6 +5,7 @@
 #include <qlistview.h>
 #include <qstring.h>
 #include <qsocketnotifier.h>
+
 #include "userlist.h"
 
 /**
@@ -14,28 +15,21 @@ class UserlistImport : public QDialog {
 	Q_OBJECT
 	public:
 		UserlistImport(QWidget *parent=0, const char *name=0);
-		void init(void);
 		
 	private:
-		void readUserlist(QTextStream &stream);
-
 		QPushButton *fetchbtn;
 		UserList importedUserlist;
-		QString importreply;
 
 	protected:
 		QListView *results;
-
-	public slots:
-		void userlistReplyReceivedSlot(char type, char *reply);
 
 	private slots:
 		void startTransfer(void);
 		void makeUserlist(void);
 		void updateUserlist(void);
 		void fromfile();
-	protected:
-		void closeEvent(QCloseEvent *e);
+		void userListImported(bool ok, UserList& userList);
+
 };
 
 /**
@@ -51,18 +45,15 @@ class UserlistExport : public QDialog {
 		QPushButton * sendbtn;
 		QPushButton * deletebtn;
 		QPushButton * tofilebtn;
-		QString saveContacts();
-
-	public slots:
-		void userlistReplyReceivedSlot(char type, char *reply);
 
 	private slots:
 		void startTransfer(void);
 		void clean(void);
 		void ExportToFile(void);
+		void userListExported(bool ok);
+		void userListCleared(bool ok);
 
-	protected:
-		void closeEvent(QCloseEvent * e);
 };
 
 #endif
+

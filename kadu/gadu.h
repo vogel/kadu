@@ -10,8 +10,10 @@
 #include "libgadu.h"
 
 class UinsList;
+class UserList;
 
 class QSocketNotifier;
+class QTextStream;
 
 extern struct gg_session* sess;
 extern struct gg_login_params loginparams;
@@ -83,25 +85,22 @@ class SocketNotifiers : public QObject
 		QSocketNotifier *snr;
 		QSocketNotifier *snw;
 
+		void createSocketNotifiers();
+		void deleteSocketNotifiers();
+		void recreateSocketNotifiers();
+		void socketEvent();
+
 	private slots:
 		void dataReceived();
 		void dataSent();
 
 	public:
-		SocketNotifiers();
+		SocketNotifiers(struct gg_http *);
 		~SocketNotifiers();
+		void start();
 
-		void setGGHttp(struct gg_http *);
-		struct gg_http *getGGHttp();
-
-		void createSocketNotifiers(struct gg_http *);
-		void deleteSocketNotifiers();
-		void recreateSocketNotifiers();
-
-		void checkWrite();
-		
 	signals:
-		void socketEvent();
+		void done(bool ok, struct gg_http *);
 
 };
 
@@ -112,21 +111,27 @@ class GaduProtocol : public QObject
 	Q_OBJECT
 
 	private:
-		SocketNotifiers *registerSN;
-		SocketNotifiers *unregisterSN;
-		SocketNotifiers *remindSN;
-		SocketNotifiers *changePasswordSN;
+		bool userListClear;
+		QString importReply;
 
 	private slots:
-		void registerSocketEvent();
-		void unregisterSocketEvent();
-		void remindSocketEvent();
-		void changePasswordSocketEvent();
+		void registerDone(bool ok, struct gg_http *);
+		void unregisterDone(bool ok, struct gg_http *);
+		void remindDone(bool ok, struct gg_http *);
+		void changePasswordDone(bool ok, struct gg_http *);
 
 	public:	
 		static void initModule();
 		GaduProtocol();
 		virtual ~GaduProtocol();
+
+		/**
+			Zamienia listê u¿ytkowników na ³añcuch i na odwrót
+		**/
+		QString userListToString(const UserList& userList) const;
+		void stringToUserList(QString&, UserList& userList) const;
+		void streamToUserList(QTextStream&, UserList& userList) const;
+
 		/**
 			Wysyla wiadomosc. bez formatowania tekstu.
 			Jesli adresatow jest wiecej niz
@@ -174,9 +179,25 @@ class GaduProtocol : public QObject
 		  	Zmienia has³o
 		**/
 		bool doChangePassword(UinType uin, QString& mail, QString& password, QString& new_password, QString& token_id, QString& token_val);
-	
+
+		/**
+			Wysy³a userlist na serwer
+		**/
+		bool doExportUserList(const UserList &);
+
+		/**
+			Czyscli userliste na serwerze
+		**/
+		bool doClearUserList();
+
+		/**
+			Importuje liste z serwera
+		**/
+		bool doImportUserList();
+
 	private slots:
 		void newResults(gg_pubdir50_t res);
+		void userListReplyReceived(char, char *);
 
 	public slots:
 		void sendUserList();
@@ -187,6 +208,9 @@ class GaduProtocol : public QObject
 		void unregistered(bool ok);
 		void reminded(bool ok);
 		void passwordChanged(bool ok);
+		void userListExported(bool ok);
+		void userListCleared(bool ok);
+		void userListImported(bool ok, UserList&);
 };
 
 extern GaduProtocol* gadu;

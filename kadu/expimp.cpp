@@ -54,58 +54,15 @@ UserlistImport::UserlistImport(QWidget *parent, const char *name)
 
 	QGridLayout * grid = new QGridLayout(this, 2, 3, 3, 3);
 	grid->addMultiCellWidget(results, 0, 0, 0, 3);
-	grid->addWidget(filebtn, 1, 0);	
+	grid->addWidget(filebtn, 1, 0);
 	grid->addWidget(fetchbtn, 1, 1);
 	grid->addWidget(savebtn, 1, 2);
 	grid->addWidget(mergebtn, 1, 3);
 
 	resize(450, 330);
-	setCaption(tr("Import userlist"));	
-}
+	setCaption(tr("Import userlist"));
 
-void UserlistImport::readUserlist(QTextStream &stream) {
-	kdebugf();
-	UserListElement e;
-	QListViewItem *qlv;
-	QStringList sections, groupnames;
-	QString line;
-	int groups, i;
-	bool ok;
-
-	stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
-	importedUserlist.clear();
-	results->clear();
-	while (!stream.eof()) {
-		line = stream.readLine();
-		sections = QStringList::split(";", line, true);
-		if (sections.count() < 12)
-			continue;
-		if (sections[6] == "0")
-			sections[6].truncate(0);
-		e.first_name = sections[0];
-		e.last_name = sections[1];
-		e.nickname = sections[2];
-		e.altnick = sections[3];
-		e.mobile = sections[4];
-		if (sections.count() >= 12)
-			groups = sections.count() - 11;
-		else
-			groups = sections.count() - 7;
-		groupnames.clear();
-		for (i = 0; i < groups; i++)
-			groupnames.append(sections[5 + i]);
-		e.setGroup(groupnames.join(","));
-		e.uin = sections[5 + groups].toUInt(&ok);
-		if (!ok)
-			e.uin = 0;
-		e.description = QString::null;
-		e.email = sections[6 + groups];
-		importedUserlist.addUser(e);
-		qlv = new QListViewItem(results, sections[5 + groups],
-			sections[2], sections[3], sections[0],
-			sections[1], sections[4], groupnames.join(","),
-			sections[6 + groups]);
-		}
+	connect(gadu, SIGNAL(userListImported(bool, UserList&)), this, SLOT(userListImported(bool, UserList&)));
 }
 
 void UserlistImport::fromfile() {
@@ -115,7 +72,7 @@ void UserlistImport::fromfile() {
 		QFile file(fname);
  		if (file.open(IO_ReadOnly)) {
 			QTextStream stream(&file);
-			readUserlist(stream);
+			gadu->streamToUserList(stream, importedUserlist);
 			file.close();
 			}
 		else
@@ -129,24 +86,8 @@ void UserlistImport::startTransfer() {
 	if (getCurrentStatus() == GG_STATUS_NOT_AVAIL)
 		return;
 
-	if (gg_userlist_request(sess, GG_USERLIST_GET, NULL) == -1) {
-		kdebug("UserlistImport: gg_userlist_get() failed\n");
-		QMessageBox::critical(this, tr("Import error"),
-			tr("The application encountered an internal error\nThe import was unsuccessful"));
-		return;
-		}
-
-	fetchbtn->setEnabled(false);
-
-	importreply.truncate(0);
-	connect(&event_manager, SIGNAL(userlistReplyReceived(char, char *)),
-		this, SLOT(userlistReplyReceivedSlot(char, char *)));
-}
-
-void UserlistImport::closeEvent(QCloseEvent * e) {
-	disconnect(&event_manager, SIGNAL(userlistReplyReceived(char, char *)),
-		this, SLOT(userlistReplyReceivedSlot(char, char *)));
-	QWidget::closeEvent(e);
+	if (gadu->doImportUserList())
+		fetchbtn->setEnabled(false);
 }
 
 void UserlistImport::makeUserlist() {
@@ -202,33 +143,19 @@ void UserlistImport::updateUserlist() {
 	kdebug("UserlistImport::updateUserlist(): Wrote userlist\n");
 }
 
-void UserlistImport::userlistReplyReceivedSlot(char type, char *reply)
+void UserlistImport::userListImported(bool ok, UserList& userList)
 {
-	kdebugf();
-	if (type != GG_USERLIST_GET_REPLY && type != GG_USERLIST_GET_MORE_REPLY)
-		return;
+	kdebug("UserlistImport::userListImported()\n");
 
-	if (!reply) {
-		disconnect(&event_manager, SIGNAL(userlistReplyReceived(char, char *)),
-			this, SLOT(userlistReplyReceivedSlot(char, char *)));
-		results->clear();
-		fetchbtn->setEnabled(true);
-		return;
-		}
-	if (strlen(reply))
-		importreply = importreply + cp2unicode((unsigned char *)reply);
-	if (type == GG_USERLIST_GET_MORE_REPLY) {
-		kdebug("ImportUserlist::userlistReplyReceived(): next portion\n");
-		return;
-		}
+	importedUserlist = userList;
+	results->clear();
+
 	fetchbtn->setEnabled(true);
-	kdebug("ImportUserlist::userlistReplyReceivedSlot(): Done.\n");
-	kdebug("ImportUserlist::userlistReplyReceivedSlot()\n%s\n",
-		unicode2latin(importreply).data());
-	QTextStream stream(&importreply, IO_ReadOnly);
-	readUserlist(stream);
-	disconnect(&event_manager, SIGNAL(userlistReplyReceived(char, char *)),
-		this, SLOT(userlistReplyReceivedSlot(char, char *)));
+
+	if (ok)
+		for (unsigned int i = 0; i < userList.count(); i++)
+			new QListViewItem(results, QString::number(userList[i].uin), userList[i].nickname, userList[i].altnick, userList[i].first_name,
+				userList[i].last_name, userList[i].mobile, userList[i].group(), userList[i].email);
 }
 
 UserlistExport::UserlistExport(QWidget *parent, const char *name)
@@ -263,74 +190,31 @@ UserlistExport::UserlistExport(QWidget *parent, const char *name)
 
 	QObject::connect(sendbtn, SIGNAL(clicked()), this, SLOT(startTransfer()));	
 	QObject::connect(tofilebtn, SIGNAL(clicked()), this, SLOT(ExportToFile()));
-	QObject::connect(deletebtn, SIGNAL(clicked()), this, SLOT(clean()));		
+	QObject::connect(deletebtn, SIGNAL(clicked()), this, SLOT(clean()));
+
+	connect(gadu, SIGNAL(userListExported(bool)), this, SLOT(userListExported(bool)));
+	connect(gadu, SIGNAL(userListCleared(bool)), this, SLOT(userListCleared(bool)));
 
 	setCaption(tr("Export userlist"));	
 }
 
-QString UserlistExport::saveContacts(){
+void UserlistExport::startTransfer()
+{
 	kdebugf();
-	QString contacts, tmp;
-	contacts="";
-	for (unsigned int i=0; i < userlist.count(); i++)
-		if (!userlist[i].anonymous) {
-			contacts += userlist[i].first_name;
-			contacts += ";";
-			contacts += userlist[i].last_name;
-			contacts += ";";
-			contacts += userlist[i].nickname;
-			contacts += ";";
-			contacts += userlist[i].altnick;
-			contacts += ";";
-			contacts += userlist[i].mobile;
-			contacts += ";";
-			tmp = userlist[i].group();
-			tmp.replace(QRegExp(","), ";");
-			contacts += tmp;
-			contacts += ";";
-			if (userlist[i].uin)
-				contacts += QString::number(userlist[i].uin);
-			contacts += ";";
-			contacts += userlist[i].email;
-			contacts += ";0;;0;";
-			contacts += "\r\n";
-			}
-	contacts.replace(QRegExp("(null)"), "");
-	
-	return contacts;
-}
 
-void UserlistExport::startTransfer() {
-	kdebugf();
 	if (getCurrentStatus() == GG_STATUS_NOT_AVAIL)
 		return;
 
-	QString contacts;
-	contacts = saveContacts();
-
-	char *con2;
-	con2 = (char *)strdup((const char *)unicode2latin(contacts));
-	kdebug("UserlistExport::startTransfer():\n%s\n", con2);
-	free(con2);
-	con2 = (char *)strdup((const char *)unicode2std(contacts));
-	
-	if (gg_userlist_request(sess, GG_USERLIST_PUT, con2) == -1) {
-		kdebug("UserlistExport: gg_userlist_put() failed\n");
-		QMessageBox::critical(this, tr("Export error"),
-			tr("The application encountered an internal error\nThe export was unsuccessful"));
-		free(con2);
-		return;
-		}
-	free(con2);
-
-	sendbtn->setEnabled(false);
-	deletebtn->setEnabled(false);
-	tofilebtn->setEnabled(false);	
-	connect(&event_manager, SIGNAL(userlistReplyReceived(char, char *)),
-		this, SLOT(userlistReplyReceivedSlot(char, char *)));
+	if (gadu->doExportUserList(userlist))
+	{
+		sendbtn->setEnabled(false);
+		deletebtn->setEnabled(false);
+		tofilebtn->setEnabled(false);	
+	}
 }
 
-void UserlistExport::ExportToFile(void) {
+void UserlistExport::ExportToFile(void)
+{
 	kdebugf();
 	QString contacts;
 	sendbtn->setEnabled(false);
@@ -339,7 +223,7 @@ void UserlistExport::ExportToFile(void) {
 
 	QString fname = QFileDialog::getSaveFileName("/", QString::null,this);
 	if (fname.length()) {
-		contacts = saveContacts();
+		contacts = gadu->userListToString(userlist);
 
 		QFile file(fname);
 		if (file.open(IO_WriteOnly)) {
@@ -362,43 +246,41 @@ void UserlistExport::ExportToFile(void) {
 
 void UserlistExport::clean() {
 	kdebugf();
+
 	if (getCurrentStatus() == GG_STATUS_NOT_AVAIL)
 		return;
 
-	const char *con2 = "";
-	
-	if (gg_userlist_request(sess, GG_USERLIST_PUT, con2) == -1) {
-		kdebug("UserlistExport::clean(): Delete failed\n");
-		QMessageBox::critical(this, tr("Export error"),
-			tr("The application encountered an internal error\nThe delete userlist on server was unsuccessful"));
-		return;
-		}
-
-	deletebtn->setEnabled(false);
-	sendbtn->setEnabled(false);
-	tofilebtn->setEnabled(false);
-	connect(&event_manager, SIGNAL(userlistReplyReceived(char, char *)),
-		this, SLOT(userlistReplyReceivedSlot(char, char *)));
+	if (gadu->doClearUserList())
+	{
+		deletebtn->setEnabled(false);
+		sendbtn->setEnabled(false);
+		tofilebtn->setEnabled(false);
+	}
 }
 
-void UserlistExport::userlistReplyReceivedSlot(char type, char *reply) {
-	kdebug("ExportUserlist::userlistReplyReceivedSlot()\n");
-	if (type != GG_USERLIST_PUT_REPLY)
-		return;
-	kdebug("ExportUserlist::userlistReplyReceivedSlot(): Done\n");
-	
-	disconnect(&event_manager, SIGNAL(userlistReplyReceived(char, char *)),
-		this, SLOT(userlistReplyReceivedSlot(char, char *)));
+void UserlistExport::userListExported(bool ok)
+{
+	if (ok)
+		MessageBox::msg(tr("Your userlist has been successfully exported to server"));
+	else
+		QMessageBox::critical(this, tr("Export error"),
+			tr("The application encountered an internal error\nThe export was unsuccessful"));
+
 	sendbtn->setEnabled(true);
 	tofilebtn->setEnabled(true);
 	deletebtn->setEnabled(true);
-
-	MessageBox::msg(tr("Your userlist has been successfully exported to server"));
 }
 
-void UserlistExport::closeEvent(QCloseEvent * e) {
-	disconnect(&event_manager, SIGNAL(userlistReplyReceived(char, char *)),
-		this, SLOT(userlistReplyReceivedSlot(char, char *)));
-	QWidget::closeEvent(e);
+void UserlistExport::userListCleared(bool ok)
+{
+	if (ok)
+		MessageBox::msg(tr("Your userlist has been successfully deleted on server"));
+	else
+		QMessageBox::critical(this, tr("Export error"),
+			tr("The application encountered an internal error\nThe delete userlist on server was unsuccessful"));
+
+	sendbtn->setEnabled(true);
+	tofilebtn->setEnabled(true);
+	deletebtn->setEnabled(true);
 }
 

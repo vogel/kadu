@@ -138,15 +138,11 @@ void Register::doRegister() {
 	Password = pwd->text();
 	Email = mailedit->text();
 
-	if (!gadu->doRegister(Password, Email, Tokenid, Tokenval))
+	if (gadu->doRegister(Password, Email, Tokenid, Tokenval))
 	{
-		status->setText(tr("Error"));
-		return;
+		status->setText(tr("Registering"));
+		setEnabled(false);
 	}
-
-	status->setText(tr("Registering"));
-
-	setEnabled(false);
 	
 }
 
@@ -232,15 +228,11 @@ void Unregister::doUnregister() {
 	
 	QString Password = pwd->text();
 
-	if (!gadu->doUnregister(uin->text().toUInt(), Password, Tokenid, Tokenval))
+	if (gadu->doUnregister(uin->text().toUInt(), Password, Tokenid, Tokenval))
 	{
-		status->setText(tr("Error"));
-		return;
+		status->setText(tr("Unregistering"));
+		setEnabled(false);
 	}
-
-	status->setText(tr("Unregistering"));
-
-	setEnabled(false);
 
 }
 

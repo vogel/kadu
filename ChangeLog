@@ -116,6 +116,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * make install: je¶li w katalogu z modu³em znajduje siê podkatalog "data" to
   jest on instalowany jako $(datadir)/kadu/modules/data/<nazwa_modulu> (adrian)
 * jednak wy³±czone znikanie kadu z paska zadañ (joi)
+* czwarty patch porz±dkuj±cy vogela: eksport i import listy kontaktów (adrian)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
