@@ -1,4 +1,4 @@
-/* $Id: libgadu.c,v 1.37 2004/05/02 21:43:30 michal Exp $ */
+/* $Id: libgadu.c,v 1.38 2004/10/02 02:53:46 joi Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -71,7 +71,7 @@ static char rcsid[]
 #ifdef __GNUC__
 __attribute__ ((unused))
 #endif
-= "$Id: libgadu.c,v 1.37 2004/05/02 21:43:30 michal Exp $";
+= "$Id: libgadu.c,v 1.38 2004/10/02 02:53:46 joi Exp $";
 #endif 
 
 /*
@@ -198,7 +198,11 @@ int gg_resolve(int *fd, int *pid, const char *hostname)
 		return -1;
 
 	if ((res = fork()) == -1)
+	{
+		close(pipes[0]);
+		close(pipes[1]);
 		return -1;
+	}
 
 	if (!res) {
 		if ((a.s_addr = inet_addr(hostname)) == INADDR_NONE) {
@@ -291,6 +295,7 @@ int gg_resolve_pthread(int *fd, void **resolver, const char *hostname)
 
 	if (!(tmp = malloc(sizeof(pthread_t)))) {
 		gg_debug(GG_DEBUG_MISC, "// gg_resolve_pthread() out of memory for pthread id\n");
+		errno = ENOMEM;
 		return -1;
 	}
 	
@@ -300,12 +305,25 @@ int gg_resolve_pthread(int *fd, void **resolver, const char *hostname)
 		return -1;
 	}
 
-	if (!(d = malloc(sizeof(*d))) || !(d->hostname = strdup(hostname))) {
+	if (!(d = malloc(sizeof(*d)))) {
 		gg_debug(GG_DEBUG_MISC, "// gg_resolve_pthread() out of memory\n");
+		close(pipes[0]);
+		close(pipes[1]);
 		free(tmp);
+		errno = ENOMEM;
 		return -1;
 	}
-
+	
+	if (!(d->hostname = strdup(hostname))) {
+		gg_debug(GG_DEBUG_MISC, "// gg_resolve_pthread() out of memory\n");
+		close(pipes[0]);
+		close(pipes[1]);
+		free(tmp);
+		free(d);
+		errno = ENOMEM;
+		return -1;
+	}
+	
 	d->fd = pipes[1];
 
 	if (pthread_create(tmp, NULL, gg_resolve_pthread_thread, d)) {
@@ -313,6 +331,8 @@ int gg_resolve_pthread(int *fd, void **resolver, const char *hostname)
 		close(pipes[0]);
 		close(pipes[1]);
 		free(tmp);
+		free(d->hostname);
+		free(d);
 		return -1;
 	}
 
@@ -703,7 +723,7 @@ struct gg_session *gg_login(const struct gg_login_params *p)
 	sess->check = GG_CHECK_READ;
 	sess->timeout = GG_DEFAULT_TIMEOUT;
 	sess->async = p->async;
-        sess->type = GG_SESSION_GG;
+	sess->type = GG_SESSION_GG;
 	sess->initial_status = p->status;
 	sess->callback = gg_session_callback;
 	sess->destroy = gg_free_session;
