@@ -376,6 +376,74 @@ Arguments should be separated with spaces. %n argument is converted to number, %
         <source>Show Inactive users</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Hints</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable hints</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hints options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable icons in hints</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show connection errors in hints</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify of new message in inactive chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify of new chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show in notify content message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Content message in hint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable status notification by hint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notification options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify of user status change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify of user become available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify of user become unavailable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add description to hint if exist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use custom syntax</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hint syntax</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>

@@ -377,6 +377,74 @@ Zaznacz i wpisz w to pole poprawny ciąg. Argumenty oddziel spacjami. Argument %
         <source>Show Inactive users</source>
         <translation>Wystapiło rozłaczenie</translation>
     </message>
+    <message>
+        <source>Hints</source>
+        <translation>Dymki</translation>
+    </message>
+    <message>
+        <source>Enable hints</source>
+        <translation>Włącz dymki</translation>
+    </message>
+    <message>
+        <source>Hints options</source>
+        <translation>Opcje</translation>
+    </message>
+    <message>
+        <source>Enable icons in hints</source>
+        <translation>Włącz ikony w dymkach</translation>
+    </message>
+    <message>
+        <source>Show connection errors in hints</source>
+        <translation>Pokaż błędy połączeń w dymkach</translation>
+    </message>
+    <message>
+        <source>Notify of new message in inactive chat window</source>
+        <translation>Powiadom o nowej wiadomości gdy okno rozmowy nieaktywne</translation>
+    </message>
+    <message>
+        <source>Notify of new chat</source>
+        <translation>Powiadom o nowej rozmowie</translation>
+    </message>
+    <message>
+        <source>Show in notify content message</source>
+        <translation>Powiadom z treścią wiadomości</translation>
+    </message>
+    <message>
+        <source>Content message in hint</source>
+        <translation>Treść wiadomości w dymku</translation>
+    </message>
+    <message>
+        <source>Enable status notification by hint</source>
+        <translation>Włącz powiadomienie o zmianie statusu w dymku</translation>
+    </message>
+    <message>
+        <source>Notification options</source>
+        <translation>Opcje powiadomienia</translation>
+    </message>
+    <message>
+        <source>Notify of user status change</source>
+        <translation>Powiadom o zmianie statusu</translation>
+    </message>
+    <message>
+        <source>Notify of user become available</source>
+        <translation>Powiadom o dostępności</translation>
+    </message>
+    <message>
+        <source>Notify of user become unavailable</source>
+        <translation>Powiadom o niedostepności </translation>
+    </message>
+    <message>
+        <source>Add description to hint if exist</source>
+        <translation>Dodaj opis do dymku jeśli istnieje</translation>
+    </message>
+    <message>
+        <source>Use custom syntax</source>
+        <translation>Użyj własnej składni</translation>
+    </message>
+    <message>
+        <source>Hint syntax</source>
+        <translation>Składnia dymku</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
