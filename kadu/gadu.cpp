@@ -235,6 +235,7 @@ SocketNotifiers::SocketNotifiers(int fd)
 {
 	kdebugf();
 	Fd = fd;
+	Snr = Snw = NULL;
 	kdebugf2();
 }
 
