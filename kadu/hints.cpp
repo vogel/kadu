@@ -410,6 +410,7 @@ void HintManager::initModule(void)
 	QT_TRANSLATE_NOOP("@default", "Notify about new chat");
 	QT_TRANSLATE_NOOP("@default", "Show in notify content message");
 	QT_TRANSLATE_NOOP("@default", "Show message contents in hint");
+	QT_TRANSLATE_NOOP("@default", "Content message in hint");
 	QT_TRANSLATE_NOOP("@default", "Enable status notification by hint");
 	QT_TRANSLATE_NOOP("@default", "Notification options");
 	QT_TRANSLATE_NOOP("@default", "Notify about user status change");
