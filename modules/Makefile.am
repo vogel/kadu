@@ -72,7 +72,7 @@ $(module_moc_cpp_files):
 	$(AR) rs $@ $(module_o_files)
 
 %.d: %.cpp
-	$(CC) -M $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS) $< | \
+	$(CXX) -M $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS) $< | \
 	sed "s,\(.*\):,$(basename $@).o $@:," > $@
 
 %.d: %.c
@@ -80,7 +80,7 @@ $(module_moc_cpp_files):
 	sed "s,\(.*\):,$(basename $@).o $@:," > $@
 
 %.o: %.cpp
-	$(CC) -o $@ -c -fPIC $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)  $(CXXFLAGS)
+	$(CXX) -o $@ -c -fPIC $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)  $(CXXFLAGS)
 
 %.o: %.c
 	$(CC) -o $@ -c -fPIC $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS)
