@@ -119,7 +119,6 @@ void escapeSpecialCharacters(QString &msg) {
 	msg.replace(QRegExp("&"), "&amp;");
 	msg.replace(QRegExp("<"), "&lt;");
 	msg.replace(QRegExp(">"), "&gt;");
-	msg.replace(QRegExp(" "), "&nbsp;");
 }
 
 QString formatGGMessage(const QString &msg, int formats_length, void *formats) {
@@ -722,7 +721,6 @@ void HtmlDocument::escapeText(QString& text)
 	text.replace(QRegExp("&"), "&amp;");
 	text.replace(QRegExp("<"), "&lt;");
 	text.replace(QRegExp(">"), "&gt;");
-	text.replace(QRegExp(" "), "&nbsp;");
 };
 
 void HtmlDocument::unescapeText(QString& text)
@@ -730,7 +728,6 @@ void HtmlDocument::unescapeText(QString& text)
 	text.replace(QRegExp("&amp;"), "&");
 	text.replace(QRegExp("&lt;"), "<");
 	text.replace(QRegExp("&gt;"), ">");
-	text.replace(QRegExp("&nbsp;"), " ");
 };
 
 void HtmlDocument::addElement(Element e)
