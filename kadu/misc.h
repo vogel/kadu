@@ -452,10 +452,11 @@ class KaduTextBrowser : public QTextBrowser, QToolTip
 		void hyperlinkClicked(const QString& link);
 		void linkHighlighted(const QString &);
 		void selectionChangedSlot();
+		void repaintSeparators();
 		
 	protected:
 		QPopupMenu *createPopupMenu(const QPoint &point);
-		void drawContents(QPainter * p, int clipx, int clipy, int clipw, int cliph);
+		virtual void drawContents(QPainter * p, int clipx, int clipy, int clipw, int cliph);
 		virtual void maybeTip(const QPoint&);
 		virtual void contentsMouseReleaseEvent(QMouseEvent * e);
 		void drawSeparators(QPainter *p, QPoint offset);
@@ -467,8 +468,9 @@ class KaduTextBrowser : public QTextBrowser, QToolTip
 			Ustaw na true je¶li paragrafy maj± byæ
 			oddzielane od boków okna i od siebie
 			separatorami w kolorze t³a.
+			gdy width==-1, to brane s± domy¶lne odleg³o¶ci
 		**/
-		void setParagraphSeparators(bool enabled, int width=2);
+		void setParagraphSeparators(bool enabled, int width=-1);
 		/**
 			Nadpisane dla wyja¶nienia wieloznaczno¶ci
 		**/

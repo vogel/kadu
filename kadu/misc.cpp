@@ -15,6 +15,7 @@
 #include <qclipboard.h>
 #include <qpopupmenu.h>
 #include <qcursor.h>
+#include <qtimer.h>
 
 #include <pwd.h>
 #include <unistd.h>
@@ -2405,7 +2406,7 @@ KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
 		setTextFormat(Qt::RichText);
 	
 	connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedSlot()));
-//	connect(verticalScrollBar(), SIGNAL(sliderReleased()), this, SLOT(repaint()));
+//	connect(verticalScrollBar(), SIGNAL(sliderReleased()), this, SLOT(repaintSeparators()));
 	kdebugf2();
 }
 
@@ -2428,9 +2429,12 @@ void KaduTextBrowser::setSource(const QString &/*name*/)
 void KaduTextBrowser::setParagraphSeparators(bool enabled, int width)
 {
 	ParagraphSeparators = enabled;
+	if (width==-1)
+		width=4;
+	
 	separatorWidth=width;
 	if (enabled)
-		setMargins(3*width, 2*width, 3*width, 2*width);
+		setMargins(width, width, width, width);
 	else
 		setMargins(0,0,0,0);
 }
@@ -2462,11 +2466,18 @@ void KaduTextBrowser::drawSeparators(QPainter *p, QPoint offset)
 //	kdebugf2();
 }
 
+void KaduTextBrowser::repaintSeparators()
+{
+//	kdebugf();
+	QPainter p(viewport(), true);
+	drawSeparators(&p, QPoint(-contentsX(), -contentsY()));
+//	kdebugf2();
+}
+
 void KaduTextBrowser::selectionChangedSlot()
 {
 	kdebugf();
-	QPainter p(viewport(), true);
-	drawSeparators(&p, QPoint(-contentsX(), -contentsY()));
+	repaintSeparators();
 	kdebugf2();
 }
 
@@ -2475,7 +2486,6 @@ void KaduTextBrowser::copyLinkLocation()
 	kdebugm(KDEBUG_FUNCTION_START, "KaduTextBrowser::copyLinkLocation(): anchor = %s\n", anchor.local8Bit().data());
 	QApplication::clipboard()->setText(anchor);
 }
-
 
 QPopupMenu *KaduTextBrowser::createPopupMenu(const QPoint &point)
 {
@@ -2506,6 +2516,7 @@ void KaduTextBrowser::drawContents(QPainter * p, int clipx, int clipy, int clipw
 //		kdebugm(KDEBUG_INFO, "x:%d y:%d w:%d h:%d\n", clipx, clipy, clipw, cliph);
 		QTextBrowser::drawContents(p, clipx, clipy, clipw, cliph);
 		drawSeparators(p, QPoint(0,0));
+		QTimer::singleShot(0, this, SLOT(repaintSeparators()));//niestety konieczne
 	}
 	--level;
 }
