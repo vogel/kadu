@@ -200,6 +200,12 @@ void ModulesDialog::getInfo()
 				tr("<br/><b>Description: </b>") + info.description);
 }
 
+void ModulesDialog::keyPressEvent(QKeyEvent *ke_event)
+{
+	if (ke_event->key() == Qt::Key_Escape)
+		close();
+}
+
 void ModulesManager::initModule()
 {
 	new ModulesManager();

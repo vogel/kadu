@@ -69,6 +69,7 @@ class ModulesDialog : public QHBox
 		void itemsChanging();
 		void getInfo();
 		void refreshList();
+		void keyPressEvent(QKeyEvent *);
 	
 	public:
 		ModulesDialog();
