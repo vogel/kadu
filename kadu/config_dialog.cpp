@@ -1080,7 +1080,7 @@ void ConfigDialog::setupTab6(void) {
 
 	QLabel *l_confprefixcon = new QLabel(i18n("Conference window title prefix:"), confsyntaxbox);
 	e_conferenceprefix = new QLineEdit(config.conferenceprefix, confsyntaxbox);
-	QToolTip::add(e_conferenceprefix,i18n("This text will be before syntax.\nIf you leave blank, default settings will be used."));
+	QToolTip::add(e_conferenceprefix,i18n("This text will be after syntax.\nIf you leave blank, default settings will be used."));
 
 	QLabel *l_confsyntax = new QLabel(i18n("syntax:"), confsyntaxbox);
 	e_conferencesyntax = new QLineEdit(config.conferencesyntax, confsyntaxbox);
