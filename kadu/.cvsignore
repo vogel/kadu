@@ -3,3 +3,4 @@ Makefile
 .deps
 kadu
 modules_static.cpp
+kadu-headers.h*
