@@ -10,25 +10,23 @@
 #include <qstringlist.h>
 #include <qapplication.h>
 #include <qtextcodec.h>
+#include <qmap.h>
 
 #include "misc.h"
 #include "debug.h"
 #include "config_file.h"
 
-ConfigFile::ConfigFile(const QString &filename) : filename(filename) {
-	kdebug("ConfigFile::ConfigFile()\n");
+QMap<QString, QMap<QString, QString> > groups;
+
+ConfigFile::ConfigFile(const QString &filename) : filename(filename),activeGroup(NULL) {
 	read();
-	activegroup = NULL;
-	kdebug("ConfigFile::ConfigFile(): finished\n");
 }
 
 void ConfigFile::read() {
+	kdebug("ConfigFile::read(): %s\n", (const char *)filename.local8Bit());
 	QFile file(filename);
 	QString line;
-	struct ConfigFileGroup activegroup;
-	struct ConfigFileEntry activeentry;
 
-	kdebug("ConfigFile::read()\n");
 	if (file.open(IO_ReadOnly)) {
 		QTextStream stream(&file);
 		stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
@@ -36,212 +34,142 @@ void ConfigFile::read() {
 		{
 			line = stream.readLine();
 			line.stripWhiteSpace();
-			if (line.startsWith("[") && line.endsWith("]")) {
-				if (activegroup.name != line.mid(1, line.length() - 2)) {
-					if (activegroup.name.length())
-						groups.append(activegroup);
-					activegroup.name = line.mid(1, line.length() - 2).stripWhiteSpace();
-					activegroup.entries.clear();
-					}
+			if (line.startsWith("[") && line.endsWith("]"))
+			{
+				QString name=line.mid(1, line.length() - 2).stripWhiteSpace();
+				if (activeGroupName!=name)
+				{
+					activeGroupName=name;
+					activeGroup=&groups[name];
 				}
-			else 
-				if (activegroup.name.length()) {
-					QString first_section = line.section('=', 0, 0);
-					activeentry.name = first_section.stripWhiteSpace();
-					activeentry.value = line.right(line.length()-first_section.length()-1);
-					activeentry.value.replace(QRegExp("\\\\n"), "\n");
-					if (line.contains('=') >= 1 && activeentry.name.length()
-						&& activeentry.value.length())
-						activegroup.entries.append(activeentry);
-					}
 			}
-		if (activegroup.name.length())
-			groups.append(activegroup);
-		file.close();
+			else if (activeGroupName.length())
+			{
+				QString name = line.section('=', 0, 0);
+				QString value=line.right(line.length()-name.length()-1).replace(QRegExp("\\\\n"), "\n");
+				name = name.stripWhiteSpace();
+				if (line.contains('=') >= 1 && name.length() && value.length())
+					(*activeGroup)[name]=value;
+			}
 		}
+		file.close();
+	}
 	kdebug("ConfigFile::read(): finished\n");
 }
 
 void ConfigFile::write() {
+	kdebugf();
 	QFile file(filename);
 	QString line;
-	struct ConfigFileGroup activegroup;
-	struct ConfigFileEntry activeentry;
 
-	kdebug("ConfigFile::write()\n");
 	if (file.open(IO_WriteOnly | IO_Truncate)) {
 		QTextStream stream(&file);
 		stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
-		for (int i = 0; i < groups.count(); i++) {
-			stream << '[' << groups[i].name << "]\n";
-			for (int j = 0; j < groups[i].entries.count(); j++)
+		for(QMap<QString, QMap<QString, QString> >::const_iterator i=groups.begin(); i!=groups.end(); i++)
+		{
+			stream << '[' << i.key() << "]\n";
+			for(QMap<QString, QString>::const_iterator j=i.data().begin(); j!=i.data().end(); j++)
 			{
-				QString q=groups[i].entries[j].value;
-				stream << groups[i].entries[j].name << '=' << q.replace(QRegExp("\n"), "\\n") << '\n';
+				QString q=j.data();
+				stream << j.key() << '=' << q.replace(QRegExp("\n"), "\\n") << '\n';
 			}
 			stream << '\n';
-			}
-		file.close();
 		}
+		file.close();
+	}
 	kdebug("ConfigFile::write(): finished\n");
 }
 
 void ConfigFile::sync() {
-	kdebug("ConfigFile::sync()\n");
 	write();
-	kdebug("ConfigFile::sync(): finished\n");
 }
 
-QValueList<ConfigFileEntry> ConfigFile::getGroupSection(const QString& name)
+QMap<QString, QString>& ConfigFile::getGroupSection(const QString& name)
 {
-	int i;
-	kdebug("ConfigFile::getGroupSection()\n");
-	for(i=0; i < groups.count(); i++)
-		if (name == groups[i].name)
-			return groups[i].entries;
-
-	QValueList<ConfigFileEntry> empty_group;
-	return empty_group;
+	kdebugf();
+	return groups[name];
 }
 
-void ConfigFile::setGroup(const QString &name) {
-	struct ConfigFileGroup newgroup;
-	int i;
-
-//	kdebug("ConfigFile::setGroup()\n");
-	for (i = 0; i < groups.count(); i++)
-		if (name == groups[i].name)
-			break;
-	if (i == groups.count()) {
-		newgroup.name = name;
-		groups.append(newgroup);
-		for (i = 0; i < groups.count(); i++)
-			if (name == groups[i].name)
-				break;
-		}
-	activegroup = &(groups[i]);
-//	kdebug("ConfigFile::setGroup(): finished\n");
+bool ConfigFile::changeEntry(const QString &group, const QString &name, const QString &value) {
+//	kdebug("ConfigFile::writeEntry(%s, %s, %s)\n", (const char *)group.local8Bit(), (const char *)name.local8Bit(), (const char *)value.local8Bit());
+	if (activeGroupName!=group)
+	{
+		activeGroupName=group;
+		activeGroup=&(groups[group]);
+	}
+	bool ret=activeGroup->contains(name);
+	(*activeGroup)[name]=value;
+	return ret;
 }
 
-bool ConfigFile::changeEntry(const QString &name, const QString &value) {
-	struct ConfigFileEntry newentry;
-	int i;
-
-//	kdebug("ConfigFile::changeEntry()\n");
-	for (i = 0; i < activegroup->entries.count(); i++)
-		if (activegroup->entries[i].name == name)
-			break;
-	if (i == activegroup->entries.count()) {
-		newentry.name = name;
-		newentry.value = value;
-		activegroup->entries.append(newentry);
-//		kdebug("ConfigFile::changeEntry(): finished\n");
-		return false;
-		}
-	else
-		activegroup->entries[i].value = value;
-//	kdebug("ConfigFile::changeEntry(): finished\n");
-	return true;
-}
-
-QString ConfigFile::getEntry(const QString &name, bool *ok) const {
-	struct ConfigFileEntry newentry;
-	int i;
-
-//	kdebug("ConfigFile::getEntry()\n");
-	for (i = 0; i < activegroup->entries.count(); i++)
-		if (activegroup->entries[i].name == name)
-			break;
+QString ConfigFile::getEntry(const QString &group, const QString &name, bool *ok) const {
+//	kdebug("ConfigFile::getEntry(%s, %s)\n", (const char *)group.local8Bit(), (const char *)name.local8Bit());
+	if (activeGroupName!=group)
+	{
+		activeGroupName=group;
+		activeGroup=&((QMap<QString, QString>&)groups[group]);
+	}
 	if (ok)
-		*ok = (i < activegroup->entries.count());
-	if (i == activegroup->entries.count()) {
-//		kdebug("ConfigFile::getEntry(): finished\n");
+		*ok=activeGroup->contains(name);
+	if (activeGroup->contains(name))
+		return (*activeGroup)[name];
+	else
 		return QString::null;
-		}
-//	kdebug("ConfigFile::getEntry(): finished\n");
-	return activegroup->entries[i].value;
 }
 
 void ConfigFile::writeEntry(const QString &group,const QString &name, const QString &value) {
-	setGroup(group);
-	changeEntry(name, value);
+	changeEntry(group, name, value);
 }
 
 void ConfigFile::writeEntry(const QString &group,const QString &name, const char *value) {
-	setGroup(group);
-	changeEntry(name, __c2q(value));
+	changeEntry(group, name, QString::fromLocal8Bit(value));
 }
 
 void ConfigFile::writeEntry(const QString &group,const QString &name, const int value) {
-	setGroup(group);
-	changeEntry(name, QString::number(value));
+	changeEntry(group, name, QString::number(value));
 }
 
 void ConfigFile::writeEntry(const QString &group,const QString &name, const double value) {
-	setGroup(group);
-	changeEntry(name, QString::number(value, 'f'));
+	changeEntry(group, name, QString::number(value, 'f'));
 }
 
 void ConfigFile::writeEntry(const QString &group,const QString &name, const bool value) {
-	setGroup(group);
-	changeEntry(name, value ? "true" : "false");
+	changeEntry(group, name, value ? "true" : "false");
 }
 
 void ConfigFile::writeEntry(const QString &group,const QString &name, const QRect &value) {
-	setGroup(group);
-	QStringList string;
-	string.append(QString::number(value.left()));
-	string.append(QString::number(value.top()));
-	string.append(QString::number(value.width()));
-	string.append(QString::number(value.height()));
-	changeEntry(name, string.join(","));
+	changeEntry(group, name, QString("%1,%2,%3,%4").arg(value.left()).arg(value.top()).
+				arg(value.width()).arg(value.height()));
 }
 
 void ConfigFile::writeEntry(const QString &group,const QString &name, const QSize &value) {
-	setGroup(group);
-	QStringList string;
-	string.append(QString::number(value.width()));
-	string.append(QString::number(value.height()));
-	changeEntry(name, string.join(","));
+	changeEntry(group, name, QString("%1,%2").arg(value.width()).arg(value.height()));
 }
 
 void ConfigFile::writeEntry(const QString &group,const QString &name, const QColor &value) {
-	setGroup(group);
-	QStringList string;
-	string.append(QString::number(value.red()));
-	string.append(QString::number(value.green()));
-	string.append(QString::number(value.blue()));
-	changeEntry(name, string.join(","));
+	changeEntry(group, name, QString("%1,%2,%3").arg(value.red()).arg(value.green()).arg(value.blue()));
 }
 
 void ConfigFile::writeEntry(const QString &group,const QString &name, const QFont &value) {
-	setGroup(group);
-	QStringList string;
-	string.append(value.family());
-	string.append(QString::number(value.pointSize()));
-	changeEntry(name, string.join(","));
+	changeEntry(group, name, value.family()+","+QString::number(value.pointSize()));
 }
 
 void ConfigFile::writeEntry(const QString &group,const QString &name, const QPoint &value) {
-	setGroup(group);
-	QStringList string;
-	string.append(QString::number(value.x()));
-	string.append(QString::number(value.y()));
-	changeEntry(name, string.join(","));
+	changeEntry(group, name, QString("%1,%2").arg(value.x()).arg(value.y()));
 }
 
-QString ConfigFile::readEntry(const QString &group,const QString &name, const QString &def) {
-	setGroup(group);
-	QString string = getEntry(name);
+QString ConfigFile::readEntry(const QString &group,const QString &name, const QString &def) const
+{
+	QString string = getEntry(group, name);
 	if (string == QString::null)
 		return def;
 	return string;
 }
 
-int ConfigFile::readNumEntry(const QString &group,const QString &name, int def) {
-	setGroup(group);
+int ConfigFile::readNumEntry(const QString &group,const QString &name, int def) const
+{
 	bool ok;
-	QString string = getEntry(name);
+	QString string = getEntry(group, name);
 	if (string == QString::null)
 		return def;
 	int num = string.toInt(&ok);
@@ -250,10 +178,10 @@ int ConfigFile::readNumEntry(const QString &group,const QString &name, int def) 
 	return num;
 }
 
-double ConfigFile::readDoubleNumEntry(const QString &group,const QString &name, double def) {
-	setGroup(group);
+double ConfigFile::readDoubleNumEntry(const QString &group,const QString &name, double def) const
+{
 	bool ok;
-	QString string = getEntry(name);
+	QString string = getEntry(group, name);
 	if (string == QString::null)
 		return def;
 	double num = string.toDouble(&ok);
@@ -262,100 +190,78 @@ double ConfigFile::readDoubleNumEntry(const QString &group,const QString &name, 
 	return num;
 }
 
-bool ConfigFile::readBoolEntry(const QString &group,const QString &name, bool def) {
-	setGroup(group);
-	QString string = getEntry(name);
+bool ConfigFile::readBoolEntry(const QString &group,const QString &name, bool def) const
+{
+	QString string = getEntry(group, name);
 	if (string == QString::null)
 		return def;
-	if (string == "true")
-		return true;
-	if (string == "false")
-		return false;
-	return def;
+	return string=="true";
 }
 
-QRect ConfigFile::readRectEntry(const QString &group,const QString &name, const QRect *def) {
-	setGroup(group);
-	QString string = getEntry(name);
+QRect ConfigFile::readRectEntry(const QString &group,const QString &name, const QRect *def) const
+{
+	QString string = getEntry(group, name);
 	QStringList stringlist;
-	QRect rect;
+	QRect rect(0,0,0,0);
 	int l, t, w, h;
 	bool ok;
 
 	if (string == QString::null)
-		return def ? *def : QRect(0, 0, 0, 0);
+		return def ? *def : rect;
 	stringlist = QStringList::split(",", string);
 	if (stringlist.count() != 4)
-		return def ? *def : QRect(0, 0, 0, 0);
-	l = stringlist[0].toInt(&ok);
-	if (!ok)
-		return def ? *def : QRect(0, 0, 0, 0);
-	t = stringlist[1].toInt(&ok);
-	if (!ok)
-		return def ? *def : QRect(0, 0, 0, 0);
-	w = stringlist[2].toInt(&ok);
-	if (!ok)
-		return def ? *def : QRect(0, 0, 0, 0);
-	h = stringlist[3].toInt(&ok);
-	if (!ok)
-		return def ? *def : QRect(0, 0, 0, 0);
+		return def ? *def : rect;
+	l = stringlist[0].toInt(&ok); if (!ok) return def ? *def : rect;
+	t = stringlist[1].toInt(&ok); if (!ok) return def ? *def : rect;
+	w = stringlist[2].toInt(&ok); if (!ok) return def ? *def : rect;
+	h = stringlist[3].toInt(&ok); if (!ok) return def ? *def : rect;
 	rect.setRect(l, t, w, h);
 	return rect;
 }
 
-QSize ConfigFile::readSizeEntry(const QString &group,const QString &name, const QSize *def) {
-	setGroup(group);
-	QString string = getEntry(name);
+QSize ConfigFile::readSizeEntry(const QString &group,const QString &name, const QSize *def) const
+{
+	QString string = getEntry(group, name);
 	QStringList stringlist;
-	QSize size;
+	QSize size(0,0);
 	int w, h;
 	bool ok;
 
 	if (string == QString::null)
-		return def ? *def : QSize(0, 0);
+		return def ? *def : size;
 	stringlist = QStringList::split(",", string);
 	if (stringlist.count() != 2)
-		return def ? *def : QSize(0, 0);
-	w = stringlist[0].toInt(&ok);
-	if (!ok)
-		return def ? *def : QSize(0, 0);
-	h = stringlist[1].toInt(&ok);
-	if (!ok)
-		return def ? *def : QSize(0, 0);
+		return def ? *def : size;
+	w = stringlist[0].toInt(&ok); if (!ok) return def ? *def : size;
+	h = stringlist[1].toInt(&ok); if (!ok) return def ? *def : size;
 	size.setWidth(w);
 	size.setHeight(h);
 	return size;
 }
 
-QColor ConfigFile::readColorEntry(const QString &group,const QString &name, const QColor *def) {
-	setGroup(group);
-	QString string = getEntry(name);
+QColor ConfigFile::readColorEntry(const QString &group,const QString &name, const QColor *def) const
+{
+	QString string = getEntry(group, name);
 	QStringList stringlist;
-	QColor color;
+	QColor color(0,0,0);
 	int r, g, b;
 	bool ok;
 
 	if (string == QString::null)
-		return def ? *def : QColor(0, 0, 0);
+		return def ? *def : color;
 	stringlist = QStringList::split(",", string);
 	if (stringlist.count() != 3)
-		return def ? *def : QColor(0, 0, 0);
-	r = stringlist[0].toInt(&ok);
-	if (!ok)
-		return def ? *def : QColor(0, 0, 0);
-	g = stringlist[1].toInt(&ok);
-	if (!ok)
-		return def ? *def : QColor(0, 0, 0);
-	b = stringlist[2].toInt(&ok);
-	if (!ok)
-		return def ? *def : QColor(0, 0, 0);
+		return def ? *def : color;
+	r = stringlist[0].toInt(&ok); if (!ok) return def ? *def : color;
+	g = stringlist[1].toInt(&ok); if (!ok) return def ? *def : color;
+	b = stringlist[2].toInt(&ok); if (!ok) return def ? *def : color;
 	color.setRgb(r, g, b);
 	return color;
 }
 
-QFont ConfigFile::readFontEntry(const QString &group,const QString &name, const QFont *def) {
-	setGroup(group);
-	QString string = getEntry(name);
+QFont ConfigFile::readFontEntry(const QString &group,const QString &name, const QFont *def) const
+{
+	QString string = getEntry(group, name);
 	QStringList stringlist;
 	QFont font;
 	bool ok;
@@ -372,25 +278,21 @@ QFont ConfigFile::readFontEntry(const QString &group,const QString &name, const 
 	return font;
 }
 
-QPoint ConfigFile::readPointEntry(const QString &group,const QString &name, const QPoint *def) {
-	setGroup(group);
-	QString string = getEntry(name);
+QPoint ConfigFile::readPointEntry(const QString &group,const QString &name, const QPoint *def) const
+{
+	QString string = getEntry(group, name);
 	QStringList stringlist;
-	QPoint point;
+	QPoint point(0,0);
 	int x, y;
 	bool ok;
 
 	if (string == QString::null)
-		return def ? *def : QPoint(0, 0);
+		return def ? *def : point;
 	stringlist = QStringList::split(",", string);
 	if (stringlist.count() != 2)
-		return def ? *def : QPoint(0, 0);
-	x = stringlist[0].toInt(&ok);
-	if (!ok)
-		return def ? *def : QPoint(0, 0);
-	y = stringlist[1].toInt(&ok);
-	if (!ok)
-		return def ? *def : QPoint(0, 0);
+		return def ? *def : point;
+	x = stringlist[0].toInt(&ok); if (!ok) return def ? *def : point;
+	y = stringlist[1].toInt(&ok); if (!ok) return def ? *def : point;
 	point.setX(x);
 	point.setY(y);
 	return point;
@@ -398,62 +300,52 @@ QPoint ConfigFile::readPointEntry(const QString &group,const QString &name, cons
 
 void ConfigFile::addVariable(const QString &group, const QString &name, const QString &defvalue)
 {
-	setGroup(group);
-	if (getEntry(name)=="")
+	if (getEntry(group, name)=="")
 		writeEntry(group,name,defvalue);
 }
 void ConfigFile::addVariable(const QString &group, const QString &name, const char *defvalue)
 {
-	setGroup(group);
-	if (getEntry(name)=="")
+	if (getEntry(group, name)=="")
 		writeEntry(group,name,defvalue);
 }
 void ConfigFile::addVariable(const QString &group, const QString &name, const int defvalue)
 {
-	setGroup(group);
-	if (getEntry(name)=="")
+	if (getEntry(group, name)=="")
 		writeEntry(group,name,defvalue);
 }
 void ConfigFile::addVariable(const QString &group, const QString &name, const double defvalue)
 {
-	setGroup(group);
-	if (getEntry(name)=="")
+	if (getEntry(group, name)=="")
 		writeEntry(group,name,defvalue);
 }
 void ConfigFile::addVariable(const QString &group, const QString &name, const bool defvalue)
 {
-	setGroup(group);
-	if (getEntry(name)=="")
+	if (getEntry(group, name)=="")
 		writeEntry(group,name,defvalue);
 }
 void ConfigFile::addVariable(const QString &group, const QString &name, const QRect &defvalue)
 {
-	setGroup(group);
-	if (getEntry(name)=="")
+	if (getEntry(group, name)=="")
 		writeEntry(group,name,defvalue);
 }
 void ConfigFile::addVariable(const QString &group, const QString &name, const QSize &defvalue)
 {
-	setGroup(group);
-	if (getEntry(name)=="")
+	if (getEntry(group, name)=="")
 		writeEntry(group,name,defvalue);
 }
 void ConfigFile::addVariable(const QString &group, const QString &name, const QColor &defvalue)
 {
-	setGroup(group);
-	if (getEntry(name)=="")
+	if (getEntry(group, name)=="")
 		writeEntry(group,name,defvalue);
 }
 void ConfigFile::addVariable(const QString &group, const QString &name, const QFont &defvalue)
 {
-	setGroup(group);
-	if (getEntry(name)=="")
+	if (getEntry(group, name)=="")
 		writeEntry(group,name,defvalue);
 }
 void ConfigFile::addVariable(const QString &group, const QString &name, const QPoint &defvalue)
 {
-	setGroup(group);
-	if (getEntry(name)=="")
+	if (getEntry(group, name)=="")
 		writeEntry(group,name,defvalue);
 }
 

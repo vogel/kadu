@@ -251,7 +251,6 @@ void Kadu::keyPressEvent(QKeyEvent *e) {
 /* a monstrous constructor so Kadu would take longer to start up */
 Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 {
-
 	//potrzebne do translacji
 	QT_TRANSLATE_NOOP("@default", "General");
 	QT_TRANSLATE_NOOP("@default", "User data");
@@ -264,6 +263,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	QT_TRANSLATE_NOOP("@default", "Set language:");
 
 	KaduSlots *kaduslots=new KaduSlots();
+	int myUin=config_file.readNumEntry("General", "UIN");
 
 	ConfigDialog::addTab("General");
 	ConfigDialog::addHGroupBox("General", "General", "User data");
@@ -368,8 +368,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	/* a newbie? */
 
-	if (config_file.readNumEntry("General", "UIN"))
-		setCaption(tr("Kadu: %1").arg(config_file.readNumEntry("General", "UIN")));
+	if (myUin)
+		setCaption(tr("Kadu: %1").arg(myUin));
 
 	pending.loadFromFile();
 
@@ -528,8 +528,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	if ((!config_file.readBoolEntry("General", "RunDocked")) || (!config_file.readBoolEntry("General", "UseDocking")))
 		show();
 
-	if (config_file.readNumEntry("General", "UIN")) {
-		uc = new UpdatesClass(config_file.readNumEntry("General", "UIN"));
+	if (myUin) {
+		uc = new UpdatesClass(myUin);
 		if (config_file.readBoolEntry("General", "CheckUpdates"))
 			QObject::connect(uc->op, SIGNAL(data(const QByteArray &, QNetworkOperation *)),
 				this, SLOT(gotUpdatesInfo(const QByteArray &, QNetworkOperation *)));
@@ -554,11 +554,8 @@ void Kadu::popupMenu()
 	users = activeUserBox->getSelectedUsers();
 	UserListElement user = users.first();
 
-	bool isOurUin=false;
+	bool isOurUin=users.containsUin(config_file.readNumEntry("General", "UIN"));
 	
-	if(users.containsUin(config_file.readNumEntry("General", "UIN")))
-		isOurUin = true;
-
 	if (!user.mobile.length() || users.count() != 1)
 		UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("Send SMS")), false);
 
@@ -1726,12 +1723,13 @@ void Kadu::createStatusPopupMenu() {
 		dockppm->insertItem(icon, qApp->translate("@default", statustext[i]), i);
 		}
 
+	bool privateStatus=config_file.readBoolEntry("General", "PrivateStatus");
 	statusppm->insertSeparator();
 	dockppm->insertSeparator();
 	statusppm->insertItem(tr("Private"), 8);
-	statusppm->setItemChecked(8, config_file.readBoolEntry("General", "PrivateStatus"));
+	statusppm->setItemChecked(8, privateStatus);
 	dockppm->insertItem(tr("Private"), 8);
-	dockppm->setItemChecked(8, config_file.readBoolEntry("General", "PrivateStatus"));
+	dockppm->setItemChecked(8, privateStatus);
 
 	statusppm->setCheckable(true);
 	dockppm->setCheckable(true);

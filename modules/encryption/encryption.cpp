@@ -86,9 +86,10 @@ void EncryptionManager::createConfigDialogSlot()
 
 void EncryptionManager::generateMyKeys()
 {
+	int myUin=config_file.readNumEntry("General","UIN");
 	QString keyfile_path;	
 	keyfile_path.append(ggPath("keys/"));
-	keyfile_path.append(QString::number(config_file.readNumEntry("General","UIN")));
+	keyfile_path.append(QString::number(myUin));
 	keyfile_path.append(".pem");
 	QFileInfo keyfile(keyfile_path);
 	
@@ -102,7 +103,7 @@ void EncryptionManager::generateMyKeys()
 	// uzywamy mkdir z sys/stat.h - nie ma w QT mozliwosci ustawienia praw do kat.
 	mkdir(tmp.data(), 0700);
 
-	if (sim_key_generate(config_file.readNumEntry("General","UIN")) < 0) {
+	if (sim_key_generate(myUin) < 0) {
 		QMessageBox::critical(0, "Kadu", tr("Error generating keys"), tr("OK"), QString::null, 0);
 		return;
 	}

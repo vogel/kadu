@@ -329,6 +329,7 @@ void HistoryManager::convHist2ekgForm(UinsList uins) {
 	QDateTime datetime, sdatetime;
 	QRegExp sep("\\s"), sep2("::");
 	our = foreign = false;
+	int myUin=config_file.readNumEntry("General","UIN");
 	while ((line = stream.readLine()) != QString::null) {
 //		our = !line.find(QRegExp("^\\S+\\s::\\s\\d{2,2}\\s\\d{2,2}\\s\\d{4,4},\\s\\(\\d{2,2}:\\d{2,2}:\\d{2,2}\\)$"));
 		our = !line.find(QRegExp("^(\\S|\\s)+\\s::\\s\\d{2,2}\\s\\d{2,2}\\s\\d{4,4},\\s\\(\\d{2,2}:\\d{2,2}:\\d{2,2}\\)$"));
@@ -372,7 +373,7 @@ void HistoryManager::convHist2ekgForm(UinsList uins) {
 				if (uins.count() > 1)
 					uin = 0;
 				else
-					if (config_file.readNumEntry("General","UIN") != uins[0])
+					if (myUin != uins[0])
 						uin = uins[0];
 					else
 						uin = uins[1];
@@ -386,7 +387,7 @@ void HistoryManager::convHist2ekgForm(UinsList uins) {
 					if (uins.count() > 1)
 						uin = 0;
 					else
-						if (config_file.readNumEntry("General","UIN") != uins[0])
+						if (myUin != uins[0])
 							uin = uins[0];
 						else
 							uin = uins[1];
@@ -1194,13 +1195,10 @@ void History::formatHistoryEntry(QString &text, const HistoryEntry &entry) {
 
 	if (entry.type == HISTORYMANAGER_ENTRY_SMSSEND)
 		text.append(entry.mobile + " SMS");
+	else if (entry.type & (HISTORYMANAGER_ENTRY_CHATSEND | HISTORYMANAGER_ENTRY_MSGSEND))
+		text.append(config_file.readEntry("General","Nick"));
 	else
-		if (entry.type & (HISTORYMANAGER_ENTRY_CHATSEND | HISTORYMANAGER_ENTRY_MSGSEND))
-		{
-			text.append(config_file.readEntry("General","Nick"));
-		}
-		else
-			text.append(entry.nick);
+		text.append(entry.nick);
 	
 	text.append(QString(" :: ") + printDateTime(entry.date));
 	if (entry.type & (HISTORYMANAGER_ENTRY_CHATRCV | HISTORYMANAGER_ENTRY_MSGRCV))

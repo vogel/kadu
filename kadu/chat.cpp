@@ -1043,9 +1043,10 @@ void Chat::pruneWindow(void) {
 	int index,occurences;
 
 	occurences = 0;
+	int chatPruneLen=config_file.readNumEntry("Chat","ChatPruneLen");
 	if (config_file.readBoolEntry("Chat","ScrollDown")) {
 		index = -1;
-		while (occurences != config_file.readNumEntry("Chat","ChatPruneLen") && totaloccurences > config_file.readNumEntry("Chat","ChatPruneLen") - 1) {
+		while (occurences !=chatPruneLen  && totaloccurences > chatPruneLen - 1) {
 			index = body->text().findRev(QString("<table"), index - 8);
 			occurences++;
 			}
@@ -1055,7 +1056,7 @@ void Chat::pruneWindow(void) {
 		}
 	else {
 		index = 0;
-		while (occurences != config_file.readNumEntry("Chat","ChatPruneLen") && totaloccurences > config_file.readNumEntry("Chat","ChatPruneLen") ) {
+		while (occurences != chatPruneLen && totaloccurences > chatPruneLen ) {
 			if (occurences == 0)
 				index = body->text().find(QString("<table"), 0);
 			else
@@ -1065,7 +1066,7 @@ void Chat::pruneWindow(void) {
 			}
 		totaloccurences++;
 
-		if (totaloccurences > config_file.readNumEntry("Chat","ChatPruneLen") && index != -1 && index != 0)
+		if (totaloccurences > chatPruneLen && index != -1 && index != 0)
 			body->setText(body->text().left(index));
 		}
 }

@@ -31,6 +31,7 @@ void PendingMessage::activate()
 	bool msgsFromHist = false;
 	QString toadd;
 	
+	bool useDocking=config_file.readBoolEntry("General", "UseDocking");
 	if ((MsgClass & GG_CLASS_CHAT) == GG_CLASS_CHAT || (MsgClass & GG_CLASS_MSG) == GG_CLASS_MSG
 		|| (!MsgClass))
 	{
@@ -49,7 +50,7 @@ void PendingMessage::activate()
 				e.description = "";
 				e.email = "";
 				e.anonymous = true;
-				if (config_file.readBoolEntry("General", "UseDocking"))
+				if (useDocking)
 					userlist.addUser(e);
 				else
 					kadu->addUser(e);

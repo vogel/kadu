@@ -313,6 +313,8 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 	mesg.replace(QRegExp("^<html><head>.*<body\\s.*\">\\r\\n"), "");
 	mesg.replace(QRegExp("\\r\\n</body></html>\\r\\n$"), "");
 	mesg.replace(QRegExp("<p>"), "");
+	mesg.replace(QRegExp("<p dir=\"ltr\">"), "");
+//	mesg.replace(QRegExp("<p dir=\"rtl\">"), "");
 	mesg.replace(QRegExp("</p>"), "");
 	regexp.setMinimal(true);
 	regexp.setPattern("<font (face=\"(\\S)+\"\\s)?(size=\"\\d{1,2}\"(\\s)?)?(style=\"font-size:\\d{1,2}pt\"(\\s)?)?>");
@@ -454,6 +456,7 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 	searchChars['}']=true;
 	searchChars[']']=true;
 	
+	int myUin=config_file.readNumEntry("General", "UIN");
 	while (index<len)
 	{
 		ParseElem pe1, pe;
@@ -501,7 +504,7 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 					break;
 				case 'd':
 					i++;
-					if(config_file.readNumEntry("General", "UIN") == ule.uin &&
+					if(myUin == ule.uin &&
 							! ifStatusWithDescription(getActualStatus()))
 						pe.str=QString::null;
 					else
@@ -1549,10 +1552,10 @@ QString Themes::themePath(const QString& theme)
 
 QString Themes::getThemeEntry(const QString& name)
 {
-	for (unsigned int i=0;i<entries.count();i++)
-		if (entries[i].name == name)
-			return entries[i].value;
-	return QString("");
+	if (entries.contains(name))
+		return entries[name];
+	else
+		return QString("");
 }
 
 void CreateNotifier::notify(QObject* new_object)

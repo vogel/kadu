@@ -18,16 +18,12 @@
 #include "userlist.h"
 #include "config_file.h"
 
-#define __c2q(__char_pointer__) QString::fromLocal8Bit(__char_pointer__)
-
 /*
 	Zmienia sciezke relatywna do katalogu z ustawieniami gg
 	na sciezke bezwzgledna uwzgledniajac zmienne srodowiskowe
 	$HOME i $CONFIG_DIR
 */
 QString ggPath(const QString &subpath);
-
-//#define i18n(String) __c2q(gettext(String))
 
 QString cp2unicode(const unsigned char *);
 QCString unicode2cp(const QString &);
@@ -228,7 +224,7 @@ class Themes : public QObject
 		QStringList ThemesList;
 		QStringList ThemesPaths;
 		QString ConfigName, Name, ActualTheme;
-		QValueList<ConfigFileEntry> entries;
+		QMap<QString, QString> entries;
 		QStringList getSubDirs(const QString& path);
 		QString fixFileName(const QString& path,const QString& fn);
 

@@ -118,6 +118,8 @@ void AutoAwayTimer::checkIdleTime()
 
 	mousepos=actmousepos;
 
+	int autoAwayTime=config_file.readNumEntry("General","AutoAwayTime");
+	int autoAwayCheckTime=config_file.readNumEntry("General","AutoAwayCheckTime");
 //	sprawdzenie czy wzrosla liczba obsluzonych przerwan klawiatury lub myszki
 	QFile f("/proc/interrupts");
 	if (f.open(IO_ReadOnly)) {
@@ -149,10 +151,10 @@ void AutoAwayTimer::checkIdleTime()
 		}
 	
 	if(inactive)
-		idletime+=config_file.readNumEntry("General", "AutoAwayCheckTime");
+		idletime+=autoAwayCheckTime;
 
 //	czy mamy stac sie "zajeci" po config.autoawaytime sekund nieaktywnosci
-	if (idletime >= config_file.readNumEntry("General","AutoAwayTime") && !autoawayed) {
+	if (idletime >= autoAwayTime && !autoawayed) {
 		beforeAutoAway = getActualStatus() & (~GG_STATUS_FRIENDS_MASK);;
 		kdebug("AutoAwayTimer::checkIdleTime(): checking whether to go auto away, beforeAutoAway = %d\n", beforeAutoAway);
 		switch (beforeAutoAway) {
@@ -165,21 +167,21 @@ void AutoAwayTimer::checkIdleTime()
 				autoawayed = true;
 				break;
 			default:
-				start(config_file.readNumEntry("General", "AutoAwayCheckTime")*1000, TRUE);
+				start(autoAwayCheckTime*1000, TRUE);
 				return;
 			}
 		kdebug("AutoAwayTimer::checkIdleTime(): I am away!\n");
 		}
 	else
 //		jesli bylismy "zajeci" to stajemy sie z powrotem "dostepni"
-		if (idletime < config_file.readNumEntry("General","AutoAwayTime") && autoawayed) {
+		if (idletime < autoAwayTime && autoawayed) {
 			kdebug("AutoAwayTimer::checkIdleTime(): auto away cancelled\n");
 			autoawayed = false;
 			kadu->setStatus(beforeAutoAway);
 			}
 
 //potrzebne na wypadek zerwania polaczenia i ponownego polaczenia sie z statusem innym niz busy*
-	start(config_file.readNumEntry("General", "AutoAwayCheckTime")*1000, TRUE);
+	start(autoAwayCheckTime*1000, TRUE);
 }
 
 void AutoAwayTimer::on() {
@@ -272,12 +274,12 @@ void AutoAwaySlots::onDestroyConfigDialog()
 
 	int status = getActualStatus();
 
+	bool privateStatus=config_file.readBoolEntry("General", "PrivateStatus");
+	
 	if (status != GG_STATUS_NOT_AVAIL)
-	if ((!(status & GG_STATUS_FRIENDS_MASK)&& 
-		config_file.readBoolEntry("General", "PrivateStatus"))
-		|| ((status & GG_STATUS_FRIENDS_MASK) &&  
-		!config_file.readBoolEntry("General", "PrivateStatus")))
+	if ((!(status & GG_STATUS_FRIENDS_MASK)&& privateStatus)
+		|| ((status & GG_STATUS_FRIENDS_MASK) && !privateStatus))
 		kadu->setStatus(status & (~GG_STATUS_FRIENDS_MASK));
 
-	statusppm->setItemChecked(8, config_file.readBoolEntry("General", "PrivateStatus"));
+	statusppm->setItemChecked(8, privateStatus);
 }

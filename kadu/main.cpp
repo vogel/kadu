@@ -73,10 +73,11 @@ int main(int argc, char *argv[])
 
 	// ladowanie tlumaczenia
 	QTranslator qt_qm(0);
-	qt_qm.load(QString(DATADIR) + QString("/kadu/translations/qt_") + config_file.readEntry("General", "Language", QTextCodec::locale()), ".");
+	QString lang=config_file.readEntry("General", "Language", QTextCodec::locale());
+	qt_qm.load(QString(DATADIR) + QString("/kadu/translations/qt_") + lang, ".");
 	qApp->installTranslator(&qt_qm);
 	QTranslator kadu_qm(0);
-	kadu_qm.load(QString(DATADIR) + QString("/kadu/translations/kadu_") + config_file.readEntry("General", "Language", QTextCodec::locale()), ".");
+	kadu_qm.load(QString(DATADIR) + QString("/kadu/translations/kadu_") + lang, ".");
 	qApp->installTranslator(&kadu_qm);
 
 	QFile f(ggPath("lock"));
@@ -127,9 +128,10 @@ int main(int argc, char *argv[])
 		}
 
 	own_description = defaultdescriptions.first();
-	if (config_file.readNumEntry("General","DefaultStatus",GG_STATUS_NOT_AVAIL) != GG_STATUS_NOT_AVAIL && config_file.readNumEntry("General","DefaultStatus",GG_STATUS_NOT_AVAIL) != GG_STATUS_NOT_AVAIL_DESCR) {
+	int defaultStatus=config_file.readNumEntry("General","DefaultStatus",GG_STATUS_NOT_AVAIL);
+	if (defaultStatus != GG_STATUS_NOT_AVAIL && defaultStatus != GG_STATUS_NOT_AVAIL_DESCR) {
 		kadu->autohammer = true;
-		kadu->setStatus(config_file.readNumEntry("General","DefaultStatus",GG_STATUS_NOT_AVAIL));
+		kadu->setStatus(defaultStatus);
 		}
 
 	QObject::connect(qApp, SIGNAL(aboutToQuit()), kadu, SLOT(quitApplication()));

@@ -87,7 +87,8 @@ void KaduListBoxPixmap::paint(QPainter *painter) {
 
 		QFontMetrics fm = painter->fontMetrics();
 
-		if (config_file.readBoolEntry("Look", "ShowDesc") && hasDescription)
+		bool showDesc=config_file.readBoolEntry("Look", "ShowDesc");
+		if (showDesc && hasDescription)
 			yPos = fm.ascent() + 1;
 		else
 			yPos = ((itemHeight - fm.height()) / 2) + fm.ascent();
@@ -99,7 +100,7 @@ void KaduListBoxPixmap::paint(QPainter *painter) {
 
 //		kdebug("KaduListBoxPixmap::paint(): isOurUin = %d, own_description = %s\n",
 //			isOurUin, (const char *)unicode2latin(own_description));
-		if (config_file.readBoolEntry("Look", "ShowDesc") && hasDescription) {
+		if (showDesc && hasDescription) {
 			yPos += fm.height() - fm.descent();
 
 			QFont newFont = QFont(oldFont);
@@ -114,8 +115,8 @@ void KaduListBoxPixmap::paint(QPainter *painter) {
 					yPos += fm.lineSpacing();
 				}
 			}
-				else
-					painter->drawText(pm.width() + 5, yPos, descr);
+			else
+				painter->drawText(pm.width() + 5, yPos, descr);
 
 			painter->setFont(oldFont);
 		}
@@ -288,7 +289,6 @@ void UserBox::refresh()
 	KaduListBoxPixmap *lbp;
 
 	kdebugf();
-
 	this->setPaletteBackgroundColor(config_file.readColorEntry("Look","UserboxBgColor"));
 	this->setPaletteForegroundColor(config_file.readColorEntry("Look","UserboxFgColor"));
 	this->QListBox::setFont(config_file.readFontEntry("Look","UserboxFont"));
@@ -304,10 +304,12 @@ void UserBox::refresh()
 	QStringList i_users;
 	QStringList n_users;
 	QStringList b_users;
+	
+	int myUin=config_file.readNumEntry("General", "UIN");
 	for (i = 0; i < Users.count(); i++) {
 		UserListElement &user = userlist.byAltNick(Users[i]);
 		if (user.uin) {
-			if (user.uin == config_file.readNumEntry("General", "UIN")) {
+			if (user.uin == myUin) {
 				user.status = getActualStatus() & (~GG_STATUS_FRIENDS_MASK);
 				user.description = own_description;
 				}
@@ -337,11 +339,12 @@ void UserBox::refresh()
 	// Czyscimy liste
 	clear();
 	// Dodajemy aktywnych
+	bool showBold=config_file.readBoolEntry("Look", "ShowBold");
 	for (i = 0; i < a_users.count(); i++)
 	{
 		UserListElement &user = userlist.byAltNick(a_users[i]);
 		bool has_mobile = user.mobile.length();
-		bool bold = config_file.readBoolEntry("Look", "ShowBold") ? (user.status == GG_STATUS_AVAIL || user.status == GG_STATUS_AVAIL_DESCR || user.status == GG_STATUS_BUSY || user.status == GG_STATUS_BUSY_DESCR) : 0;
+		bool bold = showBold ? (user.status == GG_STATUS_AVAIL || user.status == GG_STATUS_AVAIL_DESCR || user.status == GG_STATUS_BUSY || user.status == GG_STATUS_BUSY_DESCR) : 0;
 		if (pending.pendingMsgs(user.uin)) {
 			lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Message"), user.altnick, user.description, bold);
 			insertItem(lbp);
@@ -466,7 +469,6 @@ void UserBox::refresh()
 	for (i = 0; i < s_users.count(); i++)
 		setSelected(findItem(s_users[i]), true);
 	setCurrentItem(findItem(s_user));
-
 	kdebug("UserBox::refresh() exit\n");
 }
 

@@ -7,17 +7,7 @@
 #include <qsize.h>
 #include <qcolor.h>
 #include <qfont.h>
-
-
-struct ConfigFileEntry {
-	QString name;
-	QString value;
-};
-	
-struct ConfigFileGroup {
-	QString name;
-	QValueList<ConfigFileEntry> entries;
-};
+#include <qmap.h>
 
 /**
 	Klasa reprezentuj±ca plik z zapisem konfiguracji programu
@@ -27,20 +17,19 @@ class ConfigFile {
 	private:
 		void read();
 		void write();
-		bool changeEntry(const QString &name, const QString &value);
-		QString getEntry(const QString &name, bool *ok = 0) const;
+		bool changeEntry(const QString &group, const QString &name, const QString &value);
+		QString getEntry(const QString &group, const QString &name, bool *ok = 0) const;
 
 		QString filename;
-		QValueList<ConfigFileGroup> groups;
-		struct ConfigFileGroup *activegroup;
-		void setGroup(const QString &name);
-
+		QMap<QString, QMap<QString, QString> > groups;
+		mutable QString activeGroupName;
+		mutable QMap<QString, QString> *activeGroup;
 
 	public:
 		ConfigFile(const QString &filename);
 		void sync();
 		
-		QValueList<ConfigFileEntry> getGroupSection(const QString& name);
+		QMap<QString, QString>& getGroupSection(const QString& name);
 
 		void writeEntry(const QString &group,const QString &name, const QString &value);
 		void writeEntry(const QString &group,const QString &name, const char *value);
@@ -53,15 +42,15 @@ class ConfigFile {
 		void writeEntry(const QString &group,const QString &name, const QFont &value);
 		void writeEntry(const QString &group,const QString &name, const QPoint &value);
 
-		QString readEntry(const QString &group,const QString &name, const QString &def = QString::null);
-		int readNumEntry(const QString &group,const QString &name, int def = 0);
-		double readDoubleNumEntry(const QString &group,const QString &name, double def = 0.0);
-		bool readBoolEntry(const QString &group,const QString &name, bool def = false);
-		QRect readRectEntry(const QString &group,const QString &name, const QRect *def = 0L);
-		QSize readSizeEntry(const QString &group,const QString &name, const QSize *def = 0L);
-		QColor readColorEntry(const QString &group,const QString &name, const QColor *def = 0L);
-		QFont readFontEntry(const QString &group,const QString &name, const QFont *def = 0L);
-		QPoint readPointEntry(const QString &group,const QString &name, const QPoint *def = 0L);
+		QString readEntry(const QString &group,const QString &name, const QString &def = QString::null) const;
+		int readNumEntry(const QString &group,const QString &name, int def = 0) const;
+		double readDoubleNumEntry(const QString &group,const QString &name, double def = 0.0) const;
+		bool readBoolEntry(const QString &group,const QString &name, bool def = false) const;
+		QRect readRectEntry(const QString &group,const QString &name, const QRect *def = 0L) const;
+		QSize readSizeEntry(const QString &group,const QString &name, const QSize *def = 0L) const;
+		QColor readColorEntry(const QString &group,const QString &name, const QColor *def = 0L) const;
+		QFont readFontEntry(const QString &group,const QString &name, const QFont *def = 0L) const;
+		QPoint readPointEntry(const QString &group,const QString &name, const QPoint *def = 0L) const;
 		
 		void addVariable(const QString &group,const QString &name, const QString &value);
 		void addVariable(const QString &group,const QString &name, const char *value);
@@ -73,8 +62,6 @@ class ConfigFile {
 		void addVariable(const QString &group,const QString &name, const QColor &value);
 		void addVariable(const QString &group,const QString &name, const QFont &value);
 		void addVariable(const QString &group,const QString &name, const QPoint &value);
-
-
 };
 
 extern ConfigFile config_file;
