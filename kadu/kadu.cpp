@@ -1182,40 +1182,40 @@ void Kadu::error(GaduError err)
 	switch (err)
 	{
 		case ConnectionServerNotFound:
-			msg = QString(tr("Unable to connect, server has not been found"));
+			msg = tr("Unable to connect, server has not been found");
 			break;
 
 		case ConnectionCannotConnect:
-			msg = QString(tr("Unable to connect"));
+			msg = tr("Unable to connect");
 			break;
 
 		case ConnectionNeedEmail:
-			msg = QString(tr("Please change your email in \"Change password/email\" window. "
-				"Leave new password field blank."));
+			msg = tr("Please change your email in \"Change password/email\" window. "
+				"Leave new password field blank.");
 			continue_connecting = false;
 			MessageBox::msg(msg);
 			break;
 
 		case ConnectionInvalidData:
-			msg = QString(tr("Unable to connect, server has returned unknown data"));
+			msg = tr("Unable to connect, server has returned unknown data");
 			break;
 
 		case ConnectionCannotRead:
-			msg = QString(tr("Unable to connect, connection break during reading"));
+			msg = tr("Unable to connect, connection break during reading");
 			break;
 
 		case ConnectionCannotWrite:
-			msg = QString(tr("Unable to connect, connection break during writing"));
+			msg = tr("Unable to connect, connection break during writing");
 			break;
 
 		case ConnectionIncorrectPassword:
-			msg = QString(tr("Unable to connect, incorrect password"));
+			msg = tr("Unable to connect, incorrect password");
 			continue_connecting = false;
 			MessageBox::wrn(tr("Connection will be stoped\nYour password is incorrect !"));
 			break;
 
 		case ConnectionTlsError:
-			msg = QString(tr("Unable to connect, error of negotiation TLS"));
+			msg = tr("Unable to connect, error of negotiation TLS");
 			break;
 
 		case ConnectionUnknow:
@@ -1223,11 +1223,11 @@ void Kadu::error(GaduError err)
 			break;
 
 		case ConnectionTimeout:
-			msg = QString(tr("Connection timeout!"));
+			msg = tr("Connection timeout!");
 			break;
 
 		case Disconnected:
-			msg = QString(tr("Disconnection has occured"));
+			msg = tr("Disconnection has occured");
 			break;
 
 		default:

@@ -2129,7 +2129,7 @@ void HistorySlots::updateQuoteTimeLabel(int value)
 {
 	kdebugf();
 	ConfigDialog::getLabel("History", "", "dayhour") ->
-			setText(QString(tr("%1 day(s) %2 hour(s)")).arg(-value / 24).arg((-value) % 24));
+			setText(tr("%1 day(s) %2 hour(s)").arg(-value / 24).arg((-value) % 24));
 	kdebugf2();
 }
 

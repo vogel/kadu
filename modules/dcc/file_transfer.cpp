@@ -377,7 +377,7 @@ void FileTransferManager::needFileAccept(DccSocket* socket)
 			if (fi.exists() && fi.size() < socket->ggDccStruct()->file_info.size)
 			{
 				str.truncate(0);
-				str = QString(tr("File %1 already exists.")).arg(f);
+				str = tr("File %1 already exists.").arg(f);
 				switch (QMessageBox::information(0, tr("save file"),
 					str, tr("Overwrite"), tr("Resume"),
 					tr("Cancel"), 0, 2))
