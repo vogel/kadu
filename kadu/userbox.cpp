@@ -88,6 +88,9 @@ void UserBox::mousePressEvent(QMouseEvent *e) {
 	if (e->button() != RightButton)
 		QListBox::mousePressEvent(e);
 	else {
+		if(!(e->state()&Qt::ControlButton))
+			for(int i=0; i<count(); i++)
+				setSelected(i,FALSE);
 		setSelected(itemAt(e->pos()), TRUE);
 		setCurrentItem(itemAt(e->pos()));
 		emit rightButtonClicked(itemAt(e->pos()), e->globalPos());
