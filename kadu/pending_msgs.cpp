@@ -205,11 +205,11 @@ void PendingMsgs::openMessages() {
 							kadu->addUser(e);
 					}
 				k = kadu->openChat(elem.uins);
-				QValueList<UinsList>::iterator it = wasFirstMsgs.begin();
-				while (it != wasFirstMsgs.end() && !elem.uins.equals(*it))
-					it++;
-				if (it != wasFirstMsgs.end())
-					wasFirstMsgs.remove(*it);
+//				QValueList<UinsList>::iterator it = wasFirstMsgs.begin();
+//				while (it != wasFirstMsgs.end() && !elem.uins.equals(*it))
+//					it++;
+//				if (it != wasFirstMsgs.end())
+//					wasFirstMsgs.remove(*it);
 				if (!msgsFromHist) {
 					msgsFromHist = true;
 					chats[k].ptr->writeMessagesFromHistory(elem.uins, elem.time);

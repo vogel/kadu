@@ -44,7 +44,7 @@ extern "C"
 #endif
 //
 
-QValueList<UinsList> wasFirstMsgs;
+//QValueList<UinsList> wasFirstMsgs;
 const char *colors[16] = {"#FF0000", "#A00000", "#00FF00", "#00A000", "#0000FF", "#0000A0", "#FFFF00",
 	"#A0A000", "#FF00FF", "#A000A0", "#00FFFF", "#00A0A0", "#FFFFFF", "#A0A0A0", "#808080", "#000000"};
 
@@ -622,9 +622,10 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time) {
 	
 	kdebug("Chat::writeMessageFromHistory()\n");
 
-	QValueList<UinsList>::iterator uinsit = wasFirstMsgs.begin();
-	while (uinsit != wasFirstMsgs.end() && !senders.equals(*uinsit))
-		uinsit++;
+//	QValueList<UinsList>::iterator uinsit = wasFirstMsgs.begin();
+//	while (uinsit != wasFirstMsgs.end() && !senders.equals(*uinsit))
+//		uinsit++;
+
 //	if (uinsit != wasFirstMsgs.end())
 //		return;
 //	else

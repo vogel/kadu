@@ -945,11 +945,11 @@ void Kadu::openChat()
 				|| !elem.msgclass) {
 				l = chats.count();
 				k = openChat(elem.uins);
-				QValueList<UinsList>::iterator it = wasFirstMsgs.begin();
-				while (it != wasFirstMsgs.end() && !elem.uins.equals(*it))
-					it++;
-				if (it != wasFirstMsgs.end())
-					wasFirstMsgs.remove(*it);
+//				QValueList<UinsList>::iterator it = wasFirstMsgs.begin();
+//				while (it != wasFirstMsgs.end() && !elem.uins.equals(*it))
+//					it++;
+//				if (it != wasFirstMsgs.end())
+//					wasFirstMsgs.remove(*it);
 				if (l < chats.count())
 					chats[k].ptr->writeMessagesFromHistory(elem.uins, elem.time);
 				chats[k].ptr->formatMessage(false,
@@ -1444,11 +1444,11 @@ void Kadu::sendMessage(QListBoxItem *item) {
 				
 				l = chats.count();
 				k = openChat(elem.uins);
-				QValueList<UinsList>::iterator it = wasFirstMsgs.begin();
-				while (it != wasFirstMsgs.end() && !elem.uins.equals(*it))
-					it++;
-				if (it != wasFirstMsgs.end())
-					wasFirstMsgs.remove(*it);
+//				QValueList<UinsList>::iterator it = wasFirstMsgs.begin();
+//				while (it != wasFirstMsgs.end() && !elem.uins.equals(*it))
+//					it++;
+//				if (it != wasFirstMsgs.end())
+//					wasFirstMsgs.remove(*it);
 				if (!msgsFromHist) {
 					if (l < chats.count())
 						chats[k].ptr->writeMessagesFromHistory(elem.uins, elem.time);

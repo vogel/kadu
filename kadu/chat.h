@@ -13,7 +13,7 @@
 #include "userbox.h"
 #include "../config.h"
 
-extern QValueList<UinsList> wasFirstMsgs;
+//extern QValueList<UinsList> wasFirstMsgs;
 
 class EmoticonSelector;
 class ColorSelector;
