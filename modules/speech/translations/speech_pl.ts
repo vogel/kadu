@@ -91,11 +91,11 @@
     </message>
     <message>
         <source>Message too long (male):</source>
-        <translation>Zadługa wiadomość (mężczyzna): </translation>
+        <translation>Za długa wiadomość (mężczyzna): </translation>
     </message>
     <message>
         <source>Message too long (female):</source>
-        <translation>Zadługa wiadomość (kobieta): </translation>
+        <translation>Za długa wiadomość (kobieta): </translation>
     </message>
 </context>
 <context>
