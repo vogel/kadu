@@ -661,13 +661,13 @@ void ConfigDialog::setupTab5(void) {
 	b_defserver->setText(i18n("Use default server"));
 
 	g_server = new QVGroupBox(box5);
-	g_server->setTitle(i18n("Server"));
+	g_server->setTitle(i18n("Servers"));
 	g_server->setMargin(2);
 
 	QHBox *serverbox = new QHBox(g_server);
 	serverbox->setSpacing(5);
 	QLabel *l3 = new QLabel(serverbox);
-	l3->setText(i18n("IP address:"));
+	l3->setText(i18n("IP addresses:"));
 	e_server = new QLineEdit(serverbox);
 
 	g_fwdprop->setEnabled(inet_addr(config.extip) && config.extport > 1023);    
