@@ -3,12 +3,12 @@
 * dostosowanie do QT 3.1.0 i KDE 3.1-rc5
 * lepszy selektor emotow - potrafi wystawac za chat
   i zachowuje sie jak popup-menu
-* mo¿na anulowaæ wysy³anie wiadomo¶ci podczas oczekiwania na potwierdzenie
-  jej wys³ania
+* mo¿na anulowaæ oczekiwanie na potwierdzenie dostarczenia wiadomosci
 * wyszukiwanie u¿ytkowników: pierwszy znaleziony u¿ytkownik staje siê wybranym
   - teraz nie mo¿na ju¿ dodaæ drugi raz tego samego u¿ytkownika
 * w oknie rozmowy: zast±pienie guzika "Zamknij" guzikiem "Anuluj"
-  - guzik "Anuluj" powoduje anulowanie wysy³ania wiadomo¶ci
+  - guzik "Anuluj" powoduje anulowanie oczekiwania na potwierdzenie 
+  dostarczenia wiadomosci
 
 +++ wersja 0.3.3-pre1
 * automatyczna kompilacja programu sms
