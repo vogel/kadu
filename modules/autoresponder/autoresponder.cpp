@@ -8,7 +8,6 @@
  ***************************************************************************/
 #include "autoresponder.h"
 #include "gadu.h"
-#include "status.h"
 #include "config_dialog.h"
 #include "chat.h"
 #include "debug.h"
