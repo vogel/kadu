@@ -24,7 +24,7 @@
 extern "C" void speech_info(ModuleInfo* i)
 {
     i->description="\"Speech\" module";
-    i->author="Joi";
+    i->author="Kadu Team";
 }
 
 extern "C" int speech_init()

@@ -16,7 +16,7 @@ SoundManager* sound_manager;
 extern "C" void esd_sound_info(ModuleInfo* i)
 {
     i->description="ESD sound module";
-    i->author="Joi";
+    i->author="Kadu Team";
     i->depends+="sound";
 }
 

@@ -23,7 +23,7 @@ SoundManager* sound_manager;
 extern "C" void nas_sound_info(ModuleInfo* i)
 {
     i->description="Network Audio System sound module";
-    i->author="Joi";
+    i->author="Kadu Team";
     i->depends+="sound";
 }
 

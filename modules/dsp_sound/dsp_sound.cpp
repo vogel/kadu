@@ -23,7 +23,7 @@ SoundManager* sound_manager;
 extern "C" void dsp_sound_info(ModuleInfo* i)
 {
     i->description="DSP sound module";
-    i->author="Joi";
+    i->author="Kadu Team";
     i->depends+="sound";
 }
 

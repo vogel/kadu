@@ -17,7 +17,7 @@ SoundManager* sound_manager;
 extern "C" void ext_sound_info(ModuleInfo* i)
 {
     i->description="External application sound module";
-    i->author="Joi";
+    i->author="Kadu Team";
     i->depends+="sound";
 }
 
