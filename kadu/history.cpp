@@ -1902,7 +1902,6 @@ void HistorySearch::resetBtnClicked()
 void HistorySearch::setDialogValues(HistoryFindRec &findrec)
 {
 	kdebugf();
-	int status;
 	from_chb->setChecked(!findrec.fromdate.isNull());
 	from_hgb->setEnabled(!findrec.fromdate.isNull());
 	if (findrec.fromdate.isNull())
@@ -1938,6 +1937,7 @@ void HistorySearch::setDialogValues(HistoryFindRec &findrec)
 			break;
 		case 2:
 		{
+			int status=0;
 			if (findrec.data == "avail")
 				status = 0;
 			else if (findrec.data == "busy")
