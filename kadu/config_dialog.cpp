@@ -458,7 +458,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 	configdialog = this;
 	emit create();
 
-	loadGeometry(this, "General", "ConfigGeometry", 0, 0, 790, 480);
+	loadGeometry(this, "General", "ConfigGeometry", 0, 30, 790, 480);
 	kdebugf2();
 }
 
