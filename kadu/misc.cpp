@@ -171,10 +171,10 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats) {
 							+ sizeof(struct gg_msg_richtext_format));
 						mesg.append(QColor(actcolor->red, actcolor->green, actcolor->blue).name());
 						}
+					mesg.append("\">");
 					}
 				else
 					inspan = false;
-				mesg.append("\">");
 				cformats += sizeof(gg_msg_richtext_format);
 				formats_length -= sizeof(gg_msg_richtext_format);
 				if (actformat->font & GG_FONT_IMAGE) {
