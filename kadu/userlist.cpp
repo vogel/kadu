@@ -274,28 +274,33 @@ void UserList::addAnonymous(UinType uin)
 	kdebugf2();
 }
 
-void UserList::changeUserInfo(const QString oldaltnick, UserListElement &ule)
+void UserList::changeUserInfo(const QString& old_altnick, const UserListElement& new_data)
 {
 	kdebugf();
-	UserListElement &e = byAltNick(oldaltnick);
+	// mamy lokaln± kopiê old_altnick, na wypadek je¶li
+	// przekazany old_altnick jest referencj± do elementu,
+	// który zaraz bêdziemy usuwaæ.
+	QString local_old_altnick = old_altnick;
+	UserListElement e = byAltNick(old_altnick);
+	remove(old_altnick);
 
-	e.first_name = ule.first_name;
-	e.last_name = ule.last_name;
-	e.nickname = ule.nickname;
-	e.altnick = ule.altnick;
-	e.mobile = ule.mobile;
-	e.email = ule.email;
-	e.uin = ule.uin;
-//	bool wasAnonymous = e.anonymous;
+	e.first_name = new_data.first_name;
+	e.last_name = new_data.last_name;
+	e.nickname = new_data.nickname;
+	e.altnick = new_data.altnick;
+	e.mobile = new_data.mobile;
+	e.email = new_data.email;
+	e.uin = new_data.uin;
 	e.anonymous = false;
-	e.status = ule.status;
-	e.image_size = ule.image_size;
-	e.blocking = ule.blocking;
-	e.offline_to_user = ule.offline_to_user;
-	e.notify = ule.notify;
-	e.Group = ule.Group;
+	e.status = new_data.status;
+	e.image_size = new_data.image_size;
+	e.blocking = new_data.blocking;
+	e.offline_to_user = new_data.offline_to_user;
+	e.notify = new_data.notify;
+	e.Group = new_data.Group;
+	insert(e.altnick, e);
 
-	UserBox::all_renameUser(oldaltnick, ule.altnick);
+	UserBox::all_renameUser(local_old_altnick, e.altnick);
 	UserBox::all_refresh();
 
 	emit modified();
