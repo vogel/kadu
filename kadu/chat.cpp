@@ -123,11 +123,11 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	QString keyfile_path;
 	encryption = new QPushButton(buttontray);
 	if(config.encryption) {
-		QToolTip::add(encryption, i18n("Click to disable encoding this conversation"));
+		QToolTip::add(encryption, i18n("Disable encoding of this conversation"));
 		encryption->setPixmap(loader->loadIcon("encrypted", KIcon::Small));
 		encrypt_enabled = true;
 	} else {
-		QToolTip::add(encryption, i18n("Click to enable encoding this conversation"));
+		QToolTip::add(encryption, i18n("Enable encoding of this conversation"));
 		encryption->setPixmap(loader->loadIcon("encrypted", KIcon::Small));
 		encrypt_enabled = false;
 	}
