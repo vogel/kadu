@@ -52,12 +52,12 @@ SmsIdeaGateway::~SmsIdeaGateway()
 	modules_manager->moduleDecUsageCount("default_sms");
 }
 
-void SmsIdeaGateway::httpRedirected(QString link)
+void SmsIdeaGateway::httpRedirected(QString /*link*/)
 {
 	kdebugf();
 }
 
-void SmsIdeaGateway::send(const QString& number,const QString& message, const QString& contact, const QString& signature)
+void SmsIdeaGateway::send(const QString& number,const QString& message, const QString& /*contact*/, const QString& signature)
 {
 	kdebugf();
 	Number=number;
@@ -171,11 +171,11 @@ SmsPlusGateway::~SmsPlusGateway()
 	modules_manager->moduleDecUsageCount("default_sms");
 }
 
-void SmsPlusGateway::httpRedirected(QString link)
+void SmsPlusGateway::httpRedirected(QString /*link*/)
 {
 }
 
-void SmsPlusGateway::send(const QString& number,const QString& message, const QString& contact, const QString& signature)
+void SmsPlusGateway::send(const QString& number, const QString& message, const QString& /*contact*/, const QString& signature)
 {
 	kdebugf();
 	Number=number;

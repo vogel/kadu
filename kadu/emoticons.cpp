@@ -447,9 +447,9 @@ AnimTextItem::~AnimTextItem()
 }
 
 void AnimTextItem::draw(
-	QPainter* p, int x, int y, int cx, int cy,
-	int cw, int ch, const QColorGroup& cg,
-	bool selected )
+	QPainter* p, int x, int y, int /*cx*/, int /*cy*/,
+	int /*cw*/, int /*ch*/, const QColorGroup& /*cg*/,
+	bool /*selected*/ )
 {
 	if (config_file.readBoolEntry("General", "ForceUseParagraphs"))
 		p->fillRect(x, y, width, height, QColor(0,0,0));

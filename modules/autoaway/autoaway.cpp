@@ -392,7 +392,7 @@ void AutoAwaySlots::changeAutoDisconnectTime(int i)
 		invisibleSpin->setValue(awaySpin->value());
 }
 
-void AutoAwaySlots::correctAutoDisconnectTime(int i)
+void AutoAwaySlots::correctAutoDisconnectTime(int)
 {
 	QSpinBox *invisibleSpin= ConfigDialog::getSpinBox("General", "Set status to invisible after ");
 	QSpinBox *disconnectSpin= ConfigDialog::getSpinBox("General", "Disconnect after ");

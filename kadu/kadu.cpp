@@ -65,6 +65,8 @@
 #define	GG_USER_NORMAL	0x03
 #define GG_USER_BLOCKED	0x04
 
+ConfigFile config_file(ggPath(QString("kadu.conf")));
+
 int muteitem;
 struct gg_event* e;
 
@@ -941,7 +943,7 @@ void Kadu::userListChanged()
 	kdebugf2();
 }
 
-void Kadu::userStatusChanged(const UserListElement &user, const UserStatus &oldstatus, bool onConnection)
+void Kadu::userStatusChanged(const UserListElement &user, const UserStatus &/*oldstatus*/, bool onConnection)
 {
 	kdebugf();
 
@@ -955,7 +957,7 @@ void Kadu::userStatusChanged(const UserListElement &user, const UserStatus &olds
 	kdebugf2();
 }
 
-void Kadu::removeUser(QStringList &users, bool permanently = false)
+void Kadu::removeUser(QStringList &users, bool /*permanently*/)
 {
 	kdebugf();
 	if(QMessageBox::warning(kadu, "Kadu",
@@ -1273,7 +1275,7 @@ void Kadu::error(GaduError err)
 	kdebugf2();
 }
 
-void Kadu::imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &path)
+void Kadu::imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &/*path*/)
 {
 	for (int i = 0; i < pending.count(); i++)
 	{

@@ -492,11 +492,10 @@ void SmsSlots::onCloseConfigDialog()
 
 void SmsSlots::newSms(QString nick)
 {
-	Sms* sms=new Sms(nick);
-	sms->show();
+	(new Sms(nick))->show();
 }
 
-void SmsSlots::onUserClicked(int button, QListBoxItem* item, const QPoint& pos)
+void SmsSlots::onUserClicked(int button, QListBoxItem* /*item*/, const QPoint& /*pos*/)
 {
 	if(button==4)
 		onSendSmsToUser();

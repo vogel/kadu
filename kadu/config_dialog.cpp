@@ -60,7 +60,7 @@ void ConfigDialog::closeDialog()
 	kdebugf2();
 }
 
-ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const char *name)
+ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const char *name) : QVBox(parent, name)
 {
 	kdebugf();
 
@@ -313,7 +313,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 			case CONFIG_SELECTPATHS:
 			{
 				QPushButton *button =new QPushButton(appHandle->translate("@default",(*i).caption), parent);
-				SelectPaths* paths=new SelectPaths(button, (*i).name);
+				SelectPaths* paths=new SelectPaths(NULL, (*i).name);
 				button->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum));
 				(*i).widget=paths;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
@@ -1429,7 +1429,7 @@ void HotKey::keyPressEvent(QKeyEvent *e)
 	setText(keyEventToString(e));
 }
 
-void HotKey::keyReleaseEvent(QKeyEvent *e)
+void HotKey::keyReleaseEvent(QKeyEvent *)
 {
 	// sprawdzenie czy ostatnim znakiem jest "+" 
 	// jesli tak to nie ma takiego skrotu klawiszowego
@@ -1530,7 +1530,7 @@ void ColorButton::setColor(const QColor &color)
 	}	
 }
 
-SelectPaths::SelectPaths(QWidget *parent, const char* name)
+SelectPaths::SelectPaths(QWidget *parent, const char* name) : QHBox(parent, name)
 {
 	kdebugf();
 	setWFlags(Qt::WDestructiveClose|Qt::WShowModal);

@@ -396,7 +396,7 @@ void HintManager::setGridOrigin()
 	kdebugf2();
 }
 
-void HintManager::newChat(const UinsList &senders, const QString& msg, time_t time)
+void HintManager::newChat(const UinsList &senders, const QString& msg, time_t /*time*/)
 {
 	kdebugf();
 	if (config_file.readBoolEntry("Hints", "ShowContentMessage"))
@@ -427,7 +427,7 @@ void HintManager::newChat(const UinsList &senders, const QString& msg, time_t ti
 	kdebugf2();
 }
 
-void HintManager::newMessage(const UinsList &senders, const QString& msg, time_t time, bool &grab)
+void HintManager::newMessage(const UinsList &senders, const QString& msg, time_t /*time*/, bool &/*grab*/)
 {
 	kdebugf();
 	Chat* chat=chat_manager->findChatByUins(senders);
@@ -479,7 +479,7 @@ void HintManager::connectionError(const QString &message)
 	kdebugf2();
 }
 
-void HintManager::userStatusChanged(const UserListElement &ule, const UserStatus &oldStatus)
+void HintManager::userStatusChanged(const UserListElement &ule, const UserStatus &/*oldStatus*/)
 {
 	kdebugf();
 

@@ -1034,7 +1034,7 @@ QStringList HistoryManager::mySplit(const QChar &sep, const QString &str)
 		switch (state)
 		{
 			case 0:
-				if (letter == ',')
+				if (letter == sep)
 				{
 					if (token.length())
 						token.truncate(0);
@@ -1051,7 +1051,7 @@ QStringList HistoryManager::mySplit(const QChar &sep, const QString &str)
 				++idx;
 				break;
 			case 1:
-				if (letter != ',')
+				if (letter != sep)
 				{
 					token.append(letter);
 					++idx;
@@ -1145,7 +1145,7 @@ int HistoryManager::getHistoryEntryIndexByDate(UinsList uins, QDateTime &date, b
 	return start;
 }
 
-void HistoryManager::chatMsgReceived(UinsList senders,const QString& msg,time_t time,bool& grab)
+void HistoryManager::chatMsgReceived(UinsList senders,const QString& msg,time_t time,bool& /*grab*/)
 {
 	if (config_file.readBoolEntry("History","Logging"))
 		history.appendMessage(senders, senders[0], msg, false, time);

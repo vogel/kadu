@@ -38,7 +38,7 @@
 QTextCodec *codec_cp1250 = QTextCodec::codecForName("CP1250");
 QTextCodec *codec_latin2 = QTextCodec::codecForName("ISO8859-2");
 
-void saveGeometry(QWidget *w, QString section, QString name)
+void saveGeometry(const QWidget *w, const QString &section, const QString &name)
 {
 	QRect geom;
 	geom.setX(w->pos().x());
@@ -49,7 +49,7 @@ void saveGeometry(QWidget *w, QString section, QString name)
 	config_file.writeEntry(section, name, geom);
 }
 
-void loadGeometry(QWidget *w, QString section, QString name, int defaultX, int defaultY, int defaultWidth, int defaultHeight)
+void loadGeometry(QWidget *w, const QString &section, const QString &name, int defaultX, int defaultY, int defaultWidth, int defaultHeight)
 {
 	QRect def_rect(defaultX, defaultY, defaultWidth, defaultHeight);
 	config_file.addVariable(section, name, def_rect);
@@ -2015,7 +2015,7 @@ void ImageWidget::setImage(const QPixmap &image)
 	setMinimumSize(Image.width(), Image.height());
 }
 
-void ImageWidget::paintEvent(QPaintEvent *e)
+void ImageWidget::paintEvent(QPaintEvent *)
 {
 	if (!Image.isNull())
 	{
@@ -2392,7 +2392,7 @@ void KaduTextBrowser::linkHighlighted(const QString & link)
 	highlightedlink = link;
 }
 
-void KaduTextBrowser::setSource(const QString &name)
+void KaduTextBrowser::setSource(const QString &/*name*/)
 {
 }
 

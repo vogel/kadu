@@ -256,7 +256,7 @@ void EncryptionManager::enableEncryptionBtnForUins(UinsList uins)
 	kdebugf2();
 }
 
-void EncryptionManager::sendMessageFilter(const UinsList& uins,QCString& msg,bool& stop)
+void EncryptionManager::sendMessageFilter(const UinsList& uins, QCString& msg, bool& /*stop*/)
 {
 	Chat* chat=chat_manager->findChatByUins(uins);
 	if (uins.count()==1 && EncryptionEnabled[chat])

@@ -209,7 +209,7 @@ void SearchDialog::selectionChanged(QListViewItem *item)
 	kdebugf2();
 }
 
-void SearchDialog::prepareMessage(QListViewItem *item)
+void SearchDialog::prepareMessage(QListViewItem * /*item*/)
 {
 //Tu trzeba dodaæ kod który otwiera³by okno rozmowy.
 /*	Message *msg;

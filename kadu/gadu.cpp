@@ -1265,7 +1265,7 @@ void GaduProtocol::pingNetwork()
 	kdebugf2();
 }
 
-void GaduProtocol::systemMessageReceived(QString &message, QDateTime &time, int formats_length, void *formats)
+void GaduProtocol::systemMessageReceived(QString &message, QDateTime &time, int /*formats_length*/, void * /*formats*/)
 {
 	kdebugf();
 

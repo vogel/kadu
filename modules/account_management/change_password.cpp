@@ -19,7 +19,7 @@
 #include "gadu.h"
 #include "config_file.h"
 
-ChangePassword::ChangePassword(QDialog *parent, const char *name)
+ChangePassword::ChangePassword(QDialog * /*parent*/, const char * /*name*/)
 {
 	kdebugf();
 	setWFlags(Qt::WDestructiveClose);

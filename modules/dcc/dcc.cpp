@@ -112,7 +112,7 @@ void DccSocket::dccDataSent() {
 	kdebugf2();
 }
 
-void DccSocket::watchDcc(int check)
+void DccSocket::watchDcc(int /*check*/)
 {
 	kdebugf();
 	UinsList uins;

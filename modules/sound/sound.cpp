@@ -160,7 +160,7 @@ void SoundManager::setMute(const bool& enable)
 	mute= enable;
 }
 
-void SoundManager::newChat(const UinsList &senders, const QString& msg, time_t time)
+void SoundManager::newChat(const UinsList &/*senders*/, const QString& /*msg*/, time_t /*time*/)
 {
 	kdebugf();
 	if (isMuted())
@@ -188,7 +188,7 @@ void SoundManager::newChat(const UinsList &senders, const QString& msg, time_t t
 	kdebugf2();
 }
 
-void SoundManager::newMessage(const UinsList &senders, const QString& msg, time_t time, bool &grab)
+void SoundManager::newMessage(const UinsList &senders, const QString& /*msg*/, time_t /*time*/, bool &/*grab*/)
 {
 	kdebugf();
 	if (isMuted())
@@ -218,7 +218,7 @@ void SoundManager::newMessage(const UinsList &senders, const QString& msg, time_
 	kdebugf2();
 }
 
-void SoundManager::connectionError(const QString &message)
+void SoundManager::connectionError(const QString &/*message*/)
 {
 	kdebugf();
 	if (isMuted())

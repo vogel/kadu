@@ -318,7 +318,7 @@ void SpeechSlots::testSpeech()
 	kdebugf2();
 }
 
-void SpeechSlots::newChat(const UinsList &senders, const QString &msg, time_t time)
+void SpeechSlots::newChat(const UinsList &senders, const QString &msg, time_t /*time*/)
 {
 	kdebugf();
 	if (lastSpeech.elapsed()<1500)
@@ -341,7 +341,7 @@ void SpeechSlots::newChat(const UinsList &senders, const QString &msg, time_t ti
 	kdebugf2();
 }
 
-void SpeechSlots::newMessage(const UinsList &senders, const QString &msg, time_t time, bool &grab)
+void SpeechSlots::newMessage(const UinsList &senders, const QString &msg, time_t /*time*/, bool &/*grab*/)
 {
 	kdebugf();
 	if (lastSpeech.elapsed()<1500)
@@ -412,7 +412,7 @@ void SpeechSlots::userChangedStatusToNotAvailable(const UserListElement &ule)
 	kdebugf2();
 }
 
-void SpeechSlots::message(const QString &from, const QString &message, const QMap<QString, QVariant> *parameters, const UserListElement *ule)
+void SpeechSlots::message(const QString &/*from*/, const QString &message, const QMap<QString, QVariant> * /*parameters*/, const UserListElement * /*ule*/)
 {
 	kdebugf();
 	say(message);

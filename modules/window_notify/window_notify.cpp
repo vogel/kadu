@@ -68,14 +68,14 @@ WindowNotify::~WindowNotify()
 	kdebugf2();
 }
 
-void WindowNotify::newChat(const UinsList &senders, const QString& msg, time_t time)
+void WindowNotify::newChat(const UinsList &senders, const QString& msg, time_t /*time*/)
 {
 	kdebugf();
 	MessageBox::msg(tr("Chat with <b>%1</b><br/> <small>%2</small>").arg(userlist.byUinValue(senders[0]).altNick()).arg(msg));
 	kdebugf2();
 }
 
-void WindowNotify::newMessage(const UinsList &senders, const QString& msg, time_t time, bool &grab)
+void WindowNotify::newMessage(const UinsList &senders, const QString& msg, time_t /*time*/, bool & /*grab*/)
 {
 	kdebugf();
 	MessageBox::msg(tr("New message from <b>%1</b><br/> <small>%2</small>").arg(userlist.byUinValue(senders[0]).altNick()).arg(msg));
@@ -125,7 +125,7 @@ void WindowNotify::userChangedStatusToNotAvailable(const UserListElement &ule)
 	kdebugf2();
 }
 
-void WindowNotify::message(const QString &from, const QString &message, const QMap<QString, QVariant> *parameters, const UserListElement *ule)
+void WindowNotify::message(const QString &from, const QString &message, const QMap<QString, QVariant> * /*parameters*/, const UserListElement *ule)
 {
 	kdebugf();
 	if (ule==NULL)

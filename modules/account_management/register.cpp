@@ -62,7 +62,7 @@ void Register::createConfig() {
 	kdebugf2();
 }
 
-Register::Register(QDialog *parent, const char *name)
+Register::Register(QDialog * /*parent*/, const char * /*name*/)
 {
 	kdebugf();
 	setWFlags(Qt::WDestructiveClose);

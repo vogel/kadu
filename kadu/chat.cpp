@@ -811,7 +811,7 @@ void Chat::toggledUnderline(bool on)
 	edit->setUnderline(on);
 }
 
-void Chat::curPosChanged(int para, int pos)
+void Chat::curPosChanged(int, int)
 {
 	int i;
 
@@ -860,7 +860,7 @@ void Chat::insertImage()
 	kdebugf2();
 }
 
-void Chat::imageReceivedAndSaved(UinType sender,uint32_t size,uint32_t crc32,const QString& path)
+void Chat::imageReceivedAndSaved(UinType sender,uint32_t size,uint32_t crc32,const QString& /*path*/)
 {
 	kdebugf();
 	for (QValueList<ChatMessage*>::const_iterator i = ChatMessages.begin(); i != ChatMessages.end(); i++)
@@ -935,7 +935,7 @@ void Chat::changeTitle()
 	}
 }
 
-void Chat::windowActivationChange(bool oldActive)
+void Chat::windowActivationChange(bool)
 {
 	if (isActiveWindow() && title_timer->isActive())
 	{

@@ -63,7 +63,7 @@ void Updates::deactivateModule()
 	kdebugf2();
 }
 
-void Updates::gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op)
+void Updates::gotUpdatesInfo(const QByteArray &data, QNetworkOperation * /*op*/)
 {
 	kdebugf();
 	if (config_file.readBoolEntry("General", "CheckUpdates"))

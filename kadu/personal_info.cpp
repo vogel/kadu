@@ -20,7 +20,7 @@
 #include "debug.h"
 #include "misc.h"
 
-PersonalInfoDialog::PersonalInfoDialog(QDialog *parent, const char *name)
+PersonalInfoDialog::PersonalInfoDialog(QDialog * /*parent*/, const char * /*name*/)
 {
 	kdebugf();
 	setWFlags(Qt::WDestructiveClose);

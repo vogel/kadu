@@ -45,7 +45,7 @@ extern "C" void config_wizard_close()
 /**
 	Konstruktor - tworzy wszystkie okna 
 **/
-Wizard::Wizard( QWidget *parent, const char *name)
+Wizard::Wizard(QWidget * /*parent*/, const char * /*name*/)
 {
 	kdebugf();
 	setCaption(tr("Kadu Wizard"));
@@ -1149,7 +1149,7 @@ QString Wizard::toSave(QString s)
 /**
 	po zaimportowaniu listy kontaktow sie wywoluje
 **/
-void Wizard::userListImported(bool ok, UserList& userList)
+void Wizard::userListImported(bool /*ok*/, UserList& userList)
 {
 	kdebugf();
 

@@ -12,7 +12,6 @@
 #include <qtextcodec.h>
 #include <qmap.h>
 
-#include "misc.h"
 #include "debug.h"
 #include "config_file.h"
 
@@ -406,5 +405,3 @@ void ConfigFile::addVariable(const QString &group, const QString &name, const QP
 	if (getEntry(group, name)=="")
 		writeEntry(group,name,defvalue);
 }
-
-ConfigFile config_file(ggPath(QString("kadu.conf")));

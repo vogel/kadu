@@ -408,7 +408,7 @@ void UserListElement::operator = (const UserListElement &copyMe)
 	kdebugf2();
 }
 
-UserList::UserList(const UserList &source)
+UserList::UserList(const UserList &source) : QObject(NULL, "userlist"), QMap<QString,UserListElement>()
 {
 	for(const_iterator i = source.begin(); i != source.end(); ++i)
 	{

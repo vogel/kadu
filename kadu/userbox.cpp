@@ -292,7 +292,7 @@ void KaduListBoxPixmap::changeText(const QString &text)
 UserBoxMenu *UserBox::userboxmenu = NULL;
 
 UserBox::UserBox(QWidget* parent,const char* name,WFlags f)
-	: QListBox(parent,name),QToolTip(viewport())
+	: QListBox(parent, name, f),QToolTip(viewport())
 
 {
 	kdebugf();

@@ -98,12 +98,12 @@ void NotifySlots::ifNotifyAll(bool toggled)
 	ConfigDialog::getGrid("Notify","listboxy")->setEnabled(!toggled);
 }
 
-void NotifySlots::_Left2( QListBoxItem *item)
+void NotifySlots::_Left2(QListBoxItem *)
 {
 	_Left();
 }
 
-void NotifySlots::_Right2( QListBoxItem *item)
+void NotifySlots::_Right2(QListBoxItem *)
 {
 	_Right();
 }

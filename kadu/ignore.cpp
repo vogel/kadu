@@ -22,7 +22,7 @@
 
 QValueList<UinsList> ignored;
 
-Ignored::Ignored(QDialog *parent, const char *name)
+Ignored::Ignored(QDialog * /*parent*/, const char * /*name*/)
 {
 	kdebugf();
 	setWFlags(Qt::WDestructiveClose);

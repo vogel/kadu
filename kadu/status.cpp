@@ -57,7 +57,7 @@ QPixmap UserStatus::pixmap(const UserStatus &stat, bool mobile) const
 	return pixmap(stat.status(), stat.hasDescription(), mobile);
 }
 
-QPixmap UserStatus::pixmap(eUserStatus stat, bool desc, bool mobile) const
+QPixmap UserStatus::pixmap(eUserStatus /*stat*/, bool /*desc*/, bool /*mobile*/) const
 {
 	static QPixmap result;
 	return result;

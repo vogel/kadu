@@ -19,7 +19,7 @@
 #include "debug.h"
 #include "config_file.h"
 
-Unregister::Unregister(QDialog *parent, const char *name)
+Unregister::Unregister(QDialog * /*parent*/, const char * /*name*/)
 {
 	kdebugf();
 	setWFlags(Qt::WDestructiveClose);
