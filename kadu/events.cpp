@@ -663,7 +663,7 @@ void EventManager::connectionTimeoutSlot() {
 		gg_event* e;
 		sess->timeout = 0;
 		if (!(e = gg_watch_fd(sess))) {
-			emit connectionBroken();
+			emit connectionTimeout();
 			gg_free_event(e);
 			return;
 			}
@@ -673,7 +673,7 @@ void EventManager::connectionTimeoutSlot() {
 		}
 	else
 		if (sess->state == GG_STATE_READING_KEY)
-			emit connectionBroken();
+			emit connectionTimeout();
 }
 
 void EventManager::eventHandler(gg_session* sess)

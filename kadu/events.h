@@ -90,9 +90,14 @@ class EventManager : public QObject
 		**/
 		void connectionFailed(int);
 		/**
-			Po³±czenia z serwerem zosta³o przerwane
+			Po³±czenie z serwerem zosta³o przerwane
 		**/
 		void connectionBroken();
+		/**
+			Po³±czenie z serwerem zosta³o przerwane z powodu zbyt d³ugiego
+			czasu nieaktywno¶ci w trakcie ³±czenia
+		**/
+		void connectionTimeout();
 		/**
 			Otrzymano polecenie roz³±czenia
 		**/
