@@ -34,19 +34,32 @@ class EventManager : public QObject
 {
 	Q_OBJECT
 
-	private:
-		void ackHandler(int seq);
-			
 	private slots:
+		void connectedSlot();
+		void connectionFailedSlot();
+		void disconnectedSlot();
 		void userStatusChangedSlot(struct gg_event*);
 		void userlistReceivedSlot(struct gg_event *);
 		void messageReceivedSlot(int, UinsList,unsigned char* msg,time_t,int,struct gg_msg_format*);
+		void ackReceivedSlot(int seq);
 		
 	public:
 		EventManager();
 		void eventHandler(gg_session* sess);
 
 	signals:
+		/**
+			Nawi±zano po³±czenie z serwerem
+		**/
+		void connected();
+		/**
+			B³±d po³±czenia z serwerem
+		**/
+		void connectionFailed();
+		/**
+			Otrzymano polecenie roz³±czenia
+		**/
+		void disconnected();		
 		/**
 			Który¶ z kontaktów zmieni³ swój status
 		**/
@@ -56,15 +69,19 @@ class EventManager : public QObject
 		**/
 		void userlistReceived(struct gg_event *);
 		/**
-			Dosz³a jaka¶ wiadomo¶æ z serwera GG
+			Otrzymano jak±¶ wiadomo¶æ z serwera GG
 		**/
 		void messageReceived(int,UinsList,unsigned char* msg,time_t,int,struct gg_msg_format*);
 		/**
-			Dosz³a wiadomo¶æ, któr± trzeba pokazaæ (klasa chat lub msg,
+			Otrzymano wiadomo¶æ, któr± trzeba pokazaæ (klasa chat lub msg,
 			nadawca nie jest ignorowany, itp)
 			Tre¶æ zdeszyfrowana i zdekodowana do unicode.
 		**/
 		void chatReceived(UinsList senders,const QString& msg,time_t time);
+		/**
+			Otrzymano potwierdzenie wiadomo¶ci
+		**/
+		void ackReceived(int seq);
 };
 
 extern EventManager event_manager;

@@ -61,6 +61,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * wiêkszo¶æ kodu dotycz±cego obs³ugi zdarzeñ sieciowych przeniesiona z
   kadu.cpp/h do klasy EventManager. Tam nast±pi jego dalsze porz±dkowanie
   i wydzielanie sygna³ów (adrian)
+* dalsze porz±dki w EventManager - wydzielenie sygna³ów connected,
+  connectionFailed, disconnected i ackReceived (adrian)
 
 +++ wersja 0.3.4-pre2
 * graficzny instalator - instaluj.tcl (googie)
