@@ -329,7 +329,7 @@ void UserlistExport::startTransfer() {
 	con2 = (char *)strdup((const char *)unicode2latin(contacts));
 	kdebug("UserlistExport::startTransfer():\n%s\n", con2);
 	free(con2);
-	con2 = (char *)strdup((const char *)unicode2cp(contacts));
+	con2 = (char *)strdup((const char *)unicode2std(contacts));
 	
 	if (gg_userlist_request(sess, GG_USERLIST_PUT, con2) == -1) {
 		kdebug("UserlistExport: gg_userlist_put() failed\n");
