@@ -1,6 +1,7 @@
 #include <qlayout.h>
 #include <qpushbutton.h>
 #include <qmessagebox.h>
+#include <stdlib.h>
 
 #include "misc.h"
 #include "kadu.h"
