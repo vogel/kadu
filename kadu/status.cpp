@@ -90,7 +90,8 @@ bool AutoAwayTimer::eventFilter(QObject *o,QEvent *e)
 {
 	if (e->type() == QEvent::KeyPress || e->type() == QEvent::Enter) {
 		stop();
-		start(config.autoawaytime * 1000, TRUE);
+		if (config.autoaway)
+			start(config.autoawaytime * 1000, TRUE);
 		if (autoawayed && kadu->returnVar(1) && kadu->returnVar(2)) {
 			fprintf(stderr, "KK Kadu::enterEvent(): auto away cancelled\n");
 			autoawayed = false;
