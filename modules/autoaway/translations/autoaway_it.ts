@@ -19,54 +19,54 @@
     </message>
     <message>
         <source>Enable autoinvisible</source>
-        <translation type="unfinished"></translation>
+        <translation>Attiva autoinvisibile</translation>
     </message>
     <message>
         <source>Enable autodisconnect</source>
-        <translation type="unfinished"></translation>
+        <translation>Attiva autosconessione</translation>
     </message>
     <message>
         <source>Set status to invisible after </source>
-        <translation type="unfinished"></translation>
+        <translation>metti status invisibile dopo</translation>
     </message>
     <message>
         <source>Disconnect after </source>
-        <translation type="unfinished"></translation>
+        <translation>Sconnetti dopo</translation>
     </message>
     <message>
         <source>Enable AutoStatus</source>
-        <translation type="unfinished"></translation>
+        <translation>Attiva autostatus</translation>
     </message>
     <message>
         <source>Autorestore status</source>
-        <translation type="unfinished"></translation>
+        <translation>Autorestore status</translation>
     </message>
     <message>
         <source>Auto change status</source>
-        <translation type="unfinished"></translation>
+        <translation>Cambio automatico descrizzione</translation>
     </message>
     <message>
         <source>AutoStatus Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Descrizione autostatus</translation>
     </message>
 </context>
 <context>
     <name>AutoAwaySlots</name>
     <message>
         <source>Don&apos;t change the description</source>
-        <translation type="unfinished"></translation>
+        <translation>Non cambiare descrizione</translation>
     </message>
     <message>
         <source>Change</source>
-        <translation type="unfinished"></translation>
+        <translation>Cambia</translation>
     </message>
     <message>
         <source>Add in front of description</source>
-        <translation type="unfinished"></translation>
+        <translation>Aggiungi all&apos;inizio descrizione</translation>
     </message>
     <message>
         <source>Add at the back of description</source>
-        <translation type="unfinished"></translation>
+        <translation>Agiungi alla fine descrizione</translation>
     </message>
 </context>
 </TS>

@@ -15,7 +15,7 @@
     </message>
     <message>
         <source>User ID (48xxxxxxxxx)</source>
-        <translation type="unfinished"></translation>
+        <translation>User ID (39xxxxxxxxx)</translation>
     </message>
 </context>
 <context>

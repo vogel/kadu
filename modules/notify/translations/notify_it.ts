@@ -19,11 +19,11 @@
     </message>
     <message>
         <source>Notify configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>Configurazione delle notifiche</translation>
     </message>
     <message>
         <source>Connection error</source>
-        <translation type="unfinished"></translation>
+        <translation>Errore conessione</translation>
     </message>
     <message>
         <source>New chat</source>
@@ -31,36 +31,37 @@
     </message>
     <message>
         <source>New message</source>
-        <translation type="unfinished"></translation>
+        <translation>Nuovo messaggio</translation>
     </message>
     <message>
         <source>User is changing status</source>
-        <translation type="unfinished"></translation>
+        <translation>Conttato sta cambiato status</translation>
     </message>
     <message>
         <source>User changed status to &quot;Available&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Contatto ha cambiato status a &quot;Accessibile&quot;</translation>
     </message>
     <message>
         <source>User changed status to &quot;Busy&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Contatto ha cambiato status a &quot;Occupato&quot;</translation>
     </message>
     <message>
         <source>User changed status to &quot;Not available&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Contatto ha cambiato status a &quot;Non presente&quot;</translation>
     </message>
     <message>
         <source>Other message</source>
-        <translation type="unfinished"></translation>
+        <translation>Altro messaggio</translation>
     </message>
     <message>
         <source>This option will supersede tooltips with users&apos; status
  changes upon establishing connection to the server</source>
-        <translation type="unfinished"></translation>
+        <translation>Questa opzione disattiva comparsa delle notifiche con status dei contatti
+durante primo colegamento Kadu con serwer</translation>
     </message>
     <message>
         <source>Ignore changes right after connection to the server</source>
-        <translation type="unfinished"></translation>
+        <translation>Non mostrare descrizioni dopo la conessione con server</translation>
     </message>
     <message>
         <source>Ignore status changes from available/busy to available/busy</source>

@@ -83,7 +83,7 @@
     </message>
     <message>
         <source>Connection error:</source>
-        <translation type="unfinished"></translation>
+        <translation>Errore connessione:</translation>
     </message>
     <message>
         <source>Maximum number of spoken letters</source>
@@ -110,7 +110,7 @@
     </message>
     <message>
         <source>Connection error - %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Errore connessione - %1</translation>
     </message>
     <message>
         <source>man %a wrote %1</source>

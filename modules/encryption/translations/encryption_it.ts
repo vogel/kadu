@@ -19,7 +19,7 @@
     </message>
     <message>
         <source>Color of encrypted messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Colore messaggi crittati</translation>
     </message>
 </context>
 <context>

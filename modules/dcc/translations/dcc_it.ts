@@ -54,7 +54,9 @@ Connessioni dirette disabilitate.</translation>
         <source>Direct connection timeout!
 The receiver doesn&apos;t support direct connections or
 both machines are behind routers with NAT.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tempo scaduto per connessione diretta!
+Ricevente non supporta connessioni dirette
+oppure entrambe le macchine sono dietro router con NAT.</translation>
     </message>
 </context>
 <context>
@@ -76,23 +78,23 @@ both machines are behind routers with NAT.</source>
     <name>FileTransferDialog</name>
     <message>
         <source>Sender: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Mandante: %1</translation>
     </message>
     <message>
         <source>Receiver: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Rcevitore: %1</translation>
     </message>
     <message>
         <source>Filename: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nome File: %1</translation>
     </message>
     <message>
         <source>File size: %1B</source>
-        <translation type="unfinished"></translation>
+        <translation>Dimensione File: %1B</translation>
     </message>
     <message>
         <source>Speed: 0kB/s (not started)  </source>
-        <translation type="unfinished"></translation>
+        <translation>Velocità: 0kB/s (non iniziato)</translation>
     </message>
     <message>
         <source>File transfered %1%</source>
@@ -100,7 +102,7 @@ both machines are behind routers with NAT.</source>
     </message>
     <message>
         <source>Speed: %1kB/s </source>
-        <translation type="unfinished"></translation>
+        <translation>Velocità: %1kB/s</translation>
     </message>
     <message>
         <source>(stalled)</source>
@@ -123,12 +125,13 @@ both machines are behind routers with NAT.</source>
     </message>
     <message>
         <source>This file is not readable</source>
-        <translation type="unfinished"></translation>
+        <translation>Questo file non è di lettura</translation>
     </message>
     <message>
         <source>User %1 wants to send us a file %2
 of size %3kB. Accept transfer?</source>
-        <translation type="unfinished"></translation>
+        <translation>Contatto %1 manda il file %2
+di %3kB. Accetti trasferimento ?</translation>
     </message>
     <message>
         <source>Incoming transfer</source>

@@ -82,23 +82,23 @@
     </message>
     <message>
         <source>Status available sound</source>
-        <translation type="unfinished"></translation>
+        <translation>Suono di status accesibile</translation>
     </message>
     <message>
         <source>Status busy sound</source>
-        <translation type="unfinished"></translation>
+        <translation>Suono di status ocupato</translation>
     </message>
     <message>
         <source>Status not available sound</source>
-        <translation type="unfinished"></translation>
+        <translation>Suono di status non disponibile</translation>
     </message>
     <message>
         <source>Conection error sound</source>
-        <translation type="unfinished"></translation>
+        <translation>Suono di errore connessione</translation>
     </message>
     <message>
         <source>Other message</source>
-        <translation type="unfinished"></translation>
+        <translation>Altro messaggio</translation>
     </message>
 </context>
 </TS>

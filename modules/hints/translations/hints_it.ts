@@ -39,7 +39,7 @@
     </message>
     <message>
         <source>New chat / new message</source>
-        <translation type="unfinished"></translation>
+        <translation>Nuovo chat / nuovo messaggio</translation>
     </message>
     <message>
         <source>Number of quoted characters</source>
@@ -47,11 +47,11 @@
     </message>
     <message>
         <source>Status change</source>
-        <translation type="unfinished"></translation>
+        <translation>Cambio status</translation>
     </message>
     <message>
         <source>New hints go</source>
-        <translation type="unfinished"></translation>
+        <translation>Nuova fumetto</translation>
     </message>
     <message>
         <source>Hints position</source>
@@ -59,15 +59,15 @@
     </message>
     <message>
         <source>Own hints position</source>
-        <translation type="unfinished"></translation>
+        <translation>Attiva posizionamento fumentti</translation>
     </message>
     <message>
         <source>Parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Parametri</translation>
     </message>
     <message>
         <source>Set for all</source>
-        <translation type="unfinished"></translation>
+        <translation>Imposta tutti</translation>
     </message>
     <message>
         <source>&lt;b&gt;Text&lt;/b&gt; preview</source>
@@ -75,7 +75,7 @@
     </message>
     <message>
         <source>Hint type</source>
-        <translation type="unfinished"></translation>
+        <translation>Tipo fumetto</translation>
     </message>
     <message>
         <source>Change font color</source>
@@ -91,11 +91,11 @@
     </message>
     <message>
         <source>Corner</source>
-        <translation type="unfinished"></translation>
+        <translation>Angolo</translation>
     </message>
     <message>
         <source>Hint timeout</source>
-        <translation type="unfinished"></translation>
+        <translation>Scomparsa dopo</translation>
     </message>
     <message>
         <source>Open chat on click</source>
@@ -126,19 +126,19 @@
     </message>
     <message>
         <source>On top</source>
-        <translation type="unfinished"></translation>
+        <translation>Sopra</translation>
     </message>
     <message>
         <source>On bottom</source>
-        <translation type="unfinished"></translation>
+        <translation>Sotto</translation>
     </message>
     <message>
         <source>Online</source>
-        <translation type="unfinished"></translation>
+        <translation>Disponibile</translation>
     </message>
     <message>
         <source>Online (d.)</source>
-        <translation type="unfinished"></translation>
+        <translation>Disponibile (desc)</translation>
     </message>
     <message>
         <source>Busy</source>
@@ -150,19 +150,19 @@
     </message>
     <message>
         <source>Invisible</source>
-        <translation type="unfinished"></translation>
+        <translation>Invisibile</translation>
     </message>
     <message>
         <source>Invisible (d.)</source>
-        <translation type="unfinished"></translation>
+        <translation>Invisibile (desc.)</translation>
     </message>
     <message>
         <source>Offline</source>
-        <translation type="unfinished"></translation>
+        <translation>Fuori linea</translation>
     </message>
     <message>
         <source>Offline (d.)</source>
-        <translation type="unfinished"></translation>
+        <translation>Fuori linea (desc.)</translation>
     </message>
     <message>
         <source>Blocking</source>
@@ -182,79 +182,79 @@
     </message>
     <message>
         <source>Chat with &lt;b&gt;%1&lt;/b&gt;&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>chat con &lt;b&gt;%1&lt;/b&gt;&lt;br&gt;&lt;small&gt;%2&lt;/small&gt;</translation>
     </message>
     <message>
         <source>Chat with &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>chat con &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
         <source>New message from &lt;b&gt;%1&lt;/b&gt;&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Nuovo messaggio da &lt;b&gt;%1&lt;/b&gt;&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</translation>
     </message>
     <message>
         <source>New message from &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Nuovo messaggio da &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;Error:&lt;/b&gt; %1</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Errore:&lt;/b&gt; %1</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; changed status to &lt;i&gt;%2&lt;/i&gt;&lt;br/&gt; &lt;small&gt;%3&lt;/small&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; ha cambiato status a &lt;i&gt;%2&lt;/i&gt;&lt;br/&gt; &lt;small&gt;%3&lt;/small&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; changed status to &lt;i&gt;%2&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; ha cambiato status a &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; is available&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; è disponibile&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; is available</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; è disponibile</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; is busy&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; è occupato&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; is busy</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; è occupato</translation>
     </message>
     <message>
         <source>Other message</source>
-        <translation type="unfinished"></translation>
+        <translation>Altro messaggio</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; is not available&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; non è disponibile&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; is not available</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; non è disponibile</translation>
     </message>
     <message>
         <source>From &lt;b&gt;%1&lt;/b&gt;: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Da &lt;b&gt;%1&lt;/b&gt;: %2</translation>
     </message>
     <message>
         <source>Top left</source>
-        <translation type="unfinished"></translation>
+        <translation>Sopra a sinistra</translation>
     </message>
     <message>
         <source>Top right</source>
-        <translation type="unfinished"></translation>
+        <translation>Sopra a destra</translation>
     </message>
     <message>
         <source>Bottom left</source>
-        <translation type="unfinished"></translation>
+        <translation>Sotto a sinistra</translation>
     </message>
     <message>
         <source>Bottom right</source>
-        <translation type="unfinished"></translation>
+        <translation>Sotto a destra</translation>
     </message>
 </context>
 <context>

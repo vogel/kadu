@@ -99,7 +99,7 @@
     </message>
     <message>
         <source>Open chat on click</source>
-        <translation type="unfinished"></translation>
+        <translation>Öffne Chat-Fenster duch Klick</translation>
     </message>
 </context>
 <context>

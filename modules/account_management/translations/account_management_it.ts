@@ -211,7 +211,7 @@ Le password devo esser identiche !</translation>
     </message>
     <message>
         <source>This dialog box allows you to unregister your account. Be aware of using this option. &lt;font color=&quot;red&quot;&gt;&lt;b&gt;It will permanently delete your UIN and you will not be able to use it later!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Questa finestra di dialogo permette la cancellazione permamente dell&apos;utente dal server GG.&lt;font color=&quot;red&quot;&gt;&lt;b&gt;Devi renderti conto che questa operazione è irreversibile, non potrai mai più usare questo account in futuro !&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
 </context>
 </TS>

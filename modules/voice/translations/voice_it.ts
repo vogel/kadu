@@ -25,7 +25,7 @@
     </message>
     <message>
         <source>User %1 wants to talk with you. Do you accept it?</source>
-        <translation type="unfinished"></translation>
+        <translation>Contatto %1 deisdera parlare con te. Accetti ?</translation>
     </message>
     <message>
         <source>Incoming voice chat</source>

@@ -61,11 +61,11 @@ Zustandsänderungen während des Verbindens zum Server</translation>
     </message>
     <message>
         <source>Ignore changes right after connection to the server</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignoriere Änderungen nach dem Verbinden zum Server</translation>
     </message>
     <message>
         <source>Ignore status changes from available/busy to available/busy</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignoriere Zustandsänderungen von erreichbar/bschäftigt auf erreichbar/beschäftigt</translation>
     </message>
 </context>
 </TS>
