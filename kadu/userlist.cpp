@@ -106,7 +106,7 @@ UserListElement::~UserListElement()
 	delete Stat;
 }
 
-QString UserListElement::homePhone() const
+const QString &UserListElement::homePhone() const
 {
 	return HomePhone;
 }
@@ -122,7 +122,7 @@ void UserListElement::setHomePhone(const QString &phone)
 		emit Parent->userDataChanged(&old, this);
 }
 
-QString UserListElement::aliveSound(NotifyType &type) const
+const QString &UserListElement::aliveSound(NotifyType &type) const
 {
 	type = AliveSound;
 	return OwnAliveSound;
@@ -144,7 +144,7 @@ void UserListElement::setAliveSound(NotifyType type, const QString &file)
 		emit Parent->userDataChanged(&old, this);
 }
 
-QString UserListElement::messageSound(NotifyType &type) const
+const QString &UserListElement::messageSound(NotifyType &type) const
 {
 	type = MessageSound;
 	return OwnMessageSound;
@@ -166,7 +166,7 @@ void UserListElement::setMessageSound(NotifyType type, const QString &file)
 		emit Parent->userDataChanged(&old, this);
 }
 
-QString UserListElement::group() const
+const QString &UserListElement::group() const
 {
 	return Group;
 }
@@ -182,7 +182,7 @@ void UserListElement::setGroup(const QString& group)
 	kdebugf2();
 }
 
-QString UserListElement::firstName() const
+const QString &UserListElement::firstName() const
 {
 	return FirstName;
 }
@@ -198,7 +198,7 @@ void UserListElement::setFirstName(const QString &firstName)
 		emit Parent->userDataChanged(&old, this);
 }
 
-QString UserListElement::lastName() const
+const QString &UserListElement::lastName() const
 {
 	return LastName;
 }
@@ -214,7 +214,7 @@ void UserListElement::setLastName(const QString &lastName)
 		emit Parent->userDataChanged(&old, this);
 }
 
-QString UserListElement::nickName() const
+const QString &UserListElement::nickName() const
 {
 	return NickName;
 }
@@ -230,7 +230,7 @@ void UserListElement::setNickName(const QString &nickName)
 		emit Parent->userDataChanged(&old, this);
 }
 
-QString UserListElement::altNick() const
+const QString &UserListElement::altNick() const
 {
 	return AltNick;
 }
@@ -246,7 +246,7 @@ void UserListElement::setAltNick(const QString &altNick)
 		emit Parent->userDataChanged(&old, this);
 }
 
-QString UserListElement::mobile() const
+const QString &UserListElement::mobile() const
 {
 	return Mobile;
 }
@@ -262,7 +262,7 @@ void UserListElement::setMobile(const QString &mobile)
 		emit Parent->userDataChanged(&old, this);
 }
 
-QString UserListElement::email() const
+const QString &UserListElement::email() const
 {
 	return Email;
 }
@@ -346,7 +346,7 @@ QHostAddress & UserListElement::ip()
 	return Ip;
 }
 
-QString UserListElement::dnsName() const
+const QString &UserListElement::dnsName() const
 {
 	return DnsName;
 }

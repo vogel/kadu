@@ -88,13 +88,13 @@ class ChatManager : public QObject
 		/**
 			Zwraca liste otwartych okien Chat.
 		**/
-		const ChatList& chats();
+		const ChatList& chats() const;
 		/**
 			Zwraca wska¼nik do okna z list± u¿ytkowników uins
 			@param uins lista u¿ytkowników
 			@return wska¼nik do okna je¶li istnieje w przeciwnym wypadku zwraca NULL
 		**/
-		Chat* findChatByUins(UinsList uins);
+		Chat* findChatByUins(const UinsList &uins) const;
 		/**
 			zwraca warto¶æ w³asno¶ci "name" okna okre¶lonego przez uins
 			@param uins lista u¿ytkowników identyfikuj±ca okno
@@ -358,7 +358,7 @@ class Chat : public QWidget
 			@return wska¼nik do przycisku, je¶li przycisk nie istnieje
 			zwraca NULL
 		**/
-		QPushButton* button(const QString& name);
+		QPushButton* button(const QString& name) const;
 		/**
 			Formatuje wszystkie wiadomo¶ci na html'a,
 			dodaje kolory t³a i czcionek
@@ -393,7 +393,7 @@ class Chat : public QWidget
 		/**
 			Zwraca listê numerów rozmowców.
 		**/
-		const UinsList& uins();
+		const UinsList& uins() const;
 		/**
 			Daje dostêp do wiadomo¶ci aktualnie przechowywanych
 			w oknie chat. Metody tej mo¿na u¿yæ do zmiany tre¶ci
@@ -411,7 +411,7 @@ class Chat : public QWidget
 		/**
 			Zwraca aktualny tytu³ okna
 		**/
-		const QString& title();
+		const QString& title() const;
 
 	public slots:
 		/**

@@ -167,6 +167,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 						break;
 					}
 		}
+//		kdebugm(KDEBUG_DUMP, "creating widget\n");
 
 		switch((*i).type)
 		{
@@ -418,12 +419,15 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 		++num;
 	}
 
+	kdebugm(KDEBUG_INFO, "connecting SlotsOnCreate\n");
 	FOREACH(conn, SlotsOnCreate)
 		connect(this, SIGNAL(create()), (*conn).receiver, (*conn).slot);
 	
+	kdebugm(KDEBUG_INFO, "connecting SlotsOnApply\n");
 	FOREACH(conn, SlotsOnApply)
 		connect(this, SIGNAL(apply()), (*conn).receiver, (*conn).slot);
 
+	kdebugm(KDEBUG_INFO, "connecting SlotsOnClose\n");
 	FOREACH(conn, SlotsOnClose)
 		connect(this, SIGNAL(destroy()), (*conn).receiver, (*conn).slot);
 
@@ -1471,12 +1475,12 @@ void HotKey::keyReleaseEvent(QKeyEvent *)
 		setText("");
 }
 
-QKeySequence HotKey::getShortCut()
+QKeySequence HotKey::getShortCut() const
 {
 	return QKeySequence(text());
 }
 
-QString HotKey::getShortCutString()
+QString HotKey::getShortCutString() const
 {
 	return text();
 }
@@ -1518,7 +1522,7 @@ void SelectFont::setFont(const QFont &font)
 	fontEdit->setText(narg(QString("%1 %2"), currentFont.family(), QString::number(currentFont.pointSize())));
 }
 
-QFont SelectFont::font()
+const QFont &SelectFont::font() const
 {
 	return currentFont;
 }
@@ -1548,7 +1552,7 @@ void ColorButton::onClick()
 		emit changed(name(), color);
 }
 
-QColor ColorButton::color()
+const QColor &ColorButton::color() const
 {
 	return actualcolor;
 }
@@ -1637,7 +1641,7 @@ SelectPaths::SelectPaths(QWidget *parent, const char* name) : QHBox(parent, name
 	kdebugf2();
 }
 
-QStringList SelectPaths::getPathList()
+const QStringList &SelectPaths::getPathList() const
 {
 	kdebugf();
 	return releaseList;

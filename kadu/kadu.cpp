@@ -797,11 +797,6 @@ void Kadu::offlineToUser()
 void Kadu::changeAppearance()
 {
 	kdebugf();
-
-	Userbox->setPaletteBackgroundColor(config_file.readColorEntry("Look", "UserboxBgColor"));
-	Userbox->setPaletteForegroundColor(config_file.readColorEntry("Look", "UserboxFgColor"));
-	Userbox->QListBox::setFont(config_file.readFontEntry("Look", "UserboxFont"));
-
 	GroupBar->setFont(QFont(config_file.readFontEntry("Look", "UserboxFont").family(), config_file.readFontEntry("Look", "UserboxFont").pointSize(),75));
 
 	InfoPanel->setPaletteBackgroundColor(config_file.readColorEntry("Look", "InfoPanelBgColor"));
@@ -1395,22 +1390,22 @@ void Kadu::infopanelUpdate(UinType uin)
 	kdebugf2();
 }
 
-QMenuBar* Kadu::menuBar()
+QMenuBar* Kadu::menuBar() const
 {
 	return MenuBar;
 }
 
-QPopupMenu* Kadu::mainMenu()
+QPopupMenu* Kadu::mainMenu() const
 {
 	return MainMenu;
 }
 
-KaduTabBar* Kadu::groupBar()
+KaduTabBar* Kadu::groupBar() const
 {
 	return GroupBar;
 }
 
-UserBox* Kadu::userbox()
+UserBox* Kadu::userbox() const
 {
 	return Userbox;
 }
@@ -1420,7 +1415,7 @@ void Kadu::setDocked(bool docked)
 	Docked = docked;
 }
 
-bool Kadu::docked()
+bool Kadu::docked() const
 {
 	return Docked;
 }
@@ -1512,11 +1507,6 @@ void KaduSlots::onDestroyConfigDialog()
 	else
 		kadu->statusButton->hide();
 
-	if (config_file.readBoolEntry("Look", "MultiColumnUserbox"))
-		kadu->userbox()->setColumnMode(QListBox::FitToWidth);
-	else
-		kadu->userbox()->setColumnMode(1);
-
 	config_file.writeEntry("General", "DefaultStatusIndex",
 		ConfigDialog::getComboBox("General", "Default status", "cb_defstatus")->currentItem());
 
@@ -1532,7 +1522,6 @@ void KaduSlots::onDestroyConfigDialog()
 
 	if (!config_file.readBoolEntry("Look", "DisplayGroupTabs"))
 	{
-
 		kadu->groupBar()->setCurrentTab(kadu->groupBar()->tabAt(0));
 		config_file.writeEntry("Look", "CurrentGroupTab", 0);
 		kadu->setActiveGroup("");

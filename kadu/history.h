@@ -59,7 +59,7 @@ struct HistoryDate {
 class UinsListViewText : public QListViewItem {
 	public:
 		UinsListViewText(QListView *parent, UinsList &uins);
-		UinsList &getUinsList();
+		const UinsList &getUinsList() const;
 
 	private:
 		UinsList uins;
@@ -68,7 +68,7 @@ class UinsListViewText : public QListViewItem {
 class DateListViewText : public QListViewItem {
 	public:
 		DateListViewText(QListViewItem *parent, HistoryDate &date);
-		HistoryDate &getDate();
+		const HistoryDate &getDate() const;
 
 	private:
 		HistoryDate date;
@@ -96,7 +96,7 @@ class History : public QDialog {
 		void showHistoryEntries(int from, int count);
 		void setDateListViewText(QDateTime &datetime);
 		void searchHistory();
-		QString gaduStatus2symbol(unsigned int status);
+		static QString gaduStatus2symbol(unsigned int status);
 		void closeEvent(QCloseEvent *e);
 
 		QListView *uinslv;
@@ -115,7 +115,7 @@ class HistorySearch : public QDialog {
 	public:
 		HistorySearch(QWidget *parent, UinsList uins);
 		void setDialogValues(HistoryFindRec &findrec);
-		HistoryFindRec getDialogValues();
+		HistoryFindRec getDialogValues() const;
 
 	public slots:
 		void correctFromDays(int index);
@@ -152,18 +152,18 @@ class HistoryManager : public QObject
 
 	public:
 		HistoryManager(QObject *parent=0, const char *name=0);
-		int getHistoryEntriesCount(UinsList uins);
-		int getHistoryEntriesCount(QString mobile = QString::null);
+		int getHistoryEntriesCount(const UinsList &uins);
+		int getHistoryEntriesCount(const QString &mobile = QString::null);
 		QValueList<HistoryEntry> getHistoryEntries(UinsList uins, int from, int count, int mask = HISTORYMANAGER_ENTRY_ALL);
-		QValueList<HistoryDate> getHistoryDates(UinsList uins);
-		QValueList<UinsList> getUinsLists();
-		int getHistoryEntryIndexByDate(UinsList uins, QDateTime &date, bool endate = false);
-		static QString getFileNameByUinsList(UinsList &uins);
+		QValueList<HistoryDate> getHistoryDates(const UinsList &uins);
+		QValueList<UinsList> getUinsLists() const;
+		int getHistoryEntryIndexByDate(const UinsList &uins, const QDateTime &date, bool endate = false);
+		static QString getFileNameByUinsList(UinsList uins);
 		static QStringList mySplit(const QChar &sep, const QString &str);
 
 	private:
 		QString text2csv(const QString &text);
-		int getHistoryEntriesCountPrivate(const QString &filename);
+		int getHistoryEntriesCountPrivate(const QString &filename) const;
 		uint getHistoryDate(QTextStream &stream);
 		void buildIndexPrivate(const QString &filename);
 
@@ -203,12 +203,12 @@ class HistoryManager : public QObject
 				bool own, time_t t=0, bool chat=true, time_t arriveTime=time(NULL));
 		void appendSms(const QString &mobile, const QString &msg);
 		void appendStatus(UinType uin, const UserStatus &sstatus);
-		void removeHistory(UinsList uins);
+		void removeHistory(const UinsList &uins);
 
 		void convHist2ekgForm(UinsList uins);
 		void convSms2ekgForm();
-		void buildIndex(UinsList uins);
-		void buildIndex(QString mobile = QString::null);
+		void buildIndex(const UinsList &uins);
+		void buildIndex(const QString &mobile = QString::null);
 };
 
 extern HistoryManager history;

@@ -18,7 +18,7 @@ class KaduListBoxPixmap : public QListBoxItem
 		KaduListBoxPixmap(const QPixmap &pix, const QString &text);
 		KaduListBoxPixmap(const QPixmap &pix, const QString &text, const QString &descr, bool bold);
 
-		QString description() const { return descr; }
+		const QString &description() const { return descr; }
 		bool isBold() const { return bold; }
 		int height(const QListBox *lb) const;
 		int width(const QListBox *lb) const;
@@ -74,7 +74,7 @@ class UserBoxMenu : public QPopupMenu
 
 	public:
 		UserBoxMenu(QWidget *parent=0, const char* name=0);
-		int getItem(const QString &caption);
+		int getItem(const QString &caption) const;
 	
 	public slots:
 		void show(QListBoxItem *item);

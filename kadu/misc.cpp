@@ -1313,7 +1313,7 @@ IconsManager::IconsManager(const QString& name, const QString& configname)
 	kdebugf2();
 }
 
-QString IconsManager::iconPath(const QString &name)
+QString IconsManager::iconPath(const QString &name) const
 {
 	QString fname;
 	if(name.contains('/'))
@@ -1323,28 +1323,22 @@ QString IconsManager::iconPath(const QString &name)
 	return fname;
 }
 
-QPixmap IconsManager::loadIcon(const QString &name)
+const QPixmap &IconsManager::loadIcon(const QString &name)
 {
 //	kdebugf();
-	QMap<QString, QIconSet>::iterator i=icons.find(name);
+	QMap<QString, QPixmap>::iterator i=icons.find(name);
 	if (i!=icons.end())
 	{
 //		kdebugf2();
-		return (*i).pixmap();
+		return *i;
 	}
 
 	QPixmap p;
-	if (p.load(iconPath(name)))
-	{
-		icons[name]=QIconSet(p);
-//		kdebugf2();
-		return icons[name].pixmap();
-	}
-	else
-	{
-		kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "end: error - pixmap '%s' cannot be loaded!\n", name.local8Bit().data());
-		return p;
-	}
+	if (!p.load(iconPath(name)))
+		kdebugmf(KDEBUG_WARNING, "error - pixmap '%s' cannot be loaded!\n", name.local8Bit().data());
+	icons[name] = p;
+//	kdebugf2();
+	return icons[name];
 }
 
 void IconsManager::clear()
@@ -1520,7 +1514,7 @@ void IconsManager::selectedPaths(const QStringList& paths)
 	kdebugf2();
 }
 
-IconsManager icons_manager("icons", "icons.conf");
+IconsManager *icons_manager_ptr;
 /********** HttpClient **********/
 
 HttpClient::HttpClient()
@@ -1699,19 +1693,19 @@ void HttpClient::onConnectionClosed()
 	kdebugf2();
 }
 
-void HttpClient::setHost(QString host)
+void HttpClient::setHost(const QString &host)
 {
-	Host=host;
+	Host = host;
 	Cookies.clear();
 }
 
-void HttpClient::get(QString path)
+void HttpClient::get(const QString &path)
 {
-	Referer=Path;
-	Path=path;
+	Referer = Path;
+	Path = path;
 	Data.resize(0);
 	PostData.resize(0);
-	HeaderParsed=false;
+	HeaderParsed = false;
 	if(config_file.readBoolEntry("Network", "UseProxy", false))
 		Socket.connectToHost(
 			config_file.readEntry("Network", "ProxyHost"),
@@ -1720,36 +1714,36 @@ void HttpClient::get(QString path)
 		Socket.connectToHost(Host,80);
 }
 
-void HttpClient::post(QString path,const QByteArray& data)
+void HttpClient::post(const QString &path,const QByteArray& data)
 {
-	Referer=Path;
-	Path=path;
+	Referer = Path;
+	Path = path;
 	Data.resize(0);
 	PostData.duplicate(data);
-	HeaderParsed=false;
+	HeaderParsed = false;
 	Socket.connectToHost(Host,80);
 }
 
-void HttpClient::post(QString path,const QString& data)
+void HttpClient::post(const QString &path,const QString& data)
 {
 	QByteArray PostData;
 	PostData.duplicate(data.local8Bit().data(),data.length());
 	post(path,PostData);
 }
 
-int HttpClient::status()
+int HttpClient::status() const
 {
 	return StatusCode;
 }
 
-const QByteArray& HttpClient::data()
+const QByteArray& HttpClient::data() const
 {
 	return Data;
 }
 
 QString HttpClient::encode(const QString& text)
 {
-	QString encoded=text;
+	QString encoded = text;
 	QUrl::encode(encoded);
 	return encoded;
 }
@@ -1862,16 +1856,23 @@ void HtmlDocument::parseHtml(const QString& html)
 		addElement(e);
 }
 
-QString HtmlDocument::generateHtml()
+QString HtmlDocument::generateHtml() const
 {
-	QString html;
-	for(unsigned int i=0; i<Elements.size(); ++i)
+	QString html,tmp;
+	FOREACH(e, Elements)
+	{
+		tmp = (*e).text;
+		if(!(*e).tag)
+			escapeText(tmp);
+		html += tmp;
+	}
+/*	for(unsigned int i=0; i<Elements.size(); ++i)
 	{
 		Element e=Elements[i];
 		if(!e.tag)
 			escapeText(e.text);
 		html+=e.text;
-	}
+	}*/
 	return html;
 }
 
@@ -1885,7 +1886,7 @@ bool HtmlDocument::isTagElement(int index) const
 	return Elements[index].tag;
 }
 
-QString HtmlDocument::elementText(int index) const
+const QString & HtmlDocument::elementText(int index) const
 {
 	return Elements[index].text;
 }
@@ -2201,7 +2202,7 @@ Themes::Themes(const QString& themename, const QString& configname, const char *
 	ActualTheme="Custom";
 }
 
-QStringList Themes::getSubDirs(const QString& path)
+QStringList Themes::getSubDirs(const QString& path) const
 {
 	QDir dir(path);
 	dir.setFilter(QDir::Dirs);
@@ -2217,7 +2218,7 @@ QStringList Themes::getSubDirs(const QString& path)
 	return subdirs;
 }
 
-const QStringList Themes::themes()
+const QStringList &Themes::themes() const
 {
 	return ThemesList;
 }
@@ -2239,12 +2240,12 @@ void Themes::setTheme(const QString& theme)
 	kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_INFO, "end: theme: %s\n", ActualTheme.local8Bit().data());
 }
 
-QString Themes::theme()
+const QString &Themes::theme() const
 {
 	return ActualTheme;
 }
 
-QString Themes::fixFileName(const QString& path,const QString& fn)
+QString Themes::fixFileName(const QString& path, const QString& fn) const
 {
 	// sprawd¼ czy oryginalna jest ok
 	if(QFile::exists(path+"/"+fn))
@@ -2287,7 +2288,7 @@ void Themes::setPaths(const QStringList& paths)
 	kdebugf2();
 }
 
-QStringList Themes::defaultKaduPathsWithThemes()
+QStringList Themes::defaultKaduPathsWithThemes() const
 {
 	QStringList default1, default2;
 	default1=getSubDirs(dataPath("kadu/themes/"+Name));
@@ -2302,17 +2303,17 @@ QStringList Themes::defaultKaduPathsWithThemes()
 	return default1+default2;
 }
 
-QStringList Themes::paths()
+const QStringList &Themes::paths() const
 {
     return ThemesPaths;
 }
 
-QStringList Themes::additionalPaths()
+const QStringList &Themes::additionalPaths() const
 {
     return additional;
 }
 
-QString Themes::themePath(const QString& theme)
+QString Themes::themePath(const QString& theme) const
 {
 	QString t=theme;
 	if (theme.isEmpty())
@@ -2324,7 +2325,7 @@ QString Themes::themePath(const QString& theme)
 	return ThemesPaths.grep(t).first();
 }
 
-QString Themes::getThemeEntry(const QString& name)
+QString Themes::getThemeEntry(const QString& name) const
 {
 	if (entries.contains(name))
 		return entries[name];
@@ -2602,7 +2603,7 @@ void KaduTextBrowser::drawContents(QPainter * p, int clipx, int clipy, int clipw
 	--level;
 }
 
-void KaduTextBrowser::hyperlinkClicked(const QString &link)
+void KaduTextBrowser::hyperlinkClicked(const QString &link) const
 {
 	if (link.startsWith("www."))
 		openWebBrowser("http://"+link);
@@ -2691,7 +2692,6 @@ void KaduTextBrowser::copy()
 	clipboard->setText(txt, QClipboard::Clipboard);
 	clipboard->setText(txt, QClipboard::Selection);
 #endif
-
 	kdebugf2();
 }
 

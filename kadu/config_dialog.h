@@ -37,12 +37,12 @@ class HotKey : public QLineEdit
 		/**
 		  Pobiera skrót klawiszowy
 		**/
-		QString getShortCutString();
+		QString getShortCutString() const;
 
 		/**
 		  Pobiera skrót klawiszowy
 		**/
-		QKeySequence getShortCut();
+		QKeySequence getShortCut() const;
 
 		/**
 		  Ustawia skrót klawiszowy
@@ -82,7 +82,7 @@ class ColorButton : public QPushButton
 {
 	Q_OBJECT
 	private:
-	       QColor actualcolor;
+		QColor actualcolor;
 	public:
 		/**
 			Konstruktor obiektu w którym ustawia sie kolor "color",
@@ -93,7 +93,7 @@ class ColorButton : public QPushButton
 		/**
 			Pobiera kolor z przycisku
 		**/
-		QColor color();
+		const QColor &color() const;
 
 	private slots:
 		void onClick();
@@ -114,7 +114,7 @@ class SelectFont : public QHBox
 	Q_OBJECT
 	public:
 		SelectFont(const QString &text, const QFont &def_val, QWidget *parent=0,  const char *name=0, const QString &tip="");
-		QFont font();
+		const QFont &font() const;
 	public slots:
 		void setFont(const QFont &font);
 	private slots:
@@ -154,7 +154,7 @@ class SelectPaths : public QHBox
 		/**
 			Pobiera listê ¶cie¿ek katalogów
 		**/
-		QStringList getPathList();
+		const QStringList &getPathList() const;
 
 	public slots:
 		/**

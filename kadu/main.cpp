@@ -114,6 +114,7 @@ int main(int argc, char *argv[])
 	emoticons=new EmoticonsManager();
 
 	new QApplication(argc, argv);
+	icons_manager_ptr = new IconsManager ("icons", "icons.conf");
 
 	// ³adowanie t³umaczenia
 	config_file.addVariable("General", "Language", QString(QTextCodec::locale()).mid(0,2));

@@ -101,17 +101,17 @@ class UserListElement : public QObject
 
 		void operator = (const UserListElement &copyMe);
 
-		QString group() const;
-		QString firstName() const;
-		QString lastName() const;
-		QString nickName() const;
-		QString altNick() const;
-		QString mobile() const;
-		QString email() const;
+		const QString &group() const;
+		const QString &firstName() const;
+		const QString &lastName() const;
+		const QString &nickName() const;
+		const QString &altNick() const;
+		const QString &mobile() const;
+		const QString &email() const;
 		UinType uin() const;
-		QString homePhone() const;
-		QString aliveSound(NotifyType &type) const;
-		QString messageSound(NotifyType &type) const;
+		const QString &homePhone() const;
+		const QString &aliveSound(NotifyType &type) const;
+		const QString &messageSound(NotifyType &type) const;
 
 		const UserStatus & status() const;
 		UserStatus & status();
@@ -122,7 +122,7 @@ class UserListElement : public QObject
 		const QHostAddress & ip() const;
 		QHostAddress & ip();
 
-		QString dnsName() const;
+		const QString &dnsName() const;
 		short port() const;
 		int version() const;
 		bool blocking() const;

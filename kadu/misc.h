@@ -114,15 +114,15 @@ class HttpClient : public QObject
 		void onConnectionClosed();
 
 	public slots:
-		void setHost(QString host);
-		void get(QString path);
-		void post(QString path,const QByteArray& data);
-		void post(QString path,const QString& data);
+		void setHost(const QString &host);
+		void get(const QString &path);
+		void post(const QString &path,const QByteArray& data);
+		void post(const QString &path,const QString& data);
 
 	public:
 		HttpClient();
-		int status();
-		const QByteArray& data();
+		int status() const;
+		const QByteArray& data() const;
 		static QString encode(const QString& text);
 
 	signals:
@@ -189,7 +189,7 @@ class HtmlDocument
 			wchodz±ce w sk³ad elementów nie bêd±cych tagami
 			html s± escapowane.
 		**/
-		QString generateHtml();
+		QString generateHtml() const;
 		/**
 			Zwraca ilo¶æ elementów wchodz±cych w sk³ad
 			dokumentu.
@@ -203,7 +203,7 @@ class HtmlDocument
 		/**
 			Zwraca tekst elementu o podanym indeksie.
 		**/
-		QString elementText(int index) const;
+		const QString &elementText(int index) const;
 		/**
 			Ustawia tekst i typ elementu o podanym indeksie.
 		**/
@@ -268,18 +268,18 @@ class Themes : public QObject
 		QStringList additional;
 		QString ConfigName, Name, ActualTheme;
 		QMap<QString, QString> entries;
-		QStringList getSubDirs(const QString& path);
-		QString fixFileName(const QString& path,const QString& fn);
+		QStringList getSubDirs(const QString& path) const;
+		QString fixFileName(const QString& path,const QString& fn) const;
 
 	public:
 		Themes(const QString& name, const QString& configname, const char *name=0);
-		QStringList defaultKaduPathsWithThemes();
-		const QStringList themes();
-		QString theme();
-		QStringList paths();
-		QStringList additionalPaths();
-		QString themePath(const QString& theme="");
-		QString getThemeEntry(const QString& name);
+		QStringList defaultKaduPathsWithThemes() const;
+		const QStringList &themes() const;
+		const QString &theme() const;
+		const QStringList &paths() const;
+		const QStringList &additionalPaths() const;
+		QString themePath(const QString& theme="") const;
+		QString getThemeEntry(const QString& name) const;
 	public slots:
 		void setTheme(const QString& theme);
 		void setPaths(const QStringList& paths);
@@ -301,14 +301,14 @@ class IconsManager :public Themes
 			(jesli zawiera znak '/' to jest interpretowana jako
 			sciezka).
 		**/
-		QString iconPath(const QString &name);
+		QString iconPath(const QString &name) const;
 		/**
 			£aduje ikonê z aktualnego zestawu lub z podanego pliku.
 			@param name nazwa ikony z zestawu lub ¶cie¿ka do pliku
 			(je¶li zawiera znak '/' to jest interpretowana jako
 			¶cie¿ka).
 		**/
-		QPixmap loadIcon(const QString &name);
+		const QPixmap & loadIcon(const QString &name);
 		static void initModule();
 		
 		void registerMenu(QMenuData *menu);
@@ -321,7 +321,7 @@ class IconsManager :public Themes
 		void refreshMenus();
 
 	private:
-		QMap<QString, QIconSet> icons;
+		QMap<QString, QPixmap> icons;
 		
 		QValueList<QPair<QMenuData *, QValueList<QPair<QString, QString> > > > menus;
 
@@ -331,7 +331,9 @@ class IconsManager :public Themes
 		void onApplyConfigDialog();
 };
 
-extern IconsManager icons_manager;
+//TODO: po wydaniu 0.4 trzeba zmieniæ nazwê na icons_manager i wywaliæ define'a
+extern IconsManager *icons_manager_ptr;
+#define icons_manager (*icons_manager_ptr)
 
 
 /**
@@ -436,7 +438,7 @@ class KaduTextBrowser : public QTextBrowser, QToolTip
 
 	private slots:
 		void copyLinkLocation();
-		void hyperlinkClicked(const QString& link);
+		void hyperlinkClicked(const QString& link) const;
 		void linkHighlighted(const QString &);
 		
 	protected:

@@ -66,7 +66,7 @@ ChatManager::~ChatManager()
 	closeAllWindows();
 }
 
-const ChatList& ChatManager::chats()
+const ChatList& ChatManager::chats() const
 {
 	return Chats;
 }
@@ -122,7 +122,7 @@ void ChatManager::changeAppearance()
 	kdebugf2();
 }
 
-Chat* ChatManager::findChatByUins(UinsList uins)
+Chat* ChatManager::findChatByUins(const UinsList &uins) const
 {
 	for(unsigned int i=0; i<Chats.count(); ++i)
 		if(Chats[i]->uins().equals(uins))
@@ -786,9 +786,9 @@ void Chat::unregisterButton(const QString& name)
 	kdebugf2();
 }
 
-QPushButton* Chat::button(const QString& name)
+QPushButton* Chat::button(const QString& name) const
 {
-	if(Buttons.contains(name))
+	if (Buttons.contains(name))
 		return Buttons[name];
 
 	kdebugmf(KDEBUG_WARNING, " '%s' - return NULL\n", name.local8Bit().data());
@@ -1672,7 +1672,7 @@ void Chat::initModule()
 	kdebugf2();
 }
 
-const UinsList& Chat::uins()
+const UinsList& Chat::uins() const
 {
 	return Uins;
 }
@@ -1682,7 +1682,7 @@ QValueList<ChatMessage*>& Chat::chatMessages()
 	return ChatMessages;
 }
 
-const QString& Chat::title()
+const QString& Chat::title() const
 {
 	return title_buffer;
 }

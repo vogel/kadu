@@ -64,14 +64,14 @@ QString HistoryManager::text2csv(const QString &text)
 	return csv;
 }
 
-QString HistoryManager::getFileNameByUinsList(UinsList &uins)
+QString HistoryManager::getFileNameByUinsList(UinsList uins)
 {
 	kdebugf();
-	unsigned int i;
 	QString fname;
-	if (uins.count()) {
+	if (uins.count())
+	{
 		uins.sort();
-		for (i = 0; i < uins.count(); ++i)
+		for (unsigned int i = 0; i < uins.count(); ++i)
 		{
 			fname.append(QString::number(uins[i]));
 			if (i < uins.count() - 1)
@@ -316,7 +316,7 @@ void HistoryManager::appendStatus(UinType uin, const UserStatus &status)
 	kdebugf2();
 }
 
-void HistoryManager::removeHistory(UinsList uins)
+void HistoryManager::removeHistory(const UinsList &uins)
 {
 	kdebugf();
 
@@ -347,6 +347,7 @@ void HistoryManager::convHist2ekgForm(UinsList uins)
 	QStringList linelist;
 	UinType uin;
 
+	uins.sort();//nie wiem czy to jest konieczne...
 	fname = getFileNameByUinsList(uins);
 
 	f.setName(path + fname);
@@ -598,7 +599,7 @@ void HistoryManager::convSms2ekgForm()
 	kdebugf2();
 }
 
-int HistoryManager::getHistoryEntriesCountPrivate(const QString &filename)
+int HistoryManager::getHistoryEntriesCountPrivate(const QString &filename) const
 {
 	kdebugf();
 
@@ -622,7 +623,7 @@ int HistoryManager::getHistoryEntriesCountPrivate(const QString &filename)
 	return lines;
 }
 
-int HistoryManager::getHistoryEntriesCount(UinsList uins)
+int HistoryManager::getHistoryEntriesCount(const UinsList &uins)
 {
 	kdebugf();
 	convHist2ekgForm(uins);
@@ -632,7 +633,7 @@ int HistoryManager::getHistoryEntriesCount(UinsList uins)
 	return ret;
 }
 
-int HistoryManager::getHistoryEntriesCount(QString mobile)
+int HistoryManager::getHistoryEntriesCount(const QString &mobile)
 {
 	kdebugf();
 	convSms2ekgForm();
@@ -827,7 +828,7 @@ uint HistoryManager::getHistoryDate(QTextStream &stream)
 	return (tokens[pos].toUInt() / 86400);
 }
 
-QValueList<HistoryDate> HistoryManager::getHistoryDates(UinsList uins)
+QValueList<HistoryDate> HistoryManager::getHistoryDates(const UinsList &uins)
 {
 	kdebugf();
 
@@ -925,7 +926,7 @@ QValueList<HistoryDate> HistoryManager::getHistoryDates(UinsList uins)
 	return entries;
 }
 
-QValueList<UinsList> HistoryManager::getUinsLists()
+QValueList<UinsList> HistoryManager::getUinsLists() const
 {
 	kdebugf();
 	QValueList<UinsList> entries;
@@ -1012,14 +1013,14 @@ void HistoryManager::buildIndexPrivate(const QString &filename)
 	kdebugf2();
 }
 
-void HistoryManager::buildIndex(UinsList uins)
+void HistoryManager::buildIndex(const UinsList &uins)
 {
 	kdebugf();
 	buildIndexPrivate(ggPath("history/") + getFileNameByUinsList(uins));
 	kdebugf2();
 }
 
-void HistoryManager::buildIndex(QString mobile)
+void HistoryManager::buildIndex(const QString &mobile)
 {
 	kdebugf();
 	if (mobile == QString::null)
@@ -1112,7 +1113,7 @@ QStringList HistoryManager::mySplit(const QChar &sep, const QString &str)
 	return strlist;
 }
 
-int HistoryManager::getHistoryEntryIndexByDate(UinsList uins, QDateTime &date, bool enddate)
+int HistoryManager::getHistoryEntryIndexByDate(const UinsList &uins, const QDateTime &date, bool enddate)
 {
 	kdebugf();
 
@@ -1296,7 +1297,7 @@ UinsListViewText::UinsListViewText(QListView *parent, UinsList &uins)
 	kdebugf2();
 }
 
-UinsList &UinsListViewText::getUinsList()
+const UinsList &UinsListViewText::getUinsList() const
 {
 	return uins;
 }
@@ -1307,7 +1308,7 @@ DateListViewText::DateListViewText(QListViewItem *parent, HistoryDate &date)
 	setText(0, date.date.toString("yyyy.MM.dd"));
 }
 
-HistoryDate &DateListViewText::getDate()
+const HistoryDate &DateListViewText::getDate() const
 {
 	return date;
 }
@@ -2068,7 +2069,7 @@ void HistorySearch::setDialogValues(HistoryFindRec &findrec)
 	kdebugf2();
 }
 
-HistoryFindRec HistorySearch::getDialogValues()
+HistoryFindRec HistorySearch::getDialogValues() const
 {
 	kdebugf();
 	HistoryFindRec findrec;

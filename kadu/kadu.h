@@ -123,27 +123,27 @@ class Kadu : public QMainWindow
 		/**
 			Zwraca wskaznik do belki menu glownego okna.
 		**/
-		QMenuBar* menuBar();
+		QMenuBar* menuBar() const;
 
 		/**
 			Zwraca wskaznik do glownego menu programu.
 		**/
-		QPopupMenu* mainMenu();
+		QPopupMenu* mainMenu() const;
 
 		/**
 			Zwraca wskaznik do zakladek z nazwami grup.
 		**/
-		KaduTabBar* groupBar();
+		KaduTabBar* groupBar() const;
 
 		/**
 			Zwraca wskaznik do userbox-a w glownym oknie.
 		**/
-		UserBox* userbox();
+		UserBox* userbox() const;
 
 		/**
 			Zwraca true je¶li kadu jest zadokowane.
 		**/
-		bool docked();
+		bool docked() const;
 		void startupProcedure();
 		int personalInfoMenuId;//potrzebne dla modu³u account_management
 

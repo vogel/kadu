@@ -23,6 +23,7 @@
 #include "pending_msgs.h"
 #include "status.h"
 #include "userbox.h"
+#include "kadu.h"
 
 QFontMetrics* KaduListBoxPixmap::descriptionFontMetrics=NULL;
 UinType KaduListBoxPixmap::myUIN;
@@ -466,9 +467,6 @@ void UserBox::refresh()
 	unsigned int i;
 	KaduListBoxPixmap *lbp;
 
-	this->setPaletteBackgroundColor(config_file.readColorEntry("Look","UserboxBgColor"));
-	this->setPaletteForegroundColor(config_file.readColorEntry("Look","UserboxFgColor"));
-	this->QListBox::setFont(config_file.readFontEntry("Look","UserboxFont"));
 	KaduListBoxPixmap::setFont(config_file.readFontEntry("Look","UserboxFont"));
 	KaduListBoxPixmap::setShowDesc(config_file.readBoolEntry("Look", "ShowDesc"));
 	KaduListBoxPixmap::setAlignTop(config_file.readBoolEntry("Look", "AlignUserboxIconsTop"));
@@ -879,7 +877,7 @@ int UserBoxMenu::addItemAtPos(int index,const QString &iconname, const QString &
 	return insertItem( QIconSet(icons_manager.loadIcon(iconname)) , text, receiver, member, accel, id, index);
 }
 
-int UserBoxMenu::getItem(const QString &caption)
+int UserBoxMenu::getItem(const QString &caption) const
 {
 	for (unsigned int i=0; i<count(); ++i)
 		if (!QString::localeAwareCompare(caption,text(idAt(i)).left(caption.length())))
@@ -943,6 +941,17 @@ void UserBoxSlots::onCreateConfigDialog()
 void UserBoxSlots::onDestroyConfigDialog()
 {
 	kdebugf();
+	UserBox *userbox = kadu->userbox();
+
+	if (config_file.readBoolEntry("Look", "MultiColumnUserbox"))
+		userbox->setColumnMode(QListBox::FitToWidth);
+	else
+		userbox->setColumnMode(1);
+
+	userbox->setPaletteBackgroundColor(config_file.readColorEntry("Look", "UserboxBgColor"));
+	userbox->setPaletteForegroundColor(config_file.readColorEntry("Look", "UserboxFgColor"));
+	userbox->QListBox::setFont(config_file.readFontEntry("Look", "UserboxFont"));
+
 	UserBox::all_refresh();
 	kdebugf2();
 }
