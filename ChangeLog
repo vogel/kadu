@@ -68,15 +68,14 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * w oknie wyszukiwania pokazuj± siê statusy "ukryte" (chilek)
 * wywalenie z kodu starej-niedzia³aj±cej metody wykrywania "ukrytych" (chilek)
 * rozwój nowego mechanizmu budowania okna konfiguracyjnego (adrian)
-* sms: obs³uga nowej bramki ery - na razie bardzo wolno dzia³a,
-  nie wiem jeszcze dlaczego (adrian)
+* sms: obs³uga nowej bramki ERA Standard (adrian)
 * u¿ytkownicy blokowani przez nas wy¶wietlaj± siê kolorem czerwonym,
   u¿ytkownicy ignorowani przez nas kolorem ¿ó³tym (chilek)
-* poczatki drag&drop - mozna przeciagac uzytkownikow z userbox'a.
-  narazie np do jakiegos edytora tekstowego (adrian)
-* zakladki z grupami przyjmuja drag&drop z userbox'a i przenosi
-  kontakt do okreslonej grupy. trzeba to jeszcze dopracowac.
-  przy okazji drobna przerobka UserListElement (adrian)
+* pocz±tki drag&drop - mo¿na przeci±gaæ u¿ytkowników z userbox'a.
+  narazie np. do jakiego¶ edytora tekstowego (adrian)
+* zak³adki z grupami przyjmuj± drag&drop z userbox'a. Przenosi
+  to kontakt do okre¶lonej grupy. trzeba to jeszcze dopracowaæ.
+  przy okazji drobna przeróbka UserListElement (adrian)
 
 +++ wersja 0.3.4-pre3
 * dodane przeszukiwanie historii (chilek)
