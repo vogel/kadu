@@ -103,28 +103,17 @@ void KaduListBoxPixmap::paint(QPainter *painter)
 	UserListElement &user = userlist.byAltNick(text());
 //	kdebugm(KDEBUG_INFO, "%d\n", (int)&user);
 	bool isMyUin=(myUIN == user.uin());
+	QColor origColor = painter->pen().color();
 	if (user.uin())
 	{
 		UinsList uins;
 		uins.append(user.uin());
 		if (user.blocking())
-		{
-			QPen &pen = (QPen &)painter->pen();
-			pen.setColor(QColor(255, 0, 0));
-			painter->setPen(pen);
-		}
+			painter->setPen(QColor(255, 0, 0));
 		else if (isIgnored(uins))
-		{
-			QPen &pen = (QPen &)painter->pen();
-			pen.setColor(QColor(192, 192, 0));
-			painter->setPen(pen);
-		}
+			painter->setPen(QColor(192, 192, 0));
 		else if (user.offlineTo())
-		{
-			QPen &pen = (QPen &)painter->pen();
-			pen.setColor(QColor(128, 128, 128));
-			painter->setPen(pen);
-		}
+			painter->setPen(QColor(128, 128, 128));
 	}
 
 	int itemHeight = AlignUserboxIconsTop ? lineHeight(listBox()):height(listBox());
@@ -180,12 +169,10 @@ void KaduListBoxPixmap::paint(QPainter *painter)
 			int h;
 			QStringList out;
 			calculateSize(descr, width(listBox())-5-pm.width(), out, h);
-			if (!out.empty())
-			{
-				QPen &pen = (QPen &)painter->pen();
-				pen.setColor(descColor);
-				painter->setPen(pen);
-			}
+			if (!out.empty() && !isSelected())
+				painter->setPen(descColor);
+			else
+				painter->setPen(origColor);
 			FOREACH(text, out)
 			{
 				painter->drawText(pm.width() + 5, yPos, *text);
