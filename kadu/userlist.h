@@ -15,6 +15,9 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifndef USERLIST_H
+#define USERLIST_H
+
 #include <qobject.h>
 #include <qvaluelist.h>
 #include "../libgadu/lib/libgadu.h"
@@ -55,3 +58,5 @@ class UserList : public QValueList<UserListElement>
 		bool writeToFile(char *filename = NULL);
 		bool readFromFile();
 };
+
+#endif
