@@ -18,7 +18,7 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 #!/bin/bash
-# $Id: Instaluj,v 1.36 2004/06/21 14:18:31 romek Exp $
+# $Id: Instaluj,v 1.37 2004/06/24 13:15:16 adrian Exp $
 # KaduInstaller - Copyright (C) 2004 Sad Mephisto <sad@antisocial.com>
 
 export LC_ALL=pl_PL
@@ -252,25 +252,32 @@ mainmenu(){
 
 pomoc()
 {
-	dialog --backtitle "Instalator Kadu" --ok-label "Zrozumia³em" --msgbox  " \
-	Szczegó³owe informacje dotycz±ce wymagañ programowych i sprzêtowych \n \
-	znajduj± siê na stronie http://kadu.net/\n\n \
-	W wiêkszo¶ci przypadków nie jest konieczne dodatkowe konfigurowanie \n \
-	parametrów instalacyjnych Kadu. Warto jednak zajrzeæ do sekcji \n \
-	\"Modu³y\" i wybraæ tu rodzaj modu³ów (statyczne lub dynamiczne) \n \
-	oraz te, które uwa¿asz za potrzebne.\n \n \
-	UWAGA: przy wyborze modu³ów opisanych informacj± *autopobór* \n \
-	Modu³y te bêd± automatycznie pobierene z internetu w wersji \n \
-	odpowiedniej do wersji Kadu. Konieczne jest wiêc posiadanie \n \
-	uruchomionego ³±cza internetowego. Je¿eli modu³ nie zostanie pobrany, \n \
-	zostanie pominiêty podczas kompilacji. \n \n \
-	Po wybraniu opcji \"Instaluj\" rozpoczyna siê proces kompilacji\n \
-	i instalacji Kadu. Je¶li proces instalacji siê zatrzyma z \n \
-	komunikatem o b³êdzie, przeczytaj plik \"log_install\" I sprawd¼ \n \
-	w dokumentacji czy podobny problem nie zosta³ opisany.\n \
-	Je¶li nie znajdziesz wskazówek, to przeszukaj \n \
-	forum Kadu (http://kadu.net/forum) w poszukiwaniu odpowiedzi. \
-	" 25 75
+	cat > ./.temp << "	END"
+	Szczegó³owe informacje dotycz±ce wymagañ programowych
+	i sprzêtowych znajduj± siê na stronie http://kadu.net
+	
+	W wiêkszo¶ci przypadków nie jest konieczne
+	dodatkowe konfigurowanie parametrów instalacyjnych
+	Kadu. Warto jednak zajrzeæ do sekcji "Modu³y" i
+	wybraæ tu rodzaj modu³ów (statyczne lub dynamiczne)
+	oraz te, które uwa¿asz za potrzebne.
+	
+	UWAGA: przy wyborze modu³ów opisanych informacj±
+	*autopobór* Modu³y te bêd± automatycznie pobierene
+	z internetu w wersji odpowiedniej do wersji Kadu.
+	Konieczne jest wiêc posiadanie uruchomionego ³±cza
+	internetowego. Je¿eli modu³ nie zostanie pobrany,
+	zostanie pominiêty podczas kompilacji.
+	
+	Po wybraniu opcji "Instaluj" rozpoczyna siê proces
+	kompilacji i instalacji Kadu. Je¶li proces instalacji
+	siê zatrzyma z komunikatem o b³êdzie, przeczytaj plik
+	"log_install" I sprawd¼ w dokumentacji czy podobny
+	problem nie zosta³ opisany. Je¶li nie znajdziesz
+	wskazówek, to przeszukaj forum Kadu
+	(http://kadu.net/forum) w poszukiwaniu odpowiedzi.
+	END
+	dialog --backtitle "Instalator Kadu" --exit-label "Zrozumia³em" --textbox ./.temp 25 75
 }
 
 goodbye()

@@ -249,6 +249,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * o zachowaniu kadu decyduje obecno¶æ konkretnych modu³ów dokuj±cych, a nie
   ogólnego modu³u docking + wiêksze uwspólnienie kodu w module docking (adrian)
 * nasza wiadomo¶æ do historii dopiero po potwierdzeniu, BUG_ID=276 (adrian)
+* poprawiona opcja "Pomoc" w instalatorze "Instaluj" (adrian)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
