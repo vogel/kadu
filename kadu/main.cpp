@@ -59,8 +59,10 @@ int main(int argc, char *argv[])
 		path_.append("/history/");
 		mkdir(path_.local8Bit(), 0700);
 		switch (QMessageBox::information(kadu, "Kadu",
-			QT_TR_NOOP("You don't have a config file.\nWhat would you like to do?"),
-			QT_TR_NOOP("New UIN"), QT_TR_NOOP("Configure"), QT_TR_NOOP("Cancel"), 0, 1) ) {
+			qApp->translate("@default", QT_TR_NOOP("You don't have a config file.\nWhat would you like to do?")),
+			qApp->translate("@default", QT_TR_NOOP("New UIN")),
+			qApp->translate("@default", QT_TR_NOOP("Configure")),
+			qApp->translate("@default", QT_TR_NOOP("Cancel")), 0, 1) ) {
 			case 1: // Configure
 				ConfigDialog *cd;
 				cd = new ConfigDialog;
@@ -74,7 +76,7 @@ int main(int argc, char *argv[])
 			case 2: // Nothing
 				break;
 			}
-		kadu->setCaption(QT_TR_NOOP("Kadu: new user"));
+		kadu->setCaption(qApp->translate("@default", QT_TR_NOOP("Kadu: new user")));
 		}
 
 	own_description = defaultdescriptions.first();
