@@ -311,6 +311,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Look"));
 
+	ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Show vertical scrollbar in information panel"), "PanelVerticalScrollbar", true);
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Colors"));
 		ConfigDialog::addVGroupBox("Look", "Colors", QT_TRANSLATE_NOOP("@default", "Main window"));
 			ConfigDialog::addHBox("Look", "Main window", "panel_bg_color_box");
@@ -460,7 +461,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 //	descrtb->resize(descrtb->size().width(), int(1.5 * QFontMetrics(descrtb->font()).height()));
 	descrtb->setTextFormat(Qt::RichText);
 	descrtb->setAlignment(Qt::AlignVCenter | Qt::WordBreak | Qt::DontClip);
-//	descrtb->setVScrollBarMode(QScrollView::AlwaysOff);
+	if (!config_file.readBoolEntry("Look", "PanelVerticalScrollbar"))
+		descrtb->setVScrollBarMode(QScrollView::AlwaysOff);
 	descrtb->setPaletteBackgroundColor(config_file.readColorEntry("Look", "InfoPanelBgColor"));
 	descrtb->setPaletteForegroundColor(config_file.readColorEntry("Look", "InfoPanelFgColor"));
 	descrtb->setFont(config_file.readFontEntry("Look", "PanelFont"));
@@ -819,6 +821,11 @@ void Kadu::changeAppearance() {
 	descrtb->setPaletteBackgroundColor(config_file.readColorEntry("Look", "InfoPanelBgColor"));
 	descrtb->setPaletteForegroundColor(config_file.readColorEntry("Look", "InfoPanelFgColor"));
 	descrtb->setFont(config_file.readFontEntry("Look", "PanelFont"));
+
+	if (config_file.readBoolEntry("Look", "PanelVerticalScrollbar"))
+		kadu->descrtb->setVScrollBarMode(QScrollView::Auto);
+	else
+		kadu->descrtb->setVScrollBarMode(QScrollView::AlwaysOff);
 }
 
 void Kadu::currentChanged(QListBoxItem *item) {
