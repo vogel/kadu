@@ -13,7 +13,6 @@
 #include "kadu_speech.h"
 #include "debug.h"
 #include "config_dialog.h"
-#include "events.h"
 #include "chat.h"
 #include <stdlib.h>
 #include <time.h>

@@ -9,7 +9,6 @@
 
 #include "echo.h"
 
-#include "events.h"
 //#include "message_box.h"
 #include "gadu.h"
 #include "debug.h"
