@@ -214,9 +214,11 @@ Register::Register(QDialog *parent, const char *name) : QDialog (parent, name, F
 
 	snr = snw = NULL;
 	h = NULL;
+}
 
-	status->setText(tr("Getting token"));
+void Register::doGetToken() {
 	setEnabled(false);
+	status->setText(tr("Getting token"));
 	connect(&token_handle, SIGNAL(gotToken(struct gg_http *)),
 		this, SLOT(gotTokenReceived(struct gg_http *)));
 	connect(&token_handle, SIGNAL(tokenError()),
@@ -229,11 +231,9 @@ void Register::gotTokenReceived(struct gg_http *h) {
 	struct gg_token *t = (struct gg_token *)h->data;
 	tokenid = cp2unicode((unsigned char *)t->tokenid);
 
-	// prosze tego nie optymalizowac - probowalem na wiele sposobow i segfaultowalo
-	// np. z QByteArray::loadFromData() i QByteArray::detach()
-	QByteArray buf(h->body_size);
-	for (int i = 0; i < h->body_size; i++)
-		buf[i] = h->body[i];
+	QByteArray buf;
+	buf.assign(h->body, h->body_size);
+	buf.detach();
 
 	tokenimage->setImage(buf);
 	setEnabled(true);

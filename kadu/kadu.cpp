@@ -1170,6 +1170,7 @@ void Kadu::registerUser()
 {
 	Register *reg = new Register;
 	reg->show();
+	reg->doGetToken();
 }
 void Kadu::unregisterUser()
 {

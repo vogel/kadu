@@ -45,6 +45,7 @@ class Register : public QDialog {
 
 	public:
 		Register(QDialog* parent = 0, const char *name = 0);
+		void doGetToken();
 
 	private:
 		struct gg_http *h;
