@@ -37,10 +37,10 @@ AccountManagement::AccountManagement()
 	QPopupMenu *MainMenu=kadu->mainMenu();
 	int index=MainMenu->indexOf(kadu->personalInfoMenuId);
 	
-	unregisterMenuId=MainMenu->insertItem(tr("Unregister user"), this, SLOT(unregisterUser()), 0, -1, index);
+	unregisterMenuId=MainMenu->insertItem(icons_manager.loadIcon("UnregisterUser"),tr("Unregister user"), this, SLOT(unregisterUser()), 0, -1, index);
 	registerMenuId=MainMenu->insertItem(icons_manager.loadIcon("RegisterUser"),tr("Register &new user"), this, SLOT(registerUser()), 0, -1, index);
-	changeMenuId=MainMenu->insertItem(tr("&Change password/email"), this, SLOT(changePassword()), 0, -1, index);
-	remindMenuId=MainMenu->insertItem(tr("Remind &password"), this, SLOT(remindPassword()), 0, -1, index);
+	changeMenuId=MainMenu->insertItem(icons_manager.loadIcon("ChangePassMail"),tr("&Change password/email"), this, SLOT(changePassword()), 0, -1, index);
+	remindMenuId=MainMenu->insertItem(icons_manager.loadIcon("ChangePass"),tr("Remind &password"), this, SLOT(remindPassword()), 0, -1, index);
 	
 	connect(kadu, SIGNAL(wantRegister()), this, SLOT(registerUser()));
 
