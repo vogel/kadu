@@ -514,7 +514,7 @@ void ConfigDialog::setupTab1(void) {
 		i++;
 	cb_defstatus->setCurrentItem(i);
 
-	b_disconnectdesc = new QCheckBox(i18n("Closing laws description"),box1);
+	b_disconnectdesc = new QCheckBox(i18n("Closing put in description"),box1);
 	b_disconnectdesc->setChecked(config.disconnectwithdesc);
 
 	e_disconnectdesc = new QLineEdit(config.disconnectdesc,box1);
