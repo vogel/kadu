@@ -56,6 +56,7 @@
 #include <qsplitter.h>
 #include <qdatetime.h>
 #include <qevent.h>
+#include <qframe.h>
 #include <arpa/inet.h>
 #include <libintl.h>
 #include <stdio.h>
@@ -436,7 +437,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		trayicon->changeIcon();
 		}
 
-	QFrame *centralFrame = new QFrame(this);
+	centralFrame = new QFrame(this);
 	setCentralWidget(centralFrame);
 
 	/* initialize group tabbar */
@@ -513,7 +514,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	splitsizes.append(config.splitsize.height());
 	split->setSizes(splitsizes);
 
-	QGridLayout * grid = new QGridLayout(centralFrame, 3, 3);
+	grid = new QGridLayout(centralFrame, 3, 3);
 	grid->addMultiCellWidget(group_bar, 0, 0, 0, 2);
 	grid->addMultiCellWidget(split, 1, 1, 0, 2);
 	grid->addWidget(statuslabeltxt, 2, 0, Qt::AlignLeft);
@@ -521,7 +522,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	grid->setColStretch(0, 3);
 	grid->setColStretch(1, 3);
 	grid->setColStretch(2, 1);
-	grid->setRowStretch(0, 1);
 	grid->setRowStretch(1, 40);
 	grid->setRowStretch(2, 1);
 	grid->activate();
@@ -600,31 +600,28 @@ void Kadu::currentChanged(QListBoxItem *item) {
 
 void Kadu::refreshGroupTabBar()
 {
-	if(!config.grouptabs)
-	{
+	if (!config.grouptabs) {
 		group_bar->hide();
 		return;
-	};
+		}
 	/* usuwamy wszystkie zakladki - od tylu,
 	   bo indeksy sie przesuwaja po usunieciu */
-	for(int i=group_bar->count()-1; i>=1; i--)
+	for (int i = group_bar->count() - 1; i >= 1; i--)
 		group_bar->removeTab(group_bar->tabAt(i));
 	/* dodajemy nowe zakladki */
-	for(int i=0; i<userlist.count(); i++)
-	{
-		QString groups=userlist[i].group;
+	for (int i = 0; i < userlist.count(); i++) {
+		QString groups = userlist[i].group;
 		QString group;
-		for(int g=0; (group=groups.section(',',g,g))!=""; g++)
-		{
-			bool createNewTab=true;
-			for(int j=0; j<group_bar->count(); j++)
-				if(group_bar->tabAt(j)->text()==group)
-					createNewTab=false;
+		for (int g = 0; (group = groups.section(',' ,g ,g)) != ""; g++) {
+			bool createNewTab = true;
+			for (int j = 0; j < group_bar->count(); j++)
+				if (group_bar->tabAt(j)->text() == group)
+					createNewTab = false;
 			if(createNewTab)
 				group_bar->addTab(new QTab(group));
-		};
-	};
-	if(group_bar->count()==1)
+			}
+		}
+	if (group_bar->count() == 1)
 		group_bar->hide();
 	else
 		group_bar->show();
@@ -1051,10 +1048,10 @@ void Kadu::commandParser (int command) {
 /* changes the active group */
 void Kadu::changeGroup(int group) {
 	activegrpno = group;
-	grpmenu->setItemChecked(true, group-600);
-	grpmenu->updateItem(group-600);
+	grpmenu->setItemChecked(true, group - 600);
+	grpmenu->updateItem(group - 600);
 	grpmenu->repaint();
-	std::cout << group-600 << std::endl;
+	fprintf(stderr, "KK Kadu::changeGroup(): group = %d\n", group - 600);
 }
 
 /* the list that pops up if we right-click one someone */

@@ -23,6 +23,7 @@
   nowych wersji
 * drobne porz±dki z polem statusu (powinno zmniejszaæ siê przy zmianie rozmiaru
   okna kadu)
+* wyrzucony pusty pasek pod menu
 
 +++ wersja 0.3.3-rc1
 * sms.cpp ma szansê kompilowaæ siê na Qt < 3.0.5

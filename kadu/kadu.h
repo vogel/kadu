@@ -25,6 +25,8 @@
 #include <qstringlist.h>
 #include <qstring.h>
 #include <qevent.h>
+#include <qframe.h>
+#include <qlayout.h>
 
 #include "userlist.h"
 #include "userbox.h"
@@ -208,6 +210,8 @@ class Kadu : public QMainWindow
 		void statusMenuAboutToHide(void);
 
 	private:
+		QFrame *centralFrame;
+		QGridLayout *grid;
 		QMenuBar *mmb;
 		QTabBar *group_bar;
 		QTextBrowser *descrtb;
@@ -216,7 +220,6 @@ class Kadu : public QMainWindow
 		void createStatusPopupMenu();
 		void setActiveGroup(const QString& group);
 		bool close_permitted;
-		//friend class DockWidget;
 	
 	private slots:
 		void groupTabSelected(int id);
