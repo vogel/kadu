@@ -8,8 +8,8 @@
 * historie zapisuj± siê w formacie zgodnym z EKG (chilek)
 * historie w starym formacie konwertuj± siê automatycznie (on-demand) do nowego
   formatu (chilek)
-* trochê porz±dków: config.cpp/h => config_dialog.cpp/h i struktura config
-  z kadu.h do config_dialog.h
+* trochê porz±dków: config.cpp/h => config_dialog.cpp/h, struktura config
+  z kadu.h do config_dialog.h, usun±³em vuser.cpp/h (adrian)
 
 +++ wersja 0.3.3-final
 * ikonka wiadomo¶ci i ikon statusu "ukryty" z telefonikiem
