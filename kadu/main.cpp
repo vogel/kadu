@@ -30,6 +30,7 @@
 #include "config_dialog.h"
 #include "register.h"
 #include "misc.h"
+#include "debug.h"
 
 #ifdef MODULES_ENABLED
 #include "modules.h"
@@ -41,7 +42,6 @@ Kadu *kadu;
 #include <qdatetime.h>
 #include <signal.h>
 #include <stdlib.h>
-#include "debug.h"
 void kadu_signal_handler(int s)
 {
 	kdebug("kadu_signal_handler: %d\n", s);
