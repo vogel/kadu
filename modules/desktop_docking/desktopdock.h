@@ -26,6 +26,10 @@ class DesktopDockWindow : public QLabel
 		void droppedOnDesktop(const QPoint &);
 		void startMoving();
 		void updateMenu(bool);
+	private:
+		int menuPos;
+		int separatorPos;
+		bool isMoving;
 };
 
 extern DesktopDockWindow *desktop_dock_window;

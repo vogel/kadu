@@ -15,10 +15,6 @@
 #include "debug.h"
 #include "kadu.h"
 
-int menuPos;
-int separatorPos;
-bool isMoving = false;
-		
 extern "C" int desktop_docking_init()
 {
 	kdebugf();
@@ -45,7 +41,7 @@ DesktopDockWindow::DesktopDockWindow(QWidget *parent, const char *name)
 	: QLabel(parent, name, WMouseNoMask | WRepaintNoErase | WType_TopLevel | WStyle_Customize | WStyle_NoBorder | WStyle_StaysOnTop | WX11BypassWM)
 {
 	kdebugf();
-
+	isMoving = false;
 	QPixmap DesktopDockPixmap=docking_manager->defaultPixmap();	/*ustawia ikonke na starcie - nie uzywam bo moze byc jak z defaultToolTip()*/
 	QDesktopWidget *fullDesktop = QApplication::desktop();	/* ekran */
 
@@ -105,6 +101,7 @@ DesktopDockWindow::~DesktopDockWindow()
 	disconnect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
 
 	ConfigDialog::removeControl("Desktop Dock", "Move");
+	ConfigDialog::removeControl("Desktop Dock", "Enable Move entry in docklet's menu");
 	ConfigDialog::removeControl("Desktop Dock", "Horizontal position");
 	ConfigDialog::removeControl("Desktop Dock", "Vertical position");
 	ConfigDialog::removeControl("Desktop Dock", "Background color");
