@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
 		kadu->setCaption(i18n("Kadu: new user"));
 		}
 
-	own_description = config.defaultdescription;
+	own_description = config.defaultdescription.first();
 	if (config.defaultstatus != GG_STATUS_NOT_AVAIL && config.defaultstatus != GG_STATUS_NOT_AVAIL_DESCR) {
 		kadu->autohammer = true;
 		kadu->setStatus(config.defaultstatus);	

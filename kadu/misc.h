@@ -3,7 +3,7 @@
 
 #include <qvaluelist.h>
 #include <qdialog.h>
-#include <qlineedit.h>
+#include <qcombobox.h>
 #include <qstring.h>
 #include <qpixmap.h>
 #include <qlabel.h>
@@ -68,7 +68,7 @@ class ChooseDescription : public QDialog {
 		ChooseDescription ( int nr, QWidget * parent=0, const char * name=0);
 
 	private:
-		QLineEdit * desc;
+		QComboBox *desc;
 		QLabel *l_yetlen;
 
 	private slots:

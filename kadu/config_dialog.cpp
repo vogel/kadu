@@ -70,7 +70,7 @@ void loadKaduConfig(void) {
 
 	if (!config.defaultstatus)
 		config.defaultstatus = GG_STATUS_NOT_AVAIL;
-	config.defaultdescription = config_file.readEntry("DefaultDescription", i18n("I am busy."));
+	config.defaultdescription = QStringList::split(QRegExp(";0;"),config_file.readEntry("DefaultDescription", i18n("I am busy.")),true);
 
 	config.logmessages = config_file.readBoolEntry("Logging",true);
 	config.savegeometry = config_file.readBoolEntry("SaveGeometry",true);
@@ -229,7 +229,7 @@ void saveKaduConfig(void) {
 	config_file.writeEntry("Chat_sound",config.soundchat);
 	config_file.writeEntry("Logging",config.logmessages);
 	config_file.writeEntry("DefaultStatus",config.defaultstatus);
-	config_file.writeEntry("DefaultDescription", config.defaultdescription);
+	config_file.writeEntry("DefaultDescription", (config.defaultdescription).join(";0;"));
 	config_file.writeEntry("SystemMsgIndex",config.sysmsgidx);
 	config_file.writeEntry("SaveGeometry",config.savegeometry);
 	config_file.writeEntry("PlaySoundChat",config.playsoundchat);

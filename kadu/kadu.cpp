@@ -306,6 +306,10 @@ void Kadu::keyPressEvent(QKeyEvent *e) {
 	{
 	 commandParser(KADU_CMD_REMOVE_USER);
 	}
+	else if (e->key()== Key_Insert)
+	{
+	 commandParser(KADU_CMD_USERINFO);
+	}	
 
 	QWidget::keyPressEvent(e);
 }

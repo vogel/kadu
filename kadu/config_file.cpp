@@ -45,7 +45,8 @@ void ConfigFile::read() {
 			else 
 				if (activegroup.name.length()) {
 					activeentry.name = line.section('=', 0, 0).stripWhiteSpace();
-					activeentry.value = line.section('=', 1, -1, QString::SectionIncludeTrailingSep).stripWhiteSpace();
+//					activeentry.value = line.section('=', 1, -1, QString::SectionIncludeTrailingSep).stripWhiteSpace();
+					activeentry.value = line.section('=', 1, -1, QString::SectionSkipEmpty);
 					if (line.contains('=') >= 1 && activeentry.name.length()
 						&& activeentry.value.length())
 						activegroup.entries.append(activeentry);
@@ -193,6 +194,8 @@ void ConfigFile::writeEntry(const QString &name, const QFont &value) {
 	string.append(QString::number(value.pointSize()));
 	changeEntry(name, string.join(","));
 }
+
+
 
 QString ConfigFile::readEntry(const QString &name, const QString &def) const {
 	QString string = getEntry(name);

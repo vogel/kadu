@@ -7,7 +7,7 @@
 #include <qdatetime.h>
 #include <qregexp.h>
 #include <qcolor.h>
-
+#include <qlineedit.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <pwd.h>
@@ -552,10 +552,15 @@ ChooseDescription::ChooseDescription ( int nr, QWidget * parent, const char * na
 	setWFlags(Qt::WDestructiveClose);
 	setCaption(i18n("Select description"));
 
-	desc = new QLineEdit(own_description,this);
-	desc->setMaxLength(GG_STATUS_DESCR_MAXSIZE);
+  	desc = new QComboBox(TRUE,this,own_description);
 
-	l_yetlen = new QLabel(" "+QString::number(GG_STATUS_DESCR_MAXSIZE - desc->text().length()),this);
+	desc->insertStringList(config.defaultdescription);
+	QLineEdit *ss;
+	ss= new QLineEdit(this,"LineEdit");
+	desc->setLineEdit(ss);
+	ss->setMaxLength(GG_STATUS_DESCR_MAXSIZE);
+	
+	l_yetlen = new QLabel(" "+QString::number(GG_STATUS_DESCR_MAXSIZE - desc->currentText().length()),this);
 	connect(desc, SIGNAL(textChanged(const QString&)), this, SLOT(updateYetLen(const QString&)));
 
 	QPixmap *pix;
@@ -592,12 +597,21 @@ ChooseDescription::ChooseDescription ( int nr, QWidget * parent, const char * na
 	grid->addColSpacing(0, 200);
 
 	resize(250,80);
-	desc->selectAll();
 }
 
 void ChooseDescription::okbtnPressed() {
-	own_description = desc->text();
-	config.defaultdescription = own_description;
+
+    if (config.defaultdescription.contains(desc->currentText())==0)
+{
+if (config.defaultdescription.count()==4) config.defaultdescription.remove(config.defaultdescription.last());
+
+}
+else 
+{
+config.defaultdescription.remove(desc->currentText());
+}
+config.defaultdescription.prepend(desc->currentText());
+own_description=config.defaultdescription.first();
 	accept();
 }
 

@@ -132,7 +132,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	if(config.emoticons_style==EMOTS_ANIMATED)
 		body->setStyleSheet(new AnimStyleSheet(body,emoticons.themePath()));
 	
-	body->setMinimumSize(QSize(1,1));
+	body->setMinimumSize(QSize(100,100));
 	body->setFont(config.fonts.chat);
 	QObject::connect(body, SIGNAL(linkClicked(const QString &)), this, SLOT(hyperlinkClicked(const QString &)));
 
@@ -141,7 +141,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	if (uins.count() > 1) {
 		setGeometry((pos.x() + 550) / 2, (pos.y() + 400) / 2, 550, 400);
 		userbox = new UserBox(split2);
-		userbox->setMinimumSize(QSize(1,1));
+		userbox->setMinimumSize(QSize(30,30));
 		userbox->setPaletteBackgroundColor(config.colors.userboxBg);
 		userbox->setPaletteForegroundColor(config.colors.userboxFg);
 		userbox->QListBox::setFont(config.fonts.userbox);
