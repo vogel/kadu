@@ -170,6 +170,7 @@ class KaduSplitter : public QSplitter
 		KaduSplitter(Orientation o, QWidget* parent = 0, const char* name = 0);
 };
 
+class QMimeSourceFactory;
 /**
 	Okno rozmowy
 **/
@@ -196,6 +197,7 @@ class Chat : public QWidget
 		QTimer* title_timer;  
 		QColor actcolor;
 		
+		QMimeSourceFactory *bodyformat;
 		EmoticonSelector* emoticon_selector;
 		ColorSelector* color_selector;
 		QPushButton* boldbtn;

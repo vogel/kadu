@@ -22,6 +22,7 @@
 #include <qvbox.h>
 #include <qvaluelist.h>
 #include <qfiledialog.h>
+#include <qmime.h>
 
 #include <math.h>
 #include <sys/stat.h>
@@ -694,7 +695,7 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 	grid->addRowSpacing(1, 5);
 	grid->setRowStretch(0, 2);
 
-	QMimeSourceFactory *bodyformat = new QMimeSourceFactory();
+	bodyformat = new QMimeSourceFactory();
 
 	body->setMimeSourceFactory(bodyformat);
 	body->setTextFormat(Qt::RichText);
@@ -737,6 +738,7 @@ Chat::~Chat()
 
 	if (userbox)
 		delete userbox;
+	delete bodyformat;
 
 	kdebugmf(KDEBUG_FUNCTION_END, "chat destroyed: index %d\n", index);
 }
@@ -1493,13 +1495,13 @@ void Chat::colorChanged(const QColor& color)
 }
 
 /* adds an emoticon code to the edit window */
-void Chat::addEmoticon(QString string)
+void Chat::addEmoticon(QString emot)
 {
-	if (string.length())
+	if (emot.length())
 	{
-		string.replace(QRegExp("&lt;"), "<");
-		string.replace(QRegExp("&gt;"), ">");
-		edit->insert(string);
+		emot.replace(QRegExp("&lt;"), "<");
+		emot.replace(QRegExp("&gt;"), ">");
+		edit->insert(emot);
 		edit->setFocus();
 	}
 	emoticon_selector = NULL;
