@@ -251,7 +251,7 @@ void Kadu::keyPressEvent(QKeyEvent *e) {
 }
 
 /* a monstrous constructor so Kadu would take longer to start up */
-Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name), updateChecked(false)
+Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 {
 	//potrzebne do translacji
 	QT_TRANSLATE_NOOP("@default", "General");
@@ -269,6 +269,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name), updat
 
 	QT_TRANSLATE_NOOP("@default", "Default status");
 	QT_TRANSLATE_NOOP("@default", "On shutdown, set description:");
+
+	updateChecked=false;
 
 	KaduSlots *kaduslots=new KaduSlots();
 	int myUin=config_file.readNumEntry("General", "UIN");
@@ -1131,21 +1133,6 @@ void Kadu::sendMessage(QListBoxItem *item)
 void Kadu::slotHandleState(int command) {
 	ChooseDescription *cd;
 	
-	if (!updateChecked)
-	{
-		if (command>=0 && command<=5)
-		{
-			int myUin=config_file.readNumEntry("General", "UIN");
-			if (myUin) {
-				uc = new UpdatesClass(myUin);
-				QObject::connect(uc->op, SIGNAL(data(const QByteArray &, QNetworkOperation *)),
-						this, SLOT(gotUpdatesInfo(const QByteArray &, QNetworkOperation *)));
-				uc->run();
-				updateChecked=true;
-			}
-		}
-	}
-	
 	switch (command) {
 		case 0:
 			autohammer = true;
@@ -1239,6 +1226,18 @@ void Kadu::setStatus(int status) {
 
 	kdebug("Kadu::setStatus(): setting status: %d\n",
 		status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General", "PrivateStatus")));
+
+	if (!updateChecked)
+	{
+		int myUin=config_file.readNumEntry("General", "UIN");
+		if (myUin) {
+			uc = new UpdatesClass(myUin);
+			QObject::connect(uc->op, SIGNAL(data(const QByteArray &, QNetworkOperation *)),
+					this, SLOT(gotUpdatesInfo(const QByteArray &, QNetworkOperation *)));
+			uc->run();
+			updateChecked=true;
+		}
+	}
 
 	bool with_description;
 
