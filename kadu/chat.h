@@ -114,6 +114,7 @@ class ChatManager : public QObject
 		void chatCreated(const UinsList& senders);
 		void chatDestroying(const UinsList& senders);
 		void chatDestroyed(const UinsList& senders);
+		void chatOpen(const UinsList& senders);
 };
 
 extern ChatManager* chat_manager;

@@ -134,6 +134,7 @@ Chat* ChatManager::findChatByUins(UinsList uins)
 int ChatManager::openChat(UinsList senders,time_t time)
 {
 	kdebugf();
+	emit chatOpen(senders);
 	for (unsigned int i = 0; i < Chats.count(); ++i)
 		if (Chats[i]->uins().equals(senders))
 		{
