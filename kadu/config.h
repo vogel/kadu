@@ -140,6 +140,8 @@ class ConfigDialog : public QTabDialog	{
 		void chooseUserboxFgColorGet();
 		void chooseChatFontGet(int index);
 		void chooseUserboxFontGet(int index);
+		void chooseMsgTest();
+		void chooseChatTest();
 		void ifNotifyGlobal(bool);
 		void ifNotifyAll(bool);
 		void ifDccEnabled(bool);
