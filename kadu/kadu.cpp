@@ -81,10 +81,6 @@ UpdatesClass* uc;
 int lockFileHandle;
 QFile *lockFile;
 
-QValueList<QHostAddress> gg_servers;
-const char *gg_servers_ip[7] = {"217.17.41.82", "217.17.41.83", "217.17.41.84", "217.17.41.85",
-	"217.17.41.86", "217.17.41.87", "217.17.41.88"};
-
 QValueList<ToolBar::ToolButton> ToolBar::RegisteredToolButtons;
 ToolBar* ToolBar::instance=NULL;
 
@@ -299,6 +295,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	History::initModule();
 	HintManager::initModule();
 	EventConfigSlots::initModule();
+	GaduProtocol::initModule();
 
 	//zaladowanie wartosci domyslnych (pierwsze uruchomienie)
 	config_file.addVariable("General", "UserBoxHeight", 300);
@@ -493,17 +490,14 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		stream >> *this;
 		}
 
-//	tworzymy liste serverow domyslnych gg
-	QHostAddress ip;
-	for (int i = 0; i < 7; i++) {
-		ip.setAddress(QString(gg_servers_ip[i]));
-		gg_servers.append(ip);
-		}
-
 	refreshGroupTabBar();
 	int configTab = config_file.readNumEntry( "Look", "CurrentGroupTab" );
 	if ( configTab >= 0 && configTab < GroupBar -> count() )
 		((QTabBar*) GroupBar) -> setCurrentTab( configTab );
+
+	connect(gadu, SIGNAL(connecting()), this, SLOT(proteza_connecting()));
+	connect(gadu, SIGNAL(statusChanged(int)), this, SLOT(proteza_statusChanged(int)));
+	connect(gadu, SIGNAL(disconnectNetwork()), this, SLOT(proteza_disconnectNetwork()));
 
 	dccsock = NULL;
 	/* dirty workaround for multiple showEvents */
@@ -1141,6 +1135,8 @@ void Kadu::slotHandleState(int command) {
 }
 
 void Kadu::setCurrentStatus(int status) {
+	kdebugf();
+
 	int statusnr;
 
 	statusnr = statusGGToStatusNr(status);
@@ -1161,89 +1157,8 @@ void Kadu::setCurrentStatus(int status) {
 	emit currentStatusChanged(status);
 }
 
-void Kadu::setStatus(int status) {
-	unsigned char *descr;
-	QHostAddress ip;
-
-	kdebug("Kadu::setStatus(): setting status: %d\n",
-		status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General", "PrivateStatus")));
-
-	if (!updateChecked)
-	{
-		UinType myUin=(UinType)config_file.readNumEntry("General", "UIN");
-		if (myUin) {
-			uc = new UpdatesClass(myUin);
-			QObject::connect(uc->op, SIGNAL(data(const QByteArray &, QNetworkOperation *)),
-					this, SLOT(gotUpdatesInfo(const QByteArray &, QNetworkOperation *)));
-			uc->run();
-			updateChecked=true;
-		}
-	}
-
-	bool with_description;
-
-	with_description = ifStatusWithDescription(status);
-	status &= ~GG_STATUS_FRIENDS_MASK;
-
-	i_wanna_be_invisible = false;
-	if (status == GG_STATUS_INVISIBLE || status == GG_STATUS_INVISIBLE_DESCR)
-		i_wanna_be_invisible = true;
-
-	if (!userlist_sent) {
-		doBlink = true;
-		if (!blinktimer) {
-			blinktimer = new QTimer;
-			QObject::connect(blinktimer, SIGNAL(timeout()), kadu, SLOT(blink()));
-			}
-		blinktimer->start(1000, TRUE);
-		}
-
-	if (socket_active) {
-		QString sigDesc = QString::null;
-		bool stop = FALSE;
-		if (with_description)
-			sigDesc = own_description;
-
-		emit changingStatus(status, sigDesc, stop);
-		if (stop)
-			return;
-
-		doBlink = false;
-		if (with_description) {
-			descr = (unsigned char *)strdup(unicode2cp(own_description).data());
-			if (status == GG_STATUS_NOT_AVAIL_DESCR)
-				gg_change_status_descr(sess, status, (const char *)descr);
-			else
-				gg_change_status_descr(sess,
-					status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General", "PrivateStatus")), (const char *)descr);
-			free(descr);
-			}
-		else {
-			gg_change_status(sess, status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General", "PrivateStatus")));
-			own_description = QString::null;
-			}
-		if (sess->check & GG_CHECK_WRITE)
-			kadusnw->setEnabled(true);
-
-		setCurrentStatus(status);
-
-		kdebug("Kadu::setStatus(): current status: %d\n", sess->status);
-		/** AutoConnectionTimer u¿ywa loginparams.status jako statusu do nowego po³±czenia siê
-				po stracie po³±czenia, czyli kadu bêdzie próbowal sie po³±czyæ z statusem takim
-				samym, co by³ ostatnio ustawiony(oprócz niedostêpny i niedostêpny z opisem).
-		**/
-		if (status != GG_STATUS_NOT_AVAIL && status != GG_STATUS_NOT_AVAIL_DESCR)
-			loginparams.status = status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General", "PrivateStatus"));
-		UserBox::all_refresh();
-		return;
-		}
-
-	memset(&loginparams, 0, sizeof(loginparams));
-	loginparams.async = 1;
-	
-	// maksymalny rozmiar grafiki w kb
-	loginparams.image_size = config_file.readNumEntry("Chat", "MaxImageSize", 20);
-
+void Kadu::proteza_connecting()
+{
 	if (config_file.readBoolEntry("Network", "AllowDCC"))
 		prepareDcc();
 
@@ -1271,92 +1186,53 @@ void Kadu::setStatus(int status) {
 		}
 	}
 
-	loginparams.status = status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General", "PrivateStatus"));
-	if (with_description)
-		loginparams.status_descr = strdup((const char *)unicode2cp(own_description));
-	loginparams.password = strdup((const char *)unicode2cp(pwHash(config_file.readEntry("General", "Password"))));
-	char *tmp = strdup((const char *)unicode2latin(pwHash(config_file.readEntry("General", "Password"))));
-	kdebug("Kadu::setStatus(): password = %s\n", tmp);
-	free(tmp);
-	loginparams.uin = (UinType)config_file.readNumEntry("General", "UIN");
-	loginparams.has_audio = config_file.readBoolEntry("Network", "AllowDCC");
-	loginparams.last_sysmsg = config_file.readNumEntry("Global", "SystemMsgIndex");
+}
 
-	if (config_file.readBoolEntry("Network", "AllowDCC") && config_extip.ip4Addr() && config_file.readNumEntry("Network", "ExternalPort") > 1023)
+void Kadu::proteza_statusChanged(int status)
+{
+	kdebugf();
+
+	setCurrentStatus(status);
+	UserBox::all_refresh();
+}
+
+void Kadu::proteza_disconnectNetwork()
+{
+	kdebugf();
+
+	disconnectNetwork();
+	QMessageBox::warning(kadu, tr("Connection problem"),
+		tr("Couldn't connect.\nCheck your internet connection."));
+}
+
+void Kadu::setStatus(int status) {
+	kdebugf();
+
+	if (!updateChecked)
 	{
-		loginparams.external_addr = htonl(config_extip.ip4Addr());
-		loginparams.external_port = config_file.readNumEntry("Network", "ExternalPort");
-	}
-	else
-	{
-		loginparams.external_addr = 0;
-		loginparams.external_port = 0;
-	}
-	
-	if (config_servers.count() && !config_file.readBoolEntry("Network", "isDefServers") && config_servers[server_nr].ip4Addr())
-	{
-		loginparams.server_addr = htonl(config_servers[server_nr].ip4Addr());
-		loginparams.server_port = config_file.readNumEntry("Network", "DefaultPort");
-		server_nr++;
-		if (server_nr >= config_servers.count())
-			server_nr = 0;
-	}
-	else
-	{
-		if (server_nr)
+		UinType myUin=(UinType)config_file.readNumEntry("General", "UIN");
+		if (myUin)
 		{
-			loginparams.server_addr = htonl(gg_servers[server_nr - 1].ip4Addr());
-			loginparams.server_port = config_file.readNumEntry("Network", "DefaultPort");
-		}			
-		else
-		{
-			loginparams.server_addr = 0;
-			loginparams.server_port = 0;
+			uc = new UpdatesClass(myUin);
+			QObject::connect(uc->op, SIGNAL(data(const QByteArray &, QNetworkOperation *)),
+					this, SLOT(gotUpdatesInfo(const QByteArray &, QNetworkOperation *)));
+			uc->run();
+			updateChecked=true;
 		}
-		server_nr++;
-		if (server_nr > gg_servers.count())
-			server_nr = 0;
 	}
-	
-//	polaczenia TLS z serwerami GG na razie nie dzialaja
-//	loginparams.tls = config_file.readBoolEntry("Network", "UseTLS");
-	loginparams.tls = 0;
-	loginparams.client_version = GG_DEFAULT_CLIENT_VERSION;
-	loginparams.protocol_version = GG_DEFAULT_PROTOCOL_VERSION;
-	if (loginparams.tls)
+
+	if (!userlist_sent)
 	{
-		kdebug("Kadu::setStatus(): using TLS\n");
-		loginparams.server_port = 0;
-		if (config_file.readBoolEntry("Network", "isDefServers"))
-			loginparams.server_addr = 0;
-		loginparams.server_port = 443;
+		doBlink = true;
+		if (!blinktimer)
+		{
+			blinktimer = new QTimer;
+			QObject::connect(blinktimer, SIGNAL(timeout()), kadu, SLOT(blink()));
+		}
+		blinktimer->start(1000, true);
 	}
-	else
-		loginparams.server_port = config_file.readNumEntry("Network", "DefaultPort");
-	ConnectionTimeoutTimer::on();
-	ConnectionTimeoutTimer::connectTimeoutRoutine(&event_manager, SLOT(connectionTimeoutTimerSlot()));
-	sess = gg_login(&loginparams);
-//	free(loginparams.client_version);
-	free(loginparams.password);
-	if (loginparams.status_descr)
-		free(loginparams.status_descr);
 
-	AutoConnectionTimer::off();
-
-	if (sess) {
-		socket_active = true;
-
-		kadusnw = new QSocketNotifier(sess->fd, QSocketNotifier::Write, this);
-		QObject::connect(kadusnw, SIGNAL(activated(int)), kadu, SLOT(dataSent()));
-
-		kadusnr = new QSocketNotifier(sess->fd, QSocketNotifier::Read, this);
-		QObject::connect(kadusnr, SIGNAL(activated(int)), kadu, SLOT(dataReceived()));
-		}
-	else {
-		disconnectNetwork();
-		QMessageBox::warning(kadu, tr("Connection problem"),
-			tr("Couldn't connect.\nCheck your internet connection."));
-		}
+	gadu->setStatus(status);
 }
 
 void Kadu::dataReceived(void) {
@@ -1640,7 +1516,6 @@ void Kadu::createMenu() {
 
 void Kadu::InitModules()
 {
-	GaduProtocol::initModule();
 }
 
 void Kadu::statusMenuAboutToHide() {

@@ -160,6 +160,11 @@ class Kadu : public QMainWindow
 		virtual bool close(bool quit = false);
 		void quitApplication();
 
+		// protezy...
+		void proteza_statusChanged(int);
+		void proteza_connecting();
+		void proteza_disconnectNetwork();
+
 		void about();
 		void addUserAction();
 		void blockUser();

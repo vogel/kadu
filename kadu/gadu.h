@@ -156,6 +156,9 @@ class GaduProtocol : public QObject
 		bool userListClear;
 		QString importReply;
 
+		void connect(int status);
+		void changeStatus(int status);
+
 	private slots:
 		void registerDone(bool ok, struct gg_http *);
 		void unregisterDone(bool ok, struct gg_http *);
@@ -173,6 +176,11 @@ class GaduProtocol : public QObject
 		QString userListToString(const UserList& userList) const;
 		void stringToUserList(QString&, UserList& userList) const;
 		void streamToUserList(QTextStream&, UserList& userList) const;
+
+		/**
+			Zmieniamy sobie status
+		**/
+		void setStatus(int status);
 
 		/**
 			Wysyla wiadomosc. bez formatowania tekstu.
@@ -255,6 +263,9 @@ class GaduProtocol : public QObject
 		void sendUserList();
 
 	signals:
+		void connecting();
+		void statusChanged(int);
+		void disconnectNetwork();
 		void newSearchResults(SearchResults& searchResults, int seq, int lastUin);
 		void registered(bool ok, UinType uin);
 		void unregistered(bool ok);

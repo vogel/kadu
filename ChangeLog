@@ -172,6 +172,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * szybki fix Vogela na wyszukiwanie w katalogu tylko aktywnych (vogel/michal)
 * jesli sie ma ustawiony status niewidoczny z opisem to jest to prawid³owo
   wy¶wietlane (michal)
+* szósty patch porz±dkuj±cy vogela: pocz±tek porzadków w logowaniu (adrian)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

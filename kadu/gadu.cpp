@@ -34,6 +34,10 @@ QTimer* pingtimer;
 QValueList<QHostAddress> config_servers;
 bool i_wanna_be_invisible = true;
 
+QValueList<QHostAddress> gg_servers;
+const char *gg_servers_ip[7] = {"217.17.41.82", "217.17.41.83", "217.17.41.84", "217.17.41.85",
+	"217.17.41.86", "217.17.41.87", "217.17.41.88"};
+
 SearchResult::SearchResult()
 {
 }
@@ -323,24 +327,203 @@ void DccSocketNotifiers::socketEvent()
 
 void GaduProtocol::initModule()
 {
-	gadu=new GaduProtocol();
+	gadu = new GaduProtocol();
+	
+	QHostAddress ip;
+	for (int i = 0; i < 7; i++)
+	{
+		ip.setAddress(QString(gg_servers_ip[i]));
+		gg_servers.append(ip);
+	}
+
 //	kadu->mainMenu()->insertItem(icons_manager.loadIcon("ResendUserlist"), tr("Resend &userlist"), gadu, SLOT(sendUserList()),0,-1,2);
 }
 
 GaduProtocol::GaduProtocol() : QObject()
 {
-	connect(&event_manager, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)),
+	kdebugf();
+	QObject::connect(&event_manager, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)),
 		this, SLOT(newResults(gg_pubdir50_t)));
-	connect(&event_manager, SIGNAL(userlistReplyReceived(char, char *)),
+	QObject::connect(&event_manager, SIGNAL(userlistReplyReceived(char, char *)),
 		this, SLOT(userListReplyReceived(char, char *)));
 }
 
 GaduProtocol::~GaduProtocol()
 {
+	kdebugf();
 	disconnect(&event_manager, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)),
 		this, SLOT(newResults(gg_pubdir50_t)));
 	disconnect(&event_manager, SIGNAL(userlistReplyReceived(char, char *)),
 		this, SLOT(userListReplyReceived(char, char *)));
+}
+
+void GaduProtocol::setStatus(int status)
+{
+	kdebugf();
+	kdebug("GaduProtocol::setStatus(): setting status: %d\n",
+		status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General", "PrivateStatus")));
+
+	status &= ~GG_STATUS_FRIENDS_MASK;
+	i_wanna_be_invisible = (status == GG_STATUS_INVISIBLE) || (status == GG_STATUS_INVISIBLE_DESCR);
+	
+	//emit changingStatus();
+
+	if (socket_active)
+		changeStatus(status);
+	else
+		connect(status);
+
+	//emit statusChanged(int);
+
+	kdebugf2();
+}
+
+void GaduProtocol::changeStatus(int status)
+{
+	kdebugf();
+
+	QString sigDesc = QString::null;
+	bool stop = false;
+	bool with_description = ifStatusWithDescription(status);
+	unsigned char *descr;
+
+	if (with_description)
+		sigDesc = own_description;
+
+//	emit kadu->changingStatus(status, sigDesc, stop); //?? moze przjdzie TODO TOSEE
+	if (stop)
+		return;
+
+	if (with_description)
+	{
+		descr = (unsigned char *)strdup(unicode2cp(own_description).data());
+		if (status == GG_STATUS_NOT_AVAIL_DESCR)
+			gg_change_status_descr(sess, status, (const char *)descr);
+		else
+			gg_change_status_descr(sess,
+				status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General", "PrivateStatus")), (const char *)descr);
+		free(descr);
+	}
+	else
+	{
+		gg_change_status(sess, status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General", "PrivateStatus")));
+		own_description = QString::null;
+	}
+
+	if (status != GG_STATUS_NOT_AVAIL && status != GG_STATUS_NOT_AVAIL_DESCR)
+		loginparams.status = status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General", "PrivateStatus"));
+
+	emit statusChanged(status);	// TODO wymaga rozwazenia
+
+	kdebugf2();
+}
+
+void GaduProtocol::connect(int status)
+{
+	kdebugf();
+
+	bool with_description = ifStatusWithDescription(status);
+
+	memset(&loginparams, 0, sizeof(loginparams));
+	loginparams.async = 1;
+
+	// maksymalny rozmiar grafiki w kb
+	loginparams.image_size = config_file.readNumEntry("Chat", "MaxImageSize", 20);
+
+	// TODO proteza
+	emit connecting();
+	// tutaj przenie¶æ kupê kodu z kadu.cpp
+	
+	loginparams.status = status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General", "PrivateStatus"));
+
+	if (with_description)
+		loginparams.status_descr = strdup((const char *)unicode2cp(own_description));
+
+	loginparams.password = strdup((const char *)unicode2cp(pwHash(config_file.readEntry("General", "Password"))));
+	char *tmp = strdup((const char *)unicode2latin(pwHash(config_file.readEntry("General", "Password"))));
+	kdebug("GaduProtocol::connect(): password = %s\n", tmp);
+	free(tmp);
+
+	loginparams.uin = (UinType)config_file.readNumEntry("General", "UIN");
+	loginparams.has_audio = config_file.readBoolEntry("Network", "AllowDCC");
+	loginparams.last_sysmsg = config_file.readNumEntry("Global", "SystemMsgIndex");
+
+	if (config_file.readBoolEntry("Network", "AllowDCC") && config_extip.ip4Addr() && config_file.readNumEntry("Network", "ExternalPort") > 1023)
+	{
+		loginparams.external_addr = htonl(config_extip.ip4Addr());
+		loginparams.external_port = config_file.readNumEntry("Network", "ExternalPort");
+	}
+	else
+	{
+		loginparams.external_addr = 0;
+		loginparams.external_port = 0;
+	}
+	
+	if (config_servers.count() && !config_file.readBoolEntry("Network", "isDefServers") && config_servers[server_nr].ip4Addr())
+	{
+		loginparams.server_addr = htonl(config_servers[server_nr].ip4Addr());
+		loginparams.server_port = config_file.readNumEntry("Network", "DefaultPort");
+		server_nr++;
+		if (server_nr >= config_servers.count())
+			server_nr = 0;
+	}
+	else
+	{
+		if (server_nr)
+		{
+			loginparams.server_addr = htonl(gg_servers[server_nr - 1].ip4Addr());
+			loginparams.server_port = config_file.readNumEntry("Network", "DefaultPort");
+		}			
+		else
+		{
+			loginparams.server_addr = 0;
+			loginparams.server_port = 0;
+		}
+		server_nr++;
+		if (server_nr > gg_servers.count())
+			server_nr = 0;
+	}
+	
+//	polaczenia TLS z serwerami GG na razie nie dzialaja
+//	loginparams.tls = config_file.readBoolEntry("Network", "UseTLS");
+	loginparams.tls = 0;
+	loginparams.client_version = GG_DEFAULT_CLIENT_VERSION;
+	loginparams.protocol_version = GG_DEFAULT_PROTOCOL_VERSION;
+	if (loginparams.tls)
+	{
+		kdebug("Kadu::setStatus(): using TLS\n");
+		loginparams.server_port = 0;
+		if (config_file.readBoolEntry("Network", "isDefServers"))
+			loginparams.server_addr = 0;
+		loginparams.server_port = 443;
+	}
+	else
+		loginparams.server_port = config_file.readNumEntry("Network", "DefaultPort");
+
+	ConnectionTimeoutTimer::on();
+	ConnectionTimeoutTimer::connectTimeoutRoutine(&event_manager, SLOT(connectionTimeoutTimerSlot()));
+	sess = gg_login(&loginparams);
+//	free(loginparams.client_version);
+	free(loginparams.password);
+	if (loginparams.status_descr)
+		free(loginparams.status_descr);
+
+	AutoConnectionTimer::off();
+
+	if (sess)
+	{
+		socket_active = true;
+
+		kadusnw = new QSocketNotifier(sess->fd, QSocketNotifier::Write, this);
+		QObject::connect(kadusnw, SIGNAL(activated(int)), kadu, SLOT(dataSent()));
+
+		kadusnr = new QSocketNotifier(sess->fd, QSocketNotifier::Read, this);
+		QObject::connect(kadusnr, SIGNAL(activated(int)), kadu, SLOT(dataReceived()));
+	}
+	else
+		emit disconnectNetwork();
+
+	kdebugf2();
 }
 
 int GaduProtocol::sendMessage(const UinsList& uins,const char* msg)
@@ -577,7 +760,7 @@ bool GaduProtocol::doRegister(QString& mail, QString& password, QString& token_i
 	if (h)
 	{
 		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h);
-		connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(registerDone(bool, struct gg_http *)));
+		QObject::connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(registerDone(bool, struct gg_http *)));
 		sn->start();
 	}
 	else
@@ -601,7 +784,7 @@ bool GaduProtocol::doUnregister(UinType uin, QString &password, QString& token_i
 	if (h)
 	{
 		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h);
-		connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(unregisterDone(bool, struct gg_http *)));
+		QObject::connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(unregisterDone(bool, struct gg_http *)));
 		sn->start();
 	}
 	else
@@ -624,7 +807,7 @@ bool GaduProtocol::doRemind(UinType uin, QString& token_id, QString& token_value
 	if (h)
 	{
 		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h);
-		connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(remindDone(bool, struct gg_http *)));
+		QObject::connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(remindDone(bool, struct gg_http *)));
 		sn->start();
 	}
 	else
@@ -648,7 +831,7 @@ bool GaduProtocol::doChangePassword(UinType uin, QString& mail, QString& passwor
 	if (h)
 	{
 		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h);
-		connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(changePasswordDone(bool, struct gg_http *)));
+		QObject::connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(changePasswordDone(bool, struct gg_http *)));
 		sn->start();
 	}
 	else
