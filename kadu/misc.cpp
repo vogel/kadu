@@ -218,7 +218,7 @@ QString dataPath(const QString &p, const char *argv0)
 				path=QString(cpath)+"../share/";
 		}
 	}
-	if (path=="")
+	if (path.isEmpty())
 		kdebugm(KDEBUG_PANIC, "dataPath() called _BEFORE_ initial dataPath(\"\",argv[0]) (static object uses dataPath()?) !!!\n");
 	kdebugm(KDEBUG_INFO, "%s%s\n", (const char *)path.local8Bit(), (const char *)p.local8Bit());
 	return path+p;
@@ -435,7 +435,7 @@ void openWebBrowser(const QString &link)
 	QStringList args;
 
 	QString webBrowser=config_file.readEntry("Chat","WebBrowser");
-	if (webBrowser == "")
+	if (webBrowser.isEmpty())
 	{
 		QMessageBox::warning(0, qApp->translate("@default", QT_TR_NOOP("WWW error")),
 			qApp->translate("@default", QT_TR_NOOP("Web browser was not specified. Visit the configuration section")));
@@ -929,7 +929,7 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 				ParseElem &pe2=parseStack.last();
 				if (pe2.type==ParseElem::PE_STRING)
 				{
-					if (pe2.str=="" || anyNull)
+					if (pe2.str.isEmpty() || anyNull)
 						anyNull=true;
 					else
 						pe.str.prepend(pe2.str);
@@ -1446,7 +1446,7 @@ void HttpClient::onConnected()
 	if(Path.left(7)!="http://" && config_file.readBoolEntry("Network", "UseProxy"))
 		query += "http://" + Host;
 
-	if ((Path == "" || Path[0] != '/') && Path.left(7)!="http://")
+	if ((Path.isEmpty() || Path[0] != '/') && Path.left(7)!="http://")
 		query += '/';
 
 
@@ -1826,7 +1826,7 @@ void HtmlDocument::convertUrlsToHtml()
 		QString link;
 		int lft = config_file.readNumEntry("Chat","LinkFoldTreshold");
 		QString link2=text.mid(p,l);
-		link2.replace(QRegExp("%"), "%25");
+		link2.replace(QRegExp("%20"), "%2520");//obej¶cie buga w operze :|, która nie potrafi otworzyæ linka ze spacj±
 		if (l-p > lft && config_file.readBoolEntry("Chat","FoldLink"))
 			link="<a href=\""+link2+"\">"+text.mid(p,p+(lft/2))+"..."+text.mid(l-(lft/2),lft/2)+"</a>";
 		else
@@ -2204,7 +2204,7 @@ QStringList Themes::additionalPaths()
 QString Themes::themePath(const QString& theme)
 {
 	QString t=theme;
-	if (theme == "")
+	if (theme.isEmpty())
 		t= ActualTheme;
 	if (theme == "Custom")
 		return "";
@@ -2431,7 +2431,7 @@ KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
 void KaduTextBrowser::maybeTip(const QPoint &c)
 {
 	if (!highlightedlink.isNull())
-		kdebugmf(KDEBUG_INFO, "link %s (X,Y)=%d,%d\n", (const char*)highlightedlink, c.x(), c.y());
+		kdebugmf(KDEBUG_INFO, "link %s (X,Y)=%d,%d\n", highlightedlink.local8Bit().data(), c.x(), c.y());
 	tip(QRect(c.x()-20,c.y()-5,40,10), highlightedlink);
 }
 
@@ -2459,6 +2459,8 @@ QPopupMenu *KaduTextBrowser::createPopupMenu(const QPoint &point)
 {
 	kdebugf();
 	anchor = anchorAt(point);
+	anchor.replace(QRegExp("%2520"), "%20");//obej¶cie b³êdu w Qt, patrz HtmlDocument::convertUrlsToHtml()
+
 	QPopupMenu* popupmenu = QTextBrowser::createPopupMenu(point);
 
 	if (!anchor.isEmpty())

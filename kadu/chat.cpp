@@ -1056,7 +1056,7 @@ void Chat::formatMessages(QValueList<ChatMessage *> &msgs)
 
 void Chat::formatMessage(ChatMessage &msg, QColor myBgColor, QColor usrBgColor, QColor myFontColor, QColor usrFontColor, EmoticonsStyle style)
 {
-	const static QString formatString("<p style=\"background-color: %1\"><img title=\"\" height=\"%6\" width=\"10000\" align=\"right\"><font color=\"%2\"><b>%3 :: %4</b><br/>%5</font></p>");
+	const static QString formatString("<p style=\"background-color: %1\"><img title=\"\" height=\"%5\" width=\"10000\" align=\"right\"><font color=\"%2\"><b>%3 :: %4</b><br/>%6</font></p>");
 
 	if (msg.isMyMessage)
 	{
@@ -1095,8 +1095,8 @@ void Chat::formatMessage(ChatMessage &msg, QColor myBgColor, QColor usrBgColor, 
 			.arg(msg.textColor.name())
 			.arg(nick)
 			.arg(date)
-			.arg(convertCharacters(msg.unformattedMessage, msg.backgroundColor, style))
-			.arg(ParagraphSeparator);
+			.arg(ParagraphSeparator)
+			.arg(convertCharacters(msg.unformattedMessage, msg.backgroundColor, style));
 
 	msg.needsToBeFormatted=false;
 }
@@ -1383,7 +1383,7 @@ void Chat::disconnectAcknowledgeSlots()
 void Chat::sendMessage()
 {
 	kdebugf();
-	if (edit->text() == "")
+	if (edit->text().isEmpty())
 	{
 		kdebugf2();
 		return;
