@@ -352,14 +352,17 @@ void openWebBrowser(const QString &link) {
 	if (config_file.readBoolEntry("Chat","DefaultWebBrowser"))
 		cmd = QString("konqueror %1").arg(link);
 	else {
-		if (config_file.readEntry("Chat","WebBrowser") == "") {
+		QString webBrowser=config_file.readEntry("Chat","WebBrowser");
+		if (webBrowser == "") {
 			QMessageBox::warning(0, qApp->translate("@default", QT_TR_NOOP("WWW error")),
 				qApp->translate("@default", QT_TR_NOOP("Web browser was not specified. Visit the configuration section")));
 			kdebugm(KDEBUG_INFO, "openWebBrowser(): Web browser NOT specified.\n");
 			return;
-			}
-		cmd = QString(config_file.readEntry("Chat","WebBrowser")).arg(link);
 		}
+		if (!webBrowser.contains("%1"))
+			webBrowser.append(" %1");
+		cmd = webBrowser.arg(link);
+	}
 	args = QStringList::split(" ", cmd);
 	for (QStringList::iterator i = args.begin(); i != args.end(); i++)
 		kdebugm(KDEBUG_INFO, "openWebBrowser(): %s\n", unicode2latin(*i).data());
