@@ -109,7 +109,11 @@ class ConfigDialog : public QTabDialog	{
 		QPushButton *pb_chatusrfontcolor;
 		QPushButton *pb_userboxbgcolor;
 		QPushButton *pb_userboxfgcolor;
-
+		QComboBox *cb_chatfont;
+		QComboBox *cb_chatfontsize;
+		QComboBox *cb_userboxfont;
+		QComboBox *cb_userboxfontsize;
+    
 	protected slots:
 		void _Left();
 		void _Right();
@@ -125,6 +129,8 @@ class ConfigDialog : public QTabDialog	{
 		void chooseChatUsrFontColorGet();
 		void chooseUserboxBgColorGet();
 		void chooseUserboxFgColorGet();
+		void chooseChatFontGet(int index);
+    void chooseUserboxFontGet(int index);
 		void emoticonsEnabled(bool);
 		void ifDccEnabled(bool);
 		void ifDccIpEnabled(bool);
