@@ -1,4 +1,4 @@
-/* $Id: libgadu.c,v 1.13 2002/11/19 00:58:48 chilek Exp $ */
+/* $Id: libgadu.c,v 1.14 2002/11/28 11:07:46 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>,
@@ -59,7 +59,7 @@ static char rcsid[]
 #ifdef __GNUC__
 __attribute__ ((unused))
 #endif
-= "$Id: libgadu.c,v 1.13 2002/11/19 00:58:48 chilek Exp $";
+= "$Id: libgadu.c,v 1.14 2002/11/28 11:07:46 chilek Exp $";
 #endif 
 
 /*
@@ -329,18 +329,25 @@ void *gg_recv_packet(struct gg_session *sess)
 	}
 
 	if (sess->recv_left < 1) {
-		int tries = 10;
-		
 		while (ret != sizeof(h)) {
 			ret = read(sess->fd, &h, sizeof(h));
+
 			gg_debug(GG_DEBUG_MISC, "// gg_recv_packet() header recv(%d,%p,%d) = %d\n", sess->fd, &h, sizeof(h), ret);
-			if (ret < sizeof(h)) {
-				if (ret == -1)
-					gg_debug(GG_DEBUG_MISC, "// gg_recv_packet() header recv() failed: errno=%d, %s\n", errno, strerror(errno));
-				if (ret == 0)
-					gg_debug(GG_DEBUG_MISC, "// gg_recv_packet() header recv() failed: connection broken\n");
-				if (!--tries || errno != EINTR)
-					return NULL;
+
+			if (!ret) {
+				gg_debug(GG_DEBUG_MISC, "// gg_recv_packet() header recv() failed: connection broken\n");
+				return NULL;
+			}
+
+			if (ret == -1) {
+				if (errno == EINTR) {
+					gg_debug(GG_DEBUG_MISC, "// gg_recv_packet() header recv() interrupted system call, resuming\n");
+					continue;
+				}
+
+				gg_debug(GG_DEBUG_MISC, "// gg_recv_packet() header recv() failed: errno=%d, %s\n", errno, strerror(errno));
+
+				return NULL;
 			}
 		}
 

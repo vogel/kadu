@@ -1,4 +1,4 @@
-/* $Id: http.c,v 1.13 2002/11/19 00:58:48 chilek Exp $ */
+/* $Id: http.c,v 1.14 2002/11/28 11:07:46 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -339,6 +339,8 @@ int gg_http_watch_fd(struct gg_http *h)
 				h->header = NULL;
 				gg_http_error(GG_ERROR_READING);
 			}
+
+			gg_debug(GG_DEBUG_MISC, "left=%d\n", left);
 
 			if (left)
 				memcpy(h->body, tmp + sep_len, left);

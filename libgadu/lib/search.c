@@ -1,4 +1,4 @@
-/* $Id: search.c,v 1.11 2002/11/19 00:58:49 chilek Exp $ */
+/* $Id: search.c,v 1.12 2002/11/28 11:07:46 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -227,6 +227,8 @@ int gg_search_watch_fd(struct gg_http *h)
                 gg_debug(GG_DEBUG_MISC, "=> search, not enough memory for results\n");
                 return -1;
         }
+
+	gg_debug(GG_DEBUG_MISC, "h->data = %p\n", h->data);
 
 	s->count = 0;
 	s->results = NULL;

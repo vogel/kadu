@@ -1,5 +1,5 @@
 dnl Rewritten from scratch. --speedy 
-dnl $Id: python.m4,v 1.2 2002/11/19 00:58:49 chilek Exp $
+dnl $Id: python.m4,v 1.3 2002/11/28 11:08:34 chilek Exp $
 
 PYTHON=
 PYTHON_VERSION=
