@@ -6,6 +6,7 @@
   u¿ytkownicy s± dodawani do listy (serwer GG nie jest o tym informowany!)
 * w oknie rozmowy dodano guzik blokuj±cy przewijanie rozmowy (mo¿na spokojnie przeczytaæ
   co kto¶ do nas napisa³ du¿o wcze¶niej)
+* mo¿liwo¶æ rezygnacji ze zmiany statusu na status opisowy
 
 +++ wersja 0.3.3-pre3
 * CTRL + klik dowolnego przycisku myszki na ikonce w tray'u powoduje

@@ -146,10 +146,13 @@ ChooseDescription::ChooseDescription ( int nr, QWidget * parent, const char * na
 	desc = new QLineEdit(this);
 	desc->setMaxLength(40);
 
-	QPushButton * okidoki;
-	okidoki = new QPushButton(this);
-	okidoki->setText(i18n("&OK"));
-//	okidoki->setAccel(QKeySequence("ALT+O"));
+	QPushButton *okbtn;
+	okbtn = new QPushButton(this);
+	okbtn->setText(i18n("&OK"));
+	QPushButton *cancelbtn;
+	cancelbtn = new QPushButton(this);
+	cancelbtn->setText(i18n("&Cancel"));
+
 	char **gg_xpm;
 	switch (nr) {
 		case 1:
@@ -167,14 +170,16 @@ ChooseDescription::ChooseDescription ( int nr, QWidget * parent, const char * na
 		default:
 			gg_xpm = gg_inactdescr_xpm;
 		}
-	okidoki->setIconSet(QIconSet( QPixmap((const char**)gg_xpm) ));
+	okbtn->setIconSet(QIconSet(QPixmap((const char**)gg_xpm)));
 
-	QObject::connect(okidoki, SIGNAL( clicked() ), this, SLOT( okidokiPressed() ));
+	QObject::connect(okbtn, SIGNAL(clicked()), this, SLOT(okbtnPressed()));
+	QObject::connect(cancelbtn, SIGNAL(clicked()), this, SLOT(cancelbtnPressed()));
 
 	QGridLayout *grid = new QGridLayout(this, 2, 2);
 
 	grid->addMultiCellWidget(desc, 0, 0, 0, 1);
-	grid->addWidget(okidoki, 1, 1, Qt::AlignRight);
+	grid->addWidget(cancelbtn, 1, 1, Qt::AlignRight);
+	grid->addWidget(okbtn, 1, 0, Qt::AlignRight);
 	grid->addColSpacing(0, 200);
 
 	resize(250,80);
@@ -182,9 +187,14 @@ ChooseDescription::ChooseDescription ( int nr, QWidget * parent, const char * na
 	desc->selectAll();
 }
 
-void ChooseDescription::okidokiPressed() {
+void ChooseDescription::okbtnPressed() {
 	own_description = desc->text();
 	config.defaultdescription = own_description;
+	accept();
+}
+
+void ChooseDescription::cancelbtnPressed() {
+	reject();
 	close();
 }
 

@@ -1202,9 +1202,11 @@ void Kadu::slotHandleState(int command) {
 			break;
 		case 1:
 			cd = new ChooseDescription(1);
-			cd->exec();
-			autohammer = true;
-			setStatus(GG_STATUS_AVAIL_DESCR);
+			if (cd->exec() == QDialog::Accepted) {
+				cd->close();
+				autohammer = true;
+				setStatus(GG_STATUS_AVAIL_DESCR);
+				}
 			break;
 		case 2:
 			autohammer = true;
@@ -1212,9 +1214,11 @@ void Kadu::slotHandleState(int command) {
 			break;
 		case 3:
 			cd = new ChooseDescription(3);
-			cd->exec();
-			autohammer = true;
-			setStatus(GG_STATUS_BUSY_DESCR);
+			if (cd->exec() == QDialog::Accepted) {
+				cd->close();
+				autohammer = true;
+				setStatus(GG_STATUS_BUSY_DESCR);
+				}
 			break;
 		case 4:
 			autohammer = true;
@@ -1222,9 +1226,11 @@ void Kadu::slotHandleState(int command) {
 			break;
 		case 5:
 			cd = new ChooseDescription(5);
-			cd->exec();
-			autohammer = true;
-			setStatus(GG_STATUS_INVISIBLE_DESCR);
+			if (cd->exec() == QDialog::Accepted) {
+				cd->close();
+				autohammer = true;
+				setStatus(GG_STATUS_INVISIBLE_DESCR);
+				}
 			break;
 		case 6:
 			autohammer = false;
@@ -1233,11 +1239,13 @@ void Kadu::slotHandleState(int command) {
 			break;
 		case 7:
 			cd = new ChooseDescription(7);
-			cd->exec();
-			setStatus(GG_STATUS_NOT_AVAIL_DESCR);
-			statusppm->setItemEnabled(7, false);
-			autohammer = false;
-			disconnectNetwork();
+			if (cd->exec() == QDialog::Accepted) {
+				cd->close();
+				setStatus(GG_STATUS_NOT_AVAIL_DESCR);
+				statusppm->setItemEnabled(7, false);
+				autohammer = false;
+				disconnectNetwork();
+				}
 			break;	    
 		case 8:
 			statusppm->setItemChecked(8, !statusppm->isItemChecked(8));

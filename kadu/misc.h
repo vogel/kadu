@@ -37,7 +37,8 @@ class ChooseDescription : public QDialog {
 		QLineEdit * desc;
 
 	private slots:
-		void okidokiPressed();
+		void okbtnPressed();
+		void cancelbtnPressed();
 
 };
 
