@@ -144,7 +144,7 @@ bool EmoticonsManager::loadGGEmoticonThemePart(QString subdir)
 		for(int i=0; i<aliases.size(); i++)
 		{
 			item.alias=aliases[i];
-			Aliases.append(item);
+			Aliases.push_back(item);
 		};
 		item.alias=aliases[0];
 		Selector.append(item);

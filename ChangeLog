@@ -12,6 +12,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   nasluchujacego polaczen bezposrednich DCC (adrian)
 * zaaplikowany patch romka przywracajacy kompatybilnosc z QT 3.0.x (adrian)
 * dodano mozliwosc wyboru zestawu ikonek zakladka "Wyglad" (pawel_p)
+* ma³a poprawka dotycz±ca kompatybilno¶ci z QT 3.0.x (skoot/mast3r)
+* debian/rules dodane do configure --enable-voice i --enable-modules (mast3r)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
