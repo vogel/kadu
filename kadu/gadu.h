@@ -887,7 +887,7 @@ class GaduProtocol : public QObject
 			@param data zawarto¶æ pliku
 			@todo usun±æ parametry size i data - mo¿emy to chyba sami wyznaczyæ
 		**/
-		bool sendImage(UinType uin, const QString &file_name, uint32_t size, char *data);
+		bool sendImage(UinType uin, const QString &file_name, uint32_t size, const char *data);
 
 		/**
 			Rejetrujemy nowe konto. Odpowied¼ przychodzi poprzez sygna³ registered. Mo¿e

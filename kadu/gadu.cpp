@@ -1675,7 +1675,7 @@ bool GaduProtocol::sendImageRequest(UinType uin,int size,uint32_t crc32)
 	return (res==0);
 }
 
-bool GaduProtocol::sendImage(UinType uin,const QString& file_name,uint32_t size,char* data)
+bool GaduProtocol::sendImage(UinType uin, const QString& file_name, uint32_t size, const char* data)
 {
 	kdebugf();
 	int res = gg_image_reply(Sess, uin, file_name.local8Bit().data(), data, size);
