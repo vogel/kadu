@@ -492,7 +492,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	connect(searchaction, SIGNAL(activated()), this, SLOT(lookupInDirectory()));
 
 	QToolBar *toolbar = new QToolBar(this, "main toolbar");
-	toolbar->setMovingEnabled(false);
+//	toolbar->setMovingEnabled(false);
 	historyaction->addTo(toolbar);
 	userinfoaction->addTo(toolbar);
 	searchaction->addTo(toolbar);
