@@ -92,7 +92,8 @@ void DockWidget::mousePressEvent(QMouseEvent * e) {
 					for (j = 0; j < elem.uins.count(); j++)
 						if (!userlist.containsUin(elem.uins[j])) {
 							tmp = QString::number(elem.uins[j]);
-							kadu->addUser("", "", tmp, tmp, "", tmp, GG_STATUS_NOT_AVAIL, "", "", true);
+							userlist.addUser("", "", tmp, tmp, "", tmp, GG_STATUS_NOT_AVAIL,
+								false, false, true, "", "", true);
 							}
 					k = kadu->openChat(elem.uins);
 					chats[k].ptr->formatMessage(false, userlist.byUin(elem.uins[0]).altnick,
