@@ -59,6 +59,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   równie¿ wiadomo¶ci z pust± tre¶ci± - np same obrazki (adrian)
 * poprawa obs³ugi plików konfiguracyjnych przy tworzeniu nowej sekcji (joi)
 * konfiguracja odpowiedzi autorespondera (mkey/joi)
+* zachowywanie polskich znaków przez modu³y autoresponder i echo (joi)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

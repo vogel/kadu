@@ -60,9 +60,9 @@ void AutoResponder::chatReceived(UinsList senders,const QString& msg,time_t time
 			|| status == (GG_STATUS_FRIENDS_MASK | GG_STATUS_BUSY_DESCR)
 			|| status == GG_STATUS_BUSY 
 			|| status == GG_STATUS_BUSY_DESCR) {
-
-			gadu->sendMessage(senders, tr("KADU AUTORESPONDER:")+"\n"+
-							config->readEntry("Autoresponder", "Autotext"));
+			
+			gadu->sendMessage(senders, unicode2cp(tr("KADU AUTORESPONDER:")+"\n"+
+							config->readEntry("Autoresponder", "Autotext")));
 		}
 
 }
