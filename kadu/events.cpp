@@ -171,7 +171,7 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 			spk->show();
 			return;
 
-			keyfile_path.append(ggPath("keys/"));
+/*			keyfile_path.append(ggPath("keys/"));
 			keyfile_path.append(QString::number(senders[0]));
 			keyfile_path.append(".pem");
 
@@ -187,7 +187,7 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 			keyfile.writeBlock(key_data.local8Bit(), key_data.length());
 
 			keyfile.close();
-			return;
+			return;*/
 		}
 	};
 
@@ -329,7 +329,11 @@ void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)
 			// FIXME convert into a regular QMessageBox
 			QString msg;
 			msg = i18n("User %1 is available").arg(userlist.byUin(uin).altnick);
-			QMessageBox::information(0, i18n("User notify"), msg);		
+			QMessageBox *msgbox;
+			msgbox = new QMessageBox(i18n("User notify"), msg, QMessageBox::NoIcon,
+				QMessageBox::Ok, QMessageBox::NoButton, QMessageBox::NoButton,
+				0, 0, FALSE, Qt::WStyle_DialogBorder || Qt::WDestructiveClose);
+			msgbox->show();
 			}
 
 		if (config.notifysound) {

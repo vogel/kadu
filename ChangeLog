@@ -2,6 +2,8 @@
 * sms.cpp masz szansê kompilowaæ siê na Qt < 3.0.5
 * przy odebraniu b³êdnej wiadomo¶ci dcc ctcp nie powinno wywalaæ siê
 * czeski b³±d powodowa³, ¿e mesgi mog³y nie wpadaæ do okna rozmowy
+* okna dialogowe z powiadomieniami o zmianie statusu u¿ytkowników
+  nie powinny wywalaæ kadu
 
 +++ wersja 0.3.3-pre5
 * wszystkie? wiadomo¶ci od u¿ytkowników powinny wpadaæ do okna rozmowy
