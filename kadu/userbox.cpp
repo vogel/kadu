@@ -57,8 +57,12 @@ void UserBox::maybeTip(const QPoint &c)
 			case GG_STATUS_NOT_AVAIL:
 				s = i18n("<nobr><I>Not available</I></nobr>");
 				break;
+			case GG_STATUS_INVISIBLE:
 			case GG_STATUS_INVISIBLE2:
 				s = i18n("<I>Invisible</I>");
+				break;
+			case GG_STATUS_INVISIBLE_DESCR:
+				s = i18n("<I>Invisible <B>(d.)</B></I>");
 				break;
 			case GG_STATUS_BUSY_DESCR:
 				s = i18n("<nobr><I>Busy <B>(d.)</B></I></nobr>");
