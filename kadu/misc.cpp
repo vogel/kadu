@@ -6,7 +6,12 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <time.h>
+#include <klocale.h>
+#include <qpushbutton.h>
+#include <qlayout.h>
 #include "misc.h"
+#include "pixmaps.h"
+#include "kadu.h"
 
 char* preparePath(char* filename)
 {
@@ -128,3 +133,54 @@ void UinsList::sort() {
 				}
 	} while (!stop);	
 }
+
+ChooseDescription::ChooseDescription ( int nr, QWidget * parent, const char * name)
+: QDialog(parent, name, true) {
+    setWFlags(Qt::WDestructiveClose);
+    setCaption(i18n("Select description"));
+    desc = new QLineEdit(this);
+    desc->setMaxLength(40);
+
+    QPushButton * okidoki;
+    okidoki = new QPushButton(this);
+    okidoki->setText(i18n("&OK"));
+//    okidoki->setAccel(QKeySequence("ALT+O"));
+    char **gg_xpm;
+    switch (nr) {
+	case 1:
+	    gg_xpm = gg_actdescr_xpm;
+	    break;
+	case 3:
+	    gg_xpm = gg_busydescr_xpm;
+	    break;
+	case 5:
+	    gg_xpm = gg_invidescr_xpm;
+	    break;
+	case 7:
+	    gg_xpm = gg_inactdescr_xpm;
+	    break;
+	default:
+	    gg_xpm = gg_inactdescr_xpm;
+	}
+    okidoki->setIconSet(QIconSet( QPixmap((const char**)gg_xpm) ));
+
+    QObject::connect(okidoki, SIGNAL( clicked() ), this, SLOT( okidokiPressed() ));
+
+    QGridLayout * grid = new QGridLayout(this, 2,2);
+
+    grid->addMultiCellWidget(desc,0,0,0,1);
+    grid->addWidget(okidoki,1,1,Qt::AlignRight);
+    grid->addColSpacing(0,200);
+
+    resize(250,80);
+    desc->setText(own_description);
+    desc->selectAll();
+}
+
+void ChooseDescription::okidokiPressed() {
+    own_description = desc->text();
+    config.defaultdescription = own_description;
+    close();
+}
+
+#include "misc.moc"

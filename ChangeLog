@@ -10,6 +10,8 @@
 * has³o nie pokazuje siê na konsoli
 * wiadomo¶ci typu message "wpadaj±" do okna rozmowy
 * historia wys³anych sms'ów
+* ograniczenie statusu opisowego do 40 znaków i przejscie na QLineEdit
+
 
 +++ wersja 0.3.2
 * dalsze porz±dki w kodzie

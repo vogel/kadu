@@ -211,19 +211,6 @@ class Operation : public QProgressDialog {
 	void cancel();
 };
 
-class ChooseDescription : public QDialog {
-	Q_OBJECT
-	public:
-	ChooseDescription::ChooseDescription ( int nr, QWidget * parent=0, const char * name=0);
-
-	private:
-		QMultiLineEdit * desc;
-
-	private slots:
-		void okidokiPressed();
-
-};
-
 class MyLabel : public QLabel {
 	Q_OBJECT
 	public:

@@ -2,9 +2,16 @@
 #define MISC_H
 
 #include <qvaluelist.h>
+#include <qdialog.h>
+#include <qlineedit.h>
 #include "../libgadu/lib/libgadu.h"
 
 #define __c2q(__char_pointer__) QString::fromLocal8Bit(__char_pointer__)
+char* preparePath(char* filename);
+void cp_to_iso(unsigned char *);
+void iso_to_cp(unsigned char *);
+char *timestamp(time_t = 0);
+char *pwHash(const char *tekst);
 
 class UinsList : public QValueList<uin_t>
 {
@@ -14,10 +21,17 @@ class UinsList : public QValueList<uin_t>
 		void sort();
 };
 
-char* preparePath(char* filename);
-void cp_to_iso(unsigned char *);
-void iso_to_cp(unsigned char *);
-char *timestamp(time_t = 0);
-char *pwHash(const char *tekst);
+class ChooseDescription : public QDialog {
+	Q_OBJECT
+	public:
+		ChooseDescription ( int nr, QWidget * parent=0, const char * name=0);
+
+	private:
+		QLineEdit * desc;
+
+	private slots:
+		void okidokiPressed();
+
+};
 
 #endif
