@@ -1750,7 +1750,7 @@ void Kadu::eventHandler(int state) {
 		readevent->start(10000, TRUE);
 		}
 
-	if (e->type == GG_EVENT_CONN_FAILED) {
+	if (e->type == GG_EVENT_CONN_FAILED || e->type == GG_EVENT_DISCONNECT) {
 		char error[512];
 		snprintf(error, sizeof(error), "Kadu::eventHandler(): Unable to connect, the following error has occured:\n%s\nKadu::eventHandler(): Keep trying to connect?\n", strerror(errno));
 		trayicon->showErrorHint(i18n("Connection failed"));
@@ -1760,8 +1760,11 @@ void Kadu::eventHandler(int state) {
 		disconnectNetwork();	
 		setCurrentStatus(GG_STATUS_NOT_AVAIL);
 
-		if (autohammer)
-			setStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
+		if (e->type == GG_EVENT_DISCONNECT)
+			autohammer = false;
+		else
+			if (autohammer)
+				setStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
 		}
 
 	if (socket_active) {
