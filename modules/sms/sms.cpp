@@ -502,6 +502,11 @@ void SmsSlots::onUserClicked(int button, QListBoxItem* item, const QPoint& pos)
 void SmsSlots::onUserDblClicked(QListBoxItem* item)
 {
 	kdebugf();
+	kdebugm(KDEBUG_INFO, "userlist: %d\n", (int)&userlist);
+	kdebugm(KDEBUG_INFO, "item: %d\n", (int)item);
+	QString txt=item->text();
+	kdebugm(KDEBUG_INFO, "isNull: %d\n", txt.isNull());
+	kdebugm(KDEBUG_INFO, "item->text(): '%s'\n", txt.local8Bit().data());
 	UserListElement user=userlist.byAltNick(item->text());
 	if(!user.uin)
 		newSms(user.altnick);
