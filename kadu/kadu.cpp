@@ -112,15 +112,15 @@ void sendUserlist() {
 	char *types;
 	int i, j;
 
-	if (!userlist.count()) {
+	for (i = 0, j = 0; i < userlist.count(); i++)
+		if (userlist[i].uin)
+			j++;
+
+	if (!j) {
 		gg_notify_ex(sess, NULL, NULL, 0);
 		kdebug("send_userlist(): Userlist is empty\n");
 		return;
 		}
-
-	for (i = 0, j = 0; i < userlist.count(); i++)
-		if (userlist[i].uin)
-			j++;
 
 	uins = (uin_t *) malloc(j * sizeof(uin_t));
 	types = (char *) malloc(j * sizeof(char));
