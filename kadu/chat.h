@@ -141,6 +141,7 @@ class Chat : public QWidget {
 	private:
 		QString title_buffer;
 		QTimer *title_timer;  
+		QColor actcolor;
 };
 
 class ColorSelectorButton : public QToolButton

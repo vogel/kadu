@@ -367,6 +367,8 @@ void Chat::toggledUnderline(bool on) {
 }
 
 void Chat::curPosChanged(int para, int pos) {
+	int i;
+
 	kdebug("Chat::curPosChanged()\n");
 	if (edit->bold() != boldbtn->isOn())
 		boldbtn->setOn(edit->bold());
@@ -374,6 +376,16 @@ void Chat::curPosChanged(int para, int pos) {
 		italicbtn->setOn(edit->italic());
 	if (edit->underline() != underlinebtn->isOn())
 		underlinebtn->setOn(edit->underline());
+	if (edit->color() != actcolor) {
+		for (i = 0; i < 16; i++)
+			if (edit->color() == QColor(colors[i]))
+				break;
+		QPixmap p(16, 16);
+		p.fill(colors[i]);
+		colorbtn->setPixmap(p);
+		actcolor = colors[i];
+		}
+	
 }
 
 void Chat::setupEncryptButton(bool enabled) {
@@ -971,6 +983,7 @@ void Chat::colorChanged(QColor color) {
 	p.fill(color);
 	colorbtn->setPixmap(p);
 	edit->setColor(color);
+	actcolor = color;
 }
 
 /* adds an emoticon code to the edit window */
