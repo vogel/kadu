@@ -62,8 +62,10 @@ void AutoStatusTimer::onTimeout()
 {
 	if (sess && ifStatusWithDescription(sess->status)) {
 		QFile f(preparePath("description"));
-		if (!f.open(IO_ReadOnly))
+		if (!f.open(IO_ReadOnly)) {
+			start(1000, TRUE);
 			return;
+			}
 		QTextStream s(&f);
 		QString new_description;
 		new_description = s.readLine();
