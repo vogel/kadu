@@ -1,7 +1,7 @@
 int read_all(int fd, char *buffer, int count)
 {
-	kdebugf();
 	int offset = 0, c;
+	kdebugf();
 	if (fd<0)
 		return -1;
 	while (offset<count)
@@ -19,8 +19,8 @@ int read_all(int fd, char *buffer, int count)
 
 int write_all(int fd, const char *data, int length, int chunksize)
 {
-	kdebugf();
 	int res = 0, written = 0;
+	kdebugf();
 	if (fd<0)
 		return -1;
 	
@@ -47,8 +47,8 @@ int write_all(int fd, const char *data, int length, int chunksize)
 
 int read_line(int fd, char *data, int length)
 {
-	kdebugf();
 	int offset = 0;
+	kdebugf();
 	if (fd<0)
 		return -1;
 	while (offset<length)

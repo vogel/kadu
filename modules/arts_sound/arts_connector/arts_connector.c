@@ -39,8 +39,8 @@ void _kdebug_with_mask(const char* file, const int line, const char* format,...)
 {
 	if (0)
 	{
-		fprintf(stderr, "<%s:%i>\t", file, line);
 		va_list args;
+		fprintf(stderr, "<%s:%i>\t", file, line);
 		va_start(args, format);
 		vfprintf(stderr, format, args);
 		va_end(args);
@@ -91,8 +91,8 @@ void closeDevice(int i)
 
 void setFlushing(int devno, int enabled)
 {
-	kdebugf();
 	struct aRtsSoundDevice *dev;
+	kdebugf();
 	if (devno<0 || devno>=MAXDEV)
 		return;
 	
@@ -118,8 +118,8 @@ void setFlushing(int devno, int enabled)
 
 void freeRes(int fd)
 {
-	kdebugf();
 	int i;
+	kdebugf();
 	for (i=0; i<MAXDEV; ++i)
 		closeDevice(i);
 	close(fd);
@@ -251,8 +251,8 @@ int main()
 
 	while (!end)
 	{
-		alarm(60*60);//po godzinie siê wy³±czamy
 		struct aRtsSoundDevice *tmpdev; int devno;
+		alarm(60*60);//po godzinie siê wy³±czamy
 		buflen = read_line(sock, buffer, BUFSIZE);
 		end = (buflen==-1);
 		if (!end)
