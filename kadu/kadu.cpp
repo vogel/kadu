@@ -400,6 +400,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	connect(&userlist, SIGNAL(modified()), this, SLOT(userListModified()));
 
 	/* add all users to userbox */
+//	activeGroup = "anything";
 	setActiveGroup("");
 
 	// dodanie przyciskow do paska narzedzi
@@ -483,7 +484,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		this, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
 	connect(gadu, SIGNAL(needTokenValue(QPixmap, QString &)),
 		this, SLOT(readTokenValue(QPixmap, QString &)));
-	connect(gadu, SIGNAL(systemMessageReceived(QString &)), this, SLOT(systemMessageReceived(QString &)));
+	connect(gadu, SIGNAL(systemMessageReceived(const QString &)), this, SLOT(systemMessageReceived(const QString &)));
 	connect(gadu, SIGNAL(userListChanged()), this, SLOT(userListChanged()));
 	connect(gadu, SIGNAL(userStatusChanged(const UserListElement&, const UserStatus &, bool)),
 		this, SLOT(userStatusChanged(const UserListElement&, const UserStatus &, bool)));
@@ -892,6 +893,16 @@ void Kadu::refreshGroupTabBar()
 void Kadu::setActiveGroup(const QString& group)
 {
 	kdebugf();
+
+//	printBacktrace("setActiveGroup");
+
+/*	if (group == activeGroup)
+	{
+		kdebugf2();
+		return;
+	}
+*/
+//	activeGroup = group;
 	Userbox->clearUsers();
 	for (UserList::ConstIterator i = userlist.begin(); i != userlist.end(); ++i)
 	{
@@ -1168,7 +1179,7 @@ void Kadu::imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, 
 	}
 }
 
-void Kadu::systemMessageReceived(QString &msg)
+void Kadu::systemMessageReceived(const QString &msg)
 {
 	MessageBox::msg(msg);
 }

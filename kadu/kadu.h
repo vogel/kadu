@@ -74,6 +74,7 @@ class Kadu : public QMainWindow
 		bool DoBlink;
 		bool BlinkOn;
 		bool Docked;
+		QString activeGroup;
 
 		void createMenu();
 		void createToolBar();
@@ -105,7 +106,7 @@ class Kadu : public QMainWindow
 		void connecting();
 		void disconnected();
 		void imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &path);
-		void systemMessageReceived(QString &);
+		void systemMessageReceived(const QString &msg);
 		void userStatusChanged(const UserListElement &, const UserStatus &oldstatus, bool onConnection);
 
 	protected:
