@@ -156,6 +156,13 @@ void dccSocketClass::watchDcc(int check) {
 		}
 
 	switch (dccevent->type) {
+		case GG_EVENT_DCC_CLIENT_ACCEPT:
+			if (dccsock->uin != config_file.readNumEntry("General", "UIN")
+				|| !userlist.containsUin(dccsock->peer_uin)) {
+				kdebug("dccSocketClass::watchDcc(): strange uins!\n");
+				setState(DCC_SOCKET_TRANSFER_DISCARDED);
+				}
+			break;
 		case GG_EVENT_NONE:	    
 			if (filedialog && filedialog->isVisible())
 				filedialog->updateFileInfo(dccsock);
