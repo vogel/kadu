@@ -16,6 +16,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * usuniêty problem ze skryptem Instaluj gdy LC_ALL i LANG nie s± ustawione
   na pl_PL (joi)
 * poprawka polecenia kompilowania w modu³ach - kompilator c++ dla *.cpp (adrian)
+* dodany zapomniany nag³ówek dla abort() (joi)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

@@ -40,6 +40,7 @@ Kadu *kadu;
 #ifdef SIG_HANDLING_ENABLED
 #include <qdatetime.h>
 #include <signal.h>
+#include <stdlib.h>
 #include "debug.h"
 void kadu_signal_handler(int s)
 {
