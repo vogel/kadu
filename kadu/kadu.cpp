@@ -747,8 +747,9 @@ void Kadu::commandParser (int command) {
 			msg->show();
 			break;
 		case 2:
-			uin = userlist.byAltNick(userbox->currentText()).uin;
-			uins.append(uin);
+			for (i = 0; i < userbox->count(); i++)
+				if (userbox->isSelected(i))
+					uins.append(userlist.byAltNick(userbox->text(i)).uin);
 			openChat(uins);
 			break;
 		case 3:
