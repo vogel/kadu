@@ -11,6 +11,8 @@
 #include <qlayout.h>
 #include <kglobal.h>
 #include <qpushbutton.h>
+#include <qstring.h>
+#include <qfiledialog.h>
 #include <kicontheme.h>
 #include <kiconloader.h>
 #include <qmessagebox.h>
@@ -39,6 +41,12 @@ UserlistImport::UserlistImport(QWidget *parent, const char *name)
 	savebtn->setText(i18n("&Save results"));
 	QObject::connect(savebtn, SIGNAL(clicked()), this, SLOT(updateUserlist()));
 
+	QPushButton * filebtn = new QPushButton(this);
+	filebtn->setIconSet(QIconSet(loader->loadIcon("connect_creating", KIcon::Small)));
+	filebtn->setText(i18n("&Import from file"));
+	QObject::connect(filebtn, SIGNAL(clicked()), this, SLOT(fromfile()));
+
+
 	results->addColumn(i18n("UIN"));
 	results->addColumn(i18n("Nickname"));
 	results->addColumn(i18n("Disp. nick"));
@@ -48,12 +56,41 @@ UserlistImport::UserlistImport(QWidget *parent, const char *name)
 	results->addColumn(i18n("Group"));
 	results->setAllColumnsShowFocus(true);
 
-	grid->addMultiCellWidget(results, 0, 0, 0, 1);
-	grid->addWidget(fetchbtn, 1, 0);
-	grid->addWidget(savebtn, 1, 1);
+	grid->addMultiCellWidget(results, 0, 0, 0, 2);
+	grid->addWidget(filebtn, 1, 0);	
+	grid->addWidget(fetchbtn, 1, 1);
+	grid->addWidget(savebtn, 1, 2);
 
 	snr = snw = NULL;
 	gg_http = NULL;
+}
+
+
+void UserlistImport::fromfile(){
+
+    QStringList lines,userlist;
+    QListViewItem * qlv;
+    QString line;    
+    QString fname = QFileDialog::getOpenFileName("/", QString::null,this);
+	if (fname.length()){
+    QFile file(fname);
+      if ( file.open( IO_ReadOnly ) ) {
+            QTextStream stream( &file );
+	results->clear();
+            while ( !stream.eof() ) {
+                line = stream.readLine();
+		lines=QStringList::split(";",line,true);
+		importedUserlist.addUser(lines[0], lines[1], lines[2],
+				lines[3], lines[4], lines[6], GG_STATUS_NOT_AVAIL,
+				false, false, true, lines[5]);
+		qlv = new QListViewItem(results, lines[6], lines[2], lines[3],
+				lines[0], lines[1], lines[4], lines[5]);				
+  			            }
+	        file.close();
+		}
+		else
+		QMessageBox::critical(this, "Import error", i18n("The application encountered an internal error\nThe import userlist from file was unsuccessful") );
+    }
 }
 
 void UserlistImport::init() {
@@ -265,6 +302,14 @@ UserlistExport::UserlistExport(QWidget *parent, const char *name)
 	sendbtn = new QPushButton(this);
 	sendbtn->setText(i18n("&Send userlist"));
 	sendbtn->setIconSet(QIconSet( loader->loadIcon("connect_creating", KIcon::Small)));
+	
+	deletebtn = new QPushButton(this);
+	deletebtn->setText(i18n("&Delete userlist"));
+	deletebtn->setIconSet(QIconSet( loader->loadIcon("connect_creating", KIcon::Small)));
+	
+	tofilebtn = new QPushButton(this);
+	tofilebtn->setText(i18n("&Export to file"));
+	tofilebtn->setIconSet(QIconSet( loader->loadIcon("connect_creating", KIcon::Small)));
 
 	QPushButton * closebtn = new QPushButton(this);
 	closebtn->setText(i18n("&Close window"));
@@ -274,9 +319,13 @@ UserlistExport::UserlistExport(QWidget *parent, const char *name)
 
 	grid->addWidget(clabel,0,0);
 	grid->addWidget(sendbtn,1,0);
-	grid->addWidget(closebtn,2,0);
+	grid->addWidget(deletebtn,2,0);	
+	grid->addWidget(tofilebtn,3,0);		
+	grid->addWidget(closebtn,4,0);
 
 	QObject::connect(sendbtn, SIGNAL(clicked()), this, SLOT(startTransfer()));	
+	QObject::connect(tofilebtn, SIGNAL(clicked()), this, SLOT(ExportToFile()));
+	QObject::connect(deletebtn, SIGNAL(clicked()), this, SLOT(clean()));		
 
 	snw = snr = NULL;
 	gg_http = NULL;
@@ -299,10 +348,10 @@ void UserlistExport::deleteSocketNotifiers() {
 		}
 }
 
-void UserlistExport::startTransfer() {
+QString UserlistExport::saveContacts(){
 	QString contacts;
 	int i = 0;
-	
+	contacts="";
 	while (i < userlist.count()) {
 		contacts += userlist[i].first_name;
 		contacts += ";";
@@ -321,8 +370,15 @@ void UserlistExport::startTransfer() {
 		i++;
 		}
 	contacts.replace(QRegExp("(null)"), "");
+	
+	return contacts;
+}
 
-	char *con2;
+void UserlistExport::startTransfer() {
+	QString contacts;
+	contacts=saveContacts();
+	
+	char *con2;	
 	con2 = strdup((const char *)contacts.local8Bit());
 	iso_to_cp((unsigned char *)con2);
 	
@@ -342,12 +398,66 @@ void UserlistExport::startTransfer() {
 		}*/
 
 	sendbtn->setEnabled(false);
-
+	deletebtn->setEnabled(false);
+	tofilebtn->setEnabled(false);	
 	snr = new QSocketNotifier(gg_http->fd, QSocketNotifier::Read, this);
 	connect(snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
 
 	snw = new QSocketNotifier(gg_http->fd, QSocketNotifier::Write, this);
 	connect(snw, SIGNAL(activated(int)), this, SLOT(dataSent()));
+}
+
+void UserlistExport::ExportToFile(void) {
+	QString contacts;
+	sendbtn->setEnabled(false);
+	deletebtn->setEnabled(false);
+	tofilebtn->setEnabled(false);	
+	
+    QString fname = QFileDialog::getSaveFileName("/", QString::null,this);
+	if (fname.length()){
+
+
+	contacts=saveContacts();
+
+	    QFile file(fname);
+	    if (file.open(IO_WriteOnly)) {
+	    QTextStream stream(&file);
+		            stream << contacts << "\n";
+	        file.close();
+		QMessageBox::information(this, "Export completed", i18n("Your userlist has been successfully exported to file"));
+			    }else
+		QMessageBox::critical(this, "Export error", i18n("The application encountered an internal error\nThe export userlist to file was unsuccessful") );
+
+
+			    }
+
+	sendbtn->setEnabled(true);
+	deletebtn->setEnabled(true);
+	tofilebtn->setEnabled(true);	
+			    
+
+}
+
+void UserlistExport::clean(){
+	const char *con2="";
+	deletebtn->setEnabled(false);
+	sendbtn->setEnabled(false);
+	tofilebtn->setEnabled(false);
+	if (!(gg_http = gg_userlist_put(config.uin, config.password, con2, 1))) {
+		fprintf(stderr, "KK UserlistExport: Delete failed\n");
+		QMessageBox::critical(this, "Export error", i18n("The application encountered an internal error\nThe delete userlist on server was unsuccessful") );
+		deletebtn->setEnabled(true);		
+		sendbtn->setEnabled(true);
+		tofilebtn->setEnabled(true);
+		return;
+    		}
+			
+	snr = new QSocketNotifier(gg_http->fd, QSocketNotifier::Read, this);
+	connect(snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
+
+	snw = new QSocketNotifier(gg_http->fd, QSocketNotifier::Write, this);
+	connect(snw, SIGNAL(activated(int)), this, SLOT(dataSent()));
+				
 }
 
 void UserlistExport::dataReceived() {
@@ -367,7 +477,9 @@ void UserlistExport::socketEvent() {
 	fprintf(stderr, "KK ExportUserlist::socketEvent(): data on socket\n");			
 
 	if (gg_userlist_put_watch_fd(gg_http) < 0) {
+		deletebtn->setEnabled(true);
 		sendbtn->setEnabled(true);
+		tofilebtn->setEnabled(true);
 		deleteSocketNotifiers();
 		fprintf(stderr,"KK ExportUserlist::socketEvent(): gg_userlist_put_watch_fd() error. bailing out.\n");
 		QMessageBox::critical(this, "Export error", i18n("The application encountered a network error\nThe export was unsuccessful") );
@@ -378,7 +490,6 @@ void UserlistExport::socketEvent() {
 
 	if (gg_http->state == GG_STATE_CONNECTING) {
 		fprintf(stderr, "KK ExportUserlist::socketEvent(): changing QSocketNotifiers.\n");
-
 		deleteSocketNotifiers();
 		snr = new QSocketNotifier(gg_http->fd, QSocketNotifier::Read, this);
 		connect(snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
@@ -389,6 +500,8 @@ void UserlistExport::socketEvent() {
 
 	if (gg_http->state == GG_STATE_ERROR) {
 		sendbtn->setEnabled(true);
+		deletebtn->setEnabled(true);
+		tofilebtn->setEnabled(true);
 		deleteSocketNotifiers();
 		fprintf(stderr,"KK ExportUserlist::socketEvent(): gg_userlist_put_watch_fd() error. bailing out.\n");
 		QMessageBox::critical(this, "Export error", i18n("The application encountered a network error\nThe export was unsuccessful") );
@@ -399,6 +512,8 @@ void UserlistExport::socketEvent() {
 
 	if (gg_http->state == GG_STATE_DONE) {
 		sendbtn->setEnabled(true);
+		tofilebtn->setEnabled(true);
+		deletebtn->setEnabled(true);
 		fprintf(stderr,"KK Export Done\n");
 		deleteSocketNotifiers();
 		QMessageBox::information(this, "Export complete", i18n("Your userlist has been successfully exported to server") );
