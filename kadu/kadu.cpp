@@ -1044,7 +1044,7 @@ void Kadu::blink() {
 	}
 	else
 	{
-		pix = gadu->status().pixmap(status, false);
+		pix = gadu->status().pixmap(status);
 		statusbutton->setIconSet(QIconSet(pix));
 		emit statusPixmapChanged(pix);
 	}
@@ -1107,71 +1107,54 @@ void Kadu::slotHandleState(int command) {
 	ChooseDescription *cd;
 	QString desc;
 
-	switch (command) {
+	status.setStatus(gadu->status());
+	switch (command)
+	{
 		case 0:
-			Autohammer = true;
-			status = Online;
-			gadu->status().setOnline();
+			status.setOnline();
 			break;
 		case 1:
 			cd = new ChooseDescription(1);
 			if (cd->exec() == QDialog::Accepted)
 			{
-				Autohammer = true;
-				status = Online;
 				cd->getDescription(desc);
-				gadu->status().setOnline(desc);
+				status.setOnline(desc);
 			}
 			delete cd;
 			break;
 		case 2:
-			Autohammer = true;
-			status = Busy;
-			gadu->status().setBusy();
+			status.setBusy();
 			break;
 		case 3:
 			cd = new ChooseDescription(3);
 			if (cd->exec() == QDialog::Accepted)
 			{
-				Autohammer = true;
-				status = Busy;
 				cd->getDescription(desc);
-				gadu->status().setBusy(desc);
+				status.setBusy(desc);
 			}
 			delete cd;
 			break;
 		case 4:
-			Autohammer = true;
-			status = Invisible;
-			gadu->status().setInvisible();
+			status.setInvisible();
 			break;
 		case 5:
 			cd = new ChooseDescription(5);
 			if (cd->exec() == QDialog::Accepted)
 			{
-				Autohammer = true;
-				status = Invisible;
 				cd->getDescription(desc);
-				gadu->status().setInvisible(desc);
+				status.setInvisible(desc);
 			}
 			delete cd;
 			break;
 		case 6:
-			status = Offline;
-			gadu->status().setOffline();
-			gadu->disableAutoConnection();
-			Autohammer = false;
+			status.setOffline();
 			break;
 		case 7:
 			cd = new ChooseDescription(7);
 			if (cd->exec() == QDialog::Accepted)
 			{
-				status = Offline;
 				cd->getDescription(desc);
-				gadu->status().setOffline(desc);
-				statusppm->setItemEnabled(7, false);
-				gadu->disableAutoConnection();
-				Autohammer = false;
+				status.setOffline(desc);
 			}
 			delete cd;
 			break;
@@ -1179,9 +1162,29 @@ void Kadu::slotHandleState(int command) {
 			statusppm->setItemChecked(8, !statusppm->isItemChecked(8));
 			dockppm->setItemChecked(8, !dockppm->isItemChecked(8));
 			config_file.writeEntry("General", "PrivateStatus",statusppm->isItemChecked(8));
-			gadu->status().setFriendsOnly(statusppm->isItemChecked(8));
+			status.setFriendsOnly(statusppm->isItemChecked(8));
 			break;
+	}
+
+	bool stop = false;
+	emit changingStatus(status, stop);
+	if (!stop)
+	{
+		gadu->status().setStatus(status);
+
+		if (status.isOffline())
+		{
+			Autohammer = false;
+			gadu->disableAutoConnection();
+			statusppm->setItemEnabled(7, false);
+			dockppm->setItemEnabled(7, false);
 		}
+		else
+			Autohammer = true;
+	}
+	else
+		status.setStatus(gadu->status());
+
 	kdebugf2();
 }
 
@@ -1191,7 +1194,7 @@ void Kadu::connecting()
 
 	DoBlink = true;
 
-	status = Online;
+	status.setOnline();
 	if (!blinktimer)
 	{
 		blinktimer = new QTimer;

@@ -67,7 +67,7 @@ class Kadu : public QMainWindow
 		KaduTabBar* GroupBar;
 		UserBox* Userbox;
 
-		eStatus status;
+		Status status;
 
 		bool ShowMainWindowOnStart;
 		bool Autohammer;
@@ -218,7 +218,7 @@ class Kadu : public QMainWindow
 			Je¶li zostanie ustawiona zmienna stop, to status nie
 			bêdzie zmieniony.
 		**/
-		//	void changingStatus(int status, QString sigDesc, bool &stop);		TODO
+		void changingStatus(Status &, bool &stop);
 		/**
 			wywo³ana zosta³a funkcja show() na g³ównym oknie
 		**/

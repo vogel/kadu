@@ -783,6 +783,7 @@ GaduProtocol::GaduProtocol(QObject *parent, const char *name) : QObject(parent, 
 	connect(CurrentStatus, SIGNAL(goBusy(const QString &)), this, SIGNAL(goBusy(const QString &)));
 	connect(CurrentStatus, SIGNAL(goInvisible(const QString &)), this, SIGNAL(goInvisible(const QString &)));
 	connect(CurrentStatus, SIGNAL(goOffline(const QString &)), this, SIGNAL(goOffline(const QString &)));
+	connect(CurrentStatus, SIGNAL(changed(const Status &)), this, SIGNAL(statusChanged(const Status &)));
 
 	connect(SocketNotifiers, SIGNAL(ackReceived(int)), this, SIGNAL(ackReceived(int)));
 	connect(SocketNotifiers, SIGNAL(connected()), this, SLOT(connectedSlot()));
@@ -996,7 +997,7 @@ void GaduProtocol::connectedSlot()
 
 	CurrentStatus->setStatus(*NextStatus);
 	emit connected();
-	
+
 	// po po³±czeniu z sewerem niestety trzeba ponownie ustawiæ
 	// status, inaczej nie bêdziemy widoczni - raczej b³±d serwerów
 	NextStatus->refresh();
@@ -2314,33 +2315,50 @@ Status::Status()
 	FriendsOnly = false;
 
 	emit goOffline(Description);
+	emit changed(*this);
 }
 
 Status::~Status()
 {
 }
 
-QPixmap Status::pixmap()
+QPixmap Status::pixmap() const
 {
 	return pixmap(Stat, hasDescription());
 }
 
-bool Status::isOnline()
+QPixmap Status::pixmap(const Status &stat) const
+{
+	return pixmap(stat.status(), stat.hasDescription());
+}
+
+QPixmap Status::pixmap(eStatus stat, bool desc) const
+{
+	static QPixmap result;
+	return result;
+}
+
+eStatus Status::status() const
+{
+	return Stat;
+}
+
+bool Status::isOnline() const
 {
 	return Stat == Online;
 }
 
-bool Status::isBusy()
+bool Status::isBusy() const
 {
 	return Stat == Busy;
 }
 
-bool Status::isInvisible()
+bool Status::isInvisible() const
 {
 	return Stat == Invisible;
 }
 
-bool Status::isOffline()
+bool Status::isOffline() const
 {
 	return Stat == Offline;
 }
@@ -2350,17 +2368,17 @@ bool Status::isOffline(int index)
 	return (index == 6) || (index == 7);
 }
 
-bool Status::hasDescription()
+bool Status::hasDescription() const
 {
 	return !Description.isEmpty();
 }
 
-bool Status::isFriendsOnly()
+bool Status::isFriendsOnly() const
 {
 	return FriendsOnly;
 }
 
-QString Status::description()
+QString Status::description() const
 {
 	return Description;
 }
@@ -2370,7 +2388,7 @@ int Status::index(eStatus stat, bool desc)
 	return (static_cast<int>(stat) << 1) + (desc ? 1 : 0);
 }
 
-int Status::index()
+int Status::index() const
 {
 	return (static_cast<int>(Stat) << 1) + (Description.isEmpty() ? 0 : 1);
 }
@@ -2385,6 +2403,7 @@ void Status::setOnline(const QString& desc)
 	Changed = false;
 
 	emit goOnline(Description);
+	emit changed(*this);
 }
 
 void Status::setBusy(const QString& desc)
@@ -2397,6 +2416,7 @@ void Status::setBusy(const QString& desc)
 	Changed = false;
 
 	emit goBusy(Description);
+	emit changed(*this);
 }
 
 void Status::setInvisible(const QString& desc)
@@ -2409,6 +2429,7 @@ void Status::setInvisible(const QString& desc)
 	Changed = false;
 
 	emit goInvisible(Description);
+	emit changed(*this);
 }
 
 void Status::setOffline(const QString& desc)
@@ -2421,6 +2442,7 @@ void Status::setOffline(const QString& desc)
 	Changed = false;
 
 	emit goOffline(Description);
+	emit changed(*this);
 }
 
 void Status::setDescription(const QString& desc)
@@ -2434,18 +2456,22 @@ void Status::setDescription(const QString& desc)
 	{
 		case Online:
 			emit goOnline(Description);
+			emit changed(*this);
 			break;
 
 		case Busy:
 			emit goBusy(Description);
+			emit changed(*this);
 			break;
 
 		case Invisible:
 			emit goInvisible(Description);
+			emit changed(*this);
 			break;
 
 		case Offline:
 			emit goOffline(Description);
+			emit changed(*this);
 			break;
 	}
 }
@@ -2566,29 +2592,23 @@ GaduStatus::~GaduStatus()
 {
 }
 
-QPixmap GaduStatus::pixmap(eStatus stat, bool hasDescription)
+QPixmap GaduStatus::pixmap(eStatus stat, bool hasDescription) const
 {
 	kdebugf();
-	QPixmap pix;
 	switch (stat)
 	{
 		case Online:
-			pix = icons_manager.loadIcon(hasDescription ? "OnlineWithDescription" : "Online");
-			break;
+			return icons_manager.loadIcon(hasDescription ? "OnlineWithDescription" : "Online");
 		case Busy:
-			pix = icons_manager.loadIcon(hasDescription ? "BusyWithDescription" : "Busy");
-			break;
+			return icons_manager.loadIcon(hasDescription ? "BusyWithDescription" : "Busy");
 		case Invisible:
-			pix = icons_manager.loadIcon(hasDescription ? "InvisibleWithDescription" : "Invisible");
-			break;
-		case Offline:
-			pix = icons_manager.loadIcon(hasDescription ? "OfflineWithDescription" : "Offline");
-			break;
+			return icons_manager.loadIcon(hasDescription ? "InvisibleWithDescription" : "Invisible");
+		default:
+			return icons_manager.loadIcon(hasDescription ? "OfflineWithDescription" : "Offline");
 	}
-	return pix;
 }
 
-int GaduStatus::statusNumber()
+int GaduStatus::statusNumber() const
 {
 	int sn = 0;
 

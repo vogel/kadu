@@ -258,20 +258,22 @@ class Status : public QObject
 		Status();
 		virtual ~Status();
 
-		bool isOnline();
-		bool isBusy();
-		bool isInvisible();
-		bool isOffline();
+		bool isOnline() const;
+		bool isBusy() const;
+		bool isInvisible() const;
+		bool isOffline() const;
 		static bool isOffline(int index);
-		bool hasDescription();
-		bool isFriendsOnly();
-		QString description();
+		bool hasDescription() const;
+		bool isFriendsOnly() const;
+		QString description() const;
+		eStatus status() const;
 
-		int index();
+		int index() const;
 		static int index(eStatus stat, bool has_desc);
 
-		virtual QPixmap pixmap();
-		virtual QPixmap pixmap(eStatus stat, bool has_desc) = 0;
+		virtual QPixmap pixmap() const;
+		virtual QPixmap pixmap(const Status &) const;
+		virtual QPixmap pixmap(eStatus stat, bool has_desc) const;
 
 		static eStatus fromString(const QString& stat);
 		static QString toString(eStatus stat, bool has_desc);
@@ -298,6 +300,7 @@ class Status : public QObject
 		void goBusy(const QString& desc);
 		void goInvisible(const QString& desc);
 		void goOffline(const QString& desc);
+		void changed(const Status& status);
 };
 
 class GaduStatus : public Status
@@ -308,8 +311,8 @@ class GaduStatus : public Status
 		GaduStatus();
 		virtual ~GaduStatus();
 
-		virtual QPixmap pixmap(eStatus status, bool has_desc);
-		int statusNumber();
+		virtual QPixmap pixmap(eStatus status, bool has_desc) const;
+		int statusNumber() const;
 };
 
 // ------------------------------------
@@ -553,6 +556,7 @@ class GaduProtocol : public QObject
 		void goBusy(const QString &);
 		void goInvisible(const QString &);
 		void goOffline(const QString &);
+		void statusChanged(const Status &);
 
 		/**
 			Sygnal daje mozliwosc operowania na wiadomoci
