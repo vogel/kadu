@@ -376,19 +376,15 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 	if (config_file.readBoolEntry("General","Logging"))	
 		history.appendMessage(senders, senders[0], mesg, FALSE, time);
 
-	//script.eventMsg(senders[0],msgclass,(char*)msg);
-
-	i = 0;
-	while (i < chat_manager->chats.count() && !chat_manager->chats[i].uins.equals(senders))
-		i++;
+	Chat* chat=chat_manager->findChatByUins(senders);
 
 	if (((msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT || (msgclass & GG_CLASS_MSG) == GG_CLASS_MSG
-		|| !msgclass) && i < chat_manager->chats.count()) {
+		|| !msgclass) && chat!=NULL) {
 		QString toadd;
 
-		chat_manager->chats[i].ptr->checkPresence(senders, mesg, time, toadd);
-		chat_manager->chats[i].ptr->alertNewMessage();
-		if (!chat_manager->chats[i].ptr->isActiveWindow() && config_file.readBoolEntry("Hints","NotifyNewMessage"))
+		chat->checkPresence(senders, mesg, time, toadd);
+		chat->alertNewMessage();
+		if (!chat->isActiveWindow() && config_file.readBoolEntry("Hints","NotifyNewMessage"))
 			hintmanager->addHintNewMsg(ule.altnick, mesg);
 		return;
 		}

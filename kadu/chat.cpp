@@ -35,6 +35,7 @@
 #include "history.h"
 #include "emoticons.h"
 #include "pending_msgs.h"
+#include "dock_widget.h"
 #include "debug.h"
 #include "sound.h"
 #ifdef HAVE_OPENSSL
@@ -49,40 +50,59 @@ ChatManager::ChatManager() : QObject()
 {
 }
 
+int ChatManager::registerChat(Chat* chat,UinsList uins)
+{
+	ChatManager::ChatsItem ch;
+	ch.uins = uins;
+	ch.ptr = chat;
+	Chats.append(ch);
+	return Chats.count() - 1;
+}
+
+void ChatManager::unregisterChat(Chat* chat)
+{
+	for(int i=0; i<Chats.count(); i++)
+		if(Chats[i].ptr==chat)
+		{
+			Chats.remove(Chats.at(i));
+			return;
+		}
+}
+
 void ChatManager::refreshTitles()
 {
-	for (int i = 0; i < chats.count(); i++)
-		chats[i].ptr->setTitle();
+	for (int i = 0; i < Chats.count(); i++)
+		Chats[i].ptr->setTitle();
 }
 
 void ChatManager::refreshTitlesForUin(uin_t uin)
 {
-	for (int i = 0; i < chats.count(); i++)
-		if (chats[i].uins.contains(uin))
-			chats[i].ptr->setTitle();
+	for (int i = 0; i < Chats.count(); i++)
+		if (Chats[i].uins.contains(uin))
+			Chats[i].ptr->setTitle();
 }
 
 void ChatManager::changeAppearance()
 {
-	for (int i = 0; i < chats.count(); i++)
-		chat_manager->chats[i].ptr->changeAppearance();
+	for (int i = 0; i < Chats.count(); i++)
+		Chats[i].ptr->changeAppearance();
 }
 
 void ChatManager::enableEncryptionBtnForUins(UinsList uins)
 {
-	for(int i=0; i<chats.count(); i++)
-		if(chats[i].uins.equals(uins))
+	for(int i=0; i<Chats.count(); i++)
+		if(Chats[i].uins.equals(uins))
 		{
-			chats[i].ptr->setEncryptionBtnEnabled(true);
+			Chats[i].ptr->setEncryptionBtnEnabled(true);
 			return;
 		}
 }
 
 Chat* ChatManager::findChatByUins(UinsList uins)
 {
-	for(int i=0; i<chats.count(); i++)
-		if(chats[i].uins.equals(uins))
-			return chats[i].ptr;
+	for(int i=0; i<Chats.count(); i++)
+		if(Chats[i].uins.equals(uins))
+			return Chats[i].ptr;
 	return NULL;
 }
 
@@ -92,10 +112,10 @@ int ChatManager::openChat(UinsList senders)
 	UinsList uins;
 
 	i = 0;
-	while (i < chats.count() && !chats[i].uins.equals(senders))
+	while (i < Chats.count() && !Chats[i].uins.equals(senders))
 		i++;
 
-	if (i == chats.count())
+	if (i == Chats.count())
 	{
 		Chat *chat;
 		uins = senders;
@@ -105,13 +125,13 @@ int ChatManager::openChat(UinsList senders)
 	}
 	else
 	{
-		chats[i].ptr->raise();
-		chats[i].ptr->setActiveWindow();
+		Chats[i].ptr->raise();
+		Chats[i].ptr->setActiveWindow();
 		return i;
 	}
 
 	i = 0;
-	while (i < chats.count() && !chats[i].uins.equals(senders))
+	while (i < Chats.count() && !Chats[i].uins.equals(senders))
 		i++;
 
 	kdebug("ChatManager::openChat(): return %d\n", i);
@@ -131,11 +151,11 @@ void ChatManager::openPendingMsgs(UinsList uins)
 			if ((elem.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT
 				|| (elem.msgclass & GG_CLASS_MSG) == GG_CLASS_MSG
 				|| !elem.msgclass) {
-				l = chats.count();
+				l = Chats.count();
 				k = openChat(elem.uins);
-				if (l < chats.count())
-					chats[k].ptr->writeMessagesFromHistory(elem.uins, elem.time);
-				chats[k].ptr->formatMessage(false,
+				if (l < Chats.count())
+					Chats[k].ptr->writeMessagesFromHistory(elem.uins, elem.time);
+				Chats[k].ptr->formatMessage(false,
 					userlist.byUin(elem.uins[0]).altnick, elem.msg,
 					timestamp(elem.time), toadd);
 				pending.deleteMsg(i);
@@ -145,12 +165,12 @@ void ChatManager::openPendingMsgs(UinsList uins)
 				}
 		}
 	if (stop) {
-		chats[k].ptr->scrollMessages(toadd);
+		Chats[k].ptr->scrollMessages(toadd);
 		UserBox::all_refresh();
 		}
 	else {
 		k = openChat(uins);
-		chats[k].ptr->writeMessagesFromHistory(uins, 0);
+		Chats[k].ptr->writeMessagesFromHistory(uins, 0);
 		}
 }
 
@@ -196,9 +216,9 @@ void ChatManager::openPendingMsgs()
 				k = kadu->openChat(elem.uins);
 				if (!msgsFromHist) {
 					msgsFromHist = true;
-					chats[k].ptr->writeMessagesFromHistory(elem.uins, elem.time);
+					Chats[k].ptr->writeMessagesFromHistory(elem.uins, elem.time);
 				}
-				chats[k].ptr->formatMessage(false, userlist.byUin(elem.uins[0]).altnick,elem.msg, timestamp(elem.time), toadd);
+				Chats[k].ptr->formatMessage(false, userlist.byUin(elem.uins[0]).altnick,elem.msg, timestamp(elem.time), toadd);
 				pending.deleteMsg(i);
 				i--;
 				stop = true;
@@ -207,10 +227,84 @@ void ChatManager::openPendingMsgs()
 
 	if(stop) {
 		kdebug("ChatManager::openPendingMsgs() end\n");
-		chats[k].ptr->scrollMessages(toadd);
+		Chats[k].ptr->scrollMessages(toadd);
 		UserBox::all_refresh();
 	}
 }
+
+void ChatManager::sendMessage(uin_t uin,UinsList selected_uins)
+{
+	QString tmp;
+	int i, j, k = -1, l;
+	bool stop = false;
+	PendingMsgs::Element elem;
+	UserListElement e;
+	UinsList uins;
+	bool ok;
+	QString toadd;
+	bool msgsFromHist = false;
+
+	for (i = 0; i < pending.count(); i++) {
+		elem = pending[i];
+		if ((!uins.count() && elem.uins.contains(uin)) || (uins.count() && elem.uins.equals(uins)))
+			if ((elem.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT
+				|| (elem.msgclass & GG_CLASS_MSG) == GG_CLASS_MSG
+				|| !elem.msgclass) {
+				if (!uins.count())
+					uins = elem.uins;
+				for (j = 0; j < elem.uins.count(); j++)
+					if (!userlist.containsUin(elem.uins[j])) {
+						tmp = QString::number(pending[i].uins[j]);
+						e.first_name = "";
+						e.last_name = "";
+						e.nickname = tmp;
+						e.altnick = tmp;
+						e.uin = tmp.toUInt(&ok);
+						if (!ok)
+							e.uin = 0;
+						e.mobile = "";
+						e.setGroup("");
+						e.description = "";
+						e.email = "";
+						e.anonymous = true;
+						if (trayicon)
+							userlist.addUser(e);
+						else
+							kadu->addUser(e);
+						}
+				
+				l = Chats.count();
+				k = openChat(elem.uins);
+				if (!msgsFromHist) {
+					if (l < Chats.count())
+						Chats[k].ptr->writeMessagesFromHistory(elem.uins, elem.time);
+					msgsFromHist = true;
+					}
+				Chats[k].ptr->formatMessage(false,
+					userlist.byUin(elem.uins[0]).altnick, elem.msg,
+					timestamp(elem.time), toadd);	    
+				pending.deleteMsg(i);
+				kdebug("Kadu::sendMessage(): k=%d\n", k);
+				i--;
+				stop = true;
+				}
+		}
+
+	if (stop) {
+		Chats[k].ptr->scrollMessages(toadd);
+		UserBox::all_refresh();
+		return;
+		}
+	else {
+		// zawsze otwieraja sie czaty
+		uins = selected_uins;
+		l = Chats.count();
+		k = openChat(uins);
+		if (!msgsFromHist && l < Chats.count())
+			Chats[k].ptr->writeMessagesFromHistory(uins, 0);
+		}
+}
+
 
 ChatManager* chat_manager=NULL;
 
@@ -276,7 +370,6 @@ void CustomInput::paste() {
 Chat::Chat(UinsList uins, QWidget *parent, const char *name)
  : QWidget(parent, name, Qt::WDestructiveClose), uins(uins) {
 	int i;
-	struct ChatManager::chats chat;
 	QValueList<int> sizes;
 
 	emoticon_selector = NULL;
@@ -286,10 +379,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	connect(title_timer,SIGNAL(timeout()),this,SLOT(changeTitle()));
   
 	/* register us in the chats registry... */
-	chat.uins = uins;
-	chat.ptr = this;
-	chat_manager->chats.append(chat);
-	index = chat_manager->chats.count() - 1;
+	index=chat_manager->registerChat(this,uins);
 
 	QSplitter *split1, *split2;
 
@@ -484,28 +574,11 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 }
 
 Chat::~Chat() {
-	int i,j;
-
-	i = 0;
-	while (i < chat_manager->chats.count() && chat_manager->chats[i].ptr != this)
-		i++;
-	chat_manager->chats.remove(chat_manager->chats.at(i));
+	chat_manager->unregisterChat(this);
 
 	disconnect(&event_manager, SIGNAL(ackReceived(int)),
 		this, SLOT(ackReceivedSlot(int)));
 
-/*	i = 0;
-	while (i < acks.size() && acks[i].ptr != this)
-		i++;
-	if (i < acks.size()) {
-		for (j = i + 1; j < acks.size(); j++) {
-			acks[j-1].ack = acks[j].ack;
-			acks[j-1].seq = acks[j].seq;
-			acks[j-1].ptr = acks[j].ptr;
-			acks[j-1].type = acks[j].type;
-			}
-		acks.resize(acks.size() - 1);
-		}*/
 	if (userbox)
 		delete userbox;
 		
@@ -1524,9 +1597,9 @@ void ChatSlots::onDestroyConfigDialog()
 	config_file.writeEntry("Look","ChatUsrBgColor", vl_chatcolor[2]);
 	config_file.writeEntry("Look","ChatUsrFontColor", vl_chatcolor[3]);
 	config_file.writeEntry("Look", "ChatFont", vl_chatfont[0]);
-	int z;
-	for (z = 0; z < chat_manager->chats.count(); z++)
-		chat_manager->chats[z].ptr->changeAppearance();
+
+	chat_manager->changeAppearance();
+
 /*
 	Aby unikn±c problemów z niepoprawnymi localesami i pozniejszymi
 	k³opotami które moga wynikn±c z tego, musimy zamienic dwie mozliwe

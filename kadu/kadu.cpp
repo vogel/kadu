@@ -1330,88 +1330,9 @@ void Kadu::mouseButtonClicked(int button, QListBoxItem *item) {
 
 /* if something's pending, open it, if not, open new message */
 void Kadu::sendMessage(QListBoxItem *item) {
-	QString tmp;
-	int i, j, k = -1, l;
-	bool stop = false;
-	UinsList uins;
-	PendingMsgs::Element elem;
-	UserListElement e;
-	bool ok;
-	uin_t uin;
-	QString toadd;
-	bool msgsFromHist = false;
-
-	uin = userlist.byAltNick(item->text()).uin;
-
-	if (!uin) {
-		sendSmsToUser();
-		return;
-		}
-
-	for (i = 0; i < pending.count(); i++) {
-		elem = pending[i];
-		if ((!uins.count() && elem.uins.contains(uin)) || (uins.count() && elem.uins.equals(uins)))
-			if ((elem.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT
-				|| (elem.msgclass & GG_CLASS_MSG) == GG_CLASS_MSG
-				|| !elem.msgclass) {
-				if (!uins.count())
-					uins = elem.uins;
-				for (j = 0; j < elem.uins.count(); j++)
-					if (!userlist.containsUin(elem.uins[j])) {
-						tmp = QString::number(pending[i].uins[j]);
-						e.first_name = "";
-						e.last_name = "";
-						e.nickname = tmp;
-						e.altnick = tmp;
-						e.uin = tmp.toUInt(&ok);
-						if (!ok)
-							e.uin = 0;
-						e.mobile = "";
-						e.setGroup("");
-						e.description = "";
-						e.email = "";
-						e.anonymous = true;
-						if (trayicon)
-							userlist.addUser(e);
-						else
-							addUser(e);
-						}
-				
-				l = chat_manager->chats.count();
-				k = openChat(elem.uins);
-//				QValueList<UinsList>::iterator it = wasFirstMsgs.begin();
-//				while (it != wasFirstMsgs.end() && !elem.uins.equals(*it))
-//					it++;
-//				if (it != wasFirstMsgs.end())
-//					wasFirstMsgs.remove(*it);
-				if (!msgsFromHist) {
-					if (l < chat_manager->chats.count())
-						chat_manager->chats[k].ptr->writeMessagesFromHistory(elem.uins, elem.time);
-					msgsFromHist = true;
-					}
-				chat_manager->chats[k].ptr->formatMessage(false,
-					userlist.byUin(elem.uins[0]).altnick, elem.msg,
-					timestamp(elem.time), toadd);	    
-				pending.deleteMsg(i);
-				kdebug("Kadu::sendMessage(): k=%d\n", k);
-				i--;
-				stop = true;
-				}
-		}
-
-	if (stop) {
-		chat_manager->chats[k].ptr->scrollMessages(toadd);
-		UserBox::all_refresh();
-		return;
-		}
-	else {
-		// zawsze otwieraja sie czaty
-		uins = userbox->getSelectedUins();
-		l = chat_manager->chats.count();
-		k = openChat(uins);
-		if (!msgsFromHist && l < chat_manager->chats.count())
-			chat_manager->chats[k].ptr->writeMessagesFromHistory(uins, 0);
-		}
+	chat_manager->sendMessage(
+		userlist.byAltNick(item->text()).uin,
+		userbox->getSelectedUins());
 }
 
 /* when we want to change the status */

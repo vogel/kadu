@@ -20,19 +20,21 @@ class ChatManager : public QObject
 	Q_OBJECT
 
 	private:
-	
-	public:	
-		struct chats
+		struct ChatsItem
 		{
 			UinsList uins;
 			Chat *ptr;
-			bool operator==(const chats& r) const
+			bool operator==(const ChatsItem& r) const
 			{
 				return (uins==r.uins)&&(ptr==r.ptr);
 			};
 		};
-		QValueList<chats> chats;
+		QValueList<ChatsItem> Chats;
+	
+	public:	
 		ChatManager();
+		int registerChat(Chat* chat,UinsList uins);
+		void unregisterChat(Chat* chat);
 		void refreshTitles();
 		void refreshTitlesForUin(uin_t uin);
 		void changeAppearance();
@@ -41,6 +43,7 @@ class ChatManager : public QObject
 		int openChat(UinsList senders);
 		void openPendingMsgs(UinsList uins);
 		void openPendingMsgs();
+		void sendMessage(uin_t uin,UinsList selected_uins);
 };
 
 extern ChatManager* chat_manager;
