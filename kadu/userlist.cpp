@@ -168,6 +168,11 @@ UserList::~UserList()
 		mast3r: jak dobrze pamietam to obojetnie co sie wpisalo to sie wywalalo przy zamykaniu
 			winna bylo cos w kdebug
 	*/
+	/*
+		joi: obiekt userlist klasy UserList jest statyczny, wiêc jego destruktor
+		jest wywo³ywany po wyj¶ciu z main(), a kdebug u¿ywa przecie¿ QMutexów,
+		które korzystaj± z QApplication, a jego obiektu ju¿ nie ma...
+	*/
 }
 
 void UserList::addDnsLookup(UinType  uin, const QHostAddress &ip) {
