@@ -24,7 +24,7 @@ class ArtsPlayerSlots : public QObject
 		void playNotify(const uin_t uin, const QString &sound, bool volCntrl, double vol);
 };
 
-extern ArtsPlayerSlots *slotsObj;
+extern ArtsPlayerSlots *artsPlayerObj;
 
 #endif
 

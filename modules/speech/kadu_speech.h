@@ -32,7 +32,7 @@ class SpeechSlots : public QObject
 
 };
 
-extern SpeechSlots *slotsObj;
+extern SpeechSlots *speechObj;
 
 #endif
 

@@ -21,7 +21,7 @@ class ESDPlayerSlots : public QObject
 		void playNotify(const uin_t uin, const QString &sound, bool volCntrl, double vol);
 };
 
-extern ESDPlayerSlots *slotsObj;
+extern ESDPlayerSlots *esdPlayerObj;
 
 #endif
 

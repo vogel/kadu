@@ -15,21 +15,21 @@ extern "C" int esd_sound_init()
 {
 	kdebugf();
 
-	slotsObj=new ESDPlayerSlots();
-	if (slotsObj->sock<0)
+	esdPlayerObj=new ESDPlayerSlots();
+	if (esdPlayerObj->sock<0)
 	{
-		delete slotsObj;
+		delete esdPlayerObj;
 		return -1;
 	}
 
 	QObject::connect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
-					 slotsObj, SLOT(playSound(const QString &, bool, double)));
+					 esdPlayerObj, SLOT(playSound(const QString &, bool, double)));
 	QObject::connect(sound_manager, SIGNAL(playOnMessage(UinsList, const QString &, const QString &, bool, double)),
-					 slotsObj, SLOT(playMessage(UinsList, const QString &, const QString &, bool, double)));
+					 esdPlayerObj, SLOT(playMessage(UinsList, const QString &, const QString &, bool, double)));
 	QObject::connect(sound_manager, SIGNAL(playOnChat(UinsList, const QString &, const QString &, bool, double)),
-					 slotsObj, SLOT(playChat(UinsList, const QString &, const QString &, bool, double)));
+					 esdPlayerObj, SLOT(playChat(UinsList, const QString &, const QString &, bool, double)));
 	QObject::connect(sound_manager, SIGNAL(playOnNotify(const uin_t, const QString &, bool, double)),
-					 slotsObj, SLOT(playNotify(const uin_t, const QString &, bool, double)));
+					 esdPlayerObj, SLOT(playNotify(const uin_t, const QString &, bool, double)));
 
 	return 0;
 }
@@ -38,15 +38,15 @@ extern "C" void esd_sound_close()
 	kdebugf();
 
 	QObject::disconnect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
-						slotsObj, SLOT(playSound(const QString &, bool, double)));
+						esdPlayerObj, SLOT(playSound(const QString &, bool, double)));
 	QObject::disconnect(sound_manager, SIGNAL(playOnMessage(UinsList, const QString &, const QString &, bool, double)),
-						slotsObj, SLOT(playMessage(UinsList, const QString &, const QString &, bool, double)));
+						esdPlayerObj, SLOT(playMessage(UinsList, const QString &, const QString &, bool, double)));
 	QObject::disconnect(sound_manager, SIGNAL(playOnChat(UinsList, const QString &, const QString &, bool, double)),
-						slotsObj, SLOT(playChat(UinsList, const QString &, const QString &, bool, double)));
+						esdPlayerObj, SLOT(playChat(UinsList, const QString &, const QString &, bool, double)));
 	QObject::disconnect(sound_manager, SIGNAL(playOnNotify(const uin_t, const QString &, bool, double)),
-						slotsObj, SLOT(playNotify(const uin_t, const QString &, bool, double)));
-	delete slotsObj;
-	slotsObj=NULL;
+						esdPlayerObj, SLOT(playNotify(const uin_t, const QString &, bool, double)));
+	delete esdPlayerObj;
+	esdPlayerObj=NULL;
 }
 
 ESDPlayerSlots::ESDPlayerSlots()
@@ -101,4 +101,4 @@ void ESDPlayerSlots::playNotify(const uin_t uin, const QString &sound, bool volC
 	play(sound, volCntrl, vol);
 }
 
-ESDPlayerSlots *slotsObj;
+ESDPlayerSlots *esdPlayerObj;

@@ -42,7 +42,7 @@ class NASPlayerSlots : public QObject
 		void playNotify(const uin_t uin, const QString &sound, bool volCntrl, double vol);
 };
 
-extern NASPlayerSlots *slotsObj;
+extern NASPlayerSlots *nasPlayerObj;
 
 #endif
 

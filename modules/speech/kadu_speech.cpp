@@ -47,14 +47,14 @@ extern "C" int speech_init()
 	QT_TRANSLATE_NOOP("@default", "man %a changed status to %s %d");
 	QT_TRANSLATE_NOOP("@default", "woman %a changed status to %s %d");
 
-	slotsObj=new SpeechSlots();
+	speechObj=new SpeechSlots();
 
 	QObject::connect(&event_manager, SIGNAL(chatMsgReceived1(UinsList, const QString&, time_t,bool&)),
-		slotsObj, SLOT(chat(UinsList, const QString&, time_t,bool&)));
+		speechObj, SLOT(chat(UinsList, const QString&, time_t,bool&)));
 	QObject::connect(&event_manager, SIGNAL(chatMsgReceived2(UinsList, const QString&, time_t)),
-		slotsObj, SLOT(message(UinsList, const QString&,time_t)));
+		speechObj, SLOT(message(UinsList, const QString&,time_t)));
 	QObject::connect(&userlist, SIGNAL(statusModified(UserListElement*)),
-		slotsObj, SLOT(notify(UserListElement*)));
+		speechObj, SLOT(notify(UserListElement*)));
 
 	ConfigDialog::addTab("Notify");
 	ConfigDialog::addVGroupBox("Notify", "Notify", "Notify options");
@@ -86,7 +86,7 @@ extern "C" int speech_init()
 	ConfigDialog::addHGroupBox("Speech", "Speech", "Program");
 	ConfigDialog::addLineEdit("Speech", "Program", "Speech program:", "SpeechProgram","powiedz");
 	ConfigDialog::addPushButton("Speech", "Program", "", "OpenFile","","speech_fileopen");
-	ConfigDialog::connectSlot("Speech", "", SIGNAL(clicked()), slotsObj, SLOT(chooseSpeechProgram()), "speech_fileopen");
+	ConfigDialog::connectSlot("Speech", "", SIGNAL(clicked()), speechObj, SLOT(chooseSpeechProgram()), "speech_fileopen");
 	
 	ConfigDialog::addLineEdit("Speech", "Speech", "Chat format (male):", "ChatFormatMale", qApp->translate("@default", "man %a said %1"));
 	ConfigDialog::addLineEdit("Speech", "Speech", "Chat format (female):", "ChatFormatFemale", qApp->translate("@default", "woman %a said %1"));
@@ -99,12 +99,12 @@ extern "C" int speech_init()
 	
 	ConfigDialog::addPushButton("Speech", "Speech", "Test", "", "", "testspeech");
 
-	ConfigDialog::connectSlot("Speech", "Test", SIGNAL(clicked()), slotsObj, SLOT(testSpeech()), "testspeech");
-	ConfigDialog::connectSlot("Speech", "Use aRts", SIGNAL(toggled(bool)), slotsObj, SLOT(useArts(bool)), "usearts");
-	ConfigDialog::connectSlot("Speech", "Use Esd", SIGNAL(toggled(bool)), slotsObj, SLOT(useEsd(bool)), "useesd");
-	ConfigDialog::connectSlot("Speech", "Use Dsp", SIGNAL(toggled(bool)), slotsObj, SLOT(useDsp(bool)), "usedsp");
+	ConfigDialog::connectSlot("Speech", "Test", SIGNAL(clicked()), speechObj, SLOT(testSpeech()), "testspeech");
+	ConfigDialog::connectSlot("Speech", "Use aRts", SIGNAL(toggled(bool)), speechObj, SLOT(useArts(bool)), "usearts");
+	ConfigDialog::connectSlot("Speech", "Use Esd", SIGNAL(toggled(bool)), speechObj, SLOT(useEsd(bool)), "useesd");
+	ConfigDialog::connectSlot("Speech", "Use Dsp", SIGNAL(toggled(bool)), speechObj, SLOT(useDsp(bool)), "usedsp");
 
-	ConfigDialog::registerSlotOnCreate(slotsObj, SLOT(onCreateConfigDialog()));
+	ConfigDialog::registerSlotOnCreate(speechObj, SLOT(onCreateConfigDialog()));
 
 	return 0;
 }
@@ -113,21 +113,21 @@ extern "C" void speech_close()
 {
 	kdebugf();
 
-	ConfigDialog::unregisterSlotOnCreate(slotsObj, SLOT(onCreateConfigDialog()));
+	ConfigDialog::unregisterSlotOnCreate(speechObj, SLOT(onCreateConfigDialog()));
 
-	ConfigDialog::disconnectSlot("Speech", "", SIGNAL(clicked()), slotsObj, SLOT(chooseSpeechProgram()), "speech_fileopen");
-	ConfigDialog::disconnectSlot("Speech", "Test", SIGNAL(clicked()), slotsObj, SLOT(testSpeech()), "testspeech");
-	ConfigDialog::disconnectSlot("Speech", "Use aRts", SIGNAL(toggled(bool)), slotsObj, SLOT(useArts(bool)), "usearts");
-	ConfigDialog::disconnectSlot("Speech", "Use Esd", SIGNAL(toggled(bool)), slotsObj, SLOT(useEsd(bool)), "useesd");
-	ConfigDialog::disconnectSlot("Speech", "Use Dsp", SIGNAL(toggled(bool)), slotsObj, SLOT(useDsp(bool)), "usedsp");
+	ConfigDialog::disconnectSlot("Speech", "", SIGNAL(clicked()), speechObj, SLOT(chooseSpeechProgram()), "speech_fileopen");
+	ConfigDialog::disconnectSlot("Speech", "Test", SIGNAL(clicked()), speechObj, SLOT(testSpeech()), "testspeech");
+	ConfigDialog::disconnectSlot("Speech", "Use aRts", SIGNAL(toggled(bool)), speechObj, SLOT(useArts(bool)), "usearts");
+	ConfigDialog::disconnectSlot("Speech", "Use Esd", SIGNAL(toggled(bool)), speechObj, SLOT(useEsd(bool)), "useesd");
+	ConfigDialog::disconnectSlot("Speech", "Use Dsp", SIGNAL(toggled(bool)), speechObj, SLOT(useDsp(bool)), "usedsp");
 
 	QObject::disconnect(&event_manager, SIGNAL(chatMsgReceived1(UinsList, const QString&, time_t,bool&)),
-		slotsObj, SLOT(chat(UinsList, const QString&, time_t,bool&)));
+		speechObj, SLOT(chat(UinsList, const QString&, time_t,bool&)));
 	QObject::disconnect(&event_manager, SIGNAL(chatMsgReceived2(UinsList, const QString&, time_t)),
-		slotsObj, SLOT(message(UinsList, const QString&,time_t)));
+		speechObj, SLOT(message(UinsList, const QString&,time_t)));
 
 	QObject::disconnect(&userlist, SIGNAL(statusModified(UserListElement*)),
-		slotsObj, SLOT(notify(UserListElement*)));
+		speechObj, SLOT(notify(UserListElement*)));
 
 	ConfigDialog::removeControl("Speech", "Test", "testspeech");
 	ConfigDialog::removeControl("Speech", "Notify format (female):");
@@ -158,8 +158,8 @@ extern "C" void speech_close()
 	ConfigDialog::removeControl("Notify", "Notify by speech");
 	ConfigDialog::removeTab("Speech");
 
-	delete slotsObj;
-	slotsObj=NULL;
+	delete speechObj;
+	speechObj=NULL;
 }
 
 bool isFemale(QString s)
@@ -404,5 +404,5 @@ void SpeechSlots::chooseSpeechProgram()
 		e_speechprog->setText(s);
 }
 
-SpeechSlots *slotsObj;
+SpeechSlots *speechObj;
 

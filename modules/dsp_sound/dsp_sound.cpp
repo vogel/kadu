@@ -24,16 +24,16 @@ extern "C" int dsp_sound_init()
 	QT_TRANSLATE_NOOP("@default","Output device");
 	QT_TRANSLATE_NOOP("@default","Path:");
 
-	slotsObj=new DirectPlayerSlots();
+	directPlayerObj=new DirectPlayerSlots();
 
 	QObject::connect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
-					 slotsObj, SLOT(playSound(const QString &, bool, double)));
+					 directPlayerObj, SLOT(playSound(const QString &, bool, double)));
 	QObject::connect(sound_manager, SIGNAL(playOnMessage(UinsList, const QString &, const QString &, bool, double)),
-					 slotsObj, SLOT(playMessage(UinsList, const QString &, const QString &, bool, double)));
+					 directPlayerObj, SLOT(playMessage(UinsList, const QString &, const QString &, bool, double)));
 	QObject::connect(sound_manager, SIGNAL(playOnChat(UinsList, const QString &, const QString &, bool, double)),
-					 slotsObj, SLOT(playChat(UinsList, const QString &, const QString &, bool, double)));
+					 directPlayerObj, SLOT(playChat(UinsList, const QString &, const QString &, bool, double)));
 	QObject::connect(sound_manager, SIGNAL(playOnNotify(const uin_t, const QString &, bool, double)),
-					 slotsObj, SLOT(playNotify(const uin_t, const QString &, bool, double)));
+					 directPlayerObj, SLOT(playNotify(const uin_t, const QString &, bool, double)));
 
 	ConfigDialog::addHGroupBox("Sounds", "Sounds", "Output device");
 	ConfigDialog::addLineEdit("Sounds", "Output device", "Path:", "OutputDevice","/dev/dsp","","device_path");
@@ -45,17 +45,17 @@ extern "C" void dsp_sound_close()
 	kdebugf();
 
 	QObject::disconnect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
-						slotsObj, SLOT(playSound(const QString &, bool, double)));
+						directPlayerObj, SLOT(playSound(const QString &, bool, double)));
 	QObject::disconnect(sound_manager, SIGNAL(playOnMessage(UinsList, const QString &, const QString &, bool, double)),
-						slotsObj, SLOT(playMessage(UinsList, const QString &, const QString &, bool, double)));
+						directPlayerObj, SLOT(playMessage(UinsList, const QString &, const QString &, bool, double)));
 	QObject::disconnect(sound_manager, SIGNAL(playOnChat(UinsList, const QString &, const QString &, bool, double)),
-						slotsObj, SLOT(playChat(UinsList, const QString &, const QString &, bool, double)));
+						directPlayerObj, SLOT(playChat(UinsList, const QString &, const QString &, bool, double)));
 	QObject::disconnect(sound_manager, SIGNAL(playOnNotify(const uin_t, const QString &, bool, double)),
-						slotsObj, SLOT(playNotify(const uin_t, const QString &, bool, double)));
+						directPlayerObj, SLOT(playNotify(const uin_t, const QString &, bool, double)));
 	ConfigDialog::removeControl("Sounds", "Path:", "device_path");
 	ConfigDialog::removeControl("Sounds", "Output device");
-	delete slotsObj;
-	slotsObj=NULL;
+	delete directPlayerObj;
+	directPlayerObj=NULL;
 }
 
 DirectPlayerSlots::DirectPlayerSlots():thread(NULL)
@@ -232,5 +232,5 @@ void DirectPlayThread::run()
 	}//end while(!end)
 }
 
-DirectPlayerSlots *slotsObj;
+DirectPlayerSlots *directPlayerObj;
 

@@ -18,21 +18,21 @@ extern "C" int ext_sound_init()
 	QT_TRANSLATE_NOOP("@default","Sound player");
 	QT_TRANSLATE_NOOP("@default","Path:");
 
-	slotsObj=new ExternalPlayerSlots();
+	externalPlayerObj=new ExternalPlayerSlots();
 
 	QObject::connect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
-					 slotsObj, SLOT(playSound(const QString &, bool, double)));
+					 externalPlayerObj, SLOT(playSound(const QString &, bool, double)));
 	QObject::connect(sound_manager, SIGNAL(playOnMessage(UinsList, const QString &, const QString &, bool, double)),
-					 slotsObj, SLOT(playMessage(UinsList, const QString &, const QString &, bool, double)));
+					 externalPlayerObj, SLOT(playMessage(UinsList, const QString &, const QString &, bool, double)));
 	QObject::connect(sound_manager, SIGNAL(playOnChat(UinsList, const QString &, const QString &, bool, double)),
-					 slotsObj, SLOT(playChat(UinsList, const QString &, const QString &, bool, double)));
+					 externalPlayerObj, SLOT(playChat(UinsList, const QString &, const QString &, bool, double)));
 	QObject::connect(sound_manager, SIGNAL(playOnNotify(const uin_t, const QString &, bool, double)),
-					 slotsObj, SLOT(playNotify(const uin_t, const QString &, bool, double)));
+					 externalPlayerObj, SLOT(playNotify(const uin_t, const QString &, bool, double)));
 
 	ConfigDialog::addHGroupBox("Sounds", "Sounds", "Sound player");
 	ConfigDialog::addLineEdit("Sounds", "Sound player", "Path:", "SoundPlayer","","","soundplayer_path");
 	ConfigDialog::addPushButton("Sounds", "Sound player", "", "OpenFile","","soundplayer_fileopen");
-	ConfigDialog::connectSlot("Sounds", "", SIGNAL(clicked()), slotsObj, SLOT(choosePlayerFile()), "soundplayer_fileopen");
+	ConfigDialog::connectSlot("Sounds", "", SIGNAL(clicked()), externalPlayerObj, SLOT(choosePlayerFile()), "soundplayer_fileopen");
 
 	return 0;
 }
@@ -40,20 +40,20 @@ extern "C" void ext_sound_close()
 {
 	kdebugf();
 
-	ConfigDialog::disconnectSlot("Sounds", "", SIGNAL(clicked()), slotsObj, SLOT(choosePlayerFile()), "soundplayer_fileopen");
+	ConfigDialog::disconnectSlot("Sounds", "", SIGNAL(clicked()), externalPlayerObj, SLOT(choosePlayerFile()), "soundplayer_fileopen");
 	QObject::disconnect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
-						slotsObj, SLOT(playSound(const QString &, bool, double)));
+						externalPlayerObj, SLOT(playSound(const QString &, bool, double)));
 	QObject::disconnect(sound_manager, SIGNAL(playOnMessage(UinsList, const QString &, const QString &, bool, double)),
-						slotsObj, SLOT(playMessage(UinsList, const QString &, const QString &, bool, double)));
+						externalPlayerObj, SLOT(playMessage(UinsList, const QString &, const QString &, bool, double)));
 	QObject::disconnect(sound_manager, SIGNAL(playOnChat(UinsList, const QString &, const QString &, bool, double)),
-						slotsObj, SLOT(playChat(UinsList, const QString &, const QString &, bool, double)));
+						externalPlayerObj, SLOT(playChat(UinsList, const QString &, const QString &, bool, double)));
 	QObject::disconnect(sound_manager, SIGNAL(playOnNotify(const uin_t, const QString &, bool, double)),
-						slotsObj, SLOT(playNotify(const uin_t, const QString &, bool, double)));
+						externalPlayerObj, SLOT(playNotify(const uin_t, const QString &, bool, double)));
 	ConfigDialog::removeControl("Sounds", "", "soundplayer_fileopen");
 	ConfigDialog::removeControl("Sounds", "Path:", "soundplayer_path");
 	ConfigDialog::removeControl("Sounds", "Sound player");
-	delete slotsObj;
-	slotsObj=NULL;
+	delete externalPlayerObj;
+	externalPlayerObj=NULL;
 }
 
 ExternalPlayerSlots::ExternalPlayerSlots()
@@ -117,5 +117,5 @@ void ExternalPlayerSlots::choosePlayerFile()
 		e_soundprog->setText(s);
 }
 
-ExternalPlayerSlots *slotsObj;
+ExternalPlayerSlots *externalPlayerObj;
 

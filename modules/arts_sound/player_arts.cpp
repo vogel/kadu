@@ -15,21 +15,21 @@ extern "C" int arts_sound_init()
 {
 	kdebugf();
 
-	slotsObj=new ArtsPlayerSlots();
-	if (slotsObj->server.isNull())
+	artsPlayerObj=new ArtsPlayerSlots();
+	if (artsPlayerObj->server.isNull())
 	{
-		delete slotsObj;
+		delete artsPlayerObj;
 		return -1;
 	}
 
 	QObject::connect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
-					 slotsObj, SLOT(playSound(const QString &, bool, double)));
+					 artsPlayerObj, SLOT(playSound(const QString &, bool, double)));
 	QObject::connect(sound_manager, SIGNAL(playOnMessage(UinsList, const QString &, const QString &, bool, double)),
-					 slotsObj, SLOT(playMessage(UinsList, const QString &, const QString &, bool, double)));
+					 artsPlayerObj, SLOT(playMessage(UinsList, const QString &, const QString &, bool, double)));
 	QObject::connect(sound_manager, SIGNAL(playOnChat(UinsList, const QString &, const QString &, bool, double)),
-					 slotsObj, SLOT(playChat(UinsList, const QString &, const QString &, bool, double)));
+					 artsPlayerObj, SLOT(playChat(UinsList, const QString &, const QString &, bool, double)));
 	QObject::connect(sound_manager, SIGNAL(playOnNotify(const uin_t, const QString &, bool, double)),
-					 slotsObj, SLOT(playNotify(const uin_t, const QString &, bool, double)));
+					 artsPlayerObj, SLOT(playNotify(const uin_t, const QString &, bool, double)));
 
 	return 0;
 }
@@ -38,15 +38,15 @@ extern "C" void arts_sound_close()
 	kdebugf();
 
 	QObject::disconnect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
-						slotsObj, SLOT(playSound(const QString &, bool, double)));
+						artsPlayerObj, SLOT(playSound(const QString &, bool, double)));
 	QObject::disconnect(sound_manager, SIGNAL(playOnMessage(UinsList, const QString &, const QString &, bool, double)),
-						slotsObj, SLOT(playMessage(UinsList, const QString &, const QString &, bool, double)));
+						artsPlayerObj, SLOT(playMessage(UinsList, const QString &, const QString &, bool, double)));
 	QObject::disconnect(sound_manager, SIGNAL(playOnChat(UinsList, const QString &, const QString &, bool, double)),
-						slotsObj, SLOT(playChat(UinsList, const QString &, const QString &, bool, double)));
+						artsPlayerObj, SLOT(playChat(UinsList, const QString &, const QString &, bool, double)));
 	QObject::disconnect(sound_manager, SIGNAL(playOnNotify(const uin_t, const QString &, bool, double)),
-						slotsObj, SLOT(playNotify(const uin_t, const QString &, bool, double)));
-	delete slotsObj;
-	slotsObj=NULL;
+						artsPlayerObj, SLOT(playNotify(const uin_t, const QString &, bool, double)));
+	delete artsPlayerObj;
+	artsPlayerObj=NULL;
 }
 
 ArtsPlayerSlots::ArtsPlayerSlots()
@@ -103,4 +103,4 @@ void ArtsPlayerSlots::playNotify(const uin_t uin, const QString &sound, bool vol
 	play(sound, volCntrl, vol);
 }
 
-ArtsPlayerSlots *slotsObj;
+ArtsPlayerSlots *artsPlayerObj;

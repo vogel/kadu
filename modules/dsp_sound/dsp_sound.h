@@ -39,7 +39,7 @@ class DirectPlayerSlots : public QObject
 		DirectPlayThread *thread;
 };
 
-extern DirectPlayerSlots *slotsObj;
+extern DirectPlayerSlots *directPlayerObj;
 
 #endif
 

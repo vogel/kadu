@@ -20,7 +20,7 @@ class ExternalPlayerSlots : public QObject
 		void playNotify(const uin_t uin, const QString &sound, bool volCntrl, double vol);
 };
 
-extern ExternalPlayerSlots *slotsObj;
+extern ExternalPlayerSlots *externalPlayerObj;
 
 #endif
 
