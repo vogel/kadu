@@ -522,6 +522,8 @@ QString narg(const QString &s, const QString &arg1, const QString &arg2,
 **/
 QString narg(const QString &s, const QString **tab, int count);
 
+void printBacktrace(const QString &header="");
+
 // definiuje now± zmienn± v o takim samym typie jak x jednocze¶nie inicjuj±c j± warto¶ci± x
 #define VAR(v,x)	__typeof(x) v=x
 

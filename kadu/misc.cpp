@@ -2773,3 +2773,32 @@ QString narg(const QString &s, const QString &arg1, const QString &arg2, const Q
 //	return s.arg(arg1,arg2,arg3,arg4);
 //#endif
 }
+
+#ifdef HAVE_EXECINFO
+#include <execinfo.h>
+#endif
+
+void printBacktrace(const QString &header)
+{
+	fprintf(stderr, "backtrace: '%s'\n", header.local8Bit().data());
+#ifdef HAVE_EXECINFO
+	void *bt_array[100];
+	char **bt_strings;
+	int num_entries;
+	if ((num_entries = backtrace(bt_array, 100)) < 0) {
+		fprintf(stderr, "could not generate backtrace\n");
+		return;
+	}
+	if ((bt_strings = backtrace_symbols(bt_array, num_entries)) == NULL) {
+		fprintf(stderr, "could not get symbol names for backtrace\n");
+		return;
+	}
+	fprintf(stderr, "\n======= BEGIN OF BACKTRACE =====\n");
+	for (int i = 0; i < num_entries; ++i)
+		fprintf(stderr, "[%d] %s\n", i, bt_strings[i]);
+	fprintf(stderr, "======= END OF BACKTRACE  ======\n");
+	free(bt_strings);
+#else
+	fprintf(stderr, "backtrace not available\n");		
+#endif
+}
