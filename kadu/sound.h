@@ -3,6 +3,7 @@
 
 #include <qobject.h>
 #include <qthread.h>
+#include <qsemaphore.h>
 
 class SoundDevice;
 
@@ -10,31 +11,55 @@ class PlayThread : public QThread
 {
 	public:
 		PlayThread(SoundDevice *snddev);
+		~PlayThread();
 		void run();
 
 	private:
 		SoundDevice *snddev;
+		QSemaphore *semwait;
+		QSemaphore *semplay;
+
+	friend class SoundDevice;
 };
 
 class RecordThread : public QThread
 {
 	public:
 		RecordThread(SoundDevice *snddev);
+		~RecordThread();
 		void run();
 
 	private:
 		SoundDevice *snddev;
+		QSemaphore *semwait;
+		QSemaphore *semrec;
+
+	friend class SoundDevice;
 };
 
 class SoundDevice : public QObject
 {
 	Q_OBJECT
 	public:
-		SoundDevice(int freq, int bits, int chans, QObject *parent = 0, const char *name = 0);
+		SoundDevice(const int freq, const int bits, const int chans, QObject *parent = 0, const char *name = 0);
+		virtual ~SoundDevice();
+		void play(char *buf, int size);
+		bool playFinished();
+		void record(char *buf, int size);
+		bool recordFinished();
 
 	private:
-	
+		char *playbuf;
+		int playbufsize;
+		bool playfinished;
+		char *recbuf;
+		int recbufsize;
+		bool recfinished;
+
 	protected:
+		virtual void doPlaying() = 0;
+		virtual void doRecording() = 0;
+
 		RecordThread *rt;
 		PlayThread *pt;
 		int freq;
