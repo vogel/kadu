@@ -526,7 +526,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	QToolTip::add(clearchat, tr("Clear messages in chat window"));
 
 	iconsel = new QPushButton(buttontray);
-	iconsel->setPixmap(icons_manager.loadIcon("ChooseEmoticons"));
+	iconsel->setPixmap(icons_manager.loadIcon("Emoticon"));
 	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")==EMOTS_NONE)
 	{
 		QToolTip::add(iconsel, tr("Insert emoticon - enable in configuration"));
