@@ -11,7 +11,10 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   dostêpne s±, gdy mamy odpowiednio status "tylko dla znajomych" oraz mamy
   globalnie w³±czone powiadamianie o zmianie statusów (ludwik/chilek)
 * kolorem szarym wy¶wietlani s± u¿ytkownicy dla których jeste¶my niedostêpni
-  przy "tylko dla znajomych"; priorytety "kolorów" (czerwony, ¼ó³ty, szary) (ludwik/chikek)
+  przy "tylko dla znajomych"; priorytety "kolorów" (czerwony, ¼ó³ty, szary)
+  (ludwik/chilek)
+* modyfikacja formatu wy¶wietlania daty zdarzeñ; teraz dodatkowo przy otrzymanych
+  wiadomo¶ciach mamy pe³n± datê nadania wiadomo¶ci (chilek)
 
 +++ wersja 0.3.4-rc1
 * wiêkszo¶æ kodu dotycz±cego obs³ugi zdarzeñ sieciowych przeniesiona z

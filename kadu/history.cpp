@@ -1013,11 +1013,11 @@ void History::formatHistoryEntry(QString &text, const HistoryEntry &entry) {
 			text.append(config.nick);
 		else
 			text.append(entry.nick);
-	text.append(entry.date.toString(" :: dd.MM.yyyy (hh:mm:ss"));
+	text.append(entry.date.toString(" :: hh:mm:ss (dd.MM.yyyy)"));
 	if (entry.type & (HISTORYMANAGER_ENTRY_CHATRCV | HISTORYMANAGER_ENTRY_MSGRCV))
-		text.append(entry.sdate.toString(" / S hh:mm:ss)</B><BR>"));
+		text.append(entry.sdate.toString(" / hh:mm:ss (dd.MM.yyyy)</B><BR>"));
 	else
-		text.append(")</B><BR>");
+		text.append("</B><BR>");
 	if (entry.type & HISTORYMANAGER_ENTRY_STATUS) {
 		switch (entry.status) {
 			case GG_STATUS_AVAIL:

@@ -72,14 +72,12 @@ QString timestamp(time_t customtime)
 	t = time(NULL);
 
 	date.setTime_t(t);
-	buf.append(date.toString(":: dd.MM.yyyy (hh:mm:ss"));
+	buf.append(date.toString(":: hh:mm:ss (dd.MM.yyyy)"));
 
 	if (customtime) {
 		date.setTime_t(customtime);
-		buf.append(QString(" / S ") + date.toString("hh:mm:ss)"));
+		buf.append(date.toString(" / hh:mm:ss (dd.MM.yyyy)"));
 		}
-	else
-		buf.append(")");
 
 	return buf;
 }
