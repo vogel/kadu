@@ -357,11 +357,11 @@ void Chat::windowActivationChange(bool oldActive) {
 }
 
 void Chat::keyPressEvent(QKeyEvent *e) {
-	if (e->key() == Key_F9) {
+	if (e->key() == Key_F9)
 		clearChatWindow();
-	} else if (e->key() == Key_Escape) {
-		this->close();
-	}
+	else
+		if (e->key() == Key_Escape)
+			close();
 	QWidget::keyPressEvent(e);
 }
 

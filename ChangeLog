@@ -4,6 +4,7 @@
 * czeski b³±d powodowa³, ¿e mesgi mog³y nie wpadaæ do okna rozmowy
 * okna dialogowe z powiadomieniami o zmianie statusu u¿ytkowników
   nie powinny wywalaæ kadu
+* ESCAPE zamyka okno rozmowy
 
 +++ wersja 0.3.3-pre5
 * wszystkie? wiadomo¶ci od u¿ytkowników powinny wpadaæ do okna rozmowy
