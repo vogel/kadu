@@ -197,7 +197,10 @@ void UserList::addUser(const QString &FirstName,const QString &LastName,
 	e.blocking = Blocking;
 	e.offline_to_user = Offline_to_user;
 	e.notify = Notify;
-	e.Group = Group;
+	if (Group != i18n("All");
+		e.Group = Group;
+	else
+		e.Group = "";
 	e.description = Description;
 	e.email = Email;
 	e.anonymous = Anonymous;
@@ -230,7 +233,10 @@ void UserList::changeUserInfo(const QString &OldAltNick,
 	e.blocking = Blocking;
 	e.offline_to_user = Offline_to_user;
 	e.notify = Notify;
-	e.Group = Group;
+	if (Group != i18n("All");
+		e.Group = Group;
+	else
+		e.Group = "";
 	if (AltNick != OldAltNick) {
 		UserBox::all_renameUser(OldAltNick,AltNick);
 		UserBox::all_refresh();			
