@@ -44,7 +44,7 @@ void UserList::timeout()
 			ule.status == GG_STATUS_INVISIBLE2) {
 			ule.time_to_death--;
 			if (!ule.time_to_death)
-				changeUserStatus(user.uin, GG_STATUS_OFFLINE);
+				changeUserStatus(ule.uin, GG_STATUS_NOT_AVAIL);
 			else
 				if (ule.time_to_death < 0)
 					ule.time_to_death = 0;

@@ -20,6 +20,7 @@
 
 #include <qobject.h>
 #include <qvaluelist.h>
+#include <qtimer.h>
 #include "../libgadu/lib/libgadu.h"
 
 struct UserListElement
@@ -69,10 +70,10 @@ class UserList : public QObject, public QValueList<UserListElement>
 	protected:
 		QTimer *invisibleTimer;
 
-	protected slots:
+	private slots:
 		void timeout();
 
-	public signals:
+	signals:
 		void modified();
 		void statusModified(UserListElement *);
 };
