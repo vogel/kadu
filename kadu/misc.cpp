@@ -15,6 +15,7 @@
 
 #include "misc.h"
 #include "pixmaps.h"
+#include "config_dialog.h"
 #include "kadu.h"
 
 QValueList<struct SearchIdStruct> SearchList;

@@ -32,7 +32,7 @@
 #include "misc.h"
 #include "chat.h"
 #include "emoticons.h"
-#include "config.h"
+#include "config_dialog.h"
 #include "dock_widget.h"
 #include "config_file.h"
 #include "debug.h"
@@ -1547,3 +1547,4 @@ void ConfigDialog::updateConfig(void) {
 	kadu->refreshGroupTabBar();
 }
 
+struct config config;

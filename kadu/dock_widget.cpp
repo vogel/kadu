@@ -14,6 +14,7 @@
 #include <qpixmap.h>
 
 #include "dock_widget.h"
+#include "config_dialog.h"
 #include "misc.h"
 #include "pixmaps.h"
 #include "message.h"

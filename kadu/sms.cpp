@@ -12,12 +12,12 @@
 #include <qregexp.h>
 #include <qpainter.h>
 #include <qurl.h>
-//
+
 #include "kadu.h"
+#include "config_dialog.h"
 #include "sms.h"
 #include "history.h"
 #include "debug.h"
-//
 
 /********** SmsImageWidget **********/
 

@@ -15,9 +15,7 @@
 
 #include "emoticons.h"
 #include "debug.h"
-
-// dla config
-#include "kadu.h"
+#include "config_dialog.h"
 
 EmoticonsManager::EmoticonsManager()
 {

@@ -34,12 +34,11 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-//
 #include "kadu.h"
+#include "config_dialog.h"
 #include "misc.h"
 #include "debug.h"
 #include "history.h"
-//
 
 QString HistoryManager::text2csv(const QString &text)
 {

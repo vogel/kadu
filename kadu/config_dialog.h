@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONFIG_H
-#define CONFIG_H
+#ifndef CONFIG_DIALOG_H
+#define CONFIG_DIALOG_H
 
 #include <qtabdialog.h>
 #include <qcombobox.h>
@@ -18,6 +18,8 @@
 #include <qvgroupbox.h>
 #include <qhbox.h>
 #include <qvaluelist.h>
+#include <qstringlist.h>
+#include "libgadu.h"
 #include "../config.h"
 
 void loadKaduConfig(void);
@@ -186,5 +188,111 @@ class ConfigDialog : public QTabDialog	{
 		void onSmsBuildInCheckToogle(bool);
 		void onDefWebBrowserToogle(bool);
 };
+
+struct colors {
+	QColor userboxBg;
+	QColor userboxFg;
+	QColor userboxDescBg;
+	QColor userboxDescText;
+	QColor mychatBg;
+	QColor mychatText;
+	QColor usrchatBg;
+	QColor usrchatText;
+	QColor trayhintBg;
+	QColor trayhintText;
+};
+
+struct fonts {
+	QFont userbox;
+	QFont userboxDesc;
+	QFont chat;
+	QFont trayhint;
+};
+
+struct config {
+	uin_t uin;
+	QString password;
+	QString nick;
+	QString soundmsg;
+	QString soundchat;
+	QString soundprog;
+	double soundvol;
+	bool soundvolctrl;
+	bool playartsdsp;
+	bool playsound;
+	bool logmessages;
+	bool savegeometry;
+	bool playsoundchat;
+	bool playsoundchatinvisible;
+	int defaultstatus;
+	QString defaultdescription;
+	int sysmsgidx;
+	bool allowdcc;
+	QString dccip;
+	char *extip;
+	int extport;
+	QStringList servers;
+
+	bool dock;
+	bool rundocked;
+	
+	bool privatestatus;
+	bool grouptabs;
+	bool checkupdates;
+	bool addtodescription;
+	bool trayhint;
+	bool hinterror;
+	bool hintalert;
+	bool showdesc;
+
+	QRect geometry;
+	QSize splitsize;
+	
+	bool defaultwebbrowser;
+	QString webbrowser;
+
+	bool smsbuildin;
+	char * smsapp;
+	bool smscustomconf;
+	char * smsconf;
+
+	bool emoticons;
+	QString emoticons_theme;
+	bool autosend;
+	bool scrolldown;
+	int chatprunelen;
+	bool chatprune;
+	bool msgacks;
+	bool blinkchattitle;
+	bool ignoreanonusers;
+
+	bool autoaway;
+	int autoawaytime;
+	int hinttime;
+
+	QStringList notifies;
+	char *soundnotify;
+	bool notifyglobal;
+	bool notifyall;
+	bool notifydialog;
+	bool notifysound;
+	bool notifyhint;
+
+	bool useproxy;
+	QString proxyaddr;
+	unsigned short proxyport;
+	QString proxyuser;
+	QString proxypassword;
+
+	bool raise;
+
+	struct colors colors;
+	struct fonts fonts;
+#ifdef HAVE_OPENSSL
+	bool encryption;
+#endif
+};
+
+extern struct config config;
 
 #endif

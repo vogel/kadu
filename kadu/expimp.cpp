@@ -17,6 +17,7 @@
 #include <stdlib.h>
 
 #include "kadu.h"
+#include "config_dialog.h"
 #include "debug.h"
 #include "expimp.h"
 

@@ -24,6 +24,7 @@
 #include <stdlib.h>
 
 //
+#include "config_dialog.h"
 #include "kadu.h"
 #include "pixmaps.h"
 #include "chat.h"

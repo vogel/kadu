@@ -22,8 +22,9 @@
 #include <qlayout.h>
 #include <qtextbrowser.h>
 #include <qdatetime.h>
-//#include <iostream>
 #include <qmessagebox.h>
+#include <qprocess.h>
+
 #define _USE_BSD
 #include <sys/time.h>
 #include <sys/types.h>
@@ -35,15 +36,14 @@
 #include <unistd.h>
 #include <pwd.h>
 
-//
 #include "kadu.h"
+#include "config_dialog.h"
 #include "events.h"
 #include "pixmaps.h"
 #include "chat.h"
 #include "message.h"
 #include "history.h"
 #include "misc.h"
-#include "vuser.h"
 #include "pending_msgs.h"
 #include "dock_widget.h"
 #include "debug.h"

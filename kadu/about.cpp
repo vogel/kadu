@@ -10,12 +10,10 @@
 #include <qbitmap.h>
 #include <qpainter.h>
 #include <qlayout.h>
-#include "../config.h"
 
-//
-#include "kadu.h"
 #include "about.h"
-//
+#include "misc.h"
+#include "../config.h"
 
 static const char * shade_sun_xpm[] = {
 "167 122 17 1",

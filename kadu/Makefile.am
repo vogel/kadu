@@ -5,7 +5,7 @@ kadu_SOURCES = \
 about.cpp about.h about_moc.cpp \
 adduser.cpp adduser.h adduser_moc.cpp \
 chat.cpp chat.h chat_moc.cpp \
-config.cpp config.h config_moc.cpp \
+config_dialog.cpp config_dialog.h config_dialog_moc.cpp \
 config_file.cpp config_file.h \
 dcc.cpp dcc.h dcc_moc.cpp \
 debug.cpp debug.h \
@@ -33,8 +33,7 @@ tabbar.cpp tabbar.h tabbar_moc.cpp \
 userbox.cpp userbox.h userbox_moc.cpp \
 userinfo.cpp userinfo.h userinfo_moc.cpp \
 userlist.cpp userlist.h userlist_moc.cpp \
-updates.cpp updates.h \
-vuser.cpp vuser.h vuser_moc.cpp
+updates.cpp updates.h
 
 EXTRA_kadu_SOURCES = simlite.c simlite.h
 

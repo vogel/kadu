@@ -84,6 +84,7 @@
 #include "libgadu.h"
 
 //
+#include "config_dialog.h"
 #include "misc.h"
 #include "kadu.h"
 #include "pixmaps.h"
@@ -100,7 +101,6 @@
 #include "sms.h"
 #include "adduser.h"
 #include "about.h"
-#include "config.h"
 #include "ignore.h"
 #include "history.h"
 #include "message.h"
@@ -110,6 +110,7 @@
 #include "password.h"
 #include "tabbar.h"
 #include "debug.h"
+#include "../config.h"
 #ifdef HAVE_OPENSSL
 #include "simlite.h"
 #endif
@@ -153,11 +154,9 @@ PendingMsgs pending;
 QValueList<struct chats> chats;
 struct gg_session *sess = NULL;
 struct sigaction sigact;
-struct config config;
 QArray<struct acks> acks(0);
 struct gg_dcc * dccsock;
 QValueList<uin_t> ignored;
-QArray<groups> grouplist;
 struct gg_login_params loginparams;
 QSocketNotifier *kadusnr = NULL;
 QSocketNotifier *kadusnw = NULL;

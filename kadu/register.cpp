@@ -18,13 +18,12 @@
 #include <stdlib.h>
 #include <qfile.h>
 
-// to mam nadzieje kiedys usuniemy
 #include "kadu.h"
+#include "config_dialog.h"
 #include "adduser.h"
 #include "config_file.h"
 #include "debug.h"
 #include "register.h"
-//
 
 Register::Register(QDialog *parent, const char *name) : QDialog (parent, name, FALSE, Qt::WDestructiveClose) {
 	kdebug("Register::Register()\n");

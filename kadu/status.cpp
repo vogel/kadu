@@ -13,6 +13,7 @@
 #include <qdesktopwidget.h>
 
 #include "status.h"
+#include "config_dialog.h"
 #include "kadu.h"
 #include "debug.h"
 

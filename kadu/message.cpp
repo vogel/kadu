@@ -18,6 +18,7 @@
 #include <stdlib.h>
 
 //
+#include "config_dialog.h"
 #include "misc.h"
 #include "kadu.h"
 #include "pixmaps.h"

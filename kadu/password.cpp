@@ -5,7 +5,7 @@
 
 #include "misc.h"
 #include "kadu.h"
-#include "config.h"
+#include "config_dialog.h"
 #include "debug.h"
 #include "password.h"
 
