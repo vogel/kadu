@@ -463,11 +463,7 @@ void UserInfo::changeUserData(UserListElement& e)
 
 	userlist.changeUserInfo(puser->altNick(), e);
 	userlist.writeToFile();
-	if (!kadu->userbox()->containsAltNick(e.altNick()))
-	{
-		kadu->userbox()->addUser(e.altNick());
-		UserBox::all_refresh();
-	}
+
 	chat_manager->refreshTitlesForUin(puser->uin());
 	close(true);
 	kdebugf2();

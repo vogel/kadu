@@ -329,6 +329,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawione kopiowanie tekstu z chatu do schowka przy zaznaczeniu myszk± (joi)
 * zmodyfikowana sk³adnia panelu informacyjnego dla zestawu RonK2 
   (problemy na systemach, gdzie kodowanie by³o inne ni¿ latin2) (joi)
+* usuwany z grupy kontakt nie jest z powrotem dodawany do bie¿±cego userboksa (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
