@@ -81,7 +81,7 @@ extern "C" int x11_docking_init()
 	return 0;
 }
 
-extern "C" int x11_docking_close()
+extern "C" void x11_docking_close()
 {
 	delete x11_tray_icon;
 	x11_tray_icon = NULL;
@@ -131,9 +131,9 @@ X11TrayIcon::X11TrayIcon()
 	int r;
 	int data = 1;
 	r = XInternAtom(dsp, "KWM_DOCKWINDOW", false);
-	int r1=XChangeProperty(dsp, win, r, r, 32, 0, (uchar *)&data, 1);
+	/*int r1=*/XChangeProperty(dsp, win, r, r, 32, 0, (uchar *)&data, 1);
 	r = XInternAtom(dsp, "_KDE_NET_WM_SYSTEM_TRAY_WINDOW_FOR", false);
-	int r2=XChangeProperty(dsp, win, r, XA_WINDOW, 32, 0, (uchar *)&data, 1);
+	/*int r2=*/XChangeProperty(dsp, win, r, XA_WINDOW, 32, 0, (uchar *)&data, 1);
 			
 	// SPOSÓB TRZECI
 	// Dzia³a pod Window Maker'em
