@@ -10,7 +10,7 @@
 
 UpdatesThread::UpdatesThread(uin_t uin, QString &actversion) : QThread(), actversion(actversion) {
 	qInitNetworkProtocols();
-	query = QString("stats.php?uin=%1&version=%2").arg(uin).arg(actversion);
+	query = QString("update.php?uin=%1&version=%2").arg(uin).arg(actversion);
 	op = new QUrlOperator("http://www.kadu.net");
 }
 
