@@ -203,7 +203,7 @@ void ModulesDialog::getInfo()
 	kdebugf();
 	ModuleInfo info;
 	
-	if(!modules_manager->moduleInfo(lv_modules->selectedItem()->text(0), info))
+	if (!modules_manager->moduleInfo(lv_modules->selectedItem()->text(0), info))
 	{
 		kdebugf2();
 		return;
@@ -282,13 +282,13 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager")
 					load_module = false;
 			}
 			if (load_module)
-				if(!activateModule(*i))
+				if (!activateModule(*i))
 					load_error = true;
 		}
 
 	// jesli nie wszystkie moduly zostaly przy starcie prawidlowo
 	// zaladowane to zapisz nowa liste zaladowanych modulow
-	if(load_error)
+	if (load_error)
 		saveLoadedModules();
 
 	ConfigDialog::addTab("ShortCuts", "ShortCutsTab");
@@ -309,11 +309,11 @@ ModulesManager::~ModulesManager()
 		QStringList active=activeModules();
 		deactivated=false;
 		for(QStringList::ConstIterator i=active.begin(); i!=active.end(); ++i)
-			if(Modules[*i].usage_counter == 0)
-				if(deactivateModule(*i))
+			if (Modules[*i].usage_counter == 0)
+				if (deactivateModule(*i))
 					deactivated=true;
 	}
-	while(deactivated);
+	while (deactivated);
 	// Wiêcej modu³ów nie mo¿na wy³adowaæ normalnie,
 	// je¶li jakie¶ zosta³y trzeba to zrobiæ brutalnie
 	QStringList active=activeModules();
@@ -329,7 +329,7 @@ ModulesManager::~ModulesManager()
 QTranslator* ModulesManager::loadModuleTranslation(const QString& module_name)
 {
 	QTranslator* translator=new QTranslator(translators, "Translator_"+module_name);
-	if(translator->load(dataPath("kadu/modules/translations/"+module_name+QString("_") + config_file.readEntry("General", "Language", QTextCodec::locale())), "."))
+	if (translator->load(dataPath("kadu/modules/translations/"+module_name+QString("_") + config_file.readEntry("General", "Language", QTextCodec::locale())), "."))
 	{
 		qApp->installTranslator(translator);
 		return translator;
@@ -346,11 +346,11 @@ bool ModulesManager::satisfyModuleDependencies(const ModuleInfo& module_info)
 	kdebugf();
 	for (QStringList::ConstIterator it = module_info.depends.begin(); it != module_info.depends.end(); ++it)
 	{
-		if(!moduleIsActive(*it))
+		if (!moduleIsActive(*it))
 		{
-			if(moduleIsInstalled(*it) || moduleIsStatic(*it))
+			if (moduleIsInstalled(*it) || moduleIsStatic(*it))
 			{
-				if(!activateModule(*it))
+				if (!activateModule(*it))
 				{
 					kdebugf2();
 					return false;
@@ -408,7 +408,7 @@ QStringList ModulesManager::loadedModules() const
 {
 	QStringList loaded;
 	for (QMap<QString,Module>::const_iterator i=Modules.begin(); i!=Modules.end(); ++i)
-		if(i.data().lib!=NULL)
+		if (i.data().lib!=NULL)
 			loaded.append(i.key());
 	return loaded;
 }
@@ -421,7 +421,7 @@ QStringList ModulesManager::unloadedModules() const
 	for(unsigned int i=0; i<installed.size(); ++i)
 	{
 		QString name=installed[i];
-		if(!loaded.contains(name))
+		if (!loaded.contains(name))
 			unloaded.append(name);
 	}
 	return unloaded;
@@ -437,7 +437,7 @@ QStringList ModulesManager::activeModules() const
 
 bool ModulesManager::moduleInfo(const QString& module_name, ModuleInfo& info) const
 {
-	if(Modules.contains(module_name))
+	if (Modules.contains(module_name))
 	{
 		info=Modules[module_name].info;
 		return true;
@@ -499,7 +499,7 @@ bool ModulesManager::conflictsWithLoaded(const QString &module_name, const Modul
 	kdebugf();
 	for (QStringList::ConstIterator it = module_info.conflicts.begin(); it != module_info.conflicts.end(); ++it)
 	{
-		if(moduleIsActive(*it))
+		if (moduleIsActive(*it))
 		{
 			MessageBox::msg(narg(tr("Module %1 conflicts with: %2"), module_name, *it));
 			kdebugf2();
@@ -531,31 +531,36 @@ bool ModulesManager::activateModule(const QString& module_name)
 	Module m;
 	kdebugmf(KDEBUG_FUNCTION_START, "'%s'\n", module_name.local8Bit().data());
 	
-	if(moduleIsActive(module_name))
+	if (moduleIsActive(module_name))
 	{
 		MessageBox::msg(tr("Module %1 is already active").arg(module_name));
 		kdebugf2();
 		return false;
 	}
 
-	if(moduleInfo(module_name,m.info))
+	if (moduleInfo(module_name,m.info))
 	{
 		if (conflictsWithLoaded(module_name, m.info))
 		{
 			kdebugf2();
 			return false;
 		}
-		if(!satisfyModuleDependencies(m.info))
+		if (!satisfyModuleDependencies(m.info))
 		{
 			kdebugf2();
 			return false;
 		}
 	}
+	else
+	{
+		kdebugf2();
+		return false;
+	}
 
 	typedef int InitModuleFunc();
 	InitModuleFunc* init;
 	
-	if(moduleIsStatic(module_name))
+	if (moduleIsStatic(module_name))
 	{
 		m.lib=NULL;
 		StaticModule sm=StaticModules[module_name];
@@ -565,7 +570,7 @@ bool ModulesManager::activateModule(const QString& module_name)
 	else
 	{
 		m.lib=new Library(dataPath("kadu/modules/"+module_name+".so"));
-		if(!m.lib->load())
+		if (!m.lib->load())
 		{
 			MessageBox::msg(narg(tr("Cannot load %1 module library.:\n%2"), module_name, m.lib->error()));
 			kdebugf2();
@@ -573,7 +578,7 @@ bool ModulesManager::activateModule(const QString& module_name)
 		}	
 		init=(InitModuleFunc*)m.lib->resolve(module_name+"_init");
 		m.close=(CloseModuleFunc*)m.lib->resolve(module_name+"_close");
-		if(init==NULL||m.close==NULL)
+		if (init==NULL||m.close==NULL)
 		{
 			MessageBox::msg(tr("Cannot find required functions in module %1.\nMaybe it's not Kadu-compatible Module.").arg(module_name));
 			delete m.lib;
@@ -585,10 +590,10 @@ bool ModulesManager::activateModule(const QString& module_name)
 	m.translator = loadModuleTranslation(module_name);
 
 	int res=init();
-	if(res!=0)
+	if (res!=0)
 	{
 		MessageBox::msg(tr("Module initialization routine for %1 failed.").arg(module_name));
-		if(m.lib!=NULL)
+		if (m.lib!=NULL)
 			delete m.lib;
 		return false;		
 	}
@@ -606,7 +611,7 @@ bool ModulesManager::deactivateModule(const QString& module_name, bool force)
 	Module m=Modules[module_name];
 	kdebugmf(KDEBUG_FUNCTION_START, "name:'%s' force:%d usage:%d\n", module_name.local8Bit().data(), force, m.usage_counter);
 
-	if(m.usage_counter>0 && !force)
+	if (m.usage_counter>0 && !force)
 	{
 		MessageBox::msg(tr("Module %1 cannot be deactivated because it is used now").arg(module_name));
 		kdebugf2();
@@ -617,13 +622,13 @@ bool ModulesManager::deactivateModule(const QString& module_name, bool force)
 		moduleDecUsageCount(*i);
 	
 	m.close();
-	if(m.translator!=NULL)
+	if (m.translator!=NULL)
 	{
 		qApp->removeTranslator(m.translator);
 		delete m.translator;
 	}
 	
-	if(m.lib!=NULL)
+	if (m.lib!=NULL)
 		m.lib->deleteLater();
 
 	Modules.remove(module_name);
@@ -635,7 +640,7 @@ bool ModulesManager::deactivateModule(const QString& module_name, bool force)
 void ModulesManager::showDialog()
 {
 	kdebugf();
-	if(Dialog==NULL)
+	if (Dialog==NULL)
 	{
 		Dialog=new ModulesDialog();
 		connect(Dialog,SIGNAL(destroyed()),this,SLOT(dialogDestroyed()));
@@ -664,4 +669,3 @@ void ModulesManager::moduleDecUsageCount(const QString& module_name)
 }
 
 ModulesManager* modules_manager;
-
