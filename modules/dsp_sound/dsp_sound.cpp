@@ -241,7 +241,7 @@ void DirectPlayThread::run()
 			close(fd);
 		}//end if (sound->isOk())
 		mutex.unlock();
-		kdebug("unlocked");
+		kdebug("unlocked\n");
 	}//end while(!end)
 }
 
