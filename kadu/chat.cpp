@@ -557,11 +557,11 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 	colorbtn = new QPushButton(btnpart);
 //	colorbtn->setMinimumSize(boldbtn->width(), boldbtn->height());
 	QPixmap p(16, 16);
-	p.fill(colors[15]);
+	actcolor=edit->paletteForegroundColor();
+	p.fill(actcolor);
 	colorbtn->setPixmap(p);
 
-	QWidget *filler=new QWidget(btnpart);
-	filler->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
+	(new QWidget(btnpart))->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 
 	sendbtn = new QPushButton(QIconSet(icons_manager.loadIcon("SendMessage")),tr("&Send"),btnpart);
 	sendbtn->setFixedWidth(120);
@@ -715,18 +715,19 @@ void Chat::curPosChanged(int para, int pos)
 		italicbtn->setOn(edit->italic());
 	if (edit->underline() != underlinebtn->isOn())
 		underlinebtn->setOn(edit->underline());
-	if (edit->color() != actcolor) {
+	if (edit->color() != actcolor)
+	{
 		for (i = 0; i < 16; i++)
 			if (edit->color() == QColor(colors[i]))
 				break;
 		QPixmap p(16, 16);
 		if (i >= 16)
-			i = 15;
-		p.fill(colors[i]);
-		actcolor = colors[i];
+			actcolor = edit->paletteForegroundColor();
+		else
+			actcolor = colors[i];
+		p.fill(actcolor);
 		colorbtn->setPixmap(p);
-		}
-	
+	}
 }
 
 void Chat::pageUp()
@@ -1192,7 +1193,7 @@ void Chat::emoticonSelectorClicked()
 void Chat::changeColor()
 {
 	//sytuacja podobna jak w przypadku emoticon_selectora
-	color_selector = new ColorSelector(this, "color_selector");
+	color_selector = new ColorSelector(edit->paletteForegroundColor(), this, "color_selector");
 	color_selector->alignTo(colorbtn);
 	color_selector->show();
 	connect(color_selector, SIGNAL(colorSelect(const QColor&)), this, SLOT(colorChanged(const QColor&)));
@@ -1342,14 +1343,17 @@ const UinsList& Chat::uins()
 	return Uins;
 }
 
-ColorSelectorButton::ColorSelectorButton(QWidget* parent, const QColor& qcolor, const char *name) : QToolButton(parent, name)
+ColorSelectorButton::ColorSelectorButton(QWidget* parent, const QColor& qcolor, int width, const char *name) : QPushButton(parent, name)
 {
-	QPixmap p(15,15);
+#define WIDTH1 15
+#define BORDER1 3
+	QPixmap p(WIDTH1*width+(width-1)*(BORDER1*2), WIDTH1);
 	p.fill(qcolor);
 	color = qcolor;
 	setPixmap(p);
 //	setAutoRaise(true);
 	setMouseTracking(true);
+	setFixedSize(WIDTH1*width+(BORDER1*2)+(width-1)*(BORDER1*2), WIDTH1+(BORDER1*2));
 	QToolTip::add(this,color.name());
 	connect(this, SIGNAL(clicked()), this, SLOT(buttonClicked()));
 }
@@ -1359,7 +1363,7 @@ void ColorSelectorButton::buttonClicked()
 	emit clicked(color);
 }
 
-ColorSelector::ColorSelector(QWidget* parent, const char* name)
+ColorSelector::ColorSelector(const QColor &defColor, QWidget* parent, const char* name)
 	: QWidget (parent, name,Qt::WType_Popup|Qt::WDestructiveClose)
 {
 	QValueList<QColor> qcolors;
@@ -1370,14 +1374,18 @@ ColorSelector::ColorSelector(QWidget* parent, const char* name)
 
 	int selector_count=qcolors.count();
 	int selector_width=(int)sqrt((double)selector_count);
-	int btn_width=0;
 	QGridLayout *grid = new QGridLayout(this, 0, selector_width, 0, 0);
 
 	for(int i=0; i<selector_count; i++)
 	{
-		ColorSelectorButton* btn = new ColorSelectorButton(this, qcolors[i]);
-		btn_width=btn->sizeHint().width();
+		ColorSelectorButton* btn = new ColorSelectorButton(this, qcolors[i], 1);
 		grid->addWidget(btn, i/selector_width, i%selector_width);
+		connect(btn,SIGNAL(clicked(const QColor&)),this,SLOT(iconClicked(const QColor&)));
+	}
+	if (qcolors.contains(defColor)==0)
+	{
+		ColorSelectorButton* btn = new ColorSelectorButton(this, defColor, 4);
+		grid->addMultiCellWidget(btn, 4, 4, 0, 3);
 		connect(btn,SIGNAL(clicked(const QColor&)),this,SLOT(iconClicked(const QColor&)));
 	}
 }

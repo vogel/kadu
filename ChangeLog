@@ -258,6 +258,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   sprawdzenie dostêpnych modu³ów (adrian)
 * wykrywanie b³êdów w ¶ci±ganiu plików w technologii autodownload i
   ew. przerywanie dzia³ania configure (adrian)
+* gdy domy¶lny kolor czcionki w chacie jest inny ni¿ czarny, to przy wyborze
+  koloru pojawia siê dodatkowy przycisk z tym kolorem, BUG_ID=50 (joi)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

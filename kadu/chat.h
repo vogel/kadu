@@ -249,7 +249,7 @@ class Chat : public QWidget
 		void messageSent(Chat* chat);
 };
 
-class ColorSelectorButton : public QToolButton
+class ColorSelectorButton : public QPushButton
 {
 	Q_OBJECT
 
@@ -260,7 +260,7 @@ class ColorSelectorButton : public QToolButton
 		void buttonClicked();
 
 	public:
-		ColorSelectorButton(QWidget* parent, const QColor& qcolor, const char *name=0);
+		ColorSelectorButton(QWidget* parent, const QColor& qcolor, int width=1, const char *name=0);
 
 	signals:
 		void clicked(const QColor& color);
@@ -277,7 +277,7 @@ class ColorSelector : public QWidget
 		void closeEvent(QCloseEvent*);
 
 	public:
-		ColorSelector(QWidget* parent = 0, const char* name = 0);
+		ColorSelector(const QColor &defColor, QWidget* parent = 0, const char* name = 0);
 
 	public slots:
 		void alignTo(QWidget* w);
