@@ -13,9 +13,32 @@
 #include <qdialog.h>
 #include <qmultilineedit.h>
 #include <qstring.h>
+#include <qdatetime.h>
+#include <qvaluelist.h>
+#include <qstringlist.h>
 
 #include "libgadu.h"
 #include "misc.h"
+
+#define	HISTORYMANAGER_ENTRY_CHATSEND	0x00000001
+#define	HISTORYMANAGER_ENTRY_CHATRCV	0x00000002
+#define	HISTORYMANAGER_ENTRY_MSGSEND	0x00000004
+#define	HISTORYMANAGER_ENTRY_MSGRCV	0x00000008
+#define	HISTORYMANAGER_ENTRY_STATUS	0x00000010
+#define	HISTORYMANAGER_ENTRY_SMSSEND	0x00000020
+
+struct HistoryEntry {
+	int type;
+	uin_t uin;
+	QString nick;
+	QDateTime date;
+	QDateTime sdate;
+	QString message;
+	unsigned int status;
+	QString ip;
+	QString description;
+	QString mobile;	
+};
 
 class History : public QDialog {
 	Q_OBJECT
@@ -30,13 +53,21 @@ class HistoryManager {
 	public:
 		void appendMessage(UinsList receivers, uin_t sender, const QString &msg, bool own, time_t=0, bool chat=true);
 		void appendSms(const QString &mobile, const QString &msg);
-		void appendStatus(uin_t uin, unsigned int status, QString description=QString::null);
+		void appendStatus(uin_t uin, unsigned int status, QString description = QString::null);
 
 		void convHist2ekgForm(UinsList uins);
 		void convSms2ekgForm();
+		int getHistoryEntriesCount(UinsList uins);
+		int getHistoryEntriesCount(QString mobile = QString::null);
+		QValueList<HistoryEntry> getHistoryEntries(UinsList uins, int from, int count);
+
+		static QString getFileNameByUinsList(UinsList &uins);
+		static QStringList mySplit(const QChar &sep, const QString &str);
+
 	private:
 		QString text2csv(const QString &text);
 		int typeOfLine(const QString &line);
+		int getHistoryEntriesCountPrivate(const QString &filename);
 };
 
 extern HistoryManager history;

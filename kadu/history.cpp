@@ -29,6 +29,8 @@
 #include <qtextcodec.h>
 #include <qregexp.h>
 #include <qdir.h>
+#include <qvaluelist.h>
+#include <qstringlist.h>
 
 #include <time.h>
 #include <sys/socket.h>
@@ -58,6 +60,18 @@ QString HistoryManager::text2csv(const QString &text) {
 	if (csv != text || text.find(QRegExp(","), 0) != -1)
 		csv = QString("\"") + csv + QString("\"");	
 	return csv;
+}
+
+QString HistoryManager::getFileNameByUinsList(UinsList &uins) {
+	int i;
+	QString fname;
+	uins.sort();
+	for (i = 0; i < uins.count(); i++) {
+		fname.append(QString::number(uins[i]));
+		if (i < uins.count() - 1)
+			fname.append("_");
+		}
+	return fname;
 }
 
 int HistoryManager::typeOfLine(const QString &line) {
@@ -94,13 +108,7 @@ void HistoryManager::appendMessage(UinsList uins, uin_t uin, const QString &msg,
 	int i;
 
 	convHist2ekgForm(uins);
-
-	uins.sort();
-	for (i = 0; i < uins.count(); i++) {
-		fname.append(QString::number(uins[i]));
-		if (i < uins.count() - 1)
-			fname.append("_");
-		}
+	fname.append(getFileNameByUinsList(uins));
 		
 	if (own)
 		if (chat)
@@ -280,12 +288,7 @@ void HistoryManager::convHist2ekgForm(UinsList uins) {
 	uin_t uin;
 	int i, typeofline;
 
-	uins.sort();
-	for (i = 0; i < uins.count(); i++) {
-		fname.append(QString::number(uins[i]));
-		if (i < uins.count() - 1)
-			fname.append("_");
-		}
+	fname = getFileNameByUinsList(uins);
 	
 	f.setName(path + fname);
 	if (!(f.open(IO_ReadWrite))) {
@@ -523,6 +526,245 @@ void HistoryManager::convSms2ekgForm() {
 		}
 }
 
+int HistoryManager::getHistoryEntriesCountPrivate(const QString &filename) {
+	kdebug("HistoryManager::getHistoryEntriesCountPrivate(const QString &filename)\n");
+
+	int lines;
+	QFile f;
+	QString path = ggPath("history/");
+	QByteArray buffer;
+
+	f.setName(path + filename);
+	if (!(f.open(IO_ReadOnly))) {
+		kdebug("HistoryManager::getHistoryEntriesCountPrivate(const QString &filename): Error opening history file %s\n", (const char *)filename.local8Bit());
+		return -1;
+		}
+	buffer = f.readAll();
+	f.close();
+	lines = buffer.contains('\n');
+	kdebug("HistoryManager::getHistoryEntriesCountPrivate(const QString &filename): %d lines\n", lines);
+	return lines;
+}
+
+int HistoryManager::getHistoryEntriesCount(UinsList uins) {
+	return getHistoryEntriesCountPrivate(getFileNameByUinsList(uins));
+}
+
+int HistoryManager::getHistoryEntriesCount(QString mobile) {
+	if (mobile == QString::null)
+		return getHistoryEntriesCountPrivate("sms");
+	else
+		return getHistoryEntriesCountPrivate(mobile);
+}
+
+QValueList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int from, int count) {
+	kdebug("HistoryManager::getHistoryEntries(UinsList uins, int from, int count)\n");
+
+	QValueList<HistoryEntry> entries;
+	QStringList tokens;
+	QFile f;
+	QString path = ggPath("history/");
+	QString filename, line;
+
+	filename = getFileNameByUinsList(uins);
+	f.setName(path + filename);
+	if (!(f.open(IO_ReadOnly))) {
+		kdebug("HistoryManager::getHistoryEntries(UinsList uins, int from, int count): Error opening history file %s\n", (const char *)filename.local8Bit());
+		return entries;
+		}
+
+	QTextStream stream(&f);
+	stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
+	
+	int linenr = 0;
+	while (linenr < from && (line = stream.readLine()) != QString::null)
+		linenr++;
+	if ((linenr < from || line == QString::null) && from)
+		return entries;
+
+	struct HistoryEntry entry;
+	while (linenr < from + count && (line = stream.readLine()) != QString::null) {
+		linenr++;
+		tokens = mySplit(',', line);
+		if (tokens.count() < 2)
+			continue;
+		if (tokens[0] == "chatsend")
+			entry.type = HISTORYMANAGER_ENTRY_CHATSEND;
+		else if (tokens[0] == "msgsend")
+			entry.type = HISTORYMANAGER_ENTRY_MSGSEND;
+		else if (tokens[0] == "chatrcv")
+			entry.type = HISTORYMANAGER_ENTRY_CHATRCV;
+		else if (tokens[0] == "msgrcv")
+			entry.type = HISTORYMANAGER_ENTRY_MSGRCV;
+		else if (tokens[0] == "status")
+			entry.type = HISTORYMANAGER_ENTRY_STATUS;
+		else if (tokens[0] == "smssend")
+			entry.type = HISTORYMANAGER_ENTRY_SMSSEND;
+		switch (entry.type) {
+			case HISTORYMANAGER_ENTRY_CHATSEND:
+			case HISTORYMANAGER_ENTRY_MSGSEND:
+				if (tokens.count() == 5) {
+					entry.uin = tokens[1].toUInt();
+					entry.nick = tokens[2];
+					entry.date.setTime_t(tokens[3].toUInt());
+					entry.message = tokens[4];
+					entry.ip.truncate(0);
+					entry.mobile.truncate(0);
+					entry.description.truncate(0);
+					entries.append(entry);
+					}
+				break;
+			case HISTORYMANAGER_ENTRY_CHATRCV:
+			case HISTORYMANAGER_ENTRY_MSGRCV:
+				if (tokens.count() == 6) {
+					entry.uin = tokens[1].toUInt();
+					entry.nick = tokens[2];
+					entry.date.setTime_t(tokens[3].toUInt());
+					entry.sdate.setTime_t(tokens[4].toUInt());
+					entry.message = tokens[5];
+					entry.ip.truncate(0);
+					entry.mobile.truncate(0);
+					entry.description.truncate(0);
+					entries.append(entry);
+					}
+				break;
+			case HISTORYMANAGER_ENTRY_STATUS:
+				if (tokens.count() == 6 || tokens.count() == 7) {
+					entry.uin = tokens[1].toUInt();
+					entry.nick = tokens[2];
+					entry.ip = tokens[3];
+					entry.date.setTime_t(tokens[4].toUInt());
+					if (tokens[5] == "avail")
+						entry.status = GG_STATUS_AVAIL;
+					else if (tokens[5] == "notavail")
+						entry.status = GG_STATUS_NOT_AVAIL;
+					else if (tokens[5] == "busy")
+						entry.status = GG_STATUS_BUSY;
+					else if (tokens[5] == "invisible")
+						entry.status = GG_STATUS_INVISIBLE;
+					if (tokens.count() == 7) {
+						switch (entry.status) {
+							case GG_STATUS_AVAIL:
+								entry.status = GG_STATUS_AVAIL_DESCR;
+								break;
+							case GG_STATUS_NOT_AVAIL:
+								entry.status = GG_STATUS_NOT_AVAIL_DESCR;
+								break;
+							case GG_STATUS_BUSY:
+								entry.status = GG_STATUS_BUSY_DESCR;
+								break;
+							case GG_STATUS_INVISIBLE:
+								entry.status = GG_STATUS_INVISIBLE_DESCR;
+								break;
+							}
+						entry.description = tokens[6];
+						}
+					else
+						entry.description.truncate(0);
+					entry.mobile.truncate(0);
+					entry.message.truncate(0);
+					entries.append(entry);
+					}
+				break;
+			case HISTORYMANAGER_ENTRY_SMSSEND:
+				if (tokens.count() == 4 || tokens.count() == 6) {
+					entry.mobile = tokens[1];
+					entry.date.setTime_t(tokens[2].toUInt());
+					entry.message = tokens[3];
+					if (tokens.count() == 4) {
+						entry.nick.truncate(0);
+						entry.uin = 0;
+						}
+					else {
+						entry.nick = tokens[4];
+						entry.uin = tokens[5].toUInt();
+						}
+					entry.ip.truncate(0);
+					entry.description.truncate(0);
+					entries.append(entry);
+					}
+				break;
+			}
+//		kdebug("HistoryManager::getHistoryEntries(UinsList uins, int from, int count): %d\n", tokens.count());
+		}
+
+	f.close();
+
+	return entries;
+}
+
+QStringList HistoryManager::mySplit(const QChar &sep, const QString &str) {
+	QStringList strlist;
+
+	QString token;
+	QChar letter;
+	int idx = 0, state = 0;
+	while (idx < str.length()) {
+		letter = str[idx];
+		switch (state) {
+			case 0:
+				if (letter == ',') {
+					if (token.length())
+						token.truncate(0);
+					else
+						strlist.append(token);
+					}
+				else
+					if (letter == '"')
+						state = 2;
+					else {
+						token.append(letter);
+						state = 1;
+						}
+				idx++;
+				break;
+			case 1:
+				if (letter != ',') {
+					token.append(letter);
+					idx++;
+					}
+				else {
+					strlist.append(token);
+					state = 0;
+					}
+				break;
+			case 2:
+				if (letter == '\\')
+					state = 3;
+				else
+					if (letter == '\"') {
+						strlist.append(token);
+						state = 0;
+						}
+					else
+						token.append(letter);
+				idx++;
+				break;
+			case 3:
+				switch (letter) {
+					case 'n':
+						token.append('\n');
+						break;
+					case '\\':
+						token.append('\\');
+						break;
+					case '\"':
+						token.append('\"');
+						break;
+					default:
+						token.append('?');
+					}
+				state = 2;
+				idx++;
+				break;
+			}
+		}
+	if (state == 1)
+		strlist.append(token);
+
+	return strlist;
+}
+
 History::History(UinsList uins) {
 	int i;
 	
@@ -542,29 +784,71 @@ History::History(UinsList uins) {
 
 	QString fname;
 	fname.append(ggPath("history/"));
-	uins.sort();
-	for (i = 0; i < uins.count(); i++) {
-		fname.append(QString::number(uins[i]));	
-		if (i < uins.count() - 1)
-			fname.append("_");
-		}
+	fname.append(HistoryManager::getFileNameByUinsList(uins));
 		
-	QFile f(fname);
-	if (f.open(IO_ReadOnly)) {
-		QTextStream t(&f);
-		t.setCodec(QTextCodec::codecForName("ISO 8859-2"));
-		body->setText(t.read());
-		}
-	else {
-		kdebug("History(): Error opening history file %s\n", (const char *)fname.local8Bit());
-		body->setText(i18n("Error opening history file"));
-		}
 	grid->addWidget(body,0,0);
 	grid->addWidget(closebtn,1,0, Qt::AlignRight);
 
 	connect(closebtn, SIGNAL(clicked()), this, SLOT(close()));
 
 	resize(500,400);
+
+	int count;
+	QString text;
+
+	kdebug("History(): lines = %d\n", count = history.getHistoryEntriesCount(uins));
+	QValueList<HistoryEntry> entries;
+	entries = history.getHistoryEntries(uins, 0, count);
+	for (i = 0; i < entries.count(); i++) {
+		switch (entries[i].type) {
+			case HISTORYMANAGER_ENTRY_CHATSEND:
+			case HISTORYMANAGER_ENTRY_MSGSEND:
+				text.append(config.nick);
+				text.append(entries[i].date.toString(" (dd.MM.yy hh:mm:ss)\n"));
+				text.append(entries[i].message + "\n\n");
+				break;
+			case HISTORYMANAGER_ENTRY_CHATRCV:
+			case HISTORYMANAGER_ENTRY_MSGRCV:
+				text.append(entries[i].nick);
+				text.append(entries[i].date.toString(" (dd.MM.yyyy hh:mm:ss / S "));
+				text.append(entries[i].sdate.toString("dd.MM.yyyy hh:mm:ss)\n"));
+				text.append(entries[i].message + "\n\n");
+				break;
+			case HISTORYMANAGER_ENTRY_STATUS:
+				text.append(entries[i].nick);
+				text.append(entries[i].date.toString(" (dd.MM.yyyy hh:mm:ss) ip="));
+				text.append(entries[i].ip + "\n");
+				switch (entries[i].status) {
+					case GG_STATUS_AVAIL:
+					case GG_STATUS_AVAIL_DESCR:
+						text.append(i18n("Online"));
+						break;
+					case GG_STATUS_BUSY:
+					case GG_STATUS_BUSY_DESCR:
+						text.append(i18n("Busy"));
+						break;
+					case GG_STATUS_INVISIBLE:
+					case GG_STATUS_INVISIBLE_DESCR:
+						text.append(i18n("Invisible"));
+						break;
+					case GG_STATUS_NOT_AVAIL:
+					case GG_STATUS_NOT_AVAIL_DESCR:
+						text.append(i18n("Offline"));
+						break;
+					}
+				if (entries[i].description.length())
+					text.append(QString(" (") + entries[i].description + ")\n\n");
+				else
+					text.append("\n\n");
+				break;
+			case HISTORYMANAGER_ENTRY_SMSSEND:
+				text.append(entries[i].mobile + " SMS");
+				text.append(entries[i].date.toString(" (dd.MM.yyyy hh:mm:ss)\n"));
+				text.append(entries[i].message + "\n\n");
+				break;
+			}
+		}
+	body->setText(text);
 }
 
 HistoryManager history;
