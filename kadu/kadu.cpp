@@ -991,8 +991,12 @@ void Kadu::sendMessage(QListBoxItem *item) {
 	
 	uin = userlist.byAltNick(item->text()).uin;
 
-	if (!uin)
+	if (!uin) {
+		Sms *sms;
+		sms = new Sms(0, userbox->currentText(), 0);
+		sms->show();
 		return;
+		}
 
 	for (i = 0; i < pending.count(); i++) {
 		elem = pending[i];
