@@ -451,10 +451,6 @@ Hasło powinno w obu polach być takie same!</translation>
         <translation>Bieżący</translation>
     </message>
     <message>
-        <source>Registration was successful.</source>
-        <translation>Rejestracja zakończona sukcesem.</translation>
-    </message>
-    <message>
         <source>French</source>
         <translation>Francuski</translation>
     </message>
@@ -465,6 +461,19 @@ Hasło powinno w obu polach być takie same!</translation>
     <message>
         <source>This module play sounds using ALSA - Advanced Linux Sound Architecture driver.</source>
         <translation>Ten moduł używa sterownika dźwięku ALSA - Advanced Linux Sound Architecture.</translation>
+    </message>
+    <message>
+        <source>Registration was successful.
+You UIN is: </source>
+        <translation>Rejestracja zakończona sukcesem.
+Twój nr GG: </translation>
+    </message>
+    <message>
+        <source>
+Account configuration was saved.
+Press Next to continue</source>
+        <translation>Konfiguracjia konta została zapisana.
+Naciśnij Dalej by kontynuować</translation>
     </message>
 </context>
 <context>

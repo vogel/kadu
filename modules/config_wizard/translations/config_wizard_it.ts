@@ -450,10 +450,6 @@ Password in entrambi campi deve essere la stessa!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Registration was successful.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>French</source>
         <translation type="unfinished"></translation>
     </message>
@@ -463,6 +459,17 @@ Password in entrambi campi deve essere la stessa!</translation>
     </message>
     <message>
         <source>This module play sounds using ALSA - Advanced Linux Sound Architecture driver.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Registration was successful.
+You UIN is: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>
+Account configuration was saved.
+Press Next to continue</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
