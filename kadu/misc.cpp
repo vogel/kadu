@@ -412,8 +412,11 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 QString parse_symbols(QString s, int i, UserListElement &ule, bool escape) {
 	QString r,d;
 	int j;
+#if QT_VERSION >= 0x030200
 	r.reserve(s.length());
-
+#else
+#warning OUTDATED QT COMPATIBILITY USED
+#endif
 	while(s[i]!='%' && i != s.length()) {
 		r+=s[i];
 		i++;
