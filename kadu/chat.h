@@ -346,8 +346,13 @@ class ChatSlots :public QObject
 		void onFoldLink(bool toggled);
 		void chooseColor(const char* name, const QColor& color);
 		void chooseFont(const char* name, const QFont& font);
+
 		void findAndSetWebBrowser(int selectedBrowser);
 		void findAndSetBrowserOption(int selectedOption);
+
+		void initBrowserOptions(QComboBox *browserCombo, QComboBox *browserOptionsCombo, QLineEdit *browserPath);
+		void findBrowser(int selectedBrowser, QComboBox *browserCombo, QComboBox *browserOptionsCombo, QLineEdit *browserPath);
+		void setBrowserOption(int selectedOption, QLineEdit *browserPathEdit);
 };
 
 #endif
