@@ -123,23 +123,25 @@ void Ignored::add() {
 	kdebugf2();
 }
 
-void Ignored::getList() {
+void Ignored::getList()
+{
 	kdebugf();
-	unsigned int i, j, k;
 	lb_list->clear();
-	for (i = 0; i < ignored.count(); i++) {
+	for (unsigned int i = 0; i < ignored.count(); i++)
+	{
 		QStringList strlist;
-		for (j = 0; j < ignored[i].count(); j++) {
-			k = 0;
-			while (k < userlist.count() && ignored[i][j] != userlist[k].uin)
-				k++;
-			if (k < userlist.count())
-				strlist.append(QString("%1 (%2)").arg(QString::number(userlist[k].uin)).arg(userlist[k].altnick));
+		for (unsigned int j = 0; j < ignored[i].count(); j++)
+		{
+			if (userlist.containsUin(ignored[i][j]))
+			{
+				UserListElement& e = userlist.byUin(ignored[i][j]);
+				strlist.append(QString("%1 (%2)").arg(QString::number(e.uin)).arg(e.altnick));
+			}
 			else
 				strlist.append(QString("%1").arg(QString::number(ignored[i][j])));
-			}
-		lb_list->insertItem(icons_manager.loadIcon("Blocking"), strlist.join(";"));
 		}
+		lb_list->insertItem(icons_manager.loadIcon("Blocking"), strlist.join(";"));
+	}
 	kdebugf2();
 }
 

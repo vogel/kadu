@@ -233,9 +233,9 @@ Sms::Sms(const QString& altnick, QDialog* parent) : QDialog (parent, "Sms")
 
 	QStringList strlist;
 	list = new QComboBox(this);
-	for (unsigned int i = 0; i < userlist.count(); i++)
-		if (userlist[i].mobile.length())
-		 	strlist.append(userlist[i].altnick);
+	for (UserList::ConstIterator i = userlist.begin(); i != userlist.end(); i++)
+		if ((*i).mobile.length())
+		 	strlist.append((*i).altnick);
 	strlist.sort();
 	strlist.insert(strlist.begin(), QString::null);
 	list->insertStringList(strlist);
@@ -288,22 +288,18 @@ void Sms::updateRecipient(const QString &newtext)
 		recipient->setText("");
 		return;
 	}
-	for(unsigned int i=0; i<userlist.count(); i++)
-		if(userlist[i].altnick==newtext)
-		{
-			recipient->setText(userlist[i].mobile);
-			break;
-		}
+	if(userlist.containsAltNick(newtext))
+		recipient->setText(userlist.byAltNick(newtext).mobile);
 	kdebugf2();
 }
 
 void Sms::updateList(const QString &newnumber)
 {
 	kdebugf();
-	for(unsigned int i=0; i<userlist.count(); i++)
-		if(userlist[i].mobile==newnumber)
+	for(UserList::ConstIterator i = userlist.begin(); i != userlist.end(); i++)
+		if((*i).mobile==newnumber)
 		{
-			list->setCurrentText(userlist[i].altnick);
+			list->setCurrentText((*i).altnick);
 			return;
 		}
 	list->setCurrentText("");
@@ -519,11 +515,11 @@ void SmsSlots::onSendSmsToUser()
 	UserBox *activeUserBox=kadu->userbox()->getActiveUserBox();
 	if (activeUserBox==NULL)
 		return;
-	users= activeUserBox->getSelectedUsers();
+	users = activeUserBox->getSelectedUsers();
 	if (users.count() != 1)
 		return;
-	if (users.first().mobile.length())
-		newSms(users.first().altnick);
+	if ((*users.begin()).mobile.length())
+		newSms((*users.begin()).altnick);
 	kdebugf2();
 }
 
@@ -611,7 +607,7 @@ void SmsSlots::onPopupMenuCreate()
 	if (activeUserBox==NULL)//to siê zdarza...
 		return;
 	users = activeUserBox->getSelectedUsers();
-	UserListElement user = users.first();	
+	UserListElement user = (*users.begin());
 
 	if (!user.mobile.length() || users.count() != 1)
 		UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("Send SMS")), false);

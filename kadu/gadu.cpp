@@ -531,10 +531,10 @@ void GaduProtocol::disconnectedSlot()
 
 	userlist_sent = false;
 
-	for (unsigned int i=0; i < userlist.count(); i++)
+	for (UserList::Iterator i = userlist.begin(); i != userlist.end(); i++)
 	{
-		userlist[i].status = GG_STATUS_NOT_AVAIL;
-		userlist[i].description = "";
+		(*i).status = GG_STATUS_NOT_AVAIL;
+		(*i).description = "";
 	}
 
 	chat_manager->refreshTitles();
@@ -891,12 +891,12 @@ void GaduProtocol::sendUserList()
 	kdebugf();
 	UinType *uins;
 	char *types;
-	unsigned int i, j;
 
 	userlist_sent = true;
 
-	for (i = 0, j = 0; i < userlist.count(); i++)
-		if (userlist[i].uin)
+	unsigned int j = 0;
+	for (UserList::ConstIterator i = userlist.begin(); i != userlist.end(); i++)
+		if ((*i).uin)
 			j++;
 
 	if (!j) {
@@ -908,18 +908,20 @@ void GaduProtocol::sendUserList()
 	uins = (UinType *) malloc(j * sizeof(UinType));
 	types = (char *) malloc(j * sizeof(char));
 
-	for (i = 0, j = 0; i < userlist.count(); i++)
-		if (userlist[i].uin && !userlist[i].anonymous) {
-			uins[j] = userlist[i].uin;
-			if (userlist[i].offline_to_user)
+	j = 0;
+	for (UserList::ConstIterator i = userlist.begin(); i != userlist.end(); i++)
+		if ((*i).uin && !(*i).anonymous)
+		{
+			uins[j] = (*i).uin;
+			if ((*i).offline_to_user)
 				types[j] = GG_USER_OFFLINE;
 			else
-				if (userlist[i].blocking)
+				if ((*i).blocking)
 					types[j] = GG_USER_BLOCKED;
 				else
 					types[j] = GG_USER_NORMAL;
 			j++;
-			}
+		}
 
 	/** we were popping up sometimes, so let's keep the server informed **/
 	if (IWannaBeInvisible)
@@ -1191,27 +1193,27 @@ QString GaduProtocol::userListToString(const UserList& userList) const
 	kdebugf();
 	QString contacts(""), tmp;
 
-	for (unsigned int i = 0; i < userList.count(); i++)
-		if (!userList[i].anonymous)
+	for (UserList::ConstIterator i = userList.begin(); i != userList.end(); i++)
+		if (!(*i).anonymous)
 		{
-			contacts += userList[i].first_name;
+			contacts += (*i).first_name;
 			contacts += ";";
-			contacts += userList[i].last_name;
+			contacts += (*i).last_name;
 			contacts += ";";
-			contacts += userList[i].nickname;
+			contacts += (*i).nickname;
 			contacts += ";";
-			contacts += userList[i].altnick;
+			contacts += (*i).altnick;
 			contacts += ";";
-			contacts += userList[i].mobile;
+			contacts += (*i).mobile;
 			contacts += ";";
-			tmp = userList[i].group();
+			tmp = (*i).group();
 			tmp.replace(QRegExp(","), ";");
 			contacts += tmp;
 			contacts += ";";
-			if (userList[i].uin)
-				contacts += QString::number(userList[i].uin);
+			if ((*i).uin)
+				contacts += QString::number((*i).uin);
 			contacts += ";";
-			contacts += userList[i].email;
+			contacts += (*i).email;
 			contacts += ";0;;0;\r\n";
 		}
 

@@ -103,10 +103,10 @@ void UserListElement::setGroup(const QString& group)
 UserList::UserList(const UserList& source)
 {
 	for(const_iterator i=source.begin(); i!=source.end(); i++)
-		append(*i);
+		insert(i.key(),i.data());
 }
 
-UserList::UserList() : QObject(NULL, "userlist"), QValueList<UserListElement>()
+UserList::UserList() : QObject(NULL, "userlist"), QMap<QString,UserListElement>()
 {
 	dnslookups.setAutoDelete(true);
 }
@@ -187,9 +187,8 @@ UserListElement& UserList::byNick(const QString& nickname)
 
 UserListElement& UserList::byAltNick(const QString& altnick)
 {
-	for (iterator i = begin(); i != end(); i++)
-		if ((*i).altnick.lower() == altnick.lower())
-			return (*i);
+	if(contains(altnick))
+		return (*this)[altnick];
 	kdebugm(KDEBUG_PANIC, "UserList::byAltNick(): Panic! %s not exists\n",
 		(const char*)altnick.lower().local8Bit());
 	return *((UserListElement*)NULL);
@@ -250,7 +249,7 @@ void UserList::addUser(UserListElement& ule)
 	e.anonymous = ule.anonymous;
 	e.ip = ule.ip;
 	e.port = ule.port;
-	append(e);
+	insert(e.altnick,e);
 	emit userAdded(e);
 	emit modified();
 	kdebugf2();
@@ -539,7 +538,7 @@ bool UserList::readFromFile()
 
 UserList& UserList::operator=(const UserList& userlist)
 {
-	QValueList<UserListElement>::operator=(userlist);
+	QMap<QString,UserListElement>::operator=(userlist);
 	for (Iterator i = begin(); i != end(); i++)
 		(*i).Parent = this;
 	emit modified();
@@ -594,7 +593,7 @@ void UserList::merge(UserList &userlist) {
 			e.email = (*i).email;
 			e.anonymous = (*i).anonymous;
 			e.port = (*i).port;
-			append(e);
+			insert(e.altnick,e);
 			}
 		}
 	emit modified();

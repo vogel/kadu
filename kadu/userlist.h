@@ -70,12 +70,13 @@ struct UserListElement
 };
 
 /**
-	Klasa reprezentuj±ca listê kontaktów
+	Klasa reprezentuj±ca listê kontaktów.
+	indexami s± altnicki.
 **/
-class UserList : public QObject, public QValueList<UserListElement>
+class UserList : public QObject, public QMap<QString,UserListElement>
 {
 	Q_OBJECT
-
+	
 	protected:
 		DnsLookups dnslookups;
 		friend class UserListElement;

@@ -649,13 +649,14 @@ void EventConfigSlots::onCreateConfigDialog()
 
 	QListBox *e_availusers= ConfigDialog::getListBox("Notify", "available");
 	QListBox *e_notifies= ConfigDialog::getListBox("Notify", "track");
-	for (unsigned int i=0; i < userlist.count(); i++) {
-		if (userlist[i].uin)
-			if (!userlist[i].notify)
-				e_availusers->insertItem(userlist[i].altnick);
+	for (UserList::ConstIterator i = userlist.begin(); i != userlist.end(); i++)
+	{
+		if ((*i).uin)
+			if (!(*i).notify)
+				e_availusers->insertItem((*i).altnick);
 			else
-				e_notifies->insertItem(userlist[i].altnick);
-		}
+				e_notifies->insertItem((*i).altnick);
+	}
 
 	e_availusers->sort();
 	e_notifies->sort();

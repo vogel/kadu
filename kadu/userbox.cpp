@@ -285,9 +285,8 @@ UserBox::UserBox(QWidget* parent,const char* name,WFlags f)
 	kdebugf();
 	if (!userboxmenu)
 		userboxmenu= new UserBoxMenu(this);
-
 	UserBoxes.append(this);
-	setSelectionMode(QListBox::Extended);
+	setSelectionMode(QListBox::Extended);	
 	kdebugf2();
 }
 

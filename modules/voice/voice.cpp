@@ -262,7 +262,7 @@ void VoiceManager::makeVoiceChat()
 			users = activeUserBox->getSelectedUsers();
 			if (users.count() != 1)
 				return;
-			UserListElement user = users.first();
+			UserListElement user = (*users.begin());
 			if (user.port >= 10)
 			{
 				if ((dcc_new = gg_dcc_voice_chat(htonl(user.ip.ip4Addr()), user.port,
@@ -299,7 +299,7 @@ void VoiceManager::userBoxMenuPopup()
 	if (activeUserBox==NULL) //to siê zdarza...
 		return;
 	UserList users = activeUserBox->getSelectedUsers();
-	UserListElement user = users.first();
+	UserListElement user = (*users.begin());
 
 	bool isOurUin=users.containsUin(config_file.readNumEntry("General", "UIN"));	
 	int voicechat = UserBox::userboxmenu->getItem(tr("Voice chat"));

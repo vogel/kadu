@@ -42,7 +42,6 @@ UserInfo::UserInfo(const QString &name, QDialog *parent, const QString &altnick,
 	
 	QLabel *l_info = new QLabel(center);
 	
-	unsigned int i = 0;
 	if (fAddUser)
 	{
 		puser = NULL;
@@ -51,9 +50,12 @@ UserInfo::UserInfo(const QString &name, QDialog *parent, const QString &altnick,
 	}
 	else 
 	{
-		while (i < userlist.size() && userlist[i].altnick != altnick)
-			i++;
-		puser = &userlist[i];
+		for (UserList::Iterator i = userlist.begin(); i != userlist.end(); i++)
+			if ((*i).altnick == altnick)
+			{
+				puser = &(*i);
+				break;
+			}
 		setCaption(tr("User info on %1").arg(altnick));
 		
 		l_icon->setPixmap(icons_manager.loadIcon("ManageUsersWindowIcon"));

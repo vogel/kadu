@@ -141,10 +141,10 @@ void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 	linelist.append(QString::number(time(NULL)));
 	linelist.append(text2csv(msg));
 
-	for (unsigned int i = 0; i < userlist.count(); i++)
-		if (userlist[i].mobile == mobile) {
-			altnick = userlist[i].altnick;
-			uin = userlist[i].uin;
+	for (UserList::ConstIterator i = userlist.begin(); i != userlist.end(); i++)
+		if ((*i).mobile == mobile) {
+			altnick = (*i).altnick;
+			uin = (*i).uin;
 			break;
 			}
 	if (uin) {
@@ -442,7 +442,6 @@ void HistoryManager::convSms2ekgForm() {
 	QString fname, fnameout, line, nick;
 	QStringList linelist;
 	UinType uin=0;
-	unsigned int i;
 
 	fname = "sms";
 	f.setName(path + fname);
@@ -503,9 +502,9 @@ void HistoryManager::convSms2ekgForm() {
 			datetime.setTime(QTime(czas.left(2).toInt(), czas.mid(3, 2).toInt(), czas.right(2).toInt()));
 			linelist.append(QString::number(-datetime.secsTo(
 				QDateTime(QDate(1970, 1, 1), QTime(0 ,0)))));
-			for (i = 0; i < userlist.count(); i++)
-				if (userlist[i].mobile == mobile)
-					uin = userlist[i].uin;
+			for (UserList::ConstIterator i = userlist.begin(); i != userlist.end(); i++)
+				if ((*i).mobile == mobile)
+					uin = (*i).uin;
 			header = false;
 			}
 		else {
