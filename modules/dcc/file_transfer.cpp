@@ -20,6 +20,7 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <netinet/in.h>
+#include <stdlib.h>
 
 #include "kadu.h"
 #include "config_dialog.h"
@@ -149,6 +150,9 @@ QMap<DccSocket*, FileTransferDialog*> FileTransferDialog::Dialogs;
 FileTransferManager::FileTransferManager()
 {
 	kdebugf();
+	config_file.addVariable("Network", "LastUploadDirectory", QString(getenv("HOME"))+"/");
+	config_file.addVariable("Network", "LastDownloadDirectory", QString(getenv("HOME"))+"/");
+
 	UserBox::userboxmenu->addItemAtPos(1, "SendFile", tr("Send file"),
 		this,SLOT(sendFile()),
 		HotKey::shortCutFromFile("ShortCuts", "kadu_sendfile"));
@@ -241,7 +245,7 @@ QString FileTransferManager::selectFile(DccSocket* socket)
 	do
 	{
 		f = QFileDialog::getOpenFileName(
-			config_file.readEntry("Network", "LastUploadDirectory", "~/")
+			config_file.readEntry("Network", "LastUploadDirectory")
 			+(char *)socket->ggDccStruct()->file_info.filename,
 			QString::null, 0, tr("open file"), tr("Select file location"));
 		fi.setFile(f);
@@ -360,7 +364,7 @@ void FileTransferManager::needFileAccept(DccSocket* socket)
 		case 0: // Yes?
 			kdebugmf(KDEBUG_INFO, "accepted\n");
 			f = QFileDialog::getSaveFileName(
-				config_file.readEntry("Network", "LastDownloadDirectory", "~/")
+				config_file.readEntry("Network", "LastDownloadDirectory")
 					+(char *)socket->ggDccStruct()->file_info.filename,
 				QString::null, 0, tr("save file"), tr("Select file location"));
 			if (f.isEmpty())

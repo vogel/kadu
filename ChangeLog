@@ -322,6 +322,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * ³ata mig21 + drobne poprawki: je¿eli w ci±gu kilku sekund (domy¶lnie 2) od przyj¶cia
   wiadomo¶ci spróbujemy zamkn±æ okno chatu, to kadu zapyta siê o potwierdzenie (joi)
 * istotne poprawki przy instalowaniu katalogu "data" modu³ów [#353] (adrian)
+* przy pierwszym uruchomieniu dcc ¶cie¿ki do domy¶lnych katalogów s±
+  poprawnie ustawiane (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
