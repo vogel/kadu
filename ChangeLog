@@ -76,6 +76,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * zaaplikowany patch michala umozliwiajacy ogladanie
   wielolinijkowych opisow (adrian)
 * zaaplikowany patch uto poprawiajacy wylaczanie wielolinijkowych opisow (adrian)
+* zaaplikowany patch joi'a na modul sound poprawiajacy zachowywanie
+  minimalnych odstepow miedzy dzwiekami powiadamiajacymi (adrian)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

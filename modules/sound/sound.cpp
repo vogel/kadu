@@ -158,6 +158,7 @@ void SoundManager::messageSound(UinsList senders,const QString& msg,time_t time)
 	else 
 		messagesound=themePath(config_file.readEntry("Sounds", "SoundTheme"))+getThemeEntry("Message");
 	emit playOnMessage(senders, messagesound, msg, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
+	lastsoundtime.restart();
 }
 
 void SoundManager::chatSound(UinsList senders,const QString& msg,time_t time, bool& grab)
@@ -175,6 +176,7 @@ void SoundManager::chatSound(UinsList senders,const QString& msg,time_t time, bo
 		else 
 			chatsound=themePath(config_file.readEntry("Sounds", "SoundTheme"))+getThemeEntry("Chat");
 		emit playOnChat(senders, chatsound, msg, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
+		lastsoundtime.restart();
 	}
 }
 
@@ -207,6 +209,7 @@ void SoundManager::notifySound(const uin_t uin, const unsigned int oldstatus, co
 				else 
 					notifysound=themePath(config_file.readEntry("Sounds", "SoundTheme"))+getThemeEntry("Notify");
 				emit playOnNotify(uin, notifysound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
+				lastsoundtime.restart();
 			}
 }
 
