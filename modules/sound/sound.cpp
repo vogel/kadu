@@ -861,7 +861,7 @@ void SoundSlots::testSampleRecording()
 	}
 	sound_manager->closeDevice(device);
 //	MessageBox::close(tr("You should now hear recorded sample"));
-	delete buf;
+	delete[] buf;
 }
 
 void SoundSlots::testFullDuplex()
