@@ -1,25 +1,18 @@
 #ifndef ABOUT_H
 #define ABOUT_H
 
-#include <qtabdialog.h>
+#include <qdialog.h>
 
 /*
 	Okno z informacjami o programie
 */
-class About : public QTabDialog {
+class About : public QDialog {
 	Q_OBJECT
 
 public:
 	About();
 
 private:
-	void addTab1();
-	void addTab2();
-	void addTab3();
-	void addTab4();
-	void addTab5();
-	void addTab6();
-
 	QString loadFile(const QString &name);
 };
 

@@ -118,6 +118,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * jednak wy³±czone znikanie kadu z paska zadañ (joi)
 * czwarty patch porz±dkuj±cy vogela: eksport i import listy kontaktów (adrian)
 * mo¿liwo¶æ automat. pobierania i instalacji modu³ów amarok i filedesc (adrian)
+# nowe okienko about by kid (tomee)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
