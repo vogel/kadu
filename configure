@@ -6043,14 +6043,18 @@ _ACEOF
 			MODULE_LIBS_PATH=; \
 			MODULE_INCLUDES=; \
 			MODULE_INCLUDES_PATH=; \
+			MODULE_TOOLS=; \
+			MODULE_CONFIGURE_CMD=; \
 			MODULE_LDFLAGS=; \
 			MODULE_CXXFLAGS=; \
 			MODULE_DIR=../modules/$mod; \
 			. ./modules/$mod/spec; \
-			echo "MODULE_LIBS:          $MODULE_LIBS"; \
-			echo "MODULE_LIBS_PATH:     $MODULE_LIBS_PATH"; \
-			echo "MODULE_INCLUDES:      $MODULE_INCLUDES"; \
-			echo "MODULE_INCLUDES_PATH: $MODULE_INCLUDES_PATH"; \
+			echo "MODULE_LIBS:           $MODULE_LIBS"; \
+			echo "MODULE_LIBS_PATH:      $MODULE_LIBS_PATH"; \
+			echo "MODULE_INCLUDES:       $MODULE_INCLUDES"; \
+			echo "MODULE_INCLUDES_PATH:  $MODULE_INCLUDES_PATH"; \
+			echo "MODULE_TOOLS:          $MODULE_TOOLS"; \
+			echo "MODULE_CONFIGURE_CMD:  $MODULE_CONFIGURE_CMD"; \
 			for lib in $MODULE_LIBS; do \
 
 	echo "$as_me:$LINENO: checking if lib$lib.so/dylib library is in system directories" >&5
@@ -6251,6 +6255,37 @@ fi
 rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
  \
 			done; \
+			for tool in $MODULE_TOOLS; do \
+
+	echo "$as_me:$LINENO: checking if $tool tool is available" >&5
+echo $ECHO_N "checking if $tool tool is available... $ECHO_C" >&6
+	FILE_DIR=
+	for dir in `echo $PATH | sed "s/:/ /g"`
+	do
+		if test -x $dir/$tool; then
+			FILE_DIR=$dir
+			echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
+echo "${ECHO_T}found in $FILE_DIR" >&6
+			break
+		fi
+	done
+	if test -z "$FILE_DIR"; then
+		echo "$as_me:$LINENO: result: not found" >&5
+echo "${ECHO_T}not found" >&6
+		{ { echo "$as_me:$LINENO: error: $tool not found!" >&5
+echo "$as_me: error: $tool not found!" >&2;}
+   { (exit 1); exit 1; }; }
+
+	fi
+ \
+			done; \
+			if eval "$MODULE_CONFIGURE_CMD"; then \
+				echo "Additional module configuration command successed."; \
+			else \
+				{ { echo "$as_me:$LINENO: error: Additional module configuration command failed!" >&5
+echo "$as_me: error: Additional module configuration command failed!" >&2;}
+   { (exit 1); exit 1; }; }; \
+			fi; \
 			echo -n "$MODULE_CXXFLAGS" > modules/$mod/cxxflags; \
 			if test -z `expr " $shared_modules " : ".* \($mod\) "`; then \
 				echo -n > modules/$mod/ldflags; \

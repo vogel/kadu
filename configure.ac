@@ -102,6 +102,26 @@ AC_DEFUN(FIND_LIBRARY,[
 	])
 ])
 
+# $1 - tool name
+# $2 - action if not found (default is error message)
+AC_DEFUN(FIND_TOOL,[
+	AC_MSG_CHECKING([if $1 tool is available])
+	FILE_DIR=
+	for dir in `echo $PATH | sed "s/:/ /g"` 
+	do
+		if test -x $dir/$1; then
+			FILE_DIR=$dir
+			AC_MSG_RESULT([found in $FILE_DIR])
+			break
+		fi
+	done
+	if test -z "$FILE_DIR"; then
+		AC_MSG_RESULT([not found])
+		m4_if($2,,AC_MSG_ERROR([$1 not found!]))
+		$2
+	fi	
+])
+
 AC_DEFUN(FIND_AVAILABLE_MODULES,[
 	available_modules=
 	cd modules
@@ -159,14 +179,18 @@ AC_DEFUN(PROCESS_MODULE_SPEC_FILES,[
 			MODULE_LIBS_PATH=; \
 			MODULE_INCLUDES=; \
 			MODULE_INCLUDES_PATH=; \
+			MODULE_TOOLS=; \
+			MODULE_CONFIGURE_CMD=; \
 			MODULE_LDFLAGS=; \
 			MODULE_CXXFLAGS=; \
 			MODULE_DIR=../modules/$mod; \
 			. ./modules/$mod/spec; \
-			echo "MODULE_LIBS:          $MODULE_LIBS"; \
-			echo "MODULE_LIBS_PATH:     $MODULE_LIBS_PATH"; \
-			echo "MODULE_INCLUDES:      $MODULE_INCLUDES"; \
-			echo "MODULE_INCLUDES_PATH: $MODULE_INCLUDES_PATH"; \
+			echo "MODULE_LIBS:           $MODULE_LIBS"; \
+			echo "MODULE_LIBS_PATH:      $MODULE_LIBS_PATH"; \
+			echo "MODULE_INCLUDES:       $MODULE_INCLUDES"; \
+			echo "MODULE_INCLUDES_PATH:  $MODULE_INCLUDES_PATH"; \
+			echo "MODULE_TOOLS:          $MODULE_TOOLS"; \
+			echo "MODULE_CONFIGURE_CMD:  $MODULE_CONFIGURE_CMD"; \
 			for lib in $MODULE_LIBS; do \
 				FIND_LIBRARY([$lib],[$MODULE_LIBS_PATH],
 				[
@@ -181,6 +205,14 @@ AC_DEFUN(PROCESS_MODULE_SPEC_FILES,[
 					MODULE_CXXFLAGS="$MODULE_CXXFLAGS -I$FILE_DIR"
 				]) \
 			done; \
+			for tool in $MODULE_TOOLS; do \
+				FIND_TOOL([$tool]) \
+			done; \
+			if eval "$MODULE_CONFIGURE_CMD"; then \
+				echo "Additional module configuration command successed."; \
+			else \
+				AC_MSG_ERROR([Additional module configuration command failed!]); \
+			fi; \
 			echo -n "$MODULE_CXXFLAGS" > modules/$mod/cxxflags; \
 			if test -z `expr " $shared_modules " : ".* \($mod\) "`; then \
 				echo -n > modules/$mod/ldflags; \

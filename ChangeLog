@@ -105,6 +105,11 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * kadu (gdy jest zadokowane) nie pojawia siê na pasku zadañ (joi)
 * poprawka szukania g³ównej binarki (akceptowanie pocz±tkowego ../) (joi)
 * trzeci patch porz±dkuj±cy vogela: przypomnienie i zmiana has³a (adrian)
+* configure: rozszerzenia dla modu³ów, w pliku spec: MODULE_TOOLS -
+  lista wymaganych dostêpnych plików wykonywalnych, sprawdzane w $PATH,
+  MODULE_CONFIGURE_CMD - dodatkowa komenda wykonywana na koniec konfigurowania
+  modu³u, mo¿e byæ z³o¿ona np. z u¿yciem &&. "exit code" brany pod uwagê,
+  wiêc mo¿na u¿ywaæ polecenia test i tym podobnych.
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
