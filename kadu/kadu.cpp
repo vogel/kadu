@@ -1242,6 +1242,8 @@ void Kadu::setStatus(int status) {
 	if (config.useproxy) {
 		gg_proxy_host = (char *)config.proxyaddr.latin1();
 		gg_proxy_port = config.proxyport;
+		gg_proxy_username = (char *)config.proxyuser.latin1();
+		gg_proxy_password = (char *)config.proxypassword.latin1();
 		gg_proxy_enabled = 1;
 		}
 	else
