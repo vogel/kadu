@@ -1013,27 +1013,32 @@ void ConfigDialog::_Right(void) {
 
 void ConfigDialog::chooseMsgFile(void) {
 	QString s(QFileDialog::getOpenFileName( QString::null, "Audio Files (*.wav *.au *.raw)", this));
-	e_msgfile->setText(s);
+	if (s.length())
+		e_msgfile->setText(s);
 }
 
 void ConfigDialog::chooseNotifyFile(void) {
 	QString s(QFileDialog::getOpenFileName( QString::null, "Audio Files (*.wav *.au *.raw)", this));
-	e_soundnotify->setText(s);
+	if (s.length())
+		e_soundnotify->setText(s);
 }
 
 void ConfigDialog::chooseEmoticonsPath(void) {
 	QString s(QFileDialog::getExistingDirectory( QString::null, this));
-	e_emoticonspath->setText(s);
+	if (s.length())
+		e_emoticonspath->setText(s);
 }
 
 void ConfigDialog::chooseChatFile(void) {
 	QString s(QFileDialog::getOpenFileName( QString::null, "Audio Files (*.wav *.au *.raw)", this));
-	e_chatfile->setText(s);
+	if (s.length())
+		e_chatfile->setText(s);
 }
 
 void ConfigDialog::choosePlayerFile(void) {
 	QString s(QFileDialog::getOpenFileName( QString::null, "All Files (*)", this));
-	e_soundprog->setText(s);
+	if (s.length())
+		e_soundprog->setText(s);
 }
 
 void ConfigDialog::chooseChatMyBgColorGet(void) {
