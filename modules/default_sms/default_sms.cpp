@@ -324,7 +324,7 @@ QString SmsEraGateway::errorNumber(int nr)
 		case 8: return tr("Wrong receiver address");
 		case 9: return tr("Message too long");
 	}
-	return tr("Unknown error (%d)").arg(nr);
+	return tr("Unknown error (%1)").arg(nr);
 }
 
 void SmsEraGateway::httpFinished()
