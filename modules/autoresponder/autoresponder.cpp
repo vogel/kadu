@@ -13,31 +13,42 @@
 #include "message_box.h"
 #include "gadu.h"
 #include "status.h"
-#include "config_file.h"
+#include "config_dialog.h"
 
 extern "C" int autoresponder_init()
 {
 	autoresponder=new AutoResponder();
-	QObject::connect(&event_manager,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
-		autoresponder,SLOT(chatReceived(UinsList,const QString&,time_t)));
 	return 0;
 }
 
 extern "C" void autoresponder_close()
 {
-	QObject::disconnect(&event_manager,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
-		autoresponder,SLOT(chatReceived(UinsList,const QString&,time_t)));
 	delete autoresponder;
+	autoresponder=NULL;
 }
 
 AutoResponder::AutoResponder() : QObject()
 {
-//	MessageBox::msg(tr("Autoresponder started"));
+	config=new ConfigFile(ggPath(QString("autoresponder.conf")));
+	QObject::connect(&event_manager,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
+		this,SLOT(chatReceived(UinsList,const QString&,time_t)));
+	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Autoresponder"));
+	ConfigDialog::addVGroupBox( "Autoresponder", "Autoresponder", QT_TRANSLATE_NOOP( "@default", "Autoresponder options" ));
+	ConfigDialog::addLineEdit(config, "Autoresponder","Autoresponder options",
+		QT_TRANSLATE_NOOP("@default", "Autoanswer text:"),
+		"Autotext",
+		QT_TRANSLATE_NOOP("@default", "Thanks for your message. User is not currently available."));
 }
 
 AutoResponder::~AutoResponder()
 {
-//	MessageBox::msg(tr("Autoresponder stopped"));
+	QObject::disconnect(&event_manager,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
+		this,SLOT(chatReceived(UinsList,const QString&,time_t)));
+	ConfigDialog::removeControl("Autoresponder", "Autoanswer text:");
+	ConfigDialog::removeControl("Autoresponder", "Autoresponder options");
+	ConfigDialog::removeTab("Autoresponder");
+	config->sync();
+	delete config;
 }
 
 void AutoResponder::chatReceived(UinsList senders,const QString& msg,time_t time)
@@ -49,13 +60,11 @@ void AutoResponder::chatReceived(UinsList senders,const QString& msg,time_t time
 			|| status == (GG_STATUS_FRIENDS_MASK | GG_STATUS_BUSY_DESCR)
 			|| status == GG_STATUS_BUSY 
 			|| status == GG_STATUS_BUSY_DESCR) {
-		
-			ConfigFile config(ggPath(QString("autoresponder.conf")));
-			QString message = config.readEntry("General", "Response", 
-				tr("KADU AUTORESPONDER: Thanks for your message. User is not currently available."));
-			gadu->sendMessage(senders, message);
+
+			gadu->sendMessage(senders, tr("KADU AUTORESPONDER:")+"\n"+
+							config->readEntry("Autoresponder", "Autotext"));
 		}
-	
+
 }
 
 AutoResponder* autoresponder;

@@ -3,11 +3,14 @@
 
 #include <qobject.h>
 #include "misc.h"
+#include "config_file.h"
 
 class AutoResponder : public QObject
 {
 	Q_OBJECT
-
+	
+	ConfigFile *config;
+	
 	public:	
 		AutoResponder();
 		~AutoResponder();
