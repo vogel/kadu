@@ -432,6 +432,9 @@ ConfigDialog::~ConfigDialog() {
 
 void ConfigDialog::registerTab(const QString& caption)
 {
+	for(QValueList<RegisteredControl>::iterator i=RegisteredControls.begin(); i!=RegisteredControls.end(); i++)
+		if((*i).caption==caption)
+			return;
 	RegisteredControl c;
 	c.type=CONFIG_TAB;
 	c.caption=caption;

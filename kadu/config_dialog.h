@@ -58,12 +58,12 @@ class ConfigDialog : public QTabDialog	{
 		static QValueList<RegisteredControl> RegisteredControls;
 		static void registerTab(const QString& caption);
 		static void registerGroupBox(
-			const QString& tab,const QString& caption);
+			const QString& parent,const QString& caption);
 		static void registerCheckBox(
-			const QString& tab,const QString& caption,
+			const QString& parent,const QString& caption,
 			const QString& group,const QString& entry);
 		static void registerLineEdit(
-			const QString& tab,const QString& caption,
+			const QString& parent,const QString& caption,
 			const QString& group,const QString& entry);
 		//
 				

@@ -97,7 +97,11 @@ class Chat : public QWidget {
 		void addEmoticon(QString);
 		void scrollMessages(QString &);
 		void alertNewMessage(void);
-		void setEncryptionBtnEnabled(bool);
+		void setEncryptionBtnEnabled(bool);		
+		/**
+			rejestruje opcje modulu Chat w oknie konfiguracji
+		**/
+		static void initModule();
 
 		QTextBrowser *body;
 		CustomInput *edit;

@@ -999,6 +999,12 @@ void Chat::addEmoticon(QString string) {
 	emoticon_selector = NULL;
 }
 
+void Chat::initModule()
+{
+	ConfigDialog::registerTab(i18n("Other"));
+	ConfigDialog::registerCheckBox(i18n("Other"),i18n("Open chat window on new message"),"Other","OpenChatOnMessage");
+};
+
 ColorSelectorButton::ColorSelectorButton(QWidget* parent, const QColor& qcolor) : QToolButton(parent)
 {
 	QPixmap p(15,15);

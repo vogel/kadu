@@ -740,3 +740,10 @@ void Sms::onSmsSenderFinished(bool success)
 		body->clear();
 };
 
+void Sms::initModule()
+{
+	ConfigDialog::registerTab(i18n("Other"));
+	ConfigDialog::registerGroupBox(i18n("Other"),i18n("SMS Era Gateway"));
+	ConfigDialog::registerLineEdit(i18n("SMS Era Gateway"),i18n("User ID"),"SMS","EraGatewayUser");
+	ConfigDialog::registerLineEdit(i18n("SMS Era Gateway"),i18n("Password"),"SMS","EraGatewayPassword");
+};

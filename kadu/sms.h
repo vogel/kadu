@@ -184,6 +184,10 @@ class Sms : public QDialog {
 	
 	public:
 		Sms(const QString& altnick, QDialog* parent=0);
+		/**
+			rejestruje opcje modulu Sms w oknie konfiguracji
+		**/
+		static void initModule();
 
 	private:
 		QMultiLineEdit *body;
