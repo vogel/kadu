@@ -28,7 +28,7 @@
 
 EmoticonsManager::EmoticonsManager()
 {
-	ThemesList=getSubDirs(QString(DATADIR)+"/kadu/themes/emoticons");
+	ThemesList=getSubDirs(dataPath("kadu/themes/emoticons"));
 	ThemesList.remove(".");
 	walker = NULL;
 }
@@ -185,7 +185,7 @@ bool EmoticonsManager::loadGGEmoticonTheme()
 
 QString EmoticonsManager::themePath()
 {
-	return QString(DATADIR)+"/kadu/themes/emoticons/"+config_file.readEntry("Chat","EmoticonsTheme");
+	return dataPath("kadu/themes/emoticons/"+config_file.readEntry("Chat","EmoticonsTheme"));
 }
 
 void EmoticonsManager::expandEmoticons(HtmlDocument& doc,const QColor& bgcolor)

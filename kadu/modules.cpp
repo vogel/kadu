@@ -241,7 +241,7 @@ ModulesManager::~ModulesManager()
 QTranslator* ModulesManager::loadModuleTranslation(const QString& module_name)
 {
 	QTranslator* translator=new QTranslator(0);
-	if(translator->load(QString(DATADIR) + QString("/kadu/modules/translations/")+module_name+QString("_") + config_file.readEntry("General", "Language", QTextCodec::locale()), "."))
+	if(translator->load(dataPath("kadu/modules/translations/"+module_name+QString("_") + config_file.readEntry("General", "Language", QTextCodec::locale())), "."))
 	{
 		qApp->installTranslator(translator);
 		return translator;
@@ -300,7 +300,7 @@ QStringList ModulesManager::staticModules()
 
 QStringList ModulesManager::installedModules()
 {
-	QDir dir(QString(DATADIR)+"/kadu/modules","*.so");
+	QDir dir(dataPath("kadu/modules"),"*.so");
 	dir.setFilter(QDir::Files);
 	QStringList installed;
 	for(int i=0; i<dir.count(); i++)
@@ -350,7 +350,7 @@ bool ModulesManager::moduleInfo(const QString& module_name, ModuleInfo& info)
 		return true;
 	}
 
-	ConfigFile desc_file(QString(DATADIR)+"/kadu/modules/"+module_name+".desc");
+	ConfigFile desc_file(dataPath("kadu/modules/"+module_name+".desc"));
 
 	QString lang=config_file.readEntry("General", "Language", "en");
 
@@ -419,7 +419,7 @@ bool ModulesManager::activateModule(const QString& module_name)
 	}
 	else
 	{
-		m.lib=new Library(QString(DATADIR)+"/kadu/modules/"+module_name+".so");
+		m.lib=new Library(dataPath("kadu/modules/"+module_name+".so"));
 		if(!m.lib->load())
 		{
 			MessageBox::msg(tr("Cannot load %1 module library.:\n%2").arg(module_name).arg(m.lib->error()));

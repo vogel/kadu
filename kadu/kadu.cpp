@@ -1770,7 +1770,7 @@ void KaduSlots::onCreateConfigDialog()
 	e_password->setText(pwHash(config_file.readEntry("General", "Password", "")));
 	QComboBox *cb_language= ConfigDialog::getComboBox("General", "Set language:");
 
-	QDir locale(QString(DATADIR)+"/kadu/translations/", "kadu_*.qm");
+	QDir locale(dataPath("kadu/translations/"), "kadu_*.qm");
 	QStringList files=locale.entryList();
 
 	for ( QStringList::Iterator it = files.begin(); it != files.end(); ++it )

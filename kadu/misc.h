@@ -20,11 +20,13 @@
 #include "config_file.h"
 
 /*
-	Zmienia sciezke relatywna do katalogu z ustawieniami gg
-	na sciezke bezwzgledna uwzgledniajac zmienne srodowiskowe
+	Zmienia ¶cie¿kê relatywn± do katalogu z ustawieniami gg
+	na ¶cie¿kê bezwzgledn± uwzglêdniaj±c zmienne ¶rodowiskowe
 	$HOME i $CONFIG_DIR
 */
 QString ggPath(const QString &subpath);
+
+QString dataPath(const QString &);
 
 QString cp2unicode(const unsigned char *);
 QCString unicode2cp(const QString &);

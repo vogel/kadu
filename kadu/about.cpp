@@ -270,7 +270,7 @@ void About::addTab6() {
 
 QString About::loadFile(const QString &name) {
 	QString data;
-	QFile file(QString(DATADIR) + QString("/kadu/") + name);
+	QFile file(dataPath("kadu/" + name));
 	if (!file.open(IO_ReadOnly))
 		return QString::null;
 	QTextStream str(&file);

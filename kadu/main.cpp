@@ -33,6 +33,7 @@
 #include "config_file.h"
 #include "config_dialog.h"
 #include "register.h"
+#include "misc.h"
 
 #ifdef MODULES_ENABLED
 #include "modules.h"
@@ -81,10 +82,10 @@ int main(int argc, char *argv[])
 	// ladowanie tlumaczenia
 	QTranslator qt_qm(0);
 	QString lang=config_file.readEntry("General", "Language", QTextCodec::locale());
-	qt_qm.load(QString(DATADIR) + QString("/kadu/translations/qt_") + lang, ".");
+	qt_qm.load(dataPath(QString("kadu/translations/qt_") + lang), ".");
 	qApp->installTranslator(&qt_qm);
 	QTranslator kadu_qm(0);
-	kadu_qm.load(QString(DATADIR) + QString("/kadu/translations/kadu_") + lang, ".");
+	kadu_qm.load(dataPath(QString("kadu/translations/kadu_") + lang), ".");
 	qApp->installTranslator(&kadu_qm);
 
 	QFile f(ggPath("lock"));

@@ -47,6 +47,11 @@ QString ggPath(const QString &subpath)
 	return path;
 }
 
+QString dataPath(const QString &p)
+{
+	return QString(DATADIR)+"/"+p;
+}
+
 QString cp2unicode(const unsigned char *buf)
 {
 	if (buf)
@@ -1738,11 +1743,11 @@ void Themes::setPaths(const QStringList& paths)
 QStringList Themes::defaultKaduPathsWithThemes()
 {
 	QStringList default1, default2;
-	default1=getSubDirs(QString(DATADIR)+"/kadu/themes/"+Name);
+	default1=getSubDirs(dataPath("kadu/themes/"+Name));
 	default2=getSubDirs(ggPath(Name));
 
 	for (QStringList::Iterator it= default1.begin(); it!=default1.end(); it++)
-		(*it)=QString(DATADIR)+"/kadu/themes/"+Name+"/"+(*it)+"/";
+		(*it)=dataPath("kadu/themes/"+Name+"/"+(*it)+"/");
 
 	for (QStringList::Iterator it= default2.begin(); it!=default2.end(); it++)
 		(*it)=ggPath(Name)+"/"+(*it)+"/";
