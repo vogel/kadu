@@ -13,6 +13,8 @@
 * wyszukiwanie u¿ytkowników zgodne z GG 5.0
 * w oknie rozmowy: mo¿na zmieniæ propocjê pomiêdzy rozmiarem okna historii rozmowy,
   a list± u¿ytkowników (gdy prowadzimy konferencjê)
+* chyba poprawiony pad przy wiadomo¶ciach systemowych. UWAGA! teraz lec±
+  tylko na konsolê. Je¶li chcecie ogl±daæ reklamy to dajcie znaæ ;)
 
 +++ wersja 0.3.3-pre3
 * CTRL + klik dowolnego przycisku myszki na ikonce w tray'u powoduje

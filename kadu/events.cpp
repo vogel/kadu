@@ -47,7 +47,30 @@
 #include "sim.h"
 #endif
 
-void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t time,int formats_count=0,struct gg_msg_format * formats=NULL) {
+void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t time,int formats_count=0,struct gg_msg_format * formats=NULL)
+{
+	fprintf(stderr, "KK eventRecvMsg()\n");
+
+	// ignorujemy, jesli nick na liscie ignorowanych
+	// PYTANIE CZY IGNORUJEMY CALA KONFERENCJE
+	// JESLI PIERWSZY SENDER JEST IGNOROWANY????
+	if (isIgnored(senders[0]))
+		return;
+
+	// ignorujemy wiadomosci systemowe (tylko na konsole)
+	if (senders[0] == 0)
+	{
+		if (msgclass <= config.sysmsgidx)
+		{
+			fprintf(stderr, "KK Already had this message, ignoring\n");
+			return;
+		}
+		config.sysmsgidx = msgclass;
+		fprintf(stderr, "KK System message index %d\n", msgclass);
+		return;
+		//senders[0] = config.uin;
+	}
+
 	QString tmp;
 #ifdef HAVE_OPENSSL
 	int declen = 0;
@@ -65,22 +88,8 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 	}
 #endif
 
-	fprintf(stderr, "KK eventRecvMsg()\n");
-
-	if (isIgnored(senders[0]))
-		return;
-
-	/* check whether it's a system message */
-	if (senders[0] == 0) {
-		if (msgclass <= config.sysmsgidx) {
-			fprintf(stderr, "KK Already had this message, ignoring\n");
-			return;
-			}
-		config.sysmsgidx = msgclass;
-		fprintf(stderr, "KK System message index %d\n", msgclass);
-		senders[0] = config.uin;
-		} else if (msg != NULL)
-			cp_to_iso(msg);
+	if (msg != NULL)
+		cp_to_iso(msg);
 
 	QString nick;
 	if (userlist.containsUin(senders[0])) {
@@ -185,14 +194,14 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 	}
 
 	PendingMsgs::Element elem;
-
+/*
 	if (senders[0] == config.uin) {
 		rMessage *rmsg;
 		elem = pending[i];
 		rmsg = new rMessage("System", elem.msgclass, elem.uins, elem.msg);
 		rmsg->init();
 		rmsg->show();
-		}
+		}*/
 }
 
 void playSound(char *sound) {
