@@ -2476,6 +2476,9 @@ void KaduTextBrowser::copy()
 		txt.replace(QRegExp("<body [^>]+>"), "");
 		txt.replace(QRegExp("</body>"), "");
 
+		txt.replace(QRegExp("<a [^>]+>"), "");
+		txt.replace(QRegExp("</a>"), "");
+
 		txt.replace(QRegExp("<br>"), "\n");
 		txt.replace(QRegExp("<br/>"), "\n");
 		txt.replace(QRegExp("<br />"), "\n");
