@@ -19,15 +19,15 @@ class Wizard : public QWizard
     Q_OBJECT
 
 public:
-    Wizard( QWidget *parent = 0, const char *name = 0 );	/* konstruktor */
+	Wizard( QWidget *parent = 0, const char *name = 0 );	/* konstruktor */
 	~Wizard();	/* destruktor */
 	bool noNewAccount;
 	int menuPos;
 
 protected:
 	/*  te funkcje wyswietlaja poszczegolne okna wizarda */ 
-    void showWelcomePage();
-    void showGGNumberSelect();
+	void showWelcomePage();
+	void showGGNumberSelect();
 	void showGGCurrentNumberPage();
 	void showGGNewNumberPage();
 	void showLanguagePage();
