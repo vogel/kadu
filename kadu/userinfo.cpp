@@ -280,7 +280,7 @@ void UserInfo::changeUserData(UserListElement& e)
 			return;
 			}
 
-		if ((e.uin && e.uin != puser->uin && userlist.containsUin(e.uin))|| (e.altnick != puser->altnick && userlist.containsAltNick(e.altnick))) {
+		if ((e.uin && e.uin != puser->uin && userlist.containsUin(e.uin)) || (e.altnick.lower() != puser->altnick.lower() && userlist.containsAltNick(e.altnick))) {
 			QMessageBox::information(this, "Kadu",
 				tr("User is already in userlist"), QMessageBox::Ok);
 			close();

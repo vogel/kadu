@@ -147,8 +147,10 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   przy wcisnieciu "ok" (pawel_p)
 * przed zakonczeniem kadu wyladowuje poprawnie wszystkie moduly,
   pozwalajac im zapisac konfiguracje itp (adrian)
-* poprawka, poprawki adrian'a dotycz±cej problemu z dodawaniem do listy
+* poprawka, poprawki adriana dotycz±cej problemu z dodawaniem do listy
   anonimowego u¿ytkownika - wystêpowa³ segfault (mast3r)
+* poprawka przy zmianie wielkosci liter w nazwie wyswietlanej u¿ytkownika -
+  juz nie powinno wyswietlaæ informacji, ¿e juz taki kontakt istnieje (mast3r)
 
 +++ wersja 0.3.6 (22.11.2003)
 * je¶li klikniemy na jaki¶ kontakt w userboxie, od którego otrzymali¶my jak±¶
