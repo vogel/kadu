@@ -43,6 +43,9 @@ struct SearchIdStruct {
 	int type;
 };
 
+// ominiecie bledu w GCC 3.2
+static QValueList<struct SearchIdStruct> SearchList_gcc32_bug;
+////////////////////////////
 extern QValueList<struct SearchIdStruct> SearchList;
 
 class UinsList : public QValueList<uin_t>
