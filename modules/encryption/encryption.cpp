@@ -51,9 +51,10 @@ EncryptionManager::EncryptionManager()
 
 	connect(chat_manager,SIGNAL(chatCreated(const UinsList&)),this,SLOT(chatCreated(const UinsList&)));
 	connect(&event_manager,SIGNAL(messageFiltering(const UinsList&,char*)),this,SLOT(receivedMessageFilter(const UinsList&,char*)));
+	connect(UserBox::userboxmenu,SIGNAL(popup()),this,SLOT(userBoxMenuPopup()));
 	
 	Chat::registerButton("encryption_button",this,SLOT(encryptionButtonClicked()));
-	UserBox::userboxmenu->addItem("SendPublicKey", tr("Send my public key"), this, SLOT(sendPublicKey()));
+	UserBox::userboxmenu->addItemAtPos(2,"SendPublicKey", tr("Send my public key"), this, SLOT(sendPublicKey()));
 
 	sim_key_path = strdup(ggPath("keys/").local8Bit());
 }
@@ -66,6 +67,7 @@ EncryptionManager::~EncryptionManager()
 
 	disconnect(chat_manager,SIGNAL(chatCreated(const UinsList&)),this,SLOT(chatCreated(const UinsList&)));
 	disconnect(&event_manager,SIGNAL(messageFiltering(const UinsList&,char*)),this,SLOT(receivedMessageFilter(const UinsList&,char*)));
+	disconnect(UserBox::userboxmenu,SIGNAL(popup()),this,SLOT(userBoxMenuPopup()));
 
 	Chat::unregisterButton("encryption_button");
 	int sendkeyitem = UserBox::userboxmenu->getItem(tr("Send my public key"));
@@ -213,20 +215,25 @@ void EncryptionManager::sendMessageFilter(const UinsList& uins,char*& msg)
 		msg = encrypted;
 	}
 }
-/*
-	int sendkeyitem= UserBox::userboxmenu->getItem(tr("Send my public key"));
-	QString keyfile_path;
 
+void EncryptionManager::userBoxMenuPopup()
+{
+	int sendkeyitem = UserBox::userboxmenu->getItem(tr("Send my public key"));
+	
+	QString keyfile_path;
 	keyfile_path.append(ggPath("keys/"));
 	keyfile_path.append(QString::number(config_file.readNumEntry("General", "UIN")));
 	keyfile_path.append(".pem");
-
 	QFileInfo keyfile(keyfile_path);
-	if ((keyfile.permission(QFileInfo::ReadUser) && user.uin) && (users.count() == 1))
+	
+	const UinsList& uins = UserBox::getActiveUserBox()->getSelectedUins();
+	uin_t uin = uins.first();
+	
+	if ((keyfile.permission(QFileInfo::ReadUser) && uin) && (uins.count() == 1))
 		UserBox::userboxmenu->setItemEnabled(sendkeyitem, true);
 	else
 		UserBox::userboxmenu->setItemEnabled(sendkeyitem, false);
-*/
+}
 
 void EncryptionManager::sendPublicKey()
 {

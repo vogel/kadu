@@ -33,6 +33,10 @@ class KaduListBoxPixmap : public QListBoxItem {
 class UserBoxMenu : public QPopupMenu
 {
     Q_OBJECT
+
+    private slots:
+	    void restoreLook();
+
     public:
 	    UserBoxMenu(QWidget *parent=0, const char* name=0);
 	    int getItem(const QString &caption);
@@ -41,11 +45,14 @@ class UserBoxMenu : public QPopupMenu
 	    	@param iconname nazwa ikony z zestawu lub sciezka do pliku
 	    **/
 	    int addItem(const QString &iconname, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1);
-    private slots:
-	    void restoreLook();
-
+	    /**
+	    	@param iconname nazwa ikony z zestawu lub sciezka do pliku
+	    **/
+	    int addItemAtPos(int index,const QString &iconname, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1);
+	    
     public slots:
 	    void show(QListBoxItem *item);
+
     signals:
 	    void popup();
 };

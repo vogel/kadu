@@ -23,6 +23,7 @@ class EncryptionManager : public QObject
 		void receivedMessageFilter(const UinsList& senders,char* msg);
 		void sendMessageFilter(const UinsList& uins,char*& msg);
 		void sendPublicKey();
+		void userBoxMenuPopup();
 
 	public:
 		EncryptionManager();
