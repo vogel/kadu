@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
 			case 2: // Nothing
 				break;
 			}
-		kadu->setCaption("Kadu: new user");
+		kadu->setCaption(i18n("Kadu: new user"));
 		}
 
 	if (config.defaultstatus != GG_STATUS_NOT_AVAIL && config.defaultstatus != GG_STATUS_NOT_AVAIL_DESCR) {

@@ -105,7 +105,8 @@ void Register::closeEvent(QCloseEvent *e) {
 		gg_free_register(h);
 		h = NULL;
 		}
-	QWidget::closeEvent(e);
+	QDialog::closeEvent(e);
+	fprintf(stderr, "KK Register::closeEvent(): end\n");
 }
 
 void Register::createSocketNotifiers() {
@@ -179,12 +180,12 @@ void Register::socketEvent() {
 			if (p->success) {
 				status->setText(i18n("Success!"));
 				uin = p->uin;
-				QMessageBox::information(0, "Kadu", i18n("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(uin),
+				QMessageBox::information(this, "Kadu", i18n("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(uin),
 					i18n("OK"), 0, 0, 1);
 				ask();
 				fprintf(stderr, "KK Register::socketEvent() before close()\n");
-				deleteLater();
-				accept();
+//				accept();
+				close();
 				}
 			else {
 				gg_free_register(h);
@@ -205,16 +206,17 @@ void createConfig() {
 	char *home = getenv("HOME");
 	struct passwd *pw;
 
+	fprintf(stderr, "KK createConfig(): $HOME=%s\n", home);
 	if (!home) {
 		if (!(pw = getpwuid(getuid())))
 			return;
 		home = pw->pw_dir;
 		}
 
-	struct stat *buf;	
+	struct stat buf;	
 	QString ggpath = ggPath("");
-	stat(ggpath.local8Bit(), buf);
-	if (S_ISDIR(buf->st_mode))
+	stat(ggpath.local8Bit(), &buf);
+	if (S_ISDIR(buf.st_mode))
 		fprintf(stderr, "KK createConfig(): Directory %s exists\n", (const char *)ggpath.local8Bit());
 	else {
 		fprintf(stderr, "KK createConfig(): Creating directory\n");
@@ -231,6 +233,9 @@ void createConfig() {
 	konf->writeEntry("UIN", config.uin);
 	konf->writeEntry("Password", pwHash(config.password));
 	konf->sync();
+	delete konf;
+
+	kadu->setCaption(QString("Kadu: %1").arg(config.uin));
 
 	fprintf(stderr, "KK createConfig(): Config file created\n");
 }
