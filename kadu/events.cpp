@@ -60,8 +60,12 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 	if(msg != NULL) {
 		int msglen = strlen((const char *)msg);
 		memset(decoded, 0, 2048);
+
 		declen = SIM_Message_Decrypt((unsigned char *)msg, (unsigned char *)decoded, msglen, senders[0]);
-		fprintf(stderr, "DECLEN=%d\n", declen);
+
+		if(declen > 0) {
+		    strcpy((char *)msg, decoded);
+		}
 	}
 #endif
 
@@ -80,12 +84,7 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 		fprintf(stderr, "KK System message index %d\n", msgclass);
 		senders[0] = config.uin;
 		} else if (msg != NULL)
-#ifdef HAVE_OPENSSL
-                       if (declen > 0)
-                               cp_to_iso((unsigned char *)decoded);
-                       else
-#endif
-                               cp_to_iso(msg);
+			cp_to_iso(msg);
 
 	QString nick;
 	if (userlist.containsUin(senders[0])) {
@@ -104,12 +103,7 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 				false, false, true, "", "", true);
 			}
 	if (config.logmessages && senders[0] != config.uin)
-#ifdef HAVE_OPENSSL
-               if (declen > 0)
-                       appendHistory(senders, senders[0], (unsigned char *)decoded, FALSE, time);
-               else
-#endif
-                       appendHistory(senders, senders[0], msg, FALSE, time);
+		appendHistory(senders, senders[0], msg, FALSE, time);
 
 	//script.eventMsg(senders[0],msgclass,(char*)msg);
 
@@ -155,12 +149,7 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 #endif
 	if ((msgclass == GG_CLASS_CHAT || msgclass == GG_CLASS_MSG) && i < chats.count()) {
 		QString toadd;
-#ifdef HAVE_OPENSSL
-		if (declen > 0)
-			tmp = __c2q((const char *)decoded);
-		else
-#endif
-                        tmp = __c2q((const char *)msg);
+		tmp = __c2q((const char *)msg);
 
 		chats[i].ptr->checkPresence(senders, tmp, time, toadd);
 		chats[i].ptr->alertNewMessage();
@@ -173,21 +162,10 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 //	fprintf(stderr, "KK eventRecvMsg(): New buffer size: %d\n",pending.size());
 
 	if (senders[0] != config.uin)
-#ifdef HAVE_OPENSSL
-		if (declen > 0)
-			pending.addMsg(senders, __c2q((const char*)decoded), msgclass, time);
-		else
-#endif
-			pending.addMsg(senders, __c2q((const char*)msg), msgclass, time);
+		pending.addMsg(senders, __c2q((const char*)msg), msgclass, time);
 
 	fprintf(stderr, "KK eventRecvMsg(): Message allocated to slot %d\n", i);
-#ifdef HAVE_OPENSSL
-	if (declen > 0)
-		fprintf(stderr, "KK eventRecvMsg(): Got encoded message from %d (%s) saying \"%s\"\n",
-		         senders[0], (const char *)nick.local8Bit(), decoded);
-        else
-#endif
-		fprintf(stderr, "KK eventRecvMsg(): Got message from %d (%s) saying \"%s\"\n",
+	fprintf(stderr, "KK eventRecvMsg(): Got message from %d (%s) saying \"%s\"\n",
 			senders[0], (const char *)nick.local8Bit(), msg);
 											  
 	UserBox::all_refresh();
