@@ -9,7 +9,6 @@
 
 #include "autoresponder.h"
 
-#include "events.h"
 #include "status.h"
 #include "gadu.h"
 #include "chat.h"

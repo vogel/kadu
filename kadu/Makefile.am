@@ -6,7 +6,6 @@ about.cpp about.h about_moc.cpp \
 chat.cpp chat.h chat_moc.cpp \
 config_dialog.cpp config_dialog.h config_dialog_moc.cpp \
 config_file.cpp config_file.h \
-dcc.cpp dcc.h dcc_moc.cpp \
 debug.cpp debug.h \
 emoticons.cpp emoticons.h emoticons_moc.cpp \
 expimp.cpp expimp.h expimp_moc.cpp \

@@ -14,7 +14,6 @@
 #include <qlayout.h>
 
 #include "chat.h"
-#include "events.h"
 #include "sound.h"
 #include "debug.h"
 #include "config_file.h"

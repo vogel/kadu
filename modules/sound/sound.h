@@ -7,7 +7,6 @@
 #include <qstringlist.h>
 #include "config_file.h"
 
-#include "events.h"
 #include "misc.h"
 #include "modules.h"
 
