@@ -927,8 +927,10 @@ void Kadu::commandParser (int command) {
 			for (i = 0; i < userbox->count(); i++)
 				if (userbox->isSelected(i))
 					uins.append(userlist.byAltNick(userbox->text(i)).uin);
-			hb = new History(uins);
-			hb->show();
+			if (uins.count()) {
+				hb = new History(uins);
+				hb->show();
+				}
 			break;
 		case KADU_CMD_USERINFO:
 			UserInfo *ui;
