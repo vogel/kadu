@@ -87,7 +87,15 @@ QString ggPath(const QString &subpath)
 #include <stdlib.h>
 //memcpy,strcat,strchr
 #include <string.h>
-char *findMe(const char *argv0, char *path, int len)
+/*
+	funkcja poszukuje binarki programu na podstawie argv[0] oraz zmiennej PATH
+	je¿eli j± znajdzie, to zapisuje ¶cie¿kê pod adres wskazany przez path
+	(o maksymalnej d³ugo¶ci len) oraz zwraca path, który zakañczany jest znakiem '/'
+	je¿eli binarka nie zostanie znaleziona, to zwracany jest NULL
+	w obu przypadkach gwarantowane jest, ¿e path koñczy siê znakiem 0
+	(len musi byæ > 2)
+*/
+static char *findMe(const char *argv0, char *path, int len)
 {
 	kdebugf();
 	struct stat buf;
@@ -1048,7 +1056,7 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 }
 
 //internal usage
-void stringHeapSortPushDown( QString* heap, int first, int last )
+static void stringHeapSortPushDown( QString* heap, int first, int last )
 {
 	int r = first;
 	while ( r <= last / 2 ) {
@@ -1071,7 +1079,7 @@ void stringHeapSortPushDown( QString* heap, int first, int last )
 }
 
 //internal usage
-void stringHeapSortHelper( QStringList::iterator b, QStringList::iterator e, QString, uint n )
+static void stringHeapSortHelper( QStringList::iterator b, QStringList::iterator e, QString, uint n )
 {
 	QStringList::iterator insert = b;
 	QString* realheap = new QString[n];
@@ -2670,11 +2678,11 @@ QString narg(const QString &s, const QString &arg1, const QString &arg2,
 
 QString narg(const QString &s, const QString &arg1, const QString &arg2, const QString &arg3, const QString &arg4)
 {
-#if QT_VERSION < 0x030200
+//#if QT_VERSION < 0x030200
 //	kdebugm(KDEBUG_DUMP, "'%s'   '%s'  '%s'  '%s'  '%s'\n", s.local8Bit().data(), arg1.local8Bit().data(), arg2.local8Bit().data(), arg3.local8Bit().data(), arg4.local8Bit().data());
 	const QString *tab[4]={&arg1, &arg2, &arg3, &arg4};
 	return narg(s, tab, 4);
-#else
-	return s.arg(arg1,arg2,arg3,arg4);
-#endif
+//#else
+//	return s.arg(arg1,arg2,arg3,arg4);
+//#endif
 }

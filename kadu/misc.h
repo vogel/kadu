@@ -41,16 +41,6 @@ QString ggPath(const QString &subpath="");
 */
 QString dataPath(const QString &f="", const char *argv0=0);
 
-/*
-	funkcja poszukuje binarki programu na podstawie argv[0] oraz zmiennej PATH
-	je¿eli j± znajdzie, to zapisuje ¶cie¿kê pod adres wskazany przez path
-	(o maksymalnej d³ugo¶ci len) oraz zwraca path, który zakañczany jest znakiem '/'
-	je¿eli binarka nie zostanie znaleziona, to zwracany jest NULL
-	w obu przypadkach gwarantowane jest, ¿e path koñczy siê znakiem 0
-	(len musi byæ > 2)
-*/
-char *findMe(const char *argv0, char *path, int len);
-
 class UserListElement;
 
 QString cp2unicode(const unsigned char *);
@@ -515,8 +505,6 @@ template<class T, class X> QValueList<X> values(const QMap<T, X> &m)
 	a chcieliby¶my ¿eby by³o
 		"pierwszy %1 tekst odstêp drugi tekst"
 	co robi w³a¶nie ta funkcja
-	
-	Qt>=3.2 ma ju¿ odpowiedni± funkcjê w QStringu, wiêc wtedy zwracana jest warto¶æ z Qt
 */
 QString narg(const QString &s, const QString &arg1, const QString &arg2,
 				const QString &arg3=QString(), const QString &arg4=QString());

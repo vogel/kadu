@@ -14,20 +14,14 @@
 #include <qstring.h>
 #include <qtextstream.h>
 #include <qtextcodec.h>
-#include <qpoint.h>
 #include <qdir.h>
 #include <qfile.h>
-#include <qfileinfo.h>
 #include <qfont.h>
-#include <qcursor.h>
 #include <qmessagebox.h>
-#include <qprocess.h>
 #include <qregexp.h>
 #include <qtimer.h>
 #include <qmenubar.h>
-#include <qsplitter.h>
 #include <qtoolbar.h>
-#include <qtranslator.h>
 #include <qstyle.h>
 #include <qstylefactory.h>
 
@@ -61,17 +55,9 @@
 
 #include "kadu-config.h"
 
-#define GG_USER_OFFLINE	0x01
-#define	GG_USER_NORMAL	0x03
-#define GG_USER_BLOCKED	0x04
-
 ConfigFile config_file(ggPath(QString("kadu.conf")));
 
-int muteitem;
-struct gg_event* e;
-
-QTime closestatusppmtime;
-QTimer* blinktimer;
+static QTimer* blinktimer;
 QPopupMenu* dockMenu;
 
 int lockFileHandle;
@@ -386,8 +372,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	// history, hints
 	History::initModule();
-
-	closestatusppmtime.start();
 
 	// blinktimer = NULL; zamieniamy na(powod: patrz plik events.cpp)
 	blinktimer = NULL;
@@ -1403,7 +1387,6 @@ void Kadu::createMenu()
 
 void Kadu::statusMenuAboutToHide()
 {
-	closestatusppmtime.restart();
 }
 
 void Kadu::createStatusPopupMenu()

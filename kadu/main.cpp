@@ -40,7 +40,7 @@ Kadu *kadu;
 #ifdef HAVE_EXECINFO
 #include <execinfo.h>
 #endif
-void kadu_signal_handler(int s)
+static void kadu_signal_handler(int s)
 {
 	kdebugmf(KDEBUG_WARNING, "%d\n", s);
 	
