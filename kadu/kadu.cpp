@@ -1710,13 +1710,14 @@ void Kadu::startupProcedure()
 	if (ShowMainWindowOnStart)
 		show();
 
+	QString path_;
+	path_ = ggPath("");
+	mkdir(path_.local8Bit().data(), 0700);
+	path_.append("/history/");
+	mkdir(path_.local8Bit().data(), 0700);
+
 	if (!config_file.readNumEntry("General","UIN"))
 	{
-		QString path_;
-		path_ = ggPath("");
-		mkdir(path_.local8Bit().data(), 0700);
-		path_.append("/history/");
-		mkdir(path_.local8Bit().data(), 0700);
 		switch (QMessageBox::information(kadu, "Kadu",
 			tr("You don't have a config file.\nWhat would you like to do?"),
 			tr("New UIN"),
