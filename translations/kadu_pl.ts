@@ -689,7 +689,7 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     </message>
     <message>
         <source>Userbox width when multi column</source>
-        <translation>Szerokość okna listy kontaktów gdy włączone lista wielokolumnowa</translation>
+        <translation>Szerokość kolumny gdy włączona lista wielokolumnowa</translation>
     </message>
 </context>
 <context>
