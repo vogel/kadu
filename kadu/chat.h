@@ -48,9 +48,6 @@ class CustomInput : public QMultiLineEdit {
 	public slots:
 		void paste();
 
-	private:
-		Chat *tata;
-
 	protected:
 		void keyPressEvent(QKeyEvent *e);
 };
