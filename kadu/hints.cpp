@@ -294,6 +294,27 @@ void HintManager::loadConfig(void)
 void HintManager::initModule(void)
 {
 	kdebug("HintManager::initModule()\n");
+
+/* T³umaczenia */
+	QT_TRANSLATE_NOOP("@default", "Hints");
+	QT_TRANSLATE_NOOP("@default", "Enable hints");
+	QT_TRANSLATE_NOOP("@default", "Hints options");
+	QT_TRANSLATE_NOOP("@default", "Enable icons in hints");
+	QT_TRANSLATE_NOOP("@default", "Show connection errors in hints");
+	QT_TRANSLATE_NOOP("@default", "Notify of new message in inactive chat window");
+	QT_TRANSLATE_NOOP("@default", "Notify of new chat");
+	QT_TRANSLATE_NOOP("@default", "Show in notify content message");
+	QT_TRANSLATE_NOOP("@default", "Content message in hint");
+	QT_TRANSLATE_NOOP("@default", "Enable status notification by hint");
+	QT_TRANSLATE_NOOP("@default", "Notification options");
+	QT_TRANSLATE_NOOP("@default", "Notify of user status change");
+	QT_TRANSLATE_NOOP("@default", "Notify of user become available");
+	QT_TRANSLATE_NOOP("@default", "Notify of user become unavailable");
+	QT_TRANSLATE_NOOP("@default", "Add description to hint if exist");
+	QT_TRANSLATE_NOOP("@default", "Use custom syntax");
+	QT_TRANSLATE_NOOP("@default", "Hint syntax");
+
+/* Zak³adka konfiguracyjna */
 	ConfigDialog::registerTab("Hints");
 	ConfigDialog::addCheckBox("Hints", "Hints", "Enable hints", "Hints", true);
 	ConfigDialog::addVGroupBox("Hints", "Hints", "Hints options");
