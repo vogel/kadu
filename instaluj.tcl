@@ -43,7 +43,7 @@ if {$tk_version < 8.3} {
     wm minsize .err $winwidth $winheight
     wm geometry .err +$geomx+$geomy
     wm title .err "Uwaga!"
-    label .err.txt -text "Wersja TCL/TK: $tk_patchLevel\nWymagana >= 8.4\nMozliwe jest niestabilne zachowanie instalatora." -font "Helvetica -12 bold"
+    label .err.txt -text "Wersja TCL/TK: $tk_patchLevel\nWymagana >= 8.3\nMozliwe jest niestabilne zachowanie instalatora." -font "Helvetica -12 bold"
     button .err.bt -text "OK" -bd 1 -command {destroy .err; set ok 1}
     pack .err.txt .err.bt -side top
     vwait ok
@@ -142,8 +142,6 @@ set var(makessl) 1
 set var(makekde) 1
 set var(default) 1
 set var(os) "other"
-
-set main .r.u
 
 ###############
 ### Glowne okno
@@ -371,8 +369,8 @@ proc Install {fd} {
         }
     } else {
         if {[eof $fd]} {
-            close $fd
             fileevent $fd readable {}
+            catch {close $fd}
             set var(ins) 1
         }
     }
