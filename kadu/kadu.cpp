@@ -1378,8 +1378,9 @@ void Kadu::slotHandleState(int command) {
 				}
 			break;
 		case 6:
-			autohammer = false;
 			disconnectNetwork();
+			AutoConnectionTimer::off();
+			autohammer = false;
 			setCurrentStatus(GG_STATUS_NOT_AVAIL);
 			break;
 		case 7:
@@ -1387,8 +1388,9 @@ void Kadu::slotHandleState(int command) {
 			if (cd->exec() == QDialog::Accepted) {
 				setStatus(GG_STATUS_NOT_AVAIL_DESCR);
 				statusppm->setItemEnabled(7, false);
-				autohammer = false;
 				disconnectNetwork();
+				AutoConnectionTimer::off();
+				autohammer = false;
 				}
 			break;	    
 		case 8:
@@ -1535,6 +1537,8 @@ void Kadu::setStatus(int status) {
 			server_nr = 0;
 		}
 	sess = gg_login(&loginparams);
+
+	AutoConnectionTimer::off();
 
 	if (sess) {
 		socket_active = true;

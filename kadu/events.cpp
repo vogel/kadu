@@ -63,7 +63,30 @@ extern "C"
 };
 #endif
 
+AutoConnectionTimer *AutoConnectionTimer::autoconnection_object = NULL;
+
 QTime lastsoundtime;
+
+AutoConnectionTimer::AutoConnectionTimer(QObject *parent) : QTimer(parent, "AutoConnectionTimer") {
+	connect(this, SIGNAL(timeout()), SLOT(doConnect()));
+	start(2000, TRUE);
+}
+
+void AutoConnectionTimer::doConnect() {
+	kadu->setStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));	
+}
+
+void AutoConnectionTimer::on() {
+	if (!autoconnection_object)
+		autoconnection_object = new AutoConnectionTimer();
+}
+
+void AutoConnectionTimer::off() {
+	if (autoconnection_object) {
+		delete autoconnection_object;
+		autoconnection_object = NULL;
+		}
+}
 
 SavePublicKey::SavePublicKey(uin_t uin, QString keyData, QWidget *parent, const char *name) :
 	QDialog(parent, name, Qt::WDestructiveClose), uin(uin), keyData(keyData) {
@@ -166,19 +189,18 @@ void EventManager::connectedSlot()
 
 void EventManager::connectionFailedSlot()
 {
-	kdebug("Unable to connect, the following error has occured:\n%s\nKeep trying to connect?\n", strerror(errno));
+	kdebug("Unable to connect, the following error has occured:\n%s\n", strerror(errno));
+	kadu->disconnectNetwork();
 	if (kadu->autohammer)
-		kadu->setStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
+		AutoConnectionTimer::on();
 };
 
 void EventManager::connectionBrokenSlot()
 {
-	kdebug("Connection broken unexpectedly!\n");
-	kadu->disconnectNetwork();
-	kdebug("Unscheduled connection termination\n");
+	kdebug("Connection broken unexpectedly!\nUnscheduled connection termination\n");
 	kadu->setCurrentStatus(GG_STATUS_NOT_AVAIL);
 	if (kadu->autohammer)
-		kadu->setStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
+		AutoConnectionTimer::on();
 };
 
 void EventManager::disconnectedSlot()
@@ -187,6 +209,7 @@ void EventManager::disconnectedSlot()
 	kdebug("Disconnection has been occured\n");
 	kadu->autohammer = false;
 	kadu->disconnectNetwork();
+	AutoConnectionTimer::off();
 // Wykomentowa³em, bo to zawsze jest prawdziwe!
 /*	if (e->type == GG_EVENT_DISCONNECT) */
 };

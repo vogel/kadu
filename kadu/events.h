@@ -13,9 +13,24 @@
 #include <qdialog.h>
 #include <qstring.h>
 #include <qdatetime.h>
+#include <qtimer.h>
 
 #include "libgadu.h"
 #include "misc.h"
+
+class AutoConnectionTimer : private QTimer {
+	Q_OBJECT
+
+	public:
+		static void on();
+		static void off();
+
+	private:
+		AutoConnectionTimer(QObject *parent = 0);
+		void doConnect();
+
+		static AutoConnectionTimer *autoconnection_object;
+};
 
 class SavePublicKey : public QDialog {
 	Q_OBJECT
