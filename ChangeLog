@@ -65,6 +65,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   obslugi dzwieku + pierwszy z modulow "serwerowych" ext_sound obslugujacy
   odtwarzanie przez zewnetrzny program. wszystko dostosowane przeze mnie
   do nowych mozliwosci managera modulow (adrian)
+* dodany modul joi'a do obslugi serwera dzwieku arts + moje przerobki (adrian)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
