@@ -839,7 +839,6 @@ GaduProtocol::GaduProtocol(QObject *parent, const char *name) : QObject(parent, 
 	UserListSent = false;
 	PingTimer = NULL;
 	ActiveServer = NULL;
-	IWannaBeInvisible = true;
 	ServerNr = 0;
 
 	connect(NextStatus, SIGNAL(goOnline(const QString &)), this, SLOT(iWantGoOnline(const QString &)));
@@ -1461,10 +1460,6 @@ void GaduProtocol::sendUserList()
 					types[j] = GG_USER_NORMAL;
 			++j;
 		}
-
-	/** we were popping up sometimes, so let's keep the server informed **/
-	if (IWannaBeInvisible)
-		gg_change_status(Sess, GG_STATUS_INVISIBLE);
 
 	gg_notify_ex(Sess, uins, types, j);
 	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "send_userlist(): Userlist sent\n");

@@ -308,7 +308,6 @@ class GaduProtocol : public QObject
 		bool UserListClear;
 		QString ImportReply;
 		int RequestedStatusForLogin;
-		bool IWannaBeInvisible;
 		QHostAddress* ActiveServer;
 
 		void setupProxy();
