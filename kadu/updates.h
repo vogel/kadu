@@ -2,24 +2,21 @@
 #ifndef UPDATES_H
 #define UPDATES_H
 
-#include <qthread.h>
 #include <qnetwork.h>
 #include <qurloperator.h>
 #include <qnetworkprotocol.h>
 #include <qcstring.h>
 #include "misc.h"
 
-class UpdatesThread : public QThread
+class UpdatesClass
 {
 
 	public:
-		UpdatesThread(uin_t uin);
+		UpdatesClass(uin_t uin);
 		bool ifNewerVersion(QString &newestversion);
+		void run();
 
 		QUrlOperator *op;
-
-	protected:
-		void run();
 
 	private:
 		QString query;

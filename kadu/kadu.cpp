@@ -171,7 +171,7 @@ QSocketNotifier *kadusnr = NULL;
 QSocketNotifier *kadusnw = NULL;
 QSocketNotifier *dccsnr = NULL;
 QSocketNotifier *dccsnw = NULL;
-UpdatesThread *ut;
+UpdatesClass *uc;
 
 const char **gg_xpm[] = {gg_act_xpm, gg_actdescr_xpm, gg_busy_xpm, gg_busydescr_xpm,
 	gg_invi_xpm, gg_invidescr_xpm, gg_inact_xpm, gg_inactdescr_xpm, gg_stop_xpm};
@@ -357,11 +357,11 @@ void Kadu::gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op) {
 
 	fprintf(stderr, "KK Kadu::gotUpdatesInfo(): %s\n", buf);
 	
-	if (ut->ifNewerVersion(newestversion)) {
+	if (uc->ifNewerVersion(newestversion)) {
 		QMessageBox::information(this,(i18n("Update information")),
 			QString(i18n("The newest Kadu version is %1")).arg(newestversion), QMessageBox::Ok);
 		}
-	delete ut;
+	delete uc;
 }
 
 /* a monstrous constructor so Kadu would take longer to start up */
@@ -535,11 +535,11 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		autostatus_timer->start(1000,TRUE);
 
 	if (config.uin) {
-		ut = new UpdatesThread(config.uin);
+		uc = new UpdatesClass(config.uin);
 		if (config.checkupdates)
-			QObject::connect(ut->op, SIGNAL(data(const QByteArray &, QNetworkOperation *)),
+			QObject::connect(uc->op, SIGNAL(data(const QByteArray &, QNetworkOperation *)),
 				this, SLOT(gotUpdatesInfo(const QByteArray &, QNetworkOperation *)));
-		ut->start();
+		uc->run();
 		}
 }
 
