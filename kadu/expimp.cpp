@@ -326,10 +326,10 @@ void UserlistExport::startTransfer() {
 	contacts = saveContacts();
 
 	char *con2;
-	con2 = (char *)strdup(unicode2latin(contacts).data());
+	con2 = (char *)strdup((const char *)unicode2latin(contacts));
 	kdebug("UserlistExport::startTransfer():\n%s\n", con2);
 	free(con2);
-	con2 = (char *)strdup(unicode2std(contacts).data());
+	con2 = (char *)strdup((const char *)unicode2cp(contacts));
 	
 	if (gg_userlist_request(sess, GG_USERLIST_PUT, con2) == -1) {
 		kdebug("UserlistExport: gg_userlist_put() failed\n");
