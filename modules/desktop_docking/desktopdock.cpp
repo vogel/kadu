@@ -5,6 +5,7 @@
  *  (at your option) any later version.
  */
 #include <qbitmap.h>
+#include <qcheckbox.h>
 #include <qtooltip.h>
 
 #include "desktopdock.h"
