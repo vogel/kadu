@@ -785,9 +785,10 @@ void Kadu::blockUser()
 		return;
 	}
 
-	UserListElement &puser = userlist.byAltNick((*activeUserBox->getSelectedUsers().begin()).altNick());
+	UserListElement puser = userlist.byAltNick((*activeUserBox->getSelectedUsers().begin()).altNick());
 	puser.setBlocking(!puser.blocking());
 
+	userlist.changeUserInfo(puser.altNick(), puser);
 	userlist.writeToFile();
 	kdebugf2();
 }
@@ -801,9 +802,10 @@ void Kadu::notifyUser()
 		kdebugf2();
 		return;
 	}
-	UserListElement &puser = userlist.byAltNick((*activeUserBox->getSelectedUsers().begin()).altNick());
+	UserListElement puser = userlist.byAltNick((*activeUserBox->getSelectedUsers().begin()).altNick());
 	puser.setNotify(!puser.notify());
 
+	userlist.changeUserInfo(puser.altNick(), puser);
 	userlist.writeToFile();
 	kdebugf2();
 }
@@ -817,9 +819,10 @@ void Kadu::offlineToUser()
 		kdebugf2();
 		return;
 	}
-	UserListElement &puser = userlist.byAltNick((*activeUserBox->getSelectedUsers().begin()).altNick());
+	UserListElement puser = userlist.byAltNick((*activeUserBox->getSelectedUsers().begin()).altNick());
 	puser.setOfflineTo(!puser.offlineTo());
 
+	userlist.changeUserInfo(puser.altNick(), puser);
 	userlist.writeToFile();
 	kdebugf2();
 }

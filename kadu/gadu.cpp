@@ -998,8 +998,9 @@ void GaduProtocol::userDataChanged(const UserListElement* const oldData, const U
 		return;
 	if (!oldData && !newData)
 		return;
-	if (!oldData->uin() && !newData->uin())
-		return;
+	if (oldData && newData)
+		if (!oldData->uin() && !newData->uin())
+			return;
 
 	// nowy kontakt
 	if (!oldData && newData->uin())
