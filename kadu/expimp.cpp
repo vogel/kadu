@@ -83,7 +83,7 @@ UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) : 
 	vgb_export->setTitle(tr("Export userlist"));
 	// end our QGroupBox
 
-	QLabel *l_itemscount = new QLabel(vgb_export);
+	l_itemscount = new QLabel(vgb_export);
 	l_itemscount->setText(tr("%1 entries will be exported").arg(userlist.count()));
 	
 	// export buttons
@@ -199,6 +199,7 @@ void UserlistImportExport::makeUserlist() {
 			gg_add_notify(sess, userlist[i].uin);
 
 	userlist.writeToFile();
+	l_itemscount->setText(tr("%1 entries will be exported").arg(userlist.count()));
 	kdebugf2();
 }
 
@@ -225,6 +226,7 @@ void UserlistImportExport::updateUserlist() {
 			gg_add_notify(sess, userlist[i].uin);
 
 	userlist.writeToFile();
+	l_itemscount->setText(tr("%1 entries will be exported").arg(userlist.count()));
 	kdebugf2();
 }
 

@@ -6,6 +6,7 @@
 #include <qstring.h>
 #include <qsocketnotifier.h>
 #include <qhbox.h>
+#include <qlabel.h>
 
 #include "userlist.h"
 
@@ -24,6 +25,7 @@ class UserlistImportExport : public QHBox {
 		QPushButton *pb_send;
 		QPushButton *pb_delete;
 		QPushButton *pb_tofile;
+		QLabel *l_itemscount;
 
 	protected:
 		QListView *lv_userlist;
