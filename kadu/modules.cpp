@@ -18,10 +18,12 @@
 #include <qdir.h>
 #include <qlayout.h>
 #include <qvbox.h>
-#include <qlabel.h>
 #include <qpushbutton.h>
 #include <qtextcodec.h>
 #include <qregexp.h>
+#include <qlistview.h>
+#include <qvgroupbox.h>
+#include <qsizepolicy.h>
 
 #include <dlfcn.h>
 
@@ -58,47 +60,62 @@ QString Library::error()
 	return QString(dlerror());
 }
 
-ModulesDialog::ModulesDialog()
-	: QDialog(NULL,NULL)
+ModulesDialog::ModulesDialog() 
 {
+	kdebugf();
 	setWFlags(Qt::WDestructiveClose);
 	setCaption(tr("Manage Modules"));
 	
-	QHBoxLayout* layout=new QHBoxLayout(this);
-	layout->setAutoAdd(true);
+	// create main QLabel widgets (icon and app info)
+	QVBox *left=new QVBox(this);
+	left->setMargin(10);
+	left->setSpacing(10);
 	
-	QVBox* static_box=new QVBox(this);
-	QVBox* installed_box=new QVBox(this);
-	QVBox* loaded_box=new QVBox(this);	
-
-	/*QLabel* StaticLabel =*/ new QLabel(tr("Static"), static_box);
-	StaticListBox = new QListBox(static_box);
-	StaticListBox->insertStringList(modules_manager->staticModules());
-
-	/*QLabel* InstalledLabel = */new QLabel(tr("Installed"), installed_box);
-	InstalledListBox = new QListBox(installed_box);
-	connect(InstalledListBox,SIGNAL(doubleClicked(QListBoxItem*)),
-		this,SLOT(loadItem(QListBoxItem*)));
+	QLabel *l_icon = new QLabel(left);
+	QWidget *blank=new QWidget(left);
+	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
 	
-	/*QLabel* LoadedLabel =*/ new QLabel(tr("Loaded"), loaded_box);
-	LoadedListBox = new QListBox(loaded_box);
-	connect(LoadedListBox,SIGNAL(doubleClicked(QListBoxItem*)),
-		this,SLOT(unloadItem(QListBoxItem*)));
+	QVBox *center=new QVBox(this);
+	center->setMargin(10);
+	center->setSpacing(10);
+	
+	QLabel *l_info = new QLabel(center);
+	l_icon->setPixmap(icons_manager.loadIcon("ManageModulesWindowIcon"));
+	l_info->setText("This dialog box allows you to manage installed modules. Modules are responsible "
+			"for numerous vital features like playing sounds or message encryption. "
+			"You can load (or unload) them by double-clicking on their names.");
+	l_info->setAlignment(Qt::WordBreak);
+	// end create main QLabel widgets (icon and app info)
+	
+	// our QListView
+	lv_modules = new QListView(center);
+	lv_modules->addColumn(tr("Module name"), 160);
+	lv_modules->addColumn(tr("Module type"), 150);
+	lv_modules->addColumn(tr("State"), 120);
+	// end our QListView
+	
+	//our QVGroupBox
+	QVGroupBox *vgb_info = new QVGroupBox(center);
+	vgb_info->setTitle(tr("Info"));
+	//end our QGroupBox
+	
+	l_moduleinfo = new QLabel(vgb_info);
+	l_moduleinfo->setText(tr("<b>Module:</b><br/><b>Depends on:</b><br/><b>Conflicts with:</b><br/>"
+				"<b>Provides:</b><br/><b>Author:</b><br/><b>Description:</b>"));
 
-	QButton* InfoButton=new QPushButton(tr("Info"), static_box);
-	connect(InfoButton, SIGNAL(clicked()),
-		this, SLOT(getInfo()));
-
-	QButton* LoadButton=new QPushButton(tr("Load"), installed_box);
-	connect(LoadButton,SIGNAL(clicked()),
-		this,SLOT(loadSelectedItem()));
-
-
-	QButton* UnloadButton=new QPushButton(tr("Unload"), loaded_box);
-	connect(UnloadButton,SIGNAL(clicked()),
-		this,SLOT(unloadSelectedItem()));
-
-	loadGeometry(this, "General", "ModulesDialogGeometry", 0, 0, 450, 400);
+	// buttons
+	QHBox *bottom=new QHBox(center);
+	QWidget *blank2=new QWidget(bottom);
+	bottom->setSpacing(5);
+	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
+	QPushButton *pb_close = new QPushButton(icons_manager.loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
+	// end buttons
+	
+	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
+	connect(lv_modules, SIGNAL(selectionChanged()), this, SLOT(itemsChanging()));
+	connect(lv_modules, SIGNAL(doubleClicked(QListViewItem *, const QPoint &, int)), this, SLOT(moduleAction()));
+	
+ 	loadGeometry(this, "General", "ModulesDialogGeometry", 0, 0, 450, 400);
 	refreshLists();
 }
 
@@ -108,85 +125,72 @@ ModulesDialog::~ModulesDialog()
 	saveGeometry(this, "General", "ModulesDialogGeometry");
 }
 
-void ModulesDialog::loadItem(QListBoxItem* item)
+void ModulesDialog::itemsChanging()
 {
-	QString mod_name=item->text();
-	if(modules_manager->activateModule(mod_name))
+	if (lv_modules->selectedItem() != NULL)
+		getInfo();
+}
+
+void ModulesDialog::moduleAction()
+{
+	if (lv_modules->selectedItem() != NULL)
+		if ((lv_modules->selectedItem()->text(1) == tr("Dynamic")) && 
+			(lv_modules->selectedItem()->text(2) == tr("Loaded")))
+			unloadItem();
+		else
+		if ((lv_modules->selectedItem()->text(1) == tr("Dynamic")) && 
+			(lv_modules->selectedItem()->text(2) == tr("Not loaded")))
+			loadItem();
+}
+
+void ModulesDialog::loadItem()
+{
+	if(modules_manager->activateModule(lv_modules->selectedItem()->text(0)))
 	{
 		refreshLists();
 		modules_manager->saveLoadedModules();
-	}		
+	}	
 }
 
-void ModulesDialog::unloadItem(QListBoxItem* item)
+void ModulesDialog::unloadItem()
 {
-	QString mod_name=item->text();
-	modules_manager->deactivateModule(mod_name);
+	modules_manager->deactivateModule(lv_modules->selectedItem()->text(0));
 	refreshLists();
 	modules_manager->saveLoadedModules();
-}
-
-void ModulesDialog::loadSelectedItem()
-{
-	int current=InstalledListBox->currentItem();
-	if(current>=0)
-		loadItem(InstalledListBox->item(current));
-}
-
-void ModulesDialog::unloadSelectedItem()
-{
-	int current=LoadedListBox->currentItem();
-	if(current>=0)
-		unloadItem(LoadedListBox->item(current));
 }
 
 void ModulesDialog::refreshLists()
 {
 	kdebugf();
-	LoadedListBox->clear();
-	LoadedListBox->insertStringList(modules_manager->loadedModules());	
-	InstalledListBox->clear();
-	InstalledListBox->insertStringList(modules_manager->unloadedModules());
+	lv_modules->clear();
+
+	QStringList sl_list = modules_manager->staticModules();
+	for(unsigned int i = 0; i < sl_list.size(); i++)
+		(void) new QListViewItem(lv_modules, sl_list[i], tr("Static"), tr("Loaded (show info)"));
+		
+	sl_list = modules_manager->loadedModules();
+	for(unsigned int i = 0; i < sl_list.size(); i++)
+		(void) new QListViewItem(lv_modules, sl_list[i], tr("Dynamic"), tr("Loaded"));
+		
+	sl_list = modules_manager->unloadedModules();
+	for(unsigned int i = 0; i < sl_list.size(); i++)
+		(void) new QListViewItem(lv_modules, sl_list[i], tr("Dynamic"), tr("Not loaded"));
 }
 
 void ModulesDialog::getInfo()
 {
 	kdebugf();
-	QListBoxItem *item;
-	int current;
-	QListBox *currentListBox;
-
-	if(StaticListBox->hasFocus())
-		currentListBox=StaticListBox;
-	else if(InstalledListBox->hasFocus())
-		currentListBox=InstalledListBox;
-	else
-		currentListBox=LoadedListBox;
-
-	current=currentListBox->currentItem();
-	item=currentListBox->item(current);
+	ModuleInfo info;
 	
-	if(current>=0){
-		ModuleInfo info;
-		QString message;
-		if(!modules_manager->moduleInfo(item->text(), info))
-			return;
-		message+=tr(
-				"<b>Module:</b>"
-				"<br/>%1<br/>"
-				"<b>Depends on:</b><br/>").arg(item->text());
-		message+=info.depends.join("\n");
-		message+=tr("<br/><b>Conflicts with:</b><br/>");
-		message+=info.conflicts.join("\n");
-		message+=tr("<br/><b>Provides:</b><br/>");
-		message+=info.provides.join("\n");
-		message+=tr(
-				"<br/><b>Author:</b><br/>"
-				"%1<br/>"
-				"<b>Description</b>:<br/>"
-				"%2").arg(info.author).arg(info.description);
-		MessageBox::msg(message);
-	}
+	if(!modules_manager->moduleInfo(lv_modules->selectedItem()->text(0), info))
+		return;
+
+	l_moduleinfo->setText(tr("<b>Module: </b>") + lv_modules->selectedItem()->text(0) + 
+				tr("<br/><b>Depends on: </b>") + info.depends.join(", ") + 
+				tr("<br/><b>Conflicts with: </b>") + info.conflicts.join(", ") + 
+				tr("<br/><b>Provides: </b>") + info.provides.join(", ") + 
+				tr("<br/><b>Author: </b>") + info.author +
+				tr("<br/><b>Description: </b>") + info.description);
 }
 
 void ModulesManager::initModule()

@@ -5,8 +5,10 @@
 #include <qobject.h>
 #include <qstringlist.h>
 #include <qdialog.h>
-#include <qlistbox.h>
+#include <qlistview.h>
 #include <qtranslator.h>
+#include <qlabel.h>
+#include <qhbox.h>
 
 /**
 	Zastêpuje klasê QLibrary na specyficzne potrzeby Kadu
@@ -52,20 +54,19 @@ struct ModuleInfo
 	QString author;
 };
 
-class ModulesDialog : public QDialog
+class ModulesDialog : public QHBox
 {
 	Q_OBJECT
 	
 	private:
-		QListBox* StaticListBox;
-		QListBox* InstalledListBox;
-		QListBox* LoadedListBox;
+		QListView* lv_modules;
+		QLabel* l_moduleinfo;
 		
 	private slots:
-		void loadItem(QListBoxItem* item);
-		void unloadItem(QListBoxItem* item);
-		void loadSelectedItem();
-		void unloadSelectedItem();
+		void loadItem();
+		void unloadItem();
+		void moduleAction();
+		void itemsChanging();
 		void getInfo();
 		void refreshLists();
 	
