@@ -27,11 +27,11 @@
 * przypominanie has³a nie blokuje kadu
 * dodane okno zmiany has³a GG
 * porz±dki zwi±zane z oknem rejestracji u¿ytkownika GG
-* zapisywanie pozycji podzia³u userlist(userbox) a opisem + poprawki zapisywania
-  geometri okna i waro¶ci domy¶lnych
+* zapisywanie pozycji podzia³u userlist(userbox) i opisu + poprawki zapisywania
+  geometrii okna i waro¶ci domy¶lnych
 * udoskonalenie zak³adki wygl±d i dodanie mo¿liwo¶ci ustawienia wygl±du widgetu
-  w userboxie który pokazuje dane u¼ytkownika + zmiany w sposobie zapisu kolorow
-  i fontow.
+  w userboxie, który pokazuje dane u¼ytkownika + zmiany w sposobie zapisu konfiguracji
+  kolorów i czcionek.
 
 +++ wersja 0.3.3-pre3
 * CTRL + klik dowolnego przycisku myszki na ikonce w tray'u powoduje
