@@ -185,7 +185,7 @@ HintManager::HintManager()
 void HintManager::setHint(void) {
 	kdebug("HintManager::setHint()\n");
 
-	if (useposition)
+	if (useposition || trayicon == NULL)
 		move(position);
 	else
 	{

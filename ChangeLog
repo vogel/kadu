@@ -108,6 +108,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   powinno byæ ju¿ dobrze (mast3r)
 * dodano menu podreczne do konferencji 
   (przystosowanie menu do modularnosci) (pawel_p)
+* wy³±czenie ikonki w panelu dokuj±cym nie powoduje wywalenia
+  Kadu poprzez dymki (mast3r)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci
