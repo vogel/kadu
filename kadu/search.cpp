@@ -440,19 +440,9 @@ void SearchDialog::updateInfoClicked()
 		altnick = uin;
 
 	UserListElement e;
+	e=ule;
 	e.first_name = firstname;
-	e.last_name = ule.last_name;
 	e.nickname = nickname;
-	e.altnick = ule.altnick;
-	e.mobile = ule.mobile;
-	e.uin = ule.uin;
-	e.status = ule.status;
-	e.image_size = ule.image_size;
-	e.blocking = ule.blocking;
-	e.offline_to_user = ule.offline_to_user;
-	e.notify = ule.notify;
-	e.setGroup(ule.group());
-	e.email = ule.email;
 	UserInfo *ui = new UserInfo(ule.altnick, false, 0, "user info");
 	ui->setUserInfo(e);
 	ui->show();
