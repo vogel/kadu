@@ -104,9 +104,13 @@ void SamplePlayThread::stop()
 	PlayingSemaphore--;
 	if (!wait(5000))
 	{
+#if QT_VERSION >= 0x030100
 		kdebugm(KDEBUG_ERROR, "deadlock :|, terminating SamplePlayThread\n");
-		terminate();
+		this->terminate();
 		wait(1000);
+#else
+		kdebugm(KDEBUG_ERROR, "SamplePlayThread is alive, use newer Qt!!!\n");
+#endif
 	}
 	kdebugf2();
 }
@@ -166,9 +170,13 @@ void SampleRecordThread::stop()
 	RecordingSemaphore--;
 	if (!wait(5000))
 	{
+#if QT_VERSION >= 0x030100
 		kdebugm(KDEBUG_ERROR, "deadlock :|, terminating SampleRecordThread\n");
-		terminate();
+		this->terminate();
 		wait(1000);
+#else
+		kdebugm(KDEBUG_ERROR, "SampleRecordThread is alive, use newer Qt!!!\n");
+#endif
 	}
 	kdebugf2();
 }
@@ -311,8 +319,12 @@ SoundManager::~SoundManager()
 	play_thread->wait(2000);
 	if (play_thread->running())
 	{
+#if QT_VERSION >= 0x030100
 		kdebugm(KDEBUG_WARNING, "terminating play_thread!\n");
 		play_thread->terminate();
+#else
+		kdebugm(KDEBUG_ERROR, "thread is alive, use newer Qt!!!\n");
+#endif
 	}
 	delete play_thread;
 
