@@ -18,6 +18,8 @@
 #include <sys/stat.h>
 #include <sys/file.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
 
 #include "kadu.h"
 #include "kadu-config.h"
@@ -29,6 +31,7 @@
 #include "debug.h"
 #include "modules.h"
 #include "emoticons.h"
+#include "message_box.h"
 
 Kadu *kadu;	
 
@@ -140,6 +143,11 @@ int main(int argc, char *argv[])
 	kadu->startupProcedure();
 
 	QObject::connect(qApp, SIGNAL(aboutToQuit()), kadu, SLOT(quitApplication()));
+
+	// je¶li kto¶ uruchomi³ kadu jako root to przypomnijmy mu, ¿e
+	// tak nie nale¿y postêpowaæ (leczymy nawyki z win32)
+	if (geteuid() == 0)
+		MessageBox::wrn(qApp->translate("@default", QT_TR_NOOP("Please do not run Kadu as a root!\nIt's a high security risk!")));
 
 	return qApp->exec();
 }
