@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.1 2002/07/09 22:22:02 chilek Exp $
+# $Id: Makefile,v 1.2 2002/07/21 11:22:12 chilek Exp $
 
 CC = gcc
 CFLAGS = -g -O2 -ggdb -I.. -I../lib -I../src

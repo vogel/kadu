@@ -1,4 +1,4 @@
-/* $Id: libgadu.c,v 1.2 2002/07/14 15:31:50 chilek Exp $ */
+/* $Id: libgadu.c,v 1.3 2002/07/21 11:17:54 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>,
@@ -61,7 +61,7 @@ static char rcsid[]
 #ifdef __GNUC__
 __attribute__ ((unused))
 #endif
-= "$Id: libgadu.c,v 1.2 2002/07/14 15:31:50 chilek Exp $";
+= "$Id: libgadu.c,v 1.3 2002/07/21 11:17:54 chilek Exp $";
 #endif 
 
 /*
@@ -744,20 +744,20 @@ int gg_send_message(struct gg_session *sess, int msgclass, uin_t recipient, cons
 }
 
 /*
- * gg_send_message_to_users()
+ * gg_send_message_confer()
  *
  * wysy³a wiadomo¶æ do kilku u¿ytkownikow (konferencja). zwraca losowy numer
  * sekwencyjny, który mo¿na olaæ albo wykorzystaæ do potwierdzenia.
  *
  *  - sess - opis sesji,
  *  - msgclass - rodzaj wiadomo¶ci,
- *  - recipients_count - ilosc adresatow
- *  - recipients - numerki adresatow,
+ *  - recipients_count - ilo¶æ adresatów,
+ *  - recipients - numerki adresatów,
  *  - message - tre¶æ wiadomo¶ci.
  *
  * w przypadku b³êdu zwraca -1, inaczej numer sekwencyjny.
  */
-int gg_send_message_to_users(struct gg_session *sess, int msgclass, int recipients_count, uin_t *recipients, const unsigned char *message)
+int gg_send_message_confer(struct gg_session *sess, int msgclass, int recipients_count, uin_t *recipients, const unsigned char *message)
 {
 	struct gg_send_msg s;
 	struct gg_msg_recipients r;
@@ -774,7 +774,7 @@ int gg_send_message_to_users(struct gg_session *sess, int msgclass, int recipien
 		return -1;
 	}
 
-	gg_debug(GG_DEBUG_FUNCTION, "** gg_send_message_to_users(..., %d, %u, \"...\");\n", msgclass, recipients_count);
+	gg_debug(GG_DEBUG_FUNCTION, "** gg_send_message_confer(..., %d, %u, \"...\");\n", msgclass, recipients_count);
 
 	r.flag = 0x01;
 	r.count = fix32(recipients_count - 1);

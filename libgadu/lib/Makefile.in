@@ -1,4 +1,14 @@
-# $Id: Makefile.in,v 1.1 2002/07/09 22:22:02 chilek Exp $
+# $Id: Makefile.in,v 1.2 2002/07/21 11:17:54 chilek Exp $
+
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+libdir = @libdir@
+includedir = @includedir@
+
+# increased with ABI changes
+VERSION_MAJOR=0
+# increased with API changes
+VERSION_MINOR=10
 
 CC = @CC@ 
 CFLAGS = @CFLAGS_LIBGADU@ -I.. -fPIC -Wall
@@ -9,13 +19,9 @@ AR = @AR@
 INSTALL = @INSTALL@
 RANLIB = @RANLIB@
 
-prefix = @prefix@
-exec_prefix = @exec_prefix@
-libdir = @libdir@
-
 OBJS = common.o libgadu.o search.o pubdir.o http.o dcc.o userlist.o events.o
 
-SHARED = libgadu.so.0.9.0
+SHARED = libgadu.so.$(VERSION_MAJOR).$(VERSION_MINOR)
 STATIC = libgadu.a
 
 all:	@static@ @shared@
@@ -23,7 +29,7 @@ all:	@static@ @shared@
 #
 
 clean:
-	rm -f *.o *~ core $(STATIC) $(SHARED)
+	rm -f *.o *.a *.so *.so.* *~ core
 
 distclean:	clean
 	rm -f Makefile
@@ -41,17 +47,20 @@ $(STATIC): $(OBJS)
 shared:	$(SHARED)
 
 $(SHARED): $(OBJS)
-	$(CC) -g -shared -Wl,-soname,libgadu.so -o $(SHARED) $(OBJS) $(LIBS) -lc
+	$(CC) -g -shared -Wl,-soname=libgadu.so.$(VERSION_MAJOR) -o $(SHARED) $(OBJS) $(LIBS) -lc
 
 #
 
 install: @install_shared@ @install_static@
 
-install-shared:
-	$(INSTALL) -d $(libdir)
-	$(INSTALL) -m 755 $(SHARED) $(libdir)
+install-common:
+	$(INSTALL) -d $(DESTDIR)$(includedir)
+	$(INSTALL) -m 644 libgadu.h $(DESTDIR)$(includedir)
+	$(INSTALL) -d $(DESTDIR)$(libdir)
 
-install-static:
-	$(INSTALL) -d $(libdir)
-	$(INSTALL) -m 755 $(STATIC) $(libdir)
+install-shared:	install-common
+	$(INSTALL) -m 755 $(SHARED) $(DESTDIR)$(libdir)
+
+install-static:	install-common
+	$(INSTALL) -m 755 $(STATIC) $(DESTDIR)$(libdir)
 	

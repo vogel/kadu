@@ -1,4 +1,4 @@
-/* $Id: dcc.c,v 1.1 2002/07/09 22:22:02 chilek Exp $ */
+/* $Id: dcc.c,v 1.2 2002/07/21 11:17:54 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -304,10 +304,10 @@ struct gg_dcc *gg_dcc_socket_create(uin_t uin, unsigned int port)
 	struct sockaddr_in sin;
 	int sock, bound = 0;
 	
-        gg_debug(GG_DEBUG_FUNCTION, "** gg_create_dcc_socket(%ld, %d);\n", uin, port);
+        gg_debug(GG_DEBUG_FUNCTION, "** gg_create_dcc_socket(%d, %d);\n", uin, port);
 	
 	if (!uin) {
-                gg_debug(GG_DEBUG_MISC, "// gg_create_dcc_socket() invalid arguments\n");
+		gg_debug(GG_DEBUG_MISC, "// gg_create_dcc_socket() invalid arguments\n");
 		errno = EINVAL;
 		return NULL;
 	}
@@ -482,7 +482,11 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 
 		gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() new direct connection from %s:%d\n", inet_ntoa(sin.sin_addr), htons(sin.sin_port));
 
+#ifdef FIONBIO
 		if (ioctl(fd, FIONBIO, &one) == -1) {
+#else
+		if (fcntl(fd, F_SETFL, O_NONBLOCK) == -1) {
+#endif
 			gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() can't set nonblocking (%s)\n", strerror(errno));
 			close(fd);
 			e->type = GG_EVENT_DCC_ERROR;
@@ -765,7 +769,7 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 					return e;
 				}
 
-				gg_dcc_debug_data("read", h->fd, buf, tmp);
+				gg_dcc_debug_data("read", h->fd, h->voice_buf + h->chunk_offset, tmp);
 
 				h->chunk_offset += tmp;
 

@@ -1,4 +1,4 @@
-/* $Id: search.c,v 1.1 2002/07/09 22:22:02 chilek Exp $ */
+/* $Id: search.c,v 1.2 2002/07/21 11:18:42 chilek Exp $ */
 
 #include <stdio.h>
 #include "libgadu.h"

@@ -1,4 +1,4 @@
-/* $Id: common.c,v 1.1 2002/07/09 22:22:02 chilek Exp $ */
+/* $Id: common.c,v 1.2 2002/07/21 11:17:54 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>,
@@ -40,6 +40,7 @@
 #ifdef sun
   #include <sys/filio.h>
 #endif
+#include <fcntl.h>
 #include "config.h"
 #include "libgadu.h"
 
@@ -181,7 +182,11 @@ int gg_connect(void *addr, int port, int async)
 	}
 
 	if (async) {
+#ifdef FIONBIO
 		if (ioctl(sock, FIONBIO, &one) == -1) {
+#else
+		if (fcntl(sock, F_SETFL, O_NONBLOCK) == -1) {
+#endif
 			gg_debug(GG_DEBUG_MISC, "-- ioctl() failed. errno = %d (%s)\n", errno, strerror(errno));
 			close(sock);
 			return -1;
