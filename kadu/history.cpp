@@ -1048,8 +1048,11 @@ void History::showHistoryEntries(int from, int count) {
 
 	QValueList<HistoryEntry> entries;
 	entries = history.getHistoryEntries(uins, from, count);
-	for (i = 0; i < entries.count(); i++)
+	for (i = 0; i < entries.count(); i++) {
+		entries[i].message.replace(QRegExp("<"), "&lt;");
+		entries[i].message.replace(QRegExp(">"), "&gt;");
 		formatHistoryEntry(text, entries[i]);
+		}
 	body->setText(text);
 }
 

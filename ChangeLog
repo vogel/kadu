@@ -44,6 +44,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * mo¿liwo¶æ skonfigurowania okresu czasu z którego s± cytowane frazy
   przy otwieraniu okna rozmowy (chilek)
 * guzik "Konfiguracja" na pasku narzêdziowym (chilek)
+* okno historii: escape'owanie znaków < i > (chilek)
 
 +++ wersja 0.3.4-pre2
 * graficzny instalator - instaluj.tcl (googie)
