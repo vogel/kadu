@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.12 2002/11/28 11:07:46 chilek Exp $
+# $Id: Makefile.in,v 1.13 2002/12/16 22:54:39 adrian Exp $
 
 prefix = @prefix@
 exec_prefix = @exec_prefix@
@@ -8,10 +8,10 @@ includedir = @includedir@
 # increased with ABI changes
 VERSION_MAJOR=2
 # increased with API changes
-VERSION_MINOR=6
+VERSION_MINOR=7
 
 CC = @CC@ 
-CFLAGS = @CFLAGS_LIBGADU@ -I.. -Wall
+CFLAGS = @CFLAGS_LIBGADU@ -I. -I.. -Wall
 LIBS = @LIBS_LIBGADU@
 
 MAKE = @MAKE@
@@ -37,7 +37,7 @@ clean:
 	rm -f *.o *.lo *.a *.so *.so.* *~ core
 
 distclean:	clean
-	rm -f Makefile
+	rm -f Makefile libgadu-config.h libgadu.pc
 
 #
 
@@ -66,7 +66,10 @@ install: @install_shared@ @install_static@
 install-common:
 	$(INSTALL) -d $(DESTDIR)$(includedir)
 	$(INSTALL) -m 644 libgadu.h $(DESTDIR)$(includedir)
+	$(INSTALL) -m 644 libgadu-config.h $(DESTDIR)$(includedir)
 	$(INSTALL) -d $(DESTDIR)$(libdir)
+	$(INSTALL) -d $(DESTDIR)$(libdir)/pkgconfig
+	$(INSTALL) -m 644 libgadu.pc $(DESTDIR)$(libdir)/pkgconfig
 
 install-shared:	install-common @strip_libgadu_so@
 	$(INSTALL) -m 755 $(SHARED) $(DESTDIR)$(libdir)

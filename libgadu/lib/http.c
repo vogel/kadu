@@ -1,4 +1,4 @@
-/* $Id: http.c,v 1.14 2002/11/28 11:07:46 chilek Exp $ */
+/* $Id: http.c,v 1.15 2002/12/16 22:54:39 adrian Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -31,7 +31,6 @@
 #endif
 #include <stdarg.h>
 #include <ctype.h>
-#include "config.h"
 #include "compat.h"
 #include "libgadu.h"
 
@@ -95,16 +94,18 @@ struct gg_http *gg_http_connect(const char *hostname, int port, int async, const
 	gg_debug(GG_DEBUG_MISC, "=> -----BEGIN-HTTP-QUERY-----\n%s\n=> -----END-HTTP-QUERY-----\n", h->query);
 
 	if (async) {
-#ifndef HAVE_PTHREAD
+#ifndef __GG_LIBGADU_HAVE_PTHREAD
 		if (gg_resolve(&h->fd, &h->pid, hostname)) {
 #else
-		if (gg_resolve_pthread((struct gg_common*) h, hostname)) {
+		if (gg_resolve_pthread(&h->fd, &h->resolver, hostname)) {
 #endif
                         gg_debug(GG_DEBUG_MISC, "// gg_http_connect() resolver failed\n");
 			gg_http_free(h);
                         errno = ENOENT;
 			return NULL;
 		}
+
+		gg_debug(GG_DEBUG_MISC, "// gg_http_connect() resolver = %p\n", h->resolver);
 
 		h->state = GG_STATE_RESOLVING;
 		h->check = GG_CHECK_READ;
@@ -340,8 +341,6 @@ int gg_http_watch_fd(struct gg_http *h)
 				gg_http_error(GG_ERROR_READING);
 			}
 
-			gg_debug(GG_DEBUG_MISC, "left=%d\n", left);
-
 			if (left)
 				memcpy(h->body, tmp + sep_len, left);
 
@@ -457,6 +456,11 @@ void gg_http_free(struct gg_http *h)
 		return;
 
 	gg_http_stop(h);
+
+	if (h->body) {
+		free(h->body);
+		h->body = NULL;
+	}
 
 	if (h->query) {
 		free(h->query);

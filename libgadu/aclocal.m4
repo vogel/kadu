@@ -1,6 +1,6 @@
-# aclocal.m4 generated automatically by aclocal 1.5
+# aclocal.m4 generated automatically by aclocal 1.6.3 -*- Autoconf -*-
 
-# Copyright 1996, 1997, 1998, 1999, 2000, 2001
+# Copyright 1996, 1997, 1998, 1999, 2000, 2001, 2002
 # Free Software Foundation, Inc.
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -15,7 +15,7 @@ dnl Based on AC_NEED_STDINT_H by Guido Draheim <guidod@gmx.de> that can be
 dnl found at http://www.gnu.org/software/ac-archive/. Do not complain him
 dnl about this macro.
 dnl
-dnl $Id: aclocal.m4,v 1.5 2002/11/19 01:09:04 chilek Exp $
+dnl $Id: aclocal.m4,v 1.6 2002/12/16 22:56:53 adrian Exp $
 
 AC_DEFUN([AC_NEED_STDINT_H],
  [AC_MSG_CHECKING([for uintXX_t types])

@@ -1,4 +1,4 @@
-/* $Id: libgadu.c,v 1.14 2002/11/28 11:07:46 chilek Exp $ */
+/* $Id: libgadu.c,v 1.15 2002/12/16 22:54:39 adrian Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>,
@@ -35,9 +35,11 @@
 #ifdef sun
 #  include <sys/filio.h>
 #endif
-#include "config.h"
 #include "compat.h"
 #include "libgadu.h"
+#ifdef __GG_LIBGADU_HAVE_PTHREAD
+#  include <pthread.h>
+#endif
 
 int gg_debug_level = 0;
 
@@ -59,7 +61,7 @@ static char rcsid[]
 #ifdef __GNUC__
 __attribute__ ((unused))
 #endif
-= "$Id: libgadu.c,v 1.14 2002/11/28 11:07:46 chilek Exp $";
+= "$Id: libgadu.c,v 1.15 2002/12/16 22:54:39 adrian Exp $";
 #endif 
 
 /*
@@ -85,7 +87,7 @@ const char *gg_libgadu_version()
  */
 uint32_t gg_fix32(uint32_t x)
 {
-#ifndef WORDS_BIGENDIAN
+#ifndef __GG_LIBGADU_BIGENDIAN
 	return x;
 #else
 	return (uint32_t)
@@ -109,7 +111,7 @@ uint32_t gg_fix32(uint32_t x)
  */
 uint16_t gg_fix16(uint16_t x)
 {
-#ifndef WORDS_BIGENDIAN
+#ifndef __GG_LIBGADU_BIGENDIAN
 	return x;
 #else
 	return (uint16_t)
@@ -219,7 +221,7 @@ int gg_resolve(int *fd, int *pid, const char *hostname)
 	return 0;
 }
 
-#ifdef HAVE_PTHREAD
+#ifdef __GG_LIBGADU_HAVE_PTHREAD
 
 struct gg_resolve_pthread_data {
 	char *hostname;
@@ -263,42 +265,58 @@ static void *gg_resolve_pthread_thread(void *arg)
  * znaczy, ¿e mo¿na wczytaæ struct in_addr. je¶li nie znajdzie, zwraca
  * INADDR_NONE.
  *
- *  - c - sesja
+ *  - fd - wska¼nik do zmiennej przechowuj±cej desktyptor resolvera
+ *  - resolver - wska¼nik do wska¼nika resolvera
  *  - hostname - nazwa hosta do zresolvowania
  *
  * 0, -1.
  */
-int gg_resolve_pthread(struct gg_common *c, const char *hostname)
+int gg_resolve_pthread(int *fd, void **resolver, const char *hostname)
 {
 	struct gg_resolve_pthread_data *d;
+	pthread_t *tmp;
 	int pipes[2];
 
-	gg_debug(GG_DEBUG_FUNCTION, "** gg_resolve_pthread(%p, \"%s\");\n", c, hostname);
+	gg_debug(GG_DEBUG_FUNCTION, "** gg_resolve_pthread(%p, %p, \"%s\");\n", fd, resolver, hostname);
 	
-	if (!c || !hostname) {
+	if (!resolver || !fd || !hostname) {
 		gg_debug(GG_DEBUG_MISC, "// gg_resolve_pthread() invalid arguments\n");
 		errno = EFAULT;
 		return -1;
 	}
 
+	if (!(tmp = malloc(sizeof(pthread_t)))) {
+		gg_debug(GG_DEBUG_MISC, "// gg_resolve_pthread() out of memory for pthread id\n");
+		return -1;
+	}
+	
 	if (pipe(pipes) == -1) {
 		gg_debug(GG_DEBUG_MISC, "// gg_resolve_pthread() unable to create pipes (errno=%d, %s)\n", errno, strerror(errno));
+		free(tmp);
 		return -1;
 	}
 
 	if (!(d = malloc(sizeof(*d))) || !(d->hostname = strdup(hostname))) {
 		gg_debug(GG_DEBUG_MISC, "// gg_resolve_pthread() out of memory\n");
+		free(tmp);
 		return -1;
 	}
 
 	d->fd = pipes[1];
 
-	if (pthread_create(&c->resolver, NULL, gg_resolve_pthread_thread, d) == -1) {
+	if (pthread_create(tmp, NULL, gg_resolve_pthread_thread, d) == -1) {
 		gg_debug(GG_DEBUG_MISC, "// gg_resolve_phread() unable to create thread\n");
+		close(pipes[0]);
+		close(pipes[1]);
+		free(tmp);
 		return -1;
 	}
 
-	c->fd = pipes[0];
+	gg_debug(GG_DEBUG_MISC, "// gg_resolve_pthread() %p\n", tmp);
+
+	*resolver = tmp;
+
+	*fd = pipes[0];
 
 	return 0;
 }
@@ -650,10 +668,10 @@ struct gg_session *gg_login(const struct gg_login_params *p)
 	}
 	
 	if (!sess->server_addr || gg_proxy_enabled) {
-#ifndef HAVE_PTHREAD
+#ifndef __GG_LIBGADU_HAVE_PTHREAD
 		if (gg_resolve(&sess->fd, &sess->pid, hostname)) {
 #else
-		if (gg_resolve_pthread((struct gg_common*) sess, hostname)) {
+		if (gg_resolve_pthread(&sess->fd, &sess->resolver, hostname)) {
 #endif
 			gg_debug(GG_DEBUG_MISC, "// gg_login() resolving failed (errno=%d, %s)\n", errno, strerror(errno));
 			goto fail;
@@ -693,6 +711,9 @@ void gg_free_session(struct gg_session *sess)
 	
 	if (sess->client_version)
 		free(sess->client_version);
+
+	if (sess->resolver)
+		free(sess->resolver);
 
 	free(sess);
 }
@@ -831,7 +852,7 @@ void gg_logoff(struct gg_session *sess)
  * gg_send_message_ctcp()
  *
  * wysy³a wiadomo¶æ do innego u¿ytkownika. zwraca losowy numer
- * sekwencyjny, który mo¿na olaæ albo wykorzystaæ do potwierdzenia.
+ * sekwencyjny, który mo¿na zignorowaæ albo wykorzystaæ do potwierdzenia.
  *
  *  - sess - opis sesji
  *  - msgclass - rodzaj wiadomo¶ci
@@ -879,9 +900,31 @@ int gg_send_message_ctcp(struct gg_session *sess, int msgclass, uin_t recipient,
  */
 int gg_send_message(struct gg_session *sess, int msgclass, uin_t recipient, const unsigned char *message)
 {
+	gg_debug(GG_DEBUG_FUNCTION, "** gg_send_message(%p, %d, %u, %p)\n", sess, msgclass, recipient, message);
+
+	return gg_send_message_richtext(sess, msgclass, recipient, message, NULL, 0);
+}
+
+/*
+ * gg_send_message_richtext()
+ *
+ * wysy³a kolorow± wiadomo¶æ do innego u¿ytkownika. zwraca losowy numer
+ * sekwencyjny, który mo¿na olaæ albo wykorzystaæ do potwierdzenia.
+ *
+ *  - sess - opis sesji
+ *  - msgclass - rodzaj wiadomo¶ci
+ *  - recipient - numer adresata
+ *  - message - tre¶æ wiadomo¶ci
+ *  - format - informacje o formatowaniu
+ *  - formatlen - d³ugo¶æ informacji o formatowaniu
+ *
+ * numer sekwencyjny wiadomo¶ci lub -1 w przypadku b³êdu.
+ */
+int gg_send_message_richtext(struct gg_session *sess, int msgclass, uin_t recipient, const unsigned char *message, const unsigned char *format, int formatlen)
+{
 	struct gg_send_msg s;
 
-	gg_debug(GG_DEBUG_FUNCTION, "** gg_send_message(%p, %d, %u, ...);\n", sess, msgclass, recipient);
+	gg_debug(GG_DEBUG_FUNCTION, "** gg_send_message_richtext(%p, %d, %u, %p, %p, %d);\n", sess, msgclass, recipient, message, format, formatlen);
 
 	if (!sess) {
 		errno = EFAULT;
@@ -900,7 +943,7 @@ int gg_send_message(struct gg_session *sess, int msgclass, uin_t recipient, cons
 	s.msgclass = fix32(msgclass);
 	sess->seq += (rand() % 0x300) + 0x300;
 	
-	if (gg_send_packet(sess->fd, GG_SEND_MSG, &s, sizeof(s), message, strlen(message) + 1, NULL) == -1)
+	if (gg_send_packet(sess->fd, GG_SEND_MSG, &s, sizeof(s), message, strlen(message) + 1, format, formatlen, NULL) == -1)
 		return -1;
 
 	return fix32(s.seq);
@@ -922,12 +965,36 @@ int gg_send_message(struct gg_session *sess, int msgclass, uin_t recipient, cons
  */
 int gg_send_message_confer(struct gg_session *sess, int msgclass, int recipients_count, uin_t *recipients, const unsigned char *message)
 {
+	gg_debug(GG_DEBUG_FUNCTION, "** gg_send_message_confer(%p, %d, %d, %p, %p);\n", sess, msgclass, recipients_count, recipients, message);
+
+	return gg_send_message_confer_richtext(sess, msgclass, recipients_count, recipients, message, NULL, 0);
+}
+
+/*
+ * gg_send_message_confer_richtext()
+ *
+ * wysy³a kolorow± wiadomo¶æ do kilku u¿ytkownikow (konferencja). zwraca
+ * losowy numer sekwencyjny, który mo¿na zignorowaæ albo wykorzystaæ do
+ * potwierdzenia.
+ *
+ *  - sess - opis sesji
+ *  - msgclass - rodzaj wiadomo¶ci
+ *  - recipients_count - ilo¶æ adresatów
+ *  - recipients - numerki adresatów
+ *  - message - tre¶æ wiadomo¶ci
+ *  - format - informacje o formatowaniu
+ *  - formatlen - d³ugo¶æ informacji o formatowaniu
+ *
+ * numer sekwencyjny wiadomo¶ci lub -1 w przypadku b³êdu.
+ */
+int gg_send_message_confer_richtext(struct gg_session *sess, int msgclass, int recipients_count, uin_t *recipients, const unsigned char *message, const unsigned char *format, int formatlen)
+{
 	struct gg_send_msg s;
 	struct gg_msg_recipients r;
 	int i, j, k;
 	uin_t *recps;
 		
-	gg_debug(GG_DEBUG_FUNCTION, "** gg_send_message_confer(%p, %d, %u, ...);\n", sess, msgclass, recipients_count);
+	gg_debug(GG_DEBUG_FUNCTION, "** gg_send_message_confer_richtext(%p, %d, %d, %p, %p, %p, %d);\n", sess, msgclass, recipients_count, recipients, message, format, formatlen);
 
 	if (!sess) {
 		errno = EFAULT;
@@ -961,7 +1028,7 @@ int gg_send_message_confer(struct gg_session *sess, int msgclass, int recipients
 		if (!i)
 			sess->seq += (rand() % 0x300) + 0x300;
 		
-		if (gg_send_packet(sess->fd, GG_SEND_MSG, &s, sizeof(s), message, strlen(message) + 1, &r, sizeof(r), recps, (recipients_count - 1) * sizeof(uin_t), NULL) == -1) {
+		if (gg_send_packet(sess->fd, GG_SEND_MSG, &s, sizeof(s), message, strlen(message) + 1, &r, sizeof(r), recps, (recipients_count - 1) * sizeof(uin_t), format, formatlen, NULL) == -1) {
 			free(recps);
 			return -1;
 		}

@@ -1,5 +1,5 @@
 dnl Rewritten from scratch. --wojtekka
-dnl $Id: curses.m4,v 1.8 2002/11/28 11:08:34 chilek Exp $
+dnl $Id: curses.m4,v 1.9 2002/12/16 22:52:21 adrian Exp $
 
 AC_DEFUN(AC_CHECK_NCURSES,[
   AC_SUBST(CURSES_LIBS)
@@ -37,8 +37,8 @@ AC_DEFUN(AC_CHECK_NCURSES,[
       if test "x$include" != "x"; then
         AC_MSG_RESULT($include/ncurses.h)
 	CURSES_LIBS="$lib"
-	CURSES_INCLUDES="-I$include"
-	have_ncurses=true
+	CURSES_INCLUDES="-I$include -I$incl"
+	have_ncurses=yes
 	ldflags_old="$LDFLAGS"
 	LDFLAGS="$CURSES_LIBS"
 	AC_DEFINE(HAVE_NCURSES, 1, [define if You want ncurses])
@@ -52,7 +52,7 @@ AC_DEFUN(AC_CHECK_NCURSES,[
     done
   fi
 
-  if test "x$have_ncurses" != "xtrue"; then
+  if test "x$have_ncurses" != "xyes"; then
     AC_MSG_RESULT(not found)
   fi
 ])

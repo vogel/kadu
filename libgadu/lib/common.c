@@ -1,4 +1,4 @@
-/* $Id: common.c,v 1.13 2002/11/28 11:07:46 chilek Exp $ */
+/* $Id: common.c,v 1.14 2002/12/16 22:54:39 adrian Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>,
@@ -36,7 +36,6 @@
   #include <sys/filio.h>
 #endif
 #include <fcntl.h>
-#include "config.h"
 #include "libgadu.h"
 
 FILE *gg_debug_file = NULL;

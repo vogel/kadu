@@ -1,4 +1,4 @@
-/* $Id: search.c,v 1.12 2002/11/28 11:07:46 chilek Exp $ */
+/* $Id: search.c,v 1.13 2002/12/16 22:54:39 adrian Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -26,7 +26,6 @@
 #endif
 #include <stdarg.h>
 #include <ctype.h>
-#include "config.h"
 #include "libgadu.h"
 
 /*
@@ -228,10 +227,7 @@ int gg_search_watch_fd(struct gg_http *h)
                 return -1;
         }
 
-	gg_debug(GG_DEBUG_MISC, "h->data = %p\n", h->data);
-
-	s->count = 0;
-	s->results = NULL;
+	memset(s, 0, sizeof(struct gg_search));
 	
 	if (!gg_get_line(&buf)) {
 		gg_debug(GG_DEBUG_MISC, "=> search, can't read the first line\n");
@@ -297,6 +293,9 @@ void gg_search_free(struct gg_http *h)
 			free(s->results[i].nickname);
 			free(s->results[i].city);
 		}
+
+		free(s->results);
+
 		free(s);
 	}
 

@@ -1,4 +1,4 @@
-/* $Id: userlist.c,v 1.12 2002/11/28 11:07:46 chilek Exp $ */
+/* $Id: userlist.c,v 1.13 2002/12/16 22:54:39 adrian Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -26,7 +26,6 @@
 #endif
 #include <stdarg.h>
 #include <ctype.h>
-#include "config.h"
 #include "libgadu.h"
 
 /*

@@ -2,8 +2,255 @@ Teksty w nawiasach na koñcu linii mówi± o tym, kto dokona³ poprawki.
 Je¶li jest postaci ,,nick'', powinno byæ jasne. Postaæ ,,nick/x''
 oznacza, ¿e pomys³odawc± jest ,,nick'', a zrobi³ to kto¶, czyjego
 pierwsz± liter± nicka jest ,,x'' (w - wojtekka, s - speedy, a - arekm,
-d - drg). ,,p/nick'' oznacza patch lub ¼ród³o podes³ane przez ,,nick'',
-,,i/nick'' oznacza czyj¶ pomys³, ,,b/nick'' mówi, kto zg³osi³ b³±d.
+d - drg, sz - szalik). ,,p/nick'' oznacza patch lub ¼ród³o podes³ane
+przez ,,nick'', ,,i/nick'' oznacza czyj¶ pomys³, ,,b/nick'' mówi, kto
+zg³osi³ b³±d.
+
+// 2002-12-15
+
+- ekg pokazuje stderr normalnie ju¿, ¿eby widzieæ informacje o wyj±tkach
+  pythona (w)
+- dodanie komendy /python (w)
+- pocz±tek obs³ugi zdarzeñ w skryptach pythonowych. szczegó³y
+  w docs/python.txt (w)
+- poprawka /window clear (pmb/w)
+- poprawka /set ukrytej zmiennej (michal/w)
+
+// 2002-12-14
+
+- kosmetyka, ,,help /komenda'' te¿ zadzia³a (sz)
+- du¿a reorganizacja ui-ncurses. mog± wyst±piæ drobne problemy, ale stara³em
+  siê przetestowaæ wszystkie mo¿liwe dziwne sytuacje (w)
+- dodanie zmiennej backlog_size, nie bêdzie siê powiêksza³ w nieskoñczono¶æ,
+  jak to mia³o miejsce poprzednio (w)
+- dodanie pi±tego parametru liczbowego do ,,/window new'', który mówi, z
+  której strony maj± byæ umieszczone ramki. mapa bitowa: 1 - lewo, 2 - góra,
+  4 - prawo, 8 - dó³. wszystkie ramki to oczywi¶cie 15 (w)
+- ponowne zawijanie tekstu po zmianie rozmiaru okna (chocia¿by przez w³±czenie
+  lub wy³±czenie listy kontaktów). niestety nie jest jeszcze optymalne, bo
+  po wy¶wietleniu ka¿dej linii analizuje ca³y bufor od nowa, ale nie chcia³em
+  zwlekaæ z commitem. w ka¿dym razie, dziêki temu p³ywaj±ce okienka maj±
+  w koñcu sens (w)
+
+// 2002-12-13
+
+- reorganizacja sprawdzania poczty w skrzynkach mbox (sz)
+- poprawka segfaulta przy wielolinijkowych (seba/w)
+
+// 2002-12-11
+
+- nie wy¶wietlajmy komunikatu o zakolejkowaniu wiadomo¶ci do 
+  nieprawid³owego adresata (sz)
+- stan ,,zajêty'' bez opisu by³ ¼le ustawiany (sz)
+
+// 2002-12-10
+
+- poprawka segfaulta w wielolinijkowych (seba,wojboj/w)
+- poprawka usuwania przypisanych klawiszy (seba/w)
+- sprawdzanie poczty (mbox) nie przegl±da niepotrzebnie 
+  ca³ego pliku, je¶li nie by³o w nim zmian (sz)
+- poprawka ¶mieci w wielolinijkowych (seba/w)
+- dzia³a ju¿ tab w wielolinijkowych (seba/w)
+
+// 2002-12-09
+
+- poprawka wczytywania konfiguracji (szalik,Murphy/w)
+- libgadu: kosmetyka deklaracji funkcji (MatNet/w)
+- libgadu: usuniêcie wycieku pamiêci przy szukaniu (jajcus/w)
+- libgadu: generowanie pliku <libgadu-config.h> z konfiguracj± systemu
+  niezbêdn± do w³±czenia biblioteki do programu. niestety nie bêdzie on
+  regenerowany przez skrypt config.status (adrians/w)
+- libgadu: dodanie obs³ugi pkgconfig. program linkuj±ce siê z libgadu
+  mog± sprawdzaæ flagi kompilatora i linkera przez ,,pkgconfig libgadu
+  --libs --cflags'' (w)
+- libgadu: zlikwidowanie rozbie¿no¶ci ABI w wersji z i bez pthread
+  (adrians/w)
+
+// 2002-12-08
+
+- poprawka segfaulta przy display_crap = 0 (FIG,wojboj/w)
+- poprawka listy kontaktów i wielolinijkowych wiadomo¶ci (w)
+- poprawka segfaulta przy wielolinikowych wiadomo¶ciach (w)
+- komunikat o nowej poczcie zawsze zawiera s³owo ,,nowe'',
+  aby nie powodowaæ niejasno¶ci co do tego, o jak± ilo¶æ
+  emaili chodzi (Arim/sz)
+- du¿a ilo¶æ wywo³añ /exec, /sms lub sprawdzanie poczty po
+  pewnym czasie powodowa³o brak wolnych deskryptorów (sz)
+- poprawka dokumentacji (rmrmg/w)
+- dodanie zmiennej contacts_descr (rmrmg/w)
+- dalsze zmiany p³ywaj±cych okienek (wojboj/w)
+- dodanie zmiennej windows_save (w)
+
+// 2002-12-07
+
+- ekg potrafi ju¿ sprawdzaæ czy nadesz³a nowa poczta, wiêcej w
+  docs/vars.txt w opisie zmiennych check_mail. wymaga jeszcze
+  optymalizacji, poprawek ;> (sz)
+- /bind w ui-ncurses nie dodaje sekwencji, je¶li ju¿ istnieje (sz)
+- porz±dek musi byæ - miejscowa kosmetyka kodu/komentarzy (sz)
+- compat te¿ wymaga czyszczenia (sz)
+- lekkie porz±dki w sprawdzaniu poczty (w)
+- ci±g dalszy p³ywaj±cych okienek (wojboj/w)
+- poprawki dokumentacji (gophi/w)
+- powiadamianie o nowej poczcie na ekran (d)
+- powiadamianie na ekran mo¿na w³±czyæ/wy³±czyæ w zmiennej check_mail (sz)
+- mo¿liwo¶æ wysy³ania pogrubionej czcionki (Ctrl-B), pochy³ej (Ctrl-T)
+  i podkre¶lonej (Ctrl-_) (w)
+- libgadu: dodanie funkcji gg_send_message_richtext() i
+  gg_send_message_confer_richtext(). paskudnie to wygl±da, ale ABI
+  trzeba zachowaæ (w)
+- libgadu: podbicie wersji API (w)
+- wy¶wietlanie pogrubionych, pochy³ych i podkre¶lonych czcionek (w)
+- dodanie zmiennej display_color_map (w)
+- dodatki do zmiennej contacts (Murphy/w)
+
+// 2002-12-06
+
+- poprawiony odczyt /bindowanych klawiszy z konfiga (kostoo/w)
+- dodana zmienna display_crap (Murphy,pmb/w)
+
+// 2002-12-05
+
+- ujednolicenie nazewnictwa grup. zawsze nale¿y u¿ywaæ zapisu ,,@grupa''.
+  jedynie w miejscach, gdzie nie powoduje to dwuznaczno¶ci (list -m grupa,
+  list alias -g grupa) dopuszczalne jest w _ostateczno¶ci_ ,,grupa'' (pmb/sz)
+- dodanie /bind w ui-ncurses (w)
+
+// 2002-12-04
+
+- /list mo¿e ju¿ dodawaæ/usuwaæ z wielu grup (rodzielonych przecinkiem)
+  na raz. dodatkowo, nie dodaje ju¿ u¿ytkownika kilka razy do tej samej
+  grupy. kosmetyka (sz)
+- po reorganizacji stanów nie zapisywa³ siê nasz aktualny stan po /save (sz)
+- obs³uga zdarzenia ,,blink_leds'' w ,,on'' dla solarisa (d)
+- ma³a poprawka konfliktu nazw dla solarisa (d)
+- dodana ¿a³osna namiastka ,,beeps_spk'' dla solarisa (d)
+- --enable-ioctld ju¿ nie jest tylko Linux only (d)
+- kompilacja ioctld dla solarisa. powinno wystarczyæ (d)
+- poprawia wieszaj±cego siê /exec (wojboj/w)
+- pocz±tek obs³ugi p³ywaj±cych okienek (wojboj/w)
+
+// 2002-12-03
+
+- /list --member <grupa> wy¶wietla tylko cz³onków grupy (sz)
+
+// 2002-12-02
+
+- uaktualnienie contrib/link.pl (theKnight/w)
+- poprawka reakcji na F3 (Murphy/w)
+- sprawdzanie, czy podany uin dla /add, /del itp. jest sensowny (sz)
+- /list @grupa wy¶wietla cz³onków grupy (pmb/sz)
+- dodanie zmiennej auto_back (pmb/w)
+- spora reorganizacja zmiany stanu w /away, /back, /invisible, auto_away
+  itp. wiêc teoretycznie mog± wyst±piæ problemy (w)
+
+// 2002-12-01
+
+- kosmetyka kodu usuwania niektórych list (sz)
+- dalsza kosmetyka /query (sz)
+- b³êdny zapis listy nicków w chat/query wy¶wietli b³±d zamiast
+  utworzenia bezsensownej konferencji (sz)
+- usuniêcie leaka przy /find (w)
+- libgadu: usuniêcie leaka przy http (w)
+- drobne zmiany w ioctld (przy ,,beeps_spk'' ioctld nie potrzebuje +s) (d)
+- zdarzenia ,,beeps_spk'' i ,,blink_leds'' mog± dzia³aæ na FreeBSD (d)
+- wykrywanie <sys/kbio.h> dla FreeBSD (d/w)
+- ioctld na li¶cie wkompilowanych opcji (d/w)
+- porz±dki w autoconfie, s/true/yes/ (w)
+- przywrócenie /list --phone (FIG/w)
+- zmiana numeru w li¶cie kontaktów usuwa stary numer (FIG/w)
+
+// 2002-11-30
+
+- kosmetyka dokumentacji (sz)
+- poprawka /query, które nie potrafi³o utworzyæ konferencji (sz)
+- dodana opcja -s / --stime do ,,last'', dziêki czemu mo¿na
+  sprawdziæ, kiedy wys³ana zosta³a wiadomo¶æ. przydatne, gdy
+  nasz temat nie wy¶wietla timestampu wiadomo¶ci (sz)
+
+// 2002-11-29
+
+- usuniêcie opcji --phone z /find i /change (mateusza/w)
+- poprawka polskich krzaczków w opisie przy po³±czeniu (ubanus/w)
+- poprawka zapisywania opisu /quit przy keep_reason (w)
+
+// 2002-11-28
+
+- ma³a poprawka opcji --debug w ekgsearch (wysek)
+- poprawka kompilacji z readline (a.latanski/w)
+- przeniesienie obs³ugi kolejki wiadomo¶ci do msgqueue.[ch] (w)
+- wiadomo¶ci z kolejki bêd± zapisywane na dysku do ~/.gg/queue
+  po wyj¶ciu z programu (w)
+
+// 2002-11-27
+
+- ,,on'' mo¿e ju¿ reagowaæ na zmianê czyjego¶ opisu (rmrmg/sz)
+- poprawka od¶wie¿ania prompta przy activity w ui-readline (d)
+- /query wymaga podania prawid³ego u¿ytkownika lub numer (Murphy/w)
+
+// 2002-11-26
+
+- dodanie zmiennej sound_notify_file (sz)
+- obs³uga konferencji w /queue (sz)
+- kosmetyczne poprawki w tematach (sz)
+- /status nie wy¶wietla ilo¶ci zakolejkowanych wiadomo¶ci, gdy kolejka
+  jest pusta (sz)
+- /set nie wy¶wietla ju¿ nieaktywnych opcji (np. log_path przy wy³±czonym
+  logowaniu, beep_notify przy wy³±czonym beepaniu). ¿eby wy¶wietliæ
+  wszystkie zmienne, wpisujemy ,,/set -a'' (Arim/w)
+- F3 i F12 nie pokazuj± informacji o zmianie zmiennej (w)
+
+// 2002-11-25
+
+- s/struct queue/struct msg_queue/, poniewa¿ kolidowa³o z SunOSowymi
+  libcami (Murphy/w)
+- poprawka wykrywania scandir() (Murphy/w)
+
+// 2002-11-24
+
+- segfault w momencie rozpoczynania konferencji (szalik/s)
+- kosmetyka i poprawki w last i queue (szalik/s)
+
+// 2002-11-22
+
+- kosmetyka (szalik/w)
+- dodana zmienna ,,display_welcome'' (seba/w)
+- libgadu: wyrzucenie wielokrotnych prób czytania z socketa. je¶li nie
+  ma danych na sockecie mimo wywo³ania funkcji, zrywamy po³±czenie, zamiast
+  wieszaæ program (*/w)
+- poprawka dope³niania plików zaczynaj±cych siê od kropki (salvador/w)
+
+// 2002-11-21
+
+- dodanie w³asnej implementacji scandir(). co prawda nie dzia³a jeszcze,
+  ale ui-ncurses skompiluje siê na SunOSach (Murphy/w)
+- dodanie kolejkowania wiadomo¶ci wysy³anych przy roz³±czonej sesji.
+  komenda /queue (Murphy,szalik/w)
+
+// 2002-11-20
+
+- dodanie zmiennej ,,mesg_allow'' (mateusza,szalik/w)
+- poprawka leon.theme (leon/w)
+- inteligentne timestampy w /status (szalik/w)
+- literówki (szalik/w)
+
+// 2002-11-19
+
+- poprawki ,,last'' (joshua,szalik/d)
+- poprawka szyfrowania (w)
+- poprawka segfaulta w dope³nianiu plików (salvador/w)
+- przezroczyste t³o na kolorowych terminalach (greblus/w)
+- dodanie zmiennej ,,time_deviation'' (w)
+- usuniêcie timestampów z wychodz±cych wiadomo¶ci (w)
+- inteligentne timestampy w przychodz±cych. je¶li wiadomo¶æ zosta³a
+  nadana +/- time_deviation, nie wy¶wietla go. je¶li wys³ana tego samego
+  dnia, wy¶wietla tylko godzinê. je¶li wys³ana wcze¶niej, wy¶wietla datê
+  i godzinê (w)
+- dodany parametr ,,-d'' do /list (krzyk/w)
+- poprawka polskich znaków w ncurses (robson/w)
+- dodany format %{descr} do statusu w ncurses (FIG/w)
+- Alt-K w pierwszym oknie zamknie query (rmrmg/w)
+- libgadu: usuniêcie -g z CFLAGS przy --disable-debug (adrians/w)
 
 // 2002-11-18
 
@@ -73,8 +320,8 @@ d - drg). ,,p/nick'' oznacza patch lub ¼ród³o podes³ane przez ,,nick'',
 
 // 2002-11-11
 
-- 1. Limitowanie wysy?anych sms'ów przy w??czonym sms_away (szalik/s)
-- 2. 'status' wy?wietla od kiedy jeste?my po??czeni, lub roz??czeni. (szalik/s)
+- limitowanie wysy³anych sms'ów przy w³±czonym sms_away (szalik/s)
+- /status wy¶wietla od kiedy jeste¶my po³±czeni lub roz³±czeni (szalik/s)
 - dodany leon.theme (leon/s)
 
 // 2002-11-09 
@@ -2161,4 +2408,4 @@ i BUGS.
 - eleet niebieskie t³o mesgów (wiem, dalekie od idea³u).
 
 
-$Id: ChangeLog,v 1.8 2002/11/19 00:58:48 chilek Exp $
+$Id: ChangeLog,v 1.9 2002/12/16 22:56:53 adrian Exp $

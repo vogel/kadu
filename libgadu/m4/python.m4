@@ -1,5 +1,5 @@
 dnl Rewritten from scratch. --speedy 
-dnl $Id: python.m4,v 1.3 2002/11/28 11:08:34 chilek Exp $
+dnl $Id: python.m4,v 1.4 2002/12/16 22:52:21 adrian Exp $
 
 PYTHON=
 PYTHON_VERSION=
@@ -51,11 +51,11 @@ AC_DEFUN(AC_CHECK_PYTHON,[
 			PYTHON_LIBS="-L$PY_EXEC_PREFIX/lib $PY_LIB_LOC -lpython$PY_VERSION $PY_LIBS"
 			PYTHON_INCLUDES="$PY_CFLAGS"
 			AC_DEFINE(WITH_PYTHON, 1, [define if You want python])
-			have_python=true
+			have_python=yes
 		    fi
 		fi
 
-		if test "x$have_python" != "xtrue"; then 
+		if test "x$have_python" != "xyes"; then 
 			AC_MSG_RESULT(not found)
 		fi
 	fi

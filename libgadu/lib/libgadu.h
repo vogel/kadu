@@ -1,4 +1,4 @@
-/* $Id: libgadu.h,v 1.18 2002/12/09 01:01:02 chilek Exp $ */
+/* $Id: libgadu.h,v 1.19 2002/12/16 22:54:39 adrian Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>,
@@ -32,17 +32,9 @@
 extern "C" {
 #endif
 
+#include <libgadu-config.h>
 #include <sys/types.h>
 #include <stdint.h>
-
-#define HAVE_PTHREAD 1
-
-#ifdef HAVE_PTHREAD
-#  include <pthread.h>
-#  define gg_common_head_pthread pthread_t resolver;
-#else
-#  define gg_common_head_pthread /* foobar */
-#endif
 
 /*
  * uin_t
@@ -63,8 +55,7 @@ typedef uint32_t uin_t;
 	int id;			/* identyfikator */ \
 	int timeout;		/* sugerowany timeout w sekundach */ \
 	int (*callback)(x*); 	/* callback przy zmianach */ \
-	void (*destroy)(x*); 	/* funkcja niszczenia */ \
-	gg_common_head_pthread
+	void (*destroy)(x*); 	/* funkcja niszczenia */
 
 struct gg_common {
 	gg_common_head(struct gg_common)
@@ -112,6 +103,8 @@ struct gg_session {
 	int last_sysmsg;	/* ostatnia wiadomo¶æ systemowa */
 
 	char *initial_descr;	/* pocz±tkowy opis stanu klienta */
+
+	void *resolver;		/* wska¼nik na informacje resolvera */
 };
 
 /*
@@ -133,6 +126,8 @@ struct gg_http {
         void *data;             /* dane danej operacji http */
 
 	char *user_data;	/* dane u¿ytkownika */
+
+	void *resolver;		/* wska¼nik na informacje resolvera */
 };
 
 #define GG_MAX_PATH 276
@@ -206,7 +201,7 @@ enum gg_session_enum {
 	GG_SESSION_USER4,	/* j.w. */
 	GG_SESSION_USER5,	/* j.w. */
 	GG_SESSION_USER6,	/* j.w. */
-	GG_SESSION_USER7,	/* j.w. */
+	GG_SESSION_USER7	/* j.w. */
 };
 
 /*
@@ -256,7 +251,7 @@ enum gg_state_enum {
 	GG_STATE_READING_VOICE_DATA,	/* czeka na dane voip */
 	GG_STATE_SENDING_VOICE_ACK,	/* wysy³a potwierdzenie voip */
 	GG_STATE_SENDING_VOICE_REQUEST,	/* wysy³a ¿±danie voip */
-	GG_STATE_READING_TYPE,		/* czeka na typ po³±czenia */
+	GG_STATE_READING_TYPE		/* czeka na typ po³±czenia */
 };
 
 /*
@@ -277,7 +272,7 @@ enum gg_state_enum {
 enum gg_check_t {
 	GG_CHECK_NONE = 0,		/* nic. nie powinno wyst±piæ */
 	GG_CHECK_WRITE = 1,		/* sprawdzamy mo¿liwo¶æ zapisu */
-	GG_CHECK_READ = 2,		/* sprawdzamy mo¿liwo¶æ odczytu */
+	GG_CHECK_READ = 2		/* sprawdzamy mo¿liwo¶æ odczytu */
 };
 
 #define gg_check_enum gg_check_t	/* dla kompatybilno¶ci */
@@ -312,7 +307,9 @@ int gg_change_status(struct gg_session *sess, int status);
 int gg_change_status_descr(struct gg_session *sess, int status, const char *descr);
 int gg_change_status_descr_time(struct gg_session *sess, int status, const char *descr, int time);
 int gg_send_message(struct gg_session *sess, int msgclass, uin_t recipient, const unsigned char *message);
+int gg_send_message_richtext(struct gg_session *sess, int msgclass, uin_t recipient, const unsigned char *message, const unsigned char *format, int formatlen);
 int gg_send_message_confer(struct gg_session *sess, int msgclass, int recipients_count, uin_t *recipients, const unsigned char *message);
+int gg_send_message_confer_richtext(struct gg_session *sess, int msgclass, int recipients_count, uin_t *recipients, const unsigned char *message, const unsigned char *format, int formatlen);
 int gg_send_message_ctcp(struct gg_session *sess, int msgclass, uin_t recipient, const unsigned char *message, int message_len);
 int gg_ping(struct gg_session *sess);
 
@@ -336,7 +333,7 @@ enum gg_event_t {
 	GG_EVENT_DCC_NEED_FILE_INFO,	/* nale¿y wype³niæ file_info */
 	GG_EVENT_DCC_NEED_FILE_ACK,	/* czeka na potwierdzenie pliku */
 	GG_EVENT_DCC_NEED_VOICE_ACK,	/* czeka na potwierdzenie rozmowy */
-	GG_EVENT_DCC_VOICE_DATA,	/* ramka danych rozmowy g³osowej */
+	GG_EVENT_DCC_VOICE_DATA 	/* ramka danych rozmowy g³osowej */
 };
 
 /*
@@ -352,7 +349,7 @@ enum gg_failure_t {
 	GG_FAILURE_WRITING,		/* zerwano po³±czenie podczas zapisu */
 	GG_FAILURE_PASSWORD,		/* nieprawid³owe has³o */
 
-	GG_FAILURE_404,			/* XXX nieu¿ywane */
+	GG_FAILURE_404 			/* XXX nieu¿ywane */
 };
 
 /*
@@ -373,7 +370,7 @@ enum gg_error_t {
 	GG_ERROR_DCC_FILE,		/* b³±d odczytu/zapisu pliku */
 	GG_ERROR_DCC_EOF,		/* plik siê skoñczy³? */
 	GG_ERROR_DCC_NET,		/* b³±d wysy³ania/odbierania */
-	GG_ERROR_DCC_REFUSED,		/* po³±czenie odrzucone przez usera */
+	GG_ERROR_DCC_REFUSED 		/* po³±czenie odrzucone przez usera */
 };
 
 /*
@@ -621,7 +618,7 @@ extern int gg_debug_level;
 void gg_debug(int level, const char *format, ...);
 #endif
 
-const char *gg_libgadu_version();
+const char *gg_libgadu_version(void);
 
 /*
  * konfiguracja http proxy.
@@ -642,8 +639,8 @@ extern int gg_proxy_http_only;
  * -------------------------------------------------------------------------
  */
 
-#ifdef HAVE_PTHREAD
-int gg_resolve_pthread(struct gg_common *c, const char *hostname);
+#ifdef __GG_LIBGADU_HAVE_PTHREAD
+int gg_resolve_pthread(int *fd, void **resolver, const char *hostname);
 #endif
 
 #ifdef _WIN32
@@ -670,7 +667,7 @@ uint32_t gg_fix32(uint32_t x);
 uint16_t gg_fix16(uint16_t x);
 #define fix32 gg_fix32
 #define fix16 gg_fix16
-char *gg_proxy_auth();
+char *gg_proxy_auth(void);
 char *gg_base64_encode(const char *buf);
 char *gg_base64_decode(const char *buf);
 
@@ -691,7 +688,7 @@ char *gg_base64_decode(const char *buf);
 #define GG_DEFAULT_PROTOCOL_VERSION 0x18
 #define GG_DEFAULT_TIMEOUT 30
 #define GG_HAS_AUDIO_MASK 0x40000000
-#define GG_LIBGADU_VERSION "20021126"
+#define GG_LIBGADU_VERSION "20021215"
 
 #define GG_DEFAULT_DCC_PORT 1550
 

@@ -1,4 +1,4 @@
-/* $Id: events.c,v 1.12 2002/11/28 11:07:46 chilek Exp $ */
+/* $Id: events.c,v 1.13 2002/12/16 22:54:39 adrian Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>,
@@ -32,9 +32,11 @@
 #  include <string.h>
 #endif
 #include <time.h>
-#include "config.h"
 #include "compat.h"
 #include "libgadu.h"
+#ifdef __GG_LIBGADU_HAVE_PTHREAD
+#  include <pthread.h>
+#endif
 
 /*
  * gg_event_free()
@@ -420,10 +422,14 @@ struct gg_event *gg_watch_fd(struct gg_session *sess)
 			
 			close(sess->fd);
 
-#ifndef HAVE_PTHREAD
+#ifndef __GG_LIBGADU_HAVE_PTHREAD
 			waitpid(sess->pid, NULL, 0);
 #else
-			pthread_cancel(sess->resolver);
+			if (sess->resolver) {
+				pthread_cancel(*((pthread_t*) sess->resolver));
+				free(sess->resolver);
+				sess->resolver = NULL;
+			}
 #endif
 
 			/* je¶li jeste¶my w resolverze i mamy ustawiony port

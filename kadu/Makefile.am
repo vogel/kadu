@@ -33,10 +33,11 @@ updates.cpp updates.h
 
 METASOURCES = AUTO
 
-INCLUDES = $(all_includes) 
+INCLUDES = $(all_includes)
 kadu_LDADD = $(all_libraries) $(LIB_QT) $(LIB_KDECORE) $(LIB_KDEUI) -L../libgadu/lib -lgadu
 #kadu_DEPENDENCIES = ../libgadu/lib/libgadu.a
 AM_CPPFLAGS = -DBINDIR="\"$(bindir)\"" -DDATADIR="\"$(datadir)\""
+AM_CXXFLAGS = -I../libgadu/lib
 
 EXTRA_DIST = hi16-app-kadu.png hi32-app-kadu.png hi48-app-kadu.png kadu.desktop
 

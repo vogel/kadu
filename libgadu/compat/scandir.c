@@ -8,7 +8,7 @@
 #include <string.h>
 #include <errno.h>
 
-int foo_alphasort(const struct dirent **a, const struct dirent **b)
+int alphasort(const struct dirent **a, const struct dirent **b)
 {
 	if (!a || !b || !*a || !*b || !(*a)->d_name || !(*b)->d_name)
 		return 0;
@@ -18,7 +18,7 @@ int foo_alphasort(const struct dirent **a, const struct dirent **b)
 
 typedef int (*qsort_compar_t)(const void *a, const void *b);
 
-int foo_scandir(const char *path, struct dirent ***namelist, int (*select)(const struct dirent *), int (*compar)(const struct dirent **, const struct dirent **))
+int scandir(const char *path, struct dirent ***namelist, int (*select)(const struct dirent *), int (*compar)(const struct dirent **, const struct dirent **))
 {
 	struct dirent **res, *tmp;
 	int i, count = 0, my_errno = 0;

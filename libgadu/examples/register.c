@@ -1,4 +1,4 @@
-/* $Id: register.c,v 1.5 2002/10/24 11:03:57 adrian Exp $ */
+/* $Id: register.c,v 1.6 2002/12/16 22:51:50 adrian Exp $ */
 
 #include <stdio.h>
 #include "libgadu.h"
