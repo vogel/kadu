@@ -517,7 +517,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	/* initialize group tabbar */
 	group_bar=new QTabBar(this);
-	group_bar->addTab(new QTab("Wszyscy"));
+	group_bar->addTab(new QTab(i18n("Everybody")));
 	refreshGroupTabBar();
 	connect(group_bar,SIGNAL(selected(int)),this,SLOT(groupTabSelected(int)));
 

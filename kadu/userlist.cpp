@@ -83,6 +83,7 @@ void UserList::addUser(const QString FirstName,const QString LastName,
 	e.ip = 0;
 	e.port = 0;
 	append(e);
+	emit modified();
 };
 
 void UserList::changeUserInfo(const QString OldAltNick,
@@ -114,6 +115,7 @@ void UserList::removeUser(const QString &altnick)
 		if((*i).altnick == altnick)
 		{ 
 			remove(i);
+			emit modified();
 			break;
 		};
 };
@@ -238,24 +240,15 @@ bool UserList::readFromFile()
 	};
 
 	f.close();
+	emit modified();
     	return true;
 }
 
 UserList& UserList::operator=(const UserList& userlist)
 {
 	QValueList<UserListElement>::operator=(userlist);
+	emit modified();
 	return *this;
 };
-
-/*
-int UserList::count()
-{
-	return List.count();
-};
-
-UserListElement& UserList::operator[](const int i)
-{
-	return List[i];
-};*/
 
 #include "userlist.moc"
