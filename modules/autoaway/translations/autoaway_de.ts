@@ -45,5 +45,28 @@
         <source>Auto change status</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>AutoStatus Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>AutoAwaySlots</name>
+    <message>
+        <source>Don&apos;t change the description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add in front of description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add at the back of description</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

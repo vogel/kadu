@@ -45,5 +45,28 @@
         <source>Auto change status</source>
         <translation>Autozmiana statusu</translation>
     </message>
+    <message>
+        <source>AutoStatus Description</source>
+        <translation>Opis Autostatusu</translation>
+    </message>
+</context>
+<context>
+    <name>AutoAwaySlots</name>
+    <message>
+        <source>Don&apos;t change the description</source>
+        <translation>Nie zmieniaj opisu</translation>
+    </message>
+    <message>
+        <source>Change</source>
+        <translation>Zmień</translation>
+    </message>
+    <message>
+        <source>Add in front of description</source>
+        <translation>Dodaj na początku opisu</translation>
+    </message>
+    <message>
+        <source>Add at the back of description</source>
+        <translation>Dodaj na końcu opisu</translation>
+    </message>
 </context>
 </TS>
