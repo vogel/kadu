@@ -34,8 +34,8 @@ extern "C" int sound_init()
 		sound_manager, SLOT(chatSound(UinsList, const QString&, time_t,bool&)));
 	QObject::connect(&event_manager, SIGNAL(chatMsgReceived2(UinsList, const QString&, time_t)),
 		sound_manager, SLOT(messageSound(UinsList, const QString&,time_t)));
-	QObject::connect(&userlist, SIGNAL(changingStatus(const uin_t, const unsigned int, const unsigned int)),
-		sound_manager, SLOT(notifySound(const uin_t, const unsigned int, const unsigned int)));
+	QObject::connect(&userlist, SIGNAL(changingStatus(const UinType, const unsigned int, const unsigned int)),
+		sound_manager, SLOT(notifySound(const UinType, const unsigned int, const unsigned int)));
 
 	//potrzebne do translacji
 	
@@ -105,8 +105,8 @@ extern "C" void sound_close()
 		sound_manager, SLOT(chatSound(UinsList, const QString&, time_t,bool&)));
 	QObject::disconnect(&event_manager, SIGNAL(chatMsgReceived2(UinsList, const QString&, time_t)),
 		sound_manager, SLOT(messageSound(UinsList, const QString&,time_t)));
-	QObject::disconnect(&userlist, SIGNAL(changingStatus(const uin_t, const unsigned int, const unsigned int)),
-		sound_manager, SLOT(notifySound(const uin_t, const unsigned int, const unsigned int)));
+	QObject::disconnect(&userlist, SIGNAL(changingStatus(const UinType, const unsigned int, const unsigned int)),
+		sound_manager, SLOT(notifySound(const UinType, const unsigned int, const unsigned int)));
 
 	ConfigDialog::unregisterSlotOnCreate(soundslots, SLOT(onCreateConfigDialog()));
 	ConfigDialog::unregisterSlotOnApply(soundslots, SLOT(onApplyConfigDialog()));
@@ -197,7 +197,7 @@ void SoundManager::chatSound(UinsList senders,const QString& msg,time_t time, bo
 	}
 }
 
-void SoundManager::notifySound(const uin_t uin, const unsigned int oldstatus, const unsigned int status)
+void SoundManager::notifySound(const UinType uin, const unsigned int oldstatus, const unsigned int status)
 {
 	kdebugf();
 	if (isMuted())

@@ -35,10 +35,10 @@ class EncryptionManager : public QObject
 class SavePublicKey : public QDialog {
 	Q_OBJECT
 	public:
-		SavePublicKey(uin_t uin, QString keyData, QWidget *parent = 0, const char *name = 0);
+		SavePublicKey(UinType uin, QString keyData, QWidget *parent = 0, const char *name = 0);
 
 	private:
-		uin_t uin;
+		UinType uin;
 		QString keyData;
 
 	private slots:

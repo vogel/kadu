@@ -18,7 +18,7 @@ class ESDPlayerSlots : public QObject
 		void playSound(const QString &s, bool volCntrl, double vol);
 		void playMessage(UinsList senders, const QString &sound, const QString &msg, bool volCntrl, double vol);
 		void playChat(UinsList senders, const QString &sound, const QString &msg, bool volCntrl, double vol);
-		void playNotify(const uin_t uin, const QString &sound, bool volCntrl, double vol);
+		void playNotify(const UinType uin, const QString &sound, bool volCntrl, double vol);
 };
 
 extern ESDPlayerSlots *esdPlayerObj;

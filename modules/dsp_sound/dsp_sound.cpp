@@ -30,8 +30,8 @@ extern "C" int dsp_sound_init()
 					 directPlayerObj, SLOT(playMessage(UinsList, const QString &, const QString &, bool, double)));
 	QObject::connect(sound_manager, SIGNAL(playOnChat(UinsList, const QString &, const QString &, bool, double)),
 					 directPlayerObj, SLOT(playChat(UinsList, const QString &, const QString &, bool, double)));
-	QObject::connect(sound_manager, SIGNAL(playOnNotify(const uin_t, const QString &, bool, double)),
-					 directPlayerObj, SLOT(playNotify(const uin_t, const QString &, bool, double)));
+	QObject::connect(sound_manager, SIGNAL(playOnNotify(const UinType, const QString &, bool, double)),
+					 directPlayerObj, SLOT(playNotify(const UinType, const QString &, bool, double)));
 
 	ConfigDialog::addHGroupBox("Sounds", "Sounds",
 			QT_TRANSLATE_NOOP("@default","Output device"));
@@ -50,8 +50,8 @@ extern "C" void dsp_sound_close()
 						directPlayerObj, SLOT(playMessage(UinsList, const QString &, const QString &, bool, double)));
 	QObject::disconnect(sound_manager, SIGNAL(playOnChat(UinsList, const QString &, const QString &, bool, double)),
 						directPlayerObj, SLOT(playChat(UinsList, const QString &, const QString &, bool, double)));
-	QObject::disconnect(sound_manager, SIGNAL(playOnNotify(const uin_t, const QString &, bool, double)),
-						directPlayerObj, SLOT(playNotify(const uin_t, const QString &, bool, double)));
+	QObject::disconnect(sound_manager, SIGNAL(playOnNotify(const UinType, const QString &, bool, double)),
+						directPlayerObj, SLOT(playNotify(const UinType, const QString &, bool, double)));
 	ConfigDialog::removeControl("Sounds", "Path:", "device_path");
 	ConfigDialog::removeControl("Sounds", "Output device");
 	delete directPlayerObj;
@@ -127,7 +127,7 @@ void DirectPlayerSlots::playChat(UinsList senders, const QString &sound, const Q
 	play(sound, volCntrl, vol, QString::null);
 }
 
-void DirectPlayerSlots::playNotify(const uin_t uin, const QString &sound, bool volCntrl, double vol)
+void DirectPlayerSlots::playNotify(const UinType uin, const QString &sound, bool volCntrl, double vol)
 {
 	kdebugf();
 	play(sound, volCntrl, vol, QString::null);

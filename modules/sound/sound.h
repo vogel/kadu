@@ -42,7 +42,7 @@ class SoundManager : public Themes
 	private slots:
 		void chatSound(UinsList senders,const QString& msg,time_t time, bool& grab);
 		void messageSound(UinsList senders,const QString& msg,time_t time);
-		void notifySound(const uin_t uin, const unsigned int oldstatus, const unsigned int status);
+		void notifySound(const UinType uin, const unsigned int oldstatus, const unsigned int status);
 
 	public slots:
 		void play(const QString &path, bool force=false);
@@ -57,7 +57,7 @@ class SoundManager : public Themes
 		void playSound(const QString &sound, bool volCntrl, double vol);
 		void playOnMessage(UinsList senders, const QString &sound, const QString &msg, bool volCntrl, double vol);
 		void playOnChat(UinsList senders, const QString &sound, const QString &msg, bool volCntrl, double vol);
-		void playOnNotify(const uin_t uin, const QString &sound, bool volCntrl, double vol);
+		void playOnNotify(const UinType uin, const QString &sound, bool volCntrl, double vol);
 };
 
 extern SoundManager* sound_manager;

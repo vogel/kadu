@@ -240,7 +240,7 @@ void EncryptionManager::userBoxMenuPopup()
 	QFileInfo keyfile(keyfile_path);
 	
 	const UinsList& uins = activeUserBox->getSelectedUins();
-	uin_t uin = uins.first();
+	UinType uin = uins.first();
 	
 	if ((keyfile.permission(QFileInfo::ReadUser) && uin) && (uins.count() == 1))
 		UserBox::userboxmenu->setItemEnabled(sendkeyitem, true);
@@ -278,7 +278,7 @@ void EncryptionManager::sendPublicKey()
 	}
 }
 
-SavePublicKey::SavePublicKey(uin_t uin, QString keyData, QWidget *parent, const char *name) :
+SavePublicKey::SavePublicKey(UinType uin, QString keyData, QWidget *parent, const char *name) :
 	QDialog(parent, name, Qt::WDestructiveClose), uin(uin), keyData(keyData) {
 	
 	kdebug("SavePublicKey::SavePublicKey()\n");

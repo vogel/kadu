@@ -25,8 +25,8 @@ extern "C" int ext_sound_init()
 					 externalPlayerObj, SLOT(playMessage(UinsList, const QString &, const QString &, bool, double)));
 	QObject::connect(sound_manager, SIGNAL(playOnChat(UinsList, const QString &, const QString &, bool, double)),
 					 externalPlayerObj, SLOT(playChat(UinsList, const QString &, const QString &, bool, double)));
-	QObject::connect(sound_manager, SIGNAL(playOnNotify(const uin_t, const QString &, bool, double)),
-					 externalPlayerObj, SLOT(playNotify(const uin_t, const QString &, bool, double)));
+	QObject::connect(sound_manager, SIGNAL(playOnNotify(const UinType, const QString &, bool, double)),
+					 externalPlayerObj, SLOT(playNotify(const UinType, const QString &, bool, double)));
 
 	ConfigDialog::addHGroupBox("Sounds", "Sounds", 	QT_TRANSLATE_NOOP("@default","Sound player"));	
 	ConfigDialog::addLineEdit("Sounds", "Sound player",
@@ -47,8 +47,8 @@ extern "C" void ext_sound_close()
 						externalPlayerObj, SLOT(playMessage(UinsList, const QString &, const QString &, bool, double)));
 	QObject::disconnect(sound_manager, SIGNAL(playOnChat(UinsList, const QString &, const QString &, bool, double)),
 						externalPlayerObj, SLOT(playChat(UinsList, const QString &, const QString &, bool, double)));
-	QObject::disconnect(sound_manager, SIGNAL(playOnNotify(const uin_t, const QString &, bool, double)),
-						externalPlayerObj, SLOT(playNotify(const uin_t, const QString &, bool, double)));
+	QObject::disconnect(sound_manager, SIGNAL(playOnNotify(const UinType, const QString &, bool, double)),
+						externalPlayerObj, SLOT(playNotify(const UinType, const QString &, bool, double)));
 	ConfigDialog::removeControl("Sounds", "", "soundplayer_fileopen");
 	ConfigDialog::removeControl("Sounds", "Path:", "soundplayer_path");
 	ConfigDialog::removeControl("Sounds", "Sound player");
@@ -102,7 +102,7 @@ void ExternalPlayerSlots::playChat(UinsList senders, const QString &sound, const
 	play(sound, volCntrl, vol, QString::null);
 }
 
-void ExternalPlayerSlots::playNotify(const uin_t uin, const QString &sound, bool volCntrl, double vol)
+void ExternalPlayerSlots::playNotify(const UinType uin, const QString &sound, bool volCntrl, double vol)
 {
 	kdebugf();
 	play(sound, volCntrl, vol, QString::null);
