@@ -7,6 +7,10 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifndef DEBUG_ENABLED
+#define KADU_SIGNAL_HANDLING
+#endif
+
 #include <qapplication.h>
 #include <qtranslator.h>
 #include <qtextcodec.h>
@@ -32,7 +36,7 @@
 
 Kadu *kadu;	
 
-#ifndef DEBUG_ENABLED
+#ifdef KADU_SIGNAL_HANDLING
 #include <signal.h>
 #include "debug.h"
 void kadu_signal_handler(int s)
@@ -58,7 +62,7 @@ int main(int argc, char *argv[])
 {
 	gg_debug_level = 255;
 
-#ifndef DEBUG_ENABLED
+#ifdef KADU_SIGNAL_HANDLING
 	signal(SIGSEGV, kadu_signal_handler);
 	signal(SIGINT, kadu_signal_handler);
 	signal(SIGTERM, kadu_signal_handler);
