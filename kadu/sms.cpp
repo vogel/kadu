@@ -482,7 +482,7 @@ void SmsEraGateway::send(const QString& number,const QString& message, const QSt
 	if ( gateway == "Basic")
 		{
 		    path= "sms/do/extern/tinker/free/send";
-		    post_data.replace("&numbers=", "&number=");
+		    post_data.replace(post_data.find("&numbers="),9, "&number=");
 		}
 	else if (gateway == "Charge")
 		    path= "sms/do/extern/tinker/super/send";
@@ -511,7 +511,7 @@ void SmsEraGateway::httpRedirected(QString link)
 			emit finished(true);
 		else if(link.find("blad.html")> 0)
 		{
-			QMessageBox::critical(p,"SMS",tr("Error: ")+ SmsEraGateway::errorNumber(link.replace("http://moj.serwer.pl/blad.html?X-ERA-error=", "").toInt()));
+			QMessageBox::critical(p,"SMS",tr("Error: ")+ SmsEraGateway::errorNumber(link.replace(link.find("http://moj.serwer.pl/blad.html?X-ERA-error="),43, "").toInt()));
 			emit finished(false);
 		}		
 		else 
