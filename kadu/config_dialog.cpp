@@ -38,19 +38,42 @@ void ConfigDialog::showConfigDialog(QApplication* application) {
 ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const char *name) : QTabDialog(parent, name) {
 
 	ConfigDialog::appHandle=application;
-
-	int i;
 	setWFlags(Qt::WDestructiveClose);
 	
+	int actualtab= 0;
+	int nexttab= 0;
+	int actualparent=0;
+	QString actualparentname= "";
+	int i;
+
 	for(QValueList<RegisteredControl>::iterator i=RegisteredControls.begin(); i!=RegisteredControls.end(); i++)
 	{
-	
+// wyswietla cala liste 
+//		kdebug("(%d) "+(*i).group+"->"+(*i).parent+"->"+(*i).caption+"->"+(*i).name+"\n",(*i).nrOfControls);
 		QWidget* parent=NULL;
 		if((*i).type!=CONFIG_TAB)
-		    for(QValueList<RegisteredControl>::iterator j=RegisteredControls.begin(); j!=RegisteredControls.end(); j++)
-				if((*j).caption==(*i).parent)
-					parent=(*j).widget;
-
+		{
+		    actualtab= findTab((*i).group,actualtab);
+		    nexttab= findTab(actualtab+1);
+		    
+		      if (nexttab == -1) 
+			nexttab= RegisteredControls.count()-1;
+		    
+		    int z;
+		      if ((*i).parent == actualparentname)
+		        parent=RegisteredControls[actualparent].widget;
+		      else
+		    
+		        for (z=actualtab; z<nexttab; z++)
+			 	 if ((*i).parent == RegisteredControls[z].caption)
+				     {
+					parent= RegisteredControls[z].widget;
+					actualparent=z;
+					actualparentname=(*i).parent;
+					break;
+				     }
+		}
+		
 		switch((*i).type)
 		{
 			case CONFIG_CHECKBOX:
@@ -509,7 +532,6 @@ void ConfigDialog::addSpinBox(const QString& groupname,
 
 void ConfigDialog::registerTab(const QString& caption)
 {
-
 		if (findTab(caption) == -1)
 		    {
 			RegisteredControl c;
@@ -568,38 +590,69 @@ void ConfigDialog::registerSlotOnDestroy(const QObject* receiver, const char* na
 
 };
 
+int ConfigDialog::findPreviousTab(const int startpos)
+{
+    if (RegisteredControls.isEmpty())
+	return -1;
+
+
+    int position=startpos;
+    if (startpos<0) position=0;
+    if (startpos>RegisteredControls.count()-1) position=RegisteredControls.count()-1;
+    
+    int j;
+	for(j=startpos; j>=0; j--)
+		    {
+				if  (RegisteredControls[j].type == CONFIG_TAB)
+				    return position;
+		    position--;
+		    }
+// -1 oznacza ze nie ma listy
+}
 
 int ConfigDialog::findTab(const int startpos)
 {
-    int position=startpos;
-    
-	for(QValueList<RegisteredControl>::iterator j=RegisteredControls.at(startpos); j!=RegisteredControls.end(); j++)
-		    {
-				if  ((*j).type == CONFIG_TAB)
-				    return position;
-		    position++;
-		    }		    
+    if (RegisteredControls.isEmpty())
 	return -1;
+
+    int position=startpos;
+    if (startpos<0) position=0;
+    if (startpos>RegisteredControls.count()-1) position=RegisteredControls.count()-1;
+
+    position=findPreviousTab(position);
+			int val=position+ RegisteredControls[position].nrOfControls+1;
+			  if (val>RegisteredControls.count()-1)
+				val--;
+			if (RegisteredControls[val].type == CONFIG_TAB)
+			   return val;
+			else
+			    return -1;
 // zwraca miejsce znalezienia TAB'a
 // jesli nie znajdzie to zwraca -1	
-	
 };
 
 int ConfigDialog::findTab(const QString& groupname,const int startpos)
 {
-    int position=startpos;
+    if (RegisteredControls.isEmpty())
+	return -1;
+    int position;
+    if (startpos<0) position=0;
+    if (startpos>RegisteredControls.count()-1) position=RegisteredControls.count()-1;
 
-	for(QValueList<RegisteredControl>::iterator j=RegisteredControls.at(startpos); j!=RegisteredControls.end(); j++)
+    position=findPreviousTab(startpos);
+    int i;
+	for(i=startpos;i<=RegisteredControls.count()-1;i++)
 		    {
-				if  ((*j).type == CONFIG_TAB)
-				   if ((*j).caption == groupname)
+				   if (RegisteredControls[position].caption == groupname)
+				   {
 				    return position;
-		    position++;
-		    }		    
+				   }    
+				   else position=findTab(position);
+				   if (position == -1) return -1;
+		    }
 	return -1;
 // jesli znajdzie odpowiedni TAB to wzraca miejsce znalezienia 
 // jesli nie znajdzie to zwraca -1
-
 };
 
 void ConfigDialog::updateNrOfControls(const int startpos, const int endpos, const QString& parent)
@@ -624,11 +677,12 @@ int ConfigDialog::addControl(const QString& groupname, const ConfigDialog::Regis
 	int position= findTab(groupname);
 	   if (position == -1) 
 		    {
-			kdebug("There is no Tab\n");
+			kdebug("There is no Tab: "+groupname+"\n");
 			return -1;
 		    }
 	int nexttab= findTab(position+1);
-	   if (nexttab == -1) nexttab= RegisteredControls.count()-1;
+	if (nexttab == -1) nexttab= RegisteredControls.count()-1;
+
 	
 
 	int j;
@@ -641,7 +695,6 @@ int ConfigDialog::addControl(const QString& groupname, const ConfigDialog::Regis
 			RegisteredControls.append(control);
 			else
 			RegisteredControls.insert(RegisteredControls.at(j+nrOfControls+1),control);
-
 			return 0;
 		    }	
 	
@@ -734,8 +787,8 @@ int ConfigDialog::existControl(const QString& groupname, const QString& caption,
 {
 	int position= findTab(groupname);
 	if (position == -1)
-	    return -1;
-	    
+		return -1;
+
 	int j;    
 	for(j=position; j <= position+ RegisteredControls[position].nrOfControls; j++)
 				    if (RegisteredControls[j].caption == caption)

@@ -1143,7 +1143,7 @@ void EventConfigSlots::ifDccEnabled(bool value)
 	QCheckBox *b_dccfwd = ConfigDialog::getCheckBox("Network", "DCC forwarding enabled");
 	
 	b_dccip->setEnabled(value);
-	g_dccip->setEnabled(b_dccip->isChecked()&& value);	
+	g_dccip->setEnabled(!b_dccip->isChecked()&& value);	
 	b_dccfwd->setEnabled(value);
 	g_fwdprop->setEnabled(b_dccfwd->isChecked() &&value);
 };

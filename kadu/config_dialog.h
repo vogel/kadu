@@ -94,6 +94,7 @@ class ConfigDialog : public QTabDialog	{
 
 		static int findTab(const int startpos);
 		static int findTab(const QString& groupname, const int startpos=0);
+		static int findPreviousTab(const int startpos=0);
 		static int addControl(const QString& groupname,const RegisteredControl& control);
 		static void updateNrOfControls(const int startpos, const int endpos, const QString& parent);
 

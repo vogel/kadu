@@ -141,11 +141,11 @@ void SoundSlots::soundPlayer(bool value)
 	    b_playarts->setEnabled(value);
 	    g_soundplayer->setEnabled(value);
 	    b_volumectrl->setEnabled(value);
-	    g_volume->setEnabled(value);
+	    g_volume->setEnabled(value && b_volumectrl->isChecked());
 	    g_messagesnd->setEnabled(value);
-	    g_chatsnd->setEnabled(value);
+	    g_chatsnd->setEnabled(value && b_playinvisible->isChecked() && b_playchatting->isChecked());
 	    b_playchatting->setEnabled(value);
-	    b_playinvisible->setEnabled(value);
+	    b_playinvisible->setEnabled(value && b_playchatting->isChecked());
 
 }
 
