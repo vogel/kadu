@@ -27,20 +27,6 @@ UserInfo::UserInfo(const QString &name, QDialog *parent, const QString &altnick,
 	kdebugf();
 	setWFlags(Qt::WDestructiveClose);
 	
-	unsigned int i = 0;
-	if (fAddUser)
-	{
-		puser = NULL;
-		setCaption(tr("Add user"));
-	}
-	else 
-	{
-		while (i < userlist.size() && userlist[i].altnick != altnick)
-			i++;
-		puser = &userlist[i];
-		setCaption(tr("User info on %1").arg(altnick));
-	}
-	
 	// create main QLabel widgets (icon and app info)
 	QVBox *left=new QVBox(this);
 	left->setMargin(10);
@@ -55,7 +41,24 @@ UserInfo::UserInfo(const QString &name, QDialog *parent, const QString &altnick,
 	center->setSpacing(10);
 	
 	QLabel *l_info = new QLabel(center);
-	l_icon->setPixmap(icons_manager.loadIcon("ManageUsersWindowIcon"));
+	
+	unsigned int i = 0;
+	if (fAddUser)
+	{
+		puser = NULL;
+		setCaption(tr("Add user"));
+		l_icon->setPixmap(icons_manager.loadIcon("AddUserWindowIcon"));
+	}
+	else 
+	{
+		while (i < userlist.size() && userlist[i].altnick != altnick)
+			i++;
+		puser = &userlist[i];
+		setCaption(tr("User info on %1").arg(altnick));
+		
+		l_icon->setPixmap(icons_manager.loadIcon("ManageUsersWindowIcon"));
+	}
+	
 	l_info->setText(tr("This dialog box allows you to view and edit information about the selected contact."));
 	l_info->setAlignment(Qt::WordBreak);
 	// end create main QLabel widgets (icon and app info)

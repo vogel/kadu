@@ -264,6 +264,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawka segfaula w przypadku gdy nie ma zastawów emotionek
   zainstalowanych (michal)
 * w modu³ach dokowania jest uwzglêdniony status "tylko dla znajomych" (michal)
+* ma³a ³atka KID-a dla okna edycji/dodawania kontaktu (michal)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
