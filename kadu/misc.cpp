@@ -1202,14 +1202,14 @@ QStringList Themes::getSubDirs(const QString& path)
 {
 	QDir dir(path);
 	dir.setFilter(QDir::Dirs);
-	QStringList subdirs=dir.entryList();
-	subdirs.remove(".");
-	subdirs.remove("..");
-	for (QStringList::Iterator it= subdirs.begin(); it!=subdirs.end(); it++)
+	QStringList subdirs, dirs=dir.entryList();
+	dirs.remove(".");
+	dirs.remove("..");
+	for (QStringList::Iterator it= dirs.begin(); it!=dirs.end(); it++)
 		{
 		QFile s(path+"/"+(*it)+"/"+ConfigName);
-		if (!s.exists())
-		    subdirs.remove((*it));
+		if (s.exists())
+		    subdirs.append((*it));
 		}
 	return subdirs;
 };
