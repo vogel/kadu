@@ -1,0 +1,47 @@
+Kadu, klient Gadu-Gadu dla KDE, wersja 0.3.0 (lub nowsza)
+
++++ ZMIANY W 0.3.0
+Wersja 0.3.0 nale¿y do ga³êzi rozwojowej, nie wszystkie wiêc w³a¶ciwo¶ci
+musz± byæ u¿ywalne. Niemniej, wed³ug subiektywnych odzczuæ moich, a tak¿e
+innych osób, znacznie poprawi³a siê stabilno¶æ programu oraz (miejscami,
+na razie tylko miejscami...) jako¶æ kodu. Do najwa¿niejszych zmian zaliczyæ
+mo¿na:
+ - nowe ikony (to, co rzuci siê w oczy najpierw)
+ - kodowanie has³a (UWAGA: TRZEBA wpisaæ je od nowa w panelu sterowniczym)
+ - mo¿liwo¶æ u¿ycia proxy (patrz kadu.conf po pierwszym zamkniêciu programu)
+ - mo¿liwo¶æ zdefiniowania niektórych kolorów i czcionek (jw.)
+ - odwrócenie roli pól Nickname i Alternate (aka Comment) tak, by by³y
+   zgodne z EKG, GG
+ - lepsza (bezpieczniejsza) obs³uga osób niewidocznych
+ - u¿ywanie maski tylko-dla-znajomych (brak mo¿liwo¶ci zmiany, chwilowo)
+
++++ WYMAGANIA
+ * Qt-3.0.x (pisa³em na 3.0.3)
+ * KDE-3.x (pisa³em na 3.0)
+
++++ FICZERSY
+ * status: offline, online, away, invisible
+ * wysy³anie wiadomo¶ci
+ * odbieranie wiadomo¶ci
+ * czat z (wstêpnym) formatowaniem tekstu
+ * szukanie/dodawanie/usuwanie/edycja u¿ytkownika
+ * import/eksport kontaktów
+ * historia z timestampingiem
+ * dokowanie do KDE 
+ * graficzna reprezentacja statusu
+ * obs³uga wiadomo¶ci od anonimów
+ * odgrywanie d¼wiêków
+ * wysy³anie SMSów
+ * wiele innych...
+
++++ LICENCJA
+GPL
+
++++ AUTOR
+Tomek ``tomee`` Jarzynka, <tomee at cpi.pl>
+Wielkie dziêki dla Wojtka Kaniewskiego oraz
+¿yczliwych ludzi z pl.comp.os.linux.programming
+i innych.
+
++++ KONTAKT
+<tomee at cpi dot pl>, http://cpi.pl/Kadu

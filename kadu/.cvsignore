@@ -1,0 +1,5 @@
+kadu
+*~
+*.o
+Makefile
+*.moc

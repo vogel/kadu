@@ -1,0 +1,271 @@
+* CVS!
+* zmiany w metodach eventGot... (Chilek)
+* dodanie obs³ugi w³asnego opisowego (Chilek)
+* mo¿liwo¶æ wyboru statusu (tylko dla znajomych) (Chilek)
+
++++ wersja 0.3.0 :: 05/06/2002
+* domy¶lnie status tylko-dla-znajomych
+* poprawka w SearchDialog (Xlib)
+* ca³a masa poprawek od Tomka Chiliñskiego
+* zmiana pingania z 60 na 180s, a potem jednak z powrotem ;).
+* usuniêcie kodu grup, przygotowanie do wypuszczenia 0.3.0
+  wymaga bardziej sprawdzonego kodu.
+* poprawka UinToUser(), ró¿ne poprawki
+* d³uga walka z warningami QGArray okaza³a siê bezowocna. có¿,
+  widocznie chwilowo musimy z tym ¿yæ. poza tym Kadu kompiluje siê
+  na GCC-3.1 bo od tej chwili na tym kompilatorze projekt bêdzie
+  rozwijany.
+* kolejna mikrorewolucja: ujednolicenie znaczenia pól nickname
+  versus alternate nickname. Kadu dzia³a teraz tak jak EKG i GG.
+* poprawki obs³ugi grup, zastanawiam siê, czy lepiej umo¿liwi¶æ
+  dowolne kombinowanie do 32 grup, czy nielimitowan± ilo¶æ
+  wy¶wietlan± najwy¿ej po jednej
+* nieco mniej huraoptymistyczne wykrywanie niewidocznych: tylko,
+  gdy przyjdzie eventGotUserlist z NOT_AVAIL dla kogo¶, kto na
+  naszej li¶cie i tak jest NOT_AVAIL. a szkoda.
+* grupy u¿ytkowników. to wcale nie musi dzia³aæ dobrze ju¿ teraz.
+* w³±czenie poprawek kodu od Arka
+* naprawa SIGSEGVa przy wysy³aniu SMSów
+* kolejne drobne poprawki
+* mo¿liwo¶æ u¿ycia proxy (sekcja Proxy w kadu.conf)
+* dodanie migaj±cej ikonki przy ³±czeniu, obs³uga aktywnego i 
+  (hipotetycznie) niewidocznego opisowego
+* uaktualnienie do nowego API libgadu
+* kolejne drobne poprawki, m.in. obs³uga polskich liter w userli¶cie
+* poprawki importu listy u¿ytkowników i pierwszego uruchomienia
+* zapisywanie konfiguracji nie tylko przy wyj¶ciu z programu, ale tak¿e
+  zaraz po zmianie konfiguracji
+* UWAGA! ma³a rewolucja -- kodowane has³a. po pierwszym uruchomieniu
+  nowej wersji upewnijmy siê, ¿e wpiszemy swoje has³o od nowa, by mog³o
+  zostaæ zakodowane.
+* poprawki potencjalnych b³êdów
+* poprawka ukrywania okna, gdy nie ma ikonki w doku
+* poprawka SEGVa w obs³udze anonimowych wiadomo¶ci
+* rozmaite poprawki, choæby w userli¶cie
+* próbny cleanup kodu, syncUserlist zamiast wyrywkowej zmiany danych
+* mo¿na sobie zdefiniowaæ kolorki i czcionki tu i ówdzie, na razie
+  w ~/.gg/kadu.conf, nied³ugo w konfiguracji
+* QFile u¿yty do zapisywania userlisty zamiast FILE *
+* porz±dna obs³uga SMSów (tzn. ¶ledzenie procesu)
+* ³adniutkie ikonki
+* poprawki i naprawki RegExp'ów
+***************** ZERWANA KOMPATYBILNO¦Æ Z QT2 *******************
+
++++ wersja 0.2.1 :: 17/03/2002
+* poprawka niedzia³aj±cego Entera w wysy³aniu wiadomo¶ci
+* kompiluje siê ju¿ pod QT/KDE3, kompatybilno¶æ mo¿e zepsujê,
+  jak wszyscy bêd± ju¿ mieli KDE3
+* poprawka podwójnych mesgów, ju¿ ich nie powinno byæ
+* drobne ró¿ne poprawki zwi±zane ze stringami (viva QString, na
+  pohybel string.h)
+* poprawka ogromniastych b³êdów w rMessage (SIGSEGV)
+* obs³uga statusów opisowych, reimplementacja widgeta z userlist±
+  (czekajcie cierpliwie na wiêcej zmian)
+* poprawka w oknie po³±czenia: wycieki pamiêci i brak fokusu w
+  przypadku autohammeringu (fajna polszczyzna)
+* poprawka zapamiêtyowania geometrii okna
+* o wybranych u¿ytkownikach program mo¿e powiadamiaæ d¼wiêkiem
+  i/lub informacj± na ekranie plus ³adny konfig :)
+* próba po³±czenia a¿ do skutku (dos³ownie) je¶li tak powiemy
+* automatyczne ³±czenie: DefaultStatus w kadu.conf
+* dalsza czê¶æ poprawek w kodzie zwi±zanych z przej¶ciem na bufory
+  dynamiczne. ogólnie Kadu siê nie wiesza (zwykle), ale robi³o znów
+  cyrki z userlist±. wiêc uwaga, komu wyznajemy mi³o¶æ ;)
+* poprawka sercza, ¿eby nie segfaultowa³ gdy nie trzeba
+* poprawka Makefile (sorry)
+* mo¿liwo¶æ wy³±czenia ikonki dokowania (dobra wiadomo¶æ dla wszystkich
+  nie-KDEowiczów)
+* poprawki w rMessage, ¿eby zarówno wiad. systemowe jak i normalne
+  wy¶wietla³y siê dobrze.
+* obs³uga wiadomo¶ci systemowych
+* a tak¿e import u¿ytkowników oraz listê ignorowanych ludzi
+* tym razem przysz³a kolej na listê kontaktów: nie ma ju¿ odgórnych
+  ograniczeñ co do jej wielko¶ci.
+* ró¿ne poprawki wycieków pamiêci (ale to wierzcho³ek góry lodowej)
+* poprawka ucinania czata przy ustawionym przewijaniu w górê
+* pojawi³y siê tajemnicze segfault'y, po krótkiej sesji z gdb
+  podejrzewam QTextView (KTextBrowser w QT-2.3 dziedziczy po
+  QTextView). pora zastanowiæ siê nad QT-3.0...
+* poprawka s³ynnego b³êdu: je¶li mamy od kogo¶ wiadomo¶æ a ów
+  kto¶ zmieni status, to znika koperta obok jego nicka.
+* zmiana okienka czata z QTextView na KTextBrowser, automatyczne
+  pod¶wietlanie URLi
+* automatyczne zmniejszanie ilo¶ci widocznych wiadomo¶ci w czacie
+  do wybranej liczby (oszczêdza pamiêæ i miejsce)
+* bardzo eksperymentalne odbieranie plików po DCC (config: AllowDCC)
+* poprawka buga, który powodowa³, ¿e nie ³±czyli¶my siê invisible
+* ma³a reorganizacja konfiguracji, nowa zak³adka: Chat
+* trochê komentarzy do kodu. a mo¿e on nie jest a¿ tak niezrozumia³y?
+* doda³em opcjê autoawaya do konfiguracji
+* pliki ikonek itp. id± tam, gdzie ich miejsce: do $(prefix)/share
+* doda³em do oficjalnego tarballa ikonki aplikacji: 16x16 i 32x32
+* ma³a rewolucja: bufory dla wiadomo¶ci s± alokowane dynamicznie;
+  to samo mam zamiar zrobiæ z userlist±, ignorami i tak dalej.
+  wymaga jeszcze oczywi¶cie testowania, ale jak dot±d dzia³a...
+* okienko czata mo¿e ju¿ przewijaæ siê zarówno do góry, jak i do
+  do³u, zgodnie z uznaniem
+* nie powinien wywalaæ siê, je¶li zamkniemy przed czasem np.
+  okienko sercza czy eksportu; poprawka wycieków pamiêci.
+
++++ wersja 0.2.0 :: 16/02/2002
+* w czacie i historii wy¶wietla siê czas nadania wiadomo¶ci
+  (tyle, ¿e jest tak ¶rednio akuratny...)
+* czat: emotikony i enter s± teraz lepiej konfigurowalne
+* doda³em skrót Enter w serczu i przy dodawaniu u¿ytkowników
+* drobne poprawki kosmetyczne i w kodzie
+* poprawka polskich znaczków Latin<->Latin
+* poprawka odgrywania d¼wiêku w czacie
+* doda³em opcjê wysy³ania wiadomo¶ci przy pomocy li tylko enter-a
+* doda³em selektor ikonek, nie trzeba pamiêtaæ ich kodu
+* czas zacz±æ czy¶ciæ kod i poprawiaæ wycieki pamiêci...
+* ;))))) zamieni siê w ikonkê równie ³adnie jak ;), i to bez nawiasów
+* poprawka g³upiego b³êdu, który nie wy³±cza³ emotikonów
+
++++ wersja 0.2.0b :: 15/02/2002
+* ogólnie masa zmian, poprawek, ³atwo¶æ u¿ycia, polecam 0.2.0
+* przymiarka do emotikonów
+* d¼wiêki mog± byæ odtwarzane w ró¿nych sytuacjach z dowolnie
+  wybranych plików (opcja konfiguracji)
+* okno mo¿e zapamiêtaæ swoj± geometriê (opcja w konfiguracji)
+* zmiana Chata na QTextView, no i dzia³aj± polskie znaczki
+* eksport i import kontaktów do/z serwera
+* mo¿na wyszukiwaæ informacji o u¿ytkowniku z którym np. rozmawiamy
+* teraz plik konfiguracyjny nazywa sie kadu.conf, zapisujê
+  tam coraz wiêcej zmiennych
+* zwyk³e zabiegi nie zamkn± programu, tylko go ukryj±
+* zapisywanie ignorów i wyszukiwanie nicka w userli¶cie
+* kosmetyczne poprawki
+* po d³ugiej przerwie -- zgodno¶æ z aktualnym libgadu (ex libgg)
+* mo¿na siê rejestrowaæ, i jak nie ma konfiga to siê pyta grzecznie
+* zmieni³em logo w about
+* meniu!
+* ekg/ za³±czone w dystrybucji, libgg.a statycznie linkowane
+* stara siê zgadn±æ nickname, je¶li go brakuje (na podstawie pól first_name
+  i comment)
+* SMSiki. patrzcie do kadu.h. program ma przyjmowaæ 2 argumenty:
+  numer telefonu i tre¶æ wiadomo¶ci (np. z ceti.pl/~miki). na razie
+  nie sprawdza, jaki by³ kod wyj¶cia programu wysy³aj±cego SMSa
+* obs³uga polskich znaczków w userli¶cie. Tañczmy i cieszmy siê.
+* Qrczak i Arek mi t³umaczyli, dlaczego siê czasem nie kompiluje i nawet
+  zaproponowali patch'a, którego zaaplikowa³em, ale czy dzia³a nie wiem,
+  bo u mnie i tak dzia³a³o...
+
++++ wersja 0.1.9 :: 19/11/2001
+* autoaway
+* wpisanie czego¶ innego ni¿ dane personalne w okienku wyszukiwania
+  powinno automagicznie zmieniæ rodzaj wyszukiwania
+* poprawi³em polskie znaczki w czat'cie. to mi zajê³o ze 2 minuty. uff.
+* ci±g dalszy gwa³cenia sieci... 
+* dopóki nie wymy¶lê czego¶ lepszego, sieæ leci po QTimer i select().
+  teraz przynajmniej zachowuje siê bardziej przewidywalnie...
+* naprawione gg_debug_level, wywalone stare fix32(), libgg.h
+  teraz leci ze standardowych lokalizacji
+* doda³em przyciski Cancel i Close to tu, to tam...
+* poprawi³em buga SIGSEGV w li¶cie ignorowanych, jak siê nic nie wpisa³o
+* doda³em about box. 50KB ramu to nie jest taki wydatek, co nie? :)
+* zróbcie sobie ~/.gg/ignore. Potrzebujê komentowaæ? :)
+* tegez, dodawaæ luserów mo¿na
+
++++ wersja 0.1.9pre :: 03/11/2001
+* spsu³em Kadu jeszcze bardziej, ale chocia¿ dzia³a i jest
+  kompatybilne z najnowszym libgg. Jak kto chce, to niechaj
+  sobie 0.1.9pre obessie.
+* spsu³em Kadu, tzn. z nowym libgg nie chce dzia³aæ teraz jak
+  te czary z serwerami s±. Niech kto¶ to za mnie napisze ;>
+  02/11/01 18:23
+* przedwczoraj, 21 pa¼dziernika, minê³y ca³e 2 miesi±ce, odk±d po
+  raz pierwszy otworzy³em KDevelop z projektem 'Kadu'. nie jest
+  tak ¼le. za kilka miesiêcy mo¿e to i bêdzie mia³o rence i nogi ;>
+* przy obecnym ¿ó³wim tempie prac mo¿e ma sens wydanie jeszcze
+  kadu-0.1.9, zanim wyjdzie 0.2.0pre1. -pre1 to ma byæ wszak feature
+  freeze, a nam brakuje listy ignorów, dodawania u¿yszkodników i
+  konfiguracji...
+* jaki¶ drobniutki code cleanup. ale przyda³oby siê porz±dnie go
+  odpluskwiæ i dodaæ sensowne komentarze (tylko jak, skoro sam
+  nie pamiêtam, co zmienne robi±? :>)
+* doda³em wy¶wietlanie adresu IP w okienku z informacjami
+* zmieni³em czat z QTextView na QMultiLineEdit. pro: polskie znaczki,
+  zawijanie wierszy, mniej RAMu. contro: brak pod¶wietlania ;(
+* je¶li wiadomo¶æ jest == GG_CLASS_CHAT i klikniemy "Reply", to wysy³a
+  siê tak¿e jako chat
+* doda³em okienko z informacjami o u¿ytkowniku, mo¿na edytowaæ dane
+  i zapisaæ now± userlistê.
+* doda³em obs³ugê niewiedzialnych userów. tego nie ma w protokole, ale
+  skoro ¼le to napisali... ;>
+* lepsza obs³uga userlisty. usuwanie, zapisywanie. czyszczenie historii
+  pyta o pozwolenie.
+* zapobieganie ww. deadlock'om, jak nie ma danych.
+* dodano dialog z wyszukowaniem u¿yszkodników (tyle, ¿e czasem wpada w
+  nieskoñczon± pêtlê albo nic nie robi, no, ale... ;>)
+* doubleClick() na pozycji w serczu spowoduje dodanie delikwenta do
+  userlisty (_tymczasowo_) jesli go tam jeszcze nie ma i otwarcie okienka
+  wysylania wiadomosci.
+
++++ wersja 0.1.8 :: 05/10/2001
+* wykrywanie libgg i libpthread (Sapek) (16:10 -- cancelled)
+* odgrywanie d¼wiêku nie zawiesza aplikacji (fork();)
+* zmieni³em d¼wiêk wiadomo¶ci (na ³adniejszy): patrz website
+* cancel w okienku monitorowania po³±czenia powoduje przerwanie ³±czenia
+* zmiana ikonek na autorskie
+* informacje o b³êdzie w przypadku roz³±czenia, niepowodzenia po³±czenia
+* uporz±dkowanie wiadomo¶ci na stderr
+* okienko pokazuj±ce status ³±czenia siê
+* zamiast 4 w±tków mamy jeden ;P (QSocketNotifier vs. sygna³y+w±tki)
+* sortowanie userlisty: online na górze
+* polskie znaczki w wiadomo¶ciach (ISO<->CP)
+* blokowanie przycisku "Send" podczas wysy³ania
+* cleanup tablicy pending[], co poprawi³o sporo bugów.
+
++++ wersja 0.1.7 :: 29/09/2001
+* poprawiono SIGSEGV podczas uruchamiania i pisania wiadomo¶ci
+* dodano odczytywanie wiadomo¶ci middle-click na ikonce w dock
+  panel
+
++++ wersja 0.1.6 :: 29/09/2001
+* pro¶ciutki skrypt przedinstalacyjny, pobieraj±cy i buduj±cy
+  bibliotekê libgg.
+* dodano potwierdzenia: dialog z wiadomo¶ci± znika wtedy, gdy
+  zostanie ona dostarczona.
+* wiadomo¶æ mo¿e mieæ ju¿ arbitralny rozmiar, wiêkszy nawet, ni¿
+  warto¶æ MRU.
+* poprawiono ograniczenia w obs³udzie historii
+
++++ wersja 0.1.5 :: 29/09/2001
+* poprawi³em killer buga w Czacie. mo¿na ju¿ zamykaæ nawet m³otkiem :>
+* dodanie obs³ugi d¼wiêków (jednego: msg.wav ;]) i mo¿liwo¶ci
+  wyciszania.
+* dodanie "za¶lepki" wyszukiwania, na razie niedzia³aj±cej.
+* obs³uga anonimowych wiadomo¶ci: u¿ytkownik jest automagicznie
+  dodawany do listy (ale nie do pliku listy) i traktowany jak ka¿dy
+  inny. mo¿na zmieniæ mu nick, obejrzeæ historiê, a tak¿e usun±æ,
+  czego nie da siê zrobiæ (jeszcze) w trakcie dzia³ania programu
+  z innymi wpisami.
+* poprawiony bug SIGSEGV, gdy klikniêto w z³e miejsce QListBox.
+* dodano status: Invisible
+
++++ wersja 0.1.4 :: 23/09/2001
+uaktualni³em do nowego API, przygotowania do wyszukiwania
+userów i obróbki wiadomo¶ci bez pozycji w userli¶cie.
+
++++ wersja 0.1.3a :: 17/09/2001
+nowy snapszocik. trochê cleanupów
+
++++ wersja 0.1.3 :: 10/09/2001
+Mo¿na ju¿ ³±czyæ siê po roz³±czeniu, ale wci±¿ pojawiaj± siê w±tki
+<defunct>. Nie zamierzam na razie przesiadaæ siê na QThread i pokrewne,
+bo wymaga to biblioteki qt-mt, a nie ka¿dy takow± sobie skompilowa³.
+Poza tym, zamiast tekstu u do³u panelu pojawia siê ju¿ ikonka, symbolizuj±ca
+status.
+Dokowanie zaczyna mieæ sens: ikonka zmienia siê na kopertê, gdy przyjdzie
+nowa wiadomo¶æ.
+Zaimplementowa³em (baaardzo ¼le napisane) okienko historii.
+
++++ wersja 0.1.2 :: 09/09/2001
+Zaimplementowa³em pliki historii, upiêkszy³em okienko chatu, zmieni³em
+format ikonek na XPM.
+
++++ wersja 0.1.1 :: 08/09/2001
+Doda³em mo¿liwo¶æ wyboru typu aplikacji, naprawi³em od¶wie¿anie GUI.
+
++++ wersja 0.1 :: 07/09/2001
+Pierwsza dzia³aj±ca wersja programu.

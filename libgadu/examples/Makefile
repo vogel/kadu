@@ -1,0 +1,48 @@
+# $Id: Makefile,v 1.1 2002/07/09 22:22:02 chilek Exp $
+
+CC = gcc
+CFLAGS = -g -O2 -ggdb -I.. -I../lib -I../src
+MAKE = /usr/bin/gmake
+
+OBJS = ../lib/libgadu.a
+
+all:	search-sync search-async register-sync register-async conn-async send remind-async remind-sync httphash
+
+search-sync: search.c $(OBJS)
+	$(CC) $(CFLAGS) search.c -o search-sync $(OBJS)
+
+search-async: search.c $(OBJS)
+	$(CC) $(CFLAGS) search.c -o search-async -DASYNC $(OBJS)
+
+register-sync: register.c $(OBJS)
+	$(CC) $(CFLAGS) register.c -o register-sync $(OBJS)
+
+register-async: register.c $(OBJS)
+	$(CC) $(CFLAGS) register.c -o register-async -DASYNC $(OBJS)
+
+remind-sync: remind.c $(OBJS)
+	$(CC) $(CFLAGS) remind.c -o remind-sync $(OBJS)
+
+remind-async: remind.c $(OBJS)
+	$(CC) $(CFLAGS) remind.c -o remind-async -DASYNC $(OBJS)
+
+send:	send.c $(OBJS)
+	$(CC) $(CFLAGS) send.c -o send $(OBJS)
+
+httphash: httphash.c $(OBJS)
+	$(CC) $(CFLAGS) httphash.c -o httphash $(OBJS)
+
+conn-async: conn-async.c $(OBJS)
+	$(CC) $(CFLAGS) conn-async.c -o conn-async $(OBJS)
+
+$(OBJS):
+	cd ../lib && $(MAKE)
+
+#
+
+clean: 	
+	rm -f *~ *.o search-{sync,async} send conn-async register-{sync,async} remind-{sync,async} httphash
+
+distclean: clean
+	rm -f Makefile
+    

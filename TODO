@@ -1,0 +1,17 @@
+/** TODO dla wersji 0.4.0, stan na 05/07/2002. **/
+
+- :: Dobrymi chêciami, to...
++ :: Powinno byæ
+? :: Jeszcze siê zastanawiam
+! :: _MUSI_ byæ
+
+ + przetestowaæ wysy³anie plików
+ ? naprawiæ ikonkê w dock menu
+ ? dodaæ wiêcej funkcji do dock menu (szukaj, dodaj, usuñ, odbierz)
+ - zrobiæ skórki (Licq)
+ + grupy/profile
+ ! zapisywanie nieprzeczytanych wiadomo¶ci do bufora na dysku
+ - fukcja "autopilot'a" czyli generowanie automatycznych wiadomo¶ci
+   jako odpowiedzi na czyje¶ zapytania (mo¿e napisaæ do tego jaki¶
+   prosty jêzyk skryptowy?) :-)
+ ! wyeliminowaæ wszystkie b³êdy Xlib

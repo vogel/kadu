@@ -1,0 +1,47 @@
+Q: Skrypt nie znajduje mojego QT. Dlaczego?!
+A: Automake/autoconf w Kadu wymaga przepisania. Na dzieñ dzisiejszy
+   w 99,9% przypadków pomaga opcja --with-qt-dir=/katalog
+
+Q: Jestem za firewallem. Czy mogê u¿ywaæ Kadu?
+A: Tak, mo¿esz u¿yæ proxy, popatrz na zmienne w sekcji Proxy
+   w pliku kadu.conf
+
+Q: Kadu mówi, co¶ o "Permission denied" albo "Connection reset
+   by peer", ale pod Windows GG dzia³a. O co chodzi?
+A: Prawdopodobnie masz ¼le wpisane has³o. Nawet, je¶li dot±d
+   dzia³a³o, to w wersjach 0.3.0 i wzwy¿ jest inaczej kodowane
+   i dlatego nale¿y wpisaæ je od nowa.
+
+Q: Nie dzia³a mi logowanie i historia. Co jest nie tak?
+A: Najprawdopodobniej nie masz w³±czonej opcji "Log messages" w
+   konfiguracji. Sprawd¼ te¿, czy masz katalog ~/.gg/history/ i
+   czy ma on odpowiednie prawa (tzn. zapisu dla u¿ytkownika)
+
+Q: Jak mogê przenie¶æ listê u¿ytkowników z Windowsowego GG?
+A: S± dwa sposoby - b±d¼ zaimporowaæ j± z serwera (po uprzednim
+   wyeksportowaniu w GG), b±d¼ po prostu skopiowaæ wyeksportowany
+   na dysk plik userlisty do ~/.gg/userlist -- Kadu i EKG jest
+   zgodne z formatem u¿ywanym przez GG.
+
+Q: Czy dzia³a przesy³anie plików?
+A: Na razie tylko odbieranie, je¶li mamy rutowalne IP. Dopisz 
+   w konfiguracji AllowDCC=true. UWAGA: to nie jest stabilny kod.
+
+Q: Zamiast obrazków pojawiaj± mi siê kwadraciki. Co jest ¼le?
+A: Nie masz ustawionej ¶cie¿ki do obrazków lub brakuje tam niektórych
+   (lub wszystkich) z nich. W kadu.conf jest to pozycja EmoticonsPath
+
+Q: Kadu w ogóle nie chce siê kompilowaæ. Co robiæ?
+A: Mo¿esz np. spróbowaæ ¶ci±gn±æ RPMa z ftp://ftp.pld.org.pl/test/
+
+Q: Podczas kompilacji wy¶wietlaj± mi siê informacje o jakim¶ undefined
+   reference to gg_*
+A: W katalogu kadu/kadu w pliku Makefile dodaj na koñcu:
+
+   ../ekg/lib/libgadu.a:
+	cd ../ekg; ./configure;
+	make -C ../ekg/lib;
+	strip -g ../ekg/lib/libgadu.a;
+
+   Pamiêtaj, ¿e odstêpy to tabulatory, nie spacje! Teraz make powinien
+   grzecznie znale¼æ libgadu.a i siê z nim zlinkowaæ.
