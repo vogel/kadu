@@ -13,6 +13,7 @@ PendingMsgs::PendingMsgs()
 void PendingMsgs::deleteMsg(int index)
 {
 	msgs.remove(msgs.at(index));	
+	writeToFile();
 };
 
 bool PendingMsgs::pendingMsgs(uin_t uin)
@@ -48,6 +49,7 @@ void PendingMsgs::addMsg(UinsList uins, QString msg, int msgclass, time_t time)
 	e.msgclass = msgclass;
 	e.time = time;
 	msgs.append(e);
+	writeToFile();
 };
 
 void PendingMsgs::writeToFile()
