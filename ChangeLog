@@ -796,28 +796,28 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dodano status: Invisible
 
 +++ wersja 0.1.4 :: 23/09/2001
-uaktualni³em do nowego API, przygotowania do wyszukiwania
+* uaktualni³em do nowego API, przygotowania do wyszukiwania
 userów i obróbki wiadomo¶ci bez pozycji w userli¶cie.
 
 +++ wersja 0.1.3a :: 17/09/2001
-nowy snapszocik. trochê cleanupów
+* nowy snapszocik. trochê cleanupów
 
 +++ wersja 0.1.3 :: 10/09/2001
-Mo¿na ju¿ ³±czyæ siê po roz³±czeniu, ale wci±¿ pojawiaj± siê w±tki
-<defunct>. Nie zamierzam na razie przesiadaæ siê na QThread i pokrewne,
+* Mo¿na ju¿ ³±czyæ siê po roz³±czeniu, ale wci±¿ pojawiaj± siê w±tki
+(defunct). Nie zamierzam na razie przesiadaæ siê na QThread i pokrewne,
 bo wymaga to biblioteki qt-mt, a nie ka¿dy takow± sobie skompilowa³.
 Poza tym, zamiast tekstu u do³u panelu pojawia siê ju¿ ikonka, symbolizuj±ca
 status.
-Dokowanie zaczyna mieæ sens: ikonka zmienia siê na kopertê, gdy przyjdzie
+* Dokowanie zaczyna mieæ sens: ikonka zmienia siê na kopertê, gdy przyjdzie
 nowa wiadomo¶æ.
-Zaimplementowa³em (baaardzo ¼le napisane) okienko historii.
+* Zaimplementowa³em (baaardzo ¼le napisane) okienko historii.
 
 +++ wersja 0.1.2 :: 09/09/2001
-Zaimplementowa³em pliki historii, upiêkszy³em okienko chatu, zmieni³em
+* Zaimplementowa³em pliki historii, upiêkszy³em okienko chatu, zmieni³em
 format ikonek na XPM.
 
 +++ wersja 0.1.1 :: 08/09/2001
-Doda³em mo¿liwo¶æ wyboru typu aplikacji, naprawi³em od¶wie¿anie GUI.
+* Doda³em mo¿liwo¶æ wyboru typu aplikacji, naprawi³em od¶wie¿anie GUI.
 
 +++ wersja 0.1 :: 07/09/2001
-Pierwsza dzia³aj±ca wersja programu.
+* Pierwsza dzia³aj±ca wersja programu.
