@@ -130,6 +130,7 @@ class Kadu : public QMainWindow
 		void dccSetupFailed();
 		void disconnected();
 		void error(GaduError);
+		void imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &path);
 		void systemMessageReceived(QString &);
 		void userListChanged();
 		void userStatusChanged(UserListElement &, int oldstatus);

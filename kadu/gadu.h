@@ -171,19 +171,23 @@ class GaduSocketNotifiers : public QObject //SocketNotifiers
 {
 	Q_OBJECT
 
-	private slots:
-		void proteza_connectionFailed(int);
-		void proteza_connectionBroken();
+	private:
+		void connectionFailed(int);
 
 	public:
 		GaduSocketNotifiers();
 		virtual ~GaduSocketNotifiers();
+		void eventHandler(gg_session *sess);
 
 	signals:
+		void ackReceived(int);
 		void connected();
+		void dccConnectionReceived(const UserListElement &);
 		void disconnected();
 		void error(GaduError);
-		void messageReceived(int, UinsList, QCString& msg, time_t, QByteArray &formats);
+		void imageReceived(UinType, uint32_t, uint32_t, const QString &filename, const char *data);
+		void imageRequestReceived(UinType, uint32_t, uint32_t);
+		void messageReceived(int, UinsList, QCString &, time_t, QByteArray &);
 		void pubdirReplyReceived(gg_pubdir50_t);
 		void systemMessageReceived(QString &, QDateTime &, int, void *);
 		void userlistReceived(struct gg_event *);
@@ -218,7 +222,10 @@ class GaduProtocol : public QObject
 		void connectedSlot();
 		void disconnectedSlot();
 		void connectionTimeoutTimerSlot();
+		void dccConnectionReceived(const UserListElement &);
 		void errorSlot(GaduError);
+		void imageReceived(UinType, uint32_t, uint32_t, const QString &, const char *data);
+		void imageRequestReceived(UinType, uint32_t, uint32_t);
 		void messageReceived(int, UinsList, QCString& msg, time_t, QByteArray &formats);
 		void pingNetwork();
 		void newResults(gg_pubdir50_t res);
@@ -231,6 +238,8 @@ class GaduProtocol : public QObject
 		static void initModule();
 		GaduProtocol(QObject *parent=NULL, const char *name=NULL);
 		virtual ~GaduProtocol();
+		// do usuniêcia za nied³ugo
+		void eventHandler(gg_session *sess) { SocketNotifiers->eventHandler(sess); }
 
 		/**
 			Zwraca serwer z ktorym jestesmy polaczeni
@@ -331,10 +340,15 @@ class GaduProtocol : public QObject
 		void setPersonalInfo(SearchRecord& searchRecord, SearchResult& newData);
 
 	signals:
+		void ackReceived(int);
 		void connected();
 		void connecting();
 		void disconnected();
 		void error(GaduError);
+		/**
+			Otrzymano dane obrazka i zapisano go do pliku.
+		**/
+		void imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &path);
 		void userListChanged();
 		void userStatusChanged(UserListElement &, int oldstatus);
 		void systemMessageReceived(QString &);

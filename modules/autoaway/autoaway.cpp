@@ -43,7 +43,7 @@ extern "C" int autoaway_init()
 	ConfigDialog::registerSlotOnApply(autoawayslots, SLOT(onApplyConfigDialog()));
 	
 	QObject::connect(kadu, SIGNAL(disconnectingNetwork()), autoawayslots, SLOT(off()));
-	QObject::connect(&event_manager, SIGNAL(connected()), autoawayslots, SLOT(on()));
+	QObject::connect(gadu, SIGNAL(connected()), autoawayslots, SLOT(on()));
 	kdebugf2();
 	return 0;
 }
@@ -53,7 +53,7 @@ extern "C" void autoaway_close()
 	kdebugf();
 	autoawayslots->off();
 	QObject::disconnect(kadu, SIGNAL(disconnectingNetwork()), autoawayslots, SLOT(off()));
-	QObject::disconnect(&event_manager, SIGNAL(connected()), autoawayslots, SLOT(on()));
+	QObject::disconnect(gadu, SIGNAL(connected()), autoawayslots, SLOT(on()));
 	ConfigDialog::unregisterSlotOnCreate(autoawayslots, SLOT(onCreateConfigDialog()));
 	ConfigDialog::unregisterSlotOnApply(autoawayslots, SLOT(onApplyConfigDialog()));
 	delete autoawayslots;

@@ -191,13 +191,13 @@ int ChatManager::openPendingMsg(int index, ChatMessage &msg)
 	// otwieramy chat (jesli nie istnieje)
 	int k = openChat(p.uins,p.time);
 	// dopisujemy nowa wiadomosc do to_add
-	
+
 	QDateTime date;
 	date.setTime_t(p.time);
-	
+
 	msg=ChatMessage(userlist.byUin(p.uins[0]).altnick, p.msg, false, QDateTime::currentDateTime(), date);
 	Chats[k]->formatMessage(msg);
-	
+
 	// kasujemy wiadomosc z pending
 	pending.deleteMsg(index);
 	// zwracamy indeks okna chat
@@ -211,7 +211,7 @@ void ChatManager::openPendingMsgs(UinsList uins)
 	PendingMsgs::Element elem;
 	int k;
 	bool stop = false;
-	
+
 	QValueList<ChatMessage *> messages;
 	for (int i = 0; i < pending.count(); i++)
 	{
@@ -260,7 +260,7 @@ void ChatManager::openPendingMsgs()
 			{
 				if (!uins.count())
 					uins = elem.uins;
-				
+
 				ChatMessage *msg=new ChatMessage("");
 				k=openPendingMsg(i, *msg);
 				messages.append(msg);
@@ -298,7 +298,7 @@ void ChatManager::sendMessage(UinType uin,UinsList selected_uins)
 			{
 				if (!uins.count())
 					uins = elem.uins;
-				
+
 				ChatMessage *msg=new ChatMessage("");
 				k=openPendingMsg(i, *msg);
 				messages.append(msg);
@@ -655,7 +655,7 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 	connect(edit, SIGNAL(sendMessage()), this, SLOT(sendMessage()));
 	connect(edit, SIGNAL(specialKeyPressed(int)), this, SLOT(specialKeyPressed(int)));
 
-	connect(&event_manager, SIGNAL(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)),
+	connect(gadu, SIGNAL(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)),
 		this, SLOT(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)));
 
 	edit->setFocus();
@@ -667,9 +667,9 @@ Chat::~Chat()
 	kdebugf();
 	chat_manager->unregisterChat(this);
 
-	disconnect(&event_manager, SIGNAL(ackReceived(int)),
+	disconnect(gadu, SIGNAL(ackReceived(int)),
 		this, SLOT(ackReceivedSlot(int)));
-	disconnect(&event_manager, SIGNAL(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)),
+	disconnect(gadu, SIGNAL(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)),
 		this, SLOT(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)));
 
 	for(QValueList<ChatMessage *>::iterator it=chatMessages.begin(); it!=chatMessages.end(); it++)
@@ -954,7 +954,7 @@ void Chat::formatMessage(ChatMessage &msg)
 {
 	bool useParagraphs=(config_file.readBoolEntry("General", "ForceUseParagraphs") ||
 		((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") != EMOTS_ANIMATED));
-	
+
 	QString formatString;
 	if (useParagraphs)
 		formatString="<p style=\"background-color: %1\"><font color=\"%2\"><b>%3 :: %4</b><br/>%5</font></p>";
@@ -980,7 +980,7 @@ void Chat::formatMessage(ChatMessage &msg)
 			.arg(msg.nick)
 			.arg(date)
 			.arg(convertCharacters(msg.unformattedMessage, msg.isMyMessage));
-	
+
 	msg.needsToBeFormatted=false;
 }
 
@@ -991,7 +991,7 @@ void Chat::scrollMessages(const QValueList<ChatMessage *> &messages)
 
 	body->viewport()->setUpdatesEnabled(false);
 	chatMessages+=messages;
-	
+
 	QString text;
 	int i;
 	if (config_file.readBoolEntry("Chat","ScrollDown"))
@@ -999,7 +999,7 @@ void Chat::scrollMessages(const QValueList<ChatMessage *> &messages)
 		for(QValueList<ChatMessage *>::const_iterator it=chatMessages.begin(); it!=chatMessages.end(); it++)
 			text+=(*it)->message;
 		body->setText(text);
-		
+
 		if (config_file.readBoolEntry("General", "ForceUseParagraphs") ||
 			((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") != EMOTS_ANIMATED))
 		{
@@ -1047,7 +1047,7 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time)
 			from = 0;
 		else
 			from = end - config_file.readUnsignedNumEntry("History","ChatHistoryCitation") + 1;
-		
+
 		entriestmp = history.getHistoryEntries(senders, from, end - from + 1, HISTORYMANAGER_ENTRY_CHATSEND
 			| HISTORYMANAGER_ENTRY_MSGSEND | HISTORYMANAGER_ENTRY_CHATRCV | HISTORYMANAGER_ENTRY_MSGRCV);
 		kdebugm(KDEBUG_INFO, "Chat::writeMessageFromHistory(): temp entries = %d\n", entriestmp.count());
@@ -1080,7 +1080,7 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time)
 		from = 0;
 	else
 		from = entries.count() - config_file.readUnsignedNumEntry("History","ChatHistoryCitation");
-	
+
 	QValueList<ChatMessage *> messages;
 
 	for (unsigned int i = from; i < entries.count(); i++)
@@ -1104,7 +1104,7 @@ void Chat::checkPresence(UinsList senders, const QString &msg, time_t time, QVal
 {
 	QDateTime date;
 	date.setTime_t(time);
-	
+
 	ChatMessage *message=new ChatMessage(userlist.byUin(senders[0]).altnick, msg, false, QDateTime::currentDateTime(), date);
 	formatMessage(*message);
 	messages.append(message);
@@ -1155,7 +1155,7 @@ void Chat::clearChatWindow()
 void Chat::cancelMessage()
 {
 	seq = 0;
-	disconnect(&event_manager, SIGNAL(ackReceived(int)),
+	disconnect(gadu, SIGNAL(ackReceived(int)),
 		this, SLOT(ackReceivedSlot(int)));
 	edit->setReadOnly(false);
 	edit->setEnabled(true);
@@ -1175,7 +1175,7 @@ void Chat::ackReceivedSlot(int Seq)
 	writeMyMessage();
 	addMyMessageToHistory();
 	seq = 0;
-	disconnect(&event_manager, SIGNAL(ackReceived(int)),
+	disconnect(gadu, SIGNAL(ackReceived(int)),
 		this, SLOT(ackReceivedSlot(int)));
 	kdebugf2();
 }
@@ -1261,7 +1261,7 @@ void Chat::sendMessage()
 		kadusnw->setEnabled(true);
 
  	if (config_file.readBoolEntry("Chat","MessageAcks"))
-		connect(&event_manager, SIGNAL(ackReceived(int)), this, SLOT(ackReceivedSlot(int)));
+		connect(gadu, SIGNAL(ackReceived(int)), this, SLOT(ackReceivedSlot(int)));
 	else
 	{
 		writeMyMessage();
@@ -1277,7 +1277,7 @@ void Chat::pruneWindow()
 {
 	kdebugf();
 	unsigned int chatPruneLen=config_file.readUnsignedNumEntry("Chat","ChatPruneLen");
-	
+
 	if (chatMessages.size()<chatPruneLen)
 	{
 		kdebugm(KDEBUG_FUNCTION_END, "void Chat::pruneWindow() end: nothing to do\n");
@@ -1288,7 +1288,7 @@ void Chat::pruneWindow()
 	for(QValueList<ChatMessage *>::iterator it=start; it!=stop; it++)
 		delete *it;
 	chatMessages.erase(start, stop);
-	
+
 	kdebugf2();
 }
 

@@ -366,23 +366,6 @@ void DccSocketNotifiers::socketEvent()
 GaduSocketNotifiers::GaduSocketNotifiers()
 {
 	kdebugf();
-
-	connect(&event_manager, SIGNAL(connected()), this, SIGNAL(connected()));
-	connect(&event_manager, SIGNAL(connectionFailed(int)), this, SLOT(proteza_connectionFailed(int)));
-	connect(&event_manager, SIGNAL(connectionBroken()), this, SLOT(proteza_connectionBroken()));
-	connect(&event_manager, SIGNAL(disconnected()), this, SIGNAL(disconnected()));
-	connect(&event_manager, SIGNAL(messageReceived(int, UinsList, QCString &, time_t, QByteArray &)),
-		this, SIGNAL(messageReceived(int, UinsList, QCString &, time_t, QByteArray &)));
-	connect(&event_manager, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)),
-		this, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)));
-	connect(&event_manager, SIGNAL(systemMessageReceived(QString &, QDateTime &, int, void *)),
-		this, SIGNAL(systemMessageReceived(QString &, QDateTime &, int, void *)));
-	connect(&event_manager, SIGNAL(userlistReceived(struct gg_event *)),
-		this, SIGNAL(userlistReceived(struct gg_event *)));
-	connect(&event_manager, SIGNAL(userlistReplyReceived(char, char *)),
-		this, SIGNAL(userlistReplyReceived(char, char *)));
-	connect(&event_manager, SIGNAL(userStatusChanged(struct gg_event *)),
-		this, SIGNAL(userStatusChanged(struct gg_event *)));
 	kdebugf2();
 }
 
@@ -390,7 +373,165 @@ GaduSocketNotifiers::~GaduSocketNotifiers()
 {
 }
 
-void GaduSocketNotifiers::proteza_connectionFailed(int failure)
+void GaduSocketNotifiers::eventHandler(gg_session *sess)
+{
+	kdebugf();
+	static int calls = 0;
+
+	calls++;
+	if (calls > 1)
+		kdebugm(KDEBUG_WARNING, "************* GaduSocketNotifiers::eventHandler(): Recursive eventHandler calls detected!\n");
+
+	gg_event* e;
+	if (!(e = gg_watch_fd(sess)))
+	{
+		emit error(ConnectionUnknow);
+		gg_free_event(e);
+		calls--;
+		return;
+	}
+
+	if (sess->state == GG_STATE_CONNECTING_HUB || sess->state == GG_STATE_CONNECTING_GG)
+	{
+		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduSocketNotifiers::eventHandler(): changing QSocketNotifiers.\n");
+
+		kadusnw->setEnabled(false);
+		delete kadusnw;
+
+		kadusnr->setEnabled(false);
+		delete kadusnr;
+
+		kadusnw = new QSocketNotifier(sess->fd, QSocketNotifier::Write, this);
+		QObject::connect(kadusnw, SIGNAL(activated(int)), kadu, SLOT(dataSent()));
+
+		kadusnr = new QSocketNotifier(sess->fd, QSocketNotifier::Read, this);
+		QObject::connect(kadusnr, SIGNAL(activated(int)), kadu, SLOT(dataReceived()));
+	}
+
+	switch (sess->state)
+	{
+		case GG_STATE_RESOLVING:
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "EventManager::eventHandler(): Resolving address\n");
+			break;
+		case GG_STATE_CONNECTING_HUB:
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "EventManager::eventHandler(): Connecting to hub\n");
+			break;
+		case GG_STATE_READING_DATA:
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "EventManager::eventHandler(): Fetching data from hub\n");
+			break;
+		case GG_STATE_CONNECTING_GG:
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "EventManager::eventHandler(): Connecting to server\n");
+			break;
+		case GG_STATE_READING_KEY:
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "EventManager::eventHandler(): Waiting for hash key\n");
+			ConnectionTimeoutTimer::off();
+			break;
+		case GG_STATE_READING_REPLY:
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "EventManager::eventHandler(): Sending key\n");
+			ConnectionTimeoutTimer::off();
+			break;
+		case GG_STATE_CONNECTED:
+			break;
+		default:
+			break;
+	}
+
+	if (e->type == GG_EVENT_MSG)
+	{
+		UinsList uins;
+		if (e->event.msg.msgclass == GG_CLASS_CTCP)
+		{
+			uins.append(e->event.msg.sender);
+			if (config_file.readBoolEntry("Network", "AllowDCC") && !isIgnored(uins))
+				emit dccConnectionReceived(userlist.byUin(e->event.msg.sender));
+		}
+		else
+		{
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventHandler(): %d\n", e->event.msg.recipients_count);
+			if ((e->event.msg.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT)
+			{
+				uins.append(e->event.msg.sender);
+				for (int i = 0; i < e->event.msg.recipients_count; i++)
+					uins.append(e->event.msg.recipients[i]);
+			}
+			else
+				uins.append(e->event.msg.sender);
+			QCString msg((char*)e->event.msg.message);
+			QByteArray formats;
+			formats.duplicate((const char*)e->event.msg.formats, e->event.msg.formats_length);
+			emit messageReceived(e->event.msg.msgclass, uins, msg,
+				e->event.msg.time, formats);
+		}
+	}
+
+	if (e->type == GG_EVENT_IMAGE_REQUEST)
+	{
+		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "Image request received\n");
+		emit imageRequestReceived(
+			e->event.image_request.sender,
+			e->event.image_request.size,
+			e->event.image_request.crc32);
+	}
+
+	if (e->type == GG_EVENT_IMAGE_REPLY)
+	{
+		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "Image reply received\n");
+		emit imageReceived(
+			e->event.image_reply.sender,
+			e->event.image_reply.size,
+			e->event.image_reply.crc32,
+			e->event.image_reply.filename,
+			e->event.image_reply.image);
+	}
+
+	if (e->type == GG_EVENT_STATUS60 || e->type == GG_EVENT_STATUS)
+		emit userStatusChanged(e);
+
+	if (e->type == GG_EVENT_ACK)
+	{
+		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "EventManager::eventHandler(): message reached %d (seq %d)\n",
+			e->event.ack.recipient, e->event.ack.seq);
+		emit ackReceived(e->event.ack.seq);
+	}
+
+	if (e->type == GG_EVENT_NOTIFY60)
+		emit userlistReceived(e);
+
+	if (e->type == GG_EVENT_PUBDIR50_SEARCH_REPLY
+		|| e->type == GG_EVENT_PUBDIR50_READ || e->type == GG_EVENT_PUBDIR50_WRITE)
+		emit pubdirReplyReceived(e->event.pubdir50);
+
+	if (e->type == GG_EVENT_USERLIST)
+		emit userlistReplyReceived(e->event.userlist.type, e->event.userlist.reply);
+
+	if (e->type == GG_EVENT_CONN_SUCCESS)
+		emit connected();
+
+	if (e->type == GG_EVENT_CONN_FAILED)
+		connectionFailed(e->event.failure);
+
+	if (e->type == GG_EVENT_DISCONNECT)
+		emit disconnected();
+
+	if (socket_active)
+	{
+		if (sess->state == GG_STATE_IDLE && userlist_sent)
+		{
+			socket_active = false;
+			UserBox::all_changeAllToInactive();
+			emit error(ConnectionUnknow);
+		}
+		else
+			if (sess->check & GG_CHECK_WRITE)
+				kadusnw->setEnabled(true);
+	}
+
+	gg_free_event(e);
+	calls--;
+	kdebugf2();
+}
+
+void GaduSocketNotifiers::connectionFailed(int failure)
 {
 	kdebugf();
 	GaduError err;
@@ -408,13 +549,6 @@ void GaduSocketNotifiers::proteza_connectionFailed(int failure)
 	}
 
 	emit error(err);
-	kdebugf2();
-}
-
-void GaduSocketNotifiers::proteza_connectionBroken()
-{
-	kdebugf();
-	emit error(ConnectionUnknow);
 	kdebugf2();
 }
 
@@ -449,9 +583,16 @@ GaduProtocol::GaduProtocol(QObject *parent, const char *name) : QObject(parent, 
 	ActiveServer = NULL;
 	IWannaBeInvisible = true;
 
+	connect(SocketNotifiers, SIGNAL(ackReceived(int)), this, SIGNAL(ackReceived(int)));
 	connect(SocketNotifiers, SIGNAL(connected()), this, SLOT(connectedSlot()));
+	connect(SocketNotifiers, SIGNAL(dccConnectionReceived(const UserListElement &)),
+		this, SLOT(dccConnectionReceived(const UserListElement &)));
 	connect(SocketNotifiers, SIGNAL(disconnected()), this, SLOT(disconnectedSlot()));
 	connect(SocketNotifiers, SIGNAL(error(GaduError)), this, SLOT(errorSlot(GaduError)));
+	connect(SocketNotifiers, SIGNAL(imageReceived(UinType, uint32_t, uint32_t, const QString &, const char *)),
+		this, SLOT(imageReceived(UinType, uint32_t, uint32_t, const QString &, const char *)));
+	connect(SocketNotifiers, SIGNAL(imageRequestReceived(UinType, uint32_t, uint32_t)),
+		this, SLOT(imageRequestReceived(UinType, uint32_t, uint32_t)));
 	connect(SocketNotifiers, SIGNAL(messageReceived(int, UinsList, QCString &, time_t, QByteArray &)),
 		this, SLOT(messageReceived(int, UinsList, QCString &, time_t, QByteArray &)));
 	connect(SocketNotifiers, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)), this, SLOT(newResults(gg_pubdir50_t)));
@@ -495,6 +636,26 @@ void GaduProtocol::connectedSlot()
 
 	emit connected();
 	emit statusChanged(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
+
+	kdebugf2();
+}
+
+void GaduProtocol::dccConnectionReceived(const UserListElement &sender)
+{
+	kdebugf();
+
+	struct gg_dcc *dcc_new;
+	FileDccSocket *dcc;
+	if (DccSocket::count() < 8)
+	{
+		dcc_new = gg_dcc_get_file(htonl(sender.ip.ip4Addr()), sender.port, config_file.readNumEntry("General","UIN"), sender.uin);
+		if (dcc_new)
+		{
+			dcc = new FileDccSocket(dcc_new);
+			connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), kadu, SLOT(dccFinished(dccSocketClass *)));
+			dcc->initializeNotifiers();
+		}
+	}
 
 	kdebugf2();
 }
@@ -597,6 +758,24 @@ void GaduProtocol::errorSlot(GaduError err)
 	if(err != Disconnected)
 		login(RequestedStatusForLogin);
 	kdebugf2();
+}
+
+void GaduProtocol::imageReceived(UinType sender, uint32_t size, uint32_t crc32,
+	const QString &filename, const char *data)
+{
+	kdebugm(KDEBUG_INFO, QString("Received image. sender: %1, size: %2, crc32: %3,filename: %4\n")
+		.arg(sender).arg(size).arg(crc32).arg(filename).local8Bit().data());
+
+	QString full_path = gadu_images_manager.saveImage(sender,size,crc32,filename,data);
+	emit imageReceivedAndSaved(sender, size, crc32, full_path);
+}
+
+void GaduProtocol::imageRequestReceived(UinType sender, uint32_t size, uint32_t crc32)
+{
+	kdebugm(KDEBUG_INFO, QString("Received image request. sender: %1, size: %2, crc32: %3\n")
+		.arg(sender).arg(size).arg(crc32).local8Bit().data());
+
+	gadu_images_manager.sendImage(sender,size,crc32);
 }
 
 void GaduProtocol::messageReceived(int msgclass, UinsList senders, QCString &msg, time_t time,

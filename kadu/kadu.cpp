@@ -515,6 +515,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	connect(gadu, SIGNAL(dccSetupFailed()), this, SLOT(dccSetupFailed()));
 	connect(gadu, SIGNAL(disconnected()), this, SLOT(disconnected()));
 	connect(gadu, SIGNAL(error(GaduError)), this, SLOT(error(GaduError)));
+	connect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
+		this, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
 	connect(gadu, SIGNAL(statusChanged(int)), this, SLOT(setCurrentStatus(int)));
 	connect(gadu, SIGNAL(systemMessageReceived(QString &)), this, SLOT(systemMessageReceived(QString &)));
 	connect(gadu, SIGNAL(userListChanged()), this, SLOT(userListChanged()));
@@ -1448,6 +1450,15 @@ void Kadu::error(GaduError err)
 	kdebugf2();
 }
 
+void Kadu::imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &path)
+{
+	for (int i = 0; i < pending.count(); i++)
+	{
+		PendingMsgs::Element& e = pending[i];
+		e.msg = gadu_images_manager.replaceLoadingImages(e.msg,sender,size,crc32);
+	}
+}
+
 void Kadu::systemMessageReceived(QString &msg)
 {
 	MessageBox::msg(msg);
@@ -1456,7 +1467,7 @@ void Kadu::systemMessageReceived(QString &msg)
 void Kadu::dataReceived(void) {
 	kdebugf();
 	if (sess->check && GG_CHECK_READ)
-		event_manager.eventHandler(sess);
+		gadu->eventHandler(sess);
 	kdebugf2();
 }
 
@@ -1464,7 +1475,7 @@ void Kadu::dataSent(void) {
 	kdebugf();
 	kadusnw->setEnabled(false);
 	if (sess->check & GG_CHECK_WRITE)
-		event_manager.eventHandler(sess);
+		gadu->eventHandler(sess);
 	kdebugf2();
 }
 
