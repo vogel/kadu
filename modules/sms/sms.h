@@ -72,9 +72,11 @@ class SmsSender : public QObject
 {
 	Q_OBJECT
 
+	private:
+		SmsGateway* Gateway;
+
 	private slots:
 		void onFinished(bool success);
-		SmsGateway* Gateway;
 
 	public:
 		SmsSender(QObject* parent=0);
