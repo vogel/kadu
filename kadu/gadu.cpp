@@ -30,8 +30,6 @@ QValueList<QHostAddress> gg_servers;
 const char *gg_servers_ip[9] = {"217.17.41.82", "217.17.41.83", "217.17.41.84", "217.17.41.85",
 	"217.17.41.86", "217.17.41.87", "217.17.41.88", "217.17.41.92", "217.17.41.93"};
 
-QHostAddress config_extip;
-
 // ------------------------------------
 //              Timers
 // ------------------------------------
@@ -1067,6 +1065,11 @@ QHostAddress* GaduProtocol::activeServer()
 	return ActiveServer;
 }
 
+void GaduProtocol::setDccExternalIP(const QHostAddress& ip)
+{
+	DccExternalIP = ip;
+}
+
 void GaduProtocol::connectedSlot()
 {
 	kdebugf();
@@ -1285,9 +1288,9 @@ void GaduProtocol::login()
 	// GG 6.0 build 147 ustawia indeks ostatnio odczytanej wiadomosci systemowej na 1389
 	LoginParams.last_sysmsg = config_file.readNumEntry("General", "SystemMsgIndex", 1389);
 
-	if (config_file.readBoolEntry("Network", "AllowDCC") && config_extip.ip4Addr() && config_file.readNumEntry("Network", "ExternalPort") > 1023)
+	if (config_file.readBoolEntry("Network", "AllowDCC") && DccExternalIP.ip4Addr() && config_file.readNumEntry("Network", "ExternalPort") > 1023)
 	{
-		LoginParams.external_addr = htonl(config_extip.ip4Addr());
+		LoginParams.external_addr = htonl(DccExternalIP.ip4Addr());
 		LoginParams.external_port = config_file.readNumEntry("Network", "ExternalPort");
 	}
 	else

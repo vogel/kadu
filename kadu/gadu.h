@@ -19,8 +19,6 @@ typedef uin_t UinType;
 class UserList;
 class UserListElement;
 
-extern QHostAddress config_extip;
-
 // ------------------------------------
 //            UinsList
 // ------------------------------------
@@ -335,6 +333,8 @@ class GaduProtocol : public QObject
 		struct gg_login_params LoginParams;
 		/** Sesja po³±czenia - wymagane przez bibliotekê libgadu **/
 		gg_session* Sess;
+
+		QHostAddress DccExternalIP;
 
 		/**
 			Bie¿acy status. Zmieniany po po³±czeniu, oraz w przypadku zmiany statusu kiedy po³±czenie
@@ -830,6 +830,13 @@ class GaduProtocol : public QObject
 			@todo zmieniæ nazwê na connected
 		**/
 		bool userListSent();
+		/**
+			Ustawia adres IP który ma byæ przekazany do serwera GG
+			jako adres komputera, który przekierowuje do nas port DCC.
+			Zmiana jest uwzglêdniana dopiero przy ponownym po³±czeniu
+			z serwerem.
+		**/
+		void setDccExternalIP(const QHostAddress& ip);
 
 	public slots:
 		/**

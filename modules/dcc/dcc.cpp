@@ -273,11 +273,12 @@ DccManager::DccManager() : QObject(NULL,"dcc_manager")
 	DccSnw = NULL;
 
 	if (!config_file.readBoolEntry("Network","DccIpDetect"))
-		if (!ConfigDccIp.setAddress(config_file.readEntry("Network","DccIP", "")))
-			ConfigDccIp.setAddress((unsigned int)0);
+		ConfigDccIp.setAddress(config_file.readEntry("Network","DccIP", ""));
 
-	if (!config_extip.setAddress(config_file.readEntry("Network","ExternalIP", "")))
-		config_extip.setAddress((unsigned int)0);
+	QHostAddress ext_ip;
+	if (config_file.readBoolEntry("Network","DccForwarding"))
+		if (ext_ip.setAddress(config_file.readEntry("Network","ExternalIP", "")))
+			gadu->setDccExternalIP(ext_ip);
 
 	connect(&TimeoutTimer, SIGNAL(timeout()), this, SLOT(timeout()));
 
@@ -523,13 +524,14 @@ void DccManager::configDialogApply()
 	if (!ConfigDccIp.setAddress(config_file.readEntry("Network", "DccIP")))
 	{
 		config_file.writeEntry("Network", "DccIP", "0.0.0.0");
-		ConfigDccIp.setAddress((unsigned int)0);
+		ConfigDccIp = QHostAddress();
 	}
-	if (!config_extip.setAddress(config_file.readEntry("Network", "ExternalIP")))
-	{
+	QHostAddress ext_ip;
+	if (!ext_ip.setAddress(config_file.readEntry("Network", "ExternalIP")))	
 		config_file.writeEntry("Network", "ExternalIP", "0.0.0.0");
-		config_extip.setAddress((unsigned int)0);
-	}
+	if (!config_file.readBoolEntry("Network","DccForwarding"))
+		ext_ip = QHostAddress();
+	gadu->setDccExternalIP(ext_ip);
 	if (config_file.readNumEntry("Network", "ExternalPort")<=1023)
 		config_file.writeEntry("Network", "ExternalPort", 0);
 	kdebugf2();
