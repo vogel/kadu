@@ -188,7 +188,7 @@ QToolButton* ToolBar::getButton(const char* name)
 	for(QValueList<ToolButton>::iterator j=RegisteredToolButtons.begin(); j!=RegisteredToolButtons.end(); ++j)
 		if ((*j).name == name)
 			return (*j).button;
-	kdebugm(KDEBUG_WARNING, "return NULL\n");
+	kdebugmf(KDEBUG_WARNING, "'%s' return NULL\n", name?name:"[null]");
 	return NULL;
 }
 
@@ -839,7 +839,7 @@ void Kadu::currentChanged(QListBoxItem *item)
 	if (!item || !item->isSelected())
 		return;
 
-	kdebugm(KDEBUG_INFO, "Kadu::currentChanged(): %s\n", (const char *)item->text().local8Bit());
+	kdebugmf(KDEBUG_INFO, "%s\n", item->text().local8Bit().data());
 
 	if (config_file.readBoolEntry("Look", "ShowInfoPanel"))
 	{
@@ -1022,7 +1022,7 @@ void Kadu::blink()
 
 void Kadu::mouseButtonClicked(int button, QListBoxItem *item)
 {
-	kdebugm(KDEBUG_FUNCTION_START, "Kadu::mouseButtonClicked(): button=%d\n", button);
+	kdebugmf(KDEBUG_FUNCTION_START, "button=%d\n", button);
 	if (!item)
 		InfoPanel->setText("");
 	kdebugf2();
@@ -1282,7 +1282,7 @@ void Kadu::systemMessageReceived(QString &msg)
 
 void Kadu::disconnected()
 {
-	kdebugm(KDEBUG_FUNCTION_START, "Kadu::disconnected(): Disconnection has occured\n");
+	kdebugmf(KDEBUG_FUNCTION_START, "Disconnection has occured\n");
 
 	chat_manager->refreshTitles();
 	UserBox::all_refresh();
@@ -1305,7 +1305,7 @@ bool Kadu::close(bool quit)
 {
 	if (!quit && Docked)
 	{
-		kdebugm(KDEBUG_INFO, "Kadu::close(): Kadu hide\n");
+		kdebugmf(KDEBUG_INFO, "hiding\n");
 		hide();
 		return false;
 	}
@@ -1345,18 +1345,18 @@ bool Kadu::close(bool quit)
 		writeIgnored();
 		if (config_file.readBoolEntry("General", "DisconnectWithDescription") && !gadu->status().isOffline())
 		{
-			kdebugm(KDEBUG_INFO, "Kadu::close(): Set status NOT_AVAIL_DESCR with disconnect description(%s)\n",(const char *)config_file.readEntry("General", "DisconnectDescription").local8Bit());
+			kdebugmf(KDEBUG_INFO, "Set status NOT_AVAIL_DESCR with disconnect description(%s)\n",(const char *)config_file.readEntry("General", "DisconnectDescription").local8Bit());
 			gadu->status().setOffline(config_file.readEntry("General", "DisconnectDescription"));
 		}
 //		disconnectNetwork();
 //		gadu->logout();
-		kdebugm(KDEBUG_INFO, "Kadu::close(): Saved config, disconnect and ignored\n");
+		kdebugmf(KDEBUG_INFO, "Saved config, disconnect and ignored\n");
 		QWidget::close(true);
 		flock(lockFileHandle, LOCK_UN);
 		lockFile->close();
 		delete lockFile;
 		lockFile=NULL;
-		kdebugm(KDEBUG_INFO, "Kadu::close(): Graceful shutdown...\n");
+		kdebugmf(KDEBUG_INFO, "Graceful shutdown...\n");
 		return true;
 	}
 }
@@ -1479,7 +1479,7 @@ void Kadu::infopanelUpdate(UinType uin)
 {
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		return;
-	kdebugm(KDEBUG_INFO, "Kadu::infopanelUpdate(%d)\n", uin);
+	kdebugmf(KDEBUG_INFO, "%d\n", uin);
 	if (Userbox->currentItem() != -1 && uin == userlist.byAltNick(Userbox->currentText()).uin())
 	{
 		HtmlDocument doc;
@@ -1668,7 +1668,7 @@ void KaduSlots::chooseColor(const char *name, const QColor& color)
 	else if (QString(name)=="panel_font_color")
 		preview->setPaletteBackgroundColor(color);
 	else
-		kdebugm(KDEBUG_ERROR, "chooseColor: label '%s' not known\n", name);
+		kdebugmf(KDEBUG_ERROR, "label '%s' not known\n", name);
 	kdebugf2();
 }
 
@@ -1703,7 +1703,7 @@ void Kadu::resizeEvent(QResizeEvent *)
 
 /*void Kadu::moveEvent(QMoveEvent *e)
 {
-//	kdebugm(KDEBUG_INFO, "kadu::moveEvent: %d %d %d %d\n", x(), y(), width(), height());
+//	kdebugmf(KDEBUG_INFO, "%d %d %d %d\n", x(), y(), width(), height());
 	QWidget::moveEvent(e);
 }*/
 

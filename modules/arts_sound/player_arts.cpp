@@ -57,7 +57,7 @@ void aRtsPlayerSlots::playSound(const QString &s, bool volCntrl, double vol)
 	//jednocze¶nie, bo je¿eli najpierw zostanie sprawdzony drugi, a pierwszy
 	//jest prawd±, to program siê wywróci
 	kdebugf();
-	kdebugm(KDEBUG_INFO, "aRtsPlayerSlots::play(%s): null: %d\n",s.local8Bit().data(), server.isNull());
+	kdebugmf(KDEBUG_INFO, "path:%s: null: %d\n", s.local8Bit().data(), server.isNull());
 
 	if (!server.isNull())
 		kdebugm(KDEBUG_INFO, "audioMethod: %s audioDevice: %s\n", server.audioMethod().c_str(), server.audioDevice().c_str());

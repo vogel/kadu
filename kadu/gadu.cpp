@@ -390,7 +390,7 @@ void PubdirSocketNotifiers::socketEvent()
 	switch (H->state)
 	{
 		case GG_STATE_CONNECTING:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "PubdirSocketNotifiers::socketEvent(): changing QSocketNotifiers\n");
+			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "changing QSocketNotifiers\n");
 			recreateSocketNotifiers();
 
 			if (H->check & GG_CHECK_WRITE)
@@ -399,7 +399,7 @@ void PubdirSocketNotifiers::socketEvent()
 			break;
 
 		case GG_STATE_ERROR:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "PubdirSocketNotifiers::socketEvent(): error!\n");
+			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "error!\n");
 			deleteSocketNotifiers();
 			emit done(false, H);
 			gg_pubdir_free(H);
@@ -407,14 +407,14 @@ void PubdirSocketNotifiers::socketEvent()
 			break;
 
 		case GG_STATE_DONE:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "PubdirSocketNotifiers::socketEvent(): success!\n");
+			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "success!\n");
 			deleteSocketNotifiers();
 
 			if (p->success)
 				emit done(true, H);
 			else
 			{
-				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "PubdirSocketNotifiers::socketEvent(): error!\n");
+				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "error!\n");
 				emit done(false, H);
 			}
 			gg_pubdir_free(H);
@@ -490,7 +490,7 @@ void TokenSocketNotifiers::socketEvent()
 		emit tokenError();
 		gg_token_free(H);
 		H = NULL;
-		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "token::socketEvent(): getting token error\n");
+		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "getting token error\n");
 		deleteLater();
 		return;
 	}
@@ -501,7 +501,7 @@ void TokenSocketNotifiers::socketEvent()
 	{
 
 		case GG_STATE_CONNECTING:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "Register::socketEvent(): changing QSocketNotifiers.\n");
+			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "changing QSocketNotifiers.\n");
 			deleteSocketNotifiers();
 			createSocketNotifiers();
 			if (H->check & GG_CHECK_WRITE)
@@ -513,7 +513,7 @@ void TokenSocketNotifiers::socketEvent()
 			emit tokenError();
 			gg_token_free(H);
 			H = NULL;
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "token::socketEvent(): getting token error\n");
+			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "getting token error\n");
 			deleteLater();
 			break;
 
@@ -521,7 +521,7 @@ void TokenSocketNotifiers::socketEvent()
 			deleteSocketNotifiers();
 			if (p->success)
 			{
-				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "token::socketEvent(): success\n");
+				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "success\n");
 
 				struct gg_token *t = (struct gg_token *)H->data;
 				QString tokenId = cp2unicode((unsigned char *)t->tokenid);
@@ -538,7 +538,7 @@ void TokenSocketNotifiers::socketEvent()
 
 			else
 			{
-				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "token::socketEvent(): getting token error\n");
+				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "getting token error\n");
 				emit tokenError();
 			}
 
@@ -635,7 +635,7 @@ void GaduSocketNotifiers::socketEvent()
 
 	if (Sess->state == GG_STATE_CONNECTING_HUB || Sess->state == GG_STATE_CONNECTING_GG)
 	{
-		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduSocketNotifiers::socketEvent(): changing QSocketNotifiers.\n");
+		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "changing QSocketNotifiers.\n");
 
 		recreateSocketNotifiers();
 	}
@@ -643,30 +643,30 @@ void GaduSocketNotifiers::socketEvent()
 	switch (Sess->state)
 	{
 		case GG_STATE_RESOLVING:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduSocketNotifiers::socketEvent(): Resolving address\n");
+			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Resolving address\n");
 			break;
 		case GG_STATE_CONNECTING_HUB:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduSocketNotifiers::socketEvent(): Connecting to hub\n");
+			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Connecting to hub\n");
 			break;
 		case GG_STATE_READING_DATA:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduSocketNotifiers::socketEvent(): Fetching data from hub\n");
+			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Fetching data from hub\n");
 			break;
 		case GG_STATE_CONNECTING_GG:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduSocketNotifiers::socketEvent(): Connecting to server\n");
+			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Connecting to server\n");
 			break;
 		case GG_STATE_READING_KEY:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduSocketNotifiers::socketEvent(): Waiting for hash key\n");
+			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Waiting for hash key\n");
 			ConnectionTimeoutTimer::off();
 			break;
 		case GG_STATE_READING_REPLY:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduSocketNotifiers::socketEvent(): Sending key\n");
+			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Sending key\n");
 			ConnectionTimeoutTimer::off();
 			break;
 		case GG_STATE_IDLE:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_WARNING, "GaduSocketNotifiers::socketEvent(): idle!\n");
+			kdebugmf(KDEBUG_NETWORK|KDEBUG_WARNING, "idle!\n");
 			break;
 		case GG_STATE_ERROR:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_WARNING, "GaduSocketNotifiers::socketEvent(): state==error! error=%d\n", Sess->error);
+			kdebugmf(KDEBUG_NETWORK|KDEBUG_WARNING, "state==error! error=%d\n", Sess->error);
 			break;
 		case GG_STATE_CONNECTED:
 			break;
@@ -685,7 +685,7 @@ void GaduSocketNotifiers::socketEvent()
 		}
 		else
 		{
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduSocketNotifiers::socketEvent(): recipients_count: %d\n", e->event.msg.recipients_count);
+			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "recipients_count: %d\n", e->event.msg.recipients_count);
 			uins.append(e->event.msg.sender);
 			if ((e->event.msg.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT)
 				for (int i = 0; i < e->event.msg.recipients_count; ++i)
@@ -1177,7 +1177,7 @@ void GaduProtocol::connectionTimeoutTimerSlot()
 	if (Sess->state == GG_STATE_CONNECTING_HUB ||
 		Sess->state == GG_STATE_CONNECTING_GG)
 	{
-		kdebug("Timeout, breaking connection\n");
+		kdebugm(KDEBUG_INFO, "Timeout, breaking connection\n");
 		errorSlot(ConnectionTimeout);
 		//emit error(ConnectionTimeout);
 		//logout();
@@ -1223,7 +1223,7 @@ void GaduProtocol::messageReceived(int msgclass, UinsList senders, QCString &msg
 */
 	if (userlist.byUinValue(senders[0]).isAnonymous() && config_file.readBoolEntry("Chat","IgnoreAnonymousUsers"))
 	{
-		kdebugm(KDEBUG_INFO, "GaduProtocol::messageReceived(): Ignored anonymous. %d is ignored\n", senders[0]);
+		kdebugmf(KDEBUG_INFO, "Ignored anonymous. %d is ignored\n", senders[0]);
 		return;
 	}
 
@@ -1270,7 +1270,7 @@ void GaduProtocol::messageReceived(int msgclass, UinsList senders, QCString &msg
 	if(!userlist.containsUin(senders[0]))
 		userlist.addAnonymous(senders[0]);
 
-	kdebugm(KDEBUG_INFO, "eventRecvMsg(): Got message from %d saying \"%s\"\n",
+	kdebugmf(KDEBUG_INFO, "Got message from %d saying \"%s\"\n",
 			senders[0], (const char *)mesg.local8Bit());
 
 	emit chatMsgReceived1(senders, mesg, time, grab);
@@ -1367,7 +1367,7 @@ void GaduProtocol::login()
 	LoginParams.protocol_version = GG_DEFAULT_PROTOCOL_VERSION;
 	if (LoginParams.tls)
 	{
-		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::login((): using TLS\n");
+		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "using TLS\n");
 		LoginParams.server_port = 0;
 		if (config_file.readBoolEntry("Network", "isDefServers"))
 			LoginParams.server_addr = 0;
@@ -1436,8 +1436,8 @@ void GaduProtocol::setupProxy()
 		gg_proxy_host = strdup((char *)unicode2latin(config_file.readEntry("Network", "ProxyHost")).data());
 		gg_proxy_port = config_file.readNumEntry("Network", "ProxyPort");
 
-		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::setupProxy(): gg_proxy_host = %s\n", gg_proxy_host);
-		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::setupProxy(): gg_proxy_port = %d\n", gg_proxy_port);
+		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "gg_proxy_host = %s\n", gg_proxy_host);
+		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "gg_proxy_port = %d\n", gg_proxy_port);
 
 		if (config_file.readEntry("Network", "ProxyUser").length())
 		{
@@ -1503,35 +1503,34 @@ void GaduProtocol::ackReceived(int seq, uin_t uin, int status)
 	switch (status)
 	{
 		case GG_ACK_BLOCKED:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::ackReceived(): message blocked (uin: %d, seq: %d)\n", uin, seq);
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message blocked (uin: %d, seq: %d)\n", uin, seq);
 			emit messageBlocked(seq, uin);
 			emit messageRejected(seq, uin);
 			break;
 		case GG_ACK_DELIVERED:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::ackReceived(): message delivered (uin: %d, seq: %d)\n", uin, seq);
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message delivered (uin: %d, seq: %d)\n", uin, seq);
 			emit messageDelivered(seq, uin);
 			emit messageAccepted(seq, uin);
 			emit ackReceived(seq);
 			break;
 		case GG_ACK_QUEUED:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::ackReceived(): message queued (uin: %d, seq: %d)\n", uin, seq);
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message queued (uin: %d, seq: %d)\n", uin, seq);
 			emit messageQueued(seq, uin);
 			emit messageAccepted(seq, uin);
 			emit ackReceived(seq);
 			break;
 		case GG_ACK_MBOXFULL:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::ackReceived(): message box full (uin: %d, seq: %d)\n", uin, seq);
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message box full (uin: %d, seq: %d)\n", uin, seq);
 			emit messageBoxFull(seq, uin);
 			emit messageRejected(seq, uin);
 			break;
 		case GG_ACK_NOT_DELIVERED:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::ackReceived(): message not delivered (uin: %d, seq: %d)\n", uin, seq);
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message not delivered (uin: %d, seq: %d)\n", uin, seq);
 			emit messageNotDelivered(seq, uin);
 			emit messageRejected(seq, uin);
 			break;
 		default:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_WARNING, "GaduProtocol::ackReceived():"
-			" unknown acknowledge! (uin: %d, seq: %d, status:%d)\n", uin, seq, status);
+			kdebugm(KDEBUG_NETWORK|KDEBUG_WARNING, "unknown acknowledge! (uin: %d, seq: %d, status:%d)\n", uin, seq, status);
 			break;
 	}
 	kdebugf2();
@@ -1553,7 +1552,7 @@ void GaduProtocol::sendUserList()
 	if (!j)
 	{
 		gg_notify_ex(Sess, NULL, NULL, 0);
-		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "send_userlist(): Userlist is empty\n");
+		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Userlist is empty\n");
 		return;
 	}
 
@@ -1576,7 +1575,7 @@ void GaduProtocol::sendUserList()
 		}
 
 	gg_notify_ex(Sess, uins, types, j);
-	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "send_userlist(): Userlist sent\n");
+	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Userlist sent\n");
 
 	free(uins);
 	free(types);
@@ -1663,7 +1662,7 @@ void GaduProtocol::newResults(gg_pubdir50_t res)
 
 	count = gg_pubdir50_count(res);
 
-	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::newResults(): found %d results\n", count);
+	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "found %d results\n", count);
 
 	for (int i = 0; i < count; ++i)
 	{
@@ -2052,7 +2051,7 @@ bool GaduProtocol::doExportUserList(const UserList& userList)
 	QString contacts = userListToString(userList);
 	char *dup = strdup(unicode2latin(contacts));
 
-	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::exportUserList():\n%s\n", dup);
+	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "\n%s\n", dup);
 //	free(dup);
 
 	UserListClear = false;
@@ -2061,7 +2060,7 @@ bool GaduProtocol::doExportUserList(const UserList& userList)
 	bool success=(gg_userlist_request(Sess, GG_USERLIST_PUT, dup)!=-1);
 	if (!success)
 	{
-		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol:: gg_userlist_put() failed\n");
+		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "failed\n");
 		emit userListExported(false);
 	}
 	free(dup);
@@ -2079,7 +2078,7 @@ bool GaduProtocol::doClearUserList()
 	bool success=(gg_userlist_request(Sess, GG_USERLIST_PUT, dup) != -1);
 	if (!success)
 	{
-		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol:: gg_userlist_out() failed\n");
+		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "failed\n");
 		emit userListCleared(false);
 	}
 	kdebugf2();
@@ -2113,7 +2112,7 @@ void GaduProtocol::userListReceived(const struct gg_event *e)
 	{
 		if (!userlist.containsUin(e->event.notify60[nr].uin))
 		{
-			kdebugm(KDEBUG_INFO, "eventGotUserlist(): buddy %d not in list. Damned server!\n",
+			kdebugmf(KDEBUG_INFO, "buddy %d not in list. Damned server!\n",
 				e->event.notify60[nr].uin);
 			gg_remove_notify(Sess, e->event.notify60[nr].uin);
 			++nr;
@@ -2141,39 +2140,39 @@ void GaduProtocol::userListReceived(const struct gg_event *e)
 		switch (e->event.notify60[nr].status)
 		{
 			case GG_STATUS_AVAIL:
-				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventGotUserlist(): User %d went online\n",
+				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "User %d went online\n",
 					e->event.notify60[nr].uin);
 				break;
 			case GG_STATUS_BUSY:
-				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventGotUserlist(): User %d went busy\n",
+				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "User %d went busy\n",
 					e->event.notify60[nr].uin);
 				break;
 			case GG_STATUS_NOT_AVAIL:
-				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventGotUserlist(): User %d went offline\n",
+				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "User %d went offline\n",
 					e->event.notify60[nr].uin);
 				break;
 			case GG_STATUS_BLOCKED:
-				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventGotUserlist(): User %d has blocked us\n",
+				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "User %d has blocked us\n",
 					e->event.notify60[nr].uin);
 				break;
 			case GG_STATUS_BUSY_DESCR:
-				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventGotUserlist(): User %d went busy with descr.\n",
+				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "User %d went busy with description\n",
 					e->event.notify60[nr].uin);
 				break;
 			case GG_STATUS_NOT_AVAIL_DESCR:
-				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventGotUserlist(): User %d went offline with descr.\n",
+				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "User %d went offline with description\n",
 					e->event.notify60[nr].uin);
 				break;
 			case GG_STATUS_AVAIL_DESCR:
-				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventGotUserlist(): User %d went online with descr.\n",
+				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "User %d went online with description\n",
 					e->event.notify60[nr].uin);
 				break;
 			case GG_STATUS_INVISIBLE_DESCR:
-				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventGotUserlist(): User %d went invisible with descr.\n",
+				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "User %d went invisible with description\n",
 					e->event.notify60[nr].uin);
 				break;
 			default:
-				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventGotUserlist(): Unknown status for user %d: %d\n",
+				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Unknown status for user %d: %d\n",
 					e->event.notify60[nr].uin, e->event.notify60[nr].status);
 				break;
 		}
@@ -2194,8 +2193,7 @@ void GaduProtocol::userListReplyReceived(char type, char *reply)
 
 	if (type == GG_USERLIST_PUT_REPLY)
 	{
-//		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::userlistReplyReceived(): put\n");
-		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::userlistReplyReceived(): Done\n");
+		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Done\n");
 
 		if (UserListClear)
 			emit userListCleared(true);
@@ -2205,11 +2203,11 @@ void GaduProtocol::userListReplyReceived(char type, char *reply)
 	}
 	else if ((type == GG_USERLIST_GET_REPLY) || (type == GG_USERLIST_GET_MORE_REPLY))
 	{
-		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::userlistReplyReceived(): get\n");
+		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "get\n");
 
 		if (!reply)
 		{
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::userlistReplyReceived(): error!\n");
+			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "error!\n");
 
 			UserList empty;
 			emit userListImported(false, empty);
@@ -2221,13 +2219,11 @@ void GaduProtocol::userListReplyReceived(char type, char *reply)
 
 		if (type == GG_USERLIST_GET_MORE_REPLY)
 		{
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::userListReplyReceived(): next portion\n");
+			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "next portion\n");
 			return;
 		}
 
-//		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::userListReplyReceived(): Done.\n");
-		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::userListReplyReceived()\n%s\n",
-			unicode2latin(ImportReply).data());
+		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "\n%s\n", unicode2latin(ImportReply).data());
 
 		UserList importedUserList;
 		stringToUserList(ImportReply, importedUserList);
@@ -2270,13 +2266,13 @@ void GaduProtocol::userStatusChanged(const struct gg_event *e)
 		image_size = 0;
 	}
 
-	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventUserStatusChange(): User %d went %d (%s)\n", uin,
+	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "User %d went %d (%s)\n", uin,
 		status.toStatusNumber(), status.name().local8Bit().data());
 
 	if (!userlist.containsUin(uin))
 	{
 		// ignore!
-		kdebugm(KDEBUG_INFO, "eventUserStatusChange(): buddy %d not in list. Damned server!\n", uin);
+		kdebugmf(KDEBUG_INFO, "buddy %d not in list. Damned server!\n", uin);
 		gg_remove_notify(Sess, uin);
 		return;
 	}

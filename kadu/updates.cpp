@@ -70,7 +70,7 @@ void Updates::gotUpdatesInfo(const QByteArray &data, QNetworkOperation * /*op*/)
 	{
 		if (data.size() > 31)
 		{
-			kdebugm(KDEBUG_WARNING, "Updates::gotUpdatesInfo(): cannot obtain update info\n");
+			kdebugmf(KDEBUG_WARNING, "cannot obtain update info\n");
 			disconnect(gadu, SIGNAL(connected()), this, SLOT(run()));
 			deleteLater();
 			kdebugf2();
@@ -83,7 +83,7 @@ void Updates::gotUpdatesInfo(const QByteArray &data, QNetworkOperation * /*op*/)
 		buf[data.size()] = 0;
 		QString newestversion = buf;
 
-		kdebugm(KDEBUG_INFO, "Updates::gotUpdatesInfo(): %s\n", buf);
+		kdebugmf(KDEBUG_INFO, "%s\n", buf);
 
 		if (ifNewerVersion(newestversion))
 			QMessageBox::information(kadu, tr("Update information"),

@@ -56,7 +56,7 @@ bool Hint::nextSecond(void)
 
 void Hint::setShown(bool show)
 {
-	kdebugm(KDEBUG_FUNCTION_START, "Hint::setShown() show=%d\n", show);
+	kdebugmf(KDEBUG_FUNCTION_START, "show=%d\n", show);
 
 	if (show)
 	{
@@ -147,7 +147,7 @@ void Hint::leave(void)
 
 Hint::~Hint(void)
 {
-	kdebugm(KDEBUG_FUNCTION_START, "Hint::~Hint() id=%d\n", ident);
+	kdebugmf(KDEBUG_FUNCTION_START, "id=%d\n", ident);
 
 	if (icon != NULL)
 	{

@@ -25,36 +25,35 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-void Register::createConfig() {
+void Register::createConfig()
+{
 	kdebugf();
 	char *home = getenv("HOME");
 	struct passwd *pw;
 
-	kdebugm(KDEBUG_INFO, "Register::createConfig(): $HOME=%s\n", home);
+	kdebugmf(KDEBUG_INFO, "$HOME=%s\n", home);
 	if (!home) {
 		if (!(pw = getpwuid(getuid())))
 			return;
 		home = pw->pw_dir;
-		}
+	}
 
 	struct stat buf;
 	QString ggpath = ggPath("");
 	stat(ggpath.local8Bit(), &buf);
 	if (S_ISDIR(buf.st_mode))
-		kdebugm(KDEBUG_INFO, "Register::createConfig(): Directory %s exists\n", (const char *)ggpath.local8Bit());
-	else {
-		kdebugm(KDEBUG_INFO, "Register::createConfig(): Creating directory\n");
-		if (mkdir(ggpath.local8Bit(), 0700) != 0 ) {
+		kdebugmf(KDEBUG_INFO, "Directory %s exists\n", (const char *)ggpath.local8Bit());
+	else
+	{
+		kdebugmf(KDEBUG_INFO, "Creating directory\n");
+		if (mkdir(ggpath.local8Bit(), 0700) != 0 )
+		{
 			perror("mkdir");
 			return;
-			}
 		}
+	}
 
-	kdebugm(KDEBUG_INFO, "Register::createConfig(): Writing config files...\n");
-//	hmm wydaje mi sie ze przy obecnym config_file nie potrzebne jest to
-//	config_file.setGroup("General");
-//	config_file.writeEntry("UIN", int(config.uin));
-//	config_file.writeEntry("Password", pwHash(config.password));
+	kdebugmf(KDEBUG_INFO, "Writing config files...\n");
 	config_file.sync();
 
 	qApp->mainWidget()->setCaption(QString("Kadu: %1").arg((UinType)config_file.readNumEntry("General","UIN")));

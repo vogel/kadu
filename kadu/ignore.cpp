@@ -189,7 +189,7 @@ int writeIgnored(QString filename)
 
 	if (!(tmp = ggPath("")))
 	{
-		kdebugm(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "writeIgnored(): failed\n");
+		kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "failed\n");
 		return 1;
 	}
 	mkdir(tmp.local8Bit(), 0700);
@@ -200,7 +200,7 @@ int writeIgnored(QString filename)
 	QFile file(filename);
 	if (!file.open(IO_WriteOnly | IO_Truncate))
 	{
-		kdebugm(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "writeIgnored(): can't open ignore file!\n");
+		kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "can't open ignore file!\n");
 		return 2;
 	}
 
@@ -234,7 +234,7 @@ int readIgnored()
 	QFile f(fname);
 	if (!f.open(IO_ReadOnly))
 	{
-		kdebugm(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "readIgnored(): can't open ignore file!\n");
+		kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "can't open ignore file!\n");
 		return 1;
 	}
 

@@ -107,7 +107,7 @@ void DockingManager::changeIcon()
 		}
 	}
 	else
-		kdebugm(KDEBUG_INFO, "DockingManager::changeIcon() OFF\n");
+		kdebugmf(KDEBUG_INFO, "OFF\n");
 	kdebugf2();
 }
 

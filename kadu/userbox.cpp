@@ -121,7 +121,7 @@ void KaduListBoxPixmap::paint(QPainter *painter)
 		if (bold)
 			painter->setFont(oldFont);
 
-//		kdebugm(KDEBUG_INFO, "KaduListBoxPixmap::paint(): isOurUin = %d, own_description = %s\n",
+//		kdebugmf(KDEBUG_INFO, "isOurUin = %d, own_description = %s\n",
 //			isOurUin, (const char *)unicode2latin(own_description));
 		if (showDesc && hasDescription)
 		{
@@ -596,7 +596,7 @@ void UserBox::renameUser(const QString &oldaltnick, const QString &newaltnick)
 		((KaduListBoxPixmap*)findItem(oldaltnick, Qt::ExactMatch|Qt::CaseSensitive))->changeText(newaltnick);
 	}
 	else
-		kdebugm(KDEBUG_WARNING, "Userbox::renameUser(): userbox doesnt contain: %s\n", (const char *)oldaltnick.local8Bit());
+		kdebugmf(KDEBUG_WARNING, "userbox does not contain: %s\n", oldaltnick.local8Bit().data());
 	kdebugf2();
 }
 
@@ -606,7 +606,7 @@ bool UserBox::containsAltNick(const QString &altnick)
 	for (QStringList::iterator it = Users.begin(); it != Users.end(); ++it)
 		if ((*it).lower() == altnick.lower())
 			return true;
-	kdebugm(KDEBUG_INFO, "UserBox::containsAltNick(): userbox doesnt contain: %s\n", (const char *)altnick.lower().local8Bit());
+	kdebugmf(KDEBUG_INFO, "userbox does not contain: %s\n", altnick.lower().local8Bit().data());
 	return false;
 }
 
@@ -672,7 +672,7 @@ UserBox* UserBox::getActiveUserBox()
 			return box;
 		}
 	}
-	kdebugm(KDEBUG_PANIC, "return NULL!\n");
+	kdebugmf(KDEBUG_PANIC, "return NULL!\n");
 	return NULL;
 }
 
@@ -889,7 +889,7 @@ void UserBoxSlots::chooseColor(const char *name, const QColor &color)
 	else if (QString(name)=="userbox_font_color")
 		preview->setPaletteBackgroundColor(color);
 	else
-		kdebugm(KDEBUG_ERROR, "chooseColor: label '%s' not known\n", name);
+		kdebugmf(KDEBUG_ERROR, "label '%s' not known\n", name);
 	kdebugf2();
 }
 

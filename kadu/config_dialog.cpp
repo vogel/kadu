@@ -461,7 +461,7 @@ void ConfigDialog::changeTab(const QString& name)
 
 		tab=findNextTab(tab+1);
 	}
-	kdebugm(KDEBUG_FUNCTION_END, "ConfigDialog::changeTab(): active Tab=%s\n", (const char *)unicode2latin(acttab));
+	kdebugmf(KDEBUG_FUNCTION_END, "active Tab=%s\n", acttab.local8Bit().data());
 }
 
 void ConfigDialog::updateConfig(void) 
@@ -1166,7 +1166,7 @@ void ConfigDialog::removeTab(const QString& caption)
 		return;
 	}
 
-	kdebugm(KDEBUG_INFO, "removeTab: nrOfControls=%i\n", RegisteredControls[pos].nrOfControls);
+	kdebugmf(KDEBUG_INFO, "nrOfControls=%i\n", RegisteredControls[pos].nrOfControls);
 	
 	if(RegisteredControls[pos].nrOfControls==0)
 		RegisteredControls[pos].type=CONFIG_DELETED;

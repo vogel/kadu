@@ -527,7 +527,7 @@ bool ModulesManager::conflictsWithLoaded(const QString &module_name, const Modul
 bool ModulesManager::activateModule(const QString& module_name)
 {
 	Module m;
-	kdebugm(KDEBUG_FUNCTION_START, "ModulesManager::activateModule(%s)\n", module_name.local8Bit().data());
+	kdebugmf(KDEBUG_FUNCTION_START, "'%s'\n", module_name.local8Bit().data());
 	
 	if(moduleIsActive(module_name))
 	{
@@ -602,7 +602,7 @@ bool ModulesManager::activateModule(const QString& module_name)
 bool ModulesManager::deactivateModule(const QString& module_name, bool force)
 {
 	Module m=Modules[module_name];
-	kdebugm(KDEBUG_FUNCTION_START, "ModulesManager::deactivateModule(%s,%d) usage:%d\n", (const char *)module_name.local8Bit(), force, m.usage_counter);
+	kdebugmf(KDEBUG_FUNCTION_START, "name:'%s' force:%d usage:%d\n", module_name.local8Bit().data(), force, m.usage_counter);
 
 	if(m.usage_counter>0 && !force)
 	{

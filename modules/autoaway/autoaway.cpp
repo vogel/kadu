@@ -148,9 +148,8 @@ void AutoAwayTimer::checkIdleTime()
 	//spradzamy czy mamy siê roz³±czyæ
 	if (idleTime >= autoDisconnectTime && autoDisconnectEnabled)
 	{
-		kdebugm(KDEBUG_INFO, "AutoAwayTimer::checkIdleTime(): checking whether"
-		" to disconnect, beforeAutoDisconnect = %d (%s)\n",
-		currentStatus.index(), currentStatus.name().local8Bit().data());
+		kdebugmf(KDEBUG_INFO, "checking whether to disconnect, beforeAutoDisconnect = %d (%s)\n",
+			currentStatus.index(), currentStatus.name().local8Bit().data());
 		
 		if (!didChangeStatus)
 		{
@@ -165,12 +164,12 @@ void AutoAwayTimer::checkIdleTime()
 			gadu->status().setOffline(changeDescription(currentStatus.description()));
 			didChangeDescription = true;
 		}
-		kdebugm(KDEBUG_INFO, "AutoAwayTimer::checkIdleTime(): I am disconnected!\n");
+		kdebugmf(KDEBUG_INFO, "I am disconnected!\n");
 	}
 	//sprawdzamy czy mamy siê ukryæ
 	else if (idleTime >= autoInvisibleTime && autoInvisibleEnabled)
 	{	
-		kdebugm(KDEBUG_INFO, "AutoAwayTimer::checkIdleTime(): checking whether to go invisible, beforeAutoInvisible = %d\n", gadu->status().index());
+		kdebugmf(KDEBUG_INFO, "checking whether to go invisible, beforeAutoInvisible = %d\n", gadu->status().index());
 		if (currentStatus.isBusy() || currentStatus.isOnline())
 		{
 			if (!didChangeStatus)
@@ -186,13 +185,13 @@ void AutoAwayTimer::checkIdleTime()
 				gadu->status().setInvisible(changeDescription(currentStatus.description()));
 				didChangeDescription = true;
 			}
-			kdebugm(KDEBUG_INFO, "AutoAwayTimer::checkIdleTime(): I am invisible!\n");
+			kdebugmf(KDEBUG_INFO, "I am invisible!\n");
 		}
 	}
 	//sprawdzamy czy mamy staæ sie "zajêci"
 	else if (idleTime >= autoAwayTime && autoAwayEnabled)
 	{
-		kdebugm(KDEBUG_INFO, "AutoAwayTimer::checkIdleTime(): checking whether to go auto away, oldStatus = %d\n", oldStatus.index());
+		kdebugmf(KDEBUG_INFO, "checking whether to go auto away, oldStatus = %d\n", oldStatus.index());
 		
 		if (currentStatus.isOnline())
 		{
@@ -209,7 +208,7 @@ void AutoAwayTimer::checkIdleTime()
 				gadu->status().setBusy(changeDescription(currentStatus.description()));
 				didChangeDescription = true;
 			}
-			kdebugm(KDEBUG_INFO, "AutoAwayTimer::checkIdleTime(): I am away!\n");
+			kdebugmf(KDEBUG_INFO, "I am away!\n");
 		}
 	}
 	//je¶li zmieniali¶my status, a czas bezczynno¶ci jest odpowiednio ma³y, to przywracamy stary status
@@ -219,7 +218,7 @@ void AutoAwayTimer::checkIdleTime()
 				
 	 			&& didChangeStatus)
 	{
-		kdebugm(KDEBUG_INFO, "AutoAwayTimer::checkIdleTime(): auto away cancelled\n");
+		kdebugmf(KDEBUG_INFO, "auto away cancelled\n");
 
 		didChangeStatus = false;
 		didChangeDescription = false;

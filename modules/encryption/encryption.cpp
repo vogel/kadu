@@ -370,7 +370,7 @@ void SavePublicKey::yesClicked()
 	if (!(keyfile.open(IO_WriteOnly)))
 	{
 		QMessageBox::critical(this, tr("Error"), tr("Error writting the key"), tr("OK"), QString::null, 0);
-		kdebugm(KDEBUG_ERROR, "SavePublicKey::yesClicked(): Error opening key file %s\n", (const char *)keyfile_path.local8Bit());
+		kdebugmf(KDEBUG_ERROR, "Error opening key file %s\n", (const char *)keyfile_path.local8Bit());
 		return;
 	}
 	else

@@ -91,7 +91,7 @@ void ChatManager::unregisterChat(Chat* chat)
 			kdebugf2();
 			return;
 		}
-	kdebugm(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "void ChatManager::unregisterChat(): NOT found\n");
+	kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "NOT found\n");
 }
 
 void ChatManager::refreshTitles()
@@ -124,7 +124,7 @@ Chat* ChatManager::findChatByUins(UinsList uins)
 	for(unsigned int i=0; i<Chats.count(); ++i)
 		if(Chats[i]->uins().equals(uins))
 			return Chats[i];
-	kdebugm(KDEBUG_WARNING, "return NULL\n");
+	kdebugmf(KDEBUG_WARNING, "return NULL\n");
 	return NULL;
 }
 
@@ -278,7 +278,7 @@ void ChatManager::openPendingMsgs()
 	}
 	if (stop)
 	{
-		kdebugm(KDEBUG_INFO, "ChatManager::openPendingMsgs() stopped\n");
+		kdebugmf(KDEBUG_INFO, "stopped\n");
 		Chats[k]->scrollMessages(messages);
 		UserBox::all_refresh();
 	}
@@ -353,7 +353,7 @@ QVariant& ChatManager::getChatProperty(const UinsList &uins, const QString &name
 	info.uins=uins;
 	info.map[name]=QVariant();
 	addons.push_front(info);
-	kdebugm(KDEBUG_FUNCTION_END, "ChatManager::getChatProperty() end: %s NOT found\n", name.local8Bit().data());
+	kdebugmf(KDEBUG_FUNCTION_END, "end: %s NOT found\n", name.local8Bit().data());
 	return addons[0].map[name];
 //	return addons[uins][name];
 }
@@ -397,7 +397,7 @@ void CustomInput::keyPressEvent(QKeyEvent* e)
 	emit keyPressed(e, this);
 	if (autosend_enabled && ((HotKey::shortCut(e,"ShortCuts", "chat_newline")) || e->key()==Key_Enter)&& !(e->state() & ShiftButton))
 	{
-		kdebugm(KDEBUG_INFO, "CustomInput::keyPressEvent(): emit sendMessage()\n");
+		kdebugmf(KDEBUG_INFO, "emit sendMessage()\n");
 		emit sendMessage();
 	}
 	else
@@ -734,7 +734,7 @@ Chat::~Chat()
 	if (userbox)
 		delete userbox;
 
-	kdebugm(KDEBUG_FUNCTION_END, "Chat::~Chat: chat destroyed: index %d\n", index);
+	kdebugmf(KDEBUG_FUNCTION_END, "chat destroyed: index %d\n", index);
 }
 
 void Chat::registerButton(const QString& name,QObject* receiver,const QString& slot)
@@ -774,7 +774,7 @@ QPushButton* Chat::button(const QString& name)
 	if(Buttons.contains(name))
 		return Buttons[name];
 
-	kdebugm(KDEBUG_WARNING, "return NULL\n");
+	kdebugmf(KDEBUG_WARNING, " '%s' - return NULL\n", name.local8Bit().data());
 	return NULL;
 }
 
@@ -900,9 +900,9 @@ void Chat::setTitle()
 	kdebugf();
 	QString title;
 
+	kdebugmf(KDEBUG_FUNCTION_START, "Uins.size() = %d\n", Uins.size());
 	if (Uins.size() > 1)
 	{
-		kdebugm(KDEBUG_INFO, "Chat::setTitle(): Uins.size() > 1\n");
 		if (config_file.readEntry("Look","ConferencePrefix").isEmpty())
 			title = tr("Conference with ");
 		else
@@ -917,7 +917,6 @@ void Chat::setTitle()
 	}
 	else
 	{
-		kdebugm(KDEBUG_INFO, "Chat::setTitle()\n");
 		if (config_file.readEntry("Look","ChatContents").isEmpty())
 			title = parse(tr("Chat with ")+"%a (%s[: %d])",userlist.byUinValue(Uins[0]),false);
 		else
@@ -1156,7 +1155,7 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time)
 
 		entriestmp = history.getHistoryEntries(senders, from, end - from + 1, HISTORYMANAGER_ENTRY_CHATSEND
 			| HISTORYMANAGER_ENTRY_MSGSEND | HISTORYMANAGER_ENTRY_CHATRCV | HISTORYMANAGER_ENTRY_MSGRCV);
-		kdebugm(KDEBUG_INFO, "Chat::writeMessageFromHistory(): temp entries = %d\n", entriestmp.count());
+		kdebugmf(KDEBUG_INFO, "temp entries = %d\n", entriestmp.count());
 		if (time)
 		{
 			QValueList<HistoryEntry>::iterator it = entriestmp.begin();
@@ -1165,7 +1164,7 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time)
 				if ((*it).type == HISTORYMANAGER_ENTRY_CHATRCV
 					|| (*it).type == HISTORYMANAGER_ENTRY_MSGRCV)
 				{
-					kdebugm(KDEBUG_INFO, "Chat::writeMessageFromHistory(): %s %s\n",
+					kdebugmf(KDEBUG_INFO, "%s %s\n",
 						(const char *)date.toString("dd.MM.yyyy hh:mm:ss").local8Bit(),
 						(const char *)(*it).sdate.toString("dd.MM.yyyy hh:mm:ss").local8Bit());
 					if (date <= (*it).sdate)
@@ -1179,7 +1178,7 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time)
 		}
 		if (entriestmp.count())
 			entries = entriestmp + entries;
-		kdebugm(KDEBUG_INFO, "Chat::writeMessageFromHistory(): entries = %d\n", entries.count());
+		kdebugmf(KDEBUG_INFO, "entries = %d\n", entries.count());
 		end = from - 1;
 	}
 	if (entries.count() < config_file.readUnsignedNumEntry("History","ChatHistoryCitation"))
@@ -1282,7 +1281,7 @@ void Chat::messageBlockedSlot(int Seq, UinType uin)
 	kdebugf();
 	if (seq != Seq)
 		return;
-	kdebugm(KDEBUG_INFO, "Chat::messageBlockedSlot(): This is my ack.\n");
+	kdebugmf(KDEBUG_INFO, "This is my ack.\n");
 	MessageBox::wrn(tr("Your message has been blocked by server. Message has not been delivered."), true);
 	cancelMessage();
 	kdebugf2();
@@ -1293,7 +1292,7 @@ void Chat::messageBoxFullSlot(int Seq, UinType uin)
 	kdebugf();
 	if (seq != Seq)
 		return;
-	kdebugm(KDEBUG_INFO, "Chat::messageBoxFullSlot(): This is my ack.\n");
+	kdebugmf(KDEBUG_INFO, "This is my ack.\n");
 	MessageBox::wrn(tr("User's message box is full. Message has not been delivered."), true);
 	cancelMessage();
 	kdebugf2();
@@ -1304,7 +1303,7 @@ void Chat::messageNotDeliveredSlot(int Seq, UinType uin)
 	kdebugf();
 	if (seq != Seq)
 		return;
-	kdebugm(KDEBUG_INFO, "Chat::messageNotDeliveredSlot(): This is my ack.\n");
+	kdebugmf(KDEBUG_INFO, "This is my ack.\n");
 	MessageBox::wrn(tr("Message has not been delivered."), true);
 	cancelMessage();
 	kdebugf2();
@@ -1315,7 +1314,7 @@ void Chat::messageAcceptedSlot(int Seq, UinType uin)
 	kdebugf();
 	if (seq != Seq)
 		return;
-	kdebugm(KDEBUG_INFO, "Chat::messageAcceptedSlot(): This is my ack.\n");
+	kdebugmf(KDEBUG_INFO, "This is my ack.\n");
 	writeMyMessage();
 	addMyMessageToHistory();
 	seq = 0;
@@ -1360,7 +1359,7 @@ void Chat::sendMessage()
 	if (gadu->status().isOffline()) {
 		QMessageBox::critical(this, tr("Send message error"),
 			tr("Application encountered network error."));
-		kdebugm(KDEBUG_FUNCTION_END, "void Chat::sendMessage() end: not connected!\n");
+		kdebugmf(KDEBUG_FUNCTION_END, "not connected!\n");
 		return;
 	}
 
@@ -1375,14 +1374,14 @@ void Chat::sendMessage()
 			(void *)((char *)(myLastFormats) + sizeof(struct gg_msg_richtext)),0);
 	else
 		HtmlDocument::escapeText(myLastMessage);
-	kdebugm(KDEBUG_INFO, "Chat::sendMessage():\n%s\n", (const char *)unicode2latin(myLastMessage));
+	kdebugmf(KDEBUG_INFO, "\n%s\n", (const char *)unicode2latin(myLastMessage));
 	// zmieniamy unixowe \n na windowsowe \r\n
 	myLastMessage.replace(QRegExp("\r\n"), "\n");
 
 	if (mesg.length() >= 2000)
 	{
 		MessageBox::wrn(tr("Message too long (%1>=%2)").arg(mesg.length()).arg(2000));
-		kdebugm(KDEBUG_FUNCTION_END, "void Chat::sendMessage() end: message too long\n");
+		kdebugmf(KDEBUG_FUNCTION_END, "end: message too long\n");
 		return;
 	}
 
@@ -1392,14 +1391,14 @@ void Chat::sendMessage()
 	emit messageFiltering(Uins,msg,stop);
 	if(stop)
 	{
-		kdebugm(KDEBUG_FUNCTION_END, "void Chat::sendMessage() end: filter stopped processing\n");
+		kdebugmf(KDEBUG_FUNCTION_END, "end: filter stopped processing\n");
 		return;
 	}
 
 	if (mesg.length() >= 2000)
 	{
 		MessageBox::wrn(tr("Filtered message too long (%1>=%2)").arg(mesg.length()).arg(2000));
-		kdebugm(KDEBUG_FUNCTION_END, "void Chat::sendMessage() end: filtered message too long\n");
+		kdebugmf(KDEBUG_FUNCTION_END, "end: filtered message too long\n");
 		return;
 	}
 
@@ -1440,7 +1439,7 @@ void Chat::pruneWindow()
 
 	if (ChatMessages.size()<chatPruneLen)
 	{
-		kdebugm(KDEBUG_FUNCTION_END, "void Chat::pruneWindow() end: nothing to do\n");
+		kdebugmf(KDEBUG_FUNCTION_END, "end: nothing to do\n");
 		return;
 	}
 	QValueList<ChatMessage *>::iterator start=ChatMessages.begin();

@@ -72,7 +72,7 @@ void ExternalPlayerSlots::play(const QString &s, bool volCntrl, double vol, QStr
 	
 	if (t.isEmpty())
 	{
-		kdebugm(KDEBUG_FUNCTION_END, "ExternalPlayerSlots::play() end: player path is empty\n");
+		kdebugmf(KDEBUG_FUNCTION_END, "end: player path is empty\n");
 		return;
 	}
 	

@@ -335,7 +335,7 @@ QString printDateTime(const QDateTime &datetime)
 	dt2.setTime(QTime(0, 0));
 	tmp = datetime.toString("hh:mm:ss");
 	delta = dt2.secsTo(datetime);
-//	kdebugm(KDEBUG_INFO, "printDateTime(): %d\n", delta);
+//	kdebugmf(KDEBUG_INFO, "%d\n", delta);
 	if (delta < 0 || delta >= 3600 * 24)
 		tmp.append(datetime.toString(" (dd.MM.yyyy)"));
 	return tmp;
@@ -439,7 +439,7 @@ void openWebBrowser(const QString &link)
 	{
 		QMessageBox::warning(0, qApp->translate("@default", QT_TR_NOOP("WWW error")),
 			qApp->translate("@default", QT_TR_NOOP("Web browser was not specified. Visit the configuration section")));
-		kdebugm(KDEBUG_INFO, "openWebBrowser(): Web browser NOT specified.\n");
+		kdebugmf(KDEBUG_INFO, "Web browser NOT specified.\n");
 		return;
 	}
 	if (!webBrowser.contains("%1"))
@@ -452,7 +452,7 @@ void openWebBrowser(const QString &link)
 	args=toStringList("sh", "-c", webBrowser);
 
 	for (QStringList::iterator i = args.begin(); i != args.end(); ++i)
-		kdebugm(KDEBUG_INFO, "openWebBrowser(): %s\n", unicode2latin(*i).data());
+		kdebugmf(KDEBUG_INFO, "%s\n", (*i).local8Bit().data());
 	browser = new QProcess();
 	browser->setArguments(args);
 
@@ -516,7 +516,7 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, U
 				formats_length -= sizeof(gg_msg_richtext_format);
 				if (actformat->font & GG_FONT_IMAGE)
 				{
-					kdebugm(KDEBUG_INFO, "formatGGMessage(): I got image probably\n");
+					kdebugmf(KDEBUG_INFO, "I got image probably\n");
 					actimage = (struct gg_msg_richtext_image*)(cformats);
 					kdebugm(KDEBUG_INFO, QString("Image size: %1, crc32: %2\n").arg(actimage->size).arg(actimage->crc32).local8Bit().data());
 					if (sender!=0)
@@ -605,7 +605,7 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 	QValueList<struct richtext_formant> formants;
 	char *cformats, *tmpformats;
 
-//	kdebugm(KDEBUG_INFO, "unformatGGMessage():\n%s\n", msg.latin1());
+//	kdebugmf(KDEBUG_INFO, "\n%s\n", msg.latin1());
 	mesg = msg;
 //	mesg.replace(QRegExp("^<html><head><meta\\sname=\"qrichtext\"\\s*\\s/></head>"), "");
 	mesg.replace(QRegExp("^<html><head>.*<body\\s.*\">\\r\\n"), "");
@@ -628,7 +628,7 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 //	mesg.replace(QRegExp("&lt;"), "#");
 //	mesg.replace(QRegExp("&gt;"), "#");
 
-	kdebugm(KDEBUG_INFO, "unformatGGMessage():\n%s\n", mesg.local8Bit().data());
+	kdebugmf(KDEBUG_INFO, "\n%s\n", mesg.local8Bit().data());
 
 	inspan = -1;
 	pos = idx = formats_length = 0;
@@ -665,7 +665,7 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 			idx = span_idx;
 			if (idx != -1)
 			{
-				kdebugm(KDEBUG_INFO, "unformatGGMessage(): idx=%d\n", idx);
+				kdebugmf(KDEBUG_INFO, "idx=%d\n", idx);
 				inspan = idx;
 				if (pos && idx > pos)
 				{
@@ -721,7 +721,7 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 			idx = span_end_idx;
 			if (idx != -1)
 			{
-				kdebugm(KDEBUG_INFO, "unformatGGMessage(): idx=%d\n", idx);
+				kdebugmf(KDEBUG_INFO, "idx=%d\n", idx);
 				pos = idx;
 				mesg.remove(pos, 7);
 				inspan = -1;
@@ -762,7 +762,7 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 				tmpformats += sizeof(gg_msg_richtext_image);
 			}
 		}
-		kdebugm(KDEBUG_INFO, "unformatGGMessage(): formats_length=%d, tmpformats-cformats=%d\n",
+		kdebugmf(KDEBUG_INFO, "formats_length=%d, tmpformats-cformats=%d\n",
 			formats_length, tmpformats - cformats);
 		formats = (void *)cformats;
 	}
@@ -774,7 +774,7 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 //	mesg.replace(QRegExp("#"), "<");
 //	mesg.replace(QRegExp("#"), ">");
 
-	kdebugm(KDEBUG_INFO|KDEBUG_FUNCTION_END, "unformatGGMessage():\n%s\n", unicode2latin(mesg).data());
+	kdebugmf(KDEBUG_INFO|KDEBUG_FUNCTION_END, "\n%s\n", unicode2latin(mesg).data());
 	return mesg;
 }
 
@@ -786,7 +786,7 @@ struct ParseElem
 
 QString parse(const QString &s, const UserListElement &ule, bool escape)
 {
-	kdebugm(KDEBUG_DUMP, "parse(): %s escape=%i\n",(const char *)s.local8Bit(), escape);
+	kdebugmf(KDEBUG_DUMP, "%s escape=%i\n", s.local8Bit().data(), escape);
 	int index = 0, i, len = s.length();
 	QValueList<ParseElem> parseStack;
 
@@ -1204,7 +1204,7 @@ QPixmap IconsManager::loadIcon(const QString &name)
 	}
 	else
 	{
-		kdebugm(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "QPixmap IconsManager::loadIcon('%s'): end: error - pixmap cannot be loaded!\n", name.local8Bit().data());
+		kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "end: error - pixmap '%s' cannot be loaded!\n", name.local8Bit().data());
 		return p;
 	}
 }
@@ -2115,7 +2115,7 @@ void Themes::setTheme(const QString& theme)
 		}
 		emit themeChanged(ActualTheme);
 	}
-	kdebugm(KDEBUG_FUNCTION_END|KDEBUG_INFO, "Themes::setTheme() end: theme: %s\n", ActualTheme.local8Bit().data());
+	kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_INFO, "end: theme: %s\n", ActualTheme.local8Bit().data());
 }
 
 QString Themes::theme()
@@ -2419,7 +2419,7 @@ KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
 void KaduTextBrowser::maybeTip(const QPoint &c)
 {
 	if (!highlightedlink.isNull())
-		kdebugm(KDEBUG_INFO,"KaduTextBrowser::maybeTip(): link %s (X,Y)=%d,%d\n", (const char*)highlightedlink, c.x(), c.y());
+		kdebugmf(KDEBUG_INFO, "link %s (X,Y)=%d,%d\n", (const char*)highlightedlink, c.x(), c.y());
 	tip(QRect(c.x()-20,c.y()-5,40,10), highlightedlink);
 }
 
@@ -2439,7 +2439,7 @@ void KaduTextBrowser::setMargin(int width)
 
 void KaduTextBrowser::copyLinkLocation()
 {
-	kdebugm(KDEBUG_FUNCTION_START, "KaduTextBrowser::copyLinkLocation(): anchor = %s\n", anchor.local8Bit().data());
+	kdebugmf(KDEBUG_FUNCTION_START, "anchor = %s\n", anchor.local8Bit().data());
 	QApplication::clipboard()->setText(anchor);
 }
 
@@ -2465,7 +2465,7 @@ void KaduTextBrowser::drawContents(QPainter * p, int clipx, int clipy, int clipw
 			QPaintDevice: Cannot destroy paint device that is being painted
 		oraz zawieszenie Kadu (http://www.kadu.net/forum/viewtopic.php?t=2486)
 	*/
-//	kdebugm(KDEBUG_INFO, "KaduTextBrowser::drawContents(): level: %d\n", level);
+//	kdebugmf(KDEBUG_INFO, "level: %d\n", level);
 	++level;
 	if (level==1)
 	{

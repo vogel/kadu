@@ -64,7 +64,7 @@ void PendingMsgs::writeToFile()
 	QFile f(path);
 	if(!f.open(IO_WriteOnly))
 	{
-		kdebugm(KDEBUG_ERROR, "PendingMsgs::saveToFile(): Cannot open file kadu.msgs\n");
+		kdebugmf(KDEBUG_ERROR, "Cannot open file kadu.msgs\n");
 		return;
 	}
 	// Najpierw zapisujemy ilosc wiadomosci
@@ -99,25 +99,29 @@ bool PendingMsgs::loadFromFile()
 	QString path = ggPath("kadu.msgs");
 	QFile f(path);
 	if (!f.open(IO_ReadOnly)) {
-		kdebugm(KDEBUG_WARNING, "PendingMsgs::loadFromFile(): Cannot open file kadu.msgs\n");
+		kdebugmf(KDEBUG_WARNING, "Cannot open file kadu.msgs\n");
 		return false;
-		}
+	}
+	
 	// Najpierw wczytujemy ilosc wiadomosci
 	int msgs_size;
 	if (f.readBlock((char*)&msgs_size,sizeof(int)) <= 0) {
-		kdebugm(KDEBUG_ERROR, "PendingMsgs::loadFromFile(): kadu.msgs is corrupted\n");
+		kdebugmf(KDEBUG_ERROR, "kadu.msgs is corrupted\n");
 		return false;
-		}
+	}
+	
 	// Teraz w petli dla kazdej wiadomosci
 	for (int i = 0; i < msgs_size; ++i)
 	{
 		Element e;
+		
 		// wczytujemy uiny - najpierw ilosc
 		int uins_size;
 		if (f.readBlock((char*)&uins_size, sizeof(int)) <= 0) {
 			--msgs_size;
 			return false;
 		}
+		
 		// teraz dane
 		for (int j = 0; j < uins_size; ++j)
 		{
@@ -128,12 +132,14 @@ bool PendingMsgs::loadFromFile()
 			}
 			e.uins.append(uin);
 		}
+		
 		// nastepnie wiadomosc - dlugosc
 		int msg_size;
 		if (f.readBlock((char*)&msg_size, sizeof(int)) <= 0) {
 			--msgs_size;
 			return false;
 		}
+		
 		// i tresc
 		char *buf = new char[msg_size + 1];
 		if (f.readBlock(buf, msg_size) <= 0) {
@@ -144,21 +150,25 @@ bool PendingMsgs::loadFromFile()
 		buf[msg_size] = 0;
 		e.msg = QTextCodec::codecForName("ISO 8859-2")->toUnicode(buf);
 		delete[] buf;
+		
 		// na koniec jeszcze klase wiadomosci
 		if (f.readBlock((char*)&e.msgclass, sizeof(int)) <= 0) {
 			--msgs_size;
 			delete [] buf;
 			return false;
 		}
+		
 		// i czas
 		if (f.readBlock((char*)&e.time, sizeof(time_t)) <= 0) {
 			--msgs_size;
 			delete [] buf;
 			return false;
 		}
+		
 		// dodajemy do listy
 		msgs.append(e);
 	}
+	
 	// I zamykamy plik
 	f.close();
 	return true;

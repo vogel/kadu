@@ -22,7 +22,7 @@ ConfigFile::ConfigFile(const QString &filename) : filename(filename),activeGroup
 
 void ConfigFile::read()
 {
-	kdebugm(KDEBUG_FUNCTION_START, "ConfigFile::read(): %s\n", (const char *)filename.local8Bit());
+	kdebugmf(KDEBUG_FUNCTION_START, "%s\n", filename.local8Bit().data());
 	QFile file(filename);
 	QString line;
 

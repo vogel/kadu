@@ -24,14 +24,14 @@ DnsHandler::DnsHandler(UserListElement &ule) : Ule(ule)
 	kdebugf();
 
 	if (ule.ip() == QHostAddress())
-		kdebugm(KDEBUG_WARNING, "DnsHandler::DnsHandler(): NULL ip address!\n");
+		kdebugmf(KDEBUG_WARNING, "NULL ip address!\n");
 
 	connect(&DnsResolver, SIGNAL(resultsReady()), this, SLOT(resultsReady()));
 	DnsResolver.setRecordType(QDns::Ptr);
 	DnsResolver.setLabel(Ule.ip());
 	++counter;
 
-	kdebugm(KDEBUG_FUNCTION_END, "DnsHandler::DnsHandler(): counter = %d\n", counter);
+	kdebugmf(KDEBUG_FUNCTION_END, "counter = %d\n", counter);
 }
 
 DnsHandler::~DnsHandler()
@@ -111,9 +111,7 @@ QString UserListElement::group() const
 void UserListElement::setGroup(const QString& group)
 {
 	//gdzie¶ tu siê sypie :|
-	//ale jak na z³o¶æ po dodaniu debuga nie udaje siê powtórzyæ segfaulta
-	kdebugf();
-	kdebugm(KDEBUG_INFO, "group: '%s' Parent:%p\n", group.local8Bit().data(), Parent);
+	kdebugmf(KDEBUG_INFO, "group: '%s' Parent:%p\n", group.local8Bit().data(), Parent);
 	UserListElement old = *this;
 	Group = (group == QT_TR_NOOP("All")) ? "" : group;
 	if (Parent)
@@ -403,7 +401,6 @@ void UserListElement::operator = (const UserListElement &copyMe)
 
 	kdebugm(KDEBUG_DUMP, "setting status (%p <- %p)\n", Stat, copyMe.Stat);
 	Stat->setStatus(*(copyMe.Stat));
-	kdebugm(KDEBUG_DUMP, "done\n");
 
 	Group = copyMe.Group;
 	FirstName = copyMe.FirstName;
@@ -452,12 +449,12 @@ UserList::~UserList()
 	*/
 }
 
-UserListElement& UserList::byUin(UinType  uin)
+UserListElement& UserList::byUin(UinType uin)
 {
 	for(iterator i=begin(); i!=end(); ++i)
 		if((*i).uin() == uin)
 			return (*i);
-	kdebugm(KDEBUG_PANIC, "UserList::byUin(): Panic!\n");
+	kdebugmf(KDEBUG_PANIC, "Panic! uin:%d not found\n", uin);
 	return *((UserListElement*)NULL);
 }
 
@@ -466,7 +463,7 @@ UserListElement& UserList::byNick(const QString& nickname)
 	for (iterator i = begin(); i != end(); ++i)
 		if ((*i).nickName().lower() == nickname.lower())
 			return (*i);
-	kdebugm(KDEBUG_PANIC, "UserList::byNick(): Panic! %s not exists\n",
+	kdebugmf(KDEBUG_PANIC, "Panic! %s not exists\n",
 		nickname.lower().local8Bit().data());
 	return *((UserListElement*)NULL);
 }
@@ -476,7 +473,7 @@ UserListElement& UserList::byAltNick(const QString& altnick)
 	QString altnick_norm = altnick.lower();
 	if(contains(altnick_norm))
 		return (*this)[altnick_norm];
-	kdebugm(KDEBUG_PANIC, "UserList::byAltNick(): Panic! %s not exists\n",
+	kdebugmf(KDEBUG_PANIC, "Panic! %s not exists\n",
 		altnick_norm.local8Bit().data());
 	return *((UserListElement*)NULL);
 }
@@ -498,7 +495,7 @@ bool UserList::containsUin(UinType uin) const
 	for (const_iterator i = begin(); i != end(); ++i)
 		if ((*i).uin() == uin)
 			return true;
-	kdebugm(KDEBUG_INFO, "UserList::containsUin(): userlist doesn't contain %d\n", uin);
+	kdebugmf(KDEBUG_INFO, "userlist doesn't contain %d\n", uin);
 	return false;
 }
 
@@ -507,7 +504,7 @@ bool UserList::containsAltNick(const QString &altnick) const
 	QString altnick_norm = altnick.lower();
 	if(contains(altnick_norm))
 		return true;
-	kdebugm(KDEBUG_INFO, "UserList::containsAltNick(): userlist doesn't contain %s\n",
+	kdebugmf(KDEBUG_INFO, "userlist doesn't contain %s\n",
 		altnick_norm.local8Bit().data());
 	return false;
 }
@@ -595,13 +592,13 @@ bool UserList::writeToFile(QString filename)
 
 	faname = ggPath("userattribs");
 
-	kdebugm(KDEBUG_INFO, "UserList::writeToFile(): %s\n", filename.local8Bit().data());
+	kdebugmf(KDEBUG_INFO, "%s\n", filename.local8Bit().data());
 
 	QFile f(filename);
 
 	if (!f.open(IO_WriteOnly))
 	{
-		kdebugm(KDEBUG_ERROR, "UserList::writeToFile(): Error opening file :(\n");
+		kdebugmf(KDEBUG_ERROR, "Error opening file :(\n");
 		return false;
 	}
 
@@ -643,7 +640,7 @@ bool UserList::writeToFile(QString filename)
 
 	if (!fa.open(IO_WriteOnly))
 	{
-		kdebugm(KDEBUG_ERROR, "UserList::writeToFile(): Error opening file :(\n");
+		kdebugmf(KDEBUG_ERROR, "Error opening file :(\n");
 		return false;
 	}
 
@@ -684,11 +681,11 @@ bool UserList::readFromFile()
 	bool ok;
 
 	path = ggPath("userattribs");
-	kdebugm(KDEBUG_INFO, "UserList::readFromFile(): Opening userattribs file: %s\n",
+	kdebugmf(KDEBUG_INFO, "Opening userattribs file: %s\n",
 		path.local8Bit().data());
 	QFile fa(path);
 	if (!fa.open(IO_ReadOnly))
-		kdebugm(KDEBUG_ERROR, "UserList::readFromFile(): Error opening userattribs file\n");
+		kdebugmf(KDEBUG_ERROR, "Error opening userattribs file\n");
 	else
 	{
 		QTextStream s(&fa);
@@ -703,16 +700,16 @@ bool UserList::readFromFile()
 	}
 
 	path = ggPath("userlist");
-	kdebugm(KDEBUG_INFO, "UserList::readFromFile(): Opening userlist file: %s\n",
+	kdebugmf(KDEBUG_INFO, "Opening userlist file: %s\n",
 		path.local8Bit().data());
 	QFile f(path);
 	if (!f.open(IO_ReadOnly))
 	{
-		kdebugm(KDEBUG_ERROR, "UserList::readFromFile(): Error opening userlist file");
+		kdebugmf(KDEBUG_ERROR, "Error opening userlist file");
 		return false;
 	}
 
-	kdebugm(KDEBUG_INFO, "UserList::readFromFile(): File opened successfuly\n");
+	kdebugmf(KDEBUG_INFO, "File opened successfuly\n");
 
 	clear();
 
@@ -748,7 +745,7 @@ bool UserList::readFromFile()
 		else
 		{
 			userattribs = QStringList::split(";", line, true);
-			kdebugm(KDEBUG_INFO, "UserList::readFromFile(): userattribs = %d\n", userattribs.count());
+			kdebugmf(KDEBUG_INFO, "userattribs = %d\n", userattribs.count());
 			if (userattribs.count() >= 12)
 				groups = userattribs.count() - 11;
 			else

@@ -574,7 +574,7 @@ SmsGateway* SmsSlots::getGateway(QString& number)
 		}
 	}
 
-	kdebugm(KDEBUG_INFO, "SmsSlots::getGateway(): NULL\n");
+	kdebugmf(KDEBUG_INFO, "return NULL\n");
 	return NULL;
 }
 

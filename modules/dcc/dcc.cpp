@@ -52,7 +52,7 @@ DccSocket::DccSocket(struct gg_dcc* dcc_sock)
 	State = DCC_SOCKET_TRANSFERRING;
 	in_watchDcc = false;
 	++Count;
-	kdebugm(KDEBUG_FUNCTION_END|KDEBUG_INFO, "DccSocket::DccSocket(): dcc sockets count = %d\n", Count);
+	kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_INFO, "dcc sockets count = %d\n", Count);
 }
 
 DccSocket::~DccSocket()
@@ -85,7 +85,7 @@ DccSocket::~DccSocket()
 		dccsock = NULL;
 		--Count;
 	}
-	kdebugm(KDEBUG_INFO|KDEBUG_FUNCTION_END, "DccSocket::~DccSocket(): dcc sockets count = %d\n", Count);
+	kdebugmf(KDEBUG_INFO|KDEBUG_FUNCTION_END, "end: dcc sockets count = %d\n", Count);
 }
 
 void DccSocket::initializeNotifiers()
@@ -123,7 +123,7 @@ void DccSocket::watchDcc(int /*check*/)
 
 	if (!(dccevent = gadu->dccWatchFd(dccsock)))
 	{
-		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "DccSocket::watchDcc(): Connection broken unexpectedly!\n");
+		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Connection broken unexpectedly!\n");
 		connectionBroken();
 		return;
 	}
@@ -131,7 +131,7 @@ void DccSocket::watchDcc(int /*check*/)
 	switch (dccevent->type)
 	{
 		case GG_EVENT_DCC_CLIENT_ACCEPT:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "DccSocket::watchDcc():  GG_EVENT_DCC_CLIENT_ACCEPT! uin:%d peer_uin:%d\n",
+			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_CLIENT_ACCEPT! uin:%d peer_uin:%d\n",
 				dccsock->uin, dccsock->peer_uin);
 			uins.append(dccsock->peer_uin);
 			if (dccsock->uin != (UinType)config_file.readNumEntry("General", "UIN")
@@ -142,26 +142,26 @@ void DccSocket::watchDcc(int /*check*/)
 			noneEvent();
 			break;
 		case GG_EVENT_DCC_CALLBACK:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "DccSocket::watchDcc():  GG_EVENT_DCC_CALLBACK! uin:%d peer_uin:%d\n",
+			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_CALLBACK! uin:%d peer_uin:%d\n",
 				dccsock->uin, dccsock->peer_uin);
 			callbackReceived();
 			break;
 		case GG_EVENT_DCC_NEED_FILE_ACK:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "DccSocket::watchDcc():  GG_EVENT_DCC_NEED_FILE_ACK! uin:%d peer_uin:%d\n",
+			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_NEED_FILE_ACK! uin:%d peer_uin:%d\n",
 				dccsock->uin, dccsock->peer_uin);
 			needFileAccept();
 			break;
 		case GG_EVENT_DCC_NEED_FILE_INFO:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "DccSocket::watchDcc():  GG_EVENT_DCC_NEED_FILE_INFO! uin:%d peer_uin:%d\n",
+			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_NEED_FILE_INFO! uin:%d peer_uin:%d\n",
 				dccsock->uin, dccsock->peer_uin);
 			needFileInfo();
 			break;
 		case GG_EVENT_DCC_ERROR:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "DccSocket::watchDcc(): GG_EVENT_DCC_ERROR\n");
+			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_ERROR\n");
 			dccError();
 			return;
 		case GG_EVENT_DCC_DONE:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "DccSocket::watchDcc(): GG_EVENT_DCC_DONE\n");
+			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_DONE\n");
 			dccDone();
 			return;
 		default:
@@ -293,7 +293,7 @@ DccFileDialog::~DccFileDialog()
 	delete time;
 	if (!dccFinished)
 	{
-		kdebugm(KDEBUG_WARNING, "DccFileDialog::closeEvent(): DCC transfer has not finished yet!\n");
+		kdebugmf(KDEBUG_WARNING, "DCC transfer has not finished yet!\n");
 		delete dccsocket;
 	}
 	kdebugf2();
@@ -443,7 +443,7 @@ void FileDccSocket::needFileInfo()
 	QString f = selectFile();
 	if (f == QString::null)
 	{
-		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "DccSocket::watchDcc(): Abort transfer\n");
+		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Abort transfer\n");
 		setState(DCC_SOCKET_TRANSFER_DISCARDED);
 		return;
 	}
@@ -473,14 +473,14 @@ void FileDccSocket::needFileAccept()
 		QString::null, 0, 1))
 	{
 		case 0: // Yes?
-			kdebugm(KDEBUG_INFO, "DccSocket::askAccept(): accepted\n");
+			kdebugmf(KDEBUG_INFO, "accepted\n");
 			f = QFileDialog::getSaveFileName(
 				config_file.readEntry("Network", "LastDownloadDirectory", "~/")
 					+(char *)dccsock->file_info.filename,
 				QString::null, 0, tr("save file"), tr("Select file location"));
 			if (f.isEmpty())
 			{
-				kdebugm(KDEBUG_INFO, "DccSocket::askAccept(): discarded\n");
+				kdebugmf(KDEBUG_INFO, "discarded\n");
 				setState(DCC_SOCKET_TRANSFER_DISCARDED);
 				return;
 			}
@@ -495,7 +495,7 @@ void FileDccSocket::needFileAccept()
 					tr("Cancel"), 0, 2))
 				{
 					case 0:
-						kdebugm(KDEBUG_INFO, "DccSocket::askAccept(): truncating file %s\n", f.latin1());
+						kdebugmf(KDEBUG_INFO, "truncating file %s\n", f.latin1());
 
 						if ((dccsock->file_fd = open(f.latin1(), O_WRONLY | O_CREAT | O_TRUNC, 0600)) == -1)
 						{
@@ -507,7 +507,7 @@ void FileDccSocket::needFileAccept()
 						dccsock->offset = 0;
 						break;
 					case 1:
-						kdebugm(KDEBUG_INFO, "DccSocket::askAccept(): appending to file %s\n", f.latin1());
+						kdebugmf(KDEBUG_INFO, "appending to file %s\n", f.latin1());
 
 						if ((dccsock->file_fd = open(f.latin1(), O_WRONLY | O_APPEND, 0600)) == -1)
 						{
@@ -519,7 +519,7 @@ void FileDccSocket::needFileAccept()
 						dccsock->offset = fi.size();
 						break;
 					case 2:
-						kdebugm(KDEBUG_INFO, "DccSocket::askAccept(): discarded\n");
+						kdebugmf(KDEBUG_INFO, "discarded\n");
 						setState(DCC_SOCKET_TRANSFER_DISCARDED);
 						kdebugf2();
 						return;
@@ -527,7 +527,7 @@ void FileDccSocket::needFileAccept()
 			}
 			else
 			{
-				kdebugm(KDEBUG_INFO, "DccSocket::askAccept(): creating file %s\n", f.latin1());
+				kdebugmf(KDEBUG_INFO, "creating file %s\n", f.latin1());
 
 				if ((dccsock->file_fd = open(f.latin1(), O_WRONLY | O_CREAT, 0600)) == -1)
 				{
@@ -543,7 +543,7 @@ void FileDccSocket::needFileAccept()
 			filedialog->printFileInfo(dccsock);
 			break;
 		case 1:
-			kdebugm(KDEBUG_INFO, "DccSocket::askAccept(): discarded\n");
+			kdebugmf(KDEBUG_INFO, "discarded\n");
 			setState(DCC_SOCKET_TRANSFER_DISCARDED);
 			break;
 	}
@@ -670,7 +670,7 @@ void DccManager::watchDcc()
 	struct gg_event* dcc_e;
 	if (!(dcc_e = gadu->dccWatchFd(DccSock)))
 	{
-		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "Kadu::watchDcc(): Connection broken unexpectedly!\n");
+		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Connection broken unexpectedly!\n");
 		config_file.writeEntry("Network", "AllowDCC", false);
 		delete DccSnr;
 		DccSnr = NULL;
@@ -684,7 +684,7 @@ void DccManager::watchDcc()
 		case GG_EVENT_NONE:
 			break;
 		case GG_EVENT_DCC_ERROR:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "Kadu::watchDcc(): GG_EVENT_DCC_ERROR\n");
+			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_ERROR\n");
 			break;
 		case GG_EVENT_DCC_NEW:
 			if (DccSocket::count() < 8)
@@ -692,7 +692,7 @@ void DccManager::watchDcc()
 				FileDccSocket* dcc = new FileDccSocket(dcc_e->event.dcc_new);
 				connect(dcc, SIGNAL(dccFinished(DccSocket *)), this, SLOT(dccFinished(DccSocket *)));
 				dcc->initializeNotifiers();
-				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "Kadu::watchDcc(): GG_EVENT_DCC_NEW: spawning object\n");
+				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_NEW: spawning object\n");
 			}
 			else
 			{
@@ -766,7 +766,7 @@ void DccManager::setupDcc()
 
 	if (!DccSock)
 	{
-		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::setupDcc(): Couldn't bind DCC socket.\n");
+		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Couldn't bind DCC socket.\n");
 		gadu->dccFree(DccSock);
 
 		QMessageBox::warning(kadu, "",
@@ -777,7 +777,7 @@ void DccManager::setupDcc()
 
 	gadu->setDccIpAndPort(htonl(dccIp.ip4Addr()), DccSock->port);
 
-	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol:setupDcc() DCC_IP=%s DCC_PORT=%d\n", dccIp.toString().latin1(), DccSock->port);
+	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "DCC_IP=%s DCC_PORT=%d\n", dccIp.toString().latin1(), DccSock->port);
 
 	DccSnr = new QSocketNotifier(DccSock->fd, QSocketNotifier::Read, kadu);
 	connect(DccSnr, SIGNAL(activated(int)), this, SLOT(dccReceived()));

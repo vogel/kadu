@@ -42,7 +42,7 @@ Kadu *kadu;
 #endif
 void kadu_signal_handler(int s)
 {
-	kdebugm(KDEBUG_WARNING, "kadu_signal_handler: %d\n", s);
+	kdebugmf(KDEBUG_WARNING, "%d\n", s);
 	
 	if (s==SIGSEGV)
 	{

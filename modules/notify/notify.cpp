@@ -175,14 +175,13 @@ void Notify::userStatusChanged(const UserListElement &ule, const UserStatus &old
 
 	if (onConnection && config_file.readBoolEntry("Notify", "NotifyIgnoreOnConnection"))
 	{
-		kdebugm(KDEBUG_FUNCTION_END, "Notify::userStatusChanged() end: ignore on connection\n");
+		kdebugmf(KDEBUG_FUNCTION_END, "end: ignore on connection\n");
 		return;
 	}
 
 	if (!ule.notify() && !config_file.readBoolEntry("Notify","NotifyAboutAll"))
 	{
-		kdebugm(KDEBUG_FUNCTION_END,
-			"Notify::userStatusChanged() end: not notifying user AND not notifying all users\n");
+		kdebugmf(KDEBUG_FUNCTION_END, "end: not notifying user AND not notifying all users\n");
 		return;
 	}
 

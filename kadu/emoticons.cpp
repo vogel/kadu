@@ -196,7 +196,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc,const QColor& bgcolor)
 
 	if(getSubDirs(dataPath("kadu/themes/emoticons")).size()==0)
 	{
-		kdebugm(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "EmoticonsManager::expandEmoticons() end: NO EMOTICONS!\n");
+		kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "end: NO EMOTICONS!\n");
 		return;
 	}
 	

@@ -37,9 +37,12 @@
 	_kdebug_with_mask(KDEBUG_ALL,__FILE__,__LINE__,format,##args)
 #define kdebugm(mask,format,args...) \
 	_kdebug_with_mask(mask,__FILE__,__LINE__,format,##args)
+#define kdebugmf(mask,format,args...) \
+	_kdebug_with_mask(mask,__FILE__,__LINE__,"%s: " format,__PRETTY_FUNCTION__,##args)
 #else
 #define kdebug(format,args...)
 #define kdebugm(mask,format,args...)
+#define kdebugmf(mask,format,args...)
 #endif
 
 

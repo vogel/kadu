@@ -165,12 +165,12 @@ void SoundManager::newChat(const UinsList &/*senders*/, const QString& /*msg*/, 
 	kdebugf();
 	if (isMuted())
 	{
-		kdebugm(KDEBUG_FUNCTION_END, "SoundManager::newChat() end: muted\n");
+		kdebugmf(KDEBUG_FUNCTION_END, "end: muted\n");
 		return;
 	}
 	if (timeAfterLastSound()<500)
 	{
-		kdebugm(KDEBUG_FUNCTION_END, "SoundManager::newChat() end: too often, exiting\n");
+		kdebugmf(KDEBUG_FUNCTION_END, "end: too often, exiting\n");
 		return;
 	}
 
@@ -193,12 +193,12 @@ void SoundManager::newMessage(const UinsList &senders, const QString& /*msg*/, t
 	kdebugf();
 	if (isMuted())
 	{
-		kdebugm(KDEBUG_FUNCTION_END, "SoundManager::newMessage() end: muted\n");
+		kdebugmf(KDEBUG_FUNCTION_END, "end: muted\n");
 		return;
 	}
 	if (timeAfterLastSound()<500)
 	{
-		kdebugm(KDEBUG_FUNCTION_END, "SoundManager::newMessage() end: too often, exiting\n");
+		kdebugmf(KDEBUG_FUNCTION_END, "end: too often, exiting\n");
 		return;
 	}
 
@@ -223,12 +223,12 @@ void SoundManager::connectionError(const QString &/*message*/)
 	kdebugf();
 	if (isMuted())
 	{
-		kdebugm(KDEBUG_FUNCTION_END, "SoundManager::connectionError() end: muted\n");
+		kdebugmf(KDEBUG_FUNCTION_END, "end: muted\n");
 		return;
 	}
 	if (timeAfterLastSound()<500)
 	{
-		kdebugm(KDEBUG_FUNCTION_END, "SoundManager::connectionError() end: too often, exiting\n");
+		kdebugmf(KDEBUG_FUNCTION_END, "end: too often, exiting\n");
 		return;
 	}
 
@@ -248,12 +248,12 @@ void SoundManager::userChangedStatusToAvailable(const UserListElement &ule)
 	kdebugf();
 	if (isMuted())
 	{
-		kdebugm(KDEBUG_FUNCTION_END, "SoundManager::userChangedStatusToAvailable() end: muted\n");
+		kdebugmf(KDEBUG_FUNCTION_END, "end: muted\n");
 		return;
 	}
 	if (timeAfterLastSound()<500)
 	{
-		kdebugm(KDEBUG_FUNCTION_END, "SoundManager::userChangedStatusToAvailable() end: too often, exiting\n");
+		kdebugmf(KDEBUG_FUNCTION_END, "end: too often, exiting\n");
 		return;
 	}
 
@@ -273,12 +273,12 @@ void SoundManager::userChangedStatusToBusy(const UserListElement &ule)
 	kdebugf();
 	if (isMuted())
 	{
-		kdebugm(KDEBUG_FUNCTION_END, "SoundManager::userChangedStatusToBusy() end: muted\n");
+		kdebugmf(KDEBUG_FUNCTION_END, "end: muted\n");
 		return;
 	}
 	if (timeAfterLastSound()<500)
 	{
-		kdebugm(KDEBUG_FUNCTION_END, "SoundManager::userChangedStatusToBusy() end: too often, exiting\n");
+		kdebugmf(KDEBUG_FUNCTION_END, "end: too often, exiting\n");
 		return;
 	}
 
@@ -298,12 +298,12 @@ void SoundManager::userChangedStatusToNotAvailable(const UserListElement &ule)
 	kdebugf();
 	if (isMuted())
 	{
-		kdebugm(KDEBUG_FUNCTION_END, "SoundManager::userChangedStatusToNotAvailable() end: muted\n");
+		kdebugmf(KDEBUG_FUNCTION_END, "end: muted\n");
 		return;
 	}
 	if (timeAfterLastSound()<500)
 	{
-		kdebugm(KDEBUG_FUNCTION_END, "SoundManager::userChangedStatusToNotAvailable() end: too often, exiting\n");
+		kdebugmf(KDEBUG_FUNCTION_END, "end: too often, exiting\n");
 		return;
 	}
 	
@@ -332,12 +332,12 @@ void SoundManager::message(const QString &, const QString &message, const QMap<Q
 	
 	if (isMuted() && !force)
 	{
-		kdebugm(KDEBUG_FUNCTION_END, "SoundManager::message() end: muted\n");
+		kdebugmf(KDEBUG_FUNCTION_END, "end: muted\n");
 		return;
 	}
 	if (timeAfterLastSound()<500)
 	{
-		kdebugm(KDEBUG_FUNCTION_END, "SoundManager::message() end: too often, exiting\n");
+		kdebugmf(KDEBUG_FUNCTION_END, "end: too often, exiting\n");
 		return;
 	}
 
@@ -362,7 +362,7 @@ void SoundManager::play(const QString &path, bool force)
 	
 	if (isMuted() && !force)
 	{
-		kdebugm(KDEBUG_FUNCTION_END, "SoundManager::play() end: muted\n");
+		kdebugmf(KDEBUG_FUNCTION_END, "end: muted\n");
 		return;
 	}
 	if (ConfigDialog::dialogOpened())

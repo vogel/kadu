@@ -34,10 +34,10 @@ void VoiceArts::setup() {
 	playstream = arts_play_stream(8000, 16, 1, "kaduplayvoice");
 	arts_stream_set(playstream, ARTS_P_BLOCKING, 0);
 	arts_stream_set(playstream, ARTS_P_BUFFER_SIZE, 1600);
-	kdebugm(KDEBUG_INFO, "VoiceArts::setup(): playstream=%d\n", playstream);
+	kdebugmf(KDEBUG_INFO, "playstream=%d\n", playstream);
 	recstream = arts_record_stream(8000, 16, 1, "kadurecordvoice");
 	arts_stream_set(recstream, ARTS_P_BLOCKING, 0);
-	kdebugm(KDEBUG_INFO, "VoiceArts::setup(): recstream=%d\n", recstream);
+	kdebugmf(KDEBUG_INFO, "recstream=%d\n", recstream);
 	artsmutex.unlock();
 	kdebugf2();
 }

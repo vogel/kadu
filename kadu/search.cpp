@@ -352,7 +352,7 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 
 	if (!searchResults.count())
 	{
-		kdebugm(KDEBUG_INFO, "SearchDialog::newSearchResults(): No results. Exit.\n");
+		kdebugmf(KDEBUG_INFO, "No results. Exit.\n");
 		QMessageBox::information(this, tr("No results"),
 			tr("There were no results of your search"));
 //		searchhidden = false;

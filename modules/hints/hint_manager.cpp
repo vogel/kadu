@@ -248,7 +248,7 @@ void HintManager::setHint(void)
 
 void HintManager::deleteHint(unsigned int id)
 {
-	kdebugm(KDEBUG_FUNCTION_START, "HintManager::deleteHint() id=%d\n", id);
+	kdebugmf(KDEBUG_FUNCTION_START, "id=%d\n", id);
 #if QT_VERSION >= 0x030100
 	grid->removeItem(hints.at(id));
 #endif
@@ -276,7 +276,7 @@ void HintManager::oneSecond(void)
 
 void HintManager::leftButtonSlot(unsigned int id)
 {
-	kdebugm(KDEBUG_FUNCTION_START, "HintManager::leftButtonSlot() %d\n", id);
+	kdebugmf(KDEBUG_FUNCTION_START, "%d\n", id);
 	switch(config_file.readNumEntry("Hints", "LeftButton"))
 	{
 		case 1:
@@ -294,7 +294,7 @@ void HintManager::leftButtonSlot(unsigned int id)
 
 void HintManager::rightButtonSlot(unsigned int id)
 {
-	kdebugm(KDEBUG_FUNCTION_START, "HintManager::rightButtonSlot() %d\n", id);
+	kdebugmf(KDEBUG_FUNCTION_START, "%d\n", id);
 	switch(config_file.readNumEntry("Hints", "RightButton"))
 	{
 		case 1:
@@ -312,7 +312,7 @@ void HintManager::rightButtonSlot(unsigned int id)
 
 void HintManager::midButtonSlot(unsigned int id)
 {
-	kdebugm(KDEBUG_FUNCTION_START, "HintManager::midButtonSlot() %d\n", id);
+	kdebugmf(KDEBUG_FUNCTION_START, "%d\n", id);
 	switch(config_file.readNumEntry("Hints", "MiddleButton"))
 	{
 		case 1:
@@ -446,7 +446,7 @@ void HintManager::newMessage(const UinsList &senders, const QString& msg, time_t
 	Chat* chat=chat_manager->findChatByUins(senders);
 	if (chat==NULL)
 	{
-		kdebugm(KDEBUG_ERROR|KDEBUG_FUNCTION_END, "void HintManager::newMessage(...) end: chat==NULL!\n");
+		kdebugmf(KDEBUG_ERROR|KDEBUG_FUNCTION_END, "end: chat==NULL!\n");
 		return;
 	}
 
