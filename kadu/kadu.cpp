@@ -745,7 +745,7 @@ void Kadu::prepareDcc(void) {
 	if (!dccsock) {
 		perror("DCC");
 		gg_dcc_free(dccsock);
-		QMessageBox::warning(kadu, "", i18n("Couldn't create DCC socket.\nDirect connections disabled.") );		
+		QMessageBox::warning(kadu, "", i18n("Couldn't create DCC socket.\nDirect connections disabled."));
 		return;
 		}
 
@@ -1123,7 +1123,7 @@ void Kadu::sendMessage(QListBoxItem *item) {
 	for (i = 0; i < pending.count(); i++) {
 		elem = pending[i];
 		if ((!uins.count() && elem.uins.contains(uin)) || (uins.count() && elem.uins.equals(uins)))
-			if (elem.msgclass == GG_CLASS_CHAT || elem.msgclass == GG_CLASS_MSG) {
+			if (!elem.msgclass || elem.msgclass == GG_CLASS_CHAT || elem.msgclass == GG_CLASS_MSG) {
 				if (!uins.count())
 					uins = elem.uins;
 				for (j = 0; j < elem.uins.count(); j++)
@@ -1351,8 +1351,6 @@ void Kadu::setStatus(int status) {
 	else
 		gg_proxy_enabled = 0;
 
-	socket_active = TRUE;
-	last_ping = time(NULL);
 	loginparams.status = status | (GG_STATUS_FRIENDS_MASK * config.privatestatus);
 	loginparams.password = (char *)config.password.latin1();
 	loginparams.uin = config.uin;
@@ -1386,11 +1384,20 @@ void Kadu::setStatus(int status) {
 		}
 	sess = gg_login(&loginparams);
 
-	kadusnw = new QSocketNotifier(sess->fd, QSocketNotifier::Write, this); 
-	QObject::connect(kadusnw, SIGNAL(activated(int)), kadu, SLOT(dataSent()));
+	if (sess) {
+		socket_active = true;
+		last_ping = time(NULL);
 
-	kadusnr = new QSocketNotifier(sess->fd, QSocketNotifier::Read, this); 
-	QObject::connect(kadusnr, SIGNAL(activated(int)), kadu, SLOT(dataReceived()));    
+		kadusnw = new QSocketNotifier(sess->fd, QSocketNotifier::Write, this);
+		QObject::connect(kadusnw, SIGNAL(activated(int)), kadu, SLOT(dataSent()));
+
+		kadusnr = new QSocketNotifier(sess->fd, QSocketNotifier::Read, this);
+		QObject::connect(kadusnr, SIGNAL(activated(int)), kadu, SLOT(dataReceived()));
+		}
+	else {
+		disconnectNetwork();
+		QMessageBox::warning(kadu, i18n("Connection problem"), i18n("Couldn't connect.\nCheck your internet connection."));
+		}
 }
 
 void Kadu::checkConnection(void) {
