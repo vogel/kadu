@@ -37,7 +37,7 @@
 * sms idea: obs³ugiwane s± dodatkowe sytuacje takie jak nieprawid³owo
   wprowadzony tekst z obrazka, adresat z nieuaktywnion± us³ug± "sms standard".
   Zamkniêcie okienka z obrazkiem idei - np klawiszem esc - powoduje prawid³owy
-  powrót do edycji.
+  powrót do edycji (adrian)
 
 +++ wersja 0.3.3-final
 * ikonka wiadomo¶ci i ikon statusu "ukryty" z telefonikiem
