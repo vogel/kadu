@@ -38,7 +38,7 @@ void remindPassword::start() {
 void remindPassword::showErrorMessageBox() {
 	fprintf(stderr, "KK remindPassword::showErrorMessageBox()\n");
 	QMessageBox::information(0, i18n("Remind password"),
-		i18n("Error during remind password process."), i18n("OK"), 0, 0, 1);
+		i18n("Error during remind password"), i18n("OK"), 0, 0, 1);
 }
 
 void remindPassword::createSocketNotifiers() {
