@@ -261,6 +261,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * usuniêty drobny wyciek pamiêci w module sound (joi)
 * usuniêty b³±d w layoucie g³ównego okna (ostrze¿enia od Qt w trakcie dzia³ania) (joi)
 * przeniesienie inicjalizacji modu³ów _przed_ pytanie o konfiguracjê nowego konta (joi)
+* poprawka kompilacji z gcc 3.4 (michal)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

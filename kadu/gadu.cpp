@@ -44,7 +44,7 @@ int GaduProtocol::sendMessage(const UinsList& uins,const char* msg)
 	int seq;
 	if(uins.count()>1)
 	{
-		uin_t* users = new (uin_t)[uins.count()];
+		uin_t* users = new uin_t[uins.count()];
 		for (int i = 0; i < uins.count(); i++)
 			users[i] = uins[i];
 		seq=gg_send_message_confer(sess, GG_CLASS_CHAT,
@@ -62,7 +62,7 @@ int GaduProtocol::sendMessageRichText(const UinsList& uins,const char* msg,unsig
 	int seq;
 	if(uins.count()>1)
 	{
-		uin_t* users = new (uin_t)[uins.count()];
+		uin_t* users = new uin_t[uins.count()];
 		for (int i = 0; i < uins.count(); i++)
 			users[i] = uins[i];
 		seq = gg_send_message_confer_richtext(sess, GG_CLASS_CHAT,
