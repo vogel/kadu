@@ -1697,6 +1697,12 @@ bool Kadu::docked()
 	return Docked;
 }
 
+void Kadu::show()
+{
+	QMainWindow::show();
+	emit showed();
+}
+
 void KaduSlots::onCreateConfigDialog()
 {
 	kdebug("KaduSlots::onCreateConfigDialog() \n");

@@ -136,19 +136,58 @@ X11TrayIcon::X11TrayIcon()
 	/*int r1=*/XChangeProperty(dsp, win, r, r, 32, 0, (uchar *)&data, 1);
 	r = XInternAtom(dsp, "_KDE_NET_WM_SYSTEM_TRAY_WINDOW_FOR", false);
 	/*int r2=*/XChangeProperty(dsp, win, r, XA_WINDOW, 32, 0, (uchar *)&data, 1);
-			
+	
+	//wy³±czamy pokazywanie Kadu na pasku zadañ
+	disableTaskbar();
+	
 	connect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap&)), this, SLOT(setTrayPixmap(const QPixmap&)));
 	connect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
 	connect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
+	connect(kadu, SIGNAL(showed()), this, SLOT(disableTaskbar()));
 
 	if (config_file.readBoolEntry("General", "RunDocked"))
 		kadu->showMainWindowOnStart=false;
 	show();
 }
 
+void X11TrayIcon::disableTaskbar()
+{
+	enableTaskbar(false);
+}
+
+void X11TrayIcon::enableTaskbar(bool enable)
+{
+	static Display *dsp = x11Display();
+	static XEvent e;
+	static bool set=false;
+	static WId rootWindow=QApplication::desktop()->screen()->winId();
+	
+	if (!set)
+	{
+		memset(&e, 0, sizeof(e));
+		e.xclient.type=ClientMessage;
+		e.xclient.message_type=XInternAtom(dsp, "_NET_WM_STATE", False);
+//		e.xclient.display=dsp;
+		e.xclient.window=kadu->winId();
+		e.xclient.format=32;
+		e.xclient.data.l[1]=XInternAtom(dsp, "_NET_WM_STATE_SKIP_TASKBAR", False);
+		set=true;
+	}
+	e.xclient.data.l[0] = (!enable);
+
+	trap_errors();
+//	if (manager_window != None)
+//		XSendEvent(dsp, manager_window, False, (SubstructureRedirectMask|SubstructureNotifyMask), &e);
+	XSendEvent(dsp, rootWindow, False, (SubstructureRedirectMask|SubstructureNotifyMask), &e);
+	XSync(dsp, False);
+	untrap_errors();
+}
+
 X11TrayIcon::~X11TrayIcon()
 {
 	kdebugf();
+	disconnect(kadu, SIGNAL(showed()), this, SLOT(disableTaskbar()));
+	enableTaskbar();
 	disconnect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap&)), this, SLOT(setTrayPixmap(const QPixmap&)));
 	disconnect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
 	disconnect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));

@@ -186,6 +186,7 @@ class Kadu : public QMainWindow
 		void unregisterUser();
 		void viewHistory();
 		void popupMenu();
+		void show();
 
 	signals:
 		void disconnectingNetwork();
@@ -212,6 +213,10 @@ class Kadu : public QMainWindow
 			bêdzie zmieniony.
 		**/
 		void changingStatus(int status, QString sigDesc, bool &stop);
+		/**
+			wywo³ana zosta³a funkcja show() na g³ównym oknie
+		**/
+		void showed();
 };
 
 class KaduSlots : public QObject

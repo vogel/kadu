@@ -96,12 +96,13 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * usuniête miganie okna przy w³±czonym module x11_docking i opcji RunDocked
   oraz usuniêty b³±d powoduj±cy znikanie paska narzêdziowego przy powy¿szych warunkach
   i za³adowanym module sound (joi)
-* wydzielenie dokowania dla WindowMakera do oddzielnego modu³u (joi)
+* wydzielenie xlibowego dokowania dla WindowMakera do oddzielnego modu³u (joi)
 * drugi patch porz±dkuj±cy vogela: szukanie i (wy)rejestrowanie (adrian)
 * patch kida - blokada wysy³ania pustych wiadomo¶ci (adrian)
 * Instalator - dodano wybór nowych modu³ów (Ron_K)
-* kadu sie nie zapetla przy otwieraniu nowej rozmowy jesli mamy pusta
-  historie (michal)
+* kadu nie zapêtla siê przy otwieraniu nowej rozmowy je¿eli mamy pust±
+  historiê (michal)
+* kadu (gdy jest zadokowane) nie pojawia siê na pasku zadañ (joi)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
