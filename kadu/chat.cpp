@@ -413,6 +413,8 @@ void Chat::writeMyMessage() {
 		edit->setFocus();
 		sendbtn->setText(i18n("&Send"));
 		}
+  else
+    edit->clear();
 }
 
 void Chat::addMyMessageToHistory() {
