@@ -136,6 +136,9 @@ class ConfigDialog : public QTabDialog	{
 		QLineEdit *e_userboxcolor;
 		QLineEdit *e_othercolor;
 		QLineEdit *e_panelcontents;
+		QLineEdit *e_chatcontents;
+		QLineEdit *e_conferencecontents;
+		QLineEdit *e_conferenceprefix;
 		QHBox *chatselectfont;
 		QHBox *userboxselectfont;
 		QHBox *otherselectfont;
@@ -259,6 +262,9 @@ struct config {
 	bool hintalert;
 	bool showdesc;
 	QString panelcontents;
+	QString chatcontents;
+	QString conferenceprefix;
+	QString conferencecontents;
 
 	QRect geometry;
 	QSize splitsize;

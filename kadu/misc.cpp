@@ -4,6 +4,9 @@
 #include <pwd.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <sys/socket.h>
 #include <unistd.h>
 #include <time.h>
 #include <qpushbutton.h>
@@ -13,6 +16,7 @@
 #include <qtextcodec.h>
 #include <qcstring.h>
 #include <qdatetime.h>
+#include <qregexp.h>
 
 #include "misc.h"
 #include "pixmaps.h"
@@ -99,6 +103,144 @@ QString pwHash(const QString tekst) {
 		nowytekst[ile] = znak;
 		}
 	return nowytekst;
+}
+
+QString parse_symbols(QString s, int i, UserListElement &ule) {
+	QString r,d;
+	int j;
+
+	while(s[i]!='%' && i != s.length()) {
+		r+=s[i];
+		i++;
+	}
+
+	if (s[i]=='%') {
+		i++;
+		switch(s[i].latin1()) {
+			case 's':
+				i++;
+				if (!ule.uin)
+					break;
+				j=statusGGToStatusNr(ule.status);
+				if (j == 1 || j == 3 || j == 5 || j == 7)
+					r+=i18n(statustext[j-1]);
+				else
+					r+=i18n(statustext[j]);
+				break;
+			case 'd':
+				i++;
+				d=ule.description;
+				d.replace(QRegExp("<"), "&lt;");
+				d.replace(QRegExp(">"), "&gt;");
+				r+=d;
+				break;
+			case 'i':
+				i++;
+				if (ule.ip) {
+					struct in_addr in;
+					in.s_addr = ule.ip;
+					r+=inet_ntoa(in);
+				}
+				else
+					r+="";
+				break;
+			case 'n':
+				i++;
+				r+=ule.nickname;
+				break;
+			case 'a':
+				i++;
+				r+=ule.altnick;
+				break;
+			case 'f':
+				i++;
+				r+=ule.first_name;
+				break;
+			case 'r':
+				i++;
+				r+=ule.last_name;
+				break;
+			case 'm':
+				i++;
+				r+=ule.mobile;
+				break;
+			case 'u':
+				i++;
+				if (ule.uin)
+					r+=QString::number(ule.uin);
+				break;
+			case 'g':
+				i++;
+				r+=ule.group;
+				break;
+			case 'o':
+				i++;
+				if (ule.port==2)
+					r+=" ";
+				break;
+		}
+	}
+
+	if (i == s.length())
+		return r;
+	else
+		r+=parse_symbols(s,i,ule);
+}
+
+QString parse_only_text(QString s, int i) {
+	QString r;
+
+	while(s[i]!='%' && i != s.length()) {
+	r+=s[i];
+	i++;
+	}
+
+	if(s[i]=='%')
+		i+=2;
+
+	if(i==s.length())
+		return r;
+	else
+		r+=parse_only_text(s,i);
+}
+
+QString parse_expression(QString s, int& i, UserListElement &ule) {
+	QString p,r,f;
+
+	while(s[i]!='[' && i != s.length()) {
+		f+=s[i];
+		i++;
+	}
+
+	r+=parse_symbols(f,0,ule);
+
+	if(s[i]=='['){
+		i++;
+		while(s[i]!=']' && i != s.length()) {
+			p+=s[i];
+			i++;
+		}
+
+		if(s[i]==']') {
+			i++; //eat ]
+			if(parse_only_text(p,0)!=parse_symbols(p,0,ule))
+				r+=parse_symbols(p,0,ule);
+			if(i == s.length())
+				return r;
+			else
+				r+=parse_expression(s,i,ule);
+		}
+	}
+	
+	if(i == s.length())
+		return r;
+	else
+		r+=parse_expression(s,i,ule);
+}
+
+QString parse(QString s, UserListElement &ule) {
+	int i=0;
+	return parse_expression(s,i,ule);
 }
 
 void deleteSearchIdStruct(QDialog *ptr) {

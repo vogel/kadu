@@ -129,8 +129,10 @@ void loadKaduConfig(void) {
 	config.encryption = konf->readBoolEntry("Encryption", false);
 //	config.keyslen = konf->readNumEntry("KeysLength", 1024);
 #endif
-// Narazie nic nie czytamy bo nie wiemy jak dokladnie ma wygladac domyslne pole
-//	config.panelcontents = konf->readEntry("PanelContents", "Status: %s, [(%d)]");
+	config.panelcontents = konf->readEntry("PanelContents", "");
+	config.chatcontents = konf->readEntry("ChatContents", "");
+	config.conferenceprefix = konf->readEntry("ConferencePrefix", "");
+	config.conferencecontents = konf->readEntry("ConferenceContents", "");
 
 	konf->setGroup("Notify");
 	config.soundnotify = strdup(konf->readEntry("NotifySound", ""));
@@ -270,8 +272,10 @@ void saveKaduConfig(void) {
         konf->writeEntry("Encryption", config.encryption);
         //konf->writeEntry("KeysLength", config.keyslen);
 #endif
-//nie zapisujemy bo nie wiemy jak bedzie jeszcze z domyslnym polem
-//	konf->writeEntry("PanelContents", config.panelcontents);
+	konf->writeEntry("PanelContents", config.panelcontents);
+	konf->writeEntry("ChatContents", config.chatcontents);
+	konf->writeEntry("ConferencePrefix", config.conferenceprefix);
+	konf->writeEntry("ConferenceContents", config.conferencecontents);
 
 	konf->setGroup("Proxy");
 	konf->writeEntry("UseProxy",config.useproxy);
@@ -1054,13 +1058,33 @@ void ConfigDialog::setupTab6(void) {
 
 	connect(cb_otherfontsize, SIGNAL(activated(int)), this, SLOT(chooseOtherFontSizeGet(int)));
 	otherselectfont->hide();
-	
-	QHBox *panelbox = new QHBox(otherprop);
+
+	QVGroupBox *contentsprop = new QVGroupBox(box6);
+	QToolTip::add(contentsprop,i18n("%s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - frist name\n%r = surname, %m - mobile, %u - uin, %g - group, %o - If person doesn't have us in userlist\nIf is empty - default setting"));
+
+	QHBox *panelbox = new QHBox(contentsprop);
 	panelbox->setSpacing(5);
 	
 	QLabel *l_panel = new QLabel(i18n("Panel information contents"), panelbox);
 	e_panelcontents = new QLineEdit(config.panelcontents, panelbox);
-	QToolTip::add(e_panelcontents,i18n("%s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - frist name\n%r = surname, %m - mobile, %u - uin, %g - group, %o - If person has us in userlist"));
+
+	QHBox *chatconbox = new QHBox(contentsprop);
+	chatconbox->setSpacing(5);
+
+	QLabel *l_chatcon = new QLabel(i18n("Title chat window contents"), chatconbox);
+	e_chatcontents = new QLineEdit(config.chatcontents, chatconbox);
+
+	QHBox *confprefixbox = new QHBox(contentsprop);
+	confprefixbox->setSpacing(5);
+
+	QLabel *l_confprefixcon = new QLabel(i18n("Title conference window prefix contents"), confprefixbox);
+	e_conferenceprefix = new QLineEdit(config.conferenceprefix, confprefixbox);
+
+	QHBox *confconbox = new QHBox(contentsprop);
+	confconbox->setSpacing(5);
+
+	QLabel *l_confcon = new QLabel(i18n("Title conference window contents"), confconbox);
+	e_conferencecontents = new QLineEdit(config.conferencecontents, confconbox);
 
 	addTab(box6, i18n("Look"));
 };
@@ -1515,8 +1539,11 @@ void ConfigDialog::updateConfig(void) {
 	config.fonts.userbox = vl_userboxfont[0];
 	config.fonts.userboxDesc = vl_userboxfont[1];
 	config.fonts.trayhint = vl_otherfont[0];
-	
+
 	config.panelcontents = e_panelcontents->text().latin1();
+	config.chatcontents = e_chatcontents->text().latin1();
+	config.conferencecontents = e_conferencecontents->text().latin1();
+	config.conferenceprefix = e_conferenceprefix->text().latin1();
 
 	free(config.soundnotify);
 	config.soundnotify = strdup(e_soundnotify->text().latin1());

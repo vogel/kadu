@@ -73,19 +73,21 @@ void UserInfo::setupTab1() {
 	QLabel *l_group = new QLabel(i18n("Group"),box);
 	e_group = new QLineEdit(puser->group,box);
 
-	QLabel *l_addr = new QLabel(i18n("Address"),box);
+	QLabel *l_addr = new QLabel(i18n("Address IP and Port"),box);
 	e_addr = new QLineEdit(box);
 	e_addr->setReadOnly(true);
 	
 	if (puser->ip) {
 		struct in_addr in;
 		in.s_addr = puser->ip;
-		char address[128];
-		snprintf(address, sizeof(address), "%s:%d", inet_ntoa(in), puser->port);
-		e_addr->setText(i18n(address));
+		e_addr->setText(inet_ntoa(in));
 		}
 	else
 		e_addr->setText(i18n("(Unknown)"));
+	if (puser->port)
+		e_addr->setText(e_addr->text()+":"+QString::number(puser->port));
+	else
+		e_addr->setText(e_addr->text()+":"+i18n("(Unknown)"));
 
 	switch (puser->status) {
 		case GG_STATUS_AVAIL:

@@ -12,6 +12,7 @@
 #include <libintl.h>
 
 #include "libgadu.h"
+#include "userlist.h"
 
 #define __c2q(__char_pointer__) QString::fromLocal8Bit(__char_pointer__)
 
@@ -31,6 +32,7 @@ QString timestamp(time_t = 0);
 QDateTime currentDateTime();
 QString pwHash(const QString tekst);
 void deleteSearchIdStruct(QDialog *ptr);
+QString parse(QString s, UserListElement &ule);
 
 enum {
 	DIALOG_SEARCH,

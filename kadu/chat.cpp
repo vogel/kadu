@@ -301,36 +301,37 @@ void Chat::setTitle() {
 	int j,k;
 	UserListElement user;
 
-	title = i18n("Chat with ");
-
-	for (k = 0; k < uins.size(); k++) {
-		if (k)
-			title.append(", ");
-    
-		if (userlist.containsUin(uins[k])) {
-			user = userlist.byUin(uins[k]);
-			title.append(user.altnick);
-			j = statusGGToStatusNr(user.status);
-			if (!k)
-				setIcon(*icons->loadIcon(gg_icons[statusGGToStatusNr(user.status)]));
+	if (uins.size() > 1) {
+		if (config.conferenceprefix.isEmpty())
+			title = i18n("Conference with ");
+		else
+			title = config.conferenceprefix;
+		for (k = 0; k < uins.size(); k++) {
+			if (k)
+				title.append(", ");
+			if (userlist.containsUin(uins[k]))
+				user = userlist.byUin(uins[k]);
 			else
-				setIcon(*icons->loadIcon("online"));
-			}
-		else {
-			title.append(QString::number(uins[k]));
-			j = 0;
-			setIcon(*icons->loadIcon("offline"));
-			}
-		title.append(" (");
-		if (j == 1 || j == 3 || j == 5 || j == 7)
-			title.append(i18n(statustext[j-1]));
-		else
-			title.append(i18n(statustext[j]));
-		if (j & 1)
-			title.append(i18n(": %1)").arg(user.description));
-		else
-			title.append(")");
+				user.uin = uins[k];
+			if (config.conferencecontents.isEmpty())
+				title.append(parse("%a (%s[: %d])",user));
+			else
+				title.append(parse(config.conferencecontents,user));
 		}
+		setIcon(*icons->loadIcon("online"));
+	}
+	else {
+		if (userlist.containsUin(uins[0]))
+			user = userlist.byUin(uins[0]);
+		else
+			user.uin = uins[0];
+		if (config.chatcontents.isEmpty())
+			title = parse(i18n("Chat with ")+"%a (%s[: %d])",user);
+		else
+			title = parse(config.chatcontents,user);
+		setIcon(*icons->loadIcon(gg_icons[statusGGToStatusNr(user.status)]));
+	}
+
 	title.replace(QRegExp("\n"), " ");
 
 	setCaption(title);

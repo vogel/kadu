@@ -539,36 +539,15 @@ void Kadu::changeAppearance() {
 void Kadu::currentChanged(QListBoxItem *item) {
 	if (!item || !item->isSelected())
 		return;
+
 	kdebug("Kadu::currentChanged(): %s\n", (const char *)item->text().local8Bit());
+
 	UserListElement &ule = userlist.byAltNick(item->text());
-	QString s;
-	// uin
-	if (ule.uin)
-		s+=QString("#")+QString::number(ule.uin);
-	// name
-	QString name=ule.first_name;
-	if(!ule.last_name.isEmpty())
-	{
-		if(!name.isEmpty())
-			name+=" ";
-		name+=ule.last_name;
-	};
-	if(!name.isEmpty())
-	{
-		if(!s.isEmpty())
-			s+=", ";
-		s+=name;
-	};
-	// description
-	if(!ule.description.isEmpty())
-	{
-		if(!s.isEmpty())
-			s+=" - ";
-		s+=ule.description;
-	};	
-	s.replace(QRegExp("<"), "&lt;");
-	s.replace(QRegExp(">"), "&gt;");
-	descrtb->setText(s);
+
+	if (config.panelcontents.isEmpty())
+		descrtb->setText(parse("[#%u][, %f] %r [- %d] [ (%i)]",ule));
+	else
+		descrtb->setText(parse(config.panelcontents,ule));
 }
 
 void Kadu::refreshGroupTabBar()
