@@ -153,6 +153,7 @@ void ModulesDialog::unloadSelectedItem()
 
 void ModulesDialog::refreshLists()
 {
+	kdebugf();
 	LoadedListBox->clear();
 	LoadedListBox->insertStringList(modules_manager->loadedModules());	
 	InstalledListBox->clear();
@@ -161,6 +162,7 @@ void ModulesDialog::refreshLists()
 
 void ModulesDialog::getInfo()
 {
+	kdebugf();
 	QListBoxItem *item;
 	int current;
 	QListBox *currentListBox;
@@ -207,6 +209,7 @@ void ModulesManager::closeModule()
 
 ModulesManager::ModulesManager() : QObject()
 {
+	kdebugf();
 	// wazne, aby inicjalizacja tej zmiennej wystapila przed wczytaniem
 	// modulow, bo niektore juz moga z niej korzystac, wiec dlatego
 	// przenioslem to tutaj z funkcji ModulesManagert::initModule
@@ -241,6 +244,7 @@ ModulesManager::ModulesManager() : QObject()
 
 ModulesManager::~ModulesManager()
 {
+	kdebugf();
 	// Wyladowujemy wszystkie nieu¿ywane modu³y
 	// w pêtli iteruj±c dopóki jakikolwiek udaje
 	// siê wy³adowaæ
@@ -282,6 +286,7 @@ QTranslator* ModulesManager::loadModuleTranslation(const QString& module_name)
 
 bool ModulesManager::satisfyModuleDependencies(const ModuleInfo& module_info)
 {
+	kdebugf();
 	for (QStringList::ConstIterator it = module_info.depends.begin(); it != module_info.depends.end(); ++it)
 	{
 		if(!moduleIsActive(*it))
@@ -482,6 +487,7 @@ bool ModulesManager::activateModule(const QString& module_name)
 bool ModulesManager::deactivateModule(const QString& module_name, bool force)
 {
 	Module m=Modules[module_name];
+	kdebug("ModulesManager::deactivateModule(%s,%d) usage:%d\n", (const char *)module_name.local8Bit(), force, m.usage_counter);
 
 	if(m.usage_counter>0 && !force)
 	{
@@ -508,6 +514,7 @@ bool ModulesManager::deactivateModule(const QString& module_name, bool force)
 
 void ModulesManager::showDialog()
 {
+	kdebugf();
 	if(Dialog==NULL)
 	{
 		Dialog=new ModulesDialog();

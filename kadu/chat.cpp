@@ -47,6 +47,21 @@ ChatManager::ChatManager() : QObject()
 {
 }
 
+void ChatManager::closeAllWindows()
+{
+	kdebugf();
+	while (!Chats.empty())
+	{
+		Chat *chat=Chats.first();
+		delete chat;
+	}
+}
+
+ChatManager::~ChatManager()
+{
+	kdebugf();
+}
+
 const ChatList& ChatManager::chats()
 {
 	return Chats;
@@ -63,6 +78,7 @@ void ChatManager::unregisterChat(Chat* chat)
 	for(int i=0; i<Chats.count(); i++)
 		if(Chats[i]==chat)
 		{
+			emit chatDestroying(chat->uins());
 			Chats.remove(Chats.at(i));
 			emit chatDestroyed(chat->uins());
 			return;
@@ -1141,8 +1157,10 @@ void Chat::addEmoticon(QString string) {
 	emoticon_selector = NULL;
 }
 
+
 void Chat::initModule()
 {
+	kdebugf();
 	QT_TRANSLATE_NOOP("@default", "General");
 	QT_TRANSLATE_NOOP("@default", "Open chat window on new message");
 	QT_TRANSLATE_NOOP("@default", "Define keys");
@@ -1271,6 +1289,7 @@ void Chat::initModule()
 	connect(&event_manager,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
 		chat_manager,SLOT(chatMsgReceived(UinsList,const QString&,time_t,bool&)));
 }
+
 
 const UinsList& Chat::uins()
 {

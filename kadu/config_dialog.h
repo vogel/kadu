@@ -707,6 +707,11 @@ class ConfigDialog : public QDialog	{
 		**/
 		static int findPreviousTab(int startpos);
 		static bool dialogOpened();
+		static void closeDialog();
+		
+		//u¿ywaæ tylko w wyj±tkowych sytuacjach
+		static ConfigDialog *configdialog;
+		
 		//
 	protected:
 		QListBox* listBox;
@@ -714,7 +719,6 @@ class ConfigDialog : public QDialog	{
 		QPushButton* okButton;
 		QPushButton* applyButton;
 		QPushButton* cancelButton;
-		static ConfigDialog *configdialog;
 		static QString acttab;
 
 	signals:

@@ -27,6 +27,8 @@ class ChatManager : public QObject
 		
 	public:	
 		ChatManager();
+		~ChatManager();
+		void closeAllWindows();
 		/**
 			Zwraca liste otwartych okien Chat.
 		**/
@@ -52,6 +54,7 @@ class ChatManager : public QObject
 		
 	signals:
 		void chatCreated(const UinsList& senders);
+		void chatDestroying(const UinsList& senders);
 		void chatDestroyed(const UinsList& senders);
 };
 
@@ -125,6 +128,7 @@ class KaduSplitter : public QSplitter
 class Chat : public QWidget
 {
 	Q_OBJECT
+
 	private:
 		struct RegisteredButton
 		{

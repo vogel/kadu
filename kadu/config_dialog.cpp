@@ -34,6 +34,7 @@ bool ConfigDialog::ElementConnections::operator== (const ElementConnections& r) 
 }
 
 void ConfigDialog::showConfigDialog(QApplication* application) {
+	kdebugf();
 	ConfigDialog *cd;
 	
 	if (configdialog)
@@ -45,6 +46,16 @@ void ConfigDialog::showConfigDialog(QApplication* application) {
 	{
 		cd = new ConfigDialog(application);
 		cd->show();
+	}
+}
+
+void ConfigDialog::closeDialog()
+{
+	kdebugf();
+	if (configdialog)
+	{
+		configdialog->close();
+		delete configdialog;
 	}
 }
 
