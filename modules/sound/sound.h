@@ -30,8 +30,7 @@ class SoundSlots: public QObject
 		void playingSound(const QString& file);
 	public:
 		SoundSlots();
-
-		
+		~SoundSlots();
 };
 
 extern SoundSlots* soundslots;

@@ -44,6 +44,11 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * wydzielenie obslugi dzwieku jako modulu "sound" (adrian)
 * funkcje unregisterSlotOnCreate, unregisterSlotOnDestroy, disconnectSlot,
   umozliwiajace modulom odlaczenie sygnalow od okna konfiguracji (adrian)
+* wydzielenie funkcjonalnosci zwiazanej z glownym paskiem narzedziowym
+  do klasy ToolBar i dodanie metody unregisterButton. oprocz tego metody
+  register i unregister potrafia zmodyfikowac juz istniejacy toolbar (adrian)
+* poprawki modulu sound zwiazane z rejestrowaniem sie w pasku
+  narzedziowym i wyrejestrowaniem sie z paska narzedziowego oraz menu (adrian)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

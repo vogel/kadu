@@ -82,11 +82,114 @@ QLabel* statuslabeltxt;
 
 UpdatesClass* uc;
 
-QValueList <Kadu::ToolButton> Kadu::RegisteredToolButtons;
+
 
 QValueList<QHostAddress> gg_servers;
 const char *gg_servers_ip[7] = {"217.17.41.82", "217.17.41.83", "217.17.41.84", "217.17.41.85",
 	"217.17.41.86", "217.17.41.87", "217.17.41.88"};
+
+QValueList<ToolBar::ToolButton> ToolBar::RegisteredToolButtons;
+ToolBar* ToolBar::instance=NULL;
+
+ToolBar::ToolBar(QMainWindow* parent) : QToolBar(parent, "main toolbar")
+{
+	setCloseMode(QDockWindow::Undocked);
+	setLabel(tr("Main toolbar"));
+	setVerticallyStretchable(true);
+
+	config_file.addVariable("General", "ToolBarHidden", false);
+	if (config_file.readBoolEntry("General", "ToolBarHidden"))
+		hide();
+
+	createControls();	
+	instance=this;
+}
+
+ToolBar::~ToolBar()
+{
+	config_file.writeEntry("General", "ToolBarHidden", isHidden());
+	instance=NULL;
+}
+
+void ToolBar::createControls()
+{
+	for(QValueList<ToolButton>::iterator j=RegisteredToolButtons.begin(); j!=RegisteredToolButtons.end(); j++)
+		if ((*j).caption== "--separator--")
+			addSeparator();
+		else
+			(*j).button = new QToolButton((*j).iconfile, (*j).caption,
+				QString::null, (*j).receiver, (*j).slot, this, (*j).name);
+
+	QFrame *toolbarfiller = new QFrame(this);
+	setStretchableWidget(toolbarfiller);
+}
+
+void ToolBar::registerSeparator(int position)
+{
+	if(instance!=NULL)
+		instance->clear();
+
+        ToolButton RToolButton;
+	RToolButton.caption="--separator--";
+
+	if (((RegisteredToolButtons.count()-1)<position) || (position == -1))
+		RegisteredToolButtons.append(RToolButton);
+	else
+		RegisteredToolButtons.insert(RegisteredToolButtons.at(position), RToolButton);
+
+	if(instance!=NULL)
+		instance->createControls();	
+}
+
+void ToolBar::registerButton(const QIconSet& iconfile, const QString& caption, 
+		    QObject* receiver, const char* slot, int position, const char* name)
+{
+	if(instance!=NULL)
+		instance->clear();
+
+	ToolButton RToolButton;
+
+	RToolButton.iconfile= iconfile;
+	RToolButton.caption= caption;
+	RToolButton.receiver= receiver;
+	RToolButton.slot= slot;
+	RToolButton.position= position;
+	RToolButton.name= name;
+    
+	if (((RegisteredToolButtons.count()-1)<position) || (position == -1))
+		RegisteredToolButtons.append(RToolButton);
+	else
+		RegisteredToolButtons.insert(RegisteredToolButtons.at(position), RToolButton);
+
+	if(instance!=NULL)
+		instance->createControls();
+}
+
+void ToolBar::unregisterButton(const char* name)
+{
+	if(instance!=NULL)
+		instance->clear();
+
+	for(QValueList<ToolButton>::iterator j=RegisteredToolButtons.begin(); j!=RegisteredToolButtons.end(); j++)
+		if ((*j).name == name)
+		{
+			RegisteredToolButtons.remove(j);
+			break;
+		}
+
+	if(instance!=NULL)
+		instance->createControls();		
+}
+
+QToolButton* ToolBar::getButton(const char* name)
+{
+	for(QValueList<ToolButton>::iterator j=RegisteredToolButtons.begin(); j!=RegisteredToolButtons.end(); j++)
+		if ((*j).name == name)
+			return (*j).button;
+	return NULL;
+}
+
+
 
 void Kadu::gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op) {
 	char buf[32];
@@ -237,7 +340,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	config_file.addVariable("Look", "UserboxFont", &def_font);
 	config_file.addVariable("Look", "UserboxDescFont", &def_font);
 
-	config_file.addVariable("General", "ToolBarHidden", false);
 
 	closestatusppmtime.start();
 
@@ -323,15 +425,14 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	setActiveGroup("");
 
 	// dodanie przyciskow do paska narzedzi
-	Kadu::addToolButton(icons_manager.loadIcon("ShowHideInactiveUsers"), tr("Show / hide inactive users"), Userbox, SLOT(showHideInactive()));
-	Kadu::addToolButton(icons_manager.loadIcon("Configuration"), tr("Configuration"), this, SLOT(configure()));
-	Kadu::addToolButtonSeparator();
-	Kadu::addToolButton(icons_manager.loadIcon("History"), tr("View history"), this, SLOT(viewHistory()));
-	Kadu::addToolButton(icons_manager.loadIcon("EditUserInfo"), tr("View/edit user info"), this, SLOT(showUserInfo()));
-	Kadu::addToolButton(icons_manager.loadIcon("LookupUserInfo"), tr("Lookup in directory"), this, SLOT(lookupInDirectory()));
-	Kadu::addToolButtonSeparator();
-	Kadu::addToolButton(icons_manager.loadIcon("AddUser"), tr("Add user"), this, SLOT(addUserAction()));
-
+	ToolBar::registerButton(icons_manager.loadIcon("ShowHideInactiveUsers"), tr("Show / hide inactive users"), Userbox, SLOT(showHideInactive()));
+	ToolBar::registerButton(icons_manager.loadIcon("Configuration"), tr("Configuration"), this, SLOT(configure()));
+	ToolBar::registerSeparator();
+	ToolBar::registerButton(icons_manager.loadIcon("History"), tr("View history"), this, SLOT(viewHistory()));
+	ToolBar::registerButton(icons_manager.loadIcon("EditUserInfo"), tr("View/edit user info"), this, SLOT(showUserInfo()));
+	ToolBar::registerButton(icons_manager.loadIcon("LookupUserInfo"), tr("Lookup in directory"), this, SLOT(lookupInDirectory()));
+	ToolBar::registerSeparator();
+	ToolBar::registerButton(icons_manager.loadIcon("AddUser"), tr("Add user"), this, SLOT(addUserAction()));
 
 	// popupmenu
 	UserBox::userboxmenu->addItem(tr("Open chat window") ,this, SLOT(openChat()));
@@ -426,6 +527,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	split->setSizes(splitsizes);
 
 //	tworzymy pasek narzedziowy
+	createToolBar();
 	if (config_file.readEntry("General", "DockWindows") != QString::null) {
 		QString dockwindows=config_file.readEntry("General", "DockWindows").replace(QRegExp("\\\\n"), "\n");
 		QTextStream stream(&dockwindows, IO_ReadOnly);
@@ -478,67 +580,13 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		}
 }
 
-QToolButton* Kadu::getToolButton(const char* name)
-{
-	for(QValueList<ToolButton>::iterator j=RegisteredToolButtons.begin(); j!=RegisteredToolButtons.end(); j++)
-			if ((*j).name == name) return (*j).button;
-return NULL;
-}
-
-void Kadu::addToolButtonSeparator(int position)
-{
-        ToolButton RToolButton;
-	RToolButton.caption="--separator--";
-
-    if (((RegisteredToolButtons.count()-1)<position) || (position == -1))
-	RegisteredToolButtons.append(RToolButton);
-    else
-	RegisteredToolButtons.insert(RegisteredToolButtons.at(position), RToolButton);
-
-};
-
-void Kadu::addToolButton(const QIconSet& iconfile, const QString& caption, 
-		    QObject* receiver, const char* slot, int position, const char* name)
-{
-    ToolButton RToolButton;
-    
-    RToolButton.iconfile= iconfile;
-    RToolButton.caption= caption;
-    RToolButton.receiver= receiver;
-    RToolButton.slot= slot;
-    RToolButton.position= position;
-    RToolButton.name= name;
-    
-    if (((RegisteredToolButtons.count()-1)<position) || (position == -1))
-	RegisteredToolButtons.append(RToolButton);
-    else
-	RegisteredToolButtons.insert(RegisteredToolButtons.at(position), RToolButton);
-
-};
-
 void Kadu::createToolBar()
 {
-	ToolBar = new QToolBar(this, "main toolbar");
+	new ToolBar(this);
 	setRightJustification(true);
 	setDockEnabled(Qt::DockBottom, false);
-	setAppropriate(ToolBar, true);
-	ToolBar->setCloseMode(QDockWindow::Undocked);
-	ToolBar->setLabel(tr("Main toolbar"));
-	if (config_file.readBoolEntry("General", "ToolBarHidden"))
-		ToolBar->hide();
-
-	for(QValueList<ToolButton>::iterator j=RegisteredToolButtons.begin(); j!=RegisteredToolButtons.end(); j++)
-		if ((*j).caption== "--separator--")
-			 ToolBar->addSeparator();
-		else 
-		    (*j).button= new QToolButton((*j).iconfile, (*j).caption,
-			QString::null, (*j).receiver, (*j).slot, ToolBar, (*j).name);
-
-	QFrame *toolbarfiller = new QFrame(ToolBar);
-	ToolBar->setStretchableWidget(toolbarfiller);
-	ToolBar->setVerticallyStretchable(true);
-};
-
+	setAppropriate(ToolBar::instance, true);
+}
 
 void Kadu::popupMenu()
 {	
@@ -1609,14 +1657,15 @@ bool Kadu::close(bool quit) {
 	    }
 		config_file.writeEntry("General", "DefaultDescription", defaultdescriptions.join("<-->"));
 		config_file.writeEntry( "Look", "CurrentGroupTab", GroupBar->currentTab() );
-		config_file.writeEntry("General", "ToolBarHidden", ToolBar->isHidden());
 
 		QString dockwindows=config_file.readEntry("General", "DockWindows");
 		QTextStream stream(&dockwindows, IO_WriteOnly);
 		stream << *kadu;
-		dockwindows.replace(QRegExp("\\n"), "\\n");
-		
+		dockwindows.replace(QRegExp("\\n"), "\\n");	
 		config_file.writeEntry("General", "DockWindows", dockwindows);
+		
+		delete ToolBar::instance;
+		
 		config_file.sync();
 		
 		pending.writeToFile();
@@ -1676,7 +1725,6 @@ void Kadu::createMenu() {
 void Kadu::InitModules()
 {
 	GaduProtocol::initModule();
-	kadu->createToolBar();
 }
 
 void Kadu::statusMenuAboutToHide() {
@@ -1752,10 +1800,6 @@ QPopupMenu* Kadu::mainMenu()
 	return MainMenu;
 }
 
-QToolBar* Kadu::toolBar()
-{
-	return ToolBar;
-}
 KaduTabBar* Kadu::groupBar()
 {
 	return GroupBar;

@@ -275,9 +275,14 @@ SoundSlots::SoundSlots()
 		mu= new QIconSet(icons_manager.loadIcon("Unmute"));
 		}
 
-	Kadu::addToolButton(*mu, tr("Mute sounds"), this, SLOT(muteUnmuteSounds()), 0, "mute");
+	ToolBar::registerButton(*mu, tr("Mute sounds"), this, SLOT(muteUnmuteSounds()), 0, "mute");
 }
 
+SoundSlots::~SoundSlots()
+{
+	kadu->mainMenu()->removeItem(muteitem);
+	ToolBar::unregisterButton("mute");
+}
 
 void SoundSlots::onCreateConfigDialog()
 {
@@ -358,7 +363,7 @@ void SoundSlots::playingSound(const QString& file)
 
 void SoundSlots::muteUnmuteSounds()
 {
-	QToolButton *mutebtn= Kadu::getToolButton("mute");
+	QToolButton *mutebtn= ToolBar::getButton("mute");
 	sound_manager->setMute(!sound_manager->getMute());
 	if (sound_manager->getMute()) {
 		mutebtn->setIconSet(icons_manager.loadIcon("Mute"));

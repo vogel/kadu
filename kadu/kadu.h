@@ -27,6 +27,34 @@
 #include "dcc.h"
 
 /**
+	Toolbar Kadu
+**/
+class ToolBar : public QToolBar
+{
+	private:
+		struct ToolButton
+		{
+			QIconSet iconfile;
+			QString caption, name;
+			QObject* receiver;
+			QString slot;
+			QToolButton* button;
+			int position;
+		};
+		static QValueList<ToolButton> RegisteredToolButtons;
+		void createControls();
+	public:
+		static ToolBar* instance;
+		ToolBar(QMainWindow* parent);
+		~ToolBar();
+		static void registerButton(const QIconSet& iconfile, const QString& caption, 
+		    QObject* receiver, const char* slot, const int position=-1, const char* name="");
+		static void unregisterButton(const char* name);
+		static void registerSeparator(int position=-1);
+		static QToolButton* getButton(const char* name);
+};
+
+/**
 	G³ówne okno Kadu
 **/
 class Kadu : public QMainWindow
@@ -39,24 +67,11 @@ class Kadu : public QMainWindow
 		QTextBrowser* descrtb;
 		QMenuBar* MenuBar;
 		QPopupMenu* MainMenu;
-		QToolBar* ToolBar;
 		KaduTabBar* GroupBar;
 		UserBox* Userbox;
 		
 		int commencing_startup;
 
-		struct ToolButton
-		{
-			QIconSet iconfile;
-			QString caption, name;
-			QObject* receiver;
-			QString slot;
-			QToolButton* button;
-			int position;
-
-		};
-		
-		static QValueList <ToolButton> RegisteredToolButtons;
 		void createMenu();
 		void createToolBar();
 		void createStatusPopupMenu();
@@ -83,10 +98,6 @@ class Kadu : public QMainWindow
 		Kadu(QWidget* parent=0, const char *name=0);
 		~Kadu();
 		static void InitModules();
-		static void addToolButton(const QIconSet& iconfile, const QString& caption, 
-		    QObject* receiver, const char* slot, const int position=-1, const char* name="");
-		static QToolButton* getToolButton(const char* name);
-		static void addToolButtonSeparator(int position=-1);
 		void changeAppearance();
 		bool userInActiveGroup(uin_t uin);
 		void removeUser(QStringList &, bool);
@@ -99,10 +110,6 @@ class Kadu : public QMainWindow
 			Zwraca wskaznik do glownego menu programu.
 		**/
 		QPopupMenu* mainMenu();
-		/**
-			Zwraca wskaznik do paska z narzedziami
-		**/
-		QToolBar* toolBar();
 		/**
 			Zwraca wskaznik do zakladek z nazwami grup.
 		**/		
