@@ -1044,10 +1044,12 @@ void Kadu::sendMessage(QListBoxItem *item)
 		return;
 	}
 	UinType uin = userlist.byAltNick(item->text()).uin;
-	if (uin) {
+	if (uin)
+	{
 		UinsList uins = activeUserBox->getSelectedUins();
-		if (uins.findIndex(config_file.readNumEntry("General", "UIN")) == -1)
-			chat_manager->sendMessage(uin, uins);
+		if (uins.count())
+			if (uins.findIndex(config_file.readNumEntry("General", "UIN")) == -1)
+				chat_manager->sendMessage(uin, uins);
 	}
 	kdebugf2();
 }
