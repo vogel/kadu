@@ -45,8 +45,8 @@
 
 #define GG_FONT_IMAGE	0x80
 
-QFont defaultFont;
-QFontInfo defaultFontInfo(defaultFont);
+QFont *defaultFont;
+QFontInfo *defaultFontInfo;
 
 QTextCodec *codec_cp1250 = QTextCodec::codecForName("CP1250");
 QTextCodec *codec_latin2 = QTextCodec::codecForName("ISO8859-2");

@@ -1611,7 +1611,7 @@ void Chat::initModule()
 	config_file.addVariable("Look", "ChatMyFontColor", QColor("#000000"));
 	config_file.addVariable("Look", "ChatUsrFontColor", QColor("#000000"));
 
-	config_file.addVariable("Look", "ChatFont", &defaultFont);
+	config_file.addVariable("Look", "ChatFont", defaultFont);
 
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Look"), "LookTab");
 
@@ -1633,7 +1633,7 @@ void Chat::initModule()
 			ConfigDialog::addColorButton("Look", "Chat window", QT_TRANSLATE_NOOP("@default", "User font color"), "ChatUsrFontColor", config_file.readColorEntry("Look","ChatUsrFontColor"), "", "his_font_color");
 
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Fonts"));
-		ConfigDialog::addSelectFont("Look", "Fonts", QT_TRANSLATE_NOOP("@default", "Font in chat window"), "ChatFont", defaultFont.toString(), "", "chat_font_box");
+		ConfigDialog::addSelectFont("Look", "Fonts", QT_TRANSLATE_NOOP("@default", "Font in chat window"), "ChatFont", defaultFont->toString(), "", "chat_font_box");
 
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Previews"));
 		ConfigDialog::addVGroupBox("Look", "Previews", QT_TRANSLATE_NOOP("@default", "Chat preview"));

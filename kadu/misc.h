@@ -73,8 +73,8 @@ void loadGeometry(QWidget *w, const QString &section, const QString &name, int d
 //usuwa znaki nowego wiersza, tagi htmla (wszystko co da siê dopasowaæ jako <.*>)
 QString toPlainText(const QString &text);
 
-extern QFont defaultFont;
-extern QFontInfo defaultFontInfo;
+extern QFont *defaultFont;
+extern QFontInfo *defaultFontInfo;
 
 extern QTextCodec *codec_cp1250;
 extern QTextCodec *codec_latin2;

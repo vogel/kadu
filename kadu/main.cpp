@@ -119,8 +119,8 @@ int main(int argc, char *argv[])
 
 	new QApplication(argc, argv);
 	icons_manager_ptr = new IconsManager ("icons", "icons.conf");
-	defaultFontInfo = QFontInfo(qApp->font());
-	defaultFont = QFont(defaultFontInfo.family(), defaultFontInfo.pointSize());
+	defaultFontInfo = new QFontInfo(qApp->font());
+	defaultFont = new QFont(defaultFontInfo->family(), defaultFontInfo->pointSize());
 
 	// ³adowanie t³umaczenia
 	config_file.addVariable("General", "Language", QString(QTextCodec::locale()).mid(0,2));
