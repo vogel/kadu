@@ -895,7 +895,7 @@ void Chat::sendMessage(void) {
 	}
 	if (myLastFormats)
 		delete (char *)myLastFormats;
-	delete users;
+	delete []users;
 	free(utmp);
 
 	if (sess->check & GG_CHECK_WRITE)
