@@ -1,8 +1,11 @@
 Instrukcja instalacji dla wersji 0.3.0 lub nowszej
 
+Aby zainstalowaæ Kadu ze ¼róde³, spróbuj u¿yæ kreatora: ./setup
+
+W przeciwnym wypadku:
 1. w kadu zrobiæ ./configure ; make i modliæ siê, ¿eby przesz³o ;>
    ewentualnie posi³kowaæ siê np. --with-qt-dir=/¶cie¿ka
-3. jako root make install i zapamiêtaæ, gdzie co le¿y, ¿eby potem wpisaæ do
+2. jako root make install i zapamiêtaæ, gdzie co le¿y, ¿eby potem wpisaæ do
    konfiga.
 
 proste? proste ;>
