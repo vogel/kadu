@@ -1,5 +1,5 @@
-#ifndef WIZARD_H
-#define WIZARD_H
+#ifndef KADU_CONFIG_WIZARD_H
+#define KADU_CONFIG_WIZARD_H
 
 #include <qwizard.h>	
 #include <qhbox.h>
@@ -18,81 +18,96 @@ class Wizard : public QWizard
 {
     Q_OBJECT
 
-public:
-	Wizard( QWidget *parent = 0, const char *name = 0 );	/* konstruktor */
-	~Wizard();	/* destruktor */
-	bool noNewAccount;
-	int menuPos;
+	public:
+		Wizard(QWidget *parent = 0, const char *name = 0);
+		~Wizard();
 
-protected:
-	/*  te funkcje tworz± poszczegolne okna wizarda */ 
-	void createWelcomePage();
-	void createGGNumberSelect();
-	void createGGCurrentNumberPage();
-	void createGGNewNumberPage();
-	void createLanguagePage();
-	void createWWWOpionsPage();
-	void createChatOpionsPage();
-	void createSoundOptionsPage();
-	void createGeneralOptionsPage();
-	void createHintsOptionsPage();
-	void createColorsPage();
-	void createInfoPanelPage();
-	void createQtStylePage();
-	void createGreetingsPage();
+	public slots:
+		void wizardStart();
+	protected:
+		bool noNewAccount;
+
+		/*  tworz± poszczegolne okna wizarda */ 
+		void createWelcomePage();
+		void createGGNumberSelect();
+		void createGGCurrentNumberPage();
+		void createGGNewNumberPage();
+		void createLanguagePage();
+		void createWWWOpionsPage();
+		void createChatOpionsPage();
+		void createSoundOptionsPage();
+		void createGeneralOptionsPage();
+		void createHintsOptionsPage();
+		void createColorsPage();
+		void createInfoPanelPage();
+		void createQtStylePage();
+		void createGreetingsPage();
 	
-	/* a tu sa okna */
-	QVBox *welcomePage, *ggNumberSelect, *ggCurrentNumberPage, *ggNewNumberPage, *languagePage, *chatOptionsPage, *wwwOptionsPage, 
-		*soundOptionsPage, *generalOptionsPage, *greetingsPage, *hintsOptionsPage, *colorsPage, *qtStylePage, *infoPanelPage;
-	QRadioButton *rb_haveNumber, *rb_dontHaveNumber;
-	QLineEdit *l_ggNumber, *l_ggPassword, *l_ggNewPasssword, *l_ggNewPassswordRetyped, *l_email, *l_customBrowser;
-	QCheckBox *c_importContacts, *c_waitForDelivery, *c_enterSendsMessage, *c_openOnNewMessage, *c_flashTitleOnNewMessage, *c_ignoreAnonyms,
-		*c_logMessages, *c_logStatusChanges, *c_privateStatus, *c_showBlocked, *c_showBlocking, *c_startDocked, *c_enableSounds, *c_playWhilstChatting,
-		*c_playWhenInvisible, *c_showInfoPanel, *c_showScrolls;
-	QComboBox *cb_browser, *cb_browserOptions, *cb_hintsTheme, *cb_hintsType, *cb_colorTheme, *cb_iconTheme, *cb_qtTheme, *cb_panelTheme;
-	QLabel *preview, *preview2, *preview4, *iconPreview, *iconPreview2, *iconPreview3, *iconPreview4, *infoPreview;
-	QString customHint, customPanel;
+		/* a tu sa okna */
+		QVBox *welcomePage, *ggNumberSelect, *ggCurrentNumberPage, *ggNewNumberPage, *languagePage, *chatOptionsPage, *wwwOptionsPage, 
+			*soundOptionsPage, *generalOptionsPage, *greetingsPage, *hintsOptionsPage, *colorsPage, *qtStylePage, *infoPanelPage;
+		QRadioButton *rb_haveNumber, *rb_dontHaveNumber;
+		QLineEdit *l_ggNumber, *l_ggPassword, *l_ggNewPasssword, *l_ggNewPassswordRetyped, *l_email, *l_customBrowser;
+		QCheckBox *c_importContacts, *c_waitForDelivery, *c_enterSendsMessage, *c_openOnNewMessage, *c_flashTitleOnNewMessage, *c_ignoreAnonyms,
+			*c_logMessages, *c_logStatusChanges, *c_privateStatus, *c_showBlocked, *c_showBlocking, *c_startDocked, *c_enableSounds, *c_playWhilstChatting,
+			*c_playWhenInvisible, *c_showInfoPanel, *c_showScrolls;
+		QComboBox *cb_browser, *cb_browserOptions, *cb_hintsTheme, *cb_hintsType, *cb_colorTheme, *cb_iconTheme, *cb_qtTheme, *cb_panelTheme, *cb_soundModule;
+		QLabel *preview, *preview2, *preview4, *iconPreview, *iconPreview2, *iconPreview3, *iconPreview4, *infoPreview, *moduleInfo;
+		QString customHint, customPanel;
 
-	/* a tu poszczegolne funkcje zapisujace konfiguracje */
-	void tryImport();
-	void setGaduAccount();
-	void setChatOptions();
-	void setSoundOptions();
-	void setGeneralOptions();
-	void setBrowser();
-	void setHints();
-	void setColorsAndIcons();
-	void setPanelTheme();
+		/* zapisuj± konfiguracjê */
+		void tryImport();
+		void setGaduAccount();
+		void setChatOptions();
+		void setSoundOptions();
+		void setGeneralOptions();
+		void setBrowser();
+		void setHints();
+		void setColorsAndIcons();
+		void setPanelTheme();
 
-	/* funkcje pomocnicze */
-	QString toDisplay(QString);
-	QString toSave(QString);
+		/* funkcje pomocnicze */
+		QString toDisplay(QString);
+		QString toSave(QString);
+		virtual void closeEvent(QCloseEvent *e);
 
-protected slots:
+	protected slots:
+		void setLanguage(int);
+		void registeredAccount(bool, UinType);
+		void previewHintsTheme(int);
+		void previewHintsType(int);
+		void previewColorTheme(int);
+		void previewIconTheme(int);
+		void previewQtTheme(int);
+		void previewPanelTheme(int);
+		//void addScrolls(bool);
 
-	/* a tu implementacja slotow */
-	void setLanguage(int);	/* ustawia jezyk */
-	void registeredAccount(bool, UinType);	/* jak zarejestrowal konto */
-	void previewHintsTheme(int);
-	void previewHintsType(int);
-	void previewColorTheme(int);
-	void previewIconTheme(int);
-	void previewQtTheme(int);
-	void previewPanelTheme(int);
-	//void addScrolls(bool);
+		void finishClicked();
+		void nextClicked();
+		void backClicked();
+		void cancelClicked();
 
-	void wizardStart();
-	void finishPressed();
-	void nextPressed();
-	void backPressed();
+		void findAndSetWebBrowser(int selectedBrowser);
+		void findAndSetBrowserOption(int selectedOption);
+		void setSoundModule(int);
 
-	void findAndSetWebBrowser(int selectedBrowser);
-	void findAndSetBrowserOption(int selectedOption);
-
-	void userListImported(bool ok, UserList& userList);
-	void connected();
+		void userListImported(bool ok, UserList& userList);
+		void connected();
 };
 
+class WizardStarter : public QObject
+{
+	Q_OBJECT
+	private:
+		int menuPos;
+	public:
+		WizardStarter(QObject *parent=0, const char *name=0);
+		~WizardStarter();
+	public slots:
+		void start();
+};
+
+extern WizardStarter *wizardStarter;
 extern Wizard *startWizardObj;
 
 #endif

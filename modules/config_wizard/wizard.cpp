@@ -3,8 +3,17 @@
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
  *  (at your option) any later version.
- *
  */
+
+#include <qbuttongroup.h>
+#include <qcheckbox.h>
+#include <qmessagebox.h>
+#include <qregexp.h>
+#include <qstyle.h>
+#include <qstylefactory.h>
+
+#include <stdlib.h>
+#include <unistd.h>
 
 #include "wizard.h"
 #include "debug.h"
@@ -12,23 +21,21 @@
 #include "misc.h"
 #include "gadu.h"
 #include "kadu.h"
-#include <qbuttongroup.h>
-#include <qcheckbox.h>
-#include <qmessagebox.h>
-#include <qregexp.h>
-#include <qstyle.h>
-#include <qstylefactory.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include "addons.h"	//tu sa ustawienia kolorow, dymkow i panelu informacyjnego
+#include "modules.h"
+#include "addons.h"
+
+unsigned int informationPanelCount=sizeof(informationPanelSyntax)/sizeof(informationPanelSyntax[0]);
+unsigned int hintCount=sizeof(hintSyntax)/sizeof(hintSyntax[0]);
+unsigned int hintColorCount=sizeof(hintColors)/sizeof(hintColors[0]);
+unsigned int kaduColorCount=sizeof(kaduColors)/sizeof(kaduColors[0]);
 
 extern "C" int config_wizard_init()
 {
 	kdebugf();
-	startWizardObj=new Wizard();
+	wizardStarter = new WizardStarter(NULL, "wizardStarter");
 
-	if (config_file.readEntry("General", "UIN", "0")=="0")
-		startWizardObj->exec();
+	if (config_file.readNumEntry("General", "UIN", 0)==0 || config_file.readEntry("General", "Password", "").isEmpty())
+		wizardStarter->start();
 	
 	kdebugf2();
 	return 0;
@@ -37,69 +44,288 @@ extern "C" int config_wizard_init()
 extern "C" void config_wizard_close()
 {
 	kdebugf();
-	if (startWizardObj)
-		delete startWizardObj;
+	if (wizardStarter)
+	{
+		delete wizardStarter;
+		wizardStarter = NULL;
+	}
 	kdebugf2();
 }
 
-/**
-	Konstruktor - tworzy wszystkie okna 
-**/
-Wizard::Wizard(QWidget * /*parent*/, const char * /*name*/)
+WizardStarter::WizardStarter(QObject *parent, const char *name) : QObject(parent, name)
+{
+	menuPos=kadu->mainMenu()->insertItem(icons_manager.loadIcon("ConfigurationWizard"),
+		tr("Configuration Wizard"), this, SLOT(start()), 0, -1, 0);
+}
+
+WizardStarter::~WizardStarter()
+{
+	kadu->mainMenu()->removeItem(menuPos);
+	if (startWizardObj)
+	{
+		delete startWizardObj;
+		startWizardObj = NULL;
+	}
+}
+
+void WizardStarter::start()
+{
+	kdebugf();
+	startWizardObj = new Wizard(NULL, "startWizardObj");
+	startWizardObj->wizardStart();
+	kdebugf2();
+}
+
+Wizard::Wizard(QWidget *parent, const char *name) : QWizard(parent, name)
 {
 	kdebugf();
 	setCaption(tr("Kadu Wizard"));
-	setFixedSize(470, 300);	/* ustawia rozmiar okna */
+	setMinimumSize(470, 300);	/* ustawia rozmiar okna */
 
 	createWelcomePage();		/* powitanie */
 	createLanguagePage();		/* ustawienie jezyka */
-  	createGGNumberSelect();	/* wyswietla okno ustawien numerka */
+  	createGGNumberSelect();		/* wyswietla okno ustawien numerka */
 	createGGCurrentNumberPage();
 	createGGNewNumberPage();
 	createGeneralOptionsPage(); /* inne */
-	createChatOpionsPage();	/* ustawienia gadki */
+	createChatOpionsPage();		/* ustawienia gadki */
 	createColorsPage();			/* kolory */
 	createHintsOptionsPage();	/* dymki */
 	createInfoPanelPage();		/* wybor panelu */
-	createQtStylePage();			/* Qt3 theme */
+	createQtStylePage();		/* Qt3 theme */
 	createSoundOptionsPage();	/* dzwieki */
-	createWWWOpionsPage();	/* ustawienie przegladarki */
+	createWWWOpionsPage();		/* ustawienie przegladarki */
 	createGreetingsPage();		/* okno koncowe */
 
 	QPushButton *finish_button = finishButton();
-	connect(finish_button, SIGNAL(clicked()), this, SLOT(finishPressed()));
-	QPushButton *next_button = nextButton();
-	connect(next_button, SIGNAL(clicked()), this, SLOT(nextPressed()));
-	QPushButton *back_button = backButton();
-	connect(back_button, SIGNAL(clicked()), this, SLOT(backPressed()));
-	helpButton()->hide();
-	
-	/*  to po to by byly tlumaczenia buttonow w wizardzie */
+	connect(finish_button, SIGNAL(clicked()), this, SLOT(finishClicked()));
 	finish_button->setText(tr("Finish"));
+
+	QPushButton *next_button = nextButton();
+	connect(next_button, SIGNAL(clicked()), this, SLOT(nextClicked()));
 	next_button->setText(tr("Next >"));
+
+	QPushButton *back_button = backButton();
+	connect(back_button, SIGNAL(clicked()), this, SLOT(backClicked()));
 	back_button->setText(tr("< Back"));
+
 	cancelButton()->setText(tr("Cancel"));
+	connect(cancelButton(), SIGNAL(clicked()), this, SLOT(cancelClicked()));
 	
-	noNewAccount=false;	/* normalnie to jest false */
-	menuPos=kadu->mainMenu()->insertItem(icons_manager.loadIcon("ConfigurationWizard"), tr("Configuration Wizard"), this, SLOT(wizardStart()), 0, -1, 0);
-	
-	connect(gadu, SIGNAL(userListImported(bool, UserList&)), this, SLOT(userListImported(bool, UserList&)));
-	connect(gadu, SIGNAL(registered(bool, UinType)), this, SLOT(registeredAccount(bool, UinType)));
-	//connect(gadu, SIGNAL(connected(), this, SLOT(connected())));
+	helpButton()->hide();
+	noNewAccount=false;
+	kdebugf2();
+}
+
+Wizard::~Wizard()
+{
+	kdebugf();
 	kdebugf2();
 }
 
 /**
-	destruktor
+	naci¶niêcie zakoñcz i zapisanie konfiguracji (o ile nie nast±pi³o wcze¶niej)
 **/
-Wizard::~Wizard()
+void Wizard::finishClicked()
 {
 	kdebugf();
-	kadu->mainMenu()->removeItem(menuPos);
+	setGeneralOptions();
+	setChatOptions();
+	setColorsAndIcons();
+	setHints();
+	setPanelTheme();
+	setSoundOptions();
+	setBrowser();
+	connect(gadu, SIGNAL(userListImported(bool, UserList&)), this, SLOT(userListImported(bool, UserList&)));
+	tryImport();
 	disconnect(gadu, SIGNAL(userListImported(bool, UserList&)), this, SLOT(userListImported(bool, UserList&)));
-	disconnect(gadu, SIGNAL(registered(bool, UinType)), this, SLOT(registeredAccount(bool, UinType)));
-	//disconnect(gadu, SIGNAL(connected(), this, SLOT(connected())));
+	
 	startWizardObj=NULL;
+	deleteLater();
+
+	kdebugf2();
+}
+
+void Wizard::cancelClicked()
+{
+	kdebugf();
+	startWizardObj=NULL;
+	deleteLater();
+	kdebugf2();
+}
+
+void Wizard::closeEvent(QCloseEvent *e)
+{
+	kdebugf();
+	QWizard::closeEvent(e);
+	startWizardObj=NULL;
+	deleteLater();
+}
+
+/**
+	naci¶niêcie dalej - zrobione obej¶cie miêdzy istniej±cym a nowym kontem gg
+**/
+void Wizard::nextClicked()
+{
+	kdebugf();
+	if (noNewAccount)
+	{
+		if (currentPage()==welcomePage)
+			QWizard::showPage(languagePage);
+		else if (currentPage()==ggNumberSelect)
+			QWizard::showPage(ggCurrentNumberPage);
+		else if (currentPage()==ggNewNumberPage)
+			QWizard::showPage(generalOptionsPage);
+	}
+	else if (currentPage()==ggCurrentNumberPage && rb_dontHaveNumber->isChecked())
+		QWizard::showPage(ggNewNumberPage);	
+	else if (currentPage()==ggNewNumberPage && rb_haveNumber->isChecked())
+		QWizard::showPage(generalOptionsPage);
+	
+	if (currentPage()==generalOptionsPage && gadu->status().isOffline())		//jesli przeszedl jedno pole dalej niz konf. konta i nie polaczony
+		setGaduAccount();	//to zapisuje ustawienia konta
+	kdebugf2();
+}
+
+/**
+	naci¶niêcie cofnij - to co w dalej ale do ty³u
+**/
+void Wizard::backClicked()
+{
+	kdebugf();
+	if (noNewAccount)
+	{
+		if (currentPage()==ggNewNumberPage)
+			QWizard::showPage(ggCurrentNumberPage);
+		else if (currentPage()==ggNumberSelect)	
+		{
+			setBackEnabled(languagePage, false);
+			QWizard::showPage(languagePage);
+		}
+	}
+	else if (currentPage()==ggCurrentNumberPage && rb_dontHaveNumber->isChecked())
+		QWizard::showPage(ggNumberSelect);	
+	else if (currentPage()==ggNewNumberPage && rb_haveNumber->isChecked())
+		QWizard::showPage(ggCurrentNumberPage);	
+	kdebugf2();
+}
+
+/**
+	wywo³anie wizarda z menu
+**/
+void Wizard::wizardStart()
+{
+	kdebugf();
+/*	noNewAccount=true;
+	QWizard::showPage(languagePage);
+	setBackEnabled(languagePage, false);
+*/	exec();
+//	noNewAccount=false;
+	kdebugf2();
+}
+
+/**
+	po zaimportowaniu listy kontaktów siê wywo³uje
+**/
+void Wizard::userListImported(bool /*ok*/, UserList& userList)
+{
+	kdebugf();
+
+	userlist.merge(userList);
+	userlist.writeToFile();	//zaraz zapisuje liste bo kadu zaraz pewnie poleci
+
+	kadu->userbox()->clear();
+	kadu->userbox()->clearUsers();
+
+	for (UserList::const_iterator i = userlist.begin(); i != userlist.end(); ++i)
+		kadu->userbox()->addUser((*i).altNick());
+
+	UserBox::all_refresh();
+	
+	kdebugf2();
+}
+
+/**
+	po polaczeniu sie z siecia robi import - podpinane tylko gdy kadu nie jest polaczone w momencie nacisniecia Finish
+**/
+void Wizard::connected()
+{
+	if (!gadu->doImportUserList()) 
+		QMessageBox::information(0, tr("Kadu Wizard"),
+			tr("User list wasn't imported because of some error"), tr("OK"), 0, 0, 1);
+	disconnect(gadu, SIGNAL(connected()), this, SLOT(connected()));
+}
+
+/**
+	Ustawienie konta GG
+**/
+void Wizard::setGaduAccount()
+{
+	kdebugf();
+	if (rb_haveNumber->isChecked())
+	{
+		config_file.writeEntry("General", "UIN", l_ggNumber->text());
+		config_file.writeEntry("General", "Password", pwHash(l_ggPassword->text()));
+	}
+	else
+	{
+		bool isOk=true;
+		if (l_ggNewPasssword->text() != l_ggNewPassswordRetyped->text())
+		{
+			QMessageBox::information(0, tr("Kadu Wizard"), tr("Error data typed in required fields.\n\n"
+				"Passwords typed in both fields (\"New password\" and \"Retype new password\") "
+				"should be the same!"), tr("OK"), 0, 0, 1);
+			isOk=false;
+		}
+		if (!l_ggNewPasssword->text().length())
+		{
+			QMessageBox::warning(this, "Kadu Wizard", tr("Please fill all fields"), tr("OK"), 0, 0, 1);
+			isOk=false;
+		}
+		if (isOk)
+			gadu->registerAccount(l_email->text(), l_ggNewPasssword->text());
+		connect(gadu, SIGNAL(registered(bool, UinType)), this, SLOT(registeredAccount(bool, UinType)));
+	}
+	kdebugf2();
+}
+
+/**
+	Zapisanie parametrów nowego konta
+**/
+void Wizard::registeredAccount(bool ok, UinType uin)
+{
+	kdebugf();
+	if (ok) 
+	{
+		config_file.writeEntry("General", "UIN", (int)uin);
+		config_file.writeEntry("General", "Password", pwHash(l_ggNewPasssword->text()));
+		gadu->status().setOnline();	//jak zarejestrowal to od razu sie laczy
+	}
+	else
+		QMessageBox::warning(0, tr("Register user"),
+				tr("An error has occured while registration. Please try again later."), tr("OK"), 0, 0, 1);
+	disconnect(gadu, SIGNAL(registered(bool, UinType)), this, SLOT(registeredAccount(bool, UinType)));
+	kdebugf2();
+}
+
+
+/**
+	sprawdzenie czy trzeba importowaæ listê kontaktów czy nie i ew. import
+**/
+void Wizard::tryImport()
+{
+	kdebugf();
+	if (c_importContacts->isChecked())
+	{
+		if (gadu->status().isOffline())
+		{
+			gadu->status().setOnline();	//kaze sie polaczyc i podpina sie pod sygnal polaczenia sie z siecia
+			connect(gadu, SIGNAL(connected()), this, SLOT(connected()));
+		}	//jak polaczony to bez cyrkow robi import
+		else if (!gadu->doImportUserList())
+			QMessageBox::information(0, tr("Kadu Wizard"),
+				tr("User list wasn't imported because of some error"), tr("OK"), 0, 0, 1);
+	}
 	kdebugf2();
 }
 
@@ -110,16 +336,19 @@ void Wizard::createWelcomePage()
 {
 	kdebugf();
 	welcomePage=new QVBox(this);
-   	welcomePage->setSpacing(8);
+	welcomePage->setSpacing(8);
 
-	new QLabel(tr("<h2>Welcome in Kadu</h2><h3> the Gadu-gadu network client for *nix and MacOS X.</h3><br><br><font size=+1>This is first time you launch Kadu. This wizard will help you to configure the basic settings of Kadu. If you are experienced kadu user you may omit the wizard clicking Cancel. Otherwise click Next.</font>"), welcomePage);
+	new QLabel(tr("<h2>Welcome in Kadu</h2><h3> the Gadu-gadu network client for *nix "
+					"and MacOS X.</h3><br><br><font size=+1>This is first time you launch Kadu. "
+					"This wizard will help you to configure the basic settings of Kadu. "
+					"If you are experienced Kadu user you may omit the wizard by clicking Cancel. "
+					"Otherwise click Next.</font>"), welcomePage);
 
 	addPage(welcomePage, tr("Welcome"));
-    setNextEnabled(welcomePage,true);
+	setNextEnabled(welcomePage, true);
 	setHelpEnabled(welcomePage, false);
 	kdebugf2();
 }
-
 
 /**
 	Wybor opcji z numerkiem gg
@@ -129,7 +358,8 @@ void Wizard::createGGNumberSelect()
 	kdebugf();
 	ggNumberSelect=new QVBox(this);
 
-	new QLabel(tr("<h3>Please decide if you want to use your old Gadu-gadu account and number or to create the new one</h3>"), ggNumberSelect);
+	new QLabel(tr("<h3>Please decide if you want to use your old Gadu-gadu account and "
+					"number or to create the new one</h3>"), ggNumberSelect);
 
 	QButtonGroup *grp_numberSelection=new QButtonGroup(tr("Select account option"), ggNumberSelect);
 	grp_numberSelection->setInsideMargin(10);
@@ -144,7 +374,6 @@ void Wizard::createGGNumberSelect()
 	kdebugf2();
 }
 
-
 /**
 	Wyswietlenie ustawienia istniejacego konta
 **/
@@ -153,7 +382,7 @@ void Wizard::createGGCurrentNumberPage()
 	kdebugf();
 	ggCurrentNumberPage=new QVBox(this);
 	
-	new QLabel(tr("<h3>You decided to use your existing account.Please configure it</h3>"), ggCurrentNumberPage);
+	new QLabel(tr("<h3>You decided to use your existing account. Please configure it</h3>"), ggCurrentNumberPage);
 	QGroupBox *grp_haveNumber=new QGroupBox(tr("Please enter your account settings"), ggCurrentNumberPage);
 	grp_haveNumber->setInsideMargin(10);
 	grp_haveNumber->setColumns(2);
@@ -168,12 +397,10 @@ void Wizard::createGGCurrentNumberPage()
 	l_ggPassword->setText(pwHash(config_file.readEntry("General", "Password", "")));
 	c_importContacts = new QCheckBox(tr("Import contacts"), grp_haveNumber);
 	c_importContacts->setChecked(false);
-	//c_importContacts->setEnabled(false);	//na razie zablokowane
 
 	addPage(ggCurrentNumberPage, tr("Gadu-gadu account"));
 	kdebugf2();
 }
-
 
 /**
 	Zakladanie nowego konta
@@ -183,7 +410,8 @@ void Wizard::createGGNewNumberPage()
 	kdebugf();
 	ggNewNumberPage=new QVBox(this);
 	
-	new QLabel(tr("<h3>Please enter your valid e-mail address and password you want to secure your new Gadu-gadu number<h3>"), ggNewNumberPage);
+	new QLabel(tr("<h3>Please enter your valid e-mail address and password you want "
+				"to secure your new Gadu-gadu number<h3>"), ggNewNumberPage);
 
 	QGroupBox *grp_dontHaveNumber=new QGroupBox("", ggNewNumberPage);
 	grp_dontHaveNumber->setInsideMargin(10);
@@ -202,7 +430,6 @@ void Wizard::createGGNewNumberPage()
 	addPage(ggNewNumberPage, tr("Gadu-gadu account"));
 	kdebugf2();
 }
-
 
 /**
 	Wybor jezyka
@@ -225,7 +452,7 @@ void Wizard::createLanguagePage()
 	cb_language->insertItem(tr("Italian"));
 	cb_language->insertItem(tr("German"));
 
-	QString lang=config_file.readEntry("General", "Language", "en");
+	QString lang=config_file.readEntry("General", "Language");
 
 	if (lang=="pl")			cb_language->setCurrentItem(1);
 	else if (lang=="it")	cb_language->setCurrentItem(2);
@@ -236,7 +463,6 @@ void Wizard::createLanguagePage()
 	addPage(languagePage, tr("Language"));
 	kdebugf2();
 }
-
 
 /**
 	Opcje chata
@@ -268,7 +494,6 @@ void Wizard::createChatOpionsPage()
 	addPage(chatOptionsPage, tr("Chat"));
 	kdebugf2();
 }
-
 
 /**
 	opcje przegladarki www
@@ -302,7 +527,6 @@ void Wizard::createWWWOpionsPage()
 	kdebugf2();
 }
 
-
 /**
 	opcje dzwieku
 **/
@@ -310,13 +534,80 @@ void Wizard::createSoundOptionsPage()
 {
 	kdebugf();
 	soundOptionsPage = new QVBox(this);
-
+	
 	new QLabel(tr("<h3>Please setup sounds</h3>"), soundOptionsPage);
+	
+	QGroupBox *soundModuleOptions = new QGroupBox(tr("Sound module"), soundOptionsPage);
+	soundModuleOptions->setInsideMargin(10);
+	soundModuleOptions->setColumns(2);
+	soundModuleOptions->setInsideSpacing(4);
+				
+	new QLabel (tr("Choose sound module"),soundModuleOptions);
+	
+	cb_soundModule = new QComboBox(soundModuleOptions);
+	cb_soundModule->insertItem(tr("None"));
+	cb_soundModule->insertItem("ao_sound");
+	cb_soundModule->insertItem("arts_sound");
+	cb_soundModule->insertItem("dsp_sound");
+	cb_soundModule->insertItem("esd_sound");
+	cb_soundModule->insertItem("ext_sound");
+	cb_soundModule->insertItem("nas_sound");
+	
+	connect(cb_soundModule, SIGNAL(activated (int)), this, SLOT(setSoundModule(int)));
+	
+	new QLabel (tr("<b>Description:</b>"), soundModuleOptions);	
+	moduleInfo = new QLabel (tr("Kadu uses various sound modules to play its sounds. "
+								"Choosing appropriate module is quite important. "
+								"Browse installed sound modules and choose the best for you."),
+							soundModuleOptions);
+	moduleInfo->setFrameStyle(QFrame::Plain);
+	moduleInfo->setAlignment(Qt::WordBreak | Qt::DontClip);
+	moduleInfo->setFixedWidth(300);
+	moduleInfo->setAutoResize(true);
 
+	if (modules_manager->moduleIsLoaded("ao_sound"))
+	{
+		cb_soundModule->setCurrentItem(1);
+		moduleInfo->setText(tr("This module uses libao to produce sounds. "
+								"This is third-party module not supported by Kadu Team."));
+	}
+	else if (modules_manager->moduleIsLoaded("arts_sound"))
+	{
+		cb_soundModule->setCurrentItem(2);
+		moduleInfo->setText(tr("This module uses KDE's aRts daemon which mixes "
+								"multiple digital sources at real time.<br> When your "
+								"soundcard doesn't handle that, this module is for you."));
+	}
+	else if (modules_manager->moduleIsLoaded("dsp_sound")) 
+	{
+		cb_soundModule->setCurrentItem(3);
+		moduleInfo->setText(tr("This module uses OSS kernel module to produce sounds."));
+	}
+	else if (modules_manager->moduleIsLoaded("esd_sound")) 
+	{
+		cb_soundModule->setCurrentItem(4);
+		moduleInfo->setText(tr("This module uses GNOME's Enlightened Sound Daemon "
+							"which mixes multiple digital sources at real time.<br> "
+							"When your soundcard doesn't handle that, this module is for you."));
+	}
+	else if (modules_manager->moduleIsLoaded("ext_sound")) 
+	{
+		cb_soundModule->setCurrentItem(5);
+		moduleInfo->setText(tr("This module uses external application to produce sounds. "
+								"You must specify path to external program in configuration."));
+	}
+	else if (modules_manager->moduleIsLoaded("nas_sound")) 
+	{
+		cb_soundModule->setCurrentItem(6);
+		moduleInfo->setText(tr("This module uses Network Audio System to produce sounds. "
+								"Use it when you use NAS sound system."));
+	}
+	
 	QGroupBox *grp_soundOptions = new QGroupBox(tr("Sounds"), soundOptionsPage);
 	grp_soundOptions->setInsideMargin(10);
 	grp_soundOptions->setColumns(1);
 	grp_soundOptions->setInsideSpacing(4);
+	
 	c_enableSounds = new QCheckBox (tr("Play sounds"), grp_soundOptions);
 	c_playWhilstChatting = new QCheckBox (tr("Play sounds from a person whilst chatting"), grp_soundOptions);
 	c_playWhenInvisible = new QCheckBox (tr("Play chat sounds only when window is invisible"), grp_soundOptions);
@@ -328,7 +619,6 @@ void Wizard::createSoundOptionsPage()
 	addPage(soundOptionsPage, tr("Sound"));
 	kdebugf2();
 }
-
 
 /**
 	opcje ogolne
@@ -368,9 +658,8 @@ void Wizard::createGeneralOptionsPage()
 	kdebugf2();
 }
 
-
 /**
-	opcje dymkow
+	opcje dymków
 **/
 void Wizard::createHintsOptionsPage()
 {
@@ -386,7 +675,7 @@ void Wizard::createHintsOptionsPage()
 
 	new QLabel(tr("Please choose hints design"), grp_hintsOptions);
 	cb_hintsTheme = new QComboBox(grp_hintsOptions);
-	for (int i=0; i<hintColorNumber; ++i)
+	for (unsigned int i=0; i<hintColorCount; ++i)
 		cb_hintsTheme->insertItem(tr(hintColorsNames[i]));
 
 	new QLabel(tr("Preview"), grp_hintsOptions);
@@ -416,11 +705,11 @@ void Wizard::createHintsOptionsPage()
 	
 	new QLabel(tr("Please choose hints type"), grp_hintsOptions2);
 	cb_hintsType = new QComboBox(grp_hintsOptions2);
-	for (int i=0; i<hintsNumber; ++i)
-		cb_hintsType->insertItem(tr(hintLookName[i]));
+	for (unsigned int i=0; i<hintCount; ++i)
+		cb_hintsType->insertItem(tr(hintSyntaxName[i]));
 	
 	new QLabel(tr("Preview"), grp_hintsOptions2);
-	preview4 = new QLabel (toDisplay(hintLook[0]), grp_hintsOptions2);
+	preview4 = new QLabel (toDisplay(hintSyntax[0]), grp_hintsOptions2);
 	preview4->setFont(QFont("sans", 10));	//<----------------------------------
 	preview4->setPaletteForegroundColor(hintColors[0][1]);
 	preview4->setPaletteBackgroundColor(hintColors[0][0]);
@@ -428,33 +717,32 @@ void Wizard::createHintsOptionsPage()
 	preview4->setFixedWidth(200);
 	preview4->setAutoResize(true);
 
-	connect(cb_hintsTheme, SIGNAL(activated (int)), this, SLOT(previewHintsTheme(int)));
-	connect(cb_hintsType, SIGNAL(activated (int)), this, SLOT(previewHintsType(int)));
+	connect(cb_hintsTheme, SIGNAL(activated(int)), this, SLOT(previewHintsTheme(int)));
+	connect(cb_hintsType, SIGNAL(activated(int)), this, SLOT(previewHintsType(int)));
 
 	QString hintConstruction=config_file.readEntry("Hints", "NotifyHintSyntax", "");
-	if (hintConstruction != "")
+	if (!hintConstruction.isEmpty())
 	{
-		int i;
-		for (i=0; i<hintsNumber; ++i)
-			if (hintConstruction==hintLook[i])
+		unsigned int i;
+		for (i=0; i<hintCount; ++i)
+			if (hintConstruction==hintSyntax[i])
 			{
 				cb_hintsType->setCurrentItem(i);
-				preview4->setText(toDisplay(hintLook[i]));
+				preview4->setText(toDisplay(hintSyntax[i]));
 				break;
 			}
-			if (i==hintsNumber)
-			{
-				cb_hintsType->insertItem(tr("Custom"));
-				cb_hintsType->setCurrentItem(i);
-				customHint=hintConstruction;
-				preview4->setText(toDisplay(hintConstruction));
-			}	
+		if (i==hintCount)
+		{
+			cb_hintsType->insertItem(tr("Custom"));
+			cb_hintsType->setCurrentItem(i);
+			customHint=hintConstruction;
+			preview4->setText(toDisplay(hintConstruction));
+		}	
 	}
-		
+
 	addPage(hintsOptionsPage, tr("Hints"));
 	kdebugf2();
 }
-
 
 /**
 	kolorki i ikonki
@@ -475,8 +763,8 @@ void Wizard::createColorsPage()
 	new QLabel(tr("Please choose Kadu design"), grp_colorOptions);
 	cb_colorTheme = new QComboBox(grp_colorOptions);
 
-	for (int i=0; i<colorNumber; ++i)
-		cb_colorTheme->insertItem(tr(colorsNames[i]));
+	for (unsigned int i=0; i<kaduColorCount; ++i)
+		cb_colorTheme->insertItem(tr(kaduColorNames[i]));
 
 	QGroupBox *grp_iconsOptions = new QGroupBox(tr("Icons"),  colorsPage);
 	grp_iconsOptions->setInsideMargin(10);
@@ -508,7 +796,6 @@ void Wizard::createColorsPage()
 	kdebugf2();
 }
 
-
 /**
 	panel informacyjny
 **/
@@ -518,9 +805,9 @@ void Wizard::createInfoPanelPage()
 	infoPanelPage = new QVBox(this);
 	infoPanelPage->setSpacing(8);
 
-	new QLabel(tr("<h3>Choose your Info panel look</h3>"), infoPanelPage);
+	new QLabel(tr("<h3>Choose your information panel look</h3>"), infoPanelPage);
 
-	QGroupBox *grp_infoPanelOptions = new QGroupBox(tr("Information panel Theme"),  infoPanelPage);
+	QGroupBox *grp_infoPanelOptions = new QGroupBox(tr("Information panel theme"),  infoPanelPage);
 	grp_infoPanelOptions->setInsideMargin(10);
 	grp_infoPanelOptions->setColumns(2);
 	grp_infoPanelOptions->setInsideSpacing(4);
@@ -533,13 +820,13 @@ void Wizard::createInfoPanelPage()
 
 	cb_panelTheme = new QComboBox(grp_infoPanelOptions);
 
-	for (int i=0; i<panelNumber; ++i)
-		cb_panelTheme->insertItem(tr(panelLookName[i]));
+	for (unsigned int i=0; i<informationPanelCount; ++i)
+		cb_panelTheme->insertItem(tr(informationPanelName[i]));
 
 	new QLabel(tr("Preview"), grp_infoPanelOptions);
 	
 	//infoPreview = new KaduTextBrowser (grp_infoPanelOptions);	//-- przymiarka pod zmiane podgladu
-	infoPreview = new QLabel (toDisplay(panelLook[0]), grp_infoPanelOptions);
+	infoPreview = new QLabel (toDisplay(informationPanelSyntax[0]), grp_infoPanelOptions);
 	infoPreview->setFrameStyle(QFrame::Box | QFrame::Plain);
     	infoPreview->setLineWidth(1);
 	infoPreview->setAlignment(Qt::AlignVCenter | Qt::WordBreak | Qt::DontClip);
@@ -556,31 +843,28 @@ void Wizard::createInfoPanelPage()
 	QString panelConstruction=config_file.readEntry("Look", "PanelContents", "");
 	if (panelConstruction != "")
 	{
-		int i;
-		for (i=0; i<panelNumber; ++i)
-			if (panelConstruction==toSave(panelLook[i]))
+		unsigned int i;
+		for (i=0; i<informationPanelCount; ++i)
+			if (panelConstruction==toSave(informationPanelSyntax[i]))
 			{
 				cb_panelTheme->setCurrentItem(i);
-				//infoPreview->setText(QString::fromUtf8(toDisplay(panelLook[i]).ascii()));
-				infoPreview->setText(toDisplay(panelLook[i]));
+				infoPreview->setText(toDisplay(informationPanelSyntax[i]));
 				break;
 			}
-			if (i==panelNumber)
-			{
-				cb_panelTheme->insertItem(tr("Custom"));
-				cb_panelTheme->setCurrentItem(i);
-				customPanel=panelConstruction;
-				//infoPreview->setText(QString::fromUtf8(toDisplay(panelConstruction).ascii()));
-				infoPreview->setText(toDisplay(panelConstruction));
-			}	
+		if (i==informationPanelCount)
+		{
+			cb_panelTheme->insertItem(tr("Custom"));
+			cb_panelTheme->setCurrentItem(i);
+			customPanel=panelConstruction;
+			infoPreview->setText(toDisplay(panelConstruction));
+		}	
 	}
-	addPage(infoPanelPage, tr("Info panel Look"));
+	addPage(infoPanelPage, tr("Information panel look"));
 	kdebugf2();
 }
 
-
 /**
-	wybor stylu qt
+	wybór stylu qt
 **/
 void Wizard::createQtStylePage()
 {
@@ -588,14 +872,14 @@ void Wizard::createQtStylePage()
 	qtStylePage = new QVBox(this);
 	qtStylePage->setSpacing(8);
 
-	new QLabel(tr("<h3>Choose Qt3 theme for Kadu</h3>"), qtStylePage);
+	new QLabel(tr("<h3>Choose Qt theme for Kadu</h3>"), qtStylePage);
 
-	QGroupBox *grp_qtOptions = new QGroupBox(tr("Qt Theme"),  qtStylePage);
+	QGroupBox *grp_qtOptions = new QGroupBox(tr("Qt theme"),  qtStylePage);
 	grp_qtOptions->setInsideMargin(10);
 	grp_qtOptions->setColumns(2);
 	grp_qtOptions->setInsideSpacing(4);
 	
-	new QLabel(tr("Please choose Qt3 design for Kadu"), grp_qtOptions);
+	new QLabel(tr("Please choose Qt design for Kadu"), grp_qtOptions);
 	cb_qtTheme = new QComboBox(grp_qtOptions);
 
 	QStringList sl_themes=QStyleFactory::keys();
@@ -611,9 +895,8 @@ void Wizard::createQtStylePage()
 	kdebugf2();
 }
 
-
 /**
-	pozegnanie
+	po¿egnanie
 **/
 void Wizard::createGreetingsPage()
 {
@@ -621,18 +904,22 @@ void Wizard::createGreetingsPage()
 	greetingsPage = new QVBox(this);
 	greetingsPage->setSpacing(8);
 
-	new QLabel(tr("<h2>Congratulations</h2><h3>You have just configured Kadu</h3>You can adjust settings using the configuration icon on toolbar or simply by pressing F2. It's recomended to read the documentation before changing some advanced settings. If you have questions or problems with Kadu look at <b>www.kadu.net/forum</b> and be our guest.<br><h3>Enjoi using Kadu ;)<br>Kadu Team</h3>"), greetingsPage);
+	new QLabel(tr("<h2>Congratulations</h2><h3>You have just configured Kadu</h3>"
+					"You can adjust settings using the configuration icon on toolbar "
+					"or simply by pressing F2. It's recomended to read the documentation "
+					"before changing some advanced settings. If you have questions "
+					"or problems with Kadu look at <b>www.kadu.net/forum</b> and be "
+					"our guest.<br><h3>Enjoy using Kadu ;)<br>Kadu Team</h3>"), greetingsPage);
 	
 	addPage(greetingsPage, tr("Congratulations"));
 	setFinishEnabled(greetingsPage, TRUE);
 	kdebugf2();
 }
 
-
 /**
-	ustawia jezyk Kadu
+	ustawia jêzyk Kadu
 **/
-void Wizard::setLanguage(int languageId)	/* ustawia jezyk */
+void Wizard::setLanguage(int languageId)	/* ustawia jêzyk */
 {
 	kdebugf();
 	QString language;
@@ -646,80 +933,6 @@ void Wizard::setLanguage(int languageId)	/* ustawia jezyk */
 	config_file.writeEntry("General", "Language", language);
 	kdebugf2();
 }
-
-
-/**
-	Ustawienie konta GG
-**/
-void Wizard::setGaduAccount()
-{
-	kdebugf();
-	if (rb_haveNumber->isChecked())
-	{
-		config_file.writeEntry("General", "UIN", l_ggNumber->text());
-		config_file.writeEntry("General", "Password", pwHash(l_ggPassword->text()));
-	}
-	else
-	{
-		bool isOk=true;
-		if (l_ggNewPasssword->text() != l_ggNewPassswordRetyped->text())
-		{
-			QMessageBox::information(0, tr("Kadu Wizard"), tr("Error data typed in required fields.\n\nPasswords typed in "
-					"both fields (\"New password\" and \"Retype new password\") "
-					"should be the same!"), tr("OK"), 0, 0, 1);
-			isOk=false;
-		}
-		if (!l_ggNewPasssword->text().length())
-		{
-			QMessageBox::warning(this, "Kadu Wizard", tr("Please fill out all fields"), tr("OK"), 0, 0, 1);
-			isOk=false;
-		}
-		if (isOk)
-			gadu->registerAccount(l_email->text(), l_ggNewPasssword->text());
-		//connect(gadu, SIGNAL(registered(bool, UinType)), this, SLOT(registeredAccount(bool, UinType)));
-	}
-	kdebugf2();
-}
-
-
-/**
-	Zapisanie parametrow nowego konta
-**/
-void Wizard::registeredAccount(bool ok, UinType uin)
-{
-	kdebugf();
-	if (ok) 
-	{
-		config_file.writeEntry("General", "UIN", (int)uin);
-		config_file.writeEntry("General", "Password", pwHash(l_ggNewPasssword->text()));
-		gadu->status().setOnline();	//jak zarejestrowal to od razu sie laczy
-	}
-	else
-		QMessageBox::warning(0, tr("Register user"),
-				tr("An error has occured while registration. Please try again later."), tr("OK"), 0, 0, 1);
-	kdebugf2();
-}
-
-
-/**
-	sprawdzenie czy trzeba importowac liste kontaktow czy nie i ew. import
-**/
-void Wizard::tryImport()
-{
-	kdebugf();
-	if (c_importContacts->isChecked())
-	{
-		if (gadu->status().isOffline())
-		{
-			gadu->status().setOnline();	//kaze sie polaczyc i podpina sie pod sygnal polaczenia sie z siecia
-			connect(gadu, SIGNAL(connected()), this, SLOT(connected()));
-		}	//jak polaczony to bez cyrkow robi import
-		else if (!gadu->doImportUserList())
-			QMessageBox::information(0, tr("Kadu Wizard"), tr("User list wasn't imported becouse of some error"), tr("OK"), 0, 0, 1);
-	}
-	kdebugf2();
-}
-
 
 /**
 	ustawienia chata
@@ -735,9 +948,8 @@ void Wizard::setChatOptions()
 	kdebugf2();
 }
 
-
 /**
-	ustawienia dzwieku
+	ustawienia d¼wiêku
 **/
 void Wizard::setSoundOptions()
 {
@@ -745,12 +957,23 @@ void Wizard::setSoundOptions()
 	config_file.writeEntry("Sounds", "PlaySound", c_enableSounds->isChecked());
 	config_file.writeEntry("Sounds", "PlaySoundChat", c_playWhilstChatting->isChecked());
 	config_file.writeEntry("Sounds", "PlaySoundChatInvisible", c_playWhenInvisible->isChecked());
+	
+	if (modules_manager->moduleIsLoaded("ao_sound") && (cb_soundModule->currentText() != "ao_sound")) modules_manager->deactivateModule("ao_sound", false);
+	else if (modules_manager->moduleIsLoaded("arts_sound") && (cb_soundModule->currentText() != "arts_sound")) modules_manager->deactivateModule("arts_sound", false);
+	else if (modules_manager->moduleIsLoaded("dsp_sound") && (cb_soundModule->currentText() != "dsp_sound")) modules_manager->deactivateModule("dsp_sound", false);
+	else if (modules_manager->moduleIsLoaded("esd_sound") && (cb_soundModule->currentText() != "esd_sound")) modules_manager->deactivateModule("esd_sound", false);
+	else if (modules_manager->moduleIsLoaded("ext_sound") && (cb_soundModule->currentText() != "ext_sound")) modules_manager->deactivateModule("ext_sound", false);
+	else if (modules_manager->moduleIsLoaded("nas_sound") && (cb_soundModule->currentText() != "nas_sound")) modules_manager->deactivateModule("nas_sound", false);
+	
+	//jak wybrany modul != zaden to probuje zaladowac
+	if ((cb_soundModule->currentText() != tr("None")) && (!modules_manager->moduleIsLoaded(cb_soundModule->currentText())))
+		modules_manager->activateModule(cb_soundModule->currentText());
+	
 	kdebugf2();
 }
 
-
 /**
-	ustawienia ogolne
+	ustawienia ogólne
 **/
 void Wizard::setGeneralOptions()
 {
@@ -764,9 +987,8 @@ void Wizard::setGeneralOptions()
 	kdebugf2();
 }
 
-
 /**
-	zapis przegladarki
+	zapis przegl±darki
 **/
 void Wizard::setBrowser()
 {
@@ -776,9 +998,8 @@ void Wizard::setBrowser()
 	kdebugf2();
 }
 
-
 /**
-	zmiana wartosci w combo z wyborem przegladarki - szuka jej
+	zmiana warto¶ci w combo z wyborem przegl±darki - szuka jej
 **/
 void Wizard::findAndSetWebBrowser(int selectedBrowser)
 {
@@ -788,18 +1009,16 @@ void Wizard::findAndSetWebBrowser(int selectedBrowser)
 	l_customBrowser->setEnabled(!selectedBrowser);
 }
 
-
 /**
-	wybiera opcje dla przegladarki
+	wybiera opcje dla przegl±darki
 **/
 void Wizard::findAndSetBrowserOption(int selectedOption)
 {
 	ChatSlots::setBrowserOption(selectedOption, l_customBrowser, cb_browser->currentItem());
 }
 
-
 /**
-	podglad szaty graficznej dymkow
+	podgl±d szaty graficznej dymków
 **/
 void Wizard::previewHintsTheme(int hintsThemeID)
 {
@@ -811,21 +1030,19 @@ void Wizard::previewHintsTheme(int hintsThemeID)
 	preview4->setPaletteBackgroundColor(QColor(hintColors[hintsThemeID][0]));
 }
 
-
 /**
-	podglad typu dymkow
+	podgl±d typu dymków
 **/
 void Wizard::previewHintsType(int hintsTypeID)
 {
-	if (hintsTypeID==hintsNumber)
+	if (hintsTypeID==int(hintCount))
 		preview4->setText(toDisplay(customHint));
 	else 
-		preview4->setText(toDisplay(hintLook[hintsTypeID]));
+		preview4->setText(toDisplay(hintSyntax[hintsTypeID]));
 }
 
-
 /**
-	zapisuje ustawienia dymkow
+	zapisuje ustawienia dymków
 **/
 void Wizard::setHints()
 {
@@ -871,37 +1088,35 @@ void Wizard::setHints()
 	}
 	else
 	{
-		if (cb_hintsType->currentItem()==hintsNumber)
+		if (cb_hintsType->currentItem()==int(hintCount))
 			config_file.writeEntry("Hints", "NotifyHintSyntax", tr(customHint));
 		else
-			config_file.writeEntry("Hints", "NotifyHintSyntax", tr(hintLook[cb_hintsType->currentItem()]));
+			config_file.writeEntry("Hints", "NotifyHintSyntax", tr(hintSyntax[cb_hintsType->currentItem()]));
 	}
 	kdebugf2();
 }
 
-
 /**
-	podglad kolorkow i ich zapis
+	podgl±d kolorków i ich zapis
 **/
 void Wizard::previewColorTheme(int colorThemeID)
 {
 	kdebugf();
-	config_file.writeEntry("Look", "ChatMyBgColor", colors[colorThemeID][0]);
-	config_file.writeEntry("Look", "ChatMyFontColor", colors[colorThemeID][1]);
-	config_file.writeEntry("Look", "ChatUsrBgColor", colors[colorThemeID][2]);
-	config_file.writeEntry("Look", "ChatUsrFontColor", colors[colorThemeID][3]);
-	config_file.writeEntry("Look", "InfoPanelBgColor", colors[colorThemeID][4]);
-	config_file.writeEntry("Look", "InfoPanelFgColor", colors[colorThemeID][5]);
-	config_file.writeEntry("Look", "UserboxBgColor", colors[colorThemeID][6]);
-	config_file.writeEntry("Look", "UserboxFgColor", colors[colorThemeID][7]);
+	config_file.writeEntry("Look", "ChatMyBgColor", kaduColors[colorThemeID][0]);
+	config_file.writeEntry("Look", "ChatMyFontColor", kaduColors[colorThemeID][1]);
+	config_file.writeEntry("Look", "ChatUsrBgColor", kaduColors[colorThemeID][2]);
+	config_file.writeEntry("Look", "ChatUsrFontColor", kaduColors[colorThemeID][3]);
+	config_file.writeEntry("Look", "InfoPanelBgColor", kaduColors[colorThemeID][4]);
+	config_file.writeEntry("Look", "InfoPanelFgColor", kaduColors[colorThemeID][5]);
+	config_file.writeEntry("Look", "UserboxBgColor", kaduColors[colorThemeID][6]);
+	config_file.writeEntry("Look", "UserboxFgColor", kaduColors[colorThemeID][7]);
 	
 	kadu->changeAppearance();
 	kdebugf2();
 }
 
-
 /**
-	podglad ikonek
+	podgl±d ikonek
 **/
 void Wizard::previewIconTheme(int iconThemeID)
 {
@@ -915,18 +1130,17 @@ void Wizard::previewIconTheme(int iconThemeID)
 	QString path=icons_manager.iconPath("Online");
 	for (int i=0; i<cb_iconTheme->count(); ++i)
 		if (i!=iconThemeID)
-			path.replace(cb_iconTheme->text(i), cb_iconTheme->text(iconThemeID));
-	path.replace(tr("Default"), "default");
+			path.replace(QRegExp(cb_iconTheme->text(i)), cb_iconTheme->text(iconThemeID));
+	path.replace(QRegExp(tr("Default")), "default");
 	iconPreview->setPixmap(path);
-	path.remove("online.png");
+	path.replace(QRegExp("online.png"), "");
 	iconPreview2->setPixmap(path+"busy_d.png");
 	iconPreview3->setPixmap(path+"invisible_m.png");
 	iconPreview4->setPixmap(path+"offline_d_m.png");
 }
 
-
 /**
-	zapisuje ustawienie ikonek (i kolorkow)
+	zapisuje ustawienie ikonek (i kolorków)
 **/
 void Wizard::setColorsAndIcons()
 {
@@ -935,239 +1149,149 @@ void Wizard::setColorsAndIcons()
 	QString oldIconTheme=config_file.readEntry("Look", "IconTheme", "default");
 	if (newIconTheme!=oldIconTheme)
 	{
-		newIconTheme.replace(tr("Default"), "default");
+		newIconTheme.replace(QRegExp(tr("Default")), "default");
 		icons_manager.clear();
 		icons_manager.setTheme(newIconTheme);
 		ToolBar::refreshIcons();
 		UserBox::userboxmenu->refreshIcons();
 		icons_manager.refreshMenus();
-		kadu->changeAppearance();	
+		kadu->changeAppearance();
 	}
 	else
-		newIconTheme.replace(tr("Default"), "default");
+		newIconTheme.replace(QRegExp(tr("Default")), "default");
 		
 	config_file.writeEntry("Look", "IconTheme", newIconTheme);
 	kdebugf2();
 }
 
-
 /**
-	podglad panelu
+	podgl±d panelu
 **/
 void Wizard::previewPanelTheme(int panelThemeID)
-{	if (panelThemeID==panelNumber)
-		//infoPreview->setText(QString::fromUtf8(toDisplay(customPanel.ascii())));
+{
+	if (panelThemeID==int(informationPanelCount))
 		infoPreview->setText(toDisplay(customPanel));
 	else 
-		//infoPreview->setText(QString::fromUtf8(toDisplay(panelLook[cb_panelTheme->currentItem()]).ascii()));
-		infoPreview->setText(toDisplay(panelLook[cb_panelTheme->currentItem()]));
+		infoPreview->setText(toDisplay(informationPanelSyntax[cb_panelTheme->currentItem()]));
 }
 
-
 /**
-	zapisanie wygladu panelu
+	zapisanie wygl±du panelu
 **/
 void Wizard::setPanelTheme()
 {
 	kdebugf();
 	config_file.writeEntry("Look", "ShowInfoPanel", c_showInfoPanel->isChecked());
 	config_file.writeEntry("Look", "PanelVerticalScrollbar", c_showScrolls->isChecked());
-	if (cb_panelTheme->currentItem()==panelNumber)
+	if (cb_panelTheme->currentItem()==int(informationPanelCount))
 		config_file.writeEntry("Look", "PanelContents", customPanel);
 	else
-		config_file.writeEntry("Look", "PanelContents", toSave(panelLook[cb_panelTheme->currentItem()]));
+		config_file.writeEntry("Look", "PanelContents", toSave(informationPanelSyntax[cb_panelTheme->currentItem()]));
 	kdebugf2();
 }
 
 
 /**
-	podglad stylu i jego zapis
+	podgl±d stylu i jego zapis
 **/
 void Wizard::previewQtTheme(int themeID)
-{	QString new_style=cb_qtTheme->text(themeID);
-	if(new_style!=tr("Unknown") && new_style != QApplication::style().name())
+{
+	QString new_style=cb_qtTheme->text(themeID);
+	if (new_style!=tr("Unknown") && new_style != QApplication::style().name())
 	{
 		QApplication::setStyle(new_style);
 		config_file.writeEntry("Look", "QtStyle", new_style);
 	}
 }
 
-
 /**
-	nacisniecie zakoncz i zapisanie konfiguracji (o ile nie nastapilo wczesniej)
-**/
-void Wizard::finishPressed()
-{
-	kdebugf();
-	setChatOptions();
-	setSoundOptions();
-	setGeneralOptions();
-	setBrowser();
-	setHints();
-	setColorsAndIcons();
-	setPanelTheme();
-	tryImport();
-	kdebugf2();
-}
-
-
-/**
-	nacisniecie dalej - zrobione obejscie miedzy istniejacym a nowym kontem gg
-**/
-void Wizard::nextPressed()
-{
-	kdebugf();
-	if (noNewAccount)
-	{
-		if (currentPage()==welcomePage)
-			QWizard::showPage(languagePage);
-		else if (currentPage()==ggNumberSelect)
-			QWizard::showPage(ggCurrentNumberPage);
-		else if (currentPage()==ggNewNumberPage)
-			QWizard::showPage(generalOptionsPage);
-	}
-	else if ((currentPage()==ggCurrentNumberPage) && (rb_dontHaveNumber->isChecked())) 
-		QWizard::showPage(ggNewNumberPage);	
-	else if ((currentPage()==ggNewNumberPage) && (rb_haveNumber->isChecked())) 
-		QWizard::showPage(generalOptionsPage);
-	
-	if ((currentPage()==generalOptionsPage) && (gadu->status().isOffline()))		//jesli przeszedl jedno pole dalej niz konf. konta i nie polaczony
-		setGaduAccount();	//to zapisuje ustawienia konta
-	kdebugf2();
-}
-
-
-/**
-	nacisniecie cofnij - to co w dalej ale do tylu
-**/
-void Wizard::backPressed()
-{
-	kdebugf();
-	if (noNewAccount)
-	{
-		if (currentPage()==ggNewNumberPage)
-			QWizard::showPage(ggCurrentNumberPage);
-		else if (currentPage()==ggNumberSelect)	
-		{
-			setBackEnabled(languagePage, false);
-			QWizard::showPage(languagePage);
-		}
-	}
-	else if ((currentPage()==ggCurrentNumberPage) && (rb_dontHaveNumber->isChecked()))
-		QWizard::showPage(ggNumberSelect);	
-	else if ((currentPage()==ggNewNumberPage) && (rb_haveNumber->isChecked()))
-		QWizard::showPage(ggCurrentNumberPage);	
-	kdebugf2();
-}
-
-
-/**
-	wywolanie wizarda z menu
-**/
-void Wizard::wizardStart()
-{
-	kdebugf();
-	noNewAccount=true;
-	QWizard::showPage(languagePage);
-	setBackEnabled(languagePage, false);
-	exec();
-	noNewAccount=false;
-	kdebugf2();
-}
-
-
-/**
-	wykorzystywane przy wyswietelaniu podgladu panelu inf. i dymkow
+	wykorzystywane przy wy¶wietelaniu podgl±du panelu inf. i dymków
 **/
 QString Wizard::toDisplay(QString s)
 {
 	kdebugf();
-	s.replace("%s", tr("Busy"));
-	s.replace("%d", tr("My description"));
-	s.replace("%i", "192.168.0.1");
-	s.replace("%n", "Jimbo");
-	s.replace("%a", "jimbo");
-	s.replace("%f", tr("Mark"));
-	s.replace("%r", tr("Smith"));
-	s.replace("%m", "+4812345679");
-	s.replace("%u", "999999");
-	s.replace("%g", tr("Friends"));
-	s.replace("%o", "");
-	s.replace("%v", "host.serwer.net");
-	s.replace("%p", "80");
-	s.replace("%e", "jimbo@mail.server.net");
-	s.replace("[", "");
-	s.replace("]", "");
-	s.replace("changed status to", tr("changed status to"));
-	s.replace("You are not on the list", tr("You are not on the list"));
+	s.replace(QRegExp("%s"), tr("Busy"));
+	s.replace(QRegExp("%d"), tr("My description"));
+	s.replace(QRegExp("%i"), "192.168.0.1");
+	s.replace(QRegExp("%n"), "Jimbo");
+	s.replace(QRegExp("%a"), "jimbo");
+	s.replace(QRegExp("%f"), tr("Mark"));
+	s.replace(QRegExp("%r"), tr("Smith"));
+	s.replace(QRegExp("%m"), "+4812345679");
+	s.replace(QRegExp("%u"), "999999");
+	s.replace(QRegExp("%g"), tr("Friends"));
+	s.replace(QRegExp("%o"), "");
+	s.replace(QRegExp("%v"), "host.server.net");
+	s.replace(QRegExp("%p"), "80");
+	s.replace(QRegExp("%e"), "jimbo@mail.server.net");
+	s.replace(QRegExp("\\["), "");
+	s.replace(QRegExp("\\]"), "");
+	s.replace(QRegExp("changed status to"), tr("changed status to"));
 
-	int i; 
-	for (i=0; i<s.contains("$KADU_CONF"); ++i)
-		s.replace("$KADU_CONF", ggPath());
-	
-	for (i=0; i<s.contains("$KADU_SHARE"); ++i)
-		s.replace("$KADU_SHARE", dataPath("kadu"));
-	
-	for (i=0; i<s.contains("$HOME"); ++i)
-		s.replace("$HOME", getenv("HOME"));
+	s=toSave(s);
 	
 	kdebugf2();
 	return s;
 }
 
-
 /**
-	przy zapisie panelu - zamienia sciezke na odpowiednia - pomocne gdy sie nie ma kadu w /usr
+	przy zapisie panelu - zamienia ¶cie¿kê na odpowiedni± - pomocne gdy siê nie ma kadu w /usr
 **/
 QString Wizard::toSave(QString s)
-{	
-	s.replace("You are not on the list", tr("You are not on the list"));
+{
+	s.replace(QRegExp("You are not on the list"), tr("You are not on the list"));
 
 	int i; 
 	for (i=0; i<s.contains("$KADU_SHARE"); ++i)
-		s.replace("$KADU_SHARE", dataPath("kadu"));
+		s.replace(QRegExp("\\$KADU_SHARE"), dataPath("kadu"));
 	
 	for (i=0; i<s.contains("$KADU_CONF"); ++i)
-		s.replace("$KADU_CONF", ggPath());
+		s.replace(QRegExp("\\$KADU_CONF"), ggPath());
 	
 	for (i=0; i<s.contains("$HOME"); ++i)
-		s.replace("$HOME", getenv("HOME"));
+		s.replace(QRegExp("\\$HOME"), getenv("HOME"));
 	
 	return s;
 }
 
-
 /**
-	po zaimportowaniu listy kontaktow sie wywoluje
+	wybor modulu dzwiekowego - wypisanie infa na temat modulu + ew. sprawdzenie czy modul jest dostepny
 **/
-void Wizard::userListImported(bool /*ok*/, UserList& userList)
-{
-	kdebugf();
-
-	userlist.merge(userList);
-	userlist.writeToFile();	//zaraz zapisuje liste bo kadu zaraz pewnie poleci
-
-	kadu->userbox()->clear();
-	kadu->userbox()->clearUsers();
-
-	for (UserList::const_iterator i = userlist.begin(); i != userlist.end(); ++i)
-		kadu->userbox()->addUser((*i).altNick());
-
-	UserBox::all_refresh();
-	
-	kdebugf2();
+void Wizard::setSoundModule(int comboPos)
+{	
+	QString moduleName = cb_soundModule->text(comboPos);
+	if (moduleName == "arts_sound")
+		moduleInfo->setText(tr("This module uses KDE's aRts daemon which mixes multiple "
+							"digital sources at real time.<br> When your soundcard "
+							"doesn't handle that, this module is for you."));
+	else if (moduleName == "dsp_sound")
+		moduleInfo->setText(tr("This module uses OSS kernel module to produce sounds."));
+	else if (moduleName == "esd_sound")
+		moduleInfo->setText(tr("This module uses GNOME's Enlightened Sound Daemon "
+							"which mixes multiple digital sources at real time.<br> "
+							"When your soundcard doesn't handle that, this module is for you."));
+	else if (moduleName == "nas_sound")
+		moduleInfo->setText(tr("This module uses Network Audio System to produce "
+							"sounds. Use it when you use NAS sound system."));
+	else if (moduleName == "ao_sound")
+		moduleInfo->setText(tr("This module uses libao to produce sounds. "
+							"This is third-party module not supported by Kadu Team."));
+	else if (moduleName == "ext_sound")
+		moduleInfo->setText(tr("This module uses external application to produce "
+							"sounds. You must specify path to external program "
+							"in configuration."));
+	else 
+		moduleInfo->setText(tr("There will be no sounds in Kadu"));
+	if ((moduleName != tr("None")) && (!modules_manager->moduleIsInstalled(moduleName)))
+	{	
+		moduleInfo->setText(tr("<font color=red>Module is not installed! "
+							"If you want to use it download and install "
+							"it first.</font><br>")+moduleInfo->text());
+		setNextEnabled(soundOptionsPage, false);
+	}
+	else
+		setNextEnabled(soundOptionsPage, true);
 }
-
-
-/**
-	po polaczeniu sie z siecia robi import - podpinane tylko gdy kadu nie jest polaczone w momencie nacisniecia Finish
-**/
-void Wizard::connected()
-{
-	if (!gadu->doImportUserList()) 
-		QMessageBox::information(0, tr("Kadu Wizard"), tr("User list wasn't imported becouse of some error"), tr("OK"), 0, 0, 1);
-	disconnect(gadu, SIGNAL(connected()), this, SLOT(connected()));
-}
-
 
 Wizard *startWizardObj = NULL;
+WizardStarter *wizardStarter = NULL;
