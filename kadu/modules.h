@@ -8,35 +8,6 @@
 #include <qdialog.h>
 #include <qlistbox.h>
 
-class ModulesManager : public QObject
-{
-	Q_OBJECT
-
-	private:
-		typedef void CloseModuleFunc();
-		struct Module
-		{
-			QLibrary* lib;
-			CloseModuleFunc* close;
-		};
-		QMap<QString,Module> Modules;	
-
-	public:	
-		static void initModule();
-		ModulesManager();
-		QStringList installedModules();
-		QStringList loadedModules();
-		QStringList unloadedModules();
-		bool loadModule(const QString& module_name);
-		void unloadModule(const QString& module_name);
-		void saveLoadedModules();
-		
-	public slots:
-		void showDialog();
-};
-
-extern ModulesManager* modules_manager;
-
 class ModulesDialog : public QDialog
 {
 	Q_OBJECT
@@ -54,5 +25,38 @@ class ModulesDialog : public QDialog
 	public:
 		ModulesDialog();
 };
+
+class ModulesManager : public QObject
+{
+	Q_OBJECT
+
+	private:
+		typedef void CloseModuleFunc();
+		struct Module
+		{
+			QLibrary* lib;
+			CloseModuleFunc* close;
+		};
+		QMap<QString,Module> Modules;	
+		ModulesDialog* Dialog;
+
+	private slots:
+		void dialogDestroyed();
+	
+	public:	
+		static void initModule();
+		ModulesManager();
+		QStringList installedModules();
+		QStringList loadedModules();
+		QStringList unloadedModules();
+		bool loadModule(const QString& module_name);
+		void unloadModule(const QString& module_name);
+		void saveLoadedModules();
+		
+	public slots:
+		void showDialog();
+};
+
+extern ModulesManager* modules_manager;
 
 #endif

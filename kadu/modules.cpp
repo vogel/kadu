@@ -18,102 +18,6 @@
 #include <qlabel.h>
 #include <qpushbutton.h>
 
-void ModulesManager::initModule()
-{
-	modules_manager=new ModulesManager();
-	kadu->mainMenu()->insertItem(loadIcon("configure.png"), tr("&Manage Modules"), modules_manager, SLOT(showDialog()), QKeySequence(), -1, 2);
-}
-
-ModulesManager::ModulesManager() : QObject()
-{
-	QString loaded_str=config_file.readEntry("General", "LoadedModules");
-	QStringList loaded_list=QStringList::split(',',loaded_str);
-	for(int i=0; i<loaded_list.count(); i++)
-		loadModule(loaded_list[i]);
-}
-
-QStringList ModulesManager::installedModules()
-{
-	QDir dir(QString(DATADIR)+"/kadu/modules","*.so");
-	dir.setFilter(QDir::Files);
-	QStringList installed;
-	for(int i=0; i<dir.count(); i++)
-	{
-		QString name=dir[i];
-		installed.append(name.left(name.length()-3));
-	}
-	return installed;
-}
-
-QStringList ModulesManager::loadedModules()
-{
-	QStringList loaded;
-	for (QMap<QString,Module>::const_iterator it=Modules.begin(); it!=Modules.end(); it++)
-		loaded.append(it.key());
-	return loaded;
-}
-
-QStringList ModulesManager::unloadedModules()
-{
-	QStringList installed=installedModules();
-	QStringList unloaded;
-	for(int i=0; i<installed.size(); i++)
-	{
-		QString name=installed[i];
-		if(!Modules.contains(name))
-			unloaded.append(name);
-	}
-	return unloaded;
-}
-
-bool ModulesManager::loadModule(const QString& module_name)
-{
-	Module m;
-	m.lib=new QLibrary(QString(DATADIR)+"/kadu/modules/"+module_name+".so");
-	if(m.lib->load())
-	{
-		typedef void InitModuleFunc();
-		InitModuleFunc* init=(InitModuleFunc*)m.lib->resolve("init_module");
-		m.close=(CloseModuleFunc*)m.lib->resolve("close_module");
-		if(init!=NULL&&m.close!=NULL)
-			init();
-		else
-		{
-			MessageBox::msg(tr("Cannot find init_module() or close_module().\nMaybe it's not Kadu-compatible Module."));
-			return false;
-		}
-		Modules.insert(module_name,m);
-	}
-	else
-	{
-		MessageBox::msg(tr("Cannot load module library.\nMaybe it's incorrecty compiled."));
-		return false;
-	}
-	return true;
-}
-
-void ModulesManager::unloadModule(const QString& module_name)
-{
-	Module m=Modules[module_name];
-	m.close();
-	delete m.lib;
-	Modules.remove(module_name);
-}
-
-void ModulesManager::saveLoadedModules()
-{
-	config_file.writeEntry("General", "LoadedModules",loadedModules().join(","));
-	config_file.sync();
-}
-
-void ModulesManager::showDialog()
-{
-	ModulesDialog* dialog=new ModulesDialog();
-	dialog->show();
-}
-
-ModulesManager* modules_manager;
-
 ModulesDialog::ModulesDialog()
 	: QDialog(NULL,NULL)
 {
@@ -193,3 +97,113 @@ void ModulesDialog::unloadSelectedItem()
 	if(current>=0)
 		unloadItem(LoadedListBox->item(current));
 }
+
+
+void ModulesManager::initModule()
+{
+	modules_manager=new ModulesManager();
+	kadu->mainMenu()->insertItem(loadIcon("configure.png"), tr("&Manage Modules"), modules_manager, SLOT(showDialog()), QKeySequence(), -1, 2);
+}
+
+ModulesManager::ModulesManager() : QObject()
+{
+	QString loaded_str=config_file.readEntry("General", "LoadedModules");
+	QStringList loaded_list=QStringList::split(',',loaded_str);
+	for(int i=0; i<loaded_list.count(); i++)
+		loadModule(loaded_list[i]);
+	Dialog=NULL;
+}
+
+QStringList ModulesManager::installedModules()
+{
+	QDir dir(QString(DATADIR)+"/kadu/modules","*.so");
+	dir.setFilter(QDir::Files);
+	QStringList installed;
+	for(int i=0; i<dir.count(); i++)
+	{
+		QString name=dir[i];
+		installed.append(name.left(name.length()-3));
+	}
+	return installed;
+}
+
+QStringList ModulesManager::loadedModules()
+{
+	QStringList loaded;
+	for (QMap<QString,Module>::const_iterator it=Modules.begin(); it!=Modules.end(); it++)
+		loaded.append(it.key());
+	return loaded;
+}
+
+QStringList ModulesManager::unloadedModules()
+{
+	QStringList installed=installedModules();
+	QStringList unloaded;
+	for(int i=0; i<installed.size(); i++)
+	{
+		QString name=installed[i];
+		if(!Modules.contains(name))
+			unloaded.append(name);
+	}
+	return unloaded;
+}
+
+bool ModulesManager::loadModule(const QString& module_name)
+{
+	Module m;
+	m.lib=new QLibrary(QString(DATADIR)+"/kadu/modules/"+module_name+".so");
+	if(m.lib->load())
+	{
+		typedef void InitModuleFunc();
+		InitModuleFunc* init=(InitModuleFunc*)m.lib->resolve("init_module");
+		m.close=(CloseModuleFunc*)m.lib->resolve("close_module");
+		if(init!=NULL&&m.close!=NULL)
+			init();
+		else
+		{
+			MessageBox::msg(tr("Cannot find init_module() or close_module().\nMaybe it's not Kadu-compatible Module."));
+			return false;
+		}
+		Modules.insert(module_name,m);
+	}
+	else
+	{
+		MessageBox::msg(tr("Cannot load module library.\nMaybe it's incorrecty compiled."));
+		return false;
+	}
+	return true;
+}
+
+void ModulesManager::unloadModule(const QString& module_name)
+{
+	Module m=Modules[module_name];
+	m.close();
+	delete m.lib;
+	Modules.remove(module_name);
+}
+
+void ModulesManager::saveLoadedModules()
+{
+	config_file.writeEntry("General", "LoadedModules",loadedModules().join(","));
+	config_file.sync();
+}
+
+void ModulesManager::showDialog()
+{
+	if(Dialog==NULL)
+	{
+		Dialog=new ModulesDialog();
+		connect(Dialog,SIGNAL(destroyed()),this,SLOT(dialogDestroyed()));
+		Dialog->show();
+	}
+	else
+		Dialog->setActiveWindow();
+}
+
+void ModulesManager::dialogDestroyed()
+{
+	Dialog=NULL;
+}
+
+ModulesManager* modules_manager;
+
