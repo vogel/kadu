@@ -153,7 +153,7 @@ void UserList::setDnsName(UinType  uin, const QString &name) {
 	UserListElement &ule = byUin(uin);
 	if (ule.dnsname != name) {
 		ule.dnsname = name;
-		kdebugm(KDEBUG_INFO, "UserList::setDnsName(): dnsname for uin %d: %s\n", uin, name.latin1());
+		kdebugm(KDEBUG_INFO, "UserList::setDnsName(): dnsname for uin %d: %s\n", uin, name.local8Bit().data());
 		emit dnsNameReady(uin);
 	}
 }
