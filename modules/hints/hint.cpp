@@ -24,7 +24,7 @@ Hint::Hint(QWidget *parent, const QString& text, const QPixmap& pixmap, unsigned
 
 	setResizeMode(QLayout::Fixed);
 
-	if (!pixmap.isNull() && config_file.readBoolEntry("Hints","Icons"))
+	if (!pixmap.isNull())
 	{
 		icon = new QLabel(parent, "Icon");
 		icon->setPixmap(pixmap);
