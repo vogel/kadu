@@ -24,6 +24,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   nam siê okno dialogowe gdzie mo¿emy wybraæ grupê do której mamy go
   przydzieliæ lub tak¿e mamy mo¿liwo¶æ stworzyæ now± grupe (odrazu
   przydzielaj±c usera do niej) (mast3r)
+* lewy klik na tray'u gdy jest koperta powoduje odebranie wiadomo¶ci, za¶
+  gdy koperty nie ma pokazywanie/ukrywanie okna g³ównego (mast3r)
 
 +++ wersja 0.3.4-rc2
 * porzadki: kod rejestrujacy opcje modulow Chat i Sms w oknie konfiguracji
