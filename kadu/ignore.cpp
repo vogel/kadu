@@ -9,6 +9,7 @@
 
 #include <qpushbutton.h>
 #include <qlayout.h>
+#include <qfile.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <stdlib.h>
@@ -52,11 +53,7 @@ Ignored::Ignored(QDialog *parent, const char *name) : QDialog (parent, name) {
 }
 
 bool isIgnored(uin_t uin) {
-	int i;
-	for (i = 0; i < ignored.size(); i++)
-		if (ignored[i] == uin)
-			return true;
-	return false;
+	return ignored.contains(uin);
 }
 
 void Ignored::add() {
@@ -71,22 +68,21 @@ void Ignored::getList() {
 	char buf[50];
 	bool userlist_entry = false;
 	list->clear();
-	for (i = 0; i < ignored.size(); i++) 
-		if (ignored[i]) {
-			for (j = 0; j < userlist.size(); j++) {
-				if (ignored[i] == userlist[j].uin) {
-					userlist_entry = true;
-					k = j;
-					}
+	for (i = 0; i < ignored.count(); i++) {
+		for (j = 0; j < userlist.size(); j++) {
+			if (ignored[i] == userlist[j].uin) {
+				userlist_entry = true;
+				k = j;
 				}
-			if (userlist_entry)
-				snprintf(buf, sizeof(buf), "%d (%s)", userlist[k].uin, (const char *)userlist[k].altnick.local8Bit());	
-			else
-				snprintf(buf, sizeof(buf), "%d (?)", ignored[i]);			
-			userlist_entry = false;
-
-			list->insertItem(buf);
 			}
+		if (userlist_entry)
+			snprintf(buf, sizeof(buf), "%d (%s)", userlist[k].uin, (const char *)userlist[k].altnick.local8Bit());	
+		else
+			snprintf(buf, sizeof(buf), "%d (?)", ignored[i]);			
+		userlist_entry = false;
+		list->insertItem(buf);
+		}
+	list->sort();
 }
 
 void Ignored::remove() {
@@ -99,27 +95,16 @@ void Ignored::remove() {
 }
 
 void addIgnored(uin_t uin) {
-	uint size = ignored.size();
-	ignored.resize(size+1);
-	ignored[size] = uin;
+	ignored.append(uin);
 }
 
 void delIgnored(uin_t uin) {
-	int i;
-	for (i = 0; i < ignored.size(); i++)
-		if (ignored[i] == uin)
-			break;
-
-	ignored[i] = 0;
-	for (int j = i; j < ignored.size() -1; j++)
-		ignored[j] = ignored[j+1];
-	ignored.resize(ignored.size() - 1);
+	ignored.remove(uin);
 }
 
 int writeIgnored(QString filename)
 {
 	QString tmp;
-	FILE *f;
 
 	if (!(tmp = ggPath("")))
 		return -1;
@@ -129,18 +114,18 @@ int writeIgnored(QString filename)
 		filename = ggPath("ignore");
 		}
 
-	if (!(f = fopen(filename.local8Bit(), "w")))
+	QFile file(filename);
+	if (!file.open(IO_WriteOnly))
 		return -2;
 
-	fchmod(fileno(f), 0600);
+//	fchmod(fileno(f), 0600);
 
-	int i = 0;
-	while (i < ignored.size()) {
-		fprintf(f, "%d\n", ignored[i]);
-		i++;
-		}
+	for (int i = 0; i < ignored.count(); i++)
+		if (ignored[i])
+			tmp = QString::number(ignored[i]) + "\n";
 
-	fclose(f);
+	file.writeBlock(tmp, tmp.length());
+	file.close();
 
 	return 0;
 }

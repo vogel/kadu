@@ -287,7 +287,7 @@ static QValueList<chats> chats_gcc32_bug;
 ////////////////////////////
 extern QValueList<chats> chats;
 extern UserList userlist;
-extern QArray<uin_t> ignored;
+extern QValueList<uin_t> ignored;
 extern PendingMsgs pending;
 // Ominiecie bledu w gcc 3.2
 static QArray<groups> grouplist_gcc32_bug;

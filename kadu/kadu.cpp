@@ -156,7 +156,7 @@ struct sigaction sigact;
 struct config config;
 QArray<struct acks> acks(0);
 struct gg_dcc * dccsock;
-QArray<uin_t> ignored;
+QValueList<uin_t> ignored;
 QArray<groups> grouplist;
 struct gg_login_params loginparams;
 QSocketNotifier *kadusnr = NULL;
@@ -197,13 +197,14 @@ enum {
 	KADU_CMD_IMPORT_USERLIST,
 	KADU_CMD_HIDE,
 	KADU_CMD_SEND_FILE,
-#ifdef HAVE_OPENSSL
 	KADU_CMD_PERSONAL_INFO,
-	KADU_CMD_SEND_KEY
-#else
-	KADU_CMD_PERSONAL_INFO
+#ifdef HAVE_OPENSSL
+	KADU_CMD_SEND_KEY,
 #endif
-		     
+	KADU_CMD_IGNORE_USER,
+	KADU_CMD_BLOCK_USER,
+	KADU_CMD_NOTIFY_USER,
+	KADU_CMD_OFFLINE_TO_USER		     
 };
 
 /* our own description container */
@@ -402,9 +403,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	for (g = 0; g < acks.size(); g++)
 		acks[g].seq = 0;
 
-	for (g = 0; g < ignored.size(); g++)
-		ignored[g] = 0;
-	
 	loadKaduConfig();
         
 	fprintf(stderr,"KK Setting geometry to %d %d %d %d\n",
@@ -866,6 +864,7 @@ void Kadu::commandParser (int command) {
 	SearchDialog *sd;
 	UinsList uins;
 	UserListElement user;
+	UserListElement *puser;
 	QStringList users;
 	QString keyfile_path;
 	QString mykey;
@@ -1070,6 +1069,33 @@ void Kadu::commandParser (int command) {
 
 			break;
 #endif
+		case KADU_CMD_IGNORE_USER:
+			user = userlist.byAltNick(userbox->currentText());
+			if (isIgnored(user.uin))
+				delIgnored(user.uin);
+			else
+				addIgnored(user.uin);
+			writeIgnored(NULL);
+			break;
+		case KADU_CMD_BLOCK_USER:
+			puser = &userlist.byAltNick(userbox->currentText());
+			puser->blocking = !puser->blocking;
+			gg_remove_notify_ex(sess, puser->uin, puser->blocking ? GG_USER_NORMAL : GG_USER_BLOCKED);
+			gg_add_notify_ex(sess, puser->uin, puser->blocking ? GG_USER_BLOCKED : GG_USER_NORMAL);
+			userlist.writeToFile();
+			break;
+		case KADU_CMD_NOTIFY_USER:
+			puser = &userlist.byAltNick(userbox->currentText());
+			puser->notify = !puser->notify;
+			userlist.writeToFile();
+			break;
+		case KADU_CMD_OFFLINE_TO_USER:
+			puser = &userlist.byAltNick(userbox->currentText());
+			puser->offline_to_user = !puser->offline_to_user;
+			gg_remove_notify_ex(sess, puser->uin, puser->offline_to_user ? GG_USER_NORMAL : GG_USER_OFFLINE);
+			gg_add_notify_ex(sess, puser->uin, puser->offline_to_user ? GG_USER_OFFLINE : GG_USER_NORMAL);
+			userlist.writeToFile();
+			break;
 		}
 }
 
@@ -1123,6 +1149,26 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 		pm->setItemEnabled(KADU_CMD_SEND_KEY, false);
 	}
 #endif
+
+	pm->insertSeparator();
+	pm->insertItem(i18n("Ignore user"), KADU_CMD_IGNORE_USER);
+	pm->insertItem(i18n("Block user"), KADU_CMD_BLOCK_USER);
+	pm->insertItem(i18n("Notify about user"), KADU_CMD_NOTIFY_USER);
+	pm->insertItem(i18n("Offline to user"), KADU_CMD_OFFLINE_TO_USER);
+	if (!user.uin) {
+		pm->setItemEnabled(KADU_CMD_IGNORE_USER,false);
+		pm->setItemEnabled(KADU_CMD_BLOCK_USER,false);
+		pm->setItemEnabled(KADU_CMD_NOTIFY_USER,false);
+		pm->setItemEnabled(KADU_CMD_OFFLINE_TO_USER,false);
+		}
+	if (isIgnored(user.uin))
+		pm->setItemChecked(KADU_CMD_IGNORE_USER, true);
+	if (user.blocking)
+		pm->setItemChecked(KADU_CMD_BLOCK_USER, true);
+	if (user.offline_to_user)
+		pm->setItemChecked(KADU_CMD_OFFLINE_TO_USER, true);
+	if (user.notify)
+		pm->setItemChecked(KADU_CMD_NOTIFY_USER, true);
 
 	pm->insertSeparator();
 	

@@ -1,3 +1,8 @@
++++ wersja 0.3.3-rc4
+* dodatkowe opcje dostêpne w menu podrêcznym u¿ytkownika (blokowanie, ignorowanie,
+  powiadamianie i niedostêpny przy tylko dla znajomych) (chilek)
+* ignored: QArray -> QValueList, FILE -> QFile (chilek)
+
 +++ wersja 0.3.3-rc3
 * sensowne potwierdzenie usuniêcia kontaktu (adrian)
 * próba nowego "porz±dnego" autoaway'a (chilek)
