@@ -341,6 +341,11 @@ void Kadu::gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op) {
 	int i;
 	QString newestversion;
 
+	if (data.size() > 31) {
+		fprintf(stderr, "KK Kadu::gotUpdatesInfo(): cannot obtain update info\n");		
+		delete uc;
+		return;
+		}
 	for (i = 0; i < data.size(); i++)
 		buf[i] = data[i];
 	buf[data.size()] = 0;
