@@ -113,11 +113,17 @@ void ModulesManager::closeModule()
 
 ModulesManager::ModulesManager() : QObject()
 {
+	Dialog=NULL;
 	QString loaded_str=config_file.readEntry("General", "LoadedModules");
 	QStringList loaded_list=QStringList::split(',',loaded_str);
+	bool all_loaded=true;
 	for(int i=0; i<loaded_list.count(); i++)
-		loadModule(loaded_list[i]);
-	Dialog=NULL;
+		if(!loadModule(loaded_list[i]))
+			all_loaded=false;
+	// jesli nie wszystkie moduly zostaly przy starcie prawidlowo
+	// zaladowane to zapisz nowa liste zaladowanych modulow
+	if(!all_loaded)
+		saveLoadedModules();
 }
 
 ModulesManager::~ModulesManager()
@@ -167,7 +173,7 @@ bool ModulesManager::loadModule(const QString& module_name)
 	m.lib=new QLibrary(QString(DATADIR)+"/kadu/modules/"+module_name+".so");
 	if(!m.lib->load())
 	{
-		MessageBox::msg(tr("Cannot load module library.\nMaybe it's incorrecty compiled."));
+		MessageBox::msg(tr("Cannot load %1 module library.\nMaybe it's incorrecty compiled.").arg(module_name));
 		return false;
 	}
 		
