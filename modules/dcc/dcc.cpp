@@ -132,16 +132,13 @@ void DccSocket::watchDcc(int check)
 			uins.append(dccsock->peer_uin);
 			if (dccsock->uin != (UinType)config_file.readNumEntry("General", "UIN")
 				|| !userlist.containsUin(dccsock->peer_uin) || isIgnored(uins))
-			{
-				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "DccSocket::watchDcc(): strange uins!\n");
-				setState(DCC_SOCKET_TRANSFER_DISCARDED);
-			}
+			tranferDiscarded();
 			break;
 		case GG_EVENT_NONE:
 			noneEvent();
 			break;
 		case GG_EVENT_DCC_CALLBACK:
-			gadu->dccSetType(dccsock, GG_SESSION_DCC_SEND);
+			callbackReceived();
 			break;
 		case GG_EVENT_DCC_NEED_FILE_ACK:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "DccSocket::watchDcc():  GG_EVENT_DCC_NEED_FILE_ACK! %d %d\n",
@@ -187,9 +184,25 @@ void DccSocket::setState(int pstate)
 	snr->setEnabled(false);
 	snw->setEnabled(false);
 	State = pstate;
-	DccSocket **me = new (DccSocket *);
-	*me = this;
-	qApp->postEvent((QObject *)dcc_manager, new QCustomEvent(QEvent::User, me));
+	
+	switch (State)
+	{
+		case DCC_SOCKET_TRANSFER_FINISHED:
+			MessageBox::msg(tr("File has been transferred sucessfully."));
+			break;
+		case DCC_SOCKET_TRANSFER_DISCARDED:
+			break;
+		case DCC_SOCKET_TRANSFER_ERROR:
+			MessageBox::msg(tr("File transfer error!"));
+			break;
+		case DCC_SOCKET_CONNECTION_BROKEN:
+			break;
+		case DCC_SOCKET_COULDNT_OPEN_FILE:
+			MessageBox::msg(tr("Couldn't open file!"));
+			break;
+	}
+	deleteLater();
+
 	kdebugf2();
 }
 
@@ -239,6 +252,20 @@ void DccSocket::dccDone()
 	setState(DCC_SOCKET_TRANSFER_FINISHED);
 	kdebugf2();
 }
+
+void DccSocket::tranferDiscarded()
+{
+	kdebugf();				
+	setState(DCC_SOCKET_TRANSFER_DISCARDED);
+	kdebugf2();
+}
+
+void DccSocket::callbackReceived()
+{
+	dcc_manager->cancelTimeout();
+	gadu->dccSetType(dccsock, GG_SESSION_DCC_SEND);
+}
+
 
 DccFileDialog::DccFileDialog(FileDccSocket* dccsocket, TransferType type, QDialog* parent, const char* name)
 	: QDialog (parent, name), dccsocket(dccsocket), type(type)
@@ -588,6 +615,8 @@ DccManager::DccManager() : QObject(NULL,"dcc_manager")
 	if (!config_extip.setAddress(config_file.readEntry("Network","ExternalIP", "")))
 		config_extip.setAddress((unsigned int)0);
 
+	connect(&TimeoutTimer, SIGNAL(timeout()), this, SLOT(timeout()));
+
 	connect(gadu, SIGNAL(connecting()), this, SLOT(setupDcc()));
 	connect(gadu, SIGNAL(disconnected()), this, SLOT(closeDcc()));
 	connect(gadu, SIGNAL(dccConnectionReceived(const UserListElement&)),
@@ -710,6 +739,16 @@ void DccManager::dccSent()
 	kdebugf2();
 }
 
+void DccManager::timeout()
+{
+	MessageBox::msg(tr("Direct connection timeout!\nThe receiver doesn't support direct connections or\nboth computers are behind routers with nat."));
+}
+
+void DccManager::cancelTimeout()
+{
+	TimeoutTimer.stop();
+}
+
 void DccManager::setupDcc()
 {
 	kdebugf();
@@ -810,7 +849,10 @@ void DccManager::sendFile()
 				}
 			}
 			else
+			{
+				TimeoutTimer.start(3000, TRUE);
 				gadu->dccRequest(user.uin);
+			}
 		}
 	kdebugf2();
 }
@@ -847,42 +889,6 @@ void DccManager::kaduKeyPressed(QKeyEvent* e)
 {
 	if (HotKey::shortCut(e,"ShortCuts", "kadu_sendfile"))
 		sendFile();
-}
-
-bool DccManager::event(QEvent* e)
-{
-	QCustomEvent *ce;
-	DccSocket *dcc;
-	DccSocket **data;
-
-	if (e->type() == QEvent::User)
-	{
-		kdebugf();
-		ce = (QCustomEvent *)e;
-		data = (DccSocket **)ce->data();
-		dcc = *data;
-		switch (dcc->state())
-		{
-			case DCC_SOCKET_TRANSFER_FINISHED:
-				MessageBox::msg(tr("File has been transferred sucessfully."));
-				break;
-			case DCC_SOCKET_TRANSFER_DISCARDED:
-				break;
-			case DCC_SOCKET_TRANSFER_ERROR:
-				MessageBox::msg(tr("File transfer error!"));
-				break;
-			case DCC_SOCKET_CONNECTION_BROKEN:
-				break;
-			case DCC_SOCKET_COULDNT_OPEN_FILE:
-				MessageBox::msg(tr("Couldn't open file!"));
-				break;
-		}
-		delete data;
-		delete dcc;
-		ce->setData(NULL);
-		kdebugf2();
-	}
-	return QObject::event(e);
 }
 
 void DccManager::ifDccEnabled(bool value)

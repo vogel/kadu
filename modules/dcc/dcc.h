@@ -74,6 +74,8 @@ class DccSocket : public QObject
 		virtual void needFileInfo();
 		virtual void noneEvent();
 		virtual void dccDone();
+		virtual void tranferDiscarded();
+		virtual void callbackReceived();
 		virtual void setState(int pstate);
 
 	protected slots:
@@ -123,6 +125,7 @@ class DccManager : public QObject
 		QSocketNotifier* DccSnr;
 		QSocketNotifier* DccSnw;
 		QHostAddress ConfigDccIp;
+		QTimer TimeoutTimer;
 		void watchDcc();
 
 	private slots:
@@ -132,14 +135,13 @@ class DccManager : public QObject
 		void sendFile();
 		void kaduKeyPressed(QKeyEvent* e);
 		void dccConnectionReceived(const UserListElement& sender);
-
-	protected:
-		virtual bool event(QEvent* e);
+		void timeout();
 
 	public:
 		DccManager();
 		virtual ~DccManager();
 		QHostAddress configDccIp();
+		void cancelTimeout();
 
 	public slots:
 		void dccFinished(DccSocket* dcc);
