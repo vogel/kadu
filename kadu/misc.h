@@ -23,8 +23,8 @@ QString ggPath(QString subpath);
 
 #define i18n(String) __c2q(gettext(String))
 
-QString cp_to_iso(unsigned char *);
-QCString iso_to_cp(const QString &);
+QString cp2native(unsigned char *);
+QCString native2cp(const QString &);
 QPixmap loadIcon(const QString &filename);
 char *timestamp(time_t = 0);
 QString pwHash(const QString tekst);
