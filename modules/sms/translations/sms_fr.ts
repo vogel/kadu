@@ -128,6 +128,10 @@ est fonctionnel</translation>
         <source>Mobile number is incorrect or gateway is not available</source>
         <translation>Numéro de télephone incorrect ou le portail est inaccessible</translation>
     </message>
+    <message>
+        <source>Signature can&apos;t be empty</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SmsSlots</name>

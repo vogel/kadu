@@ -127,6 +127,10 @@ nicht versteht. Gib hier die Argumente ein, getrennt mit Komma. %n=Tel.; %m=Nach
         <source>Mobile number is incorrect or gateway is not available</source>
         <translation>Die Nummer des Handys ist falsch oder gateway ist unerreichbar</translation>
     </message>
+    <message>
+        <source>Signature can&apos;t be empty</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SmsSlots</name>

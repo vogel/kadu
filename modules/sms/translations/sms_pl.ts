@@ -127,6 +127,10 @@ Zaznacz i wpisz w to pole poprawny ciąg. Argumenty oddziel spacjami. Argument %
         <source>Mobile number is incorrect or gateway is not available</source>
         <translation>Numer telefonu jest niepoprawny lub bramka jest niedostępna</translation>
     </message>
+    <message>
+        <source>Signature can&apos;t be empty</source>
+        <translation>Pole &quot;Podpis&quot; nie może być puste</translation>
+    </message>
 </context>
 <context>
     <name>SmsSlots</name>

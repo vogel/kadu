@@ -127,6 +127,10 @@ e scrivi la stringa corretta. I parametri devono essere separati da spazio. Il p
         <source>Mobile number is incorrect or gateway is not available</source>
         <translation>Numero telefono errato o gateway non è disponibile</translation>
     </message>
+    <message>
+        <source>Signature can&apos;t be empty</source>
+        <translation>Campo firma non puo essere vuoto</translation>
+    </message>
 </context>
 <context>
     <name>SmsSlots</name>
