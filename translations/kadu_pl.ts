@@ -297,7 +297,7 @@ Wybierz jedną z poniższych opcji:</translation>
     </message>
     <message>
         <source>Hint syntax</source>
-        <translation>Składnia dymku</translation>
+        <translation>Składnia dymku </translation>
     </message>
     <message>
         <source>Notify about new message</source>
@@ -306,10 +306,6 @@ Wybierz jedną z poniższych opcji:</translation>
     <message>
         <source>Notify about new chat</source>
         <translation>Powiadom o nowej rozmowie</translation>
-    </message>
-    <message>
-        <source>Notify about user status change</source>
-        <translation>Powiadom kiedy kontakt zmieni status</translation>
     </message>
     <message>
         <source>Add description to hint if exists</source>
@@ -349,7 +345,7 @@ Wybierz jedną z poniższych opcji:</translation>
     </message>
     <message>
         <source>Custom Web browser</source>
-        <translation>Własna przeglądarka</translation>
+        <translation>Własna przeglądarka: </translation>
     </message>
     <message>
         <source>Automatically prune chat messages</source>
@@ -480,14 +476,6 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <translation>Treść wiadomości w dymku</translation>
     </message>
     <message>
-        <source>Notify about user becoming available</source>
-        <translation>Powiadom kiedy kontakt stanie się dostępny</translation>
-    </message>
-    <message>
-        <source>Notify about user becoming unavailable</source>
-        <translation>Powiadom kiedy kontakt stanie się niedostępny</translation>
-    </message>
-    <message>
         <source>Message acknowledgements (wait for delivery)</source>
         <translation>Potwierdzenie wysłania wiadomości (czekaj na dostarczenie)</translation>
     </message>
@@ -592,10 +580,6 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <translation>Pokaż emotikony w historii</translation>
     </message>
     <message>
-        <source>Show available in bold</source>
-        <translation>Dostepni pogrubioną czcionką</translation>
-    </message>
-    <message>
         <source>Colors</source>
         <translation>Kolory</translation>
     </message>
@@ -649,7 +633,7 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     </message>
     <message>
         <source>Font in panel</source>
-        <translation>Czcionka w panelu informacyjnym</translation>
+        <translation>Czcionka w panelu informacyjnym </translation>
     </message>
     <message>
         <source>Information panel</source>
@@ -689,7 +673,55 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     </message>
     <message>
         <source>Userbox width when multi column</source>
-        <translation>Szerokość kolumny gdy włączona lista wielokolumnowa</translation>
+        <translation>Szerokość kolumny gdy włączona lista wielokolumnowa: </translation>
+    </message>
+    <message>
+        <source>Automatically fold links</source>
+        <translation>Automatyczne zawijanie linków</translation>
+    </message>
+    <message>
+        <source>Link folding</source>
+        <translation>Zawijanie linków</translation>
+    </message>
+    <message>
+        <source>Automatically fold links longer than</source>
+        <translation>Automatyczne zawijanie linków dłuzszych niż: </translation>
+    </message>
+    <message>
+        <source>Show available users in bold</source>
+        <translation>Pokaż dostępne kontakty pogrubiną czcionką</translation>
+    </message>
+    <message>
+        <source>Displays users that are not offline using a bold font</source>
+        <translation>Wyświetla kontakty, które są aktywne używając pogrubionej czcionki</translation>
+    </message>
+    <message>
+        <source>Notify about users&apos; status changes</source>
+        <translation>Powiadom o zmianie statusu kontaktu</translation>
+    </message>
+    <message>
+        <source>Notify about users becoming available</source>
+        <translation>Powiadom kiedy kontakt będzie dostępny</translation>
+    </message>
+    <message>
+        <source>Notify about users becoming unavailable</source>
+        <translation>Powiadom kiedy kontakt będzie niedostępny</translation>
+    </message>
+    <message>
+        <source>Remember window size and position between startups</source>
+        <translation>Pamietaj rozmiar i pozycje okien po restarcie</translation>
+    </message>
+    <message>
+        <source>Automatically checks whether a new version is available</source>
+        <translation>Automatyczne sprawdzanie czy nowa wersja jest dostępna</translation>
+    </message>
+    <message>
+        <source>When enabled, you&apos;re visible only to users on your list</source>
+        <translation>Kiedy włączone, jesteś widoczny tylko do użytkowników na twojej liście</translation>
+    </message>
+    <message>
+        <source>Display users that are offline</source>
+        <translation>Wyświetlaj kontakty gdy są niedostępne</translation>
     </message>
 </context>
 <context>
@@ -869,6 +901,16 @@ Hasła  muszą być identyczne w obu polach!</translation>
     <message>
         <source>Conference with </source>
         <translation>Konferencja z </translation>
+    </message>
+    <message>
+        <source>URLs longer than this value will be shown truncated to this length</source>
+        <translation>URL dłuższy niż ta wartość będzie obcinany do tej długości</translation>
+    </message>
+    <message>
+        <source>This will show a long URL as http://www.start...end.com/
+to protect the chat window from a mess</source>
+        <translation>Bedzie pokazywać długie adresy URL jako http://www.start..end.com/
+zabezpieczając format okna rozmowy przed deformacją</translation>
     </message>
 </context>
 <context>
@@ -1523,6 +1565,10 @@ Twoje hasło jest nieprawidłowe!!!</translation>
     <message>
         <source>Disconnection has occured</source>
         <translation>Nastąpiło rozłączenie</translation>
+    </message>
+    <message>
+        <source>Connection timeout!</source>
+        <translation>Połączenie przerwane!</translation>
     </message>
 </context>
 <context>

@@ -302,18 +302,6 @@ If you leave blank, default settings will be used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Notify about user status change</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Notify about user becoming available</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Notify about user becoming unavailable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Add description to hint if exists</source>
         <translation type="unfinished"></translation>
     </message>
@@ -587,10 +575,6 @@ What would you like to do?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show available in bold</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Colors</source>
         <translation type="unfinished"></translation>
     </message>
@@ -684,6 +668,54 @@ What would you like to do?</source>
     </message>
     <message>
         <source>Userbox width when multi column</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Automatically fold links</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Link folding</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Automatically fold links longer than</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show available users in bold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Displays users that are not offline using a bold font</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about users&apos; status changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about users becoming available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about users becoming unavailable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remember window size and position between startups</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Automatically checks whether a new version is available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When enabled, you&apos;re visible only to users on your list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display users that are offline</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -862,6 +894,15 @@ Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new pa
     </message>
     <message>
         <source>Conference with </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>URLs longer than this value will be shown truncated to this length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This will show a long URL as http://www.start...end.com/
+to protect the chat window from a mess</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1513,6 +1554,10 @@ Your password is incorrect !!!</source>
     </message>
     <message>
         <source>Disconnection has occured</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection timeout!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -300,10 +300,6 @@ Was wollen sie nun tun?</translation>
         <translation>Benachrichtigung über neues Gespräch</translation>
     </message>
     <message>
-        <source>Notify about user status change</source>
-        <translation>Zeige die Statusänderung des Kontaktes</translation>
-    </message>
-    <message>
         <source>Add description to hint if exists</source>
         <translation>Füge Beschreibung zur Sprechblase, wenn vorhanden</translation>
     </message>
@@ -472,14 +468,6 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
         <translation>Inhalt der Nachricht in der Sprechblase</translation>
     </message>
     <message>
-        <source>Notify about user becoming available</source>
-        <translation>Benachrichtige, wenn Kontakt erreichbar wird</translation>
-    </message>
-    <message>
-        <source>Notify about user becoming unavailable</source>
-        <translation>Benachrichtige, wenn Kontakt unerreichbar wird</translation>
-    </message>
-    <message>
         <source>Message acknowledgements (wait for delivery)</source>
         <translation>Bestätigung der Zustellung (Warte auf Zustellung)</translation>
     </message>
@@ -592,10 +580,6 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
         <translation>Zeige Emoticons in der Geschichte</translation>
     </message>
     <message>
-        <source>Show available in bold</source>
-        <translation>Zeige erreichbaren in bold</translation>
-    </message>
-    <message>
         <source>Colors</source>
         <translation>Farben</translation>
     </message>
@@ -690,6 +674,54 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     <message>
         <source>Userbox width when multi column</source>
         <translation>Breite der Kontaktliste, wenn mehrere Spalten</translation>
+    </message>
+    <message>
+        <source>Automatically fold links</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Link folding</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Automatically fold links longer than</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show available users in bold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Displays users that are not offline using a bold font</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about users&apos; status changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about users becoming available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about users becoming unavailable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remember window size and position between startups</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Automatically checks whether a new version is available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When enabled, you&apos;re visible only to users on your list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display users that are offline</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -870,6 +902,15 @@ Das Passwort, das Sie angegeben haben, sollte in beiden Feldern (&quot;Neues Pas
     <message>
         <source>Conference with </source>
         <translation>Konferenz mit</translation>
+    </message>
+    <message>
+        <source>URLs longer than this value will be shown truncated to this length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This will show a long URL as http://www.start...end.com/
+to protect the chat window from a mess</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1523,6 +1564,10 @@ Dein Passwort ist falsch!!!</translation>
     <message>
         <source>Disconnection has occured</source>
         <translation>Verbindung wurde getrennt</translation>
+    </message>
+    <message>
+        <source>Connection timeout!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

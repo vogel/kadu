@@ -300,10 +300,6 @@ Cosa vogliamo fare?</translation>
         <translation>Notifica nuova chat</translation>
     </message>
     <message>
-        <source>Notify about user status change</source>
-        <translation>Notifica cambiamento  status di un contatto</translation>
-    </message>
-    <message>
         <source>Add description to hint if exists</source>
         <translation>Aggiungi la descrizione al suggerimento se esiste</translation>
     </message>
@@ -472,14 +468,6 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
         <translation>Il contenuto messaggio nel suggerimento</translation>
     </message>
     <message>
-        <source>Notify about user becoming available</source>
-        <translation>Notifica se il contatto diventa disponibile</translation>
-    </message>
-    <message>
-        <source>Notify about user becoming unavailable</source>
-        <translation>Notifica se il contatto diventa non disponibile</translation>
-    </message>
-    <message>
         <source>Message acknowledgements (wait for delivery)</source>
         <translation>Conferma la consegna del messaggio (aspetta conferma)</translation>
     </message>
@@ -592,10 +580,6 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
         <translation>Visualizza emoticons nello storico</translation>
     </message>
     <message>
-        <source>Show available in bold</source>
-        <translation>Visualizza accessibili in grassetto</translation>
-    </message>
-    <message>
         <source>Colors</source>
         <translation>Colori</translation>
     </message>
@@ -690,6 +674,54 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
     <message>
         <source>Userbox width when multi column</source>
         <translation>laghezza Lista contatti multicolonna</translation>
+    </message>
+    <message>
+        <source>Automatically fold links</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Link folding</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Automatically fold links longer than</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show available users in bold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Displays users that are not offline using a bold font</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about users&apos; status changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about users becoming available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about users becoming unavailable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remember window size and position between startups</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Automatically checks whether a new version is available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When enabled, you&apos;re visible only to users on your list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display users that are offline</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -869,6 +901,15 @@ Campi password devono contenere la stessa frase !</translation>
     <message>
         <source>Conference with </source>
         <translation>Conferenza con  </translation>
+    </message>
+    <message>
+        <source>URLs longer than this value will be shown truncated to this length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This will show a long URL as http://www.start...end.com/
+to protect the chat window from a mess</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1522,6 +1563,10 @@ La password è errata!!!</translation>
     <message>
         <source>Disconnection has occured</source>
         <translation>Disconessione</translation>
+    </message>
+    <message>
+        <source>Connection timeout!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
