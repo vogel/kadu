@@ -473,6 +473,7 @@ Po jakiego czorta to ?
 
 //	tworzymy pasek narzedziowy
 	QToolBar *toolbar = new QToolBar(this, "main toolbar");
+	setRightJustification(true);
 	setDockEnabled(Qt::DockBottom, false);
 	setAppropriate(toolbar, true);
 	toolbar->setCloseMode(QDockWindow::Undocked);
@@ -490,6 +491,8 @@ Po jakiego czorta to ?
 	toolbar->addSeparator();
 	QToolButton *adduserbtn = new QToolButton(*icons->loadIcon("online"), i18n("Add user"),
 		QString::null, this, SLOT(addUserAction()), toolbar, "adduser");
+	QHBox *toolbarfiller = new QHBox(toolbar);
+	toolbar->setStretchableWidget(toolbarfiller);
 
 	if (config.dockwindows != QString::null) {
 		config.dockwindows.replace(QRegExp("\\\\n"), "\n");

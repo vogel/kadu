@@ -34,6 +34,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   w grupie Wszyscy) (uto/mast3r)
 * zmiany w polu wyboru grupy w oknie dodawania nowego u¿ytkownika i w oknie
   zmiany danych o u¿ytkowniku - bardziej intelegetne (mast3r)
+* pasek narzêdziowy zajmuje ca³± szeroko¶æ okna kadu (towtys/chilek)
 
 +++ wersja 0.3.4-rc2
 * porzadki: kod rejestrujacy opcje modulow Chat i Sms w oknie konfiguracji
