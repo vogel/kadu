@@ -83,17 +83,34 @@ class Kadu : public QMainWindow
 
 		void showStatusOnMenu(int);
 
+	public slots:
+		void show();
+		void mouseButtonClicked(int, QListBoxItem *);
+		void infopanelUpdate(UinType);
+		void currentChanged(QListBoxItem *item);
+		void sendMessage(QListBoxItem *);
+		void configure();
+
 	private slots:
-		void groupTabSelected(int id);
 		void userListModified();
 		void userListStatusModified(UserListElement *, bool);
 		void openChat();
 		void userListUserAdded(const UserListElement& user);
+		void chatMsgReceived(UinsList senders, const QString &msg, time_t time);
+		void userListChanged();
 
 		void wentOnline(const QString &);
 		void wentBusy(const QString &);
 		void wentInvisible(const QString &);
 		void wentOffline(const QString &);
+		void groupTabSelected(int id);
+		void connected();
+		void connecting();
+		void disconnected();
+		void error(GaduError);
+		void imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &path);
+		void systemMessageReceived(QString &);
+		void userStatusChanged(UserListElement &, const Status &oldstatus, bool onConnection);
 
 	protected:
 		void keyPressEvent(QKeyEvent *e);
@@ -128,50 +145,32 @@ class Kadu : public QMainWindow
 		void startupProcedure();
 		int personalInfoMenuId;//potrzebne dla modu³u account_management
 
-	private slots:
-		void chatMsgReceived(UinsList senders, const QString &msg, time_t time);
-		void connected();
-		void connecting();
-		void disconnected();
-		void error(GaduError);
-		void imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &path);
-		void systemMessageReceived(QString &);
-		void userListChanged();
-		void userStatusChanged(UserListElement &, const Status &oldstatus, bool onConnection);
-
 	public slots:
-		/**
-			Modu³ dokowania powinien to ustawic, aby kadu
-			wiedzialo, ze jest zadokowane.
-		**/
-		void setDocked(bool docked);
-
+		void slotHandleState(int command);
+		void changeAppearance();
+		void blink();
+		void refreshGroupTabBar();
+		//void setCurrentStatus(int status);
+		//void setStatus(int);
+		void showdesc(bool show = true);
+		void statusMenuAboutToHide(void);
+		virtual bool close(bool quit = false);
+		void quitApplication();
 		/**
 			Potrzebne dla modu³u dokuj±cego ¿eby
 			g³ówne okno nie miga³o przy starcie...
 		**/
 		void setShowMainWindowOnStart(bool show);
-
-		void refreshGroupTabBar();
-		void changeAppearance();
-		void blink();
-		void slotHandleState(int command);
-		//void setCurrentStatus(int status);
-		void sendMessage(QListBoxItem *);
-		//void setStatus(int);
+		/**
+			Modu³ dokowania powinien to ustawic, aby kadu
+			wiedzialo, ze jest zadokowane.
+		**/
+		void setDocked(bool docked);
 		void gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op);
-		void currentChanged(QListBoxItem *item);
-		void showdesc(bool show = true);
-		void statusMenuAboutToHide(void);
-		void mouseButtonClicked(int, QListBoxItem *);
-		void infopanelUpdate(UinType);
-		virtual bool close(bool quit = false);
-		void quitApplication();
 
 		void about();
 		void addUserAction();
 		void blockUser();
-		void configure();
 		void deleteHistory();
 		void deleteUsers();
 		void help();
@@ -188,7 +187,6 @@ class Kadu : public QMainWindow
 		void showUserInfo();
 		void viewHistory();
 		void popupMenu();
-		void show();
 
 		// odczytuje z obrazka tekst i zapisuje go w drugim parametrze
 		void readTokenValue(QPixmap, QString &);

@@ -11,7 +11,8 @@
 #include "userlist.h"
 #include "misc.h"
 
-class KaduListBoxPixmap : public QListBoxItem {
+class KaduListBoxPixmap : public QListBoxItem
+{
 	public:
 		KaduListBoxPixmap(const QPixmap &pix, const QString &text);
 		KaduListBoxPixmap(const QPixmap &pix, const QString &text, const QString &descr, bool bold);
@@ -134,6 +135,7 @@ class UserBox : public QListBox , QToolTip
 		**/
 		static UserBox* getActiveUserBox();
 	public slots:	
+		void refresh();
 		void showHideInactive();
 		void showHideDescriptions();
 		virtual void clear() { QListBox::clear(); };
@@ -141,7 +143,6 @@ class UserBox : public QListBox , QToolTip
 			Funkcja czy¶ci ca³± listê u¿ytkowników w UserBox
 		**/
 		void clearUsers() { Users.clear(); };
-		void refresh();
 		/**
 			Funkcja dodaje u¿ytkownika o podanym altnick do listy w UserBox
 		**/

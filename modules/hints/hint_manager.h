@@ -30,36 +30,6 @@ class HintManager : public QFrame
 		**/
 		void setGridOrigin();
 
-	public:
-		HintManager();
-		~HintManager();
-
-	public slots:
-		/**
-			pokazuje nowy dymek o tre¶ci "text", obrazku "pixmap",
-			czcionk± "font" o kolorze "fgcolor", tle "bgcolor",
-			czasie zaniku "timeout" (sekund), dotycz±cy "senders"
-
-			pozosta³e funkcje pokazuj±ce dymki s± tylko opakowaniami na t± funkcjê
-		**/
-		void addHint(const QString &text, const QPixmap &pixmap, const QFont &font, const QColor &fgcolor, const QColor &bgcolor, unsigned int timeout, UinsList* senders=0);
-
-		/**
-			usuwa dymek o numerze id
-		**/
-		void deleteHint(unsigned int id);
-
-		/**
-			je¿eli dymek dotyczy³ konkrentej osoby lub grupy osób, to otwierane jest okno chatu
-			dymek jest kasowany
-		**/
-		void openChat(unsigned int id);
-
-		/**
-			usuwa wszystkie dymki
-		**/
-		void deleteAllHints();
-
 	private slots:
 		/**
 			minê³a sekunda: aktualizuje czasy wszystkich dymków
@@ -128,11 +98,41 @@ class HintManager : public QFrame
 		void message(const QString &from, const QString &message, const QMap<QString, QVariant> *parameters, const UserListElement *ule);
 /*********** koniec slotów dla notify *************/
 
+		/**
+			pokazuje nowy dymek o tre¶ci "text", obrazku "pixmap",
+			czcionk± "font" o kolorze "fgcolor", tle "bgcolor",
+			czasie zaniku "timeout" (sekund), dotycz±cy "senders"
+
+			pozosta³e funkcje pokazuj±ce dymki s± tylko opakowaniami na t± funkcjê
+		**/
+		void addHint(const QString &text, const QPixmap &pixmap, const QFont &font, const QColor &fgcolor, const QColor &bgcolor, unsigned int timeout, UinsList* senders=0);
+
+		/**
+			usuwa dymek o numerze id
+		**/
+		void deleteHint(unsigned int id);
+
+		/**
+			je¿eli dymek dotyczy³ konkrentej osoby lub grupy osób, to otwierane jest okno chatu
+			dymek jest kasowany
+		**/
+		void openChat(unsigned int id);
+
+		/**
+			usuwa wszystkie dymki
+		**/
+		void deleteAllHints();
+
+
 	signals:
 		/**
 			HintManager szuka pozycji traya, aby wy¶wietliæ w jego okolicy dymki
 		**/
 		void searchingForTrayPosition(QPoint& pos);
+
+	public:
+		HintManager();
+		~HintManager();
 };
 
 extern HintManager *hint_manager;

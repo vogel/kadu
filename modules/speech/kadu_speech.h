@@ -14,15 +14,6 @@ class SpeechSlots : public QObject
 		SpeechSlots();
 		~SpeechSlots();
 	private slots:
-		void onCreateConfigDialog();
-		void chooseSpeechProgram();
-		
-		void say(const QString &s, const QString &path=QString::null,
-					bool klatt=false, bool melodie=false,
-					bool arts=false, bool esd=false, bool dsp=false, const QString &device=QString::null,
-					int freq=0, int tempo=0, int basefreq=0);
-		
-
 		void newChat(UinsList senders, const QString& msg, time_t time);
 		void newMessage(UinsList senders, const QString& msg, time_t time, bool &grab);
 		void connectionError(const QString &message);
@@ -31,14 +22,19 @@ class SpeechSlots : public QObject
 		void userChangedStatusToNotAvailable(const UserListElement &ule);
 		void message(const QString &from, const QString &message, const QMap<QString, QVariant> *parameters, const UserListElement *ule);
 
+		void say(const QString &s, const QString &path=QString::null,
+					bool klatt=false, bool melodie=false,
+					bool arts=false, bool esd=false, bool dsp=false, const QString &device=QString::null,
+					int freq=0, int tempo=0, int basefreq=0);
+
+		void onCreateConfigDialog();
+		void chooseSpeechProgram();
 		void useArts();
 		void useEsd();
 		void useDsp();
 		void testSpeech();
-
 };
 
 extern SpeechSlots *speechObj;
 
 #endif
-

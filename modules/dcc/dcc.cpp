@@ -303,34 +303,19 @@ void DccFileDialog::printFileInfo(struct gg_dcc* dccsock)
 	long long int percent;
  	long double fpercent;
 
-	QLabel *l_sender = new QLabel(this);
-
 	QString sender;
 
 	if (type == TRANSFER_TYPE_GET)
-		sender.append(tr("Sender: "));
+		sender=tr("Sender: %1");
 	else
-		sender.append(tr("Receiver: "));
-	sender.append(userlist.byUin(dccsock->peer_uin).altnick);
-	l_sender->setText(sender);
+		sender=tr("Receiver: %1");
+	new QLabel(sender.arg(userlist.byUin(dccsock->peer_uin).altnick), this);
 
-	QLabel *l_filename = new QLabel(this);
-	sender.truncate(0);
+	new QLabel(tr("Filename: %1").arg((char *)dccsock->file_info.filename), this);
 
-	sender.append(tr("Filename: "));
-	sender.append((char *)dccsock->file_info.filename);
-	l_filename->setText(sender);
+	new QLabel(tr("File size: %1B").arg(QString::number(dccsock->file_info.size)), this);
 
-	QLabel *l_filesize = new QLabel(this);
-	sender.truncate(0);
-
-	sender.append(tr("File size: "));
-	sender.append(QString::number(dccsock->file_info.size));
-	sender.append("B");
-
-	l_filesize->setText(sender);
-
-	l_offset = new QLabel(tr("Speed: 0KB/s (not started)  "),this);
+	l_offset = new QLabel(tr("Speed: 0kB/s (not started)  "),this);
 
 	p_progress = new QProgressBar(100, this);
 	p_progress->setProgress(0);
@@ -364,15 +349,12 @@ void DccFileDialog::updateFileInfo(struct gg_dcc *dccsock)
 	long long int percent;
  	long double fpercent;
 	int diffOffset,diffTime;
-	QString str;
 
 	if ((diffTime = time->elapsed()) > 1000)
 	{
 		diffOffset = dccsock->offset - prevOffset;
 		prevOffset = dccsock->offset;
-		str.append(tr("Speed: "));
-		str.append(QString::number(diffOffset/1024));
-		str.append("KB/s ");
+		QString str=tr("Speed: %1kB/s ").arg(QString::number(diffOffset/1024));
 		if (!diffOffset)
 			str.append(tr("(stalled)"));
 		l_offset->setText(str);
@@ -467,16 +449,14 @@ void FileDccSocket::needFileAccept()
 	QString str, f;
 	QFileInfo fi;
 
-	str.append(tr("User "));
-	str.append(userlist.byUin(dccsock->peer_uin).altnick);
-	str.append(tr(" wants to send us a file "));
-	str.append((char *)dccsock->file_info.filename);
-	str.append(tr("\nof size "));
-
 	char fsize[20];
-	snprintf(fsize, sizeof(fsize), "%.1fkB", (float) dccsock->file_info.size / 1024);
-	str.append(fsize);
-	str.append(tr(". Accept transfer?"));
+	snprintf(fsize, sizeof(fsize), "%.1f", (float) dccsock->file_info.size / 1024);
+
+	str=tr("User %1 wants to send us a file %2\nof size %3kB. Accept transfer?")
+		.arg(userlist.byUin(dccsock->peer_uin).altnick)
+		.arg((char *)dccsock->file_info.filename)
+		.arg(fsize);
+
 
 	switch (QMessageBox::information(0, tr("Incoming transfer"), str, tr("Yes"), tr("No"),
 		QString::null, 0, 1))

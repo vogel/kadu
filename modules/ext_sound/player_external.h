@@ -12,10 +12,9 @@ class ExternalPlayerSlots : public QObject
 		ExternalPlayerSlots();
 		~ExternalPlayerSlots();
 	private slots:
-		void choosePlayerFile();
-		void play(const QString &s, bool volCntrl, double vol, QString player);
-		
 		void playSound(const QString &s, bool volCntrl, double vol);
+		void play(const QString &s, bool volCntrl, double vol, QString player);
+		void choosePlayerFile();
 };
 
 extern ExternalPlayerSlots *externalPlayerObj;

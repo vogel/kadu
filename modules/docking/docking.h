@@ -14,12 +14,12 @@ class DockingManager : public QObject
 		void defaultToolTip();
 
 	private slots:
+		void statusPixmapChanged(QPixmap &);
+		void findTrayPosition(QPoint& pos);
 		void changeIcon();
 		void dockletChange(int id);
 		void pendingMessageAdded();
 		void pendingMessageDeleted();
-		void statusPixmapChanged(QPixmap &);
-		void findTrayPosition(QPoint& pos);
 		void onApplyConfigDialog();
 
 	public:

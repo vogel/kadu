@@ -12,10 +12,10 @@ class VoiceDsp : public QObject
 		virtual ~VoiceDsp();
 
 	public slots:
-		void setup();
-		void free();
 		void playSample(char *data, int length);
 		void recordSample(char *data, int length);
+		void setup();
+		void free();
 
 	private:
 		int fd;

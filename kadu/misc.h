@@ -74,7 +74,8 @@ QStringList toStringList(const QString &e1, const QString &e2=QString(), const Q
 void saveGeometry(QWidget *w, QString section, QString name);
 void loadGeometry(QWidget *w, QString section, QString name, int defaultX, int defaultY, int defaultWidth, int defaultHeight);
 
-class ChooseDescription : public QDialog {
+class ChooseDescription : public QDialog
+{
 	Q_OBJECT
 	public:
 		ChooseDescription ( int nr, QWidget * parent=0, const char * name=0);
@@ -89,7 +90,6 @@ class ChooseDescription : public QDialog {
 		void okbtnPressed();
 		void cancelbtnPressed();
 		void updateYetLen(const QString&);
-
 };
 
 class HttpClient : public QObject
@@ -116,6 +116,12 @@ class HttpClient : public QObject
 		void onReadyRead();
 		void onConnectionClosed();
 
+	public slots:
+		void setHost(QString host);
+		void get(QString path);
+		void post(QString path,const QByteArray& data);
+		void post(QString path,const QString& data);
+
 	public:
 		HttpClient();
 		int status();
@@ -126,12 +132,6 @@ class HttpClient : public QObject
 		void finished();
 		void redirected(QString link);
 		void error();
-
-	public slots:
-		void setHost(QString host);
-		void get(QString path);
-		void post(QString path,const QByteArray& data);
-		void post(QString path,const QString& data);
 };
 
 /**

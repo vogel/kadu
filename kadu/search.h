@@ -47,24 +47,23 @@ class SearchDialog : public QDialog {
 
 		bool searchhidden;
 
-	private slots:
-		void clearResults(void);
-		void prepareMessage(QListViewItem*);
-		void uinTyped(void);
-		void personalDataTyped(void);
-		void AddButtonClicked();
-		void updateInfoClicked();
-		void openChat();
-
 	public slots:
 		void firstSearch(void);
 		void nextSearch(void);
 		void newSearchResults(SearchResults& searchResults, int seq, int fromUin);
 		void selectionChanged(QListViewItem *);
 
+	private slots:
+		void clearResults(void);
+		void prepareMessage(QListViewItem *);
+		void uinTyped(void);
+		void personalDataTyped(void);
+		void AddButtonClicked();
+		void updateInfoClicked();
+		void openChat();
+
 	protected:
 		void closeEvent(QCloseEvent * e);
-
 };
 
 #endif

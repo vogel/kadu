@@ -416,11 +416,7 @@ void VoiceSocket::dccEvent()
 void VoiceSocket::askAcceptVoiceChat()
 {
 	kdebugf();
-	QString str;
-
-	str.append(tr("User "));
-	str.append(userlist.byUin(dccsock->peer_uin).altnick);
-	str.append(tr(" wants to talk with you. Do you accept it?"));
+	QString str=tr("User %1 wants to talk with you. Do you accept it?").arg(userlist.byUin(dccsock->peer_uin).altnick);
 
 	switch (QMessageBox::information(0, tr("Incoming voice chat"), str, tr("Yes"), tr("No"),
 		QString::null, 0, 1))

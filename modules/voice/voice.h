@@ -120,8 +120,8 @@ class VoiceSocket : public DccSocket
 		void askAcceptVoiceChat();
 		
 	private slots:
-		void cancelVoiceChatReceived();
 		void voiceDataRecorded(char *data, int length);
+		void cancelVoiceChatReceived();
 
 	protected:
 		virtual void connectionBroken();

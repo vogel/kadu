@@ -220,6 +220,18 @@ class ModulesManager : public QObject
 		bool conflictsWithLoaded(const QString &module_name, const ModuleInfo& module_info) const;
 		
 	public slots:
+		/**
+			Aktywuje modu³ statyczny je¶li jest dostêpny
+			lub ³aduje do pamiêci i aktywuje modu³ zewnêtrzny.
+			@param module_name nazwa modu³u
+		**/
+		bool activateModule(const QString& module_name);
+		/**
+			Deaktywuje modu³ statyczny lub
+			deaktywuje i usuwa z pamiêci modu³ zewnêtrzny.
+			@param module_name nazwa modu³u
+		**/		
+		bool deactivateModule(const QString& module_name, bool force=false);
 		void showDialog();
 		/**
 		 	Zwiêksza licznik u¿ycia modu³u o 1
@@ -236,18 +248,6 @@ class ModulesManager : public QObject
 			modu³ów.
 		**/
 		void saveLoadedModules();
-		/**
-			Aktywuje modu³ statyczny je¶li jest dostêpny
-			lub ³aduje do pamiêci i aktywuje modu³ zewnêtrzny.
-			@param module_name nazwa modu³u
-		**/
-		bool activateModule(const QString& module_name);
-		/**
-			Deaktywuje modu³ statyczny lub
-			deaktywuje i usuwa z pamiêci modu³ zewnêtrzny.
-			@param module_name nazwa modu³u
-		**/		
-		bool deactivateModule(const QString& module_name, bool force=false);
 };
 
 extern ModulesManager* modules_manager;

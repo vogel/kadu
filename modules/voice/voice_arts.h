@@ -16,10 +16,10 @@ class VoiceArts : public QObject
 		virtual ~VoiceArts();
 
 	public slots:
-		void setup();
-		void free();
 		void playSample(char *data, int length);
 		void recordSample(char *data, int length);
+		void setup();
+		void free();
 
 	private:
 		arts_stream_t playstream;

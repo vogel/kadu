@@ -15,16 +15,17 @@ class EncryptionManager : public QObject
 		void setupEncryptButton(Chat* chat,bool enabled);
 	
 	private slots:
-		void createConfigDialogSlot();
-		void generateMyKeys();
-		void onUseEncryption(bool toggled);
-		void chatCreated(const UinsList& uins);
-		void encryptionButtonClicked();
 		void receivedMessageFilter(const UinsList& senders,
 			QCString& msg,QByteArray& formats,bool& stop);
 		void sendMessageFilter(const UinsList& uins,QCString& msg,bool& stop);
+		void chatCreated(const UinsList& uins);
+
+		void generateMyKeys();
 		void sendPublicKey();
+		void onUseEncryption(bool toggled);
+		void encryptionButtonClicked();
 		void userBoxMenuPopup();
+		void createConfigDialogSlot();
 
 	public:
 		EncryptionManager();
