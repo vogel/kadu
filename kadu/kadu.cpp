@@ -903,6 +903,7 @@ void Kadu::refreshGroupTabBar()
 	if (!config_file.readBoolEntry("Look", "DisplayGroupTabs"))
 	{
 		GroupBar->hide();
+		kdebugf2();
 		return;
 	}
 	/* budujemy listê grup */
@@ -912,31 +913,34 @@ void Kadu::refreshGroupTabBar()
 		QString groups = (*user).group();
 		QString group;
 		for (int g = 0; (group = groups.section(',' ,g ,g)) != ""; ++g)
-			if(!group_list.contains(group))
+			if (!group_list.contains(group))
 				group_list.append(group);
 	}
 	kdebugm(KDEBUG_INFO, "%i groups found: %s\n",group_list.count(), group_list.join(",").local8Bit().data());
 	//
+	/* usuwamy wszystkie niepotrzebne zakladki - od tylu,
+	   bo indeksy sie przesuwaja po usunieciu */
+	for (int i = GroupBar->count() - 1; i >= 1; --i)
+		if (!group_list.contains(GroupBar->tabAt(i)->text()))
+			GroupBar->removeTab(GroupBar->tabAt(i));
+
 	if (group_list.count() == 0)
 	{
 		GroupBar->hide();
 		setActiveGroup("");
+		kdebugf2();
 		return;
 	}
-	/* usuwamy wszystkie niepotrzebne zakladki - od tylu,
-	   bo indeksy sie przesuwaja po usunieciu */
-	for (int i = GroupBar->count() - 1; i >= 1; --i)
-		if(!group_list.contains(GroupBar->tabAt(i)->text()))
-			GroupBar->removeTab(GroupBar->tabAt(i));
+
 	/* dodajemy nowe zakladki */
-	for (unsigned int i = 0; i < group_list.count(); ++i)
+	CONST_FOREACH(group, group_list)
 	{
 		bool createNewTab = true;
 		for (int j = 0; j < GroupBar->count(); ++j)
-			if (GroupBar->tabAt(j)->text() == group_list[i])
+			if (GroupBar->tabAt(j)->text() == *group)
 				createNewTab = false;
-		if(createNewTab)
-			GroupBar->addTab(new QTab(group_list[i]));
+		if (createNewTab)
+			GroupBar->addTab(new QTab(*group));
 	}
 	kdebugm(KDEBUG_INFO, "%i group tabs\n", GroupBar->count());
 	GroupBar->show();
@@ -1009,23 +1013,21 @@ void Kadu::userStatusChanged(const UserListElement &user, const UserStatus &/*ol
 	kdebugf2();
 }
 
-void Kadu::removeUser(QStringList &users, bool /*permanently*/)
+void Kadu::removeUser(const QStringList &users, bool /*permanently*/)
 {
 	kdebugf();
-	if(QMessageBox::warning(kadu, "Kadu",
+	if (QMessageBox::warning(kadu, "Kadu",
 		tr("Selected users will be deleted. Are you sure?"),
 		tr("&Yes"),tr("&No"))!=0)
 		return;
 
-	unsigned int i;
-
-	for (i = 0; i < users.count(); ++i)
-		UserBox::all_removeUser(users[i]);
+	CONST_FOREACH(user, users)
+		UserBox::all_removeUser(*user);
 	UserBox::all_refresh();
 
-	for (i = 0; i < users.count(); ++i)
+	CONST_FOREACH(username, users)
 	{
-		UserListElement user = userlist.byAltNick(users[i]);
+		UserListElement user = userlist.byAltNick(*username); //czemu tu jest tak nakombinowane? nie mo¿na po prostu daæ userlist.removeUser(*username); ?
 		userlist.removeUser(user.altNick());
 	}
 

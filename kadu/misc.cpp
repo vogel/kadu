@@ -2804,7 +2804,7 @@ QString narg(const QString &s, const QString &arg1, const QString &arg2, const Q
 
 void printBacktrace(const QString &header)
 {
-	fprintf(stderr, "backtrace: '%s'\n", header.local8Bit().data());
+	fprintf(stderr, "\nbacktrace: '%s'\n", header.local8Bit().data());
 #ifdef HAVE_EXECINFO
 	void *bt_array[100];
 	char **bt_strings;
@@ -2817,7 +2817,7 @@ void printBacktrace(const QString &header)
 		fprintf(stderr, "could not get symbol names for backtrace\n");
 		return;
 	}
-	fprintf(stderr, "\n======= BEGIN OF BACKTRACE =====\n");
+	fprintf(stderr, "======= BEGIN OF BACKTRACE =====\n");
 	for (int i = 0; i < num_entries; ++i)
 		fprintf(stderr, "[%d] %s\n", i, bt_strings[i]);
 	fprintf(stderr, "======= END OF BACKTRACE  ======\n");

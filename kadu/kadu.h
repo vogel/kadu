@@ -118,7 +118,7 @@ class Kadu : public QMainWindow
 		Kadu(QWidget* parent=0, const char *name=0);
 		~Kadu();
 		bool userInActiveGroup(UinType uin);
-		void removeUser(QStringList &, bool);
+		void removeUser(const QStringList &, bool);
 
 		/**
 			Zwraca wskaznik do belki menu glownego okna.
