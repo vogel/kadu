@@ -272,8 +272,9 @@ void UserBox::mouseMoveEvent(QMouseEvent* e)
 
 void UserBox::keyPressEvent(QKeyEvent *e)
 {
-    QListBox::keyPressEvent(e);
-    QWidget::keyPressEvent(e);
+	QListBox::keyPressEvent(e);
+	QWidget::keyPressEvent(e);
+	emit currentChanged(item(currentItem()));
 }
 
 void UserBox::sortUsersByAltNick(QStringList &users) {
