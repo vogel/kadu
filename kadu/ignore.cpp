@@ -216,6 +216,7 @@ int writeIgnored(QString filename)
 		for (unsigned int j = 0; j < ignored[i].count(); ++j)
 			list.append(QString::number(ignored[i][j]));
 		buf.append(list.join(";"));
+		buf.append('\n');
 	}
 
 	if (buf.length())

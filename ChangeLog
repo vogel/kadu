@@ -365,6 +365,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dcc: ostrze¿enie gdy kto¶ próbuje rozpocz±æ z nami bezpo¶rednie po³±czenie,
   a adres ¼ród³owy nie zgadza siê adresem, który otrzymali¶my od serwera
   + ignorowanie po³±czeñ bezpo¶rednich od anonimów (joi)
+* poprawka Analyzera w kodzie dotycz±cym ignorowania - b³êdny zapis listy
+  ignorowanych do pliku (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
