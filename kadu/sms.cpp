@@ -16,6 +16,7 @@
 #include "kadu.h"
 #include "sms.h"
 #include "history.h"
+#include "debug.h"
 //
 
 /********** SmsImageWidget **********/
@@ -99,14 +100,14 @@ void HttpClient::onConnected()
 	query+="\n";
 	if (PostData.size() > 0)
 		query += QString(PostData);
-	fprintf(stderr, "HttpClient: Sending query:\n%s\n", query.local8Bit().data());
+	kdebug("HttpClient: Sending query:\n%s\n", query.local8Bit().data());
 	Socket.writeBlock(query.local8Bit().data(), query.length());
 };
 
 void HttpClient::onReadyRead()
 {
 	int size=Socket.bytesAvailable();
-	fprintf(stderr,"HttpClient: Data Block Retreived: %i bytes\n",size);
+	kdebug("HttpClient: Data Block Retreived: %i bytes\n",size);
 	// Dodaj nowe dane do starych
 	char buf[size];
 	Socket.readBlock(buf,size);
@@ -117,14 +118,14 @@ void HttpClient::onReadyRead()
 	// Jesli nie mamy jeszcze naglowka
 	if(ContentLength<0)
 	{	
-		fprintf(stderr,"HttpClient: Trying to parse header\n");
+		kdebug("HttpClient: Trying to parse header\n");
 		// Kontynuuj odczyt jesli naglowek niekompletny
 		QString s=QString(Data);
 		int p=s.find("\r\n\r\n");
 		if(p<0)
 			return;
 		// Dostalismy naglowek, 
-		fprintf(stderr,"HttpClient: Http header found:\n%s\n",s.local8Bit().data());		
+		kdebug("HttpClient: Http header found:\n%s\n",s.local8Bit().data());		
 		// Wyci±gamy status
 		QRegExp status_regexp("HTTP/1\\.[01] (\\d+)");
 		if(status_regexp.search(s)<0)
@@ -134,14 +135,14 @@ void HttpClient::onReadyRead()
 			return;
 		};
 		Status=status_regexp.cap(1).toInt();
-		fprintf(stderr,"HttpClient: Status: %i\n",Status);			
+		kdebug("HttpClient: Status: %i\n",Status);			
 		// Wyci±gamy Content-Length
 		QRegExp cl_regexp("Content-Length: (\\d+)");
 		if(cl_regexp.search(s)<0)
 			ContentLength=0;
 		else
 			ContentLength=cl_regexp.cap(1).toInt();
-		fprintf(stderr,"HttpClient: Content-Length: %i bytes\n",ContentLength);			
+		kdebug("HttpClient: Content-Length: %i bytes\n",ContentLength);			
 		// Wyciagamy ewentualne cookie (dla uproszczenia tylko jedno)
 		QRegExp cookie_regexp("Set-Cookie: ([^=]+)=([^;]+);");
 		if(cookie_regexp.search(s)>=0)
@@ -149,7 +150,7 @@ void HttpClient::onReadyRead()
 			QString cookie_name=cookie_regexp.cap(1);
 			QString cookie_val=cookie_regexp.cap(2);
 			Cookies.insert(cookie_name,cookie_val);
-			fprintf(stderr,"HttpClient: Cookie retreived: %s=%s\n",cookie_name.local8Bit().data(),cookie_val.local8Bit().data());
+			kdebug("HttpClient: Cookie retreived: %s=%s\n",cookie_name.local8Bit().data(),cookie_val.local8Bit().data());
 		};
 		// Wytnij naglowek z Data
 		int header_size=p+4;
@@ -157,9 +158,9 @@ void HttpClient::onReadyRead()
 		for(int i=0; i<new_data_size; i++)
 			Data[i]=Data[header_size+i];
 		Data.resize(new_data_size);
-		fprintf(stderr,"HttpClient: Header parsed and cutted off from data\n");
-		fprintf(stderr,"HttpClient: Header size: %i bytes\n",header_size);
-		fprintf(stderr,"HttpClient: New data block size: %i bytes\n",new_data_size);
+		kdebug("HttpClient: Header parsed and cutted off from data\n");
+		kdebug("HttpClient: Header size: %i bytes\n",header_size);
+		kdebug("HttpClient: New data block size: %i bytes\n",new_data_size);
 		// Je¶li status jest 100 - Continue to czekamy na dalsze dane
 		// (uniewa¿niamy ten nag³owek i czekamy na nastêpny)
 		if(Status==100)
@@ -172,7 +173,7 @@ void HttpClient::onReadyRead()
 	if(ContentLength>Data.size())
 		return;
 	// Mamy cale dane
-	fprintf(stderr,"HttpClient: All Data Retreived: %i bytes\n",Data.size());
+	kdebug("HttpClient: All Data Retreived: %i bytes\n",Data.size());
 	Socket.close();
 	emit finished();
 };
@@ -239,7 +240,7 @@ void SmsSender::onFinished()
 	if(State==SMS_LOADING_PAGE)
 	{
 		QString Page=Http.data();
-		fprintf(stderr,"SMS Provider Page:\n%s\n",Page.local8Bit().data());
+		kdebug("SMS Provider Page:\n%s\n",Page.local8Bit().data());
 		if(Provider==SMS_IDEA)
 		{
 			QRegExp pic_regexp("rotate_vt\\.asp\\?token=([^\"]+)");
@@ -252,8 +253,8 @@ void SmsSender::onFinished()
 			};
 			QString pic_path=Page.mid(pic_pos,pic_regexp.matchedLength());
 			Token=pic_regexp.cap(1);
-			fprintf(stderr,"SMS Idea Token: %s\n",Token.local8Bit().data());
-			fprintf(stderr,"SMS Idea Picture: %s\n",pic_path.local8Bit().data());
+			kdebug("SMS Idea Token: %s\n",Token.local8Bit().data());
+			kdebug("SMS Idea Picture: %s\n",pic_path.local8Bit().data());
 			State=SMS_LOADING_PICTURE;
 			Http.get(pic_path);
 		}
@@ -274,7 +275,7 @@ void SmsSender::onFinished()
 	}
 	else if(State==SMS_LOADING_PICTURE)
 	{
-		fprintf(stderr,"SMS Idea Picture Loaded: %i bytes\n",Http.data().size());
+		kdebug("SMS Idea Picture Loaded: %i bytes\n",Http.data().size());
 		SmsImageDialog* d=new SmsImageDialog((QDialog*)parent(),Http.data());
 		connect(d,SIGNAL(codeEntered(const QString&)),this,SLOT(onCodeEntered(const QString&)));
 		d->show();
@@ -282,7 +283,7 @@ void SmsSender::onFinished()
 	else if(State==SMS_LOADING_RESULTS)
 	{
 		QString Page=Http.data();
-		fprintf(stderr,"SMS Provider Results Page:\n%s\n",Page.local8Bit().data());	
+		kdebug("SMS Provider Results Page:\n%s\n",Page.local8Bit().data());	
 		if(Provider==SMS_IDEA)
 		{
 			if(Page.find("wyczerpany")>=0)
@@ -326,7 +327,7 @@ void SmsSender::onFinished()
 		};
 	}
 	else
-		fprintf(stderr,"SMS Panic! Unknown state\n");	
+		kdebug("SMS Panic! Unknown state\n");	
 };
 
 void SmsSender::onError()
@@ -337,7 +338,7 @@ void SmsSender::onError()
 
 void SmsSender::onCodeEntered(const QString& code)
 {
-	fprintf(stderr,"SMS User entered the code\n");
+	kdebug("SMS User entered the code\n");
 	State=SMS_LOADING_RESULTS;
 	QString post_data=QString("token=")+Token+"&SENDER="+config.nick+"&RECIPIENT="+Number+"&SHORT_MESSAGE="+Http.encode(Message)+"&pass="+code;
 	Http.post("sendsms.asp",post_data);
@@ -482,7 +483,7 @@ void Sms::sendSms(void) {
 		if(config.smsapp=="")
 		{
 			QMessageBox::warning(this, i18n("SMS error"), i18n("Sms application was not specified. Visit the configuration section") );
-			fprintf(stderr,"KK SMS application NOT specified. Exit.\n");
+			kdebug("SMS application NOT specified. Exit.\n");
 			return;
 		};
 		QString SmsAppPath=config.smsapp;

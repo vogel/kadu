@@ -14,6 +14,7 @@
   powinno to poprawiæ troszke wygl±d (mast3r)
 * pocz±tki porz±dnego debuga. Pliki debug.cpp/h. Makra kdebug i kdebugf.
   Od teraz u¿ywamy zamiast fprintf(stderr,...) (adrian)
+* ca³e kod kadu przerobiony na nowy sposób debugowania (adrian)
 
 +++ wersja 0.3.3-rc3
 * sensowne potwierdzenie usuniêcia kontaktu (adrian)

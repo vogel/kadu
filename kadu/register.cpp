@@ -22,11 +22,12 @@
 #include "kadu.h"
 #include "adduser.h"
 #include "config_file.h"
+#include "debug.h"
 #include "register.h"
 //
 
 Register::Register(QDialog *parent, const char *name) : QDialog (parent, name, FALSE, Qt::WDestructiveClose) {
-	fprintf(stderr, "KK Register::Register()\n");
+	kdebug("Register::Register()\n");
 
 	QGridLayout *grid = new QGridLayout(this, 5, 2, 6, 5);
 
@@ -76,7 +77,7 @@ Register::Register(QDialog *parent, const char *name) : QDialog (parent, name, F
 }
 
 void Register::doRegister() {
-	fprintf(stderr, "KK Register::doRegister()\n");
+	kdebug("Register::doRegister()\n");
 	if (pwd->text() != pwd2->text()) {
 		QMessageBox::warning(this, "Kadu", i18n("Passwords do not match"), i18n("OK"), 0, 0, 1);
 		return;
@@ -99,18 +100,18 @@ void Register::doRegister() {
 }
 
 void Register::closeEvent(QCloseEvent *e) {
-	fprintf(stderr, "KK Register::closeEvent()\n");
+	kdebug("Register::closeEvent()\n");
 	deleteSocketNotifiers();
 	if (h) {
 		gg_free_register(h);
 		h = NULL;
 		}
 	QDialog::closeEvent(e);
-	fprintf(stderr, "KK Register::closeEvent(): end\n");
+	kdebug("Register::closeEvent(): end\n");
 }
 
 void Register::createSocketNotifiers() {
-	fprintf(stderr, "KK Register::createSocketNotifiers()\n");
+	kdebug("Register::createSocketNotifiers()\n");
 
 	snr = new QSocketNotifier(h->fd, QSocketNotifier::Read, kadu);
 	QObject::connect(snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
@@ -120,7 +121,7 @@ void Register::createSocketNotifiers() {
 }
 
 void Register::deleteSocketNotifiers() {
-	fprintf(stderr, "KK Register::deleteSocketNotifiers()\n");
+	kdebug("Register::deleteSocketNotifiers()\n");
 	if (snr) {
 		snr->setEnabled(false);
 		snr->deleteLater();
@@ -134,25 +135,25 @@ void Register::deleteSocketNotifiers() {
 }
 
 void Register::dataReceived() {
-	fprintf(stderr, "KK Register::dataReceived()\n");
+	kdebug("Register::dataReceived()\n");
 	if (h->check && GG_CHECK_READ)
 		socketEvent();
 }
 
 void Register::dataSent() {
-	fprintf(stderr, "KK Register::dataSent()\n");
+	kdebug("Register::dataSent()\n");
 	snw->setEnabled(false);
 	if (h->check && GG_CHECK_WRITE)
 		socketEvent();
 }
 
 void Register::socketEvent() {
-	fprintf(stderr, "KK Register::socketEvent()\n");
+	kdebug("Register::socketEvent()\n");
 	if (gg_register_watch_fd(h) == -1) {
 		deleteSocketNotifiers();
 		gg_free_register(h);
 		h = NULL;
-		fprintf(stderr, "KK Register::socketEvent(): error registering\n");
+		kdebug("Register::socketEvent(): error registering\n");
 		status->setText(i18n("Error"));
 		setEnabled(true);
 		return;
@@ -160,7 +161,7 @@ void Register::socketEvent() {
 	struct gg_pubdir *p = (struct gg_pubdir *)h->data;
 	switch (h->state) {
 		case GG_STATE_CONNECTING:
-			fprintf(stderr, "KK Register::socketEvent(): changing QSocketNotifiers.\n");
+			kdebug("Register::socketEvent(): changing QSocketNotifiers.\n");
 			deleteSocketNotifiers();
 			createSocketNotifiers();
 			if (h->check & GG_CHECK_WRITE)
@@ -170,27 +171,27 @@ void Register::socketEvent() {
 			deleteSocketNotifiers();
 			gg_free_register(h);
 			h = NULL;
-			fprintf(stderr, "KK Register::socketEvent(): error registering\n");
+			kdebug("Register::socketEvent(): error registering\n");
 			status->setText(i18n("Error"));
 			setEnabled(true);
 			break;
 		case GG_STATE_DONE:
 			deleteSocketNotifiers();
-			fprintf(stderr, "KK Register::socketEvent(): success=%d, uin=%ld\n", p->success, p->uin);
+			kdebug("Register::socketEvent(): success=%d, uin=%ld\n", p->success, p->uin);
 			if (p->success) {
 				status->setText(i18n("Success!"));
 				uin = p->uin;
 				QMessageBox::information(this, "Kadu", i18n("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(uin),
 					i18n("OK"), 0, 0, 1);
 				ask();
-				fprintf(stderr, "KK Register::socketEvent() before close()\n");
+				kdebug("Register::socketEvent() before close()\n");
 //				accept();
 				close();
 				}
 			else {
 				gg_free_register(h);
 				h = NULL;
-				fprintf(stderr, "KK Register::socketEvent(): error registering\n");
+				kdebug("Register::socketEvent(): error registering\n");
 				status->setText(i18n("Error"));
 				setEnabled(true);
 				}
@@ -202,7 +203,7 @@ void Register::socketEvent() {
 }
 
 void Register::ask() {
-	fprintf(stderr, "KK Register::ask()\n");
+	kdebug("Register::ask()\n");
 	if (updateconfig->isChecked()) {
 		config.uin = uin;
 		config.password = pwd->text();
@@ -212,11 +213,11 @@ void Register::ask() {
 
 
 void createConfig() {
-	fprintf(stderr, "KK createConfig()\n");
+	kdebug("createConfig()\n");
 	char *home = getenv("HOME");
 	struct passwd *pw;
 
-	fprintf(stderr, "KK createConfig(): $HOME=%s\n", home);
+	kdebug("createConfig(): $HOME=%s\n", home);
 	if (!home) {
 		if (!(pw = getpwuid(getuid())))
 			return;
@@ -227,16 +228,16 @@ void createConfig() {
 	QString ggpath = ggPath("");
 	stat(ggpath.local8Bit(), &buf);
 	if (S_ISDIR(buf.st_mode))
-		fprintf(stderr, "KK createConfig(): Directory %s exists\n", (const char *)ggpath.local8Bit());
+		kdebug("createConfig(): Directory %s exists\n", (const char *)ggpath.local8Bit());
 	else {
-		fprintf(stderr, "KK createConfig(): Creating directory\n");
+		kdebug("createConfig(): Creating directory\n");
 		if (mkdir(ggpath.local8Bit(), 0700) != 0 ) {
 			perror("mkdir");
 			return;
 			}
 		}
 
-	fprintf(stderr, "KK createConfig(): Writing config files...\n");
+	kdebug("createConfig(): Writing config files...\n");
 	ConfigFile *konf;
 	konf = new ConfigFile(ggPath("kadu.conf"));
 	konf->setGroup("Global");
@@ -247,11 +248,11 @@ void createConfig() {
 
 	kadu->setCaption(QString("Kadu: %1").arg(config.uin));
 
-	fprintf(stderr, "KK createConfig(): Config file created\n");
+	kdebug("createConfig(): Config file created\n");
 }
 
 Unregister::Unregister(QDialog *parent, const char *name) : QDialog (parent, name, FALSE, Qt::WDestructiveClose) {
-	fprintf(stderr, "KK Unregister::Unregister()\n");
+	kdebug("Unregister::Unregister()\n");
 
 	QGridLayout *grid = new QGridLayout(this, 4, 2, 6, 5);
 
@@ -292,7 +293,7 @@ Unregister::Unregister(QDialog *parent, const char *name) : QDialog (parent, nam
 }
 
 void Unregister::doUnregister() {
-	fprintf(stderr, "KK Unregister::doUnregister()\n");
+	kdebug("Unregister::doUnregister()\n");
 
 	if (!uin->text().toUInt() || !pwd->text().length()) {
 		QMessageBox::warning(this, "Kadu", i18n("Please fill out all fields"), i18n("OK"), 0, 0, 1);
@@ -311,18 +312,18 @@ void Unregister::doUnregister() {
 }
 
 void Unregister::closeEvent(QCloseEvent *e) {
-	fprintf(stderr, "KK Unregister::closeEvent()\n");
+	kdebug("Unregister::closeEvent()\n");
 	deleteSocketNotifiers();
 	if (h) {
 		gg_free_register(h);
 		h = NULL;
 		}
 	QDialog::closeEvent(e);
-	fprintf(stderr, "KK Unregister::closeEvent(): end\n");
+	kdebug("Unregister::closeEvent(): end\n");
 }
 
 void Unregister::createSocketNotifiers() {
-	fprintf(stderr, "KK Unregister::createSocketNotifiers()\n");
+	kdebug("Unregister::createSocketNotifiers()\n");
 
 	snr = new QSocketNotifier(h->fd, QSocketNotifier::Read, kadu);
 	QObject::connect(snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
@@ -332,7 +333,7 @@ void Unregister::createSocketNotifiers() {
 }
 
 void Unregister::deleteSocketNotifiers() {
-	fprintf(stderr, "KK Unregister::deleteSocketNotifiers()\n");
+	kdebug("Unregister::deleteSocketNotifiers()\n");
 	if (snr) {
 		snr->setEnabled(false);
 		snr->deleteLater();
@@ -346,25 +347,25 @@ void Unregister::deleteSocketNotifiers() {
 }
 
 void Unregister::dataReceived() {
-	fprintf(stderr, "KK Unregister::dataReceived()\n");
+	kdebug("Unregister::dataReceived()\n");
 	if (h->check && GG_CHECK_READ)
 		socketEvent();
 }
 
 void Unregister::dataSent() {
-	fprintf(stderr, "KK Unregister::dataSent()\n");
+	kdebug("Unregister::dataSent()\n");
 	snw->setEnabled(false);
 	if (h->check && GG_CHECK_WRITE)
 		socketEvent();
 }
 
 void Unregister::socketEvent() {
-	fprintf(stderr, "KK Unregister::socketEvent()\n");
+	kdebug("Unregister::socketEvent()\n");
 	if (gg_register_watch_fd(h) == -1) {
 		deleteSocketNotifiers();
 		gg_free_register(h);
 		h = NULL;
-		fprintf(stderr, "KK Unregister::socketEvent(): error unregistering\n");
+		kdebug("Unregister::socketEvent(): error unregistering\n");
 		status->setText(i18n("Error"));
 		setEnabled(true);
 		return;
@@ -372,7 +373,7 @@ void Unregister::socketEvent() {
 	struct gg_pubdir *p = (struct gg_pubdir *)h->data;
 	switch (h->state) {
 		case GG_STATE_CONNECTING:
-			fprintf(stderr, "KK Unregister::socketEvent(): changing QSocketNotifiers.\n");
+			kdebug("Unregister::socketEvent(): changing QSocketNotifiers.\n");
 			deleteSocketNotifiers();
 			createSocketNotifiers();
 			if (h->check & GG_CHECK_WRITE)
@@ -382,13 +383,13 @@ void Unregister::socketEvent() {
 			deleteSocketNotifiers();
 			gg_free_register(h);
 			h = NULL;
-			fprintf(stderr, "KK Unregister::socketEvent(): error unregistering\n");
+			kdebug("Unregister::socketEvent(): error unregistering\n");
 			status->setText(i18n("Error"));
 			setEnabled(true);
 			break;
 		case GG_STATE_DONE:
 			deleteSocketNotifiers();
-			fprintf(stderr, "KK Unregister::socketEvent(): success\n");
+			kdebug("Unregister::socketEvent(): success\n");
 			if (p->success) {
 				status->setText(i18n("Success!"));
 //				uin = p->uin;
@@ -396,13 +397,13 @@ void Unregister::socketEvent() {
 //					i18n("OK"), 0, 0, 1);
 //				ask();
 				deleteConfig();
-				fprintf(stderr, "KK Unregister::socketEvent() before close()\n");
+				kdebug("Unregister::socketEvent() before close()\n");
 				close();
 				}
 			else {
 				gg_free_register(h);
 				h = NULL;
-				fprintf(stderr, "KK Unregister::socketEvent(): error unregistering\n");
+				kdebug("Unregister::socketEvent(): error unregistering\n");
 				status->setText(i18n("Error"));
 				setEnabled(true);
 				}
@@ -414,15 +415,14 @@ void Unregister::socketEvent() {
 }
 
 void Unregister::deleteConfig() {
-	fprintf(stderr, "KK Unregister::deleteConfig()\n");
+	kdebug("Unregister::deleteConfig()\n");
 
-	fprintf(stderr, "KK Unregister::deleteConfig(): Deleting config file...\n");
+	kdebug("Unregister::deleteConfig(): Deleting config file...\n");
 	QFile::remove(ggPath("kadu.conf"));
 	config.uin = 0;
 
 	kadu->setCaption(i18n("No user"));
 
-	fprintf(stderr, "KK Unregister::deleteConfig(): Config file deleted\n");
+	kdebug("Unregister::deleteConfig(): Config file deleted\n");
 }
-
 

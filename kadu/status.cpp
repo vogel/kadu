@@ -14,6 +14,7 @@
 
 #include "status.h"
 #include "kadu.h"
+#include "debug.h"
 
 AutoAwayTimer* AutoAwayTimer::autoaway_object=NULL;
 
@@ -79,7 +80,7 @@ void AutoStatusTimer::onTimeout()
 		f.close();
 		f.remove(ggPath("description"));
 		//if (new_description != own_description) {
-			fprintf(stderr, "AutoStatus: adding \"%s\" to description\n", new_description.local8Bit().data());
+			kdebug("AutoStatus: adding \"%s\" to description\n", new_description.local8Bit().data());
 			//own_description = new_description;
 			own_description.truncate(own_description.length() - length_buffor);
 			own_description += new_description;
@@ -101,12 +102,12 @@ AutoAwayTimer::AutoAwayTimer(QObject* parent) : QTimer(parent,"AutoAwayTimer") {
 
 bool AutoAwayTimer::eventFilter(QObject *o,QEvent *e)
 {
-//	fprintf(stderr, "KK AutoAwayTimer::eventFilter()\n");
+//	kdebug("AutoAwayTimer::eventFilter()\n");
 	if (e->type() == QEvent::KeyPress || e->type() == QEvent::Enter || e->type() == QEvent::MouseMove) {
 		stop();
 		start(config.autoawaytime * 1000, TRUE);
 		if (autoawayed) {
-			fprintf(stderr, "KK AutoAwayTimer::eventFilter(type = QEvent::KeyPress or QEvent::Enter): auto away cancelled\n");
+			kdebug("AutoAwayTimer::eventFilter(type = QEvent::KeyPress or QEvent::Enter): auto away cancelled\n");
 			autoawayed = false;
 			kadu->setStatus(beforeAutoAway);
 //			QApplication::desktop()->releaseMouse();
@@ -121,7 +122,7 @@ void AutoAwayTimer::onTimeout()
 {
 	if (!autoawayed) {
 		beforeAutoAway = getActualStatus() & (~GG_STATUS_FRIENDS_MASK);;
-		fprintf(stderr, "KK AutoAwayTimer::onTimeout(): checking whether to go auto away, beforeAutoAway = %d\n", beforeAutoAway);
+		kdebug("AutoAwayTimer::onTimeout(): checking whether to go auto away, beforeAutoAway = %d\n", beforeAutoAway);
 		switch (beforeAutoAway) {
 			case GG_STATUS_AVAIL_DESCR:
 				kadu->setStatus(GG_STATUS_BUSY_DESCR);
@@ -139,7 +140,7 @@ void AutoAwayTimer::onTimeout()
 				start(config.autoawaytime * 1000, TRUE);
 				return;
 			}
-		fprintf(stderr, "KK AutoAwayTimer::onTimeout(): I am away!\n");
+		kdebug("AutoAwayTimer::onTimeout(): I am away!\n");
 		}
 //potrzebne na wypadek zerwania polaczenia i ponownego polaczenia sie z statusem innym niz busy*
 	start(config.autoawaytime * 1000, TRUE);

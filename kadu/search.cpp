@@ -20,6 +20,7 @@
 #include "pixmaps.h"
 #include "search.h"
 #include "message.h"
+#include "debug.h"
 //
 
 SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchUin)
@@ -162,13 +163,13 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchU
 }
 
 SearchDialog::~SearchDialog() {
-	fprintf(stderr, "KK SearchDialog::~SearchDialog()\n");
+	kdebug("SearchDialog::~SearchDialog()\n");
 }
 
 void SearchDialog::selectionChanged(QListViewItem *item) {
 	uin_t uin;
 
-	fprintf(stderr, "KK SearchDialog::selectionChanged()\n");
+	kdebug("SearchDialog::selectionChanged()\n");
 
 	disconnect(b_addbtn, SIGNAL(clicked()), 0, 0);
 	if (item) {
@@ -286,7 +287,7 @@ void SearchDialog::nextSearch(void) {
 	gg_pubdir50_add(req, GG_PUBDIR50_START, s.local8Bit());
 
 	progress->setText(i18n("Searching..."));
-	fprintf(stderr, "KK SearchDialog::doSearch(): let the search begin\n");
+	kdebug("SearchDialog::doSearch(): let the search begin\n");
 
 	struct SearchIdStruct sid;
 	sid.ptr = this;
@@ -303,14 +304,14 @@ void SearchDialog::showResults(gg_pubdir50_t res) {
 	count = gg_pubdir50_count(res);
 
 	if (count < 1) {
-		fprintf(stderr, "KK SearchDialog::showResults(): No results. Exit.\n");
+		kdebug("SearchDialog::showResults(): No results. Exit.\n");
 		QMessageBox::information(this, i18n("No results"), i18n("There were no results of your search"));
 		b_sendbtn->setEnabled(true);
 		b_nextbtn->setEnabled(true);
 		return;
 		}
 
-	fprintf(stderr, "KK SearchDialog::showResults(): Done searching. count=%d\n", count);
+	kdebug("SearchDialog::showResults(): Done searching. count=%d\n", count);
 	progress->setText(i18n("Done searching"));
 	QListViewItem * qlv;
 	QPixmap * qpx;

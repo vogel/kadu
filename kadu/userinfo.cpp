@@ -20,6 +20,7 @@
 #include "kadu.h"
 #include "userinfo.h"
 #include "chat.h"
+#include "debug.h"
 //
 
 UserInfo::UserInfo (const QString &name, QDialog *parent , const QString &altnick)
@@ -154,7 +155,7 @@ void UserInfo::writeUserlist() {
 	uin_t uin;
 	switch (QMessageBox::information(this, "Kadu", i18n("This will write current userlist"), i18n("OK"), i18n("Cancel"), QString::null, 0, 1)) {
 		case 0: // Yes?
-			fprintf(stderr, "KK UserInfo::writeUserlist() \n");
+			kdebug("UserInfo::writeUserlist() \n");
 			uin = e_uin->text().toUInt(&ok);
 			if (!ok && e_uin->text().length()) {
 				QMessageBox::information(this, "Kadu", i18n("Bad UIN"), QMessageBox::Ok);

@@ -4,6 +4,7 @@
 
 #include "kadu.h"
 #include "vuser.h"
+#include "debug.h"
 
 class vuIntReturner : public vuTreeNode
 {
@@ -33,7 +34,7 @@ public:
 	virtual bool eval(int& i)
 	{
 		i=script->variables[name];
-		fprintf(stderr,"VUSER Variable %s=%i\n",name.local8Bit().data(),i);
+		kdebug("VUSER Variable %s=%i\n",name.local8Bit().data(),i);
 		return true;
 	};
 	static vuIntReturner* parse(VUserScript* script,QString& s)
@@ -45,7 +46,7 @@ public:
 			for(int i=0; i<s.length()&&(!s[i].isSpace()); i++)
 				name+=s[i];		
 			s=s.right(s.length()-name.length());
-			fprintf(stderr,"VUSER Parsed variable:\n");
+			kdebug("VUSER Parsed variable:\n");
 			return new vuVariable(script,name);
 		}
 		else
@@ -76,7 +77,7 @@ public:
 			for(int i=1; i<s.length()&&s[i]!='"'; i++)
 				data+=s[i];
 			s=s.right(s.length()-data.length()-2);
-			fprintf(stderr,"VUSER Parsed const:\n");
+			kdebug("VUSER Parsed const:\n");
 			return new vuStrConst(script,data);
 		}
 		else
@@ -95,12 +96,12 @@ public:
 	};
 	static vuStrReturner* parse(VUserScript* script,QString& s)
 	{
-		fprintf(stderr,"VUSER Parsing strreg: %s\n",s.local8Bit().data());
+		kdebug("VUSER Parsing strreg: %s\n",s.local8Bit().data());
 		s=s.stripWhiteSpace();
 		if(s.startsWith("MSG"))
 		{
 			s=s.right(s.length()-3);
-			fprintf(stderr,"VUSER Parsed strreg:\n");
+			kdebug("VUSER Parsed strreg:\n");
 			return new vuStrReg(script);
 		}
 		else
@@ -125,18 +126,18 @@ class vuSendMsg : public vuVoidReturner
 		virtual bool eval()
 		{
 			int u; int c; QString m;
-			fprintf(stderr,"VUSER send start\n");
+			kdebug("VUSER send start\n");
 			uin->eval(u);
 			msgclass->eval(c);
 			msg->eval(m);
 			m="V-USER: "+m;
-			fprintf(stderr,"VUSER before send\n");
+			kdebug("VUSER before send\n");
 			gg_send_message(sess, c, u, (const unsigned char*)m.local8Bit().data());
 			return true;
 		};		
 		static vuVoidReturner* parse(VUserScript* script,QString& s)
 		{
-			fprintf(stderr,"VUSER Parsing send: %s\n",s.local8Bit().data());
+			kdebug("VUSER Parsing send: %s\n",s.local8Bit().data());
 			s=s.stripWhiteSpace();
 			if(s.startsWith("send"))
 			{
@@ -180,7 +181,7 @@ class vuShell : public vuVoidReturner
 		virtual bool eval()
 		{
 			QString c; int u; int cl;
-			fprintf(stderr,"VUSER preparing shell command\n");
+			kdebug("VUSER preparing shell command\n");
 			if(!cmd->eval(c)) return false;
 			if(!uin->eval(u)) return false;
 			if(!msgclass->eval(cl)) return false;
@@ -191,19 +192,19 @@ class vuShell : public vuVoidReturner
 			script->shell_process->setCommunication(QProcess::Stdout);
 			if(!QObject::connect(script->shell_process,SIGNAL(readyReadStdout()),script,SLOT(shellProcessOutputReady())))
 			{
-				fprintf(stderr,"VUSER connecting signals failed\n");			
+				kdebug("VUSER connecting signals failed\n");			
 			};
 			QObject::connect(script->shell_process,SIGNAL(processExited()),script,SLOT(shellProcessFinished()));
-			fprintf(stderr,"VUSER executing: %s\n",c.local8Bit().data());
+			kdebug("VUSER executing: %s\n",c.local8Bit().data());
 			if(!script->shell_process->start())
 			{
-				fprintf(stderr,"VUSER executing failed.\n");
+				kdebug("VUSER executing failed.\n");
 				delete script->shell_process;
 				return false;
 			};
 			script->shell_process_uin=u;
 			script->shell_process_class=cl;
-			fprintf(stderr,"VUSER executed: %s\n",c.local8Bit().data());
+			kdebug("VUSER executed: %s\n",c.local8Bit().data());
 			return true;
 		};		
 		static vuVoidReturner* parse(VUserScript* script,QString& s)
@@ -227,7 +228,7 @@ class vuShell : public vuVoidReturner
 					delete uin;
 					return NULL;
 				};
-				fprintf(stderr,"VUSER shell command compiled.\n");				
+				kdebug("VUSER shell command compiled.\n");				
 				return new vuShell(script,cmd,uin,msgclass);
 			}
 			else
@@ -256,14 +257,14 @@ class vuIf : public vuVoidReturner
 			if(e)
 			{
 				cmd->eval();
-				fprintf(stderr,"VUSER If true\n");
+				kdebug("VUSER If true\n");
 			}
 			else
 			{
 				if(els!=NULL)
 				{
 					els->eval();
-					fprintf(stderr,"VUSER If false\n");
+					kdebug("VUSER If false\n");
 				};
 			};
 			return true;
@@ -273,7 +274,7 @@ class vuIf : public vuVoidReturner
 			s=s.stripWhiteSpace();
 			if(s.startsWith("if"))
 			{
-				fprintf(stderr,"VUSER Parsing inside if\n");
+				kdebug("VUSER Parsing inside if\n");
 				s=s.right(s.length()-2);
 				vuIntReturner* exp=vuIntReturner::parse(script,s);
 				if(exp==NULL) return NULL;
@@ -322,29 +323,29 @@ class vuContains : public vuIntReturner
 			str->eval(s);
 			pat->eval(p);
 			i=s.contains(p);
-			fprintf(stderr,"VUSER Contains %i\n",i);
+			kdebug("VUSER Contains %i\n",i);
 			return true;
 		};		
 		static vuIntReturner* parse(VUserScript* script,QString& s)
 		{
-			fprintf(stderr,"VUSER Parsing contains: %s\n",s.local8Bit().data());
+			kdebug("VUSER Parsing contains: %s\n",s.local8Bit().data());
 			s=s.stripWhiteSpace();
-			fprintf(stderr,"VUSER Parsing contains stripped: %s\n",s.local8Bit().data());			
+			kdebug("VUSER Parsing contains stripped: %s\n",s.local8Bit().data());			
 			if(s.startsWith("contains"))
 			{
-				fprintf(stderr,"VUSER Parsing inside contains\n");
+				kdebug("VUSER Parsing inside contains\n");
 				s=s.right(s.length()-8);
-				fprintf(stderr,"VUSER Parsing contains 1\n");				
+				kdebug("VUSER Parsing contains 1\n");				
 				vuStrReturner* str=vuStrReturner::parse(script,s);
 				if(str==NULL) return NULL;
-				fprintf(stderr,"VUSER Parsing contains 2\n");				
+				kdebug("VUSER Parsing contains 2\n");				
 				vuStrReturner* pat=vuStrReturner::parse(script,s);
 				if(pat==NULL)
 				{
 					delete str;
 					return NULL;
 				};
-				fprintf(stderr,"VUSER Parsed contains\n");
+				kdebug("VUSER Parsed contains\n");
 				return new vuContains(script,str,pat);
 			}
 			else
@@ -364,7 +365,7 @@ VUserScript::VUserScript(QString filename)
 	QFile f(ggPath(path.local8Bit().data()));
 	if(!f.open(IO_ReadOnly))
 	{
-		fprintf(stderr,"VUSER: Cannot open script file\n");
+		kdebug("VUSER: Cannot open script file\n");
 		return;
 	};
 	QTextStream t(&f);
@@ -372,7 +373,7 @@ VUserScript::VUserScript(QString filename)
 	f.close();
 	msg_handler=vuVoidReturner::parse(this,s);
 	if(msg_handler==NULL)
-		fprintf(stderr,"VUSER: SYNTAX ERROR\n");
+		kdebug("VUSER: SYNTAX ERROR\n");
 };
 
 void VUserScript::eventMsg(uin_t sender,int msgclass,QString msg)
@@ -398,7 +399,7 @@ void VUserScript::eventChangeStatus(QString user,int status)
 
 void VUserScript::shellProcessOutputReady()
 {
-	fprintf(stderr,"VUSER shell process output ready signal\n");
+	kdebug("VUSER shell process output ready signal\n");
 	QString o;
 	QByteArray b=shell_process->readStdout();
 	for(int i=0; i<b.count(); i++)
@@ -416,7 +417,7 @@ void VUserScript::shellProcessOutputReady()
 
 void VUserScript::shellProcessFinished()
 {
-	fprintf(stderr,"VUSER shell process finished signal\n");	
+	kdebug("VUSER shell process finished signal\n");	
 	delete shell_process;
 	shell_process=NULL;
 };
