@@ -98,6 +98,10 @@ e scrivi la stringa corretta. I parametri devono essere separati da spazio. Il p
         <source>Signature</source>
         <translation>Firma</translation>
     </message>
+    <message>
+        <source>Save SMS in history</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SmsGateway</name>

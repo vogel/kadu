@@ -98,6 +98,10 @@ Zaznacz i wpisz w to pole poprawny ciąg. Argumenty oddziel spacjami. Argument %
         <source>Signature</source>
         <translation>Podpis</translation>
     </message>
+    <message>
+        <source>Save SMS in history</source>
+        <translation>Zapisz SMS w historii</translation>
+    </message>
 </context>
 <context>
     <name>SmsGateway</name>

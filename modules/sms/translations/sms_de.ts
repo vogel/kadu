@@ -98,6 +98,10 @@ nicht versteht. Gib hier die Argumente ein, getrennt mit Komma. %n=Tel.; %m=Nach
         <source>Signature</source>
         <translation>Unterschrift</translation>
     </message>
+    <message>
+        <source>Save SMS in history</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SmsGateway</name>

@@ -61,7 +61,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unknown error (%d)</source>
+        <source>Unknown error (%1)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

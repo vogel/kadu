@@ -61,8 +61,8 @@
         <translation>Nieprawidłowy  adres odbiorcy</translation>
     </message>
     <message>
-        <source>Unknown error (%d)</source>
-        <translation>Nieznany błąd (%d)</translation>
+        <source>Unknown error (%1)</source>
+        <translation>Nieznany błąd (%1)</translation>
     </message>
 </context>
 <context>

@@ -98,6 +98,10 @@ Les arguments doivent être separés par l&apos;espace.Veuillez remplir le champ
         <source>Signature</source>
         <translation>Signature</translation>
     </message>
+    <message>
+        <source>Save SMS in history</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SmsGateway</name>
