@@ -24,8 +24,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * usuniêcie ok. 150 ostrze¿eñ przy CXXFLAGS="-Wall -std=c++98 -ansi"
   (nadal jest ich mnóstwo, ale o te 150 mniej) (joi)
 * poprawione pozycjonowanie hintów po wydzieleniu modu³u docking (adrian)
-* usuniety segfaul w przypadky wywrotki gdy plik blokujacy zostal juz
-  usuniety (michal)
+* usuniêty segfault w przypadky wywrotki gdy plik blokuj±cy zosta³ ju¿
+  zwolniony (michal)
 * podczas wywrotki kadu wypisuje backtrace (michal)
 * kadu nie wywróci siê gdy zamkniemy je z menu w trayu - zwalnianie pamiêci
   po modu³ach opó¼niane jest do czasu zakoñczenia bie¿±cych czynno¶ci (joi)
