@@ -81,6 +81,11 @@ void ESDPlayerSlots::play(const QString &s, bool volCntrl, double vol)
 	int id=esd_file_cache(sock, "Kadu", s.ascii());
 	if (id<=0)
 		return;
+
+	int sc=int(ESD_VOLUME_BASE*vol);
+	if (volCntrl)
+		esd_set_default_sample_pan(sock, id, sc, sc);
+
 	esd_sample_play(sock, id);
 	esd_sample_free(sock, id);
 }

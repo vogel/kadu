@@ -19,6 +19,7 @@
 #include <qspinbox.h>
 #include <qstringlist.h>
 #include <qtabwidget.h>
+#include <qtextedit.h>
 #include <qvaluelist.h>
 #include <qvbox.h>
 #include <qvgroupbox.h>
@@ -168,6 +169,7 @@ class ConfigDialog : public QDialog	{
 			CONFIG_LABEL,
 			CONFIG_LINEEDIT,
 			CONFIG_LINEEDIT2,
+			CONFIG_TEXTEDIT,
 			CONFIG_LISTBOX,
 			CONFIG_LISTVIEW,
 			CONFIG_PUSHBUTTON,
@@ -176,7 +178,8 @@ class ConfigDialog : public QDialog	{
 			CONFIG_SPINBOX,
 			CONFIG_TAB,
 			CONFIG_VBOX,
-			CONFIG_VGROUPBOX
+			CONFIG_VGROUPBOX,
+			CONFIG_DELETED
 		};
 
 		struct ElementConnections
@@ -190,6 +193,11 @@ class ConfigDialog : public QDialog	{
 		struct RegisteredControl
 		{
 			RegisteredControlType type;
+			RegisteredControl(RegisteredControlType t=CONFIG_DELETED,
+				const QString &groupname=QString::null,
+				const QString &parent=QString::null,
+				const QString &caption=QString::null,
+				const QString &name=QString::null);
 			QString parent;
 			QString name;
 			QString caption;
@@ -213,21 +221,21 @@ class ConfigDialog : public QDialog	{
 			
 		    Jesli nie znajdzie zakladki to zwraca wartosc "-1"
 		**/
-		static int findTab(const int startpos);
+		static int findNextTab(int startpos);
 		/**
 		    Wyszukuje pozycje zakladki "groupname" w liscie RegisteredControls 
 			poczynajac od pozycji "startpos"
 
 		    Jesli nie znajdzie zakladki to zwraca wartosc "-1"
 		**/
-		static int findTab(const QString& groupname, const int startpos=0);
+		static int findTab(const QString& groupname, int startpos=0);
 		/**
 		    Wyszukuje pozycje poprzedniej zakladki w liscie RegisteredControls 
 			poczynajac od pozycji "startpos"
 
 		    Jesli nie znajdzie zakladki to zwraca wartosc "-1"
 		**/
-		static int findPreviousTab(const int startpos=0);
+		static int findPreviousTab(int startpos);
 		/**
 		    Dodaje kontrolke do listy RegisteredControls 
 		**/
@@ -235,7 +243,8 @@ class ConfigDialog : public QDialog	{
 		/**
 		    Uaktualnia liczbe kontrolek bedacych dziecmi kontrolki "parent"
 		**/
-		static void updateNrOfControls(const int startpos, const int endpos, const QString& parent);
+		static void increaseNrOfControls(const int startpos, const int endpos, const QString& parent);
+		static void decreaseNrOfControls(int control);
 
 	public:
 		/**
@@ -386,6 +395,26 @@ class ConfigDialog : public QDialog	{
 			    const QString& parent, const QString& caption,
 			    const QString& defaultS="", const QString& tip="",const QString& name="");
 			    
+		/**
+		    Dodaje kontrolke do zakladki "groupname", 
+			Rodzicem kontrolki jest kontrolka "parent".
+			Ustawia text kontrolki na "caption".
+			Wartosc kontrolki jest zapisana do pliku konfiguracyjnego w postaci
+			-------------
+			[groupname]
+			entry= value {defaultS}
+			-------------
+			
+			Domyslna wartoscia kontrolki przy pierwszym uruchomieniu programu 
+			jest "defaultS".
+			Podpowiedz kontrolki ustawiona jest na "tip".
+			Nazwa kontrolki ustawiona jest na "name".
+		**/		
+
+		static void addTextEdit(const QString& groupname,
+			    const QString& parent, const QString& caption,
+			    const QString& entry, const QString& defaultS="", const QString& tip="",const QString& name="");
+
 		/**
 		    Dodaje kontrolke do zakladki "groupname", 
 			Rodzicem kontrolki jest kontrolka "parent".
@@ -543,6 +572,16 @@ class ConfigDialog : public QDialog	{
 		static void unregisterSlotOnDestroy(const QObject* receiver, const char* slot);
 
 		/**
+		    Usuwa kontrolke z zakladki "groupname", o etykiecie "caption". i nazwie "name".
+		**/
+		static void removeControl(const QString& groupname, const QString& caption, const QString& name="");
+
+		/**
+		    Usuwa zak³adne o nazwie caption
+		**/
+		static void removeTab(const QString& caption);
+
+		/**
 		    Pobiera wskaznik do kontrolki CheckBox(groupname, caption, name)
 		**/
 		static QCheckBox*   getCheckBox(const QString& groupname, const QString& caption, const QString& name="");
@@ -574,6 +613,10 @@ class ConfigDialog : public QDialog	{
 		    Pobiera wskaznik do kontrolki LineEdit(groupname, caption, name)
 		**/
 		static QLineEdit*   getLineEdit(const QString& groupname, const QString& caption, const QString& name="");
+		/**
+		    Pobiera wskaznik do kontrolki TextEdit(groupname, caption, name)
+		**/
+		static QTextEdit*   getTextEdit(const QString& groupname, const QString& caption, const QString& name="");
 		/**
 		    Pobiera wskaznik do kontrolki Label(groupname, caption, name)
 		**/

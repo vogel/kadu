@@ -6,6 +6,7 @@
 #include <qsize.h>
 #include <qcolor.h>
 #include <qfont.h>
+#include <qregexp.h>
 #include <qstringlist.h>
 #include <qapplication.h>
 #include <qtextcodec.h>
@@ -48,6 +49,7 @@ void ConfigFile::read() {
 					QString first_section = line.section('=', 0, 0);
 					activeentry.name = first_section.stripWhiteSpace();
 					activeentry.value = line.right(line.length()-first_section.length()-1);
+					activeentry.value.replace(QRegExp("\\\\n"), "\n");
 					if (line.contains('=') >= 1 && activeentry.name.length()
 						&& activeentry.value.length())
 						activegroup.entries.append(activeentry);
@@ -73,7 +75,10 @@ void ConfigFile::write() {
 		for (int i = 0; i < groups.count(); i++) {
 			stream << '[' << groups[i].name << "]\n";
 			for (int j = 0; j < groups[i].entries.count(); j++)
-				stream << groups[i].entries[j].name << '=' << groups[i].entries[j].value << '\n';
+			{
+				QString q=groups[i].entries[j].value;
+				stream << groups[i].entries[j].name << '=' << q.replace(QRegExp("\n"), "\\n") << '\n';
+			}
 			stream << '\n';
 			}
 		file.close();
@@ -417,7 +422,6 @@ void ConfigFile::addVariable(const QString &group, const QString &name, const do
 }
 void ConfigFile::addVariable(const QString &group, const QString &name, const bool defvalue)
 {
-
 	setGroup(group);
 	if (getEntry(name)=="")
 	    writeEntry(group,name,defvalue);
@@ -451,9 +455,6 @@ void ConfigFile::addVariable(const QString &group, const QString &name, const QP
 	setGroup(group);
 	if (getEntry(name)=="")
 	    writeEntry(group,name,defvalue);
-
 }
-
-
 
 ConfigFile config_file(ggPath(QString("kadu.conf")));

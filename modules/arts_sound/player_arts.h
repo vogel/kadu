@@ -14,7 +14,7 @@ class ArtsPlayerSlots : public QObject
 		Dispatcher disp;
 	public:
 		ArtsPlayerSlots();
-		SimpleSoundServer server;
+		SoundServerV2 server;
 	private slots:
 		void play(const QString &s, bool volCntrl=false, double vol=1);
 		

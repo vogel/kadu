@@ -31,9 +31,6 @@ extern "C" int ext_sound_init()
 		return 1;
 	slotsObj=new ExternalPlayerSlots();
 
-	ConfigDialog::registerSlotOnCreate(slotsObj, SLOT(onCreateConfigDialog()));
-	ConfigDialog::registerSlotOnDestroy(slotsObj, SLOT(onDestroyConfigDialog()));
-
 	QObject::connect(sound_manager, SIGNAL(playOnTestSound(const QString &, bool, double)),
 					 slotsObj, SLOT(playTestSound(const QString &, bool, double)));
 	QObject::connect(sound_manager, SIGNAL(playOnMessage(UinsList, const QString &, const QString &, bool, double)),
@@ -54,9 +51,6 @@ extern "C" void ext_sound_close()
 {
 	kdebugf();
 
-	ConfigDialog::unregisterSlotOnCreate(slotsObj, SLOT(onCreateConfigDialog()));
-	ConfigDialog::unregisterSlotOnDestroy(slotsObj, SLOT(onDestroyConfigDialog()));
-
 	ConfigDialog::disconnectSlot("Sounds", "", SIGNAL(clicked()), slotsObj, SLOT(choosePlayerFile()), "soundplayer_fileopen");
 	QObject::disconnect(sound_manager, SIGNAL(playOnTestSound(const QString &, bool, double)),
 						slotsObj, SLOT(playTestSound(const QString &, bool, double)));
@@ -66,6 +60,9 @@ extern "C" void ext_sound_close()
 						slotsObj, SLOT(playChat(UinsList, const QString &, const QString &, bool, double)));
 	QObject::disconnect(sound_manager, SIGNAL(playOnNotify(const uin_t, const QString &, bool, double)),
 						slotsObj, SLOT(playNotify(const uin_t, const QString &, bool, double)));
+	ConfigDialog::removeControl("Sounds", "", "soundplayer_fileopen");
+	ConfigDialog::removeControl("Sounds", "Path:", "soundplayer_path");
+	ConfigDialog::removeControl("Sounds", "Sound player");
 	delete slotsObj;
 	slotsObj=NULL;
 }
@@ -115,14 +112,6 @@ void ExternalPlayerSlots::playNotify(const uin_t uin, const QString &sound, bool
 {
 	kdebugf();
 	play(sound, volCntrl, vol, QString::null);
-}
-
-void ExternalPlayerSlots::onCreateConfigDialog()
-{
-}
-
-void ExternalPlayerSlots::onDestroyConfigDialog()
-{
 }
 
 void ExternalPlayerSlots::choosePlayerFile()

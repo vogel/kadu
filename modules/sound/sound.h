@@ -18,7 +18,7 @@ class SoundSlots: public QObject
 		int muteitem;
 
 	private slots:
-		void soundPlayer(bool value);
+		void soundPlayer(bool value, bool toolbarChanged=false);
 		void onCreateConfigDialog();
 		void onDestroyConfigDialog();
 		void chooseSoundTheme(const QString& string);
@@ -47,7 +47,7 @@ class SoundManager : public Themes
 
 	public:
 		SoundManager(const QString& name, const QString& configname);
-		bool getMute();
+		bool isMuted();
 		void setMute(const bool& enable);
 		int timeAfterLastSound();		
 		void playTestSound(const QString &);

@@ -106,6 +106,18 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   rozpoczêcia tranmisji dcc (chilek)
 * je¶li kto¶ kto jest ignorowany próbuje z nami komunikowaæ siê przez DCC
   odrzucamy jego próby po³±czeñ (chilek)
+* Na³o¿ona wielka ³atka :
+  -dodaje mo¿liwo¶æ kontroli g³o¶no¶ci w modu³ach ESD i aRts
+  -poprawia b³±d przy braku d¼wiêków
+  -poprawia wygl±d okna konfiguracji d¼wiêków
+  -poprawia zachowanie przycisków w oknie konfiguracji (ca³ym)
+  -dodaje do konfiguracji wielolinijkowe pole edycyjne (panel informacyjny)
+  -poprawia wygl±d zak³adki ze skrótami klawiszowymi
+  -poprawia b³±d zmiany statusu "Tylko dla znajomych" w trakcie ³±czenia siê z serwerem
+  -dodaje mo¿liwo¶æ usuwania kontrolek z okna konfiguracji (g³ównie zmiany Micha³a + kilka poprawek joi)
+  -usówanie kontrolek z konfiguracji dla modu³ów sound, dsp_sound, ext_sound, speech
+  -poprawia zachowanie przycisku w³±czania/wy³±czania d¼wiêku na toolbarze i w konfiguracji
+  -trochê porz±dków w config_dialog.cpp (Ron_K/joi,MICHA£)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

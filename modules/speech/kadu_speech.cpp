@@ -8,7 +8,7 @@
  ***************************************************************************/
 
 /*
- * Speech module v. 0.2 by joi
+ * Speech module v. 0.31 by joi
  */
 #include <qfiledialog.h>
 #include <qregexp.h>
@@ -114,6 +114,7 @@ extern "C" int speech_init()
 	ConfigDialog::connectSlot("Speech", "Use Dsp", SIGNAL(toggled(bool)), slotsObj, SLOT(useDsp(bool)), "usedsp");
 
 
+
 	ConfigDialog::registerSlotOnCreate(slotsObj, SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnDestroy(slotsObj, SLOT(onDestroyConfigDialog()));
 
@@ -140,6 +141,35 @@ extern "C" void speech_close()
 
 	QObject::disconnect(&userlist, SIGNAL(statusModified(UserListElement*)),
 		slotsObj, SLOT(notify(UserListElement*)));
+
+	ConfigDialog::removeControl("Speech", "Test", "testspeech");
+	ConfigDialog::removeControl("Speech", "Notify format (female):");
+	ConfigDialog::removeControl("Speech", "Notify format (male):");
+	ConfigDialog::removeControl("Speech", "Message format (female):");
+	ConfigDialog::removeControl("Speech", "Message format (male):");
+	ConfigDialog::removeControl("Speech", "Chat format (female):");
+	ConfigDialog::removeControl("Speech", "Chat format (male):");
+	ConfigDialog::removeControl("Speech", "", "speech_fileopen");
+	ConfigDialog::removeControl("Speech", "Speech program:");
+	ConfigDialog::removeControl("Speech", "Program");
+	ConfigDialog::removeControl("Speech", "Dsp device:");
+	ConfigDialog::removeControl("Speech", "Use Dsp", "usedsp");
+	ConfigDialog::removeControl("Speech", "Use Esd", "useesd");
+	ConfigDialog::removeControl("Speech", "Use aRts", "usearts");
+	ConfigDialog::removeControl("Speech", "Klatt synthesizer (requires dsp)");
+	ConfigDialog::removeControl("Speech", "Melody");
+	ConfigDialog::removeControl("Speech", "slider3");
+	ConfigDialog::removeControl("Speech", "Base frequency");
+	ConfigDialog::removeControl("Speech", "basefreq");
+	ConfigDialog::removeControl("Speech", "slider2");
+	ConfigDialog::removeControl("Speech", "Tempo");
+	ConfigDialog::removeControl("Speech", "tempo");
+	ConfigDialog::removeControl("Speech", "slider1");
+	ConfigDialog::removeControl("Speech", "Frequency");
+	ConfigDialog::removeControl("Speech", "freq");
+	ConfigDialog::removeControl("Speech", "Say only when chat window is not active");
+	ConfigDialog::removeControl("Notify", "Notify by speech");
+	ConfigDialog::removeTab("Speech");
 
 	delete slotsObj;
 	slotsObj=NULL;

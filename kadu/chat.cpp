@@ -1215,7 +1215,7 @@ void Chat::initModule()
 	ConfigDialog::addComboBox("Look", "font&size2", "Font size", "", "size");
 	ConfigDialog::addVGroupBox("Look", "Look", "Other");
 	ConfigDialog::addVBox("Look", "Other", "syntax");
-	ConfigDialog::addLineEdit("Look", "syntax", "Information panel syntax:", "PanelContents", "[#%u][, %f] %r [- %d] [ (%i)]", "Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - frist name\n%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist\n%v - revDNS, %p - port %e - email\nIf you leave blank, default settings will be used");
+	ConfigDialog::addTextEdit("Look", "syntax", "Information panel syntax:", "PanelContents", "[#%u][, %f] %r [- %d] [ (%i)]", "Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - frist name\n%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist\n%v - revDNS, %p - port %e - email\nIf you leave blank, default settings will be used");
 	ConfigDialog::addLineEdit("Look", "syntax", "Chat window title syntax:", "ChatContents", "", "Syntax the same as in information panel.");
 	ConfigDialog::addHBox("Look", "syntax", "conference");
 	ConfigDialog::addLineEdit("Look", "conference", "Conference window title prefix:", "ConferencePrefix", "", "This text will be before syntax.\nIf you leave blank, default settings will be used.");

@@ -1184,11 +1184,15 @@ void Kadu::slotHandleState(int command) {
 				}
 			break;
 		case 8:
-			statusppm->setItemChecked(8, !statusppm->isItemChecked(8));
-			dockppm->setItemChecked(8, !dockppm->isItemChecked(8));
-			config_file.writeEntry("General", "PrivateStatus",statusppm->isItemChecked(8));
-			if (!statusppm->isItemChecked(6) && !statusppm->isItemChecked(7))
-				setStatus(sess->status & (~GG_STATUS_FRIENDS_MASK));
+			int nstat=sess->status & (~GG_STATUS_FRIENDS_MASK);
+			if (nstat)
+			{
+				statusppm->setItemChecked(8, !statusppm->isItemChecked(8));
+				dockppm->setItemChecked(8, !dockppm->isItemChecked(8));
+				config_file.writeEntry("General", "PrivateStatus",statusppm->isItemChecked(8));
+				if (!statusppm->isItemChecked(6) && !statusppm->isItemChecked(7))
+					setStatus(nstat);
+			}
 			break;
 		}
 }

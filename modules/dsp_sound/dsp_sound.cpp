@@ -65,6 +65,8 @@ extern "C" void dsp_sound_close()
 						slotsObj, SLOT(playChat(UinsList, const QString &, const QString &, bool, double)));
 	QObject::disconnect(sound_manager, SIGNAL(playOnNotify(const uin_t, const QString &, bool, double)),
 						slotsObj, SLOT(playNotify(const uin_t, const QString &, bool, double)));
+	ConfigDialog::removeControl("Sounds", "Path:", "device_path");
+	ConfigDialog::removeControl("Sounds", "Output device");
 	delete slotsObj;
 	slotsObj=NULL;
 }

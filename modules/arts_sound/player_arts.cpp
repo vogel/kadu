@@ -65,38 +65,42 @@ extern "C" void arts_sound_close()
 ArtsPlayerSlots::ArtsPlayerSlots()
 {
 	kdebugf();
-	server=Arts::Reference("global:Arts_SimpleSoundServer");
+	server=Arts::Reference("global:Arts_SoundServerV2");
 }
 
 void ArtsPlayerSlots::play(const QString &s, bool volCntrl, double vol)
 {
 	kdebugf();
 	if (!server.isNull())
+	{
+		if (volCntrl)
+			server.outVolume().scaleFactor(vol);
 		server.play(std::string(s.ascii()));
+	}
 }
 
 void ArtsPlayerSlots::playTestSound(const QString &s, bool volCntrl, double vol)
 {
 	kdebugf();
-	play(s);
+	play(s, volCntrl, vol);
 }
 
 void ArtsPlayerSlots::playMessage(UinsList senders, const QString &sound, const QString &msg, bool volCntrl, double vol)
 {
 	kdebugf();
-	play(sound);
+	play(sound, volCntrl, vol);
 }
 
 void ArtsPlayerSlots::playChat(UinsList senders, const QString &sound, const QString &msg, bool volCntrl, double vol)
 {
 	kdebugf();
-	play(sound);
+	play(sound, volCntrl, vol);
 }
 
 void ArtsPlayerSlots::playNotify(const uin_t uin, const QString &sound, bool volCntrl, double vol)
 {
 	kdebugf();
-	play(sound);
+	play(sound, volCntrl, vol);
 }
 
 ArtsPlayerSlots *slotsObj;

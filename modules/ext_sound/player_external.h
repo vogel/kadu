@@ -11,8 +11,6 @@ class ExternalPlayerSlots : public QObject
 	public:
 		ExternalPlayerSlots();
 	private slots:
-		void onCreateConfigDialog();
-		void onDestroyConfigDialog();
 		void choosePlayerFile();
 		void play(const QString &s, bool volCntrl, double vol, QString player);
 		
