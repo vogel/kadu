@@ -34,7 +34,7 @@ About::About() : QDialog() {
 	l_info->setText(QString("<span style=\"font-size: 12pt\">Kadu ") + QString(VERSION)
 		+ QString(tr("<br>(c) 2001-2004 Kadu Team</span>")));
 	l_icon->resize(64, 64);
-	l_info->resize(200, 40);
+	l_info->resize(470, 40);
 	l_icon->move(10, 10);
 	l_info->move(90, 10);
 	// end create main QLabel widgets (icon and app info)
