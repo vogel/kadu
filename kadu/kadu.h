@@ -190,10 +190,12 @@ class Kadu : public QMainWindow
 		void changeGroup(int);
 		int openChat(UinsList);
 		void gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op);
+		void selectionChanged(void);
 
 	private:
 		QMenuBar *mmb;
 		QTabBar *group_bar;
+		QLabel *descrlabel;
 		int commencing_startup;
 		void createMenu();
 		void createStatusPopupMenu();

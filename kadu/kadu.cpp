@@ -499,6 +499,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	connect(userbox, SIGNAL(returnPressed(QListBoxItem *)), this, SLOT(sendMessage(QListBoxItem *)));
 	connect(userbox, SIGNAL(rightButtonClicked(QListBoxItem *, const QPoint &)),
 		this, SLOT(listPopupMenu(QListBoxItem *)));
+	connect(userbox, SIGNAL(selectionChanged()), this, SLOT(selectionChanged()));
 
 	statuslabeltxt = new MyLabel(centralFrame, "statuslabeltxt");
 	statuslabeltxt->setText(i18n("Offline"));
@@ -526,12 +527,16 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	dockppm->insertItem(loader->loadIcon("exit",KIcon::Small), i18n("&Exit Kadu"), 9);
 	connect(dockppm, SIGNAL(activated(int)), dw, SLOT(dockletChange(int)));
 
-	QGridLayout * grid = new QGridLayout(centralFrame, 3, 3);
-	//grid->setMenuBar(mmb);
-	grid->addMultiCellWidget(group_bar,0,0,0,2);
-	grid->addMultiCellWidget(userbox,1,1,0,2);
-	grid->addWidget(statuslabeltxt,2,0,Qt::AlignLeft);
-	grid->addWidget(statuslabel,2,2,Qt::AlignCenter);
+	descrlabel = new QLabel(centralFrame, "descrlabel", WStyle_Tool);
+	descrlabel->setFrameStyle(QFrame::Box | QFrame::Sunken);
+	descrlabel->setFixedHeight(70);
+
+	QGridLayout * grid = new QGridLayout(centralFrame, 4, 3);
+	grid->addMultiCellWidget(group_bar, 0, 0, 0, 2);
+	grid->addMultiCellWidget(userbox, 1, 1, 0, 2);
+	grid->addMultiCellWidget(descrlabel, 2, 2, 0, 2);
+	grid->addWidget(statuslabeltxt, 3, 0, Qt::AlignLeft);
+	grid->addWidget(statuslabel, 3, 2, Qt::AlignCenter);
 	grid->setColStretch(0, 3);
 	grid->setColStretch(1, 1);
 	grid->setColStretch(2, 1);
@@ -554,6 +559,14 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		QObject::connect(ut->op, SIGNAL(data(const QByteArray &, QNetworkOperation *)),
 			this, SLOT(gotUpdatesInfo(const QByteArray &, QNetworkOperation *)));
 	ut->start();
+}
+
+void Kadu::selectionChanged() {
+//	if (!item)
+//		return;
+	fprintf(stderr, "KK Kadu::selectionChanged(): %d\n", userbox->currentItem());
+//	UserListElement &ule = userlist.byAltNick(userbox->item(userbox->currentItem())->text());
+
 }
 
 void Kadu::refreshGroupTabBar()
