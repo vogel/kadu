@@ -1,10 +1,9 @@
 #!/bin/bash
-
 #################################################################
 #    Application Setup Script v0.1.0   (c) 2002 A.Smarzewski    #
 # This program is free software. You can redistribute it and/or #
 #  modify it under the terms of the GNU General Public License  #
-# Polish vesion (c) 2002 R. Krzystyniak #
+#                Polish vesion (c) 2002 R. Krzystyniak          #
 #################################################################
 
 
@@ -13,7 +12,6 @@
 APP_NAME=KADU
 APP_VER=0.3.3
 APP_DEF_DIR=/usr/local/kadu
-
 #################################################################
 
 
@@ -38,35 +36,76 @@ function CheckPath()
 	fi;
 }
 
-function ConfigureAndMake()
+function Configure()
 {
 	QTDIR="$QT_DIR"
 	LD_LIBRARY_PATH="$QT_DIR/lib:$LD_LIBRARY_PATH"
 	KDEDIR="$KDE_DIR"
+	OPER="Configure"
 	./configure "--prefix=$APP_DIR"
+	WYK=$?
+ if test "$WYK" -ne 0; then
+        Error
+	exit
+ fi;
+}
+function Make()
+{
+	OPER="Kompiluj"
 	make
+	WYK=$?
+if test "$WYK" -ne 0; then
+        Error
+	exit
+ fi;
 }
 
-function gratulacje()
+function Zainstaluj()
+{	OPER="Zainstaluj"
+	make install
+	WYK=$?
+ if test "$WYK" ;then
+        Gratulacje
+        exit
+        else
+        Error
+        exit
+ fi;
+}
+
+function Odinstaluj()
+{
+	OPER="Odinstaluj"
+	make uninstall
+	WYK=$?
+ if test "$WYK" ;then
+        Deinstal
+        exit
+        else
+        Error
+        exit
+ fi;
+}
+function Gratulacje()
 {
 	clear
 	echo "==============================================================================="
-	echo "               Gratulacje $APP_NAME zosta³o zainstalowane do katalogu $APP_DIR"
+	echo "                Gratulacje $APP_NAME zosta³o zainstalowane do katalogu $APP_DIR"
 	echo "==============================================================================="
 }
 
-function deinstal()
+function Deinstal()
 {
 	clear
 	echo "==============================================================================="
-	echo "                $APP_NAME zosta³o pomy¶lnie usuniête z  katalogu $APP_DIR"
+	echo "                  $APP_NAME zosta³o pomy¶lnie usuniête z  katalogu $APP_DIR"
 	echo "==============================================================================="
 }
 
-function error()
+function Error()
 {
 	echo "==============================================================================="
-	echo "                                  Wyst±pi³ b³±d operacja nie powiod³a siê"
+	echo "                              Wyst±pi³ b³±d operacja $OPER nie powiod³a siê"
 	echo "==============================================================================="
 }
 function ShowInfo()
@@ -142,17 +181,17 @@ while [ 1 ]; do
 		if [[ ("$REPLY" == "D") || ("$REPLY" == "d") ]]; then
 			AskForPath "$APP_NAME"
 			APP_DIR="$REPLY"
-			break
+                        break
 		fi;
 		if [[ ("$REPLY" == "I") || ("$REPLY" == "i") ]]; then
-			ConfigureAndMake
-			make install
-			break
+			Configure
+			Make
+			Zainstaluj
 		fi;
 		if [[ ("$REPLY" == "U") || ("$REPLY" == "u") ]]; then
-			ConfigureAndMake
-			make uninstall
-			break
+			Configure
+			Make
+			Odinstaluj
 		fi;
 		if [[ ("$REPLY" == "E") || ("$REPLY" == "e") ]]; then
 			exit
