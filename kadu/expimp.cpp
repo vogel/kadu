@@ -89,6 +89,15 @@ void UserlistImport::startTransfer() {
 		return;
 		}
 
+	int ret;
+	while ((ret = gg_userlist_get_watch_fd(gg_http)) >=0 && gg_http->state != GG_STATE_CONNECTING);
+	if (ret < 0) {
+		QMessageBox::critical(this, "Import error", i18n("The application encountered a network error\nThe export was unsuccessful") );
+		gg_userlist_get_free(gg_http);
+		gg_http = NULL;
+		return;
+		}
+
 	fetchbtn->setEnabled(false);
 
 	snr = new QSocketNotifier(gg_http->fd, QSocketNotifier::Read, this);
@@ -176,7 +185,7 @@ void UserlistImport::socketEvent() {
 		return;
 		}
 
-	if (gg_http->state == GG_STATE_CONNECTING) {
+/*	if (gg_http->state == GG_STATE_CONNECTING) {
 		fprintf(stderr, "KK ImportUserlist::socketEvent(): changing QSocketNotifiers.\n");
 
 		deleteSocketNotifiers();
@@ -186,7 +195,7 @@ void UserlistImport::socketEvent() {
 
 		snw = new QSocketNotifier(gg_http->fd, QSocketNotifier::Write, this);
 		connect(snw, SIGNAL(activated(int)), this, SLOT(dataSent()));
-		}
+		}*/
 
 	if (gg_http->state == GG_STATE_DONE && gg_http->data == NULL) {
 		fprintf(stderr, "KK ImportUserlist::socketEvent(): No results. Exit.\n");
@@ -334,6 +343,15 @@ void UserlistExport::startTransfer() {
 		return;
 		}
 
+	int ret;
+	while ((ret = gg_userlist_put_watch_fd(gg_http)) >=0 && gg_http->state != GG_STATE_CONNECTING);
+	if (ret < 0) {
+		QMessageBox::critical(this, "Export error", i18n("The application encountered a network error\nThe export was unsuccessful") );
+		gg_userlist_put_free(gg_http);
+		gg_http = NULL;
+		return;
+		}
+
 	sendbtn->setEnabled(false);
 
 	snr = new QSocketNotifier(gg_http->fd, QSocketNotifier::Read, this);
@@ -369,7 +387,7 @@ void UserlistExport::socketEvent() {
 		return;
 		}
 
-	if (gg_http->state == GG_STATE_CONNECTING) {
+/*	if (gg_http->state == GG_STATE_CONNECTING) {
 		fprintf(stderr, "KK ExportUserlist::socketEvent(): changing QSocketNotifiers.\n");
 
 		deleteSocketNotifiers();
@@ -379,7 +397,7 @@ void UserlistExport::socketEvent() {
 
 		snw = new QSocketNotifier(gg_http->fd, QSocketNotifier::Write, this);
 		connect(snw, SIGNAL(activated(int)), this, SLOT(dataSent()));
-		}
+		}*/
 
 	if (gg_http->state == GG_STATE_ERROR) {
 		sendbtn->setEnabled(true);

@@ -327,6 +327,19 @@ int SearchDialog::doSearch(void) {
 		return 1;
 		}
 
+	int ret;
+	while ((ret = gg_search_watch_fd(foo)) >=0 && foo->state != GG_STATE_CONNECTING);
+
+	if (ret < 0) {
+		QMessageBox::critical(this, i18n("Search error"), i18n("The application encountered a network error\nand was unable to complete the search") );
+		progress->setText(i18n("Error searching"));
+		gg_free_search(foo);
+		foo = NULL;
+		b_sendbtn->setEnabled(true);
+		b_nextbtn->setEnabled(true);
+		return 0;
+		}
+
 	snr = new QSocketNotifier(foo->fd, QSocketNotifier::Read, this);
 	connect(snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
 
@@ -366,7 +379,7 @@ void SearchDialog::socketEvent(void) {
 		return;
 		}
 
-	if (foo->state == GG_STATE_CONNECTING) {
+/*	if (foo->state == GG_STATE_CONNECTING) {
 		fprintf(stderr, "KK SearchDialog::socketEvent(): changing QSocketNotifiers.\n");
 
 		deleteSocketNotifiers();
@@ -376,7 +389,7 @@ void SearchDialog::socketEvent(void) {
 
 		snw = new QSocketNotifier(foo->fd, QSocketNotifier::Write, this);
 		connect(snw, SIGNAL(activated(int)), this, SLOT(dataSent()));
-		}
+		}*/
 
 	res = (struct gg_search *) foo->data;
 
