@@ -132,8 +132,6 @@ extern "C" void sound_close()
 	ConfigDialog::disconnectSlot("Sounds", "Sound theme", SIGNAL(activated(const QString&)), soundslots, SLOT(chooseSoundTheme(const QString&)));
 	ConfigDialog::disconnectSlot("Sounds", "Sound paths", SIGNAL(changed(const QStringList&)), soundslots, SLOT(selectedPaths(const QStringList&)));
 
-	ConfigDialog::removeControl("Notify", "Notify by sound");
-
 	delete sound_manager;
 	delete soundslots;
 }

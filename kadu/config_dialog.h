@@ -479,11 +479,6 @@ class ConfigDialog : public QDialog	{
 			    const int value=50, const QString& tip="", const QString& name="");
 
 		/**
-		    Usuwa kontrolke (groupname, caption, name)
-		**/
-		static void removeControl(const QString& groupname, const QString& caption,const QString& name="");
-
-		/**
 		    Dodaje zakladke o nazwie "caption"
 		    @param iconname nazwa ikony z zestawu lub sciezka do pliku
 		**/

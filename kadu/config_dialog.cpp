@@ -726,15 +726,6 @@ void ConfigDialog::addVGroupBox(const QString& groupname,
 						}
 };
 
-void ConfigDialog::removeControl(const QString& groupname, const QString& caption,const QString& name)
-{
-	int i=existControl(groupname, caption, name);
-	if(i>=0)
-	{
-//		RegisteredControls.remove(RegisteredControls.at(i));
-	}
-}
-
 void ConfigDialog::connectSlot(const QString& groupname, const QString& caption, const char* signal, const QObject* receiver, const char* slot,const QString& name)
 {
 	for(QValueList<RegisteredControl>::iterator j=RegisteredControls.begin(); j!=RegisteredControls.end(); j++)
