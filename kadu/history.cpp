@@ -1455,7 +1455,7 @@ void History::formatHistoryEntry(QString &text, const HistoryEntry &entry, QStri
 		textcolor = config_file.readColorEntry("Look","ChatUsrFontColor").name();
 	}
 
-	text.append(QString("<p style=\"background-color: %1; color: %2\"><img title=\"\" height=\"%3\" width=\"10000\" align=\"right\"><b>").arg(bgcolor).arg(textcolor).arg(ParagraphSeparator));
+	text.append(QString("<p style=\"background-color: %1\"><img title=\"\" height=\"%3\" width=\"10000\" align=\"right\"><font color=\"%2\"><b>").arg(bgcolor).arg(textcolor).arg(ParagraphSeparator));
 	paracolors.append(bgcolor);
 
 	if (entry.type == HISTORYMANAGER_ENTRY_SMSSEND)
@@ -1515,7 +1515,7 @@ void History::formatHistoryEntry(QString &text, const HistoryEntry &entry, QStri
 
 		text.append(doc.generateHtml());
 	}
-	text.append("</p>");
+	text.append("</font></p>");
 	kdebugf2();
 }
 
