@@ -371,7 +371,7 @@ void ConfigDialog::setupTab1(void) {
 		b_grptabs->setChecked(true);
 
 	b_checkupdates = new QCheckBox(grid);
-	b_checkupdates->setText(i18n("Check updates"));
+	b_checkupdates->setText(i18n("Check for updates"));
 	if (config.checkupdates)
 		b_checkupdates->setChecked(true);
 
@@ -523,7 +523,7 @@ void ConfigDialog::setupTab3(void) {
 	b_msgacks->setChecked(config.msgacks);
 
 	b_blinkchattitle = new QCheckBox(box3);
-	b_blinkchattitle->setText(i18n("Blinking chat title when new message"));
+	b_blinkchattitle->setText(i18n("Flash chat title on new message"));
 	b_blinkchattitle->setChecked(config.blinkchattitle);
 
 	addTab(box3, i18n("Chat"));
