@@ -69,12 +69,15 @@ void UserBox::maybeTip(const QPoint &c)
 			case GG_STATUS_AVAIL_DESCR:
 				s = i18n("<nobr><I>Available <B>(d.)</B></I></nobr>");
 				break;
+			case GG_STATUS_BLOCKED:
+				s = i18n("<nobr><I>Blocked</I></nobr>");				
+				break;
 			default:
 				s = i18n("<nobr><I>Unknown status</I></nobr>");
 				break;
 		};
-		QString desc=userlist.byAltNick(item->text()).description;
-		if (desc!="")
+		QString desc = userlist.byAltNick(item->text()).description;
+		if (desc != "")
 		{
 			s += "<BR><BR>";
 			s += i18n("<B>Description:</B><BR>");
@@ -141,6 +144,7 @@ void UserBox::refresh()
 				case GG_STATUS_AVAIL_DESCR:
 				case GG_STATUS_BUSY:
 				case GG_STATUS_BUSY_DESCR:
+				case GG_STATUS_BLOCKED:
 					a_users.append(user.altnick);
 					break;
 				case GG_STATUS_INVISIBLE_DESCR:
@@ -182,6 +186,9 @@ void UserBox::refresh()
 				case GG_STATUS_BUSY_DESCR:
 					gg_xpm = gg_busydescr_xpm;
 		    			break;
+				case GG_STATUS_BLOCKED:
+					gg_xpm = gg_stop_xpm;
+					break;
 				};
 			insertItem(QPixmap((const char **)gg_xpm), user.altnick);			
 		};

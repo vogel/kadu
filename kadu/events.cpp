@@ -204,7 +204,10 @@ void ChangeUserStatus(uin_t uin, unsigned int new_status) {
 										if (new_status == GG_STATUS_INVISIBLE_DESCR)
 											gg_st = new QPixmap((const char**)gg_invidescr_xpm);
 										else
-											gg_st = new QPixmap((const char**)gg_inact_xpm);
+											if (new_status == GG_STATUS_BLOCKED)	
+												gg_st = new QPixmap((const char**)gg_stop_xpm);
+											else
+												gg_st = new QPixmap((const char**)gg_inact_xpm);
 
 			kadu->userbox->changeItem(*gg_st, userlist.byUin(uin).altnick, i);
 			delete gg_st;
@@ -215,7 +218,8 @@ void ChangeUserStatus(uin_t uin, unsigned int new_status) {
 void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)
 {
 	if (config.notifyglobal && config.notifies.contains(QString::number(uin)) && (status == GG_STATUS_AVAIL ||
-		status == GG_STATUS_AVAIL_DESCR || status == GG_STATUS_BUSY || status == GG_STATUS_BUSY_DESCR) &&
+		status == GG_STATUS_AVAIL_DESCR || status == GG_STATUS_BUSY || status == GG_STATUS_BUSY_DESCR
+		|| status == GG_STATUS_BLOCKED) &&
 		(oldstatus == GG_STATUS_NOT_AVAIL || oldstatus == GG_STATUS_NOT_AVAIL_DESCR || oldstatus == GG_STATUS_INVISIBLE ||
 		oldstatus == GG_STATUS_INVISIBLE_DESCR || oldstatus == GG_STATUS_INVISIBLE2)) {
 		fprintf(stderr, "KK Notify about user\n");
@@ -268,7 +272,10 @@ void eventGotUserlist(struct gg_event * e) {
 					if (n->status == GG_STATUS_NOT_AVAIL && GetStatusFromUserlist(n->uin) != GG_STATUS_NOT_AVAIL)
 						fprintf(stderr, "KK eventGotUserlist(): User %d went offline\n", n->uin);
 					else
-						fprintf(stderr, "KK eventGotUserlist(): Unknown status for user %d: %d\n", n->uin, n->status);
+						if (n->status == GG_STATUS_BLOCKED)
+							fprintf(stderr, "KK eventGotUserlist(): User %d has blocked us\n", n->uin);
+						else
+							fprintf(stderr, "KK eventGotUserlist(): Unknown status for user %d: %d\n", n->uin, n->status);
 
 		if (n->status != GG_STATUS_NOT_AVAIL)
 			user.status = n->status;
