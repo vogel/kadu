@@ -2183,6 +2183,8 @@ bool Kadu::event(QEvent *e) {
 				break;
 			case DCC_SOCKET_TRANSFER_DISCARDED:
 				break;
+			case DCC_SOCKET_VOICECHAT_DISCARDED:
+				break;
 			case DCC_SOCKET_TRANSFER_ERROR:
 				QMessageBox::information(0, tr("Error"),
 					tr("File transfer error!"),

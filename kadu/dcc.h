@@ -49,7 +49,8 @@ enum dccSocketState {
 	DCC_SOCKET_TRANSFER_ERROR,
 	DCC_SOCKET_TRANSFER_FINISHED,
 	DCC_SOCKET_COULDNT_OPEN_FILE,
-	DCC_SOCKET_TRANSFER_DISCARDED
+	DCC_SOCKET_TRANSFER_DISCARDED,
+	DCC_SOCKET_VOICECHAT_DISCARDED
 };
 
 class dccSocketClass : public QObject {
@@ -73,6 +74,7 @@ class dccSocketClass : public QObject {
 
 	protected:
 		void askAccept();
+		void askAcceptVoiceChat();
 		QString selectFile();
 
 		QSocketNotifier *snr;

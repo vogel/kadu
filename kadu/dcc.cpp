@@ -150,6 +150,9 @@ void dccSocketClass::watchDcc(int check) {
 			dialog->printFileInfo(dccsock);
 			break;
 		case GG_EVENT_DCC_NEED_VOICE_ACK:
+			kdebug("dccSocketClass::watchDcc():  GG_EVENT_DCC_NEED_VOICE_ACK! %d %d\n",
+				dccsock->uin, dccsock->peer_uin);
+			askAcceptVoiceChat();
 			break;
 #ifdef VOICE_ENABLED
 		case GG_EVENT_DCC_VOICE_DATA:
@@ -267,6 +270,26 @@ void dccSocketClass::askAccept(void) {
 		case 1:
 			kdebug("dccSocketClass::askAccept(): discarded\n");
 			setState(DCC_SOCKET_TRANSFER_DISCARDED);
+			break;
+		}
+}
+
+void dccSocketClass::askAcceptVoiceChat() {
+	QString str;
+
+	kdebug("dccSocketClass::askAcceptVoiceChat()\n");
+	str.append(tr("User "));
+	str.append(userlist.byUin(dccsock->peer_uin).altnick);
+	str.append(tr(" wants to talk with you. Do you accept him?"));
+
+	switch (QMessageBox::information(0, tr("Incoming voice chat"), str, tr("Yes"), tr("No"),
+		QString::null, 0, 1)) {
+		case 0: // Yes?
+			kdebug("dccSocketClass::askAcceptVoiceChat(): accepted\n");
+			break;
+		case 1:
+			kdebug("dccSocketClass::askAcceptVoiceChat(): discarded\n");
+			setState(DCC_SOCKET_VOICECHAT_DISCARDED);
 			break;
 		}
 }

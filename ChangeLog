@@ -69,6 +69,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * configure: wstêp do obs³ugi rozmów g³osowych, narazie opcja
   jest na sta³e wy³±czona i kadu kompiluje siê poprawnie bez
   libgsm i rozmów g³osowych (adrian) 
+* okno potwierdzania nadchodz±cej rozmowy g³osowej (chilek)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci
