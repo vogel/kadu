@@ -11,8 +11,6 @@
 #include "kadu.h"
 #include <qfile.h>
 #include <qtextstream.h>
-#include <qevent.h>
-#include <qwidget.h>
 
 int gg_statuses[] = {GG_STATUS_AVAIL, GG_STATUS_AVAIL_DESCR, GG_STATUS_BUSY, GG_STATUS_BUSY_DESCR,
 	GG_STATUS_INVISIBLE, GG_STATUS_INVISIBLE_DESCR, GG_STATUS_NOT_AVAIL, GG_STATUS_NOT_AVAIL_DESCR,
