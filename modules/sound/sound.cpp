@@ -596,7 +596,7 @@ int SoundManager::timeAfterLastSound()
 SoundDevice SoundManager::openDevice(int sample_rate, int channels)
 {
 	kdebugf();
-	SoundDevice device;
+	SoundDevice device = NULL;
 	emit openDeviceImpl(sample_rate, channels, device);
 	kdebugf2();
 	return device;
