@@ -1,0 +1,60 @@
+#!/bin/sh
+# skrypt umo¿liwiaj±cy wybór maski debugowania dla Kadu
+# u¿ycie:
+#
+# . kadu_debug_set; kadu
+#
+# ./kadu_debug_set
+# DEBUG_MASK=liczba_któr±_wypisze_skrypt    kadu
+#
+# skrypt mo¿e przyj±æ za argument liczbê oznaczaj±c± pocz±tkow± warto¶æ maski
+
+export LC_ALL=pl_PL
+export LANG=pl_PL
+
+if [ "$1" == "" ]; then
+	ZM=$((-1&(~(1<<9))));
+else
+	ZM=$1;
+fi
+
+dialog	--begin 3 5 --nocancel --ok-label "OK" \
+		--checklist "Wybierz typy komunikatów:" 0 0 0 \
+		GG_DEBUG_NET "?" `[ $(($ZM&(1<<0))) != 0 ] && echo on || echo off` \
+		GG_DEBUG_TRAFFIC "?" `[ $(($ZM&(1<<1))) != 0 ] && echo on || echo off` \
+		GG_DEBUG_DUMP "Komunikaty wypisuj±ce du¿o informacji?" `[ $(($ZM&(1<<2))) != 0 ] && echo on || echo off` \
+		GG_DEBUG_FUNCTION "Pocz±tki funkcji" `[ $(($ZM&(1<<3))) != 0 ] && echo on || echo off` \
+		GG_DEBUG_MISC "Wszystko inne" `[ $(($ZM&(1<<4))) != 0 ] && echo on || echo off` \
+		KDEBUG_FUNCTION_START  "Pocz±tki funkcji" `[ $(($ZM&(1<<8))) != 0 ] && echo on || echo off` \
+		KDEBUG_FUNCTION_END "Koñce funkcji" `[ $(($ZM&(1<<9))) != 0 ] && echo on || echo off` \
+		KDEBUG_INFO "Zwyk³e infromacje" `[ $(($ZM&(1<<10))) != 0 ] && echo on || echo off` \
+		KDEBUG_WARNING "Niegro¼ne ostrze¿enia" `[ $(($ZM&(1<<11))) != 0 ] && echo on || echo off` \
+		KDEBUG_ERROR "Powa¿ne b³êdy, ale do obej¶cia" `[ $(($ZM&(1<<12))) != 0 ] && echo on || echo off` \
+		KDEBUG_PANIC "B³êdy fatalne, mo¿liwe ¿e program siê wywróci" `[ $(($ZM&(1<<13))) != 0 ] && echo on || echo off` \
+		KDEBUG_DUMP "Komunikaty wypisuj±ce du¿o informacji" `[ $(($ZM&(1<<14))) != 0 ] && echo on || echo off` \
+		KDEBUG_NETWORK "Obs³uga sieci" `[ $(($ZM&(1<<15))) != 0 ] && echo on || echo off` \
+		KDEBUG_ALL "WSZYSTKO (Kadu i LibGadu)" `[ $ZM == -1 ] && echo on || echo off` \
+		2>/tmp/KDEBUG_DATA
+
+ZM=0
+for i in `cat /tmp/KDEBUG_DATA`; do
+	case "$i" in
+		GG_DEBUG_NET)			ZM=$(($ZM|(1<<0))) ;;
+		GG_DEBUG_TRAFFIC)		ZM=$(($ZM|(1<<1))) ;;
+		GG_DEBUG_DUMP)			ZM=$(($ZM|(1<<2))) ;;
+		GG_DEBUG_FUNCTION)		ZM=$(($ZM|(1<<3))) ;;
+		GG_DEBUG_MISC)			ZM=$(($ZM|(1<<4))) ;;
+		KDEBUG_FUNCTION_START)	ZM=$(($ZM|(1<<8))) ;;
+		KDEBUG_FUNCTION_END)	ZM=$(($ZM|(1<<9))) ;;
+		KDEBUG_INFO)			ZM=$(($ZM|(1<<10))) ;;
+		KDEBUG_WARNING)			ZM=$(($ZM|(1<<11))) ;;
+		KDEBUG_ERROR)			ZM=$(($ZM|(1<<12))) ;;
+		KDEBUG_PANIC)			ZM=$(($ZM|(1<<13))) ;;
+		KDEBUG_DUMP)			ZM=$(($ZM|(1<<14))) ;;
+		KDEBUG_NETWORK)			ZM=$(($ZM|(1<<15))) ;;
+		KDEBUG_ALL)				ZM=-1 ;;
+	esac
+done
+rm /tmp/KDEBUG_DATA
+echo $ZM
+export DEBUG_MASK=$ZM #ta linia ma znaczenie tylko gdy skrypt jest uruchamiany tak: . kadu_debug_set
