@@ -149,8 +149,8 @@ void AutoAwayTimer::onTimeout()
 void AutoAwayTimer::on() {
 	if (autoaway_object == NULL) {
 		autoaway_object = new AutoAwayTimer();
-		stop();
-		start(config.autoawaytime * 1000, TRUE;
+		autoaway_object->stop();
+		autoaway_object->start(config.autoawaytime * 1000, TRUE);
 		}
 }
 
