@@ -199,49 +199,37 @@ void HintManager::addHintStatus(const UserListElement &ule, unsigned int status,
 
 	if (config_file.readBoolEntry("Hints", "NotifyHintAvailable") && (availstatus && !availoldstatus))
 	{
-		if (ifStatusWithDescription(status) && config_file.readBoolEntry("Hints","NotifyHintDescription"))
-		{
-			if (config_file.readBoolEntry("Hints","NotifyHintUseSyntax"))
-			{
-				addHint(parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true), *icons->loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
-				return;
-			}
-			addHint("<b>"+ule.altnick+" </b>"+tr("is available")+"<br> <small>"+QStyleSheet::escape(ule.description)+"</small>", *icons->loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
-		}
+		if (config_file.readBoolEntry("Hints","NotifyHintUseSyntax"))
+			addHint(parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true), *icons->loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
 		else
-			addHint("<b>"+ule.altnick+" </b>"+tr("is available"), *icons->loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
+			if (ifStatusWithDescription(status) && config_file.readBoolEntry("Hints","NotifyHintDescription"))
+				addHint("<b>"+ule.altnick+" </b>"+tr("is available")+"<br> <small>"+QStyleSheet::escape(ule.description)+"</small>", *icons->loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
+			else
+				addHint("<b>"+ule.altnick+" </b>"+tr("is available"), *icons->loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
 		return;
 	}
 
 	if (config_file.readBoolEntry("Hints","NotifyHintChange") && (availstatus && availoldstatus))
 	{
-		if (ifStatusWithDescription(status) && config_file.readBoolEntry("Hints","NotifyHintDescription"))
-		{
-			if (config_file.readBoolEntry("Hints","NotifyHintUseSyntax"))
-			{
-				addHint(parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true), *icons->loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
-				return;
-			}
-			addHint("<b>"+ule.altnick+" </b>"+tr("changed status to")+" <i>"+statustext[statusnr]+"</i><br> <small>"+QStyleSheet::escape(ule.description)+"</small>", *icons->loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
-		}
+		if (config_file.readBoolEntry("Hints","NotifyHintUseSyntax"))
+			addHint(parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true), *icons->loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
 		else
-			addHint("<b>"+ule.altnick+" </b>"+tr("changed status to")+" <i>"+statustext[statusnr]+"</i>", *icons->loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
+			if (ifStatusWithDescription(status) && config_file.readBoolEntry("Hints","NotifyHintDescription"))
+				addHint("<b>"+ule.altnick+" </b>"+tr("changed status to")+" <i>"+statustext[statusnr]+"</i><br> <small>"+QStyleSheet::escape(ule.description)+"</small>", *icons->loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
+			else
+				addHint("<b>"+ule.altnick+" </b>"+tr("changed status to")+" <i>"+statustext[statusnr]+"</i>", *icons->loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
 		return;
 	}
 
 	if (config_file.readBoolEntry("Hints", "NotifyHintUnavailable") && (!availstatus && availoldstatus))
 	{
-		if (ifStatusWithDescription(status) && config_file.readBoolEntry("Hints","NotifyHintDescription"))
-		{
-			if (config_file.readBoolEntry("Hints","NotifyHintUseSyntax"))
-			{
-				addHint(parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true), *icons->loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
-				return;
-			}
-			addHint("<b>"+ule.altnick+" </b>"+tr("is unavailable")+"<br> <small>"+QStyleSheet::escape(ule.description)+"</small>", *icons->loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
-		}
+		if (config_file.readBoolEntry("Hints","NotifyHintUseSyntax"))
+			addHint(parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true), *icons->loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
 		else
-			addHint("<b>"+ule.altnick+" </b>"+tr("is unavailable"), *icons->loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
+			if (ifStatusWithDescription(status) && config_file.readBoolEntry("Hints","NotifyHintDescription"))
+				addHint("<b>"+ule.altnick+" </b>"+tr("is unavailable")+"<br> <small>"+QStyleSheet::escape(ule.description)+"</small>", *icons->loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
+			else
+				addHint("<b>"+ule.altnick+" </b>"+tr("is unavailable"), *icons->loadIcon(gg_icons[statusnr]), QFont(config[statusnr][0], config[statusnr][1].toInt()), QColor(config[statusnr][2]), QColor(config[statusnr][3]), config[statusnr][4].toInt());
 		return;
 	}
 }
