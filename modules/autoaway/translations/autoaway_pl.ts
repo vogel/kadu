@@ -43,7 +43,7 @@
     </message>
     <message>
         <source>Auto change status</source>
-        <translation>Autozmiana statusu</translation>
+        <translation>Zmień na opis </translation>
     </message>
     <message>
         <source>AutoStatus Description</source>
