@@ -202,6 +202,37 @@ FileTransferManager::~FileTransferManager()
 	kdebugf2();
 }
 
+void FileTransferManager::sendFile(UinType receiver)
+{
+	kdebugf();
+	if (config_file.readBoolEntry("Network", "AllowDCC"))
+		if (dcc_manager->configDccIp().isIp4Addr())
+		{
+			struct gg_dcc *dcc_new;
+			const UserListElement& user = userlist.byUin(receiver);
+			if (user.port() >= 10)
+			{
+				kdebugm(KDEBUG_INFO, "ip: %s, port: %d, uin: %d\n", user.ip().toString().local8Bit().data(), user.port(), user.uin());
+				if ((dcc_new = gadu->dccSendFile(htonl(user.ip().ip4Addr()), user.port(),
+					config_file.readNumEntry("General", "UIN"), user.uin())) != NULL)
+				{
+					DccSocket* dcc = new DccSocket(dcc_new);
+					connect(dcc, SIGNAL(dccFinished(DccSocket*)), dcc_manager,
+						SLOT(dccFinished(DccSocket*)));
+					dcc->initializeNotifiers();
+				}
+			}
+			else
+			{
+				kdebugm(KDEBUG_INFO, "user.port()<10, asking for connection (uin: %d)\n", user.uin());
+				dcc_manager->startTimeout();
+				Requests.insert(user.uin(), true);
+				gadu->dccRequest(user.uin());
+			}
+		}
+	kdebugf2();
+}
+
 QString FileTransferManager::selectFile(DccSocket* socket)
 {
 	kdebugf();
@@ -227,44 +258,23 @@ QString FileTransferManager::selectFile(DccSocket* socket)
 void FileTransferManager::sendFile()
 {
 	kdebugf();
-	if (config_file.readBoolEntry("Network", "AllowDCC"))
-		if (dcc_manager->configDccIp().isIp4Addr())
-		{
-			struct gg_dcc *dcc_new;
-			UserBox *activeUserBox=UserBox::getActiveUserBox();
-			UserList users;
-			if (activeUserBox==NULL)
-			{
-				kdebugf2();
-				return;
-			}
-			users= activeUserBox->getSelectedUsers();
-			if (users.count() != 1)
-			{
-				kdebugf2();
-				return;
-			}
-			UserListElement user = (*users.begin());
-			if (user.port() >= 10)
-			{
-				kdebugm(KDEBUG_INFO, "ip: %s, port: %d, uin: %d\n", user.ip().toString().local8Bit().data(), user.port(), user.uin());
-				if ((dcc_new = gadu->dccSendFile(htonl(user.ip().ip4Addr()), user.port(),
-					config_file.readNumEntry("General", "UIN"), user.uin())) != NULL)
-				{
-					DccSocket* dcc = new DccSocket(dcc_new);
-					connect(dcc, SIGNAL(dccFinished(DccSocket*)), dcc_manager,
-						SLOT(dccFinished(DccSocket*)));
-					dcc->initializeNotifiers();
-				}
-			}
-			else
-			{
-				kdebugm(KDEBUG_INFO, "user.port()<10, asking for connection (uin: %d)\n", user.uin());
-				dcc_manager->startTimeout();
-				Requests.insert(user.uin(), true);
-				gadu->dccRequest(user.uin());
-			}
-		}
+
+	UserBox *activeUserBox=UserBox::getActiveUserBox();
+	UserList users;
+	if (activeUserBox==NULL)
+	{
+		kdebugf2();
+		return;
+	}
+	users = activeUserBox->getSelectedUsers();
+	if (users.count() != 1)
+	{
+		kdebugf2();
+		return;
+	}
+	UserListElement user = (*users.begin());
+	sendFile(user.uin());
+	
 	kdebugf2();
 }
 

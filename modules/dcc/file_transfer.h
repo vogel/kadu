@@ -72,6 +72,10 @@ class FileTransferManager : public QObject
 	public:
 		FileTransferManager();
 		virtual ~FileTransferManager();
+		/**
+			Inicjuje wysy³anie pliku do podanego odbiorcy.
+		**/
+		void sendFile(UinType receiver);
 };
 
 extern FileTransferManager* file_transfer_manager;
