@@ -29,19 +29,26 @@ KaduListBoxPixmap::KaduListBoxPixmap(const QPixmap &pix, const QString &text)
 
 void KaduListBoxPixmap::paint(QPainter *painter) {
 	UserListElement &user = userlist.byAltNick(text());
-	if (user.blocking) {
-		QPen &pen = (QPen &)painter->pen();
-		pen.setColor(QColor(255, 0, 0));
-		painter->setPen(pen);
-		}
 	if (user.uin) {
 		UinsList uins;
 		uins.append(user.uin);
-		if (isIgnored(uins)) {
+		if (user.blocking) {
 			QPen &pen = (QPen &)painter->pen();
-			pen.setColor(QColor(192, 192, 0));
+			pen.setColor(QColor(255, 0, 0));
 			painter->setPen(pen);
 			}
+		else
+			if (isIgnored(uins)) {
+				QPen &pen = (QPen &)painter->pen();
+				pen.setColor(QColor(192, 192, 0));
+				painter->setPen(pen);
+				}
+			else
+				if (user.offline_to_user) {
+					QPen &pen = (QPen &)painter->pen();
+					pen.setColor(QColor(128, 128, 128));
+					painter->setPen(pen);
+					}
 		}
 	QListBoxPixmap::paint(painter);
 }

@@ -7,6 +7,11 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * porzadki: kod rejestrujacy opcje modulow Chat i Sms w oknie konfiguracji
   przeniesiony do Chat::initModule() i Sms:initModule(). W ten sposob
   w przyszlosci beda sie rejestrowac wszystkie moduly Kadu (adrian)
+* w menu podrêcznym u¿ytkownika "niedostêpny dla kontaktu" i "powiadom o kontakcie"
+  dostêpne s±, gdy mamy odpowiednio status "tylko dla znajomych" oraz mamy
+  globalnie w³±czone powiadamianie o zmianie statusów (ludwik/chilek)
+* kolorem szarym wy¶wietlani s± u¿ytkownicy dla których jeste¶my niedostêpni
+  przy "tylko dla znajomych"; priorytety "kolorów" (czerwony, ¼ó³ty, szary) (ludwik/chikek)
 
 +++ wersja 0.3.4-rc1
 * wiêkszo¶æ kodu dotycz±cego obs³ugi zdarzeñ sieciowych przeniesiona z

@@ -1194,10 +1194,10 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 	pm->insertItem(i18n("Notify about user"), KADU_CMD_NOTIFY_USER);
 	pm->insertItem(i18n("Offline to user"), KADU_CMD_OFFLINE_TO_USER);
 	if (!user.uin) {
-		pm->setItemEnabled(KADU_CMD_IGNORE_USER,false);
-		pm->setItemEnabled(KADU_CMD_BLOCK_USER,false);
-		pm->setItemEnabled(KADU_CMD_NOTIFY_USER,false);
-		pm->setItemEnabled(KADU_CMD_OFFLINE_TO_USER,false);
+		pm->setItemEnabled(KADU_CMD_IGNORE_USER, false);
+		pm->setItemEnabled(KADU_CMD_BLOCK_USER, false);
+		pm->setItemEnabled(KADU_CMD_NOTIFY_USER, false);
+		pm->setItemEnabled(KADU_CMD_OFFLINE_TO_USER, false);
 		}
 	else {
 		UinsList uins;
@@ -1206,8 +1206,10 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 			pm->setItemChecked(KADU_CMD_IGNORE_USER, true);
 		if (user.blocking)
 			pm->setItemChecked(KADU_CMD_BLOCK_USER, true);
+		pm->setItemEnabled(KADU_CMD_OFFLINE_TO_USER, config.privatestatus);
 		if (user.offline_to_user)
 			pm->setItemChecked(KADU_CMD_OFFLINE_TO_USER, true);
+		pm->setItemEnabled(KADU_CMD_NOTIFY_USER, config.notifyglobal && !config.notifyall);
 		if (user.notify)
 			pm->setItemChecked(KADU_CMD_NOTIFY_USER, true);
 		}
