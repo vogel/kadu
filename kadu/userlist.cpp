@@ -153,8 +153,8 @@ bool UserList::readFromFile()
 			QString uin=comment.section(' ',1,1);
 			if(uin=="")
 				continue;
-			void UserList::addUser("","","",const QString& AltNick,++comment,
-				"",uin,GG_STATUS_NOT_AVAIL,"","")
+			addUser("","","",comment,
+				"",uin,GG_STATUS_NOT_AVAIL,"","");
 		}
 		else
 		{	    
@@ -162,9 +162,9 @@ bool UserList::readFromFile()
 			QString last_name = line.section(';',1,1);
 			QString comment = line.section(';',2,2);
 			QString nickname = line.section(';',3,3);
-			QString mobile = line(';',4,4);
-			QString group = line(';',5,5);
-			uin_t uin = get_token(';',6,6);
+			QString mobile = line.section(';',4,4);
+			QString group = line.section(';',5,5);
+			QString uin = line.section(';',6,6);
 
       /* load groups */
 /*
@@ -188,6 +188,18 @@ bool UserList::readFromFile()
 
 			if(uin=="")
 				continue;
+				
+			if(nickname=="")
+			{
+				if(comment=="")
+					nickname=first_name;
+				else
+					nickname=comment;
+			};
+
+			addUser(first_name,last_name,nickname,comment,
+				mobile,uin,GG_STATUS_NOT_AVAIL,group,"");
+
 		};
 
 	// Trzeba dodac obsluge pl literek!!!!!!!!!!!!!!!
@@ -199,16 +211,6 @@ bool UserList::readFromFile()
 	    cp_to_iso((unsigned char *)userlist[i].group);*/
 
 		// if the nickname isn't defined explicitly, try to guess it 
-		if(nickname==""))
-		{
-			if(comment=="")
-				nickname=first_name);
-			else
-				nickname=comment;
-		};
-
-		addUser(first_name,last_name,nickname,comment
-			mobile,uin,GG_STATUS_NOT_AVAIL,group,"")
 	};
 
 	f.close();
