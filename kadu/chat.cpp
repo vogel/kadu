@@ -1414,7 +1414,6 @@ void ChatSlots::onCreateConfigDialog()
 	cb_chatselect->setCurrentItem(0);
 
 	updatePreview();
-
 	QHBox *h_fontsize= ConfigDialog::getHBox("Look", "font&size2");
 	h_fontsize->hide();
 
@@ -1583,12 +1582,15 @@ void ChatSlots::chooseChatFont(int nr)
 	vl = fdb.pointSizes(cb_chatfont->text(nr),"Normal");
 	cb_chatfontsize->clear();
 	for (QValueList<int>::Iterator points = vl.begin(); points != vl.end(); ++points)
+	    {	
 		cb_chatfontsize->insertItem(QString::number(*points));
-	if (cb_chatfontsize->count() > 0) {
-		cb_chatfontsize->setCurrentItem(0);
+		if (*points == vl_chatfont[0].pointSize())
+		cb_chatfontsize->setCurrentItem(cb_chatfontsize->count()-1);
+	    }
+	if (cb_chatfontsize->count() > 0)
 		vl_chatfont[0] = 
 		    QFont(cb_chatfont->text(nr), cb_chatfontsize->currentText().toInt());
-					     }
+
 	updatePreview();
 
 }

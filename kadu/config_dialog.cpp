@@ -49,7 +49,6 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 	QVGroupBox* box= new QVGroupBox(view);
 	view->addChild(box);
 
-
 	dialogLayout->addWidget(listBox, 0, 0);
 	dialogLayout->addWidget(view, 0, 1);
 
@@ -62,7 +61,6 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 	for(QValueList<RegisteredControl>::iterator i=RegisteredControls.begin(); i!=RegisteredControls.end(); i++)
 	{
 	
-
 // wyswietla cala liste 
 //		kdebug("(%d) "+(*i).group+"->"+(*i).parent+"->"+(*i).caption+"->"+(*i).name+"\n",(*i).nrOfControls);
 		QWidget* parent=NULL;
@@ -88,6 +86,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 					break;
 				     }
 		}
+
 		switch((*i).type)
 		{
 			case CONFIG_CHECKBOX:
@@ -96,8 +95,6 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				check->setChecked(config_file.readBoolEntry((*i).group, (*i).entry, (*i).defaultS));
 				(*i).widget=check;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
-				    if ((*i).group != acttab)
-		    			(*i).widget->hide();
 				break;
 			}
 			
@@ -110,8 +107,6 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				colorbutton->setMaximumSize(QSize(50,25));
 				(*i).widget=colorbutton;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
-				    if ((*i).group != acttab)
-		    			    (*i).widget->hide();
 				break;
 			}
 			case CONFIG_COMBOBOX:
@@ -121,16 +116,12 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				QComboBox* combo=new QComboBox(hbox, (*i).name);
 				(*i).widget=combo;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
-				    if ((*i).group != acttab)
-		    			    hbox->hide();
 				break;
 			}
 			case CONFIG_GRID:
 			{
 				QGrid* grid=new QGrid((*i).defaultS.toInt(), parent, (*i).caption);
 				(*i).widget=grid;
-				    if ((*i).group != acttab)
-		    			(*i).widget->hide();
 				break;
 			}
 			case CONFIG_HBOX:
@@ -138,8 +129,6 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				QHBox* box = new QHBox(parent,(*i).caption);
 				box->setSpacing(2);
 				(*i).widget=box;
-				    if ((*i).group != acttab)
-		    			(*i).widget->hide();
 				break;
 			}
 			case CONFIG_HGROUPBOX:
@@ -147,8 +136,6 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				QHGroupBox* box = new QHGroupBox(appHandle->translate("@default",(*i).caption), parent, (*i).name);
 				(*i).widget=box;
 				box->setSizePolicy(QSizePolicy(QSizePolicy::Minimum,QSizePolicy::Maximum));
-				    if ((*i).group != acttab)
-		    			(*i).widget->hide();
 				break;
 			}
 			case CONFIG_HOTKEYEDIT:
@@ -159,16 +146,12 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				hotkey->setText(config_file.readEntry((*i).group, (*i).entry, (*i).defaultS));
 				(*i).widget=hotkey;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
-				    if ((*i).group != acttab)
-		    			hbox->hide();
 				break;
 			}
 			case CONFIG_LABEL:
 			{
 				QLabel* label=new QLabel(appHandle->translate("@default",(*i).caption), parent, (*i).name);
 				(*i).widget=label;
-				    if ((*i).group != acttab)
-		    			(*i).widget->hide();
 				break;
 			}	
 			case CONFIG_LINEEDIT:
@@ -179,8 +162,6 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				line->setText(config_file.readEntry((*i).group, (*i).entry, (*i).defaultS));
 				(*i).widget=line;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
-				    if ((*i).group != acttab)
-		    			hbox->hide();
 				break;
 			}
 			case CONFIG_LINEEDIT2:
@@ -191,8 +172,6 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				line->setText((*i).defaultS);
 				(*i).widget=line;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
-				    if ((*i).group != acttab)
-		    			    hbox->hide();
 				break;
 			}
 			case CONFIG_LISTBOX:
@@ -200,8 +179,6 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				QListBox* listbox= new QListBox(parent, (*i).caption);
 				(*i).widget=listbox;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
-				    if ((*i).group != acttab)
-		    			(*i).widget->hide();
 				break;
 			}
 			case CONFIG_PUSHBUTTON:
@@ -210,8 +187,6 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				button->setIconSet(QPixmap(QString(DATADIR)+ "/kadu/icons/" + (*i).defaultS));
 				(*i).widget=button;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
-				    if ((*i).group != acttab)
-		    			(*i).widget->hide();
 				break;
 			}
 			case CONFIG_SLIDER:
@@ -231,8 +206,6 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				slider->setTickmarks(QSlider::Below);
 				(*i).widget=slider;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
-				    if ((*i).group != acttab)
-		    			(*i).widget->hide();
 				break;
 			}
 			case CONFIG_SPINBOX:
@@ -249,8 +222,6 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				spinbox->setValue(val);
 				(*i).widget=spinbox;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
-				    if ((*i).group != acttab)
-		    			hbox->hide();
 				break;
 			}
 			case CONFIG_TAB:
@@ -264,8 +235,6 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				QVBox* box = new QVBox(parent,(*i).caption);
 				(*i).widget=box;
 				box->setSpacing(2);
-				    if ((*i).group != acttab)
-		    			(*i).widget->hide();
 				break;
 			}
 			case CONFIG_VGROUPBOX:
@@ -273,16 +242,9 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				QVGroupBox* box = new QVGroupBox(appHandle->translate("@default",(*i).caption), parent, (*i).name);
 				(*i).widget=box;
 				box->setSizePolicy(QSizePolicy(QSizePolicy::Minimum,QSizePolicy::Maximum));
-				    if ((*i).group != acttab)
-		    			(*i).widget->hide();
-
 				break;
 			}
-
-
 		};
-
-
 
 			for(QValueList<ElementConnections>::iterator k=(*i).ConnectedSlots.begin(); k!=(*i).ConnectedSlots.end(); k++)
 			{
@@ -290,6 +252,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				    kdebug("unable to connect signal: "+(*k).signal+" slot: "+(*k).slot+"\n");
 			}
 		
+		(*i).visible=true;
 	};
 
 		for(QValueList<ElementConnections>::iterator a=SlotsOnCreate.begin(); a!=SlotsOnCreate.end(); a++)
@@ -315,26 +278,56 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 
 	configdialog = this;
 	emit create();
+
+	for(QValueList<RegisteredControl>::iterator i=RegisteredControls.begin(); i!=RegisteredControls.end(); i++)
+	if ((*i).type != CONFIG_TAB)
+	{
+	    switch((*i).type)
+	    {
+	      case 	CONFIG_COMBOBOX:
+	      case	CONFIG_HOTKEYEDIT:
+	      case	CONFIG_LINEEDIT:
+	      case	CONFIG_LINEEDIT2:
+	      case 	CONFIG_SPINBOX:
+		    (*i).visible= !((QHBox*)(*i).widget->parent())->isHidden();
+		break;
+	      default:
+		    (*i).visible= !(*i).widget->isHidden();
+	      break;
+	    } 
+	}
+
+	changeTab(appHandle->translate("@default",acttab));
+
 }
 
 ConfigDialog::~ConfigDialog() {
 	configdialog = NULL;
-
-	for(QValueList<RegisteredControl>::iterator i=RegisteredControls.begin(); i!=RegisteredControls.end(); i++)
-	{
-	    if ((*i).type == CONFIG_TAB)
-		if (listBox->currentText() == appHandle->translate("@default",(*i).caption))
-			acttab= (*i).caption;
-	}
 };
 
 void ConfigDialog::changeTab(const QString& name)
 {
-kdebug("ConfigDialog::changeTab()\n");
+    kdebug("ConfigDialog::changeTab()\n");
+	for(QValueList<RegisteredControl>::iterator i=RegisteredControls.begin(); i!=RegisteredControls.end(); i++)
+	if (acttab == (*i).group)
+	if ((*i).type != CONFIG_TAB)
+	    switch((*i).type)
+	    {
+	      case 	CONFIG_COMBOBOX:
+	      case	CONFIG_HOTKEYEDIT:
+	      case	CONFIG_LINEEDIT:
+	      case	CONFIG_LINEEDIT2:
+	      case 	CONFIG_SPINBOX:
+		    (*i).visible= !((QHBox*)(*i).widget->parent())->isHidden();
+		break;
+	      default:
+		    (*i).visible= !(*i).widget->isHidden();
+	      break;
+	    }  	
+
 	for(QValueList<RegisteredControl>::iterator i=RegisteredControls.begin(); i!=RegisteredControls.end(); i++)
 	{
 	if ((*i).type != CONFIG_TAB)
-	{
 	    switch((*i).type)
 	    {
 	      case 	CONFIG_COMBOBOX:
@@ -348,9 +341,10 @@ kdebug("ConfigDialog::changeTab()\n");
 	      (*i).widget->hide();
 	      break;
 	    }  	
+	else 
+		if (listBox->currentText() == appHandle->translate("@default",(*i).caption))
+			acttab= (*i).caption;
 
-	    
-	}
 	    if (appHandle->translate("@default",(*i).group) == name)
 	    switch((*i).type)
 	    {
@@ -359,17 +353,16 @@ kdebug("ConfigDialog::changeTab()\n");
 	      case	CONFIG_LINEEDIT:
 	      case	CONFIG_LINEEDIT2:
 	      case 	CONFIG_SPINBOX:
+	      if ((*i).visible)
 	    	((QHBox*)(*i).widget->parent())->show();
 		break;
 	      default:
-	      (*i).widget->show();
+	      if ((*i).visible)
+	        (*i).widget->show();
 	      break;
-	    }  	
-
-    
-
-//		    kdebug((*i).group+"->"+(*i).caption+"->"+(*i).name+"!!!!"+name+"!!\n");
+	    }
 	}
+	kdebug("active Tab: "+acttab+"\n");
 }
 
 void ConfigDialog::updateConfig(void) 

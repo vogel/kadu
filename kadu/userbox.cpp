@@ -714,9 +714,14 @@ void UserBoxSlots::chooseUserBoxFont(int nr)
 	vl = fdb.pointSizes(cb_userboxfont->text(nr),"Normal");
 	cb_userboxfontsize->clear();
 	for (QValueList<int>::Iterator points = vl.begin(); points != vl.end(); ++points)
+	{
 		cb_userboxfontsize->insertItem(QString::number(*points));
+		if (*points == vl_userboxfont[cb_userboxselect->currentItem()-2].pointSize())
+		cb_userboxfontsize->setCurrentItem(cb_userboxfontsize->count()-1);
+	}
+	
 	if (cb_userboxfontsize->count() > 0) {
-		cb_userboxfontsize->setCurrentItem(0);
+	
 		vl_userboxfont[cb_userboxselect->currentItem()-2] = 
 		    QFont(cb_userboxfont->text(nr), cb_userboxfontsize->currentText().toInt());
 					     }

@@ -101,6 +101,7 @@ class ConfigDialog : public QDialog	{
 			QString defaultS;
 			QString tip;
 			QWidget* widget;
+			bool visible;
 			int nrOfControls;
 			QValueList <ElementConnections> ConnectedSlots;
 		};

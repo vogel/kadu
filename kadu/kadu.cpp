@@ -1911,12 +1911,6 @@ void KaduSlots::onDestroyConfigDialog()
 			trayicon = NULL;
 							  }
 
-	if (!statusppm->isItemChecked(6) && !statusppm->isItemChecked(7)
-		    && /*prevprivatestatus !=*/ config_file.readBoolEntry("General", "PrivateStatus")) {
-			    statusppm->setItemChecked(8, config_file.readBoolEntry("General", "PrivateStatus"));
-			    kadu->setStatus(sess->status & (~GG_STATUS_FRIENDS_MASK));
-												}
-
 	if (config_file.readBoolEntry("General", "AddToDescription") && !kadu->autostatus_timer->isActive())
 		kadu->autostatus_timer->start(1000, true);
 	else

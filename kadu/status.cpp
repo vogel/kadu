@@ -279,5 +279,16 @@ void AutoAwaySlots::onDestroyConfigDialog()
 	        AutoAwayTimer::on();
 	else
                 AutoAwayTimer::off();
+
+	int status = getActualStatus();
+	
+	if ((!(status & GG_STATUS_FRIENDS_MASK)&& 
+	    config_file.readBoolEntry("General", "PrivateStatus"))
+	|| ((status & GG_STATUS_FRIENDS_MASK) &&  
+	    !config_file.readBoolEntry("General", "PrivateStatus")))
+	    kadu->setStatus(status & (~GG_STATUS_FRIENDS_MASK));
+	
+	statusppm->setItemChecked(8, config_file.readBoolEntry("General", "PrivateStatus"));
+
 };
 
