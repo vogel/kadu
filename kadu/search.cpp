@@ -325,7 +325,10 @@ void SearchDialog::showResults(gg_search50_t res) {
 		status = gg_search50_get(res, i, GG_SEARCH50_STATUS);
 		if ((status && atoi(status) <= 1 && only_active->isChecked()) || !status)
 			continue;
-		qpx = new QPixmap((const char **)gg_xpm[statusGGToStatusNr(atoi(status) & 127)]);
+		if (atoi(status))
+			qpx = new QPixmap((const char **)gg_xpm[statusGGToStatusNr(atoi(status) & 127)]);
+		else
+			qpx = new QPixmap((const char **)gg_xpm[6]);
 		if (first)
 			cp_to_iso((unsigned char *)first);
 		if (nick)
