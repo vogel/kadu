@@ -507,6 +507,8 @@ QString parse_symbols(QString s, int i, UserListElement &ule, bool escape) {
 				i++;
 					r+=ule.email;
 				break;
+			default:
+				r += "%";
 		}
 	}
 

@@ -1,0 +1,3 @@
+MODULE_SOURCES=kadu_speech.cpp
+MODULE_MOC_HEADERS=kadu_speech.h
+
