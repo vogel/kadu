@@ -265,7 +265,7 @@ void SearchDialog::nextSearch(void) {
 }
 
 void SearchDialog::showResults(gg_pubdir50_t res) {
-	int i, count;
+	int i, j, count;
 	const char *uin, *first, *nick, *born, *city, *status;
 	
 	count = gg_pubdir50_count(res);
@@ -293,16 +293,24 @@ void SearchDialog::showResults(gg_pubdir50_t res) {
 		status = gg_pubdir50_get(res, i, GG_PUBDIR50_STATUS);
 		if ((status && atoi(status) <= 1 && only_active->isChecked()) || !status)
 			continue;
-		if (results->findItem(uin, 1))
-			continue;
+		qlv = results->findItem(uin, 1);
 		if (atoi(status))
 			pix = icons->loadIcon(gg_icons[statusGGToStatusNr(atoi(status) & 127)]);
 		else
 			pix = icons->loadIcon("offline");
-		qlv = new QListViewItem(results, QString::null, cp2unicode((unsigned char *)uin),
-			cp2unicode((unsigned char *)first), cp2unicode((unsigned char *)city),
-			cp2unicode((unsigned char *)nick), cp2unicode((unsigned char *)born));
+		if (qlv) {
+			qlv->setText(1, cp2unicode((unsigned char *)uin));
+			qlv->setText(2, cp2unicode((unsigned char *)first));
+			qlv->setText(3, cp2unicode((unsigned char *)city));
+			qlv->setText(4, cp2unicode((unsigned char *)nick));
+			qlv->setText(5, cp2unicode((unsigned char *)born));
+			}
+		else
+			qlv = new QListViewItem(results, QString::null, cp2unicode((unsigned char *)uin),
+				cp2unicode((unsigned char *)first), cp2unicode((unsigned char *)city),
+				cp2unicode((unsigned char *)nick), cp2unicode((unsigned char *)born));
 		qlv->setPixmap(0, *pix);
+		qlv = NULL;
 		}
 
 	fromUin = gg_pubdir50_next(res);
