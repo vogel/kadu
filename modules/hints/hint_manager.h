@@ -92,7 +92,8 @@ class HintManager : public QFrame
 		 *		"Foreground color" - QColor
 		 *		"Background color" - QColor
 		 *		"Timeout"          - unsigned int
-		 * je¿eli która¶ z warto¶ci jest niekre¶lona, to dla niej brana jest warto¶æ domy¶lna
+		 *		"ShowSource"       - bool
+		 * je¿eli która¶ z warto¶ci jest nieokre¶lona, to dla niej brana jest warto¶æ domy¶lna
 		 * gdy UserListElement != NULL, to jego uin brany jest do tworzenia dymka (LMB np otwiera okno rozmowy z danym uinem)
 		 */
 		void message(const QString &from, const QString &message, const QMap<QString, QVariant> *parameters, const UserListElement *ule);

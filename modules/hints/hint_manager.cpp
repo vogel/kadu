@@ -638,12 +638,17 @@ void HintManager::message(const QString &from, const QString &msg, const QMap<QS
 	bool showSource=true;
 	if (parameters!=NULL)
 	{
+		QMap<QString, QVariant>::const_iterator end=(*parameters).end();
+		
 		pixmap=(*parameters)["Pixmap"].toPixmap();
 		font=(*parameters)["Font"].toFont();
 		fgcolor=(*parameters)["Foreground color"].toColor();
 		bgcolor=(*parameters)["Background color"].toColor();
 		timeout=(*parameters)["Timeout"].toUInt(&ok);
-		showSource=(*parameters)["ShowSource"].toBool();
+		
+		QMap<QString, QVariant>::const_iterator sit=(*parameters).find("ShowSource");
+		if (sit!=end)
+			showSource=sit.data().toBool();
 	}
 	if (pixmap.isNull())
 		pixmap=icons_manager.loadIcon("Message");
