@@ -46,6 +46,6 @@ public:
 //	void eventChangeStatus(QString user,int status);
 };
 
-extern VUserScript script;
+//extern VUserScript script;
 
 #endif

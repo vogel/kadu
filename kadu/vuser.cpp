@@ -421,7 +421,7 @@ void VUserScript::shellProcessFinished()
 	shell_process=NULL;
 };
 
-VUserScript script("script");
+//VUserScript script("script");
 
 vuVoidReturner* vuVoidReturner::parse(VUserScript* script,QString& s)
 {

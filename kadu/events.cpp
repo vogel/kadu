@@ -83,7 +83,7 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 	if (config.logmessages && senders[0] != config.uin)
 		appendHistory(senders, senders[0], msg, FALSE, time);
 
-	script.eventMsg(senders[0],msgclass,(char*)msg);
+	//script.eventMsg(senders[0],msgclass,(char*)msg);
 
 	int i;
 	i = 0;
