@@ -236,10 +236,9 @@ void eventGotUserlist(struct gg_event * e) {
 	struct gg_notify_reply *n = e->event.notify;
 	unsigned int oldstatus;
 	int i;
-	UserListElement user;
 	
 	while (n->uin) {
-		user = userlist.byUin(n->uin);
+		UserListElement &user = userlist.byUin(n->uin);
 
 		if (!userlist.containsUin(n->uin)) {
 			fprintf(stderr, "KK eventGotUserlist(): buddy %d not in list. Damned server!\n", n->uin);
@@ -282,19 +281,19 @@ void eventGotUserlist(struct gg_event * e) {
 
 		if (user.description)
 			user.description.truncate(0);
+		
 		}
 
-	kadu->userbox->refresh();
+//	kadu->userbox->refresh();
 }
 
 void eventGotUserlistWithDescription(struct gg_event *e) {
 	struct gg_notify_reply *n = e->event.notify_descr.notify;
 	unsigned int oldstatus;
 	int i;
-	UserListElement user;
 	
 	while (n->uin) {
-		user = userlist.byUin(n->uin);	
+		UserListElement &user = userlist.byUin(n->uin);	
 		
 		if (!userlist.containsUin(n->uin)) {
     	    		fprintf(stderr, "KK eventGotUserlist(): buddy %d not in list. Damned server!\n", n->uin);
@@ -331,7 +330,7 @@ void eventGotUserlistWithDescription(struct gg_event *e) {
 		n++;
 		}
 
-	kadu->userbox->refresh();
+//	kadu->userbox->refresh();
 }
 
 
@@ -339,9 +338,8 @@ void eventStatusChange(struct gg_event * e) {
 	fprintf(stderr, "KK eventStatusChange(): User %d went %d\n", e->event.status.uin,  e->event.status.status);
 
 	unsigned int oldstatus;
-	UserListElement user;
 	
-	user = userlist.byUin(e->event.status.uin);
+	UserListElement &user = userlist.byUin(e->event.status.uin);
 
 	if (!userlist.containsUin(e->event.status.uin)) {
 		// ignore!
@@ -363,7 +361,7 @@ void eventStatusChange(struct gg_event * e) {
 		user.port = 0;
 		}
 
-	kadu->userbox->refresh();
+//	kadu->userbox->refresh();
 	ifNotify(e->event.status.uin, e->event.status.status, oldstatus);
 }
 
