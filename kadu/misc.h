@@ -104,6 +104,18 @@ class HtmlDocument
 
 	public:
 		/**
+			Dodaje podany tekst do listy elementów jako
+			tag html.
+			@param text tekst do dodania
+		**/
+		void addTag(const QString &text);
+		/**
+			Dodaje podany tekst do listy elementów jako
+			zwyk³y tekst.
+			@param text tekst do dodania
+		**/
+		void addText(const QString &text);
+		/**
 			Parsuje podany napis zgodny ze struktur± html
 			i otrzymane dane przypisuje do dokumentu.
 			@param html napis do skonwertowania
@@ -143,6 +155,10 @@ class HtmlDocument
 		**/
 		void splitElement(int& index,int start,int length);
 };
+
+HtmlDocument GGMessageToHtmlDocument(const QString &msg, int formats_length, void *formats);
+void HtmlDocumentToGGMessage(HtmlDocument &htmldoc, QString &msg,
+	int &formats_length, void *&formats);
 
 class ImageWidget : public QWidget
 {

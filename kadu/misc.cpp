@@ -670,6 +670,22 @@ void HtmlDocument::addElement(Element e)
 	Elements.append(e);
 };
 
+void HtmlDocument::addTag(const QString &text)
+{
+	Element e;
+	e.text = text;
+	e.tag = true;
+	Elements.append(e);
+}
+
+void HtmlDocument::addText(const QString &text)
+{
+	Element e;
+	e.text = text;
+	e.tag = false;
+	Elements.append(e);
+}
+
 void HtmlDocument::parseHtml(const QString& html)
 {
 	Element e;
@@ -763,6 +779,172 @@ void HtmlDocument::splitElement(int& index,int start,int length)
 	};
 	e.text=e.text.mid(start,length);
 };
+
+HtmlDocument GGMessageToHtmlDocument(const QString &msg, int formats_length, void *formats)
+{
+	QString tmp;
+	bool inspan;
+	char *cformats = (char *)formats;
+	struct gg_msg_richtext_format *actformat;
+	struct gg_msg_richtext_color *actcolor;
+	int pos, idx;
+	HtmlDocument htmldoc;
+
+	kdebug("GGMessageToHtmlDocument()\n");
+	inspan = false;
+	pos = 0;
+	if (formats_length) {
+		while (formats_length) {
+			actformat = (struct gg_msg_richtext_format *)cformats;
+			if (actformat->position > pos) {
+				tmp = msg.mid(pos, actformat->position - pos);
+				htmldoc.addText(tmp);
+				pos = actformat->position;
+				}
+			else {
+				if (inspan)
+					htmldoc.addTag("</span>");
+				if (actformat->font) {
+					inspan = true;
+					tmp = "<span style=\"";
+					if (actformat->font & GG_FONT_BOLD)
+						tmp.append("font-weight:600;");
+					if (actformat->font & GG_FONT_ITALIC)
+						tmp.append("font-style:italic;");
+					if (actformat->font & GG_FONT_UNDERLINE)
+						tmp.append("text-decoration:underline;");
+					if (actformat->font & GG_FONT_COLOR) {
+						tmp.append("color:");
+						actcolor = (struct gg_msg_richtext_color *)(cformats
+							+ sizeof(struct gg_msg_richtext_format));
+						tmp.append(QColor(actcolor->red, actcolor->green, actcolor->blue).name());
+						}
+					tmp.append("\">");
+					htmldoc.addTag(tmp);
+					}
+				else
+					inspan = false;
+				cformats += sizeof(gg_msg_richtext_format);
+				formats_length -= sizeof(gg_msg_richtext_format);
+				if (actformat->font & GG_FONT_IMAGE) {
+					idx = int((unsigned char)cformats[0]);
+					kdebug("formatGGMessage(): I got image probably: header_length = %d\n",
+						idx);
+					cformats += idx + 1;
+					formats_length -= idx + 1;
+					}
+				else {
+					cformats += sizeof(gg_msg_richtext_color) * ((actformat->font & GG_FONT_COLOR) != 0);
+					formats_length -= sizeof(gg_msg_richtext_color) * ((actformat->font & GG_FONT_COLOR) != 0);
+					}
+				}
+			}
+		if (pos < msg.length()) {
+			tmp = msg.mid(pos, msg.length() - pos);
+			htmldoc.addText(tmp);
+			}
+		if (inspan)
+			htmldoc.addTag("</span>");
+		}
+	else
+		htmldoc.addText(msg);
+	kdebug("GGMessageToHtmlDocument(): finished\n");
+	return htmldoc;
+}
+
+void HtmlDocumentToGGMessage(HtmlDocument &htmldoc, QString &msg, int &formats_length, void *&formats)
+{
+	QString tmp;
+	QStringList attribs;
+	struct attrib_formant actattrib;
+	QValueList<attrib_formant> formantattribs;
+	int pos, inspan, i, it;
+	struct gg_msg_richtext richtext_header;
+	struct richtext_formant actformant;
+	QValueList<struct richtext_formant> formants;
+	char *cformats, *tmpformats;
+
+	kdebug("HtmlDocumentToGGMessage()\n");
+
+	for (it = 0, pos = 0, formats_length = 0, inspan = -1; it < htmldoc.countElements(); it++) {
+		tmp = htmldoc.elementText(it);
+		if (htmldoc.isTagElement(it)) {
+			kdebug("HtmlDocumentToGGMessage(): pos = %d\n", pos);
+			if (tmp == "</span>")
+				inspan = -1;
+			else {
+				inspan = pos;
+				tmp = tmp.section("\"", 1, 1);
+				attribs = QStringList::split(";", tmp);
+				formantattribs.clear();
+				for (i = 0; i < attribs.count(); i++) {
+					actattrib.name = attribs[i].section(":", 0, 0);
+					actattrib.value = attribs[i].section(":", 1, 1);
+					formantattribs.append(actattrib);
+					}
+				actformant.format.position = pos;
+				actformant.format.font = 0;
+				for (i = 0; i < formantattribs.count(); i++) {
+					actattrib = formantattribs[i];
+					if (actattrib.name == "font-style" && actattrib.value == "italic")
+						actformant.format.font |= GG_FONT_ITALIC;
+					if (actattrib.name == "text-decoration" && actattrib.value == "underline")
+						actformant.format.font |= GG_FONT_UNDERLINE;
+					if (actattrib.name == "font-weight" && actattrib.value == "600")
+						actformant.format.font |= GG_FONT_BOLD;
+					if (actattrib.name == "color") {
+						actformant.format.font |= GG_FONT_COLOR;
+						QColor color(actattrib.value);
+						actformant.color.red = color.red();
+						actformant.color.green = color.green();
+						actformant.color.blue = color.blue();
+						}
+					}
+				formants.append(actformant);
+				formats_length += sizeof(struct gg_msg_richtext_format)
+					+ sizeof(struct gg_msg_richtext_color)
+					* ((actformant.format.font & GG_FONT_COLOR) != 0);
+				}
+			}
+		else {
+			if (pos && inspan == -1) {
+				actformant.format.position = pos;
+				actformant.format.font = 0;
+				formants.append(actformant);
+				formats_length += sizeof(struct gg_msg_richtext_format);
+				}
+			msg.append(tmp);
+			pos += tmp.length();
+			}
+		}
+	if (formats_length) {
+		richtext_header.flag = 2;
+		richtext_header.length = formats_length;
+		formats_length += sizeof(struct gg_msg_richtext);
+		cformats = new char[formats_length];
+		tmpformats = cformats;
+		memcpy(tmpformats, &richtext_header, sizeof(struct gg_msg_richtext));
+		tmpformats += sizeof(struct gg_msg_richtext);
+		for (QValueList<struct richtext_formant>::iterator it = formants.begin(); it != formants.end(); it++) {
+			actformant = (*it);
+			if (actformant.format.font & GG_FONT_COLOR) {
+				memcpy(tmpformats, &actformant, sizeof(richtext_formant));
+				tmpformats += sizeof(richtext_formant);
+				}
+			else {
+				memcpy(tmpformats, &actformant.format, sizeof(gg_msg_richtext_format));
+				tmpformats += sizeof(gg_msg_richtext_format);
+				}
+			}
+		kdebug("HtmlDocumentToGGMessage(): formats_length = %d, tmpformats-cformats = %d\n",
+			formats_length, tmpformats - cformats);
+		formats = (void *)cformats;
+		}
+	else
+		formats = NULL;
+
+	kdebug("HtmlDocumentToGGMessage():\n%s\n", unicode2latin(msg).data());
+}
 
 ImageWidget::ImageWidget(QWidget *parent)
 	: QWidget(parent, "ImageWidget")
