@@ -425,14 +425,18 @@ void UserBox::refresh()
 	QStringList b_users;
 	
 	UinType myUin=config_file.readNumEntry("General", "UIN");
-	for (i = 0; i < Users.count(); i++) {
+	for (i = 0; i < Users.count(); i++)
+	{
 		UserListElement &user = userlist.byAltNick(Users[i]);
-		if (user.uin) {
-			if (user.uin == myUin) {
+		if (user.uin)
+		{
+			if (user.uin == myUin)
+			{
 				user.status = getCurrentStatus() & (~GG_STATUS_FRIENDS_MASK);
-				user.description = own_description;
-				}
-			switch (user.status) {
+				user.description = ifStatusWithDescription(getCurrentStatus()) ? own_description : QString::null;
+			}
+			switch (user.status)
+			{
 				case GG_STATUS_AVAIL:
 				case GG_STATUS_AVAIL_DESCR:
 				case GG_STATUS_BUSY:
@@ -447,11 +451,11 @@ void UserBox::refresh()
 					break;
 				default:
 					n_users.append(user.altnick);
-				}
 			}
+		}
 		else
 			b_users.append(user.altnick);
-		}
+	}
 	sortUsersByAltNick(a_users);
 	sortUsersByAltNick(i_users);
 	sortUsersByAltNick(n_users);
