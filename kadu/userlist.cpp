@@ -130,54 +130,50 @@ void UserList::removeUser(uin_t uin)
 
 int UserList::writeToFile(char *filename)
 {
-/*    char *tmp;
-    int i;
-    
-    if (!(tmp = preparePath("")))
-	return -1;
-    mkdir(tmp, 0700);
+	char *tmp;
 
-    if (!filename) {
-	if (!(filename = preparePath("userlist")))
-	    return -1;
-	}
+	if (!(tmp = preparePath("")))
+		return -1;
+	mkdir(tmp, 0700);
 
-    QFile f(filename);
+	if (!filename)
+	{
+		if (!(filename = preparePath("userlist")))
+			return -1;
+	};
 
-    if (!f.open(IO_WriteOnly)) {
-	std::cout << "KK write_userlist(): Error opening file :(" << std::endl;
-	return -2;
-	}
+	QFile f(filename);
 
-//  someone tell me how.
+	if (!f.open(IO_WriteOnly))
+	{
+		fprintf(stderr,"KK UserList::writeToFile(): Error opening file :(\n");
+		return -2;
+	};
+
 //	fchmod(fileno(f), 0600);
 
-    QString jakisstr;
-    for (i = 0; i < userlist.size(); i++) {
-	jakisstr.truncate(0);
-
-        jakisstr.append(__c2q(userlist[i].first_name));
-        jakisstr.append(QString(";"));
-	jakisstr.append(__c2q(userlist[i].last_name));
-    	jakisstr.append(QString(";"));
-	jakisstr.append(__c2q(userlist[i].comment));
-	jakisstr.append(QString(";"));
-	jakisstr.append(__c2q(userlist[i].nickname));
-	jakisstr.append(QString(";"));
-	jakisstr.append(__c2q(userlist[i].mobile));
-	jakisstr.append(QString(";"));
-	jakisstr.append(__c2q(userlist[i].group));
-	jakisstr.append(QString(";"));
-	jakisstr.append(QString::number(userlist[i].uin));
-	jakisstr.append(QString("\r\n"));
-
-	std::cout << jakisstr;
-
-	f.writeBlock(jakisstr.local8Bit(), jakisstr.length());
+	for (Iterator i=begin(); i!=end(); i++)
+	{
+		QString s="";
+		s.append((*i).first_name);
+		s.append(QString(";"));
+		s.append((*i).last_name));
+		s.append(QString(";"));
+		s.append((*i).comment));
+		s.append(QString(";"));
+		s.append((*i).nickname));
+		s.append(QString(";"));
+		s.append((*i).mobile));
+		s.append(QString(";"));
+		s.append((*i).group));
+		s.append(QString(";"));
+		s.append(QString::number((*i).uin));
+		s.append(QString("\r\n"));
+		std::cout << s;
+		f.writeBlock(s.local8Bit(),s.length());
 	}	    
-    f.close();
-*/
-    return 0;
+	f.close();
+	return 0;
 }
 
 int UserList::readFromFile()
