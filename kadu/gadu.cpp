@@ -2282,7 +2282,7 @@ void GaduProtocol::userStatusChanged(const struct gg_event *e)
 		return;
 	}
 
-	if (user.status().isOffline())
+	if (status.isOffline())
 	{
 		user.ip().setAddress((unsigned int)0);
 		user.setPort(0);

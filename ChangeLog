@@ -257,6 +257,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   zmiennej ¶rodowiskowej SIGNAL_HANDLING na 0 (joi)
 * ostatnio wybrane katalogi przy przesyle plików oraz przy wyborze obrazków
   s± zapamiêtywane (joi)
+* przy przechodzeniu kontaktu ze statusu niedostêpnego na dostêpny lub zaraz wracam
+  nie od¶wie¿a³ siê adres ip, port, maksymalny rozmiar obrazka - poprawione (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
