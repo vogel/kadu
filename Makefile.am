@@ -8,6 +8,8 @@ EXTRA_DIST = admin kadu.kdevprj AUTHORS COPYING ChangeLog INSTALL README TODO ka
 AUTOMAKE_OPTIONS = foreign 
 
 install-data-local:
+	$(mkinstalldirs) "$(DESTDIR)/$(includedir)/kadu/"
+	$(INSTALL_DATA) kadu-config.h "$(DESTDIR)/$(includedir)/kadu/"
 	$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/"	
 	$(INSTALL_DATA) AUTHORS "$(DESTDIR)/$(datadir)/kadu/"
 	$(INSTALL_DATA) ChangeLog "$(DESTDIR)/$(datadir)/kadu/"
@@ -26,6 +28,7 @@ install-data-local:
 	@echo
 
 uninstall-local:
+	rm -f "$(DESTDIR)/$(includedir)/kadu/kadu-config.h"
 	rm -f "$(DESTDIR)/$(datadir)/kadu/*"
 	rm -f "$(DESTDIR)/$(datadir)/kadu/themes/emoticons/gadu-gadu/1"/*
 	rm -f "$(DESTDIR)/$(datadir)/kadu/themes/emoticons/gadu-gadu/2"/*
