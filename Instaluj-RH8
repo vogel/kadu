@@ -208,15 +208,15 @@ function ShowInfo()
         echo
 	echo " =============================================================================="
 	echo "                 PROGRAM BĘDZIE KORZYSTAŁ Z PODANYCH ŚCIEŻEK :"
+	CheckPath "$APP_DIR" bin/kadu "ZAINSTALOWANE" "NIE ZAINSTALOWANE"
+	echo "  * Lokalizacja $APP_NAME w katalogu: [$APP_DIR], $CORRECT"
+	CheckPath "$LIB_DIR" /libgadu.so "ZAINSTALOWANE" "NIE ZAINSTALOWANE użyj opcji standardowej"
+	echo "  * Lokalizacja $LIB_NAME w katalogu: [$LIB_DIR], $CORRECT"
 	CheckPath "$QT_DIR" include/qapplication.h "ZNALEZIONA." "NIE ZNALEZIONA!"
 	echo "  * Biblioteka QT wersja >=3.0.1, w katalogu: [$QT_DIR], $CORRECT"
 	CheckPath "$KDE_DIR" include/kapp.h "ZNALEZIONE." "NIE ZNALEZIONE!"
 	echo "  * KDE Desktop wersja >=3.0.0, w katalogu: [$KDE_DIR], $CORRECT"
 	echo "  KDE NIE JEST WYMAGANE DO INSTALACJI NA INNYCH MENADZERACH OKEN"
-	CheckPath "$APP_DIR" bin/kadu "ZAINSTALOWANE" "NIE ZAINSTALOWANE"
-	echo "  * Lokalizacja $APP_NAME w katalogu: [$APP_DIR], $CORRECT"
-	CheckPath "$LIB_DIR" /libgadu.so "ZAINSTALOWANE" "NIE ZAINSTALOWANE użyj opcji standardowej"
-	echo "  * Lokalizacja $LIB_NAME w katalogu: [$LIB_DIR], $CORRECT"
 	echo
 	echo " =============================================================================="
 	echo " |                               MENU PROGRAMU                                |"
@@ -229,8 +229,8 @@ function ShowInfo()
 	echo " |          Naciśnij   U  aby odinstalować $APP_NAME.                              |"
 	echo " |          Naciśnij   B  aby rozpocząć instalację bez libgadu.               |"
 	echo " |          Naciśnij   S  aby rozpocząć instalację bez szyfrowania w SSL.     |"
-	echo " |          Naciśnij   G  rozpocząć instalację z debug.                   |"
-	echo " |          Naciśnij   P  aby uzyskać Pomoc za pomocą programu Links.         |"
+	echo " |          Naciśnij   G  rozpocząć instalację z debug.                      |"
+	echo " |          Naciśnij   P  aby uzyskać Pomoc za pomocą programu Mozilla.       |"
 	echo " |          Naciśnij   E  aby zakończyć program instalacyjny.                 |"
 	echo " =============================================================================="
         echo "                 UWAGA!!! musisz mieć uprawnienia administratora"
@@ -238,46 +238,74 @@ function ShowInfo()
 
 function Szuk_kadu()
 {
-APP_DIR=`find $HOME -path */bin/kadu -type f | sed -e 's/\/bin\/kadu$//' -e q`
-if [ "$APP_DIR" == "" ]; then
 APP_DIR=`find /usr -path */bin/kadu -type f | sed -e 's/\/bin\/kadu$//' -e q`
+echo " ####"
+if [ "$APP_DIR" == "" ]; then
+APP_DIR=`find /usr/local -path */bin/kadu -type f | sed -e 's/\/bin\/kadu$//' -e q`
+echo " ####"
+fi;
+if [ "$APP_DIR" == "" ]; then
+APP_DIR=`find $HOME -path */bin/kadu -type f | sed -e 's/\/bin\/kadu$//' -e q`
+echo " ####"
 fi;
 if [ "$APP_DIR" == "" ]; then
 APP_DIR=`find /opt -path */bin/kadu -type f | sed -e 's/\/bin\/kadu$//' -e q`
+echo " ####"
 fi;
 if [ "$APP_DIR" == "" ]; then
 APP_DIR="$APP_DEF_DIR"
+echo  " ####"
 fi;
 }
 
 function Szuk_LibGadu()
 {
-LIB_DIR=`find $HOME -path */libgadu.so -type f | sed -e 's/\/libgadu.so$//' -e q`
+LIB_DIR=`find /usr/lib -path */libgadu.so -type l | sed -e 's/\/libgadu.so$//' -e q`
+echo " ####"
 if [ "$LIB_DIR" == "" ]; then
-LIB_DIR=`find /usr -path */libgadu.so -type f | sed -e 's/\/libgadu.so$//' -e q`
+LIB_DIR=`find /usr/local -path */libgadu.so -type l | sed -e 's/\/libgadu.so$//' -e q`
+echo " ####"
 fi;
 if [ "$LIB_DIR" == "" ]; then
-LIB_DIR=`find /opt -path */libgadu.so -type f | sed -e 's/\/libgadu.so$//' -e q`
+LIB_DIR=`find $HOME -path */libgadu.so -type l | sed -e 's/\/libgadu.so$//' -e q`
+echo " ####"
+fi;
+if [ "$LIB_DIR" == "" ]; then
+LIB_DIR=`find /opt -path */libgadu.so -type l | sed -e 's/\/libgadu.so$//' -e q`
+echo " ####"
 fi;
 if [ "$LIB_DIR" == "" ]; then
 LIB_DIR="$LIB_DEF_DIR"
+echo " ####"
 fi;
 }
 
 
 function Szuk_QT()
 {
+QT_DIR=`find /usr/lib -path */include/qapplication.h -type f | sed -e 's/\/include\/qapplication.h$//' -e q`
+echo " ####"
+if [ "$QT_DIR" == "" ]; then
 QT_DIR=`find /usr -path */include/qapplication.h -type f | sed -e 's/\/include\/qapplication.h$//' -e q`
+echo " ####"
+fi;
 if [ "$QT_DIR" == "" ]; then
 QT_DIR=`find /opt -path */include/qapplication.h -type f | sed -e 's/\/include\/qapplication.h$//' -e q`
+echo " ####"
 fi;
 }
 
 function Szuk_KDE()
 {
-KDE_DIR=`find /usr -path */include/kapp.h -type f | sed -e 's/\/include\/kapp.h$//' -e q`
+KDE_DIR=`find /usr/include -path */kapp.h -type f | sed -e 's/\/include\/kapp.h$//' -e q`
+echo " ####"
+if [ "$KDE_DIR" == "" ]; then
+KDE_DIR=`find /usr/lib -path */include/kapp.h -type f | sed -e 's/\/include\/kapp.h$//' -e q`
+echo " ####"
+fi;
 if [ "$KDE_DIR" == "" ]; then
 KDE_DIR=`find /opt -path */include/kapp.h -type f | sed -e 's/\/include\/kapp.h$//' -e q`
+echo " ####"
 fi;
 }
 
@@ -366,7 +394,7 @@ while [ 1 ]; do
 			exit
 		fi;
 		if [[ ("$REPLY" == "P") || ("$REPLY" == "p") ]]; then
-			links ./doc/index_doc.html
+			mozilla ./doc/index_doc.html
 			break
 		fi;
 	done

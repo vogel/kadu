@@ -5,17 +5,21 @@
 # modify it under the terms of the GNU General Public License   #
 #################################################################
 
-
-#   Definicja domyslnych wartosci dla zmiennych
-
+############################################
+#   Definition default values for variable #
+############################################
 APP_NAME=KADU
 APP_DEF_DIR=/usr
-# $1 - nazwy katalogów, $2 - Wartosci domy?lne
+LIB_NAME=LibGadu
+LIB_DEF_DIR=/usr/lib
 
-#  Deklaracja funkcji
-
+####################################
+#  Declaration funcions            #
+####################################
 function AskForPath()
 {
+# $1 - name directory
+# $2 - default value
 	echo -n "Enter new path to $1 : "
 	read -e
 	if [ "$REPLY" == "" ]; then
@@ -57,7 +61,7 @@ function Konfiguruj_bez_libgadu()
 	KDEDIR="$KDE_DIR"
 	export KDEDIR
 	OPER="Configure"
-	./configure "--prefix=$APP_DIR" "--with-existing-libgadu" 
+	./configure "--prefix=$APP_DIR" "--with-existing-libgadu"
 	WYK=$?
  if test "$WYK" -ne 0; then
         Error
@@ -73,7 +77,7 @@ function Konfiguruj_bez_ssl()
 	KDEDIR="$KDE_DIR"
 	export KDEDIR
 	OPER="Configure"
-	./configure "--prefix=$APP_DIR" "--without-openssl" 
+	./configure "--prefix=$APP_DIR" "--without-openssl"
 	WYK=$?
  if test "$WYK" -ne 0; then
         Error
@@ -171,17 +175,19 @@ function Error()
 }
 function ShowInfo()
 {
- 	clear
+	clear
         echo
 	echo " =============================================================================="
 	echo "                            PROGRAM USES THIS PATH:"
+	CheckPath "$APP_DIR" bin/kadu "INSTALLED" "NOT INSTALLED"
+	echo "     * Application $APP_NAME will be installed at directory: [$APP_DIR], $CORRECT"
+	CheckPath "$LIB_DIR" /libgadu.so "INSTALLED" "NOT INSTALLED you must uses default option"
+	echo "     * Library $LIB_NAME in directory: [$LIB_DIR], $CORRECT"
 	CheckPath "$QT_DIR" include/qapplication.h FOUND. "NOT FOUND!"
 	echo "     * Library QT version >=3.0.1, in directory: [$QT_DIR], $CORRECT"
 	CheckPath "$KDE_DIR" include/kapp.h FOUND. "NOT FOUND!"
 	echo "     * KDE Desktop version >=3.0.0, in directory: [$KDE_DIR], $CORRECT"
 	echo "     KDE IS NOT REQUIRED  FOR INSTALLATION IN ODHER MENAGERS"
-	CheckPath "$APP_DIR" bin/kadu "INSTALLED" "NOT INSTALLED"
-	echo "     * Application $APP_NAME will be installed at directory: [$APP_DIR], $CORRECT"
 	echo
 	echo " =============================================================================="
 	echo " |                                   MENU                                     |"
@@ -190,44 +196,91 @@ function ShowInfo()
 	echo " |                Press   Q   to change QT Library path.                      |"
 	echo " |                Press   K   to change KDE Desktop path.                     |"
 	echo " |                Press   D   to change destination path.                     |"
-	echo " |                Press   I   to install Kadu.                                |"
+	echo " |                Press   I   to install Kadu option default.                 |"
 	echo " |                Press   U   to uninstall Kadu.                              |"
 	echo " |                Press   B   to install Kadu with existing libgadu           |"
 	echo " |                Press   S   to install Kadu without SSL                     |"
 	echo " |                Press   G   to install Kadu with Debug                      |"
-	echo " |                Press   P   to Help in Links program.                       |"
+	echo " |                Press   P   to Help in Mozilla program.                     |"
 	echo " |                Press   E   to exit.                                        |"
 	echo " =============================================================================="
         echo "	                 WARNING!!! You have must root access."
 }
 
-function Szuk_kadu
+function Szuk_kadu()
 {
-APP_DIR=`find $HOME -path */bin/kadu -type f | sed -e 's/\/bin\/kadu$//' -e q`
-if [ "$APP_DIR" == "" ]; then
+echo " Searching for old instalation KADU ..........................................."
 APP_DIR=`find /usr -path */bin/kadu -type f | sed -e 's/\/bin\/kadu$//' -e q`
+echo " ####"
+if [ "$APP_DIR" == "" ]; then
+APP_DIR=`find /usr/local -path */bin/kadu -type f | sed -e 's/\/bin\/kadu$//' -e q`
+echo " ####"
+fi;
+if [ "$APP_DIR" == "" ]; then
+APP_DIR=`find $HOME -path */bin/kadu -type f | sed -e 's/\/bin\/kadu$//' -e q`
+echo " ####"
 fi;
 if [ "$APP_DIR" == "" ]; then
 APP_DIR=`find /opt -path */bin/kadu -type f | sed -e 's/\/bin\/kadu$//' -e q`
+echo " ####"
 fi;
 if [ "$APP_DIR" == "" ]; then
 APP_DIR="$APP_DEF_DIR"
+echo  " ####"
 fi;
 }
 
-function Szuk_QT
+function Szuk_LibGadu()
 {
+echo " Searching for old instalation LibGadu........................................."
+LIB_DIR=`find /usr/lib -path */libgadu.so -type l | sed -e 's/\/libgadu.so$//' -e q`
+echo " ####"
+if [ "$LIB_DIR" == "" ]; then
+LIB_DIR=`find /usr/local -path */libgadu.so -type l | sed -e 's/\/libgadu.so$//' -e q`
+echo " ####"
+fi;
+if [ "$LIB_DIR" == "" ]; then
+LIB_DIR=`find $HOME -path */libgadu.so -type l | sed -e 's/\/libgadu.so$//' -e q`
+echo " ####"
+fi;
+if [ "$LIB_DIR" == "" ]; then
+LIB_DIR=`find /opt -path */libgadu.so -type l | sed -e 's/\/libgadu.so$//' -e q`
+echo " ####"
+fi;
+if [ "$LIB_DIR" == "" ]; then
+LIB_DIR="$LIB_DEF_DIR"
+echo " ####"
+fi;
+}
+
+
+function Szuk_QT()
+{
+echo " Searching for  QT - devel Library ............................................"
+QT_DIR=`find /usr/lib -path */include/qapplication.h -type f | sed -e 's/\/include\/qapplication.h$//' -e q`
+echo " ####"
+if [ "$QT_DIR" == "" ]; then
 QT_DIR=`find /usr -path */include/qapplication.h -type f | sed -e 's/\/include\/qapplication.h$//' -e q`
+echo " ####"
+fi;
 if [ "$QT_DIR" == "" ]; then
 QT_DIR=`find /opt -path */include/qapplication.h -type f | sed -e 's/\/include\/qapplication.h$//' -e q`
+echo " ####"
 fi;
 }
 
-function Szuk_KDE
+function Szuk_KDE()
 {
-KDE_DIR=`find /usr -path */include/kapp.h -type f | sed -e 's/\/include\/kapp.h$//' -e q`
+echo " Searching for  KDE  ............................................................"
+KDE_DIR=`find /usr/include -path */kapp.h -type f | sed -e 's/\/include\/kapp.h$//' -e q`
+echo " ####"
+if [ "$KDE_DIR" == "" ]; then
+KDE_DIR=`find /usr/lib -path */include/kapp.h -type f | sed -e 's/\/include\/kapp.h$//' -e q`
+echo " ####"
+fi;
 if [ "$KDE_DIR" == "" ]; then
 KDE_DIR=`find /opt -path */include/kapp.h -type f | sed -e 's/\/include\/kapp.h$//' -e q`
+echo " ####"
 fi;
 }
 
@@ -250,9 +303,8 @@ clear
 	echo
         echo " Configuring setup program please wait .........."
 	echo
-	echo "Searching for  KADU..."
 		Szuk_kadu
-	echo "Searching for  QT..."
+		Szuk_LibGadu
 		Szuk_QT
 		Szuk_KDE
 
@@ -313,7 +365,7 @@ while [ 1 ]; do
 			exit
 		fi;
 		if [[ ("$REPLY" == "P") || ("$REPLY" == "p") ]]; then
-			links ./doc/index_doc.html
+			mozilla ./doc/index_doc.html
 			break
 		fi;
 	done
