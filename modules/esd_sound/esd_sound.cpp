@@ -7,6 +7,9 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <unistd.h>
+#include <errno.h>
+
 #include <esd.h>
 #include "esd_sound.h"
 #include "debug.h"
