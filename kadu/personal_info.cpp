@@ -176,6 +176,8 @@ void PersonalInfoDialog::fillFields(gg_pubdir50_t res)
 				SurnameEdit->setText(cp2unicode((unsigned char *)last));
 			if (nick)
 				NicknameEdit->setText(cp2unicode((unsigned char *)nick));
+			if (born)
+				BirthyearEdit->setText(cp2unicode((unsigned char *)born));
 			if (city)
 				CityEdit->setText(cp2unicode((unsigned char *)city));
 			if (family_name)

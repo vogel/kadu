@@ -22,6 +22,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * getMyIP() zbêdne. dzia³a mechanizm systemowy przydzia³u gniazdek dcc
   wykorzystywany w libgadu (wcze¶niej te¿ dzia³a³ tyle, ¿e nie ustawia³em 
   gg_dcc_ip na 255.255.255.255) (chilek)
+* poprawka wyswietlania roku urodzenia w danych osobistych (pawel_p/mast3r)
 
 +++ wersja 0.3.4-rc4
 * kadu nie pokazuje fa³szywych statusów ukrytych w userboksie (chilek)
