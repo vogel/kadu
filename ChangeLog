@@ -239,8 +239,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * Skrypt Instaluj - Modu³y domy¶lnie statyczne nie podlegaj± wyborowi (Ron_K)
 * historia rozmowy: gdy klikniemy na altnik wy¶wietla siê pierwsza rozmowa (chilek)
 * bramka Ery obs³uguje nowy prefix Heyah: 880 (d7:R-k,attis/adrian)
-* ³atka bugiego poprawiaj±ca wybór dodatkowych ¶cie¿ek w zestawach ikon.
-  do tego moje drobne modyfikacje "techniczne" (adrian)
+* ³atki bugiego poprawiaj±ce wybór dodatkowych ¶cie¿ek w zestawach ikon i
+  d¼wiêków. do tego moje drobne modyfikacje "techniczne" (adrian)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

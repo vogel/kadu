@@ -515,6 +515,10 @@ void SoundSlots::selectedPaths(const QStringList& paths)
 	sound_manager->setPaths(paths);
 	QComboBox* cb_soundtheme= ConfigDialog::getComboBox("Sounds","Sound theme");
 	QString current= cb_soundtheme->currentText();
+	
+	SelectPaths* soundPath = ConfigDialog::getSelectPaths("Sounds","Sound paths");
+	soundPath->setPathList(sound_manager->additionalPaths());
+	
 	cb_soundtheme->clear();
 	cb_soundtheme->insertItem("Custom");// 0-wa pozycja
 	cb_soundtheme->insertStringList(sound_manager->themes());
