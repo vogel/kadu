@@ -36,6 +36,7 @@ class HistoryManager {
 		void convSms2ekgForm();
 	private:
 		QString text2csv(const QString &text);
+		int typeOfLine(const QString &line);
 };
 
 extern HistoryManager history;

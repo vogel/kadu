@@ -17,6 +17,7 @@
 #include <qpixmap.h>
 #include <qcombobox.h>
 #include <qstring.h>
+#include <qcstring.h>
 #include <qfont.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,6 +25,7 @@
 #include <unistd.h>
 #include <qlayout.h>
 #include <qfile.h>
+#include <qbuffer.h>
 #include <qtextcodec.h>
 #include <qregexp.h>
 #include <qdir.h>
@@ -40,8 +42,15 @@
 #include "debug.h"
 #include "history.h"
 
-QString HistoryManager::text2csv(const QString &text)
-{
+enum {
+	HISTORYMANAGER_ORDINARY_LINE,
+	HISTORYMANAGER_HISTORY_OUR,
+	HISTORYMANAGER_HISTORY_FOREIGN,
+	HISTORYMANAGER_SMS_WITH_NICK,
+	HISTORYMANAGER_SMS_WITHOUT_NICK
+};
+
+QString HistoryManager::text2csv(const QString &text) {
 	QString csv = text;
 	csv.replace(QRegExp("\\\\"), "\\\\");
 	csv.replace(QRegExp("\""), "\\\"");
@@ -49,6 +58,32 @@ QString HistoryManager::text2csv(const QString &text)
 	if (csv != text || text.find(QRegExp(","), 0) != -1)
 		csv = QString("\"") + csv + QString("\"");	
 	return csv;
+}
+
+int HistoryManager::typeOfLine(const QString &line) {
+	QStringList strlist;
+
+	strlist = QStringList::split(" ", line);
+	if (strlist.count() >= 6 && strlist[1].length() == 2 && strlist[1] == "::"
+		&& strlist[2].length() == 2 && strlist[2][0].isDigit() && strlist[2][1].isDigit()
+		&& strlist[3].length() == 2 && strlist[3][0].isDigit() && strlist[3][1].isDigit()
+		&& strlist[4].length() == 5 && strlist[4][0].isDigit() && strlist[4][1].isDigit()
+		&& strlist[4][2].isDigit() && strlist[4][3].isDigit() && strlist[4][4] == ','
+		&& strlist[5].length() >= 9 && strlist[5][0] == '(' && strlist[5][1].isDigit()
+		&& strlist[5][2].isDigit() && strlist[5][3] == ':' && strlist[5][4].isDigit()
+		&& strlist[5][5].isDigit() && strlist[5][6] == ':' && strlist[5][7].isDigit()
+		&& strlist[5][8].isDigit()) {
+		if (strlist.count() == 6 && strlist[5].length() == 10 && strlist[5][9] == ')')
+			return HISTORYMANAGER_HISTORY_OUR;
+		if (strlist.count() == 9 && strlist[5].length() == 9 && strlist[6].length() == 1
+			&& strlist[6] == "/" && strlist[7].length() == 1 && strlist[7] == "S"
+			&& strlist[8].length() == 9 && strlist[8][0].isDigit() && strlist[8][1].isDigit()
+			&& strlist[8][2] == ':' && strlist[8][3].isDigit() && strlist[8][4].isDigit()
+			&& strlist[8][5] == ':' && strlist[8][6].isDigit() && strlist[8][7].isDigit()
+			&& strlist[8][8] == ')')
+			return HISTORYMANAGER_HISTORY_FOREIGN;
+		}
+	return HISTORYMANAGER_ORDINARY_LINE;
 }
 
 void HistoryManager::appendMessage(UinsList uins, uin_t uin, const QString &msg, bool own, time_t time, bool chat) {
@@ -239,9 +274,11 @@ void HistoryManager::convHist2ekgForm(UinsList uins) {
 	QFile f, fout;
 	QString path = ggPath("history/");
 	QString fname, fnameout, line, nick;
+	QByteArray datain;
+	QBuffer bufin, bufout;
 	QStringList linelist;
 	uin_t uin;
-	int i;
+	int i, typeofline;
 
 	uins.sort();
 	for (i = 0; i < uins.count(); i++) {
@@ -249,23 +286,23 @@ void HistoryManager::convHist2ekgForm(UinsList uins) {
 		if (i < uins.count() - 1)
 			fname.append("_");
 		}
-
+	
 	f.setName(path + fname);
 	if (!(f.open(IO_ReadWrite))) {
 		kdebug("HistoryManager::convHist2ekgForm(): Error opening history file %s\n", (const char *)fname.local8Bit());
 		return;
 		}
-	fnameout = fname + ".new";
-	fout.setName(path + fnameout);
-	if (!(fout.open(IO_WriteOnly | IO_Truncate))) {
-		kdebug("HistoryManager::convHist2ekgForm(): Error opening new history file %s\n", (const char *)fnameout.local8Bit());
-		f.close();
-		return;
-		}
+	datain = f.readAll();
+	f.close();
 
-	QTextStream stream(&f);
+	bufin.setBuffer(datain);
+	bufin.open(IO_ReadOnly);
+
+	bufout.open(IO_WriteOnly);
+
+	QTextStream stream(&bufin);
 	stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
-	QTextStream streamout(&fout);
+	QTextStream streamout(&bufout);
 	streamout.setCodec(QTextCodec::codecForName("ISO 8859-2"));
 
 	bool our, foreign;
@@ -276,6 +313,9 @@ void HistoryManager::convHist2ekgForm(UinsList uins) {
 	while ((line = stream.readLine()) != QString::null) {
 		our = !line.find(QRegExp("^\\S+\\s::\\s\\d{2,2}\\s\\d{2,2}\\s\\d{4,4},\\s\\(\\d{2,2}:\\d{2,2}:\\d{2,2}\\)$"));
 		foreign = !line.find(QRegExp("^\\S+\\s::\\s\\d{2,2}\\s\\d{2,2}\\s\\d{4,4},\\s\\(\\d{2,2}:\\d{2,2}:\\d{2,2}\\s/\\sS\\s\\d{2,2}:\\d{2,2}:\\d{2,2}\\)$"));
+//		typeofline = typeOfLine(line);
+//		our = (typeofline == HISTORYMANAGER_HISTORY_OUR);
+//		foreign = (typeofline == HISTORYMANAGER_HISTORY_FOREIGN);
 		if (our || foreign) {
 			if (linelist.count()) {
 				text.truncate(text.length() - 1);
@@ -353,15 +393,23 @@ void HistoryManager::convHist2ekgForm(UinsList uins) {
 		linelist.append(text2csv(text));
 		lineout = linelist.join(",");
 		streamout << lineout << '\n';
-		f.close();
+		bufin.close();
+		bufout.close();
+		fnameout = fname + ".new";
+		fout.setName(path + fnameout);
+		if (!(fout.open(IO_WriteOnly | IO_Truncate))) {
+			kdebug("HistoryManager::convHist2ekgForm(): Error opening new history file %s\n", (const char *)fnameout.local8Bit());
+			return;
+			}
+		fout.writeBlock(bufout.buffer());
 		fout.close();
 		QDir dir(path);
 		dir.rename(fname, fname + QString(".old"));
 		dir.rename(fnameout, fname);
 		}
 	else {
-		fout.remove();
-		f.close();
+		bufin.close();
+		bufout.close();
 		}
 }
 
@@ -372,26 +420,28 @@ void HistoryManager::convSms2ekgForm() {
 	QString path = ggPath("history/");
 	QString fname, fnameout, line, nick;
 	QStringList linelist;
+	QBuffer bufin, bufout;
+	QByteArray datain;
 	uin_t uin;
 	int i;
 
 	fname = "sms";
 	f.setName(path + fname);
 	if (!(f.open(IO_ReadWrite))) {
-		kdebug("HistoryManager::convHist2ekgForm(): Error opening sms history file %s\n", (const char *)fname.local8Bit());
+		kdebug("HistoryManager::convSms2ekgForm(): Error opening sms history file %s\n", (const char *)fname.local8Bit());
 		return;
 		}
-	fnameout = fname + ".new";
-	fout.setName(path + fnameout);
-	if (!(fout.open(IO_WriteOnly | IO_Truncate))) {
-		kdebug("HistoryManager::convHist2ekgForm(): Error opening new sms history file %s\n", (const char *)fnameout.local8Bit());
-		f.close();
-		return;
-		}
+	datain = f.readAll();
+	f.close();
 
-	QTextStream stream(&f);
+	bufin.setBuffer(datain);
+	bufin.open(IO_ReadOnly);
+
+	bufout.open(IO_WriteOnly);
+
+	QTextStream stream(&bufin);
 	stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
-	QTextStream streamout(&fout);
+	QTextStream streamout(&bufout);
 	streamout.setCodec(QTextCodec::codecForName("ISO 8859-2"));
 
 	bool header;
@@ -453,15 +503,23 @@ void HistoryManager::convSms2ekgForm() {
 			}
 		lineout = linelist.join(",");
 		streamout << lineout << '\n';
-		f.close();
+		bufin.close();
+		bufout.close();
+		fnameout = fname + ".new";
+		fout.setName(path + fnameout);
+		if (!(fout.open(IO_WriteOnly | IO_Truncate))) {
+			kdebug("HistoryManager::convSms2EkgForm: Error opening new sms history file %s\n", (const char *)fnameout.local8Bit());
+			return;
+			}
+		fout.writeBlock(bufout.buffer());
 		fout.close();
 		QDir dir(path);
 		dir.rename(fname, fname + QString(".old"));
 		dir.rename(fnameout, fname);
 		}
 	else {
-		fout.remove();
-		f.close();
+		bufin.close();
+		bufout.close();
 		}
 }
 
