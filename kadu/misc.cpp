@@ -1,6 +1,10 @@
 
+#include <stdio.h>
 #include <stdlib.h>
+#include <pwd.h>
 #include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
 #include "misc.h"
 
 char* preparePath(char* filename)
