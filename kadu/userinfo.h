@@ -23,23 +23,23 @@
 #include "../libgadu/lib/libgadu.h"
 
 class UserInfo : public QDialog {
-    Q_OBJECT
-    public:
-	UserInfo(const QString &, QDialog* parent=0, unsigned int uin = 0);
-    
-    private:
-	unsigned int this_index;
-	QLineEdit* e_firstname;
-	QLineEdit* e_lastname;
-	QLineEdit* e_nickname;
-	QLineEdit* e_altnick;
-	QLineEdit* e_mobile;
-	QLineEdit* e_uin;
-	QLineEdit* e_addr;
-	QLineEdit* e_group;		
+	Q_OBJECT
+	public:
+		UserInfo(const QString &, QDialog* parent=0, unsigned int uin = 0);
 
-    private slots:
-	void writeUserlist();
+	private:
+		unsigned int this_index;
+		QLineEdit *e_firstname;
+		QLineEdit *e_lastname;
+		QLineEdit *e_nickname;
+		QLineEdit *e_altnick;
+		QLineEdit *e_mobile;
+		QLineEdit *e_uin;
+		QLineEdit *e_addr;
+		QLineEdit *e_group;		
+
+	private slots:
+		void writeUserlist();
 };
 
 #endif

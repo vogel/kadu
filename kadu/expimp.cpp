@@ -184,7 +184,8 @@ void UserlistImport::socketEvent() {
 		fetchbtn->setEnabled(true);
 		fprintf(stderr,"KK ImportUserlist::socketEvent(): Done\n");
 		QStringList strlist;
-		strlist = QStringList::split("\r\n",(char *)gg_http->data,true);
+		cp_to_iso((unsigned char *)gg_http->data);
+		strlist = QStringList::split("\r\n",__c2q((const char *)gg_http->data),true);
 		fprintf(stderr, "! %d !\n", strlist.count());		
 		fprintf(stderr, "%s\n", gg_http->data);
 		QStringList fieldlist;
@@ -197,7 +198,7 @@ void UserlistImport::socketEvent() {
 		for ((it = strlist.begin()), (i = 1); it != strlist.end(), i < strlist.count(); ++it, i++ ) {
 			fieldlist = QStringList::split(";",*it,true);
 			for ((it2 = fieldlist.begin()), (j = 1); it2 != fieldlist.end(), j < fieldlist.count(); ++it2, j++) {
-				fprintf(stderr, "%s ",(*it2).latin1());
+				fprintf(stderr, "%s ",(const char *)(*it2).local8Bit());
 				tmparray[j-1] = (*it2);
 				}
 			importedUserlist.addUser(tmparray[0], tmparray[1], tmparray[2],
@@ -207,7 +208,7 @@ void UserlistImport::socketEvent() {
 			qlv = new QListViewItem(results, tmparray[6], tmparray[2], tmparray[3],
 				tmparray[0], tmparray[1], tmparray[4], tmparray[5]);
 
-			fprintf(stderr, "\n%s \n", (*it).latin1());
+			fprintf(stderr, "\n%s \n", (const char *)(*it).local8Bit());
 			}
 
 		deleteSocketNotifiers();

@@ -29,169 +29,169 @@
 //
 
 UserInfo::UserInfo (const QString & name, QDialog* parent , unsigned int uin) : QDialog (parent, name) {
-    resize(240,200);
-    setCaption(i18n("User info on %1").arg(userlist.byUin(uin).comment));
-    setWFlags(Qt::WDestructiveClose);
+	resize(240,200);
+	setCaption(i18n("User info on %1").arg(userlist.byUin(uin).comment));
+	setWFlags(Qt::WDestructiveClose);
 
-    QLineEdit *e_status = new QLineEdit(this);
-    QLabel *l_status = new QLabel(this);
-    l_status->setText(i18n("Status"));
+	QLineEdit *e_status = new QLineEdit(this);
+	QLabel *l_status = new QLabel(this);
+	l_status->setText(i18n("Status"));
 
-    e_nickname = new QLineEdit(this);
-    QLabel *l_nickname = new QLabel(this);
-    l_nickname->setText(i18n("AltNick"));
+	e_nickname = new QLineEdit(this);
+	QLabel *l_nickname = new QLabel(this);
+	l_nickname->setText(i18n("AltNick"));
 
-    e_firstname = new QLineEdit(this);
-    QLabel *l_firstname = new QLabel(this);
-    l_firstname->setText(i18n("First name"));
+	e_firstname = new QLineEdit(this);
+	QLabel *l_firstname = new QLabel(this);
+	l_firstname->setText(i18n("First name"));
 
-    e_uin = new QLineEdit(this);
-    QLabel *l_uin = new QLabel(this);
-    l_uin->setText(i18n("Uin"));
+	e_uin = new QLineEdit(this);
+	QLabel *l_uin = new QLabel(this);
+	l_uin->setText(i18n("Uin"));
 
-    e_lastname = new QLineEdit(this);
-    QLabel *l_lastname = new QLabel(this);
-    l_lastname->setText(i18n("Surname"));
+	e_lastname = new QLineEdit(this);
+	QLabel *l_lastname = new QLabel(this);
+	l_lastname->setText(i18n("Surname"));
 
-    e_altnick = new QLineEdit(this);
-    QLabel *l_altnick = new QLabel(this);
-    l_altnick->setText(i18n("Nickname"));
+	e_altnick = new QLineEdit(this);
+	QLabel *l_altnick = new QLabel(this);
+	l_altnick->setText(i18n("Nickname"));
 
-    e_mobile = new QLineEdit(this);
-    QLabel *l_mobile = new QLabel(this);
-    l_mobile->setText(i18n("Mobile"));
+	e_mobile = new QLineEdit(this);
+	QLabel *l_mobile = new QLabel(this);
+	l_mobile->setText(i18n("Mobile"));
 
-    e_group = new QLineEdit(this);
-    QLabel *l_group = new QLabel(this);
-    l_group->setText(i18n("Group"));
+	e_group = new QLineEdit(this);
+	QLabel *l_group = new QLabel(this);
+	l_group->setText(i18n("Group"));
 
-    e_addr = new QLineEdit(this);
-    QLabel *l_addr = new QLabel(this);
-    l_addr->setText(i18n("Address"));
-    e_addr->setReadOnly(true);
+	e_addr = new QLineEdit(this);
+	QLabel *l_addr = new QLabel(this);
+	l_addr->setText(i18n("Address"));
+	e_addr->setReadOnly(true);
 
 //    e_altnick->setText(__c2q(UinToUser(uin)));
 
-    QPushButton * update = new QPushButton(this);
-    update->setText(i18n("Write userlist"));
-    connect(update, SIGNAL( clicked() ), this, SLOT(writeUserlist()));
+	QPushButton * update = new QPushButton(this);
+	update->setText(i18n("Write userlist"));
+	connect(update, SIGNAL( clicked() ), this, SLOT(writeUserlist()));
 
-    int i;
-    i = 0;
-    while (i < userlist.size() && userlist[i].uin != uin)
-	i++;
-    this_index = i;
+	int i;
+	i = 0;
+ 	while (i < userlist.size() && userlist[i].uin != uin)
+		i++;
+	this_index = i;
 
-	e_nickname->setText(__c2q(userlist[i].nickname));
-	e_altnick->setText(__c2q(userlist[i].comment));
-	e_firstname->setText(__c2q(userlist[i].first_name));
-	e_lastname->setText(__c2q(userlist[i].last_name));
- 	e_mobile->setText(__c2q(userlist[i].mobile));	
-	e_group->setText(__c2q(userlist[i].group));
+	e_nickname->setText(userlist[i].nickname);
+	e_altnick->setText(userlist[i].comment);
+	e_firstname->setText(userlist[i].first_name);
+	e_lastname->setText(userlist[i].last_name);
+ 	e_mobile->setText(userlist[i].mobile);	
+	e_group->setText(userlist[i].group);
 	
-    if (userlist[i].ip) {
-	struct in_addr in;
-	in.s_addr = userlist[i].ip;
-	char address[128];
-	snprintf(address, sizeof(address), "%s:%d", inet_ntoa(in), userlist[i].port);
-	e_addr->setText(i18n(address));
-	}
-    else
-	e_addr->setText(i18n("(Unknown)"));
+	if (userlist[i].ip) {
+		struct in_addr in;
+		in.s_addr = userlist[i].ip;
+		char address[128];
+		snprintf(address, sizeof(address), "%s:%d", inet_ntoa(in), userlist[i].port);
+		e_addr->setText(i18n(address));
+		}
+	else
+		e_addr->setText(i18n("(Unknown)"));
 
-    switch (userlist[i].status) {
-	case GG_STATUS_AVAIL:
-	    e_status->setText(i18n("Online")); break;
-	case GG_STATUS_AVAIL_DESCR:
-	    e_status->setText(i18n("Online (d.)")); break;
-	case GG_STATUS_NOT_AVAIL:
-	    e_status->setText(i18n("Offline")); break;
-	case GG_STATUS_NOT_AVAIL_DESCR:
-	    e_status->setText(i18n("Offline (d.)")); break;
-	case GG_STATUS_BUSY:
-	    e_status->setText(i18n("Busy")); break;
-	case GG_STATUS_BUSY_DESCR:
-	    e_status->setText(i18n("Busy (d.)")); break;
-	case GG_STATUS_INVISIBLE2:
-	    e_status->setText(i18n("Invisible")); break;
-	}
+	switch (userlist[i].status) {
+		case GG_STATUS_AVAIL:
+			e_status->setText(i18n("Online")); break;
+		case GG_STATUS_AVAIL_DESCR:
+			e_status->setText(i18n("Online (d.)")); break;
+		case GG_STATUS_NOT_AVAIL:
+			e_status->setText(i18n("Offline")); break;
+		case GG_STATUS_NOT_AVAIL_DESCR:
+			e_status->setText(i18n("Offline (d.)")); break;
+		case GG_STATUS_BUSY:
+			e_status->setText(i18n("Busy")); break;
+		case GG_STATUS_BUSY_DESCR:
+			e_status->setText(i18n("Busy (d.)")); break;
+		case GG_STATUS_INVISIBLE2:
+			e_status->setText(i18n("Invisible")); break;
+		}
 
-    if (!userlist_sent)
-	e_status->setText(i18n("(Unknown)"));
-	
-    e_status->setReadOnly(true);
-    e_status->setEnabled(false);
+	if (!userlist_sent)
+		e_status->setText(i18n("(Unknown)"));
 
-    e_uin->setText(QString::number(userlist[i].uin));
-    e_uin->setReadOnly(true);
-    e_uin->setEnabled(false);
+	e_status->setReadOnly(true);
+//	e_status->setEnabled(false);
 
-    QPushButton * kloze = new QPushButton(this);
-    kloze->setText(i18n("Close"));
-    connect(kloze, SIGNAL(clicked()), this, SLOT(close()));
+	e_uin->setText(QString::number(userlist[i].uin));
+	e_uin->setReadOnly(true);
+//	e_uin->setEnabled(false);
 
-    QGridLayout * grid = new QGridLayout(this, 10, 2, 10, 3);
-    grid->addColSpacing(0,80);
-    grid->addWidget(l_uin,0,0);
-    grid->addWidget(e_uin,0,1);
-    grid->addWidget(l_status,1,0);
-    grid->addWidget(e_status,1,1);
-    grid->addWidget(l_nickname,2,0);
-    grid->addWidget(e_nickname,2,1);
-    grid->addWidget(l_firstname,3,0);
-    grid->addWidget(e_firstname,3,1);
-    grid->addWidget(l_lastname,4,0);
-    grid->addWidget(e_lastname,4,1);
-    grid->addWidget(l_altnick,5,0);
-    grid->addWidget(e_altnick,5,1);
-    grid->addWidget(l_mobile,6,0);
-    grid->addWidget(e_mobile,6,1);
-    grid->addWidget(l_group,7,0);
-    grid->addWidget(e_group,7,1);
-    grid->addWidget(l_addr,8,0);
-    grid->addWidget(e_addr,8,1);
-    grid->addWidget(kloze,9,0);
-    grid->addWidget(update,9,1);	
+	QPushButton * kloze = new QPushButton(this);
+	kloze->setText(i18n("Close"));
+	connect(kloze, SIGNAL(clicked()), this, SLOT(close()));
+
+	QGridLayout * grid = new QGridLayout(this, 10, 2, 10, 3);
+	grid->addColSpacing(0,80);
+	grid->addWidget(l_uin,0,0);
+	grid->addWidget(e_uin,0,1);
+	grid->addWidget(l_status,1,0);
+	grid->addWidget(e_status,1,1);
+	grid->addWidget(l_nickname,2,0);
+	grid->addWidget(e_nickname,2,1);
+	grid->addWidget(l_firstname,3,0);
+	grid->addWidget(e_firstname,3,1);
+	grid->addWidget(l_lastname,4,0);
+	grid->addWidget(e_lastname,4,1);
+	grid->addWidget(l_altnick,5,0);
+	grid->addWidget(e_altnick,5,1);
+	grid->addWidget(l_mobile,6,0);
+	grid->addWidget(e_mobile,6,1);
+	grid->addWidget(l_group,7,0);
+	grid->addWidget(e_group,7,1);
+	grid->addWidget(l_addr,8,0);
+	grid->addWidget(e_addr,8,1);
+	grid->addWidget(kloze,9,0);
+	grid->addWidget(update,9,1);
 }
 
 void UserInfo::writeUserlist() {
-    bool yes = false;
-    switch (QMessageBox::information(kadu, "Kadu", i18n("This will write current userlist"), i18n("OK"), i18n("Cancel"), QString::null, 0, 1)) {
-	case 0: // Yes?
-	    fprintf(stderr, "KK UserInfo::writeUserlist(): this_index: %d\n", this_index);
-	    userlist[this_index].first_name = strdup(e_firstname->text().local8Bit());
-	    userlist[this_index].last_name = strdup(e_lastname->text().local8Bit());
-	    userlist[this_index].nickname = strdup(e_nickname->text().local8Bit());			
-	    userlist[this_index].group = strdup(e_group->text().local8Bit());
-	    if (e_altnick->text().latin1() != NULL)
-		userlist[this_index].comment = strdup(e_altnick->text().local8Bit());
-	    else
-		userlist[this_index].comment = "";
-	    if (!userlist[this_index].anonymous)
-		userlist[this_index].mobile = strdup(e_mobile->text().local8Bit());
-	    userlist.writeToFile();
-	    
-	    for (int i = 0; i < grouplist.size(); i++) {
-		if (QString::compare(__c2q(grouplist[i].name), __c2q(userlist[this_index].group)) == 0) {
-        	    yes = true;
-        	    break;
-        	    }
-    		}
+	bool yes = false;
+	switch (QMessageBox::information(kadu, "Kadu", i18n("This will write current userlist"), i18n("OK"), i18n("Cancel"), QString::null, 0, 1)) {
+		case 0: // Yes?
+			fprintf(stderr, "KK UserInfo::writeUserlist(): this_index: %d\n", this_index);
+			userlist[this_index].first_name = e_firstname->text();
+			userlist[this_index].last_name = e_lastname->text();
+			userlist[this_index].nickname = e_nickname->text();			
+			userlist[this_index].group = e_group->text();
+			if (e_altnick->text().length())
+				userlist[this_index].comment = e_altnick->text();
+			else
+				userlist[this_index].comment = "";
+			if (!userlist[this_index].anonymous)
+				userlist[this_index].mobile = e_mobile->text();
+			userlist.writeToFile();
 
-	    if (!yes) {
-    		grouplist.resize(grouplist.size()+1);
-		if (grouplist.size() > 1)
-		    grouplist[grouplist.size()-1].number = grouplist[grouplist.size()-2].number + 1;
-    		else
-		    grouplist[grouplist.size()-1].number = 601;
-		grouplist[grouplist.size()-1].name = strdup(userlist[this_index].group);
+			for (int i = 0; i < grouplist.size(); i++) {
+				if (QString::compare(__c2q(grouplist[i].name), __c2q(userlist[this_index].group)) == 0) {
+					yes = true;
+					break;
+					}
+				}
+
+			if (!yes) {
+				grouplist.resize(grouplist.size()+1);
+				if (grouplist.size() > 1)
+					grouplist[grouplist.size()-1].number = grouplist[grouplist.size()-2].number + 1;
+				else
+					grouplist[grouplist.size()-1].number = 601;
+				grouplist[grouplist.size()-1].name = strdup(userlist[this_index].group);
+				}
+
+			kadu->userbox->refresh();
+			break;
+		case 1:
+			return;	
 		}
-
-	    kadu->userbox->refresh();
-	    break;
-	case 1:
-	    return;	
-	}
 }
 
 #include "userinfo.moc"
