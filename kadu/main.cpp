@@ -18,10 +18,12 @@
 #include "kadu.h"
 #include "kadu-config.h"
 
-//#define KADU_SIGNAL_HANDLING
 #ifndef DEBUG_ENABLED
 #define KADU_SIGNAL_HANDLING
 #endif
+
+//#define KADU_SIGNAL_HANDLING
+//#undef KADU_SIGNAL_HANDLING
 
 #ifdef VOICE_ENABLED
 #include "voice.h"
@@ -67,7 +69,6 @@ int main(int argc, char *argv[])
 	signal(SIGSEGV, kadu_signal_handler);
 	signal(SIGINT, kadu_signal_handler);
 	signal(SIGTERM, kadu_signal_handler);
-	signal(SIGPIPE, kadu_signal_handler);
 #endif
 
 	new QApplication(argc, argv);
