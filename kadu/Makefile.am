@@ -31,12 +31,12 @@ METASOURCES = AUTO
 
 INCLUDES = $(all_includes) 
 kadu_LDADD = $(all_libraries) $(LIB_QT) $(LIB_KDECORE) $(LIB_KDEUI) -L../libgadu/lib -lgadu
-kadu_DEPENDENCIES = ../libgadu/lib/libgadu.a
+#kadu_DEPENDENCIES = ../libgadu/lib/libgadu.a
 
 EXTRA_DIST = hi16-app-kadu.png hi32-app-kadu.png hi48-app-kadu.png kadu.desktop
 
-../libgadu/lib/libgadu.a:
-	cd ../libgadu && $(MAKE)
+#../libgadu/lib/libgadu.a:
+#	cd ../libgadu && $(MAKE)
 
 install-data-local:
 	if test ! -z "$(KDEDIR)"; then \

@@ -1,14 +1,14 @@
 # Process this file with autoconf to produce a configure script.
-AC_INIT([Kadu],[0.3.2])
+AC_INIT([Kadu],[0.3.3])
 AC_COPYRIGHT([configure.ac written by A.Smarzewski])
-AC_REVISION([0.3.2-1])
+AC_REVISION([0.3.3-1])
 AC_PREREQ(2.53)
 
 AC_CONFIG_SRCDIR([kadu/kadu.cpp])
 AC_CONFIG_AUX_DIR([admin])
 AM_CONFIG_HEADER([config.h])
 AC_CANONICAL_SYSTEM
-AM_INIT_AUTOMAKE([kadu-0.3.2],[0.3.2])
+AM_INIT_AUTOMAKE([kadu-0.3.3],[0.3.3])
 
 KDE_SET_PREFIX
 
@@ -42,5 +42,5 @@ AC_CHECK_FUNCS([floor inet_ntoa memset mkdir select strchr strdup strerror strto
 
 KDE_CREATE_SUBDIRSLIST
 AC_CONFIG_FILES([./Makefile kadu/Makefile po/Makefile varia/Makefile])
-AC_CONFIG_SUBDIRS([libgadu])
+AC_CONFIG_SUBDIRS([libgadu sms])
 AC_OUTPUT
