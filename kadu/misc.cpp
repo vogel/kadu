@@ -1082,6 +1082,7 @@ IconsManager::IconsManager(const QString& name, const QString& configname)
 {
 	kdebugf();
     connect(this, SIGNAL(themeChanged(const QString&)), this, SLOT(changed(const QString&)));
+	kdebugf2();
 }
 
 QString IconsManager::iconPath(const QString &name)
@@ -1097,20 +1098,25 @@ QString IconsManager::iconPath(const QString &name)
 QPixmap IconsManager::loadIcon(const QString &name)
 {
 //	kdebugf();
-	for (unsigned int i = 0; i < icons.count(); i++)
-		if (icons[i].name == name)
-		{
-//			kdebugf2();
-			return icons[i].picture.pixmap();
-		}
-	iconhandle icon;
-	icon.name = name;
+	QMap<QString, QIconSet>::iterator i=icons.find(name);
+	if (i!=icons.end())
+	{
+//		kdebugf2();
+		return (*i).pixmap();
+	}
+
 	QPixmap p;
-	p.load(iconPath(name));
-	icon.picture = QIconSet(p);
-	icons.append(icon);
-//	kdebugf2();
-	return icons[icons.count()-1].picture.pixmap();
+	if (p.load(iconPath(name)))
+	{
+		icons[name]=QIconSet(p);
+//		kdebugf2();
+		return icons[name].pixmap();
+	}
+	else
+	{
+		kdebugm(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "QPixmap IconsManager::loadIcon('%s'): end: error - pixmap cannot be loaded!\n", name.local8Bit().data());
+		return p;
+	}
 }
 
 void IconsManager::onDestroyConfigDialog()

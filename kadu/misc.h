@@ -318,12 +318,6 @@ class Themes : public QObject
 		void pathsChanged(const QStringList& list);
 };
 
-
-struct iconhandle {
-	QString name;
-	QIconSet picture;
-};
-
 class IconsManager :public Themes
 {
 	Q_OBJECT
@@ -338,16 +332,16 @@ class IconsManager :public Themes
 		**/
 		QString iconPath(const QString &name);
 		/**
-			Laduje ikone z aktualnego zestawu lub z podanego pliku.
-			@param name nazwa ikony z zestawu lub sciezka do pliku
-			(jesli zawiera znak '/' to jest interpretowana jako
-			sciezka).
+			£aduje ikonê z aktualnego zestawu lub z podanego pliku.
+			@param name nazwa ikony z zestawu lub ¶cie¿ka do pliku
+			(je¶li zawiera znak '/' to jest interpretowana jako
+			¶cie¿ka).
 		**/
 		QPixmap loadIcon(const QString &name);
 		static void initModule();
 
 	private:
-		QValueList<iconhandle> icons;
+		QMap<QString, QIconSet> icons;
 	private slots:
 		void changed(const QString& theme);
 		void chooseIconTheme(const QString& string);
@@ -364,8 +358,8 @@ extern IconsManager icons_manager;
 	o utworzeniu nowej instancji danej klasy.
 	umieszczamy w klasie publiczna statyczna
 	zmienna createNotifier klasy CreateNotifier
-	do ktorej moga sie podlaczac pozostale czesci kodu.
-	przed wyjsciem z konstruktora wywolujemy metode:
+	do ktorej mog± siê pod³±czaæ pozosta³e cze¶ci kodu.
+	przed wyj¶ciem z konstruktora wywo³ujemy metodê:
 	createNotifier.notify(this);
 **/
 class CreateNotifier : public QObject
