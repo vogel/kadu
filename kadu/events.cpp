@@ -322,7 +322,8 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 	while (i < chats.count() && !chats[i].uins.equals(senders))
 		i++;
 
-	if (((msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT || (msgclass & GG_CLASS_MSG) == GG_CLASS_MSG) && i < chats.count()) {
+	if (((msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT || (msgclass & GG_CLASS_MSG) == GG_CLASS_MSG
+		|| !msgclass) && i < chats.count()) {
 		QString toadd;
 
 		chats[i].ptr->checkPresence(senders, mesg, time, toadd);
@@ -667,7 +668,7 @@ void EventManager::eventHandler(gg_session* sess)
 		{
 			UinsList uins;
 			kdebug("eventHandler(): %d\n", e->event.msg.recipients_count);
-			if (e->event.msg.msgclass == GG_CLASS_CHAT) {
+			if ((e->event.msg.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT) {
 				uins.append(e->event.msg.sender);	
 				for (int i = 0; i < e->event.msg.recipients_count; i++)
 					uins.append(e->event.msg.recipients[i]);

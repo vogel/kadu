@@ -180,7 +180,8 @@ void PendingMsgs::openMessages() {
 	for(i = 0; i<count(); i++) {
 		elem = (*this)[i];
 		if (!uins.count() || elem.uins.equals(uins))
-			if ((elem.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT || (elem.msgclass & GG_CLASS_MSG) == GG_CLASS_MSG) {
+			if ((elem.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT || (elem.msgclass & GG_CLASS_MSG) == GG_CLASS_MSG
+				|| (!elem.msgclass)) {
 				if (!uins.count())
 					uins = elem.uins;
 				for (j = 0; j < elem.uins.count(); j++)

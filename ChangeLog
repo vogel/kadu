@@ -5,6 +5,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
 +++ wersja 0.3.4-final
 * kadu nie pokazuje fa³szywych statusów ukrytych w userboksie (chilek)
+* Monisia wysy³a wiadomo¶ci klasy "0", a my jeste¶my na to odporni (chilek)
 
 +++ wersja 0.3.4-rc3
 * je¶li u¿ywamy po³±czenia TLSv1 i wpisujemy jawnie serwery GG to domy¶lnym
