@@ -47,6 +47,7 @@ HintManager::HintManager()
 		ConfigDialog::addSpinBox("Hints", "New chat / new message", QT_TRANSLATE_NOOP("@default", "Number of quoted characters"), "CiteSign", 10, 1000, 1, 50);
 
 	ConfigDialog::addVGroupBox("Hints", "Hints", QT_TRANSLATE_NOOP("@default", "Status change"));
+		ConfigDialog::addCheckBox("Hints", "Status change", QT_TRANSLATE_NOOP("@default", "Open chat on click"), "OpenChatOnClick", false);
 		ConfigDialog::addCheckBox("Hints", "Status change", QT_TRANSLATE_NOOP("@default", "Add description to hint if exists"), "NotifyHintDescription", false);
 		ConfigDialog::addCheckBox("Hints", "Status change", QT_TRANSLATE_NOOP("@default", "Use custom syntax"), "NotifyHintUseSyntax", false);
 		ConfigDialog::addLineEdit("Hints", "Status change", QT_TRANSLATE_NOOP("@default", "Hint syntax"), "NotifyHintSyntax", "", Kadu::SyntaxText);
@@ -169,6 +170,7 @@ HintManager::~HintManager()
 	ConfigDialog::removeControl("Hints", "Hint syntax");
 	ConfigDialog::removeControl("Hints", "Use custom syntax");
 	ConfigDialog::removeControl("Hints", "Add description to hint if exists");
+	ConfigDialog::removeControl("Hints", "Open chat on click");
 	ConfigDialog::removeControl("Hints", "Status change");
 	ConfigDialog::removeControl("Hints", "Number of quoted characters");
 	ConfigDialog::removeControl("Hints", "Show message content in hint");
@@ -496,7 +498,8 @@ void HintManager::userStatusChanged(const UserListElement &ule, const UserStatus
 
 	// WTF !!
 	UinsList ulist;
-	ulist.append(ule.uin());
+	if (config_file.readBoolEntry("Hints", "OpenChatOnClick", false))
+		ulist.append(ule.uin());
 
 	QString stat;
 	switch (ule.status().status())
@@ -541,7 +544,8 @@ void HintManager::userChangedStatusToAvailable(const UserListElement &ule)
 	kdebugf();
 
 	UinsList ulist;
-	ulist.append(ule.uin());
+	if (config_file.readBoolEntry("Hints", "OpenChatOnClick", false))
+		ulist.append(ule.uin());
 
 	if (config_file.readBoolEntry("Hints","NotifyHintUseSyntax"))
 		addHint(parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true),
@@ -576,7 +580,8 @@ void HintManager::userChangedStatusToBusy(const UserListElement &ule)
 	kdebugf();
 
 	UinsList ulist;
-	ulist.append(ule.uin());
+	if (config_file.readBoolEntry("Hints", "OpenChatOnClick", false))
+		ulist.append(ule.uin());
 
 	if (config_file.readBoolEntry("Hints","NotifyHintUseSyntax"))
 		addHint(parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true),
@@ -611,7 +616,8 @@ void HintManager::userChangedStatusToNotAvailable(const UserListElement &ule)
 	kdebugf();
 
 	UinsList ulist;
-	ulist.append(ule.uin());
+	if (config_file.readBoolEntry("Hints", "OpenChatOnClick", false))
+		ulist.append(ule.uin());
 
 	if (config_file.readBoolEntry("Hints","NotifyHintUseSyntax"))
 		addHint(parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true),
