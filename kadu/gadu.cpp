@@ -1979,9 +1979,12 @@ void GaduProtocol::streamToUserList(QTextStream& stream, UserList& userList) con
 		e.setAltNick(sections[3]);
 		e.setMobile(sections[4]);
 
-		// patrz kilka linijek wy¿ej
-//		if (sections.count() >= 12)
+		// w gg 6.1 dosz³y nowe pola
+		if (sections.count() >= 14)
+			groups = sections.count() - 13;
+		else
 			groups = sections.count() - 11;
+		// patrz kilka linijek wy¿ej
 //		else
 //			groups = sections.count() - 7;
 
