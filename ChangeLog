@@ -8,6 +8,8 @@
 * rozbudowa klasy MessageBox o obs³ugê wska¼ników postêpu (adrian)
 * poprawki przy parsowaniu - mam nadzieje, ¿e teraz nie bedzie
   ju¿ problemów, dodanie debugu do kodu parsowania (mast3r)
+* poprawka: parsowanie powinno dzia³aæ juz poprawnie, poprawki
+  kosmetyczne w kodzie i w oknie konfiguracji "Wygl±d" (mast3r)
 
 +++ wersja 0.3.4-pre1
 * ¶rodkowy guzik myszki wci¶niêty na u¿ytkowniku
