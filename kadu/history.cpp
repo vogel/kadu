@@ -40,6 +40,9 @@ enum {
 
 HistoryManager::HistoryManager() : QObject(NULL, "history_manager")
 {
+	imagesTimer=new QTimer(this, "imagesTimer");
+	imagesTimer->start(1000*60);//60 sekund
+	connect(imagesTimer, SIGNAL(timeout()), this, SLOT(checkImagesTimeouts()));
 }
 
 QString HistoryManager::text2csv(const QString &text)
@@ -74,7 +77,7 @@ QString HistoryManager::getFileNameByUinsList(UinsList &uins)
 	return fname;
 }
 
-void HistoryManager::appendMessage(UinsList uins, UinType uin, const QString &msg, bool own, time_t czas, bool chat)
+void HistoryManager::appendMessage(UinsList uins, UinType uin, const QString &msg, bool own, time_t czas, bool chat, time_t arriveTime)
 {
 	kdebugf();
 	QFile f, fidx;
@@ -102,7 +105,7 @@ void HistoryManager::appendMessage(UinsList uins, UinType uin, const QString &ms
 	else
 		nick = QString::number(uin);
 	linelist.append(text2csv(nick));
-	linelist.append(QString::number(time(NULL)));
+	linelist.append(QString::number(arriveTime));
 	if (!own)
 		linelist.append(QString::number(czas));
 	linelist.append(text2csv(msg));
@@ -1145,10 +1148,123 @@ int HistoryManager::getHistoryEntryIndexByDate(UinsList uins, QDateTime &date, b
 	return start;
 }
 
-void HistoryManager::chatMsgReceived(UinsList senders,const QString& msg,time_t time,bool& /*grab*/)
+void HistoryManager::chatMsgReceived(UinsList senders, const QString& msg, time_t t, bool& /*grab*/)
 {
-	if (config_file.readBoolEntry("History","Logging"))
-		history.appendMessage(senders, senders[0], msg, false, time);
+	if (!config_file.readBoolEntry("History", "Logging"))
+		return;
+	kdebugf();
+	int occur=msg.contains(QRegExp("<img [^>]* gg_crc[^>]*>"));
+	kdebugm(KDEBUG_INFO, "sender: %d msg: '%s' occur:%d\n", senders[0], msg.local8Bit().data(), occur);
+	if (bufferedMessages.find(senders[0])!=bufferedMessages.end() || occur>0)
+	{
+		kdebugm(KDEBUG_INFO, "buffering\n");
+		bufferedMessages[senders[0]].append(BuffMessage(senders, msg, t, time(NULL), false, occur));
+		checkImageTimeout(senders[0]);
+	}
+	else
+	{
+		kdebugm(KDEBUG_INFO, "appending to history\n");
+		history.appendMessage(senders, senders[0], msg, false, t, true, time(NULL));
+	}
+	kdebugf2();
+}
+
+void HistoryManager::imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &path)
+{
+	if (!config_file.readBoolEntry("History", "Logging"))
+		return;
+	kdebugf();
+	kdebugm(KDEBUG_INFO, "sender: %d, size: %d, crc:%u, path:%s\n", sender, size, crc32, path.local8Bit().data());
+	QRegExp reg=QRegExp(GaduImagesManager::loadingImageHtml(sender, size, crc32));
+	QString imagehtml=GaduImagesManager::imageHtml(path);
+	QMap<UinType, QValueList<BuffMessage> >::iterator it=bufferedMessages.find(sender);
+	if (it!=bufferedMessages.end())
+	{
+//		kdebugm(KDEBUG_INFO, "sender found\n");
+		QValueList<BuffMessage> &messages=it.data();
+		QValueList<BuffMessage>::iterator msgsEnd=messages.end();
+		for (QValueList<BuffMessage>::iterator msg=messages.begin(); msg!=msgsEnd; msg++)
+		{
+//			kdebugm(KDEBUG_INFO, "counter:%d\n", (*msg).counter);
+			if ((*msg).counter)
+			{
+				int occur=(*msg).message.contains(reg);
+//				kdebugm(KDEBUG_INFO, "occur:%d\n", occur);
+				if (occur)
+				{
+					(*msg).message.replace(reg, imagehtml);
+					(*msg).counter-=occur;
+				}
+			}
+		}
+//		kdebugm(KDEBUG_INFO, "> msgs.size():%d\n", messages.size());
+		while (messages.size()>0)
+		{
+			BuffMessage &msg=messages.front();
+			if (msg.counter>0)
+				break;
+			history.appendMessage(msg.uins, msg.uins[0], msg.message, msg.own, msg.tm, true, msg.arriveTime);
+			messages.pop_front();
+		}
+//		kdebugm(KDEBUG_INFO, ">> msgs.size():%d\n", messages.size());
+		if (messages.size()==0)
+			bufferedMessages.remove(sender);
+	}
+	kdebugf2();
+}
+
+void HistoryManager::addMyMessage(const UinsList &senders, const QString &msg)
+{
+	if (!config_file.readBoolEntry("History", "Logging"))
+		return;
+	kdebugf();
+	time_t current=time(NULL);
+	if (bufferedMessages.find(senders[0])!=bufferedMessages.end())
+	{
+		bufferedMessages[senders[0]].append(BuffMessage(senders, msg, 0, current, true, 0));
+		checkImageTimeout(senders[0]);
+	}
+	else
+		history.appendMessage(senders, senders[0], msg, true, 0, true, current);
+	kdebugf2();
+}
+
+void HistoryManager::checkImageTimeout(UinType uin)
+{
+	kdebugf();
+	time_t currentTime=time(NULL);
+	QValueList<BuffMessage> &msgs=bufferedMessages[uin];
+	while (msgs.count()>0)
+	{
+		BuffMessage &msg=msgs.front();
+		kdebugm(KDEBUG_INFO, "arriveTime:%d current:%d counter:%d\n", msg.arriveTime, currentTime, msg.counter);
+		if (msg.arriveTime+60<currentTime || msg.counter==0)
+		{
+			kdebugm(KDEBUG_INFO, "moving message to history\n");
+			history.appendMessage(msg.uins, msg.uins[0], msg.message, msg.own, msg.tm, true, msg.arriveTime);
+			msgs.pop_front();
+		}
+		else
+		{
+			kdebugm(KDEBUG_INFO, "it's too early\n");
+			break;
+		}
+	}
+	if (msgs.count()==0)
+		bufferedMessages.remove(uin);
+	kdebugf2();
+}
+
+void HistoryManager::checkImagesTimeouts()
+{
+	kdebugf();
+	QValueList<UinType> keys=bufferedMessages.keys();
+	
+	for (QValueList<UinType>::iterator it=keys.begin();
+		it!=keys.end();
+		it++)
+		checkImageTimeout(*it);
+	kdebugf2();
 }
 
 UinsListViewText::UinsListViewText(QListView *parent, UinsList &uins)
@@ -1678,6 +1794,8 @@ void History::initModule()
 
 	connect(gadu,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
 		&history,SLOT(chatMsgReceived(UinsList,const QString&,time_t,bool&)));
+	connect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
+		&history, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
 	kdebugf2();
 }
 

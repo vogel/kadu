@@ -51,8 +51,8 @@ void ChatManager::closeAllWindows()
 	kdebugf();
 	while (!Chats.empty())
 	{
-		delete Chats.front();
-		Chats.pop_front();
+		Chat *chat=Chats.first();
+		delete chat;
 	}
 	kdebugf2();
 }
@@ -1247,8 +1247,7 @@ void Chat::writeMyMessage()
 
 void Chat::addMyMessageToHistory()
 {
-	if (config_file.readBoolEntry("History","Logging"))
-		history.appendMessage(Uins, Uins[0], myLastMessage, true);
+	history.addMyMessage(Uins, myLastMessage);
 }
 
 void Chat::clearChatWindow()

@@ -273,6 +273,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * prawid³owa obs³uga wywo³ywania rozmowy g³osowej z osob± za nat'em (adrian)
 * timeout i informacja, ¿e nie mo¿na nawi±zaæ po³±czenia dcc dzia³a
   równie¿ w obs³udze rozmów g³osowych (adrian)
+* przys³ane obrazki zapisuj± siê w historii je¿eli dotr± w ci±gu minuty od
+  wys³ania ¿±dania (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,

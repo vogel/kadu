@@ -15,6 +15,8 @@
 #include <qevent.h>
 #include <qlistbox.h>
 #include <qlistview.h>
+#include <qmap.h>
+#include <qstringlist.h>
 
 #include "misc.h"
 
@@ -165,9 +167,40 @@ class HistoryManager : public QObject
 		uint getHistoryDate(QTextStream &stream);
 		void buildIndexPrivate(const QString &filename);
 
+		class BuffMessage
+		{
+			public:
+				UinsList uins;
+				QString message;
+				time_t tm;
+				time_t arriveTime;
+				bool own;
+				int counter;
+				BuffMessage(const UinsList &uins1=UinsList(),
+							const QString &msg=QString(),
+							time_t t=0,
+							time_t arriveTime1=time(NULL),
+							bool own1=false,
+							int cntr=1)
+					: uins(uins1), message(msg), tm(t),	arriveTime(arriveTime1),
+					own(own1), counter(cntr) {}
+		};
+		QMap<UinType, QValueList<BuffMessage> > bufferedMessages;
+		QTimer *imagesTimer;
+
+		void checkImageTimeout(UinType uin);
+	private slots:
+		void chatMsgReceived(UinsList senders, const QString& msg, time_t time, bool& grab);
+		void imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &path);
+		void checkImagesTimeouts();
 	public slots:
-		void chatMsgReceived(UinsList senders,const QString& msg,time_t time,bool& grab);
-		void appendMessage(UinsList receivers, UinType sender, const QString &msg, bool own, time_t=0, bool chat=true);
+		void addMyMessage(const UinsList &senders, const QString &msg);
+
+		/**
+			raczej nie u¿ywaæ...
+		**/
+		void appendMessage(UinsList receivers, UinType sender, const QString &msg,
+				bool own, time_t t=0, bool chat=true, time_t arriveTime=time(NULL));
 		void appendSms(const QString &mobile, const QString &msg);
 		void appendStatus(UinType uin, const UserStatus &sstatus);
 		void removeHistory(UinsList uins);

@@ -533,9 +533,10 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, U
 						}
 						else
 						{
-							gadu->sendImageRequest(sender,
-								actimage->size,
-								actimage->crc32);
+							if (actimage->size<(config_file.readUnsignedNumEntry("Chat", "MaxImageSize")*1024))
+								gadu->sendImageRequest(sender,
+									actimage->size,
+									actimage->crc32);
 							mesg.append(GaduImagesManager::loadingImageHtml(
 								sender,actimage->size,actimage->crc32));
 						}
@@ -2263,7 +2264,10 @@ void GaduImagesManager::addImageToSend(const QString& file_name,uint32_t& size,u
 	img.file_name=file_name;
 	img.data = new char[img.size];
 	kdebugm(KDEBUG_INFO, "Reading file\n");
-	f.readBlock(img.data,img.size);
+	unsigned int ret=f.readBlock(img.data,img.size);
+	if (ret!=img.size)
+		kdebugm(KDEBUG_ERROR, "ret:%d != %d:img.size\n", ret, img.size);
+	f.close();
 	img.crc32 = gg_crc32(0,(const unsigned char*)img.data,img.size);
 	kdebugm(KDEBUG_INFO, "Inserting into images to send: filename=%s, size=%i, crc32=%i\n\n",img.file_name.local8Bit().data(),img.size,img.crc32);
 	ImagesToSend.append(img);
