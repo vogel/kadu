@@ -240,8 +240,8 @@ void UserlistImport::socketEvent() {
 		fetchbtn->setEnabled(true);
 		kdebug("ImportUserlist::socketEvent(): Done\n");
 		QStringList strlist;
-		cp_to_iso((unsigned char *)gg_http->data);
-		strlist = QStringList::split("\r\n", cp_to_iso((unsigned char *)gg_http->data), true);
+		cp2native((unsigned char *)gg_http->data);
+		strlist = QStringList::split("\r\n", cp2native((unsigned char *)gg_http->data), true);
 		kdebug("! %d !\n", strlist.count());		
 		kdebug("%s\n", gg_http->data);
 		QStringList fieldlist;
@@ -361,7 +361,7 @@ void UserlistExport::startTransfer() {
 	contacts=saveContacts();
 	
 	char *con2;	
-	con2 = (char *)strdup(iso_to_cp(contacts).data());
+	con2 = (char *)strdup(native2cp(contacts).data());
 	
 	if (!(gg_http = gg_userlist_put(config.uin, config.password, con2, 1))) {
 		kdebug("UserlistExport: gg_userlist_put() failed\n");

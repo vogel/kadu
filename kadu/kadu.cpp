@@ -1409,7 +1409,7 @@ void Kadu::setStatus(int status) {
 		doBlink = false;
 		if (with_description) {
 			unsigned char *descr;
-			descr = (unsigned char *)strdup(iso_to_cp(own_description).data());
+			descr = (unsigned char *)strdup(native2cp(own_description).data());
 			if (status == GG_STATUS_NOT_AVAIL_DESCR)
 				gg_change_status_descr(sess, status, (const char *)descr);
 			else

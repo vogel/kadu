@@ -85,8 +85,8 @@ void Register::doRegister() {
 		}
 
 	char *passwd, *email;
-	passwd = strdup(iso_to_cp(pwd->text()).data());
-	email = strdup(iso_to_cp(mail->text()).data());
+	passwd = strdup(native2cp(pwd->text()).data());
+	email = strdup(native2cp(mail->text()).data());
 	if (!(h = gg_register(email, passwd, 1))) {
 		status->setText(i18n("Error"));
 		free(passwd);
@@ -301,8 +301,8 @@ void Unregister::doUnregister() {
 		}
 
 	char *passwd, *email;
-	passwd = strdup(iso_to_cp(pwd->text()).data());
-	email = strdup(iso_to_cp(mail->text()).data());
+	passwd = strdup(native2cp(pwd->text()).data());
+	email = strdup(native2cp(mail->text()).data());
 	if (!(h = gg_unregister(uin->text().toUInt(), passwd, email, 1))) {
 		status->setText(i18n("Error"));
 		free(passwd);

@@ -36,7 +36,7 @@ QString ggPath(QString subpath)
 	return path;
 };
 
-QString cp_to_iso(unsigned char *buf)
+QString cp2native(unsigned char *buf)
 {
 	QTextCodec *codec = QTextCodec::codecForName("CP1250");
 	if (buf)
@@ -45,7 +45,7 @@ QString cp_to_iso(unsigned char *buf)
 		return QString::null;
 }
 
-QCString iso_to_cp(const QString &buf)
+QCString native2cp(const QString &buf)
 {
 	QTextCodec *codec = QTextCodec::codecForName("CP1250");
 	return codec->fromUnicode(buf);
