@@ -489,17 +489,28 @@ void EventManager::userlistReceivedSlot(struct gg_event *e) {
 }
 
 void EventManager::userStatusChangedSlot(struct gg_event * e) {
-	kdebug("eventStatusChange(): User %d went %d\n", e->event.status.uin,  e->event.status.status);
-
-	unsigned int oldstatus;
+	unsigned int oldstatus, status;
 	int i;
+	uint32_t uin;
+	char *descr;
 	
-	UserListElement &user = userlist.byUin(e->event.status60.uin);
+	if (e->type == GG_EVENT_STATUS60) {
+		uin = e->event.status60.uin;
+		status = e->event.status60.status;
+		descr = e->event.status60.descr;
+		}
+	else {
+		uin = e->event.status.uin;
+		status = e->event.status.status;
+		descr = e->event.status.descr;
+		}
+	kdebug("eventStatusChange(): User %d went %d\n", uin,  status);
+	UserListElement &user = userlist.byUin(uin);
 
-	if (!userlist.containsUin(e->event.status60.uin)) {
+	if (!userlist.containsUin(uin)) {
 		// ignore!
-		kdebug("eventStatusChange(): buddy %d not in list. Damned server!\n", e->event.status60.uin);
-		gg_remove_notify(sess, e->event.status60.uin);
+		kdebug("eventStatusChange(): buddy %d not in list. Damned server!\n", uin);
+		gg_remove_notify(sess, uin);
 		return;
 		}
 
@@ -508,9 +519,9 @@ void EventManager::userStatusChangedSlot(struct gg_event * e) {
 	if (user.description)
 		user.description.truncate(0);
 //	if (ifStatusWithDescription(e->event.status.status)) {
-	if (e->event.status60.descr)
-		user.description.append(cp2unicode((unsigned char *)e->event.status60.descr));
-	userlist.changeUserStatus(e->event.status60.uin, e->event.status60.status);
+	if (descr)
+		user.description.append(cp2unicode((unsigned char *)descr));
+	userlist.changeUserStatus(uin, status);
 	
 	if (user.status == GG_STATUS_NOT_AVAIL || user.status == GG_STATUS_NOT_AVAIL_DESCR) {
 		user.ip.setAddress((unsigned int)0);
@@ -523,10 +534,10 @@ void EventManager::userStatusChangedSlot(struct gg_event * e) {
 	history.appendStatus(user.uin, user.status, user.description.length() ? user.description : QString::null);
 
 	for (i = 0; i < chats.count(); i++)
-		if (chats[i].uins.contains(e->event.status60.uin))
+		if (chats[i].uins.contains(uin))
 			chats[i].ptr->setTitle();
 			
-	ifNotify(e->event.status60.uin, e->event.status60.status, oldstatus);
+	ifNotify(uin, status, oldstatus);
 	UserBox::all_refresh();
 };
 
@@ -677,7 +688,7 @@ void EventManager::eventHandler(gg_session* sess)
 		}
 	};
 
-	if (e->type == GG_EVENT_STATUS60)
+	if (e->type == GG_EVENT_STATUS60 || e->type == GG_EVENT_STATUS)
 		emit event_manager.userStatusChanged(e);
 
 	if (e->type == GG_EVENT_ACK)
