@@ -20,6 +20,7 @@
 
 #include <qlistbox.h>
 #include <qtooltip.h>
+#include <qstringlist.h>
 #include "../libgadu/lib/libgadu.h"
 
 class UserBox : public QListBox , QToolTip

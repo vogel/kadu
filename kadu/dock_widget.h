@@ -7,22 +7,27 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef HISTORY_H
-#define HISTORY_H
+#ifndef DOCKAPP_H
+#define DOCKAPP_H
 
-#include <qdialog.h>
-#include <qmultilineedit.h>
-#include "../libgadu/lib/libgadu.h"
+#include <ksystemtray.h>
 
-class History : public QDialog {
+class DockWidget : public KSystemTray
+{
 	Q_OBJECT
-	public:
-		History(UinsList uins);
 
 	protected:
-		QMultiLineEdit *body;
+		void mousePressEvent (QMouseEvent*);
+	
+	public:
+		DockWidget(QWidget *parent=0, const char *name=0);
+		void DockWidget::setType(char **gg_xpm);
+
+	public slots:
+		// Status change slots
+		void dockletChange(int id);   
 };
 
-void appendHistory(UinsList uins, uin_t uin, unsigned char * msg, bool, time_t = 0);
+extern DockWidget* dw;
 
 #endif

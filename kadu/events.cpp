@@ -48,6 +48,7 @@
 #include "misc.h"
 #include "vuser.h"
 #include "pending_msgs.h"
+#include "dock_widget.h"
 
 void sigchldHndl (int whatever) {
 	while ((wait3(NULL, WNOHANG, NULL)) > 0);

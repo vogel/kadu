@@ -25,7 +25,8 @@ sms.cpp sms.h \
 userbox.cpp userbox.h \
 userinfo.cpp userinfo.h \
 userlist.cpp userlist.h \
-vuser.cpp vuser.h
+vuser.cpp vuser.h \
+dock_widget.cpp dock_widget.h
 
 METASOURCES = AUTO
 

@@ -23,6 +23,71 @@ char* preparePath(char* filename)
 UinsList::UinsList() {
 }
 
+void cp_to_iso(unsigned char *buf)
+{
+	while (*buf)
+	{
+		if (*buf == (unsigned char)'¥') *buf = '¡';
+		if (*buf == (unsigned char)'¹') *buf = '±';
+		if (*buf == 140) *buf = '¦';
+		if (*buf == 156) *buf = '¶';
+		if (*buf == 143) *buf = '¬';
+		if (*buf == 159) *buf = '¼';
+        	buf++;
+        };
+};
+
+void iso_to_cp(unsigned char *buf)
+{
+	while (*buf)
+	{
+		if (*buf == (unsigned char)'¡') *buf = '¥';
+		if (*buf == (unsigned char)'±') *buf = '¹';
+		if (*buf == (unsigned char)'¦') *buf = 140;
+		if (*buf == (unsigned char)'¶') *buf = 156;
+		if (*buf == (unsigned char)'¬') *buf = 143;
+		if (*buf == (unsigned char)'¼') *buf = 159;
+		buf++;
+	};
+};
+
+char *timestamp(time_t customtime)
+{
+	static char buf[100];
+
+	time_t t;
+	struct tm *tm;
+
+	time(&t);
+
+	tm = localtime(&t);
+	strftime(buf, sizeof(buf), ":: %d %m %Y, (%T", tm);
+
+	if (customtime) {
+		char buf2[20];
+		struct tm *tm2;
+		tm2 = localtime(&customtime);
+		strftime(buf2, sizeof(buf2), " / S %T)", tm2);
+		strncat(buf, buf2, sizeof(buf2));
+		
+/*		int j = 0;
+		while(buf[j++] != "\0");
+		
+		int i = -1;
+		while(buf2[++i] != "\0") {
+       buf[j+i] = buf2[i];
+			}
+		buf[j + ++i] = "\0"; */
+	
+		return buf;
+
+		}
+
+	strftime(buf, sizeof(buf), ":: %d %m %Y, (%T)", tm);
+
+	return buf;
+}
+
 bool UinsList::equals(UinsList &uins) {
 	if (count() != uins.count())
 		return false;

@@ -1,12 +1,4 @@
 /***************************************************************************
-                          main.cpp  -  description
-                             -------------------
-    begin                : wto sie 21 18:35:52 CEST 2001
-    copyright            : (C) 2001 by tomee
-    email                : tomee@cpi.pl
- ***************************************************************************/
-
-/***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -47,9 +39,9 @@ int main(int argc, char *argv[])
 	gg_debug_level = 255;
 
 	KAboutData aboutData( "kadu", I18N_NOOP("Kadu"),
-		"0.3.1", description, KAboutData::License_GPL,
-		"(c) 2001-2002, tomee", 0, 0, "tomee@cpi.pl");
-	aboutData.addAuthor("tomee",0, "tomee@cpi.pl");
+		"0.3.3", description, KAboutData::License_GPL,
+		"(c) 2001-2002, Kadu Team", 0, 0, "www.kadu.net");
+	aboutData.addAuthor("Kadu Team",0, "www.kadu.net");
 	KCmdLineArgs::init( argc, argv, &aboutData );
 	KCmdLineArgs::addCmdLineOptions( options ); // Add our own options.
 

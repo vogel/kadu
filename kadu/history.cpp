@@ -1,12 +1,4 @@
 /***************************************************************************
-                          history.cpp  -  description
-                             -------------------
-    begin                : Sun Sep 9 2001
-    copyright            : (C) 2001 by tomee
-    email                : tomee@cpi.pl
- ***************************************************************************/
-
-/***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -40,43 +32,6 @@
 #include "misc.h"
 #include "history.h"
 //
-
-char *timestamp(time_t customtime)
-{
-	static char buf[100];
-
-	time_t t;
-	struct tm *tm;
-
-	time(&t);
-
-	tm = localtime(&t);
-	strftime(buf, sizeof(buf), ":: %d %m %Y, (%T", tm);
-
-	if (customtime) {
-		char buf2[20];
-		struct tm *tm2;
-		tm2 = localtime(&customtime);
-		strftime(buf2, sizeof(buf2), " / S %T)", tm2);
-		strncat(buf, buf2, sizeof(buf2));
-		
-/*		int j = 0;
-		while(buf[j++] != "\0");
-		
-		int i = -1;
-		while(buf2[++i] != "\0") {
-       buf[j+i] = buf2[i];
-			}
-		buf[j + ++i] = "\0"; */
-	
-		return buf;
-
-		}
-
-	strftime(buf, sizeof(buf), ":: %d %m %Y, (%T)", tm);
-
-	return buf;
-}
 
 void appendHistory(UinsList uins, uin_t uin, unsigned char * msg, bool own, time_t time) {
 	int i;

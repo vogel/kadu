@@ -1,12 +1,4 @@
 /***************************************************************************
-                          kadu.h  -  description
-                             -------------------
-    begin                : wto sie 21 18:35:52 CEST 2001
-    copyright            : (C) 2001 by tomee
-    email                : tomee@cpi.pl
- ***************************************************************************/
-
-/***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -20,14 +12,11 @@
 
 /** values below most probably need no alteration **/
 
-#define KADU_VERSION 0.3.2
-
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
 
 #include <kmenubar.h>
-#include <ksystemtray.h>
 #include <qprogressdialog.h>
 #include <qmultilineedit.h>
 #include <kapp.h>
@@ -35,6 +24,7 @@
 #include <qarray.h>
 #include <qmainwindow.h>
 #include <qtabbar.h>
+#include <kpopupmenu.h>
 
 #include "userlist.h"
 #include "userbox.h"
@@ -122,7 +112,6 @@ struct groups {
 };
 
 class dccSocketClass;
-class DockWidget;
 
 class Kadu : public QMainWindow
 {
@@ -143,6 +132,7 @@ class Kadu : public QMainWindow
 			const QString& Group,const QString& Description, const bool Foreign = false);
 		void removeUser(QString &, bool);
 		void refreshGroupTabBar();
+		void setClosePermitted(bool permitted);
 		
 		UserBox *userbox;
 
@@ -192,7 +182,7 @@ class Kadu : public QMainWindow
 		void createStatusPopupMenu();
 		void setActiveGroup(const QString& group);
 		bool close_permitted;
-		friend class DockWidget;
+		//friend class DockWidget;
 	
 	private slots:
 		void groupTabSelected(int id);
@@ -207,23 +197,6 @@ struct acks {
     QDialog *ptr;
 };
 
-class DockWidget : public KSystemTray  {
-   Q_OBJECT
-
- public:
-   DockWidget(QWidget *parent=0, const char *name=0);
-   void DockWidget::setType(char **gg_xpm);
-   
- public slots:
-   // Status change slots
-   void dockletChange(int id);
-   
-    
-	protected:
-		void mousePressEvent (QMouseEvent*);
-
-};
-
 class Operation : public QProgressDialog {
 	Q_OBJECT
 	public:
@@ -236,13 +209,6 @@ class Operation : public QProgressDialog {
 	void perform();
 	void cancel();
 };
-
-/*class About : public QDialog {
- Q_OBJECT
-	public:
-		About(QDialog* parent=0, const char *name=0);
-
-};*/
 
 class ChooseDescription : public QDialog {
 	Q_OBJECT
@@ -295,7 +261,6 @@ extern PendingMsgs pending;
 static QArray<groups> grouplist_gcc32_bug;
 ////////////////////////////
 extern QArray<groups> grouplist;
-extern DockWidget *dw;
 extern bool mute;
 extern bool userlist_sent;
 // Ominiecie bledu w gcc 3.2
@@ -310,8 +275,6 @@ extern QSocketNotifier *kadusnw;
 extern QSocketNotifier *dccsnr;
 extern QSocketNotifier *dccsnw;
 
-void cp_to_iso(unsigned char *);
-void iso_to_cp(unsigned char *);
 int statusGGToStatusNr(int);
 int getActualStatus();
 bool ifStatusWithDescription(int status);
@@ -332,5 +295,7 @@ char *pwHash(const char *);
 void confirmHistoryDeletion(const char *);
 void remindPassword();
 unsigned int GetStatusFromUserlist(uin_t uin);
+
+extern KPopupMenu *dockppm;
 
 #endif

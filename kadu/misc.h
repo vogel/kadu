@@ -15,5 +15,8 @@ class UinsList : public QValueList<uin_t>
 };
 
 char* preparePath(char* filename);
+void cp_to_iso(unsigned char *);
+void iso_to_cp(unsigned char *);
+char *timestamp(time_t = 0);
 
 #endif
