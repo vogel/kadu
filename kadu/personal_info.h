@@ -5,7 +5,7 @@
 #include <qlineedit.h>
 #include <qcombobox.h>
 #include <qpushbutton.h>
-#include "libgadu.h"
+#include "gadu.h"
 
 /**
 	Dialog umo¿liwiaj±cy zarz±dzanie w³asnymi danymi w katalogu
@@ -25,24 +25,21 @@ class PersonalInfoDialog : public QHBox
 		QLineEdit* le_familyname;
 		QLineEdit* le_familycity;
 		QPushButton *pb_save;
-		enum DialogState {READY, READING, WRITTING};
+		enum DialogState { READY, READING, WRITING };
 		DialogState State;
-		uint32_t seq;
+		SearchRecord *data;
 
 	private slots:
 		void saveButtonClicked();
 		void keyPressEvent(QKeyEvent *);
 		void reloadInfo();
 
-	protected:
-		virtual void closeEvent(QCloseEvent * e);
-
 	public:
 		PersonalInfoDialog(QDialog *parent=0, const char *name=0);
 		~PersonalInfoDialog();
 
 	public slots:
-		void fillFields(gg_pubdir50_t res);
+		void fillFields(SearchResults& searchResults, int seq, int);
 };
 
 #endif

@@ -32,33 +32,38 @@ extern bool i_wanna_be_invisible;
 
 struct SearchResult
 {
-	QString uin;
-	QString first;
-	QString nick;
-	QString born;
-	QString city;
-	int status;
+	QString Uin;
+	QString First;
+	QString Last;
+	QString Nick;
+	QString Born;
+	QString City;
+	QString FamilyName;
+	QString FamilyCity;
+	int Gender;
+	int Status;
 
 	SearchResult();
 	SearchResult(const SearchResult&);
-	void setData(const char *uin, const char *first, const char *nick, const char *born, const char *city, const char *status);
+	void setData(const char *uin, const char *first, const char *last, const char *nick, const char *born,
+		const char *city, const char *familyName, const char *familyCity, const char *gender, const char *status);
 };
 
 typedef QValueList<SearchResult> SearchResults;
 
 struct SearchRecord
 {
-	int seq;
-	int fromUin;
-	QString uin;
-	QString firstName;
-	QString lastName;
-	QString nickName;
-	QString city;
-	QString birthYearFrom;
-	QString birthYearTo;
-	int gender;
-	bool active;
+	int Seq;
+	int FromUin;
+	QString Uin;
+	QString FirstName;
+	QString LastName;
+	QString NickName;
+	QString City;
+	QString BirthYearFrom;
+	QString BirthYearTo;
+	int Gender;
+	bool Active;
 
 	SearchRecord();
 	virtual ~SearchRecord();
@@ -73,34 +78,71 @@ struct SearchRecord
 	void reqActive();
 
 	void clearData();
-
 };
 
 class SocketNotifiers : public QObject
 {
 	Q_OBJECT
 
-	private:
-		struct gg_http *h;
-		QSocketNotifier *snr;
-		QSocketNotifier *snw;
+	protected:
+		int Fd;
+		QSocketNotifier *Snr;
+		QSocketNotifier *Snw;
 
 		void createSocketNotifiers();
 		void deleteSocketNotifiers();
 		void recreateSocketNotifiers();
-		void socketEvent();
+		virtual void socketEvent() = 0;
 
-	private slots:
-		void dataReceived();
-		void dataSent();
+	protected slots:
+		virtual void dataReceived() = 0;
+		virtual void dataSent() = 0;
 
 	public:
-		SocketNotifiers(struct gg_http *);
-		~SocketNotifiers();
+		SocketNotifiers(int);
+		virtual ~SocketNotifiers();
 		void start();
+};
+
+class PubdirSocketNotifiers : public SocketNotifiers
+{
+	Q_OBJECT
+
+	private:
+		struct gg_http *H;
+
+	protected:
+		virtual void socketEvent();
+
+	protected slots:
+		virtual void dataReceived();
+		virtual void dataSent();
+
+	public:
+		PubdirSocketNotifiers(struct gg_http *);
+		virtual ~PubdirSocketNotifiers();
 
 	signals:
 		void done(bool ok, struct gg_http *);
+};
+
+class DccSocketNotifiers : public SocketNotifiers
+{
+	Q_OBJECT
+
+	private:
+		struct gg_dcc *D;
+
+	protected:
+		virtual void socketEvent();
+
+	protected slots:
+		virtual void dataReceived();
+		virtual void dataSent();
+
+	public:
+		DccSocketNotifiers(struct gg_dcc *);
+		virtual ~DccSocketNotifiers();
 
 };
 
@@ -194,6 +236,16 @@ class GaduProtocol : public QObject
 			Importuje liste z serwera
 		**/
 		bool doImportUserList();
+
+		/**
+			Pobiera informacje o danych odobowych z katalogu publicznego
+		**/
+		void getPersonalInfo(SearchRecord& searchRecord);
+
+		/**
+			Ustawia informacje o danych osobowych z katalogu publicznego
+		**/
+		void setPersonalInfo(SearchRecord& searchRecord, SearchResult& newData);
 
 	private slots:
 		void newResults(gg_pubdir50_t res);

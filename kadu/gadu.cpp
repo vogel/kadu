@@ -40,23 +40,35 @@ SearchResult::SearchResult()
 
 SearchResult::SearchResult(const SearchResult& copyFrom)
 {
-	this->uin = copyFrom.uin;
-	this->first = copyFrom.first;
-	this->nick = copyFrom.nick;
-	this->born = copyFrom.born;
-	this->city = copyFrom.city;
-	this->status = copyFrom.status;
+	Uin = copyFrom.Uin;
+	First = copyFrom.First;
+	Last = copyFrom.Last;
+	Nick = copyFrom.Nick;
+	Born = copyFrom.Born;
+	City = copyFrom.City;
+	FamilyName = copyFrom.FamilyName;
+	FamilyCity = copyFrom.FamilyCity;
+	Gender = copyFrom.Gender;
+	Status = copyFrom.Status;
 }
 
-void SearchResult::setData(const char *uin, const char *first, const char *nick, const char *born, const char *city, const char *status)
+void SearchResult::setData(const char *uin, const char *first, const char *last, const char *nick, const char *born,
+	const char *city, const char *familyName, const char *familyCity, const char *gender, const char *status)
 {
-	this->uin = cp2unicode((unsigned char *)uin);
-	this->first = cp2unicode((unsigned char *)first);
-	this->nick = cp2unicode((unsigned char *)nick);
-	this->born = cp2unicode((unsigned char *)born);
-	this->city = cp2unicode((unsigned char *)city);
+	Uin = cp2unicode((unsigned char *)uin);
+	First = cp2unicode((unsigned char *)first);
+	Last = cp2unicode((unsigned char *)last);
+	Nick = cp2unicode((unsigned char *)nick);
+	Born = cp2unicode((unsigned char *)born);
+	City = cp2unicode((unsigned char *)city);
+	FamilyName = cp2unicode((unsigned char *)familyName);
+	FamilyCity = cp2unicode((unsigned char *)familyCity);
 	if (status)
-		this->status = atoi(status) & 127;
+		Status = atoi(status) & 127;
+	if (gender)
+		Gender = atoi(gender);
+	else
+		Gender = 0;
 }
 
 SearchRecord::SearchRecord()
@@ -72,66 +84,65 @@ SearchRecord::~SearchRecord()
 
 void SearchRecord::reqUin(const QString& uin)
 {
-	this->uin = uin;
+	Uin = uin;
 }
 
 void SearchRecord::reqFirstName(const QString& firstName)
 {
-	this->firstName = firstName;
+	FirstName = firstName;
 }
 
 void SearchRecord::reqLastName(const QString& lastName) {
-	this->lastName = lastName;
+	LastName = lastName;
 }
 
 void SearchRecord::reqNickName(const QString& nickName)
 {
-	this->nickName = nickName;
+	NickName = nickName;
 }
 
 void SearchRecord::reqCity(const QString& city)
 {
-	this->city = city;
+	City = city;
 }
 
 void SearchRecord::reqBirthYear(const QString& birthYearFrom, const QString& birthYearTo)
 {
-	this->birthYearFrom = birthYearFrom;
-	this->birthYearTo = birthYearTo;
+	BirthYearFrom = birthYearFrom;
+	BirthYearTo = birthYearTo;
 }
 
 void SearchRecord::reqGender(bool female)
 {
-	this->gender = (female ? 2 : 1);
+	Gender = (female ? 2 : 1);
 }
 
 void SearchRecord::reqActive()
 {
-	this->active = true;
+	Active = true;
 };
 
 void SearchRecord::clearData()
 {
 	kdebugf();
-	fromUin = 0;
-	uin = "";
-	firstName = "";
-	lastName = "";
-	nickName = "";
-	city = "";
-	birthYearFrom = "";
-	birthYearTo = "";
-	gender = 0;
-	active = false;
+	FromUin = 0;
+	Uin = "";
+	FirstName = "";
+	LastName = "";
+	NickName = "";
+	City = "";
+	BirthYearFrom = "";
+	BirthYearTo = "";
+	Gender = 0;
+	Active = false;
 }
-
 /* SocketNotifiers */
 
-SocketNotifiers::SocketNotifiers(struct gg_http* nh)
+SocketNotifiers::SocketNotifiers(int fd)
 {
 	kdebugf();
 
-	h = nh;
+	Fd = fd;
 }
 
 SocketNotifiers::~SocketNotifiers()
@@ -150,11 +161,11 @@ void SocketNotifiers::createSocketNotifiers()
 {
 	kdebugf();
 
-	snr = new QSocketNotifier(h->fd, QSocketNotifier::Read);
-	connect(snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
+	Snr = new QSocketNotifier(Fd, QSocketNotifier::Read);
+	connect(Snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
 
-	snw = new QSocketNotifier(h->fd, QSocketNotifier::Write);
-	connect(snw, SIGNAL(activated(int)), this, SLOT(dataSent()));
+	Snw = new QSocketNotifier(Fd, QSocketNotifier::Write);
+	connect(Snw, SIGNAL(activated(int)), this, SLOT(dataSent()));
 
 }
 
@@ -162,18 +173,18 @@ void SocketNotifiers::deleteSocketNotifiers()
 {
 	kdebugf();
 	
-	if (snr)
+	if (Snr)
 	{
-		snr->setEnabled(false);
-		snr->deleteLater();
-		snr = NULL;
+		Snr->setEnabled(false);
+		Snr->deleteLater();
+		Snr = NULL;
 	}
 
-	if (snw)
+	if (Snw)
 	{
-		snw->setEnabled(false);
-		snw->deleteLater();
-		snw = NULL;
+		Snw->setEnabled(false);
+		Snw->deleteLater();
+		Snw = NULL;
 	}
 
 }
@@ -184,77 +195,128 @@ void SocketNotifiers::recreateSocketNotifiers()
 
 	deleteSocketNotifiers();
 	createSocketNotifiers();
-
-	if (h->check & GG_CHECK_WRITE)
-		snw->setEnabled(true);
-
 }
 
-void SocketNotifiers::dataReceived()
+/* PubdirSocketNotifiers */
+
+PubdirSocketNotifiers::PubdirSocketNotifiers(struct gg_http *h)
+	: SocketNotifiers(h->fd)
+{
+	kdebugf();
+	H = h;
+}
+
+PubdirSocketNotifiers::~PubdirSocketNotifiers()
+{
+	deleteSocketNotifiers();
+	kdebugf();
+}
+
+void PubdirSocketNotifiers::dataReceived()
 {
 	kdebugf();
 
-	if (h->check & GG_CHECK_READ)
+	if (H->check & GG_CHECK_READ)
 		socketEvent();
 }
 
-void SocketNotifiers::dataSent()
-{
-	kdebug("SocketNotifiers::dataSent()\n");
-
-	snw->setEnabled(false);
-	if (h->check & GG_CHECK_WRITE)
-		socketEvent();
-}
-
-void SocketNotifiers::socketEvent()
+void PubdirSocketNotifiers::dataSent()
 {
 	kdebugf();
 
-	if (gg_pubdir_watch_fd(h) == -1)
+	Snw->setEnabled(false);
+	if (H->check & GG_CHECK_WRITE)
+		socketEvent();
+}
+
+void PubdirSocketNotifiers::socketEvent()
+{
+	kdebugf();
+
+	if (gg_pubdir_watch_fd(H) == -1)
 	{
 		deleteSocketNotifiers();
-		emit done(false, h);
-		gg_pubdir_free(h);
+		emit done(false, H);
+		gg_pubdir_free(H);
 		deleteLater();
 		return;
 	}
 
-	struct gg_pubdir *p = (struct gg_pubdir *)h->data;
+	struct gg_pubdir *p = (struct gg_pubdir *)H->data;
 
-	switch (h->state)
+	switch (H->state)
 	{
 		case GG_STATE_CONNECTING:
-			kdebug("SocketNotifiers::socketEvent(): changing QSocketNotifiers\n");
+			kdebug("PubdirSocketNotifiers::socketEvent(): changing QSocketNotifiers\n");
 			recreateSocketNotifiers();
+
+			if (H->check & GG_CHECK_WRITE)
+				Snw->setEnabled(true);
+
 			break;
 
 		case GG_STATE_ERROR:
-			kdebug("SocketNotifiers::socketEvent(): error!\n");
+			kdebug("PubdirSocketNotifiers::socketEvent(): error!\n");
 			deleteSocketNotifiers();
-			emit done(false, h);
-			gg_pubdir_free(h);
+			emit done(false, H);
+			gg_pubdir_free(H);
 			deleteLater();
-			return;
+			break;
 
 		case GG_STATE_DONE:
-			kdebug("SocketNotifiers::socketEvent(): success!\n");
+			kdebug("PubdirSocketNotifiers::socketEvent(): success!\n");
 			deleteSocketNotifiers();
 
 			if (p->success)
-				emit done(true, h);
+				emit done(true, H);
 			else
 			{
-				kdebug("SocketNotifiers::socketEvent(): error!\n");
-				emit done(false, h);
+				kdebug("PubdirSocketNotifiers::socketEvent(): error!\n");
+				emit done(false, H);
 			}
-			gg_pubdir_free(h);
+			gg_pubdir_free(H);
+			deleteLater();
 			break;
 
 		default:
-			if (h->check & GG_CHECK_WRITE)
-				snw->setEnabled(true);
+			if (H->check & GG_CHECK_WRITE)
+				Snw->setEnabled(true);
 	}
+}
+
+/* DccSocketNotifier */
+
+DccSocketNotifiers::DccSocketNotifiers(struct gg_dcc *d)
+	: SocketNotifiers(d->fd)
+{
+	kdebugf();
+	D = d;
+}
+
+DccSocketNotifiers::~DccSocketNotifiers()
+{
+}
+
+void DccSocketNotifiers::dataReceived()
+{
+	kdebugf();
+
+	socketEvent();
+}
+
+void DccSocketNotifiers::dataSent()
+{
+	kdebugf();
+
+	Snw->setEnabled(false);
+	if (D->check & GG_CHECK_WRITE)
+		socketEvent();
+}
+
+void DccSocketNotifiers::socketEvent()
+{
+	kdebugf();
+	kdebug("FIXME: DccSocketNotifiers::socketEvent(): add some code here\n");
 }
 
 /* GaduProtocol */
@@ -387,7 +449,7 @@ bool GaduProtocol::sendImage(UinType uin,const QString& file_name,uint32_t size,
 /* wyszukiwanie w katalogu publicznym */
 
 void GaduProtocol::searchInPubdir(SearchRecord& searchRecord) {
-	searchRecord.fromUin = 0;
+	searchRecord.FromUin = 0;
 	searchNextInPubdir(searchRecord);
 }
 
@@ -397,22 +459,22 @@ void GaduProtocol::searchNextInPubdir(SearchRecord& searchRecord) {
 
 	req = gg_pubdir50_new(GG_PUBDIR50_SEARCH);
 
-	if (searchRecord.uin.length())
-		gg_pubdir50_add(req, GG_PUBDIR50_UIN, (const char *)unicode2cp(searchRecord.uin).data());
-	if (searchRecord.firstName.length())
-		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)unicode2cp(searchRecord.firstName).data());
-	if (searchRecord.lastName.length())
-		gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, (const char *)unicode2cp(searchRecord.lastName).data());
-	if (searchRecord.nickName.length())
-		gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)unicode2cp(searchRecord.nickName).data());
-	if (searchRecord.city.length())
-		gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)unicode2cp(searchRecord.city).data());
-	if (searchRecord.birthYearFrom.length() && searchRecord.birthYearTo.length()) {
-		QString bufYear = searchRecord.birthYearFrom + " " + searchRecord.birthYearTo;
+	if (searchRecord.Uin.length())
+		gg_pubdir50_add(req, GG_PUBDIR50_UIN, (const char *)unicode2cp(searchRecord.Uin).data());
+	if (searchRecord.FirstName.length())
+		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)unicode2cp(searchRecord.FirstName).data());
+	if (searchRecord.LastName.length())
+		gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, (const char *)unicode2cp(searchRecord.LastName).data());
+	if (searchRecord.NickName.length())
+		gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)unicode2cp(searchRecord.NickName).data());
+	if (searchRecord.City.length())
+		gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)unicode2cp(searchRecord.City).data());
+	if (searchRecord.BirthYearFrom.length() && searchRecord.BirthYearTo.length()) {
+		QString bufYear = searchRecord.BirthYearFrom + " " + searchRecord.BirthYearTo;
 		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)unicode2cp(bufYear).data());
 	}
 
-	switch (searchRecord.gender) {
+	switch (searchRecord.Gender) {
 		case 1:
 			gg_pubdir50_add(req, GG_PUBDIR50_GENDER, GG_PUBDIR50_GENDER_MALE);
 			break;
@@ -421,10 +483,10 @@ void GaduProtocol::searchNextInPubdir(SearchRecord& searchRecord) {
 			break;
 	}
 
-	QString s = QString::number(searchRecord.fromUin);
+	QString s = QString::number(searchRecord.FromUin);
 	gg_pubdir50_add(req, GG_PUBDIR50_START, s.local8Bit());
 
-	searchRecord.seq = gg_pubdir50(sess, req);
+	searchRecord.Seq = gg_pubdir50(sess, req);
 	gg_pubdir50_free(req);
 }
 
@@ -437,14 +499,20 @@ void GaduProtocol::newResults(gg_pubdir50_t res)
 
 	count = gg_pubdir50_count(res);
 
+	kdebug("GaduProtocol::newResults(): found %d results\n", count);
+
 	for (int i = 0; i < count; i++)
 	{
 		searchResult.setData(
 			gg_pubdir50_get(res, i, GG_PUBDIR50_UIN),
 			gg_pubdir50_get(res, i, GG_PUBDIR50_FIRSTNAME),
+			gg_pubdir50_get(res, i, GG_PUBDIR50_LASTNAME),
 			gg_pubdir50_get(res, i, GG_PUBDIR50_NICKNAME),
 			gg_pubdir50_get(res, i, GG_PUBDIR50_BIRTHYEAR),
 			gg_pubdir50_get(res, i, GG_PUBDIR50_CITY),
+			gg_pubdir50_get(res, i, GG_PUBDIR50_FAMILYNAME),
+			gg_pubdir50_get(res, i, GG_PUBDIR50_FAMILYCITY),
+			gg_pubdir50_get(res, i, GG_PUBDIR50_GENDER),
 			gg_pubdir50_get(res, i, GG_PUBDIR50_STATUS)
 		);
 		searchResults.append(searchResult);
@@ -455,6 +523,47 @@ void GaduProtocol::newResults(gg_pubdir50_t res)
 	kdebugf2();
 }
 
+/* informacje osobiste */
+
+void GaduProtocol::getPersonalInfo(SearchRecord& searchRecord)
+{
+	kdebugf();
+
+	gg_pubdir50_t req;
+
+	req = gg_pubdir50_new(GG_PUBDIR50_READ);
+	searchRecord.Seq = gg_pubdir50(sess, req);
+	gg_pubdir50_free(req);
+}
+
+void GaduProtocol::setPersonalInfo(SearchRecord& searchRecord, SearchResult& newData)
+{
+	kdebugf();
+
+	gg_pubdir50_t req;
+	req = gg_pubdir50_new(GG_PUBDIR50_WRITE);
+
+	if (newData.First.length())
+		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)(unicode2cp(newData.First).data()));
+	if (newData.Last.length())
+		gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, (const char *)(unicode2cp(newData.Last).data()));
+	if (newData.Nick.length())
+		gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)(unicode2cp(newData.Nick).data()));
+	if (newData.City.length())
+		gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)(unicode2cp(newData.City).data()));
+	if (newData.Born.length())
+		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)(unicode2cp(newData.Born).data()));
+	if (newData.Gender)
+		gg_pubdir50_add(req, GG_PUBDIR50_GENDER, QString::number(newData.Gender).latin1());
+	if (newData.FamilyName.length())
+		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYNAME, (const char *)(unicode2cp(newData.FamilyName).data()));
+	if (newData.FamilyCity.length())
+		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYCITY, (const char *)(unicode2cp(newData.FamilyCity).data()));
+
+	searchRecord.Seq = gg_pubdir50(sess, req);
+	gg_pubdir50_free(req);
+}
+
 /* rejestrowanie u¿ytkownika */
 
 bool GaduProtocol::doRegister(QString& mail, QString& password, QString& token_id, QString& token_value)
@@ -462,7 +571,7 @@ bool GaduProtocol::doRegister(QString& mail, QString& password, QString& token_i
 	struct gg_http *h = gg_register3(unicode2cp(mail).data(), unicode2cp(password).data(), unicode2cp(token_id).data(), unicode2cp(token_value).data(), 1);
 	if (h)
 	{
-		SocketNotifiers *sn = new SocketNotifiers(h);
+		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h);
 		connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(registerDone(bool, struct gg_http *)));
 		sn->start();
 	}
@@ -486,7 +595,7 @@ bool GaduProtocol::doUnregister(UinType uin, QString &password, QString& token_i
 	struct gg_http* h = gg_unregister3(uin, unicode2cp(password).data(), unicode2cp(token_id).data(), unicode2cp(token_value).data(), 1);
 	if (h)
 	{
-		SocketNotifiers *sn = new SocketNotifiers(h);
+		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h);
 		connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(unregisterDone(bool, struct gg_http *)));
 		sn->start();
 	}
@@ -509,7 +618,7 @@ bool GaduProtocol::doRemind(UinType uin, QString& token_id, QString& token_value
 	struct gg_http *h = gg_remind_passwd2(uin, unicode2cp(token_id).data(), unicode2cp(token_value).data(), 1);
 	if (h)
 	{
-		SocketNotifiers *sn = new SocketNotifiers(h);
+		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h);
 		connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(remindDone(bool, struct gg_http *)));
 		sn->start();
 	}
@@ -533,7 +642,7 @@ bool GaduProtocol::doChangePassword(UinType uin, QString& mail, QString& passwor
 			unicode2cp(new_password).data(), unicode2cp(token_id).data(), unicode2cp(token_val).data(), 1);
 	if (h)
 	{
-		SocketNotifiers *sn = new SocketNotifiers(h);
+		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h);
 		connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(changePasswordDone(bool, struct gg_http *)));
 		sn->start();
 	}

@@ -275,36 +275,36 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 	QPixmap pix;
 	SearchResults::iterator searchIterator;
 
-	if (seq != searchRecord->seq)
+	if (seq != searchRecord->Seq)
 		return;
 
-	searchRecord->fromUin = fromUin;
+	searchRecord->FromUin = fromUin;
 
 	// ??	if ((status && atoi(status) <= 1 && only_active->isChecked()) || !status)
 
 	for (searchIterator = searchResults.begin(); searchIterator != searchResults.end(); searchIterator++) {
 		
-		qlv = results->findItem((*searchIterator).uin, 1);
+		qlv = results->findItem((*searchIterator).Uin, 1);
 
-		if ((*searchIterator).status)
-			pix = icons_manager.loadIcon(gg_icons[statusGGToStatusNr((*searchIterator).status)]);
+		if ((*searchIterator).Status)
+			pix = icons_manager.loadIcon(gg_icons[statusGGToStatusNr((*searchIterator).Status)]);
 		else
 			pix = icons_manager.loadIcon("Offline");
 
 		if (qlv) {
 //			if (!searchhidden) {
-			qlv->setText(1, (*searchIterator).uin);
-			qlv->setText(2, (*searchIterator).first);
-			qlv->setText(3, (*searchIterator).city);
-			qlv->setText(4, (*searchIterator).nick);
-			qlv->setText(5, (*searchIterator).born);
+			qlv->setText(1, (*searchIterator).Uin);
+			qlv->setText(2, (*searchIterator).First);
+			qlv->setText(3, (*searchIterator).City);
+			qlv->setText(4, (*searchIterator).Nick);
+			qlv->setText(5, (*searchIterator).Born);
 //	}
 //			else
 //				searchhidden = false;
 		} else {
-			qlv = new QListViewItem(results, QString::null, (*searchIterator).uin,
-				(*searchIterator).first, (*searchIterator).city,
-				(*searchIterator).nick, (*searchIterator).born);
+			qlv = new QListViewItem(results, QString::null, (*searchIterator).Uin,
+				(*searchIterator).First, (*searchIterator).City,
+				(*searchIterator).Nick, (*searchIterator).Born);
 //			if (count == 1 && r_uin->isChecked() && !searchhidden
 //				&& (statuscode == GG_STATUS_NOT_AVAIL || statuscode == GG_STATUS_NOT_AVAIL_DESCR)) {
 //				qlv->setPixmap(0, pix);

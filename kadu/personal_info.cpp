@@ -14,7 +14,6 @@
 
 #include <stdlib.h>
 
-#include "gadu.h"
 #include "status.h"
 #include "debug.h"
 #include "events.h"
@@ -125,6 +124,11 @@ PersonalInfoDialog::PersonalInfoDialog(QDialog *parent, const char *name)
 	connect(pb_save, SIGNAL(clicked()), this, SLOT(saveButtonClicked()));
 	connect(pb_reload, SIGNAL(clicked()), this, SLOT(reloadInfo()));
 	
+	connect(gadu, SIGNAL(newSearchResults(SearchResults&, int, int)), this, SLOT(fillFields(SearchResults&, int, int)));
+
+	State = READY;
+
+	data = new SearchRecord();
 	reloadInfo();
 	
 	kdebugf2();
@@ -134,7 +138,12 @@ PersonalInfoDialog::PersonalInfoDialog(QDialog *parent, const char *name)
 PersonalInfoDialog::~PersonalInfoDialog()
 {
 	kdebugf();
+
+
+// @todo: ten fragment kodu powoduje zwieche, sprawdic co z nime
+	delete data;
 	saveGeometry(this, "General", "PersonalInfoDialogGeometry");
+	kdebugf2();
 }
 
 void PersonalInfoDialog::keyPressEvent(QKeyEvent *ke_event)
@@ -149,14 +158,8 @@ void PersonalInfoDialog::reloadInfo()
 {
 	if (getCurrentStatus() != GG_STATUS_NOT_AVAIL) 
 	{
-		gg_pubdir50_t req;
-		req = gg_pubdir50_new(GG_PUBDIR50_READ);
-		seq = gg_pubdir50(sess, req);
-		connect(&event_manager, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)),
-			this, SLOT(fillFields(gg_pubdir50_t)));
-		gg_pubdir50_free(req);
-		pb_save->setEnabled(true);
 		State = READING;
+		gadu->getPersonalInfo(*data);
 	}
 	else
 		pb_save->setEnabled(false);
@@ -168,116 +171,62 @@ void PersonalInfoDialog::saveButtonClicked()
 	if (getCurrentStatus() == GG_STATUS_NOT_AVAIL)
 		return;
 
-	char *nick, *first, *last, *city, *born, *family_name, *family_city;
+	SearchResult save;
 
-	nick = le_nickname->text().length() ? strdup(unicode2cp(le_nickname->text()).data()) : NULL;
-	first = le_name->text().length() ? strdup(unicode2cp(le_name->text()).data()) : NULL;
-	last = le_surname->text().length() ? strdup(unicode2cp(le_surname->text()).data()) : NULL;
-	city = le_city->text().length() ? strdup(unicode2cp(le_city->text()).data()) : NULL;
-	born = le_birthyear->text().length() ? strdup(unicode2cp(le_birthyear->text()).data()) : NULL;
-	family_name = le_familyname->text().length() ? strdup(unicode2cp(le_familyname->text()).data()) : NULL;
-	family_city = le_familycity->text().length() ? strdup(unicode2cp(le_familycity->text()).data()) : NULL;
-
-	gg_pubdir50_t req;
-	req = gg_pubdir50_new(GG_PUBDIR50_WRITE);
-	if (first) {
-		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)first);
-		free(first);
-		}
-	if (last) {
-		gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, (const char *)last);
-		free(last);
-		}
-	if (nick) {
-		gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)nick);
-		free(nick);
-		}
-	if (city) {
-		gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)city);
-		free(city);
-		}
-	if (cb_gender->currentItem())
-		gg_pubdir50_add(req, GG_PUBDIR50_GENDER, QString::number(cb_gender->currentItem()).latin1());
-	if (born) {
-		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)born);
-		free(born);
-		}
-	if (family_name) {
-		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYNAME, (const char *)family_name);
-		free(family_name);
-		}
-	if (family_city) {
-		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYCITY, (const char *)family_city);
-		free(family_city);
-		}
-
-	seq = gg_pubdir50(sess, req);
-	gg_pubdir50_free(req);
-	connect(&event_manager, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)),
-		this, SLOT(fillFields(gg_pubdir50_t)));
-	State = WRITTING;
+	State = WRITING;
+	save.First = le_name->text();
+	save.Last = le_surname->text();
+	save.Nick = le_nickname->text();
+	save.City = le_city->text();
+	save.Born = le_birthyear->text();
+	save.Gender = cb_gender->currentItem();
+	save.FamilyName = le_familyname->text();
+	save.FamilyCity = le_familycity->text();
+	gadu->setPersonalInfo(*data, save);
 
 	setEnabled(false);
 	kdebugf2();
 }
 
-void PersonalInfoDialog::fillFields(gg_pubdir50_t res)
+void PersonalInfoDialog::fillFields(SearchResults& searchResults, int seq, int)
 {
 	kdebugf();
-//	int count;
-	const char *first, *last, *nick, *born, *city,
-		*gender, *family_name, *family_city;
 
-	if (res->seq != seq)
+	if (data->Seq != seq)
 		return;
 
-	disconnect(&event_manager, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)),
-		this, SLOT(fillFields(gg_pubdir50_t)));
+	SearchResult result;
 
-	switch (State) {
+	switch (State)
+	{
+
 		case READING:
 			kdebug("PersonalInfoDialog::fillFields(): Done reading info,\n");
+			if (searchResults.count() == 0)
+			{
+				State = READY;
+				break;
+			}
 
-			first = gg_pubdir50_get(res, 0, GG_PUBDIR50_FIRSTNAME);
-			last = gg_pubdir50_get(res, 0, GG_PUBDIR50_LASTNAME);
-			nick = gg_pubdir50_get(res, 0, GG_PUBDIR50_NICKNAME);
-			gender = gg_pubdir50_get(res, 0, GG_PUBDIR50_GENDER);
-			born = gg_pubdir50_get(res, 0, GG_PUBDIR50_BIRTHYEAR);
-			city = gg_pubdir50_get(res, 0, GG_PUBDIR50_CITY);
-			family_name = gg_pubdir50_get(res, 0, GG_PUBDIR50_FAMILYNAME);
-			family_city = gg_pubdir50_get(res, 0, GG_PUBDIR50_FAMILYCITY);
-			if (first)
-				le_name->setText(cp2unicode((unsigned char *)first));
-			if (last)
-				le_surname->setText(cp2unicode((unsigned char *)last));
-			if (nick)
-				le_nickname->setText(cp2unicode((unsigned char *)nick));
-			if (born && strcmp(born, "0"))
-				le_birthyear->setText(cp2unicode((unsigned char *)born));
-			if (city)
-				le_city->setText(cp2unicode((unsigned char *)city));
-			if (family_name)
-				le_familyname->setText(cp2unicode((unsigned char *)family_name));
-			if (family_city)
-				le_familycity->setText(cp2unicode((unsigned char *)family_city));
-			cb_gender->setCurrentItem(gender ? atoi(gender) : 0);
+			result = searchResults[0];
+			le_name->setText(result.First);
+			le_surname->setText(result.Last);
+			le_nickname->setText(result.Nick);
+			le_birthyear->setText(result.Born);
+			le_city->setText(result.City);
+			le_familyname->setText(result.FamilyName);
+			le_familycity->setText(result.FamilyCity);
+			cb_gender->setCurrentItem(result.Gender);
+			State = READY;
 			break;
-		case WRITTING:
+
+		case WRITING:
 			kdebug("PersonalInfoDialog::fillFields(): Done writing info.\n");
-			close();
+			State = READY;
 			break;
-		case READY:
-			break;
-		}
+	}
 
 	setEnabled(true);
 	kdebugf2();
-}
-
-void PersonalInfoDialog::closeEvent(QCloseEvent * e)
-{
-	disconnect(&event_manager, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)),
-		this, SLOT(fillFields(gg_pubdir50_t)));
-	QWidget::closeEvent(e);
 }
 

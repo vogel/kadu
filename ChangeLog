@@ -168,6 +168,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * eksperymentalna obs³uga prekompilowanych nag³ówków gcc 3.4 dla kadu-core,
   domy¶lnie wy³±czona, wszak mamy feature freeze ;) (adrian)
 * KID - okno danych osobistych (KID/michal)
+* pi±ty patch porz±dkuj±cy vogela: edycja danych osobistych (adrian)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
