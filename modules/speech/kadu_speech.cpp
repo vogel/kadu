@@ -19,6 +19,7 @@
 #include "config_dialog.h"
 #include "chat.h"
 #include "../notify/notify.h"
+#include "kadu.h"
 
 extern "C" int speech_init()
 {
@@ -128,28 +129,28 @@ SpeechSlots::SpeechSlots()
 	
 	ConfigDialog::addLineEdit("Speech", "Speech",
 			QT_TRANSLATE_NOOP("@default","Chat format (male):"),
-			"ChatFormatMale", SpeechSlots::tr("man %a said %1"));
+			"ChatFormatMale", SpeechSlots::tr("man %a said %1"), Kadu::SyntaxText);
 	ConfigDialog::addLineEdit("Speech", "Speech", 
 			QT_TRANSLATE_NOOP("@default","Chat format (female):"),
-			"ChatFormatFemale", SpeechSlots::tr("woman %a said %1"));
+			"ChatFormatFemale", SpeechSlots::tr("woman %a said %1"), Kadu::SyntaxText);
 
 	ConfigDialog::addLineEdit("Speech", "Speech", 
 			QT_TRANSLATE_NOOP("@default","Message format (male):"),
-			"MessageFormatMale", SpeechSlots::tr("man %a said %1"));
+			"MessageFormatMale", SpeechSlots::tr("man %a said %1"), Kadu::SyntaxText);
 	ConfigDialog::addLineEdit("Speech", "Speech", 
 			QT_TRANSLATE_NOOP("@default","Message format (female):"),
-			"MessageFormatFemale", SpeechSlots::tr("woman %a said %1"));
+			"MessageFormatFemale", SpeechSlots::tr("woman %a said %1"), Kadu::SyntaxText);
 
 	ConfigDialog::addLineEdit("Speech", "Speech", 
 			QT_TRANSLATE_NOOP("@default","Notify format (male):"),
-			"NotifyFormatMale", SpeechSlots::tr("man %a changed status to %s %d"));
+			"NotifyFormatMale", SpeechSlots::tr("man %a changed status to %s %d"), Kadu::SyntaxText);
 	ConfigDialog::addLineEdit("Speech", "Speech", 
 			QT_TRANSLATE_NOOP("@default","Notify format (female):"),
-			"NotifyFormatFemale", SpeechSlots::tr("woman %a changed status to %s %d"));
+			"NotifyFormatFemale", SpeechSlots::tr("woman %a changed status to %s %d"), Kadu::SyntaxText);
 
 	ConfigDialog::addLineEdit("Speech", "Speech", 
 			QT_TRANSLATE_NOOP("@default","Connection error:"),
-			"ConnectionError", SpeechSlots::tr("Connection error - %1"));
+			"ConnectionError", SpeechSlots::tr("Connection error - %1"), Kadu::SyntaxText);
 	
 	ConfigDialog::addPushButton("Speech", "Speech",	QT_TRANSLATE_NOOP("@default","Test"), "", "", "testspeech");
 
