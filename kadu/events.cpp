@@ -241,13 +241,12 @@ void eventGotUserlist(struct gg_event * e) {
 	while (n->uin) {
 		user = userlist.byUin(n->uin);
 
-/*		if (i >= userlist.size()) {
+		if (!userlist.containsUin(n->uin)) {
 			fprintf(stderr, "KK eventGotUserlist(): buddy %d not in list. Damned server!\n", n->uin);
   			gg_remove_notify(&sess, n->uin);
     			n++;
     			continue;
-			}*/
-
+			}
 
 		user.ip = n->remote_ip;
 		user.port = n->remote_port;
@@ -297,12 +296,12 @@ void eventGotUserlistWithDescription(struct gg_event *e) {
 	while (n->uin) {
 		user = userlist.byUin(n->uin);	
 		
-/*		if (i >= userlist.size()) {
+		if (!userlist.containsUin(n->uin)) {
     	    		fprintf(stderr, "KK eventGotUserlist(): buddy %d not in list. Damned server!\n", n->uin);
   			gg_remove_notify(&sess, n->uin);
     			n++;
 			continue;
-			}*/
+			}
 
 		user.ip = n->remote_ip;
 		user.port = n->remote_port;
@@ -343,12 +342,13 @@ void eventStatusChange(struct gg_event * e) {
 	UserListElement user;
 	
 	user = userlist.byUin(e->event.status.uin);
-/*	if (i >= userlist.size()) {
+
+	if (!userlist.containsUin(e->event.status.uin)) {
 		// ignore!
 		fprintf(stderr, "KK eventGotUserlist(): buddy %d not in list. Damned server!\n", e->event.status.uin);
 		gg_remove_notify(&sess, e->event.status.uin);
 		return;
-		}*/
+		}
 
 	oldstatus = user.status;
 
