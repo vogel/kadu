@@ -1094,7 +1094,7 @@ void ConfigDialog::setupTab6(void) {
 	QLabel *l_panel = new QLabel(i18n("Information panel syntax:"), panelbox);
 	e_panelsyntax = new QLineEdit(config.panelsyntax, panelbox);
 
-	QToolTip::add(e_panelsyntax,i18n("Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - frist name\n%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist\nIf you leave blank, default settings will be used"));
+	QToolTip::add(e_panelsyntax,i18n("Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - frist name\n%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist\n%v - revDNS\nIf you leave blank, default settings will be used"));
 
 	QHBox *chatsyntaxbox = new QHBox(syntaxprop);
 	chatsyntaxbox->setSpacing(5);
@@ -1532,17 +1532,10 @@ void ConfigDialog::updateConfig(void) {
 		config.hinttime = atoi(e_hinttime->text().latin1());
 		}
 	else
-		config.trayhint = config.hinterror = false;	
+		config.trayhint = config.hinterror = false;
 
-	if (!b_showdesc->isChecked() && config.showdesc) {
-		kadu->hidedesc();
-		config.showdesc = b_showdesc->isChecked();
-		}
-	else
-		if(b_showdesc->isChecked() && !config.showdesc) {
-			kadu->showdesc();
-			config.showdesc = b_showdesc->isChecked();
-		}
+	kadu->showdesc(b_showdesc->isChecked());
+	config.showdesc = b_showdesc->isChecked();
 
 	config.smsbuildin = b_smsbuildin->isChecked();
 	config.smsapp = strdup(e_smsapp->text().latin1());

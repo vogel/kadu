@@ -142,11 +142,6 @@ bool timeout_connected = true;
 bool i_wanna_be_invisible = true;
 
 /*
-Klasa nie uzywana, po co ma wiêc zajmowac miejsce w pamieci, patrz plik network.cpp
-Operation *progresswindow;
-*/
-
-/*
 Zywcem deklarowanie struktury z przykladowego pliku z conn-async.c(libgadu)
 wcale nie uzywana pozniej, wiêc po co ?
 struct timeval tv;
@@ -394,12 +389,12 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	readIgnored();
 
-	/* DCC */
-
+/*	DCC
+Po jakiego czorta to ?
 	QString buf;
 	buf.append("Kadu: ");
 	buf.append(QString::number(config.uin));
-
+*/
 
 	/* a newbie? */
 	if (config.uin)
@@ -500,6 +495,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	descrtb->setFont(config.fonts.userboxDesc);
 	if (!config.showdesc)
 		descrtb->hide();
+	QObject::connect(&userlist, SIGNAL(dnsNameReady(uin_t)), this, SLOT(infopanelUpdate(uin_t)));
 
 	QValueList<int> splitsizes;
 	
@@ -1847,15 +1843,6 @@ void Kadu::disconnectNetwork() {
 		gg_dcc_port = 0;
 		}
 
-//Akcja oczyszczania kodu ;)
-/*	if (progresswindow) {
-//	if (progresswindow->isVisible())
-//	    progresswindow->close();
-		delete progresswindow;
-		progresswindow = NULL;
-		}
-*/
-
 	disconnect_planned = true;
 	if (sess) {
 		gg_logoff(sess);
@@ -2109,11 +2096,17 @@ void MyLabel::mousePressEvent (QMouseEvent * e) {
 		kadu->slotShowStatusMenu();
 }
 
-void Kadu::showdesc(void) {
-	descrtb->show();
+void Kadu::showdesc(bool show) {
+	if (show)
+		descrtb->show();
+	else
+		descrtb->hide();
 }
 
-void Kadu::hidedesc(void) {
-	descrtb->hide();
+void Kadu::infopanelUpdate(uin_t uin) {
+	if (!config.showdesc)
+		return;
+	kdebug("Kadu::infopanelUpdate(%d)\n",uin);
+	if (uin == userlist.byAltNick(userbox->currentText()).uin)
+		descrtb->setText(parse(config.panelsyntax,userlist.byUin(uin)));
 }
-

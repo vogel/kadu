@@ -101,11 +101,11 @@ QString pwHash(const QString tekst) {
 	return nowytekst;
 }
 
-QString parse_symbols(QString s, int i, UserListElement &ule) {
+QString parse_symbols(QString s, int i, UserListElement &ule, bool escape) {
 	QString r,d;
 	int j;
 
-	kdebug("parse_symbols():%s, %d\n",(const char *)s.local8Bit(),i);
+	kdebug("parse_symbols():%s, %d escape=%i\n",(const char *)s.local8Bit(),i,escape);
 
 	while(s[i]!='%' && i != s.length()) {
 		r+=s[i];
@@ -127,17 +127,24 @@ QString parse_symbols(QString s, int i, UserListElement &ule) {
 				break;
 			case 'd':
 				i++;
-				d=ule.description;
-				d.replace(QRegExp("<"), "&lt;");
-				d.replace(QRegExp(">"), "&gt;");
-				r+=d;
+				if (!escape)
+					r+=ule.description;
+				else {
+					d=ule.description;
+					d.replace(QRegExp("<"), "&lt;");
+					d.replace(QRegExp(">"), "&gt;");
+					r+=d;
+				}
 				break;
 			case 'i':
 				i++;
 				if (ule.ip.ip4Addr())
 					r += ule.ip.toString();
-//				else
-//					r += "";
+				break;
+			case 'v':
+				i++;
+				if (ule.ip.ip4Addr())
+					r+=ule.dnsname;
 				break;
 			case 'n':
 				i++;
@@ -177,7 +184,7 @@ QString parse_symbols(QString s, int i, UserListElement &ule) {
 	}
 
 	if (i != s.length())
-		r+=parse_symbols(s,i,ule);
+		r+=parse_symbols(s,i,ule,escape);
 	return r;
 }
 
@@ -199,17 +206,17 @@ QString parse_only_text(QString s, int i) {
 	return r;
 }
 
-QString parse_expression(QString s, int& i, UserListElement &ule) {
+QString parse_expression(QString s, int& i, UserListElement &ule, bool escape) {
 	QString p,r,f;
 
-	kdebug("parse_expression() %s, %d\n",(const char *)s.local8Bit(),i);
+	kdebug("parse_expression() %s, %d escape=%i\n",(const char *)s.local8Bit(),i,escape);
 
 	while(s[i]!='[' && i != s.length()) {
 		f+=s[i];
 		i++;
 	}
 
-	r+=parse_symbols(f,0,ule);
+	r+=parse_symbols(f,0,ule,escape);
 
 	if(s[i]=='['){
 		i++;
@@ -220,26 +227,26 @@ QString parse_expression(QString s, int& i, UserListElement &ule) {
 
 		if(s[i]==']') {
 			i++; //eat ]
-			if(parse_only_text(p,0)!=parse_symbols(p,0,ule))
-				r+=parse_symbols(p,0,ule);
+			if(parse_only_text(p,0)!=parse_symbols(p,0,ule,escape))
+				r+=parse_symbols(p,0,ule,escape);
 			if(i == s.length())
 				return r;
 			else
-				r+=parse_expression(s,i,ule);
+				r+=parse_expression(s,i,ule,escape);
 		}
 	}
 	
 	if(i != s.length())
-		r+=parse_expression(s,i,ule);
+		r+=parse_expression(s,i,ule,escape);
 	return r;
 }
 
-QString parse(QString s, UserListElement ule) {
+QString parse(QString s, UserListElement ule, bool escape) {
 	int i=0;
 
-	kdebug("parse() :%s\n",(const char *)s.local8Bit());
+	kdebug("parse() :%s escape=%i\n",(const char *)s.local8Bit(),escape);
 
-	return parse_expression(s,i,ule);
+	return parse_expression(s,i,ule,escape);
 }
 
 void deleteSearchIdStruct(QDialog *ptr) {
