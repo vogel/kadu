@@ -250,9 +250,9 @@ class Chat : public QWidget
 			Tresc wiadomosci mozna zmienic podmieniajac wskaznik
 			msg na nowy bufor i zwalniajac stary (za pomoca free).
 			Mozna tez przerwac dalsza jej obrobke ustawiajac
-			wskaznik msg na NULL.
+			wskaznik stop na true.
 		**/
-		void messageFiltering(const UinsList& uins,char*& msg);
+		void messageFiltering(const UinsList& uins,QCString& msg,bool& stop);
 		/**
 			Sygnal jest emitowany gdy zakonczy sie proces
 			wysylania wiadomosci i zwiazanych z tym czynnosci.

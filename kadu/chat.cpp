@@ -1088,7 +1088,7 @@ void Chat::sendMessage(void) {
 	kdebug("Chat::sendMessage():\n%s\n", myLastMessage.latin1());
 	myLastMessage.replace(QRegExp("\r\n"), "\n");
 
-	if (!mesg.length() || mesg.length() >= 2000)
+	if (mesg.length() >= 2000)
 		return;
 
 	addMyMessageToHistory();
@@ -1103,17 +1103,17 @@ void Chat::sendMessage(void) {
 		sendbtn->setText(tr("&Cancel"));
 		}
 
-	char* tmp = strdup(unicode2cp(mesg).data());
+	QCString msg = unicode2cp(mesg);
 	
-	emit messageFiltering(Uins,tmp);
-	if(tmp==NULL)
+	bool stop=false;
+	emit messageFiltering(Uins,msg,stop);
+	if(stop)
 		return;
 
 	if (myLastFormatsLength)
-		seq = gadu->sendMessageRichText(Uins, tmp, (unsigned char *)myLastFormats, myLastFormatsLength);
+		seq = gadu->sendMessageRichText(Uins, msg, (unsigned char *)myLastFormats, myLastFormatsLength);
 	else
-		seq = gadu->sendMessage(Uins, tmp);
-	free(tmp);
+		seq = gadu->sendMessage(Uins, msg);
 
  	if (config_file.readBoolEntry("Chat","MessageAcks"))
 		connect(&event_manager, SIGNAL(ackReceived(int)), this, SLOT(ackReceivedSlot(int)));

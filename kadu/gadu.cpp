@@ -41,6 +41,7 @@ GaduProtocol::GaduProtocol() : QObject()
 
 int GaduProtocol::sendMessage(const UinsList& uins,const char* msg)
 {
+	kdebugf();
 	int seq;
 	if(uins.count()>1)
 	{
@@ -54,11 +55,13 @@ int GaduProtocol::sendMessage(const UinsList& uins,const char* msg)
 	else
 		seq=gg_send_message(sess, GG_CLASS_CHAT, uins[0],
 			(unsigned char*)msg);
+	kdebugf2();
 	return seq;
 }
 
 int GaduProtocol::sendMessageRichText(const UinsList& uins,const char* msg,unsigned char* myLastFormats,int myLastFormatsLength)
 {
+	kdebugf();
 	int seq;
 	if(uins.count()>1)
 	{
@@ -74,11 +77,13 @@ int GaduProtocol::sendMessageRichText(const UinsList& uins,const char* msg,unsig
 		seq = gg_send_message_richtext(sess, GG_CLASS_CHAT,
 				uins[0], (unsigned char*)msg,
 				myLastFormats, myLastFormatsLength);
+	kdebugf2();
 	return seq;
 }
 
 void GaduProtocol::sendUserList()
 {
+	kdebugf();
 	uin_t *uins;
 	char *types;
 	unsigned int i, j;
@@ -118,22 +123,23 @@ void GaduProtocol::sendUserList()
 
 	free(uins);
 	free(types);
+	kdebugf2();
 }
 
 bool GaduProtocol::sendImageRequest(uin_t uin,int size,uint32_t crc32)
 {
 	kdebugf();
 	int res = gg_image_request(sess, uin, size, crc32);
-	return (res==0);
 	kdebugf2();
+	return (res==0);
 }
 
 bool GaduProtocol::sendImage(uin_t uin,const QString& file_name,uint32_t size,char* data)
 {
 	kdebugf();
 	int res = gg_image_reply(sess, uin, file_name.local8Bit().data(), data, size);
+	kdebugf2();
 	return (res==0);
-	kdebugf2();	
 }
 
 GaduProtocol* gadu;

@@ -122,7 +122,7 @@ void EncryptionManager::chatCreated(const UinsList& uins)
 		(keyfile.permission(QFileInfo::ReadUser) && uins.count() == 1);
 
 	Chat* chat=chat_manager->findChatByUins(uins);
-	connect(chat,SIGNAL(messageFiltering(const UinsList&,char*&)),this,SLOT(sendMessageFilter(const UinsList&,char*&)));
+	connect(chat,SIGNAL(messageFiltering(const UinsList&,QCString&,bool&)),this,SLOT(sendMessageFilter(const UinsList&,QCString&,bool&)));
 
 	QPushButton* encryption_btn=chat->button("encryption_button");	
 	setupEncryptButton(chat,config_file.readBoolEntry("Chat", "Encryption") && encryption_possible);	
@@ -198,14 +198,13 @@ void EncryptionManager::enableEncryptionBtnForUins(UinsList uins)
 	encryption_btn->setEnabled(true);
 }
 
-void EncryptionManager::sendMessageFilter(const UinsList& uins,char*& msg)
+void EncryptionManager::sendMessageFilter(const UinsList& uins,QCString& msg,bool& stop)
 {
 	Chat* chat=chat_manager->findChatByUins(uins);
 	if (uins.count()==1 && EncryptionEnabled[chat])
 	{
-		char* encrypted = sim_message_encrypt((unsigned char *)msg, uins[0]);
-		free(msg);
-		msg = encrypted;
+		const char* msg_c = msg;
+		msg = sim_message_encrypt((const unsigned char *)msg_c, uins[0]);
 	}
 }
 
