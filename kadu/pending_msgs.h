@@ -2,6 +2,7 @@
 #ifndef PENDING_MSGS_H
 #define PENDING_MSGS_H
 
+#include <qvaluelist.h>
 
 class PendingMsgs
 {

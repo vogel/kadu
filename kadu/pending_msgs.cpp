@@ -1,4 +1,6 @@
 
+#include "pending_msgs.h"
+
 PendingMsgs::PendingMsgs()
 {
 };
