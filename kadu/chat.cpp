@@ -1340,7 +1340,7 @@ void ChatSlots::onDestroyConfigDialog()
 	
 	QComboBox* cb_emoticons_theme= ConfigDialog::getComboBox("Chat", "Emoticons theme");
 	config_file.writeEntry("Chat", "EmoticonsTheme",cb_emoticons_theme->currentText());
-	
+	emoticons.setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
 	QComboBox *cb_emoticons_style= ConfigDialog::getComboBox("Chat", "Emoticons:");
 	config_file.writeEntry("Chat", "EmoticonsStyle", cb_emoticons_style->currentItem());
 
