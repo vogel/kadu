@@ -35,27 +35,10 @@ QString printDateTime(const QDateTime &datetime);
 QString timestamp(time_t = 0);
 QDateTime currentDateTime();
 QString pwHash(const QString tekst);
-void deleteSearchIdStruct(QDialog *ptr);
 void escapeSpecialCharacters(QString &msg);
 QString formatGGMessage(const QString &msg, int formats_length, void *formats);
 QString unformatGGMessage(const QString &msg, int &formats_length, void *&formats);
 QString parse(QString s, UserListElement ule, bool escape = true);
-
-enum {
-	DIALOG_SEARCH,
-	DIALOG_PERSONAL
-};
-
-struct SearchIdStruct {
-	QDialog *ptr;
-	uint32_t seq;
-	int type;
-};
-
-// ominiecie bledu w GCC 3.2
-static QValueList<struct SearchIdStruct> SearchList_gcc32_bug;
-////////////////////////////
-extern QValueList<struct SearchIdStruct> SearchList;
 
 class UinsList : public QValueList<uin_t>
 {

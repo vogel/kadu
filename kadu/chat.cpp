@@ -568,7 +568,6 @@ void Chat::userWhois(void) {
 		else
 			uin = userlist.byAltNick(userbox->currentText()).uin;
 	SearchDialog *sd = new SearchDialog(0, "User info", uin);
-	sd->init();
 	sd->show();
 	sd->firstSearch();
 }

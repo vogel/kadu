@@ -609,25 +609,12 @@ void EventManager::dccConnectionReceivedSlot(const UserListElement& sender)
 
 void EventManager::pubdirReplyReceivedSlot(gg_pubdir50_t res)
 {
-	uint32_t seq = gg_pubdir50_seq(res);
-	int i = 0;
-	while (i < SearchList.count() && SearchList[i].seq != seq)
-		i++;
-	if (i < SearchList.count())
-		switch (SearchList[i].type)
-		{
-			case DIALOG_SEARCH:
-				((SearchDialog *)SearchList[i].ptr)->showResults(res);
-				break;
-			case DIALOG_PERSONAL:
-				((PersonalInfoDialog *)SearchList[i].ptr)->fillFields(res);
-				break;
-		};
+	kdebug("EventManager::pubdirReplyReceivedSlot(): got pubdir reply.\n");
 };
 
 void EventManager::userlistReplyReceivedSlot(char type, char *reply)
 {
-	kdebug("EVentManager::userlistReplyReceivedSlot(): got userlist reply.\n");
+	kdebug("EventManager::userlistReplyReceivedSlot(): got userlist reply.\n");
 }
 
 void EventManager::eventHandler(gg_session* sess)

@@ -19,6 +19,7 @@
 #include "kadu.h"
 //
 #include "debug.h"
+#include "events.h"
 #include "personal_info.h"
 
 PersonalInfoDialog::PersonalInfoDialog(QDialog *parent, const char *name)
@@ -84,13 +85,11 @@ PersonalInfoDialog::PersonalInfoDialog(QDialog *parent, const char *name)
 	connect(CancelButton, SIGNAL(clicked()), this, SLOT(reject()));
 
 	if (getActualStatus() != GG_STATUS_NOT_AVAIL) {
-		struct SearchIdStruct sid;
 		gg_pubdir50_t req;
 		req = gg_pubdir50_new(GG_PUBDIR50_READ);
-		sid.ptr = this;
-		sid.seq = gg_pubdir50(sess, req);
-		sid.type = DIALOG_PERSONAL;
-		SearchList.append(sid);
+		seq = gg_pubdir50(sess, req);
+		connect(&event_manager, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)),
+			this, SLOT(fillFields(gg_pubdir50_t)));
 		gg_pubdir50_free(req);
 		State = READING;
 		}
@@ -111,7 +110,6 @@ void PersonalInfoDialog::OkButtonClicked()
 	family_name = strdup(unicode2cp(FamilyNameEdit->text()).data());
 	family_city = strdup(unicode2cp(FamilyCityEdit->text()).data());
 
-	struct SearchIdStruct sid;
 	gg_pubdir50_t req;
 	req = gg_pubdir50_new(GG_PUBDIR50_WRITE);
 	if (strlen(first))
@@ -131,12 +129,10 @@ void PersonalInfoDialog::OkButtonClicked()
 	if (strlen(family_city))
 		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYCITY, (const char *)family_city);
 
-	sid.ptr = this;
-	sid.seq = gg_pubdir50(sess, req);
-	sid.type = DIALOG_PERSONAL;
-	SearchList.append(sid);
+	seq = gg_pubdir50(sess, req);
 	gg_pubdir50_free(req);
-
+	connect(&event_manager, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)),
+		this, SLOT(fillFields(gg_pubdir50_t)));
 	State = WRITTING;
 
 	setEnabled(false);
@@ -156,7 +152,11 @@ void PersonalInfoDialog::fillFields(gg_pubdir50_t res)
 	const char *first, *last, *nick, *born, *city,
 		*gender, *family_name, *family_city;
 
-	deleteSearchIdStruct(this);
+	if (res->seq != seq)
+		return;
+
+	disconnect(&event_manager, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)),
+		this, SLOT(fillFields(gg_pubdir50_t)));
 
 	switch (State) {
 		case READING:
@@ -197,7 +197,8 @@ void PersonalInfoDialog::fillFields(gg_pubdir50_t res)
 
 void PersonalInfoDialog::closeEvent(QCloseEvent * e)
 {
-	deleteSearchIdStruct(this);
+	disconnect(&event_manager, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)),
+		this, SLOT(fillFields(gg_pubdir50_t)));
 	QWidget::closeEvent(e);
 }
 

@@ -20,8 +20,7 @@ class SearchDialog : public QDialog {
 	public:
 		SearchDialog(QWidget *parent=0, const char *name=0, uin_t whoisSearchUin = 0);
 		~SearchDialog(void);
-		void init(void);
-		
+
 	private:
 		QCheckBox *only_active;
 		QLineEdit *e_name;
@@ -38,6 +37,7 @@ class SearchDialog : public QDialog {
 		QPushButton *b_nextbtn;
 		QPushButton *b_addbtn;
 		uin_t _whoisSearchUin;
+		int seq;
 
 		QLineEdit *e_uin;
 

@@ -19,6 +19,7 @@
 #include "kadu.h"
 #include "search.h"
 //#include "message.h"
+#include "events.h"
 #include "debug.h"
 //
 
@@ -146,6 +147,8 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchU
 		r_uin->setChecked(true);
 		e_uin->setText(QString::number(_whoisSearchUin));
 		}
+	resize(450,330);
+	setCaption(i18n("Search in directory"));
 }
 
 SearchDialog::~SearchDialog() {
@@ -173,11 +176,6 @@ void SearchDialog::selectionChanged(QListViewItem *item) {
 		b_addbtn->setText(i18n("&Add User"));
 		connect(b_addbtn, SIGNAL(clicked()), this, SLOT(AddButtonClicked()));
 		}
-}
-
-void SearchDialog::init() {
-	resize(450,330);
-	setCaption(i18n("Search in directory"));
 }
 
 void SearchDialog::prepareMessage(QListViewItem *item) {
@@ -260,24 +258,29 @@ void SearchDialog::nextSearch(void) {
 	progress->setText(i18n("Searching..."));
 	kdebug("SearchDialog::doSearch(): let the search begin\n");
 
-	struct SearchIdStruct sid;
-	sid.ptr = this;
-	sid.seq = gg_pubdir50(sess, req);
-	sid.type = DIALOG_SEARCH;
-	SearchList.append(sid);
+	seq = gg_pubdir50(sess, req);
 	gg_pubdir50_free(req);
+	connect(&event_manager, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)),
+		this, SLOT(showResults(gg_pubdir50_t)));
 }
 
 void SearchDialog::showResults(gg_pubdir50_t res) {
 	int i, j, count, statuscode;
 	const char *uin, *first, *nick, *born, *city, *status;
 	
+	if (res->seq != seq)
+		return;
+
+	disconnect(&event_manager, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)),
+		this, SLOT(showResults(gg_pubdir50_t)));
+
 	count = gg_pubdir50_count(res);
 
 	if (count < 1) {
 		kdebug("SearchDialog::showResults(): No results. Exit.\n");
 		progress->setText(i18n("Done searching"));
-		QMessageBox::information(this, i18n("No results"), i18n("There were no results of your search"));
+		QMessageBox::information(this, i18n("No results"),
+			i18n("There were no results of your search"));
 		searchhidden = false;
 		b_sendbtn->setEnabled(true);
 		b_nextbtn->setEnabled(true);
@@ -323,7 +326,6 @@ void SearchDialog::showResults(gg_pubdir50_t res) {
 				&& (statuscode == GG_STATUS_NOT_AVAIL || statuscode == GG_STATUS_NOT_AVAIL_DESCR)) {
 				qlv->setPixmap(0, *pix);
 				searchhidden = true;
-				deleteSearchIdStruct(this);
 				nextSearch();
 				return;
 				}
@@ -340,14 +342,14 @@ void SearchDialog::showResults(gg_pubdir50_t res) {
 	else
 		selectionChanged(results->selectedItem());
 
-	deleteSearchIdStruct(this);
 	searchhidden = false;
 	b_sendbtn->setEnabled(true);
 	b_nextbtn->setEnabled(true);
 }
 
 void SearchDialog::closeEvent(QCloseEvent * e) {
-	deleteSearchIdStruct(this);
+	disconnect(&event_manager, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)),
+		this, SLOT(showResults(gg_pubdir50_t)));
 	QWidget::closeEvent(e);
 }
 
@@ -365,7 +367,8 @@ void SearchDialog::AddButtonClicked()
 	if (!selected && results->childCount() == 1)
 		selected = results->firstChild();
 	if (!selected) {
-		QMessageBox::information(this,i18n("Add User"),i18n("Select user first"));
+		QMessageBox::information(this,i18n("Add User"),
+			i18n("Select user first"));
 		return;
 		}
 
@@ -435,4 +438,3 @@ void SearchDialog::updateInfoClicked()
 		ule.blocking, ule.offline_to_user, ule.notify, ule.group(), ule.email);
 	userlist.writeToFile();
 }
-

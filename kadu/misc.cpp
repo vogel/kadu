@@ -23,7 +23,6 @@
 
 #define GG_FONT_IMAGE	0x80
 
-QValueList<struct SearchIdStruct> SearchList;
 QTextCodec *codec = QTextCodec::codecForName("CP1250");
 
 QString ggPath(QString subpath)
@@ -520,14 +519,6 @@ QString parse(QString s, UserListElement ule, bool escape) {
 	kdebug("parse() :%s escape=%i\n",(const char *)s.local8Bit(),escape);
 
 	return parse_expression(s,i,ule,escape);
-}
-
-void deleteSearchIdStruct(QDialog *ptr) {
-	int i = 0;
-	while (i < SearchList.count() && SearchList[i].ptr != ptr)
-		i++;
-	if (i < SearchList.count())
-		SearchList.remove(SearchList.at(i));
 }
 
 bool UinsList::equals(UinsList &uins) {

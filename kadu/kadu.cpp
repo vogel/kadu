@@ -606,7 +606,6 @@ void Kadu::lookupInDirectory() {
 	if (userbox->currentItem() != -1) {
 		SearchDialog *sd = new SearchDialog(0, i18n("User info"),
 			userlist.byAltNick(userbox->currentText()).uin);
-		sd->init();
 		sd->show();
 		sd->firstSearch();
 		}
@@ -720,7 +719,6 @@ void Kadu::openChat()
 void Kadu::searchInDirectory()
 {
 	SearchDialog *sd = new SearchDialog();
-	sd->init();
 	sd->show();
 }
 
