@@ -1,6 +1,7 @@
 Q: Skrypt nie znajduje mojego QT. Dlaczego?!
-A: Automake/autoconf w Kadu wymaga przepisania. Na dzieñ dzisiejszy
-   w 99,9% przypadków pomaga opcja --with-qt-dir=/katalog
+A: Automake/autoconf w Kadu wymaga przetestowania.
+   Wypróbuj opcje --with-qt-dir=/katalog/do/qt oraz
+   --disable-mt
 
 Q: Jestem za firewallem. Czy mogê u¿ywaæ Kadu?
 A: Tak, mo¿esz u¿yæ proxy, popatrz na zmienne w sekcji Proxy
@@ -24,24 +25,23 @@ A: S± dwa sposoby - b±d¼ zaimporowaæ j± z serwera (po uprzednim
    zgodne z formatem u¿ywanym przez GG.
 
 Q: Czy dzia³a przesy³anie plików?
-A: Na razie tylko odbieranie, je¶li mamy rutowalne IP. Dopisz 
-   w konfiguracji AllowDCC=true. UWAGA: to nie jest stabilny kod.
+A: Tak. Spójrz do konfiguracji. UWAGA: to nie jest stabilny kod.
 
 Q: Zamiast obrazków pojawiaj± mi siê kwadraciki. Co jest ¼le?
 A: Nie masz ustawionej ¶cie¿ki do obrazków lub brakuje tam niektórych
    (lub wszystkich) z nich. W kadu.conf jest to pozycja EmoticonsPath
 
 Q: Kadu w ogóle nie chce siê kompilowaæ. Co robiæ?
-A: Mo¿esz np. spróbowaæ ¶ci±gn±æ RPMa z ftp://ftp.pld.org.pl/test/
+A: Mo¿esz np. spróbowaæ ¶ci±gn±æ RPMa. Szczegó³y na stronie.
 
 Q: Podczas kompilacji wy¶wietlaj± mi siê informacje o jakim¶ undefined
    reference to gg_*
 A: W katalogu kadu/kadu w pliku Makefile dodaj na koñcu:
 
-   ../ekg/lib/libgadu.a:
-	cd ../ekg; ./configure;
-	make -C ../ekg/lib;
-	strip -g ../ekg/lib/libgadu.a;
+   ../libgadu/lib/libgadu.a:
+	cd ../libgadu; ./configure;
+	make -C ../libgadu;
+	strip -g ../libgadu/lib/libgadu.a;
 
    Pamiêtaj, ¿e odstêpy to tabulatory, nie spacje! Teraz make powinien
    grzecznie znale¼æ libgadu.a i siê z nim zlinkowaæ.
