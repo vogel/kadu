@@ -409,6 +409,7 @@ AnimTextItem::AnimTextItem(
 	const QString& filename, const QColor& bgcolor, const QString& tip)
 	: QTextCustomItem(p)
 {
+	text=tip;
 	Edit=edit;
 	Label=new QLabel(Edit->viewport());
 	Edit->addChild(Label);
@@ -459,6 +460,11 @@ void AnimTextItem::draw(
 		u+=Edit->paragraphRect(0).topLeft();
 	Label->move(u);
 	Label->show();
+}
+
+QString AnimTextItem::richText() const
+{
+	return text;
 }
 
 QImage* AnimTextItem::SizeCheckImage=NULL;

@@ -104,6 +104,7 @@ class AnimTextItem : public QTextCustomItem
 		QTextEdit* Edit;
 		QLabel* Label;
 		QSize EditSize;
+		QString text;
 	public:
 		AnimTextItem(
 			QTextDocument *p, QTextEdit* edit,
@@ -113,6 +114,7 @@ class AnimTextItem : public QTextCustomItem
 			QPainter* p, int x, int y, int cx, int cy,
 			int cw, int ch, const QColorGroup& cg,
 			bool selected );
+		virtual QString richText() const;
 };
 
 class AnimStyleSheet : public QStyleSheet
