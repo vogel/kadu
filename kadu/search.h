@@ -76,6 +76,7 @@ class SearchDialog : public QDialog {
 		void prepareMessage(QListViewItem*);
 		void uinTyped(void);
 		void phoneTyped(void);
+		void personalDataTyped(void);
 		void dataReceived(void);
 		void dataSent(void);
 		void AddButtonClicked();
