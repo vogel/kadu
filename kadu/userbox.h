@@ -21,8 +21,6 @@ class KaduListBoxPixmap : public QListBoxItem
 		bool isBold() const { return bold; }
 		int height(const QListBox *lb) const;
 		int width(const QListBox *lb) const;
-		static void setFont(const QFont &f);
-		
 
 	protected:
 		int lineHeight(const QListBox *lb) const;
@@ -34,11 +32,27 @@ class KaduListBoxPixmap : public QListBoxItem
 		void changeText(const QString &text);
 		friend class UserBox;
 
+		/*funkcje wprowadzone ¿eby zaoszczêdziæ na odwo³aniach do pliku konfiguracyjnego*/
+		static void setFont(const QFont &f);
+		static void setMyUIN(UinType u);
+		static void setShowDesc(bool sd);
+		static void setAlignTop(bool at);
+		static void setShowMultilineDesc(bool m);
+		static void setMultiColumn(bool m);
+		static void setMultiColumnWidth(int w);
+
 	private:
 		QPixmap pm;
 		QString descr;
 		bool bold;
 		static QFontMetrics *descriptionFontMetrics;
+
+		static UinType myUIN;
+		static bool ShowDesc;
+		static bool AlignUserboxIconsTop;
+		static bool ShowMultilineDesc;
+		static bool MultiColumn;
+		static int  MultiColumnWidth;
 		
 		mutable QString buf_text;
 		mutable int buf_width;

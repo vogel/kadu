@@ -25,6 +25,12 @@
 #include "misc.h"
 
 QFontMetrics* KaduListBoxPixmap::descriptionFontMetrics=NULL;
+UinType KaduListBoxPixmap::myUIN;
+bool KaduListBoxPixmap::ShowDesc;
+bool KaduListBoxPixmap::AlignUserboxIconsTop;
+bool KaduListBoxPixmap::ShowMultilineDesc;
+bool KaduListBoxPixmap::MultiColumn;
+int  KaduListBoxPixmap::MultiColumnWidth;
 
 void KaduListBoxPixmap::setFont(const QFont &f)
 {
@@ -55,12 +61,42 @@ KaduListBoxPixmap::KaduListBoxPixmap(const QPixmap &pix, const QString &text, co
 	setBold(bold);
 }
 
+void KaduListBoxPixmap::setMyUIN(UinType u)
+{
+	myUIN=u;
+}
+
+void KaduListBoxPixmap::setShowDesc(bool sd)
+{
+	ShowDesc=sd;
+}
+
+void KaduListBoxPixmap::setAlignTop(bool at)
+{
+	AlignUserboxIconsTop=at;
+}
+
+void KaduListBoxPixmap::setShowMultilineDesc(bool m)
+{
+	ShowMultilineDesc=m;
+}
+
+void KaduListBoxPixmap::setMultiColumn(bool m)
+{
+	MultiColumn=m;
+}
+
+void KaduListBoxPixmap::setMultiColumnWidth(int w)
+{
+	MultiColumnWidth=w;
+}
+
 void KaduListBoxPixmap::paint(QPainter *painter)
 {
 //	kdebugf();
 	UserListElement &user = userlist.byAltNick(text());
 //	kdebugm(KDEBUG_INFO, "%d\n", (int)&user);
-	bool isOurUin=((UinType)config_file.readNumEntry("General", "UIN") == user.uin());
+	bool isMyUin=(myUIN == user.uin());
 	if (user.uin())
 	{
 		UinsList uins;
@@ -85,11 +121,10 @@ void KaduListBoxPixmap::paint(QPainter *painter)
 		}
 	}
 
-	bool alignIconTop = config_file.readBoolEntry("Look", "AlignUserboxIconsTop");
-	int itemHeight = alignIconTop ? lineHeight(listBox()):height(listBox());
+	int itemHeight = AlignUserboxIconsTop ? lineHeight(listBox()):height(listBox());
 	int yPos;
-	QString descr=isOurUin ? gadu->status().description() : description();
-	bool hasDescription=isOurUin ? gadu->status().hasDescription() : !descr.isEmpty();
+	QString descr=isMyUin ? gadu->status().description() : description();
+	bool hasDescription=isMyUin ? gadu->status().hasDescription() : !descr.isEmpty();
 
 	if (!pm.isNull())
 	{
@@ -110,8 +145,7 @@ void KaduListBoxPixmap::paint(QPainter *painter)
 
 		QFontMetrics fm = painter->fontMetrics();
 
-		bool showDesc=config_file.readBoolEntry("Look", "ShowDesc");
-		if (showDesc && hasDescription)
+		if (ShowDesc && hasDescription)
 			yPos = fm.ascent() + 1;
 		else
 			yPos = ((itemHeight - fm.height()) / 2) + fm.ascent();
@@ -121,9 +155,9 @@ void KaduListBoxPixmap::paint(QPainter *painter)
 		if (bold)
 			painter->setFont(oldFont);
 
-//		kdebugmf(KDEBUG_INFO, "isOurUin = %d, own_description = %s\n",
-//			isOurUin, (const char *)unicode2latin(own_description));
-		if (showDesc && hasDescription)
+//		kdebugmf(KDEBUG_INFO, "isMyUin = %d, own_description = %s\n",
+//			isMyUin, (const char *)unicode2latin(own_description));
+		if (ShowDesc && hasDescription)
 		{
 			yPos += fm.height() - fm.descent();
 
@@ -131,7 +165,7 @@ void KaduListBoxPixmap::paint(QPainter *painter)
 			newFont.setPointSize(oldFont.pointSize() - 2);
 			painter->setFont(newFont);
 
-			if (!config_file.readBoolEntry("Look", "ShowMultilineDesc"))
+			if (!ShowMultilineDesc)
 				descr.replace(QRegExp("\n"), " ");
 
 			int h;
@@ -153,14 +187,14 @@ int KaduListBoxPixmap::height(const QListBox* lb) const
 {
 //	kdebugf();
 	UserListElement &user = userlist.byAltNick(text());
-	bool isOurUin=((UinType)config_file.readNumEntry("General", "UIN") == user.uin());
-	QString descr=isOurUin ? gadu->status().description() : description();
-	bool hasDescription=isOurUin ? gadu->status().hasDescription() : !descr.isEmpty();
+	bool isMyUin=(myUIN == user.uin());
+	QString descr=isMyUin ? gadu->status().description() : description();
+	bool hasDescription=isMyUin ? gadu->status().hasDescription() : !descr.isEmpty();
 
 	int height=lb->fontMetrics().lineSpacing()+3;
-	if (hasDescription && config_file.readBoolEntry("Look", "ShowDesc"))
+	if (hasDescription && ShowDesc)
 	{
-		if (!config_file.readBoolEntry("Look", "ShowMultilineDesc"))
+		if (!ShowMultilineDesc)
 			descr.replace(QRegExp("\n"), " ");
 		QStringList out;
 		int h;
@@ -181,8 +215,8 @@ int KaduListBoxPixmap::lineHeight(const QListBox* lb) const
 int KaduListBoxPixmap::width(const QListBox* lb) const
 {
 //	kdebugf();
-	if (config_file.readBoolEntry("Look", "MultiColumnUserbox"))
-		return config_file.readNumEntry("Look", "MultiColumnUserboxWidth", 230);
+	if (MultiColumn)
+		return MultiColumnWidth;
 	else
 		return QMAX(pm.width(), lb->width()-20);
 /*
@@ -421,6 +455,12 @@ void UserBox::refresh()
 	this->setPaletteForegroundColor(config_file.readColorEntry("Look","UserboxFgColor"));
 	this->QListBox::setFont(config_file.readFontEntry("Look","UserboxFont"));
 	KaduListBoxPixmap::setFont(config_file.readFontEntry("Look","UserboxFont"));
+	KaduListBoxPixmap::setShowDesc(config_file.readBoolEntry("Look", "ShowDesc"));
+	KaduListBoxPixmap::setAlignTop(config_file.readBoolEntry("Look", "AlignUserboxIconsTop"));
+	KaduListBoxPixmap::setShowMultilineDesc(config_file.readBoolEntry("Look", "ShowMultilineDesc"));
+	KaduListBoxPixmap::setMultiColumn(config_file.readBoolEntry("Look", "MultiColumnUserbox"));
+	KaduListBoxPixmap::setMultiColumnWidth(config_file.readNumEntry("Look", "MultiColumnUserboxWidth", 230));
+	KaduListBoxPixmap::setMyUIN(config_file.readNumEntry("General", "UIN"));
 
 	// Zapamietujemy zaznaczonych uzytkownikow
 	QStringList s_users;
