@@ -60,6 +60,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * drobna poprawka mania dla dla gcc 2.95.2 (adrian)
 * poprawka zachowania okna czat, historii, panela informacyjnego przy
   altnickach zawieraj±cych znaki specjalne html, np. znak mniejszo¶ci (adrian)
+* w konfiguracji wygl±dów dymków, w pozycji wyboru powiadomienia dodana
+  pozycja "Set for all" (mast3r)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,

@@ -632,6 +632,7 @@ void HintManagerSlots::onCreateConfigDialog()
 	hb_0->setSpacing(2);
 
 	cb_notify = new QComboBox(hb_0);
+	cb_notify->insertItem(tr("Set for all"));
 	cb_notify->insertItem(tr("Online"));
 	cb_notify->insertItem(tr("Online (d.)"));
 	cb_notify->insertItem(tr("Busy"));
@@ -648,7 +649,6 @@ void HintManagerSlots::onCreateConfigDialog()
 	/*QLabel *l_timeout = */new QLabel(tr("Hint timeout"), hb_0);
 
 	sb_timeout = new QSpinBox(1,600,1,hb_0);
-	sb_timeout->setValue(hint[cb_notify->currentItem()][4].toInt());
 	sb_timeout->setSuffix(" s");
 
 	QHBox *hb_1 = new QHBox(hintgrp);
@@ -658,9 +658,6 @@ void HintManagerSlots::onCreateConfigDialog()
 	hgb_0->setAlignment(Qt::AlignCenter);
 
 	preview = new QLabel(tr("<b>Text</b> preview"),hgb_0);
-	preview->setFont(QFont(hint[cb_notify->currentItem()][0],hint[cb_notify->currentItem()][1].toInt()));
-	preview->setPaletteForegroundColor(QColor(hint[cb_notify->currentItem()][2]));
-	preview->setPaletteBackgroundColor(QColor(hint[cb_notify->currentItem()][3]));
 	preview->setAlignment(Qt::AlignCenter);
 
 	QVBox *vb_0 = new QVBox(hb_1);
@@ -686,6 +683,9 @@ void HintManagerSlots::onCreateConfigDialog()
 	cb_middle->insertItem(tr("Delete hint"));
 	cb_middle->insertItem(tr("Delete all hints"));
 	cb_middle->setCurrentItem(config_file.readNumEntry("Hints", "MiddleButton"));
+
+/* Ustawiamy poczatkowe parametry podgladu dla ustawionej pozycji */
+	activatedChanged(cb_notify->currentItem());
 
 	connect(pb_fontcolor,SIGNAL(clicked()),this,SLOT(changeFontColor()));
 	connect(pb_bgcolor,SIGNAL(clicked()),this,SLOT(changeBackgroundColor()));
@@ -728,7 +728,6 @@ void HintManagerSlots::onDestroyConfigDialog()
 	config_file.writeEntry("Hints", "RightButton", cb_right->currentItem());
 	config_file.writeEntry("Hints", "MiddleButton", cb_middle->currentItem());
 
-
 	if (hintmanager != NULL)
 	{
 		switch(b_hint->isChecked())
@@ -750,10 +749,13 @@ void HintManagerSlots::onDestroyConfigDialog()
 
 void HintManagerSlots::activatedChanged(int index)
 {
-	preview->setFont(QFont(hint[index][0],hint[index][1].toInt()));
-	preview->setPaletteForegroundColor(QColor(hint[index][2]));
-	preview->setPaletteBackgroundColor(QColor(hint[index][3]));
-	sb_timeout->setValue(hint[index][4].toInt());
+	if (index != 0)
+	{
+		preview->setFont(QFont(hint[index-1][0],hint[index-1][1].toInt()));
+		preview->setPaletteForegroundColor(QColor(hint[index-1][2]));
+		preview->setPaletteBackgroundColor(QColor(hint[index-1][3]));
+		sb_timeout->setValue(hint[index-1][4].toInt());
+	}
 }
 
 void HintManagerSlots::changeFontColor()
@@ -762,7 +764,11 @@ void HintManagerSlots::changeFontColor()
 	if (color.isValid())
 	{
 		preview->setPaletteForegroundColor(color);
-		hint[cb_notify->currentItem()][2] = color.name();
+		if (cb_notify->currentItem() == 0)
+			for (int i = 0; i < 12; i++)
+				hint[i][2] = color.name();
+		else
+			hint[cb_notify->currentItem()-1][2] = color.name();
 	}
 }
 
@@ -772,7 +778,11 @@ void HintManagerSlots::changeBackgroundColor()
 	if (color.isValid())
 	{
 		preview->setPaletteBackgroundColor(color);
-		hint[cb_notify->currentItem()][3] = color.name();
+		if (cb_notify->currentItem() == 0)
+			for (int i = 0; i < 12; i++)
+				hint[i][3] = color.name();
+		else
+			hint[cb_notify->currentItem()-1][3] = color.name();
 	}
 }
 void HintManagerSlots::changeFont()
@@ -785,14 +795,27 @@ void HintManagerSlots::changeFont()
 		font2.setFamily(font.family());
 		font2.setPointSize(font.pointSize());
 		preview->setFont(font2);
-		hint[cb_notify->currentItem()][0] = font2.family();
-		hint[cb_notify->currentItem()][1] = QString::number(font2.pointSize());
+		if (cb_notify->currentItem() == 0)
+			for (int i = 0; i < 12; i++)
+			{
+				hint[i][0] = font2.family();
+				hint[i][1] = QString::number(font2.pointSize());
+			}
+		else
+		{
+			hint[cb_notify->currentItem()-1][0] = font2.family();
+			hint[cb_notify->currentItem()-1][1] = QString::number(font2.pointSize());
+		}
 	}
 }
 
 void HintManagerSlots::changeTimeout(int value)
 {
-	hint[cb_notify->currentItem()][4] = QString::number(value);
+	if (cb_notify->currentItem() == 0)
+		for (int i = 0; i < 12; i++)
+			hint[i][4] = QString::number(value);
+	else
+		hint[cb_notify->currentItem()-1][4] = QString::number(value);
 }
 
 HintManager *hintmanager = NULL;
