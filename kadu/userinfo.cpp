@@ -95,9 +95,15 @@ void UserInfo::setupTab1() {
 	e_ver = new QLineEdit(vbox52);
 	e_ver->setReadOnly(true);
 	
-	QLabel *l_dnsname = new QLabel(i18n("DNS name"), box);
-	e_dnsname = new QLineEdit(box);
+	QHBox *hbox6 = new QHBox(box);
+	hbox6->setSpacing(10);
+	QVBox *vbox61 = new QVBox(hbox6);
+	QLabel *l_dnsname = new QLabel(i18n("DNS name"), vbox61);
+	e_dnsname = new QLineEdit(vbox61);
 	e_dnsname->setReadOnly(true);
+	QVBox *vbox62 = new QVBox(hbox6);
+	QLabel *l_email = new QLabel(i18n("Email"), vbox62);
+	e_email = new QLineEdit(puser->email, vbox62);
 
 	if (puser->ip.ip4Addr())
 		e_addr->setText(puser->ip.toString());
@@ -239,7 +245,7 @@ void UserInfo::writeUserlist() {
 				e_mobile->text(), e_uin->text().length() ? e_uin->text() : QString("0"),
 				uin != puser->uin ? GG_STATUS_NOT_AVAIL : puser->status,
 				c_blocking->isChecked(), c_offtouser->isChecked(),
-				c_notify->isChecked(), e_group->text(), "");
+				c_notify->isChecked(), e_group->text(), e_email->text());
 			puser->anonymous = false;
 			userlist.writeToFile();
 			UserBox::all_refresh();

@@ -28,6 +28,7 @@ class UserInfo : public QTabDialog {
 		QLineEdit *e_addr;
 		QLineEdit *e_ver;
 		QLineEdit *e_group;		
+		QLineEdit *e_email;
 		QLineEdit *e_dnsname;
 		QCheckBox *c_blocking;
 		QCheckBox *c_offtouser;
