@@ -314,7 +314,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Look"));
 
 	ConfigDialog::addComboBox("Look", "Look",
-			QT_TRANSLATE_NOOP("@default","QT Theme"));
+			QT_TRANSLATE_NOOP("@default","Qt Theme"));
 
 	ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Show vertical scrollbar in information panel"), "PanelVerticalScrollbar", true);
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Colors"));
@@ -1635,11 +1635,11 @@ void KaduSlots::onCreateConfigDialog()
 	e_password->setEchoMode(QLineEdit::Password);
 	e_password->setText(pwHash(config_file.readEntry("General", "Password", "")));
 
-	QComboBox *cb_qttheme=ConfigDialog::getComboBox("Look", "QT Theme");
+	QComboBox *cb_qttheme=ConfigDialog::getComboBox("Look", "Qt Theme");
 	QStringList sl_themes=QStyleFactory::keys();
 	cb_qttheme->insertStringList(sl_themes);
 	if(!sl_themes.contains(QApplication::style().name()))
-		cb_qttheme->setCurrentText(tr("Unknow"));
+		cb_qttheme->setCurrentText(tr("Unknown"));
 	else
 		cb_qttheme->setCurrentText(QApplication::style().name());
 	
@@ -1716,10 +1716,10 @@ void KaduSlots::onDestroyConfigDialog()
 	QComboBox *cb_language= ConfigDialog::getComboBox("General", "Set language:");
 	config_file.writeEntry("General", "Language", translateLanguage(qApp, cb_language->currentText(),false));
 	
-	QString new_style=ConfigDialog::getComboBox("Look", "QT Theme")->currentText();
-	if(new_style!=tr("Unknow") && new_style != QApplication::style().name()){
+	QString new_style=ConfigDialog::getComboBox("Look", "Qt Theme")->currentText();
+	if(new_style!=tr("Unknown") && new_style != QApplication::style().name()){
 		QApplication::setStyle(new_style);
-		config_file.writeEntry("Look", "QTStyle", new_style);
+		config_file.writeEntry("Look", "QtStyle", new_style);
 	}
 
 	kdebugf2();
