@@ -165,7 +165,7 @@ void Chat::setTitle() {
 	QString name;
 	QString title;
 	int i,j,k;
-	UserListElement ule;
+	UserListElement user;
 
 	title = i18n("Chat with ");
 
@@ -175,13 +175,13 @@ void Chat::setTitle() {
 	    
 		name = userlist.byUin(uins[k]).comment;
 		title.append(name);
-		ule = userlist.byUin(uins[k]);
-		j = statusGGToStatusNr(ule.status);
+		user = userlist.byUin(uins[k]);
+		j = statusGGToStatusNr(user.status);
 
 		title.append(" (");
 		title.append(i18n(statustext[j]));
 		if (j & 1)
-			title.append(i18n(": %1)").arg(*userlist[i].description));
+			title.append(i18n(": %1)").arg(user.description));
 		else
 			title.append(")");
 		}
