@@ -34,22 +34,51 @@
 
 Kadu *kadu;	
 
+//#define HAVE_EXECINFO
+#undef HAVE_EXECINFO
+
 #ifdef SIG_HANDLING_ENABLED
 #include <qdatetime.h>
 #include <signal.h>
 #include <stdlib.h>
+#ifdef HAVE_EXECINFO
+#include <execinfo.h>
+#endif
 void kadu_signal_handler(int s)
 {
 	kdebug("kadu_signal_handler: %d\n", s);
-	flock(lockFileHandle, LOCK_UN);
-	kdebug("lock released\n");
-//	lockFile->close();//im mniej operacji tym lepiej...
-//	kdebug("lockfile closed\n");
+	if(lockFile){ // moze sie wywalic praktycznie po wylaczeniu i to tez trzeba uwzglednic	
+		flock(lockFileHandle, LOCK_UN);
+		kdebug("lock released\n");
+		lockFile->close(); //im mniej operacji tym lepiej...
+		kdebug("lockfile closed\n");
+	}
 	
 	QString f=QString("kadu.conf.backup.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
 	if (s==SIGSEGV)
 	{
 		kdebug("Kadu crashed :(\n");
+#ifdef HAVE_EXECINFO
+		void *bt_array[100];
+		char **bt_strings;
+		int num_entries;
+		if ((num_entries = backtrace(bt_array, 100)) < 0) {
+			kdebug("could not generate backtrace\n");
+			return;
+		}
+		if ((bt_strings = backtrace_symbols(bt_array, num_entries)) == NULL) {
+			kdebug("could not get symbol names for backtrace\n");
+			return;
+		}
+		fprintf(stderr, "\n======= BEGIN OF BACKTRACE =====\n");
+		for (int i = 0; i < num_entries; i++) {
+			fprintf(stderr, "[%d] %s\n", i, bt_strings[i]);
+		}
+		fprintf(stderr, "======= END OF BACKTRACE  ======\n");
+		free(bt_strings);
+#else
+		kdebug("backtrace not available\n");		
+#endif
 		config_file.saveTo(ggPath(f.latin1()));
 		abort();
 	}

@@ -1616,6 +1616,7 @@ bool Kadu::close(bool quit) {
 		flock(lockFileHandle, LOCK_UN);
 		lockFile->close();
 		delete lockFile;
+		lockFile=NULL;
 		kdebug("Kadu::close(): Graceful shutdown...\n");
 		return true;
 	}
