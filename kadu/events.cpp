@@ -91,8 +91,9 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 		i++;
 
 	if (msgclass == GG_CLASS_CHAT && i < chats.count()) {
+		QString toadd;
 		tmp = __c2q((const char *)msg);
-		chats[i].ptr->checkPresence(senders, tmp, time);
+		chats[i].ptr->checkPresence(senders, tmp, time, toadd);
 		chats[i].ptr->playChatSound();
 
 		return;

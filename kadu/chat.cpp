@@ -334,20 +334,29 @@ void Chat::timerReset(void) {
 	kadu->autoaway->start(config.autoawaytime * 1000, TRUE);
 }	
 
-/* invoked from outside when new message arrives, this is the window to the world */
-int Chat::checkPresence(UinsList senders, QString &msg, time_t time) {
-	kadu->autoaway->stop();
-	kadu->autoaway->start(config.autoawaytime * 1000, TRUE);
-
-	QString toadd;
+void Chat::formatMessage(bool me, QString &altnick, QString &msg, const char *time, QString &toadd) {
 	QString editext = convertCharacters(msg);
-	toadd.append("<TABLE width=\"100%\"><TR><TD bgcolor=\"#F0F0F0\"><B>");
-	toadd.append(userlist.byUin(senders[0]).altnick);
+
+	toadd.append("<TABLE width=\"100%\"><TR><TD bgcolor=\"");
+	if (me)
+		toadd.append("#E0E0E0");
+	else
+		toadd.append("#F0F0F0");
+	toadd.append("\"><B>");
+	toadd.append(altnick);
 	toadd.append(" ");
-	toadd.append(__c2q(timestamp(time)));
+	toadd.append(__c2q(time));
 	toadd.append("</B><BR>");
 	toadd.append(editext);
 	toadd.append("</TD></TR></TABLE>");
+}
+
+/* invoked from outside when new message arrives, this is the window to the world */
+int Chat::checkPresence(UinsList senders, QString &msg, time_t time, QString &toadd) {
+	kadu->autoaway->stop();
+	kadu->autoaway->start(config.autoawaytime * 1000, TRUE);
+
+	formatMessage(false, userlist.byUin(senders[0]).altnick, msg, timestamp(time), toadd);
 
 	if (config.chatprune)
 		pruneWindow();
@@ -356,10 +365,17 @@ int Chat::checkPresence(UinsList senders, QString &msg, time_t time) {
 		body->setText(toadd + body->text());
 	else {
 		body->setText(body->text() + toadd);
-		body->scrollToBottom();
+		if (scrolling)
+			body->scrollToBottom();
 		}
 
 	return 0;
+}
+
+void Chat::setEnabledScrolling(bool enabled) {
+	scrolling = enabled;
+	if (scrolling && config.scrolldown)
+		body->scrollToBottom();
 }
 
 void Chat::playChatSound() {
@@ -379,15 +395,8 @@ void Chat::alertNewMessage(void) {
 
 void Chat::writeMyMessage() {
 	QString toadd;
-	QString editext = convertCharacters(myLastMessage);
 
-	toadd.append("<TABLE WIDTH=\"100%\"><TR><TD bgcolor=\"#E0E0E0\"><B>");
-	toadd.append(config.nick);
-	toadd.append(" ");
-	toadd.append(__c2q(timestamp()));
-	toadd.append("</B><BR>");
-	toadd.append(editext);
-	toadd.append("</TD></TR></TABLE>");
+	formatMessage(true, config.nick, myLastMessage, timestamp(), toadd);
 
 	if (config.chatprune)
 		pruneWindow();

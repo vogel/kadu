@@ -45,6 +45,7 @@ class Chat : public QDialog {
 		QPushButton *sendbtn;
 		UserBox *userbox;
 		QString myLastMessage;
+		bool scrolling;
 
 		void pruneWindow(void);
 
@@ -52,10 +53,12 @@ class Chat : public QDialog {
 		Chat(UinsList uins, QWidget *parent = 0);
 		~Chat();
 		void setTitle(void);
+		void setEnabledScrolling(bool);
+		void formatMessage(bool, QString &, QString &, const char *, QString &);
+		int checkPresence(UinsList, QString &, time_t, QString &);
+		void addEmoticon(QString);
 
 		KTextBrowser *body;
-		int checkPresence(UinsList, QString &, time_t);
-		void addEmoticon(QString);
 		CustomInput *edit;
 		QHBox *buttontray;
 		bool autosend_enabled;

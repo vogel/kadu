@@ -1079,14 +1079,15 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 /* if something's pending, open it, if not, open new message */
 void Kadu::sendMessage(QListBoxItem *item) {
 	QString tmp;
-	int i,j;
+	int i,j,k = -1;
 	bool stop = false;
 	rMessage *rmsg;
 	Message *msg;
 	UinsList uins;
 	PendingMsgs::Element elem;
 	uin_t uin;
-	
+	QString toadd;
+
 	uin = userlist.byAltNick(item->text()).uin;
 
 	if (!uin) {
@@ -1107,10 +1108,11 @@ void Kadu::sendMessage(QListBoxItem *item) {
 						tmp = QString::number(pending[i].uins[j]);
 						addUser("", "", tmp, tmp, "", tmp, GG_STATUS_NOT_AVAIL, "", "", true);
 						}
-				j = openChat(elem.uins);
-				chats[j].ptr->checkPresence(elem.uins, elem.msg, elem.time);	    
+				k = openChat(elem.uins);
+				chats[k].ptr->setEnabledScrolling(false);
+				chats[k].ptr->checkPresence(elem.uins, elem.msg, elem.time, toadd);	    
 				deletePendingMessage(i);
-				fprintf(stderr, "KK Kadu::sendMessage(): j=%d\n", j);
+				fprintf(stderr, "KK Kadu::sendMessage(): k=%d\n", k);
 				i--;
 				stop = true;
 				}
@@ -1124,11 +1126,14 @@ void Kadu::sendMessage(QListBoxItem *item) {
 					rmsg->init();
 					rmsg->show();
 					}
+				else
+					chats[k].ptr->setEnabledScrolling(true);
 				return;
 				}
 		}
 
 	if (stop) {
+		chats[k].ptr->setEnabledScrolling(true);
 		UserBox::all_refresh();
 		return;
 		}
@@ -1731,10 +1736,11 @@ void DockWidget::dockletChange(int id)
 
 void DockWidget::mousePressEvent(QMouseEvent * e) {
 	bool message = false;
-	int i,j;
+	int i,j, k = -1;
 	QString tmp;
 	PendingMsgs::Element elem;
-	
+	QString toadd;
+
 	if (!config.dock)
 		return;
 
@@ -1753,9 +1759,10 @@ void DockWidget::mousePressEvent(QMouseEvent * e) {
 							tmp = QString::number(elem.uins[j]);
 							kadu->addUser("", "", tmp, tmp, "", tmp, GG_STATUS_NOT_AVAIL, "", "", true);
 							}
-					j = kadu->openChat(elem.uins);
-					chats[j].ptr->checkPresence(elem.uins,
-						elem.msg, elem.time);	    
+					k = kadu->openChat(elem.uins);
+					chats[k].ptr->setEnabledScrolling(false);
+					chats[k].ptr->checkPresence(elem.uins,
+						elem.msg, elem.time, toadd);	    
 					deletePendingMessage(i);
 					stop = true;
 					}		
@@ -1769,10 +1776,14 @@ void DockWidget::mousePressEvent(QMouseEvent * e) {
 						rmsg->init();
 						rmsg->show();
 						}
+					else
+						chats[k].ptr->setEnabledScrolling(true);
+
 					return;
 					}
 			}
 		if (stop) {
+			chats[k].ptr->setEnabledScrolling(true);
 	    		UserBox::all_refresh();
 			return;
 			}
