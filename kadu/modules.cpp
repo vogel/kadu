@@ -81,9 +81,9 @@ ModulesDialog::ModulesDialog()
 	
 	QLabel *l_info = new QLabel(center);
 	l_icon->setPixmap(icons_manager.loadIcon("ManageModulesWindowIcon"));
-	l_info->setText("This dialog box allows you to manage installed modules. Modules are responsible "
+	l_info->setText(tr("This dialog box allows you to manage installed modules. Modules are responsible "
 			"for numerous vital features like playing sounds or message encryption. "
-			"You can load (or unload) them by double-clicking on their names.");
+			"You can load (or unload) them by double-clicking on their names."));
 	l_info->setAlignment(Qt::WordBreak);
 	// end create main QLabel widgets (icon and app info)
 	
@@ -166,7 +166,7 @@ void ModulesDialog::refreshLists()
 
 	QStringList sl_list = modules_manager->staticModules();
 	for(unsigned int i = 0; i < sl_list.size(); i++)
-		(void) new QListViewItem(lv_modules, sl_list[i], tr("Static"), tr("Loaded (show info)"));
+		(void) new QListViewItem(lv_modules, sl_list[i], tr("Static"), tr("Loaded"));
 		
 	sl_list = modules_manager->loadedModules();
 	for(unsigned int i = 0; i < sl_list.size(); i++)
