@@ -3,6 +3,12 @@ lub rozbudowy. Postaæ (x/y) oznacza, ¿e x jest pomys³odawc± lub
 podes³a³ patcha, a zrobi³ to kto¶ oznaczony przez y. Je¶li jest
 w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
++++ wersja 0.3.4-rc1
+* wiêkszo¶æ kodu dotycz±cego obs³ugi zdarzeñ sieciowych przeniesiona z
+  kadu.cpp/h do klasy EventManager. Tam nast±pi jego dalsze porz±dkowanie
+  i wydzielanie sygna³ów (adrian)
+* dalsze porz±dki w EventManager - wydzielenie sygna³ów connected,
+  connectionFailed, disconnected i ackReceived (adrian)
 
 +++ wersja 0.3.4-pre3
 * dodane przeszukiwanie historii (chilek)
@@ -58,11 +64,6 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * zmienna liczba kolumn w userbox'ie (chilek)
 * mo¿liwo¶æ ustawienia w konfiguracji czy liczba kolumn w userbox'ie
   ma byæ zmienna (chilek)
-* wiêkszo¶æ kodu dotycz±cego obs³ugi zdarzeñ sieciowych przeniesiona z
-  kadu.cpp/h do klasy EventManager. Tam nast±pi jego dalsze porz±dkowanie
-  i wydzielanie sygna³ów (adrian)
-* dalsze porz±dki w EventManager - wydzielenie sygna³ów connected,
-  connectionFailed, disconnected i ackReceived (adrian)
 
 +++ wersja 0.3.4-pre2
 * graficzny instalator - instaluj.tcl (googie)
