@@ -47,6 +47,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * enigmatyczne Kadu::mmb i ppm zmienione na Kadu::MenuBar i Kadu::MainMenu.
   publiczne metody Kadu::menuBar() i Kadu::mainMenu() daja modulom mozliwosc
   tworzenia nowych menu w oknie i nowych opcji w menu "Kadu" (googie/adrian)
+* kadu nie wysypuje sie przy wysylaniu sms'ow do plusa (pawel_p)
+* poprawiono ilosc cytowania linijek rozmowy (pawel_p)
 
 +++ wersja 0.3.6 (22.11.2003)
 * je¶li klikniemy na jaki¶ kontakt w userboxie, od którego otrzymali¶my jak±¶
