@@ -106,7 +106,7 @@ void KaduListBoxPixmap::paint(QPainter *painter) {
 			newFont.setPointSize(oldFont.pointSize() - 2);
 			painter->setFont(newFont);
 
-			if(config_file.readBoolEntry("Look", "ShowMultilineDecs")) {
+			if(config_file.readBoolEntry("Look", "ShowMultilineDesc")) {
 				QStringList lines=QStringList::split("\n", descr);
 				
 				for(QStringList::Iterator it = lines.begin(); it != lines.end(); ++it ){
@@ -133,7 +133,7 @@ int KaduListBoxPixmap::height(const QListBox* lb) const
 	if (!hasDescription || !config_file.readBoolEntry("Look", "ShowDesc"))
 		lh = lb->fontMetrics().lineSpacing() + 2;
 	else{
-		if(config_file.readBoolEntry("Look", "ShowMultilineDecs"))
+		if(config_file.readBoolEntry("Look", "ShowMultilineDesc"))
 			lh = lb->fontMetrics().lineSpacing() * (2 + descr.contains('\n')) -2;
 		else
 			lh = lb->fontMetrics().lineSpacing() * 2 - 2;
@@ -629,7 +629,7 @@ void UserBox::initModule()
 	ConfigDialog::addCheckBox("Look", "grid", QT_TRANSLATE_NOOP("@default", "Display group tabs"), "DisplayGroupTabs", true);
 	ConfigDialog::addCheckBox("Look", "grid", QT_TRANSLATE_NOOP("@default", "Multicolumn userbox"), "MultiColumnUserbox", false);
 	ConfigDialog::addCheckBox("Look", "grid", QT_TRANSLATE_NOOP("@default", "Show description in userbox"), "ShowDesc", true);
-	ConfigDialog::addCheckBox("Look", "grid", QT_TRANSLATE_NOOP("@default", "Multiline description in userbox"), "ShowMultilineDecs", true);
+	ConfigDialog::addCheckBox("Look", "grid", QT_TRANSLATE_NOOP("@default", "Multiline description in userbox"), "ShowMultilineDesc", true);
 	ConfigDialog::addCheckBox("Look", "grid", QT_TRANSLATE_NOOP("@default", "Show avaliable in bold"), "ShowBold", true);
 
 	UserBoxSlots *userboxslots= new UserBoxSlots();
