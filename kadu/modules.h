@@ -29,6 +29,7 @@ class ModulesManager : public QObject
 		QStringList unloadedModules();
 		bool loadModule(const QString& module_name);
 		void unloadModule(const QString& module_name);
+		void saveLoadedModules();
 		
 	public slots:
 		void showDialog();

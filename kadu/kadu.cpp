@@ -63,10 +63,6 @@
 #include "gadu.h"
 #include "../config.h"
 
-#ifdef MODULES_ENABLED
-#include "modules.h"
-#endif
-
 #define GG_USER_OFFLINE	0x01
 #define	GG_USER_NORMAL	0x03
 #define GG_USER_BLOCKED	0x04
@@ -313,9 +309,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	AutoAwayTimer::initModule();
 	SoundSlots::initModule();
 	EventConfigSlots::initModule();
-#ifdef MODULES_ENABLED
-	ModulesManager::initModule();
-#endif
 
 	ConfigDialog::registerSlotOnCreate(kaduslots, SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnDestroy(kaduslots, SLOT(onDestroyConfigDialog()));
@@ -626,7 +619,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 			QObject::connect(uc->op, SIGNAL(data(const QByteArray &, QNetworkOperation *)),
 				this, SLOT(gotUpdatesInfo(const QByteArray &, QNetworkOperation *)));
 		uc->run();
-		}		
+		}
 }
 
 void Kadu::popupMenu()
@@ -1749,9 +1742,6 @@ void Kadu::createMenu() {
 	MainMenu = new QPopupMenu(this, "MainMenu");
 	MainMenu->insertItem(tr("Manage &ignored"), this, SLOT(manageIgnored()));
 	MainMenu->insertItem(loadIcon("configure.png"), tr("&Configuration"), this, SLOT(configure()),HotKey::shortCutFromFile("kadu_configure"));
-#ifdef MODULES_ENABLED
-	MainMenu->insertItem(loadIcon("configure.png"), tr("&Manage Modules"), modules_manager, SLOT(showDialog()));
-#endif
 	MainMenu->insertItem(loadIcon("reload.png"), tr("Resend &userlist"), gadu, SLOT(sendUserList()));
 	if (mute) {
 		muteitem= MainMenu->insertItem(loadIcon("mute.png"), tr("Unmute sounds"), this, SLOT(muteUnmuteSounds()));

@@ -10,6 +10,8 @@
 #include "modules.h"
 #include "debug.h"
 #include "message_box.h"
+#include "config_file.h"
+#include "kadu.h"
 
 #include <qdir.h>
 #include <qlayout.h>
@@ -19,17 +21,28 @@
 void ModulesManager::initModule()
 {
 	modules_manager=new ModulesManager();
+	kadu->mainMenu()->insertItem(loadIcon("configure.png"), tr("&Manage Modules"), modules_manager, SLOT(showDialog()), QKeySequence(), -1, 2);
 }
 
 ModulesManager::ModulesManager() : QObject()
 {
+	QString loaded_str=config_file.readEntry("General", "LoadedModules");
+	QStringList loaded_list=QStringList::split(',',loaded_str);
+	for(int i=0; i<loaded_list.count(); i++)
+		loadModule(loaded_list[i]);
 }
 
 QStringList ModulesManager::installedModules()
 {
-	QDir dir(QString(DATADIR)+"/kadu/modules");
+	QDir dir(QString(DATADIR)+"/kadu/modules","*.so");
 	dir.setFilter(QDir::Files);
-	return dir.entryList();
+	QStringList installed;
+	for(int i=0; i<dir.count(); i++)
+	{
+		QString name=dir[i];
+		installed.append(name.left(name.length()-3));
+	}
+	return installed;
 }
 
 QStringList ModulesManager::loadedModules()
@@ -85,6 +98,12 @@ void ModulesManager::unloadModule(const QString& module_name)
 	m.close();
 	delete m.lib;
 	Modules.remove(module_name);
+}
+
+void ModulesManager::saveLoadedModules()
+{
+	config_file.writeEntry("General", "LoadedModules",loadedModules().join(","));
+	config_file.sync();
 }
 
 void ModulesManager::showDialog()
@@ -148,6 +167,7 @@ void ModulesDialog::loadItem(QListBoxItem* item)
 	{
 		LoadedListBox->insertItem(mod_name);
 		InstalledListBox->removeItem(InstalledListBox->currentItem());
+		modules_manager->saveLoadedModules();
 	}		
 }
 
@@ -157,6 +177,7 @@ void ModulesDialog::unloadItem(QListBoxItem* item)
 	modules_manager->unloadModule(mod_name);
 	InstalledListBox->insertItem(mod_name);
 	LoadedListBox->removeItem(LoadedListBox->currentItem());
+	modules_manager->saveLoadedModules();
 }
 
 void ModulesDialog::loadSelectedItem()

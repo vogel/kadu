@@ -30,6 +30,10 @@
 #include "simlite.h"
 #endif
 
+#ifdef MODULES_ENABLED
+#include "modules.h"
+#endif
+
 Kadu *kadu;	
 QApplication *a;
 
@@ -94,6 +98,10 @@ int main(int argc, char *argv[])
 #endif
 
 	QObject::connect(a, SIGNAL(aboutToQuit()), kadu, SLOT(quitApplication()));
+
+#ifdef MODULES_ENABLED
+	ModulesManager::initModule();
+#endif
 
 	return a->exec();
 }
