@@ -44,10 +44,11 @@ void rMessage::replyMessage(void) {
 }
 
 /* a message! someone loves us! */
-rMessage::rMessage(const QString & nick, int i, QWidget *parent, const char *name)
+rMessage::rMessage(const QString & nick, int msgclass, UinsList uins, QString &msg, QWidget *parent, const char *name)
  : QDialog(parent, name, Qt::WDestructiveClose) {
 	bool sysmsg = false;
 	int j;
+	PendingMsgs::Element elem;
 
 	sender = nick;
 	if (sender.compare("System")==0)
@@ -65,17 +66,17 @@ rMessage::rMessage(const QString & nick, int i, QWidget *parent, const char *nam
 	klejbel->setText(i18n("Class: "));
 
 	QLineEdit *msgclasse = new QLineEdit(this);
-	if (pending[i].msgclass == GG_CLASS_MSG) {
+	if (msgclass == GG_CLASS_MSG) {
 		msgclasse->setText(i18n("Message"));
 		tchat = false;
 		}
 	else
-		if (pending[i].msgclass == GG_CLASS_CHAT) {
+		if (msgclass == GG_CLASS_CHAT) {
 			msgclasse->setText(i18n("Chat"));
 			tchat = true;
 			}
 		else
-			if (pending[i].uins[0] == config.uin)
+			if (uins[0] == config.uin)
 				msgclasse->setText(i18n("System"));
 			else
 				if (pending[i].msgclass == GG_CLASS_OFFLINE)
@@ -95,15 +96,15 @@ rMessage::rMessage(const QString & nick, int i, QWidget *parent, const char *nam
 
 	body = new QMultiLineEdit(this);
 	body->setGeometry(5,20,305,170);
-	body->setText(*pending[i].msg);
+	body->setText(msg);
 	body->setReadOnly(true);
 	body->setWordWrap(QMultiLineEdit::WidgetWidth);
 
 	fprintf(stderr,"KK rMessage::rMessage(): message in slot %d\n", i);
 
-	deletePendingMessage(i);
+//	deletePendingMessage(i);
 
-	UserBox::all_refresh();
+//	UserBox::all_refresh();
 
 	QPushButton * btn;
 	btn = new QPushButton (this);

@@ -23,6 +23,7 @@
 #include <qlabel.h>
 #include <qradiobutton.h>
 #include "../libgadu/lib/libgadu.h"
+#include "misc.h"
 
 class Message : public QDialog {
 	Q_OBJECT
@@ -59,7 +60,8 @@ class rMessage : public QDialog {
 		bool tchat;
 	
 	public:
-		rMessage(const QString &, int, QWidget *parent=0, const char *name=0);
+		rMessage(const QString &, int msgclass, UinsList uins, QString &msg,
+			QWidget *parent=0, const char *name=0);
 		void init(void);
 
 	public slots:
