@@ -1812,17 +1812,6 @@ INSTALL_STRIP_PROGRAM="\${SHELL} \$(install_sh) -c -s"
 
 
 
-
-cat >>confdefs.h <<_ACEOF
-#define BINDIR "$prefix/bin"
-_ACEOF
-
-
-cat >>confdefs.h <<_ACEOF
-#define DATADIR "$prefix/share"
-_ACEOF
-
-
 ########################################################################
 # check for programs, libraries and functions
 ########################################################################
@@ -6809,6 +6798,21 @@ fi
 ########################################################################
 # finalize configure
 ########################################################################
+
+if test "$prefix" = "NONE"; then
+	prefix="/usr/local";
+fi
+
+
+cat >>confdefs.h <<_ACEOF
+#define BINDIR "$prefix/bin"
+_ACEOF
+
+
+cat >>confdefs.h <<_ACEOF
+#define DATADIR "$prefix/share"
+_ACEOF
+
 
                                                             ac_config_files="$ac_config_files ./Makefile kadu/Makefile translations/Makefile varia/Makefile modules/Makefile varia/scripts/kadu-config"
 

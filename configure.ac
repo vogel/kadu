@@ -194,9 +194,6 @@ AM_CONFIG_HEADER([kadu-config.h])
 AC_CANONICAL_SYSTEM
 AM_INIT_AUTOMAKE([kadu-$version],[$version])
 
-AC_DEFINE_UNQUOTED(BINDIR,"$prefix/bin",[Executable files prefix])
-AC_DEFINE_UNQUOTED(DATADIR,"$prefix/share",[Data files prefix])
-
 ########################################################################
 # check for programs, libraries and functions
 ########################################################################
@@ -419,6 +416,13 @@ fi
 ########################################################################
 # finalize configure
 ########################################################################
+
+if test "$prefix" = "NONE"; then
+	prefix="/usr/local";
+fi
+
+AC_DEFINE_UNQUOTED(BINDIR,"$prefix/bin",[Executable files prefix])
+AC_DEFINE_UNQUOTED(DATADIR,"$prefix/share",[Data files prefix])
 
 AC_CONFIG_FILES([./Makefile kadu/Makefile translations/Makefile varia/Makefile modules/Makefile varia/scripts/kadu-config])
 AC_OUTPUT
