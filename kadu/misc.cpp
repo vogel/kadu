@@ -2475,7 +2475,10 @@ void KaduTextBrowser::drawContents(QPainter * p, int clipx, int clipy, int clipw
 
 void KaduTextBrowser::hyperlinkClicked(const QString &link)
 {
-	openWebBrowser(link);
+	if (link.startsWith("www."))
+		openWebBrowser("http://"+link);
+	else
+		openWebBrowser(link);
 }
 
 void KaduTextBrowser::copy()
