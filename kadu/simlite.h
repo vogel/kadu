@@ -19,7 +19,11 @@
 #define __SIMLITE_H
 
 #include <openssl/rsa.h>
+#ifdef HAVE_STDINT_H
 #include <stdint.h>
+#else
+#include <inttypes.h>
+#endif
 #include <limits.h>
 
 extern char *sim_key_path;
