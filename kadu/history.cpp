@@ -409,7 +409,7 @@ void HistoryManager::convHist2ekgForm(UinsList uins) {
 		}
 	else {
 		f.close();
-		fout.close();
+		fout.remove();
 		}
 }
 
@@ -509,7 +509,7 @@ void HistoryManager::convSms2ekgForm() {
 		}
 	else {
 		f.close();
-		fout.close();
+		fout.remove();
 		}
 }
 
