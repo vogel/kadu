@@ -96,12 +96,12 @@ void VoiceManager::free() {
 
 void VoiceManager::resetCodec() {
 	kdebug("VoiceManager::resetCodec()\n");
-	resetEncoder();
+	resetCoder();
 	resetDecoder();
 }
 
-void VoiceManager::resetEncoder() {
-	kdebug("VoiceManager::resetEncoder()\n");
+void VoiceManager::resetCoder() {
+	kdebug("VoiceManager::resetCoder()\n");
 	int value = 1;
 	if (voice_enc)
 		gsm_destroy(voice_enc);
@@ -152,7 +152,7 @@ void VoiceManager::recordSampleReceived(char *data, int length) {
 	const char *pos = data;
 	int inlen = 320;
 	gsm_signal input[160];
-	resetEncoder();
+	resetCoder();
 	*data = 0;
 	data++;
 	pos++;

@@ -40,7 +40,7 @@ class VoiceManager : public QObject {
 		void recordSampleReceived(char *data, int length);
 
 	private:
-		void resetEncoder();
+		void resetCoder();
 		void resetDecoder();
 
 		PlayThread *pt;
