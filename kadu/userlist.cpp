@@ -72,7 +72,10 @@ QString UserListElement::group()
 
 void UserListElement::setGroup(const QString& group)
 {
-	Group=group;
+	if (group == i18n("All"))
+		Group="";
+	else
+		Group=group;
 	emit Parent->modified();
 };
 
