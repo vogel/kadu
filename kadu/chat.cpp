@@ -1022,7 +1022,7 @@ void Chat::closeEvent(QCloseEvent* e)
 
 	if (config_file.readBoolEntry("Chat", "ChatCloseTimer"))
 	{
-		unsigned long period = config_file.readUnsignedNumEntry("Chat",
+		unsigned int period = config_file.readUnsignedNumEntry("Chat",
 			"ChatCloseTimerPeriod", 2);
 		if (QDateTime::currentDateTime() < lastMsgTime.addSecs(period))
 		{
