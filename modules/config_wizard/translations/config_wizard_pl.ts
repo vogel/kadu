@@ -473,7 +473,7 @@ Twój nr GG: </translation>
 Account configuration was saved.
 Press Next to continue</source>
         <translation>
-Konfiguracjia konta została zapisana.
+Konfiguracja konta została zapisana.
 Naciśnij Dalej by kontynuować</translation>
     </message>
 </context>
