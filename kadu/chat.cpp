@@ -42,8 +42,10 @@ Chat::Chat(UinsList uins, QDialog *parent) : QDialog (parent), uins(uins) {
 	autosend_enabled = false;
 
 	/* register us in the chats registry... */
+	chat.uins = uins;
+	chat.ptr = this;
 	chats.append(chat);
-	index = i;
+	index = chats.count() - 1;
 
 	resize(400,400);
 
