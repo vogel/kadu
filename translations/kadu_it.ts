@@ -3,7 +3,7 @@
     <name>@default</name>
     <message>
         <source>I am busy.</source>
-        <translation>Sono occupato.</translation>
+        <translation type="obsolete">Sono occupato.</translation>
     </message>
     <message>
         <source>User notify</source>
@@ -127,11 +127,11 @@ Che cosa gradite fare?</translation>
     </message>
     <message>
         <source>Add user problem</source>
-        <translation>Aggiunga il problema dell&apos;utente</translation>
+        <translation type="obsolete">Aggiunga il problema dell&apos;utente</translation>
     </message>
     <message>
         <source>Altnick field cannot be empty.</source>
-        <translation>Il campo di Altnick non può essere vuoto.</translation>
+        <translation type="obsolete">Il campo di Altnick non può essere vuoto.</translation>
     </message>
 </context>
 <context>
@@ -151,6 +151,18 @@ Che cosa gradite fare?</translation>
     <message>
         <source>Default Status</source>
         <translation>Condizione Di Difetto</translation>
+    </message>
+    <message>
+        <source>Enable tray hints</source>
+        <translation>Permetta i suggerimenti del vassoio</translation>
+    </message>
+    <message>
+        <source>---</source>
+        <translation>---</translation>
+    </message>
+    <message>
+        <source>Show connection errors in tray hints</source>
+        <translation>Mostri gli errori del collegamento nei suggerimenti del vassoio</translation>
     </message>
 </context>
 <context>
@@ -178,6 +190,26 @@ Che cosa gradite fare?</translation>
     <message>
         <source>On shutdown, set description:</source>
         <translation>Sull&apos;arresto, regoli la descrizione:</translation>
+    </message>
+    <message>
+        <source>Enable dock icon</source>
+        <translation>Permetta l&apos;icona del bacino</translation>
+    </message>
+    <message>
+        <source>Start docked</source>
+        <translation>Inizio attracco</translation>
+    </message>
+    <message>
+        <source>Private status</source>
+        <translation>Condizione riservata</translation>
+    </message>
+    <message>
+        <source>Check for updates</source>
+        <translation>Controlli per vedere se ci sono aggiornamenti</translation>
+    </message>
+    <message>
+        <source>Add to description</source>
+        <translation>Aggiunga alla descrizione</translation>
     </message>
 </context>
 <context>
@@ -370,15 +402,15 @@ Che cosa gradite fare?</translation>
     </message>
     <message>
         <source>Enable dock icon</source>
-        <translation>Permetta l&apos;icona del bacino</translation>
+        <translation type="obsolete">Permetta l&apos;icona del bacino</translation>
     </message>
     <message>
         <source>Private status</source>
-        <translation>Condizione riservata</translation>
+        <translation type="obsolete">Condizione riservata</translation>
     </message>
     <message>
         <source>Start docked</source>
-        <translation>Inizio attracco</translation>
+        <translation type="obsolete">Inizio attracco</translation>
     </message>
     <message>
         <source>Check for updates</source>
@@ -386,7 +418,7 @@ Che cosa gradite fare?</translation>
     </message>
     <message>
         <source>Add to description</source>
-        <translation>Aggiunga alla descrizione</translation>
+        <translation type="obsolete">Aggiunga alla descrizione</translation>
     </message>
     <message>
         <source>Network</source>
@@ -1007,6 +1039,10 @@ Controlli il vostro collegamento del Internet.</translation>
         <source>Private</source>
         <translation>Riservato</translation>
     </message>
+    <message>
+        <source>I am busy.</source>
+        <translation>Sono occupato.</translation>
+    </message>
 </context>
 <context>
     <name>KaduSlots</name>
@@ -1320,23 +1356,23 @@ Ora aggiunga i vostri amici al lista del contatto.</translation>
     </message>
     <message>
         <source>Do you want to add user %1 to user list?</source>
-        <translation>Desiderate aggiungere l&apos;utente %1 alla lista di utente?</translation>
+        <translation type="obsolete">Desiderate aggiungere l&apos;utente %1 alla lista di utente?</translation>
     </message>
     <message>
         <source>&amp;Yes</source>
-        <translation>&amp;Sì</translation>
+        <translation type="obsolete">&amp;Sì</translation>
     </message>
     <message>
         <source>&amp;No</source>
-        <translation>&amp;No</translation>
+        <translation type="obsolete">&amp;No</translation>
     </message>
     <message>
         <source>Update Info</source>
-        <translation>Aggiornamento Info</translation>
+        <translation type="obsolete">Aggiornamento Info</translation>
     </message>
     <message>
         <source>Do you want to update user info for %1?</source>
-        <translation>Desiderate all&apos;utente di aggiornamento Info per %1?</translation>
+        <translation type="obsolete">Desiderate all&apos;utente di aggiornamento Info per %1?</translation>
     </message>
 </context>
 <context>
@@ -1680,7 +1716,7 @@ Messaggio seguente di scatto di sinistra o di scatto centrale</translation>
     </message>
     <message>
         <source>Write userlist</source>
-        <translation>Rediga la lista del contatto</translation>
+        <translation type="obsolete">Rediga la lista del contatto</translation>
     </message>
     <message>
         <source>Close</source>
@@ -1800,15 +1836,15 @@ Messaggio seguente di scatto di sinistra o di scatto centrale</translation>
     </message>
     <message>
         <source>This will write current userlist</source>
-        <translation>Ciò redigerà la lista della corrente del contatto</translation>
+        <translation type="obsolete">Ciò redigerà la lista della corrente del contatto</translation>
     </message>
     <message>
         <source>OK</source>
-        <translation>OK</translation>
+        <translation type="obsolete">OK</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Annulla</translation>
+        <translation type="obsolete">Annulla</translation>
     </message>
     <message>
         <source>Bad UIN</source>
@@ -1817,6 +1853,26 @@ Messaggio seguente di scatto di sinistra o di scatto centrale</translation>
     <message>
         <source>User is already in userlist</source>
         <translation>L&apos;utente è già nella lista del contatto</translation>
+    </message>
+    <message>
+        <source>Add user</source>
+        <translation>Aggiunga il contatto</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation>Aggiunga</translation>
+    </message>
+    <message>
+        <source>Update</source>
+        <translation>Aggiornamento</translation>
+    </message>
+    <message>
+        <source>Add user problem</source>
+        <translation>Aggiunga il problema dell&apos;utente</translation>
+    </message>
+    <message>
+        <source>Altnick field cannot be empty.</source>
+        <translation>Il campo di Altnick non può essere vuoto.</translation>
     </message>
 </context>
 <context>
