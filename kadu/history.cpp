@@ -941,6 +941,10 @@ void History::nextBtnClicked() {
 
 void History::formatHistoryEntry(QString &text, const HistoryEntry &entry) {
 	QString bgcolor, textcolor;
+	QString message;
+
+	message = entry.message;
+	message.replace(QRegExp("\n"), "<BR>");
 
 	text.append("<TABLE width=\"100%\"><TR><TD bgcolor=\"");
 	if (entry.type & (HISTORYMANAGER_ENTRY_CHATSEND | HISTORYMANAGER_ENTRY_MSGSEND
@@ -992,7 +996,7 @@ void History::formatHistoryEntry(QString &text, const HistoryEntry &entry) {
 		text.append(QString(" ip=") + entry.ip);
 		}
 	else
-		text.append(entry.message);
+		text.append(message);
 	text.append("</TD></TR></TABLE></FONT>");
 }
 
