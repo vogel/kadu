@@ -74,13 +74,13 @@ int main(int argc, char *argv[])
 		kadu->setCaption(i18n("Kadu: new user"));
 		}
 
+	own_description = config.defaultdescription;
 	if (config.defaultstatus != GG_STATUS_NOT_AVAIL && config.defaultstatus != GG_STATUS_NOT_AVAIL_DESCR) {
 		kadu->autohammer = true;
-		own_description = config.defaultdescription;
 		kadu->setStatus(config.defaultstatus);	
 		}
 #ifdef HAVE_OPENSSL
-		sim_key_path=strdup(ggPath("keys/").local8Bit());
+	sim_key_path = strdup(ggPath("keys/").local8Bit());
 #endif
 
 	QObject::connect(a, SIGNAL(aboutToQuit()), kadu, SLOT(cleanUp()));
