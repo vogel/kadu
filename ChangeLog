@@ -262,6 +262,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dokowanie dla fvwm-crystal: WM_CLASS="kadudock" (joi)
 * dodane brakuj±ce ikonki w menu modulu accound_managment config_wizard (Ron_K)
 * poprawka w od¶wierzaniu ikon po zmianie tematu (michal)
+* usuniêty segfault przy próbie nawi±zania po³±czenia DCC je¿eli nie mamy
+  wywo³uj±cego na li¶cie kontaktów (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,

@@ -680,7 +680,7 @@ void GaduSocketNotifiers::socketEvent()
 		if (e->event.msg.msgclass == GG_CLASS_CTCP)
 		{
 			uins.append(e->event.msg.sender);
-			if (config_file.readBoolEntry("Network", "AllowDCC") && !isIgnored(uins))
+			if (config_file.readBoolEntry("Network", "AllowDCC") && !isIgnored(uins) && userlist.containsUin(e->event.msg.sender))
 				emit dccConnectionReceived(userlist.byUin(e->event.msg.sender));
 		}
 		else
