@@ -480,7 +480,10 @@ void ConfigDialog::updateConfig(void)
 				if ((*i).additionalParams.size()>=2)
 				{
 					int selected=((QComboBox*)((*i).widget))->currentItem();
-					(*i).config->writeEntry((*i).group, (*i).entry, (*i).additionalParams[1].toStringList()[selected]);
+					if (selected>=0)
+						(*i).config->writeEntry((*i).group, (*i).entry, (*i).additionalParams[1].toStringList()[selected]);
+					else
+						kdebugm(KDEBUG_ERROR, "type:COMBO group:%s entry:%s selected:%d\n", (*i).group.local8Bit().data(), (*i).entry.local8Bit().data(), selected);
 				}
 				break;
 			case CONFIG_HOTKEYEDIT:
@@ -511,7 +514,10 @@ void ConfigDialog::updateConfig(void)
 				QStringList values=(*i).additionalParams[1].toStringList();
 				QButtonGroup *group=(QButtonGroup*)(*i).widget;
 				int selectedId=group->id(group->selected());
-				(*i).config->writeEntry((*i).group, (*i).entry, values[selectedId]);
+				if (selectedId==-1)
+					kdebugm(KDEBUG_ERROR, "type:%d group:%s entry:%s selected:%p selected_id==-1\n", (*i).type, (*i).group.local8Bit().data(), (*i).entry.local8Bit().data(), group->selected());
+				else
+					(*i).config->writeEntry((*i).group, (*i).entry, values[selectedId]);
 				break;
 			}
 			default:
