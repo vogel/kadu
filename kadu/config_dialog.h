@@ -273,6 +273,7 @@ struct config {
 	bool autosend;
 	bool scrolldown;
 	int chatprunelen;
+	int chathistorycitation;
 	bool chatprune;
 	bool msgacks;
 	bool blinkchattitle;

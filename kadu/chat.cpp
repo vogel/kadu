@@ -526,7 +526,6 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time) {
 	QValueList<HistoryEntry> entries;
 	QValueList<HistoryEntry> entriestmp;
 	QDateTime date;
-	int ilosc = 10;
 	int i, from, end, count;
 	
 	kdebug("Chat::writeMessageFromHistory()\n");
@@ -534,27 +533,23 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time) {
 	count = history.getHistoryEntriesCount(senders);
 	end = count - 1;
 	
-	while (end >= 0 && entries.count() < ilosc) {
-		from = (end < ilosc) ? 0 : end - ilosc + 1;
+	while (end >= 0 && entries.count() < config.chathistorycitation) {
+		from = (end < config.chathistorycitation) ? 0 : end - config.chathistorycitation + 1;
 		entriestmp = history.getHistoryEntries(senders, from, end - from + 1, HISTORYMANAGER_ENTRY_CHATSEND
 			| HISTORYMANAGER_ENTRY_MSGSEND | HISTORYMANAGER_ENTRY_CHATRCV | HISTORYMANAGER_ENTRY_MSGRCV);
 		kdebug("Chat::writeMessageFromHistory(): temp entries = %d\n", entriestmp.count());
 		if (time)
 			for (QValueList<HistoryEntry>::iterator it = entriestmp.begin(); it != entriestmp.end(); it++)
 				if (((*it).type == HISTORYMANAGER_ENTRY_CHATRCV
-					|| (*it).type == HISTORYMANAGER_ENTRY_MSGRCV) && date <= (*it).sdate) {
-					kdebug("Chat::writeMessageFromHistory(): %s <= %s\n",
-						(const char *)date.toString("dd.MM.yyyy hh:mm:ss <= ").local8Bit(),
-						(const char *)(*it).sdate.toString("dd.MM.yyyy hh:mm:ss").local8Bit());
+					|| (*it).type == HISTORYMANAGER_ENTRY_MSGRCV) && date <= (*it).sdate)
 					it = entriestmp.remove(it);
-					}
 		if (entriestmp.count())
 			entries = entriestmp + entries;
 		kdebug("Chat::writeMessageFromHistory(): entries = %d\n", entries.count());
 		end = from - 1;
 		}
 
-	from = (entries.count() < ilosc) ? 0 : entries.count() - ilosc;
+	from = (entries.count() < config.chathistorycitation) ? 0 : entries.count() - config.chathistorycitation;
 	for (i = from; i < entries.count(); i++) {
 		if (entries[i].type == HISTORYMANAGER_ENTRY_MSGSEND
 			|| entries[i].type == HISTORYMANAGER_ENTRY_CHATSEND)
@@ -565,7 +560,8 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time) {
 				entries[i].date.toString(":: dd.MM.yyyy (hh:mm:ss / S ")
 				+ entries[i].sdate.toString("hh:mm:ss)"), toadd);
 		}
-	scrollMessages(toadd);
+	if (toadd.length())
+		scrollMessages(toadd);
 }
 
 /* invoked from outside when new message arrives, this is the window to the world */

@@ -120,6 +120,7 @@ void loadKaduConfig(void) {
 	config.scrolldown = konf->readBoolEntry("ScrollDown",true);
 	config.chatprune = konf->readBoolEntry("ChatPrune",false);
 	config.chatprunelen = konf->readNumEntry("ChatPruneLen",20);
+	config.chathistorycitation = konf->readNumEntry("ChatHistoryCitation", 10);
 	config.msgacks = konf->readBoolEntry("MessageAcks", true);
 	config.blinkchattitle = konf->readBoolEntry("BlinkChatTitle", true);
 	config.hintalert = konf->readBoolEntry("HintAlert", false);
@@ -258,6 +259,7 @@ void saveKaduConfig(void) {
 	konf->writeEntry("ScrollDown",config.scrolldown);
 	konf->writeEntry("ChatPrune",config.chatprune);
 	konf->writeEntry("ChatPruneLen",config.chatprunelen);
+	konf->writeEntry("ChatHistoryCitation", config.chathistorycitation);
 	konf->writeEntry("MessageAcks", config.msgacks);
 	konf->writeEntry("BlinkChatTitle", config.blinkchattitle);
 	konf->writeEntry("HintAlert", config.hintalert);

@@ -59,6 +59,8 @@
 * gdy wybierzemy "rozpocznij rozmowê" w menu podrêcznym listy u¿ytkowników,
   otwiera siê okno rozmowy wraz z wiadomo¶ciami z historii rozmowy oraz
   wiadomo¶ciami, które otrzymali¶my, a jeszcze nie przeczytali¶my (chilek)
+* plik konfiguracyjny: dodana opcja ChatHistoryCitation w sekcji Others
+  okre¶laj±ca ilo¶æ cytowanych wypowiedzi przy otwieraniu okna rozmowy (chilek)
 
 +++ wersja 0.3.3-final
 * ikonka wiadomo¶ci i ikon statusu "ukryty" z telefonikiem
