@@ -241,6 +241,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * sprawdzanie uaktualnieñ dopiero przy pierwszym zalogowaniu (joi)
 * drobna poprawka przy zamykaniu okna konfiguracji (michal) 
 * dodany skrót klawiszowy dla zarz±dcy modu³ów (joi)
+* klikniecie srodkowym przyciskem myszy na kontakt ktory ma podany numer
+  telefonu znowu powoduje utwarcie okna wywylania sms-a (michal)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

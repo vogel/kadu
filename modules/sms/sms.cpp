@@ -65,6 +65,8 @@ extern "C" int sms_init()
 	
 	QObject::connect(kadu->userbox(), SIGNAL(doubleClicked(QListBoxItem *)),
 			smsslots, SLOT(onUserDblClicked(QListBoxItem *)));
+	QObject::connect(kadu->userbox(), SIGNAL(mouseButtonClicked(int, QListBoxItem*,const QPoint&)),
+			smsslots, SLOT(onUserClicked(int, QListBoxItem*, const QPoint&)));
 	QObject::connect(kadu->userbox(), SIGNAL(returnPressed(QListBoxItem *)),
 			smsslots, SLOT(onUserDblClicked(QListBoxItem *)));
 	QObject::connect(UserBox::userboxmenu, SIGNAL(popup()), smsslots, SLOT(onPopupMenuCreate()));
@@ -104,6 +106,8 @@ extern "C" void sms_close()
 			smsslots, SLOT(onUserDblClicked(QListBoxItem *)));
 	QObject::disconnect(kadu->userbox(), SIGNAL(returnPressed(QListBoxItem *)),
 			smsslots, SLOT(onUserDblClicked(QListBoxItem *)));
+	QObject::disconnect(kadu->userbox(), SIGNAL(mouseButtonClicked(int, QListBoxItem*,const QPoint&)),
+			smsslots, SLOT(onUserClicked(int, QListBoxItem*, const QPoint&)));
 	QObject::disconnect(UserBox::userboxmenu, SIGNAL(popup()), smsslots, SLOT(onPopupMenuCreate()));
 
 	delete smsslots;
@@ -475,6 +479,12 @@ void SmsSlots::newSms(QString nick)
 {
 	Sms* sms=new Sms(nick);
 	sms->show();	
+}
+
+void SmsSlots::onUserClicked(int button, QListBoxItem* item, const QPoint& pos)
+{
+	if(button==4)
+		onSendSmsToUser();
 }
 
 void SmsSlots::onUserDblClicked(QListBoxItem* item)

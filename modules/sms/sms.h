@@ -143,6 +143,7 @@ class SmsSlots: public QObject
 		void onCloseConfigDialog();
 		void onApplyConfigDialog();
 		void onSendSms();
+		void onUserClicked(int button, QListBoxItem* item, const QPoint& pos);
 		void onUserDblClicked(QListBoxItem* item);		
 		void onPopupMenuCreate();
 		void onSendSmsToUser();
