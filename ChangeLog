@@ -117,6 +117,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   (<ok>, <oK>, <OK> to ta sama ikonka) (pawel_p)
 * make install kopiuje do $PREFIX/share/kadu pliki AUTHORS, ChangeLog,
   COPYING, HISTORY, README, THANKS na potrzeby nowego okna About (adrian)
+* przebudowane okno "O programie" (chilek)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci
