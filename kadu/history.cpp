@@ -42,7 +42,8 @@ HistoryManager::HistoryManager() : QObject(NULL, "history_manager")
 {
 }
 
-QString HistoryManager::text2csv(const QString &text) {
+QString HistoryManager::text2csv(const QString &text)
+{
 	QString csv = text;
 	csv.replace(QRegExp("\\\\"), "\\\\");
 	csv.replace(QRegExp("\""), "\\\"");
@@ -53,23 +54,26 @@ QString HistoryManager::text2csv(const QString &text) {
 	return csv;
 }
 
-QString HistoryManager::getFileNameByUinsList(UinsList &uins) {
+QString HistoryManager::getFileNameByUinsList(UinsList &uins)
+{
 	unsigned int i;
 	QString fname;
 	if (uins.count()) {
 		uins.sort();
-		for (i = 0; i < uins.count(); i++) {
+		for (i = 0; i < uins.count(); i++)
+		{
 			fname.append(QString::number(uins[i]));
 			if (i < uins.count() - 1)
 				fname.append("_");
-			}
 		}
+	}
 	else
 		fname = "sms";
 	return fname;
 }
 
-void HistoryManager::appendMessage(UinsList uins, UinType uin, const QString &msg, bool own, time_t czas, bool chat) {
+void HistoryManager::appendMessage(UinsList uins, UinType uin, const QString &msg, bool own, time_t czas, bool chat)
+{
 	QFile f, fidx;
 	QString fname = ggPath("history/");
 	QString line, nick;
@@ -102,18 +106,20 @@ void HistoryManager::appendMessage(UinsList uins, UinType uin, const QString &ms
 	line = linelist.join(",");
 
 	f.setName(fname);
-	if (!(f.open(IO_WriteOnly | IO_Append))) {
+	if (!(f.open(IO_WriteOnly | IO_Append)))
+	{
 		kdebugm(KDEBUG_ERROR, "HistoryManager::appendMessage(): Error opening history file %s\n", (const char *)fname.local8Bit());
 		return;
-		}
+	}
 
 	buildIndexPrivate(fname);
 	fidx.setName(f.name() + ".idx");
-	if (fidx.open(IO_WriteOnly | IO_Append)) {
+	if (fidx.open(IO_WriteOnly | IO_Append))
+	{
 		offs = f.at();
 		fidx.writeBlock((const char *)&offs, sizeof(int));
 		fidx.close();
-		}
+	}
 
 	QTextStream stream(&f);
 	stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
@@ -141,64 +147,72 @@ void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 	linelist.append(text2csv(msg));
 
 	for (UserList::ConstIterator i = userlist.begin(); i != userlist.end(); i++)
-		if ((*i).mobile == mobile) {
+		if ((*i).mobile == mobile)
+		{
 			altnick = (*i).altnick;
 			uin = (*i).uin;
 			break;
-			}
-	if (uin) {
+		}
+	if (uin)
+	{
 		UinsList uins;
 		uins.append(uin);
 		convHist2ekgForm(uins);
 		linelist.append(text2csv(altnick));
 		linelist.append(QString::number(uin));
-		}
+	}
 
 	line = linelist.join(",");
 
 	f.setName(ggPath("history/sms"));
-	if (!(f.open(IO_WriteOnly | IO_Append))) {
+	if (!(f.open(IO_WriteOnly | IO_Append)))
+	{
 		kdebugm(KDEBUG_ERROR, "HistoryManager::appendSms(): Error opening sms history file\n");
 		return;
-		}
+	}
 
 	buildIndexPrivate(f.name());
 	fidx.setName(f.name() + ".idx");
-	if (fidx.open(IO_WriteOnly | IO_Append)) {
+	if (fidx.open(IO_WriteOnly | IO_Append))
+	{
 		offs = f.at();
 		fidx.writeBlock((const char *)&offs, sizeof(int));
 		fidx.close();
-		}
+	}
 
 	stream.setDevice(&f);
 	stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
 	stream << line << '\n';
 	f.close();
 
-	if (uin) {
+	if (uin)
+	{
 		fname = ggPath("history/");
 		fname = fname + QString::number(uin);
 		f.setName(fname);
-		if (!(f.open(IO_WriteOnly | IO_Append))) {
+		if (!(f.open(IO_WriteOnly | IO_Append)))
+		{
 			kdebugm(KDEBUG_ERROR, "HistoryManager::appendSms(): Error opening sms history\n");
 			return;
-			}
+		}
 
 		fidx.setName(f.name() + ".idx");
-		if (fidx.open(IO_WriteOnly | IO_Append)) {
+		if (fidx.open(IO_WriteOnly | IO_Append))
+		{
 			offs = f.at();
 			fidx.writeBlock((const char *)&offs, sizeof(int));
 			fidx.close();
-			}
+		}
 
 		stream.setDevice(&f);
 		stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
 		stream << line << '\n';
 		f.close();
-		}
+	}
 }
 
-void HistoryManager::appendStatus(UinType uin, unsigned int status, QString description) {
+void HistoryManager::appendStatus(UinType uin, unsigned int status, QString description)
+{
 	kdebugf();
 
 	QFile f, fidx;
@@ -221,23 +235,26 @@ void HistoryManager::appendStatus(UinType uin, unsigned int status, QString desc
 	convHist2ekgForm(uins);
 	linelist.append("status");
 	linelist.append(QString::number(uin));
-	if (userlist.containsUin(uin)) {
+	if (userlist.containsUin(uin))
+	{
 		nick = userlist.byUin(uin).altnick;
 		ip = userlist.byUin(uin).ip;
 		port = userlist.byUin(uin).port;
-		}
-	else {
+	}
+	else
+	{
 		nick = QString::number(uin);
 		ip.setAddress((unsigned int)0);
 		port = 0;
-		}
+	}
 	linelist.append(text2csv(nick));
 	addr = ip.toString();
 	if (port)
 		addr = addr + QString(":") + QString::number(port);
 	linelist.append(addr);
 	linelist.append(QString::number(time(NULL)));
-	switch (status) {
+	switch (status)
+	{
 		case GG_STATUS_AVAIL:
 		case GG_STATUS_AVAIL_DESCR:
 			linelist.append("avail");
@@ -255,25 +272,27 @@ void HistoryManager::appendStatus(UinType uin, unsigned int status, QString desc
 		case GG_STATUS_NOT_AVAIL_DESCR:
 			linelist.append("notavail");
 			break;
-		}
+	}
 	if (description != QString::null)
 		linelist.append(text2csv(description));
 	line = linelist.join(",");
 
 	fname = fname + QString::number(uin);
 	f.setName(fname);
-	if (!(f.open(IO_WriteOnly | IO_Append))) {
+	if (!(f.open(IO_WriteOnly | IO_Append)))
+	{
 		kdebugm(KDEBUG_ERROR, "HistoryManager::appendStatus(): Error opening history file %s\n", (const char *)fname.local8Bit());
 		return;
-		}
+	}
 
 	buildIndexPrivate(fname);
 	fidx.setName(fname + ".idx");
-	if (fidx.open(IO_WriteOnly | IO_Append)) {
+	if (fidx.open(IO_WriteOnly | IO_Append))
+	{
 		offs = f.at();
 		fidx.writeBlock((const char *)&offs, sizeof(int));
 		fidx.close();
-		}
+	}
 
 	QTextStream stream(&f);
 	stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
@@ -282,12 +301,14 @@ void HistoryManager::appendStatus(UinType uin, unsigned int status, QString desc
 	f.close();
 }
 
-void HistoryManager::removeHistory(UinsList uins) {
+void HistoryManager::removeHistory(UinsList uins)
+{
 	kdebugf();
 
 	QString fname;
 	switch (QMessageBox::information(kadu, "Kadu", qApp->translate("@default",QT_TR_NOOP("Clear history?")),
-		qApp->translate("@default",QT_TR_NOOP("Yes")), qApp->translate("@default",QT_TR_NOOP("No")), QString::null, 1, 1)) {
+		qApp->translate("@default",QT_TR_NOOP("Yes")), qApp->translate("@default",QT_TR_NOOP("No")), QString::null, 1, 1))
+	{
 		case 0:
 			fname = ggPath("history/");
 			fname.append(getFileNameByUinsList(uins));
@@ -297,10 +318,11 @@ void HistoryManager::removeHistory(UinsList uins) {
 			break;
 		case 1:
 			break;
-		}
+	}
 }
 
-void HistoryManager::convHist2ekgForm(UinsList uins) {
+void HistoryManager::convHist2ekgForm(UinsList uins)
+{
 	kdebugf();
 
 	QFile f, fout;
@@ -312,18 +334,20 @@ void HistoryManager::convHist2ekgForm(UinsList uins) {
 	fname = getFileNameByUinsList(uins);
 
 	f.setName(path + fname);
-	if (!(f.open(IO_ReadWrite))) {
+	if (!(f.open(IO_ReadWrite)))
+	{
 		kdebugm(KDEBUG_ERROR, "HistoryManager::convHist2ekgForm(): Error opening history file %s\n", (const char *)fname.local8Bit());
 		return;
-		}
+	}
 
 	fnameout = fname + ".new";
 	fout.setName(path + fnameout);
-	if (!(fout.open(IO_WriteOnly | IO_Truncate))) {
+	if (!(fout.open(IO_WriteOnly | IO_Truncate)))
+	{
 		kdebugm(KDEBUG_ERROR, "HistoryManager::convHist2ekgForm(): Error opening new history file %s\n", (const char *)fnameout.local8Bit());
 		f.close();
 		return;
-		}
+	}
 
 	QTextStream stream(&f);
 	stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
@@ -336,20 +360,23 @@ void HistoryManager::convHist2ekgForm(UinsList uins) {
 	QRegExp sep("\\s"), sep2("::");
 	our = foreign = false;
 	UinType myUin=config_file.readNumEntry("General","UIN");
-	while ((line = stream.readLine()) != QString::null) {
+	while ((line = stream.readLine()) != QString::null)
+	{
 //		our = !line.find(QRegExp("^\\S+\\s::\\s\\d{2,2}\\s\\d{2,2}\\s\\d{4,4},\\s\\(\\d{2,2}:\\d{2,2}:\\d{2,2}\\)$"));
 		our = !line.find(QRegExp("^(\\S|\\s)+\\s::\\s\\d{2,2}\\s\\d{2,2}\\s\\d{4,4},\\s\\(\\d{2,2}:\\d{2,2}:\\d{2,2}\\)$"));
 //		foreign = !line.find(QRegExp("^\\S+\\s::\\s\\d{2,2}\\s\\d{2,2}\\s\\d{4,4},\\s\\(\\d{2,2}:\\d{2,2}:\\d{2,2}\\s/\\sS\\s\\d{2,2}:\\d{2,2}:\\d{2,2}\\)$"));
 		foreign = !line.find(QRegExp("^(\\S|\\s)+\\s::\\s\\d{2,2}\\s\\d{2,2}\\s\\d{4,4},\\s\\(\\d{2,2}:\\d{2,2}:\\d{2,2}\\s/\\sS\\s\\d{2,2}:\\d{2,2}:\\d{2,2}\\)$"));
-		if (our || foreign) {
-			if (linelist.count()) {
+		if (our || foreign)
+		{
+			if (linelist.count())
+			{
 				text.truncate(text.length() - 1);
 				if (text[text.length() - 1] == '\n')
 					text.truncate(text.length() - 1);
 				linelist.append(text2csv(text));
 				lineout = linelist.join(",");
 				streamout << lineout << '\n';
-				}
+			}
 			linelist.clear();
 			text.truncate(0);
 			nick = line.section(sep2, 0, 0);
@@ -363,27 +390,30 @@ void HistoryManager::convHist2ekgForm(UinsList uins) {
 			sdatetime = datetime;
 			czas = line.section(sep, 3, 3);
 			czas.remove(0, 1);
-			if (our) {
+			if (our)
+			{
 				czas.truncate(czas.length() - 1);
 				linelist.append("chatsend");
-				}
+			}
 			datetime.setTime(QTime(czas.left(2).toInt(), czas.mid(3, 2).toInt(), czas.right(2).toInt()));
-			if (foreign) {
+			if (foreign)
+			{
 				sczas = line.section(sep, 6, 6);
 				sczas.truncate(sczas.length() - 1);
 				sdatetime.setTime(QTime(sczas.left(2).toInt(), sczas.mid(3, 2).toInt(), sczas.right(2).toInt()));
 				linelist.append("chatrcv");
-				}
-			if (our) {
-
+			}
+			if (our)
+			{
 				if (uins.count() > 1)
 					uin = 0;
 				else if (myUin != uins[0])
 					uin = uins[0];
 				else
 					uin = uins[1];
-				}
-			else if (userlist.containsAltNick(nick)) {
+			}
+			else if (userlist.containsAltNick(nick))
+			{
 				UserListElement &user = userlist.byAltNick(nick);
 				uin = user.uin;
 			}
@@ -406,15 +436,17 @@ void HistoryManager::convHist2ekgForm(UinsList uins) {
 				linelist.append(QString::number(-sdatetime.secsTo(
 					QDateTime(QDate(1970, 1, 1), QTime(0 ,0)))));
 			our = foreign = false;
-			}
-		else {
+		}
+		else
+		{
 			if (!linelist.count())
 				break;
 			text.append(line);
 			text.append("\n");
-			}
 		}
-	if (linelist.count()) {
+	}
+	if (linelist.count())
+	{
 		text.truncate(text.length() - 1);
 		if (text[text.length() - 1] == '\n')
 			text.truncate(text.length() - 1);
@@ -426,14 +458,16 @@ void HistoryManager::convHist2ekgForm(UinsList uins) {
 		QDir dir(path);
 		dir.rename(fname, fname + QString(".old"));
 		dir.rename(fnameout, fname);
-		}
-	else {
+	}
+	else
+	{
 		f.close();
 		fout.remove();
-		}
+	}
 }
 
-void HistoryManager::convSms2ekgForm() {
+void HistoryManager::convSms2ekgForm()
+{
 	kdebugf();
 
 	QFile f, fout;
@@ -444,17 +478,19 @@ void HistoryManager::convSms2ekgForm() {
 
 	fname = "sms";
 	f.setName(path + fname);
-	if (!(f.open(IO_ReadWrite))) {
+	if (!(f.open(IO_ReadWrite)))
+	{
 		kdebugm(KDEBUG_ERROR, "HistoryManager::convSms2ekgForm(): Error opening sms history file %s\n", (const char *)fname.local8Bit());
 		return;
-		}
+	}
 	fnameout = fname + ".new";
 	fout.setName(path + fnameout);
-	if (!(fout.open(IO_WriteOnly | IO_Truncate))) {
+	if (!(fout.open(IO_WriteOnly | IO_Truncate)))
+	{
 		kdebugm(KDEBUG_ERROR, "HistoryManager::convSms2EkgForm: Error opening new sms history file %s\n", (const char *)fnameout.local8Bit());
 		f.close();
 		return;
-		}
+	}
 
 	QTextStream stream(&f);
 	stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
@@ -466,21 +502,25 @@ void HistoryManager::convSms2ekgForm() {
 	QDateTime datetime;
 	QRegExp sep("\\s");
 	header = false;
-	while ((line = stream.readLine()) != QString::null) {
+	while ((line = stream.readLine()) != QString::null)
+	{
 		header = !line.find(QRegExp("^\\S+\\s\\(\\d+\\)\\s::\\s\\d{2,2}\\s\\d{2,2}\\s\\d{4,4},\\s\\(\\d{2,2}:\\d{2,2}:\\d{2,2}\\)$"));
-		if (header) {
-			if (linelist.count()) {
+		if (header)
+		{
+			if (linelist.count())
+			{
 				text.truncate(text.length() - 1);
 				if (text[text.length() - 1] == '\n')
 					text.truncate(text.length() - 1);
 				linelist.append(text2csv(text));
-				if (uin) {
+				if (uin)
+				{
 					linelist.append(nick);
 					linelist.append(QString::number(uin));
-					}
+				}
 				lineout = linelist.join(",");
 				streamout << lineout << '\n';
-				}
+			}
 			linelist.clear();
 			text.truncate(0);
 			nick = line.section(sep, 0, 0);
@@ -505,23 +545,26 @@ void HistoryManager::convSms2ekgForm() {
 				if ((*i).mobile == mobile)
 					uin = (*i).uin;
 			header = false;
-			}
-		else {
+		}
+		else
+		{
 			if (!linelist.count())
 				break;
 			text.append(line);
 			text.append("\n");
-			}
 		}
-	if (linelist.count()) {
+	}
+	if (linelist.count())
+	{
 		text.truncate(text.length() - 1);
 		if (text[text.length() - 1] == '\n')
 			text.truncate(text.length() - 1);
 		linelist.append(text2csv(text));
-		if (uin) {
+		if (uin)
+		{
 			linelist.append(nick);
 			linelist.append(QString::number(uin));
-			}
+		}
 		lineout = linelist.join(",");
 		streamout << lineout << '\n';
 		f.close();
@@ -529,14 +572,16 @@ void HistoryManager::convSms2ekgForm() {
 		QDir dir(path);
 		dir.rename(fname, fname + QString(".old"));
 		dir.rename(fnameout, fname);
-		}
-	else {
+	}
+	else
+	{
 		f.close();
 		fout.remove();
-		}
+	}
 }
 
-int HistoryManager::getHistoryEntriesCountPrivate(const QString &filename) {
+int HistoryManager::getHistoryEntriesCountPrivate(const QString &filename)
+{
 	kdebugf();
 
 	int lines;
@@ -545,10 +590,11 @@ int HistoryManager::getHistoryEntriesCountPrivate(const QString &filename) {
 	QByteArray buffer;
 
 	f.setName(path + filename + ".idx");
-	if (!(f.open(IO_ReadOnly))) {
+	if (!(f.open(IO_ReadOnly)))
+	{
 		kdebugm(KDEBUG_ERROR, "HistoryManager::getHistoryEntriesCountPrivate(): Error opening history file %s\n", (const char *)filename.local8Bit());
 		return 0;
-		}
+	}
 	lines = f.size() / sizeof(int);
 //	buffer = f.readAll();
 	f.close();
@@ -558,13 +604,15 @@ int HistoryManager::getHistoryEntriesCountPrivate(const QString &filename) {
 	return lines;
 }
 
-int HistoryManager::getHistoryEntriesCount(UinsList uins) {
+int HistoryManager::getHistoryEntriesCount(UinsList uins)
+{
 	convHist2ekgForm(uins);
 	buildIndex(uins);
 	return getHistoryEntriesCountPrivate(getFileNameByUinsList(uins));
 }
 
-int HistoryManager::getHistoryEntriesCount(QString mobile) {
+int HistoryManager::getHistoryEntriesCount(QString mobile)
+{
 	convSms2ekgForm();
 	buildIndex();
 	if (mobile == QString::null)
@@ -573,7 +621,8 @@ int HistoryManager::getHistoryEntriesCount(QString mobile) {
 		return getHistoryEntriesCountPrivate(mobile);
 }
 
-QValueList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int from, int count, int mask) {
+QValueList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int from, int count, int mask)
+{
 	kdebugf();
 
 	QValueList<HistoryEntry> entries;
@@ -588,10 +637,11 @@ QValueList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int fr
 	else
 		filename = "sms";
 	f.setName(path + filename);
-	if (!(f.open(IO_ReadOnly))) {
+	if (!(f.open(IO_ReadOnly)))
+	{
 		kdebugm(KDEBUG_ERROR, "HistoryManager::getHistoryEntries(): Error opening history file %s\n", (const char *)filename.local8Bit());
 		return entries;
-		}
+	}
 
 	fidx.setName(f.name() + ".idx");
 	if (!fidx.open(IO_ReadOnly))
@@ -608,7 +658,8 @@ QValueList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int fr
 	int linenr = from;
 
 	struct HistoryEntry entry;
-	while (linenr < from + count && (line = stream.readLine()) != QString::null) {
+	while (linenr < from + count && (line = stream.readLine()) != QString::null)
+	{
 		linenr++;
 		tokens = mySplit(',', line);
 		if (tokens.count() < 2)
@@ -627,10 +678,12 @@ QValueList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int fr
 			entry.type = HISTORYMANAGER_ENTRY_SMSSEND;
 		if (!(entry.type & mask))
 			continue;
-		switch (entry.type) {
+		switch (entry.type)
+		{
 			case HISTORYMANAGER_ENTRY_CHATSEND:
 			case HISTORYMANAGER_ENTRY_MSGSEND:
-				if (tokens.count() == 5) {
+				if (tokens.count() == 5)
+				{
 					entry.uin = tokens[1].toUInt();
 					entry.nick = tokens[2];
 					entry.date.setTime_t(tokens[3].toUInt());
@@ -639,11 +692,12 @@ QValueList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int fr
 					entry.mobile.truncate(0);
 					entry.description.truncate(0);
 					entries.append(entry);
-					}
+				}
 				break;
 			case HISTORYMANAGER_ENTRY_CHATRCV:
 			case HISTORYMANAGER_ENTRY_MSGRCV:
-				if (tokens.count() == 6) {
+				if (tokens.count() == 6)
+				{
 					entry.uin = tokens[1].toUInt();
 					entry.nick = tokens[2];
 					entry.date.setTime_t(tokens[3].toUInt());
@@ -653,10 +707,11 @@ QValueList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int fr
 					entry.mobile.truncate(0);
 					entry.description.truncate(0);
 					entries.append(entry);
-					}
+				}
 				break;
 			case HISTORYMANAGER_ENTRY_STATUS:
-				if (tokens.count() == 6 || tokens.count() == 7) {
+				if (tokens.count() == 6 || tokens.count() == 7)
+				{
 					entry.uin = tokens[1].toUInt();
 					entry.nick = tokens[2];
 					entry.ip = tokens[3];
@@ -669,8 +724,10 @@ QValueList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int fr
 						entry.status = GG_STATUS_BUSY;
 					else if (tokens[5] == "invisible")
 						entry.status = GG_STATUS_INVISIBLE;
-					if (tokens.count() == 7) {
-						switch (entry.status) {
+					if (tokens.count() == 7)
+					{
+						switch (entry.status)
+						{
 							case GG_STATUS_AVAIL:
 								entry.status = GG_STATUS_AVAIL_DESCR;
 								break;
@@ -683,43 +740,47 @@ QValueList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int fr
 							case GG_STATUS_INVISIBLE:
 								entry.status = GG_STATUS_INVISIBLE_DESCR;
 								break;
-							}
-						entry.description = tokens[6];
 						}
+						entry.description = tokens[6];
+					}
 					else
 						entry.description.truncate(0);
 					entry.mobile.truncate(0);
 					entry.message.truncate(0);
 					entries.append(entry);
-					}
+				}
 				break;
 			case HISTORYMANAGER_ENTRY_SMSSEND:
-				if (tokens.count() == 4 || tokens.count() == 6) {
+				if (tokens.count() == 4 || tokens.count() == 6)
+				{
 					entry.mobile = tokens[1];
 					entry.date.setTime_t(tokens[2].toUInt());
 					entry.message = tokens[3];
-					if (tokens.count() == 4) {
+					if (tokens.count() == 4)
+					{
 						entry.nick.truncate(0);
 						entry.uin = 0;
-						}
-					else {
+					}
+					else
+					{
 						entry.nick = tokens[4];
 						entry.uin = tokens[5].toUInt();
-						}
+					}
 					entry.ip.truncate(0);
 					entry.description.truncate(0);
 					entries.append(entry);
-					}
+				}
 				break;
-			}
 		}
+	}
 
 	f.close();
 
 	return entries;
 }
 
-uint HistoryManager::getHistoryDate(QTextStream &stream) {
+uint HistoryManager::getHistoryDate(QTextStream &stream)
+{
 	QString line;
 	static QStringList types = QStringList::split(" ", "smssend chatrcv chatsend msgrcv msgsend status");
 	QStringList tokens;
@@ -738,7 +799,8 @@ uint HistoryManager::getHistoryDate(QTextStream &stream) {
 	return (tokens[pos].toUInt() / 86400);
 }
 
-QValueList<HistoryDate> HistoryManager::getHistoryDates(UinsList uins) {
+QValueList<HistoryDate> HistoryManager::getHistoryDates(UinsList uins)
+{
 	kdebugf();
 
 	QValueList<HistoryDate> entries;
@@ -757,10 +819,11 @@ QValueList<HistoryDate> HistoryManager::getHistoryDates(UinsList uins) {
 
 	filename = getFileNameByUinsList(uins);
 	f.setName(path + filename);
-	if (!(f.open(IO_ReadOnly))) {
+	if (!(f.open(IO_ReadOnly)))
+	{
 		kdebugm(KDEBUG_ERROR, "HistoryManager::getHistoryDates(): Error opening history file %s\n", (const char *)filename.local8Bit());
 		return entries;
-		}
+	}
 	QTextStream stream(&f);
 	stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
 
@@ -775,9 +838,11 @@ QValueList<HistoryDate> HistoryManager::getHistoryDates(UinsList uins) {
 	newdate.date.setTime_t(actdate * 86400);
 	entries.append(newdate);
 
-	while (actidx < count - 1) {
+	while (actidx < count - 1)
+	{
 		jmp = 1;
-		do {
+		do
+		{
 			oldidx = actidx;
 			actidx += jmp;
 			jmp <<= 1;
@@ -791,13 +856,16 @@ QValueList<HistoryDate> HistoryManager::getHistoryDates(UinsList uins) {
 			fidx.readBlock((char *)&offs, (Q_LONG)sizeof(int));
 			f.at(offs);
 			actdate = getHistoryDate(stream);
-			} while (actdate == olddate);
+		} while (actdate == olddate);
+		
 		if (actidx == oldidx)
 			break;
-		if (actdate > olddate) {
+		if (actdate > olddate)
+		{
 			leftidx = oldidx;
 			rightidx = actidx;
-			while (rightidx - leftidx > 1) {
+			while (rightidx - leftidx > 1)
+			{
 				actidx = (leftidx + rightidx) / 2;
 				fidx.at(actidx * sizeof(int));
 				fidx.readBlock((char *)&offs, (Q_LONG)sizeof(int));
@@ -807,19 +875,20 @@ QValueList<HistoryDate> HistoryManager::getHistoryDates(UinsList uins) {
 					rightidx = actidx;
 				else
 					leftidx = actidx;
-				}
+			}
 			newdate.idx = actidx = rightidx;
-			if (actdate == olddate) {
+			if (actdate == olddate)
+			{
 				fidx.at(actidx * sizeof(int));
 				fidx.readBlock((char *)&offs, (Q_LONG)sizeof(int));
 				f.at(offs);
 				actdate = getHistoryDate(stream);
-				}
+			}
 			newdate.date.setTime_t(actdate * 86400);
 			entries.append(newdate);
 			olddate = actdate;
-			}
 		}
+	}
 
 	fidx.close();
 	f.close();
@@ -827,26 +896,28 @@ QValueList<HistoryDate> HistoryManager::getHistoryDates(UinsList uins) {
 	return entries;
 }
 
-QValueList<UinsList> HistoryManager::getUinsLists() {
+QValueList<UinsList> HistoryManager::getUinsLists()
+{
 	QValueList<UinsList> entries;
 	QDir dir(ggPath("history/"), "*.idx");
 	QStringList struins;
 	UinsList uins;
 
-	for (unsigned int i = 0; i < dir.count(); i++) {
+	for (unsigned int i = 0; i < dir.count(); i++)
+	{
 		struins = QStringList::split("_", dir[i].replace(QRegExp(".idx$"), ""));
 		uins.clear();
-		if (struins[0] != "sms") {
+		if (struins[0] != "sms")
 			for (unsigned int j = 0; j < struins.count(); j++)
 				uins.append(struins[j].toUInt());
-			}
 		entries.append(uins);
-		}
+	}
 
 	return entries;
 }
 
-void HistoryManager::buildIndexPrivate(const QString &filename) {
+void HistoryManager::buildIndexPrivate(const QString &filename)
+{
 	kdebugf();
 	QString fnameout = filename + ".idx";
 	char *inbuf;
@@ -859,40 +930,46 @@ void HistoryManager::buildIndexPrivate(const QString &filename) {
 		return;
 	QFile fin(filename);
 	QFile fout(fnameout);
-	if (!fin.open(IO_ReadOnly)) {
+	if (!fin.open(IO_ReadOnly))
+	{
 		kdebugm(KDEBUG_ERROR, "HistoryManager::buildIndexPrivate(): Error opening history file: %s\n", (const char *)fin.name().local8Bit());
 		return;
-		}
-	if (!fout.open(IO_WriteOnly | IO_Truncate)) {
+	}
+	if (!fout.open(IO_WriteOnly | IO_Truncate))
+	{
 		kdebugm(KDEBUG_ERROR, "HistoryManager::buildIndexPrivate(): Error creating history index file: %s\n", (const char *)fout.name().local8Bit());
 		fin.close();
 		return;
-		}
+	}
 	inbuf = new char[65536];
 	outbuf = new int[4096];
 
 	inoffs = outbufoffs = 0;
-	while ((read = fin.readBlock(inbuf, 65536)) > 0) {
+	while ((read = fin.readBlock(inbuf, 65536)) > 0)
+	{
 		inbufoffs = 0;
-		while (inbufoffs < read) {
+		while (inbufoffs < read)
+		{
 			if (saved)
 				saved = false;
 			else
 				outbuf[outbufoffs++] = inoffs + inbufoffs;
-			if (outbufoffs == 4096) {
+			if (outbufoffs == 4096)
+			{
 				written = fout.writeBlock((char *)outbuf, 4096 * sizeof(int));
 				outbufoffs = 0;
-				}
+			}
 			while (inbufoffs < read && inbuf[inbufoffs] != '\n')
 				inbufoffs++;
 			if (inbufoffs < read)
 				inbufoffs++;
-			if (inbufoffs == read) {
+			if (inbufoffs == read)
+			{
 				inoffs += read;
 				saved = true;
-				}
 			}
 		}
+	}
 	if (outbufoffs)
 		written = fout.writeBlock((char *)outbuf, outbufoffs * sizeof(int));
 
@@ -903,11 +980,13 @@ void HistoryManager::buildIndexPrivate(const QString &filename) {
 	fout.close();
 }
 
-void HistoryManager::buildIndex(UinsList uins) {
+void HistoryManager::buildIndex(UinsList uins)
+{
 	buildIndexPrivate(ggPath("history/") + getFileNameByUinsList(uins));
 }
 
-void HistoryManager::buildIndex(QString mobile) {
+void HistoryManager::buildIndex(QString mobile)
+{
 	if (mobile == QString::null)
 		buildIndexPrivate(ggPath("history/") + "sms");
 	else
@@ -915,55 +994,63 @@ void HistoryManager::buildIndex(QString mobile) {
 }
 
 
-QStringList HistoryManager::mySplit(const QChar &sep, const QString &str) {
+QStringList HistoryManager::mySplit(const QChar &sep, const QString &str)
+{
 	QStringList strlist;
 
 	QString token;
 	QChar letter;
 	unsigned int idx = 0, state = 0;
-	while (idx < str.length()) {
+	while (idx < str.length())
+	{
 		letter = str[idx];
-		switch (state) {
+		switch (state)
+		{
 			case 0:
-				if (letter == ',') {
+				if (letter == ',')
+				{
 					if (token.length())
 						token.truncate(0);
 					else
 						strlist.append(token);
-					}
+				}
+				else if (letter == '"')
+					state = 2;
 				else
-					if (letter == '"')
-						state = 2;
-					else {
-						token.append(letter);
-						state = 1;
-						}
+				{
+					token.append(letter);
+					state = 1;
+				}
 				idx++;
 				break;
 			case 1:
-				if (letter != ',') {
+				if (letter != ',')
+				{
 					token.append(letter);
 					idx++;
-					}
-				else {
+				}
+				else
+				{
 					strlist.append(token);
 					state = 0;
-					}
+				}
 				break;
 			case 2:
 				if (letter == '\\')
 					state = 3;
 				else
-					if (letter == '\"') {
+					if (letter == '\"')
+					{
 						strlist.append(token);
 						state = 0;
-						}
+					}
 					else
 						token.append(letter);
 				idx++;
 				break;
 			case 3:
-				switch (letter) {
+				switch (letter)
+				{
 					case 'n':
 						token.append('\n');
 						break;
@@ -975,12 +1062,12 @@ QStringList HistoryManager::mySplit(const QChar &sep, const QString &str) {
 						break;
 					default:
 						token.append('?');
-					}
+				}
 				state = 2;
 				idx++;
 				break;
-			}
 		}
+	}
 	if (state == 1)
 		strlist.append(token);
 
@@ -997,7 +1084,8 @@ int HistoryManager::getHistoryEntryIndexByDate(UinsList uins, QDateTime &date, b
 
 	start = 0;
 	end = count - 1;
-	while (end - start >= 0) {
+	while (end - start >= 0)
+	{
 		kdebugm(KDEBUG_INFO, "HistoryManager::getHistoryEntryIndexByDate(): start = %d, end = %d\n", start, end);
 		entries = getHistoryEntries(uins, start + ((end - start) / 2), 1);
 		if (entries.count())
@@ -1008,27 +1096,30 @@ int HistoryManager::getHistoryEntryIndexByDate(UinsList uins, QDateTime &date, b
 					start += ((end - start) / 2) + 1;
 				else
 					return start + ((end - start) / 2);
-		}
-	if (end < 0) {
+	}
+	if (end < 0)
+	{
 		kdebugm(KDEBUG_FUNCTION_END, "HistoryManager::getHistoryEntryIndexByDate(): return 0\n");
 		return 0;
-		}
-	if (start >= count) {
-		kdebugm(KDEBUG_FUNCTION_END, "HistoryManager::getHistoryEntryIndexByDate(): return count\n");
+	}
+	if (start >= count)
+	{
+		kdebugm(KDEBUG_FUNCTION_END, "HistoryManager::getHistoryEntryIndexByDate(): return count=%d\n", count);
 		return count;
-		}
-	if (enddate) {
+	}
+	if (enddate)
+	{
 		entries = getHistoryEntries(uins, start, 1);
 		if (entries.count() && date < entries[0].date)
 			start--;
-		}
+	}
 	kdebugm(KDEBUG_FUNCTION_END, "HistoryManager::getHistoryEntryIndexByDate(): return %d\n", start);
 	return start;
 }
 
 void HistoryManager::chatMsgReceived(UinsList senders,const QString& msg,time_t time,bool& grab)
 {
-	if (config_file.readBoolEntry("General","Logging"))
+	if (config_file.readBoolEntry("History","Logging"))
 		history.appendMessage(senders, senders[0], msg, false, time);
 }
 
@@ -1039,20 +1130,23 @@ UinsListViewText::UinsListViewText(QListView *parent, UinsList &uins)
 
 	if (!uins.count())
 		setText(0, "SMS");
-	else {
-		for (unsigned int i = 0; i < uins.count(); i++) {
+	else
+	{
+		for (unsigned int i = 0; i < uins.count(); i++)
+		{
 			if (userlist.containsUin(uins[i]))
 				name.append(userlist.byUin(uins[i]).altnick);
 			else
 				name.append(QString::number(uins[i]));
 			if (i < uins.count() - 1)
 				name.append(",");
-			}
-		setText(0, name);
 		}
+		setText(0, name);
+	}
 }
 
-UinsList &UinsListViewText::getUinsList() {
+UinsList &UinsListViewText::getUinsList()
+{
 	return uins;
 }
 
@@ -1062,11 +1156,13 @@ DateListViewText::DateListViewText(QListViewItem *parent, HistoryDate &date)
 	setText(0, date.date.toString("yyyy.MM.dd"));
 }
 
-HistoryDate &DateListViewText::getDate() {
+HistoryDate &DateListViewText::getDate()
+{
 	return date;
 }
 
-History::History(UinsList uins): uins(uins), closeDemand(false), finding(false) {
+History::History(UinsList uins): uins(uins), closeDemand(false), finding(false)
+{
 	history.convHist2ekgForm(uins);
 	history.buildIndex(uins);
 
@@ -1118,42 +1214,50 @@ History::History(UinsList uins): uins(uins), closeDemand(false), finding(false) 
 	QListViewItem *datelvt;
 
 	QValueList<UinsList> uinsentries = history.getUinsLists();
-	for (unsigned int i = 0; i < uinsentries.count(); i++) {
+	for (unsigned int i = 0; i < uinsentries.count(); i++)
+	{
 		uinslvt = new UinsListViewText(uinslv, uinsentries[i]);
 		uinslvt->setExpandable(TRUE);
 		if (uinsentries[i].equals(uins))
 			selecteduinslvt = uinslvt;
-		}
+	}
 	uinslv->sort();
-	if (selecteduinslvt) {
+	if (selecteduinslvt)
+	{
 		selecteduinslvt->setOpen(TRUE);
 		datelvt = selecteduinslvt->firstChild();
-		if (datelvt) {
+		if (datelvt)
+		{
 			while (datelvt->nextSibling())
 				datelvt = datelvt->nextSibling();
 			uinslv->setCurrentItem(datelvt);
 			uinslv->setSelected(datelvt, TRUE);
 			uinslv->ensureItemVisible(datelvt);
-			}
 		}
+	}
 }
 
-void History::uinsChanged(QListViewItem *item) {
+void History::uinsChanged(QListViewItem *item)
+{
 	kdebugf();
 	QValueList<HistoryDate> dateentries;
-	if (item->depth() == 0) {
+	if (item->depth() == 0)
+	{
 		uins = ((UinsListViewText *)item)->getUinsList();
-		if (!item->childCount()) {
+		if (!item->childCount())
+		{
 			dateentries = history.getHistoryDates(uins);
 			for (unsigned int i = 0; i < dateentries.count(); i++)
 				(new DateListViewText(item, dateentries[i]))->setExpandable(FALSE);
-			}
 		}
+	}
 }
 
-void History::dateChanged(QListViewItem *item) {
+void History::dateChanged(QListViewItem *item)
+{
 	int count, depth = item->depth();
-	switch (depth) {
+	switch (depth)
+	{
 		case 1:
 			uinsChanged(item->parent());
 			start = ((DateListViewText *)item)->getDate().idx;
@@ -1166,18 +1270,20 @@ void History::dateChanged(QListViewItem *item) {
 			if (item)
 				item = item->nextSibling();
 			break;
-		}
+	}
 	count = history.getHistoryEntriesCount(uins);
-	if (depth < 2) {
+	if (depth < 2)
+	{
 		if (item)
 			count = ((DateListViewText *)item)->getDate().idx - start;
 		else
 			count -= start;
 		showHistoryEntries(start, count);
-		}
+	}
 }
 
-void History::formatHistoryEntry(QString &text, const HistoryEntry &entry, QStringList &paracolors) {
+void History::formatHistoryEntry(QString &text, const HistoryEntry &entry, QStringList &paracolors)
+{
 	QString bgcolor, textcolor;
 	QString message;
 
@@ -1185,11 +1291,13 @@ void History::formatHistoryEntry(QString &text, const HistoryEntry &entry, QStri
 	message.replace(QRegExp("\n"), "<br/>");
 
 	if (entry.type & (HISTORYMANAGER_ENTRY_CHATSEND | HISTORYMANAGER_ENTRY_MSGSEND
-		| HISTORYMANAGER_ENTRY_SMSSEND)) {
+		| HISTORYMANAGER_ENTRY_SMSSEND))
+	{
 		bgcolor = config_file.readColorEntry("Look","ChatMyBgColor").name();
 		textcolor = config_file.readColorEntry("Look","ChatMyFontColor").name();
 	}
-	else {
+	else
+	{
 		bgcolor = config_file.readColorEntry("Look","ChatUsrBgColor").name();
 		textcolor = config_file.readColorEntry("Look","ChatUsrFontColor").name();
 	}
@@ -1221,8 +1329,10 @@ void History::formatHistoryEntry(QString &text, const HistoryEntry &entry, QStri
 	if (entry.type & (HISTORYMANAGER_ENTRY_CHATRCV | HISTORYMANAGER_ENTRY_MSGRCV))
 		text.append(QString(" / S ") + printDateTime(entry.sdate));
 	text.append("</b><br/>");
-	if (entry.type & HISTORYMANAGER_ENTRY_STATUS) {
-		switch (entry.status) {
+	if (entry.type & HISTORYMANAGER_ENTRY_STATUS)
+	{
+		switch (entry.status)
+		{
 			case GG_STATUS_AVAIL:
 			case GG_STATUS_AVAIL_DESCR:
 				text.append(tr("Online"));
@@ -1239,11 +1349,11 @@ void History::formatHistoryEntry(QString &text, const HistoryEntry &entry, QStri
 			case GG_STATUS_NOT_AVAIL_DESCR:
 				text.append(tr("Offline"));
 				break;
-			}
+		}
 		if (entry.description.length())
 			text.append(QString(" (") + entry.description + ")");
 		text.append(QString(" ip=") + entry.ip);
-		}
+	}
 	else
 	{
 		HtmlDocument doc;
@@ -1264,7 +1374,8 @@ void History::formatHistoryEntry(QString &text, const HistoryEntry &entry, QStri
 		text.append("</font></td></tr></table>");
 }
 
-void History::showHistoryEntries(int from, int count) {
+void History::showHistoryEntries(int from, int count)
+{
 	kdebugf();
 	QString text;
 	QStringList paracolors;
@@ -1299,35 +1410,41 @@ void History::showHistoryEntries(int from, int count) {
 	kdebugf2();
 }
 
-void History::searchBtnClicked() {
+void History::searchBtnClicked()
+{
 	kdebugf();
 
 	HistorySearch *hs;
 	hs = new HistorySearch(this, uins);
 //	hs->resetBtnClicked();
 	hs->setDialogValues(findrec);
-	if (hs->exec() == QDialog::Accepted) {
+	if (hs->exec() == QDialog::Accepted)
+	{
 		findrec = hs->getDialogValues();
 		findrec.actualrecord = -1;
 		searchHistory();
-		}
+	}
 	delete hs;
 }
 
-void History::searchNextBtnClicked() {
+void History::searchNextBtnClicked()
+{
 	kdebugf();
 	findrec.reverse = false;
 	searchHistory();
 }
 
-void History::searchPrevBtnClicked() {
+void History::searchPrevBtnClicked()
+{
 	kdebugf();
 	findrec.reverse = true;
 	searchHistory();
 }
 
-QString History::gaduStatus2symbol(unsigned int status) {
-	switch (status) {
+QString History::gaduStatus2symbol(unsigned int status)
+{
+	switch (status)
+	{
 		case GG_STATUS_AVAIL:
 		case GG_STATUS_AVAIL_DESCR:
 			return QString("avail");
@@ -1339,27 +1456,31 @@ QString History::gaduStatus2symbol(unsigned int status) {
 			return QString("invisible");
 		default:
 			return QString("notavail");
-		}
+	}
 }
 
-void History::setDateListViewText(QDateTime &datetime) {
+void History::setDateListViewText(QDateTime &datetime)
+{
 	QListViewItem *actlvi;
 	actlvi = uinslv->firstChild();
 	while (actlvi && !((UinsListViewText *)actlvi)->getUinsList().equals(uins))
 		actlvi = actlvi->nextSibling();
-	if (actlvi) {
+	if (actlvi)
+	{
 		actlvi->setOpen(TRUE);
 		actlvi = actlvi->firstChild();
 		while (actlvi && ((DateListViewText *)actlvi)->getDate().date.date() != datetime.date())
 			actlvi = actlvi->nextSibling();
-		if (actlvi) {
+		if (actlvi)
+		{
 			uinslv->setCurrentItem(actlvi);
 //			body->setSelection(0, 0, 1, 10);
-			}
 		}
+	}
 }
 
-void History::searchHistory() {
+void History::searchHistory()
+{
 	kdebugf();
 	int start, end, count, total, len;
 	unsigned int i;
@@ -1404,7 +1525,8 @@ void History::searchHistory() {
 	setEnabled(false);
 	finding = true;
 	if (findrec.reverse)
-		do {
+		do
+		{
 			len = total > 100 ? 100 : total;
 			entries = history.getHistoryEntries(uins, findrec.actualrecord - len + 1, len);
 			for (i = 0; i < entries.count(); i++)
@@ -1413,14 +1535,15 @@ void History::searchHistory() {
 					&& entries[entries.count() - i - 1].message.contains(rxp)) ||
 					(findrec.type == 2 &&
 					(entries[entries.count() - i - 1].type & HISTORYMANAGER_ENTRY_STATUS)
-					&& findrec.data == gaduStatus2symbol(entries[entries.count() - i - 1].status))) {
+					&& findrec.data == gaduStatus2symbol(entries[entries.count() - i - 1].status)))
+				{
 					setDateListViewText(entries[entries.count() - i - 1].date);
 					//showHistoryEntries(findrec.actualrecord - i,
 					//	findrec.actualrecord - i + 99 < count ? 100
 					//	: count - findrec.actualrecord + i);
 					History::start = findrec.actualrecord - i;
 					break;
-					}
+				}
 			findrec.actualrecord -= i + (i < entries.count());
 			total -= i + (i < entries.count());
 			kdebugm(KDEBUG_INFO, "History::searchHistory(): actualrecord = %d, i = %d, total = %d\n",
@@ -1428,7 +1551,8 @@ void History::searchHistory() {
 			qApp->processEvents();
 		} while (total > 0 && i == entries.count() && !closeDemand);
 	else
-		do {
+		do
+		{
 			len = total > 100 ? 100 : total;
 			entries = history.getHistoryEntries(uins, findrec.actualrecord, len);
 			for (i = 0; i < entries.count(); i++)
@@ -1436,34 +1560,38 @@ void History::searchHistory() {
 					&& entries[i].message.contains(rxp)) ||
 					(findrec.type == 2 &&
 					(entries[i].type & HISTORYMANAGER_ENTRY_STATUS) &&
-					findrec.data == gaduStatus2symbol(entries[i].status))) {
+					findrec.data == gaduStatus2symbol(entries[i].status)))
+				{
 					setDateListViewText(entries[i].date);
 					//showHistoryEntries(findrec.actualrecord + i,
 					//	findrec.actualrecord + 99 < count ? 100
 					//	: count - findrec.actualrecord - i);
 					History::start = findrec.actualrecord + i;
 					break;
-					}
+				}
 			findrec.actualrecord += i + (i < entries.count());
 			total -= i + (i < entries.count());
 			kdebugm(KDEBUG_INFO, "History::searchHistory(): actualrecord = %d, i = %d, total = %d\n",
 				findrec.actualrecord, i, total);
 			qApp->processEvents();
 		} while (total > 0 && i == entries.count() && !closeDemand);
-	if (closeDemand) {
+	if (closeDemand)
+	{
 		reject();
 		return;
-		}
+	}
 	if (findrec.actualrecord < 0)
 		findrec.actualrecord = 0;
 	setEnabled(true);
 	finding = false;
 }
 
-void History::closeEvent(QCloseEvent *e) {
+void History::closeEvent(QCloseEvent *e)
+{
 	saveGeometry(this, "History", "HistoryGeometry");
 
-	if (finding) {
+	if (finding)
+	{
 		e->ignore();
 		closeDemand = true;
 	}
@@ -1475,12 +1603,18 @@ void History::initModule()
 {
 	kdebugf();
 	HistorySlots *historyslots=new HistorySlots();
+	
+	//do usuniecia po wydaniu 0.4
+	config_file.addVariable("History", "Logging", config_file.readEntry("General", "Logging"));
+	//
+	
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "History"));
 	ConfigDialog::addVGroupBox("History", "History", QT_TRANSLATE_NOOP("@default","Message citation in chat window"));
 	ConfigDialog::addSpinBox("History", "Message citation in chat window", QT_TRANSLATE_NOOP("@default", "Count:"), "ChatHistoryCitation", 0, 200, 1, 10);
 	ConfigDialog::addLabel("History", "Message citation in chat window", QT_TRANSLATE_NOOP("@default", "Don't cite messages older than:"));
 	ConfigDialog::addSlider("History", "Message citation in chat window", "historyslider", "ChatHistoryQuotationTime", -744, -1, 24, -336);
 	ConfigDialog::addLabel("History", "Message citation in chat window", "", "dayhour");
+	ConfigDialog::addCheckBox("History", "History", QT_TRANSLATE_NOOP("@default", "Log messages"), "Logging", true);
 	ConfigDialog::addCheckBox("History", "History", QT_TRANSLATE_NOOP("@default", "Don't show status changes"), "DontShowStatusChanges", false);
 	ConfigDialog::addCheckBox("History", "History", QT_TRANSLATE_NOOP("@default", "Don't save status changes"), "DontSaveStatusChanges", true);
 
@@ -1492,16 +1626,18 @@ void History::initModule()
 		&history,SLOT(chatMsgReceived(UinsList,const QString&,time_t,bool&)));
 }
 
-HistorySearch::HistorySearch(QWidget *parent, UinsList uins) : QDialog(parent), uins(uins) {
+HistorySearch::HistorySearch(QWidget *parent, UinsList uins) : QDialog(parent), uins(uins)
+{
 	setCaption(tr("Search history"));
 
 	int i;
 	char buf[128];
 
-	for (i = 0; i <= 59; i++) {
+	for (i = 0; i <= 59; i++)
+	{
 		sprintf(buf, "%02d", i);
 		numslist.append(QString(buf));
-		}
+	}
 
 	QStringList yearslist;
 	for (i = 2000; i <= 2020; i++)
@@ -1603,8 +1739,10 @@ HistorySearch::HistorySearch(QWidget *parent, UinsList uins) : QDialog(parent), 
 
 int daysForMonth[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
-void HistorySearch::correctFromDays(int index) {
-	if (daysForMonth[index] != from_day_cob->count()) {
+void HistorySearch::correctFromDays(int index)
+{
+	if (daysForMonth[index] != from_day_cob->count())
+	{
 		QStringList dayslist;
 		for (int i = 1; i <= daysForMonth[index]; i++)
 			dayslist.append(numslist[i]);
@@ -1613,11 +1751,13 @@ void HistorySearch::correctFromDays(int index) {
 		from_day_cob->insertStringList(dayslist);
 		if (current_day <= from_day_cob->count())
 			from_day_cob->setCurrentItem(current_day);
-		}
+	}
 }
 
-void HistorySearch::correctToDays(int index) {
-	if (daysForMonth[index] != to_day_cob->count()) {
+void HistorySearch::correctToDays(int index)
+{
+	if (daysForMonth[index] != to_day_cob->count())
+	{
 		QStringList dayslist;
 		for (int i = 1; i <= daysForMonth[index]; i++)
 			dayslist.append(numslist[i]);
@@ -1626,59 +1766,69 @@ void HistorySearch::correctToDays(int index) {
 		to_day_cob->insertStringList(dayslist);
 		if (current_day <= to_day_cob->count())
 			to_day_cob->setCurrentItem(current_day);
-		}
+	}
 }
 
-void HistorySearch::fromToggled(bool on) {
+void HistorySearch::fromToggled(bool on)
+{
 	from_hgb->setEnabled(on);
 }
 
-void HistorySearch::toToggled(bool on) {
+void HistorySearch::toToggled(bool on)
+{
 	to_hgb->setEnabled(on);
 }
 
-void HistorySearch::criteriaChanged(int id) {
+void HistorySearch::criteriaChanged(int id)
+{
 	phrase_hgb->setEnabled(id == 1);
 	status_hgb->setEnabled(id != 1);
 }
 
-void HistorySearch::findBtnClicked() {
+void HistorySearch::findBtnClicked()
+{
 	accept();
 }
 
-void HistorySearch::cancelBtnClicked() {
+void HistorySearch::cancelBtnClicked()
+{
 	reject();
 }
 
-void HistorySearch::resetFromDate() {
+void HistorySearch::resetFromDate()
+{
 	QValueList<HistoryEntry> entries;
 
 	entries = history.getHistoryEntries(uins, 0, 1);
-	if (entries.count()) {
+	if (entries.count())
+	{
 		from_day_cob->setCurrentItem(entries[0].date.date().day() - 1);
 		from_month_cob->setCurrentItem(entries[0].date.date().month() - 1);
 		from_year_cob->setCurrentItem(entries[0].date.date().year() - 2000);
 		from_hour_cob->setCurrentItem(entries[0].date.time().hour());
 		from_min_cob->setCurrentItem(entries[0].date.time().minute());
 		correctFromDays(entries[0].date.date().month() - 1);
-		}
+	}
 }
 
-void HistorySearch::resetToDate() {
+void HistorySearch::resetToDate()
+{
 	QValueList<HistoryEntry> entries;
 
 	entries = history.getHistoryEntries(uins, history.getHistoryEntriesCount(uins) - 1, 1);
-	if (entries.count()) {
+	if (entries.count())
+	{
 		to_day_cob->setCurrentItem(entries[0].date.date().day() - 1);
 		to_month_cob->setCurrentItem(entries[0].date.date().month() - 1);
 		to_year_cob->setCurrentItem(entries[0].date.date().year() - 2000);
 		to_hour_cob->setCurrentItem(entries[0].date.time().hour());
 		to_min_cob->setCurrentItem(entries[0].date.time().minute());
 		correctToDays(entries[0].date.date().month() - 1);
-		}
+	}
 }
 
-void HistorySearch::resetBtnClicked() {
+void HistorySearch::resetBtnClicked()
+{
 	from_hgb->setEnabled(false);
 	from_chb->setChecked(false);
 	resetFromDate();
@@ -1692,77 +1842,83 @@ void HistorySearch::resetBtnClicked() {
 	reverse_chb->setChecked(false);
 }
 
-void HistorySearch::setDialogValues(HistoryFindRec &findrec) {
+void HistorySearch::setDialogValues(HistoryFindRec &findrec)
+{
 	int status;
 
 	from_chb->setChecked(!findrec.fromdate.isNull());
 	from_hgb->setEnabled(!findrec.fromdate.isNull());
 	if (findrec.fromdate.isNull())
 		resetFromDate();
-	else {
+	else
+	{
 		from_day_cob->setCurrentItem(findrec.fromdate.date().day() - 1);
 		from_month_cob->setCurrentItem(findrec.fromdate.date().month() - 1);
 		from_year_cob->setCurrentItem(findrec.fromdate.date().year() - 2000);
 		from_hour_cob->setCurrentItem(findrec.fromdate.time().hour());
 		from_min_cob->setCurrentItem(findrec.fromdate.time().minute());
 		correctFromDays(findrec.fromdate.date().month() - 1);
-		}
+	}
 	to_chb->setChecked(!findrec.todate.isNull());
 	to_hgb->setEnabled(!findrec.todate.isNull());
 	if (findrec.todate.isNull())
 		resetToDate();
-	else {
+	else
+	{
 		to_day_cob->setCurrentItem(findrec.todate.date().day() - 1);
 		to_month_cob->setCurrentItem(findrec.todate.date().month() - 1);
 		to_year_cob->setCurrentItem(findrec.todate.date().year() - 2000);
 		to_hour_cob->setCurrentItem(findrec.todate.time().hour());
 		to_min_cob->setCurrentItem(findrec.todate.time().minute());
 		correctToDays(findrec.todate.date().month() - 1);
-		}
+	}
 	criteria_bg->setButton(findrec.type);
 	criteriaChanged(findrec.type);
-	switch (findrec.type) {
+	switch (findrec.type)
+	{
 		case 1:
 			phrase_edit->setText(findrec.data);
 			break;
 		case 2:
 			if (findrec.data == "avail")
 				status = 0;
-			else
-				if (findrec.data == "busy")
-					status = 1;
-				else
-					if (findrec.data == "invisible")
-						status = 2;
-					else
-						if (findrec.data == "notavail")
-							status = 3;
+			else if (findrec.data == "busy")
+				status = 1;
+			else if (findrec.data == "invisible")
+				status = 2;
+			else if (findrec.data == "notavail")
+				status = 3;
 			status_cob->setCurrentItem(status);
 			break;
-		}
+	}
 	reverse_chb->setChecked(findrec.reverse);
 }
 
-HistoryFindRec HistorySearch::getDialogValues() {
+HistoryFindRec HistorySearch::getDialogValues()
+{
 	HistoryFindRec findrec;
 
-	if (from_chb->isChecked()) {
+	if (from_chb->isChecked())
+	{
 		findrec.fromdate.setDate(QDate(from_year_cob->currentItem() + 2000,
 			from_month_cob->currentItem() + 1, from_day_cob->currentItem() + 1));
 		findrec.fromdate.setTime(QTime(from_hour_cob->currentItem(), from_min_cob->currentItem()));
-		}
-	if (to_chb->isChecked()) {
+	}
+	if (to_chb->isChecked())
+	{
 		findrec.todate.setDate(QDate(to_year_cob->currentItem() + 2000,
 			to_month_cob->currentItem() + 1, to_day_cob->currentItem() + 1));
 		findrec.todate.setTime(QTime(to_hour_cob->currentItem(), to_min_cob->currentItem()));
-		}
+	}
 	findrec.type = criteria_bg->id(criteria_bg->selected());
-	switch (findrec.type) {
+	switch (findrec.type)
+	{
 		case 1:
 			findrec.data = phrase_edit->text();
 			break;
 		case 2:
-			switch (status_cob->currentItem()) {
+			switch (status_cob->currentItem())
+			{
 				case 0:
 					findrec.data = "avail";
 					break;
@@ -1775,9 +1931,9 @@ HistoryFindRec HistorySearch::getDialogValues() {
 				case 3:
 					findrec.data = "notavail";
 					break;
-				}
+			}
 			break;
-		}
+	}
 	findrec.reverse = reverse_chb->isChecked();
 	return findrec;
 }

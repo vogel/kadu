@@ -1142,7 +1142,7 @@ void Chat::writeMyMessage()
 
 void Chat::addMyMessageToHistory()
 {
-	if (config_file.readBoolEntry("General","Logging"))
+	if (config_file.readBoolEntry("History","Logging"))
 		history.appendMessage(Uins, Uins[0], myLastMessage, true);
 }
 
