@@ -48,15 +48,13 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * usuniêty segfault przy imporcie pustej listy kontaktów (pawel_p/chilek)
 * dostosowanie importu listy kontaktów do nowego libgadu (chilek)
 * wydzielenie dialogu pobrania tokena (chilek)
-* libgadu z 05.10.2003 (chilek)
 * przypomnienie has³a zgodne z GG6 (chilek)
 * skrypt Instaluj instaluje najpierw Libgadu a potem Kadu - ominienty blad linkowania (Ron_K)
 * wiêcej informacji o b³êdach przy ³±czeniu siê z serwerem, informacja o
   niepoprawnym hasle i poprawka przy DISCONNECT - by³y wywo³ywane
   dwie funkcje zamiast jednej (mast3r)
 * znowu dobrze zapamiêtuje blokowanych itd. itp. (chilek)
-* poprawka libgadu - kadu nie wysypuje siê gdy próbujemy staæ siê niedostêpni
-  bêd±c jeszcze/ju¿ niedostêpnymi (chilek)
+* libgadu z 09.10.2003 (chilek)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci
