@@ -35,6 +35,7 @@
 #include "debug.h"
 #include "emoticons.h"
 #include "gadu.h"
+#include "ignore.h"
 #include "kadu.h"
 #include "kadu-config.h"
 #include "message_box.h"
@@ -492,8 +493,20 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, U
 	bold = italic = underline = color = inspan = false;
 	unsigned int pos = 0;
 	
-	const UserStatus &curStat=gadu->currentStatus();
-	bool receiveImage=(curStat.isOnline() || curStat.isBusy() || (curStat.isInvisible() && config_file.readBoolEntry("Chat", "ReceiveImagesDuringInvisibility")));
+	UinsList uins;
+	uins.append(sender);
+
+	const UserStatus &curStat = gadu->currentStatus();
+	
+	/* gdy mamy sendera na li¶cie kontaktów, nie jest on ignorowany,
+	   nie jest anononimowy i nasz status na to pozwala, to zezwalamy na obrazki */
+	bool receiveImage =
+		userlist.containsUin(sender) &&
+		!isIgnored(uins) &&
+		!userlist.byUinValue(sender).isAnonymous() &&
+
+		(curStat.isOnline() ||	curStat.isBusy() ||
+		(curStat.isInvisible() && config_file.readBoolEntry("Chat", "ReceiveImagesDuringInvisibility")));
 	
 	if (formats_length)
 	{
@@ -554,7 +567,7 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, U
 							gadu_images_manager.getSavedImageFileName(
 								actimage->size,
 								actimage->crc32);
-						if(file_name != "")
+						if (file_name != "")
 						{
 							kdebugm(KDEBUG_INFO, "This image was already saved\n");
 							mesg.append(GaduImagesManager::imageHtml(file_name));
@@ -562,12 +575,18 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, U
 						else
 						{
 							if (actimage->size<(config_file.readUnsignedNumEntry("Chat", "MaxImageSize")*1024))
+							{
 								if (receiveImage)
+								{
 									gadu->sendImageRequest(sender, actimage->size, actimage->crc32);
+									mesg.append(GaduImagesManager::loadingImageHtml(
+											sender,actimage->size,actimage->crc32));
+								}
 								else
-									;//mo¿naby tu zrobiæ jaki¶ dialog...
-							mesg.append(GaduImagesManager::loadingImageHtml(
-									sender,actimage->size,actimage->crc32));
+									mesg.append(qApp->translate("@default", QT_TR_NOOP("###IMAGE BLOCKED###")));
+							}
+							else
+								mesg.append(qApp->translate("@default", QT_TR_NOOP("###IMAGE TOO BIG###")));
 						}
 					}
 					else
@@ -620,23 +639,12 @@ struct richtext_formant
 	struct gg_msg_richtext_image image;
 };
 
-QString unformatGGMessage(const QString &msg, int &formats_length, void *&formats)
+QString stripHTMLFromGGMessage(const QString &msg)
 {
 	kdebugf();
-	QString mesg, tmp;
-	QStringList attribs;
 	QRegExp regexp;
-	struct attrib_formant actattrib;
-	QValueList<attrib_formant> formantattribs;
-	int pos, idx, inspan;
-	unsigned int i;
-	struct gg_msg_richtext richtext_header;
-	struct richtext_formant actformant;
-	QValueList<struct richtext_formant> formants;
-	char *cformats, *tmpformats;
+	QString mesg = msg;
 
-//	kdebugmf(KDEBUG_INFO, "\n%s\n", msg.latin1());
-	mesg = msg;
 //	mesg.replace(QRegExp("^<html><head><meta\\sname=\"qrichtext\"\\s*\\s/></head>"), "");
 	mesg.replace(QRegExp("^<html><head>.*<body\\s.*\">\\r\\n"), "");
 	mesg.replace(QRegExp("\\r\\n</body></html>\\r\\n$"), "");
@@ -658,20 +666,108 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 //	mesg.replace(QRegExp("&lt;"), "#");
 //	mesg.replace(QRegExp("&gt;"), "#");
 
+	return mesg;
+}
+
+/**
+ * Translates QValueList with formants into flat buffer on heap
+ * 
+ * Precondition - formats_length must contain valid length of result buffer
+ */
+void *allocFormantBuffer(const QValueList<struct richtext_formant> &formants, int &formats_length)
+{
+	kdebugf();
+	struct gg_msg_richtext richtext_header;
+	char *cformats, *tmpformats;
+
+	richtext_header.flag = 2;
+	richtext_header.length = formats_length;
+	formats_length += sizeof(struct gg_msg_richtext);
+	cformats = new char[formats_length];
+	tmpformats = cformats;
+	memcpy(tmpformats, &richtext_header, sizeof(struct gg_msg_richtext));
+	tmpformats += sizeof(struct gg_msg_richtext);
+	for (QValueList<struct richtext_formant>::const_iterator it = formants.begin(); it != formants.end(); ++it)
+	{
+		struct richtext_formant actformant = (*it);
+		memcpy(tmpformats, &actformant, sizeof(gg_msg_richtext_format));
+		tmpformats += sizeof(gg_msg_richtext_format);
+		if (actformant.format.font & GG_FONT_COLOR)
+		{
+			memcpy(tmpformats, &actformant.color, sizeof(gg_msg_richtext_color));
+			tmpformats += sizeof(gg_msg_richtext_color);
+		}
+		if (actformant.format.font & GG_FONT_IMAGE)
+		{
+			memcpy(tmpformats, &actformant.image, sizeof(gg_msg_richtext_image));
+			tmpformats += sizeof(gg_msg_richtext_image);
+		}
+	}
+	kdebugmf(KDEBUG_INFO, "formats_length=%d, tmpformats-cformats=%d\n",
+		formats_length, tmpformats - cformats);
+
+	return (void *)cformats;
+}
+
+QString unformatGGMessage(const QString &msg, int &formats_length, void *&formats)
+{
+	kdebugf();
+	QString mesg, tmp;
+	QStringList attribs;
+	struct attrib_formant actattrib;
+	QValueList<attrib_formant> formantattribs;
+	int pos, idx, inspan;
+	unsigned int i;
+	struct richtext_formant actformant, lastformant;
+	QValueList<struct richtext_formant> formants;
+	bool endspan;
+
+	mesg = stripHTMLFromGGMessage(msg);
+
 	kdebugmf(KDEBUG_INFO, "\n%s\n", mesg.local8Bit().data());
 
 	inspan = -1;
 	pos = idx = formats_length = 0;
+	endspan = false;
+	lastformant.format.font = 0;
 
 	while (uint(pos) < mesg.length())
 	{
+		// get indexes of unparsed tags
 		int image_idx    = mesg.find("[IMAGE ", pos);
 		int span_idx     = mesg.find("<span style=", pos);
 		int span_end_idx = mesg.find("</span>", pos);
+
+		// if image(s) was parsed recently, we possibly have to restore previous
+		// active formatting (since image formant invalidates it)
+		// the following code inserts formant saved in lastformant object
+		if (lastformant.format.font != 0 &&
+			pos != image_idx && pos != span_idx && pos != span_end_idx)
+		{
+			lastformant.format.position = pos;	// we need to update position
+			formants.append(lastformant);
+			formats_length += sizeof(struct gg_msg_richtext_format);
+		}
+		lastformant.format.font = 0; // don't insert this formant again 
+
+		// do we have an image preceding any <span> tags?
 		if (image_idx != -1 &&
 			(span_idx == -1 || image_idx < span_idx) &&
 			(span_end_idx == -1 || image_idx < span_end_idx))
 		{
+			// we have to translate any unhandled </span> tags before image
+			// by inserting empty formant 0
+			// (fixes mantis bug 355)
+			if (endspan && inspan == -1 && pos)
+			{
+				endspan = false;	// mark </span> as handled
+				actformant.format.position = pos;
+				actformant.format.font = 0;
+				formants.append(actformant);
+				formats_length += sizeof(struct gg_msg_richtext_format);
+			}
+
+			// parse [IMAGE] tag and remove it from message
 			int idx_end = mesg.find("]", image_idx);
 			if (idx_end == -1)
 				idx_end = mesg.length() - 1;
@@ -680,6 +776,24 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 			uint32_t crc32;
 			gadu_images_manager.addImageToSend(file_name, size, crc32);
 			mesg.remove(image_idx, idx_end-image_idx+1);
+
+			// search for last non-image formant before currently parsed image
+			// we need to save it, and reinsert after image in next loop iteration
+			// (this is required, since image formant removes any active formatting
+			// options)
+			QValueList<struct richtext_formant>::const_iterator it = formants.end();
+			while (it != formants.begin())
+			{
+				--it;
+				// check for non-image formants (formant 0 is ok)
+				if (((*it).format.font & GG_FONT_IMAGE) == 0)
+				{
+					lastformant = *it;
+					break;
+				}
+			}
+
+			// insert the actual image formant into the list 
 			actformant.format.position = image_idx;
 			actformant.format.font = GG_FONT_IMAGE;
 			actformant.image.unknown1 = 0x0109;
@@ -692,18 +806,24 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 		}
 		else if (inspan == -1)
 		{
+			// parsing <span> tag (NOTE: we actually handle </span> here too)
 			idx = span_idx;
 			if (idx != -1)
 			{
 				kdebugmf(KDEBUG_INFO, "idx=%d\n", idx);
 				inspan = idx;
+
+				// close any unhandled </span> tags (insert empty formant)
 				if (pos && idx > pos)
 				{
+					endspan = false;	// mark </span> as handled
 					actformant.format.position = pos;
 					actformant.format.font = 0;
 					formants.append(actformant);
 					formats_length += sizeof(struct gg_msg_richtext_format);
 				}
+
+				// parse <span> attributes and initialize formant structure
 				pos = idx;
 				idx = mesg.find("\">", pos);
 				tmp = mesg.mid(pos, idx - pos);
@@ -738,6 +858,8 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 						actformant.color.blue = color.blue();
 					}
 				}
+
+				// insert <span> formant into list 
 				formants.append(actformant);
 				formats_length += sizeof(struct gg_msg_richtext_format)
 					+ sizeof(struct gg_msg_richtext_color)
@@ -748,18 +870,25 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 		}
 		else
 		{
+			// found a </span> tag
 			idx = span_end_idx;
 			if (idx != -1)
 			{
+				// we don't create the formant structure here
+				// </span> tag is removed from string, empty formant
+				// is inserted in next loop iteration in code above.
 				kdebugmf(KDEBUG_INFO, "idx=%d\n", idx);
 				pos = idx;
 				mesg.remove(pos, 7);
 				inspan = -1;
+				endspan = true;	// we'll take care of this </span> later
 			}
 			else
 				break;
 		}
 	}
+
+	// if loop ended before we could insert </span> formant, insert it now
 	if (pos && idx == -1)
 	{
 		actformant.format.position = pos;
@@ -767,35 +896,10 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 		formants.append(actformant);
 		formats_length += sizeof(struct gg_msg_richtext_format);
 	}
+	
+	// now convert QValueList into flat memory buffer
 	if (formats_length)
-	{
-		richtext_header.flag = 2;
-		richtext_header.length = formats_length;
-		formats_length += sizeof(struct gg_msg_richtext);
-		cformats = new char[formats_length];
-		tmpformats = cformats;
-		memcpy(tmpformats, &richtext_header, sizeof(struct gg_msg_richtext));
-		tmpformats += sizeof(struct gg_msg_richtext);
-		for (QValueList<struct richtext_formant>::iterator it = formants.begin(); it != formants.end(); ++it)
-		{
-			actformant = (*it);
-			memcpy(tmpformats, &actformant, sizeof(gg_msg_richtext_format));
-			tmpformats += sizeof(gg_msg_richtext_format);
-			if (actformant.format.font & GG_FONT_COLOR)
-			{
-				memcpy(tmpformats, &actformant.color, sizeof(gg_msg_richtext_color));
-				tmpformats += sizeof(gg_msg_richtext_color);
-			}
-			if (actformant.format.font & GG_FONT_IMAGE)
-			{
-				memcpy(tmpformats, &actformant.image, sizeof(gg_msg_richtext_image));
-				tmpformats += sizeof(gg_msg_richtext_image);
-			}
-		}
-		kdebugmf(KDEBUG_INFO, "formats_length=%d, tmpformats-cformats=%d\n",
-			formats_length, tmpformats - cformats);
-		formats = (void *)cformats;
-	}
+		formats = allocFormantBuffer(formants, formats_length);
 	else
 		formats = NULL;
 
