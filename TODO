@@ -22,6 +22,7 @@
  ! wyja¶niæ zapêtlenia siê przy utracie ³±czno¶ci z serwerem 
  ! przetestowaæ wysy³anie plików
  + dopracowaæ grupy
+ + wywoywanie domyslnego klienta e-mail i pozycja e-mail w info o kontaktach
 
  TODO dla wersji 0.4.0
 -----------------------
