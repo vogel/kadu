@@ -593,7 +593,7 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 	autosend = new QPushButton(buttontray, "autoSendButton");
 	autosend->setPixmap(icons_manager.loadIcon("AutoSendMessage"));
 	autosend->setToggleButton(true);
-	QToolTip::add(autosend, tr("Enter key sends message"));
+	QToolTip::add(autosend, tr("%1 sends message").arg(config_file.readEntry("ShortCuts", "chat_newline")));
 
 	lockscroll = new QPushButton(buttontray, "lockScrollButton");
 	lockscroll->setPixmap(icons_manager.loadIcon("ScrollLock"));
