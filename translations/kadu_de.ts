@@ -472,6 +472,10 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
         <translation>Spalten</translation>
     </message>
     <message>
+        <source>Force use of paragraphs (VERY experimental)</source>
+        <translation>Setze die Nutzung von Absetzen durch (SEHR experimentell)</translation>
+    </message>
+    <message>
         <source>Show / hide users without description</source>
         <translation>Zeige / verstecke Benutzer ohne Beschreibung</translation>
     </message>
@@ -542,6 +546,28 @@ Es ist ein sehr hohes Risiko!</translation>
         <translation>Optionen des Browsers</translation>
     </message>
     <message>
+        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
+%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
+%v - revDNS, %p - port %e - email
+If you leave blank, default settings will be used</source>
+        <translation>Syntax: %s - Zustand, %d - Beschreibung, %i - ip, %n - nick, %a - altnick, %f - Vorname
+%r - Nachname, %m - Handy, %u - UIN, %g - Gruppe, %o - zeige_Abstand_wenn Benutzer uns nicht in der Kontaktliste hat
+%v - revDNS, %p - Port %e - Email
+Wenn Sie das leer lassen, wird Voreinstellung benutzt</translation>
+    </message>
+    <message>
+        <source>Use paragraphs instead of tables</source>
+        <translation>Benutze Absätze in Tabellen</translation>
+    </message>
+    <message>
+        <source>If set: chat, history windows and information panel are rendered
+using HTML paragraphs instead of tables - this improves refresh
+speed and text copying but has a couple of display problems</source>
+        <translation>Wenn eingeschaltet: Chat- und Verlaufsfenster sowie Infopanel werden dargestellt
+als HTML-Absätze in Tabellen - das verbessert Auffrischungsgeschwindigkeit und 
+das Kopieren des Textes, hat aber einige Probleme mit der Darstellung</translation>
+    </message>
+    <message>
         <source>Debugging mask</source>
         <translation>Dabug-Maske</translation>
     </message>
@@ -582,15 +608,17 @@ Es ist ein sehr hohes Risiko!</translation>
 %r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
 %v - revDNS, %p - port %e - email %x - max image size
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Syntax: %s - Zustand, %d - Beschreibung, %i - IP, %n - Nick, %a - alternativer Nick, %f - Vorname
+%r - Nachname, %m - Handy, %u - UIN, %g - Gruppe, %o - gib_leerzeichen_zurück, wenn Benutzer uns nicht in der Liste hat
+%v - revDNS, %p - port %e - Email %x - maximale Bildgröße</translation>
     </message>
     <message>
         <source>French</source>
-        <translation type="unfinished"></translation>
+        <translation>Französisch</translation>
     </message>
     <message>
         <source>Description font color</source>
-        <translation type="unfinished"></translation>
+        <translation>Farbe der Schrift der Beschreibung</translation>
     </message>
 </context>
 <context>
