@@ -87,6 +87,7 @@ VoiceChatDialog::VoiceChatDialog(DccSocket* socket)
 	: QDialog (NULL, "voice_chat_dialog"), Socket(socket)
 {
 	kdebugf();
+	chatFinished = false;
 	setWFlags(Qt::WDestructiveClose);
 	setCaption(tr("Voice chat"));
 	resize(200, 100);
@@ -109,7 +110,8 @@ VoiceChatDialog::~VoiceChatDialog()
 	kdebugf();
 	Dialogs.remove(Socket);
 	voice_manager->free();
-	delete Socket;
+	if (!chatFinished)
+		delete Socket;
 	kdebugf2();
 }
 
@@ -167,6 +169,8 @@ VoiceManager::VoiceManager(QObject *parent, const char *name) : QObject(parent, 
 		this, SLOT(dccEvent(DccSocket*)));
 	connect(dcc_manager, SIGNAL(socketDestroying(DccSocket*)),
 		this, SLOT(socketDestroying(DccSocket*)));
+	connect(dcc_manager, SIGNAL(setState(DccSocket*)),
+		this, SLOT(setState(DccSocket*)));
 	kdebugf2();
 }
 
@@ -181,6 +185,8 @@ VoiceManager::~VoiceManager()
 	UserBox::userboxmenu->removeItem(voice_chat_item);
 	disconnect(UserBox::userboxmenu,SIGNAL(popup()),this,SLOT(userBoxMenuPopup()));
 	disconnect(kadu,SIGNAL(keyPressed(QKeyEvent*)),this,SLOT(mainDialogKeyPressed(QKeyEvent*)));
+	disconnect(dcc_manager, SIGNAL(setState(DccSocket*)),
+		this, SLOT(setState(DccSocket*)));
 	disconnect(dcc_manager, SIGNAL(connectionBroken(DccSocket*)),
 		this, SLOT(connectionBroken(DccSocket*)));
 	disconnect(dcc_manager, SIGNAL(dccError(DccSocket*)),
@@ -524,7 +530,8 @@ void VoiceManager::userBoxMenuPopup()
 void VoiceManager::connectionBroken(DccSocket* socket)
 {
 	kdebugf();
-	if (VoiceChatDialog::bySocket(socket) != NULL)
+	VoiceChatDialog *dialog = VoiceChatDialog::bySocket(socket);
+	if (dialog != NULL)
 		socket->setState(DCC_SOCKET_VOICECHAT_DISCARDED);
 	kdebugf2();
 }
@@ -532,9 +539,10 @@ void VoiceManager::connectionBroken(DccSocket* socket)
 void VoiceManager::dccError(DccSocket* socket)
 {
 	kdebugf();
-	if (VoiceChatDialog::bySocket(socket) != NULL)
+	VoiceChatDialog *dialog = VoiceChatDialog::bySocket(socket);
+	if (dialog != NULL)
 	{
-		UinType peer_uin=socket->ggDccStruct()->peer_uin;
+		UinType peer_uin = socket->ggDccStruct()->peer_uin;
 
 		socket->setState(DCC_SOCKET_VOICECHAT_DISCARDED);
 
@@ -599,6 +607,17 @@ void VoiceManager::socketDestroying(DccSocket* socket)
 			direct.remove(peer_uin);
 		delete dialog;
 	}
+
+	kdebugf2();
+}
+
+void VoiceManager::setState(DccSocket* socket)
+{
+	kdebugf();
+
+	VoiceChatDialog *dialog = VoiceChatDialog::bySocket(socket);
+	if (dialog != NULL)
+		dialog->chatFinished = true;
 
 	kdebugf2();
 }

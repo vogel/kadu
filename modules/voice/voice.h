@@ -35,6 +35,8 @@ class VoiceChatDialog : public QDialog
 		static VoiceChatDialog* bySocket(DccSocket* socket);
 		static void destroyAll();
 		static void sendDataToAll(char* data, int length);
+
+		bool chatFinished;
 };
 
 class VoiceManager : public QObject
@@ -74,6 +76,7 @@ class VoiceManager : public QObject
 		void dccError(DccSocket* socket);
 		void dccEvent(DccSocket* socket);
 		void socketDestroying(DccSocket* socket);
+		void setState(DccSocket* socket);
 
 	public:
 		VoiceManager(QObject *parent=0, const char *name=0);
