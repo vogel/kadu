@@ -261,7 +261,7 @@ void SmsEraGateway::send(const QString& number,const QString& message, const QSt
 	if ( gateway == "Basic")
 	{
 	    path= "sms/do/extern/tinker/free/send";
-	    post_data.replace(post_data.find("&numbers="),9, "&number=");
+	    post_data.replace(post_data.find("&numbers="),9, "&number=48");
 	}
 	else if (gateway == "Charge")
 		    path= "sms/do/extern/tinker/super/send";

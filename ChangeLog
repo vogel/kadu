@@ -224,6 +224,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   paru globalnych do klas, zmiana publicznych na prywatne, nazwy.. (adrian)
 * w konferencji od¶wie¿anie listy u¿ytkowników gdy w³±czone s± opisy pod kontaktami (joi)
 * emotikony w historii i w panelu infomacyjnym nie powinny siê ju¿ rozje¿d¿aæ (joi)
+* teoretycznie poprawi³em wysy³anie na bramkê Era Podstawowa (adrian)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
