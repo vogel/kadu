@@ -49,6 +49,7 @@ class ConfigFile {
 		void writeEntry(const QString &group,const QString &name, const QSize &value);
 		void writeEntry(const QString &group,const QString &name, const QColor &value);
 		void writeEntry(const QString &group,const QString &name, const QFont &value);
+		void writeEntry(const QString &group,const QString &name, const QPoint &value);
 
 		QString readEntry(const QString &group,const QString &name, const QString &def = QString::null);
 		int readNumEntry(const QString &group,const QString &name, int def = 0);
@@ -58,6 +59,7 @@ class ConfigFile {
 		QSize readSizeEntry(const QString &group,const QString &name, const QSize *def = 0L);
 		QColor readColorEntry(const QString &group,const QString &name, const QColor *def = 0L);
 		QFont readFontEntry(const QString &group,const QString &name, const QFont *def = 0L);
+		QPoint readPointEntry(const QString &group,const QString &name, const QPoint *def = 0L);
 
 };
 

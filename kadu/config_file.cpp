@@ -204,7 +204,13 @@ void ConfigFile::writeEntry(const QString &group,const QString &name, const QFon
 	changeEntry(name, string.join(","));
 }
 
-
+void ConfigFile::writeEntry(const QString &group,const QString &name, const QPoint &value) {
+	setGroup(group);
+	QStringList string;
+	string.append(QString::number(value.x()));
+	string.append(QString::number(value.y()));
+	changeEntry(name, string.join(","));
+}
 
 QString ConfigFile::readEntry(const QString &group,const QString &name, const QString &def) {
 	setGroup(group);
@@ -346,6 +352,30 @@ QFont ConfigFile::readFontEntry(const QString &group,const QString &name, const 
 	if (!ok)
 		return def ? *def : QApplication::font();
 	return font;
+}
+
+QPoint ConfigFile::readPointEntry(const QString &group,const QString &name, const QPoint *def) {
+	setGroup(group);
+	QString string = getEntry(name);
+	QStringList stringlist;
+	QPoint point;
+	int x, y;
+	bool ok;
+
+	if (string == QString::null)
+		return def ? *def : QPoint(0, 0);
+	stringlist = QStringList::split(",", string);
+	if (stringlist.count() != 2)
+		return def ? *def : QPoint(0, 0);
+	x = stringlist[0].toInt(&ok);
+	if (!ok)
+		return def ? *def : QPoint(0, 0);
+	y = stringlist[1].toInt(&ok);
+	if (!ok)
+		return def ? *def : QPoint(0, 0);
+	point.setX(x);
+	point.setY(y);
+	return point;
 }
 
 ConfigFile config_file(ggPath(QString("kadu.conf")));
