@@ -211,12 +211,14 @@ void SearchDialog::init() {
 void SearchDialog::deleteSocketNotifiers() {
 	if (snr) {
 		snr->setEnabled(false);
-		snr->deleteLater();
+//		snr->deleteLater();
+		delete snr;
 		snr = NULL;
 		}
 	if (snw) {
 		snw->setEnabled(false);
-		snw->deleteLater();
+//		snw->deleteLater();
+		delete snw;
 		snw = NULL;
 		}
 }
