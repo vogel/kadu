@@ -17,6 +17,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * mo¿na cytowaæ max. 200 fraz (chilek)
 * aktualizacja libgadu na wersjê z dnia 09.09.2003 (chilek)
 * obs³uga zmian statusów zgodna z GG6 (chilek)
+* poprawne wy¶wietlanie wersji protoko³u, ip u¿ytkownika
+  i jego portu (chilek)
 
 +++ wersja 0.3.4-rc4
 * kadu nie pokazuje fa³szywych statusów ukrytych w userboksie (chilek)

@@ -493,17 +493,30 @@ void EventManager::userStatusChangedSlot(struct gg_event * e) {
 	int i;
 	uint32_t uin;
 	char *descr;
+	uint32_t remote_ip;
+	uint16_t remote_port;
+	uint8_t version;
+	uint8_t image_size;
 	
 	if (e->type == GG_EVENT_STATUS60) {
 		uin = e->event.status60.uin;
 		status = e->event.status60.status;
 		descr = e->event.status60.descr;
+		remote_ip = e->event.status60.remote_ip;
+		remote_port = e->event.status60.remote_port;
+		version = e->event.status60.version;
+		image_size = e->event.status60.image_size;
 		}
 	else {
 		uin = e->event.status.uin;
 		status = e->event.status.status;
 		descr = e->event.status.descr;
+		remote_ip = 0;
+		remote_port = 0;
+		version = 0;
+		image_size = 0;
 		}
+
 	kdebug("eventStatusChange(): User %d went %d\n", uin,  status);
 	UserListElement &user = userlist.byUin(uin);
 
@@ -529,6 +542,13 @@ void EventManager::userStatusChangedSlot(struct gg_event * e) {
 		user.port = 0;
 		user.version = 0;
 		user.image_size = 0;
+		}
+	else {
+		user.ip.setAddress(ntohl(remote_ip));
+		userlist.addDnsLookup(user.uin, user.ip);
+		user.port = remote_port;
+		user.version = version;
+		user.image_size = image_size;
 		}
 
 	history.appendStatus(user.uin, user.status, user.description.length() ? user.description : QString::null);
