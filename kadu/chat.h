@@ -21,7 +21,7 @@
 #include "userbox.h"
 #include "../config.h"
 
-class IconSelector;
+class EmoticonSelector;
 
 class CustomInput;
 
@@ -36,7 +36,7 @@ class Chat : public QWidget {
 		int index;
 		int totaloccurences;
 		UinsList uins;
-		IconSelector *iconsel_ptr;
+		EmoticonSelector *emoticon_selector;
 		QPushButton *iconsel;
 		QPushButton *autosend;
 		QPushButton *lockscroll;
@@ -112,38 +112,6 @@ class CustomInput : public QMultiLineEdit {
 
 	protected:
 		void keyPressEvent(QKeyEvent *e);
-};
-
-class IconSelectorButton : public QToolButton
-{
-	Q_OBJECT
-	
-	private:
-		QString EmoticonString;
-	
-	private slots:
-		void buttonClicked();
-
-	public:
-		IconSelectorButton(QWidget* parent,const QString& emoticon_string);	
-	
-	signals:
-		void clicked(const QString& emoticon_string);
-};
-
-class IconSelector : public QWidget {
-	Q_OBJECT
-	public:
-		IconSelector(QWidget* parent = 0, const char *name = 0, Chat *caller = 0);
-
-	private:
-		Chat *callingwidget;
-
-	protected:
-		void closeEvent(QCloseEvent *e);
-
-	private slots:
-		void iconClicked(const QString& emoticon_string);
 };
 
 #endif

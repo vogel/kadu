@@ -11,7 +11,7 @@
 #include <qtextstream.h>
 #include <qdir.h>
 #include <qtextcodec.h>
-#include <qmovie.h>
+#include <qtooltip.h>
 
 #include "emoticons.h"
 #include "debug.h"
@@ -142,6 +142,83 @@ QString EmoticonsManager::emoticonPicPath(int emot_num)
 				
 EmoticonsManager emoticons;
 
+EmoticonSelectorButton::EmoticonSelectorButton(
+	QWidget* parent,const QString& emoticon_string,
+	const QString& file_path)
+	: QToolButton(parent)
+{
+	EmoticonString = emoticon_string;
+	EmoticonPath = file_path;
+	Movie=NULL;
+	setPixmap(QPixmap(EmoticonPath));
+	setAutoRaise(true);
+	setMouseTracking(true);
+	QToolTip::add(this,emoticon_string);
+	connect(this, SIGNAL(clicked()), this, SLOT(buttonClicked()));
+};
+
+void EmoticonSelectorButton::buttonClicked()
+{
+	emit clicked(EmoticonString);
+};
+
+void EmoticonSelectorButton::movieUpdate()
+{
+	setPixmap(Movie->framePixmap());
+};
+
+void EmoticonSelectorButton::enterEvent(QEvent* e)
+{
+	QToolButton::enterEvent(e);
+	if(Movie==NULL)
+	{
+		Movie=new QMovie(EmoticonPath);
+		Movie->connectUpdate(this, SLOT(movieUpdate()));
+	};
+};
+
+void EmoticonSelectorButton::leaveEvent(QEvent* e)
+{
+	QToolButton::leaveEvent(e);
+	if(Movie!=NULL)
+	{
+		delete Movie;
+		Movie=NULL;
+		setPixmap(QPixmap(EmoticonPath));
+	};
+};
+
+/* the icon selector itself */
+EmoticonSelector::EmoticonSelector(QWidget *parent, const char *name, Chat * caller) : QWidget (parent, name,Qt::WType_Popup)
+{
+	callingwidget = caller;
+	setWFlags(Qt::WDestructiveClose);
+	
+	int emoticons_count=emoticons.emoticonsCount();
+	int selector_width=(int)sqrt((double)emoticons_count);
+	int btn_width=0;
+	QGridLayout *grid = new QGridLayout(this, 0, selector_width, 0, 0);
+
+	for(int i=0; i<emoticons_count; i++)
+	{
+		EmoticonSelectorButton* btn = new EmoticonSelectorButton(this,emoticons.emoticonString(i),emoticons.emoticonPicPath(i));
+		btn_width=btn->sizeHint().width();
+		grid->addWidget(btn, i/selector_width, i%selector_width);
+		connect(btn,SIGNAL(clicked(const QString&)),this,SLOT(iconClicked(const QString&)));
+	};
+};
+
+void EmoticonSelector::closeEvent(QCloseEvent *e) {
+	callingwidget->addEmoticon("");
+	QWidget::closeEvent(e);
+};
+
+void EmoticonSelector::iconClicked(const QString& emoticon_string)
+{
+	callingwidget->addEmoticon(emoticon_string);
+	close();
+};
+
 AnimTextItem::AnimTextItem(
 	QTextDocument *p, QTextEdit* edit,
 	const QString& filename, const QColor& bgcolor )
@@ -170,12 +247,11 @@ void AnimTextItem::draw(
 	int cw, int ch, const QColorGroup& cg,
 	bool selected )
 {
-//	p->fillRect(x,y,width,height,Qt::blue);
+//	p->fillRect(x,y,width,height,Label->paletteBackgroundColor());
 	if(Label->isVisible()&&EditSize==Edit->size())
 		return;
 	EditSize=Edit->size();
 	QPoint u=p->xForm(QPoint(x,y));
-	fprintf(stderr,"%i\n",Edit->contentsY());
 	if(Edit->contentsY()==0)
 		u+=Edit->paragraphRect(0).topLeft();
 	Label->move(u);

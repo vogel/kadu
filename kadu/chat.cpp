@@ -55,7 +55,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	struct chats chat;
 	QValueList<int> sizes;
 
-	iconsel_ptr = NULL;
+	emoticon_selector = NULL;
 	autosend_enabled = false;
 
 	title_timer = new QTimer(this);
@@ -708,21 +708,21 @@ void Chat::HistoryBox(void) {
 	hb->show();
 }
 
-/* this nifty icon selector */
-void Chat::insertEmoticon(void) {
-	if (iconsel_ptr == NULL) {
-//		iconsel->setOn(true);
-		iconsel_ptr = new IconSelector(NULL, "Icon selector", this);
+void Chat::insertEmoticon(void)
+{
+	if (emoticon_selector == NULL)
+	{
+		emoticon_selector = new EmoticonSelector(NULL, "Emoticon selector", this);
 		QPoint pos=iconsel->mapToGlobal(QPoint(0,0));
-		iconsel_ptr->move(pos.x() - iconsel_ptr->sizeHint().width(),
-			pos.y() + iconsel->height()/2 - iconsel_ptr->sizeHint().height()/2 );
-		iconsel_ptr->show();
-		}
-	else {
-//		iconsel->setOn(false);
-		iconsel_ptr->close();
-		iconsel_ptr = NULL;
-		}
+		emoticon_selector->move(pos.x() - emoticon_selector->sizeHint().width(),
+			pos.y() + iconsel->height()/2 - emoticon_selector->sizeHint().height()/2 );
+		emoticon_selector->show();
+	}
+	else
+	{
+		emoticon_selector->close();
+		emoticon_selector = NULL;
+	}
 }
 
 /* adds an emoticon code to the edit window */
@@ -732,52 +732,5 @@ void Chat::addEmoticon(QString string) {
 		edit->end();
 		edit->setFocus();
 		}
-	iconsel_ptr = NULL;
-//	iconsel->setOn(false);
+	emoticon_selector = NULL;
 }
-
-IconSelectorButton::IconSelectorButton(QWidget* parent,const QString& emoticon_string)
-	: QToolButton(parent)
-{
-	EmoticonString = emoticon_string;
-	connect(this, SIGNAL(clicked()), this, SLOT(buttonClicked()));
-};
-
-void IconSelectorButton::buttonClicked()
-{
-	emit clicked(EmoticonString);
-};
-
-/* the icon selector itself */
-IconSelector::IconSelector(QWidget *parent, const char *name, Chat * caller) : QWidget (parent, name,Qt::WType_Popup) {
-	callingwidget = caller;
-	setWFlags(Qt::WDestructiveClose/*||Qt::WStyle_NoBorder||Qt::WStyle_NoBorderEx||Qt::WX11BypassWM*/);
-	
-	int emoticons_count=emoticons.emoticonsCount();
-	int selector_width=(int)sqrt((double)emoticons_count);
-	int btn_width=0;
-	QGridLayout *grid = new QGridLayout(this, 0, selector_width, 0, 0);
-
-	for(int i=0; i<emoticons_count; i++)
-	{
-		IconSelectorButton* btn = new IconSelectorButton(this,emoticons.emoticonString(i));
-		btn->setPixmap(QPixmap(emoticons.emoticonPicPath(i)));
-		btn->setAutoRaise(true);
-		QToolTip::add(btn, emoticons.emoticonString(i));
-		btn_width=btn->sizeHint().width();
-		grid->addWidget(btn, i/selector_width, i%selector_width);
-		connect(btn,SIGNAL(clicked(const QString&)),this,SLOT(iconClicked(const QString&)));
-	};
-};
-
-void IconSelector::closeEvent(QCloseEvent *e) {
-	callingwidget->addEmoticon("");
-	QWidget::closeEvent(e);
-}
-
-void IconSelector::iconClicked(const QString& emoticon_string)
-{
-	callingwidget->addEmoticon(emoticon_string);
-	close();
-};
-

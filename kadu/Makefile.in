@@ -126,7 +126,7 @@ config_file.cpp config_file.h \
 dcc.cpp dcc.h dcc_moc.cpp \
 debug.cpp debug.h \
 dock_widget.cpp dock_widget.h dock_widget_moc.cpp \
-emoticons.cpp emoticons.h \
+emoticons.cpp emoticons.h emoticons_moc.cpp \
 events.cpp events.h events_moc.cpp \
 expimp.cpp expimp.h expimp_moc.cpp \
 history.cpp history.h history_moc.cpp \
@@ -182,21 +182,21 @@ am_kadu_OBJECTS = about.$(OBJEXT) about_moc.$(OBJEXT) adduser.$(OBJEXT) \
 	config_dialog.$(OBJEXT) config_dialog_moc.$(OBJEXT) \
 	config_file.$(OBJEXT) dcc.$(OBJEXT) dcc_moc.$(OBJEXT) \
 	debug.$(OBJEXT) dock_widget.$(OBJEXT) dock_widget_moc.$(OBJEXT) \
-	emoticons.$(OBJEXT) events.$(OBJEXT) events_moc.$(OBJEXT) \
-	expimp.$(OBJEXT) expimp_moc.$(OBJEXT) history.$(OBJEXT) \
-	history_moc.$(OBJEXT) ignore.$(OBJEXT) ignore_moc.$(OBJEXT) \
-	kadu.$(OBJEXT) kadu_moc.$(OBJEXT) main.$(OBJEXT) \
-	message.$(OBJEXT) message_moc.$(OBJEXT) misc.$(OBJEXT) \
-	misc_moc.$(OBJEXT) network.$(OBJEXT) password.$(OBJEXT) \
-	password_moc.$(OBJEXT) pending_msgs.$(OBJEXT) \
-	personal_info.$(OBJEXT) personal_info_moc.$(OBJEXT) \
-	register.$(OBJEXT) register_moc.$(OBJEXT) search.$(OBJEXT) \
-	search_moc.$(OBJEXT) sms.$(OBJEXT) sms_moc.$(OBJEXT) \
-	sound.$(OBJEXT) sound_moc.$(OBJEXT) status.$(OBJEXT) \
-	status_moc.$(OBJEXT) tabbar.$(OBJEXT) tabbar_moc.$(OBJEXT) \
-	userbox.$(OBJEXT) userbox_moc.$(OBJEXT) userinfo.$(OBJEXT) \
-	userinfo_moc.$(OBJEXT) userlist.$(OBJEXT) \
-	userlist_moc.$(OBJEXT) updates.$(OBJEXT)
+	emoticons.$(OBJEXT) emoticons_moc.$(OBJEXT) events.$(OBJEXT) \
+	events_moc.$(OBJEXT) expimp.$(OBJEXT) expimp_moc.$(OBJEXT) \
+	history.$(OBJEXT) history_moc.$(OBJEXT) ignore.$(OBJEXT) \
+	ignore_moc.$(OBJEXT) kadu.$(OBJEXT) kadu_moc.$(OBJEXT) \
+	main.$(OBJEXT) message.$(OBJEXT) message_moc.$(OBJEXT) \
+	misc.$(OBJEXT) misc_moc.$(OBJEXT) network.$(OBJEXT) \
+	password.$(OBJEXT) password_moc.$(OBJEXT) \
+	pending_msgs.$(OBJEXT) personal_info.$(OBJEXT) \
+	personal_info_moc.$(OBJEXT) register.$(OBJEXT) \
+	register_moc.$(OBJEXT) search.$(OBJEXT) search_moc.$(OBJEXT) \
+	sms.$(OBJEXT) sms_moc.$(OBJEXT) sound.$(OBJEXT) \
+	sound_moc.$(OBJEXT) status.$(OBJEXT) status_moc.$(OBJEXT) \
+	tabbar.$(OBJEXT) tabbar_moc.$(OBJEXT) userbox.$(OBJEXT) \
+	userbox_moc.$(OBJEXT) userinfo.$(OBJEXT) userinfo_moc.$(OBJEXT) \
+	userlist.$(OBJEXT) userlist_moc.$(OBJEXT) updates.$(OBJEXT)
 kadu_OBJECTS = $(am_kadu_OBJECTS)
 
 DEFS = @DEFS@
@@ -215,7 +215,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/dcc_moc.Po ./$(DEPDIR)/debug.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/dock_widget.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/dock_widget_moc.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/emoticons.Po ./$(DEPDIR)/events.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/emoticons.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/emoticons_moc.Po ./$(DEPDIR)/events.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/events_moc.Po ./$(DEPDIR)/expimp.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/expimp_moc.Po ./$(DEPDIR)/history.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/history_moc.Po ./$(DEPDIR)/ignore.Po \
@@ -311,6 +312,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dock_widget.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dock_widget_moc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/emoticons.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/emoticons_moc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/events.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/events_moc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/expimp.Po@am__quote@

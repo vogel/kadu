@@ -17,6 +17,10 @@
 #include <private/qrichtext_p.h>
 #include <qlabel.h>
 #include <qimage.h>
+#include <qtoolbutton.h>
+#include <qmovie.h>
+
+#include "chat.h"
 
 class EmoticonsManager
 {
@@ -48,6 +52,40 @@ class EmoticonsManager
 };
 
 extern EmoticonsManager emoticons;
+
+class EmoticonSelectorButton : public QToolButton
+{
+	Q_OBJECT	
+	private:
+		QString EmoticonString;
+		QString EmoticonPath;
+		QMovie* Movie;
+	private slots:
+		void buttonClicked();
+		void movieUpdate();
+	protected:
+		void enterEvent(QEvent* e);
+		void leaveEvent(QEvent* e);
+	public:
+		EmoticonSelectorButton(
+			QWidget* parent,const QString& emoticon_string,
+			const QString& file_path);	
+	signals:
+		void clicked(const QString& emoticon_string);
+};
+
+class EmoticonSelector : public QWidget
+{
+	Q_OBJECT
+	public:
+		EmoticonSelector(QWidget* parent = 0, const char *name = 0, Chat *caller = 0);
+	private:
+		Chat *callingwidget;
+	protected:
+		void closeEvent(QCloseEvent *e);
+	private slots:
+		void iconClicked(const QString& emoticon_string);
+};
 
 class AnimTextItem : public QTextCustomItem
 {

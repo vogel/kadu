@@ -11,6 +11,9 @@
 * trochê porz±dków: config.cpp/h => config_dialog.cpp/h, struktura config
   z kadu.h do config_dialog.h, usun±³em vuser.cpp/h (adrian)
 * make install instaluje style css od dokumentacji (adrian)
+* emotikony w selektorze animuj± siê po "najechaniu" kursorem myszy,
+  przy okazji porz±dki: IconSelector,IconSelectorButton z chat.cpp/h =>
+  EmoticonSelector,EmoticonSelectorButton w emoticons.cpp/h (adrian)
 
 +++ wersja 0.3.3-final
 * ikonka wiadomo¶ci i ikon statusu "ukryty" z telefonikiem
