@@ -49,7 +49,7 @@ class Chat : public QDialog {
 		void checkPresence(UinsList, QString &, time_t, QString &);
 		void addEmoticon(QString);
 		void scrollMessages(QString &);
-    void alertNewMessage(void);
+		void alertNewMessage(void);
       
 		KTextBrowser *body;
 		CustomInput *edit;
@@ -67,6 +67,7 @@ class Chat : public QDialog {
 		void closeEvent(QCloseEvent *);
 		QString convertCharacters(QString);
 		virtual void windowActivationChange(bool oldActive);
+		void keyPressEvent(QKeyEvent *e);
 
 	private slots:
 		void userWhois(void);

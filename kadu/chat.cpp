@@ -224,6 +224,13 @@ void Chat::windowActivationChange(bool oldActive) {
 	}
 }
 
+void Chat::keyPressEvent(QKeyEvent * e) {
+	if (e->key() == Key_F9){
+		body->setText("");
+		totaloccurences=0;
+	}
+}
+
 /* register/unregister sending with Return key */
 void Chat::regAutosend(void) {
 	autosend_enabled = !autosend_enabled;
