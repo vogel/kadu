@@ -298,7 +298,7 @@ void Chat::changeAppearance() {
 void Chat::setTitle() {
 	QString name;
 	QString title;
-	int j,k;
+	int k;
 	UserListElement user;
 
 	if (uins.size() > 1) {
