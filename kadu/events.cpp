@@ -232,7 +232,7 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 	while (i < chats.count() && !chats[i].uins.equals(senders))
 		i++;
 
-	if ((msgclass == GG_CLASS_CHAT || msgclass == GG_CLASS_MSG) && i < chats.count()) {
+	if (((msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT || (msgclass & GG_CLASS_CHAT) == GG_CLASS_MSG) && i < chats.count()) {
 		QString toadd;
 		tmp = __c2q((const char *)msg);
 
