@@ -49,6 +49,7 @@ class ModulesDialog : public QDialog
 	Q_OBJECT
 	
 	private:
+		QListBox* StaticListBox;
 		QListBox* InstalledListBox;
 		QListBox* LoadedListBox;
 		

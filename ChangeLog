@@ -245,6 +245,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   telefonu znowu powoduje otwarcie okna wysy³ania smsa (michal)
 * wziêta pod uwagê grubo¶æ czcionki przy obliczaniu szeroko¶ci listy kontaktów (joi)
 * porz±dki w chacie (joi)
+* poprawka b³êdu uniemo¿liwiaj±cego zobaczenie informacji o statycznych modu³ach (joi)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

@@ -71,7 +71,7 @@ ModulesDialog::ModulesDialog()
 	QVBox* loaded_box=new QVBox(this);	
 
 	QLabel* StaticLabel = new QLabel(tr("Static"), static_box);
-	QListBox* StaticListBox = new QListBox(static_box);
+	StaticListBox = new QListBox(static_box);
 	StaticListBox->insertStringList(modules_manager->staticModules());
 
 	QLabel* InstalledLabel = new QLabel(tr("Installed"), installed_box);
@@ -163,15 +163,17 @@ void ModulesDialog::getInfo()
 {
 	QListBoxItem *item;
 	int current;
+	QListBox *currentListBox;
 
-	if(InstalledListBox->hasFocus()){
-		current=InstalledListBox->currentItem();
-		item=InstalledListBox->item(current);
-	}
-	else{
-		current=LoadedListBox->currentItem();
-		item=LoadedListBox->item(current);
-	}
+	if(StaticListBox->hasFocus())
+		currentListBox=StaticListBox;
+	else if(InstalledListBox->hasFocus())
+		currentListBox=InstalledListBox;
+	else
+		currentListBox=LoadedListBox;
+
+	current=currentListBox->currentItem();
+	item=currentListBox->item(current);
 	
 	if(current>=0){
 		ModuleInfo info;
@@ -180,14 +182,14 @@ void ModulesDialog::getInfo()
 			return;
 		message+=tr(
 				"<b>Module:</b>"
-				"<br>%1<br>"
-				"<b>Depends on:</b><br>").arg(item->text());
+				"<br/>%1<br/>"
+				"<b>Depends on:</b><br/>").arg(item->text());
 		for (QStringList::Iterator it = info.depends.begin(); it != info.depends.end(); ++it)
 			message+=QString("%1\n").arg((*it));
 		message+=tr(
-				"<br><b>Author:</b><br>"
-				"%1<br>"
-				"<b>Description</b>:<br>"
+				"<br/><b>Author:</b><br/>"
+				"%1<br/>"
+				"<b>Description</b>:<br/>"
 				"%2").arg(info.author).arg(info.description);
 		MessageBox::msg(message);
 	}
