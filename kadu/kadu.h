@@ -10,7 +10,6 @@
 #include <qnetworkprotocol.h>
 #include <qstringlist.h>
 #include <qstring.h>
-#include <qevent.h>
 #include <qframe.h>
 #include <qlayout.h>
 #include <qtoolbutton.h>
@@ -18,6 +17,7 @@
 #include <qmenubar.h>
 #include <qvaluelist.h>
 #include <qfile.h>
+#include <qhbox.h>
 
 #include "misc.h"
 #include "userbox.h"
@@ -88,7 +88,6 @@ class Kadu : public QMainWindow
 		void userListUserAdded(const UserListElement& user);
 
 	protected:
-		bool event(QEvent *e);
 		void keyPressEvent(QKeyEvent *e);
 		virtual void resizeEvent(QResizeEvent *);
 //		virtual void moveEvent(QMoveEvent *);
@@ -96,7 +95,6 @@ class Kadu : public QMainWindow
 	public:
 		Kadu(QWidget* parent=0, const char *name=0);
 		~Kadu();
-		static void InitModules();
 		bool userInActiveGroup(UinType uin);
 		void removeUser(QStringList &, bool);
 		/**
@@ -181,7 +179,6 @@ class Kadu : public QMainWindow
 		void registerUser();
 		void remindPassword();
 		void searchInDirectory();
-		void sendFile();
 		void showUserInfo();
 		void unregisterUser();
 		void viewHistory();

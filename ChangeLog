@@ -38,6 +38,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   kontaktu przy w³±czonej opcji opisów na li¶cie kontaktów (adrian)
 * patch vogela usuwaj±cy zmienne globalne kadusnr, kadusnw plus inne
   drobne porz±dki z tym zwi±zane (adrian)
+* porz±dki w dcc czê¶æ trzecia - przeniesienie reszty kodu dotycz±cego dcc
+  z klasy Kadu do klasy DccManager (adrian)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,

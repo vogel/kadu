@@ -18,7 +18,6 @@
 #include <qdir.h>
 #include <qfile.h>
 #include <qfileinfo.h>
-#include <qhbox.h>
 #include <qfont.h>
 #include <qcursor.h>
 #include <qmessagebox.h>
@@ -44,7 +43,6 @@
 #include "events.h"
 #include "chat.h"
 #include "search.h"
-#include "dcc.h"
 #include "expimp.h"
 #include "userinfo.h"
 #include "personal_info.h"
@@ -245,8 +243,6 @@ void Kadu::keyPressEvent(QKeyEvent *e) {
 		Userbox->showHideInactive();
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_showonlydesc"))
 		Userbox->showHideDescriptions();
-	else if (HotKey::shortCut(e,"ShortCuts", "kadu_sendfile"))
-		sendFile();
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_configure"))
 		configure();
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_modulesmanager"))
@@ -303,17 +299,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Lookup in directory"), "kadu_searchuser", "Ctrl+F");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Show / hide inactive users"), "kadu_showinactive", "F9");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Show / hide users without description"), "kadu_showonlydesc", "F10");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Send file"), "kadu_sendfile", "F8");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Configuration"), "kadu_configure", "F2");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Add user"), "kadu_adduser", "Ctrl+N");
-
-	GaduProtocol::initModule();
-	Chat::initModule();
-	UserBox::initModule();
-	History::initModule();
-	HintManager::initModule();
-	EventConfigSlots::initModule();
-	DccManager::initModule();
 
 	//zaladowanie wartosci domyslnych (pierwsze uruchomienie)
 	config_file.addVariable("General", "UserBoxHeight", 300);
@@ -348,6 +335,54 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	ConfigDialog::connectSlot("Look", "Font in panel", SIGNAL(changed(const char *, const QFont&)),kaduslots, SLOT(chooseFont(const char *, const QFont&)), "panel_font_box");
 
+	QVBox *vbox=new QVBox(this);
+	setCentralWidget(vbox);
+	QSplitter *split = new QSplitter(Qt::Vertical, vbox);
+	QHBox* hbox1 = new QHBox(split);
+
+	// groupbar
+	GroupBar = new KaduTabBar(hbox1, "groupbar");
+	GroupBar->setShape(QTabBar::RoundedBelow);
+	GroupBar->addTab(new QTab(tr("All")));
+	GroupBar->setFont(QFont(config_file.readFontEntry("Look", "UserboxFont").family(), config_file.readFontEntry("Look", "UserboxFont").pointSize(),75));
+	hbox1->setStretchFactor(GroupBar, 1);
+	connect(GroupBar, SIGNAL(selected(int)), this, SLOT(groupTabSelected(int)));
+
+	// gadu, chat
+	GaduProtocol::initModule();
+	Chat::initModule();
+
+	// userbox	
+	UserBox::initModule();
+	Userbox = new UserBox(hbox1, "userbox");
+	hbox1->setStretchFactor(Userbox, 100);
+	connect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(popupMenu()));
+	connect(Userbox, SIGNAL(rightButtonClicked(QListBoxItem *, const QPoint &)),
+		UserBox::userboxmenu, SLOT(show(QListBoxItem *)));
+	connect(Userbox, SIGNAL(doubleClicked(QListBoxItem *)), this, SLOT(sendMessage(QListBoxItem *)));
+	connect(Userbox, SIGNAL(returnPressed(QListBoxItem *)), this, SLOT(sendMessage(QListBoxItem *)));
+	connect(Userbox, SIGNAL(mouseButtonClicked(int, QListBoxItem *, const QPoint &)),
+		this, SLOT(mouseButtonClicked(int, QListBoxItem *)));
+	connect(Userbox, SIGNAL(currentChanged(QListBoxItem *)), this, SLOT(currentChanged(QListBoxItem *)));
+	UserBox::userboxmenu->addItem(tr("Open chat window") ,this, SLOT(openChat()));
+	UserBox::userboxmenu->insertSeparator();
+	UserBox::userboxmenu->addItem(tr("Ignore user"), this, SLOT(ignoreUser()));
+	UserBox::userboxmenu->addItem(tr("Block user"), this, SLOT(blockUser()));
+	UserBox::userboxmenu->addItem(tr("Notify about user"), this, SLOT(notifyUser()));
+	UserBox::userboxmenu->addItem(tr("Offline to user"), this, SLOT(offlineToUser()));
+	UserBox::userboxmenu->insertSeparator();
+	UserBox::userboxmenu->addItem("RemoveFromUserlist", tr("Remove from userlist"), this, SLOT(deleteUsers()),HotKey::shortCutFromFile("ShortCuts", "kadu_deleteuser"));
+	UserBox::userboxmenu->addItem("ClearHistory", tr("Clear history"), this, SLOT(deleteHistory()));
+	UserBox::userboxmenu->addItem("History", tr("View history"),this,SLOT(viewHistory()),HotKey::shortCutFromFile("ShortCuts", "kadu_viewhistory"));
+	UserBox::userboxmenu->addItem("EditUserInfo", tr("View/edit user info"), this, SLOT(showUserInfo()),HotKey::shortCutFromFile("ShortCuts", "kadu_persinfo"));
+	UserBox::userboxmenu->addItem("LookupUserInfo", tr("Lookup in directory"), this, SLOT(lookupInDirectory()),HotKey::shortCutFromFile("ShortCuts", "kadu_searchuser"));
+	UserBox::userboxmenu->insertSeparator();
+	UserBox::userboxmenu->addItem(tr("About..."), this, SLOT(about()));
+
+	// history, hints
+	History::initModule();
+	HintManager::initModule();
+	EventConfigSlots::initModule();
 
 	closestatusppmtime.start();
 
@@ -379,36 +414,10 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	pending.loadFromFile();
 
-	QVBox *vbox=new QVBox(this);
-	setCentralWidget(vbox);
-
-	QSplitter *split = new QSplitter(Qt::Vertical, vbox);
-
-	QHBox *hbox1 = new QHBox(split);
-
-	/* initialize group tabbar */
-	GroupBar = new KaduTabBar(hbox1, "groupbar");
-	GroupBar->setShape(QTabBar::RoundedBelow);
-	GroupBar->addTab(new QTab(tr("All")));
-	GroupBar->setFont(QFont(config_file.readFontEntry("Look", "UserboxFont").family(), config_file.readFontEntry("Look", "UserboxFont").pointSize(),75));
-	connect(GroupBar, SIGNAL(selected(int)), this, SLOT(groupTabSelected(int)));
-
 	/* connect userlist signals */
 	connect(&userlist, SIGNAL(modified()), this, SLOT(userListModified()));
 	connect(&userlist, SIGNAL(statusModified(UserListElement *)), this, SLOT(userListStatusModified(UserListElement *)));
 	connect(&userlist, SIGNAL(userAdded(const UserListElement&)),this,SLOT(userListUserAdded(const UserListElement&)));
-
-	/* initialize and configure userbox */
-	Userbox = new UserBox(hbox1, "userbox");
-	if (config_file.readBoolEntry("Look", "MultiColumnUserbox"))
-		Userbox->setColumnMode(QListBox::FitToWidth);
-	Userbox->setPaletteBackgroundColor(config_file.readColorEntry("Look", "UserboxBgColor"));
-	Userbox->setPaletteForegroundColor(config_file.readColorEntry("Look", "UserboxFgColor"));
-	Userbox->QListBox::setFont(config_file.readFontEntry("Look", "UserboxFont"));
-	Userbox->setMinimumWidth(20);
-
-	hbox1->setStretchFactor(GroupBar, 1);
-	hbox1->setStretchFactor(Userbox, 100);
 
 	/* add all users to userbox */
 	setActiveGroup("");
@@ -423,39 +432,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	ToolBar::registerButton(icons_manager.loadIcon("LookupUserInfo"), tr("Lookup in directory"), this, SLOT(lookupInDirectory()));
 	ToolBar::registerSeparator();
 	ToolBar::registerButton(icons_manager.loadIcon("AddUser"), tr("Add user"), this, SLOT(addUserAction()));
-
-	// popupmenu
-	UserBox::userboxmenu->addItem(tr("Open chat window") ,this, SLOT(openChat()));
-
-	UserBox::userboxmenu->addItem("SendFile", tr("Send file"), this,
-		SLOT(sendFile()), HotKey::shortCutFromFile("ShortCuts", "kadu_sendfile"));
-
-	UserBox::userboxmenu->insertSeparator();
-	UserBox::userboxmenu->addItem(tr("Ignore user"), this, SLOT(ignoreUser()));
-	UserBox::userboxmenu->addItem(tr("Block user"), this, SLOT(blockUser()));
-	UserBox::userboxmenu->addItem(tr("Notify about user"), this, SLOT(notifyUser()));
-	UserBox::userboxmenu->addItem(tr("Offline to user"), this, SLOT(offlineToUser()));
-
-	UserBox::userboxmenu->insertSeparator();
-	UserBox::userboxmenu->addItem("RemoveFromUserlist", tr("Remove from userlist"), this, SLOT(deleteUsers()),HotKey::shortCutFromFile("ShortCuts", "kadu_deleteuser"));
-	UserBox::userboxmenu->addItem("ClearHistory", tr("Clear history"), this, SLOT(deleteHistory()));
-	UserBox::userboxmenu->addItem("History", tr("View history"),this,SLOT(viewHistory()),HotKey::shortCutFromFile("ShortCuts", "kadu_viewhistory"));
-	UserBox::userboxmenu->addItem("EditUserInfo", tr("View/edit user info"), this, SLOT(showUserInfo()),HotKey::shortCutFromFile("ShortCuts", "kadu_persinfo"));
-	UserBox::userboxmenu->addItem("LookupUserInfo", tr("Lookup in directory"), this, SLOT(lookupInDirectory()),HotKey::shortCutFromFile("ShortCuts", "kadu_searchuser"));
-	UserBox::userboxmenu->insertSeparator();
-	UserBox::userboxmenu->addItem(tr("About..."), this, SLOT(about()));
-
-	connect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(popupMenu()));
-	connect(Userbox, SIGNAL(rightButtonClicked(QListBoxItem *, const QPoint &)),
-		UserBox::userboxmenu, SLOT(show(QListBoxItem *)));
-	//
-
-	connect(Userbox, SIGNAL(doubleClicked(QListBoxItem *)), this, SLOT(sendMessage(QListBoxItem *)));
-	connect(Userbox, SIGNAL(returnPressed(QListBoxItem *)), this, SLOT(sendMessage(QListBoxItem *)));
-
-	connect(Userbox, SIGNAL(mouseButtonClicked(int, QListBoxItem *, const QPoint &)),
-		this, SLOT(mouseButtonClicked(int, QListBoxItem *)));
-	connect(Userbox, SIGNAL(currentChanged(QListBoxItem *)), this, SLOT(currentChanged(QListBoxItem *)));
 
 	/* guess what */
 	createMenu();
@@ -523,7 +499,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	connect(gadu, SIGNAL(userStatusChanged(UserListElement&, int)),
 		this, SLOT(userStatusChanged(UserListElement&, int)));
 
-	dccsock = NULL;
 	kdebugf2();
 }
 
@@ -551,20 +526,6 @@ void Kadu::popupMenu()
 	UserListElement user = (*users.begin());
 
 	bool isOurUin=users.containsUin(config_file.readNumEntry("General", "UIN"));
-
-	int sendfile = UserBox::userboxmenu->getItem(tr("Send file"));
-
-	if (DccSocket::count() >= 8 && users.count() != 1) {
-		UserBox::userboxmenu->setItemEnabled(sendfile, false);
-		}
-	if (users.count() == 1 && (config_file.readBoolEntry("Network", "AllowDCC") &&
-		(user.status == GG_STATUS_AVAIL || user.status == GG_STATUS_AVAIL_DESCR ||
-		user.status == GG_STATUS_BUSY || user.status == GG_STATUS_BUSY_DESCR)) && !isOurUin) {
-			UserBox::userboxmenu->setItemEnabled(sendfile, true);
-			}
-		else {
-			UserBox::userboxmenu->setItemEnabled(sendfile, false);
-			}
 
 	int ignoreuseritem= UserBox::userboxmenu->getItem(tr("Ignore user"));
 	int blockuseritem= UserBox::userboxmenu->getItem(tr("Block user"));
@@ -627,35 +588,6 @@ void Kadu::viewHistory() {
 		History *hb = new History(uins);
 		hb->show();
 	}
-	kdebugf2();
-}
-
-void Kadu::sendFile()
-{
-	kdebugf();
-	if (config_file.readBoolEntry("Network", "AllowDCC"))
-		if (config_dccip.isIp4Addr()) {
-			struct gg_dcc *dcc_new;
-			UserBox *activeUserBox=UserBox::getActiveUserBox();
-			UserList users;
-			if (activeUserBox==NULL)
-				return;
-			users= activeUserBox->getSelectedUsers();
-			if (users.count() != 1)
-				return;
-			UserListElement user = (*users.begin());
-			if (user.port >= 10) {
-				if ((dcc_new = gg_dcc_send_file(htonl(user.ip.ip4Addr()), user.port,
-					config_file.readNumEntry("General", "UIN"), user.uin)) != NULL) {
-					FileDccSocket* dcc = new FileDccSocket(dcc_new);
-					connect(dcc, SIGNAL(dccFinished(DccSocket*)), dcc_manager,
-						SLOT(dccFinished(DccSocket*)));
-					dcc->initializeNotifiers();
-					}
-				}
-			else
-				gg_dcc_request(sess, user.uin);
-			}
 	kdebugf2();
 }
 
@@ -1476,38 +1408,6 @@ void Kadu::disconnected()
 	kdebugf2();
 }
 
-bool Kadu::event(QEvent *e) {
-	QCustomEvent *ce;
-	DccSocket *dcc;
-	DccSocket **data;
-
-	if (e->type() == QEvent::User) {
-		kdebugf();
-		ce = (QCustomEvent *)e;
-		data = (DccSocket **)ce->data();
-		dcc = *data;
-		switch (dcc->state()) {
-			case DCC_SOCKET_TRANSFER_FINISHED:
-				MessageBox::msg(tr("File has been transferred sucessfully."));
-				break;
-			case DCC_SOCKET_TRANSFER_DISCARDED:
-				break;
-			case DCC_SOCKET_TRANSFER_ERROR:
-				MessageBox::msg(tr("File transfer error!"));
-				break;
-			case DCC_SOCKET_CONNECTION_BROKEN:
-				break;
-			case DCC_SOCKET_COULDNT_OPEN_FILE:
-				MessageBox::msg(tr("Couldn't open file!"));
-				break;
-			}
-		delete data;
-		delete dcc;
-		ce->setData(NULL);
-		}
-	return QWidget::event(e);
-}
-
 bool Kadu::close(bool quit) {
 	if (!quit && Docked) {
 		kdebugm(KDEBUG_INFO, "Kadu::close(): Kadu hide\n");
@@ -1610,10 +1510,6 @@ void Kadu::createMenu() {
 
 	MenuBar->insertItem(tr("&Kadu"), MainMenu);
 	kdebugf2();
-}
-
-void Kadu::InitModules()
-{
 }
 
 void Kadu::statusMenuAboutToHide() {

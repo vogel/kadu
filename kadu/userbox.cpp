@@ -291,10 +291,19 @@ UserBox::UserBox(QWidget* parent,const char* name,WFlags f)
 
 {
 	kdebugf();
+
 	if (!userboxmenu)
 		userboxmenu= new UserBoxMenu(this);
 	UserBoxes.append(this);
-	setSelectionMode(QListBox::Extended);	
+
+	if (config_file.readBoolEntry("Look", "MultiColumnUserbox"))
+		setColumnMode(QListBox::FitToWidth);
+	setPaletteBackgroundColor(config_file.readColorEntry("Look", "UserboxBgColor"));
+	setPaletteForegroundColor(config_file.readColorEntry("Look", "UserboxFgColor"));
+	QListBox::setFont(config_file.readFontEntry("Look", "UserboxFont"));
+	setMinimumWidth(20);
+	setSelectionMode(QListBox::Extended);
+	
 	kdebugf2();
 }
 
@@ -795,7 +804,7 @@ void UserBox::initModule()
 	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show inactive users"), "ShowHideInactive", true, QT_TRANSLATE_NOOP("@default","Display users that are offline"));
 	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show / hide users without description"), "ShowOnlyDescriptionUsers", false, QT_TRANSLATE_NOOP("@default","Display only users that have desciption"));
 
-// dodanie wpisow do konfiga (pierwsze uruchomienie)
+	// dodanie wpisow do konfiga (pierwsze uruchomienie)
 	QWidget w;
 	config_file.addVariable("Look", "InfoPanelBgColor", w.paletteBackgroundColor());
 	config_file.addVariable("Look", "InfoPanelFgColor", w.paletteForegroundColor());
@@ -845,6 +854,7 @@ void UserBox::initModule()
 	ConfigDialog::connectSlot("Look", "Font in userbox", SIGNAL(changed(const char *, const QFont&)), userboxslots, SLOT(chooseFont(const char *, const QFont&)), "userbox_font_box");
 
 	ConfigDialog::connectSlot("Look", "Multicolumn userbox", SIGNAL(toggled(bool)), userboxslots, SLOT(onMultiColumnUserbox(bool)));
+
 	kdebugf2();
 }
 

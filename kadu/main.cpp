@@ -29,6 +29,7 @@
 #include "debug.h"
 #include "modules.h"
 #include "emoticons.h"
+#include "dcc.h"
 
 Kadu *kadu;	
 
@@ -131,11 +132,11 @@ int main(int argc, char *argv[])
 	IconsManager::initModule();
 	kadu = new Kadu(0, "Kadu");
 
-	Kadu::InitModules();
 	QPixmap pix = icons_manager.loadIcon("Offline");
 	kadu->setIcon(pix);
 	qApp->setMainWidget(kadu);
 
+	DccManager::initModule();
 	ModulesManager::initModule();
 
 	kadu->startupProcedure();

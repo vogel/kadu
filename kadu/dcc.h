@@ -7,6 +7,7 @@
 #include <qlabel.h>
 #include <qsocketnotifier.h>
 #include <qhostaddress.h>
+#include <qevent.h>
 
 #include "kadu-config.h"
 #include "libgadu.h"
@@ -128,6 +129,12 @@ class DccManager : public QObject
 
 	private slots:
 		void dccSetupFailed();
+		void userboxMenuPopup();
+		void sendFile();
+		void kaduKeyPressed(QKeyEvent* e);
+
+	protected:
+		virtual bool event(QEvent* e);
 
 	public:
 		static void initModule();

@@ -17,6 +17,7 @@
 #include <unistd.h>
 #include <sys/socket.h>
 #include <sys/un.h>
+#include <netinet/in.h>
 //
 #include "kadu.h"
 //
@@ -24,12 +25,13 @@
 #include "ignore.h"
 #include "debug.h"
 #include "message_box.h"
+#include "config_dialog.h"
 
 QSocketNotifier *dccsnr = NULL;
 QSocketNotifier *dccsnw = NULL;
 QHostAddress config_dccip;
 QHostAddress config_extip;
-struct gg_dcc* dccsock;
+struct gg_dcc* dccsock = NULL;
 
 int DccSocket::Count = 0;
 
@@ -179,7 +181,7 @@ void DccSocket::setState(int pstate)
 	State = pstate;
 	DccSocket **me = new (DccSocket *);
 	*me = this;
-	qApp->postEvent((QObject *)kadu, new QCustomEvent(QEvent::User, me));
+	qApp->postEvent((QObject *)dcc_manager, new QCustomEvent(QEvent::User, me));
 	kdebugf2();
 }
 
@@ -508,7 +510,13 @@ void DccManager::initModule()
 
 DccManager::DccManager() : QObject(NULL,"dcc_manager")
 {
+	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Send file"), "kadu_sendfile", "F8");
 	connect(gadu, SIGNAL(dccSetupFailed()), this, SLOT(dccSetupFailed()));
+	UserBox::userboxmenu->addItemAtPos(1, "SendFile", tr("Send file"),
+		this,SLOT(sendFile()),
+		HotKey::shortCutFromFile("ShortCuts", "kadu_sendfile"));
+	connect(UserBox::userboxmenu,SIGNAL(popup()),this,SLOT(userboxMenuPopup()));
+	connect(kadu, SIGNAL(keyPressed(QKeyEvent*)), this, SLOT(kaduKeyPressed(QKeyEvent*)));
 }
 
 void DccManager::watchDcc()
@@ -582,6 +590,106 @@ void DccManager::dccSent()
 	if (dccsock->check & GG_CHECK_WRITE)
 		watchDcc();
 	kdebugf2();
+}
+
+void DccManager::sendFile()
+{
+	kdebugf();
+	if (config_file.readBoolEntry("Network", "AllowDCC"))
+		if (config_dccip.isIp4Addr()) {
+			struct gg_dcc *dcc_new;
+			UserBox *activeUserBox=UserBox::getActiveUserBox();
+			UserList users;
+			if (activeUserBox==NULL)
+				return;
+			users= activeUserBox->getSelectedUsers();
+			if (users.count() != 1)
+				return;
+			UserListElement user = (*users.begin());
+			if (user.port >= 10) {
+				if ((dcc_new = gg_dcc_send_file(htonl(user.ip.ip4Addr()), user.port,
+					config_file.readNumEntry("General", "UIN"), user.uin)) != NULL) {
+					FileDccSocket* dcc = new FileDccSocket(dcc_new);
+					connect(dcc, SIGNAL(dccFinished(DccSocket*)), dcc_manager,
+						SLOT(dccFinished(DccSocket*)));
+					dcc->initializeNotifiers();
+					}
+				}
+			else
+				gg_dcc_request(sess, user.uin);
+			}
+	kdebugf2();
+}
+
+void DccManager::userboxMenuPopup()
+{
+	kdebugf();
+	int sendfile = UserBox::userboxmenu->getItem(tr("Send file"));
+	UserBox* activeUserBox=UserBox::getActiveUserBox();
+	if (activeUserBox==NULL)//to siê zdarza...
+	{
+		kdebugf2();
+		return;
+	}
+	UserList users = activeUserBox->getSelectedUsers();
+	UserListElement user = (*users.begin());
+	if (DccSocket::count() >= 8 && users.count() != 1)
+	{
+		UserBox::userboxmenu->setItemEnabled(sendfile, false);
+	}
+	bool isOurUin=users.containsUin(config_file.readNumEntry("General", "UIN"));
+	if (users.count() == 1 && (config_file.readBoolEntry("Network", "AllowDCC") &&
+		(user.status == GG_STATUS_AVAIL || user.status == GG_STATUS_AVAIL_DESCR ||
+		user.status == GG_STATUS_BUSY || user.status == GG_STATUS_BUSY_DESCR)) && !isOurUin)
+	{
+		UserBox::userboxmenu->setItemEnabled(sendfile, true);
+	}
+	else
+	{
+		UserBox::userboxmenu->setItemEnabled(sendfile, false);
+	}
+	kdebugf2();
+}
+
+void DccManager::kaduKeyPressed(QKeyEvent* e)
+{
+	if (HotKey::shortCut(e,"ShortCuts", "kadu_sendfile"))
+		sendFile();
+}
+
+bool DccManager::event(QEvent* e)
+{
+	QCustomEvent *ce;
+	DccSocket *dcc;
+	DccSocket **data;
+
+	if (e->type() == QEvent::User)
+	{
+		kdebugf();
+		ce = (QCustomEvent *)e;
+		data = (DccSocket **)ce->data();
+		dcc = *data;
+		switch (dcc->state())
+		{
+			case DCC_SOCKET_TRANSFER_FINISHED:
+				MessageBox::msg(tr("File has been transferred sucessfully."));
+				break;
+			case DCC_SOCKET_TRANSFER_DISCARDED:
+				break;
+			case DCC_SOCKET_TRANSFER_ERROR:
+				MessageBox::msg(tr("File transfer error!"));
+				break;
+			case DCC_SOCKET_CONNECTION_BROKEN:
+				break;
+			case DCC_SOCKET_COULDNT_OPEN_FILE:
+				MessageBox::msg(tr("Couldn't open file!"));
+				break;
+		}
+		delete data;
+		delete dcc;
+		ce->setData(NULL);
+	}
+	return QObject::event(e);
 }
 
 DccManager* dcc_manager = NULL;
