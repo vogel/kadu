@@ -123,6 +123,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 			{
 				QHGroupBox* box = new QHGroupBox(appHandle->translate("@default",(*i).caption), parent, (*i).name);
 				(*i).widget=box;
+				box->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Maximum);
 				break;
 			}
 			case CONFIG_HOTKEYEDIT:
@@ -214,7 +215,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 			}
 			case CONFIG_TAB:
 			{
-				QVBox* box = new QVBox(this,(*i).caption);
+				QVGroupBox* box = new QVGroupBox(this,(*i).caption);
 				box->setMargin(2);
 				(*i).widget=box;
 				addTab(box,  appHandle->translate("@default",(*i).caption));
@@ -235,6 +236,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 			{
 				QVGroupBox* box = new QVGroupBox(appHandle->translate("@default",(*i).caption), parent, (*i).name);
 				(*i).widget=box;
+				box->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Maximum);
 				break;
 			}
 

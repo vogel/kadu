@@ -872,6 +872,8 @@ void Kadu::deleteUsers()
 {
 	QStringList  users =userbox->getSelectedAltNicks();
 	removeUser(users, false);
+	if (!userbox->isSelected(userbox->currentItem()))
+		descrtb->setText("");
 }
 
 void Kadu::personalInfo()
@@ -1178,7 +1180,9 @@ void Kadu::userListModified()
 void Kadu::userListStatusModified(UserListElement *user)
 {
 	kdebug("Kadu::userListStatusModified(): %d\n", user->uin);
-
+	if ((user->status == GG_STATUS_NOT_AVAIL)
+	    || (user->status == GG_STATUS_NOT_AVAIL_DESCR))
+		descrtb->setText("");
 //	int index = userbox->currentItem();
 //	if (index >= 0) {
 //		QListBoxItem *lbi = userbox->item(index);
@@ -1366,6 +1370,9 @@ void Kadu::changeGroup(int group) {
 
 void Kadu::mouseButtonClicked(int button, QListBoxItem *item) {
 	kdebug("Kadu::mouseButtonClicked(): button=%d\n", button);
+	if (!item)
+		descrtb->setText("");
+
 	if (button !=4 || !item)
 		return;
 	UserListElement user;
@@ -1942,12 +1949,13 @@ bool Kadu::close(bool quit) {
 	
 	    if (config_file.readBoolEntry("General", "SaveGeometry"))
 	    {
-		QSize split;
-		    split.setWidth(userbox->size().height());
-		    split.setHeight(descrtb->size().height());
-		
-		config_file.writeEntry("General", "SplitSize",split);
-		
+		if (config_file.readBoolEntry("Look", "ShowDesc"))
+		    {
+			QSize split;
+			    split.setWidth(userbox->size().height());
+			    split.setHeight(descrtb->size().height());
+			    config_file.writeEntry("General", "SplitSize",split);
+		    }
 		QRect geom;
 		    geom.setX(pos().x());
 		    geom.setY(pos().y());
@@ -2081,7 +2089,13 @@ void Kadu::showdesc(bool show) {
 	if (show)
 		descrtb->show();
 	else
+	    {
+		QSize split;
+		split.setWidth(userbox->size().height());
+		split.setHeight(descrtb->size().height());
+		config_file.writeEntry("General", "SplitSize",split);
 		descrtb->hide();
+	    }
 }
 
 void Kadu::infopanelUpdate(uin_t uin) {
@@ -2141,7 +2155,6 @@ void KaduSlots::onDestroyConfigDialog()
 		kadu->autostatus_timer->start(1000, true);
 	else
 		kadu->autostatus_timer->stop();
-
 	kadu->showdesc(config_file.readBoolEntry("Look", "ShowDesc"));
 	
 	if (config_file.readBoolEntry("Look", "MultiColumnUserbox"))

@@ -9,7 +9,6 @@
 #include <qstringlist.h>
 #include <qapplication.h>
 #include <qtextcodec.h>
-#include <stdio.h>
 
 #include "misc.h"
 #include "debug.h"
