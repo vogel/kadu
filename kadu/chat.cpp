@@ -521,27 +521,36 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	QHBox *btnpart = new QHBox(downpart);
 
 	QFont afont = QApplication::font();
+	QSize s=QFontMetrics(afont).size(0, "B")*6;
+
 	boldbtn = new QPushButton("B", btnpart);
 	boldbtn->setToggleButton(true);
 	afont.setBold(true);
 	boldbtn->setFont(afont);
+	boldbtn->setMaximumSize(s);
+
 	italicbtn = new QPushButton("I", btnpart);
 	italicbtn->setToggleButton(true);
 	afont.setBold(false);
 	afont.setItalic(true);
 	italicbtn->setFont(afont);
+	italicbtn->setMaximumSize(s);
+
 	underlinebtn = new QPushButton("U", btnpart);
 	underlinebtn->setToggleButton(true);
 	afont.setItalic(false);
 	afont.setUnderline(true);
 	underlinebtn->setFont(afont);
+	underlinebtn->setMaximumSize(s);
+
 	colorbtn = new QPushButton(btnpart);
 //	colorbtn->setMinimumSize(boldbtn->width(), boldbtn->height());
 	QPixmap p(16, 16);
 	p.fill(colors[15]);
 	colorbtn->setPixmap(p);
 
-	QHBox *fillerbox = new QHBox(btnpart);
+	QWidget *filler=new QWidget(btnpart);
+	filler->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 
 	sendbtn = new QPushButton(QIconSet(icons_manager.loadIcon("SendMessage")),tr("&Send"),btnpart);
 	sendbtn->setFixedWidth(120);
@@ -554,13 +563,6 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	acc = new QAccel(this);
 	acc->connectItem(acc->insertItem(Key_PageDown + SHIFT), this, SLOT(pageDown()));
 
-	btnpart->setStretchFactor(boldbtn, 1);
-	btnpart->setStretchFactor(italicbtn, 1);
-	btnpart->setStretchFactor(underlinebtn, 1);
-	btnpart->setStretchFactor(colorbtn, 1);
-	btnpart->setStretchFactor(fillerbox, 50);
-	btnpart->setStretchFactor(sendbtn, 1);
-
 	sizes.clear();
 	sizes.append(3);
 	sizes.append(2);
@@ -571,8 +573,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	grid->addRowSpacing(1, 5);
 	grid->setRowStretch(0, 2);
 
-	QMimeSourceFactory *bodyformat;
-	bodyformat = new QMimeSourceFactory;
+	QMimeSourceFactory *bodyformat = new QMimeSourceFactory();
 
 	body->setMimeSourceFactory(bodyformat);
 	body->setTextFormat(Qt::RichText);
