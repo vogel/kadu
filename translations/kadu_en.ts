@@ -1422,14 +1422,6 @@ Check your internet connection.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>I&amp;mport userlist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>E&amp;xport userlist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Add user</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1451,6 +1443,10 @@ Check your internet connection.</source>
     </message>
     <message>
         <source>Private</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I&amp;mport / Export userlist</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2228,83 +2224,17 @@ Now add your friends to the userlist.</source>
     </message>
 </context>
 <context>
-    <name>UserlistExport</name>
+    <name>UserlistImportExport</name>
     <message>
-        <source>%1 entries will be exported</source>
+        <source>Import / export userlist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Send userlist</source>
+        <source>This dialog box allows you to import and export your buddy list to a server or a file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Delete userlist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Export to file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Close window</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export userlist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The application encountered an internal error
-The export was unsuccessful</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export completed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Your userlist has been successfully exported to file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The application encountered an internal error
-The export userlist to file was unsuccessful</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The application encountered an internal error
-The delete userlist on server was unsuccessful</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Your userlist has been successfully exported to server</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Your userlist has been successfully deleted on server</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>UserlistImport</name>
-    <message>
-        <source>&amp;Fetch userlist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Import from file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Save results</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Merge results</source>
+        <source>Import userlist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2340,7 +2270,43 @@ The delete userlist on server was unsuccessful</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Import userlist</source>
+        <source>&amp;Fetch userlist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Import from file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Save results</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Merge results</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export userlist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 entries will be exported</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Se&amp;nd userlist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Delete userlist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Export to file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2350,6 +2316,41 @@ The delete userlist on server was unsuccessful</source>
     <message>
         <source>The application encountered an internal error
 The import userlist from file was unsuccessful</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export completed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your userlist has been successfully exported to file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The application encountered an internal error
+The export userlist to file was unsuccessful</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your userlist has been successfully exported to server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The application encountered an internal error
+The export was unsuccessful</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your userlist has been successfully deleted on server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The application encountered an internal error
+The delete userlist on server was unsuccessful</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

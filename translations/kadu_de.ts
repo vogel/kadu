@@ -1426,14 +1426,6 @@ Check your internet connection.</source>
         <translation>S&amp;uche Kontakt</translation>
     </message>
     <message>
-        <source>I&amp;mport userlist</source>
-        <translation>I&amp;mportiere Kontaktliste</translation>
-    </message>
-    <message>
-        <source>E&amp;xport userlist</source>
-        <translation>&amp;Exportiere Kontaktliste</translation>
-    </message>
-    <message>
         <source>&amp;Add user</source>
         <translation>K&amp;ontakt hinzufügen</translation>
     </message>
@@ -1460,6 +1452,10 @@ Check your internet connection.</source>
     <message>
         <source>&amp;Change password/email</source>
         <translation>Passwort/Email &amp;ändern</translation>
+    </message>
+    <message>
+        <source>I&amp;mport / Export userlist</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2241,130 +2237,135 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
     </message>
 </context>
 <context>
-    <name>UserlistExport</name>
+    <name>UserlistImportExport</name>
     <message>
-        <source>%1 entries will be exported</source>
-        <translation>Export %1 Einträge</translation>
+        <source>Import / export userlist</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Send userlist</source>
-        <translation>&amp;Sende Liste</translation>
-    </message>
-    <message>
-        <source>&amp;Delete userlist</source>
-        <translation>&amp;Lösche Liste</translation>
-    </message>
-    <message>
-        <source>&amp;Export to file</source>
-        <translation>&amp;Export in Datei</translation>
-    </message>
-    <message>
-        <source>&amp;Close window</source>
-        <translation>&amp;Fenster schliessen</translation>
-    </message>
-    <message>
-        <source>Export userlist</source>
-        <translation>Export der Kontakt-Liste </translation>
-    </message>
-    <message>
-        <source>Export error</source>
-        <translation>Export-Fehler</translation>
-    </message>
-    <message>
-        <source>The application encountered an internal error
-The export was unsuccessful</source>
-        <translation>Das Exportieren der Kontakliste auf den Server ist mißlungen</translation>
-    </message>
-    <message>
-        <source>Export completed</source>
-        <translation>Export beendet</translation>
-    </message>
-    <message>
-        <source>Your userlist has been successfully exported to file</source>
-        <translation>Die Kontaktliste wurde erfolgreich exportiert in Datei </translation>
-    </message>
-    <message>
-        <source>The application encountered an internal error
-The export userlist to file was unsuccessful</source>
-        <translation>Das Exportieren der Kontaktliste in Datei ist mißlungen</translation>
-    </message>
-    <message>
-        <source>The application encountered an internal error
-The delete userlist on server was unsuccessful</source>
-        <translation>Das löschen der Kontaktliste vom Server ist nicht gelungen.
-Die Anwendung hat einen Fehler zurückgemeldet</translation>
-    </message>
-    <message>
-        <source>Your userlist has been successfully exported to server</source>
-        <translation>Die Kontakt-Liste wurde auf den Server exportiert</translation>
-    </message>
-    <message>
-        <source>Your userlist has been successfully deleted on server</source>
-        <translation>Ihr userlist ist erfolgreich von Server gelöscht worden</translation>
-    </message>
-</context>
-<context>
-    <name>UserlistImport</name>
-    <message>
-        <source>&amp;Fetch userlist</source>
-        <translation>&amp;Hole Liste</translation>
-    </message>
-    <message>
-        <source>&amp;Save results</source>
-        <translation>Ergebnisse &amp;spiechern</translation>
-    </message>
-    <message>
-        <source>&amp;Import from file</source>
-        <translation>&amp;Import aus Datei</translation>
-    </message>
-    <message>
-        <source>UIN</source>
-        <translation>Nummer GG</translation>
-    </message>
-    <message>
-        <source>Nickname</source>
-        <translation>Nick</translation>
-    </message>
-    <message>
-        <source>Disp. nick</source>
-        <translation>Zeige Nick</translation>
-    </message>
-    <message>
-        <source>Name</source>
-        <translation>Vorname</translation>
-    </message>
-    <message>
-        <source>Surname</source>
-        <translation>Nachname</translation>
-    </message>
-    <message>
-        <source>Mobile no.</source>
-        <translation>Handy-Nr.</translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation>Gruppe</translation>
-    </message>
-    <message>
-        <source>Email</source>
-        <translation>Email</translation>
+        <source>This dialog box allows you to import and export your buddy list to a server or a file.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Import userlist</source>
-        <translation>Importiere Kontakt-Liste</translation>
+        <translation type="unfinished">Importiere Kontakt-Liste</translation>
+    </message>
+    <message>
+        <source>UIN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nickname</source>
+        <translation type="unfinished">Nick</translation>
+    </message>
+    <message>
+        <source>Disp. nick</source>
+        <translation type="unfinished">Zeige Nick</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished">Vorname</translation>
+    </message>
+    <message>
+        <source>Surname</source>
+        <translation type="unfinished">Nachname</translation>
+    </message>
+    <message>
+        <source>Mobile no.</source>
+        <translation type="unfinished">Handy-Nr.</translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished">Gruppe</translation>
+    </message>
+    <message>
+        <source>Email</source>
+        <translation type="unfinished">Email</translation>
+    </message>
+    <message>
+        <source>&amp;Fetch userlist</source>
+        <translation type="unfinished">&amp;Hole Liste</translation>
+    </message>
+    <message>
+        <source>&amp;Import from file</source>
+        <translation type="unfinished">&amp;Import aus Datei</translation>
+    </message>
+    <message>
+        <source>&amp;Save results</source>
+        <translation type="unfinished">Ergebnisse &amp;spiechern</translation>
+    </message>
+    <message>
+        <source>&amp;Merge results</source>
+        <translation type="unfinished">Ergebnisse &amp;zusammenführen</translation>
+    </message>
+    <message>
+        <source>Export userlist</source>
+        <translation type="unfinished">Export der Kontakt-Liste </translation>
+    </message>
+    <message>
+        <source>%1 entries will be exported</source>
+        <translation type="unfinished">Export %1 Einträge</translation>
+    </message>
+    <message>
+        <source>Se&amp;nd userlist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Delete userlist</source>
+        <translation type="unfinished">&amp;Lösche Liste</translation>
+    </message>
+    <message>
+        <source>&amp;Export to file</source>
+        <translation type="unfinished">&amp;Export in Datei</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Schliesse</translation>
     </message>
     <message>
         <source>Import error</source>
-        <translation>Fehler beim Importieren</translation>
+        <translation type="unfinished">Fehler beim Importieren</translation>
     </message>
     <message>
         <source>The application encountered an internal error
 The import userlist from file was unsuccessful</source>
-        <translation>Das Importieren wurde wegen eines Fehlers beendet</translation>
+        <translation type="unfinished">Das Importieren wurde wegen eines Fehlers beendet</translation>
     </message>
     <message>
-        <source>&amp;Merge results</source>
-        <translation>Ergebnisse &amp;zusammenführen</translation>
+        <source>Export completed</source>
+        <translation type="unfinished">Export beendet</translation>
+    </message>
+    <message>
+        <source>Your userlist has been successfully exported to file</source>
+        <translation type="unfinished">Die Kontaktliste wurde erfolgreich exportiert in Datei </translation>
+    </message>
+    <message>
+        <source>Export error</source>
+        <translation type="unfinished">Export-Fehler</translation>
+    </message>
+    <message>
+        <source>The application encountered an internal error
+The export userlist to file was unsuccessful</source>
+        <translation type="unfinished">Das Exportieren der Kontaktliste in Datei ist mißlungen</translation>
+    </message>
+    <message>
+        <source>Your userlist has been successfully exported to server</source>
+        <translation type="unfinished">Die Kontakt-Liste wurde auf den Server exportiert</translation>
+    </message>
+    <message>
+        <source>The application encountered an internal error
+The export was unsuccessful</source>
+        <translation type="unfinished">Das Exportieren der Kontakliste auf den Server ist mißlungen</translation>
+    </message>
+    <message>
+        <source>Your userlist has been successfully deleted on server</source>
+        <translation type="unfinished">Ihr userlist ist erfolgreich von Server gelöscht worden</translation>
+    </message>
+    <message>
+        <source>The application encountered an internal error
+The delete userlist on server was unsuccessful</source>
+        <translation type="unfinished">Das löschen der Kontaktliste vom Server ist nicht gelungen.
+Die Anwendung hat einen Fehler zurückgemeldet</translation>
     </message>
 </context>
 <context>

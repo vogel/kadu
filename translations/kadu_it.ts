@@ -1426,14 +1426,6 @@ Controllare connessione a Internet.</translation>
         <translation>Tro&amp;va contatto</translation>
     </message>
     <message>
-        <source>I&amp;mport userlist</source>
-        <translation>&amp;Importa lista dei contatti</translation>
-    </message>
-    <message>
-        <source>E&amp;xport userlist</source>
-        <translation>E&amp;sporta lista dei contatti</translation>
-    </message>
-    <message>
         <source>&amp;Add user</source>
         <translation>&amp;Aggiungi un contatto</translation>
     </message>
@@ -1460,6 +1452,10 @@ Controllare connessione a Internet.</translation>
     <message>
         <source>&amp;Change password/email</source>
         <translation>&amp;Cambia la password/email</translation>
+    </message>
+    <message>
+        <source>I&amp;mport / Export userlist</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2241,133 +2237,138 @@ Ora è possibile aggiungere i vostri amici alla lista dei contatti.</translation
     </message>
 </context>
 <context>
-    <name>UserlistExport</name>
+    <name>UserlistImportExport</name>
     <message>
-        <source>%1 entries will be exported</source>
-        <translation>%1 contatti sarnno esportati</translation>
+        <source>Import / export userlist</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Send userlist</source>
-        <translation>&amp;Manda la lista contatti</translation>
+        <source>This dialog box allows you to import and export your buddy list to a server or a file.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Delete userlist</source>
-        <translation>&amp;Cancella la lista contatti</translation>
+        <source>Import userlist</source>
+        <translation type="unfinished">importa lista contatti</translation>
     </message>
     <message>
-        <source>&amp;Export to file</source>
-        <translation>Salva in fil&amp;e</translation>
+        <source>UIN</source>
+        <translation type="unfinished">Numero GG</translation>
     </message>
     <message>
-        <source>&amp;Close window</source>
-        <translation>Chiudi &amp;finestra</translation>
+        <source>Nickname</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disp. nick</source>
+        <translation type="unfinished">Visualizza Nick</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished">Nome</translation>
+    </message>
+    <message>
+        <source>Surname</source>
+        <translation type="unfinished">Cognome</translation>
+    </message>
+    <message>
+        <source>Mobile no.</source>
+        <translation type="unfinished">Cell no.</translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished">Gruppo</translation>
+    </message>
+    <message>
+        <source>Email</source>
+        <translation type="unfinished">E-mail</translation>
+    </message>
+    <message>
+        <source>&amp;Fetch userlist</source>
+        <translation type="unfinished">&amp;Scarica la lista deicontatti</translation>
+    </message>
+    <message>
+        <source>&amp;Import from file</source>
+        <translation type="unfinished">&amp;Importazione dal file</translation>
+    </message>
+    <message>
+        <source>&amp;Save results</source>
+        <translation type="unfinished">&amp;Salva i risultati</translation>
+    </message>
+    <message>
+        <source>&amp;Merge results</source>
+        <translation type="unfinished">&amp;Unisci risultati</translation>
     </message>
     <message>
         <source>Export userlist</source>
-        <translation>Esportazione lista dei contatti</translation>
+        <translation type="unfinished">Esportazione lista dei contatti</translation>
     </message>
     <message>
-        <source>Export error</source>
-        <translation>Errore di espotazione</translation>
+        <source>%1 entries will be exported</source>
+        <translation type="unfinished">%1 contatti sarnno esportati</translation>
+    </message>
+    <message>
+        <source>Se&amp;nd userlist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Delete userlist</source>
+        <translation type="unfinished">&amp;Cancella la lista contatti</translation>
+    </message>
+    <message>
+        <source>&amp;Export to file</source>
+        <translation type="unfinished">Salva in fil&amp;e</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Chiudi</translation>
+    </message>
+    <message>
+        <source>Import error</source>
+        <translation type="unfinished">Errore scaricamento Lista contatti</translation>
     </message>
     <message>
         <source>The application encountered an internal error
-The export was unsuccessful</source>
-        <translation>L&apos;applicazione ha incontrato un errore interno
-L&apos;esportazione è fallita</translation>
+The import userlist from file was unsuccessful</source>
+        <translation type="unfinished">L&apos;applicazione ha generatoun errore interno
+L&apos;importazione della lista contatti è fallita</translation>
     </message>
     <message>
         <source>Export completed</source>
-        <translation>Esportazione completata</translation>
+        <translation type="unfinished">Esportazione completata</translation>
     </message>
     <message>
         <source>Your userlist has been successfully exported to file</source>
-        <translation>La vostra lista contatti è stata salvata con successo in un file</translation>
+        <translation type="unfinished">La vostra lista contatti è stata salvata con successo in un file</translation>
+    </message>
+    <message>
+        <source>Export error</source>
+        <translation type="unfinished">Errore di espotazione</translation>
     </message>
     <message>
         <source>The application encountered an internal error
 The export userlist to file was unsuccessful</source>
-        <translation>L&apos;applicazione ha generato un errore interno
+        <translation type="unfinished">L&apos;applicazione ha generato un errore interno
 Salvataggio lista contatti fallito</translation>
     </message>
     <message>
-        <source>The application encountered an internal error
-The delete userlist on server was unsuccessful</source>
-        <translation>L&apos;applicazione ha generato un errore interno
-Cancellazione lista contatti su server GG fallita</translation>
+        <source>Your userlist has been successfully exported to server</source>
+        <translation type="unfinished">La vostra lista dei contatti è stata esportata con successo sul server GG</translation>
     </message>
     <message>
-        <source>Your userlist has been successfully exported to server</source>
-        <translation>La vostra lista dei contatti è stata esportata con successo sul server GG</translation>
+        <source>The application encountered an internal error
+The export was unsuccessful</source>
+        <translation type="unfinished">L&apos;applicazione ha incontrato un errore interno
+L&apos;esportazione è fallita</translation>
     </message>
     <message>
         <source>Your userlist has been successfully deleted on server</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>UserlistImport</name>
-    <message>
-        <source>&amp;Fetch userlist</source>
-        <translation>&amp;Scarica la lista deicontatti</translation>
-    </message>
-    <message>
-        <source>&amp;Save results</source>
-        <translation>&amp;Salva i risultati</translation>
-    </message>
-    <message>
-        <source>&amp;Import from file</source>
-        <translation>&amp;Importazione dal file</translation>
-    </message>
-    <message>
-        <source>UIN</source>
-        <translation>Numero GG</translation>
-    </message>
-    <message>
-        <source>Nickname</source>
-        <translation>Sopranome (Nick)</translation>
-    </message>
-    <message>
-        <source>Disp. nick</source>
-        <translation>Visualizza Nick</translation>
-    </message>
-    <message>
-        <source>Name</source>
-        <translation>Nome</translation>
-    </message>
-    <message>
-        <source>Surname</source>
-        <translation>Cognome</translation>
-    </message>
-    <message>
-        <source>Mobile no.</source>
-        <translation>Cell no.</translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation>Gruppo</translation>
-    </message>
-    <message>
-        <source>Email</source>
-        <translation>E-mail</translation>
-    </message>
-    <message>
-        <source>Import userlist</source>
-        <translation>importa lista contatti</translation>
-    </message>
-    <message>
-        <source>Import error</source>
-        <translation>Errore scaricamento Lista contatti</translation>
-    </message>
     <message>
         <source>The application encountered an internal error
-The import userlist from file was unsuccessful</source>
-        <translation>L&apos;applicazione ha generatoun errore interno
-L&apos;importazione della lista contatti è fallita</translation>
-    </message>
-    <message>
-        <source>&amp;Merge results</source>
-        <translation>&amp;Unisci risultati</translation>
+The delete userlist on server was unsuccessful</source>
+        <translation type="unfinished">L&apos;applicazione ha generato un errore interno
+Cancellazione lista contatti su server GG fallita</translation>
     </message>
 </context>
 <context>
