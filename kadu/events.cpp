@@ -311,6 +311,7 @@ void eventGotUserlist(struct gg_event *e) {
 			}
 
 		user.ip.setAddress(ntohl(n->remote_ip));
+		userlist.addDnsLookup(user.uin, user.ip);
 		user.port = n->remote_port;
 
 		oldstatus = user.status;
@@ -409,6 +410,7 @@ void eventStatusChange(struct gg_event * e) {
 	
 	if (user.status == GG_STATUS_NOT_AVAIL || user.status == GG_STATUS_NOT_AVAIL_DESCR) {
 		user.ip.setAddress((unsigned int)0);
+		userlist.addDnsLookup(user.uin, user.ip);
 		user.port = 0;
 		}
 

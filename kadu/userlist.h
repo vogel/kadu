@@ -14,8 +14,32 @@
 #include <qvaluelist.h>
 #include <qtimer.h>
 #include <qhostaddress.h>
+#include <qdns.h>
+#include <qptrlist.h>
 
 #include "libgadu.h"
+
+class DnsHandler : public QObject
+{
+	Q_OBJECT
+
+	public:
+		DnsHandler(uin_t uin);
+		~DnsHandler();
+		bool isCompleted();
+
+		static int counter;
+
+	private:
+		QDns dnsresolver;
+		uin_t uin;
+		bool completed;
+
+	public slots:
+		void resultsReady();
+};
+
+typedef QPtrList<DnsHandler> DnsLookups;
 
 struct UserListElement
 {
@@ -30,6 +54,7 @@ struct UserListElement
 	unsigned int status;
 	bool anonymous;
 	QHostAddress ip;
+	QString dnsname;
 	short port;
 	int time_to_death;
 	bool blocking;
@@ -66,9 +91,12 @@ class UserList : public QObject, public QValueList<UserListElement>
 		bool writeToFile(QString filename = "");
 		bool readFromFile();
 		UserList &operator=(const UserList& userlist);
-		
+		void setDnsName(uin_t uin, const QString &name);
+		void addDnsLookup(uin_t uin, const QHostAddress &ip);
+
 	protected:
 		QTimer *invisibleTimer;
+		DnsLookups dnslookups;
 
 	private slots:
 		void timeout();
@@ -76,6 +104,7 @@ class UserList : public QObject, public QValueList<UserListElement>
 	signals:
 		void modified();
 		void statusModified(UserListElement *);
+		void dnsNameReady(uin_t);
 };
 
 extern UserList userlist;

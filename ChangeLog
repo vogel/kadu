@@ -33,6 +33,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   jej przeszukiwania (jz/chilek)
 * gdy zrezygnujemy z transmisji pliku nie pojawia siê komunikat o b³êdzie
   transmisji (jz/chilek)
+* obs³uga dns-lookupów w klasie UserList (chilek)
 
 +++ wersja 0.3.4-pre2
 * graficzny instalator - instaluj.tcl (googie)

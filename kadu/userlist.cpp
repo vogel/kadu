@@ -13,6 +13,8 @@
 #include <qtextstream.h>
 #include <qtextcodec.h>
 #include <qhostaddress.h>
+#include <qdns.h>
+#include <qptrlist.h>
 
 #include "userlist.h"
 #include "misc.h"
@@ -20,17 +22,75 @@
 #include "userbox.h"
 #include "debug.h"
 
+DnsHandler::DnsHandler(uin_t uin) : uin(uin) {
+	UserListElement &ule = userlist.byUin(uin);
+	completed = false;
+	connect(&dnsresolver, SIGNAL(resultsReady()), this, SLOT(resultsReady()));
+	dnsresolver.setRecordType(QDns::Ptr);
+	dnsresolver.setLabel(ule.ip);
+	counter++;
+	kdebug("DnsHandler::DnsHandler(): counter = %d\n", counter);
+}
+
+DnsHandler::~DnsHandler() {
+	counter--;
+	kdebug("DnsHandler::~DnsHandler(): counter = %d\n", counter);
+}
+
+void DnsHandler::resultsReady() {
+	if (dnsresolver.hostNames().count())
+		userlist.setDnsName(uin, dnsresolver.hostNames()[0]);
+	else
+		userlist.setDnsName(uin, QString::null);
+	completed = true;
+}
+
+int DnsHandler::counter = 0;
+
+bool DnsHandler::isCompleted() {
+	return completed;
+}
+
 UserList::UserList() : QObject(), QValueList<UserListElement>()
 {
 	invisibleTimer = new QTimer;
 	connect(invisibleTimer, SIGNAL(timeout()), this, SLOT(timeout()));
 	invisibleTimer->start(1000, TRUE);
+	dnslookups.setAutoDelete(true);
 };
 
 UserList::~UserList()
 {
 	invisibleTimer->stop();
 	delete invisibleTimer;
+}
+
+void UserList::addDnsLookup(uin_t uin, const QHostAddress &ip) {
+	DnsHandler *dnshandler = dnslookups.first();
+	while (dnshandler) {
+		if (dnshandler->isCompleted()) {
+			dnslookups.remove();
+			dnshandler = dnslookups.current();
+			}
+		else
+			dnshandler = dnslookups.next();
+		}
+	if (!containsUin(uin))
+		return;
+	UserListElement &ule = byUin(uin);
+	dnshandler = new DnsHandler(uin);
+	dnslookups.append(dnshandler);
+}
+
+void UserList::setDnsName(uin_t uin, const QString &name) {
+	if (!containsUin(uin))
+		return;
+	UserListElement &ule = byUin(uin);
+	if (ule.dnsname != name) {
+		ule.dnsname = name;
+		kdebug("UserList::setDnsName(): dnsname for uin %d: %s\n", uin, name.latin1());
+		emit dnsNameReady(uin);
+		}
 }
 
 void UserList::timeout()
