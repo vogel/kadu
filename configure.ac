@@ -331,21 +331,6 @@ fi
 AC_SUBST(GADU_LIBS)
 AC_SUBST(GADU_INCLUDES)
 
-# Voice talk support
-AC_ARG_ENABLE(voice,[  --disable-voice         compile without voice talk support])
-if test -z "$enable_voice"; then
-	enable_voice=yes
-fi
-if test "$enable_voice" = "yes"; then
-	AC_DEFINE(VOICE_ENABLED,1,[Define if voice talk support is enabled])
-	GSM_LIBS="-L../libgsm/lib -lgsm"
-	GSM_INCLUDES="-I../libgsm/inc"
-	MY_SUBDIRS="$MY_SUBDIRS libgsm"
-fi
-AM_CONDITIONAL(VOICE,[test "$enable_voice" = "yes"])
-AC_SUBST(GSM_LIBS)
-AC_SUBST(GSM_INCLUDES)
-
 # pthread support
 AC_ARG_WITH(pthread,[  --without-pthread       do not use pthread in libgadu resolver])
 if test -z "$with_pthread"; then
@@ -448,7 +433,6 @@ echo "   Use pthread resolving in libgadu:   $with_pthread"
 echo "   Compile with debug symbols:         $enable_debug"
 echo "   System signals handling:            $enable_sig_handling"
 echo "   Link with existing libgadu:         $with_existing_libgadu"
-echo "   Voice talk (libgsm) support:        $enable_voice"
 echo "   OpenSSL encryption support:         $have_openssl"
 echo "   Distribution type information:      $enable_dist_info"
 echo "   Additional c++ compiler flags:      $user_cxxflags"

@@ -30,6 +30,10 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * kadu nie wywróci siê gdy zamkniemy je z menu w trayu - zwalnianie pamiêci
   po modu³ach opó¼niane jest do czasu zakoñczenia bie¿±cych czynno¶ci (joi)
 * przy wy³adowywaniu x11_docking g³ówne okno wraca na pulpit (joi)
+* wydzielony modu³ voice do rozmów g³osowych, z configure wyrzucona
+  ich obs³uga, obs³uga opcji MODULE_3RDPARTY w pliku spec modu³ów,
+  oznaczaj±ca kompilacjê dodatkowych ¼róde³ w podanym podkatalogu
+  przed kompilacj± modu³u (adrian)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

@@ -22,6 +22,6 @@ class VoiceDsp : public QObject
 		int tmp;
 };
 
-extern VoiceDsp *voice_dsp;
+extern VoiceDsp* voice_dsp;
 
 #endif

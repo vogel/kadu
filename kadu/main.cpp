@@ -21,10 +21,6 @@
 #include "kadu.h"
 #include "kadu-config.h"
 
-#ifdef VOICE_ENABLED
-#include "voice.h"
-#endif
-
 #include "config_file.h"
 #include "config_dialog.h"
 #include "register.h"
@@ -99,10 +95,6 @@ int main(int argc, char *argv[])
 #endif
 
 	new QApplication(argc, argv);
-
-#ifdef VOICE_ENABLED
-	VoiceManager::initModule();
-#endif
 
 	// ladowanie tlumaczenia
 	QTranslator qt_qm(0);

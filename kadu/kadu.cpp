@@ -234,14 +234,14 @@ void Kadu::keyPressEvent(QKeyEvent *e) {
 		lookupInDirectory();
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_showinactive"))
 		Userbox->showHideInactive();
-	else if (HotKey::shortCut(e,"ShortCuts", "kadu_voicechat"))
-		makeVoiceChat();
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_sendfile"))
 		sendFile();
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_configure"))
 		configure();
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_modulesmanager"))
 		modules_manager->showDialog();
+
+	emit keyPressed(e);
 
 	QWidget::keyPressEvent(e);
 }
@@ -311,7 +311,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "View history", "kadu_viewhistory", "Ctrl+H");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Lookup in directory", "kadu_searchuser", "Ctrl+F");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Show / hide inactive users", "kadu_showinactive", "F9");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Voice chat", "kadu_voicechat", "F7");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Send file", "kadu_sendfile", "F8");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Configuration", "kadu_configure", "F2");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Add user", "kadu_adduser", "Ctrl+N");
@@ -423,8 +422,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	UserBox::userboxmenu->addItem("SendFile", tr("Send file"), this,
 		SLOT(sendFile()), HotKey::shortCutFromFile("ShortCuts", "kadu_sendfile"));
-	UserBox::userboxmenu->addItem(tr("Voice chat"), this,
-		SLOT(makeVoiceChat()), HotKey::shortCutFromFile("ShortCuts", "kadu_voicechat"));
 
 	UserBox::userboxmenu->insertSeparator();
 	UserBox::userboxmenu->addItem(tr("Ignore user"), this, SLOT(ignoreUser()));
@@ -536,22 +533,18 @@ void Kadu::popupMenu()
 
 	bool isOurUin=users.containsUin(config_file.readNumEntry("General", "UIN"));
 	
-	int voicechat = UserBox::userboxmenu->getItem(tr("Voice chat"));
 	int sendfile = UserBox::userboxmenu->getItem(tr("Send file"));
 
 	if (dccSocketClass::count >= 8 && users.count() != 1) {
 		UserBox::userboxmenu->setItemEnabled(sendfile, false);
-		UserBox::userboxmenu->setItemEnabled(voicechat, false);
 		}
 	if (users.count() == 1 && (config_file.readBoolEntry("Network", "AllowDCC") &&
 		(user.status == GG_STATUS_AVAIL || user.status == GG_STATUS_AVAIL_DESCR ||
 		user.status == GG_STATUS_BUSY || user.status == GG_STATUS_BUSY_DESCR)) && !isOurUin) {
 			UserBox::userboxmenu->setItemEnabled(sendfile, true);
-			UserBox::userboxmenu->setItemEnabled(voicechat, true);
 			}
 		else {
 			UserBox::userboxmenu->setItemEnabled(sendfile, false);
-			UserBox::userboxmenu->setItemEnabled(voicechat, false);
 			}
 
 	int ignoreuseritem= UserBox::userboxmenu->getItem(tr("Ignore user"));
@@ -629,33 +622,6 @@ void Kadu::sendFile()
 				if ((dcc_new = gg_dcc_send_file(htonl(user.ip.ip4Addr()), user.port,
 					config_file.readNumEntry("General", "UIN"), user.uin)) != NULL) {
 					dccSocketClass *dcc = new dccSocketClass(dcc_new);
-					connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), this,
-						SLOT(dccFinished(dccSocketClass *)));
-					dcc->initializeNotifiers();
-					}
-				}
-			else
-				gg_dcc_request(sess, user.uin);
-			}
-}
-
-void Kadu::makeVoiceChat()
-{
-	if (config_file.readBoolEntry("Network", "AllowDCC"))
-		if (config_dccip.isIp4Addr()) {
-			struct gg_dcc *dcc_new;
-			UserBox *activeUserBox=UserBox::getActiveUserBox();
-			UserList users;
-			if (activeUserBox==NULL)
-				return;
-			users = activeUserBox->getSelectedUsers();
-			if (users.count() != 1)
-				return;
-			UserListElement user = users.first();
-			if (user.port >= 10) {
-				if ((dcc_new = gg_dcc_voice_chat(htonl(user.ip.ip4Addr()), user.port,
-					config_file.readNumEntry("General", "UIN"), user.uin)) != NULL) {
-					dccSocketClass *dcc = new dccSocketClass(dcc_new, DCC_TYPE_VOICE);
 					connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), this,
 						SLOT(dccFinished(dccSocketClass *)));
 					dcc->initializeNotifiers();
@@ -1481,8 +1447,6 @@ bool Kadu::event(QEvent *e) {
 					tr("&OK"));
 				break;
 			case DCC_SOCKET_TRANSFER_DISCARDED:
-				break;
-			case DCC_SOCKET_VOICECHAT_DISCARDED:
 				break;
 			case DCC_SOCKET_TRANSFER_ERROR:
 				QMessageBox::information(0, tr("Error"),

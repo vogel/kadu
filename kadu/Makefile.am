@@ -32,30 +32,16 @@ userinfo.cpp userinfo.h userinfo_moc.cpp \
 userlist.cpp userlist.h userlist_moc.cpp \
 updates.cpp updates.h
 
-EXTRA_kadu_SOURCES = \
-voice.cpp voice.h voice_moc.cpp \
-voice_dsp.cpp voice_dsp.h voice_dsp_moc.cpp
-
-if VOICE
-VOICE_OBJS = \
-voice.$(OBJEXT) voice_moc.$(OBJEXT) \
-voice_dsp.$(OBJEXT) voice_dsp_moc.$(OBJEXT)
-else
-VOICE_OBJS =
-endif
-
 INCLUDES = $(XFREE_INCLUDES) $(QT_INCLUDES) $(OPENSSL_INCLUDES) $(GSM_INCLUDES) $(GADU_INCLUDES)
 
 kadu_LDADD = \
-$(VOICE_OBJS) $(PTHREAD_LIBS) $(PNG_LIBS) \
+$(PTHREAD_LIBS) $(PNG_LIBS) \
 $(QT_LIBS) $(GSM_LIBS) $(GADU_LIBS) \
 $(foreach mod,$(basename $(static_modules)),../modules/$(mod)/$(mod).a)
 
 kadu_LDFLAGS = \
 $(PTHREAD_LDFLAGS) -rdynamic $(OPENSSL_LIBS) \
 $(static_modules_ldflags)
-
-kadu_DEPENDENCIES = $(VOICE_OBJS)
 
 AM_CPPFLAGS = $(PTHREAD_CPPFLAGS) -DQT_THREAD_SUPPORT -D_REENTRANT
 

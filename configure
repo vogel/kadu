@@ -314,7 +314,7 @@ ac_includes_default="\
 #endif"
 
 ac_subdirs_all="$ac_subdirs_all libgadu"
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE CXX CXXFLAGS LDFLAGS CPPFLAGS ac_ct_CXX EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CXXDEPMODE CC CFLAGS ac_ct_CC CCDEPMODE PTHREAD_CPPFLAGS PTHREAD_LDFLAGS PTHREAD_LIBS PNG_LIBS QT_INCLUDES QT_LIBS QT_MOC_DIR CPP EGREP LIBOBJS GADU_LIBS GADU_INCLUDES VOICE_TRUE VOICE_FALSE GSM_LIBS GSM_INCLUDES OPENSSL_LIBS OPENSSL_INCLUDES PKGCONFIG OPENSSL_TRUE OPENSSL_FALSE shared_modules static_modules static_modules_ldflags STATIC_MODULES_DECLS STATIC_MODULES_REGRS MY_SUBDIRS subdirs LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE CXX CXXFLAGS LDFLAGS CPPFLAGS ac_ct_CXX EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CXXDEPMODE CC CFLAGS ac_ct_CC CCDEPMODE PTHREAD_CPPFLAGS PTHREAD_LDFLAGS PTHREAD_LIBS PNG_LIBS QT_INCLUDES QT_LIBS QT_MOC_DIR CPP EGREP LIBOBJS GADU_LIBS GADU_INCLUDES OPENSSL_LIBS OPENSSL_INCLUDES PKGCONFIG OPENSSL_TRUE OPENSSL_FALSE shared_modules static_modules static_modules_ldflags STATIC_MODULES_DECLS STATIC_MODULES_REGRS MY_SUBDIRS subdirs LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -865,7 +865,6 @@ Optional Features:
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
   --disable-dependency-tracking Speeds up one-time builds
   --enable-dependency-tracking  Do not reject slow dependency extractors
-  --disable-voice         compile without voice talk support
   --enable-debug          compile with debug symbols
   --disable-sig-handling  disable system signals handling
   --enable-dist-info=DIST enable distribution type information, default: sources
@@ -5913,38 +5912,6 @@ fi
 
 
 
-# Voice talk support
-# Check whether --enable-voice or --disable-voice was given.
-if test "${enable_voice+set}" = set; then
-  enableval="$enable_voice"
-
-fi;
-if test -z "$enable_voice"; then
-	enable_voice=yes
-fi
-if test "$enable_voice" = "yes"; then
-
-cat >>confdefs.h <<\_ACEOF
-#define VOICE_ENABLED 1
-_ACEOF
-
-	GSM_LIBS="-L../libgsm/lib -lgsm"
-	GSM_INCLUDES="-I../libgsm/inc"
-	MY_SUBDIRS="$MY_SUBDIRS libgsm"
-fi
-
-
-if test "$enable_voice" = "yes"; then
-  VOICE_TRUE=
-  VOICE_FALSE='#'
-else
-  VOICE_TRUE='#'
-  VOICE_FALSE=
-fi
-
-
-
-
 # pthread support
 
 # Check whether --with-pthread or --without-pthread was given.
@@ -6638,13 +6605,6 @@ echo "$as_me: error: conditional \"AMDEP\" was never defined.
 Usually this means the macro was only invoked conditionally." >&2;}
    { (exit 1); exit 1; }; }
 fi
-if test -z "${VOICE_TRUE}" && test -z "${VOICE_FALSE}"; then
-  { { echo "$as_me:$LINENO: error: conditional \"VOICE\" was never defined.
-Usually this means the macro was only invoked conditionally." >&5
-echo "$as_me: error: conditional \"VOICE\" was never defined.
-Usually this means the macro was only invoked conditionally." >&2;}
-   { (exit 1); exit 1; }; }
-fi
 if test -z "${OPENSSL_TRUE}" && test -z "${OPENSSL_FALSE}"; then
   { { echo "$as_me:$LINENO: error: conditional \"OPENSSL\" was never defined.
 Usually this means the macro was only invoked conditionally." >&5
@@ -7249,10 +7209,6 @@ s,@EGREP@,$EGREP,;t t
 s,@LIBOBJS@,$LIBOBJS,;t t
 s,@GADU_LIBS@,$GADU_LIBS,;t t
 s,@GADU_INCLUDES@,$GADU_INCLUDES,;t t
-s,@VOICE_TRUE@,$VOICE_TRUE,;t t
-s,@VOICE_FALSE@,$VOICE_FALSE,;t t
-s,@GSM_LIBS@,$GSM_LIBS,;t t
-s,@GSM_INCLUDES@,$GSM_INCLUDES,;t t
 s,@OPENSSL_LIBS@,$OPENSSL_LIBS,;t t
 s,@OPENSSL_INCLUDES@,$OPENSSL_INCLUDES,;t t
 s,@PKGCONFIG@,$PKGCONFIG,;t t
@@ -8152,7 +8108,6 @@ echo "   Use pthread resolving in libgadu:   $with_pthread"
 echo "   Compile with debug symbols:         $enable_debug"
 echo "   System signals handling:            $enable_sig_handling"
 echo "   Link with existing libgadu:         $with_existing_libgadu"
-echo "   Voice talk (libgsm) support:        $enable_voice"
 echo "   OpenSSL encryption support:         $have_openssl"
 echo "   Distribution type information:      $enable_dist_info"
 echo "   Additional c++ compiler flags:      $user_cxxflags"

@@ -52,19 +52,6 @@ class DccFileDialog : public QDialog {
 		int type;
 };
 
-class DccVoiceDialog : public QDialog {
-	Q_OBJECT
-
-	public:
-		DccVoiceDialog(QDialog *parent = 0, const char *name = 0);
-
-	protected:
-		void closeEvent(QCloseEvent *e);
-
-	signals:
-		void cancelVoiceChat();
-};
-
 enum dccSocketState {
 	DCC_SOCKET_TRANSFERRING,
 	DCC_SOCKET_CONNECTION_BROKEN,
@@ -80,8 +67,8 @@ class dccSocketClass : public QObject {
 	public:
 		dccSocketClass(struct gg_dcc *dcc_sock, int type = DCC_TYPE_FILE);
 		~dccSocketClass();
-		void initializeNotifiers();
-		void watchDcc(int check);
+		virtual void initializeNotifiers();
+		virtual void watchDcc(int check);
 
 		int type;
 		int state;
@@ -89,17 +76,15 @@ class dccSocketClass : public QObject {
 
 	public slots:
 		void setState(int pstate);
-		void voiceDataRecorded(char *data, int length);
-		void cancelVoiceChatReceived();
 
 	signals:
 		void dccFinished(dccSocketClass *dcc);
 
 	protected:
+		virtual void connectionBroken();
+		virtual void dccError();
+		virtual void dccEvent();
 		void askAccept();
-#ifdef VOICE_ENABLED
-		void askAcceptVoiceChat();
-#endif
 		QString selectFile();
 
 		QSocketNotifier *snr;
@@ -107,7 +92,6 @@ class dccSocketClass : public QObject {
 		struct gg_dcc *dccsock;
 		struct gg_event *dccevent;
 		DccFileDialog *filedialog;
-		DccVoiceDialog *voicedialog;
 		bool in_watchDcc;
 
 	protected slots:

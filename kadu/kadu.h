@@ -179,7 +179,6 @@ class Kadu : public QMainWindow
 		void remindPassword();
 		void searchInDirectory();
 		void sendFile();
-		void makeVoiceChat();
 		void showUserInfo();
 		void unregisterUser();
 		void viewHistory();
@@ -188,6 +187,7 @@ class Kadu : public QMainWindow
 	signals:
 		void disconnectingNetwork();
 		void disconnectedNetwork();
+		void keyPressed(QKeyEvent* e);
 		/**
 			Podczas ³±czenia (mruganie ikonki) czas na zmianê
 			ikony na t± reprezentuj±c± docelowy status.

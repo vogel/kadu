@@ -1,14 +1,16 @@
 #ifndef VOICE_H
 #define VOICE_H
 
-#include <qobject.h>
+#include <qdialog.h>
 #include <qthread.h>
 #include <qmutex.h>
 #include <qsemaphore.h>
 #include <qvaluelist.h>
 extern "C" {
-#include <gsm.h>
+#include "libgsm/inc/gsm.h"
 };
+
+#include "dcc.h"
 
 class PlayThread;
 class RecordThread;
@@ -23,11 +25,11 @@ class VoiceManager : public QObject {
 
 	public:
 		VoiceManager();
+		~VoiceManager();
 		void setup();
 		void free();
 		void resetCodec();
 		void addGsmSample(char *data, int length);
-		static void initModule();
 
 	signals:
 		void setupSoundDevice();
@@ -39,6 +41,10 @@ class VoiceManager : public QObject {
 	private slots:
 		void playGsmSampleReceived(char *data, int length);
 		void recordSampleReceived(char *data, int length);
+		void mainDialogKeyPressed(QKeyEvent* e);
+		void userBoxMenuPopup();
+		void makeVoiceChat();
+		void dccFinished(dccSocketClass* dcc);
 
 	private:
 		void resetCoder();
@@ -89,6 +95,43 @@ class RecordThread : public QObject, public QThread
 		QMutex mutex;
 
 	friend class VoiceManager;
+};
+
+class DccVoiceDialog : public QDialog
+{
+	Q_OBJECT
+
+	public:
+		DccVoiceDialog(QDialog *parent = 0, const char *name = 0);
+
+	protected:
+		void closeEvent(QCloseEvent *e);
+
+	signals:
+		void cancelVoiceChat();
+};
+
+class VoiceSocket : public dccSocketClass
+{
+	Q_OBJECT
+	
+	private:
+		DccVoiceDialog *voicedialog;
+		void askAcceptVoiceChat();
+		
+	private slots:
+		void cancelVoiceChatReceived();
+		void voiceDataRecorded(char *data, int length);
+
+	protected:
+		virtual void connectionBroken();
+		virtual void dccError();
+		virtual void dccEvent();
+
+	public:
+		VoiceSocket(struct gg_dcc *dcc_sock);
+		~VoiceSocket();
+		virtual void initializeNotifiers();
 };
 
 extern VoiceManager *voice_manager;

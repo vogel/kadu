@@ -76,8 +76,6 @@ CXX = @CXX@
 DEPDIR = @DEPDIR@
 GADU_INCLUDES = @GADU_INCLUDES@
 GADU_LIBS = @GADU_LIBS@
-GSM_INCLUDES = @GSM_INCLUDES@
-GSM_LIBS = @GSM_LIBS@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 MY_SUBDIRS = @MY_SUBDIRS@
 OPENSSL_INCLUDES = @OPENSSL_INCLUDES@
@@ -136,21 +134,10 @@ userlist.cpp userlist.h userlist_moc.cpp \
 updates.cpp updates.h
 
 
-EXTRA_kadu_SOURCES = \
-voice.cpp voice.h voice_moc.cpp \
-voice_dsp.cpp voice_dsp.h voice_dsp_moc.cpp
-
-
-@VOICE_TRUE@VOICE_OBJS = \
-@VOICE_TRUE@voice.$(OBJEXT) voice_moc.$(OBJEXT) \
-@VOICE_TRUE@voice_dsp.$(OBJEXT) voice_dsp_moc.$(OBJEXT)
-
-@VOICE_FALSE@VOICE_OBJS = 
-
 INCLUDES = $(XFREE_INCLUDES) $(QT_INCLUDES) $(OPENSSL_INCLUDES) $(GSM_INCLUDES) $(GADU_INCLUDES)
 
 kadu_LDADD = \
-$(VOICE_OBJS) $(PTHREAD_LIBS) $(PNG_LIBS) \
+$(PTHREAD_LIBS) $(PNG_LIBS) \
 $(QT_LIBS) $(GSM_LIBS) $(GADU_LIBS) \
 $(foreach mod,$(basename $(static_modules)),../modules/$(mod)/$(mod).a)
 
@@ -159,8 +146,6 @@ kadu_LDFLAGS = \
 $(PTHREAD_LDFLAGS) -rdynamic $(OPENSSL_LIBS) \
 $(static_modules_ldflags)
 
-
-kadu_DEPENDENCIES = $(VOICE_OBJS)
 
 AM_CPPFLAGS = $(PTHREAD_CPPFLAGS) -DQT_THREAD_SUPPORT -D_REENTRANT
 
@@ -193,6 +178,8 @@ am_kadu_OBJECTS = about.$(OBJEXT) about_moc.$(OBJEXT) chat.$(OBJEXT) \
 	userbox_moc.$(OBJEXT) userinfo.$(OBJEXT) userinfo_moc.$(OBJEXT) \
 	userlist.$(OBJEXT) userlist_moc.$(OBJEXT) updates.$(OBJEXT)
 kadu_OBJECTS = $(am_kadu_OBJECTS)
+kadu_DEPENDENCIES = $(foreach mod,$(basename \
+	$(static_modules)),../modules/$(mod)/$(mod).a)
 
 DEFS = @DEFS@
 DEFAULT_INCLUDES =  -I. -I$(srcdir) -I$(top_builddir)
@@ -232,10 +219,7 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/updates.Po ./$(DEPDIR)/userbox.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/userbox_moc.Po ./$(DEPDIR)/userinfo.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/userinfo_moc.Po ./$(DEPDIR)/userlist.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/userlist_moc.Po ./$(DEPDIR)/voice.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/voice_dsp.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/voice_dsp_moc.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/voice_moc.Po
+@AMDEP_TRUE@	./$(DEPDIR)/userlist_moc.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 CXXLD = $(CXX)
@@ -247,9 +231,9 @@ COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-DIST_SOURCES = $(kadu_SOURCES) $(EXTRA_kadu_SOURCES)
+DIST_SOURCES = $(kadu_SOURCES)
 DIST_COMMON = Makefile.am Makefile.in modules_static.cpp.in
-SOURCES = $(kadu_SOURCES) $(EXTRA_kadu_SOURCES)
+SOURCES = $(kadu_SOURCES)
 
 all: all-am
 
@@ -350,10 +334,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/userinfo_moc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/userlist.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/userlist_moc.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/voice.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/voice_dsp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/voice_dsp_moc.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/voice_moc.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)

@@ -24,10 +24,6 @@
 #include "ignore.h"
 #include "debug.h"
 
-#ifdef VOICE_ENABLED
-#include "voice.h"
-#endif
-
 QSocketNotifier *dccsnr = NULL;
 QSocketNotifier *dccsnw = NULL;
 QHostAddress config_dccip;
@@ -42,12 +38,6 @@ dccSocketClass::dccSocketClass(struct gg_dcc *dcc_sock, int type) : QObject(), t
 	snr = snw = NULL;
 	state = DCC_SOCKET_TRANSFERRING;
 	filedialog = NULL;
-	if (type == DCC_TYPE_VOICE) {
-		voicedialog = new DccVoiceDialog();
-		connect(voicedialog, SIGNAL(cancelVoiceChat()), this, SLOT(cancelVoiceChatReceived()));
-		}
-	else
-		voicedialog = NULL;
 	in_watchDcc = false;
 	count++;
 	kdebug("dccSocketClass::dccSocketClass(): dcc sockets count = %d\n", count);
@@ -63,10 +53,6 @@ dccSocketClass::~dccSocketClass() {
 				delete filedialog;
 			filedialog = NULL;
 			}
-		}
-	if (voicedialog) {
-		voicedialog->close();
-		voicedialog = NULL;
 		}
 	if (snr) {
 		snr->setEnabled(false);
@@ -99,24 +85,9 @@ void dccSocketClass::initializeNotifiers() {
 
 	snw = new QSocketNotifier(dccsock->fd, QSocketNotifier::Write, this);
 	QObject::connect(snw, SIGNAL(activated(int)), this, SLOT(dccDataSent()));
-#ifdef VOICE_ENABLED
-	connect(voice_manager, SIGNAL(gsmSampleRecorded(char *, int)), this, SLOT(voiceDataRecorded(char *, int)));
-#endif	
 }
 
-void dccSocketClass::cancelVoiceChatReceived() {
-	kdebug("dccSocketClass::cancelVoiceChatReceived()\n");
-	voicedialog = NULL;
-#ifdef VOICE_ENABLED
-	voice_manager->free();
-#endif
-	deleteLater();
-}
 
-void dccSocketClass::voiceDataRecorded(char *data, int length) {
-	kdebug("dccSocketClass::voiceDataRecorded()\n");
-	gg_dcc_voice_send(dccsock, data, length);
-}
 
 void dccSocketClass::dccDataReceived() {
 	if (!in_watchDcc)
@@ -132,11 +103,6 @@ void dccSocketClass::dccDataSent() {
 
 void dccSocketClass::watchDcc(int check) {
 	QString f;
-//	struct sockaddr_un addr;
-//	int sock;
-//	int len;
-//	char buf[195];
-	char *voice_buf;
 	UinsList uins;
 
 	in_watchDcc = true;
@@ -144,15 +110,9 @@ void dccSocketClass::watchDcc(int check) {
 	kdebug("dccSocketClass::watchDcc()\n");			
 	if (!(dccevent = gg_dcc_watch_fd(dccsock))) {
 		kdebug("dccSocketClass::watchDcc(): Connection broken unexpectedly!\n");
-#ifdef VOICE_ENABLED
-		voice_manager->free();
-		if (voicedialog)
-			disconnect(voicedialog, SIGNAL(cancelVoiceChat()), this, SLOT(cancelVoiceChatReceived()));
-#endif
+		connectionBroken();
 		if (type == DCC_TYPE_FILE)
 			setState(filedialog ? DCC_SOCKET_TRANSFER_ERROR : DCC_SOCKET_CONNECTION_BROKEN);
-		else
-			setState(DCC_SOCKET_VOICECHAT_DISCARDED);
 		return;
 		}
 
@@ -190,35 +150,11 @@ void dccSocketClass::watchDcc(int check) {
 			filedialog = new DccFileDialog(this, DCC_TYPE_SEND);
 			filedialog->printFileInfo(dccsock);
 			break;
-#ifdef VOICE_ENABLED
-		case GG_EVENT_DCC_NEED_VOICE_ACK:
-			kdebug("dccSocketClass::watchDcc():  GG_EVENT_DCC_NEED_VOICE_ACK! %d %d\n",
-				dccsock->uin, dccsock->peer_uin);
-			askAcceptVoiceChat();
-			break;
-		case GG_EVENT_DCC_ACK:
-			if (type == DCC_TYPE_VOICE)
-				voice_manager->setup();
-			break;
-		case GG_EVENT_DCC_VOICE_DATA:
-			voice_buf = new char[dccevent->event.dcc_voice_data.length];
-			memcpy(voice_buf, dccevent->event.dcc_voice_data.data,
-				dccevent->event.dcc_voice_data.length);
-			voice_manager->addGsmSample(voice_buf,
-				dccevent->event.dcc_voice_data.length);
-			break;
-#endif
 		case GG_EVENT_DCC_ERROR:
 			kdebug("dccSocketClass::watchDcc(): GG_EVENT_DCC_ERROR\n");
-#ifdef VOICE_ENABLED
-			voice_manager->free();
-			if (voicedialog)
-				disconnect(voicedialog, SIGNAL(cancelVoiceChat()), this, SLOT(cancelVoiceChatReceived()));
-#endif
+			dccError();
 			if (type == DCC_TYPE_FILE)
 				setState(filedialog ? DCC_SOCKET_TRANSFER_ERROR : DCC_SOCKET_CONNECTION_BROKEN);
-			else
-				setState(DCC_SOCKET_VOICECHAT_DISCARDED);
 			return;
 		case GG_EVENT_DCC_DONE:
 			kdebug("dccSocketClass::watchDcc(): GG_EVENT_DCC_DONE\n");
@@ -229,6 +165,8 @@ void dccSocketClass::watchDcc(int check) {
 		default:
 			break;
 		}
+		
+	dccEvent();
 
 	if (dccsock->check & GG_CHECK_WRITE)
 		snw->setEnabled(true);
@@ -323,30 +261,6 @@ void dccSocketClass::askAccept(void) {
 		}
 }
 
-#ifdef VOICE_ENABLED
-void dccSocketClass::askAcceptVoiceChat() {
-	QString str;
-
-	kdebug("dccSocketClass::askAcceptVoiceChat()\n");
-	str.append(tr("User "));
-	str.append(userlist.byUin(dccsock->peer_uin).altnick);
-	str.append(tr(" wants to talk with you. Do you accept it?"));
-
-	switch (QMessageBox::information(0, tr("Incoming voice chat"), str, tr("Yes"), tr("No"),
-		QString::null, 0, 1)) {
-		case 0: // Yes?
-			kdebug("dccSocketClass::askAcceptVoiceChat(): accepted\n");
-			voicedialog = new DccVoiceDialog();
-			connect(voicedialog, SIGNAL(cancelVoiceChat()), this, SLOT(cancelVoiceChatReceived()));
-			voice_manager->setup();
-			break;
-		case 1:
-			kdebug("dccSocketClass::askAcceptVoiceChat(): discarded\n");
-			setState(DCC_SOCKET_VOICECHAT_DISCARDED);
-			break;
-		}
-}
-#endif
 
 QString dccSocketClass::selectFile(void) {
 	QString f;
@@ -370,6 +284,18 @@ void dccSocketClass::setState(int pstate) {
 	*me = this;
 	qApp->postEvent((QObject *)kadu, new QCustomEvent(QEvent::User, me));
 	kdebug("dccSocketClass::setState()\n");
+}
+
+void dccSocketClass::connectionBroken()
+{
+}
+
+void dccSocketClass::dccError()
+{
+}
+
+void dccSocketClass::dccEvent()
+{
 }
 
 DccFileDialog::DccFileDialog(dccSocketClass *dccsocket, int type, QDialog *parent, const char *name)
@@ -475,24 +401,4 @@ void DccFileDialog::updateFileInfo(struct gg_dcc *dccsock) {
 		prevPercent = percent;
 		}
 	setCaption(tr("File transfered %1%").arg((int)percent));
-}
-
-DccVoiceDialog::DccVoiceDialog(QDialog *parent, const char *name)
-	: QDialog (parent, name, FALSE, Qt::WDestructiveClose) {
-	setCaption(tr("Voice chat"));
-	resize(200, 100);
-
-	QPushButton *b_stop = new QPushButton(tr("&Stop"), this);
-
-	QGridLayout *grid = new QGridLayout(this, 1, 1, 3, 3);
-	grid->addWidget(b_stop, 0, 0, Qt::AlignCenter);
-
-	connect(b_stop, SIGNAL(clicked()), this, SLOT(close()));
-	show();
-}
-
-void DccVoiceDialog::closeEvent(QCloseEvent *e) {
-	kdebug("DccVoiceDialog::closeEvent()\n");
-	emit cancelVoiceChat();
-	QDialog::closeEvent(e);
 }
