@@ -387,7 +387,7 @@ echo " ******************************************"
 echo
 
 if test "$with_existing_libgadu" = "no"; then
-	ac_configure_args="$ac_configure_args 'CFLAGS_LIBGADU=$libgadu_CFLAGS' --disable-static --enable-shared"
+	ac_configure_args="$ac_configure_args 'CFLAGS_LIBGADU=$libgadu_CFLAGS' --enable-static --disable-shared"
 	AC_CONFIG_SUBDIRS([libgadu])
 fi
 
