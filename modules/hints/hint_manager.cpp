@@ -635,6 +635,7 @@ void HintManager::message(const QString &from, const QString &msg, const QMap<QS
 	QColor fgcolor,bgcolor;
 	unsigned int timeout=0;
 	bool ok;
+	bool showSource=true;
 	if (parameters!=NULL)
 	{
 		pixmap=(*parameters)["Pixmap"].toPixmap();
@@ -642,6 +643,7 @@ void HintManager::message(const QString &from, const QString &msg, const QMap<QS
 		fgcolor=(*parameters)["Foreground color"].toColor();
 		bgcolor=(*parameters)["Background color"].toColor();
 		timeout=(*parameters)["Timeout"].toUInt(&ok);
+		showSource=(*parameters)["ShowSource"].toBool();
 	}
 	if (pixmap.isNull())
 		pixmap=icons_manager.loadIcon("Message");
@@ -653,7 +655,7 @@ void HintManager::message(const QString &from, const QString &msg, const QMap<QS
 		bgcolor=config_file.readColorEntry("Hints", "HintMessage_bgcolor");
 	if (timeout==0 || !ok)
 		timeout=config_file.readUnsignedNumEntry("Hints", "HintMessage_timeout");
-	if (from!="")
+	if (!from.isEmpty() && showSource)
 		msg2=tr("From <b>%1</b>: %2").arg(from).arg(msg);
 	else
 		msg2=msg;
