@@ -103,23 +103,26 @@ void Ignored::keyPressEvent(QKeyEvent *ke_event)
 		add(); 
 }
 
-void Ignored::add() {
+void Ignored::add()
+{
 	kdebugf();
 	QStringList strlist;
 	strlist = QStringList::split(";", e_uin->text());
 	bool ok;
 	UinsList uins;
-	for (unsigned int i = 0; i < strlist.count(); i++) {
+	for (unsigned int i = 0; i < strlist.count(); i++)
+	{
 		UinType uin = strlist[i].toUInt(&ok);
 		if (ok)
 			uins.append(uin);
-		}
-	if (uins.count()) {
+	}
+	if (uins.count())
+	{
 		addIgnored(uins);
 		e_uin->clear();
 		writeIgnored();
 		getList();
-		}
+	}
 	kdebugf2();
 }
 
@@ -152,29 +155,29 @@ void Ignored::remove() {
 	QStringList strlist;
 	strlist = QStringList::split(";", lb_list->currentText());
 	UinsList uins;
-	for (unsigned int i = 0; i < strlist.count(); i++) {
-		QString str;
-		str = strlist[i].section(' ', 0, 0);
-		uins.append(str.toUInt());
-		}
+	for (unsigned int i = 0; i < strlist.count(); i++)
+		uins.append(strlist[i].section(' ', 0, 0).toUInt());
 	delIgnored(uins);
 	getList();
 	writeIgnored();
 	kdebugf2();
 }
 
-bool isIgnored(UinsList uins) {
+bool isIgnored(UinsList uins)
+{
 	uins.sort();
 	return ignored.contains(uins);
 }
 
 
-void addIgnored(UinsList uins) {
+void addIgnored(UinsList uins)
+{
 	uins.sort();
 	ignored.append(uins);
 }
 
-void delIgnored(UinsList uins) {
+void delIgnored(UinsList uins)
+{
 	uins.sort();
 	ignored.remove(uins);
 }
@@ -204,12 +207,13 @@ int writeIgnored(QString filename)
 //	fchmod(fileno(f), 0600);
 
 	QString buf;
-	for (unsigned int i = 0; i < ignored.count(); i++) {
+	for (unsigned int i = 0; i < ignored.count(); i++)
+	{
 		QStringList list;
 		for (unsigned int j = 0; j < ignored[i].count(); j++)
 			list.append(QString::number(ignored[i][j]));
 		buf.append(list.join(";"));
-		}
+	}
 
 	if (buf.length())
 		file.writeBlock(buf, buf.length());
@@ -219,7 +223,8 @@ int writeIgnored(QString filename)
 	return 0;
 }
 
-int readIgnored() {
+int readIgnored()
+{
 	kdebugf();
 	QString line, fname;
 	QStringList list;
@@ -234,13 +239,14 @@ int readIgnored() {
 	}
 
 	QTextStream stream(&f);
-	while ((line = stream.readLine()) != QString::null) {
+	while ((line = stream.readLine()) != QString::null)
+	{
 		list = QStringList::split(";", line);
 		UinsList uins;
 		for (unsigned int i = 0; i < list.count(); i++)
 			uins.append(list[i].toUInt());
 		ignored.append(uins);
-		}
+	}
 
 	f.close();
 
@@ -248,6 +254,7 @@ int readIgnored() {
 	return 0;
 }
 
-void clearIgnored() {
+void clearIgnored()
+{
 	ignored.clear();
 }
