@@ -3,7 +3,8 @@ Kadu, klient Gadu-Gadu dla KDE, wersja 0.3.3 (lub nowsza)
 +++ WYMAGANIA
  * Qt-3.0.x (pisano na 3.0.4)
  * KDE-3.x (pisano na 3.0)
-
+ * szczegó³y w pliku /doc/install.html
+ 
 +++ FICZERSY
  * status: offline, online, away, invisible
  * wysy³anie wiadomo¶ci
@@ -20,14 +21,13 @@ Kadu, klient Gadu-Gadu dla KDE, wersja 0.3.3 (lub nowsza)
  * wiele innych...
  * DCC: wysy³anie, odbieranie
  * rozmowy konferencyjne
+ * szyfrowanie ssl
 
 +++ LICENCJA
 GPL
 
 +++ AUTORZY
-Tomek ``tomee`` Jarzynka
-Tomek ``chilek`` Chiliñski
-Adrian ``adrians`` Smarzewski
+"Kadu Team" szczegó³y w pliku AUTORS
 Wielkie dziêki dla Wojtka Kaniewskiego oraz
 ¿yczliwych ludzi z pl.comp.os.linux.programming
 i innych.

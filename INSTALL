@@ -1,6 +1,12 @@
 Instrukcja instalacji dla wersji 0.3.0 lub nowszej
 
-Aby zainstalowaæ Kadu ze ¼róde³, spróbuj u¿yæ kreatora: ./setup
+Aby zainstalowaæ Kadu ze ¼róde³ przeczytaj dokumentacje która siê
+znajduje w katalogu /doc rozpakowanych ¼róde³. S± to pliki html
+uruchamiane w ka¿dej przegladarce internetowej. Zacznij od pliku /doc/index-doc.html.
+Nastepnie spróbuj u¿yæ jednego z kreatorów:
+ ./Instaluj -> dla wi?kszo?ci dystrybucji
+ ./Instaluj-RH8 -> dla RedHata8 lub Auroxa8
+ ./setup -> wersja w j?zyku angielskim
 
 W przeciwnym wypadku:
 1. w kadu zrobiæ ./configure ; make i modliæ siê, ¿eby przesz³o ;>
