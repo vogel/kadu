@@ -45,9 +45,6 @@ e scrivi la stringa corretta. I parametri devono essere separati da spazio. Il p
     </message>
 </context>
 <context>
-    <name>SearchDialog</name>
-</context>
-<context>
     <name>Sms</name>
     <message>
         <source>Recipient</source>

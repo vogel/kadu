@@ -18,7 +18,4 @@
         <translation>Controlla  Iddle ogni</translation>
     </message>
 </context>
-<context>
-    <name>SearchDialog</name>
-</context>
 </TS>

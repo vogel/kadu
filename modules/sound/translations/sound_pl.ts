@@ -14,10 +14,6 @@
         <translation>Regulacja głośności (gdy odtwarzacz obsługuje)</translation>
     </message>
     <message>
-        <source>Message sound</source>
-        <translation>Dźwięk wiadomości</translation>
-    </message>
-    <message>
         <source>Test</source>
         <translation>Test</translation>
     </message>
@@ -28,14 +24,6 @@
     <message>
         <source>Play chat sounds only when window is invisible</source>
         <translation>Odtwórz dźwięk rozmowy tylko gdy okno nieaktywne</translation>
-    </message>
-    <message>
-        <source>Chat sound</source>
-        <translation>Dźwięk rozmowy</translation>
-    </message>
-    <message>
-        <source>Notify sound</source>
-        <translation>Dźwięk powiadomienia</translation>
     </message>
     <message>
         <source>Volume</source>

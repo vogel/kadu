@@ -14,10 +14,6 @@
         <translation>Attiva regolazione volume (se riproduttore lo supporta)</translation>
     </message>
     <message>
-        <source>Message sound</source>
-        <translation>Sono messaggio</translation>
-    </message>
-    <message>
         <source>Test</source>
         <translation>Prova</translation>
     </message>
@@ -28,14 +24,6 @@
     <message>
         <source>Play chat sounds only when window is invisible</source>
         <translation>Riproduci suoni solo se la finestra non è attiva</translation>
-    </message>
-    <message>
-        <source>Chat sound</source>
-        <translation>Suono di chat</translation>
-    </message>
-    <message>
-        <source>Notify sound</source>
-        <translation>Suono di notifica</translation>
     </message>
     <message>
         <source>Volume</source>

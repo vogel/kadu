@@ -2,98 +2,106 @@
 <context>
     <name>@default</name>
     <message>
-        <source>Sounds</source>
+        <source>Notify by speech</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Play sounds</source>
+        <source>Speech</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Enable volume control (player must support it)</source>
+        <source>Say only when chat window is not active</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Frequency</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tempo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Base frequency</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Melody</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Klatt synthesizer (requires dsp)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use aRts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use Esd</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use Dsp</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dsp device:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Program</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Speech program:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat format (male):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat format (female):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Message format (male):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Message format (female):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify format (male):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify format (female):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Test</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Play sounds from a person whilst chatting</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Play chat sounds only when window is invisible</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Volume</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Choose</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Clear</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Sound paths</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Sound theme</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Notify</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Notify options</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Notify by sound</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
-    <name>SoundSlots</name>
+    <name>SpeechSlots</name>
     <message>
-        <source>Unmute sounds</source>
+        <source>man %a said %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Mute sounds</source>
+        <source>woman %a said %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Custom</source>
+        <source>man %a changed status to %s %d</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>default</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Event</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Sound file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Chat sound</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Message sound</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Notify sound</source>
+        <source>woman %a changed status to %s %d</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

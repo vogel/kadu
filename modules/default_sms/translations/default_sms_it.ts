@@ -19,9 +19,6 @@
     </message>
 </context>
 <context>
-    <name>SearchDialog</name>
-</context>
-<context>
     <name>SmsEraGateway</name>
     <message>
         <source>Provider gateway results page looks strange. SMS was probably NOT sent.</source>
@@ -66,13 +63,6 @@
     <message>
         <source>Unknown error</source>
         <translation>Errore sconosciuto</translation>
-    </message>
-</context>
-<context>
-    <name>SmsGateway</name>
-    <message>
-        <source>Network error. Provider gateway page is probably unavailable</source>
-        <translation>Errore della rete. La pagina del Gateway del fornitore probabilmente non è disponibile</translation>
     </message>
 </context>
 <context>

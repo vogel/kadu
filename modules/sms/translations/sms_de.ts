@@ -45,13 +45,6 @@ nicht versteht. Gib hier die Argumente ein, getrennt mit Komma. %n=Tel.; %m=Nach
     </message>
 </context>
 <context>
-    <name>SearchDialog</name>
-    <message>
-        <source></source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>Sms</name>
     <message>
         <source>Recipient</source>

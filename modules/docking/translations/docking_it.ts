@@ -9,11 +9,16 @@
 <context>
     <name>DockingManager</name>
     <message>
-        <source>Left click - hide/show window
-Middle click or Left click- next message</source>
-        <translation>Click sx - nascondi/vedi finestra Kadu
-Click sx/centrale - ricevi messaggio
-Click dx - cambia status</translation>
+        <source>Current status:
+%1
+Descrition:
+%2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Current status:
+%1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

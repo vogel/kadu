@@ -85,6 +85,9 @@
         <source>Melody</source>
         <translation>Melodia</translation>
     </message>
+</context>
+<context>
+    <name>SpeechSlots</name>
     <message>
         <source>man %a said %1</source>
         <translation>%a napisał %1</translation>

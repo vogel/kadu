@@ -9,11 +9,20 @@
 <context>
     <name>DockingManager</name>
     <message>
-        <source>Left click - hide/show window
-Middle click or Left click- next message</source>
-        <translation>Lewy przycisk - Ukryj/Pokaż Kadu
-Lewy lub Środ. przycisk - Odbierz wiadomość
-Prawy przycisk - Ustaw status</translation>
+        <source>Current status:
+%1
+Descrition:
+%2</source>
+        <translation>Bierzący status:
+%1
+Opis:
+%2</translation>
+    </message>
+    <message>
+        <source>Current status:
+%1</source>
+        <translation>Bierzący status:
+%1</translation>
     </message>
 </context>
 </TS>

@@ -45,13 +45,6 @@ Zaznacz i wpisz w to pole poprawny ciąg. Argumenty oddziel spacjami. Argument %
     </message>
 </context>
 <context>
-    <name>SearchDialog</name>
-    <message>
-        <source></source>
-        <translation></translation>
-    </message>
-</context>
-<context>
     <name>Sms</name>
     <message>
         <source>Recipient</source>

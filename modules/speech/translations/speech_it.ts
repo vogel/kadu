@@ -85,21 +85,24 @@
         <source>Melody</source>
         <translation>Melodia</translation>
     </message>
+</context>
+<context>
+    <name>SpeechSlots</name>
     <message>
         <source>man %a said %1</source>
-        <translation>%a ha scritto %1</translation>
+        <translation type="unfinished">%a ha scritto %1</translation>
     </message>
     <message>
         <source>woman %a said %1</source>
-        <translation>%a ha scritto %1</translation>
+        <translation type="unfinished">%a ha scritto %1</translation>
     </message>
     <message>
         <source>man %a changed status to %s %d</source>
-        <translation>%a ha cambiato status %s %d</translation>
+        <translation type="unfinished">%a ha cambiato status %s %d</translation>
     </message>
     <message>
         <source>woman %a changed status to %s %d</source>
-        <translation>%a ha cambiato status per %s %d</translation>
+        <translation type="unfinished">%a ha cambiato status per %s %d</translation>
     </message>
 </context>
 </TS>

@@ -18,11 +18,4 @@
         <translation> Sprawdź bezczynność co:</translation>
     </message>
 </context>
-<context>
-    <name>SearchDialog</name>
-    <message>
-        <source></source>
-        <translation></translation>
-    </message>
-</context>
 </TS>
