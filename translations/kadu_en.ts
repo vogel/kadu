@@ -586,6 +586,10 @@ It&apos;s a high security risk!</source>
         <source>###IMAGE TOO BIG###</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Description font color</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>

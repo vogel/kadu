@@ -591,6 +591,10 @@ Jest to wysoce ryzykowne!</translation>
         <source>###IMAGE TOO BIG###</source>
         <translation>###ZDJĘCIE ZA DUŻE###</translation>
     </message>
+    <message>
+        <source>Description font color</source>
+        <translation>Kolor czcionki opisu</translation>
+    </message>
 </context>
 <context>
     <name>About</name>

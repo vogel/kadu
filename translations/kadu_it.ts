@@ -591,6 +591,10 @@ E un rischio per la sicurezza!</translation>
         <source>###IMAGE TOO BIG###</source>
         <translation>###IMAGIGINE TROPPO GRANDE###</translation>
     </message>
+    <message>
+        <source>Description font color</source>
+        <translation>Colore caratteri descrizione</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
