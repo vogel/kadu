@@ -44,10 +44,10 @@ endif
 #kadu_METASOURCES = AUTO
 
 INCLUDES = $(QTINCDIR)
-kadu_LDADD = $(SIM) -l$(QTMT) $(LIBINTL) $(PTHREAD_LIBS) $(PNG_LIBS) -lgadu 
-kadu_LDFLAGS = $(QTLIBDIR)
+kadu_LDADD = $(SIM) $(PTHREAD_LIBS) $(PNG_LIBS) $(QTLIBDIR) -l$(QTMT) $(LIBINTL) -lgadu
+kadu_LDFLAGS = $(PTHREAD_LDFLAGS)
 kadu_DEPENDENCIES = $(SIM)
-AM_CPPFLAGS = $(PTHREAD_FLAGS) -DQT_THREAD_SUPPORT -D_REENTRANT -DBINDIR="\"$(bindir)\"" -DDATADIR="\"$(datadir)\""
+AM_CPPFLAGS = $(PTHREAD_CPPFLAGS) -DQT_THREAD_SUPPORT -D_REENTRANT -DBINDIR="\"$(bindir)\"" -DDATADIR="\"$(datadir)\""
 
 EXTRA_DIST = hi16-app-kadu.png hi32-app-kadu.png hi48-app-kadu.png kadu.desktop
 

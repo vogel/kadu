@@ -3085,7 +3085,8 @@ echo "$as_me:$LINENO: result: $ac_cv_lib_pthread_pthread_create" >&5
 echo "${ECHO_T}$ac_cv_lib_pthread_pthread_create" >&6
 if test $ac_cv_lib_pthread_pthread_create = yes; then
 
-		PTHREAD_FLAGS=
+		PTHREAD_CPPFLAGS=
+		PTHREAD_LDFLAGS=
 		PTHREAD_LIBS=-lpthread
 
 else
@@ -3093,7 +3094,7 @@ else
 		echo "$as_me:$LINENO: checking if compiler supports -pthread" >&5
 echo $ECHO_N "checking if compiler supports -pthread... $ECHO_C" >&6
 		save_CPPFLAGS="$CPPFLAGS"
-		CPPFLAGS="$CXXFLAGS -pthread"
+		CPPFLAGS="$CPPFLAGS -pthread"
 		cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
 #include "confdefs.h"
@@ -3131,7 +3132,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
 
 			echo "$as_me:$LINENO: result: yes" >&5
 echo "${ECHO_T}yes" >&6
-			PTHREAD_FLAGS=-pthread
+			PTHREAD_CPPFLAGS=-pthread
+			PTHREAD_LDFLAGS=-pthread
 			PTHREAD_LIBS=
 
 else
@@ -3149,6 +3151,7 @@ rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
 		CPPFLAGS="$save_CPPFLAGS"
 
 fi
+
 
 
 
@@ -8294,7 +8297,8 @@ s,@CC@,$CC,;t t
 s,@CFLAGS@,$CFLAGS,;t t
 s,@ac_ct_CC@,$ac_ct_CC,;t t
 s,@CCDEPMODE@,$CCDEPMODE,;t t
-s,@PTHREAD_FLAGS@,$PTHREAD_FLAGS,;t t
+s,@PTHREAD_CPPFLAGS@,$PTHREAD_CPPFLAGS,;t t
+s,@PTHREAD_LDFLAGS@,$PTHREAD_LDFLAGS,;t t
 s,@PTHREAD_LIBS@,$PTHREAD_LIBS,;t t
 s,@PNG_LIBS@,$PNG_LIBS,;t t
 s,@QTMOCDIR@,$QTMOCDIR,;t t
