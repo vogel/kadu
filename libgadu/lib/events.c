@@ -1,4 +1,4 @@
-/* $Id: events.c,v 1.4 2002/09/12 21:05:01 chilek Exp $ */
+/* $Id: events.c,v 1.5 2002/09/13 00:30:38 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>,

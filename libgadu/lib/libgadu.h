@@ -1,4 +1,4 @@
-/* $Id: libgadu.h,v 1.6 2002/09/12 21:18:59 chilek Exp $ */
+/* $Id: libgadu.h,v 1.7 2002/09/13 00:30:38 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>,
@@ -397,8 +397,11 @@ void gg_event_free(struct gg_event *e);
 /*
  * funkcje obs³ugi listy kontaktów.
  */
+int gg_notify_ex(struct gg_session *sess, uin_t *userlist, char *types, int count);
 int gg_notify(struct gg_session *sess, uin_t *userlist, int count);
+int gg_add_notify_ex(struct gg_session *sess, uin_t uin, char type);
 int gg_add_notify(struct gg_session *sess, uin_t uin);
+int gg_remove_notify_ex(struct gg_session *sess, uin_t uin, char type);
 int gg_remove_notify(struct gg_session *sess, uin_t uin);
 
 /*
@@ -640,7 +643,7 @@ uint16_t gg_fix16(uint16_t x);
 #define GG_DEFAULT_PROTOCOL_VERSION 0x18
 #define GG_DEFAULT_TIMEOUT 30
 #define GG_HAS_AUDIO_MASK 0x40000000
-#define GG_LIBGADU_VERSION "20020911"
+#define GG_LIBGADU_VERSION "CVS"
 
 #define GG_DEFAULT_DCC_PORT 1550
 
@@ -700,6 +703,7 @@ struct gg_login_ext {
 #define GG_STATUS_INVISIBLE 0x0014		/* niewidoczny (4.6) */
 #define GG_STATUS_INVISIBLE_DESCR 0x0016	/* niewidoczny z opisem (4.9) */
 #define GG_STATUS_BLOCKED 0x0006		/* zablokowany */
+
 #define GG_STATUS_FRIENDS_MASK 0x8000		/* tylko dla znajomych (4.6) */
 
 /*

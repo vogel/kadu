@@ -1,4 +1,4 @@
-/* $Id: search.c,v 1.4 2002/09/12 21:05:02 chilek Exp $ */
+/* $Id: search.c,v 1.5 2002/09/13 00:30:38 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -256,7 +256,7 @@ int gg_search_watch_fd(struct gg_http *h)
 			return 0;
 		}
 
-		s->results[s->count].active = (atoi(line[0]) == 2);
+		s->results[s->count].active = atoi(line[0]);
 		s->results[s->count].uin = (strtol(line[1], NULL, 0));
 		s->results[s->count].first_name = strdup(line[2]);
 		s->results[s->count].last_name = strdup(line[3]);
