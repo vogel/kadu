@@ -487,9 +487,12 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		QString::null, CTRL+Key_I, this, "userinfo");
 	QAction *searchaction = new QAction(i18n("Lookup in directory"), loadIcon("viewmag.png"),
 		QString::null, CTRL+Key_L, this, "lookup");
+	QAction *adduseraction = new QAction(i18n("Add user"), *icons->loadIcon("online"),
+		QString::null, CTRL+Key_A, this, "adduser");
 	connect(historyaction, SIGNAL(activated()), this, SLOT(viewHistory()));
 	connect(userinfoaction, SIGNAL(activated()), this, SLOT(showUserInfo()));
 	connect(searchaction, SIGNAL(activated()), this, SLOT(lookupInDirectory()));
+	connect(adduseraction, SIGNAL(activated()), this, SLOT(addUserAction()));
 
 	QToolBar *toolbar = new QToolBar(this, "main toolbar");
 //	toolbar->setMovingEnabled(false);
@@ -497,6 +500,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	historyaction->addTo(toolbar);
 	userinfoaction->addTo(toolbar);
 	searchaction->addTo(toolbar);
+	toolbar->addSeparator();
+	adduseraction->addTo(toolbar);
 
 	grid = new QGridLayout(centralFrame, 2, 6);
 //	grid->addMultiCellWidget(group_bar, 0, 0, 0, 2);
@@ -548,6 +553,10 @@ void Kadu::lookupInDirectory() {
 
 void Kadu::showUserInfo() {
 	commandParser(KADU_CMD_USERINFO);
+}
+
+void Kadu::addUserAction() {
+	commandParser(KADU_CMD_ADD_USER);
 }
 
 void Kadu::resizeEvent(QResizeEvent *e) {
