@@ -1856,6 +1856,10 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
         <source>Select user first</source>
         <translation>Markiere zuerst Benutzer</translation>
     </message>
+    <message>
+        <source> </source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Sms</name>

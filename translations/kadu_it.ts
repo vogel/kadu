@@ -97,15 +97,15 @@ Cosa vogliamo fare?</translation>
     </message>
     <message>
         <source>Underline text:</source>
-        <translation>Sottolinea:</translation>
+        <translation>Sottolineato:</translation>
     </message>
     <message>
         <source>History</source>
-        <translation>Storia</translation>
+        <translation>Cronologia</translation>
     </message>
     <message>
         <source>Quoted phrases during chat open</source>
-        <translation>?? citazione delle frasi durante apertura chat</translation>
+        <translation>Mostra vecchia conversazione in fase di apertura della finestra di chat</translation>
     </message>
     <message>
         <source>Count:</source>
@@ -113,7 +113,7 @@ Cosa vogliamo fare?</translation>
     </message>
     <message>
         <source>Don&apos;t quote phrases older than:</source>
-        <translation>Non visualizza le righe più vecchie di:</translation>
+        <translation>Non visualizza righe più vecchie di:</translation>
     </message>
     <message>
         <source>User data</source>
@@ -129,7 +129,7 @@ Cosa vogliamo fare?</translation>
     </message>
     <message>
         <source>Nick</source>
-        <translation>Soprannome</translation>
+        <translation>Nickname</translation>
     </message>
     <message>
         <source>Log messages</source>
@@ -161,7 +161,7 @@ Cosa vogliamo fare?</translation>
     </message>
     <message>
         <source>IP address:</source>
-        <translation>Indirizzi IP:</translation>
+        <translation>Indirizzo IP:</translation>
     </message>
     <message>
         <source>DCC forwarding enabled</source>
@@ -181,11 +181,11 @@ Cosa vogliamo fare?</translation>
     </message>
     <message>
         <source>Servers properties</source>
-        <translation>Proprietà degli servers</translation>
+        <translation>Proprietà dei servers</translation>
     </message>
     <message>
         <source>Use default servers</source>
-        <translation>Usi i servers predefiniti</translation>
+        <translation>Usa servers predefiniti</translation>
     </message>
     <message>
         <source>Use TLSv1</source>
@@ -197,7 +197,7 @@ Cosa vogliamo fare?</translation>
     </message>
     <message>
         <source>Use proxy server</source>
-        <translation>Usi il proxy server</translation>
+        <translation>Usa un proxy server</translation>
     </message>
     <message>
         <source>Proxy server</source>
@@ -225,7 +225,7 @@ Cosa vogliamo fare?</translation>
     </message>
     <message>
         <source>Remove from userlist</source>
-        <translation>Rimuova dalla lista dei contatti</translation>
+        <translation>Rimuovi dalla lista dei contatti</translation>
     </message>
     <message>
         <source>View/edit user info</source>
@@ -233,11 +233,11 @@ Cosa vogliamo fare?</translation>
     </message>
     <message>
         <source>Send SMS</source>
-        <translation>Manda SMS</translation>
+        <translation>Manda un SMS</translation>
     </message>
     <message>
         <source>View history</source>
-        <translation>Vedi la storia</translation>
+        <translation>Visualizza cronologia</translation>
     </message>
     <message>
         <source>Lookup in directory</source>
@@ -249,7 +249,7 @@ Cosa vogliamo fare?</translation>
     </message>
     <message>
         <source>Send file</source>
-        <translation>Manda il file</translation>
+        <translation>Manda un file</translation>
     </message>
     <message>
         <source>Configuration</source>
@@ -269,7 +269,7 @@ Cosa vogliamo fare?</translation>
     </message>
     <message>
         <source>Use built-in SMS application</source>
-        <translation>Usi l&apos;applicazione incorporata di SMS</translation>
+        <translation>Usa l&apos;applicazione SMS incorporata</translation>
     </message>
     <message>
         <source>Custom SMS application</source>
@@ -277,13 +277,13 @@ Cosa vogliamo fare?</translation>
     </message>
     <message>
         <source>SMS custom string</source>
-        <translation>Stringa di SMS</translation>
+        <translation>Stringa personalizzata SMS</translation>
     </message>
     <message>
         <source>Check this box if your sms application doesn&apos;t understand arguments: number &quot;message&quot;
 Arguments should be separated with spaces. %n argument is converted to number, %m to message</source>
-        <translation>Se il tuo programma non capisce argomenti: &quot;numero_tel_cell. il messaggio&quot;
-segna questo campo e scrivi la stringa corretta. Argomenti devono essere separati con spazi.Argomento %n viene sostituito con numero, %m con messaggio</translation>
+        <translation>Segna questo campo se il tuo programma non capisce i parametri : numero_tel_cell &quot;il messaggio&quot;
+e scrivi la stringa corretta. I parametri devono essere separati da spazio. Il parametro %n è il numero di cellulare, %m è il messaggio</translation>
     </message>
     <message>
         <source>SMS Era Gateway</source>
@@ -315,7 +315,7 @@ segna questo campo e scrivi la stringa corretta. Argomenti devono essere separat
     </message>
     <message>
         <source>Enable volume control (player must support it)</source>
-        <translation>Attiva controllo volume (Se riproduttore lo permette)</translation>
+        <translation>Attiva controllo volume (Il riproduttore deve permetterlo)</translation>
     </message>
     <message>
         <source>Message sound</source>
@@ -331,7 +331,7 @@ segna questo campo e scrivi la stringa corretta. Argomenti devono essere separat
     </message>
     <message>
         <source>Play chat sounds only when window is invisible</source>
-        <translation>Suoni chiamata solo se finestra chat non è attiva</translation>
+        <translation>Suona solo se finestra chat non è attiva</translation>
     </message>
     <message>
         <source>Chat sound</source>
@@ -351,7 +351,7 @@ segna questo campo e scrivi la stringa corretta. Argomenti devono essere separat
     </message>
     <message>
         <source>On shutdown, set description:</source>
-        <translation>Sull&apos;arresto Kadu, lascia la descrizione:</translation>
+        <translation>Quando chiudi Kadu, lascia questa descrizione:</translation>
     </message>
     <message>
         <source>Enable dock icon</source>
@@ -367,11 +367,11 @@ segna questo campo e scrivi la stringa corretta. Argomenti devono essere separat
     </message>
     <message>
         <source>Add to description</source>
-        <translation>Aggiunga alla descrizione</translation>
+        <translation>Aggiungi alla descrizione</translation>
     </message>
     <message>
         <source>Show Inactive users</source>
-        <translation>Mostri contatti inattivi</translation>
+        <translation>Mostra contatti inattivi</translation>
     </message>
     <message>
         <source>Hints</source>
@@ -391,11 +391,11 @@ segna questo campo e scrivi la stringa corretta. Argomenti devono essere separat
     </message>
     <message>
         <source>Show connection errors in hints</source>
-        <translation>Mostri errori di connessione nei suggerimenti</translation>
+        <translation>Mostra errori di connessione nei suggerimenti</translation>
     </message>
     <message>
         <source>Enable status notification by hint</source>
-        <translation>Attiva le notifiche status tramite il suggerimento</translation>
+        <translation>Attiva notifica di status tramite il suggerimento</translation>
     </message>
     <message>
         <source>Notification options</source>
@@ -415,11 +415,11 @@ segna questo campo e scrivi la stringa corretta. Argomenti devono essere separat
     </message>
     <message>
         <source>Notify about new chat</source>
-        <translation>Notifica nuovo chat</translation>
+        <translation>Notifica nuova chat</translation>
     </message>
     <message>
         <source>Notify about user status change</source>
-        <translation>Notifica il cambiamento di status contatto</translation>
+        <translation>Notifica cambiamento  status di un contatto</translation>
     </message>
     <message>
         <source>Add description to hint if exists</source>
@@ -435,7 +435,7 @@ segna questo campo e scrivi la stringa corretta. Argomenti devono essere separat
     </message>
     <message>
         <source>Could not spawn Web browser process. Check if the Web browser is functional</source>
-        <translation>Impossibile lanciare il WEB browser. Controlli se è funzionante </translation>
+        <translation>Impossibile lanciare il WEB browser.  Verificare corretta funzionalità del WEB browser</translation>
     </message>
     <message>
         <source>Emoticons</source>
@@ -447,23 +447,23 @@ segna questo campo e scrivi la stringa corretta. Argomenti devono essere separat
     </message>
     <message>
         <source>Emoticons theme</source>
-        <translation>Set dei emoticons</translation>
+        <translation>Tema emoticons</translation>
     </message>
     <message>
         <source>WWW options</source>
-        <translation>Opzioni di WWW</translation>
+        <translation>Opzioni WWW</translation>
     </message>
     <message>
         <source>Use default Web browser</source>
-        <translation>Usa il WEB browser predefinito</translation>
+        <translation>Usa WEB browser predefinito</translation>
     </message>
     <message>
         <source>Custom Web browser</source>
-        <translation>WEB browser preferito</translation>
+        <translation>WEB browser personalizzato</translation>
     </message>
     <message>
         <source>Automatically prune chat messages</source>
-        <translation>Limitazione automatica messaggi chat</translation>
+        <translation>Limitazione automatica messaggi di chat</translation>
     </message>
     <message>
         <source>Message pruning</source>
@@ -475,7 +475,7 @@ segna questo campo e scrivi la stringa corretta. Argomenti devono essere separat
     </message>
     <message>
         <source>Use encryption</source>
-        <translation>Usi la crittografia</translation>
+        <translation>Usa la crittografia</translation>
     </message>
     <message>
         <source>Encryption properties</source>
@@ -495,7 +495,7 @@ segna questo campo e scrivi la stringa corretta. Argomenti devono essere separat
     </message>
     <message>
         <source>&quot;Enter&quot; key in chat sends message by default</source>
-        <translation>tasto &quot;Invio&quot; manda il messaggio automaticamente</translation>
+        <translation>tasto &quot;Invio&quot; manda automaticamente il messaggio</translation>
     </message>
     <message>
         <source>Flash chat title on new message</source>
@@ -531,11 +531,11 @@ segna questo campo e scrivi la stringa corretta. Argomenti devono essere separat
     </message>
     <message>
         <source>Chat window title syntax:</source>
-        <translation>Sintassi di titolo della finestra di chat:</translation>
+        <translation>Sintassi del titolo della finestra di chat:</translation>
     </message>
     <message>
         <source>Conference window title prefix:</source>
-        <translation>Prefisso di titolo della finestra di conferenza:</translation>
+        <translation>Prefisso del titolo della finestra di conferenza:</translation>
     </message>
     <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - frist name
@@ -551,7 +551,7 @@ Se lasciate lo spazio vuoto, sarà usata impostazione predefinita</translation>
         <source>This text will be before syntax.
 If you leave blank, default settings will be used.</source>
         <translation>Questo testo sarà inserito prima  della sintassi.
-Se lasciate lo spazio vuoto, sarà inserita stringa predefinita.</translation>
+Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation>
     </message>
     <message>
         <source>Conference window title prefix</source>
@@ -563,7 +563,7 @@ Se lasciate lo spazio vuoto, sarà inserita stringa predefinita.</translation>
     </message>
     <message>
         <source>Preview chat</source>
-        <translation>monitoragio chat</translation>
+        <translation>Anteprima chat</translation>
     </message>
     <message>
         <source>Notify</source>
@@ -571,19 +571,19 @@ Se lasciate lo spazio vuoto, sarà inserita stringa predefinita.</translation>
     </message>
     <message>
         <source>Notify when users become available</source>
-        <translation>Notifica quando gli contatti diventano disponibili</translation>
+        <translation>Notifica quando i contatti diventano disponibili</translation>
     </message>
     <message>
         <source>Notify about all users</source>
-        <translation>Notifica tutti gli contatti</translation>
+        <translation>Notifica tutti i contatti</translation>
     </message>
     <message>
         <source>Available</source>
-        <translation>Disponibile</translation>
+        <translation>Disponibili</translation>
     </message>
     <message>
         <source>Tracked</source>
-        <translation>Tracciato</translation>
+        <translation>Controllati</translation>
     </message>
     <message>
         <source>Notify options</source>
@@ -599,7 +599,7 @@ Se lasciate lo spazio vuoto, sarà inserita stringa predefinita.</translation>
     </message>
     <message>
         <source>Notify sound</source>
-        <translation>Il suono di notifica</translation>
+        <translation>Suono di notifica</translation>
     </message>
     <message>
         <source>Set language:</source>
@@ -623,15 +623,15 @@ Se lasciate lo spazio vuoto, sarà inserita stringa predefinita.</translation>
     </message>
     <message>
         <source>Preview userbox</source>
-        <translation>Monitoraggio  Lista Contatti</translation>
+        <translation>Anteprima  Lista Contatti</translation>
     </message>
     <message>
         <source>Preview desc.</source>
-        <translation>Monitoraggio desc.</translation>
+        <translation>Anteprima desc.</translation>
     </message>
     <message>
         <source>Show userbox-desc.</source>
-        <translation>Mostri il pannello di informazioni.</translation>
+        <translation>Mostra il pannello di informazioni.</translation>
     </message>
     <message>
         <source>Display group tabs</source>
@@ -643,7 +643,7 @@ Se lasciate lo spazio vuoto, sarà inserita stringa predefinita.</translation>
     </message>
     <message>
         <source>Message content in hint</source>
-        <translation>Il contenuto del messaggio nel suggerimento</translation>
+        <translation>Il contenuto messaggio nel suggerimento</translation>
     </message>
     <message>
         <source>Notify about user becoming available</source>
@@ -659,11 +659,11 @@ Se lasciate lo spazio vuoto, sarà inserita stringa predefinita.</translation>
     </message>
     <message>
         <source>Show message content in hint</source>
-        <translation>Mostri il contenuto del messaggio nel suggerimento</translation>
+        <translation>Mostra il contenuto del messaggio nel suggerimento</translation>
     </message>
     <message>
         <source>Syntax the same as in information panel.</source>
-        <translation>La stessa sintassi  che nel pannello di informazioni.</translation>
+        <translation>La stessa sintassi  del pannello di informazioni.</translation>
     </message>
     <message>
         <source>%1 - Url clicked in chat window</source>
@@ -710,7 +710,7 @@ Se lasciate lo spazio vuoto, sarà inserita stringa predefinita.</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Fine</translation>
+        <translation>&amp;Chiudi</translation>
     </message>
     <message>
         <source>&lt;br&gt;(c) 2001-2003 Kadu Team&lt;/span&gt;</source>
@@ -745,7 +745,7 @@ Se lasciate lo spazio vuoto, sarà inserita stringa predefinita.</translation>
     <name>Chat</name>
     <message>
         <source>Edit window:</source>
-        <translation>Finestra Edit:</translation>
+        <translation>Testo da inviare:</translation>
     </message>
     <message>
         <source>This is where you type in the text to be sent</source>
@@ -757,11 +757,11 @@ Se lasciate lo spazio vuoto, sarà inserita stringa predefinita.</translation>
     </message>
     <message>
         <source>Blocks scrolling</source>
-        <translation>Ferma scorimento del chat</translation>
+        <translation>Ferma scorimento testo</translation>
     </message>
     <message>
         <source>Clear messages in chat window</source>
-        <translation>Pulisci la cronologia del chat</translation>
+        <translation>Cancella cronologia</translation>
     </message>
     <message>
         <source>Insert emoticon - enable in configuration</source>
@@ -769,15 +769,15 @@ Se lasciate lo spazio vuoto, sarà inserita stringa predefinita.</translation>
     </message>
     <message>
         <source>Insert emoticon</source>
-        <translation>Inserisca emoticon</translation>
+        <translation>Inserisci emoticon</translation>
     </message>
     <message>
         <source>Show history</source>
-        <translation>Mostra la cronologia</translation>
+        <translation>Mostra cronologia</translation>
     </message>
     <message>
         <source>Lookup user info</source>
-        <translation>Visualizza info contatto</translation>
+        <translation>Mostra informazioni contatto</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
@@ -789,7 +789,7 @@ Se lasciate lo spazio vuoto, sarà inserita stringa predefinita.</translation>
     </message>
     <message>
         <source>Disable encryption for this conversation</source>
-        <translation>Disattiva la crittografia per questa conversazione</translation>
+        <translation>Disattiva la crittografia</translation>
     </message>
     <message>
         <source>Enable encryption for this conversation</source>
@@ -828,11 +828,11 @@ Se lasciate lo spazio vuoto, sarà inserita stringa predefinita.</translation>
     </message>
     <message>
         <source>Your background color</source>
-        <translation>Il vostro colore di sfondo</translation>
+        <translation>Tuo colore di sfondo</translation>
     </message>
     <message>
         <source>Your font color</source>
-        <translation>Il vostro colore caratteri</translation>
+        <translation>Tuo colore caratteri</translation>
     </message>
     <message>
         <source>User background color</source>
@@ -844,7 +844,7 @@ Se lasciate lo spazio vuoto, sarà inserita stringa predefinita.</translation>
     </message>
     <message>
         <source>Font in chat window</source>
-        <translation>Font nella finestra di chat</translation>
+        <translation>Caratteri nella finestra di chat</translation>
     </message>
     <message>
         <source>Chat with </source>
@@ -981,11 +981,11 @@ Se lasciate lo spazio vuoto, sarà inserita stringa predefinita.</translation>
     </message>
     <message>
         <source>Unable to connect, connection break during reading</source>
-        <translation>Impossibile collegarsi, rottura del collegamento durante la lettura</translation>
+        <translation>Impossibile collegarsi, interruzzione del collegamento durante la lettura</translation>
     </message>
     <message>
         <source>Unable to connect, connection break during writing</source>
-        <translation>Imossibile collegarsi, interruzione del collegamento durante la scrittura</translation>
+        <translation>Impossibile collegarsi, interruzione del collegamento durante la scrittura</translation>
     </message>
     <message>
         <source>Unable to connect, incorrect password</source>
@@ -998,20 +998,20 @@ Se lasciate lo spazio vuoto, sarà inserita stringa predefinita.</translation>
     <message>
         <source>Connection will be stoped
 Your password is incorrect !!!</source>
-        <translation>La conessione viene interrotta.
-La vostra password è errata!!!</translation>
+        <translation>La conessione sarà interrotta.
+La password è errata!!!</translation>
     </message>
     <message>
         <source>Unable to connect, error of negotiation TLS</source>
-        <translation>Impossibile collegarsi, errore della trattativa TLS</translation>
+        <translation>Impossibile collegarsi, errore in fase di negoziazione TLS</translation>
     </message>
     <message>
         <source>Disconnection has occured</source>
-        <translation>Sconessione</translation>
+        <translation>Disconessione</translation>
     </message>
     <message>
         <source>Please change your email in &quot;Change password/email&quot; window. Leave new password field blank.</source>
-        <translation>Prego di cambiare il tuo e-mail in &quot;Cambia password/email&quot;. Lasciare vuoto il campo nuova password.</translation>
+        <translation>Cambiare indirizzo e-mail in &quot;Cambia password/email&quot;. Lasciare vuoto il campo nuova password.</translation>
     </message>
 </context>
 <context>
@@ -1034,7 +1034,7 @@ La vostra password è errata!!!</translation>
     </message>
     <message>
         <source>changed status to</source>
-        <translation> cambiato status a</translation>
+        <translation> ha cambiato status in</translation>
     </message>
     <message>
         <source>is unavailable</source>
@@ -1045,7 +1045,7 @@ La vostra password è errata!!!</translation>
     <name>HintManagerSlots</name>
     <message>
         <source>New hints add to hint</source>
-        <translation>unione suggerimenti</translation>
+        <translation>Unione suggerimenti</translation>
     </message>
     <message>
         <source>Auto</source>
@@ -1097,7 +1097,7 @@ La vostra password è errata!!!</translation>
     </message>
     <message>
         <source>New message in chat</source>
-        <translation>Nuovo messaggio nella chat</translation>
+        <translation>Nuovo messaggio di chat</translation>
     </message>
     <message>
         <source>Error</source>
@@ -1105,15 +1105,15 @@ La vostra password è errata!!!</translation>
     </message>
     <message>
         <source>Preview</source>
-        <translation>Visualizza</translation>
+        <translation>Anteprima</translation>
     </message>
     <message>
         <source>Change font color</source>
-        <translation>Cambi il colore dell Font</translation>
+        <translation>Cambi il colore dei caratteri</translation>
     </message>
     <message>
         <source>Change background color</source>
-        <translation>Camba il colore sfondo</translation>
+        <translation>Camba il colore dello sfondo</translation>
     </message>
     <message>
         <source>Change font</source>
@@ -1303,7 +1303,7 @@ La vostra password è errata!!!</translation>
     <name>Kadu</name>
     <message>
         <source>Update information</source>
-        <translation>Le informazioni dell&apos;aggiornamento</translation>
+        <translation>Le informazioni su aggiornamenti</translation>
     </message>
     <message>
         <source>The newest Kadu version is %1</source>
@@ -1311,7 +1311,7 @@ La vostra password è errata!!!</translation>
     </message>
     <message>
         <source>Me</source>
-        <translation>Me</translation>
+        <translation>Io</translation>
     </message>
     <message>
         <source>Remove from userlist</source>
@@ -1319,7 +1319,7 @@ La vostra password è errata!!!</translation>
     </message>
     <message>
         <source>View/edit user info</source>
-        <translation>Mostra/edita l&apos;Info del contatto</translation>
+        <translation>Mostra/modifica Info del contatto</translation>
     </message>
     <message>
         <source>Send SMS</source>
@@ -1327,11 +1327,11 @@ La vostra password è errata!!!</translation>
     </message>
     <message>
         <source>View history</source>
-        <translation>Vedi Cronologia</translation>
+        <translation>Visualizza Cronologia</translation>
     </message>
     <message>
         <source>Lookup in directory</source>
-        <translation>Cerca nell catalogo</translation>
+        <translation>Cerca nell&apos;Indice</translation>
     </message>
     <message>
         <source>Show / hide inactive users</source>
@@ -1383,7 +1383,7 @@ La vostra password è errata!!!</translation>
     </message>
     <message>
         <source>Your public key has been sent</source>
-        <translation>La vostra chiave pubblica è stata trasmessa</translation>
+        <translation>La tua chiave pubblica è stata trasmessa</translation>
     </message>
     <message>
         <source>OK</source>
@@ -1404,12 +1404,12 @@ La vostra password è errata!!!</translation>
     <message>
         <source>Couldn&apos;t create DCC socket.
 Direct connections disabled.</source>
-        <translation>Impossibile creare socket della DCC.
-Collegamenti diretti disabilitati.</translation>
+        <translation>Impossibile creare socket DCC.
+Connessioni dirette disabilitate.</translation>
     </message>
     <message>
         <source>Open chat window</source>
-        <translation>Apri la finestra di Chat</translation>
+        <translation>Apri finestra di Chat</translation>
     </message>
     <message>
         <source>Send my public key</source>
@@ -1441,13 +1441,13 @@ Collegamenti diretti disabilitati.</translation>
     </message>
     <message>
         <source>Connection problem</source>
-        <translation>Problema del collegamento</translation>
+        <translation>Problema di collegamento</translation>
     </message>
     <message>
         <source>Couldn&apos;t connect.
 Check your internet connection.</source>
         <translation>Problemi di collegamento con GG.
-Controlli collegamenti  Internet.</translation>
+Controllare connessione a Internet.</translation>
     </message>
     <message>
         <source>Information</source>
@@ -1475,7 +1475,7 @@ Controlli collegamenti  Internet.</translation>
     </message>
     <message>
         <source>Manage &amp;ignored</source>
-        <translation>Gestione &amp;ignorati</translation>
+        <translation>Gestione contatti &amp;ignorati</translation>
     </message>
     <message>
         <source>&amp;Configuration</source>
@@ -1499,7 +1499,7 @@ Controlli collegamenti  Internet.</translation>
     </message>
     <message>
         <source>Personal information</source>
-        <translation>Le informazioni personali</translation>
+        <translation>Informazioni personali</translation>
     </message>
     <message>
         <source>&amp;Search for users</source>
@@ -1507,15 +1507,15 @@ Controlli collegamenti  Internet.</translation>
     </message>
     <message>
         <source>I&amp;mport userlist</source>
-        <translation>&amp;Importazione lista dei contatti</translation>
+        <translation>&amp;Importa lista dei contatti</translation>
     </message>
     <message>
         <source>E&amp;xport userlist</source>
-        <translation>E&amp;sportazione lista dei contatti</translation>
+        <translation>E&amp;sporta lista dei contatti</translation>
     </message>
     <message>
         <source>&amp;Add user</source>
-        <translation>&amp;Aggiungi il contatto</translation>
+        <translation>&amp;Aggiungi un contatto</translation>
     </message>
     <message>
         <source>H&amp;elp</source>
@@ -1595,7 +1595,7 @@ Controlli collegamenti  Internet.</translation>
     </message>
     <message>
         <source>Nickname</source>
-        <translation>Sopranome(NICK)</translation>
+        <translation>Sopranome (Nick)</translation>
     </message>
     <message>
         <source>Name</source>
@@ -1684,7 +1684,7 @@ Il vecchio file, se esiste, sarà sovrascritto</translation>
     </message>
     <message>
         <source>Please fill out all fields</source>
-        <translation>Compili prego tutti i campi</translation>
+        <translation>Compilare tutti i campi</translation>
     </message>
     <message>
         <source>Error</source>
@@ -1704,7 +1704,7 @@ Store it in a safe place along with the password.
 Now add your friends to the userlist.</source>
         <translation>La registrazione riuscita. Il vostro nuovo numero è %1.
 Conservilo insieme con la password in un luogo sicuro
-Ora è possibile aggiungere i vostri amici al lista dei contatti.</translation>
+Ora è possibile aggiungere i vostri amici alla lista dei contatti.</translation>
     </message>
 </context>
 <context>
@@ -1715,7 +1715,7 @@ Ora è possibile aggiungere i vostri amici al lista dei contatti.</translation>
     </message>
     <message>
         <source>User %1 is sending you his public key. Do you want to save it?</source>
-        <translation>L&apos;utente %1 sta trasmettendovi la sua chiave pubblica. Desiderate conservarla?</translation>
+        <translation>L&apos;utente %1 sta trasmettendo la sua chiave pubblica. Desideri conservarla?</translation>
     </message>
     <message>
         <source>Yes</source>
@@ -1746,7 +1746,7 @@ Ora è possibile aggiungere i vostri amici al lista dei contatti.</translation>
     </message>
     <message>
         <source>&amp;Next results</source>
-        <translation>Risultati &amp;seguenti </translation>
+        <translation>Risultati &amp;successivi </translation>
     </message>
     <message>
         <source>C&amp;lear list</source>
@@ -1758,7 +1758,7 @@ Ora è possibile aggiungere i vostri amici al lista dei contatti.</translation>
     </message>
     <message>
         <source>Nickname</source>
-        <translation>Sopranome(Nick)</translation>
+        <translation>Sopranome (Nick)</translation>
     </message>
     <message>
         <source>Name</source>
@@ -1856,6 +1856,10 @@ Ora è possibile aggiungere i vostri amici al lista dei contatti.</translation>
         <source>Select user first</source>
         <translation>Prima scegli l&apos;utente</translation>
     </message>
+    <message>
+        <source> </source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Sms</name>
@@ -1881,7 +1885,7 @@ Ora è possibile aggiungere i vostri amici al lista dei contatti.</translation>
     </message>
     <message>
         <source>Could not spawn child process. Check if the program is functional</source>
-        <translation>Problemi con lancio del programa SMS. Controlli se il programma è funzionante </translation>
+        <translation>Problemi in avvio del programa SMS.  Verificare corretta funzionalità del programma</translation>
     </message>
     <message>
         <source>SMS sent</source>
@@ -1901,7 +1905,7 @@ Ora è possibile aggiungere i vostri amici al lista dei contatti.</translation>
     </message>
     <message>
         <source>The SMS was sent and should be on its way</source>
-        <translation>Lo SMS è stato trasmesso e dovrebbe essere in viaggio</translation>
+        <translation>Il SMS è stato trasmesso e dovrebbe essere in viaggio</translation>
     </message>
     <message>
         <source>Contact</source>
@@ -1916,7 +1920,7 @@ Ora è possibile aggiungere i vostri amici al lista dei contatti.</translation>
     <name>SmsEraGateway</name>
     <message>
         <source>Provider gateway results page looks strange. SMS was probably NOT sent.</source>
-        <translation>La pagina dei risultati del Gateway di operatore GSM sembra sconosciuta. SMS probabilmente NON è stato trasmesso.</translation>
+        <translation>La pagina dei risultati del Gateway dell&apos;operatore GSM sembra sconosciuta. SMS probabilmente NON trasmesso.</translation>
     </message>
     <message>
         <source>Error: </source>
@@ -1976,7 +1980,7 @@ Probabilmente è temporaneamente disabilitata, o sono state cambiate le regole a
     </message>
     <message>
         <source>You exceeded your daily limit</source>
-        <translation>Avete superato il vostro limite quotidiano dei SMS</translation>
+        <translation>Avete superato il vostro limite quotidiano di SMS inviati</translation>
     </message>
     <message>
         <source>Text from the picture is incorrect</source>
@@ -1988,7 +1992,7 @@ Probabilmente è temporaneamente disabilitata, o sono state cambiate le regole a
     </message>
     <message>
         <source>Provider gateway results page looks strange. SMS was probably NOT sent.</source>
-        <translation>La pagina dei risultati del Gateway del operatore GSM sembra sconosciuta. SMS probabilmente NON è stato trasmesso.</translation>
+        <translation>La pagina dei risultati del Gateway dell&apos;operatore GSM sembra sconosciuta. SMS probabilmente NON trasmesso.</translation>
     </message>
 </context>
 <context>
@@ -2008,7 +2012,7 @@ Probabilmente è temporaneamente disattivata, o sono state cambiate le reole acc
     </message>
     <message>
         <source>Provider gateway results page looks strange. SMS was probably NOT sent.</source>
-        <translation>La pagina di risultati del Gateway del operatore GSM sembra sconosciuta. SMS probabilmente NON è stato trasmesso.</translation>
+        <translation>La pagina di risultati del Gateway del operatore GSM sembra sconosciuta. SMS probabilmente NON trasmesso.</translation>
     </message>
 </context>
 <context>
@@ -2026,7 +2030,7 @@ Probabilmente è temporaneamente disattivata, o sono state cambiate le reole acc
     </message>
     <message>
         <source>and type here</source>
-        <translation>e risscriva lo qui</translation>
+        <translation>e risscrivilo qui</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -2067,7 +2071,7 @@ Click dx - cambia status</translation>
     </message>
     <message>
         <source>Please fill out all fields</source>
-        <translation>Compili prego tutti i campi</translation>
+        <translation>Compilare tutti i campi</translation>
     </message>
     <message>
         <source>OK</source>
@@ -2149,7 +2153,7 @@ Click dx - cambia status</translation>
     </message>
     <message>
         <source>Desc. background color</source>
-        <translation>Colore sfondo di descrizione</translation>
+        <translation>Colore sfondo della descrizione</translation>
     </message>
     <message>
         <source>Font in userbox window</source>
@@ -2180,11 +2184,11 @@ Click dx - cambia status</translation>
     </message>
     <message>
         <source>Nickname</source>
-        <translation>Soprannome(Nick)</translation>
+        <translation>Soprannome (Nick)</translation>
     </message>
     <message>
         <source>AltNick</source>
-        <translation>Visualizzato</translation>
+        <translation>Nick Visualizzato</translation>
     </message>
     <message>
         <source>First name</source>
@@ -2212,7 +2216,7 @@ Click dx - cambia status</translation>
     </message>
     <message>
         <source>Protocol version</source>
-        <translation>Versione di protocollo</translation>
+        <translation>Versione protocollo</translation>
     </message>
     <message>
         <source>DNS name</source>
@@ -2288,7 +2292,7 @@ Click dx - cambia status</translation>
     </message>
     <message>
         <source>User is already in userlist</source>
-        <translation>Contatto è già nella lista contatti</translation>
+        <translation>Il Contatto è già nella lista contatti</translation>
     </message>
     <message>
         <source>Add user</source>
@@ -2308,7 +2312,7 @@ Click dx - cambia status</translation>
     </message>
     <message>
         <source>Altnick field cannot be empty.</source>
-        <translation>Il campo di visualizza non può essere vuoto.</translation>
+        <translation>Il campo Nick Visualizzato non può essere vuoto.</translation>
     </message>
 </context>
 <context>
@@ -2329,7 +2333,7 @@ Click dx - cambia status</translation>
     <name>UserlistExport</name>
     <message>
         <source>%1 entries will be exported</source>
-        <translation>%1 contatti sarà esportato</translation>
+        <translation>%1 contatti sarnno esportati</translation>
     </message>
     <message>
         <source>&amp;Send userlist</source>
@@ -2359,7 +2363,7 @@ Click dx - cambia status</translation>
         <source>The application encountered an internal error
 The export was unsuccessful</source>
         <translation>L&apos;applicazione ha incontrato un errore interno
-L&apos;esportazione fallita</translation>
+L&apos;esportazione è fallita</translation>
     </message>
     <message>
         <source>Export completed</source>
@@ -2379,7 +2383,7 @@ Salvataggio lista contatti fallito</translation>
         <source>The application encountered an internal error
 The delete userlist on server was unsuccessful</source>
         <translation>L&apos;applicazione ha generato un errore interno
-La cancellazione della lista contatti su server GG fallita</translation>
+Cancellazione lista contatti su server GG fallita</translation>
     </message>
     <message>
         <source>Your userlist has been successfully exported to server</source>
@@ -2406,11 +2410,11 @@ La cancellazione della lista contatti su server GG fallita</translation>
     </message>
     <message>
         <source>Nickname</source>
-        <translation>Sopranome(Nick)</translation>
+        <translation>Sopranome (Nick)</translation>
     </message>
     <message>
         <source>Disp. nick</source>
-        <translation>Visualizza</translation>
+        <translation>Visualizza Nick</translation>
     </message>
     <message>
         <source>Name</source>
@@ -2434,7 +2438,7 @@ La cancellazione della lista contatti su server GG fallita</translation>
     </message>
     <message>
         <source>Import userlist</source>
-        <translation>importazione della lista dei contatti</translation>
+        <translation>importa lista contatti</translation>
     </message>
     <message>
         <source>Import error</source>
@@ -2444,13 +2448,13 @@ La cancellazione della lista contatti su server GG fallita</translation>
         <source>The application encountered an internal error
 The import userlist from file was unsuccessful</source>
         <translation>L&apos;applicazione ha generatoun errore interno
-L&apos;importazione della lista contatti fallita</translation>
+L&apos;importazione della lista contatti è fallita</translation>
     </message>
     <message>
         <source>The application encountered an internal error
 The import was unsuccessful</source>
         <translation>L&apos;applicazione ha generato un errore interno
-L&apos;importazione fallita</translation>
+L&apos;importazione è fallita</translation>
     </message>
     <message>
         <source>&amp;Merge results</source>
@@ -2485,7 +2489,7 @@ L&apos;importazione fallita</translation>
     </message>
     <message>
         <source>Change password/email</source>
-        <translation>Cambi la password/email</translation>
+        <translation>Cambia la password/email</translation>
     </message>
 </context>
 <context>
