@@ -579,6 +579,11 @@ void GaduSocketNotifiers::dataSent()
 {
 	kdebugf();
 
+	if (Sess==NULL)
+		kdebugm(KDEBUG_PANIC, "Sess == NULL !!\n");
+	if (Snw==NULL)
+		kdebugm(KDEBUG_PANIC, "Snw == NULL !!\n");
+
 	Snw->setEnabled(false);
 	if (Sess->check & GG_CHECK_WRITE)
 		socketEvent();
@@ -2376,12 +2381,13 @@ void GaduStatus::operator = (const UserStatus &copyMe)
 	setStatus(copyMe);
 }
 
-QPixmap GaduStatus::pixmap(eUserStatus stat, bool hasDescription, bool mobile) const
+QPixmap GaduStatus::pixmap(eUserStatus stat, bool hasDescription, bool mobile, bool big) const
 {
 //	kdebugf();
 
 	QString add = (hasDescription ? "WithDescription" : "");
 	add.append(mobile ? (!hasDescription) ? "WithMobile" : "Mobile" : "");
+	add.append(big ? "Big" : "");
 
 	switch (stat)
 	{
