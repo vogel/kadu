@@ -760,16 +760,11 @@ void Chat::pageDown() {
 
 void Chat::insertImage()
 {
-	QFileDialog* fd = new QFileDialog(this,"insert image dialog",true);
-//	PixmapPreview* pp = new PixmapPreview();
-	fd->setCaption(tr("Insert image"));
-	fd->setFilter(tr("Images")+" (*.png *.PNG *.jpg *.JPG *.gif *.GIF *.bmp *.BMP)");
-//	fd->setContentsPreviewEnabled(true);
-//	fd->setContentsPreview(pp, pp);
-//	fd->setPreviewMode(QFileDialog::Contents);
-	if(fd->exec() == QDialog::Accepted)
-		edit->insert(QString("[IMAGE ")+fd->selectedFile()+"]");
-	delete fd;
+	ImageDialog* id = new ImageDialog(this);
+	id->setCaption(tr("Insert image"));
+	if(id->exec() == QDialog::Accepted)
+		edit->insert(QString("[IMAGE ")+id->selectedFile()+"]");
+	delete id;
 	edit->setFocus();
 }
 

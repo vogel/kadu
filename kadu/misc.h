@@ -414,12 +414,15 @@ extern GaduImagesManager gadu_images_manager;
 
 class PixmapPreview : public QLabel, public QFilePreview
 {
-	protected:
-		virtual QSize minimumSizeHint();
-		virtual QSize sizeHint();
 	public:
 		PixmapPreview();
 		void previewUrl(const QUrl& url);
+};
+
+class ImageDialog : public QFileDialog
+{
+	public:
+		ImageDialog(QWidget* parent);
 };
 
 #endif

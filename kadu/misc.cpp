@@ -2112,11 +2112,6 @@ GaduImagesManager gadu_images_manager;
 
 PixmapPreview::PixmapPreview() : QLabel(NULL)
 {
-	setFrameStyle(QFrame::Raised|QFrame::Box);
-	setLineWidth(1);
-	setMidLineWidth(1);
-	setFixedSize(120,75);
-	setScaledContents(true);
 }
 
 void PixmapPreview::previewUrl(const QUrl& url)
@@ -2126,16 +2121,22 @@ void PixmapPreview::previewUrl(const QUrl& url)
 	if (pix.isNull())
 		setText(tr("This is not an image"));
 	else
+	{
+		QWMatrix mx;
+		mx.scale(
+			double(width())/double(pix.width()),
+			double(height())/double(pix.height()));
+		pix = pix.xForm(mx);
 		setPixmap(pix);
-	resize(120,75); 
+	}
 }
 
-QSize PixmapPreview::minimumSizeHint()
+ImageDialog::ImageDialog(QWidget* parent)
+	: QFileDialog(parent,"image dialog",true)
 {
-	return QSize(120,75);
-}
-
-QSize PixmapPreview::sizeHint()
-{
-	return QSize(120,75);
+	PixmapPreview* pp = new PixmapPreview();
+	setFilter(tr("Images")+" (*.png *.PNG *.jpg *.JPG *.gif *.GIF *.bmp *.BMP)");
+	setContentsPreviewEnabled(true);
+	setContentsPreview(pp, pp);
+	setPreviewMode(QFileDialog::Contents);
 }

@@ -82,6 +82,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   metoda wrn() i msg() jako drugi argument przyjmuje bool modal=false. 
   Swoj± drog± w kodzie przyda³oby siê poprzerabiaæ wszystkie QMessageBox
   na wrn(), msg() lub ask()... (tomee)
+* nowe okienko wyboru obrazka do wys³ania z podgl±dem (adrian)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
