@@ -457,9 +457,6 @@ void UserInfo::changeUserData(UserListElement& e)
 	if (e.uin() == puser->uin())
 		e.status().setStatus(puser->status());
 	e.setMaxImageSize(puser->maxImageSize());
-	e.setNotify(c_notify->isChecked());
-	e.setOfflineTo(c_offtouser->isChecked());
-	e.setBlocking(c_blocking->isChecked());
 
 	userlist.changeUserInfo(puser->altNick(), e);
 	userlist.writeToFile();
@@ -495,6 +492,10 @@ void UserInfo::updateUserlist()
 	e.setGroup(l.join(","));
 
 	e.setEmail(e_email->text());
+	e.setNotify(c_notify->isChecked());
+	e.setOfflineTo(c_offtouser->isChecked());
+	e.setBlocking(c_blocking->isChecked());
+
 	if (addUser)
 		addNewUser(e);
 	else

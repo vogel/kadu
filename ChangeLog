@@ -286,7 +286,10 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * libgadu: b³êdnie liczone sumy kontrolne obrazków (joi)
 * libgadu: wysy³anie du¿ych pakietów nie "zawiesza" po³±czenia - obrazki 
   powinny ju¿ zawsze dochodziæ (joi)
-* prze³±czanie focusu w oknie chat jednak wy³±czone - czasem powodowa³o to problemy (joi)
+* prze³±czanie focusu w oknie chat jednak wy³±czone - czasem
+  powodowa³o to problemy (joi)
+* podczas dodawania kontaktu brane s± pod uwagê ustawienia
+  w zak³adce "inne" (adrian)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
