@@ -6,7 +6,10 @@ about.cpp about.h \
 adduser.cpp adduser.h \
 chat.cpp chat.h \
 config.cpp config.h \
+config_file.cpp config_file.h \
 dcc.cpp dcc.h \
+dock_widget.cpp dock_widget.h \
+emoticons.cpp emoticons.h \
 events.cpp events.h \
 expimp.cpp expimp.h \
 history.cpp history.h \
@@ -16,21 +19,19 @@ main.cpp \
 message.cpp message.h \
 misc.cpp misc.h \
 network.cpp \
+password.cpp password.h \
 pending_msgs.cpp pending_msgs.h \
 personal_info.cpp personal_info.h \
 pixmaps.h \
 register.cpp register.h \
 search.cpp search.h \
 sms.cpp sms.h \
+status.cpp status.h \
 userbox.cpp userbox.h \
 userinfo.cpp userinfo.h \
 userlist.cpp userlist.h \
 vuser.cpp vuser.h \
-dock_widget.cpp dock_widget.h \
-emoticons.cpp emoticons.h \
-status.cpp status.h \
-updates.cpp updates.h \
-password.cpp password.h
+updates.cpp updates.h
 
 EXTRA_kadu_SOURCES = simlite.c simlite.h
 
