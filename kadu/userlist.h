@@ -260,8 +260,15 @@ class UserList : public QObject, public QMap<QString,UserListElement>
 			Sygna³ przekazuje równie¿ informacjê o tym, ¿e nowy
 			kontakt pojawi³ siê na li¶cie (wtedy oldData == NULL)
 			lub ¿e zosta³ z listy usuniêty (wtedy newData = NULL).
+			je¿eli ta zmiana jest czê¶ci± czego¶ wiêkszego, to massively == true
+			i emitowany jest sygna³ allNewContacts
 		**/
-		void userDataChanged(const UserListElement* const oldData, const UserListElement* const newData);
+		void userDataChanged(const UserListElement* const oldData, const UserListElement* const newData, bool massively = false);
+
+		/**
+			zupe³nie nowa lista kontaktów
+		**/
+		void allNewContacts(const UserList &ulist);
 };
 
 extern UserList userlist;

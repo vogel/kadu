@@ -471,8 +471,10 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	if ( configTab >= 0 && configTab < GroupBar -> count() )
 		((QTabBar*) GroupBar) -> setCurrentTab( configTab );
 
-	connect(&userlist, SIGNAL(userDataChanged(const UserListElement * const, const UserListElement * const)),
-		gadu, SLOT(userDataChanged(const UserListElement * const, const UserListElement * const)));
+	connect(&userlist, SIGNAL(userDataChanged(const UserListElement * const, const UserListElement * const, bool)),
+		gadu, SLOT(userDataChanged(const UserListElement * const, const UserListElement * const, bool)));
+	connect(&userlist, SIGNAL(allNewContacts(const UserList &)),
+		gadu, SLOT(sendUserList(const UserList &)));
 
 	connect(gadu, SIGNAL(chatMsgReceived2(UinsList, const QString &, time_t)),
 		this, SLOT(chatMsgReceived(UinsList, const QString &, time_t)));

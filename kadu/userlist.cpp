@@ -797,17 +797,18 @@ UserList& UserList::operator=(const UserList& userlist)
 	return *this;
 }
 
-void UserList::merge(const UserList &userlist)
+void UserList::merge(const UserList &ulist)
 {
 	kdebugf();
 	UserListElement e(this);
+	UserStatus status;
 
 	FOREACH(i, *this)
 		emit userDataChanged(&(i.data()), NULL);
 
-	for (ConstIterator i = userlist.begin(); i != userlist.end(); ++i)
+	FOREACH(i, ulist)
 	{
-		Iterator j=begin();
+		Iterator j = begin();
 		if ((*i).uin())
 			while (j != end() && (*j).uin() != (*i).uin())
 				++j;
@@ -816,14 +817,23 @@ void UserList::merge(const UserList &userlist)
 				++j;
 
 		if (j != end())
+		{
+			status = (*j).status();
 			remove((*j).altNick().lower());
+		}
+		else
+			status = UserStatus();
 
-		e = *i; // to jest na pewno potrzebne ?? //j:wydaje siê ¿e tak, ¿eby pole Parent dobrze wskazywa³o
+		e = *i;
+		e.status() = status;
+		e.Parent = this;//!!! bez tej linii niez³a jazda jest...
 		insert(e.altNick().lower(), e);
 	}
 
+	emit allNewContacts(*this);
+
 	FOREACH(i, *this)
-		emit userDataChanged(NULL, &(i.data()));
+		emit userDataChanged(NULL, &(i.data()), true);
 
 	emit modified();
 	kdebugf2();

@@ -990,6 +990,12 @@ class GaduProtocol : public QObject
 		void sendUserList();
 
 		/**
+			wysy³a wskazan± listê u¿ytkowników na serwer
+			@see sendUserList
+		**/
+		void sendUserList(const UserList &ulist);
+
+		/**
 			Szuka ludzi w katalogu publicznym. Wyniki przychodz± za pomoca sygna³u newSearchResults.
 
 			@param searchRecord dane do szukania
@@ -1066,7 +1072,7 @@ class GaduProtocol : public QObject
 		void useTlsEnabled(bool value);
 
 		/**
-			Sygna³ wywo³ywany, gdy zmieni³y siê dane kontaktu. Umo¿liwia poinformowanie serwera
+			Slot wywo³ywany, gdy zmieni³y siê dane kontaktu. Umo¿liwia poinformowanie serwera
 			o zmianie naszych zaleceñ co do obs³ugi wiadomo¶ci od kontaktu.
 
 			Przyk³ady:
@@ -1102,8 +1108,11 @@ class GaduProtocol : public QObject
 
 			@param oldData wska¼nik do starych danych kontatku
 			@param newData wska¼nik do nowych danych konaktu
+			@param massively je¿eli == true, to ta zmiana danych jest czê¶ci± wiêkszych zmian,
+			       wiêc nie nale¿y nic z nimi robiæ, wkrótce (albo ju¿ to zosta³o zrobione)
+				   ca³a lista zostanie wys³ana w jednej paczce
 		**/
-		void userDataChanged(const UserListElement* const oldData, const UserListElement* const newData);
+		void userDataChanged(const UserListElement* const oldData, const UserListElement* const newData, bool massively = false);
 
 	signals:
 		/**

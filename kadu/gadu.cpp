@@ -1010,9 +1010,16 @@ void GaduProtocol::iWantGoOffline(const QString &desc)
 	kdebugf2();
 }
 
-void GaduProtocol::userDataChanged(const UserListElement* const oldData, const UserListElement* const newData)
+void GaduProtocol::userDataChanged(const UserListElement* const oldData, const UserListElement* const newData, bool massively)
 {
 	kdebugf();
+	/*
+	   je¿eli listê kontaktów bêdziemy wysy³aæ po kawa³ku, to serwer zgubi czê¶æ danych!
+	   musimy wiêc wys³aæ j± w ca³o¶ci (poprzez sendUserList())
+	   w takim w³a¶nie przypadku (massively==true) nie robimy nic
+	*/
+	if (massively)
+		return;
 
 	// nic
 	if (CurrentStatus->isOffline())
@@ -1623,6 +1630,11 @@ void GaduProtocol::ackReceived(int seq, uin_t uin, int status)
 
 void GaduProtocol::sendUserList()
 {
+	sendUserList(userlist);
+}
+
+void GaduProtocol::sendUserList(const UserList &ulist)
+{
 	kdebugf();
 	UinType *uins;
 	char *types;
@@ -1630,7 +1642,7 @@ void GaduProtocol::sendUserList()
 	UserListSent = true;
 
 	unsigned int j = 0;
-	for (UserList::ConstIterator i = userlist.begin(); i != userlist.end(); ++i)
+	for (UserList::ConstIterator i = ulist.begin(); i != ulist.end(); ++i)
 		if ((*i).uin())
 			++j;
 
@@ -1645,7 +1657,7 @@ void GaduProtocol::sendUserList()
 	types = (char *) malloc(j * sizeof(char));
 
 	j = 0;
-	for (UserList::ConstIterator i = userlist.begin(); i != userlist.end(); ++i)
+	for (UserList::ConstIterator i = ulist.begin(); i != ulist.end(); ++i)
 		if ((*i).uin() && !(*i).isAnonymous())
 		{
 			uins[j] = (*i).uin();
