@@ -529,7 +529,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	descrtb = new QTextBrowser(centralFrame, "descrtb");
 	descrtb->setFrameStyle(QFrame::NoFrame);
-	descrtb->setFixedHeight(int(1.5*QFontMetrics(descrtb->currentFont()).height()));
+	descrtb->setFixedHeight(int(1.5*QFontMetrics(descrtb->font()).height()));
 	descrtb->setTextFormat(Qt::RichText);
 	descrtb->setAlignment(Qt::AlignVCenter | Qt::WordBreak | Qt::DontClip);
 	descrtb->setVScrollBarMode(QScrollView::AlwaysOff);
