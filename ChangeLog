@@ -388,8 +388,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * test kodowania/dekodowania gsm w module rozmów g³osowych (adrian)
 * mo¿liwo¶æ w³±czenia trybu odtwarzania próbek zapewniaj±cego bardziej
   "p³ynne" ich ³±czenie - metoda setFlushingEnabled() (adrian)
-* dodano wersje francuska atorstwa Miroslawa Jerzewskiego
-* ³atka dorregaraya dotycz±ca przemieszczania ikonki w desktop_docking (adrian)
+* dodano wersjê francusk± autorstwa Miros³awa Jerzewskiego
+* ³atka Dorregaraya dotycz±ca przemieszczania ikonki w desktop_docking (adrian)
+* libgadu: poprawki w obs³udze proxy (pobrane z cvsu libgadu) (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
