@@ -24,12 +24,10 @@ class IconSelector;
 
 class CustomInput;
 
-class Chat : public QDialog {
+class Chat : public QWidget {
 	Q_OBJECT
 		int index;
 		int totaloccurences;
-		QString nick;
-		QDialog *chatdlg;
 		UinsList uins;
 		IconSelector *iconsel_ptr;
 		QPushButton *iconsel;
@@ -43,7 +41,7 @@ class Chat : public QDialog {
 		void pruneWindow(void);
 
 	public:
-		Chat(UinsList uins, QWidget *parent = 0);
+		Chat(UinsList uins, QWidget *parent = 0, const char *name = 0);
 		~Chat();
 		void setTitle(void);
 		void formatMessage(bool, QString &, QString &, const char *, QString &);

@@ -26,16 +26,16 @@
 #include "emoticons.h"
 //
 
-Chat::Chat(UinsList uins, QWidget *parent)
- : QDialog(parent, 0, FALSE, Qt::WDestructiveClose), uins(uins) {
+Chat::Chat(UinsList uins, QWidget *parent, const char *name)
+ : QWidget(parent, name, Qt::WDestructiveClose), uins(uins) {
 	int i;
 	struct chats chat;
 
 	iconsel_ptr = NULL;
 	autosend_enabled = false;
 
-  title_timer = new QTimer(this);
-  connect(title_timer,SIGNAL(timeout()),this,SLOT(changeTitle()));
+	title_timer = new QTimer(this);
+	connect(title_timer,SIGNAL(timeout()),this,SLOT(changeTitle()));
   
 	/* register us in the chats registry... */
 	chat.uins = uins;
@@ -130,7 +130,7 @@ Chat::Chat(UinsList uins, QWidget *parent)
 	connect(clearchat, SIGNAL(clicked()), this, SLOT(clearChatWindow()));
 
 	QGridLayout *grid = new QGridLayout (this, 5, 4, 3, 3);
-	QHBoxLayout *subgrid = new QHBoxLayout(grid);
+	QHBoxLayout *subgrid = new QHBoxLayout();
 	subgrid->addWidget(body, 3);
 	if (userbox)
 		subgrid->addWidget(userbox, 1);
@@ -237,7 +237,7 @@ void Chat::keyPressEvent(QKeyEvent *e) {
 	if (e->key() == Key_F9) {
 		clearChatWindow();
 	}
-	QDialog::keyPressEvent(e);
+	QWidget::keyPressEvent(e);
 }
 
 /* register/unregister sending with Return key */
