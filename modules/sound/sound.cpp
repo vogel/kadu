@@ -22,7 +22,7 @@
 #include "../notify/notify.h"
 
 SoundManager* sound_manager=NULL;
-SoundSlots* soundslots;
+SoundSlots* sound_slots;
 
 extern "C" int sound_init()
 {
@@ -78,16 +78,16 @@ SoundManager::SoundManager(const QString& name, const QString& configname)
 	ConfigDialog::addPushButton("Sounds", "util_box", QT_TRANSLATE_NOOP("@default","Test"));
 	
 	sound_manager=this;
-	soundslots= new SoundSlots();
+	sound_slots= new SoundSlots(NULL, "sound_slots");
 
-	ConfigDialog::registerSlotOnCreate(soundslots, SLOT(onCreateConfigDialog()));
-	ConfigDialog::registerSlotOnApply(soundslots, SLOT(onApplyConfigDialog()));
-	ConfigDialog::connectSlot("Sounds", "Play sounds", SIGNAL(toggled(bool)), soundslots, SLOT(soundPlayer(bool)));
-	ConfigDialog::connectSlot("Sounds", "Choose", SIGNAL(clicked()), soundslots, SLOT(chooseSoundFile()));
-	ConfigDialog::connectSlot("Sounds", "Clear", SIGNAL(clicked()), soundslots, SLOT(clearSoundFile()));
-	ConfigDialog::connectSlot("Sounds", "Test", SIGNAL(clicked()), soundslots, SLOT(testSoundFile()));
-	ConfigDialog::connectSlot("Sounds", "Sound theme", SIGNAL(activated(const QString&)), soundslots, SLOT(chooseSoundTheme(const QString&)));
-	ConfigDialog::connectSlot("Sounds", "Sound paths", SIGNAL(changed(const QStringList&)), soundslots, SLOT(selectedPaths(const QStringList&)));
+	ConfigDialog::registerSlotOnCreate(sound_slots, SLOT(onCreateConfigDialog()));
+	ConfigDialog::registerSlotOnApply(sound_slots, SLOT(onApplyConfigDialog()));
+	ConfigDialog::connectSlot("Sounds", "Play sounds", SIGNAL(toggled(bool)), sound_slots, SLOT(soundPlayer(bool)));
+	ConfigDialog::connectSlot("Sounds", "Choose", SIGNAL(clicked()), sound_slots, SLOT(chooseSoundFile()));
+	ConfigDialog::connectSlot("Sounds", "Clear", SIGNAL(clicked()), sound_slots, SLOT(clearSoundFile()));
+	ConfigDialog::connectSlot("Sounds", "Test", SIGNAL(clicked()), sound_slots, SLOT(testSoundFile()));
+	ConfigDialog::connectSlot("Sounds", "Sound theme", SIGNAL(activated(const QString&)), sound_slots, SLOT(chooseSoundTheme(const QString&)));
+	ConfigDialog::connectSlot("Sounds", "Sound paths", SIGNAL(changed(const QStringList&)), sound_slots, SLOT(selectedPaths(const QStringList&)));
 	
 	config_file.addVariable("Sounds", "SoundTheme", "default");
 	config_file.addVariable("Sounds", "SoundPaths","");
@@ -117,17 +117,17 @@ SoundManager::SoundManager(const QString& name, const QString& configname)
 
 SoundManager::~SoundManager()
 {
-	ConfigDialog::unregisterSlotOnCreate(soundslots, SLOT(onCreateConfigDialog()));
-	ConfigDialog::unregisterSlotOnApply(soundslots, SLOT(onApplyConfigDialog()));
-	ConfigDialog::disconnectSlot("Sounds", "Play sounds", SIGNAL(toggled(bool)), soundslots, SLOT(soundPlayer(bool)));
-	ConfigDialog::disconnectSlot("Sounds", "Choose", SIGNAL(clicked()), soundslots, SLOT(chooseSoundFile()));
-	ConfigDialog::disconnectSlot("Sounds", "Clear", SIGNAL(clicked()), soundslots, SLOT(clearSoundFile()));
-	ConfigDialog::disconnectSlot("Sounds", "Test", SIGNAL(clicked()), soundslots, SLOT(testSoundFile()));
-	ConfigDialog::disconnectSlot("Sounds", "Sound theme", SIGNAL(activated(const QString&)), soundslots, SLOT(chooseSoundTheme(const QString&)));
-	ConfigDialog::disconnectSlot("Sounds", "Sound paths", SIGNAL(changed(const QStringList&)), soundslots, SLOT(selectedPaths(const QStringList&)));
+	ConfigDialog::unregisterSlotOnCreate(sound_slots, SLOT(onCreateConfigDialog()));
+	ConfigDialog::unregisterSlotOnApply(sound_slots, SLOT(onApplyConfigDialog()));
+	ConfigDialog::disconnectSlot("Sounds", "Play sounds", SIGNAL(toggled(bool)), sound_slots, SLOT(soundPlayer(bool)));
+	ConfigDialog::disconnectSlot("Sounds", "Choose", SIGNAL(clicked()), sound_slots, SLOT(chooseSoundFile()));
+	ConfigDialog::disconnectSlot("Sounds", "Clear", SIGNAL(clicked()), sound_slots, SLOT(clearSoundFile()));
+	ConfigDialog::disconnectSlot("Sounds", "Test", SIGNAL(clicked()), sound_slots, SLOT(testSoundFile()));
+	ConfigDialog::disconnectSlot("Sounds", "Sound theme", SIGNAL(activated(const QString&)), sound_slots, SLOT(chooseSoundTheme(const QString&)));
+	ConfigDialog::disconnectSlot("Sounds", "Sound paths", SIGNAL(changed(const QStringList&)), sound_slots, SLOT(selectedPaths(const QStringList&)));
 
-	delete soundslots;
-	soundslots=NULL;
+	delete sound_slots;
+	sound_slots=NULL;
 
 	ConfigDialog::removeControl("Sounds", "Test");
 	ConfigDialog::removeControl("Sounds", "Clear");
@@ -385,7 +385,7 @@ int SoundManager::timeAfterLastSound()
 	return lastsoundtime.elapsed();
 }
 
-SoundSlots::SoundSlots() : QObject(NULL, "sound_slots")
+SoundSlots::SoundSlots(QObject *parent, const char *name) : QObject(parent, name)
 {
 	kdebugf();
 

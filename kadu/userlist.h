@@ -32,7 +32,7 @@ class DnsHandler : public QObject
 		void resultsReady();
 };
 
-struct UserListElement
+class UserListElement
 {
 	private:
 		QString Group;

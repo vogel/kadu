@@ -16,9 +16,9 @@
 extern "C" int desktop_docking_init()
 {
 	kdebugf();
-	DesktopDockObj=new DesktopDockWindow();
-	ConfigDialog::registerSlotOnApply(DesktopDockObj, SLOT(ApplyConfig()));
-	ConfigDialog::registerSlotOnCreate(DesktopDockObj, SLOT(onCreateConfigDialog()));
+	desktop_dock_window=new DesktopDockWindow(NULL, "desktop_dock_window");
+	ConfigDialog::registerSlotOnApply(desktop_dock_window, SLOT(ApplyConfig()));
+	ConfigDialog::registerSlotOnCreate(desktop_dock_window, SLOT(onCreateConfigDialog()));
 
 	kdebugf2();
 	return 0;
@@ -27,16 +27,16 @@ extern "C" int desktop_docking_init()
 extern "C" void desktop_docking_close()
 {
 	kdebugf();
-	ConfigDialog::unregisterSlotOnApply(DesktopDockObj, SLOT(ApplyConfig()));
-	ConfigDialog::unregisterSlotOnCreate(DesktopDockObj, SLOT(onCreateConfigDialog()));
-	delete DesktopDockObj;
-	DesktopDockObj=NULL;
+	ConfigDialog::unregisterSlotOnApply(desktop_dock_window, SLOT(ApplyConfig()));
+	ConfigDialog::unregisterSlotOnCreate(desktop_dock_window, SLOT(onCreateConfigDialog()));
+	delete desktop_dock_window;
+	desktop_dock_window=NULL;
 
 	kdebugf2();
 }
 
-DesktopDockWindow::DesktopDockWindow()
-	: QLabel(0,"DesktopDockIcon", WMouseNoMask | WRepaintNoErase | WType_TopLevel | WStyle_Customize | WStyle_NoBorder | WStyle_StaysOnTop | WX11BypassWM)
+DesktopDockWindow::DesktopDockWindow(QWidget *parent, const char *name)
+	: QLabel(parent, name, WMouseNoMask | WRepaintNoErase | WType_TopLevel | WStyle_Customize | WStyle_NoBorder | WStyle_StaysOnTop | WX11BypassWM)
 {
 	kdebugf();
 
@@ -157,4 +157,4 @@ void DesktopDockWindow::updateMask()		/* to zalatwia automatyczne odswiezenie ik
 	setMask(pixmap()->createHeuristicMask(false));
 }
 
-DesktopDockWindow *DesktopDockObj;
+DesktopDockWindow *desktop_dock_window;

@@ -9,7 +9,7 @@ class ExternalPlayerSlots : public QObject
 {
 	Q_OBJECT
 	public:
-		ExternalPlayerSlots();
+		ExternalPlayerSlots(QObject *parent=0, const char *name=0);
 		~ExternalPlayerSlots();
 	private slots:
 		void playSound(const QString &s, bool volCntrl, double vol);
@@ -17,7 +17,6 @@ class ExternalPlayerSlots : public QObject
 		void choosePlayerFile();
 };
 
-extern ExternalPlayerSlots *externalPlayerObj;
+extern ExternalPlayerSlots *external_player_slots;
 
 #endif
-

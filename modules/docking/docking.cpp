@@ -23,7 +23,7 @@
 
 extern "C" int docking_init()
 {
-	docking_manager = new DockingManager();
+	docking_manager = new DockingManager(NULL, "docking_manager");
 	return 0;
 }
 
@@ -34,10 +34,10 @@ extern "C" void docking_close()
 	docking_manager = NULL;
 }
 
-DockingManager::DockingManager() : QObject(NULL, "docking_manager")
+DockingManager::DockingManager(QObject *parent, const char *name) : QObject(parent, name)
 {
 	kdebugf();
-	icon_timer = new QTimer(this);
+	icon_timer = new QTimer(this, "icon_timer");
 	blink = false;
 	connect(icon_timer, SIGNAL(timeout()), this, SLOT(changeIcon()));
 

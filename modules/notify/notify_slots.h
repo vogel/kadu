@@ -22,7 +22,7 @@ class NotifySlots : public QObject
 		void _Right2(QListBoxItem *item);
 		void ifNotifyAll(bool toggled);
 	public:
-		NotifySlots();
+		NotifySlots(QObject *parent=0, const char *name=0);
 		~NotifySlots();
 		void registerDisabledControl(const QString &name);
 		void unregisterDisabledControl(const QString &name);

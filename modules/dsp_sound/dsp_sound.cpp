@@ -22,7 +22,7 @@ extern "C" int dsp_sound_init()
 {
 	kdebugf();
 		
-	directPlayerObj=new DirectPlayerSlots();
+	oss_player_slots=new OSSPlayerSlots();
 
 	ConfigDialog::addHGroupBox("Sounds", "Sounds",
 			QT_TRANSLATE_NOOP("@default","Output device"));
@@ -37,16 +37,16 @@ extern "C" void dsp_sound_close()
 
 	ConfigDialog::removeControl("Sounds", "Path:", "device_path");
 	ConfigDialog::removeControl("Sounds", "Output device");
-	delete directPlayerObj;
-	directPlayerObj=NULL;
+	delete oss_player_slots;
+	oss_player_slots=NULL;
 	kdebugf2();
 }
 
-DirectPlayerSlots::DirectPlayerSlots():thread(NULL)
+OSSPlayerSlots::OSSPlayerSlots():thread(NULL)
 {
 	kdebugf();
 	error=true;
-	thread=new DirectPlayThread();
+	thread=new OSSPlayThread();
 	if (!thread)
 		return;
 	thread->start();
@@ -58,7 +58,7 @@ DirectPlayerSlots::DirectPlayerSlots():thread(NULL)
 	kdebugf2();
 }
 
-DirectPlayerSlots::~DirectPlayerSlots()
+OSSPlayerSlots::~OSSPlayerSlots()
 {
 	kdebugf();
 
@@ -78,7 +78,7 @@ DirectPlayerSlots::~DirectPlayerSlots()
 	kdebugf2();
 }
 
-void DirectPlayerSlots::play(const QString &s, bool volCntrl, double vol, const QString &device)
+void OSSPlayerSlots::play(const QString &s, bool volCntrl, double vol, const QString &device)
 {
 	kdebugf();
 	QString t;
@@ -98,7 +98,7 @@ void DirectPlayerSlots::play(const QString &s, bool volCntrl, double vol, const 
 	kdebugf2();
 }
 
-void DirectPlayerSlots::playSound(const QString &s, bool volCntrl, double vol)
+void OSSPlayerSlots::playSound(const QString &s, bool volCntrl, double vol)
 {
 	kdebugf();
 	QString dev=QString::null;
@@ -111,18 +111,18 @@ void DirectPlayerSlots::playSound(const QString &s, bool volCntrl, double vol)
 	kdebugf2();
 }
 
-DirectPlayThread::DirectPlayThread()
+OSSPlayThread::OSSPlayThread()
 {
 	semaphore=new QSemaphore(100);
 	(*semaphore)+=100;
 }
 
-DirectPlayThread::~DirectPlayThread()
+OSSPlayThread::~OSSPlayThread()
 {
 	delete semaphore;
 }
 
-void DirectPlayThread::run()
+void OSSPlayThread::run()
 {
 	kdebugf();
 	QString path,device;
@@ -211,5 +211,5 @@ void DirectPlayThread::run()
 	kdebugf2();
 }
 
-DirectPlayerSlots *directPlayerObj;
+OSSPlayerSlots *oss_player_slots;
 

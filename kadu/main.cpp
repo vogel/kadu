@@ -107,11 +107,11 @@ int main(int argc, char *argv[])
 	new QApplication(argc, argv);
 
 	// ladowanie tlumaczenia
-	QTranslator qt_qm(0);
+	QTranslator qt_qm(0, "Translator_qt");
 	QString lang=config_file.readEntry("General", "Language", QTextCodec::locale());
 	qt_qm.load(dataPath(QString("kadu/translations/qt_") + lang), ".");
 	qApp->installTranslator(&qt_qm);
-	QTranslator kadu_qm(0);
+	QTranslator kadu_qm(0, "Translator_kadu");
 	kadu_qm.load(dataPath(QString("kadu/translations/kadu_") + lang), ".");
 	qApp->installTranslator(&kadu_qm);
 	qApp->setStyle(config_file.readEntry("Look", "QtStyle"));

@@ -8,7 +8,7 @@ class VoiceDsp : public QObject
 	Q_OBJECT
 
 	public:
-		VoiceDsp();
+		VoiceDsp(QObject *parent=0, const char *name=0);
 		virtual ~VoiceDsp();
 
 	public slots:

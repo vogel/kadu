@@ -61,7 +61,7 @@ class SmsGateway : public QObject
 		virtual void httpRedirected(QString)=0;
 		
 	public:
-		SmsGateway(QObject* parent);
+		SmsGateway(QObject* parent, const char *name=0);
 	public slots:
 		virtual void send(const QString& number,const QString& message, const QString& contact, const QString& signature)=0;
 
@@ -80,7 +80,7 @@ class SmsSender : public QObject
 		void onFinished(bool success);
 
 	public:
-		SmsSender(QObject* parent=0);
+		SmsSender(QObject* parent=0, const char *name=0);
 		~SmsSender();
 	public slots:
 		void send(const QString& number,const QString& message, const QString& contact, const QString& signature);
@@ -96,7 +96,7 @@ class Sms : public QDialog {
 	Q_OBJECT
 	
 	public:
-		Sms(const QString& altnick, QDialog* parent=0);
+		Sms(const QString& altnick, QDialog* parent=0, const char *name=0);
 		~Sms();
 
 	private:
@@ -128,7 +128,7 @@ class SmsSlots: public QObject
 	Q_OBJECT
 	
 	public:
-		SmsSlots();
+		SmsSlots(QObject *parent=0, const char *name=0);
 		~SmsSlots();
 		void registerGateway(QString, isValidFunc* f);
 		void unregisterGateway(QString);

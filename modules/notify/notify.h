@@ -58,7 +58,7 @@ class Notify : public QObject
 	void disconnectSlot(const QString &notifierName, const QString &slotName);
 
 	public:
-	Notify();
+	Notify(QObject *parent=0, const char *name=0);
 	~Notify();
 
 	/*

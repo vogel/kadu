@@ -23,7 +23,7 @@ class DockingManager : public QObject
 		void onApplyConfigDialog();
 
 	public:
-		DockingManager();
+		DockingManager(QObject *parent=0, const char *name=0);
 		~DockingManager();
 		void trayMousePressEvent(QMouseEvent * e);
 		QPixmap defaultPixmap();

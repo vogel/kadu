@@ -16,19 +16,19 @@
 extern "C" int ext_sound_init()
 {
 	kdebugf();
-	externalPlayerObj=new ExternalPlayerSlots();
+	external_player_slots=new ExternalPlayerSlots(NULL, "external_player_slots");
 	kdebugf2();
 	return 0;
 }
 extern "C" void ext_sound_close()
 {
 	kdebugf();
-	delete externalPlayerObj;
-	externalPlayerObj=NULL;
+	delete external_player_slots;
+	external_player_slots=NULL;
 	kdebugf2();
 }
 
-ExternalPlayerSlots::ExternalPlayerSlots()
+ExternalPlayerSlots::ExternalPlayerSlots(QObject *parent, const char *name) : QObject(parent, name)
 {
 	kdebugf();
 
@@ -104,5 +104,5 @@ void ExternalPlayerSlots::choosePlayerFile()
 	kdebugf2();
 }
 
-ExternalPlayerSlots *externalPlayerObj;
+ExternalPlayerSlots *external_player_slots;
 

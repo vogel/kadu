@@ -9,7 +9,7 @@ class WindowNotify : public QObject
 {
 	Q_OBJECT
 	public:
-		WindowNotify();
+		WindowNotify(QObject *parent=0, const char *name=0);
 		~WindowNotify();
 
 	public slots:

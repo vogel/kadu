@@ -18,7 +18,7 @@ class SmsIdeaGateway : public SmsGateway
 		virtual void httpRedirected(QString);
 
 	public:
-		SmsIdeaGateway(QObject* parent);
+		SmsIdeaGateway(QObject* parent, const char *name=0);
 		~SmsIdeaGateway();
 		static bool isNumberCorrect(const QString& number);
 	public slots:
@@ -34,7 +34,7 @@ class SmsPlusGateway : public SmsGateway
 		virtual void httpRedirected(QString);
 
 	public:
-		SmsPlusGateway(QObject* parent);
+		SmsPlusGateway(QObject* parent, const char *name=0);
 		~SmsPlusGateway();
 		static bool isNumberCorrect(const QString& number);
 	public slots:
@@ -50,7 +50,7 @@ class SmsEraGateway : public SmsGateway
 		virtual void httpRedirected(QString link);
 
 	public:
-		SmsEraGateway(QObject* parent);
+		SmsEraGateway(QObject* parent, const char *name=0);
 		~SmsEraGateway();
 		static bool isNumberCorrect(const QString& number);
 		static QString errorNumber(int nr);
@@ -63,7 +63,7 @@ class SmsGatewaySlots: public QObject
 	Q_OBJECT
 	
 	public:
-		SmsGatewaySlots();
+		SmsGatewaySlots(QObject *parent=0, const char *name=0);
 		~SmsGatewaySlots();
 		static SmsGateway* isValidIdea(QString& number, QObject* parent);
 		static SmsGateway* isValidPlus(QString& number, QObject* parent);
@@ -77,6 +77,6 @@ class SmsGatewaySlots: public QObject
 		void onChangeEraGateway(int gateway);			
 };
 
-extern SmsGatewaySlots* smsgatewayslots;
+extern SmsGatewaySlots* sms_gateway_slots;
 
 #endif

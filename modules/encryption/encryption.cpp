@@ -16,7 +16,7 @@ EncryptionManager* encryption_manager;
 
 extern "C" int encryption_init()
 {
-	encryption_manager=new EncryptionManager();
+	encryption_manager=new EncryptionManager(NULL, "encryption_manager");
 	return 0;
 }
 
@@ -26,7 +26,7 @@ extern "C" void encryption_close()
 	encryption_manager=NULL;
 }
 
-EncryptionManager::EncryptionManager()
+EncryptionManager::EncryptionManager(QObject *parent, const char *name) : QObject(parent, name)
 {
 	kdebugf();
 	ConfigDialog::addCheckBox("Chat", "Chat",

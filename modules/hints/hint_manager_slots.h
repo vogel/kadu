@@ -23,7 +23,7 @@ class HintManagerSlots : public QObject
 {
 	Q_OBJECT
 	public:
-		HintManagerSlots();
+		HintManagerSlots(QObject *parent=0, const char *name=0);
 		~HintManagerSlots();
 
 	public slots:

@@ -26,7 +26,7 @@ extern Time qt_x_time;
 
 extern "C" int wmaker_docking_init()
 {
-	wmaker_tray_icon = new WMakerTrayIcon();
+	wmaker_tray_icon = new WMakerTrayIcon(NULL, "wmaker_tray_icon");
 	return 0;
 }
 
@@ -36,8 +36,8 @@ extern "C" void wmaker_docking_close()
 	wmaker_tray_icon = NULL;
 }
 
-WMakerTrayIcon::WMakerTrayIcon()
-	: QLabel(0,"WMakerTrayIcon", WMouseNoMask | WRepaintNoErase | WType_TopLevel | WStyle_Customize | WStyle_NoBorder | WStyle_StaysOnTop)
+WMakerTrayIcon::WMakerTrayIcon(QObject *parent, const char *name)
+	: QLabel(parent, name, WMouseNoMask | WRepaintNoErase | WType_TopLevel | WStyle_Customize | WStyle_NoBorder | WStyle_StaysOnTop)
 {
 	kdebugf();
 	setBackgroundMode(X11ParentRelative);

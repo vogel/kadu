@@ -16,7 +16,8 @@
 #include "voice.h"
 #include "voice_dsp.h"
 
-VoiceDsp::VoiceDsp() {
+VoiceDsp::VoiceDsp(QObject *parent, const char *name) : QObject(parent, name)
+{
 	kdebugf();
 	connect(voice_manager, SIGNAL(setupSoundDevice()), this, SLOT(setup()));
 	connect(voice_manager, SIGNAL(freeSoundDevice()), this, SLOT(free()));

@@ -23,20 +23,20 @@
 
 #define FRAME_WIDTH 1
 
-HintManager::HintManager()
-	: QFrame(0, "HintManager", WStyle_NoBorder | WStyle_StaysOnTop | WStyle_Tool | WX11BypassWM | WWinOwnDC)
+HintManager::HintManager(QWidget *parent, const char *name)
+	: QFrame(parent, name, WStyle_NoBorder | WStyle_StaysOnTop | WStyle_Tool | WX11BypassWM | WWinOwnDC)
 {
 	kdebugf();
 
 	setFrameStyle(QFrame::Box | QFrame::Plain);
 	setLineWidth(FRAME_WIDTH);
 
-	grid = new QGridLayout(this, 0, 0, 1, 0, "QGridLayout");
+	grid = new QGridLayout(this, 0, 0, 1, 0, "grid");
 	grid->setResizeMode(QLayout::Fixed);
 
 	hints.setAutoDelete(true);
 
-	hint_timer = new QTimer(this);
+	hint_timer = new QTimer(this, "hint_timer");
 	connect(hint_timer, SIGNAL(timeout()), this, SLOT(oneSecond()));
 
 /* Zak³adka konfiguracyjna */
@@ -99,7 +99,7 @@ HintManager::HintManager()
 				ConfigDialog::addPushButton("Hints", "bottom", QT_TRANSLATE_NOOP("@default", "Change background color"));
 				ConfigDialog::addPushButton("Hints", "bottom", QT_TRANSLATE_NOOP("@default", "Change font"));
 
-	hint_manager_slots = new HintManagerSlots();
+	hint_manager_slots = new HintManagerSlots(NULL, "hint_manager_slots");
 	ConfigDialog::registerSlotOnCreate(hint_manager_slots, SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnApply(hint_manager_slots, SLOT(onApplyConfigDialog()));
 	ConfigDialog::registerSlotOnClose(hint_manager_slots, SLOT(onCloseConfigDialog()));

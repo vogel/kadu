@@ -8,19 +8,19 @@
 
 using namespace Arts;
 
-class ArtsPlayerSlots : public QObject
+class aRtsPlayerSlots : public QObject
 {
 	Q_OBJECT
 		Dispatcher disp;
 	public:
-		ArtsPlayerSlots();
-		~ArtsPlayerSlots();
+		aRtsPlayerSlots(QObject *parent=0, const char *name=0);
+		~aRtsPlayerSlots();
 		SoundServerV2 server;
 	private slots:
 		void playSound(const QString &s, bool volCntrl, double vol);
 };
 
-extern ArtsPlayerSlots *artsPlayerObj;
+extern aRtsPlayerSlots *arts_player_slots;
 
 #endif
 

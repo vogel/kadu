@@ -83,7 +83,7 @@ static bool send_message(
 
 extern "C" int x11_docking_init()
 {
-	x11_tray_icon = new X11TrayIcon();
+	x11_tray_icon = new X11TrayIcon(NULL, "x11_tray_icon");
 #ifdef ENABLE_HIDING
 	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Remove from taskbar (experimental)"), "HideTaskbar", false);
 #endif
@@ -99,8 +99,8 @@ extern "C" void x11_docking_close()
 	x11_tray_icon = NULL;
 }
 
-X11TrayIcon::X11TrayIcon()
-	: QLabel(0,"X11TrayIcon", WMouseNoMask | WRepaintNoErase | WType_TopLevel | WStyle_Customize | WStyle_NoBorder | WStyle_StaysOnTop)
+X11TrayIcon::X11TrayIcon(QWidget *parent, const char *name)
+	: QLabel(parent, name, WMouseNoMask | WRepaintNoErase | WType_TopLevel | WStyle_Customize | WStyle_NoBorder | WStyle_StaysOnTop)
 {
 	kdebugf();
 	setBackgroundMode(X11ParentRelative);

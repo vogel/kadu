@@ -10,13 +10,13 @@ class ESDPlayerSlots : public QObject
 	Q_OBJECT
 	public:
 		int sock;
-		ESDPlayerSlots();
+		ESDPlayerSlots(QObject *parent=0, const char *name=0);
 		~ESDPlayerSlots();
 	private slots:
 		void playSound(const QString &s, bool volCntrl, double vol);
 };
 
-extern ESDPlayerSlots *esdPlayerObj;
+extern ESDPlayerSlots *esd_player_slots;
 
 #endif
 

@@ -18,8 +18,7 @@
 extern "C" int notify_init()
 {
 	kdebugf();
-	notify=new Notify();
-
+	notify=new Notify(NULL, "notify");
 
 	kdebugf2();
 	return 0;
@@ -33,7 +32,7 @@ extern "C" void notify_close()
 	kdebugf2();
 }
 
-Notify::Notify()
+Notify::Notify(QObject *parent, const char *name) : QObject(parent, name)
 {
 	kdebugf();
 	notifySignals["NewChat"]=			QString(SIGNAL(newChat(const UinsList &, const QString &, time_t)));
@@ -66,7 +65,7 @@ Notify::Notify()
 	connect(gadu, SIGNAL(userStatusChanged(const UserListElement &, const UserStatus &, bool)),
 		this, SLOT(userStatusChanged(const UserListElement &, const UserStatus &, bool)));
 
-	notify_slots=new NotifySlots();
+	notify_slots=new NotifySlots(NULL, "notify_slots");
 
 	ConfigDialog::addCheckBox("Notify", "Notify",
 		QT_TRANSLATE_NOOP("@default", "Ignore changes on connection to server"), "NotifyIgnoreOnConnection", true, QT_TRANSLATE_NOOP("@default","This option will supersede tooltips with users' status\n changes upon establishing connection to the server"));

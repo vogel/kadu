@@ -22,10 +22,10 @@ extern "C" int nas_sound_init()
 {
 	kdebugf();
 
-	nasPlayerObj=new NASPlayerSlots();
-	if (!nasPlayerObj->isConnected())
+	nas_player_slots=new NASPlayerSlots(NULL, "nas_player_slots");
+	if (!nas_player_slots->isConnected())
 	{
-		delete nasPlayerObj;
+		delete nas_player_slots;
 		return 2;
 	}
 
@@ -36,13 +36,13 @@ extern "C" void nas_sound_close()
 {
 	kdebugf();
 
-	delete nasPlayerObj;
-	nasPlayerObj=NULL;
+	delete nas_player_slots;
+	nas_player_slots=NULL;
 
 	kdebugf2();
 }
 
-NASPlayerSlots::NASPlayerSlots()
+NASPlayerSlots::NASPlayerSlots(QObject *parent, const char *name) : QObject(parent, name)
 {
 	kdebugf();
 #ifndef INTERNAL_QT_SOUND_SUPPORT
@@ -117,4 +117,4 @@ void NASPlayerSlots::dataReceived()
 #endif
 }
 
-NASPlayerSlots *nasPlayerObj;
+NASPlayerSlots *nas_player_slots;

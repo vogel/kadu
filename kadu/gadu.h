@@ -169,7 +169,7 @@ class SocketNotifiers : public QObject
 		virtual void dataSent() = 0;
 
 	public:
-		SocketNotifiers(int);
+		SocketNotifiers(int fd, QObject *parent=0, const char *name=0);
 		virtual ~SocketNotifiers();
 		virtual void start();
 		virtual void stop();
@@ -190,7 +190,7 @@ class PubdirSocketNotifiers : public SocketNotifiers
 		virtual void dataSent();
 
 	public:
-		PubdirSocketNotifiers(struct gg_http *);
+		PubdirSocketNotifiers(struct gg_http *, QObject *parent=0, const char *name=0);
 		virtual ~PubdirSocketNotifiers();
 
 	signals:
@@ -212,7 +212,7 @@ class TokenSocketNotifiers : public SocketNotifiers
 		virtual void dataSent();
 
 	public:
-		TokenSocketNotifiers();
+		TokenSocketNotifiers(QObject *parent=0, const char *name=0);
 		virtual ~TokenSocketNotifiers();
 
 		virtual void start();
@@ -254,7 +254,7 @@ class GaduSocketNotifiers : public SocketNotifiers
 		virtual void dataSent();
 
 	public:
-		GaduSocketNotifiers();
+		GaduSocketNotifiers(QObject *parent=0, const char *name=0);
 		virtual ~GaduSocketNotifiers();
 		void setSession(gg_session *sess);
 		void checkWrite();

@@ -9,7 +9,7 @@ class DesktopDockWindow : public QLabel
 	Q_OBJECT
 
 	public:
-		DesktopDockWindow();
+		DesktopDockWindow(QWidget *parent=0, const char *name=0);
 		~DesktopDockWindow();
 		virtual void mousePressEvent(QMouseEvent *ev);
 		void updateMask();
@@ -22,5 +22,5 @@ class DesktopDockWindow : public QLabel
 		void enableColorButton(bool b);
 };
 
-extern DesktopDockWindow *DesktopDockObj;
+extern DesktopDockWindow *desktop_dock_window;
 #endif

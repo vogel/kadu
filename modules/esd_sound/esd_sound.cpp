@@ -15,10 +15,10 @@ extern "C" int esd_sound_init()
 {
 	kdebugf();
 
-	esdPlayerObj=new ESDPlayerSlots();
-	if (esdPlayerObj->sock<0)
+	esd_player_slots=new ESDPlayerSlots(NULL, "esd_player_slots");
+	if (esd_player_slots->sock<0)
 	{
-		delete esdPlayerObj;
+		delete esd_player_slots;
 		return -1;
 	}
 
@@ -28,12 +28,12 @@ extern "C" int esd_sound_init()
 extern "C" void esd_sound_close()
 {
 	kdebugf();
-	delete esdPlayerObj;
-	esdPlayerObj=NULL;
+	delete esd_player_slots;
+	esd_player_slots=NULL;
 	kdebugf2();
 }
 
-ESDPlayerSlots::ESDPlayerSlots()
+ESDPlayerSlots::ESDPlayerSlots(QObject *parent, const char *name) : QObject(parent, name)
 {
 	kdebugf();
 	sock=esd_open_sound(NULL);
@@ -72,4 +72,4 @@ void ESDPlayerSlots::playSound(const QString &s, bool volCntrl, double vol)
 	kdebugf2();
 }
 
-ESDPlayerSlots *esdPlayerObj;
+ESDPlayerSlots *esd_player_slots;

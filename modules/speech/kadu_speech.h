@@ -11,7 +11,7 @@ class SpeechSlots : public QObject
 	private:
 		QTime lastSpeech;
 	public:
-		SpeechSlots();
+		SpeechSlots(QObject *parent=0, const char *name=0);
 		~SpeechSlots();
 	private slots:
 		void newChat(const UinsList &senders, const QString& msg, time_t time);
@@ -35,6 +35,6 @@ class SpeechSlots : public QObject
 		void testSpeech();
 };
 
-extern SpeechSlots *speechObj;
+extern SpeechSlots *speech_slots;
 
 #endif

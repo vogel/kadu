@@ -67,7 +67,7 @@ void NotifySlots::onApplyConfigDialog()
 	kdebugf2();
 }
 
-NotifySlots::NotifySlots()
+NotifySlots::NotifySlots(QObject *parent, const char *name) : QObject(parent, name)
 {
 	kdebugf();
 	kdebugf2();

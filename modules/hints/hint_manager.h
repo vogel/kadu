@@ -132,7 +132,7 @@ class HintManager : public QFrame
 		void searchingForTrayPosition(QPoint& pos);
 
 	public:
-		HintManager();
+		HintManager(QWidget *parent=0, const char *name=0);
 		~HintManager();
 };
 

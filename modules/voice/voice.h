@@ -24,7 +24,7 @@ class VoiceManager : public QObject {
 	Q_OBJECT
 
 	public:
-		VoiceManager();
+		VoiceManager(QObject *parent=0, const char *name=0);
 		~VoiceManager();
 		void setup();
 		void free();

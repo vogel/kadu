@@ -23,7 +23,7 @@ extern "C" int default_sms_init()
 	smsslots->registerGateway("idea", &SmsGatewaySlots::isValidIdea);
 	smsslots->registerGateway("plus", &SmsGatewaySlots::isValidPlus);
 	smsslots->registerGateway("era" , &SmsGatewaySlots::isValidEra);
-	smsgatewayslots=new SmsGatewaySlots();
+	sms_gateway_slots=new SmsGatewaySlots(NULL, "sms_gateway_slots");
 	kdebugf2();
 	return 0;
 }
@@ -34,15 +34,15 @@ extern "C" void default_sms_close()
 	smsslots->unregisterGateway("idea");
 	smsslots->unregisterGateway("plus");
 	smsslots->unregisterGateway("era");
-	delete smsgatewayslots;
+	delete sms_gateway_slots;
 	kdebugf2();
 }
 
 
 /********** SmsIdeaGateway **********/
 
-SmsIdeaGateway::SmsIdeaGateway(QObject* parent)
-	: SmsGateway(parent)
+SmsIdeaGateway::SmsIdeaGateway(QObject* parent, const char *name)
+	: SmsGateway(parent, name)
 {
 	modules_manager->moduleIncUsageCount("default_sms");
 }
@@ -160,8 +160,8 @@ void SmsIdeaGateway::onCodeEntered(const QString& code)
 
 /********** SmsPlusGateway **********/
 
-SmsPlusGateway::SmsPlusGateway(QObject* parent)
-	: SmsGateway(parent)
+SmsPlusGateway::SmsPlusGateway(QObject* parent, const char *name)
+	: SmsGateway(parent, name)
 {
 	modules_manager->moduleIncUsageCount("default_sms");
 }
@@ -240,8 +240,8 @@ void SmsPlusGateway::httpFinished()
 
 /********** SmsEraGateway **********/
 
-SmsEraGateway::SmsEraGateway(QObject* parent)
-	: SmsGateway(parent)
+SmsEraGateway::SmsEraGateway(QObject* parent, const char *name)
+	: SmsGateway(parent, name)
 {
 	modules_manager->moduleIncUsageCount("default_sms");
 }
@@ -340,7 +340,7 @@ void SmsEraGateway::httpFinished()
 {
 }
 
-SmsGatewaySlots::SmsGatewaySlots()
+SmsGatewaySlots::SmsGatewaySlots(QObject *parent, const char *name) : QObject(parent, name)
 {
 	kdebugf();
 	ConfigDialog::addVGroupBox("SMS", "SMS",
@@ -436,7 +436,7 @@ void SmsGatewaySlots::onCreateConfigDialog()
 SmsGateway* SmsGatewaySlots::isValidIdea(QString& number, QObject* parent)
 {
 	if(SmsIdeaGateway::isNumberCorrect(number))
-		return new SmsIdeaGateway(parent);
+		return new SmsIdeaGateway(parent, "sms_idea_gateway");
 	else
 		return NULL;
 }
@@ -444,7 +444,7 @@ SmsGateway* SmsGatewaySlots::isValidIdea(QString& number, QObject* parent)
 SmsGateway* SmsGatewaySlots::isValidPlus(QString& number, QObject* parent)
 {
 	if(SmsPlusGateway::isNumberCorrect(number))
-		return new SmsPlusGateway(parent);
+		return new SmsPlusGateway(parent, "sms_plus_gateway");
 	else
 		return NULL;
 }
@@ -452,10 +452,10 @@ SmsGateway* SmsGatewaySlots::isValidPlus(QString& number, QObject* parent)
 SmsGateway* SmsGatewaySlots::isValidEra(QString& number, QObject* parent)
 {
 	if(SmsEraGateway::isNumberCorrect(number))
-		return new SmsEraGateway(parent);
+		return new SmsEraGateway(parent, "sms_era_gateway");
 	else
 		return NULL;
 }
 
 
-SmsGatewaySlots* smsgatewayslots;
+SmsGatewaySlots* sms_gateway_slots;

@@ -14,10 +14,10 @@ extern "C" int arts_sound_init()
 {
 	kdebugf();
 
-	artsPlayerObj=new ArtsPlayerSlots();
-	if (artsPlayerObj->server.isNull())
+	arts_player_slots=new aRtsPlayerSlots(NULL, "arts_player_slots");
+	if (arts_player_slots->server.isNull())
 	{
-		delete artsPlayerObj;
+		delete arts_player_slots;
 		return -1;
 	}
 	
@@ -27,12 +27,12 @@ extern "C" int arts_sound_init()
 extern "C" void arts_sound_close()
 {
 	kdebugf();
-	delete artsPlayerObj;
-	artsPlayerObj=NULL;
+	delete arts_player_slots;
+	arts_player_slots=NULL;
 	kdebugf2();
 }
 
-ArtsPlayerSlots::ArtsPlayerSlots() : QObject(NULL, "artsPlayerObj")
+aRtsPlayerSlots::aRtsPlayerSlots(QObject *parent, const char *name) : QObject(parent, name)
 {
 	kdebugf();
 	server=Arts::Reference("global:Arts_SoundServerV2");
@@ -43,7 +43,7 @@ ArtsPlayerSlots::ArtsPlayerSlots() : QObject(NULL, "artsPlayerObj")
 	kdebugf2();
 }
 
-ArtsPlayerSlots::~ArtsPlayerSlots()
+aRtsPlayerSlots::~aRtsPlayerSlots()
 {
 	kdebugf();
 	disconnect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
@@ -51,13 +51,13 @@ ArtsPlayerSlots::~ArtsPlayerSlots()
 	kdebugf2();
 }
 
-void ArtsPlayerSlots::playSound(const QString &s, bool volCntrl, double vol)
+void aRtsPlayerSlots::playSound(const QString &s, bool volCntrl, double vol)
 {
 	//warunku server.isNull() i server.audioMethod()=="" nie mo¿na sprawdzaæ
 	//jednocze¶nie, bo je¿eli najpierw zostanie sprawdzony drugi, a pierwszy
 	//jest prawd±, to program siê wywróci
 	kdebugf();
-	kdebugm(KDEBUG_INFO, "ArtsPlayerSlots::play(%s): null: %d\n",s.local8Bit().data(), server.isNull());
+	kdebugm(KDEBUG_INFO, "aRtsPlayerSlots::play(%s): null: %d\n",s.local8Bit().data(), server.isNull());
 
 	if (!server.isNull())
 		kdebugm(KDEBUG_INFO, "audioMethod: %s audioDevice: %s\n", server.audioMethod().c_str(), server.audioDevice().c_str());
@@ -77,4 +77,4 @@ void ArtsPlayerSlots::playSound(const QString &s, bool volCntrl, double vol)
 	kdebugf2();
 }
 
-ArtsPlayerSlots *artsPlayerObj;
+aRtsPlayerSlots *arts_player_slots;

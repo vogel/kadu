@@ -30,7 +30,7 @@ class NASPlayerSlots : public QObject
 #endif
 
 	public:
-		NASPlayerSlots();
+		NASPlayerSlots(QObject *parent=0, const char *name=0);
 		~NASPlayerSlots();
 		bool isConnected();
 	private slots:
@@ -39,7 +39,6 @@ class NASPlayerSlots : public QObject
 		void playSound(const QString &s, bool volCntrl, double vol);
 };
 
-extern NASPlayerSlots *nasPlayerObj;
+extern NASPlayerSlots *nas_player_slots;
 
 #endif
-

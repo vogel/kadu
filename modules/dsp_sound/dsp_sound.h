@@ -8,7 +8,7 @@
 #include <qsemaphore.h>
 #include "misc.h"
 
-class DirectPlayThread : public QThread
+class OSSPlayThread : public QThread
 {
 	public:
 		QMutex mutex;
@@ -16,27 +16,27 @@ class DirectPlayThread : public QThread
 		bool end;
 		QStringList list;
 		
-		DirectPlayThread();
-		~DirectPlayThread();
+		OSSPlayThread();
+		~OSSPlayThread();
 		void run();
 };
 
-class DirectPlayerSlots : public QObject
+class OSSPlayerSlots : public QObject
 {
 	Q_OBJECT
 	public:
-		DirectPlayerSlots();
-		~DirectPlayerSlots();
+		OSSPlayerSlots(QObject *parent=0, const char *name=0);
+		~OSSPlayerSlots();
 		bool error;
 	private slots:
 		void play(const QString &s, bool volCntrl, double vol, const QString &device=QString::null);
 		
 		void playSound(const QString &s, bool volCntrl, double vol);
 	private:
-		DirectPlayThread *thread;
+		OSSPlayThread *thread;
 };
 
-extern DirectPlayerSlots *directPlayerObj;
+extern OSSPlayerSlots *oss_player_slots;
 
 #endif
 

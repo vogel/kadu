@@ -24,7 +24,7 @@
 extern "C" int speech_init()
 {
 	kdebugf();
-	speechObj=new SpeechSlots();
+	speech_slots=new SpeechSlots(NULL, "speech_slots");
 	kdebugf2();
 	return 0;
 }
@@ -32,8 +32,8 @@ extern "C" int speech_init()
 extern "C" void speech_close()
 {
 	kdebugf();
-	delete speechObj;
-	speechObj=NULL;
+	delete speech_slots;
+	speech_slots=NULL;
 	kdebugf2();
 }
 
@@ -84,8 +84,7 @@ void SpeechSlots::useDsp()
 	kdebugf2();
 }
 
-
-SpeechSlots::SpeechSlots()
+SpeechSlots::SpeechSlots(QObject *parent, const char *name) : QObject(parent, name)
 {
 	kdebugf();
 	srand(time(NULL));
@@ -442,5 +441,5 @@ void SpeechSlots::chooseSpeechProgram()
 	kdebugf2();
 }
 
-SpeechSlots *speechObj;
+SpeechSlots *speech_slots;
 

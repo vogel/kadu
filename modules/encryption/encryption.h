@@ -28,7 +28,7 @@ class EncryptionManager : public QObject
 		void createConfigDialogSlot();
 
 	public:
-		EncryptionManager();
+		EncryptionManager(QObject *parent=0, const char *name=0);
 		~EncryptionManager();
 		void enableEncryptionBtnForUins(UinsList uins);
 };

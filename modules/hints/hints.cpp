@@ -14,7 +14,7 @@ extern "C" int hints_init()
 {
 	kdebugf();
 	
-	hint_manager=new HintManager();
+	hint_manager=new HintManager(NULL, "hint_manager");
 	
 	kdebugf2();
 	return 0;

@@ -22,7 +22,7 @@ class X11TrayIcon : public QLabel
 		void enableTaskbar(bool enable=true);
 
 	public:
-		X11TrayIcon();
+		X11TrayIcon(QWidget *parent=0, const char *name=0);
 		~X11TrayIcon();
 		void show();
 };

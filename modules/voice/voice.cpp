@@ -28,8 +28,8 @@
 
 extern "C" int voice_init()
 {
-	voice_manager = new VoiceManager();
-	voice_dsp = new VoiceDsp();
+	voice_manager = new VoiceManager(NULL, "voice_manager");
+	voice_dsp = new VoiceDsp(NULL, "voice_dsp");
 	return 0;
 }
 
@@ -90,7 +90,7 @@ void RecordThread::run()
 	kdebugf2();
 }
 
-VoiceManager::VoiceManager()
+VoiceManager::VoiceManager(QObject *parent, const char *name) : QObject(parent, name)
 {
 	kdebugf();
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys",

@@ -261,7 +261,7 @@ void SearchRecord::clearData()
 }
 /* SocketNotifiers */
 
-SocketNotifiers::SocketNotifiers(int fd)
+SocketNotifiers::SocketNotifiers(int fd, QObject *parent, const char *name) : QObject(parent, name)
 {
 	kdebugf();
 	Fd = fd;
@@ -336,8 +336,8 @@ void SocketNotifiers::recreateSocketNotifiers()
 
 /* PubdirSocketNotifiers */
 
-PubdirSocketNotifiers::PubdirSocketNotifiers(struct gg_http *h)
-	: SocketNotifiers(h->fd)
+PubdirSocketNotifiers::PubdirSocketNotifiers(struct gg_http *h, QObject *parent, const char *name)
+	: SocketNotifiers(h->fd, parent, name)
 {
 	kdebugf();
 	H = h;
@@ -430,8 +430,8 @@ void PubdirSocketNotifiers::socketEvent()
 
 /* TokenSocketNotifier */
 
-TokenSocketNotifiers::TokenSocketNotifiers()
-	: SocketNotifiers(0)
+TokenSocketNotifiers::TokenSocketNotifiers(QObject *parent, const char *name)
+	: SocketNotifiers(0, parent, name)
 {
 	kdebugf();
 	kdebugf2();
@@ -557,7 +557,7 @@ void TokenSocketNotifiers::socketEvent()
 
 /* GaduSocketNotifiers */
 
-GaduSocketNotifiers::GaduSocketNotifiers() : SocketNotifiers(0)
+GaduSocketNotifiers::GaduSocketNotifiers(QObject *parent, const char *name) : SocketNotifiers(0, parent, name)
 {
 	kdebugf();
 	Sess = 0;
@@ -874,7 +874,7 @@ GaduProtocol::GaduProtocol(QObject *parent, const char *name) : QObject(parent, 
 	Sess = NULL;
 	CurrentStatus = new GaduStatus();
 	NextStatus = new GaduStatus();
-	SocketNotifiers = new GaduSocketNotifiers();
+	SocketNotifiers = new GaduSocketNotifiers(NULL, "gadu_socket_notifiers");
 	UserListSent = false;
 	PingTimer = NULL;
 	ActiveServer = NULL;
@@ -1114,7 +1114,7 @@ void GaduProtocol::connectedSlot()
 
 	/* jezeli sie rozlaczymy albo stracimy polaczenie, proces laczenia sie z serwerami zaczyna sie od poczatku */
 	ServerNr = 0;
-	PingTimer = new QTimer();
+	PingTimer = new QTimer(NULL, "PingTimer");
 	connect(PingTimer, SIGNAL(timeout()), this, SLOT(pingNetwork()));
 	PingTimer->start(60000, TRUE);
 
@@ -1438,7 +1438,7 @@ void GaduProtocol::setupProxy()
 	kdebugf2();
 }
 
-int GaduProtocol::sendMessage(const UinsList& uins,const char* msg)
+int GaduProtocol::sendMessage(const UinsList& uins, const char* msg)
 {
 	kdebugf();
 	int seq;
@@ -1461,7 +1461,7 @@ int GaduProtocol::sendMessage(const UinsList& uins,const char* msg)
 	return seq;
 }
 
-int GaduProtocol::sendMessageRichText(const UinsList& uins,const char* msg,unsigned char* myLastFormats,int myLastFormatsLength)
+int GaduProtocol::sendMessageRichText(const UinsList& uins, const char* msg, unsigned char* myLastFormats, int myLastFormatsLength)
 {
 	kdebugf();
 	int seq;
@@ -1725,7 +1725,7 @@ void GaduProtocol::setPersonalInfo(SearchRecord& searchRecord, SearchResult& new
 
 void GaduProtocol::getToken()
 {
-	TokenSocketNotifiers *sn = new TokenSocketNotifiers();
+	TokenSocketNotifiers *sn = new TokenSocketNotifiers(NULL, "token_socket_notifiers");
 	connect(sn, SIGNAL(tokenError()), this, SLOT(tokenError()));
 	connect(sn, SIGNAL(gotToken(QString, QPixmap)), this, SLOT(gotToken(QString, QPixmap)));
 	sn->start();
@@ -1788,7 +1788,7 @@ void GaduProtocol::doRegisterAccount()
 		unicode2cp(TokenId).data(), unicode2cp(TokenValue).data(), 1);
 	if (h)
 	{
-		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h);
+		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h, NULL, "pubdir_socket_notifiers");
 		connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(registerDone(bool, struct gg_http *)));
 		sn->start();
 	}

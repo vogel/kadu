@@ -31,7 +31,7 @@ class SoundSlots: public QObject
 		void selectedPaths(const QStringList& paths);
 		void muteUnmuteSounds();
 	public:
-		SoundSlots();
+		SoundSlots(QObject *parent=0, const char *name=0);
 		~SoundSlots();
 };
 

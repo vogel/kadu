@@ -21,7 +21,7 @@
 extern "C" int window_notify_init()
 {
 	kdebugf();
-	window_notify=new WindowNotify();
+	window_notify=new WindowNotify(NULL, "window_notify");
 	kdebugf2();
 	return 0;
 }
@@ -34,7 +34,7 @@ extern "C" void window_notify_close()
 	kdebugf2();
 }
 
-WindowNotify::WindowNotify()
+WindowNotify::WindowNotify(QObject *parent, const char *name) : QObject(parent, name)
 {
 	kdebugf();
 

@@ -17,7 +17,7 @@
 #include "debug.h"
 
 
-HintManagerSlots::HintManagerSlots()
+HintManagerSlots::HintManagerSlots(QObject *parent, const char *name) : QObject(parent, name)
 {
 	kdebugf();
 	ConfigDialog::connectSlot("Hints", "Show message content in hint", SIGNAL(toggled(bool)), this, SLOT(toggled_ShowMessageContent(bool)));

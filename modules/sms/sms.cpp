@@ -49,7 +49,7 @@ extern "C" int sms_init()
 			QT_TRANSLATE_NOOP("@default", "Send SMS"), "kadu_sendsms", "Ctrl+S");
 
 
-	smsslots=new SmsSlots();
+	smsslots=new SmsSlots(NULL, "smsslots");
 	ConfigDialog::registerSlotOnCreate(smsslots, SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnClose(smsslots, SLOT(onCloseConfigDialog()));
 	ConfigDialog::registerSlotOnApply(smsslots, SLOT(onApplyConfigDialog()));
@@ -142,8 +142,8 @@ void SmsImageDialog::onReturnPressed()
 
 /********** SmsGateway **********/
 
-SmsGateway::SmsGateway(QObject* parent)
-	: QObject(parent,"SmsGateway")
+SmsGateway::SmsGateway(QObject* parent, const char *name)
+	: QObject(parent, name)
 {
 	QObject::connect(&Http,SIGNAL(finished()),this,SLOT(httpFinished()));
 	QObject::connect(&Http,SIGNAL(redirected(QString)),this,SLOT(httpRedirected(QString)));
@@ -160,8 +160,8 @@ void SmsGateway::httpError()
 
 /********** SmsSender **********/
 
-SmsSender::SmsSender(QObject* parent)
-	: QObject(parent,"SmsSender")
+SmsSender::SmsSender(QObject* parent, const char *name)
+	: QObject(parent, name)
 {
 	Gateway=NULL;
 }
@@ -211,7 +211,7 @@ void SmsSender::send(const QString& number,const QString& message, const QString
 
 /********** Sms **********/
 
-Sms::Sms(const QString& altnick, QDialog* parent) : QDialog (parent, "Sms")
+Sms::Sms(const QString& altnick, QDialog* parent, const char *name) : QDialog (parent, name)
 {
 	kdebugf();
 	QGridLayout * grid = new QGridLayout(this, 3, 4, 10, 3);
@@ -395,7 +395,7 @@ void Sms::onSmsSenderFinished(bool success)
 	l_signature->setEnabled(true);
 }
 
-SmsSlots::SmsSlots()
+SmsSlots::SmsSlots(QObject *parent, const char *name) : QObject(parent, name)
 {
 	kdebugf();
 	UserBox::userboxmenu->addItemAtPos(2, "SendSms", tr("Send SMS"), this, SLOT(onSendSmsToUser()),
@@ -492,7 +492,7 @@ void SmsSlots::onCloseConfigDialog()
 
 void SmsSlots::newSms(QString nick)
 {
-	(new Sms(nick))->show();
+	(new Sms(nick, NULL, "sms"))->show();
 }
 
 void SmsSlots::onUserClicked(int button, QListBoxItem* /*item*/, const QPoint& /*pos*/)

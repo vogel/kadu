@@ -12,7 +12,7 @@ class AutoResponder : public QObject
 	ConfigFile *config;
 	
 	public:	
-		AutoResponder();
+		AutoResponder(QObject *parent=0, const char *name=0);
 		~AutoResponder();
 	public slots:
 		void chatReceived(UinsList senders,const QString& msg,time_t time);
