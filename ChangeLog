@@ -9,6 +9,8 @@
   szyfrowanie
 * byæ mo¿e rozwi±zanie problemu z t³em ikonki w tray'u
 * ESC w glownym oknie je minimalizuje
+* Wsparcie dla Window Maker'a (dokowanie). Trzeba ustawic UseWMakerStyleDocking
+  w kadu.conf (sekcja [Global]). Uwaga: pod KDE wystepuja dziwne efekty.
 
 +++ wersja 0.3.3-rc1
 * sms.cpp ma szansê kompilowaæ siê na Qt < 3.0.5

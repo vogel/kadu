@@ -10,8 +10,6 @@
 #ifndef KADU_H
 #define KADU_H
 
-/** values below most probably need no alteration **/
-
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
@@ -74,9 +72,12 @@ struct config {
 	char *extip;
 	int extport;
 	QStringList servers;
+
 	bool dock;
-	bool privatestatus;
 	bool rundocked;
+	bool dock_wmaker;
+	
+	bool privatestatus;
 	bool grouptabs;
 	bool checkupdates;
 	bool addtodescription;

@@ -26,28 +26,50 @@
 #include <X11/Xatom.h>
 
 TrayIcon::TrayIcon(QWidget *parent, const char *name)
-	: QLabel(0,"psidock",WMouseNoMask)
+	: QLabel(0,"TrayIcon",WMouseNoMask)
 {
 	if (!config.dock)
 		return;
-
-	setWFlags(WRepaintNoErase);
-	setPixmap(QPixmap((const char**)gg_inact_xpm));
+	QPixmap pix=QPixmap((const char**)gg_inact_xpm);
+	QLabel::setPixmap(pix);
 	QToolTip::add(this, i18n("Left click - hide/show window\nMiddle click or CTRL+any click- next message"));
-	resize(22,22);
-	update();
+	// WindowMaker
+	if(config.dock_wmaker)
+	{
+		resize(64,64);
+		setAlignment(Qt::AlignHCenter|Qt::AlignVCenter);
+		update();
 
-	Display *dsp = x11Display();
-	WId win = winId();
-	int r;
-	int data = 1;
-	r = XInternAtom(dsp, "KWM_DOCKWINDOW", false);
-	XChangeProperty(dsp, win, r, r, 32, 0, (uchar *)&data, 1);
-	r = XInternAtom(dsp, "_KDE_NET_WM_SYSTEM_TRAY_WINDOW_FOR", false);
-	XChangeProperty(dsp, win, r, XA_WINDOW, 32, 0, (uchar *)&data, 1);
+		WMakerMasterWidget = new QWidget(0,"WMakerMasterWidget");
+		WMakerMasterWidget->setGeometry(-10,-10,0,0);
 
+		Display* dsp = x11Display();
+		WId win = WMakerMasterWidget->winId();
+		XWMHints* hints = XGetWMHints(dsp, win);
+		hints->window_group = win;
+		hints->icon_window = winId();
+		hints->flags |= WindowGroupHint | IconWindowHint;
+		XSetWMHints(dsp, win, hints);
+		XFree( hints );		
+	}
+	// KDE/GNOME
+	else
+	{
+		setWFlags(WRepaintNoErase);
+		resize(22,22);
+		update();
+
+		Display *dsp = x11Display();
+		WId win = winId();
+		int r;
+		int data = 1;
+		r = XInternAtom(dsp, "KWM_DOCKWINDOW", false);
+		XChangeProperty(dsp, win, r, r, 32, 0, (uchar *)&data, 1);
+		r = XInternAtom(dsp, "_KDE_NET_WM_SYSTEM_TRAY_WINDOW_FOR", false);
+		XChangeProperty(dsp, win, r, XA_WINDOW, 32, 0, (uchar *)&data, 1);
+	};
+	//
 	setBackgroundMode(X11ParentRelative);
-
 	icon_timer = new QTimer(this);
 	blink = FALSE;
 	QObject::connect(icon_timer, SIGNAL(timeout()), this, SLOT(changeIcon()));
@@ -55,12 +77,17 @@ TrayIcon::TrayIcon(QWidget *parent, const char *name)
 
 TrayIcon::~TrayIcon()
 {
+	if(config.dock_wmaker)
+		delete WMakerMasterWidget;
 }
 
 void TrayIcon::setPixmap(const QPixmap& pixmap)
 {
 	QLabel::setPixmap(pixmap);
-	repaint();
+	if(config.dock_wmaker)
+		WMakerMasterWidget->setIcon(pixmap);
+	else
+		repaint();
 };
 
 void TrayIcon::setType(char **gg_xpm)
@@ -101,7 +128,10 @@ void TrayIcon::dockletChange(int id)
 }
 
 void TrayIcon::show() {
-	QLabel::show();
+	if(config.dock_wmaker)
+		WMakerMasterWidget->show();
+	else
+		QLabel::show();
 }
 
 void TrayIcon::connectSignals() {

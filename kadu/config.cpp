@@ -81,10 +81,13 @@ void loadKaduConfig(void) {
 	config.extport = konf->readNumEntry("ExternalPort", 0);
 	config.servers = QStringList::split(";", konf->readEntry("Server", ""));
 	server_nr = 0;
+
 	config.dock = konf->readBoolEntry("UseDocking",true);
+	config.rundocked = konf->readBoolEntry("RunDocked", false);
+	config.dock_wmaker = konf->readBoolEntry("UseWMakerStyleDocking", false);
+
 	config.raise = konf->readBoolEntry("AutoRaise",false);
 	config.privatestatus = konf->readBoolEntry("PrivateStatus", false);
-	config.rundocked = konf->readBoolEntry("RunDocked", false);
 	config.grouptabs = konf->readBoolEntry("DisplayGroupTabs", true);
 	config.checkupdates = konf->readBoolEntry("CheckUpdates", true);
 	config.addtodescription = konf->readBoolEntry("AddToDescription", false);
@@ -202,10 +205,13 @@ void saveKaduConfig(void) {
 	konf->writeEntry("ExternalIP", config.extip);
 	konf->writeEntry("ExternalPort", config.extport);
 	konf->writeEntry("Server", config.servers.join(";"));
+
 	konf->writeEntry("UseDocking",config.dock);
+	konf->writeEntry("RunDocked",config.rundocked);	
+	konf->writeEntry("UseWMakerStyleDocking",config.dock_wmaker);
+
 	konf->writeEntry("AutoRaise",config.raise);
 	konf->writeEntry("PrivateStatus",config.privatestatus);
-	konf->writeEntry("RunDocked",config.rundocked);
 	konf->writeEntry("CheckUpdates", config.checkupdates);
 	konf->writeEntry("DisplayGroupTabs",config.grouptabs);
 	konf->writeEntry("AddToDescription",config.addtodescription);

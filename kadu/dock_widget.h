@@ -17,6 +17,7 @@ class TrayIcon : protected QLabel
 	Q_OBJECT
 
 	private:
+		QWidget* WMakerMasterWidget;
 		QTimer *icon_timer;
 		bool blink;
 		friend class DockHint;
