@@ -649,13 +649,11 @@ void Kadu::deleteUsers()
 
 void Kadu::personalInfo()
 {
-	PersonalInfoDialog *pid = new PersonalInfoDialog();
-	pid->show();
+	(new PersonalInfoDialog())->show();
 }
 
 void Kadu::addUserAction() {
-	UserInfo *ui = new UserInfo("add user", 0, QString::null, true);
-	ui->show();
+	(new UserInfo("add user", 0, QString::null, true))->show();
 }
 
 void Kadu::deleteHistory()
@@ -673,8 +671,7 @@ void Kadu::deleteHistory()
 
 void Kadu::manageIgnored()
 {
-	Ignored *ign = new Ignored(0, "ignored");
-	ign->show();
+	(new Ignored(0, "ignored"))->show();
 }
 
 void Kadu::openChat()
@@ -692,8 +689,7 @@ void Kadu::openChat()
 
 void Kadu::searchInDirectory()
 {
-	SearchDialog *sd = new SearchDialog();
-	sd->show();
+	(new SearchDialog())->show();
 }
 
 void Kadu::help()
@@ -711,26 +707,6 @@ void Kadu::about()
 	(new About(this, "about_window"))->show();
 }
 
-void Kadu::remindPassword()
-{
-	(new RemindPassword())->start();
-}
-
-void Kadu::changePassword()
-{
-	(new ChangePassword())->show();
-}
-
-void Kadu::registerUser()
-{
-	(new Register())->show();
-}
-
-void Kadu::unregisterUser()
-{
-	(new Unregister())->show();
-}
-
 void Kadu::quit()
 {
 	kdebugf();
@@ -741,7 +717,6 @@ void Kadu::importExportUserlist()
 {
 	(new UserlistImportExport(this, "userlist_import_export"))->show();
 }
-
 
 void Kadu::hideKadu()
 {
@@ -1489,11 +1464,7 @@ void Kadu::createMenu() {
 	MainMenu->insertItem(icons_manager.loadIcon("Configuration"), tr("&Configuration"), this, SLOT(configure()),HotKey::shortCutFromFile("ShortCuts", "kadu_configure"));
 	MainMenu->insertSeparator();
 
-	MainMenu->insertItem(tr("Remind &password"), this, SLOT(remindPassword()));
-	MainMenu->insertItem(tr("&Change password/email"), this, SLOT(changePassword()));
-	MainMenu->insertItem(icons_manager.loadIcon("RegisterUser"),tr("Register &new user"), this, SLOT(registerUser()));
-	MainMenu->insertItem(tr("Unregister user"), this, SLOT(unregisterUser()));
-	MainMenu->insertItem(tr("Personal information"), this,SLOT(personalInfo()));
+	personalInfoMenuId=MainMenu->insertItem(tr("Personal information"), this,SLOT(personalInfo()));
 	MainMenu->insertSeparator();
 	MainMenu->insertItem(icons_manager.loadIcon("LookupUserInfo"), tr("&Search for users"), this, SLOT(searchInDirectory()));
 	MainMenu->insertItem(tr("I&mport / Export userlist"), this, SLOT(importExportUserlist()));
@@ -1793,7 +1764,7 @@ void Kadu::startupProcedure()
 				ConfigDialog::showConfigDialog(qApp);
 				break;
 			case 0: // Register
-				(new Register())->show();
+				emit wantRegister();
 				break;
 			case 2: // Nothing
 				break;

@@ -118,6 +118,7 @@ class Kadu : public QMainWindow
 		**/
 		bool docked();
 		void startupProcedure();
+		int personalInfoMenuId;//potrzebne dla modu³u account_management
 
 	private slots:
 		void chatMsgReceived(UinsList senders, const QString &msg, time_t time);
@@ -163,7 +164,6 @@ class Kadu : public QMainWindow
 		void addUserAction();
 		void blockUser();
 		void configure();
-		void changePassword();
 		void deleteHistory();
 		void deleteUsers();
 		void help();
@@ -176,11 +176,8 @@ class Kadu : public QMainWindow
 		void offlineToUser();
 		void personalInfo();
 		void quit();
-		void registerUser();
-		void remindPassword();
 		void searchInDirectory();
 		void showUserInfo();
-		void unregisterUser();
 		void viewHistory();
 		void popupMenu();
 		void show();
@@ -221,6 +218,7 @@ class Kadu : public QMainWindow
 			póki co nie dzia³a
 		**/
 //		void minimized();
+		void wantRegister();
 };
 
 class KaduSlots : public QObject

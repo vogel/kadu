@@ -1,22 +1,9 @@
-#ifndef PASSWORD_H
-#define PASSWORD_H
+#ifndef CHANGE_PASSWORD_H
+#define CHANGE_PASSWORD_H
 
 #include <qhbox.h>
 #include <qlineedit.h>
-
-class RemindPassword : public QHBox {
-	Q_OBJECT
-	public:
-		RemindPassword();
-		~RemindPassword();
-
-	private slots:
-		void reminded(bool ok);
-
-	public slots:
-		void start();
-
-};
+#include <qevent.h>
 
 class ChangePassword : public QHBox {
 	Q_OBJECT

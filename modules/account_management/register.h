@@ -2,12 +2,11 @@
 #define REGISTER_H
 
 #include <qhbox.h>
-#include <qtimer.h>
+#include <qdialog.h>
 #include <qlineedit.h>
 #include <qlabel.h>
 #include <qcheckbox.h>
-#include <qsocketnotifier.h>
-
+#include <qevent.h>
 #include "gadu.h"
 
 /**
@@ -26,7 +25,8 @@ class Register : public QHBox {
 		UinType uin;
 		QCheckBox *cb_updateconfig;
 
-		void ask();	
+		void ask();
+		void createConfig();
 
 	private slots:
 		void doRegister();
@@ -37,28 +37,4 @@ class Register : public QHBox {
 
 };
 
-class Unregister : public QHBox {
-	Q_OBJECT
-
-	public:
-		Unregister(QDialog* parent = 0, const char *name = 0);
-		~Unregister();
-
-	private:
-		QLineEdit *uin, *pwd;
-		QLabel *status;
-		QCheckBox *updateconfig;
-
-		void deleteConfig();
-
-	private slots:
-		void doUnregister();
-		void keyPressEvent(QKeyEvent *);
-	
-	public slots:
-		void unregistered(bool ok);
-
-};
-
 #endif
-

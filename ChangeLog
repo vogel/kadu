@@ -65,6 +65,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * w konfiguracji mo¿na wybraæ jaki styl QT ma zostaæ u¿yty (michal) 
 * patch dorregaray'a dodaj±ca do modu³u autoaway opcjê automatycznej
   zmiany opisu, ew. doklejenia czego¶ do poprzedniego (adrian)
+* wydzielenie do modu³u rejestracji/wyrejestrowania konta,
+  zmiany/przypominania has³a (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
