@@ -412,6 +412,7 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 QString parse_symbols(QString s, int i, UserListElement &ule, bool escape) {
 	QString r,d;
 	int j;
+	r.reserve(s.length());
 
 	while(s[i]!='%' && i != s.length()) {
 		r+=s[i];
@@ -557,6 +558,63 @@ QString parse(QString s, UserListElement ule, bool escape) {
 	return parse_expression(s,i,ule,escape);
 }
 
+//internal usage
+void stringHeapSortPushDown( QString* heap, int first, int last )
+{
+	int r = first;
+	while ( r <= last / 2 ) {
+		if ( last == 2 * r ) {
+			if ( heap[2 * r].localeAwareCompare(heap[r])<0 )
+				qSwap( heap[r], heap[2 * r] );
+			r = last;
+		} else {
+			if ( heap[2 * r].localeAwareCompare( heap[r] )<0 && !(heap[2 * r + 1].localeAwareCompare(heap[2 * r])<0) ) {
+				qSwap( heap[r], heap[2 * r] );
+				r *= 2;
+			} else if ( heap[2 * r + 1].localeAwareCompare( heap[r] )<0 && heap[2 * r + 1].localeAwareCompare( heap[2 * r] )<0 ) {
+				qSwap( heap[r], heap[2 * r + 1] );
+				r = 2 * r + 1;
+			} else {
+				r = last;
+			}
+		}
+    }
+}
+
+//internal usage
+void stringHeapSortHelper( QStringList::iterator b, QStringList::iterator e, QString, uint n )
+{
+	QStringList::iterator insert = b;
+	QString* realheap = new QString[n];
+	QString* heap = realheap - 1;
+	int size = 0;
+	for( ; insert != e; ++insert ) {
+		heap[++size] = *insert;
+		int i = size;
+		while( i > 1 && heap[i].localeAwareCompare(heap[i / 2])<0 ) {
+			qSwap( heap[i], heap[i / 2] );
+			i /= 2;
+		}
+	}
+
+	for( uint i = n; i > 0; i-- ) {
+		*b++ = heap[1];
+		if ( i > 1 ) {
+			heap[1] = heap[i];
+			stringHeapSortPushDown( heap, 1, (int)i - 1 );
+		}
+	}
+
+	delete[] realheap;
+}
+
+void stringHeapSort(QStringList &c)
+{
+	if (c.begin() == c.end())
+		return;
+	stringHeapSortHelper(c.begin(), c.end(), *(c.begin()), (uint)c.count());
+}
+
 bool UinsList::equals(const UinsList &uins) const
 {
 	if (count() != uins.count())
@@ -571,23 +629,7 @@ UinsList::UinsList() {
 }
 
 void UinsList::sort() {
-	bool stop;
-	int i;
-	uin_t uin;
-	
-	if (count() < 2)
-		return;
-
-	do {
-		stop = true;
-		for (i = 0; i < count() - 1; i++)
-			if (this->operator[](i) > this->operator[](i+1)) {
-				uin = this->operator[](i);
-				this->operator[](i) = this->operator[](i+1);
-				this->operator[](i+1) = uin;
-				stop = false;
-				}
-	} while (!stop);	
+	qHeapSort(*this);
 }
 
 ChooseDescription::ChooseDescription ( int nr, QWidget * parent, const char * name)

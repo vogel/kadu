@@ -22,6 +22,7 @@
 #include "pending_msgs.h"
 #include "config_dialog.h"
 #include "config_file.h"
+#include "misc.h"
 
 KaduListBoxPixmap::KaduListBoxPixmap(const QPixmap &pix, const QString &text)
 	: QListBoxItem()
@@ -252,31 +253,8 @@ void UserBox::keyPressEvent(QKeyEvent *e)
 }
 
 void UserBox::sortUsersByAltNick(QStringList &users) {
-	int i, count;
-	QString tmp;
-	bool stop;
 
-	QMap<QString,QString> usermap;
-	for (i = 0; i < users.count(); i++) {
-		usermap.insert(users[i].upper(), users[i]);
-		users[i] = users[i].upper();
-		}
-	// sortowanie uzytkownikow
-	count = users.count();
-	do {
-		stop = true;
-		for (i = 0; i < count - 1; i++)
-			if (users[i].localeAwareCompare(users[i+1]) > 0) {
-				tmp = users[i];
-				users[i] = users[i+1];
-				users[i+1] = tmp;
-				stop = false;
-				}
-		} while (!stop);
-//	users.sort();
-
-	for (i = 0; i < users.count(); i++)
-		users[i] = usermap[users[i]];
+	stringHeapSort(users);
 }
 
 void UserBox::refresh()

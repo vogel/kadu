@@ -43,6 +43,7 @@ void escapeSpecialCharacters(QString &msg);
 QString formatGGMessage(const QString &msg, int formats_length, void *formats);
 QString unformatGGMessage(const QString &msg, int &formats_length, void *&formats);
 QString parse(QString s, UserListElement ule, bool escape = true);
+void stringHeapSort(QStringList &c);
 
 class UinsList : public QValueList<uin_t>
 {
