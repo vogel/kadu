@@ -215,6 +215,14 @@ void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 			kdebug("HistoryManager::appendSms(): Error opening sms history\n");
 			return;
 			}
+
+		fidx.setName(f.name() + ".idx");
+		if (fidx.open(IO_WriteOnly | IO_Append)) {
+			offs = f.at();
+			fidx.writeBlock((const char *)&offs, sizeof(int));
+			fidx.close();
+			}
+
 		stream.setDevice(&f);
 		stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
 		stream << line << '\n';
