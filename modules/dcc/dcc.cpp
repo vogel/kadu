@@ -14,6 +14,7 @@
 #include <qmessagebox.h>
 #include <qpushbutton.h>
 #include <qvgroupbox.h>
+#include <qsocketnotifier.h>
 
 #include <fcntl.h>
 #include <unistd.h>
@@ -54,7 +55,7 @@ DccSocket::DccSocket(struct gg_dcc* dcc_sock)
 	kdebugf();
 	dccsock = dcc_sock;
 	dccevent = NULL;
-	snr = snw = NULL;
+	readSocketNotifier = writeSocketNotifier = NULL;
 	State = DCC_SOCKET_TRANSFERRING;
 	in_watchDcc = false;
 	++Count;
@@ -65,17 +66,17 @@ DccSocket::~DccSocket()
 {
 	kdebugf();
 	emit dcc_manager->socketDestroying(this);
-	if (snr)
+	if (readSocketNotifier)
 	{
-		snr->setEnabled(false);
-		delete snr;
-		snr = NULL;
+		readSocketNotifier->setEnabled(false);
+		delete readSocketNotifier;
+		readSocketNotifier = NULL;
 	}
-	if (snw)
+	if (writeSocketNotifier)
 	{
-		snw->setEnabled(false);
-		delete snw;
-		snw = NULL;
+		writeSocketNotifier->setEnabled(false);
+		delete writeSocketNotifier;
+		writeSocketNotifier = NULL;
 	}
 	if (dccevent)
 	{
@@ -108,11 +109,11 @@ struct gg_event* DccSocket::ggDccEvent()
 void DccSocket::initializeNotifiers()
 {
 	kdebugf();
-	snr = new QSocketNotifier(dccsock->fd, QSocketNotifier::Read, this);
-	QObject::connect(snr, SIGNAL(activated(int)), this, SLOT(dccDataReceived()));
+	readSocketNotifier = new QSocketNotifier(dccsock->fd, QSocketNotifier::Read, this);
+	QObject::connect(readSocketNotifier, SIGNAL(activated(int)), this, SLOT(dccDataReceived()));
 
-	snw = new QSocketNotifier(dccsock->fd, QSocketNotifier::Write, this);
-	QObject::connect(snw, SIGNAL(activated(int)), this, SLOT(dccDataSent()));
+	writeSocketNotifier = new QSocketNotifier(dccsock->fd, QSocketNotifier::Write, this);
+	QObject::connect(writeSocketNotifier, SIGNAL(activated(int)), this, SLOT(dccDataSent()));
 	kdebugf2();
 }
 
@@ -125,7 +126,7 @@ void DccSocket::dccDataReceived()
 void DccSocket::dccDataSent()
 {
 	kdebugf();
-	snw->setEnabled(false);
+	writeSocketNotifier->setEnabled(false);
 	if (dccsock->check & GG_CHECK_WRITE)
 		watchDcc(GG_CHECK_WRITE);
 	kdebugf2();
@@ -165,7 +166,7 @@ void DccSocket::watchDcc(int /*check*/)
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_CALLBACK! uin:%d peer_uin:%d\n",
 				dccsock->uin, dccsock->peer_uin);
 			dcc_manager->cancelTimeout();
-			emit dcc_manager->callbackReceived(this);
+			dcc_manager->callbackReceived(this);
 			break;
 		case GG_EVENT_DCC_NEED_FILE_ACK:
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_NEED_FILE_ACK! uin:%d peer_uin:%d\n",
@@ -193,7 +194,7 @@ void DccSocket::watchDcc(int /*check*/)
 	emit dcc_manager->dccEvent(this);
 
 	if (dccsock->check & GG_CHECK_WRITE)
-		snw->setEnabled(true);
+		writeSocketNotifier->setEnabled(true);
 
 	if (dccevent)
 	{
@@ -208,8 +209,8 @@ void DccSocket::watchDcc(int /*check*/)
 void DccSocket::setState(int pstate)
 {
 	kdebugf();
-	snr->setEnabled(false);
-	snw->setEnabled(false);
+	readSocketNotifier->setEnabled(false);
+	writeSocketNotifier->setEnabled(false);
 	State = pstate;
 
 	switch (State)
@@ -270,8 +271,8 @@ DccManager::DccManager(QObject *parent, const char *name) : QObject(parent, name
 	ConfigDialog::registerSlotOnApply(this, SLOT(configDialogApply()));
 
 	DccSock = NULL;
-	DccSnr = NULL;
-	DccSnw = NULL;
+	DCCReadSocketNotifier = NULL;
+	DCCWriteSocketNotifier = NULL;
 
 	if (!config_file.readBoolEntry("Network","DccIpDetect"))
 		ConfigDccIp.setAddress(config_file.readEntry("Network","DccIP", ""));
@@ -337,10 +338,10 @@ void DccManager::watchDcc()
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Connection broken unexpectedly!\n");
 		config_file.writeEntry("Network", "AllowDCC", false);
-		delete DccSnr;
-		DccSnr = NULL;
-		delete DccSnw;
-		DccSnw = NULL;
+		delete DCCReadSocketNotifier;
+		DCCReadSocketNotifier = NULL;
+		delete DCCWriteSocketNotifier;
+		DCCWriteSocketNotifier = NULL;
 		return;
 	}
 
@@ -355,9 +356,10 @@ void DccManager::watchDcc()
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_NEW\n");
 			if (DccSocket::count() < 8)
 			{	
-				DccSocket* dcc = new DccSocket(dcc_e->event.dcc_new);
-				connect(dcc, SIGNAL(dccFinished(DccSocket *)), this, SLOT(dccFinished(DccSocket *)));
-				dcc->initializeNotifiers();	
+				DccSocket* dcc_socket = new DccSocket(dcc_e->event.dcc_new);
+				connect(dcc_socket, SIGNAL(dccFinished(DccSocket *)),
+						this, SLOT(dccFinished(DccSocket *)));
+				dcc_socket->initializeNotifiers();	
 			}
 			else
 			{
@@ -371,16 +373,16 @@ void DccManager::watchDcc()
 	}
 
 	if (DccSock->check == GG_CHECK_WRITE)
-		DccSnw->setEnabled(true);
+		DCCWriteSocketNotifier->setEnabled(true);
 
 	gadu->freeEvent(dcc_e);
 	kdebugf2();
 }
 
-void DccManager::dccFinished(DccSocket* dcc)
+void DccManager::dccFinished(DccSocket* dcc_socket)
 {
 	kdebugf();
-	delete dcc;
+	delete dcc_socket;
 	kdebugf2();
 }
 
@@ -394,7 +396,7 @@ void DccManager::dccReceived()
 void DccManager::dccSent()
 {
 	kdebugf();
-	DccSnw->setEnabled(false);
+	DCCWriteSocketNotifier->setEnabled(false);
 	if (DccSock->check & GG_CHECK_WRITE)
 		watchDcc();
 	kdebugf2();
@@ -428,7 +430,7 @@ void DccManager::setupDcc()
 	QHostAddress dccIp;
 	short int dccPort;
 
-	DccSock = gadu->dccSocketCreate(config_file.readNumEntry("General", "UIN"), config_file.readNumEntry("Network", "LocalPort", 1550));
+	gadu->dccSocketCreate(config_file.readNumEntry("General", "UIN"), config_file.readNumEntry("Network", "LocalPort", 1550), DccSock);
 
 	if (!DccSock)
 	{
@@ -455,11 +457,11 @@ void DccManager::setupDcc()
 
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "DCC_IP=%s DCC_PORT=%d\n", dccIp.toString().latin1(), dccPort);
 
-	DccSnr = new QSocketNotifier(DccSock->fd, QSocketNotifier::Read, kadu);
-	connect(DccSnr, SIGNAL(activated(int)), this, SLOT(dccReceived()));
+	DCCReadSocketNotifier = new QSocketNotifier(DccSock->fd, QSocketNotifier::Read, kadu);
+	connect(DCCReadSocketNotifier, SIGNAL(activated(int)), this, SLOT(dccReceived()));
 
-	DccSnw = new QSocketNotifier(DccSock->fd, QSocketNotifier::Write, kadu);
-	connect(DccSnw, SIGNAL(activated(int)), this, SLOT(dccSent()));
+	DCCWriteSocketNotifier = new QSocketNotifier(DccSock->fd, QSocketNotifier::Write, kadu);
+	connect(DCCWriteSocketNotifier, SIGNAL(activated(int)), this, SLOT(dccSent()));
 
 	kdebugf2();
 }
@@ -467,16 +469,16 @@ void DccManager::setupDcc()
 void DccManager::closeDcc()
 {
 	kdebugf();
-	if (DccSnr)
+	if (DCCReadSocketNotifier)
 	{
-		delete DccSnr;
-		DccSnr = NULL;
+		delete DCCReadSocketNotifier;
+		DCCReadSocketNotifier = NULL;
 	}
 
-	if (DccSnw)
+	if (DCCWriteSocketNotifier)
 	{
-		delete DccSnw;
-		DccSnw = NULL;
+		delete DCCWriteSocketNotifier;
+		DCCWriteSocketNotifier = NULL;
 	}
 
 	if (DccSock)
@@ -557,13 +559,55 @@ void DccManager::dccConnectionReceived(const UserListElement& sender)
 	struct gg_dcc* dcc_new;
 	if (DccSocket::count() < 8)
 	{
-		dcc_new = gadu->dccGetFile(htonl(sender.ip().ip4Addr()), sender.port(), config_file.readNumEntry("General","UIN"), sender.uin());
+		gadu->dccGetFile(htonl(sender.ip().ip4Addr()), sender.port(), config_file.readNumEntry("General","UIN"), sender.uin(), dcc_new);
 		if (dcc_new)
 		{
-			DccSocket* dcc = new DccSocket(dcc_new);
-			connect(dcc, SIGNAL(dccFinished(DccSocket*)), this, SLOT(dccFinished(DccSocket*)));
-			dcc->initializeNotifiers();
+			DccSocket* dcc_socket = new DccSocket(dcc_new);
+			connect(dcc_socket, SIGNAL(dccFinished(DccSocket*)),
+					this, SLOT(dccFinished(DccSocket*)));
+			dcc_socket->initializeNotifiers();
 		}
+	}
+	kdebugf2();
+}
+
+void DccManager::initDCCConnection(uint32_t ip, uint16_t port, UinType my_uin, UinType peer_uin, const char *gadu_slot, int dcc_type)
+{
+	kdebugf();
+	if (port>=10)
+	{
+		struct gg_dcc *sock=NULL;
+		connect(this, SIGNAL(dccSig(uint32_t, uint16_t, UinType, UinType, struct gg_dcc *&)), gadu, gadu_slot);
+		emit dccSig(htonl(ip), port, my_uin, peer_uin, sock);
+		disconnect(this, SIGNAL(dccSig(uint32_t, uint16_t, UinType, UinType, struct gg_dcc *&)), gadu, gadu_slot);
+		if (sock)
+		{
+			DccSocket* dcc_socket = new DccSocket(sock);
+			connect(dcc_socket, SIGNAL(dccFinished(DccSocket*)),
+					this, SLOT(dccFinished(DccSocket*)));
+			dcc_socket->initializeNotifiers();
+		}
+		else
+			kdebugm(KDEBUG_WARNING, "socket is null (ip:%d port:%d my:%d peer:%d type:%d)\n", ip, port, my_uin, peer_uin, dcc_type);
+	}
+	else
+	{
+		kdebugm(KDEBUG_INFO, "user.port()<10, asking for connection (uin: %d)\n", peer_uin);
+		dcc_manager->startTimeout();
+		requests.insert(peer_uin, dcc_type);
+		gadu->dccRequest(peer_uin);
+	}
+	kdebugf2();
+}
+
+void DccManager::callbackReceived(DccSocket *sock)
+{
+	kdebugf();
+	UinType peer_uin=sock->ggDccStruct()->peer_uin;
+	if (requests.contains(peer_uin))
+	{
+		gadu->dccSetType(sock->ggDccStruct(), requests[peer_uin]);
+		requests.remove(sock->ggDccStruct()->peer_uin);
 	}
 	kdebugf2();
 }

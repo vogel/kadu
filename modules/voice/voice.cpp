@@ -162,8 +162,6 @@ VoiceManager::VoiceManager(QObject *parent, const char *name) : QObject(parent, 
 		this, SLOT(connectionBroken(DccSocket*)));
 	connect(dcc_manager, SIGNAL(dccError(DccSocket*)),
 		this, SLOT(dccError(DccSocket*)));
-	connect(dcc_manager, SIGNAL(callbackReceived(DccSocket*)),
-		this, SLOT(callbackReceived(DccSocket*)));
 	connect(dcc_manager, SIGNAL(dccEvent(DccSocket*)),
 		this, SLOT(dccEvent(DccSocket*)));
 	connect(dcc_manager, SIGNAL(socketDestroying(DccSocket*)),
@@ -183,8 +181,6 @@ VoiceManager::~VoiceManager()
 		this, SLOT(connectionBroken(DccSocket*)));
 	disconnect(dcc_manager, SIGNAL(dccError(DccSocket*)),
 		this, SLOT(dccError(DccSocket*)));
-	disconnect(dcc_manager, SIGNAL(callbackReceived(DccSocket*)),
-		this, SLOT(callbackReceived(DccSocket*)));
 	disconnect(dcc_manager, SIGNAL(dccEvent(DccSocket*)),
 		this, SLOT(dccEvent(DccSocket*)));
 	disconnect(dcc_manager, SIGNAL(socketDestroying(DccSocket*)),
@@ -337,7 +333,6 @@ void VoiceManager::makeVoiceChat()
 	if (config_file.readBoolEntry("Network", "AllowDCC"))
 		if (dcc_manager->configDccIp().isIp4Addr())
 		{
-			struct gg_dcc *dcc_new;
 			UserBox *activeUserBox=UserBox::getActiveUserBox();
 			UserList users;
 			if (activeUserBox==NULL)
@@ -346,24 +341,13 @@ void VoiceManager::makeVoiceChat()
 			if (users.count() != 1)
 				return;
 			UserListElement user = (*users.begin());
-			if (user.port() >= 10)
-			{
-				kdebugm(KDEBUG_INFO, "ip: %s, port: %d, uin: %d\n", user.ip().toString().local8Bit().data(), user.port(), user.uin());
-				if ((dcc_new = gadu->dccVoiceChat(htonl(user.ip().ip4Addr()), user.port(),
-					config_file.readNumEntry("General", "UIN"), user.uin())) != NULL) {
-					DccSocket* socket = new DccSocket(dcc_new);
-					connect(socket, SIGNAL(dccFinished(DccSocket *)), dcc_manager,
-						SLOT(dccFinished(DccSocket *)));
-					socket->initializeNotifiers();
-				}
-			}
-			else
-			{
-				kdebugm(KDEBUG_INFO, "user.port()<10, asking for connection (uin: %d)\n", user.uin());
-				dcc_manager->startTimeout();
-				Requests.insert(user.uin(), true);
-				gadu->dccRequest(user.uin());
-			}
+			
+			dcc_manager->initDCCConnection(user.ip().ip4Addr(),
+				user.port(),
+				config_file.readNumEntry("General", "UIN"),
+				user.uin(),
+				SLOT(dccVoiceChat(uint32_t, uint16_t, UinType, UinType, struct gg_dcc *&)),
+				GG_SESSION_DCC_VOICE);
 		}
 	kdebugf2();
 }
@@ -428,17 +412,6 @@ void VoiceManager::connectionBroken(DccSocket* socket)
 	kdebugf();
 	if (VoiceChatDialog::bySocket(socket) != NULL)
 		socket->setState(DCC_SOCKET_VOICECHAT_DISCARDED);
-	kdebugf2();
-}
-
-void VoiceManager::callbackReceived(DccSocket* socket)
-{
-	kdebugf();
-	if (Requests.contains(socket->ggDccStruct()->peer_uin))
-	{
-		gadu->dccSetType(socket->ggDccStruct(), GG_SESSION_DCC_VOICE);
-		Requests.remove(socket->ggDccStruct()->peer_uin);
-	}
 	kdebugf2();
 }
 

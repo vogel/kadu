@@ -4,9 +4,10 @@
 #include "dcc.h"
 
 #include <qdialog.h>
-#include <qlayout.h> 
-#include <qprogressbar.h>
-#include <qlabel.h>
+
+class QLabel;
+class QProgressBar;
+class QVBoxLayout;
 
 class FileTransferDialog : public QDialog
 {
@@ -45,14 +46,6 @@ class FileTransferManager : public QObject
 	Q_OBJECT
 
 	private:
-		/**
-			Przechowuje informacje o wys³anych
-			request'ach CTCP. Je¶li kto¶ jest
-			za nat'em i chcemy wys³aæ mu plik
-			to wysy³amy pro¶bê o po³±czenie a
-			jego numer uin jest zapamiêtywany.
-		**/
-		QMap<UinType, bool> Requests;
 		QString selectFile(DccSocket* socket);
 
 	private slots:
@@ -65,7 +58,6 @@ class FileTransferManager : public QObject
 		void needFileInfo(DccSocket* socket);
 		void noneEvent(DccSocket* socket);
 		void dccDone(DccSocket* socket);
-		void callbackReceived(DccSocket* socket);
 		void setState(DccSocket* socket);
 		void socketDestroying(DccSocket* socket);
 

@@ -47,16 +47,7 @@ class VoiceManager : public QObject
 		RecordThread* rt;
 		gsm voice_enc;
 		gsm voice_dec;
-		/**
-			Przechowuje informacje o wys³anych
-			request'ach CTCP. Je¶li kto¶ jest
-			za nat'em i chcemy rozpocz±æ z nim
-			rozmowê g³osow± to wysy³amy pro¶bê
-			o po³±czenie a jego numer uin jest
-			zapamiêtywany.
-		**/
-		QMap<UinType, bool> Requests;
-
+		
 		void resetCoder();
 		void resetDecoder();
 		void askAcceptVoiceChat(DccSocket* socket);
@@ -68,7 +59,6 @@ class VoiceManager : public QObject
 		void userBoxMenuPopup();
 		void makeVoiceChat();
 		void connectionBroken(DccSocket* socket);
-		void callbackReceived(DccSocket* socket);
 		void dccError(DccSocket* socket);
 		void dccEvent(DccSocket* socket);
 		void socketDestroying(DccSocket* socket);

@@ -1,17 +1,12 @@
 #ifndef DCC_H
 #define DCC_H
 
-#include <qdialog.h>
-#include <qlayout.h> 
-#include <qprogressbar.h>
-#include <qlabel.h>
-#include <qsocketnotifier.h>
 #include <qhostaddress.h>
-#include <qevent.h>
 
 #include "kadu-config.h"
 #include "gadu.h"
 
+class QSocketNotifier;
 
 enum dccSocketState {
 	DCC_SOCKET_TRANSFERRING,
@@ -28,8 +23,8 @@ class DccSocket : public QObject
 	Q_OBJECT
 
 	private:
-		QSocketNotifier* snr;
-		QSocketNotifier* snw;
+		QSocketNotifier* readSocketNotifier;
+		QSocketNotifier* writeSocketNotifier;
 		struct gg_dcc* dccsock;
 		struct gg_event* dccevent;
 		bool in_watchDcc;
@@ -62,14 +57,15 @@ class DccManager : public QObject
 	private:
 		friend class DccSocket;
 		gg_dcc* DccSock;
-		QSocketNotifier* DccSnr;
-		QSocketNotifier* DccSnw;
+		QSocketNotifier* DCCReadSocketNotifier;
+		QSocketNotifier* DCCWriteSocketNotifier;
 		
 		QHostAddress ConfigDccIp;
 		short int ConfigDccPort;
 		
 		QTimer TimeoutTimer;
 		void watchDcc();
+		QMap<UinType, int> requests;
 
 	private slots:
 		void setupDcc();
@@ -81,6 +77,10 @@ class DccManager : public QObject
 		**/
 		void dccConnectionReceived(const UserListElement& sender);
 		void timeout();
+		void callbackReceived(DccSocket *socket);
+	signals:
+		/* nie dotykaæ */
+		void dccSig(uint32_t ip, uint16_t port, UinType my_uin, UinType peer_uin, struct gg_dcc *&out);
 
 	public:
 		DccManager(QObject *parent=0, const char *name=0);
@@ -88,6 +88,7 @@ class DccManager : public QObject
 		QHostAddress configDccIp();
 		void startTimeout();
 		void cancelTimeout();
+		void initDCCConnection(uint32_t ip, uint16_t port, UinType my_uin, UinType peer_uin, const char *gadu_slot, int dcc_type);
 
 	public slots:
 		void dccFinished(DccSocket* dcc);
@@ -106,7 +107,6 @@ class DccManager : public QObject
 		void needFileInfo(DccSocket* socket);
 		void noneEvent(DccSocket* socket);
 		void dccDone(DccSocket* socket);
-		void callbackReceived(DccSocket* socket);
 		void setState(DccSocket* socket);
 		void socketDestroying(DccSocket* socket);
 };

@@ -2297,24 +2297,24 @@ int GaduProtocol::dccFillFileInfo(struct gg_dcc* d, const QString& filename)
 	return gg_dcc_fill_file_info(d, filename.local8Bit());
 }
 
-struct gg_dcc* GaduProtocol::dccSocketCreate(UinType uin, uint16_t port)
+void GaduProtocol::dccSocketCreate(UinType uin, uint16_t port, struct gg_dcc *&out)
 {
-	return gg_dcc_socket_create(uin, port);
+	out = gg_dcc_socket_create(uin, port);
 }
 
-struct gg_dcc* GaduProtocol::dccSendFile(uint32_t ip, uint16_t port, UinType my_uin, UinType peer_uin)
+void GaduProtocol::dccSendFile(uint32_t ip, uint16_t port, UinType my_uin, UinType peer_uin, struct gg_dcc *&out)
 {
-	return gg_dcc_send_file(ip, port, my_uin, peer_uin);
+	out = gg_dcc_send_file(ip, port, my_uin, peer_uin);
 }
 
-struct gg_dcc* GaduProtocol::dccGetFile(uint32_t ip, uint16_t port, UinType my_uin, UinType peer_uin)
+void GaduProtocol::dccGetFile(uint32_t ip, uint16_t port, UinType my_uin, UinType peer_uin, struct gg_dcc *&out)
 {
-	return gg_dcc_get_file(ip, port, my_uin, peer_uin);
+	out = gg_dcc_get_file(ip, port, my_uin, peer_uin);
 }
 
-struct gg_dcc* GaduProtocol::dccVoiceChat(uint32_t ip, uint16_t port, UinType my_uin, UinType peer_uin)
+void GaduProtocol::dccVoiceChat(uint32_t ip, uint16_t port, UinType my_uin, UinType peer_uin, struct gg_dcc *&out)
 {
-	return gg_dcc_voice_chat(ip, port, my_uin, peer_uin);
+	out = gg_dcc_voice_chat(ip, port, my_uin, peer_uin);
 }
 
 int GaduProtocol::dccVoiceSend(struct gg_dcc* d, char* buf, int length)

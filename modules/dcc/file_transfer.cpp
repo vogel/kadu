@@ -14,6 +14,9 @@
 #include <qpushbutton.h>
 #include <qfileinfo.h>
 #include <qlayout.h>
+#include <qsocketnotifier.h>
+#include <qprogressbar.h>
+#include <qlabel.h>
 
 #include <fcntl.h>
 #include <unistd.h>
@@ -169,8 +172,6 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 		this, SLOT(noneEvent(DccSocket*)));
 	connect(dcc_manager, SIGNAL(dccDone(DccSocket*)),
 		this, SLOT(dccDone(DccSocket*)));
-	connect(dcc_manager, SIGNAL(callbackReceived(DccSocket*)),
-		this, SLOT(callbackReceived(DccSocket*)));
 	connect(dcc_manager, SIGNAL(setState(DccSocket*)),
 		this, SLOT(setState(DccSocket*)));
 	connect(dcc_manager, SIGNAL(socketDestroying(DccSocket*)),
@@ -197,8 +198,6 @@ FileTransferManager::~FileTransferManager()
 		this, SLOT(noneEvent(DccSocket*)));
 	disconnect(dcc_manager, SIGNAL(dccDone(DccSocket*)),
 		this, SLOT(dccDone(DccSocket*)));
-	disconnect(dcc_manager, SIGNAL(callbackReceived(DccSocket*)),
-		this, SLOT(callbackReceived(DccSocket*)));
 	disconnect(dcc_manager, SIGNAL(setState(DccSocket*)),
 		this, SLOT(setState(DccSocket*)));
 	FileTransferDialog::destroyAll();
@@ -211,27 +210,13 @@ void FileTransferManager::sendFile(UinType receiver)
 	if (config_file.readBoolEntry("Network", "AllowDCC"))
 		if (dcc_manager->configDccIp().isIp4Addr())
 		{
-			struct gg_dcc *dcc_new;
 			const UserListElement& user = userlist.byUin(receiver);
-			if (user.port() >= 10)
-			{
-				kdebugm(KDEBUG_INFO, "ip: %s, port: %d, uin: %d\n", user.ip().toString().local8Bit().data(), user.port(), user.uin());
-				if ((dcc_new = gadu->dccSendFile(htonl(user.ip().ip4Addr()), user.port(),
-					config_file.readNumEntry("General", "UIN"), user.uin())) != NULL)
-				{
-					DccSocket* dcc = new DccSocket(dcc_new);
-					connect(dcc, SIGNAL(dccFinished(DccSocket*)), dcc_manager,
-						SLOT(dccFinished(DccSocket*)));
-					dcc->initializeNotifiers();
-				}
-			}
-			else
-			{
-				kdebugm(KDEBUG_INFO, "user.port()<10, asking for connection (uin: %d)\n", user.uin());
-				dcc_manager->startTimeout();
-				Requests.insert(user.uin(), true);
-				gadu->dccRequest(user.uin());
-			}
+			dcc_manager->initDCCConnection(user.ip().ip4Addr(),
+				user.port(),
+				config_file.readNumEntry("General", "UIN"),
+				user.uin(),
+				SLOT(dccSendFile(uint32_t, uint16_t, UinType, UinType, struct gg_dcc *&)),
+				GG_SESSION_DCC_SEND);
 		}
 	kdebugf2();
 }
@@ -352,10 +337,10 @@ void FileTransferManager::needFileAccept(DccSocket* socket)
 	char fsize[20];
 	snprintf(fsize, sizeof(fsize), "%.1f", (float) socket->ggDccStruct()->file_info.size / 1024);
 
-	str=tr("User %1 wants to send us a file %2\nof size %3kB. Accept transfer?")
-		.arg(userlist.byUin(socket->ggDccStruct()->peer_uin).altNick())
-		.arg((char *)socket->ggDccStruct()->file_info.filename)
-		.arg(fsize);
+	str=narg(tr("User %1 wants to send us a file %2\nof size %3kB. Accept transfer?"),
+		userlist.byUin(socket->ggDccStruct()->peer_uin).altNick(),
+		QString((char *)socket->ggDccStruct()->file_info.filename),
+		QString(fsize));
 
 	switch (QMessageBox::information(0, tr("Incoming transfer"), str, tr("Yes"), tr("No"),
 		QString::null, 0, 1))
@@ -441,43 +426,36 @@ void FileTransferManager::needFileAccept(DccSocket* socket)
 void FileTransferManager::noneEvent(DccSocket* socket)
 {
 	kdebugf();
-	if (FileTransferDialog::bySocket(socket) != NULL)
-		FileTransferDialog::bySocket(socket)->updateFileInfo();
+	FileTransferDialog *dialog=FileTransferDialog::bySocket(socket);
+	if (dialog != NULL)
+		dialog->updateFileInfo();
 	kdebugf2();
 }
 
 void FileTransferManager::dccDone(DccSocket* socket)
 {
 	kdebugf();
-	if (FileTransferDialog::bySocket(socket) != NULL)
-		FileTransferDialog::bySocket(socket)->updateFileInfo();
-	kdebugf2();
-}
-
-void FileTransferManager::callbackReceived(DccSocket* socket)
-{
-	kdebugf();
-	if (Requests.contains(socket->ggDccStruct()->peer_uin))
-	{
-		gadu->dccSetType(socket->ggDccStruct(), GG_SESSION_DCC_SEND);
-		Requests.remove(socket->ggDccStruct()->peer_uin);
-	}
+	FileTransferDialog *dialog=FileTransferDialog::bySocket(socket);
+	if (dialog != NULL)
+		dialog->updateFileInfo();
 	kdebugf2();
 }
 
 void FileTransferManager::setState(DccSocket* socket)
 {
 	kdebugf();
-	if (FileTransferDialog::bySocket(socket) != NULL)
-		FileTransferDialog::bySocket(socket)->dccFinished = true;
+	FileTransferDialog *dialog=FileTransferDialog::bySocket(socket);
+	if (dialog != NULL)
+		dialog->dccFinished = true;
 	kdebugf2();
 }
 
 void FileTransferManager::socketDestroying(DccSocket* socket)
 {
 	kdebugf();
-	if (FileTransferDialog::bySocket(socket) != NULL)
-		delete FileTransferDialog::bySocket(socket);
+	FileTransferDialog *dialog=FileTransferDialog::bySocket(socket);
+	if (dialog != NULL)
+		delete dialog;
 	kdebugf2();
 }
 
