@@ -1508,7 +1508,7 @@ void Kadu::disconnectNetwork() {
 	doBlink = false;
 	fprintf(stderr, "KK Kadu::disconnectNetwork(): calling offline routines\n");
 
-	if (autoaway_timer)
+	if (config.autoaway)
 		autoaway_timer->stop();
 	if (pingtimer) {
 		pingtimer->stop();
