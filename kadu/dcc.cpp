@@ -139,6 +139,8 @@ void dccSocketClass::watchDcc(int check) {
 		kdebug("dccSocketClass::watchDcc(): Connection broken unexpectedly!\n");
 #ifdef VOICE_ENABLED
 		voice_manager->free();
+		if (voicedialog)
+			disconnect(voicedialog, SIGNAL(cancelVoiceChat()), this, SLOT(cancelVoiceChatReceived()));
 #endif
 		if (type == DCC_TYPE_FILE)
 			setState(filedialog ? DCC_SOCKET_TRANSFER_ERROR : DCC_SOCKET_CONNECTION_BROKEN);
@@ -194,6 +196,8 @@ void dccSocketClass::watchDcc(int check) {
 			kdebug("dccSocketClass::watchDcc(): GG_EVENT_DCC_ERROR\n");
 #ifdef VOICE_ENABLED
 			voice_manager->free();
+			if (voicedialog)
+				disconnect(voicedialog, SIGNAL(cancelVoiceChat()), this, SLOT(cancelVoiceChatReceived()));
 #endif
 			if (type == DCC_TYPE_FILE)
 				setState(filedialog ? DCC_SOCKET_TRANSFER_ERROR : DCC_SOCKET_CONNECTION_BROKEN);
