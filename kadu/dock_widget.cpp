@@ -156,9 +156,9 @@ TrayIcon::TrayIcon(QWidget *parent, const char *name)
 
 TrayIcon::~TrayIcon()
 {
+	kdebug("TrayIcon::~TrayIcon()\n");
 	delete WMakerMasterWidget;
 	delete hint;
-	kdebug("TrayIcon::~TrayIcon()\n");
 }
 
 QPoint TrayIcon::trayPosition()
@@ -373,7 +373,7 @@ TrayHint::TrayHint(QWidget *parent, const char *name)
 	hint->setPaletteBackgroundColor(config.colors.trayhintBg);
 	hint->setPaletteForegroundColor(config.colors.trayhintText);
 
-	hint_timer = new QTimer();
+	hint_timer = new QTimer(this);
 	
 	QObject::connect(hint_timer,SIGNAL(timeout()),this,SLOT(remove_hint()));
 }
