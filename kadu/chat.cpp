@@ -92,6 +92,7 @@ Chat* ChatManager::findChatByUins(UinsList uins)
 	for(int i=0; i<Chats.count(); i++)
 		if(Chats[i]->uins().equals(uins))
 			return Chats[i];
+	kdebug("return NULL\n");
 	return NULL;
 }
 
@@ -568,7 +569,10 @@ void Chat::unregisterButton(const QString& name)
 QPushButton* Chat::button(const QString& name)
 {
 	if(!Buttons.contains(name))
+	{
+		kdebug("return NULL\n");
 		return NULL;
+	}
 	return Buttons[name];
 }
 

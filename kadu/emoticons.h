@@ -106,7 +106,7 @@ class AnimTextItem : public QTextCustomItem
 	public:
 		AnimTextItem(
 			QTextDocument *p, QTextEdit* edit,
-			const QString& filename, const QColor& bgcolor );
+			const QString& filename, const QColor& bgcolor, const QString &tip);
 		~AnimTextItem();
 		void draw(
 			QPainter* p, int x, int y, int cx, int cy,

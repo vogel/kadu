@@ -91,6 +91,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawki w module encryption: zmiana umiejscowienia opcji "wyslij moj klucz"
   oraz wyszarzanie, gdy nie mozna wyslac klucza (adrian)
 * dodana mo¿liwo¶æ kopiowania hyperlinka w oknie rozmowy (chilek)
+* na³o¿ona ³ata joi-a pokazuj±ca w oknach rozmowy opisy emotikonek (chilek)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

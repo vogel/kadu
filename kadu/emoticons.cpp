@@ -219,12 +219,12 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc,const QColor& bgcolor)
                                 {
                                         // if so, then replace that previous occurrence
                                         // with html tag
-                                        QString new_text="<IMG src=\"";
+                                        QString new_text="<img title=\""+Aliases[lastEmot].alias+"\" src=\"";
                                         if( animated )
                                                 new_text += Aliases[lastEmot].anim;
                                         else
                                                 new_text += Aliases[lastEmot].stat;
-                                        new_text += "\" bgcolor=" + bgcolor.name() + ">";
+                                        new_text += "\" bgcolor=\"" + bgcolor.name() + "\">";
                                         doc.splitElement( e_i, lastBegin, 
                                                           Aliases[lastEmot].alias.length() );
                                         doc.setElementValue( e_i, new_text, true );
@@ -243,12 +243,12 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc,const QColor& bgcolor)
                 // this is the case, when only one emot was found in current text part
                 if ( lastEmot >= 0 )
                 {
-                        QString new_text="<IMG src=\"";
+                        QString new_text="<img title=\""+Aliases[lastEmot].alias+"\" src=\"";
                         if( animated )
                                 new_text += Aliases[lastEmot].anim;
                         else
                                 new_text += Aliases[lastEmot].stat;
-                        new_text += "\" bgcolor=" + bgcolor.name() + ">";
+                        new_text += "\" bgcolor=\"" + bgcolor.name() + "\">";
                         doc.splitElement( e_i, lastBegin, 
                                           Aliases[lastEmot].alias.length() );
                         doc.setElementValue( e_i, new_text, true );
@@ -393,7 +393,7 @@ void EmoticonSelector::alignTo(QWidget* w)
 
 AnimTextItem::AnimTextItem(
 	QTextDocument *p, QTextEdit* edit,
-	const QString& filename, const QColor& bgcolor )
+	const QString& filename, const QColor& bgcolor, const QString& tip)
 	: QTextCustomItem(p)
 {
 	Edit=edit;
@@ -422,6 +422,7 @@ AnimTextItem::AnimTextItem(
 	Label->setMovie(md.movie);
 	width=md.size.width();
 	height=md.size.height();
+	QToolTip::add(Label, tip);
 	Label->resize(md.size);
 	Label->setPaletteBackgroundColor(bgcolor);
 };
@@ -464,7 +465,7 @@ QTextCustomItem* AnimStyleSheet::tag(
 {
 	if(name!="img")
 		return QStyleSheet::tag(name,attr,context,factory,emptyTag,doc);
-	return new AnimTextItem(doc,(QTextEdit*)parent(),Path+"/"+attr["src"],QColor(attr["bgcolor"]));
+	return new AnimTextItem(doc,(QTextEdit*)parent(),Path+"/"+attr["src"],QColor(attr["bgcolor"]),attr["title"]);
 };
 
 
