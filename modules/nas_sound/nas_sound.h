@@ -11,8 +11,8 @@
 #ifndef INTERNAL_QT_SOUND_SUPPORT
 #include <qsocketnotifier.h>
 namespace audiolib {
-#include <audiolib.h>
-#include <soundlib.h>
+#include <audio/audiolib.h>
+#include <audio/soundlib.h>
 }
 #endif
 

@@ -44,7 +44,7 @@ WAV49	= -DWAV49
 # CCFLAGS 	= -c -O
 
 CC		:= $(CC) -ansi -pedantic
-CCFLAGS 	= -c -O2 -DNeedFunctionPrototypes=1
+CCFLAGS 	= -c -O2 -DNeedFunctionPrototypes=1 -fPIC
 
 LD 		= $(CC)
 
