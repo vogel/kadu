@@ -1,0 +1,4 @@
+[Module]
+Description=Arts sound server support module
+Author=Kadu Team
+Dependencies=sound

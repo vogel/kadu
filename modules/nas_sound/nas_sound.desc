@@ -1,0 +1,4 @@
+[Module]
+Description=Network Audio System sound module
+Author=Kadu Team
+Dependencies=sound

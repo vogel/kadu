@@ -24,12 +24,6 @@
 SoundManager* sound_manager=NULL;
 SoundSlots* soundslots;
 
-extern "C" void sound_info(ModuleInfo* i)
-{
-    i->description="General sound support module";
-    i->author="Kadu Team";
-}
-
 extern "C" int sound_init()
 {
 	kdebugf();

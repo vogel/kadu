@@ -18,24 +18,11 @@
 #include "../sound/sound.h"
 #include "sound_desc.h"
 
-SoundManager* sound_manager;
-
-extern "C" void dsp_sound_info(ModuleInfo* i)
-{
-    i->description="DSP sound module";
-    i->author="Kadu Team";
-    i->depends+="sound";
-}
-
 extern "C" int dsp_sound_init()
 {
 	kdebugf();
 	QT_TRANSLATE_NOOP("@default","Output device");
 	QT_TRANSLATE_NOOP("@default","Path:");
-
-	sound_manager=soundManager();
-	if(sound_manager==NULL)
-		return 1;
 
 	slotsObj=new DirectPlayerSlots();
 

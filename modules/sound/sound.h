@@ -60,12 +60,6 @@ class SoundManager : public Themes
 		void playOnNotify(const uin_t uin, const QString &sound, bool volCntrl, double vol);
 };
 
-inline SoundManager* soundManager()
-{
-	SoundManager** snd=(SoundManager**)modules_manager->moduleSymbol("sound","sound_manager");
-	if(snd==NULL)
-		return NULL;
-	return *snd;
-}
+extern SoundManager* sound_manager;
 
 #endif

@@ -11,22 +11,9 @@
 #include "config_dialog.h"
 #include <string>
 
-SoundManager* sound_manager;
-
-extern "C" void arts_sound_info(ModuleInfo* i)
-{
-    i->description="Arts sound server support module";
-    i->author="Kadu Team";
-    i->depends+="sound";
-}
-
 extern "C" int arts_sound_init()
 {
 	kdebugf();
-
-	sound_manager=soundManager();
-	if(sound_manager==NULL)
-		return 1;
 
 	slotsObj=new ArtsPlayerSlots();
 	if (slotsObj->server.isNull())

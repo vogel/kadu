@@ -12,23 +12,12 @@
 #include "debug.h"
 #include "config_dialog.h"
 
-SoundManager* sound_manager;
-
-extern "C" void ext_sound_info(ModuleInfo* i)
-{
-    i->description="External application sound module";
-    i->author="Kadu Team";
-    i->depends+="sound";
-}
-
 extern "C" int ext_sound_init()
 {
 	kdebugf();
 	QT_TRANSLATE_NOOP("@default","Sound player");
 	QT_TRANSLATE_NOOP("@default","Path:");
-	sound_manager=soundManager();
-	if(sound_manager==NULL)
-		return 1;
+
 	slotsObj=new ExternalPlayerSlots();
 
 	QObject::connect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),

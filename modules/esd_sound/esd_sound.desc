@@ -1,0 +1,4 @@
+[Module]
+Description=ESD sound module
+Author=Kadu Team
+Dependencies=sound

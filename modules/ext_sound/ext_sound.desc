@@ -1,0 +1,4 @@
+[Module]
+Description=External application sound module
+Author=Kadu Team
+Dependencies=sound

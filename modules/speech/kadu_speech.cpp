@@ -21,12 +21,6 @@
 //#include "userlist.h"
 #include "chat.h"
 
-extern "C" void speech_info(ModuleInfo* i)
-{
-    i->description="\"Speech\" module";
-    i->author="Kadu Team";
-}
-
 extern "C" int speech_init()
 {
 	kdebugf();

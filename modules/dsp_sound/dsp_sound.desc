@@ -1,0 +1,4 @@
+[Module]
+Description=DSP sound module
+Author=Kadu Team
+Dependencies=sound

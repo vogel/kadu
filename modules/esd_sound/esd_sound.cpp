@@ -11,22 +11,9 @@
 #include "esd_sound.h"
 #include "debug.h"
 
-SoundManager* sound_manager;
-
-extern "C" void esd_sound_info(ModuleInfo* i)
-{
-    i->description="ESD sound module";
-    i->author="Kadu Team";
-    i->depends+="sound";
-}
-
 extern "C" int esd_sound_init()
 {
 	kdebugf();
-
-	sound_manager=soundManager();
-	if(sound_manager==NULL)
-		return 1;
 
 	slotsObj=new ESDPlayerSlots();
 	if (slotsObj->sock<0)

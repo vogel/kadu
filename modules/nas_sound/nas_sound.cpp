@@ -18,21 +18,9 @@
     ((((audiolib::AuInt32) (nnn)) * AU_FIXED_POINT_SCALE) / ((audiolib::AuInt32) (ddd)))
 #endif
 
-SoundManager* sound_manager;
-
-extern "C" void nas_sound_info(ModuleInfo* i)
-{
-    i->description="Network Audio System sound module";
-    i->author="Kadu Team";
-    i->depends+="sound";
-}
-
 extern "C" int nas_sound_init()
 {
 	kdebugf();
-	sound_manager=soundManager();
-	if(sound_manager==NULL)
-		return 1;
 
 	slotsObj=new NASPlayerSlots();
 	if (!slotsObj->isConnected())

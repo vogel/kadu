@@ -16,12 +16,6 @@ extern "C"
 
 EncryptionManager* encryption_manager;
 
-extern "C" void encryption_info(ModuleInfo* i)
-{
-    i->description="OpenSSL chat encryption module";
-    i->author="Kadu Team";
-}
-
 extern "C" int encryption_init()
 {
 	encryption_manager=new EncryptionManager();
