@@ -1705,9 +1705,11 @@ void DockWidget::dockletChange(int id)
 	if (id < 9)
 		kadu->slotHandleState(id);
 	else {
+		pending.writeToFile();
 		kadu->close_permitted = true;
 		kadu->disconnectNetwork();
-		a->quit();
+		kadu->close(true);
+//		a->quit();
 		}
 }
 
