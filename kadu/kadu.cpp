@@ -117,6 +117,9 @@
 #include "updates.h"
 //
 
+#define	GG_USER_NORMAL	0x03
+#define GG_USER_BLOCKED	0x04
+
 extern void ackHandler(int);
 extern void UinToUserlistEntry (uin_t, int);
 
@@ -308,6 +311,7 @@ void remindPassword() {
 /* sends the userlist. ripped off EKG, actually, but works */
 void sendUserlist() {
 	uin_t *uins;
+	char *types;
 	int i, j;
 
 	for (i = 0, j = 0; i < userlist.count(); i++)
@@ -315,10 +319,15 @@ void sendUserlist() {
 			j++;
 
 	uins = (uin_t *) malloc(j * sizeof(uin_t));
-	
+	types = (char *) malloc(j * sizeof(char));
+
 	for (i = 0, j = 0; i < userlist.count(); i++)
 		if (userlist[i].uin) {
 			uins[j] = userlist[i].uin;
+			if (userlist[i].blocking)
+				types[j] = GG_USER_BLOCKED;
+			else
+				types[j] = GG_USER_NORMAL;
 			j++;
 			}
 
@@ -326,7 +335,7 @@ void sendUserlist() {
 	if (i_wanna_be_invisible)
 		gg_change_status(sess, GG_STATUS_INVISIBLE);
 
-	gg_notify(sess, uins, j);
+	gg_notify_ex(sess, uins, types, j);
 	fprintf(stderr, "KK send_userlist(): Userlist sent\n");
 
 	free(uins);
