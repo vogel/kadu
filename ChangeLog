@@ -12,6 +12,7 @@
   pozbyc sie jej i usunac network.cpp) (mast3r)
 * funkcja MessageBox::msg(), usuniête network.cpp i doc'e od libgadu oraz
   porz±dki w pliku AUTHORS (adrian)
+* mo¿na chowaæ pasek narzêdziowy (chilek)
   
 +++ wersja 0.3.4-pre2
 * graficzny instalator - instaluj.tcl (googie)
