@@ -510,6 +510,9 @@ Po jakiego czorta to ?
 	toolbar->setCloseMode(QDockWindow::Undocked);
 	toolbar->setLabel(i18n("Main toolbar"));
 
+	QToolButton *configbtn = new QToolButton(loadIcon("configure.png"), i18n("Configuration"),
+		QString::null, this, SLOT(configure()), toolbar, "configure");
+	toolbar->addSeparator();
 	QToolButton *viewhistorybtn = new QToolButton(loadIcon("history.png"), i18n("View history"),
 		QString::null, this, SLOT(viewHistory()), toolbar, "viewhistory");
 	QToolButton *userinfobtn = new QToolButton(loadIcon("identity.png"), i18n("View/edit user info"),
@@ -571,6 +574,10 @@ Po jakiego czorta to ?
 				this, SLOT(gotUpdatesInfo(const QByteArray &, QNetworkOperation *)));
 		uc->run();
 		}
+}
+
+void Kadu::configure() {
+	commandParser(KADU_CMD_CONFIG);
 }
 
 void Kadu::viewHistory() {

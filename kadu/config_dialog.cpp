@@ -135,7 +135,7 @@ void loadKaduConfig(void) {
 	config.chatprune = konf->readBoolEntry("ChatPrune",false);
 	config.chatprunelen = konf->readNumEntry("ChatPruneLen",20);
 	config.chathistorycitation = konf->readNumEntry("ChatHistoryCitation", 10);
-	config.chathistorycitation = konf->readNumEntry("ChatHistoryQuotation", 10);
+	config.chathistorycitation = konf->readNumEntry("ChatHistoryQuotation", config.chathistorycitation);
 	config.chathistorycitationtime = konf->readNumEntry("ChatHistoryQuotationTime", 336);
 	config.msgacks = konf->readBoolEntry("MessageAcks", true);
 	config.blinkchattitle = konf->readBoolEntry("BlinkChatTitle", true);

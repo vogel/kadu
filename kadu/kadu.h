@@ -98,6 +98,7 @@ class Kadu : public QMainWindow
 		void showdesc(bool show = true);
 		void statusMenuAboutToHide(void);
 		void mouseButtonClicked(int, QListBoxItem *);
+		void configure();
 		void viewHistory();
 		void lookupInDirectory();
 		void showUserInfo();

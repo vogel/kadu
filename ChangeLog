@@ -43,6 +43,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * okno konfiguracji: nowa zak³adka "Historia" (Ron_K/chilek)
 * mo¿liwo¶æ skonfigurowania okresu czasu z którego s± cytowane frazy
   przy otwieraniu okna rozmowy (chilek)
+* guzik "Konfiguracja" na pasku narzêdziowym (chilek)
 
 +++ wersja 0.3.4-pre2
 * graficzny instalator - instaluj.tcl (googie)
