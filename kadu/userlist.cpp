@@ -22,6 +22,8 @@
 DnsHandler::DnsHandler(UinType uin) : uin(uin) {
 	kdebugf();
 	UserListElement &ule = userlist.byUin(uin);
+	if (ule.ip.isNull())
+		kdebugm(KDEBUG_WARNING, "DnsHandler::DnsHandler(): NULL ip address!\n");
 	completed = false;
 	connect(&dnsresolver, SIGNAL(resultsReady()), this, SLOT(resultsReady()));
 	dnsresolver.setRecordType(QDns::Ptr);
