@@ -2,6 +2,8 @@
 #include <qpushbutton.h>
 #include <qmessagebox.h>
 
+#include <stdlib.h>
+
 #include "misc.h"
 #include "config_file.h"
 #include "config_dialog.h"

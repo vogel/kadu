@@ -28,6 +28,8 @@
 #include <qtoolbar.h>
 
 #include <netinet/in.h>
+#include <time.h>
+#include <stdlib.h>
 //
 #include "config_dialog.h"
 #include "config_file.h"
@@ -1378,7 +1380,6 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 	UserListElement user;
 	user = userlist.byAltNick(item->text());
 
-//	pm->insertItem(msg, tr("Send message"), KADU_CMD_SEND_MESSAGE);
 	openchatitem= pm->insertItem(tr("Open chat window") ,this, SLOT(openChat()));
 	smsitem = pm->insertItem(tr("Send SMS"), this, SLOT(sendSmsToUser()),
 		HotKey::shortCutFromFile("kadu_sendsms"));
@@ -1460,7 +1461,6 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 		pm->setItemEnabled(deletehistoryitem, false);
 		pm->setItemEnabled(historyitem, false);
 		pm->setItemEnabled(searchuser, false);
-//		pm->setItemEnabled(KADU_CMD_SEND_MESSAGE, false);
 		pm->setItemEnabled(openchatitem, false);
 		}
 	pm->insertSeparator();

@@ -19,6 +19,7 @@
 
 #include <netinet/in.h>
 #include <errno.h>
+#include <time.h>
 
 #include "kadu.h"
 #include "ignore.h"
@@ -773,6 +774,19 @@ void EventConfigSlots::initModule()
 	EventConfigSlots *eventconfigslots = new EventConfigSlots();
 	
 
+
+	QT_TRANSLATE_NOOP("@default", "Notify");
+	QT_TRANSLATE_NOOP("@default", "Notify when users become available");
+	QT_TRANSLATE_NOOP("@default", "Notify about all users");
+	QT_TRANSLATE_NOOP("@default", "Available");
+	QT_TRANSLATE_NOOP("@default", "Tracked");
+	QT_TRANSLATE_NOOP("@default", "Notify options");
+	QT_TRANSLATE_NOOP("@default", "Notify by sound");
+	QT_TRANSLATE_NOOP("@default", "Path:");
+	QT_TRANSLATE_NOOP("@default", "Test");
+	QT_TRANSLATE_NOOP("@default", "Notify by dialog box");
+	QT_TRANSLATE_NOOP("@default", "Notify sound");
+
 // zakladka "powiadom"
 	ConfigDialog::registerTab("Notify");
 	ConfigDialog::addCheckBox("Notify", "Notify", "Notify when users become available", "NotifyStatuschange", false);
@@ -840,10 +854,13 @@ void EventConfigSlots::initModule()
 	ConfigDialog::addVGroupBox("Network", "Network", "Servers properties");
 	ConfigDialog::addGrid("Network", "Servers properties", "servergrid", 2);
 	ConfigDialog::addCheckBox("Network", "servergrid", "Use default servers", "isDefServers", true);
+#ifdef HAVE_OPENSSL
 	ConfigDialog::addCheckBox("Network", "servergrid", "Use TLSv1", "UseTLS", false);
+#endif
 	ConfigDialog::addLineEdit("Network", "Servers properties", "IP addresses:", "Server","","","server");
-
+#ifdef HAVE_OPENSSL
 	ConfigDialog::addComboBox("Network", "Servers properties", "Default port to connect to servers");
+#endif
 	ConfigDialog::addCheckBox("Network", "Network", "Use proxy server", "UseProxy", false);
 
 	ConfigDialog::addVGroupBox("Network", "Network", "Proxy server");
@@ -896,9 +913,13 @@ void EventConfigSlots::onCreateConfigDialog()
 	QVGroupBox *g_proxy = ConfigDialog::getVGroupBox("Network", "Proxy server");
 	QVGroupBox *g_fwdprop = ConfigDialog::getVGroupBox("Network", "DCC forwarding properties");
 	QCheckBox *b_dccfwd = ConfigDialog::getCheckBox("Network", "DCC forwarding enabled");
-	QCheckBox *b_tls= ConfigDialog::getCheckBox("Network", "Use TLSv1");
 	QCheckBox *b_useproxy= ConfigDialog::getCheckBox("Network", "Use proxy server");
+
+#ifdef HAVE_OPENSSL
+	QCheckBox *b_tls= ConfigDialog::getCheckBox("Network", "Use TLSv1");
 	QComboBox *cb_portselect= ConfigDialog::getComboBox("Network", "Default port to connect to servers");
+#endif
+
 	QHBox *serverbox=(QHBox*)(ConfigDialog::getLineEdit("Network", "IP addresses:","server")->parent());
 	QCheckBox* b_defaultserver= ConfigDialog::getCheckBox("Network", "Use default servers");
 	
@@ -907,11 +928,14 @@ void EventConfigSlots::onCreateConfigDialog()
 	b_dccfwd->setEnabled(b_dccenabled->isChecked());
 	g_fwdprop->setEnabled(b_dccenabled->isChecked() && b_dccfwd->isChecked());
 	g_proxy->setEnabled(b_useproxy->isChecked());
+
+#ifdef HAVE_OPENSSL
 	((QHBox*)cb_portselect->parent())->setEnabled(!b_tls->isChecked());
-	serverbox->setEnabled(!b_defaultserver->isChecked());
 	cb_portselect->insertItem("8074");
 	cb_portselect->insertItem("443");
-	cb_portselect->setCurrentText(config_file.readEntry("Network", "DefaultPort", "8074"));
+	cb_portselect->setCurrentText(config_file.readEntry("Network", "DefaultPort", "8074"));	
+#endif
+	serverbox->setEnabled(!b_defaultserver->isChecked());
 	
 	connect(b_dccfwd, SIGNAL(toggled(bool)), g_fwdprop, SLOT(setEnabled(bool)));
         connect(b_useproxy, SIGNAL(toggled(bool)), g_proxy, SLOT(setEnabled(bool)));
@@ -922,9 +946,10 @@ void EventConfigSlots::onDestroyConfigDialog()
 {
 	kdebug("EventConfigSlots::onDestroyConfigDialog() \n");
 
+#ifdef HAVE_OPENSSL
 	QComboBox *cb_portselect=ConfigDialog::getComboBox("Network", "Default port to connect to servers");
 	config_file.writeEntry("Network","DefaultPort",cb_portselect->currentText());
-	
+#endif
 	QLineEdit *e_servers=ConfigDialog::getLineEdit("Network", "IP addresses:", "server");
 	
 	QStringList tmpservers,server;
@@ -1005,9 +1030,11 @@ void EventConfigSlots::ifDefServerEnabled(bool value)
 
 void EventConfigSlots::useTlsEnabled(bool value)
 {
+#ifdef HAVE_OPENSSL
 	kdebug("EventConfigSlots::useTlsEnabled() \n");
 	QHBox *box_portselect=(QHBox*)(ConfigDialog::getComboBox("Network", "Default port to connect to servers")->parent());
 	box_portselect->setEnabled(!value);
+#endif
 };
 
 

@@ -23,6 +23,7 @@
 
 #include <math.h>
 #include <sys/stat.h>
+#include <stdlib.h>
 //
 #include "config_dialog.h"
 #include "config_file.h"
@@ -1005,6 +1006,25 @@ void Chat::initModule()
 	QT_TRANSLATE_NOOP("@default", "Bold text:");
 	QT_TRANSLATE_NOOP("@default", "Italic text:");
 	QT_TRANSLATE_NOOP("@default", "Underline text:");
+	QT_TRANSLATE_NOOP("@default", "Emoticons");
+	QT_TRANSLATE_NOOP("@default", "Emoticons:");
+	QT_TRANSLATE_NOOP("@default", "Emoticons theme");
+	QT_TRANSLATE_NOOP("@default", "WWW options");
+	QT_TRANSLATE_NOOP("@default", "Use default Web browser");
+	QT_TRANSLATE_NOOP("@default", "Custom Web browser");
+	QT_TRANSLATE_NOOP("@default", "Automatically prune chat messages");
+	QT_TRANSLATE_NOOP("@default", "Message pruning");
+	QT_TRANSLATE_NOOP("@default", "Reduce the number of visible messages to");
+	QT_TRANSLATE_NOOP("@default", "Use encryption");
+	QT_TRANSLATE_NOOP("@default", "Encryption properties");
+	QT_TRANSLATE_NOOP("@default", "Keys length");
+	QT_TRANSLATE_NOOP("@default", "Generate keys");
+	QT_TRANSLATE_NOOP("@default", "Open chat window on new message");
+	QT_TRANSLATE_NOOP("@default", "Scroll chat window downward, not upward");
+	QT_TRANSLATE_NOOP("@default", "\"Enter\" key in chat sends message by default");
+	QT_TRANSLATE_NOOP("@default", "Message acknowledgements (wait for delivery");
+	QT_TRANSLATE_NOOP("@default", "Flash chat title on new message");
+	QT_TRANSLATE_NOOP("@default", "Ignore messages from anonymous users");
 
 
 	ConfigDialog::registerTab("ShortCuts");
@@ -1018,6 +1038,7 @@ void Chat::initModule()
 	
 
 	
+
 	ConfigDialog::registerTab("Chat");
 	ConfigDialog::addVGroupBox("Chat", "Chat", "Emoticons");
 	ConfigDialog::addComboBox("Chat", "Emoticons", "Emoticons:");
@@ -1028,10 +1049,12 @@ void Chat::initModule()
 	ConfigDialog::addCheckBox("Chat", "Chat", "Automatically prune chat messages", "ChatPrune", false);
 	ConfigDialog::addHGroupBox("Chat", "Chat", "Message pruning");
 	ConfigDialog::addLineEdit("Chat", "Message pruning", "Reduce the number of visible messages to", "ChatPruneLen", "20");
+#ifdef HAVE_OPENSSL		
 	ConfigDialog::addCheckBox("Chat", "Chat", "Use encryption", "Encryption", false);	
 	ConfigDialog::addHGroupBox("Chat", "Chat", "Encryption properties");
 	ConfigDialog::addComboBox("Chat", "Encryption properties", "Keys length");
 	ConfigDialog::addPushButton("Chat", "Encryption properties", "Generate keys");
+#endif
 	ConfigDialog::addCheckBox("Chat", "Chat", "Open chat window on new message", "OpenChatOnMessage");
 	ConfigDialog::addCheckBox("Chat", "Chat", "Scroll chat window downward, not upward", "ScrollDown", true);
 	ConfigDialog::addCheckBox("Chat", "Chat", "\"Enter\" key in chat sends message by default", "AutoSend", true);
@@ -1048,10 +1071,13 @@ void Chat::initModule()
 	ConfigDialog::registerSlotOnCreate(chatslots,SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnDestroy(chatslots,SLOT(onDestroyConfigDialog()));
 	ConfigDialog::connectSlot("Chat", "Emoticons:", SIGNAL(activated(int)), chatslots, SLOT(chooseEmoticonsStyle(int)));
-	
+
+#ifdef HAVE_OPENSSL	
 	ConfigDialog::connectSlot("Chat", "Generate keys", SIGNAL(clicked()), chatslots, SLOT(generateMyKeys()));
-	ConfigDialog::connectSlot("Chat", "Use default Web browser", SIGNAL(toggled(bool)), chatslots, SLOT(onDefWebBrowser(bool)));
 	ConfigDialog::connectSlot("Chat", "Use encryption", SIGNAL(toggled(bool)), chatslots, SLOT(onUseEncryption(bool)));
+#endif
+	ConfigDialog::connectSlot("Chat", "Use default Web browser", SIGNAL(toggled(bool)), chatslots, SLOT(onDefWebBrowser(bool)));
+
 	ConfigDialog::connectSlot("Chat", "Automatically prune chat messages", SIGNAL(toggled(bool)), chatslots, SLOT(onPruneChat(bool)));
 };
 
@@ -1153,8 +1179,11 @@ void ChatSlots::onCreateConfigDialog()
 
 	if ((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") == EMOTS_NONE)
 		(cb_emoticons_theme)->setEnabled(false);
+
+#ifdef HAVE_OPENSSL
 	QComboBox* cb_keylength= ConfigDialog::getComboBox("Chat", "Keys length");
 	cb_keylength->insertItem("1024");
+#endif
 
 	QCheckBox *c_defweb= ConfigDialog::getCheckBox("Chat", "Use default Web browser");
 	QLineEdit *l_webbrow= ConfigDialog::getLineEdit("Chat", "Custom Web browser");
@@ -1162,10 +1191,11 @@ void ChatSlots::onCreateConfigDialog()
 	if (c_defweb->isChecked())
 	    ((QHBox*)l_webbrow->parent())->setEnabled(false);
 
+#ifdef HAVE_OPENSSL
 	QCheckBox *c_useencryption= ConfigDialog::getCheckBox("Chat", "Use encryption");
 	QHGroupBox *h_encryption= ConfigDialog::getHGroupBox("Chat", "Encryption properties");
 	h_encryption->setEnabled(c_useencryption->isChecked());
-	
+#endif
 	
 	QCheckBox *c_prunechat= ConfigDialog::getCheckBox("Chat", "Automatically prune chat messages");
 	QHGroupBox *h_prune= ConfigDialog::getHGroupBox("Chat", "Message pruning");
@@ -1191,9 +1221,10 @@ void ChatSlots::onDefWebBrowser(bool toggled)
 
 void ChatSlots::onUseEncryption(bool toggled)
 {
-
+#ifdef HAVE_OPENSSL
 	QHGroupBox *h_encryption= ConfigDialog::getHGroupBox("Chat", "Encryption properties");
 	h_encryption->setEnabled(toggled);
+#endif
 }
 
 
@@ -1238,7 +1269,6 @@ void ChatSlots::generateMyKeys(void) {
 	QCString tmp=ggPath("keys").local8Bit();
 	mkdir(tmp.data(), 0700);
 
-//	kdebug("Generating my keys, len: %d\n", atoi(cb_keyslen->currentText()));
 	if (sim_key_generate(config_file.readNumEntry("General","UIN")) < 0) {
 		QMessageBox::critical((QWidget*)this, "Kadu", tr("Error generating keys"), tr("OK"), QString::null, 0);
 		return;
@@ -1247,3 +1277,4 @@ void ChatSlots::generateMyKeys(void) {
 	QMessageBox::information((QWidget*)this, "Kadu", tr("Keys have been generated and written"), tr("OK"), QString::null, 0);
 #endif
 }
+

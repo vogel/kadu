@@ -59,6 +59,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				check->setChecked(config_file.readBoolEntry((*i).group, (*i).entry, (*i).defaultS));
 				(*i).widget=check;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
+				(*i).widget->adjustSize();
 				break;
 			}
 			case CONFIG_COMBOBOX:
@@ -68,12 +69,14 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				QComboBox* combo=new QComboBox(hbox, (*i).name);
 				(*i).widget=combo;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
+				(*i).widget->adjustSize();
 				break;
 			}
 			case CONFIG_GRID:
 				{
 				QGrid* grid=new QGrid((*i).defaultS.toInt(), parent, (*i).caption);
 				(*i).widget=grid;
+				(*i).widget->adjustSize();
 				break;
 			}
 			case CONFIG_HBOX:
@@ -81,6 +84,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				QHBox* box = new QHBox(parent,(*i).caption);
 				box->setSpacing(2);
 				(*i).widget=box;
+				(*i).widget->adjustSize();
 				break;
 
 			}
@@ -88,6 +92,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 			{
 				QHGroupBox* box = new QHGroupBox(appHandle->translate("@default",(*i).caption), parent, (*i).name);
 				(*i).widget=box;
+				(*i).widget->adjustSize();
 				break;
 			}
 			case CONFIG_HOTKEYEDIT:
@@ -98,12 +103,14 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				hotkey->setText(config_file.readEntry((*i).group, (*i).entry, (*i).defaultS));
 				(*i).widget=hotkey;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
+				(*i).widget->adjustSize();
 				break;
 			}
 			case CONFIG_LABEL:
 			{
 				QLabel* label=new QLabel(appHandle->translate("@default",(*i).caption), parent, (*i).name);
 				(*i).widget=label;
+				(*i).widget->adjustSize();
 				break;
 			}	
 			case CONFIG_LINEEDIT:
@@ -114,6 +121,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				line->setText(config_file.readEntry((*i).group, (*i).entry, (*i).defaultS));
 				(*i).widget=line;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
+				(*i).widget->adjustSize();
 				break;
 			}
 			case CONFIG_LISTBOX:
@@ -121,6 +129,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				QListBox* listbox= new QListBox(parent, (*i).caption);
 				(*i).widget=listbox;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
+				(*i).widget->adjustSize();
 				break;
 			}
 			case CONFIG_PUSHBUTTON:
@@ -129,6 +138,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				button->setIconSet(QPixmap(QString(DATADIR)+ "/apps/kadu/icons/" + (*i).defaultS));
 				(*i).widget=button;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
+				(*i).widget->adjustSize();
 				break;
 			}
 			case CONFIG_SLIDER:
@@ -148,6 +158,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				slider->setTickmarks(QSlider::Below);
 				(*i).widget=slider;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
+				(*i).widget->adjustSize();
 				break;
 			}
 			case CONFIG_SPINBOX:
@@ -165,6 +176,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				spinbox->setValue(value);
 				(*i).widget=spinbox;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
+				(*i).widget->adjustSize();
 				break;
 			}
 			case CONFIG_TAB:
@@ -184,12 +196,14 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				QVBox* box = new QVBox(parent,(*i).caption);
 				(*i).widget=box;
 				box->setSpacing(2);
+				(*i).widget->adjustSize();
 				break;
 			}
 			case CONFIG_VGROUPBOX:
 			{
 				QVGroupBox* box = new QVGroupBox(appHandle->translate("@default",(*i).caption), parent, (*i).name);
 				(*i).widget=box;
+				(*i).widget->adjustSize();
 				break;
 			}
 

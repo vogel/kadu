@@ -14,6 +14,8 @@
 
 #include <pwd.h>
 #include <unistd.h>
+#include <time.h>
+#include <stdlib.h>
 
 #include "misc.h"
 #include "config_file.h"

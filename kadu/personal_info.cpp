@@ -13,6 +13,8 @@
 #include <qvbox.h>
 #include <qlayout.h>
 
+#include <stdlib.h>
+
 #include "kadu.h"
 #include "debug.h"
 #include "events.h"

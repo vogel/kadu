@@ -190,9 +190,7 @@ class ChatSlots :public QObject
 		void onDefWebBrowser(bool toggled);
 		void onUseEncryption(bool toggled);
 		void onPruneChat(bool toggled);
-#ifdef HAVE_OPENSSL		
 		void generateMyKeys(void);
-#endif
 
 };
 

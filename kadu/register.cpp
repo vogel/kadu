@@ -13,10 +13,12 @@
 #include <qfile.h>
 #include <qapplication.h>
 #include <qtooltip.h>
+
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <pwd.h>
+#include <stdlib.h>
 
 #include "misc.h"
 #include "config_file.h"

@@ -19,6 +19,8 @@
 #include <qhbox.h>
 #include <qtooltip.h>
 
+#include <time.h>
+
 #include "kadu.h"
 #include "config_file.h"
 #include "config_dialog.h"

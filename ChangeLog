@@ -78,6 +78,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * mo¿liwo¶æ przerwania rozmowy g³osowej (chilek)
 * poprawka wykrywania nag³ówków QT - katalog /usr/X11R6/include/qt (adrian)
 * wyeliminowane "pykniêcia" przy nadawaniu g³osu (chilek)
+* poprawki poprawek pawla_p ;) (pawel_p/adrian)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci
