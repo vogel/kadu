@@ -8,6 +8,7 @@
 #include <qcombobox.h>
 
 #include "userlist.h"
+#include "misc.h"
 
 /**
 	Dialog pokazuj±cy informacje o wybranym kontakcie
@@ -15,6 +16,14 @@
 class UserInfo : public QTabDialog {
 	Q_OBJECT
 	public:
+		/**
+			statyczny obiekt wysylajacy sygnal objectCreated
+			jesli powstanie nowa instancja okienka.
+		**/
+		static CreateNotifier createNotifier;
+		/**
+			konstruktor
+		**/
 		UserInfo(const QString &, QDialog* parent,
 			const QString &altnick, bool fAddUser = false);
 		~UserInfo();

@@ -20,6 +20,8 @@
 #include "tabbar.h"
 //
 
+CreateNotifier UserInfo::createNotifier;
+
 UserInfo::UserInfo(const QString &name, QDialog *parent, const QString &altnick, bool fAddUser)
 : QTabDialog(parent, name), fAddUser(fAddUser) {
 	resize(350,200);
@@ -47,6 +49,8 @@ UserInfo::UserInfo(const QString &name, QDialog *parent, const QString &altnick,
 	disconnect(this, SIGNAL(applyButtonPressed()), this, SLOT(accept()));
 	connect(this, SIGNAL(applyButtonPressed()), this, SLOT(updateUserlist()));
 	connect(this, SIGNAL(cancelButtonPressed()), this, SLOT(close()));
+	
+	createNotifier.notify(this);
 }
 
 void UserInfo::setUserInfo(UserListElement &ule) {

@@ -133,6 +133,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   <nazwa_modulu>_<kod_jezyka>.ts np autoresponder_pl.qm i autoresponder_pl.ts.
   translacja przez funkcje "tr" obslugiwana jest rowniez w
   funkcji inicjalizujacej i zamykajacej modulu (adrian)
+* ogolny mechanizm informowania o powstawaniu nowych instancji klas
+  - klasa CreateNotifier - i jej zastosowanie w klasie UserInfo na
+  potrzeby modulow (adrian)
 
 +++ wersja 0.3.6 (22.11.2003)
 * je¶li klikniemy na jaki¶ kontakt w userboxie, od którego otrzymali¶my jak±¶

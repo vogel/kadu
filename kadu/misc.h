@@ -265,5 +265,24 @@ class Themes : public QObject
 		void pathsChanged(const QStringList& list);
 };
 
+/**
+	klasa rozwiazujaca problem z powiadomieniem
+	o utworzeniu nowej instancji danej klasy.
+	umieszczamy w klasie publiczna statyczna
+	zmienna createNotifier klasy CreateNotifier
+	do ktorej moga sie podlaczac pozostale czesci kodu.
+	przed wyjsciem z konstruktora wywolujemy metode:
+	createNotifier.notify(this);
+**/
+class CreateNotifier : public QObject
+{
+	Q_OBJECT
+	
+	public:
+		void notify(QObject* new_object);
+		
+	signals:
+		void objectCreated(QObject* new_object);
+};
 
 #endif

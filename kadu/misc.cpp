@@ -1338,3 +1338,8 @@ QString Themes::getThemeEntry(const QString& name)
     }
 return QString("");
 }
+
+void CreateNotifier::notify(QObject* new_object)
+{
+	emit objectCreated(new_object);
+}
