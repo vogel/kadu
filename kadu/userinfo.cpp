@@ -425,6 +425,13 @@ void UserInfo::addNewUser(UserListElement& e)
 	userlist.addUser(e);
 	userlist.writeToFile();
 	close(true);
+
+	if (!config_file.readBoolEntry("Look", "DisplayGroupTabs"))
+	{
+		kadu->userbox()->addUser(e.altNick());
+		kadu->userbox()->refresh();
+	}
+
 	kdebugf2();
 }
 
