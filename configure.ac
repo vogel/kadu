@@ -379,7 +379,10 @@ AC_DEFINE_UNQUOTED(DIST_TYPE,"$enable_dist_info",[Define distribution type of th
 
 # OpenSSL support
 AC_CHECK_OPENSSL
-AM_CONDITIONAL(OPENSSL,[test "$with_openssl" = "yes"])
+if test -z "$have_openssl"; then
+	have_openssl=no
+fi
+AM_CONDITIONAL(OPENSSL,[test "$have_openssl" = "yes"])
 
 
 AC_SUBST(MY_SUBDIRS)
@@ -422,7 +425,7 @@ echo "   Install Kadu documentation:         $enable_doc [[$docdir]]"
 echo "   Use pthread resolving in libgadu:   $with_pthread"
 echo "   Compile with debug symbols:         $enable_debug"
 echo "   Link with existing libgadu:         $with_existing_libgadu"
-echo "   OpenSSL encryption support:         $with_openssl"
+echo "   OpenSSL encryption support:         $have_openssl"
 echo "   Distribution type information:      $enable_dist_info"
 echo "   Additional c++ compiler flags:      $user_cxxflags"
 echo

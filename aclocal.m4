@@ -2752,7 +2752,7 @@ AC_DEFUN([AM_LC_MESSAGES],
 ])
 
 dnl based on curses.m4 
-dnl $Id: aclocal.m4,v 1.48 2003/07/06 14:10:45 adrian Exp $
+dnl $Id: aclocal.m4,v 1.49 2003/07/06 16:56:03 adrian Exp $
 
 AC_DEFUN(AC_CHECK_OPENSSL,[
   AC_SUBST(OPENSSL_LIBS)
