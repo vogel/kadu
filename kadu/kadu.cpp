@@ -352,7 +352,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	GaduProtocol::initModule();
 	Chat::initModule();
 
-	// userbox	
+	// userbox
 	UserBox::initModule();
 	Userbox = new UserBox(hbox1, "userbox");
 	hbox1->setStretchFactor(Userbox, 100);
@@ -382,7 +382,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	// history, hints
 	History::initModule();
 	HintManager::initModule();
-	EventConfigSlots::initModule();
 
 	closestatusppmtime.start();
 
@@ -1167,8 +1166,7 @@ void Kadu::slotHandleState(int command) {
 			break;
 		case 6:
 			gadu->logout();
-		//	disconnectNetwork();
-			AutoConnectionTimer::off();
+			gadu->disableAutoConnection();
 			Autohammer = false;
 			setCurrentStatus(GG_STATUS_NOT_AVAIL);
 			break;
@@ -1178,8 +1176,7 @@ void Kadu::slotHandleState(int command) {
 				setStatus(GG_STATUS_NOT_AVAIL_DESCR);
 				statusppm->setItemEnabled(7, false);
 				gadu->logout();
-				//disconnectNetwork();
-				AutoConnectionTimer::off();
+				gadu->disableAutoConnection();
 				Autohammer = false;
 				}
 			break;
@@ -1311,7 +1308,7 @@ void Kadu::error(GaduError err)
 			msg = QString(tr("Please change your email in \"Change password/email\" window. "
 				"Leave new password field blank."));
 			Autohammer = false; /* FIXME 2/2*/
-			AutoConnectionTimer::off();
+			gadu->disableAutoConnection();
 			hintmanager->addHintError(msg);
 			MessageBox::msg(msg);
 			break;
@@ -1331,7 +1328,7 @@ void Kadu::error(GaduError err)
 		case ConnectionIncorrectPassword:
 			msg = QString(tr("Unable to connect, incorrect password"));
 			Autohammer = false; /* FIXME 2/2*/
-			AutoConnectionTimer::off();
+			gadu->disableAutoConnection();
 			hintmanager->addHintError(msg);
 			QMessageBox::critical(0, tr("Incorrect password"), tr("Connection will be stoped\nYour password is incorrect !!!"), QMessageBox::Ok, 0);
 			return;
@@ -1372,7 +1369,7 @@ void Kadu::error(GaduError err)
 	}
 
 	if (Autohammer)
-		AutoConnectionTimer::on();
+		gadu->enableAutoConnection();
 	kdebugf2();
 }
 
@@ -1404,7 +1401,7 @@ void Kadu::disconnected()
 	}
 
 	Autohammer = false;
-	AutoConnectionTimer::off();
+	gadu->disableAutoConnection();
 	kdebugf2();
 }
 

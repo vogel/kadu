@@ -9,6 +9,7 @@
 #include <qdatetime.h>
 #include <qsocketnotifier.h>
 #include <qtextstream.h>
+#include <qlistbox.h>
 
 #include "libgadu.h"
 
@@ -26,6 +27,26 @@ extern unsigned int server_nr;
 extern QValueList<QHostAddress> config_servers;
 
 extern QHostAddress config_extip;
+
+// ------------------------------------
+//              Timers
+// ------------------------------------
+
+class AutoConnectionTimer : private QTimer {
+	Q_OBJECT
+
+	public:
+		static void on();
+		static void off();
+
+	public slots:
+		void doConnect();
+
+	private:
+		AutoConnectionTimer(QObject *parent = 0, const char *name=0);
+
+		static AutoConnectionTimer *autoconnection_object;
+};
 
 class UinsList : public QValueList<UinType>
 {
@@ -255,11 +276,14 @@ class GaduProtocol : public QObject
 		QHostAddress* activeServer();
 
 		/**
-			Zamienia listê u¿ytkowników na ³añcuch i na odwrót
+			Zamienia listï¿½uytkownikï¿½ na aï¿½uch i na odwrï¿½
 		**/
 		QString userListToString(const UserList& userList) const;
 		void stringToUserList(QString&, UserList& userList) const;
 		void streamToUserList(QTextStream&, UserList& userList) const;
+
+		void enableAutoConnection();
+		void disableAutoConnection();
 
 	public slots:
 		/**
@@ -279,34 +303,34 @@ class GaduProtocol : public QObject
 		**/
 		int sendMessageRichText(const UinsList& uins,const char* msg,unsigned char* myLastFormats,int myLastFormatsLength);
 		/**
-			Wysy³a pro¶bê o przys³anie obrazka.
+			Wysya probï¿½o przysanie obrazka.
 		**/
 		bool sendImageRequest(UinType uin,int size,uint32_t crc32);
 		bool sendImage(UinType uin,const QString& file_name,uint32_t size,char* data);
 
 
 		/**
-		 	Rejestruje nowego u¿ytkownika
+		 	Rejestruje nowego uytkownika
 		**/
 		bool doRegister(QString& mail, QString& password, QString& token_id, QString& token_val);
 
 		/**
-		 	Wyrejestrowuje u¿ytkownika
+		 	Wyrejestrowuje uytkownika
 		**/
 		bool doUnregister(UinType uin, QString& password, QString& token_id, QString& token_val);
 
 		/**
-		  	Przypomina has³o
+		  	Przypomina haso
 		**/
 		bool doRemind(UinType uin, QString& token_id, QString& token_val);
 
 		/**
-		  	Zmienia has³o
+		  	Zmienia haso
 		**/
 		bool doChangePassword(UinType uin, QString& mail, QString& password, QString& new_password, QString& token_id, QString& token_val);
 
 		/**
-			Wysy³a userlist na serwer
+			Wysya userlist na serwer
 		**/
 		bool doExportUserList(const UserList &);
 
@@ -345,6 +369,18 @@ class GaduProtocol : public QObject
 		**/
 		void setPersonalInfo(SearchRecord& searchRecord, SearchResult& newData);
 
+		// przeniesione z events.h
+	    void onCreateConfigDialog();
+	    void onDestroyConfigDialog();
+	    void ifDefServerEnabled(bool value);
+	    void useTlsEnabled(bool value);
+	    void _Left();
+	    void _Right();
+	    void _Left2(QListBoxItem *item);
+	    void _Right2(QListBoxItem *item);
+	    void ifNotifyGlobal(bool toggled);
+	    void ifNotifyAll(bool toggled);
+
 	signals:
 		void ackReceived(int);
 		void connected();
@@ -375,25 +411,25 @@ class GaduProtocol : public QObject
 			ktora przyszla z serwera jeszcze w jej oryginalnej
 			formie przed konwersja na unicode i innymi zabiegami.
 			Tresc wiadomosci mozna zmienic grzebiac w buforze msg,
-			ale uwaga: mo¿na zepsuæ formatowanie tekstu zapisane
-			w formats. Oczywi¶cie je równie¿ mo¿na zmieniaæ, wed³ug
-			opisu protoko³u GG ;)
-			Mozna tez przerwac dalsza obrobke wiadomo¶ci ustawiajac
+			ale uwaga: mona zepsuï¿½formatowanie tekstu zapisane
+			w formats. Oczywicie je rï¿½nie mona zmieniaï¿½ wedug
+			opisu protokou GG ;)
+			Mozna tez przerwac dalsza obrobke wiadomoci ustawiajac
 			stop na true.
 		**/
 		void messageFiltering(const UinsList& senders,QCString& msg,
 			QByteArray& formats,bool& stop);
 		/**
-			Otrzymano wiadomo¶æ, któr± trzeba pokazaæ (klasa chat lub msg,
+			Otrzymano wiadomoï¿½ ktï¿½ trzeba pokazaï¿½(klasa chat lub msg,
 			nadawca nie jest ignorowany, itp)
-			Tre¶æ zdeszyfrowana i zdekodowana do unicode.
-			Jesli ktorys ze slotow sygna³u chatMsgReceived1 ustawi zmienna
+			Treï¿½zdeszyfrowana i zdekodowana do unicode.
+			Jesli ktorys ze slotow sygnau chatMsgReceived1 ustawi zmienna
 			grab na true to sygnal chatReceived2 nie zostanie wygenerowany.
-			Je¶li natomiast zmienna grab zostanie ustawiona przez slot
-			chatMsgReceived0, to ¿adna czynno¶æ zwi±zana z obs³ug± tego
-			zdarzenia nie zostanie podjêta (tj. wy¶wietlanie wiadomo¶ci
+			Jeli natomiast zmienna grab zostanie ustawiona przez slot
+			chatMsgReceived0, to adna czynnoï¿½zwizana z obsug tego
+			zdarzenia nie zostanie podjï¿½a (tj. wywietlanie wiadomoci
 			w oknie, dodanie jej do historii, etc.), poza przekonwertowaniem
-			kodowania wiadomo¶ci z CP1250 na Unicode.
+			kodowania wiadomoci z CP1250 na Unicode.
 		**/
 		void chatMsgReceived0(UinsList senders,const QString& msg,time_t time,bool& grab);
 		void chatMsgReceived1(UinsList senders,const QString& msg,time_t time,bool& grab);

@@ -7,6 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "personal_info.h"
+
 #include <qlabel.h>
 #include <qmessagebox.h>
 #include <qvbox.h>
@@ -16,8 +18,7 @@
 
 #include "status.h"
 #include "debug.h"
-#include "events.h"
-#include "personal_info.h"
+#include "misc.h"
 
 PersonalInfoDialog::PersonalInfoDialog(QDialog *parent, const char *name)
 {
