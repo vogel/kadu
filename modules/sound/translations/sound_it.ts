@@ -18,10 +18,6 @@
         <translation>Prova</translation>
     </message>
     <message>
-        <source>Play sounds from a person whilst chatting</source>
-        <translation>Suoni durante conversazione</translation>
-    </message>
-    <message>
         <source>Play chat sounds only when window is invisible</source>
         <translation>Riproduci suoni solo se la finestra non è attiva</translation>
     </message>

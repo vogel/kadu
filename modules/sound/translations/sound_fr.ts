@@ -18,10 +18,6 @@
         <translation>Test</translation>
     </message>
     <message>
-        <source>Play sounds from a person whilst chatting</source>
-        <translation>Son lors de la conversation</translation>
-    </message>
-    <message>
         <source>Play chat sounds only when window is invisible</source>
         <translation>Joue le son du chat uniquement si la fenêtre est inactive</translation>
     </message>
