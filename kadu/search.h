@@ -16,11 +16,21 @@ class QPushButton;
 class QRadioButton;
 
 /**
-	Dialog umo¿liwiaj±cy wyszukiwanie w katalogu publicznym
+	Klasa ta reprezentuje okno dialogowe wyszukiwania w katalogu publicznym.
+	\brief Wyszukiwanie w katalogu publicznym.
+	\class SearchDialog
 **/
 class SearchDialog : public QDialog {
 	Q_OBJECT
 	public:
+		/**
+			\fn SearchDialog(QWidget *parent=0, const char *name=0, UinType whoisSearchUin = 0)
+			Standardowy konstruktor.
+			\param parent rodzic kontrolki. Domy¶lnie 0.
+			\param name nazwa kontrolki. Domy¶lnie 0.
+			\param whoisSearchUin warto¶æ logiczna informuj±ca o tym, czy wstêpnie ma byæ wybrane
+				wyszukiwanie po numerze UIN (1) czy po danych osobowych (0). Domy¶lnie 0.
+		**/
 		SearchDialog(QWidget *parent=0, const char *name=0, UinType whoisSearchUin = 0);
 		~SearchDialog(void);
 
@@ -50,10 +60,41 @@ class SearchDialog : public QDialog {
 		bool searchhidden;
 
 	public slots:
+		/**
+			\fn void firstSearch(void)
+			Czy¶ci listê wyników, a nastêpnie wyszukuje w katalogu publicznym wg.
+			podanych w oknie danych. Wy¶wietla tylko ograniczon± ich liczbê, ze wzglêdu
+			na dzia³anie protoko³u Gadu-Gadu. Metoda ta wywo³ywana jest przy wci¶niêciu
+			przycisku "Szukaj". Aby uzyskaæ kolejne wyniki i dodaæ je do
+			bierz±cych, nale¿y dokonaæ wtórnego zapytania metod± SearchDialog::nextSearch.
+		**/
 		void firstSearch(void);
+
+		/**
+			\fn void nextSearch(void)
+			Kontynuuje wyszukowanie kolejnych kontaktów, a wyniki dodaje do bierz±cych.
+			Metoda ta wywo³ywana jest przy wci¶niêciu przycisku "Nastêpne wyniki".
+		**/
 		void nextSearch(void);
+
+		/**
+			\fn void newSearchResults(SearchResults& searchResults, int seq, int fromUin)
+			Interpretuje uzyskane wyniki wyszukiwania i dodaje je do listy wyników.
+			Metoda ta jest wywo³ywana, gdy serwer Gadu-Gadu odpowie na zapytanie do katalogu publicznego.
+			\param searchResults lista struktur opisuj±cych wyniki wyszukiwania.
+			\param seq unikalny identyfikator zapytania do katalogu publicznego.
+			\param fromUin numer UIN, od którego rozpoczêto wyszukiwanie (jest ró¿ny dla kolejnych
+			wywo³añ - najpierw SearchDialog::firstSearch, a potem kolejne SearchDialog::nextSearch).
+		**/
 		void newSearchResults(SearchResults& searchResults, int seq, int fromUin);
-		void selectionChanged(QListViewItem *);
+
+		/**
+			\fn void selectionChanged(QListViewItem *)
+			Aktualizuje kod wykonywany po wci¶niêciu przycisku "Dodaj" lub "Rozmowa" na taki,
+			aby dziala³ wzglêdem bierz±cego kontaktu, a nie ostatnio wybranego.
+			\param item wska¼nik do obiektu reprezentuj±cego element listy, który wybrano.
+		**/
+		void selectionChanged(QListViewItem *item);
 
 	private slots:
 		void clearResults(void);
@@ -65,6 +106,11 @@ class SearchDialog : public QDialog {
 		void openChat();
 
 	protected:
+		/**
+			\fn void closeEvent(QCloseEvent * e)
+			Obs³uguje zdarzenie zamkniêcia okna wyszukiwania w katalogu publicznym.
+			\param e wska¼nik do obiektu opisuj±cego zdarzenie zamkniêcie okna.
+		**/
 		void closeEvent(QCloseEvent * e);
 };
 

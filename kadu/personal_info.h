@@ -9,8 +9,10 @@ class QLineEdit;
 class QPushButton;
 
 /**
-	Dialog umo¿liwiaj±cy zarz±dzanie w³asnymi danymi w katalogu
-	publicznym
+	\class PersonalInfoDialog
+	\brief W³asne dane w katalogu publicznym
+	Dialog umo¿liwiaj±cy zarz±dzanie w³asnymi danymi osobowymi w katalogu
+	publicznym.
 **/
 class PersonalInfoDialog : public QHBox
 {
@@ -36,10 +38,24 @@ class PersonalInfoDialog : public QHBox
 		void reloadInfo();
 
 	public:
+		/**
+			\fn PersonalInfoDialog(QDialog *parent=0, const char *name=0)
+			Standardowy konstruktor.
+			\param parent rodzic kontrolki. Domy¶lnie 0.
+			\param name nazwa kontrolki. Domy¶lnie 0.
+		**/
 		PersonalInfoDialog(QDialog *parent=0, const char *name=0);
 		~PersonalInfoDialog();
 
 	public slots:
+		/**
+			\fn void fillFields(SearchResults& searchResults, int seq, int)
+			Metoda ta wype³nia pola danych osobowych w tym oknie wg. otrzymanych
+			- aktualnych - danych z serwera.
+			\param searchResults dane otrzymane z serwera.
+			\param seq unikalny identyfikator zapytania do serwera Gadu-Gadu.
+			Trzeci parametr w tym przypadku jest pomijany.
+		**/
 		void fillFields(SearchResults& searchResults, int seq, int);
 };
 
