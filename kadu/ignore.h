@@ -13,20 +13,32 @@
 #include <qdialog.h>
 #include <qlistbox.h>
 #include <qlineedit.h>
+#include <qvaluelist.h>
+
+#include "misc.h"
+#include "libgadu.h"
 
 class Ignored : public QDialog {
 	Q_OBJECT
 	public:
-		Ignored(QDialog* parent=0, const char *name=0);
+		Ignored(QDialog *parent = 0, const char *name = 0);
 
 	private:
-		QListBox * list;
-		QLineEdit * e_uin;
+		QListBox *list;
+		QLineEdit *e_uin;
 
 	private slots:
 		void remove();
 		void add();
 		void getList();	
 };
+
+int readIgnored();
+int writeIgnored(QString filename = QString::null);
+void addIgnored(UinsList uins);
+void delIgnored(UinsList uins);
+bool isIgnored(UinsList uins);
+
+extern QValueList<UinsList> ignored;
 
 #endif

@@ -167,7 +167,6 @@ extern struct gg_session *sess;
 static QValueList<chats> chats_gcc32_bug;
 ////////////////////////////
 extern QValueList<chats> chats;
-extern QValueList<uin_t> ignored;
 extern bool userlist_sent;
 extern int server_nr;
 // Ominiecie bledu w gcc 3.2
@@ -184,10 +183,6 @@ extern QSocketNotifier *dccsnw;
 void deletePendingMessage(int nr);
 void sendUserlist(void);
 
-void addIgnored(uin_t);
-void delIgnored(uin_t);
-bool isIgnored(uin_t);
-int writeIgnored(QString filename = "");
 void *watch_socket(void *);
 QString pwHash(const QString);
 void confirmHistoryDeletion(const char *);

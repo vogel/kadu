@@ -37,6 +37,7 @@
 #include <pwd.h>
 
 #include "kadu.h"
+#include "ignore.h"
 #include "config_dialog.h"
 #include "events.h"
 #include "pixmaps.h"
@@ -126,7 +127,7 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char *msg, time_t tim
 	// ignorujemy, jesli nick na liscie ignorowanych
 	// PYTANIE CZY IGNORUJEMY CALA KONFERENCJE
 	// JESLI PIERWSZY SENDER JEST IGNOROWANY????
-	if (isIgnored(senders[0]))
+	if (isIgnored(senders))
 		return;
 
 	QString mesg = cp2unicode(msg);

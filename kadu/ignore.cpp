@@ -10,6 +10,10 @@
 #include <qpushbutton.h>
 #include <qlayout.h>
 #include <qfile.h>
+#include <qtextstream.h>
+#include <qvaluelist.h>
+#include <qstringlist.h>
+
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <stdlib.h>
@@ -19,6 +23,8 @@
 #include "misc.h"
 #include "ignore.h"
 //
+
+QValueList<UinsList> ignored;
 
 Ignored::Ignored(QDialog *parent, const char *name) : QDialog (parent, name) {
 	resize(180,260);
@@ -48,49 +54,63 @@ Ignored::Ignored(QDialog *parent, const char *name) : QDialog (parent, name) {
 	grid->addWidget(b_add,3,1);
 }
 
-bool isIgnored(uin_t uin) {
-	return ignored.contains(uin);
-}
-
 void Ignored::add() {
-	addIgnored(atoi(e_uin->text().latin1()));
+	QStringList strlist;
+	strlist = QStringList::split(";", e_uin->text());
+	UinsList uins;
+	for (int i = 0; i < strlist.count(); i++)
+		uins.append(strlist[i].toUInt());
+	addIgnored(uins);
 	e_uin->clear();
-	writeIgnored(NULL);
+	writeIgnored();
 	getList();
 }
 
 void Ignored::getList() {
 	int i, j, k;
-	QString buf;
 	list->clear();
 	for (i = 0; i < ignored.count(); i++) {
-		j = 0;
-		while (j < userlist.count() && ignored[i] != userlist[j].uin)
-			j++;
-		if (j < userlist.count())
-			buf = QString("%1 (%2)").arg(QString::number(userlist[j].uin)).arg(userlist[j].altnick);
-		else
-			buf = QString("%1 (?)").arg(QString::number(ignored[i]));
-		list->insertItem(buf);
+		QStringList strlist;
+		for (j = 0; j < ignored[i].count(); j++) {
+			k = 0;
+			while (k < userlist.count() && ignored[i][j] != userlist[k].uin)
+				k++;
+			if (k < userlist.count())
+				strlist.append(QString("%1 (%2)").arg(QString::number(userlist[k].uin)).arg(userlist[k].altnick));
+			else
+				strlist.append(QString("%1 (?)").arg(QString::number(ignored[i][j])));
+			}
+		list->insertItem(strlist.join(";"));
 		}
-	list->sort();
 }
 
 void Ignored::remove() {
-	if (list->currentText().latin1() == NULL)
+	if (list->currentItem() == -1)
 		return;
-
-	delIgnored(list->currentText().toUInt());
+	QStringList strlist;
+	strlist = QStringList::split(";", list->currentText());
+	UinsList uins;
+	for (int i = 0; i < strlist.count(); i++)
+		uins.append(strlist[i].toUInt());
+	delIgnored(uins);
 	getList();
-	writeIgnored(NULL);
+	writeIgnored();
 }
 
-void addIgnored(uin_t uin) {
-	ignored.append(uin);
+bool isIgnored(UinsList uins) {
+	uins.sort();
+	return ignored.contains(uins);
 }
 
-void delIgnored(uin_t uin) {
-	ignored.remove(uin);
+
+void addIgnored(UinsList uins) {
+	uins.sort();
+	ignored.append(uins);
+}
+
+void delIgnored(UinsList uins) {
+	uins.sort();
+	ignored.remove(uins);
 }
 
 int writeIgnored(QString filename)
@@ -98,26 +118,53 @@ int writeIgnored(QString filename)
 	QString tmp;
 
 	if (!(tmp = ggPath("")))
-		return -1;
+		return 1;
 	mkdir(tmp.local8Bit(), 0700);
 
-	if (!filename.length()) {
+	if (filename == QString::null)
 		filename = ggPath("ignore");
-		}
 
 	QFile file(filename);
-	if (!file.open(IO_WriteOnly))
-		return -2;
+	if (!file.open(IO_WriteOnly | IO_Truncate))
+		return 2;
 
 //	fchmod(fileno(f), 0600);
 
-	for (int i = 0; i < ignored.count(); i++)
-		if (ignored[i])
-			tmp = QString("%1\n").arg(QString::number(ignored[i]));
+	QString buf;
+	for (int i = 0; i < ignored.count(); i++) {
+		QStringList list;
+		for (int j = 0; j < ignored[i].count(); j++)
+			list.append(QString::number(ignored[i][j]));
+		buf.append(list.join(";"));
+		}
 
-	file.writeBlock(tmp, tmp.length());
+	if (buf.length())
+		file.writeBlock(buf, buf.length());
 	file.close();
 
 	return 0;
 }
 
+int readIgnored() {
+	QString line, fname;
+	QStringList list;
+
+	fname = ggPath("ignore");
+
+	QFile f(fname);
+	if (!f.open(IO_ReadOnly))
+		return 1;
+
+	QTextStream stream(&f);
+	while ((line = stream.readLine()) != QString::null) {
+		list = QStringList::split(";", line);
+		UinsList uins;
+		for (int i = 0; i < list.count(); i++)
+			uins.append(list[i].toUInt());
+		ignored.append(uins);
+		}
+
+	f.close();
+
+	return 0;
+}

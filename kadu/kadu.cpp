@@ -155,7 +155,6 @@ struct gg_session *sess = NULL;
 struct sigaction sigact;
 QArray<struct acks> acks(0);
 struct gg_dcc * dccsock;
-QValueList<uin_t> ignored;
 struct gg_login_params loginparams;
 QSocketNotifier *kadusnr = NULL;
 QSocketNotifier *kadusnw = NULL;
@@ -251,30 +250,6 @@ void deletePendingMessage(int nr) {
 			trayicon->setType(*icons->loadIcon(gg_icons[statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]));
 		}
 }
-
-void readIgnore(void)
-{
-	FILE *f;
-	const int BUF_SIZE=256;
-	char buf[BUF_SIZE];
-
-	if(!(f=fopen(ggPath("ignore"),"r")))
-	{
-		kdebug("readIgnore(): Failed to open ignore file. Ignore list empty. Need to read manual?\n");
-		return;
-	};
-
-	while(fgets(buf,BUF_SIZE-1,f))
-	{
-		if(buf[strlen(buf)-1]=='\n')
-			buf[strlen(buf)-1]=0;
-		if(buf[0]=='#')
-			continue;
-		addIgnored(atoi(buf));
-	};
-	
-	fclose(f);
-};
 
 void confirmHistoryDeletion(UinsList &uins) {
 	QString fname;
@@ -411,7 +386,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	/* read the userlist */
 	userlist.readFromFile();
 
-	readIgnore();
+	readIgnored();
 
 	/* DCC */
 
@@ -1104,11 +1079,12 @@ void Kadu::commandParser (int command) {
 #endif
 		case KADU_CMD_IGNORE_USER:
 			user = userlist.byAltNick(userbox->currentText());
-			if (isIgnored(user.uin))
-				delIgnored(user.uin);
+			uins.append(user.uin);
+			if (isIgnored(uins))
+				delIgnored(uins);
 			else
-				addIgnored(user.uin);
-			writeIgnored(NULL);
+				addIgnored(uins);
+			writeIgnored();
 			break;
 		case KADU_CMD_BLOCK_USER:
 			puser = &userlist.byAltNick(userbox->currentText());
@@ -1206,7 +1182,9 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 		pm->setItemEnabled(KADU_CMD_OFFLINE_TO_USER,false);
 		}
 	else {
-		if (isIgnored(user.uin))
+		UinsList uins;
+		uins.append(user.uin);
+		if (isIgnored(uins))
 			pm->setItemChecked(KADU_CMD_IGNORE_USER, true);
 		if (user.blocking)
 			pm->setItemChecked(KADU_CMD_BLOCK_USER, true);
@@ -1962,7 +1940,7 @@ void Kadu::cleanUp(void) {
 	config.geometry = geometry();
 	saveKaduConfig();
 	kdebug("cleanUp(): Saved config and ...\n");
-	writeIgnored(NULL);
+	writeIgnored();
 }
 
 Kadu::~Kadu(void) {
