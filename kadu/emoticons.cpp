@@ -278,17 +278,26 @@ int EmoticonsManager::selectorCount() const
 
 QString EmoticonsManager::selectorString(int emot_num) const
 {
+    if ((emot_num>=0) && (emot_num<Selector.count()))
 	return Selector[emot_num].alias;
+    else
+	return "";
 }
 
 QString EmoticonsManager::selectorAnimPath(int emot_num) const
 {
+    if ((emot_num>=0) && (emot_num<Selector.count()))
 	return themePath()+"/"+Selector[emot_num].anim;
+    else
+	return "";
 }
 
 QString EmoticonsManager::selectorStaticPath(int emot_num) const
 {
+    if ((emot_num>=0) && (emot_num<Selector.count()))
 	return themePath()+"/"+Selector[emot_num].stat;
+    else
+	return "";
 }
 				
 EmoticonsManager *emoticons;

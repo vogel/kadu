@@ -47,21 +47,65 @@ class EmoticonsManager
 		bool loadGGEmoticonThemePart(QString subdir);
 		bool loadGGEmoticonTheme();
 	public:
+		/**
+		Konstruktor tworzy obiekt oraz wyszukuje listê zestawów w katalogu
+		$DATADIR/kadu/themes/emoticons
+		**/
 		EmoticonsManager();
 		~EmoticonsManager();
+		/**
+		Funkcja zwraca listê zestawów
+		**/
 		const QStringList& themes() const;
+		/**
+		\brief Funkcja ustawia zestaw emotikonek na theme
+		\param theme nazwa zestawu
+		Funkcja ustawi zestaw je¶li taki istnieje w przeciwnym wypadku
+		ustawionym zestawem bêdzie "gadu-gadu"
+		**/
 		void setEmoticonsTheme(const QString& theme);
+		/**
+		Funkcja zwraca ¶cie¿kê do aktualnego zestawu
+		**/
 		QString themePath() const;
+		/**
+		Funkcja wstawia w text zamiast tagów emotikonek odpowiednie emotikonki
+		\param text dokument w którym maj± byæ zamienione tagi
+		\param bgcolor kolor t³a emotikonki
+		\param style styl emotikonki jaki ma byæ wstawiony - domy¶lnie jest do
+		 aktualny zestaw
+		**/
 		void expandEmoticons(HtmlDocument& text, const QColor& bgcolor,
 			EmoticonsStyle style=(EmoticonsStyle) config_file.readNumEntry("Chat", "EmoticonsStyle"));
+		/**
+		Funkcja zwraca ilo¶æ emotikonek w zestawie 
+		**/
 		int selectorCount() const;
+		/**
+		Funkcja zwraca alias odpowiedniej emotikonki
+		\param emot_num nr emotikonki z listy
+		\return Zwracany jest pusty ci±g je¶li nie znaleziono emotikonki w przeciwnym razie zwracany jest alias.
+		**/
 		QString selectorString(int emot_num) const;
+		/**
+		Funkcja zwraca ¶cie¿kê do odpowiedniej animowanej emotikonki
+		\param emot_num nr emotikonki z listy
+		\return Zwracany jest pusty ci±g je¶li nie znaleziono emotikonki w przeciwnym razie zwracana jest ¶cie¿ka do emotikonki
+		**/
 		QString selectorAnimPath(int emot_num) const;
+		/**
+		Funkcja zwraca ¶cie¿kê do odpowiedniej statycznej emotikonki
+		\param emot_num nr emotikonki z listy
+		\return Zwracany jest pusty ci±g je¶li nie znaleziono emotikonki w przeciwnym razie zwracana jest ¶cie¿ka do emotikonki
+		**/
 		QString selectorStaticPath(int emot_num) const;
 };
 
 extern EmoticonsManager *emoticons;
 
+/**
+	Klasa s³u¿±ca do wyboru emotikonki z zestawu
+**/
 class EmoticonSelectorButton : public QToolButton
 {
 	Q_OBJECT	
@@ -74,17 +118,37 @@ class EmoticonSelectorButton : public QToolButton
 		void buttonClicked();
 		void movieUpdate();
 	protected:
+		/**
+		Funkcja obs³uguj±ca najechanie kursorem myszki na dan± emotikonkê.
+		**/
 		void enterEvent(QEvent* e);
+		/**
+		Funkcja obs³uguj±ca opuszczenie obszaru wy¶wietlania emotikonki.
+		**/
 		void leaveEvent(QEvent* e);
 	public:
+		/**
+		Konstruktor tworz±cy przycisk z emotikonk±
+		\param parent widget na którym osadzona ma byæ przycisk z emotikonk±
+		\param emoticon_string nazwa która ma byæ wy¶wietlana po najechaniu na 
+		przycisk
+		\param static_path ¶cie¿ka do statycznej emotikonki
+		\param anim_path ¶cie¿ka do animowanej emotikonki
+		**/
 		EmoticonSelectorButton(
 			QWidget* parent,const QString& emoticon_string,
 			const QString& static_path,const QString& anim_path);	
 		~EmoticonSelectorButton();
 	signals:
+		/**
+		Sygna³ emitowany po naci¶niêciu przycisku z emotikonk±
+		przekazywana jest warto¶æ emoticon_string (przewa¿nie jest to tag)
+		**/
 		void clicked(const QString& emoticon_string);
 };
-
+/**
+	Klasa wy¶wietlaj±ca listê emotikonek z aktualnego zestawu.
+**/
 class EmoticonSelector : public QWidget
 {
 	Q_OBJECT
@@ -93,10 +157,23 @@ class EmoticonSelector : public QWidget
 	private slots:
 		void iconClicked(const QString& emoticon_string);
 	protected:
+		/**
+		Funkcja obs³uguj±ca zamkniêcie listy.
+		**/
 		void closeEvent(QCloseEvent *e);
 	public:
+		/**
+		Konstruktor tworz±cy listê emotikonek.
+		\param parent rodzic na którym ma byæ wy¶wietlona lista
+		\param name nazwa obiektu
+		\param caller okno chat do ktorego ma byæ wpisana wybrana emotikonka
+		**/
 		EmoticonSelector(QWidget* parent = 0, const char *name = 0, Chat *caller = 0);
 	public slots:
+		/**
+		Slot obs³uguj±cy poprawne wy¶wietlenie listy emotikonek, wyrównanie do 
+		okna wywo³uj±cego.
+		**/
 		void alignTo(QWidget* w);
 };
 
