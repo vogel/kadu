@@ -103,11 +103,8 @@ ModulesDialog::ModulesDialog()
 	setCaption(tr("Manage Modules"));
 	
 	QHBoxLayout* layout= new QHBoxLayout(this);
-	QVBoxLayout* installed_layout=new QVBoxLayout(this);
-	QVBoxLayout* loaded_layout=new QVBoxLayout(this);	
-
-	layout->addLayout(installed_layout);
-	layout->addLayout(loaded_layout);
+	QVBoxLayout* installed_layout=new QVBoxLayout(layout);
+	QVBoxLayout* loaded_layout=new QVBoxLayout(layout);	
 		
 	QLabel* InstalledLabel = new QLabel(this);
 	InstalledLabel->setText(QString("<b>")+tr("Installed modules")+"</b>");
