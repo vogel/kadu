@@ -1124,7 +1124,18 @@ void GaduProtocol::connectedSlot()
 	// po po³±czeniu z sewerem niestety trzeba ponownie ustawiæ
 	// status, inaczej nie bêdziemy widoczni - raczej b³±d serwerów
 	NextStatus->refresh();
-
+	
+	/*
+		je¿eli robimy refresh(), to przy przechodzeniu z niedostêpnego z opisem
+		na niewidoczny z opisem ta zmiana jest ujawniana naszym kontaktom!
+		przy przechodzeniu z nidostêpnego na niewidoczny efekt nie wystêpuje
+	
+		je¿eli NIE zrobimy refresh(), to powy¿szy efekt nie wystêpuje, ale przy
+		przechodzeniu z niedostêpnego z opisem na niewidoczny (bez opisu), nasz
+		opis u innych pozostaje! (a¿ do czasu naszej zmiany statusu lub ich
+		roz³±czenia i po³±czenia)
+	*/
+	
 	kdebugf2();
 }
 
