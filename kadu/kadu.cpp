@@ -909,17 +909,17 @@ void Kadu::setActiveGroup(const QString& group)
 	Userbox->clearUsers();
 	for (UserList::ConstIterator i = userlist.begin(); i != userlist.end(); ++i)
 	{
-		bool belongsToGroup;
-		if (group == "")
-			belongsToGroup = true;
-		else
+		bool belongsToGroup = group.isEmpty();
+		if (!belongsToGroup)
 		{
-			belongsToGroup = false;
 			QString user_groups = (*i).group();
 			QString user_group;
 			for (int g = 0; (user_group = user_groups.section(',',g,g)) != ""; ++g)
 				if (user_group == group)
+				{
 					belongsToGroup = true;
+					break;
+				}
 		}
 		if (belongsToGroup && (!(*i).isAnonymous() || !Docked))
 			Userbox->addUser((*i).altNick());
