@@ -118,6 +118,7 @@
 #include "ignore.h"
 #include "history.h"
 #include "message.h"
+#include "pending_msgs.h"
 //
 
 extern void ackHandler(int);
@@ -150,7 +151,7 @@ DockWidget * dw;
 QPopupMenu * grpmenu;
 
 UserList userlist;
-QValueList<struct pending> pending;
+PendingMsgs pending;
 QValueList<struct chats> chats;
 struct gg_session sess;
 struct sigaction sigact;
@@ -984,12 +985,14 @@ void Kadu::sendMessage(QListBoxItem *item) {
 	rMessage *rmsg;
 	Message *msg;
 	UinsList uins;
+	PendingMsgs::Element elem;
 	
-	for (i = 0; i < pending.count(); i++)
-		if (!uins.count() || pending[i].uins.equals(uins))
-			if (pending[i].msgclass == GG_CLASS_CHAT) {
+	while (pending.pendingMsgs()) {
+		elem = accessNextMsg(elem);
+		if (!uins.count() || elem.uins.equals(uins))
+			if (elem.msgclass == GG_CLASS_CHAT) {
 				if (!uins.count())
-					uins = pending[i].uins;
+					uins = elem.uins;
 				for (j = 0; j < pending[i].uins.count(); j++)
 					if (!userlist.containsUin(pending[i].uins[j])) {
 						tmp = QString::number(pending[i].uins[j]);
@@ -1005,12 +1008,16 @@ void Kadu::sendMessage(QListBoxItem *item) {
 	    		else {
 				if (!stop)
 		    			{
-  		    			rmsg = new rMessage(item->text(), i);
+  		    			rmsg = new rMessage(item->text(),
+						elem.msgclass, elem.uins, elem.msg);
+					UserBox::all_refresh();
 					rmsg->init();
 					rmsg->show();
 					}
 				return;
 				}
+		}
+
 	if (stop) {
 		UserBox::all_refresh();
 		return;
@@ -1109,7 +1116,7 @@ void Kadu::setCurrentStatus(int status) {
 	dockppm->setItemEnabled(7, statusnr != 6);
 	statuslabel->setPixmap(QPixmap((const char**)gg_xpm[statusnr]));
 	setIcon(QPixmap((const char**)gg_xpm[statusnr]));
-	if (ifPendingMessages())
+	if (pending.pendingMsgs())
 		dw->setType((char **)gg_msg_xpm);
 	else
 		dw->setType((char **)gg_xpm[statusnr]);
@@ -1615,6 +1622,7 @@ void DockWidget::mousePressEvent(QMouseEvent * e) {
 	bool message = false;
 	int i,j;
 	QString tmp;
+	PendingMsgs::Element elem;
 	
 	if (!config.dock)
 		return;
@@ -1623,28 +1631,29 @@ void DockWidget::mousePressEvent(QMouseEvent * e) {
 		bool stop = false;
 	
 		UinsList uins;
-		for (i = 0; i < pending.count(); i++) {
-			if (!uins.count() || pending[i].uins.equals(uins))
-				if (pending[i].msgclass == GG_CLASS_CHAT) {
+		while (pending.pendingMsgs()) {
+			elem = pending.accessNextMsg();
+			if (!uins.count() || elem.uins.equals(uins))
+				if (elem.msgclass == GG_CLASS_CHAT) {
 					if (!uins.count())
-						uins = pending[i].uins;
-					for (j = 0; j < pending[i].uins.count(); j++)
-						if (!userlist.containsUin(pending[i].uins[j])) {
-							tmp = QString::number(pending[i].uins[j]);
+						uins = elem.uins;
+					for (j = 0; j < elem.uins.count(); j++)
+						if (!userlist.containsUin(elem.uins[j])) {
+							tmp = QString::number(elem.uins[j]);
 							kadu->addUser("", "", tmp, tmp, "", tmp, GG_STATUS_NOT_AVAIL, "", "", true);
 							}
-					j = kadu->openChat(pending[i].uins);
-					chats[j].ptr->checkPresence(pending[i].uins,
-						pending[i].msg, pending[i].time);	    
-					deletePendingMessage(i);
-					i--;
+					j = kadu->openChat(elem.uins);
+					chats[j].ptr->checkPresence(elem.uins,
+						elem.msg, elem.time);	    
+					pending.deleteNextMsg();
 					stop = true;
 					}		
 				else {
 					if (!stop) {
 						rMessage *rmsg;
-						rmsg = new rMessage(
-							userlist.byUin(pending[i].uins[0]).altnick, i);
+						rmsg = new rMessage(userlist.byUin(elem.uins[0]).altnick,
+							elem.msgclass, elem.uins, elem.msg);
+						UserBox::all_refresh();
 						rmsg->init();
 						rmsg->show();
 						}
