@@ -184,6 +184,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * klikniecie przyciskiem myszy na dymek nowej rozmowy otwiera okno chat-a (michal)
 * wyodrêbnienie czê¶ci wspólnej importu listy kontaktów z pliku i z serwera z wykorzystaniem
   QTextStream (chilek)
+* ======= FEATURE FREEZE =======
+  jeszcze popracujê nad modu³ami ale raczej poprawiamy b³êdy (adrian)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
