@@ -35,6 +35,7 @@ Library::Library(const QString& file_name)
 
 Library::~Library()
 {
+	kdebugf();
 	if (Handle != NULL)
 		dlclose(Handle);
 }
@@ -546,7 +547,8 @@ bool ModulesManager::deactivateModule(const QString& module_name, bool force)
 	}
 	
 	if(m.lib!=NULL)
-		delete m.lib;
+		m.lib->deleteLater();
+
 	Modules.remove(module_name);
 	
 	return true;

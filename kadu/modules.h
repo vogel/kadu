@@ -11,7 +11,7 @@
 /**
 	Zastêpuje klasê QLibrary na specyficzne potrzeby Kadu
 **/
-class Library
+class Library : public QObject
 {
 	private:
 		QString FileName;

@@ -15,6 +15,8 @@
 
 #include "../docking/docking.h"
 #include "debug.h"
+#include "config_file.h"
+#include "kadu.h"
 
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
@@ -150,6 +152,9 @@ X11TrayIcon::X11TrayIcon()
 	connect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
 	connect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
 
+	if (config_file.readBoolEntry("General", "RunDocked"))
+		kadu->hide();
+
 	show();
 }
 
@@ -160,6 +165,7 @@ X11TrayIcon::~X11TrayIcon()
 	disconnect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
 	disconnect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
 	delete WMakerMasterWidget;	
+	kadu->show();
 }
 
 void X11TrayIcon::findTrayPosition(QPoint& pos)

@@ -27,6 +27,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * usuniety segfaul w przypadky wywrotki gdy plik blokujacy zostal juz
   usuniety (michal)
 * podczas wywrotki kadu wypisuje backtrace (michal)
+* kadu nie wywróci siê gdy zamkniemy je z menu w trayu - zwalnianie pamiêci
+  po modu³ach opó¼niane jest do czasu zakoñczenia bie¿±cych czynno¶ci (joi)
+* przy wy³adowywaniu x11_docking g³ówne okno wraca na pulpit (joi)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

@@ -30,6 +30,7 @@ extern "C" int docking_init()
 
 extern "C" void docking_close()
 {
+	kdebugf();
 	delete docking_manager;
 	docking_manager = NULL;
 }
@@ -44,8 +45,6 @@ DockingManager::DockingManager()
 
 	QT_TRANSLATE_NOOP("@default", "Start docked");
 	ConfigDialog::addCheckBox("General", "grid", "Start docked", "RunDocked", false);
-	if (config_file.readBoolEntry("General", "RunDocked"))
-		kadu->hide();
 	
 	connect(kadu, SIGNAL(connectingBlinkShowOffline()), this, SLOT(showOffline()));
 	connect(kadu, SIGNAL(connectingBlinkShowStatus(int)), this, SLOT(showStatus(int)));
@@ -61,6 +60,8 @@ DockingManager::DockingManager()
 
 DockingManager::~DockingManager()
 {
+	kdebugf();
+
 	ConfigDialog::removeControl("General", "Start docked");
 
 	disconnect(kadu, SIGNAL(connectingBlinkShowOffline()), this, SLOT(showOffline()));
@@ -70,8 +71,11 @@ DockingManager::~DockingManager()
 	disconnect(&pending, SIGNAL(messageDeleted()), this, SLOT(pendingMessageDeleted()));
 	disconnect(hintmanager, SIGNAL(searchingForPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
 	disconnect(dockppm, SIGNAL(activated(int)), this, SLOT(dockletChange(int)));
+	disconnect(icon_timer, SIGNAL(timeout()), this, SLOT(changeIcon()));
 
 	kadu->setDocked(false);
+	delete icon_timer;
+	icon_timer=NULL;
 }
 
 void DockingManager::changeIcon()
