@@ -50,7 +50,7 @@ void kadu_signal_handler(int s)
 	if(lockFile){ // moze sie wywalic praktycznie po wylaczeniu i to tez trzeba uwzglednic	
 		flock(lockFileHandle, LOCK_UN);
 		kdebug("lock released\n");
-		lockFile->close(); //im mniej operacji tym lepiej...
+		lockFile->close();
 		kdebug("lockfile closed\n");
 	}
 	
