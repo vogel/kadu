@@ -129,6 +129,7 @@ void loadKaduConfig(void) {
 	config.encryption = konf->readBoolEntry("Encryption", false);
 //	config.keyslen = konf->readNumEntry("KeysLength", 1024);
 #endif
+	config.panelcontents = konf->readEntry("PanelContents", "Status: %s, [(%d)]");
 
 	konf->setGroup("Notify");
 	config.soundnotify = strdup(konf->readEntry("NotifySound", ""));
@@ -268,6 +269,7 @@ void saveKaduConfig(void) {
         konf->writeEntry("Encryption", config.encryption);
         //konf->writeEntry("KeysLength", config.keyslen);
 #endif
+	konf->writeEntry("PanelContents", config.panelcontents);
 
 	konf->setGroup("Proxy");
 	konf->writeEntry("UseProxy",config.useproxy);
@@ -1049,8 +1051,14 @@ void ConfigDialog::setupTab6(void) {
 	cb_otherfontsize->setCurrentText(QString::number(vl_otherfont[0].pointSize()));
 
 	connect(cb_otherfontsize, SIGNAL(activated(int)), this, SLOT(chooseOtherFontSizeGet(int)));
-
 	otherselectfont->hide();
+	
+	QHBox *panelbox = new QHBox(otherprop);
+	panelbox->setSpacing(5);
+	
+	QLabel *l_panel = new QLabel(i18n("Panel information contents"), panelbox);
+	e_panelcontents = new QLineEdit(config.panelcontents, panelbox);
+	QToolTip::add(e_panelcontents,i18n("%s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - frist name\n%r = surname, %m - mobile, %u - uin, %g - group, %o - If person has us in userlist"));
 
 	addTab(box6, i18n("Look"));
 };
@@ -1505,6 +1513,8 @@ void ConfigDialog::updateConfig(void) {
 	config.fonts.userbox = vl_userboxfont[0];
 	config.fonts.userboxDesc = vl_userboxfont[1];
 	config.fonts.trayhint = vl_otherfont[0];
+	
+	config.panelcontents = e_panelcontents->text().latin1();
 
 	free(config.soundnotify);
 	config.soundnotify = strdup(e_soundnotify->text().latin1());

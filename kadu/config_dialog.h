@@ -135,6 +135,7 @@ class ConfigDialog : public QTabDialog	{
 		QLineEdit *e_chatcolor;
 		QLineEdit *e_userboxcolor;
 		QLineEdit *e_othercolor;
+		QLineEdit *e_panelcontents;
 		QHBox *chatselectfont;
 		QHBox *userboxselectfont;
 		QHBox *otherselectfont;
@@ -144,6 +145,7 @@ class ConfigDialog : public QTabDialog	{
 		QValueList<QFont> vl_chatfont;
 		QValueList<QColor> vl_othercolor;
 		QValueList<QFont> vl_otherfont;
+		
 
 #ifdef HAVE_OPENSSL
 		QCheckBox *b_encryption;
@@ -256,6 +258,7 @@ struct config {
 	bool hinterror;
 	bool hintalert;
 	bool showdesc;
+	QString panelcontents;
 
 	QRect geometry;
 	QSize splitsize;

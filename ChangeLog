@@ -76,6 +76,8 @@
   miêdzy wszyskie te same emotikony we wszystkich oknach chat (adrian)
 * ograniczenie liczby jednocze¶nie akceptowanych po³±czeñ DCC do o¶miu (chilek)
 * obs³uga wznawiania zerwanych transmisji plików poprzez DCC (chilek)
+* pierwsze przymiarki do zrobienia konfiguralnego panelu
+  informacyjnego, na razie tylko pole w konfiguracji (mast3r)
 
 +++ wersja 0.3.3-final
 * ikonka wiadomo¶ci i ikon statusu "ukryty" z telefonikiem
