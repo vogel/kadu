@@ -212,13 +212,13 @@ void VoiceManager::testGsmEncoding()
 		MessageBox::wrn(tr("Opening sound device failed."));
 		return;
 	}
+	sound_manager->enableThreading(GsmEncodingTestDevice);
 	sound_manager->setFlushingEnabled(GsmEncodingTestDevice, false);
 
 	GsmEncodingTestSample = new int16_t[160];
 	GsmEncodingTestFrames = new gsm_frame[8000 * 3 / 160]; // = 150
 	GsmEncodingTestCurrFrame = 0;
 
-	sound_manager->enableThreading(GsmEncodingTestDevice);
 	connect(sound_manager, SIGNAL(sampleRecorded(SoundDevice)), this, SLOT(gsmEncodingTestSampleRecorded(SoundDevice)));
 	connect(sound_manager, SIGNAL(samplePlayed(SoundDevice)), this, SLOT(gsmEncodingTestSamplePlayed(SoundDevice)));
 
