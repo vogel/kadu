@@ -294,7 +294,6 @@ void readConfig(void);
 char *pwHash(const char *);
 void confirmHistoryDeletion(const char *);
 void remindPassword();
-unsigned int GetStatusFromUserlist(uin_t uin);
 
 extern KPopupMenu *dockppm;
 

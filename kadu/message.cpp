@@ -194,7 +194,7 @@ Message::Message (const QString & nick, bool tchat, QWidget *parent, const char 
 	statusedit = new QLineEdit(this);
 	statusedit->setGeometry(230, 5, 60, 20);
 
-	unsigned int status = GetStatusFromUserlist(userlist.byAltNick(nicksnd).uin);
+	unsigned int status = userlist.byAltNick(nicksnd).status;
 	if (status != -1)
 		statusedit->setText(i18n(statustext[statusGGToStatusNr(status)]));
 	else	

@@ -257,7 +257,7 @@ void eventGotUserlist(struct gg_event * e) {
 		user.ip = n->remote_ip;
 		user.port = n->remote_port;
 
-		oldstatus = GetStatusFromUserlist(n->uin);
+		oldstatus = userlist.byUin(n->uin).status;
 
 		if (n->status == GG_STATUS_AVAIL)
 			fprintf(stderr, "KK eventGotUserlist(): User %d went online\n", n->uin);
@@ -265,14 +265,14 @@ void eventGotUserlist(struct gg_event * e) {
 			if (n->status == GG_STATUS_BUSY)
 				fprintf(stderr, "KK eventGotUserlist(): User %d went busy\n", n->uin);
 			else
-				if (n->status == GG_STATUS_NOT_AVAIL && (GetStatusFromUserlist(n->uin) == GG_STATUS_NOT_AVAIL
-					|| GetStatusFromUserlist(n->uin) == GG_STATUS_INVISIBLE2)) {
+				if (n->status == GG_STATUS_NOT_AVAIL && (userlist.byUin(n->uin).status == GG_STATUS_NOT_AVAIL
+					|| userlist.byUin(n->uin).status == GG_STATUS_INVISIBLE2)) {
 		    			fprintf(stderr, "KK eventGotUserlist(): User %d went offline (probably invisible ;))\n", n->uin);
 					UserListElement &ule = userlist.byUin(n->uin);
 					ule.time_to_death = 300;
 					}
 				else
-					if (n->status == GG_STATUS_NOT_AVAIL && GetStatusFromUserlist(n->uin) != GG_STATUS_NOT_AVAIL)
+					if (n->status == GG_STATUS_NOT_AVAIL && userlist.byUin(n->uin).status != GG_STATUS_NOT_AVAIL)
 						fprintf(stderr, "KK eventGotUserlist(): User %d went offline\n", n->uin);
 					else
 						if (n->status == GG_STATUS_BLOCKED)
@@ -283,8 +283,8 @@ void eventGotUserlist(struct gg_event * e) {
 		if (n->status != GG_STATUS_NOT_AVAIL)
 			user.status = n->status;
 		else
-			if (n->status == GG_STATUS_NOT_AVAIL && (GetStatusFromUserlist(n->uin) == GG_STATUS_NOT_AVAIL
-				|| GetStatusFromUserlist(n->uin) == GG_STATUS_INVISIBLE2))
+			if (n->status == GG_STATUS_NOT_AVAIL && (userlist.byUin(n->uin).status == GG_STATUS_NOT_AVAIL
+				|| userlist.byUin(n->uin).status == GG_STATUS_INVISIBLE2))
 				user.status = GG_STATUS_INVISIBLE2;
 			else
 				user.status = GG_STATUS_NOT_AVAIL;
