@@ -338,15 +338,19 @@ void GaduProtocol::initModule()
 		gg_servers.append(ip);
 	}
 
+	gg_proxy_host = NULL;
+	gg_proxy_username = NULL;
+	gg_proxy_password = NULL;
+
 //	kadu->mainMenu()->insertItem(icons_manager.loadIcon("ResendUserlist"), tr("Resend &userlist"), gadu, SLOT(sendUserList()),0,-1,2);
 }
 
 GaduProtocol::GaduProtocol() : QObject()
 {
 	kdebugf();
-	QObject::connect(&event_manager, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)),
+	connect(&event_manager, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)),
 		this, SLOT(newResults(gg_pubdir50_t)));
-	QObject::connect(&event_manager, SIGNAL(userlistReplyReceived(char, char *)),
+	connect(&event_manager, SIGNAL(userlistReplyReceived(char, char *)),
 		this, SLOT(userListReplyReceived(char, char *)));
 }
 
@@ -373,7 +377,7 @@ void GaduProtocol::setStatus(int status)
 	if (socket_active)
 		changeStatus(status);
 	else
-		connect(status);
+		login(status);
 
 	//emit statusChanged(int);
 
@@ -420,7 +424,7 @@ void GaduProtocol::changeStatus(int status)
 	kdebugf2();
 }
 
-void GaduProtocol::connect(int status)
+void GaduProtocol::login(int status)
 {
 	kdebugf();
 
@@ -432,10 +436,10 @@ void GaduProtocol::connect(int status)
 	// maksymalny rozmiar grafiki w kb
 	loginparams.image_size = config_file.readNumEntry("Chat", "MaxImageSize", 20);
 
-	// TODO proteza
-	emit connecting();
-	// tutaj przenie¶æ kupê kodu z kadu.cpp
-	
+	if (config_file.readBoolEntry("Network", "AllowDCC"))
+		setupDcc();
+	setupProxy();
+
 	loginparams.status = status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General", "PrivateStatus"));
 
 	if (with_description)
@@ -493,7 +497,7 @@ void GaduProtocol::connect(int status)
 	loginparams.protocol_version = GG_DEFAULT_PROTOCOL_VERSION;
 	if (loginparams.tls)
 	{
-		kdebug("Kadu::setStatus(): using TLS\n");
+		kdebug("GaduProtocol::login((): using TLS\n");
 		loginparams.server_port = 0;
 		if (config_file.readBoolEntry("Network", "isDefServers"))
 			loginparams.server_addr = 0;
@@ -517,13 +521,86 @@ void GaduProtocol::connect(int status)
 		socket_active = true;
 
 		kadusnw = new QSocketNotifier(sess->fd, QSocketNotifier::Write, this);
-		QObject::connect(kadusnw, SIGNAL(activated(int)), kadu, SLOT(dataSent()));
+		connect(kadusnw, SIGNAL(activated(int)), kadu, SLOT(dataSent()));
 
 		kadusnr = new QSocketNotifier(sess->fd, QSocketNotifier::Read, this);
-		QObject::connect(kadusnr, SIGNAL(activated(int)), kadu, SLOT(dataReceived()));
+		connect(kadusnr, SIGNAL(activated(int)), kadu, SLOT(dataReceived()));
 	}
 	else
 		emit disconnectNetwork();
+
+	kdebugf2();
+}
+
+void GaduProtocol::setupProxy()
+{
+	kdebugf();
+
+	if (gg_proxy_host)
+	{
+		free(gg_proxy_host);
+		gg_proxy_host = NULL;
+	}
+
+	if (gg_proxy_username)
+	{
+		free(gg_proxy_username);
+		free(gg_proxy_password);
+		gg_proxy_username = gg_proxy_password = NULL;
+	}
+
+	gg_proxy_enabled = config_file.readBoolEntry("Network", "UseProxy");
+
+	if (gg_proxy_enabled)
+	{
+		gg_proxy_host = strdup((char *)unicode2latin(config_file.readEntry("Network", "ProxyHost")).data());
+		gg_proxy_port = config_file.readNumEntry("Network", "ProxyPort");
+
+		kdebug("GaduProtocol::setupProxy(): gg_proxy_host = %s\n", gg_proxy_host);
+		kdebug("GaduProtocol::setupProxy(): gg_proxy_port = %d\n", gg_proxy_port);
+
+		if (config_file.readEntry("Network", "ProxyUser").length())
+		{
+			gg_proxy_username = strdup((char *)unicode2latin(config_file.readEntry("Network", "ProxyUser")).data());
+			gg_proxy_password = strdup((char *)unicode2latin(config_file.readEntry("Network", "ProxyPassword")).data());
+		}
+	}
+
+	kdebugf2();
+}
+
+void GaduProtocol::setupDcc()
+{
+	kdebugf();
+
+	QHostAddress dccIp;
+
+	if (!config_dccip.ip4Addr())
+		dccIp.setAddress("255.255.255.255");
+	else
+		dccIp = config_dccip;
+
+	dccsock = gg_dcc_socket_create(config_file.readNumEntry("General", "UIN"), config_file.readNumEntry("Network", "LocalPort", 1550));
+
+	if (!dccsock)
+	{
+		kdebug("GaduProtocol::setupDcc(): Couldn't bind DCC socket.\n");
+		gg_dcc_free(dccsock);
+
+		emit dccSetupFailed();
+		return;
+	}
+
+	gg_dcc_ip = htonl(dccIp.ip4Addr());
+	gg_dcc_port = dccsock->port;
+
+	kdebug("GaduProtocol:setupDcc() DCC_IP=%s DCC_PORT=%d\n", dccIp.toString().latin1(), dccsock->port);
+
+	dccsnr = new QSocketNotifier(dccsock->fd, QSocketNotifier::Read, kadu);
+	QObject::connect(dccsnr, SIGNAL(activated(int)), kadu, SLOT(dccReceived()));
+
+	dccsnw = new QSocketNotifier(dccsock->fd, QSocketNotifier::Write, kadu);
+	QObject::connect(dccsnw, SIGNAL(activated(int)), kadu, SLOT(dccSent()));
 
 	kdebugf2();
 }
@@ -762,7 +839,7 @@ bool GaduProtocol::doRegister(QString& mail, QString& password, QString& token_i
 	if (h)
 	{
 		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h);
-		QObject::connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(registerDone(bool, struct gg_http *)));
+		connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(registerDone(bool, struct gg_http *)));
 		sn->start();
 	}
 	else
@@ -786,7 +863,7 @@ bool GaduProtocol::doUnregister(UinType uin, QString &password, QString& token_i
 	if (h)
 	{
 		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h);
-		QObject::connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(unregisterDone(bool, struct gg_http *)));
+		connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(unregisterDone(bool, struct gg_http *)));
 		sn->start();
 	}
 	else
@@ -809,7 +886,7 @@ bool GaduProtocol::doRemind(UinType uin, QString& token_id, QString& token_value
 	if (h)
 	{
 		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h);
-		QObject::connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(remindDone(bool, struct gg_http *)));
+		connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(remindDone(bool, struct gg_http *)));
 		sn->start();
 	}
 	else
@@ -833,7 +910,7 @@ bool GaduProtocol::doChangePassword(UinType uin, QString& mail, QString& passwor
 	if (h)
 	{
 		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h);
-		QObject::connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(changePasswordDone(bool, struct gg_http *)));
+		connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(changePasswordDone(bool, struct gg_http *)));
 		sn->start();
 	}
 	else

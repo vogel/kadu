@@ -147,7 +147,7 @@ class Kadu : public QMainWindow
 		void dataSent();
 		void dccReceived();
 		void dccSent();
-		void prepareDcc(void);
+		void dccSetupFailed();
 		void pingNetwork(void);
 		void setStatus(int);
 		void disconnectNetwork(void);
@@ -162,7 +162,6 @@ class Kadu : public QMainWindow
 
 		// protezy...
 		void proteza_statusChanged(int);
-		void proteza_connecting();
 		void proteza_disconnectNetwork();
 
 		void about();

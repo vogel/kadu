@@ -333,8 +333,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	closestatusppmtime.start();
 
-	gg_proxy_host = NULL;
-
 	/* timers, cause event loops and QSocketNotifiers suck. */
 
 	//pingtimer = blinktimer = readevent = NULL; zamieniamy na(powod: patrz plik events.cpp)
@@ -495,9 +493,11 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	if ( configTab >= 0 && configTab < GroupBar -> count() )
 		((QTabBar*) GroupBar) -> setCurrentTab( configTab );
 
-	connect(gadu, SIGNAL(connecting()), this, SLOT(proteza_connecting()));
+//	connect(gadu, SIGNAL(connecting()), this, SLOT(proteza_connecting()));
 	connect(gadu, SIGNAL(statusChanged(int)), this, SLOT(proteza_statusChanged(int)));
 	connect(gadu, SIGNAL(disconnectNetwork()), this, SLOT(proteza_disconnectNetwork()));
+
+	connect(gadu, SIGNAL(dccSetupFailed()), this, SLOT(dccSetupFailed()));
 
 	dccsock = NULL;
 	/* dirty workaround for multiple showEvents */
@@ -993,35 +993,10 @@ void Kadu::blink() {
 	blinktimer->start(1000, TRUE);
 }
 
-/* dcc initials */
-void Kadu::prepareDcc(void) {
-	QHostAddress dccip;
-
-	if (!config_dccip.ip4Addr())
-		dccip.setAddress("255.255.255.255");
-	else
-		dccip = config_dccip;
-
-	dccsock = gg_dcc_socket_create(config_file.readNumEntry("General", "UIN"), config_file.readNumEntry("Network", "LocalPort", 1550));
-
-	if (!dccsock) {
-		kdebug("Kadu::prepareDcc(): Couldn't bind DCC socket.\n");
-		gg_dcc_free(dccsock);
-		QMessageBox::warning(kadu, "",
-			tr("Couldn't create DCC socket.\nDirect connections disabled."));
-		return;
-		}
-
-	gg_dcc_ip = htonl(dccip.ip4Addr());
-	gg_dcc_port = dccsock->port;
-
-	kdebug("Kadu::prepareDcc() DCC_IP=%s DCC_PORT=%d\n", dccip.toString().latin1(), dccsock->port);
-
-	dccsnr = new QSocketNotifier(dccsock->fd, QSocketNotifier::Read, kadu);
-	QObject::connect(dccsnr, SIGNAL(activated(int)), kadu, SLOT(dccReceived()));
-
-	dccsnw = new QSocketNotifier(dccsock->fd, QSocketNotifier::Write, kadu);
-	QObject::connect(dccsnw, SIGNAL(activated(int)), kadu, SLOT(dccSent()));
+void Kadu::dccSetupFailed()
+{
+	QMessageBox::warning(kadu, "",
+		tr("Couldn't create DCC socket.\nDirect connections disabled."));
 }
 
 void Kadu::userListUserAdded(const UserListElement& user)
@@ -1155,37 +1130,6 @@ void Kadu::setCurrentStatus(int status) {
 	statusbutton->setIconSet(QIconSet(pix));
 	setIcon(pix);
 	emit currentStatusChanged(status);
-}
-
-void Kadu::proteza_connecting()
-{
-	if (config_file.readBoolEntry("Network", "AllowDCC"))
-		prepareDcc();
-
-	if (gg_proxy_host) {
-		free(gg_proxy_host);
-		gg_proxy_host = NULL;
-		}
-	if (gg_proxy_username) {
-		free(gg_proxy_username);
-		free(gg_proxy_password);
-		gg_proxy_username = gg_proxy_password = NULL;
-		}
-	
-	gg_proxy_enabled = config_file.readBoolEntry("Network", "UseProxy");
-	if (gg_proxy_enabled)
-	{
-		gg_proxy_host = strdup((char *)unicode2latin(config_file.readEntry("Network", "ProxyHost")).data());
-		kdebug("Kadu::setStatus(): gg_proxy_host = %s\n", gg_proxy_host);
-		gg_proxy_port = config_file.readNumEntry("Network", "ProxyPort");
-		kdebug("Kadu::setStatus(): gg_proxy_port = %d\n", gg_proxy_port);
-		if (config_file.readEntry("Network", "ProxyUser").length())
-		{
-			gg_proxy_username = strdup((char *)unicode2latin(config_file.readEntry("Network", "ProxyUser")).data());
-			gg_proxy_password = strdup((char *)unicode2latin(config_file.readEntry("Network", "ProxyPassword")).data());
-		}
-	}
-
 }
 
 void Kadu::proteza_statusChanged(int status)

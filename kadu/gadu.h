@@ -156,7 +156,9 @@ class GaduProtocol : public QObject
 		bool userListClear;
 		QString importReply;
 
-		void connect(int status);
+		void login(int status);
+		void setupProxy();
+		void setupDcc();
 		void changeStatus(int status);
 
 	private slots:
@@ -264,6 +266,7 @@ class GaduProtocol : public QObject
 
 	signals:
 		void connecting();
+		void dccSetupFailed();
 		void statusChanged(int);
 		void disconnectNetwork();
 		void newSearchResults(SearchResults& searchResults, int seq, int lastUin);
