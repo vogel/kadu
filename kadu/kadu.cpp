@@ -1786,3 +1786,27 @@ void Kadu::readTokenValue(QPixmap tokenImage, QString &tokenValue)
 
 	delete td;
 }
+
+void Kadu::deleteOldConfigFiles()
+{
+	kdebugf();
+	QDir oldConfigs(ggPath(), "kadu.conf.backup.*", QDir::Name, QDir::Files);
+//	kdebugm(KDEBUG_INFO, "%d\n", oldConfigs.count());
+	if (oldConfigs.count() > 20)
+		for (unsigned int i = 0; i < oldConfigs.count() - 20; ++i)
+		{
+//			kdebugm(KDEBUG_DUMP, "deleting %s\n", oldConfigs[i].local8Bit().data());
+			QFile::remove(ggPath(oldConfigs[i]));
+		}
+//	kdebugm(KDEBUG_INFO, "configs deleted\n");
+
+	QDir oldBacktraces(ggPath(), "kadu.backtrace.*", QDir::Name, QDir::Files);
+	if (oldBacktraces.count() > 20)
+		for (unsigned int i = 0; i < oldBacktraces.count() - 20; ++i)
+		{
+//			kdebugm(KDEBUG_DUMP, "deleting %s\n", oldBacktraces[i].local8Bit().data());
+			QFile::remove(ggPath(oldBacktraces[i]));
+		}
+//	kdebugm(KDEBUG_INFO, "bts deleted\n");
+	kdebugf2();
+}

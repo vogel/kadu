@@ -20,6 +20,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <stdio.h>
 
 #include "kadu.h"
 #include "kadu-config.h"
@@ -50,7 +51,8 @@ static void kadu_signal_handler(int s)
 	if (s==SIGSEGV)
 	{
 		kdebugm(KDEBUG_PANIC, "Kadu crashed :(\n");
-		QString f=QString("kadu.conf.backup.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
+		QString f = QString("kadu.conf.backup.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
+		QString debug_file = QString("kadu.backtrace.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
 
 		if(lockFile)
 		{ // moze sie wywalic praktycznie po wylaczeniu i to tez trzeba uwzglednic	
@@ -63,6 +65,7 @@ static void kadu_signal_handler(int s)
 		void *bt_array[100];
 		char **bt_strings;
 		int num_entries;
+		FILE *dbgfile;
 		if ((num_entries = backtrace(bt_array, 100)) < 0) {
 			kdebugm(KDEBUG_PANIC, "could not generate backtrace\n");
 			abort();
@@ -71,10 +74,22 @@ static void kadu_signal_handler(int s)
 			kdebugm(KDEBUG_PANIC, "could not get symbol names for backtrace\n");
 			abort();
 		}
+
 		fprintf(stderr, "\n======= BEGIN OF BACKTRACE =====\n");
 		for (int i = 0; i < num_entries; ++i)
 			fprintf(stderr, "[%d] %s\n", i, bt_strings[i]);
 		fprintf(stderr, "======= END OF BACKTRACE  ======\n");
+
+		dbgfile = fopen(ggPath(debug_file), "w");
+		if (dbgfile)
+		{
+			fprintf(dbgfile, "======= BEGIN OF BACKTRACE =====\n");
+			for (int i = 0; i < num_entries; ++i)
+				fprintf(dbgfile, "[%d] %s\n", i, bt_strings[i]);
+			fprintf(dbgfile, "======= END OF BACKTRACE  ======\n");
+			fclose(dbgfile);
+		}
+
 		free(bt_strings);
 #else
 		kdebugm(KDEBUG_PANIC, "backtrace not available\n");		
@@ -165,6 +180,7 @@ int main(int argc, char *argv[])
 	// tak nie nale¿y postêpowaæ (leczymy nawyki z win32)
 	if (geteuid() == 0)
 		MessageBox::wrn(qApp->translate("@default", QT_TR_NOOP("Please do not run Kadu as a root!\nIt's a high security risk!")));
+	QTimer::singleShot(15000, kadu, SLOT(deleteOldConfigFiles()));
 
 	return qApp->exec();
 }

@@ -108,6 +108,7 @@ class Kadu : public QMainWindow
 		void imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &path);
 		void systemMessageReceived(const QString &msg);
 		void userStatusChanged(const UserListElement &, const UserStatus &oldstatus, bool onConnection);
+		void deleteOldConfigFiles();
 
 	protected:
 		void keyPressEvent(QKeyEvent *e);
