@@ -1257,9 +1257,6 @@ void Chat::sendMessage()
 	if (myLastFormats)
 		delete [](char *)myLastFormats;
 
-	if (sess->check & GG_CHECK_WRITE)
-		kadusnw->setEnabled(true);
-
  	if (config_file.readBoolEntry("Chat","MessageAcks"))
 		connect(gadu, SIGNAL(ackReceived(int)), this, SLOT(ackReceivedSlot(int)));
 	else

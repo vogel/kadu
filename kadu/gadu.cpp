@@ -27,9 +27,6 @@
 struct gg_session* sess = NULL;
 struct gg_login_params loginparams;
 
-QSocketNotifier* kadusnr = NULL;
-QSocketNotifier* kadusnw = NULL;
-
 bool userlist_sent = false;
 bool socket_active = false;
 unsigned int server_nr = 0;
@@ -166,9 +163,7 @@ void SearchRecord::clearData()
 SocketNotifiers::SocketNotifiers(int fd)
 {
 	kdebugf();
-
 	Fd = fd;
-
 	kdebugf2();
 }
 
@@ -183,6 +178,13 @@ void SocketNotifiers::start()
 {
 	kdebugf();
 	createSocketNotifiers();
+	kdebugf2();
+}
+
+void SocketNotifiers::stop()
+{
+	kdebugf();
+	deleteSocketNotifiers();
 	kdebugf2();
 }
 
@@ -364,9 +366,10 @@ void DccSocketNotifiers::socketEvent()
 
 /* GaduSocketNotifiers */
 
-GaduSocketNotifiers::GaduSocketNotifiers()
+GaduSocketNotifiers::GaduSocketNotifiers() : SocketNotifiers(0)
 {
 	kdebugf();
+	Sess = 0;
 	kdebugf2();
 }
 
@@ -374,7 +377,41 @@ GaduSocketNotifiers::~GaduSocketNotifiers()
 {
 }
 
-void GaduSocketNotifiers::eventHandler(gg_session *sess)
+void GaduSocketNotifiers::setSession(gg_session *sess)
+{
+	Sess = sess;
+	Fd = Sess->fd;
+}
+
+void GaduSocketNotifiers::checkWrite()
+{
+	kdebugf();
+	if (sess->check & GG_CHECK_WRITE)
+		Snw->setEnabled(true);
+}
+
+void GaduSocketNotifiers::dataReceived()
+{
+	kdebugf();
+
+	if (Sess->check & GG_CHECK_READ)
+		socketEvent();
+
+	kdebugf2();
+}
+
+void GaduSocketNotifiers::dataSent()
+{
+	kdebugf();
+
+	Snw->setEnabled(false);
+	if (Sess->check & GG_CHECK_WRITE)
+		socketEvent();
+
+	kdebugf2();
+}
+
+void GaduSocketNotifiers::socketEvent()
 {
 	kdebugf();
 	static int calls = 0;
@@ -384,7 +421,7 @@ void GaduSocketNotifiers::eventHandler(gg_session *sess)
 		kdebugm(KDEBUG_WARNING, "************* GaduSocketNotifiers::eventHandler(): Recursive eventHandler calls detected!\n");
 
 	gg_event* e;
-	if (!(e = gg_watch_fd(sess)))
+	if (!(e = gg_watch_fd(Sess)))
 	{
 		emit error(ConnectionUnknow);
 		gg_free_event(e);
@@ -392,24 +429,14 @@ void GaduSocketNotifiers::eventHandler(gg_session *sess)
 		return;
 	}
 
-	if (sess->state == GG_STATE_CONNECTING_HUB || sess->state == GG_STATE_CONNECTING_GG)
+	if (Sess->state == GG_STATE_CONNECTING_HUB || Sess->state == GG_STATE_CONNECTING_GG)
 	{
 		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduSocketNotifiers::eventHandler(): changing QSocketNotifiers.\n");
 
-		kadusnw->setEnabled(false);
-		delete kadusnw;
-
-		kadusnr->setEnabled(false);
-		delete kadusnr;
-
-		kadusnw = new QSocketNotifier(sess->fd, QSocketNotifier::Write, this);
-		QObject::connect(kadusnw, SIGNAL(activated(int)), kadu, SLOT(dataSent()));
-
-		kadusnr = new QSocketNotifier(sess->fd, QSocketNotifier::Read, this);
-		QObject::connect(kadusnr, SIGNAL(activated(int)), kadu, SLOT(dataReceived()));
+		recreateSocketNotifiers();
 	}
 
-	switch (sess->state)
+	switch (Sess->state)
 	{
 		case GG_STATE_RESOLVING:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "EventManager::eventHandler(): Resolving address\n");
@@ -516,15 +543,16 @@ void GaduSocketNotifiers::eventHandler(gg_session *sess)
 
 	if (socket_active)
 	{
-		if (sess->state == GG_STATE_IDLE && userlist_sent)
+		if (Sess->state == GG_STATE_IDLE && userlist_sent)
 		{
 			socket_active = false;
 			UserBox::all_changeAllToInactive();
 			emit error(ConnectionUnknow);
 		}
 		else
-			if (sess->check & GG_CHECK_WRITE)
-				kadusnw->setEnabled(true);
+			checkWrite();
+			//if (sess->check & GG_CHECK_WRITE)
+				//kadusnw->setEnabled(true);
 	}
 
 	gg_free_event(e);
@@ -571,7 +599,6 @@ void GaduProtocol::initModule()
 	gg_proxy_username = NULL;
 	gg_proxy_password = NULL;
 
-//	kadu->mainMenu()->insertItem(icons_manager.loadIcon("ResendUserlist"), tr("Resend &userlist"), gadu, SLOT(sendUserList()),0,-1,2);
 	kdebugf2();
 }
 
@@ -673,19 +700,7 @@ void GaduProtocol::disconnectedSlot()
 		PingTimer = NULL;
 	}
 
-	if (kadusnw)
-	{
-		kadusnw->setEnabled(false);
-		delete kadusnw;
-		kadusnw = NULL;
-	}
-
-	if (kadusnr)
-	{
-		kadusnr->setEnabled(false);
-		delete kadusnr;
-		kadusnr = NULL;
-	}
+	SocketNotifiers->stop();
 
 	if (dccsnr)
 	{
@@ -1025,12 +1040,8 @@ void GaduProtocol::login(int status)
 	if (sess)
 	{
 		socket_active = true;
-
-		kadusnw = new QSocketNotifier(sess->fd, QSocketNotifier::Write, this);
-		connect(kadusnw, SIGNAL(activated(int)), kadu, SLOT(dataSent()));
-
-		kadusnr = new QSocketNotifier(sess->fd, QSocketNotifier::Read, this);
-		connect(kadusnr, SIGNAL(activated(int)), kadu, SLOT(dataReceived()));
+		SocketNotifiers->setSession(sess);
+		SocketNotifiers->start();
 	}
 	else
 	{
@@ -1139,6 +1150,9 @@ int GaduProtocol::sendMessage(const UinsList& uins,const char* msg)
 	else
 		seq=gg_send_message(sess, GG_CLASS_CHAT, uins[0],
 			(unsigned char*)msg);
+
+	SocketNotifiers->checkWrite();
+
 	kdebugf2();
 	return seq;
 }
@@ -1162,6 +1176,9 @@ int GaduProtocol::sendMessageRichText(const UinsList& uins,const char* msg,unsig
 				uins[0], (unsigned char*)msg,
 				myLastFormats, myLastFormatsLength);
 	kdebugf2();
+
+	SocketNotifiers->checkWrite();
+
 	return seq;
 }
 

@@ -1458,21 +1458,6 @@ void Kadu::systemMessageReceived(QString &msg)
 	MessageBox::msg(msg);
 }
 
-void Kadu::dataReceived(void) {
-	kdebugf();
-	if (sess->check && GG_CHECK_READ)
-		gadu->eventHandler(sess);
-	kdebugf2();
-}
-
-void Kadu::dataSent(void) {
-	kdebugf();
-	kadusnw->setEnabled(false);
-	if (sess->check & GG_CHECK_WRITE)
-		gadu->eventHandler(sess);
-	kdebugf2();
-}
-
 void Kadu::disconnected()
 {
 	kdebugm(KDEBUG_FUNCTION_START, "Kadu::disconnected(): Disconnection has occured\n");

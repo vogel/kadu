@@ -20,9 +20,6 @@ class UserListElement;
 extern struct gg_session* sess;
 extern struct gg_login_params loginparams;
 
-extern QSocketNotifier* kadusnr;
-extern QSocketNotifier* kadusnw;
-
 extern bool userlist_sent;
 extern bool socket_active;
 extern unsigned int server_nr;
@@ -108,6 +105,7 @@ class SocketNotifiers : public QObject
 		SocketNotifiers(int);
 		virtual ~SocketNotifiers();
 		void start();
+		void stop();
 };
 
 class PubdirSocketNotifiers : public SocketNotifiers
@@ -167,17 +165,27 @@ typedef enum
 	Disconnected
 } GaduError;
 
-class GaduSocketNotifiers : public QObject //SocketNotifiers
+class GaduSocketNotifiers : public SocketNotifiers
 {
 	Q_OBJECT
 
 	private:
+		gg_session *Sess;
+
 		void connectionFailed(int);
+
+	protected:
+		virtual void socketEvent();
+
+	public slots:
+		virtual void dataReceived();
+		virtual void dataSent();
 
 	public:
 		GaduSocketNotifiers();
 		virtual ~GaduSocketNotifiers();
-		void eventHandler(gg_session *sess);
+		void setSession(gg_session *sess);
+		void checkWrite();
 
 	signals:
 		void ackReceived(int);
@@ -238,8 +246,6 @@ class GaduProtocol : public QObject
 		static void initModule();
 		GaduProtocol(QObject *parent=NULL, const char *name=NULL);
 		virtual ~GaduProtocol();
-		// do usuniêcia za nied³ugo
-		void eventHandler(gg_session *sess) { SocketNotifiers->eventHandler(sess); }
 
 		/**
 			Zwraca serwer z ktorym jestesmy polaczeni

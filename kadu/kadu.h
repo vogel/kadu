@@ -151,8 +151,6 @@ class Kadu : public QMainWindow
 		void slotHandleState(int command);
 		void setCurrentStatus(int status);
 		void sendMessage(QListBoxItem *);
-		void dataReceived();
-		void dataSent();
 		void setStatus(int);
 		void gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op);
 		void currentChanged(QListBoxItem *item);
