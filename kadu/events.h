@@ -64,6 +64,8 @@ class EventManager : public QObject
 		void connectedSlot();
 		void connectionFailedSlot(int);
 		void connectionBrokenSlot();
+		void connectionTimeoutSlot();
+		void connectionTimeoutTimerSlot();
 		void disconnectedSlot();
 		void userStatusChangedSlot(struct gg_event*);
 		void userlistReceivedSlot(struct gg_event *);
@@ -74,7 +76,6 @@ class EventManager : public QObject
 		void dccConnectionReceivedSlot(const UserListElement& sender);
 		void pubdirReplyReceivedSlot(gg_pubdir50_t res);
 		void userlistReplyReceivedSlot(char type, char *reply);
-		void connectionTimeoutSlot();
 
 	public:
 		EventManager();

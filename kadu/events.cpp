@@ -155,6 +155,7 @@ EventManager::EventManager()
 	connect(this,SIGNAL(connected()),this,SLOT(connectedSlot()));
 	connect(this,SIGNAL(connectionFailed(int)),this,SLOT(connectionFailedSlot(int)));
 	connect(this,SIGNAL(connectionBroken()),this,SLOT(connectionBrokenSlot()));
+	connect(this,SIGNAL(connectionTimeout()),this,SLOT(connectionTimeoutSlot()));
 	connect(this,SIGNAL(disconnected()),this,SLOT(disconnectedSlot()));
 	connect(this,SIGNAL(userStatusChanged(struct gg_event*)),this,SLOT(userStatusChangedSlot(struct gg_event*)));
 	connect(this,SIGNAL(userlistReceived(struct gg_event*)),this,SLOT(userlistReceivedSlot(struct gg_event*)));
@@ -245,6 +246,14 @@ void EventManager::connectionBrokenSlot()
 	kdebug("Connection broken unexpectedly!\nUnscheduled connection termination\n");
 	kadu->disconnectNetwork();
 //	kadu->setCurrentStatus(GG_STATUS_NOT_AVAIL);
+	if (kadu->autohammer)
+		AutoConnectionTimer::on();
+};
+
+void EventManager::connectionTimeoutSlot()
+{
+	kdebug("Connection timeout!\nUnscheduled connection termination\n");
+	kadu->disconnectNetwork();
 	if (kadu->autohammer)
 		AutoConnectionTimer::on();
 };
@@ -656,8 +665,8 @@ void EventManager::userlistReplyReceivedSlot(char type, char *reply)
 	kdebug("EventManager::userlistReplyReceivedSlot(): got userlist reply.\n");
 }
 
-void EventManager::connectionTimeoutSlot() {
-	kdebug("EventManager::connectionTimeoutSlot()\n");
+void EventManager::connectionTimeoutTimerSlot() {
+	kdebug("EventManager::connectionTimeoutTimerSlot()\n");
 	ConnectionTimeoutTimer::off();
 	if (sess->state == GG_STATE_CONNECTING_GG && sess->port != GG_HTTPS_PORT) {
 		gg_event* e;
@@ -669,7 +678,7 @@ void EventManager::connectionTimeoutSlot() {
 			}
 		ConnectionTimeoutTimer::on();
 		ConnectionTimeoutTimer::connectTimeoutRoutine(this,
-			SLOT(connectionTimeoutSlot()));
+			SLOT(connectionTimeoutTimerSlot()));
 		}
 	else
 		if (sess->state == GG_STATE_READING_KEY)
