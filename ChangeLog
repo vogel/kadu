@@ -12,6 +12,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   s± z pustym polem odpowiadaj±cym numerowi; zapisywanie pola email (chilek)
 * je¿eli nie mamy praw zapisu z usera który wykonuje make install do katalogu
   /usr/share to ikonki i link kadu nie bêd± instalowane (mast3r)
+* eksport/import kontaktów dostosowany do standardu GG (chilek)
 
 +++ wersja 0.3.4-rc2
 * porzadki: kod rejestrujacy opcje modulow Chat i Sms w oknie konfiguracji
