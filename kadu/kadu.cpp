@@ -239,8 +239,9 @@ unsigned long getMyIP(void) {
 }
 
 void deletePendingMessage(int nr) {
+	fprintf(stderr, "KK predeletePendingMessage(), counts: %d\n",pending.count());
 	pending.deleteMsg(nr);
-	fprintf(stderr, "KK deletePendingMessage(%d)\n",nr);
+	fprintf(stderr, "KK deletePendingMessage(%d), counts: %d\n",nr,pending.count());
   if (!pending.pendingMsgs()) {
 		fprintf(stderr, "KK pendingMessage is false\n");
 		dw->setType((char **)gg_xpm[statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]);
