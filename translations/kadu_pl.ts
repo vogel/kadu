@@ -546,19 +546,6 @@ Jest to wysoce ryzykowne!</translation>
         <translation>Opcje przeglądarki</translation>
     </message>
     <message>
-        <source>Use paragraphs instead of tables</source>
-        <translation>Użyj paragrafów zamiast tabelek</translation>
-    </message>
-    <message>
-        <source>If set: chat, history windows and information panel are rendered
-using HTML paragraphs instead of tables - this improves refresh
-speed and text copying but has a couple of display problems</source>
-        <translation>Gdy zaznaczone: Okna rozmowy, histori i panelu informacyjnego
-bedą renderowane z użyciem paragrafów HTML zamiast tabelek.
-Polepszy to prędkość odświerzania okien jak i kopiowanie z nich
-tekstu ale może sprawiać problemy z wyświetlaniem</translation>
-    </message>
-    <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
 %r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
 %v - revDNS, %p - port %e - email %x - max image size
@@ -701,6 +688,10 @@ tekstu ale może sprawiać problemy z wyświetlaniem</translation>
     <message>
         <source>Message has not been delivered.</source>
         <translation>Wiadomość nie zostanie dostarczona.</translation>
+    </message>
+    <message>
+        <source>Chat window will be cleared. Continue?</source>
+        <translation>Okno rozmowy zostanie wyczyszczone. Kontynuować?</translation>
     </message>
 </context>
 <context>

@@ -1,5 +1,6 @@
 #!/bin/bash
-/usr/lib/qt3/bin/lupdate -noobsolete -verbose ../kadu/*.cpp -ts kadu_it.ts
-/usr/lib/qt3/bin/lupdate -noobsolete -verbose ../kadu/*.cpp -ts kadu_pl.ts
-/usr/lib/qt3/bin/lupdate -noobsolete -verbose ../kadu/*.cpp -ts kadu_en.ts
-/usr/lib/qt3/bin/lupdate -noobsolete -verbose ../kadu/*.cpp -ts kadu_de.ts
+
+$QTDIR/bin/lupdate -noobsolete -verbose ../kadu/*.cpp -ts kadu_it.ts
+$QTDIR/bin/lupdate -noobsolete -verbose ../kadu/*.cpp -ts kadu_pl.ts
+$QTDIR/bin/lupdate -noobsolete -verbose ../kadu/*.cpp -ts kadu_en.ts
+$QTDIR/bin/lupdate -noobsolete -verbose ../kadu/*.cpp -ts kadu_de.ts
