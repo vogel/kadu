@@ -5,6 +5,8 @@ AM_CPPFLAGS = $(PTHREAD_CPPFLAGS) -DQT_THREAD_SUPPORT -D_REENTRANT
 
 CLEANFILES = */*.so */*.a */*.o */*_moc.cpp */*.d
 
+CXXFLAGS = @CXXFLAGS@
+
 all:
 	@for dir in $(static_modules) $(shared_modules); do \
 		MODULE_SOURCES= && \
@@ -70,18 +72,18 @@ $(module_moc_cpp_files):
 	$(AR) rs $@ $(module_o_files)
 
 %.d: %.cpp
-	$(CC) -M $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $< | \
+	$(CC) -M $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS) $< | \
 	sed "s,\(.*\):,$(basename $@).o $@:," > $@
 
 %.d: %.c
-	$(CC) -M $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $< | \
+	$(CC) -M $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)  $(CXXFLAGS) $< | \
 	sed "s,\(.*\):,$(basename $@).o $@:," > $@
 
 %.o: %.cpp
-	$(CC) -o $@ -c -fPIC $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)
+	$(CC) -o $@ -c -fPIC $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)  $(CXXFLAGS)
 
 %.o: %.c
-	$(CC) -o $@ -c -fPIC $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)
+	$(CC) -o $@ -c -fPIC $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS)
 
 %_moc.cpp: %.h
 	$(QT_MOC_DIR)/moc -o $@ $<
