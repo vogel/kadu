@@ -597,7 +597,7 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>Colors</source>
-        <translation>Colors</translation>
+        <translation>Farben</translation>
     </message>
     <message>
         <source>Chat window</source>
@@ -629,11 +629,11 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>Previews</source>
-        <translation>Vorbetrachtungen</translation>
+        <translation>Vorschau</translation>
     </message>
     <message>
         <source>Chat preview</source>
-        <translation>Chat Vorbetrachtungen</translation>
+        <translation>Chat Vorschau</translation>
     </message>
     <message>
         <source>Main window</source>
@@ -649,11 +649,11 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>Font in panel</source>
-        <translation></translation>
+        <translation>Schrift im Panel</translation>
     </message>
     <message>
         <source>Information panel</source>
-        <translation></translation>
+        <translation>Informationspanel</translation>
     </message>
     <message>
         <source>Show information panel</source>
@@ -665,7 +665,7 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>Userbox font color</source>
-        <translation></translation>
+        <translation>Schriftfarbe der Kontaktliste</translation>
     </message>
     <message>
         <source>Font in userbox</source>
@@ -673,23 +673,23 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>Preview panel</source>
-        <translation></translation>
+        <translation>Vorheriger Panel</translation>
     </message>
     <message>
         <source>Message citation in chat window</source>
-        <translation type="unfinished"></translation>
+        <translation>Zitat des &quot;Vorrenders&quot; im Chat-Fenster</translation>
     </message>
     <message>
         <source>Don&apos;t cite messages older than:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nachrichten nicht zitieren, wenn sie älter sind als:</translation>
     </message>
     <message>
         <source>Show vertical scrollbar in information panel</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige waagerechte scrollleiste im Info-Panel</translation>
     </message>
     <message>
         <source>Userbox width when multi column</source>
-        <translation type="unfinished"></translation>
+        <translation>Breite der Kontaktliste, wenn mehrere Spalten</translation>
     </message>
 </context>
 <context>
@@ -700,7 +700,7 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Schliesse</translation>
+        <translation>&amp;Schliessen</translation>
     </message>
     <message>
         <source>A&amp;uthors</source>
@@ -735,41 +735,43 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>This dialog box allows you to change your current password or e-mail.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dieses Fenster ermöglicht die Änderung Ihres jetzigen Passwortes.</translation>
     </message>
     <message>
         <source>Email</source>
-        <translation type="unfinished">Email</translation>
+        <translation>Email</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished">Passwort</translation>
+        <translation>Passwort</translation>
     </message>
     <message>
         <source>New email:</source>
-        <translation type="unfinished"></translation>
+        <translation>Neue Email:</translation>
     </message>
     <message>
         <source>New password:</source>
-        <translation type="unfinished"></translation>
+        <translation>Neues Passwort:</translation>
     </message>
     <message>
         <source>Retype new password:</source>
-        <translation type="unfinished"></translation>
+        <translation>Neues Passwort wiederholen:</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Schliessen</translation>
     </message>
     <message>
         <source>Change password</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwort ändern</translation>
     </message>
     <message>
         <source>Error data typed in required fields.
 
 Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new password&quot;) should be the same!</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler in den eingegebenen Daten der Felder.
+
+Das Passwort, das Sie angegeben haben, sollte in beiden Feldern (&quot;Neues Passwort&quot; und &quot;Neues Passwort wiederholen&quot;) sollte gleich sein!</translation>
     </message>
 </context>
 <context>
@@ -900,7 +902,7 @@ Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new pa
     </message>
     <message>
         <source>Apply</source>
-        <translation>anwenden</translation>
+        <translation>Anwenden</translation>
     </message>
 </context>
 <context>
@@ -1262,19 +1264,19 @@ Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new pa
     </message>
     <message>
         <source>This dialog box allows you to manage your ignored contacts.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dieses Fenster ermöglicht die Verwaltung der ignorierten Kontakte.</translation>
     </message>
     <message>
         <source>Type here the UIN of the person you want to ignore.</source>
-        <translation type="unfinished"></translation>
+        <translation>Geben Sie die UIN der Person, die Sie ignorieren wollen.</translation>
     </message>
     <message>
         <source>Uin:</source>
-        <translation type="unfinished"></translation>
+        <translation>UIN:</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Schliessen</translation>
     </message>
 </context>
 <context>
@@ -1480,49 +1482,49 @@ Check your internet connection.</source>
     </message>
     <message>
         <source>Unable to connect, server has not been found</source>
-        <translation type="unfinished">Verbindung nicht möglich, Server wurde nicht gefunden</translation>
+        <translation>Verbindung nicht möglich, Server wurde nicht gefunden</translation>
     </message>
     <message>
         <source>Unable to connect</source>
-        <translation type="unfinished">Verbindung nicht möglich</translation>
+        <translation>Verbindung nicht möglich</translation>
     </message>
     <message>
         <source>Please change your email in &quot;Change password/email&quot; window. Leave new password field blank.</source>
-        <translation type="unfinished">Ändern Sie Ihre Email-Adresse in &quot;Passwort/Email ändern&quot;-Fenster. Lassen Sie das Feld ür neues Passwort leer.</translation>
+        <translation>Ändern Sie Ihre Email-Adresse in &quot;Passwort/Email ändern&quot;-Fenster. Lassen Sie das Feld für neues Passwort leer.</translation>
     </message>
     <message>
         <source>Unable to connect, server has returned unknown data</source>
-        <translation type="unfinished">Verbindung nicht nöglich, Server hat unbekannte Daten zurückgeliefert</translation>
+        <translation>Verbindung nicht nöglich, Server lieferte unbekannte Daten zurück</translation>
     </message>
     <message>
         <source>Unable to connect, connection break during reading</source>
-        <translation type="unfinished">Verbindung nicht möglich, Abbruch beim Lesen</translation>
+        <translation>Verbindung nicht möglich, Abbruch beim Lesen</translation>
     </message>
     <message>
         <source>Unable to connect, connection break during writing</source>
-        <translation type="unfinished">Verbindung nicht möglich, Abbruch beim Schreiben</translation>
+        <translation>Verbindung nicht möglich, Abbruch beim Schreiben</translation>
     </message>
     <message>
         <source>Unable to connect, incorrect password</source>
-        <translation type="unfinished">Verbindung nicht möglich, falsches Passwort</translation>
+        <translation>Verbindung nicht möglich. Falsches Passwort</translation>
     </message>
     <message>
         <source>Incorrect password</source>
-        <translation type="unfinished">Falsches Passwort</translation>
+        <translation>Falsches Passwort</translation>
     </message>
     <message>
         <source>Connection will be stoped
 Your password is incorrect !!!</source>
-        <translation type="unfinished">Verbindung wurde angehalten
+        <translation>Verbindung wurde angehalten
 Dein Passwort ist falsch!!!</translation>
     </message>
     <message>
         <source>Unable to connect, error of negotiation TLS</source>
-        <translation type="unfinished">Verbindung nicht möglich, TLS-Negotiation fehlgeschlagen</translation>
+        <translation>Verbindung nicht möglich, TLS-Negotiation schlug fehl</translation>
     </message>
     <message>
         <source>Disconnection has occured</source>
-        <translation type="unfinished">Verbindung wurde getrennt</translation>
+        <translation>Verbindung wurde getrennt</translation>
     </message>
 </context>
 <context>
@@ -1731,23 +1733,23 @@ Vielleicht ist es kein Kadu-kompatibles Modul.</translation>
     </message>
     <message>
         <source>This dialog box allows you to manage your personal information, for example your name, surname or age.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dieses Fenster ermöglicht Ihnen die Verwaltung der Ihrer persönlichen Daten, wie zB: Ihres Namens oder Alters.</translation>
     </message>
     <message>
         <source>Your personal information</source>
-        <translation type="unfinished"></translation>
+        <translation>Ihre persönliche Daten</translation>
     </message>
     <message>
         <source>&amp;Save</source>
-        <translation type="unfinished"></translation>
+        <translation>S&amp;peichern</translation>
     </message>
     <message>
         <source>&amp;Reload</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Erneut laden</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Schliessen</translation>
     </message>
 </context>
 <context>
@@ -1799,37 +1801,39 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
     </message>
     <message>
         <source>This dialog box allows you to register a new account.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dieses Fenster ermöglicht Ihnen das Registrieren eines neuen Zugangs (UIN).</translation>
     </message>
     <message>
         <source>Email</source>
-        <translation type="unfinished">Email</translation>
+        <translation>Email</translation>
     </message>
     <message>
         <source>New email:</source>
-        <translation type="unfinished"></translation>
+        <translation>Neue Email:</translation>
     </message>
     <message>
         <source>New password:</source>
-        <translation type="unfinished"></translation>
+        <translation>Neues Passwort:</translation>
     </message>
     <message>
         <source>Retype new password:</source>
-        <translation type="unfinished"></translation>
+        <translation>Neues Passwort wiederholen:</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Schliessen</translation>
     </message>
     <message>
         <source>Error data typed in required fields.
 
 Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new password&quot;) should be the same!</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler in den eingegebenen Daten der Felder.
+
+Das Passwort, das Sie angegeben haben, sollte in beiden Feldern (&quot;Neues Passwort&quot; und &quot;Neues Passwort wiederholen&quot;) sollte gleich sein!</translation>
     </message>
     <message>
         <source>An error has occured while registration. Please try again later.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ein Fehler ist während der Registrierung aufgetreten. Versuchen Sie, bitte, später noch einmal.</translation>
     </message>
 </context>
 <context>
@@ -2078,27 +2082,27 @@ Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new pa
     </message>
     <message>
         <source>This dialog box allows you to unregister your account. Be aware of using this option. It will permanently delete your UIN and you will not be able to use it later!</source>
-        <translation type="unfinished"></translation>
+        <translation>Dieses Fenster ermöglicht Ihnen das Entfernen Ihres Zugangs. Seien Sie bitte vorsichtig bei dieser Option. Sie löschen damit Ihre UIN und Sie werden es später nicht mehr nutzen können!</translation>
     </message>
     <message>
         <source>UIN and password</source>
-        <translation type="unfinished"></translation>
+        <translation>UIN und Passwort</translation>
     </message>
     <message>
         <source>UIN:</source>
-        <translation type="unfinished"></translation>
+        <translation>UIN:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation type="unfinished">Passwort:</translation>
+        <translation>Passwort:</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Schliessen</translation>
     </message>
     <message>
         <source>An error has occured while unregistration. Please try again later.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ein Fehler ist während des Entfernens Ihres Zugans aufgetreten. Versuchen Sie, bitte, später noch einmal.</translation>
     </message>
 </context>
 <context>
@@ -2300,11 +2304,11 @@ Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new pa
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Schliessen</translation>
     </message>
     <message>
         <source>This dialog box allows you to view and edit information about the selected contact.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dieses Fenster ermöglicht Ihnen die Einsicht und die Änderung der Daten des Kontakts.</translation>
     </message>
 </context>
 <context>
