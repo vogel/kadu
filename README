@@ -1,4 +1,4 @@
-Kadu, klient Gadu-Gadu dla KDE, wersja 0.3.3 (lub nowsza)
+Kadu, klient Gadu-Gadu dla Qt, wersja 0.3.8 (lub nowsza)
 
 +++ WYMAGANIA
  * Qt-3.0.x (pisano na 3.0.4)
@@ -17,10 +17,11 @@ Kadu, klient Gadu-Gadu dla KDE, wersja 0.3.3 (lub nowsza)
  * obs³uga wiadomo¶ci od anonimów
  * odgrywanie d¼wiêków
  * wysy³anie SMSów
- * wiele innych...
  * DCC: wysy³anie, odbieranie
  * rozmowy konferencyjne
  * szyfrowanie ssl
+ * rozmowy g³osowe
+ * wiele innych...
 
 +++ LICENCJA
 GPL

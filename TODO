@@ -9,11 +9,7 @@
  ? :: Jeszcze siê zastanawiamy
  ! :: MUSI byæ
 
-* TODO dla wersji 0.3.4
-
- Patrz http://kadu.net/mantis/
-
-* TODO dla wersji 0.3.5 lub pó¼niejszych
+* TODO dla wersji 0.3.8
 
  Patrz http://kadu.net/mantis/
 
@@ -27,7 +23,6 @@
 
 * TODO dla wersji pó¼niejszych
 
- + mo¿liwo¶æ do³±czenia zewnêtrznego kodu (wtyczki)
  + zrobiæ skórki (Licq) 
  - uskryptowienie kadu (python? perl? javascript?)
  ? przezroczysto¶æ
