@@ -119,7 +119,7 @@ void appendHistory(unsigned int uin, unsigned char * msg, bool own, time_t time)
 		fputs(nick,f);
 		}
 	else
-		fputs("Me",f);
+		fputs(config.nick, f);
 
 	fputs(" ", f);
 
