@@ -22,6 +22,7 @@
 #include "config_dialog.h"
 #include "status.h"
 #include "debug.h"
+#include "kadu-config.h"
 
 #define GG_FONT_IMAGE	0x80
 

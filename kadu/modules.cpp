@@ -12,6 +12,7 @@
 #include "message_box.h"
 #include "config_file.h"
 #include "kadu.h"
+#include "kadu-config.h"
 
 #include <qdir.h>
 #include <qlayout.h>

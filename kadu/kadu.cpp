@@ -60,7 +60,7 @@
 #include "tabbar.h"
 #include "debug.h"
 #include "gadu.h"
-#include "../config.h"
+#include "kadu-config.h"
 
 #ifdef MODULES_ENABLED
 #include "modules.h"

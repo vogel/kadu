@@ -39,7 +39,6 @@
 #include "config_dialog.h"
 #include "config_file.h"
 #include "gadu.h"
-#include "../config.h"
 
 AutoConnectionTimer *AutoConnectionTimer::autoconnection_object = NULL;
 ConnectionTimeoutTimer *ConnectionTimeoutTimer::connectiontimeout_object = NULL;

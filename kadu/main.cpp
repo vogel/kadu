@@ -15,7 +15,7 @@
 #include <sys/stat.h>
 
 #include "kadu.h"
-#include "../config.h"
+#include "kadu-config.h"
 
 #ifdef VOICE_ENABLED
 #include "voice.h"

@@ -17,7 +17,7 @@
 
 #include "about.h"
 #include "misc.h"
-#include "../config.h"
+#include "kadu-config.h"
 
 static char * sun_xpm[] = {
 "167 122 45 1",

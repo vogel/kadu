@@ -1,5 +1,5 @@
 #include <qnetwork.h>
-#include "../config.h"
+#include "kadu-config.h"
 #include "updates.h"
 
 UpdatesClass::UpdatesClass(uin_t uin) {

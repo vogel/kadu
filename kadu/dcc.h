@@ -9,7 +9,6 @@
 #include <qhostaddress.h>
 
 #include "libgadu.h"
-#include "../config.h"
 
 extern QSocketNotifier* dccsnr;
 extern QSocketNotifier* dccsnw;

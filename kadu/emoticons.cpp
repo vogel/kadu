@@ -18,6 +18,7 @@
 #include "emoticons.h"
 #include "debug.h"
 #include "config_file.h"
+#include "kadu-config.h"
 
 // general purpose macros to make things shorter /////////////////
 #define VAR(v,x)        __typeof(x) v=x

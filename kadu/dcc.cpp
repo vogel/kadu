@@ -23,7 +23,6 @@
 #include "dcc.h"
 #include "ignore.h"
 #include "debug.h"
-#include "../config.h"
 
 #ifdef VOICE_ENABLED
 #include "voice.h"

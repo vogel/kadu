@@ -11,7 +11,6 @@
 
 #include "misc.h"
 #include "userbox.h"
-#include "../config.h"
 
 class Chat;
 
