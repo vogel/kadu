@@ -24,7 +24,8 @@ search.cpp search.h \
 sms.cpp sms.h \
 userbox.cpp userbox.h \
 userinfo.cpp userinfo.h \
-userlist.cpp userlist.h
+userlist.cpp userlist.h \
+vuser.cpp vuser.h
 
 METASOURCES = AUTO
 
