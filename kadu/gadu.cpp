@@ -553,8 +553,16 @@ void GaduSocketNotifiers::setSession(gg_session *sess)
 void GaduSocketNotifiers::checkWrite()
 {
 	kdebugf();
+	//gdzie¶ tu siê sypie :|
+	if (Sess==NULL)
+		kdebugm(KDEBUG_PANIC, "Sess == NULL !!\n");
 	if (Sess->check & GG_CHECK_WRITE)
+	{
+		if (Snw==NULL)
+			kdebugm(KDEBUG_PANIC, "Snw == NULL !!\n");
 		Snw->setEnabled(true);
+	}
+	kdebugf2();
 }
 
 void GaduSocketNotifiers::dataReceived()
@@ -1233,7 +1241,7 @@ void GaduProtocol::login()
 	if (NextStatus->isFriendsOnly())
 		LoginParams.status |= GG_STATUS_FRIENDS_MASK;
 	if (NextStatus->hasDescription())
-		LoginParams.status_descr = strdup((const char *)unicode2cp(NextStatus->description()));
+		LoginParams.status_descr = strdup((const char *)unicode2cp(NextStatus->description()).data());
 
 	LoginParams.uin = (UinType)config_file.readNumEntry("General", "UIN");
 	LoginParams.has_audio = config_file.readBoolEntry("Network", "AllowDCC");
