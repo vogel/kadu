@@ -269,8 +269,8 @@ void HistoryManager::removeHistory(UinsList uins) {
 	kdebug("HistoryManager::removeHistory()\n");
 
 	QString fname;
-	switch (QMessageBox::information(kadu, "Kadu", QT_TR_NOOP("Clear history?"),
-		QT_TR_NOOP("Yes"), QT_TR_NOOP("No"), QString::null, 1, 1)) {
+	switch (QMessageBox::information(kadu, "Kadu", qApp->translate("@default",QT_TR_NOOP("Clear history?")),
+		qApp->translate("@default",QT_TR_NOOP("Yes")), qApp->translate("@default",QT_TR_NOOP("No")), QString::null, 1, 1)) {
 		case 0:
 			fname = ggPath("history/");
 			fname.append(getFileNameByUinsList(uins));

@@ -17,6 +17,7 @@
 #include <qlayout.h>
 #include <qmessagebox.h>
 #include <qregexp.h>
+#include <qobject.h>
 
 #include <netinet/in.h>
 #include <errno.h>
@@ -454,9 +455,9 @@ void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)
 		if (config_file.readBoolEntry("Notify","NotifyWithDialogBox")) {
 			// FIXME convert into a regular QMessageBox
 			QString msg;
-			msg = QT_TR_NOOP(QString("User %1 is available")).arg(userlist.byUin(uin).altnick);
+			msg = QString(QT_TR_NOOP("User %1 is available")).arg(userlist.byUin(uin).altnick);
 			QMessageBox *msgbox;
-			msgbox = new QMessageBox(QT_TR_NOOP("User notify"), msg, QMessageBox::NoIcon,
+			msgbox = new QMessageBox(qApp->translate("@default",QT_TR_NOOP("User notify")), qApp->translate("@default",msg), QMessageBox::NoIcon,
 				QMessageBox::Ok, QMessageBox::NoButton, QMessageBox::NoButton,
 				0, 0, FALSE, Qt::WStyle_DialogBorder || Qt::WDestructiveClose);
 			msgbox->show();
