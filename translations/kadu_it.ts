@@ -127,7 +127,7 @@
     </message>
     <message>
         <source>Show / hide inactive users</source>
-        <translation>Mostri / nascondi contatti inattivi</translation>
+        <translation>Mostra / nascondi contatti inattivi</translation>
     </message>
     <message>
         <source>Configuration</source>
@@ -293,7 +293,7 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
     </message>
     <message>
         <source>Show description in userbox</source>
-        <translation>Mostar descrizione in panello contatti</translation>
+        <translation>Mostar descrizione nel panello contatti</translation>
     </message>
     <message>
         <source>Icon theme</source>
@@ -313,7 +313,7 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
     </message>
     <message>
         <source>Lock file in profile directory exists. Another Kadu probably running.</source>
-        <translation>Trovato file bloccante. Probabilmente Kadu è già in esecuzione.</translation>
+        <translation>Trovato file bloccante. Probbabilmente Kadu è già in esecuzione.</translation>
     </message>
     <message>
         <source>Force running Kadu (not recommended).</source>
@@ -453,7 +453,7 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
     </message>
     <message>
         <source>Displays users that are not offline using a bold font</source>
-        <translation>Visualizza contatti attivi con frassetto</translation>
+        <translation>Visualizza contatti attivi con grassetto</translation>
     </message>
     <message>
         <source>Remember window size and position between startups</source>
@@ -487,7 +487,7 @@ E un rischio per la sicurezza!</translation>
     </message>
     <message>
         <source>Align icon next to contact name</source>
-        <translation>prima asocia l&apos;icona al noem del contatto</translation>
+        <translation>prima asocia l&apos;icona al nome del contatto</translation>
     </message>
     <message>
         <source>Show tooltip on userbox</source>
@@ -495,7 +495,7 @@ E un rischio per la sicurezza!</translation>
     </message>
     <message>
         <source>Number of kept descriptions</source>
-        <translation>Quatità delle descrizioni</translation>
+        <translation>Quantità delle descrizioni</translation>
     </message>
     <message>
         <source>Show inactive contacts</source>
@@ -546,47 +546,50 @@ E un rischio per la sicurezza!</translation>
 %r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
 %v - revDNS, %p - port %e - email %x - max image size
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Sintassi: %s - status, %d - descrizione, %i - ip, %n - nick, %a - altnick, %f - nome
+%r - cognome, %m - nr cell., %u - numego GG, %g - gruppo, %o - metti spazio se contatto non ha messo te nella sua lista contatti
+%v - DNS del contatto, %p - port del contatto %e - email %x - dim max file immagine accettata
+</translation>
     </message>
     <message>
         <source>Debugging mask</source>
-        <translation type="unfinished"></translation>
+        <translation>maschera debug</translation>
     </message>
     <message>
         <source>Receive images during invisibility</source>
-        <translation type="unfinished"></translation>
+        <translation>Ricevi immagini mentre sei invisibile</translation>
     </message>
     <message>
         <source>Block window close on new message</source>
-        <translation type="unfinished"></translation>
+        <translation>Blocca chiusura finestra con nuovo messaggio</translation>
     </message>
     <message>
         <source>Max time to block window close</source>
-        <translation type="unfinished"></translation>
+        <translation>Tempo massimo per bloccare chiusura finestra</translation>
     </message>
     <message>
         <source>French</source>
-        <translation type="unfinished"></translation>
+        <translation>Francese</translation>
     </message>
     <message>
         <source>Chat window background color</source>
-        <translation type="unfinished"></translation>
+        <translation>Colore di sfondo della finestra chat</translation>
     </message>
     <message>
         <source>Text edit background color</source>
-        <translation type="unfinished"></translation>
+        <translation>Colore di sfondo dei caratteri</translation>
     </message>
     <message>
         <source>Host: </source>
-        <translation type="unfinished"></translation>
+        <translation>Host:</translation>
     </message>
     <message>
         <source>###IMAGE BLOCKED###</source>
-        <translation type="unfinished"></translation>
+        <translation>###IMAGINE BLOCCATA###</translation>
     </message>
     <message>
         <source>###IMAGE TOO BIG###</source>
-        <translation type="unfinished"></translation>
+        <translation>###IMAGIGINE TROPPO GRANDE###</translation>
     </message>
 </context>
 <context>
@@ -704,7 +707,7 @@ E un rischio per la sicurezza!</translation>
     </message>
     <message>
         <source>Your message has been blocked by server. Message has not been delivered.</source>
-        <translation>Il tuo messagiio e stato bloccato dal server, non sarà consegnato.</translation>
+        <translation>Il tuo messaggio e stato bloccato dal server, non sarà consegnato.</translation>
     </message>
     <message>
         <source>User&apos;s message box is full. Message has not been delivered.</source>
@@ -716,11 +719,11 @@ E un rischio per la sicurezza!</translation>
     </message>
     <message>
         <source>Chat window will be cleared. Continue?</source>
-        <translation type="unfinished"></translation>
+        <translation>Finestra chat sarà pulita. Continuare ?</translation>
     </message>
     <message>
         <source>New message received, close window anyway?</source>
-        <translation type="unfinished"></translation>
+        <translation>Ricevuto nuovo messaggio, chiudere comunque ?</translation>
     </message>
 </context>
 <context>
@@ -861,7 +864,7 @@ La tua password è sbagliata!</translation>
     </message>
     <message>
         <source>UIN or password not set!</source>
-        <translation type="unfinished"></translation>
+        <translation>Numero GG o password non mandati!</translation>
     </message>
 </context>
 <context>
