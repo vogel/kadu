@@ -529,4 +529,3 @@ void UserlistExport::closeEvent(QCloseEvent * e) {
 	QWidget::closeEvent(e);
 }
 
-#include "expimp.moc"

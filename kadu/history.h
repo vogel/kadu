@@ -13,6 +13,7 @@
 #include <qdialog.h>
 #include <qmultilineedit.h>
 #include "libgadu.h"
+#include "misc.h"
 
 class History : public QDialog {
 	Q_OBJECT

@@ -10,8 +10,9 @@
 #ifndef USERINFO_H
 #define USERINFO_H
 
-#include <qdialog.h>
+#include <qtabdialog.h>
 #include <qlineedit.h>
+#include <qcheckbox.h>
 
 class UserInfo : public QTabDialog {
 	Q_OBJECT

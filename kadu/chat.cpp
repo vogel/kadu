@@ -804,4 +804,3 @@ void IconSelector::iconClicked(const QString& emoticon_string)
 	close();
 };
 
-#include "chat.moc"

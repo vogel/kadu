@@ -442,4 +442,3 @@ void SearchDialog::updateInfoClicked()
 	userlist.writeToFile();
 }
 
-#include "search.moc"

@@ -217,4 +217,3 @@ void ChooseDescription::cancelbtnPressed() {
 //	close();
 }
 
-#include "misc.moc"

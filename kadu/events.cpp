@@ -474,4 +474,3 @@ void ackHandler(int seq) {
 				}
 }
 
-#include "events.moc"

@@ -15,6 +15,7 @@
 #include <qstring.h>
 #include <qsocketnotifier.h>
 #include "libgadu.h"
+#include "userlist.h"
 
 class UserlistImport : public QDialog {
 	Q_OBJECT

@@ -1915,4 +1915,3 @@ void Kadu::hidedesc(void) {
 	descrtb->hide();
 }
 
-#include "kadu.moc"

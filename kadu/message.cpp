@@ -407,4 +407,3 @@ void Message::HistoryBox (void) {
 	hb->show();
 }
 
-#include "message.moc"

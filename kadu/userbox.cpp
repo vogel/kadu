@@ -355,4 +355,3 @@ void UserBox::all_renameUser(const QString &oldaltnick, const QString &newaltnic
 
 QValueList<UserBox *> UserBox::UserBoxes;
 
-#include "userbox.moc"

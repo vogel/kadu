@@ -340,4 +340,3 @@ UserList& UserList::operator=(const UserList& userlist)
 	return *this;
 };
 
-#include "userlist.moc"

@@ -537,4 +537,3 @@ void Sms::onSmsSenderFinished(bool success)
 		body->clear();
 };
 
-#include "sms.moc"

@@ -265,4 +265,3 @@ About::~About()
     delete doc;
 }
 
-#include "about.moc"

@@ -283,4 +283,3 @@ void changePassword::socketEvent() {
 		}
 }
 
-#include "password.moc"

@@ -171,4 +171,3 @@ History::History(UinsList uins) {
 	resize(500,400);
 }
 
-#include "history.moc"

@@ -2,36 +2,36 @@
 bin_PROGRAMS = kadu
 
 kadu_SOURCES = \
-about.cpp about.h \
-adduser.cpp adduser.h \
-chat.cpp chat.h \
-config.cpp config.h \
+about.cpp about.h about_moc.cpp \
+adduser.cpp adduser.h adduser_moc.cpp \
+chat.cpp chat.h chat_moc.cpp \
+config.cpp config.h config_moc.cpp \
 config_file.cpp config_file.h \
-dcc.cpp dcc.h \
-dock_widget.cpp dock_widget.h \
+dcc.cpp dcc.h dcc_moc.cpp \
+dock_widget.cpp dock_widget.h dock_widget_moc.cpp \
 emoticons.cpp emoticons.h \
-events.cpp events.h \
-expimp.cpp expimp.h \
-history.cpp history.h \
-ignore.cpp ignore.h \
-kadu.cpp kadu.h \
+events.cpp events.h events_moc.cpp \
+expimp.cpp expimp.h expimp_moc.cpp \
+history.cpp history.h history_moc.cpp \
+ignore.cpp ignore.h ignore_moc.cpp \
+kadu.cpp kadu.h kadu_moc.cpp \
 main.cpp \
-message.cpp message.h \
-misc.cpp misc.h \
+message.cpp message.h message_moc.cpp \
+misc.cpp misc.h misc_moc.cpp\
 network.cpp \
-password.cpp password.h \
+password.cpp password.h password_moc.cpp \
 pending_msgs.cpp pending_msgs.h \
-personal_info.cpp personal_info.h \
+personal_info.cpp personal_info.h personal_info_moc.cpp \
 pixmaps.h \
-register.cpp register.h \
-search.cpp search.h \
-sms.cpp sms.h \
-status.cpp status.h \
-userbox.cpp userbox.h \
-userinfo.cpp userinfo.h \
-userlist.cpp userlist.h \
-vuser.cpp vuser.h \
-updates.cpp updates.h
+register.cpp register.h register_moc.cpp \
+search.cpp search.h search_moc.cpp \
+sms.cpp sms.h sms_moc.cpp \
+status.cpp status.h status_moc.cpp \
+userbox.cpp userbox.h userbox_moc.cpp \
+userinfo.cpp userinfo.h userinfo_moc.cpp \
+userlist.cpp userlist.h userlist_moc.cpp \
+updates.cpp updates.h \
+vuser.cpp vuser.h vuser_moc.cpp
 
 EXTRA_kadu_SOURCES = simlite.c simlite.h
 
@@ -41,14 +41,18 @@ else
 SIM =
 endif
 
-kadu_METASOURCES = AUTO
+#kadu_METASOURCES = AUTO
 
-INCLUDES = $(all_includes)
-kadu_LDADD = $(SIM) $(all_libraries) $(LIB_QT) $(LIB_KDECORE) $(LIB_KDEUI) -lgadu
+INCLUDES = $(QTINCDIR)
+kadu_LDADD = $(SIM) -l$(QTMT) -lpng -lgadu
+kadu_LDFLAGS = $(QTLIBDIR)
 kadu_DEPENDENCIES = $(SIM)
-AM_CPPFLAGS = -DBINDIR="\"$(bindir)\"" -DDATADIR="\"$(datadir)\""
+AM_CPPFLAGS = -DQT_THREAD_SUPPORT -D_REENTRANT -DBINDIR="\"$(bindir)\"" -DDATADIR="\"$(datadir)\""
 
 EXTRA_DIST = hi16-app-kadu.png hi32-app-kadu.png hi48-app-kadu.png kadu.desktop
+
+%_moc.cpp: %.h
+	$(QTMOCDIR)/moc -o $@ $<
 
 install-data-local:
 	if test ! -z "$(KDEDIR)"; then \

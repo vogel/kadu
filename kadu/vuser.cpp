@@ -451,4 +451,3 @@ vuStrReturner* vuStrReturner::parse(VUserScript* script,QString& s)
 	return r;
 };	
 
-#include "vuser.moc"

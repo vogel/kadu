@@ -14,6 +14,7 @@
 #include <qstring.h>
 
 #include "libgadu.h"
+#include "misc.h"
 
 class SavePublicKey : public QDialog {
 	Q_OBJECT

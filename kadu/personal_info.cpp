@@ -210,4 +210,3 @@ void PersonalInfoDialog::closeEvent(QCloseEvent * e)
 	QWidget::closeEvent(e);
 }
 
-#include "personal_info.moc"

@@ -1,6 +1,87 @@
 # configure.ac for Kadu written by A.Smarzewski
 # Process this file with autoconf to produce a configure script.
 
+########################################################################
+# autoconf macros
+########################################################################
+
+AC_DEFUN(FIND_MOC,[
+	AC_MSG_CHECKING([for QT moc])
+
+	for dir in $1
+	do
+		if test -f $dir/moc
+		then
+			QTMOCDIR=$dir
+			AC_MSG_RESULT([found in $QTMOCDIR])
+			break
+		else
+			if test -f $dir/bin/moc
+			then
+				QTMOCDIR=$dir/bin
+				AC_MSG_RESULT([found in $QTMOCDIR])
+				break
+			fi
+		fi
+	done
+])
+
+AC_DEFUN(FIND_QT_LIBS,[
+	AC_MSG_CHECKING([for QT libraries])
+
+	if test "$enable_sharp" = "yes"
+	then
+		QTLIBS="qpe"
+	else
+		QTLIBS="qt2-mt qt-mt"
+	fi
+
+	for dir in $1
+	do
+		for i in $QTLIBS
+		do
+			if test -f $dir/lib$i.so
+			then
+				QTLIBDIR=$dir
+				AC_MSG_RESULT([found in $QTLIBDIR])
+				QTMT=$i
+				break 2
+			else
+				if test -f $dir/lib/lib$i.so
+				then
+					QTLIBDIR=$dir/lib
+					AC_MSG_RESULT([found in $QTLIBDIR])
+					QTMT=$i
+					break 2
+				fi
+			fi
+		done
+	done
+])
+
+AC_DEFUN(FIND_QT_INCLUDES,[
+	AC_MSG_CHECKING([for QT include files])
+
+	for dir in $1
+	do
+		if test -f $dir/qwidget.h
+		then
+			QTINCDIR=$dir
+			AC_MSG_RESULT([found in $QTINCDIR])
+			break
+		else
+			if test -f $dir/include/qwidget.h
+			then
+				QTINCDIR=$dir/include
+				AC_MSG_RESULT([found in $QTINCDIR])
+				break
+			fi
+		fi
+	done
+])
+
+########################################################################
+
 AC_INIT([Kadu],[0.3.3-pre5])
 AC_COPYRIGHT([configure.ac written by A.Smarzewski])
 AC_REVISION([0.3.3-pre5])
@@ -18,7 +99,7 @@ AM_CONFIG_HEADER([config.h])
 AC_CANONICAL_SYSTEM
 AM_INIT_AUTOMAKE([kadu-0.3.3-pre5],[0.3.3-pre5])
 
-KDE_SET_PREFIX
+#KDE_SET_PREFIX
 
 
 ########################################################################
@@ -30,11 +111,54 @@ CXXFLAGS=""
 # Checks for programs.
 AC_PROG_CXX
 AC_PROG_CC
+AM_PROG_LIBTOOL
 
-# KDE and QT
-KDE_PROG_LIBTOOL
-AM_KDE_WITH_NLS
-AC_PATH_KDE
+# QT
+
+AC_ARG_WITH(qt-dir,        [  --with-qt-dir=DIR       qt-dir in DIR])
+AC_ARG_WITH(qt-moc,        [  --with-qt-moc=DIR       qt-moc in DIR])
+AC_ARG_WITH(qt-includes,   [  --with-qt-includes=DIR  qt-includes in DIR])
+AC_ARG_WITH(qt-libs,       [  --with-qt-libs=DIR      qt-libs in DIR])
+
+FIND_MOC($with_qt_moc $with_qt_dir $QTDIR /usr/lib/qt3 /usr/lib/qt2 /usr/local/qt /usr/lib/qt /usr/bin /bin /usr/local /usr/X11R6)
+if test "X$QTMOCDIR" = "X"
+then
+	echo ""
+	echo "Qt's moc not found! If you have installed Qt in an"
+	echo "unusual place, please use the \"--with-qt-moc=\"" option
+	echo ""
+	exit
+fi
+
+FIND_QT_LIBS($with_qt_libs $with_qt_dir $QTDIR /usr/lib/qt3 /usr/lib/qt2 /usr/local/qt /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib)
+if test "X$QTLIBDIR" = "X"
+then
+	echo ""
+	echo "Qt libs not found! If you have installed Qt in an"
+	echo "unusual place, please use the \"--with-qt-libs=\"" option
+	echo ""
+	exit
+else
+	QTLIBDIR="-L$QTLIBDIR"
+fi
+
+FIND_QT_INCLUDES($with_qt_includes $with_qt_dir $QTDIR /usr/lib/qt3 /usr/lib/qt2 /usr/local/qt /usr/lib/qt /usr/include /usr/include/qt /usr/local/include /usr/X11R6/include/qt2 /usr/X11R6/include/qt3)
+if test "X$QTINCDIR" = "X"
+then
+	echo ""
+	echo "Qt headers not found! If you have installed Qt in an"
+	echo "unusual place, please use the \"--with-qt-includes=\"" option
+	echo ""
+	exit
+else
+	QTINCDIR="-I$QTINCDIR"
+fi
+
+AC_SUBST(QTMOCDIR)
+AC_SUBST(QTMT)
+AC_SUBST(QTLIBDIR)
+AC_SUBST(QTINCDIR)
+
 
 # Checks for header files.
 AC_HEADER_STDC
@@ -101,13 +225,11 @@ if test -z "$with_pthread"; then
 fi
 
 # debug support
+AC_ARG_ENABLE(debug,[  --enable-debug          compile with debug symbols])
 if test -z "$enable_debug"; then
 	enable_debug=no
 fi
 if test "$enable_debug" = "yes"; then
-	CXXFLAGS=`echo "$CXXFLAGS" | sed s/-ansi//`
-	CXXFLAGS=`echo "$CXXFLAGS" | sed s/-pedantic//`
-	CXXFLAGS=`echo "$CXXFLAGS" | sed s/-W* //`
 	CXXFLAGS="$CXXFLAGS -ggdb"
 else
 	ac_configure_args="$ac_configure_args --disable-debug"
@@ -121,7 +243,7 @@ fi
 AC_DEFINE_UNQUOTED(DIST_TYPE,"$enable_dist_info",[Define distribution type of this copy of application])
 
 # OpenSSL support
-AC_ARG_ENABLE(openssl,[  --without-openssl       disable OpenSSL encryption support])
+AC_ARG_WITH(openssl,[  --without-openssl       disable OpenSSL encryption support])
 if test -z "$with_openssl"; then
 	with_openssl=yes
 fi
@@ -162,7 +284,7 @@ fi
 # finalize configure
 ########################################################################
 
-KDE_CREATE_SUBDIRSLIST
+#KDE_CREATE_SUBDIRSLIST
 
 AC_CONFIG_FILES([./Makefile kadu/Makefile po/Makefile varia/Makefile])
 if test "$enable_doc" = "yes"; then

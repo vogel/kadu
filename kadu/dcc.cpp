@@ -358,4 +358,3 @@ void DccGet::updateFileInfo(struct gg_dcc *dccsock) {
 		}
 }
 
-#include "dcc.moc"

@@ -4,7 +4,7 @@
 #include <qstring.h>
 #include <qobject.h>
 #include <qprocess.h>
-
+#include "libgadu.h"
 
 class VUserScript;
 

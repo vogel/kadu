@@ -426,4 +426,3 @@ void Unregister::deleteConfig() {
 }
 
 
-#include "register.moc"

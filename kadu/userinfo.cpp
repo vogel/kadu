@@ -195,4 +195,3 @@ void UserInfo::writeUserlist() {
 		}
 }
 
-#include "userinfo.moc"

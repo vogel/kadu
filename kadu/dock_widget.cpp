@@ -283,4 +283,3 @@ void DockHint::remove_hint() {
 TrayIcon *trayicon = NULL;
 DockHint *tip;
 
-#include "dock_widget.moc"

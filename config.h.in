@@ -6,9 +6,6 @@
 /* Define to 1 if you have the <arpa/inet.h> header file. */
 #undef HAVE_ARPA_INET_H
 
-/* Defines if your system has the crypt function */
-#undef HAVE_CRYPT
-
 /* Define if Kadu documentation is installed */
 #undef HAVE_DOC
 
@@ -33,20 +30,8 @@
 /* Define to 1 if you have the `gadu' library (-lgadu). */
 #undef HAVE_LIBGADU
 
-/* Define if you have libjpeg */
-#undef HAVE_LIBJPEG
-
-/* Define if you have libpng */
-#undef HAVE_LIBPNG
-
-/* Define if you have a working libpthread (will enable threaded code) */
-#undef HAVE_LIBPTHREAD
-
 /* Define to 1 if you have the `ssl' library (-lssl). */
 #undef HAVE_LIBSSL
-
-/* Define if you have libz */
-#undef HAVE_LIBZ
 
 /* Define to 1 if your system has a working `malloc' function. */
 #undef HAVE_MALLOC
@@ -65,13 +50,6 @@
 
 /* Define if we have OpenSSL encryption support */
 #undef HAVE_OPENSSL
-
-/* Define to 1 if you have the <pthread/linuxthreads/pthread.h> header file.
-   */
-#undef HAVE_PTHREAD_LINUXTHREADS_PTHREAD_H
-
-/* Define if you have the res_init function */
-#undef HAVE_RES_INIT
 
 /* Define to 1 if you have the `select' function. */
 #undef HAVE_SELECT
@@ -122,9 +100,6 @@
 /* Define to 1 if you have <sys/wait.h> that is POSIX.1 compatible. */
 #undef HAVE_SYS_WAIT_H
 
-/* C++ compiler supports template repository */
-#undef HAVE_TEMPLATE_REPOSITORY
-
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
 
@@ -143,9 +118,6 @@
 
 /* Define to 1 if `vfork' works. */
 #undef HAVE_WORKING_VFORK
-
-/* Define if you want Xinerama support */
-#undef HAVE_XINERAMA
 
 /* Define to 1 if `lstat' dereferences a symlink specified with a trailing
    slash. */
@@ -169,18 +141,6 @@
 /* Define to the version of this package. */
 #undef PACKAGE_VERSION
 
-/* The size of a `char', as computed by sizeof. */
-#undef SIZEOF_CHAR
-
-/* The size of a `char *', as computed by sizeof. */
-#undef SIZEOF_CHAR_P
-
-/* The size of a `int', as computed by sizeof. */
-#undef SIZEOF_INT
-
-/* The size of a `long', as computed by sizeof. */
-#undef SIZEOF_LONG
-
 /* Define to 1 if you have the ANSI C header files. */
 #undef STDC_HEADERS
 
@@ -196,14 +156,8 @@
 /* Define to empty if `const' does not conform to ANSI C. */
 #undef const
 
-/* Compatibility define */
-#undef ksize_t
-
 /* Define to `int' if <sys/types.h> does not define. */
 #undef pid_t
-
-/* Define the real type of socklen_t */
-#undef socklen_t
 
 /* Define as `fork' if `vfork' does not work. */
 #undef vfork

@@ -109,4 +109,3 @@ void Adduser::Add() {
 	fprintf(stderr, "KK Adduser::Add(): finished\n");
 }
 
-#include "adduser.moc"

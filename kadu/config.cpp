@@ -1443,4 +1443,3 @@ void ConfigDialog::updateConfig(void) {
 	kadu->refreshGroupTabBar();
 }
 
-#include "config.moc"

@@ -127,4 +127,3 @@ void AutoAwayTimer::onTimeout()
 	start(config.autoawaytime * 1000, TRUE);
 }
 
-#include "status.moc"

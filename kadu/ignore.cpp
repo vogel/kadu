@@ -145,4 +145,3 @@ int writeIgnored(QString filename)
 	return 0;
 }
 
-#include "ignore.moc"
