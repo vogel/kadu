@@ -11,6 +11,7 @@
 #include "debug.h"
 #include "message_box.h"
 #include "config_file.h"
+#include "config_dialog.h"
 #include "kadu.h"
 #include "kadu-config.h"
 
@@ -20,6 +21,7 @@
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include <qtextcodec.h>
+#include <qregexp.h>
 
 #include <dlfcn.h>
 
@@ -208,7 +210,7 @@ ModulesManager::ModulesManager() : QObject()
 	// przenioslem to tutaj z funkcji ModulesManagert::initModule
 	// to samo z menu - moduly powinny sie ladowac na samym koncu
 	modules_manager=this;
-	kadu->mainMenu()->insertItem(icons_manager.loadIcon("ManageModules"), tr("&Manage Modules"), this, SLOT(showDialog()), QKeySequence(), -1, 2);
+	kadu->mainMenu()->insertItem(icons_manager.loadIcon("ManageModules"), tr("&Manage Modules"), this, SLOT(showDialog()), HotKey::shortCutFromFile("ShortCuts", "kadu_modulesmanager"), -1, 2);
 	//
 	Dialog=NULL;
 	//
@@ -229,6 +231,10 @@ ModulesManager::ModulesManager() : QObject()
 	// zaladowane to zapisz nowa liste zaladowanych modulow
 	if(!all_loaded)
 		saveLoadedModules();
+
+	ConfigDialog::addTab("ShortCuts");
+	ConfigDialog::addVGroupBox("ShortCuts", "ShortCuts", "Define keys");
+	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QString("&Manage Modules").replace(QRegExp("&"), ""), "kadu_modulesmanager", "F4");
 }
 
 ModulesManager::~ModulesManager()

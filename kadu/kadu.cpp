@@ -242,6 +242,10 @@ void Kadu::keyPressEvent(QKeyEvent *e) {
 		sendFile();
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_configure"))
 		configure();
+#ifdef MODULES_ENABLED
+	else if (HotKey::shortCut(e,"ShortCuts", "kadu_modulesmanager"))
+		modules_manager->showDialog();
+#endif
 
 	QWidget::keyPressEvent(e);
 }
