@@ -693,6 +693,10 @@ If you leave blank, default settings will be used.</source>
         <source>Don&apos;t show status changes</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>User %1 is available</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>

@@ -697,6 +697,10 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
         <source>Don&apos;t show status changes</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>User %1 is available</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -812,31 +816,31 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     <name>ChatSlots</name>
     <message>
         <source>None</source>
-        <translation type="unfinished">Bez emotów</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Static</source>
-        <translation type="unfinished">Statyczne</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Animated</source>
-        <translation type="unfinished">Animowane</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Your background color</source>
-        <translation type="unfinished">Twój kolor tła</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Your font color</source>
-        <translation type="unfinished">Twój kolor czcionki</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>User background color</source>
-        <translation type="unfinished">Kolor tła kontaktu</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>User font color</source>
-        <translation type="unfinished">Kolor czcionki kontaktu</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Font in chat window</source>
@@ -894,7 +898,7 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     <name>ColorButton</name>
     <message>
         <source>Color dialog</source>
-        <translation type="unfinished">Kolory</translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -1077,11 +1081,11 @@ Dein Passwort ist falsch!!!</translation>
     </message>
     <message>
         <source>Offline</source>
-        <translation type="unfinished">Niedostępny</translation>
+        <translation type="unfinished">Offline</translation>
     </message>
     <message>
         <source>Offline (d.)</source>
-        <translation type="unfinished">Niedostępny (Beschr.)</translation>
+        <translation type="unfinished">Offline (Beschr.)</translation>
     </message>
     <message>
         <source>Blocking</source>
@@ -1852,10 +1856,6 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
         <source>Select user first</source>
         <translation>Markiere zuerst Benutzer</translation>
     </message>
-    <message>
-        <source> </source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>Sms</name>
@@ -2376,12 +2376,11 @@ The export userlist to file was unsuccessful</source>
     <message>
         <source>The application encountered an internal error
 The delete userlist on server was unsuccessful</source>
-        <translation type="unfinished">Usunięcie listy kontaktów z serwera
-zostało zakończone niepowodzeniem.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Your userlist has been successfully exported to server</source>
-        <translation type="unfinished">Lista kontaktów została wyeksportowana na serwer.</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

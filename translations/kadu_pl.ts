@@ -697,6 +697,10 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <source>German</source>
         <translation>Niemiecki</translation>
     </message>
+    <message>
+        <source>User %1 is available</source>
+        <translation>Kontakt %1 jest dostępny</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1851,10 +1855,6 @@ Teraz możesz dodać znajomych do listy kontaktów.</translation>
     <message>
         <source>Select user first</source>
         <translation>Zaznacz użytkownika</translation>
-    </message>
-    <message>
-        <source> </source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

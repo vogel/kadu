@@ -697,6 +697,10 @@ Se lasciate lo spazio vuoto, sarà inserita stringa predefinita.</translation>
         <source>Don&apos;t show status changes</source>
         <translation>Non visualizza cambiamenti dello status</translation>
     </message>
+    <message>
+        <source>User %1 is available</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
