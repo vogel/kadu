@@ -41,10 +41,10 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   gdy jest w³±czona nie tylko gdy status jest z opisem (ciuciu/mast3r)
 * Hinty: przy zmianie statusu powinno dzia³aæ ju¿ t³umaczenie, ma³a
   przeróbka estetyczna w zak³adce konfiguracji (mast3r) 
-* libgadu z 02.10.2003 (chilek)
 * rejestracja zgodna z GG6 (chilek)
 * zmiana has³a zgodna z GG6 (chilek)
 * udoskonalenie dialogow rejestracji i zmiany hasla (chilek)
+* libgadu z 03.10.2003 (chilek)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci

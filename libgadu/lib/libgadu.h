@@ -1,4 +1,4 @@
-/* $Id: libgadu.h,v 1.42 2003/10/02 15:33:40 chilek Exp $ */
+/* $Id: libgadu.h,v 1.43 2003/10/03 20:31:24 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -699,6 +699,7 @@ struct gg_http *gg_register3(const char *email, const char *password, const char
 
 struct gg_http *gg_unregister(uin_t uin, const char *password, const char *email, int async);
 struct gg_http *gg_unregister2(uin_t uin, const char *password, const char *qa, int async);
+struct gg_http *gg_unregister3(uin_t uin, const char *password, const char *tokenid, const char *tokenval, int async);
 #define gg_unregister_watch_fd gg_pubdir_watch_fd
 #define gg_unregister_free gg_pubdir_free
 

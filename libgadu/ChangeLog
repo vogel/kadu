@@ -4,6 +4,11 @@ oznacza, ¿e ,,nick'' jest pomys³odawc± lub podes³a³ patcha, a zrobi³
 to kto¶ oznaczony przez ,,x'' (w - wojtekka, s - speedy, a - arekm,
 d - drg, sz - szalik).
 
+// 2003-10-03
+
+- libgadu: poprawka kodowania adresów e-mail w urlach (Chilek/w)
+- libgadu: uaktualnienie usuwania konta do protoko³u GG 6.0 (Chilek/w)
+
 // 2003-10-01
 
 - poprawka wykrywania libjpeg (embe/w)
@@ -325,4 +330,4 @@ d - drg, sz - szalik).
 - poprawka zachowania trybu wielolinijkowego (theKnight/w)
 
 
-$Id: ChangeLog,v 1.23 2003/10/02 15:33:39 chilek Exp $
+$Id: ChangeLog,v 1.24 2003/10/03 20:31:24 chilek Exp $

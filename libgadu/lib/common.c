@@ -1,4 +1,4 @@
-/* $Id: common.c,v 1.26 2003/10/02 15:33:40 chilek Exp $ */
+/* $Id: common.c,v 1.27 2003/10/03 20:31:24 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -346,7 +346,7 @@ char *gg_urlencode(const char *str)
 		str = strdup("");
 
 	for (p = str; *p; p++, size++) {
-		if (!((*p >= 'a' && *p <= 'z') || (*p >= 'A' && *p <= 'Z') || (*p >= '0' && *p <= '9') || *p == ' '))
+		if (!((*p >= 'a' && *p <= 'z') || (*p >= 'A' && *p <= 'Z') || (*p >= '0' && *p <= '9') || *p == ' ') || (*p == '@') || (*p == '.') || (*p == '-'))
 			size += 2;
 	}
 
@@ -354,7 +354,7 @@ char *gg_urlencode(const char *str)
 		return NULL;
 
 	for (p = str, q = buf; *p; p++, q++) {
-		if ((*p >= 'a' && *p <= 'z') || (*p >= 'A' && *p <= 'Z') || (*p >= '0' && *p <= '9'))
+		if ((*p >= 'a' && *p <= 'z') || (*p >= 'A' && *p <= 'Z') || (*p >= '0' && *p <= '9') || (*p == '@') || (*p == '.') || (*p == '-'))
 			*q = *p;
 		else {
 			if (*p == ' ')

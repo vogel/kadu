@@ -1,4 +1,4 @@
-/* $Id: obsolete.c,v 1.1 2003/10/02 15:33:40 chilek Exp $ */
+/* $Id: obsolete.c,v 1.2 2003/10/03 20:31:24 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -140,10 +140,18 @@ struct gg_http *gg_register2(const char *email, const char *password, const char
 
 struct gg_http *gg_unregister(uin_t uin, const char *password, const char *email, int async)
 {
-	gg_debug(GG_DEBUG_MISC, "// gg_unregister() is obsolete. use gg_unregister2() instead!\n");
+	gg_debug(GG_DEBUG_MISC, "// gg_unregister() is obsolete. use gg_unregister3() instead!\n");
 	errno = EINVAL;
 	return NULL;
 }
+
+struct gg_http *gg_unregister2(uin_t uin, const char *password, const char *qa, int async)
+{
+	gg_debug(GG_DEBUG_MISC, "// gg_unregister2() is obsolete. use gg_unregister3() instead!\n");
+	errno = EINVAL;
+	return NULL;
+}
+
 
 struct gg_http *gg_change_passwd(uin_t uin, const char *passwd, const char *newpasswd, const char *newemail, int async)
 {
