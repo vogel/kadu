@@ -55,7 +55,7 @@ void ConfigDialog::showConfigDialog(QApplication* application)
 		configdialog->raise();
 	}
 	else 	
-		(new ConfigDialog(application))->show();
+		(new ConfigDialog(application, 0, "configDialog"))->show();
 	kdebugf2();
 }
 
@@ -92,23 +92,23 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 	
 	setCaption(tr("Kadu configuration"));
 		
-	QHBox *center = new QHBox(this);
+	QHBox *center = new QHBox(this,"center");
 	center->setMargin(10);
 	center->setSpacing(10);
 	
-	QVBox *left = new QVBox(center);
+	QVBox *left = new QVBox(center,"left");
 	
-	listBox = new QListBox(left);
+	listBox = new QListBox(left,"listbox");
 	listBox->setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)0, (QSizePolicy::SizeType)7, 0, 0, 
 	listBox->sizePolicy().hasHeightForWidth()));
 	
-	QVGroupBox* vgb_viewcontainer = new QVGroupBox(center);
+	QVGroupBox* vgb_viewcontainer = new QVGroupBox(center,"mainGroupBox");
 	
-	view = new QScrollView(vgb_viewcontainer);
+	view = new QScrollView(vgb_viewcontainer,"scrollView");
 	view->setResizePolicy(QScrollView::AutoOneFit);
 	view->setFrameStyle(QFrame::NoFrame);
  
-	QVGroupBox* box= new QVGroupBox(view);
+	QVGroupBox* box= new QVGroupBox(view, "groupBox");
 	box->setFrameStyle(QFrame::NoFrame);
 	view->addChild(box);
 	
@@ -412,15 +412,15 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 	listBox->setCurrentItem(listBox->findItem(appHandle->translate("@default",acttab)));
 	
 	// buttons
-	QHBox *bottom = new QHBox(this);
+	QHBox *bottom = new QHBox(this, "buttons");
 	bottom->setMargin(10);
 	bottom->setSpacing(5);
 	
-	(new QWidget(bottom))->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
+	(new QWidget(bottom, "blank"))->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 
-	okButton = new QPushButton(icons_manager.loadIcon("OkWindowButton"), tr("Ok"), bottom);
-	applyButton = new QPushButton(icons_manager.loadIcon("ApplyWindowButton"), tr("Apply"), bottom);
-	cancelButton = new QPushButton(icons_manager.loadIcon("CloseWindowButton"), tr("Cancel"), bottom);
+	okButton = new QPushButton(icons_manager.loadIcon("OkWindowButton"), tr("Ok"), bottom, "okButton");
+	applyButton = new QPushButton(icons_manager.loadIcon("ApplyWindowButton"), tr("Apply"), bottom, "applyButton");
+	cancelButton = new QPushButton(icons_manager.loadIcon("CloseWindowButton"), tr("Cancel"), bottom, "cancelButton");
 	
 	connect(okButton, SIGNAL(clicked()), this, SLOT(updateAndCloseConfig()));
 	connect(applyButton, SIGNAL(clicked()), this, SLOT(updateConfig()));
