@@ -1090,13 +1090,13 @@ void Chat::formatMessage(ChatMessage &msg, QColor myBgColor, QColor usrBgColor, 
 	QString nick = msg.nick;
 	HtmlDocument::escapeText(nick);
 
-	msg.message=formatString
-			.arg(msg.backgroundColor.name())
-			.arg(msg.textColor.name())
-			.arg(nick)
-			.arg(date)
-			.arg(ParagraphSeparator)
-			.arg(convertCharacters(msg.unformattedMessage, msg.backgroundColor, style));
+	msg.message=narg(formatString,
+			msg.backgroundColor.name(),
+			msg.textColor.name(),
+			nick,
+			date,
+			QString::number(ParagraphSeparator),
+			convertCharacters(msg.unformattedMessage, msg.backgroundColor, style));
 
 	msg.needsToBeFormatted=false;
 }

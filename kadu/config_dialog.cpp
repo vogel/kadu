@@ -1496,7 +1496,7 @@ SelectFont::SelectFont(const QString &text, const QFont &val, QWidget *parent, c
 void SelectFont::setFont(const QFont &font)
 {
 	currentFont=font;
-	fontEdit->setText(QString("%1 %2").arg(currentFont.family()).arg(currentFont.pointSize()));
+	fontEdit->setText(narg(QString("%1 %2"), currentFont.family(), QString::number(currentFont.pointSize())));
 }
 
 QFont SelectFont::font()

@@ -507,4 +507,32 @@ template<class T, class X> QValueList<X> values(const QMap<T, X> &m)
 #endif
 }
 
+/*
+	zastêpstwo dla arga w QString, które podmienia kolejne %[1-4] w miejscu
+	
+	w QStringu efektem:
+		QString("%1 odstêp %2").arg("pierwszy %1 tekst").arg("drugi tekst") jest "pierwszy drugi tekst tekst odstêp %2"
+	a chcieliby¶my ¿eby by³o
+		"pierwszy %1 tekst odstêp drugi tekst"
+	co robi w³a¶nie ta funkcja
+	
+	Qt>=3.2 ma ju¿ odpowiedni± funkcjê w QStringu, wiêc wtedy zwracana jest warto¶æ z Qt
+*/
+QString narg(const QString &s, const QString &arg1, const QString &arg2,
+				const QString &arg3=QString(), const QString &arg4=QString());
+
+QString narg(const QString &s, const QString &arg1, const QString &arg2,
+				const QString &arg3, const QString &arg4,
+				const QString &arg5, const QString &arg6=QString(),
+				const QString &arg7=QString(),const QString &arg8=QString(),
+				const QString &arg9=QString());
+
+/**
+	uogólniony narg(const QString&, const QString &, const QString &, const QString &, const QString &)
+	na wiêksz± liczbê parametrów
+	count musi byæ <=9
+	tab - tablica count wska¼ników do QString
+**/
+QString narg(const QString &s, const QString **tab, int count);
+
 #endif

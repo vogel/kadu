@@ -390,7 +390,7 @@ void UserBox::maybeTip(const QPoint &c)
 			description.replace(QRegExp(" "), "&nbsp;");
 			description.replace(QRegExp("\n"), "<br/>");
 
-			s = tr("<nobr><i>%1</i> <b>(d.)</b></nobr><br/><br/><b>Description:</b><br/>%2").arg(name).arg(description);
+			s = narg(tr("<nobr><i>%1</i> <b>(d.)</b></nobr><br/><br/><b>Description:</b><br/>%2"), name, description);
 		}
 		tip(r, s);
 	}

@@ -2245,15 +2245,15 @@ void GaduImagesManager::setBackgroundsForAnimatedImages(HtmlDocument &doc, const
 QString GaduImagesManager::imageHtml(const QString& file_name)
 {
 	if (file_name.right(4).lower()==".gif")
-		return QString("<img bgcolor=\"\" animated=\"1\" src=\"%1\" title=\"%2\"/>").arg(file_name).arg(file_name);
+		return narg(QString("<img bgcolor=\"\" animated=\"1\" src=\"%1\" title=\"%2\"/>"), file_name, file_name);
 	else
 		return QString("<img src=\"%1\"/>").arg(file_name);
 }
 
 QString GaduImagesManager::loadingImageHtml(UinType uin,uint32_t size,uint32_t crc32)
 {
-	return QString("<img src=\"%1\" gg_sender=\"%2\" gg_size=\"%3\" gg_crc=\"%4\"/>")
-		.arg(icons_manager.iconPath("LoadingImage")).arg(uin).arg(size).arg(crc32);
+	return narg(QString("<img src=\"%1\" gg_sender=\"%2\" gg_size=\"%3\" gg_crc=\"%4\"/>"),
+		icons_manager.iconPath("LoadingImage"), QString::number(uin), QString::number(size), QString::number(crc32));
 }
 
 void GaduImagesManager::addImageToSend(const QString& file_name,uint32_t& size,uint32_t& crc32)
@@ -2365,7 +2365,7 @@ QString GaduImagesManager::replaceLoadingImages(const QString& text, UinType sen
 
 	QString file_name = getSavedImageFileName(size,crc32);
 	if (file_name.right(4).lower()==".gif")
-		image_string = QString("<img bgcolor=\"\" animated=\"1\" src=\"%1\" title=\"%2\"/>").arg(file_name).arg(file_name);
+		image_string = narg(QString("<img bgcolor=\"\" animated=\"1\" src=\"%1\" title=\"%2\"/>"), file_name, file_name);
 	else
 		image_string = QString("<img src=\"%1\"/>").arg(file_name);
 
@@ -2626,4 +2626,55 @@ QString toPlainText(const QString &text)
 	HtmlDocument::unescapeText(copy);
 	kdebugm(KDEBUG_INFO, "plain: %s\n", copy.local8Bit().data());
 	return copy;
+}
+
+QString narg(const QString &s, const QString **tab, int count)
+{
+	kdebugf();
+	QString out;
+	const QChar *d=s.unicode();
+	const QChar *dend=d+s.length();
+	int j=0;
+	char maxc='0'+count;
+	if (count>9)
+		return QString::null;
+
+	while (d!=dend)
+	{
+		if (*d=='%' && d+1<dend && *(d+1)>='1' && *(d+1)<=maxc)
+		{
+			out.append(QString(d-j, j));
+			d++;
+			out.append(*(tab[*d-'1']));
+			j=0;
+		}
+		else
+			j++;
+		d++;
+	}
+//	kdebugm(KDEBUG_DUMP, "out: '%s'\n", out.local8Bit().data());
+	kdebugf2();
+	
+	return out;
+}
+
+QString narg(const QString &s, const QString &arg1, const QString &arg2,
+				const QString &arg3, const QString &arg4,
+				const QString &arg5, const QString &arg6,
+				const QString &arg7, const QString &arg8,
+				const QString &arg9)
+{
+	const QString *tab[9]={&arg1, &arg2, &arg3, &arg4, &arg5, &arg6, &arg7, &arg8, &arg9};
+	return narg(s, tab, 9);
+}
+
+QString narg(const QString &s, const QString &arg1, const QString &arg2, const QString &arg3, const QString &arg4)
+{
+#if QT_VERSION > 0x030200
+//	kdebugm(KDEBUG_DUMP, "'%s'   '%s'  '%s'  '%s'  '%s'\n", s.local8Bit().data(), arg1.local8Bit().data(), arg2.local8Bit().data(), arg3.local8Bit().data(), arg4.local8Bit().data());
+	const QString *tab[4]={&arg1, &arg2, &arg3, &arg4};
+	return narg(s, tab, 4);
+#else
+	return s.arg(arg1,arg2,arg3,arg4);
+#endif
 }

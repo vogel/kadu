@@ -499,7 +499,7 @@ bool ModulesManager::conflictsWithLoaded(const QString &module_name, const Modul
 	{
 		if(moduleIsActive(*it))
 		{
-			MessageBox::msg(tr("Module %1 conflicts with: %2").arg(module_name).arg(*it));
+			MessageBox::msg(narg(tr("Module %1 conflicts with: %2"), module_name, *it));
 			kdebugf2();
 			return true;
 		}
@@ -507,7 +507,7 @@ bool ModulesManager::conflictsWithLoaded(const QString &module_name, const Modul
 			for (QStringList::const_iterator sit=(*mit).info.provides.begin(); sit!=(*mit).info.provides.end(); ++sit)
 				if ((*it)==(*sit))
 				{
-					MessageBox::msg(tr("Module %1 conflicts with: %2").arg(module_name).arg(mit.key()));
+					MessageBox::msg(narg(tr("Module %1 conflicts with: %2"), module_name, mit.key()));
 					kdebugf2();
 					return true;
 				}
@@ -516,7 +516,7 @@ bool ModulesManager::conflictsWithLoaded(const QString &module_name, const Modul
 		for (QStringList::const_iterator sit=(*it).info.conflicts.begin(); sit!=(*it).info.conflicts.end(); ++sit)
 			if ((*sit)==module_name)
 			{
-				MessageBox::msg(tr("Module %1 conflicts with: %2").arg(module_name).arg(it.key()));
+				MessageBox::msg(narg(tr("Module %1 conflicts with: %2"), module_name, it.key()));
 				kdebugf2();
 				return true;
 			}
@@ -565,7 +565,7 @@ bool ModulesManager::activateModule(const QString& module_name)
 		m.lib=new Library(dataPath("kadu/modules/"+module_name+".so"));
 		if(!m.lib->load())
 		{
-			MessageBox::msg(tr("Cannot load %1 module library.:\n%2").arg(module_name).arg(m.lib->error()));
+			MessageBox::msg(narg(tr("Cannot load %1 module library.:\n%2"), module_name, m.lib->error()));
 			kdebugf2();
 			return false;
 		}	

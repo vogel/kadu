@@ -348,6 +348,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * bezproblemowa aktualizacja uinu kontaktu je¿eli mamy go na li¶cie anonimowych (joi)
 * ignorujemy zmiany statusów dla anonimowych kontaktów, z którymi rozmawiali¶my (joi)
 * poprawki, uproszczenia przy zarz±dzaniu zewnêtrznym ip w dcc (adrian)
+* usuniête b³êdy wystêpuj±ce w wielu miejscach kadu gdy np. nick osoby zawiera "%1" (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
