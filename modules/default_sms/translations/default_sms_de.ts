@@ -10,12 +10,12 @@
         <translation>SMS-Gateway vom Era GSM</translation>
     </message>
     <message>
-        <source>User ID</source>
-        <translation>Benutzer-ID</translation>
-    </message>
-    <message>
         <source>Type of gateway</source>
         <translation>Typ des Gateways</translation>
+    </message>
+    <message>
+        <source>User ID (48xxxxxxxxx)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

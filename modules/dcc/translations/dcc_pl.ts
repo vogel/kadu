@@ -45,36 +45,36 @@
 <context>
     <name>DccFileDialog</name>
     <message>
-        <source>Sender: </source>
-        <translation>Nadawca: </translation>
-    </message>
-    <message>
-        <source>Receiver: </source>
-        <translation>Odbiorca: </translation>
-    </message>
-    <message>
-        <source>Filename: </source>
-        <translation>Nazwa pliku: </translation>
-    </message>
-    <message>
-        <source>File size: </source>
-        <translation>Rozmiar pliku: </translation>
-    </message>
-    <message>
-        <source>Speed: 0KB/s (not started)  </source>
-        <translation>Prędkość: 0KB/s (nie rozpoczęto)</translation>
-    </message>
-    <message>
-        <source>Speed: </source>
-        <translation>Prędkość: </translation>
-    </message>
-    <message>
         <source>(stalled)</source>
         <translation>(zatrzymana)</translation>
     </message>
     <message>
         <source>File transfered %1%</source>
         <translation>Transmisja pliku %1%</translation>
+    </message>
+    <message>
+        <source>Sender: %1</source>
+        <translation>Nadawca: %1</translation>
+    </message>
+    <message>
+        <source>Receiver: %1</source>
+        <translation>Odbiorca: %1</translation>
+    </message>
+    <message>
+        <source>Filename: %1</source>
+        <translation>Nazwa pliku: %1</translation>
+    </message>
+    <message>
+        <source>File size: %1B</source>
+        <translation>Rozmiar pliku: % 1B</translation>
+    </message>
+    <message>
+        <source>Speed: 0kB/s (not started)  </source>
+        <translation>Prędkość: 0kB/s (nie zaczęte)</translation>
+    </message>
+    <message>
+        <source>Speed: %1kB/s </source>
+        <translation>Prędkość: %1kB/s</translation>
     </message>
 </context>
 <context>
@@ -92,10 +92,10 @@ Połączenia bezpośrednie wyłączone.</translation>
     <message>
         <source>Direct connection timeout!
 The receiver doesn&apos;t support direct connections or
-both machines are behind routers with nat.</source>
-        <translation>Czas na połączenie upłynął!
-Odbiorca nie ma włączonego DCC lub
-oba komputery są za NAT-em.</translation>
+both machines are behind routers with NAT.</source>
+        <translation>&lt;B&gt;Upłynął czas na połączenie!&lt;/B&gt;
+Odbiorca nie ma włączonej obsługi przesyłu 
+plików lub oba komputery są za NAT-em.</translation>
     </message>
 </context>
 <context>
@@ -122,24 +122,6 @@ oba komputery są za NAT-em.</translation>
     <message>
         <source>Select file location</source>
         <translation>Wybierz lokalizację pliku</translation>
-    </message>
-    <message>
-        <source>User </source>
-        <translation>Użytkownik </translation>
-    </message>
-    <message>
-        <source> wants to send us a file </source>
-        <translation> chce wysłać nam plik </translation>
-    </message>
-    <message>
-        <source>
-of size </source>
-        <translation>
-o rozmiarze </translation>
-    </message>
-    <message>
-        <source>. Accept transfer?</source>
-        <translation>. Akceptujesz?</translation>
     </message>
     <message>
         <source>Incoming transfer</source>
@@ -176,6 +158,16 @@ o rozmiarze </translation>
     <message>
         <source>Could not open file</source>
         <translation>Problem z otwarciem pliku</translation>
+    </message>
+    <message>
+        <source>This file is not readable</source>
+        <translation>Brak uprawnień do odczytu pliku</translation>
+    </message>
+    <message>
+        <source>User %1 wants to send us a file %2
+of size %3kB. Accept transfer?</source>
+        <translation>Użytkownik %1 wysyła ci plik %2
+o rozmiarze %3kB. Akceptujesz?</translation>
     </message>
 </context>
 </TS>

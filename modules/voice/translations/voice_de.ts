@@ -27,14 +27,6 @@
 <context>
     <name>VoiceSocket</name>
     <message>
-        <source>User </source>
-        <translation>Benutzer</translation>
-    </message>
-    <message>
-        <source> wants to talk with you. Do you accept it?</source>
-        <translation> will mit dir reden. Erlauben?</translation>
-    </message>
-    <message>
         <source>Incoming voice chat</source>
         <translation>Es kommt ein Telefonat an</translation>
     </message>
@@ -45,6 +37,10 @@
     <message>
         <source>No</source>
         <translation>Nein</translation>
+    </message>
+    <message>
+        <source>User %1 wants to talk with you. Do you accept it?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

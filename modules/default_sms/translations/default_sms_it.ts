@@ -10,12 +10,12 @@
         <translation>SMS EraGSM Gateway</translation>
     </message>
     <message>
-        <source>User ID</source>
-        <translation>ID dell&apos;utente</translation>
-    </message>
-    <message>
         <source>Type of gateway</source>
         <translation>Tipo di Gateway</translation>
+    </message>
+    <message>
+        <source>User ID (48xxxxxxxxx)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

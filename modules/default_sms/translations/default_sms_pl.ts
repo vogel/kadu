@@ -10,12 +10,12 @@
         <translation>Bramka SMS Era GSM</translation>
     </message>
     <message>
-        <source>User ID</source>
-        <translation>ID Użytkownika: </translation>
-    </message>
-    <message>
         <source>Type of gateway</source>
         <translation>Rodzaj bramki</translation>
+    </message>
+    <message>
+        <source>User ID (48xxxxxxxxx)</source>
+        <translation>ID użytkownika(48xxxxxxxxx)</translation>
     </message>
 </context>
 <context>

@@ -45,36 +45,36 @@
 <context>
     <name>DccFileDialog</name>
     <message>
-        <source>Sender: </source>
-        <translation>Absender: </translation>
-    </message>
-    <message>
-        <source>Receiver: </source>
-        <translation>Empfänger: </translation>
-    </message>
-    <message>
-        <source>Filename: </source>
-        <translation>Dateiname: </translation>
-    </message>
-    <message>
-        <source>File size: </source>
-        <translation>Dateigröße: </translation>
-    </message>
-    <message>
-        <source>Speed: 0KB/s (not started)  </source>
-        <translation>Geschwindigkeit: 0KB/s (nicht gestartet)</translation>
-    </message>
-    <message>
-        <source>Speed: </source>
-        <translation>Geschwindigkeit: </translation>
-    </message>
-    <message>
         <source>(stalled)</source>
         <translation>(gestoppt)</translation>
     </message>
     <message>
         <source>File transfered %1%</source>
         <translation>Datei transferiert %1%</translation>
+    </message>
+    <message>
+        <source>Sender: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Receiver: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Filename: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File size: %1B</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Speed: 0kB/s (not started)  </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Speed: %1kB/s </source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -92,7 +92,7 @@ Direkte Verbindungen ausgeschaltet.</translation>
     <message>
         <source>Direct connection timeout!
 The receiver doesn&apos;t support direct connections or
-both machines are behind routers with nat.</source>
+both machines are behind routers with NAT.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -120,24 +120,6 @@ both machines are behind routers with nat.</source>
     <message>
         <source>Select file location</source>
         <translation>Wohin</translation>
-    </message>
-    <message>
-        <source>User </source>
-        <translation>Benutzer</translation>
-    </message>
-    <message>
-        <source> wants to send us a file </source>
-        <translation>will uns Datei senden</translation>
-    </message>
-    <message>
-        <source>
-of size </source>
-        <translation>
-mit Größe</translation>
-    </message>
-    <message>
-        <source>. Accept transfer?</source>
-        <translation>. Erlauben?</translation>
     </message>
     <message>
         <source>Incoming transfer</source>
@@ -174,6 +156,15 @@ mit Größe</translation>
     <message>
         <source>Could not open file</source>
         <translation>Problem beim Öffnen der Datei</translation>
+    </message>
+    <message>
+        <source>This file is not readable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User %1 wants to send us a file %2
+of size %3kB. Accept transfer?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
