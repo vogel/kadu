@@ -260,7 +260,7 @@ class GaduSocketNotifiers : public SocketNotifiers
 		void checkWrite();
 
 	signals:
-		void ackReceived(int);
+		void ackReceived(int seq, uin_t uin, int status);
 		void connected();
 		void dccConnectionReceived(const UserListElement &);
 		void disconnected();
@@ -697,7 +697,21 @@ class GaduProtocol : public QObject
 			@see logout
 		 **/
 		void iWantGoOffline(const QString &);
+		
+		/**
+			Przysz³a informacja o dostarczeniu (lub nie) wiadomo¶ci.
+			Na podstawie statusu emituje odpowiednie sygna³y message*
 
+			@see messageBlocked
+			@see messageDelivered
+			@see messageQueued
+			@see messageBoxFull
+			@see messageNotDelivered
+			@see messageAccepted
+			@see messageRejected
+		**/
+		void ackReceived(int seq, uin_t uin, int status);
+		
 	public:
 		static void initModule();
 		GaduProtocol(QObject *parent=NULL, const char *name=NULL);
@@ -1065,7 +1079,48 @@ class GaduProtocol : public QObject
 		void userDataChanged(const UserListElement* const oldData, const UserListElement* const newData);
 
 	signals:
-		void ackReceived(int);
+		/**
+			wiadomo¶æ zosta³a zablokowana przez serwer
+		**/
+		void messageBlocked(int seq, UinType uin);
+		
+		/**
+			wiadomo¶æ dostarczono
+		**/
+		void messageDelivered(int seq, UinType uin);
+		
+		/**
+			wiadomo¶æ zakolejkowano
+		**/
+		void messageQueued(int seq, UinType uin);
+		
+		/**
+			skrzynka odbiorcza na serwerze jest pe³na
+		**/
+		void messageBoxFull(int seq, UinType uin);
+		
+		/**
+			wiadomo¶æ nie dostaczona (wystêpuje tylko przy CTCP)
+		**/
+		void messageNotDelivered(int seq, UinType uin);
+		
+		/**
+			wiadomo¶æ zosta³a przyjêta przez serwer 
+		**/
+		void messageAccepted(int seq, UinType uin);
+		/**
+			wiadomo¶æ zosta³a odrzucona przez serwer 
+		**/
+		void messageRejected(int seq, UinType uin);
+		
+		/**
+			otrzymano informacjê o potwierdzeniu wiadomo¶ci
+			
+			wkrótce ten sygna³ zostanie usuniêty
+			proszê u¿ywaæ messageAccepted() i messageRejected() lub szczegó³owych odpowiedników
+		**/
+		void ackReceived(int seq);
+		
 		void connected();
 		void connecting();
 		void disconnected();

@@ -1,4 +1,4 @@
-/* $Id: libgadu.h,v 1.52 2004/05/02 21:43:30 michal Exp $ */
+/* $Id: libgadu.h,v 1.53 2004/09/21 01:50:39 joi Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -1200,8 +1200,10 @@ struct gg_msg_image_reply {
 
 #define GG_SEND_MSG_ACK 0x0005
 
+#define GG_ACK_BLOCKED 0x0001
 #define GG_ACK_DELIVERED 0x0002
 #define GG_ACK_QUEUED 0x0003
+#define GG_ACK_MBOXFULL 0x0004
 #define GG_ACK_NOT_DELIVERED 0x0006
 	
 struct gg_send_msg_ack {

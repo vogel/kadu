@@ -716,8 +716,7 @@ Chat::~Chat()
 	kdebugf();
 	chat_manager->unregisterChat(this);
 
-	disconnect(gadu, SIGNAL(ackReceived(int)),
-		this, SLOT(ackReceivedSlot(int)));
+	disconnectAcknowledgeSlots();
 	disconnect(gadu, SIGNAL(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)),
 		this, SLOT(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)));
 
@@ -1242,8 +1241,7 @@ void Chat::cancelMessage()
 {
 	kdebugf();
 	seq = 0;
-	disconnect(gadu, SIGNAL(ackReceived(int)),
-		this, SLOT(ackReceivedSlot(int)));
+	disconnectAcknowledgeSlots();
 	edit->setReadOnly(false);
 	edit->setEnabled(true);
 	edit->setFocus();
@@ -1254,17 +1252,69 @@ void Chat::cancelMessage()
 	kdebugf2();
 }
 
-void Chat::ackReceivedSlot(int Seq)
+void Chat::messageBlockedSlot(int Seq, UinType uin)
 {
 	kdebugf();
 	if (seq != Seq)
 		return;
-	kdebugm(KDEBUG_INFO, "Chat::ackReceivedSlot(): This is my ack.\n");
+	kdebugm(KDEBUG_INFO, "Chat::messageBlockedSlot(): This is my ack.\n");
+	MessageBox::wrn(tr("Your message has been blocked by server. Message has not been delivered."), true);
+	cancelMessage();
+	kdebugf2();
+}
+
+void Chat::messageBoxFullSlot(int Seq, UinType uin)
+{
+	kdebugf();
+	if (seq != Seq)
+		return;
+	kdebugm(KDEBUG_INFO, "Chat::messageBoxFullSlot(): This is my ack.\n");
+	MessageBox::wrn(tr("User's message box is full. Message has not been delivered."), true);
+	cancelMessage();
+	kdebugf2();
+}
+
+void Chat::messageNotDeliveredSlot(int Seq, UinType uin)
+{
+	kdebugf();
+	if (seq != Seq)
+		return;
+	kdebugm(KDEBUG_INFO, "Chat::messageNotDeliveredSlot(): This is my ack.\n");
+	MessageBox::wrn(tr("Message has not been delivered."), true);
+	cancelMessage();
+	kdebugf2();
+}
+
+void Chat::messageAcceptedSlot(int Seq, UinType uin)
+{
+	kdebugf();
+	if (seq != Seq)
+		return;
+	kdebugm(KDEBUG_INFO, "Chat::messageAcceptedSlot(): This is my ack.\n");
 	writeMyMessage();
 	addMyMessageToHistory();
 	seq = 0;
-	disconnect(gadu, SIGNAL(ackReceived(int)),
-		this, SLOT(ackReceivedSlot(int)));
+	disconnectAcknowledgeSlots();
+	kdebugf2();
+}
+
+void Chat::connectAcknowledgeSlots()
+{
+	kdebugf();
+	connect(gadu, SIGNAL(messageBlocked(int, UinType)), this, SLOT(messageBlockedSlot(int, UinType)));
+	connect(gadu, SIGNAL(messageBoxFull(int, UinType)), this, SLOT(messageBoxFullSlot(int, UinType)));
+	connect(gadu, SIGNAL(messageNotDelivered(int, UinType)), this, SLOT(messageNotDeliveredSlot(int, UinType)));
+	connect(gadu, SIGNAL(messageAccepted(int, UinType)), this, SLOT(messageAcceptedSlot(int, UinType)));
+	kdebugf2();
+}
+
+void Chat::disconnectAcknowledgeSlots()
+{
+	kdebugf();
+	disconnect(gadu, SIGNAL(messageBlocked(int, UinType)), this, SLOT(messageBlockedSlot(int, UinType)));
+	disconnect(gadu, SIGNAL(messageBoxFull(int, UinType)), this, SLOT(messageBoxFullSlot(int, UinType)));
+	disconnect(gadu, SIGNAL(messageNotDelivered(int, UinType)), this, SLOT(messageNotDeliveredSlot(int, UinType)));
+	disconnect(gadu, SIGNAL(messageAccepted(int, UinType)), this, SLOT(messageAcceptedSlot(int, UinType)));
 	kdebugf2();
 }
 
@@ -1346,7 +1396,7 @@ void Chat::sendMessage()
 		delete [](char *)myLastFormats;
 
  	if (config_file.readBoolEntry("Chat","MessageAcks"))
-		connect(gadu, SIGNAL(ackReceived(int)), this, SLOT(ackReceivedSlot(int)));
+		connectAcknowledgeSlots();
 	else
 	{
 		writeMyMessage();

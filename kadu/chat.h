@@ -228,6 +228,9 @@ class Chat : public QWidget
 		void insertImage();
 		void imageReceivedAndSaved(UinType sender,uint32_t size,uint32_t crc32,const QString& path);
 
+		void connectAcknowledgeSlots();
+		void disconnectAcknowledgeSlots();
+
 	protected:
 		virtual void closeEvent(QCloseEvent*);
 		QString convertCharacters(QString,bool me);
@@ -290,7 +293,12 @@ class Chat : public QWidget
 		void specialKeyPressed(int key);
 		void colorChanged(const QColor& color);
 		void colorSelectorAboutToClose();
-		void ackReceivedSlot(int seq);
+		
+		void messageBlockedSlot(int seq, UinType uin);
+		void messageBoxFullSlot(int seq, UinType uin);
+		void messageNotDeliveredSlot(int seq, UinType uin);
+
+		void messageAcceptedSlot(int seq, UinType uin);
 		
 	signals:
 		/**

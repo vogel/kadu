@@ -662,6 +662,12 @@ void GaduSocketNotifiers::socketEvent()
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduSocketNotifiers::socketEvent(): Sending key\n");
 			ConnectionTimeoutTimer::off();
 			break;
+		case GG_STATE_IDLE:
+			kdebugm(KDEBUG_NETWORK|KDEBUG_WARNING, "GaduSocketNotifiers::socketEvent(): idle!\n");
+			break;
+		case GG_STATE_ERROR:
+			kdebugm(KDEBUG_NETWORK|KDEBUG_WARNING, "GaduSocketNotifiers::socketEvent(): state==error! error=%d\n", Sess->error);
+			break;
 		case GG_STATE_CONNECTED:
 			break;
 		default:
@@ -717,9 +723,7 @@ void GaduSocketNotifiers::socketEvent()
 
 	else if (e->type == GG_EVENT_ACK)
 	{
-		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduSocketNotifiers::socketEvent(): message reached %d (seq %d)\n",
-			e->event.ack.recipient, e->event.ack.seq);
-		emit ackReceived(e->event.ack.seq);
+		emit ackReceived(e->event.ack.seq, e->event.ack.recipient, e->event.ack.status);
 	}
 
 	else if (e->type == GG_EVENT_NOTIFY60)
@@ -740,6 +744,9 @@ void GaduSocketNotifiers::socketEvent()
 
 	else if (e->type == GG_EVENT_DISCONNECT)
 		emit disconnected();
+	
+	else if (e->type == GG_EVENT_NONE)
+		kdebugm (KDEBUG_NETWORK, "GG_EVENT_NONE\n");
 
 	// TODO: to mi siê nie podoba
 	if (!gadu->currentStatus().isOffline())
@@ -878,7 +885,7 @@ GaduProtocol::GaduProtocol(QObject *parent, const char *name) : QObject(parent, 
 	connect(NextStatus, SIGNAL(goInvisible(const QString &)), this, SLOT(iWantGoInvisible(const QString &)));
 	connect(NextStatus, SIGNAL(goOffline(const QString &)), this, SLOT(iWantGoOffline(const QString &)));
 
-	connect(SocketNotifiers, SIGNAL(ackReceived(int)), this, SIGNAL(ackReceived(int)));
+	connect(SocketNotifiers, SIGNAL(ackReceived(int, uin_t, int)), this, SLOT(ackReceived(int, uin_t, int)));
 	connect(SocketNotifiers, SIGNAL(connected()), this, SLOT(connectedSlot()));
 	connect(SocketNotifiers, SIGNAL(dccConnectionReceived(const UserListElement&)),
 		this, SIGNAL(dccConnectionReceived(const UserListElement&)));
@@ -1475,6 +1482,46 @@ int GaduProtocol::sendMessageRichText(const UinsList& uins,const char* msg,unsig
 
 	kdebugf2();
 	return seq;
+}
+
+void GaduProtocol::ackReceived(int seq, uin_t uin, int status)
+{
+	kdebugf();
+	switch (status)
+	{
+		case GG_ACK_BLOCKED:
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::ackReceived(): message blocked (uin: %d, seq: %d)\n", uin, seq);
+			emit messageBlocked(seq, uin);
+			emit messageRejected(seq, uin);
+			break;
+		case GG_ACK_DELIVERED:
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::ackReceived(): message delivered (uin: %d, seq: %d)\n", uin, seq);
+			emit messageDelivered(seq, uin);
+			emit messageAccepted(seq, uin);
+			emit ackReceived(seq);
+			break;
+		case GG_ACK_QUEUED:
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::ackReceived(): message queued (uin: %d, seq: %d)\n", uin, seq);
+			emit messageQueued(seq, uin);
+			emit messageAccepted(seq, uin);
+			emit ackReceived(seq);
+			break;
+		case GG_ACK_MBOXFULL:
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::ackReceived(): message box full (uin: %d, seq: %d)\n", uin, seq);
+			emit messageBoxFull(seq, uin);
+			emit messageRejected(seq, uin);
+			break;
+		case GG_ACK_NOT_DELIVERED:
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::ackReceived(): message not delivered (uin: %d, seq: %d)\n", uin, seq);
+			emit messageNotDelivered(seq, uin);
+			emit messageRejected(seq, uin);
+			break;
+		default:
+			kdebugm(KDEBUG_NETWORK|KDEBUG_WARNING, "GaduProtocol::ackReceived():"
+			" unknown acknowledge! (uin: %d, seq: %d, status:%d)\n", uin, seq, status);
+			break;
+	}
+	kdebugf2();
 }
 
 void GaduProtocol::sendUserList()
