@@ -144,7 +144,7 @@ void dccSocketClass::watchDcc(int check) {
 			f = selectFile();
 			if (f == QString::null) {
 				kdebug("dccSocketClass::watchDcc(): Abort transfer\n");
-				setState(DCC_SOCKET_TRANSFER_ERROR);
+				setState(DCC_SOCKET_TRANSFER_DISCARDED);
 				return;
 				}
 			gg_dcc_fill_file_info(dccsock, f.local8Bit());

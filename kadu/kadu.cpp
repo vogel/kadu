@@ -1911,8 +1911,8 @@ bool Kadu::event(QEvent *e) {
 					i18n("&OK"));
 				break;
 			case DCC_SOCKET_TRANSFER_DISCARDED:
-				QMessageBox::information(0, i18n("Information"), 
-					i18n("File transfer has been discarded."), i18n("&OK"));
+//				QMessageBox::information(0, i18n("Information"), 
+//					i18n("File transfer has been discarded."), i18n("&OK"));
 				break;
 			case DCC_SOCKET_TRANSFER_ERROR:
 			case DCC_SOCKET_CONNECTION_BROKEN:
