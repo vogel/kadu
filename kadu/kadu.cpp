@@ -173,6 +173,7 @@ enum {
 	KADU_CMD_MUTE,
 	KADU_CMD_ADD_USER,
 	KADU_CMD_MANAGE_IGNORED,
+	KADU_CMD_HELP,
 	KADU_CMD_ABOUT,
 	KADU_CMD_SEND_USERLIST,
 	KADU_CMD_SMS,
@@ -827,6 +828,14 @@ void Kadu::commandParser (int command) {
 			Ignored *ign;
 			ign = new Ignored(0, "ignored");
 			ign->show();
+			break;
+		case KADU_CMD_HELP:
+			QProcess *help;
+			help = new QProcess();
+			help->addArgument("konqueror");
+			help->addArgument(QString(DATADIR)+"/apps/kadu/doc/index_doc.html");
+			help->start();
+			delete help;
 			break;
 		case KADU_CMD_ABOUT:
 			About *about;
@@ -1678,6 +1687,7 @@ ppm->insertSeparator();
 	ppm->insertItem(QPixmap((const char **)gg_act_xpm),i18n("&Add user"), KADU_CMD_ADD_USER);
 	ppm->insertItem(i18n("Send SMS"), KADU_CMD_MAINMENU_SMS);
 	ppm->insertSeparator();	
+	ppm->insertItem(i18n("H&elp"), KADU_CMD_HELP);	
 	ppm->insertItem(i18n("A&bout..."), KADU_CMD_ABOUT);
 	ppm->insertSeparator();
 	ppm->insertItem(i18n("&Hide Kadu"), KADU_CMD_HIDE);
