@@ -34,6 +34,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   znaków wyliczania (chilek)
 * je¶li nast±pi b³±d po³±czenia to kadu kolejny raz bêdzie próbowaæ siê po³±czyæ
   po 1 sekundzie (chilek)
+* dodanie kodu selektora koloru, narazie jeszcze jest nie skoñczony i
+  nie do konca sprawy, trzeba go jeszcze podpi±c, narazie guzik jest ukryty (mast3r)
 
 +++ wersja 0.3.4-pre3
 * dodane przeszukiwanie historii (chilek)

@@ -26,6 +26,7 @@
 extern QValueList<UinsList> wasFirstMsgs;
 
 class EmoticonSelector;
+class ColorSelector;
 
 class CustomInput : public QMultiLineEdit {
 	Q_OBJECT
@@ -64,9 +65,11 @@ class Chat : public QWidget {
 		int totaloccurences;
 		UinsList uins;
 		EmoticonSelector *emoticon_selector;
+		ColorSelector *color_selector;
 		QPushButton *boldbtn;
 		QPushButton *italicbtn;
 		QPushButton *underlinebtn;
+		QPushButton *colorbtn;
 		QPushButton *iconsel;
 		QPushButton *autosend;
 		QPushButton *lockscroll;
@@ -126,6 +129,7 @@ class Chat : public QWidget {
 		void setupEncryptButton(bool enabled);
 		void userWhois(void);
 		void insertEmoticon(void);
+		void changeColor(void);
 		void regEncryptSend(void);
 		void addMyMessageToHistory(void);
 		void clearChatWindow(void);
@@ -135,6 +139,37 @@ class Chat : public QWidget {
 	private:
 		QString title_buffer;
 		QTimer *title_timer;  
+};
+
+class ColorSelectorButton : public QToolButton
+{
+	Q_OBJECT
+
+	private:
+		QColor color;
+
+	private slots:
+		void buttonClicked();
+
+	public:
+		ColorSelectorButton(QWidget* parent, const QColor& qcolor);
+
+	signals:
+		void clicked(const QColor& color);
+};
+
+class ColorSelector : public QWidget
+{
+	Q_OBJECT
+	private slots:
+		void iconClicked(const QColor& color);
+
+	public:
+		ColorSelector(QWidget* parent = 0, const char *name = 0);
+		void alignTo(QWidget* w);
+
+	signals:
+		void colorSelect(QColor);
 };
 
 #endif

@@ -43,6 +43,8 @@ extern "C"
 //
 
 QValueList<UinsList> wasFirstMsgs;
+const char *colors[10] = {"#000000","#111111","#222222","#333333","#444444",
+	"#555555","#666666","#777777","#888888","#999999"};
 
 KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
 	: QTextBrowser(parent, name) {
@@ -99,6 +101,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	QValueList<int> sizes;
 
 	emoticon_selector = NULL;
+	color_selector = NULL;
 
 	title_timer = new QTimer(this);
 	connect(title_timer,SIGNAL(timeout()),this,SLOT(changeTitle()));
@@ -235,6 +238,8 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	afont.setItalic(false);
 	afont.setUnderline(true);
 	underlinebtn->setFont(afont);
+	colorbtn = new QPushButton("C", btnpart);
+	colorbtn->hide();
 
 	QHBox *fillerbox = new QHBox(btnpart);
 
@@ -257,6 +262,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	btnpart->setStretchFactor(boldbtn, 1);
 	btnpart->setStretchFactor(italicbtn, 1);
 	btnpart->setStretchFactor(underlinebtn, 1);
+	btnpart->setStretchFactor(colorbtn, 1);
 	btnpart->setStretchFactor(fillerbox, 50);
 	btnpart->setStretchFactor(cancelbtn, 1);
 	btnpart->setStretchFactor(sendbtn, 1);
@@ -288,6 +294,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	connect(boldbtn, SIGNAL(toggled(bool)), this, SLOT(toggledBold(bool)));
 	connect(italicbtn, SIGNAL(toggled(bool)), this, SLOT(toggledItalic(bool)));
 	connect(underlinebtn, SIGNAL(toggled(bool)), this, SLOT(toggledUnderline(bool)));
+	connect(colorbtn, SIGNAL(clicked()), this, SLOT(changeColor()));
 	connect(edit, SIGNAL(cursorPositionChanged(int, int)), this, SLOT(curPosChanged(int, int)));
 	connect(edit, SIGNAL(sendMessage()), this, SLOT(sendMessage()));
 	connect(edit, SIGNAL(specialKeyPressed(int)), this, SLOT(specialKeyPressed(int)));
@@ -296,6 +303,8 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 
 	edit->setFocus();
 //	edit->setColor(QColor(255, 0, 0));
+	ColorSelector *selector = new ColorSelector();
+	selector->show();
 }
 
 Chat::~Chat() {
@@ -938,6 +947,21 @@ void Chat::insertEmoticon(void)
 	}
 }
 
+void Chat::changeColor(void)
+{
+	if (color_selector == NULL)
+	{
+		color_selector = new ColorSelector(this);
+		color_selector->alignTo(colorbtn);
+		color_selector->show();
+	}
+	else
+	{
+		color_selector->close();
+		color_selector = NULL;
+	}
+}
+
 /* adds an emoticon code to the edit window */
 void Chat::addEmoticon(QString string) {
 	int para, index;
@@ -950,3 +974,80 @@ void Chat::addEmoticon(QString string) {
 		}
 	emoticon_selector = NULL;
 }
+
+ColorSelectorButton::ColorSelectorButton(QWidget* parent, const QColor& qcolor) : QToolButton(parent)
+{
+	QPixmap p(15,15);
+	p.fill(qcolor);
+	color = qcolor;
+	setPixmap(p);
+//	setAutoRaise(true);
+	setMouseTracking(true);
+	QToolTip::add(this,color.name());
+	connect(this, SIGNAL(clicked()), this, SLOT(buttonClicked()));
+}
+
+void ColorSelectorButton::buttonClicked()
+{
+	emit clicked(color);
+};
+
+ColorSelector::ColorSelector(QWidget *parent, const char *name) : QWidget (parent, name,Qt::WType_Popup)
+{
+	setWFlags(Qt::WDestructiveClose);
+
+	QValueList<QColor> qcolors;
+	int i;
+
+	for(i=0; i<10; i++)
+		qcolors.append(colors[i]);
+
+	int selector_count=qcolors.count();
+	int selector_width=(int)sqrt((double)selector_count);
+	int btn_width=0;
+	QGridLayout *grid = new QGridLayout(this, 0, selector_width, 0, 0);
+
+	for(int i=0; i<selector_count; i++)
+	{
+		ColorSelectorButton* btn = new ColorSelectorButton(this, qcolors[i]);
+		btn_width=btn->sizeHint().width();
+		grid->addWidget(btn, i/selector_width, i%selector_width);
+		connect(btn,SIGNAL(clicked(const QColor&)),this,SLOT(iconClicked(const QColor&)));
+	};
+}
+
+void ColorSelector::iconClicked(const QColor& color)
+{
+	emit colorSelect(color);
+	close();
+};
+
+void ColorSelector::alignTo(QWidget* w)
+{
+	// oblicz pozycjê widgetu do którego równamy
+	QPoint w_pos = w->mapToGlobal(QPoint(0,0));
+	// oblicz rozmiar selektora
+	QSize e_size = sizeHint();
+	// oblicz rozmiar pulpitu
+	QSize s_size = QApplication::desktop()->size();
+	// oblicz dystanse od widgetu do lewego brzegu i do prawego
+	int l_dist = w_pos.x();
+	int r_dist = s_size.width() - (w_pos.x() + w->width());
+	// oblicz pozycjê w zale¿no¶ci od tego czy po lewej stronie
+	// jest wiêcej miejsca czy po prawej
+	int x;
+	if (l_dist >= r_dist)
+		x = w_pos.x() - e_size.width();
+	else
+		x = w_pos.x() + w->width();
+	// oblicz pozycjê y - centrujemy w pionie
+	int y = w_pos.y() + w->height()/2 - e_size.height()/2;
+	// je¶li wychodzi poza doln± krawêd¼ to równamy do niej
+	if (y + e_size.height() > s_size.height())
+		y = s_size.height() - e_size.height();
+	// je¶li wychodzi poza górn± krawêd¼ to równamy do niej
+	if (y < 0)
+		y = 0;
+	// ustawiamy selektor na wyliczonej pozycji
+	move(x, y);
+};
