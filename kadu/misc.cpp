@@ -266,6 +266,7 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats) {
 				if (actformat->font & GG_FONT_IMAGE) {
 					idx = int((unsigned char)cformats[0]);
 					kdebug("formatGGMessage(): I got image probably: header_length = %d\n", idx);
+					mesg.append("[[[OBRAZEK]]]");
 					cformats += idx + 1;
 					formats_length -= idx + 1;
 					}
@@ -1302,6 +1303,11 @@ void HtmlDocument::splitElement(int& index,int start,int length)
 	e.text=e.text.mid(start,length);
 }
 
+/**
+	to jest zast±pienie funkcji formatGGMessage,unformatGGMessage,
+	ale jeszcze nie u¿ywane i nie wiem czy skoñczone, w ka¿dym
+	razie obs³ugê obrazków dorabiam w tamtej funkcji. Adrian.
+	
 HtmlDocument GGMessageToHtmlDocument(const QString &msg, int formats_length, void *formats)
 {
 	QString tmp;
@@ -1468,7 +1474,7 @@ void HtmlDocumentToGGMessage(HtmlDocument &htmldoc, QString &msg, int &formats_l
 
 	kdebug("HtmlDocumentToGGMessage():\n%s\n", unicode2latin(msg).data());
 }
-
+*/
 ImageWidget::ImageWidget(QWidget *parent)
 	: QWidget(parent, "ImageWidget")
 {

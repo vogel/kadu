@@ -39,6 +39,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * plik spec modu³ów mo¿e u¿ywaæ zmiennej MODULE_DIR - wzglêdna ¶cie¿ka do
   katalogu z modu³em, poprawna dla komp. stat. i dynam., mo¿na u¿yæ np. w
   MODULE_LDFLAGS, bo modu³ mo¿e siê linkowaæ w katalogu kadu lub modules (adrian)
+* gdy kto¶ wysy³a nam obrazek wklejony w tekst widaæ w tym miejscu
+  oznaczenie [[[OBRAZEK]]] - taka chwilowa proteza, dzia³a do 44kb (adrian)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

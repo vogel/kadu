@@ -192,10 +192,13 @@ class HtmlDocument
 		void splitElement(int& index,int start,int length);
 };
 
+/*
+	nie u¿ywane - patrz opis w pliku .cpp
+
 HtmlDocument GGMessageToHtmlDocument(const QString &msg, int formats_length, void *formats);
 void HtmlDocumentToGGMessage(HtmlDocument &htmldoc, QString &msg,
 	int &formats_length, void *&formats);
-
+*/
 class ImageWidget : public QWidget
 {
 	Q_OBJECT
