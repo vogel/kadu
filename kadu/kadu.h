@@ -34,13 +34,19 @@
 #include "../config.h"
 
 struct colors {
-	QColorGroup userbox;
-	QColorGroup mychat;
-	QColorGroup usrchat;
+	QColor userboxBg;
+	QColor userboxFg;
+	QColor userboxDescBg;
+	QColor userboxDescText;
+	QColor mychatBg;
+	QColor mychatText;
+	QColor usrchatBg;
+	QColor usrchatText;
 };
 
 struct fonts {
 	QFont userbox;
+	QFont userboxDesc;
 	QFont chat;
 };
 

@@ -29,6 +29,9 @@
 * porz±dki zwi±zane z oknem rejestracji u¿ytkownika GG
 * zapisywanie pozycji podzia³u userlist(userbox) a opisem + poprawki zapisywania
   geometri okna i waro¶ci domy¶lnych
+* udoskonalenie zak³adki wygl±d i dodanie mo¿liwo¶ci ustawienia wygl±du widgetu
+  w userboxie który pokazuje dane u¼ytkownika + zmiany w sposobie zapisu kolorow
+  i fontow.
 
 +++ wersja 0.3.3-pre3
 * CTRL + klik dowolnego przycisku myszki na ikonce w tray'u powoduje

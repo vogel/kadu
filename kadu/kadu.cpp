@@ -448,8 +448,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	/* initialize and configure userbox */
 	userbox = new UserBox(split, "userbox");
-	userbox->setPaletteBackgroundColor(config.colors.userbox.background());
-	userbox->setPaletteForegroundColor(config.colors.userbox.foreground());
+	userbox->setPaletteBackgroundColor(config.colors.userboxBg);
+	userbox->setPaletteForegroundColor(config.colors.userboxFg);
 	userbox->QListBox::setFont(config.fonts.userbox);
 
 	/* add all users to userbox */
@@ -495,17 +495,16 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	descrtb->setTextFormat(Qt::RichText);
 	descrtb->setAlignment(Qt::AlignVCenter | Qt::WordBreak | Qt::DontClip);
 	descrtb->setVScrollBarMode(QScrollView::AlwaysOff);
-	descrtb->setPaper(QBrush(lightGray));
+	descrtb->setPaletteBackgroundColor(config.colors.userboxDescBg);
+	descrtb->setPaletteForegroundColor(config.colors.userboxDescText);
+	descrtb->setFont(config.fonts.userboxDesc);
 
-	QValueList<int> *splitsizes;
-	splitsizes = new QValueList<int>;
+	QValueList<int> splitsizes;
 	
-	splitsizes->append(config.splitsize.width());
-	splitsizes->append(config.splitsize.height());
-	split->setSizes(*splitsizes);
+	splitsizes.append(config.splitsize.width());
+	splitsizes.append(config.splitsize.height());
+	split->setSizes(splitsizes);
 
-	delete splitsizes;
-	
 	QGridLayout * grid = new QGridLayout(centralFrame, 3, 3);
 	grid->addMultiCellWidget(group_bar, 0, 0, 0, 2);
 	grid->addMultiCellWidget(split, 1, 1, 0, 2);

@@ -91,8 +91,10 @@ void loadKaduConfig(void) {
 	config.checkupdates = konf->readBoolEntry("CheckUpdates", true);
 	config.addtodescription = konf->readBoolEntry("AddToDescription", false);
 	config.showhint = konf->readBoolEntry("ShowHint",false);
-	config.geometry = konf->readRectEntry("Geometry",&QRect(0,0,145,465));
-	config.splitsize = konf->readSizeEntry("SplitSize",&QSize(340,60));
+	QRect def_rect(0,0,145,465);
+	config.geometry = konf->readRectEntry("Geometry",&def_rect);
+	QSize def_size(340,60);
+	config.splitsize = konf->readSizeEntry("SplitSize",&def_size);
 
 	konf->setGroup("WWW");
 	config.defaultwebbrowser = konf->readBoolEntry("DefaultWebBrowser", true);
@@ -135,18 +137,37 @@ void loadKaduConfig(void) {
 	config.proxypassword = pwHash(konf->readEntry("ProxyPassword", ""));
 
 	konf->setGroup("Colors");
-	config.colors.userbox.setColor(QColorGroup::Background, konf->readColorEntry("UserboxBgColor",&QColor("#FFFFFF")));
-	config.colors.userbox.setColor(QColorGroup::Foreground, konf->readColorEntry("UserboxFgColor",&QColor("#000000")));
-	config.colors.mychat.setColor(QColorGroup::Background, konf->readColorEntry("ChatMyBgColor",&QColor("#E0E0E0")));
-	config.colors.usrchat.setColor(QColorGroup::Background, konf->readColorEntry("ChatUsrBgColor",&QColor("#F0F0F0")));
-	config.colors.mychat.setColor(QColorGroup::Text, konf->readColorEntry("ChatMyFontColor",&QColor("#000000")));
-	config.colors.usrchat.setColor(QColorGroup::Text, konf->readColorEntry("ChatUsrFontColor",&QColor("#000000")));
+	
+	QColor def_color("#FFFFFF");
+	config.colors.userboxBg = konf->readColorEntry("UserboxBgColor",&def_color);
+	
+	def_color.setNamedColor("#000000");
+	config.colors.userboxFg = konf->readColorEntry("UserboxFgColor",&def_color);
+	
+	def_color.setNamedColor("#E0E0E0");
+	config.colors.mychatBg = konf->readColorEntry("ChatMyBgColor",&def_color);
+	
+	def_color.setNamedColor("#F0F0F0");
+	config.colors.usrchatBg = konf->readColorEntry("ChatUsrBgColor",&def_color);
+	
+	def_color.setNamedColor("#000000");
+	config.colors.mychatText = konf->readColorEntry("ChatMyFontColor",&def_color);
+	
+	def_color.setNamedColor("#000000");
+	config.colors.usrchatText = konf->readColorEntry("ChatUsrFontColor",&def_color);
+	
+	def_color.setNamedColor("#C0C0C0");
+	config.colors.userboxDescBg = konf->readColorEntry("UserboxDescBgColor",&def_color);
+	
+	def_color.setNamedColor("#000000");
+	config.colors.userboxDescText = konf->readColorEntry("UserboxDescTextColor",&def_color);
 
 	konf->setGroup("Fonts");
 	QFontInfo info(a->font());
-	config.fonts.userbox = konf->readFontEntry("UserboxFont", &QFont(info.family(),info.pointSize()));
-	config.fonts.chat = konf->readFontEntry("ChatFont", &QFont(info.family(),info.pointSize()));
-
+	QFont def_font(info.family(),info.pointSize());
+	config.fonts.userbox = konf->readFontEntry("UserboxFont", &def_font);
+	config.fonts.chat = konf->readFontEntry("ChatFont", &def_font);
+	config.fonts.userboxDesc = konf->readFontEntry("UserboxDescFont", &def_font);
 	/* no need for it anymore */
 	delete konf;
 }
@@ -237,17 +258,20 @@ void saveKaduConfig(void) {
 	konf->writeEntry("NotifyWithSound", config.notifysound);
 
 	konf->setGroup("Colors");
-	konf->writeEntry("UserboxBgColor", config.colors.userbox.background());
-	konf->writeEntry("UserboxFgColor", config.colors.userbox.foreground());
-	konf->writeEntry("ChatMyBgColor", config.colors.mychat.background());
-	konf->writeEntry("ChatUsrBgColor", config.colors.usrchat.background());
-	konf->writeEntry("ChatMyFontColor", config.colors.mychat.text());
-	konf->writeEntry("ChatUsrFontColor", config.colors.usrchat.text());
+	konf->writeEntry("UserboxBgColor", config.colors.userboxBg);
+	konf->writeEntry("UserboxFgColor", config.colors.userboxFg);
+	konf->writeEntry("ChatMyBgColor", config.colors.mychatBg);
+	konf->writeEntry("ChatUsrBgColor", config.colors.usrchatBg);
+	konf->writeEntry("ChatMyFontColor", config.colors.mychatText);
+	konf->writeEntry("ChatUsrFontColor", config.colors.usrchatText);
+	konf->writeEntry("UserboxDescBgColor", config.colors.userboxDescBg);
+	konf->writeEntry("UserboxDescTextColor", config.colors.userboxDescText);
 
 	konf->setGroup("Fonts");
 	konf->writeEntry("UserboxFont", config.fonts.userbox);
 	konf->writeEntry("ChatFont", config.fonts.chat);
-
+	konf->writeEntry("UserboxDescFont", config.fonts.userboxDesc);
+	
 	konf->sync();
 	delete konf;
 }
@@ -851,11 +875,24 @@ void ConfigDialog::setupTab5(void) {
 
 void ConfigDialog::setupTab6(void) {
 
-	QPixmap pm_buttoncolor(30,7);
+	QPixmap pm_buttoncolor(35,10);
 	QFontDatabase fdb;
 	QValueList<int> vl;
-
-//	KIconLoader *loader = KGlobal::iconLoader();
+	
+//Combobox chata
+	vl_chatcolor.append(config.colors.mychatBg);
+	vl_chatcolor.append(config.colors.mychatText);
+	vl_chatcolor.append(config.colors.usrchatBg);
+	vl_chatcolor.append(config.colors.usrchatText);
+//Combobox userboxu
+	vl_userboxcolor.append(config.colors.userboxBg);
+	vl_userboxcolor.append(config.colors.userboxDescBg);
+	vl_userboxcolor.append(config.colors.userboxFg);
+	vl_userboxcolor.append(config.colors.userboxDescText);
+//Combobox fontow chata i userboxu
+	vl_chatfont.append(config.fonts.chat);
+	vl_userboxfont.append(config.fonts.userbox);
+	vl_userboxfont.append(config.fonts.userboxDesc);
 
 	QVBox *box6 = new QVBox(this);
 	box6->setMargin(2);
@@ -863,146 +900,103 @@ void ConfigDialog::setupTab6(void) {
 	QVGroupBox *chatprop = new QVGroupBox(box6);
 	chatprop->setTitle(i18n("Chat properties"));
 
-	QHBox *chatmybgcolor = new QHBox(chatprop);
-	chatmybgcolor->setSpacing(5);
-
-	QLabel *l_chatmybgcolor = new QLabel(chatmybgcolor);
-	l_chatmybgcolor->setText(i18n("Your background color"));
-
-	e_chatmybgcolor = new QLineEdit(chatmybgcolor);
-	e_chatmybgcolor->setText(config.colors.mychat.background().name());
-
-	pm_buttoncolor.fill(config.colors.mychat.background());
-
-	pb_chatmybgcolor = new QPushButton(chatmybgcolor);
-	pb_chatmybgcolor->setPixmap(pm_buttoncolor);
-	connect(pb_chatmybgcolor, SIGNAL(clicked()), this, SLOT(chooseChatMyBgColorGet()));
-
-	QHBox *chatusrbgcolor = new QHBox(chatprop);
-	chatusrbgcolor->setSpacing(5);
-
-	QLabel *l_chatusrbgcolor = new QLabel(chatusrbgcolor);
-	l_chatusrbgcolor->setText(i18n("User background color"));
-
-	e_chatusrbgcolor = new QLineEdit(chatusrbgcolor);
-	e_chatusrbgcolor->setText(config.colors.usrchat.background().name());
-
-	pm_buttoncolor.fill(config.colors.usrchat.background());
-
-	pb_chatusrbgcolor = new QPushButton(chatusrbgcolor);
-	pb_chatusrbgcolor->setPixmap(pm_buttoncolor);
-	connect(pb_chatusrbgcolor, SIGNAL(clicked()), this, SLOT(chooseChatUsrBgColorGet()));
-
-	QHBox *chatmyfontcolor = new QHBox(chatprop);
-	chatmyfontcolor->setSpacing(5);
-
-	QLabel *l_chatmyfontcolor = new QLabel(chatmyfontcolor);
-	l_chatmyfontcolor->setText(i18n("Your font color"));
-
-	e_chatmyfontcolor = new QLineEdit(chatmyfontcolor);
-	e_chatmyfontcolor->setText(config.colors.mychat.text().name());
-
-	pm_buttoncolor.fill(config.colors.mychat.text());
-
-	pb_chatmyfontcolor = new QPushButton(chatmyfontcolor);
-	pb_chatmyfontcolor->setPixmap(pm_buttoncolor);
-	connect(pb_chatmyfontcolor, SIGNAL(clicked()), this, SLOT(chooseChatMyFontColorGet()));
-
-	QHBox *chatusrfontcolor = new QHBox(chatprop);
-	chatusrfontcolor->setSpacing(5);
-
-	QLabel *l_chatusrfontcolor = new QLabel(chatusrfontcolor);
-	l_chatusrfontcolor->setText(i18n("User font color"));
-
-	e_chatusrfontcolor = new QLineEdit(chatusrfontcolor);
-	e_chatusrfontcolor->setText(config.colors.usrchat.text().name());
-
-	pm_buttoncolor.fill(config.colors.usrchat.text());
-
-	pb_chatusrfontcolor = new QPushButton(chatusrfontcolor);
-	pb_chatusrfontcolor->setPixmap(pm_buttoncolor);
-	connect(pb_chatusrfontcolor, SIGNAL(clicked()), this, SLOT(chooseChatUsrFontColorGet()));
-
-	QHBox *chatfont = new QHBox(chatprop);
-	chatfont->setSpacing(5);
-
-	QLabel *l_chatfont = new QLabel(chatfont);
+	QHBox *chatselectcolor = new QHBox(chatprop);
+	chatselectcolor->setSpacing(5);
+	
+	cb_chatselect = new QComboBox(chatselectcolor);
+	cb_chatselect->insertItem(i18n("Your background color"));
+	cb_chatselect->insertItem(i18n("Your font color"));
+	cb_chatselect->insertItem(i18n("User background color"));
+	cb_chatselect->insertItem(i18n("User font color"));
+	cb_chatselect->insertItem(i18n("Font in chat window"));
+	cb_chatselect->setCurrentItem(0);
+	
+	connect(cb_chatselect, SIGNAL(activated(int)), this, SLOT(chooseChatSelect(int)));
+	
+	e_chatcolor = new QLineEdit(chatselectcolor);
+	e_chatcolor->setText(vl_chatcolor[0].name());
+	
+	connect(e_chatcolor, SIGNAL(textChanged(const QString&)), this, SLOT(chooseChatLine(const QString&)));
+	
+	pb_chatcolor = new QPushButton(chatselectcolor);
+	pm_buttoncolor.fill(vl_chatcolor[0]);
+	pb_chatcolor->setPixmap(pm_buttoncolor);
+	connect(pb_chatcolor, SIGNAL(clicked()), this, SLOT(chooseChatColorGet()));
+	
+	chatselectfont = new QHBox(chatprop);
+	chatselectfont->setSpacing(5);
+	
+	QLabel *l_chatfont = new QLabel(chatselectfont);
 	l_chatfont->setText(i18n("Font"));
-
-	cb_chatfont = new QComboBox(chatfont);
+	
+	cb_chatfont = new QComboBox(chatselectfont);
 	cb_chatfont->insertStringList(fdb.families());
-	cb_chatfont->setCurrentText(config.fonts.chat.family());
+	cb_chatfont->setCurrentText(vl_chatfont[0].family());
 	connect(cb_chatfont, SIGNAL(activated(int)), this, SLOT(chooseChatFontGet(int)));
-
-	QHBox *chatfontsize = new QHBox(chatprop);
-	chatfontsize->setSpacing(5);
-
-	QLabel *l_chatfontsize = new QLabel(chatfontsize);
+	
+	QLabel *l_chatfontsize = new QLabel(chatselectfont);
 	l_chatfontsize->setText(i18n("Font size"));
 
-	cb_chatfontsize = new QComboBox(chatfontsize);
+	cb_chatfontsize = new QComboBox(chatselectfont);
 
-	vl = fdb.pointSizes(config.fonts.chat.family(),"Normal");
+	vl = fdb.pointSizes(vl_chatfont[0].family(),"Normal");
 	for (QValueList<int>::Iterator points = vl.begin(); points != vl.end(); ++points)
 	cb_chatfontsize->insertItem(QString::number(*points));
-	cb_chatfontsize->setCurrentText(QString::number(config.fonts.chat.pointSize()));
+	cb_chatfontsize->setCurrentText(QString::number(vl_chatfont[0].pointSize()));
 
+	connect(cb_chatfontsize, SIGNAL(activated(int)), this, SLOT(chooseChatFontSizeGet(int)));
+
+	chatselectfont->hide();
+	
 	QVGroupBox *userboxprop = new QVGroupBox(box6);
 	userboxprop->setTitle(i18n("Userbox properties"));
 
-	QHBox *userboxbgcolor = new QHBox(userboxprop);
-	userboxbgcolor->setSpacing(5);
+	QHBox *userboxselectcolor = new QHBox(userboxprop);
+	userboxselectcolor->setSpacing(5);
 
-	QLabel *l_userboxbgcolor = new QLabel(userboxbgcolor);
-	l_userboxbgcolor->setText(i18n("Userbox background color"));
-
-	e_userboxbgcolor = new QLineEdit(userboxbgcolor);
-	e_userboxbgcolor->setText(config.colors.userbox.background().name());
-
-	pm_buttoncolor.fill(config.colors.userbox.background());
-
-	pb_userboxbgcolor = new QPushButton(userboxbgcolor);
-	pb_userboxbgcolor->setPixmap(pm_buttoncolor);
-	connect(pb_userboxbgcolor, SIGNAL(clicked()), this, SLOT(chooseUserboxBgColorGet()));
+	cb_userboxselect = new QComboBox(userboxselectcolor);
+	cb_userboxselect->insertItem(i18n("Userbox background color"));
+	cb_userboxselect->insertItem(i18n("Desc. background color"));
+	cb_userboxselect->insertItem(i18n("Font in userbox window"));
+	cb_userboxselect->insertItem(i18n("Font in desc."));
+	cb_userboxselect->setCurrentItem(0);
 	
-	QHBox *userboxfgcolor = new QHBox(userboxprop);
-	userboxfgcolor->setSpacing(5);
+	connect(cb_userboxselect, SIGNAL(activated(int)), this, SLOT(chooseUserboxSelect(int)));
 
-	QLabel *l_userboxfgcolor = new QLabel(userboxfgcolor);
-	l_userboxfgcolor->setText(i18n("Userbox foreground color"));
+	e_userboxcolor = new QLineEdit(userboxselectcolor);
+	e_userboxcolor->setText(vl_userboxcolor[0].name());
 
-	e_userboxfgcolor = new QLineEdit(userboxfgcolor);
-	e_userboxfgcolor->setText(config.colors.userbox.foreground().name());
+	connect(e_userboxcolor, SIGNAL(textChanged(const QString&)), this, SLOT(chooseUserboxLine(const QString&)));
 
-	pm_buttoncolor.fill(config.colors.userbox.foreground());
+	pb_userboxcolor = new QPushButton(userboxselectcolor);
+	pm_buttoncolor.fill(vl_userboxcolor[0]);
+	pb_userboxcolor->setPixmap(pm_buttoncolor);
+	connect(pb_userboxcolor, SIGNAL(clicked()), this, SLOT(chooseUserboxColorGet()));
+	
+	userboxselectfont = new QHBox(userboxprop);
+	userboxselectfont->setSpacing(5);
 
-	pb_userboxfgcolor = new QPushButton(userboxfgcolor);
-	pb_userboxfgcolor->setPixmap(pm_buttoncolor);
-	connect(pb_userboxfgcolor, SIGNAL(clicked()), this, SLOT(chooseUserboxFgColorGet()));
-
-	QHBox *userboxfont = new QHBox(userboxprop);
-	userboxfont->setSpacing(5);
-
-	QLabel *l_userboxfont = new QLabel(userboxfont);
+	QLabel *l_userboxfont = new QLabel(userboxselectfont);
 	l_userboxfont->setText(i18n("Font"));
 
-	cb_userboxfont = new QComboBox(userboxfont);
+	cb_userboxfont = new QComboBox(userboxselectfont);
 	cb_userboxfont->insertStringList(fdb.families());
-	cb_userboxfont->setCurrentText(config.fonts.userbox.family());
+	cb_userboxfont->setCurrentText(vl_userboxfont[0].family());
 	connect(cb_userboxfont, SIGNAL(activated(int)), this, SLOT(chooseUserboxFontGet(int)));
 
-	QHBox *userboxfontsize = new QHBox(userboxprop);
-	userboxfontsize->setSpacing(5);
-
-	QLabel *l_userboxfontsize = new QLabel(userboxfontsize);
+	QLabel *l_userboxfontsize = new QLabel(userboxselectfont);
 	l_userboxfontsize->setText(i18n("Font size"));
 
-	cb_userboxfontsize = new QComboBox(userboxfontsize);
+	cb_userboxfontsize = new QComboBox(userboxselectfont);
 
-	vl = fdb.pointSizes(config.fonts.userbox.family(),"Normal");
+	vl = fdb.pointSizes(vl_userboxfont[0].family(),"Normal");
 	for (QValueList<int>::Iterator points = vl.begin(); points != vl.end(); ++points)
 	cb_userboxfontsize->insertItem(QString::number(*points));
-	cb_userboxfontsize->setCurrentText(QString::number(config.fonts.userbox.pointSize()));
+	cb_userboxfontsize->setCurrentText(QString::number(vl_userboxfont[0].pointSize()));
+
+	connect(cb_userboxfontsize, SIGNAL(activated(int)), this, SLOT(chooseUserboxFontSizeGet(int)));
+
+	userboxselectfont->hide();
 
 	addTab(box6, i18n("Look"));
 };
@@ -1100,63 +1094,72 @@ void ConfigDialog::choosePlayerFile(void) {
 		e_soundprog->setText(s);
 }
 
-void ConfigDialog::chooseChatMyBgColorGet(void) {
-	QColor color = QColorDialog::getColor(QColor(e_chatmybgcolor->text()), this, i18n("Color dialog"));
+void ConfigDialog::chooseChatSelect(int index) {
+	if (index <= 3) {
+		QPixmap pm(35,10);
+		chatselectfont->hide();
+		e_chatcolor->setText(vl_chatcolor[index].name());
+		pm.fill(vl_chatcolor[index]);
+		pb_chatcolor->setPixmap(pm);
+		e_chatcolor->setEnabled(true);
+		pb_chatcolor->setEnabled(true);
+		}
+	else {
+		QFontDatabase fdb;
+		QValueList<int> vl;
+		chatselectfont->show();
+		cb_chatfont->setCurrentText(vl_chatfont[index-4].family());
+		vl = fdb.pointSizes(cb_chatfont->currentText(),"Normal");
+		cb_chatfontsize->clear();
+		for (QValueList<int>::Iterator points = vl.begin(); points != vl.end(); ++points)
+			cb_chatfontsize->insertItem(QString::number(*points));
+		cb_chatfontsize->setCurrentText(QString::number(vl_chatfont[index-4].pointSize()));
+		e_chatcolor->setEnabled(false);
+		pb_chatcolor->setEnabled(false);
+	}
+}
+
+void ConfigDialog::chooseUserboxSelect(int index) {
+	QPixmap pm(35,10);
+
+	e_userboxcolor->setText(vl_userboxcolor[index].name());
+	pm.fill(vl_userboxcolor[index]);
+	pb_userboxcolor->setPixmap(pm);
+
+	if (index >= 2) {
+		QFontDatabase fdb;
+		QValueList<int> vl;
+		userboxselectfont->show();
+		cb_userboxfont->setCurrentText(vl_userboxfont[index-2].family());
+		vl = fdb.pointSizes(cb_userboxfont->currentText(),"Normal");
+		cb_userboxfontsize->clear();
+		for (QValueList<int>::Iterator points = vl.begin(); points != vl.end(); ++points)
+			cb_userboxfontsize->insertItem(QString::number(*points));
+		cb_userboxfontsize->setCurrentText(QString::number(vl_userboxfont[index-2].pointSize()));
+		}
+	else
+		userboxselectfont->hide();
+}
+
+void ConfigDialog::chooseChatColorGet(void) {
+	QColor color = QColorDialog::getColor(QColor(e_chatcolor->text()), this, i18n("Color dialog"));
 	if ( color.isValid() ) {
-		e_chatmybgcolor->setText(color.name());
-		QPixmap pm(30,7);
+		e_chatcolor->setText(color.name());
+		QPixmap pm(35,10);
 		pm.fill(QColor(color.name()));
-		pb_chatmybgcolor->setPixmap(pm);
+		pb_chatcolor->setPixmap(pm);
+		vl_chatcolor[cb_chatselect->currentItem()] = color;
 		}
 }
 
-void ConfigDialog::chooseChatUsrBgColorGet(void) {
-	QColor color = QColorDialog::getColor(QColor(e_chatusrbgcolor->text()), this, i18n("Color dialog"));
+void ConfigDialog::chooseUserboxColorGet(void) {
+	QColor color = QColorDialog::getColor(QColor(e_userboxcolor->text()), this, i18n("Color dialog"));
 	if ( color.isValid() ) {
-		e_chatusrbgcolor->setText(color.name());
-		QPixmap pm(30,7);
+		e_userboxcolor->setText(color.name());
+		QPixmap pm(35,10);
 		pm.fill(QColor(color.name()));
-		pb_chatusrbgcolor->setPixmap(pm);
-		}
-}
-
-void ConfigDialog::chooseUserboxBgColorGet(void) {
-	QColor color = QColorDialog::getColor(QColor(e_userboxbgcolor->text()), this, i18n("Color dialog"));
-	if ( color.isValid() ) {
-		e_userboxbgcolor->setText(color.name());
-		QPixmap pm(30,7);
-		pm.fill(QColor(color.name()));
-		pb_userboxbgcolor->setPixmap(pm);
-		}
-}
-
-void ConfigDialog::chooseUserboxFgColorGet(void) {
-	QColor color = QColorDialog::getColor(QColor(e_userboxfgcolor->text()), this, i18n("Color dialog"));
-	if ( color.isValid() ) {
-		e_userboxfgcolor->setText(color.name());
-		QPixmap pm(30,7);
-		pm.fill(QColor(color.name()));
-		pb_userboxfgcolor->setPixmap(pm);
-		}
-}
-
-void ConfigDialog::chooseChatMyFontColorGet(void) {
-	QColor color = QColorDialog::getColor(QColor(e_chatmyfontcolor->text()), this, i18n("Color dialog"));
-	if ( color.isValid() ) {
-		e_chatmyfontcolor->setText(color.name());
-		QPixmap pm(30,7);
-		pm.fill(QColor(color.name()));
-		pb_chatmyfontcolor->setPixmap(pm);
-		}
-}
-
-void ConfigDialog::chooseChatUsrFontColorGet(void) {
-	QColor color = QColorDialog::getColor(QColor(e_chatusrfontcolor->text()), this, i18n("Color dialog"));
-	if ( color.isValid() ) {
-		e_chatusrfontcolor->setText(color.name());
-		QPixmap pm(30,7);
-		pm.fill(QColor(color.name()));
-		pb_chatusrfontcolor->setPixmap(pm);
+		pb_userboxcolor->setPixmap(pm);
+		vl_userboxcolor[cb_userboxselect->currentItem()] = color;
 		}
 }
 
@@ -1166,7 +1169,11 @@ void ConfigDialog::chooseChatFontGet(int index) {
 	vl = fdb.pointSizes(cb_chatfont->text(index),"Normal");
 	cb_chatfontsize->clear();
 	for (QValueList<int>::Iterator points = vl.begin(); points != vl.end(); ++points)
-		cb_chatfontsize->insertItem(QString::number( *points));
+		cb_chatfontsize->insertItem(QString::number(*points));
+	if (cb_chatfontsize->count() > 0) {
+		cb_chatfontsize->setCurrentItem(0);
+		vl_chatfont[cb_chatselect->currentItem()-4] = QFont(cb_chatfont->text(index),atoi(cb_chatfontsize->currentText()));
+	}
 }
 
 void ConfigDialog::chooseUserboxFontGet(int index) {
@@ -1175,7 +1182,37 @@ void ConfigDialog::chooseUserboxFontGet(int index) {
 	vl = fdb.pointSizes(cb_userboxfont->text(index),"Normal");
 	cb_userboxfontsize->clear();
 	for (QValueList<int>::Iterator points = vl.begin(); points != vl.end(); ++points)
-		cb_userboxfontsize->insertItem(QString::number( *points));
+		cb_userboxfontsize->insertItem(QString::number(*points));
+	if (cb_userboxfontsize->count() > 0) {
+		cb_userboxfontsize->setCurrentItem(0);
+		vl_userboxfont[cb_userboxselect->currentItem()-2] = QFont(cb_userboxfont->text(index),atoi(cb_userboxfontsize->currentText()));
+	}
+}
+
+void ConfigDialog::chooseChatFontSizeGet(int index) {
+	vl_chatfont[cb_chatselect->currentItem()-4] = QFont(cb_chatfont->currentText(),atoi(cb_chatfontsize->text(index)));
+}
+
+void ConfigDialog::chooseUserboxFontSizeGet(int index) {
+	vl_userboxfont[cb_userboxselect->currentItem()-2] = QFont(cb_userboxfont->currentText(),atoi(cb_userboxfontsize->text(index)));
+}
+
+void ConfigDialog::chooseChatLine(const QString& text) {
+	if (e_chatcolor->text().left(1) == '#' && e_chatcolor->text().length() == 7 ) {
+		QPixmap pm(35,10);
+		pm.fill(QColor(text));
+		pb_chatcolor->setPixmap(pm);
+		vl_chatcolor[cb_chatselect->currentItem()].setNamedColor(e_chatcolor->text());
+	}
+}
+
+void ConfigDialog::chooseUserboxLine(const QString& text) {
+	if (e_userboxcolor->text()[0] == '#' && e_userboxcolor->text().length() == 7 ) {
+		QPixmap pm(35,10);
+		pm.fill(QColor(text));
+		pb_userboxcolor->setPixmap(pm);
+		vl_userboxcolor[cb_userboxselect->currentItem()].setNamedColor(e_userboxcolor->text());
+	}
 }
 
 void ConfigDialog::chooseMsgTest(void) {
@@ -1296,14 +1333,19 @@ void ConfigDialog::updateConfig(void) {
 	config.keyslen = atoi(cb_keyslen->currentText());
 #endif
 
-	config.colors.mychat.setColor(QColorGroup::Background,QColor(e_chatmybgcolor->text()));
-	config.colors.usrchat.setColor(QColorGroup::Background,QColor(e_chatusrbgcolor->text()));
-	config.colors.mychat.setColor(QColorGroup::Text,QColor(e_chatmyfontcolor->text()));
-	config.colors.usrchat.setColor(QColorGroup::Text,QColor(e_chatusrfontcolor->text()));
-	config.colors.userbox.setColor(QColorGroup::Background,QColor(e_userboxbgcolor->text()));
-	config.colors.userbox.setColor(QColorGroup::Foreground,QColor(e_userboxfgcolor->text()));
-	config.fonts.chat = QFont(cb_chatfont->currentText(), atoi(cb_chatfontsize->currentText().latin1()));
-	config.fonts.userbox = QFont(cb_userboxfont->currentText(), atoi(cb_userboxfontsize->currentText().latin1()));
+	config.colors.mychatBg = vl_chatcolor[0];
+	config.colors.usrchatBg = vl_chatcolor[2];
+	config.colors.mychatText = vl_chatcolor[1];
+	config.colors.usrchatText = vl_chatcolor[3];
+	config.colors.userboxFg = vl_userboxcolor[2];
+	config.colors.userboxBg = vl_userboxcolor[0];
+	config.colors.userboxDescBg = vl_userboxcolor[1];
+	config.colors.userboxDescText = vl_userboxcolor[3];
+	
+	config.fonts.chat = vl_chatfont[0];
+	config.fonts.userbox = vl_userboxfont[0];
+	config.fonts.userboxDesc = vl_userboxfont[1];
+
 	free(config.soundnotify);
 	config.soundnotify = strdup(e_soundnotify->text().latin1());
 	config.notifyglobal = b_notifyglobal->isChecked();

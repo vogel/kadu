@@ -78,8 +78,8 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	if (uins.count() > 1) {
 		setGeometry((pos.x()+550)/2,(pos.y()+400)/2,550,400);
 		userbox = new UserBox(split1);
-		userbox->setPaletteBackgroundColor(config.colors.userbox.background());
-		userbox->setPaletteForegroundColor(config.colors.userbox.foreground());
+		userbox->setPaletteBackgroundColor(config.colors.userboxBg);
+		userbox->setPaletteForegroundColor(config.colors.userboxFg);
 		userbox->QListBox::setFont(config.fonts.userbox);
 
 		for (i = 0; i < uins.count(); i++)
@@ -455,15 +455,15 @@ void Chat::formatMessage(bool me, QString &altnick, QString &msg, const char *ti
 
 	toadd.append("<TABLE width=\"100%\"><TR><TD bgcolor=\"");
 	if (me)
-	    	toadd.append(config.colors.mychat.background().name());
+	    	toadd.append(config.colors.mychatBg.name());
 	else
-	    	toadd.append(config.colors.usrchat.background().name());
+	    	toadd.append(config.colors.usrchatBg.name());
 	toadd.append("\">");
 	toadd.append("<FONT color=\"");
 	if (me)
-		toadd.append(config.colors.mychat.text().name());
+		toadd.append(config.colors.mychatText.name());
 	else
-		toadd.append(config.colors.usrchat.text().name());
+		toadd.append(config.colors.usrchatText.name());
 	toadd.append("\"><B>");
 	toadd.append(altnick);
 	toadd.append(" ");
