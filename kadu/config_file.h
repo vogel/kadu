@@ -292,6 +292,8 @@ class ConfigFile {
 		void addVariable(const QString &group,const QString &name, const QPoint &value);
 };
 
-extern ConfigFile config_file;
+//TODO: po wydaniu 0.4 trzeba zmieniæ nazwê na config_file i wywaliæ define'a
+extern ConfigFile *config_file_ptr;
+#define config_file (*config_file_ptr)
 
 #endif

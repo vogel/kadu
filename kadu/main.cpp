@@ -32,6 +32,9 @@
 #include "emoticons.h"
 #include "message_box.h"
 
+//patrz komentarz w config_file.h
+ConfigFile *config_file_ptr;
+
 Kadu *kadu;	
 
 #ifdef SIG_HANDLING_ENABLED
@@ -86,6 +89,7 @@ static void kadu_signal_handler(int s)
 
 int main(int argc, char *argv[])
 {
+	config_file_ptr = new ConfigFile(ggPath(QString("kadu.conf")));
 	config_file.addVariable("General", "DEBUG_MASK", KDEBUG_ALL & ~KDEBUG_FUNCTION_END);
 	debug_mask=config_file.readNumEntry("General", "DEBUG_MASK");
 	char *d = getenv("DEBUG_MASK");
@@ -115,6 +119,8 @@ int main(int argc, char *argv[])
 
 	new QApplication(argc, argv);
 	icons_manager_ptr = new IconsManager ("icons", "icons.conf");
+	defaultFontInfo = QFontInfo(qApp->font());
+	defaultFont = QFont(defaultFontInfo.family(), defaultFontInfo.pointSize());
 
 	// ³adowanie t³umaczenia
 	config_file.addVariable("General", "Language", QString(QTextCodec::locale()).mid(0,2));

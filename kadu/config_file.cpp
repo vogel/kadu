@@ -17,6 +17,8 @@
 #include "debug.h"
 #include "config_file.h"
 
+static QTextCodec *codec_latin2 = QTextCodec::codecForName("ISO8859-2");
+
 template<class T, class X> QValueList<T> keys2(const QMap<T, X> &m)
 {
 #if QT_VERSION < 0x030005
@@ -46,7 +48,7 @@ void ConfigFile::read()
 	if (file.open(IO_ReadOnly))
 	{
 		QTextStream stream(&file);
-		stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
+		stream.setCodec(codec_latin2);
 		while (!stream.atEnd())
 		{
 			line = stream.readLine();
@@ -106,7 +108,7 @@ void ConfigFile::write(const QString &f) const
 	{
 		kdebugm(KDEBUG_INFO, "file opened '%s'\n", (const char *)file.name().local8Bit());
 		QTextStream stream(&file);
-		stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
+		stream.setCodec(codec_latin2);
 		for(QMap<QString, QMap<QString, QString> >::const_iterator i=groups.begin(); i!=groups.end(); ++i)
 		{
 //			kdebugm(KDEBUG_DUMP, ">> %s\n", (const char*)i.key().local8Bit());

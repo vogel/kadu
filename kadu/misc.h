@@ -5,6 +5,8 @@
 #include <qdatetime.h>
 #include <qdialog.h>
 #include <qfiledialog.h>
+#include <qfont.h>
+#include <qfontinfo.h>
 #include <qiconset.h>
 #include <qimage.h>
 #include <qlabel.h>
@@ -70,6 +72,9 @@ void loadGeometry(QWidget *w, const QString &section, const QString &name, int d
 
 //usuwa znaki nowego wiersza, tagi htmla (wszystko co da siê dopasowaæ jako <.*>)
 QString toPlainText(const QString &text);
+
+extern QFont defaultFont;
+extern QFontInfo defaultFontInfo;
 
 class ChooseDescription : public QDialog
 {

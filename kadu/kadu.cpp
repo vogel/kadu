@@ -58,8 +58,6 @@
 
 #include "kadu-config.h"
 
-ConfigFile config_file(ggPath(QString("kadu.conf")));
-
 static QTimer* blinktimer;
 QPopupMenu* dockMenu;
 
@@ -302,9 +300,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	config_file.addVariable("General", "UserBoxHeight", 300);
 	config_file.addVariable("General", "DescriptionHeight", 60);
 
-	QFontInfo info(qApp->font());
-	QFont def_font(info.family(),info.pointSize());
-	config_file.addVariable("Look", "UserboxFont", &def_font);
+	config_file.addVariable("Look", "UserboxFont", &defaultFont);
 
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Look"), "LookTab");
 
@@ -318,7 +314,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 			ConfigDialog::addColorButton("Look", "Main window", QT_TRANSLATE_NOOP("@default", "Panel font color"), "InfoPanelFgColor", config_file.readColorEntry("Look","InfoPanelFgColor"), "", "panel_font_color");
 
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Fonts"));
-		ConfigDialog::addSelectFont("Look", "Fonts", QT_TRANSLATE_NOOP("@default", "Font in panel"), "PanelFont", def_font.toString(), "", "panel_font_box");
+		ConfigDialog::addSelectFont("Look", "Fonts", QT_TRANSLATE_NOOP("@default", "Font in panel"), "PanelFont", defaultFont.toString(), "", "panel_font_box");
 
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Information panel"));
 		ConfigDialog::addCheckBox("Look", "Information panel", QT_TRANSLATE_NOOP("@default", "Show information panel"), "ShowInfoPanel", true);

@@ -788,10 +788,8 @@ void UserBox::initModule()
 	config_file.addVariable("Look", "AlignUserboxIconsTop", false);
 	config_file.addVariable("Look", "DescriptionColor", w.paletteForegroundColor());
 
-	QFontInfo info(qApp->font());
-	QFont def_font(info.family(),info.pointSize());
-
-	int defUserboxWidth=int(QFontMetrics(def_font).width("Imie i Nazwisko")*1.5);
+	if (config_file.readEntry("Look", "MultiColumnUserboxWidth").isEmpty())//operacje na czcionkach s± powolne, wystrzegamy siê ich kiedy mozemy
+		config_file.addVariable("Look", "MultiColumnUserboxWidth", int(QFontMetrics(defaultFont).width("Imie i Nazwisko")*1.5));
 
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Look"), "LookTab");
 
@@ -799,7 +797,7 @@ void UserBox::initModule()
 
 	ConfigDialog::addVGroupBox("Look", "varOpts2", QT_TRANSLATE_NOOP("@default", "Columns"));
 	ConfigDialog::addCheckBox("Look", "Columns", QT_TRANSLATE_NOOP("@default", "Multicolumn userbox"), "MultiColumnUserbox", false);
-	ConfigDialog::addSpinBox("Look", "Columns", QT_TRANSLATE_NOOP("@default", "Userbox width when multi column"), "MultiColumnUserboxWidth", 1, 1000, 1, defUserboxWidth);
+	ConfigDialog::addSpinBox("Look", "Columns", QT_TRANSLATE_NOOP("@default", "Userbox width when multi column"), "MultiColumnUserboxWidth", 1, 1000, 1);
 
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Colors"));
 		ConfigDialog::addVGroupBox("Look", "Colors", QT_TRANSLATE_NOOP("@default", "Main window"));
@@ -808,7 +806,7 @@ void UserBox::initModule()
 			ConfigDialog::addColorButton("Look", "Main window", QT_TRANSLATE_NOOP("@default", "Description font color"), "DescriptionColor", config_file.readColorEntry("Look","DescriptionColor"), "", "userbox_desc_color");
 
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Fonts"));
-		ConfigDialog::addSelectFont("Look", "Fonts", QT_TRANSLATE_NOOP("@default", "Font in userbox"), "UserboxFont", def_font.toString(), "", "userbox_font_box");
+		ConfigDialog::addSelectFont("Look", "Fonts", QT_TRANSLATE_NOOP("@default", "Font in userbox"), "UserboxFont", defaultFont.toString(), "", "userbox_font_box");
 
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Previews"));
 		ConfigDialog::addHBox("Look", "Previews", "othr_prvws");
