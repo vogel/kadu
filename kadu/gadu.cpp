@@ -1035,7 +1035,7 @@ void GaduProtocol::userDataChanged(const UserListElement* const oldData, const U
 		if (oldData->uin()) gg_remove_notify_ex(Sess, oldData->uin(), GG_USER_BLOCKED);
 		if (newData->uin()) gg_add_notify_ex(Sess, newData->uin(), GG_USER_NORMAL);
 	}
-	else if (oldData->anonymous())
+	else if (oldData->isAnonymous())
 	{
 		if (newData->uin()) gg_add_notify(Sess, newData->uin());
 	}
@@ -1163,7 +1163,7 @@ void GaduProtocol::messageReceived(int msgclass, UinsList senders, QCString &msg
 	i czy jest wlaczona opcja ignorowania nieznajomych
 	jezeli warunek jest spelniony przerywamy dzialanie funkcji.
 */
-	if (userlist.byUinValue(senders[0]).anonymous() && config_file.readBoolEntry("Chat","IgnoreAnonymousUsers"))
+	if (userlist.byUinValue(senders[0]).isAnonymous() && config_file.readBoolEntry("Chat","IgnoreAnonymousUsers"))
 	{
 		kdebugm(KDEBUG_INFO, "GaduProtocol::messageReceived(): Ignored anonymous. %d is ignored\n", senders[0]);
 		return;
@@ -1465,7 +1465,7 @@ void GaduProtocol::sendUserList()
 
 	j = 0;
 	for (UserList::ConstIterator i = userlist.begin(); i != userlist.end(); ++i)
-		if ((*i).uin() && !(*i).anonymous())
+		if ((*i).uin() && !(*i).isAnonymous())
 		{
 			uins[j] = (*i).uin();
 			if ((*i).offlineTo())
@@ -1844,7 +1844,7 @@ void GaduProtocol::gotToken(QString tokenId, QPixmap tokenImage)
 	kdebugf2();
 }
 
-/* lista uytkowników */
+/* lista u¿ytkowników */
 
 QString GaduProtocol::userListToString(const UserList& userList) const
 {
@@ -1852,7 +1852,7 @@ QString GaduProtocol::userListToString(const UserList& userList) const
 	QString contacts(""), tmp;
 
 	for (UserList::ConstIterator i = userList.begin(); i != userList.end(); ++i)
-		if (!(*i).anonymous())
+		if (!(*i).isAnonymous())
 		{
 			contacts += (*i).firstName();
 			contacts += ";";

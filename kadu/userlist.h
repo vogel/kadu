@@ -97,7 +97,7 @@ struct UserListElement
 		int maxImageSize() const;
 		void setMaxImageSize(const int maxImageSize);
 
-		bool anonymous() const;
+		bool isAnonymous() const;
 		void setAnonymous(const bool anonymous);
 
 		const QHostAddress & ip() const;

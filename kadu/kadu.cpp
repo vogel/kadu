@@ -941,7 +941,7 @@ void Kadu::setActiveGroup(const QString& group)
 				if (user_group == group)
 					belongsToGroup = true;
 		}
-		if (belongsToGroup && (!(*i).anonymous() || !Docked))
+		if (belongsToGroup && (!(*i).isAnonymous() || !Docked))
 			Userbox->addUser((*i).altNick());
 	}
 	UserBox::all_refresh();
@@ -1042,7 +1042,7 @@ void Kadu::userListUserAdded(const UserListElement& user)
 	// (odezwal sie do nas) i mamy wlaczone dokowanie (mozemy kliknac
 	// na kopertce w trayu, zeby odebrac wiadomosc) to nie dodajemy
 	// go do userboxa itp bo po co.
-	if (user.anonymous() && Docked)
+	if (user.isAnonymous() && Docked)
 		return;
 	userlist.writeToFile();
 

@@ -401,7 +401,7 @@ void UserInfo::addNewUser(UserListElement& e)
 	if (uin_exist)
 	{
 		puser = &userlist.byUin(e.uin());
-		if (puser->anonymous())
+		if (puser->isAnonymous())
 		{
 			changeUserData(e);
 			return;

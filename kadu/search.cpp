@@ -25,7 +25,8 @@
 #include "kadu.h"
 
 SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearchUin)
-: QDialog (parent, name, FALSE, Qt::WDestructiveClose) {
+: QDialog (parent, name, FALSE, Qt::WDestructiveClose)
+{
 	kdebugf();
 
 	_whoisSearchUin = whoisSearchUin;
@@ -156,10 +157,11 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 		results->setColumnWidthMode(i, QListView::Maximum);
 
 //	searchhidden = false;
-	if (_whoisSearchUin) {
+	if (_whoisSearchUin)
+	{
 		r_uin->setChecked(true);
 		e_uin->setText(QString::number(_whoisSearchUin));
-		}
+	}
 	resize(450,330);
 	setCaption(tr("Search in directory"));
 
@@ -168,7 +170,8 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	kdebugf2();
 }
 
-SearchDialog::~SearchDialog() {
+SearchDialog::~SearchDialog()
+{
 	kdebugf();
 
 	disconnect(gadu, SIGNAL(newSearchResults(SearchResults&, int, int)), this, SLOT(newSearchResults(SearchResults&, int, int)));
@@ -176,32 +179,38 @@ SearchDialog::~SearchDialog() {
 	kdebugf2();
 }
 
-void SearchDialog::selectionChanged(QListViewItem *item) {
+void SearchDialog::selectionChanged(QListViewItem *item)
+{
 	kdebugf();
 
 	UinType uin;
 
 	disconnect(b_addbtn, SIGNAL(clicked()), 0, 0);
-	if (item) {
+	if (item)
+	{
 		uin = item->text(1).toUInt();
-		if ((userlist.containsUin(uin) && !userlist.byUin(uin).anonymous())
-			|| (userlist.containsUin(uin) && !kadu->docked())) {
+		if ((userlist.containsUin(uin) && !userlist.byUin(uin).isAnonymous())
+			|| (userlist.containsUin(uin) && !kadu->docked()))
+		{
 			b_addbtn->setText(tr("&Update Info"));
 			connect(b_addbtn, SIGNAL(clicked()), this, SLOT(updateInfoClicked()));
-			}
-		else {
+		}
+		else
+		{
 			b_addbtn->setText(tr("&Add User"));
 			connect(b_addbtn, SIGNAL(clicked()), this, SLOT(AddButtonClicked()));
-			}
 		}
-	else {
+	}
+	else
+	{
 		b_addbtn->setText(tr("&Add User"));
 		connect(b_addbtn, SIGNAL(clicked()), this, SLOT(AddButtonClicked()));
-		}
+	}
 	kdebugf2();
 }
 
-void SearchDialog::prepareMessage(QListViewItem *item) {
+void SearchDialog::prepareMessage(QListViewItem *item)
+{
 //Tu trzeba dodaæ kod który otwiera³by okno rozmowy.
 /*	Message *msg;
 
@@ -216,25 +225,29 @@ void SearchDialog::prepareMessage(QListViewItem *item) {
 
 }
 
-void SearchDialog::clearResults(void) {
+void SearchDialog::clearResults(void)
+{
 	results->clear();
 }
 
-void SearchDialog::firstSearch(void) {
+void SearchDialog::firstSearch(void)
+{
 	kdebugf();
 	if (results->childCount())
 		clearResults();
 
 	searchRecord->clearData();
 
-	if (r_pers->isChecked()) {
+	if (r_pers->isChecked())
+	{
 		searchRecord->reqFirstName(e_name->text());
 		searchRecord->reqLastName(e_surname->text());
 		searchRecord->reqNickName(e_nick->text());
 		searchRecord->reqCity(e_city->text());
 		searchRecord->reqBirthYear(e_byrFrom->text(), e_byrTo->text());
 
-		switch (c_gender->currentItem()) {
+		switch (c_gender->currentItem())
+		{
 			case 1:
 				searchRecord->reqGender(false);
 				break;
@@ -260,7 +273,8 @@ void SearchDialog::firstSearch(void) {
 	kdebugf2();
 }
 
-void SearchDialog::nextSearch(void) {
+void SearchDialog::nextSearch(void)
+{
 	if (gadu->status().isOffline())
 		return;
 	kdebugf();
@@ -274,7 +288,8 @@ void SearchDialog::nextSearch(void) {
 	kdebugf2();
 }
 
-void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int fromUin) {
+void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int fromUin)
+{
 	kdebugf();
 
 	QListViewItem *qlv = NULL;
@@ -294,7 +309,8 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 
 		pix = ((*searchIterator).Stat).pixmap((*searchIterator).Stat.status(), false, false);
 
-		if (qlv) {
+		if (qlv)
+		{
 //			if (!searchhidden) {
 			qlv->setText(1, (*searchIterator).Uin);
 			qlv->setText(2, (*searchIterator).First);
@@ -304,7 +320,9 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 //	}
 //			else
 //				searchhidden = false;
-		} else {
+		}
+		else
+		{
 			qlv = new QListViewItem(results, QString::null, (*searchIterator).Uin,
 				(*searchIterator).First, (*searchIterator).City,
 				(*searchIterator).Nick, (*searchIterator).Born);
@@ -332,7 +350,8 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 	b_sendbtn->setEnabled(true);
 	b_nextbtn->setEnabled(true);
 
-	if (!searchResults.count()) {
+	if (!searchResults.count())
+	{
 		kdebugm(KDEBUG_INFO, "SearchDialog::newSearchResults(): No results. Exit.\n");
 		QMessageBox::information(this, tr("No results"),
 			tr("There were no results of your search"));
@@ -341,15 +360,18 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 	kdebugf2();
 }
 
-void SearchDialog::closeEvent(QCloseEvent * e) {
+void SearchDialog::closeEvent(QCloseEvent * e)
+{
 	QWidget::closeEvent(e);
 }
 
-void SearchDialog::uinTyped(void) {
+void SearchDialog::uinTyped(void)
+{
 	r_uin->setChecked(true);
 }
 
-void SearchDialog::personalDataTyped(void) {
+void SearchDialog::personalDataTyped(void)
+{
 	r_pers->setChecked(true);
 }
 
@@ -359,11 +381,12 @@ void SearchDialog::AddButtonClicked()
 	QListViewItem *selected = results->selectedItem();
 	if (!selected && results->childCount() == 1)
 		selected = results->firstChild();
-	if (!selected) {
+	if (!selected)
+	{
 		QMessageBox::information(this,tr("Add User"),
 			tr("Select user first"));
 		return;
-		}
+	}
 
 	QString uin = selected->text(1);
 	QString firstname = selected->text(2);
@@ -372,12 +395,13 @@ void SearchDialog::AddButtonClicked()
 	// Build altnick. Try user nick first.
 	QString altnick = nickname;
 	// If nick is empty, try firstname+lastname.
-	if (!altnick.length()) {
+	if (!altnick.length())
+	{
 		altnick = firstname;
 //		if (firstname.length() && lastname.length())
 //			altnick += " ";
 //		altnick += lastname;
-		}
+	}
 	// If nick is empty, use uin.
 	if (!altnick.length())
 		altnick = uin;
@@ -428,12 +452,13 @@ void SearchDialog::updateInfoClicked()
 	// Build altnick. Try user nick first.
 	QString altnick = nickname;
 	// If nick is empty, try firstname+lastname.
-	if (!altnick.length()) {
+	if (!altnick.length())
+	{
 		altnick = firstname;
 //		if (firstname.length() && lastname.length())
 //			altnick += " ";
 //		altnick += lastname;
-		}
+	}
 	// If nick is empty, use uin.
 	if (!altnick.length())
 		altnick = uin;

@@ -19,7 +19,8 @@
 #include "userbox.h"
 #include "debug.h"
 
-DnsHandler::DnsHandler(UinType uin) : uin(uin) {
+DnsHandler::DnsHandler(UinType uin) : uin(uin)
+{
 	kdebugf();
 	UserListElement &ule = userlist.byUin(uin);
 //	if (ule.ip.isNull()) //od Qt 3.2
@@ -33,14 +34,16 @@ DnsHandler::DnsHandler(UinType uin) : uin(uin) {
 	kdebugm(KDEBUG_FUNCTION_END, "DnsHandler::DnsHandler(): counter = %d\n", counter);
 }
 
-DnsHandler::~DnsHandler() {
+DnsHandler::~DnsHandler()
+{
 	--counter;
 /* patrz ~Userlist()
 	kdebugm(KDEBUG_INFO, "DnsHandler::~DnsHandler(): counter = %d\n", counter);
 */
 }
 
-void DnsHandler::resultsReady() {
+void DnsHandler::resultsReady()
+{
 	kdebugf();
 	if (dnsresolver.hostNames().count())
 		userlist.setDnsName(uin, dnsresolver.hostNames()[0]);
@@ -250,7 +253,7 @@ void UserListElement::setMaxImageSize(const int maxImageSize)
 		emit Parent->userDataChanged(&old, this);
 }
 
-bool UserListElement::anonymous() const
+bool UserListElement::isAnonymous() const
 {
 	return Anonymous;
 }
@@ -434,7 +437,8 @@ UserList::~UserList()
 	*/
 }
 
-void UserList::addDnsLookup(UinType  uin, const QHostAddress &ip) {
+void UserList::addDnsLookup(UinType  uin, const QHostAddress &ip)
+{
 	kdebugf();
 //	if (ip.isNull()) //od Qt 3.2
 	if (ip==QHostAddress())
@@ -444,14 +448,16 @@ void UserList::addDnsLookup(UinType  uin, const QHostAddress &ip) {
 	}
 	DnsHandler *dnshandler;
 	dnshandler = dnslookups.first();
-	while (dnshandler) {
-		if (dnshandler->isCompleted()) {
+	while (dnshandler)
+	{
+		if (dnshandler->isCompleted())
+		{
 			dnslookups.remove();
 			dnshandler = dnslookups.current();
-			}
+		}
 		else
 			dnshandler = dnslookups.next();
-		}
+	}
 	if (!containsUin(uin))
 		return;
 	//UserListElement &ule = byUin(uin);
@@ -460,7 +466,8 @@ void UserList::addDnsLookup(UinType  uin, const QHostAddress &ip) {
 	kdebugf2();
 }
 
-void UserList::setDnsName(UinType  uin, const QString &name) {
+void UserList::setDnsName(UinType  uin, const QString &name)
+{
 	if (!containsUin(uin))
 		return;
 	UserListElement &ule = byUin(uin);
@@ -655,7 +662,7 @@ bool UserList::writeToFile(QString filename)
 			.append((*i).email())
 			.append(QString("\r\n"));
 
-		if (!(*i).anonymous())
+		if (!(*i).isAnonymous())
 		{
 			kdebugm(KDEBUG_INFO, "%s", s.local8Bit().data());
 			str = QTextCodec::codecForName("ISO 8859-2")->fromUnicode(s);
@@ -666,12 +673,14 @@ bool UserList::writeToFile(QString filename)
 
 	QFile fa(faname);
 
-	if (!fa.open(IO_WriteOnly)) {
+	if (!fa.open(IO_WriteOnly))
+	{
 		kdebugm(KDEBUG_ERROR, "UserList::writeToFile(): Error opening file :(\n");
 		return false;
 	}
 
-	for (Iterator i = begin(); i != end(); ++i) {
+	for (Iterator i = begin(); i != end(); ++i)
+	{
 		s.truncate(0);
 		s.append(QString::number((*i).uin()))
 			.append(QString(";"))
@@ -682,12 +691,13 @@ bool UserList::writeToFile(QString filename)
 			.append((*i).notify() ? QString("true") : QString("false"))
 			.append(QString("\r\n"));
 
-		if (!(*i).anonymous() && (*i).uin()) {
+		if (!(*i).isAnonymous() && (*i).uin())
+		{
 			kdebugm(KDEBUG_INFO, "%s", s.local8Bit().data());
 			str = QTextCodec::codecForName("ISO 8859-2")->fromUnicode(s);
 			fa.writeBlock(str, str.length());
-			}
 		}
+	}
 	fa.close();
 
 	kdebugf2();
@@ -709,28 +719,30 @@ bool UserList::readFromFile()
 	kdebugm(KDEBUG_INFO, "UserList::readFromFile(): Opening userattribs file: %s\n",
 		(const char *)path.local8Bit());
 	QFile fa(path);
-	if (!fa.open(IO_ReadOnly)) {
+	if (!fa.open(IO_ReadOnly))
 		kdebugm(KDEBUG_ERROR, "UserList::readFromFile(): Error opening userattribs file\n");
-	}
-	else {
+	else
+	{
 		QTextStream s(&fa);
-		while ((line = s.readLine()).length()) {
+		while ((line = s.readLine()).length())
+		{
 			QStringList slist;
 			slist = QStringList::split(';', line);
 			if (slist.count() == 4)
 				ualist.append(slist);
-			}
-		fa.close();
 		}
+		fa.close();
+	}
 
 	path = ggPath("userlist");
 	kdebugm(KDEBUG_INFO, "UserList::readFromFile(): Opening userlist file: %s\n",
 		(const char *)path.local8Bit());
 	QFile f(path);
-	if (!f.open(IO_ReadOnly)) {
+	if (!f.open(IO_ReadOnly))
+	{
 		kdebugm(KDEBUG_ERROR, "UserList::readFromFile(): Error opening userlist file");
 		return false;
-		}
+	}
 
 	kdebugm(KDEBUG_INFO, "UserList::readFromFile(): File opened successfuly\n");
 
@@ -738,11 +750,13 @@ bool UserList::readFromFile()
 
 	QTextStream t(&f);
 	t.setCodec(QTextCodec::codecForName("ISO 8859-2"));
-	while ((line = t.readLine()).length()) {
+	while ((line = t.readLine()).length())
+	{
 		if (line[0] == '#')
 			continue;
 
-		if (line.find(';') < 0) {
+		if (line.find(';') < 0)
+		{
 			QString nickname = line.section(' ',0,0);
 			QString uin = line.section(' ',1,1);
 			if (uin == "")
@@ -762,8 +776,9 @@ bool UserList::readFromFile()
 			e.setNotify(true);
 			e.status().setOffline();
 			addUser(e);
-			}
-		else {
+		}
+		else
+		{
 			userattribs = QStringList::split(";", line, true);
 			kdebugm(KDEBUG_INFO, "UserList::readFromFile(): userattribs = %d\n", userattribs.count());
 			if (userattribs.count() >= 12)
@@ -808,8 +823,8 @@ bool UserList::readFromFile()
 
 			e.status().setOffline();
 			addUser(e);
-			}
 		}
+	}
 
 	f.close();
 	emit modified();
@@ -834,32 +849,32 @@ UserList& UserList::operator=(const UserList& userlist)
 	return *this;
 }
 
-void UserList::merge(UserList &userlist) {
+void UserList::merge(UserList &userlist)
+{
 	kdebugf();
 	UserListElement e(this);
 
 	for (const_iterator i = begin(); i != end(); ++i)
 		emit userDataChanged(&(i.data()), NULL);
 
-	for (Iterator i = userlist.begin(); i != userlist.end(); ++i) {
-		Iterator j;
-		if ((*i).uin()) {
-			j = begin();
+	for (Iterator i = userlist.begin(); i != userlist.end(); ++i)
+	{
+		Iterator j=begin();
+		if ((*i).uin())
 			while (j != end() && (*j).uin() != (*i).uin())
 				++j;
-			}
-		else {
-			j = begin();
+		else
 			while (j != end() && (*j).mobile() != (*i).mobile())
 				++j;
-			}
+
 		if (j != end())
 			*j = *i;
-		else {
+		else
+		{
 			e = *i; // to jest na pewno potrzebne ??
 			insert(e.altNick(), e);
-			}
 		}
+	}
 
 	for (const_iterator i = begin(); i != end(); ++i)
 		emit userDataChanged(NULL, &(i.data()));
