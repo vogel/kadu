@@ -107,7 +107,7 @@ bool EmoticonsManager::loadGGEmoticonThemePart(QString subdir)
 	QFile theme_file(path+"emots.txt");
 	if(!theme_file.open(IO_ReadOnly))
 	{
-		kdebugm(KDEBUG_ERROR, "Error opening emots.txt file\n");
+		kdebugm(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "Error opening emots.txt file\n");
 		return false;
 	}
 	QTextStream theme_stream(&theme_file);
@@ -153,6 +153,7 @@ bool EmoticonsManager::loadGGEmoticonThemePart(QString subdir)
 		Selector.append(item);
 	}
 	theme_file.close();
+	kdebugf2();
 	return true;
 }
 
@@ -193,7 +194,10 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc,const QColor& bgcolor)
 	kdebugf();
 
 	if(getSubDirs(dataPath("kadu/themes/emoticons")).size()==0)
+	{
+		kdebugm(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "EmoticonsManager::expandEmoticons() end: NO EMOTICONS!\n");
 		return;
+	}
 	
 	// check in config if user wants animated emots
 	bool animated = (EmoticonsStyle) config_file.readNumEntry("Chat", "EmoticonsStyle") == EMOTS_ANIMATED;
