@@ -5648,6 +5648,24 @@ cat >>confdefs.h <<_ACEOF
 _ACEOF
 
 
+# LibGSM support
+# AC_CHECK_LIBGSM
+if test -z "$enable_voice"; then
+	enable_voice=no
+fi
+
+
+if test "$enable_voice" = "yes"; then
+  VOICE_TRUE=
+  VOICE_FALSE='#'
+else
+  VOICE_TRUE='#'
+  VOICE_FALSE=
+fi
+
+
+
+
 # OpenSSL support
 
 
@@ -5957,6 +5975,13 @@ if test -z "${AMDEP_TRUE}" && test -z "${AMDEP_FALSE}"; then
   { { echo "$as_me:$LINENO: error: conditional \"AMDEP\" was never defined.
 Usually this means the macro was only invoked conditionally." >&5
 echo "$as_me: error: conditional \"AMDEP\" was never defined.
+Usually this means the macro was only invoked conditionally." >&2;}
+   { (exit 1); exit 1; }; }
+fi
+if test -z "${VOICE_TRUE}" && test -z "${VOICE_FALSE}"; then
+  { { echo "$as_me:$LINENO: error: conditional \"VOICE\" was never defined.
+Usually this means the macro was only invoked conditionally." >&5
+echo "$as_me: error: conditional \"VOICE\" was never defined.
 Usually this means the macro was only invoked conditionally." >&2;}
    { (exit 1); exit 1; }; }
 fi
@@ -6519,6 +6544,10 @@ s,@QTINCDIR@,$QTINCDIR,;t t
 s,@CPP@,$CPP,;t t
 s,@LIBOBJS@,$LIBOBJS,;t t
 s,@docdir@,$docdir,;t t
+s,@VOICE_TRUE@,$VOICE_TRUE,;t t
+s,@VOICE_FALSE@,$VOICE_FALSE,;t t
+s,@LIBGSM_LIBS@,$LIBGSM_LIBS,;t t
+s,@LIBGSM_INCLUDES@,$LIBGSM_INCLUDES,;t t
 s,@OPENSSL_LIBS@,$OPENSSL_LIBS,;t t
 s,@OPENSSL_INCLUDES@,$OPENSSL_INCLUDES,;t t
 s,@PKGCONFIG@,$PKGCONFIG,;t t
@@ -7273,6 +7302,7 @@ echo "   Install Kadu documentation:         $enable_doc [$docdir]"
 echo "   Use pthread resolving in libgadu:   $with_pthread"
 echo "   Compile with debug symbols:         $enable_debug"
 echo "   Link with existing libgadu:         $with_existing_libgadu"
+echo "   Voice talk (libgsm) support:        $enable_voice"
 echo "   OpenSSL encryption support:         $have_openssl"
 echo "   Distribution type information:      $enable_dist_info"
 echo "   Additional c++ compiler flags:      $user_cxxflags"

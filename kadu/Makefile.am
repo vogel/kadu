@@ -31,11 +31,20 @@ tabbar.cpp tabbar.h tabbar_moc.cpp \
 userbox.cpp userbox.h userbox_moc.cpp \
 userinfo.cpp userinfo.h userinfo_moc.cpp \
 userlist.cpp userlist.h userlist_moc.cpp \
-updates.cpp updates.h \
-voice.cpp voice.h voice_moc.cpp \
-voice_dsp.cpp voice_dsp.h voice_dsp_moc.cpp
+updates.cpp updates.h
 
-EXTRA_kadu_SOURCES = simlite.c simlite.h
+EXTRA_kadu_SOURCES = \
+voice.cpp voice.h voice_moc.cpp \
+voice_dsp.cpp voice_dsp.h voice_dsp_moc.cpp \
+simlite.c simlite.h
+
+if VOICE
+VOICE_OBJS = \
+voice.$(OBJEXT) voice_moc.$(OBJEXT) \
+voice_dsp.$(OBJEXT) voice_dsp_moc.$(OBJEXT)
+else
+VOICE_OBJS =
+endif
 
 if OPENSSL
 SIM = simlite.$(OBJEXT)
@@ -46,9 +55,9 @@ endif
 #kadu_METASOURCES = AUTO
 
 INCLUDES = $(QTINCDIR) $(OPENSSL_INCLUDES)
-kadu_LDADD = $(SIM) $(PTHREAD_LIBS) $(PNG_LIBS) $(QTLIBDIR) -l$(QTMT) $(LIBINTL) -lgadu -lgsm
-kadu_LDFLAGS = $(PTHREAD_LDFLAGS) $(OPENSSL_LIBS)
-kadu_DEPENDENCIES = $(SIM)
+kadu_LDADD = $(VOICE_OBJS) $(SIM) $(PTHREAD_LIBS) $(PNG_LIBS) $(QTLIBDIR) -l$(QTMT) $(LIBINTL) -lgadu
+kadu_LDFLAGS = $(PTHREAD_LDFLAGS) $(OPENSSL_LIBS) $(GSM_LIBS)
+kadu_DEPENDENCIES = $(VOICE_OBJS) $(SIM)
 
 AM_CPPFLAGS = $(PTHREAD_CPPFLAGS) -DQT_THREAD_SUPPORT -D_REENTRANT \
 -DBINDIR="\"$(bindir)\"" -DDATADIR="\"$(datadir)\"" -DDOCDIR="\"$(docdir)\""

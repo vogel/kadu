@@ -365,6 +365,15 @@ if test -z "$enable_dist_info"; then
 fi
 AC_DEFINE_UNQUOTED(DIST_TYPE,"$enable_dist_info",[Define distribution type of this copy of application])
 
+# LibGSM support
+# AC_CHECK_LIBGSM
+if test -z "$enable_voice"; then
+	enable_voice=no
+fi
+AM_CONDITIONAL(VOICE,[test "$enable_voice" = "yes"])
+AC_SUBST(LIBGSM_LIBS)
+AC_SUBST(LIBGSM_INCLUDES)
+
 # OpenSSL support
 AC_CHECK_OPENSSL
 if test -z "$have_openssl"; then
@@ -414,6 +423,7 @@ echo "   Install Kadu documentation:         $enable_doc [[$docdir]]"
 echo "   Use pthread resolving in libgadu:   $with_pthread"
 echo "   Compile with debug symbols:         $enable_debug"
 echo "   Link with existing libgadu:         $with_existing_libgadu"
+echo "   Voice talk (libgsm) support:        $enable_voice"
 echo "   OpenSSL encryption support:         $have_openssl"
 echo "   Distribution type information:      $enable_dist_info"
 echo "   Additional c++ compiler flags:      $user_cxxflags"
