@@ -8,6 +8,7 @@ chat.cpp chat.h chat_moc.cpp \
 config.cpp config.h config_moc.cpp \
 config_file.cpp config_file.h \
 dcc.cpp dcc.h dcc_moc.cpp \
+debug.cpp debug.h \
 dock_widget.cpp dock_widget.h dock_widget_moc.cpp \
 emoticons.cpp emoticons.h \
 events.cpp events.h events_moc.cpp \
