@@ -57,6 +57,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * libgadu z 09.10.2003 (chilek)
 * wydzielenie funkcji openWebBrowser() - pomoc te¿ otwiera siê w zdefiniowanej
   przez u¿ytkownika przegl±darce WWW (chilek)
+* libgadu z pakietu kadu linkowane jest statycznie. w razie czego pozosta³a
+  opcja --with-existing-libgadu (adrian)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci
