@@ -31,7 +31,7 @@ extern "C"
 #endif
 //
 
-char tmprcvr[255];
+QString tmprcvr;
 
 /* is it a chat or is it not? */
 void rMessage::replyMessage(void) {
@@ -129,7 +129,7 @@ rMessage::rMessage(const QString & nick, int msgclass, UinsList uins, QString &m
 	if (sysmsg)
 		btn->setEnabled(false);
 	else
-		strncpy(tmprcvr, sender, 255);
+		tmprcvr = sender;
 
 	QPushButton *closebtn;
 	closebtn = new QPushButton(QIconSet(loadIcon("stop.png")),i18n("&Close"),this);
@@ -160,7 +160,7 @@ void rMessage::cleanUp(void) {
 
 /* let's chat some more */
 void rMessage::openChat(void) {
-	QString tmp = __c2q(tmprcvr);    
+	QString tmp = tmprcvr;
 	UinsList uins;
 
 	uins.append(userlist.byAltNick(tmp).uin);
