@@ -72,6 +72,7 @@ class FileTransferManager : public QObject
 	public:
 		FileTransferManager();
 		virtual ~FileTransferManager();
+	public slots:
 		/**
 			Inicjuje wysy³anie pliku do podanego odbiorcy.
 		**/
