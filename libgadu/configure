@@ -795,6 +795,7 @@ Optional ekg Features:
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
+  --without-bind          Disable linking with libbind when found
   --with-c99-vsnprintf    Target system has C99-compatible vsnprintf()
   --with-pthread          Use pthread in resolver
   --without-openssl       Compile without OpenSSL
@@ -3258,7 +3259,16 @@ if test $ac_cv_lib_socket_socket = yes; then
 fi
 
 
-echo "$as_me:$LINENO: checking for __inet_addr in -lbind" >&5
+
+
+# Check whether --with-bind or --without-bind was given.
+if test "${with_bind+set}" = set; then
+  withval="$with_bind"
+
+fi;
+
+if test "x$with_bind" != "xno"; then
+	echo "$as_me:$LINENO: checking for __inet_addr in -lbind" >&5
 echo $ECHO_N "checking for __inet_addr in -lbind... $ECHO_C" >&6
 if test "${ac_cv_lib_bind___inet_addr+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -3317,6 +3327,7 @@ if test $ac_cv_lib_bind___inet_addr = yes; then
   LIBS="$LIBS -lbind"
 fi
 
+fi
 
 
 for ac_func in gethostbyname_r
@@ -4006,6 +4017,10 @@ fi
 # Finally, execute ACTION-IF-FOUND/ACTION-IF-NOT-FOUND:
 if test x"$acx_pthread_ok" = xyes; then
 
+	 			if test "x$PTHREAD_CFLAGS" = "x-pthread"; then
+			PTHREAD_LIBS="$PTHREAD_LIBS -pthread"
+		fi
+
 		LIBS="$PTHREAD_LIBS $LIBS"
 		CFLAGS="$CFLAGS $PTHREAD_CFLAGS"
 		CFLAGS_LIBGADU="$CFLAGS_LIBGADU $PTHREAD_CFLAGS"
@@ -4145,6 +4160,11 @@ echo $ECHO_N "checking for OpenSSL... $ECHO_C" >&6
       OPENSSL_LIBS=$($PKGCONFIG --libs openssl)
       OPENSSL_INCLUDES=$($PKGCONFIG --cflags openssl)
       if test "x$OPENSSL_LIBS" != "x" -o "x$OPENSSL_INCLUDES" != "x"; then
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_OPENSSL 1
+_ACEOF
+
 	echo "$as_me:$LINENO: result: yes" >&5
 echo "${ECHO_T}yes" >&6
         without_openssl=yes
