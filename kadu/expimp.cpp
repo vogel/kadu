@@ -243,7 +243,7 @@ void UserlistImportExport::userListImported(bool ok, UserList& userList)
 
 	if (ok)
 		for (UserList::const_iterator i = userList.begin(); i != userList.end(); i++)
-			new QListViewItem(lv_userlist, QString::number((*i).uin), (*i).nickname, (*i).altnick, (*i).first_name,
+			new QListViewItem(lv_userlist, (*i).uin ? QString::number((*i).uin) : "", (*i).nickname, (*i).altnick, (*i).first_name,
 				(*i).last_name, (*i).mobile, (*i).group(), (*i).email);
 	kdebugf2();
 }
