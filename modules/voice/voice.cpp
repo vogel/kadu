@@ -533,19 +533,21 @@ void VoiceManager::dccError(DccSocket* socket)
 {
 	kdebugf();
 	if (VoiceChatDialog::bySocket(socket) != NULL)
+	{
 		socket->setState(DCC_SOCKET_VOICECHAT_DISCARDED);
 
-	UinType peer_uin=socket->ggDccStruct()->peer_uin;
-	if (direct.contains(peer_uin))
-	{
-		direct.remove(peer_uin);
-		const UserListElement& user = userlist.byUin(peer_uin);
-		dcc_manager->initDCCConnection(user.ip().ip4Addr(),
-				user.port(),
-				config_file.readNumEntry("General", "UIN"),
-				user.uin(),
-				SLOT(dccVoiceChat(uint32_t, uint16_t, UinType, UinType, struct gg_dcc **)),
-				GG_SESSION_DCC_VOICE, true);
+		UinType peer_uin=socket->ggDccStruct()->peer_uin;
+		if (direct.contains(peer_uin))
+		{
+			direct.remove(peer_uin);
+			const UserListElement& user = userlist.byUin(peer_uin);
+			dcc_manager->initDCCConnection(user.ip().ip4Addr(),
+					user.port(),
+					config_file.readNumEntry("General", "UIN"),
+					user.uin(),
+					SLOT(dccVoiceChat(uint32_t, uint16_t, UinType, UinType, struct gg_dcc **)),
+					GG_SESSION_DCC_VOICE, true);
+		}
 	}
 	kdebugf2();
 }
@@ -587,13 +589,15 @@ void VoiceManager::dccEvent(DccSocket* socket)
 void VoiceManager::socketDestroying(DccSocket* socket)
 {
 	kdebugf();
-	VoiceChatDialog *dialog=VoiceChatDialog::bySocket(socket);
-	if (dialog)
-		delete dialog;
 
-	UinType peer_uin=socket->ggDccStruct()->peer_uin;
-	if (direct.contains(peer_uin))
-		direct.remove(peer_uin);
+	VoiceChatDialog *dialog = VoiceChatDialog::bySocket(socket);
+	if (dialog)
+	{
+		UinType peer_uin = socket->ggDccStruct()->peer_uin;
+		if (direct.contains(peer_uin))
+			direct.remove(peer_uin);
+		delete dialog;
+	}
 
 	kdebugf2();
 }

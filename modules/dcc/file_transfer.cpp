@@ -313,25 +313,29 @@ void FileTransferManager::kaduKeyPressed(QKeyEvent* e)
 void FileTransferManager::connectionBroken(DccSocket* socket)
 {
 	kdebugf();
-	socket->setState(FileTransferDialog::bySocket(socket) != NULL ? DCC_SOCKET_TRANSFER_ERROR : DCC_SOCKET_CONNECTION_BROKEN);
+	if (FileTransferDialog::bySocket(socket) != NULL)
+		socket->setState(DCC_SOCKET_TRANSFER_ERROR);
 	kdebugf2();
 }
 
 void FileTransferManager::dccError(DccSocket* socket)
 {
 	kdebugf();
-	socket->setState(FileTransferDialog::bySocket(socket) != NULL ? DCC_SOCKET_TRANSFER_ERROR : DCC_SOCKET_CONNECTION_BROKEN);
-	UinType peer_uin=socket->ggDccStruct()->peer_uin;
-	if (direct.contains(peer_uin))
+	if (FileTransferDialog::bySocket(socket) != NULL)
 	{
-		direct.remove(peer_uin);
-		const UserListElement& user = userlist.byUin(peer_uin);
-		dcc_manager->initDCCConnection(user.ip().ip4Addr(),
-				user.port(),
-				config_file.readNumEntry("General", "UIN"),
-				user.uin(),
-				SLOT(dccSendFile(uint32_t, uint16_t, UinType, UinType, struct gg_dcc **)),
-				GG_SESSION_DCC_SEND, true);
+		socket->setState(DCC_SOCKET_TRANSFER_ERROR);
+		UinType peer_uin=socket->ggDccStruct()->peer_uin;
+		if (direct.contains(peer_uin))
+		{
+			direct.remove(peer_uin);
+			const UserListElement& user = userlist.byUin(peer_uin);
+			dcc_manager->initDCCConnection(user.ip().ip4Addr(),
+					user.port(),
+					config_file.readNumEntry("General", "UIN"),
+					user.uin(),
+					SLOT(dccSendFile(uint32_t, uint16_t, UinType, UinType, struct gg_dcc **)),
+					GG_SESSION_DCC_SEND, true);
+		}
 	}
 	kdebugf2();
 }
@@ -505,11 +509,12 @@ void FileTransferManager::socketDestroying(DccSocket* socket)
 
 	FileTransferDialog *dialog=FileTransferDialog::bySocket(socket);
 	if (dialog != NULL)
+	{
+		UinType peer_uin=socket->ggDccStruct()->peer_uin;
+		if (direct.contains(peer_uin))
+			direct.remove(peer_uin);
 		delete dialog;
-
-	UinType peer_uin=socket->ggDccStruct()->peer_uin;
-	if (direct.contains(peer_uin))
-		direct.remove(peer_uin);
+	}
 
 	kdebugf2();
 }
