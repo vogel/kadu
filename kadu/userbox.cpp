@@ -24,7 +24,6 @@ UserBox::UserBox(QWidget* parent,const char* name,WFlags f)
 {
 	UserBoxes.append(this);
 	setSelectionMode(QListBox::Extended);
-	setColumnMode(QListBox::FitToWidth);
 }
 
 UserBox::~UserBox()

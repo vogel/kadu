@@ -69,6 +69,7 @@ class ConfigDialog : public QTabDialog	{
 		QCheckBox *b_trayhint;
 		QCheckBox *b_hinterror;
 		QCheckBox *b_showdesc;
+		QCheckBox *b_multicoluserbox;
 
 		QLineEdit *e_soundprog;
 		QCheckBox *b_playsound;
@@ -271,6 +272,7 @@ struct config {
 	bool hinterror;
 	bool hintalert;
 	bool showdesc;
+	bool multicoluserbox;
 	QString panelsyntax;
 	QString chatsyntax;
 	QString conferenceprefix;

@@ -111,11 +111,12 @@ void loadKaduConfig(void) {
 	config.hinterror = konf->readBoolEntry("HintError",true);
 	config.hinttime = konf->readNumEntry("TimeoutHint",5);
 	QRect def_rect(0, 0, 145, 465);
-	config.geometry = konf->readRectEntry("Geometry",&def_rect);
+	config.geometry = konf->readRectEntry("Geometry", &def_rect);
 	config.dockwindows = konf->readEntry("DockWindows", QString::null);
 	QSize def_size(340, 60);
-	config.splitsize = konf->readSizeEntry("SplitSize",&def_size);
-	config.showdesc = konf->readBoolEntry("ShowDesc",true);
+	config.splitsize = konf->readSizeEntry("SplitSize", &def_size);
+	config.showdesc = konf->readBoolEntry("ShowDesc", true);
+	config.multicoluserbox = konf->readBoolEntry("MultiColumnUserbox", true);
 	
 	konf->setGroup("WWW");
 	config.defaultwebbrowser = konf->readBoolEntry("DefaultWebBrowser", true);
@@ -252,20 +253,21 @@ void saveKaduConfig(void) {
 	konf->writeEntry("UseDocking",config.dock);
 	konf->writeEntry("RunDocked",config.rundocked);	
 
-	konf->writeEntry("AutoRaise",config.raise);
-	konf->writeEntry("PrivateStatus",config.privatestatus);
+	konf->writeEntry("AutoRaise", config.raise);
+	konf->writeEntry("PrivateStatus", config.privatestatus);
 	konf->writeEntry("CheckUpdates", config.checkupdates);
-	konf->writeEntry("DisplayGroupTabs",config.grouptabs);
-	konf->writeEntry("AddToDescription",config.addtodescription);
-	konf->writeEntry("TrayHint",config.trayhint);
-	konf->writeEntry("HintError",config.hinterror);
-	konf->writeEntry("TimeoutHint",config.hinttime);
-	konf->writeEntry("ShowDesc",config.showdesc);
+	konf->writeEntry("DisplayGroupTabs", config.grouptabs);
+	konf->writeEntry("AddToDescription", config.addtodescription);
+	konf->writeEntry("TrayHint", config.trayhint);
+	konf->writeEntry("HintError", config.hinterror);
+	konf->writeEntry("TimeoutHint", config.hinttime);
+	konf->writeEntry("ShowDesc", config.showdesc);
+	konf->writeEntry("MultiColumnUserbox", config.multicoluserbox);
 
 	if (config.savegeometry) {
-		konf->writeEntry("SplitSize",config.splitsize);
-		konf->writeEntry("Geometry",config.geometry);
-	}
+		konf->writeEntry("SplitSize", config.splitsize);
+		konf->writeEntry("Geometry", config.geometry);
+		}
 
 	QTextStream stream(&config.dockwindows, IO_WriteOnly);
 	stream << *kadu;
@@ -482,10 +484,6 @@ void ConfigDialog::setupTab1(void) {
 	if (config.rundocked)
 		b_rdocked->setChecked(true);
 
-	b_grptabs = new QCheckBox(i18n("Display group tabs"),grid);
-	if (config.grouptabs)
-		b_grptabs->setChecked(true);
-
 	b_checkupdates = new QCheckBox(i18n("Check for updates"),grid);
 	if (config.checkupdates)
 		b_checkupdates->setChecked(true);
@@ -495,9 +493,6 @@ void ConfigDialog::setupTab1(void) {
 		b_addtodescription->setChecked(true);		
 	QToolTip::add(b_addtodescription,i18n("If a file description in gg settings directory is present, its contents will be added\nto the status description and then the file will be deleted."));
 	
-	b_showdesc = new QCheckBox(i18n("Show userbox-desc."),grid);
-	b_showdesc->setChecked(config.showdesc);
-
 	addTab(box, i18n("General"));
 }
 
@@ -1169,6 +1164,19 @@ void ConfigDialog::setupTab6(void) {
 
 	QToolTip::add(e_conferencesyntax,i18n("Syntax the same as in information panel."));
 
+	QGrid *grid = new QGrid(3, box6);
+
+	b_showdesc = new QCheckBox(i18n("Show userbox-desc."), grid);
+	b_showdesc->setChecked(config.showdesc);
+
+	b_grptabs = new QCheckBox(i18n("Display group tabs"), grid);
+	if (config.grouptabs)
+		b_grptabs->setChecked(true);
+
+	b_multicoluserbox = new QCheckBox(i18n("Multi column userbox"), grid);
+	if (config.multicoluserbox)
+		b_multicoluserbox->setChecked(true);
+
 	addTab(box6, i18n("Look"));
 };
 
@@ -1568,8 +1576,13 @@ void ConfigDialog::updateConfig(void) {
 	else
 		config.trayhint = config.hinterror = false;
 
-	kadu->showdesc(b_showdesc->isChecked());
 	config.showdesc = b_showdesc->isChecked();
+	kadu->showdesc(config.showdesc);
+	config.multicoluserbox = b_multicoluserbox->isChecked();
+	if (config.multicoluserbox)
+		kadu->userbox->setColumnMode(QListBox::FitToWidth);
+	else
+		kadu->userbox->setColumnMode(1);
 
 	config.smsbuildin = b_smsbuildin->isChecked();
 	config.smsapp = strdup(e_smsapp->text().latin1());

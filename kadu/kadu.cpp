@@ -433,6 +433,8 @@ Po jakiego czorta to ?
 
 	/* initialize and configure userbox */
 	userbox = new UserBox(hbox1, "userbox");
+	if (config.multicoluserbox)
+		userbox->setColumnMode(QListBox::FitToWidth);
 	userbox->setPaletteBackgroundColor(config.colors.userboxBg);
 	userbox->setPaletteForegroundColor(config.colors.userboxFg);
 	userbox->QListBox::setFont(config.fonts.userbox);
