@@ -243,7 +243,11 @@ void UserInfo::addNewUser(UserListElement& e)
 	{
 		puser = &userlist.byUin(e.uin);
 		if (puser->anonymous)
+		{
 			changeUserData(e);
+			return;
+		};
+			
 	}
 	if (!e_altnick->text().length())
 	{
@@ -331,9 +335,13 @@ void UserInfo::changeUserData(UserListElement& e)
 		e.notify = c_notify->isChecked();
 		userlist.changeUserInfo(puser->altnick, e);
 		userlist.writeToFile();
-		UserBox::all_refresh();
+		if (!kadu->userbox()->containsAltNick(e.altnick))
+		{
+			kadu->userbox()->addUser(e.altnick);
+			UserBox::all_refresh();
+		}
 		chat_manager->refreshTitlesForUin(puser->uin);
-		close();
+		close(true);
 }
 
 void UserInfo::updateUserlist() {

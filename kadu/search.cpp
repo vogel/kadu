@@ -163,7 +163,8 @@ void SearchDialog::selectionChanged(QListViewItem *item) {
 	disconnect(b_addbtn, SIGNAL(clicked()), 0, 0);
 	if (item) {
 		uin = item->text(1).toUInt();
-		if (userlist.containsUin(uin) && !userlist.byUin(uin).anonymous) {
+		if ((userlist.containsUin(uin) && !userlist.byUin(uin).anonymous)
+			|| (userlist.containsUin(uin) && !config_file.readBoolEntry("General", "UseDocking"))) {
 			b_addbtn->setText(tr("&Update Info"));
 			connect(b_addbtn, SIGNAL(clicked()), this, SLOT(updateInfoClicked()));
 			}
@@ -405,7 +406,15 @@ void SearchDialog::AddButtonClicked()
 	e.email = "";
 	ui->setUserInfo(e);
 	ui->show();
-	selectionChanged(selected);
+	/*
+		FIXME !!
+	//selectionChanged(selected); - to nic nie daje
+	- funkcja ta powinna byc wywolana po zamknieciu okna dodawania usera
+	a jest wywolywana zaraz po pokazaniu sie okienka z dodawaniem usera
+	tip: dodaæ do okna z dodawaniem sygnal który by wemitowa³ sie
+	gdy dodamy nowego usera i siê pod ten sygna³ podpi±æ i wywo³aæ t± funkcje
+	
+	*/
 }
 
 void SearchDialog::updateInfoClicked()

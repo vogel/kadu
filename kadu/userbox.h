@@ -79,11 +79,27 @@ class UserBox : public QListBox , QToolTip
 		~UserBox();
 		static UserBoxMenu *userboxmenu;
 		virtual void clear() { QListBox::clear(); };
+		/**
+			Funkcja czy¶ci ca³± listê u¿ytkowników w UserBox
+		**/
 		void clearUsers() { Users.clear(); };
 		void refresh();
+		/**
+			Funkcja dodaje u¿ytkownika o podanym altnick do listy w UserBox
+		**/
 		void addUser(const QString &altnick);
+		/**
+			Funkcja usuwa u¿ytkownika o podanym altnick z listy w UserBox
+		**/
 		void removeUser(const QString &altnick);
+		/**
+			Funkcja zmienia nazwe altnick z podanej na inna w liscie UserBox
+		**/
 		void renameUser(const QString &oldaltnick, const QString &newaltnick);
+		/**
+			Funkcja sprawdza czy dany altnick, znajduje siê na liscie w UserBox
+		**/
+		bool containsAltNick(const QString &altnick);
 		void changeAllToInactive();
 		// Functions below works on all created userboxes
 		static void all_refresh();

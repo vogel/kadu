@@ -117,6 +117,10 @@ UserList::~UserList()
 		Po prostu tu w destruktorze klasy UserList pewnie juz obiekt dnslookups zostal
 		zniszczony i stad problem z wyswietleniem pewnych jego atrybutow.
 	*/
+	/*
+		mast3r: jak dobrze pamietam to obojetnie co sie wpisalo to sie wywalalo przy zamykaniu
+			winna bylo cos w kdebug
+	*/
 }
 
 void UserList::addDnsLookup(uin_t uin, const QHostAddress &ip) {
@@ -260,6 +264,7 @@ void UserList::changeUserInfo(const QString oldaltnick, UserListElement &ule)
 	e.mobile = ule.mobile;
 	e.email = ule.email;
 	e.uin = ule.uin;
+	bool wasAnonymous = e.anonymous;
 	e.anonymous = false;
 	e.status = ule.status;
 	e.image_size = ule.image_size;
@@ -267,10 +272,10 @@ void UserList::changeUserInfo(const QString oldaltnick, UserListElement &ule)
 	e.offline_to_user = ule.offline_to_user;
 	e.notify = ule.notify;
 	e.Group = ule.Group;
-	if (ule.altnick != oldaltnick)
+	if ((ule.altnick != oldaltnick && !wasAnonymous) || (ule.altnick != oldaltnick && !config_file.readBoolEntry("General", "UseDocking")))
 	{
 		UserBox::all_renameUser(oldaltnick, ule.altnick);
-		UserBox::all_refresh();		
+		UserBox::all_refresh();
 	}
 	emit modified();
 }

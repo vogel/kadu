@@ -474,9 +474,21 @@ void UserBox::removeUser(const QString &altnick)
 
 void UserBox::renameUser(const QString &oldaltnick, const QString &newaltnick)
 {
-kdebug("UserBox::renameUser()\n");
+	kdebug("UserBox::renameUser()\n");
 	QStringList::iterator it = Users.find(oldaltnick);
-	(*it) = newaltnick;
+	if (it != Users.end())
+		(*it) = newaltnick;
+	else
+		kdebug("Userbox::renameUser(): userbox doesnt contain: %s\n", (const char *)oldaltnick.local8Bit());
+};
+
+bool UserBox::containsAltNick(const QString &altnick)
+{
+	for (QStringList::iterator it = Users.begin(); it != Users.end(); it++)
+		if ((*it).lower() == altnick.lower())
+			return true;
+	kdebug("UserBox::containsAltNick(): userbox doesnt contain: %s\n", (const char *)altnick.lower().local8Bit());
+	return false;
 };
 
 void UserBox::changeAllToInactive()
