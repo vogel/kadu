@@ -779,10 +779,11 @@ void GaduProtocol::initModule()
 #endif
 	ConfigDialog::addLineEdit("Network", "Servers properties",
 		QT_TRANSLATE_NOOP("@default", "IP addresses:"), "Server","","","server");
-#ifdef HAVE_OPENSSL
+	
+	// opcja wed³ug niektórych przydatna
 	ConfigDialog::addComboBox("Network", "Servers properties",
 		QT_TRANSLATE_NOOP("@default", "Default port to connect to servers"));
-#endif
+
 	ConfigDialog::addCheckBox("Network", "Network",
 		QT_TRANSLATE_NOOP("@default", "Use proxy server"), "UseProxy", false);
 
@@ -2253,20 +2254,19 @@ void GaduProtocol::onCreateConfigDialog()
 
 #ifdef HAVE_OPENSSL
 	QCheckBox *b_tls= ConfigDialog::getCheckBox("Network", "Use TLSv1");
-	QComboBox *cb_portselect= ConfigDialog::getComboBox("Network", "Default port to connect to servers");
 #endif
+	QComboBox *cb_portselect= ConfigDialog::getComboBox("Network", "Default port to connect to servers");
 
 	QHBox *serverbox=(QHBox*)(ConfigDialog::getLineEdit("Network", "IP addresses:","server")->parent());
 	QCheckBox* b_defaultserver= ConfigDialog::getCheckBox("Network", "Use default servers");
 
 	g_proxy->setEnabled(b_useproxy->isChecked());
 
-#ifdef HAVE_OPENSSL
-	((QHBox*)cb_portselect->parent())->setEnabled(!b_tls->isChecked());
+//	((QHBox*)cb_portselect->parent())->setEnabled(!b_tls->isChecked());
 	cb_portselect->insertItem("8074");
 	cb_portselect->insertItem("443");
 	cb_portselect->setCurrentText(config_file.readEntry("Network", "DefaultPort", "8074"));
-#endif
+
 	serverbox->setEnabled(!b_defaultserver->isChecked());
 
 	connect(b_useproxy, SIGNAL(toggled(bool)), g_proxy, SLOT(setEnabled(bool)));
@@ -2278,10 +2278,9 @@ void GaduProtocol::onDestroyConfigDialog()
 {
 	kdebugf();
 
-#ifdef HAVE_OPENSSL
 	QComboBox *cb_portselect=ConfigDialog::getComboBox("Network", "Default port to connect to servers");
 	config_file.writeEntry("Network","DefaultPort",cb_portselect->currentText());
-#endif
+
 	QLineEdit *e_servers=ConfigDialog::getLineEdit("Network", "IP addresses:", "server");
 
 	QStringList tmpservers,server;
