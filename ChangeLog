@@ -23,6 +23,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawiony komunikat "wiadomo¶æ za d³uga" (michal/chilek)
 * dodane t³umaczenie qt_de (chilek)
 * zablokowane wykorzystanie niedzia³aj±cego TLS (chilek)
+* w przypadku, gdy mamy pusty email w bazie GG, kadu przy b³êdzie po³±czenia
+  z serwerem GG wy¶wietla stosowny komunikat (chilek)
 
 +++ wersja 0.3.5 (05.11.2003)
 * dalsza czê¶æ przeróbek mechanizmu konfiguracji. brakuje jeszcze

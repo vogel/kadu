@@ -23,6 +23,7 @@
 #include <time.h>
 
 #include "kadu.h"
+#include "message_box.h"
 #include "ignore.h"
 #include "events.h"
 #include "chat.h"
@@ -173,6 +174,8 @@ void EventManager::connectedSlot()
 
 void EventManager::connectionFailedSlot(int failure)
 {
+	QString msg;
+
 	kadu->disconnectNetwork(); /* FIXME 1/2 */
 	switch (failure) {
 		case GG_FAILURE_RESOLVING:
@@ -186,9 +189,12 @@ void EventManager::connectionFailedSlot(int failure)
 			hintmanager->addHintError(tr("Unable to connect"));
 			break;
 		case GG_FAILURE_INVALID:
+			msg = QString(tr("Please change your email in \"Change password/email\" window. "
+				"You should leave new password field empty."));
 			kdebug("%s\n",
-				unicode2latin(QString(tr("Unable to connect, server has returned unknown data"))).data());;
-			hintmanager->addHintError(tr("Unable to connect, server has returned unknown data"));
+				unicode2latin(msg).data());
+			MessageBox::msg(msg);
+			hintmanager->addHintError(msg);
 			break;
 		case GG_FAILURE_READING:
 			kdebug("%s\n",
