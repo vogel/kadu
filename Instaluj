@@ -628,7 +628,7 @@ function ShowInfo()
 	echo " |          Naci¶nij   P  aby uzyskaæ Pomoc za pomoc± programu Mozilla.       |"
 	echo " |          Naci¶nij   E  aby zakoñczyæ program instalacyjny.                 |"
 	echo " =============================================================================="
-        echo "                 UWAGA!!! musisz mie¶ uprawnienia administratora"
+        echo "                 UWAGA!!! musisz mieæ uprawnienia administratora"
 }
 
 function Szuk_kadu()
