@@ -1,4 +1,4 @@
-/* $Id: libgadu.c,v 1.6 2002/09/13 00:30:38 chilek Exp $ */
+/* $Id: libgadu.c,v 1.7 2002/09/22 19:23:36 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>,
@@ -57,7 +57,7 @@ static char rcsid[]
 #ifdef __GNUC__
 __attribute__ ((unused))
 #endif
-= "$Id: libgadu.c,v 1.6 2002/09/13 00:30:38 chilek Exp $";
+= "$Id: libgadu.c,v 1.7 2002/09/22 19:23:36 chilek Exp $";
 #endif 
 
 /*
@@ -475,6 +475,7 @@ struct gg_session *gg_login(const struct gg_login_params *p)
 	sess->async = p->async;
         sess->type = GG_SESSION_GG;
 	sess->initial_status = p->status;
+	sess->initial_descr = p->status_descr;
 	sess->callback = gg_session_callback;
 	sess->destroy = gg_free_session;
 	sess->port = (p->server_port) ? p->server_port : GG_DEFAULT_PORT;

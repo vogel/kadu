@@ -1,4 +1,4 @@
-/* $Id: libgadu.h,v 1.7 2002/09/13 00:30:38 chilek Exp $ */
+/* $Id: libgadu.h,v 1.8 2002/09/22 19:23:37 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>,
@@ -6,6 +6,7 @@
  *                          Arkadiusz Mi¶kiewicz <misiek@pld.org.pl>,
  *                          Tomasz Chiliñski <chilek@chilan.com>,
  *                          Piotr Wysocki <wysek@linux.bydg.org>
+ *                          Dawid Jarosz <dawjar@poczta.onet.pl>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License Version
@@ -94,6 +95,8 @@ struct gg_session {
 	int protocol_version;	/* wersja u¿ywanego protoko³u */
 	char *client_version;	/* wersja u¿ywanego klienta */
 	int last_sysmsg;	/* ostatnia wiadomo¶æ systemowa */
+
+	char *initial_descr;	/* pocz±tkowy opis stanu klienta */
 };
 
 /*
@@ -157,6 +160,8 @@ struct gg_dcc {
 	char *voice_buf;	/* bufor na pakiet po³±czenia g³osowego */
 	int incoming;		/* po³±czenie przychodz±ce */
 	char *chunk_buf;	/* bufor na kawa³ek danych */
+	uint32_t remote_addr;	/* adres drugiej strony */
+	uint16_t remote_port;	/* port drugiej strony */
 };
 
 /*
@@ -177,6 +182,7 @@ enum gg_session_enum {
 	GG_SESSION_DCC_VOICE,	/* rozmowa g³osowa */
 	GG_SESSION_USERLIST_GET,	/* pobieranie userlisty */
 	GG_SESSION_USERLIST_PUT,	/* wysy³anie userlisty */
+	GG_SESSION_UNREGISTER,	/* usuwanie konta */
 	
 	GG_SESSION_USER0 = 256,	/* zdefiniowana dla u¿ytkownika */
 	GG_SESSION_USER1,	/* j.w. */
@@ -265,7 +271,7 @@ struct gg_login_params {
 	char *password;			/* has³o */
 	int async;			/* asynchroniczne sockety? */
 	int status;			/* pocz±tkowy status klienta */
-	char *status_descr;		/* opis statusu XXX */
+	char *status_descr;		/* opis statusu */
 	uint32_t server_addr;		/* adres serwera gg */
 	uint16_t server_port;		/* port serwera gg */
 	uint32_t client_addr;		/* adres dcc klienta */
@@ -495,6 +501,7 @@ void gg_pubdir_free(struct gg_http *f);
 
 /* rejestracja nowego numerka */
 struct gg_http *gg_register(const char *email, const char *password, int async);
+struct gg_http *gg_unregister(uin_t uin, const char *password, const char *email, int async);
 #define gg_register_watch_fd gg_pubdir_watch_fd
 #define gg_register_free gg_pubdir_free
 #define gg_free_register gg_pubdir_free
@@ -643,7 +650,7 @@ uint16_t gg_fix16(uint16_t x);
 #define GG_DEFAULT_PROTOCOL_VERSION 0x18
 #define GG_DEFAULT_TIMEOUT 30
 #define GG_HAS_AUDIO_MASK 0x40000000
-#define GG_LIBGADU_VERSION "CVS"
+#define GG_LIBGADU_VERSION "20020921"
 
 #define GG_DEFAULT_DCC_PORT 1550
 
@@ -705,6 +712,8 @@ struct gg_login_ext {
 #define GG_STATUS_BLOCKED 0x0006		/* zablokowany */
 
 #define GG_STATUS_FRIENDS_MASK 0x8000		/* tylko dla znajomych (4.6) */
+
+#define GG_STATUS_DESCR_MAXSIZE 40
 
 /*
  * makra do szybkiego sprawdzania stanu. ich znaczenie powinno byæ jasne.

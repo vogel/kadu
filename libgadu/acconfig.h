@@ -1,4 +1,4 @@
-/* $Id: acconfig.h,v 1.1 2002/09/12 21:04:39 chilek Exp $ */
+/* $Id: acconfig.h,v 1.2 2002/09/22 19:23:35 chilek Exp $ */
 
 /* define if you want "wap" support */
 #undef WITH_WAP

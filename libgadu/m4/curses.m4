@@ -1,5 +1,5 @@
 dnl Rewritten from scratch. --wojtekka
-dnl $Id: curses.m4,v 1.3 2002/09/12 21:05:02 chilek Exp $
+dnl $Id: curses.m4,v 1.4 2002/09/22 19:23:37 chilek Exp $
 
 AC_DEFUN(AC_CHECK_NCURSES,[
   AC_SUBST(CURSES_LIBS)
@@ -39,11 +39,14 @@ AC_DEFUN(AC_CHECK_NCURSES,[
 	CURSES_LIBS="$lib"
 	CURSES_INCLUDES="-I$include"
 	have_ncurses=true
+	ldflags_old="$LDFLAGS"
+	LDFLAGS="$CURSES_LIBS"
 	AC_DEFINE(HAVE_NCURSES)
 	AC_CHECK_LIB(ncurses, initscr,
 	  [CURSES_LIBS="$CURSES_LIBS -lncurses"],
 	  [AC_CHECK_LIB(curses, initscr,
 	    [CURSES_LIBS="$CURSES_LIBS -lcurses"])])
+	LDFLAGS="$ldflags_old"
 	break
       fi
     done

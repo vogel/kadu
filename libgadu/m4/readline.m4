@@ -1,5 +1,5 @@
 dnl Rewritten from scratch. --wojtekka
-dnl $Id: readline.m4,v 1.3 2002/09/12 21:05:02 chilek Exp $
+dnl $Id: readline.m4,v 1.4 2002/09/22 19:23:37 chilek Exp $
 
 AC_DEFUN(AC_CHECK_READLINE,[
   AC_SUBST(READLINE_LIBS)
@@ -35,7 +35,7 @@ AC_DEFUN(AC_CHECK_READLINE,[
         AC_DEFINE(HAVE_READLINE)
         have_readline=true
         break
-      elif test -f $incl/readline.h ; then
+      elif test -f $incl/readline.h -a "x$incl" != "x/usr/include"; then
         AC_MSG_RESULT($incl/readline.h)
         READLINE_LIBS="$lib -lreadline"
         READLINE_INCLUDES="-I$incl"

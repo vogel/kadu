@@ -5,6 +5,114 @@ pierwsz± liter± nicka jest ,,x'' (w - wojtekka, s - speedy, a - arekm,
 d - drg). ,,p/nick'' oznacza patch lub ¼ród³o podes³ane przez ,,nick'',
 ,,i/nick'' oznacza czyj¶ pomys³, ,,b/nick'' mówi, kto zg³osi³ b³±d.
 
+// 2002-09-21
+
+- poprawka themów ze stylami (Arim/w)
+- poprawka execa z ukrytym zakoñczeniem (sdas/w)
+- dodanie pól gg_dcc->remote_{addr,port}, podbicie wersji API (w)
+- b³êdy dcc informuj± równie¿ o adresie IP, ¿eby wiedzieæ kto nas
+  mo¿e DoSowaæ (w)
+- poprawione wysy³anie mesgów do nieistniej±cych (jojo/w)
+- poprawka rozpoznawania p³ci w /list (w)
+- poprawka informacji o u¿ytkownikach (sdas/w)
+- dodanie sta³ej GG_STATUS_DESCR_MAXSIZE (jojo/w)
+- informowanie o przekroczeniu rozmiaru opisu (jojo/w)
+- libgadu potrafi ustawiaæ opis przy logowaniu (w)
+- ekg zachowuje opis przy /save (FIG/w)
+- poprawki w /help (FIG/w)
+- mo¿liwo¶æ usuwania u¿ytkowników (DJ/w)
+- poprawione /exec (wojboj/w)
+
+// 2002-09-20
+
+- poprawka statusbara (sdas/w)
+- /find bez parametrów szuka nas samych (sdas/w)
+- puste linie nie s± zapisywane w historii (sdas/w)
+- usuniêcie leaka w add_send_nick() (w)
+- usuniêcie leaka w ui-ncurses (w)
+- uconstowienie command_exec() i argumentów komend (w)
+- poprawka segfaulta przy nieudanym szukaniu (wojboj/w)
+- ustawianie LDFLAGS w configure.in (sdad,wojboj/w)
+- pominiêcie /usr/include/readline.h w wykrywaniu readline, ¿eby nie
+  powodowaæ b³êdów na NetBSD. wszystkie w miarê nowe wersje readline
+  instaluj± siê w $prefix/include/readline/readline.h (w)
+- wys³anie wiadomo¶ci nie otwiera okienka (jojo/w)
+- poprawka helpa aliasów i debugowych komend (sdas/w)
+- przerzucenie tekstu z F1 do theme'u (thv/w)
+
+// 2002-09-19
+
+- poprawki dope³nieñ w ui-ncurses (theKnight/w)
+- zmiany stanu zawsze wrzuca do pierwszego okna (theKnight/w)
+- wska¼nik (more) w ui-ncurses (sdas/w)
+- ³adowanie themu zeruje poprzedni (Arim/w)
+- pocz±tek obs³ugi xtermowych tytu³ów (jojo/w)
+- dodana zmienna keep_reason (jojo/w)
+- format statusbara %{nick} i %{?nick ...} (FIG/w)
+- ³adniejszy /status (FIG/w)
+- poprawka /set i nieistniej±cych zmiennych (sdas/w)
+
+// 2002-09-18
+
+- poprawka segfaultu przy sortowaniu okien w ui-readline (wojboj/w)
+- ignore/unignore akceptuj± konferencje (DJ/w)
+- update DJ.theme (DJ/w)
+- poprawka d³ugich linii w ui-readline (*/w)
+
+// 2002-09-17
+
+- literówka w themie (thv/w)
+- osobny format dla timestampów wysy³anych mesgów (FIG/w)
+- update themów (Arim/w)
+- themy mog± mieæ kilka dostêpnych wygl±dów. rodzaj wygl±du podaje siê
+  po przecinku za nazw± pliku. przyk³ad ,,set theme arim'' i 
+  ,,set theme arim,irc''. ró¿ne wygl±dy definiuje siê przez dodanie do
+  themu wpisów z nazwami zakoñczonymi przecinkiem i nazw±. póki co,
+  eksperymentalne -- sposób zapisu i okre¶lania mo¿e siê zmieniæ. (Arim/w)
+- poprawka /query (Arim/w)
+- dodanie /conference --ignore, --unignore i --find (DJ/w)
+
+// 2002-09-14
+
+- poprawka segfaultu w /set (mihau/w)
+- poprawka dokumentacji docs/on.txt (thv/w)
+
+// 2002-09-13
+
+- sent_line* zawieraj± datê wys³ania mesga, a nie 1.01.1970r (Arim/w)
+- update dj.theme (DJ/w)
+- mo¿liwo¶æ zmiany nazwy konferencji (DJ/w)
+- poprawka b³êdu przy log_status 1 (speedy/w)
+- naprawienie zmiennej timestamp w ncurses (czach/w)
+- ,,W pogoni za kursorem'' (DJ,czach/w)
+
+// 2002-09-12
+
+- completion_notify ma now± flagê 4 (busy), która bierze pod uwagê
+  równie¿ zajêtych (Murphy,kameleon/w)
+- ,,window clear'' dzia³a w ui-ncurses. wzorowane na irssi, gdzie
+  zawarto¶æ okna nie jest kompletnie czyszczona, tylko przewijana
+  poza obszar ekranu (w)
+- zmiana zachowania gg_search(). active w wyniku bêdzie zawiera³o
+  stan danej osoby. z tego wzglêdu bêdzie wy¶wietla³o te¿ zajêtych
+  jako dostêpnych w aplikacjach. podbicie API, mimo ¿e powinno byæ
+  ABI. tyle, ¿e z powodu takiej bzdury nie warto psuæ zale¿no¶ci (w)
+- wielolinijkowe wiadomo¶ci w ui-ncurses, wywo³ywane Ctrl-Enter,
+  Alt-Enter lub Esc-Enter. wysy³ane t± sam± kombinacj±, anulowane
+  samym Esc. teoretycznie mo¿e powodowaæ segfaulty, ale sprawdzi³em
+  valgrindem i niczego niebezpiecznego nie znalaz³. (w)
+- konferencje. wynalazek ten obs³uguje siê poleceniem ,,conference''.
+  okienka bêda automagicznie tworzone, je¶li mamy odpowiednie
+  ustawienia. (dawjar/w)
+- zmiana kolejno¶ci poszukiwania themeów (dawjar/w)
+- update dj.theme (dawjar/w)
+- dodanie GG_STATUS_BLOCKED (Chilek/w)
+- dodanie funkcji gg_notify_ex(), gg_add_notify_ex() i gg_remove_notify_ex().
+  podbicie API (Chilek/w)
+- ujemna warto¶æ formatów _line_width powoduje odjêcie ich od szeroko¶ci
+  ekranu (czach/w)
+- naprawienie rozrzucania mesgów po okienkach, zepsutego jednym z patchy (w)
+
 // 2002-09-11
 
 - dodany skrót "-A" dla parametru "--all" w ekgsearch (wysek)
@@ -33,6 +141,7 @@ d - drg). ,,p/nick'' oznacza patch lub ¼ród³o podes³ane przez ,,nick'',
 - dodanie gg_search_request_free(), podbicie API (w)
 - dodanie osobnych timestampów dla czasu nadania wiadomo¶ci (Bies/w)
 - poprawka potencjalnego segfaulta w szukaniu (wysek/w)
+- poprawka czasu wiadomo¶ci w ekgwap (serek/w)
 
 // 2002-09-10
 
@@ -1739,4 +1848,4 @@ i BUGS.
 - eleet niebieskie t³o mesgów (wiem, dalekie od idea³u).
 
 
-$Id: ChangeLog,v 1.4 2002/09/12 21:05:00 chilek Exp $
+$Id: ChangeLog,v 1.5 2002/09/22 19:23:35 chilek Exp $
