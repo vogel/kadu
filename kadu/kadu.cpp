@@ -125,7 +125,11 @@
 #define GG_USER_BLOCKED	0x04
 
 extern void ackHandler(int);
+
+/*
+Nie widzia³em, zeby gdzies byla taka funkcja uzyta i zadeklarowana
 extern void UinToUserlistEntry (uin_t, int);
+*/
 
 bool userlist_sent = FALSE;
 bool socket_active = FALSE;
@@ -136,12 +140,25 @@ int last_read_event = -1;
 int server_nr = 0;
 bool timeout_connected = true;
 bool i_wanna_be_invisible = true;
-Operation *progresswindow;
 
+/*
+Klasa nie uzywana, po co ma wiêc zajmowac miejsce w pamieci, patrz plik network.cpp
+Operation *progresswindow;
+*/
+
+/*
+Zywcem deklarowanie struktury z przykladowego pliku z conn-async.c(libgadu)
+wcale nie uzywana pozniej, wiêc po co ?
 struct timeval tv;
+*/
+
 struct gg_event *e;
+
+/*
+Jak wy¿ej
 fd_set rd, wd;
 int ret;
+*/
 
 QTime closestatusppmtime;
 QTimer *blinktimer;
@@ -155,7 +172,11 @@ QPopupMenu *grpmenu;
 
 QValueList<struct chats> chats;
 struct gg_session *sess = NULL;
+
+/* Nie znalazlem w kodzie aby to gdzies jeszcze bylo uzwane
 struct sigaction sigact;
+*/
+
 QArray<struct acks> acks(0);
 struct gg_dcc * dccsock;
 struct gg_login_params loginparams;
@@ -1800,12 +1821,15 @@ void Kadu::disconnectNetwork() {
 		gg_dcc_ip = 0;
 		gg_dcc_port = 0;
 		}
-	if (progresswindow) {
+
+//Akcja oczyszczania kodu ;)
+/*	if (progresswindow) {
 //	if (progresswindow->isVisible())
 //	    progresswindow->close();
 		delete progresswindow;
 		progresswindow = NULL;
 		}
+*/
 
 	disconnect_planned = true;
 	if (sess) {

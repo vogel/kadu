@@ -131,6 +131,7 @@ struct acks {
     QWidget *ptr;
 };
 
+/* Klasa nie uzywana, patrz plik network.cpp
 class Operation : public QProgressDialog {
 	Q_OBJECT
 	public:
@@ -143,6 +144,7 @@ class Operation : public QProgressDialog {
 	void perform();
 	void cancel();
 };
+*/
 
 class MyLabel : public QLabel {
 	Q_OBJECT

@@ -7,6 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
+/* Klasa nieu¿ywana, po co ma zajmowaæ pamieæ i zwiekszac plik wynikowy kadu
+
 #include <qpushbutton.h>
 #include <qlayout.h>
 #include <qtimer.h>
@@ -20,7 +22,7 @@ extern int last_ping;
 extern bool socket_active;
 extern Operation *progresswindow;
 
-	/* progress bar, now isn't the name self-explanatory? :> */
+	// progress bar, now isn't the name self-explanatory? :>
 Operation::Operation(const QString & labelText, const QString & cancelButtonText, int totalSteps, QWidget *parent )
 : QProgressDialog(labelText, cancelButtonText, totalSteps, parent) {
 //    setWFlags(Qt::WDestructiveClose);
@@ -90,4 +92,4 @@ void Operation::cancel() {
     t->stop();
     progresswindow = NULL;
 }
-
+*/
