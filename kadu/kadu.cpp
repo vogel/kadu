@@ -253,6 +253,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	kdebugf();
 	Docked = false;
 	ShowMainWindowOnStart = true;
+	lastId = -1;//id taba
 
 	KaduSlots *kaduslots=new KaduSlots(this, "kaduslots");
 	UinType myUin=config_file.readNumEntry("General", "UIN");
@@ -400,7 +401,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	connect(&userlist, SIGNAL(modified()), this, SLOT(userListModified()));
 
 	/* add all users to userbox */
-//	activeGroup = "anything";
 	setActiveGroup("");
 
 	// dodanie przyciskow do paska narzedzi
@@ -896,15 +896,6 @@ void Kadu::setActiveGroup(const QString& group)
 {
 	kdebugf();
 
-//	printBacktrace("setActiveGroup");
-
-/*	if (group == activeGroup)
-	{
-		kdebugf2();
-		return;
-	}
-*/
-//	activeGroup = group;
 	Userbox->clearUsers();
 	for (UserList::ConstIterator i = userlist.begin(); i != userlist.end(); ++i)
 	{
@@ -929,10 +920,14 @@ void Kadu::setActiveGroup(const QString& group)
 
 void Kadu::groupTabSelected(int id)
 {
-	if (id == 0)
-		setActiveGroup("");
-	else
-		setActiveGroup(GroupBar->tab(id)->text());
+	if (lastId != id) // od¶wie¿amy UserBoksa dopiero gdy grupa na prawdê siê zmieni...
+	{
+		lastId = id;
+		if (id == 0)
+			setActiveGroup("");
+		else
+			setActiveGroup(GroupBar->tab(id)->text());
+	}
 }
 
 void Kadu::userListModified()

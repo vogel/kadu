@@ -74,7 +74,7 @@ class Kadu : public QMainWindow
 		bool DoBlink;
 		bool BlinkOn;
 		bool Docked;
-		QString activeGroup;
+		int lastId;
 
 		void createMenu();
 		void createToolBar();
