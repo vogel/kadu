@@ -324,6 +324,13 @@ void UserInfo::newGroupClicked()
 		MessageBox::msg(tr("'%1' is prohibited").arg(';'), true);
 		return;
 	}
+	bool number;
+	groupName.toLong(&number);
+	if (number)
+	{
+		MessageBox::msg(tr("Numbers are prohibited"), true);//ze wzglêdu na format listy kontaktów...
+		return;
+	}
 	if (groupName==tr("All"))
 	{
 		MessageBox::msg(tr("This group already exists!"), true);
