@@ -51,6 +51,9 @@
   i ustawienie portu nie jest brane pod uwagê. Dopiero przy ³±czeniu siê z pozosta³ymi
   serwerami, ustawienie portu jest uwzglêdniane. Przy w³asnych wpisach ip serwerów,
   kadu siê ³±czu odrazu z danym ip na ustawiony port (mast3r)
+* poprawka w konfiguracji, wybór "brak" emotikon - deaktywuje
+  mo¿liwo¶æ wyboru themes'u, stary kod byl niepoprawny i wywala³ 
+  bl±d na standardowe wyj¶cie (mast3r)
 
 +++ wersja 0.3.3-final
 * ikonka wiadomo¶ci i ikon statusu "ukryty" z telefonikiem

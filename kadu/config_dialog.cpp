@@ -563,7 +563,7 @@ void ConfigDialog::setupTab3(void) {
 	cb_emoticons_style->insertItem(i18n("Animated"));
 	cb_emoticons_style->setCurrentItem(config.emoticons_style);
 
-	QHBox* emotheme_box = new QHBox(emogroup);
+	emotheme_box = new QHBox(emogroup);
 	QLabel* l_emoticons_theme=new QLabel(i18n("Emoticons theme"),emotheme_box);
 	cb_emoticons_theme=new QComboBox(emotheme_box);
 	cb_emoticons_theme->insertStringList(emoticons.themes());
@@ -571,8 +571,7 @@ void ConfigDialog::setupTab3(void) {
 
 	if (config.emoticons_style==EMOTS_NONE)
 		emotheme_box->setEnabled(false);
-
-	QObject::connect(cb_emoticons_style,SIGNAL(activated(int)), emotheme_box, SLOT(setEnabled(bool)));
+	QObject::connect(cb_emoticons_style,SIGNAL(activated(int)), this, SLOT(chooseEmoticonsStyle(int)));
 
 	/* WWW begin */
 	QVGroupBox *webvgrp = new QVGroupBox(box3);
@@ -1351,6 +1350,13 @@ void ConfigDialog::chooseChatTest(void) {
 
 void ConfigDialog::chooseNotifyTest(void) {
 	playSound(e_soundnotify->text(), e_soundprog->text());
+}
+
+void ConfigDialog::chooseEmoticonsStyle(int index) {
+	if (!index)
+	    emotheme_box->setEnabled(false);
+	else
+	    emotheme_box->setEnabled(true);
 }
 
 void ConfigDialog::generateMyKeys(void) {

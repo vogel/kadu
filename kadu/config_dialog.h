@@ -76,6 +76,7 @@ class ConfigDialog : public QTabDialog	{
 
 		QComboBox *cb_emoticons_style;
 		QComboBox *cb_emoticons_theme;
+		QHBox	  *emotheme_box;
 		QCheckBox *b_autosend;
 		QCheckBox *b_scrolldown;
 		QLineEdit *e_emoticonspath;
@@ -179,6 +180,7 @@ class ConfigDialog : public QTabDialog	{
 		void chooseMsgTest();
 		void chooseChatTest();
 		void chooseNotifyTest();
+		void chooseEmoticonsStyle(int index);
 		void ifDockEnabled(bool);
 		void ifNotifyGlobal(bool);
 		void ifNotifyAll(bool);
