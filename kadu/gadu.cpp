@@ -407,11 +407,13 @@ void PubdirSocketNotifiers::socketEvent()
 			break;
 
 		case GG_STATE_DONE:
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "success!\n");
 			deleteSocketNotifiers();
 
 			if (p->success)
+			{
+				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "success!\n");
 				emit done(true, H);
+			}
 			else
 			{
 				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "error!\n");
