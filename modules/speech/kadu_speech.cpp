@@ -62,10 +62,8 @@ extern "C" int speech_init()
 		slotsObj, SLOT(chat(UinsList, const QString&, time_t,bool&)));
 	QObject::connect(&event_manager, SIGNAL(chatMsgReceived2(UinsList, const QString&, time_t)),
 		slotsObj, SLOT(message(UinsList, const QString&,time_t)));
-//	QObject::connect(&userlist, SIGNAL(changingStatus(const uin_t, const unsigned int, const unsigned int)),
-//		slotsObj, SLOT(notify(const uin_t, const unsigned int, const unsigned int)));
 	QObject::connect(&userlist, SIGNAL(statusModified(UserListElement*)),
-		slotsObj, SLOT(notify2(UserListElement*)));
+		slotsObj, SLOT(notify(UserListElement*)));
 
 	ConfigDialog::addTab("Notify");
 	ConfigDialog::addVGroupBox("Notify", "Notify", "Notify options");
@@ -139,11 +137,9 @@ extern "C" void speech_close()
 		slotsObj, SLOT(chat(UinsList, const QString&, time_t,bool&)));
 	QObject::disconnect(&event_manager, SIGNAL(chatMsgReceived2(UinsList, const QString&, time_t)),
 		slotsObj, SLOT(message(UinsList, const QString&,time_t)));
-	QObject::disconnect(&userlist, SIGNAL(changingStatus(const uin_t, const unsigned int, const unsigned int)),
-		slotsObj, SLOT(notify(const uin_t, const unsigned int, const unsigned int)));
 
 	QObject::disconnect(&userlist, SIGNAL(statusModified(UserListElement*)),
-		slotsObj, SLOT(notify2(UserListElement*)));
+		slotsObj, SLOT(notify(UserListElement*)));
 
 	delete slotsObj;
 	slotsObj=NULL;
@@ -331,17 +327,7 @@ void SpeechSlots::message(UinsList senders,const QString& msg,time_t time)
 	}
 }
 
-void SpeechSlots::notify(const uin_t uin, const unsigned int oldstatus, const unsigned int status)
-{
-	kdebugf();
-	UserListElement ule=userlist.byUin(uin);
-	if (isFemale(ule.first_name))
-		say(parse(config_file.readEntry("Speech", "NotifyFormatFemale"), ule));
-	else
-		say(parse(config_file.readEntry("Speech", "NotifyFormatMale"), ule));
-}
-
-void SpeechSlots::notify2(UserListElement *ule)
+void SpeechSlots::notify(UserListElement *ule)
 {
 	kdebugf();
 	if (!config_file.readBoolEntry("Notify","NotifyStatusChange"))

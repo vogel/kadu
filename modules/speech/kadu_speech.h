@@ -24,8 +24,7 @@ class SpeechSlots : public QObject
 		
 		void chat(UinsList senders, const QString& msg, time_t time, bool& grab);
 		void message(UinsList senders, const QString& msg, time_t time);
-		void notify(const uin_t uin, const unsigned int oldstatus, const unsigned int status);
-		void notify2(UserListElement *);
+		void notify(UserListElement *);
 		
 		void useArts(bool);
 		void useEsd(bool);
