@@ -519,14 +519,6 @@ What would you like to do?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Enable autoaway</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set status to away after </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Default status</source>
         <translation type="unfinished"></translation>
     </message>
@@ -544,10 +536,6 @@ What would you like to do?</source>
     </message>
     <message>
         <source>Private status</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add to description</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -616,10 +604,6 @@ What would you like to do?</source>
     </message>
     <message>
         <source>Quit.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Check idle every </source>
         <translation type="unfinished"></translation>
     </message>
     <message>

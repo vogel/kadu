@@ -256,14 +256,6 @@ Cosa vogliamo fare?</translation>
         <translation>Aggiungi il contatto</translation>
     </message>
     <message>
-        <source>Enable autoaway</source>
-        <translation>&quot;Torno subito&quot; automatico</translation>
-    </message>
-    <message>
-        <source>Set status to away after </source>
-        <translation>cambia a &quot;Torno subito&quot; dopo</translation>
-    </message>
-    <message>
         <source>On shutdown, set description:</source>
         <translation>Quando chiudi Kadu, lascia questa descrizione:</translation>
     </message>
@@ -278,10 +270,6 @@ Cosa vogliamo fare?</translation>
     <message>
         <source>Private status</source>
         <translation>Solo per amici</translation>
-    </message>
-    <message>
-        <source>Add to description</source>
-        <translation>Aggiungi alla descrizione</translation>
     </message>
     <message>
         <source>Show Inactive users</source>
@@ -621,10 +609,6 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
     </message>
     <message>
         <source>Quit.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Check idle every </source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -256,14 +256,6 @@ Was wollen sie nun tun?</translation>
         <translation>Kontakt hinzufügen</translation>
     </message>
     <message>
-        <source>Enable autoaway</source>
-        <translation>Automatisch &quot;Beschäftigt&quot;-Status</translation>
-    </message>
-    <message>
-        <source>Set status to away after </source>
-        <translation>Ändere den Status nach</translation>
-    </message>
-    <message>
         <source>On shutdown, set description:</source>
         <translation>Beim Ausschalten setze Beschreibung:</translation>
     </message>
@@ -278,10 +270,6 @@ Was wollen sie nun tun?</translation>
     <message>
         <source>Private status</source>
         <translation>Status &quot;Nur für Bekannte&quot;</translation>
-    </message>
-    <message>
-        <source>Add to description</source>
-        <translation>Beschreibung hinzufügen</translation>
     </message>
     <message>
         <source>Show Inactive users</source>
@@ -621,10 +609,6 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>Quit.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Check idle every </source>
         <translation type="unfinished"></translation>
     </message>
     <message>

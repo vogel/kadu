@@ -260,14 +260,6 @@ Wybierz jedną z poniższych opcji:</translation>
         <translation>Dodaj kontakt</translation>
     </message>
     <message>
-        <source>Enable autoaway</source>
-        <translation>Automatyczny status &quot;zaraz wracam&quot;</translation>
-    </message>
-    <message>
-        <source>Set status to away after </source>
-        <translation>Zmień status po</translation>
-    </message>
-    <message>
         <source>Default status</source>
         <translation>Status domyślny</translation>
     </message>
@@ -286,10 +278,6 @@ Wybierz jedną z poniższych opcji:</translation>
     <message>
         <source>Private status</source>
         <translation>Tylko dla znajomych</translation>
-    </message>
-    <message>
-        <source>Add to description</source>
-        <translation>Dodaj do opisu</translation>
     </message>
     <message>
         <source>Show Inactive users</source>
@@ -622,10 +610,6 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     <message>
         <source>Quit.</source>
         <translation>Porzuć</translation>
-    </message>
-    <message>
-        <source>Check idle every </source>
-        <translation> Sprawdź bezczynność co:</translation>
     </message>
     <message>
         <source>Show status button</source>
@@ -1588,12 +1572,12 @@ ponieważ jest używany  przez inny moduł</translation>
     </message>
     <message>
         <source>Module %1 is already active</source>
-        <translation>Modół %1 jest aktywny</translation>
+        <translation>Moduł %1 jest aktywny</translation>
     </message>
     <message>
         <source>Cannot load %1 module library.:
 %2</source>
-        <translation>Nie mogę załadować %1 biblioteki modułu.:
+        <translation>Nie mogę załadować biblioteki modułu %1:
 %2</translation>
     </message>
 </context>
