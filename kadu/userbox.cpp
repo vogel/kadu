@@ -326,6 +326,7 @@ void UserBox::refresh()
 					a_users.append(user.altnick);
 					break;
 				case GG_STATUS_INVISIBLE_DESCR:
+				case GG_STATUS_INVISIBLE:
 				case GG_STATUS_INVISIBLE2:
 					i_users.append(user.altnick);
 					break;
@@ -413,6 +414,7 @@ void UserBox::refresh()
 					else
 						pix = icons_manager.loadIcon("OnlineWithDescription");
 					break;
+				case GG_STATUS_INVISIBLE:
 				case GG_STATUS_INVISIBLE2:
 					if (has_mobile)
 						pix = icons_manager.loadIcon("InvisibleWithMobile");

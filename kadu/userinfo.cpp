@@ -192,6 +192,7 @@ void UserInfo::setupTab1() {
 				e_status->setText(tr("Busy")); break;
 			case GG_STATUS_BUSY_DESCR:
 				e_status->setText(tr("Busy (d.)")); break;
+			case GG_STATUS_INVISIBLE:
 			case GG_STATUS_INVISIBLE2:
 				e_status->setText(tr("Invisible")); break;
 			case GG_STATUS_INVISIBLE_DESCR:
