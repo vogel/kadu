@@ -265,15 +265,14 @@ void KaduTextBrowser::copyLinkLocation() {
 }
 
 QPopupMenu *KaduTextBrowser::createPopupMenu(const QPoint &point) {
-	QPopupMenu *popupmenu;
-
 	kdebugf();
-	
+	QPopupMenu *popupmenu;
 	anchor = anchorAt(point);
 	popupmenu = QTextBrowser::createPopupMenu(point);
-	if (!anchor.isEmpty()) {
+
+	if (!anchor.isEmpty())
 		popupmenu->insertItem(tr("Copy link &location"), this, SLOT(copyLinkLocation()), CTRL+Key_L, -1, 0);
-		}
+
 	return popupmenu;
 }
 
@@ -662,9 +661,9 @@ void Chat::setTitle() {
 			title = tr("Conference with ");
 		else
 			title = config_file.readEntry("Look","ConferencePrefix");
-		for (int k = 0; k < Uins.size(); k++) {
-			if (k)
-				title.append(", ");
+		title.append(parse(config_file.readEntry("Look","ConferenceContents"),userlist.byUinValue(Uins[0]),false));
+		for (int k = 1; k < Uins.size(); k++) {
+			title.append(", ");
 			title.append(parse(config_file.readEntry("Look","ConferenceContents"),userlist.byUinValue(Uins[k]),false));
 		}
 		setIcon(icons_manager.loadIcon("Online"));
@@ -687,14 +686,11 @@ void Chat::setTitle() {
 
 void Chat::changeTitle() {
 	if(!isActiveWindow()){
-		if (caption() == "  "){
+		if (caption() == "  ")
 			setCaption(title_buffer);
-			title_timer->start(500,TRUE);
-		}
-		else{    
+		else
 			setCaption("  ");
-			title_timer->start(500,TRUE);
-		}
+		title_timer->start(500,TRUE);
 	}
 }
 
@@ -708,14 +704,11 @@ void Chat::windowActivationChange(bool oldActive) {
 void Chat::keyPressEvent(QKeyEvent *e) {
 	if (HotKey::shortCut(e,"ShortCuts", "chat_clear"))
 		clearChatWindow();
-	else
-	if (HotKey::shortCut(e,"ShortCuts", "chat_close"))
+	else if (HotKey::shortCut(e,"ShortCuts", "chat_close"))
 		close();
-	else
-	if (HotKey::shortCut(e,"ShortCuts", "kadu_viewhistory"))
+	else if (HotKey::shortCut(e,"ShortCuts", "kadu_viewhistory"))
 		HistoryBox();
-	else
-	if (HotKey::shortCut(e,"ShortCuts", "kadu_searchuser"))
+	else if (HotKey::shortCut(e,"ShortCuts", "kadu_searchuser"))
 		userWhois();
 	QWidget::keyPressEvent(e);
 }
@@ -741,11 +734,10 @@ QString Chat::convertCharacters(QString edit, bool me) {
 		if (p < 0)
 			continue;
 		int l=url_regexp.matchedLength();
-		QString link="<a href=\""+text.mid(p,l)+"\">"+
-			text.mid(p,l)+"</a>";
+		QString link="<a href=\""+text.mid(p,l)+"\">"+text.mid(p,l)+"</a>";
 		doc.splitElement(i,p,l);
 		doc.setElementValue(i,link,true);
-	};
+	}
 
 	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")!=EMOTS_NONE)
 	{
@@ -754,7 +746,7 @@ QString Chat::convertCharacters(QString edit, bool me) {
 			emoticons.expandEmoticons(doc,config_file.readColorEntry("Look","ChatMyBgColor"));
 		else
 			emoticons.expandEmoticons(doc,config_file.readColorEntry("Look","ChatUsrBgColor"));
-	};
+	}
 	
 	edit=doc.generateHtml();
 	return edit;
@@ -791,9 +783,9 @@ void Chat::formatMessage(bool me, const QString &altnick, const QString &msg, co
 
 	toadd.append("<table width=\"100%\"><tr><td bgcolor=\"");
 	if (me)
-	    	toadd.append(config_file.readColorEntry("Look","ChatMyBgColor").name());
+		toadd.append(config_file.readColorEntry("Look","ChatMyBgColor").name());
 	else
-	    	toadd.append(config_file.readColorEntry("Look","ChatUsrBgColor").name());
+		toadd.append(config_file.readColorEntry("Look","ChatUsrBgColor").name());
 	toadd.append("\"><font color=\"");
 	if (me)
 		toadd.append(config_file.readColorEntry("Look","ChatMyFontColor").name());
@@ -991,8 +983,7 @@ void Chat::sendMessage(void) {
 		return;
 
 	if (myLastFormatsLength)
-		seq = gadu->sendMessageRichText(Uins, tmp,
-			(unsigned char *)myLastFormats, myLastFormatsLength);
+		seq = gadu->sendMessageRichText(Uins, tmp, (unsigned char *)myLastFormats, myLastFormatsLength);
 	else
 		seq = gadu->sendMessage(Uins, tmp);
 	free(tmp);
@@ -1236,7 +1227,7 @@ void Chat::initModule()
 	chat_manager=new ChatManager();
 	connect(&event_manager,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
 		chat_manager,SLOT(chatMsgReceived(UinsList,const QString&,time_t,bool&)));
-};
+}
 
 const UinsList& Chat::uins()
 {
@@ -1288,7 +1279,7 @@ void ColorSelector::iconClicked(const QColor& color)
 {
 	emit colorSelect(color);
 	close();
-};
+}
 
 void ColorSelector::closeEvent(QCloseEvent *e) {
 	kdebugf();
