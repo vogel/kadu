@@ -1,33 +1,30 @@
-#!/bin/sh
+#!/bin/bash
+#################################################################
+#    Application Setup Script v0.1.1   (c) 2002 Kadu Team   #
+#            This program is free software. You can redistribute it and/or #
+#           modify it under the terms of the GNU General Public License  #
+#################################################################
 
-#################################################################
-#    Application Setup Script v0.1.0   (c) 2002 A.Smarzewski    #
-# This program is free software. You can redistribute it and/or #
-#  modify it under the terms of the GNU General Public License  #
-#################################################################
 
- 
-#################################################################
+#   Definicja domy?lnych warto?ci dla zmiennych
 
 APP_NAME=KADU
 APP_VER=0.3.3
-APP_DEF_DIR=/usr/local/kadu
+APP_DEF_DIR=/usr
+# $1 - nazwy katalogów, $2 - Wartosci domy?lne
 
-#################################################################
+#  Deklaracja funkcji
 
-
-# $1 - directory name, $2 - default val
-# Response is stored in $REPLY
 function AskForPath()
 {
-	echo -n "Please, enter $1 directory path: "
+	echo -n "Prosz?, poda? ?cie?k? do $1 : "
 	read -e
 	if [ "$REPLY" == "" ]; then
 		REPLY="$2"
 	fi;
 }
 
-# $1 - path, $2 - file to check, $3 - correct string, $4 - incorrect string
+# $1 - scie?ka, $2 - plik sprawdzany, $3 - prawid?owy string, $4 - nieprawid?owy string
 function CheckPath()
 {
 	if [ -e $1/$2 ]; then
@@ -37,20 +34,165 @@ function CheckPath()
 	fi;
 }
 
-function ConfigureAndMake()
+function Konfiguruj()
 {
 	QTDIR="$QT_DIR"
 	LD_LIBRARY_PATH="$QT_DIR/lib:$LD_LIBRARY_PATH"
+	export QTDIR
 	KDEDIR="$KDE_DIR"
+	export KDEDIR
+	OPER="Configure"
 	./configure "--prefix=$APP_DIR"
-	make
+	WYK=$?
+ if test "$WYK" -ne 0; then
+        Error
+	exit
+ fi;
 }
 
+function Konfiguruj_bez_libgadu()
+{
+	QTDIR="$QT_DIR"
+	LD_LIBRARY_PATH="$QT_DIR/lib:$LD_LIBRARY_PATH"
+	export QTDIR
+	KDEDIR="$KDE_DIR"
+	export KDEDIR
+	OPER="Configure"
+	./configure "--prefix=$APP_DIR" "--with-existing-libgadu" 
+	WYK=$?
+ if test "$WYK" -ne 0; then
+        Error
+	exit
+ fi;
+}
+
+function Kompiluj()
+{
+	OPER="Kompiluj"
+	make
+	WYK=$?
+if test "$WYK" -ne 0; then
+        Error
+	exit
+ fi;
+}
+
+function Zainstaluj()
+{	OPER="Zainstaluj"
+	make install
+	WYK=$?
+ if test "$WYK" ;then
+        Gratulacje
+        exit
+        else
+        Error
+        exit
+ fi;
+}
+
+function Odinstaluj()
+{
+	OPER="Odinstaluj"
+	make uninstall
+	WYK=$?
+ if test "$WYK" ;then
+        Deinstal
+        exit
+        else
+        Error
+        exit
+ fi;
+}
+
+function Gratulacje()
+{
+	clear
+	echo " ============================================================================="
+	echo " 		Congratulatin $APP_NAME is correctly instaled in directory: $APP_DIR"
+	echo " ============================================================================="
+}
+
+function Deinstal()
+{
+	clear
+	echo " ============================================================================="
+	echo " 		$APP_NAME is correctly removed of directory $APP_DIR"
+	echo " ============================================================================="
+}
+
+function Error()
+{
+	echo -e "\a"
+	echo " ============================================================================="
+	echo " 		  ERROR operacion $OPER not correctly finished "
+	echo " ============================================================================="
+}
 function ShowInfo()
 {
+ 	clear
+        echo
+	echo " =============================================================================="
+	echo "                            PROGRAM USES THIS PATH:"
+	CheckPath "$QT_DIR" include/qapplication.h FOUND. "NOT FOUND!"
+	echo "     * Library QT version >=3.0.1, in directory: [$QT_DIR], $CORRECT"
+	CheckPath "$KDE_DIR" include/kapp.h FOUND. "NOT FOUND!"
+	echo "     * KDE Desktop version >=3.0.0, in directory: [$KDE_DIR], $CORRECT"
+	CheckPath "$APP_DIR" bin/kadu "INSTALLED" "NOT INSTALLED"
+	echo "     * Application $APP_NAME will be installed at directory: [$APP_DIR], $CORRECT"
+	echo
+	echo " =============================================================================="
+	echo " |                                   MENU                                     |"
+	echo " =============================================================================="
+	echo " |		Press   L	to view GNU licence.                          |"
+	echo " |		Press   Q	to change QT Library path.                    |"
+	echo " |		Press   K	to change KDE Desktop path.                   |"
+	echo " |		Press   D	to change destination path.                   |"
+	echo " |		Press   I	to install $APP_NAME.                              |"
+	echo " |		Press   U	to uninstall $APP_NAME.                            |"
+	echo " |		Press   B	to install $APP_NAME with existing libgadu         |"
+	echo " |		Press   P	to Help in Links program.                     |"
+	echo " |		Press   E	to exit.                                      |"
+	echo " =============================================================================="
+        echo "	                 WARNING!!! You have must root access."
+}
+
+function Szuk_kadu
+{
+APP_DIR=`find $HOME -path */bin/kadu -type f | sed -e 's/\/bin\/kadu$//' -e q`
+if [ "$APP_DIR" == "" ]; then
+APP_DIR=`find /usr -path */bin/kadu -type f | sed -e 's/\/bin\/kadu$//' -e q`
+fi;
+if [ "$APP_DIR" == "" ]; then
+APP_DIR=`find /opt -path */bin/kadu -type f | sed -e 's/\/bin\/kadu$//' -e q`
+fi;
+if [ "$APP_DIR" == "" ]; then
+APP_DIR="$APP_DEF_DIR"
+fi;
+}
+
+function Szuk_QT
+{
+QT_DIR=`find /usr -path */include/qapplication.h -type f | sed -e 's/\/include\/qapplication.h$//' -e q`
+if [ "$QT_DIR" == "" ]; then
+QT_DIR=`find /opt -path */include/qapplication.h -type f | sed -e 's/\/include\/qapplication.h$//' -e q`
+fi;
+}
+
+function Szuk_KDE
+{
+KDE_DIR=`find /usr -path */include/kapp.h -type f | sed -e 's/\/include\/kapp.h$//' -e q`
+if [ "$KDE_DIR" == "" ]; then
+KDE_DIR=`find /opt -path */include/kapp.h -type f | sed -e 's/\/include\/kapp.h$//' -e q`
+fi;
+}
+
+#########################################################################################
+#                                                       START PROGRAMU                                                                     #
+#########################################################################################
+clear
 	echo
 	echo "==============================================================================="
-	echo "          Welcome To $APP_NAME v$APP_VER Application Setup Script v0.1.0"
+	echo "          Welcome To $APP_NAME v$APP_VER Application Setup Script v0.1.1"
 	echo "==============================================================================="
 	echo
 	echo "  This program is free software; you can redistribute it and/or modify"
@@ -61,46 +203,29 @@ function ShowInfo()
 	echo "  This script will help You with $APP_NAME configuration, compilation and"
 	echo "  installation. $APP_NAME Application requires following units installed:"
 	echo
-	CheckPath "$QT_DIR" include/qapplication.h found. "NOT FOUND!"
-	echo "     * QT Library  (v>=3.0.1), path: [$QT_DIR], $CORRECT"
-	CheckPath "$KDE_DIR" include/kapp.h found. "NOT FOUND!"
-	echo "     * KDE Desktop (v>=3.0.0), path: [$KDE_DIR], $CORRECT"
+        echo " Configuring setup program please wait .........."
 	echo
-	CheckPath "$APP_DIR" bin/kadu "installed." "NOT INSTALLED"
-	echo "  Application will be installed at: [$APP_DIR], $CORRECT"
-	echo
-	echo "  Press L to view GNU licence."
-	echo "  Press Q to change QT Library path."
-	echo "  Press K to change KDE Desktop path."
-	echo "  Press D to change destination path."
-	echo "  Press I to install."
-	echo "  Press U to uninstall."
-	echo "  Press E to exit."
-}
+	echo "Searching for  KADU..."
+		Szuk_kadu
+	echo "Searching for  QT..."
+		Szuk_QT
+	echo "Searching for KDE..."
+		Szuk_KDE
 
-echo
-echo "Searching for $APP_NAME..."
-APP_DIR=`find / -path */bin/kadu -type f | sed -e 's/\/bin\/kadu$//' -e q`
-if [ "$APP_DIR" == "" ]; then
-	APP_DIR="$APP_DEF_DIR"
-fi;
-
-echo "Searching for QT..."
-QT_DIR=`find / -path */include/qapplication.h -type f | sed -e 's/\/include\/qapplication.h$//' -e q`
-
-echo "Searching for KDE..."
-KDE_DIR=`find / -path */include/kapp.h -type f | sed -e 's/\/include\/kapp.h$//' -e q`
-
+########################################################################################
+#					SEKCJA WYBORU MENU										#
+########################################################################################
 while [ 1 ]; do
 	ShowInfo
 	while [ 1 ]; do
 		read -n 1 -s
 		if [[ ("$REPLY" == "L") || ("$REPLY" == "l") ]]; then
+			clear
 			cat COPYING | more
 			break
 		fi;
 		if [[ ("$REPLY" == "Q") || ("$REPLY" == "q") ]]; then
-			AskForPath "QT Library"
+			AskForPath "biblioteki QT"
 			QT_DIR="$REPLY"
 			break
 		fi;
@@ -110,22 +235,34 @@ while [ 1 ]; do
 			break
 		fi;
 		if [[ ("$REPLY" == "D") || ("$REPLY" == "d") ]]; then
-			AskForPath "destination"
+			AskForPath "$APP_NAME"
 			APP_DIR="$REPLY"
-			break
+                        break
 		fi;
 		if [[ ("$REPLY" == "I") || ("$REPLY" == "i") ]]; then
-			ConfigureAndMake
-			make install
-			break
+			Konfiguruj
+			Kompiluj
+			Zainstaluj
+		fi;
+		if [[ ("$REPLY" == "B") || ("$REPLY" == "b") ]]; then
+			Konfiguruj_bez_libgadu
+			Kompiluj
+			Zainstaluj
 		fi;
 		if [[ ("$REPLY" == "U") || ("$REPLY" == "u") ]]; then
-			ConfigureAndMake
-			make uninstall
-			break
-		fi;	
+			Konfiguruj
+			Kompiluj
+			Odinstaluj
+		fi;
 		if [[ ("$REPLY" == "E") || ("$REPLY" == "e") ]]; then
 			exit
 		fi;
+		if [[ ("$REPLY" == "P") || ("$REPLY" == "p") ]]; then
+			links ./doc/index_doc.html
+			break
+		fi;
 	done
 done
+########################################################################################
+#					KONIEC													 #
+########################################################################################

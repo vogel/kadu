@@ -35,7 +35,7 @@ function CheckPath()
 	fi;
 }
 
-function Configure()
+function Konfiguruj()
 {
 	QTDIR="$QT_DIR"
 	LD_LIBRARY_PATH="$QT_DIR/lib:$LD_LIBRARY_PATH"
@@ -51,7 +51,23 @@ function Configure()
  fi;
 }
 
-function Make()
+function Konfiguruj_bez_libgadu()
+{
+	QTDIR="$QT_DIR"
+	LD_LIBRARY_PATH="$QT_DIR/lib:$LD_LIBRARY_PATH"
+	export QTDIR
+	KDEDIR="$KDE_DIR"
+	export KDEDIR
+	OPER="Configure"
+	./configure "--prefix=$APP_DIR" "--with-existing-libgadu" 
+	WYK=$?
+ if test "$WYK" -ne 0; then
+        Error
+	exit
+ fi;
+}
+
+function Kompiluj()
 {
 	OPER="Kompiluj"
 	make
@@ -134,6 +150,7 @@ function ShowInfo()
 	echo " |		Naci¶nij   D	aby zmieniæ lokalizacje $APP_NAME .		      |"
 	echo " |		Naci¶nij   I	aby rozpocz±æ instalacjê		      |"
 	echo " |		Naci¶nij   U	aby odinstalowaæ $APP_NAME.			      |"
+	echo " |		Naci¶nij   B	aby rozpocz±æ instalacjê bez libgadu	      |"
 	echo " |		Naci¶nij   P	aby uzyskaæ Pomoc za pomoc± programu Links.   |"
 	echo " |		Naci¶nij   E	aby zakoñczyæ program instalacyjny.	      |"
 	echo " =============================================================================="
@@ -224,13 +241,18 @@ while [ 1 ]; do
                         break
 		fi;
 		if [[ ("$REPLY" == "I") || ("$REPLY" == "i") ]]; then
-			Configure
-			Make
+			Konfiguruj
+			Kompiluj
+			Zainstaluj
+		fi;
+		if [[ ("$REPLY" == "B") || ("$REPLY" == "b") ]]; then
+			Konfiguruj_bez_libgadu
+			Kompiluj
 			Zainstaluj
 		fi;
 		if [[ ("$REPLY" == "U") || ("$REPLY" == "u") ]]; then
-			Configure
-			Make
+			Konfiguruj
+			Kompiluj
 			Odinstaluj
 		fi;
 		if [[ ("$REPLY" == "E") || ("$REPLY" == "e") ]]; then
