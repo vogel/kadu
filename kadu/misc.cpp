@@ -419,11 +419,13 @@ QString translateLanguage(const QApplication *application, const QString &locale
 {
 	const char *local[] = {"en",
 		"de",
+		"fr",
 		"it",
 		"pl",  0};
 
 	const char *name[] ={QT_TR_NOOP("English"),
 		QT_TR_NOOP("German"),
+		QT_TR_NOOP("French"),
 		QT_TR_NOOP("Italian"),
 		QT_TR_NOOP("Polish"), 0};
 

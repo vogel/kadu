@@ -454,12 +454,14 @@ void Wizard::createLanguagePage()
 	cb_language->insertItem(tr("Polish"));
 	cb_language->insertItem(tr("Italian"));
 	cb_language->insertItem(tr("German"));
+	cb_language->insertItem(tr("French"));
 
 	QString lang=config_file.readEntry("General", "Language");
 
 	if (lang=="pl")			cb_language->setCurrentItem(1);
 	else if (lang=="it")	cb_language->setCurrentItem(2);
 	else if (lang=="de")	cb_language->setCurrentItem(3);
+	else if (lang=="fr")	cb_language->setCurrentItem(4);
 
 	connect (cb_language, SIGNAL(activated(int)), this, SLOT(setLanguage(int)));
 
