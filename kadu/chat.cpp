@@ -536,10 +536,10 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time) {
 	QValueList<UinsList>::iterator uinsit = wasFirstMsgs.begin();
 	while (uinsit != wasFirstMsgs.end() && !senders.equals(*uinsit))
 		uinsit++;
-	if (uinsit != wasFirstMsgs.end())
-		return;
-	else
-		wasFirstMsgs.append(senders);
+//	if (uinsit != wasFirstMsgs.end())
+//		return;
+//	else
+//		wasFirstMsgs.append(senders);
 
 	date.setTime_t(time);
 	count = history.getHistoryEntriesCount(senders);
