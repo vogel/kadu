@@ -265,7 +265,7 @@ void TrayHint::set_hint(void) {
 	QString text_hint; 
 	for (QStringList::Iterator points = hint_list.begin(); points != hint_list.end(); ++points)
 		text_hint.append(*points);
-	size_hint = QFontMetrics(config.fonts.userbox).size(Qt::ExpandTabs, text_hint);
+	size_hint = QFontMetrics(config.fonts.trayhint).size(Qt::ExpandTabs, text_hint);
 	size_hint = QSize(size_hint.width()+35,size_hint.height()+10);
 	resize(size_hint);
 	hint->resize(size_hint);
@@ -344,6 +344,7 @@ void TrayHint::remove_hint() {
 }
 
 void TrayHint::restart() {
+	hide();
 	hint->clear();
 	hint_timer->stop();
 	hint_list.clear();
