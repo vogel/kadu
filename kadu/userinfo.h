@@ -2,6 +2,7 @@
 #define USERINFO_H
 
 #include <qhbox.h>
+#include <qvbox.h>
 #include <qlineedit.h>
 #include <qcheckbox.h>
 #include <qdns.h>
@@ -15,7 +16,8 @@
 /**
 	Dialog pokazuj±cy informacje o wybranym kontakcie
 **/
-class UserInfo : public QHBox {
+class UserInfo : public QHBox
+{
 	Q_OBJECT
 	public:
 		/**
@@ -26,8 +28,7 @@ class UserInfo : public QHBox {
 		/**
 			konstruktor
 		**/
-		UserInfo(const QString &, QDialog* parent,
-			const QString &altnick, bool fAddUser = false);
+		UserInfo(const QString &altnick, bool addUser = false, QDialog* parent=0, const char *name=0);
 		~UserInfo();
 
 	private:
@@ -40,7 +41,6 @@ class UserInfo : public QHBox {
 		QLineEdit *e_uin;
 		QLineEdit *e_addr;
 		QLineEdit *e_ver;
-		QComboBox *cb_group;
 		QLineEdit *e_email;
 		QLineEdit *e_dnsname;
 		QCheckBox *c_blocking;
@@ -50,7 +50,13 @@ class UserInfo : public QHBox {
 		QTabWidget *tw_main;
 		QVGroupBox *vgb_general;
 		QDns *dns;
-		bool fAddUser;
+		
+		QValueList<QCheckBox *> groups;
+		QValueList<QCheckBox *> hiddenCheckBoxes;
+		QLineEdit *newGroup;
+		QVBox *groupsBox;
+		
+		bool addUser;
 		void addNewUser(UserListElement& e);
 		void changeUserData(UserListElement& e);
 		void keyPressEvent(QKeyEvent *);
@@ -58,6 +64,7 @@ class UserInfo : public QHBox {
 	protected:
 		void setupTab1();
 		void setupTab2();
+		void setupTab3();
 
 	public slots:
 		void resultsReady();
@@ -65,6 +72,7 @@ class UserInfo : public QHBox {
 
 	private slots:
 		void updateUserlist();
+		void newGroupClicked();
 };
 
 #endif

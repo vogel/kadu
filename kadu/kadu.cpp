@@ -618,10 +618,7 @@ void Kadu::showUserInfo() {
 	}
 	users = activeUserBox->getSelectedUsers();
 	if (users.count() == 1)
-	{
-		UserInfo *ui = new UserInfo("user info", 0, (*users.begin()).altnick);
-		ui->show();
-	}
+		(new UserInfo((*users.begin()).altnick, false, 0, "user info"))->show();
 	kdebugf2();
 }
 
@@ -647,7 +644,7 @@ void Kadu::personalInfo()
 }
 
 void Kadu::addUserAction() {
-	(new UserInfo("add user", 0, QString::null, true))->show();
+	(new UserInfo(QString::null, true, 0, "add user"))->show();
 }
 
 void Kadu::deleteHistory()

@@ -385,7 +385,7 @@ void SearchDialog::AddButtonClicked()
 	if (!altnick.length())
 		altnick = uin;
 
-	UserInfo *ui = new UserInfo("user info", 0, QString::null, true);
+	UserInfo *ui = new UserInfo(QString::null, true, 0, "user info");
 	UserListElement e;
 	bool ok;
 	e.first_name = firstname;
@@ -457,7 +457,7 @@ void SearchDialog::updateInfoClicked()
 	e.notify = ule.notify;
 	e.setGroup(ule.group());
 	e.email = ule.email;
-	UserInfo *ui = new UserInfo("user info", 0, ule.altnick);
+	UserInfo *ui = new UserInfo(ule.altnick, false, 0, "user info");
 	ui->setUserInfo(e);
 	ui->show();
 	kdebugf2();

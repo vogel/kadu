@@ -17,12 +17,13 @@
 #include "chat.h"
 #include "debug.h"
 #include "userbox.h"
+#include "message_box.h"
 //
 
 CreateNotifier UserInfo::createNotifier;
 
-UserInfo::UserInfo(const QString &name, QDialog *parent, const QString &altnick, bool fAddUser)
-: fAddUser(fAddUser)
+UserInfo::UserInfo(const QString &altnick, bool addUser, QDialog* parent, const char *name)
+	: QHBox(parent, name), addUser(addUser)
 {
 	kdebugf();
 	setWFlags(Qt::WDestructiveClose|Qt::WShowModal);
@@ -41,8 +42,10 @@ UserInfo::UserInfo(const QString &name, QDialog *parent, const QString &altnick,
 	center->setSpacing(10);
 
 	QLabel *l_info = new QLabel(center);
+	l_info->setText(tr("This dialog box allows you to view and edit information about the selected contact."));
+	l_info->setAlignment(Qt::WordBreak);
 
-	if (fAddUser)
+	if (addUser)
 	{
 		puser = NULL;
 		setCaption(tr("Add user"));
@@ -61,8 +64,6 @@ UserInfo::UserInfo(const QString &name, QDialog *parent, const QString &altnick,
 		l_icon->setPixmap(icons_manager.loadIcon("ManageUsersWindowIcon"));
 	}
 
-	l_info->setText(tr("This dialog box allows you to view and edit information about the selected contact."));
-	l_info->setAlignment(Qt::WordBreak);
 	// end create main QLabel widgets (icon and app info)
 
 	tw_main = new QTabWidget(center);
@@ -70,13 +71,14 @@ UserInfo::UserInfo(const QString &name, QDialog *parent, const QString &altnick,
 	// create our Tabs
 	setupTab1();
 	setupTab2();
+	setupTab3();
 
 	// buttons
 	QHBox *bottom=new QHBox(center);
 	QWidget *w_blankwidget=new QWidget(bottom);
 	bottom->setSpacing(5);
 	w_blankwidget->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
-	if (fAddUser)
+	if (addUser)
 		pb_addapply = new QPushButton(icons_manager.loadIcon("AddUserButton"), tr("Add"), bottom, "add");
 	else
 		pb_addapply = new QPushButton(icons_manager.loadIcon("UpdateUserButton"), tr("Update"), bottom, "update");
@@ -158,58 +160,47 @@ void UserInfo::setupTab1()
 	e_lastname = new QLineEdit(vb_surname);
 	// end Name and Surname
 
-	// Mobile and Group
-	QHBox *hb_mobilegroup = new QHBox(vgb_general);
-	QVBox *vb_mobile = new QVBox(hb_mobilegroup);
-	QVBox *vb_group = new QVBox(hb_mobilegroup);
-	hb_mobilegroup->setSpacing(3);
+	// Mobile and Email
+	QHBox *hb_mobileemail = new QHBox(vgb_general);
+	QVBox *vb_mobile = new QVBox(hb_mobileemail);
+	QVBox *vb_email = new QVBox(hb_mobileemail);
+	hb_mobileemail->setSpacing(3);
 	vb_mobile->setSpacing(3);
-	vb_group->setSpacing(3);
-
-	// get available groups
-	QStringList list;
-	for (int i=0; i < kadu->groupBar()->count(); i++)
-		list << kadu->groupBar()->tabAt(i)->text();
-	// end get available groups
+	vb_email->setSpacing(3);
 
 	new QLabel(tr("Mobile"), vb_mobile);
 	e_mobile = new QLineEdit(vb_mobile);
-	new QLabel(tr("Group"), vb_group);
-	cb_group = new QComboBox(vb_group);
-	cb_group->insertStringList(list);
-	cb_group->setEditable(true);
-	cb_group->setAutoCompletion(true);
-	hb_mobilegroup->setStretchFactor(vb_mobile, 1);
-	hb_mobilegroup->setStretchFactor(vb_group, 1);
-	// end Mobile and Group
+	new QLabel(tr("Email"), vb_email);
+	e_email = new QLineEdit(vb_email);
+	// end Mobile and Email
 
-	// IP and Protocol Version
-	QHBox *hb_ipprotversion = new QHBox(vgb_general);
-	QVBox *vb_ip = new QVBox(hb_ipprotversion);
-	QVBox *vb_protversion = new QVBox(hb_ipprotversion);
-	hb_ipprotversion->setSpacing(3);
+	// IP and DNS
+	QHBox *hb_ipdns = new QHBox(vgb_general);
+	QVBox *vb_ip = new QVBox(hb_ipdns);
+	QVBox *vb_dns = new QVBox(hb_ipdns);
+	hb_ipdns->setSpacing(3);
 	vb_ip->setSpacing(3);
-	vb_protversion->setSpacing(3);
+	vb_dns->setSpacing(3);
 
 	new QLabel(tr("Address IP and Port"), vb_ip);
 	e_addr = new QLineEdit(vb_ip);
-	new QLabel(tr("Protocol version"), vb_protversion);
-	e_ver = new QLineEdit(vb_protversion);
-	// end IP and Protocol Version
-
-	// DNS and Email
-	QHBox *hb_dnsemail = new QHBox(vgb_general);
-	QVBox *vb_dns = new QVBox(hb_dnsemail);
-	QVBox *vb_email = new QVBox(hb_dnsemail);
-	hb_dnsemail->setSpacing(3);
-	vb_dns->setSpacing(3);
-	vb_email->setSpacing(3);
-
 	new QLabel(tr("DNS name"), vb_dns);
 	e_dnsname = new QLineEdit(vb_dns);
-	new QLabel(tr("Email"), vb_email);
-	e_email = new QLineEdit(vb_email);
-	// end DNS and Email
+	// end IP and DNS
+
+	// Protocol Version
+	QHBox *hb_protversion = new QHBox(vgb_general);
+	QVBox *vb_protversion = new QVBox(hb_protversion);
+	QVBox *vb_empty = new QVBox(hb_protversion);
+	hb_protversion->setSpacing(3);
+	vb_protversion->setSpacing(3);
+	vb_empty->setSpacing(3);
+	new QLabel(tr("Protocol version"), vb_protversion);
+	e_ver = new QLineEdit(vb_protversion);
+
+	hb_protversion->setStretchFactor(vb_protversion, 1);
+	hb_protversion->setStretchFactor(vb_empty, 1);
+	// end Protocol Version
 
 	if (!gadu->userListSent())
 		e_status->setText(tr("(Unknown)"));
@@ -221,14 +212,15 @@ void UserInfo::setupTab1()
 	e_addr->setReadOnly(true);
 	e_ver->setReadOnly(true);
 	e_dnsname->setReadOnly(true);
-	if (fAddUser) {
+	if (addUser)
+	{
 		e_status->setEnabled(false);
 		e_addr->setEnabled(false);
 		e_ver->setEnabled(false);
 		e_dnsname->setEnabled(false);
-		cb_group->setCurrentText(tr("All"));
-		}
-	else {
+	}
+	else
+	{
 		if (puser->uin)
 			e_uin->setText(QString::number(puser->uin));
 		e_nickname->setText(puser->nickname);
@@ -237,10 +229,6 @@ void UserInfo::setupTab1()
 		e_lastname->setText(puser->last_name);
 		e_mobile->setText(puser->mobile);
 		e_email->setText(puser->email);
-		if (puser->group().isEmpty())
-			cb_group->setCurrentText(tr("All"));
-		else
-			cb_group->setCurrentText(puser->group());
 		if (puser->ip.ip4Addr())
 			e_addr->setText(puser->ip.toString());
 		else
@@ -250,14 +238,16 @@ void UserInfo::setupTab1()
 		else
 			e_addr->setText(e_addr->text()+":"+tr("(Unknown)"));
 
-		if (puser->version) {
+		if (puser->version)
+		{
 			s_temp.sprintf("0x%02x", puser->version & 0x0000ffff);
 			e_ver->setText(s_temp);
-			}
+		}
 		else
 			e_ver->setText(tr("(Unknown)"));
 
-		switch (puser->status) {
+		switch (puser->status)
+		{
 			case GG_STATUS_AVAIL:
 				e_status->setText(tr("Online"));
 				tw_main->setTabIconSet(vgb_general, icons_manager.loadIcon("Online"));
@@ -295,15 +285,111 @@ void UserInfo::setupTab1()
 				e_status->setText(tr("Blocks us"));
 				tw_main->setTabIconSet(vgb_general, icons_manager.loadIcon("Blocking"));
 				break;
-			}
-		dns->setLabel(puser->ip);
-		dns->setRecordType(QDns::Ptr);
-		connect(dns, SIGNAL(resultsReady()), this, SLOT(resultsReady()));
+		}
+		if (!(puser->ip==QHostAddress()))
+		{
+			dns->setLabel(puser->ip);
+			dns->setRecordType(QDns::Ptr);
+			connect(dns, SIGNAL(resultsReady()), this, SLOT(resultsReady()));
+		}
 	}
 	kdebugf2();
 }
 
 void UserInfo::setupTab2()
+{
+	kdebugf();
+	QVGroupBox *groupsTab = new QVGroupBox(vgb_general);
+	groupsTab->setFrameStyle(QFrame::NoFrame);
+
+	tw_main->addTab(groupsTab, tr("Groups"));
+
+	// get available groups
+	QStringList list;
+	for (int i=0; i < kadu->groupBar()->count(); i++)
+		list << kadu->groupBar()->tabAt(i)->text();
+	list.remove(tr("All"));
+	// end get available groups
+
+	QStringList groupsList;
+	if (!addUser)
+		groupsList=QStringList::split(",", puser->group());
+
+	groupsBox = new QVBox(groupsTab);
+	groupsBox->setSpacing(3);
+	
+	for (QStringList::iterator it=list.begin(); it!=list.end(); it++)
+	{
+		QCheckBox *checkBox=new QCheckBox(*it, groupsBox);
+		checkBox->setChecked(groupsList.contains(*it));
+		groups.append(checkBox);
+	}
+	
+	//zobacz komentarz w newGroupClicked()
+	for (int i=0; i<10; i++)
+	{
+		QCheckBox *box=new QCheckBox(groupsBox);
+		box->setChecked(true);
+		box->hide();
+		hiddenCheckBoxes.append(box);
+	}
+
+	newGroup=new QLineEdit(groupsTab);
+	QPushButton *addNewGroup=new QPushButton(tr("Add new group"), groupsTab);
+	connect(addNewGroup, SIGNAL(clicked()), this, SLOT(newGroupClicked()));
+	connect(newGroup, SIGNAL(returnPressed()), this, SLOT(newGroupClicked()));
+	
+	kdebugf2();
+}
+
+void UserInfo::newGroupClicked()
+{
+	kdebugf();
+	QString groupName=newGroup->text();
+	if (groupName.isEmpty())
+		return;
+	if (groupName.contains(","))
+	{
+		MessageBox::msg(tr("'%1' is prohibited").arg(','), true);
+		return;
+	}
+	if (groupName.contains(";"))
+	{
+		MessageBox::msg(tr("'%1' is prohibited").arg(';'), true);
+		return;
+	}
+	if (groupName==tr("All"))
+	{
+		MessageBox::msg(tr("This group already exists!"), true);
+		return;
+	}
+	for (QValueList<QCheckBox *>::iterator it=groups.begin(); it!=groups.end(); it++)
+		if ((*it)->text()==groupName)
+		{
+			MessageBox::wrn(tr("This group already exists!"), true);
+			return;
+		}
+//	niestety ten 2-linijkowy kod nie dzia³a - nie wiem dlaczego, ale chêtnie siê dowiem
+//	w ka¿dym razie dlatego trzeba by³o stworzyæ wcze¶niej kilka checkboksów i je ukryæ...
+//	a teraz po trochu je pokazujemy :)
+//	QCheckBox *box=new QCheckBox(groupName, groupsBox);
+//	box->setChecked(true);
+
+	if (hiddenCheckBoxes.size()==0)
+	{
+		MessageBox::msg(tr("You can't add so many groups at one stroke. Close this dialog and open one more time."), true);
+		return;
+	}
+	QCheckBox *box=hiddenCheckBoxes.first();
+	hiddenCheckBoxes.pop_front();
+	box->setText(groupName);
+	box->show();
+	
+	groups.append(box);
+	kdebugf2();
+}
+
+void UserInfo::setupTab3()
 {
 	kdebugf();
 	// Misc options
@@ -316,13 +402,14 @@ void UserInfo::setupTab2()
 	c_offtouser = new QCheckBox(tr("Offline to user"), vgb_others);
 	c_notify = new QCheckBox(tr("Notify about status changes"), vgb_others);
 
-	if (!fAddUser) {
+	if (addUser)
+		c_notify->setChecked(true);
+	else
+	{
 		c_blocking->setChecked(puser->blocking);
 		c_offtouser->setChecked(puser->offline_to_user);
 		c_notify->setChecked(puser->notify);
-		}
-	else
-		c_notify->setChecked(true);
+	}
 	// end Misc options
 	kdebugf2();
 }
@@ -378,20 +465,23 @@ void UserInfo::addNewUser(UserListElement& e)
 void UserInfo::changeUserData(UserListElement& e)
 {
 	kdebugf();
-	if (e_uin->text().length() && !e.uin) {
+	if (e_uin->text().length() && !e.uin)
+	{
 		QMessageBox::information(this, "Kadu", tr("Bad UIN"), QMessageBox::Ok);
 		close();
 		return;
 	}
 
-	if (!e_altnick->text().length()) {
+	if (!e_altnick->text().length())
+	{
 		QMessageBox::warning(this, tr("Add user problem"), tr("Altnick field cannot be empty."));
 		close();
 		return;
 	}
 
 	if ((e.uin && e.uin != puser->uin && userlist.containsUin(e.uin)) ||
-		 (e.altnick.lower() != puser->altnick.lower() && userlist.containsAltNick(e.altnick))) {
+		(e.altnick.lower() != puser->altnick.lower() && userlist.containsAltNick(e.altnick)))
+	{
 		QMessageBox::information(this, "Kadu", tr("User is already in userlist"), QMessageBox::Ok);
 		close();
 		return;
@@ -459,7 +549,8 @@ void UserInfo::changeUserData(UserListElement& e)
 	kdebugf2();
 }
 
-void UserInfo::updateUserlist() {
+void UserInfo::updateUserlist()
+{
 	bool ok;
 	UserListElement e;
 
@@ -472,13 +563,16 @@ void UserInfo::updateUserlist() {
 	e.uin = e_uin->text().toUInt(&ok);
 	if (!ok)
 		e.uin = 0;
-	if (cb_group->currentText() == tr("All"))
-		e.setGroup("");
-	else
-		e.setGroup(cb_group->currentText());
+	
+	QStringList l;
+	for (QValueList<QCheckBox *>::iterator it=groups.begin(); it!=groups.end(); it++)
+		if ((*it)->isChecked())
+			l.append((*it)->text());
+	e.setGroup(l.join(","));
+
 	e.description = "";
 	e.email = e_email->text();
-	if (fAddUser)
+	if (addUser)
 		addNewUser(e);
 	else
 		changeUserData(e);
