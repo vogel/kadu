@@ -1,0 +1,9 @@
+#!/bin/bash
+
+#
+# Wykonanie cvs edit na wszystkich plikach, które bêd± modyfikowane przez
+# skrypt configure-gen. Uruchamiaæ z katalogu wy¿ej.
+#
+
+cvs edit aclocal.m4 stamp-h.in kadu-config.h.in stamp-h configure \
+	Makefile.in kadu/Makefile.in modules/Makefile.in translations/Makefile.in varia/Makefile.in

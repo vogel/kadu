@@ -1,0 +1,10 @@
+#!/bin/bash
+
+#
+# Regeneracja configure i innych. Uruchamiaæ z katalogu wy¿ej.
+#
+
+aclocal
+autoconf
+autoheader
+automake
