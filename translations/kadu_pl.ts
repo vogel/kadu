@@ -2488,7 +2488,7 @@ o rozmiarze </translation>
     </message>
     <message>
         <source> wants to talk with you. Do you accept it?</source>
-        <translation> chce rozmawiać z toba. Akceptujesz?</translation>
+        <translation> chce rozmawiać z Tobą. Akceptujesz?</translation>
     </message>
     <message>
         <source>Incoming voice chat</source>
