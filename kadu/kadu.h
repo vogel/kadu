@@ -186,6 +186,8 @@ class Kadu : public QMainWindow
 		void viewHistory();
 		void popupMenu();
 		void show();
+/*		void showMinimized();
+		void hide();*/
 
 	signals:
 		void disconnectingNetwork();
@@ -216,6 +218,11 @@ class Kadu : public QMainWindow
 			wywo³ana zosta³a funkcja show() na g³ównym oknie
 		**/
 		void shown();
+		/**
+			wci¶niêty przycisk minimalizacji g³ównego okna
+			póki co nie dzia³a
+		**/
+//		void minimized();
 };
 
 class KaduSlots : public QObject

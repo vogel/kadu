@@ -326,8 +326,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	memset(&loginparams, 0, sizeof(loginparams));
 	loginparams.async = 1;
 
-	QRect geom;
-	geom=config_file.readRectEntry("General", "Geometry");
+	QRect geom=config_file.readRectEntry("General", "Geometry");
 	kdebug("Setting size: width=%d, height=%d and setting position: x=%d, y=%d\n",
 		geom.width(),geom.height(),
 		geom.x(), geom.y());
@@ -492,7 +491,7 @@ void Kadu::createToolBar()
 {
 	new ToolBar(this);
 	setRightJustification(true);
-	setDockEnabled(Qt::DockBottom, false);
+//	setDockEnabled(Qt::DockBottom, false);
 	setAppropriate(ToolBar::instance, true);
 }
 
@@ -699,14 +698,12 @@ void Kadu::help()
 
 void Kadu::about()
 {
-	About *about = new About;
-	about->show();
+	(new About())->show();
 }
 
 void Kadu::remindPassword()
 {
-	RemindPassword *rp = new RemindPassword();
-	rp->start();
+	(new RemindPassword())->start();
 }
 
 void Kadu::changePassword()
@@ -732,14 +729,12 @@ void Kadu::quit()
 
 void Kadu::exportUserlist()
 {
-	UserlistExport *ule = new UserlistExport();
-	ule->show();
+	(new UserlistExport())->show();
 }
 
 void Kadu::importUserlist()
 {
-	UserlistImport *uli = new UserlistImport();
-	uli->show();
+	(new UserlistImport())->show();
 }
 
 
@@ -797,7 +792,7 @@ void Kadu::offlineToUser()
 }
 
 void Kadu::changeAppearance() {
-	kdebug("kadu::changeAppearance()\n");
+	kdebugf();
 
 	Userbox->setPaletteBackgroundColor(config_file.readColorEntry("Look", "UserboxBgColor"));
 	Userbox->setPaletteForegroundColor(config_file.readColorEntry("Look", "UserboxFgColor"));
@@ -939,32 +934,33 @@ void Kadu::blink() {
 	int i;
 	QPixmap pix;
 
-	if (!doBlink && socket_active) {
+	if (!doBlink && socket_active)
+	{
 		setCurrentStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
 		return;
-		}
-	else
-		if (!doBlink && !socket_active)
-		{
-			pix = icons_manager.loadIcon("Offline");
-			statusbutton->setIconSet(QIconSet(pix));
-			emit connectingBlinkShowOffline();
-			return;
-		}
-
-	if (blinkOn) {
+	}
+	else if (!doBlink && !socket_active)
+	{
 		pix = icons_manager.loadIcon("Offline");
 		statusbutton->setIconSet(QIconSet(pix));
 		emit connectingBlinkShowOffline();
-		blinkOn = false;
-		}
-	else {
+		return;
+	}
+
+	if (blinkOn)
+	{
+		pix = icons_manager.loadIcon("Offline");
+		statusbutton->setIconSet(QIconSet(pix));
+		emit connectingBlinkShowOffline();
+	}
+	else
+	{
 		i = statusGGToStatusNr(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
 		pix = icons_manager.loadIcon(gg_icons[i]);
 		statusbutton->setIconSet(QIconSet(pix));
 		emit connectingBlinkShowStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
-		blinkOn = true;
-		}
+	}
+	blinkOn=!blinkOn;
 
 	blinktimer->start(1000, TRUE);
 }
@@ -1027,7 +1023,6 @@ void Kadu::mouseButtonClicked(int button, QListBoxItem *item) {
 	if (button !=4 || !item)
 		return;
 }
-
 
 /* if something's pending, open it, if not, open new message */
 void Kadu::sendMessage(QListBoxItem *item)
@@ -1113,14 +1108,13 @@ void Kadu::slotHandleState(int command) {
 
 void Kadu::setCurrentStatus(int status) {
 	int statusnr;
-	int i = 0;
 
 	statusnr = statusGGToStatusNr(status);
-	while (i<8) {
+	for(int i=0; i<8; i++)
+	{
 		statusppm->setItemChecked(i, false);
 		dockppm->setItemChecked(i, false);
-		i++;
-		}
+	}
 	statusppm->setItemChecked(statusnr, true);
 	dockppm->setItemChecked(statusnr, true);
 
@@ -1199,7 +1193,7 @@ void Kadu::setStatus(int status) {
 
 		setCurrentStatus(status);
 
-		kdebug("Kadu::setStatus(): actual status: %d\n", sess->status);
+		kdebug("Kadu::setStatus(): current status: %d\n", sess->status);
 		/** AutoConnectionTimer u¿ywa loginparams.status jako statusu do nowego po³±czenia siê
 				po stracie po³±czenia, czyli kadu bêdzie próbowal sie po³±czyæ z statusem takim
 				samym, co by³ ostatnio ustawiony(oprócz niedostêpny i niedostêpny z opisem).
@@ -1228,19 +1222,20 @@ void Kadu::setStatus(int status) {
 		free(gg_proxy_password);
 		gg_proxy_username = gg_proxy_password = NULL;
 		}
-	if (config_file.readBoolEntry("Network", "UseProxy")) {
+	
+	gg_proxy_enabled = config_file.readBoolEntry("Network", "UseProxy");
+	if (gg_proxy_enabled)
+	{
 		gg_proxy_host = strdup((char *)unicode2latin(config_file.readEntry("Network", "ProxyHost")).data());
 		kdebug("Kadu::setStatus(): gg_proxy_host = %s\n", gg_proxy_host);
 		gg_proxy_port = config_file.readNumEntry("Network", "ProxyPort");
 		kdebug("Kadu::setStatus(): gg_proxy_port = %d\n", gg_proxy_port);
-		if (config_file.readEntry("Network", "ProxyUser").length()) {
+		if (config_file.readEntry("Network", "ProxyUser").length())
+		{
 			gg_proxy_username = strdup((char *)unicode2latin(config_file.readEntry("Network", "ProxyUser")).data());
 			gg_proxy_password = strdup((char *)unicode2latin(config_file.readEntry("Network", "ProxyPassword")).data());
-			}
-		gg_proxy_enabled = 1;
 		}
-	else
-		gg_proxy_enabled = 0;
+	}
 
 	loginparams.status = status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General", "PrivateStatus"));
 	if (with_description)
@@ -1253,46 +1248,55 @@ void Kadu::setStatus(int status) {
 	loginparams.has_audio = config_file.readBoolEntry("Network", "AllowDCC");
 	loginparams.last_sysmsg = config_file.readNumEntry("Global", "SystemMsgIndex");
 
-	if (config_file.readBoolEntry("Network", "AllowDCC") && config_extip.ip4Addr() && config_file.readNumEntry("Network", "ExternalPort") > 1023) {
+	if (config_file.readBoolEntry("Network", "AllowDCC") && config_extip.ip4Addr() && config_file.readNumEntry("Network", "ExternalPort") > 1023)
+	{
 		loginparams.external_addr = htonl(config_extip.ip4Addr());
 		loginparams.external_port = config_file.readNumEntry("Network", "ExternalPort");
-		}
-	else {
+	}
+	else
+	{
 		loginparams.external_addr = 0;
 		loginparams.external_port = 0;
-		}
-	if (config_servers.count() && !config_file.readBoolEntry("Network", "isDefServers") && config_servers[server_nr].ip4Addr()) {
+	}
+	
+	if (config_servers.count() && !config_file.readBoolEntry("Network", "isDefServers") && config_servers[server_nr].ip4Addr())
+	{
 		loginparams.server_addr = htonl(config_servers[server_nr].ip4Addr());
 		loginparams.server_port = config_file.readNumEntry("Network", "DefaultPort");
 		server_nr++;
 		if (server_nr >= config_servers.count())
 			server_nr = 0;
-		}
-	else {
-		if (server_nr) {
+	}
+	else
+	{
+		if (server_nr)
+		{
 			loginparams.server_addr = htonl(gg_servers[server_nr - 1].ip4Addr());
 			loginparams.server_port = config_file.readNumEntry("Network", "DefaultPort");
-			}			
-		else {
+		}			
+		else
+		{
 			loginparams.server_addr = 0;
 			loginparams.server_port = 0;
-			}
+		}
 		server_nr++;
 		if (server_nr > gg_servers.count())
 			server_nr = 0;
-		}
+	}
+	
 //	polaczenia TLS z serwerami GG na razie nie dzialaja
 //	loginparams.tls = config_file.readBoolEntry("Network", "UseTLS");
 	loginparams.tls = 0;
 	loginparams.client_version = GG_DEFAULT_CLIENT_VERSION;
 	loginparams.protocol_version = GG_DEFAULT_PROTOCOL_VERSION;
-	if (loginparams.tls) {
+	if (loginparams.tls)
+	{
 		kdebug("Kadu::setStatus(): using TLS\n");
 		loginparams.server_port = 0;
 		if (config_file.readBoolEntry("Network", "isDefServers"))
 			loginparams.server_addr = 0;
 		loginparams.server_port = 443;
-		}
+	}
 	else
 		loginparams.server_port = config_file.readNumEntry("Network", "DefaultPort");
 	ConnectionTimeoutTimer::on();
@@ -1328,20 +1332,19 @@ void Kadu::dataReceived(void) {
 }
 
 void Kadu::dataSent(void) {
-	kdebug("Kadu::dataSent()\n");
+	kdebugf();
 	kadusnw->setEnabled(false);
 	if (sess->check & GG_CHECK_WRITE)
 		event_manager.eventHandler(sess);
 }
 
 void Kadu::pingNetwork(void) {
-	kdebug("Kadu::pingNetwork()\n");
+	kdebugf();
 	gg_ping(sess);
 	pingtimer->start(60000, TRUE);
 }
 
 void Kadu::disconnectNetwork() {
-	unsigned int i;
 	doBlink = false;
 
 	kdebug("Kadu::disconnectNetwork(): calling offline routines\n");
@@ -1391,12 +1394,11 @@ void Kadu::disconnectNetwork() {
 		}
 	userlist_sent = false;
 
-	i = 0;
-	while (i < userlist.count()) {
+	for (unsigned int i=0; i < userlist.count(); i++)
+	{
 		userlist[i].status = GG_STATUS_NOT_AVAIL;
 		userlist[i].description = "";
-		i++;
-		}
+	}
 
 	chat_manager->refreshTitles();
 
@@ -1412,7 +1414,7 @@ void Kadu::disconnectNetwork() {
 
 
 void Kadu::dccFinished(dccSocketClass *dcc) {
-	kdebug("dccFinished\n");
+	kdebugf();
 	delete dcc;
 }
 
@@ -1449,12 +1451,12 @@ bool Kadu::event(QEvent *e) {
 }
 
 void Kadu::dccReceived(void) {
-	kdebug("Kadu::dccReceived()\n");
+	kdebugf();
 	watchDcc();
 }
 
 void Kadu::dccSent(void) {
-	kdebug("Kadu::dccSent()\n");
+	kdebugf();
 	dccsnw->setEnabled(false);
 	if (dccsock->check & GG_CHECK_WRITE)
 		watchDcc();
@@ -1703,9 +1705,25 @@ void Kadu::show()
 	emit shown();
 }
 
+/*
+void Kadu::showMinimized()
+{
+	kdebugf();
+	QWidget::showMinimized();
+//	emit minimized();
+}
+
+void Kadu::hide()
+{
+	kdebugf();
+//	emit minimized();
+	QWidget::hide();
+}
+*/
+
 void KaduSlots::onCreateConfigDialog()
 {
-	kdebug("KaduSlots::onCreateConfigDialog() \n");
+	kdebugf();
 	QLineEdit *e_password=ConfigDialog::getLineEdit("General", "Password");
 	e_password->setEchoMode(QLineEdit::Password);
 	e_password->setText(pwHash(config_file.readEntry("General", "Password", "")));
@@ -1740,7 +1758,7 @@ void KaduSlots::onCreateConfigDialog()
 
 void KaduSlots::onDestroyConfigDialog()
 {
-	kdebug("KaduSlots::onDestroyConfigDialog() \n");
+	kdebugf();
 	QLineEdit *e_password=ConfigDialog::getLineEdit("General", "Password");
 	e_password->setEchoMode(QLineEdit::Password);
 	config_file.writeEntry("General", "Password",pwHash(e_password->text()));
@@ -1771,8 +1789,7 @@ void KaduSlots::onDestroyConfigDialog()
 
 	statusppm->setItemChecked(8, privateStatus);
 
-
-	/* I odswiez okno Kadu */
+	/* I od¶wie¿ okno Kadu */
 	kadu->changeAppearance();
 	chat_manager->changeAppearance();
 	kadu->refreshGroupTabBar();
