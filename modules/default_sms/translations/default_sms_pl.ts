@@ -79,7 +79,7 @@ czasowo wyłączona lub zmieniła zasady dostępu.</translation>
     </message>
     <message>
         <source>Text from the picture is incorrect</source>
-        <translation>Tekst z obrazka wpisany niepoprawnie.</translation>
+        <translation>Tekst z obrazka wpisany nie poprawnie</translation>
     </message>
     <message>
         <source>The receiver has to enable SMS STANDARD service</source>

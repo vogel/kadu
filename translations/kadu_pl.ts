@@ -667,7 +667,7 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     </message>
     <message>
         <source>Display only users that have desciption</source>
-        <translation>Wyświtl tylko kontakty, które mają opisy</translation>
+        <translation>Wyświetl tylko kontakty, które mają opisy</translation>
     </message>
     <message>
         <source>Force use of paragraphs (VERY experimental)</source>
