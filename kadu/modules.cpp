@@ -29,12 +29,12 @@ ModulesDialog::ModulesDialog()
 	QHBoxLayout* layout= new QHBoxLayout(this);
 	QVBoxLayout* installed_layout=new QVBoxLayout(layout);
 	QVBoxLayout* loaded_layout=new QVBoxLayout(layout);	
+	QVBoxLayout* buttons_layout=new QVBoxLayout(layout);
 		
 	QLabel* InstalledLabel = new QLabel(this);
 	InstalledLabel->setText(QString("<b>")+tr("Installed modules")+"</b>");
 	
 	InstalledListBox = new QListBox(this);
-	InstalledListBox->insertStringList(modules_manager->unloadedModules());
 	connect(InstalledListBox,SIGNAL(doubleClicked(QListBoxItem*)),
 		this,SLOT(loadItem(QListBoxItem*)));
 	
@@ -42,16 +42,19 @@ ModulesDialog::ModulesDialog()
 	LoadButton->setText(tr("Load"));
 	connect(LoadButton,SIGNAL(clicked()),
 		this,SLOT(loadSelectedItem()));
+
+	QButton* InfoButton=new QPushButton(this);
+	InfoButton->setText(tr("Info"));
+	connect(InfoButton, SIGNAL(clicked()),
+		this, SLOT(getInfo()));
 	
 	installed_layout->addWidget(InstalledLabel);
 	installed_layout->addWidget(InstalledListBox);
-	installed_layout->addWidget(LoadButton);
 
 	QLabel* LoadedLabel = new QLabel(this);
 	LoadedLabel->setText(QString("<b>")+tr("Loaded modules")+"</b>");
 
 	LoadedListBox = new QListBox(this);
-	LoadedListBox->insertStringList(modules_manager->loadedModules());	
 	connect(LoadedListBox,SIGNAL(doubleClicked(QListBoxItem*)),
 		this,SLOT(unloadItem(QListBoxItem*)));
 
@@ -62,7 +65,12 @@ ModulesDialog::ModulesDialog()
 
 	loaded_layout->addWidget(LoadedLabel);
 	loaded_layout->addWidget(LoadedListBox);
-	loaded_layout->addWidget(UnloadButton);	
+
+	buttons_layout->addWidget(LoadButton);
+	buttons_layout->addWidget(UnloadButton);
+	buttons_layout->addWidget(InfoButton);
+
+	refreshLists();
 }
 
 void ModulesDialog::loadItem(QListBoxItem* item)
@@ -70,8 +78,7 @@ void ModulesDialog::loadItem(QListBoxItem* item)
 	QString mod_name=item->text();
 	if(modules_manager->loadModule(mod_name))
 	{
-		LoadedListBox->insertItem(mod_name);
-		InstalledListBox->removeItem(InstalledListBox->currentItem());
+		refreshLists();
 		modules_manager->saveLoadedModules();
 	}		
 }
@@ -80,8 +87,7 @@ void ModulesDialog::unloadItem(QListBoxItem* item)
 {
 	QString mod_name=item->text();
 	modules_manager->unloadModule(mod_name);
-	InstalledListBox->insertItem(mod_name);
-	LoadedListBox->removeItem(LoadedListBox->currentItem());
+	refreshLists();
 	modules_manager->saveLoadedModules();
 }
 
@@ -99,6 +105,47 @@ void ModulesDialog::unloadSelectedItem()
 		unloadItem(LoadedListBox->item(current));
 }
 
+void ModulesDialog::refreshLists()
+{
+	LoadedListBox->clear();
+	LoadedListBox->insertStringList(modules_manager->loadedModules());	
+	InstalledListBox->clear();
+	InstalledListBox->insertStringList(modules_manager->unloadedModules());
+}
+
+void ModulesDialog::getInfo()
+{
+	QListBoxItem *item;
+	int current;
+
+	if(InstalledListBox->hasFocus()){
+		current=InstalledListBox->currentItem();
+		item=InstalledListBox->item(current);
+	}
+	else{
+		current=LoadedListBox->currentItem();
+		item=LoadedListBox->item(current);
+	}
+	
+	if(current>=0){
+		ModuleInfo info;
+		QString message;
+		if(!modules_manager->moduleInfo(item->text(), info))
+			return;
+		message+=tr(
+				"<b>Module:</b>"
+				"<br>%1<br>"
+				"<b>Depends on:</b><br>").arg(item->text());
+		for (QStringList::Iterator it = info.depends.begin(); it != info.depends.end(); ++it)
+			message+=QString("%1\n").arg((*it));
+		message+=tr(
+				"<br><b>Author:</b><br>"
+				"%1<br>"
+				"<b>Description</b>:<br>"
+				"%2").arg(info.author).arg(info.description);
+		MessageBox::msg(message);
+	}
+}
 
 void ModulesManager::initModule()
 {
@@ -118,8 +165,9 @@ ModulesManager::ModulesManager() : QObject()
 	QStringList loaded_list=QStringList::split(',',loaded_str);
 	bool all_loaded=true;
 	for(int i=0; i<loaded_list.count(); i++)
-		if(!loadModule(loaded_list[i]))
-			all_loaded=false;
+		if(!Modules.contains(loaded_list[i]))
+			if(!loadModule(loaded_list[i]))
+				all_loaded=false;
 	// jesli nie wszystkie moduly zostaly przy starcie prawidlowo
 	// zaladowane to zapisz nowa liste zaladowanych modulow
 	if(!all_loaded)
@@ -130,7 +178,7 @@ ModulesManager::~ModulesManager()
 {
 	QStringList loaded=loadedModules();
 	for(int i=0; i<loaded.size(); i++)
-		unloadModule(loaded[i]);
+		unloadModule(loaded[i], true);
 }
 
 QStringList ModulesManager::installedModules()
@@ -167,9 +215,48 @@ QStringList ModulesManager::unloadedModules()
 	return unloaded;
 }
 
+bool ModulesManager::moduleInfo(const QString& module_name, ModuleInfo& info)
+{
+	if(Modules.contains(module_name))
+	{
+		info=Modules[module_name].info;
+		return true;
+	}
+	QLibrary* lib=new QLibrary(QString(DATADIR)+"/kadu/modules/"+module_name+".so");
+
+	if(!lib->load())
+	{
+		MessageBox::msg(tr("Cannot load %1 module library.\nMaybe it's incorrecty compiled.").arg(module_name));
+		return false;
+	}
+		
+	typedef void InfoModuleFunc(ModuleInfo* info);
+	InfoModuleFunc* info_f=(InfoModuleFunc*)lib->resolve(module_name+"_info");
+
+	if(info_f)
+		info_f(&info);
+	else
+	{
+		delete lib;
+		return true;
+	}
+
+	delete lib;
+	return true;
+}
+
 bool ModulesManager::loadModule(const QString& module_name)
 {
 	Module m;
+	ModuleInfo modinfo;
+
+	kdebug(QString("loadModule %1\n").arg(module_name));
+	
+	if(Modules.contains(module_name)){
+		MessageBox::msg(tr("Module %1 is loaded").arg(module_name));
+		return false;
+	}
+
 	m.lib=new QLibrary(QString(DATADIR)+"/kadu/modules/"+module_name+".so");
 	if(!m.lib->load())
 	{
@@ -178,13 +265,46 @@ bool ModulesManager::loadModule(const QString& module_name)
 	}
 		
 	typedef int InitModuleFunc();
+	typedef void InfoModuleFunc(ModuleInfo* info);
 	InitModuleFunc* init=(InitModuleFunc*)m.lib->resolve(module_name+"_init");
+	InfoModuleFunc* info=(InfoModuleFunc*)m.lib->resolve(module_name+"_info");
 	m.close=(CloseModuleFunc*)m.lib->resolve(module_name+"_close");
+
 	if(init==NULL||m.close==NULL)
 	{
 		MessageBox::msg(tr("Cannot find required functions.\nMaybe it's not Kadu-compatible Module."));
 		delete m.lib;
 		return false;
+	}
+
+	if(info)
+	{
+		info(&modinfo);
+		for (QStringList::Iterator it = modinfo.depends.begin(); it != modinfo.depends.end(); ++it)
+		{
+			if((*loadedModules().find(*it))==QString::null)
+			{
+				if((*installedModules().find(*it))!=QString::null)
+				{
+					if(loadModule(*it))
+						Modules[*it].usage_counter++;
+					else
+					{
+						delete m.lib;
+						return false;
+					}
+				}			
+				else
+				{
+					MessageBox::msg(tr("Required module %1 was not found").arg(*it));
+					delete m.lib;
+					return false;
+				}
+			}
+			else
+				Modules[*it].usage_counter++;
+		}
+		m.info=modinfo;
 	}
 
 	m.translator=new QTranslator(0);
@@ -206,13 +326,23 @@ bool ModulesManager::loadModule(const QString& module_name)
 		return false;		
 	}
 	
+	m.usage_counter=0;
 	Modules.insert(module_name,m);
 	return true;
 }
 
-void ModulesManager::unloadModule(const QString& module_name)
+bool ModulesManager::unloadModule(const QString& module_name, bool force)
 {
 	Module m=Modules[module_name];
+
+	if(m.usage_counter>0 && !force){
+		MessageBox::msg(tr("Module %1 cannot be unloaded because it is used by another module").arg(module_name));
+		return false;
+	}
+	
+	for (QStringList::Iterator it = m.info.depends.begin(); it != m.info.depends.end(); ++it)
+		Modules[*it].usage_counter--;
+	
 	m.close();
 	if(m.translator!=NULL)
 	{
@@ -245,6 +375,7 @@ void ModulesManager::dialogDestroyed()
 {
 	Dialog=NULL;
 }
+
 
 ModulesManager* modules_manager;
 

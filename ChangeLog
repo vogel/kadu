@@ -55,6 +55,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   szybszy heapsort na podstawie zrodel QT (adrian)
 * je¶li odebrane UINy przy DCC s± nieprawid³owe to zrywamy po³±czenie (chilek)
 * funkcja reserve z optymalizacji joi'a uzywana tylko dla QT >= 3.2 (adrian)
+* zaaplikowany patch michala rozbudowujacy menadzera modulow o pobieranie
+  informacji o module oraz obsluge zaleznosci miedzy modulami. wprowadzony
+  kod nie jest oryginalny - wprowadzilem w nim pewne zmiany (adrian)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

@@ -8,6 +8,23 @@
 #include <qdialog.h>
 #include <qlistbox.h>
 #include <qtranslator.h>
+/**
+ informacje o module
+**/
+struct ModuleInfo{
+	/**
+	 jakie inne moduly sa wymagane przez ten modul
+	**/
+	QStringList depends;
+	/**
+	 opis
+	**/
+	QString description;
+	/**
+	 autor modulu
+	**/
+	QString author;
+};
 
 class ModulesDialog : public QDialog
 {
@@ -22,6 +39,8 @@ class ModulesDialog : public QDialog
 		void unloadItem(QListBoxItem* item);
 		void loadSelectedItem();
 		void unloadSelectedItem();
+		void getInfo();
+		void refreshLists();
 	
 	public:
 		ModulesDialog();
@@ -38,6 +57,8 @@ class ModulesManager : public QObject
 			QLibrary* lib;
 			CloseModuleFunc* close;
 			QTranslator* translator;
+			ModuleInfo info;
+			int usage_counter;
 		};
 		QMap<QString,Module> Modules;	
 		ModulesDialog* Dialog;
@@ -53,8 +74,13 @@ class ModulesManager : public QObject
 		QStringList installedModules();
 		QStringList loadedModules();
 		QStringList unloadedModules();
+		/**
+			Pobiera do info informacje o module module_name jesli
+			sie to udalo zwraca true w przeciwnym wypadku false		 
+		**/		
+		bool moduleInfo(const QString& module_name, ModuleInfo& info);
 		bool loadModule(const QString& module_name);
-		void unloadModule(const QString& module_name);
+		bool unloadModule(const QString& module_name, bool force=false);
 		void saveLoadedModules();
 		
 	public slots:
