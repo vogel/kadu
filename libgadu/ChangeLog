@@ -5,6 +5,47 @@ pierwsz± liter± nicka jest ,,x'' (w - wojtekka, s - speedy, a - arekm,
 d - drg). ,,p/nick'' oznacza patch lub ¼ród³o podes³ane przez ,,nick'',
 ,,i/nick'' oznacza czyj¶ pomys³, ,,b/nick'' mówi, kto zg³osi³ b³±d.
 
+// 2002-07-12
+
+- przepisanie curses.m4 od zera unikaj±c wielokrotnego wywo³ywania makr.
+  dziêki temu configure zajmuje ~100kB mniej (w)
+- dodanie $(DESTDIR) do Makefile (jajcus/w)
+- instalacja libgadu.h, polskich manów, ekgsearch (w)
+- przepisanie readline.m4 od zera. teraz siê zacznie narzekanie na mnie
+  na ekg-users (w)
+- dodanie opcji --all i --debug, usuniêcie opcji --raw w ekgsearch (wysek)
+
+// 2002-07-11
+
+- poprawka aliasów w query (theKnight/w)
+- poprawka Makefile dla --with-shared (Charvel/w)
+- dodanie skryptu ekgsearch (wysek/w)
+
+// 2002-07-10
+
+- poprawki w numeracji libgadu.so, szczegó³y w lib/Makefile.in (jajcus/w)
+
+// 2002-07-08
+
+- dodana komenda ,,window list'' (d)
+- dodana zmienna ,,make_window'' (d)
+- update ,,docs/vars.txt'' (d)
+- poprawka od¶wie¿ania prompta w okienkach (d)
+- poprawka obcinania chat_headera (arim/d)
+- poprawka ,,query_finished'' z themes.c (d)
+- s/Okienku/Okienko/g w themes.c (grzelo/d)
+- dodanie docs/emoticons.ansi (mateusza/w)
+
+// 2002-07-07
+
+- update sic.theme (sic/w)
+
+// 2002-07-06
+
+- sprawdzanie czy query istnieje (d)
+- poprawka gg_dcc_debug_data (Chilek/w)
+- b³±d w GG_CLASS_ACK (acc/w)
+
 // 2002-07-05
 
 - poprawiony segfault w okienkach (d)
@@ -1298,4 +1339,4 @@ i BUGS.
 - eleet niebieskie t³o mesgów (wiem, dalekie od idea³u).
 
 
-$Id: ChangeLog,v 1.1 2002/07/09 22:22:02 chilek Exp $
+$Id: ChangeLog,v 1.2 2002/07/13 08:37:24 chilek Exp $

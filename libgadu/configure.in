@@ -1,4 +1,4 @@
-dnl $Id: configure.in,v 1.1 2002/07/09 22:22:02 chilek Exp $
+dnl $Id: configure.in,v 1.2 2002/07/13 08:37:24 chilek Exp $
 
 AC_INIT(lib/libgadu.h)
 
@@ -93,9 +93,14 @@ if test -d src; then
   fi
     
   if test "x$enable_ui_ncurses" = "xyes"; then 
-    AC_CHECK_CURSES
+    AC_CHECK_NCURSES
+
+    if test "x$have_ncurses" = "x"; then
+      AC_MSG_ERROR([You need ncurses and ncurses-devel packages.])
+    fi
+
     LIBS="$LIBS $CURSES_LIBS"
-    CFLAGS="$CFLAGS $CURSES_INCLUDEDIR"
+    CFLAGS="$CFLAGS $CURSES_INCLUDES"
   fi
 
   AC_ARG_WITH(termcap, 
@@ -110,15 +115,14 @@ if test -d src; then
     fi
 
     if test "x$TERMCAP_LIB" = "x" -a "x$CURSES_LIBS" = "x"; then
-      AC_CHECK_CURSES
+      AC_CHECK_NCURSES
       LIBS="$LIBS $CURSES_LIBS"
-      CFLAGS="$CFLAGS $CURSES_INCLUDEDIR"
+      CFLAGS="$CFLAGS $CURSES_INCLUDES"
     fi
       
     AC_CHECK_READLINE
 
     if test "x$READLINE_LIBS" = "x"; then
-      AC_MSG_RESULT([not found])
       AC_MSG_ERROR([You need both readline and readline-devel packages.])
     fi
 

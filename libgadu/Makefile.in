@@ -1,8 +1,10 @@
-# $Id: Makefile.in,v 1.1 2002/07/09 22:22:02 chilek Exp $
+# $Id: Makefile.in,v 1.2 2002/07/13 08:37:24 chilek Exp $
 
-prefix = @prefix@
+prefix = $(DESTDIR)@prefix@
 datadir = @datadir@
 mandir = @mandir@
+exec_prefix = @exec_prefix@
+bindir = @bindir@
 
 MAKE = @MAKE@
 INSTALL = @INSTALL@
@@ -27,8 +29,7 @@ install:	all install-libgadu @install_ekg@
 install-libgadu:
 	cd lib && $(MAKE) install
 
-install-ekg:	install-ekg-themes install-ekg-man
-	$(INSTALL) -d $(prefix)/bin
+install-ekg:	install-ekg-themes install-ekg-man install-ekgsearch
 	cd src && $(MAKE) install
 
 install-ekg-themes:
@@ -38,6 +39,12 @@ install-ekg-themes:
 install-ekg-man:
 	$(INSTALL) -d $(mandir)/man1
 	$(INSTALL) -m 644 docs/ekg.man.en $(mandir)/man1/ekg.1
+	$(INSTALL) -d $(mandir)/pl/man1
+	$(INSTALL) -m 644 docs/ekg.man.pl $(mandir)/pl/man1/ekg.1
+
+install-ekgsearch:
+	$(INSTALL) -d $(bindir)
+	$(INSTALL) -m 755 contrib/ekgsearch $(bindir)
 
 #
 
