@@ -7,8 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <kicontheme.h>
-#include <kiconloader.h>
 #include <qpushbutton.h>
 #include <qhbuttongroup.h>
 #include <qfileinfo.h>
@@ -140,8 +138,7 @@ rMessage::rMessage(const QString & nick, int msgclass, UinsList uins, QString &m
 	QPushButton *closebtn;
 	closebtn = new QPushButton(this);
 	closebtn->setText(i18n("&Close"));
-	KIconLoader *loader = KGlobal::iconLoader();
-	closebtn->setIconSet(QIconSet(loader->loadIcon("stop", KIcon::Small)));
+	closebtn->setIconSet(QIconSet(loadIcon("stop.png")));
 	connect(closebtn, SIGNAL(clicked()), this, SLOT(cleanUp()));
 
 	QGridLayout *grid = new QGridLayout(this,3,5,3,3);
@@ -224,19 +221,17 @@ Message::Message (const QString & nick, bool tchat, QWidget *parent, const char 
 	body->setWordWrap(QMultiLineEdit::WidgetWidth);
 	body->setFont(config.fonts.chat);
 
-	KIconLoader *loader = KGlobal::iconLoader();
-
 	sendbtn = new QPushButton (this);
 	sendbtn->setGeometry(240,185,60,20);
 	sendbtn->setText(i18n("&Send"));
-	sendbtn->setIconSet(QIconSet(loader->loadIcon("forward", KIcon::Small)));
+	sendbtn->setIconSet(QIconSet(loadIcon("forward.png")));
 	connect(sendbtn, SIGNAL(clicked()), this, SLOT(commitSend()));
 	QToolTip::add(sendbtn, i18n("Sends message. Hit CTRL+Enter or ALT+S for shortcut"));
 
 	closebtn = new QPushButton (this);
 	closebtn->setGeometry(170, 185, 60, 20);
 	closebtn->setText(i18n("&Close"));
-	closebtn->setIconSet(QIconSet(loader->loadIcon("stop", KIcon::Small)));
+	closebtn->setIconSet(QIconSet(loadIcon("stop.png")));
 	connect(closebtn, SIGNAL(clicked()), this, SLOT(reject()));
 	QHButtonGroup *btngrp = new QHButtonGroup(this);
 

@@ -15,6 +15,7 @@
 #include <qlabel.h>
 #include <qcheckbox.h>
 #include <qradiobutton.h>
+
 #include "libgadu.h"
 #include "misc.h"
 #include "../config.h"

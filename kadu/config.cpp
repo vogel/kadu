@@ -7,9 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <kicontheme.h>
-#include <kiconloader.h>
-#include <kglobal.h>
 #include <qapplication.h>
 #include <qvaluelist.h>
 #include <qcolordialog.h>
@@ -453,7 +450,6 @@ void ConfigDialog::setupTab1(void) {
 }
 
 void ConfigDialog::setupTab2(void) {
-	KIconLoader *loader = KGlobal::iconLoader();
 	QVBox *box2 = new QVBox(this);
 	box2->setMargin(5);
 
@@ -478,7 +474,7 @@ void ConfigDialog::setupTab2(void) {
 	e_soundprog->setText(config.soundprog);
 
 	QPushButton *f_soundprog = new QPushButton(sndgroup);
-	f_soundprog->setPixmap(loader->loadIcon("fileopen", KIcon::Small));
+	f_soundprog->setPixmap(loadIcon("fileopen.png"));
 	connect(f_soundprog, SIGNAL(clicked()), this, SLOT(choosePlayerFile()));
 
 	b_soundvolctrl = new QCheckBox(box2);
@@ -506,7 +502,7 @@ void ConfigDialog::setupTab2(void) {
 	e_msgfile->setText(config.soundmsg);
 
 	QPixmap icon;
-	icon = loader->loadIcon("fileopen", KIcon::Small);
+	icon = loadIcon("fileopen.png");
 	QPushButton *msgsnd = new QPushButton(msggroup);
 	msgsnd->setPixmap(icon);
 	connect(msgsnd, SIGNAL(clicked()), this, SLOT(chooseMsgFile()));
@@ -550,7 +546,6 @@ void ConfigDialog::setupTab2(void) {
 }
 
 void ConfigDialog::setupTab3(void) {
-//	KIconLoader *loader = KGlobal::iconLoader();
 	QVBox *box3 = new QVBox(this);
 	box3->setMargin(5);	
 
@@ -675,7 +670,6 @@ void ConfigDialog::setupTab4(void) {
 	int i;
 //	uin_t uin;
 
-	KIconLoader *loader = KGlobal::iconLoader();
 	QVBox *box4 = new QVBox(this);
 	box4->setMargin(2);	
 	
@@ -695,10 +689,10 @@ void ConfigDialog::setupTab4(void) {
 
 	QVBox *vbox2 = new QVBox(panebox);
 	QPushButton *_goRight = new QPushButton (vbox2);
-	_goRight->setPixmap( loader->loadIcon("forward", KIcon::Small));
+	_goRight->setPixmap(loadIcon("forward.png"));
 
 	QPushButton *_goLeft = new QPushButton (vbox2);
-	_goLeft->setPixmap( loader->loadIcon("back", KIcon::Small));
+	_goLeft->setPixmap(loadIcon("back.png"));
 
 	QVBox *vbox3 = new QVBox(panebox);
 	QLabel *_l2 = new QLabel(vbox3);
@@ -734,7 +728,7 @@ void ConfigDialog::setupTab4(void) {
 	e_soundnotify->setText(config.soundnotify);
 
 	QPushButton *nsndget = new QPushButton(soundbox);
-	nsndget->setPixmap(loader->loadIcon("fileopen", KIcon::Small));
+	nsndget->setPixmap(loadIcon("fileopen.png"));
 	connect(nsndget, SIGNAL(clicked()), this, SLOT(chooseNotifyFile()));
 
 	QPushButton *testsoundnotify = new QPushButton(soundbox);
@@ -774,8 +768,6 @@ void ConfigDialog::setupTab4(void) {
 
 void ConfigDialog::setupTab5(void) {
 //	int i;
-
-//	KIconLoader *loader = KGlobal::iconLoader();
 
 	QVBox *box5 = new QVBox(this);
 	box5->setMargin(2);	

@@ -8,6 +8,9 @@
 #include <time.h>
 #include <qpushbutton.h>
 #include <qlayout.h>
+#include <qpixmap.h>
+#include <qstring.h>
+
 #include "misc.h"
 #include "pixmaps.h"
 #include "kadu.h"
@@ -30,9 +33,6 @@ QString ggPath(QString subpath)
 		path = QString("%1/%2/gg/%3").arg(home).arg(config_dir).arg(subpath);
 	return path;
 };
-
-UinsList::UinsList() {
-}
 
 void cp_to_iso(unsigned char *buf)
 {
@@ -61,6 +61,13 @@ void iso_to_cp(unsigned char *buf)
 		buf++;
 	};
 };
+
+QPixmap loadIcon(const QString &filename) {
+	QPixmap icon;
+	
+	icon.load(QString(DATADIR) + "/apps/kadu/icons/" + filename);
+	return icon;
+}
 
 char *timestamp(time_t customtime)
 {
@@ -125,6 +132,9 @@ bool UinsList::equals(UinsList &uins) {
 		if(!uins.contains(*i))
 			return false;
 	return true;
+}
+
+UinsList::UinsList() {
 }
 
 void UinsList::sort() {

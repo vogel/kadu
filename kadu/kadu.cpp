@@ -7,8 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <kglobal.h>
-#include <kiconloader.h>
 #include <ksystemtray.h>
 #include <qradiobutton.h>
 #include <qevent.h>
@@ -477,10 +475,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	dockppm->insertSeparator();
 
-	KIconLoader *loader = KGlobal::iconLoader();
-
-//	dockppm->insertItem(loader->loadIcon("exit",KIcon::Small), i18n("&Exit Kadu"), 9);
-	dockppm->insertItem(loader->loadIcon("exit",KIcon::Small), i18n("&Exit Kadu"), 9);
+	dockppm->insertItem(loadIcon("exit.png"), i18n("&Exit Kadu"), 9);
 	if (config.dock)
 		connect(dockppm, SIGNAL(activated(int)), dw, SLOT(dockletChange(int)));
 
@@ -1049,10 +1044,8 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 	QPopupMenu * pm;
 	pm = new QPopupMenu(this);
 
-	KIconLoader *loader = KGlobal::iconLoader();
-
 	QPixmap msg;
-	msg = loader->loadIcon("mail_generic", KIcon::Small);
+	msg = loadIcon("mail_generic.png");
 
 	UserListElement user;
 	user = userlist.byAltNick(item->text());
@@ -1062,7 +1055,7 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 	pm->insertItem(i18n("Send SMS"), KADU_CMD_SMS);
 	if(user.mobile=="")
 		pm->setItemEnabled(KADU_CMD_SMS,false);
-	pm->insertItem(loader->loadIcon("filesave", KIcon::Small), i18n("Send file"), KADU_CMD_SEND_FILE);
+	pm->insertItem(loadIcon("filesave.png"), i18n("Send file"), KADU_CMD_SEND_FILE);
 	if (user.status == GG_STATUS_AVAIL || user.status == GG_STATUS_AVAIL_DESCR ||
 		user.status == GG_STATUS_BUSY || user.status == GG_STATUS_BUSY_DESCR)
 		pm->setItemEnabled(KADU_CMD_SEND_FILE, true);
@@ -1070,7 +1063,7 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 		pm->setItemEnabled(KADU_CMD_SEND_FILE, false);
 
 #ifdef HAVE_OPENSSL
-	pm->insertItem(loader->loadIcon("encrypted", KIcon::Small), i18n("Send my public key"), KADU_CMD_SEND_KEY);
+	pm->insertItem(loadIcon("encrypted.png"), i18n("Send my public key"), KADU_CMD_SEND_KEY);
 	QString keyfile_path;
 
 	keyfile_path.append(ggPath("keys/"));
@@ -1087,13 +1080,13 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 
 	pm->insertSeparator();
 	
-	pm->insertItem(loader->loadIcon("remove", KIcon::Small), i18n("Remove from userlist"), KADU_CMD_REMOVE_USER);
-	pm->insertItem(loader->loadIcon("eraser", KIcon::Small), i18n("Clear history"), KADU_CMD_DELETE_HISTORY);
+	pm->insertItem(loadIcon("remove.png"), i18n("Remove from userlist"), KADU_CMD_REMOVE_USER);
+	pm->insertItem(loadIcon("eraser.png"), i18n("Clear history"), KADU_CMD_DELETE_HISTORY);
 	QPixmap history;
-	history = loader->loadIcon("history", KIcon::Small);
+	history = loadIcon("history.png");
 	pm->insertItem(history, i18n("View history"), KADU_CMD_SHOW_HISTORY);
-	pm->insertItem(loader->loadIcon("identity", KIcon::Small), i18n("View/edit user info"), KADU_CMD_USERINFO);
-	pm->insertItem(loader->loadIcon("viewmag", KIcon::Small), i18n("Lookup in directory"), KADU_CMD_SEARCH_USER);
+	pm->insertItem(loadIcon("identity.png"), i18n("View/edit user info"), KADU_CMD_USERINFO);
+	pm->insertItem(loadIcon("viewmag.png"), i18n("Lookup in directory"), KADU_CMD_SEARCH_USER);
 	if (!user.uin) {
 		pm->setItemEnabled(KADU_CMD_DELETE_HISTORY, false);
 		pm->setItemEnabled(KADU_CMD_SHOW_HISTORY, false);
@@ -1809,14 +1802,12 @@ Kadu::~Kadu(void) {
 
 void Kadu::createMenu() {
 
-	KIconLoader *loader = KGlobal::iconLoader();
-
 	mmb = new QMenuBar(this, "mmb");
 
 	QPopupMenu *ppm = new QPopupMenu(this, "ppm");
 	ppm->insertItem(i18n("Manage &ignored"), KADU_CMD_MANAGE_IGNORED);
-	ppm->insertItem(loader->loadIcon("configure", KIcon::Small), i18n("&Configuration"), KADU_CMD_CONFIG);
-	ppm->insertItem(loader->loadIcon("reload", KIcon::Small), i18n("Resend &userlist"), KADU_CMD_SEND_USERLIST);
+	ppm->insertItem(loadIcon("configure.png"), i18n("&Configuration"), KADU_CMD_CONFIG);
+	ppm->insertItem(loadIcon("reload.png"), i18n("Resend &userlist"), KADU_CMD_SEND_USERLIST);
 	if (mute) {
 		QPixmap snd_unmute((const char **)snd_mute_xpm);
 		QIconSet icon(snd_unmute);
@@ -1841,7 +1832,7 @@ void Kadu::createMenu() {
 	ppm->insertItem(i18n("Personal information"), KADU_CMD_PERSONAL_INFO);
 	ppm->insertSeparator();
 	QPixmap find;
-	find = loader->loadIcon("viewmag", KIcon::Small);
+	find = loadIcon("viewmag.png");
 	ppm->insertItem(find, i18n("&Search for users"), KADU_CMD_SEARCH);
 	ppm->insertItem(i18n("I&mport userlist"), KADU_CMD_IMPORT_USERLIST);
 	ppm->insertItem(i18n("E&xport userlist"), KADU_CMD_EXPORT_USERLIST);
@@ -1852,7 +1843,7 @@ void Kadu::createMenu() {
 	ppm->insertItem(i18n("A&bout..."), KADU_CMD_ABOUT);
 	ppm->insertSeparator();
 	ppm->insertItem(i18n("&Hide Kadu"), KADU_CMD_HIDE);
-	ppm->insertItem(loader->loadIcon("exit", KIcon::Small), i18n("&Exit Kadu"), KADU_CMD_QUIT);
+	ppm->insertItem(loadIcon("exit.png"), i18n("&Exit Kadu"), KADU_CMD_QUIT);
 
 	mmb->insertItem(i18n("&Kadu"), ppm);
 //	mmb->polish();

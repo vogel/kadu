@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <kicontheme.h>
-#include <kiconloader.h>
+#include <qpixmap.h>
+#include <qpushbutton.h>
 #include <qregexp.h>
 #include <qlayout.h>
 #include <qaccel.h>
@@ -98,8 +98,6 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 		userbox = NULL;
 		}
 		
-	KIconLoader *loader = KGlobal::iconLoader();
-
 	QVBox *downpart = new QVBox(split1);
 	QHBox *edtbuttontray = new QHBox(downpart);
 
@@ -109,7 +107,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 
 	buttontray = new QHBox(edtbuttontray);
 	autosend = new QPushButton(buttontray);
-	autosend->setPixmap(loader->loadIcon("key_enter", KIcon::Small));
+	autosend->setPixmap(loadIcon("key_enter.png"));
 	autosend->setToggleButton(true);
 	QToolTip::add(autosend, i18n("Enter key sends message"));
 	if (config.autosend) {
@@ -136,11 +134,11 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 
 	if(config.encryption&&encryption_possible) {
 		QToolTip::add(encryption, i18n("Disable encryption for this conversation"));
-		encryption->setPixmap(loader->loadIcon("encrypted", KIcon::Small));
+		encryption->setPixmap(loadIcon("encrypted.png"));
 		encrypt_enabled = true;
 	} else {
 		QToolTip::add(encryption, i18n("Enable encryption for this conversation"));
-		encryption->setPixmap(loader->loadIcon("encrypted", KIcon::Small));
+		encryption->setPixmap(loadIcon("encrypted.png"));
 		encrypt_enabled = false;
 	}
 	
@@ -149,11 +147,11 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 #endif
 	
 	QPushButton *clearchat= new QPushButton(buttontray);
-	clearchat->setPixmap(loader->loadIcon("eraser", KIcon::Small));
+	clearchat->setPixmap(loadIcon("eraser.png"));
 	QToolTip::add(clearchat, i18n("Clear messages in chat window"));
 
 	iconsel = new QPushButton(buttontray);
-	iconsel->setPixmap(loader->loadIcon("icons", KIcon::Small));
+	iconsel->setPixmap(loadIcon("icons.png"));
 	if (config.emoticons)
 		QToolTip::add(iconsel, i18n("Insert emoticon"));
 	else {
@@ -167,7 +165,8 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 
 	QPushButton *whois = new QPushButton(buttontray);
 	QPixmap p_whois;
-	p_whois = loader->loadIcon("viewmag", KIcon::Small);
+	p_whois = loadIcon("viewmag.png");
+
 	whois->setPixmap(p_whois);
 	QToolTip::add(whois, i18n("Lookup user info"));
 
@@ -186,14 +185,14 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	cancelbtn = new QPushButton(btnpart);
 	cancelbtn->setText(i18n("&Cancel"));
 	cancelbtn->setFixedWidth(120);
-	cancelbtn->setIconSet(QIconSet(loader->loadIcon("stop", KIcon::Small)));
+	cancelbtn->setIconSet(QIconSet(loadIcon("stop.png")));
 	QToolTip::add(cancelbtn, i18n("Cancel waiting for delivery"));
 	cancelbtn->hide();
 
 	sendbtn = new QPushButton(btnpart);
 	sendbtn->setText(i18n("&Send"));
 	sendbtn->setFixedWidth(120);
-	sendbtn->setIconSet(QIconSet(loader->loadIcon("forward", KIcon::Small)));
+	sendbtn->setIconSet(QIconSet(loadIcon("forward.png")));
 	connect(sendbtn, SIGNAL(clicked()), this, SLOT(sendMessage()));
 	QAccel *acc = new QAccel(this);
 	acc->connectItem(acc->insertItem(Key_Return + CTRL), this, SLOT(sendMessage()));
@@ -366,12 +365,11 @@ void Chat::keyPressEvent(QKeyEvent *e) {
 
 void Chat::regEncryptSend(void) {
 #ifdef HAVE_OPENSSL
-	KIconLoader *loader = KGlobal::iconLoader();
 	if (encrypt_enabled) {
-		encryption->setPixmap(loader->loadIcon("decrypted", KIcon::Small));
+		encryption->setPixmap(loadIcon("decrypted.png"));
 		encrypt_enabled = false;
 	} else {
-		encryption->setPixmap(loader->loadIcon("encrypted", KIcon::Small));
+		encryption->setPixmap(loadIcon("encrypted.png"));
 		encrypt_enabled = true;
 	}
 #endif

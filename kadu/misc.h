@@ -4,6 +4,8 @@
 #include <qvaluelist.h>
 #include <qdialog.h>
 #include <qlineedit.h>
+#include <qstring.h>
+#include <qpixmap.h>
 #include <libintl.h>
 
 #include "libgadu.h"
@@ -21,6 +23,7 @@ QString ggPath(QString subpath);
 
 void cp_to_iso(unsigned char *);
 void iso_to_cp(unsigned char *);
+QPixmap loadIcon(const QString &filename);
 char *timestamp(time_t = 0);
 QString pwHash(const QString tekst);
 void deleteSearchIdStruct(QDialog *ptr);
