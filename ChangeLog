@@ -3,7 +3,9 @@ lub rozbudowy. Postaæ (x/y) oznacza, ¿e x jest pomys³odawc± lub
 podes³a³ patcha, a zrobi³ to kto¶ oznaczony przez y. Je¶li jest
 w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
-+++ wersja 0.3.7
++++ wersja 0.3.8-cvs
+
++++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
 * okno konfiguracji: mo¿liwo¶æ wy³±czenia zmian statusu w historii (demsik/chilek)
 * porz±dki w configure + dodane wykrywanie nag³ówków XFree,
