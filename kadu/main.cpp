@@ -42,18 +42,20 @@ Kadu *kadu;
 #endif
 void kadu_signal_handler(int s)
 {
-	kdebugm(KDEBUG_PANIC, "kadu_signal_handler: %d\n", s);
-	if(lockFile){ // moze sie wywalic praktycznie po wylaczeniu i to tez trzeba uwzglednic	
-		flock(lockFileHandle, LOCK_UN);
-		kdebugm(KDEBUG_PANIC, "lock released\n");
-		lockFile->close();
-		kdebugm(KDEBUG_PANIC, "lockfile closed\n");
-	}
+	kdebugm(KDEBUG_WARNING, "kadu_signal_handler: %d\n", s);
 	
-	QString f=QString("kadu.conf.backup.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
 	if (s==SIGSEGV)
 	{
 		kdebugm(KDEBUG_PANIC, "Kadu crashed :(\n");
+		QString f=QString("kadu.conf.backup.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
+
+		if(lockFile)
+		{ // moze sie wywalic praktycznie po wylaczeniu i to tez trzeba uwzglednic	
+			flock(lockFileHandle, LOCK_UN);
+			kdebugm(KDEBUG_WARNING, "lock released\n");
+			lockFile->close();
+			kdebugm(KDEBUG_WARNING, "lockfile closed\n");
+		}
 #ifdef HAVE_EXECINFO
 		void *bt_array[100];
 		char **bt_strings;
@@ -78,8 +80,7 @@ void kadu_signal_handler(int s)
 		abort();
 	}
 	else if (s==SIGINT || s==SIGTERM)
-		config_file.saveTo(ggPath(f.latin1()));
-	exit(0);
+		qApp->postEvent(qApp, new QEvent(QEvent::Quit));
 }
 #endif
 
