@@ -26,7 +26,7 @@ extern "C" void autoresponder_close()
 	autoresponder=NULL;
 }
 
-AutoResponder::AutoResponder() : QObject()
+AutoResponder::AutoResponder() : QObject(NULL, "autoresponder")
 {
 	kdebugf();
 	config=new ConfigFile(ggPath(QString("autoresponder.conf")));

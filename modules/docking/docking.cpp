@@ -35,7 +35,7 @@ extern "C" void docking_close()
 	docking_manager = NULL;
 }
 
-DockingManager::DockingManager()
+DockingManager::DockingManager() : QObject(NULL, "docking_manager")
 {
 	kdebugf();
 	icon_timer = new QTimer(this);

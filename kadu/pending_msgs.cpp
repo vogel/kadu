@@ -8,7 +8,7 @@
 #include "config_file.h"
 #include "chat.h"
 
-PendingMsgs::PendingMsgs(): QObject()
+PendingMsgs::PendingMsgs(): QObject(NULL, "pending_msgs")
 {
 }
 

@@ -1054,7 +1054,7 @@ void ChooseDescription::updateYetLen(const QString& text) {
 }
 
 IconsManager::IconsManager(const QString& name, const QString& configname)
-	:Themes(name, configname)
+	:Themes(name, configname, "icons_manager")
 {
     connect(this, SIGNAL(themeChanged(const QString&)), this, SLOT(changed(const QString&)));
 }
@@ -1928,9 +1928,9 @@ void TokenDialog::tokenErrorReceived() {
 	done(-1);
 }
 
-Themes::Themes(const QString& name, const QString& configname)
+Themes::Themes(const QString& themename, const QString& configname, const char *name) : QObject(NULL, name)
 {
-	Name= name;
+	Name= themename;
 	ConfigName= configname;
 	ActualTheme="Custom";
 }

@@ -216,7 +216,7 @@ void ModulesManager::closeModule()
 	delete modules_manager;
 }
 
-ModulesManager::ModulesManager() : QObject()
+ModulesManager::ModulesManager() : QObject(NULL, "modules_manager")
 {
 	kdebugf();
 	// wazne, aby inicjalizacja tej zmiennej wystapila przed wczytaniem

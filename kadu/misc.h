@@ -305,7 +305,7 @@ class Themes : public QObject
 		QString fixFileName(const QString& path,const QString& fn);
 
 	public:
-		Themes(const QString& name, const QString& configname);
+		Themes(const QString& name, const QString& configname, const char *name=0);
 		QStringList defaultKaduPathsWithThemes();
 		const QStringList themes();
 		void setTheme(const QString& theme);

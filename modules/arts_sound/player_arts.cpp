@@ -49,7 +49,7 @@ extern "C" void arts_sound_close()
 	artsPlayerObj=NULL;
 }
 
-ArtsPlayerSlots::ArtsPlayerSlots()
+ArtsPlayerSlots::ArtsPlayerSlots() : QObject(NULL, "artsPlayerObj")
 {
 	kdebugf();
 	server=Arts::Reference("global:Arts_SoundServerV2");

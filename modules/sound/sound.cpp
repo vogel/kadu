@@ -138,7 +138,7 @@ extern "C" void sound_close()
 
 
 SoundManager::SoundManager(const QString& name, const QString& configname)
-	:Themes(name, configname)
+	:Themes(name, configname, "sound_manager")
 {
 	mute = false;
 	lastsoundtime.start();
@@ -274,7 +274,7 @@ int SoundManager::timeAfterLastSound()
 	return lastsoundtime.elapsed();
 }
 
-SoundSlots::SoundSlots()
+SoundSlots::SoundSlots() : QObject(NULL, "sound_slots")
 {
 	kdebugf();
 	QIconSet mu;

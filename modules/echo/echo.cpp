@@ -29,7 +29,7 @@ extern "C" void echo_close()
 	delete echo;
 }
 
-Echo::Echo() : QObject()
+Echo::Echo() : QObject(NULL, "echo")
 {
 //	MessageBox::msg(tr("Echo started"));
 }

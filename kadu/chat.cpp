@@ -43,7 +43,7 @@
 #include "status.h"
 #include "message_box.h"
 
-ChatManager::ChatManager() : QObject()
+ChatManager::ChatManager() : QObject(NULL, "chat_manager")
 {
 }
 

@@ -9,6 +9,8 @@
 class AutoAwaySlots :public QObject
 {
 	Q_OBJECT
+	public:
+	AutoAwaySlots();
 	
 	public slots:
 		void onCreateConfigDialog();

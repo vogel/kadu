@@ -392,7 +392,7 @@ void GaduProtocol::initModule()
 //	kadu->mainMenu()->insertItem(icons_manager.loadIcon("ResendUserlist"), tr("Resend &userlist"), gadu, SLOT(sendUserList()),0,-1,2);
 }
 
-GaduProtocol::GaduProtocol() : QObject()
+GaduProtocol::GaduProtocol() : QObject(NULL, "gadu")
 {
 	kdebugf();
 	

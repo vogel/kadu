@@ -39,6 +39,10 @@ enum {
 	HISTORYMANAGER_SMS_WITHOUT_NICK
 };
 
+HistoryManager::HistoryManager() : QObject(NULL, "history_manager")
+{
+}
+
 QString HistoryManager::text2csv(const QString &text) {
 	QString csv = text;
 	csv.replace(QRegExp("\\\\"), "\\\\");

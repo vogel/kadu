@@ -103,7 +103,7 @@ UserList::UserList(const UserList& source)
 		append(*i);
 }
 
-UserList::UserList() : QObject(), QValueList<UserListElement>()
+UserList::UserList() : QObject(NULL, "userlist"), QValueList<UserListElement>()
 {
 	dnslookups.setAutoDelete(true);
 }

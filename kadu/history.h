@@ -147,6 +147,7 @@ class HistoryManager : public QObject
 	Q_OBJECT
 	
 	public:
+		HistoryManager();
 		void appendMessage(UinsList receivers, UinType sender, const QString &msg, bool own, time_t=0, bool chat=true);
 		void appendSms(const QString &mobile, const QString &msg);
 		void appendStatus(UinType uin, unsigned int status, QString description = QString::null);

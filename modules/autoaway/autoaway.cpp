@@ -205,3 +205,7 @@ void AutoAwaySlots::onApplyConfigDialog()
 		off();
 	kdebugf2();
 }
+
+AutoAwaySlots::AutoAwaySlots() : QObject(NULL, "AutoAwaySlots")
+{
+}

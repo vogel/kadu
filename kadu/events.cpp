@@ -84,7 +84,7 @@ void ConnectionTimeoutTimer::off() {
 	}
 }
 
-EventManager::EventManager()
+EventManager::EventManager() : QObject(NULL, "event_manager")
 {
 	connect(this,SIGNAL(userStatusChanged(struct gg_event*)),this,SLOT(userStatusChangedSlot(struct gg_event*)));
 	connect(this,SIGNAL(userlistReceived(struct gg_event*)),this,SLOT(userlistReceivedSlot(struct gg_event*)));
