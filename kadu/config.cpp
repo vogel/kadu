@@ -91,7 +91,7 @@ void loadKaduConfig(void) {
 		config.geometry = konf->readRectEntry("Geometry");
 
 	konf->setGroup("SMS");
-	config.smsbuildin = konf->readBoolEntry("BuildInApp",true);
+	config.smsbuildin = konf->readBoolEntry("BuiltInApp",true);
 	config.smsapp = strdup(konf->readEntry("SmsApp",""));
 	config.smscustomconf = konf->readBoolEntry("UseCustomString",false);
 	config.smsconf = strdup(konf->readEntry("SmsString",""));
@@ -171,7 +171,7 @@ void saveKaduConfig(void) {
 	konf->writeEntry("DisplayGroupTabs",config.grouptabs);
 
 	konf->setGroup("SMS");
-	konf->writeEntry("BuildInApp",config.smsbuildin);	
+	konf->writeEntry("BuiltInApp",config.smsbuildin);	
 	konf->writeEntry("SmsApp",config.smsapp);
 	konf->writeEntry("SmsString",config.smsconf);
 	konf->writeEntry("UseCustomString",config.smscustomconf);
@@ -265,7 +265,7 @@ void ConfigDialog::setupTab1(void) {
 	smsvgrp->setTitle(i18n("SMS options"));
 
 	b_smsbuildin = new QCheckBox(smsvgrp);
-	b_smsbuildin->setText(i18n("Use build-in SMS application"));
+	b_smsbuildin->setText(i18n("Use built-in SMS application"));
 
 	smshbox1 = new QHBox(smsvgrp);
 	smshbox1->setSpacing(5);
