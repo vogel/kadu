@@ -62,50 +62,57 @@ UserlistImport::UserlistImport(QWidget *parent, const char *name)
 	setCaption(tr("Import userlist"));	
 }
 
-void UserlistImport::fromfile(){
+void UserlistImport::readUserlist(QTextStream &stream) {
 	UserListElement e;
-	bool ok;
-	int groups, i;
-	QStringList lines, userlist, groupnames;
 	QListViewItem *qlv;
+	QStringList sections, groupnames;
 	QString line;
+	int groups, i;
+	bool ok;
+
+	stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
+	importedUserlist.clear();
+	results->clear();
+	while (!stream.eof()) {
+		line = stream.readLine();
+		sections = QStringList::split(";", line, true);
+		if (sections.count() < 12)
+			continue;
+		if (sections[6] == "0")
+			sections[6].truncate(0);
+		e.first_name = sections[0];
+		e.last_name = sections[1];
+		e.nickname = sections[2];
+		e.altnick = sections[3];
+		e.mobile = sections[4];
+		if (sections.count() >= 12)
+			groups = sections.count() - 11;
+		else
+			groups = sections.count() - 7;
+		groupnames.clear();
+		for (i = 0; i < groups; i++)
+			groupnames.append(sections[5 + i]);
+		e.setGroup(groupnames.join(","));
+		e.uin = sections[5 + groups].toUInt(&ok);
+		if (!ok)
+			e.uin = 0;
+		e.description = QString::null;
+		e.email = sections[6 + groups];
+		importedUserlist.addUser(e);
+		qlv = new QListViewItem(results, sections[5 + groups],
+			sections[2], sections[3], sections[0],
+			sections[1], sections[4], groupnames.join(","),
+			sections[6 + groups]);
+		}
+}
+
+void UserlistImport::fromfile() {
 	QString fname = QFileDialog::getOpenFileName("/", QString::null, this);
 	if (fname.length()) {
 		QFile file(fname);
  		if (file.open(IO_ReadOnly)) {
 			QTextStream stream(&file);
-			stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
-			importedUserlist.clear();
-			results->clear();
-			while (!stream.eof()) {
-				line = stream.readLine();
-				lines = QStringList::split(";", line, true);
-				if (lines[6] == "0")
-					lines[6].truncate(0);
-				e.first_name = lines[0];
-				e.last_name = lines[1];
-				e.nickname = lines[2];
-				e.altnick = lines[3];
-				e.mobile = lines[4];
-				if (lines.count() >= 12)
-					groups = lines.count() - 11;
-				else
-					groups = lines.count() - 7;
-				groupnames.clear();
-				for (i = 0; i < groups; i++)
-					groupnames.append(lines[5 + i]);
-				e.setGroup(groupnames.join(","));
-				e.uin = lines[5 + groups].toUInt(&ok);
-				if (!ok)
-					e.uin = 0;
-				e.description = QString::null;
-				e.email = lines[6 + groups];
-				importedUserlist.addUser(e);
-				qlv = new QListViewItem(results, lines[5 + groups],
-					lines[2], lines[3], lines[0],
-					lines[1], lines[4], groupnames.join(","),
-					lines[6 + groups]);
-	  			}
+			readUserlist(stream);
 			file.close();
 			}
 		else
@@ -218,52 +225,10 @@ void UserlistImport::userlistReplyReceivedSlot(char type, char *reply)
 		}
 	fetchbtn->setEnabled(true);
 	kdebug("ImportUserlist::userlistReplyReceivedSlot(): Done.\n");
-	QStringList strlist;
-	strlist = QStringList::split("\r\n", importreply, true);
-
 	kdebug("ImportUserlist::userlistReplyReceivedSlot()\n%s\n",
 		unicode2latin(importreply).data());
-	QStringList fieldlist, groupnames;
-	QListViewItem *qlv;
-	QStringList::Iterator it;
-	UserListElement e;
-	bool ok;
-	int groups, i;
-
-	results->clear();
-	importedUserlist.clear();
-	for ((it = strlist.begin()); it != strlist.end(); it++) {
-		if ((*it).contains(';') < 11)
-			continue;
-		fieldlist = QStringList::split(";", *it, true);
-		if (fieldlist[6] == "0")
-			fieldlist[6].truncate(0);
-		e.first_name = fieldlist[0];
-		e.last_name = fieldlist[1];
-		e.nickname = fieldlist[2];
-		e.altnick = fieldlist[3];
-		e.mobile = fieldlist[4];
-		kdebug("ImportUserlist::userlistReplyReceivedSlot(): fieldlist.count() = %d\n",
-			fieldlist.count());
-		if (fieldlist.count() >= 12)
-			groups = fieldlist.count() - 11;
-		else
-			groups = fieldlist.count() - 7;
-		groupnames.clear();
-		for (i = 0 ; i < groups; i++)
-			groupnames.append(fieldlist[5 + i]);
-		e.setGroup(groupnames.join(","));
-		e.uin = fieldlist[5 + groups].toUInt(&ok);
-		if (!ok)
-			e.uin = 0;
-		e.description = QString::null;
-		e.email = fieldlist[6 + groups];
-		importedUserlist.addUser(e);
-		qlv = new QListViewItem(results, fieldlist[5 + groups],
-			fieldlist[2], fieldlist[3], fieldlist[0],
-			fieldlist[1], fieldlist[4], groupnames.join(","),
-			fieldlist[6 + groups]);
-		}
+	QTextStream stream(&importreply, IO_ReadOnly);
+	readUserlist(stream);
 	disconnect(&event_manager, SIGNAL(userlistReplyReceived(char, char *)),
 		this, SLOT(userlistReplyReceivedSlot(char, char *)));
 }

@@ -18,8 +18,8 @@ class UserlistImport : public QDialog {
 		void init(void);
 		
 	private:
-		int ret;
-		QArray<struct userlist> importedusers;
+		void readUserlist(QTextStream &stream);
+
 		QPushButton *fetchbtn;
 		UserList importedUserlist;
 		QString importreply;
