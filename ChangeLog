@@ -36,6 +36,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * configure: mozliwosc konfigurowania kompilacji modulow w pliku
   ".config". pokazywanie ustawien w podsumowaniu configure.
   niebawem bedzie tez dzialac kompilacja statyczna (adrian)
+* "³apanie" tak¿e w link znaku \ (mast3r)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
