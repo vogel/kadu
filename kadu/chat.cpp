@@ -244,14 +244,20 @@ void Chat::setTitle() {
 		if (k)
 			title.append(", ");
     
-		name = userlist.byUin(uins[k]).altnick;
-		title.append(name);
-		user = userlist.byUin(uins[k]);
-		j = statusGGToStatusNr(user.status);
-		if (!k)
-			setIcon(QPixmap((const char**)gg_xpm[statusGGToStatusNr(user.status)]));
-		else
-			setIcon(QPixmap((const char**)gg_act_xpm));
+		if (userlist.containsUin(uins[k])) {
+			user = userlist.byUin(uins[k]);
+			title.append(user.altnick);
+			j = statusGGToStatusNr(user.status);
+			if (!k)
+				setIcon(QPixmap((const char**)gg_xpm[statusGGToStatusNr(user.status)]));
+			else
+				setIcon(QPixmap((const char**)gg_act_xpm));
+			}
+		else {
+			title.append(QString::number(uins[k]));
+			j = 0;
+			setIcon(QPixmap((const char **)gg_inact_xpm));
+			}
 		title.append(" (");
 		title.append(i18n(statustext[j]));
 		if (j & 1)
@@ -262,7 +268,7 @@ void Chat::setTitle() {
 	title.replace(QRegExp("\n"), " ");
 
 	setCaption(title);
-	title_buffer=title;
+	title_buffer = title;
 }
 
 void Chat::changeTitle() {
