@@ -220,6 +220,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   spinboksa, a nie zwyk³ego pola edycyjnego (joi)
 * lepsza (bo obliczana na podstawie czcionki) warto¶æ domy¶lna szeroko¶ci
   userboksa przy wielokolumnowsej li¶cie kontaktów (joi)
+* drobne porz±dki, usuniêcie paru niepotrzebnych zmiennych, przeniesienie
+  paru globalnych do klas, zmiana publicznych na prywatne, nazwy.. (adrian)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

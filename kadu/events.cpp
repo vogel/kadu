@@ -484,11 +484,6 @@ void EventManager::eventHandler(gg_session* sess)
 			break;
 	}
 
-	if (sess->check == GG_CHECK_READ) {
-		timeout_connected = true;
-		last_read_event = time(NULL);
-		}
-
 	if (e->type == GG_EVENT_MSG) {
 		UinsList uins;
 		if (e->event.msg.msgclass == GG_CLASS_CTCP) {

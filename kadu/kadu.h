@@ -62,14 +62,15 @@ class Kadu : public QMainWindow
 	Q_OBJECT
 
 	private:
-		KaduTextBrowser* descrtb;
+		KaduTextBrowser* InfoPanel;
 		QMenuBar* MenuBar;
 		QPopupMenu* MainMenu;
 		KaduTabBar* GroupBar;
 		UserBox* Userbox;
 
-		int commencing_startup;
-		bool updateChecked;
+		bool DoBlink;
+		bool BlinkOn;
+		bool UpdateChecked;
 		bool Docked;
 
 		void createMenu();
@@ -90,10 +91,6 @@ class Kadu : public QMainWindow
 		void keyPressEvent(QKeyEvent *e);
 		virtual void resizeEvent(QResizeEvent *);
 //		virtual void moveEvent(QMoveEvent *);
-
-		struct gg_event *dcc_e;
-		int dcc_ret;
-		bool blinkOn;
 	 
 	public:
 		Kadu(QWidget* parent=0, const char *name=0);
@@ -131,10 +128,8 @@ class Kadu : public QMainWindow
 
 		// te zmienne s± tylko chwilowo publiczne.
 		// trzeba to uporz±dkowaæ
-		bool autohammer;
-		bool doBlink;
-		
-		//potrzebne dla modu³u dokuj±cego ¿eby g³ówne okno nie miga³o przy starcie...
+		bool autohammer;		
+		// potrzebne dla modu³u dokuj±cego ¿eby g³ówne okno nie miga³o przy starcie...
 		bool showMainWindowOnStart;
 
 	private slots:

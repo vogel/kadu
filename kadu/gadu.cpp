@@ -30,12 +30,9 @@ QSocketNotifier* kadusnw = NULL;
 
 bool userlist_sent = false;
 bool socket_active = false;
-int last_read_event = -1;
 unsigned int server_nr = 0;
-bool timeout_connected = true;
 QTimer* pingtimer;
 QValueList<QHostAddress> config_servers;
-bool i_wanna_be_invisible = true;
 
 QValueList<QHostAddress> gg_servers;
 const char *gg_servers_ip[7] = {"217.17.41.82", "217.17.41.83", "217.17.41.84", "217.17.41.85",
@@ -402,6 +399,7 @@ GaduProtocol::GaduProtocol() : QObject()
 	
 	SocketNotifiers = new GaduSocketNotifiers();
 	ActiveServer = NULL;
+	IWannaBeInvisible = true;
 
 	connect(SocketNotifiers, SIGNAL(connected()), this, SLOT(connectedSlot()));
 	connect(SocketNotifiers, SIGNAL(disconnected()), this, SLOT(disconnectedSlot()));
@@ -542,7 +540,7 @@ void GaduProtocol::setStatus(int status)
 		status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General", "PrivateStatus")));
 
 	status &= ~GG_STATUS_FRIENDS_MASK;
-	i_wanna_be_invisible = (status == GG_STATUS_INVISIBLE) || (status == GG_STATUS_INVISIBLE_DESCR);
+	IWannaBeInvisible = (status == GG_STATUS_INVISIBLE) || (status == GG_STATUS_INVISIBLE_DESCR);
 	
 	//emit changingStatus();
 
@@ -872,7 +870,7 @@ void GaduProtocol::sendUserList()
 			}
 
 	/** we were popping up sometimes, so let's keep the server informed **/
-	if (i_wanna_be_invisible)
+	if (IWannaBeInvisible)
 		gg_change_status(sess, GG_STATUS_INVISIBLE);
 
 	gg_notify_ex(sess, uins, types, j);

@@ -24,12 +24,9 @@ extern QSocketNotifier* kadusnw;
 
 extern bool userlist_sent;
 extern bool socket_active;
-extern int last_read_event;
 extern unsigned int server_nr;
-extern bool timeout_connected;
 extern QTimer* pingtimer;
 extern QValueList<QHostAddress> config_servers;
-extern bool i_wanna_be_invisible;
 
 struct SearchResult
 {
@@ -195,6 +192,7 @@ class GaduProtocol : public QObject
 		bool userListClear;
 		QString importReply;
 		int RequestedStatusForLogin;
+		bool IWannaBeInvisible;
 		QHostAddress* ActiveServer;
 
 		void setupProxy();

@@ -207,7 +207,7 @@ void Kadu::gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op) {
 			QMessageBox::information(this, tr("Update information"),
 				tr("The newest Kadu version is %1").arg(newestversion), QMessageBox::Ok);
 	}
-	updateChecked=true;
+	UpdateChecked=true;
 	delete uc;
 }
 
@@ -247,7 +247,7 @@ void Kadu::keyPressEvent(QKeyEvent *e) {
 /* a monstrous constructor so Kadu would take longer to start up */
 Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 {
-	updateChecked=false;
+	UpdateChecked=false;
 	Docked=false;
 	showMainWindowOnStart=true;
 
@@ -339,8 +339,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	pingtimer = blinktimer = NULL;
 
 	/* blinker */
-	blinkOn = false;
-	doBlink = false;
+	BlinkOn = false;
+	DoBlink = false;
 
 	/* another API change, another hack */
 	memset(&loginparams, 0, sizeof(loginparams));
@@ -450,21 +450,21 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	dockppm->insertSeparator();
 	dockppm->insertItem(icons_manager.loadIcon("Exit"), tr("&Exit Kadu"), 9);
 
-	descrtb = new KaduTextBrowser(split, "descrtb");
-	descrtb->setFrameStyle(QFrame::NoFrame);
-	descrtb->setMinimumHeight(int(1.5 * QFontMetrics(descrtb->QTextEdit::font()).height()));
-//	descrtb->resize(descrtb->size().width(), int(1.5 * QFontMetrics(descrtb->font()).height()));
-	descrtb->setTextFormat(Qt::RichText);
-	descrtb->setAlignment(Qt::AlignVCenter | Qt::WordBreak | Qt::DontClip);
+	InfoPanel = new KaduTextBrowser(split, "InfoPanel");
+	InfoPanel->setFrameStyle(QFrame::NoFrame);
+	InfoPanel->setMinimumHeight(int(1.5 * QFontMetrics(InfoPanel->QTextEdit::font()).height()));
+//	InfoPanel->resize(InfoPanel->size().width(), int(1.5 * QFontMetrics(InfoPanel->font()).height()));
+	InfoPanel->setTextFormat(Qt::RichText);
+	InfoPanel->setAlignment(Qt::AlignVCenter | Qt::WordBreak | Qt::DontClip);
 	if (!config_file.readBoolEntry("Look", "PanelVerticalScrollbar"))
-		descrtb->setVScrollBarMode(QScrollView::AlwaysOff);
-	descrtb->setPaletteBackgroundColor(config_file.readColorEntry("Look", "InfoPanelBgColor"));
-	descrtb->setPaletteForegroundColor(config_file.readColorEntry("Look", "InfoPanelFgColor"));
-	descrtb->QTextEdit::setFont(config_file.readFontEntry("Look", "PanelFont"));
+		InfoPanel->setVScrollBarMode(QScrollView::AlwaysOff);
+	InfoPanel->setPaletteBackgroundColor(config_file.readColorEntry("Look", "InfoPanelBgColor"));
+	InfoPanel->setPaletteForegroundColor(config_file.readColorEntry("Look", "InfoPanelFgColor"));
+	InfoPanel->QTextEdit::setFont(config_file.readFontEntry("Look", "PanelFont"));
 	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")==EMOTS_ANIMATED)
-		descrtb->setStyleSheet(new AnimStyleSheet(descrtb, emoticons->themePath()));
+		InfoPanel->setStyleSheet(new AnimStyleSheet(InfoPanel, emoticons->themePath()));
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
-		descrtb->QWidget::hide();
+		InfoPanel->QWidget::hide();
 	QObject::connect(&userlist, SIGNAL(dnsNameReady(UinType)), this, SLOT(infopanelUpdate(UinType)));
 
 	statusbutton = new QPushButton(QIconSet(icons_manager.loadIcon("Offline")), tr("Offline"), vbox, "statusbutton");
@@ -501,8 +501,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	connect(gadu, SIGNAL(statusChanged(int)), this, SLOT(setCurrentStatus(int)));
 
 	dccsock = NULL;
-	/* dirty workaround for multiple showEvents */
-	commencing_startup = true;
 }
 
 void Kadu::createToolBar()
@@ -662,7 +660,7 @@ void Kadu::deleteUsers()
 	QStringList  users = activeUserBox->getSelectedAltNicks();
 	removeUser(users, false);
 	if (!Userbox->isSelected(Userbox->currentItem()))
-		descrtb->setText("");
+		InfoPanel->setText("");
 }
 
 void Kadu::personalInfo()
@@ -813,14 +811,14 @@ void Kadu::changeAppearance() {
 
 	GroupBar->setFont(QFont(config_file.readFontEntry("Look", "UserboxFont").family(), config_file.readFontEntry("Look", "UserboxFont").pointSize(),75));
 
-	descrtb->setPaletteBackgroundColor(config_file.readColorEntry("Look", "InfoPanelBgColor"));
-	descrtb->setPaletteForegroundColor(config_file.readColorEntry("Look", "InfoPanelFgColor"));
-	descrtb->QTextEdit::setFont(config_file.readFontEntry("Look", "PanelFont"));
+	InfoPanel->setPaletteBackgroundColor(config_file.readColorEntry("Look", "InfoPanelBgColor"));
+	InfoPanel->setPaletteForegroundColor(config_file.readColorEntry("Look", "InfoPanelFgColor"));
+	InfoPanel->QTextEdit::setFont(config_file.readFontEntry("Look", "PanelFont"));
 
 	if (config_file.readBoolEntry("Look", "PanelVerticalScrollbar"))
-		kadu->descrtb->setVScrollBarMode(QScrollView::Auto);
+		InfoPanel->setVScrollBarMode(QScrollView::Auto);
 	else
-		kadu->descrtb->setVScrollBarMode(QScrollView::AlwaysOff);
+		InfoPanel->setVScrollBarMode(QScrollView::AlwaysOff);
 }
 
 void Kadu::currentChanged(QListBoxItem *item) {
@@ -837,10 +835,10 @@ void Kadu::currentChanged(QListBoxItem *item) {
 
 		if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")!=EMOTS_NONE && config_file.readBoolEntry("General", "ShowEmotPanel"))
 		{
-			descrtb->mimeSourceFactory()->addFilePath(emoticons->themePath());
+			InfoPanel->mimeSourceFactory()->addFilePath(emoticons->themePath());
 			emoticons->expandEmoticons(doc, config_file.readColorEntry("Look", "InfoPanelBgColor"));
 		}
-		descrtb->setText(doc.generateHtml());
+		InfoPanel->setText(doc.generateHtml());
 	}
 }
 
@@ -931,7 +929,7 @@ void Kadu::userListStatusModified(UserListElement *user)
 	kdebugm(KDEBUG_FUNCTION_START, "Kadu::userListStatusModified(): %d\n", user->uin);
 	if ((user->status == GG_STATUS_NOT_AVAIL)
 		|| (user->status == GG_STATUS_NOT_AVAIL_DESCR))
-		descrtb->setText("");
+		InfoPanel->setText("");
 	chat_manager->refreshTitlesForUin(user->uin);
 }
 
@@ -963,12 +961,12 @@ void Kadu::blink() {
 	int i;
 	QPixmap pix;
 
-	if (!doBlink && socket_active)
+	if (!DoBlink && socket_active)
 	{
 		setCurrentStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
 		return;
 	}
-	else if (!doBlink && !socket_active)
+	else if (!DoBlink && !socket_active)
 	{
 		pix = icons_manager.loadIcon("Offline");
 		statusbutton->setIconSet(QIconSet(pix));
@@ -976,7 +974,7 @@ void Kadu::blink() {
 		return;
 	}
 
-	if (blinkOn)
+	if (BlinkOn)
 	{
 		pix = icons_manager.loadIcon("Offline");
 		statusbutton->setIconSet(QIconSet(pix));
@@ -989,7 +987,7 @@ void Kadu::blink() {
 		statusbutton->setIconSet(QIconSet(pix));
 		emit connectingBlinkShowStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
 	}
-	blinkOn=!blinkOn;
+	BlinkOn=!BlinkOn;
 
 	blinktimer->start(1000, TRUE);
 }
@@ -1022,7 +1020,7 @@ void Kadu::userListUserAdded(const UserListElement& user)
 void Kadu::mouseButtonClicked(int button, QListBoxItem *item) {
 	kdebugm(KDEBUG_FUNCTION_START, "Kadu::mouseButtonClicked(): button=%d\n", button);
 	if (!item)
-		descrtb->setText("");
+		InfoPanel->setText("");
 
 	if (button !=4 || !item)
 		return;
@@ -1139,7 +1137,7 @@ void Kadu::setCurrentStatus(int status) {
 void Kadu::setStatus(int status) {
 	kdebugf();
 
-	if (!updateChecked)
+	if (!UpdateChecked)
 	{
 		UinType myUin=(UinType)config_file.readNumEntry("General", "UIN");
 		if (myUin)
@@ -1148,7 +1146,7 @@ void Kadu::setStatus(int status) {
 			QObject::connect(uc->op, SIGNAL(data(const QByteArray &, QNetworkOperation *)),
 					this, SLOT(gotUpdatesInfo(const QByteArray &, QNetworkOperation *)));
 			uc->run();
-			updateChecked=true;
+			UpdateChecked=true;
 		}
 	}
 
@@ -1159,7 +1157,7 @@ void Kadu::connecting()
 {
 	kdebugf();
 
-	doBlink = true;
+	DoBlink = true;
 
 	if (!blinktimer)
 	{
@@ -1174,7 +1172,7 @@ void Kadu::connected()
 {
 	kdebugf();
 
-	doBlink = false;
+	DoBlink = false;
 
 	kadu->setCurrentStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
 	if ((loginparams.status & (~GG_STATUS_FRIENDS_MASK)) == GG_STATUS_INVISIBLE_DESCR)
@@ -1294,7 +1292,7 @@ void Kadu::disconnected()
 {
 	kdebugm(KDEBUG_FUNCTION_START, "Kadu::disconnected(): Disconnection has occured\n");
 
-	doBlink = false;
+	DoBlink = false;
 
 	if (blinktimer)
 	{
@@ -1358,6 +1356,7 @@ void Kadu::dccSent(void) {
 
 void Kadu::watchDcc(void) {
 	kdebugf();
+	struct gg_event* dcc_e;
 	if (!(dcc_e = gg_dcc_watch_fd(dccsock))) {
 		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "Kadu::watchDcc(): Connection broken unexpectedly!\n");
 		config_file.writeEntry("Network", "AllowDCC", false);
@@ -1415,7 +1414,7 @@ bool Kadu::close(bool quit) {
 			{
 				QSize split;
 				config_file.writeEntry("General", "UserBoxHeight", Userbox->size().height());
-				config_file.writeEntry("General", "DescriptionHeight", descrtb->size().height());
+				config_file.writeEntry("General", "DescriptionHeight", InfoPanel->size().height());
 			}
 			if (config_file.readBoolEntry("Look", "ShowStatusButton"))
 			{
@@ -1543,9 +1542,9 @@ void Kadu::createStatusPopupMenu() {
 
 void Kadu::showdesc(bool show) {
 	if (show)
-		descrtb->show();
+		InfoPanel->show();
 	else
-		descrtb->QWidget::hide();
+		InfoPanel->QWidget::hide();
 }
 
 void Kadu::infopanelUpdate(UinType uin) {
@@ -1559,10 +1558,10 @@ void Kadu::infopanelUpdate(UinType uin) {
 		doc.convertUrlsToHtml();
 		if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")!=EMOTS_NONE && config_file.readBoolEntry("General", "ShowEmotPanel"))
 		{
-			descrtb->mimeSourceFactory()->addFilePath(emoticons->themePath());
+			InfoPanel->mimeSourceFactory()->addFilePath(emoticons->themePath());
 			emoticons->expandEmoticons(doc, config_file.readColorEntry("Look", "InfoPanelBgColor"));
 		}
-		descrtb->setText(doc.generateHtml());
+		InfoPanel->setText(doc.generateHtml());
 	}
 }
 

@@ -161,8 +161,6 @@ class EventManager : public QObject
 
 extern EventManager event_manager;
 
-extern QTime lastsoundtime;
-
 class EventConfigSlots : public QObject
 {
 	Q_OBJECT
