@@ -44,12 +44,8 @@ void VoiceArts::playSample(char *data, int length) {
 }
 
 void VoiceArts::recordSample(char *data, int length) {
-	int len;
-	kdebug("VoiceArts::recordSample()\n");
-	len = 0;
-	do {
-		len += arts_read(recstream, data, length - len);
-	} while (len < length);
+	kdebug("VoiceArts::recordSample(): read = %d\n",
+		arts_read(recstream, data, length));
 }
 
 VoiceArts *voice_arts;
