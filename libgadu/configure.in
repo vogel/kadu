@@ -1,4 +1,4 @@
-dnl $Id: configure.in,v 1.5 2002/09/22 19:23:35 chilek Exp $
+dnl $Id: configure.in,v 1.6 2002/10/24 11:03:57 adrian Exp $
 
 AC_INIT(lib/libgadu.h)
 AC_PREREQ(2.50)
@@ -44,7 +44,6 @@ AC_SUBST(install_ioctld, "")
 AC_SUBST(shared, "")
 AC_SUBST(install_shared, "")
 
-AC_SUBST(libgadu_a, "")
 AC_SUBST(lgadu, "")
 
 AC_SUBST(static, "static")
@@ -59,9 +58,7 @@ AC_SUBST(uninstall_ekg, "")
 AC_SUBST(make_ekgwap, "")
 AC_SUBST(install_ekgwap, "")
 
-AC_SUBST(ui_readline_o, "")
-AC_SUBST(ui_ncurses_o, "")
-AC_SUBST(python_o, "")
+AC_SUBST(OBJS, "")
 
 # najpierw sprawdzamy te opcje, które s± wspólne dla libgadu i ekg.
 
@@ -77,6 +74,7 @@ else
   CFLAGS="$CFLAGS -ggdb" 
 fi
 
+dnl sparc libs...
 AC_CHECK_LIB(nsl, t_accept, LIBS="$LIBS -lnsl")
 AC_CHECK_LIB(socket, socket, LIBS="$LIBS -lsocket")
 
@@ -120,7 +118,7 @@ AC_TRY_RUN(
   {
     char tmp;
     return (snprintf(&tmp, sizeof(tmp), "test") != 4);
-  }], [AC_DEFINE(HAVE_C99_VSNPRINTF)
+  }], [AC_DEFINE(HAVE_C99_VSNPRINTF, 1, [define if you have C99-aware vsnprintf])
   AC_MSG_RESULT([yes])], [AC_MSG_RESULT([no])])
 
 # i zaczynamy wykrywaæ ¶mieci dla ekg
@@ -137,8 +135,8 @@ if test -d src; then
     [  --enable-ui-ncurses     Enable ncurses UI])
 
   if test "x$enable_ui_readline" != "xno"; then
-    AC_DEFINE(WITH_UI_READLINE)
-    ui_readline_o="ui-readline.o"
+    AC_DEFINE(WITH_UI_READLINE, 1, [define if you want ui_readline])
+    OBJS="$OBJS ui-readline.o"
   fi
 
   if test -f .enable-ui-ncurses; then
@@ -146,12 +144,12 @@ if test -d src; then
   fi
   
   if test "x$enable_ui_ncurses" = "xyes"; then
-    AC_DEFINE(WITH_UI_NCURSES)
-    ui_ncurses_o="ui-ncurses.o"
+    AC_DEFINE(WITH_UI_NCURSES, 1, [define if you want ui_ncurses])
+    OBJS="$OBJS ui-ncurses.o"
   fi
   
   if test "x$enable_ui_ncurses" = "xyes" -a "x$enable_force_readline" = "xyes"; then 
-    AC_DEFINE(WITH_FORCE_READLINE)
+    AC_DEFINE(WITH_FORCE_READLINE, 1, [define if you want ui_readline as default])
   fi
   
   if test "x$enable_ui_ncurses" = "xyes"; then 
@@ -161,7 +159,6 @@ if test -d src; then
       AC_MSG_ERROR([You need ncurses and ncurses-devel packages.])
     fi
 
-    LIBS="$LIBS $CURSES_LIBS"
     LDFLAGS="$LDFLAGS $CURSES_LIBS"
     CFLAGS="$CFLAGS $CURSES_INCLUDES"
   fi
@@ -174,13 +171,11 @@ if test -d src; then
       TERMCAP_LIB=""
     else
       AC_CHECK_LIB(termcap, tgetent, [TERMCAP_LIB="-ltermcap"])
-      LIBS="$LIBS $TERMCAP_LIB"
       LDFLAGS="$LDFLAGS $TERMCAP_LIB"
     fi
 
     if test "x$TERMCAP_LIB" = "x" -a "x$CURSES_LIBS" = "x"; then
       AC_CHECK_NCURSES
-      LIBS="$LIBS $CURSES_LIBS"
       LDFLAGS="$LDFLAGS $CURSES_LIBS"
       CFLAGS="$CFLAGS $CURSES_INCLUDES"
     fi
@@ -191,7 +186,6 @@ if test -d src; then
       AC_MSG_ERROR([You need both readline and readline-devel packages.])
     fi
 
-    LIBS="$READLINE_LIBS $LIBS"
     LDFLAGS="$READLINE_LIBS $LDFLAGS"
     CFLAGS="$CFLAGS $READLINE_INCLUDES"
 
@@ -207,8 +201,8 @@ if test -d src; then
     AC_CHECK_LIB(gsm, gsm_decode, [ 
       AC_CHECK_HEADERS(gsm.h, [
         AC_CHECK_HEADERS(linux/soundcard.h, [
-          AC_DEFINE(HAVE_VOIP)
-          LIBS="$LIBS -lgsm"
+          AC_DEFINE(HAVE_VOIP, 1, [define if you want VOIP support])
+	  LDFLAGS="-lgsm $LDFLAGS"
 	])
       ])
     ])
@@ -219,9 +213,24 @@ if test -d src; then
   AC_CHECK_PYTHON
   
   if test "x$have_python" = "xtrue"; then
-    python_o="python.o"
-    LIBS="$LIBS $PYTHON_LIBS"
+    OBJS="$OBJS python.o"
+    LDFLAGS="$PYTHON_LIBS $LDFLAGS"
     CFLAGS="$CFLAGS $PYTHON_INCLUDES"
+  fi
+
+  # sprawdzamy openssl
+
+  AC_ARG_WITH(openssl,
+    [  --without-openssl       Compile without OpenSSL])
+
+  if test "x$with_openssl" != "xno"; then
+    AC_CHECK_LIB(ssl, RSA_new, [
+      AC_CHECK_HEADERS(openssl/rsa.h, [
+        AC_DEFINE(HAVE_OPENSSL, 1, [define if you have OpenSSL])
+	LDFLAGS="-lssl -lcrypto $LDFLAGS"
+	OBJS="$OBJS sim.o"
+      ])
+    ])
   fi
 
   # sprawdzamy libz.so, <zlib.h>
@@ -232,8 +241,8 @@ if test -d src; then
   if test "x$with_zlib" != "xno"; then
     AC_CHECK_LIB(z, gzopen, [
       AC_CHECK_HEADERS(zlib.h, [
-        AC_DEFINE(HAVE_ZLIB)
-        LIBS="$LIBS -lz"
+        AC_DEFINE(HAVE_ZLIB, 1, [define if you want compressed logs])
+	LDFLAGS="-lz $LDFLAGS"
       ])
     ])
   fi
@@ -260,7 +269,7 @@ dnl   fi
   if test "x$enable_wap" = "xyes"; then
     make_ekgwap="make-ekgwap"
     install_ekgwap="install-ekgwap"
-    AC_DEFINE(WITH_WAP)
+    AC_DEFINE(WITH_WAP, 1, [define if you want "WAP" support])
   fi
 
   # sprawdzamy ioctld
@@ -276,11 +285,17 @@ dnl   fi
     ])
   fi
 
-  libgadu_a="../lib/libgadu.a"
-  lgadu=""
+  # sprawdzamy, czy system ma getopt_long
+
+  AC_CHECK_FUNC(getopt_long, , [OBJS="$OBJS ../compat/getopt.o ../compat/getopt1.o"; CFLAGS="-I../compat $CFLAGS"])
+  
+  # ustawiamy opcje
+
   if test "x$enable_static" = "xno" -o "x$enable_dynamic" = "xyes"; then 
-    libgadu_a=""
     lgadu="-lgadu"
+  else
+    OBJS="$OBJS ../lib/libgadu.a"
+    lgadu=""
   fi
   ekg="ekg"
   install_ekg="install-ekg"

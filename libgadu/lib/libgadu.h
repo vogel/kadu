@@ -1,4 +1,4 @@
-/* $Id: libgadu.h,v 1.10 2002/10/01 10:24:50 chilek Exp $ */
+/* $Id: libgadu.h,v 1.11 2002/10/24 11:03:58 adrian Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>,
@@ -35,6 +35,11 @@ extern "C" {
 #include <sys/types.h>
 #include <stdint.h>
 
+/*
+ * uin_t
+ *
+ * typ reprezentuj±cy numer osoby.
+ */
 typedef uint32_t uin_t;
 
 /*
@@ -120,12 +125,12 @@ struct gg_http {
 	char *user_data;	/* dane u¿ytkownika */
 };
 
+#define GG_MAX_PATH 276
+
 /*
  * odpowiednik windowsowej struktury WIN32_FIND_DATA niezbêdnej przy
  * wysy³aniu plików.
  */
-#define GG_MAX_PATH 276
-
 struct gg_file_info {
 	uint32_t mode;			/* dwFileAttributes */
 	uint32_t ctime[2];		/* ftCreationTime */
@@ -253,13 +258,18 @@ enum gg_state_enum {
 #define GG_STATE_FINISHED GG_STATE_DONE
 
 /*
- * co proces klienta powinien sprawdzaæ w deskryptorach?
+ * gg_check_t
+ *
+ * informuje, co proces klienta powinien sprawdziæ na deskryptorze danego
+ * po³±czenia.
  */
-enum gg_check_enum {
+enum gg_check_t {
 	GG_CHECK_NONE = 0,		/* nic. nie powinno wyst±piæ */
 	GG_CHECK_WRITE = 1,		/* sprawdzamy mo¿liwo¶æ zapisu */
 	GG_CHECK_READ = 2,		/* sprawdzamy mo¿liwo¶æ odczytu */
 };
+
+#define gg_check_enum gg_check_t	/* dla kompatybilno¶ci */
 
 /*
  * parametry gg_login(). przenios³em do struktury, ¿eby unikn±æ cyrków
@@ -289,54 +299,60 @@ void gg_free_session(struct gg_session *sess);
 void gg_logoff(struct gg_session *sess);
 int gg_change_status(struct gg_session *sess, int status);
 int gg_change_status_descr(struct gg_session *sess, int status, const char *descr);
+int gg_change_status_descr_time(struct gg_session *sess, int status, const char *descr, int time);
 int gg_send_message(struct gg_session *sess, int msgclass, uin_t recipient, const unsigned char *message);
 int gg_send_message_confer(struct gg_session *sess, int msgclass, int recipients_count, uin_t *recipients, const unsigned char *message);
 int gg_send_message_ctcp(struct gg_session *sess, int msgclass, uin_t recipient, const unsigned char *message, int message_len);
 int gg_ping(struct gg_session *sess);
 
-enum {
-	GG_EVENT_NONE = 0,
-	GG_EVENT_MSG,
-	GG_EVENT_NOTIFY,
-	GG_EVENT_NOTIFY_DESCR,
-	GG_EVENT_STATUS,
-	GG_EVENT_ACK,
-	GG_EVENT_PONG,
-	GG_EVENT_CONN_FAILED,
-	GG_EVENT_CONN_SUCCESS,
-	GG_EVENT_DISCONNECT,
+enum gg_event_t {
+	GG_EVENT_NONE = 0,		/* nic siê nie wydarzy³o */
+	GG_EVENT_MSG,			/* otrzymano wiadomo¶æ */
+	GG_EVENT_NOTIFY,		/* kto¶ siê pojawi³ */
+	GG_EVENT_NOTIFY_DESCR,		/* kto¶ siê pojawi³ z opisem */
+	GG_EVENT_STATUS,		/* kto¶ zmieni³ stan */
+	GG_EVENT_ACK,			/* potwierdzenie wys³ania wiadomo¶ci */
+	GG_EVENT_PONG,			/* pakiet pong */
+	GG_EVENT_CONN_FAILED,		/* po³±czenie siê powiod³o */
+	GG_EVENT_CONN_SUCCESS,		/* po³±czenie siê nie uda³o */
+	GG_EVENT_DISCONNECT,		/* serwer zrywa po³±czenie */
 
 	GG_EVENT_DCC_NEW,		/* nowe po³±czenie miêdzy klientami */
-	GG_EVENT_DCC_ERROR,		/* b³±d */
-	GG_EVENT_DCC_DONE,		/* skoñczy³ */
+	GG_EVENT_DCC_ERROR,		/* b³±d po³±czenia miêdzy klientami */
+	GG_EVENT_DCC_DONE,		/* zakoñczono po³±czenie */
 	GG_EVENT_DCC_CLIENT_ACCEPT,	/* moment akceptacji klienta */
-	GG_EVENT_DCC_CALLBACK,		/* klient siê po³±czy³ bo wo³ali¶my */
-	GG_EVENT_DCC_NEED_FILE_INFO,	/* trzeba wype³niæ file_info */
+	GG_EVENT_DCC_CALLBACK,		/* klient siê po³±czy³ na ¿±danie */
+	GG_EVENT_DCC_NEED_FILE_INFO,	/* nale¿y wype³niæ file_info */
 	GG_EVENT_DCC_NEED_FILE_ACK,	/* czeka na potwierdzenie pliku */
-	GG_EVENT_DCC_NEED_VOICE_ACK,	/* czeka na potwierdzenie voip */
-	GG_EVENT_DCC_VOICE_DATA,	/* ramka danych voip */
+	GG_EVENT_DCC_NEED_VOICE_ACK,	/* czeka na potwierdzenie rozmowy */
+	GG_EVENT_DCC_VOICE_DATA,	/* ramka danych rozmowy g³osowej */
 };
 
 /*
- * nied³ugo siê tego pozbêdê na rzecz sensownej obs³ugi b³êdów. --w
+ * gg_failure_t
+ *
+ * okre¶la powód nieudanego po³±czenia.
  */
-enum {
-	GG_FAILURE_RESOLVING = 1,
-	GG_FAILURE_CONNECTING,
-	GG_FAILURE_INVALID,
-	GG_FAILURE_READING,
-	GG_FAILURE_WRITING,
-	GG_FAILURE_PASSWORD,
-	GG_FAILURE_404,
+enum gg_failure_t {
+	GG_FAILURE_RESOLVING = 1,	/* nie znaleziono serwera */
+	GG_FAILURE_CONNECTING,		/* nie mo¿na siê po³±czyæ */
+	GG_FAILURE_INVALID,		/* serwer zwróci³ nieprawid³owe dane */
+	GG_FAILURE_READING,		/* zerwano po³±czenie podczas odczytu */
+	GG_FAILURE_WRITING,		/* zerwano po³±czenie podczas zapisu */
+	GG_FAILURE_PASSWORD,		/* nieprawid³owe has³o */
+
+	GG_FAILURE_404,			/* XXX nieu¿ywane */
 };
 
 /*
- * rodzaje b³êdów, na razie u¿ywane przez http. bez rozczulania siê nad
- * powodami. klient powie, ¿e albo nie znalaz³ hosta, albo nie móg³ siê
- * po³±czyæ, albo nie móg³ wys³aæ, albo nie móg³ odebrac. i tyle. jak
- * kto¶ bêdzie chcia³, to bêdzie móg³ sprawdziæ errno. ale po co?
+ * gg_error_t
+ *
+ * okre¶la rodzaj b³êdu wywo³anego przez dan± operacjê. nie zawiera
+ * przesadnie szczegó³owych informacji o powodzie b³êdu, by nie komplikowaæ
+ * obs³ugi b³êdów. je¶li wymagana jest wiêksza dok³adno¶æ, nale¿y sprawdziæ
+ * zawarto¶æ zmiennej errno.
  */
-enum {
+enum gg_error_t {
 	GG_ERROR_RESOLVING = 1,		/* b³±d znajdowania hosta */
 	GG_ERROR_CONNECTING,		/* b³±d ³aczenia siê */
 	GG_ERROR_READING,		/* b³±d odczytu */
@@ -515,7 +531,7 @@ struct gg_http *gg_remind_passwd(uin_t uin, int async);
 /* zmiana has³a */
 struct gg_http *gg_change_passwd(uin_t uin, const char *passwd, const char *newpasswd, const char *newemail, int async);
 #define gg_change_passwd_free gg_pubdir_free
-#define gg_free_change_passwd gg_pundir_free
+#define gg_free_change_passwd gg_pubdir_free
 
 /* zmiana informacji w katalogu publicznym */
 struct gg_change_info_request {
@@ -650,7 +666,7 @@ uint16_t gg_fix16(uint16_t x);
 #define GG_DEFAULT_PROTOCOL_VERSION 0x18
 #define GG_DEFAULT_TIMEOUT 30
 #define GG_HAS_AUDIO_MASK 0x40000000
-#define GG_LIBGADU_VERSION "20020930"
+#define GG_LIBGADU_VERSION "20021023"
 
 #define GG_DEFAULT_DCC_PORT 1550
 

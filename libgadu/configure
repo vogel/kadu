@@ -837,8 +837,12 @@ Optional ekg Features:
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
+  --with-ncurses[=dir]    Compile with ncurses/locate base dir
   --without-termcap       Used to force ncurses for readline
+  --with-readline[=dir]   Compile with readline/locate base dir
   --without-libgsm        Compile without GSM support
+  --with-python     	  Compile with Python bindings
+  --without-openssl       Compile without OpenSSL
   --without-zlib          Compile without zlib (compressed logs)
 
 Some influential environment variables:
@@ -2333,7 +2337,87 @@ echo "${ECHO_T}no" >&6
 fi
 
 
-AC_NEED_STDINT_H
+
+echo "$as_me:$LINENO: checking for uintXX_t types" >&5
+echo $ECHO_N "checking for uintXX_t types... $ECHO_C" >&6
+
+  if test "x" = "x"; then
+    ac_stdint_h="stdint.h"
+  else
+    ac_stdint_h=""
+  fi
+
+  rm -f $ac_stdint_h
+
+  ac_header_stdint=""
+  for i in stdint.h inttypes.h sys/inttypes.h sys/int_types.h sys/types.h; do
+    if test "x$ac_header_stdint" = "x"; then
+      cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+#include "confdefs.h"
+#include <$i>
+#ifdef F77_DUMMY_MAIN
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+#endif
+int
+main ()
+{
+uint32_t foo
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_header_stdint=$i
+else
+  echo "$as_me: failed program was:" >&5
+cat conftest.$ac_ext >&5
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+    fi
+  done
+
+  if test "x$ac_header_stdint" != "x" ; then
+    echo "$as_me:$LINENO: result: found in <$ac_header_stdint>" >&5
+echo "${ECHO_T}found in <$ac_header_stdint>" >&6
+    if test "x$ac_header_stdint" != "xstdint.h" ; then
+      echo "#include <$ac_header_stdint>" > $ac_stdint_h
+    fi
+  else
+    echo "$as_me:$LINENO: result: not found, using reasonable defaults" >&5
+echo "${ECHO_T}not found, using reasonable defaults" >&6
+
+    cat > $ac_stdint_h << EOF
+#ifndef __AC_STDINT_H
+#define __AC_STDINT_H 1
+
+/* ISO C 9X: 7.18 Integer types <stdint.h> */
+
+#define __int8_t_defined
+typedef   signed char    int8_t;
+typedef unsigned char   uint8_t;
+typedef   signed short  int16_t;
+typedef unsigned short uint16_t;
+typedef   signed int    int32_t;
+typedef unsigned int   uint32_t;
+
+#endif /* __AC_STDINT_H */
+EOF
+  fi
 
 echo "$as_me:$LINENO: checking whether byte ordering is bigendian" >&5
 echo $ECHO_N "checking whether byte ordering is bigendian... $ECHO_C" >&6
@@ -2558,8 +2642,6 @@ shared=""
 install_shared=""
 
 
-libgadu_a=""
-
 lgadu=""
 
 
@@ -2584,11 +2666,7 @@ make_ekgwap=""
 install_ekgwap=""
 
 
-ui_readline_o=""
-
-ui_ncurses_o=""
-
-python_o=""
+OBJS=""
 
 
 # najpierw sprawdzamy te opcje, które s± wspólne dla libgadu i ekg.
@@ -2797,7 +2875,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
-  cat >>confdefs.h <<\_ACEOF
+
+cat >>confdefs.h <<\_ACEOF
 #define HAVE_C99_VSNPRINTF 1
 _ACEOF
 
@@ -2837,11 +2916,12 @@ if test "${enable_ui_ncurses+set}" = set; then
 fi;
 
   if test "x$enable_ui_readline" != "xno"; then
-    cat >>confdefs.h <<\_ACEOF
+
+cat >>confdefs.h <<\_ACEOF
 #define WITH_UI_READLINE 1
 _ACEOF
 
-    ui_readline_o="ui-readline.o"
+    OBJS="$OBJS ui-readline.o"
   fi
 
   if test -f .enable-ui-ncurses; then
@@ -2849,22 +2929,203 @@ _ACEOF
   fi
 
   if test "x$enable_ui_ncurses" = "xyes"; then
-    cat >>confdefs.h <<\_ACEOF
+
+cat >>confdefs.h <<\_ACEOF
 #define WITH_UI_NCURSES 1
 _ACEOF
 
-    ui_ncurses_o="ui-ncurses.o"
+    OBJS="$OBJS ui-ncurses.o"
   fi
 
   if test "x$enable_ui_ncurses" = "xyes" -a "x$enable_force_readline" = "xyes"; then
-    cat >>confdefs.h <<\_ACEOF
+
+cat >>confdefs.h <<\_ACEOF
 #define WITH_FORCE_READLINE 1
 _ACEOF
 
   fi
 
   if test "x$enable_ui_ncurses" = "xyes"; then
-    AC_CHECK_NCURSES
+
+
+
+
+
+# Check whether --with-ncurses or --without-ncurses was given.
+if test "${with_ncurses+set}" = set; then
+  withval="$with_ncurses"
+  if test "x$withval" = "xno" ; then
+        without_ncurses=yes
+      elif test "x$withval" != "xyes" ; then
+        with_arg=$withval/include:-L$withval/lib
+      fi
+fi;
+
+  if test "x$without_ncurses" != "xyes" ; then
+    echo "$as_me:$LINENO: checking for ncurses.h" >&5
+echo $ECHO_N "checking for ncurses.h... $ECHO_C" >&6
+
+    for i in $with_arg \
+    		/usr/include: \
+		/usr/local/include:"-L/usr/local/lib -L/usr/local/lib/ncurses" \
+		/usr/pkg/include:-L/usr/pkg/lib \
+		/usr/contrib/include:-L/usr/contrib/lib \
+		/usr/freeware/include:-L/usr/freeware/lib32 \
+    		/sw/include:-L/sw/lib \
+    		/cw/include:-L/cw/lib; do
+
+      incl=`echo "$i" | sed 's/:.*//'`
+      lib=`echo "$i" | sed 's/.*://'`
+
+      if test -f $incl/ncurses/ncurses.h; then
+        include=$incl/ncurses
+      elif test -f $incl/ncurses.h; then
+        include=$incl
+      fi
+
+      if test "x$include" != "x"; then
+        echo "$as_me:$LINENO: result: $include/ncurses.h" >&5
+echo "${ECHO_T}$include/ncurses.h" >&6
+	CURSES_LIBS="$lib"
+	CURSES_INCLUDES="-I$include"
+	have_ncurses=true
+	ldflags_old="$LDFLAGS"
+	LDFLAGS="$CURSES_LIBS"
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_NCURSES 1
+_ACEOF
+
+	echo "$as_me:$LINENO: checking for initscr in -lncurses" >&5
+echo $ECHO_N "checking for initscr in -lncurses... $ECHO_C" >&6
+if test "${ac_cv_lib_ncurses_initscr+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lncurses  $LIBS"
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+#include "confdefs.h"
+
+/* Override any gcc2 internal prototype to avoid an error.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+/* We use char because int might match the return type of a gcc2
+   builtin and then its argument prototype would still apply.  */
+char initscr ();
+#ifdef F77_DUMMY_MAIN
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+#endif
+int
+main ()
+{
+initscr ();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_cv_lib_ncurses_initscr=yes
+else
+  echo "$as_me: failed program was:" >&5
+cat conftest.$ac_ext >&5
+ac_cv_lib_ncurses_initscr=no
+fi
+rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+echo "$as_me:$LINENO: result: $ac_cv_lib_ncurses_initscr" >&5
+echo "${ECHO_T}$ac_cv_lib_ncurses_initscr" >&6
+if test $ac_cv_lib_ncurses_initscr = yes; then
+  CURSES_LIBS="$CURSES_LIBS -lncurses"
+else
+  echo "$as_me:$LINENO: checking for initscr in -lcurses" >&5
+echo $ECHO_N "checking for initscr in -lcurses... $ECHO_C" >&6
+if test "${ac_cv_lib_curses_initscr+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lcurses  $LIBS"
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+#include "confdefs.h"
+
+/* Override any gcc2 internal prototype to avoid an error.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+/* We use char because int might match the return type of a gcc2
+   builtin and then its argument prototype would still apply.  */
+char initscr ();
+#ifdef F77_DUMMY_MAIN
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+#endif
+int
+main ()
+{
+initscr ();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_cv_lib_curses_initscr=yes
+else
+  echo "$as_me: failed program was:" >&5
+cat conftest.$ac_ext >&5
+ac_cv_lib_curses_initscr=no
+fi
+rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+echo "$as_me:$LINENO: result: $ac_cv_lib_curses_initscr" >&5
+echo "${ECHO_T}$ac_cv_lib_curses_initscr" >&6
+if test $ac_cv_lib_curses_initscr = yes; then
+  CURSES_LIBS="$CURSES_LIBS -lcurses"
+fi
+
+fi
+
+	LDFLAGS="$ldflags_old"
+	break
+      fi
+    done
+  fi
+
+  if test "x$have_ncurses" != "xtrue"; then
+    echo "$as_me:$LINENO: result: not found" >&5
+echo "${ECHO_T}not found" >&6
+  fi
+
 
     if test "x$have_ncurses" = "x"; then
       { { echo "$as_me:$LINENO: error: You need ncurses and ncurses-devel packages." >&5
@@ -2872,7 +3133,6 @@ echo "$as_me: error: You need ncurses and ncurses-devel packages." >&2;}
    { (exit 1); exit 1; }; }
     fi
 
-    LIBS="$LIBS $CURSES_LIBS"
     LDFLAGS="$LDFLAGS $CURSES_LIBS"
     CFLAGS="$CFLAGS $CURSES_INCLUDES"
   fi
@@ -2947,18 +3207,262 @@ if test $ac_cv_lib_termcap_tgetent = yes; then
   TERMCAP_LIB="-ltermcap"
 fi
 
-      LIBS="$LIBS $TERMCAP_LIB"
       LDFLAGS="$LDFLAGS $TERMCAP_LIB"
     fi
 
     if test "x$TERMCAP_LIB" = "x" -a "x$CURSES_LIBS" = "x"; then
-      AC_CHECK_NCURSES
-      LIBS="$LIBS $CURSES_LIBS"
+
+
+
+
+
+# Check whether --with-ncurses or --without-ncurses was given.
+if test "${with_ncurses+set}" = set; then
+  withval="$with_ncurses"
+  if test "x$withval" = "xno" ; then
+        without_ncurses=yes
+      elif test "x$withval" != "xyes" ; then
+        with_arg=$withval/include:-L$withval/lib
+      fi
+fi;
+
+  if test "x$without_ncurses" != "xyes" ; then
+    echo "$as_me:$LINENO: checking for ncurses.h" >&5
+echo $ECHO_N "checking for ncurses.h... $ECHO_C" >&6
+
+    for i in $with_arg \
+    		/usr/include: \
+		/usr/local/include:"-L/usr/local/lib -L/usr/local/lib/ncurses" \
+		/usr/pkg/include:-L/usr/pkg/lib \
+		/usr/contrib/include:-L/usr/contrib/lib \
+		/usr/freeware/include:-L/usr/freeware/lib32 \
+    		/sw/include:-L/sw/lib \
+    		/cw/include:-L/cw/lib; do
+
+      incl=`echo "$i" | sed 's/:.*//'`
+      lib=`echo "$i" | sed 's/.*://'`
+
+      if test -f $incl/ncurses/ncurses.h; then
+        include=$incl/ncurses
+      elif test -f $incl/ncurses.h; then
+        include=$incl
+      fi
+
+      if test "x$include" != "x"; then
+        echo "$as_me:$LINENO: result: $include/ncurses.h" >&5
+echo "${ECHO_T}$include/ncurses.h" >&6
+	CURSES_LIBS="$lib"
+	CURSES_INCLUDES="-I$include"
+	have_ncurses=true
+	ldflags_old="$LDFLAGS"
+	LDFLAGS="$CURSES_LIBS"
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_NCURSES 1
+_ACEOF
+
+	echo "$as_me:$LINENO: checking for initscr in -lncurses" >&5
+echo $ECHO_N "checking for initscr in -lncurses... $ECHO_C" >&6
+if test "${ac_cv_lib_ncurses_initscr+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lncurses  $LIBS"
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+#include "confdefs.h"
+
+/* Override any gcc2 internal prototype to avoid an error.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+/* We use char because int might match the return type of a gcc2
+   builtin and then its argument prototype would still apply.  */
+char initscr ();
+#ifdef F77_DUMMY_MAIN
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+#endif
+int
+main ()
+{
+initscr ();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_cv_lib_ncurses_initscr=yes
+else
+  echo "$as_me: failed program was:" >&5
+cat conftest.$ac_ext >&5
+ac_cv_lib_ncurses_initscr=no
+fi
+rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+echo "$as_me:$LINENO: result: $ac_cv_lib_ncurses_initscr" >&5
+echo "${ECHO_T}$ac_cv_lib_ncurses_initscr" >&6
+if test $ac_cv_lib_ncurses_initscr = yes; then
+  CURSES_LIBS="$CURSES_LIBS -lncurses"
+else
+  echo "$as_me:$LINENO: checking for initscr in -lcurses" >&5
+echo $ECHO_N "checking for initscr in -lcurses... $ECHO_C" >&6
+if test "${ac_cv_lib_curses_initscr+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lcurses  $LIBS"
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+#include "confdefs.h"
+
+/* Override any gcc2 internal prototype to avoid an error.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+/* We use char because int might match the return type of a gcc2
+   builtin and then its argument prototype would still apply.  */
+char initscr ();
+#ifdef F77_DUMMY_MAIN
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+#endif
+int
+main ()
+{
+initscr ();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_cv_lib_curses_initscr=yes
+else
+  echo "$as_me: failed program was:" >&5
+cat conftest.$ac_ext >&5
+ac_cv_lib_curses_initscr=no
+fi
+rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+echo "$as_me:$LINENO: result: $ac_cv_lib_curses_initscr" >&5
+echo "${ECHO_T}$ac_cv_lib_curses_initscr" >&6
+if test $ac_cv_lib_curses_initscr = yes; then
+  CURSES_LIBS="$CURSES_LIBS -lcurses"
+fi
+
+fi
+
+	LDFLAGS="$ldflags_old"
+	break
+      fi
+    done
+  fi
+
+  if test "x$have_ncurses" != "xtrue"; then
+    echo "$as_me:$LINENO: result: not found" >&5
+echo "${ECHO_T}not found" >&6
+  fi
+
       LDFLAGS="$LDFLAGS $CURSES_LIBS"
       CFLAGS="$CFLAGS $CURSES_INCLUDES"
     fi
 
-    AC_CHECK_READLINE
+
+
+
+
+
+# Check whether --with-readline or --without-readline was given.
+if test "${with_readline+set}" = set; then
+  withval="$with_readline"
+  if test "x$withval" = "xno" ; then
+      without_readline=yes
+    elif test "x$withval" != "xyes" ; then
+      with_arg="$withval/include:-L$withval/lib $withval/include/readline:-L$withval/lib"
+    fi
+fi;
+
+  echo "$as_me:$LINENO: checking for readline.h" >&5
+echo $ECHO_N "checking for readline.h... $ECHO_C" >&6
+
+  if test "x$without_readline" != "xyes"; then
+    for i in $with_arg \
+	     /usr/include: \
+	     /usr/local/include:-L/usr/local/lib \
+             /usr/freeware/include:-L/usr/freeware/lib32 \
+	     /usr/pkg/include:-L/usr/pkg/lib \
+	     /sw/include:-L/sw/lib \
+	     /cw/include:-L/cw/lib \
+	     /net/caladium/usr/people/piotr.nba/temp/pkg/include:-L/net/caladium/usr/people/piotr.nba/temp/pkg/lib; do
+
+      incl=`echo "$i" | sed 's/:.*//'`
+      lib=`echo "$i" | sed 's/.*://'`
+
+      if test -f $incl/readline/readline.h ; then
+        echo "$as_me:$LINENO: result: $incl/readline/readline.h" >&5
+echo "${ECHO_T}$incl/readline/readline.h" >&6
+        READLINE_LIBS="$lib -lreadline"
+	if test "$incl" != "/usr/include"; then
+	  READLINE_INCLUDES="-I$incl/readline -I$incl"
+	else
+	  READLINE_INCLUDES="-I$incl/readline"
+	fi
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_READLINE 1
+_ACEOF
+
+        have_readline=true
+        break
+      elif test -f $incl/readline.h -a "x$incl" != "x/usr/include"; then
+        echo "$as_me:$LINENO: result: $incl/readline.h" >&5
+echo "${ECHO_T}$incl/readline.h" >&6
+        READLINE_LIBS="$lib -lreadline"
+        READLINE_INCLUDES="-I$incl"
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_READLINE 1
+_ACEOF
+
+        have_readline=true
+        break
+      fi
+    done
+  fi
+
+  if test "x$have_readline" != "xtrue"; then
+    echo "$as_me:$LINENO: result: not found" >&5
+echo "${ECHO_T}not found" >&6
+  fi
+
 
     if test "x$READLINE_LIBS" = "x"; then
       { { echo "$as_me:$LINENO: error: You need both readline and readline-devel packages." >&5
@@ -2966,7 +3470,6 @@ echo "$as_me: error: You need both readline and readline-devel packages." >&2;}
    { (exit 1); exit 1; }; }
     fi
 
-    LIBS="$READLINE_LIBS $LIBS"
     LDFLAGS="$READLINE_LIBS $LDFLAGS"
     CFLAGS="$CFLAGS $READLINE_INCLUDES"
 
@@ -3737,11 +4240,12 @@ if test `eval echo '${'$as_ac_Header'}'` = yes; then
 #define `echo "HAVE_$ac_header" | $as_tr_cpp` 1
 _ACEOF
 
-          cat >>confdefs.h <<\_ACEOF
+
+cat >>confdefs.h <<\_ACEOF
 #define HAVE_VOIP 1
 _ACEOF
 
-          LIBS="$LIBS -lgsm"
+	  LDFLAGS="-lgsm $LDFLAGS"
 
 fi
 
@@ -3759,12 +4263,421 @@ fi
 
   # sprawdzamy pythona
 
-  AC_CHECK_PYTHON
+
+
+
+
+
+# Check whether --with-python or --without-python was given.
+if test "${with_python+set}" = set; then
+  withval="$with_python"
+  if test "x$withval" != "xno" -a "x$withval" != "xyes"; then
+	with_arg="$withval/include:-L$withval/lib $withval/include/python:-L$withval/lib"
+    fi
+
+fi;
+
+	if test "x$with_python" = "xyes"; then
+
+		# Extract the first word of "python", so it can be a program name with args.
+set dummy python; ac_word=$2
+echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+if test "${ac_cv_path_PYTHON+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  case $PYTHON in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_PYTHON="$PYTHON" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_PYTHON="$as_dir/$ac_word$ac_exec_ext"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+
+  ;;
+esac
+fi
+PYTHON=$ac_cv_path_PYTHON
+
+if test -n "$PYTHON"; then
+  echo "$as_me:$LINENO: result: $PYTHON" >&5
+echo "${ECHO_T}$PYTHON" >&6
+else
+  echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+fi
+
+		if test "$PYTHON" = ""; then # Extract the first word of "python2.2", so it can be a program name with args.
+set dummy python2.2; ac_word=$2
+echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+if test "${ac_cv_path_PYTHON+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  case $PYTHON in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_PYTHON="$PYTHON" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_PYTHON="$as_dir/$ac_word$ac_exec_ext"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+
+  ;;
+esac
+fi
+PYTHON=$ac_cv_path_PYTHON
+
+if test -n "$PYTHON"; then
+  echo "$as_me:$LINENO: result: $PYTHON" >&5
+echo "${ECHO_T}$PYTHON" >&6
+else
+  echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+fi
+ fi
+		if test "$PYTHON" = ""; then # Extract the first word of "python2.1", so it can be a program name with args.
+set dummy python2.1; ac_word=$2
+echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+if test "${ac_cv_path_PYTHON+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  case $PYTHON in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_PYTHON="$PYTHON" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_PYTHON="$as_dir/$ac_word$ac_exec_ext"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+
+  ;;
+esac
+fi
+PYTHON=$ac_cv_path_PYTHON
+
+if test -n "$PYTHON"; then
+  echo "$as_me:$LINENO: result: $PYTHON" >&5
+echo "${ECHO_T}$PYTHON" >&6
+else
+  echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+fi
+ fi
+		if test "$PYTHON" = ""; then # Extract the first word of "python2.0", so it can be a program name with args.
+set dummy python2.0; ac_word=$2
+echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+if test "${ac_cv_path_PYTHON+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  case $PYTHON in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_PYTHON="$PYTHON" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_PYTHON="$as_dir/$ac_word$ac_exec_ext"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+
+  ;;
+esac
+fi
+PYTHON=$ac_cv_path_PYTHON
+
+if test -n "$PYTHON"; then
+  echo "$as_me:$LINENO: result: $PYTHON" >&5
+echo "${ECHO_T}$PYTHON" >&6
+else
+  echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+fi
+ fi
+
+		if test "$PYTHON" != ""; then
+			PY_VERSION=`$PYTHON -c "import sys; print sys.version[0:3]"`
+			PY_PREFIX=`$PYTHON -c "import sys; print sys.prefix"`
+			echo "Found Python version $PY_VERSION $PY_PREFIX"
+		fi
+
+		echo "$as_me:$LINENO: checking for Python.h" >&5
+echo $ECHO_N "checking for Python.h... $ECHO_C" >&6
+
+		PY_EXEC_PREFIX=`$PYTHON -c "import sys; print sys.exec_prefix"`
+
+		if test "$PY_VERSION" != ""; then
+		    if test -f $PY_PREFIX/include/python$PY_VERSION/Python.h ; then
+			echo "$as_me:$LINENO: result: $PY_PREFIX/include/python$PY_VERSION/Python.h" >&5
+echo "${ECHO_T}$PY_PREFIX/include/python$PY_VERSION/Python.h" >&6
+			PY_LIB_LOC="-L$PY_EXEC_PREFIX/lib/python$PY_VERSION/config"
+			PY_CFLAGS="-I$PY_PREFIX/include/python$PY_VERSION"
+			PY_MAKEFILE="$PY_EXEC_PREFIX/lib/python$PY_VERSION/config/Makefile"
+
+			PY_LOCALMODLIBS=`sed -n -e 's/^LOCALMODLIBS=\(.*\)/\1/p' $PY_MAKEFILE`
+			PY_BASEMODLIBS=`sed -n -e 's/^BASEMODLIBS=\(.*\)/\1/p' $PY_MAKEFILE`
+			PY_OTHER_LIBS=`sed -n -e 's/^LIBS=\(.*\)/\1/p' $PY_MAKEFILE`
+			PY_OTHER_LIBM=`sed -n -e 's/^LIBC=\(.*\)/\1/p' $PY_MAKEFILE`
+			PY_OTHER_LIBC=`sed -n -e 's/^LIBM=\(.*\)/\1/p' $PY_MAKEFILE`
+			PY_LIBS="$PY_LOCALMODLIBS $PY_BASEMODLIBS $PY_OTHER_LIBS $PY_OTHER_LIBC $PY_OTHER_LIBM"
+
+			PYTHON_LIBS="-L$PY_EXEC_PREFIX/lib $PY_LIB_LOC -lpython$PY_VERSION $PY_LIBS"
+			PYTHON_INCLUDES="$PY_CFLAGS"
+
+cat >>confdefs.h <<\_ACEOF
+#define WITH_PYTHON 1
+_ACEOF
+
+			have_python=true
+		    fi
+		fi
+
+		if test "x$have_python" != "xtrue"; then
+			echo "$as_me:$LINENO: result: not found" >&5
+echo "${ECHO_T}not found" >&6
+		fi
+	fi
+
 
   if test "x$have_python" = "xtrue"; then
-    python_o="python.o"
-    LIBS="$LIBS $PYTHON_LIBS"
+    OBJS="$OBJS python.o"
+    LDFLAGS="$PYTHON_LIBS $LDFLAGS"
     CFLAGS="$CFLAGS $PYTHON_INCLUDES"
+  fi
+
+  # sprawdzamy openssl
+
+
+# Check whether --with-openssl or --without-openssl was given.
+if test "${with_openssl+set}" = set; then
+  withval="$with_openssl"
+
+fi;
+
+  if test "x$with_openssl" != "xno"; then
+    echo "$as_me:$LINENO: checking for RSA_new in -lssl" >&5
+echo $ECHO_N "checking for RSA_new in -lssl... $ECHO_C" >&6
+if test "${ac_cv_lib_ssl_RSA_new+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lssl  $LIBS"
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+#include "confdefs.h"
+
+/* Override any gcc2 internal prototype to avoid an error.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+/* We use char because int might match the return type of a gcc2
+   builtin and then its argument prototype would still apply.  */
+char RSA_new ();
+#ifdef F77_DUMMY_MAIN
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+#endif
+int
+main ()
+{
+RSA_new ();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_cv_lib_ssl_RSA_new=yes
+else
+  echo "$as_me: failed program was:" >&5
+cat conftest.$ac_ext >&5
+ac_cv_lib_ssl_RSA_new=no
+fi
+rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+echo "$as_me:$LINENO: result: $ac_cv_lib_ssl_RSA_new" >&5
+echo "${ECHO_T}$ac_cv_lib_ssl_RSA_new" >&6
+if test $ac_cv_lib_ssl_RSA_new = yes; then
+
+
+for ac_header in openssl/rsa.h
+do
+as_ac_Header=`echo "ac_cv_header_$ac_header" | $as_tr_sh`
+if eval "test \"\${$as_ac_Header+set}\" = set"; then
+  echo "$as_me:$LINENO: checking for $ac_header" >&5
+echo $ECHO_N "checking for $ac_header... $ECHO_C" >&6
+if eval "test \"\${$as_ac_Header+set}\" = set"; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+fi
+echo "$as_me:$LINENO: result: `eval echo '${'$as_ac_Header'}'`" >&5
+echo "${ECHO_T}`eval echo '${'$as_ac_Header'}'`" >&6
+else
+  # Is the header compilable?
+echo "$as_me:$LINENO: checking $ac_header usability" >&5
+echo $ECHO_N "checking $ac_header usability... $ECHO_C" >&6
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+#include "confdefs.h"
+$ac_includes_default
+#include <$ac_header>
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_header_compiler=yes
+else
+  echo "$as_me: failed program was:" >&5
+cat conftest.$ac_ext >&5
+ac_header_compiler=no
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+echo "$as_me:$LINENO: result: $ac_header_compiler" >&5
+echo "${ECHO_T}$ac_header_compiler" >&6
+
+# Is the header present?
+echo "$as_me:$LINENO: checking $ac_header presence" >&5
+echo $ECHO_N "checking $ac_header presence... $ECHO_C" >&6
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+#include "confdefs.h"
+#include <$ac_header>
+_ACEOF
+if { (eval echo "$as_me:$LINENO: \"$ac_cpp conftest.$ac_ext\"") >&5
+  (eval $ac_cpp conftest.$ac_ext) 2>conftest.er1
+  ac_status=$?
+  egrep -v '^ *\+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } >/dev/null; then
+  if test -s conftest.err; then
+    ac_cpp_err=$ac_c_preproc_warn_flag
+  else
+    ac_cpp_err=
+  fi
+else
+  ac_cpp_err=yes
+fi
+if test -z "$ac_cpp_err"; then
+  ac_header_preproc=yes
+else
+  echo "$as_me: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+  ac_header_preproc=no
+fi
+rm -f conftest.err conftest.$ac_ext
+echo "$as_me:$LINENO: result: $ac_header_preproc" >&5
+echo "${ECHO_T}$ac_header_preproc" >&6
+
+# So?  What about this header?
+case $ac_header_compiler:$ac_header_preproc in
+  yes:no )
+    { echo "$as_me:$LINENO: WARNING: $ac_header: accepted by the compiler, rejected by the preprocessor!" >&5
+echo "$as_me: WARNING: $ac_header: accepted by the compiler, rejected by the preprocessor!" >&2;}
+    { echo "$as_me:$LINENO: WARNING: $ac_header: proceeding with the preprocessor's result" >&5
+echo "$as_me: WARNING: $ac_header: proceeding with the preprocessor's result" >&2;};;
+  no:yes )
+    { echo "$as_me:$LINENO: WARNING: $ac_header: present but cannot be compiled" >&5
+echo "$as_me: WARNING: $ac_header: present but cannot be compiled" >&2;}
+    { echo "$as_me:$LINENO: WARNING: $ac_header: check for missing prerequisite headers?" >&5
+echo "$as_me: WARNING: $ac_header: check for missing prerequisite headers?" >&2;}
+    { echo "$as_me:$LINENO: WARNING: $ac_header: proceeding with the preprocessor's result" >&5
+echo "$as_me: WARNING: $ac_header: proceeding with the preprocessor's result" >&2;};;
+esac
+echo "$as_me:$LINENO: checking for $ac_header" >&5
+echo $ECHO_N "checking for $ac_header... $ECHO_C" >&6
+if eval "test \"\${$as_ac_Header+set}\" = set"; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  eval "$as_ac_Header=$ac_header_preproc"
+fi
+echo "$as_me:$LINENO: result: `eval echo '${'$as_ac_Header'}'`" >&5
+echo "${ECHO_T}`eval echo '${'$as_ac_Header'}'`" >&6
+
+fi
+if test `eval echo '${'$as_ac_Header'}'` = yes; then
+  cat >>confdefs.h <<_ACEOF
+#define `echo "HAVE_$ac_header" | $as_tr_cpp` 1
+_ACEOF
+
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_OPENSSL 1
+_ACEOF
+
+	LDFLAGS="-lssl -lcrypto $LDFLAGS"
+	OBJS="$OBJS sim.o"
+
+fi
+
+done
+
+
+fi
+
   fi
 
   # sprawdzamy libz.so, <zlib.h>
@@ -3944,11 +4857,12 @@ if test `eval echo '${'$as_ac_Header'}'` = yes; then
 #define `echo "HAVE_$ac_header" | $as_tr_cpp` 1
 _ACEOF
 
-        cat >>confdefs.h <<\_ACEOF
+
+cat >>confdefs.h <<\_ACEOF
 #define HAVE_ZLIB 1
 _ACEOF
 
-        LIBS="$LIBS -lz"
+	LDFLAGS="-lz $LDFLAGS"
 
 fi
 
@@ -3971,7 +4885,8 @@ fi;
   if test "x$enable_wap" = "xyes"; then
     make_ekgwap="make-ekgwap"
     install_ekgwap="install-ekgwap"
-    cat >>confdefs.h <<\_ACEOF
+
+cat >>confdefs.h <<\_ACEOF
 #define WITH_WAP 1
 _ACEOF
 
@@ -4106,11 +5021,86 @@ done
 
   fi
 
-  libgadu_a="../lib/libgadu.a"
-  lgadu=""
+  # sprawdzamy, czy system ma getopt_long
+
+  echo "$as_me:$LINENO: checking for getopt_long" >&5
+echo $ECHO_N "checking for getopt_long... $ECHO_C" >&6
+if test "${ac_cv_func_getopt_long+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+#include "confdefs.h"
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char getopt_long (); below.  */
+#include <assert.h>
+/* Override any gcc2 internal prototype to avoid an error.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+/* We use char because int might match the return type of a gcc2
+   builtin and then its argument prototype would still apply.  */
+char getopt_long ();
+char (*f) ();
+
+#ifdef F77_DUMMY_MAIN
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+#endif
+int
+main ()
+{
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined (__stub_getopt_long) || defined (__stub___getopt_long)
+choke me
+#else
+f = getopt_long;
+#endif
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_cv_func_getopt_long=yes
+else
+  echo "$as_me: failed program was:" >&5
+cat conftest.$ac_ext >&5
+ac_cv_func_getopt_long=no
+fi
+rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
+fi
+echo "$as_me:$LINENO: result: $ac_cv_func_getopt_long" >&5
+echo "${ECHO_T}$ac_cv_func_getopt_long" >&6
+if test $ac_cv_func_getopt_long = yes; then
+  :
+else
+  OBJS="$OBJS ../compat/getopt.o ../compat/getopt1.o"; CFLAGS="-I../compat $CFLAGS"
+fi
+
+
+  # ustawiamy opcje
+
   if test "x$enable_static" = "xno" -o "x$enable_dynamic" = "xyes"; then
-    libgadu_a=""
     lgadu="-lgadu"
+  else
+    OBJS="$OBJS ../lib/libgadu.a"
+    lgadu=""
   fi
   ekg="ekg"
   install_ekg="install-ekg"
@@ -4709,7 +5699,6 @@ s,@ioctld@,$ioctld,;t t
 s,@install_ioctld@,$install_ioctld,;t t
 s,@shared@,$shared,;t t
 s,@install_shared@,$install_shared,;t t
-s,@libgadu_a@,$libgadu_a,;t t
 s,@lgadu@,$lgadu,;t t
 s,@static@,$static,;t t
 s,@install_static@,$install_static,;t t
@@ -4720,10 +5709,15 @@ s,@distclean_ekg@,$distclean_ekg,;t t
 s,@uninstall_ekg@,$uninstall_ekg,;t t
 s,@make_ekgwap@,$make_ekgwap,;t t
 s,@install_ekgwap@,$install_ekgwap,;t t
-s,@ui_readline_o@,$ui_readline_o,;t t
-s,@ui_ncurses_o@,$ui_ncurses_o,;t t
-s,@python_o@,$python_o,;t t
+s,@OBJS@,$OBJS,;t t
+s,@CURSES_LIBS@,$CURSES_LIBS,;t t
+s,@CURSES_INCLUDES@,$CURSES_INCLUDES,;t t
+s,@READLINE_LIBS@,$READLINE_LIBS,;t t
+s,@READLINE_INCLUDES@,$READLINE_INCLUDES,;t t
 s,@CPP@,$CPP,;t t
+s,@PYTHON_LIBS@,$PYTHON_LIBS,;t t
+s,@PYTHON_INCLUDES@,$PYTHON_INCLUDES,;t t
+s,@PYTHON@,$PYTHON,;t t
 CEOF
 
 _ACEOF

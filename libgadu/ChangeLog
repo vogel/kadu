@@ -5,6 +5,167 @@ pierwsz± liter± nicka jest ,,x'' (w - wojtekka, s - speedy, a - arekm,
 d - drg). ,,p/nick'' oznacza patch lub ¼ród³o podes³ane przez ,,nick'',
 ,,i/nick'' oznacza czyj¶ pomys³, ,,b/nick'' mówi, kto zg³osi³ b³±d.
 
+// 2002-10-23
+
+- timestampy w ui-readline (Joshua/w)
+
+// 2002-10-21
+
+- poprawka literówki (shasta/w)
+
+// 2002-10-19
+
+- poprawka themów wymiany kluczy (w)
+
+// 2002-10-18
+
+- poprawienie komendy ,,last'' dla last & 2 (d)
+- porz±dki w libgadu: poprawki kodu po³±czenia, wiêcej szczegó³ów w debugach
+  (na przyk³ad adresy struktur, ¿eby móc wykryæ operacje na niezainicjowanych
+  wska¼nikach), znacznie wiêcej komentarzy do kodu (w)
+- poprawka linkowania z openssl (Zwierz/w)
+
+// 2002-10-17
+
+- poprawka zapêtlania siê libgadu przy po³±czeniu zerwanym w trakcie
+  odbierania nag³ówka (w)
+- poprawka pagera w ui-readline (w)
+- /find bez parametrów dzia³a ju¿ w ui-readline (w)
+- je¶li mamy zainstalowane OpenSSL, mo¿emy u¿ywaæ szyfrowania SIM.
+  szczegó³y w docs/sim.txt (w)
+
+// 2002-10-16
+
+- poprawienie wielolinijkowych wiadomo¶ci w ui-readline (d)
+- drobna poprawka w syntezie mowy (d)
+- synteza mowy w ui-readline (d)
+- nowe zdarzenia ,,delivered'' i ,,queued'' (Murphy/w)
+- poprawki opisu protoko³u: d³ugo¶æ opisu, informacje zwracane przez
+  huba (adaml/w)	
+
+// 2002-10-15
+
+- dodanie syntezy mowy, szczegó³y w README. uprzedzaj±c pytania, dzia³a
+  tylko w ncurses. (tarapat/w)
+
+// 2002-10-13
+
+- poprawka aliasów z ,,/'' (mateusza/w)
+
+// 2002-10-10
+
+- poprawienie segfaulta przy /disconnect z opisem (w)
+
+// 2002-10-09
+
+- pokazuje opis przy po³±czeniu (theKnight/w)
+
+// 2002-10-08
+
+- poprawka konferencji (DJ/w)
+- poprawka ,,-c'' w getopt (serek/w)
+
+// 2002-10-07
+
+- poprawka p³ci w wyszukiwaniu (FIG/w)
+
+// 2002-10-06
+
+- poprawka logowania w iso (wielu/w)
+- poprawka synchronicznych po³±czeñ (hao/w)
+- dodanie kolejnego ui-automaton przeznaczonego do wspó³pracy z pluginem
+  do irssi (malekith/w)
+- poprawka w³asnego adresu w li¶cie kontaktów (FIG/w)
+
+// 2002-10-05
+
+- /query z drugim parametrem wysy³a od razu wiadomo¶æ (czach/w)
+
+// 2002-10-04
+
+- usuniêcie #include "db.h" (a.latanski/w)
+- nieco inteligentniejsze ioctld_socket() (d)
+
+// 2002-10-03
+
+- s/csae/case/ przy WITH_IOCTLD (d)
+- wy¶wietlanie wyniku wysy³ania smsów (wojboj/w)
+- poprawki konferencji, wy¶wietlanie jej nazwy (DJ/w)
+- wyrzucenie -I/usr/include z flag kompilatora (malekith/w)
+- poprawka kodu o niezdefiniowanym dzia³aniu (malekith/w)
+- porz±dki z ui_event() (malekith/w)
+- porz±dki w configure.in i Makefile.in (w)
+- proste dope³nianie plików w ui-ncurses (DJ/w)
+- poprawka wy¶wietlanie w³asnego stanu niewidocznego (w)
+- dodanie u¿ytkownika powoduje uaktualnienie nazwy okienka (w)
+- po wielu latach w koñcu saprintf() nie zwraca NULL (w)
+
+// 2002-10-02
+
+- wy¶wietla potwierdzenia w oknie rozmowy (theKnight/w)
+- o zbyt d³ugim opisie informacja poprawna gramatycznie bardziej (konik/w)
+- /find szuka rozmówcy albo nas samych. dotyczy ui-ncurses (w)
+- usuniêcie niedokoñczonego 2k2.theme (w)
+- usuniêcie timestampów z domy¶lnego themu. stary zosta³ zachowany
+  w old.theme (w)
+- domy¶lne w³±czenie timestamp "%H%M " (w)
+- uaktualnianie w³asnego stanu w li¶cie kontaktów (w)
+- przej¶cie na getopt() (DJ/w)
+- dodanie katalogu compat/, na wypadek, gdyby systemowi brakowa³o funkcji
+  getopt_long (w)
+
+// 2002-10-01
+
+- round robin serwerów (w)
+- wiadomo¶æ (nie myliæ z rozmow±) nie otwiera nowego okna (theKnight/w)
+
+// 2002-09-30
+
+- poprawka us³ug http. mo¿liwe, ¿e znajd± siê jakie¶ b³êdy, bo nie by³em
+  w stanie sprawdziæ tego w ka¿dej mo¿liwej konfiguracji (wiele_osób/w)
+- poprawka debugowania (nie blokuje ju¿ rurki, co doprowadza³o do wieszania
+  siê ekg przy du¿ej ilo¶ci debugowych tekstów) (w)
+- dodanie zmiennej enter_scrolls (jp/w)
+
+// 2002-09-28
+
+- poprawka sms_away i back z opisem (kbns/w)
+
+// 2002-09-25
+
+- dalsza rewolucja w krainie autoconf/python (s)
+
+// 2002-09-24
+
+- kolejne poprawki /exec (wojboj/w)
+- dodanie string_clear() (w)
+- poprawki debugowania (sdas/w)
+- ma³y cleanup w ekgsearch (wysek)
+- je¶li pubdir jest przeci±¿ony, ekgsearch napisze o tym (w/wysek)
+- drobne poprawki w docach (w)
+- optymalizacja /exec (w)
+
+// 2002-09-23
+
+- optymalizacja string_*() (wojboj/w)
+- poprawka /exec (wojboj/w)
+- dodanie konferencji do dope³niania (DJ/w)
+- poprawka configure.in/LDFLAGS (s)
+- /msg do wielu osób nie tworzy konferencji (joshua/w)
+- rewolucja w krainie autoconfa (s,w)
+- informacje o rozpoznawaniu p³ci w dokumentacji (w)
+- poprawka segfaulta przy quicie (s/w)
+- poprawka g³upiego zachowania readline (Zwierz/w)
+- dodanie debugów do ui-ncurses (w)
+- usuniêcie leaka przy /set (w)
+
+// 2002-09-22
+
+- poprawki /exec (wojboj/w)
+- poprawki wyszukiwania -- dok³adniejsze komunikaty b³êdów (w)
+- zwiêkszenie limitu rozmiaru opisu (jojo/w)
+- przy zmianie stanu, zaznaczana jest widoczna i ucinana czê¶æ opisu (jojo/w)
+
 // 2002-09-21
 
 - poprawka themów ze stylami (Arim/w)
@@ -22,6 +183,7 @@ d - drg). ,,p/nick'' oznacza patch lub ¼ród³o podes³ane przez ,,nick'',
 - poprawki w /help (FIG/w)
 - mo¿liwo¶æ usuwania u¿ytkowników (DJ/w)
 - poprawione /exec (wojboj/w)
+- poprawka g³upiego zachowania ui-ncurses przy pustych liniach (sdas/w)
 
 // 2002-09-20
 
@@ -1848,4 +2010,4 @@ i BUGS.
 - eleet niebieskie t³o mesgów (wiem, dalekie od idea³u).
 
 
-$Id: ChangeLog,v 1.5 2002/09/22 19:23:35 chilek Exp $
+$Id: ChangeLog,v 1.6 2002/10/24 11:03:57 adrian Exp $

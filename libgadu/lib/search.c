@@ -1,4 +1,4 @@
-/* $Id: search.c,v 1.7 2002/09/28 00:13:01 chilek Exp $ */
+/* $Id: search.c,v 1.8 2002/10/24 11:03:58 adrian Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -41,7 +41,7 @@
  *  - async - po³±czenie asynchroniczne
  *
  * zaalokowana struct gg_http, któr± po¼niej nale¿y zwolniæ
- * funkcj± gg_free_search(), albo NULL je¶li wyst±pi³ b³±d.
+ * funkcj± gg_search_free(), albo NULL je¶li wyst±pi³ b³±d.
  */
 struct gg_http *gg_search(const struct gg_search_request *r, int async)
 {

@@ -1,4 +1,4 @@
-/* $Id: common.c,v 1.8 2002/10/01 10:24:50 chilek Exp $ */
+/* $Id: common.c,v 1.9 2002/10/24 11:03:57 adrian Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>,
@@ -65,26 +65,25 @@ void gg_debug(int level, const char *format, ...)
 #endif
 
 /*
- * gg_saprintf() // funkcja pomocnicza
+ * gg_vsaprintf() // funkcja pomocnicza
  *
- * robi dok³adnie to samo, co sprintf(), tyle ¿e alokuje sobie wcze¶niej
+ * robi dok³adnie to samo, co vsprintf(), tyle ¿e alokuje sobie wcze¶niej
  * miejsce na dane. powinno dzia³aæ na tych maszynach, które maj± funkcjê
  * vsnprintf() zgodn± z C99, jak i na wcze¶niejszych.
  *
- *  - format... - tre¶æ taka sama jak w funkcji printf()
+ *  - format - opis wy¶wietlanego tekstu jak dla printf()
+ *  - ap - lista argumentów dla printf()
  *
  * zaalokowany bufor, który nale¿y pó¼niej zwolniæ, lub NULL
  * je¶li nie uda³o siê wykonaæ zadania.
  */
-char *gg_saprintf(const char *format, ...)
+char *gg_vsaprintf(const char *format, va_list ap)
 {
-        va_list ap;
         int size = 0;
 	const char *start;
 	char *buf = NULL;
 
 	start = format; 
-        va_start(ap, format);
 
 #ifndef HAVE_C99_VSNPRINTF
 	{
@@ -114,16 +113,35 @@ char *gg_saprintf(const char *format, ...)
 	}
 #endif
 
-	va_end(ap);
-	
 	format = start;
-	va_start(ap, format);
 	
 	vsnprintf(buf, size + 1, format, ap);
 	
+	return buf;
+}
+
+/*
+ * gg_saprintf() // funkcja pomocnicza
+ *
+ * robi dok³adnie to samo, co sprintf(), tyle ¿e alokuje sobie wcze¶niej
+ * miejsce na dane. powinno dzia³aæ na tych maszynach, które maj± funkcjê
+ * vsnprintf() zgodn± z C99, jak i na wcze¶niejszych.
+ *
+ *  - format... - tre¶æ taka sama jak w funkcji printf()
+ *
+ * zaalokowany bufor, który nale¿y pó¼niej zwolniæ, lub NULL
+ * je¶li nie uda³o siê wykonaæ zadania.
+ */
+char *gg_saprintf(const char *format, ...)
+{
+	va_list ap;
+	char *res;
+
+	va_start(ap, format);
+	res = gg_vsaprintf(format, ap);
 	va_end(ap);
 
-	return buf;
+	return res;
 }
 
 /*
@@ -182,7 +200,7 @@ int gg_connect(void *addr, int port, int async)
 	gg_debug(GG_DEBUG_FUNCTION, "** gg_connect(%s, %d, %d);\n", inet_ntoa(*a), port, async);
 	
 	if ((sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) == -1) {
-		gg_debug(GG_DEBUG_MISC, "-- socket() failed. errno = %d (%s)\n", errno, strerror(errno));
+		gg_debug(GG_DEBUG_MISC, "// gg_connect() socket() failed (errno=%d, %s)\n", errno, strerror(errno));
 		return -1;
 	}
 
@@ -196,7 +214,7 @@ int gg_connect(void *addr, int port, int async)
 #else
 		if (fcntl(sock, F_SETFL, O_NONBLOCK) == -1) {
 #endif
-			gg_debug(GG_DEBUG_MISC, "-- ioctl() failed. errno = %d (%s)\n", errno, strerror(errno));
+			gg_debug(GG_DEBUG_MISC, "// gg_connect() ioctl() failed (errno=%d, %s)\n", errno, strerror(errno));
 			close(sock);
 			return -1;
 		}
@@ -208,11 +226,11 @@ int gg_connect(void *addr, int port, int async)
 	
 	if (connect(sock, (struct sockaddr*) &sin, sizeof(sin)) == -1) {
 		if (errno && (!async || errno != EINPROGRESS)) {
-			gg_debug(GG_DEBUG_MISC, "-- connect() failed. errno = %d (%s)\n", errno, strerror(errno));
+			gg_debug(GG_DEBUG_MISC, "// gg_connect() connect() failed (errno=%d, %s)\n", errno, strerror(errno));
 			close(sock);
 			return -1;
 		}
-		gg_debug(GG_DEBUG_MISC, "-- connect() in progress\n");
+		gg_debug(GG_DEBUG_MISC, "// gg_connect() connect() in progress\n");
 	}
 	
 	return sock;
@@ -236,7 +254,7 @@ char *gg_read_line(int sock, char *buf, int length)
 	for (; length > 1; buf++, length--) {
 		do {
 			if ((ret = read(sock, buf, 1)) < 1 && errno != EINTR) {
-				gg_debug(GG_DEBUG_MISC, "-- gg_read_line(), eof reached\n");
+				gg_debug(GG_DEBUG_MISC, "// gg_read_line() eof reached\n");
 				*buf = 0;
 				return NULL;
 			}

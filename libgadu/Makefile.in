@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.5 2002/09/22 19:23:35 chilek Exp $
+# $Id: Makefile.in,v 1.6 2002/10/24 11:03:57 adrian Exp $
 
 prefix = @prefix@
 datadir = @datadir@
@@ -29,7 +29,7 @@ examples:
 
 #
 
-configure:	configure.in m4/* acconfig.h
+configure:	configure.in m4/*
 	./autogen.sh
 
 #
@@ -91,6 +91,7 @@ clean-examples:
 
 distclean:	distclean-libgadu @distclean_ekg@ distclean-examples
 	rm -f *~ config.log config.cache config.status config.h Makefile
+	rm -f config.h.in configure aclocal.m4
 
 distclean-libgadu:
 	cd lib && $(MAKE) distclean

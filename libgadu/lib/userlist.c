@@ -1,4 +1,4 @@
-/* $Id: userlist.c,v 1.7 2002/09/28 00:13:01 chilek Exp $ */
+/* $Id: userlist.c,v 1.8 2002/10/24 11:03:58 adrian Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -164,7 +164,7 @@ void gg_userlist_get_free(struct gg_http *h)
 	if (!h)
 		return;
 	free(h->data);
-	gg_free_http(h);
+	gg_http_free(h);
 }
 
 /*
@@ -303,7 +303,7 @@ int gg_userlist_put_watch_fd(struct gg_http *h)
  */
 void gg_userlist_put_free(struct gg_http *h)
 {
-	gg_free_http(h);
+	gg_http_free(h);
 }
 
 /*
