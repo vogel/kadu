@@ -34,20 +34,31 @@ Kadu *kadu;
 
 #include <signal.h>
 #include "debug.h"
-void kill_signal(int s)
+void kadu_signal_handler(int s)
 {
-	//s==SIGSEGV
-	kdebug("Kadu crashed :(\n");
-	config_file.sync();
-	QFile::remove(ggPath("lock"));
-	raise(SIGABRT);
+	kdebug("kadu_signal_handler: %d\n", s);
+	if (s==SIGSEGV)
+	{
+		kdebug("Kadu crashed :(\n");
+		config_file.sync();
+		QFile::remove(ggPath("lock"));
+		raise(SIGABRT);
+	}
+	else if (s==SIGINT || s==SIGTERM)
+	{
+		config_file.sync();
+		QFile::remove(ggPath("lock"));
+		exit(0);
+	}
 }
 
 int main(int argc, char *argv[])
 {
 	gg_debug_level = 255;
 
-	signal(SIGSEGV, kill_signal);
+	signal(SIGSEGV, kadu_signal_handler);
+	signal(SIGINT, kadu_signal_handler);
+	signal(SIGTERM, kadu_signal_handler);
 
 	new QApplication(argc, argv);
 

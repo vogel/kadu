@@ -173,6 +173,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * konfiguracja timera w autoaway'u (joi)
 * tylko jedno Kadu mo¿e korzystaæ z profilu (joi)
 * zapisywanie pliku konfiguracyjnego w przypadku wywrotki (joi)
+* zapis tak¿e przy standardowych sygna³ach zakoñczenia procesu (SIGINT,SIGTERM) (joi)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
