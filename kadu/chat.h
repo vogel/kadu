@@ -86,9 +86,19 @@ class CustomInput : public QMultiLineEdit {
 };
 
 class KaduTextBrowser : public QTextBrowser {
+	Q_OBJECT
 	public:
 		KaduTextBrowser(QWidget *parent = 0, const char *name = 0);
 		void setSource(const QString &name);
+
+	protected:
+		QPopupMenu *createPopupMenu(const QPoint &point);
+
+	public slots:
+		void copyLinkLocation();
+
+	private:
+		QString anchor;
 };
 
 /**

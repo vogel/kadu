@@ -21,6 +21,7 @@
 #include <qhbox.h>
 #include <qvbox.h>
 #include <qvaluelist.h>
+#include <qclipboard.h>
 
 #include <math.h>
 #include <sys/stat.h>
@@ -257,6 +258,24 @@ KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
 }
 
 void KaduTextBrowser::setSource(const QString &name) {
+}
+
+void KaduTextBrowser::copyLinkLocation() {
+	kdebug("KaduTextBrowser::copyLinkLocation(): anchor = %s\n", (const char *)unicode2latin(anchor));
+	qApp->clipboard()->setText(anchor);
+}
+
+QPopupMenu *KaduTextBrowser::createPopupMenu(const QPoint &point) {
+	QPopupMenu *popupmenu;
+
+	kdebug("KaduTextBrowser::createPopupMenu()\n");
+	
+	anchor = anchorAt(point);
+	popupmenu = QTextBrowser::createPopupMenu(point);
+	if (!anchor.isEmpty()) {
+		popupmenu->insertItem(tr("Copy link &location"), this, SLOT(copyLinkLocation()), CTRL+Key_L, -1, 0);
+		}
+	return popupmenu;
 }
 
 CustomInput::CustomInput(QWidget *parent, const char *name) : QMultiLineEdit(parent, name) {

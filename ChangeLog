@@ -90,6 +90,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   listy kontaktow (adrian)
 * poprawki w module encryption: zmiana umiejscowienia opcji "wyslij moj klucz"
   oraz wyszarzanie, gdy nie mozna wyslac klucza (adrian)
+* dodana mo¿liwo¶æ kopiowania hyperlinka w oknie rozmowy (chilek)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
