@@ -3,15 +3,15 @@
     <name>AutoResponder</name>
     <message>
         <source>Autoresponder started</source>
-        <translation type="unfinished"></translation>
+        <translation>Autoresponder attivato</translation>
     </message>
     <message>
         <source>Autoresponder stopped</source>
-        <translation type="unfinished"></translation>
+        <translation>Autoresponder disattivato</translation>
     </message>
     <message>
         <source>KADU AUTORESPONDER: Thanks for your message. User is not currently available.</source>
-        <translation type="unfinished"></translation>
+        <translation>RISPOSTA AUTOMATICA: Grazie per il messaggio, lo leggo più tardi, adesso sono occupato.</translation>
     </message>
 </context>
 </TS>
