@@ -74,7 +74,7 @@
     <name>SoundSlots</name>
     <message>
         <source>Unmute sounds</source>
-        <translation>Przywróć dżwięki</translation>
+        <translation>Przywróć dźwięki</translation>
     </message>
     <message>
         <source>Mute sounds</source>

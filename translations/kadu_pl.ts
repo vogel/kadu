@@ -1591,7 +1591,7 @@ Sprawdź swoje połączenie internetowe.</translation>
     <name>ModulesManager</name>
     <message>
         <source>&amp;Manage Modules</source>
-        <translation>Z&amp;arządca Modułów</translation>
+        <translation>Z&amp;arządca modułów</translation>
     </message>
     <message>
         <source>Module initialization routine failed.</source>
