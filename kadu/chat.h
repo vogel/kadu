@@ -72,7 +72,6 @@ class Chat : public QWidget {
 		QPushButton *encryption;
 #endif
 		QPushButton *sendbtn;
-		QPushButton *cancelbtn;
 		UserBox *userbox;
 		QString myLastMessage;
 		int myLastFormatsLength;

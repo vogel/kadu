@@ -255,11 +255,6 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 
 	QHBox *fillerbox = new QHBox(btnpart);
 
-	cancelbtn = new QPushButton(QIconSet(loadIcon("stop.png")),tr("&Cancel"),btnpart);
-	cancelbtn->setFixedWidth(120);
-	QToolTip::add(cancelbtn, tr("Cancel waiting for delivery"));
-	cancelbtn->hide();
-
 	sendbtn = new QPushButton(QIconSet(loadIcon("forward.png")),tr("&Send"),btnpart);
 	sendbtn->setFixedWidth(120);
 	connect(sendbtn, SIGNAL(clicked()), this, SLOT(sendMessage()));
@@ -276,7 +271,6 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	btnpart->setStretchFactor(underlinebtn, 1);
 	btnpart->setStretchFactor(colorbtn, 1);
 	btnpart->setStretchFactor(fillerbox, 50);
-	btnpart->setStretchFactor(cancelbtn, 1);
 	btnpart->setStretchFactor(sendbtn, 1);
 
 	sizes.clear();
@@ -302,7 +296,6 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	connect(iconsel, SIGNAL(clicked()), this, SLOT(insertEmoticon()));
 	connect(whois, SIGNAL(clicked()), this, SLOT(userWhois()));
 	connect(clearchat, SIGNAL(clicked()), this, SLOT(clearChatWindow()));
-	connect(cancelbtn, SIGNAL(clicked()), this, SLOT(cancelMessage()));
 	connect(boldbtn, SIGNAL(toggled(bool)), this, SLOT(toggledBold(bool)));
 	connect(italicbtn, SIGNAL(toggled(bool)), this, SLOT(toggledItalic(bool)));
 	connect(underlinebtn, SIGNAL(toggled(bool)), this, SLOT(toggledUnderline(bool)));
@@ -735,8 +728,10 @@ void Chat::cancelMessage(void) {
 	edit->setReadOnly(false);
 	edit->setEnabled(true);
 	edit->setFocus();
-	sendbtn->setEnabled(true);
-	cancelbtn->hide();
+	disconnect(sendbtn, SIGNAL(clicked()), this, SLOT(cancelMessage()));
+	connect(sendbtn, SIGNAL(clicked()), this, SLOT(sendMessage()));
+	sendbtn->setIconSet(QIconSet(loadIcon("forward.png")));
+	sendbtn->setText(tr("&Send"));
 }
 
 void Chat::ackReceivedSlot(int Seq) {
@@ -788,8 +783,10 @@ void Chat::sendMessage(void) {
 	if (config_file.readBoolEntry("Chat","MessageAcks")) {
 		edit->setReadOnly(true);	
 		edit->setEnabled(false);
-		sendbtn->setEnabled(false);
-		cancelbtn->show();
+		disconnect(sendbtn, SIGNAL(clicked()), this, SLOT(sendMessage()));
+		connect(sendbtn, SIGNAL(clicked()), this, SLOT(cancelMessage()));
+		sendbtn->setIconSet(QIconSet(loadIcon("stop.png")));
+		sendbtn->setText(tr("&Cancel"));
 		}
 
 	unsigned char *utmp = (unsigned char *)strdup(unicode2cp(mesg).data());

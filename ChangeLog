@@ -88,6 +88,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawka tlumaczeñ w zak³adce konfiguracji dymków (mast3r)
 * konfiguracja: zak³adka Look wed³ug nowego mechanizmu (pawel_p/adrian)
 * konfiguracja: poprawki i mo¿liwo¶æ wyboru jêzyka (pawel_p/adrian)
+* okno rozmowy: guzik wy¶lij jest zamieniany na anuluj je¿eli mamy w³±czon
+  opcje: czekaj na potwierdzenie - okno nie powinno siê ju¿ rozszerzaæ (mast3r)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci
