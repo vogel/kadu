@@ -29,6 +29,7 @@
 #include "debug.h"
 #include "history.h"
 #include "status.h"
+#include "emoticons.h"
 
 enum {
 	HISTORYMANAGER_ORDINARY_LINE,
@@ -1081,6 +1082,8 @@ History::History(UinsList uins): uins(uins), closeDemand(false), finding(false) 
 	body = new KaduTextBrowser(vbox1, "History browser");
 	body->setReadOnly(true);
 	body->setFont(config_file.readFontEntry("Look","ChatFont"));
+	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")==EMOTS_ANIMATED)
+		body->setStyleSheet(new AnimStyleSheet(body, emoticons->themePath()));
 
 	QHBox *btnbox = new QHBox(vbox1);
 	QPushButton *searchbtn = new QPushButton(btnbox);
@@ -1220,6 +1223,13 @@ void History::formatHistoryEntry(QString &text, const HistoryEntry &entry) {
 		HtmlDocument doc;
 		doc.parseHtml(message);
 		doc.convertUrlsToHtml();
+
+	 	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")!=EMOTS_NONE)
+	 	{
+			body->mimeSourceFactory()->addFilePath(emoticons->themePath());
+			emoticons->expandEmoticons(doc, bgcolor);
+		}
+		
 		text.append(doc.generateHtml());
 	}
 	text.append("</font></td></tr></table>");

@@ -438,6 +438,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	descrtb->setPaletteBackgroundColor(config_file.readColorEntry("Look", "UserboxDescBgColor"));
 	descrtb->setPaletteForegroundColor(config_file.readColorEntry("Look", "UserboxDescTextColor"));
 	descrtb->setFont(config_file.readFontEntry("Look", "UserboxDescFont"));
+	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")==EMOTS_ANIMATED)
+		descrtb->setStyleSheet(new AnimStyleSheet(descrtb, emoticons->themePath()));
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		descrtb->hide();
 	QObject::connect(&userlist, SIGNAL(dnsNameReady(UinType)), this, SLOT(infopanelUpdate(UinType)));
@@ -809,6 +811,12 @@ void Kadu::currentChanged(QListBoxItem *item) {
 		HtmlDocument doc;
 		doc.parseHtml(parse(config_file.readEntry("Look", "PanelContents"), userlist.byAltNick(item->text())));
 		doc.convertUrlsToHtml();
+
+		if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")!=EMOTS_NONE)
+		{
+			descrtb->mimeSourceFactory()->addFilePath(emoticons->themePath());
+			emoticons->expandEmoticons(doc, config_file.readColorEntry("Look", "UserboxDescBgColor"));
+		}
 		descrtb->setText(doc.generateHtml());
 	}
 }
@@ -1662,6 +1670,11 @@ void Kadu::infopanelUpdate(UinType uin) {
 		HtmlDocument doc;
 		doc.parseHtml(parse(config_file.readEntry("Look", "PanelContents"), userlist.byUin(uin)));
 		doc.convertUrlsToHtml();
+		if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")!=EMOTS_NONE)
+		{
+			descrtb->mimeSourceFactory()->addFilePath(emoticons->themePath());
+			emoticons->expandEmoticons(doc, config_file.readColorEntry("Look", "UserboxDescBgColor"));
+		}
 		descrtb->setText(doc.generateHtml());
 	}
 }
