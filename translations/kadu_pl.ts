@@ -497,7 +497,7 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     </message>
     <message>
         <source>Syntax the same as in information panel.</source>
-        <translation>Składnia taka sama jak w panelu info.</translation>
+        <translation>Składnia taka sama jak w panelu informacyjnym</translation>
     </message>
     <message>
         <source>%1 - Url clicked in chat window</source>
@@ -641,15 +641,15 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     </message>
     <message>
         <source>Panel background color</source>
-        <translation>Kolor tła panela info.</translation>
+        <translation>Kolor tła panela informacyjnego</translation>
     </message>
     <message>
         <source>Panel font color</source>
-        <translation>Kolor czcionki w panelu info.</translation>
+        <translation>Kolor czcionki w panelu informacyjnym</translation>
     </message>
     <message>
         <source>Font in panel</source>
-        <translation>Czcionka w panelu info.</translation>
+        <translation>Czcionka w panelu informacyjnym</translation>
     </message>
     <message>
         <source>Information panel</source>
@@ -673,7 +673,7 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     </message>
     <message>
         <source>Preview panel</source>
-        <translation>Podgląd panela info.</translation>
+        <translation>Podgląd panela informacyjnego</translation>
     </message>
     <message>
         <source>Message citation in chat window</source>
