@@ -586,6 +586,7 @@ bool ModulesManager::activateModule(const QString& module_name)
 		if (!m.lib->load())
 		{
 			MessageBox::msg(narg(tr("Cannot load %1 module library.:\n%2"), module_name, m.lib->error()));
+			delete m.lib;
 			kdebugf2();
 			return false;
 		}	
