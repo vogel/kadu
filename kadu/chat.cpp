@@ -68,6 +68,7 @@ void ChatManager::unregisterChat(Chat* chat)
 		if(Chats[i]==chat)
 		{
 			Chats.remove(Chats.at(i));
+			emit chatDestroyed(chat->uins());
 			return;
 		}
 }

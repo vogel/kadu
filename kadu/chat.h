@@ -53,6 +53,7 @@ class ChatManager : public QObject
 		
 	signals:
 		void chatCreated(const UinsList& senders);
+		void chatDestroyed(const UinsList& senders);
 };
 
 extern ChatManager* chat_manager;
