@@ -190,6 +190,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawne otwieranie linków zawieraj±cych spacje (joi)
 * "przytrzymywanie" stanu bocznego suwaka w zarz±dcy modu³ów przy
   ³adowaniu / wy³adowywaniu (joi)
+* ³ata Vogela usuwaj±ca segfault przy braku po³±czenia z serwerem (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,

@@ -588,6 +588,7 @@ class GaduProtocol : public QObject
 		virtual ~GaduProtocol();
 
 		UserStatus & status();
+		const UserStatus & currentStatus();
 
 		/**
 			Zwraca serwer z którym jeste¶my po³±czeni

@@ -593,7 +593,7 @@ void GaduSocketNotifiers::socketEvent()
 
 	++calls;
 	if (calls > 1)
-		kdebugm(KDEBUG_WARNING, "************* GaduSocketNotifiers::socketEvent(): Recursive eventHandler calls detected!\n");
+		kdebugm(KDEBUG_WARNING, "************* GaduSocketNotifiers::socketEvent(): Recursive socketEvent calls detected!\n");
 
 	gg_event* e;
 	if (!(e = gg_watch_fd(Sess)))
@@ -713,7 +713,7 @@ void GaduSocketNotifiers::socketEvent()
 		emit disconnected();
 
 	// TODO: to mi siê nie podoba
-	if (!gadu->status().isOffline())
+	if (!gadu->currentStatus().isOffline())
 		if (Sess->state == GG_STATE_IDLE && gadu->userListSent())
 		{
 			gadu->status().setOffline("");
@@ -886,6 +886,11 @@ GaduProtocol::~GaduProtocol()
 UserStatus & GaduProtocol::status()
 {
 	return *NextStatus;
+}
+
+const UserStatus & GaduProtocol::currentStatus()
+{
+	return *CurrentStatus;
 }
 
 void GaduProtocol::iWantGoOnline(const QString &desc)
