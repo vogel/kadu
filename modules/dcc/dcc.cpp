@@ -136,6 +136,8 @@ void DccSocket::watchDcc(int /*check*/)
 {
 	kdebugf();
 	UinsList uins;
+	bool spoofingAttempt, insane, unbidden;
+	UserListElement peer;
 
 	in_watchDcc = true;
 
@@ -152,8 +154,34 @@ void DccSocket::watchDcc(int /*check*/)
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_CLIENT_ACCEPT! uin:%d peer_uin:%d\n",
 				dccsock->uin, dccsock->peer_uin);
 			uins.append(dccsock->peer_uin);
-			if (dccsock->uin != (UinType)config_file.readNumEntry("General", "UIN")
-				|| !userlist.containsUin(dccsock->peer_uin) || isIgnored(uins))
+			
+			insane = dccsock->uin != (UinType)config_file.readNumEntry("General", "UIN")
+				|| !userlist.containsUin(dccsock->peer_uin);
+			peer=userlist.byUinValue(dccsock->peer_uin);
+			unbidden = peer.isAnonymous() || isIgnored(uins);
+			spoofingAttempt = !(QHostAddress(ntohl(dccsock->remote_addr)) == peer.ip());
+			
+			if (insane)
+				kdebugm(KDEBUG_WARNING, "insane values: uin:%d peer_uin:%d\n", dccsock->uin, dccsock->peer_uin);
+			if (!insane && unbidden)
+				kdebugm(KDEBUG_WARNING, "unbidden user: %d\n", dccsock->peer_uin);
+			
+			if (!insane && !unbidden && spoofingAttempt)
+			{
+				kdebugm(KDEBUG_WARNING, "possible spoofing attempt from %s (uin:%d)\n",
+						QHostAddress(ntohl(dccsock->remote_addr)).toString().local8Bit().data(), dccsock->peer_uin);
+				if (!insane && !unbidden)
+					spoofingAttempt = !MessageBox::ask(narg(
+					tr("%1 is asking for direct connection but his/her\n"
+					"IP address (%2) differs from what GG server returned\n"
+					"as his/her IP address (%3). It may be spoofing\n"
+					"or he/she has port forwarding. Continue connection?"),
+					peer.altNick(),
+					QHostAddress(ntohl(dccsock->remote_addr)).toString(),
+					peer.ip().toString()));
+			}
+			
+			if (insane || unbidden || spoofingAttempt)
 			{
 				setState(DCC_SOCKET_TRANSFER_DISCARDED);
 				//emit dcc_manager->tranferDiscarded(this);
@@ -354,8 +382,9 @@ void DccManager::watchDcc()
 			break;
 		case GG_EVENT_DCC_NEW:
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_NEW\n");
+			
 			if (DccSocket::count() < 8)
-			{	
+			{
 				DccSocket* dcc_socket = new DccSocket(dcc_e->event.dcc_new);
 				connect(dcc_socket, SIGNAL(dccFinished(DccSocket *)),
 						this, SLOT(dccFinished(DccSocket *)));
