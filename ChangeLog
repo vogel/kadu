@@ -38,6 +38,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   nie do konca sprawy, trzeba go jeszcze podpi±c, narazie guzik jest ukryty (mast3r)
 * zapomnia³em, ¿e doConnect() w AutoConnectTimer powinno byæ slotem (chilek)
 * okno rozmowy: mo¿liwo¶æ wybrania koloru tekstu (chilek)
+* okno rozmowy: wstawienie znaku "*" nie powinno powodowaæ wstawiania nadinteligentnych
+  znaków wyliczania (chilek)
 
 +++ wersja 0.3.4-pre3
 * dodane przeszukiwanie historii (chilek)
