@@ -1196,13 +1196,13 @@ void Chat::initModule()
 // pierwsze uruchomienie kadu
 	QColor color;
 	color=QColor("#E0E0E0");
-	config_file.addVariable("Look", "ChatMyBgColor", &color);
+	config_file.addVariable("Look", "ChatMyBgColor", color);
 	color=QColor("#F0F0F0");
-	config_file.addVariable("Look", "ChatUsrBgColor", &color);
+	config_file.addVariable("Look", "ChatUsrBgColor", color);
 	color=QColor("#000000");
-	config_file.addVariable("Look", "ChatMyFontColor", &color);
+	config_file.addVariable("Look", "ChatMyFontColor", color);
 	color=QColor("#000000");
-	config_file.addVariable("Look", "ChatUsrFontColor", &color);
+	config_file.addVariable("Look", "ChatUsrFontColor", color);
 
 	QFontInfo info(qApp->font());
 	QFont def_font(info.family(),info.pointSize());

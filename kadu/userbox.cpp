@@ -502,7 +502,11 @@ void UserBox::initModule()
 	config_file.addVariable("Look", "UserboxDescTextColor", QColor("#000000"));
 	config_file.addVariable("Look", "UserboxBgColor", QColor("#FFFFFF"));
 	config_file.addVariable("Look", "UserboxFgColor", QColor("#000000"));
-	
+
+	QFontInfo info0(qApp->font());
+	QFont def_font0(info0.family(),info0.pointSize());
+	config_file.addVariable("Look", "UserboxFont", def_font0);
+	config_file.addVariable("Look", "UserboxDescFont", def_font0);
 //
 	
 	QT_TRANSLATE_NOOP("@default", "Look");

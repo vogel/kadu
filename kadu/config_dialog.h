@@ -66,6 +66,7 @@ class SelectPaths : public QDialog
 	      QPushButton *findPath;
 	protected slots:
 	      void okButton();
+	      void cancelButton();
 	      void addPath();
 	      void replacePath();
 	      void deletePath();
@@ -75,6 +76,8 @@ class SelectPaths : public QDialog
 	      ~SelectPaths();
 	      QStringList getPathList();
 	      void setPathList(QStringList& list);
+	      void closeEvent(QCloseEvent *e);
+	      void keyPressEvent(QKeyEvent *e);
 
 	signals:
 	      void changed(const QStringList &list);

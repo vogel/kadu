@@ -1148,7 +1148,6 @@ void ColorButton::setColor(const QColor &color )
 SelectPaths::SelectPaths(QWidget *parent, const char* name): QDialog(parent, name)
 {	
 	kdebug("SelectPaths::SelectPaths()\n");
-	setWFlags(Qt::WDestructiveClose);
 	setCaption(tr("Select paths"));
 	QGridLayout *layout= new QGridLayout(this, 1,0, 5, 10);
 	
@@ -1179,6 +1178,7 @@ SelectPaths::SelectPaths(QWidget *parent, const char* name): QDialog(parent, nam
 	layout->addWidget(okcancel, 2, 0, Qt::AlignRight);
 	connect(cancel, SIGNAL(released()), this, SLOT(hide()));
 	connect(ok, SIGNAL(released()), this, SLOT(okButton()));
+	connect(cancel, SIGNAL(released()), this, SLOT(cancelButton()));
 	connect(change, SIGNAL(released()), this, SLOT(replacePath()));
 	connect(add, SIGNAL(released()), this, SLOT(addPath()));
 	connect(remove, SIGNAL(released()), this, SLOT(deletePath()));
@@ -1212,7 +1212,8 @@ void SelectPaths::addPath()
     if (dir.cd(dirtoadd))
     {
         if (dirtoadd.right(1) != "/") dirtoadd+="/";
-	    pathListBox->insertItem(dirtoadd);
+	    if (!pathListBox->findItem(dirtoadd, Qt::ExactMatch)) 
+		    pathListBox->insertItem(dirtoadd);
     }
     pathListBox->setSelected(pathListBox->currentItem(),true);
 
@@ -1231,6 +1232,7 @@ void SelectPaths::replacePath()
         if (pathListBox->isSelected(pathListBox->currentItem()))
 	    {
 	        if (dirtochange.right(1) != "/") dirtochange+="/";
+	    if (!pathListBox->findItem(dirtochange, Qt::ExactMatch)) 
 		pathListBox->changeItem(dirtochange, pathListBox->currentItem());
 		pathListBox->setSelected(pathListBox->currentItem(), true);
 	    }
@@ -1259,12 +1261,35 @@ void SelectPaths::choosePath()
 
 void SelectPaths::okButton()
 {
+    kdebug("SelectPaths::okButton()\n");
     releaseList.clear();
     for (unsigned int i=0; i<pathListBox->count(); i++)
 	releaseList.append(pathListBox->text(i));
     hide();
     emit changed(releaseList);
 }
+
+void SelectPaths::cancelButton()
+{
+    kdebug("SelectPaths::cancelButton()\n");
+    pathListBox->clear();
+    pathListBox->insertStringList(releaseList);
+    hide();
+}
+
+void SelectPaths::closeEvent(QCloseEvent *e)
+{
+    e->ignore();    
+    cancelButton();
+}
+
+void SelectPaths::keyPressEvent(QKeyEvent *e)
+{
+    if (e->key() == Qt::Key_Escape)
+	cancelButton();
+}
+
+
 SelectPaths::~SelectPaths()
 {
     kdebug("SelectPaths::~SelectPaths()\n");

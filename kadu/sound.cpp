@@ -98,6 +98,7 @@ void SoundManager::setSoundPaths(const QStringList& paths)
 		if (!s.exists())
 		    add.remove((*it));
 		else ThemesList.append((*it).section("/", -2));
+		if (add.isEmpty()) break;
 		}
 	ThemesPaths+=add;
 };
