@@ -7,9 +7,13 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <qmutex.h>
+
 #include "debug.h"
 #include "voice.h"
 #include "voice_arts.h"
+
+QMutex artsmutex;
 
 VoiceArts::VoiceArts() {
 	kdebug("VoiceArts::VoiceArts()\n");
@@ -23,29 +27,44 @@ VoiceArts::~VoiceArts() {
 }
 
 void VoiceArts::setup() {
+	artsmutex.lock();
 	arts_init();
 	playstream = arts_play_stream(8000, 16, 1, "kaduplayvoice");
+	arts_stream_set(playstream, ARTS_P_BLOCKING, 0);
 	kdebug("VoiceArts::setup(): playstream=%d\n", playstream);
-//	arts_stream_set(playstream, ARTS_P_BUFFER_SIZE, 1024);
 	recstream = arts_record_stream(8000, 16, 1, "kadurecordvoice");
+	arts_stream_set(recstream, ARTS_P_BLOCKING, 0);
 	kdebug("VoiceArts::setup(): recstream=%d\n", recstream);
+	artsmutex.unlock();
 }
 
 void VoiceArts::free() {
-	kdebug("VoiceArts::free()\n");
+	artsmutex.lock();
 	arts_close_stream(playstream);
 	arts_close_stream(recstream);
 	arts_free();
+	kdebug("VoiceArts::free()\n");
+	artsmutex.unlock();
 }
 
 void VoiceArts::playSample(char *data, int length) {
+	int count = 0;
 	kdebug("VoiceArts::playSample()\n");
-	arts_write(playstream, data, length);
+	while (count < length) {
+		artsmutex.lock();
+		count += arts_write(playstream, data + count, length - count);
+		artsmutex.unlock();
+		}
 }
 
 void VoiceArts::recordSample(char *data, int length) {
-	kdebug("VoiceArts::recordSample(): read = %d\n",
-		arts_read(recstream, data, length));
+	int count = 0;
+	kdebug("VoiceArts::recordSample()\n");
+	while (count < length) {
+		artsmutex.lock();
+		count += arts_read(recstream, data + count, length - count);
+		artsmutex.unlock();
+		}
 }
 
 VoiceArts *voice_arts;
