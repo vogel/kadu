@@ -413,6 +413,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   + drobne porz±dki w obs³udze sytuacji awaryjnych (joi)
 * ³ata Dorregaraya na config_wizard: zapisywanie uina i has³a przy "mam ju¿ numer"
   oraz poprawne ustawianie domy¶lnych kolorów dymków (joi)
+* Dorregaray: checkbox w oknie wysy³ania smsa okre¶laj±cy czy powinien zostaæ
+  zapisany do historii (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,

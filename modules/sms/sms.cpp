@@ -254,6 +254,9 @@ Sms::Sms(const QString& altnick, QDialog* parent, const char *name) : QDialog (p
 
 	smslen = new QLabel("0", this);
 	grid->addWidget(smslen, 3, 0);
+	c_saveInHistory = new QCheckBox(tr("Save SMS in history"), this);
+	c_saveInHistory->setChecked(true);
+	grid->addWidget(c_saveInHistory, 3, 1);
 
 	b_send = new QPushButton(this);
 	b_send->setText(tr("Send"));
@@ -272,7 +275,6 @@ Sms::Sms(const QString& altnick, QDialog* parent, const char *name) : QDialog (p
 
 	if (altnick.isEmpty())
 		recipient->setFocus();
-
 	resize(400, 250);
 	setCaption(tr("Send SMS"));
 
@@ -325,6 +327,7 @@ void Sms::sendSms(void)
 	l_contact->setEnabled(false);
 	e_signature->setEnabled(false);
 	l_signature->setEnabled(false);
+	c_saveInHistory->setEnabled(false);
 
 	if (config_file.readBoolEntry("SMS","BuiltInApp"))
 	{
@@ -374,6 +377,7 @@ void Sms::smsSigHandler()
 	else
 		QMessageBox::warning(this, tr("SMS not sent"), tr("The process exited abnormally. The SMS may not be sent"));
 
+	c_saveInHistory->setEnabled(true);
 	e_contact->setEnabled(true);
 	l_contact->setEnabled(true);
 	e_signature->setEnabled(true);
@@ -394,7 +398,8 @@ void Sms::onSmsSenderFinished(bool success)
 	kdebugf();
 	if (success)
 	{
-		history.appendSms(recipient->text(), body->text());
+		if (c_saveInHistory->isChecked())
+			history.appendSms(recipient->text(), body->text());
 		QMessageBox::information(this, tr("SMS sent"), tr("The SMS was sent and should be on its way"));
 		body->clear();
 	}
@@ -404,6 +409,7 @@ void Sms::onSmsSenderFinished(bool success)
 	l_contact->setEnabled(true);
 	e_signature->setEnabled(true);
 	l_signature->setEnabled(true);
+	c_saveInHistory->setEnabled(true);
 	kdebugf2();
 }
 

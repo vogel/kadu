@@ -4,6 +4,7 @@
 #include <qdialog.h>
 #include <qmultilineedit.h>
 #include <qlineedit.h>
+#include <qcheckbox.h>
 #include <qcombobox.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
@@ -109,6 +110,7 @@ class Sms : public QDialog {
 		QLabel *l_signature;
 		QLineEdit *e_signature;
 		QPushButton *b_send;
+		QCheckBox *c_saveInHistory;
 		QProcess *smsProcess;
 		SmsSender Sender;
 
