@@ -38,20 +38,35 @@ class ConfigDialog : public QTabDialog	{
 		ConfigDialog(QWidget *parent = 0, const char *name = 0);
 		~ConfigDialog();
 		static void showConfigDialog();
-		// poni¿ej pocz±tki nowego mechanizmu
+		// nowy mechanizm
+		enum RegisteredControlType
+		{
+			CONFIG_TAB,
+			CONFIG_GROUPBOX,
+			CONFIG_CHECKBOX,
+			CONFIG_LINEEDIT
+		};
 		struct RegisteredControl
 		{
-			QString tab_name;
+			RegisteredControlType type;
+			QString parent;
 			QString caption;
 			QString group;
 			QString entry;
-			QCheckBox* widget;
+			QWidget* widget;
 		};
 		static QValueList<RegisteredControl> RegisteredControls;
-		static void registerCheckbox(
+		static void registerTab(const QString& caption);
+		static void registerGroupBox(
+			const QString& tab,const QString& caption);
+		static void registerCheckBox(
 			const QString& tab,const QString& caption,
 			const QString& group,const QString& entry);
-		
+		static void registerLineEdit(
+			const QString& tab,const QString& caption,
+			const QString& group,const QString& entry);
+		//
+				
 	protected:
 		void setupTab1();
 		void setupTab2();

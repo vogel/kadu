@@ -15,6 +15,7 @@
 
 #include "kadu.h"
 #include "config_dialog.h"
+#include "config_file.h"
 #include "sms.h"
 #include "history.h"
 #include "debug.h"
@@ -67,19 +68,22 @@ HttpClient::HttpClient()
 {
 	connect(&Socket,SIGNAL(connected()),this,SLOT(onConnected()));
 	connect(&Socket,SIGNAL(readyRead()),this,SLOT(onReadyRead()));
+	connect(&Socket,SIGNAL(connectionClosed()),this,SLOT(onConnectionClosed()));
 };
 
 void HttpClient::onConnected()
 {
 	QString query = (PostData.size() > 0 ? "POST" : "GET");
 	query += " ";
-	if (Path == "" || Path[0] != '/')
+	if ((Path == "" || Path[0] != '/')&&Path.left(7)!="http://")
 		query += '/';
 	query += Path;
 	query += " HTTP/1.1\n";
-	query += "Host: " + Host + "\n";
+//	query+="Connection: Keep-Alive\n";
 	query += "User-Agent: Mozilla/5.0 (X11; U; Linux i686; pl-PL; rv:1.2)\n";
-//	query+="Connection: keep-alive\n";
+	if(Referer!="")
+		query += "Referer: "+Referer+"\n";
+	query += "Host: " + Host + "\n";
 	if (Cookies.size() > 0) {
 		query += "Cookie: ";
 
@@ -117,14 +121,14 @@ void HttpClient::onReadyRead()
 	char buf[size];
 	Socket.readBlock(buf,size);
 	//
-	kdebug("%s\n",buf);
+//	kdebug("%s\n",buf);
 	//
 	int old_size=Data.size();
 	Data.resize(old_size+size);
 	for(int i=0; i<size; i++)
 		Data[old_size+i]=buf[i];
 	// Jesli nie mamy jeszcze naglowka
-	if(ContentLength<0)
+	if(!HeaderParsed)
 	{	
 		kdebug("HttpClient: Trying to parse header\n");
 		// Kontynuuj odczyt jesli naglowek niekompletny
@@ -134,6 +138,7 @@ void HttpClient::onReadyRead()
 			return;
 		// Dostalismy naglowek, 
 		kdebug("HttpClient: Http header found:\n%s\n",s.local8Bit().data());		
+		HeaderParsed=true;
 		// Wyci±gamy status
 		QRegExp status_regexp("HTTP/1\\.[01] (\\d+)");
 		if(status_regexp.search(s)<0)
@@ -147,7 +152,7 @@ void HttpClient::onReadyRead()
 		// Status 302 oznacza przekierowanie.
 		if(Status==302)
 		{
-			QRegExp location_regexp("Location: ([^\\n]+)");
+			QRegExp location_regexp("Location: ([^\\r\\n]+)");
 			if(location_regexp.search(s)<0)
 			{
 				Socket.close();
@@ -162,10 +167,16 @@ void HttpClient::onReadyRead()
 		// Wyci±gamy Content-Length
 		QRegExp cl_regexp("Content-Length: (\\d+)");
 		if(cl_regexp.search(s)<0)
-			ContentLength=0;
+		{
+			ContentLength=-1;
+			kdebug("HttpClient: Content-Length not found. We will wait for connection to close.");
+		}
 		else
+		{
 			ContentLength=cl_regexp.cap(1).toInt();
-		kdebug("HttpClient: Content-Length: %i bytes\n",ContentLength);			
+			kdebug("HttpClient: Content-Length: %i bytes\n",ContentLength);			
+		};
+		
 		// Wyciagamy ewentualne cookie (dla uproszczenia tylko jedno)
 		QRegExp cookie_regexp("Set-Cookie: ([^=]+)=([^;]+);");
 		if(cookie_regexp.search(s)>=0)
@@ -188,17 +199,26 @@ void HttpClient::onReadyRead()
 		// (uniewa¿niamy ten nag³owek i czekamy na nastêpny)
 		if(Status==100)
 		{
-			ContentLength=-1;
+			HeaderParsed=false;
 			return;
 		};
 	};
 	// Kontynuuj odczyt jesli dane niekompletne
-	if(ContentLength>Data.size())
+	// lub je¶li mamy czekaæ na connection close
+	if(ContentLength>Data.size()||ContentLength<0)
 		return;
 	// Mamy cale dane
 	kdebug("HttpClient: All Data Retreived: %i bytes\n",Data.size());
 	Socket.close();
 	emit finished();
+};
+
+void HttpClient::onConnectionClosed()
+{
+	if(HeaderParsed&&ContentLength<0)
+		emit finished();
+	else
+		emit error();
 };
 
 void HttpClient::setHost(QString host)
@@ -209,19 +229,21 @@ void HttpClient::setHost(QString host)
 
 void HttpClient::get(QString path)
 {
+	Referer=Path;
 	Path=path;
 	Data.resize(0);
 	PostData.resize(0);
-	ContentLength=-1;
+	HeaderParsed=false;
 	Socket.connectToHost(Host,80);
 };
 
 void HttpClient::post(QString path,const QByteArray& data)
 {
+	Referer=Path;
 	Path=path;
 	Data.resize(0);
 	PostData.duplicate(data);
-	ContentLength=-1;
+	HeaderParsed=false;
 	Socket.connectToHost(Host,80);
 };
 
@@ -442,9 +464,9 @@ void SmsEraGateway::send(const QString& number,const QString& message)
 {
 	Number=number;
 	Message=message;
-	State=SMS_LOADING_PAGE;
+	State=SMS_LOADING_LOGIN_PAGE;
 	Http.setHost("sms.era.pl");
-	Http.get("sms/do/singleSignonFromXAction");
+	Http.get("sms");
 };
 
 bool SmsEraGateway::isNumberCorrect(const QString& number)
@@ -455,34 +477,76 @@ bool SmsEraGateway::isNumberCorrect(const QString& number)
 void SmsEraGateway::httpFinished()
 {
 	QWidget* p=(QWidget*)(parent()->parent());
-	if(State==SMS_LOADING_PAGE)
+	if(State==SMS_LOADING_LOGIN_PAGE)
+	{
+		QString Page=Http.data();
+		kdebug("SMS Provider Login Page:\n%s\n",Page.local8Bit().data());
+		if(Page.find("Zaloguj siê") < 0)
+		{
+			QMessageBox::critical(p,"SMS",i18n("Provider gateway page looks strange. It's probably temporary disabled\nor has beed changed too much to parse it correctly."));
+			emit finished(false);
+			return;
+		};
+		State = SMS_LOADING_LOGIN_RESULTS;
+		config_file.setGroup("SMS");
+		QString post_data=
+			"j_username="+config_file.readEntry("EraGatewayUser")+
+			"&j_password="+config_file.readEntry("EraGatewayPassword")+
+			"&x=46&y=6";
+		Http.post("j_security_check", post_data);
+	}
+	else if(State==SMS_LOADING_LOGIN_RESULTS)
+	{
+		QString Page=Http.data();
+		kdebug("SMS Provider Authentication Results Page:\n%s\n",Page.local8Bit().data());
+		if(Page.find("Wyloguj siê")<0)
+		{
+			kdebug("Authentication error\n");
+			QMessageBox::critical(p,"SMS",i18n("Authentication error. Incorrect login or password?"));
+			emit finished(false);
+			return;
+		};
+		State=SMS_LOADING_PAGE;
+		Http.get("sms/do/singleSignonFromXAction");
+	}
+	else if(State==SMS_LOADING_PAGE)
 	{
 		QString Page=Http.data();
 		kdebug("SMS Provider Page:\n%s\n",Page.local8Bit().data());
-		QRegExp code_regexp("name=\\\"kod\\\" value=\\\"(\\d+)\\\"");
-		QRegExp code_regexp2("name=\\\"Kod(\\d+)\\\" value=\\\"(\\d+)\\\"");
-		if(code_regexp.search(Page) < 0) {
+		if(Page.find("Bramka podstawowa") < 0)
+		{
 			QMessageBox::critical(p,"SMS",i18n("Provider gateway page looks strange. It's probably temporary disabled\nor has beed changed too much to parse it correctly."));
 			emit finished(false);
 			return;
-			}
-		if(code_regexp2.search(Page) < 0) {
+		};	
+		State=SMS_LOADING_PREVIEW;
+		config_file.setGroup("SMS");
+		QString post_data=
+			"phoneNumber="+Number+
+			"&smsContent="+Http.encode(Message)+
+			"&reply="+config_file.readEntry("EraGatewayUser")+
+			"&signature="+Http.encode(config.nick);
+		Http.post("sms/do/previewSMS", post_data);	
+	}
+	else if(State==SMS_LOADING_PREVIEW)
+	{
+		QString Page=Http.data();
+		kdebug("SMS Provider Preview Page:\n%s\n",Page.local8Bit().data());
+		QRegExp token_regexp("sms\\/do\\/sendSMS\\?org\\.apache\\.struts\\.taglib\\.html\\.TOKEN=([^\"]+)");
+		if(token_regexp.search(Page)<0)
+		{
 			QMessageBox::critical(p,"SMS",i18n("Provider gateway page looks strange. It's probably temporary disabled\nor has beed changed too much to parse it correctly."));
 			emit finished(false);
 			return;
-			}
-		QString code = code_regexp.cap(1);
-		QString num = code_regexp2.cap(1);
-		QString code2 = code_regexp2.cap(2);
-		State = SMS_LOADING_RESULTS;
-		QString post_data = "bookopen=&numer="+Number+"&ksiazka=ksi%B1%BFka+telefoniczna&message="+Http.encode(Message)+"&podpis="+config.nick+"&kontakt=&Send=++tak-nada%E6++&Kod"+num+"="+code2+"&kod="+code;
-		Http.post("sms/sendsms.asp", post_data);
+		};
+		State=SMS_LOADING_RESULTS;
+		Http.get(token_regexp.cap(0));
 	}
 	else if(State==SMS_LOADING_RESULTS)
 	{
 		QString Page=Http.data();
 		kdebug("SMS Provider Results Page:\n%s\n",Page.local8Bit().data());	
-		if(Page.find("zosta³a wys³ana")>=0)
+		if(Page.find("Wiadomo¶æ zosta³a przekazana do wys³ania")>=0)
 		{
 			emit finished(true);
 		}

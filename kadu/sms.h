@@ -60,16 +60,19 @@ class HttpClient : public QObject
 	private:
 		QSocket Socket;
 		QString Host;
+		QString Referer;
 		QString Path;
 		QByteArray Data;
 		QByteArray PostData;
 		int Status;
+		bool HeaderParsed;
 		int ContentLength;
 		QMap<QString,QString> Cookies;
 		
 	private slots:
 		void onConnected();
 		void onReadyRead();
+		void onConnectionClosed();
 		
 	public:
 		HttpClient();
@@ -93,8 +96,11 @@ class SmsGateway : public QObject
 	protected:
 		enum GatewayState
 		{
+			SMS_LOADING_LOGIN_PAGE,
+			SMS_LOADING_LOGIN_RESULTS,
 			SMS_LOADING_PAGE,
 			SMS_LOADING_PICTURE,
+			SMS_LOADING_PREVIEW,
 			SMS_LOADING_RESULTS
 		};
 		GatewayState State;

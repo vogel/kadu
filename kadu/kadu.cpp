@@ -319,7 +319,11 @@ void Kadu::keyPressEvent(QKeyEvent *e) {
 /* a monstrous constructor so Kadu would take longer to start up */
 Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 {
-	ConfigDialog::registerCheckbox(i18n("Chat")+" [2]",i18n("Open chat window on new message"),"Other","OpenChatOnMessage");
+	ConfigDialog::registerTab(i18n("Other"));
+	ConfigDialog::registerCheckBox(i18n("Other"),i18n("Open chat window on new message"),"Other","OpenChatOnMessage");
+	ConfigDialog::registerGroupBox(i18n("Other"),i18n("SMS Era Gateway"));
+	ConfigDialog::registerLineEdit(i18n("SMS Era Gateway"),i18n("User ID"),"SMS","EraGatewayUser");
+	ConfigDialog::registerLineEdit(i18n("SMS Era Gateway"),i18n("Password"),"SMS","EraGatewayPassword");
 
 	closestatusppmtime.start();
 	lastsoundtime.start();

@@ -366,20 +366,48 @@ ConfigDialog::ConfigDialog(QWidget *parent, const char *name) : QTabDialog(paren
 	setupTab7();
 
 	// nowy mechanizm	
-	QMap<QString,QVBox*> Tabs;
 	for(QValueList<RegisteredControl>::iterator i=RegisteredControls.begin(); i!=RegisteredControls.end(); i++)
 	{
-		if(!Tabs.contains((*i).tab_name))
+		QWidget* parent=NULL;
+		if((*i).type!=CONFIG_TAB)
+			for(QValueList<RegisteredControl>::iterator j=RegisteredControls.begin(); j!=RegisteredControls.end(); j++)
+				if((*j).caption==(*i).parent)
+					parent=(*j).widget;
+		switch((*i).type)
 		{
-			QVBox* box = new QVBox(this);
-			box->setMargin(2);
-			addTab(box,(*i).tab_name);
-			Tabs.insert((*i).tab_name,box);
-		};
-		QCheckBox* check=new QCheckBox((*i).caption,Tabs[(*i).tab_name]);
-		config_file.setGroup((*i).group);
-		check->setChecked(config_file.readBoolEntry((*i).entry));
-		(*i).widget=check;
+			case CONFIG_TAB:
+			{
+				QVBox* box = new QVBox(this);
+				box->setMargin(2);
+				(*i).widget=box;
+				addTab(box,(*i).caption);
+				break;
+			}
+			case CONFIG_GROUPBOX:
+			{
+				QVGroupBox* box = new QVGroupBox((*i).caption,parent);
+				(*i).widget=box;
+				break;
+			}
+			case CONFIG_CHECKBOX:
+			{
+				QCheckBox* check=new QCheckBox((*i).caption,parent);
+				config_file.setGroup((*i).group);
+				check->setChecked(config_file.readBoolEntry((*i).entry));
+				(*i).widget=check;
+				break;
+			}
+			case CONFIG_LINEEDIT:
+			{
+				QHBox* hbox=new QHBox(parent);
+				QLabel* label=new QLabel((*i).caption,hbox);
+				QLineEdit* line=new QLineEdit(hbox);
+				config_file.setGroup((*i).group);
+				line->setText(config_file.readEntry((*i).entry));
+				(*i).widget=line;
+				break;
+			}
+		};			
 	};
 	//
 
@@ -402,12 +430,44 @@ ConfigDialog::~ConfigDialog() {
 	acttab = QString(currentPage()->name());
 };
 
-void ConfigDialog::registerCheckbox(
-			const QString& tab,const QString& caption,
+void ConfigDialog::registerTab(const QString& caption)
+{
+	RegisteredControl c;
+	c.type=CONFIG_TAB;
+	c.caption=caption;
+	RegisteredControls.append(c);
+};
+
+void ConfigDialog::registerGroupBox(
+	const QString& parent,const QString& caption)
+{
+	RegisteredControl c;
+	c.type=CONFIG_GROUPBOX;
+	c.parent=parent;
+	c.caption=caption;
+	RegisteredControls.append(c);
+};
+
+void ConfigDialog::registerCheckBox(
+			const QString& parent,const QString& caption,
 			const QString& group,const QString& entry)
 {
 	RegisteredControl c;
-	c.tab_name=tab;
+	c.type=CONFIG_CHECKBOX;
+	c.parent=parent;
+	c.caption=caption;
+	c.group=group;
+	c.entry=entry;
+	RegisteredControls.append(c);
+};
+
+void ConfigDialog::registerLineEdit(
+			const QString& parent,const QString& caption,
+			const QString& group,const QString& entry)
+{
+	RegisteredControl c;
+	c.type=CONFIG_LINEEDIT;
+	c.parent=parent;
 	c.caption=caption;
 	c.group=group;
 	c.entry=entry;
@@ -1795,7 +1855,15 @@ void ConfigDialog::updateConfig(void) {
 	for(QValueList<RegisteredControl>::iterator i=RegisteredControls.begin(); i!=RegisteredControls.end(); i++)
 	{
 		config_file.setGroup((*i).group);
-		config_file.writeEntry((*i).entry,(*i).widget->isChecked());
+		switch((*i).type)
+		{
+			case CONFIG_CHECKBOX:
+				config_file.writeEntry((*i).entry,((QCheckBox*)((*i).widget))->isChecked());
+				break;
+			case CONFIG_LINEEDIT:
+				config_file.writeEntry((*i).entry,((QLineEdit*)((*i).widget))->text());
+				break;
+		};			
 	};
 	config_file.sync();
 	//
