@@ -129,7 +129,8 @@ void loadKaduConfig(void) {
 	config.encryption = konf->readBoolEntry("Encryption", false);
 //	config.keyslen = konf->readNumEntry("KeysLength", 1024);
 #endif
-	config.panelcontents = konf->readEntry("PanelContents", "Status: %s, [(%d)]");
+// Narazie nic nie czytamy bo nie wiemy jak dokladnie ma wygladac domyslne pole
+//	config.panelcontents = konf->readEntry("PanelContents", "Status: %s, [(%d)]");
 
 	konf->setGroup("Notify");
 	config.soundnotify = strdup(konf->readEntry("NotifySound", ""));
@@ -269,7 +270,8 @@ void saveKaduConfig(void) {
         konf->writeEntry("Encryption", config.encryption);
         //konf->writeEntry("KeysLength", config.keyslen);
 #endif
-	konf->writeEntry("PanelContents", config.panelcontents);
+//nie zapisujemy bo nie wiemy jak bedzie jeszcze z domyslnym polem
+//	konf->writeEntry("PanelContents", config.panelcontents);
 
 	konf->setGroup("Proxy");
 	konf->writeEntry("UseProxy",config.useproxy);
