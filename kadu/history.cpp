@@ -1028,10 +1028,14 @@ void History::showHistoryEntries(int from, int count) {
 	int i;
 	QString text;
 
+	bool noStatus = config_file.readBoolEntry("History", "DontShowStatusChanges");
+
 	QValueList<HistoryEntry> entries;
 	entries = history.getHistoryEntries(uins, from, count);
-	for (i = 0; i < entries.count(); i++)
-		formatHistoryEntry(text, entries[i]);
+	for (i = 0; i < entries.count(); i++) {
+	    if ( ! (noStatus && entries[i].type & HISTORYMANAGER_ENTRY_STATUS))
+			formatHistoryEntry(text, entries[i]);
+	}
 	body->setText(text);
 }
 
@@ -1194,6 +1198,7 @@ void History::initModule()
 	QT_TRANSLATE_NOOP("@default", "Quoted phrases during chat open");
 	QT_TRANSLATE_NOOP("@default", "Count:");
 	QT_TRANSLATE_NOOP("@default", "Don't quote phrases older than:");
+	QT_TRANSLATE_NOOP("@default", "Don't show status changes");
 
 	kdebug("History::initModule() \n");
 	HistorySlots *historyslots=new HistorySlots();
@@ -1203,7 +1208,8 @@ void History::initModule()
 	ConfigDialog::addLabel("History", "Quoted phrases during chat open", "Don't quote phrases older than:");
 	ConfigDialog::addSlider("History", "Quoted phrases during chat open", "historyslider", "ChatHistoryQuotationTime", -744, -1, 24, -336);
 	ConfigDialog::addLabel("History", "Quoted phrases during chat open", "", "dayhour");
-
+	ConfigDialog::addCheckBox("History", "History", "Don't show status changes", "DontShowStatusChanges", false);
+    
 	ConfigDialog::registerSlotOnCreate(historyslots, SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnDestroy(historyslots, SLOT(onDestroyConfigDialog()));
 	ConfigDialog::connectSlot("History", "historyslider", SIGNAL(valueChanged(int)), historyslots, SLOT(updateQuoteTimeLabel(int)));
@@ -1277,6 +1283,8 @@ HistorySearch::HistorySearch(QWidget *parent, UinsList uins) : QDialog(parent), 
 	criteria_bg = new QVButtonGroup(tr("Find Criteria"), this);
 	phrase_rb = new QRadioButton(tr("&Pattern"), criteria_bg);
 	status_rb = new QRadioButton(tr("&Status"), criteria_bg);
+	if (config_file.readBoolEntry("History", "DontShowStatusChanges"))
+		status_rb->setEnabled(false);
 	criteria_bg->insert(phrase_rb, 1);
 	criteria_bg->insert(status_rb, 2);
 

@@ -116,6 +116,10 @@ Wybierz jedną z poniższych opcji:</translation>
         <translation>Nie wyświetlaj wierszy starszych niż:</translation>
     </message>
     <message>
+        <source>Don&apos;t show status changes</source>
+        <translation>Nie pokazuj zmian statusu</translation>
+    </message>
+    <message>
         <source>User data</source>
         <translation>Dane użytkownika</translation>
     </message>
