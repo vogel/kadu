@@ -390,18 +390,25 @@ unsigned int GetStatusFromUserlist(uin_t uin) {
 /* sends the userlist. ripped off EKG, actually, but works */
 void sendUserlist() {
 	uin_t *uins;
-	int i;
+	int i, j;
 
-	uins = (uin_t *) malloc(userlist.count() * sizeof(uin_t));
+	for (i = 0, j = 0; i < userlist.count(); i++)
+		if (userlist[i].uin)
+			j++;
+
+	uins = (uin_t *) malloc(j * sizeof(uin_t));
 	
-	for (i = 0; i < userlist.count(); i++)
-		uins[i] = userlist[i].uin;
+	for (i = 0, j = 0; i < userlist.count(); i++)
+		if (userlist[i].uin) {
+			uins[j] = userlist[i].uin;
+			j++;
+			}
 
 	/* we were popping up sometimes, so let's keep the server informed */
 	if (i_wanna_be_invisible)
 		gg_change_status(&sess, GG_STATUS_INVISIBLE);
 
-	gg_notify(&sess, uins, userlist.count());
+	gg_notify(&sess, uins, j);
 	fprintf(stderr, "KK send_userlist(): Userlist sent\n");
 
 	free(uins);
