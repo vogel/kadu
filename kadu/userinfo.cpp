@@ -494,7 +494,7 @@ void UserInfo::changeUserData(UserListElement& e)
 	}
 
 	if (e.uin == puser->uin)
-		e.status = puser->status;
+		e.status->setStatus(*(puser->status));
 	e.image_size = puser->image_size;
 	e.blocking = c_blocking->isChecked();
 	e.offline_to_user = c_offtouser->isChecked();
