@@ -626,19 +626,18 @@ void GaduSocketNotifiers::socketEvent()
 			break;
 		case GG_STATE_READING_KEY:
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Waiting for hash key\n");
-			ConnectionTimeoutTimer::off();
 			break;
 		case GG_STATE_READING_REPLY:
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Sending key\n");
-			ConnectionTimeoutTimer::off();
+			break;
+		case GG_STATE_CONNECTED:
+			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "connected\n");
 			break;
 		case GG_STATE_IDLE:
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_WARNING, "idle!\n");
 			break;
 		case GG_STATE_ERROR:
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_WARNING, "state==error! error=%d\n", Sess->error);
-			break;
-		case GG_STATE_CONNECTED:
 			break;
 		default:
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_WARNING, "unknown state! state=%d\n", Sess->state);
@@ -1097,6 +1096,7 @@ void GaduProtocol::setDccExternalIP(const QHostAddress& ip)
 void GaduProtocol::connectedSlot()
 {
 	kdebugf();
+	ConnectionTimeoutTimer::off();
 
 	whileConnecting = false;
 	sendUserList();
