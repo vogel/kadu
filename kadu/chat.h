@@ -195,13 +195,13 @@ class Chat : public QWidget
 			Sygnal jest emitowany gdy uzytkownik wyda polecenie
 			wyslania wiadomosci, np klikajac na guzik "wyslij".
 		**/
-		void messageSendRequested();
+		void messageSendRequested(Chat* chat);
 		/**
 			Sygnal jest emitowany gdy zakonczy sie proces
 			wysylania wiadomosci i zwiazanych z tym czynnosci.
 			Oczywiscie nie wiemy czy wiadomosc dotarla.
 		**/		
-		void messageSent();
+		void messageSent(Chat* chat);
 };
 
 class ColorSelectorButton : public QToolButton

@@ -935,7 +935,7 @@ void Chat::ackReceivedSlot(int Seq) {
 /* sends the message typed */
 void Chat::sendMessage(void) {
 
-	emit messageSendRequested();
+	emit messageSendRequested(this);
 
 	QString mesg;
 
@@ -1011,7 +1011,7 @@ void Chat::sendMessage(void) {
 	if (sess->check & GG_CHECK_WRITE)
 		kadusnw->setEnabled(true);
 		
-	emit messageSent();
+	emit messageSent(this);
 }
 
 /* prunes messages */
