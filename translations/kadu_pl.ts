@@ -3,7 +3,7 @@
     <name>@default</name>
     <message>
         <source>I am busy.</source>
-        <translation type="unfinished"></translation>
+        <translation>Jestem zajęty.</translation>
     </message>
     <message>
         <source>User notify</source>
@@ -11,7 +11,7 @@
     </message>
     <message>
         <source> is available</source>
-        <translation type="unfinished"></translation>
+        <translation>jest dostępny</translation>
     </message>
     <message>
         <source>You don&apos;t have a config file.
@@ -32,50 +32,50 @@ What would you like to do?</source>
     </message>
     <message>
         <source>Kadu: new user</source>
-        <translation type="unfinished"></translation>
+        <translation>Kadu: nowy użytkownik</translation>
     </message>
     <message>
         <source>Online</source>
-        <translation type="unfinished"></translation>
+        <translation>Dostępny</translation>
     </message>
     <message>
         <source>Online (d.)</source>
-        <translation type="unfinished"></translation>
+        <translation>Dostępny (opis)</translation>
     </message>
     <message>
         <source>Busy</source>
-        <translation type="unfinished"></translation>
+        <translation>Zaraz wracam</translation>
     </message>
     <message>
         <source>Busy (d.)</source>
-        <translation type="unfinished"></translation>
+        <translation>Zaraz wracam (opis)</translation>
     </message>
     <message>
         <source>Invisible</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukryty</translation>
     </message>
     <message>
         <source>Invisible (d.)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukryty (opis)</translation>
     </message>
     <message>
         <source>Offline</source>
-        <translation type="unfinished"></translation>
+        <translation>Niedostępny</translation>
     </message>
     <message>
         <source>Offline (d.)</source>
-        <translation type="unfinished"></translation>
+        <translation>Niedostępny (opis)</translation>
     </message>
     <message>
         <source>Blocking</source>
-        <translation type="unfinished"></translation>
+        <translation>Blokuje</translation>
     </message>
 </context>
 <context>
     <name>About</name>
     <message>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>O programie</translation>
     </message>
 </context>
 <context>
@@ -593,19 +593,19 @@ What would you like to do?</source>
     </message>
     <message>
         <source>Online</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dostępny</translation>
     </message>
     <message>
         <source>Busy</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zaraz wracam</translation>
     </message>
     <message>
         <source>Invisible</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ukryty</translation>
     </message>
     <message>
         <source>Offline</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Niedostępny</translation>
     </message>
     <message>
         <source>Quoted phrases during chat open</source>
@@ -824,7 +824,7 @@ What would you like to do?</source>
     </message>
     <message>
         <source>Offline</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Niedostępny</translation>
     </message>
     <message>
         <source>&amp;Exit Kadu</source>
@@ -1229,10 +1229,6 @@ Now add your friends to the userlist.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source> </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Male</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1334,6 +1330,10 @@ Now add your friends to the userlist.</source>
     </message>
     <message>
         <source>Do you want to update user info for %1?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> </source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1737,35 +1737,35 @@ Middle click or Left click- next message</source>
     </message>
     <message>
         <source>Online</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dostępny</translation>
     </message>
     <message>
         <source>Online (d.)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dostępny (opis)</translation>
     </message>
     <message>
         <source>Offline</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Niedostępny</translation>
     </message>
     <message>
         <source>Offline (d.)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Niedostępny (opis)</translation>
     </message>
     <message>
         <source>Busy</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zaraz wracam</translation>
     </message>
     <message>
         <source>Busy (d.)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zaraz wracam (opis)</translation>
     </message>
     <message>
         <source>Invisible</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ukryty</translation>
     </message>
     <message>
         <source>Invisible (d.)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ukryty (opis)</translation>
     </message>
     <message>
         <source>Blocks us</source>
