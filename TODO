@@ -25,13 +25,10 @@
    o autorach - wystarczy plik AUTHORS
  + sprawdzanie dostêpnych aktualizacji
  + sortowanie wed³ug polskiego locale (³ po l itp)
- ! je¶li mamy ustawiony autoaway i zmienimy status na niedostepny
-   to po autoaway_delay kadu pada
  ? dodawanie nieznanych u¿ytkowników z konferencji do listy jako opcja
    i ew. z listy userów w oknie konferencji
  ! wyja¶niæ zapêtlenia siê przy utracie ³±czno¶ci z serwerem 
  + przycisk TEST w ustawieniach d¼wiêku
- + dodaæ kilka numerów ip serwerów gadu
  ! inne pady i halty kadu - patrz forum
  
 
