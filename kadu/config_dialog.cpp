@@ -94,7 +94,13 @@ void loadKaduConfig(void) {
 			config.servers.append(ip);
 		}
 	config.default_servers = config_file.readBoolEntry("isDefServers",true);
+
+#ifdef HAVE_OPENSSL
 	config.tls = config_file.readNumEntry("UseTLS", 0);
+#else
+	config.tls = 0;
+#endif
+
 	config.default_port = config_file.readNumEntry("DefaultPort", 8074);
 	server_nr = 0;
 
@@ -1056,7 +1062,9 @@ void ConfigDialog::setupTab5(void) {
 	QObject::connect(b_dccip, SIGNAL(toggled(bool)), this, SLOT(ifDccIpEnabled(bool)));
 	QObject::connect(b_dccfwd, SIGNAL(toggled(bool)), g_fwdprop, SLOT(setEnabled(bool)));
 	QObject::connect(b_defserver, SIGNAL(toggled(bool)), this, SLOT(ifDefServerEnabled(bool)));
+#ifdef HAVE_OPENSSL
 	QObject::connect(b_tls, SIGNAL(toggled(bool)), this, SLOT(useTlsEnabled(bool)));
+#endif
 	QObject::connect(b_useproxy, SIGNAL(toggled(bool)), g_proxy, SLOT(setEnabled(bool)));
 
 	addTab(box5, i18n("Network"));

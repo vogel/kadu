@@ -6,6 +6,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 +++ wersja 0.3.4-rc3
 * je¶li u¿ywamy po³±czenia TLSv1 i wpisujemy jawnie serwery GG to domy¶lnym
   portem jest 443 (chilek)
+* "wyifdefowanie" connecta b_usetls w oknie konfiguracyjnym (chilek)
 
 +++ wersja 0.3.4-rc2
 * porzadki: kod rejestrujacy opcje modulow Chat i Sms w oknie konfiguracji
