@@ -1214,7 +1214,7 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 /* if something's pending, open it, if not, open new message */
 void Kadu::sendMessage(QListBoxItem *item) {
 	QString tmp;
-	int i,j,k = -1;
+	int i, j, k = -1, l;
 	bool stop = false;
 	rMessage *rmsg;
 	Message *msg;
@@ -1250,9 +1250,12 @@ void Kadu::sendMessage(QListBoxItem *item) {
 							addUser("", "", tmp, tmp, "", tmp, GG_STATUS_NOT_AVAIL,
 								"", "", true);
 						}
+				
+				l = chats.count();
 				k = openChat(elem.uins);
 				if (!msgsFromHist) {
-					chats[k].ptr->writeMessagesFromHistory(elem.uins, elem.time);
+					if (l < chats.count())
+						chats[k].ptr->writeMessagesFromHistory(elem.uins, elem.time);
 					msgsFromHist = true;
 					}
 				chats[k].ptr->formatMessage(false,
@@ -1300,8 +1303,9 @@ void Kadu::sendMessage(QListBoxItem *item) {
 		msg->show();
 		}*/
 //	zawsze otwieraja sie czaty
+	l = chats.count();
 	k = openChat(uins);
-	if (!msgsFromHist)
+	if (!msgsFromHist && l < chats.count())
 		chats[k].ptr->writeMessagesFromHistory(uins, 0);
 }
 
