@@ -11,6 +11,7 @@
 #include <qcursor.h>
 #include <qobject.h>
 #include <qpopupmenu.h>
+#include <qpixmap.h>
 
 #include "dock_widget.h"
 #include "misc.h"
@@ -68,7 +69,7 @@ TrayIcon::TrayIcon(QWidget *parent, const char *name)
 {
 	if (!config.dock)
 		return;
-	QPixmap pix=QPixmap((const char**)gg_inact_xpm);
+	QPixmap pix = *icons->loadIcon("offline");
 	QLabel::setPixmap(pix);
 	QToolTip::add(this, i18n("Left click - hide/show window\nMiddle click or CTRL+any click- next message"));
 	// WindowMaker
@@ -135,11 +136,11 @@ void TrayIcon::setPixmap(const QPixmap& pixmap)
 		repaint();
 };
 
-void TrayIcon::setType(char **gg_xpm)
+void TrayIcon::setType(QPixmap &pixmap)
 {
 	if (!config.dock)
 		return;
-	setPixmap(QPixmap((const char**)gg_xpm));
+	setPixmap(pixmap);
 }
 
 void TrayIcon::changeIcon() {
@@ -150,7 +151,7 @@ void TrayIcon::changeIcon() {
 			blink = true;
 			}
 		else {
-			setPixmap(QPixmap((const char**)gg_xpm[statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]));
+			setPixmap(*icons->loadIcon(gg_icons[statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]));
 			icon_timer->start(500,TRUE);
 			blink = false;
 			}

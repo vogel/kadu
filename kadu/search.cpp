@@ -300,7 +300,7 @@ void SearchDialog::showResults(gg_pubdir50_t res) {
 	kdebug("SearchDialog::showResults(): Done searching. count=%d\n", count);
 	progress->setText(i18n("Done searching"));
 	QListViewItem * qlv;
-	QPixmap * qpx;
+	QPixmap *pix;
 	qlv = NULL;
 
 	for (i = 0; i < count; i++) {
@@ -315,9 +315,9 @@ void SearchDialog::showResults(gg_pubdir50_t res) {
 		if (results->findItem(uin, 1))
 			continue;
 		if (atoi(status))
-			qpx = new QPixmap((const char **)gg_xpm[statusGGToStatusNr(atoi(status) & 127)]);
+			pix = icons->loadIcon(gg_icons[statusGGToStatusNr(atoi(status) & 127)]);
 		else
-			qpx = new QPixmap((const char **)gg_xpm[6]);
+			pix = icons->loadIcon("offline");
 		if (first)
 			cp_to_iso((unsigned char *)first);
 		if (nick)
@@ -326,7 +326,7 @@ void SearchDialog::showResults(gg_pubdir50_t res) {
 			cp_to_iso((unsigned char *)city);
 		qlv = new QListViewItem(results, QString::null, __c2q(uin),
 			__c2q(first), __c2q(city), __c2q(nick), __c2q(born));
-		qlv->setPixmap(0, *qpx);
+		qlv->setPixmap(0, *pix);
 		}
 
 	fromUin = gg_pubdir50_next(res);

@@ -13,6 +13,7 @@
 #include <qlabel.h>
 #include <qtextbrowser.h>
 #include <qstringlist.h>
+#include <qpixmap.h>
 
 class TrayIcon : protected QLabel
 {
@@ -32,7 +33,7 @@ class TrayIcon : protected QLabel
 	public:
 		TrayIcon(QWidget *parent = 0, const char *name = 0);
 		~TrayIcon();
-		void setType(char **gg_xpm);
+		void setType(QPixmap &pixmap);
 		void show();
 		void connectSignals();
 		void showHint(const QString&, const QString&, int index);

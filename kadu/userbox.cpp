@@ -23,16 +23,6 @@ UserBox::UserBox(QWidget* parent,const char* name,WFlags f)
 {
 	UserBoxes.append(this);
 	setSelectionMode(QListBox::Extended);
-	// za³aduj obrazki
-	if(OnlineMobilePixmap==NULL)
-	{
-		OnlineMobilePixmap=new QPixmap(QString(DATADIR)+"/apps/kadu/icons/online_m.png");
-		OnlineDescMobilePixmap=new QPixmap(QString(DATADIR)+"/apps/kadu/icons/online_d_m.png");
-		BusyMobilePixmap=new QPixmap(QString(DATADIR)+"/apps/kadu/icons/busy_m.png");
-		BusyDescMobilePixmap=new QPixmap(QString(DATADIR)+"/apps/kadu/icons/busy_d_m.png");
-		OfflineMobilePixmap=new QPixmap(QString(DATADIR)+"/apps/kadu/icons/offline_m.png");
-		OfflineDescMobilePixmap=new QPixmap(QString(DATADIR)+"/apps/kadu/icons/offline_d_m.png");
-	};
 }
 
 UserBox::~UserBox()
@@ -144,7 +134,6 @@ void UserBox::sortUsersByAltNick(QStringList &users) {
 
 void UserBox::refresh()
 {
-	char **gg_xpm;
 	int i;
 
 	kdebug("UserBox::refresh()\n");
@@ -191,47 +180,47 @@ void UserBox::refresh()
 	for (i = 0; i < a_users.count(); i++)
 	{
 		UserListElement &user = userlist.byAltNick(a_users[i]);
-		bool has_mobile=(user.mobile!="");
+		bool has_mobile = user.mobile.length();
 		if (pending.pendingMsgs(user.uin))
 		{
 	    		insertItem(QPixmap((const char **)gg_msg_xpm), user.altnick);
 		}
 		else
 		{
-			QPixmap* pix=NULL;
+			QPixmap *pix = NULL;
 			switch (user.status) {
 				case GG_STATUS_AVAIL:
-					if(has_mobile)
-						pix=OnlineMobilePixmap;
+					if (has_mobile)
+						pix = icons->loadIcon("online_m");
 					else
-		    				gg_xpm = (char **)gg_act_xpm;
+		    				pix = icons->loadIcon("online");
 		    			break;
 				case GG_STATUS_AVAIL_DESCR:
-					if(has_mobile)
-						pix=OnlineDescMobilePixmap;
+					if (has_mobile)
+						pix = icons->loadIcon("online_d_m");
 					else
-		    				gg_xpm = (char **)gg_actdescr_xpm;
+		    				pix = icons->loadIcon("online_d");
 		    			break;
 				case GG_STATUS_BUSY:
-					if(has_mobile)
-						pix=BusyMobilePixmap;
+					if (has_mobile)
+						pix = icons->loadIcon("busy_m");
 					else
-						gg_xpm = (char **)gg_busy_xpm;
+						pix = icons->loadIcon("busy");
 		    			break;
 				case GG_STATUS_BUSY_DESCR:
-					if(has_mobile)
-						pix=BusyDescMobilePixmap;
+					if (has_mobile)
+						pix = icons->loadIcon("busy_d_m");
 					else
-					gg_xpm = (char **)gg_busydescr_xpm;
+						pix = icons->loadIcon("busy_d");
 		    			break;
 				case GG_STATUS_BLOCKED:
-					gg_xpm = (char **)gg_stop_xpm;
+					pix = icons->loadIcon("blocking");
 					break;
 				};
-			if(pix!=NULL)
+			if (pix != NULL)
 				insertItem(*pix, user.altnick);
 			else
-				insertItem(QPixmap((const char **)gg_xpm), user.altnick);			
+				insertItem(*icons->loadIcon("online"), user.altnick);			
 		};
 	};	
 	// Dodajemy niewidocznych
@@ -244,53 +233,54 @@ void UserBox::refresh()
 		}
 		else
 		{
+			QPixmap *pix = NULL;
 			switch (user.status) {
 				case GG_STATUS_INVISIBLE_DESCR:
-		    			gg_xpm = (char **)gg_invidescr_xpm;
+		    			pix = icons->loadIcon("invisible_d");
     		    			break;
 				case GG_STATUS_INVISIBLE2:
-					gg_xpm = (char **)gg_invi_xpm;
+					pix = icons->loadIcon("invisible");
 		    			break;
 				};
-			insertItem(QPixmap((const char **)gg_xpm), user.altnick);			
+			insertItem(*pix, user.altnick);			
 		};
 	};	
 	// Dodajemy nieaktywnych
 	for (i = 0; i < n_users.count(); i++)
 	{
 		UserListElement &user = userlist.byAltNick(n_users[i]);
-		bool has_mobile=(user.mobile!="");
+		bool has_mobile = user.mobile.length();
 		if (pending.pendingMsgs(user.uin))
 		{
 	    		insertItem(QPixmap((const char **)gg_msg_xpm), user.altnick);
 		}
 		else
 		{
-			QPixmap* pix=NULL;
+			QPixmap *pix = NULL;
 			switch (user.status) {
 				case GG_STATUS_NOT_AVAIL_DESCR:
-					if(has_mobile)
-						pix=OfflineDescMobilePixmap;
+					if (has_mobile)
+						pix = icons->loadIcon("offline_d_m");
 					else
-			    			gg_xpm = (char **)gg_inactdescr_xpm;			
+			    			pix = icons->loadIcon("offline_d");			
     		    			break;
 				default:
-					if(has_mobile)
-						pix=OfflineMobilePixmap;
+					if (has_mobile)
+						pix = icons->loadIcon("offline_m");
 					else
-		    				gg_xpm = (char **)gg_inact_xpm;			
+		    				pix = icons->loadIcon("offline");			
 		    			break;
 				};
-			if(pix!=NULL)
+			if (pix != NULL)
 				insertItem(*pix, user.altnick);
 			else
-				insertItem(QPixmap((const char **)gg_xpm), user.altnick);			
+				insertItem(*icons->loadIcon("online"), user.altnick);			
 		};
 	};
 	// Dodajemy uzytkownikow bez numerow GG
 	for (i = 0; i < b_users.count(); i++) {
 		UserListElement &user = userlist.byAltNick(b_users[i]);
-		insertItem(QPixmap((const char **)cellphone), user.altnick);
+		insertItem(*icons->loadIcon("mobile"), user.altnick);
 		}
 	// Przywracamy zaznaczenie wczesniej zaznaczonych uzytkownikow
 	for (i = 0; i < s_users.count(); i++)
@@ -318,9 +308,9 @@ void UserBox::renameUser(const QString &oldaltnick, const QString &newaltnick)
 
 void UserBox::changeAllToInactive()
 {
-	QPixmap qp_inact((const char **)gg_inact_xpm);
+	QPixmap *qp_inact = icons->loadIcon("offline");
 	for(int i=0; i<count(); i++)
-		changeItem(qp_inact,item(i)->text(),i);
+		changeItem(*qp_inact,item(i)->text(),i);
 };
 
 /////////////////////////////////////////////////////////
@@ -350,10 +340,3 @@ void UserBox::all_renameUser(const QString &oldaltnick, const QString &newaltnic
 };
 
 QValueList<UserBox *> UserBox::UserBoxes;
-
-QPixmap* UserBox::OnlineMobilePixmap=NULL;
-QPixmap* UserBox::OnlineDescMobilePixmap=NULL;
-QPixmap* UserBox::BusyMobilePixmap=NULL;
-QPixmap* UserBox::BusyDescMobilePixmap=NULL;
-QPixmap* UserBox::OfflineMobilePixmap=NULL;
-QPixmap* UserBox::OfflineDescMobilePixmap=NULL;

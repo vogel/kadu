@@ -302,14 +302,14 @@ void Chat::setTitle() {
 			title.append(user.altnick);
 			j = statusGGToStatusNr(user.status);
 			if (!k)
-				setIcon(QPixmap((const char**)gg_xpm[statusGGToStatusNr(user.status)]));
+				setIcon(*icons->loadIcon(gg_icons[statusGGToStatusNr(user.status)]));
 			else
-				setIcon(QPixmap((const char**)gg_act_xpm));
+				setIcon(*icons->loadIcon("online"));
 			}
 		else {
 			title.append(QString::number(uins[k]));
 			j = 0;
-			setIcon(QPixmap((const char **)gg_inact_xpm));
+			setIcon(*icons->loadIcon("offline"));
 			}
 		title.append(" (");
 		if (j == 1 || j == 3 || j == 5 || j == 7)

@@ -276,7 +276,7 @@ struct chats {
     };
 };
 
-extern const char **gg_xpm[];
+extern QString gg_icons[];
 //extern KApplication *a;
 extern QApplication *a;
 extern Kadu *kadu;

@@ -18,7 +18,6 @@
 #include <qpixmap.h>
 #include <qcombobox.h>
 #include <qstring.h>
-#include <qpixmap.h>
 #include <qlineedit.h>
 #include <qpopupmenu.h>
 #include <qtextstream.h>
@@ -168,9 +167,9 @@ UpdatesClass *uc;
 
 const char *gg_servers[7] = {"217.17.41.82", "217.17.41.83", "217.17.41.84", "217.17.41.85",
 	"217.17.41.86", "217.17.41.87", "217.17.41.88"};
+QString gg_icons[] = {"online", "online_d", "busy", "busy_d", "invisible", "invisible_d",
+	"offline", "offline_d", "blocking"};
 
-const char **gg_xpm[] = {gg_act_xpm, gg_actdescr_xpm, gg_busy_xpm, gg_busydescr_xpm,
-	gg_invi_xpm, gg_invidescr_xpm, gg_inact_xpm, gg_inactdescr_xpm, gg_stop_xpm};
 enum {
 	KADU_CMD_SEND_MESSAGE,
 	KADU_CMD_OPEN_CHAT,
@@ -256,7 +255,7 @@ void deletePendingMessage(int nr) {
 	if (!pending.pendingMsgs()) {
 		kdebug("pendingMessage is false\n");
 		if (trayicon)
-			trayicon->setType((char **)gg_xpm[statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]);
+			trayicon->setType(*icons->loadIcon(gg_icons[statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]));
 		}
 }
 
@@ -497,8 +496,9 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		qBlue(statuslabeltxt->paletteBackgroundColor().rgb()) - 20));
 
 	statuslabel = new MyLabel(centralFrame, "statuslabel");
-	statuslabel->setPixmap(QPixmap((const char**)gg_inact_xpm));
-	statuslabel->setFixedWidth(QPixmap((const char**)gg_inact_xpm).width());
+	QPixmap *pix = icons->loadIcon("offline");
+	statuslabel->setPixmap(*pix);
+	statuslabel->setFixedWidth(pix->width());
 
 	/* guess what */
 	createMenu();
@@ -733,6 +733,7 @@ void Kadu::removeUser(QStringList &users, bool permanently = false)
 
 void Kadu::blink() {
 	int i;
+	QPixmap *pix;
 
 	if (!doBlink && socket_active) {
 		setCurrentStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
@@ -740,23 +741,26 @@ void Kadu::blink() {
 		}
 	else
 		if (!doBlink && !socket_active) {
-	    		statuslabel->setPixmap(QPixmap((const char**)gg_inact_xpm) );
+			pix = icons->loadIcon("offline");
+	    		statuslabel->setPixmap(*pix);
 	    		if (trayicon)
-				trayicon->setType((char **)gg_inact_xpm);
+				trayicon->setType(*pix);
 	    		return;
 	    		}
 
 	if (blinkOn) {
-		statuslabel->setPixmap(QPixmap((const char**)gg_inact_xpm) );
+		pix = icons->loadIcon("offline");
+		statuslabel->setPixmap(*pix);
 		if (trayicon)
-			trayicon->setType((char **)gg_inact_xpm);
+			trayicon->setType(*pix);
 		blinkOn = false;
 		}
 	else {
 		i = statusGGToStatusNr(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
-		statuslabel->setPixmap(QPixmap((const char **)gg_xpm[i]));
+		pix = icons->loadIcon(gg_icons[i]);
+		statuslabel->setPixmap(*pix);
 		if (trayicon)
-			trayicon->setType((char **)gg_xpm[i]);
+			trayicon->setType(*pix);
 		blinkOn = true;
 		}
 
@@ -1362,10 +1366,11 @@ void Kadu::setCurrentStatus(int status) {
 	statuslabeltxt->setText(i18n(statustext[statusnr]));
 	statusppm->setItemEnabled(7, statusnr != 6);
 	dockppm->setItemEnabled(7, statusnr != 6);
-	statuslabel->setPixmap(QPixmap((const char**)gg_xpm[statusnr]));
-	setIcon(QPixmap((const char**)gg_xpm[statusnr]));
+	QPixmap *pix = icons->loadIcon(gg_icons[statusnr]);
+	statuslabel->setPixmap(*pix);
+	setIcon(*pix);
 	if (!pending.pendingMsgs() && trayicon)
-		trayicon->setType((char **)gg_xpm[statusnr]);
+		trayicon->setType(*pix);
 }
 
 void Kadu::slotShowStatusMenu() {
@@ -1812,6 +1817,7 @@ void Kadu::pingNetwork(void) {
 
 void Kadu::disconnectNetwork() {
 	int i;
+	QPixmap *pix;
 
 	doBlink = false;
 	kdebug("Kadu::disconnectNetwork(): calling offline routines\n");
@@ -1887,10 +1893,12 @@ void Kadu::disconnectNetwork() {
 	UserBox::all_refresh();
 
 	socket_active = false;
-	statuslabel->setPixmap(QPixmap((const char**)gg_inact_xpm));
+	
+	pix = icons->loadIcon("offline");
+	statuslabel->setPixmap(*pix);
 	if (trayicon)
-		trayicon->setType((char **)gg_inact_xpm);
-	setIcon(QPixmap((const char**)gg_inact_xpm));
+		trayicon->setType(*pix);
+	setIcon(*pix);
 
 }
 
@@ -1938,7 +1946,7 @@ void Kadu::createMenu() {
 	ppm->insertItem(find, i18n("&Search for users"), KADU_CMD_SEARCH);
 	ppm->insertItem(i18n("I&mport userlist"), KADU_CMD_IMPORT_USERLIST);
 	ppm->insertItem(i18n("E&xport userlist"), KADU_CMD_EXPORT_USERLIST);
-	ppm->insertItem(QPixmap((const char **)gg_act_xpm),i18n("&Add user"), KADU_CMD_ADD_USER);
+	ppm->insertItem(*icons->loadIcon("online"), i18n("&Add user"), KADU_CMD_ADD_USER);
 	ppm->insertItem(i18n("Send SMS"), KADU_CMD_MAINMENU_SMS);
 	ppm->insertSeparator();	
 	ppm->insertItem(i18n("H&elp"), KADU_CMD_HELP);	
@@ -1959,15 +1967,15 @@ void Kadu::statusMenuAboutToHide() {
 
 void Kadu::createStatusPopupMenu() {
 
-	QPixmap pixmap;
+	QPixmap *pix;
 	QIconSet icon;
 
 	statusppm = new QPopupMenu(this, "statusppm");
 	dockppm = new QPopupMenu(this, "dockppm");
 
 	for (int i=0; i<8; i++) {
-		pixmap = QPixmap((const char **)gg_xpm[i]);
-		icon = QIconSet(pixmap);
+		pix = icons->loadIcon(gg_icons[i]);
+		icon = QIconSet(*pix);
 		statusppm->insertItem(icon, i18n((const char *)statustext[i]), i);
 		dockppm->insertItem(icon, i18n((const char *)statustext[i]), i);
 		}

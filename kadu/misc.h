@@ -66,4 +66,24 @@ class ChooseDescription : public QDialog {
 
 };
 
+struct iconhandle {
+	QString name;
+	QPixmap pixmap;
+};
+
+class IconsManager {
+	public:
+		IconsManager();
+		IconsManager(QString &dir);
+		void setDirectory(QString &dir);
+		QPixmap *loadIcon(QString name);
+		void clear();
+
+	private:
+		QValueList<iconhandle> icons;
+		QString directory;
+};
+
+extern IconsManager *icons;
+
 #endif

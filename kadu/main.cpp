@@ -45,9 +45,12 @@ int main(int argc, char *argv[])
 
 	a = new QApplication(argc, argv);
 	a->setDefaultCodec( QTextCodec::codecForName("ISO 8859-2"));
+	QString dir;
+	dir = QString(DATADIR) + "/apps/kadu/icons";
+	icons = new IconsManager(dir);
 	kadu = new Kadu(0, "Kadu");
-	QPixmap px((const char **)gg_inact_xpm);
-	kadu->setIcon(px);
+	QPixmap *pix = icons->loadIcon("offline");
+	kadu->setIcon(*pix);
 	a->setMainWidget(kadu);
 
 	// pokazanie okna przeniesione do konstruktora z powodu RunDocked

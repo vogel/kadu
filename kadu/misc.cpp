@@ -168,26 +168,26 @@ ChooseDescription::ChooseDescription ( int nr, QWidget * parent, const char * na
 	l_yetlen = new QLabel(" "+QString::number(GG_STATUS_DESCR_MAXSIZE - desc->text().length()),this);
 	connect(desc, SIGNAL(textChanged(const QString&)), this, SLOT(updateYetLen(const QString&)));
 
-	char **gg_xpm;
+	QPixmap *pix;
 	switch (nr) {
 		case 1:
-			gg_xpm = (char **)gg_actdescr_xpm;
+			pix = icons->loadIcon("online_d");
 			break;
 		case 3:
-			gg_xpm = (char **)gg_busydescr_xpm;
+			pix = icons->loadIcon("busy_d");
 			break;
 		case 5:
-			gg_xpm = (char **)gg_invidescr_xpm;
+			pix = icons->loadIcon("invisible_d");
 			break;
 		case 7:
-			gg_xpm = (char **)gg_inactdescr_xpm;
+			pix = icons->loadIcon("offline_d");
 			break;
 		default:
-			gg_xpm = (char **)gg_inactdescr_xpm;
+			pix = icons->loadIcon("offline_d");
 		}
 
-	QPushButton *okbtn = new QPushButton(QIconSet(QPixmap((const char**)gg_xpm)),i18n("&OK"),this);
-	QPushButton *cancelbtn = new QPushButton(i18n("&Cancel"),this);
+	QPushButton *okbtn = new QPushButton(QIconSet(*pix), i18n("&OK"), this);
+	QPushButton *cancelbtn = new QPushButton(i18n("&Cancel"), this);
 	
 
 	QObject::connect(okbtn, SIGNAL(clicked()), this, SLOT(okbtnPressed()));
@@ -219,3 +219,43 @@ void ChooseDescription::cancelbtnPressed() {
 void ChooseDescription::updateYetLen(const QString& text) {
 	l_yetlen->setText(" "+QString::number(GG_STATUS_DESCR_MAXSIZE - text.length()));
 }
+
+IconsManager::IconsManager() {
+}
+
+IconsManager::IconsManager(QString &dir) {
+	directory = dir;
+}
+
+void IconsManager::setDirectory(QString &dir) {
+	directory = dir;
+}
+
+QPixmap *IconsManager::loadIcon(QString name) {
+	int i;
+	QString fname;
+
+	for (i = 0; i < icons.count(); i++)
+		if (icons[i].name == name)
+			break;
+	if (i < icons.count()) {
+		return &icons[i].pixmap;
+		}
+	else {
+		iconhandle icon;
+		icon.name = name;
+		QPixmap p;
+		fname = directory + "/";
+		fname = fname + name + ".png";
+		p.load(fname);
+		icon.pixmap = p;
+		icons.append(icon);
+		return &icons[i].pixmap;
+		}		
+}
+
+void IconsManager::clear() {
+	icons.clear();
+}
+
+IconsManager *icons = NULL;
