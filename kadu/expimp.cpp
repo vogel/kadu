@@ -64,6 +64,7 @@ UserlistImport::UserlistImport(QWidget *parent, const char *name)
 }
 
 void UserlistImport::readUserlist(QTextStream &stream) {
+	kdebugf();
 	UserListElement e;
 	QListViewItem *qlv;
 	QStringList sections, groupnames;
@@ -108,6 +109,7 @@ void UserlistImport::readUserlist(QTextStream &stream) {
 }
 
 void UserlistImport::fromfile() {
+	kdebugf();
 	QString fname = QFileDialog::getOpenFileName("/", QString::null, this);
 	if (fname.length()) {
 		QFile file(fname);
@@ -123,6 +125,7 @@ void UserlistImport::fromfile() {
 }
 
 void UserlistImport::startTransfer() {
+	kdebugf();
 	if (getActualStatus() == GG_STATUS_NOT_AVAIL)
 		return;
 
@@ -149,7 +152,7 @@ void UserlistImport::closeEvent(QCloseEvent * e) {
 void UserlistImport::makeUserlist() {
 	int i;
 	
-	kdebug("UserlistImport::makeUserlist()\n");
+	kdebugf();
 	
 	i = 0;
 	while (i < userlist.count()) {
@@ -179,7 +182,7 @@ void UserlistImport::makeUserlist() {
 void UserlistImport::updateUserlist() {
 	int i;
 	
-	kdebug("UserlistImport::updateUserlist()\n");
+	kdebugf();
 	
 	i = 0;
 	while (i < userlist.count()) {
@@ -207,7 +210,7 @@ void UserlistImport::updateUserlist() {
 
 void UserlistImport::userlistReplyReceivedSlot(char type, char *reply)
 {
-	kdebug("ImportUserlist::userlistReplyReceivedSlot()\n");
+	kdebugf();
 	if (type != GG_USERLIST_GET_REPLY && type != GG_USERLIST_GET_MORE_REPLY)
 		return;
 
@@ -272,6 +275,7 @@ UserlistExport::UserlistExport(QWidget *parent, const char *name)
 }
 
 QString UserlistExport::saveContacts(){
+	kdebugf();
 	QString contacts, tmp;
 	int i = 0;
 	contacts="";
@@ -305,6 +309,7 @@ QString UserlistExport::saveContacts(){
 }
 
 void UserlistExport::startTransfer() {
+	kdebugf();
 	if (getActualStatus() == GG_STATUS_NOT_AVAIL)
 		return;
 
@@ -334,6 +339,7 @@ void UserlistExport::startTransfer() {
 }
 
 void UserlistExport::ExportToFile(void) {
+	kdebugf();
 	QString contacts;
 	sendbtn->setEnabled(false);
 	deletebtn->setEnabled(false);
@@ -363,6 +369,7 @@ void UserlistExport::ExportToFile(void) {
 }
 
 void UserlistExport::clean() {
+	kdebugf();
 	if (getActualStatus() == GG_STATUS_NOT_AVAIL)
 		return;
 
