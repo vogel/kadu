@@ -805,10 +805,8 @@ void ImageWidget::setImage(const QByteArray &image)
 
 void ImageWidget::paintEvent(QPaintEvent *e)
 {
-	kdebug("ImageWidget::paintEvent()\n");
 	if (!Image.isNull()) {
 	        QPainter p(this);
 	        p.drawImage(0,0,Image);
 		}
-	kdebug("ImageWidget::paintEvent(): finished\n");
 };

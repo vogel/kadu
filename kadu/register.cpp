@@ -228,9 +228,13 @@ void Register::gotTokenReceived(struct gg_http *h) {
 	kdebug("Register::gotTokenReceived()\n");
 	struct gg_token *t = (struct gg_token *)h->data;
 	tokenid = cp2unicode((unsigned char *)t->tokenid);
-	QByteArray buf;
-	buf.assign(h->body, h->body_size);
-	buf.detach();
+
+	// prosze tego nie optymalizowac - probowalem na wiele sposobow i segfaultowalo
+	// np. z QByteArray::loadFromData() i QByteArray::detach()
+	QByteArray buf(h->body_size);
+	for (int i = 0; i < h->body_size; i++)
+		buf[i] = h->body[i];
+
 	tokenimage->setImage(buf);
 	setEnabled(true);
 	kdebug("Register::gotTokenReceived(): finished\n");
