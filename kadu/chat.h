@@ -48,7 +48,7 @@ class Chat : public QDialog {
 		void pruneWindow(void);
 
 	public:
-		Chat(UinsList uins, QDialog *parent = 0);
+		Chat(UinsList uins, QWidget *parent = 0);
 		~Chat();
 		void setTitle(void);
 

@@ -33,11 +33,11 @@
 #include "misc.h"
 //
 
-Chat::Chat(UinsList uins, QDialog *parent) : QDialog (parent), uins(uins) {
+Chat::Chat(UinsList uins, QWidget *parent)
+ : QDialog(parent, 0, FALSE, Qt::WDestructiveClose), uins(uins) {
 	int i;
 	struct chats chat;
 
-	setWFlags(Qt::WDestructiveClose);
 	iconsel_ptr = NULL;
 	autosend_enabled = false;
 
@@ -47,11 +47,9 @@ Chat::Chat(UinsList uins, QDialog *parent) : QDialog (parent), uins(uins) {
 	chats.append(chat);
 	index = chats.count() - 1;
 
-	setTitle();
-
 	body = new KTextBrowser(this);
 	if (uins.count() > 1) {
-  	resize(550,400);
+		resize(550,400);
 		userbox = new UserBox(this);
 
 		userbox->setPaletteBackgroundColor(QColor(config.colors.userboxBgR,config.colors.userboxBgG,config.colors.userboxBgB));

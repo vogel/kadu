@@ -748,6 +748,7 @@ int Kadu::openChat(UinsList senders) {
 		Chat *chat;
 		uins = senders;
 		chat = new Chat(uins, 0);
+		chat->setTitle();
 		chat->show();
 		}
 	else {
@@ -778,6 +779,7 @@ void Kadu::commandParser (int command) {
 		case KADU_CMD_SEND_MESSAGE:
 			Message *msg;
 			msg = new Message(userbox->currentText());
+			msg->init();
 			msg->show();
 			break;
 		case KADU_CMD_OPEN_CHAT:
@@ -1000,6 +1002,7 @@ void Kadu::sendMessage(QListBoxItem *item) {
 				if (!stop)
 		    			{
   		    			rmsg = new rMessage(item->text(), i);
+					rmsg->init();
 					rmsg->show();
 					}
 				return;
@@ -1021,6 +1024,7 @@ void Kadu::sendMessage(QListBoxItem *item) {
 		openChat(uins);
 	else {
 		msg = new Message(item->text());
+		msg->init();
 		msg->show();
 		}    
 }
@@ -1637,6 +1641,7 @@ void DockWidget::mousePressEvent(QMouseEvent * e) {
 						rMessage *rmsg;
 						rmsg = new rMessage(
 							userlist.byUin(pending[i].uins[0]).altnick, i);
+						rmsg->init();
 						rmsg->show();
 						}
 					return;

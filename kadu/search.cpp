@@ -207,6 +207,7 @@ void SearchDialog::prepareMessage(QListViewItem *item) {
 		AddButtonClicked();
 	else {
 		msg = new Message(userlist.byUin(atoi(item->text(1).local8Bit())).altnick);
+		msg->init();
 		msg->show();
 		}
 }

@@ -44,18 +44,14 @@ void rMessage::replyMessage(void) {
 }
 
 /* a message! someone loves us! */
-rMessage::rMessage(const QString & nick, int i, QDialog* parent , const char *name) : QDialog (parent, name) {
+rMessage::rMessage(const QString & nick, int i, QWidget *parent, const char *name)
+ : QDialog(parent, name, Qt::WDestructiveClose) {
 	bool sysmsg = false;
 	int j;
 
 	sender = nick;
 	if (sender.compare("System")==0)
 		sysmsg = true;
-
-	setWFlags(Qt::WDestructiveClose);
-
-	resize(345,220);
-	setCaption(i18n("Message from ") + sender);
 
 	lejbel = new QLabel(this);
 	lejbel->setText(i18n("Sender: "));
@@ -140,6 +136,11 @@ rMessage::rMessage(const QString & nick, int i, QDialog* parent , const char *na
 //	grid->addWidget(chatbtn,2,2);
 }
 
+void rMessage::init(void) {
+	resize(345,220);
+	setCaption(i18n("Message from ") + sender);
+}
+
 /* clean up the mess */
 void rMessage::cleanUp(void) {
 	/* should we add some more? */
@@ -157,7 +158,8 @@ void rMessage::openChat(void) {
 }
 
 /* send a message, send me a message */
-Message::Message (const QString & nick, bool tchat, QDialog* parent , const char *name) : QDialog (parent, name) {
+Message::Message (const QString & nick, bool tchat, QWidget *parent, const char *name)
+ : QDialog(parent, name) {
 	QAccel *acc = new QAccel( this );
 	acc->connectItem( acc->insertItem(Key_Return+CTRL), this, SLOT(commitSend()) );
 
@@ -173,9 +175,6 @@ Message::Message (const QString & nick, bool tchat, QDialog* parent , const char
 	acks[index].seq = 0;
 	acks[index].type = 0;
 	acks[index].ptr = NULL;
-
-	resize(355,235);
-	setCaption("Message for " + nicksnd);
 
 	nicknamelab = new QLabel(this);
 	nicknamelab->setText("Recipient");
@@ -256,6 +255,11 @@ Message::Message (const QString & nick, bool tchat, QDialog* parent , const char
 	grid->addRowSpacing(2, 20);
 
 	body->setFocus();
+}
+
+void Message::init(void) {
+	resize(355,235);
+	setCaption("Message for " + nicksnd);
 }
 
 /* the actual send */

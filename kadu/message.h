@@ -35,8 +35,9 @@ class Message : public QDialog {
 		QRadioButton *b_chat;
 
 	public:
-    		Message(const QString &, bool tchat=false, QDialog* parent=0, const char *name=0);
+    		Message(const QString &, bool tchat=false, QWidget *parent=0, const char *name=0);
 		~Message();
+		void init(void);
 
 	public slots:
 		void gotAck(void);
@@ -58,7 +59,8 @@ class rMessage : public QDialog {
 		bool tchat;
 	
 	public:
-		rMessage(const QString &, int, QDialog *parent=0, const char *name=0);
+		rMessage(const QString &, int, QWidget *parent=0, const char *name=0);
+		void init(void);
 
 	public slots:
 		void replyMessage(void);

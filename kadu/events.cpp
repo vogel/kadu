@@ -129,6 +129,7 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 	if (senders[0] == config.uin) {
 		rMessage *rmsg;
 		rmsg = new rMessage("System", i);
+		rmsg->init();
 		rmsg->show();
 		}
 }
