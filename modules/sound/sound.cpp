@@ -270,18 +270,18 @@ int SoundManager::timeAfterLastSound()
 SoundSlots::SoundSlots()
 {
 	kdebugf();
-	QIconSet *mu;
+	QIconSet mu;
 	sound_manager->setMute(!config_file.readBoolEntry("Sounds", "PlaySound"));
 	if (sound_manager->isMuted()) {
 		muteitem= kadu->mainMenu()->insertItem(icons_manager.loadIcon("Mute"), tr("Unmute sounds"), this, SLOT(muteUnmuteSounds()), 0, -1, 3);
-		mu= new QIconSet(icons_manager.loadIcon("Mute"));
+		mu= QIconSet(icons_manager.loadIcon("Mute"));
 	}
 	else {
 		muteitem= kadu->mainMenu()->insertItem(icons_manager.loadIcon("Unmute"), tr("Mute sounds"), this, SLOT(muteUnmuteSounds()), 0, -1, 3);
-		mu= new QIconSet(icons_manager.loadIcon("Unmute"));
+		mu= QIconSet(icons_manager.loadIcon("Unmute"));
 	}
 
-	ToolBar::registerButton(*mu, tr("Mute sounds"), this, SLOT(muteUnmuteSounds()), 0, "mute");
+	ToolBar::registerButton(mu, tr("Mute sounds"), this, SLOT(muteUnmuteSounds()), 0, "mute");
 }
 
 SoundSlots::~SoundSlots()
