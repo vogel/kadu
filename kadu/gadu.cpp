@@ -13,6 +13,7 @@
 #include "events.h"
 #include "kadu.h"
 #include "chat.h"
+#include "ignore.h"
 
 #include <netinet/in.h>
 
