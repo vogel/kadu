@@ -18,7 +18,7 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 #!/bin/bash
-# $Id: Instaluj,v 1.33 2004/05/10 13:24:45 romek Exp $
+# $Id: Instaluj,v 1.34 2004/06/18 22:12:00 romek Exp $
 # KaduInstaller - Copyright (C) 2004 Sad Mephisto <sad@antisocial.com>
 
 export LC_ALL=pl_PL
@@ -70,31 +70,23 @@ statyczne()
 {
 	rm -fr log_selectedmodule
 	dialog --separate-output --checklist "Wybierz modu³y do zainstalowania" 0 75 0 \
-    		encryption "Obs³uga szyfrowania SSL" on \
-		docking "Modu³ obs³ugi ikony w tray'u" on \
-		x11_docking "Modu³ dokuj±cy ikonê w tray'u u¿ywaj±cy XLib" on \
 		wmaker_docking "Obs³uga dokowania ikony dla WindowMakera" 0 \
     		speech "Obs³uga syntezatora mowy" on \
-    		sound "Ogólne wsparcie dla d¼wiêku" on \
-    		ext_sound "Obs³uga d¿wiêku przez zewnêtrzny program" on \
     		dsp_sound "Wsparcie DSP dla d¼wiêku" 0 \
     		arts_sound "Wsparcie aRts! dla d¼wiêku" on \
     		esd_sound "Wsparcie ESD dla d¼wiêku" 0 \
     		nas_sound "Wsparcie Network Audio System dla d¼wiêku" 0 \
     		echo "Przyk³adowy modu³ Echo" 0 \
-		autoaway "Obs³uga automatycznej zmiany statusu" on \
     		autoresponder "Modu³ Autoodpowiedzi" on \
-		voice "Rozmowy g³osowe" on \
-		sms "Wsparcie dla SMS" on \
-		default_sms "Domy¶lne bramki SMS (Plus,Era,Idea)" on \
 		tcl_scripting "Modu³ TCL - autopobór z http://" 0 \
 		xmms "Pobiera opisy z XMMS - autopobór z http://" 0 \
 		amarok "Pobiera opisy z Amarok - autopobór z http://" 0 \
 		mail "Obs³uga skrzynek e-mail - autopobór z http://" 0 \
-		filedesc "Pobiera opisy z pliku - autopobór z http://" 0  2>log_selectedmodule
+		filedesc "Pobiera opisy z pliku - autopobór z http://" 0 \
+		spellchecker "Zaznacza b³êdy - autopobór z http://" 0 2>log_selectedmodule
 
 		rm -f .config
-	MODULY="encryption docking x11_docking wmaker_docking speech sound ext_sound dsp_sound arts_sound esd_sound nas_sound echo autoaway autoresponder voice sms default_sms tcl_scripting xmms amarok filedesc mail"
+	MODULY="wmaker_docking speech dsp_sound arts_sound esd_sound nas_sound echo autoresponder tcl_scripting xmms amarok filedesc mail spellchecker"
 	for MODUL in $MODULY; do
 		if [[ `cat log_selectedmodule |grep $MODUL` != "" ]]; then
 			echo "module_$MODUL=y" >> .config
@@ -102,36 +94,38 @@ statyczne()
 			echo "module_$MODUL=n" >> .config
 		fi;
 	done;
+echo "module_docking=y" >> .config
+echo "module_x11_docking=y" >> .config
+echo "module_encryption=y" >> .config
+echo "module_voice=y" >> .config
+echo "module_sound=y" >> .config
+echo "module_ext_sound=y" >> .config
+echo "module_sms=y" >> .config
+echo "module_default_sms=y" >> .config
+echo "module_autoaway=y" >> .config
+
 }
 dynamiczne()
 {
 	rm -fr log_selectedmodule
 	dialog --separate-output --checklist "Wybierz modu³y do zainstalowania" 0 75 0 \
-    		encryption "Obs³uga szyfrowania SSL" on \
-		docking "Modu³ obs³ugi ikony w tray'u" on \
-		x11_docking "Modu³ dokuj±cy ikonê w tray'u u¿ywaj±cy XLib" on \
 		wmaker_docking "Obs³uga dokowania ikony dla WindowMakera" 0 \
     		speech "Obs³uga syntezatora mowy" on \
-    		sound "Ogólne wsparcie dla d¼wiêku" on \
-    		ext_sound "Obs³uga d¿wiêku przez zewnêtrzny program" on \
     		dsp_sound "Wsparcie DSP dla d¼wiêku" 0 \
     		arts_sound "Wsparcie aRts! dla d¼wiêku" on \
     		esd_sound "Wsparcie ESD dla d¼wiêku" 0 \
     		nas_sound "Wsparcie Network Audio System dla d¼wiêku" 0 \
     		echo "Przyk³adowy modu³ Echo" 0 \
-		autoaway "Obs³uga automatycznej zmiany statusu" on \
     		autoresponder "Modu³ Autoodpowiedzi" on \
-		voice "Rozmowy g³osowe" on \
-		sms "Wsparcie dla SMS" on \
-		default_sms "Domy¶lne bramki SMS (Plus.Era,Idea)" on \
 		tcl_scripting "Modu³ TCL - autopobór z http://" 0 \
 		xmms "Pobiera opisy z XMMS - autopobór z http://" 0 \
 		amarok "Pobiera opisy z Amarok - autopobór z http://" 0 \
 		mail "Obs³uga skrzynek e-mail - autopobór z http://" 0 \
-		filedesc "Pobiera opisy z pliku - autopobór z http://" 0  2>log_selectedmodule
+		filedesc "Pobiera opisy z pliku - autopobór z http://" 0 \
+		spellchecker "Zaznacza b³êdy - autopobór z http://" 0 2>log_selectedmodule
 
 		rm -f .config
-	MODULY="encryption docking x11_docking wmaker_docking speech sound ext_sound dsp_sound arts_sound esd_sound nas_sound echo autoaway autoresponder voice sms default_sms tcl_scripting xmms amarok filedesc mail"
+	MODULY="wmaker_docking speech dsp_sound arts_sound esd_sound nas_sound echo autoresponder tcl_scripting xmms amarok filedesc mail spellchecker"
 	for MODUL in $MODULY; do
 		if [[ `cat log_selectedmodule |grep $MODUL` != "" ]]; then
 			echo "module_$MODUL=m" >> .config
@@ -139,6 +133,16 @@ dynamiczne()
 			echo "module_$MODUL=n" >> .config
 		fi;
 	done;
+echo "module_docking=y" >> .config
+echo "module_x11_docking=y" >> .config
+echo "module_encryption=y" >> .config
+echo "module_voice=y" >> .config
+echo "module_sound=y" >> .config
+echo "module_ext_sound=y" >> .config
+echo "module_sms=y" >> .config
+echo "module_default_sms=y" >> .config
+echo "module_autoaway=y" >> .config
+
 }
 
 # Menu z opcjami uruchomienia ./configure
