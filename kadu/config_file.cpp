@@ -58,7 +58,7 @@ void ConfigFile::read()
 	kdebugf2();
 }
 
-void ConfigFile::write(const QString &f)
+void ConfigFile::write(const QString &f) const
 {
 	kdebugf();
 	QFile file;
@@ -97,12 +97,12 @@ QStringList ConfigFile::getGroupList() const
 	return QStringList(groups.keys());
 }
 
-void ConfigFile::sync()
+void ConfigFile::sync() const
 {
 	write();
 }
 
-void ConfigFile::saveTo(const QString &f)
+void ConfigFile::saveTo(const QString &f) const
 {
 	write(f);
 }

@@ -16,7 +16,7 @@ class ConfigFile {
 
 	private:
 		void read();
-		void write(const QString &f=QString::null);
+		void write(const QString &f=QString::null) const;
 		bool changeEntry(const QString &group, const QString &name, const QString &value);
 		QString getEntry(const QString &group, const QString &name, bool *ok = 0) const;
 
@@ -26,11 +26,29 @@ class ConfigFile {
 		mutable QMap<QString, QString> *activeGroup;
 
 	public:
+		/**
+			otwiera plik filename i go wczytuje
+		**/
 		ConfigFile(const QString &filename);
-		void sync();
-		void saveTo(const QString &);
 		
+		/**
+			zapisuje na dysk zawarto¶æ konfiguracji
+		**/
+		void sync() const;
+		
+		/**
+			zapisuje do wybranego pliku kopiê konfiguracji
+		**/
+		void saveTo(const QString &filename) const;
+		
+		/**
+			zwraca ca³± sekcjê "name"
+		**/
 		QMap<QString, QString>& getGroupSection(const QString& name);
+		
+		/**
+			zwraca listê sekcji
+		**/
 		QStringList getGroupList() const;
 
 		void writeEntry(const QString &group,const QString &name, const QString &value);
