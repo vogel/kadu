@@ -233,7 +233,7 @@ void AutoAwaySlots::onCreateConfigDialog()
 	cb_defstatus->clear();
 	int i;
 	for (i = 0;i < 7; i++)
-		cb_defstatus->insertItem(tr(__c2q(statustext[i])));
+		cb_defstatus->insertItem(qApp->translate("@default", statustext[i]));
 	i=0;	
 	while (i<7 && statusnr !=gg_statuses[i])
 		i++;

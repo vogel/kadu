@@ -1385,7 +1385,7 @@ void Kadu::setCurrentStatus(int status) {
 	statusppm->setItemChecked(statusnr, true);
 	dockppm->setItemChecked(statusnr, true);	
 
-	statuslabeltxt->setText(tr(statustext[statusnr]));
+	statuslabeltxt->setText(qApp->translate("@default", statustext[statusnr]));
 	statusppm->setItemEnabled(7, statusnr != 6);
 	dockppm->setItemEnabled(7, statusnr != 6);
 	QPixmap *pix = icons->loadIcon(gg_icons[statusnr]);
@@ -1843,8 +1843,8 @@ void Kadu::createStatusPopupMenu() {
 	for (int i=0; i<8; i++) {
 		pix = icons->loadIcon(gg_icons[i]);
 		icon = QIconSet(*pix);
-		statusppm->insertItem(icon, tr((const char *)statustext[i]), i);
-		dockppm->insertItem(icon, tr((const char *)statustext[i]), i);
+		statusppm->insertItem(icon, qApp->translate("@default", statustext[i]), i);
+		dockppm->insertItem(icon, qApp->translate("@default", statustext[i]), i);
 		}
 
 	statusppm->insertSeparator();

@@ -1,3 +1,4 @@
+#include <qapplication.h>
 #include <qpushbutton.h>
 #include <qlayout.h>
 #include <qstring.h>
@@ -376,9 +377,9 @@ QString parse_symbols(QString s, int i, UserListElement &ule, bool escape) {
 					break;
 				j=statusGGToStatusNr(ule.status);
 				if (j == 1 || j == 3 || j == 5 || j == 7)
-					r+=QT_TR_NOOP(statustext[j-1]);
+					r += qApp->translate("@default", statustext[j-1]);
 				else
-					r+=QT_TR_NOOP(statustext[j]);
+					r += qApp->translate("@default", statustext[j]);
 				break;
 			case 'd':
 				i++;

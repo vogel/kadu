@@ -38,10 +38,11 @@ int main(int argc, char *argv[])
 	a = new QApplication(argc, argv);
 
 	// ladowanie tlumaczenia
+	QTranslator qt_qm(0);
+	qt_qm.load(QString(DATADIR) + QString("/locale/qt_") + QTextCodec::locale(), ".");
+	a->installTranslator(&qt_qm);
 	QTranslator kadu_qm(0);
-	QString qmname = QString(DATADIR) + QString("/locale/kadu_") + QTextCodec::locale();
-	fprintf(stderr, "Localization file: %s\n", qmname.latin1());
-	kadu_qm.load(qmname, ".");
+	kadu_qm.load(QString(DATADIR) + QString("/locale/kadu_") + QTextCodec::locale(), ".");
 	a->installTranslator(&kadu_qm);
 
 	QString dir;
