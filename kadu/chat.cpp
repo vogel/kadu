@@ -628,6 +628,7 @@ IconSelector::IconSelector(QWidget *parent, const char *name, Chat * caller) : Q
 		IconSelectorButton* btn = new IconSelectorButton(this,emoticons.emoticonString(i));
 		btn->setPixmap(QPixmap(emoticons.emoticonPicPath(i)));
 		btn->setAutoRaise(true);
+		QToolTip::add(btn, emoticons.emoticonString(i));
 		btn_width=btn->sizeHint().width();
 		grid->addWidget(btn, i/selector_width, i%selector_width);
 		connect(btn,SIGNAL(clicked(const QString&)),this,SLOT(iconClicked(const QString&)));
