@@ -10,13 +10,15 @@
 #include <qlayout.h>
 #include <qpushbutton.h>
 #include <qmessagebox.h>
+#include <qfile.h>
+#include <qapplication.h>
+#include <qtooltip.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <pwd.h>
-#include <qfile.h>
 
-#include "kadu.h"
+#include "misc.h"
 #include "config_file.h"
 #include "debug.h"
 #include "register.h"
@@ -53,7 +55,7 @@ void createConfig() {
 //	config_file.writeEntry("Password", pwHash(config.password));
 	config_file.sync();
 
-	kadu->setCaption(QString("Kadu: %1").arg(config_file.readNumEntry("General","UIN")));
+	qApp->mainWidget()->setCaption(QString("Kadu: %1").arg(config_file.readNumEntry("General","UIN")));
 
 	kdebug("createConfig(): Config file created\n");
 }
@@ -162,10 +164,10 @@ void Register::closeEvent(QCloseEvent *e) {
 void Register::createSocketNotifiers() {
 	kdebug("Register::createSocketNotifiers()\n");
 
-	snr = new QSocketNotifier(h->fd, QSocketNotifier::Read, kadu);
+	snr = new QSocketNotifier(h->fd, QSocketNotifier::Read, qApp->mainWidget());
 	QObject::connect(snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
 
-	snw = new QSocketNotifier(h->fd, QSocketNotifier::Write, kadu);
+	snw = new QSocketNotifier(h->fd, QSocketNotifier::Write, qApp->mainWidget());
 	QObject::connect(snw, SIGNAL(activated(int)), this, SLOT(dataSent()));
 }
 
@@ -345,10 +347,10 @@ void Unregister::closeEvent(QCloseEvent *e) {
 void Unregister::createSocketNotifiers() {
 	kdebug("Unregister::createSocketNotifiers()\n");
 
-	snr = new QSocketNotifier(h->fd, QSocketNotifier::Read, kadu);
+	snr = new QSocketNotifier(h->fd, QSocketNotifier::Read, qApp->mainWidget());
 	QObject::connect(snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
 
-	snw = new QSocketNotifier(h->fd, QSocketNotifier::Write, kadu);
+	snw = new QSocketNotifier(h->fd, QSocketNotifier::Write, qApp->mainWidget());
 	QObject::connect(snw, SIGNAL(activated(int)), this, SLOT(dataSent()));
 }
 
@@ -439,7 +441,7 @@ void Unregister::deleteConfig() {
 	QFile::remove(ggPath("kadu.conf"));
 	config_file.writeEntry("General","UIN",0);
 
-	kadu->setCaption(tr("No user"));
+	qApp->mainWidget()->setCaption(tr("No user"));
 
 	kdebug("Unregister::deleteConfig(): Config file deleted\n");
 }

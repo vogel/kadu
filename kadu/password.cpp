@@ -3,7 +3,6 @@
 #include <qmessagebox.h>
 
 #include "misc.h"
-#include "kadu.h"
 #include "config_file.h"
 #include "config_dialog.h"
 #include "debug.h"
@@ -27,12 +26,27 @@ remindPassword::~remindPassword() {
 
 void remindPassword::start() {
 	kdebug("remindPassword::start()\n");
-	if (!(h = gg_remind_passwd(config_file.readNumEntry("General","UIN"), 1))) {
+
+	TokenDialog *tokendialog = new TokenDialog();
+	if (tokendialog->exec() != QDialog::Accepted) {
+		delete tokendialog;
+		return;
+		}
+	QString Tokenid, Tokenval;
+	tokendialog->getToken(Tokenid, Tokenval);
+	delete tokendialog;
+
+	char *tokenid, *tokenval;
+	tokenid = strdup(unicode2cp(Tokenid).data());
+	tokenval = strdup(unicode2cp(Tokenval).data());
+	h = gg_remind_passwd2(config_file.readNumEntry("General","UIN"), tokenid, tokenval, 1);
+	free(tokenid);
+	free(tokenval);
+	if (!h) {
 		showErrorMessageBox();
 		deleteLater();
 		return;
 		}
-
 	createSocketNotifiers();
 }
 
@@ -45,10 +59,10 @@ void remindPassword::showErrorMessageBox() {
 void remindPassword::createSocketNotifiers() {
 	kdebug("remindPassword::createSocketNotifiers()\n");
 
-	snr = new QSocketNotifier(h->fd, QSocketNotifier::Read, kadu);
+	snr = new QSocketNotifier(h->fd, QSocketNotifier::Read, qApp->mainWidget());
 	QObject::connect(snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
 	
-	snw = new QSocketNotifier(h->fd, QSocketNotifier::Write, kadu);
+	snw = new QSocketNotifier(h->fd, QSocketNotifier::Write, qApp->mainWidget());
 	QObject::connect(snw, SIGNAL(activated(int)), this, SLOT(dataSent()));
 }
 
@@ -214,10 +228,10 @@ void changePassword::start() {
 void changePassword::createSocketNotifiers() {
 	kdebug("changePassword::createSocketNotifiers()\n");
 
-	snr = new QSocketNotifier(h->fd, QSocketNotifier::Read, kadu);
+	snr = new QSocketNotifier(h->fd, QSocketNotifier::Read, qApp->mainWidget());
 	QObject::connect(snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
 	
-	snw = new QSocketNotifier(h->fd, QSocketNotifier::Write, kadu);
+	snw = new QSocketNotifier(h->fd, QSocketNotifier::Write, qApp->mainWidget());
 	QObject::connect(snw, SIGNAL(activated(int)), this, SLOT(dataSent()));
 }
 
