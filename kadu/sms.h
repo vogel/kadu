@@ -1,12 +1,4 @@
 /***************************************************************************
-                            sms.h  -  description
-                             -------------------
-    begin                : Sun Dec 2 2001
-    copyright            : (C) 2001 by tomee
-    email                : tomee@cpi.pl
- ***************************************************************************/
-
-/***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -21,6 +13,7 @@
 #include <qdialog.h>
 #include <qmultilineedit.h>
 #include <qlineedit.h>
+#include <qcombobox.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include <qprocess.h>
@@ -30,17 +23,19 @@ class Sms : public QDialog {
 	Q_OBJECT
 	
 	public:
-		Sms(unsigned int gsmno = 0, const QString & = "sms", QDialog* parent=0);
+		Sms(const QString& altnick, QDialog* parent=0);
 
 	private:
 		QMultiLineEdit *body;
 		QLineEdit *recipient;
+		QComboBox* list;
 		QLabel *smslen;
 		QPushButton *b_send;
 		QProcess *smsProcess;
 
 	private slots:
 		void updateRecipient(const QString &);
+		void updateList(const QString& newnumber);
 		int sendSms();
 		void updateCounter();
 		void smsSigHandler();

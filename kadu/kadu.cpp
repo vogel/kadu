@@ -1,12 +1,5 @@
 /***************************************************************************
-                          kadu.cpp  -  description
-                             -------------------
-    begin                : pia lip 06 00:16:52 CEST 2002
-    copyright            : (C) 2002 by tomee, chilek, adrian
-    email                : tomee@cpi.pl, chilek@chilan.com, adrians@aska.com.pl
- ***************************************************************************/
-
-/*                                                                         *
+ *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
@@ -961,7 +954,7 @@ void Kadu::commandParser (int command) {
 			break;
 		case KADU_CMD_SMS:
 			Sms *sms;
-			sms = new Sms(0, userbox->currentText(), 0);
+			sms = new Sms(userbox->currentText(), 0);
 			sms->show();
 			break;
 		case KADU_CMD_REMIND_PASSWORD:
@@ -1062,6 +1055,8 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 	pm->insertItem(msg, i18n("Send message"), KADU_CMD_SEND_MESSAGE);
 	pm->insertItem(i18n("Open chat window"), KADU_CMD_OPEN_CHAT);
 	pm->insertItem(i18n("Send SMS"), KADU_CMD_SMS);
+	if(user.mobile=="")
+		pm->setItemEnabled(KADU_CMD_SMS,false);
 	pm->insertItem(loader->loadIcon("filesave", KIcon::Small), i18n("Send file"), KADU_CMD_SEND_FILE);
 	if (user.status == GG_STATUS_AVAIL || user.status == GG_STATUS_AVAIL_DESCR ||
 		user.status == GG_STATUS_BUSY || user.status == GG_STATUS_BUSY_DESCR)
@@ -1108,7 +1103,7 @@ void Kadu::sendMessage(QListBoxItem *item) {
 
 	if (!uin) {
 		Sms *sms;
-		sms = new Sms(0, userbox->currentText(), 0);
+		sms = new Sms(userbox->currentText(), 0);
 		sms->show();
 		return;
 		}

@@ -1,12 +1,4 @@
 /***************************************************************************
-                          sms.cpp  -  description
-                             -------------------
-    begin                : Sun Dec 2 2001
-    copyright            : (C) 2001 by tomee
-    email                : tomee@cpi.pl
- ***************************************************************************/
-
-/***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -16,7 +8,6 @@
  ***************************************************************************/
 
 #include <qlayout.h>
-#include <qcombobox.h>
 #include <qmessagebox.h>
 #include <klocale.h>
 
@@ -25,9 +16,8 @@
 #include "sms.h"
 //
 
-Sms::Sms(unsigned int gsmno,const QString & name, QDialog* parent) : QDialog (parent, name) {
-	int i;
-
+Sms::Sms(const QString& altnick, QDialog* parent) : QDialog (parent, "Sms")
+{
 	QGridLayout * grid = new QGridLayout(this, 3, 4, 10, 3);
 
 	body = new QMultiLineEdit(this);
@@ -37,34 +27,20 @@ Sms::Sms(unsigned int gsmno,const QString & name, QDialog* parent) : QDialog (pa
 	QObject::connect(body, SIGNAL(textChanged()), this, SLOT(updateCounter()));
 
 	recipient = new QLineEdit(this);
-
+	recipient->setText(userlist.byAltNick(altnick).mobile);
+	QObject::connect(recipient,SIGNAL(textChanged(const QString&)),this,SLOT(updateList(const QString&)));
 	grid->addWidget(recipient, 0, 1);
 
-	QComboBox *list = new QComboBox(this);
-	QObject::connect(list, SIGNAL(activated(const QString&)), this, SLOT(updateRecipient(const QString &)));
-	i = 0;
- 	while (i < userlist.count()) {
+	list = new QComboBox(this);
+	list->insertItem("");
+	for(int i=0; i<userlist.count(); i++)
+	{
 		if (userlist[i].mobile.length())
 			list->insertItem(userlist[i].altnick);
-		i++;
-		}
+	};
+	list->setCurrentText(altnick);
+	QObject::connect(list, SIGNAL(activated(const QString&)), this, SLOT(updateRecipient(const QString &)));
 	grid->addWidget(list, 0, 3);
-
-	i = 0;
-	while (i < list->count() && name != list->text(i))
-		i++;
-
-	QString myuin;
-	if (i < list->count()) {
-		list->setCurrentItem(i);
-		myuin = list->text(i);
-		recipient->setText(userlist.byAltNick(myuin).mobile);
-		}
-	else
-		if (list->count()) {
-			myuin = list->text(0);
-			recipient->setText(userlist.byAltNick(myuin).mobile);
-			}
 
 	QLabel *recilabel = new QLabel(this);
 	recilabel->setText(i18n("Recipient"));
@@ -83,12 +59,31 @@ Sms::Sms(unsigned int gsmno,const QString & name, QDialog* parent) : QDialog (pa
 	setCaption(i18n("Send SMS"));
 }
 
-void Sms::updateRecipient(const QString &newtext) {
-	int i = 0;
-	while (i < userlist.count() && newtext.compare(userlist[i].nickname))
-		i++;
-	recipient->setText(userlist[i].mobile);
+void Sms::updateRecipient(const QString &newtext)
+{
+	if(newtext=="")
+	{
+		recipient->setText("");
+		return;
+	};
+	for(int i=0; i<userlist.count(); i++)
+		if(userlist[i].altnick==newtext)
+		{
+			recipient->setText(userlist[i].mobile);
+			break;
+		};
 }
+
+void Sms::updateList(const QString &newnumber)
+{
+	for(int i=0; i<userlist.count(); i++)
+		if(userlist[i].mobile==newnumber)
+		{
+			list->setCurrentText(userlist[i].altnick);
+			return;
+		};
+	list->setCurrentText("");
+};
 
 int Sms::sendSms(void) {
 	b_send->setEnabled(false);
