@@ -419,6 +419,8 @@ void EmoticonSelector::alignTo(QWidget* w)
 #include <qglobal.h>
 #include <qfeatures.h>
 
+#define Q_DUMMY_COMPARISON_OPERATOR(C)
+
 static inline bool is_printer( QPainter *p )
 {
 	if ( !p || !p->device() )
@@ -431,7 +433,11 @@ static inline int scale( int value, QPainter *painter )
 	if ( is_printer( painter ) ) {
 		QPaintDeviceMetrics metrics( painter->device() );
 #if defined(Q_WS_X11)
+#if QT_VERSION < 0x030100
+		value = value * metrics.logicalDpiY() / QPaintDevice::x11AppDpiY();
+#else
 		value = value * metrics.logicalDpiY() / QPaintDevice::x11AppDpiY( painter->device()->x11Screen() );
+#endif
 #elif defined (Q_WS_WIN)
 		HDC hdc = GetDC( 0 );
 		int gdc = GetDeviceCaps( hdc, LOGPIXELSY );

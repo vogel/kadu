@@ -549,7 +549,7 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 	body->setMinimumSize(QSize(100,100));
 	body->setFont(config_file.readFontEntry("Look","ChatFont"));
 
-	QPoint pos = QCursor::pos();
+//	QPoint pos = QCursor::pos();
 
 	if (uins.count() > 1)
 	{
@@ -2116,17 +2116,17 @@ void ChatSlots::setBrowserOption(int selectedOption, QLineEdit *browserPathEdit,
 		case 1: //Konqueror
 		{
 			if (selectedOption==1)
-				browserPath.replace("KonquerorIface openBrowserWindow", "konqueror-mainwindow#1 newTab");
+				browserPath.replace(QRegExp("KonquerorIface openBrowserWindow"), "konqueror-mainwindow#1 newTab");
 			else
-				browserPath.replace("konqueror-mainwindow#1 newTab", "KonquerorIface openBrowserWindow");
+				browserPath.replace(QRegExp("konqueror-mainwindow#1 newTab"), "KonquerorIface openBrowserWindow");
 			browserPathEdit->setText(browserPath);
 			break;
 		}
 		case 2:		//Opera
 		{
-			browserPath.remove(" -newwindow");
-			browserPath.remove(" -newpage");
-			browserPath.remove(" -backgroundpage");
+			browserPath.replace(QRegExp(" -newwindow"), "");
+			browserPath.replace(QRegExp(" -newpage"), "");
+			browserPath.replace(QRegExp(" -backgroundpage"), "");
 			switch(selectedOption)
 			{
 				case 0: browserPath.append(" -newwindow"); break;
@@ -2140,9 +2140,9 @@ void ChatSlots::setBrowserOption(int selectedOption, QLineEdit *browserPathEdit,
 		case 4:		//Firefox
 		{
 			if (selectedOption==1)
-				browserPath.replace("new-window", "new-tab");
+				browserPath.replace(QRegExp("new-window"), "new-tab");
 			else
-				browserPath.replace("new-tab", "new-window");
+				browserPath.replace(QRegExp("new-tab"), "new-window");
 			browserPathEdit->setText(browserPath);
 			break;
 		}

@@ -29,6 +29,7 @@
 #include "history.h"
 #include "status.h"
 #include "emoticons.h"
+#include "misc.h"
 
 enum {
 	HISTORYMANAGER_ORDINARY_LINE,
@@ -1258,10 +1259,10 @@ void HistoryManager::checkImageTimeout(UinType uin)
 void HistoryManager::checkImagesTimeouts()
 {
 	kdebugf();
-	QValueList<UinType> keys=bufferedMessages.keys();
+	QValueList<UinType> uins=keys(bufferedMessages);
 	
-	for (QValueList<UinType>::iterator it=keys.begin();
-		it!=keys.end();
+	for (QValueList<UinType>::iterator it=uins.begin();
+		it!=uins.end();
 		it++)
 		checkImageTimeout(*it);
 	kdebugf2();

@@ -113,7 +113,7 @@ void UserListElement::setGroup(const QString& group)
 	//gdzie¶ tu siê sypie :|
 	kdebugmf(KDEBUG_INFO, "group: '%s' Parent:%p\n", group.local8Bit().data(), Parent);
 	UserListElement old = *this;
-	Group = (group == QT_TR_NOOP("All")) ? "" : group;
+	Group = (group == QT_TR_NOOP("All")) ? QString() : group;
 	if (Parent)
 		emit Parent->userDataChanged(&old, this);
 	kdebugf2();

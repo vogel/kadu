@@ -255,26 +255,29 @@ void HintManager::recreateLayout()
 	QColor fgcolor, bgcolor;
 	unsigned int timeout;
 	QPtrList<Hint> copy;
-	for (QPtrList<Hint>::iterator it=hints.begin(); it!=hints.end(); it++)
+	Hint *elem;
+
+	while ((elem=hints.first()))
 	{
-		(*it)->getData(text, pixmap, timeout, font, fgcolor, bgcolor);
+		elem->getData(text, pixmap, timeout, font, fgcolor, bgcolor);
 		
 		Hint *h=new Hint(this, text, pixmap, timeout);
-		h->set(font, fgcolor, bgcolor, (*it)->id());
-		h->setUins((*it)->getUins());
+		h->set(font, fgcolor, bgcolor, elem->id());
+		h->setUins(elem->getUins());
 
 		copy.append(h);
+		hints.removeFirst();
 	}
-	hints.clear();
 	delete grid;
 	grid = new QGridLayout(this, 0, 0, 1, 0, "grid");
 	grid->setResizeMode(QLayout::Fixed);
 
 	setGridOrigin();
-	for (QPtrList<Hint>::iterator it=copy.begin(); it!=copy.end(); it++)
+	while ((elem=copy.first()))
 	{
-		(*it)->getData(text, pixmap, timeout, font, fgcolor, bgcolor);
-		addHint(text, pixmap, font, fgcolor, bgcolor, timeout, (*it)->getUins());
+		elem->getData(text, pixmap, timeout, font, fgcolor, bgcolor);
+		addHint(text, pixmap, font, fgcolor, bgcolor, timeout, elem->getUins());
+		copy.removeFirst();
 	}
 #endif
 }

@@ -15,6 +15,18 @@
 #include "debug.h"
 #include "config_file.h"
 
+template<class T, class X> QValueList<T> keys(const QMap<T, X> &m)
+{
+#if QT_VERSION < 0x030005
+    QValueList<T> ret;
+    for(QMap<T,X>::const_iterator it=m.begin(); it!=m.end(); it++)
+        ret.append(it.key());
+    return ret;
+#else
+    return m.keys();
+#endif
+}
+
 ConfigFile::ConfigFile(const QString &filename) : filename(filename),activeGroup(NULL)
 {
 	read();
@@ -93,7 +105,8 @@ void ConfigFile::write(const QString &f) const
 
 QStringList ConfigFile::getGroupList() const
 {
-	return QStringList(groups.keys());
+	return QStringList(keys(groups));
+//	return QStringList(groups.keys());
 }
 
 void ConfigFile::sync() const

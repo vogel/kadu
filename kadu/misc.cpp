@@ -2556,7 +2556,12 @@ void KaduTextBrowser::copy()
 	txt.replace(QRegExp("&quot;"), "\"");
 
 //	kdebugm(KDEBUG_DUMP, "result: \n%s\n\n", txt.local8Bit().data());
+
+#if QT_VERSION < 0x030100
+	QApplication::clipboard()->setText(txt);
+#else
 	QApplication::clipboard()->setText(txt, QClipboard::Clipboard);
+#endif
 
 	kdebugf2();
 }
