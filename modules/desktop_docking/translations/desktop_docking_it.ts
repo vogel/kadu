@@ -10,12 +10,12 @@
         <translation>Coordinata verticale</translation>
     </message>
     <message>
-        <source>Background color</source>
-        <translation>Colore di fondo</translation>
-    </message>
-    <message>
         <source>Transparent</source>
         <translation>Trasparente</translation>
+    </message>
+    <message>
+        <source>Put the position in pixels</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

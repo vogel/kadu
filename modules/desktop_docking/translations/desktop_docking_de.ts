@@ -10,12 +10,12 @@
         <translation>Position in Senkblei</translation>
     </message>
     <message>
-        <source>Background color</source>
-        <translation>Hintergrund Farbe</translation>
-    </message>
-    <message>
         <source>Transparent</source>
         <translation>Durchsichtig</translation>
+    </message>
+    <message>
+        <source>Put the position in pixels</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
