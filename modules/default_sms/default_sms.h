@@ -1,7 +1,7 @@
 #ifndef _DEFAULT_SMS_H
 #define _DEFAULT_SMS_H
 
-#include "sms/sms.h"
+#include "../sms/sms.h"
 
 class SmsIdeaGateway : public SmsGateway
 {
