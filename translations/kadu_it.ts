@@ -398,10 +398,6 @@ Le discussioni dovrebbero essere separate con gli spazi. la discussione di %n è
         <translation>Mostri gli errori del collegamento nei suggerimenti</translation>
     </message>
     <message>
-        <source>Show in notify content message</source>
-        <translation>L&apos;esposizione dentro informa il messaggio soddisfatto</translation>
-    </message>
-    <message>
         <source>Enable status notification by hint</source>
         <translation>Permetta la notifica di condizione tramite il suggerimento</translation>
     </message>
@@ -434,108 +430,100 @@ Le discussioni dovrebbero essere separate con gli spazi. la discussione di %n è
         <translation>Informi circa il cambiamento di condizione dell&apos;utente</translation>
     </message>
     <message>
-        <source>Notify about user become available</source>
-        <translation>Informi circa l&apos;utente diventano disponibile</translation>
-    </message>
-    <message>
-        <source>Notify about user become unavailable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Add description to hint if exists</source>
-        <translation type="unfinished"></translation>
+        <translation>Aggiunga la descrizione al suggerimento se esiste</translation>
     </message>
     <message>
         <source>WWW error</source>
-        <translation type="unfinished">Errore di WWW</translation>
+        <translation>Errore di WWW</translation>
     </message>
     <message>
         <source>Web browser was not specified. Visit the configuration section</source>
-        <translation type="unfinished">Il web browser non è stato specificato. Visiti la sezione di con</translation>
+        <translation>Il web browser non è stato specificato. Visiti la sezione di con</translation>
     </message>
     <message>
         <source>Could not spawn Web browser process. Check if the Web browser is functional</source>
-        <translation type="unfinished">Non ha potuto deporre le uova il processo di web browser. Controlli se il web browser è funzionale </translation>
+        <translation>Non ha potuto deporre le uova il processo di web browser. Controlli se il web browser è funzionale </translation>
     </message>
     <message>
         <source>Emoticons</source>
-        <translation type="unfinished"></translation>
+        <translation>Emoticons</translation>
     </message>
     <message>
         <source>Emoticons:</source>
-        <translation type="unfinished"></translation>
+        <translation>Emoticons:</translation>
     </message>
     <message>
         <source>Emoticons theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Tema dei emoticons</translation>
     </message>
     <message>
         <source>WWW options</source>
-        <translation type="unfinished"></translation>
+        <translation>Opzioni di WWW</translation>
     </message>
     <message>
         <source>Use default Web browser</source>
-        <translation type="unfinished"></translation>
+        <translation>Usi il web browser di difetto</translation>
     </message>
     <message>
         <source>Custom Web browser</source>
-        <translation type="unfinished"></translation>
+        <translation>Web browser su ordinazione</translation>
     </message>
     <message>
         <source>Automatically prune chat messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Automaticamente messaggi di chiacchierata della prugna</translation>
     </message>
     <message>
         <source>Message pruning</source>
-        <translation type="unfinished"></translation>
+        <translation>Potatura del messaggio</translation>
     </message>
     <message>
         <source>Reduce the number of visible messages to</source>
-        <translation type="unfinished"></translation>
+        <translation>Riduca il numero di messaggi visibili a</translation>
     </message>
     <message>
         <source>Use encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Usi la crittografia</translation>
     </message>
     <message>
         <source>Encryption properties</source>
-        <translation type="unfinished"></translation>
+        <translation>Proprietà di crittografia</translation>
     </message>
     <message>
         <source>Keys length</source>
-        <translation type="unfinished"></translation>
+        <translation>Chiude a chiave la lunghezza</translation>
     </message>
     <message>
         <source>Generate keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Generi le chiavi</translation>
     </message>
     <message>
         <source>Scroll chat window downward, not upward</source>
-        <translation type="unfinished"></translation>
+        <translation>Finestra di chiacchierata del rotolo verso il basso, non verso l&apos;alto</translation>
     </message>
     <message>
         <source>&quot;Enter&quot; key in chat sends message by default</source>
-        <translation type="unfinished"></translation>
+        <translation>a chiave &quot;Enter&quot; nella chiacchierata trasmette il messaggio per difetto</translation>
     </message>
     <message>
         <source>Message acknowledgements (wait for delivery</source>
-        <translation type="unfinished"></translation>
+        <translation>Ringraziamenti del messaggio (aspett la consegna</translation>
     </message>
     <message>
         <source>Flash chat title on new message</source>
-        <translation type="unfinished"></translation>
+        <translation>Titolo istantaneo di chiacchierata sul nuovo messaggio</translation>
     </message>
     <message>
         <source>Ignore messages from anonymous users</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignori i messaggi dagli utenti anonimi</translation>
     </message>
     <message>
         <source>Look</source>
-        <translation type="unfinished"></translation>
+        <translation>Sguardo</translation>
     </message>
     <message>
         <source>Chat properties</source>
-        <translation type="unfinished"></translation>
+        <translation>Proprietà di chiacchierata</translation>
     </message>
     <message>
         <source>Font</source>
@@ -662,7 +650,15 @@ If you leave blank, default settings will be used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Content message in hint</source>
+        <source>Message content in hint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about user becoming available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about user becoming unavailable</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -883,11 +879,11 @@ If you leave blank, default settings will be used.</source>
     <name>DccVoiceDialog</name>
     <message>
         <source>Voice chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Chiacchierata di voce</translation>
     </message>
     <message>
         <source>&amp;Stop</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Stop</translation>
     </message>
 </context>
 <context>
@@ -899,10 +895,6 @@ If you leave blank, default settings will be used.</source>
 </context>
 <context>
     <name>EventManager</name>
-    <message>
-        <source>Disconnection been occured</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Unable to connect, server has not been found</source>
         <translation type="unfinished"></translation>
@@ -938,6 +930,10 @@ Your password is incorrect !!!</source>
     </message>
     <message>
         <source>Unable to connect, error of negotiation TLS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disconnection has occured</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1048,7 +1044,7 @@ Your password is incorrect !!!</source>
     </message>
     <message>
         <source>Color dialog</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dialogo di colore</translation>
     </message>
     <message>
         <source>Number of quoted characters</source>
@@ -1782,6 +1778,10 @@ Ora aggiunga i vostri amici al lista del contatto.</translation>
     <message>
         <source>Select user first</source>
         <translation>Selezioni l&apos;utente primo</translation>
+    </message>
+    <message>
+        <source> </source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

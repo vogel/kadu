@@ -398,10 +398,6 @@ Arguments should be separated with spaces. %n argument is converted to number, %
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show in notify content message</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Enable status notification by hint</source>
         <translation type="unfinished"></translation>
     </message>
@@ -431,14 +427,6 @@ Arguments should be separated with spaces. %n argument is converted to number, %
     </message>
     <message>
         <source>Notify about user status change</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Notify about user become available</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Notify about user become unavailable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -662,7 +650,15 @@ If you leave blank, default settings will be used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Content message in hint</source>
+        <source>Message content in hint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about user becoming available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about user becoming unavailable</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -900,10 +896,6 @@ If you leave blank, default settings will be used.</source>
 <context>
     <name>EventManager</name>
     <message>
-        <source>Disconnection been occured</source>
-        <translation>Disconnection been occured</translation>
-    </message>
-    <message>
         <source>Unable to connect, server has not been found</source>
         <translation type="unfinished"></translation>
     </message>
@@ -938,6 +930,10 @@ Your password is incorrect !!!</source>
     </message>
     <message>
         <source>Unable to connect, error of negotiation TLS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disconnection has occured</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

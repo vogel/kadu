@@ -398,10 +398,6 @@ Zaznacz i wpisz w to pole poprawny ciąg. Argumenty oddziel spacjami. Argument %
         <translation>Pokaż błędy połączeń w dymkach</translation>
     </message>
     <message>
-        <source>Show in notify content message</source>
-        <translation>Powiadom z treścią wiadomości</translation>
-    </message>
-    <message>
         <source>Enable status notification by hint</source>
         <translation>Włącz powiadomienie o zmianie statusu w dymku</translation>
     </message>
@@ -432,14 +428,6 @@ Zaznacz i wpisz w to pole poprawny ciąg. Argumenty oddziel spacjami. Argument %
     <message>
         <source>Notify about user status change</source>
         <translation>Powiadom kiedy kontakt zmieni status</translation>
-    </message>
-    <message>
-        <source>Notify about user become available</source>
-        <translation>Powiadom kiedu kontakt będzie dostępny</translation>
-    </message>
-    <message>
-        <source>Notify about user become unavailable</source>
-        <translation>Powiadom kiedu kontakt będzie niedostępny</translation>
     </message>
     <message>
         <source>Add description to hint if exists</source>
@@ -595,7 +583,7 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     </message>
     <message>
         <source>Notify when users become available</source>
-        <translation>Powiadom kiedu kontakt będzie dostępny</translation>
+        <translation>Powiadom kiedy kontakt będzie dostępny</translation>
     </message>
     <message>
         <source>Notify about all users</source>
@@ -666,8 +654,16 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <translation>Lista w kolumnach</translation>
     </message>
     <message>
-        <source>Content message in hint</source>
-        <translation>Treść wiadowmości w dymku</translation>
+        <source>Message content in hint</source>
+        <translation>Treść wiadomości w dymku</translation>
+    </message>
+    <message>
+        <source>Notify about user becoming available</source>
+        <translation>Powiadom kiedy kontakt stanie się dostępny</translation>
+    </message>
+    <message>
+        <source>Notify about user becoming unavailable</source>
+        <translation>Powiadom kiedy kontakt stanie się nie dostępny</translation>
     </message>
 </context>
 <context>
@@ -904,10 +900,6 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
 <context>
     <name>EventManager</name>
     <message>
-        <source>Disconnection been occured</source>
-        <translation>Wystapiło rozłaczenie</translation>
-    </message>
-    <message>
         <source>Unable to connect, server has not been found</source>
         <translation>Połączenie niemożliwe, serwer  nie znaleziony</translation>
     </message>
@@ -944,6 +936,10 @@ Twoje hasło jest nieprawidłowe!!!</translation>
     <message>
         <source>Unable to connect, error of negotiation TLS</source>
         <translation>Połączenie niemożliwe, błąd negocjacji TLS</translation>
+    </message>
+    <message>
+        <source>Disconnection has occured</source>
+        <translation>Nastąpiło rozłączenie</translation>
     </message>
 </context>
 <context>
@@ -2448,7 +2444,7 @@ o rozmiarze </translation>
     </message>
     <message>
         <source> wants to talk with you. Do you accept it?</source>
-        <translation>chce rozmawiać z toba. Akceptujesz?</translation>
+        <translation> chce rozmawiać z toba. Akceptujesz?</translation>
     </message>
     <message>
         <source>Incoming voice chat</source>
