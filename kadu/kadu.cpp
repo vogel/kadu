@@ -1041,7 +1041,7 @@ void Kadu::sendMessage(QListBoxItem *item) {
 	for (i = 0; i < pending.count(); i++) {
 		elem = pending[i];
 		if ((!uins.count() && elem.uins[0] == uin) || (uins.count() && elem.uins.equals(uins)))
-			if (elem.msgclass == GG_CLASS_CHAT) {
+			if (elem.msgclass == GG_CLASS_CHAT || elem.msgclass == GG_CLASS_MSG) {
 				if (!uins.count())
 					uins = elem.uins;
 				for (j = 0; j < elem.uins.count(); j++)
@@ -1059,8 +1059,7 @@ void Kadu::sendMessage(QListBoxItem *item) {
 				stop = true;
 				}
 	    		else {
-				if (!stop)
-		    			{
+				if (!stop) {
   		    			rmsg = new rMessage(item->text(),
 						elem.msgclass, elem.uins, elem.msg);
 					deletePendingMessage(i);
