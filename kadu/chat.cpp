@@ -1397,7 +1397,9 @@ void Chat::initModule()
 
 	ConfigDialog::addComboBox("Chat", "Emoticons", QT_TRANSLATE_NOOP("@default", "Emoticons theme"));
 	ConfigDialog::addVGroupBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "WWW options"));
-	ConfigDialog::addCheckBox("Chat", "WWW options", QT_TRANSLATE_NOOP("@default", "Use default Web browser"), "DefaultWebBrowser", true);
+	
+	ConfigDialog::addComboBox("Chat", "WWW options", QT_TRANSLATE_NOOP("@default", "Choose your browser"));
+	ConfigDialog::addComboBox("Chat", "WWW options", QT_TRANSLATE_NOOP("@default", "Browser options"));
 	ConfigDialog::addLineEdit("Chat", "WWW options", QT_TRANSLATE_NOOP("@default", "Custom Web browser"), "WebBrowser", "", QT_TRANSLATE_NOOP("@default", "%1 - Url clicked in chat window"));
 	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Automatically prune chat messages"), "ChatPrune", true);
 	ConfigDialog::addHGroupBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Message pruning"));
@@ -1464,7 +1466,6 @@ void Chat::initModule()
 	ConfigDialog::registerSlotOnCreate(chatslots,SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnApply(chatslots,SLOT(onDestroyConfigDialog()));
 	ConfigDialog::connectSlot("Chat", "Emoticons:", SIGNAL(activated(int)), chatslots, SLOT(chooseEmoticonsStyle(int)));
-	ConfigDialog::connectSlot("Chat", "Use default Web browser", SIGNAL(toggled(bool)), chatslots, SLOT(onDefWebBrowser(bool)));
 	ConfigDialog::connectSlot("Chat", "Automatically prune chat messages", SIGNAL(toggled(bool)), chatslots, SLOT(onPruneChat(bool)));
 	ConfigDialog::connectSlot("Chat", "Automatically fold links", SIGNAL(toggled(bool)), chatslots, SLOT(onFoldLink(bool)));
 
@@ -1596,12 +1597,59 @@ void ChatSlots::onCreateConfigDialog()
 	if ((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") == EMOTS_NONE)
 		(cb_emoticons_theme)->setEnabled(false);
 
-	QCheckBox *c_defweb= ConfigDialog::getCheckBox("Chat", "Use default Web browser");
+	//ustawienie pól w combo wyboru przegladarki
+	QComboBox* cb_browser= ConfigDialog::getComboBox("Chat", "Choose your browser");
+	QComboBox* cb_browser_options=ConfigDialog::getComboBox("Chat", "Browser options");
+	cb_browser->insertItem(tr("Specify path"));
+	cb_browser->insertItem("Konqueror");
+	cb_browser->insertItem("Opera");
+	cb_browser->insertItem("Mozilla");
+	cb_browser->insertItem("Mozilla Firefox");
+	cb_browser->insertItem("Dillo");
+	cb_browser->insertItem("Galeon");
 	QLineEdit *l_webbrow= ConfigDialog::getLineEdit("Chat", "Custom Web browser");
+	QString browserCommandLine=l_webbrow->text();
+	cb_browser_options->setEnabled(false);
 
-	if (c_defweb->isChecked())
-		((QHBox*)l_webbrow->parent())->setEnabled(false);
+	int browserNumber=config_file.readNumEntry("Chat", "WebBrowserNo", 0);
+	cb_browser->setCurrentItem(browserNumber);
+	cb_browser_options->clear();
+	switch (browserNumber)
+	{
+		case 2: 	//opera
+		{
+			cb_browser_options->insertItem(tr("Open in new window"));		//dodajemy pozycje w combo
+			cb_browser_options->insertItem(tr("Open in new tab"));
+			cb_browser_options->insertItem(tr("Open in background tab"));
+			if (browserCommandLine.find("-newpage", 0, true) != -1)	//jak znajdzie ta opcje to podswietla odpowiedni wpis w combo
+				cb_browser_options->setCurrentItem(1);
+			else if (browserCommandLine.find("-backgroundpage", 0, true) != -1)
+				cb_browser_options->setCurrentItem(2);
+			else
+				cb_browser_options->setCurrentItem(0);
+			cb_browser_options->setEnabled(true);	//uaktywniamy combo
+			break;
+		}
+		case 3:		//mozilla
+		case 4: 	//firefox
+		{
+			cb_browser_options->insertItem(tr("Open in new window"));		//dodajemy pozycje combo
+			cb_browser_options->insertItem(tr("Open in new tab"));	
+			if (browserCommandLine.find("new-tab", 0, true) != -1)	//i wyszukujemy ktora opcje zaznaczyc
+				cb_browser_options->setCurrentItem(1);
+			else
+				cb_browser_options->setCurrentItem(0);
+			cb_browser_options->setEnabled(true);
+			break;
+		}
+	}
+	chosenBrowser=browserNumber;
 
+	//podpiecie pod zmiane w combo
+	connect(cb_browser, SIGNAL(activated (int)), this, SLOT(findAndSetWebBrowser(int)));
+	connect(cb_browser_options, SIGNAL(activated (int)), this, SLOT(findAndSetBrowserOption(int)));
+	l_webbrow->setReadOnly(cb_browser->currentItem()!=0);
+	
 	QCheckBox *c_prunechat= ConfigDialog::getCheckBox("Chat", "Automatically prune chat messages");
 	QHGroupBox *h_prune= ConfigDialog::getHGroupBox("Chat", "Message pruning");
 
@@ -1614,7 +1662,6 @@ void ChatSlots::onCreateConfigDialog()
 	ConfigDialog::getSpinBox("Chat", "Max image size")->setSuffix(" kB");
 
 	h_fold->setEnabled(c_foldlink->isChecked());
-
 	updatePreview();
 	kdebugf2();
 }
@@ -1629,12 +1676,6 @@ void ChatSlots::onFoldLink(bool toggled)
 	ConfigDialog::getHGroupBox("Chat", "Link folding")->setEnabled(toggled);
 }
 
-void ChatSlots::onDefWebBrowser(bool toggled)
-{
-	QLineEdit *l_webbrow= ConfigDialog::getLineEdit("Chat", "Custom Web browser");
-	((QHBox*)l_webbrow->parent())->setEnabled(!toggled);
-}
-
 void ChatSlots::onDestroyConfigDialog()
 {
 	kdebugf();
@@ -1642,6 +1683,8 @@ void ChatSlots::onDestroyConfigDialog()
 	QComboBox* cb_emoticons_theme= ConfigDialog::getComboBox("Chat", "Emoticons theme");
 	config_file.writeEntry("Chat", "EmoticonsTheme",cb_emoticons_theme->currentText());
 	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
+
+	config_file.writeEntry("Chat", "WebBrowserNo", ConfigDialog::getComboBox("Chat", "Choose your browser")->currentItem());
 
 	chat_manager->changeAppearance();
 
@@ -1716,5 +1759,225 @@ void ChatSlots::updatePreview()
 	preview2->setPaletteForegroundColor(config_file.readColorEntry("Look", "ChatUsrFontColor"));
 	preview2->setPaletteBackgroundColor(config_file.readColorEntry("Look", "ChatUsrBgColor"));
 	preview2->setAlignment(Qt::AlignLeft);
+	kdebugf2();
+}
+
+void ChatSlots::findAndSetWebBrowser(int selectedBrowser)
+{
+	kdebugf();
+	/*
+		obs³uga mozilli i firefoksa jest dosyæ skomplikowana, wiêc przy rozbudowie tej funkcji
+		nale¿y najpierw zrozumieæ jej dzia³anie dla tych dwóch przegl±darek, bo mo¿na siê naci±æ...
+	*/
+	
+	QLineEdit *customWebBrowser= ConfigDialog::getLineEdit("Chat", "Custom Web browser");
+	QString prevBrowser=customWebBrowser->text();
+	chosenBrowser=selectedBrowser;	//to bedzie potrzebne przy wyborze dodatkowych opcji w drugim combo
+	QComboBox* browserOptions=ConfigDialog::getComboBox("Chat", "Browser options");
+	browserOptions->setEnabled(false);	//blokujemy combo
+
+	if (selectedBrowser==0)
+	{
+		customWebBrowser->setReadOnly(false);
+		return;
+	}
+	else
+		customWebBrowser->setReadOnly(true);
+
+	QString homePath=getenv("HOME");
+	QString browserName;
+	
+	QStringList searchPath=QStringList::split(":", QString(getenv("PATH")));
+	
+	switch (selectedBrowser)
+	{
+		case 1: //konqueror
+		{
+			browserName="dcop";
+			searchPath.append("/opt/kde/bin");
+			searchPath.append("/opt/kde3/bin");
+			browserOptions->clear();	
+			browserOptions->insertItem(tr("Open in new window"));
+			browserOptions->insertItem(tr("Open in new tab"));
+			browserOptions->setCurrentItem(0);
+			browserOptions->setEnabled(true);
+			break;
+		}
+		case 2://opera
+		{
+			browserName="opera"; 
+			searchPath.append("/opt/opera");
+			browserOptions->clear();	
+			browserOptions->insertItem(tr("Open in new window"));
+			browserOptions->insertItem(tr("Open in new tab"));
+			browserOptions->insertItem(tr("Open in background tab"));
+			browserOptions->setCurrentItem(0);
+			browserOptions->setEnabled(true);
+			break;
+		}
+		case 3: //mozilla
+		{
+			browserName="mozilla-xremote-client";
+			
+			QStringList dirList=QDir("/usr/lib").entryList("mozilla*", QDir::All, QDir::Name|QDir::Reversed);
+			for (QStringList::iterator it=dirList.begin(); it!=dirList.end(); it++)
+				searchPath.append("/usr/lib/"+(*it));
+
+			searchPath.append("/usr/local/Mozilla");
+			searchPath.append("/usr/local/mozilla");
+			searchPath.append(homePath+"/Mozilla");
+			searchPath.append(homePath+"/mozilla");
+			browserOptions->clear();	
+			browserOptions->insertItem(tr("Open in new window"));
+			browserOptions->insertItem(tr("Open in new tab"));
+			browserOptions->setCurrentItem(0);
+			browserOptions->setEnabled(true);
+			break;
+		}
+		case 4:	//firefox
+		{
+			browserName="mozilla-xremote-client";
+
+			QStringList dirList=QDir("/usr/lib").entryList("firefox*", QDir::All, QDir::Name|QDir::Reversed);
+			for (QStringList::iterator it=dirList.begin(); it!=dirList.end(); it++)
+				searchPath.append("/usr/lib/"+(*it));
+
+			dirList=QDir("/usr/lib").entryList("mozilla-firefox*", QDir::All, QDir::Name|QDir::Reversed);
+			for (QStringList::iterator it=dirList.begin(); it!=dirList.end(); it++)
+				searchPath.append("/usr/lib/"+(*it));
+			if (!dirList.empty())//jeste¶my na debianie, gdzie zmienili nazwê skryptu, grrr :|
+				browserName="mozilla-firefox-xremote-client";
+
+			searchPath.append("/usr/local/Firefox:");
+			searchPath.append("/usr/local/firefox:");
+			searchPath.append(homePath+"/Firefox:");
+			searchPath.append(homePath+"/firefox:");
+
+			dirList=QDir("/usr/lib").entryList("mozilla*", QDir::All, QDir::Name|QDir::Reversed);
+			for (QStringList::iterator it=dirList.begin(); it!=dirList.end(); it++)
+				searchPath.append("/usr/lib/"+(*it));
+
+			browserOptions->clear();	
+			browserOptions->insertItem(tr("Open in new window"));
+			browserOptions->insertItem(tr("Open in new tab"));
+			browserOptions->setCurrentItem(0);
+			browserOptions->setEnabled(true);
+			break;
+		}
+		case 5: browserName="dillo"; break;
+		case 6: browserName="galeon"; break;
+		default: return;
+	}
+	QFile browserFile;
+	QString path, testPath;
+	
+	bool browserFound=false;
+	QStringList::iterator dir=searchPath.begin();
+	QStringList::iterator endDir=searchPath.end();
+	
+	kdebugm(KDEBUG_INFO, "search path: %s\n", searchPath.join(" ").local8Bit().data());
+	while (!browserFound && dir!=endDir)
+	{
+		testPath=(*dir)+"/"+browserName;
+		if (QFile::exists(testPath))
+		{
+			if (selectedBrowser==1) //konqueror
+			{
+				if (browserName=="kfmclient")
+					path.replace(QRegExp("kfmclient"), testPath);
+				else
+				{
+					path="ok=0;for i in `dcop|grep konqueror`; do shown=`dcop $i konqueror-mainwindow#1 shown`; if [ \"$shown\" == \"true\" ];then dcop $i KonquerorIface openBrowserWindow %1 && ok=1; fi; if [ \"$ok\" == \"1\" ]; then break; fi done; if [ \"$ok\" != \"1\" ]; then kfmclient openURL %1; fi;";
+					path.replace(QRegExp("dcop"), testPath);
+					browserName="kfmclient";
+					dir=searchPath.begin();
+					continue;
+				}
+			}
+			else if (selectedBrowser==3) //mozilla
+			{
+				if (browserName=="mozilla")
+					path=path+testPath+" %1";
+				else
+				{
+					path=testPath+" -a mozilla \"openURL(%1,new-window)\" || ";
+					browserName="mozilla";
+					dir=searchPath.begin();
+					continue;
+				}
+			}
+			else if (selectedBrowser==4) //firefox
+			{
+				if (browserName=="firefox")
+					path=path+testPath+" %1";
+				else
+				{
+					path=testPath+" -a firefox \"openURL(%1,new-window)\" || ";
+					browserName="firefox";
+					dir=searchPath.begin();
+					continue;
+				}
+			}
+			else
+				path=testPath;
+			customWebBrowser->setText(path);
+			browserFound=true;
+			kdebugm(KDEBUG_INFO, "browser found! '%s'\n", path.local8Bit().data());
+		}
+		dir++;
+	}
+	if (!browserFound)
+	{
+		MessageBox::msg(tr("I didn't find the browser you selected! The path to it doesn't exists in $PATH variable. \nYou may add it to $PATH or specify location using Specify path option."));
+		ConfigDialog::getComboBox("Chat", "Choose your browser")->setCurrentItem(0);	//ustawiamy na default
+		browserOptions->clear();	//czyscimy opcje
+		customWebBrowser->setText(prevBrowser);
+//		customWebBrowser->clear(); 	//no i czyscimy LineEdita
+	}
+	kdebugf2();
+}
+
+
+void ChatSlots::findAndSetBrowserOption(int selectedOption)
+{
+	kdebugf();
+	QLineEdit *customWebBrowser= ConfigDialog::getLineEdit("Chat", "Custom Web browser");
+	QString browserPath=customWebBrowser->text();
+	switch(chosenBrowser)
+	{
+		case 1: //Konqueror
+		{
+			if (selectedOption==1)
+				browserPath.replace("KonquerorIface openBrowserWindow", "konqueror-mainwindow#1 newTab");
+			else
+				browserPath.replace("konqueror-mainwindow#1 newTab", "KonquerorIface openBrowserWindow");
+			customWebBrowser->setText(browserPath);
+			break;
+		}
+		case 2:		//Opera 
+		{
+			browserPath.remove(" -newwindow");
+			browserPath.remove(" -newpage");
+			browserPath.remove(" -backgroundpage");
+			switch(selectedOption)
+			{
+				case 0: browserPath.append(" -newwindow"); break;
+				case 1: browserPath.append(" -newpage"); break;
+				case 2: browserPath.append(" -backgroundpage"); break;
+			}
+			customWebBrowser->setText(browserPath);
+			break;
+		}
+		case 3: 	//Mozilla
+		case 4:		//Firefox
+		{
+			if (selectedOption==1)
+				browserPath.replace("new-window", "new-tab");
+			else
+				browserPath.replace("new-tab", "new-window");
+			customWebBrowser->setText(browserPath);
+			break;
+		}
+	}
 	kdebugf2();
 }

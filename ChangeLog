@@ -122,6 +122,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * ³ata Vogela na obs³ugê statusów + moje zmiany, co by to dzia³a³o ;) + drobne optymalizacje (joi)
 * je¿eli w trakcie ³adowania modu³u autoaway ustawiony by³ status dostêpny,
   to modu³ nie startowa³ prawid³owo - poprawione (joi)
+* wybór przegl±darki do otwierania linków - patch Dorregaraya i moje spoore zmiany (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,

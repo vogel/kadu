@@ -405,32 +405,32 @@ void openWebBrowser(const QString &link)
 {
 	kdebugf();
 	QProcess *browser;
-	QString cmd;
 	QStringList args;
-
-	if (config_file.readBoolEntry("Chat","DefaultWebBrowser"))
-		cmd = QString("konqueror %1").arg(link);
-	else {
-		QString webBrowser=config_file.readEntry("Chat","WebBrowser");
-		if (webBrowser == "") {
-			QMessageBox::warning(0, qApp->translate("@default", QT_TR_NOOP("WWW error")),
-				qApp->translate("@default", QT_TR_NOOP("Web browser was not specified. Visit the configuration section")));
-			kdebugm(KDEBUG_INFO, "openWebBrowser(): Web browser NOT specified.\n");
-			return;
-		}
-		if (!webBrowser.contains("%1"))
-			webBrowser.append(" %1");
-		cmd = webBrowser.arg(link);
+	
+	QString webBrowser=config_file.readEntry("Chat","WebBrowser");
+	if (webBrowser == "")
+	{
+		QMessageBox::warning(0, qApp->translate("@default", QT_TR_NOOP("WWW error")),
+			qApp->translate("@default", QT_TR_NOOP("Web browser was not specified. Visit the configuration section")));
+		kdebugm(KDEBUG_INFO, "openWebBrowser(): Web browser NOT specified.\n");
+		return;
 	}
-	args = QStringList::split(" ", cmd);
+	if (!webBrowser.contains("%1"))
+		webBrowser.append(" %1");
+	while (webBrowser.contains("%1"))
+		webBrowser=webBrowser.arg(link);
+
+	args=toStringList("sh", "-c", webBrowser);
+
 	for (QStringList::iterator i = args.begin(); i != args.end(); ++i)
 		kdebugm(KDEBUG_INFO, "openWebBrowser(): %s\n", unicode2latin(*i).data());
 	browser = new QProcess();
 	browser->setArguments(args);
+	
 	if (!browser->start())
 		QMessageBox::critical(0, qApp->translate("@default", QT_TR_NOOP("WWW error")),
 			qApp->translate("@default", QT_TR_NOOP("Could not spawn Web browser process. Check if the Web browser is functional")));
-	delete browser;
+	
 	kdebugf2();
 }
 

@@ -328,7 +328,7 @@ class ChatSlots :public QObject
 
 	private:
 		void updatePreview();
-
+		int chosenBrowser;
 	public:
 		ChatSlots(QObject* parent=0, const char* name=0);
 
@@ -336,11 +336,12 @@ class ChatSlots :public QObject
 		void onCreateConfigDialog();
 		void onDestroyConfigDialog();
 		void chooseEmoticonsStyle(int index);
-		void onDefWebBrowser(bool toggled);
 		void onPruneChat(bool toggled);
 		void onFoldLink(bool toggled);
 		void chooseColor(const char* name, const QColor& color);
 		void chooseFont(const char* name, const QFont& font);
+		void findAndSetWebBrowser(int selectedBrowser);
+		void findAndSetBrowserOption(int selectedOption);
 };
 
 #endif
