@@ -109,6 +109,7 @@ void EventManager::systemMessageReceivedSlot(QString &msg, QDateTime &time,
 {
 	kdebugf();
 	MessageBox::msg(time.toString("hh:mm:ss (dd.MM.yyyy): ") + msg);
+	kdebugf2();
 }
 
 void EventManager::messageReceivedSlot(int msgclass, UinsList senders,QCString& msg, time_t time,
@@ -216,7 +217,7 @@ void EventManager::imageReceivedAndSavedSlot(UinType sender,uint32_t size,uint32
 void ifNotify(UinType uin, unsigned int status, unsigned int oldstatus)
 {
 	if (!config_file.readBoolEntry("Notify","NotifyStatusChange"))
-			return;
+		return;
 
 	if (userlist.containsUin(uin)) {
 		UserListElement ule = userlist.byUin(uin);
@@ -252,6 +253,7 @@ void ifNotify(UinType uin, unsigned int status, unsigned int oldstatus)
 }
 
 void EventManager::userlistReceivedSlot(struct gg_event *e) {
+	kdebugf();
 	unsigned int oldstatus;
 	int nr = 0;
 
@@ -329,9 +331,11 @@ void EventManager::userlistReceivedSlot(struct gg_event *e) {
 		nr++;		
 		}
 	UserBox::all_refresh();
+	kdebugf2();
 }
 
 void EventManager::userStatusChangedSlot(struct gg_event * e) {
+	kdebugf();
 	unsigned int oldstatus, status;
 	uint32_t uin;
 	char *descr;
@@ -399,6 +403,7 @@ void EventManager::userStatusChangedSlot(struct gg_event * e) {
 			
 	ifNotify(uin, status, oldstatus);
 	UserBox::all_refresh();
+	kdebugf2();
 }
 
 void EventManager::ackReceivedSlot(int seq)
@@ -408,6 +413,7 @@ void EventManager::ackReceivedSlot(int seq)
 
 void EventManager::dccConnectionReceivedSlot(const UserListElement& sender)
 {
+	kdebugf();
 	struct gg_dcc *dcc_new;
 	dccSocketClass *dcc;
 	if (dccSocketClass::count < 8)
@@ -420,13 +426,14 @@ void EventManager::dccConnectionReceivedSlot(const UserListElement& sender)
 			dcc->initializeNotifiers();
 		}
 	}
+	kdebugf2();
 }
 
 void EventManager::eventHandler(gg_session* sess)
 {
+	kdebugf();
 	static int calls = 0;
 
-	kdebugf();
 	calls++;
 	if (calls > 1)
 		kdebugm(KDEBUG_WARNING, "************* EventManager::eventHandler(): Recursive eventHandler calls detected!\n");
@@ -570,6 +577,7 @@ void EventManager::eventHandler(gg_session* sess)
 
 	gg_free_event(e);
 	calls--;
+	kdebugf2();
 }
 
 EventConfigSlots::EventConfigSlots(QObject *parent, const char *name) : QObject(parent, name)
@@ -670,6 +678,7 @@ void EventConfigSlots::initModule()
 	ConfigDialog::connectSlot("Notify", "", SIGNAL(clicked()), eventconfigslots, SLOT(_Left()), "back");
 	ConfigDialog::connectSlot("Notify", "available", SIGNAL(doubleClicked(QListBoxItem *)), eventconfigslots, SLOT(_Right2(QListBoxItem *)));
 	ConfigDialog::connectSlot("Notify", "track", SIGNAL(doubleClicked(QListBoxItem *)), eventconfigslots, SLOT(_Left2(QListBoxItem *)));
+	kdebugf2();
 }
 
 void EventConfigSlots::onCreateConfigDialog()
@@ -744,6 +753,7 @@ void EventConfigSlots::onCreateConfigDialog()
 	QObject::connect(b_notifyall, SIGNAL(toggled(bool)), this, SLOT(ifNotifyAll(bool)));
 	QObject::connect(b_notifyglobal, SIGNAL(toggled(bool)), this, SLOT(ifNotifyGlobal(bool)));
 
+	kdebugf2();
 }
 
 void EventConfigSlots::onDestroyConfigDialog()
@@ -814,6 +824,7 @@ void EventConfigSlots::onDestroyConfigDialog()
 	/* and now, save it */
 	userlist.writeToFile();	
 	//
+	kdebugf2();
 }
 
 void EventConfigSlots::ifNotifyGlobal(bool toggled) {
@@ -858,6 +869,7 @@ void EventConfigSlots::_Left(void) {
 	}
 
 	e_availusers->sort();
+	kdebugf2();
 }
 
 void EventConfigSlots::_Right(void) {
@@ -878,6 +890,7 @@ void EventConfigSlots::_Right(void) {
 	}
 
 	e_notifies->sort();
+	kdebugf2();
 }
 
 
@@ -894,6 +907,7 @@ void EventConfigSlots::ifDccEnabled(bool value)
 	g_dccip->setEnabled(!b_dccip->isChecked()&& value);	
 	b_dccfwd->setEnabled(value);
 	g_fwdprop->setEnabled(b_dccfwd->isChecked() &&value);
+	kdebugf2();
 }
 
 void EventConfigSlots::ifDccIpEnabled(bool value)
@@ -901,6 +915,7 @@ void EventConfigSlots::ifDccIpEnabled(bool value)
 	kdebugf();
 	QVGroupBox *g_dccip = ConfigDialog::getVGroupBox("Network", "DCC IP");
 	g_dccip->setEnabled(!value);
+	kdebugf2();
 }
 
 void EventConfigSlots::ifDefServerEnabled(bool value)
@@ -908,6 +923,7 @@ void EventConfigSlots::ifDefServerEnabled(bool value)
 	kdebugf();
 	QHBox *serverbox=(QHBox*)(ConfigDialog::getLineEdit("Network", "IP addresses:","server")->parent());
 	serverbox->setEnabled(!value);	
+	kdebugf2();
 }
 
 void EventConfigSlots::useTlsEnabled(bool value)
@@ -916,6 +932,7 @@ void EventConfigSlots::useTlsEnabled(bool value)
 	kdebugf();
 	QHBox *box_portselect=(QHBox*)(ConfigDialog::getComboBox("Network", "Default port to connect to servers")->parent());
 	box_portselect->setEnabled(!value);
+	kdebugf2();
 #endif
 }
 

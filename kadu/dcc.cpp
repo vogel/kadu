@@ -34,6 +34,7 @@ struct gg_dcc* dccsock;
 int dccSocketClass::count = 0;
 
 dccSocketClass::dccSocketClass(struct gg_dcc *dcc_sock, int type, QObject *parent, const char *name) : QObject(parent, name), type(type) {
+	kdebugf();
 	dccsock = dcc_sock;
 	dccevent = NULL;
 	snr = snw = NULL;
@@ -81,14 +82,14 @@ dccSocketClass::~dccSocketClass() {
 }
 
 void dccSocketClass::initializeNotifiers() {
+	kdebugf();
 	snr = new QSocketNotifier(dccsock->fd, QSocketNotifier::Read, this);
 	QObject::connect(snr, SIGNAL(activated(int)), this, SLOT(dccDataReceived()));
 
 	snw = new QSocketNotifier(dccsock->fd, QSocketNotifier::Write, this);
 	QObject::connect(snw, SIGNAL(activated(int)), this, SLOT(dccDataSent()));
+	kdebugf2();
 }
-
-
 
 void dccSocketClass::dccDataReceived() {
 	if (!in_watchDcc)
@@ -100,6 +101,7 @@ void dccSocketClass::dccDataSent() {
 	snw->setEnabled(false);
 	if (dccsock->check & GG_CHECK_WRITE)
 		watchDcc(GG_CHECK_WRITE);
+	kdebugf2();
 }
 
 void dccSocketClass::watchDcc(int check) {
@@ -178,6 +180,7 @@ void dccSocketClass::watchDcc(int check) {
 		}
 
 	in_watchDcc = false;
+	kdebugf2();
 }
 
 void dccSocketClass::askAccept(void) {
@@ -261,6 +264,7 @@ void dccSocketClass::askAccept(void) {
 			setState(DCC_SOCKET_TRANSFER_DISCARDED);
 			break;
 		}
+	kdebugf2();
 }
 
 
@@ -277,6 +281,7 @@ QString dccSocketClass::selectFile(void) {
 }
 
 void dccSocketClass::setState(int pstate) {
+	kdebugf();
 	snr->setEnabled(false);
 	snw->setEnabled(false);
 	state = pstate;
@@ -323,6 +328,7 @@ void DccFileDialog::closeEvent(QCloseEvent *e) {
 }
 
 void DccFileDialog::printFileInfo(struct gg_dcc *dccsock) {
+	kdebugf();
 	long long int percent;
  	long double fpercent;
 
@@ -377,9 +383,11 @@ void DccFileDialog::printFileInfo(struct gg_dcc *dccsock) {
 
 	setCaption(tr("File transfered %1%").arg((int)percent));
 	show();
+	kdebugf2();
 }
 
 void DccFileDialog::updateFileInfo(struct gg_dcc *dccsock) {
+	kdebugf();
 	long long int percent;
  	long double fpercent;
 	int diffOffset,diffTime;
@@ -403,4 +411,5 @@ void DccFileDialog::updateFileInfo(struct gg_dcc *dccsock) {
 		prevPercent = percent;
 		}
 	setCaption(tr("File transfered %1%").arg((int)percent));
+	kdebugf2();
 }

@@ -49,6 +49,7 @@ void ConfigDialog::showConfigDialog(QApplication* application) {
 		cd = new ConfigDialog(application, kadu, "config_dialog");
 		cd->show();
 	}
+	kdebugf2();
 }
 
 void ConfigDialog::closeDialog()
@@ -59,9 +60,11 @@ void ConfigDialog::closeDialog()
 		configdialog->close();
 		delete configdialog;
 	}
+	kdebugf2();
 }
 
 ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const char *name) : QDialog(parent, name) {
+	kdebugf();
 
 	ConfigDialog::appHandle=application;
 	setWFlags(Qt::WDestructiveClose);
@@ -357,6 +360,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 	emit create();
 
 	changeTab(appHandle->translate("@default",acttab));
+	kdebugf2();
 }
 
 ConfigDialog::~ConfigDialog() {
@@ -386,6 +390,7 @@ void ConfigDialog::changeTab(const QString& name)
 
 void ConfigDialog::updateConfig(void) 
 {
+	kdebugf();
 	for(QValueList<RegisteredControl>::iterator i=RegisteredControls.begin(); i!=RegisteredControls.end(); i++)
 	{
 		if (!(*i).widget)
@@ -797,6 +802,7 @@ ConfigDialog::RegisteredControl::RegisteredControl(RegisteredControlType t,
 
 void ConfigDialog::connectSlot(const QString& groupname, const QString& caption, const char* signal, const QObject* receiver, const char* slot,const QString& name)
 {
+	kdebugf();
 	for(QValueList<RegisteredControl>::iterator j=RegisteredControls.begin(); j!=RegisteredControls.end(); j++)
 		if(((*j).group == groupname) && ((*j).caption == caption) && ((*j).name == name) && (*j).type!=CONFIG_DELETED)
 		{
@@ -808,10 +814,12 @@ void ConfigDialog::connectSlot(const QString& groupname, const QString& caption,
 			kdebugm(KDEBUG_INFO, "Slot connected:: %s\n",slot);
 			break;
 		}
+	kdebugf2();
 }
 
 void ConfigDialog::disconnectSlot(const QString& groupname, const QString& caption, const char* signal, const QObject* receiver, const char* slot,const QString& name)
 {
+	kdebugf();
 	for(QValueList<RegisteredControl>::iterator j=RegisteredControls.begin(); j!=RegisteredControls.end(); j++)
 		if(((*j).group == groupname) && ((*j).caption == caption) && ((*j).name == name) && (*j).type!=CONFIG_DELETED)
 		{
@@ -823,6 +831,7 @@ void ConfigDialog::disconnectSlot(const QString& groupname, const QString& capti
 			kdebugm(KDEBUG_INFO, "Slot disconnected:: %s\n",slot);
 			break;
 		}
+	kdebugf2();
 }
 
 
@@ -876,6 +885,7 @@ void ConfigDialog::unregisterSlotOnApply(const QObject* receiver, const char* na
 
 int ConfigDialog::findPreviousTab(int pos)
 {
+//	kdebugf();
 	if (RegisteredControls.isEmpty())
 		return -1;
 	if (pos<0)
@@ -891,6 +901,7 @@ int ConfigDialog::findPreviousTab(int pos)
 
 int ConfigDialog::findNextTab(int pos)
 {
+//	kdebugf();
 	if (RegisteredControls.isEmpty())
 		return -1;
 	if (pos<0)
@@ -913,6 +924,7 @@ int ConfigDialog::findNextTab(int pos)
 
 int ConfigDialog::findTab(const QString& groupname, int pos)
 {
+//	kdebugf();
 	if (RegisteredControls.isEmpty())
 		return -1;
 	if (pos<0)
@@ -958,6 +970,7 @@ void ConfigDialog::removeControl(const QString& groupname, const QString& captio
 
 void ConfigDialog::removeTab(const QString& caption)
 {
+//	kdebugf();
 	int pos=findTab(caption);
 	
 	if(pos<0)
@@ -972,10 +985,12 @@ void ConfigDialog::removeTab(const QString& caption)
 		RegisteredControls[pos].type=CONFIG_DELETED;
 	else
 		kdebugm(KDEBUG_INFO, "can't remove tab!\n");
+//	kdebugf2();
 }
 
 void ConfigDialog::decreaseNrOfControls(int control)
 {
+//	kdebugf();
 	int j;
 	QString localparent=RegisteredControls[control].parent;
 	for (j=control; j>=0; j--)
@@ -987,10 +1002,12 @@ void ConfigDialog::decreaseNrOfControls(int control)
 				if (RegisteredControls[j].type == CONFIG_TAB)
 					break;
 			}
+//	kdebugf2();
 }
 
 void ConfigDialog::increaseNrOfControls(const int startpos, const int endpos, const QString& parent)
 {
+//	kdebugf();
 	int j;
 	QString localparent=parent;
 	for (j=endpos;j>=startpos;j--)
@@ -1002,10 +1019,12 @@ void ConfigDialog::increaseNrOfControls(const int startpos, const int endpos, co
 				if (RegisteredControls[j].type == CONFIG_TAB)
 					break;
 			}
+//	kdebugf2();
 }
 
 int ConfigDialog::addControl(const QString& groupname, const ConfigDialog::RegisteredControl& control)
 {
+//	kdebugf();
 	int position= findTab(groupname);
 	if (position == -1) 
 	{
@@ -1027,9 +1046,11 @@ int ConfigDialog::addControl(const QString& groupname, const ConfigDialog::Regis
 					RegisteredControls.append(control);
 				else
 					RegisteredControls.insert(RegisteredControls.at(j+nrOfControls+1),control);
+//				kdebugf2();
 				return 0;
 			}	
-	
+
+//	kdebugf2();
 	return -2;
 
 // je¶li warto¶æ zwrócona jest -1 to nie znaleziono takiego TAB'a
@@ -1244,6 +1265,7 @@ void HotKey::setShortCut(const QKeySequence& shortcut)
 SelectFont::SelectFont(const QString &text, const QFont &val, QWidget *parent, const char *name, const QString &tip)
 	: QHBox(parent, name)
 {
+	kdebugf();
 	new QLabel(qApp->translate("@default", text), this);
 	(new QWidget(this))->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 
@@ -1254,6 +1276,7 @@ SelectFont::SelectFont(const QString &text, const QFont &val, QWidget *parent, c
 	setFont(val);
 	connect(button, SIGNAL(clicked()), this, SLOT(onClick()));
 	QToolTip::add(button, tip);
+	kdebugf2();
 }
 
 void SelectFont::setFont(const QFont &font)
@@ -1344,6 +1367,7 @@ SelectPaths::SelectPaths(QWidget *parent, const char* name): QDialog(parent, nam
 	connect(findPath, SIGNAL(clicked()), this, SLOT(choosePath()));
 	connect(pathEdit, SIGNAL(returnPressed()), this, SLOT(addPath()));
 	resize(330,330);
+	kdebugf2();
 }
 
 QStringList SelectPaths::getPathList()
@@ -1360,6 +1384,7 @@ void SelectPaths::setPathList(const QStringList& list)
 	pathListBox->insertStringList(list);
 	pathListBox->setSelected(0, true);
 	releaseList=list;
+	kdebugf2();
 }
 
 void SelectPaths::addPath()
@@ -1376,6 +1401,7 @@ void SelectPaths::addPath()
 				pathListBox->insertItem(dirtoadd);
 		}
 	pathListBox->setSelected(pathListBox->currentItem(),true);
+	kdebugf2();
 }
 
 void SelectPaths::replacePath()
@@ -1394,6 +1420,7 @@ void SelectPaths::replacePath()
 					pathListBox->changeItem(dirtochange, pathListBox->currentItem());
 				pathListBox->setSelected(pathListBox->currentItem(), true);
 			}
+	kdebugf2();
 }
 
 void SelectPaths::deletePath()
@@ -1404,6 +1431,7 @@ void SelectPaths::deletePath()
 		pathListBox->removeItem(pathListBox->currentItem());
 		pathListBox->setSelected(pathListBox->currentItem(),true);
 	}
+	kdebugf2();
 }
 
 void SelectPaths::choosePath()
@@ -1417,6 +1445,7 @@ void SelectPaths::choosePath()
 	QString s= QFileDialog::getExistingDirectory(startdir, this, "getDirectory", tr("Choose a directory"));
 	if (s!="")
 		pathEdit->setText(s);
+	kdebugf2();
 }
 
 void SelectPaths::okButton()
@@ -1429,6 +1458,7 @@ void SelectPaths::okButton()
 	pathEdit->setText("");
 	hide();
 	emit changed(releaseList);
+	kdebugf2();
 }
 
 void SelectPaths::cancelButton()
@@ -1438,6 +1468,7 @@ void SelectPaths::cancelButton()
 	pathListBox->insertStringList(releaseList);
 	pathEdit->setText("");
 	hide();
+	kdebugf2();
 }
 
 void SelectPaths::closeEvent(QCloseEvent *e)

@@ -122,12 +122,14 @@ UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) : 
 	// end connect
 	
  	loadGeometry(this, "General", "ImportExportDialogGeometry", 0, 0, 560, 450);
+	kdebugf2();
 }
 
 UserlistImportExport::~UserlistImportExport() 
 {
 	kdebugf();
 	saveGeometry(this, "General", "ImportExportDialogGeometry");
+	kdebugf2();
 }
 
 void UserlistImportExport::keyPressEvent(QKeyEvent *ke_event)
@@ -158,6 +160,7 @@ void UserlistImportExport::fromfile() {
 		else
 			MessageBox::wrn(tr("The application encountered an internal error\nThe import userlist from file was unsuccessful"));
 	}
+	kdebugf2();
 }
 
 void UserlistImportExport::startImportTransfer() {
@@ -170,6 +173,7 @@ void UserlistImportExport::startImportTransfer() {
 
 	if (gadu->doImportUserList())
 		pb_fetch->setEnabled(false);
+	kdebugf2();
 }
 
 void UserlistImportExport::makeUserlist() {
@@ -243,6 +247,7 @@ void UserlistImportExport::userListImported(bool ok, UserList& userList)
 		for (unsigned int i = 0; i < userList.count(); i++)
 			new QListViewItem(lv_userlist, QString::number(userList[i].uin), userList[i].nickname, userList[i].altnick, userList[i].first_name,
 				userList[i].last_name, userList[i].mobile, userList[i].group(), userList[i].email);
+	kdebugf2();
 }
 
 void UserlistImportExport::startExportTransfer()
@@ -252,6 +257,7 @@ void UserlistImportExport::startExportTransfer()
 	if (getCurrentStatus() == GG_STATUS_NOT_AVAIL)
 	{
 		MessageBox::wrn(tr("Cannot export user list to server in offline mode"));
+		kdebugf2();
 		return;
 	}
 
@@ -261,6 +267,7 @@ void UserlistImportExport::startExportTransfer()
 		pb_delete->setEnabled(false);
 		pb_tofile->setEnabled(false);	
 	}
+	kdebugf2();
 }
 
 void UserlistImportExport::ExportToFile(void)
@@ -290,6 +297,7 @@ void UserlistImportExport::ExportToFile(void)
 	pb_send->setEnabled(true);
 	pb_delete->setEnabled(true);
 	pb_tofile->setEnabled(true);
+	kdebugf2();
 }
 
 void UserlistImportExport::clean() {
@@ -298,6 +306,7 @@ void UserlistImportExport::clean() {
 	if (getCurrentStatus() == GG_STATUS_NOT_AVAIL)
 	{
 		MessageBox::wrn(tr("Cannot clear user list on server in offline mode"));
+		kdebugf2();
 		return;
 	}
 
@@ -307,10 +316,12 @@ void UserlistImportExport::clean() {
 		pb_delete->setEnabled(false);
 		pb_tofile->setEnabled(false);
 	}
+	kdebugf2();
 }
 
 void UserlistImportExport::userListExported(bool ok)
 {
+	kdebugf();
 	if (ok)
 		MessageBox::msg(tr("Your userlist has been successfully exported to server"));
 	else
@@ -319,10 +330,12 @@ void UserlistImportExport::userListExported(bool ok)
 	pb_send->setEnabled(true);
 	pb_delete->setEnabled(true);
 	pb_tofile->setEnabled(true);
+	kdebugf2();
 }
 
 void UserlistImportExport::userListCleared(bool ok)
 {
+	kdebugf();
 	if (ok)
 		MessageBox::msg(tr("Your userlist has been successfully deleted on server"));
 	else
@@ -331,5 +344,6 @@ void UserlistImportExport::userListCleared(bool ok)
 	pb_send->setEnabled(true);
 	pb_delete->setEnabled(true);
 	pb_tofile->setEnabled(true);
+	kdebugf2();
 }
 
