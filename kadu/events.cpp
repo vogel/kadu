@@ -301,7 +301,7 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 
 	UserListElement ule = userlist.byUinValue(senders[0]);
 /*
-	Sprawdzamy czy uin znajduje sie na naszej userliscie, jezeli tak to w zalezno¶ci czy
+	Sprawdzamy czy uin znajduje sie na naszej userliscie, jezeli nie to w zalezno¶ci czy
 	mamy w³±czon± ikonke w trayu to dodajemy tylko do userlisty(ale chyba nie zapisujemy)
 	lub dodajemy automatycznie do naszej userlisty.
 */
