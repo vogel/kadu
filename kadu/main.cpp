@@ -18,6 +18,7 @@
 #include "kadu.h"
 #include "kadu-config.h"
 
+//#define KADU_SIGNAL_HANDLING
 #ifndef DEBUG_ENABLED
 #define KADU_SIGNAL_HANDLING
 #endif
@@ -38,24 +39,23 @@
 Kadu *kadu;	
 
 #ifdef KADU_SIGNAL_HANDLING
+#include <qdatetime.h>
 #include <signal.h>
 #include "debug.h"
 void kadu_signal_handler(int s)
 {
 	kdebug("kadu_signal_handler: %d\n", s);
+	QFile::remove(ggPath("lock"));
+	QString f=QString("kadu.conf.backup.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
 	if (s==SIGSEGV)
 	{
 		kdebug("Kadu crashed :(\n");
-		config_file.sync();
-		QFile::remove(ggPath("lock"));
+		config_file.saveTo(ggPath(f.latin1()));
 		raise(SIGABRT);
 	}
 	else if (s==SIGINT || s==SIGTERM)
-	{
-		config_file.sync();
-		QFile::remove(ggPath("lock"));
-		exit(0);
-	}
+		config_file.saveTo(ggPath(f.latin1()));
+	exit(0);
 }
 #endif
 
@@ -67,6 +67,7 @@ int main(int argc, char *argv[])
 	signal(SIGSEGV, kadu_signal_handler);
 	signal(SIGINT, kadu_signal_handler);
 	signal(SIGTERM, kadu_signal_handler);
+	signal(SIGPIPE, kadu_signal_handler);
 #endif
 
 	new QApplication(argc, argv);

@@ -57,9 +57,13 @@ void ConfigFile::read() {
 	kdebug("ConfigFile::read(): finished\n");
 }
 
-void ConfigFile::write() {
+void ConfigFile::write(const QString &f) {
 	kdebugf();
-	QFile file(filename);
+	QFile file;
+	if (f==QString::null)
+		file.setName(filename);
+	else
+		file.setName(f);
 	QString line;
 
 	if (file.open(IO_WriteOnly | IO_Truncate)) {
@@ -82,6 +86,11 @@ void ConfigFile::write() {
 
 void ConfigFile::sync() {
 	write();
+}
+
+void ConfigFile::saveTo(const QString &f)
+{
+	write(f);
 }
 
 QMap<QString, QString>& ConfigFile::getGroupSection(const QString& name)

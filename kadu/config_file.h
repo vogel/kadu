@@ -16,7 +16,7 @@ class ConfigFile {
 
 	private:
 		void read();
-		void write();
+		void write(const QString &f=QString::null);
 		bool changeEntry(const QString &group, const QString &name, const QString &value);
 		QString getEntry(const QString &group, const QString &name, bool *ok = 0) const;
 
@@ -28,6 +28,7 @@ class ConfigFile {
 	public:
 		ConfigFile(const QString &filename);
 		void sync();
+		void saveTo(const QString &);
 		
 		QMap<QString, QString>& getGroupSection(const QString& name);
 

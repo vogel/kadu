@@ -206,7 +206,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * problem z kompilacj± modu³u powoduje przerwanie procesu budowania kadu (adrian)
 * bramki SMS sa wydzielowe do modulow (michal)
 * ³apanie do linków w chacie tak¿e: sftp:// smb:// file:/ rsync:// mailto: (joi)
-* Nowy instalator kaduinstaller.sh Sad Mephisto (Ron_K)
+* nowy instalator kaduinstaller.sh Sad Mephisto (Ron_K)
 * opisy modulow w plikach .desc moga byc wielojezyczne (michal)
 * metody moduleIncUsageCount i moduleDecUsageCount w ModulesManager (michal)
 * bramka ery obsuguje siec hejah (owczi/michal)
@@ -217,6 +217,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   u¿ycia modu³ów wystêpuj±cych w zale¿no¶ciach (adrian)
 * configure nie generuje bezpo¶rednio kodu wywo³añ funkcji init i close modu³ów
   statycznych, tylko kod wype³niaj±cy tablicê StaticModules (adrian)
+* w obs³udze sygna³ów systemowych konfiguracjê zapisujemy do innego pliku ni¿
+  kadu.conf (kadu.conf.backup.data) + obs³uga sygna³u SIGPIPE generowanego przez
+  niektóre WM przy zamykaniu iksów (joi)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
