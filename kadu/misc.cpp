@@ -193,6 +193,17 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats) {
 	return mesg;
 }
 
+QString unformatGGMessage(const QString &msg, int &formats_length, void *&formats) {
+	QString mesg;
+
+	mesg = msg;
+//	mesg.replace(QRegExp("^<html><head><meta\\sname=\"qrichtext\"\\s*\\s/></head>"), "");
+	mesg.replace(QRegExp("^<html><head>.*<body\\s.*\">\\n"), "");
+	mesg.replace(QRegExp("\\n</body></html>\\n$"), "");
+
+	return mesg;
+}
+
 QString parse_symbols(QString s, int i, UserListElement &ule, bool escape) {
 	QString r,d;
 	int j;

@@ -120,6 +120,10 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 
 	QPushButton *boldbtn = new QPushButton("B", buttontray);
 	boldbtn->setToggleButton(true);
+	QPushButton *italicbtn = new QPushButton("I", buttontray);
+	italicbtn->setToggleButton(true);
+	QPushButton *underlinebtn = new QPushButton("U", buttontray);
+	underlinebtn->setToggleButton(true);
 
 	autosend = new QPushButton(buttontray);
 	autosend->setPixmap(loadIcon("key_enter.png"));
@@ -221,8 +225,8 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 
 	body->setMimeSourceFactory(bodyformat);
 	body->setTextFormat(Qt::RichText);
-//	edit->setMimeSourceFactory(bodyformat);
-//	edit->setTextFormat(Qt::RichText);
+	edit->setMimeSourceFactory(bodyformat);
+	edit->setTextFormat(Qt::RichText);
 
 	connect(autosend, SIGNAL(clicked()), this, SLOT(regAutosend()));
 	connect(history, SIGNAL(clicked()), this, SLOT(HistoryBox()));
@@ -230,7 +234,9 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	connect(whois, SIGNAL(clicked()), this, SLOT(userWhois()));
 	connect(clearchat, SIGNAL(clicked()), this, SLOT(clearChatWindow()));
 	connect(cancelbtn, SIGNAL(clicked()), this, SLOT(cancelMessage()));
-	connect(boldbtn, SIGNAL(toggle(bool)), this, SLOT(toggleBold(bool)));
+	connect(boldbtn, SIGNAL(toggled(bool)), this, SLOT(toggledBold(bool)));
+	connect(italicbtn, SIGNAL(toggled(bool)), this, SLOT(toggledItalic(bool)));
+	connect(underlinebtn, SIGNAL(toggled(bool)), this, SLOT(toggledUnderline(bool)));
 
 	totaloccurences = 0;
 
@@ -263,8 +269,19 @@ Chat::~Chat() {
 	kdebug("Chat::~Chat: chat destroyed: index %d\n", index);
 }
 
-void Chat::toggleBold(bool on) {
+void Chat::toggledBold(bool on) {
+	kdebug("Chat::toggledBold()\n");
 	edit->setBold(on);
+}
+
+void Chat::toggledItalic(bool on) {
+	kdebug("Chat::toggledItalic()\n");
+	edit->setItalic(on);
+}
+
+void Chat::toggledUnderline(bool on) {
+	kdebug("Chat::toggledUnderline()\n");
+	edit->setUnderline(on);
 }
 
 void Chat::setupEncryptButton(bool enabled) {
@@ -664,6 +681,9 @@ void Chat::sendMessage(void) {
 		return;
 
 	myLastMessage = edit->text();
+	int formats_length;
+	void *formats;
+	myLastMessage = unformatGGMessage(myLastMessage, formats_length, formats);
 	escapeSpecialCharacters(myLastMessage);
 
 	if (edit->length() >= 2000)
@@ -743,7 +763,7 @@ void Chat::sendMessage(void) {
 			}
 #endif
 		}
-		writeMyMessage();	
+		writeMyMessage();
 	}
 	delete users;
 	free(utmp);
