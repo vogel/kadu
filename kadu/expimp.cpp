@@ -404,7 +404,7 @@ void UserlistExport::ExportToFile(void) {
 		if (file.open(IO_WriteOnly)) {
 			QTextStream stream(&file);
 			stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
-			stream << contacts << "\n";
+			stream << contacts;
 			file.close();
 			QMessageBox::information(this, "Export completed", i18n("Your userlist has been successfully exported to file"));
 			}
