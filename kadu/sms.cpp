@@ -11,7 +11,7 @@
 #include <qmessagebox.h>
 #include <klocale.h>
 #include <qregexp.h>
-
+#include <qpainter.h>
 //
 #include "kadu.h"
 #include "sms.h"
@@ -54,6 +54,11 @@ Sms::Sms(const QString& altnick, QDialog* parent) : QDialog (parent, "Sms")
 	grid->addWidget(b_send, 3, 3);
 	QObject::connect(b_send, SIGNAL(clicked()), this, SLOT(sendSms()));
 
+	QPushButton* b_send_int = new QPushButton(this);
+	b_send_int->setText(i18n("Send (internal)"));
+	grid->addWidget(b_send_int, 3, 1);
+	QObject::connect(b_send_int, SIGNAL(clicked()), this, SLOT(sendSmsInternal()));
+
 	smslen = new QLabel(this);
 	smslen->setText("0");
 	grid->addWidget(smslen, 3, 0);
@@ -88,7 +93,7 @@ void Sms::updateList(const QString &newnumber)
 	list->setCurrentText("");
 };
 
-int Sms::sendSms(void) {
+void Sms::sendSms(void) {
 	b_send->setEnabled(false);
 	body->setEnabled(false);
 
@@ -101,7 +106,7 @@ int Sms::sendSms(void) {
 		{
 			QMessageBox::warning(this, i18n("SMS error"), i18n("Sms application was not specified. Visit the configuration section") );
 			fprintf(stderr,"KK SMS application NOT specified. Exit.\n");
-			return -1;
+			return;
 		};
 		SmsAppPath=config.smsapp;
 	};
@@ -146,5 +151,115 @@ void Sms::updateCounter() {
 	snprintf(len, sizeof(len), "%d", body->text().length());
 	smslen->setText(len);
 }
+
+void Sms::sendSmsInternal()
+{
+	(new SmsThread(this,"502387781","xxx"))->start();
+};
+
+/********** SmsImageWidget **********/
+
+SmsImageWidget::SmsImageWidget(QWidget* parent,const QByteArray& image)
+	: QWidget(parent, "SmsImageWidget"), Image(image)
+{
+	setMinimumSize(Image.width(),Image.height());
+};
+
+void SmsImageWidget::paintEvent(QPaintEvent* e)
+{
+	QPainter p(this);
+	p.drawImage(0,0,Image);
+};
+
+/********** SmsImageDialog **********/
+
+SmsImageDialog::SmsImageDialog(QDialog* parent,const QByteArray& image)
+	: QDialog (parent, "SmsImageDialog")
+{
+	QGridLayout * grid = new QGridLayout(this, 2, 2, 10, 10);
+	SmsImageWidget* image_widget=new SmsImageWidget(this,image);
+	grid->addMultiCellWidget(image_widget, 0, 0, 0, 1);
+	QLabel* label=new QLabel(this);
+	label->setText(i18n("Enter text from the picture:"));
+	grid->addWidget(label, 1, 0);
+	code_edit=new QLineEdit(this);
+	grid->addWidget(code_edit, 1, 1);
+	connect(code_edit,SIGNAL(returnPressed()),this,SLOT(onReturnPressed()));
+};
+
+void SmsImageDialog::onReturnPressed()
+{
+	accept();
+	emit codeEntered(code_edit->text());
+};
+
+/********** SmsThread **********/
+
+SmsThread::SmsThread(QObject* parent,const QString& number,const QString& message)
+	: QObject(parent,"SmsThread"), QThread()
+{
+	qInitNetworkProtocols();
+};
+
+void SmsThread::onFinished(QNetworkOperation* op)
+{
+	fprintf(stderr,"SMS Operation State: %i\n",op->state());
+	if(State==SMS_LOADING_PAGE)
+	{
+		QString Page=QString(Data);
+		fprintf(stderr,"SMS Idea Page:\n%s\n",Page.local8Bit().data());
+		QRegExp pic_regexp("rotate_vt\\.asp\\?token=[^\"]+");
+		int pic_pos=pic_regexp.search(Page);
+		QString pic_path;
+		if(pic_pos>-1)
+			pic_path=Page.mid(pic_pos,pic_regexp.matchedLength());
+		fprintf(stderr,"SMS Idea Picture: %s\n",pic_path.local8Bit().data());
+		State=SMS_LOADING_PICTURE;
+		Data.resize(0);
+		delete UrlOp;
+		UrlOp=new QUrlOperator("http://213.218.116.131/"+pic_path);
+		QObject::connect(UrlOp,SIGNAL(finished(QNetworkOperation*)),this,SLOT(onFinished(QNetworkOperation*)));
+		QObject::connect(UrlOp,SIGNAL(data(const QByteArray&, QNetworkOperation*)),this,SLOT(onData(const QByteArray&, QNetworkOperation*)));	
+		UrlOp->get();
+	}
+	else if(State=SMS_LOADING_PICTURE)
+	{
+		fprintf(stderr,"SMS Idea Picture Loaded: %i bytes\n",Data.size());
+		delete UrlOp;
+		SmsImageDialog* d=new SmsImageDialog((QDialog*)parent(),Data);
+		connect(d,SIGNAL(codeEntered(const QString&)),this,SLOT(onCodeEntered(const QString&)));
+		d->show();
+	}
+	else
+	{
+//		delete UrlOp;
+	};
+};
+
+void SmsThread::onCodeEntered(const QString& code)
+{
+	State=SMS_LOADING_RESULTS;
+/*	UrlOp=new QUrlOperator(QString("http://213.218.116.131/default.asp?"));
+	QObject::connect(UrlOp,SIGNAL(finished(QNetworkOperation*)),this,SLOT(onFinished(QNetworkOperation*)));
+	QObject::connect(UrlOp,SIGNAL(data(const QByteArray&, QNetworkOperation*)),this,SLOT(onData(const QByteArray&, QNetworkOperation*)));
+	UrlOp->get();	*/
+};
+
+void SmsThread::onData(const QByteArray& data,QNetworkOperation* op)
+{
+	int old_size=Data.size();
+	Data.resize(old_size+data.size());
+	for(int i=0; i<data.size(); i++)
+		Data[old_size+i]=data[i];
+};
+
+void SmsThread::run()
+{
+	State=SMS_LOADING_PAGE;
+	UrlOp=new QUrlOperator("http://213.218.116.131");
+	QObject::connect(UrlOp,SIGNAL(finished(QNetworkOperation*)),this,SLOT(onFinished(QNetworkOperation*)));
+	QObject::connect(UrlOp,SIGNAL(data(const QByteArray&, QNetworkOperation*)),this,SLOT(onData(const QByteArray&, QNetworkOperation*)));	
+	UrlOp->get();
+};
 
 #include "sms.moc"

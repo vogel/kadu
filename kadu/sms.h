@@ -17,6 +17,11 @@
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include <qprocess.h>
+#include <qthread.h>
+#include <qnetwork.h>
+#include <qurloperator.h>
+#include <qnetworkprotocol.h>
+#include <qimage.h>
 
 class Sms : public QDialog {
 	Q_OBJECT
@@ -35,9 +40,68 @@ class Sms : public QDialog {
 	private slots:
 		void updateRecipient(const QString &);
 		void updateList(const QString& newnumber);
-		int sendSms();
+		void sendSms();
 		void updateCounter();
 		void smsSigHandler();
+		void sendSmsInternal();
+};
+
+class SmsImageWidget : public QWidget
+{
+	Q_OBJECT
+
+	private:
+		QImage Image;
+
+	protected:
+		virtual void paintEvent(QPaintEvent* e);
+
+	public:
+		SmsImageWidget(QWidget* parent,const QByteArray& image);
+};
+
+class SmsImageDialog : public QDialog
+{
+	Q_OBJECT
+
+	private:
+		QLineEdit* code_edit;
+
+	private slots:
+		void onReturnPressed();
+
+	public:
+		SmsImageDialog(QDialog* parent,const QByteArray& image);
+
+	signals:
+		void codeEntered(const QString& code);
+};
+
+class SmsThread : public QObject,public QThread
+{
+	Q_OBJECT
+
+	private:
+		QUrlOperator* UrlOp;
+		QByteArray Data;
+		enum SmsThreadState
+		{
+			SMS_LOADING_PAGE,
+			SMS_LOADING_PICTURE,
+			SMS_LOADING_RESULTS
+		};
+		SmsThreadState State;
+
+	private slots:
+		void onFinished(QNetworkOperation* op);
+		void onCodeEntered(const QString& code);
+		void onData(const QByteArray& data,QNetworkOperation* op);
+
+	protected:
+		void run();
+
+	public:
+		SmsThread(QObject* parent,const QString& number,const QString& message);
 };
 
 #endif
