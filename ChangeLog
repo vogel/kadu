@@ -79,14 +79,18 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   MODULE_SOURCES - lista plikow ".cpp", MODULE_MOC_HEADERS - naglowki dla moc'a,
   MODULE_HEADERS - pozostale, MODULE_CXXFLAGS oraz MODULE_LDFLAGS - wiadomo.
   generowany plik ".so" ma nazwe zgodna z nazwa katalogu modulu (adrian)
-* w katalogu $PREFIX/share/kadu/themes/sounds/default instalowany jest
-  domyslny zestaw dzwiekow skladajacy sie tylko z msg.wav (adrian)
 * configure wspiera wykrywanie bibliotek i naglowkow potrzebnych modulom.
   w pliku "spec" modulu mozemy okreslic: MODULE_LIBS - lista potrzebnych
   bibliotek, np. "artsc". MODULE_INCLUDES - lista potrzebnych naglowkow,
   np. "artsc.h", MODULE_LIBS_PATH i MODULE_INCLUDES_PATH - listy dodatkowych
   katalogow w ktorych configure ma szukac bibliotek i naglowkow. potrzebne
   do kompilacji modulu argumenty -I -L i -l dodawane sa automatycznie.
+* uporzadkowanie kodu dotyczacego dzwiekow (znajduje sie juz tylko w sound.cpp)
+* dodano mozliwosc wykonywania operacji na pasku narzedziowym
+  (API: addToolButton, addToolButtonSeparator, getToolButton, toolBar) (pawel_p)
+* zestawy dzwiekowe sa szukane katalogach "$PREFIX/kadu/themes/sounds" 
+    i ".gg/sounds" oraz dodanych przez uzytkownika, domyslnym zestawem dzwiekowym 
+    jest "default" (pawel_p)
 
 +++ wersja 0.3.6 (22.11.2003)
 * je¶li klikniemy na jaki¶ kontakt w userboxie, od którego otrzymali¶my jak±¶
