@@ -456,6 +456,9 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	centralFrame->setMinimumSize(50, 100);
 
 	refreshGroupTabBar();
+        int configTab = config_file.readNumEntry( "Look", "CurrentGroupTab" );
+        if ( configTab >= 0 && configTab < GroupBar -> count() )
+          ((QTabBar*) GroupBar) -> setCurrentTab( configTab );
 
 	dccsock = NULL;
 	/* dirty workaround for multiple showEvents */
@@ -1611,7 +1614,9 @@ bool Kadu::close(bool quit) {
 		config_file.writeEntry("General", "Geometry",geom);
 	    }
 		config_file.writeEntry("General", "DefaultDescription", defaultdescriptions.join("<-->"));
-		
+
+                config_file.writeEntry( "Look", "CurrentGroupTab", 
+                                        GroupBar -> currentTab() );
 		QString dockwindows=config_file.readEntry("General", "DockWindows");
 		QTextStream stream(&dockwindows, IO_WriteOnly);
 		stream << *kadu;
