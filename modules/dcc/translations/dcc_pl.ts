@@ -66,7 +66,7 @@
     </message>
     <message>
         <source>File size: %1B</source>
-        <translation>Rozmiar pliku: % 1B</translation>
+        <translation>Rozmiar pliku: %1B</translation>
     </message>
     <message>
         <source>Speed: 0kB/s (not started)  </source>
