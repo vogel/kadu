@@ -118,11 +118,11 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 
 	buttontray = new QHBox(edtbuttontray);
 
-	QPushButton *boldbtn = new QPushButton("B", buttontray);
+	boldbtn = new QPushButton("B", buttontray);
 	boldbtn->setToggleButton(true);
-	QPushButton *italicbtn = new QPushButton("I", buttontray);
+	italicbtn = new QPushButton("I", buttontray);
 	italicbtn->setToggleButton(true);
-	QPushButton *underlinebtn = new QPushButton("U", buttontray);
+	underlinebtn = new QPushButton("U", buttontray);
 	underlinebtn->setToggleButton(true);
 
 	autosend = new QPushButton(buttontray);
@@ -643,6 +643,12 @@ void Chat::writeMyMessage() {
 	if (!edit->isEnabled())
 		cancelMessage();
 	edit->clear();
+	if (boldbtn->isOn())
+		edit->setBold(true);
+	if (italicbtn->isOn())
+		edit->setItalic(true);
+	if (underlinebtn->isOn())
+		edit->setUnderline(true);
 }
 
 void Chat::addMyMessageToHistory() {

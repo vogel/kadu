@@ -202,7 +202,10 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 	mesg.replace(QRegExp("\\n</body></html>\\n$"), "");
 	mesg.replace(QRegExp("<p>"), "");
 	mesg.replace(QRegExp("</p>"), "");
+	mesg.replace(QRegExp("&lt;"), "<");
+	mesg.replace(QRegExp("&gt;"), ">");
 
+	kdebug("unformatGGMessage():\n%s\n", mesg.latin1());
 	return mesg;
 }
 

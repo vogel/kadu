@@ -41,6 +41,9 @@ class Chat : public QWidget {
 		int totaloccurences;
 		UinsList uins;
 		EmoticonSelector *emoticon_selector;
+		QPushButton *boldbtn;
+		QPushButton *italicbtn;
+		QPushButton *underlinebtn;
 		QPushButton *iconsel;
 		QPushButton *autosend;
 		QPushButton *lockscroll;
