@@ -154,6 +154,17 @@ void Register::socketEvent() {
 		status->setText(i18n("Error"));
 		return;
 		}
+	if (h->state == GG_STATE_CONNECTING) {
+		fprintf(stderr, "KK Register::socketEvent(): changing QSocketNotifiers.\n");
+		deleteSocketNotifiers();
+
+		snr = new QSocketNotifier(h->fd, QSocketNotifier::Read, kadu);
+		QObject::connect(snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
+
+		snw = new QSocketNotifier(h->fd, QSocketNotifier::Write, kadu);
+		QObject::connect(snw, SIGNAL(activated(int)), this, SLOT(dataSent()));
+		}
+
 	if (h->state == GG_STATE_ERROR) {
 		deleteSocketNotifiers();
 		gg_free_register(h);

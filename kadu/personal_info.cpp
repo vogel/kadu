@@ -148,76 +148,73 @@ void PersonalInfoDialog::socketEvent()
 	fprintf(stderr,"PersonalInfoDialog::socketEvent()\n");
 
 	int res;
-	if(State==WRITTING)
-		res=gg_pubdir_watch_fd(http);
+	if(State == WRITTING)
+		res = gg_pubdir_watch_fd(http);
 	else
-		res=gg_search_watch_fd(http);
+		res = gg_search_watch_fd(http);
 		
-	if(res<0)
-	{
+	if(res<0) {
 		setEnabled(true);
 		deleteSocketNotifiers();
-		if(State==WRITTING)
-		{
+		if (State == WRITTING) {
 			QMessageBox::critical(this,i18n("Error"),i18n("Public directory write failed"));
 			gg_pubdir_free(http);
-		}
-		else
-		{
+			}
+		else {
 			QMessageBox::critical(this,i18n("Error"),i18n("Public directory read failed"));		
 			gg_free_search(http);
-		};
-		State=READY;
+			}
+		State = READY;
 		return;
-	};
-        
-	if(http->state==GG_STATE_ERROR)
-	{
-		setEnabled(true);
-		deleteSocketNotifiers();
-		if(State==WRITTING)
-		{
-			QMessageBox::critical(this,i18n("Error"),i18n("Public directory write failed"));
-			gg_pubdir_free(http);
 		}
-		else
-		{
-			QMessageBox::critical(this,i18n("Error"),i18n("Public directory read failed"));		
-			gg_free_search(http);
-		};
-		State=READY;
-		return;
-	};
 
-	if(http->state==GG_STATE_DONE)
-	{
+	if (http->state == GG_STATE_CONNECTING) {
+		fprintf(stderr, "KK PersonalInfoDialog::socketEvent(): changing QSocketNotifiers.\n");
+		deleteSocketNotifiers();
+		createSocketNotifiers();
+		}
+
+	if (http->state == GG_STATE_ERROR) {
 		setEnabled(true);
 		deleteSocketNotifiers();
-		if(State==WRITTING)
-		{
+		if (State == WRITTING) {
+			QMessageBox::critical(this,i18n("Error"),i18n("Public directory write failed"));
+			gg_pubdir_free(http);
+			}
+		else {
+			QMessageBox::critical(this,i18n("Error"),i18n("Public directory read failed"));		
+			gg_free_search(http);
+			}
+		State = READY;
+		return;
+		}
+
+	if (http->state == GG_STATE_DONE) {
+		setEnabled(true);
+		deleteSocketNotifiers();
+		if (State == WRITTING) {
 			gg_pubdir_free(http);
 			accept();
-		}
-		else
-		{
+			}
+		else {
 			fillFields();
 			gg_free_search(http);
-		};	
-		State=READY;
+			}	
+		State = READY;
 		return;
-	};
-};
+		}
+}
 
 void PersonalInfoDialog::createSocketNotifiers()
 {
 	fprintf(stderr,"PersonalInfoDialog::createSocketNotifiers()\n");
 
-	SocketReadNotifier=new QSocketNotifier(http->fd,QSocketNotifier::Read);
-    	connect(SocketReadNotifier,SIGNAL(activated(int)),this,SLOT(dataReceived()));
+	SocketReadNotifier = new QSocketNotifier(http->fd, QSocketNotifier::Read);
+    	connect(SocketReadNotifier, SIGNAL(activated(int)), this, SLOT(dataReceived()));
 
-	SocketWriteNotifier=new QSocketNotifier(http->fd,QSocketNotifier::Write);
-	connect(SocketWriteNotifier,SIGNAL(activated(int)),this,SLOT(dataSent()));
-};
+	SocketWriteNotifier = new QSocketNotifier(http->fd, QSocketNotifier::Write);
+	connect(SocketWriteNotifier, SIGNAL(activated(int)), this, SLOT(dataSent()));
+}
 
 void PersonalInfoDialog::deleteSocketNotifiers()
 {
@@ -225,7 +222,7 @@ void PersonalInfoDialog::deleteSocketNotifiers()
 	delete SocketReadNotifier;
 	SocketWriteNotifier->setEnabled(false);
 	delete SocketWriteNotifier;
-};
+}
 
 void PersonalInfoDialog::fillFields()
 {
@@ -248,17 +245,16 @@ void PersonalInfoDialog::fillFields()
 
 void PersonalInfoDialog::closeEvent(QCloseEvent * e)
 {
-	if(State==WRITTING)
-	{
+	if (State == WRITTING) {
 		gg_pubdir_free(http);
 		deleteSocketNotifiers();
-	}
-	else if(State==READING)
-	{
-		gg_free_search(http);
-		deleteSocketNotifiers();		
-	};	
+		}
+	else
+		if (State == READING) {
+			gg_free_search(http);
+			deleteSocketNotifiers();
+			}
 	QWidget::closeEvent(e);
-};
+}
 
 #include "personal_info.moc"
