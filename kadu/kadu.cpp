@@ -1716,7 +1716,7 @@ void Kadu::startupProcedure()
 	path_.append("/history/");
 	mkdir(path_.local8Bit().data(), 0700);
 
-	if (!config_file.readNumEntry("General","UIN"))
+/*	if (!config_file.readNumEntry("General","UIN"))
 	{
 		switch (QMessageBox::information(kadu, "Kadu",
 			tr("You don't have a config file.\nWhat would you like to do?"),
@@ -1735,6 +1735,7 @@ void Kadu::startupProcedure()
 		}
 		setCaption(tr("Kadu: new user"));
 	}
+*/
 	Updates::initModule();
 
 	QString descr = defaultdescriptions.first();
@@ -1760,7 +1761,7 @@ void Kadu::startupProcedure()
 	// END: wsteczna kombatybilno¶æ, do wywalenia w 0.5.x
 
 	if (statusIndex == -1)
-		status.setOffline(descr);
+		status.setOffline();
 	else
 		status.setIndex(statusIndex, descr);
 	status.setFriendsOnly(config_file.readBoolEntry("General", "PrivateStatus"));
