@@ -171,7 +171,17 @@ int KaduListBoxPixmap::width(const QListBox* lb) const
 	if (config_file.readBoolEntry("Look", "MultiColumnUserbox"))
 		return config_file.readNumEntry("Look", "MultiColumnUserboxWidth", 230);
 	else
-		return QMAX(pm.width(), lb->visibleWidth());
+		return QMAX(pm.width(), lb->width()-20);
+/*
+   joi:
+   trzeba daæ lb->width()-20, ¿eby zmie¶ci³ siê suwak - nie mo¿na pobraæ jego
+   szeroko¶ci ze stylu, bo np Keramik zwraca b³êdn± warto¶æ (=100)  (ze standardowych
+   stylów KDE tylko SGI ma szeroko¶æ >20 i na nim kadu bêdzie kiepsko wygl±daæ:( )
+   
+   nie mo¿na te¿ wzi±æ lb->visibleWidth(), bo gdy w jednej zak³adce mamy tyle kontaktów,
+   ¿e siê nie mieszcz± na 1 ekranie, a w drugiej tyle ¿e siê mieszcz±, to przy
+   prze³±czaniu siê z jednej zak³adki do drugiej dostajemy poziomy suwak... :|
+*/
 }
 
 //#include <sys/time.h>
