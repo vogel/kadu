@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include <qmap.h>
+#include <qregexp.h>
 
 //
 #include "kadu.h"
@@ -76,6 +77,8 @@ void UserBox::maybeTip(const QPoint &c)
 		{
 			s += "<BR><BR>";
 			s += i18n("<B>Description:</B><BR>");
+			desc.replace(QRegExp("<"), "&lt;");
+			desc.replace(QRegExp(">"), "&gt;");
 			s += desc;
 		};
 		tip(r, s);
