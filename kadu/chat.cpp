@@ -70,7 +70,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 		}
 	else 
 		body = new KaduTextBrowser(this);
-	body->setFont(QFont(config.fonts.chatFont, config.fonts.chatFontSize));
+	body->setFont(config.fonts.chat);
 	QObject::connect(body, SIGNAL(linkClicked(const QString &)), this, SLOT(hyperlinkClicked(const QString &)));
 
 	QPoint pos = QCursor::pos();
@@ -80,7 +80,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 		userbox = new UserBox(split1);
 		userbox->setPaletteBackgroundColor(QColor(config.colors.userboxBgColor));
 		userbox->setPaletteForegroundColor(QColor(config.colors.userboxFgColor));
-		userbox->QListBox::setFont(QFont(config.fonts.userboxFont, config.fonts.userboxFontSize));
+		userbox->QListBox::setFont(config.fonts.userbox);
 
 		for (i = 0; i < uins.count(); i++)
 			userbox->addUser(userlist.byUin(uins[i]).altnick);
@@ -98,7 +98,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	edit = new CustomInput(this);
 	edit->setGeometry(5,215, 390, 150);
 	edit->setWordWrap(QMultiLineEdit::WidgetWidth);
-	edit->setFont(QFont(config.fonts.chatFont, config.fonts.chatFontSize));
+	edit->setFont(config.fonts.chat);
 
 	KIconLoader *loader = KGlobal::iconLoader();
 

@@ -144,10 +144,8 @@ void loadKaduConfig(void) {
 
 	konf->setGroup("Fonts");
 	QFontInfo info(a->font());
-	config.fonts.userboxFont = konf->readEntry("UserboxFont", info.family());
-	config.fonts.userboxFontSize = konf->readNumEntry("UserboxFontSize", info.pointSize());
-	config.fonts.chatFont = konf->readEntry("ChatFont", info.family());
-	config.fonts.chatFontSize = konf->readNumEntry("ChatFontSize", info.pointSize());
+	config.fonts.userbox = konf->readFontEntry("UserboxFont", &QFont(info.family(),info.pointSize()));
+	config.fonts.chat = konf->readFontEntry("ChatFont", &QFont(info.family(),info.pointSize()));
 
 	/* no need for it anymore */
 	delete konf;
@@ -247,10 +245,8 @@ void saveKaduConfig(void) {
 	konf->writeEntry("ChatUsrFontColor", config.colors.chatUsrFontColor);
 
 	konf->setGroup("Fonts");
-	konf->writeEntry("UserboxFont", config.fonts.userboxFont);
-	konf->writeEntry("UserboxFontSize", config.fonts.userboxFontSize);
-	konf->writeEntry("ChatFont", config.fonts.chatFont);
-	konf->writeEntry("ChatFontSize", config.fonts.chatFontSize);
+	konf->writeEntry("UserboxFont", config.fonts.userbox);
+	konf->writeEntry("ChatFont", config.fonts.chat);
 
 	konf->sync();
 	delete konf;
@@ -935,7 +931,7 @@ void ConfigDialog::setupTab6(void) {
 
 	cb_chatfont = new QComboBox(chatfont);
 	cb_chatfont->insertStringList(fdb.families());
-	cb_chatfont->setCurrentText(config.fonts.chatFont);
+	cb_chatfont->setCurrentText(config.fonts.chat.family());
 	connect(cb_chatfont, SIGNAL(activated(int)), this, SLOT(chooseChatFontGet(int)));
 
 	QHBox *chatfontsize = new QHBox(chatprop);
@@ -946,10 +942,10 @@ void ConfigDialog::setupTab6(void) {
 
 	cb_chatfontsize = new QComboBox(chatfontsize);
 
-	vl = fdb.pointSizes(config.fonts.chatFont,"Normal");
+	vl = fdb.pointSizes(config.fonts.chat.family(),"Normal");
 	for (QValueList<int>::Iterator points = vl.begin(); points != vl.end(); ++points)
 	cb_chatfontsize->insertItem(QString::number(*points));
-	cb_chatfontsize->setCurrentText(QString::number(config.fonts.chatFontSize));
+	cb_chatfontsize->setCurrentText(QString::number(config.fonts.chat.pointSize()));
 
 	QVGroupBox *userboxprop = new QVGroupBox(box6);
 	userboxprop->setTitle(i18n("Userbox properties"));
@@ -992,7 +988,7 @@ void ConfigDialog::setupTab6(void) {
 
 	cb_userboxfont = new QComboBox(userboxfont);
 	cb_userboxfont->insertStringList(fdb.families());
-	cb_userboxfont->setCurrentText(config.fonts.userboxFont);
+	cb_userboxfont->setCurrentText(config.fonts.userbox.family());
 	connect(cb_userboxfont, SIGNAL(activated(int)), this, SLOT(chooseUserboxFontGet(int)));
 
 	QHBox *userboxfontsize = new QHBox(userboxprop);
@@ -1003,10 +999,10 @@ void ConfigDialog::setupTab6(void) {
 
 	cb_userboxfontsize = new QComboBox(userboxfontsize);
 
-	vl = fdb.pointSizes(config.fonts.userboxFont,"Normal");
+	vl = fdb.pointSizes(config.fonts.userbox.family(),"Normal");
 	for (QValueList<int>::Iterator points = vl.begin(); points != vl.end(); ++points)
 	cb_userboxfontsize->insertItem(QString::number(*points));
-	cb_userboxfontsize->setCurrentText(QString::number(config.fonts.userboxFontSize));
+	cb_userboxfontsize->setCurrentText(QString::number(config.fonts.userbox.pointSize()));
 
 	addTab(box6, i18n("Look"));
 };
@@ -1306,10 +1302,8 @@ void ConfigDialog::updateConfig(void) {
 	config.colors.chatUsrFontColor = e_chatusrfontcolor->text();
 	config.colors.userboxBgColor = e_userboxbgcolor->text();
 	config.colors.userboxFgColor = e_userboxfgcolor->text();
-	config.fonts.chatFont = cb_chatfont->currentText();
-	config.fonts.chatFontSize = atoi(cb_chatfontsize->currentText().latin1());
-	config.fonts.userboxFont = cb_userboxfont->currentText();
-	config.fonts.userboxFontSize = atoi(cb_userboxfontsize->currentText().latin1());
+	config.fonts.chat = QFont(cb_chatfont->currentText(), atoi(cb_chatfontsize->currentText().latin1()));
+	config.fonts.userbox = QFont(cb_userboxfont->currentText(), atoi(cb_userboxfontsize->currentText().latin1()));
 	free(config.soundnotify);
 	config.soundnotify = strdup(e_soundnotify->text().latin1());
 	config.notifyglobal = b_notifyglobal->isChecked();

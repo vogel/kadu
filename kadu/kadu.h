@@ -43,10 +43,8 @@ struct colors {
 };
 
 struct fonts {
-	QString userboxFont;
-	int userboxFontSize;
-	QString chatFont;
-	int chatFontSize;
+	QFont userbox;
+	QFont chat;
 };
 
 struct config {

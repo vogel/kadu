@@ -450,7 +450,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	userbox = new UserBox(split, "userbox");
 	userbox->setPaletteBackgroundColor(QColor(config.colors.userboxBgColor));
 	userbox->setPaletteForegroundColor(QColor(config.colors.userboxFgColor));
-	userbox->QListBox::setFont(QFont(config.fonts.userboxFont, config.fonts.userboxFontSize));
+	userbox->QListBox::setFont(config.fonts.userbox);
 
 	/* add all users to userbox */
 	setActiveGroup("");

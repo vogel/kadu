@@ -171,7 +171,7 @@ void DockHint::Show(QString Text) {
 	
 //Zamotany kod, nie probowac nawet go zrozumiec ;)
 	QPoint p=dw->mapToGlobal(QPoint(0,0));
-	QSize size=QFontMetrics(QFont(config.fonts.userboxFont,config.fonts.userboxFontSize)).size(Qt::ExpandTabs,text());
+	QSize size=QFontMetrics(config.fonts.userbox).size(Qt::ExpandTabs,text());
 //trzeba dodac kilka pixeli bo to gowno wyzej nie dziala jak trzeba, na przyszlosc trzeba bedzie cos lepszego wymyslec
 	size=QSize(size.width()+5,size.height()+5);
 	fprintf(stderr,"w:%d,h:%d\n",size.width(),size.height());
@@ -216,7 +216,7 @@ void DockHint::remove_hint() {
 	}
 //zamotany kod
 	QPoint p=dw->mapToGlobal(QPoint(0,0));
-	QSize size=QFontMetrics(QFont(config.fonts.userboxFont,config.fonts.userboxFontSize)).size(Qt::ExpandTabs,text());
+	QSize size=QFontMetrics(config.fonts.userbox).size(Qt::ExpandTabs,text());
 //trzeba dodac kilka pixeli bo to gowno wyzej nie dziala jak trzeba, na przyszlosc trzeba bedzie cos lepszego wymyslec
 	size=QSize(size.width()+5,size.height()+5);
 	fprintf(stderr,"w:%d,h:%d\n",size.width(),size.height());
