@@ -65,7 +65,7 @@ class ModulesDialog : public QHBox
 	private slots:
 		void loadItem();
 		void unloadItem();
-		void moduleAction();
+		void moduleAction(QListViewItem *);
 		void itemsChanging();
 		void getInfo();
 		void refreshLists();

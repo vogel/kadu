@@ -113,7 +113,7 @@ ModulesDialog::ModulesDialog()
 	
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 	connect(lv_modules, SIGNAL(selectionChanged()), this, SLOT(itemsChanging()));
-	connect(lv_modules, SIGNAL(doubleClicked(QListViewItem *, const QPoint &, int)), this, SLOT(moduleAction()));
+	connect(lv_modules, SIGNAL(doubleClicked(QListViewItem *)), this, SLOT(moduleAction(QListViewItem *)));
 	
  	loadGeometry(this, "General", "ModulesDialogGeometry", 0, 0, 450, 400);
 	refreshLists();
@@ -131,7 +131,7 @@ void ModulesDialog::itemsChanging()
 		getInfo();
 }
 
-void ModulesDialog::moduleAction()
+void ModulesDialog::moduleAction(QListViewItem *)
 {
 	if (lv_modules->selectedItem() != NULL)
 		if ((lv_modules->selectedItem()->text(1) == tr("Dynamic")) && 
