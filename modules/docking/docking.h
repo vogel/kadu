@@ -20,6 +20,7 @@ class DockingManager : public QObject
 		void pendingMessageDeleted();
 		void statusPixmapChanged(QPixmap &);
 		void findTrayPosition(QPoint& pos);
+		void onApplyConfigDialog();
 
 	public:
 		DockingManager();

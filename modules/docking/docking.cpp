@@ -40,7 +40,7 @@ DockingManager::DockingManager() : QObject(NULL, "docking_manager")
 	kdebugf();
 	icon_timer = new QTimer(this);
 	blink = false;
-	QObject::connect(icon_timer, SIGNAL(timeout()), this, SLOT(changeIcon()));
+	connect(icon_timer, SIGNAL(timeout()), this, SLOT(changeIcon()));
 
 	connect(kadu, SIGNAL(statusPixmapChanged(QPixmap &)),
 		this, SLOT(statusPixmapChanged(QPixmap &)));
@@ -52,12 +52,27 @@ DockingManager::DockingManager() : QObject(NULL, "docking_manager")
 	connect(dockppm, SIGNAL(activated(int)), this, SLOT(dockletChange(int)));
 	connect(this, SIGNAL(mousePressMidButton()), &pending, SLOT(openMessages()));
 
+	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show tooltip in tray"), "ShowTooltipInTray", true);
+	ConfigDialog::registerSlotOnApply(this, SLOT(onApplyConfigDialog()));
+	
+	kdebugf2();
+}
+
+void DockingManager::onApplyConfigDialog()
+{
+	kdebugf();
+	if (ConfigDialog::getCheckBox("General", "Show tooltip in tray")->isChecked())
+		defaultToolTip();
+	else
+		emit trayTooltipChanged("");
 	kdebugf2();
 }
 
 DockingManager::~DockingManager()
 {
 	kdebugf();
+	ConfigDialog::unregisterSlotOnApply(this, SLOT(onApplyConfigDialog()));
+	ConfigDialog::removeControl("General", "Show tooltip in tray");
 
 	disconnect(kadu, SIGNAL(statusPixmapChanged(QPixmap &)),
 		this, SLOT(statusPixmapChanged(QPixmap &)));
@@ -118,14 +133,17 @@ void DockingManager::pendingMessageDeleted()
 
 void DockingManager::defaultToolTip()
 {
-	QString tiptext = tr("Left click - hide/show window\nMiddle click or Left click- open message");
-	tiptext.append(tr("\n\nCurrent status:\n%1")
-		.arg(qApp->translate("@default", Status::name(gadu->status().index()))));
+	if (config_file.readBoolEntry("General", "ShowTooltipInTray"))
+	{
+		QString tiptext = tr("Left click - hide/show window\nMiddle click or Left click- open message");
+		tiptext.append(tr("\n\nCurrent status:\n%1")
+			.arg(qApp->translate("@default", Status::name(gadu->status().index()))));
 
-	if (gadu->status().hasDescription())
-		tiptext.append(tr("\n\nDescription:\n%2").arg(gadu->status().description()));
+		if (gadu->status().hasDescription())
+			tiptext.append(tr("\n\nDescription:\n%2").arg(gadu->status().description()));
 
-	emit trayTooltipChanged(tiptext);
+		emit trayTooltipChanged(tiptext);
+	}
 }
 
 void DockingManager::findTrayPosition(QPoint& pos)
