@@ -128,7 +128,6 @@ changePassword::changePassword(QDialog *parent, const char *name) : QDialog(pare
 	l_actpwd->setText(i18n("Actual password"));
 	actpwd = new QLineEdit(this);
 	actpwd->setEchoMode(QLineEdit::Password);
-	actpwd->setText(config.password);
 
 	QLabel *l_actemail = new QLabel(this);
 	l_actemail->setText(i18n("Actual email"));
