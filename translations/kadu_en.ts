@@ -630,19 +630,11 @@ What would you like to do?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;About</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>A&amp;uthors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Thanks</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;History</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -927,13 +919,6 @@ Your password is incorrect !!!</source>
     </message>
     <message>
         <source>Disconnection has occured</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>GaduProtocol</name>
-    <message>
-        <source>Resend &amp;userlist</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2263,6 +2248,10 @@ The delete userlist on server was unsuccessful</source>
         <source>Your userlist has been successfully exported to server</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Your userlist has been successfully deleted on server</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UserlistImport</name>
@@ -2325,11 +2314,6 @@ The delete userlist on server was unsuccessful</source>
     <message>
         <source>The application encountered an internal error
 The import userlist from file was unsuccessful</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The application encountered an internal error
-The import was unsuccessful</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

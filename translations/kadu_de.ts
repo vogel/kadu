@@ -635,20 +635,12 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
         <translation>&amp;Schliesse</translation>
     </message>
     <message>
-        <source>&amp;About</source>
-        <translation>&amp;Über</translation>
-    </message>
-    <message>
         <source>A&amp;uthors</source>
         <translation>A&amp;utoren</translation>
     </message>
     <message>
         <source>&amp;Thanks</source>
         <translation>&amp;Dank</translation>
-    </message>
-    <message>
-        <source>&amp;History</source>
-        <translation>&amp;Geschichte</translation>
     </message>
     <message>
         <source>&amp;ChangeLog</source>
@@ -934,13 +926,6 @@ Dein Passwort ist falsch!!!</translation>
     <message>
         <source>Please change your email in &quot;Change password/email&quot; window. Leave new password field blank.</source>
         <translation>Ändern Sie Ihre Email-Adresse in &quot;Passwort/Email ändern&quot;-Fenster. Lassen Sie das Feld ür neues Passwort leer.</translation>
-    </message>
-</context>
-<context>
-    <name>GaduProtocol</name>
-    <message>
-        <source>Resend &amp;userlist</source>
-        <translation>&amp;Kontakt-Liste senden</translation>
     </message>
 </context>
 <context>
@@ -2276,6 +2261,10 @@ Die Anwendung hat einen Fehler zurückgemeldet</translation>
         <source>Your userlist has been successfully exported to server</source>
         <translation>Die Kontakt-Liste wurde auf den Server exportiert</translation>
     </message>
+    <message>
+        <source>Your userlist has been successfully deleted on server</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UserlistImport</name>
@@ -2334,11 +2323,6 @@ Die Anwendung hat einen Fehler zurückgemeldet</translation>
     <message>
         <source>The application encountered an internal error
 The import userlist from file was unsuccessful</source>
-        <translation>Das Importieren wurde wegen eines Fehlers beendet</translation>
-    </message>
-    <message>
-        <source>The application encountered an internal error
-The import was unsuccessful</source>
         <translation>Das Importieren wurde wegen eines Fehlers beendet</translation>
     </message>
     <message>

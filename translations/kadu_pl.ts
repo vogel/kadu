@@ -635,20 +635,12 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <translation>&amp;Zamknij</translation>
     </message>
     <message>
-        <source>&amp;About</source>
-        <translation>&amp;O programie</translation>
-    </message>
-    <message>
         <source>A&amp;uthors</source>
         <translation>A&amp;utorzy</translation>
     </message>
     <message>
         <source>&amp;Thanks</source>
         <translation>&amp;Podziękowania</translation>
-    </message>
-    <message>
-        <source>&amp;History</source>
-        <translation>&amp;Historia</translation>
     </message>
     <message>
         <source>&amp;ChangeLog</source>
@@ -934,13 +926,6 @@ Twoje hasło jest nieprawidłowe!!!</translation>
     <message>
         <source>Please change your email in &quot;Change password/email&quot; window. Leave new password field blank.</source>
         <translation>Zmień swój e-mail w oknie &quot;Zmień hasło/e-mail&quot;. Pole nowe hasło pozostaw puste.</translation>
-    </message>
-</context>
-<context>
-    <name>GaduProtocol</name>
-    <message>
-        <source>Resend &amp;userlist</source>
-        <translation>&amp;Wyślij listę kontaktów</translation>
     </message>
 </context>
 <context>
@@ -2281,6 +2266,10 @@ zostało zakończone niepowodzeniem.</translation>
         <source>Your userlist has been successfully exported to server</source>
         <translation>Lista kontaktów została wyeksportowana na serwer.</translation>
     </message>
+    <message>
+        <source>Your userlist has been successfully deleted on server</source>
+        <translation>Lista kontaktów została usunięta z serwera</translation>
+    </message>
 </context>
 <context>
     <name>UserlistImport</name>
@@ -2341,12 +2330,6 @@ zostało zakończone niepowodzeniem.</translation>
 The import userlist from file was unsuccessful</source>
         <translation>Import listy kontaktów z pliku został zakończony
 niepowodzeniem z powodu wewnętrznego błędu.</translation>
-    </message>
-    <message>
-        <source>The application encountered an internal error
-The import was unsuccessful</source>
-        <translation>Import listy kontaktów został
-zakończony niepowodzeniem.</translation>
     </message>
     <message>
         <source>&amp;Merge results</source>

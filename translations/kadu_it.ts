@@ -635,20 +635,12 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
         <translation>&amp;Chiudi</translation>
     </message>
     <message>
-        <source>&amp;About</source>
-        <translation>&amp;Informazioni su</translation>
-    </message>
-    <message>
         <source>A&amp;uthors</source>
         <translation>A&amp;utori</translation>
     </message>
     <message>
         <source>&amp;Thanks</source>
         <translation>&amp;Ringraziamenti</translation>
-    </message>
-    <message>
-        <source>&amp;History</source>
-        <translation>C&amp;ronologia</translation>
     </message>
     <message>
         <source>&amp;ChangeLog</source>
@@ -934,13 +926,6 @@ La password è errata!!!</translation>
     <message>
         <source>Please change your email in &quot;Change password/email&quot; window. Leave new password field blank.</source>
         <translation>Cambiare indirizzo e-mail in &quot;Cambia password/email&quot;. Lasciare vuoto il campo nuova password.</translation>
-    </message>
-</context>
-<context>
-    <name>GaduProtocol</name>
-    <message>
-        <source>Resend &amp;userlist</source>
-        <translation>&amp;Reinvia la lista dei contatti</translation>
     </message>
 </context>
 <context>
@@ -2279,6 +2264,10 @@ Cancellazione lista contatti su server GG fallita</translation>
         <source>Your userlist has been successfully exported to server</source>
         <translation>La vostra lista dei contatti è stata esportata con successo sul server GG</translation>
     </message>
+    <message>
+        <source>Your userlist has been successfully deleted on server</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UserlistImport</name>
@@ -2339,12 +2328,6 @@ Cancellazione lista contatti su server GG fallita</translation>
 The import userlist from file was unsuccessful</source>
         <translation>L&apos;applicazione ha generatoun errore interno
 L&apos;importazione della lista contatti è fallita</translation>
-    </message>
-    <message>
-        <source>The application encountered an internal error
-The import was unsuccessful</source>
-        <translation>L&apos;applicazione ha generato un errore interno
-L&apos;importazione è fallita</translation>
     </message>
     <message>
         <source>&amp;Merge results</source>
