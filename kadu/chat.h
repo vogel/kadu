@@ -55,8 +55,9 @@ class Chat : public QDialog {
 		void setTitle(void);
 		void setEnabledScrolling(bool);
 		void formatMessage(bool, QString &, QString &, const char *, QString &);
-		int checkPresence(UinsList, QString &, time_t, QString &);
+		void checkPresence(UinsList, QString &, time_t, QString &);
 		void addEmoticon(QString);
+		void scrollMessages(QString &);
 
 		KTextBrowser *body;
 		CustomInput *edit;
@@ -76,7 +77,7 @@ class Chat : public QDialog {
 		QString convertCharacters(QString);
 
 	private slots:
-		void timerReset(void);
+		void resetAutoAway(void);
 		void userWhois(void);
 		void insertEmoticon(void);
 		void regAutosend(void);

@@ -150,7 +150,7 @@ Chat::Chat(UinsList uins, QWidget *parent)
 
 	totaloccurences = 0;
 
-	QObject::connect(edit, SIGNAL(textChanged()), this, SLOT(timerReset()));
+	QObject::connect(edit, SIGNAL(textChanged()), this, SLOT(resetAutoAway()));
 }
 
 Chat::~Chat() {
@@ -329,7 +329,7 @@ void Chat::cleanUp(void) {
 }
 
 /* reset autoaway timer, something was pressed */
-void Chat::timerReset(void) {
+void Chat::resetAutoAway(void) {
 	kadu->autoaway->stop();
 	kadu->autoaway->start(config.autoawaytime * 1000, TRUE);
 }	
@@ -351,13 +351,7 @@ void Chat::formatMessage(bool me, QString &altnick, QString &msg, const char *ti
 	toadd.append("</TD></TR></TABLE>");
 }
 
-/* invoked from outside when new message arrives, this is the window to the world */
-int Chat::checkPresence(UinsList senders, QString &msg, time_t time, QString &toadd) {
-	kadu->autoaway->stop();
-	kadu->autoaway->start(config.autoawaytime * 1000, TRUE);
-
-	formatMessage(false, userlist.byUin(senders[0]).altnick, msg, timestamp(time), toadd);
-
+void Chat::scrollMessages(QString &toadd) {
 	if (config.chatprune)
 		pruneWindow();
 
@@ -368,8 +362,15 @@ int Chat::checkPresence(UinsList senders, QString &msg, time_t time, QString &to
 		if (scrolling)
 			body->scrollToBottom();
 		}
+}
 
-	return 0;
+/* invoked from outside when new message arrives, this is the window to the world */
+void Chat::checkPresence(UinsList senders, QString &msg, time_t time, QString &toadd) {
+	resetAutoAway();
+
+	formatMessage(false, userlist.byUin(senders[0]).altnick, msg, timestamp(time), toadd);
+
+	scrollMessages(toadd);
 }
 
 void Chat::setEnabledScrolling(bool enabled) {
@@ -398,15 +399,7 @@ void Chat::writeMyMessage() {
 
 	formatMessage(true, config.nick, myLastMessage, timestamp(), toadd);
 
-	if (config.chatprune)
-		pruneWindow();
-
-	if (!config.scrolldown)
-		body->setText(toadd + body->text());
-	else {
-		body->setText(body->text() + toadd);
-		body->scrollToBottom();    
-		}
+	scrollMessages(toadd);
 
 	edit->clear();
 	edit->setReadOnly(false);
