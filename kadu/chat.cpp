@@ -1074,6 +1074,9 @@ void Chat::ackReceivedSlot(int Seq) {
 /* sends the message typed */
 void Chat::sendMessage(void) {
 
+	if (edit->text() == "")
+		return;
+	
 	emit messageSendRequested(this);
 
 	QString mesg;
