@@ -649,6 +649,10 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
         <source>Multiline description in userbox</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Local TCP port:</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -2152,52 +2156,52 @@ Rechte Maustaste - Setze Status</translation>
 <context>
     <name>UserBox</name>
     <message>
-        <source>&lt;I&gt;Available&lt;/I&gt;</source>
-        <translation>&lt;I&gt;Erreichbar&lt;/I&gt;</translation>
+        <source>&lt;i&gt;Available&lt;/i&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;I&gt;Busy&lt;/I&gt;</source>
-        <translation>&lt;I&gt;Beschäftigt&lt;/I&gt;</translation>
+        <source>&lt;i&gt;Busy&lt;/i&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;I&gt;Mobile:&lt;/I&gt;&lt;B&gt; </source>
-        <translation>&lt;I&gt;Telefon: &lt;/I&gt;&lt;B&gt;</translation>
+        <source>&lt;i&gt;Mobile:&lt;/i&gt;&lt;b&gt; </source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;nobr&gt;&lt;I&gt;Not available&lt;/I&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;I&gt;Unerrreichbar&lt;/I&gt;&lt;/nobr&gt;</translation>
+        <source>&lt;nobr&gt;&lt;i&gt;Not available&lt;/i&gt;&lt;/nobr&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;I&gt;Invisible&lt;/I&gt;</source>
-        <translation>&lt;I&gt;Versteckt&lt;/I&gt;</translation>
+        <source>&lt;i&gt;Invisible&lt;/i&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;I&gt;Invisible &lt;B&gt;(d.)&lt;/B&gt;&lt;/I&gt;</source>
-        <translation>&lt;I&gt;Versteckt mit &lt;B&gt;Beschr.&lt;/B&gt;&lt;/I&gt;</translation>
+        <source>&lt;i&gt;Invisible &lt;b&gt;(d.)&lt;/b&gt;&lt;/i&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;nobr&gt;&lt;I&gt;Busy &lt;B&gt;(d.)&lt;/B&gt;&lt;/I&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;I&gt;Beschäftigt mit &lt;B&gt;Beschr.&lt;/B&gt;&lt;/I&gt;&lt;/nobr&gt;</translation>
+        <source>&lt;nobr&gt;&lt;i&gt;Busy &lt;b&gt;(d.)&lt;/b&gt;&lt;/i&gt;&lt;/nobr&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;nobr&gt;&lt;I&gt;Not available &lt;B&gt;(d.)&lt;/B&gt;&lt;/I&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;I&gt;Unerreichbar mit &lt;B&gt;Beschr.&lt;/B&gt;&lt;/I&gt;&lt;/nobr&gt;</translation>
+        <source>&lt;nobr&gt;&lt;i&gt;Not available &lt;b&gt;(d.)&lt;/b&gt;&lt;/i&gt;&lt;/nobr&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;nobr&gt;&lt;I&gt;Available &lt;B&gt;(d.)&lt;/B&gt;&lt;/I&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;I&gt;DErreichbar mit &lt;B&gt;Beschr.&lt;/B&gt;&lt;/I&gt;&lt;/nobr&gt;</translation>
+        <source>&lt;nobr&gt;&lt;i&gt;Available &lt;b&gt;(d.)&lt;/b&gt;&lt;/i&gt;&lt;/nobr&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;nobr&gt;&lt;I&gt;Blocking&lt;/I&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;I&gt;Blockiert uns&lt;/I&gt;&lt;/nobr&gt;</translation>
+        <source>&lt;nobr&gt;&lt;i&gt;Blocking&lt;/i&gt;&lt;/nobr&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;nobr&gt;&lt;I&gt;Unknown status&lt;/I&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;I&gt;Unbekannter Status&lt;/I&gt;&lt;/nobr&gt;</translation>
+        <source>&lt;nobr&gt;&lt;i&gt;Unknown status&lt;/i&gt;&lt;/nobr&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;B&gt;Description:&lt;/B&gt;&lt;BR&gt;</source>
-        <translation>&lt;B&gt;Beschreibung:&lt;/B&gt;&lt;BR&gt;</translation>
+        <source>&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

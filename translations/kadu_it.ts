@@ -649,6 +649,10 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
         <source>Multiline description in userbox</source>
         <translation>Descrizione multilinea nella Lista contatti</translation>
     </message>
+    <message>
+        <source>Local TCP port:</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1866,6 +1870,10 @@ Ora è possibile aggiungere i vostri amici alla lista dei contatti.</translation
         <source>&amp;Chat</source>
         <translation>&amp;Chat</translation>
     </message>
+    <message>
+        <source> </source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SelectPaths</name>
@@ -2145,52 +2153,52 @@ Click dx - cambia status</translation>
 <context>
     <name>UserBox</name>
     <message>
-        <source>&lt;I&gt;Available&lt;/I&gt;</source>
-        <translation>&lt;I&gt;Disponibile&lt;/I&gt;</translation>
+        <source>&lt;i&gt;Available&lt;/i&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;I&gt;Busy&lt;/I&gt;</source>
-        <translation>&lt;I&gt;Occupato&lt;/I&gt;</translation>
+        <source>&lt;i&gt;Busy&lt;/i&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;I&gt;Mobile:&lt;/I&gt;&lt;B&gt; </source>
-        <translation>&lt;I&gt;Cell:&lt;/I&gt;&lt;B&gt; </translation>
+        <source>&lt;i&gt;Mobile:&lt;/i&gt;&lt;b&gt; </source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;nobr&gt;&lt;I&gt;Not available&lt;/I&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;I&gt;Non disponibile&lt;/I&gt;&lt;/nobr&gt;</translation>
+        <source>&lt;nobr&gt;&lt;i&gt;Not available&lt;/i&gt;&lt;/nobr&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;I&gt;Invisible&lt;/I&gt;</source>
-        <translation>&lt;I&gt;Invisibile&lt;/I&gt;</translation>
+        <source>&lt;i&gt;Invisible&lt;/i&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;I&gt;Invisible &lt;B&gt;(d.)&lt;/B&gt;&lt;/I&gt;</source>
-        <translation>&lt;I&gt;Invisibile &lt;B&gt;(desc.)&lt;/B&gt;&lt;/I&gt;</translation>
+        <source>&lt;i&gt;Invisible &lt;b&gt;(d.)&lt;/b&gt;&lt;/i&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;nobr&gt;&lt;I&gt;Busy &lt;B&gt;(d.)&lt;/B&gt;&lt;/I&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;I&gt;Occupato &lt;B&gt;(desc.)&lt;/B&gt;&lt;/I&gt;&lt;/nobr&gt;</translation>
+        <source>&lt;nobr&gt;&lt;i&gt;Busy &lt;b&gt;(d.)&lt;/b&gt;&lt;/i&gt;&lt;/nobr&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;nobr&gt;&lt;I&gt;Not available &lt;B&gt;(d.)&lt;/B&gt;&lt;/I&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;I&gt;Non disponibile &lt;B&gt;(d.)&lt;/B&gt;&lt;/I&gt;&lt;/nobr&gt;</translation>
+        <source>&lt;nobr&gt;&lt;i&gt;Not available &lt;b&gt;(d.)&lt;/b&gt;&lt;/i&gt;&lt;/nobr&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;nobr&gt;&lt;I&gt;Available &lt;B&gt;(d.)&lt;/B&gt;&lt;/I&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;I&gt;Disponibile &lt;B&gt;(d.)&lt;/B&gt;&lt;/I&gt;&lt;/nobr&gt;</translation>
+        <source>&lt;nobr&gt;&lt;i&gt;Available &lt;b&gt;(d.)&lt;/b&gt;&lt;/i&gt;&lt;/nobr&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;nobr&gt;&lt;I&gt;Blocking&lt;/I&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;I&gt;Bloccato&lt;/I&gt;&lt;/nobr&gt;</translation>
+        <source>&lt;nobr&gt;&lt;i&gt;Blocking&lt;/i&gt;&lt;/nobr&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;nobr&gt;&lt;I&gt;Unknown status&lt;/I&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;I&gt;Condizione sconosciuta&lt;/I&gt;&lt;/nobr&gt;</translation>
+        <source>&lt;nobr&gt;&lt;i&gt;Unknown status&lt;/i&gt;&lt;/nobr&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;B&gt;Description:&lt;/B&gt;&lt;BR&gt;</source>
-        <translation>&lt;B&gt;Descrizione:&lt;/B&gt;&lt;BR&gt;</translation>
+        <source>&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
