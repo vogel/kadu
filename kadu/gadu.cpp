@@ -2381,13 +2381,12 @@ void GaduStatus::operator = (const UserStatus &copyMe)
 	setStatus(copyMe);
 }
 
-QPixmap GaduStatus::pixmap(eUserStatus stat, bool hasDescription, bool mobile, bool big) const
+QPixmap GaduStatus::pixmap(eUserStatus stat, bool hasDescription, bool mobile) const
 {
 //	kdebugf();
 
 	QString add = (hasDescription ? "WithDescription" : "");
 	add.append(mobile ? (!hasDescription) ? "WithMobile" : "Mobile" : "");
-	add.append(big ? "Big" : "");
 
 	switch (stat)
 	{
