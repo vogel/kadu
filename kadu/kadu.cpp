@@ -1617,26 +1617,6 @@ void Kadu::startupProcedure()
 	path_.append("/history/");
 	mkdir(path_.local8Bit().data(), 0700);
 
-/*	if (!config_file.readNumEntry("General","UIN"))
-	{
-		switch (QMessageBox::information(kadu, "Kadu",
-			tr("You don't have a config file.\nWhat would you like to do?"),
-			tr("New UIN"),
-			tr("Configure"),
-			tr("Cancel"), 0, 1) )
-		{
-			case 1: // Configure
-				ConfigDialog::showConfigDialog(qApp);
-				break;
-			case 0: // Register
-				emit wantRegister();
-				break;
-			case 2: // Nothing
-				break;
-		}
-		setCaption(tr("Kadu: new user"));
-	}
-*/
 	Updates::initModule();
 
 	QString descr = defaultdescriptions.first();

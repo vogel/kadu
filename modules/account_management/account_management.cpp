@@ -47,16 +47,12 @@ AccountManagement::AccountManagement()
 	icons_manager.registerMenuItem(kadu->mainMenu(), tr("&Change password/email"), "ChangePassMail");
 	icons_manager.registerMenuItem(kadu->mainMenu(), tr("Remind &password"), "ChangePass");
 
-	connect(kadu, SIGNAL(wantRegister()), this, SLOT(registerUser()));
-
 	kdebugf2();
 }
 
 AccountManagement::~AccountManagement()
 {
 	kdebugf();
-	
-	disconnect(kadu, SIGNAL(wantRegister()), this, SLOT(registerUser()));
 	
 	QPopupMenu *MainMenu=kadu->mainMenu();
 	MainMenu->removeItem(remindMenuId);

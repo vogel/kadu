@@ -119,28 +119,34 @@ class Kadu : public QMainWindow
 		~Kadu();
 		bool userInActiveGroup(UinType uin);
 		void removeUser(QStringList &, bool);
+
 		/**
 			Zwraca wskaznik do belki menu glownego okna.
 		**/
 		QMenuBar* menuBar();
+
 		/**
 			Zwraca wskaznik do glownego menu programu.
 		**/
 		QPopupMenu* mainMenu();
+
 		/**
 			Zwraca wskaznik do zakladek z nazwami grup.
 		**/
 		KaduTabBar* groupBar();
+
 		/**
 			Zwraca wskaznik do userbox-a w glownym oknie.
 		**/
 		UserBox* userbox();
+
 		/**
 			Zwraca true je¶li kadu jest zadokowane.
 		**/
 		bool docked();
 		void startupProcedure();
 		int personalInfoMenuId;//potrzebne dla modu³u account_management
+
 		/**
 			w zwi±zku z tym, ¿e opis sk³adni dla parsera jest u¿ywany w kilku miejscach
 			dodane zosta³o to pole, ¿eby nie trzeba by³o zmieniaæ tekstu w kilku miejscach
@@ -151,17 +157,17 @@ class Kadu : public QMainWindow
 		void changeAppearance();
 		void blink();
 		void refreshGroupTabBar();
-		//void setCurrentStatus(int status);
-		//void setStatus(int);
 		void showdesc(bool show = true);
 		void statusMenuAboutToHide(void);
 		virtual bool close(bool quit = false);
 		void quitApplication();
+
 		/**
 			Potrzebne dla modu³u dokuj±cego ¿eby
 			g³ówne okno nie miga³o przy starcie...
 		**/
 		void setShowMainWindowOnStart(bool show);
+
 		/**
 			Modu³ dokowania powinien to ustawic, aby kadu
 			wiedzialo, ze jest zadokowane.
@@ -196,20 +202,7 @@ class Kadu : public QMainWindow
 		void disconnectedNetwork();
 		void keyPressed(QKeyEvent* e);
 		void statusPixmapChanged(QPixmap &);
-		/**
-			Podczas ³±czenia (mruganie ikonki) czas na zmianê
-			ikony na t± reprezentuj±c± docelowy status.
-		**/
-		//void connectingBlinkShowStatus(eUserStatus, bool);
-		/**
-			Podczas ³±czenia (mruganie ikonki) czas na zmianê
-			ikony na t± reprezentuj±c± status offline.
-		**/
-		//void connectingBlinkShowOffline();
-		/**
-			Zmieni³ siê nasz aktualny status GG.
-		**/
-		//	void currentStatusChanged(int status);		TODO
+
 		/**
 			U¿ytkownik chce zmieniæ status. Je¶li jest to status
 			bezopisowy, to zmienna sigDesc bêdzie równa QString::null.
@@ -217,19 +210,18 @@ class Kadu : public QMainWindow
 			bêdzie zmieniony.
 		**/
 		void changingStatus(UserStatus &, bool &stop);
+
 		/**
 			wywo³ana zosta³a funkcja show() na g³ównym oknie
 		**/
 		void shown();
-		/**
-			u¿ytkownik chce zarejestrowaæ nowy numer gg
-		**/
-		void wantRegister();
+
 		/**
 			wyst±pi³ b³±d po³±czenia
 			TODO: wywaliæ po 0.4, odpowiedni sygna³ jest w GaduProtocol
 		**/
 		void connectionError(const QString &reason);
+
 		/**
 			u¿ywany przez modu³ hints do zdobycia pozycji traya od modu³u docking
 			TODO: trzeba wymy¶liæ jaki¶ elegancki sposób na komunikacjê pomiêdzy modu³ami, które nie zale¿± od siebie
@@ -252,9 +244,7 @@ class KaduSlots : public QObject
 };
 
 extern Kadu* kadu;
-
 extern QPopupMenu* dockMenu;
-
 extern int lockFileHandle;
 extern QFile *lockFile;
 
