@@ -209,8 +209,8 @@ void EventManager::connectionBrokenSlot()
 
 void EventManager::disconnectedSlot()
 {
-	trayicon->showErrorHint(i18n("Disconnection has been occured"));
-	kdebug("Disconnection has been occured\n");
+	trayicon->showErrorHint(i18n("Disconnection has occured"));
+	kdebug("Disconnection been occured\n");
 	kadu->autohammer = false;
 	kadu->disconnectNetwork();
 	AutoConnectionTimer::off();
