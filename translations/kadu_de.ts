@@ -601,87 +601,87 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>Show available in bold</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige erreichbaren in bold</translation>
     </message>
     <message>
         <source>Colors</source>
-        <translation type="unfinished"></translation>
+        <translation>Colors</translation>
     </message>
     <message>
         <source>Chat window</source>
-        <translation type="unfinished"></translation>
+        <translation>Chatfenster</translation>
     </message>
     <message>
         <source>Your background color</source>
-        <translation type="unfinished">Deine Hintergrundfarbe</translation>
+        <translation>Deine Hintergrundfarbe</translation>
     </message>
     <message>
         <source>User background color</source>
-        <translation type="unfinished">Hintergrundfarbe für Kontakt</translation>
+        <translation>Hintergrundfarbe für Kontakt</translation>
     </message>
     <message>
         <source>Your font color</source>
-        <translation type="unfinished">Deine Schriftfarbe</translation>
+        <translation>Deine Schriftfarbe</translation>
     </message>
     <message>
         <source>User font color</source>
-        <translation type="unfinished">Schriftfarbe für Kontakt</translation>
+        <translation>Schriftfarbe für Kontakt</translation>
     </message>
     <message>
         <source>Fonts</source>
-        <translation type="unfinished"></translation>
+        <translation>Fonts</translation>
     </message>
     <message>
         <source>Font in chat window</source>
-        <translation type="unfinished">Schriftart im Chat-Fenster</translation>
+        <translation>Schriftart im Chatfenster</translation>
     </message>
     <message>
         <source>Previews</source>
-        <translation type="unfinished"></translation>
+        <translation>Vorbetrachtungen</translation>
     </message>
     <message>
         <source>Chat preview</source>
-        <translation type="unfinished"></translation>
+        <translation>Chat Vorbetrachtungen</translation>
     </message>
     <message>
         <source>Main window</source>
-        <translation type="unfinished"></translation>
+        <translation>Hauptfenster</translation>
     </message>
     <message>
         <source>Panel background color</source>
-        <translation type="unfinished"></translation>
+        <translation>Panel Hintergrundfarbe</translation>
     </message>
     <message>
         <source>Panel font color</source>
-        <translation type="unfinished"></translation>
+        <translation>Panel fontcolor</translation>
     </message>
     <message>
         <source>Font in panel</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Information panel</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Show information panel</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Panel Informationen</translation>
     </message>
     <message>
         <source>Userbox background color</source>
-        <translation type="unfinished">Hintergrundfarbe für Kontakt-Liste</translation>
+        <translation>Hintergrundfarbe für Kontaktliste</translation>
     </message>
     <message>
         <source>Userbox font color</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Font in userbox</source>
-        <translation type="unfinished"></translation>
+        <translation>Font in Kontaktliste</translation>
     </message>
     <message>
         <source>Preview panel</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -874,7 +874,7 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>Apply</source>
-        <translation></translation>
+        <translation>anwenden</translation>
     </message>
 </context>
 <context>
@@ -1487,7 +1487,7 @@ Check your internet connection.</source>
     </message>
     <message>
         <source>I&amp;mport / Export userlist</source>
-        <translation type="unfinished"></translation>
+        <translation>I&amp;mportieren / Exportieren Benutzerlistet</translation>
     </message>
 </context>
 <context>
@@ -1554,59 +1554,59 @@ Check your internet connection.</source>
     </message>
     <message>
         <source>This dialog box allows you to manage installed modules. Modules are responsible for numerous vital features like playing sounds or message encryption. You can load (or unload) them by double-clicking on their names.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dieses Dialogfeld erlaubt Ihnen, angebrachte Module zu handhaben.Module sind für zahlreiche lebenswichtige Eigenschaften wie das Spielen der Töne oder der Anzeige Verschlüsselung verantwortlich. Sie können (oder leeren) sie laden, indem Sie auf ihrem name doppeltklicken.</translation>
     </message>
     <message>
         <source>Module name</source>
-        <translation type="unfinished"></translation>
+        <translation>Modulename</translation>
     </message>
     <message>
         <source>Module type</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>State</source>
-        <translation type="unfinished"></translation>
+        <translation>Zustand</translation>
     </message>
     <message>
         <source>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Depends on:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Conflicts with:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Provides:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Erfordert:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Konflikt mit:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Provides:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Autor:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Beschreibung:&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Schliesse</translation>
+        <translation>&amp;Schliesse</translation>
     </message>
     <message>
         <source>Dynamic</source>
-        <translation type="unfinished"></translation>
+        <translation>Dynamisch</translation>
     </message>
     <message>
         <source>Not loaded</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht geladen</translation>
     </message>
     <message>
         <source>&lt;b&gt;Module: &lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&lt;br/&gt;&lt;b&gt;Depends on: &lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;br/&gt;&lt;b&gt;Erfordert: &lt;/b&gt;</translation>
     </message>
     <message>
         <source>&lt;br/&gt;&lt;b&gt;Conflicts with: &lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;br/&gt;&lt;b&gt;Konflikt mit: &lt;/b&gt;</translation>
     </message>
     <message>
         <source>&lt;br/&gt;&lt;b&gt;Provides: &lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&lt;br/&gt;&lt;b&gt;Author: &lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;br/&gt;&lt;b&gt;Autor: &lt;/b&gt;</translation>
     </message>
     <message>
         <source>&lt;br/&gt;&lt;b&gt;Description: &lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;br/&gt;&lt;b&gt;Beschreibung: &lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -1929,7 +1929,7 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
     <name>SelectFont</name>
     <message>
         <source>Select</source>
-        <translation type="unfinished"></translation>
+        <translation>Auswählen</translation>
     </message>
 </context>
 <context>
@@ -2260,131 +2260,131 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
     <name>UserlistImportExport</name>
     <message>
         <source>Import / export userlist</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>This dialog box allows you to import and export your buddy list to a server or a file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dieses Dialogfeld erlaubt Ihnen, Ihre Kontaktliste auf server oder in eine datei zu importieren und zu exportieren.</translation>
     </message>
     <message>
         <source>Import userlist</source>
-        <translation type="unfinished">Importiere Kontakt-Liste</translation>
+        <translation>Importiere Kontakt-Liste</translation>
     </message>
     <message>
         <source>UIN</source>
-        <translation type="unfinished">Nummer GG (UIN)</translation>
+        <translation>Nummer GG (UIN)</translation>
     </message>
     <message>
         <source>Nickname</source>
-        <translation type="unfinished">Nick</translation>
+        <translation>Nick</translation>
     </message>
     <message>
         <source>Disp. nick</source>
-        <translation type="unfinished">Zeige Nick</translation>
+        <translation>Zeige Nick</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation type="unfinished">Vorname</translation>
+        <translation>Vorname</translation>
     </message>
     <message>
         <source>Surname</source>
-        <translation type="unfinished">Nachname</translation>
+        <translation>Nachname</translation>
     </message>
     <message>
         <source>Mobile no.</source>
-        <translation type="unfinished">Handy-Nr.</translation>
+        <translation>Handy-Nr.</translation>
     </message>
     <message>
         <source>Group</source>
-        <translation type="unfinished">Gruppe</translation>
+        <translation>Gruppe</translation>
     </message>
     <message>
         <source>Email</source>
-        <translation type="unfinished">Email</translation>
+        <translation>Email</translation>
     </message>
     <message>
         <source>&amp;Fetch userlist</source>
-        <translation type="unfinished">&amp;Hole Liste</translation>
+        <translation>&amp;Hole Kontaktliste</translation>
     </message>
     <message>
         <source>&amp;Import from file</source>
-        <translation type="unfinished">&amp;Import aus Datei</translation>
+        <translation>&amp;Import aus Datei</translation>
     </message>
     <message>
         <source>&amp;Save results</source>
-        <translation type="unfinished">Ergebnisse &amp;spiechern</translation>
+        <translation>Ergebnisse &amp;spiechern</translation>
     </message>
     <message>
         <source>&amp;Merge results</source>
-        <translation type="unfinished">Ergebnisse &amp;zusammenführen</translation>
+        <translation>Ergebnisse &amp;zusammenführen</translation>
     </message>
     <message>
         <source>Export userlist</source>
-        <translation type="unfinished">Export der Kontakt-Liste </translation>
+        <translation>Export der Kontaktliste </translation>
     </message>
     <message>
         <source>%1 entries will be exported</source>
-        <translation type="unfinished">Export %1 Einträge</translation>
+        <translation>Export %1 Einträge</translation>
     </message>
     <message>
         <source>Se&amp;nd userlist</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontaktliste &amp;senden</translation>
     </message>
     <message>
         <source>&amp;Delete userlist</source>
-        <translation type="unfinished">&amp;Lösche Liste</translation>
+        <translation>&amp;Lösche Kontaktliste</translation>
     </message>
     <message>
         <source>&amp;Export to file</source>
-        <translation type="unfinished">&amp;Export in Datei</translation>
+        <translation>&amp;Export in Datei</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Schliesse</translation>
+        <translation>&amp;Schliessen</translation>
     </message>
     <message>
         <source>Import error</source>
-        <translation type="unfinished">Fehler beim Importieren</translation>
+        <translation>Fehler beim Importieren</translation>
     </message>
     <message>
         <source>The application encountered an internal error
 The import userlist from file was unsuccessful</source>
-        <translation type="unfinished">Das Importieren wurde wegen eines Fehlers beendet</translation>
+        <translation>Das Importieren wurde wegen eines Fehlers beendet</translation>
     </message>
     <message>
         <source>Export completed</source>
-        <translation type="unfinished">Export beendet</translation>
+        <translation>Export beendet</translation>
     </message>
     <message>
         <source>Your userlist has been successfully exported to file</source>
-        <translation type="unfinished">Die Kontaktliste wurde erfolgreich exportiert in Datei </translation>
+        <translation>Die Kontaktliste wurde erfolgreich exportiert in Datei </translation>
     </message>
     <message>
         <source>Export error</source>
-        <translation type="unfinished">Export-Fehler</translation>
+        <translation>Export-Fehler</translation>
     </message>
     <message>
         <source>The application encountered an internal error
 The export userlist to file was unsuccessful</source>
-        <translation type="unfinished">Das Exportieren der Kontaktliste in Datei ist mißlungen</translation>
+        <translation>Das Exportieren der Kontaktliste in Datei ist mißlungen</translation>
     </message>
     <message>
         <source>Your userlist has been successfully exported to server</source>
-        <translation type="unfinished">Die Kontakt-Liste wurde auf den Server exportiert</translation>
+        <translation>Die Kontaktliste wurde auf den Server exportiert</translation>
     </message>
     <message>
         <source>The application encountered an internal error
 The export was unsuccessful</source>
-        <translation type="unfinished">Das Exportieren der Kontakliste auf den Server ist mißlungen</translation>
+        <translation>Das Exportieren der Kontakliste auf den Server ist mißlungen</translation>
     </message>
     <message>
         <source>Your userlist has been successfully deleted on server</source>
-        <translation type="unfinished">Ihr userlist ist erfolgreich von Server gelöscht worden</translation>
+        <translation>Ihr userlist ist erfolgreich von Server gelöscht worden</translation>
     </message>
     <message>
         <source>The application encountered an internal error
 The delete userlist on server was unsuccessful</source>
-        <translation type="unfinished">Das löschen der Kontaktliste vom Server ist nicht gelungen.
+        <translation>Das löschen der Kontaktliste vom Server ist nicht gelungen.
 Die Anwendung hat einen Fehler zurückgemeldet</translation>
     </message>
 </context>
