@@ -29,6 +29,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dodanie do detekcji adresów url ³apania w url znaków '!' i ',' (uto/mast3r)
 * CTRL + lewy klik na tray'u gdy jest wiadomo¶æ spowoduje pokazanie/ukrycie
   okna g³ównego (mast3r)
+* przeci±gaj±c usera na grupe Wszyscy nie dodajemy go do grupy Wszyscy
+  tylko do grupy "" (to prawie to samo bo i tak userzy znajda sie
+  w grupie Wszyscy) (uto/mast3r)
 
 +++ wersja 0.3.4-rc2
 * porzadki: kod rejestrujacy opcje modulow Chat i Sms w oknie konfiguracji
