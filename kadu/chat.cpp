@@ -580,16 +580,16 @@ void Chat::HistoryBox(void) {
 
 /* this nifty icon selector */
 void Chat::insertEmoticon(void) {
-/*	if (iconsel_ptr == NULL) {
-		iconsel->setOn(true);*/
+	if (iconsel_ptr == NULL) {
+//		iconsel->setOn(true);
 		iconsel_ptr = new IconSelector(NULL,"Icon selector",this);
 		iconsel_ptr->show();
-/*		}
+		}
 	else {
-		iconsel->setOn(false);
+//		iconsel->setOn(false);
 		iconsel_ptr->close();
 		iconsel_ptr = NULL;
-		}*/
+		}
 }
 
 /* adds an emoticon code to the edit window */
