@@ -6,7 +6,9 @@
 #include <qmutex.h>
 #include <qsemaphore.h>
 #include <qvaluelist.h>
+extern "C" {
 #include <gsm.h>
+};
 
 class PlayThread;
 class RecordThread;
@@ -38,16 +40,16 @@ class VoiceManager : public QObject {
 		void recordSampleReceived(char *data, int length);
 
 	private:
-		PlayThread pt;
+		PlayThread *pt;
 		gsm voice_enc;
-		RecordThread rt;
+		RecordThread *rt;
 		gsm voice_dec;
 
 	friend class PlayThread;
 	friend class RecordThread;
 };
 
-class PlayThread : public QThread, public QObject
+class PlayThread : public QObject, public QThread
 {
 	Q_OBJECT
 
@@ -66,7 +68,7 @@ class PlayThread : public QThread, public QObject
 	friend class VoiceManager;
 };
 
-class RecordThread : public QThread, public QObject
+class RecordThread : public QObject, public QThread
 {
 	Q_OBJECT
 

@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "debug.h"
 #include "libgadu.h"
 #include "voice.h"
 
@@ -43,29 +44,31 @@ void RecordThread::run() {
 
 VoiceManager::VoiceManager() {
 	kdebug("VoiceManager::VoiceManager()\n");
-	gsm_enc = gsm_dec = NULL;
-	connect(&pt, SIGNAL(playGsmSample(char *, int)), this, SLOT(playGsmSampleReceived(char *, int)));
-	connect(&rt, SIGNAL(recordSample(char *, int)), this, SLOT(recordSampleReceived(char *, int)));
+	voice_enc = voice_dec = NULL;
+	pt = new PlayThread();
+	rt = new RecordThread();
+	connect(pt, SIGNAL(playGsmSample(char *, int)), this, SLOT(playGsmSampleReceived(char *, int)));
+	connect(rt, SIGNAL(recordSample(char *, int)), this, SLOT(recordSampleReceived(char *, int)));
 }
 
 void VoiceManager::setup() {
 	emit setupSoundDevice();
-	pt.start();
-//	rt.start();
+	pt->start();
+//	rt->start();
 }
 
 void VoiceManager::free() {
-	pt.exit();
-//	rt.exit();
+	pt->exit();
+//	rt->exit();
 	emit freeSoundDevice();
 }
 
 void VoiceManager::resetCodec() {
 	kdebug("VoiceManager::resetCodec()\n");
 	int value = 1;
-	if (gsm_enc)
+	if (voice_enc)
 		gsm_destroy(voice_enc);
-	if (gsm_dec)
+	if (voice_dec)
 		gsm_destroy(voice_dec);
 	voice_enc = gsm_create();
 	gsm_option(voice_enc, GSM_OPT_FAST, &value);
@@ -83,13 +86,16 @@ void VoiceManager::playGsmSampleReceived(char *data, int length) {
 	int outlen = 320;
 	gsm_signal output[160];
 	resetCodec();
+	data++;
+	pos++;
+	length--;
 	while (pos <= (data + length - 65)) {
-		gsm_decode(voice_dec, (char *) pos, output);
+		gsm_decode(voice_dec, (gsm_byte *) pos, output);
 		pos += 33;
-		emit playSample(output, outlen);
-		gsm_decode(voice_dec, (char *) pos, output);
+		emit playSample((char *) output, outlen);
+		gsm_decode(voice_dec, (gsm_byte *) pos, output);
 		pos += 32;
-		emit playSample(output, outlen);
+		emit playSample((char *) output, outlen);
 		}
 }
 
@@ -105,10 +111,10 @@ void VoiceManager::recordSampleReceived(char *data, int length) {
 	length--;
 	while (pos <= (data + length - 65)) {
 		emit recordSample((char *) input, inlen);
-		gsm_encode(voice_enc, input, (char *) pos);
+		gsm_encode(voice_enc, input, (gsm_byte *) pos);
 		pos += 32;
 		emit recordSample((char *) input, inlen);
-		gsm_encode(voice_enc, input, (char *) pos);
+		gsm_encode(voice_enc, input, (gsm_byte *) pos);
 		pos += 33;
 		}
 	emit gsmSampleRecorded(data, length);
@@ -119,8 +125,8 @@ void VoiceManager::addGsmSample(char *data, int length) {
 	struct gsm_sample gsmsample;
 	gsmsample.data = data;
 	gsmsample.length = length;
-	mutex.lock();
-	queue << gsmsample;
-	mutex.unlock();
-	pt.wsem--;
+	pt->mutex.lock();
+	pt->queue << gsmsample;
+	pt->mutex.unlock();
+	pt->wsem--;
 }
