@@ -543,7 +543,7 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, U
 					//ukrywamy siê przed spy'em i ekg2
 					if (actimage->size == 20 && (actimage->crc32 == 4567 || actimage->crc32==99))
 					{
-						kdebugm(KDEBUG_INFO, "scanning for invisibility detected ;)\n");
+						kdebugm(KDEBUG_INFO, "%d: scanning for invisibility detected, preparing tactical nuclear missiles ;)\n", sender);
 						if (receiveImage)
 							gadu->sendImageRequest(sender, actimage->size, actimage->crc32);
 					}
