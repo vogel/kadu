@@ -357,7 +357,7 @@ SmsGatewaySlots::SmsGatewaySlots()
 	//
 
 	ConfigDialog::addLineEdit2("SMS", "SMS Era Gateway",
-			QT_TRANSLATE_NOOP("@default", "User ID"));
+			QT_TRANSLATE_NOOP("@default", "User ID (48xxxxxxxxx)"));
 	ConfigDialog::addLineEdit2("SMS", "SMS Era Gateway",
 			QT_TRANSLATE_NOOP("@default", "Password"));
 
@@ -377,7 +377,7 @@ SmsGatewaySlots::~SmsGatewaySlots()
 	
 	ConfigDialog::disconnectSlot("SMS", "Type of gateway", SIGNAL(activated(int)), this, SLOT(onChangeEraGateway(int)));
 	ConfigDialog::removeControl("SMS", "Password");
-	ConfigDialog::removeControl("SMS", "User ID");
+	ConfigDialog::removeControl("SMS", "User ID (48xxxxxxxxx)");
 	ConfigDialog::removeControl("SMS", "Type of gateway");
 	ConfigDialog::removeControl("SMS", "SMS Era Gateway");
 	kdebugf2();
@@ -386,7 +386,7 @@ SmsGatewaySlots::~SmsGatewaySlots()
 void SmsGatewaySlots::onChangeEraGateway(int gateway)
 {
 	kdebugf();
-	QLineEdit *e_erauser= ConfigDialog::getLineEdit("SMS", "User ID");
+	QLineEdit *e_erauser= ConfigDialog::getLineEdit("SMS", "User ID (48xxxxxxxxx)");
 	QLineEdit *e_erapassword= ConfigDialog::getLineEdit("SMS", "Password");
 	QComboBox *cb_typegateway= ConfigDialog::getComboBox("SMS","Type of gateway");
 	
@@ -403,7 +403,7 @@ void SmsGatewaySlots::onApplyConfigDialog()
 {
 	kdebugf();
 	
-	QLineEdit *e_erauser= ConfigDialog::getLineEdit("SMS", "User ID");
+	QLineEdit *e_erauser= ConfigDialog::getLineEdit("SMS", "User ID (48xxxxxxxxx)");
 	QLineEdit *e_erapassword= ConfigDialog::getLineEdit("SMS", "Password");
 	config_file.writeEntry("SMS", "EraGateway_"+config_file.readEntry("SMS", "EraGateway")+"_Password", e_erapassword->text());
 	config_file.writeEntry("SMS", "EraGateway_"+config_file.readEntry("SMS", "EraGateway")+"_User", e_erauser->text());
@@ -422,7 +422,7 @@ void SmsGatewaySlots::onCreateConfigDialog()
 	
 	actualEraGateway=config_file.readEntry("SMS", "EraGateway");
 	
-	QLineEdit *e_erauser= ConfigDialog::getLineEdit("SMS", "User ID");
+	QLineEdit *e_erauser= ConfigDialog::getLineEdit("SMS", "User ID (48xxxxxxxxx)");
 	QLineEdit *e_erapassword= ConfigDialog::getLineEdit("SMS", "Password");
 	e_erapassword->setEchoMode(QLineEdit::Password);
 	
