@@ -79,7 +79,7 @@ UserListElement::UserListElement()
 	anonymous = false;
 }
 
-QString UserListElement::group()
+QString UserListElement::group() const
 {
 	return Group;
 };
@@ -192,16 +192,16 @@ UserListElement UserList::byUinValue(uin_t uin)
 	return ule;
 };
 
-bool UserList::containsUin(uin_t uin) {
-	for (iterator i = begin(); i != end(); i++)
+bool UserList::containsUin(uin_t uin) const {
+	for (const_iterator i = begin(); i != end(); i++)
 		if ((*i).uin == uin)
 			return true;
 	kdebug("UserList::containsUin(): userlist doesnt contain %d\n", uin);
 	return false;
 }
 
-bool UserList::containsAltNick(const QString &altnick) {
-	for (iterator i = begin(); i != end(); i++)
+bool UserList::containsAltNick(const QString &altnick) const {
+	for (const_iterator i = begin(); i != end(); i++)
 		if ((*i).altnick.lower() == altnick.lower())
 			return true;
 	kdebug("UserList::containsAltNick(): userlist doesnt contain %s\n",

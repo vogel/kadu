@@ -44,7 +44,7 @@ struct UserListElement
 	public:
 		UserListElement(UserList* parent);
 		UserListElement();
-		QString group();
+		QString group() const;
 		void setGroup(const QString& group);
 	
 		// te trzeba kiedys trzeba tak uporzadkowac
@@ -91,8 +91,8 @@ class UserList : public QObject, public QValueList<UserListElement>
 		UserListElement& byAltNick(const QString& altnick);
 		UserListElement byUinValue(uin_t uin);
 
-		bool containsUin(uin_t uin);
-		bool containsAltNick(const QString& altnick);
+		bool containsUin(uin_t uin) const;
+		bool containsAltNick(const QString& altnick) const;
 
 		void addUser(UserListElement &ule);
 		void addAnonymous(uin_t uin);
