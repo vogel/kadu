@@ -19,6 +19,8 @@
 #include <qhbox.h>
 #include <qvaluelist.h>
 #include <qstringlist.h>
+#include <qhostaddress.h>
+
 #include "libgadu.h"
 #include "../config.h"
 
@@ -243,10 +245,10 @@ struct config {
 	QString defaultdescription;
 	int sysmsgidx;
 	bool allowdcc;
-	QString dccip;
-	char *extip;
+	QHostAddress dccip;
+	QHostAddress extip;
 	int extport;
-	QStringList servers;
+	QValueList<QHostAddress> servers;
 	bool default_servers;
 	int default_port;
 
@@ -302,7 +304,7 @@ struct config {
 	bool notifyhint;
 
 	bool useproxy;
-	QString proxyaddr;
+	QHostAddress proxyaddr;
 	unsigned short proxyport;
 	QString proxyuser;
 	QString proxypassword;

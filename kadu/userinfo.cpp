@@ -7,11 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <sys/types.h>
 #include <qpushbutton.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <sys/socket.h>
 #include <qlayout.h>
 #include <qmessagebox.h>
 #include <qvbox.h>
@@ -77,11 +73,8 @@ void UserInfo::setupTab1() {
 	e_addr = new QLineEdit(box);
 	e_addr->setReadOnly(true);
 	
-	if (puser->ip) {
-		struct in_addr in;
-		in.s_addr = puser->ip;
-		e_addr->setText(inet_ntoa(in));
-		}
+	if (puser->ip.ip4Addr())
+		e_addr->setText(puser->ip.toString());
 	else
 		e_addr->setText(i18n("(Unknown)"));
 	if (puser->port)

@@ -1,14 +1,3 @@
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <pwd.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <sys/socket.h>
-#include <unistd.h>
-#include <time.h>
 #include <qpushbutton.h>
 #include <qlayout.h>
 #include <qpixmap.h>
@@ -17,6 +6,12 @@
 #include <qcstring.h>
 #include <qdatetime.h>
 #include <qregexp.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <pwd.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <time.h>
 
 #include "misc.h"
 #include "pixmaps.h"
@@ -139,13 +134,10 @@ QString parse_symbols(QString s, int i, UserListElement &ule) {
 				break;
 			case 'i':
 				i++;
-				if (ule.ip) {
-					struct in_addr in;
-					in.s_addr = ule.ip;
-					r+=inet_ntoa(in);
-				}
-				else
-					r+="";
+				if (ule.ip.ip4Addr())
+					r += ule.ip.toString();
+//				else
+//					r += "";
 				break;
 			case 'n':
 				i++;

@@ -58,6 +58,7 @@
 #include <qtoolbar.h>
 #include <qtoolbutton.h>
 
+#include <netinet/in.h>
 #include <arpa/inet.h>
 #include <libintl.h>
 #include <stdio.h>
@@ -69,7 +70,6 @@
 #include <sys/time.h>
 #include <time.h>
 #include <iostream>
-// #include <net/route.h>
 #define RTF_GATEWAY 0x2
 
 #include <ctype.h>
@@ -186,7 +186,8 @@ QSocketNotifier *dccsnr = NULL;
 QSocketNotifier *dccsnw = NULL;
 UpdatesClass *uc;
 
-const char *gg_servers[7] = {"217.17.41.82", "217.17.41.83", "217.17.41.84", "217.17.41.85",
+QValueList<QHostAddress> gg_servers;
+const char *gg_servers_ip[7] = {"217.17.41.82", "217.17.41.83", "217.17.41.84", "217.17.41.85",
 	"217.17.41.86", "217.17.41.87", "217.17.41.88"};
 
 enum {
@@ -226,17 +227,18 @@ enum {
 	KADU_CMD_OFFLINE_TO_USER		     
 };
 
-unsigned long getMyIP(void) {
+QHostAddress getMyIP(void) {
 	unsigned long dest, gw;
 	int flags, fd;
 	FILE *file;
 	char buf[256],name[32];
 	bool stopped = false;
 	struct ifreq ifr;
+	QHostAddress ip;
 
 	file = fopen("/proc/net/route", "r");
 	if (!file)
-		return 0;
+		return ip;
 
 	fgets(buf, 256, file);
 	while (!feof(file))
@@ -250,18 +252,19 @@ unsigned long getMyIP(void) {
 	fclose(file);
 
 	if (!stopped)
-		return 0;
+		return ip;
 
 	if ((fd = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
-		return 0;
+		return ip;
 
 	strcpy(ifr.ifr_name, name);
 	if (ioctl(fd, SIOCGIFADDR, &ifr) < 0 || ioctl(fd, SIOCGIFFLAGS, &ifr) <0 ) {
 		close(fd);
-		return 0;
+		return ip;
 		}
 
-	return ((struct sockaddr_in *)&ifr.ifr_addr)->sin_addr.s_addr;
+	ip.setAddress(ntohl(((struct sockaddr_in *)&ifr.ifr_addr)->sin_addr.s_addr));
+	return ip;
 }
 
 void deletePendingMessage(int nr) {
@@ -349,6 +352,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 {
 	closestatusppmtime.start();
 	lastsoundtime.start();
+
+	gg_proxy_host = NULL;
 
 	/* timers, cause event loops and QSocketNotifiers suck. */
 	pingtimer = blinktimer = readevent = NULL;
@@ -524,6 +529,13 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		QTextStream stream(&config.dockwindows, IO_ReadOnly);
 		stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
 		stream >> *this;
+		}
+
+//	tworzymy liste serverow domyslnych gg
+	QHostAddress ip;
+	for (int i = 0; i < 7; i++) {
+		ip.setAddress(QString(gg_servers_ip[i]));
+		gg_servers.append(ip);
 		}
 
 //	tworzymy gridlayout
@@ -758,16 +770,15 @@ void Kadu::blink() {
 /* dcc initials */
 void Kadu::prepareDcc(void) {
 	struct in_addr in;
-	QString dccip;
+	QHostAddress dccip;
 
-	if (config.dccip == "0.0.0.0") {
-		in.s_addr = getMyIP();
-		if (!in.s_addr) {
+	if (!config.dccip.ip4Addr()) {
+		dccip = getMyIP();
+		if (!dccip.ip4Addr()) {
 			kdebug("Cannot determine IP address!\n");
 			return;
 			}
-		dccip = inet_ntoa(in);
-		kdebug("My IP address: %s\n", inet_ntoa(in));
+		kdebug("My IP address: %s\n", dccip.toString().latin1());
 		}
 	else
 		dccip = config.dccip;
@@ -782,10 +793,10 @@ void Kadu::prepareDcc(void) {
 		return;
 		}
 
-	gg_dcc_ip = inet_addr(dccip.latin1());
+	gg_dcc_ip = htonl(dccip.ip4Addr());
 	gg_dcc_port = dccsock->port;
 
-	kdebug("Kadu::prepareDcc() DCC_IP=%s DCC_PORT=%d\n", dccip.latin1(), dccsock->port);
+	kdebug("Kadu::prepareDcc() DCC_IP=%s DCC_PORT=%d\n", dccip.toString().latin1(), dccsock->port);
 
 	dccsnr = new QSocketNotifier(dccsock->fd, QSocketNotifier::Read, kadu);
 	QObject::connect(dccsnr, SIGNAL(activated(int)), kadu, SLOT(dccReceived()));
@@ -1064,7 +1075,7 @@ void Kadu::commandParser (int command) {
 
 			dccSocketClass *dcc;
 			if (user.port >= 10) {
-				if ((dcc_new = gg_dcc_send_file(user.ip, user.port, config.uin, user.uin)) != NULL) {
+				if ((dcc_new = gg_dcc_send_file(htonl(user.ip.ip4Addr()), user.port, config.uin, user.uin)) != NULL) {
 					dcc = new dccSocketClass(dcc_new);
 					connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), this, SLOT(dccFinished(dccSocketClass *)));
 					dcc->initializeNotifiers();
@@ -1442,6 +1453,7 @@ void Kadu::setCurrentStatus(int status) {
 }
 
 void Kadu::setStatus(int status) {
+	QHostAddress ip;
 
 	kdebug("Kadu::setStatus(): setting status: %d\n",
 		status | (GG_STATUS_FRIENDS_MASK * config.privatestatus));
@@ -1493,9 +1505,11 @@ void Kadu::setStatus(int status) {
 		prepareDcc();
 
 	if (config.useproxy) {
-		char * gg_proxy_username;
-		char * gg_proxy_password;
-		gg_proxy_host = (char *)config.proxyaddr.latin1();
+		char *gg_proxy_username;
+		char *gg_proxy_password;
+		if (gg_proxy_host)
+			delete gg_proxy_host;
+		gg_proxy_host = strdup(config.proxyaddr.toString().latin1());
 		gg_proxy_port = config.proxyport;
 		if (config.proxyuser.length()) {
 			gg_proxy_username = (char *)config.proxyuser.latin1();
@@ -1513,16 +1527,17 @@ void Kadu::setStatus(int status) {
 	loginparams.uin = config.uin;
 	loginparams.client_version = GG_DEFAULT_CLIENT_VERSION;
 	loginparams.has_audio = 1;
-	if (config.allowdcc && inet_addr(config.extip) && config.extport > 1023) {
-		loginparams.external_addr = inet_addr(config.extip);
+	
+	if (config.allowdcc && config.extip.ip4Addr() && config.extport > 1023) {
+		loginparams.external_addr = htonl(config.extip.ip4Addr());
 		loginparams.external_port = config.extport;
 		}
 	else {
 		loginparams.external_addr = 0;
 		loginparams.external_port = 0;
 		}	
-	if (config.servers.count() && !config.default_servers && inet_addr(config.servers[server_nr].latin1()) != INADDR_NONE) {
-		loginparams.server_addr = inet_addr(config.servers[server_nr].latin1());
+	if (config.servers.count() && !config.default_servers && config.servers[server_nr].ip4Addr()) {
+		loginparams.server_addr = htonl(config.servers[server_nr].ip4Addr());
 		loginparams.server_port = config.default_port;
 		server_nr++;
 		if (server_nr >= config.servers.count())
@@ -1530,7 +1545,7 @@ void Kadu::setStatus(int status) {
 		}
 	else {
 		if (server_nr) {
-			loginparams.server_addr = inet_addr(gg_servers[server_nr - 1]);
+			loginparams.server_addr = htonl(gg_servers[server_nr - 1].ip4Addr());
 			loginparams.server_port = config.default_port;
 			}
 		else {
@@ -1655,7 +1670,7 @@ void Kadu::eventHandler(int state) {
 			user = userlist.byUin(e->event.msg.sender);
 			dccSocketClass *dcc;
 			if (dccSocketClass::count < 8) {
-				dcc_new = gg_dcc_get_file(user.ip, user.port, config.uin, e->event.msg.sender);
+				dcc_new = gg_dcc_get_file(htonl(user.ip.ip4Addr()), user.port, config.uin, e->event.msg.sender);
 				if (dcc_new) {
 					dcc = new dccSocketClass(dcc_new);
 					connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), this, SLOT(dccFinished(dccSocketClass *)));		    

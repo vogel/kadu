@@ -14,6 +14,7 @@
   porz±dki w pliku AUTHORS (adrian)
 * mo¿na chowaæ pasek narzêdziowy (chilek)
 * zapamiêtywanie ustawieñ paska narzêdziowego (chilek)
+* wszystkie adresy IP przechowywane s± w obiektach klasy QHostAddress (chilek)
   
 +++ wersja 0.3.4-pre2
 * graficzny instalator - instaluj.tcl (googie)

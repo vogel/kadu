@@ -22,13 +22,12 @@
 #include <qrect.h>
 #include <qtextstream.h>
 #include <qtextcodec.h>
+#include <qhostaddress.h>
 
+#include <netinet/in.h>
 #include <math.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
 #include <stdlib.h>
 //
 #include "kadu.h"
@@ -49,6 +48,8 @@ extern "C"
 //
 
 void loadKaduConfig(void) {  	
+	QHostAddress ip;
+	QStringList servers;
 	/* first read our own config file... */
 	kdebug("loadKaduConfig(): Reading config file...\n");
 	ConfigFile * konf;
@@ -81,10 +82,17 @@ void loadKaduConfig(void) {
 	config.autoaway = konf->readBoolEntry("AutoAway", false);
 	config.autoawaytime = konf->readNumEntry("AutoAwayTime", 300);
 	config.allowdcc = konf->readBoolEntry("AllowDCC",false);
-	config.dccip = konf->readEntry("DccIP", "0.0.0.0");
-	config.extip = strdup(konf->readEntry("ExternalIP", "0.0.0.0"));
+	if (!config.dccip.setAddress(konf->readEntry("DccIP", "0.0.0.0")))
+		config.dccip.setAddress((unsigned int)0);
+	if (!config.extip.setAddress(konf->readEntry("ExternalIP", "0.0.0.0")))
+		config.extip.setAddress((unsigned int)0);
 	config.extport = konf->readNumEntry("ExternalPort", 0);
-	config.servers = QStringList::split(";", konf->readEntry("Server", ""));
+	servers = QStringList::split(";", konf->readEntry("Server", ""));
+	config.servers.clear();
+	for (int i = 0; i < servers.count(); i++) {
+		if (ip.setAddress(servers[i]))
+			config.servers.append(ip);
+		}
 	config.default_servers = konf->readBoolEntry("isDefServers",true);
 	config.default_port = konf->readNumEntry("DefaultPort", 8074);
 	server_nr = 0;
@@ -149,7 +157,8 @@ void loadKaduConfig(void) {
 
 	konf->setGroup("Proxy");
 	config.useproxy = konf->readBoolEntry("UseProxy", false);
-	config.proxyaddr = konf->readEntry("ProxyHost", "");
+	if (!config.proxyaddr.setAddress(konf->readEntry("ProxyHost", "")))
+		config.proxyaddr.setAddress((unsigned int)0);
 	config.proxyport = konf->readNumEntry("ProxyPort", 0);
 	config.proxyuser = pwHash(konf->readEntry("ProxyUser", ""));
 	config.proxypassword = pwHash(konf->readEntry("ProxyPassword", ""));
@@ -199,6 +208,8 @@ void loadKaduConfig(void) {
 }
 
 void saveKaduConfig(void) {
+	QStringList servers;
+
 	kdebug("saveKaduConfig(): Writing config files...\n");
 	ConfigFile * konf;
 	konf = new ConfigFile(ggPath(QString("kadu.conf")));
@@ -225,11 +236,13 @@ void saveKaduConfig(void) {
 	konf->writeEntry("AutoAway",config.autoaway);
 	konf->writeEntry("AutoAwayTime",config.autoawaytime);
 	konf->writeEntry("AllowDCC",config.allowdcc);
-	konf->writeEntry("DccIP", config.dccip);
-	konf->writeEntry("ExternalIP", config.extip);
+	konf->writeEntry("DccIP", config.dccip.toString());
+	konf->writeEntry("ExternalIP", config.extip.toString());
 	konf->writeEntry("ExternalPort", config.extport);
 	konf->writeEntry("isDefServers",config.default_servers);
-	konf->writeEntry("Server", config.servers.join(";"));
+	for (int i = 0; i < config.servers.count(); i++)
+		servers.append(config.servers[i].toString());
+	konf->writeEntry("Server", servers.join(";"));
 	konf->writeEntry("DefaultPort",config.default_port);
 
 	konf->writeEntry("UseDocking",config.dock);
@@ -289,7 +302,7 @@ void saveKaduConfig(void) {
 
 	konf->setGroup("Proxy");
 	konf->writeEntry("UseProxy",config.useproxy);
-	konf->writeEntry("ProxyHost",config.proxyaddr);
+	konf->writeEntry("ProxyHost",config.proxyaddr.toString());
 	konf->writeEntry("ProxyPort",config.proxyport);
 	konf->writeEntry("ProxyUser", pwHash(config.proxyuser));
 	konf->writeEntry("ProxyPassword", pwHash(config.proxypassword));
@@ -788,7 +801,7 @@ void ConfigDialog::setupTab4(void) {
 }
 
 void ConfigDialog::setupTab5(void) {
-//	int i;
+	QHostAddress ip;
 
 	QVBox *box5 = new QVBox(this);
 	box5->setMargin(2);	
@@ -797,7 +810,7 @@ void ConfigDialog::setupTab5(void) {
 	b_dccenabled->setChecked(config.allowdcc);
 
 	b_dccip = new QCheckBox(i18n("DCC IP autodetection"),box5);
-	b_dccip->setChecked(config.dccip == "0.0.0.0");
+	b_dccip->setChecked(!config.dccip.ip4Addr());
 
 	g_dccip = new QVGroupBox(box5);
 	g_dccip->setTitle(i18n("DCC IP"));
@@ -808,7 +821,7 @@ void ConfigDialog::setupTab5(void) {
 	QLabel *l4 = new QLabel(i18n("IP address:"),dccipbox);
 	e_dccip = new QLineEdit(dccipbox);
 	if (g_dccip->isEnabled())
-		e_dccip->setText(config.dccip);
+		e_dccip->setText(config.dccip.toString());
 
 	b_dccfwd = new QCheckBox(i18n("DCC forwarding enabled"),box5);
 	b_dccfwd->setEnabled(config.allowdcc);
@@ -837,12 +850,16 @@ void ConfigDialog::setupTab5(void) {
 	       
 	serverbox = new QHBox(g_server);
 	serverbox->setSpacing(5);
-	serverbox->setEnabled(!config.default_servers && config.servers.count() && inet_addr(config.servers[0].latin1()) != INADDR_NONE);
+	ip = config.servers[0];
+	serverbox->setEnabled(!config.default_servers && config.servers.count() && ip.ip4Addr());
 	
 	QLabel *l3 = new QLabel(i18n("IP addresses:"),serverbox);
 	e_server = new QLineEdit(serverbox);
-	e_server->setText(config.servers.join(";"));
-	
+	QStringList servers;
+	for (int i = 0; i < config.servers.count(); i++)
+		servers.append(config.servers[i].toString());
+	e_server->setText(servers.join(";"));
+
 	QHBox *portserverbox = new QHBox(g_server);
 	serverbox->setSpacing(5);
 	QLabel *lserverport = new QLabel(i18n("Default port to connect servers"),portserverbox);
@@ -872,10 +889,10 @@ void ConfigDialog::setupTab5(void) {
 	e_proxypassword = new QLineEdit(proxyuserbox);
 	e_proxypassword->setEchoMode(QLineEdit::Password);
 
-	g_fwdprop->setEnabled(inet_addr(config.extip) && config.extport > 1023);    
+	g_fwdprop->setEnabled(config.extip.ip4Addr() && config.extport > 1023);    
 	if (g_fwdprop->isEnabled()) {
 		b_dccfwd->setChecked(true);
-		e_extip->setText(config.extip);
+		e_extip->setText(config.extip.toString());
 		e_extport->setText(QString::number(config.extport));	
 		}
 //	g_server->setEnabled(!config.default_servers && config.servers.count() && inet_addr(config.servers[0].latin1()) != INADDR_NONE);
@@ -883,10 +900,11 @@ void ConfigDialog::setupTab5(void) {
 //		b_defserver->setChecked(true);
 //	else
 //		e_server->setText(config.servers.join(";"));
-	g_proxy->setEnabled(inet_addr(config.proxyaddr) && config.proxyport > 1023 && config.useproxy);
+	
+	g_proxy->setEnabled(config.proxyaddr.isIp4Addr() && config.proxyport > 1023 && config.useproxy);
 	b_useproxy->setChecked(g_proxy->isEnabled());
 	if (g_proxy->isEnabled()) {
-		e_proxyserver->setText(config.proxyaddr);
+		e_proxyserver->setText(config.proxyaddr.toString());
 		e_proxyport->setText(QString::number(config.proxyport));
 		e_proxyuser->setText(config.proxyuser);
 		e_proxypassword->setText(config.proxypassword);
@@ -1448,7 +1466,9 @@ void ConfigDialog::generateMyKeys(void) {
 
 void ConfigDialog::updateConfig(void) {
 	QString tmp;
-	int i;//, j;
+	int i;
+	QHostAddress ip;
+	bool ipok;
 
 	config.uin = atoi(e_uin->text().latin1());
 	config.password = e_password->text();
@@ -1603,38 +1623,44 @@ void ConfigDialog::updateConfig(void) {
 		userlist.byAltNick(tmp).notify = false;
 		}
 
-	delete config.extip;
 	config.allowdcc = b_dccenabled->isChecked();
-	if (config.allowdcc && !b_dccip->isChecked() && inet_addr(e_dccip->text().latin1()) != INADDR_NONE)
-		config.dccip = e_dccip->text();
+	ipok = ip.setAddress(e_dccip->text());
+	if (config.allowdcc && !b_dccip->isChecked() && ipok)
+		config.dccip = ip;
 	else
-		config.dccip = "0.0.0.0";
-	if (config.allowdcc && b_dccfwd->isChecked() && inet_addr(e_extip->text().latin1()) != INADDR_NONE
+		config.dccip.setAddress((unsigned int)0);
+	ipok = ip.setAddress(e_extip->text());
+	if (config.allowdcc && b_dccfwd->isChecked() && ipok
 		&& atoi(e_extport->text().latin1()) > 1023) {
-		config.extip = strdup(e_extip->text().latin1());
+		config.extip = ip;
 		config.extport = atoi(e_extport->text().latin1());
 		}
 	else {
-		config.extip = strdup("0.0.0.0");
+		config.extip.setAddress((unsigned int)0);
 		config.extport = 0;
 		}
 
 	QStringList tmpservers;
+	QValueList<QHostAddress> servers;
 	tmpservers = QStringList::split(";", e_server->text());
-	for (i = 0; i < tmpservers.count(); i++)
-		if (inet_addr(tmpservers[i].latin1()) == INADDR_NONE)
+	for (i = 0; i < tmpservers.count(); i++) {
+		ipok = ip.setAddress(tmpservers[i]);
+		if (!ipok)
 			break;
+		servers.append(ip);
+		}
 	if (!b_defserver->isChecked() && i == tmpservers.count())
-		config.servers = QStringList::split(";", e_server->text());
+		config.servers = servers;
 	config.default_servers = b_defserver->isChecked();
 	server_nr = 0;
 
 	config.default_port = atoi(cb_portselect->currentText().latin1());
 
-	config.useproxy = b_useproxy->isChecked() && inet_addr(e_proxyserver->text().latin1()) != INADDR_NONE
+	ipok = ip.setAddress(e_proxyserver->text());
+	config.useproxy = b_useproxy->isChecked() && ipok
 		&& atoi(e_proxyport->text().latin1()) > 1023;
 	if (config.useproxy) {
-		config.proxyaddr = e_proxyserver->text();
+		config.proxyaddr = ip;
 		config.proxyport = (unsigned short)atoi(e_proxyport->text().latin1());
 		config.proxyuser = e_proxyuser->text();
 		if (config.proxyuser.length())
@@ -1643,7 +1669,7 @@ void ConfigDialog::updateConfig(void) {
 			config.proxypassword.truncate(0);
 		}
 	else {
-		config.proxyaddr.truncate(0);
+		config.proxyaddr.setAddress((unsigned int)0);
 		config.proxyport = 0;
 		config.proxyuser.truncate(0);
 		config.proxypassword.truncate(0);

@@ -12,6 +12,7 @@
 #include <sys/stat.h>
 #include <qtextstream.h>
 #include <qtextcodec.h>
+#include <qhostaddress.h>
 
 #include "userlist.h"
 #include "misc.h"
@@ -112,7 +113,6 @@ void UserList::addUser(const QString FirstName,const QString LastName,
 	e.group = Group;
 	e.description = Description;
 	e.anonymous = Anonymous;
-	e.ip = 0;
 	e.port = 0;
 	e.time_to_death = 300;
 	append(e);

@@ -13,6 +13,7 @@
 #include <qobject.h>
 #include <qvaluelist.h>
 #include <qtimer.h>
+#include <qhostaddress.h>
 
 #include "libgadu.h"
 
@@ -28,7 +29,7 @@ struct UserListElement
 	uin_t uin;
 	unsigned int status;
 	bool anonymous;
-	int ip;
+	QHostAddress ip;
 	short port;
 	int time_to_death;
 	bool blocking;

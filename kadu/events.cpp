@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <signal.h>
+//#include <signal.h>
 #include <qwidget.h>
 #include <qdialog.h>
 #include <qmultilineedit.h>
@@ -35,6 +35,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <pwd.h>
+#include <netinet/in.h>
 
 #include "kadu.h"
 #include "ignore.h"
@@ -309,7 +310,7 @@ void eventGotUserlist(struct gg_event *e) {
 			continue;
 			}
 
-		user.ip = n->remote_ip;
+		user.ip.setAddress(ntohl(n->remote_ip));
 		user.port = n->remote_port;
 
 		oldstatus = user.status;
@@ -407,7 +408,7 @@ void eventStatusChange(struct gg_event * e) {
 	userlist.changeUserStatus(e->event.status.uin, e->event.status.status);
 	
 	if (user.status == GG_STATUS_NOT_AVAIL || user.status == GG_STATUS_NOT_AVAIL_DESCR) {
-		user.ip = 0;
+		user.ip.setAddress((unsigned int)0);
 		user.port = 0;
 		}
 

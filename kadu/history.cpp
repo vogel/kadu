@@ -41,10 +41,10 @@
 #include <qtooltip.h>
 
 #include <time.h>
-#include <sys/socket.h>
-#include <net/if.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
+//#include <sys/socket.h>
+//#include <net/if.h>
+//#include <netinet/in.h>
+//#include <arpa/inet.h>
 
 #include "kadu.h"
 #include "config_dialog.h"
@@ -217,9 +217,10 @@ void HistoryManager::appendStatus(uin_t uin, unsigned int status, QString descri
 	QString fname = ggPath("history/");
 	QString line, nick, addr;
 	QStringList linelist;
-	int ip, offs;
+	int offs;
+	QHostAddress ip;
 	unsigned short port;
-	struct in_addr in;
+//	struct in_addr in;
 
 	kdebug("HistoryManager::appendStatus()\n");
 
@@ -235,14 +236,12 @@ void HistoryManager::appendStatus(uin_t uin, unsigned int status, QString descri
 		}
 	else {
 		nick = QString::number(uin);
-		ip = 0;
+		ip.setAddress((unsigned int)0);
 		port = 0;
 		}
 	linelist.append(text2csv(nick));
-	in.s_addr = ip;
-	addr = inet_ntoa(in);
 	if (port)
-		addr = addr + QString(":") + QString::number(port);
+		addr = ip.toString() + QString(":") + QString::number(port);
 	linelist.append(addr);
 	linelist.append(QString::number(time(NULL)));
 	switch (status) {
