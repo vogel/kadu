@@ -1743,6 +1743,21 @@ QString HttpClient::encode(const QString& text)
 	return encoded;
 }
 
+const QString &HttpClient::cookie(const QString& name) const
+{
+	return Cookies[name];
+}
+
+const QMap<QString,QString> &HttpClient::cookies() const
+{
+	return Cookies;
+}
+
+void HttpClient::setCookie(const QString &name, const QString &value)
+{
+	Cookies[name] = value;
+}
+
 void HtmlDocument::escapeText(QString& text)
 {
 #if QT_VERSION < 0x030100

@@ -114,7 +114,7 @@ class HttpClient : public QObject
 		unsigned int ContentLength;
 		bool ContentLengthNotFound;
 
-		QMap<QString,QString> Cookies;
+		QMap<QString, QString> Cookies;
 
 	private slots:
 		void onConnected();
@@ -124,14 +124,18 @@ class HttpClient : public QObject
 	public slots:
 		void setHost(const QString &host);
 		void get(const QString &path);
-		void post(const QString &path,const QByteArray& data);
-		void post(const QString &path,const QString& data);
+		void post(const QString &path, const QByteArray &data);
+		void post(const QString &path, const QString &data);
 
 	public:
 		HttpClient();
 		int status() const;
-		const QByteArray& data() const;
-		static QString encode(const QString& text);
+		const QByteArray &data() const;
+		static QString encode(const QString &text);
+
+		const QString &cookie(const QString &name) const;
+		const QMap<QString, QString> &cookies() const;
+		void setCookie(const QString &name, const QString &value);
 
 	signals:
 		void finished();
