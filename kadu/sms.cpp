@@ -108,13 +108,16 @@ int Sms::sendSms(void) {
 	smsProcess = new QProcess(this);
 	if(config.smscustomconf&&(!config.smsbuildin))
 	{
-		QString jakisstring;
-		jakisstring.sprintf(config.smsconf, (const char*)SmsAppPath.local8Bit(), recipient->text().toInt(), (const char *)body->text().local8Bit());
-		smsProcess->addArgument(jakisstring);
+		smsProcess->addArgument(SmsAppPath);
+		QString args=config.smsconf;
+		args.replace("%n",recipient->text());
+		args.replace("%m",body->text());
+		smsProcess->addArgument(args);
 	}
 	else
 	{
 		smsProcess->addArgument(SmsAppPath);
+		smsProcess->addArgument("--bramkaorg");
 		smsProcess->addArgument(recipient->text());
 		smsProcess->addArgument(body->text());
 	};
