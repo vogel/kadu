@@ -64,7 +64,7 @@ void HistoryManager::appendMessage(UinsList uins, uin_t uin, const QString &msg,
 	QString fname = ggPath("history/");
 	QString line, nick;
 	QStringList linelist;
-	int i, offs;
+	int offs;
 
 	convHist2ekgForm(uins);
 	fname.append(getFileNameByUinsList(uins));
@@ -292,7 +292,6 @@ void HistoryManager::convHist2ekgForm(UinsList uins) {
 	QString fname, fnameout, line, nick;
 	QStringList linelist;
 	uin_t uin;
-	int i, j, typeofline;
 
 	fname = getFileNameByUinsList(uins);
 	
@@ -892,7 +891,6 @@ void HistoryManager::chatMsgReceived(UinsList senders,const QString& msg,time_t 
 }
 
 History::History(UinsList uins): uins(uins), closeDemand(false), finding(false) {
-	int i;
 	
 	history.convHist2ekgForm(uins);
 	history.buildIndex(uins);

@@ -13,6 +13,7 @@
 #include <qcolor.h>
 #include <qlayout.h>
 #include <qscrollview.h>
+#include <qfiledialog.h>
 
 #include "config_dialog.h"
 #include "config_file.h"
@@ -56,7 +57,6 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 	int nexttab= 0;
 	int actualparent=0;
 	QString actualparentname= "";
-	int i;
 
 	for(QValueList<RegisteredControl>::iterator i=RegisteredControls.begin(); i!=RegisteredControls.end(); i++)
 	{
@@ -181,6 +181,13 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				break;
 			}
+			case CONFIG_LISTVIEW:
+			{	
+				QListView* listview= new QListView(parent, (*i).caption);
+				(*i).widget=listview;
+				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
+				break;
+			}
 			case CONFIG_PUSHBUTTON:
 			{
 				QPushButton *button =new QPushButton(appHandle->translate("@default",(*i).caption), parent, (*i).name);
@@ -189,6 +196,17 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				break;
 			}
+			case CONFIG_SELECTPATHS:
+			{
+				QPushButton *button =new QPushButton(appHandle->translate("@default",(*i).caption), parent);
+				SelectPaths* paths=new SelectPaths(button, (*i).name);
+				button->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum));
+				(*i).widget=paths;
+				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
+				connect(button, SIGNAL(released()), paths, SLOT(show()));
+				break;
+			}
+
 			case CONFIG_SLIDER:
 			{
 				int minVal;
@@ -263,7 +281,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 	listBox->setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)0, (QSizePolicy::SizeType)7, 0, 0, listBox->sizePolicy().hasHeightForWidth()));
 	
 	QHBox* buttonbox= new QHBox(this);
-	okButton= new QPushButton("Ok", buttonbox);
+	okButton= new QPushButton(tr("Ok"), buttonbox);
 	cancelButton= new QPushButton(tr("Cancel"), buttonbox);
 	
 	dialogLayout->addWidget(buttonbox, 1, 1,Qt::AlignRight);
@@ -387,10 +405,6 @@ void ConfigDialog::updateConfig(void)
 				config_file.writeEntry((*i).group, (*i).entry, ((QLineEdit*)((*i).widget))->text());
 				break;
 			}
-			case CONFIG_LISTBOX:
-			{
-				break;
-			}
 			case CONFIG_SLIDER:
 			{
 				config_file.writeEntry((*i).group, (*i).entry, ((QSlider*)((*i).widget))->value());
@@ -401,6 +415,8 @@ void ConfigDialog::updateConfig(void)
 				config_file.writeEntry((*i).group, (*i).entry, ((QSpinBox*)((*i).widget))->value());
 				break;
 			}
+			default:
+				break;
 		}
 	}
 		for(QValueList<ElementConnections>::iterator a=SlotsOnDestroy.begin(); a!=SlotsOnDestroy.end(); a++)
@@ -431,8 +447,7 @@ void ConfigDialog::addCheckBox(const QString& groupname,
 		c.tip=tip;
 		c.nrOfControls=0;
 		if (addControl(groupname,c) == 0)
-		    if (config_file.readEntry(groupname, entry) == "")		
-			  config_file.writeEntry(groupname, entry, defaultS);
+			  config_file.addVariable(groupname, entry, defaultS);
 
 							}
 };
@@ -543,8 +558,7 @@ void ConfigDialog::addHotKeyEdit(const QString& groupname,
 		if (addControl(groupname,c) == 0)
 		// zapisujemy warto¶æ domy¶ln±, aby ju¿ wiêcej nie musieæ
 		// jej podawaæ przy czytaniu z pliku conf		
-		    if (config_file.readEntry(groupname, entry)=="")		
-			  config_file.writeEntry(groupname, entry, defaultS);
+			  config_file.addVariable(groupname, entry, defaultS);	
 						}
 };
 
@@ -584,9 +598,7 @@ void ConfigDialog::addLineEdit(const QString& groupname,
 		c.nrOfControls=0;
 
 		if (addControl(groupname,c) == 0)
-		    if (config_file.readEntry(groupname, entry) == "")
-			  config_file.writeEntry(groupname, entry, defaultS);
-
+			  config_file.addVariable(groupname, entry, defaultS);	
 							   }
 };
 
@@ -622,6 +634,23 @@ void ConfigDialog::addListBox(const QString& groupname,
 						}
 };
 
+void ConfigDialog::addListView(const QString& groupname,
+			    const QString& parent, const QString& caption, const QString& tip, const QString& name)
+{
+	if (existControl(groupname, caption, name) == -1){
+		RegisteredControl c;
+		c.type=CONFIG_LISTVIEW;
+		c.parent=parent;
+		c.name=name;
+		c.group=groupname;		
+		c.caption=caption;
+		c.tip=tip;
+		c.nrOfControls=0;
+		addControl(groupname,c);
+						}
+};
+
+
 void ConfigDialog::addPushButton(const QString& groupname,
 			    const QString& parent, const QString& caption,
 			    const QString &iconFileName, const QString& tip, const QString& name)
@@ -639,6 +668,22 @@ void ConfigDialog::addPushButton(const QString& groupname,
 		addControl(groupname,c);
 						}
 };
+
+void ConfigDialog::addSelectPaths(const QString& groupname,
+			const QString& parent, const QString& caption, const QString& name)
+{
+	if (existControl(groupname, caption, name) == -1){
+		RegisteredControl c;
+		c.type=CONFIG_SELECTPATHS;
+		c.parent=parent;
+		c.group=groupname;		
+		c.name=name;
+		c.caption=caption;
+		c.nrOfControls=0;
+		addControl(groupname,c);
+						}
+};
+
 
 void ConfigDialog::addSlider(const QString& groupname,
 			    const QString& parent, const QString& caption,
@@ -660,8 +705,7 @@ void ConfigDialog::addSlider(const QString& groupname,
 		c.nrOfControls=0;
 
 		if (addControl(groupname,c) == 0)
-		    if (config_file.readEntry(groupname, entry) == "")
-			  config_file.writeEntry(groupname, entry, value);
+			  config_file.addVariable(groupname, entry, value);
 					    		  }
 
 };
@@ -684,9 +728,7 @@ void ConfigDialog::addSpinBox(const QString& groupname,
 		c.nrOfControls=0;
 		
 		if (addControl(groupname,c) == 0)
-		    if (config_file.readEntry(groupname, entry) == "")
-			  config_file.writeEntry(groupname, entry, value);
-		
+			  config_file.addVariable(groupname, entry, value);
 					    		  }
 
 };
@@ -737,7 +779,7 @@ void ConfigDialog::addVGroupBox(const QString& groupname,
 void ConfigDialog::connectSlot(const QString& groupname, const QString& caption, const char* signal, const QObject* receiver, const char* slot,const QString& name)
 {
 		for(QValueList<RegisteredControl>::iterator j=RegisteredControls.begin(); j!=RegisteredControls.end(); j++)
-				if(((*j).caption == caption)&& ((*j).name == name))
+				if(((*j).group == groupname)&& ((*j).caption == caption)&& ((*j).name == name))
 			{
 	ElementConnections c;
 	c.signal=signal;
@@ -784,6 +826,7 @@ int ConfigDialog::findPreviousTab(const int startpos)
 				    return position;
 		    position--;
 		    }
+    return -1;
 // -1 oznacza ze nie ma listy
 }
 
@@ -890,6 +933,7 @@ QWidget* ConfigDialog::getWidget(const QString& groupname, const QString& captio
 	    if (nr!=-1)
 					return (RegisteredControls[nr].widget);
 	kdebug("Warning there is no \\" +groupname+ "\\"+ caption+ "\\"+ name+ "\\ control\n");
+    return NULL;
 }
 
 
@@ -945,11 +989,22 @@ QListBox* ConfigDialog::getListBox(const QString& groupname, const QString& capt
 	    return dynamic_cast<QListBox*>(getWidget(groupname,caption,name));
 }
 
+QListView* ConfigDialog::getListView(const QString& groupname, const QString& caption, const QString& name)
+{	
+	    return dynamic_cast<QListView*>(getWidget(groupname,caption,name));
+}
+
 
 QPushButton* ConfigDialog::getPushButton(const QString& groupname, const QString& caption, const QString& name)
 {	
 	    return dynamic_cast<QPushButton*>(getWidget(groupname,caption,name));
 }
+
+SelectPaths* ConfigDialog::getSelectPaths(const QString& groupname, const QString& caption, const QString& name)
+{	
+	    return dynamic_cast<SelectPaths*>(getWidget(groupname,caption,name));
+}
+
 
 
 QSlider* ConfigDialog::getSlider(const QString& groupname, const QString& caption, const QString& name)
@@ -1089,3 +1144,129 @@ void ColorButton::setColor(const QColor &color )
 		setPixmap(pm);
 	    }	
 }
+
+SelectPaths::SelectPaths(QWidget *parent, const char* name): QDialog(parent, name)
+{	
+	kdebug("SelectPaths::SelectPaths()\n");
+	setWFlags(Qt::WDestructiveClose);
+	setCaption(tr("Select paths"));
+	QGridLayout *layout= new QGridLayout(this, 1,0, 5, 10);
+	
+	QVBox *vertical=new QVBox(this);
+	pathListBox= new QListBox(vertical);
+	pathListBox->setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding));
+	QHBox *buttons= new QHBox(vertical);
+	add= new QPushButton(buttons);
+	add->setText(tr("Add"));
+	change= new QPushButton(buttons);
+	change->setText(tr("Replace"));
+	remove= new QPushButton(buttons);
+	remove->setText(tr("Remove"));
+
+	QHBox *editpath=new QHBox(this);
+	pathEdit= new QLineEdit(editpath);
+	findPath= new QPushButton(editpath);
+	findPath->setText(tr("Choose"));
+
+	QHBox *okcancel=new QHBox(this);
+	ok= new QPushButton(tr("Ok"), okcancel);
+	ok->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
+	cancel= new QPushButton(tr("Cancel"), okcancel);
+	cancel->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
+	
+	layout->addWidget(vertical, 0, 0);
+	layout->addWidget(editpath, 1, 0);
+	layout->addWidget(okcancel, 2, 0, Qt::AlignRight);
+	connect(cancel, SIGNAL(released()), this, SLOT(hide()));
+	connect(ok, SIGNAL(released()), this, SLOT(okButton()));
+	connect(change, SIGNAL(released()), this, SLOT(replacePath()));
+	connect(add, SIGNAL(released()), this, SLOT(addPath()));
+	connect(remove, SIGNAL(released()), this, SLOT(deletePath()));
+	connect(findPath, SIGNAL(released()), this, SLOT(choosePath()));
+	resize(330,330);
+}
+
+QStringList SelectPaths::getPathList()
+{
+    kdebug("SelectPaths::getPathList()\n");
+    return releaseList;
+}
+
+
+void SelectPaths::setPathList(QStringList& list)
+{
+    kdebug("SelectPaths::setPathList()\n");
+    pathListBox->clear();
+    pathListBox->insertStringList(list);
+    pathListBox->setSelected(0, true);
+    releaseList=list;
+}
+
+
+void SelectPaths::addPath()
+{
+    kdebug("SelectPaths::addPath()\n");
+    QString dirtoadd=pathEdit->text();
+    QDir dir;
+    if (dirtoadd!= "")
+    if (dir.cd(dirtoadd))
+    {
+        if (dirtoadd.right(1) != "/") dirtoadd+="/";
+	    pathListBox->insertItem(dirtoadd);
+    }
+    pathListBox->setSelected(pathListBox->currentItem(),true);
+
+
+}
+
+void SelectPaths::replacePath()
+{
+    kdebug("SelectPaths::replacePath()\n");
+    QString dirtochange=pathEdit->text();
+
+    QDir dir;
+    if (dirtochange!= "")
+    if (dir.cd(dirtochange))
+
+        if (pathListBox->isSelected(pathListBox->currentItem()))
+	    {
+	        if (dirtochange.right(1) != "/") dirtochange+="/";
+		pathListBox->changeItem(dirtochange, pathListBox->currentItem());
+		pathListBox->setSelected(pathListBox->currentItem(), true);
+	    }
+}
+
+void SelectPaths::deletePath()
+{
+    kdebug("SelectPaths::deletePath()\n");
+    if (pathListBox->isSelected(pathListBox->currentItem()))
+	{    pathListBox->removeItem(pathListBox->currentItem());
+	     pathListBox->setSelected(pathListBox->currentItem(),true);
+	}
+}
+
+void SelectPaths::choosePath()
+{
+    kdebug("SelectPaths::choosePath()\n");
+
+    QDir dir;
+    QString startdir="/";
+    if (dir.cd(pathEdit->text()) && (pathEdit->text()!= ""))
+	    startdir=pathEdit->text();
+    QString s= QFileDialog::getExistingDirectory(startdir, this, "getDirectory", tr("Choose a directory"));
+    if (s!="") pathEdit->setText(s);
+}
+
+void SelectPaths::okButton()
+{
+    releaseList.clear();
+    for (unsigned int i=0; i<pathListBox->count(); i++)
+	releaseList.append(pathListBox->text(i));
+    hide();
+    emit changed(releaseList);
+}
+SelectPaths::~SelectPaths()
+{
+    kdebug("SelectPaths::~SelectPaths()\n");
+}
+

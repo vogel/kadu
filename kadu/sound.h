@@ -2,28 +2,48 @@
 #define SOUND_H
 
 #include <qobject.h>
-#include <qthread.h>
-#include <qsemaphore.h>
-
-extern bool mute;
-
-void playSound(const QString &sound, const QString player = QString::null);
+#include <qdatetime.h>
+#include <qstringlist.h>
+#include "config_file.h"
 
 class SoundSlots: public QObject
 {
 	Q_OBJECT
 	
-	public:
-		static void initModule();
 	public slots:
 		void soundPlayer(bool value);
 		void onCreateConfigDialog();
+		void onDestroyConfigDialog();
+		void chooseSoundTheme(const QString& string);
 		void choosePlayerFile();
-		void chooseMsgFile();
-		void chooseMsgTest();
-		void chooseChatFile();
-		void chooseChatTest();	
+		void chooseSoundFile();
+		void clearSoundFile();
+		void testSoundFile();
+		void selectedPaths(const QStringList& paths);
 
 };
 
+class SoundManager
+{
+	private:
+		QStringList ThemesList;
+		QStringList ThemesPaths;
+		QValueList<ConfigFileEntry> entries;
+		QStringList getSubDirs(const QString& path);
+		QString fixFileName(const QString& path,const QString& fn);
+		QTime lastsoundtime;
+	public:
+		SoundManager();
+		static void initModule();
+		bool mute;
+		void playSound(const QString &sound, const QString player = QString::null);
+		const QStringList& themes();
+		void setSoundTheme(const QString& theme);
+		void setSoundPaths(const QStringList& paths);
+		QString themePath(const QString& theme="");
+		QString getThemeEntry(const QString& name);
+		int timeAfterLastSound();
+};
+
+extern SoundManager soundmanager;
 #endif

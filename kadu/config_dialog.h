@@ -11,6 +11,7 @@
 #include <qlabel.h>
 #include <qlineedit.h>
 #include <qlistbox.h>
+#include <qlistview.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
 #include <qrect.h>
@@ -42,7 +43,7 @@ class ColorButton : public QPushButton
 	private:
 	       QColor actualcolor;
 	public:
-	       ColorButton::ColorButton(const QColor &color, QWidget *parent =0, const char* name =0);	
+	       ColorButton(const QColor &color, QWidget *parent =0, const char* name =0);
 	       QColor color();
 	       void setColor(const QColor &color);
 	private slots:
@@ -51,6 +52,32 @@ class ColorButton : public QPushButton
 		void changed();
 
 
+};
+
+class SelectPaths : public QDialog
+{	
+	Q_OBJECT
+	protected:
+	      QStringList releaseList;
+	      QListBox *pathListBox;
+	      QPushButton *ok, *cancel;
+	      QPushButton *add, *change, *remove;
+	      QLineEdit *pathEdit;
+	      QPushButton *findPath;
+	protected slots:
+	      void okButton();
+	      void addPath();
+	      void replacePath();
+	      void deletePath();
+	      void choosePath();
+	public:
+	      SelectPaths(QWidget *parent =0, const char* name =0);
+	      ~SelectPaths();
+	      QStringList getPathList();
+	      void setPathList(QStringList& list);
+
+	signals:
+	      void changed(const QStringList &list);
 };
 
 
@@ -75,7 +102,9 @@ class ConfigDialog : public QDialog	{
 			CONFIG_LINEEDIT,
 			CONFIG_LINEEDIT2,
 			CONFIG_LISTBOX,
+			CONFIG_LISTVIEW,
 			CONFIG_PUSHBUTTON,
+			CONFIG_SELECTPATHS,
 			CONFIG_SLIDER,
 			CONFIG_SPINBOX,
 			CONFIG_TAB,
@@ -162,10 +191,16 @@ class ConfigDialog : public QDialog	{
 			    
 		static void addListBox(const QString& groupname, 
 			    const QString& parent, const QString& caption, const QString& tip= "", const QString& name="");
+
+		static void addListView(const QString& groupname, 
+			    const QString& parent, const QString& caption, const QString& tip= "", const QString& name="");
 			    
 		static void addPushButton(const QString& groupname, 
 			    const QString& parent, const QString& caption,
 			    const QString& iconFileName="", const QString& tip="", const QString& name="");
+
+		static void addSelectPaths(const QString& groupname, 
+			    const QString& parent, const QString& caption, const QString& name="");
 			    
 		static void addSlider(const QString& groupname, 
 			    const QString& parent, const QString& caption,
@@ -204,7 +239,9 @@ class ConfigDialog : public QDialog	{
 		static QLineEdit*   getLineEdit(const QString& groupname, const QString& caption, const QString& name="");
 		static QLabel*      getLabel(const QString& groupname, const QString& caption, const QString& name="");
 		static QListBox*    getListBox(const QString& groupname, const QString& caption, const QString& name="");
+		static QListView*   getListView(const QString& groupname, const QString& caption, const QString& name="");
 		static QPushButton* getPushButton(const QString& groupname, const QString& caption, const QString& name="");
+		static SelectPaths* getSelectPaths(const QString& groupname, const QString& caption, const QString& name="");
 		static QSlider*     getSlider(const QString& groupname, const QString& caption, const QString& name="");
 		static QSpinBox*    getSpinBox(const QString& groupname, const QString& caption, const QString& name="");
 		static QVBox*  	    getVBox(const QString& groupname, const QString& caption, const QString& name="");

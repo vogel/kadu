@@ -213,7 +213,7 @@ void ChatManager::openPendingMsgs()
 void ChatManager::sendMessage(uin_t uin,UinsList selected_uins)
 {
 	QString tmp;
-	int i, k = -1, l;
+	int i, k = -1;
 	bool stop = false;
 	PendingMsgs::Element elem;
 	UinsList uins;
@@ -887,7 +887,14 @@ void Chat::alertNewMessage(void) {
 			if (isActiveWindow())
 				return;
 										     }
-		playSound(config_file.readEntry("Sounds","Chat_sound"));
+
+	QString chatsound;
+	if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
+		chatsound=config_file.readEntry("Sounds", "Chat_sound");
+	else 
+		chatsound=soundmanager.themePath()+ "/" +soundmanager.getThemeEntry("Chat");
+
+	soundmanager.playSound(chatsound);
 			
 		}
 }
@@ -1105,7 +1112,6 @@ void Chat::colorChanged(const QColor& color) {
 
 /* adds an emoticon code to the edit window */
 void Chat::addEmoticon(QString string) {
-	int para, index;
 
 	if (string.length()) {
 		string.replace(QRegExp("&lt;"), "<");
@@ -1577,7 +1583,6 @@ void ChatSlots::chooseChatFont(int nr)
 	QValueList<int> vl;
 	QComboBox *cb_chatfont= ConfigDialog::getComboBox("Look", "Font", "font");
 	QComboBox *cb_chatfontsize= ConfigDialog::getComboBox("Look", "Font size", "size");
-	QComboBox *cb_chatselect= ConfigDialog::getComboBox("Look", "","combobox1");
 	
 	vl = fdb.pointSizes(cb_chatfont->text(nr),"Normal");
 	cb_chatfontsize->clear();
@@ -1599,7 +1604,6 @@ void ChatSlots::chooseChatFontSize(int nr)
 {
 	QComboBox *cb_chatfontsize= ConfigDialog::getComboBox("Look", "Font size", "size");
 	QComboBox *cb_chatfont= ConfigDialog::getComboBox("Look", "Font", "font");
-	QComboBox *cb_chatselect= ConfigDialog::getComboBox("Look", "","combobox1");
 	
 	vl_chatfont[0]= 
 	    QFont(cb_chatfont->currentText(), cb_chatfontsize->currentText().toInt());

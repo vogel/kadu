@@ -85,6 +85,18 @@ void ConfigFile::sync() {
 	kdebug("ConfigFile::sync(): finished\n");
 }
 
+QValueList<ConfigFileEntry> ConfigFile::getGroupSection(const QString& name)
+{
+    int i;
+    kdebug("ConfigFile::getGroupSection()\n");
+    for(i=0; i < groups.count(); i++)
+    	if (name == groups[i].name)
+		  return groups[i].entries;
+    
+    QValueList<ConfigFileEntry> empty_group;
+    return empty_group;
+}
+
 void ConfigFile::setGroup(const QString &name) {
 	struct ConfigFileGroup newgroup;
 	int i;

@@ -169,8 +169,6 @@ class EventConfigSlots : public QObject
 
 	    void ifNotifyGlobal(bool toggled);
 	    void ifNotifyAll(bool toggled);
-	    void chooseNotifyFile();
-	    void chooseNotifyTest();
 };
 
 #endif

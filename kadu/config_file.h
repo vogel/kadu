@@ -39,6 +39,8 @@ class ConfigFile {
 	public:
 		ConfigFile(const QString &filename);
 		void sync();
+		
+		QValueList<ConfigFileEntry> getGroupSection(const QString& name);
 
 		void writeEntry(const QString &group,const QString &name, const QString &value);
 		void writeEntry(const QString &group,const QString &name, const char *value);

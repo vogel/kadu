@@ -51,8 +51,6 @@ extern "C"
 AutoConnectionTimer *AutoConnectionTimer::autoconnection_object = NULL;
 ConnectionTimeoutTimer *ConnectionTimeoutTimer::connectiontimeout_object = NULL;
 
-QTime lastsoundtime;
-
 AutoConnectionTimer::AutoConnectionTimer(QObject *parent) : QTimer(parent, "AutoConnectionTimer") {
 	connect(this, SIGNAL(timeout()), SLOT(doConnect()));
 	start(1000, TRUE);
@@ -140,7 +138,6 @@ void SavePublicKey::yesClicked() {
 	else {
 		keyfile.writeBlock(keyData.local8Bit(), keyData.length());
 		keyfile.close();
-		int i = 0;
 		UinsList uins;
 		uins.append(uin);
 		chat_manager->enableEncryptionBtnForUins(uins);
@@ -341,7 +338,14 @@ void EventManager::chatMsgReceived2Slot(UinsList senders,const QString& msg,time
 {
 	UserListElement ule = userlist.byUinValue(senders[0]);
 
-	playSound(parse(config_file.readEntry("Sounds","Message_sound"),ule));
+	QString messagesound;
+	if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
+		messagesound=parse(config_file.readEntry("Sounds","Message_sound"),ule);
+	else 
+		messagesound=soundmanager.themePath()+"/"+soundmanager.getThemeEntry("Message");
+	
+	soundmanager.playSound(messagesound);
+		
 
 	pending.addMsg(senders, msg, GG_CLASS_CHAT, time);
 	
@@ -394,17 +398,24 @@ void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)
 			msgbox->show();
 			}
 
-		if (config_file.readBoolEntry("Notify","NotifyWithSound") && config_file.readBoolEntry("Sounds", "PlaySound")) {
-			if (lastsoundtime.elapsed() >= 500)
-				playSound(parse(config_file.readEntry("Notify","NotifySound"),userlist.byUin(uin),false));
-			lastsoundtime.restart();
+		if (config_file.readBoolEntry("Notify","NotifyWithSound")) {
+			if (soundmanager.timeAfterLastSound()>500)
+			{
+			    QString notifysound;
+			    if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
+				notifysound=parse(config_file.readEntry("Notify","NotifySound"),userlist.byUin(uin),false);
+			    else 
+				notifysound=soundmanager.themePath()+"/"+soundmanager.getThemeEntry("Notify");
+	
+		    	    soundmanager.playSound(notifysound);
+			}
 			}
 		}
 }
 
 void EventManager::userlistReceivedSlot(struct gg_event *e) {
 	unsigned int oldstatus;
-	int i, nr = 0;
+	int nr = 0;
 
 	while (e->event.notify60[nr].uin) {
 		UserListElement &user = userlist.byUin(e->event.notify60[nr].uin);
@@ -484,7 +495,6 @@ void EventManager::userlistReceivedSlot(struct gg_event *e) {
 
 void EventManager::userStatusChangedSlot(struct gg_event * e) {
 	unsigned int oldstatus, status;
-	int i;
 	uint32_t uin;
 	char *descr;
 	uint32_t remote_ip;
@@ -751,7 +761,6 @@ void EventConfigSlots::initModule()
 	QT_TRANSLATE_NOOP("@default", "Path:");
 	QT_TRANSLATE_NOOP("@default", "Test");
 	QT_TRANSLATE_NOOP("@default", "Notify by dialog box");
-	QT_TRANSLATE_NOOP("@default", "Notify sound");
 
 // zakladka "powiadom"
 	ConfigDialog::addTab("Notify");
@@ -773,11 +782,6 @@ void EventConfigSlots::initModule()
 	
 	ConfigDialog::addVGroupBox("Notify", "Notify", "Notify options");
 	ConfigDialog::addCheckBox("Notify", "Notify options", "Notify by sound", "NotifyWithSound", false);
-	
-	ConfigDialog::addHGroupBox("Notify", "Notify options","Notify sound");
-	ConfigDialog::addLineEdit("Notify", "Notify sound", "Path:", "NotifySound");
-	ConfigDialog::addPushButton("Notify", "Notify sound","","fileopen.png","","notifysoundfile");
-	ConfigDialog::addPushButton("Notify", "Notify sound", "Test");
 	ConfigDialog::addCheckBox("Notify", "Notify options", "Notify by dialog box", "NotifyWithDialogBox", false);
 	
 
@@ -858,7 +862,7 @@ void EventConfigSlots::initModule()
 	    QHostAddress ip2;
 	    servers = QStringList::split(";", config_file.readEntry("Network","Server", ""));
 	    config_servers.clear();
-	        for (int i = 0; i < servers.count(); i++)
+	        for (unsigned int i = 0; i < servers.count(); i++)
 		    {
 		        if (ip2.setAddress(servers[i]))
   			       config_servers.append(ip2);
@@ -870,8 +874,6 @@ void EventConfigSlots::initModule()
 	ConfigDialog::connectSlot("Notify", "", SIGNAL(clicked()), eventconfigslots, SLOT(_Left()), "back");
 	ConfigDialog::connectSlot("Notify", "available", SIGNAL(doubleClicked(QListBoxItem *)), eventconfigslots, SLOT(_Right2(QListBoxItem *)));
 	ConfigDialog::connectSlot("Notify", "track", SIGNAL(doubleClicked(QListBoxItem *)), eventconfigslots, SLOT(_Left2(QListBoxItem *)));
-	ConfigDialog::connectSlot("Notify", "", SIGNAL(clicked()), eventconfigslots, SLOT(chooseNotifyFile()), "notifysoundfile");
-	ConfigDialog::connectSlot("Notify", "Test", SIGNAL(clicked()), eventconfigslots, SLOT(chooseNotifyTest()));
 }
 
 void EventConfigSlots::onCreateConfigDialog()
@@ -933,28 +935,17 @@ void EventConfigSlots::onCreateConfigDialog()
 	QCheckBox *b_notifyall= ConfigDialog::getCheckBox("Notify", "Notify about all users");
 	QVGroupBox *notifybox= ConfigDialog::getVGroupBox("Notify", "Notify options");
 	QGrid *panebox = ConfigDialog::getGrid("Notify","listboxy");	
-	QHGroupBox *soundbox= ConfigDialog::getHGroupBox("Notify", "Notify sound");
-	QCheckBox *b_notifysound= ConfigDialog::getCheckBox("Notify", "Notify by sound");
 	
 	if (config_file.readBoolEntry("Notify", "NotifyAboutAll")) 
 		panebox->setEnabled(false);
-
-	if (!config_file.readBoolEntry("Sounds", "PlaySound"))
-		{
-		soundbox->setEnabled(false);
-		b_notifysound->setEnabled(false);
-		}
 
 	if (!config_file.readBoolEntry("Notify", "NotifyStatusChange"))
 		{	
 		b_notifyall->setEnabled(false);
 		panebox->setEnabled(false);
 		notifybox->setEnabled(false);
-		soundbox->setEnabled(false);
-
 		}
 
-	QObject::connect(b_notifysound, SIGNAL(toggled(bool)), soundbox, SLOT(setEnabled(bool)));
 	QObject::connect(b_notifyall, SIGNAL(toggled(bool)), this, SLOT(ifNotifyAll(bool)));
 	QObject::connect(b_notifyglobal, SIGNAL(toggled(bool)), this, SLOT(ifNotifyGlobal(bool)));
 
@@ -1036,12 +1027,9 @@ void EventConfigSlots::ifNotifyGlobal(bool toggled) {
 	QCheckBox *b_notifyall= ConfigDialog::getCheckBox("Notify", "Notify about all users");
 	QVGroupBox *notifybox= ConfigDialog::getVGroupBox("Notify", "Notify options");
 	QGrid *panebox = ConfigDialog::getGrid("Notify","listboxy");
-	QCheckBox *b_sounds= ConfigDialog::getCheckBox("Sounds", "Play sounds");
-	QCheckBox *b_notifysound= ConfigDialog::getCheckBox("Notify", "Notify by sound");
 	
 	b_notifyall->setEnabled(toggled);
 	panebox->setEnabled(toggled && !b_notifyall->isChecked());
-	b_notifysound->setEnabled(toggled && b_sounds->isChecked());
 	notifybox->setEnabled(toggled);
 }
 
@@ -1081,22 +1069,6 @@ void EventConfigSlots::_Right(void) {
 		e_availusers->removeItem(e_availusers->currentItem());
 		e_notifies->sort();
 		}
-}
-
-
-void EventConfigSlots::chooseNotifyFile(void) {
-
-	QLineEdit *e_soundnotify= ConfigDialog::getLineEdit("Notify", "Path:");
-	QString s(QFileDialog::getOpenFileName( QString::null, "Audio Files (*.wav *.au *.raw)"));
-	if (s.length())
-		e_soundnotify->setText(s);
-}
-
-
-void EventConfigSlots::chooseNotifyTest(void) {
-	QLineEdit *e_soundnotify= ConfigDialog::getLineEdit("Notify", "Path:");
-	playSound(e_soundnotify->text(), config_file.readEntry("Sounds", "SoundPlayer"));
-	
 }
 
 

@@ -286,7 +286,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	History::initModule();
 	HintManager::initModule();
 	AutoAwayTimer::initModule();
-	SoundSlots::initModule();
+	SoundManager::initModule();
 	EventConfigSlots::initModule();
 
 	ConfigDialog::registerSlotOnCreate(kaduslots, SLOT(onCreateConfigDialog()));
@@ -331,7 +331,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	config_file.addVariable("Look", "UserboxDescFont", &def_font);
 	
 	closestatusppmtime.start();
-	lastsoundtime.start();
 
 	gg_proxy_host = NULL;
 
@@ -519,7 +518,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	
 	QIconSet *mu;
-	if (mute)
+	if (soundmanager.mute)
 	{mu= new QIconSet(loadIcon("mute.png"));}
 	else
 	{mu= new QIconSet(loadIcon("unmute.png"));}
@@ -682,8 +681,8 @@ void Kadu::popupMenu()
 
 void Kadu::muteUnmuteSounds()
 {
-	mute = !mute;
-	if (mute) {
+	soundmanager.mute = !soundmanager.mute;
+	if (soundmanager.mute) {
 		mutebtn->setIconSet(loadIcon("mute.png"));
 		mutebtn->setTextLabel(tr("Unmute sounds"));
 		MenuBar->changeItem(muteitem, loadIcon("mute.png"), tr("Unmute sounds"));
@@ -1178,7 +1177,6 @@ void Kadu::userListUserAdded(const UserListElement& user)
 	// go do userboxa itp bo po co.
 	if (user.anonymous && config_file.readBoolEntry("General", "UseDocking"))
 		return;
-
 	userlist.writeToFile();
 
 	Userbox->addUser(user.altnick);
@@ -1712,7 +1710,7 @@ void Kadu::createMenu() {
 	MainMenu->insertItem(tr("Manage &ignored"), this, SLOT(manageIgnored()));
 	MainMenu->insertItem(loadIcon("configure.png"), tr("&Configuration"), this, SLOT(configure()),HotKey::shortCutFromFile("kadu_configure"));
 	MainMenu->insertItem(loadIcon("reload.png"), tr("Resend &userlist"), gadu, SLOT(sendUserList()));
-	if (mute) {
+	if (soundmanager.mute) {
 		muteitem= MainMenu->insertItem(loadIcon("mute.png"), tr("Unmute sounds"), this, SLOT(muteUnmuteSounds()));
 		}
 	else {
