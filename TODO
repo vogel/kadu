@@ -1,4 +1,4 @@
-/** TODO, stan na 18/05/2003. **/
+/** TODO, stan na 16/06/2003. **/
 (TODO mo¿e byæ nieaktualne... zapraszamy na kadu.net/forum)
 
 
@@ -18,14 +18,21 @@
  ! dopracowaæ animowane emotikony na ile siê da
  + dopracowaæ grupy
  ! dopracowaæ ob³ugê historii
- + zmiany statusu u¿ytkowników pokazuj± siê w oknie rozmowy i historii (opcja)
+ ! dopracowaæ wysy³anie SMS'ów do ERY
+ ! wyja¶niæ problemy z autoaway'em
+ + mo¿liwo¶æ wy³±czenia pokazywania siê zmian statusu u¿ytkowników
+   w oknie rozmowy i historii
  + okno rozmowy "wyp³ywa na wierzch" za ka¿d± now± wiadomo¶ci± (je¶li
    odpowiednia opcja w oknie rozmowy jest w³±czona)
- ! wysylanie SMS'ow do ery
 
  TODO dla wersji 0.3.5 lub pó¼niejszych
 ----------------------------------------
 
+ + po³±czenia ssl z serwerami gadu
+ + ca³kowite przej¶cie na nowy mechanizm budowania okna konfiguracji
+   i uporz±dkowanie go
+ + konfigurowanie klawiszologii kadu
+ + zapamiêtywanie wymiarów okien
  - sprawdzanie pisowni w oknie chat
  - dokoñczyæ rozmowy g³osowe
  ? dodawanie nieznanych u¿ytkowników z konferencji do listy jako opcja
@@ -33,7 +40,6 @@
  ? wykrywanie niewidocznych jako opcja
  + wywo³ywanie domyslnego klienta e-mail i pozycja e-mail w info o kontaktach
  ? wysy³anie smsów do wielu osób jednoczesnie
- - mo¿liwo¶æ formatowania tekstu
  ? ustawienie miejsca wyskakiwania hinta zamiast ko³o tray'a
  ? podrêczne menu w oknie rozmowy
  ? inteligentna data w oknie rozmowy
