@@ -713,6 +713,10 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
         <source>Sound paths</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Sound theme</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>

@@ -707,6 +707,10 @@ Arguments should be separated with spaces. %n argument is converted to number, %
         <source>Sound paths</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Sound theme</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>

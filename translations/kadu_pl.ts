@@ -713,6 +713,10 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <source>Sound paths</source>
         <translation>Ścieżki do dźwięków</translation>
     </message>
+    <message>
+        <source>Sound theme</source>
+        <translation>Zestaw dźwięków</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -2115,7 +2119,7 @@ czasowo wyłączona lub zmieniła zasady dostępu.</translation>
     <name>SoundSlots</name>
     <message>
         <source>Custom</source>
-        <translation>Samodzielnie</translation>
+        <translation>Własny</translation>
     </message>
     <message>
         <source>Event</source>
