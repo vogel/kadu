@@ -100,6 +100,9 @@ DesktopDockWindow::~DesktopDockWindow()
 	disconnect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap&)), this, SLOT(setPixmap(const QPixmap&)));
 	disconnect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
 
+	ConfigDialog::disconnectSlot("Desktop Dock", "Move", SIGNAL(clicked()), this, SLOT(startMoving()));
+	ConfigDialog::disconnectSlot("Desktop Dock", "Enable Move entry in docklet's menu", SIGNAL(toggled(bool)), this, SLOT(updateMenu(bool)));
+
 	ConfigDialog::removeControl("Desktop Dock", "Move");
 	ConfigDialog::removeControl("Desktop Dock", "Enable Move entry in docklet's menu");
 	ConfigDialog::removeControl("Desktop Dock", "Horizontal position");
