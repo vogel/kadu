@@ -13,7 +13,6 @@
 #include <qlistbox.h>
 #include <qstring.h>
 #include <qtextstream.h>
-#include <qtextcodec.h>
 #include <qpoint.h>
 #include <qfile.h>
 #include <qfileinfo.h>
@@ -1906,16 +1905,14 @@ void Kadu::setStatus(int status) {
 		gg_proxy_username = gg_proxy_password = NULL;
 		}
 	if (config_file.readBoolEntry("Network","UseProxy")) {
-		gg_proxy_host = strdup(config_file.readEntry("Network","ProxyHost").latin1());
+		gg_proxy_host = strdup((char *)unicode2latin(config_file.readEntry("Network","ProxyHost")).data());
 		kdebug("Kadu::setStatus(): gg_proxy_host = %s\n", gg_proxy_host);
 		gg_proxy_port = config_file.readNumEntry("Network","ProxyPort");
 		kdebug("Kadu::setStatus(): gg_proxy_port = %d\n", gg_proxy_port);
-		if (pwHash(config_file.readEntry("Network","ProxyUser")).length()) {
-			gg_proxy_username = strdup(pwHash(config_file.readEntry("Network","ProxyUser")).latin1());
-			gg_proxy_password = strdup(pwHash(config_file.readEntry("Network","ProxyPassword")).latin1());
+		if (config_file.readEntry("Network","ProxyUser").length()) {
+			gg_proxy_username = strdup((char *)unicode2latin(config_file.readEntry("Network","ProxyUser")).data());
+			gg_proxy_password = strdup((char *)unicode2latin(config_file.readEntry("Network","ProxyPassword")).data());
 			}
-		else
-			gg_proxy_username = gg_proxy_password = NULL;
 		gg_proxy_enabled = 1;
 		}
 	else
@@ -1925,7 +1922,7 @@ void Kadu::setStatus(int status) {
         loginparams.password =
 		strdup(unicode2cp(pwHash(config_file.readEntry("General","Password"))).data());
 	char *tmp =
-		strdup(QTextCodec::codecForName("ISO8859-2")->fromUnicode(pwHash(config_file.readEntry("General", "Password"))).data());
+		strdup(unicode2latin(pwHash(config_file.readEntry("General", "Password"))).data());
 	kdebug("Kadu::setStatus(): password = %s\n", tmp);
 	free(tmp);
 	loginparams.uin = config_file.readNumEntry("General","UIN");
