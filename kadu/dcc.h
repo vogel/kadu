@@ -8,6 +8,7 @@
 #include <qsocketnotifier.h>
 
 #include "libgadu.h"
+#include "../config.h"
 
 enum DccFileDialogType {
 	DCC_TYPE_SEND,
