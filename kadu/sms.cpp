@@ -43,7 +43,7 @@ Sms::Sms(unsigned int gsmno,const QString & name, QDialog* parent) : QDialog (pa
 	QObject::connect(list, SIGNAL(activated(const QString&)), this, SLOT(updateRecipient(const QString &)));
 	i = 0;
  	while (i < userlist.count()) {
-		if (QString::compare(userlist[i].mobile,""))
+		if (userlist[i].mobile.length())
 			list->insertItem(userlist[i].comment);
 		i++;
 		}
