@@ -52,19 +52,21 @@ ChatManager::ChatManager() : QObject()
 {
 }
 
-int ChatManager::registerChat(Chat* chat,UinsList uins)
+const ChatList& ChatManager::chats()
 {
-	ChatManager::ChatsItem ch;
-	ch.uins = uins;
-	ch.ptr = chat;
-	Chats.append(ch);
+	return Chats;
+}
+
+int ChatManager::registerChat(Chat* chat)
+{
+	Chats.append(chat);
 	return Chats.count() - 1;
 }
 
 void ChatManager::unregisterChat(Chat* chat)
 {
 	for(int i=0; i<Chats.count(); i++)
-		if(Chats[i].ptr==chat)
+		if(Chats[i]==chat)
 		{
 			Chats.remove(Chats.at(i));
 			return;
@@ -74,28 +76,28 @@ void ChatManager::unregisterChat(Chat* chat)
 void ChatManager::refreshTitles()
 {
 	for (int i = 0; i < Chats.count(); i++)
-		Chats[i].ptr->setTitle();
+		Chats[i]->setTitle();
 }
 
 void ChatManager::refreshTitlesForUin(uin_t uin)
 {
 	for (int i = 0; i < Chats.count(); i++)
-		if (Chats[i].uins.contains(uin))
-			Chats[i].ptr->setTitle();
+		if (Chats[i]->uins().contains(uin))
+			Chats[i]->setTitle();
 }
 
 void ChatManager::changeAppearance()
 {
 	for (int i = 0; i < Chats.count(); i++)
-		Chats[i].ptr->changeAppearance();
+		Chats[i]->changeAppearance();
 }
 
 void ChatManager::enableEncryptionBtnForUins(UinsList uins)
 {
 	for(int i=0; i<Chats.count(); i++)
-		if(Chats[i].uins.equals(uins))
+		if(Chats[i]->uins().equals(uins))
 		{
-			Chats[i].ptr->setEncryptionBtnEnabled(true);
+			Chats[i]->setEncryptionBtnEnabled(true);
 			return;
 		}
 }
@@ -103,18 +105,18 @@ void ChatManager::enableEncryptionBtnForUins(UinsList uins)
 Chat* ChatManager::findChatByUins(UinsList uins)
 {
 	for(int i=0; i<Chats.count(); i++)
-		if(Chats[i].uins.equals(uins))
-			return Chats[i].ptr;
+		if(Chats[i]->uins().equals(uins))
+			return Chats[i];
 	return NULL;
 }
 
 int ChatManager::openChat(UinsList senders,time_t time)
 {
 	for (int i = 0; i < Chats.count(); i++)
-		if (Chats[i].uins.equals(senders))
+		if (Chats[i]->uins().equals(senders))
 		{
-			Chats[i].ptr->raise();
-			Chats[i].ptr->setActiveWindow();
+			Chats[i]->raise();
+			Chats[i]->setActiveWindow();
 			return i;	
 		}
 	Chat* chat = new Chat(senders, 0);
@@ -153,7 +155,7 @@ int ChatManager::openPendingMsg(int index,QString& to_add)
 	// otwieramy chat (jesli nie istnieje)
 	int k = openChat(p.uins,p.time);
 	// dopisujemy nowa wiadomosc do to_add
-	Chats[k].ptr->formatMessage(false, userlist.byUin(p.uins[0]).altnick,p.msg, timestamp(p.time), to_add);
+	Chats[k]->formatMessage(false, userlist.byUin(p.uins[0]).altnick,p.msg, timestamp(p.time), to_add);
 	// kasujemy wiadomosc z pending
 	pending.deleteMsg(index);
 	// zwracamy indeks okna chat
@@ -182,7 +184,7 @@ void ChatManager::openPendingMsgs(UinsList uins)
 	}
 	if (stop)
 	{
-		Chats[k].ptr->scrollMessages(toadd);
+		Chats[k]->scrollMessages(toadd);
 		UserBox::all_refresh();
 	}
 	else
@@ -220,7 +222,7 @@ void ChatManager::openPendingMsgs()
 	if(stop)
 	{
 		kdebug("ChatManager::openPendingMsgs() end\n");
-		Chats[k].ptr->scrollMessages(toadd);
+		Chats[k]->scrollMessages(toadd);
 		UserBox::all_refresh();
 	}
 }
@@ -251,7 +253,7 @@ void ChatManager::sendMessage(uin_t uin,UinsList selected_uins)
 	}
 	if (stop)
 	{
-		Chats[k].ptr->scrollMessages(toadd);
+		Chats[k]->scrollMessages(toadd);
 		UserBox::all_refresh();
 	}
 	else
@@ -338,7 +340,8 @@ void CustomInput::paste() {
 }
 
 Chat::Chat(UinsList uins, QWidget *parent, const char *name)
- : QWidget(parent, name, Qt::WDestructiveClose), uins(uins) {
+ : QWidget(parent, name, Qt::WDestructiveClose), Uins(uins)
+{
 	int i;
 	QValueList<int> sizes;
 
@@ -349,7 +352,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	connect(title_timer,SIGNAL(timeout()),this,SLOT(changeTitle()));
   
 	/* register us in the chats registry... */
-	index=chat_manager->registerChat(this,uins);
+	index=chat_manager->registerChat(this);
 
 	QSplitter *split1, *split2;
 
@@ -642,7 +645,7 @@ void Chat::setEncryptionBtnEnabled(bool enabled) {
 }
 
 void Chat::changeAppearance() {
-	if (uins.count() > 1 && userbox) {
+	if (Uins.count() > 1 && userbox) {
 		userbox->setPaletteBackgroundColor(config_file.readColorEntry("Look","UserboxBgColor"));
 		userbox->setPaletteForegroundColor(config_file.readColorEntry("Look","UserboxFgColor"));
 		userbox->QListBox::setFont(config_file.readFontEntry("Look","UserboxFont"));
@@ -655,26 +658,26 @@ void Chat::setTitle() {
 
 	QString title;
 
-	if (uins.size() > 1) {
-		kdebug("Chat::setTitle(): uins.size() > 1\n");
+	if (Uins.size() > 1) {
+		kdebug("Chat::setTitle(): Uins.size() > 1\n");
 		if (config_file.readEntry("Look","ConferencePrefix").isEmpty())
 			title = tr("Conference with ");
 		else
 			title = config_file.readEntry("Look","ConferencePrefix");
-		for (int k = 0; k < uins.size(); k++) {
+		for (int k = 0; k < Uins.size(); k++) {
 			if (k)
 				title.append(", ");
-			title.append(parse(config_file.readEntry("Look","ConferenceContents"),userlist.byUinValue(uins[k]),false));
+			title.append(parse(config_file.readEntry("Look","ConferenceContents"),userlist.byUinValue(Uins[k]),false));
 		}
 		setIcon(*icons->loadIcon("online"));
 	}
 	else {
 		kdebug("Chat::setTitle()\n");
 		if (config_file.readEntry("Look","ChatContents").isEmpty())
-			title = parse(tr("Chat with ")+"%a (%s[: %d])",userlist.byUinValue(uins[0]),false);
+			title = parse(tr("Chat with ")+"%a (%s[: %d])",userlist.byUinValue(Uins[0]),false);
 		else
-			title = parse(config_file.readEntry("Look","ChatContents"),userlist.byUinValue(uins[0]),false);
-		setIcon(*icons->loadIcon(gg_icons[statusGGToStatusNr(userlist.byUinValue(uins[0]).status)]));
+			title = parse(config_file.readEntry("Look","ChatContents"),userlist.byUinValue(Uins[0]),false);
+		setIcon(*icons->loadIcon(gg_icons[statusGGToStatusNr(userlist.byUinValue(Uins[0]).status)]));
 	}
 
 	title.replace(QRegExp("\n"), " ");
@@ -776,10 +779,10 @@ void Chat::userWhois(void) {
 	uin_t uin;
 	
 	if (!userbox)
-		uin = uins[0];
+		uin = Uins[0];
 	else
 		if (userbox->currentItem() == -1)
-			uin = uins[0];
+			uin = Uins[0];
 		else
 			uin = userlist.byAltNick(userbox->currentText()).uin;
 	SearchDialog *sd = new SearchDialog(0, "User info", uin);
@@ -924,9 +927,9 @@ void Chat::writeMyMessage() {
 void Chat::addMyMessageToHistory() {
 	int uin;
 
-	uin = uins[0];
+	uin = Uins[0];
 	if (config_file.readBoolEntry("General","Logging"))
-		history.appendMessage(uins, uin, myLastMessage, true);
+		history.appendMessage(Uins, uin, myLastMessage, true);
 }
 
 void Chat::clearChatWindow(void) {
@@ -1000,9 +1003,9 @@ void Chat::sendMessage(void) {
 	char* tmp = strdup(unicode2cp(mesg).data());
 	
 #ifdef HAVE_OPENSSL
-	if (uins.count()==1 && encrypt_enabled)
+	if (Uins.count()==1 && encrypt_enabled)
 	{
-		char* encrypted = sim_message_encrypt((unsigned char *)tmp, uins[0]);
+		char* encrypted = sim_message_encrypt((unsigned char *)tmp, Uins[0]);
 		free(tmp);
 		tmp=encrypted;		
 	}	
@@ -1011,10 +1014,10 @@ void Chat::sendMessage(void) {
 	if (tmp != NULL)
 	{
 		if (myLastFormatsLength)
-			seq = gadu->sendMessageRichText(uins, tmp,
+			seq = gadu->sendMessageRichText(Uins, tmp,
 				(unsigned char *)myLastFormats, myLastFormatsLength);
 		else
-			seq = gadu->sendMessage(uins, tmp);
+			seq = gadu->sendMessage(Uins, tmp);
 		free(tmp);
 	}
 
@@ -1071,7 +1074,7 @@ void Chat::pruneWindow(void) {
 void Chat::HistoryBox(void) {
 	History *hb;
 
-	hb = new History(uins);
+	hb = new History(Uins);
 	hb->show();
 }
 
@@ -1276,6 +1279,11 @@ void Chat::initModule()
 	connect(&event_manager,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
 		chat_manager,SLOT(chatMsgReceived(UinsList,const QString&,time_t,bool&)));
 };
+
+const UinsList& Chat::uins()
+{
+	return Uins;
+}
 
 ColorSelectorButton::ColorSelectorButton(QWidget* parent, const QColor& qcolor) : QToolButton(parent)
 {

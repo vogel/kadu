@@ -38,6 +38,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   teraz otwiera okno sms zamiast chat z dziwnym numerem (adrian)
 * ChatManager::openChat() jednak publiczny + sygnal chatCreated()
   a wszystko to na potrzeby modulow oczywiscie (adrian)
+* Chat::uins() zwracajacy liste rozmowcow, ChatManager::chats() zwracajacy
+  liste okien Chat, skutkiem tego Chat::ChatsItem przestalo byc potrzebne,
+  wiec porzadki w kodzie (adrian)
 
 +++ wersja 0.3.6 (22.11.2003)
 * je¶li klikniemy na jaki¶ kontakt w userboxie, od którego otrzymali¶my jak±¶

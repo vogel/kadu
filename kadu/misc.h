@@ -46,7 +46,7 @@ class UinsList : public QValueList<uin_t>
 {
 	public:
 		UinsList();
-		bool equals(UinsList &uins);
+		bool equals(const UinsList &uins) const;
 		void sort();
 };
 

@@ -559,10 +559,11 @@ QString parse(QString s, UserListElement ule, bool escape) {
 	return parse_expression(s,i,ule,escape);
 }
 
-bool UinsList::equals(UinsList &uins) {
+bool UinsList::equals(const UinsList &uins) const
+{
 	if (count() != uins.count())
 		return false;
-	for (UinsList::iterator i = begin(); i != end(); i++)
+	for (UinsList::const_iterator i = begin(); i != end(); i++)
 		if(!uins.contains(*i))
 			return false;
 	return true;

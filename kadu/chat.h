@@ -15,26 +15,23 @@
 
 class Chat;
 
+typedef QValueList<Chat*> ChatList;
+
 class ChatManager : public QObject
 {
 	Q_OBJECT
 
 	private:
-		struct ChatsItem
-		{
-			UinsList uins;
-			Chat *ptr;
-			bool operator==(const ChatsItem& r) const
-			{
-				return (uins==r.uins)&&(ptr==r.ptr);
-			};
-		};
-		QValueList<ChatsItem> Chats;
+		ChatList Chats;
 		int openPendingMsg(int index,QString& to_add);	
 
 	public:	
 		ChatManager();
-		int registerChat(Chat* chat,UinsList uins);
+		/**
+			Zwraca liste otwartych okien Chat.
+		**/
+		const ChatList& chats();
+		int registerChat(Chat* chat);
 		void unregisterChat(Chat* chat);
 		void refreshTitles();
 		void refreshTitlesForUin(uin_t uin);
@@ -97,11 +94,18 @@ class KaduTextBrowser : public QTextBrowser {
 /**
 	Okno rozmowy
 **/
-class Chat : public QWidget {
+class Chat : public QWidget
+{
 	Q_OBJECT
+	
+	private:
+		UinsList Uins;
 		int index;
 		int totaloccurences;
-		UinsList uins;
+		QString title_buffer;
+		QTimer *title_timer;  
+		QColor actcolor;
+		
 		EmoticonSelector *emoticon_selector;
 		ColorSelector *color_selector;
 		QPushButton *boldbtn;
@@ -124,7 +128,36 @@ class Chat : public QWidget {
 
 		void pruneWindow(void);
 
+	private slots:
+		void setupEncryptButton(bool enabled);
+		void userWhois(void);
+		void insertEmoticon(void);
+		void changeColor(void);
+		void regEncryptSend(void);
+		void addMyMessageToHistory(void);
+		void clearChatWindow(void);
+		void pageUp();
+		void pageDown();
+
+	protected:
+		void closeEvent(QCloseEvent *);
+		QString convertCharacters(QString,bool me);
+		virtual void windowActivationChange(bool oldActive);
+		void keyPressEvent(QKeyEvent *e);
+
 	public:
+		// FIXME - nie powinno byc publicznych zmiennych
+		QTextBrowser *body;
+		CustomInput *edit;
+		QHBox *buttontray;
+#ifdef HAVE_OPENSSL
+		bool encrypt_enabled;
+#endif
+		//
+		/**
+			Rejestruje opcje modulu Chat w oknie konfiguracji.
+		**/
+		static void initModule();
 		Chat(UinsList uins, QWidget *parent = 0, const char *name = 0);
 		~Chat();
 		void changeAppearance();
@@ -135,18 +168,11 @@ class Chat : public QWidget {
 		void addEmoticon(QString);
 		void scrollMessages(QString &);
 		void alertNewMessage(void);
-		void setEncryptionBtnEnabled(bool);		
+		void setEncryptionBtnEnabled(bool);
 		/**
-			rejestruje opcje modulu Chat w oknie konfiguracji
+			Zwraca liste numerow rozmowcow.
 		**/
-		static void initModule();
-
-		QTextBrowser *body;
-		CustomInput *edit;
-		QHBox *buttontray;
-#ifdef HAVE_OPENSSL
-		bool encrypt_enabled;
-#endif
+		const UinsList& uins();
     
 	public slots:
 		void HistoryBox(void);
@@ -163,28 +189,6 @@ class Chat : public QWidget {
 		void colorChanged(const QColor& color);
 		void aboutToClose();
 		void ackReceivedSlot(int seq);
-
-	protected:
-		void closeEvent(QCloseEvent *);
-		QString convertCharacters(QString,bool me);
-		virtual void windowActivationChange(bool oldActive);
-		void keyPressEvent(QKeyEvent *e);
-
-	private slots:
-		void setupEncryptButton(bool enabled);
-		void userWhois(void);
-		void insertEmoticon(void);
-		void changeColor(void);
-		void regEncryptSend(void);
-		void addMyMessageToHistory(void);
-		void clearChatWindow(void);
-		void pageUp();
-		void pageDown();
-
-	private:
-		QString title_buffer;
-		QTimer *title_timer;  
-		QColor actcolor;
 };
 
 class ColorSelectorButton : public QToolButton
