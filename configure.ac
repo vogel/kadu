@@ -180,23 +180,23 @@ AC_DEFUN(FIND_QT_INCLUDES,[
 
 ########################################################################
 
-AC_INIT([Kadu],[0.3.4-rc2])
+AC_INIT([Kadu],[])
 AC_COPYRIGHT([configure.ac written by A.Smarzewski])
-AC_REVISION([0.3.4-rc2])
+AC_REVISION([])
 AC_PREREQ(2.53)
+
+version=`cat VERSION`
 
 echo
 echo " ***************************************"
-echo " * Configuring Kadu, please wait . . . *"
+echo " * Configuring Kadu  please wait . . . *"
 echo " ***************************************"
-echo
 
 AC_CONFIG_SRCDIR([kadu/kadu.cpp])
 AC_CONFIG_AUX_DIR([admin])
 AM_CONFIG_HEADER([config.h])
 AC_CANONICAL_SYSTEM
-AM_INIT_AUTOMAKE([kadu-0.3.4-rc2],[0.3.4-rc2])
-
+AM_INIT_AUTOMAKE([kadu-$version],[$version])
 
 ########################################################################
 # check for programs, libraries and functions

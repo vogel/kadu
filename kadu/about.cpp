@@ -165,7 +165,7 @@ About::About() : QDialog(0) {
 
 aboutText.append("<CENTER><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR>"
 "<H1><FONT COLOR=\"#ffd326\">Kadu ");
-aboutText.append(PACKAGE_VERSION);
+aboutText.append(VERSION);
 aboutText.append(__c2q("</FONT></H1><BR><BR>"
 "bazuje na QT3, libgadu<BR><BR>"
 "<B>Ludzie:</B><BR>"
