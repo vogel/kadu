@@ -9,6 +9,7 @@
   Rozwi±zuje to problem braku podpowiedzi (hint) z opisem guzików gdy
   Kadu nie jest aktywne (adrian)
 * polskie znaczki w dymkach powinny byæ ju¿ - OK (mast3r)
+* nowe libgadu, zwiêkszenie tymczasowo wysoko¶ci okna konfiguracji (chilek)
 
 +++ wersja 0.3.3-rc4
 * dodatkowe opcje dostêpne w menu podrêcznym u¿ytkownika (blokowanie, ignorowanie,
