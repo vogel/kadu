@@ -337,7 +337,7 @@ void SoundSlots::testSamplePlaying()
 	}
 	file.close();
 	
-	SamplePlayingTestDevice = sound_manager->openDevice(11025);
+	SamplePlayingTestDevice = sound_manager->openDevice(PLAY_ONLY, 11025);
 	if (SamplePlayingTestDevice == NULL)
 	{
 		MessageBox::wrn(tr("Opening sound device failed."));
@@ -377,7 +377,7 @@ void SoundSlots::testSampleRecording()
 	kdebugf();
 	if (SampleRecordingTestMsgBox != NULL)
 		return;
-	SampleRecordingTestDevice = sound_manager->openDevice(8000);
+	SampleRecordingTestDevice = sound_manager->openDevice(RECORD_ONLY, 8000);
 	if (SampleRecordingTestDevice == NULL)
 	{
 		MessageBox::wrn(tr("Opening sound device failed."));
@@ -433,7 +433,7 @@ void SoundSlots::testFullDuplex()
 	kdebugf();
 	if (FullDuplexTestMsgBox != NULL)
 		return;
-	FullDuplexTestDevice = sound_manager->openDevice(8000);
+	FullDuplexTestDevice = sound_manager->openDevice(PLAY_AND_RECORD, 8000);
 	if (FullDuplexTestDevice == NULL)
 	{
 		MessageBox::wrn(tr("Opening sound device failed."));

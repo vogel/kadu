@@ -34,8 +34,8 @@ ESDPlayer::ESDPlayer(QObject *parent, const char *name) : QObject(parent, name)
 {
 	kdebugf();
 
-	connect(sound_manager, SIGNAL(openDeviceImpl(int, int, SoundDevice&)),
-			this, SLOT(openDevice(int, int, SoundDevice&)));
+	connect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice&)),
+			this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice&)));
 	connect(sound_manager, SIGNAL(closeDeviceImpl(SoundDevice)),
 			this, SLOT(closeDevice(SoundDevice)));
 	connect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const int16_t*, int, bool&)),
@@ -52,8 +52,8 @@ ESDPlayer::~ESDPlayer()
 {
 	kdebugf();
 
-	disconnect(sound_manager, SIGNAL(openDeviceImpl(int, int, SoundDevice&)),
-			this, SLOT(openDevice(int, int, SoundDevice&)));
+	disconnect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice&)),
+			this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice&)));
 	disconnect(sound_manager, SIGNAL(closeDeviceImpl(SoundDevice)),
 			this, SLOT(closeDevice(SoundDevice)));
 	disconnect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const int16_t*, int, bool&)),
@@ -69,27 +69,34 @@ ESDPlayer::~ESDPlayer()
 struct ESDDevice
 {
 	int play_sock, rec_sock;
+	ESDDevice():play_sock(-1),rec_sock(-1){}
 };
 
-void ESDPlayer::openDevice(int sample_rate, int channels, SoundDevice& device)
+void ESDPlayer::openDevice(SoundDeviceType type, int sample_rate, int channels, SoundDevice& device)
 {
 	kdebugf();
 	ESDDevice *dev = new ESDDevice();
 	device = (SoundDevice) dev;
-	dev->play_sock = esd_play_stream(ESD_BITS16|(channels==2?ESD_STEREO:ESD_MONO), sample_rate, NULL, NULL);
-	if (dev->play_sock<=0)
+	if (type == PLAY_ONLY || type == PLAY_AND_RECORD)
 	{
-		delete dev;
-		device = NULL;
-		return;
+		dev->play_sock = esd_play_stream(ESD_BITS16|(channels==2?ESD_STEREO:ESD_MONO), sample_rate, NULL, NULL);
+		if (dev->play_sock<=0)
+		{
+			delete dev;
+			device = NULL;
+			return;
+		}
 	}
-	dev->rec_sock = esd_record_stream(ESD_BITS16|(channels==2?ESD_STEREO:ESD_MONO), sample_rate, NULL, NULL);
-	if (dev->rec_sock<=0)
+	if (type == RECORD_ONLY || type == PLAY_AND_RECORD)
 	{
-		esd_close(dev->play_sock);
-		delete dev;
-		device = NULL;
-		return;
+		dev->rec_sock = esd_record_stream(ESD_BITS16|(channels==2?ESD_STEREO:ESD_MONO), sample_rate, NULL, NULL);
+		if (dev->rec_sock<=0)
+		{
+			esd_close(dev->play_sock);
+			delete dev;
+			device = NULL;
+			return;
+		}
 	}
 	kdebugf2();
 }
@@ -103,8 +110,10 @@ void ESDPlayer::closeDevice(SoundDevice device)
 		kdebugf2();
 		return;
 	}
-	esd_close(dev->play_sock);
-	esd_close(dev->rec_sock);
+	if (dev->play_sock>0)
+		esd_close(dev->play_sock);
+	if (dev->rec_sock>0)
+		esd_close(dev->rec_sock);
 	kdebugf2();
 }
 

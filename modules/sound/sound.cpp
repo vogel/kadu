@@ -625,11 +625,11 @@ int SoundManager::timeAfterLastSound()
 	return lastsoundtime.elapsed();
 }
 
-SoundDevice SoundManager::openDevice(int sample_rate, int channels)
+SoundDevice SoundManager::openDevice(SoundDeviceType type, int sample_rate, int channels)
 {
 	kdebugf();
 	SoundDevice device = NULL;
-	emit openDeviceImpl(sample_rate, channels, device);
+	emit openDeviceImpl(type, sample_rate, channels, device);
 	kdebugf2();
 	return device;
 }
@@ -808,7 +808,7 @@ bool SoundPlayThread::play(const char *path, bool volumeControl, float volume)
 		sound->setVolume(volume);
 
 	SoundDevice dev;
-	dev = sound_manager->openDevice(sound->speed, sound->channels);
+	dev = sound_manager->openDevice(PLAY_ONLY, sound->speed, sound->channels);
 	ret = sound_manager->playSample(dev, sound->data, sound->length*sizeof(sound->data[0]));
 	sound_manager->closeDevice(dev);
 	

@@ -80,8 +80,8 @@ OSSPlayerSlots::OSSPlayerSlots(QObject *parent, const char *name) : QObject(pare
 {
 	kdebugf();
 
-	connect(sound_manager, SIGNAL(openDeviceImpl(int, int, SoundDevice&)),
-		this, SLOT(openDevice(int, int, SoundDevice&)));
+	connect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice&)),
+		this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice&)));
 	connect(sound_manager, SIGNAL(closeDeviceImpl(SoundDevice)),
 		this, SLOT(closeDevice(SoundDevice)));
 	connect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const int16_t*, int, bool&)),
@@ -97,8 +97,8 @@ OSSPlayerSlots::~OSSPlayerSlots()
 {
 	kdebugf();
 
-	disconnect(sound_manager, SIGNAL(openDeviceImpl(int, int, SoundDevice&)),
-		this, SLOT(openDevice(int, int, SoundDevice&)));
+	disconnect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice&)),
+		this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice&)));
 	disconnect(sound_manager, SIGNAL(closeDeviceImpl(SoundDevice)),
 		this, SLOT(closeDevice(SoundDevice)));
 	disconnect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const int16_t*, int, bool&)),
@@ -111,7 +111,7 @@ OSSPlayerSlots::~OSSPlayerSlots()
 	kdebugf2();
 }
 
-void OSSPlayerSlots::openDevice(int sample_rate, int channels, SoundDevice& device)
+void OSSPlayerSlots::openDevice(SoundDeviceType type, int sample_rate, int channels, SoundDevice& device)
 {
 	kdebugf();
 	int maxbufsize = 0, caps = 0, value;
@@ -120,7 +120,15 @@ void OSSPlayerSlots::openDevice(int sample_rate, int channels, SoundDevice& devi
 	QString sdev = config_file.readEntry("Sounds","OutputDevice", "/dev/dsp");
 	kdebugm(KDEBUG_INFO, "Opening %s\n", sdev.local8Bit().data());
 
-	int fd = open(sdev.local8Bit().data(), O_RDWR);
+	int flags;
+	if (type == PLAY_ONLY)
+		flags = O_WRONLY;
+	else if (type == RECORD_ONLY)
+		flags = O_RDONLY;
+	else
+		flags = O_RDWR;
+
+	int fd = open(sdev.local8Bit().data(), flags);
 	if (fd<0)
 	{
 		kdebugm(KDEBUG_ERROR, "Error opening device (%s, %d)\n", strerror(errno), errno);

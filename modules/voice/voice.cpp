@@ -206,7 +206,7 @@ void VoiceManager::testGsmEncoding()
 		return;
 	}
 		
-	GsmEncodingTestDevice = sound_manager->openDevice(8000);
+	GsmEncodingTestDevice = sound_manager->openDevice(PLAY_AND_RECORD, 8000);
 	if (GsmEncodingTestDevice == NULL)
 	{
 		MessageBox::wrn(tr("Opening sound device failed."));
@@ -289,7 +289,7 @@ void VoiceManager::setup()
 	kdebugf();
 	if (!pt->running())
 	{
-		device = sound_manager->openDevice(8000);
+		device = sound_manager->openDevice(PLAY_AND_RECORD, 8000);
 		if (device == NULL)
 		{
 			MessageBox::wrn(tr("Opening sound device failed."));

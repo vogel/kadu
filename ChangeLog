@@ -449,6 +449,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dodano dokumentacje w plikach about.h i chat.h (format doxygena) (pawel_p)
 * poprawione ³±czenie siê z sewerem - timeouty (kadu zbyt wcze¶nie uznawa³o,
   ¿e uda³o siê po³±czyæ) (joi)
+* czê¶æ poprawek zwi±zanych z blokowaniem siê modu³ów d¼wiêkowych (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,

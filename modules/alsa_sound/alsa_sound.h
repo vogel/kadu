@@ -21,7 +21,7 @@ class ALSAPlayerSlots : public QObject
 		static snd_pcm_t *alsa_open (const char *dev, int channels, int samplerate, bool play = true);
 
 	public slots:
-		void openDevice(int sample_rate, int channels, SoundDevice& device);
+		void openDevice(SoundDeviceType type, int sample_rate, int channels, SoundDevice& device);
 		void closeDevice(SoundDevice device);
 		void playSample(SoundDevice device, const int16_t* data, int length, bool& result);
 		void recordSample(SoundDevice device, int16_t* data, int length, bool& result);

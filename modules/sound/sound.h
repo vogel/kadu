@@ -23,6 +23,10 @@
 typedef void* SoundDevice;
 
 /**
+**/
+enum SoundDeviceType {RECORD_ONLY, PLAY_ONLY, PLAY_AND_RECORD};
+
+/**
 	To jest klasa u¿ywana wewnêtrznie przez klasê SoundManager
 	i nie powiniene¶ mieæ potrzeby jej u¿ywania.
 **/
@@ -154,6 +158,7 @@ class SoundManager : public Themes
 		void setMute(const bool& enable);
 
 	public:
+
 		SoundManager(const QString& name, const QString& configname);
 		~SoundManager();
 		bool isMuted();
@@ -168,11 +173,12 @@ class SoundManager : public Themes
 			Emituje sygna³ openDeviceImpl() w celu
 			przekazania ¿±dania do konkrentego modu³u
 			d¼wiêkowego.
+			@param type
 			@param sample_rate sample rate - np. 8000 lub 48000
-			@channels ilo¶æ kana³ów: 1 - mono, 2 - stereo
+			@param channels ilo¶æ kana³ów: 1 - mono, 2 - stereo
 			@return uogólniony deskryptor urz±dzenia lub NULL je¶li otwarcie siê nie powiod³o.
 		**/
-		SoundDevice openDevice(int sample_rate, int channels = 1);
+		SoundDevice openDevice(SoundDeviceType type, int sample_rate, int channels = 1);
 		/**
 			Zamyka urz±dzenie d¼wiêkowe otwarte za pomoc±
 			metody openDevice().
@@ -230,8 +236,8 @@ class SoundManager : public Themes
 			zajmowanej przez dane sampla zanim odtwarzanie siê nie
 			zakoñczy.
 			@param device uogólniony deskryptor urz±dzenia
-			@data wska¼nik do danych sampla
-			@length d³ugo¶æ danych sampla (w bajtach)
+			@param data wska¼nik do danych sampla
+			@param length d³ugo¶æ danych sampla (w bajtach)
 			@return true je¶li odtwarzanie zakoñczy³o siê powodzeniem.
 		**/
 		bool playSample(SoundDevice device, const int16_t* data, int length);
@@ -249,8 +255,8 @@ class SoundManager : public Themes
 			bufora na dane sampla zanim nagrywanie siê nie
 			zakoñczy.			
 			@param device uogólniony deskryptor urz±dzenia
-			@data wska¼nik na bufor dla danych sampla
-			@length d³ugo¶æ sampla do nagrania (wielko¶æ bufora w bajtach)
+			@param data wska¼nik na bufor dla danych sampla
+			@param length d³ugo¶æ sampla do nagrania (wielko¶æ bufora w bajtach)
 			@return true je¶li nagrywanie zakoñczy³o siê powodzeniem.
 		**/
 		bool recordSample(SoundDevice device, int16_t* data, int length);
@@ -276,11 +282,12 @@ class SoundManager : public Themes
 			Wyemitowanie sygna³u oznacza ¿±danie
 			otwarcia urz±dzenia d¼wiêkowego do operacji
 			odtwarzania i nagrywania sampli.
+			@param type
 			@param sample_rate sample rate - np. 8000 lub 48000
-			@channels ilo¶æ kana³ów: 1 - mono, 2 - stereo
+			@param channels ilo¶æ kana³ów: 1 - mono, 2 - stereo
 			@device zwrócony uogólniony deskryptor urz±dzenia lub NULL je¶li otwarcie siê nie powiod³o.
 		**/
-		void openDeviceImpl(int sample_rate, int channels, SoundDevice& device);
+		void openDeviceImpl(SoundDeviceType type, int sample_rate, int channels, SoundDevice& device);
 		/**
 			Pod ten sygna³ powinien podpi±æ siê modu³
 			d¼wiêkowy je¶li obs³uguje funkcjê odtwarzania
@@ -302,9 +309,9 @@ class SoundManager : public Themes
 			Sygna³ zazwyczaj bêdzie emitowany z innego
 			w±tku i slot musi byæ do tego przystosowany.
 			@param device uogólniony deskryptor urz±dzenia
-			@data wska¼nik do danych sampla
-			@length d³ugo¶æ danych sampla (w bajtach)
-			@result zwrócony rezultat operacji - true je¶li odtwarzanie zakoñczy³o siê powodzeniem.
+			@param data wska¼nik do danych sampla
+			@param length d³ugo¶æ danych sampla (w bajtach)
+			@param result zwrócony rezultat operacji - true je¶li odtwarzanie zakoñczy³o siê powodzeniem.
 		**/
 		void playSampleImpl(SoundDevice device, const int16_t* data, int length, bool& result);
 		/**
@@ -318,9 +325,9 @@ class SoundManager : public Themes
 			Sygna³ zazwyczaj bêdzie emitowany z innego
 			w±tku i slot musi byæ do tego przystosowany.
 			@param device uogólniony deskryptor urz±dzenia
-			@data wska¼nik na bufor dla danych sampla
-			@length d³ugo¶æ sampla do nagrania (wielko¶æ bufora w bajtach)
-			@result zwrócony rezultat operacji - true je¶li nagrywanie zakoñczy³o siê powodzeniem.
+			@param data wska¼nik na bufor dla danych sampla
+			@param length d³ugo¶æ sampla do nagrania (wielko¶æ bufora w bajtach)
+			@param result zwrócony rezultat operacji - true je¶li nagrywanie zakoñczy³o siê powodzeniem.
 		**/
 		void recordSampleImpl(SoundDevice device, int16_t* data, int length, bool& result);		
 		/**

@@ -198,8 +198,8 @@ ALSAPlayerSlots::ALSAPlayerSlots(QObject *parent, const char *name) : QObject(pa
 {
 	kdebugf();
 	
-	connect(sound_manager, SIGNAL(openDeviceImpl(int, int, SoundDevice&)),
-			this, SLOT(openDevice(int, int, SoundDevice&)));
+	connect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice&)),
+			this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice&)));
 	connect(sound_manager, SIGNAL(closeDeviceImpl(SoundDevice)),
 			this, SLOT(closeDevice(SoundDevice)));
 	connect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const int16_t*, int, bool&)),
@@ -224,8 +224,8 @@ ALSAPlayerSlots::~ALSAPlayerSlots()
 	ConfigDialog::removeControl("Sounds", "ALSA device:", "device_path");
 	ConfigDialog::removeControl("Sounds", "Output device");
 
-	disconnect(sound_manager, SIGNAL(openDeviceImpl(int, int, SoundDevice&)),
-			this, SLOT(openDevice(int, int, SoundDevice&)));
+	disconnect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice&)),
+			this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice&)));
 	disconnect(sound_manager, SIGNAL(closeDeviceImpl(SoundDevice)),
 			this, SLOT(closeDevice(SoundDevice)));
 	disconnect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const int16_t*, int, bool&)),
@@ -249,12 +249,14 @@ bool ALSAPlayerSlots::isOk()
 	return ret;
 }
 
-void ALSAPlayerSlots::openDevice(int sample_rate, int channels, SoundDevice& device)
+void ALSAPlayerSlots::openDevice(SoundDeviceType type, int sample_rate, int channels, SoundDevice& device)
 {
 	kdebugf();
 	ALSADevice *dev = new ALSADevice();
-	dev->player = alsa_open (config_file.readEntry("Sounds", "ALSAOutputDevice").local8Bit().data(), channels, sample_rate, true);
-	dev->recorder = alsa_open (config_file.readEntry("Sounds", "ALSAOutputDevice").local8Bit().data(), channels, sample_rate, false);
+	if (type == PLAY_ONLY || type == PLAY_AND_RECORD)
+		dev->player = alsa_open (config_file.readEntry("Sounds", "ALSAOutputDevice").local8Bit().data(), channels, sample_rate, true);
+	if (type == RECORD_ONLY || type == PLAY_AND_RECORD)
+		dev->recorder = alsa_open (config_file.readEntry("Sounds", "ALSAOutputDevice").local8Bit().data(), channels, sample_rate, false);
 	dev->channels = channels;
 	device = (SoundDevice)dev;
 	kdebugf2();

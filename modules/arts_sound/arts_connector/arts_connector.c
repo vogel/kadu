@@ -57,17 +57,18 @@ struct aRtsSoundDevice
 
 struct aRtsSoundDevice *devices[MAXDEV];
 
-int openDevice(int rate, int channels)
+int openDevice(int rate, int channels, int type)
 {
 	int i;
 	kdebugf();
 	for(i=0; i<MAXDEV; ++i)
 		if (devices[i]==NULL)
 		{
-			devices[i] = (struct aRtsSoundDevice *) malloc(sizeof(struct aRtsSoundDevice));
-			devices[i]->recorder = arts_record_stream(rate, 16, channels, "kadu_recorder");
-//			devices[i]->player = NULL;
-			devices[i]->player = arts_play_stream(rate, 16, channels, "kadu_player");
+			devices[i] = (struct aRtsSoundDevice *) calloc(1, sizeof(struct aRtsSoundDevice));
+			if (type == 1 || type == 3)
+				devices[i]->player = arts_play_stream(rate, 16, channels, "kadu_player");
+			if (type == 2 || type == 3)
+				devices[i]->recorder = arts_record_stream(rate, 16, channels, "kadu_recorder");
 			return i;
 		}
 	return -1;
@@ -154,7 +155,7 @@ int main()
 	struct sockaddr_un unix_sock_name;
 	unsigned long long int pass, p;
 	int lsock, err, sock, end, buflen, i;
-	int uin, channels, rate, enabled, length, offset,num;
+	int uin, channels, rate, enabled, length, offset, num, type;
 
 	memset(devices, 0, MAXDEV*sizeof(struct aRtsSoundDevice));
 	scanf("%d %llu %d", &uin, &pass, &num);
@@ -261,9 +262,9 @@ int main()
 			{
 				case 'O': //OPEN RATE CHANNELS
 //					printf(">>>%d\n", sscanf(buffer, "OPEN %d %d", &rate, &channels));fflush(stdout);
-					if (sscanf(buffer, "OPEN %d %d", &rate, &channels)!=2)
+					if (sscanf(buffer, "OPEN %d %d %d", &rate, &channels, &type)!=3)
 						endApp(sock);
-					sprintf(buffer, "OPENED %d\n", openDevice(rate, channels));
+					sprintf(buffer, "OPENED %d\n", openDevice(rate, channels, type));
 					if (write_all(sock, buffer, strlen(buffer), 32)==-1)
 						endApp(sock);
 					break;

@@ -93,8 +93,8 @@ aRtsPlayerRecorder::aRtsPlayerRecorder(QObject *parent, const char *name) : QObj
 	srandom(time(NULL));
 	finalizing = false;
 	
-	connect(sound_manager, SIGNAL(openDeviceImpl(int, int, SoundDevice&)),
-		this, SLOT(openDevice(int, int, SoundDevice&)));
+	connect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice&)),
+		this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice&)));
 	connect(sound_manager, SIGNAL(closeDeviceImpl(SoundDevice)),
 		this, SLOT(closeDevice(SoundDevice)));
 	connect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const int16_t*, int, bool&)),
@@ -130,8 +130,8 @@ aRtsPlayerRecorder::~aRtsPlayerRecorder()
 	}
 	busymutex.unlock();
 
-	disconnect(sound_manager, SIGNAL(openDeviceImpl(int, int, SoundDevice&)),
-		this, SLOT(openDevice(int, int, SoundDevice&)));
+	disconnect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice&)),
+		this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice&)));
 	disconnect(sound_manager, SIGNAL(closeDeviceImpl(SoundDevice)),
 		this, SLOT(closeDevice(SoundDevice)));
 	disconnect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const int16_t*, int, bool&)),
@@ -152,9 +152,16 @@ aRtsPlayerRecorder::~aRtsPlayerRecorder()
 	kdebugf2();
 }
 
-void aRtsPlayerRecorder::openDevice(int sample_rate, int channels, SoundDevice& device)
+void aRtsPlayerRecorder::openDevice(SoundDeviceType type, int sample_rate, int channels, SoundDevice& device)
 {
-	kdebugmf(KDEBUG_FUNCTION_START, "rate:%d channels:%d\n", sample_rate, channels);
+	int itype;
+	if (type == PLAY_ONLY)
+		itype = 1;
+	else if (type == RECORD_ONLY)
+		itype = 2;
+	else // PLAY_AND_RECORD
+		itype = 3;
+	kdebugmf(KDEBUG_FUNCTION_START, "rate:%d channels:%d type:%d\n", sample_rate, channels, itype);
 
 	struct sockaddr_un unix_sock_name;
 	char tmp[100];
@@ -255,7 +262,8 @@ void aRtsPlayerRecorder::openDevice(int sample_rate, int channels, SoundDevice& 
 		kdebugm(KDEBUG_INFO, "%p %d\n", dev->process, dev->sock);
 	}
 	device = dev;
-	sprintf(tmp, "OPEN %d %d\n", sample_rate, channels);
+
+	sprintf(tmp, "OPEN %d %d %d\n", sample_rate, channels, itype);
 	kdebugm(KDEBUG_INFO, "%d, sending: '%s'\n", dev->valid, tmp);
 	dev->valid = dev->valid && write_all(dev->sock, tmp, strlen(tmp), 100)!=-1;
 	dev->valid = dev->valid && read_line(dev->sock, tmp, 100)!=-1;
