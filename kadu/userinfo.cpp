@@ -65,7 +65,7 @@ void UserInfo::setupTab1() {
 	e_lastname = new QLineEdit(puser->last_name,box);
 
 	QLabel *l_altnick = new QLabel(i18n("AltNick"),box);
-	e_altnick = new QLineEdit(box);
+	e_altnick = new QLineEdit(puser->altnick,box);
 
 	QLabel *l_mobile = new QLabel(i18n("Mobile"),box);
 	e_mobile = new QLineEdit(puser->mobile,box);
