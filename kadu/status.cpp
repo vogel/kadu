@@ -284,7 +284,8 @@ void AutoAwaySlots::onDestroyConfigDialog()
                 AutoAwayTimer::off();
 
 	int status = getActualStatus();
-	
+
+	if (status != GG_STATUS_NOT_AVAIL)
 	if ((!(status & GG_STATUS_FRIENDS_MASK)&& 
 	    config_file.readBoolEntry("General", "PrivateStatus"))
 	|| ((status & GG_STATUS_FRIENDS_MASK) &&  
