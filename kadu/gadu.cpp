@@ -617,7 +617,8 @@ void GaduSocketNotifiers::socketEvent()
 	if (!gadu->status().isOffline())
 		if (Sess->state == GG_STATE_IDLE && gadu->userListSent())
 		{
-			gadu->status().setOffline("");
+			//gadu->status().setOffline("");
+			UserBox::all_changeAllToInactive();
 			emit error(ConnectionUnknow);
 		}
 		else
@@ -1184,7 +1185,7 @@ void GaduProtocol::login()
 	LoginParams.status = NextStatus->getStatusNumber();
 	if (config_file.readBoolEntry("General", "PrivateStatus") == 1)
 	{
-		NextStatus->setFriendsOnly(true);
+		CurrentStatus->setFriendsOnly(true);
 		LoginParams.status |= GG_STATUS_FRIENDS_MASK;
 	}
 
