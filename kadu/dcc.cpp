@@ -220,12 +220,13 @@ void dccSocketClass::askAccept(void) {
 		QString::null, 0, 1) ) {
 		case 0: // Yes?
 			fprintf(stderr, "KK dccSocketClass::askAccept: accepted\n");
-			do {
-				f = QFileDialog::getSaveFileName((char *)dccsock->file_info.filename,
-					QString::null, 0, i18n("save file"), i18n("Select file location"));
-				if (f.isEmpty())
-					QMessageBox::warning(kadu, i18n("File not specified"), i18n("Please specify a file") );
-			} while (f.isEmpty());
+			f = QFileDialog::getSaveFileName((char *)dccsock->file_info.filename,
+				QString::null, 0, i18n("save file"), i18n("Select file location"));
+			if (f.isEmpty()) {
+				fprintf(stderr, "KK dccSocketClass::askAccept: discarded\n");
+				setState(DCC_SOCKET_TRANSFER_DISCARDED);
+				break;
+				}
 
 			fprintf(stderr, "KK dccSocketClass::askAccept: opening file %s\n", f.latin1());
 
