@@ -86,6 +86,7 @@ QString ggPath(const QString &subpath)
 #include <string.h>
 char *findMe(const char *argv0, char *path, int len)
 {
+	kdebugf();
 	struct stat buf;
 	char *lastslash;
 
@@ -99,12 +100,14 @@ char *findMe(const char *argv0, char *path, int len)
 		if (getcwd(path, len-2)==NULL)
 		{
 			path[0]=0;
+			kdebugf2();
 			return NULL;
 		}
 		strncat(path, argv0+1, len-1);
 		path[len-1]=0;
 		lastslash=strrchr(path, '/');
 		lastslash[1]=0;
+		kdebugf2();
 		return path;
 	}
 
@@ -113,6 +116,7 @@ char *findMe(const char *argv0, char *path, int len)
 		if (getcwd(path, len-2)==NULL)
 		{
 			path[0]=0;
+			kdebugf2();
 			return NULL;
 		}
 		strncat(path, "/", len-1);
@@ -120,6 +124,7 @@ char *findMe(const char *argv0, char *path, int len)
 		path[len-1]=0;
 		lastslash=strrchr(path, '/');
 		lastslash[1]=0;
+		kdebugf2();
 		return path;
 	}
 	
@@ -129,6 +134,7 @@ char *findMe(const char *argv0, char *path, int len)
 		path[len-1]=0;
 		lastslash=strrchr(path, '/');
 		lastslash[1]=0;
+		kdebugf2();
 		return path;
 	}
 
@@ -139,6 +145,7 @@ char *findMe(const char *argv0, char *path, int len)
 		if (l>len-2)
 		{
 			path[0]=0;
+			kdebugf2();
 			return NULL;
 		}
 		
@@ -153,6 +160,7 @@ char *findMe(const char *argv0, char *path, int len)
 				path[l]=0;
 			else
 				path[l+1]=0;
+			kdebugf2();
 			return path;
 		}
 		previous=current+1;
@@ -172,13 +180,16 @@ char *findMe(const char *argv0, char *path, int len)
 			path[l]=0;
 		else
 			path[l+1]=0;
+		kdebugf2();
 		return path;
 	}
 	else
 	{
 		path[0]=0;
+		kdebugf2();
 		return NULL;
 	}
+	kdebugf2();
 }
 
 QString dataPath(const QString &p, const char *argv0)
@@ -345,6 +356,7 @@ QString translateLanguage(const QApplication *application, const QString &locale
 }
 
 void openWebBrowser(const QString &link) {
+	kdebugf();
 	QProcess *browser;
 	QString cmd;
 	QStringList args;
@@ -372,6 +384,7 @@ void openWebBrowser(const QString &link) {
 		QMessageBox::critical(0, qApp->translate("@default", QT_TR_NOOP("WWW error")),
 			qApp->translate("@default", QT_TR_NOOP("Could not spawn Web browser process. Check if the Web browser is functional")));
 	delete browser;
+	kdebugf2();
 }
 
 QString formatGGMessage(const QString &msg, int formats_length, void *formats, UinType sender)
@@ -500,6 +513,7 @@ struct richtext_formant {
 };
 
 QString unformatGGMessage(const QString &msg, int &formats_length, void *&formats) {
+	kdebugf();
 	QString mesg, tmp;
 	QStringList attribs;
 	QRegExp regexp;
@@ -665,7 +679,7 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 //	mesg.replace(QRegExp("#"), "<");
 //	mesg.replace(QRegExp("#"), ">");
 
-	kdebugm(KDEBUG_INFO, "unformatGGMessage():\n%s\n", unicode2latin(mesg).data());
+	kdebugm(KDEBUG_INFO|KDEBUG_FUNCTION_END, "unformatGGMessage():\n%s\n", unicode2latin(mesg).data());
 	return mesg;
 }
 
@@ -979,6 +993,7 @@ void UinsList::sort() {
 
 ChooseDescription::ChooseDescription ( int nr, QWidget * parent, const char * name)
 : QDialog(parent, name, true) {
+	kdebugf();
 	setWFlags(Qt::WDestructiveClose);
 	setCaption(tr("Select description"));
 
@@ -1027,6 +1042,7 @@ ChooseDescription::ChooseDescription ( int nr, QWidget * parent, const char * na
 	grid->addColSpacing(0, 200);
 
 	resize(250,80);
+	kdebugf2();
 }
 
 void ChooseDescription::okbtnPressed() {
@@ -1093,6 +1109,7 @@ void IconsManager::onDestroyConfigDialog()
 
 	config_file.writeEntry("Look", "IconsPaths", icons_manager.additionalPaths().join(";"));
 	config_file.writeEntry("Look", "IconTheme", theme);
+	kdebugf2();
 }
 
 void IconsManager::chooseIconTheme(const QString& string)
@@ -1103,6 +1120,7 @@ void IconsManager::chooseIconTheme(const QString& string)
 	    str= "default";
 	icons_manager.setTheme(str);
 	QMessageBox::information(0, tr("Icons"), tr("Please restart kadu to apply new icon theme"));
+	kdebugf2();
 }
 
 void IconsManager::onCreateConfigDialog()
@@ -1117,6 +1135,7 @@ void IconsManager::onCreateConfigDialog()
 	SelectPaths *selpaths= ConfigDialog::getSelectPaths("Look", "Icon paths");
 	QStringList pl(QStringList::split(";", config_file.readEntry("Look", "IconsPaths")));
 	selpaths->setPathList(pl);	
+	kdebugf2();
 }
 
 void IconsManager::initModule()
@@ -1140,7 +1159,7 @@ void IconsManager::initModule()
 	ConfigDialog::registerSlotOnApply(&icons_manager, SLOT(onDestroyConfigDialog()));
 	ConfigDialog::connectSlot("Look", "Icon theme", SIGNAL(activated(const QString&)), &icons_manager, SLOT(chooseIconTheme(const QString&)));
 	ConfigDialog::connectSlot("Look", "Icon paths", SIGNAL(changed(const QStringList&)), &icons_manager, SLOT(selectedPaths(const QStringList&)));
-
+	kdebugf2();
 }
 
 void IconsManager::selectedPaths(const QStringList& paths)
@@ -1157,7 +1176,7 @@ void IconsManager::selectedPaths(const QStringList& paths)
 	cb_icontheme->setCurrentText(current);
 
 	if (paths.contains("default"))
-	cb_icontheme->changeItem(tr("Default"), paths.findIndex("default"));
+		cb_icontheme->changeItem(tr("Default"), paths.findIndex("default"));
 }
 
 void IconsManager::changed(const QString& theme)
@@ -1177,6 +1196,7 @@ HttpClient::HttpClient()
 
 void HttpClient::onConnected()
 {
+	kdebugf();
 	QString query = (PostData.size() > 0 ? "POST" : "GET");
 	query += " ";
 	
@@ -1222,10 +1242,12 @@ void HttpClient::onConnected()
 		query += QString(PostData);
 	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Sending query:\n%s\n", query.local8Bit().data());
 	Socket.writeBlock(query.local8Bit().data(), query.length());
+	kdebugf2();
 }
 
 void HttpClient::onReadyRead()
 {
+	kdebugf();
 	int size=Socket.bytesAvailable();
 	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Data Block Retreived: %i bytes\n",size);
 	// Dodaj nowe dane do starych
@@ -1331,14 +1353,17 @@ void HttpClient::onReadyRead()
 	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: All Data Retreived: %i bytes\n",Data.size());
 	Socket.close();
 	emit finished();
+	kdebugf2();
 }
 
 void HttpClient::onConnectionClosed()
 {
+	kdebugf();
 	if(HeaderParsed&&ContentLengthNotFound)
 		emit finished();
 	else
 		emit error();
+	kdebugf2();
 }
 
 void HttpClient::setHost(QString host)
@@ -1788,6 +1813,7 @@ void token::getToken() {
 		return;
 	}
 	createSocketNotifiers();
+	kdebugf2();
 }
 
 void token::createSocketNotifiers() {
@@ -1798,6 +1824,7 @@ void token::createSocketNotifiers() {
 
 	snw = new QSocketNotifier(h->fd, QSocketNotifier::Write, qApp->mainWidget());
 	QObject::connect(snw, SIGNAL(activated(int)), this, SLOT(dataSent()));
+	kdebugf2();
 }
 
 void token::deleteSocketNotifiers() {
@@ -1812,12 +1839,14 @@ void token::deleteSocketNotifiers() {
 		snw->deleteLater();
 		snw = NULL;
 	}
+	kdebugf2();
 }
 
 void token::dataReceived() {
 	kdebugf();
 	if (h->check && GG_CHECK_READ)
 		socketEvent();
+	kdebugf2();
 }
 
 void token::dataSent() {
@@ -1825,6 +1854,7 @@ void token::dataSent() {
 	snw->setEnabled(false);
 	if (h->check && GG_CHECK_WRITE)
 		socketEvent();
+	kdebugf2();
 }
 
 void token::socketEvent() {
@@ -1871,10 +1901,12 @@ void token::socketEvent() {
 			if (h->check & GG_CHECK_WRITE)
 				snw->setEnabled(true);
 	}
+	kdebugf2();
 }
 
 TokenDialog::TokenDialog(QDialog *parent, const char *name)
 	: QDialog(parent, name) {
+	kdebugf();
 	QGridLayout *grid = new QGridLayout(this, 3, 2, 6, 5);
 
 	QLabel *l_tokenimage = new QLabel(tr("Read this code ..."), this);
@@ -1902,6 +1934,7 @@ TokenDialog::TokenDialog(QDialog *parent, const char *name)
 	b_cancel->setDefault(false);
 	b_ok->setDefault(true);
 	setEnabled(false);
+	kdebugf2();
 }
 
 void TokenDialog::getToken(QString &Tokenid, QString &Tokenval) {
@@ -1922,12 +1955,14 @@ void TokenDialog::gotTokenReceived(struct gg_http *h) {
 	tokenimage->setImage(buf);
 	setEnabled(true);
 	tokenedit->setFocus();
+	kdebugf2();
 }
 
 void TokenDialog::tokenErrorReceived() {
 	kdebugf();
 	setEnabled(true);
 	done(-1);
+	kdebugf2();
 }
 
 Themes::Themes(const QString& themename, const QString& configname, const char *name) : QObject(NULL, name)
@@ -2101,6 +2136,7 @@ void GaduImagesManager::addImageToSend(const QString& file_name,uint32_t& size,u
 	ImagesToSend.append(img);
 	size = img.size;
 	crc32 = img.crc32;
+	kdebugf2();
 }
 
 void GaduImagesManager::sendImage(UinType uin,uint32_t size,uint32_t crc32)
