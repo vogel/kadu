@@ -460,7 +460,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 //	descrtb->resize(descrtb->size().width(), int(1.5 * QFontMetrics(descrtb->font()).height()));
 	descrtb->setTextFormat(Qt::RichText);
 	descrtb->setAlignment(Qt::AlignVCenter | Qt::WordBreak | Qt::DontClip);
-	descrtb->setVScrollBarMode(QScrollView::AlwaysOff);
+//	descrtb->setVScrollBarMode(QScrollView::AlwaysOff);
 	descrtb->setPaletteBackgroundColor(config_file.readColorEntry("Look", "InfoPanelBgColor"));
 	descrtb->setPaletteForegroundColor(config_file.readColorEntry("Look", "InfoPanelFgColor"));
 	descrtb->setFont(config_file.readFontEntry("Look", "PanelFont"));
