@@ -18,6 +18,7 @@
 #include <qstyle.h>
 #include <qiconset.h>
 #include <qcursor.h>
+#include <qsizepolicy.h>
 
 #include "tabbar.h"
 
@@ -25,6 +26,7 @@ struct QTabPrivate;
 
 KaduTabBar::KaduTabBar(QWidget *parent, const char *name)
 	: QTabBar(parent, name) {
+	setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred));
 }
 
 void KaduTabBar::layoutTabs() {
@@ -79,6 +81,7 @@ QSize KaduTabBar::sizeHint() {
 		QRect r(t->rect());
 		while ((t = tabList()->next()) != 0)
 			r = r.unite(t->rect());
+		r.setHeight(1000);
 		return r.size().expandedTo(QApplication::globalStrut());
 		}
 	else {

@@ -33,7 +33,7 @@
 #include "pending_msgs.h"
 #include "misc.h"
 #include "status.h"
-#include "tabbar.h"
+//#include "tabbar.h"
 #include "../config.h"
 
 struct colors {
@@ -148,6 +148,8 @@ struct groups {
 };
 
 class dccSocketClass;
+
+class KaduTabBar;
 
 class Kadu : public QMainWindow
 {

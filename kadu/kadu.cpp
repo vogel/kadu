@@ -443,23 +443,38 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	centralFrame = new QFrame(this);
 	setCentralWidget(centralFrame);
 
+	QSplitter *split = new QSplitter(Qt::Vertical, centralFrame);
+
+	QHBox *hbox1 = new QHBox(split);
 	/* initialize group tabbar */
-	group_bar = new KaduTabBar(centralFrame, "groupbar");
+//	QVBox *vbox1 = new QVBox(hbox1);
+//	vbox1->setMinimumWidth(10);
+	group_bar = new KaduTabBar(hbox1, "groupbar");
+	group_bar->setShape(QTabBar::RoundedBelow);
 	group_bar->addTab(new QTab(i18n("All")));
 	refreshGroupTabBar();
+	group_bar->setMinimumWidth(group_bar->sizeHint().width());
 	connect(group_bar, SIGNAL(selected(int)), this, SLOT(groupTabSelected(int)));
+
+//	QHBox *hbox2 = new QHBox(vbox1);
+//	hbox2->setMinimumWidth(10);
+
+//	vbox1->setStretchFactor(group_bar, 1);
+//	vbox1->setStretchFactor(hbox2, 100);
 
 	/* connect userlist modified signal */
 	connect(&userlist, SIGNAL(modified()), this, SLOT(userListModified()));
 	connect(&userlist, SIGNAL(statusModified(UserListElement *)), this, SLOT(userListStatusModified(UserListElement *)));
 
-	QSplitter *split = new QSplitter(Qt::Vertical, centralFrame);
-
 	/* initialize and configure userbox */
-	userbox = new UserBox(split, "userbox");
+	userbox = new UserBox(hbox1, "userbox");
 	userbox->setPaletteBackgroundColor(config.colors.userboxBg);
 	userbox->setPaletteForegroundColor(config.colors.userboxFg);
 	userbox->QListBox::setFont(config.fonts.userbox);
+	userbox->setMinimumWidth(20);
+
+	hbox1->setStretchFactor(group_bar, 1);
+	hbox1->setStretchFactor(userbox, 100);
 
 	/* add all users to userbox */
 	setActiveGroup("");
@@ -517,16 +532,19 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	splitsizes.append(config.splitsize.height());
 	split->setSizes(splitsizes);
 
-	grid = new QGridLayout(centralFrame, 3, 3);
-	grid->addMultiCellWidget(group_bar, 0, 0, 0, 2);
-	grid->addMultiCellWidget(split, 1, 1, 0, 2);
-	grid->addWidget(statuslabeltxt, 2, 0, Qt::AlignLeft);
-	grid->addWidget(statuslabel, 2, 2, Qt::AlignCenter);
-	grid->setColStretch(0, 3);
-	grid->setColStretch(1, 3);
+	grid = new QGridLayout(centralFrame, 2, 6);
+//	grid->addMultiCellWidget(group_bar, 0, 0, 0, 2);
+	grid->addMultiCellWidget(split, 0, 0, 0, 5);
+	grid->addWidget(statuslabeltxt, 1, 0, Qt::AlignLeft);
+	grid->addWidget(statuslabel, 1, 5, Qt::AlignRight);
+	grid->setColStretch(0, 5);
+	grid->setColStretch(1, 1);
 	grid->setColStretch(2, 1);
-	grid->setRowStretch(1, 40);
-	grid->setRowStretch(2, 1);
+	grid->setColStretch(3, 1);
+	grid->setColStretch(4, 1);
+	grid->setColStretch(5, 1);
+	grid->setRowStretch(0, 40);
+	grid->setRowStretch(1, 1);
 	grid->activate();
 
 	centralFrame->setMinimumSize(50, 100);
