@@ -14,6 +14,7 @@
 #include <qlayout.h>
 #include <qaccel.h>
 #include <qtimer.h>
+#include <math.h>
 
 //
 #include "kadu.h"
