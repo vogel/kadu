@@ -259,7 +259,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc,const QColor& bgcolor)
 			doc.setElementValue( e_i, new_text, true );
 		}
 	}
-	kdebugm(KDEBUG_INFO, "Emoticons expanded, html is below:\n%s\n",doc.generateHtml().local8Bit().data());
+	kdebugm(KDEBUG_DUMP, "Emoticons expanded, html is below:\n%s\n",doc.generateHtml().local8Bit().data());
 	kdebugf2();
 }
 

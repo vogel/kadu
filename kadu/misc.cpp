@@ -679,7 +679,7 @@ struct ParseElem
 
 QString parse(const QString &s, const UserListElement &ule, bool escape)
 {
-	kdebugm(KDEBUG_INFO, "parse(): %s escape=%i\n",(const char *)s.local8Bit(), escape);
+	kdebugm(KDEBUG_DUMP, "parse(): %s escape=%i\n",(const char *)s.local8Bit(), escape);
 	int index=0, i, j, len=s.length();
 	QValueList<ParseElem> parseStack;
 
@@ -901,7 +901,7 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 			kdebugm(KDEBUG_WARNING, "Incorrect parse string! %d\n", last.type);
 		parseStack.pop_back();
 	}
-	kdebugm(KDEBUG_INFO, "%s\n", (const char *)ret.local8Bit());
+	kdebugm(KDEBUG_DUMP, "%s\n", (const char *)ret.local8Bit());
 	return ret;
 }
 

@@ -348,7 +348,10 @@ void CustomInput::keyPressEvent(QKeyEvent * e) {
 			return;
 		}
 		else if (HotKey::shortCut(e,"ShortCuts", "chat_underline"))
+		{
 			emit specialKeyPressed(CustomInput::KEY_UNDERLINE);
+			return;
+		}
 		QMultiLineEdit::keyPressEvent(e);
 	}
 	// przekazanie event'a do qwidget 
