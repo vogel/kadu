@@ -1,4 +1,6 @@
-* TODO, stan na 15/08/2003.
+* TODO, stan na 1/09/2003.
+* TODO nie bêdzie ju¿ aktualizowane pod wzglêdem nowo¶ci
+  wszystkie propozycje bêda umieszczane w Mantis'ie - http://kadu.net/mantis/
 
 * Legenda
 
@@ -9,33 +11,12 @@
 
 * TODO dla wersji 0.3.4
 
- ! naprawiæ b³êdy przy problemach z po³±czeniem
- ! ró¿ne dziwne b³êdy zwi±zane z GG 6.0. (libgadu?)
- ! rejestracja, zmiana has³a z GG 6.0 (czekamy na libgadu?)
+ Patrz http://kadu.net/mantis/
 
 * TODO dla wersji 0.3.5 lub pó¼niejszych
 
- ! wyja¶niæ problemy z autoaway'em albo przynajmniej umo¿liwiæ u¿ywanie poprzedniej metody
- ! dopracowaæ animowane emotikony na ile siê da
- ! dopracowaæ ob³ugê historii
- ! dopracowaæ wysy³anie SMS'ów do ERY (prêdko¶æ)
- + po³±czenia ssl z serwerami gadu
- + ca³kowite przej¶cie na nowy mechanizm budowania okna konfiguracji i uporz±dkowanie go
- + zapamiêtywanie wymiarów okien
- - sprawdzanie pisowni w oknie chat
- - dokoñczyæ rozmowy g³osowe
- ? dodawanie nieznanych u¿ytkowników z konferencji do listy jako opcja i ew. z listy userów w oknie konferencji
- ? wykrywanie niewidocznych jako opcja
- + wywo³ywanie domyslnego klienta e-mail i pozycja e-mail w info o kontaktach
- ? wysy³anie smsów do wielu osób jednoczesnie
- ? ustawienie miejsca wyskakiwania hinta zamiast ko³o tray'a
- ? podrêczne menu w oknie rozmowy
- + zak³adki w oknie rozmowy (opcja)
- + dopracowaæ grupy
- + okno rozmowy "wyp³ywa na wierzch" za ka¿d± now± wiadomo¶ci± (je¶li odpowiednia opcja w oknie rozmowy jest w³±czona)
- + mo¿liwo¶æ wy³±czenia pokazywania siê zmian statusu u¿ytkowników w oknie rozmowy i historii
- + obs³uga /img wstawiaj±ca obrazek z podanego url
- 
+ Patrz http://kadu.net/mantis/
+
 * TODO dla wersji 0.4.0
 
  Ogólne za³o¿enie:
