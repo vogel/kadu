@@ -148,7 +148,7 @@ class Kadu : public QMainWindow
 		void refreshGroupTabBar();
 		void changeAppearance();
 		void blink();
-		void dccFinished(dccSocketClass *dcc);
+		void dccFinished(DccSocket *dcc);
 		void slotHandleState(int command);
 		void setCurrentStatus(int status);
 		void sendMessage(QListBoxItem *);

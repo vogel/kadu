@@ -342,13 +342,13 @@ void EventManager::dccConnectionReceivedSlot(const UserListElement& sender)
 {
 	kdebugf();
 	struct gg_dcc *dcc_new;
-	dccSocketClass *dcc;
-	if (dccSocketClass::count < 8)
+	FileDccSocket *dcc;
+	if (DccSocket::count() < 8)
 	{
 		dcc_new = gg_dcc_get_file(htonl(sender.ip.ip4Addr()), sender.port, config_file.readNumEntry("General","UIN"), sender.uin);
 		if (dcc_new)
 		{
-			dcc = new dccSocketClass(dcc_new, DCC_TYPE_GET, this, "dcc_socket_class");
+			dcc = new FileDccSocket(dcc_new);
 			connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), kadu, SLOT(dccFinished(dccSocketClass *)));
 			dcc->initializeNotifiers();
 		}

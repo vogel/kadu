@@ -268,8 +268,8 @@ void VoiceManager::makeVoiceChat()
 				if ((dcc_new = gg_dcc_voice_chat(htonl(user.ip.ip4Addr()), user.port,
 					config_file.readNumEntry("General", "UIN"), user.uin)) != NULL) {
 					VoiceSocket* dcc = new VoiceSocket(dcc_new);
-					connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), this,
-						SLOT(dccFinished(dccSocketClass *)));
+					connect(dcc, SIGNAL(dccFinished(DccSocket *)), this,
+						SLOT(dccFinished(DccSocket *)));
 					dcc->initializeNotifiers();
 				}
 			}
@@ -279,7 +279,7 @@ void VoiceManager::makeVoiceChat()
 	kdebugf2();
 }
 
-void VoiceManager::dccFinished(dccSocketClass* dcc)
+void VoiceManager::dccFinished(DccSocket* dcc)
 {
 	kdebugf();
 	delete dcc;
@@ -305,7 +305,7 @@ void VoiceManager::userBoxMenuPopup()
 	int voicechat = UserBox::userboxmenu->getItem(tr("Voice chat"));
 
 	if (
-		dccSocketClass::count < 8 &&
+		DccSocket::count() < 8 &&
 		users.count() == 1 &&
 		!isOurUin &&
 		config_file.readBoolEntry("Network", "AllowDCC") &&
@@ -349,7 +349,7 @@ void DccVoiceDialog::closeEvent(QCloseEvent *e)
 }
 
 VoiceSocket::VoiceSocket(struct gg_dcc* dcc_sock)
-	: dccSocketClass(dcc_sock,DCC_TYPE_VOICE)
+	: DccSocket(dcc_sock)
 {
 	voicedialog = new DccVoiceDialog();
 	connect(voicedialog, SIGNAL(cancelVoiceChat()), this, SLOT(cancelVoiceChatReceived()));
@@ -367,7 +367,7 @@ VoiceSocket::~VoiceSocket()
 void VoiceSocket::connectionBroken()
 {
 	kdebugf();
-	dccSocketClass::connectionBroken();
+	DccSocket::connectionBroken();
 	voice_manager->free();
 	if (voicedialog)
 		disconnect(voicedialog, SIGNAL(cancelVoiceChat()), this, SLOT(cancelVoiceChatReceived()));
@@ -378,7 +378,7 @@ void VoiceSocket::connectionBroken()
 void VoiceSocket::dccError()
 {
 	kdebugf();
-	dccSocketClass::dccError();
+	DccSocket::dccError();
 	voice_manager->free();
 	if (voicedialog)
 		disconnect(voicedialog, SIGNAL(cancelVoiceChat()), this, SLOT(cancelVoiceChatReceived()));
@@ -388,7 +388,7 @@ void VoiceSocket::dccError()
 
 void VoiceSocket::dccEvent()
 {
-	dccSocketClass::dccEvent();
+	DccSocket::dccEvent();
 	char* voice_buf;
 	switch(dccevent->type)
 	{
@@ -398,8 +398,7 @@ void VoiceSocket::dccEvent()
 			askAcceptVoiceChat();
 			break;
 		case GG_EVENT_DCC_ACK:
-			if (type == DCC_TYPE_VOICE)
-				voice_manager->setup();
+			voice_manager->setup();
 			break;
 		case GG_EVENT_DCC_VOICE_DATA:
 			voice_buf = new char[dccevent->event.dcc_voice_data.length];
@@ -438,7 +437,7 @@ void VoiceSocket::askAcceptVoiceChat()
 
 void VoiceSocket::initializeNotifiers()
 {
-	dccSocketClass::initializeNotifiers();
+	DccSocket::initializeNotifiers();
 	connect(voice_manager, SIGNAL(gsmSampleRecorded(char *, int)), this, SLOT(voiceDataRecorded(char *, int)));
 }
 

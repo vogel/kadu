@@ -44,7 +44,7 @@ class VoiceManager : public QObject {
 		void mainDialogKeyPressed(QKeyEvent* e);
 		void userBoxMenuPopup();
 		void makeVoiceChat();
-		void dccFinished(dccSocketClass* dcc);
+		void dccFinished(DccSocket* dcc);
 
 	private:
 		void resetCoder();
@@ -111,7 +111,7 @@ class DccVoiceDialog : public QDialog
 		void cancelVoiceChat();
 };
 
-class VoiceSocket : public dccSocketClass
+class VoiceSocket : public DccSocket
 {
 	Q_OBJECT
 	

@@ -17,32 +17,20 @@ extern QHostAddress config_dccip;
 extern QHostAddress config_extip;
 extern struct gg_dcc* dccsock;
 
-enum DccFileDialogType {
-	DCC_TYPE_SEND,
-	DCC_TYPE_GET
-};
+class FileDccSocket;
 
-enum DccType {
-	DCC_TYPE_FILE,
-	DCC_TYPE_VOICE
-};
-
-class dccSocketClass;
-
-class DccFileDialog : public QDialog {
+class DccFileDialog : public QDialog
+{
 	Q_OBJECT
+
 	public:
-		DccFileDialog(dccSocketClass *dccsocket, int type = DCC_TYPE_GET,
-			QDialog *parent = 0, const char *name = 0);
-		~DccFileDialog();
-		void printFileInfo(struct gg_dcc *dccsock);
-		void updateFileInfo(struct gg_dcc *dccsock);
+		enum TransferType {
+			TRANSFER_TYPE_GET,
+			TRANSFER_TYPE_SEND
+		};
 
-		bool dccFinished;				
 	protected:
-		void closeEvent(QCloseEvent *e);
-
-		dccSocketClass *dccsocket;
+		FileDccSocket* dccsocket;
 		QLabel *l_offset;
 		QProgressBar *p_progress;
 		QVBoxLayout* vlayout1;
@@ -50,6 +38,15 @@ class DccFileDialog : public QDialog {
 		QTime *time;
 		int prevOffset;
 		int type;
+		void closeEvent(QCloseEvent *e);
+
+	public:
+		DccFileDialog(FileDccSocket* dccsocket, TransferType type, QDialog* parent=NULL, const char* name=NULL);
+		~DccFileDialog();
+		void printFileInfo(struct gg_dcc* dccsock);
+		void updateFileInfo(struct gg_dcc* dccsock);
+
+		bool dccFinished;		
 };
 
 enum dccSocketState {
@@ -62,41 +59,64 @@ enum dccSocketState {
 	DCC_SOCKET_VOICECHAT_DISCARDED
 };
 
-class dccSocketClass : public QObject {
+class DccSocket : public QObject
+{
 	Q_OBJECT
-	public:
-		dccSocketClass(struct gg_dcc *dcc_sock, int type = DCC_TYPE_FILE, QObject *parent=NULL, const char *name=NULL);
-		~dccSocketClass();
-		virtual void initializeNotifiers();
-		virtual void watchDcc(int check);
-
-		int type;
-		int state;
-		static int count;
-
-	public slots:
-		void setState(int pstate);
-
-	signals:
-		void dccFinished(dccSocketClass *dcc);
 
 	protected:
+		QSocketNotifier* snr;
+		QSocketNotifier* snw;
+		struct gg_dcc* dccsock;
+		struct gg_event* dccevent;
+		bool in_watchDcc;
+		int State;
+		static int Count;
+
 		virtual void connectionBroken();
 		virtual void dccError();
 		virtual void dccEvent();
-		void askAccept();
-		QString selectFile();
-
-		QSocketNotifier *snr;
-		QSocketNotifier *snw;
-		struct gg_dcc *dccsock;
-		struct gg_event *dccevent;
-		DccFileDialog *filedialog;
-		bool in_watchDcc;
+		virtual void needFileAccept();
+		virtual void needFileInfo();
+		virtual void noneEvent();
+		virtual void dccDone();
+		virtual void setState(int pstate);
 
 	protected slots:
 		void dccDataReceived();
 		void dccDataSent();
+	
+	public:
+		DccSocket(struct gg_dcc* dcc_sock);
+		~DccSocket();
+		virtual void initializeNotifiers();
+		virtual void watchDcc(int check);
+		int state();
+		static int count();
+
+	signals:
+		void dccFinished(DccSocket* dcc);
+};
+
+class FileDccSocket : public DccSocket
+{
+	Q_OBJECT
+
+	private:
+		DccFileDialog* filedialog;
+		QString selectFile();
+	
+	protected:
+		virtual void connectionBroken();
+		virtual void dccError();
+		virtual void needFileAccept();
+		virtual void needFileInfo();
+		virtual void noneEvent();
+		virtual void dccDone();
+		virtual void setState(int pstate);
+
+	public:
+		FileDccSocket(struct gg_dcc* dcc_sock);
+		~FileDccSocket();
 };
 
 #endif

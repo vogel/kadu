@@ -542,7 +542,7 @@ void Kadu::popupMenu()
 
 	int sendfile = UserBox::userboxmenu->getItem(tr("Send file"));
 
-	if (dccSocketClass::count >= 8 && users.count() != 1) {
+	if (DccSocket::count() >= 8 && users.count() != 1) {
 		UserBox::userboxmenu->setItemEnabled(sendfile, false);
 		}
 	if (users.count() == 1 && (config_file.readBoolEntry("Network", "AllowDCC") &&
@@ -635,9 +635,9 @@ void Kadu::sendFile()
 			if (user.port >= 10) {
 				if ((dcc_new = gg_dcc_send_file(htonl(user.ip.ip4Addr()), user.port,
 					config_file.readNumEntry("General", "UIN"), user.uin)) != NULL) {
-					dccSocketClass *dcc = new dccSocketClass(dcc_new);
-					connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), this,
-						SLOT(dccFinished(dccSocketClass *)));
+					FileDccSocket* dcc = new FileDccSocket(dcc_new);
+					connect(dcc, SIGNAL(dccFinished(DccSocket *)), this,
+						SLOT(dccFinished(DccSocket *)));
 					dcc->initializeNotifiers();
 					}
 				}
@@ -1449,22 +1449,22 @@ void Kadu::disconnected()
 	kdebugf2();
 }
 
-void Kadu::dccFinished(dccSocketClass *dcc) {
+void Kadu::dccFinished(DccSocket *dcc) {
 	kdebugf();
 	delete dcc;
 }
 
 bool Kadu::event(QEvent *e) {
 	QCustomEvent *ce;
-	dccSocketClass *dcc;
-	dccSocketClass **data;
+	DccSocket *dcc;
+	DccSocket **data;
 
 	if (e->type() == QEvent::User) {
 		kdebugf();
 		ce = (QCustomEvent *)e;
-		data = (dccSocketClass **)ce->data();
+		data = (DccSocket **)ce->data();
 		dcc = *data;
-		switch (dcc->state) {
+		switch (dcc->state()) {
 			case DCC_SOCKET_TRANSFER_FINISHED:
 				MessageBox::msg(tr("File has been transferred sucessfully."));
 				break;
@@ -1520,10 +1520,9 @@ void Kadu::watchDcc(void) {
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "Kadu::watchDcc(): GG_EVENT_DCC_ERROR\n");
 			break;
 		case GG_EVENT_DCC_NEW:
-			if (dccSocketClass::count < 8) {
-				dccSocketClass *dcc;
-				dcc = new dccSocketClass(dcc_e->event.dcc_new);
-				connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), this, SLOT(dccFinished(dccSocketClass *)));
+			if (DccSocket::count() < 8) {
+				FileDccSocket* dcc = new FileDccSocket(dcc_e->event.dcc_new);
+				connect(dcc, SIGNAL(dccFinished(DccSocket *)), this, SLOT(dccFinished(DccSocket *)));
 				dcc->initializeNotifiers();
 				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "Kadu::watchDcc(): GG_EVENT_DCC_NEW: spawning object\n");
 				}
