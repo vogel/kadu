@@ -122,17 +122,15 @@ void UserList::changeUserInfo(const QString OldAltNick,
 	e.first_name = FirstName;
 	e.last_name = LastName;
 	e.nickname = NickName;
-	if (AltNick != e.altnick)
-	{
-		UserBox::all_renameUser(e.altnick,AltNick);
-		UserBox::all_refresh();			
-	};	
 	e.altnick=AltNick;
 	e.mobile=Mobile;
 	e.foreign=false;		
 	e.group=Group;
-//			if (!userlist[this_index].anonymous)
-//				userlist[this_index].mobile = e_mobile->text();
+	if (AltNick != OldAltNick)
+	{
+		UserBox::all_renameUser(OldAltNick,AltNick);
+		UserBox::all_refresh();			
+	};	
 	emit modified();
 };
 
