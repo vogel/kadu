@@ -43,8 +43,8 @@ void AutoResponder::chatReceived(UinsList senders,const QString& msg,time_t time
 {
 	int status = getActualStatus();
 
-	if(status == GG_STATUS_FRIENDS_MASK | GG_STATUS_BUSY 
-			|| status == GG_STATUS_FRIENDS_MASK | GG_STATUS_BUSY_DESCR 
+	if(status == (GG_STATUS_FRIENDS_MASK | GG_STATUS_BUSY)
+			|| status == (GG_STATUS_FRIENDS_MASK | GG_STATUS_BUSY_DESCR)
 			|| status == GG_STATUS_BUSY 
 			|| status == GG_STATUS_BUSY_DESCR) {
 		
@@ -54,6 +54,7 @@ void AutoResponder::chatReceived(UinsList senders,const QString& msg,time_t time
 		
 		gadu->sendMessage(senders, message);
 	}
+	
 }
 
 AutoResponder* autoresponder;
