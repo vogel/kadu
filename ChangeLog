@@ -15,6 +15,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawka segfault w opcji wysy³aniu pliku je¶li ¿aden kontakt
   nie jest zaznaczony, np. po starcie kadu (hutta/adrian)
 * mo¿na cytowaæ max. 200 fraz (chilek)
+* aktualizacja libgadu na wersjê z dnia 09.09.2003 (chilek)
+* obs³uga zmian statusów zgodna z GG6 (chilek)
 
 +++ wersja 0.3.4-rc4
 * kadu nie pokazuje fa³szywych statusów ukrytych w userboksie (chilek)
