@@ -232,10 +232,6 @@ Was wollen sie nun tun?</translation>
         <translation>Zeige/ändere Kontakt-Daten</translation>
     </message>
     <message>
-        <source>Send SMS</source>
-        <translation>Sende SMS</translation>
-    </message>
-    <message>
         <source>View history</source>
         <translation>Zeige Verlauf</translation>
     </message>
@@ -258,40 +254,6 @@ Was wollen sie nun tun?</translation>
     <message>
         <source>Add user</source>
         <translation>Kontakt hinzufügen</translation>
-    </message>
-    <message>
-        <source>SMS</source>
-        <translation>SMS</translation>
-    </message>
-    <message>
-        <source>SMS options</source>
-        <translation>SMS-Eigenschaften</translation>
-    </message>
-    <message>
-        <source>Use built-in SMS application</source>
-        <translation>Benutze eingebautes SMS-Programm</translation>
-    </message>
-    <message>
-        <source>Custom SMS application</source>
-        <translation>Eigenes SMS-Programm</translation>
-    </message>
-    <message>
-        <source>SMS custom string</source>
-        <translation>SMS-Formatierung</translation>
-    </message>
-    <message>
-        <source>Check this box if your sms application doesn&apos;t understand arguments: number &quot;message&quot;
-Arguments should be separated with spaces. %n argument is converted to number, %m to message</source>
-        <translation>Wähle das Kästchen an, wenn dein SMS-Programm die Argumente: Tel. &quot;Nachricht&quot;
-nicht versteht. Gib hier die Argumente ein, getrennt mit Komma. %n=Tel.; %m=Nachricht</translation>
-    </message>
-    <message>
-        <source>SMS Era Gateway</source>
-        <translation>SMS-Gateway vom Era GSM</translation>
-    </message>
-    <message>
-        <source>User ID</source>
-        <translation>Benutzer-ID</translation>
     </message>
     <message>
         <source>Enable autoaway</source>
@@ -604,10 +566,6 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     <message>
         <source>German</source>
         <translation>Deutsch</translation>
-    </message>
-    <message>
-        <source>Type of gateway</source>
-        <translation>Typ des Gateways</translation>
     </message>
     <message>
         <source>Default status</source>
@@ -1327,10 +1285,6 @@ Dein Passwort ist falsch!!!</translation>
         <translation>Zeige/Editiere Kontakt-Informationen</translation>
     </message>
     <message>
-        <source>Send SMS</source>
-        <translation>Sende SMS</translation>
-    </message>
-    <message>
         <source>View history</source>
         <translation>Zeige Verlauf</translation>
     </message>
@@ -1623,20 +1577,20 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
 Vielleicht ist es kein Kadu-kompatibles Modul.</translation>
     </message>
     <message>
-        <source>Cannot load %1 module library.
-Maybe it&apos;s incorrecty compiled.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Module %1 is loaded</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Required module %1 was not found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Module %1 cannot be unloaded because it is used by another module</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Module %1 is already active</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot load %1 module library.:
+%2</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1939,167 +1893,6 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
     <message>
         <source>Choose a directory</source>
         <translation>Wählen Sie ein Verzeichnis</translation>
-    </message>
-</context>
-<context>
-    <name>Sms</name>
-    <message>
-        <source>Recipient</source>
-        <translation>Empfänger</translation>
-    </message>
-    <message>
-        <source>Send</source>
-        <translation>Sende</translation>
-    </message>
-    <message>
-        <source>Send SMS</source>
-        <translation>Sende SMS</translation>
-    </message>
-    <message>
-        <source>SMS error</source>
-        <translation>SMS-Sendefehler</translation>
-    </message>
-    <message>
-        <source>Sms application was not specified. Visit the configuration section</source>
-        <translation>Programm zum verschicken von SMS nicht angegeben. Schau mal in die Konfiguration ein</translation>
-    </message>
-    <message>
-        <source>Could not spawn child process. Check if the program is functional</source>
-        <translation>Konnte das SMS-Programm nicht starten</translation>
-    </message>
-    <message>
-        <source>SMS sent</source>
-        <translation>SMS gesendet</translation>
-    </message>
-    <message>
-        <source>The process exited normally. The SMS should be on its way</source>
-        <translation>Das versenden ist gelungen. Die SMS ist unterwegs</translation>
-    </message>
-    <message>
-        <source>SMS not sent</source>
-        <translation>SMS nicht verschickt</translation>
-    </message>
-    <message>
-        <source>The process exited abnormally. The SMS may not be sent</source>
-        <translation>Versenden unerwartet beendet. SMS ist wahrscheinlich nicht verschickt</translation>
-    </message>
-    <message>
-        <source>The SMS was sent and should be on its way</source>
-        <translation>SMS wurde verschickt und ist unterwegs</translation>
-    </message>
-    <message>
-        <source>Contact</source>
-        <translation>Kontakt</translation>
-    </message>
-    <message>
-        <source>Signature</source>
-        <translation>Unterschrift</translation>
-    </message>
-</context>
-<context>
-    <name>SmsEraGateway</name>
-    <message>
-        <source>Provider gateway results page looks strange. SMS was probably NOT sent.</source>
-        <translation>Die Antwort des SMS-Gateways ist seltsam. SMS wurde wahrscheinlich nicht verschickt.</translation>
-    </message>
-    <message>
-        <source>Error: </source>
-        <translation>Fehler:</translation>
-    </message>
-    <message>
-        <source>No error</source>
-        <translation>Keine Fehler</translation>
-    </message>
-    <message>
-        <source>System failure</source>
-        <translation>Systemfehler</translation>
-    </message>
-    <message>
-        <source>Unauthorised user</source>
-        <translation>Nicht zugelassener Benutzer</translation>
-    </message>
-    <message>
-        <source>Access forbidden</source>
-        <translation>Zugriff verboten</translation>
-    </message>
-    <message>
-        <source>Syntax error</source>
-        <translation>Syntax-Fehler</translation>
-    </message>
-    <message>
-        <source>Limit of the sms run-down</source>
-        <translation>Verbleibende freie Zeichen</translation>
-    </message>
-    <message>
-        <source>Wrong receiver adress</source>
-        <translation>falsche Empfängeradresse</translation>
-    </message>
-    <message>
-        <source>Message too long</source>
-        <translation>Nachricht zu lang</translation>
-    </message>
-    <message>
-        <source>Unknown error</source>
-        <translation>Unbekannter Fehler</translation>
-    </message>
-</context>
-<context>
-    <name>SmsGateway</name>
-    <message>
-        <source>Network error. Provider gateway page is probably unavailable</source>
-        <translation>Der angegebene SMS-Gateway ist wahrscheinlich ausgeschaltet</translation>
-    </message>
-</context>
-<context>
-    <name>SmsIdeaGateway</name>
-    <message>
-        <source>Provider gateway page looks strange. It&apos;s probably temporary disabled
-or has beed changed too much to parse it correctly.</source>
-        <translation>SMS-Gateway ist unerreichbar. Wahrscheinlich ist sie momentan ausgeschaltet
-oder änderte die Zugangserlaubnis.</translation>
-    </message>
-    <message>
-        <source>You exceeded your daily limit</source>
-        <translation>SMS-Limit überschritten</translation>
-    </message>
-    <message>
-        <source>Text from the picture is incorrect</source>
-        <translation>Der vom Bild abgelesene Text ist falsch</translation>
-    </message>
-    <message>
-        <source>The receiver has to enable SMS STANDARD service</source>
-        <translation>Der Empfänger hat den Dienst SMS STANDARD nicht eingeschaltet</translation>
-    </message>
-    <message>
-        <source>Provider gateway results page looks strange. SMS was probably NOT sent.</source>
-        <translation>Die Antwort des SMS-Gateways ist seltsam. SMS wurde wahrscheinlich nicht verschickt.</translation>
-    </message>
-</context>
-<context>
-    <name>SmsImageDialog</name>
-    <message>
-        <source>Enter text from the picture:</source>
-        <translation>Lese den Text vom Bild ab und gib ihn hier ein:</translation>
-    </message>
-</context>
-<context>
-    <name>SmsPlusGateway</name>
-    <message>
-        <source>Provider gateway page looks strange. It&apos;s probably temporary disabled
-or has beed changed too much to parse it correctly.</source>
-        <translation>SMS-Gateway ist unerreichbar. Wahrscheinlich ist sie momentan ausgeschaltet
-oder änderte die Zugangserlaubnis.</translation>
-    </message>
-    <message>
-        <source>Provider gateway results page looks strange. SMS was probably NOT sent.</source>
-        <translation>Die Antwort des SMS-Gateways ist seltsam. SMS wurde wahrscheinlich nicht verschickt.</translation>
-    </message>
-</context>
-<context>
-    <name>SmsSender</name>
-    <message>
-        <source>Mobile number is incorrect</source>
-        <translation>Falsche Telefonnummer</translation>
     </message>
 </context>
 <context>

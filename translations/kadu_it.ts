@@ -232,10 +232,6 @@ Cosa vogliamo fare?</translation>
         <translation>Vedi/Cambia info contatto</translation>
     </message>
     <message>
-        <source>Send SMS</source>
-        <translation>Manda un SMS</translation>
-    </message>
-    <message>
         <source>View history</source>
         <translation>Visualizza cronologia</translation>
     </message>
@@ -258,40 +254,6 @@ Cosa vogliamo fare?</translation>
     <message>
         <source>Add user</source>
         <translation>Aggiungi il contatto</translation>
-    </message>
-    <message>
-        <source>SMS</source>
-        <translation>SMS</translation>
-    </message>
-    <message>
-        <source>SMS options</source>
-        <translation>Opzioni SMS</translation>
-    </message>
-    <message>
-        <source>Use built-in SMS application</source>
-        <translation>Usa l&apos;applicazione SMS incorporata</translation>
-    </message>
-    <message>
-        <source>Custom SMS application</source>
-        <translation>Applicazione SMS esterna</translation>
-    </message>
-    <message>
-        <source>SMS custom string</source>
-        <translation>Stringa personalizzata SMS</translation>
-    </message>
-    <message>
-        <source>Check this box if your sms application doesn&apos;t understand arguments: number &quot;message&quot;
-Arguments should be separated with spaces. %n argument is converted to number, %m to message</source>
-        <translation>Segna questo campo se il tuo programma non capisce i parametri : numero_tel_cell &quot;il messaggio&quot;
-e scrivi la stringa corretta. I parametri devono essere separati da spazio. Il parametro %n è il numero di cellulare, %m è il messaggio</translation>
-    </message>
-    <message>
-        <source>SMS Era Gateway</source>
-        <translation>SMS EraGSM Gateway</translation>
-    </message>
-    <message>
-        <source>User ID</source>
-        <translation>ID dell&apos;utente</translation>
     </message>
     <message>
         <source>Enable autoaway</source>
@@ -600,10 +562,6 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
     <message>
         <source>&lt;b&gt;Other party&lt;/b&gt; 00:00:02</source>
         <translation>&lt;b&gt;Interlocutore&lt;/b&gt; 00:00:02</translation>
-    </message>
-    <message>
-        <source>Type of gateway</source>
-        <translation>Tipo di Gateway</translation>
     </message>
     <message>
         <source>Default status</source>
@@ -1327,10 +1285,6 @@ La password è errata!!!</translation>
         <translation>Mostra/modifica Info del contatto</translation>
     </message>
     <message>
-        <source>Send SMS</source>
-        <translation>Manda SMS</translation>
-    </message>
-    <message>
         <source>View history</source>
         <translation>Visualizza Cronologia</translation>
     </message>
@@ -1623,22 +1577,21 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
 Probabilmente Modulo non è compatibile.</translation>
     </message>
     <message>
-        <source>Cannot load %1 module library.
-Maybe it&apos;s incorrecty compiled.</source>
-        <translation>Impossibile caricre libreria modulo %1.
-Probbabilmente è stato compilato male.</translation>
-    </message>
-    <message>
-        <source>Module %1 is loaded</source>
-        <translation>Modulo %1 e stato attivato</translation>
-    </message>
-    <message>
         <source>Required module %1 was not found</source>
         <translation>Module %1 non trovato</translation>
     </message>
     <message>
         <source>Module %1 cannot be unloaded because it is used by another module</source>
         <translation>Modulo %1 non può essere disattivato perchè in uso da altro modulo</translation>
+    </message>
+    <message>
+        <source>Module %1 is already active</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot load %1 module library.:
+%2</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1940,167 +1893,6 @@ Ora è possibile aggiungere i vostri amici alla lista dei contatti.</translation
     <message>
         <source>Choose a directory</source>
         <translation>Seleziona cartella</translation>
-    </message>
-</context>
-<context>
-    <name>Sms</name>
-    <message>
-        <source>Recipient</source>
-        <translation>Destinatario</translation>
-    </message>
-    <message>
-        <source>Send</source>
-        <translation>Manda</translation>
-    </message>
-    <message>
-        <source>Send SMS</source>
-        <translation>Manda SMS</translation>
-    </message>
-    <message>
-        <source>SMS error</source>
-        <translation>Errore trassmissione SMS</translation>
-    </message>
-    <message>
-        <source>Sms application was not specified. Visit the configuration section</source>
-        <translation>L&apos;applicazione di Sms non è stata specificata. Consultare la sezione di configurazione </translation>
-    </message>
-    <message>
-        <source>Could not spawn child process. Check if the program is functional</source>
-        <translation>Problemi in avvio del programa SMS.  Verificare corretta funzionalità del programma</translation>
-    </message>
-    <message>
-        <source>SMS sent</source>
-        <translation>SMS trasmesso</translation>
-    </message>
-    <message>
-        <source>The process exited normally. The SMS should be on its way</source>
-        <translation>Il processo terminato con successo. Lo SMS dovrebbe essere in viaggio</translation>
-    </message>
-    <message>
-        <source>SMS not sent</source>
-        <translation>SMS non inviato</translation>
-    </message>
-    <message>
-        <source>The process exited abnormally. The SMS may not be sent</source>
-        <translation>Il processo SMS terminato con errore. Lo SMS non può essere trasmesso</translation>
-    </message>
-    <message>
-        <source>The SMS was sent and should be on its way</source>
-        <translation>Il SMS è stato trasmesso e dovrebbe essere in viaggio</translation>
-    </message>
-    <message>
-        <source>Contact</source>
-        <translation>Contatto</translation>
-    </message>
-    <message>
-        <source>Signature</source>
-        <translation>Firma</translation>
-    </message>
-</context>
-<context>
-    <name>SmsEraGateway</name>
-    <message>
-        <source>Provider gateway results page looks strange. SMS was probably NOT sent.</source>
-        <translation>La pagina dei risultati del Gateway dell&apos;operatore GSM sembra sconosciuta. SMS probabilmente NON trasmesso.</translation>
-    </message>
-    <message>
-        <source>Error: </source>
-        <translation>Errore:</translation>
-    </message>
-    <message>
-        <source>No error</source>
-        <translation>Nessun errore</translation>
-    </message>
-    <message>
-        <source>System failure</source>
-        <translation>Guasto del sistema</translation>
-    </message>
-    <message>
-        <source>Unauthorised user</source>
-        <translation>Utente non autorizzato</translation>
-    </message>
-    <message>
-        <source>Access forbidden</source>
-        <translation>Accesso proibito</translation>
-    </message>
-    <message>
-        <source>Syntax error</source>
-        <translation>Errore di sintassi</translation>
-    </message>
-    <message>
-        <source>Limit of the sms run-down</source>
-        <translation>limite quantitativo SMS raggiunto</translation>
-    </message>
-    <message>
-        <source>Wrong receiver adress</source>
-        <translation>Indirizzo del ricevente SMS errato</translation>
-    </message>
-    <message>
-        <source>Message too long</source>
-        <translation>Messaggio troppo lungo</translation>
-    </message>
-    <message>
-        <source>Unknown error</source>
-        <translation>Errore sconosciuto</translation>
-    </message>
-</context>
-<context>
-    <name>SmsGateway</name>
-    <message>
-        <source>Network error. Provider gateway page is probably unavailable</source>
-        <translation>Errore della rete. La pagina del Gateway del fornitore è probabilmente non disponibile</translation>
-    </message>
-</context>
-<context>
-    <name>SmsIdeaGateway</name>
-    <message>
-        <source>Provider gateway page looks strange. It&apos;s probably temporary disabled
-or has beed changed too much to parse it correctly.</source>
-        <translation>La pagina del Gateway del fornitore sembra sconosciuta.
-Probabilmente è temporaneamente disabilitata, o sono state cambiate le regole accesso.</translation>
-    </message>
-    <message>
-        <source>You exceeded your daily limit</source>
-        <translation>Avete superato il vostro limite quotidiano di SMS inviati</translation>
-    </message>
-    <message>
-        <source>Text from the picture is incorrect</source>
-        <translation>Il testo dall&apos;immagine errato</translation>
-    </message>
-    <message>
-        <source>The receiver has to enable SMS STANDARD service</source>
-        <translation>Il ricevente deve consentire (attivare) il servizio di STANDARD SMS</translation>
-    </message>
-    <message>
-        <source>Provider gateway results page looks strange. SMS was probably NOT sent.</source>
-        <translation>La pagina dei risultati del Gateway dell&apos;operatore GSM sembra sconosciuta. SMS probabilmente NON trasmesso.</translation>
-    </message>
-</context>
-<context>
-    <name>SmsImageDialog</name>
-    <message>
-        <source>Enter text from the picture:</source>
-        <translation>Inserire il testo dall&apos;immagine:</translation>
-    </message>
-</context>
-<context>
-    <name>SmsPlusGateway</name>
-    <message>
-        <source>Provider gateway page looks strange. It&apos;s probably temporary disabled
-or has beed changed too much to parse it correctly.</source>
-        <translation>La pagina del Gateway del operatore GSM sembra sconosciuta.
-Probabilmente è temporaneamente disattivata, o sono state cambiate le reole accesso.</translation>
-    </message>
-    <message>
-        <source>Provider gateway results page looks strange. SMS was probably NOT sent.</source>
-        <translation>La pagina di risultati del Gateway del operatore GSM sembra sconosciuta. SMS probabilmente NON trasmesso.</translation>
-    </message>
-</context>
-<context>
-    <name>SmsSender</name>
-    <message>
-        <source>Mobile number is incorrect</source>
-        <translation>Il numero di telefono è errato</translation>
     </message>
 </context>
 <context>

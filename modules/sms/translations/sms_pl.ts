@@ -41,7 +41,7 @@ Zaznacz i wpisz w to pole poprawny ciąg. Argumenty oddziel spacjami. Argument %
     </message>
     <message>
         <source>Down</source>
-        <translation>przenieś w dół</translation>
+        <translation>Przenieś w dół</translation>
     </message>
 </context>
 <context>

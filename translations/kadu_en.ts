@@ -410,10 +410,6 @@ If you leave blank, default settings will be used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Send SMS</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>View history</source>
         <translation type="unfinished"></translation>
     </message>
@@ -484,43 +480,6 @@ What would you like to do?</source>
     </message>
     <message>
         <source>Could not spawn Web browser process. Check if the Web browser is functional</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SMS</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SMS options</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Use built-in SMS application</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Custom SMS application</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SMS custom string</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Check this box if your sms application doesn&apos;t understand arguments: number &quot;message&quot;
-Arguments should be separated with spaces. %n argument is converted to number, %m to message</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SMS Era Gateway</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>User ID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Type of gateway</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1324,10 +1283,6 @@ Your password is incorrect !!!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Send SMS</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Send file</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1613,20 +1568,20 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cannot load %1 module library.
-Maybe it&apos;s incorrecty compiled.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Module %1 is loaded</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Required module %1 was not found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Module %1 cannot be unloaded because it is used by another module</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Module %1 is already active</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot load %1 module library.:
+%2</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1925,165 +1880,6 @@ Now add your friends to the userlist.</source>
     </message>
     <message>
         <source>Choose a directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>Sms</name>
-    <message>
-        <source>Recipient</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Send</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Contact</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Signature</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Send SMS</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SMS error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Sms application was not specified. Visit the configuration section</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Could not spawn child process. Check if the program is functional</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SMS sent</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The process exited normally. The SMS should be on its way</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SMS not sent</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The process exited abnormally. The SMS may not be sent</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The SMS was sent and should be on its way</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>SmsEraGateway</name>
-    <message>
-        <source>Error: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Provider gateway results page looks strange. SMS was probably NOT sent.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>System failure</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unauthorised user</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Access forbidden</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Syntax error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Limit of the sms run-down</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Wrong receiver adress</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Message too long</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unknown error</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>SmsGateway</name>
-    <message>
-        <source>Network error. Provider gateway page is probably unavailable</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>SmsIdeaGateway</name>
-    <message>
-        <source>Provider gateway page looks strange. It&apos;s probably temporary disabled
-or has beed changed too much to parse it correctly.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>You exceeded your daily limit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Text from the picture is incorrect</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The receiver has to enable SMS STANDARD service</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Provider gateway results page looks strange. SMS was probably NOT sent.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>SmsImageDialog</name>
-    <message>
-        <source>Enter text from the picture:</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>SmsPlusGateway</name>
-    <message>
-        <source>Provider gateway page looks strange. It&apos;s probably temporary disabled
-or has beed changed too much to parse it correctly.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Provider gateway results page looks strange. SMS was probably NOT sent.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>SmsSender</name>
-    <message>
-        <source>Mobile number is incorrect</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
