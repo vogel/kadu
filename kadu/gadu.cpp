@@ -744,7 +744,7 @@ void GaduSocketNotifiers::socketEvent()
 
 	else if (e->type == GG_EVENT_DISCONNECT)
 		emit disconnected();
-	
+
 	else if (e->type == GG_EVENT_NONE)
 		kdebugm (KDEBUG_NETWORK, "GG_EVENT_NONE\n");
 
@@ -914,6 +914,7 @@ GaduProtocol::~GaduProtocol()
 {
 	kdebugf();
 
+	disconnectedSlot();
 	delete SocketNotifiers;
 
 	kdebugf2();
@@ -1166,7 +1167,8 @@ void GaduProtocol::connectionTimeoutTimerSlot()
 		Sess->state == GG_STATE_CONNECTING_GG)
 	{
 		kdebug("Timeout, breaking connection\n");
-		emit error(ConnectionTimeout);
+		errorSlot(ConnectionTimeout);
+		//emit error(ConnectionTimeout);
 		//logout();
 		//login();
 	}
