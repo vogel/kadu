@@ -251,6 +251,7 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 				mesg.remove(pos, idx - pos);
 				tmp = tmp.section("\"", 1, 1);
 				attribs = QStringList::split(";", tmp);
+				formantattribs.clear();
 				for (i = 0; i < attribs.count(); i++) {
 					actattrib.name = attribs[i].section(":", 0, 0);
 					actattrib.value = attribs[i].section(":", 1, 1);
