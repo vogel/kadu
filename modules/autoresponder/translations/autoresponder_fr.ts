@@ -23,7 +23,7 @@
     </message>
     <message>
         <source>Status invisible</source>
-        <translation>Statut inaccessible</translation>
+        <translation>Statut non visible</translation>
     </message>
     <message>
         <source>Status busy</source>
@@ -42,7 +42,7 @@
     <name>AutoResponder</name>
     <message>
         <source>KADU AUTORESPONDER:</source>
-        <translation>KADU AUTOODPOWIEDŹ:</translation>
+        <translation>REPONDEUR KADU:</translation>
     </message>
 </context>
 </TS>

@@ -3,7 +3,7 @@
     <name>@default</name>
     <message>
         <source>DCC enabled</source>
-        <translation>DCC activé.(Connexion directe)</translation>
+        <translation>DCC activé</translation>
     </message>
     <message>
         <source>DCC IP autodetection</source>
@@ -54,7 +54,7 @@ Connexion directe coupée.</translation>
         <source>Direct connection timeout!
 The receiver doesn&apos;t support direct connections or
 both machines are behind routers with NAT.</source>
-        <translation>&lt;B&gt;Temps de connexion depassé!&lt;/B&gt;
+        <translation>Temps de connexion directe depassé!
 Le receveur n&apos;a pas activé le service de connexion
 Les deux machines sont situées derrière le routeur avec NAT.</translation>
     </message>
@@ -78,7 +78,10 @@ Les deux machines sont situées derrière le routeur avec NAT.</translation>
 IP address (%2) differs from what GG server returned
 as his/her IP address (%3). It may be spoofing
 or he/she has port forwarding. Continue connection?</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 demande la connexion directe mais la ligne de lui/elle
+le IP addresse (%2) diffère de GG serveur  retour
+son IP address (%3). Ce peut être ligne spool
+ou lui/elle a transmit. Continuez la connexion ?</translation>
     </message>
 </context>
 <context>
@@ -137,12 +140,12 @@ or he/she has port forwarding. Continue connection?</source>
     <message>
         <source>User %1 wants to send us a file %2
 of size %3kB. Accept transfer?</source>
-        <translation>Utilisateur %1souhaite vous envoyer le fichier %2( nouvelle ligne)
+        <translation>Utilisateur %1souhaite vous envoyer le fichier %2
 de dimension %3kB.Acceptez vous ce transfert?</translation>
     </message>
     <message>
         <source>Incoming transfer</source>
-        <translation>Transfert arrivée</translation>
+        <translation>Transfert arrivé</translation>
     </message>
     <message>
         <source>Yes</source>
@@ -170,7 +173,7 @@ de dimension %3kB.Acceptez vous ce transfert?</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Anule</translation>
+        <translation>Annule</translation>
     </message>
     <message>
         <source>Could not open file</source>

@@ -3,18 +3,18 @@
     <name>@default</name>
     <message>
         <source>Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Fenêtre</translation>
     </message>
 </context>
 <context>
     <name>WindowNotify</name>
     <message>
         <source>Chat with &lt;b&gt;%1&lt;/b&gt;&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</source>
-        <translation>Chat avec &lt;b&gt;%1&lt;/b&gt;&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</translation>
+        <translation>Chat avec &lt;b&gt;%1&lt;/b&gt;&lt;br/&gt; &lt;petit&gt;%2&lt;/petit&gt;</translation>
     </message>
     <message>
         <source>New message from &lt;b&gt;%1&lt;/b&gt;&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</source>
-        <translation>Nouveau message de la part de &lt;b&gt;%1&lt;/b&gt;&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</translation>
+        <translation>Nouveau message de la part de &lt;b&gt;%1&lt;/b&gt;&lt;br/&gt; &lt;petit&gt;%2&lt;/petit&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;Error:&lt;/b&gt; %1</source>
@@ -22,7 +22,7 @@
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; changed status to &lt;i&gt;%2&lt;/i&gt;&lt;br/&gt; &lt;small&gt;%3&lt;/small&gt;</source>
-        <translation>&lt;b&gt;%1&lt;/b&gt; changé le statut en  &lt;i&gt;%2&lt;/i&gt;&lt;br/&gt; &lt;small&gt;%3&lt;/small&gt;</translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; changé le statut en  &lt;i&gt;%2&lt;/i&gt;&lt;br/&gt; &lt;petit&gt;%3&lt;/petit&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;From %1:&lt;/b&gt;%2</source>

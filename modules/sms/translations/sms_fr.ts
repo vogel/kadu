@@ -28,8 +28,8 @@
     <message>
         <source>Check this box if your sms application doesn&apos;t understand arguments: number &quot;message&quot;
 Arguments should be separated with spaces. %n argument is converted to number, %m to message</source>
-        <translation>Si votre application de SMS ne comprend pas les arguments &quot;numéro tél. contenu du message&quot;
-Les arguments doivent être separés par l&apos;espace.Veuillez remplir le champ avec la chaîne de caractères correcte. Argument %n est échangé en numéro , %m en message</translation>
+        <translation>Veuillez controler ce cadre si votre application de SMS ne comprend pas les arguments: numéro &quot;message&quot;
+Les arguments doivent être separés par l&apos;espace.%n argument est converti en nombres,%m en message</translation>
     </message>
     <message>
         <source>Gateways priority</source>
@@ -48,7 +48,7 @@ Les arguments doivent être separés par l&apos;espace.Veuillez remplir le champ
     <name>Sms</name>
     <message>
         <source>Recipient</source>
-        <translation>Receveur</translation>
+        <translation>Destinataire</translation>
     </message>
     <message>
         <source>Send</source>
@@ -60,15 +60,16 @@ Les arguments doivent être separés par l&apos;espace.Veuillez remplir le champ
     </message>
     <message>
         <source>SMS error</source>
-        <translation>Erreur expédition SMS</translation>
+        <translation>Erreur SMS</translation>
     </message>
     <message>
         <source>Sms application was not specified. Visit the configuration section</source>
-        <translation>Indique le nom d&apos;application pour l&apos;envoie de SMS dans la configuration</translation>
+        <translation>L&apos;appplication Sms n&apos;a pas été specifié. Veuillez controler la configuration</translation>
     </message>
     <message>
         <source>Could not spawn child process. Check if the program is functional</source>
-        <translation>Problème d&apos;activation de programme d&apos;expedition de SMS</translation>
+        <translation>N&apos;a pas pu engendrer le processus d&apos;enfant. Contrôlez si le programme
+est fonctionnel</translation>
     </message>
     <message>
         <source>SMS sent</source>
@@ -76,7 +77,7 @@ Les arguments doivent être separés par l&apos;espace.Veuillez remplir le champ
     </message>
     <message>
         <source>The process exited normally. The SMS should be on its way</source>
-        <translation>Processus terminé avec success. SMS est en route.</translation>
+        <translation>Processus terminé avec success. SMS est en route</translation>
     </message>
     <message>
         <source>SMS not sent</source>
@@ -84,7 +85,7 @@ Les arguments doivent être separés par l&apos;espace.Veuillez remplir le champ
     </message>
     <message>
         <source>The process exited abnormally. The SMS may not be sent</source>
-        <translation>Processus terminé anormallement. SMS n&apos;a pas été envoyé.</translation>
+        <translation>Processus terminé anormallement. SMS n&apos;a pas été envoyé</translation>
     </message>
     <message>
         <source>The SMS was sent and should be on its way</source>
@@ -100,7 +101,7 @@ Les arguments doivent être separés par l&apos;espace.Veuillez remplir le champ
     </message>
     <message>
         <source>Save SMS in history</source>
-        <translation type="unfinished"></translation>
+        <translation>Enregistre SMS dans l&apos;historique</translation>
     </message>
 </context>
 <context>

@@ -64,8 +64,7 @@
         <source>Error data typed in required fields.
 
 Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new password&quot;) should be the same!</source>
-        <translation>Données incorrects dans le champs.(nouvelle ligne)
-(nouvelle ligne)
+        <translation>Données incorrects dans le champs.
 Les mot de passe doivent être(&quot;nouveau mot de passe&quot; et &quot;retapper le nouveu mot de passe&quot;) idéntiques dans le deux champs!</translation>
     </message>
 </context>
@@ -105,13 +104,13 @@ L&apos;ancien fichier sera effacé.</translation>
         <source>Registration was successful. Your new number is %1.
 Store it in a safe place along with the password.
 Now add your friends to the userlist.</source>
-        <translation>Enregistrement reussi.Ton nouveau numéro est  %1.
+        <translation>Enregistrement reussi.Ton nouveau numéro est %1.
 Conserve ces données dans le lieu sur.
 Actuellement vous pouvez ajouter les contacts sur votre liste.</translation>
     </message>
     <message>
         <source>This dialog box allows you to register a new account.</source>
-        <translation>Cette fenêtre de dialogue permet d&apos;enregistrer un compte nouveau.</translation>
+        <translation>Cette fenêtre de dialogue permet d&apos;enregistrer un nouveau compte .</translation>
     </message>
     <message>
         <source>Email</source>
@@ -138,7 +137,6 @@ Actuellement vous pouvez ajouter les contacts sur votre liste.</translation>
 
 Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new password&quot;) should be the same!</source>
         <translation>Données erronnées dans les champs.
-
 Les mot de passe dans le deux champs doivent être idéntiques!</translation>
     </message>
     <message>
@@ -162,7 +160,7 @@ Les mot de passe dans le deux champs doivent être idéntiques!</translation>
     </message>
     <message>
         <source>Password reminded</source>
-        <translation>Rapelle de mot de passe</translation>
+        <translation>Rapelle le mot de passe</translation>
     </message>
 </context>
 <context>
@@ -189,8 +187,7 @@ Les mot de passe dans le deux champs doivent être idéntiques!</translation>
     </message>
     <message>
         <source>Unregistation was successful. Now you don&apos;t have any GG number :(</source>
-        <translation>Suppression reussie.
-Vous n&apos;avez plus le numéro de GG:(</translation>
+        <translation>Suppression reussie.Vous n&apos;avez plus le numéro de GG:(</translation>
     </message>
     <message>
         <source>UIN and password</source>
@@ -214,7 +211,7 @@ Vous n&apos;avez plus le numéro de GG:(</translation>
     </message>
     <message>
         <source>This dialog box allows you to unregister your account. Be aware of using this option. &lt;font color=&quot;red&quot;&gt;&lt;b&gt;It will permanently delete your UIN and you will not be able to use it later!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation>Cette fenêtre permet la suppression définitive d&apos;utilisateur Gadu-Gadu su serveur. &lt;font color=&quot;red&quot;&gt;&lt;b&gt;Veuillez prendre en compte qu&apos;il s&apos;agit d&apos;une suppression définitive et vous ne pourriz plus jamais utiliser ce numéro !&lt;/b&gt;&lt;/font&gt;</translation>
+        <translation>Cette fenêtre permet la suppression définitive d&apos;utilisateur Gadu-Gadu sur le serveur. &lt;font color=&quot;red&quot;&gt;&lt;b&gt;Veuillez prendre en compte qu&apos;il s&apos;agit d&apos;une suppression définitive et vous ne pourriz plus jamais utiliser ce numéro !&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
 </context>
 </TS>

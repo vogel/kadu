@@ -11,7 +11,7 @@
     </message>
     <message>
         <source>&lt;h3&gt;Please decide if you want to use your old Gadu-gadu account and number or to create the new one&lt;/h3&gt;</source>
-        <translation>&lt;h3&gt;Veuillez indiquer si vous souhaitez enregistrer un compte nouveau ou utiliser le compte ancien&lt;/h3&gt;</translation>
+        <translation>&lt;h3&gt;Veuillez indiquer si vous souhaitez enregistrer un nouveau compte ou utiliser le compte ancien&lt;/h3&gt;</translation>
     </message>
     <message>
         <source>Select account option</source>
@@ -99,7 +99,7 @@
     </message>
     <message>
         <source>Message acknowledgements (wait for delivery)</source>
-        <translation>Confirmation d&apos;expédition du massage (attente pour la  la livraison)</translation>
+        <translation>Confirmation d&apos;expédition du massage (attente pour la livraison)</translation>
     </message>
     <message>
         <source>&quot;Enter&quot; key in chat sends message by default</source>
@@ -199,11 +199,11 @@
     </message>
     <message>
         <source>Don&apos;t log messages</source>
-        <translation>Veuillez n&apos;est pas enregistrer les messages</translation>
+        <translation>Ne veuillez pas enregistrer les messages</translation>
     </message>
     <message>
         <source>Don&apos;t log status changes</source>
-        <translation>Veuillez n&apos;est pas enregistrer le changement de statut</translation>
+        <translation>Ne veuillez pas enregistrer le changement de statut</translation>
     </message>
     <message>
         <source>&lt;h3&gt;Please setup hints options&lt;/h3&gt;</source>
@@ -273,9 +273,8 @@
         <source>Error data typed in required fields.
 
 Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new password&quot;) should be the same!</source>
-        <translation>Données erronées.(nouvelle ligne)
-(nouvelle ligne)
-Le mot de passe devrait être le même dans les deux champs!</translation>
+        <translation>Données erronées.
+Le mot de passe devrait être le même (&quot;nouveau mot de passe&quot; et &quot;retappez le nouveau mot de passe&quot; dans les deux champs!</translation>
     </message>
     <message>
         <source>An error has occured while registration. Please try again later.</source>
@@ -295,7 +294,7 @@ Le mot de passe devrait être le même dans les deux champs!</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Anule</translation>
+        <translation>Annule</translation>
     </message>
     <message>
         <source>&lt;b&gt;Error&lt;/b&gt;: (192.168.0.1) Disconnection has occured</source>
@@ -315,7 +314,7 @@ Le mot de passe devrait être le même dans les deux champs!</translation>
     </message>
     <message>
         <source>Mark</source>
-        <translation>Jan</translation>
+        <translation>Mark</translation>
     </message>
     <message>
         <source>Smith</source>
@@ -355,7 +354,7 @@ Le mot de passe devrait être le même dans les deux champs!</translation>
     </message>
     <message>
         <source>&lt;h2&gt;Welcome in Kadu&lt;/h2&gt;&lt;h3&gt; the Gadu-gadu network client for *nix and MacOS X.&lt;/h3&gt;&lt;br&gt;&lt;br&gt;&lt;font size=+1&gt;This is first time you launch Kadu. This wizard will help you to configure the basic settings of Kadu. If you are experienced Kadu user you may omit the wizard by clicking Cancel. Otherwise click Next.&lt;/font&gt;</source>
-        <translation>&lt;h2&gt;Bienvenue chez Kadu&lt;/h2&gt;&lt;h3&gt;client  Gadu-Gadu pour*unix et MacOS X.&lt;/h3&gt;&lt;br&gt;&lt;br&gt;&lt;font size=+1&gt;Activation de Kadu pour la première fois. Le créateur va vous guider dans la configuration de base du programme. Si vous etes utilisateur experimenté vous pouvez ignorer cette étape et annuler. Dans le cas contraire appuyer Suivant&lt;/font&gt;</translation>
+        <translation>&lt;h2&gt;Bienvenue chez Kadu&lt;/h2&gt;&lt;h3&gt;client  Gadu-Gadu pour*unix et MacOS X.&lt;/h3&gt;&lt;br&gt;&lt;br&gt;&lt;police size=+1&gt;Activation de Kadu pour la première fois. Le créateur va vous guider dans la configuration de base du programme. Si vous etes utilisateur experimenté vous pouvez ignorer cette étape et annuler. Dans le cas contraire appuyer Suivant&lt;/police&gt;</translation>
     </message>
     <message>
         <source>&lt;h3&gt;You decided to use your existing account. Please configure it&lt;/h3&gt;</source>
@@ -395,7 +394,7 @@ Le mot de passe devrait être le même dans les deux champs!</translation>
     </message>
     <message>
         <source>This module uses GNOME&apos;s Enlightened Sound Daemon which mixes multiple digital sources at real time.&lt;br&gt; When your soundcard doesn&apos;t handle that, this module is for you.</source>
-        <translation>Ce module utilise Enlightened Sound Daemon (Gnome),qui mixe les differents sources de son en temps réel.&lt;br&gt;si votre carte du son ne supporte pas ce dispositif ce son est pour vous. </translation>
+        <translation>Ce module utilise Enlightened Sound Daemon Gnome ,qui mixe les differents sources de son en temps réel.&lt;br&gt;si votre carte du son ne supporte pas ce dispositif, ce son est pour vous. </translation>
     </message>
     <message>
         <source>This module uses external application to produce sounds. You must specify path to external program in configuration.</source>
@@ -439,7 +438,7 @@ Le mot de passe devrait être le même dans les deux champs!</translation>
     </message>
     <message>
         <source>&lt;font color=red&gt;Module is not installed! If you want to use it download and install it first.&lt;/font&gt;&lt;br&gt;</source>
-        <translation>&lt;font color=red&gt;Ce module n&apos;est pas installé! Sivous souhaitez l&apos;utiliser veuillez le télécharger sur le site et installer.&lt;/font&gt;&lt;br&gt;</translation>
+        <translation>&lt;couleur de fond=rouge&gt;Ce module n&apos;est pas installé! Sivous souhaitez l&apos;utiliser veuillez le télécharger sur le site et installer.&lt;/fond&gt;&lt;br&gt;</translation>
     </message>
     <message>
         <source>Current</source>
@@ -447,42 +446,45 @@ Le mot de passe devrait être le même dans les deux champs!</translation>
     </message>
     <message>
         <source>French</source>
-        <translation type="unfinished"></translation>
+        <translation>Français</translation>
     </message>
     <message>
         <source>Register</source>
-        <translation type="unfinished"></translation>
+        <translation>Enregistrement</translation>
     </message>
     <message>
         <source>This module play sounds using ALSA - Advanced Linux Sound Architecture driver.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ce module du son est utilisé par ALSA-Driver Architecture Linux.</translation>
     </message>
     <message>
         <source>Registration was successful.
 You UIN is: </source>
-        <translation type="unfinished"></translation>
+        <translation>Enregistrement avec success.
+Votre VIN numero Kadu est :</translation>
     </message>
     <message>
         <source>
 Account configuration was saved.
 Press Next to continue</source>
-        <translation type="unfinished"></translation>
+        <translation>Votre configuration a été enregistrée.
+Appuyer suivant pour continuer</translation>
     </message>
     <message>
         <source>&lt;h3&gt;Please enter your valid e-mail address and password you want to secure your new Gadu-gadu number&lt;/h3&gt;
 Password must contain at least 5 signs (only letters and numbers)</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;h3&gt;Veuillez inscrire votre adresse e-mail valide et le mot de passe numéro Gadu_Gadu&lt;/h3&gt;
+Le mot de passe devrait contenir 5 signes( seulement les lettres ou les chiffres)</translation>
     </message>
 </context>
 <context>
     <name>WizardStarter</name>
     <message>
         <source>Configuration Wizard</source>
-        <translation>Kreator konfiguracji</translation>
+        <translation>Créateur de configuration</translation>
     </message>
     <message>
         <source>User list wasn&apos;t imported because of some error</source>
-        <translation type="unfinished">Erreur d&apos;importation de la liste de contacts</translation>
+        <translation>Erreur d&apos;importation de la liste de contacts</translation>
     </message>
 </context>
 </TS>

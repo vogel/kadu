@@ -3,11 +3,11 @@
     <name>@default</name>
     <message>
         <source>Output device</source>
-        <translation type="unfinished"></translation>
+        <translation> Dispositif de sortie</translation>
     </message>
     <message>
         <source>ALSA device:</source>
-        <translation type="unfinished"></translation>
+        <translation> dispositif ALSA:</translation>
     </message>
 </context>
 </TS>

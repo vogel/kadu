@@ -47,23 +47,23 @@
     </message>
     <message>
         <source>Samples</source>
-        <translation type="unfinished"></translation>
+        <translation>échantillons</translation>
     </message>
     <message>
         <source>Test sample playing</source>
-        <translation type="unfinished"></translation>
+        <translation>Testez l&apos;échantillon du son</translation>
     </message>
     <message>
         <source>Test sample recording</source>
-        <translation type="unfinished"></translation>
+        <translation>Test enregistrement échantillon</translation>
     </message>
     <message>
         <source>Test full duplex</source>
-        <translation type="unfinished"></translation>
+        <translation>Test full duplex</translation>
     </message>
     <message>
         <source>Sound</source>
-        <translation type="unfinished"></translation>
+        <translation>Son</translation>
     </message>
 </context>
 <context>
@@ -102,7 +102,7 @@
     </message>
     <message>
         <source>Status available sound</source>
-        <translation>Si statut disponible son</translation>
+        <translation>Si statut du son disponible</translation>
     </message>
     <message>
         <source>Status busy sound</source>
@@ -122,36 +122,37 @@
     </message>
     <message>
         <source>Status invisible sound</source>
-        <translation type="unfinished"></translation>
+        <translation>Statut du son invisible</translation>
     </message>
     <message>
         <source>Opening test sample file failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouverture de fichier test non reussi.</translation>
     </message>
     <message>
         <source>Reading test sample file failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lecture fichier test non reussi.</translation>
     </message>
     <message>
         <source>Opening sound device failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouverture unité son non reussi.</translation>
     </message>
     <message>
         <source>Testing sample playing. You should hear some sound now.</source>
-        <translation type="unfinished"></translation>
+        <translation>Test lecture du son.Vous devez entendre un son.</translation>
     </message>
     <message>
         <source>Testing sample recording. Please talk now (3 seconds).</source>
-        <translation type="unfinished"></translation>
+        <translation>Test enregistrement son.Veuillez parler ( 3 sec).</translation>
     </message>
     <message>
         <source>You should hear your recorded sample now.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous devriez entendre votre échantillon enregistré maintenant.</translation>
     </message>
     <message>
         <source>Testing fullduplex. Please talk now.
 You should here it with one second delay.</source>
-        <translation type="unfinished"></translation>
+        <translation>Test pour fullduplex. Parlez.
+Le délai est une seconde.</translation>
     </message>
 </context>
 </TS>

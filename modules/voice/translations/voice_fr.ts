@@ -3,11 +3,11 @@
     <name>@default</name>
     <message>
         <source>Voice chat</source>
-        <translation></translation>
+        <translation>Voie chat</translation>
     </message>
     <message>
         <source>Test GSM Encoding</source>
-        <translation type="unfinished"></translation>
+        <translation>Test encodage GSM</translation>
     </message>
 </context>
 <context>
@@ -45,19 +45,20 @@
     </message>
     <message>
         <source>Opening DSP Encoder failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouverture encodeur DSP a échoué.</translation>
     </message>
     <message>
         <source>Opening sound device failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouverture dispositif son a échoué.</translation>
     </message>
     <message>
         <source>Testing GSM Encoding. Please talk now (3 seconds).</source>
-        <translation type="unfinished"></translation>
+        <translation>Codage de Test de GM/M. S&apos;il vous plaît entretien maintenant (3
+secondes).</translation>
     </message>
     <message>
         <source>You should hear your recorded sample now.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous devriez entendre votre échantillon enregistré maintenant.</translation>
     </message>
 </context>
 </TS>

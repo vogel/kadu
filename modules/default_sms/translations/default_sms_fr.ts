@@ -58,11 +58,11 @@
     </message>
     <message>
         <source>Wrong receiver address</source>
-        <translation type="unfinished"></translation>
+        <translation>Adresse de receveur non correct</translation>
     </message>
     <message>
         <source>Unknown error (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur inconnu (%1)</translation>
     </message>
 </context>
 <context>
@@ -70,7 +70,7 @@
     <message>
         <source>Provider gateway page looks strange. It&apos;s probably temporary disabled
 or has beed changed too much to parse it correctly.</source>
-        <translation>Le portail de fournisseur SMS indiqué est inaccessible.(nouvelle ligne)
+        <translation>Le portail de fournisseur SMS indiqué est inaccessible
 Probablement elle est inactive ou le fournisseur a changé le principe d&apos;access.
 </translation>
     </message>
@@ -96,8 +96,8 @@ Probablement elle est inactive ou le fournisseur a changé le principe d&apos;ac
     <message>
         <source>Provider gateway page looks strange. It&apos;s probably temporary disabled
 or has beed changed too much to parse it correctly.</source>
-        <translation>Le portail SMS est inaccessible en ce moment.
-Probablement la  ligne est non activée ou le principe d&apos;access a changé.
+        <translation>La page du Portail de fournisseur semble étrange.Probablement il s&apos;agit d&apos;une ligne provisoire 
+ou il est impossible de l&apos;analyser correctement.
 </translation>
     </message>
     <message>

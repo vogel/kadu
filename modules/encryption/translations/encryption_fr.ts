@@ -11,7 +11,7 @@
     </message>
     <message>
         <source>Keys length</source>
-        <translation>Longeur du clef</translation>
+        <translation>Longeur de la clef</translation>
     </message>
     <message>
         <source>Generate keys</source>
@@ -42,7 +42,7 @@
     </message>
     <message>
         <source>Error generating keys</source>
-        <translation>Erreur en cours de génération du clef</translation>
+        <translation>Erreur en cours de génération de la clef</translation>
     </message>
     <message>
         <source>OK</source>
@@ -66,7 +66,7 @@
     </message>
     <message>
         <source>Cannot encrypt message. sim_message_encrypt returned: &quot;%1&quot; (sim_errno=%2)</source>
-        <translation>Ne peut pas cripter le sim_message_encrypt message revient :&quot;%1&quot; (sim_errno=%2)</translation>
+        <translation>Ne peut pas cripter le. sim_message_encrypt message revient :&quot;%1&quot; (sim_errno=%2)</translation>
     </message>
 </context>
 <context>
@@ -77,7 +77,7 @@
     </message>
     <message>
         <source>User %1 is sending you his public key. Do you want to save it?</source>
-        <translation>L&apos;Utilisateur est en train d&apos;expedier sa clé public %1 Il vous a envoyé la clé public. Voulez vous l&apos;enregistrer?</translation>
+        <translation>L&apos;Utilisateur est en train d&apos;expedier sa clé public %1.Voulez vous l&apos;enregistrer?</translation>
     </message>
     <message>
         <source>Yes</source>
@@ -93,7 +93,7 @@
     </message>
     <message>
         <source>Error writting the key</source>
-        <translation>Erreur de criptage du clé</translation>
+        <translation>Erreur de criptage de la clé</translation>
     </message>
     <message>
         <source>OK</source>

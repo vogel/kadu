@@ -57,7 +57,8 @@
     <message>
         <source>This option will supersede tooltips with users&apos; status
  changes upon establishing connection to the server</source>
-        <translation>Cette option desactivera l&apos;apparition des fumées lors de la première  connexion de Kadu avec le serveur
+        <translation>Cette option desactivera l&apos;apparition des fumées 
+lors de la première  connexion de Kadu avec le serveur
 </translation>
     </message>
     <message>
@@ -70,7 +71,7 @@
     </message>
     <message>
         <source>User changed status to &quot;Invisible&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilisateur a changé le statut en &quot;Invisible&quot;</translation>
     </message>
 </context>
 </TS>

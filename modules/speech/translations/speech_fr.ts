@@ -87,7 +87,7 @@
     </message>
     <message>
         <source>Maximum number of spoken letters</source>
-        <translation>Le nombre maximum de lettres écrites</translation>
+        <translation>Le nombre maximum de lettres prononcées</translation>
     </message>
     <message>
         <source>Message too long (male):</source>
@@ -102,11 +102,11 @@
     <name>SpeechSlots</name>
     <message>
         <source>man %a changed status to %s %d</source>
-        <translation>%a changé le statut en %s %d</translation>
+        <translation>homme%a changé le statut en %s %d</translation>
     </message>
     <message>
         <source>woman %a changed status to %s %d</source>
-        <translation>%a changé le statut en %s %d</translation>
+        <translation>femme%a changé le statut en %s %d</translation>
     </message>
     <message>
         <source>Connection error - %1</source>
@@ -118,7 +118,7 @@
     </message>
     <message>
         <source>woman %a wrote %1</source>
-        <translation>femme% a écrit %1</translation>
+        <translation>femme%a écrit %1</translation>
     </message>
     <message>
         <source>%a wrote long message</source>

@@ -7,15 +7,15 @@
     </message>
     <message>
         <source>Enable autoaway</source>
-        <translation>Statut automatique &quot;je reviens bientôt&quot;</translation>
+        <translation>Statut automatique </translation>
     </message>
     <message>
         <source>Set status to away after </source>
-        <translation>Change mot de passe après </translation>
+        <translation>Definition de statut après </translation>
     </message>
     <message>
         <source>Check idle every </source>
-        <translation>Test d&apos;inactivité chaque </translation>
+        <translation>Test inactive chaque </translation>
     </message>
     <message>
         <source>Enable autoinvisible</source>
@@ -43,7 +43,7 @@
     </message>
     <message>
         <source>Auto change status</source>
-        <translation>Change en description</translation>
+        <translation>Change statut en auto</translation>
     </message>
     <message>
         <source>AutoStatus Description</source>
@@ -66,7 +66,7 @@
     </message>
     <message>
         <source>Add at the back of description</source>
-        <translation>Ajout en fin de descritption</translation>
+        <translation>Ajout en fin de description</translation>
     </message>
 </context>
 </TS>
