@@ -62,8 +62,6 @@ class Kadu : public QMainWindow
 	Q_OBJECT
 
 	private:
-		QFrame* centralFrame;
-		QGridLayout* grid;
 		QTextBrowser* descrtb;
 		QMenuBar* MenuBar;
 		QPopupMenu* MainMenu;

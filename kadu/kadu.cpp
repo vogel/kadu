@@ -390,11 +390,10 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name), updat
 	if (config_file.readBoolEntry("General", "UseDocking"))
 		trayicon->changeIcon();
 	
-	QVBoxLayout *layout = new QVBoxLayout(this);
-	layout->setAutoAdd(true);
+	QVBox *vbox=new QVBox(this);
+	setCentralWidget(vbox);
 
-	QSplitter *split = new QSplitter(Qt::Vertical, this);
-	setCentralWidget(split);
+	QSplitter *split = new QSplitter(Qt::Vertical, vbox);
 
 	QHBox *hbox1 = new QHBox(split);
 
@@ -497,7 +496,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name), updat
 		descrtb->hide();
 	QObject::connect(&userlist, SIGNAL(dnsNameReady(uin_t)), this, SLOT(infopanelUpdate(uin_t)));
 
-	statusbutton = new QPushButton(QIconSet(icons_manager.loadIcon("Offline")), tr("Offline"), this, "statusbutton");
+	statusbutton = new QPushButton(QIconSet(icons_manager.loadIcon("Offline")), tr("Offline"), vbox, "statusbutton");
 	statusbutton->setPopup(statusppm);
 	
 	if (!config_file.readBoolEntry("Look", "ShowStatusButton"))
@@ -629,10 +628,10 @@ void Kadu::viewHistory() {
 	if (activeUserBox==NULL)
 		return;
 	UinsList uins= activeUserBox->getSelectedUins();
-		if (uins.count()) {
-			History *hb = new History(uins);
-			hb->show();
-		}
+	if (uins.count()) {
+		History *hb = new History(uins);
+		hb->show();
+	}
 }
 
 void Kadu::sendFile()

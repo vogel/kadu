@@ -259,6 +259,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * modu³y arts_sound, nas_sound, dsp_sound, esd_sound wykluczaj± siê nazwzajem (joi)
 * zabezpieczenie przed zapêtleniem siê modu³ów echo i autoresponder (mkey/joi)
 * usuniêty drobny wyciek pamiêci w module sound (joi)
+* usuniêty b³±d w layoucie g³ównego okna (ostrze¿enia od Qt w trakcie dzia³ania) (joi)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
