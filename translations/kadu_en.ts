@@ -1540,6 +1540,10 @@ Check your internet connection.</source>
         <source>Private</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&amp;Manage Modules</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>KaduSlots</name>

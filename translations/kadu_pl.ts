@@ -1549,6 +1549,10 @@ Sprawdź swoje połączenie internetowe.</translation>
         <source>&amp;Change password/email</source>
         <translation>&amp;Zmień hasło/email</translation>
     </message>
+    <message>
+        <source>&amp;Manage Modules</source>
+        <translation>&amp;Menadżer Modułów</translation>
+    </message>
 </context>
 <context>
     <name>KaduSlots</name>
@@ -1855,10 +1859,6 @@ Teraz możesz dodać znajomych do listy kontaktów.</translation>
     <message>
         <source>Select user first</source>
         <translation>Zaznacz użytkownika</translation>
-    </message>
-    <message>
-        <source> </source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

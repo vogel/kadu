@@ -1549,6 +1549,10 @@ Check your internet connection.</source>
         <source>&amp;Change password/email</source>
         <translation>Passwort/Email &amp;ändern</translation>
     </message>
+    <message>
+        <source>&amp;Manage Modules</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>KaduSlots</name>
@@ -1857,7 +1861,7 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
         <translation>Markiere zuerst Benutzer</translation>
     </message>
     <message>
-        <source></source>
+        <source> </source>
         <translation type="unfinished"></translation>
     </message>
 </context>

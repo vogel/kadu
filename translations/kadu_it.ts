@@ -1549,6 +1549,10 @@ Controllare connessione a Internet.</translation>
         <source>&amp;Change password/email</source>
         <translation>&amp;Cambia la password/email</translation>
     </message>
+    <message>
+        <source>&amp;Manage Modules</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>KaduSlots</name>
