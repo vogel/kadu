@@ -113,8 +113,10 @@ void EventManager::connectedSlot()
 	gadu->sendUserList();
 	kadu->setCurrentStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
 	userlist_sent = true;
-	if (ifStatusWithDescription(loginparams.status))
-		kadu->setStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
+
+//	if (ifStatusWithDescription(loginparams.status))
+//		kadu->setStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
+
 	/* uruchamiamy autoawaya(jezeli wlaczony) po wyslaniu userlisty i ustawieniu statusu */
 	if (config_file.readBoolEntry("General","AutoAway"))
 		AutoAwayTimer::on();
