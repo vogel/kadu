@@ -1,12 +1,12 @@
 +++ wersja 0.3.3-rc2
 * sporo poprawek dla FreeBSD
-* gdy mamy status domy¶lny "niedostêpny" to nie ginie nam zapamiêtany opis statusu
-* okno rozmowy: PAGEUP i PAGEDOWN nie przesuwaj± historii rozmowy
+* gdy mamy status domy¶lny "niedostêpny" to nie ginie nam zapamiêtany opis statusu (chilek)
+* okno rozmowy: PAGEUP i PAGEDOWN nie przesuwaj± historii rozmowy (chilek)
 * je¶li okno wyboru statusu jest otwarte to klikniêcie informacji o statusie
-  zamyka to okno
-* Geometry w kadu.conf zgodne z wersjami kadu wcze¶niejszymi ni¿ 0.3.3-rc1
+  zamyka to okno (chilek)
+* Geometry w kadu.conf zgodne z wersjami kadu wcze¶niejszymi ni¿ 0.3.3-rc1 (chilek)
 * okno rozmowy: poprawione podpowiedzi (hinty) do guzika w³±czaj±cego/wy³±czaj±cego
-  szyfrowanie
+  szyfrowanie (chilek)
 * byæ mo¿e rozwi±zanie problemu z t³em ikonki w tray'u
 * ESC w glownym oknie je minimalizuje
 * Wsparcie dla Window Maker'a (dokowanie). Trzeba ustawic UseWMakerStyleDocking
@@ -20,56 +20,56 @@
 * informacja o dostêpno¶ci przez hinta w tray'u i wy¶wietlanie niektórych
   b³êdów podczas próby ³±czenia siê + poprawki
 * kadu nie wywala siê, gdy s± problemy z odczytaniem informacji o dostêpno¶ci
-  nowych wersji
+  nowych wersji (chilek)
 * drobne porz±dki z polem statusu (powinno zmniejszaæ siê przy zmianie rozmiaru
-  okna kadu)
-* wyrzucony pusty pasek pod menu
+  okna kadu) (chilek)
+* wyrzucony pusty pasek pod menu (chilek)
 
 +++ wersja 0.3.3-rc1
-* sms.cpp ma szansê kompilowaæ siê na Qt < 3.0.5
-* przy odebraniu b³êdnej wiadomo¶ci dcc ctcp nie powinno wywalaæ siê
-* czeski b³±d powodowa³, ¿e mesgi mog³y nie wpadaæ do okna rozmowy
+* sms.cpp ma szansê kompilowaæ siê na Qt < 3.0.5 (chilek)
+* przy odebraniu b³êdnej wiadomo¶ci dcc ctcp nie powinno wywalaæ siê (chilek)
+* czeski b³±d powodowa³, ¿e mesgi mog³y nie wpadaæ do okna rozmowy (chilek)
 * okna dialogowe z powiadomieniami o zmianie statusu u¿ytkowników
-  nie powinny wywalaæ kadu
+  nie powinny wywalaæ kadu (chilek)
 * wci¶niêcie klawisza escape zamyka okno rozmowy
-* locales jest obs³ugiwane bez po¶rednictwa KDE
-* obs³uga pliku konfiguracyjnego kadu.conf bez po¶rednictwa KDE
-* kadu nie u¿ywa klas KDE do obs³ugi ikon
+* locales jest obs³ugiwane bez po¶rednictwa KDE (chilek)
+* obs³uga pliku konfiguracyjnego kadu.conf bez po¶rednictwa KDE (chilek)
+* kadu nie u¿ywa klas KDE do obs³ugi ikon (chilek)
 * TrayIcon jest oddzieln± klas± w której mo¿na zrobiæ obs³ugê ikon z
-  ró¿nych mened¿erów okien
-* mo¿liwo¶æ w³±czenia/wy³±czenia TrayIcon w trakcie dzia³ania programu
+  ró¿nych mened¿erów okien (chilek)
+* mo¿liwo¶æ w³±czenia/wy³±czenia TrayIcon w trakcie dzia³ania programu (chilek)
 * obs³uga dokowania (TrayIcon) bez po¶rednictwa KDE. Powinno dzia³aæ
   miêdzy innymi pod GNOME
 * okno informacji o u¿ytkowniku: zmiana pola "Wy¶wietl" aktualizuje
-  okna rozmów które maj± w tytule star± nazwê u¿ytkownika
+  okna rozmów które maj± w tytule star± nazwê u¿ytkownika (chilek)
 * okno wyboru statusu (pojawiaj±ce siê po klikniêciu pola z naszym
-  statusem) zawsze pokazuje siê we w³a¶ciwym miejscu
-* g³ówne okno programu mo¿na zmniejszaæ dowolnie po prze³adowaniu kadu
+  statusem) zawsze pokazuje siê we w³a¶ciwym miejscu (chilek)
+* g³ówne okno programu mo¿na zmniejszaæ dowolnie po prze³adowaniu kadu (chilek)
 * okno konfiguracji: mo¿na testowaæ d¼wiêki po zmianie programu do
   ich odgrywania
 
 +++ wersja 0.3.3-pre5
-* wszystkie? wiadomo¶ci od u¿ytkowników powinny wpadaæ do okna rozmowy
+* wszystkie? wiadomo¶ci od u¿ytkowników powinny wpadaæ do okna rozmowy (chilek)
 * je¶li nie mamy po³±czenia z internetem, a tym samym gg_login() zwróci NULL
-  to kadu nie wywala siê?
-* mo¿na dodawaæ wielu u¿ytkowników, którzy nie maj± swojego uina
+  to kadu nie wywala siê? (chilek)
+* mo¿na dodawaæ wielu u¿ytkowników, którzy nie maj± swojego uina (chilek)
 * dodane czyszczenie listy u¿ytkowników w oknie importu, gdy importujemy listê
   u¿ytkowników z pliku
-* mo¿liwo¶æ usuniêcia z listy wielu u¿ytkowników na raz
+* mo¿liwo¶æ usuniêcia z listy wielu u¿ytkowników na raz (chilek)
 * okno dodawania u¿ytkownika: nie mo¿na dodaæ do listy u¿ytkownika, który
-  ma puste pole "altnick"
+  ma puste pole "altnick" (chilek)
 * emotikony: kadu nie zapêtla siê jesli mamy ustawiony nie istniej±cy juz zestaw
 * okno rozmowy: mo¿liwo¶æ zmieniania proporcji pomiêdzy widokiem historii rozmowy,
-  a reszt± okna
+  a reszt± okna (chilek)
 * sms: znowu powinny dzia³aæ era i plus (standardowo przez zewnêtrzny
   program kadusms).
 * szyfrowanie: odbierania klucza publicznego nie powoduje padów aplikacji, a ponadto
   zatwierdzenie jego zapisania powoduje uaktywnienie guzika "encryption" w rozmowie
   prowadzonej z osob±, która do nas przys³a³a swój klucz publiczny
 * powiadamianie d¼wiêkiem o zmianie statusu kontaktów nastêpuje tylko wtedy, gdy
-  czas jaki min±³ od ostatniego takiego zdarzenia przekracza 500ms
+  czas jaki min±³ od ostatniego takiego zdarzenia przekracza 500ms (chilek)
 * okno rozmowy: SHIFT+PageUp, PageUp - przesuwaj± historiê rozmowy do góry,
-  SHIFT+PageDown, PageDown - przesuwaj± historiê rozmowy do do³u
+  SHIFT+PageDown, PageDown - przesuwaj± historiê rozmowy do do³u (chilek)
 * sms: wysy³anie smsów wewnêtrznym mechanizmem kadu (z ew. wy¶wietlaniem
   obrazka ze strony sms.idea.pl). Program SMS Miko³aja Rydzewskiego
   zosta³ usuniêty ze ¼róde³
@@ -238,9 +238,9 @@
 * czê¶ciowe uporz±dkowanie kodu
 * przesy³anie plików (DCC)
 * sporo drobiazgów
-* zmiany w metodach eventGot... (Chilek)
-* dodanie obs³ugi w³asnego opisowego (Chilek)
-* mo¿liwo¶æ wyboru statusu (tylko dla znajomych) (Chilek)
+* zmiany w metodach eventGot... (chilek)
+* dodanie obs³ugi w³asnego opisowego (chilek)
+* mo¿liwo¶æ wyboru statusu (tylko dla znajomych) (chilek)
 
 +++ wersja 0.3.0 :: 05/06/2002
 * domy¶lnie status tylko-dla-znajomych
