@@ -2430,7 +2430,7 @@ void KaduTextBrowser::setParagraphSeparators(bool enabled, int width)
 {
 	ParagraphSeparators = enabled;
 	if (width==-1)
-		width=4;
+		width=config_file.readNumEntry("General", "ParagraphSeparator");
 	
 	separatorWidth=width;
 	if (enabled)

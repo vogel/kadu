@@ -287,7 +287,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		"If set: chat, history windows and information panel are rendered\n"
 		"using HTML paragraphs instead of tables - this improves refresh\n"
 		"speed and text copying but has a couple of display problems"));
-
+	config_file.addVariable("General", "ParagraphSeparator", 4);
+	
 	ConfigDialog::addVGroupBox("General", "General", "Status");
 	ConfigDialog::addComboBox("General", "Status", QT_TRANSLATE_NOOP("@default", "Default status"), "", "cb_defstatus");
 	ConfigDialog::addHBox("General", "Status", "discstatus");
