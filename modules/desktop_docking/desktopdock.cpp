@@ -5,7 +5,6 @@
  *  (at your option) any later version.
  */
 #include <qbitmap.h>
-#include <qcheckbox.h>
 #include <qtooltip.h>
 
 #include "desktopdock.h"
@@ -13,7 +12,12 @@
 #include "config_dialog.h"
 #include "../docking/docking.h"
 #include "debug.h"
+#include "kadu.h"
 
+int menuPos;
+int separatorPos;
+bool isMoving = false;
+		
 extern "C" int desktop_docking_init()
 {
 	kdebugf();
@@ -46,13 +50,20 @@ DesktopDockWindow::DesktopDockWindow(QWidget *parent, const char *name)
 
 	ConfigDialog::addTab("Desktop Dock", "DesktopDockTab");
 	ConfigDialog::addVBox("Desktop Dock", "Desktop Dock", "MainDesktop");
-	ConfigDialog::addSpinBox("Desktop Dock", "MainDesktop", QT_TRANSLATE_NOOP("@default", "Horizontal position"), "PositionX", 0, fullDesktop->width()-DesktopDockPixmap.size().width(), 1, 0,
+	ConfigDialog::addSpinBox("Desktop Dock", "MainDesktop", QT_TRANSLATE_NOOP("@default", "Horizontal position"), "PositionX", 0, fullDesktop->width() - DesktopDockPixmap.size().width(), 1, 0,
         QT_TRANSLATE_NOOP("@default", "Put the position in pixels"));
-	ConfigDialog::addSpinBox("Desktop Dock", "MainDesktop", QT_TRANSLATE_NOOP("@default", "Vertical position"), "PositionY", 0, fullDesktop->height()-DesktopDockPixmap.size().height(), 1, 0,
+	ConfigDialog::addSpinBox("Desktop Dock", "MainDesktop", QT_TRANSLATE_NOOP("@default", "Vertical position"), "PositionY", 0, fullDesktop->height() - DesktopDockPixmap.size().height(), 1, 0,
         QT_TRANSLATE_NOOP("@default", "Put the position in pixels"));
 	ConfigDialog::addHBox("Desktop Dock", "Desktop Dock", "Colors");
-	ConfigDialog::addColorButton( "Desktop Dock", "Colors", "Background color", "DockingColor", QColor("black"));
+	ConfigDialog::addColorButton( "Desktop Dock", "Colors", QT_TRANSLATE_NOOP("@default", "Background color"), "DockingColor", QColor("black"));
 	ConfigDialog::addCheckBox("Desktop Dock", "Colors", QT_TRANSLATE_NOOP("@default", "Transparent"), "DockingTransparency", false);
+	
+	ConfigDialog::addCheckBox("Desktop Dock", "Desktop Dock", QT_TRANSLATE_NOOP("@default", "Enable Move entry in docklet's menu"), "MoveInMenu", true);
+	ConfigDialog::connectSlot("Desktop Dock", "Enable Move entry in docklet's menu", SIGNAL(toggled(bool)), this, SLOT(updateMenu(bool)));
+	
+	ConfigDialog::addPushButton("Desktop Dock", "Desktop Dock", QT_TRANSLATE_NOOP("@default", "Move"), "", QT_TRANSLATE_NOOP("@default", "Enable icon moving on desktop. After pressing move cursor over docking icon and then move. Press any mouse key when the icon is in right place."));
+	
+	ConfigDialog::connectSlot("Desktop Dock", "Move", SIGNAL(clicked()), this, SLOT(startMoving()));
 	
 	QPoint pos(config_file.readNumEntry("Desktop Dock", "PositionX"), config_file.readNumEntry("Desktop Dock", "PositionY")); /* wpisuje pozycje ikonki */ 
 	resize(DesktopDockPixmap.size());	/* ustawia rozmiar okna na taki jaki ma ikonka */
@@ -72,6 +83,15 @@ DesktopDockWindow::DesktopDockWindow(QWidget *parent, const char *name)
 	show();		/*wyswietla ikonke*/
 	docking_manager->setDocked(true);
 	setAutoMask(config_file.readBoolEntry("Desktop Dock", "DockingTransparency"));
+	
+	if (config_file.readBoolEntry("Desktop Dock", "MoveInMenu"))
+	{
+		separatorPos = dockMenu->insertSeparator();
+		menuPos = dockMenu->insertItem(tr("Move"), this, SLOT(startMoving()));
+	}
+	
+	kdebugmf(KDEBUG_INFO, "Move's ID is = %d\n", menuPos);
+	
 	kdebugf2();
 }
 
@@ -83,6 +103,7 @@ DesktopDockWindow::~DesktopDockWindow()
 	disconnect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap&)), this, SLOT(setPixmap(const QPixmap&)));
 	disconnect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
 
+	ConfigDialog::removeControl("Desktop Dock", "Move");
 	ConfigDialog::removeControl("Desktop Dock", "Horizontal position");
 	ConfigDialog::removeControl("Desktop Dock", "Vertical position");
 	ConfigDialog::removeControl("Desktop Dock", "Background color");
@@ -92,12 +113,31 @@ DesktopDockWindow::~DesktopDockWindow()
 	ConfigDialog::removeTab("Desktop Dock");	
 	
 	docking_manager->setDocked(false);
+	
+	if (config_file.readBoolEntry("Desktop Dock", "MoveInMenu"))
+	{
+		dockMenu->removeItem(menuPos);
+		dockMenu->removeItem(separatorPos);
+	}
+	
 	kdebugf2();
 }
 
 void DesktopDockWindow::mousePressEvent(QMouseEvent *ev)	/* przekazanie klikniecia mysza */
 {
-	docking_manager->trayMousePressEvent(ev);
+	if (!isMoving)
+		docking_manager->trayMousePressEvent(ev);
+	else 
+	{
+		droppedOnDesktop(QPoint(ev->globalPos().x() - width()/2, ev->globalPos().y() - height()/2));
+		isMoving = false;
+	}		
+}
+
+void DesktopDockWindow::mouseMoveEvent(QMouseEvent *ev)
+{
+	if (isMoving)
+		move(QPoint(ev->globalPos().x() - width()/2, ev->globalPos().y() - height()/2));
 }
 
 void DesktopDockWindow::ApplyConfig()		/* przy zapisie konfiguracji */
@@ -156,6 +196,44 @@ void DesktopDockWindow::enableColorButton(bool b)
 void DesktopDockWindow::updateMask()		/* to zalatwia automatyczne odswiezenie ikony - jak to dziala nie pytac (wazne ze dziala) */
 {
 	setMask(pixmap()->createHeuristicMask(false));
+}
+
+void DesktopDockWindow::droppedOnDesktop(const QPoint& pos) 	/* nacisniecie przycisku na ekranie - ustawienie ikonki i zapisanie ustawien */
+{	
+	move(pos);
+	update();
+	show();
+	QDesktopWidget *fullDesktop = QApplication::desktop();
+	
+	if (pos.x() > fullDesktop->width() - pixmap()->width())
+		config_file.writeEntry("Desktop Dock", "PositionX", fullDesktop->width() - pixmap()->width());
+	else
+		config_file.writeEntry("Desktop Dock", "PositionX", pos.x());
+	
+	if (pos.y() > fullDesktop->height() - pixmap()->height())
+		config_file.writeEntry("Desktop Dock", "PositionY", fullDesktop->height() - pixmap()->height());
+	else	
+		config_file.writeEntry("Desktop Dock", "PositionY", pos.y());
+}
+
+void DesktopDockWindow::startMoving()	/* rozpoczynamy wojaze po ekranie */
+{
+	isMoving = true;
+	
+}
+
+void DesktopDockWindow::updateMenu(bool b)
+{
+	if (b)
+	{	
+		separatorPos = dockMenu->insertSeparator();
+		menuPos = dockMenu->insertItem(tr("Move"), this, SLOT(startMoving()));
+	}
+	else
+	{
+		dockMenu->removeItem(menuPos);
+		dockMenu->removeItem(separatorPos);
+	}
 }
 
 DesktopDockWindow *desktop_dock_window;

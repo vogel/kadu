@@ -4,6 +4,8 @@
 #include <qpixmap.h>
 #include <qlabel.h>
 
+/* DesktopDockWindow - ikonka dokujaca */
+
 class DesktopDockWindow : public QLabel
 {	
 	Q_OBJECT
@@ -11,15 +13,19 @@ class DesktopDockWindow : public QLabel
 	public:
 		DesktopDockWindow(QWidget *parent=0, const char *name=0);
 		~DesktopDockWindow();
-		virtual void mousePressEvent(QMouseEvent *ev);
+		void mousePressEvent(QMouseEvent *);
+		void mouseMoveEvent(QMouseEvent *);
 		void updateMask();
 	private slots:
-		void setToolTip(const QString& statusText);
+		void setToolTip(const QString &statusText);
 		void ApplyConfig();
 		void onCreateConfigDialog();
-		void setPixmap(const QPixmap& DockPixmap);
-		void findTrayPosition(QPoint& DockPoint);
+		void setPixmap(const QPixmap &DockPixmap);
+		void findTrayPosition(QPoint &DockPoint);
 		void enableColorButton(bool b);
+		void droppedOnDesktop(const QPoint &);
+		void startMoving();
+		void updateMenu(bool);
 };
 
 extern DesktopDockWindow *desktop_dock_window;
