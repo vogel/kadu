@@ -128,6 +128,11 @@ UserList::~UserList()
 
 void UserList::addDnsLookup(UinType  uin, const QHostAddress &ip) {
 	kdebugf();
+	if (ip.isNull())
+	{
+		kdebugm(KDEBUG_FUNCTION_END, "UserList::addDnsLookup: No IP\n");
+		return;
+	}
 	DnsHandler *dnshandler;
 	dnshandler = dnslookups.first();
 	while (dnshandler) {
