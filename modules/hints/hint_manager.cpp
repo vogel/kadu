@@ -246,6 +246,39 @@ void HintManager::setHint(void)
 	kdebugf2();
 }
 
+void HintManager::recreateLayout()
+{
+#if QT_VERSION < 0x030100
+	QString text;
+	QPixmap pixmap;
+	QFont font;
+	QColor fgcolor, bgcolor;
+	unsigned int timeout;
+	QPtrList<Hint> copy;
+	for (QPtrList<Hint>::iterator it=hints.begin(); it!=hints.end(); it++)
+	{
+		(*it)->getData(text, pixmap, timeout, font, fgcolor, bgcolor);
+		
+		Hint *h=new Hint(this, text, pixmap, timeout);
+		h->set(font, fgcolor, bgcolor, (*it)->id());
+		h->setUins((*it)->getUins());
+
+		copy.append(h);
+	}
+	hints.clear();
+	delete grid;
+	grid = new QGridLayout(this, 0, 0, 1, 0, "grid");
+	grid->setResizeMode(QLayout::Fixed);
+
+	setGridOrigin();
+	for (QPtrList<Hint>::iterator it=copy.begin(); it!=copy.end(); it++)
+	{
+		(*it)->getData(text, pixmap, timeout, font, fgcolor, bgcolor);
+		addHint(text, pixmap, font, fgcolor, bgcolor, timeout, (*it)->getUins());
+	}
+#endif
+}
+
 void HintManager::deleteHint(unsigned int id)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "id=%d\n", id);
@@ -253,6 +286,9 @@ void HintManager::deleteHint(unsigned int id)
 	grid->removeItem(hints.at(id));
 #endif
 	hints.remove(id);
+#if QT_VERSION < 0x030100
+	recreateLayout();
+#endif
 	if (!hints.count())
 	{
 		hint_timer->stop();
@@ -347,6 +383,9 @@ void HintManager::deleteAllHints()
 		grid->removeItem(hints.at(i));
 #endif
 	hints.clear();
+#if QT_VERSION < 0x030100
+	recreateLayout();
+#endif
 	hide();
 	kdebugf2();
 }

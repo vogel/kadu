@@ -162,3 +162,17 @@ Hint::~Hint(void)
 	label->deleteLater();
 	kdebugf2();
 }
+
+void Hint::getData(QString &text, QPixmap &pixmap, unsigned int &timeout, QFont &font, QColor &fgcolor, QColor &bgcolor)
+{
+	text=label->text().replace(QRegExp(" "), "");
+	if (icon)
+		pixmap=*(icon->pixmap());
+	else
+		pixmap=QPixmap();
+	timeout=secs;
+	font=label->font();
+	fgcolor=label->paletteForegroundColor();
+	bgcolor=bcolor;
+}
+

@@ -39,6 +39,8 @@ class Hint : public QHBoxLayout
 			zwraca identyfikator dymka
 		**/
 		unsigned int id() const {return ident;}
+		
+		void getData(QString &text, QPixmap &pixmap, unsigned int &timeout, QFont &font, QColor &fgcolor, QColor &bgcolor);
 
 	protected:
 		/**
