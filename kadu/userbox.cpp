@@ -615,7 +615,7 @@ void UserBox::initModule()
 	QT_TRANSLATE_NOOP("@default", "Show avaliable in bold");
 	QT_TRANSLATE_NOOP("@default", "Display group tabs");
 	QT_TRANSLATE_NOOP("@default", "Multicolumn userbox");
-
+	QT_TRANSLATE_NOOP("@default", "Show status button");
 
 	ConfigDialog::addTab("Look");
 	ConfigDialog::addVGroupBox("Look","Look","Userbox properties");
