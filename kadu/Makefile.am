@@ -60,25 +60,21 @@ CLEANFILES = *_moc.cpp
 	$(QTMOCDIR)/moc -o $@ $<
 
 install-data-local:
-	if test ! -z "$(KDEDIR)"; then \
-		$(mkinstalldirs) "$(DESTDIR)/$(KDEDIR)/share/applnk/Internet/"; \
-		echo "[Desktop Entry]" > "$(DESTDIR)/$(KDEDIR)/share/applnk/Internet/kadu.desktop"; \
-		echo "Type=Application" >> "$(DESTDIR)/$(KDEDIR)/share/applnk/Internet/kadu.desktop"; \
-		echo "Exec=$(bindir)/kadu" >> "$(DESTDIR)/$(KDEDIR)/share/applnk/Internet/kadu.desktop"; \
-		echo "Icon=kadu.png" >> "$(DESTDIR)/$(KDEDIR)/share/applnk/Internet/kadu.desktop"; \
-		echo "MiniIcon=kadu.png" >> "$(DESTDIR)/$(KDEDIR)/share/applnk/Internet/kadu.desktop"; \
-		echo "Terminal=0" >> "$(DESTDIR)/$(KDEDIR)/share/applnk/Internet/kadu.desktop"; \
-		echo "Name=Kadu" >> "$(DESTDIR)/$(KDEDIR)/share/applnk/Internet/kadu.desktop"; \
-		$(mkinstalldirs) "$(DESTDIR)/$(KDEDIR)/share/icons/hicolor/48x48/apps/"; \
-		$(INSTALL_DATA) hi48-app-kadu.png "$(DESTDIR)/$(KDEDIR)/share/icons/hicolor/48x48/apps/kadu.png"; \
-		$(mkinstalldirs) "$(DESTDIR)/$(KDEDIR)/share/icons/hicolor/32x32/apps/"; \
-		$(INSTALL_DATA) hi32-app-kadu.png "$(DESTDIR)/$(KDEDIR)/share/icons/hicolor/32x32/apps/kadu.png"; \
-		$(mkinstalldirs) "$(DESTDIR)/$(KDEDIR)/share/icons/hicolor/16x16/apps/"; \
-		$(INSTALL_DATA) hi16-app-kadu.png "$(DESTDIR)/$(KDEDIR)/share/icons/hicolor/16x16/apps/kadu.png"; \
-	fi;
+		$(mkinstalldirs) "$(DESTDIR)/usr/share/applnk/Internet/";
+		echo "[Desktop Entry]" > "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop";
+		echo "Type=Application" >> "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop";
+		echo "Exec=$(bindir)/kadu" >> "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop";
+		echo "Icon=kadu.png" >> "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop";
+		echo "MiniIcon=kadu_mini.png" >> "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop";
+		echo "Terminal=0" >> "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop";
+		echo "Name=Kadu" >> "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop";
+		$(mkinstalldirs) "$(DESTDIR)/usr/share/pixmaps/";
+		$(INSTALL_DATA) hi48-app-kadu.png "$(DESTDIR)/usr/share/pixmaps/kadu_big.png";
+		$(INSTALL_DATA) hi32-app-kadu.png "$(DESTDIR)/usr/share/pixmaps/kadu.png";
+		$(INSTALL_DATA) hi16-app-kadu.png "$(DESTDIR)/usr/share/pixmaps/kadu_mini.png";
 
 uninstall-local:
-	rm -f "$(DESTDIR)/$(KDEDIR)/share/applnk/Internet/kadu.desktop"
-	rm -f "$(DESTDIR)/$(KDEDIR)/share/icons/hicolor/48x48/apps/kadu.png"
-	rm -f "$(DESTDIR)/$(KDEDIR)/share/icons/hicolor/32x32/apps/kadu.png"
-	rm -f "$(DESTDIR)/$(KDEDIR)/share/icons/hicolor/16x16/apps/kadu.png"
+	rm -f "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop"
+	rm -f "$(DESTDIR)/usr/share/pixmaps/kadu_big.png"
+	rm -f "$(DESTDIR)/usr/share/pixmaps/kadu.png"
+	rm -f "$(DESTDIR)/usr/share/pixmaps/kadu_mini.png"
