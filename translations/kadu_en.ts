@@ -398,10 +398,6 @@ Arguments should be separated with spaces. %n argument is converted to number, %
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Notify of new message in inactive chat window</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Notify of new chat</source>
         <translation type="unfinished"></translation>
     </message>
@@ -443,6 +439,10 @@ Arguments should be separated with spaces. %n argument is converted to number, %
     </message>
     <message>
         <source>Hint syntax</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify of new message</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -398,10 +398,6 @@ Zaznacz i wpisz w to pole poprawny ciąg. Argumenty oddziel spacjami. Argument %
         <translation>Pokaż błędy połączeń w dymkach</translation>
     </message>
     <message>
-        <source>Notify of new message in inactive chat window</source>
-        <translation>Powiadom o wiadomości gdy okno nieaktywne</translation>
-    </message>
-    <message>
         <source>Notify of new chat</source>
         <translation>Powiadom o nowej rozmowie</translation>
     </message>
@@ -444,6 +440,10 @@ Zaznacz i wpisz w to pole poprawny ciąg. Argumenty oddziel spacjami. Argument %
     <message>
         <source>Hint syntax</source>
         <translation>Składnia dymku</translation>
+    </message>
+    <message>
+        <source>Notify of new message</source>
+        <translation type="unfinished">Powiadom o nowej wiadomości</translation>
     </message>
 </context>
 <context>
