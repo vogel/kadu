@@ -120,8 +120,13 @@ install-data-local: uninstall-local
 			$(INSTALL_DATA) $$dir/translations/*.qm "$(DESTDIR)/$(datadir)/kadu/modules/translations/"; \
 		fi; \
 		if test -d $$dir/data; then \
-			$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/modules/data/$$dir"; \
-			cp -r $$dir/data/* "$(DESTDIR)/$(datadir)/kadu/modules/data/$$dir"; \
+			for new_dir in `find $$dir/data -type d | grep -v /CVS | grep -v /.svn`; do \
+				$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/modules/data/$$new_dir"; \
+				for new_file in `find $$new_dir -type f -maxdepth 1 | sed "s/ /_SPACE_/g"`; do \
+					new_file=`echo "$$new_file" | sed "s/_SPACE_/ /g"`; \
+					$(INSTALL_DATA) "$$new_file" "$(DESTDIR)/$(datadir)/kadu/modules/data/$$new_dir"; \
+				done; \
+			done; \
 		fi; \
 		if test -z `expr " $(static_modules) " : ".* \($$dir\) "`; then \
 			$(INSTALL_DATA) $$dir/$$dir.so "$(DESTDIR)/$(datadir)/kadu/modules/"; \
