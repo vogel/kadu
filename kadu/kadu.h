@@ -37,18 +37,12 @@
 
 #include "userlist.h"
 #include "userbox.h"
+#include "pending_msgs.h"
 #include "misc.h"
 
 #define GG_STATUS_INVISIBLE2 0x0009 /* g³upy... */
 
 #define __c2q(__char_pointer__) QString::fromLocal8Bit(__char_pointer__)
-
-struct pending {
-    UinsList uins;
-    QString *msg;
-    int msgclass;
-    time_t time;
-};
 
 struct colors {
     int userboxBgR;
@@ -281,7 +275,7 @@ extern struct config config;
 extern QValueList<struct chats> chats;
 extern UserList userlist;
 extern QArray<uin_t> ignored;
-extern QValueList<struct pending> pending;
+extern PendingMsgs pending;
 extern QArray<groups> grouplist;
 extern DockWidget *dw;
 extern bool mute;
