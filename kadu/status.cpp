@@ -9,6 +9,7 @@
 
 #include "status.h"
 #include "gadu.h"
+#include "debug.h"
 #include <qobject.h>
 
 QString gg_icons[] = {"Online", "OnlineWithDescription", "Busy", "BusyWithDescription", "Invisible", "InvisibleWithDescription",
@@ -49,12 +50,20 @@ bool isAvailableStatus(unsigned int status)
 }
 
 int statusGGToStatusNr(int status) {
+	kdebugm(KDEBUG_FUNCTION_START, "int statusGGToStatusNr(%d)\n", status);
 	int i = 0;
 	if (status == GG_STATUS_INVISIBLE2)
+	{
+		kdebugm(KDEBUG_FUNCTION_END, "int statusGGToStatusNr() end: return 4\n");
 		return 4;
+	}
 	while (i < 9 && gg_statuses[i] != status)
 		i++;
 	if (i < 9)
+	{
+		kdebugm(KDEBUG_FUNCTION_END, "int statusGGToStatusNr() end: return %d\n", i);
 		return i;
+	}
+	kdebugm(KDEBUG_FUNCTION_END|KDEBUG_PANIC, "int statusGGToStatusNr() end: PANIC! i==9\n");
 	return -1;
 }

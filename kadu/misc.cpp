@@ -1074,6 +1074,7 @@ void ChooseDescription::updateYetLen(const QString& text) {
 IconsManager::IconsManager(const QString& name, const QString& configname)
 	:Themes(name, configname, "icons_manager")
 {
+	kdebugf();
     connect(this, SIGNAL(themeChanged(const QString&)), this, SLOT(changed(const QString&)));
 }
 
@@ -1089,15 +1090,20 @@ QString IconsManager::iconPath(const QString &name)
 
 QPixmap IconsManager::loadIcon(const QString &name)
 {
+//	kdebugf();
 	for (unsigned int i = 0; i < icons.count(); i++)
 		if (icons[i].name == name)
+		{
+//			kdebugf2();
 			return icons[i].picture.pixmap();
+		}
 	iconhandle icon;
 	icon.name = name;
 	QPixmap p;
 	p.load(iconPath(name));
 	icon.picture = QIconSet(p);
 	icons.append(icon);
+//	kdebugf2();
 	return icons[icons.count()-1].picture.pixmap();
 }
 
@@ -1168,6 +1174,7 @@ void IconsManager::initModule()
 
 void IconsManager::selectedPaths(const QStringList& paths)
 {
+	kdebugf();
 	setPaths(paths);
 	QComboBox* cb_icontheme = ConfigDialog::getComboBox("Look","Icon theme");
 	QString current = cb_icontheme->currentText();
@@ -1181,6 +1188,7 @@ void IconsManager::selectedPaths(const QStringList& paths)
 
 	if (paths.contains("default"))
 		cb_icontheme->changeItem(tr("Default"), paths.findIndex("default"));
+	kdebugf2();
 }
 
 void IconsManager::changed(const QString& theme)
@@ -1193,9 +1201,11 @@ IconsManager icons_manager("icons", "icons.conf");
 
 HttpClient::HttpClient()
 {
+	kdebugf();
 	connect(&Socket,SIGNAL(connected()),this,SLOT(onConnected()));
 	connect(&Socket,SIGNAL(readyRead()),this,SLOT(onReadyRead()));
 	connect(&Socket,SIGNAL(connectionClosed()),this,SLOT(onConnectionClosed()));
+	kdebugf2();
 }
 
 void HttpClient::onConnected()
@@ -2268,6 +2278,7 @@ ImageDialog::ImageDialog(QWidget* parent)
 KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
 	: QTextBrowser(parent, name),QToolTip(viewport()),level(0)
 {
+	kdebugf();
 	connect(this, SIGNAL(linkClicked(const QString&)), this, SLOT(hyperlinkClicked(const QString&)));
 	connect(this, SIGNAL(highlighted(const QString&)), this, SLOT(linkHighlighted(const QString &)));
 #if QT_VERSION >= 0x030100
@@ -2276,6 +2287,7 @@ KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
 	if (config_file.readBoolEntry("General", "ForceUseParagraphs") ||
 		((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") != EMOTS_NONE))
 		setTextFormat(Qt::RichText);
+	kdebugf2();
 }
 
 void KaduTextBrowser::maybeTip(const QPoint &c) {
@@ -2308,6 +2320,7 @@ QPopupMenu *KaduTextBrowser::createPopupMenu(const QPoint &point)
 	if (!anchor.isEmpty())
 		popupmenu->insertItem(tr("Copy link &location"), this, SLOT(copyLinkLocation()), CTRL+Key_L, -1, 0);
 
+	kdebugf2();
 	return popupmenu;
 }
 
