@@ -9,7 +9,7 @@
 #   Definicja domyślnych wartości dla zmiennych
 
 APP_NAME=KADU
-APP_VER=0.3.3-pre3
+APP_VER=0.3.3-rc1
 APP_DEF_DIR=/usr
 # $1 - nazwy katalogw, $2 - Wartości domyślne
 
