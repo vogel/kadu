@@ -28,7 +28,7 @@
 ("<piwo>"),"piwo.gif","piwo_na.gif"
 "<nie powiem>","nie_powiem.gif"
 *"<sex>","sex.gif"
-"<soczek>,"soczek.gif","soczek_na.gif"
+"<soczek>","soczek.gif","soczek_na.gif"
 (":*",":-*",";*",";-*","<cmok>"),"cmok.gif","cmok_na.gif"
 ("<ca³us>"),"calus.gif","calus_na.gif"
 ("<marzyciel>","oczy.gif"),"oczy_na.gif"
