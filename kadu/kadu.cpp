@@ -1559,6 +1559,7 @@ void Kadu::setStatus(int status) {
 		loginparams.server_port = 0;
 		if (config.default_servers)
 			loginparams.server_addr = 0;
+		loginparams.server_port = 443;
 		}
 	else
 		loginparams.server_port = config.default_port;
