@@ -20,7 +20,7 @@
 
 /** values below most probably need no alteration **/
 
-#define KADU_VERSION 0.3.1
+#define KADU_VERSION 0.3.2
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -61,58 +61,59 @@ struct colors {
 
 
 struct config {
-    uin_t uin;
-    char *password;
-    char *soundmsg;
-    char *soundchat;
-    char *soundprog;
-    double soundvol;
-    bool soundvolctrl;
-    bool playartsdsp;
-    bool playsound;
-    bool logmessages;
-    bool savegeometry;
-    bool playsoundchat;
-    bool playsoundchatinvisible;
-    int defaultstatus;
-    QString defaultdescription;
-    int sysmsgidx;
-    bool allowdcc;
-    char *dccip;
-    char *extip;
-    int extport;
-    char *server;
-    bool dock;
-    bool privatestatus;
-    QRect geometry;
-    
-    char * smsapp;
-    bool smscustomconf;
-    char * smsconf;
+	uin_t uin;
+	char *password;
+	char *soundmsg;
+	char *soundchat;
+	char *soundprog;
+	double soundvol;
+	bool soundvolctrl;
+	bool playartsdsp;
+	bool playsound;
+	bool logmessages;
+	bool savegeometry;
+	bool playsoundchat;
+	bool playsoundchatinvisible;
+	int defaultstatus;
+	QString defaultdescription;
+	int sysmsgidx;
+	bool allowdcc;
+	char *dccip;
+	char *extip;
+	int extport;
+	char *server;
+	bool dock;
+	bool privatestatus;
+	QRect geometry;
 
-    bool emoticons;
-    char *emoticonspath;
-    bool autosend;
-    bool scrolldown;
-    int chatprunelen;
-    bool chatprune;
+	char * smsapp;
+	bool smscustomconf;
+	char * smsconf;
 
-    bool autoaway;
-    int autoawaytime;
+	bool emoticons;
+	char *emoticonspath;
+	bool autosend;
+	bool scrolldown;
+	int chatprunelen;
+	bool chatprune;
+	bool msgacks;
 
-    QStringList notifies;
-    char *soundnotify;
-    bool notifyglobal;
-    bool notifydialog;
-    bool notifysound;
+	bool autoaway;
+	int autoawaytime;
 
-    bool useproxy;
-    char * proxyaddr;
-    unsigned short proxyport;
+	QStringList notifies;
+	char *soundnotify;
+	bool notifyglobal;
+	bool notifydialog;
+	bool notifysound;
 
-    bool raise;
+	bool useproxy;
+	char * proxyaddr;
+	unsigned short proxyport;
 
-    struct colors colors;
+	bool raise;
+
+	struct colors colors;
 };
 
 struct groups {

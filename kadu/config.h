@@ -71,7 +71,8 @@ class ConfigDialog : public QTabDialog	{
 		QLineEdit *e_emoticonspath;
 		QCheckBox *b_chatprune;
 		QLineEdit *e_chatprunelen;
-
+		QCheckBox *b_msgacks;
+		
 		QListBox *e_notifies;
 		QListBox *e_availusers;
 		QCheckBox *b_notifyglobal;

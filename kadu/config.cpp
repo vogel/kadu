@@ -92,7 +92,8 @@ void loadKaduConfig(void) {
 	config.emoticonspath = strdup(konf->readEntry("EmoticonsPath",""));
 	config.chatprune = konf->readBoolEntry("ChatPrune",false);
 	config.chatprunelen = konf->readNumEntry("ChatPruneLen",20);
-
+	config.msgacks = konf->readBoolEntry("MessageAcks", true);
+	
 	konf->setGroup("Notify");
 	config.soundnotify = strdup(konf->readEntry("NotifySound",""));
 	config.notifyglobal = konf->readBoolEntry("NotifyStatusChange",false);
@@ -164,7 +165,8 @@ void saveKaduConfig(void) {
 	konf->writeEntry("EmoticonsPath",config.emoticonspath);
 	konf->writeEntry("ChatPrune",config.chatprune);
 	konf->writeEntry("ChatPruneLen",config.chatprunelen);
-
+	konf->writeEntry("MessageAcks", config.msgacks);
+	
 	konf->setGroup("Proxy");
 	konf->writeEntry("UseProxy",config.useproxy);
 	konf->writeEntry("ProxyHost",config.proxyaddr);
@@ -447,7 +449,11 @@ void ConfigDialog::setupTab3(void) {
 	b_autosend->setText(i18n("\"Enter\" key in chat sends message by default"));
 	if (config.autosend)
 		b_autosend->setChecked(true);
-
+	
+	b_msgacks = new QCheckBox(box3);
+	b_msgacks->setText(i18n("Message acknowledgements"));
+	b_msgacks->setChecked(config.msgacks);
+	
 	addTab(box3, i18n("Chat"));
 }
 
@@ -707,7 +713,8 @@ void ConfigDialog::updateConfig(void) {
 	config.emoticonspath = strdup(e_emoticonspath->text().latin1());
 	config.chatprune = b_chatprune->isChecked();
 	config.chatprunelen = atoi(e_chatprunelen->text().latin1());
-
+	config.msgacks = b_msgacks->isChecked();
+	
 	free(config.soundnotify);
 	config.soundnotify = strdup(e_soundnotify->text().latin1());
 	config.notifyglobal = b_notifyglobal->isChecked();

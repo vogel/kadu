@@ -53,6 +53,11 @@ Chat::Chat(UinsList uins, QDialog *parent) : QDialog (parent), uins(uins) {
 	if (uins.count() > 1) {
   	resize(550,400);
 		userbox = new UserBox(this);
+
+		userbox->setPaletteBackgroundColor(QColor(config.colors.userboxBgR,config.colors.userboxBgG,config.colors.userboxBgB));
+		userbox->setPaletteForegroundColor(QColor(config.colors.userboxFgR,config.colors.userboxFgG,config.colors.userboxFgB));
+		userbox->QListBox::setFont(QFont(config.colors.userboxFont, config.colors.userboxFontSize));
+
 		for (i = 0; i < uins.count(); i++)
 			userbox->addUin(uins[i]);
 		userbox->refresh();
@@ -377,7 +382,9 @@ void Chat::writeMyMessage() {
 	QString toadd;
 	QString editext = convertCharacters(edit->text());
 
-	toadd.append("<TABLE WIDTH=\"100%\"><TR><TD bgcolor=\"#E0E0E0\"><B>Me ");
+	toadd.append("<TABLE WIDTH=\"100%\"><TR><TD bgcolor=\"#E0E0E0\"><B>");
+	toadd.append(i18n("Me"));
+	toadd.append(" ");
 	toadd.append(__c2q(timestamp()));
 	toadd.append("</B><BR>");
 	toadd.append(editext);
@@ -413,6 +420,7 @@ void Chat::addMyMessageToHistory() {
 /* sends the message typed */
 void Chat::sendMessage(void) {
 	int i,j;
+	uin_t *users;
 
 	kadu->autoaway->stop();
 	kadu->autoaway->start(config.autoawaytime * 1000, TRUE);
@@ -423,9 +431,11 @@ void Chat::sendMessage(void) {
 	if (edit->length() >= 2000)
 		return;
 
-	edit->setReadOnly(true);	
-	edit->setEnabled(false);
-
+	if (config.msgacks) {
+		edit->setReadOnly(true);	
+		edit->setEnabled(false);
+		}
+		
 	QString text;
 	text = edit->text();
 	QCString tmp(text.local8Bit());
@@ -434,22 +444,37 @@ void Chat::sendMessage(void) {
 	addMyMessageToHistory();
 
 	iso_to_cp(utmp);
-	acks.resize(acks.size() + 1);
-	i = acks.size() - 1;
-	uin_t users[32];
-	if (uins.count() > 1) {
-		for (j = 0; j < uins.count(); j++)
-			users[j] = uins[j];
-		acks[i].seq = gg_send_message_to_users(&sess, GG_CLASS_CHAT,
-			uins.count(), users, (unsigned char *)utmp);    
-		acks[i].ack = uins.count();
+	
+	users = new (uin_t)[uins.count()];
+	if (config.msgacks) {
+		acks.resize(acks.size() + 1);
+		i = acks.size() - 1;
+		if (uins.count() > 1) {
+			for (j = 0; j < uins.count(); j++)
+				users[j] = uins[j];
+			acks[i].seq = gg_send_message_confer(&sess, GG_CLASS_CHAT,
+				uins.count(), users, (unsigned char *)utmp);    
+			acks[i].ack = uins.count();
+			}
+		else {
+			acks[i].seq = gg_send_message(&sess, GG_CLASS_CHAT, uins[0], (unsigned char *)utmp);
+			acks[i].ack = 1;
+			}
+		acks[i].type = 2;
+		acks[i].ptr = this;
 		}
 	else {
-		acks[i].seq = gg_send_message(&sess, GG_CLASS_CHAT, uins[0], (unsigned char *)utmp);
-		acks[i].ack = 1;
+		if (uins.count() > 1) {
+			for (j = 0; j < uins.count(); j++)
+				users[j] = uins[j];
+			gg_send_message_confer(&sess, GG_CLASS_CHAT,
+				uins.count(), users, (unsigned char *)utmp);    
+			}
+		else
+			gg_send_message(&sess, GG_CLASS_CHAT, uins[0], (unsigned char *)utmp);
+		writeMyMessage();	
 		}
-	acks[i].type = 2;
-	acks[i].ptr = this;
+	delete users;
 
 	if (sess.check & GG_CHECK_WRITE)
 		kadusnw->setEnabled(true);
