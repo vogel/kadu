@@ -107,6 +107,8 @@ SpeechSlots::SpeechSlots(QObject *parent, const char *name) : QObject(parent, na
 	ConfigDialog::addGrid("Speech", "Speech", "basefreq", 2);
 	ConfigDialog::addLabel("Speech", "basefreq", QT_TRANSLATE_NOOP("@default","Base frequency"));
 	ConfigDialog::addSlider("Speech", "basefreq", "slider3", "BaseFrequency", 60, 440, 10, 133);
+	ConfigDialog::addSpinBox("Speech", "Speech", QT_TRANSLATE_NOOP("@default",
+		"Maximum number of spoken letters"), "MaxLength", 10, 2001, 1, 200);
 
 	ConfigDialog::addCheckBox("Speech", "Speech", QT_TRANSLATE_NOOP("@default","Melody"), "Melody", true);
 	ConfigDialog::addCheckBox("Speech", "Speech", 
@@ -128,17 +130,17 @@ SpeechSlots::SpeechSlots(QObject *parent, const char *name) : QObject(parent, na
 	
 	ConfigDialog::addLineEdit("Speech", "Speech",
 			QT_TRANSLATE_NOOP("@default","Chat format (male):"),
-			"ChatFormatMale", SpeechSlots::tr("man %a said %1"), Kadu::SyntaxText);
+			"ChatFormatMale", SpeechSlots::tr("man %a wrote %1"), Kadu::SyntaxText);
 	ConfigDialog::addLineEdit("Speech", "Speech", 
 			QT_TRANSLATE_NOOP("@default","Chat format (female):"),
-			"ChatFormatFemale", SpeechSlots::tr("woman %a said %1"), Kadu::SyntaxText);
+			"ChatFormatFemale", SpeechSlots::tr("woman %a wrote %1"), Kadu::SyntaxText);
 
 	ConfigDialog::addLineEdit("Speech", "Speech", 
 			QT_TRANSLATE_NOOP("@default","Message format (male):"),
-			"MessageFormatMale", SpeechSlots::tr("man %a said %1"), Kadu::SyntaxText);
+			"MessageFormatMale", SpeechSlots::tr("man %a wrote %1"), Kadu::SyntaxText);
 	ConfigDialog::addLineEdit("Speech", "Speech", 
 			QT_TRANSLATE_NOOP("@default","Message format (female):"),
-			"MessageFormatFemale", SpeechSlots::tr("woman %a said %1"), Kadu::SyntaxText);
+			"MessageFormatFemale", SpeechSlots::tr("woman %a wrote %1"), Kadu::SyntaxText);
 
 	ConfigDialog::addLineEdit("Speech", "Speech", 
 			QT_TRANSLATE_NOOP("@default","Notify format (male):"),
@@ -150,6 +152,13 @@ SpeechSlots::SpeechSlots(QObject *parent, const char *name) : QObject(parent, na
 	ConfigDialog::addLineEdit("Speech", "Speech", 
 			QT_TRANSLATE_NOOP("@default","Connection error:"),
 			"ConnectionError", SpeechSlots::tr("Connection error - %1"), Kadu::SyntaxText);
+
+	ConfigDialog::addLineEdit("Speech", "Speech", 
+			QT_TRANSLATE_NOOP("@default","Message too long (male):"),
+			"MsgTooLongMale", SpeechSlots::tr("%a wrote long message"), Kadu::SyntaxText);
+	ConfigDialog::addLineEdit("Speech", "Speech", 
+			QT_TRANSLATE_NOOP("@default","Message too long (female):"),
+			"MsgTooLongFemale", SpeechSlots::tr("%a wrote long message"), Kadu::SyntaxText);
 	
 	ConfigDialog::addPushButton("Speech", "Speech",	QT_TRANSLATE_NOOP("@default","Test"), "", "", "testspeech");
 
@@ -197,6 +206,8 @@ SpeechSlots::~SpeechSlots()
 
 	ConfigDialog::removeControl("Speech", "Test", "testspeech");
 	ConfigDialog::removeControl("Speech", "Connection error:");
+	ConfigDialog::removeControl("Speech", "Message too long (male):");
+	ConfigDialog::removeControl("Speech", "Message too long (female):");
 	ConfigDialog::removeControl("Speech", "Notify format (female):");
 	ConfigDialog::removeControl("Speech", "Notify format (male):");
 	ConfigDialog::removeControl("Speech", "Message format (female):");
@@ -212,6 +223,7 @@ SpeechSlots::~SpeechSlots()
 	ConfigDialog::removeControl("Speech", "Use aRts", "usearts");
 	ConfigDialog::removeControl("Speech", "Klatt synthesizer (requires dsp)");
 	ConfigDialog::removeControl("Speech", "Melody");
+	ConfigDialog::removeControl("Speech", "Maximum number of spoken letters");
 	ConfigDialog::removeControl("Speech", "slider3");
 	ConfigDialog::removeControl("Speech", "Base frequency");
 	ConfigDialog::removeControl("Speech", "basefreq");
@@ -331,11 +343,21 @@ void SpeechSlots::newChat(const UinsList &senders, const QString &msg, time_t /*
 		if (chatWin->isActiveWindow())
 			return;
 	QString plainMsg=toPlainText(msg);
+	QString format;
 	UserListElement ule=userlist.byUin(senders.first());
-	if (isFemale(ule.firstName()))
-		say(parse(config_file.readEntry("Speech", "ChatFormatFemale"), ule).arg(plainMsg));
+
+	if (plainMsg.length()>config_file.readUnsignedNumEntry("Speech", "MaxLength"))
+		format="MsgTooLong";
 	else
-		say(parse(config_file.readEntry("Speech", "ChatFormatMale"), ule).arg(plainMsg));
+		format="MessageFormat";
+
+	if (isFemale(ule.firstName()))
+		format=config_file.readEntry("Speech", format+"Female");
+	else
+		format=config_file.readEntry("Speech", format+"Male");
+
+	say(parse(format, ule).arg(plainMsg));
+
 	lastSpeech.restart();
 	kdebugf2();
 }
@@ -350,11 +372,21 @@ void SpeechSlots::newMessage(const UinsList &senders, const QString &msg, time_t
 	}
 
 	QString plainMsg=toPlainText(msg);
+	QString format;
 	UserListElement ule=userlist.byUin(senders.first());
-	if (isFemale(ule.firstName()))
-		say(parse(config_file.readEntry("Speech", "MessageFormatFemale"), ule).arg(plainMsg));
+
+	if (plainMsg.length()>config_file.readUnsignedNumEntry("Speech", "MaxLength"))
+		format="MsgTooLong";
 	else
-		say(parse(config_file.readEntry("Speech", "MessageFormatMale"), ule).arg(plainMsg));
+		format="MessageFormat";
+
+	if (isFemale(ule.firstName()))
+		format=config_file.readEntry("Speech", format+"Female");
+	else
+		format=config_file.readEntry("Speech", format+"Male");
+
+	say(parse(format, ule).arg(plainMsg));
+
 	lastSpeech.restart();
 	kdebugf2();
 }
