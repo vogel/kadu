@@ -990,7 +990,7 @@ void Kadu::sendMessage(QListBoxItem *item) {
 
 	for (i = 0; i < pending.count(); i++) {
 		elem = pending[i];
-		if ((!uins.count() && elem.uins[0] == uin) || elem.uins.equals(uins))
+		if ((!uins.count() && elem.uins[0] == uin) || (uins.count() && elem.uins.equals(uins)))
 			if (elem.msgclass == GG_CLASS_CHAT) {
 				if (!uins.count())
 					uins = elem.uins;
