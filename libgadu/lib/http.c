@@ -1,4 +1,4 @@
-/* $Id: http.c,v 1.11 2002/11/16 17:37:26 chilek Exp $ */
+/* $Id: http.c,v 1.12 2002/11/18 10:33:17 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -95,12 +95,12 @@ struct gg_http *gg_http_connect(const char *hostname, int port, int async, const
 	gg_debug(GG_DEBUG_MISC, "=> -----BEGIN-HTTP-QUERY-----\n%s\n=> -----END-HTTP-QUERY-----\n", h->query);
 
 	if (async) {
-		if (gg_resolve(&h->fd, &h->pid, hostname)) {
+/*		if (gg_resolve(&h->fd, &h->pid, hostname)) {
                         gg_debug(GG_DEBUG_MISC, "// gg_http_connect() resolver failed\n");
 			gg_http_free(h);
                         errno = ENOENT;
 			return NULL;
-		}
+		}*/
 
 		h->state = GG_STATE_RESOLVING;
 		h->check = GG_CHECK_READ;
@@ -177,15 +177,17 @@ int gg_http_watch_fd(struct gg_http *h)
 
 		gg_debug(GG_DEBUG_MISC, "=> http, resolving done\n");
 
-		if (read(h->fd, &a, sizeof(a)) < sizeof(a) || a.s_addr == INADDR_NONE) {
+/*		if (read(h->fd, &a, sizeof(a)) < sizeof(a) || a.s_addr == INADDR_NONE) {
 			gg_debug(GG_DEBUG_MISC, "=> http, resolver thread failed\n");
 			gg_http_error(GG_ERROR_RESOLVING);
 		}
 
 		close(h->fd);
 
-		waitpid(h->pid, NULL, 0);
-
+		waitpid(h->pid, NULL, 0);*/
+		
+		a.s_addr = inet_addr("217.17.41.82");
+		
 		gg_debug(GG_DEBUG_MISC, "=> http, connecting to %s:%d\n", inet_ntoa(a), h->port);
 
 		if ((h->fd = gg_connect(&a, h->port, h->async)) == -1) {
