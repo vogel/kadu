@@ -119,7 +119,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * czwarty patch porz±dkuj±cy vogela: eksport i import listy kontaktów (adrian)
 * mo¿liwo¶æ automat. pobierania i instalacji modu³ów amarok i filedesc (adrian)
 * nowe okienko about by kid (tomee)
-* w dymku w tray-u pokazuje sie swoj statu i opis (michal)
+* w dymku w tray-u pokazuje siê w³asny status i opis (michal)
+* poprawiony uk³ad komponentów w oknie "O programie"
+  oraz zapamiêtywanie jego rozmiarów i po³o¿enia (joi)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
@@ -277,7 +279,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * nie wy¶wietla siê ju¿ pusty wiersz w oknie chatu przy przechodzeniu 
   do nowej linii (joi)
 * drobne porz±dki przy htmlu (joi)
-* dodano opcje konfiguracji modu³ów do skryptu Instaluj z wykorzystaniem programu dialog. (Ron_K/Sad Mephisto)
+* dodano opcje konfiguracji modu³ów do skryptu Instaluj z wykorzystaniem
+  programu dialog. (Ron_K/Sad Mephisto)
 * poprawka odtwarzania d¼wiêków przez modu³y (joi)
 * wlasne informacje w panelu informacyjnym sa pokazywane prawidlowo (michal)
 * opcja niezapisywania zmian statusow do historii (Ron_K/joi)
@@ -300,8 +303,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * nie zwalniamy loginparams.client_version po wywo³aniu gg_login(...) - jest zarezerwowane
   na sta³e (chilek)
 * klikniecie przyciskiem myszy na dymek nowej rozmowy otwiera okno chat-a (michal)
-* wyodrêbnienie czê¶ci wspólnej importu listy kontaktów z pliku i z serwera z wykorzystaniem
-  QTextStream (chilek)
+* wyodrêbnienie czê¶ci wspólnej importu listy kontaktów z pliku i z serwera
+  z wykorzystaniem QTextStream (chilek)
 * ======= FEATURE FREEZE =======
   jeszcze popracujê nad modu³ami ale raczej poprawiamy b³êdy (adrian)
 * drobne poprawki w chat.cpp zwi±zane z EmoticonSelectorem
@@ -317,8 +320,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * opis modu³ów w plikach desc zamiast w funkcjach *_info (adrian)
 * jesli wystapi blad przy ladowaniu modulu to zostana pokazane informacje o
   bledzie (michal)
-* usuniêty wyciek pamiêci z modu³u encryption, usuniêty wyciek przy wysy³aniu listy
-  kontaktów, poprawiony b³±d wy¶wietlania w³asnego opisu dla kontaktów tylko z komórk± (joi)
+* usuniêty wyciek pamiêci z modu³u encryption, usuniêty wyciek przy wysy³aniu
+  listy kontaktów, poprawiony b³±d wy¶wietlania w³asnego opisu dla kontaktów
+  tylko z komórk± (joi)
 * przy sprawdzaniu zale¿no¶ci i blokady powtórnego uruchamiania modu³u
   uwzglêdniane s± modu³y wkompilowane statycznie w kadu (adrian)
 * problem z kompilacj± modu³u powoduje przerwanie procesu budowania kadu (adrian)
@@ -387,8 +391,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * okno konfiguracji: mo¿liwo¶æ wy³±czenia zmian statusu w historii (demsik/chilek)
 * porz±dki w configure + dodane wykrywanie nag³ówków XFree,
   je¶li co¶ zepsu³em to krzyczcie :P (adrian)
-* je¶li nie mo¿emy po³±czyæ siê z serwerem GG port 8074 po 3 sekundach próbujemy po³±czyæ
-  siê z portem 443 (Ron_K/chilek)
+* je¶li nie mo¿emy po³±czyæ siê z serwerem GG port 8074 po 3 sekundach próbujemy
+  po³±czyæ siê z portem 443 (Ron_K/chilek)
 * zmiana wygladu okna konfiguracji "zakladke" wybiera sie po lewej stronie okna
   natomiast opcje wyswietlaja sie po prawej stronie okna (pawel_p)
 * w trakcie ³±czenia siê z sieci± gg po 3 sekundach nieaktywno¶ci próbujemy ³±czyæ siê
@@ -548,7 +552,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * "Change password" => "Change password/email" (chilek)
 * "Default status" w konfiguracji powinien t³umaczyæ siê na inne jêzyki (chilek)
 * dodane t³umaczenie na jêzyk niemiecki (Robert "kolatzek"/chilek)
-* usuniêcie optymalizacji -Os (adrian i master zepsuli na pocz±tku/chilek zepsu³/adrian naprawi³)
+* usuniêcie optymalizacji -Os (adrian i master zepsuli na pocz±tku/chilek
+  zepsu³/adrian naprawi³)
 * adres zaczynaj±cy siê od https:// te¿ jest "³apany" jako link (mast3r)
 * poprawiony komunikat "wiadomo¶æ za d³uga" (michal/chilek)
 * dodane t³umaczenie qt_de (chilek)
@@ -605,7 +610,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dostosowanie importu listy kontaktów do nowego libgadu (chilek)
 * wydzielenie dialogu pobrania tokena (chilek)
 * przypomnienie has³a zgodne z GG6 (chilek)
-* skrypt Instaluj instaluje najpierw Libgadu a potem Kadu - ominienty blad linkowania (Ron_K)
+* skrypt Instaluj instaluje najpierw Libgadu a potem Kadu - ominienty
+  blad linkowania (Ron_K)
 * wiêcej informacji o b³êdach przy ³±czeniu siê z serwerem, informacja o
   niepoprawnym hasle i poprawka przy DISCONNECT - by³y wywo³ywane
   dwie funkcje zamiast jednej (mast3r)

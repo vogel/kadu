@@ -15,34 +15,40 @@
 #include <qtextcodec.h>
 #include <qfile.h>
 #include <qtextstream.h>
+#include <qhbox.h>
+#include <qvbox.h>
+#include <qsizepolicy.h>
 
 #include "about.h"
 #include "misc.h"
 #include "kadu-config.h"
+#include "config_file.h"
+#include "debug.h"
 
-About::About() : QDialog() {
+About::About() {
+	kdebugf();
 	// set window properties and flags
 	setWFlags(Qt::WDestructiveClose);
 	setCaption(tr("About"));
-	setFixedSize(570, 400);
+	setMinimumSize(400, c00);
 	// end set window properties and flags
 	
 	// create main QLabel widgets (icon and app info)
-	QLabel *l_icon = new QLabel(this);
-	QLabel *l_info = new QLabel(this);
+	QVBox *left=new QVBox(this);
+	QLabel *l_icon = new QLabel(left);
+	QWidget *blank=new QWidget(left);
+	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
+	
+	QVBox *center=new QVBox(this);
+	
+	QLabel *l_info = new QLabel(center);
 	l_icon->setPixmap(icons_manager.loadIcon("AboutIcon"));
 	l_info->setText(QString("<span style=\"font-size: 12pt\">Kadu ") + QString(VERSION)
 		+ QString(tr("<br>(c) 2001-2004 Kadu Team</span>")));
-	l_icon->resize(64, 64);
-	l_info->resize(470, 40);
-	l_icon->move(10, 10);
-	l_info->move(90, 10);
 	// end create main QLabel widgets (icon and app info)
 	
 	// our TabWidget
-	QTabWidget *tw_about = new QTabWidget(this);
-	tw_about->resize(460, 290);
-	tw_about->move(90, 60);
+	QTabWidget *tw_about = new QTabWidget(center);
 	// end our TabWidget
 	
 	// create our info widgets
@@ -82,13 +88,35 @@ About::About() : QDialog() {
 	// end create our info widgets
 	
 	// close button
-	QPushButton *pb_close = new QPushButton(icons_manager.loadIcon("CloseWindow"), tr("&Close"), this, "close");
+	QHBox *bottom=new QHBox(center);
+	QWidget *blank2=new QWidget(bottom);
+	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
+	QPushButton *pb_close = new QPushButton(icons_manager.loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
-	pb_close->move(465, 365);
 	// end close button
+
+	QRect def_rect(20, 20, 580, 400);
+	config_file.addVariable("General", "AboutGeometry", def_rect);
+
+	QRect geom=config_file.readRectEntry("General", "AboutGeometry");
+	resize(geom.width(),geom.height());
+	move(geom.x(),geom.y());
 }
 
-QString About::loadFile(const QString &name) {
+About::~About()
+{
+	kdebugf();
+	QRect geom;
+	geom.setX(pos().x());
+	geom.setY(pos().y());
+	geom.setWidth(size().width());
+	geom.setHeight(size().height());
+	
+	config_file.writeEntry("General", "AboutGeometry", geom);
+}
+
+QString About::loadFile(const QString &name)
+{
 	QString data;
 	QFile file(dataPath("kadu/" + name));
 	if (!file.open(IO_ReadOnly))
@@ -99,4 +127,3 @@ QString About::loadFile(const QString &name) {
 	file.close();
 	return data;
 }
-

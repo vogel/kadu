@@ -1,16 +1,17 @@
 #ifndef ABOUT_H
 #define ABOUT_H
 
-#include <qdialog.h>
-
+#include <qwidget.h>
+#include <qhbox.h>
 /*
 	Okno z informacjami o programie
 */
-class About : public QDialog {
+class About : public QHBox {
 	Q_OBJECT
 
 public:
 	About();
+	~About();
 
 private:
 	QString loadFile(const QString &name);
