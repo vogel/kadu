@@ -815,8 +815,8 @@ void Kadu::addUser(const QString& FirstName, const QString& LastName,
 		if (!uin)
 			ule = userlist.byAltNick(AltNick);
 		userlist.changeUserInfo(ule.altnick,
-			FirstName, LastName, NickName, AltNick, Mobile, ule.blocking, ule.offline_to_user,
-			ule.notify, Group);
+			FirstName, LastName, NickName, AltNick, Mobile, Uin, ule.status,
+			ule.blocking, ule.offline_to_user, ule.notify, Group);
 		}
 	userlist.writeToFile();
 

@@ -57,8 +57,9 @@ class UserList : public QObject, public QValueList<UserListElement>
 		void changeUserInfo(const QString OldAltNick,
 			const QString &FirstName, const QString &LastName,
 			const QString &NickName, const QString &AltNick,
-			const QString &Mobile, const bool Blocking,
-			const bool Offline_to_user, const bool Notify, const QString &Group);
+			const QString &Mobile, const QString &Uin, int Status,
+			const bool Blocking, const bool Offline_to_user, const bool Notify,
+			const QString &Group);
 		void changeUserStatus(const uin_t uin, const unsigned int status);
 		void removeUser(const QString &altnick);
 		bool writeToFile(QString filename = "");

@@ -438,7 +438,8 @@ void SearchDialog::updateInfoClicked()
 		return;
 
 	userlist.changeUserInfo(ule.altnick, firstname, "", nickname, ule.altnick,
-		ule.mobile, ule.blocking, ule.offline_to_user, ule.notify, ule.group);
+		ule.mobile, QString::number(ule.uin), ule.status,
+		ule.blocking, ule.offline_to_user, ule.notify, ule.group);
 	userlist.writeToFile();
 }
 

@@ -101,7 +101,7 @@ void UserList::addUser(const QString FirstName,const QString LastName,
 	e.nickname = NickName;
 	e.altnick = AltNick;
 	e.mobile = Mobile;
-	e.uin = atoi(Uin.local8Bit());
+	e.uin = Uin.toUInt();
 	e.status = Status;
 	e.blocking = Blocking;
 	e.offline_to_user = Offline_to_user;
@@ -119,8 +119,8 @@ void UserList::addUser(const QString FirstName,const QString LastName,
 void UserList::changeUserInfo(const QString OldAltNick,
 	const QString& FirstName, const QString& LastName,
 	const QString& NickName, const QString& AltNick,
-	const QString& Mobile, const bool Blocking,
-	const bool Offline_to_user, const bool Notify, const QString& Group)
+	const QString& Mobile, const QString &Uin, int Status,
+	const bool Blocking, const bool Offline_to_user, const bool Notify, const QString& Group)
 {
 	UserListElement &e = byAltNick(OldAltNick);
 	e.first_name = FirstName;
@@ -128,7 +128,13 @@ void UserList::changeUserInfo(const QString OldAltNick,
 	e.nickname = NickName;
 	e.altnick = AltNick;
 	e.mobile = Mobile;
+	bool ok;
+	uin_t uin;
+	uin = Uin.toUInt(&ok);
+	if (ok)
+		e.uin = uin;
 	e.anonymous = false;
+	e.status = Status;
 	e.blocking = Blocking;
 	e.offline_to_user = Offline_to_user;
 	e.notify = Notify;
