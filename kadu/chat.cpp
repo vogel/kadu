@@ -40,13 +40,6 @@
 #include "debug.h"
 #include "gadu.h"
 #include "hints.h"
-#ifdef HAVE_OPENSSL
-extern "C"
-{
-#include "simlite.h"
-};
-#endif
-//
 
 ChatManager::ChatManager() : QObject()
 {
@@ -91,16 +84,6 @@ void ChatManager::changeAppearance()
 {
 	for (int i = 0; i < Chats.count(); i++)
 		Chats[i]->changeAppearance();
-}
-
-void ChatManager::enableEncryptionBtnForUins(UinsList uins)
-{
-	for(int i=0; i<Chats.count(); i++)
-		if(Chats[i]->uins().equals(uins))
-		{
-			Chats[i]->setEncryptionBtnEnabled(true);
-			return;
-		}
 }
 
 Chat* ChatManager::findChatByUins(UinsList uins)
@@ -323,6 +306,8 @@ void CustomInput::paste() {
 	pasteSubType("plain");
 }
 
+QValueList<Chat::RegisteredButton> Chat::RegisteredButtons;
+
 Chat::Chat(UinsList uins, QWidget *parent, const char *name)
  : QWidget(parent, name, Qt::WDestructiveClose), Uins(uins)
 {
@@ -400,22 +385,13 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	lockscroll->setToggleButton(true);
 	QToolTip::add(lockscroll, tr("Blocks scrolling"));
 
-#ifdef HAVE_OPENSSL
-	encryption = new QPushButton(buttontray);
-	connect(encryption, SIGNAL(clicked()), this, SLOT(regEncryptSend()));
-
-	QString keyfile_path;
-	keyfile_path.append(ggPath("keys/"));
-	keyfile_path.append(QString::number(uins[0]));
-	keyfile_path.append(".pem");
-	QFileInfo keyfile(keyfile_path);
-	bool encryption_possible =
-		(keyfile.permission(QFileInfo::ReadUser) && uins.count() == 1);
-
-	setupEncryptButton(config_file.readBoolEntry("Chat", "Encryption") && encryption_possible);
-	
-	encryption->setEnabled(encryption_possible);	
-#endif
+	for(int i=0; i<RegisteredButtons.size(); i++)
+	{
+		RegisteredButton& b=RegisteredButtons[i];
+		QPushButton* btn=new QPushButton(buttontray,b.name.local8Bit().data());
+		connect(btn, SIGNAL(clicked()), b.receiver, b.slot.local8Bit().data());
+		Buttons.insert(b.name,btn);
+	}
 	
 	QPushButton *clearchat= new QPushButton(buttontray);
 	clearchat->setPixmap(icons_manager.loadIcon("ClearChat"));
@@ -542,6 +518,41 @@ Chat::~Chat() {
 	kdebug("Chat::~Chat: chat destroyed: index %d\n", index);
 }
 
+void Chat::registerButton(const QString& name,QObject* receiver,const QString& slot)
+{
+	RegisteredButton b;
+	b.name=name;
+	b.receiver=receiver;
+	b.slot=slot;
+	RegisteredButtons.append(b);
+}
+
+void Chat::unregisterButton(const QString& name)
+{
+	for(int i=0; i<RegisteredButtons.size(); i++)
+		if(RegisteredButtons[i].name==name)
+		{
+			RegisteredButtons.remove(RegisteredButtons.at(i));
+			break;
+		}
+	for(int i=0; i<chat_manager->chats().size(); i++)
+	{
+		Chat* chat=chat_manager->chats()[i];
+		if(chat->Buttons.contains(name))
+		{
+			delete chat->Buttons[name];
+			chat->Buttons.remove(name);
+		}
+	}
+}
+
+QPushButton* Chat::button(const QString& name)
+{
+	if(!Buttons.contains(name))
+		return NULL;
+	return Buttons[name];
+}
+
 void Chat::specialKeyPressed(int key) {
 	kdebug("Chat::specialKeyPressed()\n");
 	switch (key) {
@@ -599,33 +610,12 @@ void Chat::curPosChanged(int para, int pos) {
 	
 }
 
-void Chat::setupEncryptButton(bool enabled) {
-#ifdef HAVE_OPENSSL
-	encrypt_enabled = enabled;
-	QToolTip::remove(encryption);
-	if (enabled) {
-		QToolTip::add(encryption, tr("Disable encryption for this conversation"));
-		encryption->setPixmap(icons_manager.loadIcon("EncryptedChat"));
-		}
-	else {
-		QToolTip::add(encryption, tr("Enable encryption for this conversation"));
-		encryption->setPixmap(icons_manager.loadIcon("DecryptedChat"));
-		}
-#endif		
-}
-
 void Chat::pageUp() {
 	body->scrollBy(0, (body->height() * -2) / 3);
 }
 
 void Chat::pageDown() {
 	body->scrollBy(0, (body->height() * 2) / 3);
-}
-
-void Chat::setEncryptionBtnEnabled(bool enabled) {
-#ifdef HAVE_OPENSSL
-	encryption->setEnabled(enabled && config_file.readBoolEntry("Chat", "Encryption"));
-#endif
 }
 
 void Chat::changeAppearance() {
@@ -703,13 +693,6 @@ void Chat::keyPressEvent(QKeyEvent *e) {
 	if (HotKey::shortCut(e,"ShortCuts", "kadu_searchuser"))
 		userWhois();
 	QWidget::keyPressEvent(e);
-}
-
-void Chat::regEncryptSend(void) {
-#ifdef HAVE_OPENSSL
-	encrypt_enabled = !encrypt_enabled;
-	setupEncryptButton(encrypt_enabled);
-#endif
 }
 
 /* convert special characters into emoticons, HTML into plain text and so forth */
@@ -978,14 +961,9 @@ void Chat::sendMessage(void) {
 
 	char* tmp = strdup(unicode2cp(mesg).data());
 	
-#ifdef HAVE_OPENSSL
-	if (Uins.count()==1 && encrypt_enabled)
-	{
-		char* encrypted = sim_message_encrypt((unsigned char *)tmp, Uins[0]);
-		free(tmp);
-		tmp=encrypted;		
-	}	
-#endif
+	emit messageFiltering(Uins,tmp);
+	if(tmp==NULL)
+		return;
 
 	if (tmp != NULL)
 	{
@@ -1132,10 +1110,6 @@ void Chat::initModule()
 	QT_TRANSLATE_NOOP("@default", "Automatically prune chat messages");
 	QT_TRANSLATE_NOOP("@default", "Message pruning");
 	QT_TRANSLATE_NOOP("@default", "Reduce the number of visible messages to");
-	QT_TRANSLATE_NOOP("@default", "Use encryption");
-	QT_TRANSLATE_NOOP("@default", "Encryption properties");
-	QT_TRANSLATE_NOOP("@default", "Keys length");
-	QT_TRANSLATE_NOOP("@default", "Generate keys");
 	QT_TRANSLATE_NOOP("@default", "Open chat window on new message");
 	QT_TRANSLATE_NOOP("@default", "Scroll chat window downward, not upward");
 	QT_TRANSLATE_NOOP("@default", "\"Enter\" key in chat sends message by default");
@@ -1167,12 +1141,6 @@ void Chat::initModule()
 	ConfigDialog::addCheckBox("Chat", "Chat", "Automatically prune chat messages", "ChatPrune", false);
 	ConfigDialog::addHGroupBox("Chat", "Chat", "Message pruning");
 	ConfigDialog::addLineEdit("Chat", "Message pruning", "Reduce the number of visible messages to", "ChatPruneLen", "20");
-#ifdef HAVE_OPENSSL		
-	ConfigDialog::addCheckBox("Chat", "Chat", "Use encryption", "Encryption", false);	
-	ConfigDialog::addHGroupBox("Chat", "Chat", "Encryption properties");
-	ConfigDialog::addComboBox("Chat", "Encryption properties", "Keys length");
-	ConfigDialog::addPushButton("Chat", "Encryption properties", "Generate keys");
-#endif
 	ConfigDialog::addCheckBox("Chat", "Chat", "Open chat window on new message", "OpenChatOnMessage");
 	ConfigDialog::addCheckBox("Chat", "Chat", "Scroll chat window downward, not upward", "ScrollDown", true);
 	ConfigDialog::addCheckBox("Chat", "Chat", "\"Enter\" key in chat sends message by default", "AutoSend", true);
@@ -1240,10 +1208,6 @@ void Chat::initModule()
 	ConfigDialog::registerSlotOnDestroy(chatslots,SLOT(onDestroyConfigDialog()));
 	ConfigDialog::connectSlot("Chat", "Emoticons:", SIGNAL(activated(int)), chatslots, SLOT(chooseEmoticonsStyle(int)));
 
-#ifdef HAVE_OPENSSL	
-	ConfigDialog::connectSlot("Chat", "Generate keys", SIGNAL(clicked()), chatslots, SLOT(generateMyKeys()));
-	ConfigDialog::connectSlot("Chat", "Use encryption", SIGNAL(toggled(bool)), chatslots, SLOT(onUseEncryption(bool)));
-#endif
 	ConfigDialog::connectSlot("Chat", "Use default Web browser", SIGNAL(toggled(bool)), chatslots, SLOT(onDefWebBrowser(bool)));
 
 	ConfigDialog::connectSlot("Chat", "Automatically prune chat messages", SIGNAL(toggled(bool)), chatslots, SLOT(onPruneChat(bool)));
@@ -1361,22 +1325,11 @@ void ChatSlots::onCreateConfigDialog()
 	if ((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") == EMOTS_NONE)
 		(cb_emoticons_theme)->setEnabled(false);
 
-#ifdef HAVE_OPENSSL
-	QComboBox* cb_keylength= ConfigDialog::getComboBox("Chat", "Keys length");
-	cb_keylength->insertItem("1024");
-#endif
-
 	QCheckBox *c_defweb= ConfigDialog::getCheckBox("Chat", "Use default Web browser");
 	QLineEdit *l_webbrow= ConfigDialog::getLineEdit("Chat", "Custom Web browser");
 	
 	if (c_defweb->isChecked())
 	    ((QHBox*)l_webbrow->parent())->setEnabled(false);
-
-#ifdef HAVE_OPENSSL
-	QCheckBox *c_useencryption= ConfigDialog::getCheckBox("Chat", "Use encryption");
-	QHGroupBox *h_encryption= ConfigDialog::getHGroupBox("Chat", "Encryption properties");
-	h_encryption->setEnabled(c_useencryption->isChecked());
-#endif
 	
 	QCheckBox *c_prunechat= ConfigDialog::getCheckBox("Chat", "Automatically prune chat messages");
 	QHGroupBox *h_prune= ConfigDialog::getHGroupBox("Chat", "Message pruning");
@@ -1446,14 +1399,6 @@ void ChatSlots::onDefWebBrowser(bool toggled)
 	
 }
 
-void ChatSlots::onUseEncryption(bool toggled)
-{
-#ifdef HAVE_OPENSSL
-	QHGroupBox *h_encryption= ConfigDialog::getHGroupBox("Chat", "Encryption properties");
-	h_encryption->setEnabled(toggled);
-#endif
-}
-
 
 void ChatSlots::onDestroyConfigDialog()
 {
@@ -1501,36 +1446,6 @@ void ChatSlots::chooseEmoticonsStyle(int index) {
 	    emotheme_box->setEnabled(false);
 	else
 	    emotheme_box->setEnabled(true);
-}
-
-
-void ChatSlots::generateMyKeys(void) {
-#ifdef HAVE_OPENSSL
-	QString keyfile_path;
-
-	
-	keyfile_path.append(ggPath("keys/"));
-	keyfile_path.append(QString::number(config_file.readNumEntry("General","UIN")));
-	keyfile_path.append(".pem");
-	
-	QFileInfo keyfile(keyfile_path);
-	
-	if (keyfile.permission(QFileInfo::WriteUser))
-		if(QMessageBox::warning(0, "Kadu",
-			tr("Keys exist. Do you want to overwrite them?"),
-			tr("Yes"), tr("No"),QString::null, 0, 1)==1)
-				return;
-	
-	QCString tmp=ggPath("keys").local8Bit();
-	mkdir(tmp.data(), 0700);
-
-	if (sim_key_generate(config_file.readNumEntry("General","UIN")) < 0) {
-		QMessageBox::critical(0, "Kadu", tr("Error generating keys"), tr("OK"), QString::null, 0);
-		return;
-	}
-
-	QMessageBox::information(0, "Kadu", tr("Keys have been generated and written"), tr("OK"), QString::null, 0);
-#endif
 }
 
 void ChatSlots::chooseChatSelect(int nr)

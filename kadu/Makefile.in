@@ -139,8 +139,7 @@ updates.cpp updates.h
 EXTRA_kadu_SOURCES = \
 modules.cpp modules.h modules_moc.cpp \
 voice.cpp voice.h voice_moc.cpp \
-voice_dsp.cpp voice_dsp.h voice_dsp_moc.cpp \
-simlite.c simlite.h
+voice_dsp.cpp voice_dsp.h voice_dsp_moc.cpp
 
 
 @MODULES_TRUE@MODULES_OBJS = \
@@ -154,15 +153,10 @@ simlite.c simlite.h
 
 @VOICE_FALSE@VOICE_OBJS = 
 
-@OPENSSL_TRUE@SIM = simlite.$(OBJEXT)
-@OPENSSL_FALSE@SIM = 
-
-
-#kadu_METASOURCES = AUTO
 INCLUDES = $(XFREE_INCLUDES) $(QT_INCLUDES) $(OPENSSL_INCLUDES) $(GSM_INCLUDES) $(GADU_INCLUDES)
-kadu_LDADD = $(MODULES_OBJS) $(VOICE_OBJS) $(SIM) $(PTHREAD_LIBS) $(PNG_LIBS) $(QT_LIBS) $(GSM_LIBS) $(GADU_LIBS)
+kadu_LDADD = $(MODULES_OBJS) $(VOICE_OBJS) $(PTHREAD_LIBS) $(PNG_LIBS) $(QT_LIBS) $(GSM_LIBS) $(GADU_LIBS)
 kadu_LDFLAGS = $(PTHREAD_LDFLAGS) $(MODULES_LDFLAGS) $(OPENSSL_LIBS)
-kadu_DEPENDENCIES = $(MODULES_OBJS) $(VOICE_OBJS) $(SIM)
+kadu_DEPENDENCIES = $(MODULES_OBJS) $(VOICE_OBJS)
 
 AM_CPPFLAGS = $(PTHREAD_CPPFLAGS) -DQT_THREAD_SUPPORT -D_REENTRANT \
 -DBINDIR="\"$(bindir)\"" -DDATADIR="\"$(datadir)\""
@@ -235,27 +229,27 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/personal_info_moc.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/register.Po ./$(DEPDIR)/register_moc.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/search.Po ./$(DEPDIR)/search_moc.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/simlite.Po ./$(DEPDIR)/sms.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/sms_moc.Po ./$(DEPDIR)/status.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/status_moc.Po ./$(DEPDIR)/tabbar.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/tabbar_moc.Po ./$(DEPDIR)/updates.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/userbox.Po ./$(DEPDIR)/userbox_moc.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/userinfo.Po ./$(DEPDIR)/userinfo_moc.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/userlist.Po ./$(DEPDIR)/userlist_moc.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/voice.Po ./$(DEPDIR)/voice_dsp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/sms.Po ./$(DEPDIR)/sms_moc.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/status.Po ./$(DEPDIR)/status_moc.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/tabbar.Po ./$(DEPDIR)/tabbar_moc.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/updates.Po ./$(DEPDIR)/userbox.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/userbox_moc.Po ./$(DEPDIR)/userinfo.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/userinfo_moc.Po ./$(DEPDIR)/userlist.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/userlist_moc.Po ./$(DEPDIR)/voice.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/voice_dsp.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/voice_dsp_moc.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/voice_moc.Po
-COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
-	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-CCLD = $(CC)
-LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-CFLAGS = @CFLAGS@
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 CXXLD = $(CXX)
 CXXLINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
 	-o $@
 CXXFLAGS = @CXXFLAGS@
+CFLAGS = @CFLAGS@
+COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
+	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 DIST_SOURCES = $(kadu_SOURCES) $(EXTRA_kadu_SOURCES)
 DIST_COMMON = Makefile.am Makefile.in
 SOURCES = $(kadu_SOURCES) $(EXTRA_kadu_SOURCES)
@@ -263,7 +257,7 @@ SOURCES = $(kadu_SOURCES) $(EXTRA_kadu_SOURCES)
 all: all-am
 
 .SUFFIXES:
-.SUFFIXES: .c .cpp .o .obj
+.SUFFIXES: .cpp .o .obj
 $(srcdir)/Makefile.in:  Makefile.am  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
 	  $(AUTOMAKE) --gnu  kadu/Makefile
@@ -348,7 +342,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/register_moc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/search.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/search_moc.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/simlite.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sms.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sms_moc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/status.Po@am__quote@
@@ -369,19 +362,6 @@ distclean-compile:
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
-
-.c.o:
-@AMDEP_TRUE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(COMPILE) -c `test -f '$<' || echo '$(srcdir)/'`$<
-
-.c.obj:
-@AMDEP_TRUE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(COMPILE) -c `cygpath -w $<`
-CCDEPMODE = @CCDEPMODE@
 
 .cpp.o:
 @AMDEP_TRUE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@

@@ -36,7 +36,6 @@ class ChatManager : public QObject
 		void refreshTitles();
 		void refreshTitlesForUin(uin_t uin);
 		void changeAppearance();
-		void enableEncryptionBtnForUins(UinsList uins);
 		Chat* findChatByUins(UinsList uins);
 		/**
 			Otwiera nowe okno Chat z wymienionymi rozmowcami.
@@ -100,6 +99,15 @@ class Chat : public QWidget
 	Q_OBJECT
 	
 	private:
+		struct RegisteredButton
+		{
+			QString name;
+			QObject* receiver;
+			QString slot;
+		};
+		static QValueList<RegisteredButton> RegisteredButtons;
+		QMap<QString,QPushButton*> Buttons;
+	
 		UinsList Uins;
 		int index;
 		int totaloccurences;
@@ -117,9 +125,6 @@ class Chat : public QWidget
 		QPushButton *autosend;
 		QPushButton *lockscroll;
 		QAccel *acc;
-#ifdef HAVE_OPENSSL
-		QPushButton *encryption;
-#endif
 		QPushButton *sendbtn;
 		UserBox *userbox;
 		QString myLastMessage;
@@ -130,11 +135,9 @@ class Chat : public QWidget
 		void pruneWindow(void);
 
 	private slots:
-		void setupEncryptButton(bool enabled);
 		void userWhois(void);
 		void insertEmoticon(void);
 		void changeColor(void);
-		void regEncryptSend(void);
 		void addMyMessageToHistory(void);
 		void clearChatWindow(void);
 		void pageUp();
@@ -151,9 +154,6 @@ class Chat : public QWidget
 		QTextBrowser *body;
 		CustomInput *edit;
 		QHBox *buttontray;
-#ifdef HAVE_OPENSSL
-		bool encrypt_enabled;
-#endif
 		//
 		/**
 			Rejestruje opcje modulu Chat w oknie konfiguracji.
@@ -161,6 +161,9 @@ class Chat : public QWidget
 		static void initModule();
 		Chat(UinsList uins, QWidget *parent = 0, const char *name = 0);
 		~Chat();
+		static void registerButton(const QString& name,QObject* receiver,const QString& slot);
+		static void unregisterButton(const QString& name);
+		QPushButton* button(const QString& name);
 		void changeAppearance();
 		void setTitle(void);
 		void formatMessage(bool, const QString &, const QString &, const QString &, QString &);
@@ -169,7 +172,6 @@ class Chat : public QWidget
 		void addEmoticon(QString);
 		void scrollMessages(QString &);
 		void alertNewMessage(void);
-		void setEncryptionBtnEnabled(bool);
 		/**
 			Zwraca liste numerow rozmowcow.
 		**/
@@ -197,6 +199,16 @@ class Chat : public QWidget
 			wyslania wiadomosci, np klikajac na guzik "wyslij".
 		**/
 		void messageSendRequested(Chat* chat);
+		/**
+			Sygnal daje mozliwosc operowania na wiadomoci
+			ktora ma byc wyslana do serwera juz w jej docelowej
+			formie po konwersji z unicode i innymi zabiegami.
+			Tresc wiadomosci mozna zmienic podmieniajac wskaznik
+			msg na nowy bufor i zwalniajac stary (za pomoca free).
+			Mozna tez przerwac dalsza jej obrobke ustawiajac
+			wskaznik msg na NULL.
+		**/
+		void messageFiltering(const UinsList& uins,char*& msg);
 		/**
 			Sygnal jest emitowany gdy zakonczy sie proces
 			wysylania wiadomosci i zwiazanych z tym czynnosci.
@@ -252,9 +264,7 @@ class ChatSlots :public QObject
 		void onDestroyConfigDialog();
 		void chooseEmoticonsStyle(int index);
 		void onDefWebBrowser(bool toggled);
-		void onUseEncryption(bool toggled);
 		void onPruneChat(bool toggled);
-		void generateMyKeys(void);
 		void chooseColorGet(const QColor& color);
 		void chooseColorGet(const QString& text);
 		void chooseChatSelect(int nr);

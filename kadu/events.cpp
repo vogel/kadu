@@ -40,12 +40,6 @@
 #include "config_file.h"
 #include "gadu.h"
 #include "../config.h"
-#ifdef HAVE_OPENSSL
-extern "C"
-{
-#include "simlite.h"
-};
-#endif
 
 AutoConnectionTimer *AutoConnectionTimer::autoconnection_object = NULL;
 ConnectionTimeoutTimer *ConnectionTimeoutTimer::connectiontimeout_object = NULL;
@@ -89,61 +83,6 @@ void ConnectionTimeoutTimer::off() {
 		delete connectiontimeout_object;
 		connectiontimeout_object = NULL;
 		}
-}
-
-SavePublicKey::SavePublicKey(uin_t uin, QString keyData, QWidget *parent, const char *name) :
-	QDialog(parent, name, Qt::WDestructiveClose), uin(uin), keyData(keyData) {
-	
-	kdebug("SavePublicKey::SavePublicKey()\n");
-
-	setCaption(tr("Save public key"));
-	resize(200, 80);
-	
-	QLabel *l_info = new QLabel(
-		tr("User %1 is sending you his public key. Do you want to save it?").arg(userlist.byUin(uin).altnick),
-		this);
-
-	QPushButton *yesbtn = new QPushButton(tr("Yes"), this);
-	QPushButton *nobtn = new QPushButton(tr("No"), this);
-
-	QObject::connect(yesbtn, SIGNAL(clicked()), this, SLOT(yesClicked()));
-	QObject::connect(nobtn, SIGNAL(clicked()), this, SLOT(reject()));
-
-	QGridLayout *grid = new QGridLayout(this, 2, 2, 3, 3);
-	grid->addMultiCellWidget(l_info, 0, 0, 0, 1);
-	grid->addWidget(yesbtn, 1, 0);
-	grid->addWidget(nobtn, 1, 1);
-
-	kdebug("SavePublicKey::SavePublicKey(): finished\n");
-}
-
-void SavePublicKey::yesClicked() {
-	QFile keyfile;
-	QString keyfile_path;
-
-	kdebug("SavePublicKey::yesClicked()\n");
-
-	keyfile_path.append(ggPath("keys/"));
-	keyfile_path.append(QString::number(uin));
-	keyfile_path.append(".pem");
-
-	keyfile.setName(keyfile_path);
-
-	if (!(keyfile.open(IO_WriteOnly))) {
-		QMessageBox::critical(this, tr("Error"), tr("Error writting the key"), tr("OK"), QString::null, 0);
-		kdebug("eventRecvMsg(): Error opening key file %s\n", (const char *)keyfile_path.local8Bit());
-		return;
-		}
-	else {
-		keyfile.writeBlock(keyData.local8Bit(), keyData.length());
-		keyfile.close();
-		UinsList uins;
-		uins.append(uin);
-		chat_manager->enableEncryptionBtnForUins(uins);
-		}
-	accept();
-
-	kdebug("SavePublicKey::yesClicked(): finished\n");
 }
 
 EventManager::EventManager()
@@ -290,6 +229,10 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 	if (isIgnored(senders))
 		return;
 
+	emit messageFiltering(senders,(char*)msg);
+	if(strlen((const char*)msg)==0)
+		return;
+
 	QString mesg = cp2unicode(msg);
 	QDateTime datetime;
 	datetime.setTime_t(time);
@@ -307,35 +250,6 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 		emit systemMessageReceived(mesg, datetime, formats_length, formats);
 		return;
 		}
-
-#ifdef HAVE_OPENSSL
-	if (config_file.readBoolEntry("Chat","Encryption")) {
-		if (!strncmp((char *)msg, "-----BEGIN RSA PUBLIC KEY-----", 20)) {
-			QFile keyfile;
-			QString keyfile_path;
-			QWidget *parent;
-
-			Chat* chat=chat_manager->findChatByUins(senders);
-			if (chat == NULL)
-				parent = kadu;
-			else
-				parent = chat;
-
-			SavePublicKey *spk = new SavePublicKey(senders[0], mesg, NULL);
-			spk->show();
-			return;
-		}
-	};
-
-	if (msg != NULL)	{
-		kdebug("Decrypting encrypted message...\n");
-		char* decoded = sim_message_decrypt(msg, senders[0]);
-		kdebug("Decrypted message is: %s\n",decoded);
-		if (decoded != NULL)
-			strcpy((char *)msg, decoded);
-		mesg = cp2unicode(msg);
-		}
-#endif
 
 	mesg = formatGGMessage(mesg, formats_length, formats);
 

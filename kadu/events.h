@@ -40,19 +40,6 @@ class ConnectionTimeoutTimer : public QTimer {
 		static ConnectionTimeoutTimer *connectiontimeout_object;
 };
 
-class SavePublicKey : public QDialog {
-	Q_OBJECT
-	public:
-		SavePublicKey(uin_t uin, QString keyData, QWidget *parent = 0, const char *name = 0);
-
-	private:
-		uin_t uin;
-		QString keyData;
-
-	private slots:
-		void yesClicked();
-};
-
 /**
 	Menad¿er zdarzeñ. Udostêpnia sygna³y reprezentuj±ce zdarzenia
 	otrzymywane z serwera GG.
@@ -60,7 +47,7 @@ class SavePublicKey : public QDialog {
 class EventManager : public QObject
 {
 	Q_OBJECT
-
+	
 	private slots:
 		void connectedSlot();
 		void connectionFailedSlot(int);
@@ -115,15 +102,23 @@ class EventManager : public QObject
 		**/
 		void userlistReceived(struct gg_event *);
 		/**
-			Otrzymano jak±¶ wiadomo¶æ od serwera GG
+			Otrzymano wiadomo¶æ systemowa od serwera GG
 		**/
 		void systemMessageReceived(QString &msg, QDateTime &, int formats_length, void *formats);
 		/**
-			Otrzymano wiadomo¶æ systemowa od serwera GG
+			Otrzymano jak±¶ wiadomo¶æ od serwera GG
 		**/
 		void messageReceived(int,UinsList,unsigned char* msg,time_t,
 			int formats_length, void *formats);
-		
+		/**
+			Sygnal daje mozliwosc operowania na wiadomoci
+			ktora przyszla z serwera jeszcze w jej oryginalnej
+			formie przed konwersja na unicode i innymi zabiegami.
+			Tresc wiadomosci mozna zmienic grzebiac w buforze msg.
+			Mozna tez przerwac dalsza jej obrobke ustawiajac
+			jej dlugosc na 0 - np. msg[0]=0
+		**/
+		void messageFiltering(const UinsList& senders,char* msg);
 		/**
 			Otrzymano wiadomo¶æ, któr± trzeba pokazaæ (klasa chat lub msg,
 			nadawca nie jest ignorowany, itp)

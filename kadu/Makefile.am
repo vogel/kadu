@@ -36,8 +36,7 @@ updates.cpp updates.h
 EXTRA_kadu_SOURCES = \
 modules.cpp modules.h modules_moc.cpp \
 voice.cpp voice.h voice_moc.cpp \
-voice_dsp.cpp voice_dsp.h voice_dsp_moc.cpp \
-simlite.c simlite.h
+voice_dsp.cpp voice_dsp.h voice_dsp_moc.cpp
 
 if MODULES
 MODULES_OBJS = \
@@ -54,18 +53,10 @@ else
 VOICE_OBJS =
 endif
 
-if OPENSSL
-SIM = simlite.$(OBJEXT)
-else
-SIM =
-endif
-
-#kadu_METASOURCES = AUTO
-
 INCLUDES = $(XFREE_INCLUDES) $(QT_INCLUDES) $(OPENSSL_INCLUDES) $(GSM_INCLUDES) $(GADU_INCLUDES)
-kadu_LDADD = $(MODULES_OBJS) $(VOICE_OBJS) $(SIM) $(PTHREAD_LIBS) $(PNG_LIBS) $(QT_LIBS) $(GSM_LIBS) $(GADU_LIBS)
+kadu_LDADD = $(MODULES_OBJS) $(VOICE_OBJS) $(PTHREAD_LIBS) $(PNG_LIBS) $(QT_LIBS) $(GSM_LIBS) $(GADU_LIBS)
 kadu_LDFLAGS = $(PTHREAD_LDFLAGS) $(MODULES_LDFLAGS) $(OPENSSL_LIBS)
-kadu_DEPENDENCIES = $(MODULES_OBJS) $(VOICE_OBJS) $(SIM)
+kadu_DEPENDENCIES = $(MODULES_OBJS) $(VOICE_OBJS)
 
 AM_CPPFLAGS = $(PTHREAD_CPPFLAGS) -DQT_THREAD_SUPPORT -D_REENTRANT \
 -DBINDIR="\"$(bindir)\"" -DDATADIR="\"$(datadir)\""

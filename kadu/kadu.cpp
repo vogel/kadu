@@ -443,10 +443,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	UserBox::userboxmenu->addItem(tr("Voice chat"), this,
 		SLOT(makeVoiceChat()), HotKey::shortCutFromFile("ShortCuts", "kadu_voicechat"));
 
-#ifdef HAVE_OPENSSL
-	UserBox::userboxmenu->addItem("SendPublicKey", tr("Send my public key"), this, SLOT(sendKey()));
-#endif
-
 	UserBox::userboxmenu->insertSeparator();
 	UserBox::userboxmenu->addItem(tr("Ignore user"), this, SLOT(ignoreUser()));
 	UserBox::userboxmenu->addItem(tr("Block user"), this, SLOT(blockUser()));
@@ -585,22 +581,6 @@ void Kadu::popupMenu()
 			UserBox::userboxmenu->setItemEnabled(sendfile, false);
 			UserBox::userboxmenu->setItemEnabled(voicechat, false);
 			}
-
-#ifdef HAVE_OPENSSL
-	int sendkeyitem = UserBox::userboxmenu->getItem(tr("Send my public key"));
-	QString keyfile_path;
-
-	keyfile_path.append(ggPath("keys/"));
-	keyfile_path.append(QString::number(config_file.readNumEntry("General", "UIN")));
-	keyfile_path.append(".pem");
-
-	QFileInfo keyfile(keyfile_path);
-	if (keyfile.permission(QFileInfo::ReadUser) && user.uin && users.count() == 1 && !isOurUin)
-		UserBox::userboxmenu->setItemEnabled(sendkeyitem, true);
-	else
-		UserBox::userboxmenu->setItemEnabled(sendkeyitem, false);
-
-#endif
 
 	int ignoreuseritem= UserBox::userboxmenu->getItem(tr("Ignore user"));
 	int blockuseritem= UserBox::userboxmenu->getItem(tr("Block user"));
@@ -768,31 +748,6 @@ void Kadu::personalInfo()
 void Kadu::addUserAction() {
 	UserInfo *ui = new UserInfo("add user", 0, QString::null, true);
 	ui->show();
-}
-
-void Kadu::sendKey()
-{
-#ifdef HAVE_OPENSSL
-	QString keyfile_path;
-	QString mykey;
-	QFile keyfile;
-
-	keyfile_path.append(ggPath("keys/"));
-	keyfile_path.append(config_file.readEntry("General", "UIN"));
-	keyfile_path.append(".pem");
-
-	keyfile.setName(keyfile_path);
-
-	if (keyfile.open(IO_ReadOnly)) {
-		QTextStream t(&keyfile);
-		mykey = t.read();
-		keyfile.close();
-		QCString tmp(mykey.local8Bit());
-		gg_send_message(sess, GG_CLASS_MSG, UserBox::getActiveUserBox()->getSelectedUins().first(), (unsigned char *)tmp.data());
-		QMessageBox::information(this, "Kadu",
-			tr("Your public key has been sent"), tr("OK"), QString::null, 0);
-		}
-#endif
 }
 
 void Kadu::deleteHistory()

@@ -1,0 +1,6 @@
+MODULE_SOURCES="encryption.cpp simlite.cpp"
+MODULE_HEADERS=simlite.h
+MODULE_MOC_HEADERS=encryption.h
+MODULE_INCLUDES=ssl.h
+MODULE_INCLUDES_PATH=/usr/include/openssl
+MODULE_LIBS="ssl crypto"
