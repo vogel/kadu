@@ -16,8 +16,6 @@
 #include "debug.h"
 #include "config_file.h"
 
-QMap<QString, QMap<QString, QString> > groups;
-
 ConfigFile::ConfigFile(const QString &filename) : filename(filename),activeGroup(NULL) {
 	read();
 }
