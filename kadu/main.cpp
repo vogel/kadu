@@ -46,7 +46,9 @@ void kadu_signal_handler(int s)
 {
 	kdebug("kadu_signal_handler: %d\n", s);
 	flock(lockFileHandle, LOCK_UN);
-	lockFile->close();
+	kdebug("lock released\n");
+//	lockFile->close();//im mniej operacji tym lepiej...
+//	kdebug("lockfile closed\n");
 	
 	QString f=QString("kadu.conf.backup.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
 	if (s==SIGSEGV)
