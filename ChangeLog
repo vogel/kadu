@@ -236,6 +236,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * obs³uga ¶cie¿ek do plików danych przeniesiona do jednej funkcji dataPath() (joi)
 * poprawa powa¿nego segfaulta w modu³ach d¼wiêkowych i w module speech (michal/joi)
 * configure: poprawka wykrywania bibliotek i opcja --disable-sig-handling (adrian)
+* poprawna deaktywacja modu³ów przy zamykaniu kadu (adrian)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

@@ -233,9 +233,28 @@ ModulesManager::ModulesManager() : QObject()
 
 ModulesManager::~ModulesManager()
 {
+	// Wyladowujemy wszystkie nieu¿ywane modu³y
+	// w pêtli iteruj±c dopóki jakikolwiek udaje
+	// siê wy³adowaæ
+	bool deactivated;
+	do
+	{
+		QStringList active=activeModules();
+		deactivated=false;
+		for(QStringList::ConstIterator i=active.begin(); i!=active.end(); i++)
+			if(Modules[*i].usage_counter == 0)
+				if(deactivateModule(*i))
+					deactivated=true;
+	}
+	while(deactivated);
+	// Wiêcej modu³ów nie mo¿na wy³adowaæ normalnie,
+	// je¶li jakie¶ zosta³y trzeba to zrobiæ brutalnie
 	QStringList active=activeModules();
 	for(QStringList::ConstIterator i=active.begin(); i!=active.end(); i++)
-		deactivateModule(*i, true);
+	{
+		kdebug("WARNING! Could not deactivate module %s, killing\n",(*i).local8Bit().data());
+		deactivateModule(*i,true);
+	}
 }
 
 QTranslator* ModulesManager::loadModuleTranslation(const QString& module_name)
