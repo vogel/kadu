@@ -457,11 +457,13 @@ void ConfigDialog::changeTab(const QString& name)
 		const RegisteredControl &tabControl = (*tab).front();
 		if (appHandle->translate("@default", tabControl.caption) == name)
 		{
-			tabControl.widget->show();
+			if (tabControl.widget)
+				tabControl.widget->show();
 			currentTab = tabControl.caption;
 		}
 		else 
-			tabControl.widget->hide();
+			if (tabControl.widget)
+				tabControl.widget->hide();
 	}
 
 	kdebugmf(KDEBUG_FUNCTION_END, "active Tab=%s\n", currentTab.local8Bit().data());
