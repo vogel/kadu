@@ -48,7 +48,7 @@ Hint::Hint(QWidget *parent, const QString& text, const QPixmap& pixmap, unsigned
 
 bool Hint::nextSecond(void)
 {
-	kdebug("Hint::nextSecond()\n");
+//	kdebug("Hint::nextSecond()\n");
 	secs--;
 	return secs;
 }
@@ -123,8 +123,10 @@ void HintManager::deleteHint(void)
 	kdebug("HintManager::deleteHint()\n");
 
 	for ( int i = 0; i < hints.count(); i++ )
+	{
 		if (!(hints[i]->nextSecond()))
 		{
+			grid->removeItem(hints[i]);
 			delete hints[i];
 			hints.remove(hints.at(i));
 			i--;
@@ -132,10 +134,12 @@ void HintManager::deleteHint(void)
 			{
 				hint_timer->stop();
 				hide();
+				kdebug("HintManager::deleteHint hints is empty !!\n");
 				return;
 			}
 			setHint();
 		}
+	}
 }
 
 void HintManager::addHint(const QString& text, const QPixmap& pixmap,  const QFont &font, const QColor &color, const QColor &bgcolor, unsigned int timeout)
@@ -144,7 +148,7 @@ void HintManager::addHint(const QString& text, const QPixmap& pixmap,  const QFo
 
 	hints.append(new Hint(this, text, pixmap, timeout));
 	int i = hints.count()-1;
-	grid->addMultiCellLayout(hints[i], i, i, 0, 1, Qt::AlignCenter);
+	grid->addItem(hints[i]);
 	hints[i]->setLookHint(font, color, bgcolor);
 	hints[i]->show();
 	setHint();

@@ -59,6 +59,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   przez u¿ytkownika przegl±darce WWW (chilek)
 * libgadu z pakietu kadu linkowane jest statycznie. w razie czego pozosta³a
   opcja --with-existing-libgadu (adrian)
+* ma³e poprawki optymalizuj±ce do dymków (mast3r)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci

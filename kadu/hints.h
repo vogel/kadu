@@ -23,13 +23,13 @@ class Hint : public QHBoxLayout
 		unsigned int secs;
 
 	public:
-		Hint(QWidget *parent, const QString&, const QPixmap&, unsigned int);
+		Hint(QWidget *parent, const QString &text, const QPixmap &pixmap, unsigned int timeout);
 		~Hint();
 
 	public slots:
 		bool nextSecond();
 		void show();
-		void setLookHint(const QFont&, const QColor&, const QColor&);
+		void setLookHint(const QFont &, const QColor &, const QColor &);
 };
 
 class HintManager : public QFrame
