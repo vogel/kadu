@@ -79,6 +79,9 @@ struct config {
 	bool addtodescription;
 	QRect geometry;
 
+	bool defaultwebbrowser;
+	QString webbrowser;
+
 	bool smsbuildin;
 	char * smsapp;
 	bool smscustomconf;

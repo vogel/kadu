@@ -76,6 +76,9 @@ class ConfigDialog : public QTabDialog	{
 		QLineEdit *e_chatprunelen;
 		QCheckBox *b_msgacks;
 		QCheckBox *b_blinkchattitle;
+		QHBox     *webhbox1;
+		QCheckBox *b_defwebbrowser;
+		QLineEdit *e_webbrowser;
 
 		QVGroupBox *notifybox;
 		QHBox *panebox;
@@ -149,6 +152,7 @@ class ConfigDialog : public QTabDialog	{
 		void ifDefServerEnabled(bool);
 		void ifUseProxyEnabled(bool);
 		void onSmsBuildInCheckToogle(bool);
+		void onDefWebBrowserToogle(bool);
 };
 
 #endif

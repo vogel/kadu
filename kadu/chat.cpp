@@ -15,6 +15,8 @@
 #include <qaccel.h>
 #include <qtimer.h>
 #include <qcursor.h>
+#include <qprocess.h>
+#include <qmessagebox.h>
 #include <math.h>
 
 //
@@ -353,7 +355,28 @@ void Chat::userWhois(void) {
 }
 
 void Chat::hyperlinkClicked(const QString &link) {
-	fprintf(stderr, "KK Chat::hyperlinkClicked()\n");
+	QProcess *browser;
+	QString cmd;
+	QStringList args;
+
+	if (config.defaultwebbrowser)
+		cmd = QString("konqueror %1").arg(link);
+	else {
+                if (config.webbrowser == "") {
+			QMessageBox::warning(this, i18n("WWW error"),
+				i18n("Web browser was not specified. Visit the configuration section"));
+			fprintf(stderr,"KK Chat::hyperlinkClicked(): Web browser NOT specified.\n");
+			return;
+			}
+		cmd = QString(config.webbrowser).arg(link);
+		}
+	args = QStringList::split(" ", cmd);
+	browser = new QProcess(this);
+	browser->setArguments(args);
+	if (!browser->start())
+		QMessageBox::critical(this, i18n("WWW error"),
+			i18n("Could not spawn Web browser process. Check if the Web browser is functional"));
+//	QObject::connect(smsProcess, SIGNAL(processExited()), this, SLOT(smsSigHandler()));
 }
 
 void Chat::formatMessage(bool me, QString &altnick, QString &msg, const char *time, QString &toadd) {

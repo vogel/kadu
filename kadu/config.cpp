@@ -85,6 +85,10 @@ void loadKaduConfig(void) {
 	if (config.savegeometry)
 		config.geometry = konf->readRectEntry("Geometry");
 
+	konf->setGroup("WWW");
+	config.defaultwebbrowser = konf->readBoolEntry("DefaultWebBrowser", true);
+	config.webbrowser = konf->readEntry("WebBrowser", "");
+	
 	konf->setGroup("SMS");
 	config.smsbuildin = konf->readBoolEntry("BuiltInApp",true);
 	config.smsapp = strdup(konf->readEntry("SmsApp",""));
@@ -173,6 +177,10 @@ void saveKaduConfig(void) {
 	konf->writeEntry("CheckUpdates", config.checkupdates);
 	konf->writeEntry("DisplayGroupTabs",config.grouptabs);
 	konf->writeEntry("AddToDescription",config.addtodescription);
+
+	konf->setGroup("WWW");
+	konf->writeEntry("DefaultWebBrowser", config.defaultwebbrowser);	
+	konf->writeEntry("WebBrowser", config.webbrowser);
 
 	konf->setGroup("SMS");
 	konf->writeEntry("BuiltInApp",config.smsbuildin);	
@@ -509,6 +517,28 @@ void ConfigDialog::setupTab3(void) {
 		emotheme_box->setEnabled(false);
 
 	QObject::connect(b_emoticons,SIGNAL(toggled(bool)), emotheme_box, SLOT(setEnabled(bool)));
+
+	/* WWW begin */
+	QVGroupBox *webvgrp = new QVGroupBox(box3);
+	webvgrp->setTitle(i18n("WWW options"));
+
+	b_defwebbrowser = new QCheckBox(webvgrp);
+	b_defwebbrowser->setText(i18n("Use default Web browser"));
+
+	webhbox1 = new QHBox(webvgrp);
+	webhbox1->setSpacing(5);
+	QLabel *l_webbrowser = new QLabel(webhbox1);
+	l_webbrowser->setText(i18n("Custom Web browser"));
+	e_webbrowser = new QLineEdit(webhbox1);
+	e_webbrowser->setText(config.webbrowser);
+
+	if (config.defaultwebbrowser) {
+		b_defwebbrowser->setChecked(true);
+		webhbox1->setEnabled(false);
+		}
+		
+	QObject::connect(b_defwebbrowser, SIGNAL(toggled(bool)), this, SLOT(onDefWebBrowserToogle(bool)));
+	/* WWW end */
 
 	b_chatprune = new QCheckBox(box3);
 	b_chatprune->setText(i18n("Automatically prune chat messages"));
@@ -932,6 +962,11 @@ void ConfigDialog::onSmsBuildInCheckToogle(bool toggled)
 	smshbox2->setEnabled(!toggled);
 };
 
+void ConfigDialog::onDefWebBrowserToogle(bool toggled)
+{
+	webhbox1->setEnabled(!toggled);
+};
+
 void ConfigDialog::ifDccEnabled(bool toggled) {
 	b_dccip->setEnabled(toggled);
 	b_dccfwd->setEnabled(toggled);
@@ -1155,6 +1190,8 @@ void ConfigDialog::updateConfig(void) {
 	config.chatprunelen = atoi(e_chatprunelen->text().latin1());
 	config.msgacks = b_msgacks->isChecked();
 	config.blinkchattitle = b_blinkchattitle->isChecked();
+	config.defaultwebbrowser = b_defwebbrowser->isChecked();
+	config.webbrowser = e_webbrowser->text();
 
 	config.colors.chatMyBgColor = e_chatmybgcolor->text();
 	config.colors.chatUsrBgColor = e_chatusrbgcolor->text();
