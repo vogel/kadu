@@ -16,13 +16,13 @@
 * szyfrowanie: odbierania klucza publicznego nie powoduje padów aplikacji, a ponadto
   zatwierdzenie jego zapisania powoduje uaktywnienie guzika "encryption" w rozmowie
   prowadzonej z osob±, która do nas przys³a³a swój klucz publiczny
-* sms: wysy³anie smsów (Idea) wewnêtrznym mechanizmem kadu (z wy¶wietlaniem
-  obrazka ze strony sms.idea.pl). Dwie pozosta³e sieci zostan± równie¿ wkrótce
-  zaimplementowane.
 * powiadamianie d¼wiêkiem o zmianie statusu kontaktów nastêpuje tylko wtedy, gdy
   czas jaki min±³ od ostatniego takiego zdarzenia przekracza 500ms
 * okno rozmowy: SHIFT+PageUp, PageUp - przesuwaj± historiê rozmowy do góry,
   SHIFT+PageDown, PageDown - przesuwaj± historiê rozmowy do do³u
+* sms: wysy³anie smsów wewnêtrznym mechanizmem kadu (z ew. wy¶wietlaniem
+  obrazka ze strony sms.idea.pl). Program sms Miko³aja Rydzewskiego
+  zostanie wkrótce usuniêty ze ¼róde³
 
 +++ wersja 0.3.3-pre4
 * przy imporcie listy u¿ytkowników ustawiamy domy¶lne atrybuty u¿ytkowników
