@@ -1,24 +1,53 @@
-#ifndef PLAYER_ARTS_H
-#define PLAYER_ARTS_H
+#ifndef KADU_ARTS_H
+#define KADU_ARTS_H
 #include <qobject.h>
 #include <qstring.h>
-#include <soundserver.h>
+#include <qvaluelist.h>
+#include <qmutex.h>
+#include "../sound/sound.h"
 
-using namespace Arts;
+class QProcess;
 
-class aRtsPlayerSlots : public QObject
+class aRtsDevice : public QObject
 {
 	Q_OBJECT
-		Dispatcher disp;
 	public:
-		aRtsPlayerSlots(QObject *parent=0, const char *name=0);
-		~aRtsPlayerSlots();
-		SoundServerV2 server;
-	private slots:
-		void playSound(const QString &s, bool volCntrl, double vol);
+		QMutex mutex;
+		QMutex inUse;
+		QProcess *process;
+		int sock, no;
+		bool valid;
+		aRtsDevice();
+		~aRtsDevice();
+		void deleteLater2();
+
+	public slots:
+		void processExited();
 };
 
-extern aRtsPlayerSlots *arts_player_slots;
+class aRtsPlayerRecorder : public QObject
+{
+	Q_OBJECT
+	private:
+		QMutex poolmutex;
+		QMutex busymutex;
+		QValueList<aRtsDevice *> pool;
+		QValueList<aRtsDevice *> busy;
+		int num;
+		bool finalizing;
+	public:
+		friend class aRtsDevice;
+		aRtsPlayerRecorder(QObject *parent=0, const char *name=0);
+		~aRtsPlayerRecorder();
+	public slots:
+		void openDevice(int sample_rate, int channels, SoundDevice& device);
+		void closeDevice(SoundDevice device);
+		void playSample(SoundDevice device, const int16_t* data, int length, bool& result);
+		void recordSample(SoundDevice device, int16_t* data, int length, bool& result);
+		void setFlushingEnabled(SoundDevice device, bool enabled);
+};
+
+
+extern aRtsPlayerRecorder *arts_player_recorder;
 
 #endif
-

@@ -28,6 +28,8 @@
 #include "../notify/notify.h"
 #include "sound_file.h"
 
+#include "sound_slots.h"
+
 SoundManager* sound_manager=NULL;
 SoundSlots* sound_slots;
 
@@ -35,10 +37,6 @@ extern "C" int sound_init()
 {
 	kdebugf();
 	new SoundManager("sounds", "sound.conf");
-	
-	//tymczasowo, ¿eby linker nie usun±³ nieu¿ywanych symboli (ca³ej klasy SoundFile)
-	SoundFile::setVolume(NULL,0,0);
-	
 	kdebugf2();
 	return 0;
 }
@@ -51,8 +49,7 @@ extern "C" void sound_close()
 	kdebugf2();
 }
 
-
-SoundPlayThread::SoundPlayThread(SoundDevice device)
+SamplePlayThread::SamplePlayThread(SoundDevice device)
 	: PlayingSemaphore(1), SampleSemaphore(1)
 {
 	kdebugf();
@@ -64,7 +61,7 @@ SoundPlayThread::SoundPlayThread(SoundDevice device)
 	kdebugf2();
 }
 
-void SoundPlayThread::run()
+void SamplePlayThread::run()
 {
 	kdebugf();
 	for(;;)
@@ -83,15 +80,13 @@ void SoundPlayThread::run()
 	kdebugf2();
 }
 
-void SoundPlayThread::customEvent(QCustomEvent* event)
+void SamplePlayThread::customEvent(QCustomEvent* event)
 {
 	if (event->type() == QEvent::User)
-	{
 		emit samplePlayed((SoundDevice)event->data());
-	}
 }
 
-void SoundPlayThread::playSample(const int16_t* data, int length)
+void SamplePlayThread::playSample(const int16_t* data, int length)
 {
 	kdebugf();
 	SampleSemaphore++;
@@ -101,18 +96,22 @@ void SoundPlayThread::playSample(const int16_t* data, int length)
 	kdebugf2();
 }
 
-void SoundPlayThread::stop()
+void SamplePlayThread::stop()
 {
 	kdebugf();
 	SampleSemaphore++;
 	Stopped = true;
 	PlayingSemaphore--;
-	wait();
+	if (!wait(5000))
+	{
+		kdebugm(KDEBUG_ERROR, "deadlock :|, terminating SamplePlayThread\n");
+		terminate();
+		wait(1000);
+	}
 	kdebugf2();
 }
 
-
-SoundRecordThread::SoundRecordThread(SoundDevice device)
+SampleRecordThread::SampleRecordThread(SoundDevice device)
 	: RecordingSemaphore(1), SampleSemaphore(1)
 {
 	kdebugf();
@@ -124,7 +123,7 @@ SoundRecordThread::SoundRecordThread(SoundDevice device)
 	kdebugf2();
 }
 
-void SoundRecordThread::run()
+void SampleRecordThread::run()
 {
 	kdebugf();
 	for(;;)
@@ -143,15 +142,13 @@ void SoundRecordThread::run()
 	kdebugf2();
 }
 
-void SoundRecordThread::customEvent(QCustomEvent* event)
+void SampleRecordThread::customEvent(QCustomEvent* event)
 {
 	if (event->type() == QEvent::User)
-	{
 		emit sampleRecorded((SoundDevice)event->data());
-	}
 }
 
-void SoundRecordThread::recordSample(int16_t* data, int length)
+void SampleRecordThread::recordSample(int16_t* data, int length)
 {
 	kdebugf();
 	SampleSemaphore++;
@@ -161,22 +158,31 @@ void SoundRecordThread::recordSample(int16_t* data, int length)
 	kdebugf2();
 }
 
-void SoundRecordThread::stop()
+void SampleRecordThread::stop()
 {
 	kdebugf();
 	SampleSemaphore++;
 	Stopped = true;
 	RecordingSemaphore--;
-	wait();
+	if (!wait(5000))
+	{
+		kdebugm(KDEBUG_ERROR, "deadlock :|, terminating SampleRecordThread\n");
+		terminate();
+		wait(1000);
+	}
 	kdebugf2();
 }
 
-
 SoundManager::SoundManager(const QString& name, const QString& configname)
-	:Themes(name, configname, "sound_manager")
+	: Themes(name, configname, "sound_manager")
 {
+	kdebugf();
+	simple_player_count = 0;
 	mute = false;
 	lastsoundtime.start();
+	
+	play_thread = new SoundPlayThread();
+	play_thread->start();
 
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default","Sounds"), "SoundsTab");
 	ConfigDialog::addCheckBox("Sounds", "Sounds",
@@ -214,8 +220,8 @@ SoundManager::SoundManager(const QString& name, const QString& configname)
 	ConfigDialog::addPushButton("Sounds", "Samples", QT_TRANSLATE_NOOP("@default","Test sample recording"));
 	ConfigDialog::addPushButton("Sounds", "Samples", QT_TRANSLATE_NOOP("@default","Test full duplex"));
 
-	sound_manager=this;
-	sound_slots= new SoundSlots(NULL, "sound_slots");
+	sound_manager = this;
+	sound_slots = new SoundSlots(this, "sound_slots");
 
 	ConfigDialog::registerSlotOnCreate(sound_slots, SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnApply(sound_slots, SLOT(onApplyConfigDialog()));
@@ -255,10 +261,14 @@ SoundManager::SoundManager(const QString& name, const QString& configname)
 	config_file.addVariable("Notify", "Message_Sound", true);
 
 	notify->registerNotifier(QT_TRANSLATE_NOOP("@default","Sound"), this, s);
+	kdebugf2();
 }
 
 SoundManager::~SoundManager()
 {
+	kdebugf();
+	play_thread->endThread();
+
 	ConfigDialog::unregisterSlotOnCreate(sound_slots, SLOT(onCreateConfigDialog()));
 	ConfigDialog::unregisterSlotOnApply(sound_slots, SLOT(onApplyConfigDialog()));
 	ConfigDialog::disconnectSlot("Sounds", "Play sounds", SIGNAL(toggled(bool)), sound_slots, SLOT(soundPlayer(bool)));
@@ -272,7 +282,7 @@ SoundManager::~SoundManager()
 	ConfigDialog::disconnectSlot("Sounds", "Test full duplex", SIGNAL(clicked()), sound_slots, SLOT(testFullDuplex()));
 
 	delete sound_slots;
-	sound_slots=NULL;
+	sound_slots = NULL;
 
 	ConfigDialog::removeControl("Sounds", "Test full duplex");
 	ConfigDialog::removeControl("Sounds", "Test sample recording");
@@ -297,6 +307,16 @@ SoundManager::~SoundManager()
 	ConfigDialog::removeTab("Sounds");
 
 	notify->unregisterNotifier("Sound");
+
+	play_thread->wait(2000);
+	if (play_thread->running())
+	{
+		kdebugm(KDEBUG_WARNING, "terminating play_thread!\n");
+		play_thread->terminate();
+	}
+	delete play_thread;
+
+	kdebugf2();
 }
 
 bool SoundManager::isMuted()
@@ -306,7 +326,7 @@ bool SoundManager::isMuted()
 
 void SoundManager::setMute(const bool& enable)
 {
-	mute= enable;
+	mute = enable;
 }
 
 void SoundManager::newChat(const UinsList &/*senders*/, const QString& /*msg*/, time_t /*time*/)
@@ -332,7 +352,7 @@ void SoundManager::newChat(const UinsList &/*senders*/, const QString& /*msg*/, 
 			chatsound=themePath(config_file.readEntry("Sounds", "SoundTheme"))+getThemeEntry("Chat");
 		if (QFile::exists(chatsound))
 		{
-			emit playSound(chatsound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
+			play(chatsound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
 			lastsoundtime.restart();
 		}
 		else
@@ -367,7 +387,7 @@ void SoundManager::newMessage(const UinsList &senders, const QString& /*msg*/, t
 		messagesound=themePath(config_file.readEntry("Sounds", "SoundTheme"))+getThemeEntry("Message");
 	if (QFile::exists(messagesound))
 	{
-		emit playSound(messagesound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
+		play(messagesound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
 		lastsoundtime.restart();
 	}
 	else
@@ -396,7 +416,7 @@ void SoundManager::connectionError(const QString &/*message*/)
 		conn_error_sound=themePath(config_file.readEntry("Sounds", "SoundTheme"))+getThemeEntry("ConnectionError");
 	if (QFile::exists(conn_error_sound))
 	{
-		emit playSound(conn_error_sound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
+		play(conn_error_sound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
 		lastsoundtime.restart();
 	}
 	else
@@ -425,7 +445,7 @@ void SoundManager::userChangedStatusToAvailable(const UserListElement &ule)
 		status_change_sound=themePath(config_file.readEntry("Sounds", "SoundTheme"))+getThemeEntry("StatusAvailable");
 	if (QFile::exists(status_change_sound))
 	{
-		emit playSound(status_change_sound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
+		play(status_change_sound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
 		lastsoundtime.restart();
 	}
 	else
@@ -454,7 +474,7 @@ void SoundManager::userChangedStatusToBusy(const UserListElement &ule)
 		status_change_sound=themePath(config_file.readEntry("Sounds", "SoundTheme"))+getThemeEntry("StatusBusy");
 	if (QFile::exists(status_change_sound))
 	{
-		emit playSound(status_change_sound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
+		play(status_change_sound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
 		lastsoundtime.restart();
 	}
 	else
@@ -483,7 +503,7 @@ void SoundManager::userChangedStatusToInvisible(const UserListElement &ule)
 		status_change_sound=themePath(config_file.readEntry("Sounds", "SoundTheme"))+getThemeEntry("StatusInvisible");
 	if (QFile::exists(status_change_sound))
 	{
-		emit playSound(status_change_sound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
+		play(status_change_sound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
 		lastsoundtime.restart();
 	}
 	else
@@ -512,7 +532,7 @@ void SoundManager::userChangedStatusToNotAvailable(const UserListElement &ule)
 		status_change_sound=themePath(config_file.readEntry("Sounds", "SoundTheme"))+getThemeEntry("StatusNotAvailable");
 	if (QFile::exists(status_change_sound))
 	{
-		emit playSound(status_change_sound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
+		play(status_change_sound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
 		lastsoundtime.restart();
 	}
 	else
@@ -552,7 +572,7 @@ void SoundManager::message(const QString &, const QString &message, const QMap<Q
 		message_sound=themePath(config_file.readEntry("Sounds", "SoundTheme"))+getThemeEntry("OtherMessage");
 	if (QFile::exists(message_sound))
 	{
-		emit playSound(message_sound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
+		play(message_sound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
 		lastsoundtime.restart();
 	}
 	else
@@ -582,7 +602,7 @@ void SoundManager::play(const QString &path, bool force)
 		vol=1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100;
 	}
 	if (QFile::exists(path))
-		emit playSound(path, volCntrl, vol);
+		play(path, volCntrl, vol);
 	else
 		kdebugm(KDEBUG_WARNING, "file (%s) not found\n", path.local8Bit().data());
 	kdebugf2();
@@ -604,25 +624,24 @@ SoundDevice SoundManager::openDevice(int sample_rate, int channels)
 
 void SoundManager::closeDevice(SoundDevice device)
 {
-	kdebugf2();
+	kdebugf();
 	if (PlayingThreads.contains(device))
 	{
-		SoundPlayThread* playing_thread = PlayingThreads[device];
+		SamplePlayThread* playing_thread = PlayingThreads[device];
+		disconnect(playing_thread, SIGNAL(samplePlayed(SoundDevice)), this, SIGNAL(samplePlayed(SoundDevice)));
 		playing_thread->stop();
-		PlayingThreads.remove(playing_thread);
+		PlayingThreads.remove(device);
 		delete playing_thread;
 	}
 	if (RecordingThreads.contains(device))
 	{
-		SoundRecordThread* recording_thread = RecordingThreads[device];
+		SampleRecordThread* recording_thread = RecordingThreads[device];
+		disconnect(recording_thread, SIGNAL(sampleRecorded(SoundDevice)), this, SIGNAL(sampleRecorded(SoundDevice)));
 		recording_thread->stop();
-		RecordingThreads.remove(recording_thread);
+		RecordingThreads.remove(device);
 		delete recording_thread;
 	}
 	emit closeDeviceImpl(device);
-
-	if (FlushingEnabled.contains(device))
-		FlushingEnabled.remove(device);
 
 	kdebugf2();
 }
@@ -632,14 +651,14 @@ void SoundManager::enableThreading(SoundDevice device)
 	kdebugf();
 	if (!PlayingThreads.contains(device))
 	{
-		SoundPlayThread* playing_thread = new SoundPlayThread(device);
+		SamplePlayThread* playing_thread = new SamplePlayThread(device);
 		connect(playing_thread, SIGNAL(samplePlayed(SoundDevice)), this, SIGNAL(samplePlayed(SoundDevice)));
 		playing_thread->start();
 		PlayingThreads.insert(device, playing_thread);
 	}
 	if (!RecordingThreads.contains(device))
 	{
-		SoundRecordThread* recording_thread = new SoundRecordThread(device);
+		SampleRecordThread* recording_thread = new SampleRecordThread(device);
 		connect(recording_thread, SIGNAL(sampleRecorded(SoundDevice)), this, SIGNAL(sampleRecorded(SoundDevice)));
 		recording_thread->start();
 		RecordingThreads.insert(device, recording_thread);
@@ -649,15 +668,9 @@ void SoundManager::enableThreading(SoundDevice device)
 
 void SoundManager::setFlushingEnabled(SoundDevice device, bool enabled)
 {
-	FlushingEnabled[device] = enabled;
-}
-
-bool SoundManager::flushingEnabled(SoundDevice device)
-{
-	if (FlushingEnabled.contains(device))
-		return FlushingEnabled[device];
-	else
-		return true;
+	kdebugf();
+	emit setFlushingEnabledImpl(device, enabled);
+	kdebugf2();
 }
 
 bool SoundManager::playSample(SoundDevice device, const int16_t* data, int length)
@@ -690,456 +703,125 @@ bool SoundManager::recordSample(SoundDevice device, int16_t* data, int length)
 	return result;
 }
 
+void SoundManager::connectNotify(const char *signal)
+{
+//	kdebugm(KDEBUG_INFO, ">>>%s %s\n", signal, SIGNAL(playSound(const QString&,bool,double)) );
+	if (strcmp(signal,SIGNAL(playSound(const QString&,bool,double)))==0)
+		++simple_player_count;
+}
 
-SoundSlots::SoundSlots(QObject *parent, const char *name) : QObject(parent, name)
+void SoundManager::disconnectNotify(const char *signal)
+{
+//	kdebugm(KDEBUG_INFO, ">>>%s %s\n", signal, SIGNAL(playSound(const QString&,bool,double)) );
+	if (strcmp(signal,SIGNAL(playSound(const QString&,bool,double)))==0)
+		--simple_player_count;
+}
+
+void SoundManager::play(const QString &path, bool volCntrl, double vol)
 {
 	kdebugf();
-
-	soundNames<<"Chat"<<"Message"<<"StatusAvailable"<<"StatusBusy"<<"StatusInvisible"<<
-			"StatusNotAvailable"<<"ConnectionError"<<"OtherMessage";
-	
-	soundTexts<<tr("Chat sound")<<tr("Message sound")<<tr("Status available sound")<<
-				tr("Status busy sound")<<tr("Status invisible sound")<<tr("Status not available sound")<<
-				tr("Conection error sound")<<tr("Other message");
-
-	sound_manager->setMute(!config_file.readBoolEntry("Sounds", "PlaySound"));
-	if (sound_manager->isMuted())
-	{
-		muteitem= kadu->mainMenu()->insertItem(icons_manager.loadIcon("Mute"), tr("Unmute sounds"), this, SLOT(muteUnmuteSounds()), 0, -1, 3);
-		icons_manager.registerMenuItem(kadu->mainMenu(), tr("Unmute sounds"), "Mute");
-
-		ToolBar::registerButton("Mute", tr("Unmute sounds"), this, SLOT(muteUnmuteSounds()), 0, "mute");
-	}
+	if (simple_player_count>0)
+		emit playSound(path, volCntrl, vol);
 	else
+		play_thread->tryPlay(path.local8Bit().data(), volCntrl, vol);
+	kdebugf2();
+}
+
+SoundPlayThread::SoundPlayThread()
+{
+	semaphore = new QSemaphore(100);
+	(*semaphore) += 100;
+	end = false;
+}
+
+SoundPlayThread::~SoundPlayThread()
+{
+	delete semaphore;
+}
+
+void SoundPlayThread::tryPlay(const char *path, bool volumeControl, float volume)
+{
+	kdebugf();
+	if (mutex.tryLock())
 	{
-		muteitem= kadu->mainMenu()->insertItem(icons_manager.loadIcon("Unmute"), tr("Mute sounds"), this, SLOT(muteUnmuteSounds()), 0, -1, 3);
-		icons_manager.registerMenuItem(kadu->mainMenu(), tr("Mute sounds"), "Unmute");
-		ToolBar::registerButton("Unmute", tr("Mute sounds"), this, SLOT(muteUnmuteSounds()), 0, "mute");
+		list.push_back(SndParams(path, volumeControl, volume));
+		mutex.unlock();
+		(*semaphore)--;
 	}
-
-	SamplePlayingTestMsgBox = NULL;
-	SamplePlayingTestSample = NULL;
-	SampleRecordingTestMsgBox = NULL;
-	SampleRecordingTestSample = NULL;
-	FullDuplexTestMsgBox = NULL;
-	FullDuplexTestSample = NULL;
-	
 	kdebugf2();
 }
 
-SoundSlots::~SoundSlots()
+void SoundPlayThread::run()
 {
 	kdebugf();
-	kadu->mainMenu()->removeItem(muteitem);
-	ToolBar::unregisterButton("mute");
-	kdebugf2();
-}
-
-void SoundSlots::onCreateConfigDialog()
-{
-	kdebugf();
-	QCheckBox *b_playsound= ConfigDialog::getCheckBox("Sounds", "Play sounds");
-	QCheckBox *b_volumectrl= ConfigDialog::getCheckBox("Sounds", "Enable volume control (player must support it)");
-	QGrid *g_volume= ConfigDialog::getGrid("Sounds","volume");
-	QCheckBox *b_playchatting= ConfigDialog::getCheckBox("Sounds", "Play sounds from a person whilst chatting");
-	QCheckBox *b_playinvisible= ConfigDialog::getCheckBox("Sounds", "Play chat sounds only when window is invisible");
-	QComboBox *cb_soundtheme= ConfigDialog::getComboBox("Sounds", "Sound theme");
-	cb_soundtheme->insertItem("Custom");// 0-wa pozycja
-	cb_soundtheme->insertStringList(sound_manager->themes());
-	cb_soundtheme->setCurrentText(config_file.readEntry("Sounds", "SoundTheme"));
-	cb_soundtheme->changeItem(tr("Custom"), 0);// dodanie translacji 
-	if (sound_manager->themes().contains("default"))
-		cb_soundtheme->changeItem(tr("default"), sound_manager->themes().findIndex("default")+1);
-
-	QHBox* box=ConfigDialog::getHBox("Sounds","sound_box");
-	QHBox* soundtheme=ConfigDialog::getHBox("Sounds", "sound_theme");
-	box->setEnabled(b_playsound->isChecked());
-	soundtheme->setEnabled(b_playsound->isChecked());
-
-	QListView* lv_soundfiles=ConfigDialog::getListView("Sounds","sound_files");
-	lv_soundfiles->setSorting(-1);
-	lv_soundfiles->addColumn(tr("Event"));
-	lv_soundfiles->addColumn(tr("Sound file"));
-	lv_soundfiles->setAllColumnsShowFocus(true);
-	lv_soundfiles->setColumnWidthMode(0, QListView::Maximum);
-	lv_soundfiles->setColumnWidthMode(1, QListView::Maximum);
-	lv_soundfiles->setResizeMode(QListView::LastColumn);
-	lv_soundfiles->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Ignored));
-	config_file.addVariable("Sounds", "Notify_sound", config_file.readEntry("Notify", "NotifySound"));
-	
-	soundfiles.clear();	
-	if (cb_soundtheme->currentText() == tr("Custom"))
-		for (QStringList::iterator it=soundNames.begin(); it!=soundNames.end(); ++it)
-			soundfiles[*it]=config_file.readEntry("Sounds", (*it)+"_sound");
-	else
+	while (!end)
 	{
-		QPushButton *choose = ConfigDialog::getPushButton("Sounds","Choose");
-		QPushButton *clear = ConfigDialog::getPushButton("Sounds","Clear");
-		choose->setEnabled(false);
-		clear->setEnabled(false);
-
-		for (QStringList::iterator it=soundNames.begin(); it!=soundNames.end(); ++it)
-			soundfiles[*it]=sound_manager->themePath()+sound_manager->getThemeEntry(*it);
-	}
-	
-	QStringList::iterator it2=soundTexts.begin();
-	for (QStringList::iterator it=soundNames.begin(); it!=soundNames.end(); ++it, ++it2)
-		new QListViewItem(lv_soundfiles, *it2, soundfiles[*it]);
-
-	QVBox* util_box=ConfigDialog::getVBox("Sounds","util_box");
-	util_box->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum));
-	
-	soundPlayer(b_playsound->isChecked());
-	
-	g_volume->setEnabled(b_playsound->isChecked() && b_volumectrl->isChecked());
-	b_playinvisible->setEnabled(b_playsound->isChecked()&& b_playchatting->isChecked());
-
-	connect(b_volumectrl,SIGNAL(toggled(bool)), g_volume, SLOT(setEnabled(bool)));
-	connect(b_playchatting,SIGNAL(toggled(bool)), b_playinvisible, SLOT(setEnabled(bool)));
-
-	SelectPaths *selpaths= ConfigDialog::getSelectPaths("Sounds", "Sound paths");
-	QStringList pl(QStringList::split(";", config_file.readEntry("Sounds", "SoundPaths")));
-	selpaths->setPathList(pl);
-	kdebugf2();
-}
-
-void SoundSlots::muteUnmuteSounds()
-{
-	kdebugf();
-	bool mute=!sound_manager->isMuted();
-	sound_manager->setMute(mute);
-	config_file.writeEntry("Sounds", "PlaySound", !mute);
-	
-	if (ConfigDialog::dialogOpened())
-	{
-		QCheckBox *box=ConfigDialog::getCheckBox("Sounds", "Play sounds");
-		if (box->isChecked()==mute)
+		(*semaphore)++;
+		mutex.lock();
+		kdebugmf(KDEBUG_INFO, "locked\n");
+		if (end)
 		{
-			box->setChecked(!mute);
-			soundPlayer(!mute, true);
+			mutex.unlock();
+			break;
 		}
-	}
-
-	if (mute)
-	{
-		ToolBar::refreshIcons(tr("Mute sounds"), "Mute", tr("Unmute sounds"));
-		kadu->menuBar()->changeItem(muteitem, icons_manager.loadIcon("Mute"), tr("Unmute sounds"));
-	}
-	else
-	{
-		ToolBar::refreshIcons(tr("Unmute sounds"), "Unmute", tr("Mute sounds"));
-		kadu->menuBar()->changeItem(muteitem, icons_manager.loadIcon("Unmute"), tr("Mute sounds"));
-	}
-
+		SndParams params=list.first();
+		list.pop_front();
+		
+		play(params.filename.local8Bit().data(),
+				params.volumeControl, params.volume);
+		mutex.unlock();
+		kdebugmf(KDEBUG_INFO, "unlocked\n");
+	}//end while(!end)
 	kdebugf2();
 }
 
-
-void SoundSlots::soundPlayer(bool value, bool toolbarChanged)
+bool SoundPlayThread::play(const char *path, bool volumeControl, float volume)
 {
-	kdebugf();
-	QCheckBox *b_volumectrl= ConfigDialog::getCheckBox("Sounds", "Enable volume control (player must support it)");
-	QCheckBox *b_playchatting= ConfigDialog::getCheckBox("Sounds", "Play sounds from a person whilst chatting");
-	QCheckBox *b_playinvisible= ConfigDialog::getCheckBox("Sounds", "Play chat sounds only when window is invisible");
-
-	ConfigDialog::getHBox("Sounds","sound_box")->setEnabled(value);
-	ConfigDialog::getHBox("Sounds","sound_theme")->setEnabled(value);
-
-	b_volumectrl->setEnabled(value);
-	ConfigDialog::getGrid("Sounds","volume")->setEnabled(value && b_volumectrl->isChecked());
-	b_playchatting->setEnabled(value);
-	b_playinvisible->setEnabled(value && b_playchatting->isChecked());
-	if (value==sound_manager->isMuted() && !toolbarChanged)
-		muteUnmuteSounds();
-	kdebugf2();
-}
-
-void SoundSlots::clearSoundFile()
-{
-	kdebugf();
-	QListViewItem *item=ConfigDialog::getListView("Sounds", "sound_files")->currentItem();
-	if (!item->isSelected())
-		return;
-	item->setText(1, "");
-	kdebugf2();
-}
-
-void SoundSlots::chooseSoundFile()
-{
-	kdebugf();
-	QString start=QDir::rootDirPath();
-	QListViewItem *item=ConfigDialog::getListView("Sounds", "sound_files")->currentItem();
-	if (!item->isSelected())
-		return;
-
-	QString p=item->text(1);
-	if (QFile(p).exists())
-		start=p;
+	bool ret=false;
+	SoundFile *sound=new SoundFile(path);
 	
-	QString s(QFileDialog::getOpenFileName( start, "Audio Files (*.wav *.au *.raw)"));
-	if (s.length())
-		item->setText(1,s);
-	kdebugf2();
-}
-
-
-void SoundSlots::testSoundFile()
-{
-	kdebugf();
-	QListViewItem *item=ConfigDialog::getListView("Sounds", "sound_files")->currentItem();
-	if (!item->isSelected())
-		return;
-	sound_manager->play(item->text(1), true);
-	kdebugf2();
-}
-
-void SoundSlots::chooseSoundTheme(const QString& string)
-{
-	kdebugf();
-	QString str=string;
-	if (string == tr("Custom"))
-		str= "Custom";
-	else if (string == tr("default"))
-		str= "default";
-	sound_manager->setTheme(str);
-
-	QPushButton *choose = ConfigDialog::getPushButton("Sounds","Choose");
-	QPushButton *clear = ConfigDialog::getPushButton("Sounds","Clear");
-
-	QString chatfile;
-	QString messagefile;
-	QString notifyfile;
-
-	QListView* lv_soundfiles=ConfigDialog::getListView("Sounds", "sound_files");
-	lv_soundfiles->clear();
-	soundfiles.clear();	
-	if (str == "Custom")
+	if (!sound->isOk())
 	{
-		for (QStringList::iterator it=soundNames.begin(); it!=soundNames.end(); ++it)
-			soundfiles[*it]=config_file.readEntry("Sounds", (*it)+"_sound");
-		choose->setEnabled(true);
-		clear->setEnabled(true);
-	}
-	else
-	{
-		for (QStringList::iterator it=soundNames.begin(); it!=soundNames.end(); ++it)
-			soundfiles[*it]=sound_manager->themePath()+sound_manager->getThemeEntry(*it);
-		choose->setEnabled(false);
-		clear->setEnabled(false);
+		kdebugmf(KDEBUG_ERROR, "sound is not ok?\n");
+		delete sound;
+		return false;
 	}
 
-	QStringList::iterator it2=soundTexts.begin();
-	for (QStringList::iterator it=soundNames.begin(); it!=soundNames.end(); ++it, ++it2)
-		new QListViewItem(lv_soundfiles, *it2, soundfiles[*it]);
-	kdebugf2();
-}
+	kdebugm(KDEBUG_INFO, "\n");
+	kdebugm(KDEBUG_INFO, "length:   %d\n", sound->length);
+	kdebugm(KDEBUG_INFO, "speed:    %d\n", sound->speed);
+	kdebugm(KDEBUG_INFO, "channels: %d\n", sound->channels);
 
+	if (volumeControl)
+		sound->setVolume(volume);
 
-void SoundSlots::selectedPaths(const QStringList& paths)
-{
-	kdebugf();
-	sound_manager->setPaths(paths);
-	QComboBox* cb_soundtheme= ConfigDialog::getComboBox("Sounds","Sound theme");
-	QString current= cb_soundtheme->currentText();
+	SoundDevice dev;
+	dev = sound_manager->openDevice(sound->speed, sound->channels);
+	ret = sound_manager->playSample(dev, sound->data, sound->length*sizeof(sound->data[0]));
+	sound_manager->closeDevice(dev);
 	
-	SelectPaths* soundPath = ConfigDialog::getSelectPaths("Sounds","Sound paths");
-	soundPath->setPathList(sound_manager->additionalPaths());
-	
-	cb_soundtheme->clear();
-	cb_soundtheme->insertItem("Custom");// 0-wa pozycja
-	cb_soundtheme->insertStringList(sound_manager->themes());
-	cb_soundtheme->setCurrentText(current);
-	cb_soundtheme->changeItem(tr("Custom"), 0);// dodanie translacji 
-
-	if (paths.contains("default"))
-		cb_soundtheme->changeItem(tr("default"), paths.findIndex("default")+1);
-	kdebugf2();
+	delete sound;
+	return ret;
 }
 
-void SoundSlots::onApplyConfigDialog()
+void SoundPlayThread::endThread()
 {
-	kdebugf();
-	QComboBox *cb_soundtheme= ConfigDialog::getComboBox("Sounds", "Sound theme");
-	QString theme;
-	if (cb_soundtheme->currentText() == tr("Custom"))
-	{
-		QListView* lv_soundfiles=ConfigDialog::getListView("Sounds", "sound_files");
-		theme= "Custom";
-
-		QStringList::iterator it2=soundTexts.begin();
-		for (QStringList::iterator it=soundNames.begin(); it!=soundNames.end(); ++it, ++it2)
-			config_file.writeEntry("Sounds", (*it)+"_sound", lv_soundfiles->findItem(*it2, 0)->text(1));
-	}
-	else
-		theme= cb_soundtheme->currentText();
-	if (theme == tr("default"))
-		theme= "default";
-
-	config_file.writeEntry("Sounds", "SoundPaths", sound_manager->additionalPaths().join(";"));
-	config_file.writeEntry("Sounds", "SoundTheme", theme);
-	kdebugf2();
+	mutex.lock();
+	end = true;
+	mutex.unlock();
+	(*semaphore)--;
 }
 
-void SoundSlots::testSamplePlaying()
+SndParams::SndParams(QString fm, bool volCntrl, float vol) :
+			filename(fm), volumeControl(volCntrl), volume(vol)
 {
-	kdebugf();
-	if (SamplePlayingTestMsgBox != NULL)
-		return;
-	QString chatsound;
-	if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
-		chatsound = config_file.readEntry("Sounds", "Chat_sound");
-	else 
-		chatsound = sound_manager->themePath(config_file.readEntry("Sounds", "SoundTheme")) + sound_manager->getThemeEntry("Chat");
-
-	QFile file(chatsound);
-	if (!file.open(IO_ReadOnly))
-	{
-		MessageBox::wrn(tr("Opening test sample file failed."));
-		return;
-	}
-	// alokujemy jeden int16_t wiêcej w razie gdyby file.size() nie
-	// by³o wielokrotno¶ci± sizeof(int16_t)
-	SamplePlayingTestSample = new int16_t[file.size() / sizeof(int16_t) + 1];
-	if (file.readBlock((char*)SamplePlayingTestSample, file.size()) != file.size())
-	{
-		MessageBox::wrn(tr("Reading test sample file failed."));
-		file.close();
-		delete[] SamplePlayingTestSample;
-		SamplePlayingTestSample = NULL;
-		return;	
-	}
-	file.close();
-	
-	SamplePlayingTestDevice = sound_manager->openDevice(11025);
-	if (SamplePlayingTestDevice == NULL)
-	{
-		MessageBox::wrn(tr("Opening sound device failed."));
-		delete[] SamplePlayingTestSample;
-		SamplePlayingTestSample = NULL;
-		return;
-	}
-	
-	sound_manager->enableThreading(SamplePlayingTestDevice);
-	connect(sound_manager, SIGNAL(samplePlayed(SoundDevice)), this, SLOT(samplePlayingTestSamplePlayed(SoundDevice)));
-
-	SamplePlayingTestMsgBox = new MessageBox(tr("Testing sample playing. You should hear some sound now."));
-	SamplePlayingTestMsgBox->show();
-
-	sound_manager->playSample(SamplePlayingTestDevice, SamplePlayingTestSample, file.size());
-	kdebugf2();
 }
 
-void SoundSlots::samplePlayingTestSamplePlayed(SoundDevice device)
+SndParams::SndParams(const SndParams &p) : filename(p.filename),
+						volumeControl(p.volumeControl), volume(p.volume)
 {
-	kdebugf();
-	if (device == SamplePlayingTestDevice)
-	{
-		disconnect(sound_manager, SIGNAL(samplePlayed(SoundDevice)), this, SLOT(samplePlayingTestSamplePlayed(SoundDevice)));
-		sound_manager->closeDevice(device);
-		delete[] SamplePlayingTestSample;
-		SamplePlayingTestSample = NULL;
-		SamplePlayingTestMsgBox->deleteLater();
-		SamplePlayingTestMsgBox = NULL;
-	}
-	kdebugf2();
 }
 
-void SoundSlots::testSampleRecording()
+SndParams::SndParams()
 {
-	kdebugf();
-	if (SampleRecordingTestMsgBox != NULL)
-		return;
-	SampleRecordingTestDevice = sound_manager->openDevice(8000);
-	if (SampleRecordingTestDevice == NULL)
-	{
-		MessageBox::wrn(tr("Opening sound device failed."));
-		return;
-	}
-	SampleRecordingTestSample = new int16_t[8000 * 3];
-
-	sound_manager->enableThreading(SampleRecordingTestDevice);
-	connect(sound_manager, SIGNAL(sampleRecorded(SoundDevice)), this, SLOT(sampleRecordingTestSampleRecorded(SoundDevice)));
-	connect(sound_manager, SIGNAL(samplePlayed(SoundDevice)), this, SLOT(sampleRecordingTestSamplePlayed(SoundDevice)));
-
-	SampleRecordingTestMsgBox = new MessageBox(tr("Testing sample recording. Please talk now (3 seconds)."));
-	SampleRecordingTestMsgBox->show();
-
-	sound_manager->recordSample(SampleRecordingTestDevice, SampleRecordingTestSample, sizeof(int16_t) * 8000 * 3);
-	kdebugf2();
-}
-
-void SoundSlots::sampleRecordingTestSampleRecorded(SoundDevice device)
-{
-	kdebugf();
-	if (device == SampleRecordingTestDevice)
-	{
-		delete SampleRecordingTestMsgBox;
-		SampleRecordingTestMsgBox = new MessageBox(tr("You should hear your recorded sample now."));
-		SampleRecordingTestMsgBox->show();		
-		sound_manager->playSample(device, SampleRecordingTestSample, sizeof(int16_t) * 8000 * 3);
-	}
-	kdebugf2();
-}
-
-void SoundSlots::sampleRecordingTestSamplePlayed(SoundDevice device)
-{
-	kdebugf();
-	if (device == SampleRecordingTestDevice)
-	{
-		disconnect(sound_manager, SIGNAL(sampleRecorded(SoundDevice)), this, SLOT(sampleRecordingTestSampleRecorded(SoundDevice)));
-		disconnect(sound_manager, SIGNAL(samplePlayed(SoundDevice)), this, SLOT(sampleRecordingTestSamplePlayed(SoundDevice)));
-		sound_manager->closeDevice(device);
-		delete[] SampleRecordingTestSample;
-		SampleRecordingTestSample = NULL;
-		SampleRecordingTestMsgBox->deleteLater();
-		SampleRecordingTestMsgBox = NULL;
-	}
-	kdebugf2();
-}
-
-void SoundSlots::testFullDuplex()
-{
-	kdebugf();
-	if (FullDuplexTestMsgBox != NULL)
-		return;
-	FullDuplexTestDevice = sound_manager->openDevice(8000);
-	if (FullDuplexTestDevice == NULL)
-	{
-		MessageBox::wrn(tr("Opening sound device failed."));
-		return;
-	}
-	FullDuplexTestSample = new int16_t[8000];
-
-	sound_manager->enableThreading(FullDuplexTestDevice);
-	connect(sound_manager, SIGNAL(sampleRecorded(SoundDevice)), this, SLOT(fullDuplexTestSampleRecorded(SoundDevice)));
-
-	FullDuplexTestMsgBox = new MessageBox(tr("Testing fullduplex. Please talk now.\nYou should here it with one second delay."), MessageBox::OK);
-	connect(FullDuplexTestMsgBox, SIGNAL(okPressed()), this, SLOT(closeFullDuplexTest()));
-	FullDuplexTestMsgBox->show();
-
-	sound_manager->recordSample(FullDuplexTestDevice, FullDuplexTestSample, sizeof(int16_t) * 8000);
-	kdebugf2();
-}
-
-void SoundSlots::fullDuplexTestSampleRecorded(SoundDevice device)
-{
-	kdebugf();
-	if (device == FullDuplexTestDevice)
-	{
-		sound_manager->playSample(device, FullDuplexTestSample, sizeof(int16_t) * 8000);
-		sound_manager->recordSample(device, FullDuplexTestSample, sizeof(int16_t) * 8000);
-	}
-	kdebugf2();
-}
-
-void SoundSlots::closeFullDuplexTest()
-{
-	kdebugf();
-	disconnect(sound_manager, SIGNAL(sampleRecorded(SoundDevice)), this, SLOT(fullDuplexTestSampleRecorded(SoundDevice)));
-	sound_manager->closeDevice(FullDuplexTestDevice);
-	delete[] FullDuplexTestSample;
-	FullDuplexTestSample = NULL;
-	FullDuplexTestMsgBox->deleteLater();
-	FullDuplexTestMsgBox = NULL;
-	kdebugf2();
 }

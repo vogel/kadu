@@ -7,6 +7,8 @@
 #include <qstringlist.h>
 #include <qmap.h>
 #include <qthread.h>
+#include <qmutex.h>
+#include <qsemaphore.h>
 
 #include "config_file.h"
 #include "modules.h"
@@ -24,7 +26,7 @@ typedef void* SoundDevice;
 	To jest klasa u¿ywana wewnêtrznie przez klasê SoundManager
 	i nie powiniene¶ mieæ potrzeby jej u¿ywania.
 **/
-class SoundPlayThread : public QObject, public QThread
+class SamplePlayThread : public QObject, public QThread
 {
 	Q_OBJECT
 
@@ -41,7 +43,7 @@ class SoundPlayThread : public QObject, public QThread
 		virtual void customEvent(QCustomEvent* event);
 
 	public:
-		SoundPlayThread(SoundDevice device);
+		SamplePlayThread(SoundDevice device);
 		void playSample(const int16_t* data, int length);
 		void stop();
 		
@@ -53,7 +55,7 @@ class SoundPlayThread : public QObject, public QThread
 	To jest klasa u¿ywana wewnêtrznie przez klasê SoundManager
 	i nie powiniene¶ mieæ potrzeby jej u¿ywania.
 **/
-class SoundRecordThread : public QObject, public QThread
+class SampleRecordThread : public QObject, public QThread
 {
 	Q_OBJECT
 
@@ -70,7 +72,7 @@ class SoundRecordThread : public QObject, public QThread
 		virtual void customEvent(QCustomEvent* event);
 
 	public:
-		SoundRecordThread(SoundDevice device);
+		SampleRecordThread(SoundDevice device);
 		void recordSample(int16_t* data, int length);
 		void stop();
 		
@@ -78,59 +80,58 @@ class SoundRecordThread : public QObject, public QThread
 		void sampleRecorded(SoundDevice device);
 };
 
-class SoundSlots : public QObject
+/**
+	To jest klasa u¿ywana wewnêtrznie przez klasê SoundManager
+	i nie powiniene¶ mieæ potrzeby jej u¿ywania.
+**/
+class SndParams
 {
-	Q_OBJECT
-	private:
-		int muteitem;
-		QMap<QString, QString> soundfiles;
-		QStringList soundNames;
-		QStringList soundTexts;
-		MessageBox* SamplePlayingTestMsgBox;
-		SoundDevice SamplePlayingTestDevice;
-		int16_t* SamplePlayingTestSample;
-		MessageBox* SampleRecordingTestMsgBox;
-		SoundDevice SampleRecordingTestDevice;
-		int16_t* SampleRecordingTestSample;
-		MessageBox* FullDuplexTestMsgBox;
-		SoundDevice FullDuplexTestDevice;
-		int16_t* FullDuplexTestSample;
-
-	private slots:
-		void soundPlayer(bool value, bool toolbarChanged=false);
-		void onCreateConfigDialog();
-		void onApplyConfigDialog();
-		void chooseSoundTheme(const QString& string);
-		void chooseSoundFile();
-		void clearSoundFile();
-		void testSoundFile();
-		void selectedPaths(const QStringList& paths);
-		void muteUnmuteSounds();
-		void testSamplePlaying();
-		void samplePlayingTestSamplePlayed(SoundDevice device);
-		void testSampleRecording();
-		void sampleRecordingTestSampleRecorded(SoundDevice device);
-		void sampleRecordingTestSamplePlayed(SoundDevice device);
-		void testFullDuplex();
-		void fullDuplexTestSampleRecorded(SoundDevice device);
-		void closeFullDuplexTest();
-
 	public:
-		SoundSlots(QObject *parent=0, const char *name=0);
-		~SoundSlots();
+		SndParams(QString fm, bool volCntrl=false, float vol=1);
+		SndParams(const SndParams &p);
+		SndParams();
+
+		QString filename;
+		bool volumeControl;
+		float volume;
+};
+
+/**
+	To jest klasa u¿ywana wewnêtrznie przez klasê SoundManager
+	i nie powiniene¶ mieæ potrzeby jej u¿ywania.
+**/
+class SoundPlayThread : public QThread
+{
+	public:
+		SoundPlayThread();
+		~SoundPlayThread();
+		void run();
+		void tryPlay(const char *path, bool volCntrl=false, float volume=1.0);
+		void endThread();
+
+	private:
+		static bool play(const char *path, bool volCntrl=false, float volume=1.0);
+		QMutex mutex;
+		QSemaphore *semaphore;
+		bool end;
+		QValueList<SndParams> list;
 };
 
 class SoundManager : public Themes
 {
     Q_OBJECT
 	private:
-		friend class SoundPlayThread;
-		friend class SoundRecordThread;
+		friend class SamplePlayThread;
+		friend class SampleRecordThread;
 		QTime lastsoundtime;
 		bool mute;
-		QMap<SoundDevice, SoundPlayThread*> PlayingThreads;
-		QMap<SoundDevice, SoundRecordThread*> RecordingThreads;
-		QMap<SoundDevice, bool> FlushingEnabled;
+		QMap<SoundDevice, SamplePlayThread*> PlayingThreads;
+		QMap<SoundDevice, SampleRecordThread*> RecordingThreads;
+		SoundPlayThread *play_thread;
+		
+		int simple_player_count;
+		virtual void connectNotify(const char *signal);
+		virtual void disconnectNotify(const char *signal);
 
 	private slots:
 		void newChat(const UinsList &senders, const QString& msg, time_t time);
@@ -149,6 +150,7 @@ class SoundManager : public Themes
 
 	public slots:
 		void play(const QString &path, bool force=false);
+		void play(const QString &path, bool volCntrl, double vol);
 		void setMute(const bool& enable);
 
 	public:
@@ -214,11 +216,6 @@ class SoundManager : public Themes
 			po sobie.
 		**/
 		void setFlushingEnabled(SoundDevice device, bool enabled);
-		/**
-			Zwraca aktualne ustawienie dokonane przy pomocy
-			setFlushingEnabled. Standardowo jest to true.
-		**/
-		bool flushingEnabled(SoundDevice device);
 		/**
 			Odtwarza próbkê d¼wiêkow±. Standardowo jest to
 			operacja blokuj±ca. Mo¿e byæ wywo³ana z innego
@@ -326,6 +323,9 @@ class SoundManager : public Themes
 			@result zwrócony rezultat operacji - true je¶li nagrywanie zakoñczy³o siê powodzeniem.
 		**/
 		void recordSampleImpl(SoundDevice device, int16_t* data, int length, bool& result);		
+		/**
+		**/
+		void setFlushingEnabledImpl(SoundDevice device, bool enabled);
 };
 
 extern SoundManager* sound_manager;

@@ -1,0 +1,10 @@
+CFLAGS:=$(CFLAGS) `artsc-config --cflags`
+LDFLAGS:=$(LDFLAGS) `artsc-config --libs`
+
+all: arts_connector
+	ln -f arts_connector ../data/
+
+arts_connector: arts_connector.c
+
+clean:
+	rm -f arts_connector ../data/arts_connector

@@ -1,5 +1,5 @@
-MODULE_SOURCES="sound.cpp sound_file.cpp"
-MODULE_MOC_HEADERS="sound.h"
+MODULE_SOURCES="sound.cpp sound_file.cpp sound_slots.cpp"
+MODULE_MOC_HEADERS="sound.h sound_slots.h"
 MODULE_INCLUDES="sndfile.h"
 MODULE_INCLUDES_PATH="/usr/local/include /usr/include"
 MODULE_LIBS=sndfile

@@ -50,9 +50,12 @@ struct OSSSoundDevice
 {
 	int fd;
 	int max_buf_size;
+	bool flushing;
+	int sample_rate;
+	int channels;
 };
 
-int OSSPlayThread::write_all(int fd, const char *data, int length, int chunksize)
+int OSSPlayerSlots::write_all(int fd, const char *data, int length, int chunksize)
 {
 	int res = 0, written = 0;
 	
@@ -60,6 +63,7 @@ int OSSPlayThread::write_all(int fd, const char *data, int length, int chunksize
 		int towrite = (chunksize < length - written) ? chunksize : length - written;
 		res = write(fd, data + written, towrite);
 		if (res == -1) {
+			kdebugmf(KDEBUG_WARNING, "%s (%d)\n", strerror(errno), errno);
 			if (errno == EAGAIN)
 				continue;
 			else
@@ -72,48 +76,10 @@ int OSSPlayThread::write_all(int fd, const char *data, int length, int chunksize
 	return res;
 }
 
-bool OSSPlayThread::play(const char *path, const char *device, bool volumeControl, float volume)
-{
-	bool ret=false;
-	SoundFile *sound=new SoundFile(path);
-	
-	if (!sound->isOk())
-	{
-		kdebugmf(KDEBUG_ERROR, "sound is not ok?\n");
-		delete sound;
-		return false;
-	}
-
-	kdebugm(KDEBUG_INFO, "\n");
-	kdebugm(KDEBUG_INFO, "length:   %d\n", sound->length);
-	kdebugm(KDEBUG_INFO, "speed:    %d\n", sound->speed);
-	kdebugm(KDEBUG_INFO, "channels: %d\n", sound->channels);
-
-	if (volumeControl)
-		sound->setVolume(volume);
-
-	SoundDevice dev;
-	oss_player_slots->openDevice(sound->speed, sound->channels, dev);
-	oss_player_slots->playSample(dev, sound->data, sound->length*sizeof(sound->data[0]), ret);
-	oss_player_slots->closeDevice(dev);
-	
-	delete sound;
-	return ret;
-}
-
-
-OSSPlayerSlots::OSSPlayerSlots(QObject *parent, const char *name) : QObject(parent, name), thread(NULL)
+OSSPlayerSlots::OSSPlayerSlots(QObject *parent, const char *name) : QObject(parent, name)
 {
 	kdebugf();
-	error=true;
-	thread=new OSSPlayThread();
-	if (!thread)
-		return;
-	thread->start();
-	error=false;
 
-	connect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
-		this, SLOT(playSound(const QString &, bool, double)));
 	connect(sound_manager, SIGNAL(openDeviceImpl(int, int, SoundDevice&)),
 		this, SLOT(openDevice(int, int, SoundDevice&)));
 	connect(sound_manager, SIGNAL(closeDeviceImpl(SoundDevice)),
@@ -122,6 +88,8 @@ OSSPlayerSlots::OSSPlayerSlots(QObject *parent, const char *name) : QObject(pare
 		this, SLOT(playSample(SoundDevice, const int16_t*, int, bool&)));
 	connect(sound_manager, SIGNAL(recordSampleImpl(SoundDevice, int16_t*, int, bool&)),
 		this, SLOT(recordSample(SoundDevice, int16_t*, int, bool&)));
+	connect(sound_manager, SIGNAL(setFlushingEnabledImpl(SoundDevice, bool)),
+		this, SLOT(setFlushingEnabled(SoundDevice, bool)));
 	kdebugf2();
 }
 
@@ -129,8 +97,6 @@ OSSPlayerSlots::~OSSPlayerSlots()
 {
 	kdebugf();
 
-	disconnect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
-			this, SLOT(playSound(const QString &, bool, double)));
 	disconnect(sound_manager, SIGNAL(openDeviceImpl(int, int, SoundDevice&)),
 		this, SLOT(openDevice(int, int, SoundDevice&)));
 	disconnect(sound_manager, SIGNAL(closeDeviceImpl(SoundDevice)),
@@ -139,49 +105,9 @@ OSSPlayerSlots::~OSSPlayerSlots()
 		this, SLOT(playSample(SoundDevice, const int16_t*, int, bool&)));
 	disconnect(sound_manager, SIGNAL(recordSampleImpl(SoundDevice, int16_t*, int, bool&)),
 		this, SLOT(recordSample(SoundDevice, int16_t*, int, bool&)));
+	disconnect(sound_manager, SIGNAL(setFlushingEnabledImpl(SoundDevice, bool)),
+		this, SLOT(setFlushingEnabled(SoundDevice, bool)));
 
-	if (thread)
-	{
-		thread->mutex.lock();
-		thread->end=true;
-		thread->mutex.unlock();
-		(*(thread->semaphore))--;
-		thread->wait();
-		delete thread;
-		thread=NULL;
-	}
-	kdebugf2();
-}
-
-void OSSPlayerSlots::play(const QString &s, bool volCntrl, double vol, const QString &device)
-{
-	kdebugf();
-	QString t;
-
-	if (device==QString::null)
-		t=config_file.readEntry("Sounds","OutputDevice", "/dev/dsp");
-	else
-		t=device;
-
-	if (thread->mutex.tryLock())
-	{
-		thread->list.push_back(SndParams(s,t,volCntrl,vol));
-		thread->mutex.unlock();
-		(*(thread->semaphore))--;
-	}
-	kdebugf2();
-}
-
-void OSSPlayerSlots::playSound(const QString &s, bool volCntrl, double vol)
-{
-	kdebugf();
-	QString dev=QString::null;
-	if (ConfigDialog::dialogOpened())
-	{
-		QLineEdit *e_sounddev= ConfigDialog::getLineEdit("Sounds", "Path:", "device_path");
-		dev=e_sounddev->text();
-	}
-	play(s, volCntrl, vol, dev);
 	kdebugf2();
 }
 
@@ -243,10 +169,30 @@ void OSSPlayerSlots::openDevice(int sample_rate, int channels, SoundDevice& devi
 		return;
 	}
 
-	kdebugm(KDEBUG_FUNCTION_END, "Setup successful, fd=%d\n", fd);
+	int caps;
+	if (ioctl(fd, SNDCTL_DSP_GETCAPS, &caps)<0)
+	{
+		kdebugm(KDEBUG_ERROR, "Error getting capabilities\n");
+		close(fd);
+		return;
+	}
+	else
+	{
+		kdebugm(KDEBUG_INFO, "soundcard capabilities: rev=%d, duplex=%d, "
+						"realtime=%d, batch=%d, coproc=%d, trigger=%d, "
+						"mmap=%d, multi=%d, bind=%d\n",
+			caps&DSP_CAP_REVISION, (caps&DSP_CAP_DUPLEX)!=0, (caps&DSP_CAP_REALTIME)!=0,
+			(caps&DSP_CAP_BATCH)!=0, (caps&DSP_CAP_COPROC)!=0, (caps&DSP_CAP_TRIGGER)!=0,
+			(caps&DSP_CAP_MMAP)!=0, (caps&DSP_CAP_MULTI)!=0, (caps&DSP_CAP_BIND)!=0);
+	}
+	
+
+	kdebugm(KDEBUG_FUNCTION_END, "Setup successful, fd=%d maxbuf=%d\n", fd, maxbufsize);
 	OSSSoundDevice* dev = new OSSSoundDevice;
 	dev->fd = fd;
 	dev->max_buf_size = maxbufsize;
+	dev->sample_rate = sample_rate;
+	dev->channels = channels;
 	device = (SoundDevice) dev;
 }
 
@@ -254,11 +200,17 @@ void OSSPlayerSlots::closeDevice(SoundDevice device)
 {
 	kdebugf();
 	OSSSoundDevice* dev = (OSSSoundDevice*)device;
-	if (dev)
+	if (!dev)
+	{
+		kdebugm(KDEBUG_WARNING, "cannot close device, device not opened\n");
+		return;
+	}
+	if (dev->fd!=-1)
 	{
 		close(dev->fd);
-		delete dev;
+		dev->fd = -1;
 	}
+	delete dev;
 	device = NULL;
 	kdebugf2();
 }
@@ -268,29 +220,20 @@ void OSSPlayerSlots::playSample(SoundDevice device, const int16_t* data, int len
 	kdebugf();
 	result = true;
 	OSSSoundDevice* dev = (OSSSoundDevice*)device;
-	int c = 0;
 	if (!dev || dev->fd<0)
 	{
 		result = false;
-		kdebugm(KDEBUG_WARNING, "cannot play sample, device not opened, dev:%p dev->fd:%p\n", dev, dev?dev->fd:NULL);
+		kdebugm(KDEBUG_WARNING, "cannot play sample, device not opened, dev:%p dev->fd:%d\n", dev, dev?dev->fd:-1);
 		return;
 	}
-	while (c < length)
-	{
-		int l = (dev->max_buf_size < length - c) ? dev->max_buf_size : length - c;
-		if (write(dev->fd, ((char*)data)+c, l) != l)
-		{
-			result = false;
-			break;
-		}
-		c += dev->max_buf_size;
-	}
-	if (sound_manager->flushingEnabled(device))
+	write_all(dev->fd, (char*)data, length, dev->max_buf_size);
+
+	if (dev->flushing)
 	{
 		// czekaj na zakoñczenie odtwarzania
-		if (ioctl(dev->fd, SOUND_PCM_SYNC, 0) < 0)
+		if (ioctl(dev->fd, SNDCTL_DSP_SYNC, 0) < 0)
 		{
-			kdebugm(KDEBUG_ERROR, "SOUND_PCM_SYNC error\n");
+			kdebugm(KDEBUG_ERROR, "SNDCTL_DSP_SYNC error\n");
 			result = false;	
 		}
 	}
@@ -300,58 +243,46 @@ void OSSPlayerSlots::playSample(SoundDevice device, const int16_t* data, int len
 void OSSPlayerSlots::recordSample(SoundDevice device, int16_t* data, int length, bool& result)
 {
 	kdebugf();
-	result = (read(((OSSSoundDevice*)device)->fd, data, length) == length);
+	OSSSoundDevice* dev = (OSSSoundDevice*)device;
+	if (!dev || dev->fd<0)
+	{
+		result = false;
+		kdebugm(KDEBUG_WARNING, "cannot record sample, device not opened, dev:%p dev->fd:%p\n", dev, dev?dev->fd:NULL);
+		return;
+	}
+	int ret = read_all(dev->fd, (char *)data, length);
+	result = (ret == length);
+//	if (ret != length)
+		kdebugm(KDEBUG_WARNING, "requested: %d, returned: %d\n", length, ret);
 	kdebugf2();
 }
 
-OSSPlayThread::OSSPlayThread()
-{
-	semaphore=new QSemaphore(100);
-	(*semaphore)+=100;
-}
-
-OSSPlayThread::~OSSPlayThread()
-{
-	delete semaphore;
-}
-
-void OSSPlayThread::run()
+void OSSPlayerSlots::setFlushingEnabled(SoundDevice device, bool enabled)
 {
 	kdebugf();
-	end=false;
-	while (!end)
-	{
-		(*semaphore)++;
-		mutex.lock();
-		kdebugm(KDEBUG_INFO, "locked\n");
-		if (end)
-		{
-			mutex.unlock();
-			break;
-		}
-		SndParams params=list.first();
-		list.pop_front();
-		
-		play(params.filename.local8Bit().data(), params.device.local8Bit().data(),
-				params.volumeControl, params.volume);
-		mutex.unlock();
-		kdebugm(KDEBUG_INFO, "unlocked\n");
-	}//end while(!end)
+	OSSSoundDevice* dev = (OSSSoundDevice*)device;
+	if (dev)
+		dev->flushing = enabled;
 	kdebugf2();
 }
 
-SndParams::SndParams(QString fm, QString dev, bool volCntrl, float vol) :
-			filename(fm), device(dev), volumeControl(volCntrl), volume(vol)
+int OSSPlayerSlots::read_all(int fd, char *buffer, int count)
 {
-}
-
-SndParams::SndParams(const SndParams &p) : filename(p.filename), device(p.device),
-									volumeControl(p.volumeControl), volume(p.volume)
-{
-}
-
-SndParams::SndParams()
-{
+	kdebugf();
+	int offset = 0,c;
+	while (offset<count)
+	{
+		c = read(fd, buffer + offset, count - offset);
+		if (c == -1)
+		{
+			kdebugmf(KDEBUG_WARNING, "%s (%d)\n", strerror(errno), errno);
+			return -1;
+		}
+//		else
+//			kdebugm(KDEBUG_INFO, "read: %d\n", c);
+		offset += c;
+	}
+	return offset;
 }
 
 OSSPlayerSlots *oss_player_slots;
