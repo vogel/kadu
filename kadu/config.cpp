@@ -46,7 +46,7 @@
 
 void loadKaduConfig(void) {  	
 	/* first read our own config file... */
-	fprintf(stderr,"KK loadKaduConfig(): Touching config file...\n");
+	fprintf(stderr,"KK loadKaduConfig(): Reading config file...\n");
 	KConfig * konf;
 	konf = new KConfig(preparePath("kadu.conf"));
 
@@ -237,7 +237,7 @@ ConfigDialog::ConfigDialog(QWidget *parent, const char *name) : QTabDialog(paren
 	setCancelButton(i18n("Cancel"));
 	connect(this, SIGNAL(cancelButtonPressed()), this, SLOT(close()));
 	setCaption(i18n("Kadu configuration"));
-	resize(380,440);
+	resize(480,440);
 }
 
 void ConfigDialog::setupTab1(void) {
