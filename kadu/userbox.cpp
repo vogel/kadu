@@ -24,6 +24,7 @@
 
 MyListBox::MyListBox ( QWidget * parent, const char * name, WFlags f ) : QListBox(parent, name),
     QToolTip(viewport()) {
+    setSelectionMode(QListBox::Extended);
 }
 
 void MyListBox::maybeTip(const QPoint &c) {
