@@ -1,5 +1,8 @@
 
-+++ wersja 0.3.3
++++ wersja 0.3.3-pre2
+* dostosowanie do QT 3.1.0 i KDE 3.1-rc5
+
++++ wersja 0.3.3-pre1
 * automatyczna kompilacja programu sms
 * porz±dki w opcji wysy³ania sms: brak opcji, je¶li osoba nie ma
   numeru, osobna opcja w menu g³ównym do wysy³ania sms'a pod wpisany z

@@ -1709,8 +1709,6 @@ void Kadu::createStatusPopupMenu() {
 	dockppm->setCheckable(true);
 	statusppm->setItemChecked(6, true);
 
-	statusppm->popup(QPoint(0,0));
-	statusppm->close();
 	connect(statusppm, SIGNAL(activated(int)), this, SLOT(slotHandleState(int)));
 }
 
