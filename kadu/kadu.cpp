@@ -191,6 +191,7 @@ enum {
 	KADU_CMD_SMS,
 	KADU_CMD_MAINMENU_SMS,
 	KADU_CMD_REMIND_PASSWORD,
+	KADU_CMD_CHANGE_PASSWORD,
 	KADU_CMD_REGISTER_USER,
 	KADU_CMD_QUIT,
 	KADU_CMD_SEARCH_USER,
@@ -935,6 +936,11 @@ void Kadu::commandParser (int command) {
 			remindPassword *rp;	
 			rp = new remindPassword();
 			rp->start();
+			break;
+		case KADU_CMD_CHANGE_PASSWORD:
+			changePassword *cp;	
+			cp = new changePassword();
+			cp->show();
 			break;
 		case KADU_CMD_REGISTER_USER:
 			Register *reg;
@@ -1810,19 +1816,8 @@ void Kadu::createMenu() {
 	grpmenu->insertItem(i18n("All"), 600);
 	grpmenu->insertSeparator();
 
-/*
-for (int k = 0; k < grouplist.size(); k++) {
-    grpmenu->insertItem(__c2q(grouplist[k].name), grouplist[k].number);
-    }
-
-ppm->insertItem(i18n("Groups"), grpmenu);
-
-QObject::connect(grpmenu, SIGNAL( activated(int) ), this, SLOT( changeGroup(int) ));
-
-ppm->insertSeparator();
-*/
-
 	ppm->insertItem(i18n("Remind &password"), KADU_CMD_REMIND_PASSWORD);
+	ppm->insertItem(i18n("&Change password"), KADU_CMD_CHANGE_PASSWORD);
 	QPixmap new__user((const char **)new_user);
 	ppm->insertItem(new__user,i18n("Register &new user"), KADU_CMD_REGISTER_USER);
 	ppm->insertItem(i18n("Personal information"), KADU_CMD_PERSONAL_INFO);

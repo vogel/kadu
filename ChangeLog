@@ -11,7 +11,7 @@
   (w momencie gdy nie znaleziono informacji o nas w katalogu publicznym)
 * mo¿liwo¶æ regulacji wielko¶ci panela informacyjnego
 * wyszukiwanie u¿ytkowników zgodne z GG 5.0
-* w oknie rozmowy: mo¿na zmieniæ propocjê pomiêdzy rozmiarem okna historii rozmowy,
+* w oknie rozmowy: mo¿na zmieniæ proporcjê pomiêdzy rozmiarem okna historii rozmowy,
   a list± u¿ytkowników (gdy prowadzimy konferencjê)
 * chyba poprawiony pad przy wiadomo¶ciach systemowych. UWAGA! teraz lec±
   tylko na konsolê. Je¶li chcecie ogl±daæ reklamy to dajcie znaæ ;)
@@ -25,6 +25,7 @@
 * szyfrowanie: gruntowna poprawka - przejscie na simlite z ekg. dziala juz
   kadu<=>kadu, ale kod wymaga jeszcze troszke pracy
 * przypominanie has³a nie blokuje kadu
+* dodane okno zmiany has³a GG
 
 +++ wersja 0.3.3-pre3
 * CTRL + klik dowolnego przycisku myszki na ikonce w tray'u powoduje
