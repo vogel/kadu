@@ -126,7 +126,7 @@ TrayIcon::TrayIcon(QWidget *parent, const char *name)
 	// SPOSÓB PIERWSZY
 	// System Tray Protocol Specification
 	// Dzia³a pod KDE 3.x (przynajmniej pod 3.1) i GNOME 2.x
-/*	Screen *screen = XDefaultScreenOfDisplay(dsp);
+	Screen *screen = XDefaultScreenOfDisplay(dsp);
 	int screen_id = XScreenNumberOfScreen(screen);
 	char buf[32];
 	snprintf(buf, sizeof(buf), "_NET_SYSTEM_TRAY_S%d", screen_id);
@@ -138,7 +138,7 @@ TrayIcon::TrayIcon(QWidget *parent, const char *name)
 	XUngrabServer(dsp);
 	XFlush(dsp);
 	if (manager_window != None)
-		send_message(dsp, manager_window, SYSTEM_TRAY_REQUEST_DOCK, win, 0, 0);*/
+		send_message(dsp, manager_window, SYSTEM_TRAY_REQUEST_DOCK, win, 0, 0);
 
 	// SPOSÓB DRUGI
 	// Dzia³a na KDE 3.x i pewnie na starszych
@@ -168,7 +168,8 @@ TrayIcon::TrayIcon(QWidget *parent, const char *name)
 
 TrayIcon::~TrayIcon()
 {
-//	delete icon;	
+	if (icon)
+		delete icon;	
 	delete hint;
 	kdebug("TrayIcon::~TrayIcon()\n");
 }
