@@ -934,6 +934,9 @@ void Chat::ackReceivedSlot(int Seq) {
 
 /* sends the message typed */
 void Chat::sendMessage(void) {
+
+	emit messageSendRequested();
+
 	QString mesg;
 
 	if (getActualStatus() == GG_STATUS_NOT_AVAIL) {
@@ -1006,7 +1009,9 @@ void Chat::sendMessage(void) {
 		delete [](char *)myLastFormats;
 
 	if (sess->check & GG_CHECK_WRITE)
-		kadusnw->setEnabled(true);		
+		kadusnw->setEnabled(true);
+		
+	emit messageSent();
 }
 
 /* prunes messages */
