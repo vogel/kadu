@@ -565,7 +565,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	KIconLoader *loader = KGlobal::iconLoader();
 
-	dockppm->insertItem(loader->loadIcon("exit",KIcon::Small), i18n("Exit"), 9);
+	dockppm->insertItem(loader->loadIcon("exit",KIcon::Small), i18n("&Exit Kadu"), 9);
 	connect(dockppm, SIGNAL(activated(int)), dw, SLOT(dockletChange(int)));
 	
 	QGridLayout * grid = new QGridLayout (this,4,3);
