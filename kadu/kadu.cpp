@@ -994,7 +994,7 @@ void Kadu::commandParser (int command) {
 			pending.writeToFile();
 			close_permitted = true;
 			disconnectNetwork();
-			close(true);
+			a->quit();
 			break;
 		case KADU_CMD_SEARCH_USER:
 			sd = new SearchDialog(0, i18n("User info"),
@@ -1911,6 +1911,11 @@ void Kadu::disconnectNetwork() {
 }
 
 void Kadu::cleanUp(void) {
+	config.splitsize.setWidth(userbox->size().height());
+	config.splitsize.setHeight(descrtb->size().height());
+	config.geometry = geometry();
+	saveKaduConfig();
+	printf("cleanUp(): Saved config and ...\n");
 	writeIgnored(NULL);
 }
 
@@ -2008,11 +2013,7 @@ void Kadu::closeEvent(QCloseEvent *e) {
 		hide();
 		}
 	else {
-		config.splitsize.setWidth(userbox->size().height());
-		config.splitsize.setHeight(descrtb->size().height());
-		config.geometry = geometry();
-		saveKaduConfig();
-		kdebug("closeEvent(): Graceful shutdown...\n");
+		printf("closeEvent(): Graceful shutdown...\n");
 		e->accept();
 		}
 }

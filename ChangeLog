@@ -21,6 +21,7 @@
   + info o 3 klawiszu, aby wys³aæ sms (mast3r)
 * wykluczenie mo¿liwo¶ci wys³ania swojego klucza do osoby
   nie maj±cej w userliscie uin'u (mast3r)
+* poprawka zamykania siê Kadu (mast3r)
 
 +++ wersja 0.3.3-final
 * ikonka wiadomo¶ci i ikon statusu "ukryty" z telefonikiem
