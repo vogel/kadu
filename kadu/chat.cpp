@@ -313,10 +313,10 @@ void Chat::setTitle() {
 				user = userlist.byUin(uins[k]);
 			else
 				user.uin = uins[k];
-			if (config.conferencecontents.isEmpty())
+			if (config.conferencesyntax.isEmpty())
 				title.append(parse("%a (%s[: %d])",user));
 			else
-				title.append(parse(config.conferencecontents,user));
+				title.append(parse(config.conferencesyntax,user));
 		}
 		setIcon(*icons->loadIcon("online"));
 	}
@@ -325,10 +325,10 @@ void Chat::setTitle() {
 			user = userlist.byUin(uins[0]);
 		else
 			user.uin = uins[0];
-		if (config.chatcontents.isEmpty())
+		if (config.chatsyntax.isEmpty())
 			title = parse(i18n("Chat with ")+"%a (%s[: %d])",user);
 		else
-			title = parse(config.chatcontents,user);
+			title = parse(config.chatsyntax,user);
 		setIcon(*icons->loadIcon(gg_icons[statusGGToStatusNr(user.status)]));
 	}
 

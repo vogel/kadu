@@ -129,10 +129,10 @@ void loadKaduConfig(void) {
 	config.encryption = konf->readBoolEntry("Encryption", false);
 //	config.keyslen = konf->readNumEntry("KeysLength", 1024);
 #endif
-	config.panelcontents = konf->readEntry("PanelContents", "");
-	config.chatcontents = konf->readEntry("ChatContents", "");
+	config.panelsyntax = konf->readEntry("PanelContents", "");
+	config.chatsyntax = konf->readEntry("ChatContents", "");
 	config.conferenceprefix = konf->readEntry("ConferencePrefix", "");
-	config.conferencecontents = konf->readEntry("ConferenceContents", "");
+	config.conferencesyntax = konf->readEntry("ConferenceContents", "");
 
 	konf->setGroup("Notify");
 	config.soundnotify = strdup(konf->readEntry("NotifySound", ""));
@@ -272,10 +272,10 @@ void saveKaduConfig(void) {
         konf->writeEntry("Encryption", config.encryption);
         //konf->writeEntry("KeysLength", config.keyslen);
 #endif
-	konf->writeEntry("PanelContents", config.panelcontents);
-	konf->writeEntry("ChatContents", config.chatcontents);
+	konf->writeEntry("PanelContents", config.panelsyntax);
+	konf->writeEntry("ChatContents", config.chatsyntax);
 	konf->writeEntry("ConferencePrefix", config.conferenceprefix);
-	konf->writeEntry("ConferenceContents", config.conferencecontents);
+	konf->writeEntry("ConferenceContents", config.conferencesyntax);
 
 	konf->setGroup("Proxy");
 	konf->writeEntry("UseProxy",config.useproxy);
@@ -1059,32 +1059,32 @@ void ConfigDialog::setupTab6(void) {
 	connect(cb_otherfontsize, SIGNAL(activated(int)), this, SLOT(chooseOtherFontSizeGet(int)));
 	otherselectfont->hide();
 
-	QVGroupBox *contentsprop = new QVGroupBox(box6);
-	QToolTip::add(contentsprop,i18n("%s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - frist name\n%r = surname, %m - mobile, %u - uin, %g - group, %o - if user doesn't have us in userlist\nIf you leave blank, default settings will be used"));
+	QVGroupBox *syntaxprop = new QVGroupBox(box6);
 
-	QHBox *panelbox = new QHBox(contentsprop);
+	QHBox *panelbox = new QHBox(syntaxprop);
 	panelbox->setSpacing(5);
 	
-	QLabel *l_panel = new QLabel(i18n("Information panel syntax"), panelbox);
-	e_panelcontents = new QLineEdit(config.panelcontents, panelbox);
+	QLabel *l_panel = new QLabel(i18n("Information panel syntax:"), panelbox);
+	e_panelsyntax = new QLineEdit(config.panelsyntax, panelbox);
+	QToolTip::add(e_panelsyntax,i18n("Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - frist name\n%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist\nIf you leave blank, default settings will be used"));
 
-	QHBox *chatconbox = new QHBox(contentsprop);
-	chatconbox->setSpacing(5);
+	QHBox *chatsyntaxbox = new QHBox(syntaxprop);
+	chatsyntaxbox->setSpacing(5);
 
-	QLabel *l_chatcon = new QLabel(i18n("Chat window title syntax"), chatconbox);
-	e_chatcontents = new QLineEdit(config.chatcontents, chatconbox);
+	QLabel *l_chatsyntax = new QLabel(i18n("Chat window title syntax:"), chatsyntaxbox);
+	e_chatsyntax = new QLineEdit(config.chatsyntax, chatsyntaxbox);
+	QToolTip::add(e_chatsyntax,i18n("Syntax the same as in information panel."));
 
-	QHBox *confprefixbox = new QHBox(contentsprop);
-	confprefixbox->setSpacing(5);
+	QHBox *confsyntaxbox = new QHBox(syntaxprop);
+	confsyntaxbox->setSpacing(5);
 
-	QLabel *l_confprefixcon = new QLabel(i18n("Conference window title prefix"), confprefixbox);
-	e_conferenceprefix = new QLineEdit(config.conferenceprefix, confprefixbox);
+	QLabel *l_confprefixcon = new QLabel(i18n("Conference window title prefix:"), confsyntaxbox);
+	e_conferenceprefix = new QLineEdit(config.conferenceprefix, confsyntaxbox);
+	QToolTip::add(e_conferenceprefix,i18n("This text will be before syntax.\nIf you leave blank, default settings will be used."));
 
-	QHBox *confconbox = new QHBox(contentsprop);
-	confconbox->setSpacing(5);
-
-	QLabel *l_confcon = new QLabel(i18n("Conference window title syntax"), confconbox);
-	e_conferencecontents = new QLineEdit(config.conferencecontents, confconbox);
+	QLabel *l_confsyntax = new QLabel(i18n("syntax:"), confsyntaxbox);
+	e_conferencesyntax = new QLineEdit(config.conferencesyntax, confsyntaxbox);
+	QToolTip::add(e_conferencesyntax,i18n("Syntax the same as in information panel."));
 
 	addTab(box6, i18n("Look"));
 };
@@ -1540,9 +1540,9 @@ void ConfigDialog::updateConfig(void) {
 	config.fonts.userboxDesc = vl_userboxfont[1];
 	config.fonts.trayhint = vl_otherfont[0];
 
-	config.panelcontents = e_panelcontents->text();
-	config.chatcontents = e_chatcontents->text();
-	config.conferencecontents = e_conferencecontents->text();
+	config.panelsyntax = e_panelsyntax->text();
+	config.chatsyntax = e_chatsyntax->text();
+	config.conferencesyntax = e_conferencesyntax->text();
 	config.conferenceprefix = e_conferenceprefix->text();
 
 	free(config.soundnotify);

@@ -110,7 +110,7 @@ QString parse_symbols(QString s, int i, UserListElement &ule) {
 	QString r,d;
 	int j;
 
-	kdebug("parse_symbols() %s, %d\n",(const char *)s.local8Bit(),i);
+	kdebug("parse_symbols():%s, %d\n",(const char *)s.local8Bit(),i);
 
 	while(s[i]!='%' && i != s.length()) {
 		r+=s[i];
@@ -184,10 +184,9 @@ QString parse_symbols(QString s, int i, UserListElement &ule) {
 		}
 	}
 
-	if (i == s.length())
-		return r;
-	else
+	if (i != s.length())
 		r+=parse_symbols(s,i,ule);
+	return r;
 }
 
 QString parse_only_text(QString s, int i) {
@@ -203,10 +202,9 @@ QString parse_only_text(QString s, int i) {
 	if(s[i]=='%')
 		i+=2;
 
-	if(i==s.length())
-		return r;
-	else
+	if(i!=s.length())
 		r+=parse_only_text(s,i);
+	return r;
 }
 
 QString parse_expression(QString s, int& i, UserListElement &ule) {
@@ -239,10 +237,9 @@ QString parse_expression(QString s, int& i, UserListElement &ule) {
 		}
 	}
 	
-	if(i == s.length())
-		return r;
-	else
+	if(i != s.length())
 		r+=parse_expression(s,i,ule);
+	return r;
 }
 
 QString parse(QString s, UserListElement ule) {
