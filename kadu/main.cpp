@@ -18,13 +18,6 @@
 #include "kadu.h"
 #include "kadu-config.h"
 
-#ifndef DEBUG_ENABLED
-#define KADU_SIGNAL_HANDLING
-#endif
-
-//#define KADU_SIGNAL_HANDLING
-//#undef KADU_SIGNAL_HANDLING
-
 #ifdef VOICE_ENABLED
 #include "voice.h"
 #include "voice_dsp.h"
@@ -41,7 +34,7 @@
 
 Kadu *kadu;	
 
-#ifdef KADU_SIGNAL_HANDLING
+#ifdef SIG_HANDLING_ENABLED
 #include <qdatetime.h>
 #include <signal.h>
 #include "debug.h"
@@ -66,7 +59,7 @@ int main(int argc, char *argv[])
 {
 	gg_debug_level = 255;
 
-#ifdef KADU_SIGNAL_HANDLING
+#ifdef SIG_HANDLING_ENABLED
 	signal(SIGSEGV, kadu_signal_handler);
 	signal(SIGINT, kadu_signal_handler);
 	signal(SIGTERM, kadu_signal_handler);
