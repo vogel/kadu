@@ -225,18 +225,20 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 /* Moim zdaniem t± ca³a funkcje trzeba przepisaæ od nowa,
 	a przynajmniej poprawiæ i rozbiæ na mniejsze.
 */
-
-	//sprawdzamy czy user jest na naszej liscie, jezeli nie to .anonymous zwroci true
-	//i czy jest wlaczona opcja ignorowania nieznajomych
-	//jezeli warunek jest spelniony przerywamy dzialanie funkcji.
+/*
+	sprawdzamy czy user jest na naszej liscie, jezeli nie to .anonymous zwroci true
+	i czy jest wlaczona opcja ignorowania nieznajomych
+	jezeli warunek jest spelniony przerywamy dzialanie funkcji.
+*/
 	if (userlist.byUinValue(senders[0]).anonymous && config.ignoreanonusers) {
 		kdebug("EventManager::messageReceivedSlot(): Ignored anonymous. %d is ignored\n",senders[0]);
 		return;
 		}
-
-	//w dalszej czêsci kodu wystêpuje ten warunek, po co ma sprawdzac po kilka razy, jak mozna raz,
-	//podejrzewam ze to juz nie jest potrzebne, gdyz kiedys to sluzylo co oznaczania wiadomosci
-	//systemowych,ktore obecnie sa ignorowane, w dalszej czesci kodu.
+/*
+	w dalszej czêsci kodu wystêpuje ten warunek, po co ma sprawdzac po kilka razy, jak mozna raz,
+	podejrzewam ze to juz nie jest potrzebne(ale na wszelki wypadek zostawie), gdyz kiedys to
+	sluzylo co oznaczania wiadomosci systemowych,ktore obecnie sa ignorowane, w dalszej czesci kodu.
+*/
 	if (senders[0] == config.uin)
 		return;
 
@@ -297,14 +299,14 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 
 	mesg = formatGGMessage(mesg, formats_length, formats);
 
-//Jezeli uin osoby jest rozny od naszego uin to dodawana i nie mamy ten osoby w userliscie
-//jest osoba do userlisty na dwa rozne sposoby(w zaleznosci czy mamy wlaczona ikonke w docku)
-//jezeli nie to dodawana jest owa osoba do userlisty w userboxie.
-
 	UserListElement ule = userlist.byUinValue(senders[0]);
-
+/*
+	Sprawdzamy czy uin znajduje sie na naszej userliscie, jezeli tak to w zalezno¶ci czy
+	mamy w³±czon± ikonke w trayu to dodajemy tylko do userlisty(ale chyba nie zapisujemy)
+	lub dodajemy automatycznie do naszej userlisty.
+*/
 	if (!userlist.containsUin(senders[0]))
-		if (trayicon)
+		if (config.dock)
 			userlist.addUser("", "", ule.altnick, ule.altnick, "", ule.altnick, GG_STATUS_NOT_AVAIL,
 				false, false, true, "", "", true);
 		else
