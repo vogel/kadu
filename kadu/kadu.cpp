@@ -1439,7 +1439,7 @@ void KaduSlots::onCreateConfigDialog()
 	e_password->setText(pwHash(config_file.readEntry("General", "Password", "")));
 
 	QComboBox *cb_qttheme=ConfigDialog::getComboBox("Look", "Qt Theme");
-	QStringList sl_themes=QStyleFactory::keys();
+	static QStringList sl_themes = QStyleFactory::keys();//to jest dosyæ kosztowna czasowo operacja
 	cb_qttheme->insertStringList(sl_themes);
 	if(!sl_themes.contains(QApplication::style().name()))
 		cb_qttheme->setCurrentText(tr("Unknown"));
