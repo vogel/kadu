@@ -1161,14 +1161,16 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 		pm->setItemEnabled(KADU_CMD_NOTIFY_USER,false);
 		pm->setItemEnabled(KADU_CMD_OFFLINE_TO_USER,false);
 		}
-	if (isIgnored(user.uin))
-		pm->setItemChecked(KADU_CMD_IGNORE_USER, true);
-	if (user.blocking)
-		pm->setItemChecked(KADU_CMD_BLOCK_USER, true);
-	if (user.offline_to_user)
-		pm->setItemChecked(KADU_CMD_OFFLINE_TO_USER, true);
-	if (user.notify)
-		pm->setItemChecked(KADU_CMD_NOTIFY_USER, true);
+	else {
+		if (isIgnored(user.uin))
+			pm->setItemChecked(KADU_CMD_IGNORE_USER, true);
+		if (user.blocking)
+			pm->setItemChecked(KADU_CMD_BLOCK_USER, true);
+		if (user.offline_to_user)
+			pm->setItemChecked(KADU_CMD_OFFLINE_TO_USER, true);
+		if (user.notify)
+			pm->setItemChecked(KADU_CMD_NOTIFY_USER, true);
+		}
 
 	pm->insertSeparator();
 	

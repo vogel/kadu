@@ -5,6 +5,8 @@
 * userinfo: mo¿liwo¶æ zmiany uinu u¿ytkownika (chilek)
 * userinfo: mo¿na u¿ytkownikowi usuwaæ i dodawaæ UIN, poza tym je¶li np. usuniemy UIN
   to nie s± wysy³ane bezsensowne powiadomienia do serwera GG (chilek)
+* menu podrêczne u¿ytkownika: je¶li u¿ytkownik nie ma UINu nie wy¶wietlamy ¿adnych
+  haczyków (chilek)
 
 +++ wersja 0.3.3-rc3
 * sensowne potwierdzenie usuniêcia kontaktu (adrian)
