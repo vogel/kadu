@@ -34,7 +34,9 @@ DnsHandler::DnsHandler(uin_t uin) : uin(uin) {
 
 DnsHandler::~DnsHandler() {
 	counter--;
+/* patrz ~Userlist()
 	kdebug("DnsHandler::~DnsHandler(): counter = %d\n", counter);
+*/
 }
 
 void DnsHandler::resultsReady() {

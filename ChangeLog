@@ -60,6 +60,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dodanie katalogu debian/ w katalogu glownym programu, teraz kazdy
   bedzie mogl stworzyc wlasna paczke programu dla swojego Debian'a (mast3r)
 * Enter na klawiaturze alfanumerycznej te¿ wysy³a wiadomo¶æ (mast3r)
+* kolejne "pozbycie" sie seg faulta przy debugu (mast3r)
 
 +++ wersja 0.3.4-pre3
 * dodane przeszukiwanie historii (chilek)
