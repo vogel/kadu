@@ -1396,15 +1396,13 @@ void Kadu::setStatus(int status) {
 			server_nr = 0;
 		}
 	else {
-		switch (server_nr) {
-			case 0:
-				loginparams.server_addr = 0;
-				loginparams.server_port = 0;
-				break;
-			default:
-				loginparams.server_addr = inet_addr(gg_servers[server_nr + 1]);
-				loginparams.server_port = 8074;
-				break;
+		if (server_nr) {
+			loginparams.server_addr = inet_addr(gg_servers[server_nr - 1]);
+			loginparams.server_port = 8074;
+			}
+		else {
+			loginparams.server_addr = 0;
+			loginparams.server_port = 0;
 			}
 		server_nr++;
 		if (server_nr > 7)
