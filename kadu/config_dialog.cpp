@@ -335,6 +335,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 			{
 				QPushButton *button =new QPushButton(appHandle->translate("@default",(*i).caption), parent);
 				SelectPaths* paths=new SelectPaths(NULL, (*i).name);
+				insertChild(paths);//musimy go wstawiæ na listê dzieci, bo inaczej wycieknie nam...
 				button->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum));
 				(*i).widget=paths;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
@@ -1552,59 +1553,59 @@ SelectPaths::SelectPaths(QWidget *parent, const char* name) : QHBox(parent, name
 	setCaption(tr("Select paths"));
 
 	// create main QLabel widgets (icon and app info)
-	QVBox *left=new QVBox(this);
+	QVBox *left=new QVBox(this, "left");
 	left->setMargin(10);
 	left->setSpacing(10);
 	
-	QLabel *l_icon = new QLabel(left);
-	QWidget *blank=new QWidget(left);
+	QLabel *l_icon = new QLabel(left,"icon");
+	QWidget *blank=new QWidget(left,"blank");
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
 	
-	QVBox *center=new QVBox(this);
+	QVBox *center=new QVBox(this,"center");
 	center->setMargin(10);
 	center->setSpacing(10);
 	
-	QLabel *l_info = new QLabel(center);
+	QLabel *l_info = new QLabel(center,"info");
 	l_icon->setPixmap(icons_manager.loadIcon("SelectPathWindowIcon"));
 	l_info->setText(tr("This dialog box allows you to choose directories in which kadu will look for icons or sounds."));
 	l_info->setAlignment(Qt::WordBreak);
 	// end create main QLabel widgets (icon and app info)
 	
 	//our QVGroupBox
-	QVGroupBox *vgb_pathlist = new QVGroupBox(center);
+	QVGroupBox *vgb_pathlist = new QVGroupBox(center,"pathlist");
 	vgb_pathlist->setTitle(tr("Paths"));
-	QVGroupBox *vgb_pathtoadd = new QVGroupBox(center);
+	QVGroupBox *vgb_pathtoadd = new QVGroupBox(center,"newpath");
 	vgb_pathtoadd->setTitle(tr("Path to add"));
 	center->setStretchFactor(vgb_pathlist, 1);
 	//end our QGroupBox
 	
 	// create needed fields
-	QHBox *hb_pathlist = new QHBox(vgb_pathlist);
+	QHBox *hb_pathlist = new QHBox(vgb_pathlist,"box");
 	hb_pathlist->setSpacing(5);
-	pathListBox = new QListBox(hb_pathlist);
+	pathListBox = new QListBox(hb_pathlist,"pathBox");
 	hb_pathlist->setStretchFactor(pathListBox, 1);
-	QVBox *vb_managebuttons = new QVBox(hb_pathlist);
+	QVBox *vb_managebuttons = new QVBox(hb_pathlist,"buttons");
 	vb_managebuttons->setSpacing(5);
-	pb_add = new QPushButton(icons_manager.loadIcon("AddSelectPathDialogButton"), tr("Add"), vb_managebuttons, "add");
-	pb_change = new QPushButton(icons_manager.loadIcon("ChangeSelectPathDialogButton"), tr("Change"), vb_managebuttons, "change");
-	pb_remove = new QPushButton(icons_manager.loadIcon("RemoveSelectPathDialogButton"), tr("Remove"), vb_managebuttons, "remove");
-	QWidget *w_managebuttons = new QWidget(vb_managebuttons);
+	pb_add = new QPushButton(icons_manager.loadIcon("AddSelectPathDialogButton"), tr("Add"), vb_managebuttons, "addButton");
+	pb_change = new QPushButton(icons_manager.loadIcon("ChangeSelectPathDialogButton"), tr("Change"), vb_managebuttons, "changeButton");
+	pb_remove = new QPushButton(icons_manager.loadIcon("RemoveSelectPathDialogButton"), tr("Remove"), vb_managebuttons, "removeButton");
+	QWidget *w_managebuttons = new QWidget(vb_managebuttons,"blank");
 	vb_managebuttons->setStretchFactor(w_managebuttons, 1);
 	
-	QHBox *hb_selectpath = new QHBox(vgb_pathtoadd);
+	QHBox *hb_selectpath = new QHBox(vgb_pathtoadd,"box");
 	hb_selectpath ->setSpacing(5);
-	pathEdit = new QLineEdit(hb_selectpath);
-	pb_choose = new QPushButton(icons_manager.loadIcon("ChooseSelectPathDialogButton"), tr("Choose"), hb_selectpath, "choose");
+	pathEdit = new QLineEdit(hb_selectpath,"newPathLineEdit");
+	pb_choose = new QPushButton(icons_manager.loadIcon("ChooseSelectPathDialogButton"), tr("Choose"), hb_selectpath, "chooseButton");
 	hb_selectpath->setStretchFactor(pathEdit, 1);
 	// end create needed fields
 
 	// buttons
-	QHBox *bottom = new QHBox(center);
-	QWidget *blank2 = new QWidget(bottom);
+	QHBox *bottom = new QHBox(center, "bottom");
+	QWidget *blank2 = new QWidget(bottom,"blank");
 	bottom->setSpacing(5);
 	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
-	pb_ok = new QPushButton(icons_manager.loadIcon("OkWindowButton"), tr("OK"), bottom, "ok");
-	pb_cancel = new QPushButton(icons_manager.loadIcon("CancelWindowButton"), tr("&Cancel"), bottom, "cancel");
+	pb_ok = new QPushButton(icons_manager.loadIcon("OkWindowButton"), tr("OK"), bottom, "okButton");
+	pb_cancel = new QPushButton(icons_manager.loadIcon("CancelWindowButton"), tr("&Cancel"), bottom, "cancelButton");
 	// end buttons
 
 	connect(pb_ok, SIGNAL(clicked()), this, SLOT(okButton()));
