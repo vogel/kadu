@@ -7,6 +7,7 @@
 #include <qbitmap.h>
 #include <qtooltip.h>
 #include <qcheckbox.h>
+#include <qspinbox.h>
 
 #include "desktopdock.h"
 #include "config_file.h"
