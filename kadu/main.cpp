@@ -60,11 +60,11 @@ void kadu_signal_handler(int s)
 		int num_entries;
 		if ((num_entries = backtrace(bt_array, 100)) < 0) {
 			kdebugm(KDEBUG_PANIC, "could not generate backtrace\n");
-			return;
+			abort();
 		}
 		if ((bt_strings = backtrace_symbols(bt_array, num_entries)) == NULL) {
 			kdebugm(KDEBUG_PANIC, "could not get symbol names for backtrace\n");
-			return;
+			abort();
 		}
 		fprintf(stderr, "\n======= BEGIN OF BACKTRACE =====\n");
 		for (int i = 0; i < num_entries; i++) {
