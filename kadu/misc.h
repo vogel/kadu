@@ -317,6 +317,14 @@ class IconsManager :public Themes
 	public:
 		IconsManager(const QString& name, const QString& configname);
 		/**
+			Zwraca pe³n± ¶cie¿kê do ikony z aktualnego zestawu
+			lub bezposrednio name je¶li jest to pe³na ¶cie¿ka.
+			@param name nazwa ikony z zestawu lub sciezka do pliku
+			(jesli zawiera znak '/' to jest interpretowana jako
+			sciezka).
+		**/
+		QString iconPath(const QString &name);
+		/**
 			Laduje ikone z aktualnego zestawu lub z podanego pliku.
 			@param name nazwa ikony z zestawu lub sciezka do pliku
 			(jesli zawiera znak '/' to jest interpretowana jako

@@ -1018,21 +1018,25 @@ IconsManager::IconsManager(const QString& name, const QString& configname)
     connect(this, SIGNAL(themeChanged(const QString&)), this, SLOT(changed(const QString&)));
 }
 
+QString IconsManager::iconPath(const QString &name)
+{
+	QString fname;	
+	if(name.contains('/'))
+		fname = name;
+	else
+		fname = themePath() + getThemeEntry(name);
+	return fname;
+}
 
 QPixmap IconsManager::loadIcon(const QString &name)
 {
 	for (unsigned int i = 0; i < icons.count(); i++)
 		if (icons[i].name == name)
 			return icons[i].picture.pixmap();
-	QString fname;	
-	if(name.contains('/'))
-		fname = name;
-	else
-		fname = themePath() + getThemeEntry(name);
 	iconhandle icon;
 	icon.name = name;
 	QPixmap p;
-	p.load(fname);
+	p.load(iconPath(name));
 	icon.picture = QIconSet(p);
 	icons.append(icon);
 	return icons[icons.count()-1].picture.pixmap();
@@ -1985,8 +1989,8 @@ QString GaduImagesManager::imageHtml(const QString& file_name)
 
 QString GaduImagesManager::loadingImageHtml(uin_t uin,uint32_t size,uint32_t crc32)
 {
-	return QString("<img src=\"loading.png\" static=\"1\" gg_sender=\"%1\" gg_size=\"%2\" gg_crc=\"%3\"/>")
-		.arg(uin).arg(size).arg(crc32);
+	return QString("<img src=\"%1\" static=\"1\" gg_sender=\"%2\" gg_size=\"%3\" gg_crc=\"%4\"/>")
+		.arg(icons_manager.iconPath("LoadingImage")).arg(uin).arg(size).arg(crc32);
 }
 
 void GaduImagesManager::addImageToSend(const QString& file_name,uint32_t& size,uint32_t& crc32)
