@@ -75,12 +75,14 @@ void Ignored::getList() {
 				k = j;
 				}
 			}
-		if (userlist_entry)
-			snprintf(buf, sizeof(buf), "%d (%s)", userlist[k].uin, (const char *)userlist[k].altnick.local8Bit());	
-		else
-			snprintf(buf, sizeof(buf), "%d (?)", ignored[i]);			
+		if (userlist[k].uin) {
+			if (userlist_entry)
+				snprintf(buf, sizeof(buf), "%d (%s)", userlist[k].uin, (const char *)userlist[k].altnick.local8Bit());	
+			else
+				snprintf(buf, sizeof(buf), "%d (?)", ignored[i]);			
+			list->insertItem(buf);
+			}
 		userlist_entry = false;
-		list->insertItem(buf);
 		}
 	list->sort();
 }
