@@ -39,13 +39,13 @@
   Zamkniêcie okienka z obrazkiem idei - np klawiszem esc - powoduje prawid³owy
   powrót do edycji (adrian)
 * znaki < i > wy¶wietlaj± siê prawid³owo w widoku opisu u¿ytkownika (chilek)
-* historia wy¶wietla siê tak jak kiedy¶ (z paroma dodatkowymi bajerami), ale wykorzystuje
-   ju¿ nowy format plików historii (chilek)
+* historia wy¶wietla siê tak jak kiedy¶ (z paroma dodatkowymi bajerami),
+  ale wykorzystuje ju¿ nowy format plików historii (chilek)
 * porz±dki z czasami zdarzeñ (chilek)
 * okno rozmowy: gdy otwieramy pojawia siê w nim 10 ostatnich wypowiedzi
-   z historii rozmowy (chilek)
+  z historii rozmowy (chilek)
 * historie rozmów: optymalizacja obs³ugi historii rozmów - wprowadzenie plików
-   z indeksami wpisów historii (chilek)
+  z indeksami wpisów historii (chilek)
 
 +++ wersja 0.3.3-final
 * ikonka wiadomo¶ci i ikon statusu "ukryty" z telefonikiem
