@@ -44,7 +44,10 @@
 #include "dock_widget.h"
 #include "../config.h"
 #ifdef HAVE_OPENSSL
-#include "sim.h"
+extern "C"
+{
+#include "simlite.h"
+};
 #endif
 
 void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t time,int formats_count=0,struct gg_msg_format * formats=NULL)
@@ -72,20 +75,50 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 	}
 
 	QString tmp;
+
 #ifdef HAVE_OPENSSL
-	int declen = 0;
-	char decoded[2048];
+	if (config.encryption) {
+		if (!strncmp((char *)msg, "-----BEGIN RSA PUBLIC KEY-----", 20)) {
+			QFile keyfile;
+			QString keyfile_path;
+			QString key_data;
+			switch(QMessageBox::information(kadu, "Kadu", i18n("User") +  (const char *) + i18n("is sending you public key. Do you want to save them ?"), i18n("Yes"), i18n("No"), QString::null, 0, 1)) {
+				case 0: // Yes ? ;)
+					keyfile_path.append(ggPath("keys/"));
+					keyfile_path.append(QString::number(senders[0]));
+					keyfile_path.append(".pem");
 
-	if(msg != NULL) {
-		int msglen = strlen((const char *)msg);
-		memset(decoded, 0, sizeof(char)*2048);
+					keyfile.setName(keyfile_path);
 
-		declen = SIM_Message_Decrypt((unsigned char *)msg, (unsigned char *)decoded, msglen, senders[0]);
+					if(!(keyfile.open(IO_WriteOnly))) {
+						QMessageBox::critical(kadu, "Kadu", i18n("Nie mozna zapisa. klucza"), i18n("OK"), QString::null, 0);
+						fprintf(stderr, "eventRecvMsg(): Error opening key file %s\n", (const char *)keyfile_path.local8Bit());
+						return;
+					}
 
-		if(declen > 0) {
-		    strcpy((char *)msg, decoded);
+					key_data.append(__c2q((const char *)msg));
+
+					keyfile.writeBlock(key_data.local8Bit(), key_data.length());
+
+					keyfile.close();
+
+					//SIM_KC_Free(SIM_KC_Find(senders[0]));
+
+					return;
+				case 1: // No ? ;)
+					return;
+			}
 		}
-	}
+	};
+
+	if(msg != NULL)
+	{
+		fprintf(stderr,"DECRYPTING\n");
+		char* decoded = sim_message_decrypt(msg, senders[0]);
+		fprintf(stderr,"DECODED: %s\n",decoded);
+		if (decoded != NULL)
+			strcpy((char *)msg, decoded);
+	};
 #endif
 
 	if (msg != NULL)
@@ -120,41 +153,6 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 	while (i < chats.count() && !chats[i].uins.equals(senders))
 		i++;
 
-#ifdef HAVE_OPENSSL
-	if (config.encryption) {
-		if (!strncmp((char *)msg, "-----BEGIN RSA PUBLIC KEY-----", 20)) {
-			QFile keyfile;
-			QString keyfile_path;
-			QString key_data;
-			switch(QMessageBox::information(kadu, "Kadu", i18n("User") +  (const char *) + i18n("is sending you public key. Do you want to save them ?"), i18n("Yes"), i18n("No"), QString::null, 0, 1)) {
-				case 0: // Yes ? ;)
-					keyfile_path.append(ggPath("keys/"));
-					keyfile_path.append(QString::number(senders[0]));
-					keyfile_path.append(".pem");
-
-					keyfile.setName(keyfile_path);
-
-					if(!(keyfile.open(IO_WriteOnly))) {
-						QMessageBox::critical(kadu, "Kadu", i18n("Nie mozna zapisa. klucza"), i18n("OK"), QString::null, 0);
-						fprintf(stderr, "eventRecvMsg(): Error opening key file %s\n", (const char *)keyfile_path.local8Bit());					
-						return;
-					}
-
-					key_data.append(__c2q((const char *)msg));
-
-					keyfile.writeBlock(key_data.local8Bit(), key_data.length());
-
-					keyfile.close();
-
-					SIM_KC_Free(SIM_KC_Find(senders[0]));
-
-					return;
-				case 1: // No ? ;)
-					return;
-			}
-		}
-	}
-#endif
 	if ((msgclass == GG_CLASS_CHAT || msgclass == GG_CLASS_MSG) && i < chats.count()) {
 		QString toadd;
 		tmp = __c2q((const char *)msg);

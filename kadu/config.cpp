@@ -38,7 +38,10 @@
 #include "config.h"
 #include "dock_widget.h"
 #ifdef HAVE_OPENSSL
-#include "sim.h"
+extern "C"
+{
+#include "simlite.h"
+};
 #endif
 //
 
@@ -114,7 +117,7 @@ void loadKaduConfig(void) {
 	config.ignoreanonusers = konf->readBoolEntry("IgnoreAnonymousUsers", false);
 #ifdef HAVE_OPENSSL
 	config.encryption = konf->readBoolEntry("Encryption", false);
-	config.keyslen = konf->readNumEntry("KeysLength", 512);
+	config.keyslen = konf->readNumEntry("KeysLength", 1024);
 #endif
 
 	konf->setGroup("Notify");
@@ -1200,35 +1203,19 @@ void ConfigDialog::generateMyKeys(void) {
 		}
 	}
 	
-	RSA *key;
 	char fname[PATH_MAX];
-
-	key = SIM_RSA_GenKey(atoi(cb_keyslen->currentText()));
-	fprintf(stderr,"KK Generating my keys, len: %d\n", atoi(cb_keyslen->currentText()));
-
-	if (!key) {
-		QMessageBox::critical(this, "Kadu", i18n("B..d przy generowaniu klucza"), i18n("OK"), QString::null, 0);
-		return;
-	}
 
 	QCString tmp;
 
 	tmp = ggPath("keys").local8Bit();
 	mkdir(tmp.data(), 0700);
 
-	tmp = ggPath("keys/private.pem").local8Bit();
-	memset(fname, 0, sizeof(fname));
-	sprintf(fname, tmp.data());
+	fprintf(stderr,"KK Generating my keys, len: %d\n", atoi(cb_keyslen->currentText()));
+	if (sim_key_generate(config.uin) < 0) {
+		QMessageBox::critical(this, "Kadu", i18n("B..d przy generowaniu klucza"), i18n("OK"), QString::null, 0);
+		return;
+	}
 
-	SIM_RSA_WriteKey(key, fname, PRIVATE);
-
-	chmod(fname, 0400);
-
-	tmp = ggPath("keys/").local8Bit();
-	memset(fname, 0, sizeof(fname));
-	sprintf(fname, "%s%d.pem", tmp.data(), config.uin);
-
-	SIM_RSA_WriteKey(key, fname, PUBLIC);
 
 	QMessageBox::information(this, "Kadu", i18n("Keys have been generated and written"), i18n("OK"), QString::null, 0);
 

@@ -119,7 +119,7 @@
 #include "updates.h"
 #include "password.h"
 #ifdef HAVE_OPENSSL
-#include "sim.h"
+#include "simlite.h"
 #endif
 //
 
@@ -945,9 +945,6 @@ void Kadu::commandParser (int command) {
 			pending.writeToFile();
 			close_permitted = true;
 			disconnectNetwork();
-#ifdef HAVE_OPENSSL
-			SIM_KC_Finish();
-#endif		       
 			close(true);
 			break;
 		case KADU_CMD_SEARCH_USER:

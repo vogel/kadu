@@ -22,6 +22,8 @@
 * dane osobiste: dzia³aj± w standardzie GG 5.0 (nie ma problemów z poszczególnymi polami
   naszego opisu)
 * dane osobiste: obs³uga FamilyName i FamilyCity
+* szyfrowanie: gruntowna poprawka - przejscie na simlite z ekg. dziala juz
+  kadu<=>kadu, ale kod wymaga jeszcze troszke pracy
 
 +++ wersja 0.3.3-pre3
 * CTRL + klik dowolnego przycisku myszki na ikonce w tray'u powoduje

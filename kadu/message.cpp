@@ -26,7 +26,10 @@
 #include "message.h"
 #include "history.h"
 #ifdef HAVE_OPENSSL
-#include "sim.h"
+extern "C"
+{
+#include "simlite.h"
+};
 #endif
 //
 
@@ -49,15 +52,10 @@ rMessage::rMessage(const QString & nick, int msgclass, UinsList uins, QString &m
 	bool sysmsg = false;
 	int j;
 #ifdef HAVE_OPENSSL
-	char decoded[2048];
-	int declen = strlen((const char *)msg);
-
-	memset(decoded, 0, sizeof(char)*2048);
-
 	QCString tmp(msg.local8Bit());
 	unsigned char *utmp = (unsigned char *)tmp.data();
 
-	declen = SIM_Message_Decrypt((unsigned char *)utmp, (unsigned char *)decoded, declen, uins[0]);
+	char* decrypted=sim_message_decrypt((unsigned char *)utmp, uins[0]);
 #endif
 
 	PendingMsgs::Element elem;
@@ -109,9 +107,12 @@ rMessage::rMessage(const QString & nick, int msgclass, UinsList uins, QString &m
 	body = new QMultiLineEdit(this);
 	body->setGeometry(5,20,305,170);
 #ifdef HAVE_OPENSSL
-       if (declen > 0)
-               body->setText(decoded);
-       else
+	if (decrypted != NULL)
+	{
+               body->setText(decrypted);
+	       free(decrypted);
+	}       
+	else
 #endif
                body->setText(msg);
 
@@ -321,11 +322,6 @@ void Message::commitSend(void) {
 	sendbtn->setDisabled(true);
 
 	int uin;
-#ifdef HAVE_OPENSSL
-        int enclen;
-        char encoded[4096];
-        memset(encoded, 0, 4096*sizeof(char));
-#endif
 	QString text;
 	text = body->text();
 	if ((text.compare("") == 0) || (text.compare(" ") == 0))
@@ -347,12 +343,13 @@ void Message::commitSend(void) {
 	iso_to_cp(utmp);
 
 #ifdef HAVE_OPENSSL
-	enclen = SIM_Message_Encrypt((unsigned char *)utmp, (unsigned char *)encoded, strlen((char *)utmp), uin);
+	char* encrypted = sim_message_encrypt((unsigned char *)utmp, uin);
 #endif
 	if (b_chat->isChecked()) {
 #ifdef HAVE_OPENSSL
                if (b_encryptmsg->isEnabled() && b_encryptmsg->isChecked()) {
-                       seq = gg_send_message(sess, GG_CLASS_CHAT, uin, (unsigned char *)encoded);
+                       seq = gg_send_message(sess, GG_CLASS_CHAT, uin, (unsigned char *)encrypted);
+		       free(encrypted);
                        fprintf(stderr,"seq: %d\n", seq);
                } else {
 #endif
@@ -364,7 +361,10 @@ void Message::commitSend(void) {
 	} else
 #ifdef HAVE_OPENSSL
 		if (b_encryptmsg->isEnabled() && b_encryptmsg->isChecked())
-			seq = gg_send_message(sess, GG_CLASS_MSG, uin, (unsigned char *)encoded);
+		{
+			seq = gg_send_message(sess, GG_CLASS_MSG, uin, (unsigned char *)encrypted);
+			free(encrypted);
+		}
 		else
 #endif
 		seq = gg_send_message(sess, GG_CLASS_MSG, uin, utmp);

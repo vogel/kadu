@@ -30,7 +30,10 @@
 #include "misc.h"
 #include "emoticons.h"
 #ifdef HAVE_OPENSSL
-#include "sim.h"
+extern "C"
+{
+#include "simlite.h"
+};
 #endif
 //
 
@@ -551,11 +554,6 @@ void Chat::sendMessage(void) {
 			i18n("Application encountered network error."));
 		return;
 		}
-#ifdef HAVE_OPENSSL
-	int enclen;
-	char encoded[4096];
-	memset(encoded, 0, 4096*sizeof(char));
-#endif
 
 	if (!QString::compare(edit->text().local8Bit(),""))
 		return;
@@ -595,10 +593,11 @@ void Chat::sendMessage(void) {
 		else {
 #ifdef HAVE_OPENSSL
 			if (encrypt_enabled) {
-				enclen = SIM_Message_Encrypt((unsigned char *)utmp, (unsigned char *)encoded, strlen((char *)utmp), uins[0]);
-				if (enclen > 0) {
-					acks[i].seq = gg_send_message(sess, GG_CLASS_CHAT, uins[0], (unsigned char *)encoded);
+				char* encrypted = sim_message_encrypt((unsigned char *)utmp, uins[0]);
+				if (encrypted != NULL) {
+					acks[i].seq = gg_send_message(sess, GG_CLASS_CHAT, uins[0], (unsigned char *)encrypted);
 					acks[i].ack = 1;
+					free(encrypted);
 				}
 			} else {
 #endif
@@ -622,9 +621,10 @@ void Chat::sendMessage(void) {
 		else {
 #ifdef HAVE_OPENSSL
 			if (encrypt_enabled) {
-				enclen = SIM_Message_Encrypt((unsigned char *)utmp, (unsigned char *)encoded, strlen((char *)utmp), uins[0]);
-				if (enclen > 0) {
-					gg_send_message(sess, GG_CLASS_CHAT, uins[0], (unsigned char *)encoded);
+				char* encrypted = sim_message_encrypt((unsigned char *)utmp, uins[0]);
+				if (encrypted != NULL) {
+					gg_send_message(sess, GG_CLASS_CHAT, uins[0], (unsigned char *)encrypted);
+					free(encrypted);
 				}
 			} else {
 #endif

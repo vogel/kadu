@@ -29,12 +29,13 @@ vuser.cpp vuser.h \
 dock_widget.cpp dock_widget.h \
 emoticons.cpp emoticons.h \
 status.cpp status.h \
-updates.cpp updates.h
+updates.cpp updates.h \
+password.cpp password.h
 
-EXTRA_kadu_SOURCES = sim.cpp sim.h
+EXTRA_kadu_SOURCES = simlite.c simlite.h
 
 if OPENSSL
-SIM = sim.$(OBJEXT)
+SIM = simlite.$(OBJEXT)
 else
 SIM =
 endif
