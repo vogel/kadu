@@ -215,7 +215,7 @@ class Kadu : public QMainWindow
 		/**
 			wywo³ana zosta³a funkcja show() na g³ównym oknie
 		**/
-		void showed();
+		void shown();
 };
 
 class KaduSlots : public QObject

@@ -1700,7 +1700,7 @@ bool Kadu::docked()
 void Kadu::show()
 {
 	QMainWindow::show();
-	emit showed();
+	emit shown();
 }
 
 void KaduSlots::onCreateConfigDialog()

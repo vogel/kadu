@@ -143,7 +143,7 @@ X11TrayIcon::X11TrayIcon()
 	connect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap&)), this, SLOT(setTrayPixmap(const QPixmap&)));
 	connect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
 	connect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
-	connect(kadu, SIGNAL(showed()), this, SLOT(disableTaskbar()));
+	connect(kadu, SIGNAL(shown()), this, SLOT(disableTaskbar()));
 
 	if (config_file.readBoolEntry("General", "RunDocked"))
 		kadu->showMainWindowOnStart=false;
@@ -186,7 +186,7 @@ void X11TrayIcon::enableTaskbar(bool enable)
 X11TrayIcon::~X11TrayIcon()
 {
 	kdebugf();
-	disconnect(kadu, SIGNAL(showed()), this, SLOT(disableTaskbar()));
+	disconnect(kadu, SIGNAL(shown()), this, SLOT(disableTaskbar()));
 	enableTaskbar();
 	disconnect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap&)), this, SLOT(setTrayPixmap(const QPixmap&)));
 	disconnect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
