@@ -970,10 +970,12 @@ void Kadu::commandParser (int command) {
 			mute = !mute;
 			if (mute) {
 				mutebtn->setIconSet(loadIcon("mute.png"));
+				mutebtn->setTextLabel(i18n("Unmute sounds"));
 				mmb->changeItem(KADU_CMD_MUTE, loadIcon("mute.png"), i18n("Unmute sounds"));
 				}
 			else {
 				mmb->changeItem(KADU_CMD_MUTE, loadIcon("unmute.png"), i18n("Mute sounds"));
+				mutebtn->setTextLabel(i18n("Mute sounds"));
 				mutebtn->setIconSet(loadIcon("unmute.png"));
 				}
 			break;
