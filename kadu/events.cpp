@@ -211,7 +211,8 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 
 		chats[i].ptr->checkPresence(senders, tmp, time, toadd);
 		chats[i].ptr->alertNewMessage();
-
+		if (!chats[i].ptr->isActiveWindow() && config.hintalert)
+			trayicon->showHint(i18n("New message from: "), (const char *)nick.local8Bit(),0);
 		return;
 		}
 

@@ -90,6 +90,7 @@ struct config {
 	bool addtodescription;
 	bool trayhint;
 	bool hinterror;
+	bool hintalert;
 	bool showdesc;
 
 	QRect geometry;

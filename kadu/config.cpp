@@ -119,6 +119,7 @@ void loadKaduConfig(void) {
 	config.chatprunelen = konf->readNumEntry("ChatPruneLen",20);
 	config.msgacks = konf->readBoolEntry("MessageAcks", true);
 	config.blinkchattitle = konf->readBoolEntry("BlinkChatTitle", true);
+	config.hintalert = konf->readBoolEntry("HintAlert", false);
 	config.ignoreanonusers = konf->readBoolEntry("IgnoreAnonymousUsers", false);
 #ifdef HAVE_OPENSSL
 	config.encryption = konf->readBoolEntry("Encryption", false);
@@ -255,6 +256,7 @@ void saveKaduConfig(void) {
 	konf->writeEntry("ChatPruneLen",config.chatprunelen);
 	konf->writeEntry("MessageAcks", config.msgacks);
 	konf->writeEntry("BlinkChatTitle", config.blinkchattitle);
+	konf->writeEntry("HintAlert", config.hintalert);
 	konf->writeEntry("IgnoreAnonymousUsers", config.ignoreanonusers);
 #ifdef HAVE_OPENSSL
         konf->writeEntry("Encryption", config.encryption);
@@ -328,8 +330,6 @@ void ConfigDialog::setupTab1(void) {
 	QLabel *l_uin = new QLabel(userinfo);
 	l_uin->setText(i18n("Uin"));
 
-//	char uin[12];
-//	snprintf(uin, sizeof(uin), "%d", config.uin);
 	e_uin = new QLineEdit(userinfo);
 	e_uin->setText(QString::number(config.uin));
 
@@ -411,7 +411,7 @@ void ConfigDialog::setupTab1(void) {
 	QVGroupBox *hintgrp = new QVGroupBox(box);
 	QHBox *box_time = new QHBox(hintgrp);
 	QLabel *l_trayhint = new QLabel(box_time);
-	l_trayhint->setText(i18n("Tray Hints timeout "));
+	l_trayhint->setText(i18n("Tray hints timeout "));
 
 	e_hinttime = new QLineEdit(box_time);
 	e_hinttime->setText(QString::number(config.hinttime));
@@ -704,6 +704,18 @@ void ConfigDialog::setupTab3(void) {
 	b_ignoreanonusers = new QCheckBox(box3);
 	b_ignoreanonusers->setText(i18n("Ignore messages from anonymous users"));
 	b_ignoreanonusers->setChecked(config.ignoreanonusers);
+
+	b_hintalert = new QCheckBox(box3);
+	b_hintalert->setText(i18n("Show tray hint on new message"));
+	if (config.trayhint)
+		b_hintalert->setChecked(config.hintalert);
+	else {
+		b_hintalert->setChecked(false);
+		b_hintalert->setEnabled(false);
+		}
+
+
+	QObject::connect(b_trayhint, SIGNAL(toggled(bool)), b_hintalert, SLOT(setEnabled(bool)));
 
 	addTab(box3, i18n("Chat"));
 }
@@ -1520,6 +1532,7 @@ void ConfigDialog::updateConfig(void) {
 	config.chatprunelen = atoi(e_chatprunelen->text().latin1());
 	config.msgacks = b_msgacks->isChecked();
 	config.blinkchattitle = b_blinkchattitle->isChecked();
+	config.hintalert = b_hintalert->isChecked();
 	config.ignoreanonusers = b_ignoreanonusers->isChecked();
 	config.defaultwebbrowser = b_defwebbrowser->isChecked();
 	config.webbrowser = e_webbrowser->text();
