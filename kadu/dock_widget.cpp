@@ -46,6 +46,8 @@ TrayIcon::TrayIcon(QWidget *parent, const char *name)
 	r = XInternAtom(dsp, "_KDE_NET_WM_SYSTEM_TRAY_WINDOW_FOR", false);
 	XChangeProperty(dsp, win, r, XA_WINDOW, 32, 0, (uchar *)&data, 1);
 
+	setBackgroundMode(X11ParentRelative);
+
 	icon_timer = new QTimer(this);
 	blink = FALSE;
 	QObject::connect(icon_timer, SIGNAL(timeout()), this, SLOT(changeIcon()));

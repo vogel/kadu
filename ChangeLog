@@ -7,6 +7,7 @@
 * Geometry w kadu.conf zgodne z wersjami kadu wcze¶niejszymi ni¿ 0.3.3-rc1
 * okno rozmowy: poprawione podpowiedzi (hinty) do guzika w³±czaj±cego/wy³±czaj±cego
   szyfrowanie
+* byæ mo¿e rozwi±zanie problemu z t³em ikonki w tray'u
 
 +++ wersja 0.3.3-rc1
 * sms.cpp ma szansê kompilowaæ siê na Qt < 3.0.5
