@@ -43,7 +43,9 @@ Adrian
  + autoryzacja proxy
  + dodaæ domy¶lnie strip do makefile'a i opcjê --enable-debug
  ? wykrywanie niewidocznych jako opcja
-
+ + usun±æ z kodów ¼ród³owych poszczególnych modu³ów informacje o autorach - wystarczy plik AUTHORS
+ + aktualiazja tytu³u okna czatu, gdy prowadzimy rozmowê z osob± "ukryt±" a jej stan zmieni³ siê na 
+niedostêpny
 
  TODO dla wersji pó¼niejszych
 ---------------------------------------- 
