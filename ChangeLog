@@ -423,6 +423,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * gdy kto¶ przysy³a nam obrazek wiêkszy ni¿ nasz limit lub gdy obrazek pochodzi od
   anonima/ignorowanego, to zamiast klepsydry pojawia siê odpowiedni napis (joi)
 * usuniêty potencjalny segfault przy aktualizacji informacji o kontakcie (joi)
+* usuniête 2 wycieki pamiêci: w sound i voice (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,

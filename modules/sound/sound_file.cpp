@@ -87,8 +87,11 @@ void SoundFile::setVolume(float vol)
 
 SoundFile::~SoundFile()
 {
-	if (length!=0)
-		delete data;
+	if (data != 0)
+	{
+		delete [] data;
+		data = NULL;
+	}
 }
 
 bool SoundFile::isOk()

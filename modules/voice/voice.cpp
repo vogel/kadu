@@ -64,7 +64,7 @@ void PlayThread::run()
 		queue.pop_front();
 		mutex.unlock();
 		emit playGsmSample(gsmsample.data, gsmsample.length);
-		delete gsmsample.data;
+		delete [] gsmsample.data;
 	}
 	kdebugf2();
 }
@@ -321,7 +321,7 @@ void VoiceManager::free()
 		{
 			gsmsample = pt->queue.front();
 			pt->queue.pop_front();
-			delete gsmsample.data;
+			delete [] gsmsample.data;
 		}
 		pt->mutex.unlock();
 		sound_manager->closeDevice(device);
