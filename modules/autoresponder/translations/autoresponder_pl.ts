@@ -11,7 +11,7 @@
     </message>
     <message>
         <source>KADU AUTORESPONDER: Thanks for your message. User is not currently available.</source>
-        <translation>AUTOODPOWIEDZ: Dziekuje za wiadomosc przeczytam ja puzniej, teraz jestem nieobecny.</translation>
+        <translation>AUTOODPOWIEDZ: Dziekuje za wiadomosc przeczytam ja pozniej, teraz jestem nieobecny.</translation>
     </message>
 </context>
 </TS>
