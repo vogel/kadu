@@ -20,12 +20,15 @@ class SmsIdeaGateway : public SmsGateway
 	public:
 		SmsIdeaGateway(QObject* parent);
 		~SmsIdeaGateway();
-		virtual void send(const QString& number,const QString& message, const QString& contact, const QString& signature);
 		static bool isNumberCorrect(const QString& number);
+	public slots:
+		virtual void send(const QString& number,const QString& message, const QString& contact, const QString& signature);
 };
 
 class SmsPlusGateway : public SmsGateway
 {
+	Q_OBJECT
+	
 	protected:
 		virtual void httpFinished();
 		virtual void httpRedirected(QString);
@@ -33,12 +36,15 @@ class SmsPlusGateway : public SmsGateway
 	public:
 		SmsPlusGateway(QObject* parent);
 		~SmsPlusGateway();
-		virtual void send(const QString& number,const QString& message, const QString& contact, const QString& signature);
 		static bool isNumberCorrect(const QString& number);
+	public slots:
+		virtual void send(const QString& number,const QString& message, const QString& contact, const QString& signature);
 };
 
 class SmsEraGateway : public SmsGateway
 {
+	Q_OBJECT
+	
 	protected:
 		virtual void httpFinished();
 		virtual void httpRedirected(QString link);
@@ -46,14 +52,14 @@ class SmsEraGateway : public SmsGateway
 	public:
 		SmsEraGateway(QObject* parent);
 		~SmsEraGateway();
-		virtual void send(const QString& number,const QString& message, const QString& contact, const QString& signature);
 		static bool isNumberCorrect(const QString& number);
 		static QString errorNumber(int nr);
+	public slots:
+		virtual void send(const QString& number,const QString& message, const QString& contact, const QString& signature);
 };
 
 class SmsGatewaySlots: public QObject
 {
-
 	Q_OBJECT
 	
 	public:

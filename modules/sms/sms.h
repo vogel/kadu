@@ -62,6 +62,7 @@ class SmsGateway : public QObject
 		
 	public:
 		SmsGateway(QObject* parent);
+	public slots:
 		virtual void send(const QString& number,const QString& message, const QString& contact, const QString& signature)=0;
 
 	signals:
@@ -81,6 +82,7 @@ class SmsSender : public QObject
 	public:
 		SmsSender(QObject* parent=0);
 		~SmsSender();
+	public slots:
 		void send(const QString& number,const QString& message, const QString& contact, const QString& signature);
 		
 	signals:
