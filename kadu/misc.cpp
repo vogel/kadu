@@ -272,6 +272,31 @@ QString unicode2std(const QString &buf)
 	return tmp;
 }
 
+//wygl±da magicznie, nie? :D
+QString unicodeUrl2latinUrl(const QString &buf)
+{
+	QString tmp = buf;
+	tmp.replace(QRegExp("%C4%99"), "%EA"); //ê
+	tmp.replace(QRegExp("%C3%B3"), "%F3"); //ó
+	tmp.replace(QRegExp("%C4%85"), "%B1"); //±
+	tmp.replace(QRegExp("%C5%9B"), "%B6"); //¶
+	tmp.replace(QRegExp("%C5%82"), "%B3"); //³
+	tmp.replace(QRegExp("%C5%BC"), "%BF"); //¿
+	tmp.replace(QRegExp("%C5%BA"), "%BC"); //¼
+	tmp.replace(QRegExp("%C4%87"), "%E6"); //æ
+	tmp.replace(QRegExp("%C5%84"), "%F1"); //ñ
+	tmp.replace(QRegExp("%C4%98"), "%CA"); //Ê
+	tmp.replace(QRegExp("%C3%93"), "%D3"); //Ó
+	tmp.replace(QRegExp("%C4%84"), "%A1"); //¡
+	tmp.replace(QRegExp("%C5%9A"), "%A6"); //¦
+	tmp.replace(QRegExp("%C5%81"), "%A3"); //£
+	tmp.replace(QRegExp("%C5%BB"), "%AF"); //¯
+	tmp.replace(QRegExp("%C5%B9"), "%AC"); //¬
+	tmp.replace(QRegExp("%C4%86"), "%C3"); //Æ
+	tmp.replace(QRegExp("%C5%83"), "%D1"); //Ñ
+	return tmp;
+}
+
 QString printDateTime(const QDateTime &datetime) {
 	QString tmp;
 	time_t t;

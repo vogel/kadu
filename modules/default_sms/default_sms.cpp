@@ -153,7 +153,7 @@ void SmsIdeaGateway::onCodeEntered(const QString& code)
 	}
 	kdebugm(KDEBUG_INFO, "SMS User entered the code\n");
 	State=SMS_LOADING_RESULTS;
-	QString post_data=QString("token=")+Token+"&SENDER="+Signature+"&RECIPIENT="+Number+"&SHORT_MESSAGE="+Http.encode(Message)+"&pass="+code+"&CHK_RESP=FALSE"+"&respInfo=1";
+	QString post_data=QString("token=")+Token+"&SENDER="+unicodeUrl2latinUrl(Http.encode(Signature))+"&RECIPIENT="+Number+"&SHORT_MESSAGE="+unicodeUrl2latinUrl(Http.encode(Message))+"&pass="+code+"&CHK_RESP=FALSE"+"&respInfo=1";
 	Http.post("sendsms.aspx",post_data);
 	kdebugf2();
 }
