@@ -46,12 +46,12 @@ Operation::Operation(const QString & labelText, const QString & cancelButtonText
 }
   
 void Operation::perform() {
-    if (sess.state == laststate) { 
+    if (sess->state == laststate) { 
 	t->start(50, TRUE);
 	return;
 	}
 
-    switch (sess.state) {
+    switch (sess->state) {
 	case GG_STATE_RESOLVING:
 	    laststate = GG_STATE_RESOLVING;
 	    setLabelText(i18n("Resolving address"));

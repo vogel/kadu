@@ -131,7 +131,7 @@ class vuSendMsg : public vuVoidReturner
 			msg->eval(m);
 			m="V-USER: "+m;
 			fprintf(stderr,"VUSER before send\n");
-			gg_send_message(&sess,c,u,(const unsigned char*)m.local8Bit().data());
+			gg_send_message(sess, c, u, (const unsigned char*)m.local8Bit().data());
 			return true;
 		};		
 		static vuVoidReturner* parse(VUserScript* script,QString& s)
@@ -406,12 +406,12 @@ void VUserScript::shellProcessOutputReady()
 		o+=b[i];
 		if(o.length()>999)
 		{
-			gg_send_message(&sess,shell_process_class,shell_process_uin,(const unsigned char*)o.local8Bit().data());		
+			gg_send_message(sess, shell_process_class, shell_process_uin, (const unsigned char*)o.local8Bit().data());		
 			o="";
 		};
 	};
 	if(o.length()>0)
-		gg_send_message(&sess,shell_process_class,shell_process_uin,(const unsigned char*)o.local8Bit().data());
+		gg_send_message(sess, shell_process_class, shell_process_uin, (const unsigned char*)o.local8Bit().data());
 };
 
 void VUserScript::shellProcessFinished()

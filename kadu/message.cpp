@@ -286,13 +286,13 @@ void Message::commitSend(void) {
 		appendHistory(uins, uin, utmp, TRUE);
 	iso_to_cp(utmp);
 	if (b_chat->isChecked()) {
-		seq = gg_send_message(&sess, GG_CLASS_CHAT, uin, utmp);
+		seq = gg_send_message(sess, GG_CLASS_CHAT, uin, utmp);
 		fprintf(stderr,"seq: %d\n", seq);
 		}
 	else
-		seq = gg_send_message(&sess, GG_CLASS_MSG, uin, utmp);
+		seq = gg_send_message(sess, GG_CLASS_MSG, uin, utmp);
 	
-	if (sess.check & GG_CHECK_WRITE)
+	if (sess->check & GG_CHECK_WRITE)
 		kadusnw->setEnabled(true);
 
 	acks[index].ack = 1;

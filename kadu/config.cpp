@@ -770,7 +770,7 @@ void ConfigDialog::updateConfig(void) {
 	if (!statusppm->isItemChecked(6) && !statusppm->isItemChecked(7)
 		&& prevprivatestatus != config.privatestatus) {
 		statusppm->setItemChecked(8, config.privatestatus);
-		kadu->setStatus(sess.status & (~GG_STATUS_FRIENDS_MASK));
+		kadu->setStatus(sess->status & (~GG_STATUS_FRIENDS_MASK));
 		}
 	config.rundocked=b_rdocked->isChecked();
 	config.grouptabs=b_grptabs->isChecked();

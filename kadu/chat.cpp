@@ -445,12 +445,12 @@ void Chat::sendMessage(void) {
 		if (uins.count() > 1) {
 			for (j = 0; j < uins.count(); j++)
 				users[j] = uins[j];
-			acks[i].seq = gg_send_message_confer(&sess, GG_CLASS_CHAT,
+			acks[i].seq = gg_send_message_confer(sess, GG_CLASS_CHAT,
 				uins.count(), users, (unsigned char *)utmp);    
 			acks[i].ack = uins.count();
 			}
 		else {
-			acks[i].seq = gg_send_message(&sess, GG_CLASS_CHAT, uins[0], (unsigned char *)utmp);
+			acks[i].seq = gg_send_message(sess, GG_CLASS_CHAT, uins[0], (unsigned char *)utmp);
 			acks[i].ack = 1;
 			}
 		acks[i].type = 2;
@@ -460,16 +460,16 @@ void Chat::sendMessage(void) {
 		if (uins.count() > 1) {
 			for (j = 0; j < uins.count(); j++)
 				users[j] = uins[j];
-			gg_send_message_confer(&sess, GG_CLASS_CHAT,
+			gg_send_message_confer(sess, GG_CLASS_CHAT,
 				uins.count(), users, (unsigned char *)utmp);    
 			}
 		else
-			gg_send_message(&sess, GG_CLASS_CHAT, uins[0], (unsigned char *)utmp);
+			gg_send_message(sess, GG_CLASS_CHAT, uins[0], (unsigned char *)utmp);
 		writeMyMessage();	
 		}
 	delete users;
 
-	if (sess.check & GG_CHECK_WRITE)
+	if (sess->check & GG_CHECK_WRITE)
 		kadusnw->setEnabled(true);
 }
 

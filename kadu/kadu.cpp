@@ -153,7 +153,7 @@ QPopupMenu * grpmenu;
 UserList userlist;
 PendingMsgs pending;
 QValueList<struct chats> chats;
-struct gg_session sess;
+struct gg_session *sess = NULL;
 struct sigaction sigact;
 struct config config;
 QArray<struct acks> acks(0);
@@ -294,10 +294,10 @@ void deletePendingMessage(int nr) {
  jesli stan sesji jest inny niz polaczone to znaczy
  ze jestesmy niedostepni */
 int getActualStatus() {
-    if (sess.state == GG_STATE_CONNECTED)
-	return sess.status;
-    
-    return GG_STATUS_NOT_AVAIL;
+	if (sess->state == GG_STATE_CONNECTED)
+		return sess->status;
+
+	return GG_STATUS_NOT_AVAIL;
 }
 
 /* sprawdza czy nasz status jest opisowy
@@ -409,9 +409,9 @@ void sendUserlist() {
 
 	/* we were popping up sometimes, so let's keep the server informed */
 	if (i_wanna_be_invisible)
-		gg_change_status(&sess, GG_STATUS_INVISIBLE);
+		gg_change_status(sess, GG_STATUS_INVISIBLE);
 
-	gg_notify(&sess, uins, j);
+	gg_notify(sess, uins, j);
 	fprintf(stderr, "KK send_userlist(): Userlist sent\n");
 
 	free(uins);
@@ -670,7 +670,7 @@ void Kadu::removeUser(QString &username, bool permanently = false) {
 	UserBox::all_refresh();
 	
 	UserListElement user = userlist.byAltNick(username);
-	gg_remove_notify(&sess, user.uin);
+	gg_remove_notify(sess, user.uin);
     	userlist.removeUser(user.altnick);
 
 	switch (QMessageBox::information(kadu, "Kadu", i18n("Save current userlist to file?"), i18n("Yes"), i18n("No"), QString::null, 0, 1) ) {
@@ -790,7 +790,7 @@ void Kadu::addUser(const QString& FirstName, const QString& LastName,
 
 	refreshGroupTabBar();
 
-	gg_add_notify(&sess, Uin.toInt());
+	gg_add_notify(sess, Uin.toInt());
 };
 
 /* cancel autoaway, we're alive */
@@ -1009,7 +1009,7 @@ void Kadu::commandParser (int command) {
 				acks.resize(acks.size() + 1);
 				i = acks.size() - 1;
 				acks[i].ack = 0;
-				acks[i].seq = gg_dcc_request(&sess, user.uin);
+				acks[i].seq = gg_dcc_request(sess, user.uin);
 				acks[i].type = 0;
 				acks[i].ptr = NULL;
 				}
@@ -1213,7 +1213,7 @@ void Kadu::slotHandleState(int command) {
 			dockppm->setItemChecked(8, !dockppm->isItemChecked(8));	    
 			config.privatestatus = statusppm->isItemChecked(8);
 			if (!statusppm->isItemChecked(6) && !statusppm->isItemChecked(7))
-				setStatus(sess.status & (~GG_STATUS_FRIENDS_MASK));
+				setStatus(sess->status & (~GG_STATUS_FRIENDS_MASK));
 			break;
 		}
 }
@@ -1281,15 +1281,15 @@ void Kadu::setStatus(int status) {
 			descr = (unsigned char *)strdup((const char *)own_description.local8Bit());
 			iso_to_cp(descr);
 			if (status == GG_STATUS_NOT_AVAIL_DESCR)
-				gg_change_status_descr(&sess, status, (const char *)descr);
+				gg_change_status_descr(sess, status, (const char *)descr);
 			else
-				gg_change_status_descr(&sess,
+				gg_change_status_descr(sess,
 					status | (GG_STATUS_FRIENDS_MASK * config.privatestatus), (const char *)descr);
 			delete descr;
 			}
 		else
-			gg_change_status(&sess, status | (GG_STATUS_FRIENDS_MASK * config.privatestatus));
-		if (sess.check & GG_CHECK_WRITE)
+			gg_change_status(sess, status | (GG_STATUS_FRIENDS_MASK * config.privatestatus));
+		if (sess->check & GG_CHECK_WRITE)
 			kadusnw->setEnabled(true);
 	
 		setCurrentStatus(status);
@@ -1332,12 +1332,12 @@ void Kadu::setStatus(int status) {
 		loginparams.server_addr = 0;
 		loginparams.server_port = 0;
 		}
-	sess = *gg_login(&loginparams);
+	sess = gg_login(&loginparams);
 
-	kadusnw = new QSocketNotifier(sess.fd, QSocketNotifier::Write, this); 
+	kadusnw = new QSocketNotifier(sess->fd, QSocketNotifier::Write, this); 
 	QObject::connect(kadusnw, SIGNAL(activated(int)), kadu, SLOT(dataSent()));
 
-	kadusnr = new QSocketNotifier(sess.fd, QSocketNotifier::Read, this); 
+	kadusnr = new QSocketNotifier(sess->fd, QSocketNotifier::Read, this); 
 	QObject::connect(kadusnr, SIGNAL(activated(int)), kadu, SLOT(dataReceived()));    
 }
 
@@ -1459,14 +1459,14 @@ void Kadu::watchDcc(void) {
 
 void Kadu::dataReceived(void) {
 	fprintf(stderr, "KK Kadu::dataReceived()\n");
-	if (sess.check && GG_CHECK_READ)
+	if (sess->check && GG_CHECK_READ)
 		eventHandler(GG_CHECK_READ);
 }
 
 void Kadu::dataSent(void) {
 	fprintf(stderr, "KK Kadu::dataSent()\n");
 	kadusnw->setEnabled(false);
-	if (sess.check & GG_CHECK_WRITE)
+	if (sess->check & GG_CHECK_WRITE)
 		eventHandler(GG_CHECK_WRITE);
 }
 
@@ -1479,7 +1479,7 @@ void Kadu::eventHandler(int state) {
 	calls++;
 	if (calls > 1)
 		fprintf(stderr, "************* KK Kadu::eventHandler(): Recursive eventHandler calls detected!\n");
-	if (!(e = gg_watch_fd(&sess))) {
+	if (!(e = gg_watch_fd(sess))) {
 		fprintf(stderr,"KK Kadu::eventHandler(): Connection broken unexpectedly!\n");
 		char error[512];
 		disconnectNetwork();
@@ -1493,7 +1493,7 @@ void Kadu::eventHandler(int state) {
 		calls--;
 		return;	
 		}
-	switch (sess.state) {
+	switch (sess->state) {
 		case GG_STATE_RESOLVING:
 			fprintf(stderr, "KK Kadu::eventHandler(): Resolving address\n");
 			break;
@@ -1518,7 +1518,7 @@ void Kadu::eventHandler(int state) {
 			break;
 		}
 
-	if (sess.check == GG_CHECK_READ) {
+	if (sess->check == GG_CHECK_READ) {
 		timeout_connected = true;
 		last_read_event = time(NULL);
 		}
@@ -1602,7 +1602,7 @@ void Kadu::eventHandler(int state) {
 		}
 
 	if (socket_active) {
-		if (sess.state == GG_STATE_IDLE && userlist_sent) {
+		if (sess->state == GG_STATE_IDLE && userlist_sent) {
 			char error[512];
 			socket_active = false;
 			UserBox::all_changeAllToInactive();
@@ -1614,7 +1614,7 @@ void Kadu::eventHandler(int state) {
 				setStatus(config.defaultstatus & (~GG_STATUS_FRIENDS_MASK));
 			}
 		else
-			if (sess.check & GG_CHECK_WRITE)
+			if (sess->check & GG_CHECK_WRITE)
 				kadusnw->setEnabled(true);
 		}
 
@@ -1625,10 +1625,7 @@ void Kadu::eventHandler(int state) {
 
 void Kadu::pingNetwork(void) {
 	fprintf(stderr, "KK Kadu::pingNetwork()\n");
-	gg_ping(&sess);
-	// Fuck you, since you don't reply anyway
-//	if (socket_active && i_wanna_be_invisible)
-//		gg_change_status(&sess, GG_STATUS_INVISIBLE | (GG_STATUS_FRIENDS_MASK * config.privatestatus));
+	gg_ping(sess);
 	pingtimer->start(60000, TRUE);
 }
 
@@ -1686,7 +1683,11 @@ void Kadu::disconnectNetwork() {
 
 	i_am_busy = false;
 	disconnect_planned = true;
-	gg_logoff(&sess);
+	if (sess) {
+		gg_logoff(sess);
+		gg_free_session(sess);
+		sess = NULL;
+		}
 	userlist_sent = false;
 
 	i = 0;
@@ -1815,8 +1816,8 @@ void DockWidget::mousePressEvent(QMouseEvent * e) {
 
 void Kadu::cleanUp(void) {
 	// may be of use
-	if (sess.password !=NULL)
-		free(sess.password);
+	if (sess && sess->password)
+		free(sess->password);
 	writeIgnored(NULL);
 }
 

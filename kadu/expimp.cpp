@@ -115,7 +115,7 @@ void UserlistImport::updateUserlist() {
 	i = 0;
 	while (i < userlist.count()) {
 		if (userlist[i].uin)
-			gg_remove_notify(&sess, userlist[i].uin);
+			gg_remove_notify(sess, userlist[i].uin);
 		i++;
 		}
 
@@ -131,7 +131,7 @@ void UserlistImport::updateUserlist() {
 
 	for (i = 0; i < userlist.count(); i++)
 		if (userlist[i].uin)
-			gg_add_notify(&sess, userlist[i].uin);
+			gg_add_notify(sess, userlist[i].uin);
 
 	uin_t *uins;
 	uins = (uin_t *) malloc(userlist.count() * sizeof(uin_t));
@@ -139,7 +139,7 @@ void UserlistImport::updateUserlist() {
 	for (i = 0; i < userlist.count(); i++)
 		uins[i] = userlist[i].uin;
 
-	gg_notify(&sess, uins, userlist.count());
+	gg_notify(sess, uins, userlist.count());
 	fprintf(stderr, "KK UserlistImport::updateUserlist(): Userlist sent\n");
 
 	userlist.writeToFile();

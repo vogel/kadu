@@ -275,7 +275,7 @@ extern char **gg_xpm[8];
 extern int gg_statuses[8];
 extern KApplication *a;
 extern Kadu *kadu;
-extern struct gg_session sess;
+extern struct gg_session *sess;
 extern struct config config;
 extern QValueList<struct chats> chats;
 extern UserList userlist;
