@@ -1514,44 +1514,72 @@ Sprawdź swoje połączenie internetowe.</translation>
         <translation>Zarządca modułów</translation>
     </message>
     <message>
-        <source>Load</source>
-        <translation>Uruchom</translation>
-    </message>
-    <message>
-        <source>Unload</source>
-        <translation>Wstrzymaj</translation>
-    </message>
-    <message>
         <source>Info</source>
         <translation>Informacje</translation>
     </message>
     <message>
         <source>Static</source>
-        <translation>Statyczne</translation>
-    </message>
-    <message>
-        <source>Installed</source>
-        <translation>Zainstalowane</translation>
+        <translation>Statyczny</translation>
     </message>
     <message>
         <source>Loaded</source>
-        <translation>Załadowane</translation>
+        <translation>Załadowany</translation>
     </message>
     <message>
-        <source>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;%1&lt;br/&gt;&lt;b&gt;Depends on:&lt;/b&gt;&lt;br/&gt;</source>
-        <translation>&lt;b&gt;Moduł:&lt;/b&gt;&lt;br/&gt;%1&lt;br/&gt;&lt;b&gt;Jest zależny od:&lt;/b&gt;&lt;br/&gt;</translation>
+        <source>This dialog box allows you to manage installed modules. Modules are responsible for numerous vital features like playing sounds or message encryption. You can load (or unload) them by double-clicking on their names.</source>
+        <translation>To okno dialogowe daje możliwość zarządzania zainstalowanymi modułami. Moduły są odpowiedzialne za wiele funkcji takich jak odtwarzanie dźwieków lub szyfrowanie wiadomości. Jeśli zechcesz włączyć (lub wyłączyć) któryś z nich wystarczy dwukrotnie kliknąć na jego nazwie. Modułu statycznego nie można wyłączyć.</translation>
     </message>
     <message>
-        <source>&lt;br/&gt;&lt;b&gt;Conflicts with:&lt;/b&gt;&lt;br/&gt;</source>
-        <translation>&lt;br/&gt;&lt;b&gt;Konflikt z:&lt;/b&gt;&lt;br/&gt;</translation>
+        <source>Module name</source>
+        <translation>Nazwa modułu</translation>
     </message>
     <message>
-        <source>&lt;br/&gt;&lt;b&gt;Provides:&lt;/b&gt;&lt;br/&gt;</source>
-        <translation>&lt;br/&gt;&lt;b&gt;Dostarcza:&lt;/b&gt;&lt;br/&gt;</translation>
+        <source>Module type</source>
+        <translation>Typ modułu</translation>
     </message>
     <message>
-        <source>&lt;br/&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br/&gt;%1&lt;br/&gt;&lt;b&gt;Description&lt;/b&gt;:&lt;br/&gt;%2</source>
-        <translation>&lt;br/&gt;&lt;b&gt;Autor:&lt;/b&gt;&lt;br/&gt;%1&lt;br/&gt;&lt;b&gt;Opis&lt;/b&gt;:&lt;br/&gt;%2</translation>
+        <source>State</source>
+        <translation>Stan</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Depends on:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Conflicts with:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Provides:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;</source>
+        <translation>&lt;b&gt;Moduł:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Wymaga:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Konflikt z:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Dostarcza:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Autor:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Opis:&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation>&amp;Zamknij</translation>
+    </message>
+    <message>
+        <source>Dynamic</source>
+        <translation>Dynamiczny</translation>
+    </message>
+    <message>
+        <source>Not loaded</source>
+        <translation>Nie załadowany</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Module: &lt;/b&gt;</source>
+        <translation>&lt;b&gt;Moduł: &lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;br/&gt;&lt;b&gt;Depends on: &lt;/b&gt;</source>
+        <translation>&lt;br/&gt;&lt;b&gt;Wymaga: &lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;br/&gt;&lt;b&gt;Conflicts with: &lt;/b&gt;</source>
+        <translation>&lt;br/&gt;&lt;b&gt;Konflikt z: &lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;br/&gt;&lt;b&gt;Provides: &lt;/b&gt;</source>
+        <translation>&lt;br/&gt;&lt;b&gt;Dostarcza: &lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;br/&gt;&lt;b&gt;Author: &lt;/b&gt;</source>
+        <translation>&lt;br/&gt;&lt;b&gt;Autor: &lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;br/&gt;&lt;b&gt;Description: &lt;/b&gt;</source>
+        <translation>&lt;br/&gt;&lt;b&gt;Opis: &lt;/b&gt;</translation>
     </message>
 </context>
 <context>

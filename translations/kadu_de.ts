@@ -1513,14 +1513,6 @@ Check your internet connection.</source>
         <translation>Manage Module</translation>
     </message>
     <message>
-        <source>Load</source>
-        <translation>Laden</translation>
-    </message>
-    <message>
-        <source>Unload</source>
-        <translation>Leeren</translation>
-    </message>
-    <message>
         <source>Info</source>
         <translation>Info</translation>
     </message>
@@ -1529,28 +1521,64 @@ Check your internet connection.</source>
         <translation>Statische</translation>
     </message>
     <message>
-        <source>Installed</source>
-        <translation>Installiert</translation>
-    </message>
-    <message>
         <source>Loaded</source>
         <translation>Geladen</translation>
     </message>
     <message>
-        <source>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;%1&lt;br/&gt;&lt;b&gt;Depends on:&lt;/b&gt;&lt;br/&gt;</source>
-        <translation>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;%1&lt;br/&gt;&lt;b&gt;abhängig von:&lt;/b&gt;&lt;br/&gt;</translation>
+        <source>This dialog box allows you to manage installed modules. Modules are responsible for numerous vital features like playing sounds or message encryption. You can load (or unload) them by double-clicking on their names.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;br/&gt;&lt;b&gt;Conflicts with:&lt;/b&gt;&lt;br/&gt;</source>
-        <translation>&lt;br/&gt;&lt;b&gt;Konflikte mit:&lt;/b&gt;&lt;br/&gt;</translation>
+        <source>Module name</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;br/&gt;&lt;b&gt;Provides:&lt;/b&gt;&lt;br/&gt;</source>
-        <translation>&lt;br/&gt;&lt;b&gt;Stellt zur Verfügung&lt;/b&gt;&lt;br/&gt;</translation>
+        <source>Module type</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;br/&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br/&gt;%1&lt;br/&gt;&lt;b&gt;Description&lt;/b&gt;:&lt;br/&gt;%2</source>
-        <translation>&lt;br/&gt;&lt;b&gt;Autor:&lt;/b&gt;&lt;br/&gt;%1&lt;br/&gt;&lt;b&gt;Beschreibung&lt;/b&gt;:&lt;br/&gt;%2</translation>
+        <source>State</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Depends on:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Conflicts with:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Provides:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Schliesse</translation>
+    </message>
+    <message>
+        <source>Dynamic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not loaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Module: &lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;br/&gt;&lt;b&gt;Depends on: &lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;br/&gt;&lt;b&gt;Conflicts with: &lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;br/&gt;&lt;b&gt;Provides: &lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;br/&gt;&lt;b&gt;Author: &lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;br/&gt;&lt;b&gt;Description: &lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
