@@ -1821,6 +1821,10 @@ Possibile incompatibilità con Kadu.</translation>
         <source>You can&apos;t add so many groups at one stroke. Close this dialog and open one more time.</source>
         <translation>Non puoi aggiungere troppi gruppi alla volta. Chiudi finestra e riapri.</translation>
     </message>
+    <message>
+        <source>Numbers are prohibited</source>
+        <translation>I numeri sono proibiti</translation>
+    </message>
 </context>
 <context>
     <name>UserList</name>

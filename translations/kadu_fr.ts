@@ -1823,6 +1823,10 @@ Peut être module incompatible avec Kadu.</translation>
         <source>You can&apos;t add so many groups at one stroke. Close this dialog and open one more time.</source>
         <translation>Impossible d&apos;ajouter cette quantité de groupes en même temps. Ferme cette fenêtre et ouvre encore une fois.</translation>
     </message>
+    <message>
+        <source>Numbers are prohibited</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UserList</name>

@@ -1820,6 +1820,10 @@ Vielleicht ist das kein Kadu-Modul.</translation>
         <source>You can&apos;t add so many groups at one stroke. Close this dialog and open one more time.</source>
         <translation>Sie können nicht so viele Gruppen auf einmal anlegen. Schließen Sie dieses Fenster und starten es noch einmal.</translation>
     </message>
+    <message>
+        <source>Numbers are prohibited</source>
+        <translation>Zahlen sind nicht erlaubt</translation>
+    </message>
 </context>
 <context>
     <name>UserList</name>

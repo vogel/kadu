@@ -1811,6 +1811,10 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
         <source>You can&apos;t add so many groups at one stroke. Close this dialog and open one more time.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Numbers are prohibited</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UserList</name>
