@@ -118,7 +118,8 @@ QString pwHash(const QString tekst) {
 void escapeSpecialCharacters(QString &msg) {
 	msg.replace(QRegExp("&"), "&amp;");
 	msg.replace(QRegExp("<"), "&lt;");
-	msg.replace(QRegExp(">"), "&gt;");				
+	msg.replace(QRegExp(">"), "&gt;");
+	msg.replace(QRegExp(" "), "&nbsp;");
 }
 
 QString formatGGMessage(const QString &msg, int formats_length, void *formats) {
@@ -367,8 +368,6 @@ QString parse_symbols(QString s, int i, UserListElement &ule, bool escape) {
 	QString r,d;
 	int j;
 
-	kdebug("parse_symbols():%s, %d escape=%i\n",(const char *)s.local8Bit(),i,escape);
-
 	while(s[i]!='%' && i != s.length()) {
 		r+=s[i];
 		i++;
@@ -393,9 +392,7 @@ QString parse_symbols(QString s, int i, UserListElement &ule, bool escape) {
 					r+=ule.description;
 				else {
 					d=ule.description;
-					d.replace(QRegExp("<"), "&lt;");
-					d.replace(QRegExp(">"), "&gt;");
-					d.replace(QRegExp(" "), "&nbsp;");
+					escapeSpecialCharacters(d);
 					r+=d;
 				}
 				break;
@@ -463,8 +460,6 @@ QString parse_symbols(QString s, int i, UserListElement &ule, bool escape) {
 QString parse_only_text(QString s, int i) {
 	QString r;
 
-	kdebug("parse_only_text() %s, %d\n",(const char *)s.local8Bit(),i);
-
 	while(s[i]!='%' && i != s.length()) {
 	r+=s[i];
 	i++;
@@ -480,8 +475,6 @@ QString parse_only_text(QString s, int i) {
 
 QString parse_expression(QString s, int& i, UserListElement &ule, bool escape) {
 	QString p,r,f;
-
-	kdebug("parse_expression() %s, %d escape=%i\n",(const char *)s.local8Bit(),i,escape);
 
 	while(s[i]!='[' && i != s.length()) {
 		f+=s[i];
@@ -515,9 +508,7 @@ QString parse_expression(QString s, int& i, UserListElement &ule, bool escape) {
 
 QString parse(QString s, UserListElement ule, bool escape) {
 	int i=0;
-
 	kdebug("parse() :%s escape=%i\n",(const char *)s.local8Bit(),escape);
-
 	return parse_expression(s,i,ule,escape);
 }
 
