@@ -1,12 +1,12 @@
 #!/bin/bash
 #################################################################
-#    Application Setup Script v0.1.1   (c) 2002 Kadu Team   #
-#            This program is free software. You can redistribute it and/or #
-#           modify it under the terms of the GNU General Public License  #
+# Application Setup Script v0.1.1   (c) 2002 Kadu Team          #
+# This program is free software. You can redistribute it and/or #
+# modify it under the terms of the GNU General Public License   #
 #################################################################
 
 
-#   Definicja domy?lnych warto?ci dla zmiennych
+#   Definicja domyslnych wartosci dla zmiennych
 
 APP_NAME=KADU
 APP_VER=0.3.3
@@ -17,14 +17,14 @@ APP_DEF_DIR=/usr
 
 function AskForPath()
 {
-	echo -n "Prosz?, poda? ?cie?k? do $1 : "
+	echo -n "Enter new path to $1 : "
 	read -e
 	if [ "$REPLY" == "" ]; then
 		REPLY="$2"
 	fi;
 }
 
-# $1 - scie?ka, $2 - plik sprawdzany, $3 - prawid?owy string, $4 - nieprawid?owy string
+# $1 - path, $2 - chek file, $3 - correctly  string, $4 - not correctly string
 function CheckPath()
 {
 	if [ -e $1/$2 ]; then
@@ -59,6 +59,22 @@ function Konfiguruj_bez_libgadu()
 	export KDEDIR
 	OPER="Configure"
 	./configure "--prefix=$APP_DIR" "--with-existing-libgadu" 
+	WYK=$?
+ if test "$WYK" -ne 0; then
+        Error
+	exit
+ fi;
+}
+
+function Konfiguruj_z_ssl()
+{
+	QTDIR="$QT_DIR"
+	LD_LIBRARY_PATH="$QT_DIR/lib:$LD_LIBRARY_PATH"
+	export QTDIR
+	KDEDIR="$KDE_DIR"
+	export KDEDIR
+	OPER="Configure"
+	./configure "--prefix=$APP_DIR" "--with-openssl" 
 	WYK=$?
  if test "$WYK" -ne 0; then
         Error
@@ -143,15 +159,16 @@ function ShowInfo()
 	echo " =============================================================================="
 	echo " |                                   MENU                                     |"
 	echo " =============================================================================="
-	echo " |		Press   L	to view GNU licence.                          |"
-	echo " |		Press   Q	to change QT Library path.                    |"
-	echo " |		Press   K	to change KDE Desktop path.                   |"
-	echo " |		Press   D	to change destination path.                   |"
-	echo " |		Press   I	to install $APP_NAME.                              |"
-	echo " |		Press   U	to uninstall $APP_NAME.                            |"
-	echo " |		Press   B	to install $APP_NAME with existing libgadu         |"
-	echo " |		Press   P	to Help in Links program.                     |"
-	echo " |		Press   E	to exit.                                      |"
+	echo " |                Press   L   to view GNU licence.                            |"
+	echo " |                Press   Q   to change QT Library path.                      |"
+	echo " |                Press   K   to change KDE Desktop path.                     |"
+	echo " |                Press   D   to change destination path.                     |"
+	echo " |                Press   I   to install $APP_NAME.                                |"
+	echo " |                Press   U   to uninstall $APP_NAME.                              |"
+	echo " |                Press   B   to install $APP_NAME with existing libgadu           |"
+	echo " |                Press   S   to install $APP_NAME with SSL                        |"
+	echo " |                Press   P   to Help in Links program.                       |"
+	echo " |                Press   E   to exit.                                        |"
 	echo " =============================================================================="
         echo "	                 WARNING!!! You have must root access."
 }
@@ -192,7 +209,7 @@ fi;
 clear
 	echo
 	echo "==============================================================================="
-	echo "          Welcome To $APP_NAME v$APP_VER Application Setup Script v0.1.1"
+	echo "          Welcome To $APP_NAME v$APP_VER Application Setup Script v0.1.2"
 	echo "==============================================================================="
 	echo
 	echo "  This program is free software; you can redistribute it and/or modify"
@@ -246,6 +263,11 @@ while [ 1 ]; do
 		fi;
 		if [[ ("$REPLY" == "B") || ("$REPLY" == "b") ]]; then
 			Konfiguruj_bez_libgadu
+			Kompiluj
+			Zainstaluj
+		fi;
+		if [[ ("$REPLY" == "S") || ("$REPLY" == "s") ]]; then
+			Konfiguruj_z_ssl
 			Kompiluj
 			Zainstaluj
 		fi;

@@ -1,16 +1,15 @@
 #!/bin/bash
 #################################################################
-#    Application Setup Script v0.1.1   (c) 2002 A.Smarzewski  R.Krzystyniak   #
-#            This program is free software. You can redistribute it and/or #
-#           modify it under the terms of the GNU General Public License  #
-#                        Polish vesion (c) 2002 R. Krzystyniak          #
+# Application Setup Script v0.1.2   (c) 2002 Kadu Team          #
+# This program is free software. You can redistribute it and/or #
+# modify it under the terms of the GNU General Public License   #
 #################################################################
 
 
 #   Definicja domy¶lnych warto¶ci dla zmiennych
 
 APP_NAME=KADU
-APP_VER=0.3.3
+APP_VER=0.3.3-pre3
 APP_DEF_DIR=/usr
 # $1 - nazwy katalogów, $2 - Wartosci domy¶lne
 
@@ -59,7 +58,23 @@ function Konfiguruj_bez_libgadu()
 	KDEDIR="$KDE_DIR"
 	export KDEDIR
 	OPER="Configure"
-	./configure "--prefix=$APP_DIR" "--with-existing-libgadu" 
+	./configure "--prefix=$APP_DIR" "--with-existing-libgadu"
+	WYK=$?
+ if test "$WYK" -ne 0; then
+        Error
+	exit
+ fi;
+}
+
+function Konfiguruj_z_ssl()
+{
+	QTDIR="$QT_DIR"
+	LD_LIBRARY_PATH="$QT_DIR/lib:$LD_LIBRARY_PATH"
+	export QTDIR
+	KDEDIR="$KDE_DIR"
+	export KDEDIR
+	OPER="Configure"
+	./configure "--prefix=$APP_DIR" "--with-openssl"
 	WYK=$?
  if test "$WYK" -ne 0; then
         Error
@@ -144,18 +159,18 @@ function ShowInfo()
 	echo " =============================================================================="
 	echo " |                               MENU PROGRAMU                                |"
 	echo " =============================================================================="
-	echo " |		Naci¶nij   L	aby zobaczyæ licencje GNU.		      |"
-	echo " |		Naci¶nij   Q	aby zmieniæ ¶cie¿kê do biblioteki QT	      |"
-	echo " |		Naci¶nij   K	aby zmieniæ ¶cie¿kê do KDE Desktop.	      |"
-	echo " |		Naci¶nij   D	aby zmieniæ lokalizacje $APP_NAME .		      |"
-	echo " |		Naci¶nij   I	aby rozpocz±æ instalacjê		      |"
-	echo " |		Naci¶nij   U	aby odinstalowaæ $APP_NAME.			      |"
-	echo " |		Naci¶nij   B	aby rozpocz±æ instalacjê bez libgadu	      |"
-	echo " |		Naci¶nij   P	aby uzyskaæ Pomoc za pomoc± programu Links.   |"
-	echo " |		Naci¶nij   E	aby zakoñczyæ program instalacyjny.	      |"
+	echo " |          Naci¶nij   L  aby zobaczyæ licencje GNU.                          |"
+	echo " |          Naci¶nij   Q  aby zmieniæ ¶cie¿kê do biblioteki QT.               |"
+	echo " |          Naci¶nij   K  aby zmieniæ ¶cie¿kê do KDE Desktop.                 |"
+	echo " |          Naci¶nij   D  aby zmieniæ lokalizacje $APP_NAME .                      |"
+	echo " |          Naci¶nij   I  aby rozpocz±æ instalacjê                            |"
+	echo " |          Naci¶nij   U  aby odinstalowaæ $APP_NAME.                              |"
+	echo " |          Naci¶nij   B  aby rozpocz±æ instalacjê bez libgadu.               |"
+	echo " |          Naci¶nij   S  aby rozpocz±æ instalacjê z szyfrowaniem w SSL.      |"
+	echo " |          Naci¶nij   P  aby uzyskaæ Pomoc za pomoc± programu Links.         |"
+	echo " |          Naci¶nij   E  aby zakoñczyæ program instalacyjny.                 |"
 	echo " =============================================================================="
-        echo "	UWAGA!!! Je¿eli instalujesz lub odinstalowywujesz $APP_NAME do innego"
-	echo "	katalogu ni¿ domowego musisz mieæ uprawnienia do zapisu w tym katalogu."
+        echo "                 UWAGA!!! musisz mieæ uprawnienia administratora"
 }
 
 function Szuk_kadu
@@ -194,7 +209,7 @@ fi;
 clear
 echo
 	echo " =============================================================================="
-	echo "            Witaj w $APP_NAME wersja $APP_VER Skrypt instalacyjny v0.1.1"
+	echo "            Witaj w $APP_NAME wersja $APP_VER Skrypt instalacyjny v0.1.2"
 	echo "  Skrypt ten konfiguruje, kompiluje, instaluje lub odinstalowywuje $APP_NAME ."
 	echo " =============================================================================="
 	echo
@@ -247,6 +262,11 @@ while [ 1 ]; do
 		fi;
 		if [[ ("$REPLY" == "B") || ("$REPLY" == "b") ]]; then
 			Konfiguruj_bez_libgadu
+			Kompiluj
+			Zainstaluj
+		fi;
+		if [[ ("$REPLY" == "S") || ("$REPLY" == "s") ]]; then
+			Konfiguruj_z_ssl
 			Kompiluj
 			Zainstaluj
 		fi;

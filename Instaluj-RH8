@@ -1,6 +1,6 @@
 #!/bin/bash
 #################################################################
-# Application Setup Script v0.1.1   (c) 2002 Kadu Team          #
+# Application Setup Script v0.1.2   (c) 2002 Kadu Team          #
 # This program is free software. You can redistribute it and/or #
 # modify it under the terms of the GNU General Public License   #
 #################################################################
@@ -9,7 +9,7 @@
 #   Definicja domyślnych wartości dla zmiennych
 
 APP_NAME=KADU
-APP_VER=0.3.3
+APP_VER=0.3.3-pre3
 APP_DEF_DIR=/usr
 # $1 - nazwy katalogw, $2 - Wartości domyślne
 
@@ -59,6 +59,22 @@ function Konfiguruj_bez_libgadu()
 	export KDEDIR
 	OPER="Configure"
 	./configure "--prefix=$APP_DIR" "--with-existing-libgadu"
+	WYK=$?
+ if test "$WYK" -ne 0; then
+        Error
+	exit
+ fi;
+}
+
+function Konfiguruj_z_ssl()
+{
+	QTDIR="$QT_DIR"
+	LD_LIBRARY_PATH="$QT_DIR/lib:$LD_LIBRARY_PATH"
+	export QTDIR
+	KDEDIR="$KDE_DIR"
+	export KDEDIR
+	OPER="Configure"
+	./configure "--prefix=$APP_DIR" "--with-openssl"
 	WYK=$?
  if test "$WYK" -ne 0; then
         Error
@@ -150,6 +166,7 @@ function ShowInfo()
 	echo " |           Naciśnij   I    aby rozpocząć instalację.                        |"
 	echo " |           Naciśnij   U    aby odinstalować $APP_NAME.                           |"
 	echo " |           Naciśnij   B    aby rozpocząć instalację bez libgadu             |"
+	echo " |           Naciśnij   S    aby rozpocząć instalacj�z SSL                    |"
 	echo " |           Naciśnij   P    aby uzyskać Pomoc za pomocą programu Links       |"
 	echo " |           Naciśnij   E    aby zakończyć program instalacyjny.              |"
 	echo " =============================================================================="
@@ -192,8 +209,8 @@ fi;
 clear
 echo
 	echo " =============================================================================="
-	echo "            Witaj w $APP_NAME wersja $APP_VER Skrypt instalacyjny v0.1.1-1 "
-	echo "                        PRZEZNACZONY DLA REDHAT 0.0 I AUROX 8.0"
+	echo "            Witaj w $APP_NAME wersja $APP_VER Skrypt instalacyjny v0.1.2-1 "
+	echo "                        PRZEZNACZONY DLA REDHAT 8.0 I AUROX 8.0"
 	echo "  Skrypt ten konfiguruje, kompiluje, instaluje lub odinstalowywuje $APP_NAME"
 	echo " =============================================================================="
 	echo
@@ -249,6 +266,11 @@ while [ 1 ]; do
 			Kompiluj
 			Zainstaluj
 		fi;
+		if [[ ("$REPLY" == "S") || ("$REPLY" == "s") ]]; then
+			Konfiguruj_z_ssl
+			Kompiluj
+			Zainstaluj
+		fi;		
 		if [[ ("$REPLY" == "U") || ("$REPLY" == "u") ]]; then
 			Konfiguruj
 			Kompiluj
