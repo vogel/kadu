@@ -111,22 +111,23 @@ void UserBox::refresh()
 	QValueList<uin_t> a_users;
 	QValueList<uin_t> i_users;
 	QValueList<uin_t> n_users;
-	for(int i=0; i<Uins.count(); i++)
+	for (int i = 0; i < Users.count(); i++)
 	{
-		switch(userlist.byUin(Uins[i]).status)
+		UserListElement &user = userlist.byAltNick(Users[i]);
+		switch (user.status)
 		{
 			case GG_STATUS_AVAIL:
 			case GG_STATUS_AVAIL_DESCR:
 			case GG_STATUS_BUSY:
 			case GG_STATUS_BUSY_DESCR:
-				a_users.append(Uins[i]);
+				a_users.append(user.uin);
 				break;
 			case GG_STATUS_INVISIBLE_DESCR:
 			case GG_STATUS_INVISIBLE2:
-				i_users.append(Uins[i]);
+				i_users.append(user.uin);
 				break;
 			default:
-				n_users.append(Uins[i]);			
+				n_users.append(user.uin);
 		};
 	};
 	sortUinsByAltNick(a_users);
@@ -135,9 +136,9 @@ void UserBox::refresh()
 	// Czyscimy liste
 	clear();
 	// Dodajemy aktywnych
-	for(int i=0; i<a_users.count(); i++)
+	for (int i = 0; i < a_users.count(); i++)
 	{
-		UserListElement& user=userlist.byUin(a_users[i]);
+		UserListElement &user = userlist.byUin(a_users[i]);
 		if (pending.pendingMsgs(user.uin))
 		{
 	    		insertItem(QPixmap((const char **)gg_msg_xpm), user.altnick);
@@ -162,9 +163,9 @@ void UserBox::refresh()
 		};
 	};	
 	// Dodajemy niewidocznych
-	for(int i=0; i<i_users.count(); i++)
+	for (int i = 0; i < i_users.count(); i++)
 	{
-		UserListElement& user=userlist.byUin(i_users[i]);
+		UserListElement &user = userlist.byUin(i_users[i]);
 		if (pending.pendingMsgs(user.uin))
 		{
 	    		insertItem(QPixmap((const char **)gg_msg_xpm), user.altnick);
@@ -183,9 +184,9 @@ void UserBox::refresh()
 		};
 	};	
 	// Dodajemy nieaktywnych
-	for(int i=0; i<n_users.count(); i++)
+	for (int i = 0; i < n_users.count(); i++)
 	{
-		UserListElement& user=userlist.byUin(n_users[i]);
+		UserListElement &user = userlist.byUin(n_users[i]);
 		if (pending.pendingMsgs(user.uin))
 		{
 	    		insertItem(QPixmap((const char **)gg_msg_xpm), user.altnick);
@@ -205,20 +206,14 @@ void UserBox::refresh()
 	};	
 };
 
-void UserBox::addUin(uin_t uin)
+void UserBox::addUser(const QString &altnick)
 {
-	Uins.append(uin);
+	Users.append(altnick);
 };
 
-void UserBox::removeUin(uin_t uin)
+void UserBox::removeUser(const QString &altnick)
 {
-	Uins.remove(uin);
-	refresh();	
-};
-
-void UserBox::removeUser(QString& username)
-{
-	removeUin(userlist.byAltNick(username).uin);
+	Users.remove(altnick);
 };
 
 /*void ChangeUserStatus (unsigned int uin, int new_status) {
@@ -281,16 +276,10 @@ void UserBox::all_refresh()
 		UserBoxes[i]->refresh();
 };
 
-void UserBox::all_removeUin(uin_t uin)
+void UserBox::all_removeUser(QString &altnick)
 {
 	for(int i=0; i<UserBoxes.size(); i++)
-		UserBoxes[i]->removeUin(uin);
-};
-
-void UserBox::all_removeUser(QString& username)
-{
-	for(int i=0; i<UserBoxes.size(); i++)
-		UserBoxes[i]->removeUser(username);
+		UserBoxes[i]->removeUser(altnick);
 };
 
 void UserBox::all_changeAllToInactive()
@@ -299,6 +288,6 @@ void UserBox::all_changeAllToInactive()
 		UserBoxes[i]->changeAllToInactive();	
 };
 
-QValueList<UserBox*> UserBox::UserBoxes;
+QValueList<UserBox *> UserBox::UserBoxes;
 
 #include "userbox.moc"

@@ -28,7 +28,7 @@ class UserBox : public QListBox , QToolTip
 
 	private:
 		static QValueList<UserBox*> UserBoxes;
-		QValueList<uin_t> Uins;
+		QStringList Users;
 
 		void sortUinsByAltNick(QValueList<uin_t> &);
 			
@@ -39,16 +39,14 @@ class UserBox : public QListBox , QToolTip
 		UserBox(QWidget* parent=0,const char* name=0,WFlags f=0);
 		~UserBox();
 		virtual void clear() { QListBox::clear(); };
-		void clearUins() { Uins.clear(); };
+		void clearUsers() { Users.clear(); };
 		void refresh();
-		void addUin(uin_t uin);
-		void removeUin(uin_t uin);
-		void removeUser(QString& username);
+		void addUser(const QString &altnick);
+		void removeUser(const QString &altnick);
 		void changeAllToInactive();
 		// Functions below works on all created userboxes
 		static void all_refresh();
-		static void all_removeUin(uin_t uin);		
-		static void all_removeUser(QString& username);		
+		static void all_removeUser(QString &altnick);		
 		static void all_changeAllToInactive();		
 };
 

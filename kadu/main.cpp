@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
 	a->setMainWidget(kadu);
 	
 	// pokazanie okna przeniesione do konstruktora z powodu RunDocked
-	//kadu->show();
+//	kadu->show();
 	
 	if (config.defaultstatus != GG_STATUS_NOT_AVAIL && config.defaultstatus != GG_STATUS_NOT_AVAIL_DESCR) {
 		kadu->autohammer = true;

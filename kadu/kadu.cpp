@@ -515,7 +515,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 
 	for (int i = 0; i < userlist.count(); i++)
-		userbox->addUin(userlist[i].uin);
+		userbox->addUser(userlist[i].altnick);
 	UserBox::all_refresh();
 	
 	/* start auto away. yes, even if it's disabled. this way enabling it will work at run-time */
@@ -552,7 +552,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	dockppm->insertItem(loader->loadIcon("exit",KIcon::Small), i18n("Exit"), 9);
 	connect(dockppm, SIGNAL(activated(int)), dw, SLOT(dockletChange(int)));
-
+	
 	QGridLayout * grid = new QGridLayout (this,3,3);
 	grid->addMultiCellWidget(mmb,0,0,0,2);
 	grid->addMultiCellWidget(userbox, 1, 1, 0, 2);
@@ -685,7 +685,7 @@ void Kadu::addUser(const QString& FirstName, const QString& LastName,
 	userlist.addUser(FirstName, LastName, NickName, AltNick, Mobile, Uin, Status, Group, Description, Foreign);
 	userlist.writeToFile();
 
-	userbox->addUin(Uin.toInt());
+	userbox->addUser(AltNick);
 	UserBox::all_refresh();
 
 	gg_add_notify(&sess, Uin.toInt());

@@ -57,7 +57,7 @@ Chat::Chat(UinsList uins, QWidget *parent)
 		userbox->QListBox::setFont(QFont(config.colors.userboxFont, config.colors.userboxFontSize));
 
 		for (i = 0; i < uins.count(); i++)
-			userbox->addUin(uins[i]);
+			userbox->addUser(userlist.byUin(uins[i]).altnick);
 		userbox->refresh();
 		}
 	else {

@@ -122,17 +122,14 @@ void UserlistImport::updateUserlist() {
 //	importedUserlist.clear();
 	
 	kadu->userbox->clear();
-	kadu->userbox->clearUins();
+	kadu->userbox->clearUsers();
 	for (i = 0; i < userlist.count(); i++)
-		kadu->userbox->addUin(userlist[i].uin);
+		kadu->userbox->addUser(userlist[i].altnick);
 		
 	UserBox::all_refresh();
 
-	i = 0;
-	while (i < userlist.count()) {
+	for (i = 0; i < userlist.count(); i++)
 		gg_add_notify(&sess, userlist[i].uin);
-		i++;
-		}
 
 	uin_t *uins;
 	uins = (uin_t *) malloc(userlist.count() * sizeof(uin_t));
