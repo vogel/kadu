@@ -642,7 +642,9 @@ void UserBox::renameUser(const QString &oldaltnick, const QString &newaltnick)
 	if (it != Users.end())
 	{
 		(*it) = newaltnick;
-		((KaduListBoxPixmap*)findItem(oldaltnick, Qt::ExactMatch|Qt::CaseSensitive))->changeText(newaltnick);
+		KaduListBoxPixmap *pix=(KaduListBoxPixmap*)findItem(oldaltnick, Qt::ExactMatch|Qt::CaseSensitive);
+		if (pix)
+			pix->changeText(newaltnick);
 	}
 	else
 		kdebugmf(KDEBUG_WARNING, "userbox does not contain: %s\n", oldaltnick.local8Bit().data());
