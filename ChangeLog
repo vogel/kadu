@@ -21,6 +21,8 @@
   aby dodaæ go do listy, albo uaktualniæ informacjê o nim
 * w oknie konfiguracji: gdy odznaczymy domy¶lny serwer GG i nie wpiszemy ¿adnego
   serwera GG to kadu ju¿ nie wywala siê przy próbie ponownego ³±czenia siê
+* Autostatus z pliku ~/.gg/description je¶li istnieje - do zastosowañ zwi±zanych
+  z XMMS i innymi.
 
 +++ wersja 0.3.2
 * dalsze porz±dki w kodzie
