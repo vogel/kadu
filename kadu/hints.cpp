@@ -56,8 +56,12 @@ Hint::Hint(QWidget *parent, const QString& text, const QPixmap& pixmap, unsigned
 
 bool Hint::nextSecond(void)
 {
+	if (secs==0)
+		kdebugm(KDEBUG_ERROR, "ERROR: secs == 0 !\n");
+	else if (secs>2000000000)
+		kdebugm(KDEBUG_WARNING, "WARNING: secs > 2 000 000 000 !\n");
 	secs--;
-	return secs;
+	return secs>0;
 }
 
 void Hint::setShown(bool show)
@@ -704,7 +708,7 @@ void HintManagerSlots::onDestroyConfigDialog()
 {
 	kdebugf();
 
-	kdebugm(KDEBUG_FUNCTION_START, "Hint 1 timeout: %s\n", hint[0][4].latin1());
+	kdebugm(KDEBUG_INFO, "Hint 1 timeout: %s\n", hint[0][4].latin1());
 	config_file.writeEntry("Hints", "NewHintUnder", combobox2->currentItem());
 	config_file.writeEntry("Hints", "UseUserPosition", b_useposition->isChecked());
 	config_file.writeEntry("Hints", "HintsPosition", QPoint(e_posx->value(),e_posy->value()));
