@@ -22,7 +22,7 @@
 * przepisany od zera b³êdny kod wykrywania adresów url w wiadomo¶ciach (adrian)
 * pionowe zak³adki grup (chilek)
 * wy³±czenie ikony w tray'u nie powoduje wywalenia siê kadu, gdy jednocze¶nie
-  wy³±czamy dymki
+  wy³±czamy dymki (chilek)
 
 +++ wersja 0.3.3-rc2
 * sporo poprawek dla FreeBSD (adrian)
