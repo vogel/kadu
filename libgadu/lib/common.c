@@ -1,4 +1,4 @@
-/* $Id: common.c,v 1.31 2004/01/10 12:57:28 chilek Exp $ */
+/* $Id: common.c,v 1.32 2004/05/02 21:43:30 michal Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -229,6 +229,7 @@ int gg_connect(void *addr, int port, int async)
 	int sock, one = 1;
 	struct sockaddr_in sin;
 	struct in_addr *a = addr;
+        struct sockaddr_in myaddr;
 
 	gg_debug(GG_DEBUG_FUNCTION, "** gg_connect(%s, %d, %d);\n", inet_ntoa(*a), port, async);
 	
@@ -236,6 +237,16 @@ int gg_connect(void *addr, int port, int async)
 		gg_debug(GG_DEBUG_MISC, "// gg_connect() socket() failed (errno=%d, %s)\n", errno, strerror(errno));
 		return -1;
 	}
+
+        memset(&myaddr, 0, sizeof(myaddr));
+        myaddr.sin_family = AF_INET;
+
+        myaddr.sin_addr.s_addr = gg_local_ip;
+        
+        if(bind(sock, (struct sockaddr *) &myaddr, sizeof(myaddr)) == -1) {
+                gg_debug(GG_DEBUG_MISC, "// gg_connect() bind() failed (errno=%d, %s)\n", errno, strerror(errno));
+                return -1;
+        }
 
 #ifdef ASSIGN_SOCKETS_TO_THREADS
 	gg_win32_thread_socket(0, sock);

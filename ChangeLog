@@ -88,6 +88,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   bêd± to obs³ugiwaæ, domy¶lnie w³±czone ostrze¿enia -Wall (adrian)
 * klasa HttpClient (ktora jest uzywana przez moduly sms) moze uzywac
   servera proxy (michal)
+* uaktualnienie libgadu do wersji z dnia 02.05.2004 (michal)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

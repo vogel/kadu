@@ -1,9 +1,9 @@
-/* $Id: libgadu.h,v 1.51 2004/01/10 12:57:28 chilek Exp $ */
+/* $Id: libgadu.h,v 1.52 2004/05/02 21:43:30 michal Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
  *                          Robert J. Wo¼ny <speedy@ziew.org>
- *                          Arkadiusz Mi¶kiewicz <misiek@pld.org.pl>
+ *                          Arkadiusz Mi¶kiewicz <arekm@pld-linux.org>
  *                          Tomasz Chiliñski <chilek@chilan.com>
  *                          Piotr Wysocki <wysek@linux.bydg.org>
  *                          Dawid Jarosz <dawjar@poczta.onet.pl>
@@ -865,6 +865,12 @@ extern char *gg_proxy_username;		/* okre¶la nazwê u¿ytkownika przy autoryzacji s
 extern char *gg_proxy_password;		/* okre¶la has³o u¿ytkownika przy autoryzacji serwera proxy */
 extern int gg_proxy_http_only;		/* w³±cza obs³ugê proxy wy³±cznie dla us³ug HTTP */
 
+
+/* 
+ * adres, z którego ¶lemy pakiety (np ³±czymy siê z serwerem)
+ * u¿ywany przy gg_connect()
+ */
+extern unsigned long gg_local_ip; 
 /*
  * -------------------------------------------------------------------------
  * poni¿ej znajduj± siê wewnêtrzne sprawy biblioteki. zwyk³y klient nie
@@ -933,7 +939,7 @@ int gg_image_queue_remove(struct gg_session *s, struct gg_image_queue *q, int fr
 #define GG_DEFAULT_PROTOCOL_VERSION 0x20
 #define GG_DEFAULT_TIMEOUT 30
 #define GG_HAS_AUDIO_MASK 0x40000000
-#define GG_LIBGADU_VERSION "20040109"
+#define GG_LIBGADU_VERSION "CVS"
 
 #define GG_DEFAULT_DCC_PORT 1550
 
@@ -1060,6 +1066,9 @@ struct gg_pubdir50_reply {
 struct gg_new_status {
 	uint32_t status;			/* na jaki zmieniæ? */
 } GG_PACKED;
+
+#define GG_NOTIFY_FIRST 0x000f
+#define GG_NOTIFY_LAST 0x0010
 
 #define GG_NOTIFY 0x0010
 	

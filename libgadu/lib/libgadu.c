@@ -1,9 +1,9 @@
-/* $Id: libgadu.c,v 1.36 2004/01/10 12:57:28 chilek Exp $ */
+/* $Id: libgadu.c,v 1.37 2004/05/02 21:43:30 michal Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
  *                          Robert J. Wo¼ny <speedy@ziew.org>
- *                          Arkadiusz Mi¶kiewicz <misiek@pld.org.pl>
+ *                          Arkadiusz Mi¶kiewicz <arekm@pld-linux.org>
  *                          Tomasz Chiliñski <chilek@chilan.com>
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -55,6 +55,7 @@ void (*gg_debug_handler)(int level, const char *format, va_list ap) = NULL;
 int gg_dcc_port = 0;
 unsigned long gg_dcc_ip = 0;
 
+unsigned long gg_local_ip = 0;
 /*
  * zmienne opisuj±ce parametry proxy http.
  */
@@ -70,7 +71,7 @@ static char rcsid[]
 #ifdef __GNUC__
 __attribute__ ((unused))
 #endif
-= "$Id: libgadu.c,v 1.36 2004/01/10 12:57:28 chilek Exp $";
+= "$Id: libgadu.c,v 1.37 2004/05/02 21:43:30 michal Exp $";
 #endif 
 
 /*
@@ -1462,18 +1463,37 @@ int gg_notify_ex(struct gg_session *sess, uin_t *userlist, char *types, int coun
 	if (!userlist || !count)
 		return gg_send_packet(sess, GG_LIST_EMPTY, NULL);
 	
-	if (!(n = (struct gg_notify*) malloc(sizeof(*n) * count)))
-		return -1;
-	
-	for (u = userlist, t = types, i = 0; i < count; u++, t++, i++) { 
-		n[i].uin = gg_fix32(*u);
-		n[i].dunno1 = *t;
-	}
-	
-	if (gg_send_packet(sess, GG_NOTIFY, n, sizeof(*n) * count, NULL) == -1)
-		res = -1;
+	while (count > 0) {
+		int part_count, packet_type;
+		
+		if (count > 400) {
+			part_count = 400;
+			packet_type = GG_NOTIFY_FIRST;
+		} else {
+			part_count = count;
+			packet_type = GG_NOTIFY_LAST;
+		}
 
-	free(n);
+		if (!(n = (struct gg_notify*) malloc(sizeof(*n) * part_count)))
+			return -1;
+	
+		for (u = userlist, t = types, i = 0; i < part_count; u++, t++, i++) { 
+			n[i].uin = gg_fix32(*u);
+			n[i].dunno1 = *t;
+		}
+	
+		if (gg_send_packet(sess, packet_type, n, sizeof(*n) * part_count, NULL) == -1) {
+			free(n);
+			res = -1;
+			break;
+		}
+
+		count -= part_count;
+		userlist += part_count;
+		types += part_count;
+
+		free(n);
+	}
 
 	return res;
 }
@@ -1509,20 +1529,38 @@ int gg_notify(struct gg_session *sess, uin_t *userlist, int count)
 	}
 
 	if (!userlist || !count)
-		return 0;
+		return gg_send_packet(sess, GG_LIST_EMPTY, NULL);
 	
-	if (!(n = (struct gg_notify*) malloc(sizeof(*n) * count)))
-		return -1;
+	while (count > 0) {
+		int part_count, packet_type;
+		
+		if (count > 400) {
+			part_count = 400;
+			packet_type = GG_NOTIFY_FIRST;
+		} else {
+			part_count = count;
+			packet_type = GG_NOTIFY_LAST;
+		}
+			
+		if (!(n = (struct gg_notify*) malloc(sizeof(*n) * part_count)))
+			return -1;
 	
-	for (u = userlist, i = 0; i < count; u++, i++) { 
-		n[i].uin = gg_fix32(*u);
-		n[i].dunno1 = GG_USER_NORMAL;
-	}
+		for (u = userlist, i = 0; i < part_count; u++, i++) { 
+			n[i].uin = gg_fix32(*u);
+			n[i].dunno1 = GG_USER_NORMAL;
+		}
 	
-	if (gg_send_packet(sess, GG_NOTIFY, n, sizeof(*n) * count, NULL) == -1)
-		res = -1;
+		if (gg_send_packet(sess, packet_type, n, sizeof(*n) * part_count, NULL) == -1) {
+			res = -1;
+			free(n);
+			break;
+		}
 
-	free(n);
+		free(n);
+
+		userlist += part_count;
+		count -= part_count;
+	}
 
 	return res;
 }

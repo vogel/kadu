@@ -2,7 +2,143 @@ Teksty w nawiasach na koñcu linii mówi± o tym, kto dokona³ poprawki.
 Je¶li jest postaci ,,nick'', powinno byæ jasne. Postaæ ,,nick/x''
 oznacza, ¿e ,,nick'' jest pomys³odawc± lub podes³a³ patcha, a zrobi³
 to kto¶ oznaczony przez ,,x'' (w - wojtekka, s - speedy, a - arekm,
-d - drg, sz - szalik).
+d - drg, sz - szalik, del - deletek).
+
+// 2004-05-02
+
+- libgadu: obs³uga list kontaktów wiêkszych ni¿ 409 wpisów (MAG,adrians/w)
+- uaktualnienie dokumentacji protoko³u o wiêksze listy kontaktów (w)
+
+// 2004-04-28
+
+- informacja o próbie podszycia siê pod u¿ytkownika przy po³±czeniach
+  bezpo¶rednich (acze/w)
+
+// 2004-04-26
+
+- poprawione z³e wy¶wietlanie czasów przy /status w readline (kbns/del)
+
+// 2004-04-17
+
+- poprawione tabcompletion (b³êdy z cudzys³owiami) (MS/del)
+
+// 2004-04-06
+
+- poprawka tabcompletion dla nazw plików (Brzezi/del)
+- poprawka problemu z 'query odbiorca wiadomosc' (Sydney/del)
+
+// 2004-04-05
+
+- poprawka b³êdu z ustawianiem opisu i stanu przy ³±czeniu (nik/del)
+
+// 2004-04-04 
+
+- poprawka wycieku pamiêci przy /set contacts_size 0 (mirek/del)
+
+// 2004-03-28
+
+- poprawka dotycz±ca tabcompletion (del)
+
+// 2004-03-23
+
+- usuniêty b³±d z dope³nieniem np /dcc g[TAB] (Wojciech S/del)
+
+// 2004-03-21
+
+- usuniêty b³±d przy query maj±cym utworzyæ konferencjê, np:
+ /query "Imiê Nazwisko",nick wy¶le komunikat zamiast tworzyæ konferncjê (del)
+- parê poprawek dotycz±cych wew. funkcji (del) 
+
+// 2004-03-03
+
+- poprawka TAB completition (pare b³êdów, cleanup, komentarze) (del)
+- poprawka sprawdzaj±ca parametry komendy /query (samo /query wyrzuca komunikat
+  o b³êdzie, a /query @nieistniejaca_grupa nie wyrzuca "krzaczków") (del)
+- poprawka formatu ,,ncurses_timestamp'' (kfahoo/w)
+- uaktualnienie arim.theme (arim/w)
+
+// 2004-03-02
+
+- poprawka b³êdów z dope³nieniem klawiszem TAB (min. segv) (del)
+- dzia³aj±ce tab_commmand (del)
+- dodanie ,,Requires: openssl'' w libgadu.pc w razie potrzeby (krzak/w)
+
+// 2004-03-01
+
+- literkówka w vars.txt (porridge/d)
+
+// 2004-02-29
+
+- dope³nianie listy nicków abc,def,ghi (joshua/del)
+- przy dope³nieniu obs³uga du¿ych/ma³ych polskich liter (del)
+
+// 2004-02-28
+
+- poprawka obs³ugi du¿ych polskich literek w s³owniu (del)
+- dope³nianie w ¶rodku linii (sz/del)
+
+// 2004-02-27
+
+- zast±pienie zmiennej aspell_allowed wewnêtrzn± funkcj± sprawdzaj±c± (del)
+- wyczyszczony kod i dodana obs³uga adresów WWW i FTP (nie s± podkre¶lane) w s³owniku (del)
+
+// 2004-02-26
+
+- zapomniany contrib/ioctld-client.c
+- dodanie zmiennych ioctld_enable oraz ioctld_net_port, które umo¿liwiaj±
+  zdalne dzia³anie daemona ioctld (d)
+- dodanie zmiennej local_ip, pozwalajaj±cej na ustawienie adresu lokalnego (del)
+- dodanie dokumentacji s³ownika aspell (del)
+- poprawka teoretycznej mo¿liwo¶ci segfaulta w module aspell'a (del)
+- poprawka w module aspell'a dotycz±ca sprawdzania pisowni przy zawijanych wierszach (del)
+- dodanie zmiennej aspell_allowed okre¶laj±cej jakie znaki maj± byæ ignorowane 
+  (np. nawiasy czy cudzys³owia) (del)
+
+// 2004-02-25
+
+- sprawdzanie pisowni (deli/w)
+
+// 2004-02-16
+
+- poprawka zakoñczenia linii w wielolinijkowych wiadomo¶ciach z potoku
+  steruj±cego (reef/w)
+
+// 2004-02-14
+
+- dodanie pythonowych zdarzeñ handle_status_own i handle_msg_own do
+  poprawiania w³asnych stanów i wiadomo¶ci (*/w)
+
+// 2004-02-13
+
+- pomijanie ignorowanych u¿ytkowników przy wysy³aniu listy kontaktów
+  do serwera (gophi/w)
+
+// 2004-02-11
+
+- dodatkowe opcje dotycz±ce kolorów (goblin/w)
+- poprawka segfaulta przy wychodzeniu (goblin/w)
+
+// 2004-02-01
+
+- dodanie wpisu ,,ncurses_timestamp'' w tematach wygl±du (*/w)
+
+// 2004-01-25
+
+- poprawka klawiszy Home i End w FreeBSD (deli/w)
+
+// 2004-01-22
+
+- poprawka dzia³ania auto_conference (joshua/sz)
+
+// 2004-01-13
+
+- usuniêcie u¿ytkownika nie usuwa go z listy ignorowanych i blokowanych
+  (perry/w)
+
+// 2004-01-12
+
+- kod b³êdu GG_FAILURE_NEED_EMAIL jest zwracany w stanie
+  GG_STATE_READING_REPLY (chilek)
 
 // 2004-01-06
 
@@ -471,4 +607,4 @@ d - drg, sz - szalik).
 - poprawka zachowania trybu wielolinijkowego (theKnight/w)
 
 
-$Id: ChangeLog,v 1.29 2004/01/10 12:57:27 chilek Exp $
+$Id: ChangeLog,v 1.30 2004/05/02 21:43:30 michal Exp $
