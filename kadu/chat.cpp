@@ -684,7 +684,7 @@ void Chat::sendMessage(void) {
 	int formats_length;
 	void *formats;
 	myLastMessage = unformatGGMessage(myLastMessage, formats_length, formats);
-	escapeSpecialCharacters(myLastMessage);
+//	escapeSpecialCharacters(myLastMessage);
 
 	if (edit->length() >= 2000)
 		return;

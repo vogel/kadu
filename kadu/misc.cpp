@@ -200,6 +200,8 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 //	mesg.replace(QRegExp("^<html><head><meta\\sname=\"qrichtext\"\\s*\\s/></head>"), "");
 	mesg.replace(QRegExp("^<html><head>.*<body\\s.*\">\\n"), "");
 	mesg.replace(QRegExp("\\n</body></html>\\n$"), "");
+	mesg.replace(QRegExp("<p>"), "");
+	mesg.replace(QRegExp("</p>"), "");
 
 	return mesg;
 }
