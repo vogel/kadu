@@ -1465,7 +1465,7 @@ void HttpClient::onReadyRead()
 		if(p<0)
 			return;
 		// Dostalismy naglowek,
-		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Http header found:\n%s\n",s.local8Bit().data());
+		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Http header found:\n%s\n", s.local8Bit().data());
 		HeaderParsed=true;
 		// Wyci±gamy status
 		QRegExp status_regexp("HTTP/1\\.[01] (\\d+)");
@@ -1475,10 +1475,10 @@ void HttpClient::onReadyRead()
 			emit error();
 			return;
 		}
-		Status=status_regexp.cap(1).toInt();
-		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Status: %i\n",Status);
-		// Status 302 oznacza przekierowanie.
-		if(Status==302)
+		StatusCode=status_regexp.cap(1).toInt();
+		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: StatusCode: %i\n", StatusCode);
+		// StatusCode 302 oznacza przekierowanie.
+		if (StatusCode==302)
 		{
 			QRegExp location_regexp("Location: ([^\\r\\n]+)");
 			if(location_regexp.search(s)<0)
@@ -1534,7 +1534,7 @@ void HttpClient::onReadyRead()
 		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: New data block size: %i bytes\n",new_data_size);
 		// Je¶li status jest 100 - Continue to czekamy na dalsze dane
 		// (uniewa¿niamy ten nag³owek i czekamy na nastêpny)
-		if(Status==100)
+		if (StatusCode==100)
 		{
 			HeaderParsed=false;
 			return;
@@ -1601,7 +1601,7 @@ void HttpClient::post(QString path,const QString& data)
 
 int HttpClient::status()
 {
-	return Status;
+	return StatusCode;
 }
 
 const QByteArray& HttpClient::data()

@@ -222,12 +222,12 @@ void UserListElement::setUin(const UinType &uin)
 		emit Parent->userDataChanged(&old, this);
 }
 
-const Status & UserListElement::status() const
+const UserStatus & UserListElement::status() const
 {
 	return *Stat;
 }
 
-Status & UserListElement::status()
+UserStatus & UserListElement::status()
 {
 	return *Stat;
 }

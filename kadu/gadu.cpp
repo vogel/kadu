@@ -880,7 +880,7 @@ GaduProtocol::~GaduProtocol()
 	kdebugf2();
 }
 
-Status & GaduProtocol::status()
+UserStatus & GaduProtocol::status()
 {
 	return *NextStatus;
 }
@@ -2003,7 +2003,7 @@ void GaduProtocol::userListReceived(const struct gg_event *e)
 {
 	kdebugf();
 
-	Status oldStatus;
+	UserStatus oldStatus;
 	int nr = 0;
 
 	while (e->event.notify60[nr].uin)
@@ -2167,14 +2167,14 @@ void GaduProtocol::userStatusChanged(const struct gg_event *e)
 		image_size = 0;
 	}
 
-	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventStatusChange(): User %d went %d (%s)\n", uin,
+	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventUserStatusChange(): User %d went %d (%s)\n", uin,
 		status.toStatusNumber(), status.name().local8Bit().data());
 	UserListElement &user = userlist.byUin(uin);
 
 	if (!userlist.containsUin(uin))
 	{
 		// ignore!
-		kdebugm(KDEBUG_INFO, "eventStatusChange(): buddy %d not in list. Damned server!\n", uin);
+		kdebugm(KDEBUG_INFO, "eventUserStatusChange(): buddy %d not in list. Damned server!\n", uin);
 		gg_remove_notify(Sess, uin);
 		return;
 	}
@@ -2361,12 +2361,12 @@ GaduStatus::~GaduStatus()
 {
 }
 
-void GaduStatus::operator = (const Status &copyMe)
+void GaduStatus::operator = (const UserStatus &copyMe)
 {
 	setStatus(copyMe);
 }
 
-QPixmap GaduStatus::pixmap(eStatus stat, bool hasDescription, bool mobile) const
+QPixmap GaduStatus::pixmap(eUserStatus stat, bool hasDescription, bool mobile) const
 {
 //	kdebugf();
 
@@ -2393,7 +2393,7 @@ int GaduStatus::toStatusNumber() const
 	return toStatusNumber(Stat, !Description.isEmpty());
 }
 
-int GaduStatus::toStatusNumber(eStatus status, bool has_desc)
+int GaduStatus::toStatusNumber(eUserStatus status, bool has_desc)
 {
 	int sn = 0;
 

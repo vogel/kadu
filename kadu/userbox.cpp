@@ -330,9 +330,9 @@ void UserBox::maybeTip(const QPoint &c)
 	{
 		QRect r(itemRect(item));
 		QString s;
-		const Status & status = userlist.byAltNick(item->text()).status();
+		const UserStatus & status = userlist.byAltNick(item->text()).status();
 		QString description = status.description();
-		QString name = qApp->translate("@default", Status::name(Status::index(status.status(), false)));
+		QString name = qApp->translate("@default", UserStatus::name(UserStatus::index(status.status(), false)));
 
 		if (description.isEmpty())
 		{

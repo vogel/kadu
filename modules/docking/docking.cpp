@@ -136,7 +136,7 @@ void DockingManager::defaultToolTip()
 	{
 		QString tiptext = tr("Left click - hide/show window\nMiddle click or Left click- open message");
 		tiptext.append(tr("\n\nCurrent status:\n%1")
-			.arg(qApp->translate("@default", Status::name(gadu->status().index()))));
+			.arg(qApp->translate("@default", UserStatus::name(gadu->status().index()))));
 
 		if (gadu->status().hasDescription())
 			tiptext.append(tr("\n\nDescription:\n%2").arg(gadu->status().description()));

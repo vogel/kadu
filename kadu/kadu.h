@@ -72,7 +72,7 @@ class Kadu : public QMainWindow
 		QPopupMenu* statusMenu;
 		QPushButton* statusButton;
 		
-		Status status;
+		UserStatus status;
 
 		bool ShowMainWindowOnStart;
 		bool Autohammer;
@@ -114,7 +114,7 @@ class Kadu : public QMainWindow
 		void error(GaduError);
 		void imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &path);
 		void systemMessageReceived(QString &);
-		void userStatusChanged(const UserListElement &, const Status &oldstatus, bool onConnection);
+		void userStatusChanged(const UserListElement &, const UserStatus &oldstatus, bool onConnection);
 
 	protected:
 		void keyPressEvent(QKeyEvent *e);
@@ -204,7 +204,7 @@ class Kadu : public QMainWindow
 			Podczas ³±czenia (mruganie ikonki) czas na zmianê
 			ikony na t± reprezentuj±c± docelowy status.
 		**/
-		//void connectingBlinkShowStatus(eStatus, bool);
+		//void connectingBlinkShowStatus(eUserStatus, bool);
 		/**
 			Podczas ³±czenia (mruganie ikonki) czas na zmianê
 			ikony na t± reprezentuj±c± status offline.
@@ -220,7 +220,7 @@ class Kadu : public QMainWindow
 			Je¶li zostanie ustawiona zmienna stop, to status nie
 			bêdzie zmieniony.
 		**/
-		void changingStatus(Status &, bool &stop);
+		void changingStatus(UserStatus &, bool &stop);
 		/**
 			wywo³ana zosta³a funkcja show() na g³ównym oknie
 		**/

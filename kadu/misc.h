@@ -106,7 +106,7 @@ class HttpClient : public QObject
 		QString Path;
 		QByteArray Data;
 		QByteArray PostData;
-		int Status;
+		int StatusCode;
 		bool HeaderParsed;
 
 		unsigned int ContentLength;

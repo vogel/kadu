@@ -42,7 +42,7 @@ WindowNotify::WindowNotify()
 	s["NewChat"]=SLOT(newChat(const UinsList &, const QString &, time_t));
 	s["NewMessage"]=SLOT(newMessage(const UinsList &, const QString &, time_t, bool &));
 	s["ConnError"]=SLOT(connectionError(const QString &));
-	s["StatusChanged"]=SLOT(userStatusChanged(const UserListElement &, const Status &));
+	s["StatusChanged"]=SLOT(userStatusChanged(const UserListElement &, const UserStatus &));
 	s["toAvailable"]=SLOT(userChangedStatusToAvailable(const UserListElement &));
 	s["toBusy"]=SLOT(userChangedStatusToBusy(const UserListElement &));
 	s["toNotAvailable"]=SLOT(userChangedStatusToNotAvailable(const UserListElement &));
@@ -89,7 +89,7 @@ void WindowNotify::connectionError(const QString &message)
 	kdebugf2();
 }
 
-void WindowNotify::userStatusChanged(const UserListElement &ule, const Status &oldStatus)
+void WindowNotify::userStatusChanged(const UserListElement &ule, const UserStatus &oldStatus)
 {
 	kdebugf();
 

@@ -16,7 +16,7 @@ class WindowNotify : public QObject
 		void newChat(const UinsList &senders, const QString& msg, time_t time);
 		void newMessage(const UinsList &senders, const QString& msg, time_t time, bool &grab);
 		void connectionError(const QString &message);
-		void userStatusChanged(const UserListElement &ule, const Status &oldStatus);
+		void userStatusChanged(const UserListElement &ule, const UserStatus &oldStatus);
 		void userChangedStatusToAvailable(const UserListElement &ule);
 		void userChangedStatusToBusy(const UserListElement &ule);
 		void userChangedStatusToNotAvailable(const UserListElement &ule);

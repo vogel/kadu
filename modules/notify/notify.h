@@ -38,7 +38,7 @@ class Notify : public QObject
 
 	private slots:
 	/* obs³uga zmian statusów */
-	void userStatusChanged(const UserListElement &, const Status &oldStatus, bool onConnection);
+	void userStatusChanged(const UserListElement &, const UserStatus &oldStatus, bool onConnection);
 
 	/* pomocniczy slot */
 	void probablyNewChat(UinsList senders, const QString& msg, time_t time);
@@ -112,7 +112,7 @@ class Notify : public QObject
 	void connectionError(const QString &message);
 
 	/* u¿ytkownik zmieni³ status */
-	void userStatusChanged(const UserListElement &, const Status &oldStatus);
+	void userStatusChanged(const UserListElement &, const UserStatus &oldStatus);
 
 	/* u¿ytkownik zmieni³ status na "Dostêpny" */
 	void userChangedStatusToAvailable(const UserListElement &);

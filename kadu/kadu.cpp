@@ -521,8 +521,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		this, SLOT(readTokenValue(QPixmap, QString &)));
 	connect(gadu, SIGNAL(systemMessageReceived(QString &)), this, SLOT(systemMessageReceived(QString &)));
 	connect(gadu, SIGNAL(userListChanged()), this, SLOT(userListChanged()));
-	connect(gadu, SIGNAL(userStatusChanged(const UserListElement&, const Status &, bool)),
-		this, SLOT(userStatusChanged(const UserListElement&, const Status &, bool)));
+	connect(gadu, SIGNAL(userStatusChanged(const UserListElement&, const UserStatus &, bool)),
+		this, SLOT(userStatusChanged(const UserListElement&, const UserStatus &, bool)));
 
 	connect(&(gadu->status()), SIGNAL(goOnline(const QString &)),
 		this, SLOT(wentOnline(const QString &)));
@@ -970,7 +970,7 @@ void Kadu::userListChanged()
 	kdebugf2();
 }
 
-void Kadu::userStatusChanged(const UserListElement &user, const Status &oldstatus, bool onConnection)
+void Kadu::userStatusChanged(const UserListElement &user, const UserStatus &oldstatus, bool onConnection)
 {
 	kdebugf();
 
@@ -1461,7 +1461,7 @@ void Kadu::createStatusPopupMenu()
 	icons_manager.registerMenu(statusMenu);
 	icons_manager.registerMenu(dockMenu);
 
-	Status *s = new GaduStatus();
+	UserStatus *s = new GaduStatus();
 	for (int i=0; i<8; ++i)
 	{
 		// je¿eli wywo³anie mia³o by postaæ setIndex(i)
@@ -1471,11 +1471,11 @@ void Kadu::createStatusPopupMenu()
 		s->setIndex(i, ".");
 		pix = s->pixmap();
 		icon = QIconSet(pix);
-		statusMenu->insertItem(icon, qApp->translate("@default", Status::name(i)), i);
-		dockMenu->insertItem(icon, qApp->translate("@default", Status::name(i)), i);
+		statusMenu->insertItem(icon, qApp->translate("@default", UserStatus::name(i)), i);
+		dockMenu->insertItem(icon, qApp->translate("@default", UserStatus::name(i)), i);
 
-		icons_manager.registerMenuItem(statusMenu, qApp->translate("@default", Status::name(i)), Status::toString(s->status(), s->hasDescription()));
-		icons_manager.registerMenuItem(dockMenu, qApp->translate("@default", Status::name(i)), Status::toString(s->status(), s->hasDescription()));
+		icons_manager.registerMenuItem(statusMenu, qApp->translate("@default", UserStatus::name(i)), UserStatus::toString(s->status(), s->hasDescription()));
+		icons_manager.registerMenuItem(dockMenu, qApp->translate("@default", UserStatus::name(i)), UserStatus::toString(s->status(), s->hasDescription()));
 	}
 	delete s;
 
@@ -1605,27 +1605,27 @@ void KaduSlots::onCreateConfigDialog()
 		statusIndex = config_file.readNumEntry("General", "DefaultStatus", -1);
 		switch (statusIndex)
 		{
-			case 0x0001: statusIndex = Status::index(Offline, false); break;
-			case 0x0015: statusIndex = Status::index(Offline, true); break;
-			case 0x0002: statusIndex = Status::index(Online, false); break;
-			case 0x0004: statusIndex = Status::index(Online, true); break;
-			case 0x0003: statusIndex = Status::index(Busy, false); break;
-			case 0x0005: statusIndex = Status::index(Busy, true); break;
-			case 0x0014: statusIndex = Status::index(Invisible, false); break;
-			case 0x0016: statusIndex = Status::index(Invisible, true); break;
+			case 0x0001: statusIndex = UserStatus::index(Offline, false); break;
+			case 0x0015: statusIndex = UserStatus::index(Offline, true); break;
+			case 0x0002: statusIndex = UserStatus::index(Online, false); break;
+			case 0x0004: statusIndex = UserStatus::index(Online, true); break;
+			case 0x0003: statusIndex = UserStatus::index(Busy, false); break;
+			case 0x0005: statusIndex = UserStatus::index(Busy, true); break;
+			case 0x0014: statusIndex = UserStatus::index(Invisible, false); break;
+			case 0x0016: statusIndex = UserStatus::index(Invisible, true); break;
 			default:
 				statusIndex = -1;
 		}
 	}
 	if (statusIndex == -1)
-		statusIndex = Status::index(Offline, false);
+		statusIndex = UserStatus::index(Offline, false);
 	// END: wsteczna kombatybilno¶æ, do wywalenia w 0.5.x
 
-	int max = Status::initCount();
+	int max = UserStatus::initCount();
 	QComboBox* cb_defstatus = ConfigDialog::getComboBox("General", "Default status", "cb_defstatus");
 	cb_defstatus->clear();
 	for (int i = 0; i < max; ++i)
-		cb_defstatus->insertItem(qApp->translate("@default", Status::name(i)));
+		cb_defstatus->insertItem(qApp->translate("@default", UserStatus::name(i)));
 	cb_defstatus->setCurrentItem(statusIndex);
 
 	updatePreview();
@@ -1761,14 +1761,14 @@ void Kadu::startupProcedure()
 		statusIndex = config_file.readNumEntry("General", "DefaultStatus", -1);
 		switch (statusIndex)
 		{
-			case 0x0001: statusIndex = Status::index(Offline, false); break;
-			case 0x0015: statusIndex = Status::index(Offline, true); break;
-			case 0x0002: statusIndex = Status::index(Online, false); break;
-			case 0x0004: statusIndex = Status::index(Online, true); break;
-			case 0x0003: statusIndex = Status::index(Busy, false); break;
-			case 0x0005: statusIndex = Status::index(Busy, true); break;
-			case 0x0014: statusIndex = Status::index(Invisible, false); break;
-			case 0x0016: statusIndex = Status::index(Invisible, true); break;
+			case 0x0001: statusIndex = UserStatus::index(Offline, false); break;
+			case 0x0015: statusIndex = UserStatus::index(Offline, true); break;
+			case 0x0002: statusIndex = UserStatus::index(Online, false); break;
+			case 0x0004: statusIndex = UserStatus::index(Online, true); break;
+			case 0x0003: statusIndex = UserStatus::index(Busy, false); break;
+			case 0x0005: statusIndex = UserStatus::index(Busy, true); break;
+			case 0x0014: statusIndex = UserStatus::index(Invisible, false); break;
+			case 0x0016: statusIndex = UserStatus::index(Invisible, true); break;
 			default:
 				statusIndex = -1;
 		}

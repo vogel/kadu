@@ -12,118 +12,118 @@
 #include "debug.h"
 #include <qobject.h>
 
-Status::Status()
+UserStatus::UserStatus()
 {
 	Stat = Offline;
 	Description = "";
 	FriendsOnly = false;
 }
 
-Status::Status(const Status &copyMe)
+UserStatus::UserStatus(const UserStatus &copyMe)
 {
 	Stat = copyMe.Stat;
 	Description = copyMe.Description;
 	FriendsOnly = copyMe.FriendsOnly;
 }
 
-Status::~Status()
+UserStatus::~UserStatus()
 {
 }
 
-void Status::operator = (const Status &copyMe)
+void UserStatus::operator = (const UserStatus &copyMe)
 {
 	Stat = copyMe.Stat;
 	Description = copyMe.Description;
 	FriendsOnly = copyMe.FriendsOnly;
 }
 
-bool Status::operator == (const Status &compare) const
+bool UserStatus::operator == (const UserStatus &compare) const
 {
 	return (Stat == compare.Stat) && (Description == compare.Description);
 }
 
-bool Status::operator != (const Status &compare) const
+bool UserStatus::operator != (const UserStatus &compare) const
 {
 	return (Stat != compare.Stat) || (Description != compare.Description);
 }
 
-QPixmap Status::pixmap(bool mobile) const
+QPixmap UserStatus::pixmap(bool mobile) const
 {
 	return pixmap(Stat, hasDescription(), mobile);
 }
 
-QPixmap Status::pixmap(const Status &stat, bool mobile) const
+QPixmap UserStatus::pixmap(const UserStatus &stat, bool mobile) const
 {
 	return pixmap(stat.status(), stat.hasDescription(), mobile);
 }
 
-QPixmap Status::pixmap(eStatus stat, bool desc, bool mobile) const
+QPixmap UserStatus::pixmap(eUserStatus stat, bool desc, bool mobile) const
 {
 	static QPixmap result;
 	return result;
 }
 
-eStatus Status::status() const
+eUserStatus UserStatus::status() const
 {
 	return Stat;
 }
 
-bool Status::isOnline() const
+bool UserStatus::isOnline() const
 {
 	return Stat == Online;
 }
 
-bool Status::isBusy() const
+bool UserStatus::isBusy() const
 {
 	return Stat == Busy;
 }
 
-bool Status::isInvisible() const
+bool UserStatus::isInvisible() const
 {
 	return Stat == Invisible;
 }
 
-bool Status::isOffline() const
+bool UserStatus::isOffline() const
 {
 	return Stat == Offline;
 }
 
-bool Status::isBlocking() const
+bool UserStatus::isBlocking() const
 {
 	return Stat == Blocking;
 }
 
-bool Status::isOffline(int index)
+bool UserStatus::isOffline(int index)
 {
 	return (index == 6) || (index == 7);
 }
 
-bool Status::hasDescription() const
+bool UserStatus::hasDescription() const
 {
 	return !Description.isEmpty();
 }
 
-bool Status::isFriendsOnly() const
+bool UserStatus::isFriendsOnly() const
 {
 	return FriendsOnly;
 }
 
-QString Status::description() const
+QString UserStatus::description() const
 {
 	return Description;
 }
 
-int Status::index(eStatus stat, bool desc)
+int UserStatus::index(eUserStatus stat, bool desc)
 {
 	return (static_cast<int>(stat) << 1) + (desc ? 1 : 0);
 }
 
-int Status::index() const
+int UserStatus::index() const
 {
 	return (static_cast<int>(Stat) << 1) + (Description.isEmpty() ? 0 : 1);
 }
 
-void Status::setOnline(const QString& desc)
+void UserStatus::setOnline(const QString& desc)
 {
 	if (Stat == Online && Description == desc && !Changed)
 		return;
@@ -136,7 +136,7 @@ void Status::setOnline(const QString& desc)
 	emit changed(*this);
 }
 
-void Status::setBusy(const QString& desc)
+void UserStatus::setBusy(const QString& desc)
 {
 	if (Stat == Busy && Description == desc && !Changed)
 		return;
@@ -149,7 +149,7 @@ void Status::setBusy(const QString& desc)
 	emit changed(*this);
 }
 
-void Status::setInvisible(const QString& desc)
+void UserStatus::setInvisible(const QString& desc)
 {
 	if (Stat == Invisible && Description == desc && !Changed)
 		return;
@@ -162,7 +162,7 @@ void Status::setInvisible(const QString& desc)
 	emit changed(*this);
 }
 
-void Status::setOffline(const QString& desc)
+void UserStatus::setOffline(const QString& desc)
 {
 	if (Stat == Offline && Description == desc)
 		return;
@@ -175,7 +175,7 @@ void Status::setOffline(const QString& desc)
 	emit changed(*this);
 }
 
-void Status::setBlocking()
+void UserStatus::setBlocking()
 {
 	if (Stat == Blocking)
 		return;
@@ -188,7 +188,7 @@ void Status::setBlocking()
 	emit changed(*this);
 }
 
-void Status::setDescription(const QString& desc)
+void UserStatus::setDescription(const QString& desc)
 {
 	if (Description == desc)
 		return;
@@ -225,7 +225,7 @@ void Status::setDescription(const QString& desc)
 	}
 }
 
-void Status::setFriendsOnly(bool f)
+void UserStatus::setFriendsOnly(bool f)
 {
 	if (FriendsOnly == f)
 		return;
@@ -245,7 +245,7 @@ void Status::setFriendsOnly(bool f)
 	}
 }
 
-void Status::setStatus(const Status& stat)
+void UserStatus::setStatus(const UserStatus& stat)
 {
 	FriendsOnly = stat.FriendsOnly;
 	Changed = true;
@@ -263,15 +263,15 @@ void Status::setStatus(const Status& stat)
 	}
 }
 
-void Status::setIndex(int index, const QString& desc)
+void UserStatus::setIndex(int index, const QString& desc)
 {
 	if (index % 2 == 0)
-		setStatus(static_cast<eStatus>(index >> 1), "");
+		setStatus(static_cast<eUserStatus>(index >> 1), "");
 	else
-		setStatus(static_cast<eStatus>(index >> 1), desc);
+		setStatus(static_cast<eUserStatus>(index >> 1), desc);
 }
 
-void Status::setStatus(eStatus stat, const QString& desc)
+void UserStatus::setStatus(eUserStatus stat, const QString& desc)
 {
 	switch (stat)
 	{
@@ -285,13 +285,13 @@ void Status::setStatus(eStatus stat, const QString& desc)
 	}
 }
 
-void Status::refresh()
+void UserStatus::refresh()
 {
 	Changed = true;
 	setStatus(*this);
 }
 
-eStatus Status::fromString(const QString& stat)
+eUserStatus UserStatus::fromString(const QString& stat)
 {
 	if (stat.contains("Online"))
 		return Online;
@@ -304,7 +304,7 @@ eStatus Status::fromString(const QString& stat)
 	return Offline;
 }
 
-QString Status::toString(eStatus stat, bool desc)
+QString UserStatus::toString(eUserStatus stat, bool desc)
 {
 	QString res;
 	switch (stat)
@@ -323,17 +323,17 @@ QString Status::toString(eStatus stat, bool desc)
 	return res;
 }
 
-int Status::count()
+int UserStatus::count()
 {
 	return 9;
 }
 
-int Status::initCount()
+int UserStatus::initCount()
 {
 	return 7;
 }
 
-QString Status::name(int nr)
+QString UserStatus::name(int nr)
 {
 	static const char * names[] = {
 		QT_TR_NOOP("Online"),
@@ -350,7 +350,7 @@ QString Status::name(int nr)
 	return names[nr];
 }
 
-QString Status::name() const
+QString UserStatus::name() const
 {
 	return name(index());
 }

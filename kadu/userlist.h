@@ -43,7 +43,7 @@ struct UserListElement
 		QString Mobile;
 		QString Email;
 		UinType Uin;
-		Status *Stat;
+		UserStatus *Stat;
 		int MaxImageSize;
 		bool Anonymous;
 		QHostAddress Ip;
@@ -91,8 +91,8 @@ struct UserListElement
 		UinType uin() const;
 		void setUin(const UinType &uin);
 
-		const Status & status() const;
-		Status & status();
+		const UserStatus & status() const;
+		UserStatus & status();
 
 		int maxImageSize() const;
 		void setMaxImageSize(const int maxImageSize);

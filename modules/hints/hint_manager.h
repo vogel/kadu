@@ -73,7 +73,7 @@ class HintManager : public QFrame
 		void connectionError(const QString &message);
 
 		/* u¿ytkownik zmieni³ status */
-		void userStatusChanged(const UserListElement &ule, const Status &oldStatus);
+		void userStatusChanged(const UserListElement &ule, const UserStatus &oldStatus);
 
 		/* u¿ytkownik zmieni³ status na "Dostêpny" */
 		void userChangedStatusToAvailable(const UserListElement &ule);

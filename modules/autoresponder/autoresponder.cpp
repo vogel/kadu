@@ -7,12 +7,11 @@
  *                                                                         *
  ***************************************************************************/
 #include "autoresponder.h"
-//#include "events.h"
+#include "gadu.h"
 #include "status.h"
 #include "config_dialog.h"
 #include "chat.h"
 #include "debug.h"
-
 
 extern "C" int autoresponder_init()
 {
@@ -27,9 +26,10 @@ extern "C" void autoresponder_close()
 }
 
 AutoResponder::AutoResponder() : QObject(NULL, "autoresponder")
-{	kdebugf();
+{
+	kdebugf();
 	config=new ConfigFile(ggPath(QString("autoresponder.conf")));
-	QObject::connect(chat_manager,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
+	QObject::connect(gadu,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
 		this,SLOT(chatReceived(UinsList,const QString&,time_t)));
 	QObject::connect(chat_manager, SIGNAL(chatCreated(const UinsList&)), this, SLOT(chatOpened(const UinsList&)));
 
@@ -50,7 +50,7 @@ AutoResponder::AutoResponder() : QObject(NULL, "autoresponder")
 AutoResponder::~AutoResponder()
 {
 	kdebugf();
-	QObject::disconnect(chat_manager,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
+	QObject::disconnect(gadu,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
 		this,SLOT(chatReceived(UinsList,const QString&,time_t)));
 	QObject::disconnect(chat_manager, SIGNAL(chatCreated(const UinsList&)), this, SLOT(chatOpened(const UinsList&)));
 	ConfigDialog::removeControl("Autoresponder", "Choose status:");
@@ -71,7 +71,6 @@ void AutoResponder::chatReceived(UinsList senders, const QString& msg, time_t ti
 	kdebugf();
 	if (msg.left(5)!="KADU ")
 	{
-
 		bool was=false;					//to pamieta czy okienko juz otwarte czy nie
 		if (!UserList.isEmpty())
 		for (unsigned int l=0; l<senders.count(); ++l)
@@ -93,11 +92,12 @@ void AutoResponder::chatReceived(UinsList senders, const QString& msg, time_t ti
 			respond=false;			//to zablokuje odpisanie na wiadomosc
 
 		if (respond)
-			{	gadu->sendMessage(senders, unicode2cp(tr("KADU AUTORESPONDER:")+"\n"+
-							config->readEntry("Autoresponder", "Autotext")));
-				for (unsigned int l=0; l<senders.count(); ++l)
-					UserList+=senders[l];	//doda kolesi do listy (jednego jak jeden albo wszystkich z konferencji
-			}
+		{
+			gadu->sendMessage(senders, unicode2cp(tr("KADU AUTORESPONDER:")+"\n"+
+						config->readEntry("Autoresponder", "Autotext")));
+			for (unsigned int l=0; l<senders.count(); ++l)
+				UserList+=senders[l];	//doda kolesi do listy (jednego jak jeden albo wszystkich z konferencji
+		}
 	}
 	kdebugf2();
 }
@@ -105,11 +105,11 @@ void AutoResponder::chatReceived(UinsList senders, const QString& msg, time_t ti
 void AutoResponder::chatOpened(const UinsList& senders)
 {	int indexx;
 	for (unsigned int l=0; l<UserList.count(); ++l)
-	{	indexx=UserList.findIndex(senders[l]);
+	{
+		indexx=UserList.findIndex(senders[l]);
 		if (indexx!=-1)
 			UserList.remove(indexx);
 	}
 }
-
 
 AutoResponder* autoresponder;

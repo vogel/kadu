@@ -54,10 +54,10 @@ class UinsList : public QValueList<UinType>
 };
 
 // ------------------------------------
-//             Status
+//             UserStatus
 // ------------------------------------
 
-class GaduStatus : public Status
+class GaduStatus : public UserStatus
 {
 	Q_OBJECT
 
@@ -65,12 +65,12 @@ class GaduStatus : public Status
 		GaduStatus();
 		virtual ~GaduStatus();
 
-		void operator = (const Status &copyMe);
+		void operator = (const UserStatus &copyMe);
 
-		virtual QPixmap pixmap(eStatus status, bool has_desc, bool mobile) const;
+		virtual QPixmap pixmap(eUserStatus status, bool has_desc, bool mobile) const;
 
 		int toStatusNumber() const;
-		static int toStatusNumber(eStatus status, bool has_desc);
+		static int toStatusNumber(eUserStatus status, bool has_desc);
 
 		void fromStatusNumber(int statusNumber, const QString &description);
 };
@@ -347,14 +347,14 @@ class GaduProtocol : public QObject
 			@see iWantGoInvisible
 			@see iWantGoOffline
 			@see NextStatus
-			@see Status
+			@see UserStatus
 			@see status
 		*/
 		GaduStatus* CurrentStatus;
 
 		/*!
 			Nastêpny status. Ustalany zewnêtrznie przy wykorzystaniu metody status i odpowiednich
-			slotów klasy Status. Zmiana wywo³uje jedn± z metod iWantGo... i w konsekwencji zmianê
+			slotów klasy UserStatus. Zmiana wywo³uje jedn± z metod iWantGo... i w konsekwencji zmianê
 			statusu (w razie konieczno¶ci te¿ zalogowanie).
 
 			@see login
@@ -364,7 +364,7 @@ class GaduProtocol : public QObject
 			@see iWantGoInvisible
 			@see iWantGoOffline
 			@see CurrentStatus
-			@see Status
+			@see UserStatus
 			@see status
 		 */
 		GaduStatus* NextStatus;
@@ -448,7 +448,7 @@ class GaduProtocol : public QObject
 		GaduProtocol(QObject *parent=NULL, const char *name=NULL);
 		virtual ~GaduProtocol();
 
-		Status & status();
+		UserStatus & status();
 
 		/**
 			Zwraca serwer z którym jeste¶my po³±czeni
@@ -573,7 +573,7 @@ class GaduProtocol : public QObject
 		**/
 		void imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &path);
 		void userListChanged();
-		void userStatusChanged(const UserListElement &, const Status &oldStatus, bool onConnection = false);
+		void userStatusChanged(const UserListElement &, const UserStatus &oldStatus, bool onConnection = false);
 		void systemMessageReceived(QString &);
 		void dccConnectionReceived(const UserListElement&);
 		void disconnectNetwork();
