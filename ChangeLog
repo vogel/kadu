@@ -72,7 +72,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   ustawienia dla kazdej osoby innego pliku dzwiêkowego (mast3r)
 * dodanie katalogu debian/ w katalogu glownym programu, teraz kazdy
   bedzie mogl stworzyc wlasna paczke programu dla swojego Debian'a (mast3r)
-* Enter na klawiaturze alfanumerycznej te¿ wysy³a wiadomo¶æ (mast3r)
+* Enter na klawiaturze alfanumerycznej te¿ wysy³a wiadomo¶æ (Abaddon/mast3r)
 * kolejne "pozbycie" sie seg faulta przy debugu (mast3r)
 * dodanie nowej funkcji do userlist, ktora przydaje sie w kilku miejscach (mast3r)
 * porz±dki w kodzie events.cpp i chat.cpp (mast3r)
