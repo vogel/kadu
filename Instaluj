@@ -18,7 +18,7 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 #!/bin/bash
-# $Id: Instaluj,v 1.34 2004/06/18 22:12:00 romek Exp $
+# $Id: Instaluj,v 1.35 2004/06/20 14:50:58 romek Exp $
 # KaduInstaller - Copyright (C) 2004 Sad Mephisto <sad@antisocial.com>
 
 export LC_ALL=pl_PL
@@ -236,9 +236,7 @@ mainmenu(){
 		cd kadu
 		dialog --beep --backtitle "Instalator Kadu" --msgbox "¬ród³a Kadu zosta³y zaktualizowane!" 0 0
 	elif [ $MENUCHOICE == "Konfiguracja" ]; then
-		while [ 1 ]; do
 		configmenu
-		done;
 	elif [ $MENUCHOICE == "Koniec" ]; then
 		goodbye
 	elif [ $MENUCHOICE == "Deinstalacja" ]; then
