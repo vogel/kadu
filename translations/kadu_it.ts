@@ -623,6 +623,14 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
         <source>Show inactive users</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Show emoticons in panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show emoticons in history</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>

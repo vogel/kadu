@@ -623,6 +623,14 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
         <source>Show inactive users</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Show emoticons in panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show emoticons in history</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>

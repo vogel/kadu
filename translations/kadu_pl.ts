@@ -623,6 +623,14 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <source>Show inactive users</source>
         <translation>Pokaż nieaktywne kontakty</translation>
     </message>
+    <message>
+        <source>Show emoticons in panel</source>
+        <translation>Pokaż emotikony w panelu info.</translation>
+    </message>
+    <message>
+        <source>Show emoticons in history</source>
+        <translation>Pokaż emotikony w histori</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
