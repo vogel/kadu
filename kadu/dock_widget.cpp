@@ -43,7 +43,7 @@ void DockWidget::dockletChange(int id)
 		pending.writeToFile();
 		kadu->setClosePermitted(true);
 		kadu->disconnectNetwork();
-		kadu->close(true);
+		kadu->close();
 //		a->quit();
 		}
 }
