@@ -564,23 +564,122 @@ class GaduProtocol : public QObject
 		 **/
 		void gotToken(QString, QPixmap);
 
+		/**
+			Slot wywo³ywany po po³±czeniu z serwerem. Emituje connected i w³±cza pingowanie
+			serwera.
+
+			@see connected
+		 **/
 		void connectedSlot();
+		/**
+			Slot wywo³ywany po roz³±czeniu z serwerem. Emituje disconnected i wy³±cza pingowanie
+			serwera.
+
+			@see disconnected
+		 **/
 		void disconnectedSlot();
+		/**
+			Slot wywo³ywany po przekroczeniu czasu po³±czenia. Próbuje po³aczyæ ponownie.
+		 **/
 		void connectionTimeoutTimerSlot();
+		/**
+			Slot wywo³ywane po wyst±pieniu b³êdu po³±czenia. Emituje disconnected i error.
+
+			@see error
+			@see disconnected
+		 **/
 		void errorSlot(GaduError);
-		void imageReceived(UinType, uint32_t, uint32_t, const QString &, const char *data);
+		/**
+			Slot wywo³ywany po otrzymaniu obrazka od serwera. Emituje imageReceivedAndSaved
+
+			@see imageReceivedAndSaved
+		 **/
+		void imageReceived(UinType sender, uint32_t size, uint32_t crc32,
+			const QString &filename, const char *data);
+		/**
+			Slot wywo³ywany po otrzymaniu pro¶by o obrazek od serwera. Wysy³a obrazek.
+		 **/
 		void imageRequestReceived(UinType, uint32_t, uint32_t);
+		/**
+			Slot wywo³ywany po otrzymaniu wiadomo¶ci od serwera.
+		 **/
 		void messageReceived(int, UinsList, QCString& msg, time_t, QByteArray &formats);
+		/**
+			Co pewien czas pinguje serwer.
+		 **/
 		void pingNetwork();
+		/**
+			Obs³uguje otrzymanie nowych wyników wyszukiwania z serwera. Emituje newSearchResults.
+
+			@see newSearchResults
+		 **/
 		void newResults(gg_pubdir50_t res);
+		/**
+			Nowa wiadomo¶æ od serwera. Emituje systemMessageReceived
+
+			@see systemMessageReceived
+		 **/
 		void systemMessageReceived(QString &, QDateTime &, int, void *);
+		/**
+			Pobrano listê u¿ytkowników z serwera. Emituje userStatusChanged dla ka¿dego
+			otrzymanego kontaktu oraz userListChanged przed zakoñczeniem dzia³ania.
+
+			@see userStatusChanged
+			@see userListChanged
+		 **/
 		void userListReceived(const struct gg_event *);
+		/**
+			Odpowied¼ od serwera na temat operacji na li¶cie u¿ytkowników. Emituje, w zale¿no¶ci
+			od trybu dzia³ania: userListCleared, userListExported, userListImported.
+
+			@see userListCleared
+			@see userListExported
+			@see userListImported
+		 **/
 		void userListReplyReceived(char, char *);
+		/**
+			Informacja o zmianie statusu kontaktu. Emituje userStatusChanged oraz userListChanged.
+
+			@see userStatusChanged
+			@see userListChanged
+		 **/
 		void userStatusChanged(const struct gg_event *);
 
+		/**
+			Kto¶ wykona³ gadu.status().setOnline(). £±czymy z serwerem, je¿eli jeszcze tego nie
+			zrobili¶my, i zmieniamy status.
+
+			@see CurrentStatus
+			@see NextStatus
+			@see login
+		 **/
 		void iWantGoOnline(const QString &);
+		/**
+			Kto¶ wykona³ gadu.status().setBusy(). £±czymy z serwerem, je¿eli jeszcze tego nie
+			zrobili¶my, i zmieniamy status.
+
+			@see CurrentStatus
+			@see NextStatus
+			@see login
+		 **/
 		void iWantGoBusy(const QString &);
+		/**
+			Kto¶ wykona³ gadu.status().setInvisible(). £±czymy z serwerem, je¿eli jeszcze tego nie
+			zrobili¶my, i zmieniamy status.
+
+			@see CurrentStatus
+			@see NextStatus
+			@see login
+		 **/
 		void iWantGoInvisible(const QString &);
+		/**
+			Kto¶ wykona³ gadu.status().setOffline(). Roz³±czamy siê z serwerem i ustawiamy opis (je¿eli
+			byli¶my po³±czeni).
+
+			@see CurrentStatus
+			@see NextStatus
+			@see logout
+		 **/
 		void iWantGoOffline(const QString &);
 
 	public:
@@ -588,94 +687,303 @@ class GaduProtocol : public QObject
 		GaduProtocol(QObject *parent=NULL, const char *name=NULL);
 		virtual ~GaduProtocol();
 
+		/**
+			Status u¿ytkownika. Za pomoc± tej metody mo¿emy go zmieniæ, pobraæ ikonê statusu i wykonaæ
+			kilka innych ciekawych rzeczy.
+
+			1. Zmiena statusu:
+			<code>
+				GaduProtocol gadu;
+
+				...
+
+				gadu.status().setOnline("Jestem zalogowany"); // zalogowanie i ustawienie opisu
+				gadu.status().setFriendsOnly(true);           // tryb tylko dla przyjació³
+				...
+				gadu.status().setOffline();                   // wylogowanie, usuniêcie opisu
+			</code>
+
+			2. Sprawdzenie statusu:
+			<code>
+				GaduProtocol gadu;
+
+				if (gadu.status().isOnline())                 // jeste¶my online
+					...
+				else if (gadu.status().isInvisible())         // jeste¶my niewidzialni
+					...
+
+				// mo¿na te¿:
+				switch (gadu.status().status())
+				{
+					case Online:
+						break;
+					case Busy:
+						break;
+					case Invisible:
+						break;
+					case Offline:
+						break;
+				}
+			</code>
+
+			3. Pobranie ikony i nazwy statusu
+			<code>
+				QPixmap pix;
+				QString name;
+				GaduProtocol gadu;
+
+				...
+
+				pix = gadu.status().pixmap();
+				name = gadu.status().name();
+			</code>
+
+			@see currentStatus
+		 **/
 		UserStatus & status();
+
+		/**
+			Rzeczywisty aktualny status. Mo¿na go wykorzystaæ tylko w trybie do odczytu (pobranie
+			ikony, nazwy, sprawdzenie rzeczywistego stanu po³aczenia).
+
+			@see status
+		 **/
 		const UserStatus & currentStatus();
 
 		/**
-			Zwraca serwer z którym jeste¶my po³±czeni
-			lub do którego siê w³a¶nie ³±czymy.
+			Zwraca serwer z którym jeste¶my po³±czeni lub do którego siê w³a¶nie ³±czymy.
 			NULL = hub.
 		**/
 		QHostAddress* activeServer();
 
 		/**
-			Zamienia listê u¿ytkowników na ³añcuch i na odwrót
-		**/
-		QString userListToString(const UserList& userList) const;
-		void stringToUserList(QString&, UserList& userList) const;
-		void streamToUserList(QTextStream&, UserList& userList) const;
+			Konwertuje listê u¿ytkowników do postaci ³añcucha.
 
+			£añcuch wynikowy ma postaæ:
+			<code>
+				opis_u¿ytkownika<CR><LF>
+				opis_u¿ytkownika<CR><LF>
+				...
+				opis_u¿ytkownika<CR><LF>
+			</code>
+
+			opis_u¿ytkownika ma postaæ:
+			<code>
+				firstName;lastName;nickName;altNick;mobile;grupy;uin;email;0;;0;
+			</code>
+
+			grup maj± postaæ:
+			<code>
+				grupa_1,grupa_2,grupa_3
+			</code>
+
+			@param userList lista u¿ytkowników, która zostanie skonwertowana
+			@return ³añcuch reprezentuj±cy listê u¿ytkowników
+			@see stringToUserList
+			@see streamToUserList
+		 **/
+		QString userListToString(const UserList &userList) const;
+		/**
+			Konwertujê ³añcuch do listy u¿ytkowników.
+
+			Format ³añcucha jest anologiczny do tego z funkcji userListToString. Jedynym wyj±tkiem
+			jest to, ¿e grupy oddzielone s± ¶rednikami, nie przecinkami.
+
+			@param source ³añuch, bêd±cy reprezentacj± listy u¿ytkowników
+			@param userList lista u¿ytkowników, do której zapisany zostanie wynik konwersji
+			@see userListToString
+			@see streamToUserList
+		 **/
+		void stringToUserList(QString &source, UserList &userList) const;
+		/**
+			Odczytuje ze strumienia ³añcuch reprezentuj±cy listê u¿ytkowników i konwertuje
+			go go postaci obiektu UserList.
+
+			Format ³añcucha jest anologiczny do tego z funkcji userListToString. Jedynym wyj±tkiem
+			jest to, ¿e grupy oddzielone s± ¶rednikami, nie przecinkami.
+
+			@param source strumieñ, z którego odczytane zostan± dane
+			@param userList lista u¿ytkowników, do której zapisany zostanie wynik konwersji
+			@see userListToString
+			@see stringToUserList
+		 **/
+		void streamToUserList(QTextStream &source, UserList &userList) const;
+
+		/**
+			W³±cza próby automatycznego ³±czenia w razie niepowodzenia.
+		 **/
 		void enableAutoConnection();
+		/**
+			Wy³±cza próby automatycznego ³±czenia w razie niepowodzenia.
+		 **/
 		void disableAutoConnection();
 
+		/**
+			Zwraca true, je¿eli jeste¶my po³±czenie z serwerem.
+
+			@todo zmieniæ nazwê na connected
+		 **/
 		bool userListSent();
 
 	public slots:
 		/**
-			Wysyla wiadomosc. bez formatowania tekstu.
-			Jesli adresatow jest wiecej niz
-			jeden wysylana jest wiadomosc konferencyjna.
-			Zwracany jest numer sekwencyjny wiadomosci, jesli
-			przypadkiem mysli chcieli sledzic jej potwierdzenie.
+			Wysy³a wiadomo¶æ bez formatowania tekstu. Je¶li adresatów jest wiêcej ni¿ jeden, to wysy³ana
+			jest wiadomo¶æ konferencyjna. Zwracany jest numer sekwencyjny wiadomo¶ci, je¶li
+			przypadkiem by¶my chcieli ¶ledziæ jej potwierdzenie.
+
+			@param uins lista u¿ytkowników, do których wysy³amy wiadomo¶æ
+			@param msg wiadomo¶æ, któr± wysy³amy - musi byæ podana w postaci cp1250
+			@toto zmieniæ na sendMessage(const UinsList &, QString &) z wewnêtrzn± konwersj± na cp1250
 		**/
-		int sendMessage(const UinsList& uins,const char* msg);
-		/**
-			Wysyla wiadomosc z formatowaniem tekstu.
-			Jesli adresatow jest wiecej niz
-			jeden wysylana jest wiadomosc konferencyjna.
-			Zwracany jest numer sekwencyjny wiadomosci, jesli
-			przypadkiem mysli chcieli sledzic jej potwierdzenie.
-		**/
-		int sendMessageRichText(const UinsList& uins,const char* msg,unsigned char* myLastFormats,int myLastFormatsLength);
-		/**
-			Wysya probï¿½o przysanie obrazka.
-		**/
-		bool sendImageRequest(UinType uin,int size,uint32_t crc32);
-		bool sendImage(UinType uin,const QString& file_name,uint32_t size,char* data);
+		int sendMessage(const UinsList &uins, const char *msg);
 
 		/**
-			Zarz±dzanie kontem
+			Wysy³a wiadomo¶æ z formatowaniem tekstu. Je¶li adresatów jest wiêcej ni¿ jeden, to wysy³ana
+			jest wiadomo¶æ konferencyjna. Zwracany jest numer sekwencyjny wiadomo¶ci, je¶li
+			przypadkiem by¶my chcieli ¶ledziæ jej potwierdzenie.
+
+			@param uins lista u¿ytkowników, do których wysy³amy wiadomo¶æ
+			@param msg wiadomo¶æ, któr± wysy³amy - musi byæ podana w postaci cp1250
+			@param myLastFormats formatowanie tekstu
+			@param myLastFormatsLength ilo¶c znaczników formatuj±cych
+
+			@toto zmieniæ na sendMessageRichText(const UinsList &, QString &, ...)
+				z wewnêtrzn± konwersj± na cp1250 oraz z jakim¶ lepszym sposobem formatowania tekstu
+		**/
+		int sendMessageRichText(const UinsList &uins, const char *msg, unsigned char *myLastFormats,
+		 	int myLastFormatsLength);
+
+		/**
+			Wysy³a pro¶bê o przys³anie obrazka z danymi parametrami.
+
+			@param uin u¿ytkownik, od którego chcemy obrazek
+			@param size rozmiar obrazka w bajtach
+			@param crc32 crc32 pliku
+			@todo powinno byæ sendImageRequest(uniqId uint32_t) - info o obrazku zapisywaæ gdzie¶ w ¶rodku
+		 **/
+		bool sendImageRequest(UinType uin, int size, uint32_t crc32);
+		/**
+			Wywy³a obrazek o podanych parametrach.
+
+			@param uin u¿ytkownik, któremu wysy³amy obrazek
+			@param file_name nazwa pliku obrazka
+			@param size rozmiar obrazka w bajtach
+			@param data zawarto¶æ pliku
+			@toto usun±æ parametry size i data - mo¿emy to chyba sami wyznaczyæ
+		 **/
+		bool sendImage(UinType uin, const QString &file_name, uint32_t size, char *data);
+
+		/**
+			Rejetrujemy nowe konto. Odpowied¼ przychodzi poprzez sygna³ registered. Mo¿e
+			zostaæ tak¿e wywo³any sygna³ needTokenValue.
+
+			@param mail nasz email, pole nieobowi±zkowe
+			@param password nasze has³o, pole obowi±zkowe
+			@see registered
+			@see needTokenValue
+			@see unregisterAccount
 		**/
 		void registerAccount(const QString &mail, const QString &password);
+		/**
+			Wyrejestrowujemy stare konto. Odpowied¼ przychodzi poprzez sygna³ unregistered. Mo¿e
+			zostaæ tak¿e wywo³any sygna³ needTokenValue.
+
+			@param uin nasz uin
+			@param password nasze has³o
+			@toto parametr uin naprawdê potrzebny?
+		 **/
 		void unregisterAccount(UinType uin, const QString &password);
+		/**
+			Wysy³a has³o na email. Odpowied¼ przychodzi poprzez sygna³ reminded. Mo¿e
+			zostaæ tak¿e wywo³any sygna³ needTokenValue.
+
+			@param uin nasz uin
+			@toto parametr uin naprawdê potrzebny?
+		 **/
 		void remindPassword(UinType uin);
+		/**
+			Zmienia nasze has³o. Odpowied¼ przychodzi poprzez sygna³ passwordChanged. Mo¿e
+			zostaæ tak¿e wywo³any sygna³ needTokenValue.
+
+			@param uin nasz uin
+			@param mail nasz email, jaki podali¶my przy rejestracji
+			@param password stare has³o
+			@param newPassword nowe has³o
+			@toto parametr uin naprawdê potrzebny?
+		 **/
 		void changePassword(UinType uin, const QString &mail, const QString &password,
 			const QString &newPassword);
 
 		/**
-			Wysya userlist na serwer
+			Wysy³a listê u¿ytkowników na serwer. Odpowied¼ przychodzi przez sygna³ userListExported.
+
+			@return false, je¿li operacja siê nie powiod³a
+			@param userList lista do wys³ania
+			@see userListExported
+			@todo usun±æ warto¶æ zwracan±
 		**/
-		bool doExportUserList(const UserList &);
+		bool doExportUserList(const UserList &userList);
 
 		/**
-			Czyscli userliste na serwerze
+			Usuwa listê u¿ytkowników z serwera. Odpowied¼ przychodzi przez sygna³ userListCleared.
+
+			@return false, je¿li operacja siê nie powiod³a
+			@see userListCleared
+			@todo usun±æ warto¶æ zwracan±
 		**/
 		bool doClearUserList();
 
 		/**
-			Importuje liste z serwera
+			Importuje listê u¿ytkowników z serwera. Odpowied¼ przychodzi przez sygna³ userListImported.
+
+			@return false, je¿li operacja siê nie powiod³a
+			@see userListImported
+			@todo usun±æ warto¶æ zwracan±
 		**/
 		bool doImportUserList();
 
+		/**
+			Wysy³a nasz± listê u¿ytkowników na serwer. Uwaga: nie ma to nic wspólnego z importem/eksportem.
+		 **/
 		void sendUserList();
 
 		/**
-		  	Szuka ludzi w katalogu publicznym
+			Szuka ludzi w katalogu publicznym. Wyniki przychodz± za pomoca sygna³u newSearchResults.
+
+			@param searchRecord dane do szukania
+			@see newSearchResults
+			@see searchNextInPubdir
 		**/
 		void searchInPubdir(SearchRecord& searchRecord);
+		/**
+			Szuka ludzi w katalogu publicznym. Wyniki przychodz± za pomoca sygna³u newSearchResults.
+
+			@param searchRecord dane do szukania
+			@see newSearchResults
+			@see searchInPubdir
+		**/
 		void searchNextInPubdir(SearchRecord& searchRecord);
 
 		/**
-			Pobiera informacje o danych odobowych z katalogu publicznego
+			Pobiera informacje o danych odobowych z katalogu publicznego.
+
+			@todo jak to w ogóle dzia³a, bo zapomnia³em??
 		**/
 		void getPersonalInfo(SearchRecord& searchRecord);
 
 		/**
-			Ustawia informacje o danych osobowych z katalogu publicznego
+			Ustawia informacje o danych osobowych w katalogu publicznym.
+
+			@todo jak to w ogóle dzia³a, bo zapomnia³em??
 		**/
 		void setPersonalInfo(SearchRecord& searchRecord, SearchResult& newData);
 
-		// to raczej chwilowo
+		/**
+			 To raczej chwilowo.
+
+			 @todo usun±æ
+			 @todo niech Adrian zrobi porzadek z tym dcc...
+		 **/
 		void freeEvent(struct gg_event* e);
 
 		// --------------------
@@ -700,7 +1008,44 @@ class GaduProtocol : public QObject
 		void ifDefServerEnabled(bool value);
 		void useTlsEnabled(bool value);
 
-		// userlist
+		/**
+			Sygna³ wywo³ywany, gdy zmieni³y siê dane kontaktu. Umo¿liwia poinformowanie serwera
+			o zmianie naszych zaleceñ co do obs³ugi wiadomo¶ci od kontaktu.
+
+			Przyk³ady:
+			<code>
+				GaduProtocol gadu;
+				UserListElement old, new;
+
+				...
+				gadu.userDataChanged(NULL, &new);              // dodali¶my nowy kontakt
+
+				old = new;
+				new.setBlockng(true);                          // blokujemy
+				gadu.userDataChanged(&old, &new);              // informujemy o tym serwer
+
+				gadu.userDataChanged(new, NULL);               // usunêli¶my kontakt
+				...
+			</code>
+
+			Powy¿sze kontrukcje nie s± jednak na ogó³ potrzebne, gdy¿ obiekty UserListElement
+			wywo³uj± odpowieni sygna³ swoich UserList (konkretnie userDataChanged), który mo¿na
+			podpi±æ bezpo¶rednio pod taki sam slot klasy GaduProtocol, dziêki czemu ka¿da
+			zmiana zostanie automatycznie zauwa¿ona przez serwer.
+
+			<code>
+				GaduProtocol gadu;
+				UserListElement *ule;
+				UserList ul;
+
+				...                                            // po³aczenie odpowiednich slotów
+				ule = &ul.byAltNick("AltNick");
+				ule->setBlocking(true);                        // i wszystko robi siê samo
+			</code>
+
+			@param oldData wska¼nik do starych danych kontatku
+			@param newData wska¼nik do nowych danych konaktu
+		 **/
 		void userDataChanged(const UserListElement* const oldData, const UserListElement* const newData);
 
 	signals:

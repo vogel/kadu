@@ -1130,8 +1130,6 @@ void GaduProtocol::disconnectedSlot()
 	for (UserList::Iterator i = userlist.begin(); i != userlist.end(); ++i)
 		(*i).status().setOffline();
 
-	chat_manager->refreshTitles();
-	UserBox::all_refresh();
 	CurrentStatus->setOffline("");
 	emit disconnected();
 	kdebugf2();
@@ -1926,8 +1924,11 @@ void GaduProtocol::streamToUserList(QTextStream& stream, UserList& userList) con
 	{
 		line = stream.readLine();
 		sections = QStringList::split(";", line, true);
+
+		// patrz kilka linijek ni¿ej...
 		if (sections.count() < 12)
 			continue;
+
 		if (sections[6] == "0")
 			sections[6].truncate(0);
 		e.setFirstName(sections[0]);
@@ -1935,10 +1936,13 @@ void GaduProtocol::streamToUserList(QTextStream& stream, UserList& userList) con
 		e.setNickName(sections[2]);
 		e.setAltNick(sections[3]);
 		e.setMobile(sections[4]);
-		if (sections.count() >= 12)
+
+		// patrz kilka linijek wy¿ej
+//		if (sections.count() >= 12)
 			groups = sections.count() - 11;
-		else
-			groups = sections.count() - 7;
+//		else
+//			groups = sections.count() - 7;
+
 		groupNames.clear();
 		for (i = 0; i < groups; ++i)
 			groupNames.append(sections[5 + i]);

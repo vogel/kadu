@@ -1291,6 +1291,9 @@ void Kadu::disconnected()
 {
 	kdebugm(KDEBUG_FUNCTION_START, "Kadu::disconnected(): Disconnection has occured\n");
 
+	chat_manager->refreshTitles();
+	UserBox::all_refresh();
+
 	DoBlink = false;
 
 	if (blinktimer)
