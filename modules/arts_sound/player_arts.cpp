@@ -212,6 +212,7 @@ void aRtsPlayerRecorder::openDevice(SoundDeviceType type, int sample_rate, int c
 			dev->mutex.unlock();
 			usleep(100000);//0.1 s
 //			kdebugm(KDEBUG_INFO, "locking\n");
+			qApp->processEvents();
 			dev->mutex.lock();
 //			kdebugm(KDEBUG_INFO, "locked again\n");
 		}
