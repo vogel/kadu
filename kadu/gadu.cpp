@@ -127,14 +127,14 @@ UinsList::UinsList()
 {
 }
 
-UinsList::UinsList (QString uins)
+UinsList::UinsList (const QString &uins)
 {
 	QStringList list = QStringList::split (",", uins);
 	for (QStringList::const_iterator it = list.begin (); it != list.end (); it++)
 		append ((*it).toUInt ());
 }
 
-UinsList::UinsList (QStringList list)
+UinsList::UinsList (const QStringList &list)
 {
 	for (QStringList::const_iterator it = list.begin (); it != list.end (); it++)
 		append ((*it).toUInt ());

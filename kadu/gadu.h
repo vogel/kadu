@@ -57,13 +57,13 @@ class UinsList : public QValueList<UinType>
 			konstruuje obiekt UinsList na podstawie ³añcucha "uins" sk³adaj±cego
 			siê z oddzielonych przecinkami Uinów
 		**/
-		UinsList(QString uins);
+		UinsList(const QString &uins);
 
 		/**
 			konstruuje obiekt UinsList na podstawie "list"
 			przekszta³acaj±c ka¿dy element do typy UinType
 		**/
-		UinsList(QStringList list);
+		UinsList(const QStringList &list);
 
 		bool equals(const UinsList &uins) const;
 		void sort();
@@ -1102,16 +1102,16 @@ class GaduProtocol : public QObject
 		void messageFiltering(const UinsList& senders,QCString& msg,
 			QByteArray& formats,bool& stop);
 		/**
-			Otrzymano wiadomoï¿½ ktï¿½ trzeba pokazaï¿½(klasa chat lub msg,
+			Otrzymano wiadomo¶æ któr± trzeba pokazaæ (klasa chat lub msg,
 			nadawca nie jest ignorowany, itp)
-			Treï¿½zdeszyfrowana i zdekodowana do unicode.
-			Jesli ktorys ze slotow sygnau chatMsgReceived1 ustawi zmienna
-			grab na true to sygnal chatReceived2 nie zostanie wygenerowany.
-			Jeli natomiast zmienna grab zostanie ustawiona przez slot
-			chatMsgReceived0, to adna czynnoï¿½zwizana z obsug tego
-			zdarzenia nie zostanie podjï¿½a (tj. wywietlanie wiadomoci
+			Tre¶æ zdeszyfrowana i zdekodowana do unicode.
+			Je¶li który¶ ze slotów sygna³u chatMsgReceived1 ustawi zmienn±
+			grab na true to sygna³ chatReceived2 nie zostanie wygenerowany.
+			Je¶li natomiast zmienna grab zostanie ustawiona przez slot
+			chatMsgReceived0, to ¿adna czynno¶æ zwi±zana z obs³ug± tego
+			zdarzenia nie zostanie podjêta (tj. wy¶wietlanie wiadomo¶ci
 			w oknie, dodanie jej do historii, etc.), poza przekonwertowaniem
-			kodowania wiadomoci z CP1250 na Unicode.
+			kodowania wiadomo¶ci z CP1250 na Unicode.
 		**/
 		void chatMsgReceived0(UinsList senders,const QString& msg,time_t time,bool& grab);
 		void chatMsgReceived1(UinsList senders,const QString& msg,time_t time,bool& grab);
