@@ -392,7 +392,7 @@ void SearchDialog::AddButtonClicked()
 		return;
 
 	kadu->addUser(firstname, "", nickname, altnick, "", uin,
-		GG_STATUS_NOT_AVAIL, "", "", "");
+		GG_STATUS_NOT_AVAIL, 0, "", "", "");
 	selectionChanged(selected);
 }
 
@@ -431,7 +431,7 @@ void SearchDialog::updateInfoClicked()
 		return;
 
 	userlist.changeUserInfo(ule.altnick, firstname, "", nickname, ule.altnick,
-		ule.mobile, QString::number(ule.uin), ule.status,
+		ule.mobile, QString::number(ule.uin), ule.status, ule.image_size,
 		ule.blocking, ule.offline_to_user, ule.notify, ule.group(), ule.email);
 	userlist.writeToFile();
 }

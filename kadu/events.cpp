@@ -300,10 +300,10 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 	if (!userlist.containsUin(senders[0]))
 		if (config.dock)
 			userlist.addUser("", "", ule.altnick, ule.altnick, "", ule.altnick, GG_STATUS_NOT_AVAIL,
-				false, false, true, "", "", "", true);
+				0, false, false, true, "", "", "", true);
 		else
 			kadu->addUser("", "", ule.altnick, ule.altnick, "", ule.altnick, GG_STATUS_NOT_AVAIL,
-				"", "", "", true);
+				0, "", "", "", true);
 
 	if (config.logmessages)
 		history.appendMessage(senders, senders[0], mesg, FALSE, time);
@@ -407,79 +407,83 @@ void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)
 }
 
 void EventManager::userlistReceivedSlot(struct gg_event *e) {
-	struct gg_notify_reply *n;
 	unsigned int oldstatus;
-	int i;
+	int i, nr = 0;
 
-	if (e->type == GG_EVENT_NOTIFY)
-		n = e->event.notify;
-	else
-		n = e->event.notify_descr.notify;
+	while (e->event.notify60[nr].uin) {
+		UserListElement &user = userlist.byUin(e->event.notify60[nr].uin);
 
-	while (n->uin) {
-		UserListElement &user = userlist.byUin(n->uin);
-
-		if (!userlist.containsUin(n->uin)) {
-			kdebug("eventGotUserlist(): buddy %d not in list. Damned server!\n", n->uin);
-			gg_remove_notify(sess, n->uin);
-			n++;
+		if (!userlist.containsUin(e->event.notify60[nr].uin)) {
+			kdebug("eventGotUserlist(): buddy %d not in list. Damned server!\n",
+				e->event.notify60[nr].uin);
+			gg_remove_notify(sess, e->event.notify60[nr].uin);
+			nr++;
 			continue;
 			}
 
-		user.ip.setAddress(ntohl(n->remote_ip));
+		user.ip.setAddress(ntohl(e->event.notify60[nr].remote_ip));
 		userlist.addDnsLookup(user.uin, user.ip);
-		user.port = n->remote_port;
-		user.version = n->version;
+		user.port = e->event.notify60[nr].remote_port;
+		user.version = e->event.notify60[nr].version;
+		user.image_size = e->event.notify60[nr].image_size;
 
 		oldstatus = user.status;
 
 		if (user.description)
 			user.description.truncate(0);
 
-		if (e->type == GG_EVENT_NOTIFY_DESCR) {
-			user.description.append(cp2unicode((unsigned char *)e->event.notify_descr.descr));
-			}
+		if (e->event.notify60[nr].descr)
+			user.description.append(cp2unicode((unsigned char *)e->event.notify60[nr].descr));
 
-		switch (n->status) {
+		switch (e->event.notify60[nr].status) {
 			case GG_STATUS_AVAIL:
-				kdebug("eventGotUserlist(): User %d went online\n", n->uin);
+				kdebug("eventGotUserlist(): User %d went online\n",
+					e->event.notify60[nr].uin);
 				break;
 			case GG_STATUS_BUSY:
-				kdebug("eventGotUserlist(): User %d went busy\n", n->uin);
+				kdebug("eventGotUserlist(): User %d went busy\n",
+					e->event.notify60[nr].uin);
 				break;
 			case GG_STATUS_NOT_AVAIL:
-				kdebug("eventGotUserlist(): User %d went offline\n", n->uin);
+				kdebug("eventGotUserlist(): User %d went offline\n",
+					e->event.notify60[nr].uin);
 				break;
 			case GG_STATUS_BLOCKED:
-				kdebug("eventGotUserlist(): User %d has blocked us\n", n->uin);
+				kdebug("eventGotUserlist(): User %d has blocked us\n",
+					e->event.notify60[nr].uin);
 				break;
 			case GG_STATUS_BUSY_DESCR:
-				kdebug("eventGotUserlist(): User %d went busy with descr.\n", n->uin);
+				kdebug("eventGotUserlist(): User %d went busy with descr.\n",
+					e->event.notify60[nr].uin);
 				break;
 			case GG_STATUS_NOT_AVAIL_DESCR:
-				kdebug("eventGotUserlist(): User %d went offline with descr.\n", n->uin);
+				kdebug("eventGotUserlist(): User %d went offline with descr.\n",
+					e->event.notify60[nr].uin);
 				break;
 			case GG_STATUS_AVAIL_DESCR:
-				kdebug("eventGotUserlist(): User %d went online with descr.\n", n->uin);
+				kdebug("eventGotUserlist(): User %d went online with descr.\n",
+					e->event.notify60[nr].uin);
 				break;
 			case GG_STATUS_INVISIBLE_DESCR:
-				kdebug("eventGotUserlist(): User %d went invisible with descr.\n", n->uin);
+				kdebug("eventGotUserlist(): User %d went invisible with descr.\n",
+					e->event.notify60[nr].uin);
 				break;
 			default:
-				kdebug("eventGotUserlist(): Unknown status for user %d: %d\n", n->uin, n->status);
+				kdebug("eventGotUserlist(): Unknown status for user %d: %d\n",
+					e->event.notify60[nr].uin, e->event.notify60[nr].status);
 				break;
 			}
-		userlist.changeUserStatus(n->uin, n->status);
+		userlist.changeUserStatus(e->event.notify60[nr].uin, e->event.notify60[nr].status);
 
 		history.appendStatus(user.uin, user.status, user.description.length() ? user.description : QString::null);
 
 		for (i = 0; i < chats.count(); i++)
-			if (chats[i].uins.contains(n->uin))
+			if (chats[i].uins.contains(e->event.notify60[nr].uin))
 				chats[i].ptr->setTitle();
 
-		ifNotify(n->uin, n->status, oldstatus);
+		ifNotify(e->event.notify60[nr].uin, e->event.notify60[nr].status, oldstatus);
 
-		n++;		
+		nr++;		
 		}
 	UserBox::all_refresh();
 }
@@ -490,12 +494,12 @@ void EventManager::userStatusChangedSlot(struct gg_event * e) {
 	unsigned int oldstatus;
 	int i;
 	
-	UserListElement &user = userlist.byUin(e->event.status.uin);
+	UserListElement &user = userlist.byUin(e->event.status60.uin);
 
-	if (!userlist.containsUin(e->event.status.uin)) {
+	if (!userlist.containsUin(e->event.status60.uin)) {
 		// ignore!
-		kdebug("eventStatusChange(): buddy %d not in list. Damned server!\n", e->event.status.uin);
-		gg_remove_notify(sess, e->event.status.uin);
+		kdebug("eventStatusChange(): buddy %d not in list. Damned server!\n", e->event.status60.uin);
+		gg_remove_notify(sess, e->event.status60.uin);
 		return;
 		}
 
@@ -503,25 +507,26 @@ void EventManager::userStatusChangedSlot(struct gg_event * e) {
 
 	if (user.description)
 		user.description.truncate(0);
-	if (ifStatusWithDescription(e->event.status.status)) {
-		user.description.append(cp2unicode((unsigned char *)e->event.status.descr));
-		}
-	userlist.changeUserStatus(e->event.status.uin, e->event.status.status);
+//	if (ifStatusWithDescription(e->event.status.status)) {
+	if (e->event.status60.descr)
+		user.description.append(cp2unicode((unsigned char *)e->event.status60.descr));
+	userlist.changeUserStatus(e->event.status60.uin, e->event.status60.status);
 	
 	if (user.status == GG_STATUS_NOT_AVAIL || user.status == GG_STATUS_NOT_AVAIL_DESCR) {
 		user.ip.setAddress((unsigned int)0);
 		userlist.addDnsLookup(user.uin, user.ip);
 		user.port = 0;
 		user.version = 0;
+		user.image_size = 0;
 		}
 
 	history.appendStatus(user.uin, user.status, user.description.length() ? user.description : QString::null);
 
 	for (i = 0; i < chats.count(); i++)
-		if (chats[i].uins.contains(e->event.status.uin))
+		if (chats[i].uins.contains(e->event.status60.uin))
 			chats[i].ptr->setTitle();
 			
-	ifNotify(e->event.status.uin, e->event.status.status, oldstatus);
+	ifNotify(e->event.status60.uin, e->event.status60.status, oldstatus);
 	UserBox::all_refresh();
 };
 
@@ -672,7 +677,7 @@ void EventManager::eventHandler(gg_session* sess)
 		}
 	};
 
-	if (e->type == GG_EVENT_STATUS)
+	if (e->type == GG_EVENT_STATUS60)
 		emit event_manager.userStatusChanged(e);
 
 	if (e->type == GG_EVENT_ACK)
@@ -681,7 +686,7 @@ void EventManager::eventHandler(gg_session* sess)
 		emit ackReceived(e->event.ack.seq);
 	};
 
-	if (e->type == GG_EVENT_NOTIFY_DESCR || e->type == GG_EVENT_NOTIFY)
+	if (e->type == GG_EVENT_NOTIFY60)
 		emit event_manager.userlistReceived(e);
 	
 	if (e->type == GG_EVENT_PUBDIR50_SEARCH_REPLY

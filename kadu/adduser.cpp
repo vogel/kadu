@@ -97,7 +97,7 @@ void Adduser::Add() {
 	if (e_altnick->text().length()) {
 		kadu->addUser(e_fname->text(), e_lname->text(), e_nickname->text(),
 			e_altnick->text(), e_tel->text(), e_uin->text(),
-			GG_STATUS_NOT_AVAIL, cb_group->currentText(), "", e_email->text());
+			GG_STATUS_NOT_AVAIL, 0, cb_group->currentText(), "", e_email->text());
 		close(true);
 		}
 	else

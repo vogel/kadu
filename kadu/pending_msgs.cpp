@@ -189,10 +189,10 @@ void PendingMsgs::openMessages() {
 						tmp = QString::number(elem.uins[j]);
 						if (config.dock)
 							userlist.addUser("", "", tmp, tmp, "", tmp, GG_STATUS_NOT_AVAIL,
-								false, false, true, "", "", "", true);
+								0, false, false, true, "", "", "", true);
 						else
 							kadu->addUser("", "", tmp, tmp, "", tmp, GG_STATUS_NOT_AVAIL,
-								"", "", "", true);
+								0, "", "", "", true);
 					}
 				k = kadu->openChat(elem.uins);
 				QValueList<UinsList>::iterator it = wasFirstMsgs.begin();

@@ -41,6 +41,7 @@ class Kadu : public QMainWindow
 		void addUser(const QString &FirstName,const QString &LastName,
 			const QString &NickName,const QString &AltNick,
 			const QString &Mobile,const QString &Uin,const int Status,
+			const int Image_size,
 			const QString &Group,const QString &Description, const QString &Email,
 			const bool Anonymous = false);
 		void removeUser(QStringList &, bool);

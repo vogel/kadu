@@ -58,6 +58,7 @@ struct UserListElement
 		QString email;
 		uin_t uin;
 		unsigned int status;
+		int image_size;
 		bool anonymous;
 		QHostAddress ip;
 		QString dnsname;
@@ -74,7 +75,7 @@ struct UserListElement
 class UserList : public QObject, public QValueList<UserListElement>
 {
 	Q_OBJECT
-	
+
 	public:
 		UserList();
 		~UserList();
@@ -88,6 +89,7 @@ class UserList : public QObject, public QValueList<UserListElement>
 			const QString &NickName, const QString &AltNick,
 			const QString &Mobile, const QString &Uin,
 			const int Status = GG_STATUS_NOT_AVAIL,
+			const int Image_size = 0,
 			const bool Blocking = false, const bool Offline_to_user = false,
 			const bool Notify = true, const QString &Group = "", const QString &Description = "",
 			const QString &Email = "", const bool anonymous = false);
@@ -95,6 +97,7 @@ class UserList : public QObject, public QValueList<UserListElement>
 			const QString &FirstName, const QString &LastName,
 			const QString &NickName, const QString &AltNick,
 			const QString &Mobile, const QString &Uin, int Status,
+			const int Image_size,
 			const bool Blocking, const bool Offline_to_user, const bool Notify,
 			const QString &Group, const QString &Email);
 		void changeUserStatus(const uin_t uin, const unsigned int status);

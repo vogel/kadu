@@ -257,6 +257,7 @@ void UserInfo::writeUserlist() {
 				e_nickname->text(),e_altnick->text(),
 				e_mobile->text(), e_uin->text().length() ? e_uin->text() : QString("0"),
 				uin != puser->uin ? GG_STATUS_NOT_AVAIL : puser->status,
+				puser->image_size,
 				c_blocking->isChecked(), c_offtouser->isChecked(),
 				c_notify->isChecked(), cb_group->currentText(), e_email->text());
 			puser->anonymous = false;

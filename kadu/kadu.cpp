@@ -1103,6 +1103,7 @@ void Kadu::prepareDcc(void) {
 void Kadu::addUser(const QString &FirstName, const QString &LastName,
 	const QString &NickName, const QString &AltNick,
 	const QString &Mobile, const QString &Uin, const int Status,
+	const int Image_size,
 	const QString &Group, const QString &Description, const QString &Email,
 	const bool Anonymous)
 {
@@ -1110,13 +1111,14 @@ void Kadu::addUser(const QString &FirstName, const QString &LastName,
 
 	if (!userlist.containsUin(uin) || (!uin && !userlist.containsAltNick(AltNick)))
 		userlist.addUser(FirstName, LastName, NickName, AltNick, Mobile, Uin, Status, 
-			false, false, true, Group, Description, Email, Anonymous);
+			Image_size, false, false, true, Group, Description, Email, Anonymous);
 	else {
 		UserListElement &ule = userlist.byUin(uin);
 		if (!uin)
 			ule = userlist.byAltNick(AltNick);
 		userlist.changeUserInfo(ule.altnick,
 			FirstName, LastName, NickName, AltNick, Mobile, Uin, ule.status,
+			ule.image_size,
 			ule.blocking, ule.offline_to_user, ule.notify, Group, Email);
 		}
 	userlist.writeToFile();
@@ -1327,10 +1329,10 @@ void Kadu::sendMessage(QListBoxItem *item) {
 						tmp = QString::number(pending[i].uins[j]);
 						if (trayicon)
 							userlist.addUser("", "", tmp, tmp, "", tmp, GG_STATUS_NOT_AVAIL,
-								false, false, true, "", "", "", true);
+								0, false, false, true, "", "", "", true);
 						else
 							addUser("", "", tmp, tmp, "", tmp, GG_STATUS_NOT_AVAIL,
-								"", "", "", true);
+								0, "", "", "", true);
 						}
 				
 				l = chats.count();

@@ -187,6 +187,7 @@ bool UserList::containsAltNick(const QString &altnick) {
 void UserList::addUser(const QString &FirstName,const QString &LastName,
 	const QString &NickName,const QString &AltNick,
 	const QString &Mobile,const QString &Uin,const int Status,
+	const int Image_size,
 	const bool Blocking, const bool Offline_to_user, const bool Notify,
 	const QString &Group,const QString &Description, const QString &Email,
 	const bool Anonymous)
@@ -199,6 +200,7 @@ void UserList::addUser(const QString &FirstName,const QString &LastName,
 	e.mobile = Mobile;
 	e.uin = Uin.toUInt();
 	e.status = Status;
+	e.image_size = Image_size;
 	e.blocking = Blocking;
 	e.offline_to_user = Offline_to_user;
 	e.notify = Notify;
@@ -218,6 +220,7 @@ void UserList::changeUserInfo(const QString &OldAltNick,
 	const QString &FirstName, const QString &LastName,
 	const QString &NickName, const QString &AltNick,
 	const QString &Mobile, const QString &Uin, int Status,
+	const int Image_size,
 	const bool Blocking, const bool Offline_to_user, const bool Notify,
 	const QString &Group, const QString &Email)
 {
@@ -235,6 +238,7 @@ void UserList::changeUserInfo(const QString &OldAltNick,
 		e.uin = uin;
 	e.anonymous = false;
 	e.status = Status;
+	e.image_size = Image_size;
 	e.blocking = Blocking;
 	e.offline_to_user = Offline_to_user;
 	e.notify = Notify;
@@ -401,7 +405,7 @@ bool UserList::readFromFile()
 			if (uin == "")
 				continue;
 			addUser("" , "", nickname, nickname,
-				"", uin, GG_STATUS_NOT_AVAIL,"","");
+				"", uin, GG_STATUS_NOT_AVAIL, 0, "", "");
 			}
 		else {	    
 			QString first_name = line.section(';', 0, 0);
@@ -440,7 +444,7 @@ bool UserList::readFromFile()
 				}
 
 			addUser(first_name, last_name, nickname, altnick,
-				mobile, uin, GG_STATUS_NOT_AVAIL, blocking, offline_to_user,
+				mobile, uin, GG_STATUS_NOT_AVAIL, 0, blocking, offline_to_user,
 				notify, group, "", email);
 			}
 		}
