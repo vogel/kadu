@@ -22,6 +22,7 @@ class MessageBox : public QDialog
 		QProgressBar* Progress;
 		QLabel * _pixmap;
 		QGridLayout * _grid;
+		QString message;
 				
 	private slots:
 		void okClicked();
@@ -37,8 +38,8 @@ class MessageBox : public QDialog
 		static const int NO;
 		static const int PROGRESS;
 		//
-		MessageBox(const QString& message,int components = 0
-			,bool modal=false);
+		MessageBox(const QString& message,int components = 0, bool modal=false);
+		~MessageBox();
 
 		void setTotalSteps(int s);
 		void setProgress(int p);

@@ -24,8 +24,9 @@ const int MessageBox::YES      = 4;  // 00100
 const int MessageBox::NO       = 8;  // 01000
 const int MessageBox::PROGRESS = 16; // 10000
 
-MessageBox::MessageBox(const QString& message,int components,bool modal)
-	: QDialog(NULL,NULL,modal,WType_TopLevel|WStyle_Customize|WStyle_DialogBorder|WStyle_Title|WStyle_SysMenu)
+MessageBox::MessageBox(const QString& message1,int components,bool modal)
+	: QDialog(NULL,NULL,modal,WType_TopLevel|WStyle_Customize|WStyle_DialogBorder|WStyle_Title|WStyle_SysMenu|WDestructiveClose),
+	message(message1)
 {
 	kdebugf();
 	_pixmap = 0;
@@ -35,13 +36,15 @@ MessageBox::MessageBox(const QString& message,int components,bool modal)
 	_grid->addLayout(vbox,0,1);
 	vbox->setMargin(20);
 	vbox->setSpacing(20);
-	if(message.length()>0)
+
+	if (message.length()>0)
 	{
 		QLabel* l=new QLabel(this);
 		l->setText(message);
 		vbox->addWidget(l,0,AlignCenter);
 	}
-	if(components&PROGRESS)
+
+	if (components&PROGRESS)
 	{
 		Progress=new QProgressBar(this);
 		vbox->addWidget(Progress,0,AlignCenter);
@@ -49,49 +52,60 @@ MessageBox::MessageBox(const QString& message,int components,bool modal)
 	else
 		Progress=NULL;
 
-	if(!(components&(~PROGRESS)))
+	if (!(components&(~PROGRESS)))
 		return;
 
 	QHBoxLayout* hbox=new QHBoxLayout(vbox);
 	QHBox* buttons=new QHBox(this);
 	buttons->setSpacing(20);
 	hbox->addWidget(buttons,0,AlignCenter);
-	if(components&OK)
+
+	if (components&OK)
 	{
 		QPushButton* b=new QPushButton(buttons);
 		b->setText(tr("&OK"));
 		connect(b,SIGNAL(clicked()),this,SLOT(okClicked()));
 	}
-	if(components&YES)
+
+	if (components&YES)
 	{
 		QPushButton* b=new QPushButton(buttons);
 		b->setText(tr("&Yes"));
 		connect(b,SIGNAL(clicked()),this,SLOT(yesClicked()));
 	}
-	if(components&NO)
+
+	if (components&NO)
 	{
 		QPushButton* b=new QPushButton(buttons);
 		b->setText(tr("&No"));
 		connect(b,SIGNAL(clicked()),this,SLOT(noClicked()));
 	}
-	if(components&CANCEL)
+
+	if (components&CANCEL)
 	{
 		QPushButton* b=new QPushButton(buttons);
 		b->setText(tr("&Cancel"));
 		connect(b,SIGNAL(clicked()),this,SLOT(cancelClicked()));
 	}
+
 	buttons->setMaximumSize(buttons->sizeHint());
 	kdebugf2();
 }
 
+MessageBox::~MessageBox()
+{
+	if (Boxes.contains(message))
+		Boxes.remove(message);
+}
+
 void MessageBox::setIcon(const QPixmap & pixmap)
 {
-	if (_pixmap == 0) {
+	if (_pixmap == 0)
+	{
 		_pixmap = new QLabel(this);
 		_pixmap->setPixmap(pixmap);
 		_grid->addWidget(_pixmap,0,0);
-		}
-
+	}
 }
 
 void MessageBox::okClicked()
@@ -120,13 +134,13 @@ void MessageBox::noClicked()
 
 void MessageBox::setTotalSteps(int s)
 {
-	if(Progress!=NULL)
+	if (Progress!=NULL)
 		Progress->setTotalSteps(s);
 }
 
 void MessageBox::setProgress(int p)
 {
-	if(Progress!=NULL)
+	if (Progress!=NULL)
 		Progress->setProgress(p);
 }
 
@@ -168,7 +182,7 @@ void MessageBox::progress(const QString& message, const QObject* receiver,
 {
 	kdebugf();
 	MessageBox* m;
-	if(receiver!=0&&slot!=0)
+	if (receiver!=0 && slot!=0)
 	{
 		m=new MessageBox(message,PROGRESS|CANCEL);
 		connect(m,SIGNAL(cancelPressed()),receiver,slot);
@@ -184,7 +198,7 @@ void MessageBox::progress(const QString& message, const QObject* receiver,
 
 void MessageBox::progress(const QString& message,int progress)
 {
-	if(Boxes.contains(message))
+	if (Boxes.contains(message))
 	{
 		MessageBox* m=Boxes[message];
 		m->setProgress(progress);
@@ -194,7 +208,7 @@ void MessageBox::progress(const QString& message,int progress)
 
 void MessageBox::close(const QString& message)
 {
-	if(Boxes.contains(message))
+	if (Boxes.contains(message))
 	{
 		Boxes[message]->accept();
 		Boxes.remove(message);
