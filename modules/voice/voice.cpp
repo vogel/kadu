@@ -91,7 +91,8 @@ void RecordThread::run() {
 VoiceManager::VoiceManager()
 {
 	kdebugf();
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Voice chat", "kadu_voicechat", "F7");
+	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", 
+			QT_TRANSLATE_NOOP("@default", "Voice chat"), "kadu_voicechat", "F7");
 
 	voice_enc = voice_dec = NULL;
 	pt = new PlayThread();
