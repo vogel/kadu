@@ -1,9 +1,9 @@
 # configure.ac for Kadu written by A.Smarzewski
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([Kadu],[0.3.3-pre3])
+AC_INIT([Kadu],[0.3.3-pre4])
 AC_COPYRIGHT([configure.ac written by A.Smarzewski])
-AC_REVISION([0.3.3-pre3])
+AC_REVISION([0.3.3-pre4])
 AC_PREREQ(2.53)
 
 echo
@@ -16,7 +16,7 @@ AC_CONFIG_SRCDIR([kadu/kadu.cpp])
 AC_CONFIG_AUX_DIR([admin])
 AM_CONFIG_HEADER([config.h])
 AC_CANONICAL_SYSTEM
-AM_INIT_AUTOMAKE([kadu-0.3.3-pre3],[0.3.3-pre3])
+AM_INIT_AUTOMAKE([kadu-0.3.3-pre4],[0.3.3-pre4])
 
 KDE_SET_PREFIX
 
@@ -131,25 +131,21 @@ fi
 AC_DEFINE_UNQUOTED(DIST_TYPE,"$enable_dist_info",[Define distribution type of this copy of application])
 
 # OpenSSL support
-AC_ARG_ENABLE(openssl,[  --with-openssl          enable OpenSSL encryption support])
+AC_ARG_ENABLE(openssl,[  --without-openssl       disable OpenSSL encryption support])
 if test -z "$with_openssl"; then
-	with_openssl=no
+	with_openssl=yes
 fi
 if test "$with_openssl" = "yes"; then
-#	AC_CHECK_HEADER(openssl.h,[
+	AC_CHECK_HEADER(openssl/rsa.h,[
 		AC_CHECK_LIB(crypto,RSA_public_encrypt,,[
 			AC_MSG_ERROR([libcrypto was not found!])
 		])
-#	],[
-#		AC_MSG_ERROR([existing libgadu was not found!])
-#	])
-#	AC_CHECK_HEADER(openssl.h,[
 		AC_CHECK_LIB(ssl,BIO_new,,[
 			AC_MSG_ERROR([libssl was not found!])
 		])
-#	],[
-#		AC_MSG_ERROR([existing libgadu was not found!])
-#	])
+	],[
+		AC_MSG_ERROR([openssl/rsa.h was not found!])
+	])
 	AC_DEFINE(HAVE_OPENSSL,1,[Define if we have OpenSSL encryption support])
 fi
 AM_CONDITIONAL(OPENSSL,[test "$with_openssl" = "yes"])
