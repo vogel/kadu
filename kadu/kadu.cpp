@@ -450,6 +450,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	group_bar = new KaduTabBar(hbox1, "groupbar");
 	group_bar->setShape(QTabBar::RoundedBelow);
 	group_bar->addTab(new QTab(i18n("All")));
+	group_bar->setFont(QFont(config.fonts.userbox.family(),config.fonts.userbox.pointSize(),75));
 //	group_bar->setMinimumWidth(group_bar->sizeHint().width());
 	connect(group_bar, SIGNAL(selected(int)), this, SLOT(groupTabSelected(int)));
 
@@ -579,6 +580,8 @@ void Kadu::changeAppearance() {
 	userbox->setPaletteBackgroundColor(config.colors.userboxBg);
 	userbox->setPaletteForegroundColor(config.colors.userboxFg);
 	userbox->QListBox::setFont(config.fonts.userbox);
+
+	group_bar->setFont(QFont(config.fonts.userbox.family(),config.fonts.userbox.pointSize(),75));
 
 	descrtb->setPaletteBackgroundColor(config.colors.userboxDescBg);
 	descrtb->setPaletteForegroundColor(config.colors.userboxDescText);

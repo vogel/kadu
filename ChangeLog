@@ -10,6 +10,8 @@
 * poprawiony mechanizm zmiany wielko¶ci komponentów w oknie chat. Teraz mo¿na
   ju¿ naprawdê dowolnie, co do pixela ustawiaæ wielko¶æ (adrian)
 * dodanie guzików przewijania zak³adek grup (chilek)
+* czcionka w zak³adkach grup to czcionka ustawiona w userboxie + bold,
+  powinno to poprawiæ troszke wygl±d (mast3r)
 
 +++ wersja 0.3.3-rc3
 * sensowne potwierdzenie usuniêcia kontaktu (adrian)
