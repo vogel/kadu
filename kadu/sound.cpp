@@ -10,9 +10,9 @@
 #include <qobject.h>
 #include <qthread.h>
 #include <qsemaphore.h>
-#include <kde/artsc/artsc.h>
-#include <fcntl.h>
-#include <sys/ioctl.h>
+//#include <kde/artsc/artsc.h>
+//#include <fcntl.h>
+//#include <sys/ioctl.h>
 //#include <linux/soundcard.h>
 //#include <unistd.h>
 
