@@ -47,7 +47,9 @@ DockingManager::DockingManager() : QObject(NULL, "docking_manager")
 	connect(kadu, SIGNAL(currentStatusChanged(int)), this, SLOT(showCurrentStatus(int)));
 	connect(&pending, SIGNAL(messageAdded()), this, SLOT(pendingMessageAdded()));
 	connect(&pending, SIGNAL(messageDeleted()), this, SLOT(pendingMessageDeleted()));
-	connect(hintmanager, SIGNAL(searchingForPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
+	hintmanager_existed_on_start=(hintmanager!=NULL);
+	if (hintmanager_existed_on_start)
+		connect(hintmanager, SIGNAL(searchingForPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
 	connect(dockppm, SIGNAL(activated(int)), this, SLOT(dockletChange(int)));
 	connect(this, SIGNAL(mousePressMidButton()), &pending, SLOT(openMessages()));
 
@@ -63,7 +65,8 @@ DockingManager::~DockingManager()
 	disconnect(kadu, SIGNAL(currentStatusChanged(int)), this, SLOT(showCurrentStatus(int)));
 	disconnect(&pending, SIGNAL(messageAdded()), this, SLOT(pendingMessageAdded()));
 	disconnect(&pending, SIGNAL(messageDeleted()), this, SLOT(pendingMessageDeleted()));
-	disconnect(hintmanager, SIGNAL(searchingForPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
+	if (hintmanager_existed_on_start && hintmanager!=NULL)
+		disconnect(hintmanager, SIGNAL(searchingForPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
 	disconnect(dockppm, SIGNAL(activated(int)), this, SLOT(dockletChange(int)));
 	disconnect(icon_timer, SIGNAL(timeout()), this, SLOT(changeIcon()));
 

@@ -12,6 +12,7 @@ class DockingManager : public QObject
 		QTimer *icon_timer;
 		bool blink;
 		void defaultToolTip();
+		bool hintmanager_existed_on_start;
 
 	private slots:
 		void changeIcon();
