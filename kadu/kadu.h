@@ -270,9 +270,9 @@ struct chats {
     Chat *ptr;
 };
 
-extern const char *statustext[8];
-extern char **gg_xpm[8];
-extern int gg_statuses[8];
+extern const char *statustext[];
+extern char **gg_xpm[];
+extern int gg_statuses[];
 extern KApplication *a;
 extern Kadu *kadu;
 extern struct gg_session *sess;

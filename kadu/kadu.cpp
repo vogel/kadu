@@ -166,14 +166,15 @@ QSocketNotifier *kadusnw = NULL;
 QSocketNotifier *dccsnr = NULL;
 QSocketNotifier *dccsnw = NULL;
 
-char **gg_xpm[8] = {gg_act_xpm, gg_actdescr_xpm, gg_busy_xpm, gg_busydescr_xpm,
-	gg_invi_xpm, gg_invidescr_xpm, gg_inact_xpm, gg_inactdescr_xpm};
-int gg_statuses[8] = {GG_STATUS_AVAIL, GG_STATUS_AVAIL_DESCR, GG_STATUS_BUSY, GG_STATUS_BUSY_DESCR,
-	GG_STATUS_INVISIBLE, GG_STATUS_INVISIBLE_DESCR, GG_STATUS_NOT_AVAIL, GG_STATUS_NOT_AVAIL_DESCR};
-const char *statustext[8] = {"Online", "Online (d.)",
+char **gg_xpm[] = {gg_act_xpm, gg_actdescr_xpm, gg_busy_xpm, gg_busydescr_xpm,
+	gg_invi_xpm, gg_invidescr_xpm, gg_inact_xpm, gg_inactdescr_xpm, gg_stop_xpm};
+int gg_statuses[] = {GG_STATUS_AVAIL, GG_STATUS_AVAIL_DESCR, GG_STATUS_BUSY, GG_STATUS_BUSY_DESCR,
+	GG_STATUS_INVISIBLE, GG_STATUS_INVISIBLE_DESCR, GG_STATUS_NOT_AVAIL, GG_STATUS_NOT_AVAIL_DESCR,
+	GG_STATUS_BLOCKED};
+const char *statustext[] = {"Online", "Online (d.)",
 	"Busy", "Busy (d.)",
 	"Invisible", "Invisible (d.)",
-	"Offline", "Offline (d.)"};
+	"Offline", "Offline (d.)", "Blocked"};
 enum {
 	KADU_CMD_SEND_MESSAGE,
 	KADU_CMD_OPEN_CHAT,
@@ -272,9 +273,9 @@ int statusGGToStatusNr(int status) {
     int i = 0;
     if (status == GG_STATUS_INVISIBLE2)
 	return 4;
-    while (i < 8 && gg_statuses[i] != status)
+    while (i < 9 && gg_statuses[i] != status)
 	i++;
-    if (i < 8)
+    if (i < 9)
 	return i;
     return -1;
 }
