@@ -56,7 +56,9 @@ extern "C" int sms_init()
 	
 	smsslots=new SmsSlots();
 	ConfigDialog::registerSlotOnCreate(smsslots, SLOT(onCreateConfigDialog()));
-	ConfigDialog::registerSlotOnDestroy(smsslots, SLOT(onDestroyConfigDialog()));
+	ConfigDialog::registerSlotOnClose(smsslots, SLOT(onCloseConfigDialog()));
+	ConfigDialog::registerSlotOnApply(smsslots, SLOT(onApplyConfigDialog()));
+	
     	ConfigDialog::connectSlot("SMS", "Use built-in SMS application", SIGNAL(toggled(bool)), smsslots, SLOT(onSmsBuildInCheckToggle(bool)));
 	ConfigDialog::connectSlot("SMS", "Up", SIGNAL(clicked()), smsslots, SLOT(onUpButton()));
 	ConfigDialog::connectSlot("SMS", "Down", SIGNAL(clicked()), smsslots, SLOT(onDownButton()));
@@ -77,7 +79,8 @@ extern "C" void sms_close()
 	kdebug("sms_close \n");	
 
 	ConfigDialog::unregisterSlotOnCreate(smsslots, SLOT(onCreateConfigDialog()));
-	ConfigDialog::unregisterSlotOnDestroy(smsslots, SLOT(onDestroyConfigDialog()));
+	ConfigDialog::unregisterSlotOnClose(smsslots, SLOT(onCloseConfigDialog()));
+	ConfigDialog::unregisterSlotOnApply(smsslots, SLOT(onApplyConfigDialog()));
 
     	ConfigDialog::disconnectSlot("SMS", "Use built-in SMS application", SIGNAL(toggled(bool)), smsslots, SLOT(onSmsBuildInCheckToggle(bool)));
 	ConfigDialog::disconnectSlot("SMS", "Up", SIGNAL(clicked()), smsslots, SLOT(onUpButton()));
@@ -123,12 +126,14 @@ SmsImageDialog::SmsImageDialog(QDialog* parent,const QByteArray& image)
 
 void SmsImageDialog::reject()
 {
+	kdebugf();
 	emit codeEntered("");
 	QDialog::reject();
 };
 
 void SmsImageDialog::onReturnPressed()
 {
+	kdebugf();
 	accept();
 	emit codeEntered(code_edit->text());
 };
@@ -143,13 +148,6 @@ SmsGateway::SmsGateway(QObject* parent)
 	QObject::connect(&Http,SIGNAL(error()),this,SLOT(httpError()));
 };
 
-SmsGateway::~SmsGateway()
-{
-	QObject::disconnect(&Http,SIGNAL(finished()),this,SLOT(httpFinished()));
-	QObject::disconnect(&Http,SIGNAL(redirected(QString)),this,SLOT(httpRedirected(QString)));
-	QObject::disconnect(&Http,SIGNAL(error()),this,SLOT(httpError()));
-};
-
 void SmsGateway::httpError()
 {
 	kdebug("SmsGateway::httpError()\n");
@@ -162,6 +160,7 @@ void SmsGateway::httpError()
 SmsSender::SmsSender(QObject* parent)
 	: QObject(parent,"SmsSender")
 {
+	Gateway=NULL;
 };
 
 SmsSender::~SmsSender()
@@ -207,9 +206,10 @@ void SmsSender::send(const QString& number,const QString& message, const QString
 
 Sms::Sms(const QString& altnick, QDialog* parent) : QDialog (parent, "Sms")
 {
+	kdebugf();
 	QGridLayout * grid = new QGridLayout(this, 3, 4, 10, 3);
 
-	Sender=new SmsSender();
+	setWFlags(WDestructiveClose);
 
 	body = new QMultiLineEdit(this);
 	grid->addMultiCellWidget(body, 1, 1, 0, 3);
@@ -263,14 +263,13 @@ Sms::Sms(const QString& altnick, QDialog* parent) : QDialog (parent, "Sms")
 	resize(400,250);
 	setCaption(tr("Send SMS"));
 
-	connect(Sender,SIGNAL(finished(bool)),this,SLOT(onSmsSenderFinished(bool)));
+	connect(&Sender,SIGNAL(finished(bool)),this,SLOT(onSmsSenderFinished(bool)));
+	modules_manager->moduleIncUsageCount("sms");
 }
 
 Sms::~Sms()
 {
-	kdebugf();
-	if(Sender)
-		delete Sender;
+	modules_manager->moduleDecUsageCount("sms");
 }
 
 void Sms::updateRecipient(const QString &newtext)
@@ -311,7 +310,7 @@ void Sms::sendSms(void) {
 
 	if(config_file.readBoolEntry("SMS","BuiltInApp"))
 	{
-		Sender->send(recipient->text(), body->text(), e_contact->text(), e_signature->text());
+		Sender.send(recipient->text(), body->text(), e_contact->text(), e_signature->text());
 	}
 	else
 	{
@@ -397,8 +396,6 @@ SmsSlots::~SmsSlots()
 	int sendsmstem = UserBox::userboxmenu->getItem(tr("Send SMS"));
 	UserBox::userboxmenu->removeItem(sendsmstem);
 	kadu->mainMenu()->removeItem(menuid);
-	while(!activegw.isEmpty())
-		delete activegw.pop();
 }
 	
 
@@ -448,10 +445,12 @@ void SmsSlots::onCreateConfigDialog()
 		if(lb_gws->index(lb_gws->findItem(it.key()))==-1)
 			lb_gws->insertItem(it.key());
 	}
+
+	modules_manager->moduleIncUsageCount("sms");
 	
 };
 
-void SmsSlots::onDestroyConfigDialog()	
+void SmsSlots::onApplyConfigDialog()	
 {
 	kdebugf();
 
@@ -467,11 +466,15 @@ void SmsSlots::onDestroyConfigDialog()
 	config_file.writeEntry("SMS", "Priority", priority.join(";"));
 }
 
+void SmsSlots::onCloseConfigDialog()
+{
+	modules_manager->moduleDecUsageCount("sms");
+}
+
 void SmsSlots::newSms(QString nick)
 {
 	Sms* sms=new Sms(nick);
 	sms->show();	
-	activegw.push(sms);
 }
 
 void SmsSlots::onUserDblClicked(QListBoxItem* item)
@@ -505,6 +508,11 @@ void SmsSlots::onSendSms()
 void SmsSlots::registerGateway(QString name, isValidFunc* f)
 {
 	kdebugf();
+	QStringList priority=QStringList::split(";", config_file.readEntry("SMS", "Priority"));
+	if(!priority.contains(name)){
+		priority+=name;
+		config_file.writeEntry("SMS", "Priority", priority.join(";"));
+	}
 	gateways.insert(name, f);
 }
 

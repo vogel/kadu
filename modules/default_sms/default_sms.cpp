@@ -34,7 +34,13 @@ extern "C" void default_sms_close()
 SmsIdeaGateway::SmsIdeaGateway(QObject* parent)
 	: SmsGateway(parent)
 {
+	modules_manager->moduleIncUsageCount("default_sms");
 };
+
+SmsIdeaGateway::~SmsIdeaGateway()
+{
+	modules_manager->moduleDecUsageCount("default_sms");
+}
 
 void SmsIdeaGateway::httpRedirected(QString link)
 {
@@ -152,7 +158,13 @@ void SmsGateway::httpError() {
 SmsPlusGateway::SmsPlusGateway(QObject* parent)
 	: SmsGateway(parent)
 {
+	modules_manager->moduleIncUsageCount("default_sms");
 };
+
+SmsPlusGateway::~SmsPlusGateway()
+{
+	modules_manager->moduleDecUsageCount("default_sms");
+}
 
 void SmsPlusGateway::httpRedirected(QString link)
 {
@@ -222,7 +234,13 @@ void SmsPlusGateway::httpFinished()
 SmsEraGateway::SmsEraGateway(QObject* parent)
 	: SmsGateway(parent)
 {
+	modules_manager->moduleIncUsageCount("default_sms");
 };
+
+SmsEraGateway::~SmsEraGateway()
+{
+	modules_manager->moduleDecUsageCount("default_sms");
+}
 
 void SmsEraGateway::send(const QString& number,const QString& message, const QString& contact, const QString& signature)
 {
@@ -323,7 +341,8 @@ SmsGatewaySlots::SmsGatewaySlots()
 	ConfigDialog::addLineEdit2("SMS", "SMS Era Gateway", "User ID");
 	ConfigDialog::addLineEdit2("SMS", "SMS Era Gateway", "Password");
 	ConfigDialog::registerSlotOnCreate(this, SLOT(onCreateConfigDialog()));
-	ConfigDialog::registerSlotOnDestroy(this, SLOT(onDestroyConfigDialog()));
+	ConfigDialog::registerSlotOnClose(this, SLOT(onCloseConfigDialog()));
+	ConfigDialog::registerSlotOnApply(this, SLOT(onApplyConfigDialog()));
 	ConfigDialog::connectSlot("SMS", "Type of gateway", SIGNAL(activated(int)), this, SLOT(onChangeEraGateway(int)));
 	
 
@@ -332,13 +351,16 @@ SmsGatewaySlots::SmsGatewaySlots()
 SmsGatewaySlots::~SmsGatewaySlots()
 {
 	ConfigDialog::unregisterSlotOnCreate(this, SLOT(onCreateConfigDialog()));
-	ConfigDialog::unregisterSlotOnDestroy(this, SLOT(onDestroyConfigDialog()));
+	ConfigDialog::unregisterSlotOnClose(this, SLOT(onCloseConfigDialog()));
+	ConfigDialog::unregisterSlotOnApply(this, SLOT(onApplyConfigDialog()));
+	
 	ConfigDialog::disconnectSlot("SMS", "Type of gateway", SIGNAL(activated(int)), this, SLOT(onChangeEraGateway(int)));
 	ConfigDialog::removeControl("SMS", "Password");
 	ConfigDialog::removeControl("SMS", "User ID");
 	ConfigDialog::removeControl("SMS", "Type of gateway");
 	ConfigDialog::removeControl("SMS", "SMS Era Gateway");
 }
+
 void SmsGatewaySlots::onChangeEraGateway(int gateway)
 {
 	QLineEdit *e_erauser= ConfigDialog::getLineEdit("SMS", "User ID");
@@ -353,8 +375,10 @@ void SmsGatewaySlots::onChangeEraGateway(int gateway)
 	actualEraGateway=cb_typegateway->text(gateway);
 };
 
-void SmsGatewaySlots::onDestroyConfigDialog()
+void SmsGatewaySlots::onApplyConfigDialog()
 {
+	kdebugf();
+	
 	QComboBox *cb_typegateway= ConfigDialog::getComboBox("SMS","Type of gateway");
 	config_file.writeEntry("SMS", "EraGateway",cb_typegateway->currentText());
 
@@ -362,8 +386,12 @@ void SmsGatewaySlots::onDestroyConfigDialog()
 	QLineEdit *e_erapassword= ConfigDialog::getLineEdit("SMS", "Password");
 	config_file.writeEntry("SMS", "EraGateway_"+config_file.readEntry("SMS", "EraGateway")+"_Password", e_erapassword->text());
 	config_file.writeEntry("SMS", "EraGateway_"+config_file.readEntry("SMS", "EraGateway")+"_User", e_erauser->text());
-
 };
+
+void SmsGatewaySlots::onCloseConfigDialog()
+{
+	modules_manager->moduleDecUsageCount("default_sms");
+}
 
 void SmsGatewaySlots::onCreateConfigDialog()
 {
@@ -383,7 +411,7 @@ void SmsGatewaySlots::onCreateConfigDialog()
 	e_erapassword->setText(config_file.readEntry("SMS", "EraGateway_"+config_file.readEntry("SMS", "EraGateway")+"_Password"));
 	e_erauser->setText(config_file.readEntry("SMS", "EraGateway_"+config_file.readEntry("SMS", "EraGateway")+"_User"));
 
-	
+	modules_manager->moduleIncUsageCount("default_sms");
 };
 
 SmsGateway* SmsGatewaySlots::isValidIdea(QString& number, QObject* parent)

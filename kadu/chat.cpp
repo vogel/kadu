@@ -1241,7 +1241,7 @@ void Chat::initModule()
 	
 	ChatSlots *chatslots =new ChatSlots();
 	ConfigDialog::registerSlotOnCreate(chatslots,SLOT(onCreateConfigDialog()));
-	ConfigDialog::registerSlotOnDestroy(chatslots,SLOT(onDestroyConfigDialog()));
+	ConfigDialog::registerSlotOnApply(chatslots,SLOT(onDestroyConfigDialog()));
 	ConfigDialog::connectSlot("Chat", "Emoticons:", SIGNAL(activated(int)), chatslots, SLOT(chooseEmoticonsStyle(int)));
 
 	ConfigDialog::connectSlot("Chat", "Use default Web browser", SIGNAL(toggled(bool)), chatslots, SLOT(onDefWebBrowser(bool)));

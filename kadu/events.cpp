@@ -751,7 +751,7 @@ void EventConfigSlots::initModule()
 	ConfigDialog::addLineEdit("Network", "proxygrid", "Password:", "ProxyPassword");
 	
 	ConfigDialog::registerSlotOnCreate(eventconfigslots, SLOT(onCreateConfigDialog()));
-	ConfigDialog::registerSlotOnDestroy(eventconfigslots, SLOT(onDestroyConfigDialog()));
+	ConfigDialog::registerSlotOnApply(eventconfigslots, SLOT(onDestroyConfigDialog()));
 	
 	ConfigDialog::connectSlot("Network", "DCC enabled", SIGNAL(toggled(bool)), eventconfigslots, SLOT(ifDccEnabled(bool)));
 	ConfigDialog::connectSlot("Network", "DCC IP autodetection", SIGNAL(toggled(bool)), eventconfigslots, SLOT(ifDccIpEnabled(bool)));

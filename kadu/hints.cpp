@@ -491,7 +491,7 @@ void HintManager::initModule(void)
 	/* FIXME */
 	HintManagerSlots *hintmanagerslots = new HintManagerSlots(); 
 	ConfigDialog::registerSlotOnCreate(hintmanagerslots,SLOT(onCreateConfigDialog()));
-	ConfigDialog::registerSlotOnDestroy(hintmanagerslots,SLOT(onDestroyConfigDialog()));
+	ConfigDialog::registerSlotOnApply(hintmanagerslots,SLOT(onDestroyConfigDialog()));
 }
 
 void HintManagerSlots::onCreateConfigDialog()

@@ -25,7 +25,8 @@ QApplication *ConfigDialog::appHandle = NULL;
 
 QValueList<ConfigDialog::RegisteredControl> ConfigDialog::RegisteredControls;
 QValueList<ConfigDialog::ElementConnections> ConfigDialog::SlotsOnCreate;
-QValueList<ConfigDialog::ElementConnections> ConfigDialog::SlotsOnDestroy;
+QValueList<ConfigDialog::ElementConnections> ConfigDialog::SlotsOnClose;
+QValueList<ConfigDialog::ElementConnections> ConfigDialog::SlotsOnApply;
 
 bool ConfigDialog::ElementConnections::operator== (const ElementConnections& r) const
 {
@@ -302,6 +303,9 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 
 	for(QValueList<ElementConnections>::iterator a=SlotsOnCreate.begin(); a!=SlotsOnCreate.end(); a++)
 		connect(this, SIGNAL(create()), (*a).receiver, (*a).slot);
+	
+	for(QValueList<ElementConnections>::iterator a=SlotsOnApply.begin(); a!=SlotsOnApply.end(); a++)
+		connect(this, SIGNAL(apply()), (*a).receiver, (*a).slot);
 
 	listBox->setCurrentItem(listBox->findItem(appHandle->translate("@default",acttab)));
 
@@ -413,10 +417,8 @@ void ConfigDialog::updateConfig(void)
 	
 	config_file.writeEntry("General", "ConfigGeometry",geom);
 
-	for(QValueList<ElementConnections>::iterator a=SlotsOnDestroy.begin(); a!=SlotsOnDestroy.end(); a++)
-		connect(this, SIGNAL(destroy()), (*a).receiver, (*a).slot);
+	emit apply();
 
-	emit destroy();
 	kdebug("ConfigDialog: Configuration saved\n");
 	config_file.sync();
 }
@@ -424,6 +426,12 @@ void ConfigDialog::updateConfig(void)
 void ConfigDialog::updateAndCloseConfig()
 {
 	updateConfig();
+	
+	for(QValueList<ElementConnections>::iterator a=SlotsOnClose.begin(); a!=SlotsOnClose.end(); a++)
+		connect(this, SIGNAL(destroy()), (*a).receiver, (*a).slot);
+
+	emit  destroy();
+
 	close();
 }
 
@@ -786,21 +794,38 @@ void ConfigDialog::unregisterSlotOnCreate(const QObject* receiver, const char* n
 	SlotsOnCreate.remove(SlotsOnCreate.find(c));
 }
 
-void ConfigDialog::registerSlotOnDestroy(const QObject* receiver, const char* name)
+void ConfigDialog::registerSlotOnClose(const QObject* receiver, const char* name)
 {
 	ElementConnections c;
 	c.receiver=(QObject *)receiver;
 	c.slot=name;
-	SlotsOnDestroy.append(c);
+	SlotsOnClose.append(c);
 }
 
-void ConfigDialog::unregisterSlotOnDestroy(const QObject* receiver, const char* name)
+void ConfigDialog::unregisterSlotOnClose(const QObject* receiver, const char* name)
 {
 	ElementConnections c;
 	c.receiver=(QObject *)receiver;
 	c.slot=name;
-	SlotsOnDestroy.remove(SlotsOnDestroy.find(c));
+	SlotsOnClose.remove(SlotsOnClose.find(c));
 }
+
+void ConfigDialog::registerSlotOnApply(const QObject* receiver, const char* name)
+{
+	ElementConnections c;
+	c.receiver=(QObject *)receiver;
+	c.slot=name;
+	SlotsOnApply.append(c);
+}
+
+void ConfigDialog::unregisterSlotOnApply(const QObject* receiver, const char* name)
+{
+	ElementConnections c;
+	c.receiver=(QObject *)receiver;
+	c.slot=name;
+	SlotsOnApply.remove(SlotsOnApply.find(c));
+}
+
 
 int ConfigDialog::findPreviousTab(int pos)
 {

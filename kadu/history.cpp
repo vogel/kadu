@@ -1429,7 +1429,7 @@ void History::initModule()
 	ConfigDialog::addCheckBox("History", "History", "Don't save status changes", "DontSaveStatusChanges", true);
 
 	ConfigDialog::registerSlotOnCreate(historyslots, SLOT(onCreateConfigDialog()));
-	ConfigDialog::registerSlotOnDestroy(historyslots, SLOT(onDestroyConfigDialog()));
+	ConfigDialog::registerSlotOnApply(historyslots, SLOT(onDestroyConfigDialog()));
 	ConfigDialog::connectSlot("History", "historyslider", SIGNAL(valueChanged(int)), historyslots, SLOT(updateQuoteTimeLabel(int)));
 
 	connect(&event_manager,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),

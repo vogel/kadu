@@ -62,7 +62,6 @@ class SmsGateway : public QObject
 		
 	public:
 		SmsGateway(QObject* parent);
-		~SmsGateway();
 		virtual void send(const QString& number,const QString& message, const QString& contact, const QString& signature)=0;
 
 	signals:
@@ -107,7 +106,7 @@ class Sms : public QDialog {
 		QLineEdit *e_signature;
 		QPushButton *b_send;
 		QProcess *smsProcess;
-		SmsSender* Sender;
+		SmsSender Sender;
 
 	private slots:
 		void updateRecipient(const QString &);
@@ -135,12 +134,12 @@ class SmsSlots: public QObject
 	private:
 		int menuid;
 		QMap<QString,isValidFunc*> gateways;
-		QPtrStack<Sms> activegw;
 	
 	public slots:
 		void onSmsBuildInCheckToggle(bool);
 		void onCreateConfigDialog();
-		void onDestroyConfigDialog();
+		void onCloseConfigDialog();
+		void onApplyConfigDialog();
 		void onSendSms();
 		void onUserDblClicked(QListBoxItem* item);		
 		void onPopupMenuCreate();

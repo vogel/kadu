@@ -647,7 +647,7 @@ void UserBox::initModule()
 
 	UserBoxSlots *userboxslots= new UserBoxSlots();
 	ConfigDialog::registerSlotOnCreate(userboxslots, SLOT(onCreateConfigDialog()));
-	ConfigDialog::registerSlotOnDestroy(userboxslots, SLOT(onDestroyConfigDialog()));
+	ConfigDialog::registerSlotOnApply(userboxslots, SLOT(onDestroyConfigDialog()));
 	ConfigDialog::connectSlot("Look", "ColorButton0", SIGNAL(changed(const QColor&)), userboxslots, SLOT(chooseColorGet(const QColor&)));
 	ConfigDialog::connectSlot("Look", "", SIGNAL(textChanged(const QString&)), userboxslots, SLOT(chooseColorGet(const QString&)), "line0");
 	ConfigDialog::connectSlot("Look", "", SIGNAL(activated(int)), userboxslots, SLOT(chooseUserBoxSelect(int)), "combobox0");

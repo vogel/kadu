@@ -214,7 +214,8 @@ class ConfigDialog : public QDialog	{
 
 		static QValueList <RegisteredControl> RegisteredControls;
 		static QValueList <ElementConnections> SlotsOnCreate;
-		static QValueList <ElementConnections> SlotsOnDestroy;
+		static QValueList <ElementConnections> SlotsOnClose;
+		static QValueList <ElementConnections> SlotsOnApply;
 		static QApplication* appHandle;
 		
 		/**
@@ -572,13 +573,26 @@ class ConfigDialog : public QDialog	{
 			Rejestruje slot "slot" obiektu "receiver",
 			ktory jest wywolywany przy zamykaniu okna konfiguracji
 		**/
-		static void registerSlotOnDestroy(const QObject* receiver, const char* slot);
+		static void registerSlotOnClose(const QObject* receiver, const char* slot);
 		
 		/**
 			Wyrejestrowuje slot "slot" obiektu "receiver",
 			ktory jest wywolywany przy zamykaniu okna konfiguracji
 		**/
-		static void unregisterSlotOnDestroy(const QObject* receiver, const char* slot);
+		static void unregisterSlotOnClose(const QObject* receiver, const char* slot);
+
+		/**
+			Rejestruje slot "slot" obiektu "receiver",
+			ktory jest wywolywany przy zapisywaniu konfiguracji
+		**/
+		static void registerSlotOnApply(const QObject* receiver, const char* slot);
+		
+		/**
+			Wyrejestrowuje slot "slot" obiektu "receiver",
+			ktory jest wywolywany przy zapisywaniu konfiguracji
+		**/
+		static void unregisterSlotOnApply(const QObject* receiver, const char* slot);
+
 
 		/**
 		    Usuwa kontrolke z zakladki "groupname", o etykiecie "caption". i nazwie "name".
@@ -713,6 +727,11 @@ class ConfigDialog : public QDialog	{
 		    Sygna³ jest emitowany przy zamykaniu okna
 		**/
 		void destroy();
+		/**
+		   Sygna³ jest emitowany przy zapisywaniu konfiguracji
+		**/
+		void apply();
+
 
 	protected slots:
 		/**

@@ -290,7 +290,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	ConfigDialog::addLineEdit("General", "discstatus", "", "DisconnectDescription", "", "", "e_defaultstatus");
 
 	ConfigDialog::registerSlotOnCreate(kaduslots, SLOT(onCreateConfigDialog()));
-	ConfigDialog::registerSlotOnDestroy(kaduslots, SLOT(onDestroyConfigDialog()));
+	ConfigDialog::registerSlotOnApply(kaduslots, SLOT(onDestroyConfigDialog()));
 
 	//potrzebne do translacji
 	QT_TRANSLATE_NOOP("@default", "ShortCuts");

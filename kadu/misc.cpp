@@ -903,7 +903,7 @@ void IconsManager::initModule()
 	ConfigDialog::addSelectPaths("Look", "icon_theme", "Icon paths");
 	
 	ConfigDialog::registerSlotOnCreate(&icons_manager, SLOT(onCreateConfigDialog()));
-	ConfigDialog::registerSlotOnDestroy(&icons_manager, SLOT(onDestroyConfigDialog()));
+	ConfigDialog::registerSlotOnApply(&icons_manager, SLOT(onDestroyConfigDialog()));
 	ConfigDialog::connectSlot("Look", "Icon theme", SIGNAL(activated(const QString&)), &icons_manager, SLOT(chooseIconTheme(const QString&)));
 	ConfigDialog::connectSlot("Look", "Icon paths", SIGNAL(changed(const QStringList&)), &icons_manager, SLOT(selectedPaths(const QStringList&)));
 

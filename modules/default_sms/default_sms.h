@@ -19,6 +19,7 @@ class SmsIdeaGateway : public SmsGateway
 
 	public:
 		SmsIdeaGateway(QObject* parent);
+		~SmsIdeaGateway();
 		virtual void send(const QString& number,const QString& message, const QString& contact, const QString& signature);
 		static bool isNumberCorrect(const QString& number);
 };
@@ -31,6 +32,7 @@ class SmsPlusGateway : public SmsGateway
 
 	public:
 		SmsPlusGateway(QObject* parent);
+		~SmsPlusGateway();
 		virtual void send(const QString& number,const QString& message, const QString& contact, const QString& signature);
 		static bool isNumberCorrect(const QString& number);
 };
@@ -43,6 +45,7 @@ class SmsEraGateway : public SmsGateway
 
 	public:
 		SmsEraGateway(QObject* parent);
+		~SmsEraGateway();
 		virtual void send(const QString& number,const QString& message, const QString& contact, const QString& signature);
 		static bool isNumberCorrect(const QString& number);
 		static QString errorNumber(int nr);
@@ -63,7 +66,8 @@ class SmsGatewaySlots: public QObject
 		QString actualEraGateway;			
 	public slots:
 		void onCreateConfigDialog();
-		void onDestroyConfigDialog();
+		void onCloseConfigDialog();
+		void onApplyConfigDialog();
 		void onChangeEraGateway(int gateway);			
 };
 
