@@ -126,6 +126,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * zmiana nazwy config.h -> kadu-config.h (adrian)
 * definicje BINDIR i DATADIR w kadu-config.h zamiast w argumentach gcc (adrian)
 * make clean nie kasuje plikow cxxflags i ldflags w modulach (adrian)
+* zaaplikowana latka googiego dodajaca sygnal emitowany przy nacisnieciu
+  klawisza w oknie chat (adrian)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

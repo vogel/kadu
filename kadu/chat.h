@@ -73,6 +73,10 @@ class CustomInput : public QMultiLineEdit {
 	signals:
 		void sendMessage();
 		void specialKeyPressed(int key);
+		/**
+			Dowolny przycisk klawiatury zostal nacisniety.
+		**/
+		void keyPressed(QKeyEvent*);
 
 	public slots:
 		void paste();
