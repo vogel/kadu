@@ -7,15 +7,17 @@
 #include <qtimer.h>
 #include <qvaluelist.h>
 #include <qdatetime.h>
+#include <qsocketnotifier.h>
+#include <qtextstream.h>
 
 #include "libgadu.h"
 
-class UinsList;
+typedef uin_t UinType;
+
+#include "misc.h"
+
 class UserList;
 class UserListElement;
-
-class QSocketNotifier;
-class QTextStream;
 
 extern struct gg_session* sess;
 extern struct gg_login_params loginparams;
@@ -144,7 +146,6 @@ class DccSocketNotifiers : public SocketNotifiers
 
 };
 
-typedef uin_t UinType;
 typedef enum
 {
 	ConnectionServerNotFound,
@@ -176,7 +177,7 @@ class GaduSocketNotifiers : public QObject //SocketNotifiers
 		void connected();
 		void disconnected();
 		void error(GaduError);
-		void messageReceived(int, UinsList, QCString& msg, time_t, QByteArray &formats);
+		void messageReceived(int, class UinsList, QCString& msg, time_t, QByteArray &formats);
 		void pubdirReplyReceived(gg_pubdir50_t);
 		void systemMessageReceived(QString &, QDateTime &, int, void *);
 		void userlistReceived(struct gg_event *);
