@@ -67,6 +67,8 @@ class Kadu : public QMainWindow
 		KaduTabBar* GroupBar;
 		UserBox* Userbox;
 
+		eStatus status;
+
 		bool ShowMainWindowOnStart;
 		bool Autohammer;
 		bool DoBlink;
@@ -80,12 +82,19 @@ class Kadu : public QMainWindow
 		void ifNotify(UinType uin, unsigned int status, unsigned int oldstatus);
 		void setActiveGroup(const QString& group);
 
+		void showStatusOnMenu(int);
+
 	private slots:
 		void groupTabSelected(int id);
 		void userListModified();
 		void userListStatusModified(UserListElement *);
 		void openChat();
 		void userListUserAdded(const UserListElement& user);
+
+		void wentOnline(const QString &);
+		void wentBusy(const QString &);
+		void wentInvisible(const QString &);
+		void wentOffline(const QString &);
 
 	protected:
 		void keyPressEvent(QKeyEvent *e);
@@ -148,9 +157,9 @@ class Kadu : public QMainWindow
 		void changeAppearance();
 		void blink();
 		void slotHandleState(int command);
-		void setCurrentStatus(int status);
+		//void setCurrentStatus(int status);
 		void sendMessage(QListBoxItem *);
-		void setStatus(int);
+		//void setStatus(int);
 		void gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op);
 		void currentChanged(QListBoxItem *item);
 		void showdesc(bool show = true);
@@ -188,27 +197,28 @@ class Kadu : public QMainWindow
 		void disconnectingNetwork();
 		void disconnectedNetwork();
 		void keyPressed(QKeyEvent* e);
+		void statusPixmapChanged(QPixmap &);
 		/**
 			Podczas ³±czenia (mruganie ikonki) czas na zmianê
 			ikony na t± reprezentuj±c± docelowy status.
 		**/
-		void connectingBlinkShowStatus(int status);
+		//void connectingBlinkShowStatus(eStatus, bool);
 		/**
 			Podczas ³±czenia (mruganie ikonki) czas na zmianê
 			ikony na t± reprezentuj±c± status offline.
 		**/
-		void connectingBlinkShowOffline();
+		//void connectingBlinkShowOffline();
 		/**
 			Zmieni³ siê nasz aktualny status GG.
 		**/
-		void currentStatusChanged(int status);
+		//	void currentStatusChanged(int status);		TODO
 		/**
 			U¿ytkownik chce zmieniæ status. Je¶li jest to status
 			bezopisowy, to zmienna sigDesc bêdzie równa QString::null.
 			Je¶li zostanie ustawiona zmienna stop, to status nie
 			bêdzie zmieniony.
 		**/
-		void changingStatus(int status, QString sigDesc, bool &stop);
+		//	void changingStatus(int status, QString sigDesc, bool &stop);		TODO
 		/**
 			wywo³ana zosta³a funkcja show() na g³ównym oknie
 		**/

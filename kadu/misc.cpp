@@ -753,8 +753,7 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 					break;
 				case 'd':
 					i++;
-					if(myUin == ule.uin &&
-							! ifStatusWithDescription(gadu->getCurrentStatus()))
+					if( myUin == ule.uin && !(gadu->status().hasDescription()))
 						pe.str=QString::null;
 					else
 						pe.str=ule.description;
@@ -996,12 +995,11 @@ void stringHeapSort(QStringList &c)
 }
 
 ChooseDescription::ChooseDescription ( int nr, QWidget * parent, const char * name)
-: QDialog(parent, name, true) {
+: QDialog(parent, name, false) {
 	kdebugf();
-	setWFlags(Qt::WDestructiveClose);
 	setCaption(tr("Select description"));
 
-  	desc = new QComboBox(TRUE,this,own_description);
+  	desc = new QComboBox(TRUE,this,gadu->status().description());
 
 	desc->insertStringList(defaultdescriptions);
 	QLineEdit *ss;
@@ -1049,6 +1047,15 @@ ChooseDescription::ChooseDescription ( int nr, QWidget * parent, const char * na
 	kdebugf2();
 }
 
+ChooseDescription::~ChooseDescription()
+{
+}
+
+void ChooseDescription::getDescription(QString &dest)
+{
+	dest = desc->currentText();
+}
+
 void ChooseDescription::okbtnPressed() {
 	if (defaultdescriptions.contains(desc->currentText())==0)
 	{
@@ -1058,7 +1065,6 @@ void ChooseDescription::okbtnPressed() {
 	else
 		defaultdescriptions.remove(desc->currentText());
 	defaultdescriptions.prepend(desc->currentText());
-	own_description=defaultdescriptions.first();
 	accept();
 }
 

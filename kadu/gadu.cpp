@@ -23,10 +23,6 @@
 
 #include <stdlib.h>
 
-struct gg_login_params loginparams;
-
-bool socket_active = false;
-
 QValueList<QHostAddress> gg_servers;
 const char *gg_servers_ip[7] = {"217.17.41.82", "217.17.41.83", "217.17.41.84", "217.17.41.85",
 	"217.17.41.86", "217.17.41.87", "217.17.41.88"};
@@ -64,7 +60,7 @@ AutoConnectionTimer::AutoConnectionTimer(QObject *parent, const char *name) : QT
 
 void AutoConnectionTimer::doConnect()
 {
-	kadu->setStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
+	gadu->status().setOnline("");
 }
 
 void AutoConnectionTimer::on()
@@ -616,17 +612,16 @@ void GaduSocketNotifiers::socketEvent()
 	if (e->type == GG_EVENT_DISCONNECT)
 		emit disconnected();
 
-	if (socket_active)
-	{
+	// TODO: to mi siê nie podoba
+	if (!gadu->status().isOffline())
 		if (Sess->state == GG_STATE_IDLE && gadu->userListSent())
 		{
-			socket_active = false;
-			UserBox::all_changeAllToInactive();
+			gadu->status().setOffline("");
 			emit error(ConnectionUnknow);
 		}
 		else
 			checkWrite();
-	}
+	// TODO: to mi siê nie podoba
 
 	gg_free_event(e);
 	calls--;
@@ -768,12 +763,24 @@ GaduProtocol::GaduProtocol(QObject *parent, const char *name) : QObject(parent, 
 	kdebugf();
 
 	Sess = NULL;
+	CurrentStatus = new GaduStatus();
+	NextStatus = new GaduStatus();
 	SocketNotifiers = new GaduSocketNotifiers();
 	UserListSent = false;
 	PingTimer = NULL;
 	ActiveServer = NULL;
 	IWannaBeInvisible = true;
 	ServerNr = 0;
+
+	connect(NextStatus, SIGNAL(goOnline(const QString &)), this, SLOT(iWantGoOnline(const QString &)));
+	connect(NextStatus, SIGNAL(goBusy(const QString &)), this, SLOT(iWantGoBusy(const QString &)));
+	connect(NextStatus, SIGNAL(goInvisible(const QString &)), this, SLOT(iWantGoInvisible(const QString &)));
+	connect(NextStatus, SIGNAL(goOffline(const QString &)), this, SLOT(iWantGoOffline(const QString &)));
+
+	connect(CurrentStatus, SIGNAL(goOnline(const QString &)), this, SIGNAL(goOnline(const QString &)));
+	connect(CurrentStatus, SIGNAL(goBusy(const QString &)), this, SIGNAL(goBusy(const QString &)));
+	connect(CurrentStatus, SIGNAL(goInvisible(const QString &)), this, SIGNAL(goInvisible(const QString &)));
+	connect(CurrentStatus, SIGNAL(goOffline(const QString &)), this, SIGNAL(goOffline(const QString &)));
 
 	connect(SocketNotifiers, SIGNAL(ackReceived(int)), this, SIGNAL(ackReceived(int)));
 	connect(SocketNotifiers, SIGNAL(connected()), this, SLOT(connectedSlot()));
@@ -809,12 +816,120 @@ GaduProtocol::~GaduProtocol()
 	kdebugf2();
 }
 
-StatusType GaduProtocol::getCurrentStatus()
+Status & GaduProtocol::status()
 {
-	if (Sess && Sess->state == GG_STATE_CONNECTED)
-		return Sess->status;
+	return *NextStatus;
+}
 
-	return GG_STATUS_NOT_AVAIL;
+void GaduProtocol::iWantGoOnline(const QString &desc)
+{
+	kdebugf();
+
+	if (CurrentStatus->isOffline())
+	{
+		login();
+		return;
+	}
+
+	int friends = (NextStatus->isFriendsOnly() ? GG_STATUS_FRIENDS_MASK : 0);
+
+	if (!desc.isEmpty())
+	{
+		unsigned char *pdesc;
+		pdesc = (unsigned char *)strdup(unicode2cp(desc).data());
+		gg_change_status_descr(Sess, GG_STATUS_AVAIL_DESCR | friends, (const char *)pdesc);
+		free(pdesc);
+	}
+	else
+		gg_change_status(Sess, GG_STATUS_AVAIL | friends);
+
+	NextStatus->setOnline(desc);
+	CurrentStatus->setStatus(*NextStatus);
+
+	kdebugf2();
+}
+
+void GaduProtocol::iWantGoBusy(const QString &desc)
+{
+	kdebugf();
+
+	if (CurrentStatus->isOffline())
+	{
+		login();
+		return;
+	}
+
+	int friends = (NextStatus->isFriendsOnly() ? GG_STATUS_FRIENDS_MASK : 0);
+
+	if (!desc.isEmpty())
+	{
+		unsigned char *pdesc;
+		pdesc = (unsigned char *)strdup(unicode2cp(desc).data());
+		gg_change_status_descr(Sess, GG_STATUS_BUSY_DESCR | friends, (const char *)pdesc);
+		free(pdesc);
+	}
+	else
+		gg_change_status(Sess, GG_STATUS_BUSY | friends);
+
+	NextStatus->setBusy(desc);
+	CurrentStatus->setStatus(*NextStatus);
+
+	kdebugf2();
+}
+
+void GaduProtocol::iWantGoInvisible(const QString &desc)
+{
+	kdebugf();
+
+	if (CurrentStatus->isOffline())
+	{
+		login();
+		return;
+	}
+
+	int friends = (NextStatus->isFriendsOnly() ? GG_STATUS_FRIENDS_MASK : 0);
+
+	if (!desc.isEmpty())
+	{
+		unsigned char *pdesc;
+		pdesc = (unsigned char *)strdup(unicode2cp(desc).data());
+		gg_change_status_descr(Sess, GG_STATUS_INVISIBLE_DESCR | friends, (const char *)pdesc);
+		free(pdesc);
+	}
+	else
+		gg_change_status(Sess, GG_STATUS_INVISIBLE | friends);
+
+	NextStatus->setInvisible(desc);
+	CurrentStatus->setStatus(*NextStatus);
+
+	kdebugf2();
+}
+
+void GaduProtocol::iWantGoOffline(const QString &desc)
+{
+	kdebugf();
+
+	if (CurrentStatus->isOffline())
+	{
+		login();
+		return;
+	}
+
+	if (!desc.isEmpty())
+	{
+		unsigned char *pdesc;
+		pdesc = (unsigned char *)strdup(unicode2cp(desc).data());
+		gg_change_status_descr(Sess, GG_STATUS_NOT_AVAIL_DESCR, (const char *)pdesc);
+		free(pdesc);
+	}
+	else
+		gg_change_status(Sess, GG_STATUS_NOT_AVAIL);
+
+	NextStatus->setOffline(desc);
+	CurrentStatus->setStatus(*NextStatus);
+	logout();
+
+	kdebugf2();
 }
 
 void GaduProtocol::blockUser(const UinType& uin, bool block)
@@ -859,15 +974,6 @@ void GaduProtocol::removeNotifyEx(const UinType& uin, bool blocked, bool offline
 		gg_remove_notify_ex(Sess, uin, GG_USER_NORMAL);
 }
 
-void GaduProtocol::friendsOnly(bool friendsOnly)
-{
-	StatusType nstat = Sess ? Sess->status & (~GG_STATUS_FRIENDS_MASK) : 0;
-	if (friendsOnly)
-		nstat |= GG_STATUS_FRIENDS_MASK;
-
-	setStatus(nstat);
-}
-
 bool GaduProtocol::userListSent()
 {
 	return UserListSent;
@@ -891,7 +997,7 @@ void GaduProtocol::connectedSlot()
 	PingTimer->start(60000, TRUE);
 
 	emit connected();
-	emit statusChanged(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
+	CurrentStatus->setStatus(*NextStatus);
 
 	kdebugf2();
 }
@@ -926,13 +1032,8 @@ void GaduProtocol::disconnectedSlot()
 	}
 
 	chat_manager->refreshTitles();
-
-//	own_description = QString::null;
 	UserBox::all_refresh();
-
-	socket_active = false;
-
-	emit statusChanged(GG_STATUS_NOT_AVAIL);
+	CurrentStatus->setOffline("");
 	emit disconnected();
 	kdebugf2();
 }
@@ -947,7 +1048,7 @@ void GaduProtocol::connectionTimeoutTimerSlot()
 		kdebug("Timeout, breaking connection\n");
 		emit error(ConnectionTimeout);
 		logout();
-		login(RequestedStatusForLogin);
+		login();
 	}
 	kdebugf2();
 }
@@ -959,7 +1060,7 @@ void GaduProtocol::errorSlot(GaduError err)
 	disconnectedSlot();
 	emit error(err);
 	if(err != Disconnected)
-		login(RequestedStatusForLogin);
+		login();
 	kdebugf2();
 }
 
@@ -1054,27 +1155,6 @@ void GaduProtocol::pingNetwork()
 	kdebugf2();
 }
 
-void GaduProtocol::setStatus(StatusType status)
-{
-	kdebugf();
-	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::setStatus(): setting status: %d\n",
-		status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General", "PrivateStatus")));
-
-	status &= ~GG_STATUS_FRIENDS_MASK;
-	IWannaBeInvisible = (status == GG_STATUS_INVISIBLE) || (status == GG_STATUS_INVISIBLE_DESCR);
-
-	//emit changingStatus();
-
-	if (socket_active)
-		changeStatus(status);
-	else
-		login(status);
-
-	//emit statusChanged(int);
-
-	kdebugf2();
-}
-
 void GaduProtocol::systemMessageReceived(QString &message, QDateTime &time, int formats_length, void *formats)
 {
 	kdebugf();
@@ -1085,86 +1165,46 @@ void GaduProtocol::systemMessageReceived(QString &message, QDateTime &time, int 
 	kdebugf2();
 }
 
-void GaduProtocol::changeStatus(int status)
+void GaduProtocol::login()
 {
 	kdebugf();
-
-	QString sigDesc = QString::null;
-	bool stop = false;
-	bool with_description = ifStatusWithDescription(status);
-	unsigned char *descr;
-
-	if (with_description)
-		sigDesc = own_description;
-
-//	emit kadu->changingStatus(status, sigDesc, stop); //?? moze przjdzie TODO TOSEE
-	if (stop)
-		return;
-
-	if (with_description)
-	{
-		descr = (unsigned char *)strdup(unicode2cp(own_description).data());
-		if (status == GG_STATUS_NOT_AVAIL_DESCR)
-			gg_change_status_descr(Sess, status, (const char *)descr);
-		else
-			gg_change_status_descr(Sess,
-				status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General", "PrivateStatus")), (const char *)descr);
-		free(descr);
-	}
-	else
-	{
-		gg_change_status(Sess, status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General", "PrivateStatus")));
-		own_description = QString::null;
-	}
-
-	if (status != GG_STATUS_NOT_AVAIL && status != GG_STATUS_NOT_AVAIL_DESCR)
-		loginparams.status = status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General", "PrivateStatus"));
-
-	emit statusChanged(status);	// TODO wymaga rozwazenia
-
-	kdebugf2();
-}
-
-void GaduProtocol::login(int status)
-{
-	kdebugf();
-	RequestedStatusForLogin = status;
+	RequestedStatusForLogin = NextStatus->getStatusNumber();
 
 	emit connecting();
 
-	bool with_description = ifStatusWithDescription(status);
-
-	memset(&loginparams, 0, sizeof(loginparams));
-	loginparams.async = 1;
+	memset(&LoginParams, 0, sizeof(LoginParams));
+	LoginParams.async = 1;
 
 	// maksymalny rozmiar grafiki w kb
-	loginparams.image_size = config_file.readNumEntry("Chat", "MaxImageSize", 20);
+	LoginParams.image_size = config_file.readNumEntry("Chat", "MaxImageSize", 20);
 
 	setupProxy();
 
-	loginparams.status = status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General", "PrivateStatus"));
+	LoginParams.status = NextStatus->getStatusNumber();
+	if (config_file.readBoolEntry("General", "PrivateStatus") == 1)
+	{
+		NextStatus->setFriendsOnly(true);
+		LoginParams.status |= GG_STATUS_FRIENDS_MASK;
+	}
 
-	if (with_description)
-		loginparams.status_descr = strdup((const char *)unicode2cp(own_description));
+	if (NextStatus->hasDescription())
+		LoginParams.status_descr = strdup((const char *)unicode2cp(NextStatus->description()));
 
-	loginparams.password = strdup((const char *)unicode2cp(pwHash(config_file.readEntry("General", "Password"))));
-	char *tmp = strdup((const char *)unicode2latin(pwHash(config_file.readEntry("General", "Password"))));
-	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::connect(): password = %s\n", tmp);
-	free(tmp);
+	LoginParams.password = strdup((const char *)unicode2cp(pwHash(config_file.readEntry("General", "Password"))));
 
-	loginparams.uin = (UinType)config_file.readNumEntry("General", "UIN");
-	loginparams.has_audio = config_file.readBoolEntry("Network", "AllowDCC");
-	loginparams.last_sysmsg = config_file.readNumEntry("Global", "SystemMsgIndex");
+	LoginParams.uin = (UinType)config_file.readNumEntry("General", "UIN");
+	LoginParams.has_audio = config_file.readBoolEntry("Network", "AllowDCC");
+	LoginParams.last_sysmsg = config_file.readNumEntry("Global", "SystemMsgIndex");
 
 	if (config_file.readBoolEntry("Network", "AllowDCC") && config_extip.ip4Addr() && config_file.readNumEntry("Network", "ExternalPort") > 1023)
 	{
-		loginparams.external_addr = htonl(config_extip.ip4Addr());
-		loginparams.external_port = config_file.readNumEntry("Network", "ExternalPort");
+		LoginParams.external_addr = htonl(config_extip.ip4Addr());
+		LoginParams.external_port = config_file.readNumEntry("Network", "ExternalPort");
 	}
 	else
 	{
-		loginparams.external_addr = 0;
-		loginparams.external_port = 0;
+		LoginParams.external_addr = 0;
+		LoginParams.external_port = 0;
 	}
 
 	if (ConfigServers.count() && !config_file.readBoolEntry("Network", "isDefServers") && ConfigServers[ServerNr].ip4Addr())
@@ -1187,44 +1227,43 @@ void GaduProtocol::login(int status)
 
 	if (ActiveServer != NULL)
 	{
-		loginparams.server_addr = htonl(ActiveServer->ip4Addr());
-		loginparams.server_port = config_file.readNumEntry("Network", "DefaultPort");
+		LoginParams.server_addr = htonl(ActiveServer->ip4Addr());
+		LoginParams.server_port = config_file.readNumEntry("Network", "DefaultPort");
 	}
 	else
 	{
-		loginparams.server_addr = 0;
-		loginparams.server_port = 0;
+		LoginParams.server_addr = 0;
+		LoginParams.server_port = 0;
 	}
 
 //	polaczenia TLS z serwerami GG na razie nie dzialaja
-//	loginparams.tls = config_file.readBoolEntry("Network", "UseTLS");
-	loginparams.tls = 0;
-	loginparams.client_version = GG_DEFAULT_CLIENT_VERSION;
-	loginparams.protocol_version = GG_DEFAULT_PROTOCOL_VERSION;
-	if (loginparams.tls)
+//	LoginParams.tls = config_file.readBoolEntry("Network", "UseTLS");
+	LoginParams.tls = 0;
+	LoginParams.client_version = GG_DEFAULT_CLIENT_VERSION;
+	LoginParams.protocol_version = GG_DEFAULT_PROTOCOL_VERSION;
+	if (LoginParams.tls)
 	{
 		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::login((): using TLS\n");
-		loginparams.server_port = 0;
+		LoginParams.server_port = 0;
 		if (config_file.readBoolEntry("Network", "isDefServers"))
-			loginparams.server_addr = 0;
-		loginparams.server_port = 443;
+			LoginParams.server_addr = 0;
+		LoginParams.server_port = 443;
 	}
 	else
-		loginparams.server_port = config_file.readNumEntry("Network", "DefaultPort");
+		LoginParams.server_port = config_file.readNumEntry("Network", "DefaultPort");
 
 	ConnectionTimeoutTimer::on();
 	ConnectionTimeoutTimer::connectTimeoutRoutine(this, SLOT(connectionTimeoutTimerSlot()));
-	Sess = gg_login(&loginparams);
-//	free(loginparams.client_version);
-	free(loginparams.password);
-	if (loginparams.status_descr)
-		free(loginparams.status_descr);
+	Sess = gg_login(&LoginParams);
+//	free(LoginParams.client_version);
+	free(LoginParams.password);
+	if (LoginParams.status_descr)
+		free(LoginParams.status_descr);
 
 	disableAutoConnection();
 
 	if (Sess)
 	{
-		socket_active = true;
 		SocketNotifiers->setSession(Sess);
 		SocketNotifiers->start();
 	}
@@ -1398,14 +1437,16 @@ bool GaduProtocol::sendImage(UinType uin,const QString& file_name,uint32_t size,
 
 /* wyszukiwanie w katalogu publicznym */
 
-void GaduProtocol::searchInPubdir(SearchRecord& searchRecord) {
+void GaduProtocol::searchInPubdir(SearchRecord& searchRecord)
+{
 	kdebugf();
 	searchRecord.FromUin = 0;
 	searchNextInPubdir(searchRecord);
 	kdebugf2();
 }
 
-void GaduProtocol::searchNextInPubdir(SearchRecord& searchRecord) {
+void GaduProtocol::searchNextInPubdir(SearchRecord& searchRecord)
+{
 	kdebugf();
 	QString bufYear;
 	gg_pubdir50_t req;
@@ -2179,7 +2220,8 @@ void GaduProtocol::onDestroyConfigDialog()
 	kdebugf2();
 }
 
-void GaduProtocol::ifNotifyGlobal(bool toggled) {
+void GaduProtocol::ifNotifyGlobal(bool toggled)
+{
 	QCheckBox *b_notifyall= ConfigDialog::getCheckBox("Notify", "Notify about all users");
 	QVGroupBox *notifybox= ConfigDialog::getVGroupBox("Notify", "Notify options");
 	QGrid *panebox = ConfigDialog::getGrid("Notify","listboxy");
@@ -2189,21 +2231,24 @@ void GaduProtocol::ifNotifyGlobal(bool toggled) {
 	notifybox->setEnabled(toggled);
 }
 
-void GaduProtocol::ifNotifyAll(bool toggled) {
+void GaduProtocol::ifNotifyAll(bool toggled)
+{
 	QGrid *panebox = ConfigDialog::getGrid("Notify","listboxy");
 	panebox->setEnabled(!toggled);
 }
 
-void GaduProtocol::_Left2( QListBoxItem *item) {
+void GaduProtocol::_Left2( QListBoxItem *item)
+{
 	_Left();
 }
 
-void GaduProtocol::_Right2( QListBoxItem *item) {
+void GaduProtocol::_Right2( QListBoxItem *item)
+{
 	_Right();
 }
 
-
-void GaduProtocol::_Left(void) {
+void GaduProtocol::_Left(void)
+{
 	kdebugf();
 	QListBox *e_availusers= ConfigDialog::getListBox("Notify", "available");
 	QListBox *e_notifies= ConfigDialog::getListBox("Notify", "track");
@@ -2224,7 +2269,8 @@ void GaduProtocol::_Left(void) {
 	kdebugf2();
 }
 
-void GaduProtocol::_Right(void) {
+void GaduProtocol::_Right(void)
+{
 	kdebugf();
 	QListBox *e_availusers= ConfigDialog::getListBox("Notify", "available");
 	QListBox *e_notifies= ConfigDialog::getListBox("Notify", "track");
@@ -2263,5 +2309,305 @@ void GaduProtocol::useTlsEnabled(bool value)
 #endif
 }
 
-GaduProtocol* gadu;
+Status::Status()
+{
+	Stat = Offline;
+	Description = "";
+	FriendsOnly = false;
 
+	emit goOffline(Description);
+}
+
+Status::~Status()
+{
+}
+
+QPixmap Status::getPixmap()
+{
+	return getPixmap(Stat, hasDescription());
+}
+
+bool Status::isOnline()
+{
+	return Stat == Online;
+}
+
+bool Status::isBusy()
+{
+	return Stat == Busy;
+}
+
+bool Status::isInvisible()
+{
+	return Stat == Invisible;
+}
+
+bool Status::isOffline()
+{
+	return Stat == Offline;
+}
+
+bool Status::isOffline(int index)
+{
+	return (index == 6) || (index == 7);
+}
+
+bool Status::hasDescription()
+{
+	return !Description.isEmpty();
+}
+
+bool Status::isFriendsOnly()
+{
+	return FriendsOnly;
+}
+
+QString Status::description()
+{
+	return Description;
+}
+
+int Status::getIndex(eStatus stat, bool desc)
+{
+	return (static_cast<int>(stat) << 1) + (desc ? 1 : 0);
+}
+
+int Status::getIndex()
+{
+	return (static_cast<int>(Stat) << 1) + (Description.isEmpty() ? 0 : 1);
+}
+
+void Status::setOnline(const QString &desc)
+{
+	if (Stat == Online && Description == desc && !Changed)
+		return;
+
+	Stat = Online;
+	Description = desc;
+	Changed = false;
+
+	emit goOnline(Description);
+}
+
+void Status::setBusy(const QString &desc)
+{
+	if (Stat == Busy && Description == desc && !Changed)
+		return;
+
+	Stat = Busy;
+	Description = desc;
+	Changed = false;
+
+	emit goBusy(Description);
+}
+
+void Status::setInvisible(const QString &desc)
+{
+	if (Stat == Invisible && Description == desc && !Changed)
+		return;
+
+	Stat = Invisible;
+	Description = desc;
+	Changed = false;
+
+	emit goInvisible(Description);
+}
+
+void Status::setOffline(const QString &desc)
+{
+	if (Stat == Offline && Description == desc)
+		return;
+
+	Stat = Offline;
+	Description = desc;
+	Changed = false;
+
+	emit goOffline(Description);
+}
+
+void Status::setDescription(const QString &desc)
+{
+	if (Description == desc)
+		return;
+
+	Description = desc;
+
+	switch (Stat)
+	{
+		case Online:
+			emit goOnline(Description);
+			break;
+
+		case Busy:
+			emit goBusy(Description);
+			break;
+
+		case Invisible:
+			emit goInvisible(Description);
+			break;
+
+		case Offline:
+			emit goOffline(Description);
+			break;
+	}
+}
+
+void Status::setFriendsOnly(bool f)
+{
+	if (FriendsOnly == f)
+		return;
+
+	FriendsOnly = f;
+	Changed = true;
+
+	switch (Stat)
+	{
+		case Online: setOnline(Description); break;
+		case Busy: setBusy(Description); break;
+		case Invisible: setInvisible(Description); break;
+		case Offline: break;
+	}
+}
+
+void Status::setStatus(const Status &stat)
+{
+	setFriendsOnly(stat.FriendsOnly);
+
+	switch (stat.Stat)
+	{
+		case Online: setOnline(stat.Description); break;
+		case Busy: setBusy(stat.Description); break;
+		case Invisible: setInvisible(stat.Description); break;
+		case Offline: setOffline(stat.Description); break;
+	}
+}
+
+void Status::setIndex(int index, const QString &desc)
+{
+	if (index % 2 == 0)
+		setStatus(static_cast<eStatus>(index >> 1), "");
+	else
+		setStatus(static_cast<eStatus>(index >> 1), desc);
+}
+
+void Status::setStatus(eStatus stat, const QString &desc)
+{
+	switch (stat)
+	{
+		case Online: setOnline(desc); break;
+		case Busy: setBusy(desc); break;
+		case Invisible: setInvisible(desc); break;
+		case Offline: setOffline(desc); break;
+	}
+}
+
+eStatus Status::fromString(const QString &stat)
+{
+	if (stat.contains("Online"))
+		return Online;
+	if (stat.contains("Busy"))
+		return Busy;
+	if (stat.contains("Invisible"))
+		return Invisible;
+	return Offline;
+}
+
+QString Status::toString(eStatus stat, bool desc)
+{
+	QString res;
+	switch (stat)
+	{
+		case Online: res.append("Online"); break;
+		case Busy: res.append("Busy"); break;
+		case Invisible: res.append("Invisible"); break;
+		case Offline: res.append("Offline"); break;
+	}
+	if (desc)
+		res.append("WithDescription");
+	return res;
+}
+
+int Status::getCount()
+{
+	return 9;
+}
+
+int Status::getInitCount()
+{
+	return 7;
+}
+
+QString Status::getName(int nr)
+{
+	static const char * names[] = {
+		QT_TR_NOOP("Online"),
+		QT_TR_NOOP("Online (d.)"),
+		QT_TR_NOOP("Busy"),
+		QT_TR_NOOP("Busy (d.)"),
+		QT_TR_NOOP("Invisible"),
+		QT_TR_NOOP("Invisible (d.)"),
+		QT_TR_NOOP("Offline"),
+		QT_TR_NOOP("Offline (d.)"),
+		QT_TR_NOOP("Blocking")
+	};
+
+	return names[nr];
+}
+
+GaduStatus::GaduStatus()
+{
+}
+
+GaduStatus::~GaduStatus()
+{
+}
+
+QPixmap GaduStatus::getPixmap(eStatus stat, bool hasDescription)
+{
+	kdebugf();
+	QPixmap pix;
+	switch (stat)
+	{
+		case Online:
+			pix = icons_manager.loadIcon(hasDescription ? "OnlineWithDescription" : "Online");
+			break;
+		case Busy:
+			pix = icons_manager.loadIcon(hasDescription ? "BusyWithDescription" : "Busy");
+			break;
+		case Invisible:
+			pix = icons_manager.loadIcon(hasDescription ? "InvisibleWithDescription" : "Invisible");
+			break;
+		case Offline:
+			pix = icons_manager.loadIcon(hasDescription ? "OfflineWithDescription" : "Offline");
+			break;
+	}
+	return pix;
+}
+
+int GaduStatus::getStatusNumber()
+{
+	int sn = 0;
+
+	switch (Stat)
+	{
+		case Online:
+			sn = Description.isEmpty() ? GG_STATUS_AVAIL : GG_STATUS_AVAIL_DESCR;
+			break;
+
+		case Busy:
+			sn = Description.isEmpty() ? GG_STATUS_BUSY : GG_STATUS_BUSY_DESCR;
+			break;
+
+		case Invisible:
+			sn = Description.isEmpty() ? GG_STATUS_INVISIBLE : GG_STATUS_INVISIBLE_DESCR;
+			break;
+
+		case Offline:
+			sn = Description.isEmpty() ? GG_STATUS_NOT_AVAIL : GG_STATUS_NOT_AVAIL_DESCR;
+			break;
+	}
+
+	return sn;
+}
+
+GaduProtocol* gadu;

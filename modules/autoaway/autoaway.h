@@ -6,12 +6,14 @@
 #include <qtimer.h>
 #include <qevent.h>
 
+#include "gadu.h"
+
 class AutoAwaySlots :public QObject
 {
 	Q_OBJECT
 	public:
 	AutoAwaySlots();
-	
+
 	public slots:
 		void onCreateConfigDialog();
 		void onApplyConfigDialog();
@@ -41,9 +43,8 @@ class AutoAwayTimer : private QTimer
 		bool autoinvisibled;		/* zapamietuje czy przeszedl na autoinvisible - potrzebne do autodisconnect */
 		bool autodisconnected;		/* zapamietuje czy rozlaczylismy sie juz */
 		bool autodescription;		/* zapamietuje czy juz zmienil opis */
-		int beforeAutoAway;
+		GaduStatus beforeAutoAway;
 		int idletime;
-		QString oldStatus;
 		friend class AutoAwaySlots;
 };
 

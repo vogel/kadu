@@ -37,7 +37,7 @@ QString ggPath(const QString &subpath="");
 	¶cie¿kê na podstawie argv0, które ma byæ równe argv[0] oraz zmiennej PATH
 */
 QString dataPath(const QString &f="", const char *argv0=0);
- 
+
 /*
 	funkcja poszukuje binarki programu na podstawie argv[0] oraz zmiennej PATH
 	je¿eli j± znajdzie, to zapisuje ¶cie¿kê pod adres wskazany przez path
@@ -73,6 +73,8 @@ class ChooseDescription : public QDialog {
 	Q_OBJECT
 	public:
 		ChooseDescription ( int nr, QWidget * parent=0, const char * name=0);
+		virtual ~ChooseDescription();
+		void getDescription(QString &);
 
 	private:
 		QComboBox *desc;
@@ -88,7 +90,7 @@ class ChooseDescription : public QDialog {
 class HttpClient : public QObject
 {
 	Q_OBJECT
-	
+
 	private:
 		QSocket Socket;
 		QString Host;
@@ -98,23 +100,23 @@ class HttpClient : public QObject
 		QByteArray PostData;
 		int Status;
 		bool HeaderParsed;
-		
+
 		unsigned int ContentLength;
 		bool ContentLengthNotFound;
-		
+
 		QMap<QString,QString> Cookies;
-		
+
 	private slots:
 		void onConnected();
 		void onReadyRead();
 		void onConnectionClosed();
-		
+
 	public:
 		HttpClient();
 		int status();
 		const QByteArray& data();
 		QString encode(const QString& text);
-		
+
 	signals:
 		void finished();
 		void redirected(QString link);
@@ -164,14 +166,14 @@ class HtmlDocument
 			tag html przed innym elementem.
 			@param pos indeks elementu przed ktorym wstawiamy
 			@param text tekst do dodania
-		**/		
+		**/
 		void insertTag(const int pos,const QString &text);
 		/**
 			Wstawia podany tekst do listy elementów jako
 			zwykly tekst przed innym elementem.
 			@param pos indeks elementu przed ktorym wstawiamy
 			@param text tekst do dodania
-		**/				
+		**/
 		void insertText(const int pos,const QString &text);
 		/**
 			Parsuje podany napis zgodny ze struktur± html
@@ -202,7 +204,7 @@ class HtmlDocument
 		QString elementText(int index) const;
 		/**
 			Ustawia tekst i typ elementu o podanym indeksie.
-		**/			
+		**/
 		void setElementValue(int index,const QString& text,bool tag=false);
 		/**
 			Wydziela z elementu podany fragment tekstu.
@@ -322,7 +324,7 @@ struct iconhandle {
 	QIconSet picture;
 };
 
-class IconsManager :public Themes 
+class IconsManager :public Themes
 {
 	Q_OBJECT
 	public:
@@ -369,10 +371,10 @@ extern IconsManager icons_manager;
 class CreateNotifier : public QObject
 {
 	Q_OBJECT
-	
+
 	public:
 		void notify(QObject* new_object);
-		
+
 	signals:
 		void objectCreated(QObject* new_object);
 };
@@ -385,7 +387,7 @@ class GaduImagesManager
 			uint32_t size;
 			uint32_t crc32;
 			QString file_name;
-			char* data;		
+			char* data;
 		};
 		QValueList<ImageToSend> ImagesToSend;
 		struct SavedImage
@@ -453,7 +455,7 @@ class KaduTextBrowser : public QTextBrowser, QToolTip
 						// for use with maybeTip(), or is null
 
 	private slots:
-		void copyLinkLocation();	
+		void copyLinkLocation();
 		void hyperlinkClicked(const QString& link);
 		void linkHighlighted(const QString &);
 
@@ -461,7 +463,7 @@ class KaduTextBrowser : public QTextBrowser, QToolTip
 		QPopupMenu *createPopupMenu(const QPoint &point);
 		void drawContents(QPainter * p, int clipx, int clipy, int clipw, int cliph);
 		virtual void maybeTip(const QPoint&);
-		
+
 	public:
 		KaduTextBrowser(QWidget *parent = 0, const char *name = 0);
 		void setSource(const QString &name);

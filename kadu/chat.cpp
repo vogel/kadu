@@ -975,7 +975,7 @@ void Chat::formatMessage(ChatMessage &msg)
 
 	QString nick = msg.nick;
 	HtmlDocument::escapeText(nick);
-	
+
 	msg.message=formatString
 			.arg(msg.backgroundColor.name())
 			.arg(msg.textColor.name())
@@ -1196,7 +1196,7 @@ void Chat::sendMessage()
 
 	QString mesg;
 
-	if (gadu->getCurrentStatus() == GG_STATUS_NOT_AVAIL) {
+	if (gadu->status().isOffline()) {
 		QMessageBox::critical(this, tr("Send message error"),
 			tr("Application encountered network error."));
 		kdebugm(KDEBUG_FUNCTION_END, "void Chat::sendMessage() end: not connected!\n");

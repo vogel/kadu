@@ -261,7 +261,7 @@ void SearchDialog::firstSearch(void) {
 }
 
 void SearchDialog::nextSearch(void) {
-	if (gadu->getCurrentStatus() == GG_STATUS_NOT_AVAIL)
+	if (gadu->status().isOffline())
 		return;
 	kdebugf();
 

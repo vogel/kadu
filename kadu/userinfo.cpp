@@ -397,7 +397,7 @@ void UserInfo::changeUserData(UserListElement& e)
 		return;
 	}
 
-	if (gadu->getCurrentStatus() != GG_STATUS_NOT_AVAIL)
+	if (!gadu->status().isOffline())
 	{
 		if (c_offtouser->isChecked() && !puser->offline_to_user)
 		{

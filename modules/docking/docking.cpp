@@ -42,9 +42,8 @@ DockingManager::DockingManager() : QObject(NULL, "docking_manager")
 	blink = false;
 	QObject::connect(icon_timer, SIGNAL(timeout()), this, SLOT(changeIcon()));
 
-	connect(kadu, SIGNAL(connectingBlinkShowOffline()), this, SLOT(showOffline()));
-	connect(kadu, SIGNAL(connectingBlinkShowStatus(int)), this, SLOT(showStatus(int)));
-	connect(kadu, SIGNAL(currentStatusChanged(int)), this, SLOT(showCurrentStatus(int)));
+	connect(kadu, SIGNAL(statusPixmapChanged(QPixmap &)),
+		this, SLOT(statusPixmapChanged(QPixmap &)));
 	connect(&pending, SIGNAL(messageAdded()), this, SLOT(pendingMessageAdded()));
 	connect(&pending, SIGNAL(messageDeleted()), this, SLOT(pendingMessageDeleted()));
 	hintmanager_existed_on_start=(hintmanager!=NULL);
@@ -60,9 +59,8 @@ DockingManager::~DockingManager()
 {
 	kdebugf();
 
-	disconnect(kadu, SIGNAL(connectingBlinkShowOffline()), this, SLOT(showOffline()));
-	disconnect(kadu, SIGNAL(connectingBlinkShowStatus(int)), this, SLOT(showStatus(int)));
-	disconnect(kadu, SIGNAL(currentStatusChanged(int)), this, SLOT(showCurrentStatus(int)));
+	disconnect(kadu, SIGNAL(statusPixmapChanged(QPixmap &)),
+		this, SLOT(statusPixmapChanged(QPixmap &)));
 	disconnect(&pending, SIGNAL(messageAdded()), this, SLOT(pendingMessageAdded()));
 	disconnect(&pending, SIGNAL(messageDeleted()), this, SLOT(pendingMessageDeleted()));
 	if (hintmanager_existed_on_start && hintmanager!=NULL)
@@ -88,7 +86,7 @@ void DockingManager::changeIcon()
 		}
 		else
 		{
-			emit trayPixmapChanged(icons_manager.loadIcon(gg_icons[statusGGToStatusNr(gadu->getCurrentStatus() & (~GG_STATUS_FRIENDS_MASK))]));
+			emit emit trayPixmapChanged(gadu->status().getPixmap());
 			icon_timer->start(500,TRUE);
 			blink = false;
 		}
@@ -114,45 +112,19 @@ void DockingManager::pendingMessageAdded()
 void DockingManager::pendingMessageDeleted()
 {
 	if (!pending.pendingMsgs())
-	{
-		QPixmap pix = icons_manager.loadIcon(gg_icons[statusGGToStatusNr(gadu->getCurrentStatus() & (~GG_STATUS_FRIENDS_MASK))]);
-		emit trayPixmapChanged(pix);
-	}
-}
-
-void DockingManager::showOffline()
-{
-	emit trayPixmapChanged(icons_manager.loadIcon("Offline"));
-}
-
-void DockingManager::showStatus(int status)
-{
-	int i = statusGGToStatusNr(status);
-	emit trayPixmapChanged(icons_manager.loadIcon(gg_icons[i]));
+		emit trayPixmapChanged(gadu->status().getPixmap());
 }
 
 void DockingManager::defaultToolTip()
 {
-	showCurrentStatus(gadu->getCurrentStatus());
-}
+	QString tiptext = tr("Left click - hide/show window\nMiddle click or Left click- open message");
+	tiptext.append(tr("\n\nCurrent status:\n%1")
+		.arg(qApp->translate("@default", Status::getName(gadu->status().getIndex()))));
 
-void DockingManager::showCurrentStatus(int status)
-{
-	kdebugf();
-	int statusnr = statusGGToStatusNr(status & (~GG_STATUS_FRIENDS_MASK));
-	QPixmap pix = icons_manager.loadIcon(gg_icons[statusnr]);
-	QString tiptext=tr("Left click - hide/show window\nMiddle click or Left click- open message");
-
-	if (!pending.pendingMsgs())
-		emit trayPixmapChanged(pix);
-
-	tiptext+=tr("\n\nCurrent status:\n%1").arg(qApp->translate("@default", statustext[statusnr]));
-
-	if(ifStatusWithDescription(status))
-		tiptext+=tr("\n\nDescription:\n%2").arg(own_description);
+	if (gadu->status().hasDescription())
+		tiptext.append(tr("\n\nDescription:\n%2").arg(gadu->status().description()));
 
 	emit trayTooltipChanged(tiptext);
-	kdebugf2();
 }
 
 void DockingManager::findTrayPosition(QPoint& pos)
@@ -198,10 +170,16 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 	kdebugf2();
 }
 
+void DockingManager::statusPixmapChanged(QPixmap &pix)
+{
+ 	kdebugf();
+	emit trayPixmapChanged(pix);
+	defaultToolTip();
+}
+
 QPixmap DockingManager::defaultPixmap()
 {
-	return icons_manager.loadIcon(gg_icons[
-		statusGGToStatusNr(gadu->getCurrentStatus() & (~GG_STATUS_FRIENDS_MASK))]);
+	return gadu->status().getPixmap();
 }
 
 void DockingManager::setDocked(bool docked)

@@ -19,9 +19,7 @@ class DockingManager : public QObject
 		void dockletChange(int id);
 		void pendingMessageAdded();
 		void pendingMessageDeleted();
-		void showOffline();
-		void showStatus(int status);
-		void showCurrentStatus(int status);
+		void statusPixmapChanged(QPixmap &);
 		void findTrayPosition(QPoint& pos);
 
 	public:

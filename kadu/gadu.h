@@ -14,13 +14,10 @@
 #include "libgadu.h"
 
 typedef uin_t UinType;
-typedef int StatusType;
 
 class UserList;
 class UserListElement;
 
-extern struct gg_login_params loginparams;
-extern bool socket_active;
 extern QHostAddress config_extip;
 
 // ------------------------------------
@@ -43,6 +40,10 @@ class AutoConnectionTimer : private QTimer {
 		static AutoConnectionTimer *autoconnection_object;
 };
 
+// ------------------------------------
+//            UinsList
+// ------------------------------------
+
 class UinsList : public QValueList<UinType>
 {
 	public:
@@ -50,6 +51,10 @@ class UinsList : public QValueList<UinType>
 		bool equals(const UinsList &uins) const;
 		void sort();
 };
+
+// ------------------------------------
+//              Search
+// ------------------------------------
 
 struct SearchResult
 {
@@ -100,6 +105,10 @@ struct SearchRecord
 
 	void clearData();
 };
+
+// ------------------------------------
+//             Notifiers
+// ------------------------------------
 
 class SocketNotifiers : public QObject
 {
@@ -221,6 +230,90 @@ class GaduSocketNotifiers : public SocketNotifiers
 		void userStatusChanged(struct gg_event *);
 };
 
+// ------------------------------------
+//             Status
+// ------------------------------------
+
+enum eStatus
+{
+	Online,
+	Busy,
+	Invisible,
+	Offline
+};
+
+class Status : public QObject
+{
+	Q_OBJECT
+
+	private:
+		bool Changed;
+
+	protected:
+		eStatus Stat;
+		QString Description;
+		bool FriendsOnly;
+
+	public:
+		Status();
+		virtual ~Status();
+
+		bool isOnline();
+		bool isBusy();
+		bool isInvisible();
+		bool isOffline();
+		static bool isOffline(int);
+		bool hasDescription();
+		bool isFriendsOnly();
+		QString description();
+
+		int getIndex();
+		static int getIndex(eStatus, bool);
+
+		virtual QPixmap getPixmap();
+		virtual QPixmap getPixmap(eStatus, bool) = 0;
+
+		static eStatus fromString(const QString &);
+		static QString toString(eStatus, bool);
+
+		static int getCount();
+		static int getInitCount();
+		static QString getName(int);
+
+	public slots:
+		void setOnline(const QString & = "");
+		void setBusy(const QString & = "");
+		void setInvisible(const QString & = "");
+		void setOffline(const QString & = "");
+		void setDescription(const QString & = "");
+		void setStatus(const Status &);
+		void setStatus(eStatus, const QString & = "");
+		void setIndex(int, const QString & = "");
+		void setFriendsOnly(bool);
+
+	signals:
+		void goOnline(const QString &);
+		void goBusy(const QString &);
+		void goInvisible(const QString &);
+		void goOffline(const QString &);
+};
+
+class GaduStatus : public Status
+{
+	Q_OBJECT
+
+	public:
+		GaduStatus();
+		virtual ~GaduStatus();
+
+		virtual QPixmap getPixmap(eStatus, bool);
+		int getStatusNumber();
+};
+
+// ------------------------------------
+//            GaduProtocol
+// ------------------------------------
+
 class GaduProtocol : public QObject
 {
 	Q_OBJECT
@@ -228,7 +321,11 @@ class GaduProtocol : public QObject
 	private:
 		static QValueList<QHostAddress> ConfigServers;
 
+		struct gg_login_params LoginParams;
 		gg_session* Sess;
+
+		GaduStatus *CurrentStatus;
+		GaduStatus *NextStatus;
 
 		GaduSocketNotifiers *SocketNotifiers;
 		QTimer* PingTimer;
@@ -243,7 +340,9 @@ class GaduProtocol : public QObject
 		QHostAddress* ActiveServer;
 
 		void setupProxy();
-		void changeStatus(int status);
+
+		void login();
+		void logout();
 
 	private slots:
 		void registerDone(bool ok, struct gg_http *);
@@ -265,10 +364,17 @@ class GaduProtocol : public QObject
 		void userListReplyReceived(char, char *);
 		void userStatusChanged(struct gg_event *);
 
+		void iWantGoOnline(const QString &);
+		void iWantGoBusy(const QString &);
+		void iWantGoInvisible(const QString &);
+		void iWantGoOffline(const QString &);
+
 	public:
 		static void initModule();
 		GaduProtocol(QObject *parent=NULL, const char *name=NULL);
 		virtual ~GaduProtocol();
+
+		Status & status();
 
 		/**
 			Zwraca serwer z ktorym jestesmy polaczeni
@@ -287,14 +393,13 @@ class GaduProtocol : public QObject
 		void enableAutoConnection();
 		void disableAutoConnection();
 
-		StatusType getCurrentStatus();
+//		StatusType getCurrentStatus();
 		void blockUser(const UinType&, bool);
 		void offlineToUser(const UinType&, bool);
 		void addNotify(const UinType&);
 		void removeNotify(const UinType&);
 		void addNotifyEx(const UinType&, bool blocked, bool offline);
 		void removeNotifyEx(const UinType &, bool blocked, bool offline);
-		void friendsOnly(bool);
 
 		bool userListSent();
 
@@ -358,13 +463,11 @@ class GaduProtocol : public QObject
 		bool doImportUserList();
 
 		void sendUserList();
-		void login(int status);
-		void logout();
 
 		/**
 			Zmieniamy sobie status
 		**/
-		void setStatus(StatusType status);
+		//void setStatus(StatusType status);
 
 		/**
 		  	Szuka ludzi w katalogu publicznym
@@ -384,7 +487,7 @@ class GaduProtocol : public QObject
 
 		// to raczej chwilowo
 		void freeEvent(struct gg_event* e);
-		
+
 		// --------------------
 		//  DCC
 		// --------------------
@@ -427,7 +530,6 @@ class GaduProtocol : public QObject
 		void userStatusChanged(UserListElement &, int oldstatus);
 		void systemMessageReceived(QString &);
 		void dccConnectionReceived(const UserListElement&);
-		void statusChanged(int);
 		void disconnectNetwork();
 		void newSearchResults(SearchResults& searchResults, int seq, int lastUin);
 		void registered(bool ok, UinType uin);
@@ -437,6 +539,11 @@ class GaduProtocol : public QObject
 		void userListExported(bool ok);
 		void userListCleared(bool ok);
 		void userListImported(bool ok, UserList&);
+
+		void goOnline(const QString &);
+		void goBusy(const QString &);
+		void goInvisible(const QString &);
+		void goOffline(const QString &);
 
 		/**
 			Sygnal daje mozliwosc operowania na wiadomoci

@@ -32,7 +32,6 @@ const char *statustext[] = {
 };
 
 /* our own description container */
-QString own_description;
 QStringList defaultdescriptions;
 
 /* sprawdza czy nasz status jest opisowy

@@ -9,7 +9,6 @@
 extern QString gg_icons[];
 extern int gg_statuses[];
 extern const char *statustext[];
-extern QString own_description;
 extern QStringList defaultdescriptions;
 bool ifStatusWithDescription(int status);
 bool isAvailableStatus(unsigned int);

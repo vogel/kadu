@@ -11,7 +11,7 @@
 #include <qtextstream.h>
 #include <qregexp.h>
 #include <qhgroupbox.h>
-#include <qcursor.h> 
+#include <qcursor.h>
 
 
 #include "config_file.h"
@@ -28,7 +28,7 @@ AutoAwaySlots *autoawayslots=NULL;
 extern "C" int autoaway_init()
 {
 	kdebugf();
-	
+
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "General"));
 
 	ConfigDialog::addHGroupBox("General", "General", "AutoStatus");
@@ -58,14 +58,14 @@ extern "C" int autoaway_init()
 	ConfigDialog::addHBox("General", "AutoStatus Description", "first");
 	ConfigDialog::addLineEdit("General", "first",
 			QT_TRANSLATE_NOOP("@default", "Auto change status"), "AutoStatusText", "");
-	ConfigDialog::addHBox("General", "AutoStatus Description", "second");	
+	ConfigDialog::addHBox("General", "AutoStatus Description", "second");
 	ConfigDialog::addLabel("General", "second", "0");
 	ConfigDialog::addComboBox("General", "second",  " ");
-		
+
 	autoawayslots= new AutoAwaySlots();
 	ConfigDialog::registerSlotOnCreate(autoawayslots, SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnApply(autoawayslots, SLOT(onApplyConfigDialog()));
-	
+
 	QObject::connect(kadu, SIGNAL(disconnectingNetwork()), autoawayslots, SLOT(off()));
 	QObject::connect(gadu, SIGNAL(connected()), autoawayslots, SLOT(on()));
 	kdebugf2();
@@ -101,7 +101,7 @@ extern "C" void autoaway_close()
 	ConfigDialog::removeControl("General", "first");
 	ConfigDialog::removeControl("General", "second");
 	ConfigDialog::removeControl("General", "AutoStatus Description");
-	
+
 	kdebugf2();
 }
 
@@ -130,7 +130,7 @@ void AutoAwayTimer::checkIdleTime()
 	static int mouseirqs = 0;
 	static int i8042irqs = 0;
 	static QPoint mousepos(0, 0);
-	
+
 	int actkbdirqs   = 0;
 	int actmouseirqs = 0;
 	int acti8042irqs = 0;
@@ -155,7 +155,7 @@ void AutoAwayTimer::checkIdleTime()
 	bool autoRestoreStatus=config_file.readBoolEntry("General","AutoRestoreStatus");
 	int autoChangeDescription=config_file.readNumEntry("General", "AutoChangeDescription");
 	QString autoStatusText=config_file.readEntry("General", "AutoStatusText");
-	
+
 //	sprawdzenie czy wzrosla liczba obsluzonych przerwan klawiatury lub myszki
 	QFile f("/proc/interrupts");
 	if (f.open(IO_ReadOnly)) {
@@ -185,40 +185,36 @@ void AutoAwayTimer::checkIdleTime()
 		mouseirqs = actmouseirqs;
 		i8042irqs = acti8042irqs;
 		}
-	
+
 	if(inactive)
 		idletime+=autoAwayCheckTime;
-	
-	int currentStatus = gadu->getCurrentStatus() & (~GG_STATUS_FRIENDS_MASK); /* to sie przyda pozniej */
 
 	/* czy sie nie rozlaczyc */
 	//if (idletime >= autoDisconnectTime && autoDisconnect && ((currentStatus==GG_STATUS_INVISIBLE_DESCR) || (currentStatus==GG_STATUS_INVISIBLE)) && !autodisconnected)
 	if (idletime >= autoDisconnectTime && autoDisconnect && !autodisconnected)
-	{	kdebugm(KDEBUG_INFO, "AutoAwayTimer::checkIdleTime(): checking whether to disconnect, beforeAutoDisconnect = %d\n", currentStatus);
+	{	kdebugm(KDEBUG_INFO, "AutoAwayTimer::checkIdleTime(): checking whether to disconnect, beforeAutoDisconnect = %d\n", gadu->status().getIndex());
 			if (!autoinvisibled)
-				{	beforeAutoAway = gadu->getCurrentStatus() & (~GG_STATUS_FRIENDS_MASK);
+				{	beforeAutoAway.setStatus(gadu->status());
 					autoinvisibled=true;
 					autoawayed=true;
-				}	
+				}
 			if (!autodescription)
 			   if (autoChangeDescription==1)
-					{	oldStatus=own_description;
-						own_description=autoStatusText;
+					{	gadu->status().setDescription(autoStatusText);
 						autodescription=true;
 					}
 				else if ((autoChangeDescription==2) || (autoChangeDescription==3))
-					{	oldStatus=own_description;
-						QString new_description;
-						if (autoChangeDescription==2) new_description=autoStatusText+own_description;
-							else 
-								{	own_description.truncate(70-autoStatusText.length()-1);
-									new_description=own_description+autoStatusText;
-								}	
+					{	QString new_description = gadu->status().description();
+						if (autoChangeDescription==2) new_description=autoStatusText+new_description;
+							else
+								{	new_description.truncate(70-autoStatusText.length()-1);
+									new_description += autoStatusText;
+								}
 						new_description.truncate(70);
-						own_description=new_description;
+						gadu->status().setDescription(new_description);
 						autodescription=true;
 					}
-			gadu->logout();
+			gadu->status().setOffline(gadu->status().description());
 			autodisconnected=true;
 			kdebugm(KDEBUG_INFO, "AutoAwayTimer::checkIdleTime(): I am disconnected!\n");
 		}
@@ -226,102 +222,82 @@ void AutoAwayTimer::checkIdleTime()
 	/* potem sprawdzamy czy nie idziemy do ukrytego - ale to tylko jak wczesniej byl busy */
 	//if (idletime >= autoInvisibleTime && autoInvisible && ((currentStatus==GG_STATUS_BUSY_DESCR) || (currentStatus==GG_STATUS_BUSY)) && !autoinvisibled && !autodisconnected)
 	if (idletime >= autoInvisibleTime && autoInvisible && !autoinvisibled)
-		{	kdebugm(KDEBUG_INFO, "AutoAwayTimer::checkIdleTime(): checking whether to go invisible, beforeAutoInvisible = %d\n", currentStatus);
-			if (!autoawayed) 
-				{	beforeAutoAway = gadu->getCurrentStatus() & (~GG_STATUS_FRIENDS_MASK);
+		{	kdebugm(KDEBUG_INFO, "AutoAwayTimer::checkIdleTime(): checking whether to go invisible, beforeAutoInvisible = %d\n", gadu->status().getIndex());
+			if (!autoawayed)
+				{	beforeAutoAway.setStatus(gadu->status());
 					autoawayed=true;
 				}
 			if (!autodescription)
 			    if (autoChangeDescription==1)
-					{	oldStatus=own_description;
-						own_description=autoStatusText;
+					{	gadu->status().setDescription(autoStatusText);
 						autodescription=true;
 					}
 				else if ((autoChangeDescription==2) || (autoChangeDescription==3))
-					{	oldStatus=own_description;
-						QString new_description;
-						if (autoChangeDescription==2) new_description=autoStatusText+own_description;
-							else 
-								{	own_description.truncate(70-autoStatusText.length());
-									new_description=own_description+autoStatusText;
-								}	
+					{	QString new_description = gadu->status().description();
+						if (autoChangeDescription==2) new_description=autoStatusText+new_description;
+							else
+								{	new_description.truncate(70-autoStatusText.length());
+									new_description += autoStatusText;
+								}
 						new_description.truncate(70);
-						own_description=new_description;
+						gadu->status().setDescription(new_description);
 						autodescription=true;
 					}
-			switch (currentStatus)
-			{	case GG_STATUS_BUSY_DESCR:
-					kadu->setStatus(GG_STATUS_INVISIBLE_DESCR);		
-					autoinvisibled=true;
-					break;
-				case GG_STATUS_BUSY:
-					kadu->setStatus(GG_STATUS_INVISIBLE);
-					autoinvisibled=true;
-					break;
-				case GG_STATUS_AVAIL_DESCR:
-					kadu->setStatus(GG_STATUS_INVISIBLE_DESCR);
-					autoinvisibled=true;
-					break;
-				case GG_STATUS_AVAIL:
-					kadu->setStatus(GG_STATUS_INVISIBLE);
-					autoinvisibled=true;
-					break;
-				default:
-					start(autoAwayCheckTime*1000, TRUE);
-					return;
+			if (gadu->status().isBusy() || gadu->status().isOnline())
+			{
+				gadu->status().setInvisible(gadu->status().description());
+				autoinvisibled = true;
+			}
+			else
+			{
+				start(autoAwayCheckTime*1000, TRUE);
+				return;
 			}
 			kdebugm(KDEBUG_INFO, "AutoAwayTimer::checkIdleTime(): I am invisible!\n");
 		}
-	else 
+	else
 	//	czy mamy stac sie "zajeci" po config.autoawaytime sekund nieaktywnosci
 	if (idletime >= autoAwayTime && !autoawayed && autoAway) {
-		beforeAutoAway = gadu->getCurrentStatus() & (~GG_STATUS_FRIENDS_MASK);
-		kdebugm(KDEBUG_INFO, "AutoAwayTimer::checkIdleTime(): checking whether to go auto away, beforeAutoAway = %d\n", beforeAutoAway);
+		beforeAutoAway.setStatus(gadu->status());
+		kdebugm(KDEBUG_INFO, "AutoAwayTimer::checkIdleTime(): checking whether to go auto away, beforeAutoAway = %d\n", beforeAutoAway.getIndex());
 		if (!autodescription)
 			    if (autoChangeDescription==1)
-					{	oldStatus=own_description;
-						own_description=autoStatusText;
+					{	gadu->status().setDescription(autoStatusText);
 						autodescription=true;
 					}
 				else if ((autoChangeDescription==2) || (autoChangeDescription==3))
-					{	oldStatus=own_description;
-						QString new_description;
-						if (autoChangeDescription==2) new_description=autoStatusText+own_description;
-							else 
-								{	own_description.truncate(70-autoStatusText.length());
-									new_description=own_description+autoStatusText;
-								}	
+					{	QString new_description = gadu->status().description();
+						if (autoChangeDescription==2) new_description=autoStatusText+new_description;
+							else
+								{	new_description.truncate(70-autoStatusText.length());
+									new_description += autoStatusText;
+								}
 						new_description.truncate(70);
-						own_description=new_description;
+						gadu->status().setDescription(new_description);
 						autodescription=true;
 					}
-		switch (beforeAutoAway) {
-			case GG_STATUS_AVAIL_DESCR:
-				kadu->setStatus(GG_STATUS_BUSY_DESCR);
-				autoawayed = true;
-				break;
-			case GG_STATUS_AVAIL:
-				kadu->setStatus(GG_STATUS_BUSY);
-				autoawayed = true;
-				break;
-			default:
-				start(autoAwayCheckTime*1000, TRUE);
-				return;
+		if (beforeAutoAway.isOnline()) {
+			gadu->status().setBusy(gadu->status().description());
+			autoawayed = true;
+		}
+		else
+		{
+			start(autoAwayCheckTime*1000, TRUE);
+			return;
 		}
 		kdebugm(KDEBUG_INFO, "AutoAwayTimer::checkIdleTime(): I am away!\n");
-	} 
+	}
 	else
 //		jesli bylismy "zajeci" to stajemy sie z powrotem "dostepni" jasli nie mamy tego zablokowanego
 	if (idletime < autoAwayTime && autoawayed && autoRestoreStatus)
 		{	kdebugm(KDEBUG_INFO, "AutoAwayTimer::checkIdleTime(): auto away cancelled\n");
-			
+
 			autodisconnected=false;
 			autoinvisibled=false;
 			autoawayed = false;
-			if (autodescription)  own_description=oldStatus;
 			autodescription=false;
-			
-			kadu->setStatus(beforeAutoAway);
+
+			gadu->status().setStatus(beforeAutoAway);
 		}
 
 //potrzebne na wypadek zerwania polaczenia i ponownego polaczenia sie z statusem innym niz busy*
@@ -344,7 +320,7 @@ void AutoAwaySlots::off() {
 void AutoAwaySlots::onCreateConfigDialog()
 {
 	kdebugf();
-		
+
 	QHBox *awygrp = ConfigDialog::getHBox("General", "times");
 	QHBox *awygrp2 = ConfigDialog::getHBox("General", "enables");
 	QHGroupBox *awygrp3 = ConfigDialog::getHGroupBox("General", "AutoStatus Description");
@@ -366,7 +342,7 @@ void AutoAwaySlots::onCreateConfigDialog()
 	QSpinBox *invisibleSpin= ConfigDialog::getSpinBox("General", "Set status to invisible after ");
 	invisibleSpin->setEnabled(b_autoinvisible->isChecked());
 	QSpinBox *disconnectSpin= ConfigDialog::getSpinBox("General", "Disconnect after ");
-	disconnectSpin->setEnabled(b_autodisconnect->isChecked());	
+	disconnectSpin->setEnabled(b_autodisconnect->isChecked());
 	/* podpinanie sie do slotow zmiany dostepnosci */
 	connect(b_autostatus, SIGNAL(toggled(bool)), awygrp, SLOT(setEnabled(bool)));
 	connect(b_autostatus, SIGNAL(toggled(bool)), awygrp2, SLOT(setEnabled(bool)));
@@ -413,11 +389,11 @@ void AutoAwaySlots::onCreateConfigDialog()
 void AutoAwaySlots::onApplyConfigDialog()
 {
 	kdebugf();
-	
+
 	QComboBox *autoChangeDescription=ConfigDialog::getComboBox("General", " ");
 	int i=autoChangeDescription->currentItem();
 	config_file.writeEntry("General", "AutoChangeDescription", i);
-		
+
 	if (config_file.readBoolEntry("General", "AutoChange"))
 		on();
 	else
@@ -430,13 +406,13 @@ void AutoAwaySlots::changeAutoInvisibleTime(int i)
 {	QSpinBox *invisibleSpin= ConfigDialog::getSpinBox("General", "Set status to invisible after ");
 	if (invisibleSpin->value()<i)
 		invisibleSpin->setValue(i);
-	
+
 }
 void AutoAwaySlots::changeAutoDisconnectTime(int i)
 {	QSpinBox *disconnectSpin= ConfigDialog::getSpinBox("General", "Disconnect after ");
 	if (disconnectSpin->value()<i)
 		disconnectSpin->setValue(i);
-	/* 	dodana reakcja na wpisanie wartosci mniejszej niz jest w away 
+	/* 	dodana reakcja na wpisanie wartosci mniejszej niz jest w away
 		mozna to zalatwic w osobnej funkcji zeby bylo ladniej ale niech na razie tak bedzie */
 	QSpinBox *awaySpin= ConfigDialog::getSpinBox("General", "Set status to away after ");
 	QSpinBox *invisibleSpin= ConfigDialog::getSpinBox("General", "Set status to invisible after ");

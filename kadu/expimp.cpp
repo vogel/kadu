@@ -165,7 +165,7 @@ void UserlistImportExport::fromfile() {
 
 void UserlistImportExport::startImportTransfer() {
 	kdebugf();
-	if (gadu->getCurrentStatus() == GG_STATUS_NOT_AVAIL)
+	if (gadu->status().isOffline())
 	{
 		MessageBox::wrn(tr("Cannot import user list from server in offline mode"));
 		return;
@@ -252,7 +252,7 @@ void UserlistImportExport::startExportTransfer()
 {
 	kdebugf();
 
-	if (gadu->getCurrentStatus() == GG_STATUS_NOT_AVAIL)
+	if (gadu->status().isOffline())
 	{
 		MessageBox::wrn(tr("Cannot export user list to server in offline mode"));
 		kdebugf2();
@@ -301,7 +301,7 @@ void UserlistImportExport::ExportToFile(void)
 void UserlistImportExport::clean() {
 	kdebugf();
 
-	if (gadu->getCurrentStatus() == GG_STATUS_NOT_AVAIL)
+	if (gadu->status().isOffline())
 	{
 		MessageBox::wrn(tr("Cannot clear user list on server in offline mode"));
 		kdebugf2();

@@ -71,28 +71,27 @@ void AutoResponder::chatReceived(UinsList senders, const QString& msg, time_t ti
 	kdebugf();
 	if (msg.left(5)!="KADU ")
 	{
-		int status=gadu->getCurrentStatus() & ~GG_STATUS_FRIENDS_MASK; //pozbywamy siê flagi "Tylko dla przyjació³"
-		
+
 		bool was=false;					//to pamieta czy okienko juz otwarte czy nie
 		if (!UserList.isEmpty())
 		for (unsigned int l=0; l<senders.count(); ++l)
 			if (UserList.findIndex(senders[l])!=-1)
-				was=true;						//jak bylo to bylo=true		
-	
+				was=true;						//jak bylo to bylo=true
+
 		bool respond=config->readBoolEntry("Autoresponder", "StatusInvisible") &&
-					(status==GG_STATUS_INVISIBLE || status==GG_STATUS_INVISIBLE_DESCR);
-	
+					gadu->status().isInvisible();
+
 		if (!respond)
 			respond=config->readBoolEntry("Autoresponder", "StatusBusy") &&
-					(status==GG_STATUS_BUSY || status==GG_STATUS_BUSY_DESCR);
+					gadu->status().isBusy();;
 
 		if (!respond)
 			respond=config->readBoolEntry("Autoresponder", "StatusAvailable") &&
-					(status==GG_STATUS_AVAIL || status==GG_STATUS_AVAIL_DESCR);
+					gadu->status().isOnline();
 
 		if ((config->readBoolEntry("Autoresponder", "OnlyFirstTime")) && (was))
 			respond=false;			//to zablokuje odpisanie na wiadomosc
-		
+
 		if (respond)
 			{	gadu->sendMessage(senders, unicode2cp(tr("KADU AUTORESPONDER:")+"\n"+
 							config->readEntry("Autoresponder", "Autotext")));

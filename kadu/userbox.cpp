@@ -87,8 +87,8 @@ void KaduListBoxPixmap::paint(QPainter *painter) {
 	bool alignIconTop = config_file.readBoolEntry("Look", "AlignUserboxIconsTop");
 	int itemHeight = alignIconTop ? lineHeight(listBox()):height(listBox());
 	int yPos;
-	QString descr=isOurUin ? own_description : description();
-	bool hasDescription=isOurUin ? ifStatusWithDescription(gadu->getCurrentStatus()) : !descr.isEmpty();
+	QString descr=isOurUin ? gadu->status().description() : description();
+	bool hasDescription=isOurUin ? gadu->status().hasDescription() : !descr.isEmpty();
 
 	if (!pm.isNull()) {
 		yPos = (itemHeight - pm.height()) / 2;
@@ -149,8 +149,8 @@ int KaduListBoxPixmap::height(const QListBox* lb) const
 //	kdebugf();
 	UserListElement &user = userlist.byAltNick(text());
 	bool isOurUin=((UinType)config_file.readNumEntry("General", "UIN") == user.uin);
-	QString descr=isOurUin ? own_description : description();
-	bool hasDescription=isOurUin ? ifStatusWithDescription(gadu->getCurrentStatus()) : !descr.isEmpty();
+	QString descr=isOurUin ? gadu->status().description() : description();
+	bool hasDescription=isOurUin ? gadu->status().isOffline() : !descr.isEmpty();
 
 	int height=lb->fontMetrics().lineSpacing()+3;
 	if (hasDescription && config_file.readBoolEntry("Look", "ShowDesc"))
@@ -466,8 +466,8 @@ void UserBox::refresh()
 		{
 			if (user.uin == myUin)
 			{
-				user.status = gadu->getCurrentStatus() & (~GG_STATUS_FRIENDS_MASK);
-				user.description = ifStatusWithDescription(gadu->getCurrentStatus()) ? own_description : QString::null;
+				//user.status = gadu->getCurrentStatus() & (~GG_STATUS_FRIENDS_MASK);
+				user.description = gadu->status().description();
 			}
 			switch (user.status)
 			{

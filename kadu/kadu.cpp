@@ -488,9 +488,12 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	connect(gadu, SIGNAL(connected()), this, SLOT(connected()));
 	connect(gadu, SIGNAL(disconnected()), this, SLOT(disconnected()));
 	connect(gadu, SIGNAL(error(GaduError)), this, SLOT(error(GaduError)));
+	connect(gadu, SIGNAL(goOnline(const QString &)), this, SLOT(wentOnline(const QString &)));
+	connect(gadu, SIGNAL(goBusy(const QString &)), this, SLOT(wentBusy(const QString &)));
+	connect(gadu, SIGNAL(goInvisible(const QString &)), this, SLOT(wentInvisible(const QString &)));
+	connect(gadu, SIGNAL(goOffline(const QString &)), this, SLOT(wentOffline(const QString &)));
 	connect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
 		this, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
-	connect(gadu, SIGNAL(statusChanged(int)), this, SLOT(setCurrentStatus(int)));
 	connect(gadu, SIGNAL(systemMessageReceived(QString &)), this, SLOT(systemMessageReceived(QString &)));
 	connect(gadu, SIGNAL(userListChanged()), this, SLOT(userListChanged()));
 	connect(gadu, SIGNAL(userStatusChanged(UserListElement&, int)),
@@ -1018,34 +1021,33 @@ void Kadu::removeUser(QStringList &users, bool permanently = false)
 }
 
 void Kadu::blink() {
-	int i;
 	QPixmap pix;
 
-	if (!DoBlink && socket_active)
+	kdebugf();
+
+	if (!DoBlink && !gadu->status().isOffline())
 	{
-		setCurrentStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
 		return;
 	}
-	else if (!DoBlink && !socket_active)
+	else if (!DoBlink && gadu->status().isOffline())
 	{
-		pix = icons_manager.loadIcon("Offline");
+		pix = gadu->status().getPixmap(Offline, false);
 		statusbutton->setIconSet(QIconSet(pix));
-		emit connectingBlinkShowOffline();
+		emit statusPixmapChanged(pix);
 		return;
 	}
 
 	if (BlinkOn)
 	{
-		pix = icons_manager.loadIcon("Offline");
+		pix = gadu->status().getPixmap(Offline, false);
 		statusbutton->setIconSet(QIconSet(pix));
-		emit connectingBlinkShowOffline();
+		emit statusPixmapChanged(pix);
 	}
 	else
 	{
-		i = statusGGToStatusNr(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
-		pix = icons_manager.loadIcon(gg_icons[i]);
+		pix = gadu->status().getPixmap(status, false);
 		statusbutton->setIconSet(QIconSet(pix));
-		emit connectingBlinkShowStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
+		emit statusPixmapChanged(pix);
 	}
 	BlinkOn=!BlinkOn;
 
@@ -1104,109 +1106,83 @@ void Kadu::sendMessage(QListBoxItem *item)
 void Kadu::slotHandleState(int command) {
 	kdebugf();
 	ChooseDescription *cd;
+	QString desc;
 
 	switch (command) {
 		case 0:
 			Autohammer = true;
-			setStatus(GG_STATUS_AVAIL);
+			status = Online;
+			gadu->status().setOnline();
 			break;
 		case 1:
 			cd = new ChooseDescription(1);
-			if (cd->exec() == QDialog::Accepted) {
+			if (cd->exec() == QDialog::Accepted)
+			{
 				Autohammer = true;
-				setStatus(GG_STATUS_AVAIL_DESCR);
-				}
+				status = Online;
+				cd->getDescription(desc);
+				gadu->status().setOnline(desc);
+			}
+			delete cd;
 			break;
 		case 2:
 			Autohammer = true;
-			setStatus(GG_STATUS_BUSY);
+			status = Busy;
+			gadu->status().setBusy();
 			break;
 		case 3:
 			cd = new ChooseDescription(3);
-			if (cd->exec() == QDialog::Accepted) {
+			if (cd->exec() == QDialog::Accepted)
+			{
 				Autohammer = true;
-				setStatus(GG_STATUS_BUSY_DESCR);
-				}
+				status = Busy;
+				cd->getDescription(desc);
+				gadu->status().setBusy(desc);
+			}
+			delete cd;
 			break;
 		case 4:
 			Autohammer = true;
-			setStatus(GG_STATUS_INVISIBLE);
+			status = Invisible;
+			gadu->status().setInvisible();
 			break;
 		case 5:
 			cd = new ChooseDescription(5);
-			if (cd->exec() == QDialog::Accepted) {
+			if (cd->exec() == QDialog::Accepted)
+			{
 				Autohammer = true;
-				setStatus(GG_STATUS_INVISIBLE_DESCR);
-				}
+				status = Invisible;
+				cd->getDescription(desc);
+				gadu->status().setInvisible(desc);
+			}
+			delete cd;
 			break;
 		case 6:
-			gadu->logout();
+			status = Offline;
+			gadu->status().setOffline();
 			gadu->disableAutoConnection();
 			Autohammer = false;
-			setCurrentStatus(GG_STATUS_NOT_AVAIL);
 			break;
 		case 7:
 			cd = new ChooseDescription(7);
-			if (cd->exec() == QDialog::Accepted) {
-				setStatus(GG_STATUS_NOT_AVAIL_DESCR);
+			if (cd->exec() == QDialog::Accepted)
+			{
+				status = Offline;
+				cd->getDescription(desc);
+				gadu->status().setOffline(desc);
 				statusppm->setItemEnabled(7, false);
-				gadu->logout();
 				gadu->disableAutoConnection();
 				Autohammer = false;
-				}
+			}
+			delete cd;
 			break;
 		case 8:
 			statusppm->setItemChecked(8, !statusppm->isItemChecked(8));
 			dockppm->setItemChecked(8, !dockppm->isItemChecked(8));
 			config_file.writeEntry("General", "PrivateStatus",statusppm->isItemChecked(8));
-			gadu->friendsOnly(statusppm->isItemChecked(8));
+			gadu->status().setFriendsOnly(statusppm->isItemChecked(8));
 			break;
 		}
-	kdebugf2();
-}
-
-void Kadu::setCurrentStatus(int status) {
-	kdebugf();
-
-	int statusnr;
-
-	statusnr = statusGGToStatusNr(status);
-	for(int i=0; i<8; i++)
-	{
-		statusppm->setItemChecked(i, false);
-		dockppm->setItemChecked(i, false);
-	}
-	statusppm->setItemChecked(statusnr, true);
-	dockppm->setItemChecked(statusnr, true);
-
-	statusbutton->setText(qApp->translate("@default", statustext[statusnr]));
-	statusppm->setItemEnabled(7, statusnr != 6);
-	dockppm->setItemEnabled(7, statusnr != 6);
-	QPixmap pix = icons_manager.loadIcon(gg_icons[statusnr]);
-	statusbutton->setIconSet(QIconSet(pix));
-	setIcon(pix);
-	UserBox::all_refresh();
-	emit currentStatusChanged(status);
-	kdebugf2();
-}
-
-void Kadu::setStatus(int status) {
-	kdebugf();
-
-	if (!UpdateChecked)
-	{
-		UinType myUin=(UinType)config_file.readNumEntry("General", "UIN");
-		if (myUin)
-		{
-			uc = new UpdatesClass(myUin);
-			QObject::connect(uc->op, SIGNAL(data(const QByteArray &, QNetworkOperation *)),
-					this, SLOT(gotUpdatesInfo(const QByteArray &, QNetworkOperation *)));
-			uc->run();
-			UpdateChecked=true;
-		}
-	}
-
-	gadu->setStatus(status);
 	kdebugf2();
 }
 
@@ -1216,6 +1192,7 @@ void Kadu::connecting()
 
 	DoBlink = true;
 
+	status = Online;
 	if (!blinktimer)
 	{
 		blinktimer = new QTimer;
@@ -1243,7 +1220,7 @@ void Kadu::chatMsgReceived(UinsList senders, const QString &msg, time_t time)
 
 	hintmanager->addHintNewChat(senders, msg);
 
-	if(config_file.readBoolEntry("Chat","OpenChatOnMessage"))
+	if(config_file.readBoolEntry("Chat", "OpenChatOnMessage"))
 		pending.openMessages();
 
 	kdebugf2();
@@ -1255,9 +1232,6 @@ void Kadu::connected()
 
 	DoBlink = false;
 
-	kadu->setCurrentStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
-	if ((loginparams.status & (~GG_STATUS_FRIENDS_MASK)) == GG_STATUS_INVISIBLE_DESCR)
-		kadu->setStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
 	kdebugf2();
 }
 
@@ -1419,13 +1393,14 @@ bool Kadu::close(bool quit) {
 
 		pending.writeToFile();
 		writeIgnored();
-		if (config_file.readBoolEntry("General", "DisconnectWithDescription") && gadu->getCurrentStatus() != GG_STATUS_NOT_AVAIL) {
+//		if (config_file.readBoolEntry("General", "DisconnectWithDescription") && gadu->getCurrentStatus() != GG_STATUS_NOT_AVAIL) {
+		if (config_file.readBoolEntry("General", "DisconnectWithDescription") && !gadu->status().isOffline())
+		{
 			kdebugm(KDEBUG_INFO, "Kadu::close(): Set status NOT_AVAIL_DESCR with disconnect description(%s)\n",(const char *)config_file.readEntry("General", "DisconnectDescription").local8Bit());
-			own_description = config_file.readEntry("General", "DisconnectDescription");
-			setStatus(GG_STATUS_NOT_AVAIL_DESCR);
+			gadu->status().setOffline(config_file.readEntry("General", "DisconnectDescription"));
 		}
 //		disconnectNetwork();
-		gadu->logout();
+//		gadu->logout();
 		kdebugm(KDEBUG_INFO, "Kadu::close(): Saved config, disconnect and ignored\n");
 		QWidget::close(true);
 		flock(lockFileHandle, LOCK_UN);
@@ -1612,7 +1587,7 @@ void KaduSlots::onCreateConfigDialog()
 		cb_qttheme->setCurrentText(tr("Unknown"));
 	else
 		cb_qttheme->setCurrentText(QApplication::style().name());
-	
+
 	QComboBox *cb_language= ConfigDialog::getComboBox("General", "Set language:");
 
 	QDir locale(dataPath("kadu/translations/"), "kadu_*.qm");
@@ -1630,16 +1605,37 @@ void KaduSlots::onCreateConfigDialog()
 	e_disconnectdesc->setEnabled(b_disconnectdesc->isChecked());
 	connect(b_disconnectdesc, SIGNAL(toggled(bool)), e_disconnectdesc, SLOT(setEnabled(bool)));
 
-	QComboBox* cb_defstatus= ConfigDialog::getComboBox("General", "Default status", "cb_defstatus");
-	int statusnr=config_file.readNumEntry("General", "DefaultStatus", GG_STATUS_NOT_AVAIL);
+	int statusIndex = config_file.readNumEntry("General", "DefaultStatusIndex", -1);
+
+	// BEGIN: wsteczna kompatybilno뜻, do wywalenia w 0.5.x
+	if (statusIndex == -1)
+	{
+		statusIndex = config_file.readNumEntry("General", "DefaultStatus", -1);
+		switch (statusIndex)
+		{
+			case 0x0001: statusIndex = Status::getIndex(Offline, false); break;
+			case 0x0015: statusIndex = Status::getIndex(Offline, true); break;
+			case 0x0002: statusIndex = Status::getIndex(Online, false); break;
+			case 0x0004: statusIndex = Status::getIndex(Online, true); break;
+			case 0x0003: statusIndex = Status::getIndex(Busy, false); break;
+			case 0x0005: statusIndex = Status::getIndex(Busy, true); break;
+			case 0x0014: statusIndex = Status::getIndex(Invisible, false); break;
+			case 0x0016: statusIndex = Status::getIndex(Invisible, true); break;
+			default:
+				statusIndex = -1;
+		}
+	}
+	if (statusIndex == -1)
+		statusIndex = Status::getIndex(Offline, false);
+	// END: wsteczna kombatybilno뜻, do wywalenia w 0.5.x
+
+	int max = Status::getInitCount();
+	QComboBox* cb_defstatus = ConfigDialog::getComboBox("General", "Default status", "cb_defstatus");
 	cb_defstatus->clear();
-	int i;
-	for (i = 0;i < 7; i++)
-		cb_defstatus->insertItem(qApp->translate("@default", statustext[i]));
-	i=0;
-	while (i<7 && statusnr !=gg_statuses[i])
-		i++;
-	cb_defstatus->setCurrentItem(i);
+	for (int i = 0; i < max; i++)
+		cb_defstatus->insertItem(qApp->translate("@default", Status::getName(i)));
+	cb_defstatus->setCurrentItem(statusIndex);
+
 	updatePreview();
 	kdebugf2();
 }
@@ -1663,17 +1659,11 @@ void KaduSlots::onDestroyConfigDialog()
 	else
 		kadu->userbox()->setColumnMode(1);
 
-	QComboBox* cb_defstatus= ConfigDialog::getComboBox("General", "Default status", "cb_defstatus");
-	config_file.writeEntry("General", "DefaultStatus", gg_statuses[cb_defstatus->currentItem()]);
+	QComboBox* cb_defstatus = ConfigDialog::getComboBox("General", "Default status", "cb_defstatus");
+	config_file.writeEntry("General", "DefaultStatusIndex", cb_defstatus->currentItem());
 
-	StatusType status = gadu->getCurrentStatus();
-
-	bool privateStatus=config_file.readBoolEntry("General", "PrivateStatus");
-
-	if (status != GG_STATUS_NOT_AVAIL)
-	if ((!(status & GG_STATUS_FRIENDS_MASK)&& privateStatus)
-		|| ((status & GG_STATUS_FRIENDS_MASK) && !privateStatus))
-		kadu->setStatus(status & (~GG_STATUS_FRIENDS_MASK));
+	bool privateStatus = config_file.readBoolEntry("General", "PrivateStatus");
+	gadu->status().setFriendsOnly(privateStatus);
 
 	statusppm->setItemChecked(8, privateStatus);
 
@@ -1685,7 +1675,7 @@ void KaduSlots::onDestroyConfigDialog()
 
 	QComboBox *cb_language= ConfigDialog::getComboBox("General", "Set language:");
 	config_file.writeEntry("General", "Language", translateLanguage(qApp, cb_language->currentText(),false));
-	
+
 	QString new_style=ConfigDialog::getComboBox("Look", "Qt Theme")->currentText();
 	if(new_style!=tr("Unknown") && new_style != QApplication::style().name()){
 		QApplication::setStyle(new_style);
@@ -1770,12 +1760,34 @@ void Kadu::startupProcedure()
 		setCaption(tr("Kadu: new user"));
 	}
 
-	own_description = defaultdescriptions.first();
-	int defaultStatus = config_file.readNumEntry("General","DefaultStatus",GG_STATUS_NOT_AVAIL);
-	if (defaultStatus != GG_STATUS_NOT_AVAIL && defaultStatus != GG_STATUS_NOT_AVAIL_DESCR)
+	QString descr = defaultdescriptions.first();
+	int statusIndex = config_file.readNumEntry("General", "DefaultStatusIndex", -1);
+	// BEGIN: wsteczna kompatybilno뜻, do wywalenia w 0.5.x
+	if (statusIndex == -1)
+	{
+		statusIndex = config_file.readNumEntry("General", "DefaultStatus", -1);
+		switch (statusIndex)
+		{
+			case 0x0001: statusIndex = Status::getIndex(Offline, false); break;
+			case 0x0015: statusIndex = Status::getIndex(Offline, true); break;
+			case 0x0002: statusIndex = Status::getIndex(Online, false); break;
+			case 0x0004: statusIndex = Status::getIndex(Online, true); break;
+			case 0x0003: statusIndex = Status::getIndex(Busy, false); break;
+			case 0x0005: statusIndex = Status::getIndex(Busy, true); break;
+			case 0x0014: statusIndex = Status::getIndex(Invisible, false); break;
+			case 0x0016: statusIndex = Status::getIndex(Invisible, true); break;
+			default:
+				statusIndex = -1;
+		}
+	}
+	if (statusIndex == -1)
+		statusIndex = Status::getIndex(Offline, false);
+	// END: wsteczna kombatybilno뜻, do wywalenia w 0.5.x
+
+	if (!Status::isOffline(statusIndex))
 	{
 		Autohammer = true;
-		setStatus(defaultStatus);
+		gadu->status().setIndex(statusIndex, descr);
 	}
 	kdebugf2();
 }
@@ -1783,4 +1795,55 @@ void Kadu::startupProcedure()
 void Kadu::setShowMainWindowOnStart(bool show)
 {
 	ShowMainWindowOnStart = show;
+}
+
+void Kadu::wentOnline(const QString &desc)
+{
+	kdebugf();
+	DoBlink = false;
+	showStatusOnMenu(desc.isEmpty() ? 0 : 1);
+}
+
+void Kadu::wentBusy(const QString &desc)
+{
+	kdebugf();
+	DoBlink = false;
+	showStatusOnMenu(desc.isEmpty() ? 2 : 3);
+}
+
+void Kadu::wentInvisible(const QString &desc)
+{
+	kdebugf();
+	DoBlink = false;
+	showStatusOnMenu(desc.isEmpty() ? 4 : 5);
+}
+
+void Kadu::wentOffline(const QString &desc)
+{
+	kdebugf();
+	DoBlink = false;
+	showStatusOnMenu(desc.isEmpty() ? 6 : 7);
+}
+
+void Kadu::showStatusOnMenu(int statusNr)
+{
+	for(int i = 0; i < 8; i++)
+	{
+		statusppm->setItemChecked(i, false);
+		dockppm->setItemChecked(i, false);
+	}
+	statusppm->setItemChecked(statusNr, true);
+	dockppm->setItemChecked(statusNr, true);
+	statusppm->setItemChecked(8, gadu->status().isFriendsOnly());
+	dockppm->setItemChecked(8, gadu->status().isFriendsOnly());
+
+	statusbutton->setText(qApp->translate("@default", statustext[statusNr]));
+	statusppm->setItemEnabled(7, statusNr != 6);
+	dockppm->setItemEnabled(7, statusNr != 6);
+	QPixmap pix = gadu->status().getPixmap();
+	statusbutton->setIconSet(QIconSet(pix));
+	setIcon(pix);
+	UserBox::all_refresh();
+
+	emit statusPixmapChanged(pix);
 }
