@@ -352,6 +352,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * usuniêty wyciek pamiêci z modu³u dsp_sound (joi)
 * usuniêty wyciek pamiêci z okna konfiguracji (joi)
 * api do obs³ugi nagrywania i odtwarzania próbek w module sound (adrian)
+* obs³uga nagrywania i odtwarzania próbek w module dsp_sound (adrian)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,

@@ -6,6 +6,7 @@
 #include <qstringlist.h>
 #include <qmutex.h>
 #include <qsemaphore.h>
+#include "../sound/sound.h"
 
 class OSSPlayThread : public QThread
 {
@@ -23,16 +24,22 @@ class OSSPlayThread : public QThread
 class OSSPlayerSlots : public QObject
 {
 	Q_OBJECT
+
+	private:
+		OSSPlayThread *thread;
+
+	private slots:
+		void play(const QString &s, bool volCntrl, double vol, const QString &device=QString::null);		
+		void playSound(const QString &s, bool volCntrl, double vol);
+		void openDevice(int sample_rate, int channels, SoundDevice& device);
+		void closeDevice(SoundDevice device);
+		void playSample(SoundDevice device, const int16_t* data, int length, bool& result);
+		void recordSample(SoundDevice device, int16_t* data, int length, bool& result);		
+
 	public:
 		OSSPlayerSlots(QObject *parent=0, const char *name=0);
 		~OSSPlayerSlots();
 		bool error;
-	private slots:
-		void play(const QString &s, bool volCntrl, double vol, const QString &device=QString::null);
-		
-		void playSound(const QString &s, bool volCntrl, double vol);
-	private:
-		OSSPlayThread *thread;
 };
 
 extern OSSPlayerSlots *oss_player_slots;

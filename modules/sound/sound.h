@@ -37,6 +37,11 @@ class SoundSlots : public QObject
 		~SoundSlots();
 };
 
+/**
+	Uogólniony deskryptor urz±dzenia d¼wiêkowego.
+**/
+typedef void* SoundDevice;
+
 class SoundManager : public Themes
 {
     Q_OBJECT
@@ -67,10 +72,6 @@ class SoundManager : public Themes
 		~SoundManager();
 		bool isMuted();
 		int timeAfterLastSound();
-		/**
-			Uogólniony deskryptor urz±dzenia d¼wiêkowego.
-		**/
-		typedef void* SoundDevice;
 		/**
 			Otwiera urz±dzenie d¼wiêkowe do operacji
 			odtwarzania i nagrywania sampli.
@@ -110,7 +111,7 @@ class SoundManager : public Themes
 			@length d³ugo¶æ danych sampla
 			@return true je¶li odtwarzanie zakoñczy³o siê powodzeniem.
 		**/
-		bool playSample(SoundDevice device, char* data, int length);
+		bool playSample(SoundDevice device, const int16_t* data, int length);
 		/**
 			Nagrywa próbkê d¼wiêkow±. Operacja blokuj±ca.
 			Mo¿e byæ wywo³ana z innego w±tku (a nawet powinna).
@@ -122,7 +123,7 @@ class SoundManager : public Themes
 			@length d³ugo¶æ sampla do nagrania (wielko¶æ bufora)
 			@return true je¶li nagrywanie zakoñczy³o siê powodzeniem.
 		**/
-		bool recordSample(SoundDevice device, char* data, int length);
+		bool recordSample(SoundDevice device, int16_t* data, int length);
 
 	signals:
 		void playSound(const QString &sound, bool volCntrl, double vol);
@@ -163,7 +164,7 @@ class SoundManager : public Themes
 			@length d³ugo¶æ danych sampla
 			@result zwrócony rezultat operacji - true je¶li odtwarzanie zakoñczy³o siê powodzeniem.
 		**/
-		void playSampleImpl(SoundDevice device, char* data, int length, bool& result);
+		void playSampleImpl(SoundDevice device, const int16_t* data, int length, bool& result);
 		/**
 			Pod ten sygna³ powinien podpi±æ siê modu³
 			d¼wiêkowy je¶li obs³uguje funkcjê odtwarzania
@@ -179,7 +180,7 @@ class SoundManager : public Themes
 			@length d³ugo¶æ sampla do nagrania (wielko¶æ bufora)
 			@result zwrócony rezultat operacji - true je¶li nagrywanie zakoñczy³o siê powodzeniem.
 		**/
-		void recordSampleImpl(SoundDevice device, char* data, int length, bool& result);		
+		void recordSampleImpl(SoundDevice device, int16_t* data, int length, bool& result);		
 };
 
 extern SoundManager* sound_manager;

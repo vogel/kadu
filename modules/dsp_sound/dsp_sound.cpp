@@ -15,7 +15,6 @@
 #include "dsp_sound.h"
 #include "debug.h"
 #include "config_dialog.h"
-#include "../sound/sound.h"
 #include "sound_desc.h"
 
 extern "C" int dsp_sound_init()
@@ -53,8 +52,15 @@ OSSPlayerSlots::OSSPlayerSlots(QObject *parent, const char *name) : QObject(pare
 	error=false;
 
 	connect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
-			this, SLOT(playSound(const QString &, bool, double)));
-
+		this, SLOT(playSound(const QString &, bool, double)));
+	connect(sound_manager, SIGNAL(openDevice(int, int, SoundDevice&)),
+		this, SLOT(openDevice(int, int, SoundDevice&)));
+	connect(sound_manager, SIGNAL(closeDevice(SoundDevice)),
+		this, SLOT(closeDevice(SoundDevice)));
+	connect(sound_manager, SIGNAL(playSample(SoundDevice, const int16_t*, int, bool&)),
+		this, SLOT(playSample(SoundDevice, const int16_t*, int, bool&)));
+	connect(sound_manager, SIGNAL(recordSample(SoundDevice, int16_t*, int, bool&)),
+		this, SLOT(recordSample(SoundDevice, int16_t*, int, bool&)));
 	kdebugf2();
 }
 
@@ -64,6 +70,14 @@ OSSPlayerSlots::~OSSPlayerSlots()
 
 	disconnect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
 			this, SLOT(playSound(const QString &, bool, double)));
+	disconnect(sound_manager, SIGNAL(openDevice(int, int, SoundDevice&)),
+		this, SLOT(openDevice(int, int, SoundDevice&)));
+	disconnect(sound_manager, SIGNAL(closeDevice(SoundDevice)),
+		this, SLOT(closeDevice(SoundDevice)));
+	disconnect(sound_manager, SIGNAL(playSample(SoundDevice, const int16_t*, int, bool&)),
+		this, SLOT(playSample(SoundDevice, const int16_t*, int, bool&)));
+	disconnect(sound_manager, SIGNAL(recordSample(SoundDevice, int16_t*, int, bool&)),
+		this, SLOT(recordSample(SoundDevice, int16_t*, int, bool&)));
 
 	if (thread)
 	{
@@ -110,6 +124,77 @@ void OSSPlayerSlots::playSound(const QString &s, bool volCntrl, double vol)
 	play(s, volCntrl, vol, dev);
 	kdebugf2();
 }
+
+void OSSPlayerSlots::openDevice(int sample_rate, int channels, SoundDevice& device)
+{
+	kdebugf();
+	device = NULL;
+
+	kdebugm(KDEBUG_INFO, "Opening /dev/dsp\n");
+	int fd = open("/dev/dsp", O_RDWR);
+	if(fd<0)
+	{
+		kdebugm(KDEBUG_ERROR, "Error opening /dev/dsp\n");
+		return;
+	}
+
+	kdebugm(KDEBUG_INFO, "Setting speed for /dev/dsp\n");
+	int value = sample_rate;
+	if(ioctl(fd, SNDCTL_DSP_SPEED, &value)<0)
+	{
+		kdebugm(KDEBUG_ERROR, "Error setting speed for /dev/dsp\n");
+		return;
+	}
+
+	kdebugm(KDEBUG_INFO, "Setting sample size for /dev/dsp\n");
+	value = 16;
+	if(ioctl(fd, SNDCTL_DSP_SAMPLESIZE, &value)<0)
+	{
+		kdebugm(KDEBUG_ERROR, "Error setting sample size for /dev/dsp\n");
+		return;
+	}
+
+	kdebugm(KDEBUG_INFO, "Setting channels for /dev/dsp\n");
+	value = channels;
+	if(ioctl(fd, SNDCTL_DSP_CHANNELS, &value)<0)
+	{
+		kdebugm(KDEBUG_ERROR, "Error setting channels for /dev/dsp\n");
+		return;
+	}
+	
+	kdebugm(KDEBUG_INFO, "Setting ftm for /dev/dsp\n");
+	value = AFMT_S16_LE;
+	if(ioctl(fd, SNDCTL_DSP_SETFMT, &value)<0)
+	{
+		kdebugm(KDEBUG_ERROR, "Error setting ftm for /dev/dsp\n");
+		return;
+	}
+	kdebugm(KDEBUG_FUNCTION_END, "Setup successful, fd=%d\n", fd);
+	device = (SoundDevice)fd;
+}
+
+void OSSPlayerSlots::closeDevice(SoundDevice device)
+{
+	kdebugf();
+	close((int)device);
+	kdebugf2();
+}
+
+void OSSPlayerSlots::playSample(SoundDevice device, const int16_t* data, int length, bool& result)
+{
+	kdebugf();
+	result = (write((int)device, data, length) == length);
+	kdebugf2();
+}
+
+void OSSPlayerSlots::recordSample(SoundDevice device, int16_t* data, int length, bool& result)
+{
+	kdebugf();
+	result = (read((int)device, data, length) == length);
+	kdebugf2();
+}
+
+
 
 OSSPlayThread::OSSPlayThread()
 {

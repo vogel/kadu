@@ -421,7 +421,7 @@ int SoundManager::timeAfterLastSound()
 	return lastsoundtime.elapsed();
 }
 
-SoundManager::SoundDevice SoundManager::openDevice(int sample_rate, int channels)
+SoundDevice SoundManager::openDevice(int sample_rate, int channels)
 {
 	SoundDevice device;
 	emit openDeviceImpl(sample_rate, channels, device);
@@ -433,14 +433,14 @@ void SoundManager::closeDevice(SoundDevice device)
 	emit closeDeviceImpl(device);
 }
 
-bool SoundManager::playSample(SoundDevice device, char* data, int length)
+bool SoundManager::playSample(SoundDevice device, const int16_t* data, int length)
 {
 	bool result;
 	emit playSampleImpl(device, data, length, result);
 	return result;
 }
 
-bool SoundManager::recordSample(SoundDevice device, char* data, int length)
+bool SoundManager::recordSample(SoundDevice device, int16_t* data, int length)
 {
 	bool result;
 	emit recordSampleImpl(device, data, length, result);
