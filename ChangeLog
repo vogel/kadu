@@ -209,6 +209,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * usuniêty segfault przy zmianie danych o kontakcie (joi)
 * w³asny opis w ToolTipie na li¶cie kontaktów po pierwszym prze³±czeniu siê ze
   statusu niedostêpnego jest wy¶wietlany poprawnie (joi)
+* zawijanie d³ugich tekstów bez spacji w chacie/historii/panelu (joi)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

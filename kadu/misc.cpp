@@ -2220,6 +2220,7 @@ KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
 	: QTextBrowser(parent, name), level(0)
 {
 	connect(this, SIGNAL(linkClicked(const QString&)), this, SLOT(hyperlinkClicked(const QString&)));
+	setWrapPolicy(QTextEdit::AtWordOrDocumentBoundary);
 }
 
 void KaduTextBrowser::setSource(const QString &name)
