@@ -54,7 +54,7 @@ extern "C" int sms_init()
 	ConfigDialog::registerSlotOnClose(smsslots, SLOT(onCloseConfigDialog()));
 	ConfigDialog::registerSlotOnApply(smsslots, SLOT(onApplyConfigDialog()));
 	
-    	ConfigDialog::connectSlot("SMS", "Use built-in SMS application", SIGNAL(toggled(bool)), smsslots, SLOT(onSmsBuildInCheckToggle(bool)));
+	ConfigDialog::connectSlot("SMS", "Use built-in SMS application", SIGNAL(toggled(bool)), smsslots, SLOT(onSmsBuildInCheckToggle(bool)));
 	ConfigDialog::connectSlot("SMS", "Up", SIGNAL(clicked()), smsslots, SLOT(onUpButton()));
 	ConfigDialog::connectSlot("SMS", "Down", SIGNAL(clicked()), smsslots, SLOT(onDownButton()));
 	
@@ -79,7 +79,7 @@ extern "C" void sms_close()
 	ConfigDialog::unregisterSlotOnClose(smsslots, SLOT(onCloseConfigDialog()));
 	ConfigDialog::unregisterSlotOnApply(smsslots, SLOT(onApplyConfigDialog()));
 
-    	ConfigDialog::disconnectSlot("SMS", "Use built-in SMS application", SIGNAL(toggled(bool)), smsslots, SLOT(onSmsBuildInCheckToggle(bool)));
+	ConfigDialog::disconnectSlot("SMS", "Use built-in SMS application", SIGNAL(toggled(bool)), smsslots, SLOT(onSmsBuildInCheckToggle(bool)));
 	ConfigDialog::disconnectSlot("SMS", "Up", SIGNAL(clicked()), smsslots, SLOT(onUpButton()));
 	ConfigDialog::disconnectSlot("SMS", "Down", SIGNAL(clicked()), smsslots, SLOT(onDownButton()));
 	
@@ -402,6 +402,7 @@ SmsSlots::SmsSlots()
                 HotKey::shortCutFromFile("ShortCuts", "kadu_sendsms"));
 	
 	menuid=kadu->mainMenu()->insertItem(icons_manager.loadIcon("SendSms"), tr("Send SMS"), this, SLOT(onSendSms()), 0, -1, 10);
+	icons_manager.registerMenuItem(kadu->mainMenu(), tr("Send SMS"), "SendSms");
 	kdebugf2();
 }
 

@@ -50,6 +50,8 @@ class UserBoxMenu : public QPopupMenu
 {
 	Q_OBJECT
 
+	private:
+		QValueList<QPair<QString, QString> > iconNames;
 	private slots:
 		void restoreLook();
 
@@ -68,7 +70,11 @@ class UserBoxMenu : public QPopupMenu
 			@param iconname nazwa ikony z zestawu lub sciezka do pliku
 		**/
 		int addItemAtPos(int index,const QString &iconname, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1);
-
+		
+		/**
+			prze³adowuje wszystkie ikony w tym menu dodane przy pomocy powy¿szych funkcji 
+		**/
+		void refreshIcons();
 	signals:
 		void popup();
 };

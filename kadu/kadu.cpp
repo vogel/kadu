@@ -70,9 +70,7 @@ struct gg_event* e;
 
 QTime closestatusppmtime;
 QTimer* blinktimer;
-QPopupMenu* statusppm;
-QPopupMenu* dockppm;
-QPushButton* statusbutton;
+QPopupMenu* dockMenu;
 
 UpdatesClass* uc;
 int lockFileHandle;
@@ -112,7 +110,7 @@ void ToolBar::createControls()
 		if ((*j).caption== "--separator--")
 			addSeparator();
 		else
-			(*j).button = new QToolButton((*j).iconfile, (*j).caption,
+			(*j).button = new QToolButton(icons_manager.loadIcon((*j).iconname), (*j).caption,
 				QString::null, (*j).receiver, (*j).slot, this, (*j).name);
 
 	setStretchableWidget(new QWidget(this));
@@ -138,7 +136,7 @@ void ToolBar::registerSeparator(int position)
 	kdebugf2();
 }
 
-void ToolBar::registerButton(const QIconSet& iconfile, const QString& caption,
+void ToolBar::registerButton(const QString &iconname, const QString& caption,
 			QObject* receiver, const char* slot, int position, const char* name)
 {
 	kdebugf();
@@ -147,7 +145,7 @@ void ToolBar::registerButton(const QIconSet& iconfile, const QString& caption,
 
 	ToolButton RToolButton;
 
-	RToolButton.iconfile= iconfile;
+	RToolButton.iconname= iconname;
 	RToolButton.caption= caption;
 	RToolButton.receiver= receiver;
 	RToolButton.slot= slot;
@@ -191,6 +189,37 @@ QToolButton* ToolBar::getButton(const char* name)
 	return NULL;
 }
 
+void ToolBar::refreshIcons(const QString &caption, const QString &newIconName, const QString &newCaption)
+{
+	kdebugf();
+	if (caption==QString::null) //wszystkie siê od¶wie¿aj±
+	{
+		for(QValueList<ToolButton>::iterator j=RegisteredToolButtons.begin(); j!=RegisteredToolButtons.end(); ++j)
+			if ((*j).caption!="--separator--")
+				(*j).button->setIconSet(icons_manager.loadIcon((*j).iconname));
+		if (kadu->isVisible())
+		{
+			kadu->hide();
+			kadu->show();
+		}
+	}
+	else
+		for(QValueList<ToolButton>::iterator j=RegisteredToolButtons.begin(); j!=RegisteredToolButtons.end(); ++j)
+			if ((*j).caption == caption)
+			{
+				if (newIconName!=QString::null)
+					(*j).iconname=newIconName;
+				(*j).button->setIconSet(icons_manager.loadIcon((*j).iconname));
+				if (newCaption!=QString::null)
+				{
+					(*j).caption=newCaption;
+					(*j).button->setTextLabel(newCaption);
+				}
+				break;
+			}
+	kdebugf2();
+}
+
 void Kadu::gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op)
 {
 	char buf[32];
@@ -199,7 +228,8 @@ void Kadu::gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op)
 
 	if (config_file.readBoolEntry("General", "CheckUpdates"))
 	{
-		if (data.size() > 31) {
+		if (data.size() > 31)
+		{
 			kdebugm(KDEBUG_WARNING, "Kadu::gotUpdatesInfo(): cannot obtain update info\n");
 			delete uc;
 			return;
@@ -364,7 +394,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	connect(Userbox, SIGNAL(mouseButtonClicked(int, QListBoxItem *, const QPoint &)),
 		this, SLOT(mouseButtonClicked(int, QListBoxItem *)));
 	connect(Userbox, SIGNAL(currentChanged(QListBoxItem *)), this, SLOT(currentChanged(QListBoxItem *)));
-	UserBox::userboxmenu->addItem(tr("Open chat window") ,this, SLOT(openChat()));
+	UserBox::userboxmenu->addItem("OpenChat", tr("Open chat window") ,this, SLOT(openChat()));
 	UserBox::userboxmenu->insertSeparator();
 	UserBox::userboxmenu->addItem(tr("Ignore user"), this, SLOT(ignoreUser()));
 	UserBox::userboxmenu->addItem(tr("Block user"), this, SLOT(blockUser()));
@@ -413,24 +443,24 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	setActiveGroup("");
 
 	// dodanie przyciskow do paska narzedzi
-	ToolBar::registerButton(icons_manager.loadIcon("ShowHideInactiveUsers"), tr("Show / hide inactive users"), Userbox, SLOT(showHideInactive()));
-	ToolBar::registerButton(icons_manager.loadIcon("ShowOnlyDescriptionUsers"), tr("Show / hide users without description"), Userbox, SLOT(showHideDescriptions()));
-	ToolBar::registerButton(icons_manager.loadIcon("Configuration"), tr("Configuration"), this, SLOT(configure()));
+	ToolBar::registerButton("ShowHideInactiveUsers", tr("Show / hide inactive users"), Userbox, SLOT(showHideInactive()));
+	ToolBar::registerButton("ShowOnlyDescriptionUsers", tr("Show / hide users without description"), Userbox, SLOT(showHideDescriptions()));
+	ToolBar::registerButton("Configuration", tr("Configuration"), this, SLOT(configure()));
 	ToolBar::registerSeparator();
-	ToolBar::registerButton(icons_manager.loadIcon("History"), tr("View history"), this, SLOT(viewHistory()));
-	ToolBar::registerButton(icons_manager.loadIcon("EditUserInfo"), tr("View/edit user info"), this, SLOT(showUserInfo()));
-	ToolBar::registerButton(icons_manager.loadIcon("LookupUserInfo"), tr("Lookup in directory"), this, SLOT(lookupInDirectory()));
+	ToolBar::registerButton("History", tr("View history"), this, SLOT(viewHistory()));
+	ToolBar::registerButton("EditUserInfo", tr("View/edit user info"), this, SLOT(showUserInfo()));
+	ToolBar::registerButton("LookupUserInfo", tr("Lookup in directory"), this, SLOT(lookupInDirectory()));
 	ToolBar::registerSeparator();
-	ToolBar::registerButton(icons_manager.loadIcon("AddUser"), tr("Add user"), this, SLOT(addUserAction()));
+	ToolBar::registerButton("AddUser", tr("Add user"), this, SLOT(addUserAction()));
 
 	/* guess what */
 	createMenu();
 	createStatusPopupMenu();
 
-	connect(statusppm, SIGNAL(aboutToHide()), this, SLOT(statusMenuAboutToHide()));
+	connect(statusMenu, SIGNAL(aboutToHide()), this, SLOT(statusMenuAboutToHide()));
 
-	dockppm->insertSeparator();
-	dockppm->insertItem(icons_manager.loadIcon("Exit"), tr("&Exit Kadu"), 9);
+	dockMenu->insertSeparator();
+	dockMenu->insertItem(icons_manager.loadIcon("Exit"), tr("&Exit Kadu"), 9);
 
 	InfoPanel = new KaduTextBrowser(split, "InfoPanel");
 	InfoPanel->setFrameStyle(QFrame::NoFrame);
@@ -449,11 +479,11 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		InfoPanel->QWidget::hide();
 	QObject::connect(&userlist, SIGNAL(dnsNameReady(UinType)), this, SLOT(infopanelUpdate(UinType)));
 
-	statusbutton = new QPushButton(QIconSet(icons_manager.loadIcon("Offline")), tr("Offline"), vbox, "statusbutton");
-	statusbutton->setPopup(statusppm);
+	statusButton = new QPushButton(QIconSet(icons_manager.loadIcon("Offline")), tr("Offline"), vbox, "statusbutton");
+	statusButton->setPopup(statusMenu);
 
 	if (!config_file.readBoolEntry("Look", "ShowStatusButton"))
-		statusbutton->hide();
+		statusButton->hide();
 
 	QValueList<int> splitsizes;
 
@@ -464,11 +494,12 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 //	tworzymy pasek narzedziowy
 	createToolBar();
-	if (config_file.readEntry("General", "DockWindows") != QString::null) {
+	if (config_file.readEntry("General", "DockWindows") != QString::null)
+	{
 		QString dockwindows=config_file.readEntry("General", "DockWindows").replace(QRegExp("\\\\n"), "\n");
 		QTextStream stream(&dockwindows, IO_ReadOnly);
 		stream >> *this;
-		}
+	}
 
 	refreshGroupTabBar();
 	int configTab = config_file.readNumEntry( "Look", "CurrentGroupTab" );
@@ -532,13 +563,15 @@ void Kadu::popupMenu()
 	int notifyuseritem= UserBox::userboxmenu->getItem(tr("Notify about user"));
 	int offlinetouseritem= UserBox::userboxmenu->getItem(tr("Offline to user"));
 
-	if (!user.uin || isOurUin) {
+	if (!user.uin || isOurUin)
+	{
 		UserBox::userboxmenu->setItemEnabled(ignoreuseritem, false);
 		UserBox::userboxmenu->setItemEnabled(blockuseritem, false);
 		UserBox::userboxmenu->setItemEnabled(notifyuseritem, false);
 		UserBox::userboxmenu->setItemEnabled(offlinetouseritem, false);
-		}
-	else {
+	}
+	else
+	{
 		UinsList uins;
 		uins = activeUserBox->getSelectedUins();
 		if (isIgnored(uins))
@@ -551,15 +584,16 @@ void Kadu::popupMenu()
 		UserBox::userboxmenu->setItemEnabled(notifyuseritem, config_file.readBoolEntry("Notify", "NotifyStatusChange") && !config_file.readBoolEntry("Notify", "NotifyAboutAll"));
 		if (user.notify)
 			UserBox::userboxmenu->setItemChecked(notifyuseritem, true);
-		}
+	}
 
 	int deletehistoryitem = UserBox::userboxmenu->getItem(tr("Clear history"));
 	int historyitem = UserBox::userboxmenu->getItem(tr("View history"));
 	int searchuser = UserBox::userboxmenu->getItem(tr("Lookup in directory"));
-	if (!user.uin || isOurUin) {
+	if (!user.uin || isOurUin)
+	{
 		UserBox::userboxmenu->setItemEnabled(deletehistoryitem, false);
 		UserBox::userboxmenu->setItemEnabled(historyitem, false);
-		}
+	}
 	if (users.count() != 1 || !user.uin)
 		UserBox::userboxmenu->setItemEnabled(searchuser, false);
 	if (users.count() != 1)
@@ -575,7 +609,8 @@ void Kadu::configure()
 	ConfigDialog::showConfigDialog(qApp);
 }
 
-void Kadu::viewHistory() {
+void Kadu::viewHistory()
+{
 	kdebugf();
 	UserBox *activeUserBox=UserBox::getActiveUserBox();
 	if (activeUserBox==NULL)
@@ -584,46 +619,46 @@ void Kadu::viewHistory() {
 		return;
 	}
 	UinsList uins= activeUserBox->getSelectedUins();
-	if (uins.count()) {
-		History *hb = new History(uins);
-		hb->show();
-	}
+	if (uins.count())
+		(new History(uins))->show();
 	kdebugf2();
 }
 
-void Kadu::lookupInDirectory() {
+void Kadu::lookupInDirectory()
+{
 	kdebugf();
 	SearchDialog *sd;
 	UserBox *activeUserBox=UserBox::getActiveUserBox();
-	UserList users;
 	if (activeUserBox==NULL)
 	{
 		kdebugf2();
 		return;
 	}
-	users = activeUserBox->getSelectedUsers();
-	if (users.count() == 1) {
-		sd = new SearchDialog(0, tr("User info"), userlist.byAltNick((*users.begin()).altnick).uin);
+	UserList users = activeUserBox->getSelectedUsers();
+	if (users.count() == 1)
+	{
+		sd = new SearchDialog(0, tr("User info"), (*(users.begin())).uin);
 		sd->show();
 		sd->firstSearch();
 	}
-	else {
+	else
+	{
 		sd = new SearchDialog();
 		sd->show();
 	}
 	kdebugf2();
 }
 
-void Kadu::showUserInfo() {
+void Kadu::showUserInfo()
+{
 	kdebugf();
 	UserBox *activeUserBox=UserBox::getActiveUserBox();
-	UserList users;
 	if (activeUserBox==NULL)
 	{
 		kdebugf2();
 		return;
 	}
-	users = activeUserBox->getSelectedUsers();
+	UserList users = activeUserBox->getSelectedUsers();
 	if (users.count() == 1)
 		(new UserInfo((*users.begin()).altnick, false, 0, "user info"))->show();
 	kdebugf2();
@@ -638,7 +673,7 @@ void Kadu::deleteUsers()
 		kdebugf2();
 		return;
 	}
-	QStringList  users = activeUserBox->getSelectedAltNicks();
+	QStringList users = activeUserBox->getSelectedAltNicks();
 	removeUser(users, false);
 	if (!Userbox->isSelected(Userbox->currentItem()))
 		InfoPanel->setText("");
@@ -650,7 +685,8 @@ void Kadu::personalInfo()
 	(new PersonalInfoDialog())->show();
 }
 
-void Kadu::addUserAction() {
+void Kadu::addUserAction()
+{
 	(new UserInfo(QString::null, true, 0, "add user"))->show();
 }
 
@@ -692,12 +728,7 @@ void Kadu::searchInDirectory()
 
 void Kadu::help()
 {
-	QString link;
-/*	if (QFile::exists(QString(DOCDIR) + "/index_doc.html"))
-		link = QString(DOCDIR) + "/index_doc.html";
-	else*/
-		link = "http://kadu.net/doc.php";
-	openWebBrowser(link);
+	openWebBrowser("http://www.kadu.net/doc.php");
 }
 
 void Kadu::about()
@@ -791,7 +822,8 @@ void Kadu::offlineToUser()
 	kdebugf2();
 }
 
-void Kadu::changeAppearance() {
+void Kadu::changeAppearance()
+{
 	kdebugf();
 
 	Userbox->setPaletteBackgroundColor(config_file.readColorEntry("Look", "UserboxBgColor"));
@@ -808,10 +840,15 @@ void Kadu::changeAppearance() {
 		InfoPanel->setVScrollBarMode(QScrollView::Auto);
 	else
 		InfoPanel->setVScrollBarMode(QScrollView::AlwaysOff);
+
+	QPixmap pix=gadu->status().pixmap(status);
+	statusButton->setIconSet(QIconSet(pix));
+	emit statusPixmapChanged(pix);
 	kdebugf2();
 }
 
-void Kadu::currentChanged(QListBoxItem *item) {
+void Kadu::currentChanged(QListBoxItem *item)
+{
 	if (!item || !item->isSelected())
 		return;
 
@@ -868,14 +905,14 @@ void Kadu::refreshGroupTabBar()
 			GroupBar->removeTab(GroupBar->tabAt(i));
 	/* dodajemy nowe zakladki */
 	for (unsigned int i = 0; i < group_list.count(); ++i)
-		{
+	{
 		bool createNewTab = true;
 		for (int j = 0; j < GroupBar->count(); ++j)
 			if (GroupBar->tabAt(j)->text() == group_list[i])
 				createNewTab = false;
 		if(createNewTab)
 			GroupBar->addTab(new QTab(group_list[i]));
-		}
+	}
 	kdebugm(KDEBUG_INFO, "%i group tabs\n", GroupBar->count());
 	GroupBar->show();
 	/* odswiezamy - dziala tylko jesli jest widoczny */
@@ -975,29 +1012,23 @@ void Kadu::blink()
 	kdebugf();
 
 	if (!DoBlink && !gadu->status().isOffline())
-	{
 		return;
-	}
 	else if (!DoBlink && gadu->status().isOffline())
 	{
 		pix = gadu->status().pixmap(Offline, false);
-		statusbutton->setIconSet(QIconSet(pix));
+		statusButton->setIconSet(QIconSet(pix));
 		emit statusPixmapChanged(pix);
 		return;
 	}
 
 	if (BlinkOn)
-	{
 		pix = gadu->status().pixmap(Offline, false);
-		statusbutton->setIconSet(QIconSet(pix));
-		emit statusPixmapChanged(pix);
-	}
 	else
-	{
 		pix = gadu->status().pixmap(status);
-		statusbutton->setIconSet(QIconSet(pix));
-		emit statusPixmapChanged(pix);
-	}
+
+	statusButton->setIconSet(QIconSet(pix));
+	emit statusPixmapChanged(pix);
+
 	BlinkOn=!BlinkOn;
 
 	blinktimer->start(1000, TRUE);
@@ -1022,13 +1053,11 @@ void Kadu::userListUserAdded(const UserListElement& user)
 		gadu->addNotify(user.uin);
 }
 
-void Kadu::mouseButtonClicked(int button, QListBoxItem *item) {
+void Kadu::mouseButtonClicked(int button, QListBoxItem *item)
+{
 	kdebugm(KDEBUG_FUNCTION_START, "Kadu::mouseButtonClicked(): button=%d\n", button);
 	if (!item)
 		InfoPanel->setText("");
-
-	if (button !=4 || !item)
-		return;
 	kdebugf2();
 }
 
@@ -1112,10 +1141,10 @@ void Kadu::slotHandleState(int command)
 			delete cd;
 			break;
 		case 8:
-			statusppm->setItemChecked(8, !statusppm->isItemChecked(8));
-			dockppm->setItemChecked(8, !dockppm->isItemChecked(8));
-			config_file.writeEntry("General", "PrivateStatus",statusppm->isItemChecked(8));
-			status.setFriendsOnly(statusppm->isItemChecked(8));
+			statusMenu->setItemChecked(8, !statusMenu->isItemChecked(8));
+			dockMenu->setItemChecked(8, !dockMenu->isItemChecked(8));
+			config_file.writeEntry("General", "PrivateStatus",statusMenu->isItemChecked(8));
+			status.setFriendsOnly(statusMenu->isItemChecked(8));
 			break;
 	}
 
@@ -1129,8 +1158,8 @@ void Kadu::slotHandleState(int command)
 		{
 			Autohammer = false;
 			gadu->disableAutoConnection();
-			statusppm->setItemEnabled(7, false);
-			dockppm->setItemEnabled(7, false);
+			statusMenu->setItemEnabled(7, false);
+			dockMenu->setItemEnabled(7, false);
 		}
 		else
 			Autohammer = true;
@@ -1301,13 +1330,16 @@ void Kadu::disconnected()
 	kdebugf2();
 }
 
-bool Kadu::close(bool quit) {
-	if (!quit && Docked) {
+bool Kadu::close(bool quit)
+{
+	if (!quit && Docked)
+	{
 		kdebugm(KDEBUG_INFO, "Kadu::close(): Kadu hide\n");
 		hide();
 		return false;
 	}
-	else {
+	else
+	{
 		chat_manager->closeAllWindows();
 		ConfigDialog::closeDialog();
 		ModulesManager::closeModule();
@@ -1316,14 +1348,11 @@ bool Kadu::close(bool quit) {
 		{
 			if (config_file.readBoolEntry("Look", "ShowInfoPanel"))
 			{
-//				QSize split;
 				config_file.writeEntry("General", "UserBoxHeight", Userbox->size().height());
 				config_file.writeEntry("General", "DescriptionHeight", InfoPanel->size().height());
 			}
 			if (config_file.readBoolEntry("Look", "ShowStatusButton"))
-			{
 				config_file.writeEntry("General", "UserBoxHeight", Userbox->size().height());
-			}
 			saveGeometry(this, "General", "Geometry");
 		}
 
@@ -1342,7 +1371,6 @@ bool Kadu::close(bool quit) {
 
 		pending.writeToFile();
 		writeIgnored();
-//		if (config_file.readBoolEntry("General", "DisconnectWithDescription") && gadu->getCurrentStatus() != GG_STATUS_NOT_AVAIL) {
 		if (config_file.readBoolEntry("General", "DisconnectWithDescription") && !gadu->status().isOffline())
 		{
 			kdebugm(KDEBUG_INFO, "Kadu::close(): Set status NOT_AVAIL_DESCR with disconnect description(%s)\n",(const char *)config_file.readEntry("General", "DisconnectDescription").local8Bit());
@@ -1361,53 +1389,73 @@ bool Kadu::close(bool quit) {
 	}
 }
 
-void Kadu::quitApplication() {
+void Kadu::quitApplication()
+{
 	kdebugf();
 	close(true);
 }
 
-Kadu::~Kadu(void) {
+Kadu::~Kadu(void)
+{
 	kdebugf();
 	kdebugf2();
 }
 
-void Kadu::createMenu() {
+void Kadu::createMenu()
+{
 	kdebugf();
 	MenuBar = new QMenuBar(this, "MenuBar");
 
 	MainMenu = new QPopupMenu(this, "MainMenu");
-	MainMenu->insertItem(tr("Manage &ignored"), this, SLOT(manageIgnored()));
+	MainMenu->insertItem(icons_manager.loadIcon("ManageIgnored"), tr("Manage &ignored"), this, SLOT(manageIgnored()));
 	MainMenu->insertItem(icons_manager.loadIcon("Configuration"), tr("&Configuration"), this, SLOT(configure()),HotKey::shortCutFromFile("ShortCuts", "kadu_configure"));
 	MainMenu->insertSeparator();
 
-	personalInfoMenuId=MainMenu->insertItem(tr("Personal information"), this,SLOT(personalInfo()));
+	personalInfoMenuId=MainMenu->insertItem(icons_manager.loadIcon("PersonalInfo"), tr("Personal information"), this,SLOT(personalInfo()));
 	MainMenu->insertSeparator();
 	MainMenu->insertItem(icons_manager.loadIcon("LookupUserInfo"), tr("&Search for users"), this, SLOT(searchInDirectory()));
-	MainMenu->insertItem(tr("I&mport / Export userlist"), this, SLOT(importExportUserlist()));
+	MainMenu->insertItem(icons_manager.loadIcon("ImportExport"), tr("I&mport / Export userlist"), this, SLOT(importExportUserlist()));
 	MainMenu->insertItem(icons_manager.loadIcon("AddUser"), tr("&Add user"), this, SLOT(addUserAction()),HotKey::shortCutFromFile("ShortCuts", "kadu_adduser"));
 	MainMenu->insertSeparator();
-	MainMenu->insertItem(tr("H&elp"), this, SLOT(help()));
-	MainMenu->insertItem(tr("A&bout..."), this, SLOT(about()));
+	MainMenu->insertItem(icons_manager.loadIcon("HelpMenuItem"), tr("H&elp"), this, SLOT(help()));
+	MainMenu->insertItem(icons_manager.loadIcon("AboutMenuItem"), tr("A&bout..."), this, SLOT(about()));
 	MainMenu->insertSeparator();
-	MainMenu->insertItem(tr("&Hide Kadu"), this, SLOT(hideKadu()));
+	MainMenu->insertItem(icons_manager.loadIcon("HideKadu"), tr("&Hide Kadu"), this, SLOT(hideKadu()));
 	MainMenu->insertItem(icons_manager.loadIcon("Exit"), tr("&Exit Kadu"), this, SLOT(quit()));
 
 	MenuBar->insertItem(tr("&Kadu"), MainMenu);
+	
+	icons_manager.registerMenu(MainMenu);
+	icons_manager.registerMenuItem(MainMenu, tr("Manage &ignored"), "ManageIgnored");
+	icons_manager.registerMenuItem(MainMenu, tr("&Configuration"), "Configuration");
+	icons_manager.registerMenuItem(MainMenu, tr("Personal information"), "PersonalInfo");
+	icons_manager.registerMenuItem(MainMenu, tr("&Search for users"), "LookupUserInfo");
+	icons_manager.registerMenuItem(MainMenu, tr("I&mport / Export userlist"), "ImportExport");
+	icons_manager.registerMenuItem(MainMenu, tr("&Add user"), "AddUser");
+	icons_manager.registerMenuItem(MainMenu, tr("H&elp"), "HelpMenuItem");
+	icons_manager.registerMenuItem(MainMenu, tr("A&bout..."), "AboutMenuItem");
+	icons_manager.registerMenuItem(MainMenu, tr("&Hide Kadu"), "HideKadu");
+	icons_manager.registerMenuItem(MainMenu, tr("&Exit Kadu"), "Exit");
 	kdebugf2();
 }
 
-void Kadu::statusMenuAboutToHide() {
+void Kadu::statusMenuAboutToHide()
+{
 	closestatusppmtime.restart();
 }
 
-void Kadu::createStatusPopupMenu() {
+void Kadu::createStatusPopupMenu()
+{
 	kdebugf();
 
 	QPixmap pix;
 	QIconSet icon;
 
-	statusppm = new QPopupMenu(this, "statusppm");
-	dockppm = new QPopupMenu(this, "dockppm");
+	statusMenu = new QPopupMenu(this, "statusMenu");
+	dockMenu = new QPopupMenu(this, "dockMenu");
+
+	icons_manager.registerMenu(statusMenu);
+	icons_manager.registerMenu(dockMenu);
 
 	Status *s = new GaduStatus();
 	for (int i=0; i<8; ++i)
@@ -1419,39 +1467,44 @@ void Kadu::createStatusPopupMenu() {
 		s->setIndex(i, ".");
 		pix = s->pixmap();
 		icon = QIconSet(pix);
-		statusppm->insertItem(icon, qApp->translate("@default", Status::name(i)), i);
-		dockppm->insertItem(icon, qApp->translate("@default", Status::name(i)), i);
+		statusMenu->insertItem(icon, qApp->translate("@default", Status::name(i)), i);
+		dockMenu->insertItem(icon, qApp->translate("@default", Status::name(i)), i);
+
+		icons_manager.registerMenuItem(statusMenu, qApp->translate("@default", Status::name(i)), Status::toString(s->status(), s->hasDescription()));
+		icons_manager.registerMenuItem(dockMenu, qApp->translate("@default", Status::name(i)), Status::toString(s->status(), s->hasDescription()));
 	}
 	delete s;
 
 	bool privateStatus=config_file.readBoolEntry("General", "PrivateStatus");
-	statusppm->insertSeparator();
-	dockppm->insertSeparator();
-	statusppm->insertItem(tr("Private"), 8);
-	statusppm->setItemChecked(8, privateStatus);
-	dockppm->insertItem(tr("Private"), 8);
-	dockppm->setItemChecked(8, privateStatus);
+	statusMenu->insertSeparator();
+	dockMenu->insertSeparator();
+	statusMenu->insertItem(tr("Private"), 8);
+	statusMenu->setItemChecked(8, privateStatus);
+	dockMenu->insertItem(tr("Private"), 8);
+	dockMenu->setItemChecked(8, privateStatus);
 
-	statusppm->setCheckable(true);
-	dockppm->setCheckable(true);
-	statusppm->setItemChecked(6, true);
-	dockppm->setItemChecked(6, true);
+	statusMenu->setCheckable(true);
+	dockMenu->setCheckable(true);
+	statusMenu->setItemChecked(6, true);
+	dockMenu->setItemChecked(6, true);
 
-	statusppm->setItemEnabled(7, false);
-	dockppm->setItemEnabled(7, false);
+	statusMenu->setItemEnabled(7, false);
+	dockMenu->setItemEnabled(7, false);
 
-	connect(statusppm, SIGNAL(activated(int)), this, SLOT(slotHandleState(int)));
+	connect(statusMenu, SIGNAL(activated(int)), this, SLOT(slotHandleState(int)));
 	kdebugf2();
 }
 
-void Kadu::showdesc(bool show) {
+void Kadu::showdesc(bool show)
+{
 	if (show)
 		InfoPanel->show();
 	else
 		InfoPanel->QWidget::hide();
 }
 
-void Kadu::infopanelUpdate(UinType uin) {
+void Kadu::infopanelUpdate(UinType uin)
+{
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		return;
 	kdebugm(KDEBUG_INFO, "Kadu::infopanelUpdate(%d)\n", uin);
@@ -1585,22 +1638,22 @@ void KaduSlots::onDestroyConfigDialog()
 	kadu->showdesc(config_file.readBoolEntry("Look", "ShowInfoPanel"));
 
 	if (config_file.readBoolEntry("Look", "ShowStatusButton"))
-		statusbutton->show();
+		kadu->statusButton->show();
 	else
-		statusbutton->hide();
+		kadu->statusButton->hide();
 
 	if (config_file.readBoolEntry("Look", "MultiColumnUserbox"))
 		kadu->userbox()->setColumnMode(QListBox::FitToWidth);
 	else
 		kadu->userbox()->setColumnMode(1);
 
-	QComboBox* cb_defstatus = ConfigDialog::getComboBox("General", "Default status", "cb_defstatus");
-	config_file.writeEntry("General", "DefaultStatusIndex", cb_defstatus->currentItem());
+	config_file.writeEntry("General", "DefaultStatusIndex",
+		ConfigDialog::getComboBox("General", "Default status", "cb_defstatus")->currentItem());
 
 	bool privateStatus = config_file.readBoolEntry("General", "PrivateStatus");
 	gadu->status().setFriendsOnly(privateStatus);
 
-	statusppm->setItemChecked(8, privateStatus);
+	kadu->statusMenu->setItemChecked(8, privateStatus);
 
 	/* I od¶wie¿ okno Kadu */
 	kadu->changeAppearance();
@@ -1612,7 +1665,8 @@ void KaduSlots::onDestroyConfigDialog()
 	config_file.writeEntry("General", "Language", translateLanguage(qApp, cb_language->currentText(),false));
 
 	QString new_style=ConfigDialog::getComboBox("Look", "Qt Theme")->currentText();
-	if(new_style!=tr("Unknown") && new_style != QApplication::style().name()){
+	if(new_style!=tr("Unknown") && new_style != QApplication::style().name())
+	{
 		QApplication::setStyle(new_style);
 		config_file.writeEntry("Look", "QtStyle", new_style);
 	}
@@ -1767,19 +1821,19 @@ void Kadu::showStatusOnMenu(int statusNr)
 {
 	for(int i = 0; i < 8; ++i)
 	{
-		statusppm->setItemChecked(i, false);
-		dockppm->setItemChecked(i, false);
+		statusMenu->setItemChecked(i, false);
+		dockMenu->setItemChecked(i, false);
 	}
-	statusppm->setItemChecked(statusNr, true);
-	dockppm->setItemChecked(statusNr, true);
-	statusppm->setItemChecked(8, gadu->status().isFriendsOnly());
-	dockppm->setItemChecked(8, gadu->status().isFriendsOnly());
+	statusMenu->setItemChecked(statusNr, true);
+	dockMenu->setItemChecked(statusNr, true);
+	statusMenu->setItemChecked(8, gadu->status().isFriendsOnly());
+	dockMenu->setItemChecked(8, gadu->status().isFriendsOnly());
 
-	statusbutton->setText(qApp->translate("@default", gadu->status().name()));
-	statusppm->setItemEnabled(7, statusNr != 6);
-	dockppm->setItemEnabled(7, statusNr != 6);
+	statusButton->setText(qApp->translate("@default", gadu->status().name()));
+	statusMenu->setItemEnabled(7, statusNr != 6);
+	dockMenu->setItemEnabled(7, statusNr != 6);
 	QPixmap pix = gadu->status().pixmap();
-	statusbutton->setIconSet(QIconSet(pix));
+	statusButton->setIconSet(QIconSet(pix));
 	setIcon(pix);
 	UserBox::all_refresh();
 

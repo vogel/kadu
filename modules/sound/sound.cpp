@@ -387,20 +387,18 @@ SoundSlots::SoundSlots() : QObject(NULL, "sound_slots")
 				tr("Status busy sound")<<tr("Status not available sound")<<
 				tr("Conection error sound")<<tr("Other message");
 
-	QIconSet mu;
 	sound_manager->setMute(!config_file.readBoolEntry("Sounds", "PlaySound"));
 	if (sound_manager->isMuted())
 	{
 		muteitem= kadu->mainMenu()->insertItem(icons_manager.loadIcon("Mute"), tr("Unmute sounds"), this, SLOT(muteUnmuteSounds()), 0, -1, 3);
-		mu= QIconSet(icons_manager.loadIcon("Mute"));
+		ToolBar::registerButton("Mute", tr("Unmute sounds"), this, SLOT(muteUnmuteSounds()), 0, "mute");
 	}
 	else
 	{
 		muteitem= kadu->mainMenu()->insertItem(icons_manager.loadIcon("Unmute"), tr("Mute sounds"), this, SLOT(muteUnmuteSounds()), 0, -1, 3);
-		mu= QIconSet(icons_manager.loadIcon("Unmute"));
+		ToolBar::registerButton("Unmute", tr("Mute sounds"), this, SLOT(muteUnmuteSounds()), 0, "mute");
 	}
 
-	ToolBar::registerButton(mu, tr("Mute sounds"), this, SLOT(muteUnmuteSounds()), 0, "mute");
 	kdebugf2();
 }
 
@@ -483,7 +481,6 @@ void SoundSlots::onCreateConfigDialog()
 void SoundSlots::muteUnmuteSounds()
 {
 	kdebugf();
-	QToolButton *mutebtn= ToolBar::getButton("mute");
 	bool mute=!sound_manager->isMuted();
 	sound_manager->setMute(mute);
 	config_file.writeEntry("Sounds", "PlaySound", !mute);
@@ -497,18 +494,18 @@ void SoundSlots::muteUnmuteSounds()
 			soundPlayer(!mute, true);
 		}
 	}
+
 	if (mute)
 	{
-		mutebtn->setIconSet(icons_manager.loadIcon("Mute"));
-		mutebtn->setTextLabel(tr("Unmute sounds"));
+		ToolBar::refreshIcons(tr("Mute sounds"), "Mute", tr("Unmute sounds"));
 		kadu->menuBar()->changeItem(muteitem, icons_manager.loadIcon("Mute"), tr("Unmute sounds"));
 	}
 	else
 	{
+		ToolBar::refreshIcons(tr("Unmute sounds"), "Unmute", tr("Mute sounds"));
 		kadu->menuBar()->changeItem(muteitem, icons_manager.loadIcon("Unmute"), tr("Mute sounds"));
-		mutebtn->setTextLabel(tr("Mute sounds"));
-		mutebtn->setIconSet(icons_manager.loadIcon("Unmute"));
 	}
+
 	kdebugf2();
 }
 
@@ -517,17 +514,14 @@ void SoundSlots::soundPlayer(bool value, bool toolbarChanged)
 {
 	kdebugf();
 	QCheckBox *b_volumectrl= ConfigDialog::getCheckBox("Sounds", "Enable volume control (player must support it)");
-	QGrid *g_volume= ConfigDialog::getGrid("Sounds","volume");
 	QCheckBox *b_playchatting= ConfigDialog::getCheckBox("Sounds", "Play sounds from a person whilst chatting");
 	QCheckBox *b_playinvisible= ConfigDialog::getCheckBox("Sounds", "Play chat sounds only when window is invisible");
 
-	QHBox* box=ConfigDialog::getHBox("Sounds","sound_box");
-	box->setEnabled(value);
-	QHBox* combobox=ConfigDialog::getHBox("Sounds","sound_theme");
-	combobox->setEnabled(value);
+	ConfigDialog::getHBox("Sounds","sound_box")->setEnabled(value);
+	ConfigDialog::getHBox("Sounds","sound_theme")->setEnabled(value);
 
 	b_volumectrl->setEnabled(value);
-	g_volume->setEnabled(value && b_volumectrl->isChecked());
+	ConfigDialog::getGrid("Sounds","volume")->setEnabled(value && b_volumectrl->isChecked());
 	b_playchatting->setEnabled(value);
 	b_playinvisible->setEnabled(value && b_playchatting->isChecked());
 	if (value==sound_manager->isMuted() && !toolbarChanged)
@@ -538,8 +532,7 @@ void SoundSlots::soundPlayer(bool value, bool toolbarChanged)
 void SoundSlots::clearSoundFile()
 {
 	kdebugf();
-	QListView* lv_soundfiles=ConfigDialog::getListView("Sounds", "sound_files");
-	QListViewItem *item= lv_soundfiles->currentItem();
+	QListViewItem *item=ConfigDialog::getListView("Sounds", "sound_files")->currentItem();
 	if (!item->isSelected())
 		return;
 	item->setText(1, "");
@@ -550,8 +543,7 @@ void SoundSlots::chooseSoundFile()
 {
 	kdebugf();
 	QString start=QDir::rootDirPath();
-	QListView* lv_soundfiles=ConfigDialog::getListView("Sounds", "sound_files");
-	QListViewItem *item= lv_soundfiles->currentItem();
+	QListViewItem *item=ConfigDialog::getListView("Sounds", "sound_files")->currentItem();
 	if (!item->isSelected())
 		return;
 
@@ -569,8 +561,7 @@ void SoundSlots::chooseSoundFile()
 void SoundSlots::testSoundFile()
 {
 	kdebugf();
-	QListView* lv_soundfiles=ConfigDialog::getListView("Sounds", "sound_files");
-	QListViewItem *item= lv_soundfiles->currentItem();
+	QListViewItem *item=ConfigDialog::getListView("Sounds", "sound_files")->currentItem();
 	if (!item->isSelected())
 		return;
 	sound_manager->play(item->text(1), true);

@@ -31,6 +31,7 @@
 #include "message_box.h"
 #include "kadu-config.h"
 #include "emoticons.h"
+#include "kadu.h"
 
 #define GG_FONT_IMAGE	0x80
 
@@ -1142,7 +1143,6 @@ IconsManager::IconsManager(const QString& name, const QString& configname)
 	:Themes(name, configname, "icons_manager")
 {
 	kdebugf();
-    connect(this, SIGNAL(themeChanged(const QString&)), this, SLOT(changed(const QString&)));
 	kdebugf2();
 }
 
@@ -1180,44 +1180,155 @@ QPixmap IconsManager::loadIcon(const QString &name)
 	}
 }
 
-void IconsManager::onDestroyConfigDialog()
+void IconsManager::clear()
 {
 	kdebugf();
-	QComboBox *cb_icontheme= ConfigDialog::getComboBox("Look", "Icon theme");
-	QString theme;
-	if (cb_icontheme->currentText() == tr("Default"))
-		theme= "default";
-	else
-	    theme= cb_icontheme->currentText();
-
-	config_file.writeEntry("Look", "IconsPaths", icons_manager.additionalPaths().join(";"));
-	config_file.writeEntry("Look", "IconTheme", theme);
+	icons.clear();
 	kdebugf2();
 }
 
-void IconsManager::chooseIconTheme(const QString& string)
+void IconsManager::registerMenu(QMenuData *menu)
 {
 	kdebugf();
-	QString str=string;
-	if (string == tr("Default"))
-	    str= "default";
-	icons_manager.setTheme(str);
-	QMessageBox::information(0, tr("Icons"), tr("Please restart kadu to apply new icon theme"));
+	menus.push_front(qMakePair(menu, QValueList<QPair<QString, QString> >()));
+	kdebugf2();
+}
+
+void IconsManager::unregisterMenu(QMenuData *menu)
+{
+	kdebugf();
+	QValueList<QPair<QMenuData *, QValueList<QPair<QString, QString> > > >::iterator it=menus.begin();
+	QValueList<QPair<QMenuData *, QValueList<QPair<QString, QString> > > >::iterator end=menus.end();
+	while (it!=end)
+	{
+		if ((*it).first==menu)
+		{
+			menus.remove(it);
+			break;
+		}
+		it++;
+	}
+	kdebugf2();
+}
+
+void IconsManager::registerMenuItem(QMenuData *menu, const QString &caption, const QString &iconName)
+{
+	kdebugf();
+	QValueList<QPair<QMenuData *, QValueList<QPair<QString, QString> > > >::iterator it=menus.begin();
+	QValueList<QPair<QMenuData *, QValueList<QPair<QString, QString> > > >::iterator end=menus.end();
+	while (it!=end)
+	{
+		if ((*it).first==menu)
+		{
+			(*it).second.push_front(qMakePair(caption, iconName));
+			break;
+		}
+		it++;
+	}
+	kdebugf2();
+}
+
+void IconsManager::unregisterMenuItem(QMenuData *menu, const QString &caption)
+{
+	kdebugf();
+	QValueList<QPair<QMenuData *, QValueList<QPair<QString, QString> > > >::iterator it=menus.begin();
+	QValueList<QPair<QMenuData *, QValueList<QPair<QString, QString> > > >::iterator end=menus.end();
+	while (it!=end)
+	{
+		if ((*it).first==menu)
+		{
+			QValueList<QPair<QString, QString> >::iterator it2=(*it).second.begin();
+			QValueList<QPair<QString, QString> >::iterator end2=(*it).second.end();
+			while (it2!=end2)
+			{
+				if ((*it2).first==caption)
+				{
+					(*it).second.remove(*it2);
+					break;
+				}
+				it2++;
+			}
+			break;
+		}
+		it++;
+	}
+	kdebugf2();
+}
+
+void IconsManager::refreshMenus()
+{
+	kdebugf();
+	QValueList<QPair<QMenuData *, QValueList<QPair<QString, QString> > > >::const_iterator it=menus.begin();
+	QValueList<QPair<QMenuData *, QValueList<QPair<QString, QString> > > >::const_iterator end=menus.end();
+	while (it!=end)
+	{
+		QMenuData *menu=(*it).first;
+		for (unsigned int i=0; i<menu->count(); i++)
+		{
+			int id=menu->idAt(i);
+			QString t=menu->text(id);
+
+			QValueList<QPair<QString, QString> >::const_iterator it2=(*it).second.begin();
+			QValueList<QPair<QString, QString> >::const_iterator end2=(*it).second.end();
+		
+			for (;it2!=end2; it2++)
+				if (t.startsWith((*it2).first))
+				{
+					bool enabled=menu->isItemEnabled(id);
+					bool checked=menu->isItemChecked(id);
+					menu->changeItem(id, loadIcon((*it2).second), t);
+					menu->setItemEnabled(id, enabled);
+					menu->setItemChecked(id, checked);
+				}
+		}
+
+		it++;
+	}
+	kdebugf2();
+}
+
+void IconsManager::onApplyConfigDialog()
+{
+	kdebugf();
+	QString previousIconTheme=config_file.readEntry("Look", "IconTheme");
+	QComboBox *iconThemeCombo= ConfigDialog::getComboBox("Look", "Icon theme");
+	QString selectedTheme;
+	if (iconThemeCombo->currentText() == tr("Default"))
+		selectedTheme="default";
+	else
+	    selectedTheme=iconThemeCombo->currentText();
+
+	if (selectedTheme!=previousIconTheme)
+	{
+		config_file.writeEntry("Look", "IconTheme", selectedTheme);
+
+		icons_manager.clear();
+		icons_manager.setTheme(selectedTheme);
+		ToolBar::refreshIcons();
+		UserBox::userboxmenu->refreshIcons();
+		icons_manager.refreshMenus();
+		kadu->changeAppearance();
+		QMessageBox::information(0, tr("Icons"), tr("Please close all (except main) Kadu windows"));
+	}
+
+	config_file.writeEntry("Look", "IconsPaths", icons_manager.additionalPaths().join(";"));
 	kdebugf2();
 }
 
 void IconsManager::onCreateConfigDialog()
 {
 	kdebugf();
-	QComboBox *cb_icontheme= ConfigDialog::getComboBox("Look", "Icon theme");
-	cb_icontheme->insertStringList(icons_manager.themes());
-	cb_icontheme->setCurrentText(config_file.readEntry("Look", "IconTheme"));
-	if (icons_manager.themes().contains("default"))
-	cb_icontheme->changeItem(tr("Default"), icons_manager.themes().findIndex("default"));
 
-	SelectPaths *selpaths= ConfigDialog::getSelectPaths("Look", "Icon paths");
+	QComboBox *iconThemeCombo=ConfigDialog::getComboBox("Look", "Icon theme");
+	iconThemeCombo->insertStringList(icons_manager.themes());
+	iconThemeCombo->setCurrentText(config_file.readEntry("Look", "IconTheme"));
+
+	if (icons_manager.themes().contains("default"))
+		iconThemeCombo->changeItem(tr("Default"), icons_manager.themes().findIndex("default"));
+
 	QStringList pl(QStringList::split(";", config_file.readEntry("Look", "IconsPaths")));
-	selpaths->setPathList(pl);
+	ConfigDialog::getSelectPaths("Look", "Icon paths")->setPathList(pl);
+
 	kdebugf2();
 }
 
@@ -1239,8 +1350,7 @@ void IconsManager::initModule()
 	ConfigDialog::addSelectPaths("Look", "icon_theme", QT_TRANSLATE_NOOP("@default","Icon paths"));
 
 	ConfigDialog::registerSlotOnCreate(&icons_manager, SLOT(onCreateConfigDialog()));
-	ConfigDialog::registerSlotOnApply(&icons_manager, SLOT(onDestroyConfigDialog()));
-	ConfigDialog::connectSlot("Look", "Icon theme", SIGNAL(activated(const QString&)), &icons_manager, SLOT(chooseIconTheme(const QString&)));
+	ConfigDialog::registerSlotOnApply(&icons_manager, SLOT(onApplyConfigDialog()));
 	ConfigDialog::connectSlot("Look", "Icon paths", SIGNAL(changed(const QStringList&)), &icons_manager, SLOT(selectedPaths(const QStringList&)));
 	kdebugf2();
 }
@@ -1249,24 +1359,18 @@ void IconsManager::selectedPaths(const QStringList& paths)
 {
 	kdebugf();
 	setPaths(paths);
-	QComboBox* cb_icontheme = ConfigDialog::getComboBox("Look","Icon theme");
-	QString current = cb_icontheme->currentText();
+	QComboBox* iconThemeCombo = ConfigDialog::getComboBox("Look","Icon theme");
+	QString current = iconThemeCombo->currentText();
 
-	SelectPaths* iconPath = ConfigDialog::getSelectPaths("Look","Icon paths");
-	iconPath->setPathList(additionalPaths());
+	ConfigDialog::getSelectPaths("Look","Icon paths")->setPathList(additionalPaths());
 
-	cb_icontheme->clear();
-	cb_icontheme->insertStringList(themes());
-	cb_icontheme->setCurrentText(current);
+	iconThemeCombo->clear();
+	iconThemeCombo->insertStringList(themes());
+	iconThemeCombo->setCurrentText(current);
 
 	if (paths.contains("default"))
-		cb_icontheme->changeItem(tr("Default"), paths.findIndex("default"));
+		iconThemeCombo->changeItem(tr("Default"), paths.findIndex("default"));
 	kdebugf2();
-}
-
-void IconsManager::changed(const QString& theme)
-{
-//    icons.clear();
 }
 
 IconsManager icons_manager("icons", "icons.conf");
@@ -1302,7 +1406,8 @@ void HttpClient::onConnected()
 //	query += "Connection: keep-alive\r\n";
 	if(Referer!="")
 		query += "Referer: "+Referer+"\r\n";
-	if (Cookies.size() > 0) {
+	if (Cookies.size() > 0)
+	{
 		query += "Cookie: ";
 
 		QValueList<QString> keys;
@@ -1312,18 +1417,20 @@ void HttpClient::onConnected()
 //		wywolanie Cookies.keys() zostaje na lepsze czasu jak juz
 //		wszyscy beda mieli Qt >= 3.0.5
 //    		for(int i=0; i<Cookies.keys().size(); ++i)
-		for (unsigned int i = 0; i < keys.size(); ++i) {
+		for (unsigned int i = 0; i < keys.size(); ++i)
+		{
 			if (i > 0)
 				query+="; ";
 //			query+=Cookies.keys()[i]+"="+Cookies[Cookies.keys()[i]];
 			query += keys[i] + "=" + Cookies[keys[i]];
-			}
-		query+="\r\n";
 		}
-	if (PostData.size() > 0) {
+		query+="\r\n";
+	}
+	if (PostData.size() > 0)
+	{
 		query += "Content-Type: application/x-www-form-urlencoded\r\n";
 		query += "Content-Length: " + QString::number(PostData.size()) + "\r\n";
-		}
+	}
 	query+="\r\n";
 	if (PostData.size() > 0)
 		query += QString(PostData);
@@ -1958,6 +2065,7 @@ const QStringList Themes::themes()
 
 void Themes::setTheme(const QString& theme)
 {
+	kdebugf();
 	if(ThemesList.contains(theme)|| (theme == "Custom"))
 	{
 		entries.clear();
@@ -1969,7 +2077,7 @@ void Themes::setTheme(const QString& theme)
 		}
 		emit themeChanged(ActualTheme);
 	}
-	kdebugm(KDEBUG_INFO, "Theme: %s\n", ActualTheme.local8Bit().data());
+	kdebugm(KDEBUG_FUNCTION_END|KDEBUG_INFO, "Themes::setTheme() end: theme: %s\n", ActualTheme.local8Bit().data());
 }
 
 QString Themes::theme()
@@ -2037,6 +2145,7 @@ QStringList Themes::paths()
 {
     return ThemesPaths;
 }
+
 QStringList Themes::additionalPaths()
 {
     return additional;
@@ -2190,7 +2299,6 @@ QString GaduImagesManager::replaceLoadingImages(const QString& text, UinType sen
 	return new_text;
 }
 
-
 GaduImagesManager gadu_images_manager;
 
 PixmapPreview::PixmapPreview() : QLabel(NULL)
@@ -2239,14 +2347,15 @@ KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
 	kdebugf2();
 }
 
-void KaduTextBrowser::maybeTip(const QPoint &c) {
-	if (!highlightedlink.isNull()) {
-		kdebugm(KDEBUG_INFO,"KaduTextBrowser::maybeTip(): link %s (X,Y)=%d,%d\n",(const char*)highlightedlink,c.x(),c.y());
-		}
+void KaduTextBrowser::maybeTip(const QPoint &c)
+{
+	if (!highlightedlink.isNull())
+		kdebugm(KDEBUG_INFO,"KaduTextBrowser::maybeTip(): link %s (X,Y)=%d,%d\n", (const char*)highlightedlink, c.x(), c.y());
 	tip(QRect(c.x()-20,c.y()-5,40,10), highlightedlink);
 }
 
-void KaduTextBrowser::linkHighlighted(const QString & link) {
+void KaduTextBrowser::linkHighlighted(const QString & link)
+{
 	highlightedlink = link;
 }
 
@@ -2331,7 +2440,8 @@ void KaduTextBrowser::copy()
 QValueList<int> toIntList(const QValueList<QVariant> &in)
 {
 	QValueList<int> out;
-	for (QValueList<QVariant>::const_iterator it=in.begin(); it!=in.end(); it++)
+	QValueList<QVariant>::const_iterator end=in.end();
+	for (QValueList<QVariant>::const_iterator it=in.begin(); it!=end; it++)
 		out.append((*it).toInt());
 	return out;
 }
@@ -2339,7 +2449,8 @@ QValueList<int> toIntList(const QValueList<QVariant> &in)
 QValueList<QVariant> toVariantList(const QValueList<int> &in)
 {
 	QValueList<QVariant> out;
-	for (QValueList<int>::const_iterator it=in.begin(); it!=in.end(); it++)
+	QValueList<int>::const_iterator end=in.end();
+	for (QValueList<int>::const_iterator it=in.begin(); it!=end; it++)
 		out.append(QVariant(*it));
 	return out;
 }

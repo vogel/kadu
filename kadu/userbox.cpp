@@ -788,11 +788,13 @@ int UserBoxMenu::addItem(const QString &text, const QObject* receiver, const cha
 
 int UserBoxMenu::addItem(const QString &iconname, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel, int id)
 {
+	iconNames.append(qMakePair(text,iconname));
 	return insertItem( QIconSet(icons_manager.loadIcon(iconname)) , text, receiver, member, accel, id);
 }
 
 int UserBoxMenu::addItemAtPos(int index,const QString &iconname, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel, int id)
 {
+	iconNames.append(qMakePair(text,iconname));
 	return insertItem( QIconSet(icons_manager.loadIcon(iconname)) , text, receiver, member, accel, id, index);
 }
 
@@ -822,6 +824,30 @@ void UserBoxMenu::show(QListBoxItem *item)
 
 	emit popup();
 	exec(QCursor::pos());
+}
+
+void UserBoxMenu::refreshIcons()
+{
+	kdebugf();
+	for (unsigned int i=0; i<count(); i++)
+	{
+		int id=idAt(i);
+		QString t=text(id);
+
+		QValueList<QPair<QString, QString> >::const_iterator it=iconNames.begin();
+		QValueList<QPair<QString, QString> >::const_iterator end=iconNames.end();
+		
+		for (;it!=end; it++)
+			if (t.startsWith((*it).first))
+			{
+				bool enabled=isItemEnabled(id);
+				bool checked=isItemChecked(id);
+				changeItem(id, icons_manager.loadIcon((*it).second), t);
+				setItemEnabled(id, enabled);
+				setItemChecked(id, checked);
+			}
+	}
+	kdebugf2();
 }
 
 void UserBoxSlots::onCreateConfigDialog()

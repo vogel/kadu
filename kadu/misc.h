@@ -20,6 +20,7 @@
 #include <qtooltip.h>
 #include <qvaluelist.h>
 #include <qvariant.h>
+#include <qmenudata.h>
 
 #include <inttypes.h>
 
@@ -314,15 +315,25 @@ class IconsManager :public Themes
 		**/
 		QPixmap loadIcon(const QString &name);
 		static void initModule();
+		
+		void registerMenu(QMenuData *menu);
+		void unregisterMenu(QMenuData *menu);
+		
+		void registerMenuItem(QMenuData *menu, const QString &caption, const QString &iconName);
+		void unregisterMenuItem(QMenuData *menu, const QString &caption);
+	public slots:
+		void clear();
+		void refreshMenus();
 
 	private:
 		QMap<QString, QIconSet> icons;
+		
+		QValueList<QPair<QMenuData *, QValueList<QPair<QString, QString> > > > menus;
+
 	private slots:
-		void changed(const QString& theme);
-		void chooseIconTheme(const QString& string);
 		void selectedPaths(const QStringList& paths);
 		void onCreateConfigDialog();
-		void onDestroyConfigDialog();
+		void onApplyConfigDialog();
 };
 
 extern IconsManager icons_manager;
@@ -411,7 +422,7 @@ class ImageDialog : public QFileDialog
 	Zmodyfikowany QTextBrowser specjalnie na potrzeby Kadu.
 	Klikniêcie na linku otwiera ustawion± w konfiguracji przegl±darkê.
 	W menu kontekstowym jest dodatkowa opcja "Kopiuj lokacjê odno¶nika".
-	Dodatkowo poprawka b³êdu w QT.
+	Dodatkowo poprawka b³êdu w Qt.
 **/
 class KaduTextBrowser : public QTextBrowser, QToolTip
 {

@@ -573,7 +573,7 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 	QToolTip::add(clearchat, tr("Clear messages in chat window"));
 
 	iconsel = new QPushButton(buttontray);
-	iconsel->setPixmap(icons_manager.loadIcon("Emoticon"));
+	iconsel->setPixmap(icons_manager.loadIcon("ChooseEmoticon"));
 	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")==EMOTS_NONE)
 	{
 		QToolTip::add(iconsel, tr("Insert emoticon - enable in configuration"));
@@ -591,7 +591,7 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 	QToolTip::add(whois, tr("Lookup user info"));
 
 	QPushButton* insertimage = new QPushButton(buttontray);
-	insertimage->setPixmap(icons_manager.loadIcon("ChooseEmoticons"));
+	insertimage->setPixmap(icons_manager.loadIcon("ChooseImage"));
 	QToolTip::add(insertimage, tr("Insert image"));
 
 	edtbuttontray->setStretchFactor(edt, 50);

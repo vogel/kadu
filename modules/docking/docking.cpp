@@ -49,7 +49,7 @@ DockingManager::DockingManager() : QObject(NULL, "docking_manager")
 
 	connect(kadu, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
 
-	connect(dockppm, SIGNAL(activated(int)), this, SLOT(dockletChange(int)));
+	connect(dockMenu, SIGNAL(activated(int)), this, SLOT(dockletChange(int)));
 	connect(this, SIGNAL(mousePressMidButton()), &pending, SLOT(openMessages()));
 
 	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show tooltip in tray"), "ShowTooltipInTray", true);
@@ -81,7 +81,7 @@ DockingManager::~DockingManager()
 
 	disconnect(kadu, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
 
-	disconnect(dockppm, SIGNAL(activated(int)), this, SLOT(dockletChange(int)));
+	disconnect(dockMenu, SIGNAL(activated(int)), this, SLOT(dockletChange(int)));
 	disconnect(icon_timer, SIGNAL(timeout()), this, SLOT(changeIcon()));
 
 	delete icon_timer;
@@ -184,7 +184,7 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 	if (e->button() == RightButton)
 	{
 		emit mousePressRightButton();
-		dockppm->exec(QCursor::pos());
+		dockMenu->exec(QCursor::pos());
 		return;
 	}
 	kdebugf2();

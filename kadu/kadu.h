@@ -33,7 +33,7 @@ class ToolBar : public QToolBar
 	private:
 		struct ToolButton
 		{
-			QIconSet iconfile;
+			QString iconname;
 			QString caption, name;
 			QObject* receiver;
 			QString slot;
@@ -46,11 +46,12 @@ class ToolBar : public QToolBar
 		static ToolBar* instance;
 		ToolBar(QMainWindow* parent);
 		~ToolBar();
-		static void registerButton(const QIconSet& iconfile, const QString& caption,
+		static void registerButton(const QString &iconname, const QString& caption,
 			QObject* receiver, const char* slot, const int position=-1, const char* name="");
 		static void unregisterButton(const char* name);
 		static void registerSeparator(int position=-1);
 		static QToolButton* getButton(const char* name);
+		static void refreshIcons(const QString &caption=QString::null, const QString &newIconName=QString::null, const QString &newCaption=QString::null);
 };
 
 /**
@@ -61,12 +62,16 @@ class Kadu : public QMainWindow
 	Q_OBJECT
 
 	private:
+		friend class KaduSlots;
 		KaduTextBrowser* InfoPanel;
 		QMenuBar* MenuBar;
 		QPopupMenu* MainMenu;
 		KaduTabBar* GroupBar;
 		UserBox* Userbox;
 
+		QPopupMenu* statusMenu;
+		QPushButton* statusButton;
+		
 		Status status;
 
 		bool ShowMainWindowOnStart;
@@ -249,8 +254,7 @@ class KaduSlots : public QObject
 
 extern Kadu* kadu;
 
-extern QPopupMenu* statusppm;
-extern QPopupMenu* dockppm;
+extern QPopupMenu* dockMenu;
 
 extern int lockFileHandle;
 extern QFile *lockFile;
