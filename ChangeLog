@@ -103,6 +103,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * kadu nie zapêtla siê przy otwieraniu nowej rozmowy je¿eli mamy pust±
   historiê (michal)
 * kadu (gdy jest zadokowane) nie pojawia siê na pasku zadañ (joi)
+* poprawka szukania g³ównej binarki (akceptowanie pocz±tkowego ../) (joi)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

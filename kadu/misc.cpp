@@ -68,7 +68,8 @@ char *findMe(const char *argv0, char *path, int len)
 	char *previous;
 	int l;
 
-	if (argv0[0]=='.' && argv0[1]=='/') //¶cie¿ka wzglêdem bie¿±cego katalogu
+	
+	if (argv0[0]=='.' && argv0[1]=='/') //¶cie¿ka wzglêdem bie¿±cego katalogu (./)
 	{
 		if (getcwd(path, len-2)==NULL)
 		{
@@ -76,6 +77,21 @@ char *findMe(const char *argv0, char *path, int len)
 			return NULL;
 		}
 		strncat(path, argv0+1, len-1);
+		path[len-1]=0;
+		lastslash=strrchr(path, '/');
+		lastslash[1]=0;
+		return path;
+	}
+
+	if (argv0[0]=='.' && argv0[1]=='.' && argv0[2]=='/') //¶cie¿ka wzglêdem bie¿±cego katalogu (../)
+	{
+		if (getcwd(path, len-2)==NULL)
+		{
+			path[0]=0;
+			return NULL;
+		}
+		strncat(path, "/", len-1);
+		strncat(path, argv0, len-1);
 		path[len-1]=0;
 		lastslash=strrchr(path, '/');
 		lastslash[1]=0;
