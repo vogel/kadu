@@ -21,6 +21,8 @@
 #include "kadu.h"
 #include "debug.h"
 
+#define GG_FONT_IMAGE	0x80
+
 QValueList<struct SearchIdStruct> SearchList;
 QTextCodec *codec = QTextCodec::codecForName("CP1250");
 
@@ -188,8 +190,17 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats) {
 						}
 				cformats += sizeof(gg_msg_richtext_format);
 				formats_length -= sizeof(gg_msg_richtext_format);
-				cformats += sizeof(gg_msg_richtext_color) * ((actformat->font & GG_FONT_COLOR) != 0);
-				formats_length -= sizeof(gg_msg_richtext_color) * ((actformat->font & GG_FONT_COLOR) != 0);
+				if (actformat->font & GG_FONT_IMAGE) {
+					idx = int((unsigned char)cformats[0]);
+					kdebug("formatGGMessage(): I got image probably: header_length = %d\n",
+						idx);
+					cformats += idx + 1;
+					formats_length -= idx + 1;
+					}
+				else {
+					cformats += sizeof(gg_msg_richtext_color) * ((actformat->font & GG_FONT_COLOR) != 0);
+					formats_length -= sizeof(gg_msg_richtext_color) * ((actformat->font & GG_FONT_COLOR) != 0);
+					}
 				}
 			}
 		if (pos < msg.length()) {

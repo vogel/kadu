@@ -25,6 +25,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawka wy¶wietlania roku urodzenia w danych osobistych (pawel_p/mast3r)
 * poprawka wy¶wietlania opisu z spacjami w tipach userboxu i panelu
   informacyjnego (mast3r)
+* kadu nie powinno siê wywalaæ jak otrzymamy wiadomo¶æ graficzn±;
+  póki co obrazek jest ignorowany (chilek)
 
 +++ wersja 0.3.4-rc4
 * kadu nie pokazuje fa³szywych statusów ukrytych w userboksie (chilek)
