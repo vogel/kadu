@@ -17,6 +17,8 @@
 #include "modules.h"
 //#include "userlist.h"
 #include "chat.h"
+#include <stdlib.h>
+#include <time.h>
 
 extern "C" int speech_init()
 {
