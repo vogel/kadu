@@ -37,6 +37,7 @@ dccSocketClass::dccSocketClass(struct gg_dcc *dcc_sock) : QObject() {
 	state = DCC_SOCKET_TRANSFERRING;
 	dialog = NULL;
 	recordprocess = playprocess = NULL;
+	in_watchDcc = false;
 }
 
 dccSocketClass::~dccSocketClass() {
@@ -94,8 +95,10 @@ void dccSocketClass::initializeNotifiers() {
 }
 
 void dccSocketClass::dccDataReceived() {
-	fprintf(stderr, "KK dccSocketClass::dccDataReceived\n");
-	watchDcc(GG_CHECK_READ);
+	if (!in_watchDcc) {
+		fprintf(stderr, "KK dccSocketClass::dccDataReceived\n");
+		watchDcc(GG_CHECK_READ);
+		}
 }
 
 void dccSocketClass::dccDataSent() {
@@ -111,6 +114,8 @@ void dccSocketClass::watchDcc(int check) {
 	int sock;
 	int len;
 	char buf[195];
+
+	in_watchDcc = true;
 
 	fprintf(stderr, "KK dccSocketClass::watchDcc()\n");			
 	if (!(dccevent = gg_dcc_watch_fd(dccsock))) {
@@ -199,6 +204,8 @@ void dccSocketClass::watchDcc(int check) {
 		gg_free_event(dccevent);
 		dccevent = NULL;
 		}
+
+	in_watchDcc = false;
 }
 
 void dccSocketClass::askAccept(void) {
