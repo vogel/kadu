@@ -61,7 +61,12 @@ UserList::UserList() : QObject(), QValueList<UserListElement>()
 
 UserList::~UserList()
 {
-	kdebug("UserList::~UserList(): dnslookups.count() = %d\n", dnslookups.count());
+	/* Ciekawa zagadka... ten kdebug przy zamykaniu powodowa³ naruszenie
+		pamiêci obojêtnie, co mia³ w parametrach, debugowanie tego nie jest
+		konieczne wiêc zakomentowa³em.
+		kdebug("UserList::~UserList(): dnslookups.count() = %d\n", dnslookups.count());
+	*/
+
 	invisibleTimer->stop();
 	delete invisibleTimer;
 }

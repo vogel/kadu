@@ -971,9 +971,9 @@ void Kadu::commandParser (int command) {
 			help = new QProcess();
 			help->addArgument("konqueror");
 			if (QFile::exists(QString(DOCDIR)+"/index_doc.html"))
-			    help->addArgument(QString(DOCDIR)+"/index_doc.html");
-		        else
-		            help->addArgument("http://kadu.net/index_doc.html");
+				help->addArgument(QString(DOCDIR)+"/index_doc.html");
+			else
+				help->addArgument("http://kadu.net/index_doc.html");
 			help->start();
 			delete help;
 			break;

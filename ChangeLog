@@ -45,6 +45,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   Przymiarki do nowej ERY (adrian)
 * okno rozmowy: ustawianie koloru z poza tablicy nie jest mo¿liwe (chilek)
 * roz³±czenie z serwerem GG zawsze powinno wy³±czaæ pingowanie serwera GG (chilek)
+* poprawka: Kadu z debugiem nie wywala siê przy zamykaniu (mast3r)
 
 +++ wersja 0.3.4-pre3
 * dodane przeszukiwanie historii (chilek)
