@@ -1,0 +1,131 @@
+#!/bin/sh
+
+#################################################################
+#    Application Setup Script v0.1.0   (c) 2002 A.Smarzewski    #
+# This program is free software. You can redistribute it and/or #
+#  modify it under the terms of the GNU General Public License  #
+#################################################################
+
+ 
+#################################################################
+
+APP_NAME=KADU
+APP_VER=0.3.1
+APP_DEF_DIR=/usr/local/kadu
+
+#################################################################
+
+
+# $1 - directory name, $2 - default val
+# Response is stored in $REPLY
+function AskForPath()
+{
+	echo -n "Please, enter $1 directory path: "
+	read -e
+	if [ "$REPLY" == "" ]; then
+		REPLY="$2"
+	fi;
+}
+
+# $1 - path, $2 - file to check, $3 - correct string, $4 - incorrect string
+function CheckPath()
+{
+	if [ -e $1/$2 ]; then
+		CORRECT="$3"
+	else
+		CORRECT="$4"
+	fi;
+}
+
+function ConfigureAndMake()
+{
+	QTDIR="$QT_DIR"
+	LD_LIBRARY_PATH="$QT_DIR/lib:$LD_LIBRARY_PATH"
+	KDEDIR="$KDE_DIR"
+	./configure "--prefix=$APP_DIR"
+	make
+}
+
+function ShowInfo()
+{
+	echo
+	echo "==============================================================================="
+	echo "          Welcome To $APP_NAME v$APP_VER Application Setup Script v0.1.0"
+	echo "==============================================================================="
+	echo
+	echo "  This program is free software; you can redistribute it and/or modify"
+	echo "  it under the terms of the GNU General Public License as published by"
+	echo "  the Free Software Foundation; either version 2 of the License, or   "
+	echo "  (at your option) any later version.                                 "
+	echo
+	echo "  This script will help You with $APP_NAME configuration, compilation and"
+	echo "  installation. $APP_NAME Application requires following units installed:"
+	echo
+	CheckPath "$QT_DIR" include/qapplication.h found. "NOT FOUND!"
+	echo "     * QT Library  (v>=3.0.1), path: [$QT_DIR], $CORRECT"
+	CheckPath "$KDE_DIR" include/kapp.h found. "NOT FOUND!"
+	echo "     * KDE Desktop (v>=3.0.0), path: [$KDE_DIR], $CORRECT"
+	echo
+	CheckPath "$APP_DIR" bin/kadu "installed." "NOT INSTALLED"
+	echo "  Application will be installed at: [$APP_DIR], $CORRECT"
+	echo
+	echo "  Press L to view GNU licence."
+	echo "  Press Q to change QT Library path."
+	echo "  Press K to change KDE Desktop path."
+	echo "  Press D to change destination path."
+	echo "  Press I to install."
+	echo "  Press U to uninstall."
+	echo "  Press E to exit."
+}
+
+echo
+echo "Searching for $APP_NAME..."
+APP_DIR=`find / -path */bin/kadu -type f | sed -e 's/\/bin\/kadu$//' -e q`
+if [ "$APP_DIR" == "" ]; then
+	APP_DIR="$APP_DEF_DIR"
+fi;
+
+echo "Searching for QT..."
+QT_DIR=`find / -path */include/qapplication.h -type f | sed -e 's/\/include\/qapplication.h$//' -e q`
+
+echo "Searching for KDE..."
+KDE_DIR=`find / -path */include/kapp.h -type f | sed -e 's/\/include\/kapp.h$//' -e q`
+
+while [ 1 ]; do
+	ShowInfo
+	while [ 1 ]; do
+		read -n 1 -s
+		if [[ ("$REPLY" == "L") || ("$REPLY" == "l") ]]; then
+			cat COPYING | more
+			break
+		fi;
+		if [[ ("$REPLY" == "Q") || ("$REPLY" == "q") ]]; then
+			AskForPath "QT Library"
+			QT_DIR="$REPLY"
+			break
+		fi;
+		if [[ ("$REPLY" == "K") || ("$REPLY" == "k") ]]; then
+			AskForPath "KDE Desktop"
+			KDE_DIR="$REPLY"
+			break
+		fi;
+		if [[ ("$REPLY" == "D") || ("$REPLY" == "d") ]]; then
+			AskForPath "destination"
+			APP_DIR="$REPLY"
+			break
+		fi;
+		if [[ ("$REPLY" == "I") || ("$REPLY" == "i") ]]; then
+			ConfigureAndMake
+			make install
+			break
+		fi;
+		if [[ ("$REPLY" == "U") || ("$REPLY" == "u") ]]; then
+			ConfigureAndMake
+			make uninstall
+			break
+		fi;	
+		if [[ ("$REPLY" == "E") || ("$REPLY" == "e") ]]; then
+			exit
+		fi;
+	done
+done
