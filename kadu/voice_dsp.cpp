@@ -16,18 +16,18 @@
 #include "voice.h"
 #include "voice_dsp.h"
 
-SoundDsp::SoundDsp() {
-	kdebug("SoundDsp::SoundDsp()\n");
+VoiceDsp::VoiceDsp() {
+	kdebug("VoiceDsp::VoiceDsp()\n");
 	connect(voice_manager, SIGNAL(setupSoundDevice()), this, SLOT(setup()));
 	connect(voice_manager, SIGNAL(freeSoundDevice()), this, SLOT(free()));
 	connect(voice_manager, SIGNAL(playSample(char *, int)), this, SLOT(playSample(char *, int)));
 	connect(voice_manager, SIGNAL(recordSample(char *, int)), this, SLOT(recordSample(char *, int)));
 }
 
-SoundDsp::~SoundDsp() {
+VoiceDsp::~VoiceDsp() {
 }
 
-void SoundDsp::setup() {
+void VoiceDsp::setup() {
 	int value;	
 	fd = open("/dev/dsp", O_RDWR);
 	value = 8000;
@@ -38,25 +38,25 @@ void SoundDsp::setup() {
 	ioctl(fd, SNDCTL_DSP_CHANNELS, &value);
 	value = AFMT_S16_LE;
 	ioctl(fd, SNDCTL_DSP_SETFMT, &value);
-	kdebug("SoundDsp::setup(): fd=%d\n", fd);
+	kdebug("VoiceDsp::setup(): fd=%d\n", fd);
 }
 
-void SoundDsp::free() {
-	kdebug("SoundDsp::free()\n");
+void VoiceDsp::free() {
+	kdebug("VoiceDsp::free()\n");
 	close(fd);
 }
 
-void SoundDsp::playSample(char *data, int length) {
-	kdebug("SoundDsp::playSample()\n");
+void VoiceDsp::playSample(char *data, int length) {
+	kdebug("VoiceDsp::playSample()\n");
 	write(fd, data, length);
 }
 
-void SoundDsp::recordSample(char *data, int length) {
-	kdebug("SoundDsp::recordSample()\n");
+void VoiceDsp::recordSample(char *data, int length) {
+	kdebug("VoiceDsp::recordSample()\n");
 	read(fd, data, length);
 }
 
-SoundDsp *sound_dsp;
+VoiceDsp *voice_dsp;
 
 /*ArtsSoundDevice::ArtsSoundDevice(const int freq, const int bits, const int chans, QObject *parent, const char *name)
 	: SoundDevice(freq, bits, chans, parent, name) {

@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
 
 #ifdef VOICE_ENABLED
 	voice_manager = new VoiceManager();
-	sound_dsp = new SoundDsp();
+	voice_dsp = new VoiceDsp();
 #endif
 
 	// ladowanie tlumaczenia

@@ -3,13 +3,13 @@
 
 #include <qobject.h>
 
-class SoundDsp : public QObject
+class VoiceDsp : public QObject
 {
 	Q_OBJECT
 
 	public:
-		SoundDsp();
-		virtual ~SoundDsp();
+		VoiceDsp();
+		virtual ~VoiceDsp();
 
 	public slots:
 		void setup();
@@ -21,6 +21,6 @@ class SoundDsp : public QObject
 		int fd;
 };
 
-extern SoundDsp *sound_dsp;
+extern VoiceDsp *voice_dsp;
 
 #endif
