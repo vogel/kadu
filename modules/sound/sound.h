@@ -59,6 +59,7 @@ class SoundManager : public Themes
 		void connectionError(const QString &message);
 		void userChangedStatusToAvailable(const UserListElement &ule);
 		void userChangedStatusToBusy(const UserListElement &ule);
+		void userChangedStatusToInvisible(const UserListElement &ule);
 		void userChangedStatusToNotAvailable(const UserListElement &ule);
 		/* from i ule s± ignorowane, message wskazuje na plik z d¼wiêkiem do odtworzenia
 		 * je¿eli message==QString::null, to odtwarzany jest standardowy d¼wiêk dla tego typu 

@@ -85,6 +85,9 @@ class HintManager : public QFrame
 		/* u¿ytkownik zmieni³ status na "Zaraz wracam" */
 		void userChangedStatusToBusy(const UserListElement &ule);
 
+		/* u¿ytkownik zmieni³ status na "Niewidoczny" */
+		void userChangedStatusToInvisible(const UserListElement &ule);
+
 		/* u¿ytkownik zmieni³ status na "Niewidoczny" lub "Niedostêpny" */
 		void userChangedStatusToNotAvailable(const UserListElement &ule);
 

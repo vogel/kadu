@@ -46,6 +46,7 @@ WindowNotify::WindowNotify(QObject *parent, const char *name) : QObject(parent, 
 	s["StatusChanged"]=SLOT(userStatusChanged(const UserListElement &, const UserStatus &));
 	s["toAvailable"]=SLOT(userChangedStatusToAvailable(const UserListElement &));
 	s["toBusy"]=SLOT(userChangedStatusToBusy(const UserListElement &));
+	s["toInvisible"]=SLOT(userChangedStatusToInvisible(const UserListElement &));
 	s["toNotAvailable"]=SLOT(userChangedStatusToNotAvailable(const UserListElement &));
 	s["Message"]=SLOT(message(const QString &, const QString &, const QMap<QString, QVariant> *, const UserListElement *));
 
@@ -55,6 +56,7 @@ WindowNotify::WindowNotify(QObject *parent, const char *name) : QObject(parent, 
 	config_file.addVariable("Notify", "ChangingStatus_Window", false);
 	config_file.addVariable("Notify", "toAvailable_Window", false);
 	config_file.addVariable("Notify", "toBusy_Window", false);
+	config_file.addVariable("Notify", "toInvisible_Window", false);
 	config_file.addVariable("Notify", "toNotAvailable_Window", false);
 	config_file.addVariable("Notify", "Message_Window", false);
 
@@ -113,6 +115,13 @@ void WindowNotify::userChangedStatusToAvailable(const UserListElement &ule)
 }
 
 void WindowNotify::userChangedStatusToBusy(const UserListElement &ule)
+{
+	kdebugf();
+	userChangedStatusToAvailable(ule);
+	kdebugf2();
+}
+
+void WindowNotify::userChangedStatusToInvisible(const UserListElement &ule)
 {
 	kdebugf();
 	userChangedStatusToAvailable(ule);

@@ -41,6 +41,7 @@ Notify::Notify(QObject *parent, const char *name) : QObject(parent, name)
 	notifySignals["StatusChanged"]=		QString(SIGNAL(userStatusChanged(const UserListElement &, const UserStatus &)));
 	notifySignals["toAvailable"]=		QString(SIGNAL(userChangedStatusToAvailable(const UserListElement &)));
 	notifySignals["toBusy"]=			QString(SIGNAL(userChangedStatusToBusy(const UserListElement &)));
+	notifySignals["toInvisible"]=		QString(SIGNAL(userChangedStatusToInvisible(const UserListElement &)));
 	notifySignals["toNotAvailable"]=	QString(SIGNAL(userChangedStatusToNotAvailable(const UserListElement &)));
 	notifySignals["Message"]=			QString(SIGNAL(message(const QString &, const QString &, const QMap<QString, QVariant> *, const UserListElement *)));
 
@@ -56,6 +57,7 @@ Notify::Notify(QObject *parent, const char *name) : QObject(parent, name)
 	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "User is changing status"));
 	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "User changed status to \"Available\""));
 	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "User changed status to \"Busy\""));
+	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "User changed status to \"Invisible\""));
 	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "User changed status to \"Not available\""));
 	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "Other message"));
 
@@ -158,6 +160,7 @@ Notify::~Notify()
 	ConfigDialog::removeControl("Notify", "User is changing status");
 	ConfigDialog::removeControl("Notify", "User changed status to \"Available\"");
 	ConfigDialog::removeControl("Notify", "User changed status to \"Busy\"");
+	ConfigDialog::removeControl("Notify", "User changed status to \"Invisible\"");
 	ConfigDialog::removeControl("Notify", "User changed status to \"Not available\"");
 	ConfigDialog::removeControl("Notify", "Other message");
 
@@ -196,8 +199,8 @@ void Notify::userStatusChanged(const UserListElement &ule, const UserStatus &old
 	{
 		case Online: emit userChangedStatusToAvailable(ule); break;
 		case Busy:   emit userChangedStatusToBusy(ule); break;
-		case Invisible:
-		case Offline: emit userChangedStatusToNotAvailable(ule);
+		case Invisible: emit userChangedStatusToInvisible(ule); break;
+		case Offline: emit userChangedStatusToNotAvailable(ule); break;
 		default:
 			;//jeszcze jest status "blokowany", który nie jest tu obs³ugiwany
 	}
@@ -228,7 +231,7 @@ void Notify::addConfigColumn(const QString &name, const QMap<QString, QString> &
 	ConfigDialog::addLabel("Notify", name+"_vbox", name);
 
 	QStringList t;
-	t<<"ConnError"<<"NewChat"<<"NewMessage"<<"StatusChanged"<<"toAvailable"<<"toBusy"<<"toNotAvailable"<<"Message";
+	t<<"ConnError"<<"NewChat"<<"NewMessage"<<"StatusChanged"<<"toAvailable"<<"toBusy"<<"toInvisible"<<"toNotAvailable"<<"Message";
 
 	int i=1;
 	for (QStringList::iterator it=t.begin(); it!=t.end(); ++it, ++i)
@@ -245,7 +248,7 @@ void Notify::removeConfigColumn(const QString &name, const QMap<QString, QPair<Q
 	kdebugf();
 
 	QStringList t;
-	t<<"ConnError"<<"NewChat"<<"NewMessage"<<"StatusChanged"<<"toAvailable"<<"toBusy"<<"toNotAvailable"<<"Message";
+	t<<"ConnError"<<"NewChat"<<"NewMessage"<<"StatusChanged"<<"toAvailable"<<"toBusy"<<"toInvisible"<<"toNotAvailable"<<"Message";
 
 	int i=1;
 	for (QStringList::iterator it=t.begin(); it!=t.end(); ++it, ++i)

@@ -19,6 +19,7 @@ class WindowNotify : public QObject
 		void userStatusChanged(const UserListElement &ule, const UserStatus &oldStatus);
 		void userChangedStatusToAvailable(const UserListElement &ule);
 		void userChangedStatusToBusy(const UserListElement &ule);
+		void userChangedStatusToInvisible(const UserListElement &ule);
 		void userChangedStatusToNotAvailable(const UserListElement &ule);
 		void message(const QString &from, const QString &message, const QMap<QString, QVariant> *parameters, const UserListElement *ule);
 };

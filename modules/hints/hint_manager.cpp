@@ -110,6 +110,7 @@ HintManager::HintManager(QWidget *parent, const char *name)
 	config_file.addVariable("Notify", "ChangingStatus_Hints", false);
 	config_file.addVariable("Notify", "toAvailable_Hints", true);
 	config_file.addVariable("Notify", "toBusy_Hints", true);
+	config_file.addVariable("Notify", "toInvisible_Hints", false);
 	config_file.addVariable("Notify", "toNotAvailable_Hints", false);
 	config_file.addVariable("Notify", "Message_Hints", true);
 
@@ -122,6 +123,7 @@ HintManager::HintManager(QWidget *parent, const char *name)
 	s["StatusChanged"]=SLOT(userStatusChanged(const UserListElement &, const UserStatus &));
 	s["toAvailable"]=SLOT(userChangedStatusToAvailable(const UserListElement &));
 	s["toBusy"]=SLOT(userChangedStatusToBusy(const UserListElement &));
+	s["toInvisible"]=SLOT(userChangedStatusToInvisible(const UserListElement &));
 	s["toNotAvailable"]=SLOT(userChangedStatusToNotAvailable(const UserListElement &));
 	s["Message"]=SLOT(message(const QString &, const QString &, const QMap<QString, QVariant> *, const UserListElement *));
 	notify->registerNotifier(QT_TRANSLATE_NOOP("@default","Hints"), this, s);
@@ -652,6 +654,43 @@ void HintManager::userChangedStatusToBusy(const UserListElement &ule)
 				config_file.readUnsignedNumEntry("Hints", "HintBusy_timeout"), ulist);
 	kdebugf2();
 }
+
+void HintManager::userChangedStatusToInvisible(const UserListElement &ule)
+{
+	kdebugf();
+
+	UinsList ulist;
+	if (config_file.readBoolEntry("Hints", "OpenChatOnClick", false))
+		ulist.append(ule.uin());
+
+	if (config_file.readBoolEntry("Hints","NotifyHintUseSyntax"))
+		addHint(parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true),
+			ule.status().pixmap(),
+			config_file.readFontEntry("Hints", "HintInvisible_font"),
+			config_file.readColorEntry("Hints", "HintInvisible_fgcolor"),
+			config_file.readColorEntry("Hints", "HintInvisible_bgcolor"),
+			config_file.readUnsignedNumEntry("Hints", "HintInvisible_timeout"), ulist);
+	else
+		if (ule.status().hasDescription() && config_file.readBoolEntry("Hints","NotifyHintDescription"))
+			addHint(narg(tr("<b>%1</b> is invisible<br/> <small>%2</small>"),
+				QStyleSheet::escape(ule.altNick()),
+				QStyleSheet::escape(ule.status().description())),
+				ule.status().pixmap(),
+				config_file.readFontEntry("Hints", "HintInvisibleD_font"),
+				config_file.readColorEntry("Hints", "HintInvisibleD_fgcolor"),
+				config_file.readColorEntry("Hints", "HintInvisibleD_bgcolor"),
+				config_file.readUnsignedNumEntry("Hints", "HintInvisibleD_timeout"), ulist);
+		else
+			addHint(tr("<b>%1</b> is invisible")
+				.arg(QStyleSheet::escape(ule.altNick())),
+				ule.status().pixmap(),
+				config_file.readFontEntry("Hints", "HintInvisible_font"),
+				config_file.readColorEntry("Hints", "HintInvisible_fgcolor"),
+				config_file.readColorEntry("Hints", "HintInvisible_bgcolor"),
+				config_file.readUnsignedNumEntry("Hints", "HintInvisible_timeout"), ulist);
+	kdebugf2();
+}
+
 
 void HintManager::userChangedStatusToNotAvailable(const UserListElement &ule)
 {

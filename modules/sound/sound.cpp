@@ -116,6 +116,7 @@ SoundManager::SoundManager(const QString& name, const QString& configname)
 	s["ConnError"]=SLOT(connectionError(const QString &));
 	s["toAvailable"]=SLOT(userChangedStatusToAvailable(const UserListElement &));
 	s["toBusy"]=SLOT(userChangedStatusToBusy(const UserListElement &));
+	s["toInvisible"]=SLOT(userChangedStatusToInvisible(const UserListElement &));
 	s["toNotAvailable"]=SLOT(userChangedStatusToNotAvailable(const UserListElement &));
 	s["Message"]=SLOT(message(const QString &, const QString &, const QMap<QString, QVariant> *, const UserListElement *));
 	
@@ -124,6 +125,7 @@ SoundManager::SoundManager(const QString& name, const QString& configname)
 	config_file.addVariable("Notify", "ConnError_Sound", true);
 	config_file.addVariable("Notify", "toAvailable_Sound", true);
 	config_file.addVariable("Notify", "toBusy_Sound", true);
+	config_file.addVariable("Notify", "toInvisible_Sound", false);
 	config_file.addVariable("Notify", "toNotAvailable_Sound", false);
 	config_file.addVariable("Notify", "Message_Sound", true);
 
@@ -335,6 +337,35 @@ void SoundManager::userChangedStatusToBusy(const UserListElement &ule)
 	kdebugf2();
 }
 
+void SoundManager::userChangedStatusToInvisible(const UserListElement &ule)
+{
+	kdebugf();
+	if (isMuted())
+	{
+		kdebugmf(KDEBUG_FUNCTION_END, "end: muted\n");
+		return;
+	}
+	if (timeAfterLastSound()<500)
+	{
+		kdebugmf(KDEBUG_FUNCTION_END, "end: too often, exiting\n");
+		return;
+	}
+	
+	QString status_change_sound;
+	if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
+		status_change_sound=parse(config_file.readEntry("Sounds","StatusInvisible_sound"), ule);
+	else 
+		status_change_sound=themePath(config_file.readEntry("Sounds", "SoundTheme"))+getThemeEntry("StatusInvisible");
+	if (QFile::exists(status_change_sound))
+	{
+		emit playSound(status_change_sound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
+		lastsoundtime.restart();
+	}
+	else
+		kdebugm(KDEBUG_WARNING, "file (%s) not found\n", status_change_sound.local8Bit().data());
+	kdebugf2();
+}
+
 void SoundManager::userChangedStatusToNotAvailable(const UserListElement &ule)
 {
 	kdebugf();
@@ -470,11 +501,11 @@ SoundSlots::SoundSlots(QObject *parent, const char *name) : QObject(parent, name
 {
 	kdebugf();
 
-	soundNames<<"Chat"<<"Message"<<"StatusAvailable"<<"StatusBusy"<<
+	soundNames<<"Chat"<<"Message"<<"StatusAvailable"<<"StatusBusy"<<"StatusInvisible"<<
 			"StatusNotAvailable"<<"ConnectionError"<<"OtherMessage";
 	
 	soundTexts<<tr("Chat sound")<<tr("Message sound")<<tr("Status available sound")<<
-				tr("Status busy sound")<<tr("Status not available sound")<<
+				tr("Status busy sound")<<tr("Status invisible sound")<<tr("Status not available sound")<<
 				tr("Conection error sound")<<tr("Other message");
 
 	sound_manager->setMute(!config_file.readBoolEntry("Sounds", "PlaySound"));

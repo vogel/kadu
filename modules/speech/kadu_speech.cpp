@@ -177,6 +177,7 @@ SpeechSlots::SpeechSlots(QObject *parent, const char *name) : QObject(parent, na
 	s["ConnError"]=SLOT(connectionError(const QString &));
 	s["toAvailable"]=SLOT(userChangedStatusToAvailable(const UserListElement &));
 	s["toBusy"]=SLOT(userChangedStatusToBusy(const UserListElement &));
+	s["toInvisible"]=SLOT(userChangedStatusToInvisible(const UserListElement &));
 	s["toNotAvailable"]=SLOT(userChangedStatusToNotAvailable(const UserListElement &));
 	s["Message"]=SLOT(message(const QString &, const QString &, const QMap<QString, QVariant> *, const UserListElement *));
 	
@@ -185,6 +186,7 @@ SpeechSlots::SpeechSlots(QObject *parent, const char *name) : QObject(parent, na
 	config_file.addVariable("Notify", "ConnError_Speech", false);
 	config_file.addVariable("Notify", "toAvailable_Speech", false);
 	config_file.addVariable("Notify", "toBusy_Speech", false);
+	config_file.addVariable("Notify", "toInvisible_Speech", false);
 	config_file.addVariable("Notify", "toNotAvailable_Speech", false);
 	config_file.addVariable("Notify", "Message_Speech", true);
 
@@ -432,6 +434,13 @@ void SpeechSlots::userChangedStatusToAvailable(const UserListElement &ule)
 }
 
 void SpeechSlots::userChangedStatusToBusy(const UserListElement &ule)
+{
+	kdebugf();
+	userChangedStatusToAvailable(ule);
+	kdebugf2();
+}
+
+void SpeechSlots::userChangedStatusToInvisible(const UserListElement &ule)
 {
 	kdebugf();
 	userChangedStatusToAvailable(ule);

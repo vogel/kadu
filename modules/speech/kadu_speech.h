@@ -19,6 +19,7 @@ class SpeechSlots : public QObject
 		void connectionError(const QString &message);
 		void userChangedStatusToAvailable(const UserListElement &ule);
 		void userChangedStatusToBusy(const UserListElement &ule);
+		void userChangedStatusToInvisible(const UserListElement &ule);
 		void userChangedStatusToNotAvailable(const UserListElement &ule);
 		void message(const QString &from, const QString &message, const QMap<QString, QVariant> *parameters, const UserListElement *ule);
 
