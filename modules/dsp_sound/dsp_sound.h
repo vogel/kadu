@@ -6,7 +6,6 @@
 #include <qstringlist.h>
 #include <qmutex.h>
 #include <qsemaphore.h>
-#include "misc.h"
 
 class OSSPlayThread : public QThread
 {
