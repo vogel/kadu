@@ -687,6 +687,10 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
         <source>Show vertical scrollbar in information panel</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Userbox width when multi column</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1711,12 +1715,24 @@ Vielleicht ist es kein Kadu-kompatibles Modul.</translation>
         <translation>Geburtsort</translation>
     </message>
     <message>
-        <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <source>This dialog box allows you to manage your personal information, for example your name, surname or age.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Cancel</source>
-        <translation>&amp;Abbrechen</translation>
+        <source>Your personal information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Reload</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -687,6 +687,10 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <source>Show vertical scrollbar in information panel</source>
         <translation>Pokaż pionowy pasek przewijania w panelu informacyjnym</translation>
     </message>
+    <message>
+        <source>Userbox width when multi column</source>
+        <translation>Szerokość okna listy kontaktów gdy włączone lista wielokolumnowa</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1712,12 +1716,24 @@ Być może nie jest to moduł kompatybilny z Kadu</translation>
         <translation>Miasto rodzinne</translation>
     </message>
     <message>
-        <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <source>This dialog box allows you to manage your personal information, for example your name, surname or age.</source>
+        <translation>To okno dialogowe daje możliwość zarzadzania twoimi danymi personalnymi takimi jaki imie, nazwisko, wiek, płeć.</translation>
     </message>
     <message>
-        <source>&amp;Cancel</source>
-        <translation>&amp;Anuluj</translation>
+        <source>Your personal information</source>
+        <translation>Twoje dane osobiste</translation>
+    </message>
+    <message>
+        <source>&amp;Save</source>
+        <translation>&amp;Zapisz</translation>
+    </message>
+    <message>
+        <source>&amp;Reload</source>
+        <translation>&amp;Przeładuj</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation>&amp;Zamknij</translation>
     </message>
 </context>
 <context>

@@ -687,6 +687,10 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
         <source>Show vertical scrollbar in information panel</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Userbox width when multi column</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1711,12 +1715,24 @@ Probabilmente Modulo non è compatibile.</translation>
         <translation>Città Della Famiglia</translation>
     </message>
     <message>
-        <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <source>This dialog box allows you to manage your personal information, for example your name, surname or age.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Cancel</source>
-        <translation>&amp;Annulla</translation>
+        <source>Your personal information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Reload</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Chiudi</translation>
     </message>
 </context>
 <context>
