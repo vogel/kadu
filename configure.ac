@@ -110,6 +110,12 @@ AC_DEFUN(FIND_AVAILABLE_MODULES,[
 			available_modules="$available_modules $dir"; \
 		fi; \
 	done
+	for file in *.web; do \
+		dir=`basename $file .web`; \
+		if test ! -f $dir/spec; then \
+			available_modules="$available_modules $dir"; \
+		fi; \
+	done
 	cd ..
 ])
 
@@ -141,6 +147,11 @@ AC_DEFUN(PROCESS_MODULE_SPEC_FILES,[
 	static_modules_ldflags=
 	static_modules_cxxflags=
 	for mod in $static_modules $shared_modules; do \
+		if test -f modules/$mod.web; then \
+			cd modules; \
+			./download_module $mod; \
+			cd ..; \
+		fi; \
 		if test -f modules/$mod/spec; then \
 			echo; \
 			echo ">>> Configuring $mod module..."; \
