@@ -511,6 +511,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	grid->setRowStretch(2, 1);
 	grid->activate();
 
+	centralFrame->setMinimumSize(50, 100);
+
 	dccsock = NULL;
 	/* dirty workaround for multiple showEvents */
 	commencing_startup = true;
