@@ -520,9 +520,11 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	pending.loadFromFile();
 
 
+	QFrame *centralFrame = new QFrame(this);
+	setCentralWidget(centralFrame);
 
 	/* initialize group tabbar */
-	group_bar=new QTabBar(this, "groupbar");
+	group_bar=new QTabBar(centralFrame, "groupbar");
 	group_bar->addTab(new QTab(i18n("All")));
 	refreshGroupTabBar();
 	connect(group_bar,SIGNAL(selected(int)),this,SLOT(groupTabSelected(int)));
@@ -531,7 +533,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	connect(&userlist,SIGNAL(modified()),this,SLOT(userListModified()));
 		
 	/* initialize and configure userbox */
-	userbox = new UserBox(this, "userbox");
+	userbox = new UserBox(centralFrame, "userbox");
 	userbox->setPaletteBackgroundColor(QColor(config.colors.userboxBgR,config.colors.userboxBgG,config.colors.userboxBgB));
 	userbox->setPaletteForegroundColor(QColor(config.colors.userboxFgR,config.colors.userboxFgG,config.colors.userboxFgB));
 	userbox->QListBox::setFont(QFont(config.userboxFont, config.userboxFontSize));
@@ -548,7 +550,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	connect(userbox, SIGNAL(rightButtonClicked(QListBoxItem *, const QPoint &)),
 		this, SLOT(listPopupMenu(QListBoxItem *)));
 
-	statuslabeltxt = new MyLabel(this, "statuslabeltxt");
+	statuslabeltxt = new MyLabel(centralFrame, "statuslabeltxt");
 	statuslabeltxt->setText(i18n("Offline"));
 	statuslabeltxt->setFrameStyle(QFrame::WinPanel | QFrame::Sunken);
 	statuslabeltxt->setFont(QFont("Verdana", 9));
@@ -560,7 +562,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		qGreen(statuslabeltxt->paletteBackgroundColor().rgb()) - 20,
 		qBlue(statuslabeltxt->paletteBackgroundColor().rgb()) - 20));
 
-	statuslabel = new MyLabel(this, "statuslabel");
+	statuslabel = new MyLabel(centralFrame, "statuslabel");
 	statuslabel->setPixmap(QPixmap((const char**)gg_inact_xpm) );
 
 	/* guess what */
@@ -574,7 +576,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	dockppm->insertItem(loader->loadIcon("exit",KIcon::Small), i18n("&Exit Kadu"), 9);
 	connect(dockppm, SIGNAL(activated(int)), dw, SLOT(dockletChange(int)));
 	
-	QGridLayout * grid = new QGridLayout(this, 4, 3);
+	QGridLayout * grid = new QGridLayout(centralFrame, 4, 3);
 	grid->setMenuBar(mmb);
 	grid->addMultiCellWidget(group_bar,1,1,0,2);
 	grid->addMultiCellWidget(userbox,2,2,0,2);
