@@ -13,7 +13,7 @@
 	na sciezke bezwzgledna uwzgledniajac zmienne srodowiskowe
 	$HOME i $CONFIG_DIR
 */
-char* ggPath(char* subpath);
+QString ggPath(QString subpath);
 
 void cp_to_iso(unsigned char *);
 void iso_to_cp(unsigned char *);

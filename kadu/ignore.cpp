@@ -117,28 +117,27 @@ void delIgnored(uin_t uin) {
 	ignored.resize(ignored.size() - 1);
 }
 
-int writeIgnored(char *filename = NULL)
+int writeIgnored(QString filename)
 {
-	char *tmp;
+	QString tmp;
 	FILE *f;
 
 	if (!(tmp = ggPath("")))
 		return -1;
-	mkdir(tmp, 0700);
+	mkdir(tmp.local8Bit(), 0700);
 
-	if (filename == NULL) {
-		if (!(filename = ggPath("ignore")))
-			return -1;
+	if (!filename.length()) {
+		filename = ggPath("ignore");
 		}
 
-	if (!(f = fopen(filename, "w")))
+	if (!(f = fopen(filename.local8Bit(), "w")))
 		return -2;
 
 	fchmod(fileno(f), 0600);
 
 	int i = 0;
 	while (i < ignored.size()) {
-		fprintf(f,"%d\n",ignored[i]);
+		fprintf(f, "%d\n", ignored[i]);
 		i++;
 		}
 

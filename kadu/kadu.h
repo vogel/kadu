@@ -280,7 +280,7 @@ void createKonfig(char *, uin_t);
 void addIgnored(uin_t);
 void delIgnored(uin_t);
 bool isIgnored(uin_t);
-int writeIgnored(char *);
+int writeIgnored(QString filename = "");
 void *watch_socket(void *);
 void kadu_debug(int, char*);
 void playSound(char *);

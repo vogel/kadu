@@ -154,22 +154,21 @@ void UserList::removeUser(const QString &altnick)
 		};
 };
 
-bool UserList::writeToFile(char *filename)
+bool UserList::writeToFile(QString filename)
 {
 	QString faname;
-	char *tmp;
+	QString tmp;
 
-	if (!(tmp = ggPath("")))
-		return false;
-	mkdir(tmp, 0700);
+	tmp = ggPath("");
+	mkdir(tmp.local8Bit(), 0700);
 
-	if (!filename) {
-		if (!(filename = ggPath("userlist")))
-			return false;
+	if (!filename.length()) {
+		filename = ggPath("userlist");
 		}
 
-	if (!(faname = ggPath("userattribs")))
-		return false;
+	faname = ggPath("userattribs");
+
+	fprintf(stderr, "KK UserList::writeToFile(): %s\n", (const char *)filename.local8Bit());
 
 	QFile f(filename);
 
@@ -233,12 +232,13 @@ bool UserList::writeToFile(char *filename)
 
 bool UserList::readFromFile()
 {
-	char *path;
+	QString path;
 	QValueList<QStringList> ualist;
 	QString line;
 
 	path = ggPath("userattribs");
-	fprintf(stderr, "KK UserList::readFromFile(): Opening userattribs file: %s\n", path);
+	fprintf(stderr, "KK UserList::readFromFile(): Opening userattribs file: %s\n",
+		(const char *)path.local8Bit());
 	QFile fa(path);
 	if (!fa.open(IO_ReadOnly)) {
 		fprintf(stderr, "KK UserList::readFromFile(): Error opening userattribs file");
@@ -255,7 +255,8 @@ bool UserList::readFromFile()
 		}
 
 	path = ggPath("userlist");
-	fprintf(stderr, "KK UserList::readFromFile(): Opening userlist file: %s\n", path);
+	fprintf(stderr, "KK UserList::readFromFile(): Opening userlist file: %s\n",
+		(const char *)path.local8Bit());
 	QFile f(path);
 	if (!f.open(IO_ReadOnly)) {
 		fprintf(stderr, "KK UserList::readFromFile(): Error opening userlist file");

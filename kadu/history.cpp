@@ -38,7 +38,7 @@ void appendHistory(UinsList uins, uin_t uin,unsigned char* msg, bool own, time_t
 	
 	QFile f;
 
-	char * path2 = ggPath("history/");
+	QString path2 = ggPath("history/");
 
 	QString fname;
 	

@@ -198,13 +198,13 @@ void createKonfig() {
 		}
 
 	struct stat *buf;	
-	char* ggpath=ggPath("");
-	stat(ggpath, buf);
+	QString ggpath = ggPath("");
+	stat(ggpath.local8Bit(), buf);
 	if (S_ISDIR(buf->st_mode))
-		fprintf(stderr, "KK createKonfig(): Directory %s exists\n", ggpath);
+		fprintf(stderr, "KK createKonfig(): Directory %s exists\n", (const char *)ggpath.local8Bit());
 	else {
 		fprintf(stderr, "KK createKonfig(): Creating directory\n");
-		if (mkdir(ggpath, 0700) != 0 ) {
+		if (mkdir(ggpath.local8Bit(), 0700) != 0 ) {
 			perror("mkdir");
 			return;
 			}

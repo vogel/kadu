@@ -41,7 +41,7 @@ void loadKaduConfig(void) {
 	/* first read our own config file... */
 	fprintf(stderr,"KK loadKaduConfig(): Reading config file...\n");
 	KConfig * konf;
-	konf = new KConfig(ggPath("kadu.conf"));
+	konf = new KConfig(ggPath(QString("kadu.conf")));
 
 	konf->setGroup("Global");
 	config.uin = konf->readNumEntry("UIN",0);
@@ -145,7 +145,7 @@ void loadKaduConfig(void) {
 void saveKaduConfig(void) {
 	fprintf(stderr,"KK saveKaduConfig(): Writing config files...\n");
 	KConfig * konf;
-	konf = new KConfig(ggPath("kadu.conf"));
+	konf = new KConfig(ggPath(QString("kadu.conf")));
 
 	konf->setGroup("Global");
 	konf->writeEntry("UIN",config.uin);

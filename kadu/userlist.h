@@ -60,7 +60,7 @@ class UserList : public QObject, public QValueList<UserListElement>
 			const bool Offline_to_user, const bool Notify, const QString &Group);
 		void changeUserStatus(const uin_t uin, const unsigned int status);
 		void removeUser(const QString &altnick);
-		bool writeToFile(char *filename = NULL);
+		bool writeToFile(QString filename = "");
 		bool readFromFile();
 		UserList &operator=(const UserList& userlist);
 		

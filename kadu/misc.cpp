@@ -13,20 +13,20 @@
 #include "pixmaps.h"
 #include "kadu.h"
 
-char* ggPath(char* subpath)
+QString ggPath(QString subpath)
 {
-	static char path[1023];
-	char* home;
-	struct passwd* pw;
-	if (pw=getpwuid(getuid()))
-		home=pw->pw_dir;
+	QString path;
+	char *home;
+	struct passwd *pw;
+	if (pw = getpwuid(getuid()))
+		home = pw->pw_dir;
 	else
-		home=getenv("HOME");
-	char* config_dir=getenv("CONFIG_DIR");
-	if(config_dir==NULL)
-		snprintf(path, sizeof(path), "%s/.gg/%s", home, subpath);
+		home = getenv("HOME");
+	char *config_dir = getenv("CONFIG_DIR");
+	if (config_dir == NULL)
+		path = QString("%1/.gg/%2").arg(home).arg(subpath);
 	else
-		snprintf(path, sizeof(path), "%s/%s/gg/%s", home, config_dir, subpath);
+		path = QString("%1/%2/gg/%3").arg(home).arg(config_dir).arg(subpath);
 	return path;
 };
 
