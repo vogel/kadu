@@ -105,7 +105,7 @@ AM_CPPFLAGS = $(PTHREAD_CPPFLAGS) -DQT_THREAD_SUPPORT -D_REENTRANT \
 -DBINDIR="\"$(bindir)\"" -DDATADIR="\"$(datadir)\""
 
 
-CLEANFILES = *.so *.o *_moc.cpp
+CLEANFILES = */*.so */*.o */*_moc.cpp
 
 module_spec_list = $(wildcard */spec)
 module_dir_list = $(patsubst %/spec,%,$(module_spec_list))
@@ -119,6 +119,7 @@ DIST_COMMON = Makefile.am Makefile.in
 all: all-am
 
 .SUFFIXES:
+.SUFFIXES: .cpp .o
 $(srcdir)/Makefile.in:  Makefile.am  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
 	  $(AUTOMAKE) --gnu  modules/Makefile
@@ -244,34 +245,37 @@ all:
 		echo; \
 		echo ">>> Compiling $$dir module [LD=$$MODULE_LDFLAGS,CXX=$$MODULE_CXXFLAGS] ..."; \
 		echo; \
-		obj_files=" "; \
+		moc_cpp_files="" \
+		o_files=""; \
 		h_files=""; \
 		for src_file in $$MODULE_SOURCES; do \
-			obj_file=`expr $$src_file : "\(.*\).cpp"`.o; \
-			obj_files="$$obj_files $$dir/$$obj_file"; \
+			o_file=`expr $$src_file : "\(.*\).cpp"`.o; \
+			o_files="$$o_files $$dir/$$o_file"; \
 		done; \
 		for moc_h_file in $$MODULE_MOC_HEADERS; do \
 			h_files="$$h_files $$dir/$$moc_h_file"; \
-			obj_file=`expr $$moc_h_file : "\(.*\).h"`_moc.o; \
-			obj_files="$$obj_files $$dir/$$obj_file"; \
+			moc_cpp_file=`expr $$moc_h_file : "\(.*\).h"`_moc.cpp; \
+			moc_cpp_files="$$moc_cpp_files $$dir/$$moc_cpp_file"; \
+			o_file=`expr $$moc_h_file : "\(.*\).h"`_moc.o; \
+			o_files="$$o_files $$dir/$$o_file"; \
 		done; \
 		for h_file in $$MODULE_HEADERS; do \
 			h_files="$$h_files $$dir/$$h_file"; \
 		done; \
-		$(MAKE) "module_obj_files=$$obj_files" \
+		$(MAKE) "module_o_files=$$o_files" \
 			"module_h_files=$$h_files" \
+			"module_moc_cpp_files=$$moc_cpp_files" \
 			"module_cxxflags=$$MODULE_CXXFLAGS" \
 			"module_ldflags=$$MODULE_LDFLAGS" \
 			$$dir/$$dir.so; \
 	done
 
-%.so: $(module_obj_files)
-	$(CC) -shared -o $@ $(module_obj_files) $(module_ldflags)
+.SECONDARY: $(module_o_files) $(module_moc_cpp_files)
 
-%_moc.o: %_moc.cpp
-	$(CC) -o $@ -c -fPIC $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)
+%.so: $(module_o_files)
+	$(CC) -shared -o $@ $(module_o_files) $(module_ldflags)
 
-%.o: %.cpp $(module_h_files)
+.cpp.o: $(module_h_files)
 	$(CC) -o $@ -c -fPIC $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)
 
 %_moc.cpp: %.h
