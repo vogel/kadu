@@ -18,7 +18,7 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 #!/bin/bash
-# $Id: Instaluj,v 1.31 2004/05/04 22:17:51 romek Exp $
+# $Id: Instaluj,v 1.32 2004/05/10 09:15:46 romek Exp $
 # KaduInstaller - Copyright (C) 2004 Sad Mephisto <sad@antisocial.com>
 
 export LC_ALL=pl_PL
@@ -87,11 +87,14 @@ statyczne()
 		voice "Rozmowy g³osowe" on \
 		sms "Wsparcie dla SMS" on \
 		default_sms "Domy¶lne bramki SMS (Plus,Era,Idea)" on \
-		tcl_scripting "Modu³ TCL" 0 \
-		xmms "Modu³ XMMS" 0  2>log_selectedmodule
+		tcl_scripting "Modu³ TCL - autopobór z http://" 0 \
+		xmms "Pobiera opisy z XMMS - autopobór z http://" 0 \
+		amarok "Pobiera opisy z Amarok - autopobór z http://" 0 \
+		mail "Obs³uga skrzynek e-mail - autopobór z http://" 0 \
+		filedesc "Pobiera opisy z pliku - autopobór z http://" 0  2>log_selectedmodule
 
 		rm -f .config
-	MODULY="encryption docking x11_docking wmaker_docking speech sound ext_sound dsp_sound arts_sound esd_sound nas_sound echo autoaway autoresponder voice sms default_sms tcl_scripting xmms"
+	MODULY="encryption docking x11_docking wmaker_docking speech sound ext_sound dsp_sound arts_sound esd_sound nas_sound echo autoaway autoresponder voice sms default_sms tcl_scripting xmms amarok filedesc mail"
 	for MODUL in $MODULY; do
 		if [[ `cat log_selectedmodule |grep $MODUL` != "" ]]; then
 			echo "module_$MODUL=y" >> .config
@@ -121,11 +124,14 @@ dynamiczne()
 		voice "Rozmowy g³osowe" on \
 		sms "Wsparcie dla SMS" on \
 		default_sms "Domy¶lne bramki SMS (Plus.Era,Idea)" on \
-		tcl_scripting "Modu³ TCL" 0 \
-		xmms "Modu³ XMMS" 0  2>log_selectedmodule
+		tcl_scripting "Modu³ TCL - autopobór z http://" 0 \
+		xmms "Pobiera opisy z XMMS - autopobór z http://" 0 \
+		amarok "Pobiera opisy z Amarok - autopobór z http://" 0 \
+		mail "Obs³uga skrzynek e-mail - autopobór z http://" 0 \
+		filedesc "Pobiera opisy z pliku - autopobór z http://" 0  2>log_selectedmodule
 
 		rm -f .config
-	MODULY="encryption docking x11_docking wmaker_docking speech sound ext_sound dsp_sound arts_sound esd_sound nas_sound echo autoaway autoresponder voice sms default_sms tcl_scripting xmms"
+	MODULY="encryption docking x11_docking wmaker_docking speech sound ext_sound dsp_sound arts_sound esd_sound nas_sound echo autoaway autoresponder voice sms default_sms tcl_scripting xmms amarok filedesc mail"
 	for MODUL in $MODULY; do
 		if [[ `cat log_selectedmodule |grep $MODUL` != "" ]]; then
 			echo "module_$MODUL=m" >> .config
@@ -248,16 +254,20 @@ pomoc()
 	znajduj± siê na stronie http://kadu.net/\n\n \
 	W wiêkszo¶ci przypadków nie jest konieczne dodatkowe konfigurowanie \n \
 	parametrów instalacyjnych Kadu. Warto jednak zajrzeæ do sekcji \n \
-	\"Modu³y\" i wybraæ te, które uwa¿asz za potrzebne.\n \
-	W okienku listy wyboru modu³u klikniêcie na przycisku\n \
-	\"Anuluj\" powoduje rezygnacjê z instalowania *wszystkich* modu³ów. \n\n \
+	\"Modu³y\" i wybraæ tu rodzaj modu³ów (statyczne lub dynamiczne) \n \
+	oraz te, które uwa¿asz za potrzebne.\n \n \
+	UWAGA: przy wyborze modu³ów opisanych informacj± *autopobór* \n \
+	Modu³y te bêd± automatycznie pobierene z internetu w wersji \n \
+	odpowiedniej do wersji Kadu. Konieczne jest wiêc posiadanie \n \
+	uruchomionego ³±cza internetowego. Je¿eli modu³ nie zostanie pobrany, \n \
+	zostanie pominiêty podczas kompilacji. \n \n \
 	Po wybraniu opcji \"Instaluj\" rozpoczyna siê proces kompilacji\n \
 	i instalacji Kadu. Je¶li proces instalacji siê zatrzyma z \n \
 	komunikatem o b³êdzie, przeczytaj plik \"log_install\" I sprawd¼ \n \
 	w dokumentacji czy podobny problem nie zosta³ opisany.\n \
 	Je¶li nie znajdziesz wskazówek, to przeszukaj \n \
 	forum Kadu (http://kadu.net/forum) w poszukiwaniu odpowiedzi. \
-	" 20 75
+	" 25 75
 }
 
 goodbye()
