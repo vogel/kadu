@@ -255,19 +255,9 @@ void dccSocketClass::askAccept(void) {
 QString dccSocketClass::selectFile(void) {
 	QString f;
 
-	do {
-		f = QFileDialog::getOpenFileName((char *)dccsock->file_info.filename,
-			QString::null, 0, i18n("open file"), i18n("Select file location"));
-		if (f.isEmpty())
-			switch (QMessageBox::warning(kadu, i18n("File not specified"),
-				i18n("Please specify a file"), i18n("OK"), i18n("Abort"), QString::null, 0, 1) ) {
-				case 0: // Yes?
-					break;
-				case 1:
-					return NULL;
-				}
-	} while (f.isEmpty());
-
+	f = QFileDialog::getOpenFileName((char *)dccsock->file_info.filename,
+		QString::null, 0, i18n("open file"), i18n("Select file location"));
+	
 	return f;
 }
 
