@@ -1,4 +1,4 @@
-/* $Id: conn-async.c,v 1.9 2003/06/29 20:17:02 adrian Exp $ */
+/* $Id: conn-async.c,v 1.10 2003/07/03 19:52:44 adrian Exp $ */
 
 /*
  * g³upiutki przyk³ad, jak siê po³±czyæ, korzystaj±c z asynchronicznych

@@ -4,6 +4,27 @@ oznacza, ¿e ,,nick'' jest pomys³odawc± lub podes³a³ patcha, a zrobi³
 to kto¶ oznaczony przez ,,x'' (w - wojtekka, s - speedy, a - arekm,
 d - drg, sz - szalik).
 
+// 2003-07-02
+
+- informacja o b³êdach przy logowaniu (*/w)
+
+// 2003-07-01
+
+- poprawka zapisywania plików konfiguracyjnych (porridge/w)
+- poprawka wykrywania niestandardowych instalacji openssl (zawirek,adrians/w)
+- poprawne zamykanie deskryptora w niektórych sytuacjach (mirqus/sz)
+
+// 2003-06-30
+
+- nie wywraca siê, gdy dostanie wiadomo¶æ graficzn± (sz)
+
+// 2003-06-29
+
+- ekgbot w contrib/scripts/ (sznik/w)
+- kolejna przegl±darka logów, tym razem w C (Goblin/w)
+- linki.py w contrib/scripts/ (rmrmg/w)
+- pomijanie tylko dla przyjació³ w wynikach szukania (Struthio/w)
+
 // 2003-06-27
 
 - poprawka dope³niania /python (rmrmg/w)
@@ -200,4 +221,4 @@ d - drg, sz - szalik).
 - poprawka zachowania trybu wielolinijkowego (theKnight/w)
 
 
-$Id: ChangeLog,v 1.21 2003/06/29 20:16:39 adrian Exp $
+$Id: ChangeLog,v 1.22 2003/07/03 19:54:14 adrian Exp $

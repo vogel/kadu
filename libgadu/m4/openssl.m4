@@ -1,5 +1,5 @@
 dnl based on curses.m4 
-dnl $Id: openssl.m4,v 1.10 2003/06/29 20:17:02 adrian Exp $
+dnl $Id: openssl.m4,v 1.11 2003/07/03 19:53:24 adrian Exp $
 
 AC_DEFUN(AC_CHECK_OPENSSL,[
   AC_SUBST(OPENSSL_LIBS)
@@ -12,6 +12,22 @@ AC_DEFUN(AC_CHECK_OPENSSL,[
       elif test "x$withval" != "xyes" ; then
         with_arg=$withval/include:-L$withval/lib
       fi)
+
+  if test "x$without_openssl" != "xyes" -a "x$with_arg" = "x"; then
+    AC_CHECK_PROG([PKGCONFIG], [pkg-config], [pkg-config], [no])
+    if test "x$PKGCONFIG" != "xno"; then
+      AC_MSG_CHECKING([for OpenSSL])
+      OPENSSL_LIBS=$($PKGCONFIG --libs openssl)
+      OPENSSL_INCLUDES=$($PKGCONFIG --cflags openssl)
+      if test "x$OPENSSL_LIBS" != "x" -o "x$OPENSSL_INCLUDES" != "x"; then
+	AC_MSG_RESULT([yes])
+        without_openssl=yes
+	have_openssl=yes
+      else
+        AC_MSG_RESULT([no])
+      fi
+    fi
+  fi
 
   if test "x$without_openssl" != "xyes" ; then
     AC_MSG_CHECKING(for ssl.h)

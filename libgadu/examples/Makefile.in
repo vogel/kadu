@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.8 2003/06/29 20:17:02 adrian Exp $
+# $Id: Makefile.in,v 1.9 2003/07/03 19:52:44 adrian Exp $
 
 CC = @CC@
 CFLAGS = @CFLAGS_LIBGADU@ @CFLAGS@ -I.. -I../lib -I../src
