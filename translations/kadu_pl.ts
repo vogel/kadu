@@ -598,10 +598,6 @@ Jest to wysoce ryzykowne!</translation>
         <source>&amp;License</source>
         <translation>L&amp;icencja</translation>
     </message>
-    <message>
-        <source>&lt;br&gt;(c) 2001-2004 Kadu Team&lt;/span&gt;</source>
-        <translation>&lt;br&gt;(c) 2001-2004 Kadu Team&lt;/span&gt;</translation>
-    </message>
 </context>
 <context>
     <name>Chat</name>
