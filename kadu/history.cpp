@@ -33,7 +33,7 @@
 #include "history.h"
 //
 
-void appendHistory(UinsList uins, uin_t uin, unsigned char * msg, bool own, time_t time) {
+void appendHistory(UinsList uins, uin_t uin,unsigned char* msg, bool own, time_t time) {
 	int i;
 	
 	QFile f;
@@ -88,6 +88,48 @@ void appendHistory(UinsList uins, uin_t uin, unsigned char * msg, bool own, time
 
 	f.close();
 }
+
+void appendSMSHistory(const QString& mobile,const QString& msg)
+{
+	fprintf(stderr,"Appending sms to history (%s)\n",mobile.local8Bit().data());
+	QString altnick;
+	// Jesli user posiada uin to loguj to normalnej historii
+	for(int i=0; i<userlist.count(); i++)
+		if(userlist[i].mobile==mobile)
+		{
+			altnick=userlist[i].altnick;
+			uin_t uin=userlist[i].uin;
+			if(uin!=0)
+			{
+				UinsList uins;
+				uins.append(userlist[i].uin);
+				QCString cmsg=(QString("[SMS: ")+mobile+"]\n"+msg).local8Bit();
+				unsigned char* umsg=(unsigned char*)cmsg.data();
+				appendHistory(uins,userlist[i].uin,umsg,true);
+			};
+			break;
+		};
+	// Oprocz tego zawsze do pliku history/sms
+	QFile f(preparePath("history/sms"));
+	if(!(f.open(IO_WriteOnly|IO_Append)))
+	{
+		fprintf(stderr, "appendSMSHistory(): Error opening sms history file\n");
+		return;
+	};
+	QString target;
+	if(altnick.length()>0)
+		target=altnick+" ("+mobile+")";
+	else
+		target=mobile;
+	f.writeBlock(target.local8Bit(),target.length());
+	f.putch(' ');
+	char *ctime=timestamp();
+	f.writeBlock(ctime, strlen(ctime));
+	f.putch('\n');
+	QString log=msg+"\n\n";
+	f.writeBlock(log.local8Bit(),log.length());
+	f.close();
+};
 
 History::History(UinsList uins) {
 	int i;

@@ -14,6 +14,7 @@
 //
 #include "kadu.h"
 #include "sms.h"
+#include "history.h"
 //
 
 Sms::Sms(const QString& altnick, QDialog* parent) : QDialog (parent, "Sms")
@@ -124,11 +125,11 @@ int Sms::sendSms(void) {
 }
 
 void Sms::smsSigHandler() {
+	appendSMSHistory(recipient->text(),body->text());
 	if (smsProcess->normalExit())
 		QMessageBox::information(this, i18n("SMS sent"), i18n("The process exited normally. The SMS should be on its way"));
 	else
 		QMessageBox::warning(this, i18n("SMS not sent"), i18n("The process exited abnormally. The SMS may not be sent"));
-
 	b_send->setEnabled(true);
 	body->setEnabled(true);
 	body->clear();

@@ -23,6 +23,7 @@ class History : public QDialog {
 		QMultiLineEdit *body;
 };
 
-void appendHistory(UinsList uins, uin_t uin, unsigned char * msg, bool, time_t = 0);
+void appendHistory(UinsList uins,uin_t uin,unsigned char* msg,bool own,time_t=0);
+void appendSMSHistory(const QString& mobile,const QString& msg);
 
 #endif
