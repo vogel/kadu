@@ -70,6 +70,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   jest na sta³e wy³±czona i kadu kompiluje siê poprawnie bez
   libgsm i rozmów g³osowych (adrian) 
 * okno potwierdzania nadchodz±cej rozmowy g³osowej (chilek)
+* kadu wch³onê³o bibliotekê libgsm 1.0.10 ;) (adrian)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci
