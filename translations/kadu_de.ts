@@ -384,18 +384,6 @@ Was wollen sie nun tun?</translation>
         <translation>Aussehen</translation>
     </message>
     <message>
-        <source>Chat properties</source>
-        <translation>Chat-Fenster-Einstellungen</translation>
-    </message>
-    <message>
-        <source>Font</source>
-        <translation>Schriftart</translation>
-    </message>
-    <message>
-        <source>Font size</source>
-        <translation>Schriftartgröße</translation>
-    </message>
-    <message>
         <source>Other</source>
         <translation>Sonstige</translation>
     </message>
@@ -430,10 +418,6 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     <message>
         <source>syntax:</source>
         <translation> Syntax:</translation>
-    </message>
-    <message>
-        <source>Preview chat</source>
-        <translation>Geschprächsvorschau</translation>
     </message>
     <message>
         <source>Notify</source>
@@ -480,16 +464,8 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
         <translation>Polnisch</translation>
     </message>
     <message>
-        <source>Userbox properties</source>
-        <translation>Eigenschaften der Kontaktliste</translation>
-    </message>
-    <message>
         <source>Preview userbox</source>
         <translation>Kontaktliste Vorschau</translation>
-    </message>
-    <message>
-        <source>Preview desc.</source>
-        <translation>Beschreibung Vorschau.</translation>
     </message>
     <message>
         <source>Display group tabs</source>
@@ -552,16 +528,8 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
         <translation>Benutzer %1 ist erreichbar</translation>
     </message>
     <message>
-        <source>Show info-panel</source>
-        <translation>Zeige Info-Panel</translation>
-    </message>
-    <message>
         <source>Show description in userbox</source>
         <translation>Zeige  Beschreibung in der Kontaktliste</translation>
-    </message>
-    <message>
-        <source>Show avaliable in bold</source>
-        <translation>Zeige erreichbare fett gedruckt</translation>
     </message>
     <message>
         <source>Icon theme</source>
@@ -630,6 +598,90 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     <message>
         <source>Show emoticons in history</source>
         <translation>Zeige Emoticons in der Geschichte</translation>
+    </message>
+    <message>
+        <source>Show available in bold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Colors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your background color</source>
+        <translation type="unfinished">Deine Hintergrundfarbe</translation>
+    </message>
+    <message>
+        <source>User background color</source>
+        <translation type="unfinished">Hintergrundfarbe für Kontakt</translation>
+    </message>
+    <message>
+        <source>Your font color</source>
+        <translation type="unfinished">Deine Schriftfarbe</translation>
+    </message>
+    <message>
+        <source>User font color</source>
+        <translation type="unfinished">Schriftfarbe für Kontakt</translation>
+    </message>
+    <message>
+        <source>Fonts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Font in chat window</source>
+        <translation type="unfinished">Schriftart im Chat-Fenster</translation>
+    </message>
+    <message>
+        <source>Previews</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat preview</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Main window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Panel background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Panel font color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Font in panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Information panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show information panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Userbox background color</source>
+        <translation type="unfinished">Hintergrundfarbe für Kontakt-Liste</translation>
+    </message>
+    <message>
+        <source>Userbox font color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Font in userbox</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preview panel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -774,26 +826,6 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     <message>
         <source>Animated</source>
         <translation>animierte</translation>
-    </message>
-    <message>
-        <source>Your background color</source>
-        <translation>Deine Hintergrundfarbe</translation>
-    </message>
-    <message>
-        <source>Your font color</source>
-        <translation>Deine Schriftfarbe</translation>
-    </message>
-    <message>
-        <source>User background color</source>
-        <translation>Hintergrundfarbe für Kontakt</translation>
-    </message>
-    <message>
-        <source>User font color</source>
-        <translation>Schriftfarbe für Kontakt</translation>
-    </message>
-    <message>
-        <source>Font in chat window</source>
-        <translation>Schriftart im Chat-Fenster</translation>
     </message>
     <message>
         <source>Chat with </source>
@@ -1894,6 +1926,13 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
     </message>
 </context>
 <context>
+    <name>SelectFont</name>
+    <message>
+        <source>Select</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SelectPaths</name>
     <message>
         <source>Select paths</source>
@@ -2050,25 +2089,6 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
     <message>
         <source>&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;</source>
         <translation>&lt;b&gt;Beschreibung:&lt;/b&gt;&lt;br/&gt;</translation>
-    </message>
-</context>
-<context>
-    <name>UserBoxSlots</name>
-    <message>
-        <source>Userbox background color</source>
-        <translation>Hintergrundfarbe für Kontakt-Liste</translation>
-    </message>
-    <message>
-        <source>Desc. background color</source>
-        <translation>Hintergrundfarbe für Beschreibung</translation>
-    </message>
-    <message>
-        <source>Font in userbox window</source>
-        <translation>Schriftart für Kontakt-Liste</translation>
-    </message>
-    <message>
-        <source>Font in desc.</source>
-        <translation>Schriftart in Beschr.</translation>
     </message>
 </context>
 <context>
@@ -2252,7 +2272,7 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
     </message>
     <message>
         <source>UIN</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nummer GG (UIN)</translation>
     </message>
     <message>
         <source>Nickname</source>

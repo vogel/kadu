@@ -114,18 +114,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Chat properties</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Font</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Font size</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Other</source>
         <translation type="unfinished"></translation>
     </message>
@@ -155,10 +143,6 @@ If you leave blank, default settings will be used.</source>
     </message>
     <message>
         <source>syntax:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Preview chat</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -527,15 +511,7 @@ What would you like to do?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Userbox properties</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Preview userbox</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Preview desc.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -547,15 +523,7 @@ What would you like to do?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show info-panel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Show description in userbox</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show avaliable in bold</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -624,6 +592,90 @@ What would you like to do?</source>
     </message>
     <message>
         <source>Show emoticons in history</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show available in bold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Colors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your font color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User font color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fonts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Font in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Previews</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat preview</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Main window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Panel background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Panel font color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Font in panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Information panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show information panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Userbox background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Userbox font color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Font in userbox</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preview panel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -768,26 +820,6 @@ What would you like to do?</source>
     </message>
     <message>
         <source>Animated</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Your background color</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Your font color</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>User background color</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>User font color</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Font in chat window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1881,6 +1913,13 @@ Now add your friends to the userlist.</source>
     </message>
 </context>
 <context>
+    <name>SelectFont</name>
+    <message>
+        <source>Select</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SelectPaths</name>
     <message>
         <source>Select paths</source>
@@ -2036,25 +2075,6 @@ Now add your friends to the userlist.</source>
     </message>
     <message>
         <source>&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>UserBoxSlots</name>
-    <message>
-        <source>Userbox background color</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Desc. background color</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Font in userbox window</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Font in desc.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

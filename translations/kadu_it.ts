@@ -384,18 +384,6 @@ Cosa vogliamo fare?</translation>
         <translation>Aspetto</translation>
     </message>
     <message>
-        <source>Chat properties</source>
-        <translation>Proprietà della finesta chat</translation>
-    </message>
-    <message>
-        <source>Font</source>
-        <translation>Caratteri</translation>
-    </message>
-    <message>
-        <source>Font size</source>
-        <translation>Dimensione caratteri</translation>
-    </message>
-    <message>
         <source>Other</source>
         <translation>Altro</translation>
     </message>
@@ -430,10 +418,6 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
     <message>
         <source>syntax:</source>
         <translation>sintassi:</translation>
-    </message>
-    <message>
-        <source>Preview chat</source>
-        <translation>Anteprima chat</translation>
     </message>
     <message>
         <source>Notify</source>
@@ -480,16 +464,8 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
         <translation>Polacco</translation>
     </message>
     <message>
-        <source>Userbox properties</source>
-        <translation>Proprietà della lista Contatti</translation>
-    </message>
-    <message>
         <source>Preview userbox</source>
         <translation>Anteprima  Lista Contatti</translation>
-    </message>
-    <message>
-        <source>Preview desc.</source>
-        <translation>Anteprima desc.</translation>
     </message>
     <message>
         <source>Display group tabs</source>
@@ -552,16 +528,8 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
         <translation>%1 è disponibile</translation>
     </message>
     <message>
-        <source>Show info-panel</source>
-        <translation>Mostra panello-info</translation>
-    </message>
-    <message>
         <source>Show description in userbox</source>
         <translation>Mostar descrizione in panello contatti</translation>
-    </message>
-    <message>
-        <source>Show avaliable in bold</source>
-        <translation>Mostra disponibile in grassetto</translation>
     </message>
     <message>
         <source>Icon theme</source>
@@ -629,6 +597,90 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
     </message>
     <message>
         <source>Show emoticons in history</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show available in bold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Colors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your background color</source>
+        <translation type="unfinished">Tuo colore di sfondo</translation>
+    </message>
+    <message>
+        <source>User background color</source>
+        <translation type="unfinished">Colore di sfondo del contatto</translation>
+    </message>
+    <message>
+        <source>Your font color</source>
+        <translation type="unfinished">Tuo colore caratteri</translation>
+    </message>
+    <message>
+        <source>User font color</source>
+        <translation type="unfinished">Colore caratteri del contatto</translation>
+    </message>
+    <message>
+        <source>Fonts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Font in chat window</source>
+        <translation type="unfinished">Caratteri nella finestra di chat</translation>
+    </message>
+    <message>
+        <source>Previews</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat preview</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Main window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Panel background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Panel font color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Font in panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Information panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show information panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Userbox background color</source>
+        <translation type="unfinished">Colore di sfondo della lista contatti</translation>
+    </message>
+    <message>
+        <source>Userbox font color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Font in userbox</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preview panel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -774,26 +826,6 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
     <message>
         <source>Animated</source>
         <translation>Animato</translation>
-    </message>
-    <message>
-        <source>Your background color</source>
-        <translation>Tuo colore di sfondo</translation>
-    </message>
-    <message>
-        <source>Your font color</source>
-        <translation>Tuo colore caratteri</translation>
-    </message>
-    <message>
-        <source>User background color</source>
-        <translation>Colore di sfondo del contatto</translation>
-    </message>
-    <message>
-        <source>User font color</source>
-        <translation>Colore caratteri del contatto</translation>
-    </message>
-    <message>
-        <source>Font in chat window</source>
-        <translation>Caratteri nella finestra di chat</translation>
     </message>
     <message>
         <source>Chat with </source>
@@ -1894,6 +1926,13 @@ Ora è possibile aggiungere i vostri amici alla lista dei contatti.</translation
     </message>
 </context>
 <context>
+    <name>SelectFont</name>
+    <message>
+        <source>Select</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SelectPaths</name>
     <message>
         <source>Select paths</source>
@@ -2050,25 +2089,6 @@ Ora è possibile aggiungere i vostri amici alla lista dei contatti.</translation
     <message>
         <source>&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;</source>
         <translation>&lt;b&gt;Descrizione:&lt;/b&gt;&lt;br/&gt;</translation>
-    </message>
-</context>
-<context>
-    <name>UserBoxSlots</name>
-    <message>
-        <source>Userbox background color</source>
-        <translation>Colore di sfondo della lista contatti</translation>
-    </message>
-    <message>
-        <source>Desc. background color</source>
-        <translation>Colore sfondo della descrizione</translation>
-    </message>
-    <message>
-        <source>Font in userbox window</source>
-        <translation>Caratteri lista contatti</translation>
-    </message>
-    <message>
-        <source>Font in desc.</source>
-        <translation>Caratteri della desc.</translation>
     </message>
 </context>
 <context>

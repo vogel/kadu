@@ -392,18 +392,6 @@ Wybierz jedną z poniższych opcji:</translation>
         <translation>Wygląd</translation>
     </message>
     <message>
-        <source>Chat properties</source>
-        <translation>Właściwości okna rozmowy</translation>
-    </message>
-    <message>
-        <source>Font</source>
-        <translation>Czcionka</translation>
-    </message>
-    <message>
-        <source>Font size</source>
-        <translation>Rozmiar czcionki</translation>
-    </message>
-    <message>
         <source>Other</source>
         <translation>Pozostałe</translation>
     </message>
@@ -438,10 +426,6 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     <message>
         <source>syntax:</source>
         <translation> składnia: </translation>
-    </message>
-    <message>
-        <source>Preview chat</source>
-        <translation>Podgląd rozmowy</translation>
     </message>
     <message>
         <source>Notify</source>
@@ -488,16 +472,8 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <translation>Polski</translation>
     </message>
     <message>
-        <source>Userbox properties</source>
-        <translation>Właściwości listy kontaktów</translation>
-    </message>
-    <message>
         <source>Preview userbox</source>
         <translation>Podgląd listy kontaktów</translation>
-    </message>
-    <message>
-        <source>Preview desc.</source>
-        <translation>Podgląd opisu</translation>
     </message>
     <message>
         <source>Display group tabs</source>
@@ -552,16 +528,8 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <translation>Kontakt %1 jest dostępny</translation>
     </message>
     <message>
-        <source>Show info-panel</source>
-        <translation>Pokaż panel informacyjny</translation>
-    </message>
-    <message>
         <source>Show description in userbox</source>
         <translation>Pokaż opis w liście kontaktów</translation>
-    </message>
-    <message>
-        <source>Show avaliable in bold</source>
-        <translation>Dostępni pogrubioną czcionką</translation>
     </message>
     <message>
         <source>Icon theme</source>
@@ -630,6 +598,90 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     <message>
         <source>Show emoticons in history</source>
         <translation>Pokaż emotikony w histori</translation>
+    </message>
+    <message>
+        <source>Show available in bold</source>
+        <translation>Dostepni pogrubioną czcionką</translation>
+    </message>
+    <message>
+        <source>Colors</source>
+        <translation>Kolory</translation>
+    </message>
+    <message>
+        <source>Chat window</source>
+        <translation>Okno rozmowy</translation>
+    </message>
+    <message>
+        <source>Your background color</source>
+        <translation>Twój kolor tła</translation>
+    </message>
+    <message>
+        <source>User background color</source>
+        <translation>Kolor tła kontaktu</translation>
+    </message>
+    <message>
+        <source>Your font color</source>
+        <translation>Twój kolor czcionki</translation>
+    </message>
+    <message>
+        <source>User font color</source>
+        <translation>Kolor czcionki kontaktu</translation>
+    </message>
+    <message>
+        <source>Fonts</source>
+        <translation>Czcionki</translation>
+    </message>
+    <message>
+        <source>Font in chat window</source>
+        <translation>Czcionka w oknie rozmowy</translation>
+    </message>
+    <message>
+        <source>Previews</source>
+        <translation>Podgląd</translation>
+    </message>
+    <message>
+        <source>Chat preview</source>
+        <translation>Podgląd okna rozmowy</translation>
+    </message>
+    <message>
+        <source>Main window</source>
+        <translation>Okno listy kontaktów</translation>
+    </message>
+    <message>
+        <source>Panel background color</source>
+        <translation>Kolor tła panela info.</translation>
+    </message>
+    <message>
+        <source>Panel font color</source>
+        <translation>Kolor czcionki w panelu info.</translation>
+    </message>
+    <message>
+        <source>Font in panel</source>
+        <translation>Czcionka w panelu info.</translation>
+    </message>
+    <message>
+        <source>Information panel</source>
+        <translation>Panel informacyjny</translation>
+    </message>
+    <message>
+        <source>Show information panel</source>
+        <translation>Pokaż panel informacyjny</translation>
+    </message>
+    <message>
+        <source>Userbox background color</source>
+        <translation>Kolor tła listy kontaktów</translation>
+    </message>
+    <message>
+        <source>Userbox font color</source>
+        <translation>Kolor czcionki listy kontaktów</translation>
+    </message>
+    <message>
+        <source>Font in userbox</source>
+        <translation>Czcionka listy kontaktów</translation>
+    </message>
+    <message>
+        <source>Preview panel</source>
+        <translation>Podgląd panela info.</translation>
     </message>
 </context>
 <context>
@@ -774,26 +826,6 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     <message>
         <source>Animated</source>
         <translation>Animowane</translation>
-    </message>
-    <message>
-        <source>Your background color</source>
-        <translation>Twój kolor tła</translation>
-    </message>
-    <message>
-        <source>Your font color</source>
-        <translation>Twój kolor czcionki</translation>
-    </message>
-    <message>
-        <source>User background color</source>
-        <translation>Kolor tła kontaktu</translation>
-    </message>
-    <message>
-        <source>User font color</source>
-        <translation>Kolor czcionki kontaktu</translation>
-    </message>
-    <message>
-        <source>Font in chat window</source>
-        <translation>Czcionka w oknie rozmowy</translation>
     </message>
     <message>
         <source>Chat with </source>
@@ -1895,6 +1927,13 @@ Teraz możesz dodać znajomych do listy kontaktów.</translation>
     </message>
 </context>
 <context>
+    <name>SelectFont</name>
+    <message>
+        <source>Select</source>
+        <translation>Wybierz</translation>
+    </message>
+</context>
+<context>
     <name>SelectPaths</name>
     <message>
         <source>Select paths</source>
@@ -2052,25 +2091,6 @@ Teraz już nie masz numeru GG :(</translation>
     <message>
         <source>&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;</source>
         <translation>&lt;b&gt;Opis:&lt;/b&gt;&lt;br/&gt;</translation>
-    </message>
-</context>
-<context>
-    <name>UserBoxSlots</name>
-    <message>
-        <source>Userbox background color</source>
-        <translation>Kolor tła listy kontaktów</translation>
-    </message>
-    <message>
-        <source>Desc. background color</source>
-        <translation>Kolor tła opisu</translation>
-    </message>
-    <message>
-        <source>Font in userbox window</source>
-        <translation>Czcionka listy kontaktów</translation>
-    </message>
-    <message>
-        <source>Font in desc.</source>
-        <translation>Czcionka w opisie.</translation>
     </message>
 </context>
 <context>
