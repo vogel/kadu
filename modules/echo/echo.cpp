@@ -13,14 +13,15 @@
 #include "message_box.h"
 #include "gadu.h"
 
-extern "C" void init_module()
+extern "C" int echo_init()
 {
 	echo=new Echo();
 	QObject::connect(&event_manager,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
 		echo,SLOT(chatReceived(UinsList,const QString&,time_t)));
+	return 0;
 }
 
-extern "C" void close_module()
+extern "C" void echo_close()
 {
 	QObject::disconnect(&event_manager,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
 		echo,SLOT(chatReceived(UinsList,const QString&,time_t)));

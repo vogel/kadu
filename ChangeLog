@@ -104,6 +104,10 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawka modulu autorespondera (uto)
 * poprawki przy Makefile do modulow - prawidlowo dziala "make clean"
   i przekompilowuje tylko pliki .cpp ktore zmienialismy (adrian)
+* zmieniony interface modulow. "void init_module()"->"int <nazwa_mod.>_init()",
+  zwraca 0 jesli funkcja sie powiodla, albo nr bledu (narazie cokolwiek innego)
+  w przeciwnym wypadku. "void close_module"->"void <nazwa_mod.>_close()".
+  zmiana nazewnictwa potrzebna do przyszlego kompilowania statycznego modulow.
 
 +++ wersja 0.3.6 (22.11.2003)
 * je¶li klikniemy na jaki¶ kontakt w userboxie, od którego otrzymali¶my jak±¶

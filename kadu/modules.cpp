@@ -154,14 +154,23 @@ bool ModulesManager::loadModule(const QString& module_name)
 	m.lib=new QLibrary(QString(DATADIR)+"/kadu/modules/"+module_name+".so");
 	if(m.lib->load())
 	{
-		typedef void InitModuleFunc();
-		InitModuleFunc* init=(InitModuleFunc*)m.lib->resolve("init_module");
-		m.close=(CloseModuleFunc*)m.lib->resolve("close_module");
+		typedef int InitModuleFunc();
+		InitModuleFunc* init=(InitModuleFunc*)m.lib->resolve(module_name+"_init");
+		m.close=(CloseModuleFunc*)m.lib->resolve(module_name+"_close");
 		if(init!=NULL&&m.close!=NULL)
-			init();
+		{
+			int res=init();
+			if(res!=0)
+			{
+				MessageBox::msg(tr("Module initialization routine failed."));
+				delete m.lib;
+				return false;		
+			}
+		}
 		else
 		{
-			MessageBox::msg(tr("Cannot find init_module() or close_module().\nMaybe it's not Kadu-compatible Module."));
+			MessageBox::msg(tr("Cannot find required functions.\nMaybe it's not Kadu-compatible Module."));
+			delete m.lib;
 			return false;
 		}
 		Modules.insert(module_name,m);

@@ -15,14 +15,15 @@
 #include "status.h"
 #include "config_file.h"
 
-extern "C" void init_module()
+extern "C" int autoresponder_init()
 {
 	autoresponder=new AutoResponder();
 	QObject::connect(&event_manager,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
 		autoresponder,SLOT(chatReceived(UinsList,const QString&,time_t)));
+	return 0;
 }
 
-extern "C" void close_module()
+extern "C" void autoresponder_close()
 {
 	QObject::disconnect(&event_manager,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
 		autoresponder,SLOT(chatReceived(UinsList,const QString&,time_t)));
