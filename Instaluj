@@ -18,7 +18,7 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 #!/bin/bash
-# $Id: Instaluj,v 1.27 2004/04/09 17:30:53 romek Exp $
+# $Id: Instaluj,v 1.28 2004/04/11 10:31:15 romek Exp $
 # KaduInstaller - Copyright (C) 2004 Sad Mephisto <sad@antisocial.com>
 
 # ./configure, make, make install....  tylko ¿eby ³adnie wygl±da³o
@@ -50,7 +50,7 @@ wybierzmoduly()
 {
 	CONFIGMENUCHOICE=`dialog --stdout --backtitle "Instalator Kadu" --menu "Menu konfiguracji" 10 75 4 \
 	Statyczne	"Moduly beda kompilowane statycznie" \
-	Dynamicznie	"Moduly beda kompilowane dynamicznie" \
+	Dynamiczne	"Moduly beda kompilowane dynamicznie" \
 	Wróæ		"Powrót do menu g³ównego"`
 	
 	if [ $CONFIGMENUCHOICE == "Statyczne" ]; then
