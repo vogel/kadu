@@ -65,7 +65,7 @@ function Konfiguruj_bez_libgadu()
  fi;
 }
 
-function Konfiguruj_z_ssl()
+function Konfiguruj_bez_ssl()
 {
 	QTDIR="$QT_DIR"
 	LD_LIBRARY_PATH="$QT_DIR/lib:$LD_LIBRARY_PATH"
@@ -73,7 +73,7 @@ function Konfiguruj_z_ssl()
 	KDEDIR="$KDE_DIR"
 	export KDEDIR
 	OPER="Configure"
-	./configure "--prefix=$APP_DIR" "--with-openssl"
+	./configure "--prefix=$APP_DIR" "--without-openssl"
 	WYK=$?
  if test "$WYK" -ne 0; then
         Error
@@ -89,7 +89,7 @@ function Konfiguruj_z_debug()
 	KDEDIR="$KDE_DIR"
 	export KDEDIR
 	OPER="Configure"
-	./configure "--prefix=$APP_DIR" "--with-openssl" "--with-debug"
+	./configure "--prefix=$APP_DIR" "--with-debug"
 	WYK=$?
  if test "$WYK" -ne 0; then
         Error
@@ -182,8 +182,8 @@ function ShowInfo()
 	echo " |           Naciśnij   I    aby rozpocząć instalację.                        |"
 	echo " |           Naciśnij   U    aby odinstalować $APP_NAME.                           |"
 	echo " |           Naciśnij   B    aby rozpocząć instalację bez libgadu             |"
-	echo " |           Naciśnij   S    aby rozpocząć instalację z SSL                  |"
-	echo " |           Naciśnij   G    aby rozpocząć instalację z Debug i SSL          |"
+	echo " |           Naciśnij   S    aby rozpocząć instalację bez SSL                |"
+	echo " |           Naciśnij   G    aby rozpocząć instalację z Debug                |"
 	echo " |           Naciśnij   P    aby uzyskać Pomoc za pomocą programu Links       |"
 	echo " |           Naciśnij   E    aby zakończyć program instalacyjny.              |"
 	echo " =============================================================================="
@@ -284,7 +284,7 @@ while [ 1 ]; do
 			Zainstaluj
 		fi;
 		if [[ ("$REPLY" == "S") || ("$REPLY" == "s") ]]; then
-			Konfiguruj_z_ssl
+			Konfiguruj_bez_ssl
 			Kompiluj
 			Zainstaluj
 		fi;		

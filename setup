@@ -65,7 +65,7 @@ function Konfiguruj_bez_libgadu()
  fi;
 }
 
-function Konfiguruj_z_ssl()
+function Konfiguruj_bez_ssl()
 {
 	QTDIR="$QT_DIR"
 	LD_LIBRARY_PATH="$QT_DIR/lib:$LD_LIBRARY_PATH"
@@ -73,7 +73,7 @@ function Konfiguruj_z_ssl()
 	KDEDIR="$KDE_DIR"
 	export KDEDIR
 	OPER="Configure"
-	./configure "--prefix=$APP_DIR" "--with-openssl" 
+	./configure "--prefix=$APP_DIR" "--without-openssl" 
 	WYK=$?
  if test "$WYK" -ne 0; then
         Error
@@ -89,7 +89,7 @@ function Konfiguruj_z_debug()
 	KDEDIR="$KDE_DIR"
 	export KDEDIR
 	OPER="Configure"
-	./configure "--prefix=$APP_DIR" "--with-debug" "--with-openssl" 
+	./configure "--prefix=$APP_DIR" "--with-debug" 
 	WYK=$?
  if test "$WYK" -ne 0; then
         Error
@@ -179,11 +179,11 @@ function ShowInfo()
 	echo " |                Press   Q   to change QT Library path.                      |"
 	echo " |                Press   K   to change KDE Desktop path.                     |"
 	echo " |                Press   D   to change destination path.                     |"
-	echo " |                Press   I   to install $APP_NAME.                                |"
-	echo " |                Press   U   to uninstall $APP_NAME.                              |"
-	echo " |                Press   B   to install $APP_NAME with existing libgadu           |"
-	echo " |                Press   S   to install $APP_NAME with SSL                        |"
-	echo " |                Press   G   to install $APP_NAME with Debug and SSL              |"
+	echo " |                Press   I   to install Kadu.                                |"
+	echo " |                Press   U   to uninstall Kadu.                              |"
+	echo " |                Press   B   to install Kadu with existing libgadu           |"
+	echo " |                Press   S   to install Kadu without SSL                     |"
+	echo " |                Press   G   to install Kadu with Debug                      |"
 	echo " |                Press   P   to Help in Links program.                       |"
 	echo " |                Press   E   to exit.                                        |"
 	echo " =============================================================================="
@@ -283,7 +283,7 @@ while [ 1 ]; do
 			Zainstaluj
 		fi;
 		if [[ ("$REPLY" == "S") || ("$REPLY" == "s") ]]; then
-			Konfiguruj_z_ssl
+			Konfiguruj_bez_ssl
 			Kompiluj
 			Zainstaluj
 		fi;
