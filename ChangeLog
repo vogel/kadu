@@ -22,7 +22,8 @@
 * optymalizacja reszty kodu, w dialogu do opisu statusu jest liczba
   informuj±ca ile znaków mo¿na jeszcze wprowadziæ, a tak¿e max. d³ugo¶æ opisu jest
   brana ze sta³ej deklerowanej w libgadu.h (mast3r)
-* poprawne wyswietlanie pola "wyswietl" w informacji o kontakcie
+* poprawne wyswietlanie pola "wyswietl" w informacji o kontakcie (mast3r)
+* kontakty z ustawionym numerem telefonu maj± ikonki z telefonami (jz,adrian)
 
 +++ wersja 0.3.3-rc3
 * sensowne potwierdzenie usuniêcia kontaktu (adrian)

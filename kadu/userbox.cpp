@@ -23,6 +23,16 @@ UserBox::UserBox(QWidget* parent,const char* name,WFlags f)
 {
 	UserBoxes.append(this);
 	setSelectionMode(QListBox::Extended);
+	// za³aduj obrazki
+	if(OnlineMobilePixmap==NULL)
+	{
+		OnlineMobilePixmap=new QPixmap(QString(DATADIR)+"/apps/kadu/icons/online_m.png");
+		OnlineDescMobilePixmap=new QPixmap(QString(DATADIR)+"/apps/kadu/icons/online_d_m.png");
+		BusyMobilePixmap=new QPixmap(QString(DATADIR)+"/apps/kadu/icons/busy_m.png");
+		BusyDescMobilePixmap=new QPixmap(QString(DATADIR)+"/apps/kadu/icons/busy_d_m.png");
+		OfflineMobilePixmap=new QPixmap(QString(DATADIR)+"/apps/kadu/icons/offline_m.png");
+		OfflineDescMobilePixmap=new QPixmap(QString(DATADIR)+"/apps/kadu/icons/offline_d_m.png");
+	};
 }
 
 UserBox::~UserBox()
@@ -181,30 +191,47 @@ void UserBox::refresh()
 	for (i = 0; i < a_users.count(); i++)
 	{
 		UserListElement &user = userlist.byAltNick(a_users[i]);
+		bool has_mobile=(user.mobile!="");
 		if (pending.pendingMsgs(user.uin))
 		{
 	    		insertItem(QPixmap((const char **)gg_msg_xpm), user.altnick);
 		}
 		else
 		{
+			QPixmap* pix=NULL;
 			switch (user.status) {
 				case GG_STATUS_AVAIL:
-		    			gg_xpm = (char **)gg_act_xpm;
+					if(has_mobile)
+						pix=OnlineMobilePixmap;
+					else
+		    				gg_xpm = (char **)gg_act_xpm;
 		    			break;
 				case GG_STATUS_AVAIL_DESCR:
-		    			gg_xpm = (char **)gg_actdescr_xpm;
+					if(has_mobile)
+						pix=OnlineDescMobilePixmap;
+					else
+		    				gg_xpm = (char **)gg_actdescr_xpm;
 		    			break;
 				case GG_STATUS_BUSY:
-					gg_xpm = (char **)gg_busy_xpm;
+					if(has_mobile)
+						pix=BusyMobilePixmap;
+					else
+						gg_xpm = (char **)gg_busy_xpm;
 		    			break;
 				case GG_STATUS_BUSY_DESCR:
+					if(has_mobile)
+						pix=BusyDescMobilePixmap;
+					else
 					gg_xpm = (char **)gg_busydescr_xpm;
 		    			break;
 				case GG_STATUS_BLOCKED:
 					gg_xpm = (char **)gg_stop_xpm;
 					break;
 				};
-			insertItem(QPixmap((const char **)gg_xpm), user.altnick);			
+			if(pix!=NULL)
+				insertItem(*pix, user.altnick);
+			else
+				insertItem(QPixmap((const char **)gg_xpm), user.altnick);			
 		};
 	};	
 	// Dodajemy niewidocznych
@@ -232,21 +259,32 @@ void UserBox::refresh()
 	for (i = 0; i < n_users.count(); i++)
 	{
 		UserListElement &user = userlist.byAltNick(n_users[i]);
+		bool has_mobile=(user.mobile!="");
 		if (pending.pendingMsgs(user.uin))
 		{
 	    		insertItem(QPixmap((const char **)gg_msg_xpm), user.altnick);
 		}
 		else
 		{
+			QPixmap* pix=NULL;
 			switch (user.status) {
 				case GG_STATUS_NOT_AVAIL_DESCR:
-		    			gg_xpm = (char **)gg_inactdescr_xpm;			
+					if(has_mobile)
+						pix=OfflineDescMobilePixmap;
+					else
+			    			gg_xpm = (char **)gg_inactdescr_xpm;			
     		    			break;
 				default:
-		    			gg_xpm = (char **)gg_inact_xpm;			
+					if(has_mobile)
+						pix=OfflineMobilePixmap;
+					else
+		    				gg_xpm = (char **)gg_inact_xpm;			
 		    			break;
 				};
-			insertItem(QPixmap((const char **)gg_xpm), user.altnick);			
+			if(pix!=NULL)
+				insertItem(*pix, user.altnick);
+			else
+				insertItem(QPixmap((const char **)gg_xpm), user.altnick);			
 		};
 	};
 	// Dodajemy uzytkownikow bez numerow GG
@@ -277,51 +315,6 @@ void UserBox::renameUser(const QString &oldaltnick, const QString &newaltnick)
 	QStringList::iterator it = Users.find(oldaltnick);
 	(*it) = newaltnick;
 };
-
-/*void ChangeUserStatus (unsigned int uin, int new_status) {
-    int num = mylist->numItemsVisible();
-    QString tmpstr;
-
-	for (int i = 0; i < num; i++) {
-	tmpstr = mylist->text(i);
-	
-	for (int j = 0; j < pending.size(); j++)
-	    if (pending[j].uin == uin)
-		return;
-
-	if (!tmpstr.compare(__c2q(UinToUser(uin)))) {
-	    QPixmap * gg_st;
-	    if (new_status == GG_STATUS_AVAIL)
-		gg_st = new QPixmap((const char**)gg_act_xpm);
-	    else
-		if (new_status == GG_STATUS_BUSY)
-		    gg_st = new QPixmap((const char**)gg_busy_xpm);
-		else
-		    if (new_status == GG_STATUS_BUSY_DESCR)
-			gg_st = new QPixmap((const char**)gg_busydescr_xpm);
-		    else
-			if (new_status == GG_STATUS_NOT_AVAIL)
-			    gg_st = new QPixmap((const char**)gg_inact_xpm);
-			else
-			    if (new_status == GG_STATUS_NOT_AVAIL_DESCR)
-				gg_st = new QPixmap((const char**)gg_inactdescr_xpm);
-			    else
-				if (new_status == GG_STATUS_AVAIL_DESCR)
-				    gg_st = new QPixmap((const char**)gg_actdescr_xpm);
-				else
-				    if (new_status == GG_STATUS_INVISIBLE2)
-					gg_st = new QPixmap((const char**)gg_invi_xpm);
-				    else
-					if (new_status == GG_STATUS_INVISIBLE_DESCR)
-					    gg_st = new QPixmap((const char**)gg_invidescr_xpm);
-					else
-					    gg_st = new QPixmap((const char**)gg_inact_xpm);
-
-	    mylist->changeItem(*gg_st, __c2q(UinToUser(uin)), i);
-	    delete gg_st;
-	    }
-	}
-}*/
 
 void UserBox::changeAllToInactive()
 {
@@ -358,3 +351,9 @@ void UserBox::all_renameUser(const QString &oldaltnick, const QString &newaltnic
 
 QValueList<UserBox *> UserBox::UserBoxes;
 
+QPixmap* UserBox::OnlineMobilePixmap=NULL;
+QPixmap* UserBox::OnlineDescMobilePixmap=NULL;
+QPixmap* UserBox::BusyMobilePixmap=NULL;
+QPixmap* UserBox::BusyDescMobilePixmap=NULL;
+QPixmap* UserBox::OfflineMobilePixmap=NULL;
+QPixmap* UserBox::OfflineDescMobilePixmap=NULL;

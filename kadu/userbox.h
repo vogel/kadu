@@ -20,6 +20,14 @@ class UserBox : public QListBox , QToolTip
 
 	private:
 		static QValueList<UserBox*> UserBoxes;
+		// Pixmaps
+		static QPixmap* OnlineMobilePixmap;
+		static QPixmap* OnlineDescMobilePixmap;
+		static QPixmap* BusyMobilePixmap;
+		static QPixmap* BusyDescMobilePixmap;
+		static QPixmap* OfflineMobilePixmap;
+		static QPixmap* OfflineDescMobilePixmap;		
+		//
 		QStringList Users;
 
 		void sortUsersByAltNick(QStringList &);
