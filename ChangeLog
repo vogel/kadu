@@ -10,6 +10,7 @@
 * pozbycie siê snprintf - zamiast tego jest QString::number (mast3r)
 * make clean kasuje pliki *_moc.cpp (adrian)
 * simlite uzywa inttypes.h jesli w systemie nie ma stdint.h (adrian)
+* powiadomienie o nowej wiadomosci w rozmowie przez tray hint'a
  
 +++ wersja 0.3.3-rc2
 * sporo poprawek dla FreeBSD (adrian)
