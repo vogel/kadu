@@ -9,6 +9,7 @@ extern "C"
 #include "debug.h"
 #include <qfile.h>
 #include <qmessagebox.h>
+#include "message_box.h"
 // uzywamy mkdir z sys/stat.h - nie ma w QT mozliwosci ustawienia praw do kat.
 #include <sys/stat.h>
 
@@ -245,13 +246,20 @@ void EncryptionManager::enableEncryptionBtnForUins(UinsList uins)
 	kdebugf2();
 }
 
-void EncryptionManager::sendMessageFilter(const UinsList& uins, QCString& msg, bool& /*stop*/)
+void EncryptionManager::sendMessageFilter(const UinsList& uins, QCString& msg, bool &stop)
 {
 	Chat* chat=chat_manager->findChatByUins(uins);
 	if (uins.count()==1 && EncryptionEnabled[chat])
 	{
-		const char* msg_c = msg;
-		msg = sim_message_encrypt((const unsigned char *)msg_c, uins[0]);
+		char *msg_c = sim_message_encrypt((const unsigned char *)msg_c, uins[0]);
+		if (msg_c==NULL)
+		{
+			kdebugm(KDEBUG_ERROR, "sim_message_encrypt returned NULL! sim_errno=%d sim_strerror=%s\n", sim_errno, sim_strerror(sim_errno));
+			stop=true;
+			MessageBox::wrn(tr("Cannot encrypt message. sim_message_encrypt returned: \"%1\" (sim_errno=%2)").arg(sim_strerror(sim_errno)).arg(sim_errno), true);
+		}
+		else
+			msg = msg_c;
 	}
 }
 
