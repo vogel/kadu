@@ -540,7 +540,7 @@ bool ModulesManager::activateModule(const QString& module_name)
 		m.close=(CloseModuleFunc*)m.lib->resolve(module_name+"_close");
 		if(init==NULL||m.close==NULL)
 		{
-			MessageBox::msg(tr("Cannot find required functions.\nMaybe it's not Kadu-compatible Module."));
+			MessageBox::msg(tr("Cannot find required functions in module %1.\nMaybe it's not Kadu-compatible Module.").arg(module_name));
 			delete m.lib;
 			kdebugf2();
 			return false;
@@ -552,7 +552,7 @@ bool ModulesManager::activateModule(const QString& module_name)
 	int res=init();
 	if(res!=0)
 	{
-		MessageBox::msg(tr("Module initialization routine failed."));
+		MessageBox::msg(tr("Module initialization routine for %1 failed.").arg(module_name));
 		if(m.lib!=NULL)
 			delete m.lib;
 		return false;		
