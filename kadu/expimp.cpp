@@ -138,7 +138,8 @@ void UserlistImportExport::keyPressEvent(QKeyEvent *ke_event)
 		close();
 }
 
-void UserlistImportExport::fromfile() {
+void UserlistImportExport::fromfile()
+{
 	kdebugf();
 	QString fname = QFileDialog::getOpenFileName("/", QString::null, this);
 	if (fname.length())
@@ -163,7 +164,8 @@ void UserlistImportExport::fromfile() {
 	kdebugf2();
 }
 
-void UserlistImportExport::startImportTransfer() {
+void UserlistImportExport::startImportTransfer()
+{
 	kdebugf();
 	if (gadu->status().isOffline())
 	{
@@ -182,8 +184,6 @@ void UserlistImportExport::makeUserlist()
 
 	if (!MessageBox::ask(tr("This operation will delete your current user list. Are you sure you want this?")))
 		return;
-
-
 
 	userlist = importedUserlist;
 
@@ -263,20 +263,22 @@ void UserlistImportExport::ExportToFile(void)
 	pb_tofile->setEnabled(false);
 
 	QString fname = QFileDialog::getSaveFileName("/", QString::null,this);
-	if (fname.length()) {
+	if (fname.length())
+	{
 		contacts = gadu->userListToString(userlist);
 
 		QFile file(fname);
-		if (file.open(IO_WriteOnly)) {
+		if (file.open(IO_WriteOnly))
+		{
 			QTextStream stream(&file);
 			stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
 			stream << contacts;
 			file.close();
 			MessageBox::msg(tr("Your userlist has been successfully exported to file"));
-			}
+		}
 		else
 			MessageBox::wrn(tr("The application encountered an internal error\nThe export userlist to file was unsuccessful"));
-		}
+	}
 
 	pb_send->setEnabled(true);
 	pb_delete->setEnabled(true);
@@ -284,7 +286,8 @@ void UserlistImportExport::ExportToFile(void)
 	kdebugf2();
 }
 
-void UserlistImportExport::clean() {
+void UserlistImportExport::clean()
+{
 	kdebugf();
 
 	if (gadu->status().isOffline())

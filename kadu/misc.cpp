@@ -327,10 +327,11 @@ QString timestamp(time_t customtime)
 	date.setTime_t(t);
 	buf.append(printDateTime(date));
 
-	if (customtime) {
+	if (customtime)
+	{
 		date.setTime_t(customtime);
 		buf.append(QString(" / S ") + printDateTime(date));
-		}
+	}
 
 	return buf;
 }
@@ -549,12 +550,14 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, U
 	return mesg;
 }
 
-struct attrib_formant {
+struct attrib_formant
+{
 	QString name;
 	QString value;
 };
 
-struct richtext_formant {
+struct richtext_formant
+{
 	struct gg_msg_richtext_format format;
 	struct gg_msg_richtext_color color;
 	struct gg_msg_richtext_image image;
@@ -1056,7 +1059,8 @@ void stringHeapSort(QStringList &c)
 }
 
 ChooseDescription::ChooseDescription ( int nr, QWidget * parent, const char * name)
-: QDialog(parent, name, false) {
+: QDialog(parent, name, false)
+{
 	kdebugf();
 	setCaption(tr("Select description"));
 
@@ -1074,22 +1078,14 @@ ChooseDescription::ChooseDescription ( int nr, QWidget * parent, const char * na
 	connect(desc, SIGNAL(textChanged(const QString&)), this, SLOT(updateYetLen(const QString&)));
 
 	QPixmap pix;
-	switch (nr) {
-		case 1:
-			pix = icons_manager.loadIcon("OnlineWithDescription");
-			break;
-		case 3:
-			pix = icons_manager.loadIcon("BusyWithDescription");
-			break;
-		case 5:
-			pix = icons_manager.loadIcon("InvisibleWithDescription");
-			break;
-		case 7:
-			pix = icons_manager.loadIcon("OfflineWithDescription");
-			break;
-		default:
-			pix = icons_manager.loadIcon("OfflineWithDescription");
-		}
+	switch (nr)
+	{
+		case 1: pix = icons_manager.loadIcon("OnlineWithDescription");	break;
+		case 3: pix = icons_manager.loadIcon("BusyWithDescription");	break;
+		case 5: pix = icons_manager.loadIcon("InvisibleWithDescription");break;
+		case 7: pix = icons_manager.loadIcon("OfflineWithDescription");	break;
+		default:pix = icons_manager.loadIcon("OfflineWithDescription");
+	}
 
 	QPushButton *okbtn = new QPushButton(QIconSet(pix), tr("&OK"), this);
 	QPushButton *cancelbtn = new QPushButton(tr("&Cancel"), this);
@@ -1131,12 +1127,14 @@ void ChooseDescription::okbtnPressed()
 	accept();
 }
 
-void ChooseDescription::cancelbtnPressed() {
+void ChooseDescription::cancelbtnPressed()
+{
 	reject();
 //	close();
 }
 
-void ChooseDescription::updateYetLen(const QString& text) {
+void ChooseDescription::updateYetLen(const QString& text)
+{
 	l_yetlen->setText(" "+QString::number(GG_STATUS_DESCR_MAXSIZE - text.length()));
 }
 
@@ -1989,7 +1987,8 @@ void ImageWidget::setImage(const QPixmap &image)
 
 void ImageWidget::paintEvent(QPaintEvent *e)
 {
-	if (!Image.isNull()) {
+	if (!Image.isNull())
+	{
 		QPainter p(this);
 		p.drawImage(0,0,Image);
 	}
@@ -2031,7 +2030,8 @@ TokenDialog::TokenDialog(QPixmap tokenImage, QDialog *parent, const char *name)
 	kdebugf2();
 }
 
-void TokenDialog::getValue(QString &tokenValue) {
+void TokenDialog::getValue(QString &tokenValue)
+{
 	tokenValue = tokenedit->text();
 }
 
@@ -2434,7 +2434,7 @@ void KaduTextBrowser::copy()
 		QApplication::clipboard()->setText(txt, QClipboard::Clipboard);
 	}
 	else
-		return QTextBrowser::copy();
+		QTextBrowser::copy();
 	kdebugf2();
 }
 
