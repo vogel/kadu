@@ -23,6 +23,7 @@
 #include "dcc.h"
 #include "ignore.h"
 #include "debug.h"
+#include "message_box.h"
 
 QSocketNotifier *dccsnr = NULL;
 QSocketNotifier *dccsnw = NULL;
@@ -218,7 +219,7 @@ void dccSocketClass::askAccept(void) {
 						kdebug("dccSocketClass::askAccept(): truncating file %s\n", f.latin1());
 
 						if ((dccsock->file_fd = open(f.latin1(), O_WRONLY | O_CREAT | O_TRUNC, 0600)) == -1) {
-							QMessageBox::warning(kadu, tr("Connect error"), tr("Could not open file"));
+							MessageBox::wrn(tr("Could not open file"));
 							setState(DCC_SOCKET_COULDNT_OPEN_FILE);
 							return;
 							}
@@ -228,7 +229,7 @@ void dccSocketClass::askAccept(void) {
 						kdebug("dccSocketClass::askAccept(): appending to file %s\n", f.latin1());
 
 						if ((dccsock->file_fd = open(f.latin1(), O_WRONLY | O_APPEND, 0600)) == -1) {
-							QMessageBox::warning(kadu, tr("Connect error"), tr("Could not open file"));
+							MessageBox::wrn(tr("Could not open file"));
 							setState(DCC_SOCKET_COULDNT_OPEN_FILE);
 							return;
 							}
@@ -244,7 +245,7 @@ void dccSocketClass::askAccept(void) {
 				kdebug("dccSocketClass::askAccept(): creating file %s\n", f.latin1());
 
 				if ((dccsock->file_fd = open(f.latin1(), O_WRONLY | O_CREAT, 0600)) == -1) {
-					QMessageBox::warning(kadu, tr("Connect error"), tr("Could not open file"));
+					MessageBox::wrn(tr("Could not open file"));
 					setState(DCC_SOCKET_COULDNT_OPEN_FILE);
 					return;
 					}
