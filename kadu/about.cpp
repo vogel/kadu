@@ -169,7 +169,7 @@ aboutText.append("<CENTER><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><B
 "<H1><FONT COLOR=\"#ffd326\">Kadu ");
 aboutText.append(PACKAGE_VERSION);
 aboutText.append(__c2q("</FONT></H1><BR><BR>"
-"bazuje na KDE3, QT3, libgadu<BR><BR>"
+"bazuje na QT3, libgadu<BR><BR>"
 "<B>Ludzie:</B><BR>"
 "Tomek \"tomee\" Jarzynka<BR>"
 "tomee (at) cpi (dot) pl<BR><BR>"
@@ -194,7 +194,12 @@ aboutText.append(__c2q("</FONT></H1><BR><BR>"
 "w KDE, na bazie libgg.so Wojtka Kaniewskiego. "
 "Z czasem program przekszta³ci³ siê "
 "w jeden z najpopularniejszych klientów "
-"GG dla Linuxa...<BR><BR><BR><BR>"
+"GG dla Linuxa...<BR><BR><BR>"
+"Pocz±wszy od wersji 0.3.3 Kadu "
+"nie wymaga ju¿ bibliotek KDE "
+"i mo¿e byæ bez problemu u¿ywane "
+"w innych ¶rodowiskach."
+"<BR><BR><BR><BR>"
 "Pamiêtaj, Kadu to darmowe oprogramowanie. Autorzy po¶wiêcaj± swój prywatny czas "
 "na rozwój aplikacji. Miej to na wzglêdzie, prosz±c ich o co¶ lub mieszaj±c z b³otem."
 "</CENTER>"));
