@@ -11,27 +11,33 @@
 #include "libgadu.h"
 #include "voice.h"
 
-PlayThread::PlayThread(): wsem(32) {
+PlayThread::PlayThread(): wsem(32), rsem(1) {
 	wsem += 32;
 }
 
 void PlayThread::run() {
-	kdebug("PlayThread::run()\n");
 	struct gsm_sample gsmsample;
+	kdebug("PlayThread::run()\n");
 	while (true) {
+		if (!rsem.available())
+			return;
 		wsem++;
 		kdebug("PlayThread::run(): wokenUp\n");
 		mutex.lock();
+		if (queue.empty()) {
+			mutex.unlock();
+			continue;
+			}
 		gsmsample = queue.front();
 		queue.pop_front();
 		mutex.unlock();
 		emit playGsmSample(gsmsample.data, gsmsample.length);
 		delete gsmsample.data;
 		}
+	kdebug("PlayThread::run(): exiting ...\n");
 }
 
-RecordThread::RecordThread(): wsem(32) {
-	wsem += 32;
+RecordThread::RecordThread(): rsem(1) {
 }
 
 void RecordThread::run() {
@@ -39,8 +45,11 @@ void RecordThread::run() {
 	char data[GG_DCC_VOICE_FRAME_LENGTH_505];
 	int length = GG_DCC_VOICE_FRAME_LENGTH_505;
 	while (true) {
+		if (!rsem.available())
+			return;
 		emit recordSample(data, length);
 		}
+	kdebug("RecordThread::run(): exiting ...\n");
 }
 
 VoiceManager::VoiceManager() {
@@ -53,17 +62,32 @@ VoiceManager::VoiceManager() {
 }
 
 void VoiceManager::setup() {
+	kdebug("VoiceManager::setup()\n");
 	if (!pt->running()) {
 		emit setupSoundDevice();
+		rt->rsem--;
 		pt->start();
+		}
+	if (!rt->running()) {
+		rt->rsem--;
 		rt->start();
 		}
 }
 
 void VoiceManager::free() {
+	struct gsm_sample gsmsample;
+	kdebug("VoiceManager::free()\n");
+	if (rt->running())
+		rt->rsem++;
 	if (pt->running()) {
-		pt->exit();
-		rt->exit();
+		pt->rsem++;
+		pt->mutex.lock();
+		while (!pt->queue.empty()) {
+			gsmsample = pt->queue.front();
+			pt->queue.pop_front();
+			delete gsmsample.data;
+			}
+		pt->mutex.unlock();
 		emit freeSoundDevice();
 		}
 }
@@ -122,7 +146,7 @@ void VoiceManager::recordSampleReceived(char *data, int length) {
 		gsm_encode(voice_enc, input, (gsm_byte *) pos);
 		pos += 33;
 		}
-	emit gsmSampleRecorded(data, length + 1);
+	emit gsmSampleRecorded(data - 1, length + 1);
 }
 
 void VoiceManager::addGsmSample(char *data, int length) {

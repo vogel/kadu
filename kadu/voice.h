@@ -61,7 +61,7 @@ class PlayThread : public QObject, public QThread
 		void playGsmSample(char *data, int length);
 
 	private:
-		QSemaphore wsem;
+		QSemaphore wsem, rsem;
 		QValueList<struct gsm_sample> queue;
 		QMutex mutex;
 
@@ -80,7 +80,7 @@ class RecordThread : public QObject, public QThread
 		void recordSample(char *data, int length);
 
 	private:
-		QSemaphore wsem;
+		QSemaphore rsem;
 		QValueList<struct gsm_sample> queue;
 		QMutex mutex;
 
