@@ -2239,7 +2239,7 @@ void PixmapPreview::previewUrl(const QUrl& url)
 	QString path = url.path();
 	QPixmap pix( path );
 	if (pix.isNull())
-		setText(tr("This is not an image"));
+		setText(qApp->translate("PixmapPreview", "This is not an image"));
 	else
 	{
 		QWMatrix mx;
@@ -2255,7 +2255,7 @@ ImageDialog::ImageDialog(QWidget* parent)
 	: QFileDialog(parent,"image dialog",true)
 {
 	PixmapPreview* pp = new PixmapPreview();
-	setFilter(tr("Images")+" (*.png *.PNG *.jpg *.JPG *.gif *.GIF *.bmp *.BMP)");
+	setFilter(qApp->translate("ImageDialog", "Images")+" (*.png *.PNG *.jpg *.JPG *.gif *.GIF *.bmp *.BMP)");
 	setContentsPreviewEnabled(true);
 	setContentsPreview(pp, pp);
 	setPreviewMode(QFileDialog::Contents);

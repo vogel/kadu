@@ -13,6 +13,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * na³o¿ony patch znany pod nazw± kadu-speedup oraz wspó³dzia³aj±cy
   patch joia kadu-speech (adrian)
 * porz±dki w dcc czê¶æ pierwsza - wydzielenie klasy FileDccSocket (adrian)
+* teksty w dialogu wyboru obrazka t³umacz± siê (chilek)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
