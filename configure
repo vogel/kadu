@@ -314,7 +314,7 @@ ac_includes_default="\
 #endif"
 
 ac_subdirs_all="$ac_subdirs_all libgadu"
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE CXX CXXFLAGS LDFLAGS CPPFLAGS ac_ct_CXX EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CXXDEPMODE CC CFLAGS ac_ct_CC CCDEPMODE CPP EGREP PTHREAD_CPPFLAGS PTHREAD_LDFLAGS PTHREAD_LIBS PNG_LIBS QT_INCLUDES QT_LIBS QT_MOC_DIR LIBOBJS GADU_LIBS GADU_INCLUDES enable_pheaders PHEADERS_ENABLED_TRUE PHEADERS_ENABLED_FALSE shared_modules static_modules static_modules_ldflags STATIC_MODULES_DECLS STATIC_MODULES_REGRS enabled_icon_themes MY_SUBDIRS subdirs LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE CXX CXXFLAGS LDFLAGS CPPFLAGS ac_ct_CXX EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CXXDEPMODE CC CFLAGS ac_ct_CC CCDEPMODE CPP EGREP PTHREAD_CPPFLAGS PTHREAD_LDFLAGS PTHREAD_LIBS Z_LIBS PNG_LIBS QT_INCLUDES QT_LIBS QT_MOC_DIR LIBOBJS GADU_LIBS GADU_INCLUDES enable_pheaders PHEADERS_ENABLED_TRUE PHEADERS_ENABLED_FALSE shared_modules static_modules static_modules_ldflags STATIC_MODULES_DECLS STATIC_MODULES_REGRS enabled_icon_themes MY_SUBDIRS subdirs LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -4404,6 +4404,8 @@ fi
 
 
 
+
+
 #################
 # PNG Library
 #################
@@ -4467,10 +4469,10 @@ sed 's/^/| /' conftest.$ac_ext >&5
 		echo "$as_me:$LINENO: result: no" >&5
 echo "${ECHO_T}no" >&6
 
-		echo "$as_me:$LINENO: checking if libpng is in specified directories: $with_libs /usr/lib /usr/local/lib" >&5
-echo $ECHO_N "checking if libpng is in specified directories: $with_libs /usr/lib /usr/local/lib... $ECHO_C" >&6
+		echo "$as_me:$LINENO: checking if libpng is in specified directories: $with_libs /usr/lib /usr/local/lib /sw/lib" >&5
+echo $ECHO_N "checking if libpng is in specified directories: $with_libs /usr/lib /usr/local/lib /sw/lib... $ECHO_C" >&6
 		FILE_DIR=
-		for dir in $with_libs /usr/lib /usr/local/lib
+		for dir in $with_libs /usr/lib /usr/local/lib /sw/lib
 		do
 			CFLAGS="$save_CFLAGS  -L $dir -lpng"
 			cat >conftest.$ac_ext <<_ACEOF
@@ -4539,9 +4541,297 @@ rm -f conftest.err conftest.$ac_objext \
 echo "${ECHO_T}not found" >&6
 
 
-	{ { echo "$as_me:$LINENO: error: libpng not found - please install libpng-devel" >&5
+	echo "$as_me:$LINENO: result: libpng not found - checking for zlib first" >&5
+echo "${ECHO_T}libpng not found - checking for zlib first" >&6
+
+	#################
+	# LibZ
+	#################
+	Z_LIBS="-lz"
+
+	echo "$as_me:$LINENO: checking if libz is in system directories" >&5
+echo $ECHO_N "checking if libz is in system directories... $ECHO_C" >&6
+	save_CFLAGS="$CFLAGS"
+	CFLAGS="$CFLAGS  -lz"
+	cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+		return 0;
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+
+		CFLAGS="$save_CFLAGS"
+		echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6
+
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+
+		CFLAGS="$save_CFLAGS"
+		echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+
+		echo "$as_me:$LINENO: checking if libz is in specified directories: $with_libs /usr/lib /usr/local/lib /sw/lib" >&5
+echo $ECHO_N "checking if libz is in specified directories: $with_libs /usr/lib /usr/local/lib /sw/lib... $ECHO_C" >&6
+		FILE_DIR=
+		for dir in $with_libs /usr/lib /usr/local/lib /sw/lib
+		do
+			CFLAGS="$save_CFLAGS  -L $dir -lz"
+			cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+				return 0;
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+
+				CFLAGS="$save_CFLAGS"
+				FILE_DIR=$dir
+				echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
+echo "${ECHO_T}found in $FILE_DIR" >&6
+
+		Z_LIBS="$Z_LIBS -L$FILE_DIR"
+
+				break
+
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+
+				CFLAGS="$save_CFLAGS"
+
+fi
+rm -f conftest.err conftest.$ac_objext \
+      conftest$ac_exeext conftest.$ac_ext
+		done
+		if test -z "$FILE_DIR";
+		then
+			echo "$as_me:$LINENO: result: not found" >&5
+echo "${ECHO_T}not found" >&6
+
+
+		{ { echo "$as_me:$LINENO: error: libz not found - please install zlib-devel" >&5
+echo "$as_me: error: libz not found - please install zlib-devel" >&2;}
+   { (exit 1); exit 1; }; }
+
+		fi
+
+fi
+rm -f conftest.err conftest.$ac_objext \
+      conftest$ac_exeext conftest.$ac_ext
+
+
+	echo "$as_me:$LINENO: result: zlib found - checking for libpng once again" >&5
+echo "${ECHO_T}zlib found - checking for libpng once again" >&6
+
+
+	echo "$as_me:$LINENO: checking if libpng is in system directories" >&5
+echo $ECHO_N "checking if libpng is in system directories... $ECHO_C" >&6
+	save_CFLAGS="$CFLAGS"
+	CFLAGS="$CFLAGS $Z_LIBS -lm -lpng"
+	cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+		return 0;
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+
+		CFLAGS="$save_CFLAGS"
+		echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6
+
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+
+		CFLAGS="$save_CFLAGS"
+		echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+
+		echo "$as_me:$LINENO: checking if libpng is in specified directories: $with_libs /usr/lib /usr/local/lib /sw/lib" >&5
+echo $ECHO_N "checking if libpng is in specified directories: $with_libs /usr/lib /usr/local/lib /sw/lib... $ECHO_C" >&6
+		FILE_DIR=
+		for dir in $with_libs /usr/lib /usr/local/lib /sw/lib
+		do
+			CFLAGS="$save_CFLAGS $Z_LIBS -lm -L $dir -lpng"
+			cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+				return 0;
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+
+				CFLAGS="$save_CFLAGS"
+				FILE_DIR=$dir
+				echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
+echo "${ECHO_T}found in $FILE_DIR" >&6
+
+		PNG_LIBS="$Z_LIBS $PNG_LIBS -L$FILE_DIR"
+
+				break
+
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+
+				CFLAGS="$save_CFLAGS"
+
+fi
+rm -f conftest.err conftest.$ac_objext \
+      conftest$ac_exeext conftest.$ac_ext
+		done
+		if test -z "$FILE_DIR";
+		then
+			echo "$as_me:$LINENO: result: not found" >&5
+echo "${ECHO_T}not found" >&6
+
+
+		{ { echo "$as_me:$LINENO: error: libpng not found - please install libpng-devel" >&5
 echo "$as_me: error: libpng not found - please install libpng-devel" >&2;}
    { (exit 1); exit 1; }; }
+
+		fi
+
+fi
+rm -f conftest.err conftest.$ac_objext \
+      conftest$ac_exeext conftest.$ac_ext
+
 
 		fi
 
@@ -4653,7 +4943,7 @@ QT_LIBS="-lqt-mt"
 	echo "$as_me:$LINENO: checking if libqt-mt is in system directories" >&5
 echo $ECHO_N "checking if libqt-mt is in system directories... $ECHO_C" >&6
 	save_CFLAGS="$CFLAGS"
-	CFLAGS="$CFLAGS  -lqt-mt"
+	CFLAGS="$CFLAGS $PNG_LIBS -lqt-mt"
 	cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
 _ACEOF
@@ -4712,7 +5002,7 @@ echo $ECHO_N "checking if libqt-mt is in specified directories: $with_libs $QTDI
 		FILE_DIR=
 		for dir in $with_libs $QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib /usr/lib/qt3/lib64 /sw/lib /usr/share/qt3/lib
 		do
-			CFLAGS="$save_CFLAGS  -L $dir -lqt-mt"
+			CFLAGS="$save_CFLAGS $PNG_LIBS -L $dir -lqt-mt"
 			cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
 _ACEOF
@@ -4814,8 +5104,10 @@ echo "${ECHO_T}found in $FILE_DIR" >&6
 	if test -z "$FILE_DIR"; then
 		echo "$as_me:$LINENO: result: not found" >&5
 echo "${ECHO_T}not found" >&6
-		{ { echo "$as_me:$LINENO: error: moc not found!" >&5
-echo "$as_me: error: moc not found!" >&2;}
+
+
+	{ { echo "$as_me:$LINENO: error: moc not found - please install qt-dev-tools" >&5
+echo "$as_me: error: moc not found - please install qt-dev-tools" >&2;}
    { (exit 1); exit 1; }; }
 
 	fi
@@ -7727,6 +8019,7 @@ s,@EGREP@,$EGREP,;t t
 s,@PTHREAD_CPPFLAGS@,$PTHREAD_CPPFLAGS,;t t
 s,@PTHREAD_LDFLAGS@,$PTHREAD_LDFLAGS,;t t
 s,@PTHREAD_LIBS@,$PTHREAD_LIBS,;t t
+s,@Z_LIBS@,$Z_LIBS,;t t
 s,@PNG_LIBS@,$PNG_LIBS,;t t
 s,@QT_INCLUDES@,$QT_INCLUDES,;t t
 s,@QT_LIBS@,$QT_LIBS,;t t

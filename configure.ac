@@ -413,16 +413,38 @@ AC_SUBST(PTHREAD_CPPFLAGS)
 AC_SUBST(PTHREAD_LDFLAGS)
 AC_SUBST(PTHREAD_LIBS)
 
+
+
 #################
 # PNG Library
 #################
 
 PNG_LIBS="-lpng"
-FIND_LIBRARY([png],[/usr/lib /usr/local/lib],
+FIND_LIBRARY([png],[/usr/lib /usr/local/lib /sw/lib],
 [
 	PNG_LIBS="$PNG_LIBS -L$FILE_DIR"
 ],[
-	AC_MSG_ERROR([libpng not found - please install libpng-devel])
+	AC_MSG_RESULT([libpng not found - checking for zlib first])
+
+	#################
+	# LibZ
+	#################
+	Z_LIBS="-lz"
+	FIND_LIBRARY([z],[/usr/lib /usr/local/lib /sw/lib],
+	[
+		Z_LIBS="$Z_LIBS -L$FILE_DIR"
+	],[
+		AC_MSG_ERROR([libz not found - please install zlib-devel])
+	])
+	AC_SUBST(Z_LIBS)
+	AC_MSG_RESULT([zlib found - checking for libpng once again])
+
+	FIND_LIBRARY([png],[/usr/lib /usr/local/lib /sw/lib],
+	[
+		PNG_LIBS="$Z_LIBS $PNG_LIBS -L$FILE_DIR"
+	],[
+		AC_MSG_ERROR([libpng not found - please install libpng-devel])
+	],[$Z_LIBS -lm])
 ])
 AC_SUBST(PNG_LIBS)
 
@@ -449,7 +471,7 @@ FIND_LIBRARY([qt-mt],[$QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt 
 	QT_LIBS="$QT_LIBS -L$FILE_DIR"
 ],[
 	AC_MSG_ERROR([libqt-mt not found - please install libqt3])
-])
+],[$PNG_LIBS])
 AC_SUBST(QT_LIBS)
 
 #################
@@ -459,6 +481,8 @@ AC_SUBST(QT_LIBS)
 FIND_FILE([moc],[$with_apps $QTDIR/bin /usr/lib/qt3/bin /usr/local/qt/bin /usr/lib/qt/bin /usr/bin /bin /usr/local/bin /usr/X11R6/bin /usr/share/qt3/bin],
 [
 	QT_MOC_DIR="$FILE_DIR"
+],[
+	AC_MSG_ERROR([moc not found - please install qt-dev-tools])
 ])
 AC_SUBST(QT_MOC_DIR)
 

@@ -512,6 +512,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * w konfiguracji przy zmianie kolorów nie od¶wie¿a³y siê podgl±dy (joi)
 * lepsze wykrywanie bibliotek przy configure (nie ma znaczenia rozszerzenie
   biblioteki na danym systemie) oraz czytelniejsze komunikaty o braku Qt i png (joi)
+* poprawa wykrywania libpng na slackware, dodane domy¶lne ¶cie¿ki dla MacOSX (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
