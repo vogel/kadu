@@ -22,6 +22,7 @@
 * mo¿liwo¶æ blokowania u¿ytkowników
 * mo¿liwo¶æ ukrycia siê przed u¿ytkownikami, których mamy na li¶cie przy statusie
   "tylko dla znajomych"
+* poprawione wysylanie sms-ow (przez bramka.org). znowu dziala idea.
 
 +++ wersja 0.3.3-pre1
 * automatyczna kompilacja programu sms
