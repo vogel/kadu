@@ -1140,6 +1140,10 @@ La password è errata!!!</translation>
         <source>Offline</source>
         <translation>Fuori linea</translation>
     </message>
+    <message>
+        <source>Uins</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>HistoryManager</name>

@@ -1140,6 +1140,10 @@ Dein Passwort ist falsch!!!</translation>
         <source>Offline</source>
         <translation>Offline</translation>
     </message>
+    <message>
+        <source>Uins</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>HistoryManager</name>

@@ -1140,6 +1140,10 @@ Twoje hasło jest nieprawidłowe!!!</translation>
         <source>Offline</source>
         <translation>Niedostępny</translation>
     </message>
+    <message>
+        <source>Uins</source>
+        <translation>Numery GG</translation>
+    </message>
 </context>
 <context>
     <name>HistoryManager</name>
@@ -1866,7 +1870,7 @@ Teraz możesz dodać znajomych do listy kontaktów.</translation>
     </message>
     <message>
         <source></source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
