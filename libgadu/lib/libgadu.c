@@ -1,4 +1,4 @@
-/* $Id: libgadu.c,v 1.29 2003/10/02 15:33:40 chilek Exp $ */
+/* $Id: libgadu.c,v 1.30 2003/10/04 00:29:10 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -69,7 +69,7 @@ static char rcsid[]
 #ifdef __GNUC__
 __attribute__ ((unused))
 #endif
-= "$Id: libgadu.c,v 1.29 2003/10/02 15:33:40 chilek Exp $";
+= "$Id: libgadu.c,v 1.30 2003/10/04 00:29:10 chilek Exp $";
 #endif 
 
 /*
@@ -1472,18 +1472,18 @@ int gg_userlist_request(struct gg_session *sess, char type, const char *request)
 	len = strlen(request);
 
 	while (len > 2047) {
-		if (type == GG_USERLIST_PUT)
-			type = GG_USERLIST_PUT_MORE;
-
 		if (gg_send_packet(sess, GG_USERLIST_REQUEST, &type, sizeof(type), request, 2047, NULL) == -1)
 			return -1;
+
+		if (type == GG_USERLIST_PUT)
+			type = GG_USERLIST_PUT_MORE;
 
 		request += 2047;
 		len -= 2047;
 	}
 
-	if (type == GG_USERLIST_PUT_MORE)
-		type = GG_USERLIST_PUT;
+//	if (type == GG_USERLIST_PUT_MORE)
+//		type = GG_USERLIST_PUT;
 		
 	return gg_send_packet(sess, GG_USERLIST_REQUEST, &type, sizeof(type), request, len, NULL);
 }
