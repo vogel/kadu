@@ -56,14 +56,14 @@ void VoiceManager::setup() {
 	if (!pt->running()) {
 		emit setupSoundDevice();
 		pt->start();
-//		rt->start();
+		rt->start();
 		}
 }
 
 void VoiceManager::free() {
 	if (pt->running()) {
 		pt->exit();
-//		rt->exit();
+		rt->exit();
 		emit freeSoundDevice();
 		}
 }
@@ -122,7 +122,7 @@ void VoiceManager::recordSampleReceived(char *data, int length) {
 		gsm_encode(voice_enc, input, (gsm_byte *) pos);
 		pos += 33;
 		}
-	emit gsmSampleRecorded(data, length);
+	emit gsmSampleRecorded(data, length + 1);
 }
 
 void VoiceManager::addGsmSample(char *data, int length) {
