@@ -94,7 +94,6 @@ STRIP = @STRIP@
 VERSION = @VERSION@
 am__include = @am__include@
 am__quote = @am__quote@
-docdir = @docdir@
 install_sh = @install_sh@
 
 bin_PROGRAMS = kadu
@@ -155,7 +154,7 @@ kadu_LDFLAGS = $(PTHREAD_LDFLAGS) $(OPENSSL_LIBS)
 kadu_DEPENDENCIES = $(VOICE_OBJS) $(SIM)
 
 AM_CPPFLAGS = $(PTHREAD_CPPFLAGS) -DQT_THREAD_SUPPORT -D_REENTRANT \
--DBINDIR="\"$(bindir)\"" -DDATADIR="\"$(datadir)\"" -DDOCDIR="\"$(docdir)\""
+-DBINDIR="\"$(bindir)\"" -DDATADIR="\"$(datadir)\""
 
 
 EXTRA_DIST = hi16-app-kadu.png hi32-app-kadu.png hi48-app-kadu.png kadu.desktop

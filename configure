@@ -848,8 +848,6 @@ Optional Features:
   --disable-dependency-tracking Speeds up one-time builds
   --enable-dependency-tracking  Do not reject slow dependency extractors
   --enable-voice          compile with experimental voice talk support
-  --enable-doc=DIR        install doc in DIR [DATADIR/apps/kadu/doc]
-  --disable-doc           do not install documentation
   --enable-debug          compile with debug symbols
   --enable-dist-info=DIST enable distribution type information, default: sources
 
@@ -5602,36 +5600,6 @@ fi
 
 MY_SUBDIRS="$MY_SUBDIRS kadu translations varia"
 
-# doc support
-# Check whether --enable-doc or --disable-doc was given.
-if test "${enable_doc+set}" = set; then
-  enableval="$enable_doc"
-
-fi;
-# Check whether --enable-doc or --disable-doc was given.
-if test "${enable_doc+set}" = set; then
-  enableval="$enable_doc"
-
-fi;
-if test -z "$enable_doc"; then
-	enable_doc=yes
-fi
-if test "$enable_doc" != "no"; then
-
-cat >>confdefs.h <<\_ACEOF
-#define HAVE_DOC 1
-_ACEOF
-
-	MY_SUBDIRS="$MY_SUBDIRS doc"
-	if test "$enable_doc" = "yes"; then
-		docdir="$datadir/apps/kadu/doc"
-	else
-		docdir="$enable_doc"
-		enable_doc=yes
-	fi;
-fi
-
-
 # pthread support
 
 # Check whether --with-pthread or --without-pthread was given.
@@ -5906,10 +5874,6 @@ fi
 
 ac_config_files="$ac_config_files ./Makefile kadu/Makefile translations/Makefile varia/Makefile"
 
-if test "$enable_doc" = "yes"; then
-	ac_config_files="$ac_config_files doc/Makefile"
-
-fi
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
 # tests run on this system so they can be shared between configure
@@ -6416,7 +6380,6 @@ do
   "kadu/Makefile" ) CONFIG_FILES="$CONFIG_FILES kadu/Makefile" ;;
   "translations/Makefile" ) CONFIG_FILES="$CONFIG_FILES translations/Makefile" ;;
   "varia/Makefile" ) CONFIG_FILES="$CONFIG_FILES varia/Makefile" ;;
-  "doc/Makefile" ) CONFIG_FILES="$CONFIG_FILES doc/Makefile" ;;
   "depfiles" ) CONFIG_COMMANDS="$CONFIG_COMMANDS depfiles" ;;
   "config.h" ) CONFIG_HEADERS="$CONFIG_HEADERS config.h" ;;
   *) { { echo "$as_me:$LINENO: error: invalid argument: $ac_config_target" >&5
@@ -6562,7 +6525,6 @@ s,@VOICE_TRUE@,$VOICE_TRUE,;t t
 s,@VOICE_FALSE@,$VOICE_FALSE,;t t
 s,@GSM_LIBS@,$GSM_LIBS,;t t
 s,@GSM_INCLUDES@,$GSM_INCLUDES,;t t
-s,@docdir@,$docdir,;t t
 s,@OPENSSL_LIBS@,$OPENSSL_LIBS,;t t
 s,@OPENSSL_INCLUDES@,$OPENSSL_INCLUDES,;t t
 s,@PKGCONFIG@,$PKGCONFIG,;t t
@@ -7313,7 +7275,6 @@ echo
 echo " Kadu was configured using options specified below:"
 echo
 echo "   Installation prefix:                [$prefix]"
-echo "   Install Kadu documentation:         $enable_doc [$docdir]"
 echo "   Use pthread resolving in libgadu:   $with_pthread"
 echo "   Compile with debug symbols:         $enable_debug"
 echo "   Link with existing libgadu:         $with_existing_libgadu"
