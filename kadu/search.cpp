@@ -20,6 +20,7 @@
 #include "search.h"
 #include "events.h"
 #include "userinfo.h"
+#include "chat.h"
 #include "debug.h"
 //
 
@@ -35,6 +36,9 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchU
 	QLabel *l_gender;
 	QLabel *l_city;
 	QLabel *l_uin;
+	
+	b_chat = new QPushButton(tr("&Chat"),this);
+	connect(b_chat, SIGNAL(clicked()), this, SLOT(openChat()));
 
 	b_sendbtn = new QPushButton(tr("&Search"),this);
 	b_sendbtn->setAccel(Key_Return);	
@@ -51,6 +55,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchU
 	connect(b_addbtn, SIGNAL(clicked()), this, SLOT(AddButtonClicked()));
 
 	QHBoxLayout* CommandLayout = new QHBoxLayout(5);
+	CommandLayout->addWidget(b_chat);
 	CommandLayout->addWidget(b_sendbtn);
 	CommandLayout->addWidget(b_nextbtn);
 	CommandLayout->addWidget(b_clrbtn);
@@ -463,4 +468,20 @@ void SearchDialog::updateInfoClicked()
 	UserInfo *ui = new UserInfo("user info", 0, ule.altnick);
 	ui->setUserInfo(e);
 	ui->show();
+}
+
+void SearchDialog::openChat()
+{
+	QListViewItem *selected = results->selectedItem();
+	if (!selected && results->childCount() == 1)
+		selected = results->firstChild();
+	if (!selected)
+		return;
+
+	QString uin = selected->text(1);
+	UinsList uins;
+
+	uins.append((uin_t)uin.toInt());
+
+	chat_manager->openChat(uins);
 }

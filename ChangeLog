@@ -25,6 +25,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   do $prefix/include/kadu (adrian)
 * configure: generowany i instalowany jest skrypt kadu-config, pomocny
   przy instalacji modulow z poza glownych zrodel kadu (adrian)
+* zaaplikowany patch michala dodajacy przycisk rozpoczecia rozmowy
+  w oknie dialogowym "szukaj w katalogu" (adrian)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

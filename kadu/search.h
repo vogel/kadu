@@ -33,6 +33,7 @@ class SearchDialog : public QDialog {
 		QLabel *progress;
 		QRadioButton *r_uin;
 		QRadioButton *r_pers;
+		QPushButton *b_chat;
 		QPushButton *b_sendbtn;
 		QPushButton *b_nextbtn;
 		QPushButton *b_addbtn;
@@ -51,6 +52,7 @@ class SearchDialog : public QDialog {
 		void personalDataTyped(void);
 		void AddButtonClicked();
 		void updateInfoClicked();
+		void openChat();
 
 	public slots:
 		void firstSearch(void);
