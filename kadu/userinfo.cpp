@@ -102,6 +102,8 @@ void UserInfo::setupTab1() {
 			e_status->setText(i18n("Busy (d.)")); break;
 		case GG_STATUS_INVISIBLE2:
 			e_status->setText(i18n("Invisible")); break;
+		case GG_STATUS_INVISIBLE_DESCR:
+			e_status->setText(i18n("Invisible (d.)")); break;
 		case GG_STATUS_BLOCKED:
 			e_status->setText(i18n("Blocks us")); break;
 		}
