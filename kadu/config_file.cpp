@@ -370,51 +370,51 @@ QPoint ConfigFile::readPointEntry(const QString &group,const QString &name, cons
 
 void ConfigFile::addVariable(const QString &group, const QString &name, const QString &defvalue)
 {
-	if (getEntry(group, name)=="")
+	if (getEntry(group, name).isEmpty())
 		writeEntry(group,name,defvalue);
 }
 void ConfigFile::addVariable(const QString &group, const QString &name, const char *defvalue)
 {
-	if (getEntry(group, name)=="")
+	if (getEntry(group, name).isEmpty())
 		writeEntry(group,name,defvalue);
 }
 void ConfigFile::addVariable(const QString &group, const QString &name, const int defvalue)
 {
-	if (getEntry(group, name)=="")
+	if (getEntry(group, name).isEmpty())
 		writeEntry(group,name,defvalue);
 }
 void ConfigFile::addVariable(const QString &group, const QString &name, const double defvalue)
 {
-	if (getEntry(group, name)=="")
+	if (getEntry(group, name).isEmpty())
 		writeEntry(group,name,defvalue);
 }
 void ConfigFile::addVariable(const QString &group, const QString &name, const bool defvalue)
 {
-	if (getEntry(group, name)=="")
+	if (getEntry(group, name).isEmpty())
 		writeEntry(group,name,defvalue);
 }
 void ConfigFile::addVariable(const QString &group, const QString &name, const QRect &defvalue)
 {
-	if (getEntry(group, name)=="")
+	if (getEntry(group, name).isEmpty())
 		writeEntry(group,name,defvalue);
 }
 void ConfigFile::addVariable(const QString &group, const QString &name, const QSize &defvalue)
 {
-	if (getEntry(group, name)=="")
+	if (getEntry(group, name).isEmpty())
 		writeEntry(group,name,defvalue);
 }
 void ConfigFile::addVariable(const QString &group, const QString &name, const QColor &defvalue)
 {
-	if (getEntry(group, name)=="")
+	if (getEntry(group, name).isEmpty())
 		writeEntry(group,name,defvalue);
 }
 void ConfigFile::addVariable(const QString &group, const QString &name, const QFont &defvalue)
 {
-	if (getEntry(group, name)=="")
+	if (getEntry(group, name).isEmpty())
 		writeEntry(group,name,defvalue);
 }
 void ConfigFile::addVariable(const QString &group, const QString &name, const QPoint &defvalue)
 {
-	if (getEntry(group, name)=="")
+	if (getEntry(group, name).isEmpty())
 		writeEntry(group,name,defvalue);
 }

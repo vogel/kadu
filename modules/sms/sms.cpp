@@ -336,7 +336,7 @@ void Sms::sendSms(void)
 	}
 	else
 	{
-		if(config_file.readEntry("SMS","SmsApp")=="")
+		if(config_file.readEntry("SMS","SmsApp").isEmpty())
 
 		{
 			QMessageBox::warning(this, tr("SMS error"), tr("Sms application was not specified. Visit the configuration section") );

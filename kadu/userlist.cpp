@@ -726,7 +726,7 @@ bool UserList::readFromFile()
 		{
 			QString nickname = line.section(' ',0,0);
 			QString uin = line.section(' ',1,1);
-			if (uin == "")
+			if (uin.isEmpty())
 				continue;
 			e.setFirstName("");
 			e.setLastName("");
@@ -766,8 +766,8 @@ bool UserList::readFromFile()
 				e.setUin(0);
 			e.setEmail(userattribs[6 + groups]);
 
-			if (e.altNick() == "")
-				if (e.nickName() == "")
+			if (e.altNick().isEmpty())
+				if (e.nickName().isEmpty())
 					e.setAltNick(e.firstName());
 				else
 					e.setAltNick(e.nickName());
