@@ -15,6 +15,15 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * eksport/import kontaktów dostosowany do standardu GG (chilek)
 * w oknie informacji o u¿ytkowniku mo¿liwo¶æ edycji emaila (chilek)
 * przeprojektowanie wygl±du okna "dodaj u¿ytownika" (chilek)
+* poprawka - jak u¿ywamy przeci±gania userów do grup za ka¿dym razem jest
+  zapisywana userlista(wolne to ale konieczne, patrz plik tabbar.cpp!!!)
+  wczesniej zmiany po prostu nie zachodzi³y (mast3r)
+* poprawka seg faulta podczas przeci±gania user'a na pole
+  ni¿ej ni¿ zak³adki grup (mast3r)
+* przeci±gaj±c usera na pole gdzie nie ma zak³adki grupy tj. ni¿ej - otwiera
+  nam siê okno dialogowe gdzie mo¿emy wybraæ grupê do której mamy go
+  przydzieliæ lub tak¿e mamy mo¿liwo¶æ stworzyæ now± grupe (odrazu
+  przydzielaj±c usera do niej) (mast3r)
 
 +++ wersja 0.3.4-rc2
 * porzadki: kod rejestrujacy opcje modulow Chat i Sms w oknie konfiguracji

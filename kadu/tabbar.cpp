@@ -7,7 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qtabbar.h>
 #include <qrect.h>
 #include <qaccel.h>
 #include <qbitmap.h>
@@ -20,11 +19,13 @@
 #include <qcursor.h>
 #include <qsizepolicy.h>
 #include <qdragobject.h>
+#include <qinputdialog.h>
 
 #include "tabbar.h"
 #include "debug.h"
 #include "userbox.h"
 #include "userlist.h"
+#include "misc.h"
 
 struct QTabPrivate;
 
@@ -264,16 +265,30 @@ void KaduTabBar::scrollTabsVert() {
 
 void KaduTabBar::dragEnterEvent(QDragEnterEvent* e)
 {
+	kdebug("KaduTabBar::dragEnterEvent()\n");
 	e->accept(QTextDrag::canDecode(e) &&
 		dynamic_cast<UserBox*>(e->source()));
 };
 
 void KaduTabBar::dropEvent(QDropEvent* e)
 {
+	kdebug("KaduTabBar::dropEvent()\n");
 	QString altnick;
-	if(dynamic_cast<UserBox*>(e->source()) &&
-		QTextDrag::decode(e,altnick))
-	{
-		userlist.byAltNick(altnick).setGroup(selectTab(e->pos())->text());
-	};
+	if(dynamic_cast<UserBox*>(e->source()) && QTextDrag::decode(e,altnick)) {
+		if(selectTab(e->pos()))
+			userlist.byAltNick(altnick).setGroup(selectTab(e->pos())->text());
+		else {
+			bool ok;
+			QStringList list;
+			for (int i=0; i < count(); i++)
+				list << tabAt(i)->text();
+			QString text = QInputDialog::getItem(i18n("Add new group"), i18n("Enter name new group:"),
+				list, 0, true, &ok, 0);
+			if (ok && !text.isEmpty())
+				userlist.byAltNick(altnick).setGroup(text);
+		}
+//bardzo nie wygodne, trzeba poprawiæ writeToFile !! ta funkcja jest za wolna
+//trzeba dodaæ mozliwo¶æ zmiany danych tylko jednego user !!
+	userlist.writeToFile();
+	}
 };
