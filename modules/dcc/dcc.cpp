@@ -251,7 +251,7 @@ DccManager::DccManager() : QObject(NULL,"dcc_manager")
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Send file"), "kadu_sendfile", "F8");
 
 	ConfigDialog::addCheckBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "DCC enabled"), "AllowDCC", false);
-	ConfigDialog::addCheckBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "DCC IP autodetection"), "DccIpDetect", false);
+	ConfigDialog::addCheckBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "DCC IP autodetection"), "DccIpDetect", true);
 
 	ConfigDialog::addVGroupBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "DCC IP"));
 	ConfigDialog::addLineEdit("Network", "DCC IP", QT_TRANSLATE_NOOP("@default", "IP address:"),"DccIP");
@@ -423,7 +423,7 @@ void DccManager::setupDcc()
 
 	QHostAddress dccIp;
 
-	if (!ConfigDccIp.ip4Addr())
+	if (ConfigDccIp.isNull())
 		dccIp.setAddress("255.255.255.255");
 	else
 		dccIp = ConfigDccIp;
@@ -521,11 +521,14 @@ void DccManager::configDialogCreated()
 void DccManager::configDialogApply()
 {
 	kdebugf();
-	if (!ConfigDccIp.setAddress(config_file.readEntry("Network", "DccIP")))
-	{
-		config_file.writeEntry("Network", "DccIP", "0.0.0.0");
+	if (config_file.readBoolEntry("Network","DccIpDetect"))
 		ConfigDccIp = QHostAddress();
-	}
+	else
+		if (!ConfigDccIp.setAddress(config_file.readEntry("Network", "DccIP")))
+		{
+			config_file.writeEntry("Network", "DccIP", "0.0.0.0");
+			ConfigDccIp = QHostAddress();
+		}
 	QHostAddress ext_ip;
 	if (!ext_ip.setAddress(config_file.readEntry("Network", "ExternalIP")))	
 		config_file.writeEntry("Network", "ExternalIP", "0.0.0.0");
