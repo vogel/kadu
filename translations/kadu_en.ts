@@ -74,10 +74,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&quot;Enter&quot; key in chat sends message by default</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Message acknowledgements (wait for delivery)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -590,6 +586,10 @@ It&apos;s a high security risk!</source>
         <source>Port to connect to servers</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&quot;%1&quot; in chat sends message by default</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -626,10 +626,6 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>This is where you type in the text to be sent</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enter key sends message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -722,6 +718,10 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>New message received, close window anyway?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 sends message</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

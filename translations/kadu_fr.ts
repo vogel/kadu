@@ -198,10 +198,6 @@
         <translation>Defilement de la fenêtre vers le bâs</translation>
     </message>
     <message>
-        <source>&quot;Enter&quot; key in chat sends message by default</source>
-        <translation>Bouton &quot;entrée&quot; envoie le message  par default</translation>
-    </message>
-    <message>
         <source>Flash chat title on new message</source>
         <translation>Clignottement de bord de titre à la recéption du message</translation>
     </message>
@@ -596,6 +592,10 @@ Attention danger!
         <source>Description font color</source>
         <translation>Couleur de la police</translation>
     </message>
+    <message>
+        <source>&quot;%1&quot; in chat sends message by default</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -633,10 +633,6 @@ Attention danger!
     <message>
         <source>This is where you type in the text to be sent</source>
         <translation>C&apos;est ici que vous saisissez le texte à envoyer</translation>
-    </message>
-    <message>
-        <source>Enter key sends message</source>
-        <translation>Bouton entrée envoie le message</translation>
     </message>
     <message>
         <source>Blocks scrolling</source>
@@ -729,6 +725,10 @@ Attention danger!
     <message>
         <source>New message received, close window anyway?</source>
         <translation>Nouvel message reçu, voulez vous fermer la fenêtre?</translation>
+    </message>
+    <message>
+        <source>%1 sends message</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

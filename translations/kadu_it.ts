@@ -190,10 +190,6 @@
         <translation>Scorri il testo chat verso il basso</translation>
     </message>
     <message>
-        <source>&quot;Enter&quot; key in chat sends message by default</source>
-        <translation>tasto &quot;Invio&quot; manda automaticamente il messaggio</translation>
-    </message>
-    <message>
         <source>Flash chat title on new message</source>
         <translation>Titolo finestra chat lampeggia all&apos;arrivo del nuovo messaggio</translation>
     </message>
@@ -593,7 +589,11 @@ E un rischio per la sicurezza!</translation>
     </message>
     <message>
         <source>Port to connect to servers</source>
-        <translation type="unfinished"></translation>
+        <translation>La porta per connessione ai servers</translation>
+    </message>
+    <message>
+        <source>&quot;%1&quot; in chat sends message by default</source>
+        <translation>&quot;%1&quot; manda messaggio automaticamente</translation>
     </message>
 </context>
 <context>
@@ -632,10 +632,6 @@ E un rischio per la sicurezza!</translation>
     <message>
         <source>This is where you type in the text to be sent</source>
         <translation>Inserisci qui il testo del messaggio da spedire</translation>
-    </message>
-    <message>
-        <source>Enter key sends message</source>
-        <translation>Tasto Invio manda il messaggio</translation>
     </message>
     <message>
         <source>Blocks scrolling</source>
@@ -728,6 +724,10 @@ E un rischio per la sicurezza!</translation>
     <message>
         <source>New message received, close window anyway?</source>
         <translation>Ricevuto nuovo messaggio, chiudere comunque ?</translation>
+    </message>
+    <message>
+        <source>%1 sends message</source>
+        <translation>%1 manda messaggio</translation>
     </message>
 </context>
 <context>
@@ -872,7 +872,7 @@ La tua password è sbagliata!</translation>
     </message>
     <message>
         <source>Default</source>
-        <translation type="unfinished">Predefinito</translation>
+        <translation>Predefinito</translation>
     </message>
 </context>
 <context>

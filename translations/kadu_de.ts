@@ -190,10 +190,6 @@
         <translation>Scrolle das Fenster nach unten, nicht nach oben</translation>
     </message>
     <message>
-        <source>&quot;Enter&quot; key in chat sends message by default</source>
-        <translation>&quot;Enter&quot; sendet Nachricht</translation>
-    </message>
-    <message>
         <source>Flash chat title on new message</source>
         <translation>Blinken der Titelleiste</translation>
     </message>
@@ -594,6 +590,10 @@ Es ist ein sehr hohes Risiko!</translation>
         <source>Port to connect to servers</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&quot;%1&quot; in chat sends message by default</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -631,10 +631,6 @@ Es ist ein sehr hohes Risiko!</translation>
     <message>
         <source>This is where you type in the text to be sent</source>
         <translation>Hier schreiben Sie den zu versendenden Text</translation>
-    </message>
-    <message>
-        <source>Enter key sends message</source>
-        <translation>&quot;Enter&quot;-Taste versendet die Nachricht</translation>
     </message>
     <message>
         <source>Blocks scrolling</source>
@@ -727,6 +723,10 @@ Es ist ein sehr hohes Risiko!</translation>
     <message>
         <source>New message received, close window anyway?</source>
         <translation>Neue Nachricht empfangen, trotzdem schliessen?</translation>
+    </message>
+    <message>
+        <source>%1 sends message</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
