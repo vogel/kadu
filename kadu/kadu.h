@@ -119,6 +119,7 @@ class Kadu : public QMainWindow
 		void remindPassword1();
 		void searchInDirectory();
 		void sendFile();
+		void makeVoiceChat();
 		void sendKey();
 		void sendSms();
 		void sendSmsToUser();

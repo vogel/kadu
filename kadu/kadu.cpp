@@ -199,7 +199,10 @@ void Kadu::keyPressEvent(QKeyEvent *e) {
 	else if (HotKey::shortCut(e,"kadu_showinactive"))
 	{
 		showHideInactive();
-	}	
+	}
+	else if (HotKey::shortCut(e, "kadu_voicechat")) {
+		makeVoiceChat();
+		}
 	else if (HotKey::shortCut(e,"kadu_sendfile"))
 	{
 		sendFile();
@@ -463,6 +466,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "View history", "kadu_viewhistory", "Ctrl+H");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Lookup in directory", "kadu_searchuser", "Ctrl+F");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Show / hide inactive users", "kadu_showinactive", "F9");
+	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Voice chat", "kadu_voicechat", "F7");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Send file", "kadu_sendfile", "F8");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Configuration", "kadu_configure", "F2");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Add user", "kadu_adduser", "Ctrl+N");
@@ -996,25 +1000,47 @@ void Kadu::viewHistory() {
 
 void Kadu::sendFile()
 {
-    if (config_file.readBoolEntry("Network","AllowDCC"))
-     if (config_dccip.isIp4Addr()) {
-	struct gg_dcc *dcc_new;
-	if (userbox->currentText()=="")
-		return;
-	UserListElement user = userlist.byAltNick(userbox->currentText());
-	if (user.port >= 10) {
-		if ((dcc_new = gg_dcc_send_file(htonl(user.ip.ip4Addr()), user.port, config_file.readNumEntry("General","UIN"), user.uin)) != NULL) {
-			dccSocketClass *dcc = new dccSocketClass(dcc_new);
-			connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), this, SLOT(dccFinished(dccSocketClass *)));
-			dcc->initializeNotifiers();
+	if (config_file.readBoolEntry("Network", "AllowDCC"))
+		if (config_dccip.isIp4Addr()) {
+			struct gg_dcc *dcc_new;
+			if (userbox->currentText() == "")
+				return;
+			UserListElement user = userlist.byAltNick(userbox->currentText());
+			if (user.port >= 10) {
+				if ((dcc_new = gg_dcc_send_file(htonl(user.ip.ip4Addr()), user.port,
+					config_file.readNumEntry("General", "UIN"), user.uin)) != NULL) {
+					dccSocketClass *dcc = new dccSocketClass(dcc_new);
+					connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), this,
+						SLOT(dccFinished(dccSocketClass *)));
+					dcc->initializeNotifiers();
+					}
+				}
+			else
+				gg_dcc_request(sess, user.uin);
 			}
-		}
-	else
-		gg_dcc_request(sess, user.uin);
-			  }
 }
 
-
+void Kadu::makeVoiceChat()
+{
+	if (config_file.readBoolEntry("Network", "AllowDCC"))
+		if (config_dccip.isIp4Addr()) {
+			struct gg_dcc *dcc_new;
+			if (userbox->currentText() == "")
+				return;
+			UserListElement user = userlist.byAltNick(userbox->currentText());
+			if (user.port >= 10) {
+				if ((dcc_new = gg_dcc_voice_chat(htonl(user.ip.ip4Addr()), user.port,
+					config_file.readNumEntry("General", "UIN"), user.uin)) != NULL) {
+					dccSocketClass *dcc = new dccSocketClass(dcc_new);
+					connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), this,
+						SLOT(dccFinished(dccSocketClass *)));
+					dcc->initializeNotifiers();
+					}
+				}
+			else
+				gg_dcc_request(sess, user.uin);
+			}
+}
 
 void Kadu::lookupInDirectory() {
 	if (userbox->currentItem() != -1) {
@@ -1570,6 +1596,7 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 	msg = loadIcon("mail_generic.png");
 	int smsitem;
 	int sendfile;
+	int voicechat;
 	int deletehistoryitem;
 	int historyitem;
 	int searchuser;
@@ -1583,19 +1610,29 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 
 //	pm->insertItem(msg, tr("Send message"), KADU_CMD_SEND_MESSAGE);
 	openchatitem= pm->insertItem(tr("Open chat window") ,this, SLOT(openChat()));
-	smsitem= pm->insertItem(tr("Send SMS"),this,SLOT(sendSmsToUser()),HotKey::shortCutFromFile("kadu_sendsms"));
+	smsitem = pm->insertItem(tr("Send SMS"), this, SLOT(sendSmsToUser()),
+		HotKey::shortCutFromFile("kadu_sendsms"));
 	if (!user.mobile.length())
 		pm->setItemEnabled(smsitem,false);
 
-	sendfile= pm->insertItem(loadIcon("filesave.png"), tr("Send file"), this, SLOT(sendFile()),HotKey::shortCutFromFile("kadu_sendfile"));
-	if (dccSocketClass::count >= 8)
+	sendfile = pm->insertItem(loadIcon("filesave.png"), tr("Send file"), this,
+		SLOT(sendFile()), HotKey::shortCutFromFile("kadu_sendfile"));
+	voicechat =  pm->insertItem(tr("Voice chat"), this,
+		SLOT(makeVoiceChat()), HotKey::shortCutFromFile("kadu_voicechat"));
+	if (dccSocketClass::count >= 8) {
 		pm->setItemEnabled(sendfile, false);
-	if ((config_file.readBoolEntry("Network","AllowDCC"))&&
-	     (user.status == GG_STATUS_AVAIL || user.status == GG_STATUS_AVAIL_DESCR ||
-			user.status == GG_STATUS_BUSY || user.status == GG_STATUS_BUSY_DESCR))
+		pm->setItemEnabled(voicechat, false);
+		}
+	if ((config_file.readBoolEntry("Network", "AllowDCC")) &&
+		(user.status == GG_STATUS_AVAIL || user.status == GG_STATUS_AVAIL_DESCR ||
+		user.status == GG_STATUS_BUSY || user.status == GG_STATUS_BUSY_DESCR)) {
 			pm->setItemEnabled(sendfile, true);
-		else
+			pm->setItemEnabled(voicechat, true);
+			}
+		else {
 			pm->setItemEnabled(sendfile, false);
+			pm->setItemEnabled(voicechat, false);
+			}
 
 #ifdef HAVE_OPENSSL
 	int sendkeyitem;
