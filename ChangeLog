@@ -26,6 +26,7 @@
 * okno rejestracji: przej¶cie na QSocketNotifier
 * status opisowy: bardziej restrykcyjne (zmienna sess) sprawdzanie czy jeste¶my
   od³±czeni od serwera
+* status opisowy: kasowanie pliku description po jego odczytaniu
 
 +++ wersja 0.3.2
 * dalsze porz±dki w kodzie
