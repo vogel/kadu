@@ -547,7 +547,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 
 	connect(autosend, SIGNAL(toggled(bool)), edit, SLOT(setAutosend(bool)));
 	connect(history, SIGNAL(clicked()), this, SLOT(HistoryBox()));
-	connect(iconsel, SIGNAL(clicked()), this, SLOT(insertEmoticon()));
+	connect(iconsel, SIGNAL(clicked()), this, SLOT(emoticonSelectorClicked()));
 	connect(whois, SIGNAL(clicked()), this, SLOT(userWhois()));
 	connect(clearchat, SIGNAL(clicked()), this, SLOT(clearChatWindow()));
 	connect(boldbtn, SIGNAL(toggled(bool)), this, SLOT(toggledBold(bool)));
@@ -1078,35 +1078,27 @@ void Chat::HistoryBox(void) {
 	hb->show();
 }
 
-void Chat::insertEmoticon(void)
+void Chat::emoticonSelectorClicked(void)
 {
-	if (emoticon_selector == NULL)
-	{
-		emoticon_selector = new EmoticonSelector(NULL, "Emoticon selector", this);
-		emoticon_selector->alignTo(iconsel);
-		emoticon_selector->show();
-	}
-	else
-	{
-		emoticon_selector->close();
-		emoticon_selector = NULL;
-	}
+	//emoticons_selector zawsze bêdzie NULLem gdy wchodzimy do tej funkcji
+	//bo EmoticonSelector ma ustawione flagi Qt::WDestructiveClose i Qt::WType_Popup
+	//akcj± na opuszczenie okna jest ustawienie zmiennej emoticons_selector w Chacie na NULL
+	emoticon_selector = new EmoticonSelector(NULL, "Emoticon selector", this);
+	emoticon_selector->alignTo(iconsel);
+	emoticon_selector->show();
 }
 
 void Chat::changeColor(void)
 {
-	if (color_selector == NULL) {
-		color_selector = new ColorSelector(this);
-		color_selector->alignTo(colorbtn);
-		color_selector->show();
-		connect(color_selector, SIGNAL(colorSelect(const QColor&)), this, SLOT(colorChanged(const QColor&)));
-		connect(color_selector, SIGNAL(aboutToClose()), this, SLOT(aboutToClose()));
-		}
-	else
-		color_selector = NULL;
+	//sytuacja podobna jak w przypadku emoticon_selectora
+	color_selector = new ColorSelector(this);
+	color_selector->alignTo(colorbtn);
+	color_selector->show();
+	connect(color_selector, SIGNAL(colorSelect(const QColor&)), this, SLOT(colorChanged(const QColor&)));
+	connect(color_selector, SIGNAL(aboutToClose()), this, SLOT(colorSelectorAboutToClose()));
 }
 
-void Chat::aboutToClose() {
+void Chat::colorSelectorAboutToClose() {
 	kdebugf();
 	color_selector = NULL;
 }
@@ -1131,8 +1123,6 @@ void Chat::addEmoticon(QString string) {
 		}
 	emoticon_selector = NULL;
 }
-
-
 
 void Chat::initModule()
 {

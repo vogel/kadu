@@ -150,7 +150,7 @@ class Chat : public QWidget
 
 	private slots:
 		void userWhois(void);
-		void insertEmoticon(void);
+		void emoticonSelectorClicked(void);
 		void changeColor(void);
 		void addMyMessageToHistory(void);
 		void clearChatWindow(void);
@@ -204,7 +204,7 @@ class Chat : public QWidget
 		void curPosChanged(int para, int pos);
 		void specialKeyPressed(int key);
 		void colorChanged(const QColor& color);
-		void aboutToClose();
+		void colorSelectorAboutToClose();
 		void ackReceivedSlot(int seq);
 		
 	signals:

@@ -186,6 +186,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   QTextStream (chilek)
 * ======= FEATURE FREEZE =======
   jeszcze popracujê nad modu³ami ale raczej poprawiamy b³êdy (adrian)
+* drobne poprawki w chat.cpp zwi±zane z EmoticonSelectorem
+  i ColorSelectorem, nadal gdzie¶ tam jest wyciek pamiêci :( (joi)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

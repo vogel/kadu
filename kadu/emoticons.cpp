@@ -331,10 +331,9 @@ void EmoticonSelectorButton::leaveEvent(QEvent* e)
 	}
 }
 
-EmoticonSelector::EmoticonSelector(QWidget *parent, const char *name, Chat * caller) : QWidget (parent, name,Qt::WType_Popup)
+EmoticonSelector::EmoticonSelector(QWidget *parent, const char *name, Chat * caller) : QWidget (parent, name,Qt::WType_Popup|Qt::WDestructiveClose)
 {
 	callingwidget = caller;
-	setWFlags(Qt::WDestructiveClose);
 	
 	int selector_count=emoticons.selectorCount();
 	int selector_width=(int)sqrt((double)selector_count);
