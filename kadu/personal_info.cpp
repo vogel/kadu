@@ -106,12 +106,18 @@ void PersonalInfoDialog::OkButtonClicked()
 	struct SearchIdStruct sid;
 	gg_search50_t req;
 	req = gg_search50_new();
-	gg_search50_add(req, GG_SEARCH50_FIRSTNAME, (const char *)first);
-	gg_search50_add(req, GG_SEARCH50_LASTNAME, (const char *)last);
-	gg_search50_add(req, GG_SEARCH50_NICKNAME, (const char *)nick);
-	gg_search50_add(req, GG_SEARCH50_CITY, (const char *)city);
-	gg_search50_add(req, GG_SEARCH50_GENDER, QString::number(GenderCombo->currentItem()).latin1());
-	gg_search50_add(req, GG_SEARCH50_BIRTHYEAR, (const char *)born);
+	if (strlen(first))
+		gg_search50_add(req, GG_SEARCH50_FIRSTNAME, (const char *)first);
+	if (strlen(last))
+		gg_search50_add(req, GG_SEARCH50_LASTNAME, (const char *)last);
+	if (strlen(nick))
+		gg_search50_add(req, GG_SEARCH50_NICKNAME, (const char *)nick);
+	if (strlen(city))
+		gg_search50_add(req, GG_SEARCH50_CITY, (const char *)city);
+	if (GenderCombo->currentItem())
+		gg_search50_add(req, GG_SEARCH50_GENDER, QString::number(GenderCombo->currentItem()).latin1());
+	if (strlen(born))
+		gg_search50_add(req, GG_SEARCH50_BIRTHYEAR, (const char *)born);
 	sid.ptr = this;
 	sid.seq = gg_search50(sess, req, 0x01);
 	sid.type = DIALOG_PERSONAL;
