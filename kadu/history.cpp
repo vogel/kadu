@@ -1154,16 +1154,28 @@ void History::uinsChanged(QListViewItem *item) {
 }
 
 void History::dateChanged(QListViewItem *item) {
-	if (item->depth() == 1) {
-		uinsChanged(item->parent());
-		int count = history.getHistoryEntriesCount(uins);
-		start = ((DateListViewText *)item)->getDate().idx;
-		item = item->nextSibling();
+	int count, depth = item->depth();
+	count = history.getHistoryEntriesCount(uins);
+	switch (depth) {
+		case 1:
+			uinsChanged(item->parent());
+			start = ((DateListViewText *)item)->getDate().idx;
+			item = item->nextSibling();
+			break;
+		case 0:
+			uinsChanged(item);
+			start = 0;
+			item = item->firstChild();
+			if (item)
+				item = item->nextSibling();
+			break;
+		}		
+	if (depth < 2) {
 		if (item)
 			count = ((DateListViewText *)item)->getDate().idx - start;
 		else
 			count -= start;
-		showHistoryEntries(start, count);			
+		showHistoryEntries(start, count);
 		}
 }
 
