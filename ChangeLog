@@ -10,6 +10,8 @@
   ju¿ problemów, dodanie debugu do kodu parsowania (mast3r)
 * poprawka: parsowanie powinno dzia³aæ juz poprawnie, poprawki
   kosmetyczne w kodzie i w oknie konfiguracji "Wygl±d" (mast3r)
+* w oknie konfiguracji pola puste zamieniane s± na faktyczne
+  domy¶lne ustawienia (mast3r)
 
 +++ wersja 0.3.4-pre1
 * ¶rodkowy guzik myszki wci¶niêty na u¿ytkowniku

@@ -1065,25 +1065,45 @@ void ConfigDialog::setupTab6(void) {
 	panelbox->setSpacing(5);
 	
 	QLabel *l_panel = new QLabel(i18n("Information panel syntax:"), panelbox);
-	e_panelsyntax = new QLineEdit(config.panelsyntax, panelbox);
+	e_panelsyntax = new QLineEdit(panelbox);
+	if (config.panelsyntax.isEmpty())
+		e_panelsyntax->setText("[#%u][, %f] %r [- %d] [ (%i)]");
+	else
+		e_panelsyntax->setText(config.panelsyntax);
+
 	QToolTip::add(e_panelsyntax,i18n("Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - frist name\n%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist\nIf you leave blank, default settings will be used"));
 
 	QHBox *chatsyntaxbox = new QHBox(syntaxprop);
 	chatsyntaxbox->setSpacing(5);
 
 	QLabel *l_chatsyntax = new QLabel(i18n("Chat window title syntax:"), chatsyntaxbox);
-	e_chatsyntax = new QLineEdit(config.chatsyntax, chatsyntaxbox);
+	e_chatsyntax = new QLineEdit(chatsyntaxbox);
+	if (config.chatsyntax.isEmpty())
+		e_chatsyntax->setText(i18n("Chat with ")+"%a (%s[: %d])");
+	else
+		e_chatsyntax->setText(config.chatsyntax);
+
 	QToolTip::add(e_chatsyntax,i18n("Syntax the same as in information panel."));
 
 	QHBox *confsyntaxbox = new QHBox(syntaxprop);
 	confsyntaxbox->setSpacing(5);
 
 	QLabel *l_confprefixcon = new QLabel(i18n("Conference window title prefix:"), confsyntaxbox);
-	e_conferenceprefix = new QLineEdit(config.conferenceprefix, confsyntaxbox);
-	QToolTip::add(e_conferenceprefix,i18n("This text will be after syntax.\nIf you leave blank, default settings will be used."));
+	e_conferenceprefix = new QLineEdit(confsyntaxbox);
+	if (config.conferenceprefix.isEmpty())
+		e_conferenceprefix->setText(i18n("Conference with "));
+	else
+		e_conferenceprefix->setText(config.conferenceprefix);
+
+	QToolTip::add(e_conferenceprefix,i18n("This text will be before syntax.\nIf you leave blank, default settings will be used."));
 
 	QLabel *l_confsyntax = new QLabel(i18n("syntax:"), confsyntaxbox);
-	e_conferencesyntax = new QLineEdit(config.conferencesyntax, confsyntaxbox);
+	e_conferencesyntax = new QLineEdit(confsyntaxbox);
+	if (config.conferencesyntax.isEmpty())
+		e_conferencesyntax->setText("%a (%s[: %d])");
+	else
+		e_conferencesyntax->setText(config.conferencesyntax);
+
 	QToolTip::add(e_conferencesyntax,i18n("Syntax the same as in information panel."));
 
 	addTab(box6, i18n("Look"));
@@ -1539,11 +1559,31 @@ void ConfigDialog::updateConfig(void) {
 	config.fonts.userbox = vl_userboxfont[0];
 	config.fonts.userboxDesc = vl_userboxfont[1];
 	config.fonts.trayhint = vl_otherfont[0];
+	
+/*
+	Aby unikn±c problemów z niepoprawnymi localesami i pozniejszymi
+	k³opotami które moga wynikn±c z tego, musimy zamienic dwie mozliwe
+	mozliwo¶ci na _puste_pole_ przez co uzyskamy ze kadu i tak bedzie
+	dynamicznie reagowac na zmiany localesów nie zaleznie jaka wersja
+	by³a zapisana przed ustawieniem ustawien domyslnych(moze nie za
+	dobrze to wyjasnione, ale konieczne. Nie dotyczy to dwóch zmiennych
+	config.panelsyntax i config.conferencesyntax, bo pierwotnie zawieraj
+	TYLKO sam± sk³adnie)
+*/
 
 	config.panelsyntax = e_panelsyntax->text();
-	config.chatsyntax = e_chatsyntax->text();
+
+	if (e_chatsyntax->text() == i18n("Chat with ")+"%a (%s[: %d])" || e_chatsyntax->text() == "Chat with %a (%s[: %d])")
+		config.chatsyntax = "";
+	else
+		config.chatsyntax = e_chatsyntax->text();
+	
 	config.conferencesyntax = e_conferencesyntax->text();
-	config.conferenceprefix = e_conferenceprefix->text();
+
+	if (e_conferenceprefix->text() == i18n("Conference with ") || e_conferenceprefix->text() == "Conference with ")
+		config.conferenceprefix = "";
+	else
+		config.conferenceprefix = e_conferenceprefix->text();
 
 	free(config.soundnotify);
 	config.soundnotify = strdup(e_soundnotify->text().latin1());
