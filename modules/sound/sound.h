@@ -67,5 +67,6 @@ class SoundManager : public Themes
 
 };
 
-extern SoundManager sound_manager;
+extern SoundManager* sound_manager;
+
 #endif

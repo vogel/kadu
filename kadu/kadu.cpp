@@ -59,7 +59,6 @@
 #include "password.h"
 #include "tabbar.h"
 #include "debug.h"
-#include "sound.h"
 #include "gadu.h"
 #include "../config.h"
 
@@ -1677,7 +1676,6 @@ void Kadu::createMenu() {
 void Kadu::InitModules()
 {
 	GaduProtocol::initModule();
-	SoundManager::initModule();
 	kadu->createToolBar();
 }
 
