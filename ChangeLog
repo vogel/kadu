@@ -4,6 +4,8 @@ podes³a³ patcha, a zrobi³ to kto¶ oznaczony przez y. Je¶li jest
 w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
 +++ wersja 0.3.8-cvs
+* zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
+  moze powinnismy zmienic nazwe projektu na FastKadu? ;) (adrian)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

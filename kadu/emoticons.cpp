@@ -13,15 +13,28 @@
 #include <qtextcodec.h>
 #include <qtooltip.h>
 #include <math.h>
+#include <algorithm>
 
 #include "emoticons.h"
 #include "debug.h"
 #include "config_file.h"
 
+// general purpose macros to make things shorter /////////////////
+#define VAR(v,x)        __typeof(x) v=x
+#define FOREACH(i,c) for(VAR(i, (c).begin()); i!=(c).end(); ++i)
+//////////////////////////////////////////////////////////////////
+
+
 EmoticonsManager::EmoticonsManager()
 {
 	ThemesList=getSubDirs(QString(DATADIR)+"/kadu/themes/emoticons");	ThemesList.remove(".");
+        walker = NULL;
 };
+
+EmoticonsManager::~EmoticonsManager()
+{
+        if ( walker) delete walker;
+}
 
 QStringList EmoticonsManager::getSubDirs(const QString& path)
 {
@@ -150,6 +163,18 @@ bool EmoticonsManager::loadGGEmoticonTheme()
 	for(int i=0; i<subdirs.size(); i++)
 		if(loadGGEmoticonThemePart(subdirs[i]))
 			something_loaded=true;
+
+        if ( something_loaded ) {
+          // delete previous dictionary of emots
+          if ( walker ) delete walker;
+          walker = new EmotsWalker();
+          int i = 0;
+          // put all emots into dictionary, to allow easy finding
+          // their occurrences in text
+          FOREACH( item, Aliases )
+            walker -> insertString( item -> alias.lower(), i++ );
+        }
+
 	return something_loaded;
 };
 
@@ -160,34 +185,75 @@ QString EmoticonsManager::themePath()
 
 void EmoticonsManager::expandEmoticons(HtmlDocument& doc,const QColor& bgcolor)
 {
+        // check in config if user wants animated emots
+        bool animated = (EmoticonsStyle) config_file.readNumEntry("Chat", 
+                                                                  "EmoticonsStyle")
+          == EMOTS_ANIMATED;
+
 	kdebug("Expanding emoticons...\n");
-	for(int e_i=0; e_i<doc.countElements(); e_i++)
+        // iterate through parsed html parts of message
+	for(int e_i = 0; e_i < doc.countElements(); e_i++)
 	{
+                // emots are not expanded in html tags
 		if(doc.isTagElement(e_i)) continue;
-		QString text=doc.elementText(e_i);
-		for(int j=0; j<text.length(); j++)
+                
+                // analyze text of this text part
+		QString text = doc.elementText(e_i);
+                // variables storing position of last occurrence
+                // of emot matching current emots dictionary
+                int lastBegin = 10000, lastEmot = -1;
+                // intitialize automata for checking occurrences
+                // of emots in text
+                walker -> initWalking();
+		for(int j = 0; j < text.length(); j++)
 		{
-			QValueList<EmoticonsListItem>::iterator e=Aliases.end();
-			for(QValueList<EmoticonsListItem>::iterator i=Aliases.begin(); i!=Aliases.end(); i++)
-			{
-				if(text.mid(j,(*i).alias.length()).lower()==(*i).alias.lower())
-					if(e==Aliases.end()||(*i).alias.length()>(*e).alias.length())
-						e=i;
-			};
-			if(e!=Aliases.end())
-			{
-				QString new_text="<IMG src=\"";
-				if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")==EMOTS_ANIMATED)
-					new_text+=(*e).anim;
-				else
-					new_text+=(*e).stat;			
-				new_text+="\" bgcolor="+bgcolor.name()+">";
-				doc.splitElement(e_i,j,(*e).alias.length());
-				doc.setElementValue(e_i,new_text,true);
-				break;
-			}
-		};
-	};
+                        // find out if there is some emot occurence when we
+                        // add current character
+                        int idx = walker -> checkEmotOccurrence( text[j].lower() );
+                        // when some emot from dictionary is ending at current character
+                        if ( idx >= 0 )
+                                // check if there already was some occurence, whose
+                                // beginning is before beginning of currently found one
+                                if ( lastEmot >= 0 && 
+                                     lastBegin < j - Aliases[idx].alias.length() + 1 )
+                                {
+                                        // if so, then replace that previous occurrence
+                                        // with html tag
+                                        QString new_text="<IMG src=\"";
+                                        if( animated )
+                                                new_text += Aliases[lastEmot].anim;
+                                        else
+                                                new_text += Aliases[lastEmot].stat;
+                                        new_text += "\" bgcolor=" + bgcolor.name() + ">";
+                                        doc.splitElement( e_i, lastBegin, 
+                                                          Aliases[lastEmot].alias.length() );
+                                        doc.setElementValue( e_i, new_text, true );
+                                        // our analysis will begin directly after 
+                                        // occurrence of previous emot
+                                        lastEmot = -1;
+                                        break;
+                                }
+                                else
+                                {
+                                        // this is first occurrence in current text part
+                                        lastEmot = idx;
+                                        lastBegin = j - Aliases[lastEmot].alias.length() + 1;
+                                }
+                };
+                // this is the case, when only one emot was found in current text part
+                if ( lastEmot >= 0 )
+                {
+                        QString new_text="<IMG src=\"";
+                        if( animated )
+                                new_text += Aliases[lastEmot].anim;
+                        else
+                                new_text += Aliases[lastEmot].stat;
+                        new_text += "\" bgcolor=" + bgcolor.name() + ">";
+                        doc.splitElement( e_i, lastBegin, 
+                                          Aliases[lastEmot].alias.length() );
+                        doc.setElementValue( e_i, new_text, true );
+                }
+ 	};
 	kdebug("Emoticons expanded...\n");
 };
 
@@ -400,3 +466,141 @@ QTextCustomItem* AnimStyleSheet::tag(
 		return QStyleSheet::tag(name,attr,context,factory,emptyTag,doc);
 	return new AnimTextItem(doc,(QTextEdit*)parent(),Path+"/"+attr["src"],QColor(attr["bgcolor"]));
 };
+
+
+/** create fresh emoticons dictionary, which will allow easy finding of occurrences
+    of stored emots in text
+*/
+EmotsWalker::EmotsWalker() 
+{
+  root = new PrefixNode();
+  root -> emotIndex = -1;
+  myPair.second = NULL;
+}
+
+/** deletes entire dictionary of emots */
+EmotsWalker::~EmotsWalker() 
+{
+  removeChilds( root );
+  delete root;
+}
+
+/** find node in prefix tree, which is direct successor of given node with
+    edge marked by given character
+    return NULL if there is none
+*/
+PrefixNode* EmotsWalker::findChild( PrefixNode* node, const QChar& c ) 
+{
+  myPair.first = c;
+  // create variable 'position' with result of binary search in childs
+  // of given node
+  VAR( position, std::upper_bound ( node -> childs.begin(), node -> childs.end(),
+                                    myPair ) );  
+
+  if ( position != node -> childs.end() && position -> first == c )
+    return position -> second;
+  else
+    return NULL;
+}
+
+/** add successor to given node with edge marked by given characted
+    (building of prefix tree)
+*/
+PrefixNode* EmotsWalker::insertChild( PrefixNode* node, const QChar& c ) 
+{
+  PrefixNode* newNode = new PrefixNode();
+  newNode -> emotIndex = -1;
+  
+  // create child with new node
+  VAR( newPair, qMakePair( c, newNode ) );
+  // insert new child into childs of current node, performing binary
+  // search to find correct position for it
+  node -> childs.insert( std::upper_bound( node -> childs.begin(), 
+                                           node -> childs.end(), newPair ), 
+                         newPair );
+  return newNode;
+}
+
+/** recursively delete all childs of given node */
+void EmotsWalker::removeChilds( PrefixNode* node ) 
+{
+  FOREACH( ch, node -> childs ) {
+    removeChilds( ch -> second );
+    delete ch -> second;
+  }
+}
+
+/** adds given string (emot) to dictionary of emots, giving it
+    number, which will be used later to notify occurrences of
+    emot in analyzed text
+*/
+void EmotsWalker::insertString( const QString& str, int num ) 
+{
+  PrefixNode *child, *node = root;
+  unsigned int len = str.length();
+  unsigned int pos = 0;
+  
+  // it adds string to prefix tree character after character
+  while ( pos < len ) {
+    child = findChild( node, str[pos] );
+    if ( child == NULL )
+      child = insertChild( node, str[pos] );
+    
+    node = child;
+    pos++;
+  }
+
+  if ( node -> emotIndex == -1 ) 
+    node -> emotIndex = num;
+}
+
+/** return number of emot, which occurre in analyzed text just
+    after adding given character (thus ending on this character)
+    beginning of text analysis is turned on by 'initWalking()'
+    if no emot occures, -1 is returned
+*/
+int EmotsWalker::checkEmotOccurrence( const QChar& c ) 
+{
+  PrefixNode* next;
+  int result = -1, resultLen = -1;
+
+  if ( amountPositions < positions.size() ) {
+    lengths[amountPositions] = 0;
+    positions[amountPositions++] = root;
+  }
+  else {
+    amountPositions++;
+    positions.push_back( root );
+    lengths.push_back( 0 );
+  }
+
+  for (int i = amountPositions - 1; i >= 0; i--) {
+    next = findChild( positions[i], c );
+    
+    if ( next == NULL ) {
+      lengths[i] = lengths[amountPositions - 1];
+      positions[i] = positions[--amountPositions];
+    }
+    else {
+      positions[i] = next;
+      lengths[i]++;
+      if ( result == -1 || 
+           ( next -> emotIndex >= 0 && (next -> emotIndex < result ||
+                                        resultLen < lengths[i] ) ) )
+      {
+        resultLen = lengths[i];
+        result = next -> emotIndex;
+      }
+    }
+  }
+  return result;
+}
+
+/** clear internal structures responsible for analyzing text, it allows 
+    begin of new text analysis
+*/
+void EmotsWalker::initWalking() 
+{
+  amountPositions = 0;
+}
+
