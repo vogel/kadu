@@ -514,16 +514,35 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		setCaption(i18n("Kadu: %1").arg(config.uin));
 
 	pending.loadFromFile();
+
+	/* initialize group tabbar */
+	group_bar=new QTabBar(this);
+	group_bar->addTab(new QTab("Wszyscy"));
+	for(int i=0; i<userlist.count(); i++)
+	{
+		if(userlist[i].group!="")
+		{
+			bool createNewTab=true;
+			for(int j=0; j<group_bar->count(); j++)
+				if(group_bar->tab(j)->text()==userlist[i].group)
+					createNewTab=false;
+			if(createNewTab)
+				group_bar->addTab(new QTab(userlist[i].group));
+		};
+	};
+	if(group_bar->count()==1)
+		group_bar->hide();
+	else
+		connect(group_bar,SIGNAL(selected(int)),this,SLOT(groupTabSelected(int)));
+		
 	/* initialize and configure userbox */
 	userbox = new UserBox(this);
 	userbox->setPaletteBackgroundColor(QColor(config.colors.userboxBgR,config.colors.userboxBgG,config.colors.userboxBgB));
 	userbox->setPaletteForegroundColor(QColor(config.colors.userboxFgR,config.colors.userboxFgG,config.colors.userboxFgB));
 	userbox->QListBox::setFont(QFont(config.colors.userboxFont, config.colors.userboxFontSize));
 
-
-	for (int i = 0; i < userlist.count(); i++)
-		userbox->addUser(userlist[i].altnick);
-	UserBox::all_refresh();
+	/* add all users to userbox */
+	setActiveGroup("");
 	
 	/* start auto away. yes, even if it's disabled. this way enabling it will work at run-time */
 	autoaway = new QTimer(this);
@@ -560,11 +579,12 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	dockppm->insertItem(loader->loadIcon("exit",KIcon::Small), i18n("Exit"), 9);
 	connect(dockppm, SIGNAL(activated(int)), dw, SLOT(dockletChange(int)));
 	
-	QGridLayout * grid = new QGridLayout (this,3,3);
+	QGridLayout * grid = new QGridLayout (this,4,3);
 	grid->addMultiCellWidget(mmb,0,0,0,2);
-	grid->addMultiCellWidget(userbox, 1, 1, 0, 2);
-	grid->addWidget(statuslabeltxt,2,0, Qt::AlignLeft);
-	grid->addWidget(statuslabel, 2, 2, Qt::AlignCenter);
+	grid->addMultiCellWidget(group_bar,1,1,0,2);
+	grid->addMultiCellWidget(userbox,2,2,0,2);
+	grid->addWidget(statuslabeltxt,3,0,Qt::AlignLeft);
+	grid->addWidget(statuslabel,3,2,Qt::AlignCenter);
 	grid->setColStretch(0, 3);
 	grid->setColStretch(1, 1);
 	grid->setColStretch(2, 1);
@@ -577,6 +597,25 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	if((!config.rundocked)||(!config.dock))
 		show();
 }
+
+void Kadu::setActiveGroup(const QString& group)
+{
+	userbox->clearUsers();
+	for (int i = 0; i < userlist.count(); i++)
+	{
+		if(group==""||group==userlist[i].group)
+			userbox->addUser(userlist[i].altnick);
+	};
+	UserBox::all_refresh();
+};
+
+void Kadu::groupTabSelected(int id)
+{
+	if(id==0)
+		setActiveGroup("");
+	else
+		setActiveGroup(group_bar->tab(id)->text());
+};
 
 void Kadu::removeUser(QString &username, bool permanently = false) {
 	int i = 0;

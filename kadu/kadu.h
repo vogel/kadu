@@ -34,6 +34,7 @@
 #include <qsocketnotifier.h>
 #include <qarray.h>
 #include <qmainwindow.h>
+#include <qtabbar.h>
 
 #include "userlist.h"
 #include "userbox.h"
@@ -179,14 +180,18 @@ class Kadu : public QMainWindow
 		int openChat(UinsList);
 	
 	private:
-		KMenuBar *mmb;
+		KMenuBar* mmb;
+		QTabBar* group_bar;
 		int beforeAutoAway;
 		int commencing_startup;
 		void createMenu();
 		void createStatusPopupMenu();
+		void setActiveGroup(const QString& group);
 		bool close_permitted;
+		friend class DockWidget;
 	
-	friend class DockWidget;
+	private slots:
+		void groupTabSelected(int id);
 };
 
 struct acks {
