@@ -255,7 +255,7 @@ else
 	QTLIBDIR="-L$QTLIBDIR"
 fi
 
-FIND_QT_INCLUDES($with_qt_includes $with_qt_dir $QTDIR /usr/lib/qt3 /usr/local/qt /usr/lib/qt /usr/include /usr/include/qt /usr/include/qt3 /usr/local/include /usr/X11R6/include /usr/X11R6/include/qt3)
+FIND_QT_INCLUDES($with_qt_includes $with_qt_dir $QTDIR /usr/lib/qt3 /usr/local/qt /usr/lib/qt /usr/include /usr/include/qt /usr/include/qt3 /usr/local/include /usr/X11R6/include /usr/X11R6/include/qt /usr/X11R6/include/qt3)
 if test "X$QTINCDIR" = "X"
 then
 	echo ""
