@@ -46,7 +46,7 @@ DockingManager::DockingManager(QObject *parent, const char *name) : QObject(pare
 	connect(&pending, SIGNAL(messageAdded()), this, SLOT(pendingMessageAdded()));
 	connect(&pending, SIGNAL(messageDeleted()), this, SLOT(pendingMessageDeleted()));
 
-	connect(kadu, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
+	connect(kadu, SIGNAL(searchingForTrayPosition(QPoint&)), this, SIGNAL(searchingForTrayPosition(QPoint&)));
 
 	connect(dockMenu, SIGNAL(activated(int)), this, SLOT(dockletChange(int)));
 	connect(this, SIGNAL(mousePressMidButton()), &pending, SLOT(openMessages()));
@@ -78,7 +78,7 @@ DockingManager::~DockingManager()
 	disconnect(&pending, SIGNAL(messageAdded()), this, SLOT(pendingMessageAdded()));
 	disconnect(&pending, SIGNAL(messageDeleted()), this, SLOT(pendingMessageDeleted()));
 
-	disconnect(kadu, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
+	disconnect(kadu, SIGNAL(searchingForTrayPosition(QPoint&)), this, SIGNAL(searchingForTrayPosition(QPoint&)));
 
 	disconnect(dockMenu, SIGNAL(activated(int)), this, SLOT(dockletChange(int)));
 	disconnect(icon_timer, SIGNAL(timeout()), this, SLOT(changeIcon()));
@@ -143,11 +143,6 @@ void DockingManager::defaultToolTip()
 
 		emit trayTooltipChanged(tiptext);
 	}
-}
-
-void DockingManager::findTrayPosition(QPoint& pos)
-{
-	emit searchingForTrayPosition(pos);
 }
 
 void DockingManager::trayMousePressEvent(QMouseEvent * e)

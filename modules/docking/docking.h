@@ -15,7 +15,6 @@ class DockingManager : public QObject
 
 	private slots:
 		void statusPixmapChanged(QPixmap &);
-		void findTrayPosition(QPoint& pos);
 		void changeIcon();
 		void dockletChange(int id);
 		void pendingMessageAdded();
