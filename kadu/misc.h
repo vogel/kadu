@@ -33,6 +33,7 @@ QString cp2unicode(unsigned char *);
 QCString unicode2cp(const QString &);
 QString latin2unicode(unsigned char *);
 QCString unicode2latin(const QString &);
+QString unicode2std(const QString &);
 QString printDateTime(const QDateTime &datetime);
 QString timestamp(time_t = 0);
 QDateTime currentDateTime();

@@ -72,6 +72,29 @@ QCString unicode2latin(const QString &buf)
 	return codec_latin2->fromUnicode(buf);
 }
 
+QString unicode2std(const QString &buf)
+{
+	QString tmp = buf;
+	tmp.replace(QRegExp("\\x0119"), "e");
+	tmp.replace(QRegExp("\\x00f3"), "o");
+	tmp.replace(QRegExp("\\x0105"), "a");
+	tmp.replace(QRegExp("\\x015b"), "s");
+	tmp.replace(QRegExp("\\x0142"), "l");
+	tmp.replace(QRegExp("\\x017c"), "z");
+	tmp.replace(QRegExp("\\x017a"), "z");
+	tmp.replace(QRegExp("\\x0107"), "c");
+	tmp.replace(QRegExp("\\x0144"), "n");
+	tmp.replace(QRegExp("\\x0118"), "E");
+	tmp.replace(QRegExp("\\x00d3"), "O");
+	tmp.replace(QRegExp("\\x0104"), "A");
+	tmp.replace(QRegExp("\\x015a"), "S");
+	tmp.replace(QRegExp("\\x0141"), "L");
+	tmp.replace(QRegExp("\\x017b"), "Z");
+	tmp.replace(QRegExp("\\x0179"), "Z");
+	tmp.replace(QRegExp("\\x0106"), "C");
+	tmp.replace(QRegExp("\\x0143"), "N");
+	return tmp;
+}
 
 QString printDateTime(const QDateTime &datetime) {
 	QString tmp;

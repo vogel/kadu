@@ -146,6 +146,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * loginparams.has_audio = 1, gdy mamy DCC w³±czone; przedstawiamy siê jako wersja
   gg 6.0.0.132 (chilek)
 * w opcjach powiadamiania mozna wybierac wielu uzytkownikow (michal)
+* usuwanie polskich ogonków przy eksporcie listy kontaktów na serwer (chilek)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
