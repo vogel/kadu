@@ -289,16 +289,16 @@ void HintManager::initModule(void)
 	QT_TRANSLATE_NOOP("@default", "Hints options");
 	QT_TRANSLATE_NOOP("@default", "Enable icons in hints");
 	QT_TRANSLATE_NOOP("@default", "Show connection errors in hints");
-	QT_TRANSLATE_NOOP("@default", "Notify of new message");
-	QT_TRANSLATE_NOOP("@default", "Notify of new chat");
+	QT_TRANSLATE_NOOP("@default", "Notify about new message");
+	QT_TRANSLATE_NOOP("@default", "Notify about new chat");
 	QT_TRANSLATE_NOOP("@default", "Show in notify content message");
-	QT_TRANSLATE_NOOP("@default", "Content message in hint");
+	QT_TRANSLATE_NOOP("@default", "Show message contents in hint");
 	QT_TRANSLATE_NOOP("@default", "Enable status notification by hint");
 	QT_TRANSLATE_NOOP("@default", "Notification options");
-	QT_TRANSLATE_NOOP("@default", "Notify of user status change");
-	QT_TRANSLATE_NOOP("@default", "Notify of user become available");
-	QT_TRANSLATE_NOOP("@default", "Notify of user become unavailable");
-	QT_TRANSLATE_NOOP("@default", "Add description to hint if exist");
+	QT_TRANSLATE_NOOP("@default", "Notify about user status change");
+	QT_TRANSLATE_NOOP("@default", "Notify about user become available");
+	QT_TRANSLATE_NOOP("@default", "Notify about user become unavailable");
+	QT_TRANSLATE_NOOP("@default", "Add description to hint if exists");
 	QT_TRANSLATE_NOOP("@default", "Use custom syntax");
 	QT_TRANSLATE_NOOP("@default", "Hint syntax");
 
@@ -388,8 +388,8 @@ void HintManagerSlots::onCreateConfigDialog()
 	QVGroupBox *vboxgrp = new QVGroupBox(tr("New hints add to hint"),hbox);
 	combobox2 = new QComboBox(vboxgrp);
 	combobox2->insertItem(tr("Auto"));
-	combobox2->insertItem(tr("Under up"));
-	combobox2->insertItem(tr("Under down"));
+	combobox2->insertItem(tr("In top"));
+	combobox2->insertItem(tr("In bottom"));
 	combobox2->setCurrentItem(newhintunder);
 
 	QVBox *vbox = new QVBox(hbox);
