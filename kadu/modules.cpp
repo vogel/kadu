@@ -296,8 +296,7 @@ bool ModulesManager::satisfyModuleDependencies(const ModuleInfo& module_info)
 void ModulesManager::incDependenciesUsageCount(const ModuleInfo& module_info)
 {
 	for (QStringList::ConstIterator it = module_info.depends.begin(); it != module_info.depends.end(); ++it)
-		if(!moduleIsStatic(*it))
-			moduleIncUsageCount(*it);
+		moduleIncUsageCount(*it);
 }
 
 void ModulesManager::registerStaticModule(const QString& module_name,
