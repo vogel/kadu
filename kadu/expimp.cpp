@@ -72,6 +72,8 @@ void UserlistImport::fromfile(){
 			while ( !stream.eof() ) {
 				line = stream.readLine();
 				lines = QStringList::split(";",line,true);
+				if (lines[6] == "0")
+					lines[6].truncate(0);
 				importedUserlist.addUser(lines[0], lines[1], lines[2],
 					lines[3], lines[4], lines[6], GG_STATUS_NOT_AVAIL,
 					false, false, true, lines[5]);

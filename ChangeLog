@@ -15,6 +15,7 @@
 * zawsze otwiera siê okno czatu niezale¿nie od statusu u¿ytkownika (chilek)
 * kadu dzia³a w unicode, pliki konfiguracyjne w ISO 8859-2, komunikacja z
   serwerami GG w CP1250 (chilek)
+* drobne poprawki eksportu i importu listy u¿ytkowników do i z pliku (chilek)
 
 +++ wersja 0.3.3-rc4
 * dodatkowe opcje dostêpne w menu podrêcznym u¿ytkownika (blokowanie, ignorowanie,
