@@ -1,6 +1,8 @@
 #ifndef DEBUG_H
 #define DEBUG_H
 
+#include "kadu-config.h"
+
 /*
 	<<< kdebug >>>
 	Wy¶wietla komunikat debuguj±cy na konsoli.
