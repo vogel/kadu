@@ -16,6 +16,7 @@
  ***************************************************************************/
 
 #include <klocale.h>
+#include <sys/types.h>
 #include <qpushbutton.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
