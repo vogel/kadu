@@ -230,39 +230,42 @@ void iso_to_cp(unsigned char *buf) {
 }
 
 unsigned long getMyIP(void) {
-    unsigned long dest, gw;
-    int flags, fd;
-    FILE *file;
-    char buf[256],name[32];
-    bool stopped = false;
-    char *iface;
-    struct ifreq ifr;
-    
-    file = fopen("/proc/net/route", "r");
-    fgets(buf, 256, file);
-    while (!feof(file))
-	if (fgets(buf, 256, file)) {
-	    sscanf(buf, "%s %x %x %x", name, &dest, &gw, &flags);
-	    if (!dest && gw &&(flags & RTF_GATEWAY)) {
-		stopped = true;
-		break;
-		}	    
-	    }
-    fclose(file);
-    
-    if (!stopped)
-	return 0;
+	unsigned long dest, gw;
+	int flags, fd;
+	FILE *file;
+	char buf[256],name[32];
+	bool stopped = false;
+	char *iface;
+	struct ifreq ifr;
 
-    if ((fd = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
-	return 0;
-    
-    strcpy(ifr.ifr_name, name);
-    if (ioctl(fd, SIOCGIFADDR, &ifr) < 0 || ioctl(fd, SIOCGIFFLAGS, &ifr) <0 ) {
-	close(fd);
-	return 0;
-	}
-	
-    return ((struct sockaddr_in *)&ifr.ifr_addr)->sin_addr.s_addr;
+	file = fopen("/proc/net/route", "r");
+	if (!file)
+		return 0;
+
+	fgets(buf, 256, file);
+	while (!feof(file))
+		if (fgets(buf, 256, file)) {
+			sscanf(buf, "%s %x %x %x", name, &dest, &gw, &flags);
+			if (!dest && gw &&(flags & RTF_GATEWAY)) {
+				stopped = true;
+				break;
+				}	    
+	    		}
+	fclose(file);
+
+	if (!stopped)
+		return 0;
+
+	if ((fd = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
+		return 0;
+
+	strcpy(ifr.ifr_name, name);
+	if (ioctl(fd, SIOCGIFADDR, &ifr) < 0 || ioctl(fd, SIOCGIFFLAGS, &ifr) <0 ) {
+		close(fd);
+		return 0;
+		}
+
+	return ((struct sockaddr_in *)&ifr.ifr_addr)->sin_addr.s_addr;
 }
 
 int statusGGToStatusNr(int status) {
@@ -708,6 +711,14 @@ void Kadu::blink() {
 
 /* dcc initials */
 void Kadu::prepareDcc(void) {
+	struct in_addr in;
+	in.s_addr = getMyIP();
+	config.dccip = inet_ntoa(in);
+	if (!in.s_addr) {
+		fprintf(stderr, "KK Cannot determine IP address!\n");
+		return;
+		}
+	fprintf(stderr, "KK My IP address: %s\n", inet_ntoa(in));
 
 	dccsock = gg_dcc_socket_create(config.uin, 0);
 	
@@ -717,11 +728,6 @@ void Kadu::prepareDcc(void) {
 		QMessageBox::warning(kadu, "", i18n("Couldn't create DCC socket.\nDirect connections disabled.") );		
 		return;
 		}
-
-	struct in_addr in;
-	in.s_addr = getMyIP();
-	config.dccip = inet_ntoa(in);
-	fprintf(stderr, "KK My IP address: %s\n", inet_ntoa(in));
 
 	gg_dcc_ip = inet_addr(config.dccip);
 	gg_dcc_port = dccsock->port;
