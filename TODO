@@ -1,4 +1,4 @@
-/** TODO, stan na 11/11/2002. **/
+/** TODO, stan na 14/11/2002. **/
 (TODO mo¿e byæ nieaktualne... zapraszamy na kadu.net/forum)
 
 
@@ -18,12 +18,10 @@
  ! wyeliminowaæ wszystkie b³êdy Xlib
  + dopracowaæ grupy
  + dokoñczyæ rozmowy g³osowe
- + mo¿liwo¶æ wy³±czenia kompilacji kadusms
  + mrugaj±cy tytu³ okna chat (zminimalizowanego te¿) przy doj¶ciu nowej wiad.
  + mrugaj±ca koperta nowej wiadomo¶ci
  + w konfiguracji przy ustawieniach powiadomienia opcja dodania wszystkich
  + autoryzacja proxy
- + dodaæ domy¶lnie strip do makefile'a i opcjê --enable-debug
  ? wykrywanie niewidocznych jako opcja
  + usun±æ z kodów ¼ród³owych poszczególnych modu³ów informacje
    o autorach - wystarczy plik AUTHORS
@@ -37,24 +35,40 @@
  + przycisk TEST w ustawieniach d¼wiêku
  + ograniczenie statusu opisowego do 40 znaków
  + dodaæ kilka numerów ip serwerów gadu
- + instalacja dokumentacji wraz z Kadu, opcja Pomoc w menu
  ! inne pady i halty kadu - patrz forum
  
 
+ TODO dla wersji 0.3.4 (ze wzglêdu na konieczno¶æ modyfikacji configure)
+-------------------------------------------------------------------------
+
+ + mo¿liwo¶æ wy³±czenia kompilacji kadusms
+ + dodaæ domy¶lnie strip do makefile'a i opcjê --enable-debug
+ + instalacja dokumentacji wraz z Kadu, opcja Pomoc w menu
+
+
+ TODO dla wersji 0.4.0
+-----------------------
+
+ Ogólne za³o¿enie:
+   stabilny komunikator z kompletem opcji, wyrównanie poziomu
+   mo¿liwo¶ci do orygina³u + nadliczbowe dodatki
+ 
+ - animowane emotikony
+ + dodaæ profile
+ ? naprawiæ ikonkê w dock menu
+ ? dodaæ wiêcej funkcji do dock menu (szukaj, dodaj, usuñ, odbierz)
+ ? rozbudowa opcji ignorowania o blokowanie
+ ? autostatus, pod³±czenie pod odtwarzacz mp3
+
+ 
  TODO dla wersji pó¼niejszych
 ---------------------------------------- 
 
  + obs³uga libtlen
  + zrobiæ skórki (Licq) 
- - animowane emotikony
- + dodaæ profile
  - fukcja "autopilot'a" czyli generowanie automatycznych wiadomo¶ci
    jako odpowiedzi na czyje¶ zapytania
    (kontynuowanie prac nad jêzykiem skryptowym v-user) 
- ? naprawiæ ikonkê w dock menu
- ? dodaæ wiêcej funkcji do dock menu (szukaj, dodaj, usuñ, odbierz)
  ? przechowywanie maili userów i uruchamianie klienta mail
  - wybór przegl±darki obs³uguj±cej linki
- ? rozbudowa opcji ignorowania o blokowanie
  - mechanizm plugin'ów
- ? autostatus, pod³±czenie pod odtwarzacz mp3
