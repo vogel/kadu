@@ -205,22 +205,32 @@ void DesktopDockWindow::droppedOnDesktop(const QPoint& pos) 	/* nacisniecie przy
 	update();
 	show();
 	QDesktopWidget *fullDesktop = QApplication::desktop();
+	int posX, posY;
 	
 	if (pos.x() > fullDesktop->width() - pixmap()->width())
-		config_file.writeEntry("Desktop Dock", "PositionX", fullDesktop->width() - pixmap()->width());
+		posX = fullDesktop->width() - pixmap()->width();
 	else
-		config_file.writeEntry("Desktop Dock", "PositionX", pos.x());
+		posX = pos.x();
 	
 	if (pos.y() > fullDesktop->height() - pixmap()->height())
-		config_file.writeEntry("Desktop Dock", "PositionY", fullDesktop->height() - pixmap()->height());
+		posY = fullDesktop->height() - pixmap()->height();
 	else	
-		config_file.writeEntry("Desktop Dock", "PositionY", pos.y());
+		posY = pos.y();
+	
+	config_file.writeEntry("Desktop Dock", "PositionX", posX);
+	config_file.writeEntry("Desktop Dock", "PositionY", posY);
+	
+	QSpinBox *horizontalSpin = ConfigDialog::getSpinBox("Desktop Dock", "Horizontal position");
+	if (horizontalSpin != NULL) 
+		horizontalSpin->setValue(posX);
+	QSpinBox *verticalSpin = ConfigDialog::getSpinBox("Desktop Dock", "Vertical position");
+	if (verticalSpin != NULL)
+		verticalSpin->setValue(posY);
 }
 
 void DesktopDockWindow::startMoving()	/* rozpoczynamy wojaze po ekranie */
 {
 	isMoving = true;
-	
 }
 
 void DesktopDockWindow::updateMenu(bool b)
