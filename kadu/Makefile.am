@@ -10,7 +10,6 @@ debug.cpp debug.h \
 emoticons.cpp emoticons.h emoticons_moc.cpp \
 expimp.cpp expimp.h expimp_moc.cpp \
 gadu.cpp gadu.h gadu_moc.cpp \
-hints.cpp hints.h hints_moc.cpp \
 history.cpp history.h history_moc.cpp \
 ignore.cpp ignore.h ignore_moc.cpp \
 kadu.cpp kadu.h kadu_moc.cpp \

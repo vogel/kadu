@@ -110,7 +110,6 @@ debug.cpp debug.h \
 emoticons.cpp emoticons.h emoticons_moc.cpp \
 expimp.cpp expimp.h expimp_moc.cpp \
 gadu.cpp gadu.h gadu_moc.cpp \
-hints.cpp hints.h hints_moc.cpp \
 history.cpp history.h history_moc.cpp \
 ignore.cpp ignore.h ignore_moc.cpp \
 kadu.cpp kadu.h kadu_moc.cpp \
@@ -167,12 +166,11 @@ am_kadu_OBJECTS = about.$(OBJEXT) about_moc.$(OBJEXT) chat.$(OBJEXT) \
 	config_dialog_moc.$(OBJEXT) config_file.$(OBJEXT) \
 	debug.$(OBJEXT) emoticons.$(OBJEXT) emoticons_moc.$(OBJEXT) \
 	expimp.$(OBJEXT) expimp_moc.$(OBJEXT) gadu.$(OBJEXT) \
-	gadu_moc.$(OBJEXT) hints.$(OBJEXT) hints_moc.$(OBJEXT) \
-	history.$(OBJEXT) history_moc.$(OBJEXT) ignore.$(OBJEXT) \
-	ignore_moc.$(OBJEXT) kadu.$(OBJEXT) kadu_moc.$(OBJEXT) \
-	main.$(OBJEXT) message_box.$(OBJEXT) message_box_moc.$(OBJEXT) \
-	misc.$(OBJEXT) misc_moc.$(OBJEXT) modules.$(OBJEXT) \
-	modules_moc.$(OBJEXT) pending_msgs.$(OBJEXT) \
+	gadu_moc.$(OBJEXT) history.$(OBJEXT) history_moc.$(OBJEXT) \
+	ignore.$(OBJEXT) ignore_moc.$(OBJEXT) kadu.$(OBJEXT) \
+	kadu_moc.$(OBJEXT) main.$(OBJEXT) message_box.$(OBJEXT) \
+	message_box_moc.$(OBJEXT) misc.$(OBJEXT) misc_moc.$(OBJEXT) \
+	modules.$(OBJEXT) modules_moc.$(OBJEXT) pending_msgs.$(OBJEXT) \
 	pending_msgs_moc.$(OBJEXT) personal_info.$(OBJEXT) \
 	personal_info_moc.$(OBJEXT) search.$(OBJEXT) \
 	search_moc.$(OBJEXT) status.$(OBJEXT) status_moc.$(OBJEXT) \
@@ -198,8 +196,7 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/emoticons.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/emoticons_moc.Po ./$(DEPDIR)/expimp.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/expimp_moc.Po ./$(DEPDIR)/gadu.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/gadu_moc.Po ./$(DEPDIR)/hints.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/hints_moc.Po ./$(DEPDIR)/history.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/gadu_moc.Po ./$(DEPDIR)/history.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/history_moc.Po ./$(DEPDIR)/ignore.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/ignore_moc.Po ./$(DEPDIR)/kadu.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/kadu_moc.Po ./$(DEPDIR)/main.Po \
@@ -292,8 +289,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/expimp_moc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gadu.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gadu_moc.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hints.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hints_moc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/history.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/history_moc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ignore.Po@am__quote@
