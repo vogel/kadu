@@ -280,7 +280,7 @@ void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)
 
 		if (config.notifysound) {
 			if (lastsoundtime.elapsed() >= 500)
-				playSound(config.soundnotify);
+				playSound(parse(config.soundnotify,userlist.byUin(uin)));
 			lastsoundtime.restart();
 			}
 		

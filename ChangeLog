@@ -3,6 +3,8 @@
 * poprawka, polskie literki powinny ju¿ siê wy¶wietlaæ poprawnie w
   panelu infomacyjnym i tytule okna rozmowy, konferencji przy
   wlasnej konfiguracji (mast3r)
+* parsowanie sie¿ki do pliku odtwarzanego przy powiadomieniu 
+  o dostêpno¶ci u¿ytkownika (mast3r)
 
 +++ wersja 0.3.4-pre1
 * ¶rodkowy guzik myszki wci¶niêty na u¿ytkowniku
