@@ -19,19 +19,26 @@ else
 	KADU_VERSION=`cat ../../../VERSION`
 fi
 
-ITEM_WEBSITE=`cat $1.web`
-if test -z $ITEM_WEBSITE; then
+
+ITEM_WEBSITES=`cat $1.web`
+if test -z $ITEM_WEBSITES; then
 	echo -e "\033[31m!!!\033[0m ERROR: Homepage for $1 $2 is unknown"
 	echo
 	exit 1
 fi
 
-if ! wget -N $ITEM_WEBSITE/kadu-$KADU_VERSION-$1.href; then
+ITEM_HREF=
+for ITEM_WEBSITE in $ITEM_WEBSITES; do
+	if wget -N $ITEM_WEBSITE/kadu-$KADU_VERSION-$1.href; then
+		ITEM_HREF=`cat kadu-$KADU_VERSION-$1.href`
+		break
+	fi
+done
+if test -z $ITEM_HREF; then
 	echo -e "\033[31m!!!\033[0m ERROR: Downloading of $1 $2 href-file failed"
 	echo
 	exit 1
 fi
-ITEM_HREF=`cat kadu-$KADU_VERSION-$1.href`
 
 if ! wget -N $ITEM_HREF; then
 	echo -e "\033[31m!!!\033[0m ERROR: Downloading of $1 $2 package failed"
