@@ -223,8 +223,9 @@ void About::addTab2() {
 	box->setSpacing(10);
 	QTextBrowser *tb_authors = new QTextBrowser(box);
 	tb_authors->setTextFormat(Qt::PlainText);
+	tb_authors->setWordWrap(QTextEdit::NoWrap);
 	tb_authors->setText(loadFile("AUTHORS"));
-	addTab(box, tr("&Authors"));
+	addTab(box, tr("A&uthors"));
 }
 
 void About::addTab3() {
@@ -232,6 +233,7 @@ void About::addTab3() {
 	box->setSpacing(10);
 	QTextBrowser *tb_thanks = new QTextBrowser(box);
 	tb_thanks->setTextFormat(Qt::PlainText);
+	tb_thanks->setWordWrap(QTextEdit::NoWrap);
 	tb_thanks->setText(loadFile("THANKS"));
 	addTab(box, tr("&Thanks"));
 }
@@ -241,6 +243,7 @@ void About::addTab4() {
 	box->setSpacing(10);
 	QTextBrowser *tb_history = new QTextBrowser(box);
 	tb_history->setTextFormat(Qt::PlainText);
+	tb_history->setWordWrap(QTextEdit::NoWrap);
 	tb_history->setText(loadFile("HISTORY"));
 	addTab(box, tr("&History"));
 }
@@ -250,6 +253,7 @@ void About::addTab5() {
 	box->setSpacing(10);
 	QTextBrowser *tb_changelog = new QTextBrowser(box);
 	tb_changelog->setTextFormat(Qt::PlainText);
+	tb_changelog->setWordWrap(QTextEdit::NoWrap);
 	tb_changelog->setText(loadFile("ChangeLog"));
 	addTab(box, tr("&ChangeLog"));
 }
@@ -259,6 +263,7 @@ void About::addTab6() {
 	box->setSpacing(10);
 	QTextBrowser *tb_license = new QTextBrowser(box);
 	tb_license->setTextFormat(Qt::PlainText);
+	tb_license->setWordWrap(QTextEdit::NoWrap);
 	tb_license->setText(loadFile("COPYING"));
 	addTab(box, tr("&License"));
 }
