@@ -11,6 +11,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   <cancel> nie powoduje pustego prefixu zachowana jest opcja wy¶wietlana,
   przy ponownej próbie edycji prefixu pamiêtana jest wersja wcze¶niej
   wybrana (Ron_K)
+* wygodna konfiguracja zachowania dymkow po kliknieciu na nie (michal)
+  
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
   moze powinnismy zmienic nazwe projektu na FastKadu? ;) (adrian)

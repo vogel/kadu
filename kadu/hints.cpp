@@ -115,7 +115,7 @@ bool Hint::eventFilter(QObject *obj, QEvent *ev)
 						return true;
 						break;
 					case Qt::RightButton:
-						emit rightButtonClicked();
+						emit rightButtonClicked(ident);
 						return true;
 						break;
 					case Qt::MidButton:
@@ -242,6 +242,54 @@ void HintManager::oneSecond(void)
 void HintManager::leftButtonSlot(unsigned int id)
 {
 	kdebug("HintManager::leftButtonSlot() %d\n", id);
+	switch(config_file.readNumEntry("Hints", "LeftButton")){
+		case 1:
+			openChat(id);
+			break;
+		case 2:
+			deleteHint(id);
+			break;
+		case 3:
+			deleteAllHints();
+			break;
+	}
+}
+
+void HintManager::rightButtonSlot(unsigned int id)
+{
+	kdebug("HintManager::rightButtonSlot() %d\n", id);
+	switch(config_file.readNumEntry("Hints", "RightButton")){
+		case 1:
+			openChat(id);
+			break;
+		case 2:
+			deleteHint(id);
+			break;
+		case 3:
+			deleteAllHints();
+			break;
+	}
+}
+
+void HintManager::midButtonSlot(unsigned int id)
+{
+	kdebug("HintManager::midButtonSlot() %d\n", id);
+	switch(config_file.readNumEntry("Hints", "MiddleButton")){
+		case 1:
+			openChat(id);
+			break;
+		case 2:
+			deleteHint(id);
+			break;
+		case 3:
+			deleteAllHints();
+			break;
+	}
+}
+
+void HintManager::openChat(unsigned int id)
+{
+	kdebugf();
 	UinsList senders=hints.at(id)->getUins();
 	if(senders.size()!=0){	
 		chat_manager->openPendingMsgs(senders);
@@ -249,10 +297,8 @@ void HintManager::leftButtonSlot(unsigned int id)
 	deleteHint(id);
 }
 
-void HintManager::rightButtonSlot(void)
+void HintManager::deleteAllHints()
 {
-	kdebug("HintManager::rightButtonSlot()\n");
-
 	hint_timer->stop();
 #if QT_VERSION >= 0x030100
 	for (int i = 0; i < hints.count(); i++)
@@ -260,11 +306,7 @@ void HintManager::rightButtonSlot(void)
 #endif
 	hints.clear();
 	hide();
-}
 
-void HintManager::midButtonSlot(unsigned int id)
-{
-	kdebug("HintManager::midButtonSlot() %d\n", id);
 }
 
 void HintManager::addHint(const QString& text, const QPixmap& pixmap,  const QFont &font, const QColor &color, const QColor &bgcolor, unsigned int timeout, UinsList* senders)
@@ -278,7 +320,7 @@ void HintManager::addHint(const QString& text, const QPixmap& pixmap,  const QFo
 		hints.at(i)->setUins(*senders);
 
 	connect(hints.at(i), SIGNAL(leftButtonClicked(unsigned int)), this, SLOT(leftButtonSlot(unsigned int)));
-	connect(hints.at(i), SIGNAL(rightButtonClicked()), this, SLOT(rightButtonSlot()));
+	connect(hints.at(i), SIGNAL(rightButtonClicked(unsigned int)), this, SLOT(rightButtonSlot(unsigned int)));
 	connect(hints.at(i), SIGNAL(midButtonClicked(unsigned int)), this, SLOT(midButtonSlot(unsigned int)));
 	setHint();
 	if (!hint_timer->isActive())
@@ -447,6 +489,10 @@ void HintManager::initModule(void)
 	QT_TRANSLATE_NOOP("@default", "Add description to hint if exists");
 	QT_TRANSLATE_NOOP("@default", "Use custom syntax");
 	QT_TRANSLATE_NOOP("@default", "Hint syntax");
+	QT_TRANSLATE_NOOP("@default", "Mouse buttons");
+	QT_TRANSLATE_NOOP("@default", "Left");
+	QT_TRANSLATE_NOOP("@default", "Right");
+	QT_TRANSLATE_NOOP("@default", "Middle");
 
 /* Zak³adka konfiguracyjna */
 	ConfigDialog::addTab("Hints");
@@ -469,6 +515,12 @@ void HintManager::initModule(void)
 	ConfigDialog::addCheckBox("Hints", "grid-notify-status", "Add description to hint if exists", "NotifyHintDescription", false);
 	ConfigDialog::addCheckBox("Hints", "grid-notify-status", "Use custom syntax", "NotifyHintUseSyntax", false);
 	ConfigDialog::addLineEdit("Hints",  "Notification options", "Hint syntax", "NotifyHintSyntax", "");
+	
+	ConfigDialog::addVGroupBox("Hints", "Hints options", "Mouse buttons");
+	ConfigDialog::addComboBox("Hints", "Mouse buttons", "Left");
+	ConfigDialog::addComboBox("Hints", "Mouse buttons", "Right");
+	ConfigDialog::addComboBox("Hints", "Mouse buttons", "Middle");
+
 	config_file.addVariable("Hints","NewHintUnder",0);
 	config_file.addVariable("Hints","UseUserPosition",false);
 	config_file.addVariable("Hints","HintsPosition",QPoint(0,0));
@@ -487,6 +539,10 @@ void HintManager::initModule(void)
 	config_file.addVariable("Hints","HintNewChat",def_font.family()+","+QString::number(def_font.pointSize())+",#000000,#F0F0F0,10");
 	config_file.addVariable("Hints","HintNewMessage",def_font.family()+","+QString::number(def_font.pointSize())+",#000000,#F0F0F0,10");
 	config_file.addVariable("Hints","HintError",def_font.family()+","+QString::number(def_font.pointSize())+",#000000,#F0F0F0,10");
+
+	config_file.addVariable("Hints", "LeftButton", 1);
+	config_file.addVariable("Hints", "RightButton", 2);
+	config_file.addVariable("Hints", "MiddleButton", 3);
 
 	/* FIXME */
 	HintManagerSlots *hintmanagerslots = new HintManagerSlots(); 
@@ -520,6 +576,9 @@ void HintManagerSlots::onCreateConfigDialog()
 	QLineEdit *e_syntax = ConfigDialog::getLineEdit("Hints", "Hint syntax");
 	QCheckBox *b_showcontent = ConfigDialog::getCheckBox("Hints", "Show message content in hint");
 	QVGroupBox *messagegrp = ConfigDialog::getVGroupBox("Hints", "Message content in hint");
+	QComboBox* cb_left = ConfigDialog::getComboBox("Hints", "Left");
+	QComboBox* cb_right = ConfigDialog::getComboBox("Hints", "Right");
+	QComboBox* cb_middle = ConfigDialog::getComboBox("Hints", "Middle");
 
 	messagegrp->setEnabled(b_showcontent->isChecked());
 	QHBox *h_msg = new QHBox(messagegrp);
@@ -598,6 +657,24 @@ void HintManagerSlots::onCreateConfigDialog()
 	QPushButton *pb_bgcolor = new QPushButton(tr("Change background color"),vb_0);
 	QPushButton *pb_font = new QPushButton(tr("Change font"),vb_0);
 
+	cb_left->insertItem(tr("Nothing"));
+	cb_left->insertItem(tr("Open chat"));
+	cb_left->insertItem(tr("Delete hint"));
+	cb_left->insertItem(tr("Delete all hints"));
+	cb_left->setCurrentItem(config_file.readNumEntry("Hints", "LeftButton"));
+	
+	cb_right->insertItem(tr("Nothing"));
+	cb_right->insertItem(tr("Open chat"));
+	cb_right->insertItem(tr("Delete hint"));
+	cb_right->insertItem(tr("Delete all hints"));
+	cb_right->setCurrentItem(config_file.readNumEntry("Hints", "RightButton"));
+	
+	cb_middle->insertItem(tr("Nothing"));
+	cb_middle->insertItem(tr("Open chat"));
+	cb_middle->insertItem(tr("Delete hint"));
+	cb_middle->insertItem(tr("Delete all hints"));
+	cb_middle->setCurrentItem(config_file.readNumEntry("Hints", "MiddleButton"));
+
 	connect(pb_fontcolor,SIGNAL(clicked()),this,SLOT(changeFontColor()));
 	connect(pb_bgcolor,SIGNAL(clicked()),this,SLOT(changeBackgroundColor()));
 	connect(pb_font,SIGNAL(clicked()),this,SLOT(changeFont()));
@@ -629,6 +706,15 @@ void HintManagerSlots::onDestroyConfigDialog()
 	config_file.writeEntry("Hints", "HintNewChat", hint[9].join(","));
 	config_file.writeEntry("Hints", "HintNewMessage", hint[10].join(","));
 	config_file.writeEntry("Hints", "HintError", hint[11].join(","));
+
+	QComboBox* cb_left = ConfigDialog::getComboBox("Hints", "Left");
+	QComboBox* cb_right = ConfigDialog::getComboBox("Hints", "Right");
+	QComboBox* cb_middle = ConfigDialog::getComboBox("Hints", "Middle");
+	
+	config_file.writeEntry("Hints", "LeftButon", cb_left->currentItem());
+	config_file.writeEntry("Hints", "RightButton", cb_right->currentItem());
+	config_file.writeEntry("Hints", "MiddleButton", cb_middle->currentItem());
+
 
 	if (hintmanager != NULL)
 	{

@@ -47,7 +47,7 @@ class Hint : public QHBoxLayout
 
 	signals:
 		void leftButtonClicked(unsigned int);
-		void rightButtonClicked();
+		void rightButtonClicked(unsigned int);
 		void midButtonClicked(unsigned int);
 };
 
@@ -75,12 +75,14 @@ class HintManager : public QFrame
 	public slots:
 		void loadConfig();
 		void deleteHint(unsigned int);
+		void openChat(unsigned int id);
+		void deleteAllHints();
 
 	private slots:
 		void oneSecond();
 		void setHint();
 		void leftButtonSlot(unsigned int);
-		void rightButtonSlot();
+		void rightButtonSlot(unsigned int);
 		void midButtonSlot(unsigned int);
 };
 
