@@ -619,7 +619,7 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     </message>
     <message>
         <source>Automatically fold links longer than</source>
-        <translation>Automatyczne zawijanie linków dłuzszych niż: </translation>
+        <translation>Automatyczne zawijanie linków dłuższych niż: </translation>
     </message>
     <message>
         <source>Show available users in bold</source>
