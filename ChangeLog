@@ -197,6 +197,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   zostanie wygenerowana dokumentacja api na stronie i kadu powinno ju¿ byæ z
   ni± kompatybilne - modu³opisarze mog± szykowaæ finalne wersje modu³ów (adrian)
 * wszystkie pliki przerobione na nowy mechanizm debugowania (joi)
+* poprawka segfaulta w ConfigDialog::changeTab() (chilek)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

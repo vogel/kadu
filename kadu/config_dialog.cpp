@@ -380,7 +380,7 @@ void ConfigDialog::changeTab(const QString& name)
 
 		tab=findNextTab(tab+1);
 	}
-	kdebugm(KDEBUG_FUNCTION_END, "ConfigDialog::changeTab(): active Tab=%d\n", acttab);
+	kdebugm(KDEBUG_FUNCTION_END, "ConfigDialog::changeTab(): active Tab=%s\n", (const char *)unicode2latin(acttab));
 }
 
 void ConfigDialog::updateConfig(void) 
@@ -900,9 +900,11 @@ int ConfigDialog::findNextTab(int pos)
 	if (pos>=count)
 		pos=count;
 
-	for(; pos<count; pos++)
-		if (RegisteredControls[pos].type == CONFIG_TAB)
+	for(; pos<count; pos++) {
+		if (RegisteredControls[pos].type == CONFIG_TAB) {
 			return pos;
+			}
+		}
 	return -1;
 //	zwraca miejsce znalezienia TAB'a
 //	jesli nie znajdzie to zwraca -1	
