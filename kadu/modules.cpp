@@ -495,6 +495,8 @@ bool ModulesManager::deactivateModule(const QString& module_name, bool force)
 	if(m.lib!=NULL)
 		delete m.lib;
 	Modules.remove(module_name);
+	
+	return true;
 }
 
 void ModulesManager::showDialog()
