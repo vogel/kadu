@@ -17,10 +17,10 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   wiadomo¶ciach mamy pe³n± datê nadania wiadomo¶ci (chilek)
 * informacje o proxy nie powinny ju¿ znikaæ po ponownej aktywacji (lol/mast3r)
 * porz±dki w kodzie, zoptymalizowano commandParser (mast3r)
-* poprawka z zwalnianiem pamieci w chat.cpp (nazgul/mast3r)
+* poprawka ze zwalnianiem pamiêci w chat.cpp (nazgul/mast3r)
 * porz±dki w libgadu: wywali³em katalog win32 - narazie nie jest potrzebny,
-  oraz katalog z cache'm od m4. Usun±³em równie¿ historyczny ChangeLog.1,
-  bo to ponad 100kb a nikt nie bêdzie i tak tego czyta³ (adrian)
+  oraz katalog z cachem m4. Usun±³em równie¿ historyczny ChangeLog.1,
+  bo to ponad 100KB, a nikt nie bêdzie i tak tego czyta³ (adrian)
 * configure: libgadu nie obs³uguje ju¿ --disable-debug. Po konsultacji
   z Wojtkiem rozwi±za³em w inny sposób wy³±czanie debugów libgadu (adrian)
 
