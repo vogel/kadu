@@ -216,6 +216,7 @@ class Chat : public QWidget
 		int seq;
 		KaduSplitter *vertSplit, *horizSplit;
 		int ParagraphSeparator;
+		QDateTime lastMsgTime;
 
 		void pruneWindow();
 
@@ -379,6 +380,7 @@ class ChatSlots :public QObject
 		void chooseEmoticonsStyle(int index);
 		void onPruneChat(bool toggled);
 		void onFoldLink(bool toggled);
+		void onBlockClose(bool toggled);
 		void chooseColor(const char* name, const QColor& color);
 		void chooseFont(const char* name, const QFont& font);
 

@@ -1013,6 +1013,20 @@ QString Chat::convertCharacters(QString edit, bool me)
 void Chat::closeEvent(QCloseEvent* e)
 {
 	kdebugf();
+
+	if (config_file.readBoolEntry("Chat", "ChatCloseTimer"))
+	{
+		unsigned long period = config_file.readUnsignedNumEntry("Chat",
+			"ChatCloseTimerPeriod", 2);
+		if (QDateTime::currentDateTime() < lastMsgTime.addSecs(period))
+		{
+			if (!MessageBox::ask(tr("New message received, close window anyway?")))
+			{
+				e->ignore();
+				return;
+			}
+		}
+	}
 	QWidget::closeEvent(e);
 }
 
@@ -1218,6 +1232,7 @@ void Chat::alertNewMessage()
 	if (config_file.readBoolEntry("Chat","BlinkChatTitle"))
 		if (!isActiveWindow() && !title_timer->isActive())
 			changeTitle();
+	lastMsgTime = QDateTime::currentDateTime();
 }
 
 void Chat::writeMyMessage()
@@ -1544,6 +1559,10 @@ void Chat::initModule()
 	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Flash chat title on new message"), "BlinkChatTitle", true);
 	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Ignore messages from anonymous users"), "IgnoreAnonymousUsers", false);
 	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Receive images during invisibility"), "ReceiveImagesDuringInvisibility", true);
+	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Block window close on new message"), "ChatCloseTimer", false);
+	ConfigDialog::addSpinBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Max time to block window close"),
+			"ChatCloseTimerPeriod", 1, 5, 1, 2);
+
 	ConfigDialog::addSpinBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Max image size"),
 			"MaxImageSize", 0, 255, 5, 20);
 
@@ -1599,6 +1618,7 @@ void Chat::initModule()
 	ConfigDialog::connectSlot("Chat", "Emoticons:", SIGNAL(activated(int)), chatslots, SLOT(chooseEmoticonsStyle(int)));
 	ConfigDialog::connectSlot("Chat", "Automatically prune chat messages", SIGNAL(toggled(bool)), chatslots, SLOT(onPruneChat(bool)));
 	ConfigDialog::connectSlot("Chat", "Automatically fold links", SIGNAL(toggled(bool)), chatslots, SLOT(onFoldLink(bool)));
+	ConfigDialog::connectSlot("Chat", "Block window close on new message", SIGNAL(toggled(bool)), chatslots, SLOT(onBlockClose(bool)));
 
 	ConfigDialog::connectSlot("Look", "", SIGNAL(changed(const char *, const QColor&)), chatslots, SLOT(chooseColor(const char *, const QColor&)), "own_bg_color");
 	ConfigDialog::connectSlot("Look", "", SIGNAL(changed(const char *, const QColor&)), chatslots, SLOT(chooseColor(const char *, const QColor&)), "his_bg_color");
@@ -1818,10 +1838,19 @@ void ChatSlots::onCreateConfigDialog()
 	QToolTip::add(h_fold, tr("URLs longer than this value will be shown truncated to this length"));
 	QToolTip::add(c_foldlink, tr("This will show a long URL as http://www.start...end.com/\nto protect the chat window from a mess"));
 	ConfigDialog::getSpinBox("Chat", "Max image size")->setSuffix(" kB");
+	
+	QSpinBox *blockCloseTime=ConfigDialog::getSpinBox("Chat", "Max time to block window close");
+	blockCloseTime->setEnabled(config_file.readBoolEntry("Chat", "ChatCloseTimer"));
+	blockCloseTime->setSuffix(" s");
 
 	h_fold->setEnabled(c_foldlink->isChecked());
 	updatePreview();
 	kdebugf2();
+}
+
+void ChatSlots::onBlockClose(bool toggled)
+{
+	ConfigDialog::getSpinBox("Chat", "Max time to block window close")->setEnabled(toggled);
 }
 
 void ChatSlots::onPruneChat(bool toggled)
