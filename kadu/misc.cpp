@@ -852,9 +852,13 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 			{
 				case 's':
 					++i;
-					if (!ule.uin())
-						break;
-					pe.str = qApp->translate("@default", ule.status().name());
+					if (ule.uin())
+						pe.str = qApp->translate("@default", ule.status().name());
+					break;
+				case 't':
+					++i;
+					if (ule.uin())
+						pe.str = ule.status().name();
 					break;
 				case 'd':
 					++i;

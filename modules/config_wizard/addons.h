@@ -74,7 +74,7 @@ QString informationPanelSyntax[]=
 		"<table width=\"160px\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr valign=\"top\"><td valign=top width=\"50px\">"
 		"<img width=\"50px\" align=\"left\" valign=\"top\" src=\"{$HOME/fotki/%u.png $HOME/fotki/%u.png}{~$HOME/fotki/%u.png $KADU_SHARE/modules/data/config_wizard/ronk2/tux.png}\"></td>"
 		"<td align=\"right\" width=\"110px\" valign=\"top\"><table width=\"105px\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">"
-		"[<tr valign=\"middle\"><td width=\"5px\"><img  valign=\"middle\" src=\"$KADU_SHARE/modules/data/config_wizard/ronk2/%s.png\"></td>"
+		"[<tr valign=\"middle\"><td width=\"5px\"><img  valign=\"middle\" src=\"$KADU_SHARE/modules/data/config_wizard/ronk2/%t.png\"></td>"
 		"<td widht=\"105px\" align=\"left\"><font size=\"4\" color=\"Purple\" face=\"Flubber\"><B>%u</B></font></td></tr>]"
 		"[<tr valign=\"middle\"><td width=\"5px\"><img valign=\"middle\" src=\"$KADU_SHARE/modules/data/config_wizard/ronk2/mobile.png\"></td>"
 		"<td align=\"left\" width=\"105px\" valign=\"middle\"><font color=\"#555500\">%m</font></td></tr>]"
