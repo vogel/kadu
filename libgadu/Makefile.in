@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.15 2003/02/02 01:10:55 adrian Exp $
+# $Id: Makefile.in,v 1.16 2003/02/13 01:16:34 chilek Exp $
 
 prefix = @prefix@
 datadir = @datadir@
@@ -14,7 +14,7 @@ INSTALL = @INSTALL@
 
 #
 
-all:	libgadu @ekg@ @make_ekgwap@
+all:	configure libgadu @ekg@ @make_ekgwap@
 
 libgadu:
 	cd lib && $(MAKE) all
@@ -50,7 +50,7 @@ install:	all install-libgadu @install_ekg@ @install_ekgwap@
 install-libgadu:
 	cd lib && $(MAKE) install
 
-install-ekg:	install-ekg-data install-ekg-man install-ekgsearch
+install-ekg:	install-ekg-data install-ekg-man
 	cd src && $(MAKE) install
 
 install-ekg-data:
@@ -61,18 +61,21 @@ install-ekg-data:
 install-ekg-man:
 	$(INSTALL) -d $(DESTDIR)$(mandir)/man1
 	$(INSTALL) -m 644 docs/ekg.man.en $(DESTDIR)$(mandir)/man1/ekg.1
-	$(INSTALL) -m 644 docs/ekgsearch.man.en $(DESTDIR)$(mandir)/man1/ekgsearch.1
 	$(INSTALL) -d $(DESTDIR)$(mandir)/pl/man1
 	$(INSTALL) -m 644 docs/ekg.man.pl $(DESTDIR)$(mandir)/pl/man1/ekg.1
-	$(INSTALL) -m 644 docs/ekgsearch.man.pl $(DESTDIR)$(mandir)/pl/man1/ekgsearch.1
-
-install-ekgsearch:
-	$(INSTALL) -d $(DESTDIR)$(bindir)
-	$(INSTALL) -m 755 contrib/ekgsearch $(DESTDIR)$(bindir)
 
 install-ekgwap:
 	$(INSTALL) -d $(DESTDIR)$(bindir)
 	$(INSTALL) -m 755 ekgwap/ekgwapd $(DESTDIR)$(bindir)
+
+install-ekl2:
+	$(INSTALL) -d $(DESTDIR)$(bindir)
+	$(INSTALL) -m 755 contrib/ekl2.pl $(DESTDIR)$(bindir)
+	$(INSTALL) -m 755 contrib/ekl2.sh $(DESTDIR)$(bindir)
+	$(INSTALL) -d $(DESTDIR)$(mandir)/man1
+	$(INSTALL) -m 644 docs/ekl2.man.en $(DESTDIR)$(mandir)/man1/ekl2.1
+	$(INSTALL) -d $(DESTDIR)$(mandir)/pl/man1
+	$(INSTALL) -m 644 docs/ekl2.man.pl $(DESTDIR)$(mandir)/pl/man1/ekl2.1
 
 #
 
@@ -81,10 +84,10 @@ uninstall:	@uninstall_ekg@
 	rm -f $(DESTDIR)$(includedir)/libgadu{,-config,-stdint}.h
 
 uninstall-ekg:
-	rm -f $(DESTDIR)$(bindir)/{ekg,ekgsearch,ekgwapd}
+	rm -f $(DESTDIR)$(bindir)/{ekg,ekgwapd,ekl2.{sh,pl}}
 	rm -f $(DESTDIR)$(libexecdir)/ioctld
 	rm -rf $(DESTDIR)$(datadir)/ekg
-	rm -f $(DESTDIR)$(mandir){/pl,}/man1/ekg{,search}.1
+	rm -f $(DESTDIR)$(mandir){/pl,}/man1/{ekg,ekl2}.1
 
 #
 

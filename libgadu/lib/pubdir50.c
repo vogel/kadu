@@ -1,4 +1,4 @@
-/* $Id: pubdir50.c,v 1.2 2003/02/02 01:07:35 adrian Exp $ */
+/* $Id: pubdir50.c,v 1.3 2003/02/13 01:16:35 chilek Exp $ */
 
 /*
  *  (C) Copyright 2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -29,7 +29,7 @@
 /*
  * gg_pubdir50_new()
  *
- * tworzy now± zmienn± typu gg_search_t.
+ * tworzy now± zmienn± typu gg_pubdir50_t.
  *
  * zaalokowana zmienna lub NULL w przypadku braku pamiêci.
  */
@@ -54,7 +54,7 @@ gg_pubdir50_t gg_pubdir50_new(int type)
 /*
  * gg_pubdir50_add_n()  // funkcja wewnêtrzna
  *
- * funkcja dodaje pole do zapytania lub odpowiedzi.
+ * funkcja dodaje lub zastêpuje istniej±ce pole do zapytania lub odpowiedzi.
  *
  *  - req - wska¼nik opisu zapytania,
  *  - num - numer wyniku (0 dla zapytania),
@@ -67,17 +67,28 @@ int gg_pubdir50_add_n(gg_pubdir50_t req, int num, const char *field, const char 
 {
 	struct gg_pubdir50_entry *tmp = NULL, *entry;
 	char *dupfield, *dupvalue;
+	int i;
 
 	gg_debug(GG_DEBUG_FUNCTION, "** gg_pubdir50_add_n(%p, %d, \"%s\", \"%s\");\n", req, num, field, value);
 
-	if (!(dupfield = strdup(field))) {
+	if (!(dupvalue = strdup(value))) {
 		gg_debug(GG_DEBUG_MISC, "// gg_pubdir50_add_n() out of memory\n");
 		return -1;
 	}
 
-	if (!(dupvalue = strdup(value))) {
+	for (i = 0; i < req->entries_count; i++) {
+		if (req->entries[i].num != num || strcmp(req->entries[i].field, field))
+			continue;
+
+		free(req->entries[i].value);
+		req->entries[i].value = dupvalue;
+
+		return 0;
+	}
+		
+	if (!(dupfield = strdup(field))) {
 		gg_debug(GG_DEBUG_MISC, "// gg_pubdir50_add_n() out of memory\n");
-		free(dupfield);
+		free(dupvalue);
 		return -1;
 	}
 
@@ -131,7 +142,7 @@ int gg_pubdir50_seq_set(gg_pubdir50_t req, uint32_t seq)
 	gg_debug(GG_DEBUG_FUNCTION, "** gg_pubdir50_seq_set(%p, %d);\n", req, seq);
 	
 	if (!req) {
-		gg_debug(GG_DEBUG_MISC, "// gg_pubdir50() invalid arguments\n");
+		gg_debug(GG_DEBUG_MISC, "// gg_pubdir50_seq_set() invalid arguments\n");
 		errno = EFAULT;
 		return -1;
 	}
@@ -161,6 +172,7 @@ void gg_pubdir50_free(gg_pubdir50_t s)
 	}
 
 	free(s->entries);
+	free(s);
 }
 
 /*
@@ -211,7 +223,8 @@ uint32_t gg_pubdir50(struct gg_session *sess, gg_pubdir50_t req)
 	r = (struct gg_pubdir50_request*) buf;
 	res = time(NULL);
 	r->type = req->type;
-	r->seq = (req->seq) ? fix32(req->seq) : fix32(time(NULL));
+	r->seq = (req->seq) ? gg_fix32(req->seq) : gg_fix32(time(NULL));
+	req->seq = gg_fix32(r->seq);
 
 	for (i = 0, p = buf + 5; i < req->entries_count; i++) {
 		if (req->entries[i].num)
@@ -271,7 +284,7 @@ int gg_pubdir50_handle_reply(struct gg_event *e, const char *packet, int length)
 
 	e->event.pubdir50 = res;
 
-	res->seq = fix32(r->seq);
+	res->seq = gg_fix32(r->seq);
 
 	switch (res->type) {
 		case GG_PUBDIR50_READ:

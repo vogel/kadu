@@ -1,4 +1,4 @@
-/* $Id: pubdir.c,v 1.16 2003/01/14 23:44:01 chilek Exp $ */
+/* $Id: pubdir.c,v 1.17 2003/02/13 01:16:35 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -608,7 +608,7 @@ void gg_pubdir_free(struct gg_http *h)
  * 
  *  - first_name - imiê
  *  - last_name - nazwisko
- *  - nickname - pseudownim
+ *  - nickname - pseudonim
  *  - email - adres e-mail
  *  - born - data urodzenia
  *  - gender - p³eæ (GG_GENDER_UNKNOWN, GG_GENDER_MALE, GG_GENDER_FEMALE)

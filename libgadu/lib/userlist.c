@@ -1,4 +1,4 @@
-/* $Id: userlist.c,v 1.15 2003/01/12 22:56:43 chilek Exp $ */
+/* $Id: userlist.c,v 1.16 2003/02/13 01:16:35 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>

@@ -1,27 +1,41 @@
 /*
- * (C) Copyright 2002 Wojtek Kaniewski <wojtekka@irc.pl>
- * Released under terms of GPL v2.
+ *  Copyright (c) 2002-2003 Wojtek Kaniewski <wojtekka@irc.pl>
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License Version
+ *  2.1 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ * 
+ *  You should have received a copy of the GNU Lesser General Public
+ *  License along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
 #include <stdlib.h>
 #include <dirent.h>
-#include <string.h>
+#ifndef _AIX
+#  include <string.h>
+#endif
 #include <errno.h>
 
-int alphasort(const struct dirent **a, const struct dirent **b)
+int alphasort(const void *__a, const void *__b)
 {
+	struct dirent **a = (struct dirent**) __a, **b = (struct dirent**) __b;
+
 	if (!a || !b || !*a || !*b || !(*a)->d_name || !(*b)->d_name)
 		return 0;
 
 	return strcmp((*a)->d_name, (*b)->d_name);
 }
 
-typedef int (*qsort_compar_t)(const void *a, const void *b);
-
-int scandir(const char *path, struct dirent ***namelist, int (*select)(const struct dirent *), int (*compar)(const struct dirent **, const struct dirent **))
+int scandir(const char *path, struct dirent ***namelist, int (*select)(const struct dirent *), int (*compar)(const void *a, const void *b))
 {
-	struct dirent **res, *tmp;
 	int i, count = 0, my_errno = 0;
+	struct dirent **res, *tmp;
 	DIR *dir;
 
 	if (!(dir = opendir(path)))
@@ -33,31 +47,42 @@ int scandir(const char *path, struct dirent ***namelist, int (*select)(const str
 
 	rewinddir(dir);
 
-	if (!(res = malloc(count * sizeof(struct dirent*)))) {
-		my_errno = ENOMEM;
+	res = calloc(count, sizeof(struct dirent*));
+
+	if (!res) {
+		my_errno = errno;
 		goto cleanup;
 	}
 
 	memset(res, 0, count * sizeof(struct dirent*));
 
-	for (i = 0; i < count; i++) {
-		if (!(tmp = readdir(dir))) {
+	for (i = 0; i < count; ) {
+		tmp = readdir(dir);
+
+		if (!tmp) {
 			my_errno = errno;
 			goto cleanup;
 		}
 
-		if (!(res[i] = malloc(sizeof(struct dirent)))) {
+		if (select && !(*select)(tmp))
+			continue;
+
+		res[i] = malloc(sizeof(struct dirent));
+
+		if (!res[i]) {
 			my_errno = ENOMEM;
 			goto cleanup;
 		}
 
-		memcpy(res[i], dir, sizeof(struct dirent));
+		memcpy(res[i], tmp, sizeof(struct dirent));
+
+		i++;
 	}
 
 	closedir(dir);
 
 	if (compar)
-		qsort(res, count, sizeof(struct dirent*), (qsort_compar_t) compar);
+		qsort(res, count, sizeof(struct dirent*), compar);
 
 	*namelist = res;
 

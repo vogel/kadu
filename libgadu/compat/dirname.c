@@ -1,51 +1,67 @@
-
 /*
- * Copyright (c) 1997 Todd C. Miller <Todd.Miller@courtesan.com>
- * All rights reserved.
+ *  Copyright (c) 2003 Piotr Domagalski <szalik@szalik.net>
  *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License Version
+ *  2.1 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ * 
+ *  You should have received a copy of the GNU Lesser General Public
+ *  License along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+#include <stdio.h>
+#ifndef _AIX
+#  include <string.h>
+#endif
+#include <limits.h>
 #include <errno.h>
-#include <string.h>
-#include <sys/param.h>
 
-char *
-dirname(path)
-	const char *path;
+#ifndef PATH_MAX
+#  define PATH_MAX _POSIX_PATH_MAX
+#endif
+
+char *dirname(const char *path)
 {
-	static char bname[MAXPATHLEN];
-	register const char *endp;
+	static char buf[PATH_MAX];
+	register const char *ptr;
 
-	/* Empty or NULL string gets treated as "." */
-	if (path == NULL || *path == '\0') {
-		(void)strcpy(bname, ".");
-		return(bname);
+	if (!path || !*path || !strchr(path, '/')) {
+		strncpy(buf, ".", sizeof(buf) - 1);
+		buf[sizeof(buf) - 1] = 0;
+		return buf;
 	}
 
-	/* Strip trailing slashes */
-	endp = path + strlen(path) - 1;
-	while (endp > path && *endp == '/')
-		endp--;
+	for (ptr = path + strlen(path) - 1; ptr > path; ptr--)
+		if (*ptr != '/')
+			break;
 
-	/* Find the start of the dir */
-	while (endp > path && *endp != '/')
-		endp--;
+	for (; ptr > path; ptr--)
+		if (*ptr == '/')
+			break;
 
-	/* Either the dir is "/" or there are no slashes */
-	if (endp == path) {
-		(void)strcpy(bname, *endp == '/' ? "/" : ".");
-		return(bname);
-	} else {
-		do {
-			endp--;
-		} while (endp > path && *endp == '/');
-	}
+	if (ptr > path) {
 
-	if (endp - path + 2 > sizeof(bname)) {
-		errno = ENAMETOOLONG;
-		return(NULL);
-	}
-	(void)strncpy(bname, path, endp - path + 1);
-	bname[endp - path + 1] = '\0';
-	return(bname);
+		for (; ptr > path; ptr--)
+			if (*ptr != '/')
+				break;
+
+		if (ptr - path + 2 > sizeof(buf)) {
+			errno = ENAMETOOLONG;
+			return NULL;
+		}
+
+		strncat(buf, path, ptr - path + 1);
+
+	} else
+		strncat(buf, "/", sizeof(buf) - 1);
+
+	buf[sizeof(buf) - 1] = 0;
+
+	return buf;
 }

@@ -1,4 +1,4 @@
-/* $Id: libgadu.h,v 1.26 2003/02/02 01:38:53 chilek Exp $ */
+/* $Id: libgadu.h,v 1.27 2003/02/13 01:16:35 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -61,7 +61,10 @@ struct gg_common {
 };
 
 /*
- * struktura opisuj±ca dan± sesjê. tworzona przez gg_login().
+ * struct gg_session
+ *
+ * struktura opisuj±ca dan± sesjê. tworzona przez gg_login(), zwalniana
+ * przez gg_free_session().
  */
 struct gg_session {
 	gg_common_head(struct gg_session)
@@ -107,7 +110,10 @@ struct gg_session {
 };
 
 /*
- * ogólna struktura opisuj±ca stan wszystkich operacji http.
+ * struct gg_http
+ * 
+ * ogólna struktura opisuj±ca stan wszystkich operacji http. tworzona
+ * przez gg_http_connect(), zwalniana przez gg_http_free().
  */
 struct gg_http {
 	gg_common_head(struct gg_http)
@@ -124,7 +130,7 @@ struct gg_http {
 
         void *data;             /* dane danej operacji http */
 
-	char *user_data;	/* dane u¿ytkownika */
+	char *user_data;	/* dane u¿ytkownika, nie s± zwalniane przez gg_http_free() */
 
 	void *resolver;		/* wska¼nik na informacje resolvera */
 };
@@ -132,6 +138,8 @@ struct gg_http {
 #define GG_MAX_PATH 276
 
 /*
+ * struct gg_file_info
+ * 
  * odpowiednik windowsowej struktury WIN32_FIND_DATA niezbêdnej przy
  * wysy³aniu plików.
  */
@@ -148,7 +156,10 @@ struct gg_file_info {
 };
 
 /*
+ * struct gg_dcc
+ * 
  * struktura opisuj±ca nas³uchuj±ce gniazdo po³±czeñ miêdzy klientami.
+ * tworzona przez gg_dcc_socket_create(), zwalniana przez gg_dcc_free().
  */
 struct gg_dcc {
 	gg_common_head(struct gg_dcc)
@@ -174,6 +185,8 @@ struct gg_dcc {
 };
 
 /*
+ * enum gg_session_enum
+ *
  * rodzaje sesji.
  */
 enum gg_session_enum {
@@ -204,6 +217,8 @@ enum gg_session_enum {
 };
 
 /*
+ * enum gg_state_enum
+ *
  * ró¿ne stany asynchronicznej maszynki.
  */
 enum gg_state_enum {
@@ -263,7 +278,7 @@ enum gg_state_enum {
 #define GG_STATE_FINISHED GG_STATE_DONE
 
 /*
- * gg_check_t
+ * enum gg_check_t
  *
  * informuje, co proces klienta powinien sprawdziæ na deskryptorze danego
  * po³±czenia.
@@ -277,9 +292,10 @@ enum gg_check_t {
 #define gg_check_enum gg_check_t	/* dla kompatybilno¶ci */
 
 /*
- * parametry gg_login(). przenios³em do struktury, ¿eby unikn±æ cyrków
- * z ci±g³ymi zmianami api, gdy chcemy co¶ dodatkowego powiedzieæ tej
- * funkcji.
+ * struct gg_login_params
+ *
+ * parametry gg_login(). przeniesiono do struktury, ¿eby unikn±æ problemów
+ * z ci±g³ymi zmianami api, gdy dodano co¶ nowego do protoko³u.
  */
 struct gg_login_params {
 	uin_t uin;			/* numerek */
@@ -312,6 +328,11 @@ int gg_send_message_confer_richtext(struct gg_session *sess, int msgclass, int r
 int gg_send_message_ctcp(struct gg_session *sess, int msgclass, uin_t recipient, const unsigned char *message, int message_len);
 int gg_ping(struct gg_session *sess);
 
+/*
+ * enum gg_event_t
+ *
+ * rodzaje zdarzeñ.
+ */
 enum gg_event_t {
 	GG_EVENT_NONE = 0,		/* nic siê nie wydarzy³o */
 	GG_EVENT_MSG,			/* otrzymano wiadomo¶æ */
@@ -342,7 +363,7 @@ enum gg_event_t {
 #define GG_EVENT_SEARCH50_REPLY GG_EVENT_PUBDIR50_SEARCH_REPLY
 
 /*
- * gg_failure_t
+ * enum gg_failure_t
  *
  * okre¶la powód nieudanego po³±czenia.
  */
@@ -358,7 +379,7 @@ enum gg_failure_t {
 };
 
 /*
- * gg_error_t
+ * enum gg_error_t
  *
  * okre¶la rodzaj b³êdu wywo³anego przez dan± operacjê. nie zawiera
  * przesadnie szczegó³owych informacji o powodzie b³êdu, by nie komplikowaæ
@@ -400,6 +421,8 @@ struct gg_pubdir50_s {
 typedef struct gg_pubdir50_s *gg_pubdir50_t;
 
 /*
+ * struct gg_event
+ *
  * struktura opisuj±ca rodzaj zdarzenia. wychodzi z gg_watch_fd() lub
  * z gg_dcc_watch_fd()
  */
@@ -472,57 +495,43 @@ void gg_http_free(struct gg_http *h);
 #define gg_free_http gg_http_free
 
 /*
- * struktura opisuj±ca kryteria wyszukiwania. argument gg_search().
+ * struktury opisuj±ca kryteria wyszukiwania dla gg_search(). nieaktualne,
+ * zast±pione przez gg_pubdir50_t. pozostawiono je dla zachowania ABI.
  */
 struct gg_search_request {
-	int active;		/* czy ma szukaæ tylko aktywnych? */
-	unsigned int start;	/* od którego wyniku pokazywaæ? biblioteka
-				   bierze pod uwagê 31 dolnych bitów. */
-
-	/* mode 0 */
-	char *nickname;		/* pseudonim */
-	char *first_name;	/* imiê */
-	char *last_name;	/* nazwisko */
-	char *city;		/* miasto */
-	int gender;		/* p³eæ */
-	int min_birth;		/* urodzony od roku... */
-	int max_birth;		/* urodzony do roku... */
-	
-	/* mode 1 */
-	char *email;		/* adres e-mail */
-
-	/* mode 2 */
-	char *phone;		/* numer telefonu */
-	
-	/* mode 3 */
-	uin_t uin;		/* numerek */
+	int active;
+	unsigned int start;
+	char *nickname;
+	char *first_name;
+	char *last_name;
+	char *city;
+	int gender;
+	int min_birth;
+	int max_birth;
+	char *email;
+	char *phone;
+	uin_t uin;
 };
 
-/*
- * struktura opisuj±ca rezultat wyszukiwania. pole gg_http.
- */
 struct gg_search {
-	int count;				/* ilo¶æ znalezionych */
-	struct gg_search_result *results;	/* tabelka z nimi */
+	int count;
+	struct gg_search_result *results;
 };
 
-/*
- * pojedynczy rezultat wyszukiwania.
- */
 struct gg_search_result {
-	uin_t uin;		/* numerek */
-	char *first_name;	/* imiê */
-	char *last_name;	/* nazwisko */
-	char *nickname;		/* pseudonim */
-	int born;		/* rok urodzenia */
-	int gender;		/* p³eæ */
-	char *city;		/* miasto */
-	int active;		/* czy jest aktywny */
+	uin_t uin;
+	char *first_name;
+	char *last_name;
+	char *nickname;
+	int born;
+	int gender;
+	char *city;
+	int active;
 };
 
-#define GG_GENDER_NONE 0	/* nie podano lub bez znaczenia */
-#define GG_GENDER_FEMALE 1	/* kobieta */
-#define GG_GENDER_MALE 2	/* mê¿czyzna */
+#define GG_GENDER_NONE 0
+#define GG_GENDER_FEMALE 1
+#define GG_GENDER_MALE 2
 
 /*
  * funkcje wyszukiwania.
@@ -575,6 +584,8 @@ void gg_pubdir50_free(gg_pubdir50_t res);
 int gg_pubdir50_handle_reply(struct gg_event *e, const char *packet, int length);
 
 /*
+ * struct gg_pubdir
+ *
  * operacje na katalogu publicznym.
  */
 struct gg_pubdir {
@@ -606,7 +617,11 @@ struct gg_http *gg_change_passwd2(uin_t uin, const char *passwd, const char *new
 #define gg_change_passwd_free gg_pubdir_free
 #define gg_free_change_passwd gg_pubdir_free
 
-/* zmiana informacji w katalogu publicznym */
+/*
+ * struct gg_change_info_request
+ * 
+ * opis ¿±dania zmiany informacji w katalogu publicznym.
+ */
 struct gg_change_info_request {
 	char *first_name;	/* imiê */
 	char *last_name;	/* nazwisko */
@@ -639,8 +654,8 @@ void gg_userlist_put_free(struct gg_http *f);
 /*
  * funkcje dotycz±ce komunikacji miêdzy klientami.
  */
-extern int gg_dcc_port;
-extern unsigned long gg_dcc_ip;
+extern int gg_dcc_port;			/* port, na którym nas³uchuje klient */
+extern unsigned long gg_dcc_ip;		/* adres, na którym nas³uchuje klient */
 
 int gg_dcc_request(struct gg_session *sess, uin_t uin);
 
@@ -667,8 +682,7 @@ void gg_dcc_free(struct gg_dcc *c);
  * niestety w miarê przybywania wpisów `gg_debug(...)' nie chcia³o mi
  * siê ustawiaæ odpowiednich leveli, wiêc wiêkszo¶æ sz³a do _MISC.
  */
-
-extern int gg_debug_level;
+extern int gg_debug_level;	/* poziom debugowania. mapa bitowa sta³ych GG_DEBUG_* */
 
 #define GG_DEBUG_NET 1
 #define GG_DEBUG_TRAFFIC 2
@@ -687,12 +701,12 @@ const char *gg_libgadu_version(void);
 /*
  * konfiguracja http proxy.
  */
-extern int gg_proxy_enabled;
-extern char *gg_proxy_host;
-extern int gg_proxy_port;
-extern char *gg_proxy_username;
-extern char *gg_proxy_password;
-extern int gg_proxy_http_only;
+extern int gg_proxy_enabled;		/* w³±cza obs³ugê proxy */
+extern char *gg_proxy_host;		/* okre¶la adres serwera proxy */
+extern int gg_proxy_port;		/* okre¶la port serwera proxy */
+extern char *gg_proxy_username;		/* okre¶la nazwê u¿ytkownika przy autoryzacji serwera proxy */
+extern char *gg_proxy_password;		/* okre¶la has³o u¿ytkownika przy autoryzacji serwera proxy */
+extern int gg_proxy_http_only;		/* w³±cza obs³ugê proxy wy³±cznie dla us³ug HTTP */
 
 /*
  * -------------------------------------------------------------------------
@@ -748,11 +762,11 @@ char *gg_base64_decode(const char *buf);
 #define GG_HTTPS_PORT 443
 #define GG_HTTP_USERAGENT "Mozilla/4.7 [en] (Win98; I)"
 
-#define GG_DEFAULT_CLIENT_VERSION "5.0.3.100"
-#define GG_DEFAULT_PROTOCOL_VERSION 0x19
+#define GG_DEFAULT_CLIENT_VERSION "4.9.3.62"
+#define GG_DEFAULT_PROTOCOL_VERSION 0x18
 #define GG_DEFAULT_TIMEOUT 30
 #define GG_HAS_AUDIO_MASK 0x40000000
-#define GG_LIBGADU_VERSION "20030201"
+#define GG_LIBGADU_VERSION "20030212"
 
 #define GG_DEFAULT_DCC_PORT 1550
 

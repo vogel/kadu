@@ -1,4 +1,4 @@
-/* $Id: libgadu.c,v 1.17 2003/01/12 22:56:42 chilek Exp $ */
+/* $Id: libgadu.c,v 1.18 2003/02/13 01:16:35 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -61,13 +61,17 @@ static char rcsid[]
 #ifdef __GNUC__
 __attribute__ ((unused))
 #endif
-= "$Id: libgadu.c,v 1.17 2003/01/12 22:56:42 chilek Exp $";
+= "$Id: libgadu.c,v 1.18 2003/02/13 01:16:35 chilek Exp $";
 #endif 
 
 /*
  * gg_libgadu_version()
  *
  * zwraca wersjê libgadu.
+ *
+ *  - brak
+ *
+ * wersja libgadu.
  */
 const char *gg_libgadu_version()
 {
@@ -369,8 +373,8 @@ void *gg_recv_packet(struct gg_session *sess)
 			}
 		}
 
-		h.type = fix32(h.type);
-		h.length = fix32(h.length);
+		h.type = gg_fix32(h.type);
+		h.length = gg_fix32(h.length);
 	} else {
 		memcpy(&h, sess->recv_buf, sizeof(h));
 	}
@@ -474,8 +478,8 @@ int gg_send_packet(int sock, int type, ...)
 	}
 
 	h = (struct gg_header*) tmp;
-	h->type = fix32(type);
-	h->length = fix32(0);
+	h->type = gg_fix32(type);
+	h->length = gg_fix32(0);
 
 	va_start(ap, type);
 
@@ -501,13 +505,13 @@ int gg_send_packet(int sock, int type, ...)
 	va_end(ap);
 
 	h = (struct gg_header*) tmp;
-	h->length = fix32(tmp_length);
+	h->length = gg_fix32(tmp_length);
 
 	if ((gg_debug_level & GG_DEBUG_DUMP)) {
                 int i;
 		
-                gg_debug(GG_DEBUG_DUMP, "// gg_send_packet()", fix32(h->type));
-                for (i = 0; i < sizeof(struct gg_header) + fix32(h->length); i++)
+                gg_debug(GG_DEBUG_DUMP, "// gg_send_packet()", gg_fix32(h->type));
+                for (i = 0; i < sizeof(struct gg_header) + gg_fix32(h->length); i++)
                         gg_debug(GG_DEBUG_DUMP, " %.2x", (unsigned char) tmp[i]);
                 gg_debug(GG_DEBUG_DUMP, "\n");
         }
@@ -549,7 +553,7 @@ static int gg_session_callback(struct gg_session *s)
  * UWAGA! program musi obs³u¿yæ SIGCHLD, je¶li ³±czy siê asynchronicznie,
  * ¿eby poprawnie zamkn±æ proces resolvera.
  *
- *  - p - struktura opisuj±ca pocz±tkowy stan. wymagane pola: uin,
+ *  - p - struktura opisuj±ca pocz±tkowy stan. wymagane pola: uin, 
  *    password
  *
  * w przypadku b³êdu NULL, je¶li idzie dobrze (async) albo posz³o
@@ -587,6 +591,11 @@ struct gg_session *gg_login(const struct gg_login_params *p)
 		goto fail;
 	}
 
+	if (p->status_descr && !(sess->initial_descr = strdup(p->status_descr))) {
+		gg_debug(GG_DEBUG_MISC, "// gg_login() not enough memory for status\n");
+		goto fail;
+	}
+
 	sess->uin = p->uin;
 	sess->state = GG_STATE_RESOLVING;
 	sess->check = GG_CHECK_READ;
@@ -594,7 +603,6 @@ struct gg_session *gg_login(const struct gg_login_params *p)
 	sess->async = p->async;
         sess->type = GG_SESSION_GG;
 	sess->initial_status = p->status;
-	sess->initial_descr = p->status_descr;
 	sess->callback = gg_session_callback;
 	sess->destroy = gg_free_session;
 	sess->port = (p->server_port) ? p->server_port : GG_DEFAULT_PORT;
@@ -688,7 +696,14 @@ struct gg_session *gg_login(const struct gg_login_params *p)
 	return sess;
 
 fail:
-	free(sess);
+	if (sess) {
+		if (sess->password)
+			free(sess->password);
+		if (sess->initial_descr)
+			free(sess->initial_descr);
+		free(sess);
+	}
+	
 	return NULL;
 }
 
@@ -709,6 +724,9 @@ void gg_free_session(struct gg_session *sess)
 	if (sess->password)
 		free(sess->password);
 	
+	if (sess->initial_descr)
+		free(sess->initial_descr);
+
 	if (sess->client_version)
 		free(sess->client_version);
 
@@ -744,7 +762,7 @@ int gg_change_status(struct gg_session *sess, int status)
 		return -1;
 	}
 
-	p.status = fix32(status);
+	p.status = gg_fix32(status);
 
 	sess->status = status;
 
@@ -778,7 +796,7 @@ int gg_change_status_descr(struct gg_session *sess, int status, const char *desc
 		return -1;
 	}
 
-	p.status = fix32(status);
+	p.status = gg_fix32(status);
 
 	sess->status = status;
 
@@ -814,11 +832,11 @@ int gg_change_status_descr_time(struct gg_session *sess, int status, const char 
 		return -1;
 	}
 
-	p.status = fix32(status);
+	p.status = gg_fix32(status);
 
 	sess->status = status;
 
-	newtime = fix32(time);
+	newtime = gg_fix32(time);
 
 
 	return gg_send_packet(sess->fd, GG_NEW_STATUS, &p, sizeof(p), descr, (strlen(descr) > GG_STATUS_DESCR_MAXSIZE) ? GG_STATUS_DESCR_MAXSIZE : strlen(descr), &newtime, sizeof(newtime), NULL);
@@ -878,9 +896,9 @@ int gg_send_message_ctcp(struct gg_session *sess, int msgclass, uin_t recipient,
 		return -1;
 	}
 
-	s.recipient = fix32(recipient);
-	s.seq = fix32(0);
-	s.msgclass = fix32(msgclass);
+	s.recipient = gg_fix32(recipient);
+	s.seq = gg_fix32(0);
+	s.msgclass = gg_fix32(msgclass);
 	
 	return gg_send_packet(sess->fd, GG_SEND_MSG, &s, sizeof(s), message, message_len, NULL);
 }
@@ -889,7 +907,7 @@ int gg_send_message_ctcp(struct gg_session *sess, int msgclass, uin_t recipient,
  * gg_send_message()
  *
  * wysy³a wiadomo¶æ do innego u¿ytkownika. zwraca losowy numer
- * sekwencyjny, który mo¿na olaæ albo wykorzystaæ do potwierdzenia.
+ * sekwencyjny, który mo¿na zignorowaæ albo wykorzystaæ do potwierdzenia.
  *
  *  - sess - opis sesji
  *  - msgclass - rodzaj wiadomo¶ci
@@ -909,7 +927,7 @@ int gg_send_message(struct gg_session *sess, int msgclass, uin_t recipient, cons
  * gg_send_message_richtext()
  *
  * wysy³a kolorow± wiadomo¶æ do innego u¿ytkownika. zwraca losowy numer
- * sekwencyjny, który mo¿na olaæ albo wykorzystaæ do potwierdzenia.
+ * sekwencyjny, który mo¿na zignorowaæ albo wykorzystaæ do potwierdzenia.
  *
  *  - sess - opis sesji
  *  - msgclass - rodzaj wiadomo¶ci
@@ -936,24 +954,24 @@ int gg_send_message_richtext(struct gg_session *sess, int msgclass, uin_t recipi
 		return -1;
 	}
 
-	s.recipient = fix32(recipient);
+	s.recipient = gg_fix32(recipient);
 	if (!sess->seq)
 		sess->seq = 0x01740000 | (rand() & 0xffff);
-	s.seq = fix32(sess->seq);
-	s.msgclass = fix32(msgclass);
+	s.seq = gg_fix32(sess->seq);
+	s.msgclass = gg_fix32(msgclass);
 	sess->seq += (rand() % 0x300) + 0x300;
 	
 	if (gg_send_packet(sess->fd, GG_SEND_MSG, &s, sizeof(s), message, strlen(message) + 1, format, formatlen, NULL) == -1)
 		return -1;
 
-	return fix32(s.seq);
+	return gg_fix32(s.seq);
 }
 
 /*
  * gg_send_message_confer()
  *
  * wysy³a wiadomo¶æ do kilku u¿ytkownikow (konferencja). zwraca losowy numer
- * sekwencyjny, który mo¿na olaæ albo wykorzystaæ do potwierdzenia.
+ * sekwencyjny, który mo¿na zignorowaæ albo wykorzystaæ do potwierdzenia.
  *
  *  - sess - opis sesji
  *  - msgclass - rodzaj wiadomo¶ci
@@ -1007,21 +1025,21 @@ int gg_send_message_confer_richtext(struct gg_session *sess, int msgclass, int r
 	}
 
 	r.flag = 0x01;
-	r.count = fix32(recipients_count - 1);
+	r.count = gg_fix32(recipients_count - 1);
 	
 	if (!sess->seq)
 		sess->seq = 0x01740000 | (rand() & 0xffff);
-	s.seq = fix32(sess->seq);
-	s.msgclass = fix32(msgclass);
+	s.seq = gg_fix32(sess->seq);
+	s.msgclass = gg_fix32(msgclass);
 
 	recps = malloc(sizeof(uin_t) * recipients_count);
 	for (i = 0; i < recipients_count; i++) {
 	 
-		s.recipient = fix32(recipients[i]);
+		s.recipient = gg_fix32(recipients[i]);
 		
 		for (j = 0, k = 0; j < recipients_count; j++)
 			if (recipients[j] != s.recipient) {
-				recps[k] = fix32(recipients[j]);
+				recps[k] = gg_fix32(recipients[j]);
 				k++;
 			}
 				
@@ -1036,7 +1054,7 @@ int gg_send_message_confer_richtext(struct gg_session *sess, int msgclass, int r
 
 	free(recps);
 	
-	return fix32(s.seq);
+	return gg_fix32(s.seq);
 }
 
 /*
@@ -1104,7 +1122,7 @@ int gg_notify_ex(struct gg_session *sess, uin_t *userlist, char *types, int coun
 		return -1;
 	
 	for (u = userlist, t = types, i = 0; i < count; u++, t++, i++) { 
-		n[i].uin = fix32(*u);
+		n[i].uin = gg_fix32(*u);
 		n[i].dunno1 = *t;
 	}
 	
@@ -1153,7 +1171,7 @@ int gg_notify(struct gg_session *sess, uin_t *userlist, int count)
 		return -1;
 	
 	for (u = userlist, i = 0; i < count; u++, i++) { 
-		n[i].uin = fix32(*u);
+		n[i].uin = gg_fix32(*u);
 		n[i].dunno1 = 3;
 	}
 	
@@ -1193,7 +1211,7 @@ int gg_add_notify_ex(struct gg_session *sess, uin_t uin, char type)
 		return -1;
 	}
 	
-	a.uin = fix32(uin);
+	a.uin = gg_fix32(uin);
 	a.dunno1 = type;
 	
 	return gg_send_packet(sess->fd, GG_ADD_NOTIFY, &a, sizeof(a), NULL);
@@ -1217,7 +1235,7 @@ int gg_add_notify(struct gg_session *sess, uin_t uin)
 /*
  * gg_remove_notify_ex()
  *
- * usuwa z listy kontaktów w trakcie po³±czenia
+ * usuwa z listy kontaktów w trakcie po³±czenia.
  * usuwanemu u¿ytkownikowi okre¶lamy jego typ (patrz protocol.html)
  *
  *  - sess - identyfikator sesji
@@ -1242,7 +1260,7 @@ int gg_remove_notify_ex(struct gg_session *sess, uin_t uin, char type)
 		return -1;
 	}
 
-	a.uin = fix32(uin);
+	a.uin = gg_fix32(uin);
 	a.dunno1 = type;
 	
 	return gg_send_packet(sess->fd, GG_REMOVE_NOTIFY, &a, sizeof(a), NULL);
@@ -1251,7 +1269,7 @@ int gg_remove_notify_ex(struct gg_session *sess, uin_t uin, char type)
 /*
  * gg_remove_notify()
  *
- * usuwa z listy kontaktów w trakcie po³±czenia
+ * usuwa z listy kontaktów w trakcie po³±czenia.
  *
  *  - sess - identyfikator sesji
  *  - uin - numer

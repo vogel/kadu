@@ -6,7 +6,169 @@ d - drg, sz - szalik). ,,p/nick'' oznacza patch lub ¼ród³o podes³ane
 przez ,,nick'', ,,i/nick'' oznacza czyj¶ pomys³, ,,b/nick'' mówi, kto
 zg³osi³ b³±d.
 
-// 2002-02-01
+// 2003-02-12
+
+- skrypt autorun/__init__.py nie jest ³adowany (rmrmg/w)
+- poprawka segfaulta przy ,,python unload'' bez parametrów (rmrmg/w)
+- ma³a reorganizacja komend /timer i /at. ta ostatnia potrafi ju¿ 
+  ,,na sta³e'' planowaæ komendy (sz)
+- krzyk.theme (krzyk/sz)
+- poprawka wyciszania /sms (sz)
+
+// 2003-02-11
+
+- poprawka przewijania okien (sz/w)
+- poprawka segfaulta przy oknach p³ywaj±cych (lordzik/w)
+- /window new nie tworzy wiêcej ni¿ jednego okna o danej nazwie (ember/sz)
+- poprawka zmiennej ,,interface'' (a.latanski/w)
+
+// 2003-02-10
+
+- poprawka duuu¿ych marginesów okna (sdas/w)
+- zmienna ,,events_delay'' dotyczy równie¿ d¼wiêków (rmrmg/w)
+- poprawki sprawdzania, którego timestampu u¿yæ w /status i wiadomo¶ciach.
+  w wyj±tkowych przypadkach (np. gdy w³±czenie/po³±czenie ekg nast±pi³o
+  kilka minut po pó³nocy) z powodu ma³ej precyzji, dochodzi³o do pomy³ek (sz)
+- /add alias robi u¿ytek z dodatkowych opcji dotycz±cych wpisu (sz)
+- s/gg_remove_notify/gg_remove_notify_ex, ¿eby nie zostawiaæ ¶mieæi np. po
+  usuniêciu z listy osoby, któr± blokujemy (sz)
+- ekg ostrzega o mo¿liwo¶ci filtrowania wiadomo¶ci przez serwer (joshua/w)
+- informacja dla nowych u¿ytkowników o konieczno¶ci podania adresu e-mail (w)
+- zmienna ,,display_pl_chars'' dzia³a te¿ w nag³ówku i pasku stanu (sz/w)
+- usuniêcie informacji o zmiennej ,,debug'' (sCoOtY/w)
+- poprawka segfaulta przy zbyt du¿ym rozmiarze listy kontaktów (salvador/w)
+- poprawka sortowania userlisty (leon,fidor/w)
+
+// 2003-02-09
+
+- poprawione zawijanie w li¶cie kontaktów (pmb/w)
+- dodanie implementacji funkcji strlcpy/strlcat z OpenBSD. mo¿na z nich 
+  wiêc korzystaæ na ka¿dym systemie (sz)
+- poprawka segfaulta przy automatycznym reconnect'cie (acze/sz)
+- poprawka otwierania nowych okien z nickami z '+' lub '*' na
+  pocz±tku (K.Gibas/sz)
+- poprawka segfaultów i b³êdów z w³±czonym sort_windows (*/w)
+- dodanie zmiennej ,,fade_in'' (w)
+- poprawka przewijania ekranu w ncurses (sz/w)
+
+// 2003-02-08
+
+- przepisanie compat/dirname.c, gdy¿ poprzednia wersja by³a na innej
+  licencji (BSD) ni¿ ca³y ekg (sz)
+- drobne porz±dki, poprawki w ustawianiu zmiennych, ,,0xF'' te¿ jest
+  prawid³ow± warto¶ci± liczbow± (sz)
+- zbyt d³uga wysy³ana wiadomo¶æ zostanie przyciêta. niestety, nie dotyczy
+  to jeszcze szyfrowanych wiadomo¶ci (w)
+- drobne poprawki kodu (w)
+- usuniêcie zmiennej ,,contacts_descr'' (w)
+- kompletna reorganizacja listy kontaków. jest nowa, kolorowa, bardziej
+  konfigurowalna, themowalna i nie szczypie w oczy. dodanie zmiennej
+  ,,contacts_options'', warto zajrzeæ do jej opisu (koniu i wiele innych
+  osób, które dzieli³y siê pomys³ami/w)
+- obs³uga grup w li¶cie kontaktów. ustawiane zmienn± ,,contacts_groups''
+  i prze³±czane klawiszem F4 (jojo/w)
+- libgadu: bufor z opisem stanu z gg_login_params jest strdup()owany (pirat/w)
+- informowanie o blokowaniu lub ukrywaniu siê przed kim¶ w /list (cukier/w)
+- mo¿liwo¶æ negacji w ,,/list @grupa'' (cukier/w)
+
+// 2003-02-07
+
+- poprawka dzielenia linii po zmianie listy kontaktów (pmb/w)
+- porz±dki i reorganizacja dokumentacji: w³±czenie dcc-protocol.txt
+  do protocol.html, po³±czenie opisów formatów plików w files.txt,
+  literówki i drobne poprawki dokumentacji libgadu (w)
+- poprawka obs³ugi zmiennej ,,interface'' (a.latanski/w)
+- dodana zmienna ,,reason_limit'' (jojo/w)
+- poprawki ,,reload plik'', gdy kto¶ u¿ywa zarówno readline jak i ncurses (sz)
+- kosmetyka /change (sz)
+- poprawka /add -f (sz)
+- zmiana stanu przy starcie zachowuje siê przy w³±czonym ,,keep_reason'' tak
+  samo, jak w kliencie. ze wzglêdu na sposób podawania parametrów, nie mo¿na
+  jednak wyczy¶ciæ stanu przez ,,-''. je¶li bêdzie to przeszkadza³o, zawsze
+  mo¿na przywróciæ stare, ale chyba bardziej k³opotliwe zachowanie ;) (sz)
+- usuniêcie zbêdnego sprawdzania pod k±tem ,,NULL'' w userlist.c. je¶li
+  komu¶ co¶ sie zepsu³o, krzyczeæ, bo trzeba wszystkie b³êdy wy³apaæ. (sz)
+- poziomy ignorowania. /help ignore (sz)
+
+// 2003-02-06
+
+- s/strcmp/strcasecmp/ w kodzie query dla ui-readline (teardrop/d)
+- taby w docs/vars.txt (sz)
+- ustawienie ,,contacts'' na warto¶æ 2 nie oznacza wcale, ¿e 
+  ,,beep_notify'' czy te¿ ,,sound_notify_file'' ma przestaæ dzia³aæ (sz)
+- poprawka kompilacji biblioteki dzielonej na OpenBSD (bartek/w)
+- poprawka obs³ugi zmiany rozmiaru terminala (perry/w)
+- je¶li terminal jest zbyt ma³y, lista kontaktów jest ukrywana (w)
+- /status pokazuje uptime klienta (FIG/w)
+- poprawka stylu w docs/protocol.html (w)
+- poprawka tymczasowej zmiany poziomu debugowania (w)
+- dodana komenda /_ctcp (w)
+	
+// 2003-02-05
+
+- dodanie ,,cleartab -o'' (Murphy/sz)
+- drobne porz±dki (sz)
+- ma³a poprawka precyzji /at (TycooN/sz)
+- sprawdzanie warto¶ci ,,contacts_size'' (sdas/w)
+- libgadu: s/fix16/gg_fix16/, s/fix32/gg_fix32/ (w)
+- pozbycie siê s³owa ,,status'' z themów. nastêpnym etapiem bêdzie pozbycie
+  siê s³owa ,,theme'' ;) (w)
+- dok³adniejszy opis /passwd (sz/w)
+
+// 2003-02-04
+
+- poprawka inteligencji /timer (FIG/sz)
+- poprawka zdarzenia sigusr2 (krzyk/sz)
+- usuniêcie zapomnianych ¶mieci (lordzik/w)
+- poprawka themów wiadomo¶ci (lordzik/w)
+- poprawka segv przy opcji -f (d)
+- poprawka bindowaniu w ui-readline (d) 
+- dodanie opisu us³ug http do docs/protocol.html (pm/w)
+- dodanie opisu nowego protoko³u katalogu publicznego (w)
+
+// 2003-02-03
+
+- poprawka kompilacji przy braku openssl'a (*/sz)
+- zapêdzi³em siê: on przyjmuje znów tylko jednego u¿ytkownika/grupê.
+  przy wiêkszej ilo¶ci trzeba by wiele rzeczy sprawdzaæ, a to tylko
+  niepotrzebnie skomplikowa³oby i tak ju¿ brzydki kod (z powodu
+  ma³ych mo¿liwo¶ci manipulacji grupami). w ogóle to, zamiast /on
+  lepiej u¿yæ o wiele lepszego python'a ;> (sz)
+- przekazywanie liczby nowych maili w zdarzeniu ,,newmail'' (sz)
+- drobne poprawki dokumentacji (sz)
+- nie czytajmy ca³ego pliku np. w /reload, je¶li nie wygl±da
+  to na plik z konfiguracj± - po co zawieszaæ ekg. sam tak zrobi³em,
+  przez przypadek daj±c za parametr plik wielko¶ci 150 MB...
+  je¶li co¶ pójdzie ¼le podczas ,,reload plik'', wczytana zostanie
+  ponownie konfiguracja z ~/.gg/config (sz)
+- poprawka /blink_leds i /beeps_spk (sz)
+- usuniêcie nieaktualnego przyk³adu search.c (sz)
+- ujednolicenie opcji --list w niektórych komendach (sz)
+- mo¿liwo¶æ wy¶wietlania tylko wybranej sekwencji w /bind (FIG/w)
+- sensowna lista kluczy publicznych (FIG/w)
+- wykrywanie p³ci w wynikach wyszukiwania (FIG/w)
+- libgadu: usuniêcie leaków w gg_pubdir50() (w)
+- libgadu: gg_pubdir50_add() zastêpuje pole, je¶li ju¿ istnieje (w)
+- dodanie /find --all (*/w)
+- dodanie /find --stop (FIG/w)
+- drobna optymalizacja wy¶wietlania listy kontaktów (w)
+- obs³uga klawiszy F1-F4, Home i End na g³upich terminalach (czyt. Konsole
+  z KDE 3.0, pewnie inne te¿), kosztem Alt-Shift-O (w)
+
+// 2003-02-02
+
+- komenda ,,key'' do obs³ugi kluczy SIM (sz)
+- poprawka zachowania po ,,reload'' (m.in. duplikaty aliasów) (sz)
+- kolejna poprawka tabów podczas czytania z potoku (sz)
+- mo¿na podaæ wiele numerów/aliasów/grup jako parametr /on (sz)
+- wy¶wietlanie fingerprintu kluczy (w)
+- poprawka analizy parametrów klienta. rozumie ju¿ --away "powód",
+  -a "powód" i -a"powód" (w)
+- drobne poprawki sztucznej inteligencji /list (w)
+- poprawka dope³niania (FIG/w)
+- ,,add --find'' doda do listy kontaktów ostatnio znalezion± osobê (w)
+
+// 2003-02-01
 
 - poprawka Alt-9 (krzyk/w)
 - uaktualnienie leon.theme (leon/w)
@@ -26,12 +188,25 @@ zg³osi³ b³±d.
 - w oknie rozmowy z nieznan± osob± wystarczy /add alias (krzyk/sz)
 - komenda reload (stforek/sz)
 - poprawka kodowania eksportowanej listy kontaktów (Sero/sz)
+- dalsza reorganizacja zdarzeñ, ulepszenie logiki, opis w /help on 
+  i troche innych mniej powa¿nych zmian. zdarzenie ,,blocked''.
+  zmiana ,,new_mail'' na ,,newmail'' i ,,disconnect'' na ,,notavail'' (sz)
+- zmienna ,,events_delay'' (sz)
+- usuniêcie ekgsearch (sz)
 - poprawka wy¶wietlania tabów (w)
 - dodanie parametru do /save, który mówi, gdzie zapisaæ konfiguracjê (w)
 - po uruchomieniu drugiej sesji ekg nie bêdzie próbowa³o siê ³±czyæ
   ponownie (fidor/w)
+- obs³uga kolorów. niestety ze wzglêdu na niewielk± ilo¶æ kolorów na
+  terminalu ANSI bêd± problemy z odwzorowaniem prawdziwej barwy. poza
+  tym, mog± wyst±piæ problemy z atrybutami i kolorami na tym samym
+  tek¶cie (np. zielony i podkre¶lony). kolory w wysy³anych wiadomo¶ciach
+  wybiera siê przez wci¶niêcie Ctrl-R i wpisaniu za tym numeru koloru
+  (od 0 do 15). koniec kolorowej sekwencji to samo Ctrl-R. ka¿dy kolor
+  nale¿y koñczyæ. klawisz Ctrl-R jest tymczasowy, dopóki nie znajdê
+  sposobu na obs³u¿enie Ctrl-C w ncurses (w)
 
-// 2002-01-31
+// 2003-01-31
 
 - drobna reorganizacja kolorów w ui-ncurses (w)
 - zmienna ,,display_color = 2'' wy¶wietla kolory wszêdzie oprócz pasku
@@ -2870,4 +3045,4 @@ i BUGS.
 - eleet niebieskie t³o mesgów (wiem, dalekie od idea³u).
 
 
-$Id: ChangeLog,v 1.14 2003/02/02 01:07:34 adrian Exp $
+$Id: ChangeLog,v 1.15 2003/02/13 01:16:34 chilek Exp $

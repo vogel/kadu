@@ -1,4 +1,4 @@
-/* $Id: search.c,v 1.16 2003/02/02 01:07:35 adrian Exp $ */
+/* $Id: search.c,v 1.17 2003/02/13 01:16:35 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
