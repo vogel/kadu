@@ -801,7 +801,7 @@ History::History(UinsList uins) {
 			case HISTORYMANAGER_ENTRY_CHATSEND:
 			case HISTORYMANAGER_ENTRY_MSGSEND:
 				text.append(config.nick);
-				text.append(entries[i].date.toString(" (dd.MM.yy hh:mm:ss)\n"));
+				text.append(entries[i].date.toString(" (dd.MM.yyyy hh:mm:ss)\n"));
 				text.append(entries[i].message + "\n\n");
 				break;
 			case HISTORYMANAGER_ENTRY_CHATRCV:
