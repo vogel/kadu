@@ -11,11 +11,12 @@
 #define EMOTICONS_H
 
 #include <qvaluelist.h>
+#include <qstringlist.h>
 
 class EmoticonsManager
 {
 	private:
-		QString CurrentStyle;
+		QStringList ThemesList;
 		struct EmoticonsRegexpListItem
 		{
 			QString regexp;
@@ -32,11 +33,13 @@ class EmoticonsManager
 		void loadEmoticonsSelectorList();
 	public:
 		EmoticonsManager();
-		void setEmoticonsStyle(const QString& style);
+		const QStringList& themes();
+		void setEmoticonsTheme(const QString& theme);
+		QString themePath();
 		void expandEmoticons(QString& text);
 		int emoticonsCount();
 		QString emoticonString(int emot_num);
-		QString emoticonPicName(int emot_num);
+		QString emoticonPicPath(int emot_num);
 };
 
 extern EmoticonsManager emoticons;

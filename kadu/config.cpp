@@ -40,6 +40,7 @@
 //
 #include "kadu.h"
 #include "misc.h"
+#include "emoticons.h"
 #include "config.h"
 //
 
@@ -97,9 +98,9 @@ void loadKaduConfig(void) {
 
 	konf->setGroup("Other");
 	config.emoticons = konf->readBoolEntry("UseEmoticons",false);
+	emoticons.setEmoticonsTheme(konf->readEntry("EmoticonsTheme","kadubis"));
 	config.autosend = konf->readBoolEntry("AutoSend",false);
 	config.scrolldown = konf->readBoolEntry("ScrollDown",true);
-	config.emoticonspath = strdup(konf->readEntry("EmoticonsPath",""));
 	config.chatprune = konf->readBoolEntry("ChatPrune",false);
 	config.chatprunelen = konf->readNumEntry("ChatPruneLen",20);
 	config.msgacks = konf->readBoolEntry("MessageAcks", true);
@@ -177,9 +178,9 @@ void saveKaduConfig(void) {
 
 	konf->setGroup("Other");
 	konf->writeEntry("UseEmoticons",config.emoticons);
+	konf->writeEntry("EmoticonsTheme",config.emoticons_theme);
 	konf->writeEntry("AutoSend",config.autosend);
 	konf->writeEntry("ScrollDown",config.scrolldown);
-	konf->writeEntry("EmoticonsPath",config.emoticonspath);
 	konf->writeEntry("ChatPrune",config.chatprune);
 	konf->writeEntry("ChatPruneLen",config.chatprunelen);
 	konf->writeEntry("MessageAcks", config.msgacks);
@@ -457,26 +458,25 @@ void ConfigDialog::setupTab3(void) {
 	QVBox *box3 = new QVBox(this);
 	box3->setMargin(5);	
 
-	b_emoticons = new QCheckBox(box3);
+	QVGroupBox *emogroup = new QVGroupBox(box3);
+	emogroup->setTitle(i18n("Emoticons"));
+
+	b_emoticons = new QCheckBox(emogroup);
 	b_emoticons->setText(i18n("Enable emoticons in chat window"));
 
-	QHGroupBox *emogroup = new QHGroupBox(box3);
-	emogroup->setTitle(i18n("Emoticons path"));
-
-	e_emoticonspath = new QLineEdit(emogroup);
-	e_emoticonspath->setText(config.emoticonspath);
-
-	QPushButton *emoget = new QPushButton(emogroup);
-	emoget->setPixmap(loader->loadIcon("fileopen", KIcon::Small));
-	connect(emoget, SIGNAL(clicked()), this, SLOT(chooseEmoticonsPath()));
+	QHBox* emotheme_box = new QHBox(emogroup);
+	QLabel* l_emoticons_theme=new QLabel(emotheme_box);
+	l_emoticons_theme->setText(i18n("Emoticons theme"));
+	cb_emoticons_theme=new QComboBox(emotheme_box);
+	cb_emoticons_theme->insertStringList(emoticons.themes());
+	cb_emoticons_theme->setCurrentText(config.emoticons_theme);
 
 	if (config.emoticons)
 		b_emoticons->setChecked(true);
 	else
-		emogroup->setEnabled(true);
+		emotheme_box->setEnabled(false);
 
-	QObject::connect(b_emoticons,SIGNAL(toggled(bool)), emogroup, SLOT(setEnabled(bool)));
-	QObject::connect(b_emoticons, SIGNAL(toggled(bool)), this, SLOT(emoticonsEnabled(bool)));
+	QObject::connect(b_emoticons,SIGNAL(toggled(bool)), emotheme_box, SLOT(setEnabled(bool)));
 
 	b_chatprune = new QCheckBox(box3);
 	b_chatprune->setText(i18n("Automatically prune chat messages"));
@@ -989,11 +989,6 @@ void ConfigDialog::chooseUserboxFontGet(int index) {
 	cb_userboxfontsize->insertItem(QString::number( *points));
 }
 
-void ConfigDialog::emoticonsEnabled(bool enabled) {
-	if (enabled)
-		QMessageBox::information(this, "Emoticons", i18n("You have enabled the usage of emoticons.\nPlease make sure you will have set the right path\nto the directory where all emoticons are stored") );
-}
-
 void ConfigDialog::updateConfig(void) {
 	QString tmp;
 
@@ -1040,9 +1035,9 @@ void ConfigDialog::updateConfig(void) {
 	config.smsconf = strdup(e_smsconf->text().latin1());
 	config.smscustomconf = b_smscustomconf->isChecked();
 	config.emoticons = b_emoticons->isChecked();
+	emoticons.setEmoticonsTheme(cb_emoticons_theme->currentText());
 	config.autosend = b_autosend->isChecked();
 	config.scrolldown = b_scrolldown->isChecked();
-	config.emoticonspath = strdup(e_emoticonspath->text().latin1());
 	config.chatprune = b_chatprune->isChecked();
 	config.chatprunelen = atoi(e_chatprunelen->text().latin1());
 	config.msgacks = b_msgacks->isChecked();

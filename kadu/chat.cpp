@@ -136,8 +136,6 @@ Chat::Chat(UinsList uins, QWidget *parent)
 
 	QMimeSourceFactory *bodyformat;
 	bodyformat = new QMimeSourceFactory;
-	if (config.emoticons)
-		bodyformat->addFilePath(config.emoticonspath);
 
 	body->setMimeSourceFactory(bodyformat);
 	body->setTextFormat(Qt::RichText);
@@ -221,9 +219,12 @@ void CustomInput::keyPressEvent(QKeyEvent * e) {
 
 /* convert special characters into emoticons, HTML into plain text and so forth */
 QString Chat::convertCharacters(QString edit) {
-	if (config.emoticons)
+	if(config.emoticons)
+	{
+		body->mimeSourceFactory()->addFilePath(emoticons.themePath());
 		emoticons.expandEmoticons(edit);
-
+	};
+	
 	edit.replace( QRegExp("<"), "&lt;" );
 	edit.replace( QRegExp(">"), "&gt;" );
 	edit.replace( QRegExp("__escaped_lt__"), "<");
@@ -522,9 +523,6 @@ void IconSelectorButton::buttonClicked()
 IconSelector::IconSelector(QWidget *parent, const char *name, Chat * caller) : QWidget (parent, name) {
 	callingwidget = caller;
 	setWFlags(Qt::WDestructiveClose||Qt::WStyle_NoBorder||Qt::WStyle_NoBorderEx||Qt::WX11BypassWM);
-
-	QString path;
-	path.append(config.emoticonspath);
 	
 	int emoticons_count=emoticons.emoticonsCount();
 	int selector_width=(int)sqrt((double)emoticons_count);
@@ -534,7 +532,7 @@ IconSelector::IconSelector(QWidget *parent, const char *name, Chat * caller) : Q
 	for(int i=0; i<emoticons_count; i++)
 	{
 		IconSelectorButton* btn = new IconSelectorButton(this,emoticons.emoticonString(i));
-		btn->setPixmap(QPixmap(path + emoticons.emoticonPicName(i)));
+		btn->setPixmap(QPixmap(emoticons.emoticonPicPath(i)));
 		btn->setAutoRaise(true);
 		btn_width=btn->sizeHint().width();
 		grid->addWidget(btn, i/selector_width, i%selector_width);
@@ -542,7 +540,7 @@ IconSelector::IconSelector(QWidget *parent, const char *name, Chat * caller) : Q
 	};
 
 	move(callingwidget->buttontray->x() - sizeHint().width() + btn_width,
-		callingwidget->buttontray->y() + callingwidget->buttontray->height());
+		callingwidget->buttontray->y() + callingwidget->buttontray->height()/2 - sizeHint().height()/2 );
 };
 
 void IconSelector::iconClicked(const QString& emoticon_string)

@@ -78,7 +78,7 @@ struct config {
 	char * smsconf;
 
 	bool emoticons;
-	char *emoticonspath;
+	QString emoticons_theme;
 	bool autosend;
 	bool scrolldown;
 	int chatprunelen;

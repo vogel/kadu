@@ -74,6 +74,7 @@ class ConfigDialog : public QTabDialog	{
 		QCheckBox *b_soundvolctrl;
 
 		QCheckBox *b_emoticons;
+		QComboBox *cb_emoticons_theme;
 		QCheckBox *b_autosend;
 		QCheckBox *b_scrolldown;
 		QLineEdit *e_emoticonspath;
@@ -135,7 +136,6 @@ class ConfigDialog : public QTabDialog	{
 		void chooseUserboxFgColorGet();
 		void chooseChatFontGet(int index);
 		void chooseUserboxFontGet(int index);
-		void emoticonsEnabled(bool);
 		void ifDccEnabled(bool);
 		void ifDccIpEnabled(bool);
 		void ifDefServerEnabled(bool);
