@@ -11,5 +11,6 @@ kadu (<wersja>-0) unstable; urgency=low
   * 23.10.2003 - Poprawki dotyczace nowej translacji i miejsca instalacji
 		 plikow kadu.
   * 02.11.2003 - Nie ma juz paczki kadu-doc
+  * 13.02.2004 - Dodane do configure --enable-modules i --enable-voice
 
  -- Dariusz Jagodzik <mast3r@kadu.net>  Tue, 25 Feb 2003 10:06:51 +0100

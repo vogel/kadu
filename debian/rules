@@ -24,7 +24,9 @@ config.status: configure
 	--build=$(DEB_BUILD_GNU_TYPE) \
 	--prefix=/usr \
 	--mandir=\$${prefix}/share/man \
-	--infodir=\$${prefix}/share/info
+	--infodir=\$${prefix}/share/info \
+	--enable-voice \
+	--enable-modules
 
 build: build-stamp
 build-stamp:  config.status
