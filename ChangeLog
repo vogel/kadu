@@ -29,8 +29,8 @@
 * status opisowy: kasowanie pliku description po jego odczytaniu
 * configure: pare pomocniczych komunikatów
 * configure: mo¿liwo¶æ wy³±czenia kompilacji kadusms (--disable-sms)
-* instalacja dokumentacji wraz z Kadu (i opcja --disable-doc)
-* standardowo symbole dla debugera nie sa wkompilowywane (opcja --enable-debug)
+* configure: instalacja dokumentacji wraz z Kadu (i opcja --disable-doc)
+* configure: symbole dla debugera nie sa wkompilowywane (i opcja --enable-debug)
 
 
 +++ wersja 0.3.2
