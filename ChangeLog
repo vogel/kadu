@@ -260,11 +260,11 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * przy przechodzeniu kontaktu ze statusu niedostêpnego na dostêpny lub zaraz wracam
   nie od¶wie¿a³ siê adres ip, port, maksymalny rozmiar obrazka - poprawione (joi)
 * dokowanie dla fvwm-crystal: WM_CLASS="kadudock" (joi)
-* dodane brakuj±ce ikonki w menu modulu accound_managment config_wizard (Ron_K)
-* poprawka w od¶wierzaniu ikon po zmianie tematu (michal)
+* dodane brakuj±ce ikonki w menu modulów account_management config_wizard (Ron_K)
+* poprawka w od¶wie¿aniu ikon po zmianie tematu (michal)
 * usuniêty segfault przy próbie nawi±zania po³±czenia DCC je¿eli nie mamy
   wywo³uj±cego na li¶cie kontaktów (joi)
-* w przypadku braku domy¶lnego zestawu ikon kadu prze³±cza siê nie pierwszy
+* w przypadku braku domy¶lnego zestawu ikon kadu prze³±cza siê na pierwszy
   dostêpny zestaw (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
