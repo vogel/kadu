@@ -579,7 +579,7 @@ void Kadu::removeUser(QString &username, bool permanently = false) {
 	
 	UserListElement user = userlist.byAltNick(username);
 	gg_remove_notify(&sess, user.uin);
-    	userlist.removeUser(user.uin);
+    	userlist.removeUser(user.altnick);
 
 	switch (QMessageBox::information(kadu, "Kadu", i18n("Save current userlist to file?"), i18n("Yes"), i18n("No"), QString::null, 0, 1) ) {
 		case 0: // Yes?

@@ -84,11 +84,11 @@ void UserList::addUser(const QString FirstName,const QString LastName,
 	append(e);
 };
 
-void UserList::removeUser(uin_t uin)
+void UserList::removeUser(const QString &altnick)
 {
-	for(Iterator i=begin(); i!=end(); i++)
-		if((*i).uin==uin)
-		{
+	for (Iterator i = begin(); i != end(); i++)
+		if((*i).altnick == altnick)
+		{ 
 			remove(i);
 			break;
 		};
