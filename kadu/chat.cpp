@@ -52,6 +52,32 @@ KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
 void KaduTextBrowser::setSource(const QString &name) {
 }
 
+CustomInput::CustomInput(QWidget *parent, const char *name) : QMultiLineEdit(parent, name) {
+}
+
+void CustomInput::keyPressEvent(QKeyEvent * e) {
+	kdebug("CustomInput::keyPressEvent()\n");
+	if (e->key() == Key_Enter && !(e->state() & ShiftButton)) {
+		kdebug("CustomInput::keyPressEvent(): emit enterPressed()\n");
+		emit enterPressed();
+		}
+	else {
+		if (e->state() & ControlButton) {
+			if (e->key() == Key_B) {
+				emit specialKeyPressed(CustomInput::KEY_BOLD);
+				return;
+				}
+			else if (e->key() == Key_I) {
+				emit specialKeyPressed(CustomInput::KEY_ITALIC);
+				return;
+				}
+			else if (e->key() == Key_U)
+				emit specialKeyPressed(CustomInput::KEY_UNDERLINE);
+			}
+		QMultiLineEdit::keyPressEvent(e);
+		}
+}
+
 Chat::Chat(UinsList uins, QWidget *parent, const char *name)
  : QWidget(parent, name, Qt::WDestructiveClose), uins(uins) {
 	int i;
@@ -181,7 +207,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	edtbuttontray->setStretchFactor(edt, 50);
 	edtbuttontray->setStretchFactor(buttontray, 1);
 
-	edit = new CustomInput(downpart, this);
+	edit = new CustomInput(downpart);
 	edit->setMinimumHeight(1);
 	edit->setWordWrap(QMultiLineEdit::WidgetWidth);
 	edit->setFont(config.fonts.chat);
@@ -237,6 +263,9 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	connect(boldbtn, SIGNAL(toggled(bool)), this, SLOT(toggledBold(bool)));
 	connect(italicbtn, SIGNAL(toggled(bool)), this, SLOT(toggledItalic(bool)));
 	connect(underlinebtn, SIGNAL(toggled(bool)), this, SLOT(toggledUnderline(bool)));
+	connect(edit, SIGNAL(cursorPositionChanged(int, int)), this, SLOT(curPosChanged(int, int)));
+	connect(edit, SIGNAL(enterPressed()), this, SLOT(enterPressed()));
+	connect(edit, SIGNAL(specialKeyPressed(int)), this, SLOT(specialKeyPressed(int)));
 
 	totaloccurences = 0;
 
@@ -269,6 +298,30 @@ Chat::~Chat() {
 	kdebug("Chat::~Chat: chat destroyed: index %d\n", index);
 }
 
+void Chat::specialKeyPressed(int key) {
+	kdebug("Chat::specialKeyPressed()\n");
+	switch (key) {
+		case CustomInput::KEY_BOLD:
+			boldbtn->setOn(!boldbtn->isOn());
+			edit->setBold(boldbtn->isOn());
+			break;
+		case CustomInput::KEY_ITALIC:
+			italicbtn->setOn(!italicbtn->isOn());
+			edit->setItalic(italicbtn->isOn());
+			break;
+		case CustomInput::KEY_UNDERLINE:
+			underlinebtn->setOn(!underlinebtn->isOn());
+			edit->setUnderline(underlinebtn->isOn());
+			break;
+		}
+}
+
+void Chat::enterPressed() {
+	kdebug("Chat::enterPressed()\n");
+	if (autosend_enabled)
+		sendMessage();
+}
+
 void Chat::toggledBold(bool on) {
 	kdebug("Chat::toggledBold()\n");
 	edit->setBold(on);
@@ -282,6 +335,16 @@ void Chat::toggledItalic(bool on) {
 void Chat::toggledUnderline(bool on) {
 	kdebug("Chat::toggledUnderline()\n");
 	edit->setUnderline(on);
+}
+
+void Chat::curPosChanged(int para, int pos) {
+	kdebug("Chat::curPosChanged()\n");
+	if (edit->bold() != boldbtn->isOn())
+		boldbtn->setOn(edit->bold());
+	if (edit->italic() != italicbtn->isOn())
+		italicbtn->setOn(edit->italic());
+	if (edit->underline() != underlinebtn->isOn())
+		underlinebtn->setOn(edit->underline());
 }
 
 void Chat::setupEncryptButton(bool enabled) {
@@ -402,18 +465,6 @@ void Chat::regEncryptSend(void) {
 /* register/unregister sending with Return key */
 void Chat::regAutosend(void) {
 	autosend_enabled = !autosend_enabled;
-}
-
-CustomInput::CustomInput(QWidget *parent, Chat *owner, const char *name) : QMultiLineEdit(parent, name) {
-	tata = owner;
-}
-
-void CustomInput::keyPressEvent(QKeyEvent * e) {
-	if (tata->autosend_enabled && ((e->key() == Key_Return) || (e->key() == Key_Enter))
-		&& !(e->state() & ShiftButton))
-		tata->sendMessage();
-	else
-		QMultiLineEdit::keyPressEvent(e);
 }
 
 /* convert special characters into emoticons, HTML into plain text and so forth */
@@ -676,7 +727,8 @@ void Chat::cancelMessage(void) {
 void Chat::sendMessage(void) {
 	int i, j, online;
 	uin_t *users;
-	
+	QString mesg;
+
 	if (getActualStatus() == GG_STATUS_NOT_AVAIL) {
 		QMessageBox::critical(this, i18n("Send message error"),
 			i18n("Application encountered network error."));
@@ -687,10 +739,6 @@ void Chat::sendMessage(void) {
 		return;
 
 	myLastMessage = edit->text();
-	int formats_length;
-	void *formats;
-	myLastMessage = unformatGGMessage(myLastMessage, formats_length, formats);
-//	escapeSpecialCharacters(myLastMessage);
 
 	if (edit->length() >= 2000)
 		return;
@@ -702,11 +750,20 @@ void Chat::sendMessage(void) {
 		cancelbtn->show();
 		}
 
+	mesg = myLastMessage;
+	mesg.replace(QRegExp("\n"), "\r\n");
+	mesg = unformatGGMessage(mesg, myLastFormatsLength, myLastFormats);
+	myLastMessage = mesg;
+	if (myLastFormatsLength)
+		myLastMessage = formatGGMessage(myLastMessage, myLastFormatsLength - sizeof(struct gg_msg_richtext),
+			(void *)((char *)(myLastFormats) + sizeof(struct gg_msg_richtext)));
+	kdebug("Chat::sendMessage():\n%s\n", myLastMessage.latin1());
+	myLastMessage.replace(QRegExp("\r\n"), "\n");
+
 	addMyMessageToHistory();
 	// zmieniamy unixowe \n na windowsowe \r\n
-	myLastMessage.replace(QRegExp("\n"), "\r\n");
 			
-	unsigned char *utmp = (unsigned char *)strdup(unicode2cp(myLastMessage).data());
+	unsigned char *utmp = (unsigned char *)strdup(unicode2cp(mesg).data());
 
 	users = new (uin_t)[uins.count()];
 	for (j = 0, online = 0; j < uins.count(); j++) {
@@ -722,8 +779,13 @@ void Chat::sendMessage(void) {
 		if (uins.count() > 1) {
 			for (j = 0; j < uins.count(); j++)
 				users[j] = uins[j];
-			acks[i].seq = gg_send_message_confer(sess, GG_CLASS_CHAT,
-				uins.count(), users, (unsigned char *)utmp);    
+			if (myLastFormatsLength)
+				acks[i].seq = gg_send_message_confer_richtext(sess, GG_CLASS_CHAT,
+					uins.count(), users, (unsigned char *)utmp,
+					(unsigned char *)myLastFormats, myLastFormatsLength);
+			else
+				acks[i].seq = gg_send_message_confer(sess, GG_CLASS_CHAT,
+					uins.count(), users, (unsigned char *)utmp);
 			acks[i].ack = online;
 			}
 		else {
@@ -731,13 +793,25 @@ void Chat::sendMessage(void) {
 			if (encrypt_enabled) {
 				char* encrypted = sim_message_encrypt((unsigned char *)utmp, uins[0]);
 				if (encrypted != NULL) {
-					acks[i].seq = gg_send_message(sess, GG_CLASS_CHAT, uins[0], (unsigned char *)encrypted);
+					if (myLastFormatsLength)
+						acks[i].seq = gg_send_message_richtext(sess, GG_CLASS_CHAT,
+							uins[0], (unsigned char *)encrypted,
+							(unsigned char *)myLastFormats, myLastFormatsLength);
+					else
+						acks[i].seq = gg_send_message(sess, GG_CLASS_CHAT,
+							uins[0], (unsigned char *)encrypted);
 					acks[i].ack = 1;
 					free(encrypted);
 				}
 			} else {
 #endif
-				acks[i].seq = gg_send_message(sess, GG_CLASS_CHAT, uins[0], (unsigned char *)utmp);
+				if (myLastFormatsLength)
+					acks[i].seq = gg_send_message_richtext(sess, GG_CLASS_CHAT, uins[0],
+						(unsigned char *)utmp,
+						(unsigned char *)myLastFormats, myLastFormatsLength);
+				else
+					acks[i].seq = gg_send_message(sess, GG_CLASS_CHAT, uins[0],
+						(unsigned char *)utmp);
 				acks[i].ack = 1;
 #ifdef HAVE_OPENSSL
 			}
@@ -751,26 +825,43 @@ void Chat::sendMessage(void) {
 		if (uins.count() > 1) {
 			for (j = 0; j < uins.count(); j++)
 				users[j] = uins[j];
-			gg_send_message_confer(sess, GG_CLASS_CHAT,
-				uins.count(), users, (unsigned char *)utmp);    
+			if (myLastFormatsLength)
+				gg_send_message_confer_richtext(sess, GG_CLASS_CHAT,
+					uins.count(), users, (unsigned char *)utmp,
+					(unsigned char *)myLastFormats, myLastFormatsLength);
+			else
+				gg_send_message_confer(sess, GG_CLASS_CHAT,
+					uins.count(), users, (unsigned char *)utmp);
 			}
 		else {
 #ifdef HAVE_OPENSSL
 			if (encrypt_enabled) {
 				char* encrypted = sim_message_encrypt((unsigned char *)utmp, uins[0]);
 				if (encrypted != NULL) {
-					gg_send_message(sess, GG_CLASS_CHAT, uins[0], (unsigned char *)encrypted);
+					if (myLastFormatsLength)
+						gg_send_message_richtext(sess, GG_CLASS_CHAT, uins[0],
+							(unsigned char *)encrypted,
+							(unsigned char *)myLastFormats, myLastFormatsLength);
+					else
+						gg_send_message(sess, GG_CLASS_CHAT, uins[0],
+							(unsigned char *)encrypted);
 					free(encrypted);
 				}
 			} else {
 #endif
-				gg_send_message(sess, GG_CLASS_CHAT, uins[0], (unsigned char *)utmp);
+				if (myLastFormatsLength)
+					gg_send_message_richtext(sess, GG_CLASS_CHAT, uins[0], (unsigned char *)utmp,
+						(unsigned char *)myLastFormats, myLastFormatsLength);
+				else
+					gg_send_message(sess, GG_CLASS_CHAT, uins[0], (unsigned char *)utmp);
 #ifdef HAVE_OPENSSL
 			}
 #endif
 		}
 		writeMyMessage();
 	}
+	if (myLastFormats)
+		delete (char *)myLastFormats;
 	delete users;
 	free(utmp);
 

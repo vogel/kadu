@@ -12,6 +12,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <time.h>
+#include <string.h>
 
 #include "misc.h"
 #include "pixmaps.h"
@@ -125,7 +126,7 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats) {
 				tmp = msg.mid(pos, actformat->position - pos);
 				escapeSpecialCharacters(tmp);
 				mesg.append(tmp);
-				pos += actformat->position;
+				pos = actformat->position;
 				}
 			else {
 				if (actformat->font & GG_FONT_BOLD) {
@@ -193,17 +194,117 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats) {
 	return mesg;
 }
 
+struct richtext_formant {
+	struct gg_msg_richtext_format format;
+	struct gg_msg_richtext_color color;
+};
+
 QString unformatGGMessage(const QString &msg, int &formats_length, void *&formats) {
-	QString mesg;
+	QString mesg, tmp;
+	QStringList attribs;
+	int pos, idx;
+	struct gg_msg_richtext richtext_header;
+	struct richtext_formant actformant;
+	QValueList<struct richtext_formant> formants;
+	int inspan;
+	char *cformats, *tmpformats;
 
 	mesg = msg;
 //	mesg.replace(QRegExp("^<html><head><meta\\sname=\"qrichtext\"\\s*\\s/></head>"), "");
-	mesg.replace(QRegExp("^<html><head>.*<body\\s.*\">\\n"), "");
-	mesg.replace(QRegExp("\\n</body></html>\\n$"), "");
+	mesg.replace(QRegExp("^<html><head>.*<body\\s.*\">\\r\\n"), "");
+	mesg.replace(QRegExp("\\r\\n</body></html>\\r\\n$"), "");
 	mesg.replace(QRegExp("<p>"), "");
 	mesg.replace(QRegExp("</p>"), "");
-	mesg.replace(QRegExp("&lt;"), "<");
-	mesg.replace(QRegExp("&gt;"), ">");
+	mesg.replace(QRegExp("&lt;"), "\a");
+	mesg.replace(QRegExp("&gt;"), "\f");
+//	mesg.replace(QRegExp("&lt;"), "#");
+//	mesg.replace(QRegExp("&gt;"), "#");
+
+	kdebug("unformatGGMessage():\n%s\n", mesg.latin1());
+
+	inspan = -1;
+	pos = idx = formats_length = 0;
+	while (pos < mesg.length()) {
+		if (inspan == -1) {
+			idx = mesg.find("<span style=", pos);
+			if (idx != -1) {
+				kdebug("unformatGGMessage(): idx=%d\n", idx);
+				inspan = idx;
+				if (pos && idx > pos) {
+					actformant.format.position = pos;
+					actformant.format.font = 0;
+					formants.append(actformant);
+					formats_length += sizeof(struct gg_msg_richtext_format);
+					}
+				pos = idx;
+				idx = mesg.find("\">", pos);
+				tmp = mesg.mid(pos, idx - pos);
+				idx += 2;
+				mesg.remove(pos, idx - pos);
+				tmp = tmp.section("\"", 1, 1);
+				attribs = QStringList::split(";", tmp);
+				actformant.format.position = pos;
+				actformant.format.font = 0;
+				if (attribs.findIndex("font-style:italic") != -1)
+					actformant.format.font |= GG_FONT_ITALIC;
+				if (attribs.findIndex("text-decoration:underline") != -1)
+					actformant.format.font |= GG_FONT_UNDERLINE;
+				if (attribs.findIndex("font-weight:600") != -1)
+					actformant.format.font |= GG_FONT_BOLD;
+				formants.append(actformant);
+				formats_length += sizeof(struct gg_msg_richtext_format);
+				}
+			else
+				break;
+			}
+		else {
+			idx = mesg.find("</span>", pos);
+			if (idx != -1) {
+				kdebug("unformatGGMessage(): idx=%d\n", idx);
+				pos = idx;
+				mesg.remove(pos, 7);
+				inspan = -1;
+				}
+			else
+				break;
+			}
+		}
+	if (pos && idx == -1) {
+		actformant.format.position = pos;
+		actformant.format.font = 0;
+		formants.append(actformant);
+		formats_length += sizeof(struct gg_msg_richtext_format);
+		}
+	if (formats_length) {
+		richtext_header.flag = 2;
+		richtext_header.length = formats_length;
+		formats_length += sizeof(struct gg_msg_richtext);
+		cformats = new char[formats_length];
+		tmpformats = cformats;
+		memcpy(tmpformats, &richtext_header, sizeof(struct gg_msg_richtext));
+		tmpformats += sizeof(struct gg_msg_richtext);
+		for (QValueList<struct richtext_formant>::iterator it = formants.begin(); it != formants.end(); it++) {
+			actformant = (*it);
+			if (actformant.format.font & GG_FONT_COLOR) {
+				memcpy(tmpformats, &actformant, sizeof(richtext_formant));
+				tmpformats += sizeof(richtext_formant);
+				}
+			else {
+				memcpy(tmpformats, &actformant.format, sizeof(gg_msg_richtext_format));
+				tmpformats += sizeof(gg_msg_richtext_format);
+				}
+			}
+		kdebug("unformatGGMessage(): formats_length=%d, tmpformats-cformats=%d\n",
+			formats_length, tmpformats - cformats);
+		formats = (void *)cformats;
+		}
+	else
+		formats = NULL;
+
+	mesg.replace(QRegExp("\\a"), "<");
+	mesg.replace(QRegExp("\\f"), ">");
+//	mesg.replace(QRegExp("#"), "<");
+//	mesg.replace(QRegExp("#"), ">");
 
 	kdebug("unformatGGMessage():\n%s\n", mesg.latin1());
 	return mesg;
