@@ -1098,7 +1098,7 @@ void Chat::initModule()
 	ConfigDialog::addGrid("Look", "Chat properties", "previewgrid2", 2);
 	ConfigDialog::addVGroupBox("Look","previewgrid2","Preview chat");
 	ConfigDialog::addLabel("Look","Preview chat", "<b>Me</b> 00:00:00", "chat");
-	ConfigDialog::addLabel("Look","Preview chat", "<b>He</b> 00:00:02", "chat2");
+	ConfigDialog::addLabel("Look","Preview chat", "<b>Other party</b> 00:00:02", "chat2");
 	ConfigDialog::addHBox("Look", "Chat properties", "--");
 	ConfigDialog::addComboBox("Look", "--", "", "", "combobox1");
 	ConfigDialog::addLineEdit2("Look", "--", "", "", "", "line1");
@@ -1501,7 +1501,7 @@ void ChatSlots::chooseColorGet()
 void ChatSlots::updatePreview()
 {
 	QLabel *preview= ConfigDialog::getLabel("Look", "<b>Me</b> 00:00:00", "chat");
-	QLabel *preview2= ConfigDialog::getLabel("Look", "<b>He</b> 00:00:02", "chat2");
+	QLabel *preview2= ConfigDialog::getLabel("Look", "<b>Other party</b> 00:00:02", "chat2");
 	preview->setFont(vl_chatfont[0]);
 	preview->setPaletteForegroundColor(vl_chatcolor[1]);
 	preview->setPaletteBackgroundColor(vl_chatcolor[0]);
