@@ -314,7 +314,7 @@ ConfigDialog::ConfigDialog(QWidget *parent, const char *name) : QTabDialog(paren
 	setCancelButton(i18n("Cancel"));
 	connect(this, SIGNAL(cancelButtonPressed()), this, SLOT(close()));
 	setCaption(i18n("Kadu configuration"));
-	resize(480,440);
+	resize(480,500);
 }
 
 void ConfigDialog::setupTab1(void) {
