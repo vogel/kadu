@@ -655,6 +655,7 @@ DccManager::~DccManager()
 	UserBox::userboxmenu->removeItem(sendfile);
 	disconnect(UserBox::userboxmenu,SIGNAL(popup()),this,SLOT(userboxMenuPopup()));
 	disconnect(kadu, SIGNAL(keyPressed(QKeyEvent*)), this, SLOT(kaduKeyPressed(QKeyEvent*)));
+	closeDcc();
 	kdebugf2();
 }
 
