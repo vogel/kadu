@@ -72,14 +72,17 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchU
 	l_nick = new QLabel(this);
 	l_nick->setText(i18n("Nickname"));
 	e_nick = new QLineEdit(this);
+	connect(e_nick, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
 
 	l_name = new QLabel(this);
 	l_name->setText(i18n("Name"));
 	e_name = new QLineEdit(this);
+	connect(e_name, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
 
 	l_surname = new QLabel(this);
 	l_surname->setText(i18n("Surname"));
 	e_surname = new QLineEdit(this);
+	connect(e_surname, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
 
 	l_gender = new QLabel(this);
 	l_gender->setText(i18n("Gender"));
@@ -87,24 +90,29 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchU
 	c_gender->insertItem(i18n(" "), 0);
 	c_gender->insertItem(i18n("Male"), 1);
 	c_gender->insertItem(i18n("Female"), 2);
+	connect(c_gender, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
 
 	l_byr = new QLabel(this);
 	l_byr->setText(i18n("Birthyear"));
 	e_byr = new QLineEdit(this);
+	connect(e_byr, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
 
 	l_city = new QLabel(this);
 	l_city->setText(i18n("City"));
 	e_city = new QLineEdit(this);
+	connect(e_city, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
 
 	QGroupBox * qgrp1 = new QGroupBox(2, Qt::Horizontal, i18n("Uin"), this);
 	l_uin = new QLabel(qgrp1);
 	l_uin->setText(i18n("Uin"));
 	e_uin = new QLineEdit(qgrp1);
+	connect(e_uin, SIGNAL(textChanged(const QString &)), this, SLOT(uinTyped()));
 
 	QGroupBox *qgrp2 = new QGroupBox(4, Qt::Horizontal, i18n("Phone number"), this);
 	l_phone = new QLabel(qgrp2);
 	l_phone->setText(i18n("Phone"));
 	e_phone = new QLineEdit(qgrp2);
+	connect(e_phone, SIGNAL(textChanged(const QString &)), this, SLOT(phoneTyped()));
 
 	progress = new QLabel(this);
 
@@ -126,9 +134,6 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchU
 	r_phone->setText(i18n("P&hone number"));
 	QToolTip::add(r_phone, i18n("Search by phone"));
 
-	/* change radio buttons automagically if some fields are altered */
-	connect(e_phone, SIGNAL(textChanged(const QString &)), this, SLOT(phoneTyped()));
-	connect(e_uin, SIGNAL(textChanged(const QString &)), this, SLOT(uinTyped()));
 	connect(results, SIGNAL(selectionChanged(QListViewItem *)), this, SLOT(selectionChanged(QListViewItem *)));
 
 	btngrp->insert(r_pers, 1);
@@ -445,6 +450,10 @@ void SearchDialog::phoneTyped(void) {
 
 void SearchDialog::uinTyped(void) {
 	r_uin->setChecked(true);
+}
+
+void SearchDialog::personalDataTyped(void) {
+	r_pers->setChecked(true);
 }
 
 void SearchDialog::AddButtonClicked()
