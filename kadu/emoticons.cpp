@@ -170,7 +170,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc,const QColor& bgcolor)
 			QValueList<EmoticonsListItem>::iterator e=Aliases.end();
 			for(QValueList<EmoticonsListItem>::iterator i=Aliases.begin(); i!=Aliases.end(); i++)
 			{
-				if(text.mid(j,(*i).alias.length())==(*i).alias)
+				if(text.mid(j,(*i).alias.length()).lower()==(*i).alias.lower())
 					if(e==Aliases.end()||(*i).alias.length()>(*e).alias.length())
 						e=i;
 			};
