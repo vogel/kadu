@@ -428,6 +428,10 @@ void UserBox::refresh()
 		if (isSelected(i))
 			s_users.append(item(i)->text());
 	QString s_user = currentText();
+	
+	//zapamiêtajmy po³o¿enie pionowego suwaka
+	int vScrollValue=verticalScrollBar()->value();
+	
 	// Najpierw dzielimy uzytkownikow na cztery grupy
 	QStringList a_users;
 	QStringList i_users;
@@ -604,6 +608,10 @@ void UserBox::refresh()
 	for (i = 0; i < s_users.count(); i++)
 		setSelected(findItem(s_users[i]), true);
 	setCurrentItem(findItem(s_user));
+
+	//przywracamy po³o¿enie pionowego suwaka
+	verticalScrollBar()->setValue(vScrollValue);
+
 	kdebugf2();
 }
 
