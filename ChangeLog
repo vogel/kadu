@@ -73,6 +73,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * kadu wch³onê³o bibliotekê libgsm 1.0.10 ;) (adrian)
 * konfiguracja: zak³adki Chat i Notify wed³ug nowego mechanizmu.
   Notify ju¿ jest, ale jeszcze nie dzia³a (pawel_p/adrian)
+* configure: nowa opcja --enable-voice w³±czaj±ca eksperymentaln±
+  obs³ugê rozmów g³osowych (adrian)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci
