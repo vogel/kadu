@@ -212,7 +212,7 @@ void About::addTab1() {
 	l_logo->setAlignment(Qt::AlignCenter);
 	QString ver;
 	ver = QString("<span style=\"font-size: 12pt\">Kadu ") + QString(VERSION)
-		+ QString(tr("<br>(c) 2001-2003 Kadu Team</span>"));
+		+ QString(tr("<br>(c) 2001-2004 Kadu Team</span>"));
 	QLabel *l_info = new QLabel(ver, box);
 	l_info->setAlignment(Qt::AlignCenter);
 	addTab(box, tr("&About"));
