@@ -1,4 +1,4 @@
-/* $Id: libgadu.c,v 1.41 2004/12/17 21:15:35 joi Exp $ */
+/* $Id: libgadu.c,v 1.42 2004/12/26 03:40:22 joi Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -72,7 +72,7 @@ static char rcsid[]
 #ifdef __GNUC__
 __attribute__ ((unused))
 #endif
-= "$Id: libgadu.c,v 1.41 2004/12/17 21:15:35 joi Exp $";
+= "$Id: libgadu.c,v 1.42 2004/12/26 03:40:22 joi Exp $";
 #endif 
 
 /*
@@ -240,6 +240,8 @@ static void *gg_resolve_pthread_thread(void *arg)
 {
 	struct gg_resolve_pthread_data *d = arg;
 	struct in_addr a;
+
+	pthread_detach(pthread_self());
 
 	if ((a.s_addr = inet_addr(d->hostname)) == INADDR_NONE) {
 		struct in_addr *hn;
