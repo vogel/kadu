@@ -20,11 +20,12 @@ AM_INIT_AUTOMAKE([kadu-0.3.3],[0.3.3])
 
 KDE_SET_PREFIX
 
+
 ########################################################################
 # check for programs, libraries and functions
 ########################################################################
 
-CXXFLAGS=-O2
+CXXFLAGS=""
 
 # Checks for programs.
 AC_PROG_CXX
@@ -53,6 +54,7 @@ AC_FUNC_STAT
 AC_FUNC_STRFTIME
 AC_FUNC_WAIT3
 AC_CHECK_FUNCS([floor inet_ntoa memset mkdir select strchr strdup strerror strtol])
+
 
 ########################################################################
 # parse configuration options
@@ -92,12 +94,16 @@ if test -z "$enable_debug"; then
 	enable_debug=no
 fi
 if test "$enable_debug" = "yes"; then
+	CXXFLAGS=`echo "$CXXFLAGS" | sed s/-ansi//`
+	CXXFLAGS=`echo "$CXXFLAGS" | sed s/-pedantic//`
+	CXXFLAGS=`echo "$CXXFLAGS" | sed s/-W* //`
 	CXXFLAGS="$CXXFLAGS -ggdb"
 else
 	ac_configure_args="$ac_configure_args --disable-debug"
 fi
 
 AC_SUBST(MY_SUBDIRS)
+
 
 ########################################################################
 # configure libgadu and sms application
@@ -109,6 +115,7 @@ echo " * Configuring libgadu and sms (if enabled), please wait . . . *"
 echo " ***************************************************************"
 echo
 
+ac_configure_args="$ac_configure_args --disable-static --enable-shared"
 AC_CONFIG_SUBDIRS([libgadu])
 if test "$enable_sms" = "yes"; then
 	AC_CONFIG_SUBDIRS([sms])
