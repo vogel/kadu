@@ -75,8 +75,9 @@ class CustomInput : public QMultiLineEdit {
 		void specialKeyPressed(int key);
 		/**
 			Dowolny przycisk klawiatury zostal nacisniety.
+			Przekazany zostaje tak¿e obiekt, który wywo³a³ akcjê - czyli this.
 		**/
-		void keyPressed(QKeyEvent*, QWidget *sender);
+		void keyPressed(QKeyEvent*, CustomInput *sender);
 
 	public slots:
 		void paste();
