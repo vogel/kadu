@@ -103,14 +103,14 @@ HintManager::HintManager()
 	ConfigDialog::registerSlotOnApply(hint_manager_slots, SLOT(onApplyConfigDialog()));
 	ConfigDialog::registerSlotOnClose(hint_manager_slots, SLOT(onCloseConfigDialog()));
 
-	config_file.addVariable("Notify", "NewChat_Window", true);
-	config_file.addVariable("Notify", "NewMessage_Window", true);
-	config_file.addVariable("Notify", "ConnError_Window", true);
-	config_file.addVariable("Notify", "ChangingStatus_Window", false);
-	config_file.addVariable("Notify", "toAvailable_Window", true);
-	config_file.addVariable("Notify", "toBusy_Window", true);
-	config_file.addVariable("Notify", "toNotAvailable_Window", false);
-	config_file.addVariable("Notify", "Message_Window", true);
+	config_file.addVariable("Notify", "NewChat_Hints", true);
+	config_file.addVariable("Notify", "NewMessage_Hints", true);
+	config_file.addVariable("Notify", "ConnError_Hints", true);
+	config_file.addVariable("Notify", "ChangingStatus_Hints", false);
+	config_file.addVariable("Notify", "toAvailable_Hints", true);
+	config_file.addVariable("Notify", "toBusy_Hints", true);
+	config_file.addVariable("Notify", "toNotAvailable_Hints", false);
+	config_file.addVariable("Notify", "Message_Hints", true);
 	
 	connect(this, SIGNAL(searchingForTrayPosition(QPoint &)), kadu, SIGNAL(searchingForTrayPosition(QPoint &)));
 
