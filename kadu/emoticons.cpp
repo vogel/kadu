@@ -683,6 +683,7 @@ AnimTextItem::AnimTextItem(
 	QToolTip::add(Label, tip);
 	Label->resize(md.size);
 	Label->setPaletteBackgroundColor(bgcolor);
+	Label->hide();
 }
 
 AnimTextItem::~AnimTextItem()
@@ -697,19 +698,28 @@ AnimTextItem::~AnimTextItem()
 }
 
 void AnimTextItem::draw(
-	QPainter* p, int x, int y, int /*cx*/, int cy,
-	int /*cw*/, int /*ch*/, const QColorGroup& /*cg*/,
+	QPainter* p, int x, int y, int cx, int cy,
+	int cw, int ch, const QColorGroup& /*cg*/,
 	bool /*selected*/ )
 {
-	if(Label->isVisible()&&EditSize==Edit->size())
+	if(EditSize==Edit->size())
 		return;
+//	if(Label->isVisible()&&EditSize==Edit->size())
+//		return;
+//	kdebugm(KDEBUG_WARNING, "x:%d y:%d cx:%d cy:%d cw:%d ch:%d\n", x, y, cx, cy, cw, ch);
+//	kdebugm(KDEBUG_WARNING, "contX:%d contY:%d contW:%d contH:%d visW:%d visH:%d\n", Edit->contentsX(), Edit->contentsY(), Edit->contentsWidth(), Edit->contentsHeight(), Edit->visibleWidth(), Edit->visibleHeight());
+
+
 	EditSize=Edit->size();
 
 	QPoint u;	
 	if (config_file.readBoolEntry("General", "UseParagraphs"))
 	{
-		//p->fillRect(x, y, width, height, QColor(0,0,0));
 		u = QPoint(x, y - cy);
+		//trzeba ustaliæ warto¶æ prawej strony tej nierówno¶ci, na pewno jest to warto¶æ dodatnia
+		//nie jest to 0,10,ch,height,visibleHeight/2
+		if (u.y()>=10) 
+			u += QPoint(0, Edit->visibleHeight()-ch);
 	}
 	else
 	{
