@@ -69,7 +69,7 @@ QStringList ModulesManager::unloadedModules()
 bool ModulesManager::loadModule(const QString& module_name)
 {
 	Module m;
-	m.lib=new QLibrary(QString(DATADIR)+"/kadu/modules/"+module_name);
+	m.lib=new QLibrary(QString(DATADIR)+"/kadu/modules/"+module_name+".so");
 	if(m.lib->load())
 	{
 		typedef void InitModuleFunc();
