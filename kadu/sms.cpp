@@ -109,11 +109,13 @@ int Sms::sendSms(void) {
 	smsProcess = new QProcess(this);
 	if(config.smscustomconf&&(!config.smsbuildin))
 	{
-		smsProcess->addArgument(SmsAppPath);
-		QString args=config.smsconf;
-		args.replace(QRegExp("%n"),recipient->text());
-		args.replace(QRegExp("%m"),body->text());
-		smsProcess->addArgument(args);
+		QStringList args=QStringList::split(' ',config.smsconf);
+		if(args.find("%n")!=args.end())
+			*args.find("%n")=recipient->text();
+		if(args.find("%m")!=args.end())
+			*args.find("%m")=body->text();
+		args.prepend(SmsAppPath);
+		smsProcess->setArguments(args);
 	}
 	else
 	{

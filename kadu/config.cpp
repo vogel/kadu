@@ -301,7 +301,7 @@ void ConfigDialog::setupTab1(void) {
 	smshbox2->setSpacing(5);
 	b_smscustomconf = new QCheckBox(smshbox2);
 	b_smscustomconf->setText(i18n("SMS custom string"));
-	QToolTip::add(b_smscustomconf,i18n("Check this box if your sms application doesn't understand sms number \"message\"\nThe string formatting is %s for app, %d for number and %s for message\nand the order is %s %d %s"));
+	QToolTip::add(b_smscustomconf,i18n("Check this box if your sms application doesn't understand arguments: number \"message\"\nArguments should be separated with spaces. %n argument is converted to number, %m to message"));
 
 	e_smsconf = new QLineEdit(smshbox2);
 	e_smsconf->setText(config.smsconf);
