@@ -99,14 +99,14 @@ extern "C" int speech_init()
 	ConfigDialog::addPushButton("Speech", "Program", "", "OpenFile","","speech_fileopen");
 	ConfigDialog::connectSlot("Speech", "", SIGNAL(clicked()), slotsObj, SLOT(chooseSpeechProgram()), "speech_fileopen");
 	
-	ConfigDialog::addLineEdit("Speech", "Speech", "Chat format (male):", "ChatFormatMale", "man %a said %1");
-	ConfigDialog::addLineEdit("Speech", "Speech", "Chat format (female):", "ChatFormatFemale", "woman %a said %1");
+	ConfigDialog::addLineEdit("Speech", "Speech", "Chat format (male):", "ChatFormatMale", qApp->translate("@default", "man %a said %1"));
+	ConfigDialog::addLineEdit("Speech", "Speech", "Chat format (female):", "ChatFormatFemale", qApp->translate("@default", "woman %a said %1"));
 
-	ConfigDialog::addLineEdit("Speech", "Speech", "Message format (male):", "MessageFormatMale", "man %a said %1");
-	ConfigDialog::addLineEdit("Speech", "Speech", "Message format (female):", "MessageFormatFemale", "woman %a said %1");
+	ConfigDialog::addLineEdit("Speech", "Speech", "Message format (male):", "MessageFormatMale", qApp->translate("@default", "man %a said %1"));
+	ConfigDialog::addLineEdit("Speech", "Speech", "Message format (female):", "MessageFormatFemale", qApp->translate("@default", "woman %a said %1"));
 
-	ConfigDialog::addLineEdit("Speech", "Speech", "Notify format (male):", "NotifyFormatMale", "man %a changed status to %s %d");
-	ConfigDialog::addLineEdit("Speech", "Speech", "Notify format (female):", "NotifyFormatFemale", "woman %a changed status to %s %d");
+	ConfigDialog::addLineEdit("Speech", "Speech", "Notify format (male):", "NotifyFormatMale", qApp->translate("@default", "man %a changed status to %s %d"));
+	ConfigDialog::addLineEdit("Speech", "Speech", "Notify format (female):", "NotifyFormatFemale", qApp->translate("@default", "woman %a changed status to %s %d"));
 	
 	ConfigDialog::addPushButton("Speech", "Speech", "Test", "", "", "testspeech");
 
