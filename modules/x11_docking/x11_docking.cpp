@@ -102,6 +102,13 @@ X11TrayIcon::X11TrayIcon()
 
 	Display *dsp = x11Display();
 	WId win = winId();
+	
+	//unikamy efektu klepsydry w KDE
+	QWidget *w=new QWidget();
+	w->setGeometry(-100,-100,10,10);
+	w->show();
+	w->hide();
+	delete w;
 
 	// SPOSÓB PIERWSZY
 	// System Tray Protocol Specification
