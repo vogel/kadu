@@ -466,7 +466,7 @@ void AnimTextItem::draw(
 	EditSize=Edit->size();
 
 	QPoint u;	
-	if (config_file.readBoolEntry("General", "ForceUseParagraphs"))
+	if (config_file.readBoolEntry("General", "UseParagraphs"))
 	{
 		//p->fillRect(x, y, width, height, QColor(0,0,0));
 		u = QPoint(x, y - cy);

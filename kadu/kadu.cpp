@@ -283,7 +283,10 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show emoticons in panel"), "ShowEmotPanel", false);
 	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show emoticons in history"), "ShowEmotHist", false);
-	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Force use of paragraphs (VERY experimental)"), "ForceUseParagraphs", false);
+	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Use paragraphs instead of tables"), "UseParagraphs", false, QT_TRANSLATE_NOOP("@default",
+		"If set: chat, history windows and information panel are rendered\n"
+		"using HTML paragraphs instead of tables - this improves refresh\n"
+		"speed and text copying but has a couple of display problems"));
 
 	ConfigDialog::addVGroupBox("General", "General", "Status");
 	ConfigDialog::addComboBox("General", "Status", QT_TRANSLATE_NOOP("@default", "Default status"), "", "cb_defstatus");

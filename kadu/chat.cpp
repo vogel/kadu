@@ -538,7 +538,8 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 
 	body->setMinimumSize(QSize(100,100));
 	body->setFont(config_file.readFontEntry("Look","ChatFont"));
-	body->setParagraphSeparators(true);
+	if (config_file.readBoolEntry("General", "UseParagraphs"))
+		body->setParagraphSeparators(true);
 
 	QPoint pos = QCursor::pos();
 
@@ -1022,11 +1023,8 @@ void Chat::userWhois()
 
 void Chat::formatMessage(ChatMessage &msg)
 {
-	bool useParagraphs=(config_file.readBoolEntry("General", "ForceUseParagraphs") ||
-		((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") != EMOTS_ANIMATED));
-
 	QString formatString;
-	if (useParagraphs)
+	if (config_file.readBoolEntry("General", "UseParagraphs"))
 		formatString="<p style=\"background-color: %1\"><font color=\"%2\"><b>%3 :: %4</b><br/>%5</font></p>";
 	else
 		formatString="<table width=\"100%\"><tr><td bgcolor=\"%1\"><font color=\"%2\"><b>%3 :: %4</b><br/>%5</font></td></tr></table>";
@@ -1070,8 +1068,7 @@ void Chat::repaintMessages()
 			text+=(*it)->message;
 		body->setText(text);
 
-		if (config_file.readBoolEntry("General", "ForceUseParagraphs") ||
-			((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") != EMOTS_ANIMATED))
+		if (config_file.readBoolEntry("General", "UseParagraphs"))
 		{
 			i=0;
 			for(QValueList<ChatMessage *>::const_iterator it=ChatMessages.begin(); it!=ChatMessages.end(); ++it, ++i)
@@ -1086,8 +1083,7 @@ void Chat::repaintMessages()
 		for(QValueList<ChatMessage *>::const_iterator it=ChatMessages.begin(); it!=ChatMessages.end(); ++it)
 			text=(*it)->message+text;
 		body->setText(text);
-		if (config_file.readBoolEntry("General", "ForceUseParagraphs") ||
-			((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") != EMOTS_ANIMATED))
+		if (config_file.readBoolEntry("General", "UseParagraphs"))
 		{
 			i=ChatMessages.size()-1;
 			for(QValueList<ChatMessage *>::const_iterator it=ChatMessages.begin(); it!=ChatMessages.end(); ++it, --i)

@@ -1210,7 +1210,8 @@ History::History(UinsList uins): uins(uins), closeDemand(false), finding(false)
 
 	QVBox *vbox1 = new QVBox(split1);
 	body = new KaduTextBrowser(vbox1, "History browser");
-	body->setParagraphSeparators(true);
+	if (config_file.readBoolEntry("General", "UseParagraphs"))
+		body->setParagraphSeparators(true);
 	body->setReadOnly(true);
 	body->QTextEdit::setFont(config_file.readFontEntry("Look","ChatFont"));
 	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")==EMOTS_ANIMATED)
@@ -1339,9 +1340,7 @@ void History::formatHistoryEntry(QString &text, const HistoryEntry &entry, QStri
 		textcolor = config_file.readColorEntry("Look","ChatUsrFontColor").name();
 	}
 
-	bool useParagraphs=(config_file.readBoolEntry("General", "ForceUseParagraphs") ||
-		((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") != EMOTS_ANIMATED)||
-		!config_file.readBoolEntry("General", "ShowEmotHist"));
+	bool useParagraphs=config_file.readBoolEntry("General", "UseParagraphs");
 
 	if (useParagraphs)
 		text.append(QString("<p style=\"color:") + textcolor + "\"><b>");
@@ -1429,9 +1428,7 @@ void History::showHistoryEntries(int from, int count)
 			formatHistoryEntry(text, entries[i], paracolors);
 	body->setText(text);
 
-	if (config_file.readBoolEntry("General", "ForceUseParagraphs") ||
-		((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") != EMOTS_ANIMATED) ||
-		!config_file.readBoolEntry("General", "ShowEmotHist"))
+	if (config_file.readBoolEntry("General", "UseParagraphs"))
 	{
 		for (i = 0; i < paracolors.count(); ++i)
 			body->setParagraphBackgroundColor(i, paracolors[i]);

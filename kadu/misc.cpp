@@ -2401,8 +2401,7 @@ KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
 #if QT_VERSION >= 0x030100
 	setWrapPolicy(QTextEdit::AtWordOrDocumentBoundary);
 #endif
-	if (config_file.readBoolEntry("General", "ForceUseParagraphs") ||
-		((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") != EMOTS_NONE))
+	if (config_file.readBoolEntry("General", "UseParagraphs"))
 		setTextFormat(Qt::RichText);
 	
 	connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedSlot()));
@@ -2431,7 +2430,7 @@ void KaduTextBrowser::setParagraphSeparators(bool enabled, int width)
 	ParagraphSeparators = enabled;
 	separatorWidth=width;
 	if (enabled)
-		setMargins(width, width, width, width);
+		setMargins(3*width, 2*width, 3*width, 2*width);
 	else
 		setMargins(0,0,0,0);
 }
@@ -2519,8 +2518,7 @@ void KaduTextBrowser::hyperlinkClicked(const QString &link)
 void KaduTextBrowser::copy()
 {
 	kdebugf();
-	if (config_file.readBoolEntry("General", "ForceUseParagraphs") ||
-		((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") != EMOTS_NONE))
+	if (config_file.readBoolEntry("General", "UseParagraphs"))
 	{
 		int paraFrom, indexFrom, paraTo, indexTo;
 		getSelection(&paraFrom, &indexFrom, &paraTo, &indexTo);
