@@ -681,7 +681,13 @@ void Kadu::userListStatusModified(UserListElement *user)
 			chats[i].ptr->setTitle();
 };
 
-void Kadu::removeUser(QStringList &users, bool permanently = false) {
+void Kadu::removeUser(QStringList &users, bool permanently = false)
+{
+	if(QMessageBox::warning(kadu, "Kadu",
+		i18n("Selected users will be deleted. Are you sure?"),
+		QMessageBox::Yes,QMessageBox::No)!=QMessageBox::Yes)
+		return;
+
 	int i;
 
 	for (i = 0; i < users.count(); i++)
@@ -695,14 +701,7 @@ void Kadu::removeUser(QStringList &users, bool permanently = false) {
 		userlist.removeUser(user.altnick);
 		}
 
-	switch (QMessageBox::information(kadu, "Kadu", i18n("Save current userlist?"),
-		i18n("Yes"), i18n("No"), QString::null, 0, 1) ) {
-		case 0: // Yes?
-			userlist.writeToFile();
-			break;
-		case 1:
-			break;
-		}
+	userlist.writeToFile();
 	refreshGroupTabBar();
 }
 

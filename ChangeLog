@@ -1,3 +1,6 @@
++++ wersja 0.3.3-rc3
+* sensowne potwierdzenie usuniêcia kontaktu (adrian)
+
 +++ wersja 0.3.3-rc2
 * sporo poprawek dla FreeBSD (adrian)
 * gdy mamy status domy¶lny "niedostêpny" to nie ginie nam zapamiêtany
