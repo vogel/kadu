@@ -117,23 +117,23 @@ void UserBox::refresh()
 		UserListElement& user=userlist.byUin(a_users[i]);
 		if (ifPendingMessages(user.uin))
 		{
-	    		insertItem(QPixmap((const char **)gg_msg_xpm), __c2q(user.nickname));
+	    		insertItem(QPixmap((const char **)gg_msg_xpm), user.comment);
 		}
 		else
 		{
 			switch (user.status)
 			{
 				case GG_STATUS_AVAIL:
-		    			insertItem(QPixmap((const char **)gg_act_xpm), __c2q(user.nickname));			
+		    			insertItem(QPixmap((const char **)gg_act_xpm), user.comment);			
 		    			break;
 				case GG_STATUS_AVAIL_DESCR:
-		    			insertItem(QPixmap((const char **)gg_actdescr_xpm), __c2q(user.nickname));			
+		    			insertItem(QPixmap((const char **)gg_actdescr_xpm), user.comment);			
 		    			break;
 				case GG_STATUS_BUSY:
-		    			insertItem(QPixmap((const char **)gg_busy_xpm), __c2q(user.nickname));			
+		    			insertItem(QPixmap((const char **)gg_busy_xpm), user.comment);			
 		    			break;
 				case GG_STATUS_BUSY_DESCR:
-		    			insertItem(QPixmap((const char **)gg_busydescr_xpm), __c2q(user.nickname));			
+		    			insertItem(QPixmap((const char **)gg_busydescr_xpm), user.comment);			
 		    			break;
 			};
 		};
@@ -144,17 +144,17 @@ void UserBox::refresh()
 		UserListElement& user=userlist.byUin(i_users[i]);
 		if (ifPendingMessages(user.uin))
 		{
-	    		insertItem(QPixmap((const char **)gg_msg_xpm), __c2q(user.nickname));
+	    		insertItem(QPixmap((const char **)gg_msg_xpm), user.comment);
 		}
 		else
 		{
 			switch (user.status)
 			{
 				case GG_STATUS_INVISIBLE_DESCR:
-		    			insertItem(QPixmap((const char **)gg_invidescr_xpm), __c2q(user.nickname));			
+		    			insertItem(QPixmap((const char **)gg_invidescr_xpm), user.comment);			
     		    			break;
 				case GG_STATUS_INVISIBLE2:
-		    			insertItem(QPixmap((const char **)gg_invi_xpm), __c2q(user.nickname));			
+		    			insertItem(QPixmap((const char **)gg_invi_xpm), user.comment);			
 		    			break;
 			};
 		};
@@ -165,17 +165,17 @@ void UserBox::refresh()
 		UserListElement& user=userlist.byUin(n_users[i]);
 		if (ifPendingMessages(user.uin))
 		{
-	    		insertItem(QPixmap((const char **)gg_msg_xpm), __c2q(user.nickname));
+	    		insertItem(QPixmap((const char **)gg_msg_xpm), user.comment);
 		}
 		else
 		{
 			switch (user.status)
 			{
 				case GG_STATUS_NOT_AVAIL_DESCR:
-		    			insertItem(QPixmap((const char **)gg_inactdescr_xpm), __c2q(user.nickname));			
+		    			insertItem(QPixmap((const char **)gg_inactdescr_xpm), user.comment);			
     		    			break;
 				default:
-		    			insertItem(QPixmap((const char **)gg_inact_xpm), __c2q(user.nickname));			
+		    			insertItem(QPixmap((const char **)gg_inact_xpm), user.comment);			
 		    			break;
 			};
 		};
