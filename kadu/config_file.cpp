@@ -276,9 +276,24 @@ QColor ConfigFile::readColorEntry(const QString &group,const QString &name, cons
 	if (str==QString::null)
 		return def ? *def : col;
 	else
-		return QColor(str);
+	{
+		if (!str.contains(','))
+			return QColor(str);
+		
+		//stary zapis kolorów, w 0.5.0 mo¿na bêdzie wywaliæ
+		bool ok;
+		QStringList stringlist = QStringList::split(",", str);
+		if (stringlist.count() != 3)
+			return def ? *def : col;
+		int r = stringlist[0].toInt(&ok); if (!ok) return def ? *def : col;
+		int g = stringlist[1].toInt(&ok); if (!ok) return def ? *def : col;
+		int b = stringlist[2].toInt(&ok); if (!ok) return def ? *def : col;
+		col.setRgb(r, g, b);
+		return col;
+	}
 }
 
+													 
 QFont ConfigFile::readFontEntry(const QString &group,const QString &name, const QFont *def) const
 {
 	QString string = getEntry(group, name);
