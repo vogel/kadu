@@ -561,7 +561,7 @@ Jest to wysoce ryzykowne!</translation>
     </message>
     <message>
         <source>Receive images during invisibility</source>
-        <translation>Odbieraj obrazki gdy jestem niedostępny</translation>
+        <translation>Odbieraj obrazki gdy jestem niewidoczny</translation>
     </message>
     <message>
         <source>Block window close on new message</source>
