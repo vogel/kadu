@@ -15,6 +15,7 @@
 #include "misc.h"
 #include "kadu.h"
 #include "userbox.h"
+#include "debug.h"
 
 UserList::UserList() : QObject(), QValueList<UserListElement>()
 {
@@ -51,7 +52,7 @@ UserListElement& UserList::byUin(uin_t uin)
 	for(iterator i=begin(); i!=end(); i++)
 		if((*i).uin==uin)
 			return (*i);
-	fprintf(stderr, "KK UserList::byUin(): Panic!\n");
+	kdebug("UserList::byUin(): Panic!\n");
 	// Kadu Panic :) What we should do here???
 };
 
@@ -60,7 +61,7 @@ UserListElement& UserList::byNick(QString nickname)
 	for(iterator i=begin(); i!=end(); i++)
 		if((*i).nickname==nickname)
 			return (*i);
-	fprintf(stderr, "KK UserList::byNick(): Panic! %s not exists\n",(const char*)nickname.local8Bit());
+	kdebug("UserList::byNick(): Panic! %s not exists\n",(const char*)nickname.local8Bit());
 	// Kadu Panic :) What we should do here???
 };
 
@@ -69,7 +70,7 @@ UserListElement& UserList::byAltNick(QString altnick)
 	for(iterator i=begin(); i!=end(); i++)
 		if((*i).altnick==altnick)
 			return (*i);
-	fprintf(stderr, "KK UserList::byAltNick(): Panic! %s not exists\n",(const char*)altnick.local8Bit());
+	kdebug("UserList::byAltNick(): Panic! %s not exists\n",(const char*)altnick.local8Bit());
 	// Kadu Panic :) What we should do here???
 };
 
@@ -77,7 +78,7 @@ bool UserList::containsUin(uin_t uin) {
 	for (iterator i = begin(); i != end(); i++)
 		if ((*i).uin == uin)
 			return true;
-	fprintf(stderr, "KK UserList::containsUin(): userlist doesnt contain %d\n", uin);
+	kdebug("UserList::containsUin(): userlist doesnt contain %d\n", uin);
 	return false;
 }
 
@@ -85,7 +86,7 @@ bool UserList::containsAltNick(const QString altnick) {
 	for (iterator i = begin(); i != end(); i++)
 		if ((*i).altnick == altnick)
 			return true;
-	fprintf(stderr, "KK UserList::containsAltNick(): userlist doesnt contain %s\n", (const char *)altnick.local8Bit());
+	kdebug("UserList::containsAltNick(): userlist doesnt contain %s\n", (const char *)altnick.local8Bit());
 	return false;
 }
 
@@ -181,12 +182,12 @@ bool UserList::writeToFile(QString filename)
 
 	faname = ggPath("userattribs");
 
-	fprintf(stderr, "KK UserList::writeToFile(): %s\n", (const char *)filename.local8Bit());
+	kdebug("UserList::writeToFile(): %s\n", (const char *)filename.local8Bit());
 
 	QFile f(filename);
 
 	if (!f.open(IO_WriteOnly)) {
-		fprintf(stderr,"KK UserList::writeToFile(): Error opening file :(\n");
+		kdebug("UserList::writeToFile(): Error opening file :(\n");
 		return false;
 		}
 
@@ -209,7 +210,7 @@ bool UserList::writeToFile(QString filename)
 		s.append(QString("\r\n"));
 		
 		if (!(*i).anonymous) {
-			fprintf(stderr, s.local8Bit());
+			kdebug(s.local8Bit());
 			f.writeBlock(s.local8Bit(), s.length());
 			}
 		}
@@ -218,7 +219,7 @@ bool UserList::writeToFile(QString filename)
 	QFile fa(faname);
 
 	if (!fa.open(IO_WriteOnly)) {
-		fprintf(stderr,"KK UserList::writeToFile(): Error opening file :(\n");
+		kdebug("UserList::writeToFile(): Error opening file :(\n");
 		return false;
 		}
 
@@ -234,7 +235,7 @@ bool UserList::writeToFile(QString filename)
 		s.append(QString("\r\n"));
 		
 		if (!(*i).anonymous && (*i).uin) {
-			fprintf(stderr, s.local8Bit());
+			kdebug(s.local8Bit());
 			fa.writeBlock(s.local8Bit(), s.length());
 			}
 		}
@@ -250,11 +251,11 @@ bool UserList::readFromFile()
 	QString line;
 
 	path = ggPath("userattribs");
-	fprintf(stderr, "KK UserList::readFromFile(): Opening userattribs file: %s\n",
+	kdebug("UserList::readFromFile(): Opening userattribs file: %s\n",
 		(const char *)path.local8Bit());
 	QFile fa(path);
 	if (!fa.open(IO_ReadOnly)) {
-		fprintf(stderr, "KK UserList::readFromFile(): Error opening userattribs file\n");
+		kdebug("UserList::readFromFile(): Error opening userattribs file\n");
 		}
 	else {
 		QTextStream s(&fa);
@@ -268,15 +269,15 @@ bool UserList::readFromFile()
 		}
 
 	path = ggPath("userlist");
-	fprintf(stderr, "KK UserList::readFromFile(): Opening userlist file: %s\n",
+	kdebug("UserList::readFromFile(): Opening userlist file: %s\n",
 		(const char *)path.local8Bit());
 	QFile f(path);
 	if (!f.open(IO_ReadOnly)) {
-		fprintf(stderr, "KK UserList::readFromFile(): Error opening userlist file");
+		kdebug("UserList::readFromFile(): Error opening userlist file");
 		return false;
 		}
 
-	fprintf(stderr, "KK UserList::readFromFile(): File opened successfuly\n");
+	kdebug("UserList::readFromFile(): File opened successfuly\n");
 
 	clear();
 

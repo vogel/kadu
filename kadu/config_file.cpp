@@ -11,13 +11,14 @@
 #include <stdio.h>
 
 #include "misc.h"
+#include "debug.h"
 #include "config_file.h"
 
 ConfigFile::ConfigFile(const QString &filename) : filename(filename) {
-	fprintf(stderr, "KK ConfigFile::ConfigFile()\n");
+	kdebug("ConfigFile::ConfigFile()\n");
 	read();
 	activegroup = NULL;
-	fprintf(stderr, "KK ConfigFile::ConfigFile(): finished\n");
+	kdebug("ConfigFile::ConfigFile(): finished\n");
 }
 
 void ConfigFile::read() {
@@ -26,7 +27,7 @@ void ConfigFile::read() {
 	struct ConfigFileGroup activegroup;
 	struct ConfigFileEntry activeentry;
 
-	fprintf(stderr, "KK ConfigFile::read()\n");
+	kdebug("ConfigFile::read()\n");
 	if (file.open(IO_ReadWrite)) {
 		QTextStream stream(&file);
 		while ((line = stream.readLine()) != QString::null) {
@@ -52,7 +53,7 @@ void ConfigFile::read() {
 			groups.append(activegroup);
 		file.close();
 		}
-	fprintf(stderr, "KK ConfigFile::read(): finished\n");
+	kdebug("ConfigFile::read(): finished\n");
 }
 
 void ConfigFile::write() {
@@ -61,7 +62,7 @@ void ConfigFile::write() {
 	struct ConfigFileGroup activegroup;
 	struct ConfigFileEntry activeentry;
 
-	fprintf(stderr, "KK ConfigFile::write()\n");
+	kdebug("ConfigFile::write()\n");
 	if (file.open(IO_WriteOnly | IO_Truncate)) {
 		QTextStream stream(&file);
 		for (int i = 0; i < groups.count(); i++) {
@@ -72,20 +73,20 @@ void ConfigFile::write() {
 			}
 		file.close();
 		}
-	fprintf(stderr, "KK ConfigFile::write(): finished\n");
+	kdebug("ConfigFile::write(): finished\n");
 }
 
 void ConfigFile::sync() {
-	fprintf(stderr, "KK ConfigFile::sync()\n");
+	kdebug("ConfigFile::sync()\n");
 	write();
-	fprintf(stderr, "KK ConfigFile::sync()(): finished\n");
+	kdebug("ConfigFile::sync()(): finished\n");
 }
 
 void ConfigFile::setGroup(const QString &name) {
 	struct ConfigFileGroup newgroup;
 	int i;
 
-	fprintf(stderr, "KK ConfigFile::setGroup()\n");
+	kdebug("ConfigFile::setGroup()\n");
 	for (i = 0; i < groups.count(); i++)
 		if (name == groups[i].name)
 			break;
@@ -97,14 +98,14 @@ void ConfigFile::setGroup(const QString &name) {
 				break;
 		}
 	activegroup = &(groups[i]);
-	fprintf(stderr, "KK ConfigFile::setGroup(): finished\n");
+	kdebug("ConfigFile::setGroup(): finished\n");
 }
 
 bool ConfigFile::changeEntry(const QString &name, const QString &value) {
 	struct ConfigFileEntry newentry;
 	int i;
 
-	fprintf(stderr, "KK ConfigFile::changeEntry()\n");
+	kdebug("ConfigFile::changeEntry()\n");
 	for (i = 0; i < activegroup->entries.count(); i++)
 		if (activegroup->entries[i].name == name)
 			break;
@@ -112,12 +113,12 @@ bool ConfigFile::changeEntry(const QString &name, const QString &value) {
 		newentry.name = name;
 		newentry.value = value;
 		activegroup->entries.append(newentry);
-		fprintf(stderr, "KK ConfigFile::changeEntry(): finished\n");
+		kdebug("ConfigFile::changeEntry(): finished\n");
 		return false;
 		}
 	else
 		activegroup->entries[i].value = value;
-	fprintf(stderr, "KK ConfigFile::changeEntry(): finished\n");
+	kdebug("ConfigFile::changeEntry(): finished\n");
 	return true;
 }
 
@@ -125,17 +126,17 @@ QString ConfigFile::getEntry(const QString &name, bool *ok) const {
 	struct ConfigFileEntry newentry;
 	int i;
 
-	fprintf(stderr, "KK ConfigFile::getEntry()\n");
+	kdebug("ConfigFile::getEntry()\n");
 	for (i = 0; i < activegroup->entries.count(); i++)
 		if (activegroup->entries[i].name == name)
 			break;
 	if (ok)
 		*ok = (i < activegroup->entries.count());
 	if (i == activegroup->entries.count()) {
-		fprintf(stderr, "KK ConfigFile::getEntry(): finished\n");
+		kdebug("ConfigFile::getEntry(): finished\n");
 		return QString::null;
 		}
-	fprintf(stderr, "KK ConfigFile::getEntry(): finished\n");
+	kdebug("ConfigFile::getEntry(): finished\n");
 	return activegroup->entries[i].value;
 }
 
