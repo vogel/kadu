@@ -221,13 +221,13 @@ void SearchRecord::clearData()
 {
 	kdebugf();
 	FromUin = 0;
-	Uin = "";
-	FirstName = "";
-	LastName = "";
-	NickName = "";
-	City = "";
-	BirthYearFrom = "";
-	BirthYearTo = "";
+	Uin.truncate(0);
+	FirstName.truncate(0);
+	LastName.truncate(0);
+	NickName.truncate(0);
+	City.truncate(0);
+	BirthYearFrom.truncate(0);
+	BirthYearTo.truncate(0);
 	Gender = 0;
 	Active = false;
 	kdebugf2();
@@ -824,8 +824,8 @@ void GaduProtocol::initModule()
 	QHostAddress ip2;
 	servers = QStringList::split(";", config_file.readEntry("Network","Server", ""));
 	ConfigServers.clear();
-	for (unsigned int i = 0; i < servers.count(); ++i)
-		if (ip2.setAddress(servers[i]))
+	CONST_FOREACH(server, servers)
+		if (ip2.setAddress(*server))
 			ConfigServers.append(ip2);
 
 	kdebugf2();
@@ -1431,7 +1431,7 @@ void GaduProtocol::login()
 		LoginParams.external_port = 0;
 	}
 
-	if (ConfigServers.count() && !config_file.readBoolEntry("Network", "isDefServers") && ConfigServers[ServerNr].ip4Addr())
+	if (!ConfigServers.isEmpty() && !config_file.readBoolEntry("Network", "isDefServers") && ConfigServers[ServerNr].ip4Addr())
 	{
 		ActiveServer = &ConfigServers[ServerNr];
 		++ServerNr;
@@ -1553,17 +1553,18 @@ int GaduProtocol::sendMessage(const UinsList& uins, const char* msg)
 {
 	kdebugf();
 	int seq;
-	if(uins.count()>1)
+	unsigned int uinsCount = uins.count();
+	if (uinsCount>1)
 	{
-		UinType* users = new UinType[uins.count()];
-		for (unsigned int i = 0; i < uins.count(); ++i)
+		UinType* users = new UinType[uinsCount];
+		for (unsigned int i = 0; i < uinsCount; ++i)
 			users[i] = uins[i];
-		seq=gg_send_message_confer(Sess, GG_CLASS_CHAT,
-			uins.count(), users, (unsigned char*)msg);
+		seq = gg_send_message_confer(Sess, GG_CLASS_CHAT,
+			uinsCount, users, (unsigned char*)msg);
 		delete[] users;
 	}
 	else
-		seq=gg_send_message(Sess, GG_CLASS_CHAT, uins[0],
+		seq = gg_send_message(Sess, GG_CLASS_CHAT, uins[0],
 			(unsigned char*)msg);
 
 	SocketNotifiers->checkWrite();
@@ -1576,13 +1577,14 @@ int GaduProtocol::sendMessageRichText(const UinsList& uins, const char* msg, uns
 {
 	kdebugf();
 	int seq;
-	if(uins.count()>1)
+	unsigned int uinsCount = uins.count();
+	if (uinsCount>1)
 	{
-		UinType* users = new UinType[uins.count()];
-		for (unsigned int i = 0; i < uins.count(); ++i)
+		UinType* users = new UinType[uinsCount];
+		for (unsigned int i = 0; i < uinsCount; ++i)
 			users[i] = uins[i];
 		seq = gg_send_message_confer_richtext(Sess, GG_CLASS_CHAT,
-				uins.count(), users, (unsigned char*)msg,
+				uinsCount, users, (unsigned char*)msg,
 				myLastFormats, myLastFormatsLength);
 		delete[] users;
 	}
@@ -2112,7 +2114,7 @@ void GaduProtocol::streamToUserList(QTextStream& stream, UserList& userList) con
 		sections = QStringList::split(";", line, true);
 		secCount = sections.count();
 
-		if (sections.count() < 7)
+		if (secCount < 7)
 			continue;
 
 		e.setFirstName(sections[0]);
@@ -2223,7 +2225,7 @@ bool GaduProtocol::doImportUserList()
 {
 	kdebugf();
 
-	ImportReply = "";
+	ImportReply.truncate(0);
 
 	bool success=(gg_userlist_request(Sess, GG_USERLIST_GET, NULL) != -1);
 	if (!success)
@@ -2534,12 +2536,11 @@ void GaduProtocol::onDestroyConfigDialog()
 	QValueList<QHostAddress> servers;
 	QHostAddress ip;
 	bool ipok;
-	unsigned int i;
 
 	tmpservers = QStringList::split(";", e_servers->text());
-	for (i = 0; i < tmpservers.count(); ++i)
+	CONST_FOREACH(tmpserver, tmpservers)
 	{
-		ipok = ip.setAddress(tmpservers[i]);
+		ipok = ip.setAddress(*tmpserver);
 		if (!ipok)
 			break;
 		servers.append(ip);
@@ -2646,7 +2647,7 @@ int GaduStatus::toStatusNumber(eUserStatus status, bool has_desc)
 
 void GaduStatus::fromStatusNumber(int statusNumber, const QString &description)
 {
-	Description = "";
+	Description.truncate(0);
 
 	switch (statusNumber)
 	{

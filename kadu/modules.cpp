@@ -180,17 +180,17 @@ void ModulesDialog::refreshList()
 	
 	lv_modules->clear();
 
-	QStringList sl_list = modules_manager->staticModules();
-	for(unsigned int i = 0; i < sl_list.size(); ++i)
-		(void) new QListViewItem(lv_modules, sl_list[i], tr("Static"), tr("Loaded"));
+	QStringList moduleList = modules_manager->staticModules();
+	CONST_FOREACH(module, moduleList)
+		new QListViewItem(lv_modules, *module, tr("Static"), tr("Loaded"));
 		
-	sl_list = modules_manager->loadedModules();
-	for(unsigned int i = 0; i < sl_list.size(); ++i)
-		(void) new QListViewItem(lv_modules, sl_list[i], tr("Dynamic"), tr("Loaded"));
+	moduleList = modules_manager->loadedModules();
+	CONST_FOREACH(module, moduleList)
+		new QListViewItem(lv_modules, *module, tr("Dynamic"), tr("Loaded"));
 		
-	sl_list = modules_manager->unloadedModules();
-	for(unsigned int i = 0; i < sl_list.size(); ++i)
-		(void) new QListViewItem(lv_modules, sl_list[i], tr("Dynamic"), tr("Not loaded"));
+	moduleList = modules_manager->unloadedModules();
+	CONST_FOREACH(module, moduleList)
+		new QListViewItem(lv_modules, *module, tr("Dynamic"), tr("Not loaded"));
 	
 	lv_modules->setSelected(lv_modules->findItem(s_selected, 0), true);
 
@@ -409,11 +409,8 @@ QStringList ModulesManager::installedModules() const
 	QDir dir(dataPath("kadu/modules"),"*.so");
 	dir.setFilter(QDir::Files);
 	QStringList installed;
-	for(unsigned int i=0; i<dir.count(); ++i)
-	{
-		QString name=dir[i];
-		installed.append(name.left(name.length()-3));
-	}
+	CONST_FOREACH(entry, dir.entryList())
+		installed.append((*entry).left((*entry).length()-3));
 	return installed;
 }
 
@@ -428,15 +425,12 @@ QStringList ModulesManager::loadedModules() const
 
 QStringList ModulesManager::unloadedModules() const
 {
-	QStringList installed=installedModules();
-	QStringList loaded=loadedModules();
+	QStringList installed = installedModules();
+	QStringList loaded = loadedModules();
 	QStringList unloaded;
-	for(unsigned int i=0; i<installed.size(); ++i)
-	{
-		QString name=installed[i];
-		if (!loaded.contains(name))
-			unloaded.append(name);
-	}
+	CONST_FOREACH(module, installed)
+		if (!loaded.contains(*module))
+			unloaded.append(*module);
 	return unloaded;
 }
 

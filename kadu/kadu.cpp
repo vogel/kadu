@@ -219,7 +219,7 @@ void Kadu::keyPressEvent(QKeyEvent *e)
 	}
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_deleteuser"))
 	{
-		if (Userbox->getSelectedAltNicks().count())
+		if (!Userbox->getSelectedAltNicks().isEmpty())
 			deleteUsers();
 	}
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_persinfo"))
@@ -662,7 +662,7 @@ void Kadu::deleteUsers()
 	QStringList users = activeUserBox->getSelectedAltNicks();
 	removeUser(users, false);
 	if (!Userbox->isSelected(Userbox->currentItem()))
-		InfoPanel->setText("");
+		InfoPanel->clear();
 	kdebugf2();
 }
 
@@ -912,7 +912,7 @@ void Kadu::refreshGroupTabBar()
 	{
 		QString groups = (*user).group();
 		QString group;
-		for (int g = 0; (group = groups.section(',' ,g ,g)) != ""; ++g)
+		for (int g = 0; !(group = groups.section(',' ,g ,g)).isEmpty(); ++g)
 			if (!group_list.contains(group))
 				group_list.append(group);
 	}
@@ -924,7 +924,7 @@ void Kadu::refreshGroupTabBar()
 		if (!group_list.contains(GroupBar->tabAt(i)->text()))
 			GroupBar->removeTab(GroupBar->tabAt(i));
 
-	if (group_list.count() == 0)
+	if (group_list.isEmpty())
 	{
 		GroupBar->hide();
 		setActiveGroup("");
@@ -936,7 +936,7 @@ void Kadu::refreshGroupTabBar()
 	CONST_FOREACH(group, group_list)
 	{
 		bool createNewTab = true;
-		for (int j = 0; j < GroupBar->count(); ++j)
+		for (int j = 0, count = GroupBar->count(); j < count; ++j)
 			if (GroupBar->tabAt(j)->text() == *group)
 				createNewTab = false;
 		if (createNewTab)
@@ -961,7 +961,7 @@ void Kadu::setActiveGroup(const QString& group)
 		{
 			QString user_groups = (*user).group();
 			QString user_group;
-			for (int g = 0; (user_group = user_groups.section(',',g,g)) != ""; ++g)
+			for (int g = 0; !(user_group = user_groups.section(',',g,g)).isEmpty(); ++g)
 				if (user_group == group)
 				{
 					belongsToGroup = true;
@@ -1006,7 +1006,7 @@ void Kadu::userStatusChanged(const UserListElement &user, const UserStatus &/*ol
 	history.appendStatus(user.uin(), user.status());
 	chat_manager->refreshTitlesForUin(user.uin());
 	if (user.status().isOffline())
-		InfoPanel->setText("");
+		InfoPanel->clear();
 	if (!onConnection)//refresh zrobimy jak ju¿ ca³± listê przetworzymy, czyli w userListChanged()
 		UserBox::all_refresh();
 
@@ -1069,7 +1069,7 @@ void Kadu::mouseButtonClicked(int button, QListBoxItem *item)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "button=%d\n", button);
 	if (!item)
-		InfoPanel->setText("");
+		InfoPanel->clear();
 	kdebugf2();
 }
 
@@ -1087,7 +1087,7 @@ void Kadu::sendMessage(const QString &to)
 	if (uin)
 	{
 		UinsList uins = activeUserBox->getSelectedUins();
-		if (uins.count())
+		if (!uins.isEmpty())
 			if (uins.findIndex(config_file.readNumEntry("General", "UIN")) == -1)
 				chat_manager->sendMessage(uin, uins);
 	}
@@ -1234,10 +1234,10 @@ void Kadu::connected()
 
 void Kadu::imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &/*path*/)
 {
-	for (int i = 0; i < pending.count(); i++)
+	for (int i = 0, count = pending.count(); i < count; i++)
 	{
 		PendingMsgs::Element& e = pending[i];
-		e.msg = gadu_images_manager.replaceLoadingImages(e.msg,sender,size,crc32);
+		e.msg = gadu_images_manager.replaceLoadingImages(e.msg, sender, size, crc32);
 	}
 }
 
@@ -1782,7 +1782,7 @@ void Kadu::readTokenValue(QPixmap tokenImage, QString &tokenValue)
 	if (td->exec() == QDialog::Accepted)
 		td->getValue(tokenValue);
 	else
-		tokenValue = "";
+		tokenValue.truncate(0);
 
 	delete td;
 }

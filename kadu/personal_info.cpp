@@ -205,7 +205,7 @@ void PersonalInfoDialog::fillFields(SearchResults& searchResults, int seq, int)
 
 		case READING:
 			kdebugmf(KDEBUG_INFO, "Done reading info,\n");
-			if (searchResults.count() == 0)
+			if (searchResults.isEmpty())
 			{
 				State = READY;
 				break;

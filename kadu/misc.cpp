@@ -563,7 +563,7 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, U
 							gadu_images_manager.getSavedImageFileName(
 								actimage->size,
 								actimage->crc32);
-						if (file_name != "")
+						if (!file_name.isEmpty())
 						{
 							kdebugm(KDEBUG_INFO, "This image was already saved\n");
 							mesg.append(GaduImagesManager::imageHtml(file_name));
@@ -713,7 +713,6 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 	struct attrib_formant actattrib;
 	QValueList<attrib_formant> formantattribs;
 	int pos, idx, inspan;
-	unsigned int i;
 	struct richtext_formant actformant, lastformant;
 	QValueList<struct richtext_formant> formants;
 	bool endspan;
@@ -828,27 +827,26 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 				tmp = tmp.section("\"", 1, 1);
 				attribs = QStringList::split(";", tmp);
 				formantattribs.clear();
-				for (i = 0; i < attribs.count(); ++i)
+				CONST_FOREACH(attrib, attribs)
 				{
-					actattrib.name = attribs[i].section(":", 0, 0);
-					actattrib.value = attribs[i].section(":", 1, 1);
+					actattrib.name = (*attrib).section(":", 0, 0);
+					actattrib.value = (*attrib).section(":", 1, 1);
 					formantattribs.append(actattrib);
 				}
 				actformant.format.position = pos;
 				actformant.format.font = 0;
-				for (i = 0; i < formantattribs.count(); ++i)
+				CONST_FOREACH(actattrib, formantattribs)
 				{
-					actattrib = formantattribs[i];
-					if (actattrib.name == "font-style" && actattrib.value == "italic")
+					if ((*actattrib).name == "font-style" && (*actattrib).value == "italic")
 						actformant.format.font |= GG_FONT_ITALIC;
-					if (actattrib.name == "text-decoration" && actattrib.value == "underline")
+					if ((*actattrib).name == "text-decoration" && (*actattrib).value == "underline")
 						actformant.format.font |= GG_FONT_UNDERLINE;
-					if (actattrib.name == "font-weight" && actattrib.value == "600")
+					if ((*actattrib).name == "font-weight" && (*actattrib).value == "600")
 						actformant.format.font |= GG_FONT_BOLD;
-					if (actattrib.name == "color")
+					if ((*actattrib).name == "color")
 					{
 						actformant.format.font |= GG_FONT_COLOR;
-						QColor color(actattrib.value);
+						QColor color((*actattrib).value);
 						actformant.color.red = color.red();
 						actformant.color.green = color.green();
 						actformant.color.blue = color.blue();
@@ -1398,18 +1396,18 @@ void IconsManager::refreshMenus()
 	FOREACH(it, menus)
 	{
 		QMenuData *menu=(*it).first;
-		for (unsigned int i=0; i<menu->count(); i++)
+		for (unsigned int i = 0, count = menu->count(); i < count; ++i)
 		{
-			int id=menu->idAt(i);
-			QString t=menu->text(id);
+			int id = menu->idAt(i);
+			QString t = menu->text(id);
 
 			FOREACH(it2, (*it).second)
 				//startsWith jest potrzebne, bo je¿eli opcja w menu ma skrót klawiszowy,
 				//to menu->text(id) zwraca napis "Nazwa opcji\tskrót klawiszowy"
-				if (t==(*it2).first || t.startsWith((*it2).first+"\t")) 
+				if (t == (*it2).first || t.startsWith((*it2).first + "\t")) 
 				{
-					bool enabled=menu->isItemEnabled(id);
-					bool checked=menu->isItemChecked(id);
+					bool enabled = menu->isItemEnabled(id);
+					bool checked = menu->isItemChecked(id);
 					menu->changeItem(id, loadIcon((*it2).second), t);
 					menu->setItemEnabled(id, enabled);
 					menu->setItemChecked(id, checked);
@@ -1473,7 +1471,7 @@ void IconsManager::initModule()
 	icons_manager.setPaths(QStringList::split(";", config_file.readEntry("Look", "IconsPaths")));
 
 	QStringList themes=icons_manager.themes();
-	if (!themes.contains(config_file.readEntry("Look","IconTheme")) && themes.count()>0)
+	if (!themes.contains(config_file.readEntry("Look","IconTheme")) && !themes.isEmpty())
 		config_file.writeEntry("Look", "IconTheme", themes[0]);
 
 	icons_manager.setTheme(config_file.readEntry("Look","IconTheme"));
@@ -1525,10 +1523,10 @@ HttpClient::HttpClient()
 void HttpClient::onConnected()
 {
 	kdebugf();
-	QString query = (PostData.size() > 0 ? "POST" : "GET");
+	QString query = PostData.isEmpty() ? "GET": "POST";
 	query += " ";
 
-	if(Path.left(7)!="http://" && config_file.readBoolEntry("Network", "UseProxy"))
+	if (Path.left(7)!="http://" && config_file.readBoolEntry("Network", "UseProxy"))
 		query += "http://" + Host;
 
 	if ((Path.isEmpty() || Path[0] != '/') && Path.left(7)!="http://")
@@ -1541,9 +1539,9 @@ void HttpClient::onConnected()
 	query += "User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4) Gecko/20030617\r\n";
 //	query += "Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8\r\n";
 //	query += "Connection: keep-alive\r\n";
-	if(Referer!="")
+	if (!Referer.isEmpty())
 		query += "Referer: "+Referer+"\r\n";
-	if (Cookies.size() > 0)
+	if (!Cookies.isEmpty())
 	{
 		query += "Cookie: ";
 		CONST_FOREACH(it, Cookies)
@@ -1556,13 +1554,13 @@ void HttpClient::onConnected()
 		}
 		query+="\r\n";
 	}
-	if (PostData.size() > 0)
+	if (!PostData.isEmpty())
 	{
 		query += "Content-Type: application/x-www-form-urlencoded\r\n";
 		query += "Content-Length: " + QString::number(PostData.size()) + "\r\n";
 	}
 	query+="\r\n";
-	if (PostData.size() > 0)
+	if (!PostData.isEmpty())
 		query += QString(PostData);
 	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Sending query:\n%s\n", query.local8Bit().data());
 	Socket.writeBlock(query.local8Bit().data(), query.length());

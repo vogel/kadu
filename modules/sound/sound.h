@@ -161,8 +161,8 @@ class SoundManager : public Themes
 
 		SoundManager(const QString& name, const QString& configname);
 		~SoundManager();
-		bool isMuted();
-		int timeAfterLastSound();
+		bool isMuted() const;
+		int timeAfterLastSound() const;
 		/**
 			Otwiera urz±dzenie d¼wiêkowe do operacji
 			odtwarzania i nagrywania sampli.

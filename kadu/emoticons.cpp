@@ -99,7 +99,7 @@ QString EmoticonsManager::fixFileName(const QString& path,const QString& fn)
 
 bool EmoticonsManager::loadGGEmoticonThemePart(QString subdir)
 {
-	if(subdir!="")
+	if (!subdir.isEmpty())
 		subdir+="/";
 	QString path=themePath()+"/"+subdir;
 	QFile theme_file(path+"emots.txt");
@@ -142,9 +142,9 @@ bool EmoticonsManager::loadGGEmoticonThemePart(QString subdir)
 		}
 		else
 			item.stat=item.anim;
-		for(i=0; i<aliases.size(); ++i)
+		CONST_FOREACH(alias, aliases)
 		{
-			item.alias=aliases[i];
+			item.alias=*alias;
 			Aliases.push_back(item);
 		}
 		item.alias=aliases[0];
@@ -160,12 +160,12 @@ bool EmoticonsManager::loadGGEmoticonTheme()
 	Aliases.clear();
 	Selector.clear();
 	bool something_loaded=false;
-	if(loadGGEmoticonThemePart(""))
-		something_loaded=true;
-	QStringList subdirs=getSubDirs(themePath());
-	for(unsigned int i=0; i<subdirs.size(); ++i)
-		if(loadGGEmoticonThemePart(subdirs[i]))
-			something_loaded=true;
+	if (loadGGEmoticonThemePart(""))
+		something_loaded = true;
+	QStringList subdirs = getSubDirs(themePath());
+	CONST_FOREACH(subdir, subdirs)
+		if (loadGGEmoticonThemePart(*subdir))
+			something_loaded = true;
 
 	if ( something_loaded ) {
 		// delete previous dictionary of emots
@@ -194,7 +194,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc, const QColor& bgcolor,
 	static bool emotsFound = false;
 	const static QString emotTemplate("<img emoticon=\"1\" title=\"%1\" src=\"%2\" bgcolor=\"%3\" animated=\"%4\"/>");
 
-	if (!emotsFound && getSubDirs(dataPath("kadu/themes/emoticons")).size()==0)
+	if (!emotsFound && getSubDirs(dataPath("kadu/themes/emoticons")).isEmpty())
 	{
 		kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "end: NO EMOTICONS!\n");
 		return;
@@ -278,7 +278,7 @@ int EmoticonsManager::selectorCount() const
 
 QString EmoticonsManager::selectorString(int emot_num) const
 {
-	if ((emot_num>=0) && (emot_num<Selector.count()))
+	if (emot_num>=0 && uint(emot_num)<Selector.count())
 		return Selector[emot_num].alias;
 	else
 		return "";
@@ -286,16 +286,16 @@ QString EmoticonsManager::selectorString(int emot_num) const
 
 QString EmoticonsManager::selectorAnimPath(int emot_num) const
 {
-	if ((emot_num>=0) && (emot_num<Selector.count()))
-		return themePath()+"/"+Selector[emot_num].anim;
+	if (emot_num>=0 && uint(emot_num)<Selector.count())
+		return themePath() + "/" + Selector[emot_num].anim;
 	else
 		return "";
 }
 
 QString EmoticonsManager::selectorStaticPath(int emot_num) const
 {
-	if ((emot_num>=0) && (emot_num<Selector.count()))
-		return themePath()+"/"+Selector[emot_num].stat;
+	if (emot_num>=0 && uint(emot_num)<Selector.count())
+		return themePath() + "/" + Selector[emot_num].stat;
 	else
 		return "";
 }

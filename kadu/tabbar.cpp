@@ -298,7 +298,7 @@ void KaduTabBar::dropEvent(QDropEvent* e)
 		{
 			bool ok;
 			QStringList list;
-			for (int i = 0; i < count(); ++i)
+			for (int i = 0, count2 = count(); i < count2; ++i)
 				list << tabAt(i)->text();
 			QString text = QInputDialog::getItem(tr("Add new group"), tr("Name of new group:"),
 				list, 0, true, &ok, 0);

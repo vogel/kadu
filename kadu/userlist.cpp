@@ -42,7 +42,7 @@ void DnsHandler::resultsReady()
 {
 	kdebugf();
 
-	if (DnsResolver.hostNames().count())
+	if (!DnsResolver.hostNames().isEmpty())
 		emit result(DnsResolver.hostNames()[0]);
 	else
 		emit result(QString::null);

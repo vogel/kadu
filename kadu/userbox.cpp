@@ -272,7 +272,7 @@ void KaduListBoxPixmap::calculateSize(const QString &text, int width, QStringLis
 		return;
 	}
 
-	while (tmpout.size())
+	while (!tmpout.isEmpty())
 	{
 		QString curtext=tmpout.front();
 		int textlen=curtext.length();
@@ -415,7 +415,7 @@ void UserBox::mousePressEvent(QMouseEvent *e)
 		{
 			if (!item->isSelected())
 				if (!(e->state() & Qt::ControlButton))
-					for (unsigned int i = 0; i < count(); ++i)
+					for (unsigned int i = 0, count2 = count(); i < count2; ++i)
 						setSelected(i, FALSE);
 			setSelected(item, TRUE);
 			setCurrentItem(item);
@@ -431,12 +431,12 @@ void UserBox::mouseMoveEvent(QMouseEvent* e)
 	if ((e->state() & LeftButton)&&itemAt(e->pos()))
 	{
 		QString drag_text;
-		for(unsigned int i=0; i<count(); ++i)
-			if(isSelected(i))
+		for(unsigned int i = 0, count1 = count(); i < count1; ++i)
+			if (isSelected(i))
 			{
-				if(drag_text!="")
-					drag_text+="\n";
-				drag_text+=item(i)->text();
+				if (!drag_text.isEmpty())
+					drag_text += "\n";
+				drag_text += item(i)->text();
 			}
 		QDragObject* d = new QTextDrag(drag_text,this);
 		d->dragCopy();
@@ -463,12 +463,11 @@ void UserBox::sortUsersByAltNick(QStringList &users)
 void UserBox::refresh()
 {
 	kdebugf();
-	unsigned int i;
 	KaduListBoxPixmap *lbp;
 
 	// Zapamiêtujemy zaznaczonych u¿ytkowników
 	QStringList s_users;
-	for (i = 0; i < count(); ++i)
+	for (unsigned int i = 0, count2 = count(); i < count2; ++i)
 		if (isSelected(i))
 			s_users.append(item(i)->text());
 	QString s_user = currentText();
@@ -665,8 +664,8 @@ void UserBox::changeAllToInactive()
 {
 	kdebugf();
 	QPixmap qp_inact = icons_manager.loadIcon("Offline");
-	for(unsigned int i=0; i<count(); ++i)
-		changeItem(qp_inact,item(i)->text(),i);
+	for(unsigned int i = 0, count2 = count(); i < count2; ++i)
+		changeItem(qp_inact, item(i)->text(), i);
 	kdebugf2();
 }
 
@@ -689,7 +688,7 @@ UinsList UserBox::getSelectedUins() const
 {
 	kdebugf();
 	UinsList uins;
-	for (unsigned int i = 0; i < count(); ++i)
+	for (unsigned int i = 0, count2 = count(); i < count2; ++i)
 		if (isSelected(i))
 		{
 			UserListElement &user = userlist.byAltNick(text(i));
@@ -704,7 +703,7 @@ UserList UserBox::getSelectedUsers() const
 {
 	kdebugf();
 	UserList users;
-	for (unsigned int i=0; i< count(); ++i)
+	for (unsigned int i = 0, count2 = count(); i < count2; ++i)
 		if (isSelected(i))
 			users.addUser(userlist.byAltNick(text(i)));
 	kdebugf2();
@@ -730,7 +729,7 @@ QStringList UserBox::getSelectedAltNicks() const
 {
 	kdebugf();
 	QStringList nicks;
-	for (unsigned int i=0; i< count(); ++i)
+	for (unsigned int i = 0, count2 = count(); i < count2; ++i)
 		if (isSelected(i))
 			nicks.append(text(i));
 	kdebugf2();
@@ -880,18 +879,18 @@ int UserBoxMenu::addItemAtPos(int index,const QString &iconname, const QString &
 
 int UserBoxMenu::getItem(const QString &caption) const
 {
-	for (unsigned int i=0; i<count(); ++i)
-		if (!QString::localeAwareCompare(caption,text(idAt(i)).left(caption.length())))
+	for (unsigned int i = 0, count2 = count(); i < count2; ++i)
+		if (!QString::localeAwareCompare(caption, text(idAt(i)).left(caption.length())))
 			return idAt(i);
 	return -1;
 }
 
 void UserBoxMenu::restoreLook()
 {
-	for (unsigned int i=0; i<count(); ++i)
+	for (unsigned int i = 0, count2 = count(); i < count2; ++i)
 	{
-		setItemEnabled(idAt(i),true);
-		setItemChecked(idAt(i),false);
+		setItemEnabled(idAt(i), true);
+		setItemChecked(idAt(i), false);
 //		setItemVisible(idAt(i),true);
 // nie ma takiej funkcji w qt 3.0.*
 	}
@@ -909,10 +908,10 @@ void UserBoxMenu::show(QListBoxItem *item)
 void UserBoxMenu::refreshIcons()
 {
 	kdebugf();
-	for (unsigned int i=0; i<count(); i++)
+	for (unsigned int i = 0, count2 = count(); i < count2; ++i)
 	{
-		int id=idAt(i);
-		QString t=text(id);
+		int id = idAt(i);
+		QString t = text(id);
 
 		CONST_FOREACH(it, iconNames)
 			if (t.startsWith((*it).first))

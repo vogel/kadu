@@ -272,7 +272,7 @@ void UserInfo::setupTab2()
 
 	// get available groups
 	QStringList list;
-	for (int i = 0; i < kadu->groupBar()->count(); ++i)
+	for (int i = 0, count = kadu->groupBar()->count(); i < count; ++i)
 		list << kadu->groupBar()->tabAt(i)->text();
 	list.remove(tr("All"));
 	// end get available groups
@@ -348,7 +348,7 @@ void UserInfo::newGroupClicked()
 //	QCheckBox *box=new QCheckBox(groupName, groupsBox);
 //	box->setChecked(true);
 
-	if (hiddenCheckBoxes.size() == 0)
+	if (hiddenCheckBoxes.isEmpty())
 	{
 		MessageBox::msg(tr("You can't add so many groups at one stroke. Close this dialog and open one more time."), true);
 		return;

@@ -302,7 +302,7 @@ void Sms::updateRecipient(const QString &newtext)
 	kdebugf();
 	if (newtext.isEmpty())
 	{
-		recipient->setText("");
+		recipient->clear();
 		kdebugf2();
 		return;
 	}

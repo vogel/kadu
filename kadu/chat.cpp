@@ -80,8 +80,8 @@ int ChatManager::registerChat(Chat* chat)
 void ChatManager::unregisterChat(Chat* chat)
 {
 	kdebugf();
-	for(unsigned int i=0; i<Chats.count(); ++i)
-		if(Chats[i]==chat)
+	FOREACH(curChat, Chats)
+		if (*curChat == chat)
 		{
 			setChatProperty(chat->uins(), "Geometry", QRect(chat->pos().x(), chat->pos().y(), chat->size().width(), chat->size().height()));
 			setChatProperty(chat->uins(), "VerticalSizes", toVariantList(chat->vertSplit->sizes()));
@@ -89,7 +89,7 @@ void ChatManager::unregisterChat(Chat* chat)
 				setChatProperty(chat->uins(), "HorizontalSizes", toVariantList(chat->horizSplit->sizes()));
 
 			emit chatDestroying(chat->uins());
-			Chats.remove(Chats.at(i));
+			Chats.remove(curChat);
 			emit chatDestroyed(chat->uins());
 			kdebugf2();
 			return;
@@ -100,51 +100,55 @@ void ChatManager::unregisterChat(Chat* chat)
 void ChatManager::refreshTitles()
 {
 	kdebugf();
-	for (unsigned int i = 0; i < Chats.count(); ++i)
-		Chats[i]->setTitle();
+	CONST_FOREACH(chat, Chats)
+		(*chat)->setTitle();
 	kdebugf2();
 }
 
 void ChatManager::refreshTitlesForUin(UinType uin)
 {
 	kdebugf();
-	for (unsigned int i = 0; i < Chats.count(); ++i)
-		if (Chats[i]->uins().contains(uin))
-			Chats[i]->setTitle();
+	CONST_FOREACH(chat, Chats)
+		if ((*chat)->uins().contains(uin))
+			(*chat)->setTitle();
 	kdebugf2();
 }
 
 void ChatManager::changeAppearance()
 {
 	kdebugf();
-	for (unsigned int i = 0; i < Chats.count(); ++i)
-		Chats[i]->changeAppearance();
+	CONST_FOREACH(chat, Chats)
+		(*chat)->changeAppearance();
 	kdebugf2();
 }
 
 Chat* ChatManager::findChatByUins(const UinsList &uins) const
 {
-	for(unsigned int i=0; i<Chats.count(); ++i)
-		if(Chats[i]->uins().equals(uins))
-			return Chats[i];
+	CONST_FOREACH(chat, Chats)
+		if ((*chat)->uins().equals(uins))
+			return *chat;
 	kdebugmf(KDEBUG_WARNING, "return NULL\n");
 	return NULL;
 }
 
-int ChatManager::openChat(UinsList senders,time_t time)
+int ChatManager::openChat(UinsList senders, time_t time)
 {
 	kdebugf();
 	emit chatOpen(senders);
-	for (unsigned int i = 0; i < Chats.count(); ++i)
-		if (Chats[i]->uins().equals(senders))
+	unsigned int i = 0;
+	CONST_FOREACH(chat, Chats)
+	{
+		if ((*chat)->uins().equals(senders))
 		{
 #if QT_VERSION >= 0x030300
-			Chats[i]->setWindowState(Chats[i]->windowState() & ~WindowMinimized);
+			(*chat)->setWindowState((*chat)->windowState() & ~WindowMinimized);
 #endif
-			Chats[i]->raise();
-			Chats[i]->setActiveWindow();
+			(*chat)->raise();
+			(*chat)->setActiveWindow();
 			return i;
 		}
+		++i;
+	}
 	QStringList uins=senders.toStringList();	uins.sort();
 	Chat* chat = new Chat(senders, 0, QString("chat:%1").arg(uins.join(",")).local8Bit().data());
 	chat->setTitle();
@@ -201,9 +205,9 @@ int ChatManager::openPendingMsg(int index, ChatMessage &msg)
 	PendingMsgs::Element p = pending[index];
 	// jesli ktoregos z nadawcow nie mamy na liscie to dodajemy
 	// go tam jako anonymous
-	for (unsigned int j = 0; j < p.uins.count(); ++j)
-		if (!userlist.containsUin(p.uins[j]))
-			userlist.addAnonymous(p.uins[j]);
+	CONST_FOREACH(uin, p.uins)
+		if (!userlist.containsUin(*uin))
+			userlist.addAnonymous(*uin);
 	// otwieramy chat (jesli nie istnieje)
 	int k = openChat(p.uins,p.time);
 	// dopisujemy nowa wiadomosc do to_add
@@ -211,7 +215,7 @@ int ChatManager::openPendingMsg(int index, ChatMessage &msg)
 	QDateTime date;
 	date.setTime_t(p.time);
 
-	msg=ChatMessage(userlist.byUin(p.uins[0]).altNick(), p.msg, false, QDateTime::currentDateTime(), date);
+	msg = ChatMessage(userlist.byUin(p.uins[0]).altNick(), p.msg, false, QDateTime::currentDateTime(), date);
 	Chats[k]->formatMessage(msg);
 
 	// kasujemy wiadomosc z pending
@@ -237,8 +241,8 @@ void ChatManager::openPendingMsgs(UinsList uins)
 				|| (elem.msgclass & GG_CLASS_MSG) == GG_CLASS_MSG
 				|| !elem.msgclass)
 			{
-				ChatMessage *msg=new ChatMessage("");
-				k=openPendingMsg(i, *msg);
+				ChatMessage *msg = new ChatMessage("");
+				k = openPendingMsg(i, *msg);
 				messages.append(msg);
 
 				--i;
@@ -265,19 +269,19 @@ void ChatManager::openPendingMsgs()
 	bool stop = false;
 	QValueList<ChatMessage *> messages;
 
-	for(i = 0; i<pending.count(); ++i)
+	for(i = 0; i < pending.count(); ++i)
 	{
 		elem = pending[i];
-		if (!uins.count() || elem.uins.equals(uins))
+		if (uins.isEmpty() || elem.uins.equals(uins))
 			if ((elem.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT
 				|| (elem.msgclass & GG_CLASS_MSG) == GG_CLASS_MSG
 				|| (!elem.msgclass))
 			{
-				if (!uins.count())
+				if (uins.isEmpty())
 					uins = elem.uins;
 
-				ChatMessage *msg=new ChatMessage("");
-				k=openPendingMsg(i, *msg);
+				ChatMessage *msg = new ChatMessage("");
+				k = openPendingMsg(i, *msg);
 				messages.append(msg);
 
 				--i;
@@ -306,16 +310,16 @@ void ChatManager::sendMessage(UinType uin,UinsList selected_uins)
 	for (i = 0; i < pending.count(); ++i)
 	{
 		elem = pending[i];
-		if ((!uins.count() && elem.uins.contains(uin)) || (uins.count() && elem.uins.equals(uins)))
+		if ((uins.isEmpty() && elem.uins.contains(uin)) || (!uins.isEmpty() && elem.uins.equals(uins)))
 			if ((elem.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT
 				|| (elem.msgclass & GG_CLASS_MSG) == GG_CLASS_MSG
 				|| !elem.msgclass)
 			{
-				if (!uins.count())
+				if (uins.isEmpty())
 					uins = elem.uins;
 
-				ChatMessage *msg=new ChatMessage("");
-				k=openPendingMsg(i, *msg);
+				ChatMessage *msg = new ChatMessage("");
+				k = openPendingMsg(i, *msg);
 				messages.append(msg);
 
 				--i;
@@ -566,8 +570,8 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 		userbox->setPaletteForegroundColor(config_file.readColorEntry("Look","UserboxFgColor"));
 		userbox->QListBox::setFont(config_file.readFontEntry("Look","UserboxFont"));
 
-		for (unsigned i = 0; i < uins.count(); ++i)
-			userbox->addUser(userlist.byUin(uins[i]).altNick());
+		CONST_FOREACH(uin, uins)
+			userbox->addUser(userlist.byUin(*uin).altNick());
 		userbox->refresh();
 
 		connect(userbox, SIGNAL(rightButtonPressed(QListBoxItem *, const QPoint &)),
@@ -600,12 +604,11 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 	lockscroll->setToggleButton(true);
 	QToolTip::add(lockscroll, tr("Blocks scrolling"));
 
-	for(unsigned int i=0; i<RegisteredButtons.size(); ++i)
+	CONST_FOREACH(b, RegisteredButtons)
 	{
-		RegisteredButton& b=RegisteredButtons[i];
-		QPushButton* btn=new QPushButton(buttontray,b.name.local8Bit().data());
-		connect(btn, SIGNAL(clicked()), b.receiver, b.slot.local8Bit().data());
-		Buttons.insert(b.name,btn);
+		QPushButton* btn = new QPushButton(buttontray, (*b).name.local8Bit().data());
+		connect(btn, SIGNAL(clicked()), (*b).receiver, (*b).slot.local8Bit().data());
+		Buttons.insert((*b).name,btn);
 	}
 
 	QPushButton *clearchat= new QPushButton(buttontray, "clearChatButton");
@@ -769,21 +772,18 @@ void Chat::registerButton(const QString& name,QObject* receiver,const QString& s
 void Chat::unregisterButton(const QString& name)
 {
 	kdebugf();
-	for(unsigned int i=0; i<RegisteredButtons.size(); ++i)
-		if(RegisteredButtons[i].name==name)
+	FOREACH(button, RegisteredButtons)
+		if ((*button).name == name)
 		{
-			RegisteredButtons.remove(RegisteredButtons.at(i));
+			RegisteredButtons.remove(button);
 			break;
 		}
-	for(unsigned int i=0; i<chat_manager->chats().size(); ++i)
-	{
-		Chat* chat=chat_manager->chats()[i];
-		if(chat->Buttons.contains(name))
+	CONST_FOREACH(chat, chat_manager->chats())
+		if ((*chat)->Buttons.contains(name))
 		{
-			delete chat->Buttons[name];
-			chat->Buttons.remove(name);
+			delete (*chat)->Buttons[name];
+			(*chat)->Buttons.remove(name);
 		}
-	}
 	kdebugf2();
 }
 
@@ -926,10 +926,10 @@ void Chat::setTitle()
 		else
 			title = config_file.readEntry("Look","ConferencePrefix");
 		title.append(parse(config_file.readEntry("Look","ConferenceContents"),userlist.byUinValue(Uins[0]),false));
-		for (unsigned int k = 1; k < Uins.size(); ++k)
+		CONST_FOREACH(uin, Uins)
 		{
 			title.append(", ");
-			title.append(parse(config_file.readEntry("Look","ConferenceContents"),userlist.byUinValue(Uins[k]),false));
+			title.append(parse(config_file.readEntry("Look","ConferenceContents"),userlist.byUinValue(*uin),false));
 		}
 		setIcon(icons_manager.loadIcon("Online"));
 	}
@@ -1220,28 +1220,33 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time)
 					++it;
 			}
 		}
-		if (entriestmp.count())
+		if (!entriestmp.isEmpty())
 			entries = entriestmp + entries;
 		kdebugmf(KDEBUG_INFO, "entries = %d\n", entries.count());
 		end = from - 1;
 	}
-	if (entries.count() < chatHistoryQuotation)
+	
+	unsigned int entryCount = entries.count();
+	if (entryCount < chatHistoryQuotation)
 		from = 0;
 	else
-		from = entries.count() - chatHistoryQuotation;
+		from = entryCount - chatHistoryQuotation;
 
 	QValueList<ChatMessage *> messages;
 
-	int quotTime=config_file.readNumEntry("History","ChatHistoryQuotationTime");
-	QString myNick=config_file.readEntry("General","Nick");
-	for (unsigned int i = from; i < entries.count(); ++i)
-		if (entries[i].date.secsTo(QDateTime::currentDateTime()) <= -quotTime * 3600)
+	int quotTime = config_file.readNumEntry("History","ChatHistoryQuotationTime");
+	QString myNick = config_file.readEntry("General","Nick");
+
+	QValueListConstIterator<HistoryEntry> entry = entries.at(from);
+	QValueListConstIterator<HistoryEntry> entriesEnd = entries.end();
+	for (; entry!=entriesEnd; ++entry)
+		if ((*entry).date.secsTo(QDateTime::currentDateTime()) <= -quotTime * 3600)
 		{
 			ChatMessage *msg;
-			if (entries[i].type == HISTORYMANAGER_ENTRY_MSGSEND	|| entries[i].type == HISTORYMANAGER_ENTRY_CHATSEND)
-				msg=new ChatMessage(myNick, entries[i].message, true, entries[i].date);
+			if ((*entry).type == HISTORYMANAGER_ENTRY_MSGSEND || (*entry).type == HISTORYMANAGER_ENTRY_CHATSEND)
+				msg = new ChatMessage(myNick, (*entry).message, true, (*entry).date);
 			else
-				msg=new ChatMessage(entries[i].nick, entries[i].message, false, entries[i].date, entries[i].sdate);
+				msg = new ChatMessage((*entry).nick, (*entry).message, false, (*entry).date, (*entry).sdate);
 			messages.append(msg);
 		}
 	formatMessages(messages);
@@ -1256,7 +1261,7 @@ void Chat::checkPresence(UinsList senders, const QString &msg, time_t time, QVal
 	QDateTime date;
 	date.setTime_t(time);
 
-	ChatMessage *message=new ChatMessage(userlist.byUin(senders[0]).altNick(), msg, false, QDateTime::currentDateTime(), date);
+	ChatMessage *message = new ChatMessage(userlist.byUin(senders[0]).altNick(), msg, false, QDateTime::currentDateTime(), date);
 	formatMessage(*message);
 	messages.append(message);
 
@@ -1714,21 +1719,20 @@ ColorSelector::ColorSelector(const QColor &defColor, QWidget* parent, const char
 	for (i = 0; i < 16; ++i)
 		qcolors.append(colors[i]);
 
-	int selector_count=qcolors.count();
-	int selector_width=(int)sqrt((double)selector_count);
+	int selector_width = 4; //sqrt(16)
 	QGridLayout *grid = new QGridLayout(this, 0, selector_width, 0, 0);
 
-	for(int i=0; i<selector_count; ++i)
+	CONST_FOREACH(color, qcolors)
 	{
-		ColorSelectorButton* btn = new ColorSelectorButton(this, qcolors[i], 1, QString("color_selector:%1").arg(qcolors[i].name()).local8Bit().data());
-		grid->addWidget(btn, i/selector_width, i%selector_width);
-		connect(btn,SIGNAL(clicked(const QColor&)),this,SLOT(iconClicked(const QColor&)));
+		ColorSelectorButton* btn = new ColorSelectorButton(this, *color, 1, QString("color_selector:%1").arg((*color).name()).local8Bit().data());
+		grid->addWidget(btn, i / selector_width, i % selector_width);
+		connect(btn, SIGNAL(clicked(const QColor&)), this, SLOT(iconClicked(const QColor&)));
 	}
-	if (qcolors.contains(defColor)==0)
+	if (!qcolors.contains(defColor))
 	{
 		ColorSelectorButton* btn = new ColorSelectorButton(this, defColor, 4, QString("color_selector:%1").arg(defColor.name()).local8Bit().data());
 		grid->addMultiCellWidget(btn, 4, 4, 0, 3);
-		connect(btn,SIGNAL(clicked(const QColor&)),this,SLOT(iconClicked(const QColor&)));
+		connect(btn, SIGNAL(clicked(const QColor&)), this, SLOT(iconClicked(const QColor&)));
 	}
 	kdebugf2();
 }

@@ -41,7 +41,7 @@ bool PendingMsgs::pendingMsgs(UinType uin) const
 
 bool PendingMsgs::pendingMsgs() const
 {
-	return (msgs.size()>0);
+	return !msgs.isEmpty();
 }
 
 int PendingMsgs::count() const

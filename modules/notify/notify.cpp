@@ -35,6 +35,9 @@ extern "C" void notify_close()
 Notify::Notify(QObject *parent, const char *name) : QObject(parent, name)
 {
 	kdebugf();
+	eventNames<<"ConnError"<<"NewChat"<<"NewMessage"<<"StatusChanged"<<"toAvailable"<<
+				"toBusy"<<"toInvisible"<<"toNotAvailable"<<"Message";
+
 	notifySignals["NewChat"]=			QString(SIGNAL(newChat(const UinsList &, const QString &, time_t)));
 	notifySignals["NewMessage"]=		QString(SIGNAL(newMessage(const UinsList &, const QString &, time_t, bool &)));
 	notifySignals["ConnError"]=			QString(SIGNAL(connectionError(const QString &)));
@@ -141,7 +144,7 @@ Notify::~Notify()
 	disconnect(gadu, SIGNAL(userStatusChanged(const UserListElement &, const UserStatus &, bool)),
 		this, SLOT(userStatusChanged(const UserListElement &, const UserStatus &, bool)));
 
-	if (notifiers.size()>0)
+	if (!notifiers.isEmpty())
 	{
 		kdebugm(KDEBUG_WARNING, "WARNING: not unregistered notifiers found! (%d)\n", notifiers.size());
 		QValueList<QString> notifierNames = keys(notifiers);
@@ -231,11 +234,8 @@ void Notify::addConfigColumn(const QString &name, const QMap<QString, QString> &
 	ConfigDialog::addVBox("Notify", "Notify configuration", name+"_vbox");
 	ConfigDialog::addLabel("Notify", name+"_vbox", name);
 
-	QStringList t;
-	t<<"ConnError"<<"NewChat"<<"NewMessage"<<"StatusChanged"<<"toAvailable"<<"toBusy"<<"toInvisible"<<"toNotAvailable"<<"Message";
-
 	int i = 1;
-	CONST_FOREACH(it, t)
+	CONST_FOREACH(it, eventNames)
 	{
 		ConfigDialog::addCheckBox("Notify", name+"_vbox", " ", (*it)+"_"+name, false, "", name+QString::number(i));
 		if (!notifierSlots.contains(*it))
@@ -249,11 +249,8 @@ void Notify::removeConfigColumn(const QString &name, const QMap<QString, QPair<Q
 {
 	kdebugf();
 
-	QStringList t;
-	t<<"ConnError"<<"NewChat"<<"NewMessage"<<"StatusChanged"<<"toAvailable"<<"toBusy"<<"toInvisible"<<"toNotAvailable"<<"Message";
-
 	int i = 1;
-	CONST_FOREACH(it, t)
+	CONST_FOREACH(it, eventNames)
 	{
 		ConfigDialog::removeControl("Notify", " ", name+QString::number(i));
 		if (!notifierSlots.contains(*it))
@@ -272,19 +269,19 @@ void Notify::updateConnections()
 
 	FOREACH(i, notifiers)
 	{
-		QString notifierName=i.key();
-		Notifier &notifier=i.data();
+		QString notifierName = i.key();
+		Notifier &notifier = i.data();
 		FOREACH(j, notifier.notifierSlots)
 		{
-			QString signalName=j.key();
-			QPair<QString, bool> &connection=j.data();
-			if (config_file.readBoolEntry("Notify", signalName+"_"+notifierName)!=connection.second)
+			QString signalName = j.key();
+			QPair<QString, bool> &connection = j.data();
+			if (config_file.readBoolEntry("Notify", signalName + "_" + notifierName) != connection.second)
 			{
 				if (connection.second)
 					disconnect(this, notifySignals[signalName], notifier.notifier, connection.first);
 				else
 					connect(this, notifySignals[signalName], notifier.notifier, connection.first);
-				connection.second=!connection.second;
+				connection.second =! connection.second;
 			}
 		}
 	}
@@ -374,7 +371,7 @@ void Notify::emitMessage(const QString &from, const QString &to, const QString &
 	kdebugf2();
 }
 
-QStringList Notify::notifiersList()
+QStringList Notify::notifiersList() const
 {
 	return QStringList(keys(notifiers));
 }

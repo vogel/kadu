@@ -84,7 +84,8 @@ void Updates::gotUpdatesInfo(const QByteArray &data, QNetworkOperation * /*op*/)
 	kdebugf();
 	if (config_file.readBoolEntry("General", "CheckUpdates"))
 	{
-		if (data.size() > 31)
+		int size = data.size();
+		if (size > 31)
 		{
 			kdebugmf(KDEBUG_WARNING, "cannot obtain update info\n");
 			disconnect(gadu, SIGNAL(connected()), this, SLOT(run()));
@@ -94,9 +95,9 @@ void Updates::gotUpdatesInfo(const QByteArray &data, QNetworkOperation * /*op*/)
 		}
 		
 		char buf[32];
-		for (unsigned i = 0; i < data.size(); ++i)
+		for (unsigned i = 0; i < size; ++i)
 			buf[i] = data[i];
-		buf[data.size()] = 0;
+		buf[size] = 0;
 		QString newestversion = buf;
 
 		kdebugmf(KDEBUG_INFO, "%s\n", buf);

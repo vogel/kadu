@@ -926,7 +926,7 @@ void Wizard::createInfoPanelPage()
 	connect(c_showScrolls, SIGNAL(toggled(bool)), this, SLOT(addScrolls(bool)));	//--j.w.
 	
 	QString panelConstruction=config_file.readEntry("Look", "PanelContents", "");
-	if (panelConstruction != "")
+	if (!panelConstruction.isEmpty())
 	{	
 		UserListElement el;		
 		unsigned int i;
@@ -1272,8 +1272,8 @@ void Wizard::previewIconTheme(int iconThemeID)
 	icons_manager.setTheme(iconName);
 	
 	QString path=icons_manager.iconPath("Online");
-	for (int i=0; i<cb_iconTheme->count(); ++i)
-		if (i!=iconThemeID)
+	for (int i = 0, count = cb_iconTheme->count(); i < count; ++i)
+		if (i != iconThemeID)
 			path.replace(QRegExp(cb_iconTheme->text(i)), cb_iconTheme->text(iconThemeID));
 	path.replace(QRegExp(tr("Default")), "default");
 	iconPreview->setPixmap(path);

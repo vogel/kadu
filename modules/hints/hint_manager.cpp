@@ -294,14 +294,15 @@ void HintManager::deleteHint(unsigned int id)
 #if QT_VERSION < 0x030100
 	recreateLayout();
 #endif
-	if (!hints.count())
+	if (hints.isEmpty())
 	{
 		hint_timer->stop();
 		hide();
 		return;
 	}
-	for (unsigned int i = id; i < hints.count(); ++i)
-		hints.at(i)->setId(i);
+	unsigned int i = 0;
+	CONST_FOREACH(hint, hints)
+		(*hint)->setId(i++);
 	setHint();
 	kdebugf2();
 }
@@ -372,8 +373,8 @@ void HintManager::midButtonSlot(unsigned int id)
 void HintManager::openChat(unsigned int id)
 {
 	kdebugf();
-	UinsList senders=hints.at(id)->getUins();
-	if(senders.size()!=0)
+	UinsList senders = hints.at(id)->getUins();
+	if (!senders.isEmpty())
 		chat_manager->openPendingMsgs(senders);
 	deleteHint(id);
 	kdebugf2();
@@ -384,8 +385,8 @@ void HintManager::deleteAllHints()
 	kdebugf();
 	hint_timer->stop();
 #if QT_VERSION >= 0x030100
-	for (unsigned int i = 0; i < hints.count(); ++i)
-		grid->removeItem(hints.at(i));
+	CONST_FOREACH(hint, hints)
+		grid->removeItem(*hint);
 #endif
 	hints.clear();
 #if QT_VERSION < 0x030100
@@ -404,7 +405,7 @@ void HintManager::addHint(const QString& text, const QPixmap& pixmap, const QFon
 	grid->addLayout(hints.at(i), i, 0);
 	hints.at(i)->set(font, color, bgcolor, i);
 
-	if(senders.count()>0)
+	if (!senders.isEmpty())
 		hints.at(i)->setUins(senders);
 
 	connect(hints.at(i), SIGNAL(leftButtonClicked(unsigned int)), this, SLOT(leftButtonSlot(unsigned int)));

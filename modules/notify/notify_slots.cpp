@@ -61,9 +61,11 @@ void NotifySlots::onApplyConfigDialog()
 	QListBox *e_availusers= ConfigDialog::getListBox("Notify", "available");
 	QListBox *e_notifies= ConfigDialog::getListBox("Notify", "track");
 
-	for (i = 0; i < e_notifies->count(); ++i)
+	unsigned int count = e_notifies->count();
+	for (i = 0; i < count; ++i)
 		userlist.byAltNick(e_notifies->text(i)).setNotify(true);
-	for (i = 0; i < e_availusers->count(); ++i)
+	count = e_availusers->count();
+	for (i = 0; i < count; ++i)
 		userlist.byAltNick(e_availusers->text(i)).setNotify(false);
 	kdebugf2();
 }
@@ -115,11 +117,11 @@ void NotifySlots::_Left(void)
 	QListBox *e_availusers= ConfigDialog::getListBox("Notify", "available");
 	QListBox *e_notifies= ConfigDialog::getListBox("Notify", "track");
 	QStringList tomove;
-	unsigned int i;
+	unsigned int i, count = e_notifies->count();
 
-	for(i=0; i<e_notifies->count(); ++i)
+	for (i = 0; i < count; ++i)
 		if (e_notifies->isSelected(i))
-			tomove+=e_notifies->text(i);
+			tomove += e_notifies->text(i);
 
 	CONST_FOREACH(elem, tomove)
 	{
@@ -137,11 +139,11 @@ void NotifySlots::_Right(void)
 	QListBox *e_availusers= ConfigDialog::getListBox("Notify", "available");
 	QListBox *e_notifies= ConfigDialog::getListBox("Notify", "track");
 	QStringList tomove;
-	unsigned int i;
+	unsigned int i, count = e_availusers->count();
 
-	for(i=0; i<e_availusers->count(); ++i)
+	for(i = 0; i < count; ++i)
 		if (e_availusers->isSelected(i))
-			tomove+=e_availusers->text(i);
+			tomove += e_availusers->text(i);
 
 	CONST_FOREACH(elem, tomove)
 	{

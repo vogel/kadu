@@ -357,7 +357,7 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 	b_sendbtn->setEnabled(true);
 	b_nextbtn->setEnabled(true);
 
-	if (!searchResults.count())
+	if (searchResults.isEmpty())
 	{
 		kdebugmf(KDEBUG_INFO, "No results. Exit.\n");
 		QMessageBox::information(this, tr("No results"),

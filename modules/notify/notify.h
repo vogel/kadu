@@ -6,6 +6,7 @@
 #include <qvariant.h>
 #include <qpair.h>
 #include <qvaluelist.h>
+#include <qstringlist.h>
 
 #include "gadu.h"
 #include "notify_slots.h"
@@ -26,6 +27,7 @@ class Notify : public QObject
 		};
 		QMap<QString, Notifier> notifiers; //nazwa powiadamiacza("Hints") -> obiekt powiadomienia
 		QMap<QString, QString> notifySignals; //nazwa sygna³u("NewMessage") -> sygna³ (SIGNAL(newMessage(...)))
+		QStringList eventNames;
 
 		/*
 		 * dodaje kolumnê checkboksów w konfiguracji,
@@ -82,7 +84,7 @@ class Notify : public QObject
 		 */
 		void unregisterNotifier(const QString &name);
 
-		QStringList notifiersList();
+		QStringList notifiersList() const;
 	
 	public slots:
 		/*

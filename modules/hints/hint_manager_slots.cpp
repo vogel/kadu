@@ -93,7 +93,7 @@ void HintManagerSlots::onCreateConfigDialog()
 		
 		config_hint_properties[*prefix]=prop;
 	}
-	currentOptionPrefix="";
+	currentOptionPrefix.truncate(0);
 	
 	QVButtonGroup *group=ConfigDialog::getVButtonGroup("Hints", "Hint type");
 	clicked_HintType(group->id(group->selected()));

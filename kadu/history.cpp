@@ -68,7 +68,7 @@ QString HistoryManager::getFileNameByUinsList(UinsList uins)
 {
 	kdebugf();
 	QString fname;
-	if (uins.count())
+	if (!uins.isEmpty())
 	{
 		uins.sort();
 		unsigned int i = 0, uinsCount = uins.count();
@@ -384,7 +384,7 @@ void HistoryManager::convHist2ekgForm(UinsList uins)
 		foreign = !line.find(QRegExp("^(\\S|\\s)+\\s::\\s\\d{2,2}\\s\\d{2,2}\\s\\d{4,4},\\s\\(\\d{2,2}:\\d{2,2}:\\d{2,2}\\s/\\sS\\s\\d{2,2}:\\d{2,2}:\\d{2,2}\\)$"));
 		if (our || foreign)
 		{
-			if (linelist.count())
+			if (!linelist.isEmpty())
 			{
 				text.truncate(text.length() - 1);
 				if (text[text.length() - 1] == '\n')
@@ -452,13 +452,13 @@ void HistoryManager::convHist2ekgForm(UinsList uins)
 		}
 		else
 		{
-			if (!linelist.count())
+			if (linelist.isEmpty())
 				break;
 			text.append(line);
 			text.append("\n");
 		}
 	}
-	if (linelist.count())
+	if (!linelist.isEmpty())
 	{
 		text.truncate(text.length() - 1);
 		if (text[text.length() - 1] == '\n')
@@ -521,7 +521,7 @@ void HistoryManager::convSms2ekgForm()
 		header = !line.find(QRegExp("^\\S+\\s\\(\\d+\\)\\s::\\s\\d{2,2}\\s\\d{2,2}\\s\\d{4,4},\\s\\(\\d{2,2}:\\d{2,2}:\\d{2,2}\\)$"));
 		if (header)
 		{
-			if (linelist.count())
+			if (!linelist.isEmpty())
 			{
 				text.truncate(text.length() - 1);
 				if (text[text.length() - 1] == '\n')
@@ -562,13 +562,13 @@ void HistoryManager::convSms2ekgForm()
 		}
 		else
 		{
-			if (!linelist.count())
+			if (linelist.isEmpty())
 				break;
 			text.append(line);
 			text.append("\n");
 		}
 	}
-	if (linelist.count())
+	if (!linelist.isEmpty())
 	{
 		text.truncate(text.length() - 1);
 		if (text[text.length() - 1] == '\n')
@@ -654,7 +654,7 @@ QValueList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int fr
 	QString filename, line;
 	int offs;
 
-	if (uins.count())
+	if (!uins.isEmpty())
 		filename = getFileNameByUinsList(uins);
 	else
 		filename = "sms";
@@ -839,7 +839,7 @@ QValueList<HistoryDate> HistoryManager::getHistoryDates(const UinsList &uins)
 	uint offs, count, oldidx, actidx, leftidx, rightidx, /*mididx,*/ olddate, actdate, jmp;
 //	uint num = 0;
 
-	if (uins.count())
+	if (!uins.isEmpty())
 		count = getHistoryEntriesCount(uins);
 	else
 		count = getHistoryEntriesCount("sms");
@@ -938,12 +938,12 @@ QValueList<UinsList> HistoryManager::getUinsLists() const
 	QStringList struins;
 	UinsList uins;
 
-	for (unsigned int i = 0; i < dir.count(); ++i)
+	FOREACH(entry, dir.entryList())
 	{
-		struins = QStringList::split("_", dir[i].replace(QRegExp(".idx$"), ""));
+		struins = QStringList::split("_", (*entry).replace(QRegExp(".idx$"), ""));
 		uins.clear();
 		if (struins[0] != "sms")
-			FOREACH(struin, struins)
+			CONST_FOREACH(struin, struins)
 				uins.append((*struin).toUInt());
 		entries.append(uins);
 	}
@@ -1130,7 +1130,7 @@ int HistoryManager::getHistoryEntryIndexByDate(const UinsList &uins, const QDate
 	{
 		kdebugmf(KDEBUG_INFO, "start = %d, end = %d\n", start, end);
 		entries = getHistoryEntries(uins, start + ((end - start) / 2), 1);
-		if (entries.count())
+		if (!entries.isEmpty())
 			if (date < entries[0].date)
 				end -= ((end - start) / 2) + 1;
 			else if (date > entries[0].date)
@@ -1151,7 +1151,7 @@ int HistoryManager::getHistoryEntryIndexByDate(const UinsList &uins, const QDate
 	if (enddate)
 	{
 		entries = getHistoryEntries(uins, start, 1);
-		if (entries.count() && date < entries[0].date)
+		if (!entries.isEmpty() && date < entries[0].date)
 			--start;
 	}
 	kdebugmf(KDEBUG_FUNCTION_END, "return %d\n", start);
@@ -1207,7 +1207,7 @@ void HistoryManager::imageReceivedAndSaved(UinType sender, uint32_t size, uint32
 			}
 		}
 //		kdebugm(KDEBUG_INFO, "> msgs.size():%d\n", messages.size());
-		while (messages.size()>0)
+		while (!messages.isEmpty())
 		{
 			BuffMessage &msg=messages.front();
 			if (msg.counter>0)
@@ -1216,7 +1216,7 @@ void HistoryManager::imageReceivedAndSaved(UinType sender, uint32_t size, uint32
 			messages.pop_front();
 		}
 //		kdebugm(KDEBUG_INFO, ">> msgs.size():%d\n", messages.size());
-		if (messages.size()==0)
+		if (messages.isEmpty())
 			bufferedMessages.remove(sender);
 	}
 	kdebugf2();
@@ -1241,13 +1241,13 @@ void HistoryManager::addMyMessage(const UinsList &senders, const QString &msg)
 void HistoryManager::checkImageTimeout(UinType uin)
 {
 	kdebugf();
-	time_t currentTime=time(NULL);
-	QValueList<BuffMessage> &msgs=bufferedMessages[uin];
-	while (msgs.count()>0)
+	time_t currentTime = time(NULL);
+	QValueList<BuffMessage> &msgs = bufferedMessages[uin];
+	while (!msgs.isEmpty())
 	{
-		BuffMessage &msg=msgs.front();
+		BuffMessage &msg = msgs.front();
 		kdebugm(KDEBUG_INFO, "arriveTime:%d current:%d counter:%d\n", msg.arriveTime, currentTime, msg.counter);
-		if (msg.arriveTime+60<currentTime || msg.counter==0)
+		if (msg.arriveTime + 60 < currentTime || msg.counter == 0)
 		{
 			kdebugm(KDEBUG_INFO, "moving message to history\n");
 			history.appendMessage(msg.uins, msg.uins[0], msg.message, msg.own, msg.tm, true, msg.arriveTime);
@@ -1259,7 +1259,7 @@ void HistoryManager::checkImageTimeout(UinType uin)
 			break;
 		}
 	}
-	if (msgs.count()==0)
+	if (msgs.isEmpty())
 		bufferedMessages.remove(uin);
 	kdebugf2();
 }
@@ -1267,7 +1267,7 @@ void HistoryManager::checkImageTimeout(UinType uin)
 void HistoryManager::checkImagesTimeouts()
 {
 	kdebugf();
-	QValueList<UinType> uins=keys(bufferedMessages);
+	QValueList<UinType> uins = keys(bufferedMessages);
 	
 	CONST_FOREACH(uin, uins)
 		checkImageTimeout(*uin);
@@ -1280,7 +1280,7 @@ UinsListViewText::UinsListViewText(QListView *parent, const UinsList &uins)
 //	kdebugf();
 	QString name;
 
-	if (!uins.count())
+	if (uins.isEmpty())
 		setText(0, "SMS");
 	else
 	{
@@ -1375,7 +1375,7 @@ History::History(UinsList uins) : QDialog(NULL, "HistoryDialog"), uins(uins), cl
 	{
 		uinslvt = new UinsListViewText(uinslv, *uinsentry);
 		uinslvt->setExpandable(TRUE);
-		if ((*uinsentry).equals(uins) && uins.count())
+		if ((*uinsentry).equals(uins) && !uins.isEmpty())
 			selecteduinslvt = uinslvt;
 	}
 
@@ -1992,7 +1992,7 @@ void HistorySearch::resetFromDate()
 	QValueList<HistoryEntry> entries;
 
 	entries = history.getHistoryEntries(uins, 0, 1);
-	if (entries.count())
+	if (!entries.isEmpty())
 	{
 		from_day_cob->setCurrentItem(entries[0].date.date().day() - 1);
 		from_month_cob->setCurrentItem(entries[0].date.date().month() - 1);
@@ -2010,7 +2010,7 @@ void HistorySearch::resetToDate()
 	QValueList<HistoryEntry> entries;
 
 	entries = history.getHistoryEntries(uins, history.getHistoryEntriesCount(uins) - 1, 1);
-	if (entries.count())
+	if (!entries.isEmpty())
 	{
 		to_day_cob->setCurrentItem(entries[0].date.date().day() - 1);
 		to_month_cob->setCurrentItem(entries[0].date.date().month() - 1);

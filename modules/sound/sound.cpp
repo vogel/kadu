@@ -327,7 +327,7 @@ SoundManager::~SoundManager()
 	kdebugf2();
 }
 
-bool SoundManager::isMuted()
+bool SoundManager::isMuted() const
 {
 	return mute;
 }
@@ -612,7 +612,7 @@ void SoundManager::play(const QString &path, bool force)
 	kdebugf2();
 }
 
-int SoundManager::timeAfterLastSound()
+int SoundManager::timeAfterLastSound() const
 {
 	return lastsoundtime.elapsed();
 }
