@@ -1709,7 +1709,7 @@ INSTALL_STRIP_PROGRAM="\${SHELL} \$(install_sh) -c -s"
 ########################################################################
 
 user_cxxflags="$CXXFLAGS"
-CXXFLAGS="-Os -fno-exceptions -pipe $user_cxxflags"
+CXXFLAGS="-fno-exceptions -pipe $user_cxxflags"
 
 # Checks for programs.
 ac_ext=cc

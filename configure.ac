@@ -203,7 +203,7 @@ AM_INIT_AUTOMAKE([kadu-$version],[$version])
 ########################################################################
 
 user_cxxflags="$CXXFLAGS"
-CXXFLAGS="-O0 -fno-exceptions -pipe $user_cxxflags"
+CXXFLAGS="-fno-exceptions -pipe $user_cxxflags"
 
 # Checks for programs.
 AC_PROG_CXX

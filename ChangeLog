@@ -18,6 +18,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * "Change password" => "Change password/email" (chilek)
 * "Default status" w konfiguracji powinien t³umaczyæ siê na inne jêzyki (chilek)
 * dodane t³umaczenie na jêzyk niemiecki (Robert "kolatzek"/chilek)
+* usuniêcie optymalizacji -Os (chilek zepsu³/adrian naprawi³)
 
 +++ wersja 0.3.5 (05.11.2003)
 * dalsza czê¶æ przeróbek mechanizmu konfiguracji. brakuje jeszcze
