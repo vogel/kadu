@@ -87,6 +87,7 @@ ToolBar* ToolBar::instance=NULL;
 
 ToolBar::ToolBar(QMainWindow* parent) : QToolBar(parent, "main toolbar")
 {
+	kdebugf();
 	setCloseMode(QDockWindow::Undocked);
 	setLabel(tr("Main toolbar"));
 
@@ -99,6 +100,7 @@ ToolBar::ToolBar(QMainWindow* parent) : QToolBar(parent, "main toolbar")
 
 	createControls();	
 	instance=this;
+	kdebugf2();
 }
 
 ToolBar::~ToolBar()
@@ -109,6 +111,7 @@ ToolBar::~ToolBar()
 
 void ToolBar::createControls()
 {
+	kdebugf();
 	for(QValueList<ToolButton>::iterator j=RegisteredToolButtons.begin(); j!=RegisteredToolButtons.end(); j++)
 		if ((*j).caption== "--separator--")
 			addSeparator();
@@ -117,10 +120,12 @@ void ToolBar::createControls()
 				QString::null, (*j).receiver, (*j).slot, this, (*j).name);
 
 	setStretchableWidget(new QWidget(this));
+	kdebugf2();
 }
 
 void ToolBar::registerSeparator(int position)
 {
+	kdebugf();
 	if(instance!=NULL)
 		instance->clear();
 
@@ -134,11 +139,13 @@ void ToolBar::registerSeparator(int position)
 
 	if(instance!=NULL)
 		instance->createControls();	
+	kdebugf2();
 }
 
 void ToolBar::registerButton(const QIconSet& iconfile, const QString& caption, 
 			QObject* receiver, const char* slot, int position, const char* name)
 {
+	kdebugf();
 	if(instance!=NULL)
 		instance->clear();
 
@@ -158,10 +165,12 @@ void ToolBar::registerButton(const QIconSet& iconfile, const QString& caption,
 
 	if(instance!=NULL)
 		instance->createControls();
+	kdebugf2();
 }
 
 void ToolBar::unregisterButton(const char* name)
 {
+	kdebugf();
 	if(instance!=NULL)
 		instance->clear();
 
@@ -174,6 +183,7 @@ void ToolBar::unregisterButton(const char* name)
 
 	if(instance!=NULL)
 		instance->createControls();		
+	kdebugf2();
 }
 
 QToolButton* ToolBar::getButton(const char* name)
@@ -248,6 +258,7 @@ void Kadu::keyPressEvent(QKeyEvent *e) {
 /* a monstrous constructor so Kadu would take longer to start up */
 Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 {
+	kdebugf();
 	UpdateChecked = false;
 	Docked = false;
 	Autohammer = false;
@@ -501,22 +512,29 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	connect(gadu, SIGNAL(statusChanged(int)), this, SLOT(setCurrentStatus(int)));
 
 	dccsock = NULL;
+	kdebugf2();
 }
 
 void Kadu::createToolBar()
 {
+	kdebugf();
 	new ToolBar(this);
 	setRightJustification(true);
 //	setDockEnabled(Qt::DockBottom, false);
 	setAppropriate(ToolBar::instance, true);
+	kdebugf2();
 }
 
 void Kadu::popupMenu()
 {
+	kdebugf();
 	UserList users;
 	UserBox *activeUserBox=UserBox::getActiveUserBox();
 	if (activeUserBox==NULL)//to siê zdarza...
+	{
+		kdebugf2();
 		return;
+	}
 	users = activeUserBox->getSelectedUsers();
 	UserListElement user = users.first();
 
@@ -575,6 +593,7 @@ void Kadu::popupMenu()
 		UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("View/edit user info")), false);
 	if (!user.uin || isOurUin)
 		UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("Open chat window")), false);
+	kdebugf2();
 }
 
 
@@ -584,18 +603,24 @@ void Kadu::configure()
 }
 
 void Kadu::viewHistory() {
+	kdebugf();
 	UserBox *activeUserBox=UserBox::getActiveUserBox();
 	if (activeUserBox==NULL)
+	{
+		kdebugf2();
 		return;
+	}
 	UinsList uins= activeUserBox->getSelectedUins();
 	if (uins.count()) {
 		History *hb = new History(uins);
 		hb->show();
 	}
+	kdebugf2();
 }
 
 void Kadu::sendFile()
 {
+	kdebugf();
 	if (config_file.readBoolEntry("Network", "AllowDCC"))
 		if (config_dccip.isIp4Addr()) {
 			struct gg_dcc *dcc_new;
@@ -619,14 +644,19 @@ void Kadu::sendFile()
 			else
 				gg_dcc_request(sess, user.uin);
 			}
+	kdebugf2();
 }
 
 void Kadu::lookupInDirectory() {
+	kdebugf();
 	SearchDialog *sd;
 	UserBox *activeUserBox=UserBox::getActiveUserBox();
 	UserList users;
 	if (activeUserBox==NULL)
+	{
+		kdebugf2();
 		return;
+	}
 	users = activeUserBox->getSelectedUsers();
 	if (users.count() == 1) {
 		sd = new SearchDialog(0, tr("User info"), userlist.byAltNick(users.first().altnick).uin);
@@ -637,30 +667,41 @@ void Kadu::lookupInDirectory() {
 		sd = new SearchDialog();
 		sd->show();
 	}
+	kdebugf2();
 }
 
 void Kadu::showUserInfo() {
+	kdebugf();
 	UserBox *activeUserBox=UserBox::getActiveUserBox();
 	UserList users;
 	if (activeUserBox==NULL)
+	{
+		kdebugf2();
 		return;
+	}
 	users = activeUserBox->getSelectedUsers();
 	if (users.count() == 1)
 	{
 		UserInfo *ui = new UserInfo("user info", 0, users.first().altnick);
 		ui->show();
 	}
+	kdebugf2();
 }
 
 void Kadu::deleteUsers()
 {
+	kdebugf();
 	UserBox *activeUserBox=UserBox::getActiveUserBox();
 	if (activeUserBox==NULL)
+	{
+		kdebugf2();
 		return;
+	}
 	QStringList  users = activeUserBox->getSelectedAltNicks();
 	removeUser(users, false);
 	if (!Userbox->isSelected(Userbox->currentItem()))
 		InfoPanel->setText("");
+	kdebugf2();
 }
 
 void Kadu::personalInfo()
@@ -676,10 +717,15 @@ void Kadu::addUserAction() {
 
 void Kadu::deleteHistory()
 {
+	kdebugf();
 	UserBox *activeUserBox=UserBox::getActiveUserBox();
 	if (activeUserBox==NULL)
+	{
+		kdebugf2();
 		return;
+	}
 	history.removeHistory(activeUserBox->getSelectedUins());
+	kdebugf2();
 }
 
 void Kadu::manageIgnored()
@@ -690,10 +736,15 @@ void Kadu::manageIgnored()
 
 void Kadu::openChat()
 {
+	kdebugf();
 	UserBox *activeUserBox=UserBox::getActiveUserBox();
 	if (activeUserBox==NULL)
+	{
+		kdebugf2();
 		return;
+	}
 	chat_manager->openPendingMsgs(activeUserBox->getSelectedUins());
+	kdebugf2();
 }
 
 void Kadu::searchInDirectory()
@@ -757,49 +808,69 @@ void Kadu::hideKadu()
 
 void Kadu::ignoreUser()
 {
+	kdebugf();
 	UserBox *activeUserBox=UserBox::getActiveUserBox();
 	if (activeUserBox==NULL)
+	{
+		kdebugf2();
 		return;
+	}
 	UinsList uins = activeUserBox->getSelectedUins();
 	if (isIgnored(uins))
 		delIgnored(uins);
 	else
 		addIgnored(uins);
 	writeIgnored();
+	kdebugf2();
 }
 
 void Kadu::blockUser()
 {
+	kdebugf();
 	UserBox *activeUserBox=UserBox::getActiveUserBox();
 	if (activeUserBox==NULL)
+	{
+		kdebugf2();
 		return;
+	}
 	UserListElement *puser = &userlist.byAltNick(activeUserBox->getSelectedUsers().first().altnick);
 	puser->blocking = !puser->blocking;
 	gg_remove_notify_ex(sess, puser->uin, puser->blocking ? GG_USER_NORMAL : GG_USER_BLOCKED);
 	gg_add_notify_ex(sess, puser->uin, puser->blocking ? GG_USER_BLOCKED : GG_USER_NORMAL);
 	userlist.writeToFile();
+	kdebugf2();
 }
 
 void Kadu::notifyUser()
 {
+	kdebugf();
 	UserBox *activeUserBox=UserBox::getActiveUserBox();
 	if (activeUserBox==NULL)
+	{
+		kdebugf2();
 		return;
+	}
 	UserListElement *puser = &userlist.byAltNick(activeUserBox->getSelectedUsers().first().altnick);
 	puser->notify = !puser->notify;
 	userlist.writeToFile();
+	kdebugf2();
 }
 
 void Kadu::offlineToUser()
 {
+	kdebugf();
 	UserBox *activeUserBox=UserBox::getActiveUserBox();
 	if (activeUserBox==NULL)
+	{
+		kdebugf2();
 		return;
+	}
 	UserListElement *puser = &userlist.byAltNick(activeUserBox->getSelectedUsers().first().altnick);
 	puser->offline_to_user = !puser->offline_to_user;
 	gg_remove_notify_ex(sess, puser->uin, puser->offline_to_user ? GG_USER_NORMAL : GG_USER_OFFLINE);
 	gg_add_notify_ex(sess, puser->uin, puser->offline_to_user ? GG_USER_OFFLINE : GG_USER_NORMAL);
 	userlist.writeToFile();
+	kdebugf2();
 }
 
 void Kadu::changeAppearance() {
@@ -819,6 +890,7 @@ void Kadu::changeAppearance() {
 		InfoPanel->setVScrollBarMode(QScrollView::Auto);
 	else
 		InfoPanel->setVScrollBarMode(QScrollView::AlwaysOff);
+	kdebugf2();
 }
 
 void Kadu::currentChanged(QListBoxItem *item) {
@@ -842,10 +914,12 @@ void Kadu::currentChanged(QListBoxItem *item) {
 		if (config_file.readBoolEntry("General", "ShowEmotPanel"))
 			InfoPanel->scrollToBottom();
 	}
+	kdebugf2();
 }
 
 void Kadu::refreshGroupTabBar()
 {
+	kdebugf();
 	if (!config_file.readBoolEntry("Look", "DisplayGroupTabs"))
 	{
 		GroupBar->hide();
@@ -888,10 +962,12 @@ void Kadu::refreshGroupTabBar()
 	GroupBar->show();
 	/* odswiezamy - dziala tylko jesli jest widoczny */
 	GroupBar->update();
+	kdebugf2();
 }
 
 void Kadu::setActiveGroup(const QString& group)
 {
+	kdebugf();
 	Userbox->clearUsers();
 	for (unsigned int i = 0; i < userlist.count(); i++)
 	{
@@ -911,6 +987,7 @@ void Kadu::setActiveGroup(const QString& group)
 			Userbox->addUser(userlist[i].altnick);
 	}
 	UserBox::all_refresh();
+	kdebugf2();
 }
 
 void Kadu::groupTabSelected(int id)
@@ -933,10 +1010,12 @@ void Kadu::userListStatusModified(UserListElement *user)
 		|| (user->status == GG_STATUS_NOT_AVAIL_DESCR))
 		InfoPanel->setText("");
 	chat_manager->refreshTitlesForUin(user->uin);
+	kdebugf2();
 }
 
 void Kadu::removeUser(QStringList &users, bool permanently = false)
 {
+	kdebugf();
 	if(QMessageBox::warning(kadu, "Kadu",
 		tr("Selected users will be deleted. Are you sure?"),
 		tr("&Yes"),tr("&No"))!=0)
@@ -957,6 +1036,7 @@ void Kadu::removeUser(QStringList &users, bool permanently = false)
 
 	userlist.writeToFile();
 	refreshGroupTabBar();
+	kdebugf2();
 }
 
 void Kadu::blink() {
@@ -1026,24 +1106,31 @@ void Kadu::mouseButtonClicked(int button, QListBoxItem *item) {
 
 	if (button !=4 || !item)
 		return;
+	kdebugf2();
 }
 
 /* if something's pending, open it, if not, open new message */
 void Kadu::sendMessage(QListBoxItem *item)
 {
+	kdebugf();
 	UserBox *activeUserBox=UserBox::getActiveUserBox();
 	if (activeUserBox==NULL)
+	{
+		kdebugf2();
 		return;
+	}
 	UinType uin = userlist.byAltNick(item->text()).uin;
 	if (uin) {
 		UinsList uins = activeUserBox->getSelectedUins();
 		if (uins.findIndex(config_file.readNumEntry("General", "UIN")) == -1)
 			chat_manager->sendMessage(uin, uins);
 	}
+	kdebugf2();
 }
 
 /* when we want to change the status */
 void Kadu::slotHandleState(int command) {
+	kdebugf();
 	ChooseDescription *cd;
 	
 	switch (command) {
@@ -1107,6 +1194,7 @@ void Kadu::slotHandleState(int command) {
 				setStatus(nstat);
 			break;
 		}
+	kdebugf2();
 }
 
 void Kadu::setCurrentStatus(int status) {
@@ -1131,6 +1219,7 @@ void Kadu::setCurrentStatus(int status) {
 	setIcon(pix);
 	UserBox::all_refresh();
 	emit currentStatusChanged(status);
+	kdebugf2();
 }
 
 void Kadu::setStatus(int status) {
@@ -1150,6 +1239,7 @@ void Kadu::setStatus(int status) {
 	}
 
 	gadu->setStatus(status);
+	kdebugf2();
 }
 
 void Kadu::connecting()
@@ -1165,6 +1255,7 @@ void Kadu::connecting()
 	}
 
 	blinktimer->start(1000, true);
+	kdebugf2();
 }
 
 void Kadu::connected()
@@ -1176,6 +1267,7 @@ void Kadu::connected()
 	kadu->setCurrentStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
 	if ((loginparams.status & (~GG_STATUS_FRIENDS_MASK)) == GG_STATUS_INVISIBLE_DESCR)
 		kadu->setStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
+	kdebugf2();
 }
 
 void Kadu::error(GaduError err)
@@ -1260,7 +1352,7 @@ void Kadu::error(GaduError err)
 
 	if (Autohammer)
 		AutoConnectionTimer::on();
-
+	kdebugf2();
 }
 
 void Kadu::systemMessageReceived(QString &msg)
@@ -1272,6 +1364,7 @@ void Kadu::dataReceived(void) {
 	kdebugf();
 	if (sess->check && GG_CHECK_READ)
 		event_manager.eventHandler(sess);
+	kdebugf2();
 }
 
 void Kadu::dataSent(void) {
@@ -1279,6 +1372,7 @@ void Kadu::dataSent(void) {
 	kadusnw->setEnabled(false);
 	if (sess->check & GG_CHECK_WRITE)
 		event_manager.eventHandler(sess);
+	kdebugf2();
 }
 
 void Kadu::disconnected()
@@ -1296,6 +1390,7 @@ void Kadu::disconnected()
 
 	Autohammer = false;
 	AutoConnectionTimer::off();
+	kdebugf2();
 }
 
 void Kadu::dccFinished(dccSocketClass *dcc) {
@@ -1338,6 +1433,7 @@ bool Kadu::event(QEvent *e) {
 void Kadu::dccReceived(void) {
 	kdebugf();
 	watchDcc();
+	kdebugf2();
 }
 
 void Kadu::dccSent(void) {
@@ -1345,6 +1441,7 @@ void Kadu::dccSent(void) {
 	dccsnw->setEnabled(false);
 	if (dccsock->check & GG_CHECK_WRITE)
 		watchDcc();
+	kdebugf2();
 }
 
 void Kadu::watchDcc(void) {
@@ -1388,6 +1485,7 @@ void Kadu::watchDcc(void) {
 		dccsnw->setEnabled(true);
 
 	gg_free_event(dcc_e);
+	kdebugf2();
 }
 
 bool Kadu::close(bool quit) {
@@ -1461,9 +1559,11 @@ Kadu::~Kadu(void) {
 		delete hintmanager;
 		hintmanager=NULL;
 	}
+	kdebugf2();
 }
 
 void Kadu::createMenu() {
+	kdebugf();
 
 	MenuBar = new QMenuBar(this, "MenuBar");
 
@@ -1489,6 +1589,7 @@ void Kadu::createMenu() {
 	MainMenu->insertItem(icons_manager.loadIcon("Exit"), tr("&Exit Kadu"), this, SLOT(quit()));
 
 	MenuBar->insertItem(tr("&Kadu"), MainMenu);
+	kdebugf2();
 }
 
 void Kadu::InitModules()
@@ -1500,6 +1601,7 @@ void Kadu::statusMenuAboutToHide() {
 }
 
 void Kadu::createStatusPopupMenu() {
+	kdebugf();
 
 	QPixmap pix;
 	QIconSet icon;
@@ -1531,6 +1633,7 @@ void Kadu::createStatusPopupMenu() {
 	dockppm->setItemEnabled(7, false);
 
 	connect(statusppm, SIGNAL(activated(int)), this, SLOT(slotHandleState(int)));
+	kdebugf2();
 }
 
 void Kadu::showdesc(bool show) {
@@ -1558,6 +1661,7 @@ void Kadu::infopanelUpdate(UinType uin) {
 		if (config_file.readBoolEntry("General", "ShowEmotPanel"))
 			InfoPanel->scrollToBottom();
 	}
+	kdebugf2();
 }
 
 QMenuBar* Kadu::menuBar()
@@ -1646,6 +1750,7 @@ void KaduSlots::onCreateConfigDialog()
 		i++;
 	cb_defstatus->setCurrentItem(i);
 	updatePreview();
+	kdebugf2();
 }
 
 void KaduSlots::onDestroyConfigDialog()
@@ -1689,6 +1794,7 @@ void KaduSlots::onDestroyConfigDialog()
 
 	QComboBox *cb_language= ConfigDialog::getComboBox("General", "Set language:");
 	config_file.writeEntry("General", "Language", translateLanguage(qApp, cb_language->currentText(),false));
+	kdebugf2();
 }
 
 void KaduSlots::chooseColor(const char *name, const QColor& color)
@@ -1701,6 +1807,7 @@ void KaduSlots::chooseColor(const char *name, const QColor& color)
 		preview->setPaletteBackgroundColor(color);
 	else
 		kdebugm(KDEBUG_ERROR, "chooseColor: label '%s' not known\n", name);
+	kdebugf2();
 }
 
 void KaduSlots::chooseFont(const char *name, const QFont& font)
@@ -1709,6 +1816,7 @@ void KaduSlots::chooseFont(const char *name, const QFont& font)
 	QLabel *preview= ConfigDialog::getLabel("Look", "<b>Text</b> preview", "preview_panel");
 	if (QString(name)=="panel_font_box")
 		preview->setFont(font);
+	kdebugf2();
 }
 
 void KaduSlots::updatePreview()
@@ -1719,6 +1827,7 @@ void KaduSlots::updatePreview()
 	preview->setPaletteForegroundColor(config_file.readColorEntry("Look", "InfoPanelFgColor"));
 	preview->setPaletteBackgroundColor(config_file.readColorEntry("Look", "InfoPanelBgColor"));
 	preview->setAlignment(Qt::AlignLeft);
+	kdebugf2();
 }
 
 void Kadu::resizeEvent(QResizeEvent *)
@@ -1734,6 +1843,7 @@ void Kadu::resizeEvent(QResizeEvent *)
 
 void Kadu::startupProcedure()
 {
+	kdebugf();
 	if (ShowMainWindowOnStart)
 		show();
 
@@ -1769,6 +1879,7 @@ void Kadu::startupProcedure()
 		Autohammer = true;
 		setStatus(defaultStatus);
 	}
+	kdebugf2();
 }
 
 void Kadu::setShowMainWindowOnStart(bool show)
