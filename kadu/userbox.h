@@ -39,6 +39,7 @@ class UserBox : public QListBox , QToolTip
 		virtual void maybeTip(const QPoint&);
 		virtual void mousePressEvent(QMouseEvent *e);
 		virtual void mouseMoveEvent(QMouseEvent* e);
+		virtual void keyPressEvent(QKeyEvent *e);
 
 	public:
 		UserBox(QWidget* parent=0,const char* name=0,WFlags f=0);

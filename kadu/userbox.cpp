@@ -163,6 +163,12 @@ void UserBox::mouseMoveEvent(QMouseEvent* e)
 	QListBox::mouseMoveEvent(e);
 };
 
+void UserBox::keyPressEvent(QKeyEvent *e)
+{
+    QListBox::keyPressEvent(e);
+    QWidget::keyPressEvent(e);
+}
+
 void UserBox::sortUsersByAltNick(QStringList &users) {
 	int i, count;
 	QString tmp;
