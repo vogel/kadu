@@ -1293,6 +1293,17 @@ void ConfigDialog::updateConfig(void) {
 	else
 		AutoAwayTimer::off();
 	config.dock = b_dock->isChecked();
+	if (config.dock && !trayicon) {
+		trayicon = new TrayIcon(kadu);
+		trayicon->show();
+		trayicon->connectSignals();
+		trayicon->changeIcon();
+		}
+	else
+		if (!config.dock && trayicon) {
+			delete trayicon;
+			trayicon = NULL;
+			}
 	config.defaultstatus = gg_statuses[cb_defstatus->currentItem()];
 
 	bool prevprivatestatus = config.privatestatus;

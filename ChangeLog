@@ -10,6 +10,7 @@
 * kadu nie u¿ywa klas KDE do obs³ugi ikon
 * TrayIcon jest oddzieln± klas± w której mo¿na zrobiæ obs³ugê ikon z
   ró¿nych mened¿erów okien
+* mo¿liwo¶æ w³±czenia/wy³±czenia TrayIcon w trakcie dzia³ania programu
 
 +++ wersja 0.3.3-pre5
 * wszystkie? wiadomo¶ci od u¿ytkowników powinny wpadaæ do okna rozmowy

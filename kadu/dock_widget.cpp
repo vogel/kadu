@@ -10,6 +10,7 @@
 #include <qapplication.h>
 #include <qcursor.h>
 #include <qobject.h>
+#include <qpopupmenu.h>
 
 #include "dock_widget.h"
 #include "misc.h"
@@ -46,7 +47,7 @@ void TrayIcon::show() {
 }
 
 void TrayIcon::connectSignals() {
-	QObject::connect(dockppm, SIGNAL(activated()), dw, SLOT(dockletChange(int)));
+	QObject::connect(dockppm, SIGNAL(activated(int)), dw, SLOT(dockletChange(int)));
 }
 
 DockWidget::DockWidget(QWidget *parent, const char *name ) : KSystemTray( parent, name )
