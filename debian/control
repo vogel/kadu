@@ -1,0 +1,19 @@
+Source: kadu
+Section: net
+Priority: optional
+Maintainer: Dariusz Jagodzik <mast3r@kadu.net>
+Build-Depends: debhelper (>> 3.0.0)
+Standards-Version: 3.5.2
+
+Package: kadu
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: Gadu Gadu client for X11
+ Gadu Gadu is a Windows insant messenger, very popular in Poland.
+ Kadu is a QT3 version for *nix systems.
+
+Package: kadu-doc
+Section: doc
+Architecture: any
+Description: Documentation for Kadu
+ Kadu html documentation.

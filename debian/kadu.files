@@ -1,0 +1,6 @@
+usr/bin/kadu
+usr/share/apps/kadu/*
+usr/share/icons/*
+usr/share/locale/pl/LC_MESSAGES/kadu.mo
+usr/share/man/pl/man1/kadu.1
+usr/share/applnk/Internet/kadu.desktop

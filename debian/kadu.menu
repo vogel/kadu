@@ -1,0 +1,6 @@
+?package(ekg):needs="X11" \
+  section=Apps/Net \
+  title="Kadu" \
+  command="/usr/bin/ekadu" \
+  hints="Gadu-Gadu client for X" \
+  longtitle="Kadu - klient gadu-gadu dla X11"
