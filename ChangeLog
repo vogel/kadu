@@ -66,6 +66,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   teraz zamiast tego stara siê zaznaczaæ szyfrowan± wiadomo¶æ na niebiesko,
   mo¿e siê dorobi do tego konfiguracjê. konieczna by³a kolejna przebudowa
   filtrów przychodz±cych wiadomo¶ci (adrian)
+* konfiguracja statusów w autoresponderze (mkey/joi)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
