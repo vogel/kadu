@@ -273,6 +273,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	totaloccurences = 0;
 
 	edit->setFocus();
+	edit->setColor(QColor(255, 0, 0));
 }
 
 Chat::~Chat() {

@@ -114,7 +114,7 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats) {
 	char *cformats = (char *)formats;
 	struct gg_msg_richtext_format *actformat;
 	struct gg_msg_richtext_color *actcolor;
-	int pos;
+	int pos, idx;
 
 	kdebug("formatGGMessage()\n");
 	bold = italic = underline = color = false;
@@ -165,8 +165,8 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats) {
 				if (actformat->font & GG_FONT_COLOR) {
 					actcolor = (struct gg_msg_richtext_color *)(cformats
 						+ sizeof(struct gg_msg_richtext_format));
-					mesg.append(QString("<FONT color=\"#%1%2%3\">").arg(actcolor->red, 0, 16)
-						.arg(actcolor->green, 0, 16).arg(actcolor->blue, 0, 16));
+					mesg.append(QString("<FONT color=\"%1\">").arg(
+						QColor(actcolor->red, actcolor->green, actcolor->blue).name()));
 					color = true;
 					}
 				else
@@ -194,6 +194,11 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats) {
 	return mesg;
 }
 
+struct attrib_formant {
+	QString name;
+	QString value;
+};
+
 struct richtext_formant {
 	struct gg_msg_richtext_format format;
 	struct gg_msg_richtext_color color;
@@ -202,11 +207,12 @@ struct richtext_formant {
 QString unformatGGMessage(const QString &msg, int &formats_length, void *&formats) {
 	QString mesg, tmp;
 	QStringList attribs;
-	int pos, idx;
+	struct attrib_formant actattrib;
+	QValueList<attrib_formant> formantattribs;
+	int pos, idx, inspan, i;
 	struct gg_msg_richtext richtext_header;
 	struct richtext_formant actformant;
 	QValueList<struct richtext_formant> formants;
-	int inspan;
 	char *cformats, *tmpformats;
 
 	mesg = msg;
@@ -216,6 +222,7 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 	mesg.replace(QRegExp("<p>"), "");
 	mesg.replace(QRegExp("</p>"), "");
 	mesg.replace(QRegExp("&quot;"), "\"");
+	mesg.replace(QRegExp("&amp;"), "&");
 	mesg.replace(QRegExp("&lt;"), "\a");
 	mesg.replace(QRegExp("&gt;"), "\f");
 //	mesg.replace(QRegExp("&lt;"), "#");
@@ -244,16 +251,35 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 				mesg.remove(pos, idx - pos);
 				tmp = tmp.section("\"", 1, 1);
 				attribs = QStringList::split(";", tmp);
+				for (i = 0; i < attribs.count(); i++) {
+					actattrib.name = attribs[i].section(":", 0, 0);
+					actattrib.value = attribs[i].section(":", 1, 1);
+					formantattribs.append(actattrib);
+					}
 				actformant.format.position = pos;
 				actformant.format.font = 0;
-				if (attribs.findIndex("font-style:italic") != -1)
-					actformant.format.font |= GG_FONT_ITALIC;
-				if (attribs.findIndex("text-decoration:underline") != -1)
-					actformant.format.font |= GG_FONT_UNDERLINE;
-				if (attribs.findIndex("font-weight:600") != -1)
-					actformant.format.font |= GG_FONT_BOLD;
+				for (i = 0; i < formantattribs.count(); i++) {
+					actattrib = formantattribs[i];
+					if (actattrib.name == "font-style" && actattrib.value == "italic")
+						actformant.format.font |= GG_FONT_ITALIC;
+					if (actattrib.name == "text-decoration" && actattrib.value == "underline")
+						actformant.format.font |= GG_FONT_UNDERLINE;
+					if (actattrib.name == "font-weight" && actattrib.value == "600")
+						actformant.format.font |= GG_FONT_BOLD;
+					if (actattrib.name == "color") {
+						actformant.format.font |= GG_FONT_COLOR;
+						tmp = actattrib.value.mid(1, 2);
+						actformant.color.red = tmp.toUShort(0, 16);
+						tmp = actattrib.value.mid(3, 2);
+						actformant.color.green = tmp.toUShort(0, 16);
+						tmp = actattrib.value.mid(5, 2);
+						actformant.color.blue = tmp.toUShort(0, 16);
+						}
+					}
 				formants.append(actformant);
-				formats_length += sizeof(struct gg_msg_richtext_format);
+				formats_length += sizeof(struct gg_msg_richtext_format)
+					+ sizeof(struct gg_msg_richtext_color)
+					* ((actformant.format.font & GG_FONT_COLOR) != 0);
 				}
 			else
 				break;
