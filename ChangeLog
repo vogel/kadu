@@ -78,6 +78,10 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * kadu nie odbiera dwa razy tego samego obrazka w obrêbie jednej sesji (adrian)
 * pokazywanie odebranych obrazków w oknie rozmowy (adrian)
 * obrazek klepsydry zanim otrzymamy ten w³a¶ciwy, klepsydra by tomee (adrian)
+* klasa MessageBox ma now± metodê statyczn± wrn() (ostrze¿enia) z ikonk±.
+  metoda wrn() i msg() jako drugi argument przyjmuje bool modal=false. 
+  Swoj± drog± w kodzie przyda³oby siê poprzerabiaæ wszystkie QMessageBox
+  na wrn(), msg() lub ask()... (tomee)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
