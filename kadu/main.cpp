@@ -31,10 +31,7 @@
 #include "register.h"
 #include "misc.h"
 #include "debug.h"
-
-#ifdef MODULES_ENABLED
 #include "modules.h"
-#endif
 
 Kadu *kadu;	
 
@@ -112,9 +109,7 @@ int main(int argc, char *argv[])
 	kadu->setIcon(pix);
 	qApp->setMainWidget(kadu);
 
-#ifdef MODULES_ENABLED
 	ModulesManager::initModule();
-#endif
 
 	if (!config_file.readNumEntry("General","UIN")) {
 		QString path_;

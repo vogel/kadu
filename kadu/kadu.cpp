@@ -59,11 +59,9 @@
 #include "tabbar.h"
 #include "debug.h"
 #include "gadu.h"
-#include "kadu-config.h"
-
-#ifdef MODULES_ENABLED
 #include "modules.h"
-#endif
+
+#include "kadu-config.h"
 
 #define GG_USER_OFFLINE	0x01
 #define	GG_USER_NORMAL	0x03
@@ -242,10 +240,8 @@ void Kadu::keyPressEvent(QKeyEvent *e) {
 		sendFile();
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_configure"))
 		configure();
-#ifdef MODULES_ENABLED
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_modulesmanager"))
 		modules_manager->showDialog();
-#endif
 
 	QWidget::keyPressEvent(e);
 }
@@ -1571,9 +1567,7 @@ bool Kadu::close(bool quit) {
 	else {
 		chat_manager->closeAllWindows();
 		ConfigDialog::closeDialog();
-#ifdef MODULES_ENABLED
 		ModulesManager::closeModule();
-#endif
 
 		if (config_file.readBoolEntry("General", "SaveGeometry"))
 		{
