@@ -1,3 +1,6 @@
+#include <qmessagebox.h>
+#include <klocale.h>
+
 #include "misc.h"
 #include "kadu.h"
 #include "password.h"
@@ -21,11 +24,18 @@ remindPassword::~remindPassword() {
 void remindPassword::start() {
 	fprintf(stderr, "KK remindPassword::start()\n");
 	if (!(h = gg_remind_passwd(config.uin, 1))) {
+		showErrorMessageBox();
 		deleteLater();
 		return;
 		}
 
 	createSocketNotifiers();
+}
+
+void remindPassword::showErrorMessageBox() {
+	fprintf(stderr, "KK remindPassword::showErrorMessageBox()\n");
+	QMessageBox::information(0, i18n("Remind password"),
+		i18n("Error during remind password process."), 0, 0, 1);
 }
 
 void remindPassword::createSocketNotifiers() {
@@ -54,14 +64,14 @@ void remindPassword::deleteSocketNotifiers() {
 
 void remindPassword::dataReceived() {
 	fprintf(stderr, "KK remindPassword::dataReceived()\n");
-	if (h->check && GG_CHECK_READ)
+	if (h->check & GG_CHECK_READ)
 		socketEvent();
 }
 
 void remindPassword::dataSent() {
 	fprintf(stderr, "KK remindPassword::dataSent()\n");
 	snw->setEnabled(false);
-	if (h->check && GG_CHECK_WRITE)
+	if (h->check & GG_CHECK_WRITE)
 		socketEvent();
 }
 
@@ -70,6 +80,7 @@ void remindPassword::socketEvent() {
 	if (gg_remind_passwd_watch_fd(h) == -1) {
 		deleteSocketNotifiers();
 		fprintf(stderr, "KK remindPassword::socketEvent(): error reminding password!\n");
+		showErrorMessageBox();
 		deleteLater();
 		return;
 		}
@@ -78,9 +89,13 @@ void remindPassword::socketEvent() {
 			fprintf(stderr, "KK remindPassword::socketEvent(): changing QSocketNotifiers.\n");
 			deleteSocketNotifiers();
 			createSocketNotifiers();
+			if (h->check & GG_CHECK_WRITE)
+				snw->setEnabled(true);
+			break;
 		case GG_STATE_ERROR:
 			fprintf(stderr, "KK remindPassword::socketEvent(): error reminding password!\n");
 			deleteSocketNotifiers();
+			showErrorMessageBox();
 			deleteLater();
 			break;
 		case GG_STATE_DONE:
@@ -89,7 +104,7 @@ void remindPassword::socketEvent() {
 			deleteLater();
 			break;
 		default:
-			if (h->check && GG_CHECK_WRITE)
+			if (h->check & GG_CHECK_WRITE)
 				snw->setEnabled(true);
 		}
 }

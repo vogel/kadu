@@ -13,6 +13,7 @@ class remindPassword : public QObject {
 	private:
 		void deleteSocketNotifiers();
 		void createSocketNotifiers();
+		void showErrorMessageBox();
 
 		struct gg_http *h;
 		struct gg_pubdir *p;
