@@ -29,7 +29,6 @@ class UserInfo : public QHBox {
 		UserInfo(const QString &, QDialog* parent,
 			const QString &altnick, bool fAddUser = false);
 		~UserInfo();
-		void setUserInfo(UserListElement &ule);
 
 	private:
 		UserListElement *puser;
@@ -62,6 +61,7 @@ class UserInfo : public QHBox {
 
 	public slots:
 		void resultsReady();
+		void setUserInfo(UserListElement &ule);
 
 	private slots:
 		void updateUserlist();

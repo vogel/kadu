@@ -86,6 +86,7 @@ class EmoticonSelector : public QWidget
 		void closeEvent(QCloseEvent *e);
 	public:
 		EmoticonSelector(QWidget* parent = 0, const char *name = 0, Chat *caller = 0);
+	public slots:
 		void alignTo(QWidget* w);
 };
 

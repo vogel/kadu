@@ -120,10 +120,6 @@ class HttpClient : public QObject
 		
 	public:
 		HttpClient();
-		void setHost(QString host);
-		void get(QString path);
-		void post(QString path,const QByteArray& data);
-		void post(QString path,const QString& data);
 		int status();
 		const QByteArray& data();
 		QString encode(const QString& text);
@@ -132,6 +128,12 @@ class HttpClient : public QObject
 		void finished();
 		void redirected(QString link);
 		void error();
+
+	public slots:
+		void setHost(QString host);
+		void get(QString path);
+		void post(QString path,const QByteArray& data);
+		void post(QString path,const QString& data);
 };
 
 /**
@@ -308,13 +310,14 @@ class Themes : public QObject
 		Themes(const QString& name, const QString& configname, const char *name=0);
 		QStringList defaultKaduPathsWithThemes();
 		const QStringList themes();
-		void setTheme(const QString& theme);
 		QString theme();
-		void setPaths(const QStringList& paths);
 		QStringList paths();
 		QStringList additionalPaths();
 		QString themePath(const QString& theme="");
 		QString getThemeEntry(const QString& name);
+	public slots:
+		void setTheme(const QString& theme);
+		void setPaths(const QStringList& paths);
 
 	signals:
 		void themeChanged(const QString& theme);

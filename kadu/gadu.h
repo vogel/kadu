@@ -210,6 +210,8 @@ class GaduProtocol : public QObject
 		void connectionTimeoutTimerSlot();
 		void errorSlot(GaduError);
 		void pingNetwork();
+		void newResults(gg_pubdir50_t res);
+		void userListReplyReceived(char, char *);
 
 	public:	
 		static void initModule();
@@ -230,14 +232,7 @@ class GaduProtocol : public QObject
 		void stringToUserList(QString&, UserList& userList) const;
 		void streamToUserList(QTextStream&, UserList& userList) const;
 
-		void login(int status);
-		void logout();
-
-		/**
-			Zmieniamy sobie status
-		**/
-		void setStatus(int status);
-
+	public slots:
 		/**
 			Wysyla wiadomosc. bez formatowania tekstu.
 			Jesli adresatow jest wiecej niz
@@ -260,11 +255,6 @@ class GaduProtocol : public QObject
 		bool sendImageRequest(UinType uin,int size,uint32_t crc32);
 		bool sendImage(UinType uin,const QString& file_name,uint32_t size,char* data);
 
-		/**
-		  	Szuka ludzi w katalogu publicznym
-		**/
-		void searchInPubdir(SearchRecord& searchRecord);
-		void searchNextInPubdir(SearchRecord& searchRecord);
 
 		/**
 		 	Rejestruje nowego u¿ytkownika
@@ -301,6 +291,21 @@ class GaduProtocol : public QObject
 		**/
 		bool doImportUserList();
 
+		void sendUserList();
+		void login(int status);
+		void logout();
+
+		/**
+			Zmieniamy sobie status
+		**/
+		void setStatus(int status);
+
+		/**
+		  	Szuka ludzi w katalogu publicznym
+		**/
+		void searchInPubdir(SearchRecord& searchRecord);
+		void searchNextInPubdir(SearchRecord& searchRecord);
+
 		/**
 			Pobiera informacje o danych odobowych z katalogu publicznego
 		**/
@@ -310,13 +315,6 @@ class GaduProtocol : public QObject
 			Ustawia informacje o danych osobowych z katalogu publicznego
 		**/
 		void setPersonalInfo(SearchRecord& searchRecord, SearchResult& newData);
-
-	private slots:
-		void newResults(gg_pubdir50_t res);
-		void userListReplyReceived(char, char *);
-
-	public slots:
-		void sendUserList();
 
 	signals:
 		void connected();

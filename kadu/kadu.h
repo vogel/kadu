@@ -98,10 +98,8 @@ class Kadu : public QMainWindow
 		Kadu(QWidget* parent=0, const char *name=0);
 		~Kadu();
 		static void InitModules();
-		void changeAppearance();
 		bool userInActiveGroup(UinType uin);
 		void removeUser(QStringList &, bool);
-		void refreshGroupTabBar();
 		/**
 			Zwraca wskaznik do belki menu glownego okna.
 		**/
@@ -119,20 +117,10 @@ class Kadu : public QMainWindow
 		**/
 		UserBox* userbox();
 		/**
-			Modu³ dokowania powinien to ustawic, aby kadu
-			wiedzialo, ze jest zadokowane.
-		**/
-		void setDocked(bool docked);
-		/**
 			Zwraca true je¶li kadu jest zadokowane.
 		**/
 		bool docked();
 		void startupProcedure();
-		/**
-			Potrzebne dla modu³u dokuj±cego ¿eby
-			g³ówne okno nie miga³o przy starcie...
-		**/
-		void setShowMainWindowOnStart(bool show);
 
 	private slots:
 		void connected();
@@ -143,6 +131,20 @@ class Kadu : public QMainWindow
 		void systemMessageReceived(QString &);
 	
 	public slots:
+		/**
+			Modu³ dokowania powinien to ustawic, aby kadu
+			wiedzialo, ze jest zadokowane.
+		**/
+		void setDocked(bool docked);
+
+		/**
+			Potrzebne dla modu³u dokuj±cego ¿eby
+			g³ówne okno nie miga³o przy starcie...
+		**/
+		void setShowMainWindowOnStart(bool show);
+
+		void refreshGroupTabBar();
+		void changeAppearance();
 		void blink();
 		void dccFinished(dccSocketClass *dcc);
 		void slotHandleState(int command);

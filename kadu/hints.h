@@ -32,8 +32,6 @@ class Hint : public QHBoxLayout
 	public:
 		Hint(QWidget *parent, const QString &text, const QPixmap &pixmap, unsigned int timeout);
 		~Hint();
-		void setId(unsigned int id) {ident = id;}
-		void setUins(UinsList i) { uins=i; };
 		UinsList getUins() { return uins ; };
 		unsigned int id() const {return ident;}
 
@@ -44,6 +42,8 @@ class Hint : public QHBoxLayout
 		bool nextSecond();
 		void setShown(bool);
 		void set(const QFont &, const QColor &, const QColor &, unsigned int, bool show = true);
+		void setId(unsigned int id) {ident = id;}
+		void setUins(UinsList i) { uins=i; };
 
 	signals:
 		void leftButtonClicked(unsigned int);
@@ -67,14 +67,14 @@ class HintManager : public QFrame
 	public:
 		HintManager();
 		static void initModule();
+
+	public slots:
+		void loadConfig();
 		void addHint(const QString &, const QPixmap &, const QFont &, const QColor &, const QColor &, unsigned int, UinsList* senders=0);
 		void addHintError(const QString &);
 		void addHintNewMsg(const QString &, const QString &);
 		void addHintNewChat(UinsList& senders, const QString &);
 		void addHintStatus(const UserListElement &, unsigned int status, unsigned int oldstatus);
-
-	public slots:
-		void loadConfig();
 		void deleteHint(unsigned int);
 		void openChat(unsigned int id);
 		void deleteAllHints();

@@ -149,15 +149,6 @@ class HistoryManager : public QObject
 	
 	public:
 		HistoryManager();
-		void appendMessage(UinsList receivers, UinType sender, const QString &msg, bool own, time_t=0, bool chat=true);
-		void appendSms(const QString &mobile, const QString &msg);
-		void appendStatus(UinType uin, unsigned int status, QString description = QString::null);
-		void removeHistory(UinsList uins);
-
-		void convHist2ekgForm(UinsList uins);
-		void convSms2ekgForm();
-		void buildIndex(UinsList uins);
-		void buildIndex(QString mobile = QString::null);
 		int getHistoryEntriesCount(UinsList uins);
 		int getHistoryEntriesCount(QString mobile = QString::null);
 		QValueList<HistoryEntry> getHistoryEntries(UinsList uins, int from, int count, int mask = HISTORYMANAGER_ENTRY_ALL);
@@ -175,6 +166,15 @@ class HistoryManager : public QObject
 		
 	public slots:
 		void chatMsgReceived(UinsList senders,const QString& msg,time_t time,bool& grab);
+		void appendMessage(UinsList receivers, UinType sender, const QString &msg, bool own, time_t=0, bool chat=true);
+		void appendSms(const QString &mobile, const QString &msg);
+		void appendStatus(UinType uin, unsigned int status, QString description = QString::null);
+		void removeHistory(UinsList uins);
+
+		void convHist2ekgForm(UinsList uins);
+		void convSms2ekgForm();
+		void buildIndex(UinsList uins);
+		void buildIndex(QString mobile = QString::null);
 };
 
 extern HistoryManager history;

@@ -212,6 +212,16 @@ class ModulesManager : public QObject
 		**/
 		bool moduleIsActive(const QString& module_name) const;
 		/**
+			Sprawdza czy podany modu³ konfliktuje
+			z jakim¶ innym za³adowanym modu³em
+			@param module_name nazwa modu³u
+			@param module_info informacje o module
+		**/
+		bool conflictsWithLoaded(const QString &module_name, const ModuleInfo& module_info) const;
+		
+	public slots:
+		void showDialog();
+		/**
 		 	Zwiêksza licznik u¿ycia modu³u o 1
 			@param module_name nazwa modu³u
 		**/
@@ -238,16 +248,6 @@ class ModulesManager : public QObject
 			@param module_name nazwa modu³u
 		**/		
 		bool deactivateModule(const QString& module_name, bool force=false);
-		/**
-			Sprawdza czy podany modu³ konfliktuje
-			z jakim¶ innym za³adowanym modu³em
-			@param module_name nazwa modu³u
-			@param module_info informacje o module
-		**/
-		bool conflictsWithLoaded(const QString &module_name, const ModuleInfo& module_info) const;
-		
-	public slots:
-		void showDialog();
 };
 
 extern ModulesManager* modules_manager;

@@ -25,17 +25,17 @@ class PendingMsgs : public QObject
 		
 	public:
 		PendingMsgs();
-		void deleteMsg(int index);
 		bool pendingMsgs(UinType uin);
 		bool pendingMsgs();
 		int count();
 		Element &operator[](int index);
-		void addMsg(UinsList uins, QString msg, int msgclass, time_t time);
-		bool loadFromFile();
-		void writeToFile();
 
 	public slots:
 		void openMessages();
+		void deleteMsg(int index);
+		void addMsg(UinsList uins, QString msg, int msgclass, time_t time);
+		bool loadFromFile();
+		void writeToFile();
 		
 	signals:
 		void messageAdded();

@@ -94,6 +94,7 @@ class UserList : public QObject, public QValueList<UserListElement>
 		bool containsUin(UinType uin) const;
 		bool containsAltNick(const QString& altnick) const;
 
+	public slots:
 		void addUser(UserListElement &ule);
 		void addAnonymous(UinType uin);
 		void removeUser(const QString &altnick);

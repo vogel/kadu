@@ -54,6 +54,9 @@ class UserBoxMenu : public QPopupMenu
 	public:
 		UserBoxMenu(QWidget *parent=0, const char* name=0);
 		int getItem(const QString &caption);
+	
+	public slots:
+		void show(QListBoxItem *item);
 		int addItem(const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1);
 		/**
 			@param iconname nazwa ikony z zestawu lub sciezka do pliku
@@ -63,9 +66,6 @@ class UserBoxMenu : public QPopupMenu
 			@param iconname nazwa ikony z zestawu lub sciezka do pliku
 		**/
 		int addItemAtPos(int index,const QString &iconname, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1);
-	
-	public slots:
-		void show(QListBoxItem *item);
 
 	signals:
 		void popup();

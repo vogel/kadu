@@ -38,29 +38,33 @@ class ChatManager : public QObject
 	public:	
 		ChatManager(QObject* parent=NULL, const char* name=NULL);
 		~ChatManager();
-		void closeAllWindows();
 		/**
 			Zwraca liste otwartych okien Chat.
 		**/
 		const ChatList& chats();
-		int registerChat(Chat* chat);
-		void unregisterChat(Chat* chat);
-		void refreshTitles();
-		void refreshTitlesForUin(UinType uin);
-		void changeAppearance();
 		Chat* findChatByUins(UinsList uins);
+		
+	public slots:
+		void chatMsgReceived(UinsList senders,const QString& msg,time_t time,bool& grab);
+
 		/**
 			Otwiera nowe okno Chat z wymienionymi rozmowcami.
 			Parametr time sluzy do sprawdzenia ile wiadomosci
 			z historii ma sie pojawic w oknie.
 		**/
 		int openChat(UinsList senders,time_t time=0);		
+
 		void openPendingMsgs(UinsList uins);
 		void openPendingMsgs();
 		void sendMessage(UinType uin,UinsList selected_uins);
-		
-	public slots:
-		void chatMsgReceived(UinsList senders,const QString& msg,time_t time,bool& grab);
+		void closeAllWindows();
+
+		int registerChat(Chat* chat);
+		void unregisterChat(Chat* chat);
+
+		void refreshTitles();
+		void refreshTitlesForUin(UinType uin);
+		void changeAppearance();
 		
 	signals:
 		void chatCreated(const UinsList& senders);
@@ -192,20 +196,21 @@ class Chat : public QWidget
 		static void registerButton(const QString& name,QObject* receiver,const QString& slot);
 		static void unregisterButton(const QString& name);
 		QPushButton* button(const QString& name);
-		void changeAppearance();
-		void setTitle();
 		void formatMessage(bool, const QString&, const QString&, const QString&, QString&);
 		void checkPresence(UinsList, const QString&, time_t, QString&);
 		void writeMessagesFromHistory(UinsList, time_t);
-		void addEmoticon(QString);
-		void scrollMessages(QString&);
-		void alertNewMessage();
 		/**
 			Zwraca liste numerow rozmowcow.
 		**/
 		const UinsList& uins();
 
 	public slots:
+		void changeAppearance();
+		void setTitle();
+		void addEmoticon(QString);
+		void scrollMessages(QString&);
+		void alertNewMessage();
+
 		void HistoryBox();
 		void sendMessage();
 		void cancelMessage();
@@ -273,6 +278,8 @@ class ColorSelector : public QWidget
 
 	public:
 		ColorSelector(QWidget* parent = 0, const char* name = 0);
+
+	public slots:
 		void alignTo(QWidget* w);
 
 	signals:

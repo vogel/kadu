@@ -93,12 +93,13 @@ class ColorButton : public QPushButton
 		**/
 		QColor color();
 
+	private slots:
+		void onClick();
+	public slots:
 		/**
 			Ustawia kolor na przycisku
 		**/
 		void setColor(const QColor &color);
-	private slots:
-		void onClick();
 	signals:
 		/**
 			Sygna³ jest emitowany przy zmianie koloru, przesy³a on nazwê komponentu oraz nowy kolor
@@ -111,8 +112,9 @@ class SelectFont : public QHBox
 	Q_OBJECT
 	public:
 		SelectFont(const QString &text, const QFont &def_val, QWidget *parent=0,  const char *name=0, const QString &tip="");
-		void setFont(const QFont &font);
 		QFont font();
+	public slots:
+		void setFont(const QFont &font);
 	private slots:
 		void onClick();
 	signals:
@@ -152,6 +154,7 @@ class SelectPaths : public QDialog
 		**/
 		QStringList getPathList();
 
+	public slots:
 		/**
 			Ustawia ¶cie¿ki z katalogami
 		**/
