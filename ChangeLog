@@ -138,7 +138,10 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * usuniêcie pojawiaj±cego siê czasem &nbsp; w panelu (joi)
 * patch Kida: reorganizacja okna mened¿era modu³ów (Ron_K)
 * sprawdzenie danych osobistych nie wywraca Kadu (joi)
-* walki z &nbsp; ci±g dalszy ;) (adrian/joi)
+* poprawienie wybierania sciezek do zestawow (dzwieki / ikonki)
+  nalezy skasowac sobie wszystkie wpisy z "sciezki do ikon" 
+  oraz "sciezki do dzwiekow" - od tej pory sa to tylko dodatkowe sciezki 
+  a nie wszystkie (pawel_p)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
