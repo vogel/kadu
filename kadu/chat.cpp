@@ -78,6 +78,10 @@ void CustomInput::keyPressEvent(QKeyEvent * e) {
 		}
 }
 
+void CustomInput::paste() {
+	pasteSubType("plain");
+}
+
 Chat::Chat(UinsList uins, QWidget *parent, const char *name)
  : QWidget(parent, name, Qt::WDestructiveClose), uins(uins) {
 	int i;
