@@ -128,7 +128,7 @@ Les arguments doivent être separés par l&apos;espace.Veuillez remplir le champ
     <name>SmsSlots</name>
     <message>
         <source>Send SMS</source>
-        <translation>Wyślij SMS</translation>
+        <translation>Envoie SMS</translation>
     </message>
 </context>
 </TS>

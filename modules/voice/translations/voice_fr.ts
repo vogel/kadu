@@ -3,7 +3,7 @@
     <name>@default</name>
     <message>
         <source>Voice chat</source>
-        <translation>Rozmowa głosowa</translation>
+        <translation></translation>
     </message>
     <message>
         <source>Test GSM Encoding</source>
