@@ -570,6 +570,14 @@ It&apos;s a high security risk!</source>
         <source>French</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Chat window background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text edit background color</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>

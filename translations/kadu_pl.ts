@@ -575,6 +575,14 @@ Jest to wysoce ryzykowne!</translation>
         <source>French</source>
         <translation>Francuski</translation>
     </message>
+    <message>
+        <source>Chat window background color</source>
+        <translation>Kolor tła okna rozmowy</translation>
+    </message>
+    <message>
+        <source>Text edit background color</source>
+        <translation>Kolor tła okna edycji rozmowy</translation>
+    </message>
 </context>
 <context>
     <name>About</name>

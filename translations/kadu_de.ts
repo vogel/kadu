@@ -572,6 +572,14 @@ Es ist ein sehr hohes Risiko!</translation>
         <source>French</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Chat window background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text edit background color</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
