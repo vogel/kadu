@@ -394,6 +394,7 @@ void UserListElement::operator = (const UserListElement &copyMe)
 	MaxImageSize = copyMe.MaxImageSize;
 	Port = copyMe.Port;
 	Ip = copyMe.Ip;
+	DnsName = copyMe.DnsName;
 	Blocking = copyMe.Blocking;
 	OfflineTo = copyMe.OfflineTo;
 	Notify = copyMe.Notify;

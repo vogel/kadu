@@ -457,6 +457,9 @@ void UserInfo::changeUserData(UserListElement& e)
 	if (e.uin() == puser->uin())
 		e.status().setStatus(puser->status());
 	e.setMaxImageSize(puser->maxImageSize());
+	e.ip()=puser->ip();
+	e.setPort(puser->port());
+	e.setDnsName(puser->dnsName());
 
 	userlist.changeUserInfo(puser->altNick(), e);
 	userlist.writeToFile();
