@@ -201,7 +201,7 @@ About::About() : QTabDialog(0) {
 	addTab6();
 
 	setOkButton(tr("&Close"));
-	resize(300, 200);
+	resize(380, 250);
 }
 
 void About::addTab1() {
