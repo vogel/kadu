@@ -174,7 +174,7 @@ CXXFLAGS=""
 # Checks for programs.
 AC_PROG_CXX
 AC_PROG_CC
-AM_PROG_LIBTOOL
+# AM_PROG_LIBTOOL
 
 # pthread
 

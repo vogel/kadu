@@ -70,7 +70,6 @@ EXEEXT = @EXEEXT@
 OBJEXT = @OBJEXT@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 AMTAR = @AMTAR@
-AS = @AS@
 AWK = @AWK@
 BUILD_INCLUDED_LIBINTL = @BUILD_INCLUDED_LIBINTL@
 CATOBJEXT = @CATOBJEXT@
@@ -78,8 +77,6 @@ CC = @CC@
 CXX = @CXX@
 DATADIRNAME = @DATADIRNAME@
 DEPDIR = @DEPDIR@
-DLLTOOL = @DLLTOOL@
-ECHO = @ECHO@
 GENCAT = @GENCAT@
 GLIBC21 = @GLIBC21@
 GMSGFMT = @GMSGFMT@
@@ -93,14 +90,11 @@ INTL_LIBTOOL_SUFFIX_PREFIX = @INTL_LIBTOOL_SUFFIX_PREFIX@
 LIB = @LIB@
 LIBICONV = @LIBICONV@
 LIBINTL = @LIBINTL@
-LIBTOOL = @LIBTOOL@
-LN_S = @LN_S@
 LTLIB = @LTLIB@
 LTLIBICONV = @LTLIBICONV@
 LTLIBINTL = @LTLIBINTL@
 MKINSTALLDIRS = @MKINSTALLDIRS@
 MY_SUBDIRS = @MY_SUBDIRS@
-OBJDUMP = @OBJDUMP@
 PACKAGE = @PACKAGE@
 POSUB = @POSUB@
 PTHREAD_FLAGS = @PTHREAD_FLAGS@
@@ -131,15 +125,6 @@ $(srcdir)/Makefile.in:  Makefile.am  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
 	  $(AUTOMAKE) --gnu  varia/Makefile
 Makefile:  $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe)
-
-mostlyclean-libtool:
-	-rm -f *.lo
-
-clean-libtool:
-	-rm -rf .libs _libs
-
-distclean-libtool:
-	-rm -f libtool
 uninstall-info-am:
 tags: TAGS
 TAGS:
@@ -202,11 +187,11 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-am
 
-clean-am: clean-generic clean-libtool mostlyclean-am
+clean-am: clean-generic mostlyclean-am
 
 distclean: distclean-am
 
-distclean-am: clean-am distclean-generic distclean-libtool
+distclean-am: clean-am distclean-generic
 
 dvi: dvi-am
 
@@ -232,19 +217,18 @@ maintainer-clean-am: distclean-am maintainer-clean-generic
 
 mostlyclean: mostlyclean-am
 
-mostlyclean-am: mostlyclean-generic mostlyclean-libtool
+mostlyclean-am: mostlyclean-generic
 
 uninstall-am: uninstall-info-am uninstall-local
 
-.PHONY: all all-am check check-am clean clean-generic clean-libtool \
-	distclean distclean-generic distclean-libtool distdir dvi \
-	dvi-am info info-am install install-am install-data \
-	install-data-am install-data-local install-exec install-exec-am \
-	install-info install-info-am install-man install-strip \
-	installcheck installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-generic \
-	mostlyclean-libtool uninstall uninstall-am uninstall-info-am \
-	uninstall-local
+.PHONY: all all-am check check-am clean clean-generic distclean \
+	distclean-generic distdir dvi dvi-am info info-am install \
+	install-am install-data install-data-am install-data-local \
+	install-exec install-exec-am install-info install-info-am \
+	install-man install-strip installcheck installcheck-am \
+	installdirs maintainer-clean maintainer-clean-generic \
+	mostlyclean mostlyclean-generic uninstall uninstall-am \
+	uninstall-info-am uninstall-local
 
 
 install-data-local:

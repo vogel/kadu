@@ -70,7 +70,6 @@ EXEEXT = @EXEEXT@
 OBJEXT = @OBJEXT@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 AMTAR = @AMTAR@
-AS = @AS@
 AWK = @AWK@
 BUILD_INCLUDED_LIBINTL = @BUILD_INCLUDED_LIBINTL@
 CATOBJEXT = @CATOBJEXT@
@@ -78,8 +77,6 @@ CC = @CC@
 CXX = @CXX@
 DATADIRNAME = @DATADIRNAME@
 DEPDIR = @DEPDIR@
-DLLTOOL = @DLLTOOL@
-ECHO = @ECHO@
 GENCAT = @GENCAT@
 GLIBC21 = @GLIBC21@
 GMSGFMT = @GMSGFMT@
@@ -93,14 +90,11 @@ INTL_LIBTOOL_SUFFIX_PREFIX = @INTL_LIBTOOL_SUFFIX_PREFIX@
 LIB = @LIB@
 LIBICONV = @LIBICONV@
 LIBINTL = @LIBINTL@
-LIBTOOL = @LIBTOOL@
-LN_S = @LN_S@
 LTLIB = @LTLIB@
 LTLIBICONV = @LTLIBICONV@
 LTLIBINTL = @LTLIBINTL@
 MKINSTALLDIRS = @MKINSTALLDIRS@
 MY_SUBDIRS = @MY_SUBDIRS@
-OBJDUMP = @OBJDUMP@
 PACKAGE = @PACKAGE@
 POSUB = @POSUB@
 PTHREAD_FLAGS = @PTHREAD_FLAGS@
@@ -137,11 +131,11 @@ RECURSIVE_TARGETS = info-recursive dvi-recursive install-info-recursive \
 	install-exec-recursive installdirs-recursive install-recursive \
 	uninstall-recursive check-recursive installcheck-recursive
 DIST_COMMON = README AUTHORS COPYING ChangeLog INSTALL Makefile.am \
-	Makefile.in TODO aclocal.m4 admin/ChangeLog admin/config.guess \
-	admin/config.sub admin/depcomp admin/install-sh admin/ltcf-c.sh \
+	Makefile.in TODO aclocal.m4 admin/config.guess admin/config.sub \
+	admin/depcomp admin/install-sh admin/ltcf-c.sh \
 	admin/ltcf-cxx.sh admin/ltcf-gcj.sh admin/ltconfig \
-	admin/ltmain.sh admin/missing admin/mkinstalldirs admin/ylwrap \
-	config.h.in configure configure.ac
+	admin/ltmain.sh admin/missing admin/mkinstalldirs config.h.in \
+	configure configure.ac
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
@@ -179,15 +173,6 @@ $(srcdir)/config.h.in:  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
 
 distclean-hdr:
 	-rm -f config.h stamp-h1
-
-mostlyclean-libtool:
-	-rm -f *.lo
-
-clean-libtool:
-	-rm -rf .libs _libs
-
-distclean-libtool:
-	-rm -f libtool
 uninstall-info-am:
 
 # This directory's subdirectories are mostly independent; you can cd
@@ -420,12 +405,11 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-recursive
 
-clean-am: clean-generic clean-libtool mostlyclean-am
+clean-am: clean-generic mostlyclean-am
 
 distclean: distclean-recursive
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
-distclean-am: clean-am distclean-generic distclean-hdr distclean-libtool \
-	distclean-tags
+distclean-am: clean-am distclean-generic distclean-hdr distclean-tags
 
 dvi: dvi-recursive
 
@@ -452,28 +436,27 @@ maintainer-clean-am: distclean-am maintainer-clean-generic
 
 mostlyclean: mostlyclean-recursive
 
-mostlyclean-am: mostlyclean-generic mostlyclean-libtool
+mostlyclean-am: mostlyclean-generic
 
 uninstall-am: uninstall-info-am
 
 uninstall-info: uninstall-info-recursive
 
 .PHONY: $(RECURSIVE_TARGETS) GTAGS all all-am check check-am clean \
-	clean-generic clean-libtool clean-recursive dist dist-all \
-	dist-gzip distcheck distclean distclean-generic distclean-hdr \
-	distclean-libtool distclean-recursive distclean-tags \
-	distcleancheck distdir dvi dvi-am dvi-recursive info info-am \
-	info-recursive install install-am install-data install-data-am \
-	install-data-local install-data-recursive install-exec \
-	install-exec-am install-exec-recursive install-info \
-	install-info-am install-info-recursive install-man \
+	clean-generic clean-recursive dist dist-all dist-gzip distcheck \
+	distclean distclean-generic distclean-hdr distclean-recursive \
+	distclean-tags distcleancheck distdir dvi dvi-am dvi-recursive \
+	info info-am info-recursive install install-am install-data \
+	install-data-am install-data-local install-data-recursive \
+	install-exec install-exec-am install-exec-recursive \
+	install-info install-info-am install-info-recursive install-man \
 	install-recursive install-strip installcheck installcheck-am \
 	installdirs installdirs-am installdirs-recursive \
 	maintainer-clean maintainer-clean-generic \
 	maintainer-clean-recursive mostlyclean mostlyclean-generic \
-	mostlyclean-libtool mostlyclean-recursive tags tags-recursive \
-	uninstall uninstall-am uninstall-info-am \
-	uninstall-info-recursive uninstall-recursive
+	mostlyclean-recursive tags tags-recursive uninstall \
+	uninstall-am uninstall-info-am uninstall-info-recursive \
+	uninstall-recursive
 
 
 install-data-local:

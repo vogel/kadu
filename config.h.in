@@ -14,9 +14,6 @@
    */
 #undef HAVE_DCGETTEXT
 
-/* Define to 1 if you have the <dlfcn.h> header file. */
-#undef HAVE_DLFCN_H
-
 /* Define if Kadu documentation is installed */
 #undef HAVE_DOC
 
