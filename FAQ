@@ -1,3 +1,5 @@
+Naj¶wie¿sze informacje mo¿esz znale¼æ w pliku doc/faq.html
+
 Q: Skrypt nie znajduje mojego QT. Dlaczego?!
 A: Automake/autoconf w Kadu wymaga przetestowania.
    Wypróbuj opcje --with-qt-dir=/katalog/do/qt oraz
