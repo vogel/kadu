@@ -50,12 +50,16 @@ QString HistoryManager::text2csv(const QString &text) {
 QString HistoryManager::getFileNameByUinsList(UinsList &uins) {
 	int i;
 	QString fname;
-	uins.sort();
-	for (i = 0; i < uins.count(); i++) {
-		fname.append(QString::number(uins[i]));
-		if (i < uins.count() - 1)
-			fname.append("_");
+	if (uins.count()) {
+		uins.sort();
+		for (i = 0; i < uins.count(); i++) {
+			fname.append(QString::number(uins[i]));
+			if (i < uins.count() - 1)
+				fname.append("_");
+			}
 		}
+	else
+		fname = "sms";
 	return fname;
 }
 
@@ -571,7 +575,10 @@ QValueList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int fr
 	QString filename, line;
 	int offs;
 
-	filename = getFileNameByUinsList(uins);
+	if (uins.count())
+		filename = getFileNameByUinsList(uins);
+	else
+		filename = "sms";
 	f.setName(path + filename);
 	if (!(f.open(IO_ReadOnly))) {
 		kdebug("HistoryManager::getHistoryEntries(UinsList uins, int from, int count): Error opening history file %s\n", (const char *)filename.local8Bit());
@@ -733,7 +740,10 @@ QValueList<HistoryDate> HistoryManager::getHistoryDates(UinsList uins) {
 	QString filename, line;
 	uint offs, count, oldidx, actidx, leftidx, rightidx, mididx, olddate, actdate, jmp;
 
-	count = getHistoryEntriesCount(uins);
+	if (uins.count())
+		count = getHistoryEntriesCount(uins);
+	else
+		count = getHistoryEntriesCount("sms");
 	if (!count)
 		return entries;
 
