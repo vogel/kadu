@@ -224,12 +224,12 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc,const QColor& bgcolor)
 				{
 					// if so, then replace that previous occurrence
 					// with html tag
-					QString new_text="<img title=\""+Aliases[lastEmot].alias+"\" src=\"";
+					QString new_text="<img emoticon=\"1\" title=\""+Aliases[lastEmot].alias+"\" src=\"";
 					if( animated )
 						new_text += Aliases[lastEmot].anim;
 					else
 						new_text += Aliases[lastEmot].stat;
-					new_text += "\" bgcolor=\"" + bgcolor.name() + "\"/>";
+					new_text += QString("\" bgcolor=\"%1\" animated=\"%2\"/>").arg(bgcolor.name()).arg(animated);
 					doc.splitElement( e_i, lastBegin, 
 					Aliases[lastEmot].alias.length() );
 					doc.setElementValue( e_i, new_text, true );
@@ -248,12 +248,12 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc,const QColor& bgcolor)
 		// this is the case, when only one emot was found in current text part
 		if ( lastEmot >= 0 )
 		{
-			QString new_text="<img title=\""+Aliases[lastEmot].alias+"\" src=\"";
+			QString new_text="<img emoticon=\"1\" title=\""+Aliases[lastEmot].alias+"\" src=\"";
 			if( animated )
 				new_text += Aliases[lastEmot].anim;
 			else
 				new_text += Aliases[lastEmot].stat;
-			new_text += "\" bgcolor=\"" + bgcolor.name() + "\"/>";
+			new_text += QString("\" bgcolor=\"%1\" animated=\"%2\"/>").arg(bgcolor.name()).arg(animated);
 			doc.splitElement( e_i, lastBegin, 
 			Aliases[lastEmot].alias.length() );
 			doc.setElementValue( e_i, new_text, true );
@@ -468,9 +468,17 @@ QTextCustomItem* AnimStyleSheet::tag(
 	const QString& context, const QMimeSourceFactory& factory,
 	bool emptyTag, QTextDocument* doc) const
 {
-	if(name!="img" || attr["static"]=="1")
-		return QStyleSheet::tag(name,attr,context,factory,emptyTag,doc);	
-	return new AnimTextItem(doc,(QTextEdit*)parent(),Path+"/"+attr["src"],QColor(attr["bgcolor"]),attr["title"]);
+	if (name!="img")
+		return QStyleSheet::tag(name,attr,context,factory,emptyTag,doc);
+	if (attr["animated"]=="1")
+	{
+		if (attr["emoticon"]=="1")
+			return new AnimTextItem(doc,(QTextEdit*)parent(),Path+"/"+attr["src"],QColor(attr["bgcolor"]),attr["title"]);
+		else
+			return new AnimTextItem(doc,(QTextEdit*)parent(),         attr["src"],QColor(attr["bgcolor"]),attr["title"]);
+	}
+	else
+		return QStyleSheet::tag(name,attr,context,factory,emptyTag,doc);
 }
 
 /** create fresh emoticons dictionary, which will allow easy finding of occurrences

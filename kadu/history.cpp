@@ -1224,7 +1224,7 @@ void History::formatHistoryEntry(QString &text, const HistoryEntry &entry) {
 		doc.parseHtml(message);
 		doc.convertUrlsToHtml();
 
-	 	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")!=EMOTS_NONE)
+	 	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")!=EMOTS_NONE && config_file.readBoolEntry("General", "ShowEmotHist"))
 	 	{
 			body->mimeSourceFactory()->addFilePath(emoticons->themePath());
 			emoticons->expandEmoticons(doc, bgcolor);

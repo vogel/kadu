@@ -271,6 +271,9 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Private status"), "PrivateStatus", false);
 
+	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show emoticons in panel"), "ShowEmotPanel", false);
+	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show emoticons in history"), "ShowEmotHist", false);
+
 	ConfigDialog::addVGroupBox("General", "General", "Status");
 	ConfigDialog::addComboBox("General", "Status", QT_TRANSLATE_NOOP("@default", "Default status"), "", "cb_defstatus");
 	ConfigDialog::addHBox("General", "Status", "discstatus");
@@ -812,7 +815,7 @@ void Kadu::currentChanged(QListBoxItem *item) {
 		doc.parseHtml(parse(config_file.readEntry("Look", "PanelContents"), userlist.byAltNick(item->text())));
 		doc.convertUrlsToHtml();
 
-		if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")!=EMOTS_NONE)
+		if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")!=EMOTS_NONE && config_file.readBoolEntry("General", "ShowEmotPanel"))
 		{
 			descrtb->mimeSourceFactory()->addFilePath(emoticons->themePath());
 			emoticons->expandEmoticons(doc, config_file.readColorEntry("Look", "UserboxDescBgColor"));
@@ -871,22 +874,22 @@ void Kadu::setActiveGroup(const QString& group)
 {
 	Userbox->clearUsers();
 	for (unsigned int i = 0; i < userlist.count(); i++)
-		{
+	{
 		bool belongsToGroup;
 		if (group == "")
 			belongsToGroup = true;
 		else
-			{
+		{
 			belongsToGroup = false;
 			QString user_groups = userlist[i].group();
 			QString user_group;
 			for (int g = 0; (user_group = user_groups.section(',',g,g)) != ""; g++)
 				if (user_group == group)
 					belongsToGroup = true;
-			}
+		}
 		if (belongsToGroup && (!userlist[i].anonymous || !Docked))
 			Userbox->addUser(userlist[i].altnick);
-		}
+	}
 	UserBox::all_refresh();
 }
 
@@ -1670,7 +1673,7 @@ void Kadu::infopanelUpdate(UinType uin) {
 		HtmlDocument doc;
 		doc.parseHtml(parse(config_file.readEntry("Look", "PanelContents"), userlist.byUin(uin)));
 		doc.convertUrlsToHtml();
-		if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")!=EMOTS_NONE)
+		if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")!=EMOTS_NONE && config_file.readBoolEntry("General", "ShowEmotPanel"))
 		{
 			descrtb->mimeSourceFactory()->addFilePath(emoticons->themePath());
 			emoticons->expandEmoticons(doc, config_file.readColorEntry("Look", "UserboxDescBgColor"));

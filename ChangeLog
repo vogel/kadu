@@ -132,6 +132,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   oraz dodano opis w pomocy (Ron_K)
 * Instalator: poprawiony b³±d podawania z³ych parametrów do configure (Ron_K)
 * dymek w tray'u pokazuje siê tak¿e przed zmian± statusu (michal)
+* poprawione wy¶wietlanie emotikonów i obrazków w panelu + konfiguracja
+  emotikonów (domy¶lnie wy³±czone) (joi)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

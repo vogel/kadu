@@ -2053,12 +2053,12 @@ void CreateNotifier::notify(QObject* new_object)
 
 QString GaduImagesManager::imageHtml(const QString& file_name)
 {
-	return QString("<img src=\"%1\" static=\"1\"/>").arg(file_name);
+	return QString("<img src=\"%1\"/>").arg(file_name);
 }
 
 QString GaduImagesManager::loadingImageHtml(UinType uin,uint32_t size,uint32_t crc32)
 {
-	return QString("<img src=\"%1\" static=\"1\" gg_sender=\"%2\" gg_size=\"%3\" gg_crc=\"%4\"/>")
+	return QString("<img src=\"%1\" gg_sender=\"%2\" gg_size=\"%3\" gg_crc=\"%4\"/>")
 		.arg(icons_manager.iconPath("LoadingImage")).arg(uin).arg(size).arg(crc32);
 }
 
@@ -2160,11 +2160,8 @@ QString GaduImagesManager::getSavedImageFileName(uint32_t size,uint32_t crc32)
 QString GaduImagesManager::replaceLoadingImages(const QString& text, UinType sender, uint32_t size, uint32_t crc32)
 {
 	kdebugf();
-	QString loading_string =
-		GaduImagesManager::loadingImageHtml(sender,size,crc32);
-	QString image_string =
-		QString("<img src=\"%1\" static=\"1\"/>")
-		.arg(getSavedImageFileName(size,crc32));
+	QString loading_string = GaduImagesManager::loadingImageHtml(sender,size,crc32);
+	QString image_string = QString("<img src=\"%1\"/>").arg(getSavedImageFileName(size,crc32));
 	QString new_text = text;
 	int pos;
 	while ((pos = new_text.find(loading_string)) != -1)
