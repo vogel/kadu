@@ -299,7 +299,7 @@ Zaznacz i wpisz w to pole poprawny ciąg. Argumenty oddziel spacjami. Argument %
     </message>
     <message>
         <source>Play sounds</source>
-        <translation>Ottwarzaj dźwięki</translation>
+        <translation>Odtwarzaj dźwięki</translation>
     </message>
     <message>
         <source>Play sounds using aRts! server</source>
