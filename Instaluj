@@ -160,7 +160,24 @@ function Zainstaluj()
         exit
  fi;
 }
-
+function Instaluj()
+{
+	echo "==============================================================================="
+	echo "          Operacja $OPER zakoÅ„czona powodzeniem"
+        echo "          Teraz $LIB_NAME zostanie zainstalowane"
+	echo "==============================================================================="
+	OPER="Instaluj $LIB_NAME"
+	make install
+	WYK=$?
+ if test "$WYK" ;then
+ 	echo "==============================================================================="
+	echo "          OK"
+	echo "==============================================================================="
+        else
+        Error
+        exit
+ fi;
+}
 function Odinstaluj()
 {
 	OPER="Odinstaluj"
@@ -373,6 +390,10 @@ while [ 1 ]; do
 		fi;
 		if [[ ("$REPLY" == "I") || ("$REPLY" == "i") ]]; then
 			Konfiguruj
+			cd libgadu
+			Kompiluj
+			Instaluj
+			cd ..
 			Kompiluj
 			Zainstaluj
 			Aktualizuj_ldsoconf
@@ -546,7 +567,24 @@ function Zainstaluj()
         exit
  fi;
 }
-
+function Instaluj()
+{
+	echo "==============================================================================="
+	echo "          Operacja $OPER zakoñczona powodzeniem"
+        echo "          Teraz $LIB_NAME zostanie zainstalowane"
+	echo "==============================================================================="
+	OPER="Instaluj $LIB_NAME"
+	make install
+	WYK=$?
+ if test "$WYK" ;then
+ 	echo "==============================================================================="
+	echo "         OK"
+	echo "==============================================================================="
+        else
+        Error
+        exit
+ fi;
+}
 function Odinstaluj()
 {
 	OPER="Odinstaluj"
@@ -755,6 +793,10 @@ while [ 1 ]; do
 		fi;
 		if [[ ("$REPLY" == "I") || ("$REPLY" == "i") ]]; then
 			Konfiguruj
+			cd libgadu
+			Kompiluj
+			Instaluj
+			cd ..
 			Kompiluj
 			Zainstaluj
 			Aktualizuj_ldsoconf

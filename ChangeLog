@@ -50,6 +50,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * wydzielenie dialogu pobrania tokena (chilek)
 * libgadu z 05.10.2003 (chilek)
 * przypomnienie has³a zgodne z GG6 (chilek)
+* skrypt Instaluj instaluje najpierw Libgadu a potem Kadu - ominienty blad linkowania (Ron_K)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci
