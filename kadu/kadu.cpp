@@ -507,7 +507,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	setDockEnabled(Qt::DockBottom, false);
 	setAppropriate(toolbar, true);
 	toolbar->setCloseMode(QDockWindow::Undocked);
-	toolbar->setCaption(i18n("Main toolbar"));
+	toolbar->setLabel(i18n("Main toolbar"));
 
 	QToolButton *viewhistorybtn = new QToolButton(loadIcon("history.png"), i18n("View history"),
 		QString::null, this, SLOT(viewHistory()), toolbar, "viewhistory");
