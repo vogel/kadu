@@ -276,10 +276,6 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <translation>Potwierdzenie wysłania wiadomości (czekaj na dostarczenie)</translation>
     </message>
     <message>
-        <source>Syntax the same as in information panel.</source>
-        <translation>Składnia taka sama jak w panelu informacyjnym</translation>
-    </message>
-    <message>
         <source>%1 - Url clicked in chat window</source>
         <translation>%1 - URL przekazywany z okna rozmowy</translation>
     </message>
@@ -557,12 +553,11 @@ Jest to wysoce ryzykowne!</translation>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
 %r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
 %v - revDNS, %p - port %e - email
-If you leave blank, default settings will be used</source>
+</source>
         <translation>Składnia: %s - status, %d - opis, %i - IP, %n - nick, %a - wyświetl,
 %f - imię, %r - nazwisko, %m - telefon, %u - nr GG, %g - grupa, 
 %o - zwraca spację jeżeli kontakt nie ma cię na liście, %v - DNS, 
-%p - port %e - email. Jeżeli pole to zostanie puste, używane będą 
-ustawienia domyślne</translation>
+%p - port %e - email</translation>
     </message>
 </context>
 <context>

@@ -268,10 +268,6 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
         <translation>Bestätigung der Zustellung (Warte auf Zustellung)</translation>
     </message>
     <message>
-        <source>Syntax the same as in information panel.</source>
-        <translation>Syntax wie im Info-Panel.</translation>
-    </message>
-    <message>
         <source>%1 - Url clicked in chat window</source>
         <translation>%1 - angeclickes URL im Chat-Fenster</translation>
     </message>
@@ -556,7 +552,7 @@ It&apos;s a high security risk!</source>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
 %r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
 %v - revDNS, %p - port %e - email
-If you leave blank, default settings will be used</source>
+</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

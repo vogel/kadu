@@ -268,10 +268,6 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
         <translation>Conferma la consegna del messaggio (aspetta conferma)</translation>
     </message>
     <message>
-        <source>Syntax the same as in information panel.</source>
-        <translation>La stessa sintassi  del pannello di informazioni.</translation>
-    </message>
-    <message>
         <source>%1 - Url clicked in chat window</source>
         <translation>%1 Url cliccata nella finestra chat</translation>
     </message>
@@ -556,7 +552,7 @@ It&apos;s a high security risk!</source>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
 %r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
 %v - revDNS, %p - port %e - email
-If you leave blank, default settings will be used</source>
+</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
