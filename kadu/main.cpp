@@ -26,10 +26,6 @@
 #include "config_dialog.h"
 #include "register.h"
 
-#ifdef HAVE_OPENSSL
-#include "simlite.h"
-#endif
-
 #ifdef MODULES_ENABLED
 #include "modules.h"
 #endif
@@ -92,9 +88,6 @@ int main(int argc, char *argv[])
 		kadu->autohammer = true;
 		kadu->setStatus(config_file.readNumEntry("General","DefaultStatus",GG_STATUS_NOT_AVAIL));
 		}
-#ifdef HAVE_OPENSSL
-	sim_key_path = strdup(ggPath("keys/").local8Bit());
-#endif
 
 	QObject::connect(qApp, SIGNAL(aboutToQuit()), kadu, SLOT(quitApplication()));
 
