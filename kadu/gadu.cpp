@@ -2056,7 +2056,7 @@ void GaduProtocol::userListReceived(const struct gg_event *e)
 				break;
 		}
 
-		emit userStatusChanged(user, oldStatus, false);
+		emit userStatusChanged(user, oldStatus, true);
 
 		++nr;
 	}

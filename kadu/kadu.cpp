@@ -973,7 +973,8 @@ void Kadu::userStatusChanged(const UserListElement &user, const Status &oldstatu
 	chat_manager->refreshTitlesForUin(user.uin);
 	if (user.status->isOffline())
 		InfoPanel->setText("");
-	UserBox::all_refresh();
+	if (!onConnection)//refresh zrobimy jak ju¿ ca³± listê przetworzymy, czyli w userListChanged()
+		UserBox::all_refresh();
 
 	kdebugf2();
 }
