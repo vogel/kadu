@@ -328,16 +328,13 @@ void Sms::sendSms(void)
 	e_signature->setEnabled(false);
 	l_signature->setEnabled(false);
 
-	history.appendSms(recipient->text(), body->text());
-
-	if(config_file.readBoolEntry("SMS","BuiltInApp"))
+	if (config_file.readBoolEntry("SMS","BuiltInApp"))
 	{
 		Sender.send(recipient->text(), body->text(), e_contact->text(), e_signature->text());
 	}
 	else
 	{
-		if(config_file.readEntry("SMS","SmsApp").isEmpty())
-
+		if (config_file.readEntry("SMS","SmsApp").isEmpty())
 		{
 			QMessageBox::warning(this, tr("SMS error"), tr("Sms application was not specified. Visit the configuration section") );
 			kdebugm(KDEBUG_WARNING, "SMS application NOT specified. Exit.\n");
@@ -346,8 +343,8 @@ void Sms::sendSms(void)
 		QString SmsAppPath=config_file.readEntry("SMS","SmsApp");
 
 		smsProcess = new QProcess(this);
-		if(config_file.readBoolEntry("SMS","UseCustomString")&&
-		(!config_file.readBoolEntry("SMS","BuiltInApp")))
+		if (config_file.readBoolEntry("SMS","UseCustomString")&&
+			(!config_file.readBoolEntry("SMS","BuiltInApp")))
 		{
 			QStringList args=QStringList::split(' ',config_file.readEntry("SMS","SmsString"));
 			if(args.find("%n")!=args.end())
@@ -399,6 +396,7 @@ void Sms::onSmsSenderFinished(bool success)
 	kdebugf();
 	if (success)
 	{
+		history.appendSms(recipient->text(), body->text());
 		QMessageBox::information(this, tr("SMS sent"), tr("The SMS was sent and should be on its way"));
 		body->clear();
 	}

@@ -340,6 +340,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * usuniêty segfault przy dwukliku na li¶cie kontaktów przy nowej wiadomo¶ci (joi)
 * dodany do autodownloadu modu³ dcopexport (joi)
 * poprawne otwieranie linków z % (joi)
+* sms l±duje w historii tylko gdy bramka nie zwróci³a b³êdu (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
