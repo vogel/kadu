@@ -723,6 +723,10 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <source>Display users that are offline</source>
         <translation>Wyświetlaj kontakty gdy są niedostępne</translation>
     </message>
+    <message>
+        <source>Columns</source>
+        <translation>Kolumny</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1118,10 +1122,6 @@ aby uchronić okno rozmowy przed bałaganem</translation>
         <translation>&lt;b&gt;Podgląd&lt;/b&gt; tekstu</translation>
     </message>
     <message>
-        <source>Hint timeout (in seconds)</source>
-        <translation>Zanik po (w sekundach)</translation>
-    </message>
-    <message>
         <source>In top</source>
         <translation>W górę</translation>
     </message>
@@ -1144,6 +1144,10 @@ aby uchronić okno rozmowy przed bałaganem</translation>
     <message>
         <source>Delete all hints</source>
         <translation>Kasuj wszystkie dymki</translation>
+    </message>
+    <message>
+        <source>Hint timeout</source>
+        <translation>Dymek zniknie po: </translation>
     </message>
 </context>
 <context>

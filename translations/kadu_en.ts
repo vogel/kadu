@@ -718,6 +718,10 @@ What would you like to do?</source>
         <source>Display users that are offline</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Columns</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1095,10 +1099,6 @@ to protect the chat window from a mess</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Hint timeout (in seconds)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Preview</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1136,6 +1136,10 @@ to protect the chat window from a mess</source>
     </message>
     <message>
         <source>Delete all hints</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hint timeout</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

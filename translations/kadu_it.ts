@@ -677,50 +677,54 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
     </message>
     <message>
         <source>Automatically fold links</source>
-        <translation type="unfinished"></translation>
+        <translation>Arotolamento automatico per i link</translation>
     </message>
     <message>
         <source>Link folding</source>
-        <translation type="unfinished"></translation>
+        <translation>Arotolamento per i link</translation>
     </message>
     <message>
         <source>Automatically fold links longer than</source>
-        <translation type="unfinished"></translation>
+        <translation>Arotolamento automatico per i link più lunghi di</translation>
     </message>
     <message>
         <source>Show available users in bold</source>
-        <translation type="unfinished"></translation>
+        <translation>Contatti disponibili in grassetto</translation>
     </message>
     <message>
         <source>Displays users that are not offline using a bold font</source>
-        <translation type="unfinished"></translation>
+        <translation>Visualizza contatti attivi con frassetto</translation>
     </message>
     <message>
         <source>Notify about users&apos; status changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Notifica cambiamento dello status contatto</translation>
     </message>
     <message>
         <source>Notify about users becoming available</source>
-        <translation type="unfinished"></translation>
+        <translation>Notifica quando il contatto sarà disponibile</translation>
     </message>
     <message>
         <source>Notify about users becoming unavailable</source>
-        <translation type="unfinished"></translation>
+        <translation>Notifica quando il contatto sarà non disponibile</translation>
     </message>
     <message>
         <source>Remember window size and position between startups</source>
-        <translation type="unfinished"></translation>
+        <translation>Memorizza le dimensioni e posizioni delle finestre dopo restart</translation>
     </message>
     <message>
         <source>Automatically checks whether a new version is available</source>
-        <translation type="unfinished"></translation>
+        <translation>Controlla se é disponibile la nuova versione del programma</translation>
     </message>
     <message>
         <source>When enabled, you&apos;re visible only to users on your list</source>
-        <translation type="unfinished"></translation>
+        <translation>Quando abilitato, sei disponibile solo per contatti nella tua lista</translation>
     </message>
     <message>
         <source>Display users that are offline</source>
+        <translation>Visualizza contatti, quando non sono disponibili</translation>
+    </message>
+    <message>
+        <source>Columns</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -904,12 +908,13 @@ Campi password devono contenere la stessa frase !</translation>
     </message>
     <message>
         <source>URLs longer than this value will be shown truncated to this length</source>
-        <translation type="unfinished"></translation>
+        <translation>URL più lungo di questo valore sarà troncato a questa lunghezza</translation>
     </message>
     <message>
         <source>This will show a long URL as http://www.start...end.com/
 to protect the chat window from a mess</source>
-        <translation type="unfinished"></translation>
+        <translation>Saranno visualizzati URL lunghi come http://www.start...end.com/
+per salvare finestra di chat da disordine</translation>
     </message>
 </context>
 <context>
@@ -1117,10 +1122,6 @@ to protect the chat window from a mess</source>
         <translation>&lt;b&gt;Anteprima&lt;/b&gt; del testo</translation>
     </message>
     <message>
-        <source>Hint timeout (in seconds)</source>
-        <translation>Scomparsa suggerimento (secondi)</translation>
-    </message>
-    <message>
         <source>In top</source>
         <translation>In su</translation>
     </message>
@@ -1143,6 +1144,10 @@ to protect the chat window from a mess</source>
     <message>
         <source>Delete all hints</source>
         <translation>Cancella tutti fumetti</translation>
+    </message>
+    <message>
+        <source>Hint timeout</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1566,7 +1571,7 @@ La password è errata!!!</translation>
     </message>
     <message>
         <source>Connection timeout!</source>
-        <translation type="unfinished"></translation>
+        <translation>Tempo di connessione superato!</translation>
     </message>
 </context>
 <context>

@@ -723,6 +723,10 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
         <source>Display users that are offline</source>
         <translation>Zeige Benutzer die offline sind</translation>
     </message>
+    <message>
+        <source>Columns</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1119,10 +1123,6 @@ um das Chatfenster vor einer unordnung zu schützen</translation>
         <translation>&lt;b&gt;Text&lt;/b&gt;-Vorschau</translation>
     </message>
     <message>
-        <source>Hint timeout (in seconds)</source>
-        <translation>Verschwindet nach (in Sekunden)</translation>
-    </message>
-    <message>
         <source>In top</source>
         <translation>hinauf</translation>
     </message>
@@ -1145,6 +1145,10 @@ um das Chatfenster vor einer unordnung zu schützen</translation>
     <message>
         <source>Delete all hints</source>
         <translation>Alle hints löschen</translation>
+    </message>
+    <message>
+        <source>Hint timeout</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
