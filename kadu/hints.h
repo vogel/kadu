@@ -100,8 +100,8 @@ class HintManagerSlots: public QObject
 		QSpinBox *sb_timeout;
 		QSpinBox *sb_citesign;
 		QLabel *preview;
-		QLineEdit *e_posx;
-		QLineEdit *e_posy;
+		QSpinBox *e_posx;
+		QSpinBox *e_posy;
 		QCheckBox *b_useposition;
 		QCheckBox *b_hint;
 		QValueList<QStringList> hint;

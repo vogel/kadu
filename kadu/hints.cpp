@@ -588,11 +588,11 @@ void HintManagerSlots::onCreateConfigDialog()
 	vboxgrp2->setEnabled(useposition);
 	QHBox *hxybox = new QHBox(vboxgrp2);
 	/*QLabel *labelx = */new QLabel("x = ",hxybox);
-	e_posx = new QLineEdit(hxybox);
-	e_posx->setText(QString::number(hintsposition.x()));
+	e_posx = new QSpinBox(-2048, 2048, 1, hxybox);
+	e_posx->setValue(hintsposition.x());
 	/*QLabel *labely = */new QLabel("y = ",hxybox);
-	e_posy = new QLineEdit(hxybox);
-	e_posy->setText(QString::number(hintsposition.y()));
+	e_posy = new QSpinBox(-2048, 2048, 1, hxybox);
+	e_posy->setValue(hintsposition.y());
 	
 	hintgrp->setEnabled(b_hint->isChecked());
 	notifygrp->setEnabled(b_notify->isChecked());
@@ -674,7 +674,7 @@ void HintManagerSlots::onDestroyConfigDialog()
 	kdebugf();
 	config_file.writeEntry("Hints", "NewHintUnder", combobox2->currentItem());
 	config_file.writeEntry("Hints", "UseUserPosition", b_useposition->isChecked());
-	config_file.writeEntry("Hints", "HintsPosition", QPoint(e_posx->text().toInt(),e_posy->text().toInt()));
+	config_file.writeEntry("Hints", "HintsPosition", QPoint(e_posx->value(),e_posy->value()));
 	config_file.writeEntry("Hints", "CiteSign", sb_citesign->value());
 	config_file.writeEntry("Hints", "HintOnline", hint[0].join(","));
 	config_file.writeEntry("Hints", "HintOnlineD", hint[1].join(","));
