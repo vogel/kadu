@@ -225,6 +225,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   podawaæ kilka adresów w kolejnych wierszach (adrian)
 * ³ata Vogela: ikona w trayu znowu miga i dzia³aj± timeouty na po³±czenia
   z serwerami (joi)
+* t³o pod animowanymi obrazkami jest ju¿ odpowiedniego koloru (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,

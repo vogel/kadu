@@ -977,15 +977,19 @@ QString Chat::convertCharacters(QString edit, bool me)
 	// detekcja adresow url
 	doc.convertUrlsToHtml();
 
+	QColor bgcolor;
+	if (me)
+		bgcolor=config_file.readColorEntry("Look","ChatMyBgColor");
+	else
+		bgcolor=config_file.readColorEntry("Look","ChatUsrBgColor");
+
 	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")!=EMOTS_NONE)
 	{
 		body->mimeSourceFactory()->addFilePath(emoticons->themePath());
-		if (me)
-			emoticons->expandEmoticons(doc,config_file.readColorEntry("Look","ChatMyBgColor"));
-		else
-			emoticons->expandEmoticons(doc,config_file.readColorEntry("Look","ChatUsrBgColor"));
+		emoticons->expandEmoticons(doc, bgcolor);
 	}
 
+	GaduImagesManager::setBackgroundsForAnimatedImages(doc, bgcolor);
 	edit=doc.generateHtml();
 	return edit;
 }

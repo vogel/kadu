@@ -2209,10 +2209,26 @@ void CreateNotifier::notify(QObject* new_object)
 	emit objectCreated(new_object);
 }
 
+void GaduImagesManager::setBackgroundsForAnimatedImages(HtmlDocument &doc, const QColor &col)
+{
+	static QRegExp animRE("<img bgcolor=\"\" animated=\"1\"");
+	QString animText=QString("<img bgcolor=\"%1\" animated=\"1\"").arg(col.name());
+	for(int i = 0; i < doc.countElements(); ++i)
+	{
+		if (!doc.isTagElement(i))
+			continue;
+
+		QString text = doc.elementText(i);
+		text.replace(animRE, animText);
+//		kdebugm(KDEBUG_WARNING, ">>%s\n", text.local8Bit().data());
+		doc.setElementValue(i, text, true);
+	}
+}
+
 QString GaduImagesManager::imageHtml(const QString& file_name)
 {
 	if (file_name.right(4).lower()==".gif")
-		return QString("<img animated=\"1\" src=\"%1\" title=\"%2\"/>").arg(file_name).arg(file_name);
+		return QString("<img bgcolor=\"\" animated=\"1\" src=\"%1\" title=\"%2\"/>").arg(file_name).arg(file_name);
 	else
 		return QString("<img src=\"%1\"/>").arg(file_name);
 }
@@ -2329,7 +2345,7 @@ QString GaduImagesManager::replaceLoadingImages(const QString& text, UinType sen
 
 	QString file_name = getSavedImageFileName(size,crc32);
 	if (file_name.right(4).lower()==".gif")
-		image_string = QString("<img animated=\"1\" src=\"%1\" title=\"%2\"/>").arg(file_name).arg(file_name);
+		image_string = QString("<img bgcolor=\"\" animated=\"1\" src=\"%1\" title=\"%2\"/>").arg(file_name).arg(file_name);
 	else
 		image_string = QString("<img src=\"%1\"/>").arg(file_name);
 

@@ -1401,6 +1401,7 @@ void History::formatHistoryEntry(QString &text, const HistoryEntry &entry, QStri
 			body->mimeSourceFactory()->addFilePath(emoticons->themePath());
 			emoticons->expandEmoticons(doc, bgcolor);
 		}
+		GaduImagesManager::setBackgroundsForAnimatedImages(doc, bgcolor);
 
 		text.append(doc.generateHtml());
 	}
