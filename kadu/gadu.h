@@ -1,21 +1,20 @@
 #ifndef GADU_H
 #define GADU_H
 
+#include <qdatetime.h>
 #include <qhostaddress.h>
 #include <qobject.h>
 #include <qstring.h>
+#include <qtextstream.h>
 #include <qtimer.h>
 #include <qvaluelist.h>
-#include <qdatetime.h>
-#include <qsocketnotifier.h>
-#include <qtextstream.h>
-#include <qlistbox.h>
 
 #include "libgadu.h"
 #include "status.h"
 
 typedef uin_t UinType;
 
+class QSocketNotifier;
 class UserList;
 class UserListElement;
 

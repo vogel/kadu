@@ -7,17 +7,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qpixmap.h>
-#include <qlabel.h>
-#include <qtextbrowser.h>
-#include <qpushbutton.h>
-#include <qtabwidget.h>
-#include <qtextcodec.h>
 #include <qfile.h>
-#include <qtextstream.h>
 #include <qhbox.h>
-#include <qvbox.h>
+#include <qlabel.h>
+#include <qpushbutton.h>
 #include <qsizepolicy.h>
+#include <qtabwidget.h>
+#include <qtextbrowser.h>
+#include <qtextcodec.h>
+#include <qtextstream.h>
+#include <qvbox.h>
 
 #include "about.h"
 #include "misc.h"

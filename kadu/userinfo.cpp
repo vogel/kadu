@@ -7,18 +7,21 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <qcheckbox.h>
+#include <qdns.h>
+#include <qlineedit.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
+#include <qtabwidget.h>
 #include <qvbox.h>
+#include <qvgroupbox.h>
 
-//
-#include "kadu.h"
-#include "userinfo.h"
 #include "chat.h"
 #include "debug.h"
-#include "userbox.h"
+#include "kadu.h"
 #include "message_box.h"
-//
+#include "userinfo.h"
+#include "userbox.h"
 
 CreateNotifier UserInfo::createNotifier;
 

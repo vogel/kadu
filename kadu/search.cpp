@@ -7,22 +7,29 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <qcheckbox.h>
+#include <qcombobox.h>
 #include <qgroupbox.h>
-#include <qmessagebox.h>
 #include <qhbuttongroup.h>
+#include <qlabel.h>
 #include <qlayout.h>
+#include <qlineedit.h>
+#include <qlistview.h>
+#include <qmessagebox.h>
+#include <qpushbutton.h>
+#include <qradiobutton.h>
 #include <qtooltip.h>
 
 #include <stdlib.h>
-//
-#include "gadu.h"
-#include "status.h"
-#include "search.h"
-#include "userlist.h"
-#include "userinfo.h"
+
 #include "chat.h"
 #include "debug.h"
+#include "gadu.h"
 #include "kadu.h"
+#include "search.h"
+#include "status.h"
+#include "userinfo.h"
+#include "userlist.h"
 
 SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearchUin)
 : QDialog (parent, name, FALSE, Qt::WDestructiveClose)

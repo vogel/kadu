@@ -1,7 +1,8 @@
-#ifndef STATUS_H
-#define STATUS_H
+#ifndef KADU_STATUS_H
+#define KADU_STATUS_H
 
 #include <qobject.h>
+#include <qpixmap.h>
 #include <qstring.h>
 #include <qstringlist.h>
 

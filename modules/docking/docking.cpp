@@ -7,19 +7,19 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "docking.h"
-
 #include <qapplication.h>
 #include <qcursor.h>
+#include <qcheckbox.h>
 #include <qobject.h>
 #include <qtimer.h>
 
 #include "config_file.h"
 #include "config_dialog.h"
+#include "docking.h"
 #include "debug.h"
+#include "kadu.h"
 #include "pending_msgs.h"
 #include "status.h"
-#include "kadu.h"
 
 extern "C" int docking_init()
 {

@@ -2,11 +2,12 @@
 #define IGNORE_H
 
 #include <qhbox.h>
-#include <qlistbox.h>
-#include <qlineedit.h>
 #include <qvaluelist.h>
 
 #include "misc.h"
+
+class QLineEdit;
+class QListBox;
 
 /**
 	Dialog umo¿liwiaj±cy zarz±dzanie list± ignorowanych

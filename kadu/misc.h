@@ -1,31 +1,30 @@
-#ifndef MISC_H
-#define MISC_H
+#ifndef KADU_MISC_H
+#define KADU_MISC_H
 
-#include <qvaluelist.h>
-#include <qdialog.h>
-#include <qcombobox.h>
-#include <qstring.h>
-#include <qpixmap.h>
-#include <qiconset.h>
-#include <qlabel.h>
 #include <qcstring.h>
 #include <qdatetime.h>
-#include <qlineedit.h>
+#include <qdialog.h>
+#include <qfiledialog.h>
+#include <qiconset.h>
 #include <qimage.h>
+#include <qlabel.h>
+#include <qpixmap.h>
 #include <qstringlist.h>
 #include <qsocket.h>
-#include <qsocketnotifier.h>
-#include <qfiledialog.h>
+#include <qstring.h>
 #include <qtextbrowser.h>
 #include <qtooltip.h>
 #include <qvaluelist.h>
 #include <qvariant.h>
-#include <qmenudata.h>
 
 #include <inttypes.h>
 
-#include "gadu.h"
 #include "config_file.h"
+#include "gadu.h"
+
+class QComboBox;
+class QLineEdit;
+class QMenuData;
 
 /*
 	Zmienia ¶cie¿kê relatywn± do katalogu z ustawieniami gg

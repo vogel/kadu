@@ -7,22 +7,22 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qmap.h>
-#include <qdragobject.h>
-#include <qpen.h>
-#include <qregexp.h>
-#include <qfontdatabase.h>
-#include <qpopupmenu.h>
 #include <qcursor.h>
+#include <qdragobject.h>
+#include <qfontmetrics.h>
+#include <qpen.h>
+#include <qpopupmenu.h>
+#include <qregexp.h>
+#include <qspinbox.h>
 
-#include "status.h"
-#include "userbox.h"
-#include "ignore.h"
-#include "debug.h"
-#include "pending_msgs.h"
 #include "config_dialog.h"
 #include "config_file.h"
+#include "debug.h"
+#include "ignore.h"
 #include "misc.h"
+#include "pending_msgs.h"
+#include "status.h"
+#include "userbox.h"
 
 QFontMetrics* KaduListBoxPixmap::descriptionFontMetrics=NULL;
 UinType KaduListBoxPixmap::myUIN;

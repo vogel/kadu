@@ -1,15 +1,16 @@
-#ifndef USERBOX_H
-#define USERBOX_H
+#ifndef KADU_USERBOX_H
+#define KADU_USERBOX_H
 
 #include <qlistbox.h>
-#include <qtooltip.h>
-#include <qstringlist.h>
 #include <qpainter.h>
 #include <qpopupmenu.h>
-#include <qfontmetrics.h>
+#include <qstringlist.h>
+#include <qtooltip.h>
 
-#include "userlist.h"
 #include "misc.h"
+#include "userlist.h"
+
+class QFontMetrics;
 
 class KaduListBoxPixmap : public QListBoxItem
 {

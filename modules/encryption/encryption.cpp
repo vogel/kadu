@@ -1,15 +1,29 @@
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
+#include <qcheckbox.h>
+#include <qfile.h>
+#include <qhgroupbox.h>
+#include <qmessagebox.h>
+
+#include "config_dialog.h"
+#include "debug.h"
 #include "encryption.h"
+#include "gadu.h"
+#include "kadu.h"
+#include "message_box.h"
+
 extern "C"
 {
 #include "simlite.h"
 };
-#include "config_dialog.h"
-#include "kadu.h"
-#include "gadu.h"
-#include "debug.h"
-#include <qfile.h>
-#include <qmessagebox.h>
-#include "message_box.h"
+
 // uzywamy mkdir z sys/stat.h - nie ma w QT mozliwosci ustawienia praw do kat.
 #include <sys/stat.h>
 

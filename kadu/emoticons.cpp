@@ -7,19 +7,21 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qfile.h>
-#include <qtextstream.h>
 #include <qdir.h>
+#include <qfile.h>
+#include <qimage.h>
+#include <qlabel.h>
+#include <qtextstream.h>
 #include <qtextcodec.h>
 #include <qtooltip.h>
+
 #include <math.h>
 #include <algorithm>
-#include <qcursor.h>
 
-#include "emoticons.h"
 #include "chat.h"
-#include "debug.h"
 #include "config_file.h"
+#include "debug.h"
+#include "emoticons.h"
 #include "kadu-config.h"
 
 // general purpose macros to make things shorter /////////////////

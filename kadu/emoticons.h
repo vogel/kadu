@@ -1,21 +1,21 @@
 #ifndef EMOTICONS_H
 #define EMOTICONS_H
 
-#include <qvaluelist.h>
-#include <qvaluevector.h>
-#include <qstringlist.h>
-#include <qtextedit.h>
-#include <private/qrichtext_p.h>
-#include <qlabel.h>
-#include <qimage.h>
-#include <qtoolbutton.h>
 #include <qmovie.h>
 #include <qmap.h>
+#include <private/qrichtext_p.h>
+#include <qstringlist.h>
+#include <qtextedit.h>
+#include <qtoolbutton.h>
+#include <qvaluelist.h>
+#include <qvaluevector.h>
 
 #include "misc.h"
 
 class Chat;
 class EmotsWalker;
+class QImage;
+class QLabel;
 
 enum EmoticonsStyle
 {

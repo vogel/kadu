@@ -1,23 +1,22 @@
 #ifndef CHAT_H
 #define CHAT_H
 
+#include <qcolor.h>
 #include <qdialog.h>
-#include <qhbox.h>
+#include <qmap.h>
 #include <qmultilineedit.h>
 #include <qpushbutton.h>
-#include <qtoolbutton.h>
-#include <qvaluelist.h>
-#include <qsplitter.h>
 #include <qrect.h>
-#include <qcolor.h>
+#include <qsplitter.h>
 #include <qvariant.h>
-#include <qmap.h>
+#include <qvaluelist.h>
 
+#include "emoticons.h"
 #include "misc.h"
 #include "userbox.h"
-#include "emoticons.h"
 
 class Chat;
+class QHBox;
 
 typedef QValueList<Chat*> ChatList;
 

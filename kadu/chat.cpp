@@ -7,40 +7,42 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qpushbutton.h>
-#include <qfontdatabase.h>
-#include <qregexp.h>
-#include <qlayout.h>
 #include <qaccel.h>
-#include <qtimer.h>
+#include <qcheckbox.h>
+#include <qcombobox.h>
 #include <qcursor.h>
-#include <qprocess.h>
-#include <qmessagebox.h>
-#include <qfileinfo.h>
-#include <qsplitter.h>
 #include <qhbox.h>
+#include <qhgroupbox.h>
+#include <qlayout.h>
+#include <qlineedit.h>
+#include <qmessagebox.h>
+#include <qmime.h>
+#include <qpushbutton.h>
+#include <qregexp.h>
+#include <qspinbox.h>
+#include <qsplitter.h>
+#include <qtimer.h>
+#include <qtooltip.h>
 #include <qvbox.h>
 #include <qvaluelist.h>
-#include <qfiledialog.h>
-#include <qmime.h>
 
 #include <math.h>
 #include <sys/stat.h>
 #include <stdlib.h>
 
-#include "misc.h"
+#include "chat.h"
 #include "config_dialog.h"
 #include "config_file.h"
-#include "kadu.h"
-#include "chat.h"
-#include "search.h"
-#include "history.h"
-#include "emoticons.h"
-#include "pending_msgs.h"
 #include "debug.h"
+#include "emoticons.h"
 #include "gadu.h"
-#include "status.h"
+#include "history.h"
+#include "kadu.h"
 #include "message_box.h"
+#include "misc.h"
+#include "pending_msgs.h"
+#include "search.h"
+#include "status.h"
 
 ChatManager::ChatManager(QObject* parent, const char* name)
 	: QObject(parent, name)

@@ -7,23 +7,26 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qwidget.h>
+#include <qcheckbox.h>
+#include <qcombobox.h>
 #include <qdialog.h>
-#include <qlabel.h>
-#include <qlistbox.h>
-#include <qstring.h>
-#include <qtextstream.h>
-#include <qtextcodec.h>
 #include <qdir.h>
 #include <qfile.h>
 #include <qfont.h>
+#include <qlabel.h>
+#include <qlineedit.h>
+#include <qlistbox.h>
+#include <qmenubar.h>
 #include <qmessagebox.h>
 #include <qregexp.h>
-#include <qtimer.h>
-#include <qmenubar.h>
-#include <qtoolbar.h>
+#include <qstring.h>
 #include <qstyle.h>
 #include <qstylefactory.h>
+#include <qtextstream.h>
+#include <qtextcodec.h>
+#include <qtimer.h>
+#include <qtoolbar.h>
+#include <qwidget.h>
 
 #include <sys/file.h>
 #include <sys/types.h>
@@ -33,25 +36,25 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 //
+#include "about.h"
+#include "chat.h"
 #include "config_dialog.h"
 #include "config_file.h"
-#include "kadu.h"
-#include "chat.h"
-#include "search.h"
-#include "expimp.h"
-#include "userinfo.h"
-#include "personal_info.h"
-#include "about.h"
-#include "ignore.h"
-#include "emoticons.h"
-#include "history.h"
-#include "pending_msgs.h"
-#include "updates.h"
-#include "tabbar.h"
 #include "debug.h"
+#include "emoticons.h"
+#include "expimp.h"
 #include "gadu.h"
-#include "modules.h"
+#include "history.h"
+#include "ignore.h"
+#include "kadu.h"
 #include "message_box.h"
+#include "modules.h"
+#include "pending_msgs.h"
+#include "personal_info.h"
+#include "search.h"
+#include "tabbar.h"
+#include "userinfo.h"
+#include "updates.h"
 
 #include "kadu-config.h"
 

@@ -8,14 +8,27 @@
  ***************************************************************************/
 
 #include <qaccel.h>
-#include <qtooltip.h>
 #include <qcolordialog.h>
 #include <qcolor.h>
-#include <qlayout.h>
-#include <qscrollview.h>
+#include <qcombobox.h>
+#include <qcheckbox.h>
 #include <qfiledialog.h>
 #include <qfontdialog.h>
+#include <qgrid.h>
+#include <qhbuttongroup.h>
+#include <qhgroupbox.h>
+#include <qlabel.h>
+#include <qlayout.h>
+#include <qlistbox.h>
+#include <qlistview.h>
 #include <qradiobutton.h>
+#include <qscrollview.h>
+#include <qslider.h>
+#include <qspinbox.h>
+#include <qtextedit.h>
+#include <qtooltip.h>
+#include <qvgroupbox.h>
+#include <qvbuttongroup.h>
 
 #include "config_dialog.h"
 #include "misc.h"

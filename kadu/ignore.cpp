@@ -7,17 +7,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qpushbutton.h>
-#include <qvbox.h>
 #include <qfile.h>
-#include <qtextstream.h>
+#include <qlineedit.h>
+#include <qlistbox.h>
+#include <qpushbutton.h>
 #include <qstringlist.h>
+#include <qtextstream.h>
+#include <qvbox.h>
 #include <qvgroupbox.h>
 
 #include <sys/stat.h>
+
+#include "debug.h"
 #include "ignore.h"
 #include "userlist.h"
-#include "debug.h"
 //
 
 QValueList<UinsList> ignored;

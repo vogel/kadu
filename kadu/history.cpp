@@ -7,29 +7,34 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include <qwidget.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
-#include <qfile.h>
-#include <qtextcodec.h>
-#include <qregexp.h>
+#include <qcheckbox.h>
+#include <qcombobox.h>
 #include <qdir.h>
-#include <qmessagebox.h>
+#include <qfile.h>
 #include <qhbox.h>
-#include <qtooltip.h>
+#include <qhgroupbox.h>
+#include <qlabel.h>
+#include <qlineedit.h>
+#include <qmessagebox.h>
+#include <qpushbutton.h>
+#include <qregexp.h>
 #include <qsplitter.h>
+#include <qradiobutton.h>
+#include <qtextcodec.h>
+#include <qtooltip.h>
+#include <qvbuttongroup.h>
+#include <qwidget.h>
 
 #include <time.h>
 
-#include "kadu.h"
 #include "config_file.h"
 #include "config_dialog.h"
 #include "debug.h"
-#include "history.h"
-#include "status.h"
 #include "emoticons.h"
+#include "history.h"
+#include "kadu.h"
 #include "misc.h"
+#include "status.h"
 
 enum {
 	HISTORYMANAGER_ORDINARY_LINE,
@@ -39,7 +44,7 @@ enum {
 	HISTORYMANAGER_SMS_WITHOUT_NICK
 };
 
-HistoryManager::HistoryManager() : QObject(NULL, "history_manager")
+HistoryManager::HistoryManager(QObject *parent, const char *name) : QObject(parent, name)
 {
 	imagesTimer=new QTimer(this, "imagesTimer");
 	imagesTimer->start(1000*60);//60 sekund
@@ -1754,7 +1759,7 @@ void History::closeEvent(QCloseEvent *e)
 void History::initModule()
 {
 	kdebugf();
-	HistorySlots *historyslots=new HistorySlots();
+	HistorySlots *historyslots=new HistorySlots(&history, "history_slots");
 
 	//do usuniecia po wydaniu 0.4
 	config_file.addVariable("History", "Logging", config_file.readEntry("General", "Logging"));
@@ -2110,6 +2115,10 @@ HistoryFindRec HistorySearch::getDialogValues()
 	return findrec;
 }
 
+HistorySlots::HistorySlots(QObject *parent, const char *name) : QObject(parent, name)
+{
+}
+
 void HistorySlots::onCreateConfigDialog()
 {
 	kdebugf();
@@ -2121,8 +2130,8 @@ void HistorySlots::onCreateConfigDialog()
 
 void HistorySlots::onDestroyConfigDialog()
 {
-	kdebugf();
-	kdebugf2();
+//	kdebugf();
+//	kdebugf2();
 }
 
 void HistorySlots::updateQuoteTimeLabel(int value)
@@ -2133,4 +2142,4 @@ void HistorySlots::updateQuoteTimeLabel(int value)
 	kdebugf2();
 }
 
-HistoryManager history;
+HistoryManager history(NULL, "history_manager");

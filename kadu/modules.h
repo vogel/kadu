@@ -1,14 +1,15 @@
-#ifndef MODULES_H
-#define MODULES_H
+#ifndef KADU_MODULES_H
+#define KADU_MODULES_H
 
-#include <qstring.h>
-#include <qobject.h>
-#include <qstringlist.h>
-#include <qdialog.h>
-#include <qlistview.h>
-#include <qtranslator.h>
-#include <qlabel.h>
 #include <qhbox.h>
+#include <qobject.h>
+#include <qstring.h>
+#include <qstringlist.h>
+#include <qtranslator.h>
+
+class QLabel;
+class QListView;
+class QListViewItem;
 
 /**
 	Zastêpuje klasê QLibrary na specyficzne potrzeby Kadu

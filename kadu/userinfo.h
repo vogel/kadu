@@ -1,17 +1,18 @@
-#ifndef USERINFO_H
-#define USERINFO_H
+#ifndef KADU_USERINFO_H
+#define KADU_USERINFO_H
 
 #include <qhbox.h>
-#include <qvbox.h>
-#include <qlineedit.h>
-#include <qcheckbox.h>
-#include <qdns.h>
-#include <qcombobox.h>
-#include <qtabwidget.h>
-#include <qvgroupbox.h>
 
 #include "userlist.h"
 #include "misc.h"
+
+class QCheckBox;
+class QDns;
+class QLineEdit;
+class QPushButton;
+class QTabWidget;
+class QVBox;
+class QVGroupBox;
 
 /**
 	Dialog pokazuj±cy informacje o wybranym kontakcie

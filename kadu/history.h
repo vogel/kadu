@@ -1,34 +1,33 @@
 #ifndef HISTORY_H
 #define HISTORY_H
 
-#include <qdialog.h>
-#include <qstring.h>
 #include <qdatetime.h>
-#include <qvaluelist.h>
-#include <qstringlist.h>
-#include <qcombobox.h>
-#include <qcheckbox.h>
-#include <qhgroupbox.h>
-#include <qradiobutton.h>
-#include <qlineedit.h>
-#include <qvbuttongroup.h>
-#include <qevent.h>
-#include <qlistbox.h>
+#include <qdialog.h>
 #include <qlistview.h>
 #include <qmap.h>
+#include <qstring.h>
 #include <qstringlist.h>
+#include <qvaluelist.h>
+
 #include <time.h>
 
 #include "misc.h"
 
-#define	HISTORYMANAGER_ENTRY_CHATSEND	0x00000001
-#define	HISTORYMANAGER_ENTRY_CHATRCV	0x00000002
-#define	HISTORYMANAGER_ENTRY_MSGSEND	0x00000004
-#define	HISTORYMANAGER_ENTRY_MSGRCV	0x00000008
-#define	HISTORYMANAGER_ENTRY_STATUS	0x00000010
-#define	HISTORYMANAGER_ENTRY_SMSSEND	0x00000020
-#define HISTORYMANAGER_ENTRY_ALL	0x0000003f
-#define HISTORYMANAGER_ENTRY_ALL_MSGS	0x0000002f
+#define HISTORYMANAGER_ENTRY_CHATSEND   0x00000001
+#define HISTORYMANAGER_ENTRY_CHATRCV    0x00000002
+#define HISTORYMANAGER_ENTRY_MSGSEND    0x00000004
+#define HISTORYMANAGER_ENTRY_MSGRCV     0x00000008
+#define HISTORYMANAGER_ENTRY_STATUS     0x00000010
+#define HISTORYMANAGER_ENTRY_SMSSEND    0x00000020
+#define HISTORYMANAGER_ENTRY_ALL        0x0000003f
+#define HISTORYMANAGER_ENTRY_ALL_MSGS   0x0000002f
+
+class QComboBox;
+class QRadioButton;
+class QVButtonGroup;
+class QHGroupBox;
+class QCheckBox;
+class QLineEdit;
 
 struct HistoryEntry {
 	int type;
@@ -152,7 +151,7 @@ class HistoryManager : public QObject
 	Q_OBJECT
 
 	public:
-		HistoryManager();
+		HistoryManager(QObject *parent=0, const char *name=0);
 		int getHistoryEntriesCount(UinsList uins);
 		int getHistoryEntriesCount(QString mobile = QString::null);
 		QValueList<HistoryEntry> getHistoryEntries(UinsList uins, int from, int count, int mask = HISTORYMANAGER_ENTRY_ALL);
@@ -217,6 +216,8 @@ extern HistoryManager history;
 class HistorySlots: public QObject
 {
 	Q_OBJECT
+	public:
+		HistorySlots(QObject *parent=0, const char *name=0);
 	public slots:
 		void onCreateConfigDialog();
 		void onDestroyConfigDialog();

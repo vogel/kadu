@@ -7,9 +7,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qfontdialog.h>
+#include <qcheckbox.h>
 #include <qcolordialog.h>
+#include <qfontdialog.h>
 #include <qlabel.h>
+#include <qspinbox.h>
+#include <qvbuttongroup.h>
 
 #include "hint_manager_slots.h"
 #include "config_dialog.h"

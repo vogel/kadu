@@ -2,10 +2,11 @@
 #define PERSONAL_INFO_H
 
 #include <qhbox.h>
-#include <qlineedit.h>
-#include <qcombobox.h>
-#include <qpushbutton.h>
 #include "gadu.h"
+
+class QComboBox;
+class QLineEdit;
+class QPushButton;
 
 /**
 	Dialog umo¿liwiaj±cy zarz±dzanie w³asnymi danymi w katalogu

@@ -1,10 +1,10 @@
-#ifndef TABBAR_H
-#define TABBAR_H
+#ifndef KADU_TABBAR_H
+#define KADU_TABBAR_H
 
 #include <qtabbar.h>
 #include <qpainter.h>
-#include <qrect.h>
-#include <qtoolbutton.h>
+
+class QToolButton;
 
 class KaduTabBar : public QTabBar {
 	Q_OBJECT

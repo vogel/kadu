@@ -2,32 +2,31 @@
 #define CONFIG_DIALOG_H
 
 #include <qapplication.h>
-#include <qcheckbox.h>
-#include <qcombobox.h>
-#include <qfileinfo.h>
-#include <qgrid.h>
 #include <qhbox.h>
-#include <qhgroupbox.h>
-#include <qlabel.h>
 #include <qlineedit.h>
-#include <qlistbox.h>
-#include <qlistview.h>
-#include <qmessagebox.h>
 #include <qpushbutton.h>
-#include <qrect.h>
-#include <qslider.h>
-#include <qspinbox.h>
 #include <qstringlist.h>
-#include <qtabwidget.h>
-#include <qtextedit.h>
 #include <qvaluelist.h>
 #include <qvbox.h>
-#include <qvgroupbox.h>
-#include <qvbuttongroup.h>
-#include <qhbuttongroup.h>
 #include <qvariant.h>
 
 #include "config_file.h"
+
+class QCheckBox;
+class QComboBox;
+class QGrid;
+class QHButtonGroup;
+class QHGroupBox;
+class QLabel;
+class QListBox;
+class QListView;
+class QScrollView;
+class QSlider;
+class QSpinBox;
+class QTextEdit;
+class QVGroupBox;
+class QVButtonGroup;
+
 /**
     Kontrolka umo¿liwiajaca wybranie skrótu klawiszowego
 **/

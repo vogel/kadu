@@ -7,13 +7,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "dcc.h"
-
+#include <qcheckbox.h>
 #include <qfiledialog.h>
-#include <qmessagebox.h>
-#include <qpushbutton.h>
 #include <qfileinfo.h>
 #include <qlayout.h>
+#include <qmessagebox.h>
+#include <qpushbutton.h>
+#include <qvgroupbox.h>
 
 #include <fcntl.h>
 #include <unistd.h>
@@ -21,12 +21,13 @@
 #include <sys/un.h>
 #include <netinet/in.h>
 
-#include "file_transfer.h"
-#include "kadu.h"
-#include "ignore.h"
-#include "debug.h"
-#include "message_box.h"
 #include "config_dialog.h"
+#include "dcc.h"
+#include "debug.h"
+#include "file_transfer.h"
+#include "ignore.h"
+#include "kadu.h"
+#include "message_box.h"
 #include "userlist.h"
 
 extern "C" int dcc_init()

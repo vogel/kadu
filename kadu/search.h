@@ -1,17 +1,19 @@
-#ifndef SEARCH_H
-#define SEARCH_H
+#ifndef KADU_SEARCH_H
+#define KADU_SEARCH_H
 
-#include <qradiobutton.h>
 #include <qdialog.h>
-#include <qcheckbox.h>
-#include <qlineedit.h>
-#include <qcombobox.h>
-#include <qpushbutton.h>
-#include <qlistview.h>
-#include <qlabel.h>
 #include <qvaluelist.h>
 
 #include "gadu.h"
+
+class QCheckBox;
+class QComboBox;
+class QLabel;
+class QLineEdit;
+class QListView;
+class QListViewItem;
+class QPushButton;
+class QRadioButton;
 
 /**
 	Dialog umo¿liwiaj±cy wyszukiwanie w katalogu publicznym

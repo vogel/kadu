@@ -1,4 +1,3 @@
-
 #ifndef PENDING_MSGS_H
 #define PENDING_MSGS_H
 
@@ -24,7 +23,7 @@ class PendingMsgs : public QObject
 		PendingMsgsList msgs;
 		
 	public:
-		PendingMsgs();
+		PendingMsgs(QObject *parent=0, const char *name=0);
 		bool pendingMsgs(UinType uin);
 		bool pendingMsgs();
 		int count();

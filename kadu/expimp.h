@@ -1,14 +1,12 @@
 #ifndef EXPIMP_H
 #define EXPIMP_H
 
-#include <qdialog.h>
-#include <qlistview.h>
-#include <qstring.h>
-#include <qsocketnotifier.h>
 #include <qhbox.h>
-#include <qlabel.h>
-
 #include "userlist.h"
+
+class QLabel;
+class QListView;
+class QPushButton;
 
 /**
 	Dialog umo¿liwiaj±cy import / export listy kontaktów z serwera GG

@@ -2,23 +2,24 @@
 #define KADU_H
 
 #include <qapplication.h>
+#include <qframe.h>
+#include <qlayout.h>
 #include <qmainwindow.h>
 #include <qpopupmenu.h>
 #include <qstringlist.h>
 #include <qstring.h>
-#include <qframe.h>
-#include <qlayout.h>
 #include <qtoolbutton.h>
 #include <qtoolbar.h>
-#include <qmenubar.h>
 #include <qvaluelist.h>
-#include <qfile.h>
 
 #include "misc.h"
 #include "userbox.h"
 #include "userlist.h"
 #include "tabbar.h"
 #include "status.h"
+
+class QFile;
+class QMenuBar;
 
 /**
 	Toolbar Kadu

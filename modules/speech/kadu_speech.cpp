@@ -7,19 +7,21 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <qcheckbox.h>
 #include <qfiledialog.h>
-#include <qregexp.h>
 #include <qprocess.h>
+#include <qregexp.h>
+#include <qslider.h>
 
 #include <stdlib.h>
 #include <time.h>
 
-#include "kadu_speech.h"
-#include "debug.h"
-#include "config_dialog.h"
 #include "chat.h"
-#include "../notify/notify.h"
+#include "config_dialog.h"
+#include "debug.h"
+#include "kadu_speech.h"
 #include "kadu.h"
+#include "../notify/notify.h"
 
 extern "C" int speech_init()
 {

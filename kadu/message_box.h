@@ -3,9 +3,10 @@
 
 #include <qdialog.h>
 #include <qmap.h>
-#include <qprogressbar.h>
-#include <qlabel.h>
-#include <qlayout.h>
+
+class QGridLayout;
+class QLabel;
+class QProgressBar;
 
 /**
 	Odpowiednik klasy QMessageBox z QT. W zamierzeniu ma

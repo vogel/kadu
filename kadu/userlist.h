@@ -1,12 +1,9 @@
-#ifndef USERLIST_H
-#define USERLIST_H
+#ifndef KADU_USERLIST_H
+#define KADU_USERLIST_H
 
-#include <qobject.h>
-#include <qvaluelist.h>
-#include <qtimer.h>
-#include <qhostaddress.h>
 #include <qdns.h>
-#include <qptrlist.h>
+#include <qhostaddress.h>
+#include <qobject.h>
 
 #include "gadu.h"
 

@@ -1,38 +1,46 @@
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 #include <qapplication.h>
-#include <qmessagebox.h>
-#include <qpushbutton.h>
-#include <qlayout.h>
-#include <qstring.h>
-#include <qtextcodec.h>
+#include <qclipboard.h>
+#include <qcolor.h>
+#include <qcombobox.h>
 #include <qcstring.h>
 #include <qdatetime.h>
-#include <qregexp.h>
-#include <qcolor.h>
+#include <qlineedit.h>
+#include <qmenudata.h>
+#include <qmessagebox.h>
 #include <qpainter.h>
-#include <qaccel.h>
-#include <qprocess.h>
-#include <qurl.h>
-#include <qclipboard.h>
 #include <qpopupmenu.h>
-#include <qcursor.h>
-#include <qtimer.h>
+#include <qprocess.h>
+#include <qpushbutton.h>
+#include <qregexp.h>
+#include <qstring.h>
+#include <qtextcodec.h>
+#include <qurl.h>
 
 #include <pwd.h>
 #include <unistd.h>
 #include <time.h>
 #include <stdlib.h>
 
-#include "misc.h"
 #include "config_file.h"
 #include "config_dialog.h"
-#include "status.h"
-#include "gadu.h"
 #include "debug.h"
-#include "userlist.h"
-#include "message_box.h"
-#include "kadu-config.h"
 #include "emoticons.h"
+#include "gadu.h"
 #include "kadu.h"
+#include "kadu-config.h"
+#include "message_box.h"
+#include "misc.h"
+#include "status.h"
+#include "userlist.h"
 
 #define GG_FONT_IMAGE	0x80
 

@@ -7,25 +7,25 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "modules.h"
-#include "debug.h"
-#include "message_box.h"
-#include "config_file.h"
-#include "config_dialog.h"
-#include "kadu.h"
-#include "kadu-config.h"
-
 #include <qdir.h>
-#include <qlayout.h>
-#include <qvbox.h>
-#include <qpushbutton.h>
-#include <qtextcodec.h>
-#include <qregexp.h>
+#include <qlabel.h>
 #include <qlistview.h>
-#include <qvgroupbox.h>
+#include <qpushbutton.h>
+#include <qregexp.h>
 #include <qsizepolicy.h>
+#include <qtextcodec.h>
+#include <qvgroupbox.h>
+#include <qvbox.h>
 
 #include <dlfcn.h>
+
+#include "config_file.h"
+#include "config_dialog.h"
+#include "debug.h"
+#include "kadu.h"
+#include "kadu-config.h"
+#include "message_box.h"
+#include "modules.h"
 
 #include "modules_static.cpp"
 

@@ -7,21 +7,24 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qfile.h>
-#include <qtextstream.h>
-#include <qregexp.h>
-#include <qhgroupbox.h>
+#include <qcheckbox.h>
+#include <qcombobox.h>
 #include <qcursor.h>
+#include <qfile.h>
+#include <qhgroupbox.h>
+#include <qregexp.h>
+#include <qspinbox.h>
+#include <qtextstream.h>
+
 #include <string.h>
 
+#include "autoaway.h"
 #include "config_file.h"
 #include "config_dialog.h"
 #include "debug.h"
 #include "kadu.h"
-#include "misc.h"
-
 #include "message_box.h"
-#include "autoaway.h"
+#include "misc.h"
 
 AutoAwayTimer *autoaway_object=NULL;
 AutoAwaySlots *autoawayslots=NULL;

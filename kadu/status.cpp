@@ -7,10 +7,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "status.h"
-#include "gadu.h"
-#include "debug.h"
 #include <qobject.h>
+
+#include "debug.h"
+#include "gadu.h"
+#include "status.h"
 
 UserStatus::UserStatus()
 {

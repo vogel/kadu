@@ -10,14 +10,13 @@
 #include <qfile.h>
 #include <qtextstream.h>
 #include <qtextcodec.h>
-#include <qdns.h>
 #include <qregexp.h>
 
 #include <sys/stat.h>
 
-#include "userlist.h"
-#include "userbox.h"
 #include "debug.h"
+#include "userbox.h"
+#include "userlist.h"
 
 DnsHandler::DnsHandler(const QHostAddress &address)
 {
@@ -56,7 +55,7 @@ int DnsHandler::counter = 0;
 
 UserListElement::UserListElement(UserList* parent)
 {
-	kdebugf();
+//	kdebugf();
 	Parent = parent;
 	Version = 0;
 	MaxImageSize = 0;
@@ -68,21 +67,21 @@ UserListElement::UserListElement(UserList* parent)
 	Uin = 0;
 	// TODO: zuniwersalizowaæ
 	Stat = new GaduStatus();
-	kdebugf2();
+//	kdebugf2();
 }
 
 UserListElement::UserListElement(const UserListElement &copyMe)
 {
-	kdebugf();
+//	kdebugf();
 	// TODO: zuniwersalizowaæ
 	Stat = new GaduStatus();
 	*this = copyMe;
-	kdebugf2();
+//	kdebugf2();
 }
 
 UserListElement::UserListElement()
 {
-	kdebugf();
+//	kdebugf();
 	Parent = NULL;
 	Version = 0;
 	MaxImageSize = 0;
@@ -95,7 +94,7 @@ UserListElement::UserListElement()
 	Uin = 0;
 	// TODO: zuniwersalizowaæ
 	Stat = new GaduStatus();
-	kdebugf2();
+//	kdebugf2();
 }
 
 UserListElement::~UserListElement()
@@ -388,7 +387,7 @@ void UserListElement::refreshDnsName()
 
 void UserListElement::operator = (const UserListElement &copyMe)
 {
-	kdebugf();
+//	kdebugf();
 
 	Parent = copyMe.Parent;
 	Version = copyMe.Version;
@@ -412,7 +411,7 @@ void UserListElement::operator = (const UserListElement &copyMe)
 	Mobile = copyMe.Mobile;
 	Email = copyMe.Email;
 	Uin = copyMe.Uin;
-	kdebugf2();
+//	kdebugf2();
 }
 
 UserList::UserList(const UserList &source) : QObject(NULL, "userlist"), QMap<QString,UserListElement>()

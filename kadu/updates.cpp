@@ -1,11 +1,22 @@
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 #include <qnetwork.h>
 #include <qmessagebox.h>
-#include "kadu-config.h"
-#include "updates.h"
+#include <qurloperator.h>
+
 #include "config_file.h"
 #include "debug.h"
-#include "kadu.h"
 #include "gadu.h"
+#include "kadu.h"
+#include "kadu-config.h"
+#include "updates.h"
 
 Updates *Updates::instance = NULL;
 bool Updates::UpdateChecked = false;

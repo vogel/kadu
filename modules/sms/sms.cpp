@@ -7,20 +7,18 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <qcheckbox.h>
+#include <qgrid.h>
 #include <qlayout.h>
 #include <qregexp.h>
-#include <qpainter.h>
-#include <qurl.h>
-#include <qgrid.h>
 #include <qstring.h>
-#include <qobject.h>
 
 #include "config_dialog.h"
 #include "config_file.h"
-#include "sms.h"
 #include "history.h"
-#include "modules.h"
 #include "kadu.h"
+#include "modules.h"
+#include "sms.h"
 #include "userbox.h"
 
 extern "C" int sms_init()

@@ -8,15 +8,16 @@
  ***************************************************************************/
 
 #include <qapplication.h>
-#include <qstyle.h>
-#include <qiconset.h>
 #include <qcursor.h>
-#include <qsizepolicy.h>
 #include <qdragobject.h>
+#include <qiconset.h>
+#include <qstyle.h>
 #include <qinputdialog.h>
+#include <qsizepolicy.h>
+#include <qtoolbutton.h>
 
-#include "tabbar.h"
 #include "debug.h"
+#include "tabbar.h"
 #include "userbox.h"
 #include "userlist.h"
 

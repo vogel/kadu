@@ -7,20 +7,25 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qprocess.h>
-#include <qfiledialog.h>
-#include <qstring.h>
+#include <qcheckbox.h>
+#include <qcombobox.h>
 #include <qdir.h>
+#include <qfiledialog.h>
+#include <qgrid.h>
 #include <qlayout.h>
+#include <qlistview.h>
+#include <qmenubar.h>
+#include <qstring.h>
+#include <qslider.h>
 
 #include "chat.h"
-#include "sound.h"
-#include "debug.h"
 #include "config_file.h"
 #include "config_dialog.h"
+#include "debug.h"
+#include "sound.h"
 #include "kadu.h"
-#include "../notify/notify.h"
 #include "misc.h"
+#include "../notify/notify.h"
 
 SoundManager* sound_manager=NULL;
 SoundSlots* sound_slots;

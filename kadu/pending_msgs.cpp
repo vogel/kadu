@@ -1,14 +1,22 @@
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 
 #include <qfile.h>
 #include <qtextcodec.h>
 
-#include "pending_msgs.h"
+#include "chat.h"
+#include "config_file.h"
 #include "debug.h"
 #include "kadu.h"
-#include "config_file.h"
-#include "chat.h"
+#include "pending_msgs.h"
 
-PendingMsgs::PendingMsgs(): QObject(NULL, "pending_msgs")
+PendingMsgs::PendingMsgs(QObject *parent, const char *name): QObject(parent, name)
 {
 }
 
@@ -178,4 +186,4 @@ void PendingMsgs::openMessages() {
 	chat_manager->openPendingMsgs();
 }
 
-PendingMsgs pending;
+PendingMsgs pending(NULL, "pending_msgs");
