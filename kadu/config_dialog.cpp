@@ -577,7 +577,7 @@ void ConfigDialog::setupTab1(void) {
 		i++;
 	cb_defstatus->setCurrentItem(i);
 
-	b_disconnectdesc = new QCheckBox(i18n("Closing put in description"),box1);
+	b_disconnectdesc = new QCheckBox(i18n("On shutdown, set description:"),box1);
 	b_disconnectdesc->setChecked(config.disconnectwithdesc);
 
 	e_disconnectdesc = new QLineEdit(config.disconnectdesc,box1);
@@ -990,7 +990,7 @@ void ConfigDialog::setupTab5(void) {
 
 	QHBox *portserverbox = new QHBox(g_server);
 	serverbox->setSpacing(5);
-	QLabel *lserverport = new QLabel(i18n("Default port to connect servers"),portserverbox);
+	QLabel *lserverport = new QLabel(i18n("Default port to connect to servers"),portserverbox);
 	
 	cb_portselect = new QComboBox(portserverbox);
         cb_portselect->insertItem("8074");
