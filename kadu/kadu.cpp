@@ -1172,7 +1172,11 @@ void Kadu::prepareDcc(void) {
 
 void Kadu::userListUserAdded(const UserListElement& user)
 {
-	if (user.anonymous || config_file.readBoolEntry("General", "UseDocking"))
+	// jesli dodany do listy uzyszkodnik jest uzyszkodnikiem anonimowym
+	// (odezwal sie do nas) i mamy wlaczone dokowanie (mozemy kliknac
+	// na kopertce w trayu, zeby odebrac wiadomosc) to nie dodajemy
+	// go do userboxa itp bo po co.
+	if (user.anonymous && config_file.readBoolEntry("General", "UseDocking"))
 		return;
 
 	userlist.writeToFile();
