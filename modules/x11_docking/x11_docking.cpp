@@ -165,6 +165,7 @@ X11TrayIcon::X11TrayIcon()
 	
 	//zapobiega pojawieniu siê 2 ikon jedna na drugiej (z kilkunastopikselowym przesuniêciem)
 	QTimer::singleShot(0, this, SLOT(repaint()));
+	QTimer::singleShot(1000, this, SLOT(repaint()));
 	
 	kdebugf2();
 }
