@@ -18,7 +18,7 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 #!/bin/bash
-# $Id: kaduinstaller.sh,v 1.1 2004/04/06 11:46:16 romek Exp $
+# $Id: kaduinstaller.sh,v 1.2 2004/04/07 11:02:25 romek Exp $
 # KaduInstaller - Copyright (C) 2004 Sad Mephisto <sad@antisocial.com>
 
 # ./configure, make, make install....  tylko ¿eby ³adnie wygl±da³o
@@ -61,11 +61,12 @@ wybierzmoduly()
 		sms "Obs³uga wsys³ania SMS" on \
 		default_sms "Obs³uga standardowych bramek SMS" on \
     		"echo" "Przyk³adowy modu³ Echo" 0 \
+		autoway "Obs³uga automatycznej zmiany statusu" on \
     		autoresponder "Przyk³adowy modu³ Autoresponder" 0 2>log_selectedmodule
 
 	rm -fr .config
 	
-	MODULY="encryption speech sound ext_sound dsp_sound arts_sound esd_sound nas_sound echo autoresponder sms default_sms"
+	MODULY="encryption speech sound ext_sound dsp_sound arts_sound esd_sound nas_sound echo autoresponder sms default_sms autoway"
 	for MODUL in $MODULY; do
 		if [[ `cat log_selectedmodule |grep $MODUL` != "" ]]; then
 			echo "module_$MODUL=m" >> .config
