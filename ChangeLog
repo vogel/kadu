@@ -124,6 +124,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   oraz zapamiêtywanie jego rozmiarów i po³o¿enia (joi)
 * dodane ogólne funkcje do zapamiêtywania rozmiarów okien (loadGeometry
   i saveGeometry) (joi)
+* patch Kida dotycz±cy odstêpów miêdzy komponentami w oknie "O programie" (joi)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

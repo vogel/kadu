@@ -35,11 +35,16 @@ About::About() {
 	
 	// create main QLabel widgets (icon and app info)
 	QVBox *left=new QVBox(this);
+	left->setMargin(10);
+	left->setSpacing(10);
+	
 	QLabel *l_icon = new QLabel(left);
 	QWidget *blank=new QWidget(left);
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
 	
 	QVBox *center=new QVBox(this);
+	center->setMargin(10);
+	center->setSpacing(10);
 	
 	QLabel *l_info = new QLabel(center);
 	l_icon->setPixmap(icons_manager.loadIcon("AboutIcon"));
