@@ -209,11 +209,20 @@ void DccSocket::watchDcc(int /*check*/)
 		case GG_EVENT_DCC_ERROR:
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_ERROR\n");
 			emit dcc_manager->dccError(this);
+			if (state() != DCC_SOCKET_VOICECHAT_DISCARDED &&
+				state() != DCC_SOCKET_TRANSFER_ERROR)
+				setState(DCC_SOCKET_CONNECTION_BROKEN);
+			gadu->freeEvent(dccevent);
+			dccevent = NULL;
+			in_watchDcc = false;
 			return;
 		case GG_EVENT_DCC_DONE:
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_DONE\n");
 			setState(DCC_SOCKET_TRANSFER_FINISHED);
 			emit dcc_manager->dccDone(this);
+			gadu->freeEvent(dccevent);
+			dccevent = NULL;
+			in_watchDcc = false;
 			return;
 		default:
 			break;

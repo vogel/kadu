@@ -1,5 +1,5 @@
-#ifndef VOICE_H
-#define VOICE_H
+#ifndef KADU_VOICE_H
+#define KADU_VOICE_H
 
 #include <qdialog.h>
 #include <qthread.h>
@@ -16,7 +16,8 @@ extern "C" {
 class PlayThread;
 class RecordThread;
 
-struct gsm_sample {
+struct gsm_sample
+{
 	char *data;
 	int length;
 };
@@ -26,15 +27,15 @@ class VoiceChatDialog : public QDialog
 	Q_OBJECT
 
 	private:
-		static QMap<DccSocket*, VoiceChatDialog*> Dialogs;
+		static QMap<DccSocket *, VoiceChatDialog *> Dialogs;
 		DccSocket* Socket;
 
 	public:
-		VoiceChatDialog(DccSocket* socket);
+		VoiceChatDialog(DccSocket *socket);
 		~VoiceChatDialog();
-		static VoiceChatDialog* bySocket(DccSocket* socket);
+		static VoiceChatDialog *bySocket(DccSocket *socket);
 		static void destroyAll();
-		static void sendDataToAll(char* data, int length);
+		static void sendDataToAll(char *data, int length);
 
 		bool chatFinished;
 };
@@ -44,24 +45,23 @@ class VoiceManager : public QObject
 	Q_OBJECT
 
 	private:
-		MessageBox* GsmEncodingTestMsgBox;
+		MessageBox *GsmEncodingTestMsgBox;
 		SoundDevice GsmEncodingTestDevice;
 		gsm GsmEncodingTestHandle;
-		int16_t* GsmEncodingTestSample;
-		gsm_frame* GsmEncodingTestFrames;
+		int16_t *GsmEncodingTestSample;
+		gsm_frame *GsmEncodingTestFrames;
 		int GsmEncodingTestCurrFrame;
-		friend class PlayThread;
-		friend class RecordThread;
 		SoundDevice device;
-		PlayThread* pt;
-		RecordThread* rt;
+
+		PlayThread *playThread;
+		RecordThread *recordThread;
 		gsm voice_enc;
 		gsm voice_dec;
 		QValueList<UinType> direct;
 		
 		void resetCoder();
 		void resetDecoder();
-		void askAcceptVoiceChat(DccSocket* socket);
+		void askAcceptVoiceChat(DccSocket *socket);
 
 	private slots:
 		void testGsmEncoding();
@@ -69,17 +69,17 @@ class VoiceManager : public QObject
 		void gsmEncodingTestSamplePlayed(SoundDevice device);
 		void playGsmSampleReceived(char *data, int length);
 		void recordSampleReceived(char *data, int length);
-		void mainDialogKeyPressed(QKeyEvent* e);
+		void mainDialogKeyPressed(QKeyEvent *e);
 		void userBoxMenuPopup();
 		void makeVoiceChat();
-		void connectionBroken(DccSocket* socket);
-		void dccError(DccSocket* socket);
-		void dccEvent(DccSocket* socket);
-		void socketDestroying(DccSocket* socket);
-		void setState(DccSocket* socket);
+		void connectionBroken(DccSocket *socket);
+		void dccError(DccSocket *socket);
+		void dccEvent(DccSocket *socket);
+		void socketDestroying(DccSocket *socket);
+		void setState(DccSocket *socket);
 
 	public:
-		VoiceManager(QObject *parent=0, const char *name=0);
+		VoiceManager(QObject *parent = 0, const char *name = 0);
 		~VoiceManager();
 		void setup();
 		void free();
@@ -97,16 +97,22 @@ class PlayThread : public QObject, public QThread
 	public:
 		PlayThread();
 		void run();
+		void endThread();
+		void addGsmSample(char *data, int length);
 
 	signals:
 		void playGsmSample(char *data, int length);
 
 	private:
-		QSemaphore wsem, rsem;
-		QValueList<struct gsm_sample> queue;
-		QMutex mutex;
-
-	friend class VoiceManager;
+		QSemaphore wsem;
+		void waitForData(); //czeka na nowe dane
+		void moreData(); //daje znaæ, ¿e s± nowe dane
+		
+		QValueList<struct gsm_sample> samples;
+		QMutex samplesMutex; // chroni dostêp do samples
+		
+		bool end;
+//		QMutex endMutex; //chroni dostêp do end
 };
 
 class RecordThread : public QObject, public QThread
@@ -116,16 +122,14 @@ class RecordThread : public QObject, public QThread
 	public:
 		RecordThread();
 		void run();
+		void endThread();
 
 	signals:
 		void recordSample(char *data, int length);
 
 	private:
-		QSemaphore rsem;
-		QValueList<struct gsm_sample> queue;
-		QMutex mutex;
-
-	friend class VoiceManager;
+		bool end;
+//		QMutex endMutex; //chroni dostêp do end
 };
 
 extern VoiceManager *voice_manager;

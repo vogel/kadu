@@ -513,6 +513,10 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * lepsze wykrywanie bibliotek przy configure (nie ma znaczenia rozszerzenie
   biblioteki na danym systemie) oraz czytelniejsze komunikaty o braku Qt i png (joi)
 * poprawa wykrywania libpng na slackware, dodane domy¶lne ¶cie¿ki dla MacOSX (joi)
+* rozmowy g³osowe: niewywracaj±ce (np. alsy) zamykanie po³±czenia i ogólne porz±dki
+  z tym zwi±zane; wykrywanie ciszy na mikrofonie i nie przesy³anie wtedy danych
+  przez sieæ; przy braku mo¿liwo¶ci odegrania wszystkich d¼wiêków, co jaki¶ czas
+  opuszczane jest kilka ramek (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
