@@ -632,7 +632,9 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 	edit->setMinimumHeight(1);
 	edit->setWordWrap(QMultiLineEdit::WidgetWidth);
 	edit->setFont(config_file.readFontEntry("Look","ChatFont"));
-	connect(body, SIGNAL(mouseReleased(QMouseEvent *, KaduTextBrowser *)), edit, SLOT(setFocus()));
+
+//	jednak czasami qt wydziwia i przez to prze³±czanie focusu nie dzia³a wycinanie tekstu
+//	connect(body, SIGNAL(mouseReleased(QMouseEvent *, KaduTextBrowser *)), edit, SLOT(setFocus()));
 
 	if (config_file.readBoolEntry("Chat","AutoSend"))
 		autosend->setOn(true);
