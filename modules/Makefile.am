@@ -112,6 +112,7 @@ install-data-local: uninstall-local
 	$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/modules/"
 	$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/modules/translations/"
 	$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/modules/data/"
+	$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/modules/bin/"
 	@for dir in $(static_modules) $(shared_modules); do \
 		echo -e "\033[32m>>>\033[0m Installing $$dir module ..."; \
 		$(INSTALL_DATA) $$dir/$$dir.desc "$(DESTDIR)/$(datadir)/kadu/modules"; \
@@ -126,6 +127,16 @@ install-data-local: uninstall-local
 				for new_file in `find $$sub_dir -type f -maxdepth 1 | sed "s/ /_SPACE_/g"`; do \
 					new_file=`echo "$$new_file" | sed "s/_SPACE_/ /g"`; \
 					$(INSTALL_DATA) "$$new_file" "$(DESTDIR)/$(datadir)/kadu/modules/data/$$dst_dir"; \
+				done; \
+			done; \
+		fi; \
+		if test -d $$dir/bin; then \
+			for sub_dir in `find $$dir/bin -type d | grep -v /CVS | grep -v /.svn`; do \
+				dst_dir=`echo "$$sub_dir" | sed "s,/bin/,/," | sed "s,/bin$$,,"`; \
+				$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/modules/bin/$$dst_dir"; \
+				for new_file in `find $$sub_dir -type f -maxdepth 1 | sed "s/ /_SPACE_/g"`; do \
+					new_file=`echo "$$new_file" | sed "s/_SPACE_/ /g"`; \
+					$(INSTALL_PROGRAM) "$$new_file" "$(DESTDIR)/$(datadir)/kadu/modules/bin/$$dst_dir"; \
 				done; \
 			done; \
 		fi; \
