@@ -18,6 +18,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   budowania okna konfiguracyjnego (adrian)
 * opcja automatycznego otwierania siê okna rozmowy,
   gdy nadejdzie wiadomo¶æ (adrian)
+* formatowanie kolorków i wygl±du czcionki w wiadomo¶ciach przychodz±cych od
+  u¿ytkowników GG (chilek)
 
 +++ wersja 0.3.4-pre3
 * dodane przeszukiwanie historii (chilek)

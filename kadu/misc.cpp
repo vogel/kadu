@@ -114,6 +114,8 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats) {
 	struct gg_msg_richtext_format *actformat;
 	struct gg_msg_richtext_color *actcolor;
 	int pos;
+
+	kdebug("formatGGMessage()\n");
 	bold = italic = underline = color = false;
 	pos = 0;
 	if (formats_length) {
@@ -173,8 +175,8 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats) {
 						}
 				cformats += sizeof(gg_msg_richtext_format);
 				formats_length -= sizeof(gg_msg_richtext_format);
-				cformats += sizeof(gg_msg_richtext_color) * (actformat->font & GG_FONT_COLOR);
-				formats_length -= sizeof(gg_msg_richtext_color) * (actformat->font & GG_FONT_COLOR);
+				cformats += sizeof(gg_msg_richtext_color) * ((actformat->font & GG_FONT_COLOR) != 0);
+				formats_length -= sizeof(gg_msg_richtext_color) * ((actformat->font & GG_FONT_COLOR) != 0);
 				}
 			}
 		if (pos < msg.length()) {
@@ -187,6 +189,7 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats) {
 		mesg = msg;
 		escapeSpecialCharacters(mesg);
 		}
+	kdebug("formatGGMessage(): finished\n");
 	return mesg;
 }
 
