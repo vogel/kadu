@@ -1249,7 +1249,10 @@ void Kadu::error(GaduError err)
 		emit connectionError(msg);
 	}
 
-	if (continue_connecting)
+	// je¶li b³±d który wyst±pi³ umo¿liwia dalsze próby po³±czenia
+	// i w miêdzyczasie u¿ytkownik nie zmieni³ statusu na niedostêpny
+	// to za sekundê próbujemy ponownie
+	if (continue_connecting && !gadu->status().isOffline())
 		gadu->connectAfterOneSecond();
 
 	kdebugf2();

@@ -342,6 +342,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawne otwieranie linków z % (joi)
 * sms l±duje w historii tylko gdy bramka nie zwróci³a b³êdu (joi)
 * mo¿liwo¶æ ³±czenia okien chatów we Fluxboksie - WM_CLASS=kadu-chat (joi)
+* zmiana statusu na niedostêpny prawid³owo przerywa proces ³±czenia (adrian)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
