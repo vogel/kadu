@@ -103,6 +103,11 @@ int main(int argc, char *argv[])
 	QPixmap pix = icons_manager.loadIcon("Offline");
 	kadu->setIcon(pix);
 	qApp->setMainWidget(kadu);
+
+#ifdef MODULES_ENABLED
+	ModulesManager::initModule();
+#endif
+
 	if (!config_file.readNumEntry("General","UIN")) {
 		QString path_;
 		path_ = ggPath("");
@@ -137,9 +142,6 @@ int main(int argc, char *argv[])
 
 	QObject::connect(qApp, SIGNAL(aboutToQuit()), kadu, SLOT(quitApplication()));
 
-#ifdef MODULES_ENABLED
-	ModulesManager::initModule();
-#endif
 
 	return qApp->exec();
 }
