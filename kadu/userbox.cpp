@@ -16,6 +16,7 @@
  ***************************************************************************/
 
 #include <klocale.h>
+#include <qmap.h>
 
 //
 #include "kadu.h"
@@ -95,23 +96,15 @@ void UserBox::mousePressEvent(QMouseEvent *e) {
 
 void UserBox::sortUsersByAltNick(QStringList &users) {
 	int i, j;
-	uin_t uin;
-	bool stop;
 
-	if (users.count() < 2)
-		return;
-
-/*	do {
-		stop = true;
-		for (i = 0; i < uins.count() - 1; i++)
-			if (userlist.byUin(uins[i]).altnick > userlist.byUin(uins[i+1]).altnick) {
-				uin = uins[i];
-				uins[i] = uins[i+1];
-				uins[i+1] = uin;
-				stop = false;
-				}	
-	} while (!stop);*/
+	QMap<QString,QString> usermap;
+	for (i = 0; i < users.count(); i++) {
+		usermap.insert(users[i].upper(), users[i]);
+		users[i] = users[i].upper();
+		}
 	users.sort();
+	for (i = 0; i < users.count(); i++)
+		users[i] = usermap[users[i]];
 }
 
 void UserBox::refresh()
