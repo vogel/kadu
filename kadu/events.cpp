@@ -119,20 +119,22 @@ void SavePublicKey::yesClicked() {
 	kdebug("SavePublicKey::yesClicked(): finished\n");
 }
 
-void eventRecvMsg(int msgclass, UinsList senders, unsigned char *msg, time_t time,int formats_count,struct gg_msg_format * formats)
+EventManager::EventManager()
 {
-	int i;
+	connect(this,SIGNAL(userStatusChanged(struct gg_event*)),this,SLOT(userStatusChangedSlot(struct gg_event*)));
+	connect(this,SIGNAL(userlistReceived(struct gg_event*)),this,SLOT(userlistReceivedSlot(struct gg_event*)));
+	connect(this,SIGNAL(messageReceived(int,UinsList,unsigned char*,time_t,int,struct gg_msg_format*)),this,SLOT(messageReceivedSlot(int,UinsList,unsigned char*,time_t,int,struct gg_msg_format*)));
+};
 
-	kdebug("eventRecvMsg()\n");
-
+void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned char* msg, time_t time,int formats_count,struct gg_msg_format * formats)
+{
 	// ignorujemy, jesli nick na liscie ignorowanych
 	// PYTANIE CZY IGNORUJEMY CALA KONFERENCJE
 	// JESLI PIERWSZY SENDER JEST IGNOROWANY????
 	if (isIgnored(senders))
 		return;
 
-	QString mesg = cp2unicode(msg);
-	// ignorujemy wiadomosci systemowe (tylko na konsole)
+	// ignorujemy wiadomosci systemowe
 	if (senders[0] == 0)
 	{
 		if (msgclass <= config.sysmsgidx)
@@ -146,8 +148,11 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char *msg, time_t tim
 		//senders[0] = config.uin;
 	}
 
-	QString tmp;
+	QString mesg = cp2unicode(msg);
 
+	int i;
+
+	QString tmp;
 #ifdef HAVE_OPENSSL
 	if (config.encryption) {
 		if (!strncmp((char *)msg, "-----BEGIN RSA PUBLIC KEY-----", 20)) {
@@ -239,8 +244,10 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char *msg, time_t tim
 	if (msgclass == GG_CLASS_MSG)
 		trayicon->showHint(i18n("Message from: "), nick,0);
 
-	PendingMsgs::Element elem;
-/*
+	emit chatReceived(senders,mesg,time);
+
+/*	PendingMsgs::Element elem;
+
 	if (senders[0] == config.uin) {
 		rMessage *rmsg;
 		elem = pending[i];
@@ -290,7 +297,7 @@ void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)
 		}
 }
 
-void eventGotUserlist(struct gg_event *e) {
+void EventManager::userlistReceivedSlot(struct gg_event *e) {
 	struct gg_notify_reply *n;
 	unsigned int oldstatus;
 	int i;
@@ -384,7 +391,7 @@ void eventGotUserlist(struct gg_event *e) {
 
 }
 
-void eventStatusChange(struct gg_event * e) {
+void EventManager::userStatusChangedSlot(struct gg_event * e) {
 	kdebug("eventStatusChange(): User %d went %d\n", e->event.status.uin,  e->event.status.status);
 
 	unsigned int oldstatus;
@@ -448,3 +455,23 @@ void ackHandler(int seq) {
 		}
 }
 
+EventManager event_manager;
+
+void eventRecvMsg(int msgclass, UinsList senders, unsigned char *msg, time_t time,int formats_count,struct gg_msg_format * formats)
+{
+	fprintf(stderr,"eventRecvMsg\n");
+	kdebug("eventRecvMsg()\n");
+	emit event_manager.messageReceived(msgclass,senders,msg,time,formats_count,formats);
+};
+
+void eventGotUserlist(struct gg_event *e)
+{
+	fprintf(stderr,"eventGotUserlist\n");
+	emit event_manager.userlistReceived(e);
+};
+
+void eventStatusChange(struct gg_event * e)
+{
+	fprintf(stderr,"eventStatusChange\n");
+	emit event_manager.userStatusChanged(e);
+};

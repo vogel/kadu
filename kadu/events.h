@@ -30,10 +30,44 @@ class SavePublicKey : public QDialog {
 		void yesClicked();
 };
 
+class EventManager : public QObject
+{
+	Q_OBJECT
+
+	private:
+		// Chwilowo. Tego nie bêdzie.
+		friend void eventRecvMsg(int, UinsList, unsigned char *,time_t,int,struct gg_msg_format*);
+		friend void eventGotUserlist(struct gg_event *);
+		friend void eventStatusChange(struct gg_event *);
+			
+	private slots:
+		void userStatusChangedSlot(struct gg_event*);
+		void userlistReceivedSlot(struct gg_event *);
+		void messageReceivedSlot(int, UinsList,unsigned char* msg,time_t,int,struct gg_msg_format*);
+		
+	public:
+		EventManager();
+		
+	signals:
+		void userStatusChanged(struct gg_event*);
+		void userlistReceived(struct gg_event *);
+		// Dosz³a jaka¶ wiadomo¶æ z serwera GG
+		void messageReceived(int,UinsList,unsigned char* msg,time_t,int,struct gg_msg_format*);
+		/**
+			Dosz³a wiadomo¶æ, któr± trzeba pokazaæ (klasa chat lub msg,
+			nadawca nie jest ignorowany, itp)
+			Tre¶æ zdeszyfrowana i zdekodowana do unicode.
+		**/
+		void chatReceived(UinsList senders,const QString& msg,time_t time);
+};
+
+extern EventManager event_manager;
+
+extern QTime lastsoundtime;
+
+// Chwilowo. Tego nie bêdzie.
 void eventRecvMsg(int, UinsList, unsigned char *,time_t,int=0,struct gg_msg_format * = NULL);
 void eventGotUserlist(struct gg_event *);
 void eventStatusChange(struct gg_event *);
-
-extern QTime lastsoundtime;
 
 #endif

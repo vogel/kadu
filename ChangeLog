@@ -50,6 +50,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   - od dluzszego czasu nie uzywamy tego. Propozycja (patrz plik message.h)
   usuniecia message.cpp i message.h, deaktywacja "Wyslij wiadomo¶æ" z
   prawego menu na userze w userbox'ie (mast3r)
+* pocz±tki gruntownych porz±dków w events.cpp/h - stworzenie klasy
+  EventManager, sygna³y messageReceived, chatReceived, userlistReceived,
+  userStatusChanged. Wiêcej porz±dków wkrótce (adrian)
 
 +++ wersja 0.3.4-pre2
 * graficzny instalator - instaluj.tcl (googie)
