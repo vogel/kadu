@@ -1347,7 +1347,7 @@ void ColorButton::setColor(const QColor &color)
 SelectPaths::SelectPaths(QWidget *parent, const char* name)
 {
 	kdebugf();
-	setWFlags(Qt::WDestructiveClose);
+	setWFlags(Qt::WDestructiveClose|Qt::WShowModal);
 	setCaption(tr("Select paths"));
 
 	// create main QLabel widgets (icon and app info)

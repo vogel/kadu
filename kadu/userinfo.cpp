@@ -25,7 +25,7 @@ UserInfo::UserInfo(const QString &name, QDialog *parent, const QString &altnick,
 : fAddUser(fAddUser) 
 {
 	kdebugf();
-	setWFlags(Qt::WDestructiveClose);
+	setWFlags(Qt::WDestructiveClose|Qt::WShowModal);
 	
 	// create main QLabel widgets (icon and app info)
 	QVBox *left=new QVBox(this);
