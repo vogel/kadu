@@ -106,6 +106,8 @@ void UserBox::sortUsersByAltNick(QStringList &users) {
 
 void UserBox::refresh()
 {
+	char **gg_xpm;
+	
 	fprintf(stderr, "KK UserBox::refresh()\n");
 	
 	// Najpierw dzielimy uzytkownikow na trzy grupy
@@ -146,21 +148,24 @@ void UserBox::refresh()
 		}
 		else
 		{
-			switch (user.status)
-			{
+			switch (user.status) {
 				case GG_STATUS_AVAIL:
-		    			insertItem(QPixmap((const char **)gg_act_xpm), user.altnick);			
+		    			gg_xpm = gg_act_xpm;
 		    			break;
 				case GG_STATUS_AVAIL_DESCR:
-		    			insertItem(QPixmap((const char **)gg_actdescr_xpm), user.altnick);			
+		    			gg_xpm = gg_actdescr_xpm;
 		    			break;
 				case GG_STATUS_BUSY:
-		    			insertItem(QPixmap((const char **)gg_busy_xpm), user.altnick);			
+					gg_xpm = gg_busy_xpm;
 		    			break;
 				case GG_STATUS_BUSY_DESCR:
-		    			insertItem(QPixmap((const char **)gg_busydescr_xpm), user.altnick);			
+					gg_xpm = gg_busydescr_xpm;
 		    			break;
-			};
+				};
+			if (user.uin)
+				insertItem(QPixmap((const char **)gg_xpm), user.altnick);			
+			else
+				insertItem(user.altnick);
 		};
 	};	
 	// Dodajemy niewidocznych
@@ -173,15 +178,18 @@ void UserBox::refresh()
 		}
 		else
 		{
-			switch (user.status)
-			{
+			switch (user.status) {
 				case GG_STATUS_INVISIBLE_DESCR:
-		    			insertItem(QPixmap((const char **)gg_invidescr_xpm), user.altnick);			
+		    			gg_xpm = gg_invidescr_xpm;
     		    			break;
 				case GG_STATUS_INVISIBLE2:
-		    			insertItem(QPixmap((const char **)gg_invi_xpm), user.altnick);			
+					gg_xpm = gg_invi_xpm;
 		    			break;
-			};
+				};
+			if (user.uin)
+				insertItem(QPixmap((const char **)gg_xpm), user.altnick);			
+			else
+				insertItem(user.altnick);
 		};
 	};	
 	// Dodajemy nieaktywnych
@@ -194,15 +202,18 @@ void UserBox::refresh()
 		}
 		else
 		{
-			switch (user.status)
-			{
+			switch (user.status) {
 				case GG_STATUS_NOT_AVAIL_DESCR:
-		    			insertItem(QPixmap((const char **)gg_inactdescr_xpm), user.altnick);			
+		    			gg_xpm = gg_inactdescr_xpm;			
     		    			break;
 				default:
-		    			insertItem(QPixmap((const char **)gg_inact_xpm), user.altnick);			
+		    			gg_xpm = gg_inact_xpm;			
 		    			break;
-			};
+				};
+			if (user.uin)
+				insertItem(QPixmap((const char **)gg_xpm), user.altnick);			
+			else
+				insertItem(user.altnick);
 		};
 	};	
 };
