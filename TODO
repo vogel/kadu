@@ -1,4 +1,4 @@
-/** TODO, stan na 13/10/2002. **/
+/** TODO, stan na 11/11/2002. **/
 (TODO mo¿e byæ nieaktualne... zapraszamy na kadu.net/forum)
 
 
@@ -11,17 +11,11 @@
 ! :: _MUSI_ byæ
 
 
- TODO dla wersji 0.3.2
+ TODO dla wersji 0.3.3
 -----------------------
 
  ! przetestowaæ wysy³anie plików
  ! wyeliminowaæ wszystkie b³êdy Xlib
- ! wyeliminowaæ problemy z polskimi znakami na niektórych systemach
- 
-
- TODO dla wersji 0.3.3
------------------------
-
  + dopracowaæ grupy
  + dokoñczyæ rozmowy g³osowe
  + mo¿liwo¶æ wy³±czenia kompilacji kadusms
@@ -35,10 +29,24 @@
  + usun±æ z kodów ¼ród³owych poszczególnych modu³ów informacje
    o autorach - wystarczy plik AUTHORS
  + sprawdzanie dostêpnych aktualizacji
+ + sortowanie wed³ug polskiego locale (³ po l itp)
+ ! je¶li mamy ustawiony autoaway i zmienimy status na niedostepny
+   to po autoaway_delay kadu pada
+ ? dodawanie nieznanych u¿ytkowników z konferencji do listy jako opcja
+   i ew. z listy userów w oknie konferencji
+ ! wyja¶niæ zapêtlenia siê przy utracie ³±czno¶ci z serwerem 
+ + przycisk TEST w ustawieniach d¼wiêku
+ + ograniczenie statusu opisowego do 40 znaków
+ + wywaliæ pokazywanie siê has³a na konsoli
+ + dodaæ kilka numerów ip serwerów gadu
+ ? ustawienie czy mesg ma wpadaæ do otwartego okna chat
+ ! inne pady i halty kadu - patrz forum
+ 
 
  TODO dla wersji pó¼niejszych
 ---------------------------------------- 
 
+ + obs³uga libtlen
  + zrobiæ skórki (Licq) 
  - animowane emotikony
  + dodaæ profile
@@ -47,8 +55,8 @@
    (kontynuowanie prac nad jêzykiem skryptowym v-user) 
  ? naprawiæ ikonkê w dock menu
  ? dodaæ wiêcej funkcji do dock menu (szukaj, dodaj, usuñ, odbierz)
- ? ustawienie czy mesg ma wpadaæ do otwartego okna chat
  ? przechowywanie maili userów i uruchamianie klienta mail
  - wybór przegl±darki obs³uguj±cej linki
  ? rozbudowa opcji ignorowania o blokowanie
  - mechanizm plugin'ów
+ ? autostatus, pod³±czenie pod odtwarzacz mp3
