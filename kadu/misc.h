@@ -17,6 +17,7 @@
 #include <qsocketnotifier.h>
 #include <qfiledialog.h>
 #include <qtextbrowser.h>
+#include <qtooltip.h>
 
 #include <inttypes.h>
 
@@ -446,22 +447,26 @@ class ImageDialog : public QFileDialog
 	W menu kontekstowym jest dodatkowa opcja "Kopiuj lokacjê odno¶nika".
 	Dodatkowo poprawka b³êdu w QT.
 **/
-class KaduTextBrowser : public QTextBrowser
+class KaduTextBrowser : public QTextBrowser, QToolTip
 {
 	Q_OBJECT
 
 	private:
 		QString anchor;
 		int level;
+		QString highlightedlink; 	// this value stores the current highlighted link
+						// for use with maybeTip(), or is null
 
 	private slots:
 		void copyLinkLocation();	
 		void hyperlinkClicked(const QString& link);
+		void linkHighlighted(const QString &);
 
 	protected:
 		QPopupMenu *createPopupMenu(const QPoint &point);
 		void drawContents(QPainter * p, int clipx, int clipy, int clipw, int cliph);
-
+		virtual void maybeTip(const QPoint&);
+		
 	public:
 		KaduTextBrowser(QWidget *parent = 0, const char *name = 0);
 		void setSource(const QString &name);

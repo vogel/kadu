@@ -211,6 +211,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   statusu niedostêpnego jest wy¶wietlany poprawnie (joi)
 * dodano obcinanie wyswietlanych linkow, konfigurowalne (tomee)
 * zawijanie d³ugich tekstów bez spacji w chacie/historii/panelu (joi)
+* nad odno¶nikami w oknie rozmowy pokazuj± siê dymki z ich pe³n± tre¶ci± (tomee)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

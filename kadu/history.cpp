@@ -1082,7 +1082,7 @@ History::History(UinsList uins): uins(uins), closeDemand(false), finding(false) 
 	QVBox *vbox1 = new QVBox(split1);
 	body = new KaduTextBrowser(vbox1, "History browser");
 	body->setReadOnly(true);
-	body->setFont(config_file.readFontEntry("Look","ChatFont"));
+	body->QTextEdit::setFont(config_file.readFontEntry("Look","ChatFont"));
 	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")==EMOTS_ANIMATED)
 		body->setStyleSheet(new AnimStyleSheet(body, emoticons->themePath()));
 

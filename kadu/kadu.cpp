@@ -452,7 +452,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	descrtb = new KaduTextBrowser(split, "descrtb");
 	descrtb->setFrameStyle(QFrame::NoFrame);
-	descrtb->setMinimumHeight(int(1.5 * QFontMetrics(descrtb->font()).height()));
+	descrtb->setMinimumHeight(int(1.5 * QFontMetrics(descrtb->QTextEdit::font()).height()));
 //	descrtb->resize(descrtb->size().width(), int(1.5 * QFontMetrics(descrtb->font()).height()));
 	descrtb->setTextFormat(Qt::RichText);
 	descrtb->setAlignment(Qt::AlignVCenter | Qt::WordBreak | Qt::DontClip);
@@ -460,11 +460,11 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		descrtb->setVScrollBarMode(QScrollView::AlwaysOff);
 	descrtb->setPaletteBackgroundColor(config_file.readColorEntry("Look", "InfoPanelBgColor"));
 	descrtb->setPaletteForegroundColor(config_file.readColorEntry("Look", "InfoPanelFgColor"));
-	descrtb->setFont(config_file.readFontEntry("Look", "PanelFont"));
+	descrtb->QTextEdit::setFont(config_file.readFontEntry("Look", "PanelFont"));
 	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")==EMOTS_ANIMATED)
 		descrtb->setStyleSheet(new AnimStyleSheet(descrtb, emoticons->themePath()));
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
-		descrtb->hide();
+		descrtb->QWidget::hide();
 	QObject::connect(&userlist, SIGNAL(dnsNameReady(UinType)), this, SLOT(infopanelUpdate(UinType)));
 
 	statusbutton = new QPushButton(QIconSet(icons_manager.loadIcon("Offline")), tr("Offline"), vbox, "statusbutton");
@@ -815,7 +815,7 @@ void Kadu::changeAppearance() {
 
 	descrtb->setPaletteBackgroundColor(config_file.readColorEntry("Look", "InfoPanelBgColor"));
 	descrtb->setPaletteForegroundColor(config_file.readColorEntry("Look", "InfoPanelFgColor"));
-	descrtb->setFont(config_file.readFontEntry("Look", "PanelFont"));
+	descrtb->QTextEdit::setFont(config_file.readFontEntry("Look", "PanelFont"));
 
 	if (config_file.readBoolEntry("Look", "PanelVerticalScrollbar"))
 		kadu->descrtb->setVScrollBarMode(QScrollView::Auto);
@@ -1538,7 +1538,7 @@ void Kadu::showdesc(bool show) {
 	if (show)
 		descrtb->show();
 	else
-		descrtb->hide();
+		descrtb->QWidget::hide();
 }
 
 void Kadu::infopanelUpdate(UinType uin) {

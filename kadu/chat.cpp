@@ -399,7 +399,7 @@ void KaduSplitter::childEvent(QChildEvent *c)
 }
 
 Chat::Chat(UinsList uins, QWidget *parent, const char *name)
- : QWidget(parent, name, Qt::WDestructiveClose), Uins(uins)
+ : QWidget(parent, name, Qt::WDestructiveClose),Uins(uins)
 {
 //	int i;
 	QValueList<int> sizes;

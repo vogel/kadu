@@ -14,6 +14,7 @@
 #include <qurl.h>
 #include <qclipboard.h>
 #include <qpopupmenu.h>
+#include <qcursor.h>
 
 #include <pwd.h>
 #include <unistd.h>
@@ -2222,10 +2223,24 @@ ImageDialog::ImageDialog(QWidget* parent)
 }
 
 KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
-	: QTextBrowser(parent, name), level(0)
+	: QTextBrowser(parent, name),QToolTip(viewport()),level(0)
 {
 	connect(this, SIGNAL(linkClicked(const QString&)), this, SLOT(hyperlinkClicked(const QString&)));
+	connect(this, SIGNAL(highlighted(const QString&)), this, SLOT(linkHighlighted(const QString &)));
+	//QString s("Hello");
+	//linkHighlighted(s);
 	setWrapPolicy(QTextEdit::AtWordOrDocumentBoundary);
+}
+
+void KaduTextBrowser::maybeTip(const QPoint &c) {
+	if (!highlightedlink.isNull()) {
+		kdebugm(KDEBUG_INFO,"KaduTextBrowser::maybeTip(): link %s (X,Y)=%d,%d\n",(const char*)highlightedlink,c.x(),c.y());
+		}
+	tip(QRect(c.x()-20,c.y()-5,40,10), highlightedlink);
+}
+
+void KaduTextBrowser::linkHighlighted(const QString & link) {
+	highlightedlink = link;
 }
 
 void KaduTextBrowser::setSource(const QString &name)
