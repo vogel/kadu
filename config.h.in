@@ -41,14 +41,8 @@
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 
-/* Define to 1 if you have the `crypto' library (-lcrypto). */
-#undef HAVE_LIBCRYPTO
-
 /* Define to 1 if you have the `gadu' library (-lgadu). */
 #undef HAVE_LIBGADU
-
-/* Define to 1 if you have the `ssl' library (-lssl). */
-#undef HAVE_LIBSSL
 
 /* Define to 1 if your system has a working `malloc' function. */
 #undef HAVE_MALLOC
@@ -65,7 +59,7 @@
 /* Define to 1 if you have the <netinet/in.h> header file. */
 #undef HAVE_NETINET_IN_H
 
-/* Define if we have OpenSSL encryption support */
+/* define if you have OpenSSL */
 #undef HAVE_OPENSSL
 
 /* Define to 1 if you have the `select' function. */

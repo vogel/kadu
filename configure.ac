@@ -378,24 +378,9 @@ fi
 AC_DEFINE_UNQUOTED(DIST_TYPE,"$enable_dist_info",[Define distribution type of this copy of application])
 
 # OpenSSL support
-AC_ARG_WITH(openssl,[  --without-openssl       disable OpenSSL encryption support])
-if test -z "$with_openssl"; then
-	with_openssl=yes
-fi
-if test "$with_openssl" = "yes"; then
-	AC_CHECK_HEADER(openssl/rsa.h,[
-		AC_CHECK_LIB(crypto,RSA_public_encrypt,,[
-			AC_MSG_ERROR([libcrypto was not found!])
-		])
-		AC_CHECK_LIB(ssl,BIO_new,,[
-			AC_MSG_ERROR([libssl was not found!])
-		])
-	],[
-		AC_MSG_ERROR([openssl/rsa.h was not found!])
-	])
-	AC_DEFINE(HAVE_OPENSSL,1,[Define if we have OpenSSL encryption support])
-fi
+AC_CHECK_OPENSSL
 AM_CONDITIONAL(OPENSSL,[test "$with_openssl" = "yes"])
+
 
 AC_SUBST(MY_SUBDIRS)
 
