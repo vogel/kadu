@@ -34,6 +34,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   ich obs³uga, obs³uga opcji MODULE_3RDPARTY w pliku spec modu³ów,
   oznaczaj±ca kompilacjê dodatkowych ¼róde³ w podanym podkatalogu
   przed kompilacj± modu³u (adrian)
+* dodana funkcja kdebugf2() analogiczna do kdebugf(), aby móc zaznaczyæ
+  w debugu koniec funkcji (joi)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

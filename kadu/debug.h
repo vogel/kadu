@@ -27,6 +27,9 @@
 #define kdebugf() \
 	kdebug("%s\n",__PRETTY_FUNCTION__)
 
+#define kdebugf2() \
+	kdebug("%s end\n",__PRETTY_FUNCTION__)
+
 /*
 	Funkcja pomocnicza. Nie u¿ywaæ.
 */

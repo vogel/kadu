@@ -52,7 +52,7 @@ void ConfigFile::read() {
 		}
 		file.close();
 	}
-	kdebug("ConfigFile::read(): finished\n");
+	kdebugf2();
 }
 
 void ConfigFile::write(const QString &f) {
@@ -79,7 +79,7 @@ void ConfigFile::write(const QString &f) {
 		}
 		file.close();
 	}
-	kdebug("ConfigFile::write(): finished\n");
+	kdebugf2();
 }
 
 void ConfigFile::sync() {
