@@ -642,8 +642,10 @@ void Kadu::refreshGroupTabBar()
 				group_bar->addTab(new QTab(group));
 			}
 		}
-	if (group_bar->count() == 1)
+	if (group_bar->count() == 1) {
 		group_bar->hide();
+		setActiveGroup("");
+		}
 	else
 		group_bar->show();
 	/* odswiezamy - dziala tylko jesli jest widoczny */

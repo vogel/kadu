@@ -24,6 +24,8 @@
 * wy³±czenie ikony w tray'u nie powoduje wywalenia siê kadu, gdy jednocze¶nie
   wy³±czamy dymki (chilek)
 * configure: kolejne poprawki dla FreeBSD (adrian)
+* je¶li usuniemy ostatniego u¿ytkownika z ostatniej grupy innej ni¿ domy¶lna
+  lista u¿ytkowników prze³±cza siê na listê wszystkich u¿ytkowników (chilek)
 
 +++ wersja 0.3.3-rc2
 * sporo poprawek dla FreeBSD (adrian)
