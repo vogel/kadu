@@ -1764,6 +1764,7 @@ void Kadu::disconnectNetwork() {
 
 	if (config_file.readBoolEntry("General", "AutoAway"))
 		AutoAwayTimer::off();
+	ConnectionTimeoutTimer::off();
 	if (pingtimer) {
 		pingtimer->stop();
 		delete pingtimer;

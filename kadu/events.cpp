@@ -45,6 +45,7 @@ extern "C"
 #endif
 
 AutoConnectionTimer *AutoConnectionTimer::autoconnection_object = NULL;
+ConnectionTimeoutTimer *ConnectionTimeoutTimer::connectiontimeout_object = NULL;
 
 QTime lastsoundtime;
 
@@ -66,6 +67,26 @@ void AutoConnectionTimer::off() {
 	if (autoconnection_object) {
 		delete autoconnection_object;
 		autoconnection_object = NULL;
+		}
+}
+
+ConnectionTimeoutTimer::ConnectionTimeoutTimer(QObject *parent) : QTimer(parent, "ConnectionTimeoutTimer") {
+	start(3000, TRUE);
+}
+
+bool ConnectionTimeoutTimer::connectTimeoutRoutine(const QObject *receiver, const char *member) {
+	return connect(connectiontimeout_object, SIGNAL(timeout()), receiver, member);
+}
+
+void ConnectionTimeoutTimer::on() {
+	if (!connectiontimeout_object)
+		connectiontimeout_object = new ConnectionTimeoutTimer();
+}
+
+void ConnectionTimeoutTimer::off() {
+	if (connectiontimeout_object) {
+		delete connectiontimeout_object;
+		connectiontimeout_object = NULL;
 		}
 }
 
@@ -635,6 +656,19 @@ void EventManager::userlistReplyReceivedSlot(char type, char *reply)
 	kdebug("EventManager::userlistReplyReceivedSlot(): got userlist reply.\n");
 }
 
+void EventManager::connectionTimeoutSlot() {
+	ConnectionTimeoutTimer::off();
+	if (sess->state != GG_STATE_CONNECTING_GG || sess->port == GG_HTTPS_PORT)
+		return;
+	gg_event* e;
+	sess->timeout = 0;
+	if (!(e = gg_watch_fd(sess))) {
+		emit connectionBroken();
+		gg_free_event(e);
+		return;
+		}
+}
+
 void EventManager::eventHandler(gg_session* sess)
 {
 	static int calls = 0;
@@ -682,9 +716,13 @@ void EventManager::eventHandler(gg_session* sess)
 			break;
 		case GG_STATE_CONNECTING_GG:
 			kdebug("EventManager::eventHandler(): Connecting to server\n");
+			ConnectionTimeoutTimer::on();
+			ConnectionTimeoutTimer::connectTimeoutRoutine(this,
+				SLOT(connectionTimeoutSlot()));
 			break;
 		case GG_STATE_READING_KEY:
 			kdebug("EventManager::eventHandler(): Waiting for hash key\n");
+			ConnectionTimeoutTimer::off();
 			break;
 		case GG_STATE_READING_REPLY:
 			kdebug("EventManager::eventHandler(): Sending key\n");

@@ -25,6 +25,20 @@ class AutoConnectionTimer : private QTimer {
 		static AutoConnectionTimer *autoconnection_object;
 };
 
+class ConnectionTimeoutTimer : public QTimer {
+	Q_OBJECT
+
+	public:
+		static void on();
+		static void off();
+		static bool connectTimeoutRoutine(const QObject *receiver, const char *member);
+
+	private:
+		ConnectionTimeoutTimer(QObject *parent = 0);
+
+		static ConnectionTimeoutTimer *connectiontimeout_object;
+};
+
 class SavePublicKey : public QDialog {
 	Q_OBJECT
 	public:
@@ -60,6 +74,7 @@ class EventManager : public QObject
 		void dccConnectionReceivedSlot(const UserListElement& sender);
 		void pubdirReplyReceivedSlot(gg_pubdir50_t res);
 		void userlistReplyReceivedSlot(char type, char *reply);
+		void connectionTimeoutSlot();
 
 	public:
 		EventManager();
