@@ -51,12 +51,12 @@ char *timestamp(time_t customtime)
 	tm = localtime(&t);
 	strftime(buf, sizeof(buf), ":: %d %m %Y, (%T", tm);
 
-	if (customtime != 0) {
+	if (customtime) {
 		char buf2[20];
 		struct tm *tm2;
 		tm2 = localtime(&customtime);
 		strftime(buf2, sizeof(buf2), " / S %T)", tm2);
-    strncat(buf, buf2, sizeof(buf2));
+		strncat(buf, buf2, sizeof(buf2));
 		
 /*		int j = 0;
 		while(buf[j++] != "\0");
@@ -82,7 +82,7 @@ void appendHistory(unsigned int uin, unsigned char * msg, bool own, time_t time)
 /*	char * path = getenv("HOME");
 	char * path2 = "/.gg/history/"; */
 
-  char * path2 = preparePath("history/");
+	char * path2 = preparePath("history/");
 
 //  struct stat * boof;
 //  cout << path2 << endl;
@@ -106,68 +106,69 @@ void appendHistory(unsigned int uin, unsigned char * msg, bool own, time_t time)
 	if (!(f = fopen(buffer, "a"))) {
 		fprintf(stderr, "appendHistory(): Error opening history file %s\n", buffer);
 		return;
-	}
+		}
 
 	char nick[255];
 	
 	if (!own) {
-		strncpy(nick, UinToUser(uin), 255);
+		strncpy(nick, userlist.byUin(uin).comment, 255);
 		fputs(nick,f);
-}
+		}
 	else
 		fputs("Me",f);
 
 	fputs(" ", f);
-	if (time == 0)
+
+	if (!time)
 		fputs(timestamp(), f);
-  else
+	else
 		fputs(timestamp(time), f);
 
 	fputs("\n", f);
 
 	fputs((const char*)msg, f);
 	fputs("\n\n",f);
-		  	
-  fclose(f);
+
+	fclose(f);
 }
 
 History::History(uin_t uin) {
-    setCaption(i18n("History"));
-    setWFlags(Qt::WDestructiveClose);
+	setCaption(i18n("History"));
+	setWFlags(Qt::WDestructiveClose);
 
-    QGridLayout *grid = new QGridLayout(this, 2,1,3,3);
+	QGridLayout *grid = new QGridLayout(this, 2,1,3,3);
 
-    body = new QMultiLineEdit(this, "History browser");
-    body->setReadOnly(true);
-    body->setWordWrap(QMultiLineEdit::WidgetWidth);
-    body->setWrapPolicy(QMultiLineEdit::Anywhere);
-    QPushButton *closebtn = new QPushButton(this);
-    closebtn->setText(i18n("&Close"));
+	body = new QMultiLineEdit(this, "History browser");
+	body->setReadOnly(true);
+	body->setWordWrap(QMultiLineEdit::WidgetWidth);
+	body->setWrapPolicy(QMultiLineEdit::Anywhere);
+	QPushButton *closebtn = new QPushButton(this);
+	closebtn->setText(i18n("&Close"));
 
-    char *path = getenv("HOME");
-    char *path2 = "/.gg/history/";
-    char path3[255];
-    snprintf(path3,255,"%s%d",path2,uin);
-    char buffer[511];
-    snprintf(buffer,511,"%s%s",path,path3);
+	char *path = getenv("HOME");
+	char *path2 = "/.gg/history/";
+	char path3[255];
+	snprintf(path3,255,"%s%d",path2,uin);
+	char buffer[511];
+	snprintf(buffer,511,"%s%s",path,path3);
 
-    QFile f(buffer);
-    if (f.open(IO_ReadOnly)) {
-        char *cbody = (char *) malloc(f.size()+1);
-        f.readBlock(cbody, f.size());
-        cbody[f.size()] = 0;
-        body->setText(__c2q(cbody));
-	}
-    else {
-        fprintf(stderr, "KK History(): Error opening history file %s\n", buffer);
-        body->setText(i18n("Error opening history file"));
-        }
-    grid->addWidget(body,0,0);
-    grid->addWidget(closebtn,1,0, Qt::AlignRight);
+	QFile f(buffer);
+	if (f.open(IO_ReadOnly)) {
+		char *cbody = (char *) malloc(f.size()+1);
+		f.readBlock(cbody, f.size());
+		cbody[f.size()] = 0;
+		body->setText(__c2q(cbody));
+		}
+	else {
+		fprintf(stderr, "KK History(): Error opening history file %s\n", buffer);
+		body->setText(i18n("Error opening history file"));
+		}
+	grid->addWidget(body,0,0);
+	grid->addWidget(closebtn,1,0, Qt::AlignRight);
 
-    connect(closebtn, SIGNAL(clicked()), this, SLOT(close()));
+	connect(closebtn, SIGNAL(clicked()), this, SLOT(close()));
 
-    resize(500,400);
+	resize(500,400);
 }
 
 #include "history.moc"

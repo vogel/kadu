@@ -23,12 +23,12 @@
 #include "../libgadu/lib/libgadu.h"
 
 class History : public QDialog {
-    Q_OBJECT
-    public:
-	History(uin_t);
+	Q_OBJECT
+	public:
+		History(uin_t);
 
-    protected:
-	QMultiLineEdit *body;
+	protected:
+		QMultiLineEdit *body;
 };
 
 char *timestamp(time_t = 0);
