@@ -11,7 +11,6 @@
 
  ! poprawiæ escapowanie znaków specjalnych, m.in. ¼le escape'uje <<
  ! naprawiæ b³êdy przy problemach z po³±czeniem
- + ikonka wy³±czenia d¼wiêków w toolbarze
 
 * TODO dla wersji 0.3.5 lub pó¼niejszych
 
@@ -21,7 +20,7 @@
  ! dopracowaæ wysy³anie SMS'ów do ERY (prêdko¶æ)
  + po³±czenia ssl z serwerami gadu
  + ca³kowite przej¶cie na nowy mechanizm budowania okna konfiguracji i uporz±dkowanie go
- + konfigurowanie klawiszologii kadu
+ + konfigurowanie klawiszologii kadu - narazie jest tylko okno chat
  + zapamiêtywanie wymiarów okien
  - sprawdzanie pisowni w oknie chat
  - dokoñczyæ rozmowy g³osowe
@@ -31,7 +30,6 @@
  ? wysy³anie smsów do wielu osób jednoczesnie
  ? ustawienie miejsca wyskakiwania hinta zamiast ko³o tray'a
  ? podrêczne menu w oknie rozmowy
- ? inteligentna data w oknie rozmowy
  + zak³adki w oknie rozmowy (opcja)
  + dopracowaæ grupy
  + okno rozmowy "wyp³ywa na wierzch" za ka¿d± now± wiadomo¶ci± (je¶li odpowiednia opcja w oknie rozmowy jest w³±czona)
