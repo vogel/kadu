@@ -1779,10 +1779,11 @@ void Kadu::eventHandler(int state) {
 		char error[512];
 		snprintf(error, sizeof(error), "Kadu::eventHandler(): Unable to connect, the following error has occured:\n%s\nKadu::eventHandler(): Keep trying to connect?\n", strerror(errno));
 		trayicon->showErrorHint(i18n("Connection failed"));
-		disconnectNetwork();	
-		setCurrentStatus(GG_STATUS_NOT_AVAIL);
 		kdebug("Kadu::eventHandler(): Connection failed\n");
 		kdebug(error);
+		
+		disconnectNetwork();	
+		setCurrentStatus(GG_STATUS_NOT_AVAIL);
 
 		if (autohammer)
 			setStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
