@@ -1856,6 +1856,10 @@ Teraz możesz dodać znajomych do listy kontaktów.</translation>
         <source>Select user first</source>
         <translation>Zaznacz użytkownika</translation>
     </message>
+    <message>
+        <source> </source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Sms</name>

@@ -2,440 +2,40 @@
 <context>
     <name>@default</name>
     <message>
-        <source>User notify</source>
-        <translation>User notify</translation>
-    </message>
-    <message>
-        <source>You don&apos;t have a config file.
-What would you like to do?</source>
-        <translation>You don&apos;t have a config file.
-What would you like to do?</translation>
-    </message>
-    <message>
-        <source>New UIN</source>
-        <translation>New UIN</translation>
-    </message>
-    <message>
-        <source>Configure</source>
-        <translation>Configure</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Cancel</translation>
-    </message>
-    <message>
-        <source>Kadu: new user</source>
-        <translation>Kadu: new user</translation>
-    </message>
-    <message>
-        <source>Online</source>
-        <translation>Online</translation>
-    </message>
-    <message>
-        <source>Online (d.)</source>
-        <translation>Online (d.)</translation>
-    </message>
-    <message>
-        <source>Busy</source>
-        <translation>Busy</translation>
-    </message>
-    <message>
-        <source>Busy (d.)</source>
-        <translation>Busy (d.)</translation>
-    </message>
-    <message>
-        <source>Invisible</source>
-        <translation>Invisible</translation>
-    </message>
-    <message>
-        <source>Invisible (d.)</source>
-        <translation>Invisible (d.)</translation>
-    </message>
-    <message>
-        <source>Offline</source>
-        <translation>Offline</translation>
-    </message>
-    <message>
-        <source>Offline (d.)</source>
-        <translation>Offline (d.)</translation>
-    </message>
-    <message>
-        <source>Blocking</source>
-        <translation>Blocking</translation>
-    </message>
-    <message>
         <source>General</source>
-        <translation>General</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Open chat window on new message</source>
-        <translation>Open chat window on new message</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Define keys</source>
-        <translation>Define keys</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>New line / send message:</source>
-        <translation>New line / send message:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Clear Chat:</source>
-        <translation>Clear Chat:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Close Chat:</source>
-        <translation>Close Chat:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Bold text:</source>
-        <translation>Bold text:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Italic text:</source>
-        <translation>Italic text:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Underline text:</source>
-        <translation>Underline text:</translation>
-    </message>
-    <message>
-        <source>History</source>
-        <translation>History</translation>
-    </message>
-    <message>
-        <source>Quoted phrases during chat open</source>
-        <translation>Quoted phrases during chat open</translation>
-    </message>
-    <message>
-        <source>Count:</source>
-        <translation>Count:</translation>
-    </message>
-    <message>
-        <source>Don&apos;t quote phrases older than:</source>
-        <translation>Don&apos;t quote phrases older than:</translation>
-    </message>
-    <message>
-        <source>User data</source>
-        <translation>User data</translation>
-    </message>
-    <message>
-        <source>Uin</source>
-        <translation>Uin</translation>
-    </message>
-    <message>
-        <source>Password</source>
-        <translation>Password</translation>
-    </message>
-    <message>
-        <source>Nick</source>
-        <translation>Nick</translation>
-    </message>
-    <message>
-        <source>Log messages</source>
-        <translation>Log messages</translation>
-    </message>
-    <message>
-        <source>Restore window geometry</source>
-        <translation>Restore window geometry</translation>
-    </message>
-    <message>
-        <source>Check for updates</source>
-        <translation>Check for updates</translation>
-    </message>
-    <message>
-        <source>Network</source>
-        <translation>Network</translation>
-    </message>
-    <message>
-        <source>DCC enabled</source>
-        <translation>DCC enabled</translation>
-    </message>
-    <message>
-        <source>DCC IP autodetection</source>
-        <translation>DCC IP autodetection</translation>
-    </message>
-    <message>
-        <source>DCC IP</source>
-        <translation>DCC IP</translation>
-    </message>
-    <message>
-        <source>IP address:</source>
-        <translation>IP address:</translation>
-    </message>
-    <message>
-        <source>DCC forwarding enabled</source>
-        <translation>DCC forwarding enabled</translation>
-    </message>
-    <message>
-        <source>DCC forwarding properties</source>
-        <translation>DCC forwarding properties</translation>
-    </message>
-    <message>
-        <source>External IP address:</source>
-        <translation>External IP address:</translation>
-    </message>
-    <message>
-        <source>External TCP port:</source>
-        <translation>External TCP port:</translation>
-    </message>
-    <message>
-        <source>Servers properties</source>
-        <translation>Servers properties</translation>
-    </message>
-    <message>
-        <source>Use default servers</source>
-        <translation>Use default servers</translation>
-    </message>
-    <message>
-        <source>Use TLSv1</source>
-        <translation>Use TLSv1</translation>
-    </message>
-    <message>
-        <source>Default port to connect to servers</source>
-        <translation>Default port to connect to servers</translation>
-    </message>
-    <message>
-        <source>Use proxy server</source>
-        <translation>Use proxy server</translation>
-    </message>
-    <message>
-        <source>Proxy server</source>
-        <translation>Proxy server</translation>
-    </message>
-    <message>
-        <source>Port:</source>
-        <translation>Port:</translation>
-    </message>
-    <message>
-        <source>IP addresses:</source>
-        <translation>IP addresses:</translation>
-    </message>
-    <message>
-        <source>Username:</source>
-        <translation>Username:</translation>
-    </message>
-    <message>
-        <source>Password:</source>
-        <translation>Password:</translation>
-    </message>
-    <message>
-        <source>ShortCuts</source>
-        <translation>ShortCuts</translation>
-    </message>
-    <message>
-        <source>Remove from userlist</source>
-        <translation>Remove from userlist</translation>
-    </message>
-    <message>
-        <source>View/edit user info</source>
-        <translation>View/edit user info</translation>
-    </message>
-    <message>
-        <source>Send SMS</source>
-        <translation>Send SMS</translation>
-    </message>
-    <message>
-        <source>View history</source>
-        <translation>View history</translation>
-    </message>
-    <message>
-        <source>Lookup in directory</source>
-        <translation>Lookup in directory</translation>
-    </message>
-    <message>
-        <source>Show / hide inactive users</source>
-        <translation>Show / hide inactive users</translation>
-    </message>
-    <message>
-        <source>Send file</source>
-        <translation>Send file</translation>
-    </message>
-    <message>
-        <source>Configuration</source>
-        <translation>Configuration</translation>
-    </message>
-    <message>
-        <source>Add user</source>
-        <translation>Add user</translation>
-    </message>
-    <message>
-        <source>SMS</source>
-        <translation>SMS</translation>
-    </message>
-    <message>
-        <source>SMS options</source>
-        <translation>SMS options</translation>
-    </message>
-    <message>
-        <source>Use built-in SMS application</source>
-        <translation>Use built-in SMS application</translation>
-    </message>
-    <message>
-        <source>Custom SMS application</source>
-        <translation>Custom SMS application</translation>
-    </message>
-    <message>
-        <source>SMS custom string</source>
-        <translation>SMS custom string</translation>
-    </message>
-    <message>
-        <source>Check this box if your sms application doesn&apos;t understand arguments: number &quot;message&quot;
-Arguments should be separated with spaces. %n argument is converted to number, %m to message</source>
-        <translation>Check this box if your sms application doesn&apos;t understand arguments: number &quot;message&quot;
-Arguments should be separated with spaces. %n argument is converted to number, %m to message</translation>
-    </message>
-    <message>
-        <source>SMS Era Gateway</source>
-        <translation>SMS Era Gateway</translation>
-    </message>
-    <message>
-        <source>User ID</source>
-        <translation>User ID</translation>
-    </message>
-    <message>
-        <source>Sounds</source>
-        <translation>Sounds</translation>
-    </message>
-    <message>
-        <source>Play sounds</source>
-        <translation>Play sounds</translation>
-    </message>
-    <message>
-        <source>Play sounds using aRts! server</source>
-        <translation>Play sounds using aRts! server</translation>
-    </message>
-    <message>
-        <source>Sound player</source>
-        <translation>Sound player</translation>
-    </message>
-    <message>
-        <source>Path:</source>
-        <translation>Path:</translation>
-    </message>
-    <message>
-        <source>Enable volume control (player must support it)</source>
-        <translation>Enable volume control (player must support it)</translation>
-    </message>
-    <message>
-        <source>Message sound</source>
-        <translation>Message sound</translation>
-    </message>
-    <message>
-        <source>Test</source>
-        <translation>Test</translation>
-    </message>
-    <message>
-        <source>Play sounds from a person whilst chatting</source>
-        <translation>Play sounds from a person whilst chatting</translation>
-    </message>
-    <message>
-        <source>Play chat sounds only when window is invisible</source>
-        <translation>Play chat sounds only when window is invisible</translation>
-    </message>
-    <message>
-        <source>Chat sound</source>
-        <translation>Chat sound</translation>
-    </message>
-    <message>
-        <source>Enable autoaway</source>
-        <translation>Enable autoaway</translation>
-    </message>
-    <message>
-        <source>Set status to away after </source>
-        <translation>Set status to away after </translation>
-    </message>
-    <message>
-        <source> seconds</source>
-        <translation> seconds</translation>
-    </message>
-    <message>
-        <source>On shutdown, set description:</source>
-        <translation>On shutdown, set description:</translation>
-    </message>
-    <message>
-        <source>Enable dock icon</source>
-        <translation>Enable dock icon</translation>
-    </message>
-    <message>
-        <source>Start docked</source>
-        <translation>Start docked</translation>
-    </message>
-    <message>
-        <source>Private status</source>
-        <translation>Private status</translation>
-    </message>
-    <message>
-        <source>Add to description</source>
-        <translation>Add to description</translation>
-    </message>
-    <message>
-        <source>Show Inactive users</source>
-        <translation>Show Inactive users</translation>
-    </message>
-    <message>
-        <source>Hints</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enable hints</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Hints options</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enable icons in hints</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show connection errors in hints</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enable status notification by hint</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Notification options</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Use custom syntax</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Hint syntax</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Notify about new message</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Notify about new chat</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Notify about user status change</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add description to hint if exists</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>WWW error</source>
-        <translation type="unfinished">WWW error</translation>
-    </message>
-    <message>
-        <source>Web browser was not specified. Visit the configuration section</source>
-        <translation type="unfinished">Web browser was not specified. Visit the configuration section</translation>
-    </message>
-    <message>
-        <source>Could not spawn Web browser process. Check if the Web browser is functional</source>
-        <translation type="unfinished">Could not spawn Web browser process. Check if the Web browser is functional</translation>
     </message>
     <message>
         <source>Emoticons</source>
@@ -498,11 +98,31 @@ Arguments should be separated with spaces. %n argument is converted to number, %
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Message acknowledgements (wait for delivery)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Flash chat title on new message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Ignore messages from anonymous users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Syntax the same as in information panel.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 - Url clicked in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Me&lt;/b&gt; 00:00:00</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Other party&lt;/b&gt; 00:00:02</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -562,6 +182,14 @@ If you leave blank, default settings will be used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>User %1 is available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User notify</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Notify</source>
         <translation type="unfinished"></translation>
     </message>
@@ -590,6 +218,14 @@ If you leave blank, default settings will be used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Path:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Test</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Notify by dialog box</source>
         <translation type="unfinished"></translation>
     </message>
@@ -598,11 +234,268 @@ If you leave blank, default settings will be used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Network</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DCC enabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DCC IP autodetection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DCC IP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>IP address:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DCC forwarding enabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DCC forwarding properties</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>External IP address:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>External TCP port:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Servers properties</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use default servers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use TLSv1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default port to connect to servers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use proxy server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Proxy server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Port:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>IP addresses:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Username:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hints</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable hints</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hints options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable icons in hints</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show connection errors in hints</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about new message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about new chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show message content in hint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Message content in hint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable status notification by hint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notification options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about user status change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about user becoming available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about user becoming unavailable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add description to hint if exists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use custom syntax</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hint syntax</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>History</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Quoted phrases during chat open</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Count:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Don&apos;t quote phrases older than:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Don&apos;t show status changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nick</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Log messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Restore window geometry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check for updates</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Set language:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>ShortCuts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove from userlist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View/edit user info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send SMS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View history</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lookup in directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show / hide inactive users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add user</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You don&apos;t have a config file.
+What would you like to do?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New UIN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Configure</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kadu: new user</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>English</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>German</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -611,6 +504,171 @@ If you leave blank, default settings will be used.</source>
     </message>
     <message>
         <source>Polish</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>WWW error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Web browser was not specified. Visit the configuration section</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not spawn Web browser process. Check if the Web browser is functional</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SMS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SMS options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use built-in SMS application</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Custom SMS application</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SMS custom string</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check this box if your sms application doesn&apos;t understand arguments: number &quot;message&quot;
+Arguments should be separated with spaces. %n argument is converted to number, %m to message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SMS Era Gateway</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type of gateway</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sounds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Play sounds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Play sounds using aRts! server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sound player</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable volume control (player must support it)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Message sound</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Play sounds from a person whilst chatting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Play chat sounds only when window is invisible</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat sound</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Volume</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Online</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Online (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Busy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Busy (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invisible</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invisible (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Offline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Offline (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Blocking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable autoaway</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set status to away after </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> seconds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>On shutdown, set description:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable dock icon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start docked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Private status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add to description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Inactive users</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -637,72 +695,12 @@ If you leave blank, default settings will be used.</source>
         <source>Multicolumn userbox</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Message content in hint</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Notify about user becoming available</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Notify about user becoming unavailable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Message acknowledgements (wait for delivery)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show message content in hint</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Syntax the same as in information panel.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 - Url clicked in chat window</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Me&lt;/b&gt; 00:00:00</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Other party&lt;/b&gt; 00:00:02</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Volume</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Type of gateway</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Default status</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>German</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Don&apos;t show status changes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>User %1 is available</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>About</name>
     <message>
         <source>About</source>
-        <translation>About</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Close</source>
@@ -741,71 +739,71 @@ If you leave blank, default settings will be used.</source>
     <name>Chat</name>
     <message>
         <source>Edit window:</source>
-        <translation>Edit window:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>This is where you type in the text to be sent</source>
-        <translation>This is where you type in the text to be sent</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Enter key sends message</source>
-        <translation>Enter key sends message</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Blocks scrolling</source>
-        <translation>Blocks scrolling</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Clear messages in chat window</source>
-        <translation>Clear messages in chat window</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Insert emoticon - enable in configuration</source>
-        <translation>Insert emoticon - enable in configuration</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Insert emoticon</source>
-        <translation>Insert emoticon</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Show history</source>
-        <translation>Show history</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Lookup user info</source>
-        <translation>Lookup user info</translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation>&amp;Cancel</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Send</source>
-        <translation>&amp;Send</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Disable encryption for this conversation</source>
-        <translation>Disable encryption for this conversation</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Enable encryption for this conversation</source>
-        <translation>Enable encryption for this conversation</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Conference with </source>
-        <translation>Conference with </translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Chat with </source>
-        <translation>Chat with </translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Send message error</source>
-        <translation>Send message error</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Application encountered network error.</source>
-        <translation>Application encountered network error.</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -844,103 +842,103 @@ If you leave blank, default settings will be used.</source>
     </message>
     <message>
         <source>Chat with </source>
-        <translation type="unfinished">Chat with </translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Conference with </source>
-        <translation type="unfinished">Conference with </translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Keys exist. Do you want to overwrite them?</source>
-        <translation type="unfinished">Keys exist. Do you want to overwrite them?</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Yes</source>
-        <translation type="unfinished">Yes</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>No</source>
-        <translation type="unfinished">No</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Error generating keys</source>
-        <translation type="unfinished">Error generating keys</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Keys have been generated and written</source>
-        <translation type="unfinished">Keys have been generated and written</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ChooseDescription</name>
     <message>
         <source>Select description</source>
-        <translation>Select description</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancel</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ColorButton</name>
     <message>
         <source>Color dialog</source>
-        <translation type="unfinished">Color dialog</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ConfigDialog</name>
     <message>
         <source>Cancel</source>
-        <translation>Cancel</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Kadu configuration</source>
-        <translation>Kadu configuration</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>DccFileDialog</name>
     <message>
         <source>Sender: </source>
-        <translation type="unfinished">Sender: </translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Receiver: </source>
-        <translation type="unfinished">Receiver: </translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Filename: </source>
-        <translation type="unfinished">Filename: </translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>File size: </source>
-        <translation type="unfinished">File size: </translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Speed: 0KB/s (not started)  </source>
-        <translation type="unfinished">Speed: 0KB/s (not started)  </translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>File transfer</source>
-        <translation type="unfinished">File transfer</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Speed: </source>
-        <translation type="unfinished">Speed: </translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>(stalled)</source>
-        <translation type="unfinished">(stalled)</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -958,7 +956,7 @@ If you leave blank, default settings will be used.</source>
     <name>EventConfigSlots</name>
     <message>
         <source>I am busy.</source>
-        <translation type="unfinished">I am busy.</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -969,6 +967,10 @@ If you leave blank, default settings will be used.</source>
     </message>
     <message>
         <source>Unable to connect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please change your email in &quot;Change password/email&quot; window. Leave new password field blank.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1004,134 +1006,46 @@ Your password is incorrect !!!</source>
         <source>Disconnection has occured</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Please change your email in &quot;Change password/email&quot; window. Leave new password field blank.</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>HintManager</name>
     <message>
         <source>Error:</source>
-        <translation>Error:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>New message from</source>
-        <translation>New message from</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Chat with</source>
-        <translation>Chat with</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>is available</source>
-        <translation>is available</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>changed status to</source>
-        <translation>changed status to</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>is unavailable</source>
-        <translation>is unavailable</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>HintManagerSlots</name>
     <message>
+        <source>Number of quoted characters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>New hints add to hint</source>
-        <translation>New hints add to hint</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Auto</source>
-        <translation>Auto</translation>
-    </message>
-    <message>
-        <source>Hints position</source>
-        <translation>Hints position</translation>
-    </message>
-    <message>
-        <source>Online</source>
-        <translation>Online</translation>
-    </message>
-    <message>
-        <source>Online (d.)</source>
-        <translation>Online (d.)</translation>
-    </message>
-    <message>
-        <source>Busy</source>
-        <translation>Busy</translation>
-    </message>
-    <message>
-        <source>Busy (d.)</source>
-        <translation>Busy (d.)</translation>
-    </message>
-    <message>
-        <source>Invisible</source>
-        <translation>Invisible</translation>
-    </message>
-    <message>
-        <source>Invisible (d.)</source>
-        <translation>Invisible (d.)</translation>
-    </message>
-    <message>
-        <source>Offline</source>
-        <translation>Offline</translation>
-    </message>
-    <message>
-        <source>Offline (d.)</source>
-        <translation>Offline (d.)</translation>
-    </message>
-    <message>
-        <source>Blocking</source>
-        <translation>Blocking</translation>
-    </message>
-    <message>
-        <source>New chat</source>
-        <translation>New chat</translation>
-    </message>
-    <message>
-        <source>New message in chat</source>
-        <translation>New message in chat</translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation>Error</translation>
-    </message>
-    <message>
-        <source>Preview</source>
-        <translation>Preview</translation>
-    </message>
-    <message>
-        <source>Change font color</source>
-        <translation>Change font color</translation>
-    </message>
-    <message>
-        <source>Change background color</source>
-        <translation>Change background color</translation>
-    </message>
-    <message>
-        <source>Change font</source>
-        <translation>Change font</translation>
-    </message>
-    <message>
-        <source>Color dialog</source>
-        <translation>Color dialog</translation>
-    </message>
-    <message>
-        <source>Number of quoted characters</source>
-        <translation>Number of quoted characters</translation>
-    </message>
-    <message>
-        <source>Use custom hints position</source>
-        <translation>Use custom hints position</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Text&lt;/b&gt; preview</source>
-        <translation>&lt;b&gt;Text&lt;/b&gt; preview</translation>
-    </message>
-    <message>
-        <source>Hint timeout (in seconds)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1142,406 +1056,488 @@ Your password is incorrect !!!</source>
         <source>In bottom</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Use custom hints position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hints position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Online</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Online (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Busy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Busy (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invisible</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invisible (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Offline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Offline (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Blocking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New message in chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hint timeout (in seconds)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preview</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Text&lt;/b&gt; preview</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change font color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change font</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>History</name>
     <message>
         <source>History</source>
-        <translation>History</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Find</source>
-        <translation>&amp;Find</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Find &amp;next</source>
-        <translation>Find &amp;next</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Find &amp;previous</source>
-        <translation>Find &amp;previous</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Online</source>
-        <translation>Online</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Busy</source>
-        <translation>Busy</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Invisible</source>
-        <translation>Invisible</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Offline</source>
-        <translation>Offline</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>HistoryManager</name>
     <message>
         <source>Clear history?</source>
-        <translation>Clear history?</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Yes</source>
-        <translation>Yes</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>No</source>
-        <translation>No</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>HistorySearch</name>
     <message>
         <source>Search history</source>
-        <translation>Search history</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;From:</source>
-        <translation>&amp;From:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>day</source>
-        <translation>day</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>month</source>
-        <translation>month</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>year</source>
-        <translation>year</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>hour</source>
-        <translation>hour</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>minute</source>
-        <translation>minute</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;To:</source>
-        <translation>&amp;To:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Find Criteria</source>
-        <translation>Find Criteria</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Pattern</source>
-        <translation>&amp;Pattern</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Status</source>
-        <translation>&amp;Status</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Pattern</source>
-        <translation>Pattern</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Status</source>
-        <translation>Status</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Reverse find</source>
-        <translation>&amp;Reverse find</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Find</source>
-        <translation>&amp;Find</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Reset</source>
-        <translation>Reset</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancel</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>HistorySlots</name>
     <message>
         <source>%1 day(s) %2 hour(s)</source>
-        <translation>%1 day(s) %2 hour(s)</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Ignored</name>
     <message>
         <source>Manage ignored users</source>
-        <translation>Manage ignored users</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Ignored Uins:</source>
-        <translation>Ignored Uins:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Delete</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Add</source>
-        <translation>Add</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Uin</source>
-        <translation>Uin</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Kadu</name>
     <message>
         <source>Update information</source>
-        <translation>Update information</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>The newest Kadu version is %1</source>
-        <translation>The newest Kadu version is %1</translation>
-    </message>
-    <message>
-        <source>Me</source>
-        <translation>Me</translation>
-    </message>
-    <message>
-        <source>Remove from userlist</source>
-        <translation>Remove from userlist</translation>
-    </message>
-    <message>
-        <source>View/edit user info</source>
-        <translation>View/edit user info</translation>
-    </message>
-    <message>
-        <source>Send SMS</source>
-        <translation>Send SMS</translation>
-    </message>
-    <message>
-        <source>View history</source>
-        <translation>View history</translation>
-    </message>
-    <message>
-        <source>Lookup in directory</source>
-        <translation>Lookup in directory</translation>
-    </message>
-    <message>
-        <source>Show / hide inactive users</source>
-        <translation>Show / hide inactive users</translation>
-    </message>
-    <message>
-        <source>Send file</source>
-        <translation>Send file</translation>
-    </message>
-    <message>
-        <source>Configuration</source>
-        <translation>Configuration</translation>
-    </message>
-    <message>
-        <source>Add user</source>
-        <translation>Add user</translation>
-    </message>
-    <message>
-        <source>Kadu: %1</source>
-        <translation>Kadu: %1</translation>
-    </message>
-    <message>
-        <source>All</source>
-        <translation>All</translation>
-    </message>
-    <message>
-        <source>Offline</source>
-        <translation>Offline</translation>
-    </message>
-    <message>
-        <source>&amp;Exit Kadu</source>
-        <translation>&amp;Exit Kadu</translation>
-    </message>
-    <message>
-        <source>Main toolbar</source>
-        <translation>Main toolbar</translation>
-    </message>
-    <message>
-        <source>Mute sounds</source>
-        <translation>Mute sounds</translation>
-    </message>
-    <message>
-        <source>Unmute sounds</source>
-        <translation>Unmute sounds</translation>
-    </message>
-    <message>
-        <source>User info</source>
-        <translation>User info</translation>
-    </message>
-    <message>
-        <source>Your public key has been sent</source>
-        <translation>Your public key has been sent</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-    <message>
-        <source>Selected users will be deleted. Are you sure?</source>
-        <translation>Selected users will be deleted. Are you sure?</translation>
-    </message>
-    <message>
-        <source>&amp;Yes</source>
-        <translation>&amp;Yes</translation>
-    </message>
-    <message>
-        <source>&amp;No</source>
-        <translation>&amp;No</translation>
-    </message>
-    <message>
-        <source>Couldn&apos;t create DCC socket.
-Direct connections disabled.</source>
-        <translation>Couldn&apos;t create DCC socket.
-Direct connections disabled.</translation>
-    </message>
-    <message>
-        <source>Open chat window</source>
-        <translation>Open chat window</translation>
-    </message>
-    <message>
-        <source>Send my public key</source>
-        <translation>Send my public key</translation>
-    </message>
-    <message>
-        <source>Ignore user</source>
-        <translation>Ignore user</translation>
-    </message>
-    <message>
-        <source>Block user</source>
-        <translation>Block user</translation>
-    </message>
-    <message>
-        <source>Notify about user</source>
-        <translation>Notify about user</translation>
-    </message>
-    <message>
-        <source>Offline to user</source>
-        <translation>Offline to user</translation>
-    </message>
-    <message>
-        <source>Clear history</source>
-        <translation>Clear history</translation>
-    </message>
-    <message>
-        <source>About...</source>
-        <translation>About...</translation>
-    </message>
-    <message>
-        <source>Connection problem</source>
-        <translation>Connection problem</translation>
-    </message>
-    <message>
-        <source>Couldn&apos;t connect.
-Check your internet connection.</source>
-        <translation>Couldn&apos;t connect.
-Check your internet connection.</translation>
-    </message>
-    <message>
-        <source>Information</source>
-        <translation>Information</translation>
-    </message>
-    <message>
-        <source>File has been transferred sucessfully.</source>
-        <translation>File has been transferred sucessfully.</translation>
-    </message>
-    <message>
-        <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation>Error</translation>
-    </message>
-    <message>
-        <source>File transfer error!</source>
-        <translation>File transfer error!</translation>
-    </message>
-    <message>
-        <source>Couldn&apos;t open file!</source>
-        <translation>Couldn&apos;t open file!</translation>
-    </message>
-    <message>
-        <source>Manage &amp;ignored</source>
-        <translation>Manage &amp;ignored</translation>
-    </message>
-    <message>
-        <source>&amp;Configuration</source>
-        <translation>&amp;Configuration</translation>
-    </message>
-    <message>
-        <source>Resend &amp;userlist</source>
-        <translation>Resend &amp;userlist</translation>
-    </message>
-    <message>
-        <source>Remind &amp;password</source>
-        <translation>Remind &amp;password</translation>
-    </message>
-    <message>
-        <source>Register &amp;new user</source>
-        <translation>Register &amp;new user</translation>
-    </message>
-    <message>
-        <source>Unregister user</source>
-        <translation>Unregister user</translation>
-    </message>
-    <message>
-        <source>Personal information</source>
-        <translation>Personal information</translation>
-    </message>
-    <message>
-        <source>&amp;Search for users</source>
-        <translation>&amp;Search for users</translation>
-    </message>
-    <message>
-        <source>I&amp;mport userlist</source>
-        <translation>I&amp;mport userlist</translation>
-    </message>
-    <message>
-        <source>E&amp;xport userlist</source>
-        <translation>E&amp;xport userlist</translation>
-    </message>
-    <message>
-        <source>&amp;Add user</source>
-        <translation>&amp;Add user</translation>
-    </message>
-    <message>
-        <source>H&amp;elp</source>
-        <translation>H&amp;elp</translation>
-    </message>
-    <message>
-        <source>A&amp;bout...</source>
-        <translation>A&amp;bout...</translation>
-    </message>
-    <message>
-        <source>&amp;Hide Kadu</source>
-        <translation>&amp;Hide Kadu</translation>
-    </message>
-    <message>
-        <source>&amp;Kadu</source>
-        <translation>&amp;Kadu</translation>
-    </message>
-    <message>
-        <source>Private</source>
-        <translation>Private</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>I am busy.</source>
-        <translation>I am busy.</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Me</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kadu: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send SMS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send file</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Voice chat</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Send my public key</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ignore user</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Block user</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about user</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Offline to user</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove from userlist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear history</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View history</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View/edit user info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lookup in directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>About...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Offline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Exit Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Main toolbar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show / hide inactive users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mute sounds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add user</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unmute sounds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your public key has been sent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selected users will be deleted. Are you sure?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Yes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;No</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t create DCC socket.
+Direct connections disabled.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection problem</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect.
+Check your internet connection.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File has been transferred sucessfully.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File transfer error!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t open file!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Manage &amp;ignored</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Resend &amp;userlist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remind &amp;password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>&amp;Change password/email</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Register &amp;new user</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unregister user</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Personal information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Search for users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I&amp;mport userlist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>E&amp;xport userlist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Add user</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>H&amp;elp</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A&amp;bout...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Hide Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Private</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1549,310 +1545,307 @@ Check your internet connection.</translation>
     <name>KaduSlots</name>
     <message>
         <source>Kadu: %1</source>
-        <translation type="unfinished">Kadu: %1</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>KaduTabBar</name>
     <message>
         <source>Add new group</source>
-        <translation>Add new group</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Name of new group:</source>
-        <translation>Name of new group:</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>MessageBox</name>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Yes</source>
-        <translation>&amp;Yes</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;No</source>
-        <translation>&amp;No</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancel</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>PersonalInfoDialog</name>
     <message>
         <source>Personal Information</source>
-        <translation>Personal Information</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Nickname</source>
-        <translation>Nickname</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Name</source>
-        <translation>Name</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Surname</source>
-        <translation>Surname</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Gender</source>
-        <translation>Gender</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Male</source>
-        <translation>Male</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Female</source>
-        <translation>Female</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Birthyear</source>
-        <translation>Birthyear</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>City</source>
-        <translation>City</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Family Name</source>
-        <translation>Family Name</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Family City</source>
-        <translation>Family City</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancel</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Register</name>
     <message>
         <source>Password</source>
-        <translation>Password</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Retype password</source>
-        <translation>Retype password</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>E-mail</source>
-        <translation>E-mail</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Register</source>
-        <translation>Register</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Create config file</source>
-        <translation>Create config file</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Write the newly obtained UIN and password into a clean configuration file
 This will erase your current config file contents if you have one</source>
-        <translation>Write the newly obtained UIN and password into a clean configuration file
-This will erase your current config file contents if you have one</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Register user</source>
-        <translation>Register user</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Passwords do not match</source>
-        <translation>Passwords do not match</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>OK</source>
-        <translation>OK</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Please fill out all fields</source>
-        <translation>Please fill out all fields</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Error</source>
-        <translation>Error</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Registering</source>
-        <translation>Registering</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Success!</source>
-        <translation>Success!</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Registration was successful. Your new number is %1.
 Store it in a safe place along with the password.
 Now add your friends to the userlist.</source>
-        <translation>Registration was successful. Your new number is %1.
-Store it in a safe place along with the password.
-Now add your friends to the userlist.</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>SavePublicKey</name>
     <message>
         <source>Save public key</source>
-        <translation>Save public key</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>User %1 is sending you his public key. Do you want to save it?</source>
-        <translation>User %1 is sending you his public key. Do you want to save it?</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Yes</source>
-        <translation>Yes</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>No</source>
-        <translation>No</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Error</source>
-        <translation>Error</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Error writting the key</source>
-        <translation>Error writting the key</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>OK</source>
-        <translation>OK</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>SearchDialog</name>
     <message>
         <source>&amp;Search</source>
-        <translation>&amp;Search</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Next results</source>
-        <translation>&amp;Next results</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>C&amp;lear list</source>
-        <translation>C&amp;lear list</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Add User</source>
-        <translation>&amp;Add User</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Nickname</source>
-        <translation>Nickname</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Name</source>
-        <translation>Name</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Surname</source>
-        <translation>Surname</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Gender</source>
-        <translation>Gender</translation>
-    </message>
-    <message>
-        <source>Male</source>
-        <translation>Male</translation>
-    </message>
-    <message>
-        <source>Female</source>
-        <translation>Female</translation>
-    </message>
-    <message>
-        <source>Birthyear</source>
-        <translation>Birthyear</translation>
-    </message>
-    <message>
-        <source>City</source>
-        <translation>City</translation>
-    </message>
-    <message>
-        <source>Uin</source>
-        <translation>Uin</translation>
-    </message>
-    <message>
-        <source>Search criteria</source>
-        <translation>Search criteria</translation>
-    </message>
-    <message>
-        <source>&amp;Personal data</source>
-        <translation>&amp;Personal data</translation>
-    </message>
-    <message>
-        <source>Search using the personal data typed above (name, nickname)...</source>
-        <translation>Search using the personal data typed above (name, nickname)...</translation>
-    </message>
-    <message>
-        <source>&amp;Uin number</source>
-        <translation>&amp;Uin number</translation>
-    </message>
-    <message>
-        <source>Search for this UIN exclusively</source>
-        <translation>Search for this UIN exclusively</translation>
-    </message>
-    <message>
-        <source>Only active users</source>
-        <translation>Only active users</translation>
-    </message>
-    <message>
-        <source>Status</source>
-        <translation>Status</translation>
-    </message>
-    <message>
-        <source>Birth year</source>
-        <translation>Birth year</translation>
-    </message>
-    <message>
-        <source>Search in directory</source>
-        <translation>Search in directory</translation>
-    </message>
-    <message>
-        <source>&amp;Update Info</source>
-        <translation>&amp;Update Info</translation>
-    </message>
-    <message>
-        <source>Searching...</source>
-        <translation>Searching...</translation>
-    </message>
-    <message>
-        <source>Done searching</source>
-        <translation>Done searching</translation>
-    </message>
-    <message>
-        <source>No results</source>
-        <translation>No results</translation>
-    </message>
-    <message>
-        <source>There were no results of your search</source>
-        <translation>There were no results of your search</translation>
-    </message>
-    <message>
-        <source>Add User</source>
-        <translation>Add User</translation>
-    </message>
-    <message>
-        <source>Select user first</source>
-        <translation>Select user first</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source> </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Male</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Female</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Birthyear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>City</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search criteria</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Personal data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search using the personal data typed above (name, nickname)...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Uin number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search for this UIN exclusively</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Only active users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Birth year</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search in directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Update Info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Searching...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Done searching</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No results</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There were no results of your search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add User</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select user first</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1860,47 +1853,11 @@ Now add your friends to the userlist.</translation>
     <name>Sms</name>
     <message>
         <source>Recipient</source>
-        <translation>Recipient</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Send</source>
-        <translation>Send</translation>
-    </message>
-    <message>
-        <source>Send SMS</source>
-        <translation>Send SMS</translation>
-    </message>
-    <message>
-        <source>SMS error</source>
-        <translation>SMS error</translation>
-    </message>
-    <message>
-        <source>Sms application was not specified. Visit the configuration section</source>
-        <translation>Sms application was not specified. Visit the configuration section</translation>
-    </message>
-    <message>
-        <source>Could not spawn child process. Check if the program is functional</source>
-        <translation>Could not spawn child process. Check if the program is functional</translation>
-    </message>
-    <message>
-        <source>SMS sent</source>
-        <translation>SMS sent</translation>
-    </message>
-    <message>
-        <source>The process exited normally. The SMS should be on its way</source>
-        <translation>The process exited normally. The SMS should be on its way</translation>
-    </message>
-    <message>
-        <source>SMS not sent</source>
-        <translation>SMS not sent</translation>
-    </message>
-    <message>
-        <source>The process exited abnormally. The SMS may not be sent</source>
-        <translation>The process exited abnormally. The SMS may not be sent</translation>
-    </message>
-    <message>
-        <source>The SMS was sent and should be on its way</source>
-        <translation>The SMS was sent and should be on its way</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Contact</source>
@@ -1910,15 +1867,51 @@ Now add your friends to the userlist.</translation>
         <source>Signature</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Send SMS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SMS error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sms application was not specified. Visit the configuration section</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not spawn child process. Check if the program is functional</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SMS sent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The process exited normally. The SMS should be on its way</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SMS not sent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The process exited abnormally. The SMS may not be sent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The SMS was sent and should be on its way</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SmsEraGateway</name>
     <message>
-        <source>Provider gateway results page looks strange. SMS was probably NOT sent.</source>
-        <translation>Provider gateway results page looks strange. SMS was probably NOT sent.</translation>
+        <source>Error: </source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Error: </source>
+        <source>Provider gateway results page looks strange. SMS was probably NOT sent.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1962,7 +1955,7 @@ Now add your friends to the userlist.</translation>
     <name>SmsGateway</name>
     <message>
         <source>Network error. Provider gateway page is probably unavailable</source>
-        <translation>Network error. Provider gateway page is probably unavailable</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1970,31 +1963,30 @@ Now add your friends to the userlist.</translation>
     <message>
         <source>Provider gateway page looks strange. It&apos;s probably temporary disabled
 or has beed changed too much to parse it correctly.</source>
-        <translation>Provider gateway page looks strange. It&apos;s probably temporary disabled
-or has beed changed too much to parse it correctly.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>You exceeded your daily limit</source>
-        <translation>You exceeded your daily limit</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Text from the picture is incorrect</source>
-        <translation>Text from the picture is incorrect</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>The receiver has to enable SMS STANDARD service</source>
-        <translation>The receiver has to enable SMS STANDARD service</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Provider gateway results page looks strange. SMS was probably NOT sent.</source>
-        <translation>Provider gateway results page looks strange. SMS was probably NOT sent.</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>SmsImageDialog</name>
     <message>
         <source>Enter text from the picture:</source>
-        <translation>Enter text from the picture:</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2002,19 +1994,18 @@ or has beed changed too much to parse it correctly.</translation>
     <message>
         <source>Provider gateway page looks strange. It&apos;s probably temporary disabled
 or has beed changed too much to parse it correctly.</source>
-        <translation>Provider gateway page looks strange. It&apos;s probably temporary disabled
-or has beed changed too much to parse it correctly.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Provider gateway results page looks strange. SMS was probably NOT sent.</source>
-        <translation>Provider gateway results page looks strange. SMS was probably NOT sent.</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>SmsSender</name>
     <message>
         <source>Mobile number is incorrect</source>
-        <translation>Mobile number is incorrect</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2029,11 +2020,11 @@ or has beed changed too much to parse it correctly.</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Cancel</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2041,102 +2032,101 @@ or has beed changed too much to parse it correctly.</translation>
     <message>
         <source>Left click - hide/show window
 Middle click or Left click- next message</source>
-        <translation>Left click - hide/show window
-Middle click or Left click- next message</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Unregister</name>
     <message>
         <source>UIN</source>
-        <translation>UIN</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Password</source>
-        <translation>Password</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Unregister</source>
-        <translation>Unregister</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Unregister user</source>
-        <translation>Unregister user</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Please fill out all fields</source>
-        <translation>Please fill out all fields</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>OK</source>
-        <translation>OK</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Error</source>
-        <translation>Error</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Unregistering</source>
-        <translation>Unregistering</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Success!</source>
-        <translation>Success!</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>No user</source>
-        <translation>No user</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>UserBox</name>
     <message>
         <source>&lt;I&gt;Available&lt;/I&gt;</source>
-        <translation>&lt;I&gt;Available&lt;/I&gt;</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&lt;I&gt;Busy&lt;/I&gt;</source>
-        <translation>&lt;I&gt;Busy&lt;/I&gt;</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&lt;I&gt;Mobile:&lt;/I&gt;&lt;B&gt; </source>
-        <translation>&lt;I&gt;Mobile:&lt;/I&gt;&lt;B&gt; </translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&lt;nobr&gt;&lt;I&gt;Not available&lt;/I&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;I&gt;Not available&lt;/I&gt;&lt;/nobr&gt;</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&lt;I&gt;Invisible&lt;/I&gt;</source>
-        <translation>&lt;I&gt;Invisible&lt;/I&gt;</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&lt;I&gt;Invisible &lt;B&gt;(d.)&lt;/B&gt;&lt;/I&gt;</source>
-        <translation>&lt;I&gt;Invisible &lt;B&gt;(d.)&lt;/B&gt;&lt;/I&gt;</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&lt;nobr&gt;&lt;I&gt;Busy &lt;B&gt;(d.)&lt;/B&gt;&lt;/I&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;I&gt;Busy &lt;B&gt;(d.)&lt;/B&gt;&lt;/I&gt;&lt;/nobr&gt;</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&lt;nobr&gt;&lt;I&gt;Not available &lt;B&gt;(d.)&lt;/B&gt;&lt;/I&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;I&gt;Not available &lt;B&gt;(d.)&lt;/B&gt;&lt;/I&gt;&lt;/nobr&gt;</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&lt;nobr&gt;&lt;I&gt;Available &lt;B&gt;(d.)&lt;/B&gt;&lt;/I&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;I&gt;Available &lt;B&gt;(d.)&lt;/B&gt;&lt;/I&gt;&lt;/nobr&gt;</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&lt;nobr&gt;&lt;I&gt;Blocking&lt;/I&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;I&gt;Blocking&lt;/I&gt;&lt;/nobr&gt;</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&lt;nobr&gt;&lt;I&gt;Unknown status&lt;/I&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;I&gt;Unknown status&lt;/I&gt;&lt;/nobr&gt;</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&lt;B&gt;Description:&lt;/B&gt;&lt;BR&gt;</source>
-        <translation>&lt;B&gt;Description:&lt;/B&gt;&lt;BR&gt;</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2161,328 +2151,323 @@ Middle click or Left click- next message</translation>
 <context>
     <name>UserInfo</name>
     <message>
-        <source>User info on %1</source>
-        <translation>User info on %1</translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation>Close</translation>
-    </message>
-    <message>
-        <source>Uin</source>
-        <translation>Uin</translation>
-    </message>
-    <message>
-        <source>Status</source>
-        <translation>Status</translation>
-    </message>
-    <message>
-        <source>Nickname</source>
-        <translation>Nickname</translation>
-    </message>
-    <message>
-        <source>AltNick</source>
-        <translation>AltNick</translation>
-    </message>
-    <message>
-        <source>First name</source>
-        <translation>First name</translation>
-    </message>
-    <message>
-        <source>Surname</source>
-        <translation>Surname</translation>
-    </message>
-    <message>
-        <source>Mobile</source>
-        <translation>Mobile</translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation>Group</translation>
-    </message>
-    <message>
-        <source>All</source>
-        <translation>All</translation>
-    </message>
-    <message>
-        <source>Address IP and Port</source>
-        <translation>Address IP and Port</translation>
-    </message>
-    <message>
-        <source>Protocol version</source>
-        <translation>Protocol version</translation>
-    </message>
-    <message>
-        <source>DNS name</source>
-        <translation>DNS name</translation>
-    </message>
-    <message>
-        <source>Email</source>
-        <translation>Email</translation>
-    </message>
-    <message>
-        <source>(Unknown)</source>
-        <translation>(Unknown)</translation>
-    </message>
-    <message>
-        <source>Online</source>
-        <translation>Online</translation>
-    </message>
-    <message>
-        <source>Online (d.)</source>
-        <translation>Online (d.)</translation>
-    </message>
-    <message>
-        <source>Offline</source>
-        <translation>Offline</translation>
-    </message>
-    <message>
-        <source>Offline (d.)</source>
-        <translation>Offline (d.)</translation>
-    </message>
-    <message>
-        <source>Busy</source>
-        <translation>Busy</translation>
-    </message>
-    <message>
-        <source>Busy (d.)</source>
-        <translation>Busy (d.)</translation>
-    </message>
-    <message>
-        <source>Invisible</source>
-        <translation>Invisible</translation>
-    </message>
-    <message>
-        <source>Invisible (d.)</source>
-        <translation>Invisible (d.)</translation>
-    </message>
-    <message>
-        <source>Blocks us</source>
-        <translation>Blocks us</translation>
-    </message>
-    <message>
-        <source>General</source>
-        <translation>General</translation>
-    </message>
-    <message>
-        <source>Block user</source>
-        <translation>Block user</translation>
-    </message>
-    <message>
-        <source>Offline to user</source>
-        <translation>Offline to user</translation>
-    </message>
-    <message>
-        <source>Notify about status changes</source>
-        <translation>Notify about status changes</translation>
-    </message>
-    <message>
-        <source>Others</source>
-        <translation>Others</translation>
-    </message>
-    <message>
-        <source>Bad UIN</source>
-        <translation>Bad UIN</translation>
-    </message>
-    <message>
-        <source>User is already in userlist</source>
-        <translation>User is already in userlist</translation>
-    </message>
-    <message>
         <source>Add user</source>
-        <translation>Add user</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Add</source>
-        <translation>Add</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User info on %1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Update</source>
-        <translation>Update</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nickname</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>AltNick</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>First name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Surname</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mobile</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Address IP and Port</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Protocol version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DNS name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Email</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>(Unknown)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Online</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Online (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Offline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Offline (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Busy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Busy (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invisible</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invisible (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Blocks us</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Block user</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Offline to user</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about status changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Others</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Add user problem</source>
-        <translation>Add user problem</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Altnick field cannot be empty.</source>
-        <translation>Altnick field cannot be empty.</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User is already in userlist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bad UIN</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>UserList</name>
     <message>
         <source>All</source>
-        <translation>All</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>UserListElement</name>
     <message>
         <source>All</source>
-        <translation>All</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>UserlistExport</name>
     <message>
         <source>%1 entries will be exported</source>
-        <translation>%1 entries will be exported</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Send userlist</source>
-        <translation>&amp;Send userlist</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Delete userlist</source>
-        <translation>&amp;Delete userlist</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Export to file</source>
-        <translation>&amp;Export to file</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Close window</source>
-        <translation>&amp;Close window</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Export userlist</source>
-        <translation>Export userlist</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Export error</source>
-        <translation>Export error</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>The application encountered an internal error
 The export was unsuccessful</source>
-        <translation>The application encountered an internal error
-The export was unsuccessful</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Export completed</source>
-        <translation>Export completed</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Your userlist has been successfully exported to file</source>
-        <translation>Your userlist has been successfully exported to file</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>The application encountered an internal error
 The export userlist to file was unsuccessful</source>
-        <translation>The application encountered an internal error
-The export userlist to file was unsuccessful</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>The application encountered an internal error
 The delete userlist on server was unsuccessful</source>
-        <translation>The application encountered an internal error
-The delete userlist on server was unsuccessful</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Your userlist has been successfully exported to server</source>
-        <translation>Your userlist has been successfully exported to server</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>UserlistImport</name>
     <message>
         <source>&amp;Fetch userlist</source>
-        <translation>&amp;Fetch userlist</translation>
-    </message>
-    <message>
-        <source>&amp;Save results</source>
-        <translation>&amp;Save results</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Import from file</source>
-        <translation>&amp;Import from file</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Save results</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Merge results</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>UIN</source>
-        <translation>UIN</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Nickname</source>
-        <translation>Nickname</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Disp. nick</source>
-        <translation>Disp. nick</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Name</source>
-        <translation>Name</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Surname</source>
-        <translation>Surname</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Mobile no.</source>
-        <translation>Mobile no.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Group</source>
-        <translation>Group</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Email</source>
-        <translation>Email</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Import userlist</source>
-        <translation>Import userlist</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Import error</source>
-        <translation>Import error</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>The application encountered an internal error
 The import userlist from file was unsuccessful</source>
-        <translation>The application encountered an internal error
-The import userlist from file was unsuccessful</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>The application encountered an internal error
 The import was unsuccessful</source>
-        <translation>The application encountered an internal error
-The import was unsuccessful</translation>
-    </message>
-    <message>
-        <source>&amp;Merge results</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>changePassword</name>
     <message>
-        <source>New password</source>
-        <translation>New password</translation>
-    </message>
-    <message>
-        <source>Retype new password</source>
-        <translation>Retype new password</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-    <message>
-        <source>Bad data</source>
-        <translation>Bad data</translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation>Error</translation>
-    </message>
-    <message>
         <source>New email</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>New password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Retype new password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Change password/email</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bad data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2490,69 +2475,64 @@ The import was unsuccessful</translation>
     <name>dccSocketClass</name>
     <message>
         <source>User </source>
-        <translation>User </translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source> wants to send us a file </source>
-        <translation> wants to send us a file </translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>
 of size </source>
-        <translation>
-of size </translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>. Accept transfer?</source>
-        <translation>. Accept transfer?</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Incoming transfer</source>
-        <translation>Incoming transfer</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Yes</source>
-        <translation>Yes</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>No</source>
-        <translation>No</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>save file</source>
-        <translation>save file</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Select file location</source>
-        <translation>Select file location</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>File %1 already exists.</source>
-        <translation>File %1 already exists.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Overwrite</source>
-        <translation>Overwrite</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Resume</source>
-        <translation>Resume</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Cancel</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Connect error</source>
-        <translation>Connect error</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Could not open file</source>
-        <translation>Could not open file</translation>
-    </message>
-    <message>
-        <source>open file</source>
-        <translation>open file</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source> wants to talk with you. Do you accept it?</source>
@@ -2562,20 +2542,24 @@ of size </translation>
         <source>Incoming voice chat</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>open file</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>remindPassword</name>
     <message>
         <source>Remind password</source>
-        <translation>Remind password</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Error during remind password</source>
-        <translation>Error during remind password</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>OK</source>
-        <translation>OK</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
