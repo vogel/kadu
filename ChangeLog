@@ -97,6 +97,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * na³o¿ona ³ata joi-a przyspieszaj±ca parsera i dodaj±ca w nim mo¿liwo¶æ wstawiania
   wyj¶cia zewnêtrznych poleceñ pow³oki (chilek)
 * w oknie historii pokazywane s± daty rozmów (chilek)
+* w oknie historii pokazywani s± rozmówcy (przegl±danie wys³anych SMSów na razie
+  nie dzia³a) (chilek)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

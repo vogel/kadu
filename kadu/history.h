@@ -14,6 +14,7 @@
 #include <qlineedit.h>
 #include <qvbuttongroup.h>
 #include <qevent.h>
+#include <qlistbox.h>
 
 #include "libgadu.h"
 #include "misc.h"
@@ -54,6 +55,14 @@ struct HistoryDate {
 	uint idx;
 };
 
+class UinsListBoxText : public QListBoxText {
+	public:
+		UinsListBoxText(UinsList &uins);
+		UinsList &getUinsList();
+
+	private:
+		UinsList uins;
+};
 
 /**
 	Okno historii rozmowy
@@ -63,7 +72,9 @@ class History : public QDialog {
 	public:
 		History(UinsList uins);
 		static void initModule();
+
 	public slots:
+		void uinsClicked(QListBoxItem *item);
 		void dateClicked(int index);
 		void searchBtnClicked();
 		void searchNextBtnClicked();
@@ -73,10 +84,11 @@ class History : public QDialog {
 		void formatHistoryEntry(QString &text, const HistoryEntry &entry);
 		void showHistoryEntries(int from, int count);
 		void searchHistory();
+		void refreshHistoryEntries(UinsList &uins);
 		QString gaduStatus2symbol(unsigned int status);
 		void closeEvent(QCloseEvent *e);
 
-		QListBox *dates;
+		QListBox *uinslb, *dates;
 		QTextBrowser *body;
 		UinsList uins;
 		int start;
@@ -140,6 +152,7 @@ class HistoryManager : public QObject
 		int getHistoryEntriesCount(QString mobile = QString::null);
 		QValueList<HistoryEntry> getHistoryEntries(UinsList uins, int from, int count, int mask = HISTORYMANAGER_ENTRY_ALL);
 		QValueList<HistoryDate> getHistoryDates(UinsList uins);
+		QValueList<UinsList> getUinsLists();
 		int getHistoryEntryIndexByDate(UinsList uins, QDateTime &date, bool endate = false);
 		static QString getFileNameByUinsList(UinsList &uins);
 		static QStringList mySplit(const QChar &sep, const QString &str);

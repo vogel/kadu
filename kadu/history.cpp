@@ -809,6 +809,25 @@ QValueList<HistoryDate> HistoryManager::getHistoryDates(UinsList uins) {
 	return entries;
 }
 
+QValueList<UinsList> HistoryManager::getUinsLists() {
+	QValueList<UinsList> entries;
+	QDir dir(ggPath("history/"), "*.idx");
+	QStringList struins;
+	UinsList uins;
+
+	for (int i = 0; i < dir.count(); i++) {
+		struins = QStringList::split("_", dir[i].replace(QRegExp(".idx$"), ""));
+		uins.clear();
+		if (struins[0] != "sms") {
+			for (int j = 0; j < struins.count(); j++)
+				uins.append(struins[j].toUInt());
+			}
+		entries.append(uins);
+		}
+
+	return entries;
+}
+
 void HistoryManager::buildIndexPrivate(const QString &filename) {
 	kdebug("HistoryManager::buildIndexPrivate()\n");
 	QString fnameout = filename + ".idx";
@@ -995,16 +1014,40 @@ void HistoryManager::chatMsgReceived(UinsList senders,const QString& msg,time_t 
 		history.appendMessage(senders, senders[0], msg, false, time);
 }
 
+UinsListBoxText::UinsListBoxText(UinsList &uins)
+	: QListBoxText(), uins(uins)
+{
+	QString name;
+
+	if (!uins.count())
+		setText("SMS");
+	else {
+		for (int i = 0; i < uins.count(); i++) {
+			if (userlist.containsUin(uins[i]))
+				name.append(userlist.byUin(uins[i]).altnick);
+			else
+				name.append(QString::number(uins[i]));
+			if (i < uins.count() - 1)
+				name.append(",");
+			}
+		setText(name);
+		}
+}
+
+UinsList &UinsListBoxText::getUinsList() {
+	return uins;
+}
+
 History::History(UinsList uins): uins(uins), closeDemand(false), finding(false) {
-	
 	history.convHist2ekgForm(uins);
 	history.buildIndex(uins);
 
 	setCaption(tr("History"));
 	setWFlags(Qt::WDestructiveClose);
 
-	QGridLayout *grid = new QGridLayout(this, 2, 4, 3, 3);
+	QGridLayout *grid = new QGridLayout(this, 2, 5, 3, 3);
 
+	uinslb = new QListBox(this, "History uins");
 	dates = new QListBox(this, "History dates");
 
 	body = new QTextBrowser(this, "History browser");
@@ -1018,16 +1061,19 @@ History::History(UinsList uins): uins(uins), closeDemand(false), finding(false) 
 	QPushButton *searchprevbtn = new QPushButton(this);
 	searchprevbtn->setText(tr("Find &previous"));
 
-	grid->addMultiCellWidget(dates, 0, 1, 0, 0);
-	grid->addMultiCellWidget(body, 0, 0, 1, 3);
-	grid->addWidget(searchbtn, 1, 1);
-	grid->addWidget(searchnextbtn, 1, 2);
-	grid->addWidget(searchprevbtn, 1, 3);
-	grid->setColStretch(0, 1);
-	grid->setColStretch(1, 100);
+	grid->addMultiCellWidget(uinslb, 0, 1, 0, 0);
+	grid->addMultiCellWidget(dates, 0, 1, 1, 1);
+	grid->addMultiCellWidget(body, 0, 0, 2, 4);
+	grid->addWidget(searchbtn, 1, 2);
+	grid->addWidget(searchnextbtn, 1, 3);
+	grid->addWidget(searchprevbtn, 1, 4);
+	grid->setColStretch(0, 100);
+	grid->setColStretch(1, 1);
 	grid->setColStretch(2, 100);
 	grid->setColStretch(3, 100);
+	grid->setColStretch(4, 100);
 
+	connect(uinslb, SIGNAL(highlighted(QListBoxItem *)), this, SLOT(uinsClicked(QListBoxItem *)));
 	connect(dates, SIGNAL(highlighted(int)), this, SLOT(dateClicked(int)));
 	connect(searchbtn, SIGNAL(clicked()), this, SLOT(searchBtnClicked()));
 	connect(searchnextbtn, SIGNAL(clicked()), this, SLOT(searchNextBtnClicked()));
@@ -1039,21 +1085,36 @@ History::History(UinsList uins): uins(uins), closeDemand(false), finding(false) 
 	findrec.reverse = 0;
 	findrec.actualrecord = -1;
 
+	UinsListBoxText *uinslbt, *selecteduinslbt = NULL;
+	int i;
+	QValueList<UinsList> uinsentries = history.getUinsLists();
+	for (i = 0; i < uinsentries.count(); i++) {
+		uinslbt = new UinsListBoxText(uinsentries[i]);
+		uinslb->insertItem(uinslbt);
+		if (uinsentries[i].equals(uins))
+			selecteduinslbt = uinslbt;
+		}
+	uinslb->sort();
+	if (selecteduinslbt) {
+		uinslb->setCurrentItem(selecteduinslbt);
+		uinslb->setSelected(selecteduinslbt, TRUE);
+		}
+}
+
+void History::uinsClicked(QListBoxItem *item) {
+	uins = ((UinsListBoxText *)item)->getUinsList();
+	refreshHistoryEntries(uins);
+}
+
+void History::refreshHistoryEntries(UinsList &uins) {
 	int count = history.getHistoryEntriesCount(uins);
+	dates->clear();
 	if (count) {
 		dateentries = history.getHistoryDates(uins);
 		for (int i = 0; i < dateentries.count(); i++)
 			dates->insertItem(dateentries[i].date.toString("dd.MM.yyyy"));
 		dates->setCurrentItem(dateentries.count() - 1);
 		dates->setSelected(dateentries.count() - 1, TRUE);
-//		QValueList<HistoryDate>::iterator it = dateentries.end();
-//		it--;
-//		if (it != dateentries.end())
-//			start = (*it).idx;
-//		else
-//			start = 0;
-//		count -= start;
-//		showHistoryEntries(start, count);
 		}
 }
 
