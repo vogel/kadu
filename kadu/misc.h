@@ -483,4 +483,16 @@ class KaduTextBrowser : public QTextBrowser, QToolTip
 QValueList<int> toIntList(const QValueList<QVariant> &in);
 QValueList<QVariant> toVariantList(const QValueList<int> &in);
 
+template<class T, class X> QValueList<T> keys(const QMap<T, X> &m)
+{
+#if QT_VERSION < 0x030005
+    QValueList<T> ret;
+    for(QMap<T,X>::const_iterator it=m.begin(); it!=m.end(); it++)
+        ret.append(it.key());
+    return ret;
+#else
+    return m.keys();
+#endif
+}
+
 #endif
