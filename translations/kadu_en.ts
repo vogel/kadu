@@ -737,6 +737,10 @@ Arguments should be separated with spaces. %n argument is converted to number, %
         <source>&lt;b&gt;Text&lt;/b&gt; preview</source>
         <translation>&lt;b&gt;Text&lt;/b&gt; preview</translation>
     </message>
+    <message>
+        <source>Hint timeout (in seconds)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>History</name>

@@ -375,7 +375,7 @@ Zaznacz i wpisz w to pole poprawny ciąg. Argumenty oddziel spacjami. Argument %
     </message>
     <message>
         <source>Show Inactive users</source>
-        <translation>Wystapiło rozłaczenie</translation>
+        <translation>Pokaż niedostępne kontakty</translation>
     </message>
     <message>
         <source>Hints</source>
@@ -629,7 +629,7 @@ wiadomości</translation>
     </message>
     <message>
         <source>changed status to</source>
-        <translation>zmień status na</translation>
+        <translation>zmienił status na</translation>
     </message>
     <message>
         <source>is unavailable</source>
@@ -737,6 +737,10 @@ wiadomości</translation>
     <message>
         <source>&lt;b&gt;Text&lt;/b&gt; preview</source>
         <translation>&lt;b&gt;Tekst&lt;/b&gt; w dymku</translation>
+    </message>
+    <message>
+        <source>Hint timeout (in seconds)</source>
+        <translation>Zanik po (w sekundach)</translation>
     </message>
 </context>
 <context>
