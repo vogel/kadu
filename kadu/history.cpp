@@ -571,10 +571,14 @@ int HistoryManager::getHistoryEntriesCountPrivate(const QString &filename) {
 }
 
 int HistoryManager::getHistoryEntriesCount(UinsList uins) {
+	convHist2ekgForm(uins);
+	buildIndex(uins);
 	return getHistoryEntriesCountPrivate(getFileNameByUinsList(uins));
 }
 
 int HistoryManager::getHistoryEntriesCount(QString mobile) {
+	convSms2ekgForm();
+	buildIndex();
 	if (mobile == QString::null)
 		return getHistoryEntriesCountPrivate("sms");
 	else
