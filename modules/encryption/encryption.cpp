@@ -179,7 +179,7 @@ void EncryptionManager::encryptionButtonClicked()
 	setupEncryptButton(chat,!EncryptionEnabled[chat]);
 }
 
-void EncryptionManager::receivedMessageFilter(const UinsList& senders,QCString& msg,QByteArray& formats,bool& stop)
+void EncryptionManager::receivedMessageFilter(const UinsList& senders, QCString& msg, QByteArray& formats, bool& stop)
 {
 	kdebugf();
 	if (config_file.readBoolEntry("Chat","Encryption"))
@@ -324,16 +324,21 @@ void EncryptionManager::sendPublicKey()
 }
 
 SavePublicKey::SavePublicKey(UinType uin, QString keyData, QWidget *parent, const char *name) :
-	QDialog(parent, name, Qt::WDestructiveClose), uin(uin), keyData(keyData) {
-
+	QDialog(parent, name, Qt::WDestructiveClose), uin(uin), keyData(keyData)
+{
 	kdebugf();
 
 	setCaption(tr("Save public key"));
 	resize(200, 80);
 
-	QLabel *l_info = new QLabel(
-		tr("User %1 is sending you his public key. Do you want to save it?").arg(userlist.byUin(uin).altNick()),
-		this);
+	QLabel *l_info;
+	QString text=tr("User %1 is sending you his public key. Do you want to save it?");
+	if (userlist.containsUin(uin))
+		text=text.arg(userlist.byUin(uin).altNick());
+	else
+		text=text.arg(uin);
+
+	l_info = new QLabel(text, this);
 
 	QPushButton *yesbtn = new QPushButton(tr("Yes"), this);
 	QPushButton *nobtn = new QPushButton(tr("No"), this);
@@ -349,7 +354,8 @@ SavePublicKey::SavePublicKey(UinType uin, QString keyData, QWidget *parent, cons
 	kdebugf2();
 }
 
-void SavePublicKey::yesClicked() {
+void SavePublicKey::yesClicked()
+{
 	kdebugf();
 
 	QFile keyfile;
