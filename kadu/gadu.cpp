@@ -489,7 +489,7 @@ void GaduSocketNotifiers::socketEvent()
 
 	calls++;
 	if (calls > 1)
-		kdebugm(KDEBUG_WARNING, "************* GaduSocketNotifiers::eventHandler(): Recursive eventHandler calls detected!\n");
+		kdebugm(KDEBUG_WARNING, "************* GaduSocketNotifiers::socketEvent(): Recursive eventHandler calls detected!\n");
 
 	gg_event* e;
 	if (!(e = gg_watch_fd(Sess)))
@@ -502,7 +502,7 @@ void GaduSocketNotifiers::socketEvent()
 
 	if (Sess->state == GG_STATE_CONNECTING_HUB || Sess->state == GG_STATE_CONNECTING_GG)
 	{
-		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduSocketNotifiers::eventHandler(): changing QSocketNotifiers.\n");
+		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduSocketNotifiers::socketEvent(): changing QSocketNotifiers.\n");
 
 		recreateSocketNotifiers();
 	}
@@ -510,23 +510,23 @@ void GaduSocketNotifiers::socketEvent()
 	switch (Sess->state)
 	{
 		case GG_STATE_RESOLVING:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "EventManager::eventHandler(): Resolving address\n");
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduSocketNotifiers::socketEvent(): Resolving address\n");
 			break;
 		case GG_STATE_CONNECTING_HUB:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "EventManager::eventHandler(): Connecting to hub\n");
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduSocketNotifiers::socketEvent(): Connecting to hub\n");
 			break;
 		case GG_STATE_READING_DATA:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "EventManager::eventHandler(): Fetching data from hub\n");
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduSocketNotifiers::socketEvent(): Fetching data from hub\n");
 			break;
 		case GG_STATE_CONNECTING_GG:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "EventManager::eventHandler(): Connecting to server\n");
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduSocketNotifiers::socketEvent(): Connecting to server\n");
 			break;
 		case GG_STATE_READING_KEY:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "EventManager::eventHandler(): Waiting for hash key\n");
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduSocketNotifiers::socketEvent(): Waiting for hash key\n");
 			ConnectionTimeoutTimer::off();
 			break;
 		case GG_STATE_READING_REPLY:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "EventManager::eventHandler(): Sending key\n");
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduSocketNotifiers::socketEvent(): Sending key\n");
 			ConnectionTimeoutTimer::off();
 			break;
 		case GG_STATE_CONNECTED:
@@ -546,7 +546,7 @@ void GaduSocketNotifiers::socketEvent()
 		}
 		else
 		{
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventHandler(): %d\n", e->event.msg.recipients_count);
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduSocketNotifiers::socketEvent(): recipients_count: %d\n", e->event.msg.recipients_count);
 			if ((e->event.msg.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT)
 			{
 				uins.append(e->event.msg.sender);
@@ -588,7 +588,7 @@ void GaduSocketNotifiers::socketEvent()
 
 	if (e->type == GG_EVENT_ACK)
 	{
-		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "EventManager::eventHandler(): message reached %d (seq %d)\n",
+		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduSocketNotifiers::socketEvent(): message reached %d (seq %d)\n",
 			e->event.ack.recipient, e->event.ack.seq);
 		emit ackReceived(e->event.ack.seq);
 	}
@@ -1092,7 +1092,7 @@ void GaduProtocol::messageReceived(int msgclass, UinsList senders, QCString &msg
 */
 	if (userlist.byUinValue(senders[0]).anonymous && config_file.readBoolEntry("Chat","IgnoreAnonymousUsers"))
 	{
-		kdebugm(KDEBUG_INFO, "EventManager::messageReceivedSlot(): Ignored anonymous. %d is ignored\n", senders[0]);
+		kdebugm(KDEBUG_INFO, "GaduProtocol::messageReceived(): Ignored anonymous. %d is ignored\n", senders[0]);
 		return;
 	}
 
