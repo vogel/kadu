@@ -221,6 +221,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   kadu.conf (kadu.conf.backup.data) + obs³uga sygna³u SIGPIPE generowanego przez
   niektóre WM przy zamykaniu iksów (joi)
 * Usunieta translacjia spacji w search.cpp (Ron_K)
+* usuniety blad powodujacy segfaula przy dodawania anomimowego urzytkownika w
+  przypadku konferencji (michal)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

@@ -273,11 +273,10 @@ void UserList::changeUserInfo(const QString oldaltnick, UserListElement &ule)
 	e.offline_to_user = ule.offline_to_user;
 	e.notify = ule.notify;
 	e.Group = ule.Group;
-	if ((ule.altnick != oldaltnick && !wasAnonymous) || (ule.altnick != oldaltnick && !config_file.readBoolEntry("General", "UseDocking")))
-	{
-		UserBox::all_renameUser(oldaltnick, ule.altnick);
-		UserBox::all_refresh();
-	}
+
+	UserBox::all_renameUser(oldaltnick, ule.altnick);
+	UserBox::all_refresh();
+
 	emit modified();
 }
 
