@@ -17,7 +17,7 @@ Was wollen sie nun tun?</translation>
     </message>
     <message>
         <source>Configure</source>
-        <translation>Ich besitze schon eine Nummer GG</translation>
+        <translation>Konfigurieren</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -683,15 +683,15 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>German</source>
-        <translation type="unfinished"></translation>
+        <translation>deutsch</translation>
     </message>
     <message>
         <source>Type of gateway</source>
-        <translation type="unfinished"></translation>
+        <translation>Typ des Gateways</translation>
     </message>
     <message>
         <source>Default status</source>
-        <translation type="unfinished"></translation>
+        <translation>Standard-Status</translation>
     </message>
 </context>
 <context>
@@ -1000,10 +1000,6 @@ Dein Passwort ist falsch!!!</translation>
     <message>
         <source>Disconnection has occured</source>
         <translation>Verbindung wurde getrennt</translation>
-    </message>
-    <message>
-        <source>Please change your email in &quot;Change password/email&quot; window. Leave new password field blank.</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1539,7 +1535,7 @@ Check your internet connection.</source>
     </message>
     <message>
         <source>&amp;Change password/email</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwort/Email än&amp;dern</translation>
     </message>
 </context>
 <context>
@@ -1848,10 +1844,6 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
         <source>Select user first</source>
         <translation>Markiere zuerst Benutzer</translation>
     </message>
-    <message>
-        <source> </source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>Sms</name>
@@ -1901,11 +1893,11 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
     </message>
     <message>
         <source>Contact</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontakt</translation>
     </message>
     <message>
         <source>Signature</source>
-        <translation type="unfinished"></translation>
+        <translation>Unterschrift</translation>
     </message>
 </context>
 <context>
@@ -1916,43 +1908,43 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
     </message>
     <message>
         <source>Error: </source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler:</translation>
     </message>
     <message>
         <source>No error</source>
-        <translation type="unfinished"></translation>
+        <translation>Keine Fehler</translation>
     </message>
     <message>
         <source>System failure</source>
-        <translation type="unfinished"></translation>
+        <translation>Systemfehler</translation>
     </message>
     <message>
         <source>Unauthorised user</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht zugelassener Benutzer</translation>
     </message>
     <message>
         <source>Access forbidden</source>
-        <translation type="unfinished"></translation>
+        <translation>Zugriff verboten</translation>
     </message>
     <message>
         <source>Syntax error</source>
-        <translation type="unfinished"></translation>
+        <translation>Syntax-Fehler</translation>
     </message>
     <message>
         <source>Limit of the sms run-down</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbleibende freie Zeichen</translation>
     </message>
     <message>
         <source>Wrong receiver adress</source>
-        <translation type="unfinished"></translation>
+        <translation>falsche Empfängeradresse</translation>
     </message>
     <message>
         <source>Message too long</source>
-        <translation type="unfinished"></translation>
+        <translation>Nachricht zu lang</translation>
     </message>
     <message>
         <source>Unknown error</source>
-        <translation type="unfinished"></translation>
+        <translation>Unbekannter Fehler</translation>
     </message>
 </context>
 <context>
@@ -2228,7 +2220,7 @@ Rechte Maustaste - Setze Status</translation>
     </message>
     <message>
         <source>Online (d.)</source>
-        <translation type="unfinished">Online mit Beschr.</translation>
+        <translation>Online (mit Beschr.)</translation>
     </message>
     <message>
         <source>Offline</source>
@@ -2236,7 +2228,7 @@ Rechte Maustaste - Setze Status</translation>
     </message>
     <message>
         <source>Offline (d.)</source>
-        <translation type="unfinished">Offline mit Beschr.</translation>
+        <translation>Offline (mit Beschr.)</translation>
     </message>
     <message>
         <source>Busy</source>
@@ -2244,7 +2236,7 @@ Rechte Maustaste - Setze Status</translation>
     </message>
     <message>
         <source>Busy (d.)</source>
-        <translation type="unfinished">Beschäftigt mit Beschr.</translation>
+        <translation>Beschäftigt (mit Beschr.)</translation>
     </message>
     <message>
         <source>Invisible</source>
@@ -2252,7 +2244,7 @@ Rechte Maustaste - Setze Status</translation>
     </message>
     <message>
         <source>Invisible (d.)</source>
-        <translation type="unfinished">Versteckt mit Beschr.</translation>
+        <translation>Versteckt (mit Beschr.)</translation>
     </message>
     <message>
         <source>Blocks us</source>
@@ -2477,7 +2469,7 @@ The import was unsuccessful</source>
     </message>
     <message>
         <source>Change password/email</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwort/Email ändern</translation>
     </message>
 </context>
 <context>
