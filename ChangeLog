@@ -227,6 +227,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * teoretycznie poprawi³em wysy³anie na bramkê Era Podstawowa (adrian)
 * kolejne drobne porz±dki: pingtimer ukryty w klasie GaduProtocol,
   pozbycie siê publicznych zmiennych z klasy Kadu (adrian)
+* porz±dki w wewnêtrznym nazewnictwie obiektów (joi)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

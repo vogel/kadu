@@ -10,7 +10,7 @@ class About : public QHBox {
 	Q_OBJECT
 
 	public:
-		About();
+		About(QWidget *parent=NULL, const char *name=NULL);
 		~About();
 
 	private:

@@ -26,10 +26,9 @@
 #include "expimp.h"
 #include "status.h"
 
-UserlistImportExport::UserlistImportExport() 
+UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopLevel|WDestructiveClose)
 {
 	kdebugf();
-	setWFlags(Qt::WDestructiveClose);
 	setCaption(tr("Import / export userlist"));
 	
 	// create main QLabel widgets (icon and app info)

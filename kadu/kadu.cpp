@@ -713,7 +713,7 @@ void Kadu::help()
 
 void Kadu::about()
 {
-	(new About())->show();
+	(new About(this, "about_window"))->show();
 }
 
 void Kadu::remindPassword()
@@ -744,7 +744,7 @@ void Kadu::quit()
 
 void Kadu::importExportUserlist()
 {
-	(new UserlistImportExport())->show();
+	(new UserlistImportExport(this, "userlist_import_export"))->show();
 }
 
 

@@ -33,7 +33,7 @@ struct gg_dcc* dccsock;
 
 int dccSocketClass::count = 0;
 
-dccSocketClass::dccSocketClass(struct gg_dcc *dcc_sock, int type) : QObject(), type(type) {
+dccSocketClass::dccSocketClass(struct gg_dcc *dcc_sock, int type, QObject *parent, const char *name) : QObject(parent, name), type(type) {
 	dccsock = dcc_sock;
 	dccevent = NULL;
 	snr = snw = NULL;
@@ -148,7 +148,7 @@ void dccSocketClass::watchDcc(int check) {
 				return;
 				}
 			gg_dcc_fill_file_info(dccsock, f.local8Bit());
-			filedialog = new DccFileDialog(this, DCC_TYPE_SEND);
+			filedialog = new DccFileDialog(this, DCC_TYPE_SEND, NULL, "dcc_file_dialog");
 			filedialog->printFileInfo(dccsock);
 			break;
 		case GG_EVENT_DCC_ERROR:
@@ -253,7 +253,7 @@ void dccSocketClass::askAccept(void) {
 				dccsock->offset = 0;
 				}
 
-			filedialog = new DccFileDialog(this);
+			filedialog = new DccFileDialog(this, DCC_TYPE_GET, NULL, "dcc_file_dialog");
 			filedialog->printFileInfo(dccsock);
 			break;
 		case 1:

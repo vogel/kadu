@@ -376,7 +376,7 @@ void GaduSocketNotifiers::proteza_systemMessageReceived(QString &message, QDateT
 
 void GaduProtocol::initModule()
 {
-	gadu = new GaduProtocol();
+	gadu = new GaduProtocol(kadu, "gadu");
 	
 	QHostAddress ip;
 	for (int i = 0; i < 7; i++)
@@ -392,7 +392,7 @@ void GaduProtocol::initModule()
 //	kadu->mainMenu()->insertItem(icons_manager.loadIcon("ResendUserlist"), tr("Resend &userlist"), gadu, SLOT(sendUserList()),0,-1,2);
 }
 
-GaduProtocol::GaduProtocol() : QObject(NULL, "gadu")
+GaduProtocol::GaduProtocol(QObject *parent, const char *name) : QObject(parent, name)
 {
 	kdebugf();
 	

@@ -20,7 +20,7 @@ class AutoConnectionTimer : private QTimer {
 		void doConnect();
 	
 	private:
-		AutoConnectionTimer(QObject *parent = 0);
+		AutoConnectionTimer(QObject *parent = 0, const char *name=0);
 
 		static AutoConnectionTimer *autoconnection_object;
 };
@@ -34,7 +34,7 @@ class ConnectionTimeoutTimer : public QTimer {
 		static bool connectTimeoutRoutine(const QObject *receiver, const char *member);
 
 	private:
-		ConnectionTimeoutTimer(QObject *parent = 0);
+		ConnectionTimeoutTimer(QObject *parent = 0, const char *name=0);
 
 		static ConnectionTimeoutTimer *connectiontimeout_object;
 };
@@ -62,7 +62,7 @@ class EventManager : public QObject
 		void dccConnectionReceivedSlot(const UserListElement& sender);
 
 	public:
-		EventManager();
+		EventManager(QObject *parent=NULL, const char *name=NULL);
 		void eventHandler(gg_session* sess);
 
 	signals:
@@ -165,6 +165,7 @@ class EventConfigSlots : public QObject
 {
 	Q_OBJECT
 	public:
+		EventConfigSlots(QObject *parent=NULL, const char *name=NULL);
 	    static void initModule();
 	    
 	public slots:

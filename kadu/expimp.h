@@ -15,7 +15,7 @@
 class UserlistImportExport : public QHBox {
 	Q_OBJECT
 	public:
-		UserlistImportExport();
+		UserlistImportExport(QWidget *parent=NULL, const char *name=NULL);
 		~UserlistImportExport();
 	private:
 		int ret;

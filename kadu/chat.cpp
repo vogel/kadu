@@ -43,7 +43,7 @@
 #include "status.h"
 #include "message_box.h"
 
-ChatManager::ChatManager() : QObject(NULL, "chat_manager")
+ChatManager::ChatManager(QObject *parent, const char *name) : QObject(parent, name)
 {
 }
 
@@ -143,7 +143,7 @@ int ChatManager::openChat(UinsList senders,time_t time)
 			Chats[i]->setActiveWindow();
 			return i;	
 		}
-	Chat* chat = new Chat(senders, 0);
+	Chat* chat = new Chat(senders, 0, "chat");
 	chat->setTitle();
 
 	bool found=false;
@@ -1158,7 +1158,7 @@ void Chat::emoticonSelectorClicked(void)
 void Chat::changeColor(void)
 {
 	//sytuacja podobna jak w przypadku emoticon_selectora
-	color_selector = new ColorSelector(this);
+	color_selector = new ColorSelector(this, "color_selector");
 	color_selector->alignTo(colorbtn);
 	color_selector->show();
 	connect(color_selector, SIGNAL(colorSelect(const QColor&)), this, SLOT(colorChanged(const QColor&)));
@@ -1282,7 +1282,7 @@ void Chat::initModule()
 	config_file.addVariable("Chat", "EmoticonsStyle", EMOTS_ANIMATED);
 	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
 	
-	ChatSlots *chatslots =new ChatSlots();
+	ChatSlots *chatslots =new ChatSlots(kadu, "chat_slots");
 	ConfigDialog::registerSlotOnCreate(chatslots,SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnApply(chatslots,SLOT(onDestroyConfigDialog()));
 	ConfigDialog::connectSlot("Chat", "Emoticons:", SIGNAL(activated(int)), chatslots, SLOT(chooseEmoticonsStyle(int)));
@@ -1297,7 +1297,7 @@ void Chat::initModule()
 
 	ConfigDialog::connectSlot("Look", "Font in chat window", SIGNAL(changed(const char *, const QFont&)), chatslots, SLOT(chooseFont(const char *, const QFont&)), "chat_font_box");
 	
-	chat_manager=new ChatManager();
+	chat_manager=new ChatManager(kadu, "chat_manager");
 	connect(&event_manager,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
 		chat_manager,SLOT(chatMsgReceived(UinsList,const QString&,time_t,bool&)));
 }
@@ -1307,7 +1307,7 @@ const UinsList& Chat::uins()
 	return Uins;
 }
 
-ColorSelectorButton::ColorSelectorButton(QWidget* parent, const QColor& qcolor) : QToolButton(parent)
+ColorSelectorButton::ColorSelectorButton(QWidget* parent, const QColor& qcolor, const char *name) : QToolButton(parent, name)
 {
 	QPixmap p(15,15);
 	p.fill(qcolor);
@@ -1386,6 +1386,10 @@ void ColorSelector::alignTo(QWidget* w)
 		y = 0;
 	// ustawiamy selektor na wyliczonej pozycji
 	move(x, y);
+}
+
+ChatSlots::ChatSlots(QObject *parent, const char *name) : QObject(parent, name)
+{
 }
 
 void ChatSlots::onCreateConfigDialog()

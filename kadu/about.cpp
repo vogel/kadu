@@ -24,10 +24,10 @@
 #include "kadu-config.h"
 #include "debug.h"
 
-About::About() {
+About::About(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopLevel|WDestructiveClose)
+{
 	kdebugf();
 	// set window properties and flags
-	setWFlags(Qt::WDestructiveClose);
 	setCaption(tr("About"));
 	setMinimumSize(400, 300);
 	// end set window properties and flags

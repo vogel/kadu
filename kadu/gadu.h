@@ -213,7 +213,7 @@ class GaduProtocol : public QObject
 
 	public:	
 		static void initModule();
-		GaduProtocol();
+		GaduProtocol(QObject *parent=NULL, const char *name=NULL);
 		virtual ~GaduProtocol();
 
 		/**

@@ -19,6 +19,7 @@
 #include "config_dialog.h"
 #include "misc.h"
 #include "debug.h"
+#include "kadu.h"
 
 QString ConfigDialog::acttab = QT_TRANSLATE_NOOP("@default", "General");
 ConfigDialog *ConfigDialog::configdialog = NULL;
@@ -45,7 +46,7 @@ void ConfigDialog::showConfigDialog(QApplication* application) {
 	}
 	else 	
 	{
-		cd = new ConfigDialog(application);
+		cd = new ConfigDialog(application, kadu, "config_dialog");
 		cd->show();
 	}
 }
@@ -336,9 +337,9 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 	listBox->setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)0, (QSizePolicy::SizeType)7, 0, 0, listBox->sizePolicy().hasHeightForWidth()));
 	
 	QHBox* buttonbox= new QHBox(this);
-	okButton= new QPushButton(tr("Ok"), buttonbox);
-	applyButton = new QPushButton(tr("Apply"), buttonbox);
-	cancelButton= new QPushButton(tr("Cancel"), buttonbox);
+	okButton= new QPushButton(tr("Ok"), buttonbox, "configdialog_ok_button");
+	applyButton = new QPushButton(tr("Apply"), buttonbox, "configdialog_apply_button");
+	cancelButton= new QPushButton(tr("Cancel"), buttonbox, "configdialog_cancel_button");
 	
 	dialogLayout->addWidget(buttonbox, 1, 1,Qt::AlignRight);
 	
@@ -1249,7 +1250,7 @@ SelectFont::SelectFont(const QString &text, const QFont &val, QWidget *parent, c
 	fontEdit=new QLineEdit(this);
 	fontEdit->setReadOnly(true);
 	fontEdit->setFixedWidth(int(fontEdit->fontMetrics().width("Bitstream Vera Sans Mono 15")*1.5));
-	QPushButton *button=new QPushButton(tr("Select"), this);
+	QPushButton *button=new QPushButton(tr("Select"), this, "selectfont_selectbutton");
 	setFont(val);
 	connect(button, SIGNAL(clicked()), this, SLOT(onClick()));
 	QToolTip::add(button, tip);
@@ -1317,17 +1318,13 @@ SelectPaths::SelectPaths(QWidget *parent, const char* name): QDialog(parent, nam
 	pathListBox= new QListBox(vertical);
 	pathListBox->setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding));
 	QHBox *buttons= new QHBox(vertical);
-	add= new QPushButton(buttons);
-	add->setText(tr("Add"));
-	change= new QPushButton(buttons);
-	change->setText(tr("Replace"));
-	remove= new QPushButton(buttons);
-	remove->setText(tr("Remove"));
+	add= new QPushButton(tr("Add"), buttons);
+	change= new QPushButton(tr("Replace"), buttons);
+	remove= new QPushButton(tr("Remove"), buttons);
 
 	QHBox *editpath=new QHBox(this);
 	pathEdit= new QLineEdit(editpath);
-	findPath= new QPushButton(editpath);
-	findPath->setText(tr("Choose"));
+	findPath= new QPushButton(tr("Choose"), editpath);
 
 	QHBox *okcancel=new QHBox(this);
 	ok= new QPushButton(tr("Ok"), okcancel);

@@ -43,7 +43,7 @@
 AutoConnectionTimer *AutoConnectionTimer::autoconnection_object = NULL;
 ConnectionTimeoutTimer *ConnectionTimeoutTimer::connectiontimeout_object = NULL;
 
-AutoConnectionTimer::AutoConnectionTimer(QObject *parent) : QTimer(parent, "AutoConnectionTimer") {
+AutoConnectionTimer::AutoConnectionTimer(QObject *parent, const char *name) : QTimer(parent, name) {
 	connect(this, SIGNAL(timeout()), SLOT(doConnect()));
 	start(1000, TRUE);
 }
@@ -54,7 +54,7 @@ void AutoConnectionTimer::doConnect() {
 
 void AutoConnectionTimer::on() {
 	if (!autoconnection_object)
-		autoconnection_object = new AutoConnectionTimer();
+		autoconnection_object = new AutoConnectionTimer(kadu, "auto_connection_timer_object");
 }
 
 void AutoConnectionTimer::off() {
@@ -64,7 +64,7 @@ void AutoConnectionTimer::off() {
 	}
 }
 
-ConnectionTimeoutTimer::ConnectionTimeoutTimer(QObject *parent) : QTimer(parent, "ConnectionTimeoutTimer") {
+ConnectionTimeoutTimer::ConnectionTimeoutTimer(QObject *parent, const char *name) : QTimer(parent, name) {
 	start(5000, TRUE);
 }
 
@@ -74,7 +74,7 @@ bool ConnectionTimeoutTimer::connectTimeoutRoutine(const QObject *receiver, cons
 
 void ConnectionTimeoutTimer::on() {
 	if (!connectiontimeout_object)
-		connectiontimeout_object = new ConnectionTimeoutTimer();
+		connectiontimeout_object = new ConnectionTimeoutTimer(kadu, "connection_timeout_timer_object");
 }
 
 void ConnectionTimeoutTimer::off() {
@@ -84,7 +84,7 @@ void ConnectionTimeoutTimer::off() {
 	}
 }
 
-EventManager::EventManager() : QObject(NULL, "event_manager")
+EventManager::EventManager(QObject *parent, const char *name) : QObject(parent, name)
 {
 	connect(this,SIGNAL(userStatusChanged(struct gg_event*)),this,SLOT(userStatusChangedSlot(struct gg_event*)));
 	connect(this,SIGNAL(userlistReceived(struct gg_event*)),this,SLOT(userlistReceivedSlot(struct gg_event*)));
@@ -415,7 +415,7 @@ void EventManager::dccConnectionReceivedSlot(const UserListElement& sender)
 		dcc_new = gg_dcc_get_file(htonl(sender.ip.ip4Addr()), sender.port, config_file.readNumEntry("General","UIN"), sender.uin);
 		if (dcc_new)
 		{
-			dcc = new dccSocketClass(dcc_new);
+			dcc = new dccSocketClass(dcc_new, DCC_TYPE_GET, this, "dcc_socket_class");
 			connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), kadu, SLOT(dccFinished(dccSocketClass *)));
 			dcc->initializeNotifiers();
 		}
@@ -572,11 +572,15 @@ void EventManager::eventHandler(gg_session* sess)
 	calls--;
 }
 
+EventConfigSlots::EventConfigSlots(QObject *parent, const char *name) : QObject(parent, name)
+{
+}
+
 void EventConfigSlots::initModule()
 {
 	kdebugf();
 	
-	EventConfigSlots *eventconfigslots = new EventConfigSlots();
+	EventConfigSlots *eventconfigslots = new EventConfigSlots(&event_manager, "eventconfigslots");
 
 // zakladka "powiadom"
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Notify"));
@@ -916,4 +920,5 @@ void EventConfigSlots::useTlsEnabled(bool value)
 }
 
 
-EventManager event_manager;
+EventManager event_manager(NULL, "event_manager");
+//po wydaniu 0.3.9 trzeba to zmieniæ we wska¼nik i daæ kadu jako rodzica

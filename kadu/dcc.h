@@ -65,7 +65,7 @@ enum dccSocketState {
 class dccSocketClass : public QObject {
 	Q_OBJECT
 	public:
-		dccSocketClass(struct gg_dcc *dcc_sock, int type = DCC_TYPE_FILE);
+		dccSocketClass(struct gg_dcc *dcc_sock, int type = DCC_TYPE_FILE, QObject *parent=NULL, const char *name=NULL);
 		~dccSocketClass();
 		virtual void initializeNotifiers();
 		virtual void watchDcc(int check);

@@ -36,7 +36,7 @@ class ChatManager : public QObject
 		QValueList<ChatInfo> sizes;
 		
 	public:	
-		ChatManager();
+		ChatManager(QObject *parent=NULL, const char *name=NULL);
 		~ChatManager();
 		void closeAllWindows();
 		/**
@@ -254,7 +254,7 @@ class ColorSelectorButton : public QToolButton
 		void buttonClicked();
 
 	public:
-		ColorSelectorButton(QWidget* parent, const QColor& qcolor);
+		ColorSelectorButton(QWidget* parent, const QColor& qcolor, const char *name=0);
 
 	signals:
 		void clicked(const QColor& color);
@@ -281,6 +281,8 @@ class ColorSelector : public QWidget
 class ChatSlots :public QObject
 {
 	Q_OBJECT
+	public:
+		ChatSlots(QObject *parent=0, const char *name=0);
 	private:
 		void updatePreview();
 	public slots:
