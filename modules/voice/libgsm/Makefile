@@ -15,15 +15,15 @@ FAST	= -DFAST
 ######### Define together with USE_FLOAT_MUL to enable the GSM library's
 ######### approximation option for incorrect, but good-enough results.
 
-# LTP_CUT	= -DLTP_CUT
-LTP_CUT	=
+LTP_CUT	= -DLTP_CUT
+#LTP_CUT	=
 ######### Define to enable the GSM library's long-term correlation 
 ######### approximation option---faster, but worse; works for
 ######### both integer and floating point multiplications.
 ######### This flag is still in the experimental stage.
 
-#WAV49	= -DWAV49
-WAV49	=
+WAV49	= -DWAV49
+#WAV49	=
 ######### Define to enable the GSM library's option to pack GSM frames 
 ######### in the style used by the WAV #49 format.  If you want to write
 ######### a tool that produces .WAV files which contain GSM-encoded data,
