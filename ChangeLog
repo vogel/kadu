@@ -55,6 +55,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   userStatusChanged. Wiêcej porz±dków wkrótce (adrian)
 * oczyszczanie, porz±dki, optymalizacja kodu, poprawki starych funkcji,
   krok ku przejsciu na sygna³'y (mast3r)
+* zmienna liczba kolumn w userbox'ie (chilek)
 
 +++ wersja 0.3.4-pre2
 * graficzny instalator - instaluj.tcl (googie)
