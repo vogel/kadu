@@ -9,6 +9,7 @@
 * w oknie rozmowy: zast±pienie guzika "Zamknij" guzikiem "Anuluj"
   - guzik "Anuluj" powoduje anulowanie oczekiwania na potwierdzenie 
   dostarczenia wiadomosci
+* okno rozmowy: KTextBrowser -> QTextBrowser
 
 +++ wersja 0.3.3-pre1
 * automatyczna kompilacja programu sms

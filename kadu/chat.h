@@ -11,7 +11,8 @@
 #define CHAT_H
 
 #include <qdialog.h>
-#include <ktextbrowser.h>
+//#include <ktextbrowser.h>
+#include <qtextbrowser.h>
 #include <qhbox.h>
 #include <qmultilineedit.h>
 #include <qarray.h>
@@ -50,7 +51,7 @@ class Chat : public QWidget {
 		void scrollMessages(QString &);
 		void alertNewMessage(void);
       
-		KTextBrowser *body;
+		QTextBrowser *body;
 		CustomInput *edit;
 		QHBox *buttontray;
 		bool autosend_enabled;

@@ -44,7 +44,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	chats.append(chat);
 	index = chats.count() - 1;
 
-	body = new KTextBrowser(this);
+	body = new QTextBrowser(this);
 	body->setFont(QFont(config.fonts.chatFont, config.fonts.chatFontSize));
 	
 	QPoint pos = QCursor::pos();
@@ -370,12 +370,15 @@ void Chat::scrollMessages(QString &toadd) {
 	if (config.chatprune)
 		pruneWindow();
 
+	body->viewport()->setUpdatesEnabled(false);
 	if (!config.scrolldown)
 		body->setText(toadd + body->text());
 	else {
 		body->setText(body->text() + toadd);
 		body->scrollToBottom();
 		}
+	body->viewport()->setUpdatesEnabled(true);
+	body->viewport()->repaint();
 }
 
 /* invoked from outside when new message arrives, this is the window to the world */
