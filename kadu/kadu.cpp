@@ -67,9 +67,6 @@
 
 bool userlist_sent = FALSE;
 bool socket_active = FALSE;
-bool disconnect_planned = FALSE;
-int userlist_count = 0;
-int last_ping;
 int last_read_event = -1;
 int server_nr = 0;
 int muteitem;
@@ -1438,7 +1435,6 @@ void Kadu::setStatus(int status) {
 	i_wanna_be_invisible = false;
 	if (status == GG_STATUS_INVISIBLE || status == GG_STATUS_INVISIBLE_DESCR)
 		i_wanna_be_invisible = true;
-	disconnect_planned = false;		
 
 	if (!userlist_sent) {
 		doBlink = true;
@@ -1568,7 +1564,6 @@ void Kadu::setStatus(int status) {
 
 	if (sess) {
 		socket_active = true;
-		last_ping = time(NULL);
 
 		kadusnw = new QSocketNotifier(sess->fd, QSocketNotifier::Write, this);
 		QObject::connect(kadusnw, SIGNAL(activated(int)), kadu, SLOT(dataSent()));
@@ -1654,7 +1649,6 @@ void Kadu::disconnectNetwork() {
 		gg_dcc_port = 0;
 		}
 
-	disconnect_planned = true;
 	if (sess) {
 		if (sess->state == GG_STATE_CONNECTED)
 			gg_logoff(sess);

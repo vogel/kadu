@@ -20,10 +20,8 @@
 #include "status.h"
 #include "userbox.h"
 #include "userlist.h"
-
-class dccSocketClass;
-
-class KaduTabBar;
+#include "tabbar.h"
+#include "dcc.h"
 
 /**
 	G³ówne okno Kadu
@@ -146,8 +144,6 @@ class MyLabel : public QLabel {
 		void mousePressEvent (QMouseEvent * e);
 };
 
-class Chat;
-
 class KaduSlots : public QObject
 {
 
@@ -158,37 +154,30 @@ class KaduSlots : public QObject
 	    void onDestroyConfigDialog();
 };
 
-extern QApplication *a;
+void sendUserlist(void);
+void* watch_socket(void *);
+QString pwHash(const QString);
 
+
+extern QApplication *a;
 extern Kadu *kadu;
 
-extern struct gg_session *sess;
-extern bool userlist_sent;
-extern int server_nr;
+extern QSocketNotifier* kadusnr;
+extern QSocketNotifier* kadusnw;
+extern QSocketNotifier* dccsnr;
+extern QSocketNotifier* dccsnw;
 
-extern QPopupMenu *statusppm;
-extern QSocketNotifier *kadusnr;
-extern QSocketNotifier *kadusnw;
-extern QSocketNotifier *dccsnr;
-extern QSocketNotifier *dccsnw;
+extern QPopupMenu* statusppm;
+extern QPopupMenu* dockppm;
 
-void sendUserlist(void);
-
-void *watch_socket(void *);
-QString pwHash(const QString);
-extern QPopupMenu *dockppm;
-
+extern struct gg_session* sess;
 extern bool userlist_sent;
 extern bool socket_active;
-extern bool disconnect_planned;
-extern int userlist_count;
-extern int last_ping;
 extern int last_read_event;
 extern int server_nr;
 extern bool timeout_connected;
 extern struct gg_login_params loginparams;
 extern QTimer *pingtimer;
-
 extern QHostAddress config_dccip;
 extern QHostAddress config_extip;
 extern QValueList<QHostAddress> config_servers;
