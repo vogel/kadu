@@ -151,7 +151,7 @@ void DockingManager::showCurrentStatus(int status)
 	tiptext+=tr("\n\nCurrent status:\n%1").arg(qApp->translate("@default", statustext[statusnr]));
 
 	if(ifStatusWithDescription(status))
-		tiptext+=tr("\n\nDescrition:\n%2").arg(own_description);
+		tiptext+=tr("\n\nDescription:\n%2").arg(own_description);
 
 	emit trayTooltipChanged(tiptext);
 }
