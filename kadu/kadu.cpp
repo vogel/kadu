@@ -768,11 +768,15 @@ void Kadu::addUser(const QString& FirstName, const QString& LastName,
 	const QString& Mobile, const QString& Uin, const int Status,
 	const QString& Group, const QString& Description, const bool Anonymous)
 {
-	if (!userlist.containsUin(Uin.toUInt()))
+	uint32_t uin = Uin.toUInt();
+
+	if (!userlist.containsUin(uin) || (!uin && !userlist.containsAltNick(AltNick)))
 		userlist.addUser(FirstName, LastName, NickName, AltNick, Mobile, Uin, Status, 
 			false, false, true, Group, Description, Anonymous);
 	else {
-		UserListElement &ule = userlist.byUin(Uin.toUInt());
+		UserListElement &ule = userlist.byUin(uin);
+		if (!uin)
+			ule = userlist.byAltNick(AltNick);
 		userlist.changeUserInfo(ule.altnick,
 			FirstName, LastName, NickName, AltNick, Mobile, ule.blocking, ule.offline_to_user,
 			ule.notify, Group);
@@ -784,8 +788,8 @@ void Kadu::addUser(const QString& FirstName, const QString& LastName,
 
 	refreshGroupTabBar();
 
-	if (!Anonymous)
-		gg_add_notify(sess, Uin.toInt());
+	if (!Anonymous && uin)
+		gg_add_notify(sess, uin);
 };
 
 int Kadu::openChat(UinsList senders) {

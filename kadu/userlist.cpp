@@ -72,14 +72,21 @@ UserListElement& UserList::byAltNick(QString altnick)
 	// Kadu Panic :) What we should do here???
 };
 
-bool UserList::containsUin(uin_t uin)
-{
-	for(iterator i=begin(); i!=end(); i++)
-		if((*i).uin==uin)
+bool UserList::containsUin(uin_t uin) {
+	for (iterator i = begin(); i != end(); i++)
+		if ((*i).uin == uin)
 			return true;
 	fprintf(stderr, "KK UserList::containsUin(): userlist doesnt contain %d\n", uin);
 	return false;
-};
+}
+
+bool UserList::containsAltNick(const QString altnick) {
+	for (iterator i = begin(); i != end(); i++)
+		if ((*i).altnick == altnick)
+			return true;
+	fprintf(stderr, "KK UserList::containsAltNick(): userlist doesnt contain %s\n", altnick.local8Bit());
+	return false;
+}
 
 void UserList::addUser(const QString FirstName,const QString LastName,
 	const QString NickName,const QString AltNick,

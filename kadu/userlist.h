@@ -46,6 +46,7 @@ class UserList : public QObject, public QValueList<UserListElement>
 		UserListElement& byNick(QString nickname);
 		UserListElement& byAltNick(QString altnick);
 		bool containsUin(uin_t uin);
+		bool containsAltNick(const QString altnick);
 		void addUser(const QString FirstName, const QString LastName,
 			const QString NickName, const QString AltNick,
 			const QString Mobile, const QString Uin,

@@ -2,6 +2,7 @@
 * wszystkie? wiadomo¶ci od u¿ytkowników powinny wpadaæ do okna rozmowy
 * je¶li nie mamy po³±czenia z internetem, a tym samym gg_login() zwróci NULL
   to kadu nie wywala siê?
+* mo¿na dodawaæ wielu u¿ytkowników, którzy nie maj± swojego uina
 
 +++ wersja 0.3.3-pre4
 * przy imporcie listy u¿ytkowników ustawiamy domy¶lne atrybuty u¿ytkowników
