@@ -11,7 +11,7 @@
 
 APP_NAME=KADU
 APP_VER=0.3.3
-APP_DEF_DIR=/usr/local/kadu
+APP_DEF_DIR=/usr/local
 #################################################################
 
 
@@ -89,40 +89,32 @@ function Odinstaluj()
 function Gratulacje()
 {
 	clear
-	echo "==============================================================================="
-	echo "                Gratulacje $APP_NAME zosta³o zainstalowane do katalogu $APP_DIR"
-	echo "==============================================================================="
+	echo " ============================================================================="
+	echo " 		Gratulacje $APP_NAME zosta³o zainstalowane do katalogu $APP_DIR"
+	echo " ============================================================================="
 }
 
 function Deinstal()
 {
 	clear
-	echo "==============================================================================="
-	echo "                  $APP_NAME zosta³o pomy¶lnie usuniête z  katalogu $APP_DIR"
-	echo "==============================================================================="
+	echo " ============================================================================="
+	echo " 		$APP_NAME zosta³o pomy¶lnie usuniête z  katalogu $APP_DIR"
+	echo " ============================================================================="
 }
 
 function Error()
 {
-	echo "==============================================================================="
-	echo "                              Wyst±pi³ b³±d operacja $OPER nie powiod³a siê"
-	echo "==============================================================================="
+	echo -e "\a"
+	echo " ============================================================================="
+	echo " 		Wyst±pi³ b³±d operacja $OPER nie powiod³a siê"
+	echo " ============================================================================="
 }
 function ShowInfo()
 {
  	clear
-	echo
-	echo "==============================================================================="
-	echo "            Witaj w $APP_NAME wersja $APP_VER Skrypt instalacyjny v0.1.0"
-	echo "  Skrypt ten konfiguruje, kompiluje, instaluje lub odinstalowywuje $APP_NAME ."
-	echo "==============================================================================="
-	echo
-	echo " Ten program jest wolnym oprogramowniem. Mo¿na go rozprowadzaæ i modyfikowaæ"
-	echo " zgodnie z licencj± GNU General Public License opublikowan± przez Free Software"
-	echo " Foundation w wersji 2 z pó¼niejszymi zmianami"
-	echo
-	echo "==============================================================================="
-	echo
+        echo
+	echo " =============================================================================="
+	echo "                 PROGRAM BÊDZIE KORZYSTA£ Z PODANYCH ¦CIE¯EK :"
 	CheckPath "$QT_DIR" include/qapplication.h ZNALEZIONA. "NIE ZNALEZIONA!"
 	echo "     * Biblioteka QT wersja >=3.0.1, w katalogu: [$QT_DIR], $CORRECT"
 	CheckPath "$KDE_DIR" include/kapp.h ZNALEZIONE. "NIE ZNALEZIONE!"
@@ -130,23 +122,35 @@ function ShowInfo()
 	CheckPath "$APP_DIR" bin/kadu "ZAINSTALOWANE" "NIE ZAINSTALOWANE"
 	echo "     * Lokalizacja $APP_NAME w katalogu: [$APP_DIR], $CORRECT"
 	echo
-	echo "==============================================================================="
-	echo "  Naci¶nij   L	aby zobaczyæ licencje GNU."
-	echo "  Naci¶nij   Q	aby zmieniæ ¶cie¿kê do biblioteki QT."
-	echo "  Naci¶nij   K	aby zmieniæ ¶cie¿kê do KDE Desktop."
-	echo "  Naci¶nij   D	aby zmieniæ lokalizacje $APP_NAME ."
-	echo "  Naci¶nij   I	aby rozpocz±æ instalacjê."
-	echo "		UWAGA!!! Je¿eli instalujesz do innego katalogu ni¿ domowego"
-	echo "		musisz mieæ uprawnienia do zapisu w tym katalogu."
-	echo "  Naci¶nij   U	aby odinstalowaæ $APP_NAME."
-	echo "		UWAGA!!! Je¿eli chcesz odinstalowaæ z innego katalogu ni¿"
-	echo "		domowogo musisz mieæ uprawnienia do zapisu w tym katalogu."
-	echo "  Naci¶nij   E	aby zakoñczyæ program instalacyjny."
-	echo "==============================================================================="
+	echo " =============================================================================="
+	echo " |                               MENU PROGRAMU                                |"
+	echo " =============================================================================="
+	echo " |		Naci¶nij   L	aby zobaczyæ licencje GNU.		      |"
+	echo " |		Naci¶nij   Q	aby zmieniæ ¶cie¿kê do biblioteki QT	      |"
+	echo " |		Naci¶nij   K	aby zmieniæ ¶cie¿kê do KDE Desktop.	      |"
+	echo " |		Naci¶nij   D	aby zmieniæ lokalizacje $APP_NAME .		      |"
+	echo " |		Naci¶nij   I	aby rozpocz±æ instalacjê		      |"
+	echo " |		Naci¶nij   U	aby odinstalowaæ $APP_NAME.			      |"
+	echo " |		Naci¶nij   P	aby uzyskaæ Pomoc za pomoc± programu Links.   |"
+	echo " |		Naci¶nij   E	aby zakoñczyæ program instalacyjny.	      |"	
+	echo " =============================================================================="
+        echo "	UWAGA!!! Je¿eli instalujesz lub odinstalowywujesz $APP_NAME do innego"
+	echo "	katalogu ni¿ domowego musisz mieæ uprawnienia do zapisu w tym katalogu."
 }
 clear
 echo
-echo "Konfigurujê program instalacyjny to mo¿e chwilê potrwaæ b±d¼ cierpliwy"
+	echo " =============================================================================="
+	echo "            Witaj w $APP_NAME wersja $APP_VER Skrypt instalacyjny v0.1.0"
+	echo "  Skrypt ten konfiguruje, kompiluje, instaluje lub odinstalowywuje $APP_NAME ."
+	echo " =============================================================================="
+	echo
+	echo " Ten program jest wolnym oprogramowniem. Mo¿na go rozprowadzaæ i modyfikowaæ"
+	echo " zgodnie z licencj± GNU General Public License opublikowan± przez Free Software"
+	echo " Foundation w wersji 2 z pó¼niejszymi zmianami"
+	echo
+        echo " =============================================================================="
+        echo
+        echo " Konfigurujê program instalacyjny to mo¿e chwilê potrwaæ b±d¼ cierpliwy"
 echo
 echo "Szukam  $APP_NAME..."
 APP_DIR=`find / -path */bin/kadu -type f | sed -e 's/\/bin\/kadu$//' -e q`
@@ -165,6 +169,7 @@ while [ 1 ]; do
 	while [ 1 ]; do
 		read -n 1 -s
 		if [[ ("$REPLY" == "L") || ("$REPLY" == "l") ]]; then
+			clear
 			cat COPYING | more
 			break
 		fi;
@@ -195,6 +200,10 @@ while [ 1 ]; do
 		fi;
 		if [[ ("$REPLY" == "E") || ("$REPLY" == "e") ]]; then
 			exit
+		fi;
+		if [[ ("$REPLY" == "P") || ("$REPLY" == "p") ]]; then
+			links ./doc/index_doc.html
+			break
 		fi;
 	done
 done
