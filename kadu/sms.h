@@ -63,8 +63,7 @@ class HttpClient : public QObject
 		QByteArray PostData;
 		int Status;
 		int ContentLength;
-		QString CookieName;
-		QString CookieValue;
+		QMap<QString,QString> Cookies;
 		
 	private slots:
 		void onConnected();

@@ -74,8 +74,17 @@ void HttpClient::onConnected()
 	query+="Host: "+Host+"\n";
 	query+="User-Agent: Mozilla/5.0 (X11; U; Linux i686; pl-PL; rv:1.2)\n";
 //	query+="Connection: keep-alive\n";
-	if(CookieName!="")
-		query+="Cookie: "+CookieName+"="+CookieValue+"\n";
+	if(Cookies.size()>0)
+	{
+		query+="Cookie: ";
+		for(int i=0; i<Cookies.keys().size(); i++)
+		{
+			if(i>0)
+				query+="; ";
+			query+=Cookies.keys()[i]+"="+Cookies[Cookies.keys()[i]];
+		};
+		query+="\n";
+	};
 	if(PostData.size()>0)
 	{
 		query+="Content-Type: application/x-www-form-urlencoded\n";
@@ -131,9 +140,10 @@ void HttpClient::onReadyRead()
 		QRegExp cookie_regexp("Set-Cookie: ([^=]+)=([^;]+);");
 		if(cookie_regexp.search(s)>=0)
 		{
-			CookieName=cookie_regexp.cap(1);
-			CookieValue=cookie_regexp.cap(2);
-			fprintf(stderr,"HttpClient: Cookie retreived: %s=%s\n",CookieName.local8Bit().data(),CookieValue.local8Bit().data());
+			QString cookie_name=cookie_regexp.cap(1);
+			QString cookie_val=cookie_regexp.cap(2);
+			Cookies.insert(cookie_name,cookie_val);
+			fprintf(stderr,"HttpClient: Cookie retreived: %s=%s\n",cookie_name.local8Bit().data(),cookie_val.local8Bit().data());
 		};
 		// Wytnij naglowek z Data
 		int header_size=p+4;
@@ -164,7 +174,7 @@ void HttpClient::onReadyRead()
 void HttpClient::setHost(QString host)
 {
 	Host=host;
-	CookieName="";
+	Cookies.clear();
 };
 
 void HttpClient::get(QString path)
@@ -209,21 +219,40 @@ void SmsSender::onFinished()
 	if(State==SMS_LOADING_PAGE)
 	{
 		QString Page=Http.data();
-		fprintf(stderr,"SMS Idea Page:\n%s\n",Page.local8Bit().data());
-		QRegExp pic_regexp("rotate_vt\\.asp\\?token=([^\"]+)");
-		int pic_pos=pic_regexp.search(Page);
-		if(pic_pos<0)
+		fprintf(stderr,"SMS Provider Page:\n%s\n",Page.local8Bit().data());
+		if(Provider==SMS_IDEA)
 		{
-			QMessageBox::critical((QWidget*)parent(),"SMS",i18n("Provider gateway page looks strange. It's probably temporary disabled\nor has beed changed too much to parse it correctly."));
-			emit finished(false);
-			return;
+			QRegExp pic_regexp("rotate_vt\\.asp\\?token=([^\"]+)");
+			int pic_pos=pic_regexp.search(Page);
+			if(pic_pos<0)
+			{
+				QMessageBox::critical((QWidget*)parent(),"SMS",i18n("Provider gateway page looks strange. It's probably temporary disabled\nor has beed changed too much to parse it correctly."));
+				emit finished(false);
+				return;
+			};
+			QString pic_path=Page.mid(pic_pos,pic_regexp.matchedLength());
+			Token=pic_regexp.cap(1);
+			fprintf(stderr,"SMS Idea Token: %s\n",Token.local8Bit().data());
+			fprintf(stderr,"SMS Idea Picture: %s\n",pic_path.local8Bit().data());
+			State=SMS_LOADING_PICTURE;
+			Http.get(pic_path);
+		}
+		else
+		{
+			QRegExp code_regexp("name=\\\"Code\\\" value=\\\"(\\d+)\\\"");
+			if(code_regexp.search(Page)<0)
+			{
+				QMessageBox::critical((QWidget*)parent(),"SMS",i18n("Provider gateway page looks strange. It's probably temporary disabled\nor has beed changed too much to parse it correctly."));
+				emit finished(false);
+				return;
+			};
+			QString code=code_regexp.cap(1);
+			State=SMS_LOADING_RESULTS;
+			QString post_data="bookopen=&numer="+Number+"&ksiazka=ksi%B1%BFka+telefoniczna&message="+Message+"&podpis=Kadu&kontakt=&code="+code+"&Nadaj=Nadaj";
+			QByteArray PostData;
+			PostData.duplicate(post_data.local8Bit().data(),post_data.length());
+			Http.post("sms/sendsms.asp",PostData);
 		};
-		QString pic_path=Page.mid(pic_pos,pic_regexp.matchedLength());
-		Token=pic_regexp.cap(1);
-		fprintf(stderr,"SMS Idea Token: %s\n",Token.local8Bit().data());
-		fprintf(stderr,"SMS Idea Picture: %s\n",pic_path.local8Bit().data());
-		State=SMS_LOADING_PICTURE;
-		Http.get(pic_path);
 	}
 	else if(State==SMS_LOADING_PICTURE)
 	{
@@ -235,21 +264,36 @@ void SmsSender::onFinished()
 	else if(State==SMS_LOADING_RESULTS)
 	{
 		QString Page=Http.data();
-		fprintf(stderr,"SMS Idea Results Page:\n%s\n",Page.local8Bit().data());	
-		if(Page.find("wyczerpany")>=0)
+		fprintf(stderr,"SMS Provider Results Page:\n%s\n",Page.local8Bit().data());	
+		if(Provider==SMS_IDEA)
 		{
-			QMessageBox::critical((QWidget*)parent(),"SMS",i18n("You exceeded your daily limit"));
-			emit finished(false);
-		}
-		else if(Page.find("wiadomo¶æ tekstowa zosta³a wys³ana")>=0)
-		{
-			emit finished(true);
+			if(Page.find("wyczerpany")>=0)
+			{
+				QMessageBox::critical((QWidget*)parent(),"SMS",i18n("You exceeded your daily limit"));
+				emit finished(false);
+			}
+			else if(Page.find("wiadomo¶æ tekstowa zosta³a wys³ana")>=0)
+			{
+				emit finished(true);
+			}
+			else
+			{
+				QMessageBox::critical((QWidget*)parent(),"SMS",i18n("Provider gateway results page looks strange. SMS was probably NOT sent."));
+				emit finished(false);
+			};
 		}
 		else
 		{
-			QMessageBox::critical((QWidget*)parent(),"SMS",i18n("Provider gateway results page looks strange. SMS was probably NOT sent."));
-			emit finished(false);
-		};		
+			if(Page.find("zosta³a wys³ana")>=0)
+			{
+				emit finished(true);
+			}
+			else
+			{
+				QMessageBox::critical((QWidget*)parent(),"SMS",i18n("Provider gateway results page looks strange. SMS was probably NOT sent."));
+				emit finished(false);
+			};		
+		};
 	}
 	else
 		fprintf(stderr,"SMS Panic! Unknown state\n");	
@@ -304,11 +348,18 @@ void SmsSender::send(const QString& number,const QString& message)
 		Http.setHost("213.218.116.131");
 		Http.get("/");
 	}
+	else if(Provider==SMS_ERA)
+	{
+		Http.setHost("213.158.194.32");
+		QString post_data="sms=1";
+		QByteArray PostData;
+		PostData.duplicate(post_data.local8Bit().data(),post_data.length());
+		Http.post("sms/sendsms.asp",PostData);
+	}
 	else
 	{
 		QMessageBox::critical((QWidget*)parent(),"SMS",i18n("Routines for this provider not implemented yet"));
 		emit finished(false);
-
 	};
 };
 
