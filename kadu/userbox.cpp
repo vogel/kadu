@@ -86,9 +86,9 @@ void UserBox::maybeTip(const QPoint &c)
 void UserBox::refresh()
 {
 	// Najpierw dzielimy uzytkownikow na trzy grupy
-	QValueList<uint_t> a_users;
-	QValueList<uint_t> i_users;
-	QValueList<uint_t> n_users;
+	QValueList<uin_t> a_users;
+	QValueList<uin_t> i_users;
+	QValueList<uin_t> n_users;
 	for(int i=0; i<Uins.count(); i++)
 	{
 		switch(userlist.byUin(Uins[i]).status)
@@ -169,7 +169,7 @@ void UserBox::refresh()
 		{
 			switch (user.status)
 			{
-				case GG_STATUS_INACTIVE_DESCR:
+				case GG_STATUS_NOT_AVAIL_DESCR:
 		    			insertItem(QPixmap((const char **)gg_inactdescr_xpm), __c2q(user.nickname));			
     		    			break;
 				default:
@@ -245,7 +245,7 @@ void UserBox::changeAllToInactive()
 {
 	QPixmap qp_inact((const char **)gg_inact_xpm);
 	for(int i=0; i<count(); i++)
-		changeItem(qp_inact,item(i)->text,i);
+		changeItem(qp_inact,item(i)->text(),i);
 };
 
 /////////////////////////////////////////////////////////
@@ -317,7 +317,7 @@ void MyListBox::maybeTip(const QPoint &c) {
         if (descriptionForUser(item) != -1) {
             s += "<BR><BR>";
             s += i18n("<B>Description:</B><BR>");
-            s += QString(*userlist[descriptionForUser(item)].description);
+            s += userlist[descriptionForUser(item)].description;
             }
         
         tip(r, s);
@@ -333,7 +333,7 @@ int MyListBox::descriptionForUser(QListBoxItem * s) {
         i++;
 
     if (userlist[i].description)
-        if (userlist[i].description->length() > 0)
+        if (userlist[i].description.length() > 0)
             return i;
         else
             return -1;
