@@ -18,7 +18,7 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 #!/bin/bash
-# $Id: Instaluj,v 1.32 2004/05/10 09:15:46 romek Exp $
+# $Id: Instaluj,v 1.33 2004/05/10 13:24:45 romek Exp $
 # KaduInstaller - Copyright (C) 2004 Sad Mephisto <sad@antisocial.com>
 
 export LC_ALL=pl_PL
@@ -146,11 +146,10 @@ dodatkoweopcje()
 {
 	rm -fr log_configureoptions
 	dialog --separate-output --checklist "Wybierz modu³y do zainstalowania" 0 75 0 \
-    		--enable-debug 	"W³±cza tryb debug" 0 \
-    		--disable-modules	"Wy³±cza obs³ugê modu³ów" 0 \
-#		--disable-voice		"Wy³±cza obs³ugê rozmów g³osowych" 0 \
-		--with-existing-libgadu "Linkuje z istniej±cym libgadu" 0 \
-    		 2>log_configureoptions
+	--enable-debug 	"W³±cza tryb debug" 0 \
+	--disable-modules	"Wy³±cza obs³ugê modu³ów" 0 \
+	--with-existing-libgadu "Linkuje z istniej±cym libgadu" 0 \
+	 2>log_configureoptions
 
 }
 
