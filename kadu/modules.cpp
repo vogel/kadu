@@ -260,6 +260,34 @@ void ModulesManager::loadStaticModulesTranslations()
 		loadModuleTranslation(*i);
 }
 
+bool ModulesManager::satisfyModuleDependencies(const ModuleInfo& module_info)
+{
+	for (QStringList::ConstIterator it = module_info.depends.begin(); it != module_info.depends.end(); ++it)
+	{
+		if(!moduleIsActive(*it))
+		{
+			if(moduleIsInstalled(*it))
+			{
+				if(!loadModule(*it))
+					return false;
+			}			
+			else
+			{
+				MessageBox::msg(tr("Required module %1 was not found").arg(*it));
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+void ModulesManager::incDependenciesUsageCount(const ModuleInfo& module_info)
+{
+	for (QStringList::ConstIterator it = module_info.depends.begin(); it != module_info.depends.end(); ++it)
+		if(!moduleIsStatic(*it))
+			moduleIncUsageCount(*it);
+}
+
 QStringList ModulesManager::staticModules()
 {
 	return QStringList::split(" ",STATIC_MODULES);
@@ -326,8 +354,6 @@ bool ModulesManager::moduleInfo(const QString& module_name, ModuleInfo& info)
 bool ModulesManager::loadModule(const QString& module_name)
 {
 	Module m;
-	ModuleInfo modinfo;
-
 	kdebug(QString("loadModule %1\n").arg(module_name));
 	
 	if(moduleIsActive(module_name))
@@ -336,33 +362,13 @@ bool ModulesManager::loadModule(const QString& module_name)
 		return false;
 	}
 
-	if(moduleInfo(module_name,modinfo))
+	if(moduleInfo(module_name,m.info))
 	{	
-		for (QStringList::Iterator it = modinfo.depends.begin(); it != modinfo.depends.end(); ++it)
+		if(!satisfyModuleDependencies(m.info))
 		{
-			if(!moduleIsActive(*it))
-			{
-				if(moduleIsInstalled(*it))
-				{
-					if(loadModule(*it))
-						moduleIncUsageCount(*it);
-					else
-					{
-						delete m.lib;
-						return false;
-					}
-				}			
-				else
-				{
-					MessageBox::msg(tr("Required module %1 was not found").arg(*it));
-					delete m.lib;
-					return false;
-				}
-			}
-			else if(!moduleIsStatic(*it))
-				moduleIncUsageCount(*it);
+			delete m.lib;
+			return false;
 		}
-		m.info=modinfo;
 	}
 
 	m.lib=new Library(QString(DATADIR)+"/kadu/modules/"+module_name+".so");
@@ -392,6 +398,8 @@ bool ModulesManager::loadModule(const QString& module_name)
 		delete m.lib;
 		return false;		
 	}
+	
+	incDependenciesUsageCount(m.info);
 	
 	m.usage_counter=0;
 	Modules.insert(module_name,m);

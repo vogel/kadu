@@ -92,6 +92,19 @@ class ModulesManager : public QObject
 			modu³ów.
 		**/
 		void loadStaticModulesTranslations();
+		/**
+			Sprawdza czy dostêpne s± modu³y z listy
+			zale¿no¶ci danego modu³u. W razie czego
+			stara siê je za³adowaæ je¶li s± dostêpne.
+			@param module_info informacje o module
+		**/
+		bool satisfyModuleDependencies(const ModuleInfo& module_info);
+		/**
+			Zwiêksza liczniki u¿ycia modu³ów u¿ywanych
+			przez dany modu³.
+			@param module_info informacje o module
+		**/
+		void incDependenciesUsageCount(const ModuleInfo& module_info);
 
 	private slots:
 		void dialogDestroyed();

@@ -213,6 +213,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * autoaway do modu³u (+trochê porz±dków) (joi)
 * poprawki w modulach sms (michal)
 * porzadki w config-dialogu (michal)
+* je¶li ³adowanie/inicjalizacja modu³u zawiedzie to nie zwiêkszamy licznika
+  u¿ycia modu³ów wystêpuj±cych w zale¿no¶ciach (adrian)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
