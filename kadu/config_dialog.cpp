@@ -76,6 +76,14 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				(*i).widget=grid;
 				break;
 			}
+			case CONFIG_HBOX:
+			{
+				QHBox* box = new QHBox(parent,(*i).caption);
+				box->setSpacing(2);
+				(*i).widget=box;
+				break;
+
+			}
 			case CONFIG_HGROUPBOX:
 			{
 				QHGroupBox* box = new QHGroupBox(appHandle->translate("@default",(*i).caption), parent, (*i).name);
@@ -171,6 +179,13 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				   }
 				break;
 			}
+			case CONFIG_VBOX:
+			{
+				QVBox* box = new QVBox(parent,(*i).caption);
+				(*i).widget=box;
+				box->setSpacing(2);
+				break;
+			}
 			case CONFIG_VGROUPBOX:
 			{
 				QVGroupBox* box = new QVGroupBox(appHandle->translate("@default",(*i).caption), parent, (*i).name);
@@ -250,6 +265,9 @@ void ConfigDialog::updateConfig(void)
 
 	
     emit destroy();
+    
+    kdebug("ConfigDialog: Configuration saved\n");
+    config_file.sync();
 }
 
 
@@ -279,7 +297,7 @@ void ConfigDialog::addCheckBox(const QString& groupname,
 
 void ConfigDialog::addComboBox(const QString& groupname,
 			const QString& parent, const QString& caption,
-			const QString& entry, const QString& tip, const QString& name)
+			const QString& tip, const QString& name)
 {
 	if (existControl(groupname, caption, name) == -1){
 		RegisteredControl c;
@@ -288,7 +306,6 @@ void ConfigDialog::addComboBox(const QString& groupname,
 		c.name=name;
 		c.caption=caption;
 		c.group=groupname;
-		c.entry=entry;
 		c.tip=tip;
 		c.nrOfControls=0;
 		addControl(groupname,c);

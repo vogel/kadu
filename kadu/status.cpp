@@ -225,7 +225,7 @@ void AutoAwayTimer::initModule()
 	ConfigDialog::addLineEdit("General", "--", "Set status to away after ", "AutoAwayTime", "300");
 	ConfigDialog::addLabel("General", "--", " seconds");
 	ConfigDialog::addHGroupBox("General", "General", "Default Status");
-	ConfigDialog::addComboBox("General", "Default Status", "", "DefaultStatus", "", "cb_defstatus");
+	ConfigDialog::addComboBox("General", "Default Status", "", "", "cb_defstatus");
 	ConfigDialog::addCheckBox("General", "General", "On shutdown, set description:", "DisconnectWithDescription", false);
 	ConfigDialog::addLineEdit("General", "General", "", "DisconnectDescription", "", "", "e_defaultstatus");
 	AutoAwaySlots *autoawayslots= new AutoAwaySlots();
@@ -273,7 +273,6 @@ void AutoAwaySlots::onDestroyConfigDialog()
 	kdebug("AutoAwayTimer::onDestroyConfigDialog() \n");
 	QComboBox* cb_defstatus= ConfigDialog::getComboBox("General", "", "cb_defstatus");
 	config_file.writeEntry("General", "DefaultStatus", gg_statuses[cb_defstatus->currentItem()]);
-	config_file.sync();	
 };
 
 void AutoAwaySlots::ifDockEnabled(bool value)

@@ -71,6 +71,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   libgsm i rozmów g³osowych (adrian) 
 * okno potwierdzania nadchodz±cej rozmowy g³osowej (chilek)
 * kadu wch³onê³o bibliotekê libgsm 1.0.10 ;) (adrian)
+* konfiguracja: zak³adki Chat i Notify wed³ug nowego mechanizmu.
+  Notify ju¿ jest, ale jeszcze nie dzia³a (pawel_p/adrian)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci

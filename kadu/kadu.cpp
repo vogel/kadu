@@ -28,7 +28,6 @@
 #include <qtoolbar.h>
 
 #include <netinet/in.h>
-#include <sys/stat.h>
 //
 #include "config_dialog.h"
 #include "config_file.h"
@@ -55,13 +54,6 @@
 #include "debug.h"
 #include "sound.h"
 #include "../config.h"
-
-#ifdef HAVE_OPENSSL
-extern "C"
-{
-#include "simlite.h"
-};
-#endif
 
 
 #define GG_USER_OFFLINE	0x01
@@ -278,7 +270,54 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	config_file.addVariable("History","ChatHistoryQuotationTime",-config_file.readNumEntry("Other","ChatHistoryQuotationTime"));
 	config_file.addVariable("History","ChatHistoryQuotation",config_file.readEntry("Other","ChatHistoryQuotation",
 	config_file.readEntry("Other","ChatHistoryCitation")));
+
+
+	config_file.addVariable("Look", "UserboxBgColor", 
+	config_file.readEntry("Colors", "UserboxBgColor"));
+	
+	config_file.addVariable("Look", "UserboxFgColor",
+	config_file.readEntry("Colors", "UserboxFgColor"));
+
+	config_file.addVariable("Look", "ChatMyBgColor",
+	config_file.readEntry("Colors", "ChatMyBgColor"));
+
+	config_file.addVariable("Look", "ChatUsrBgColor",
+	config_file.readEntry("Colors", "ChatUsrBgColor"));
+
+	config_file.addVariable("Look", "ChatMyFontColor",
+	config_file.readEntry("Colors", "ChatMyFontColor"));
+
+	config_file.addVariable("Look", "ChatUsrFontColor",
+	config_file.readEntry("Colors", "ChatUsrFontColor"));
+
+	config_file.addVariable("Look", "UserboxDescBgColor",
+	config_file.readEntry("Colors", "UserboxDescBgColor"));
+
+	config_file.addVariable("Look", "UserboxDescTextColor",
+	config_file.readEntry("Colors", "UserboxDescTextColor"));
+
+	config_file.addVariable("Look", "TrayHintBgColor",
+	config_file.readEntry("Colors", "TrayHintBgColor"));
+
+	config_file.addVariable("Look", "TrayHintTextColor",
+	config_file.readEntry("Colors", "TrayHintTextColor"));
+
+	config_file.addVariable("Look", "UserboxFont",
+	config_file.readEntry("Fonts",  "UserboxFont"));
+
+	config_file.addVariable("Look", "ChatFont",
+	config_file.readEntry("Fonts",  "ChatFont"));
+
+	config_file.addVariable("Look", "UserboxDescFont",
+	config_file.readEntry("Fonts",  "UserboxDescFont"));
+
+	config_file.addVariable("Look", "TrayHintFont",
+	config_file.readEntry("Fonts",  "TrayHintFont"));
+	
+	config_file.addVariable("Chat", "EmoticonsStyle", config_file.readEntry("Other", "EmoticonsStyle"));
+	config_file.addVariable("Chat", "EmoticonsTheme", config_file.readEntry("Other", "EmoticonsTheme"));
 	//koniec wstecznej kompatybilnosci
+
 
 	//potrzebne do translacji
 	QT_TRANSLATE_NOOP("@default", "General");
@@ -302,138 +341,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	ConfigDialog::addCheckBox("General", "grid", "Restore window geometry", "SaveGeometry", true);
 	ConfigDialog::addCheckBox("General", "grid", "Check for updates", "CheckUpdates", true);
 
-
-/*
-// zakladka "rozmowa"
-
-	ConfigDialog::registerTab(tr("Chat"));
-	ConfigDialog::addVGroupBox(tr("Chat"),tr("Emoticons"));
-// wczytac wartosci do comboboxa		
-	values.clear();
-	values.append(tr("None"));
-	values.append(tr("Static"));
-	values.append(tr("Animated"));
-
-	ConfigDialog::addComboBox(tr("Emoticons"),tr("Emoticons:"),"Other","EmoticonsTypes",values);
-	ConfigDialog::addComboBox(tr("Emoticons"),tr("Emoticons theme"),"Other","EmoticonsTheme",QStringList(""));
-
-	ConfigDialog::addVGroupBox(tr("Chat"),tr("WWW options"));
-	ConfigDialog::addCheckBox(tr("WWW options"),tr("Use default Web browser"),"WWW","DefaultWebBrowser",true);
-	ConfigDialog::addLineEdit(tr("WWW options"),tr("Custom Web browser"),"WWW","WebBrowser");
-	
-	ConfigDialog::addCheckBox(tr("Chat"),tr("Automatically prune chat messages"),"Other","ChatPrune",false);
-	
-	ConfigDialog::addHGroupBox(tr("Chat"),tr("Message pruning"));
-	ConfigDialog::addLineEdit(tr("Message pruning"),tr("Reduce the number of visible messages to"),"Other","ChatPruneLen","20");
-	
-	ConfigDialog::addCheckBox(tr("Chat"),tr("Use encryption"),"Other","Encryption",false);
-	
-	ConfigDialog::addHGroupBox(tr("Chat"),tr("Encryption properties"));
-	values.clear();
-	values.append("128");
-	values.append("256");
-	values.append("512");
-	values.append("1024");	
-	ConfigDialog::addComboBox(tr("Encryption properties"),tr("Keys length"),"Other","KeyLength",values);
-	ConfigDialog::addPushButton(tr("Encryption properties"),tr("Generate keys"));
-	
-	ConfigDialog::addCheckBox(tr("Chat"),tr("Scroll chat window downward, not upward"),"Other","ScrollDown",true);
-	ConfigDialog::addCheckBox(tr("Chat"),tr("\"Enter\" key in chat sends message by default"),"Other","AutoSend",true);
-	ConfigDialog::addCheckBox(tr("Chat"),tr("Message acknowledgements (wait for delivery)"),"Other","MessageAcks",true);
-	ConfigDialog::addCheckBox(tr("Chat"),tr("Flash chat title on new message"),"Other","BlinkChatTitle",true);
-	ConfigDialog::addCheckBox(tr("Chat"),tr("Ignore messages from anonymous users"),"Other","IgnoreAnonymousUsers",false);
-	ConfigDialog::addCheckBox(tr("Chat"),tr("Show tray hint on new message"),"Other","HintAlert",false);
-
-// zakladka "powiadom"
-	ConfigDialog::registerTab(tr("Users"));
-	ConfigDialog::addCheckBox(tr("Users"),tr("Notify when users become available"),"Notify","NotifyStatuschange",false);
-	ConfigDialog::addCheckBox(tr("Users"),tr("Notify about all users"),"Notify","NotifyAboutAll",false);
-	ConfigDialog::addGrid(tr("Users"),"listboxy",3);
-	
-	ConfigDialog::addGrid("listboxy","listbox1",1);
-	ConfigDialog::addLabel("listbox1",tr("Available"));
-	ConfigDialog::addListBox("listbox1","available");
-	
-	ConfigDialog::addGrid("listboxy","listbox2",1);
-	ConfigDialog::addPushButton("listbox2","","forward.png");
-	ConfigDialog::addPushButton("listbox2","","back.png");
-	
-	ConfigDialog::addGrid("listboxy","listbox3",1);
-	ConfigDialog::addLabel("listbox3",tr("Tracked"));
-	ConfigDialog::addListBox("listbox3","tracked");
-	
-	ConfigDialog::addVGroupBox(tr("Users"),tr("Notify options"));
-	ConfigDialog::addCheckBox(tr("Notify options"),tr("Notify by sound"),"Notify","NotifyWithSound",false);
-	
-	ConfigDialog::addHGroupBox(tr("Notify options"),tr("Notify sound"));
-	ConfigDialog::addLineEdit(tr("Notify sound"),tr("Path:"),"Notify","NotifySound");
-	ConfigDialog::addPushButton(tr("Notify sound"),"","fileopen.png");
-	ConfigDialog::addPushButton(tr("Notify sound"),tr("Test"));
-	ConfigDialog::addCheckBox(tr("Notify options"),tr("Notify by dialog box"),"Notify","NotifyWithSound",false);
-	ConfigDialog::addCheckBox(tr("Notify options"),tr("Notify by hint"),"Notify","NotifyWithHint",false);
-	
-*/
-
-//zakladka "siec"
-	//potrzebne do translacji
-	QT_TRANSLATE_NOOP("@default", "Network");
-	QT_TRANSLATE_NOOP("@default",  "DCC enabled");
-	QT_TRANSLATE_NOOP("@default", "DCC IP autodetection");
-	QT_TRANSLATE_NOOP("@default", "DCC IP");
-	QT_TRANSLATE_NOOP("@default", "IP address:");
-	QT_TRANSLATE_NOOP("@default", "DCC forwarding enabled");
-	QT_TRANSLATE_NOOP("@default", "DCC forwarding properties");
-	QT_TRANSLATE_NOOP("@default", "External IP address:");
-	QT_TRANSLATE_NOOP("@default", "External TCP port:");
-	QT_TRANSLATE_NOOP("@default", "Servers properties");
-	QT_TRANSLATE_NOOP("@default", "Use default servers");
-	QT_TRANSLATE_NOOP("@default", "Use TLSv1");
-	QT_TRANSLATE_NOOP("@default", "Default port to connect to servers");
-	QT_TRANSLATE_NOOP("@default", "Use proxy server");
-	QT_TRANSLATE_NOOP("@default", "Proxy server");
-	QT_TRANSLATE_NOOP("@default", "Port:");
-	QT_TRANSLATE_NOOP("@default", "IP addresses:");
-	QT_TRANSLATE_NOOP("@default", "Username:");
-	QT_TRANSLATE_NOOP("@default", "Password:");
-
-
-	ConfigDialog::registerTab("Network");
-	ConfigDialog::addCheckBox("Network", "Network", "DCC enabled", "AllowDCC", false);
-	ConfigDialog::addCheckBox("Network", "Network", "DCC IP autodetection", "DccIpDetect", false);
-	
-	ConfigDialog::addVGroupBox("Network", "Network", "DCC IP");
-	ConfigDialog::addLineEdit("Network", "DCC IP", "IP address:","DccIP");
-	ConfigDialog::addCheckBox("Network", "Network", "DCC forwarding enabled", "DccForwarding", false);
-	
-	ConfigDialog::addVGroupBox("Network", "Network", "DCC forwarding properties");
-	ConfigDialog::addLineEdit("Network", "DCC forwarding properties", "External IP address:", "ExternalIP");
-	ConfigDialog::addLineEdit("Network", "DCC forwarding properties", "External TCP port:", "ExternalPort", "0");
-
-	ConfigDialog::addVGroupBox("Network", "Network", "Servers properties");
-	ConfigDialog::addGrid("Network", "Servers properties", "servergrid", 2);
-	ConfigDialog::addCheckBox("Network", "servergrid", "Use default servers", "isDefServers", true);
-	ConfigDialog::addCheckBox("Network", "servergrid", "Use TLSv1", "UseTLS", false);
-	ConfigDialog::addLineEdit("Network", "Servers properties", "IP addresses:", "Server","","","server");
-
-	ConfigDialog::addComboBox("Network", "Servers properties", "Default port to connect to servers", "DefaultPort");
-	ConfigDialog::addCheckBox("Network", "Network", "Use proxy server", "UseProxy", false);
-
-	ConfigDialog::addVGroupBox("Network", "Network", "Proxy server");
-	ConfigDialog::addGrid("Network", "Proxy server", "proxygrid", 2);
-	ConfigDialog::addLineEdit("Network", "proxygrid", "IP address:", "ProxyHost", "","","proxyhost");
-	ConfigDialog::addLineEdit("Network", "proxygrid", "Port:", "ProxyPort", "0");
-	ConfigDialog::addLineEdit("Network", "proxygrid", "Username:", "ProxyUser");
-	ConfigDialog::addLineEdit("Network", "proxygrid", "Password:", "ProxyPassword");
-	
 	ConfigDialog::registerSlotOnCreate(kaduslots, SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnDestroy(kaduslots, SLOT(onDestroyConfigDialog()));
-	
-	ConfigDialog::connectSlot("Network", "DCC enabled", SIGNAL(toggled(bool)), kaduslots, SLOT(ifDccEnabled(bool)));
-	ConfigDialog::connectSlot("Network", "DCC IP autodetection", SIGNAL(toggled(bool)), kaduslots, SLOT(ifDccIpEnabled(bool)));
-	ConfigDialog::connectSlot("Network", "Use default servers", SIGNAL(toggled(bool)), kaduslots, SLOT(ifDefServerEnabled(bool)));
-#ifdef HAVE_OPENSSL
-	ConfigDialog::connectSlot("Network", "Use TLSv1", SIGNAL(toggled(bool)), kaduslots, SLOT(useTlsEnabled(bool)));
-#endif	
 
 
 	Sms::initModule();
@@ -443,7 +352,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	HintManager::initModule();
 	AutoAwayTimer::initModule();
 	SoundSlots::initModule();
-	
+	EventConfigSlots::initModule();
+
 
 	//potrzebne do translacji
 	QT_TRANSLATE_NOOP("@default", "ShortCuts");
@@ -458,7 +368,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	QT_TRANSLATE_NOOP("@default", "Configuration");
 	QT_TRANSLATE_NOOP("@default", "Add user");
 
-	
 	ConfigDialog::registerTab("ShortCuts");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Remove from userlist", "kadu_deleteuser", "Del");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "View/edit user info", "kadu_persinfo", "Ins");
@@ -470,6 +379,99 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Send file", "kadu_sendfile", "F8");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Configuration", "kadu_configure", "F2");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Add user", "kadu_adduser", "Ctrl+N");
+
+
+	//zaladowanie wartosci domyslnych (pierwsze uruchomienie)
+	QRect def_rect(0, 0, 145, 465);
+	config_file.addVariable("General", "Geometry", def_rect);
+	QSize def_size(340, 60);
+	config_file.addVariable("General", "SplitSize", def_size);
+	config_file.addVariable("General", "DockWindows", QString::null);
+	config_file.addVariable("General", "AutoRaise", false);
+
+
+
+	QString temp;
+	temp=config_file.readEntry("General","DisplayGroupTabs");
+	if (temp=="")
+	config_file.writeEntry("General","DisplayGroupTabs", true);
+	
+	
+	
+	temp=config_file.readEntry("General","ShowDesc");
+	if (temp=="")
+	config_file.writeEntry("General","ShowDesc", true);
+	
+	temp=config_file.readEntry("General","MultiColumnUserbox");
+	if (temp=="")
+	config_file.writeEntry("General","MultiColumnUserbox", true);
+
+	temp=config_file.readEntry("Look","PanelContents");
+	if (temp=="")
+	config_file.writeEntry("Look","PanelContents", "[#%u][, %f] %r [- %d] [ (%i)]");
+
+
+	QColor def_color("#FFFFFF");
+	temp=config_file.readEntry("Look","UserboxBgColor");
+	if (temp=="")
+	config_file.writeEntry("Look","UserboxBgColor",def_color);
+	def_color.setNamedColor("#000000");
+	temp=config_file.readEntry("Look","UserboxFgColor");
+	if (temp=="")
+	config_file.writeEntry("Look","UserboxFgColor",def_color);
+	def_color.setNamedColor("#E0E0E0");
+	temp=config_file.readEntry("Look","ChatMyBgColor");
+	if (temp=="")
+	config_file.writeEntry("Look","ChatMyBgColor",def_color);
+	def_color.setNamedColor("#F0F0F0");
+	temp=config_file.readEntry("Look","ChatUsrBgColor");
+	if (temp=="")
+	config_file.writeEntry("Look","ChatUsrBgColor",def_color);	
+	def_color.setNamedColor("#000000");
+	temp=config_file.readEntry("Look","ChatMyFontColor");
+	if (temp=="")
+	config_file.writeEntry("Look","ChatMyFontColor",def_color);
+	def_color.setNamedColor("#000000");
+	temp=config_file.readEntry("Look","ChatUsrFontColor");
+	if (temp=="")
+	config_file.writeEntry("Look","ChatUsrFontColor",def_color);
+	def_color.setNamedColor("#C0C0C0");
+	temp=config_file.readEntry("Look","UserboxDescBgColor");
+	if (temp=="")
+	config_file.writeEntry("Look","UserboxDescBgColor",def_color);
+	def_color.setNamedColor("#000000");
+	temp=config_file.readEntry("Look","UserboxDescTextColor");
+	if (temp=="")
+	config_file.writeEntry("Look","UserboxDescTextColor",def_color);
+	def_color.setNamedColor("#F0F0F0");
+	temp=config_file.readEntry("Look","TrayHintBgColor");
+	if (temp=="")
+	config_file.writeEntry("Look","TrayHintBgColor",def_color);
+	def_color.setNamedColor("#000000");
+	temp=config_file.readEntry("Look","TrayHintTextColor");
+	if (temp=="")
+	config_file.writeEntry("Look","TrayHintTextColor",def_color);
+
+//
+	QFontInfo info(a->font());
+	QFont def_font(info.family(),info.pointSize());
+	temp=config_file.readEntry("Look","UserboxFont");
+	if (temp=="")
+	config_file.writeEntry("Look","UserboxFont", def_font);
+	temp=config_file.readEntry("Look","ChatFont");
+	if (temp=="")
+	config_file.writeEntry("Look","ChatFont", def_font);
+	temp=config_file.readEntry("Look","UserboxDescFont");
+	if (temp=="")
+	config_file.writeEntry("Look","UserboxDescFont", def_font);
+	temp=config_file.readEntry("Look","TrayHintFont");
+	if (temp=="")
+	config_file.writeEntry("Look","TrayHintFont", def_font);
+
+	
+
+	//---------------------------------
+
 	
 	closestatusppmtime.start();
 	lastsoundtime.start();
@@ -492,238 +494,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	/* active group, 600 is all groups */
 	activegrpno = 600;
 
-	int g;
-
-
-	// wsteczna kompatybilnosc (po zmianie grup w konfigu)
-
-	QString temp;
-	/* first read our own config file... */
-	kdebug("loadKaduConfig(): Reading config file...\n");
-	
-	temp=config_file.readEntry("General","AutoRaise");
-	if (temp=="")
-	config_file.readBoolEntry("General","AutoRaise",false);
-	
-	temp=config_file.readEntry("General","DisplayGroupTabs");
-	if (temp=="")
-	config_file.writeEntry("General","DisplayGroupTabs", true);
-	
-	QRect def_rect(0, 0, 145, 465);
-	temp=config_file.readEntry("General","Geometry");
-	if (temp=="")
-	config_file.writeEntry("General","Geometry", def_rect);
-	
-	temp=config_file.readEntry("General","DockWindows");
-	if (temp=="")
-	config_file.writeEntry("General","DockWindows", QString::null);
-	
-	QSize def_size(340, 60);
-	temp=config_file.readEntry("General","SplitSize");
-	if (temp=="")
-	config_file.writeEntry("General","SplitSize", def_size);
-	
-	temp=config_file.readEntry("General","ShowDesc");
-	if (temp=="")
-	config_file.writeEntry("General","ShowDesc", true);
-	
-	temp=config_file.readEntry("General","MultiColumnUserbox");
-	if (temp=="")
-	config_file.writeEntry("General","MultiColumnUserbox", true);
-
-//	
-	
-	temp=config_file.readEntry("WWW","DefaultWebBrowser");
-	if (temp=="")
-	config_file.writeEntry("WWW","DefaultWebBrowser", true);
-	
-	temp=config_file.readEntry("WWW","WebBrowser", "");
-	if (temp=="")
-	config_file.writeEntry("WWW","WebBrowser", "");
-
-//	
-	
-	temp=config_file.readEntry("Other","EmoticonsStyle");
-	if (temp=="")
-	config_file.writeEntry("Other","EmoticonsStyle",EMOTS_ANIMATED);
-	
-	emoticons.setEmoticonsTheme(config_file.readEntry("Other","EmoticonsTheme",""));
-	
-	temp=config_file.readEntry("Other","AutoSend");
-	if (temp=="")
-	config_file.writeEntry("Other","AutoSend",false);
-	
-	temp=config_file.readEntry("Other","ScrollDown");
-	if (temp=="")
-	config_file.writeEntry("Other","ScrollDown",true);
-	
-	temp=config_file.readEntry("Other","ChatPrune");
-	if (temp=="")
-	config_file.writeEntry("Other","ChatPrune",false);
-	
-	temp=config_file.readEntry("Other","ChatPruneLen");
-	if (temp=="")
-	config_file.writeEntry("Other","ChatPruneLen",20);
-		
-	temp=config_file.readEntry("Other","MessageAcks");
-	if (temp=="")
-	config_file.writeEntry("Other","MessageAcks",true);
-	
-	temp=config_file.readEntry("Other","BlinkChatTitle");
-	if (temp=="")
-	config_file.writeEntry("Other","BlinkChatTitle",true);
-	
-	temp=config_file.readEntry("Other","HintAlert");
-	if (temp=="")
-	config_file.writeEntry("Other","HintAlert", false);
-	
-	temp=config_file.readEntry("Other","IgnoreAnonymousUsers");
-	if (temp=="")
-	config_file.writeEntry("Other","IgnoreAnonymousUsers", false);
-	
-#ifdef HAVE_OPENSSL
-	temp=config_file.readEntry("Other","Encryption");
-	if (temp=="")
-	config_file.writeEntry("Other","Encryption", false);
-#endif
-
-	temp=config_file.readEntry("Other","PanelContents");
-	if (temp=="")
-	config_file.writeEntry("Other","PanelContents", "[#%u][, %f] %r [- %d] [ (%i)]");
-	
-	temp=config_file.readEntry("Other","ChatContents");
-	if (temp=="")
-	config_file.writeEntry("Other","ChatContents", "");
-
-	temp=config_file.readEntry("Other","ConferencePrefix");
-	if (temp=="")
-	config_file.writeEntry("Other","ConferencePrefix", "");
-    
-    	
-	temp=config_file.readEntry("Other","ConferenceContents");
-	if (temp=="")
-	config_file.writeEntry("Other","ConferenceContents", "%a (%s[: %d])");	
-
-//
-	temp=config_file.readEntry("Notify","NotifySound");
-	if (temp=="")	
-	config_file.writeEntry("Notify","NotifySound", "");
-	
-	temp=config_file.readEntry("Notify","NotifyStatusChange");
-	if (temp=="")
-	config_file.writeEntry("Notify","NotifyStatusChange", false);
-	
-	temp=config_file.readEntry("Notify","NotifyAboutAll");
-	if (temp=="")
-	config_file.writeEntry("Notify","NotifyAboutAll", false);
-	
-	temp=config_file.readEntry("Notify","NotifyWithDialogBox");
-	if (temp=="")
-	config_file.writeEntry("Notify","NotifyWithDialogBox", false);
-	
-	temp=config_file.readEntry("Notify","NotifyWithSound");
-	if (temp=="")
-	config_file.writeEntry("Notify","NotifyWithSound", false);
-	
-	temp=config_file.readEntry("Notify","NotifyWithHint");
-	if (temp=="")
-	config_file.writeEntry("Notify","NotifyWithHint",true);	
-
-//	    	
-	
-	QColor def_color("#FFFFFF");
-
-	temp=config_file.readEntry("Colors","UserboxBgColor");
-	if (temp=="")
-	config_file.writeEntry("Colors","UserboxBgColor",def_color);
-	
-	def_color.setNamedColor("#000000");
-	temp=config_file.readEntry("Colors","UserboxFgColor");
-	if (temp=="")
-	config_file.writeEntry("Colors","UserboxFgColor",def_color);
-		
-	def_color.setNamedColor("#E0E0E0");
-	temp=config_file.readEntry("Colors","ChatMyBgColor");
-	if (temp=="")
-	config_file.writeEntry("Colors","ChatMyBgColor",def_color);
-			
-	def_color.setNamedColor("#F0F0F0");
-	temp=config_file.readEntry("Colors","ChatUsrBgColor");
-	if (temp=="")
-	config_file.writeEntry("Colors","ChatUsrBgColor",def_color);	
-					
-	def_color.setNamedColor("#000000");
-	temp=config_file.readEntry("Colors","ChatMyFontColor");
-	if (temp=="")
-	config_file.writeEntry("Colors","ChatMyFontColor",def_color);
-					
-	def_color.setNamedColor("#000000");
-	temp=config_file.readEntry("Colors","ChatUsrFontColor");
-	if (temp=="")
-	config_file.writeEntry("Colors","ChatUsrFontColor",def_color);
-							
-	def_color.setNamedColor("#C0C0C0");
-	temp=config_file.readEntry("Colors","UserboxDescBgColor");
-	if (temp=="")
-	config_file.writeEntry("Colors","UserboxDescBgColor",def_color);
-								
-	def_color.setNamedColor("#000000");
-	temp=config_file.readEntry("Colors","UserboxDescTextColor");
-	if (temp=="")
-	config_file.writeEntry("Colors","UserboxDescTextColor",def_color);
-						    
-	def_color.setNamedColor("#F0F0F0");
-	temp=config_file.readEntry("Colors","TrayHintBgColor");
-	if (temp=="")
-	config_file.writeEntry("Colors","TrayHintBgColor",def_color);
-								    
-	def_color.setNamedColor("#000000");
-	temp=config_file.readEntry("Colors","TrayHintTextColor");
-	if (temp=="")
-	config_file.writeEntry("Colors","TrayHintTextColor",def_color);
-
-//
-	QFontInfo info(a->font());
-	
-	QFont def_font(info.family(),info.pointSize());
-	
-	temp=config_file.readEntry("Fonts","UserboxFont");
-	if (temp=="")
-	config_file.writeEntry("Fonts","UserboxFont", def_font);
-	
-	temp=config_file.readEntry("Fonts","ChatFont");
-	if (temp=="")
-	config_file.writeEntry("Fonts","ChatFont", def_font);
-	
-	temp=config_file.readEntry("Fonts","UserboxDescFont");
-	if (temp=="")
-	config_file.writeEntry("Fonts","UserboxDescFont", def_font);
-	
-	temp=config_file.readEntry("Fonts","TrayHintFont");
-	if (temp=="")
-	config_file.writeEntry("Fonts","TrayHintFont", def_font);
-
-	
-
-	    defaultdescriptions = QStringList::split(QRegExp("<-->"), config_file.readEntry("General","DefaultDescription", tr("I am busy.")), true);
-		if (!config_file.readBoolEntry("Network","DccIpDetect"))
-		if (!config_dccip.setAddress(config_file.readEntry("Network","DccIP", "")))
-			config_dccip.setAddress((unsigned int)0);
-
-	        if (!config_extip.setAddress(config_file.readEntry("Network","ExternalIP", "")))
-			config_extip.setAddress((unsigned int)0);
-
-
-	    QStringList servers;
-	    QHostAddress ip2;
-	    servers = QStringList::split(";", config_file.readEntry("Network","Server", ""));
-	    config_servers.clear();
-	        for (int i = 0; i < servers.count(); i++)
-		    {
-		        if (ip2.setAddress(servers[i]))
-  			       config_servers.append(ip2);
-		    }
-		server_nr = 0;
 
         
 	QRect geom;
@@ -770,7 +540,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	group_bar = new KaduTabBar(hbox1, "groupbar");
 	group_bar->setShape(QTabBar::RoundedBelow);
 	group_bar->addTab(new QTab(tr("All")));
-	group_bar->setFont(QFont(config_file.readFontEntry("Fonts","UserboxFont").family(),config_file.readFontEntry("Fonts","UserboxFont").pointSize(),75));
+	group_bar->setFont(QFont(config_file.readFontEntry("Look","UserboxFont").family(),config_file.readFontEntry("Look","UserboxFont").pointSize(),75));
 //	group_bar->setMinimumWidth(group_bar->sizeHint().width());
 	connect(group_bar, SIGNAL(selected(int)), this, SLOT(groupTabSelected(int)));
 
@@ -788,9 +558,9 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	userbox = new UserBox(hbox1, "userbox");
 	if (config_file.readBoolEntry("General","MultiColumnUserbox"))
 		userbox->setColumnMode(QListBox::FitToWidth);
-	userbox->setPaletteBackgroundColor(config_file.readColorEntry("Colors","UserboxBgColor"));
-	userbox->setPaletteForegroundColor(config_file.readColorEntry("Colors","UserboxFgColor"));
-	userbox->QListBox::setFont(config_file.readFontEntry("Fonts","UserboxFont"));
+	userbox->setPaletteBackgroundColor(config_file.readColorEntry("Look","UserboxBgColor"));
+	userbox->setPaletteForegroundColor(config_file.readColorEntry("Look","UserboxFgColor"));
+	userbox->QListBox::setFont(config_file.readFontEntry("Look","UserboxFont"));
 	userbox->setMinimumWidth(20);
 
 	hbox1->setStretchFactor(group_bar, 1);
@@ -843,9 +613,9 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	descrtb->setTextFormat(Qt::RichText);
 	descrtb->setAlignment(Qt::AlignVCenter | Qt::WordBreak | Qt::DontClip);
 	descrtb->setVScrollBarMode(QScrollView::AlwaysOff);
-	descrtb->setPaletteBackgroundColor(config_file.readColorEntry("Colors","UserboxDescBgColor"));
-	descrtb->setPaletteForegroundColor(config_file.readColorEntry("Colors","UserboxDescTextColor"));
-	descrtb->setFont(config_file.readFontEntry("Fonts","UserboxDescFont"));
+	descrtb->setPaletteBackgroundColor(config_file.readColorEntry("Look","UserboxDescBgColor"));
+	descrtb->setPaletteForegroundColor(config_file.readColorEntry("Look","UserboxDescTextColor"));
+	descrtb->setFont(config_file.readFontEntry("Look","UserboxDescFont"));
 	if (!config_file.readBoolEntry("General","ShowDesc"))
 		descrtb->hide();
 	QObject::connect(&userlist, SIGNAL(dnsNameReady(uin_t)), this, SLOT(infopanelUpdate(uin_t)));
@@ -1088,7 +858,7 @@ void Kadu::sendKey()
 	QFile keyfile;
 
 	keyfile_path.append(ggPath("keys/"));
-	keyfile_path.append(config_file.readNumEntry("General","UIN"));
+	keyfile_path.append(config_file.readEntry("General","UIN"));
 	keyfile_path.append(".pem");
 
 	keyfile.setName(keyfile_path);
@@ -1270,15 +1040,15 @@ void Kadu::resizeEvent(QResizeEvent *e) {
 void Kadu::changeAppearance() {
 	kdebug("kadu::changeAppearance()\n");
 
-	userbox->setPaletteBackgroundColor(config_file.readColorEntry("Colors","UserboxBgColor"));
-	userbox->setPaletteForegroundColor(config_file.readColorEntry("Colors","UserboxFgColor"));
-	userbox->QListBox::setFont(config_file.readFontEntry("Fonts","UserboxFont"));
+	userbox->setPaletteBackgroundColor(config_file.readColorEntry("Look","UserboxBgColor"));
+	userbox->setPaletteForegroundColor(config_file.readColorEntry("Look","UserboxFgColor"));
+	userbox->QListBox::setFont(config_file.readFontEntry("Look","UserboxFont"));
 
-	group_bar->setFont(QFont(config_file.readFontEntry("Fonts","UserboxFont").family(),config_file.readFontEntry("Fonts","UserboxFont").pointSize(),75));
+	group_bar->setFont(QFont(config_file.readFontEntry("Look","UserboxFont").family(),config_file.readFontEntry("Look","UserboxFont").pointSize(),75));
 
-	descrtb->setPaletteBackgroundColor(config_file.readColorEntry("Colors","UserboxDescBgColor"));
-	descrtb->setPaletteForegroundColor(config_file.readColorEntry("Colors","UserboxDescTextColor"));
-	descrtb->setFont(config_file.readFontEntry("Fonts","UserboxDescFont"));
+	descrtb->setPaletteBackgroundColor(config_file.readColorEntry("Look","UserboxDescBgColor"));
+	descrtb->setPaletteForegroundColor(config_file.readColorEntry("Look","UserboxDescTextColor"));
+	descrtb->setFont(config_file.readFontEntry("Look","UserboxDescFont"));
 }
 
 void Kadu::currentChanged(QListBoxItem *item) {
@@ -1288,7 +1058,7 @@ void Kadu::currentChanged(QListBoxItem *item) {
 	kdebug("Kadu::currentChanged(): %s\n", (const char *)item->text().local8Bit());
 
 	if (config_file.readBoolEntry("General","ShowDesc"))
-		descrtb->setText(parse(config_file.readEntry("Other","PanelContents"),userlist.byAltNick(item->text())));
+		descrtb->setText(parse(config_file.readEntry("Look","PanelContents"),userlist.byAltNick(item->text())));
 }
 
 void Kadu::refreshGroupTabBar()
@@ -2295,9 +2065,9 @@ bool Kadu::close(bool quit) {
 		
 		pending.writeToFile();
 		writeIgnored();
-		if (config_file.readBoolEntry("Other","DisconnectWithDescription") && getActualStatus() != GG_STATUS_NOT_AVAIL) {
-			kdebug("Kadu::close(): Set status NOT_AVAIL_DESCR with disconnect description(%s)\n",(const char *)config_file.readEntry("Other","DisconnectDescription").local8Bit());
-			own_description = config_file.readEntry("Other","DisconnectDescription");
+		if (config_file.readBoolEntry("General","DisconnectWithDescription") && getActualStatus() != GG_STATUS_NOT_AVAIL) {
+			kdebug("Kadu::close(): Set status NOT_AVAIL_DESCR with disconnect description(%s)\n",(const char *)config_file.readEntry("General","DisconnectDescription").local8Bit());
+			own_description = config_file.readEntry("General","DisconnectDescription");
 			setStatus(GG_STATUS_NOT_AVAIL_DESCR);
 		}
 		disconnectNetwork();
@@ -2416,40 +2186,8 @@ void Kadu::infopanelUpdate(uin_t uin) {
 		return;
 	kdebug("Kadu::infopanelUpdate(%d)\n", uin);
 	if (userbox->currentItem() != -1 && uin == userlist.byAltNick(userbox->currentText()).uin)
-		descrtb->setText(parse(config_file.readEntry("Other","PanelContents"),userlist.byUin(uin)));
+		descrtb->setText(parse(config_file.readEntry("Look","PanelContents"),userlist.byUin(uin)));
 }
-
-void Kadu::generateMyKeys(void) {
-#ifdef HAVE_OPENSSL
-	QString keyfile_path;
-
-	
-	keyfile_path.append(ggPath("keys/"));
-	keyfile_path.append(QString::number(config_file.readNumEntry("General","UIN")));
-	keyfile_path.append(".pem");
-	
-	QFileInfo keyfile(keyfile_path);
-	
-	if (keyfile.permission(QFileInfo::WriteUser))
-		if(QMessageBox::warning(this, "Kadu",
-			tr("Keys exist. Do you want to overwrite them?"),
-			tr("Yes"), tr("No"),QString::null, 0, 1)==1)
-				return;
-	
-	QCString tmp=ggPath("keys").local8Bit();
-	mkdir(tmp.data(), 0700);
-
-//	kdebug("Generating my keys, len: %d\n", atoi(cb_keyslen->currentText()));
-	if (sim_key_generate(config_file.readNumEntry("General","UIN")) < 0) {
-		QMessageBox::critical(this, "Kadu", tr("Error generating keys"), tr("OK"), QString::null, 0);
-		return;
-	}
-
-	QMessageBox::information(this, "Kadu", tr("Keys have been generated and written"), tr("OK"), QString::null, 0);
-#endif
-}
-
-
 
 void KaduSlots::onCreateConfigDialog()
 {
@@ -2457,32 +2195,6 @@ void KaduSlots::onCreateConfigDialog()
 	QLineEdit *e_password=ConfigDialog::getLineEdit("General", "Password");
 	e_password->setEchoMode(QLineEdit::Password);
 	e_password->setText(pwHash(config_file.readEntry("General", "Password","")));
-	
-	QCheckBox *b_dccenabled = ConfigDialog::getCheckBox("Network", "DCC enabled");
-	QCheckBox *b_dccip= ConfigDialog::getCheckBox("Network", "DCC IP autodetection");
-	QVGroupBox *g_dccip = ConfigDialog::getVGroupBox("Network", "DCC IP");
-	QVGroupBox *g_proxy = ConfigDialog::getVGroupBox("Network", "Proxy server");
-	QVGroupBox *g_fwdprop = ConfigDialog::getVGroupBox("Network", "DCC forwarding properties");
-	QCheckBox *b_dccfwd = ConfigDialog::getCheckBox("Network", "DCC forwarding enabled");
-	QCheckBox *b_tls= ConfigDialog::getCheckBox("Network", "Use TLSv1");
-	QCheckBox *b_useproxy= ConfigDialog::getCheckBox("Network", "Use proxy server");
-	QComboBox *cb_portselect= ConfigDialog::getComboBox("Network", "Default port to connect to servers");
-	QHBox *serverbox=(QHBox*)(ConfigDialog::getLineEdit("Network", "IP addresses:","server")->parent());
-	QCheckBox* b_defaultserver= ConfigDialog::getCheckBox("Network", "Use default servers");
-	
-	b_dccip->setEnabled(b_dccenabled->isChecked());
-	g_dccip->setEnabled(!b_dccip->isChecked()&& b_dccenabled->isChecked());
-	b_dccfwd->setEnabled(b_dccenabled->isChecked());
-	g_fwdprop->setEnabled(b_dccenabled->isChecked() && b_dccfwd->isChecked());
-	g_proxy->setEnabled(b_useproxy->isChecked());
-	((QHBox*)cb_portselect->parent())->setEnabled(!b_tls->isChecked());
-	serverbox->setEnabled(!b_defaultserver->isChecked());
-	cb_portselect->insertItem("8074");
-	cb_portselect->insertItem("443");
-	cb_portselect->setCurrentText(config_file.readEntry("Network", "DefaultPort", "8074"));
-	
-	connect(b_dccfwd, SIGNAL(toggled(bool)), g_fwdprop, SLOT(setEnabled(bool)));
-        connect(b_useproxy, SIGNAL(toggled(bool)), g_proxy, SLOT(setEnabled(bool)));
 	
 }
 
@@ -2492,51 +2204,6 @@ void KaduSlots::onDestroyConfigDialog()
 	QLineEdit *e_password=ConfigDialog::getLineEdit("General", "Password");
 	e_password->setEchoMode(QLineEdit::Password);
 	config_file.writeEntry("General","Password",pwHash(e_password->text()));
-
-	QComboBox *cb_portselect=ConfigDialog::getComboBox("Network", "Default port to connect to servers");
-	config_file.writeEntry("Network","DefaultPort",cb_portselect->currentText());
-	
-	QLineEdit *e_servers=ConfigDialog::getLineEdit("Network", "IP addresses:", "server");
-	
-	QStringList tmpservers,server;
-	QValueList<QHostAddress> servers;
-	QHostAddress ip;
-	bool ipok;
-	int i;
-	
-	    tmpservers = QStringList::split(";", e_servers->text());
-		for (i = 0; i < tmpservers.count(); i++) 
-		{
-		ipok = ip.setAddress(tmpservers[i]);
-			if (!ipok)
-			    break;
-			    servers.append(ip);
-			    server.append(ip.toString());
-		}
-		config_file.writeEntry("Network","Server",server.join(";"));
-		config_servers=servers;
-			    server_nr = 0;
-			    
-	if (!config_dccip.setAddress(config_file.readEntry("Network","DccIP")))
-	    {
-		config_file.writeEntry("Network","DccIP","0.0.0.0");
-		config_dccip.setAddress((unsigned int)0);
-	    }										
-	
-	if (!config_extip.setAddress(config_file.readEntry("Network","ExternalIP")))
-	    {	config_file.writeEntry("Network","ExternalIP","0.0.0.0");
-		config_extip.setAddress((unsigned int)0);
-	    }	
-	
-	if (config_file.readNumEntry("Network","ExternalPort")<=1023)
-	    config_file.writeEntry("Network","ExternalPort",0);
-	
-	if (!ip.setAddress(config_file.readEntry("Network","ProxyHost")))
-	    config_file.writeEntry("Network","ProxyHost","0.0.0.0");
-
-	if (config_file.readNumEntry("Network","ProxyPort")<=1023)
-	    config_file.writeEntry("Network","ProxyPort",0);
-
 
 	if (config_file.readBoolEntry("General","AutoAway"))
 	        AutoAwayTimer::on();
@@ -2575,13 +2242,6 @@ void KaduSlots::onDestroyConfigDialog()
 		kadu->userbox->setColumnMode(1);
 
 
-// dopisac kolory/czcionki/powiadomienia    
-
-	/* and now, save it */
-	userlist.writeToFile();	
-	config_file.sync();
-	//
-
 	/* I odswiez okno Kadu */
 	int z;	
 	kadu->changeAppearance();
@@ -2591,40 +2251,3 @@ void KaduSlots::onDestroyConfigDialog()
 
 	
 };
-
-void KaduSlots::ifDccEnabled(bool value)
-{
-	kdebug("KaduSlots::ifDccEnabled() \n");
-
-	QCheckBox *b_dccip= ConfigDialog::getCheckBox("Network", "DCC IP autodetection");
-	QVGroupBox *g_dccip = ConfigDialog::getVGroupBox("Network", "DCC IP");
-	QVGroupBox *g_fwdprop = ConfigDialog::getVGroupBox("Network", "DCC forwarding properties");
-	QCheckBox *b_dccfwd = ConfigDialog::getCheckBox("Network", "DCC forwarding enabled");
-	
-	b_dccip->setEnabled(value);
-	g_dccip->setEnabled(b_dccip->isChecked()&& value);	
-	b_dccfwd->setEnabled(value);
-	g_fwdprop->setEnabled(b_dccfwd->isChecked() &&value);
-};
-
-void KaduSlots::ifDccIpEnabled(bool value)
-{
-	kdebug("KaduSlots::ifDccIpEnabled() \n");
-	QVGroupBox *g_dccip = ConfigDialog::getVGroupBox("Network", "DCC IP");
-	g_dccip->setEnabled(!value);
-};
-
-void KaduSlots::ifDefServerEnabled(bool value)
-{
-	kdebug("KaduSlots::ifDefServerEnabled() \n");
-	QHBox *serverbox=(QHBox*)(ConfigDialog::getLineEdit("Network", "IP addresses:","server")->parent());
-	serverbox->setEnabled(!value);	
-};
-
-void KaduSlots::useTlsEnabled(bool value)
-{
-	kdebug("KaduSlots::useTlsEnabled() \n");
-	QHBox *box_portselect=(QHBox*)(ConfigDialog::getComboBox("Network", "Default port to connect to servers")->parent());
-	box_portselect->setEnabled(!value);
-};
-

@@ -179,4 +179,21 @@ class ColorSelector : public QWidget
 		void colorSelect(const QColor&);
 };
 
+class ChatSlots :public QObject
+{
+	Q_OBJECT
+	
+	public slots:
+		void onCreateConfigDialog();
+		void onDestroyConfigDialog();
+		void chooseEmoticonsStyle(int index);
+		void onDefWebBrowser(bool toggled);
+		void onUseEncryption(bool toggled);
+		void onPruneChat(bool toggled);
+#ifdef HAVE_OPENSSL		
+		void generateMyKeys(void);
+#endif
+
+};
+
 #endif

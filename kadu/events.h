@@ -124,4 +124,19 @@ extern EventManager event_manager;
 
 extern QTime lastsoundtime;
 
+class EventConfigSlots : public QObject
+{
+	Q_OBJECT
+	public:
+	    static void initModule();
+	    
+	public slots:
+	    void onCreateConfigDialog();
+	    void onDestroyConfigDialog();
+	    void ifDccEnabled(bool value);
+	    void ifDccIpEnabled(bool value);
+	    void ifDefServerEnabled(bool value);
+	    void useTlsEnabled(bool value);
+};
+
 #endif

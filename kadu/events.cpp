@@ -15,6 +15,7 @@
 #include <qfile.h>
 #include <qlayout.h>
 #include <qmessagebox.h>
+#include <qregexp.h>
 
 #include <netinet/in.h>
 #include <errno.h>
@@ -30,6 +31,7 @@
 #include "debug.h"
 #include "sound.h"
 #include "dcc.h"
+#include "config_dialog.h"
 #include "config_file.h"
 #include "../config.h"
 #ifdef HAVE_OPENSSL
@@ -256,7 +258,7 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 	i czy jest wlaczona opcja ignorowania nieznajomych
 	jezeli warunek jest spelniony przerywamy dzialanie funkcji.
 */
-	if (userlist.byUinValue(senders[0]).anonymous && config_file.readBoolEntry("Other","IgnoreAnonymousUsers")) {
+	if (userlist.byUinValue(senders[0]).anonymous && config_file.readBoolEntry("Chat","IgnoreAnonymousUsers")) {
 		kdebug("EventManager::messageReceivedSlot(): Ignored anonymous. %d is ignored\n",senders[0]);
 		return;
 		}
@@ -292,7 +294,7 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 	int i;
 
 #ifdef HAVE_OPENSSL
-	if (config_file.readBoolEntry("Other","Encryption")) {
+	if (config_file.readBoolEntry("Chat","Encryption")) {
 		if (!strncmp((char *)msg, "-----BEGIN RSA PUBLIC KEY-----", 20)) {
 			QFile keyfile;
 			QString keyfile_path;
@@ -407,7 +409,7 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 
 void EventManager::chatReceivedSlot(UinsList senders,const QString& msg,time_t time)
 {
-	if(config_file.readBoolEntry("General","OpenChatOnMessage"))
+	if(config_file.readBoolEntry("Chat","OpenChatOnMessage"))
 		pending.openMessages();
 };
 
@@ -763,5 +765,250 @@ void EventManager::eventHandler(gg_session* sess)
 	gg_free_event(e);
 	calls--;
 };
+
+void EventConfigSlots::initModule()
+{
+    	kdebug("EventConfigSlots::initModule()\n");
+	
+	EventConfigSlots *eventconfigslots = new EventConfigSlots();
+	
+
+// zakladka "powiadom"
+	ConfigDialog::registerTab("Notify");
+	ConfigDialog::addCheckBox("Notify", "Notify", "Notify when users become available", "NotifyStatuschange", false);
+	ConfigDialog::addCheckBox("Notify", "Notify", "Notify about all users", "NotifyAboutAll", false);
+	ConfigDialog::addGrid("Notify", "Notify" ,"listboxy",3);
+	
+	ConfigDialog::addGrid("Notify", "listboxy", "listbox1", 1);
+	ConfigDialog::addLabel("Notify", "listbox1", "Available");
+	ConfigDialog::addListBox("Notify", "listbox1","available");
+	
+	ConfigDialog::addGrid("Notify", "listboxy", "listbox2", 1);
+	ConfigDialog::addPushButton("Notify", "listbox2", "", "forward.png","","forward");
+	ConfigDialog::addPushButton("Notify", "listbox2", "", "back.png","","back");
+	
+	ConfigDialog::addGrid("Notify", "listboxy", "listbox3", 1);
+	ConfigDialog::addLabel("Notify", "listbox3", "Tracked");
+	ConfigDialog::addListBox("Notify", "listbox3", "track");
+	
+	ConfigDialog::addVGroupBox("Notify", "Notify", "Notify options");
+	ConfigDialog::addCheckBox("Notify", "Notify options", "Notify by sound", "NotifyWithSound", false);
+	
+	ConfigDialog::addHGroupBox("Notify", "Notify options","Notify sound");
+	ConfigDialog::addLineEdit("Notify", "Notify sound", "Path:", "NotifySound");
+	ConfigDialog::addPushButton("Notify", "Notify sound","","fileopen.png");
+	ConfigDialog::addPushButton("Notify", "Notify sound", "Test");
+	ConfigDialog::addCheckBox("Notify", "Notify options", "Notify by dialog box", "NotifyWithDialogBox", false);
+	
+
+
+//zakladka "siec"
+	//potrzebne do translacji
+	QT_TRANSLATE_NOOP("@default", "Network");
+	QT_TRANSLATE_NOOP("@default",  "DCC enabled");
+	QT_TRANSLATE_NOOP("@default", "DCC IP autodetection");
+	QT_TRANSLATE_NOOP("@default", "DCC IP");
+	QT_TRANSLATE_NOOP("@default", "IP address:");
+	QT_TRANSLATE_NOOP("@default", "DCC forwarding enabled");
+	QT_TRANSLATE_NOOP("@default", "DCC forwarding properties");
+	QT_TRANSLATE_NOOP("@default", "External IP address:");
+	QT_TRANSLATE_NOOP("@default", "External TCP port:");
+	QT_TRANSLATE_NOOP("@default", "Servers properties");
+	QT_TRANSLATE_NOOP("@default", "Use default servers");
+	QT_TRANSLATE_NOOP("@default", "Use TLSv1");
+	QT_TRANSLATE_NOOP("@default", "Default port to connect to servers");
+	QT_TRANSLATE_NOOP("@default", "Use proxy server");
+	QT_TRANSLATE_NOOP("@default", "Proxy server");
+	QT_TRANSLATE_NOOP("@default", "Port:");
+	QT_TRANSLATE_NOOP("@default", "IP addresses:");
+	QT_TRANSLATE_NOOP("@default", "Username:");
+	QT_TRANSLATE_NOOP("@default", "Password:");
+
+
+	ConfigDialog::registerTab("Network");
+	ConfigDialog::addCheckBox("Network", "Network", "DCC enabled", "AllowDCC", false);
+	ConfigDialog::addCheckBox("Network", "Network", "DCC IP autodetection", "DccIpDetect", false);
+	
+	ConfigDialog::addVGroupBox("Network", "Network", "DCC IP");
+	ConfigDialog::addLineEdit("Network", "DCC IP", "IP address:","DccIP");
+	ConfigDialog::addCheckBox("Network", "Network", "DCC forwarding enabled", "DccForwarding", false);
+	
+	ConfigDialog::addVGroupBox("Network", "Network", "DCC forwarding properties");
+	ConfigDialog::addLineEdit("Network", "DCC forwarding properties", "External IP address:", "ExternalIP");
+	ConfigDialog::addLineEdit("Network", "DCC forwarding properties", "External TCP port:", "ExternalPort", "0");
+
+	ConfigDialog::addVGroupBox("Network", "Network", "Servers properties");
+	ConfigDialog::addGrid("Network", "Servers properties", "servergrid", 2);
+	ConfigDialog::addCheckBox("Network", "servergrid", "Use default servers", "isDefServers", true);
+	ConfigDialog::addCheckBox("Network", "servergrid", "Use TLSv1", "UseTLS", false);
+	ConfigDialog::addLineEdit("Network", "Servers properties", "IP addresses:", "Server","","","server");
+
+	ConfigDialog::addComboBox("Network", "Servers properties", "Default port to connect to servers");
+	ConfigDialog::addCheckBox("Network", "Network", "Use proxy server", "UseProxy", false);
+
+	ConfigDialog::addVGroupBox("Network", "Network", "Proxy server");
+	ConfigDialog::addGrid("Network", "Proxy server", "proxygrid", 2);
+	ConfigDialog::addLineEdit("Network", "proxygrid", "IP address:", "ProxyHost", "","","proxyhost");
+	ConfigDialog::addLineEdit("Network", "proxygrid", "Port:", "ProxyPort", "0");
+	ConfigDialog::addLineEdit("Network", "proxygrid", "Username:", "ProxyUser");
+	ConfigDialog::addLineEdit("Network", "proxygrid", "Password:", "ProxyPassword");
+	
+	ConfigDialog::registerSlotOnCreate(eventconfigslots, SLOT(onCreateConfigDialog()));
+	ConfigDialog::registerSlotOnDestroy(eventconfigslots, SLOT(onDestroyConfigDialog()));
+	
+	ConfigDialog::connectSlot("Network", "DCC enabled", SIGNAL(toggled(bool)), eventconfigslots, SLOT(ifDccEnabled(bool)));
+	ConfigDialog::connectSlot("Network", "DCC IP autodetection", SIGNAL(toggled(bool)), eventconfigslots, SLOT(ifDccIpEnabled(bool)));
+	ConfigDialog::connectSlot("Network", "Use default servers", SIGNAL(toggled(bool)), eventconfigslots, SLOT(ifDefServerEnabled(bool)));
+#ifdef HAVE_OPENSSL
+	ConfigDialog::connectSlot("Network", "Use TLSv1", SIGNAL(toggled(bool)), eventconfigslots, SLOT(useTlsEnabled(bool)));
+#endif	
+
+	    defaultdescriptions = QStringList::split(QRegExp("<-->"), config_file.readEntry("General","DefaultDescription", tr("I am busy.")), true);
+		if (!config_file.readBoolEntry("Network","DccIpDetect"))
+		if (!config_dccip.setAddress(config_file.readEntry("Network","DccIP", "")))
+			config_dccip.setAddress((unsigned int)0);
+
+	        if (!config_extip.setAddress(config_file.readEntry("Network","ExternalIP", "")))
+			config_extip.setAddress((unsigned int)0);
+
+
+	    QStringList servers;
+	    QHostAddress ip2;
+	    servers = QStringList::split(";", config_file.readEntry("Network","Server", ""));
+	    config_servers.clear();
+	        for (int i = 0; i < servers.count(); i++)
+		    {
+		        if (ip2.setAddress(servers[i]))
+  			       config_servers.append(ip2);
+		    }
+		server_nr = 0;
+
+
+}
+
+void EventConfigSlots::onCreateConfigDialog()
+{
+	kdebug("EventConfigSlots::onCreateConfigDialog() \n");
+	
+	QCheckBox *b_dccenabled = ConfigDialog::getCheckBox("Network", "DCC enabled");
+	QCheckBox *b_dccip= ConfigDialog::getCheckBox("Network", "DCC IP autodetection");
+	QVGroupBox *g_dccip = ConfigDialog::getVGroupBox("Network", "DCC IP");
+	QVGroupBox *g_proxy = ConfigDialog::getVGroupBox("Network", "Proxy server");
+	QVGroupBox *g_fwdprop = ConfigDialog::getVGroupBox("Network", "DCC forwarding properties");
+	QCheckBox *b_dccfwd = ConfigDialog::getCheckBox("Network", "DCC forwarding enabled");
+	QCheckBox *b_tls= ConfigDialog::getCheckBox("Network", "Use TLSv1");
+	QCheckBox *b_useproxy= ConfigDialog::getCheckBox("Network", "Use proxy server");
+	QComboBox *cb_portselect= ConfigDialog::getComboBox("Network", "Default port to connect to servers");
+	QHBox *serverbox=(QHBox*)(ConfigDialog::getLineEdit("Network", "IP addresses:","server")->parent());
+	QCheckBox* b_defaultserver= ConfigDialog::getCheckBox("Network", "Use default servers");
+	
+	b_dccip->setEnabled(b_dccenabled->isChecked());
+	g_dccip->setEnabled(!b_dccip->isChecked()&& b_dccenabled->isChecked());
+	b_dccfwd->setEnabled(b_dccenabled->isChecked());
+	g_fwdprop->setEnabled(b_dccenabled->isChecked() && b_dccfwd->isChecked());
+	g_proxy->setEnabled(b_useproxy->isChecked());
+	((QHBox*)cb_portselect->parent())->setEnabled(!b_tls->isChecked());
+	serverbox->setEnabled(!b_defaultserver->isChecked());
+	cb_portselect->insertItem("8074");
+	cb_portselect->insertItem("443");
+	cb_portselect->setCurrentText(config_file.readEntry("Network", "DefaultPort", "8074"));
+	
+	connect(b_dccfwd, SIGNAL(toggled(bool)), g_fwdprop, SLOT(setEnabled(bool)));
+        connect(b_useproxy, SIGNAL(toggled(bool)), g_proxy, SLOT(setEnabled(bool)));
+	
+}
+
+void EventConfigSlots::onDestroyConfigDialog()
+{
+	kdebug("EventConfigSlots::onDestroyConfigDialog() \n");
+
+	QComboBox *cb_portselect=ConfigDialog::getComboBox("Network", "Default port to connect to servers");
+	config_file.writeEntry("Network","DefaultPort",cb_portselect->currentText());
+	
+	QLineEdit *e_servers=ConfigDialog::getLineEdit("Network", "IP addresses:", "server");
+	
+	QStringList tmpservers,server;
+	QValueList<QHostAddress> servers;
+	QHostAddress ip;
+	bool ipok;
+	int i;
+	
+	    tmpservers = QStringList::split(";", e_servers->text());
+		for (i = 0; i < tmpservers.count(); i++) 
+		{
+		ipok = ip.setAddress(tmpservers[i]);
+			if (!ipok)
+			    break;
+			    servers.append(ip);
+			    server.append(ip.toString());
+		}
+		config_file.writeEntry("Network","Server",server.join(";"));
+		config_servers=servers;
+			    server_nr = 0;
+			    
+	if (!config_dccip.setAddress(config_file.readEntry("Network","DccIP")))
+	    {
+		config_file.writeEntry("Network","DccIP","0.0.0.0");
+		config_dccip.setAddress((unsigned int)0);
+	    }										
+	
+	if (!config_extip.setAddress(config_file.readEntry("Network","ExternalIP")))
+	    {	config_file.writeEntry("Network","ExternalIP","0.0.0.0");
+		config_extip.setAddress((unsigned int)0);
+	    }	
+	
+	if (config_file.readNumEntry("Network","ExternalPort")<=1023)
+	    config_file.writeEntry("Network","ExternalPort",0);
+	
+	if (!ip.setAddress(config_file.readEntry("Network","ProxyHost")))
+	    config_file.writeEntry("Network","ProxyHost","0.0.0.0");
+
+	if (config_file.readNumEntry("Network","ProxyPort")<=1023)
+	    config_file.writeEntry("Network","ProxyPort",0);
+
+
+	/* and now, save it */
+	userlist.writeToFile();	
+	//
+
+
+};
+
+void EventConfigSlots::ifDccEnabled(bool value)
+{
+	kdebug("EventConfigSlots::ifDccEnabled() \n");
+
+	QCheckBox *b_dccip= ConfigDialog::getCheckBox("Network", "DCC IP autodetection");
+	QVGroupBox *g_dccip = ConfigDialog::getVGroupBox("Network", "DCC IP");
+	QVGroupBox *g_fwdprop = ConfigDialog::getVGroupBox("Network", "DCC forwarding properties");
+	QCheckBox *b_dccfwd = ConfigDialog::getCheckBox("Network", "DCC forwarding enabled");
+	
+	b_dccip->setEnabled(value);
+	g_dccip->setEnabled(b_dccip->isChecked()&& value);	
+	b_dccfwd->setEnabled(value);
+	g_fwdprop->setEnabled(b_dccfwd->isChecked() &&value);
+};
+
+void EventConfigSlots::ifDccIpEnabled(bool value)
+{
+	kdebug("EventConfigSlots::ifDccIpEnabled() \n");
+	QVGroupBox *g_dccip = ConfigDialog::getVGroupBox("Network", "DCC IP");
+	g_dccip->setEnabled(!value);
+};
+
+void EventConfigSlots::ifDefServerEnabled(bool value)
+{
+	kdebug("EventConfigSlots::ifDefServerEnabled() \n");
+	QHBox *serverbox=(QHBox*)(ConfigDialog::getLineEdit("Network", "IP addresses:","server")->parent());
+	serverbox->setEnabled(!value);	
+};
+
+void EventConfigSlots::useTlsEnabled(bool value)
+{
+	kdebug("EventConfigSlots::useTlsEnabled() \n");
+	QHBox *box_portselect=(QHBox*)(ConfigDialog::getComboBox("Network", "Default port to connect to servers")->parent());
+	box_portselect->setEnabled(!value);
+};
+
 
 EventManager event_manager;

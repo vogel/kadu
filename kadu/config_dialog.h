@@ -50,6 +50,7 @@ class ConfigDialog : public QTabDialog	{
 			CONFIG_CHECKBOX,
 			CONFIG_COMBOBOX,
 			CONFIG_GRID,
+			CONFIG_HBOX,
 			CONFIG_HGROUPBOX,
 			CONFIG_HOTKEYEDIT,
 			CONFIG_LABEL,
@@ -59,6 +60,7 @@ class ConfigDialog : public QTabDialog	{
 			CONFIG_SLIDER,
 			CONFIG_SPINBOX,
 			CONFIG_TAB,
+			CONFIG_VBOX,
 			CONFIG_VGROUPBOX
 		};
 
@@ -107,7 +109,7 @@ class ConfigDialog : public QTabDialog	{
 			    			    
 		static void addComboBox(const QString& groupname, 
 			    const QString& parent, const QString& caption,
-			    const QString& entry, const QString& tip="", const QString& name="");
+			    const QString& tip="", const QString& name="");
 			    
 		static void addGrid(const QString& groupname, 
 			    const QString& parent, const QString& caption, const int nrColumns=3, const QString& name="");
@@ -127,7 +129,7 @@ class ConfigDialog : public QTabDialog	{
 			    const QString& entry, const QString& defaultS="", const QString& tip="",const QString& name="");
 			    
 		static void addListBox(const QString& groupname, 
-			    const QString& parent, const QString& caption, const QString& tip, const QString& name="");
+			    const QString& parent, const QString& caption, const QString& tip= "", const QString& name="");
 			    
 		static void addPushButton(const QString& groupname, 
 			    const QString& parent, const QString& caption,

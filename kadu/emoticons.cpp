@@ -41,13 +41,13 @@ const QStringList& EmoticonsManager::themes()
 void EmoticonsManager::setEmoticonsTheme(const QString& theme)
 {
 	if(ThemesList.contains(theme))
-		config_file.writeEntry("Other","EmoticonsTheme",theme);
+		config_file.writeEntry("Chat","EmoticonsTheme",theme);
 	else
-		config_file.writeEntry("Other","EmoticonsTheme","gadu-gadu");
+		config_file.writeEntry("Chat","EmoticonsTheme","gadu-gadu");
 	if(!loadGGEmoticonTheme())
-		if(config_file.readEntry("Other","EmoticonsTheme")!="gadu-gadu")
+		if(config_file.readEntry("Chat","EmoticonsTheme")!="gadu-gadu")
 		{
-			config_file.writeEntry("Other","EmoticonsTheme","gadu-gadu");
+			config_file.writeEntry("Chat","EmoticonsTheme","gadu-gadu");
 			loadGGEmoticonTheme();
 		};
 };
@@ -155,7 +155,7 @@ bool EmoticonsManager::loadGGEmoticonTheme()
 
 QString EmoticonsManager::themePath()
 {
-	return QString(DATADIR)+"/apps/kadu/themes/emoticons/"+config_file.readEntry("Other","EmoticonsTheme");
+	return QString(DATADIR)+"/apps/kadu/themes/emoticons/"+config_file.readEntry("Chat","EmoticonsTheme");
 };
 
 void EmoticonsManager::expandEmoticons(HtmlDocument& doc,const QColor& bgcolor)
@@ -177,7 +177,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc,const QColor& bgcolor)
 			if(e!=Aliases.end())
 			{
 				QString new_text="<IMG src=\"";
-				if((EmoticonsStyle)config_file.readNumEntry("Other","EmoticonsStyle")==EMOTS_ANIMATED)
+				if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")==EMOTS_ANIMATED)
 					new_text+=(*e).anim;
 				else
 					new_text+=(*e).stat;			
@@ -242,7 +242,7 @@ void EmoticonSelectorButton::movieUpdate()
 void EmoticonSelectorButton::enterEvent(QEvent* e)
 {
 	QToolButton::enterEvent(e);
-	if((EmoticonsStyle)config_file.readNumEntry("Other","EmoticonsStyle")!=EMOTS_ANIMATED)
+	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")!=EMOTS_ANIMATED)
 		return;
 	if(Movie==NULL)
 	{

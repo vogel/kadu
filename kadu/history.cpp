@@ -895,7 +895,7 @@ History::History(UinsList uins): uins(uins), closeDemand(false), finding(false) 
 
 	body = new QTextBrowser(this, "History browser");
 	body->setReadOnly(true);
-	body->setFont(config_file.readFontEntry("Fonts","ChatFont"));
+	body->setFont(config_file.readFontEntry("Look","ChatFont"));
 
 //	QPushButton *closebtn = new QPushButton(this);
 //	closebtn->setText(tr("&Close"));
@@ -968,12 +968,12 @@ void History::formatHistoryEntry(QString &text, const HistoryEntry &entry) {
 	text.append("<TABLE width=\"100%\"><TR><TD bgcolor=\"");
 	if (entry.type & (HISTORYMANAGER_ENTRY_CHATSEND | HISTORYMANAGER_ENTRY_MSGSEND
 		| HISTORYMANAGER_ENTRY_SMSSEND)) {
-		bgcolor = config_file.readColorEntry("Colors","ChatMyBgColor").name();
-		textcolor = config_file.readColorEntry("Colors","ChatMyFontColor").name();
+		bgcolor = config_file.readColorEntry("Look","ChatMyBgColor").name();
+		textcolor = config_file.readColorEntry("Look","ChatMyFontColor").name();
 		}
 	else {
-		bgcolor = config_file.readColorEntry("Colors","ChatUsrBgColor").name();
-		textcolor = config_file.readColorEntry("Colors","ChatUsrFontColor").name();
+		bgcolor = config_file.readColorEntry("Look","ChatUsrBgColor").name();
+		textcolor = config_file.readColorEntry("Look","ChatUsrFontColor").name();
 		}
 	text.append(bgcolor);
 	text.append("\"><FONT color=\"");
