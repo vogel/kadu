@@ -26,6 +26,7 @@ void PlayThread::run() {
 		queue.pop_front();
 		mutex.unlock();
 		emit playGsmSample(gsmsample.data, gsmsample.length);
+		delete gsmsample.data;
 		}
 }
 
@@ -52,15 +53,19 @@ VoiceManager::VoiceManager() {
 }
 
 void VoiceManager::setup() {
-	emit setupSoundDevice();
-	pt->start();
-//	rt->start();
+	if (!pt->running()) {
+		emit setupSoundDevice();
+		pt->start();
+//		rt->start();
+		}
 }
 
 void VoiceManager::free() {
-	pt->exit();
-//	rt->exit();
-	emit freeSoundDevice();
+	if (pt->running()) {
+		pt->exit();
+//		rt->exit();
+		emit freeSoundDevice();
+		}
 }
 
 void VoiceManager::resetCodec() {
