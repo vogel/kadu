@@ -1297,7 +1297,7 @@ void ConfigDialog::updateConfig(void) {
 		trayicon = new TrayIcon(kadu);
 		trayicon->show();
 		trayicon->connectSignals();
-		trayicon->changeIcon();
+		trayicon->setType((char **)gg_xpm[statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]);
 		}
 	else
 		if (!config.dock && trayicon) {
