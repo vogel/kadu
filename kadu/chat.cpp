@@ -21,7 +21,6 @@
 #include <qhbox.h>
 #include <qvbox.h>
 #include <qvaluelist.h>
-#include <qclipboard.h>
 #include <qfiledialog.h>
 
 #include <math.h>
@@ -310,47 +309,6 @@ ChatManager* chat_manager=NULL;
 const char *colors[16] = {"#FF0000", "#A00000", "#00FF00", "#00A000", "#0000FF", "#0000A0", "#FFFF00",
 	"#A0A000", "#FF00FF", "#A000A0", "#00FFFF", "#00A0A0", "#FFFFFF", "#A0A0A0", "#808080", "#000000"};
 
-KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
-	: QTextBrowser(parent, name), level(0) {
-
-}
-
-void KaduTextBrowser::setSource(const QString &name) {
-}
-
-void KaduTextBrowser::copyLinkLocation() {
-	kdebug("KaduTextBrowser::copyLinkLocation(): anchor = %s\n", (const char *)unicode2latin(anchor));
-	qApp->clipboard()->setText(anchor);
-}
-
-QPopupMenu *KaduTextBrowser::createPopupMenu(const QPoint &point) {
-	kdebugf();
-	QPopupMenu *popupmenu;
-	anchor = anchorAt(point);
-	popupmenu = QTextBrowser::createPopupMenu(point);
-
-	if (!anchor.isEmpty())
-		popupmenu->insertItem(tr("Copy link &location"), this, SLOT(copyLinkLocation()), CTRL+Key_L, -1, 0);
-
-	return popupmenu;
-}
-
-void KaduTextBrowser::drawContents(QPainter * p, int clipx, int clipy, int clipw, int cliph)
-{
-	/*
-		z nie do koñca wiadomych przyczyn, Qt czasami wpada w pêtle i drawContents
-		jeszcze	raz wywo³uje sam± siebie, co powoduje wypisanie:
-			QPixmap::operator=: Cannot assign to pixmap during painting
-			QPaintDevice: Cannot destroy paint device that is being painted
-		oraz zawieszenie Kadu (http://www.kadu.net/forum/viewtopic.php?t=2486)
-	*/
-//	kdebug("KaduTextBrowser::drawContents(): level: %d\n", level);
-	level++;
-	if (level==1)
-		QTextBrowser::drawContents(p, clipx, clipy, clipw, cliph);
-	level--;
-}
-
 CustomInput::CustomInput(QWidget *parent, const char *name) : QMultiLineEdit(parent, name) {
 	QStyleSheet *style=styleSheet();
 	style->item("p")->setMargin(QStyleSheetItem::MarginVertical, 0);
@@ -469,7 +427,6 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	
 	body->setMinimumSize(QSize(100,100));
 	body->setFont(config_file.readFontEntry("Look","ChatFont"));
-	QObject::connect(body, SIGNAL(linkClicked(const QString &)), this, SLOT(hyperlinkClicked(const QString &)));
 
 	QPoint pos = QCursor::pos();
 	
@@ -860,20 +817,7 @@ QString Chat::convertCharacters(QString edit, bool me) {
 	doc.parseHtml(edit);
 
 	// detekcja adresow url
-	QRegExp url_regexp("(http://|https://|www\\.|ftp://|ftp\\.|sftp://|smb://|file:/|rsync://|mailto:)[a-zA-Z0-9\\-\\._/~?=&#\\+%:;,!@\\\\]+");
-	for(int i=0; i<doc.countElements(); i++)
-	{
-		if(doc.isTagElement(i))
-			continue;
-		QString text=doc.elementText(i);
-		int p=url_regexp.search(text);
-		if (p < 0)
-			continue;
-		int l=url_regexp.matchedLength();
-		QString link="<a href=\""+text.mid(p,l)+"\">"+text.mid(p,l)+"</a>";
-		doc.splitElement(i,p,l);
-		doc.setElementValue(i,link,true);
-	}
+	doc.convertUrlsToHtml();
 
 	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")!=EMOTS_NONE)
 	{
@@ -908,10 +852,6 @@ void Chat::userWhois(void) {
 	SearchDialog *sd = new SearchDialog(0, "User info", uin);
 	sd->show();
 	sd->firstSearch();
-}
-
-void Chat::hyperlinkClicked(const QString &link) {
-	openWebBrowser(link);
 }
 
 void Chat::formatMessage(bool me, const QString &altnick, const QString &msg, const QString &time, QString &toadd) {

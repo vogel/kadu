@@ -1078,7 +1078,7 @@ History::History(UinsList uins): uins(uins), closeDemand(false), finding(false) 
 	uinslv->setRootIsDecorated(TRUE);
 
 	QVBox *vbox1 = new QVBox(split1);
-	body = new QTextBrowser(vbox1, "History browser");
+	body = new KaduTextBrowser(vbox1, "History browser");
 	body->setReadOnly(true);
 	body->setFont(config_file.readFontEntry("Look","ChatFont"));
 
@@ -1216,7 +1216,12 @@ void History::formatHistoryEntry(QString &text, const HistoryEntry &entry) {
 		text.append(QString(" ip=") + entry.ip);
 		}
 	else
-		text.append(message);
+	{
+		HtmlDocument doc;
+		doc.parseHtml(message);
+		doc.convertUrlsToHtml();
+		text.append(doc.generateHtml());
+	}
 	text.append("</font></td></tr></table>");
 }
 

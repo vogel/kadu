@@ -2,7 +2,6 @@
 #define HISTORY_H
 
 #include <qdialog.h>
-#include <qtextbrowser.h>
 #include <qstring.h>
 #include <qdatetime.h>
 #include <qvaluelist.h>
@@ -78,6 +77,7 @@ class DateListViewText : public QListViewItem {
 **/
 class History : public QDialog {
 	Q_OBJECT
+
 	public:
 		History(UinsList uins);
 		static void initModule();
@@ -97,7 +97,7 @@ class History : public QDialog {
 		void closeEvent(QCloseEvent *e);
 
 		QListView *uinslv;
-		QTextBrowser *body;
+		KaduTextBrowser* body;
 		UinsList uins;
 		int start;
 		HistoryFindRec findrec;

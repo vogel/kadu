@@ -12,6 +12,8 @@
 #include <qaccel.h>
 #include <qprocess.h>
 #include <qurl.h>
+#include <qclipboard.h>
+#include <qpopupmenu.h>
 
 #include <pwd.h>
 #include <unistd.h>
@@ -1541,6 +1543,24 @@ void HtmlDocument::splitElement(int& index,int start,int length)
 	e.text=e.text.mid(start,length);
 }
 
+void HtmlDocument::convertUrlsToHtml()
+{
+	QRegExp url_regexp("(http://|https://|www\\.|ftp://|ftp\\.|sftp://|smb://|file:/|rsync://|mailto:)[a-zA-Z0-9\\-\\._/~?=&#\\+%:;,!@\\\\]+");
+	for(int i = 0; i < countElements(); i++)
+	{
+		if(isTagElement(i))
+			continue;
+		QString text=elementText(i);
+		int p=url_regexp.search(text);
+		if (p < 0)
+			continue;
+		int l=url_regexp.matchedLength();
+		QString link="<a href=\""+text.mid(p,l)+"\">"+text.mid(p,l)+"</a>";
+		splitElement(i,p,l);
+		setElementValue(i,link,true);
+	}
+}
+
 /**
 	to jest zast±pienie funkcji formatGGMessage,unformatGGMessage,
 	ale jeszcze nie u¿ywane i nie wiem czy skoñczone, w ka¿dym
@@ -2188,4 +2208,53 @@ ImageDialog::ImageDialog(QWidget* parent)
 	setContentsPreviewEnabled(true);
 	setContentsPreview(pp, pp);
 	setPreviewMode(QFileDialog::Contents);
+}
+
+KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
+	: QTextBrowser(parent, name), level(0)
+{
+	connect(this, SIGNAL(linkClicked(const QString&)), this, SLOT(hyperlinkClicked(const QString&)));
+}
+
+void KaduTextBrowser::setSource(const QString &name)
+{
+}
+
+void KaduTextBrowser::copyLinkLocation()
+{
+	kdebug("KaduTextBrowser::copyLinkLocation(): anchor = %s\n", anchor.local8Bit().data());
+	QApplication::clipboard()->setText(anchor);
+}
+
+QPopupMenu *KaduTextBrowser::createPopupMenu(const QPoint &point)
+{
+	kdebugf();
+	anchor = anchorAt(point);
+	QPopupMenu* popupmenu = QTextBrowser::createPopupMenu(point);
+
+	if (!anchor.isEmpty())
+		popupmenu->insertItem(tr("Copy link &location"), this, SLOT(copyLinkLocation()), CTRL+Key_L, -1, 0);
+
+	return popupmenu;
+}
+
+void KaduTextBrowser::drawContents(QPainter * p, int clipx, int clipy, int clipw, int cliph)
+{
+	/*
+		z nie do koñca wiadomych przyczyn, Qt czasami wpada w pêtle i drawContents
+		jeszcze	raz wywo³uje sam± siebie, co powoduje wypisanie:
+			QPixmap::operator=: Cannot assign to pixmap during painting
+			QPaintDevice: Cannot destroy paint device that is being painted
+		oraz zawieszenie Kadu (http://www.kadu.net/forum/viewtopic.php?t=2486)
+	*/
+//	kdebug("KaduTextBrowser::drawContents(): level: %d\n", level);
+	level++;
+	if (level==1)
+		QTextBrowser::drawContents(p, clipx, clipy, clipw, cliph);
+	level--;
+}
+
+void KaduTextBrowser::hyperlinkClicked(const QString &link)
+{
+	openWebBrowser(link);
 }

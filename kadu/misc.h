@@ -16,6 +16,7 @@
 #include <qsocket.h>
 #include <qsocketnotifier.h>
 #include <qfiledialog.h>
+#include <qtextbrowser.h>
 
 #include <inttypes.h>
 
@@ -216,6 +217,11 @@ class HtmlDocument
 			indeks wydzielonego elementu by³ aktualny.
 		**/
 		void splitElement(int& index,int start,int length);
+		/**
+			Skanuje tekst w poszukiwaniu adresów www,
+			np. "www.kadu.net" i zmienia je w linki html.
+		**/
+		void convertUrlsToHtml();
 };
 
 /*
@@ -430,6 +436,33 @@ class ImageDialog : public QFileDialog
 {
 	public:
 		ImageDialog(QWidget* parent);
+};
+
+/**
+	Zmodyfikowany QTextBrowser specjalnie na potrzeby Kadu.
+	Klikniêcie na linku otwiera ustawion± w konfiguracji przegl±darkê.
+	W menu kontekstowym jest dodatkowa opcja "Kopiuj lokacjê odno¶nika".
+	Dodatkowo poprawka b³êdu w QT.
+**/
+class KaduTextBrowser : public QTextBrowser
+{
+	Q_OBJECT
+
+	private:
+		QString anchor;
+		int level;
+
+	private slots:
+		void copyLinkLocation();	
+		void hyperlinkClicked(const QString& link);
+
+	protected:
+		QPopupMenu *createPopupMenu(const QPoint &point);
+		void drawContents(QPainter * p, int clipx, int clipy, int clipw, int cliph);
+
+	public:
+		KaduTextBrowser(QWidget *parent = 0, const char *name = 0);
+		void setSource(const QString &name);
 };
 
 #endif

@@ -103,24 +103,6 @@ class CustomInput : public QMultiLineEdit {
 		bool autosend_enabled;
 };
 
-class KaduTextBrowser : public QTextBrowser {
-	Q_OBJECT
-	public:
-		KaduTextBrowser(QWidget *parent = 0, const char *name = 0);
-		void setSource(const QString &name);
-
-	protected:
-		QPopupMenu *createPopupMenu(const QPoint &point);
-		void drawContents(QPainter * p, int clipx, int clipy, int clipw, int cliph);
-
-	public slots:
-		void copyLinkLocation();
-
-	private:
-		QString anchor;
-		int level;
-};
-
 class KaduSplitter : public QSplitter
 {
 	public:
@@ -228,7 +210,6 @@ class Chat : public QWidget
 		void cancelMessage(void);
 		void writeMyMessage(void);
 		void changeTitle(void);
-		void hyperlinkClicked(const QString &link);
 		void toggledBold(bool on);
 		void toggledItalic(bool on);
 		void toggledUnderline(bool on);
