@@ -163,6 +163,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawka odtwarzania d¼wiêków przez modu³y (joi)
 * wlasne informacje w panelu informacyjnym sa pokazywane prawidlowo (michal)
 * Opcja niezapisywania zmian statusow do histori (Ron_K/joi)
+* male porzadki w config dialog-u (michal)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

@@ -218,27 +218,6 @@ class ConfigDialog : public QDialog	{
 		static QApplication* appHandle;
 		
 		/**
-		    Wyszukuje pozycje dowonlnej zakladki w liscie RegisteredControls 
-			poczynajac od pozycji "startpos"
-			
-		    Jesli nie znajdzie zakladki to zwraca wartosc "-1"
-		**/
-		static int findNextTab(int startpos);
-		/**
-		    Wyszukuje pozycje zakladki "groupname" w liscie RegisteredControls 
-			poczynajac od pozycji "startpos"
-
-		    Jesli nie znajdzie zakladki to zwraca wartosc "-1"
-		**/
-		static int findTab(const QString& groupname, int startpos=0);
-		/**
-		    Wyszukuje pozycje poprzedniej zakladki w liscie RegisteredControls 
-			poczynajac od pozycji "startpos"
-
-		    Jesli nie znajdzie zakladki to zwraca wartosc "-1"
-		**/
-		static int findPreviousTab(int startpos);
-		/**
 		    Dodaje kontrolke do listy RegisteredControls 
 		**/
 		static int addControl(const QString& groupname,const RegisteredControl& control);
@@ -343,7 +322,7 @@ class ConfigDialog : public QDialog	{
 		    Dodaje kontrolke do zakladki "groupname", 
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
-			Wartosc kontrolki jest zapisana do pliku konfiguracyjnego w postaci
+			Wartosc kontrolki jest zapisana do pliku konfiguracyjnego "config" w postaci
 			-------------
 			[groupname]
 			entry= value {defaultS}
@@ -377,7 +356,7 @@ class ConfigDialog : public QDialog	{
 		    Dodaje kontrolke do zakladki "groupname", 
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
-			Wartosc kontrolki jest zapisana do pliku konfiguracyjnego w postaci
+			Wartosc kontrolki jest zapisana do pliku konfiguracyjnego "config" w postaci
 			-------------
 			[groupname]
 			entry= value {defaultS}
@@ -414,7 +393,7 @@ class ConfigDialog : public QDialog	{
 		    Dodaje kontrolke do zakladki "groupname", 
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
-			Wartosc kontrolki jest zapisana do pliku konfiguracyjnego w postaci
+			Wartosc kontrolki jest zapisana do pliku konfiguracyjnego "config" w postaci
 			-------------
 			[groupname]
 			entry= value {defaultS}
@@ -484,7 +463,7 @@ class ConfigDialog : public QDialog	{
 		    Dodaje kontrolke do zakladki "groupname", 
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
-			Wartosc kontrolki jest zapisana do pliku konfiguracyjnego w postaci
+			Wartosc kontrolki jest zapisana do pliku konfiguracyjnego "config" w postaci
 			-------------
 			[groupname]
 			entry= value {defaultS}
@@ -513,7 +492,7 @@ class ConfigDialog : public QDialog	{
 		    Dodaje kontrolke do zakladki "groupname", 
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
-			Wartosc kontrolki jest zapisana do pliku konfiguracyjnego w postaci
+			Wartosc kontrolki jest zapisana do pliku konfiguracyjnego "config" w postaci
 			-------------
 			[groupname]
 			entry= value {defaultS}
@@ -692,7 +671,27 @@ class ConfigDialog : public QDialog	{
 		    jesli nie istnieje taka kontrolka to zwracana jest wartosc -1
 		**/
 		static int existControl(const QString& groupname, const QString& caption, const QString& name="");
-		
+		/**
+		    Wyszukuje pozycje dowonlnej zakladki w liscie RegisteredControls 
+			poczynajac od pozycji "startpos"
+			
+		    Jesli nie znajdzie zakladki to zwraca wartosc "-1"
+		**/
+		static int findNextTab(int startpos);
+		/**
+		    Wyszukuje pozycje zakladki "groupname" w liscie RegisteredControls 
+			poczynajac od pozycji "startpos"
+
+		    Jesli nie znajdzie zakladki to zwraca wartosc "-1"
+		**/
+		static int findTab(const QString& groupname, int startpos=0);
+		/**
+		    Wyszukuje pozycje poprzedniej zakladki w liscie RegisteredControls 
+			poczynajac od pozycji "startpos"
+
+		    Jesli nie znajdzie zakladki to zwraca wartosc "-1"
+		**/
+		static int findPreviousTab(int startpos);
 		static bool dialogOpened();
 		//
 	protected:
