@@ -13,8 +13,6 @@
 #include <qhgroupbox.h>
 #include <qcursor.h> 
 
-
-#include "gadu.h"
 #include "config_file.h"
 #include "config_dialog.h"
 #include "debug.h"

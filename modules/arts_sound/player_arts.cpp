@@ -8,7 +8,6 @@
  ***************************************************************************/
 #include "player_arts.h"
 #include "debug.h"
-#include "config_dialog.h"
 #include <string>
 
 extern "C" int arts_sound_init()

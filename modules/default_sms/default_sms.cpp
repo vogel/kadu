@@ -8,7 +8,6 @@
 #include "debug.h"
 #include "modules.h"
 
-
 extern "C" int default_sms_init()
 {
 	kdebugf();
@@ -35,7 +34,7 @@ SmsIdeaGateway::SmsIdeaGateway(QObject* parent)
 	: SmsGateway(parent)
 {
 	modules_manager->moduleIncUsageCount("default_sms");
-};
+}
 
 SmsIdeaGateway::~SmsIdeaGateway()
 {
@@ -44,7 +43,7 @@ SmsIdeaGateway::~SmsIdeaGateway()
 
 void SmsIdeaGateway::httpRedirected(QString link)
 {
-};
+}
 
 void SmsIdeaGateway::send(const QString& number,const QString& message, const QString& contact, const QString& signature)
 {
@@ -54,12 +53,12 @@ void SmsIdeaGateway::send(const QString& number,const QString& message, const QS
 	State=SMS_LOADING_PAGE;
 	Http.setHost("sms.idea.pl");
 	Http.get("/");
-};
+}
 
 bool SmsIdeaGateway::isNumberCorrect(const QString& number)
 {
 	return (number[0]=='5');
-};
+}
 
 void SmsIdeaGateway::httpFinished()
 {
@@ -126,7 +125,7 @@ void SmsIdeaGateway::httpFinished()
 	}
 	else
 		kdebug("SMS Panic! Unknown state\n");	
-};
+}
 
 void SmsIdeaGateway::onCodeEntered(const QString& code)
 {
@@ -139,7 +138,7 @@ void SmsIdeaGateway::onCodeEntered(const QString& code)
 	State=SMS_LOADING_RESULTS;
 	QString post_data=QString("token=")+Token+"&SENDER="+Signature+"&RECIPIENT="+Number+"&SHORT_MESSAGE="+Http.encode(Message)+"&pass="+code+"&CHK_RESP=FALSE"+"&respInfo=1";
 	Http.post("sendsms.aspx",post_data);
-};
+}
 
 /********** SmsPlusGateway **********/
 
@@ -147,7 +146,7 @@ SmsPlusGateway::SmsPlusGateway(QObject* parent)
 	: SmsGateway(parent)
 {
 	modules_manager->moduleIncUsageCount("default_sms");
-};
+}
 
 SmsPlusGateway::~SmsPlusGateway()
 {
@@ -156,7 +155,7 @@ SmsPlusGateway::~SmsPlusGateway()
 
 void SmsPlusGateway::httpRedirected(QString link)
 {
-};
+}
 
 void SmsPlusGateway::send(const QString& number,const QString& message, const QString& contact, const QString& signature)
 {
@@ -166,12 +165,12 @@ void SmsPlusGateway::send(const QString& number,const QString& message, const QS
 	Http.setHost("212.2.96.57");
 	QString post_data="tprefix="+Number.left(3)+"&numer="+Number.right(6)+"&odkogo="+signature+"&tekst="+Message;
 	Http.post("sms/sendsms.php",post_data);
-};
+}
 
 bool SmsPlusGateway::isNumberCorrect(const QString& number)
 {
 	return (number[0]=='6'&&((QChar(number[2])-'0')%2)!=0);
-};
+}
 
 void SmsPlusGateway::httpFinished()
 {
@@ -215,7 +214,7 @@ void SmsPlusGateway::httpFinished()
 	}
 	else
 		kdebug("SMS Panic! Unknown state\n");	
-};
+}
 
 /********** SmsEraGateway **********/
 
@@ -223,7 +222,7 @@ SmsEraGateway::SmsEraGateway(QObject* parent)
 	: SmsGateway(parent)
 {
 	modules_manager->moduleIncUsageCount("default_sms");
-};
+}
 
 SmsEraGateway::~SmsEraGateway()
 {
@@ -263,12 +262,12 @@ void SmsEraGateway::send(const QString& number,const QString& message, const QSt
 	
 	Http.post(path,post_data);
 
-};
+}
 
 bool SmsEraGateway::isNumberCorrect(const QString& number)
 {
 	return ((number[0]=='6'&&((QChar(number[2])-'0')%2)==0) || (number[0]=='8' && number[1]=='8' && number[2]=='8'));
-};
+}
 
 void SmsEraGateway::httpRedirected(QString link)
 {
@@ -282,7 +281,7 @@ void SmsEraGateway::httpRedirected(QString link)
 		}		
 		else 
 			QMessageBox::critical(p,"SMS",tr("Provider gateway results page looks strange. SMS was probably NOT sent."));
-};
+}
 
 QString SmsEraGateway::errorNumber(int nr)
 {
@@ -309,7 +308,7 @@ QString SmsEraGateway::errorNumber(int nr)
 
 void SmsEraGateway::httpFinished()
 {
-};
+}
 
 SmsGatewaySlots::SmsGatewaySlots()
 {
@@ -363,7 +362,7 @@ void SmsGatewaySlots::onChangeEraGateway(int gateway)
 	e_erauser->setText(config_file.readEntry("SMS", "EraGateway_"+cb_typegateway->currentText()+"_User"));
 	e_erapassword->setText(config_file.readEntry("SMS", "EraGateway_"+cb_typegateway->currentText()+"_Password"));
 	actualEraGateway=cb_typegateway->text(gateway);
-};
+}
 
 void SmsGatewaySlots::onApplyConfigDialog()
 {
@@ -376,7 +375,7 @@ void SmsGatewaySlots::onApplyConfigDialog()
 	QLineEdit *e_erapassword= ConfigDialog::getLineEdit("SMS", "Password");
 	config_file.writeEntry("SMS", "EraGateway_"+config_file.readEntry("SMS", "EraGateway")+"_Password", e_erapassword->text());
 	config_file.writeEntry("SMS", "EraGateway_"+config_file.readEntry("SMS", "EraGateway")+"_User", e_erauser->text());
-};
+}
 
 void SmsGatewaySlots::onCloseConfigDialog()
 {
@@ -403,7 +402,7 @@ void SmsGatewaySlots::onCreateConfigDialog()
 	e_erauser->setText(config_file.readEntry("SMS", "EraGateway_"+config_file.readEntry("SMS", "EraGateway")+"_User"));
 
 	modules_manager->moduleIncUsageCount("default_sms");
-};
+}
 
 SmsGateway* SmsGatewaySlots::isValidIdea(QString& number, QObject* parent)
 {

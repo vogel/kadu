@@ -14,8 +14,6 @@
 #include "debug.h"
 #include "config_dialog.h"
 #include "events.h"
-#include "modules.h"
-//#include "userlist.h"
 #include "chat.h"
 #include <stdlib.h>
 #include <time.h>
@@ -23,12 +21,6 @@
 extern "C" int speech_init()
 {
 	kdebugf();
-
-
-	//QT_TRANSLATE_NOOP("@default", "man %a said %1");
-	//QT_TRANSLATE_NOOP("@default", "woman %a said %1");
-	//QT_TRANSLATE_NOOP("@default", "man %a changed status to %s %d");
-	//QT_TRANSLATE_NOOP("@default", "woman %a changed status to %s %d");
 
 	speechObj=new SpeechSlots();
 

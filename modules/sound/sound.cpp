@@ -20,7 +20,6 @@
 #include "config_file.h"
 #include "config_dialog.h"
 #include "kadu.h"
-#include "status.h"
 
 SoundManager* sound_manager=NULL;
 SoundSlots* soundslots;
@@ -37,11 +36,6 @@ extern "C" int sound_init()
 	QObject::connect(&userlist, SIGNAL(changingStatus(const UinType, const unsigned int, const unsigned int)),
 		sound_manager, SLOT(notifySound(const UinType, const unsigned int, const unsigned int)));
 
-	//potrzebne do translacji
-	
-//	QT_TRANSLATE_NOOP("@default","Message sound");
-//	QT_TRANSLATE_NOOP("@default","Notify sound");
-						
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Notify"));
 	ConfigDialog::addVGroupBox("Notify", "Notify", QT_TRANSLATE_NOOP("@default", "Notify options"));
 	ConfigDialog::addCheckBox("Notify", "Notify options",
