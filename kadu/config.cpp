@@ -212,6 +212,8 @@ void saveKaduConfig(void) {
 	konf->writeEntry("ChatUsrBgColor", config.colors.chatUsrBgColor);
 	konf->writeEntry("ChatMyFontColor", config.colors.chatMyFontColor);
 	konf->writeEntry("ChatUsrFontColor", config.colors.chatUsrFontColor);
+
+	konf->setGroup("Fonts");
 	konf->writeEntry("UserboxFont", config.fonts.userboxFont);
 	konf->writeEntry("UserboxFontSize", config.fonts.userboxFontSize);
 	konf->writeEntry("ChatFont", config.fonts.chatFont);
