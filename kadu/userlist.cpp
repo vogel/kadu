@@ -22,6 +22,7 @@
 #include <iostream.h>
 //#include <unistd.h>
 #include <stdlib.h>
+#include <sys/stat.h>
 
 static char *get_token(char **ptr, char sep)
 {
@@ -157,15 +158,15 @@ int UserList::writeToFile(char *filename)
 		QString s="";
 		s.append((*i).first_name);
 		s.append(QString(";"));
-		s.append((*i).last_name));
+		s.append((*i).last_name);
 		s.append(QString(";"));
-		s.append((*i).comment));
+		s.append((*i).comment);
 		s.append(QString(";"));
-		s.append((*i).nickname));
+		s.append((*i).nickname);
 		s.append(QString(";"));
-		s.append((*i).mobile));
+		s.append((*i).mobile);
 		s.append(QString(";"));
-		s.append((*i).group));
+		s.append((*i).group);
 		s.append(QString(";"));
 		s.append(QString::number((*i).uin));
 		s.append(QString("\r\n"));
