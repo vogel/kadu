@@ -1061,7 +1061,7 @@ void Chat::sendMessage(void) {
 	myLastMessage = mesg;
 	if (myLastFormatsLength)
 		myLastMessage = formatGGMessage(myLastMessage, myLastFormatsLength - sizeof(struct gg_msg_richtext),
-			(void *)((char *)(myLastFormats) + sizeof(struct gg_msg_richtext)));
+			(void *)((char *)(myLastFormats) + sizeof(struct gg_msg_richtext)),0);
 	else
 		escapeSpecialCharacters(myLastMessage);
 	kdebug("Chat::sendMessage():\n%s\n", myLastMessage.latin1());

@@ -40,7 +40,10 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   katalogu z modu³em, poprawna dla komp. stat. i dynam., mo¿na u¿yæ np. w
   MODULE_LDFLAGS, bo modu³ mo¿e siê linkowaæ w katalogu kadu lub modules (adrian)
 * gdy kto¶ wysy³a nam obrazek wklejony w tekst widaæ w tym miejscu
-  oznaczenie [[[OBRAZEK]]] - taka chwilowa proteza, dzia³a do 44kb (adrian)
+  oznaczenie [[[OBRAZEK]]] - taka chwilowa proteza (adrian)
+* odbierane obrazki zapisywane s± w katalogu .gg/images pod nazw±
+  uin_nadawcy-wielkosc-crc32-nazwa_pliku, podziekowania dla masieq
+  za wsparcie z platformy win32 ;) (adrian)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

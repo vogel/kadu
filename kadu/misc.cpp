@@ -22,6 +22,7 @@
 #include "config_file.h"
 #include "config_dialog.h"
 #include "status.h"
+#include "gadu.h"
 #include "debug.h"
 #include "kadu-config.h"
 
@@ -219,12 +220,14 @@ void escapeSpecialCharacters(QString &msg) {
 	msg.replace(QRegExp(">"), "&gt;");
 }
 
-QString formatGGMessage(const QString &msg, int formats_length, void *formats) {
+QString formatGGMessage(const QString &msg, int formats_length, void *formats, uin_t sender)
+{
 	QString mesg, tmp;
 	bool bold, italic, underline, color, inspan;
 	char *cformats = (char *)formats;
 	struct gg_msg_richtext_format *actformat;
 	struct gg_msg_richtext_color *actcolor;
+	struct gg_msg_richtext_image* actimage;
 	int pos, idx;
 
 	kdebug("formatGGMessage()\n");
@@ -266,6 +269,12 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats) {
 				if (actformat->font & GG_FONT_IMAGE) {
 					idx = int((unsigned char)cformats[0]);
 					kdebug("formatGGMessage(): I got image probably: header_length = %d\n", idx);
+					actimage = (struct gg_msg_richtext_image*)(cformats
+							/*+ sizeof(struct gg_msg_richtext_color)*/);
+					kdebug(QString("Image size: %1, crc32: %2\n").arg(actimage->size).arg(actimage->crc32).local8Bit().data());
+					gadu->sendImageRequest(sender,
+						actimage->size,
+						actimage->crc32);
 					mesg.append("[[[OBRAZEK]]]");
 					cformats += idx + 1;
 					formats_length -= idx + 1;

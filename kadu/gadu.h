@@ -45,6 +45,10 @@ class GaduProtocol : public QObject
 			przypadkiem mysli chcieli sledzic jej potwierdzenie.
 		**/
 		int sendMessageRichText(const UinsList& uins,const char* msg,unsigned char* myLastFormats,int myLastFormatsLength);
+		/**
+			Wysy³a pro¶bê o przys³anie obrazka.
+		**/
+		bool sendImageRequest(uin_t uin,int size,uint32_t crc32);
 
 	public slots:
 		void sendUserList();	

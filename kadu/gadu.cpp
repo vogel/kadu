@@ -120,5 +120,12 @@ void GaduProtocol::sendUserList()
 	free(types);
 }
 
+bool GaduProtocol::sendImageRequest(uin_t uin,int size,uint32_t crc32)
+{
+	kdebugf();
+	int res = gg_image_request(sess, uin, size, crc32);
+	return (res==0);
+	kdebugf2();
+}
 
 GaduProtocol* gadu;

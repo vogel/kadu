@@ -98,6 +98,8 @@ EventManager::EventManager()
 		this, SLOT(systemMessageReceivedSlot(QString &, QDateTime &, int, void *)));
 	connect(this,SIGNAL(chatMsgReceived2(UinsList,const QString&,time_t)),
 		this,SLOT(chatMsgReceived2Slot(UinsList,const QString&,time_t)));
+	connect(this,SIGNAL(imageReceived(uin_t,uint32_t,uint32_t,const QString&,const char*)),
+		this,SLOT(imageReceivedSlot(uin_t,uint32_t,uint32_t,const QString&,const char*)));
 	connect(this,SIGNAL(ackReceived(int)),this,SLOT(ackReceivedSlot(int)));
 	connect(this,SIGNAL(dccConnectionReceived(const UserListElement&)),
 		this,SLOT(dccConnectionReceivedSlot(const UserListElement&)));
@@ -249,7 +251,7 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 		return;
 		}
 
-	mesg = formatGGMessage(mesg, formats_length, formats);
+	mesg = formatGGMessage(mesg, formats_length, formats, senders[0]);
 
 	if(!userlist.containsUin(senders[0]))
 		userlist.addAnonymous(senders[0]);
@@ -281,6 +283,19 @@ void EventManager::chatMsgReceived2Slot(UinsList senders,const QString& msg,time
 	if(config_file.readBoolEntry("Chat","OpenChatOnMessage"))
 		pending.openMessages();
 }
+
+void EventManager::imageReceivedSlot(uin_t sender,uint32_t size,uint32_t crc32,const QString& filename,const char* data)
+{
+	kdebug(QString("Received image. sender: %1, size: %2, crc32: %3,filename: %4\n").arg(sender).arg(size).arg(crc32).arg(filename).local8Bit().data());
+	QString path = ggPath("images");
+	kdebug("Creating directory: %s\n",path.local8Bit().data());
+	QDir().mkdir(path);
+	QString file_name = QString("%1-%2-%3-%4").arg(sender).arg(size).arg(crc32).arg(filename);
+	kdebug("Saving image as file: %s\n",file_name.local8Bit().data());
+	QFile f(path+"/"+file_name);
+	f.open(IO_WriteOnly);
+	f.writeBlock(data,size);
+}	
 
 void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)
 {
@@ -609,8 +624,19 @@ void EventManager::eventHandler(gg_session* sess)
 			}
 		}
 
+	if (e->type == GG_EVENT_IMAGE_REPLY)
+	{
+		kdebug("Image reply received\n");
+		emit imageReceived(
+			e->event.image_reply.sender,
+			e->event.image_reply.size,
+			e->event.image_reply.crc32,
+			e->event.image_reply.filename,
+			e->event.image_reply.image);
+	}
+
 	if (e->type == GG_EVENT_STATUS60 || e->type == GG_EVENT_STATUS)
-		emit event_manager.userStatusChanged(e);
+		emit userStatusChanged(e);
 
 	if (e->type == GG_EVENT_ACK) {
 		kdebug("EventManager::eventHandler(): message reached %d (seq %d)\n",
