@@ -108,6 +108,12 @@ void UserlistImport::updateUserlist() {
 	
 	fprintf(stderr, "KK UserlistImport::updateUserlist()\n");
 	
+	i = 0;
+	while (i < userlist.count()) {
+		gg_remove_notify(&sess, userlist[i].uin);
+		i++;
+		}
+
 	userlist = importedUserlist;
 //	importedUserlist.clear();
 	
@@ -117,6 +123,12 @@ void UserlistImport::updateUserlist() {
 		kadu->userbox->addUin(userlist[i].uin);
 		
 	kadu->userbox->refresh();
+
+	i = 0;
+	while (i < userlist.count()) {
+		gg_add_notify(&sess, userlist[i].uin);
+		i++;
+		}
 
 	uin_t *uins;
 	uins = (uin_t *) malloc(userlist.count() * sizeof(uin_t));
