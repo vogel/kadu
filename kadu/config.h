@@ -80,6 +80,7 @@ class ConfigDialog : public QTabDialog	{
 		QHBox     *webhbox1;
 		QCheckBox *b_defwebbrowser;
 		QLineEdit *e_webbrowser;
+		QCheckBox *b_ignoreanonusers;
 
 		QVGroupBox *notifybox;
 		QHBox *panebox;

@@ -106,6 +106,7 @@ void loadKaduConfig(void) {
 	config.chatprunelen = konf->readNumEntry("ChatPruneLen",20);
 	config.msgacks = konf->readBoolEntry("MessageAcks", true);
 	config.blinkchattitle = konf->readBoolEntry("BlinkChatTitle", true);
+	config.ignoreanonusers = konf->readBoolEntry("IgnoreAnonymousUsers", false);
 
 	konf->setGroup("Notify");
 	config.soundnotify = strdup(konf->readEntry("NotifySound", ""));
@@ -200,6 +201,7 @@ void saveKaduConfig(void) {
 	konf->writeEntry("ChatPruneLen",config.chatprunelen);
 	konf->writeEntry("MessageAcks", config.msgacks);
 	konf->writeEntry("BlinkChatTitle", config.blinkchattitle);
+	konf->writeEntry("IgnoreAnonymousUsers", config.ignoreanonusers);
 
 	konf->setGroup("Proxy");
 	konf->writeEntry("UseProxy",config.useproxy);
@@ -584,6 +586,10 @@ void ConfigDialog::setupTab3(void) {
 	b_blinkchattitle = new QCheckBox(box3);
 	b_blinkchattitle->setText(i18n("Flash chat title on new message"));
 	b_blinkchattitle->setChecked(config.blinkchattitle);
+
+	b_ignoreanonusers = new QCheckBox(box3);
+	b_ignoreanonusers->setText(i18n("Ignore messages from anonymous users"));
+	b_ignoreanonusers->setChecked(config.ignoreanonusers);
 
 	addTab(box3, i18n("Chat"));
 }
@@ -1200,6 +1206,7 @@ void ConfigDialog::updateConfig(void) {
 	config.chatprunelen = atoi(e_chatprunelen->text().latin1());
 	config.msgacks = b_msgacks->isChecked();
 	config.blinkchattitle = b_blinkchattitle->isChecked();
+	config.ignoreanonusers = b_ignoreanonusers->isChecked();
 	config.defaultwebbrowser = b_defwebbrowser->isChecked();
 	config.webbrowser = e_webbrowser->text();
 

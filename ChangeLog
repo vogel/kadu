@@ -24,6 +24,7 @@
   "tylko dla znajomych"
 * poprawione wysy³anie smsów (przez bramka.org). znowu dzia³a idea.
 * wy¶wietlanie hintów przy ikonce w docku - experimental
+* mo¿liwo¶æ ignorowania wiadomo¶ci od u¿ytkowników spoza listy kontaktów
 
 +++ wersja 0.3.3-pre1
 * automatyczna kompilacja programu sms

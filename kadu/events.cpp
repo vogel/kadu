@@ -69,10 +69,13 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 	QString nick;
 	if (userlist.containsUin(senders[0]))
 		nick = userlist.byUin(senders[0]).altnick;
-	else if (senders[0] != config.uin) {
-		nick = QString::number(senders[0]);
-		kadu->addUser("", "", nick, nick, "", nick, GG_STATUS_NOT_AVAIL, "", "", true);
-		}
+	else
+		if (senders[0] != config.uin) {
+			if (config.ignoreanonusers)
+				return;
+			nick = QString::number(senders[0]);
+			kadu->addUser("", "", nick, nick, "", nick, GG_STATUS_NOT_AVAIL, "", "", true);
+			}
 	if (config.logmessages && senders[0] != config.uin)
 		appendHistory(senders, senders[0], msg, FALSE, time);
 

@@ -96,7 +96,8 @@ struct config {
 	bool chatprune;
 	bool msgacks;
 	bool blinkchattitle;
- 
+	bool ignoreanonusers;
+
 	bool autoaway;
 	int autoawaytime;
 
