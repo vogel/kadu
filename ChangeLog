@@ -68,7 +68,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dodany modul joi'a do obslugi serwera dzwieku arts + moje przerobki (adrian)
 * dodane pozostale trzy moduly joi'a do obslugi serwerow dzwieku:
   dsp_sound, esd_sound i nas_sound (adrian)
-* nie dzia³a wyszkukiwanie niewidocznych - kod w search.cpp zakomentowany (chilek)
+* nie dzia³a wyszukiwanie niewidocznych - kod w search.cpp zakomentowany (chilek)
 * gdy mamy siebie na li¶cie kontaktów kadu wy¶wietla nasz status i opis (chilek)
 * wydzielenie szyfrowania przez ssl do modulu "encryption" oraz zwiazane
   z tym nowe mechanizmy dla modulow (adrian)
@@ -97,9 +97,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * na³o¿ona ³ata joi-a przyspieszaj±ca parsera i dodaj±ca w nim mo¿liwo¶æ wstawiania
   wyj¶cia zewnêtrznych poleceñ pow³oki (chilek)
 * w oknie historii pokazywane s± daty rozmów (chilek)
-* w oknie historii pokazywani s± rozmówcy (przegl±danie wys³anych SMSów na razie
-  nie dzia³a) (chilek)
+* w oknie historii pokazywani s± rozmówcy (chilek)
 * dodana mo¿liwo¶æ przegl±dania historii wys³anych smsów (chilek)
+* nie znika nam opis przy problemach z po³±czeniem? (chilek)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
