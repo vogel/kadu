@@ -179,6 +179,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dodana kontrola g³o¶no¶ci w module nas_sound (joi)
 * je¿eli wywróci siê demon arts to Kadu siê tym nie przejmie ;) (joi)
 * przycisk "Zastosuj" w konfiguracji (joi)
+* klikniecie srodkowym przyciskiem myszy na dymek nowej rozmowy otwiera
+  okno chat-a (michal)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

@@ -23,6 +23,7 @@ class Hint : public QHBoxLayout
 		QColor bcolor;
 		unsigned int secs;
 		unsigned int ident;
+		uin_t uin;
 		void enter();
 		void leave();
 
@@ -30,10 +31,12 @@ class Hint : public QHBoxLayout
 		Hint(QWidget *parent, const QString &text, const QPixmap &pixmap, unsigned int timeout);
 		~Hint();
 		void setId(unsigned int id) {ident = id;}
+		void setUin(uin_t i) { uin=i; };
+		uin_t getUin() { return uin ; };
 		unsigned int id() const {return ident;}
 
 	protected:
-		bool eventFilter(QObject *obj, QEvent *ev);
+		bool eventFilter(QObject *obj, QEvent *ev);		
 
 	public slots:
 		bool nextSecond();
@@ -61,7 +64,7 @@ class HintManager : public QFrame
 	public:
 		HintManager();
 		static void initModule();
-		void addHint(const QString &, const QPixmap &, const QFont &, const QColor &, const QColor &, unsigned int);
+		void addHint(const QString &, const QPixmap &, const QFont &, const QColor &, const QColor &, unsigned int, uin_t=0);
 		void addHintError(const QString &);
 		void addHintNewMsg(const QString &, const QString &);
 		void addHintNewChat(const QString &, const QString &);
