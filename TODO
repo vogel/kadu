@@ -1,11 +1,5 @@
-/** TODO, stan na 08/10/2002. **/
-(TODO mo¿e byæ "trochê" nieaktualne... zapraszamy na kadu.net/forum)
-
-*******************************************
-Do Teamu Kadu:
-Na kolana i dziêkujcie ;)
-Adrian
-*******************************************
+/** TODO, stan na 13/10/2002. **/
+(TODO mo¿e byæ nieaktualne... zapraszamy na kadu.net/forum)
 
 
  Legenda
@@ -31,15 +25,12 @@ Adrian
  + zrobiæ skórki (Licq)
  + dopracowaæ grupy
  + dokoñczyæ rozmowy g³osowe
- + automatyczna kompilacja sms jako kadusms i domy¶lne wywo³anie tego
-   programu
+ + mo¿liwo¶æ wy³±czenia kompilacji kadusms
+ + domy¶lne wywo³anie kadusms
  + mrugaj±cy tytu³ okna chat (zminimalizowanego te¿) przy doj¶ciu nowej wiad.
  + mrugaj±ca koperta nowej wiadomo¶ci
  + historia wys³anych sms'ów
  + w konfiguracji przy ustawieniach powiadomienia opcja dodania wszystkich
- + uporz±dkowaæ opcjê wysy³ania sms: brak opcji, je¶li osoba nie ma
-   numeru, osobna opcja w menu g³ównym do wysy³ania sms'a pod wpisany z
-   klawiatury numer.
  + autoryzacja proxy
  + dodaæ domy¶lnie strip do makefile'a i opcjê --enable-debug
  ? wykrywanie niewidocznych jako opcja

@@ -27,7 +27,8 @@ Sms::Sms(const QString& altnick, QDialog* parent) : QDialog (parent, "Sms")
 	QObject::connect(body, SIGNAL(textChanged()), this, SLOT(updateCounter()));
 
 	recipient = new QLineEdit(this);
-	recipient->setText(userlist.byAltNick(altnick).mobile);
+	if(altnick!="")
+		recipient->setText(userlist.byAltNick(altnick).mobile);
 	QObject::connect(recipient,SIGNAL(textChanged(const QString&)),this,SLOT(updateList(const QString&)));
 	grid->addWidget(recipient, 0, 1);
 

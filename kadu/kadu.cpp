@@ -183,6 +183,7 @@ enum {
 	KADU_CMD_ABOUT,
 	KADU_CMD_SEND_USERLIST,
 	KADU_CMD_SMS,
+	KADU_CMD_MAINMENU_SMS,
 	KADU_CMD_REMIND_PASSWORD,
 	KADU_CMD_REGISTER_USER,
 	KADU_CMD_QUIT,
@@ -955,6 +956,10 @@ void Kadu::commandParser (int command) {
 		case KADU_CMD_SMS:
 			Sms *sms;
 			sms = new Sms(userbox->currentText(), 0);
+			sms->show();
+			break;
+		case KADU_CMD_MAINMENU_SMS:
+			sms = new Sms("", 0);
 			sms->show();
 			break;
 		case KADU_CMD_REMIND_PASSWORD:
@@ -1878,7 +1883,8 @@ ppm->insertSeparator();
 	ppm->insertItem(i18n("I&mport userlist"), KADU_CMD_IMPORT_USERLIST);
 	ppm->insertItem(i18n("E&xport userlist"), KADU_CMD_EXPORT_USERLIST);
 	ppm->insertItem(QPixmap((const char **)gg_act_xpm),i18n("&Add user"), KADU_CMD_ADD_USER);
-	ppm->insertSeparator();
+	ppm->insertItem(i18n("Send SMS"), KADU_CMD_MAINMENU_SMS);
+	ppm->insertSeparator();	
 	ppm->insertItem(i18n("A&bout..."), KADU_CMD_ABOUT);
 	ppm->insertSeparator();
 	ppm->insertItem(i18n("&Hide Kadu"), KADU_CMD_HIDE);
