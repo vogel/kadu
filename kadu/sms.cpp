@@ -263,7 +263,7 @@ void SmsSender::onFinished()
 			};
 			QString code=code_regexp.cap(1);
 			State=SMS_LOADING_RESULTS;
-			QString post_data="bookopen=&numer="+Number+"&ksiazka=ksi%B1%BFka+telefoniczna&message="+Http.encode(Message)+"&podpis=Kadu&kontakt=&code="+code+"&Nadaj=Nadaj";
+			QString post_data="bookopen=&numer="+Number+"&ksiazka=ksi%B1%BFka+telefoniczna&message="+Http.encode(Message)+"&podpis="+config.nick+"&kontakt=&code="+code+"&Nadaj=Nadaj";
 			Http.post("sms/sendsms.asp",post_data);
 		};
 	}
@@ -334,7 +334,7 @@ void SmsSender::onCodeEntered(const QString& code)
 {
 	fprintf(stderr,"SMS User entered the code\n");
 	State=SMS_LOADING_RESULTS;
-	QString post_data=QString("token=")+Token+"&SENDER=Kadu&RECIPIENT="+Number+"&SHORT_MESSAGE="+Http.encode(Message)+"&pass="+code;
+	QString post_data=QString("token=")+Token+"&SENDER="+config.nick+"&RECIPIENT="+Number+"&SHORT_MESSAGE="+Http.encode(Message)+"&pass="+code;
 	Http.post("sendsms.asp",post_data);
 };
 
@@ -383,7 +383,7 @@ void SmsSender::send(const QString& number,const QString& message)
 	{
 		State=SMS_LOADING_RESULTS;
 		Http.setHost("212.2.96.57");
-		QString post_data="tprefix="+Number.left(3)+"&numer="+Number.right(6)+"&odkogo=Kadu&tekst="+Message;
+		QString post_data="tprefix="+Number.left(3)+"&numer="+Number.right(6)+"&odkogo="+config.nick+"&tekst="+Message;
 		Http.post("sms/sendsms.php",post_data);
 	};
 };
