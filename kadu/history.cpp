@@ -543,7 +543,7 @@ int HistoryManager::getHistoryEntriesCountPrivate(const QString &filename) {
 	f.setName(path + filename + ".idx");
 	if (!(f.open(IO_ReadOnly))) {
 		kdebug("HistoryManager::getHistoryEntriesCountPrivate(const QString &filename): Error opening history file %s\n", (const char *)filename.local8Bit());
-		return -1;
+		return 0;
 		}
 	lines = f.size() / sizeof(int);
 //	buffer = f.readAll();
@@ -1006,8 +1006,8 @@ int HistoryManager::getHistoryEntryIndexByDate(UinsList uins, QDateTime &date, b
 					return start + ((end - start) / 2);
 		}
 	if (end < 0) {
-		kdebug("HistoryManager::getHistoryEntryIndexByDate(): return minus one\n");
-		return -1;
+		kdebug("HistoryManager::getHistoryEntryIndexByDate(): return zero\n");
+		return 0;		
 		}
 	if (start >= count) {
 		kdebug("HistoryManager::getHistoryEntryIndexByDate(): return count\n");

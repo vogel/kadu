@@ -100,6 +100,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * drugi patch porz±dkuj±cy vogela: szukanie i (wy)rejestrowanie (adrian)
 * patch kida - blokada wysy³ania pustych wiadomo¶ci (adrian)
 * Instalator - dodano wybór nowych modu³ów (Ron_K)
+* kadu sie nie zapetla przy otwieraniu nowej rozmowy jesli mamy pusta
+  historie (michal)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
