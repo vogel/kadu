@@ -41,8 +41,10 @@ KaduListBoxPixmap::KaduListBoxPixmap(const QPixmap &pix, const QString &text, co
 }
 
 void KaduListBoxPixmap::paint(QPainter *painter) {
+	bool isOurUin;
 	UserListElement &user = userlist.byAltNick(text());
 	if (user.uin) {
+		isOurUin = (config_file.readNumEntry("General", "UIN") == user.uin);
 		UinsList uins;
 		uins.append(user.uin);
 		if (user.blocking) {
@@ -83,24 +85,28 @@ void KaduListBoxPixmap::paint(QPainter *painter) {
 
 		QFontMetrics fm = painter->fontMetrics();
 
-		if (description().isEmpty() || !config_file.readBoolEntry("Look", "ShowDesc"))
-			yPos = ((itemHeight - fm.height()) / 2) + fm.ascent();
-		else
+		if (config_file.readBoolEntry("Look", "ShowDesc") && (!description().isEmpty()
+			|| (!own_description.isEmpty() && isOurUin)))
 			yPos = fm.ascent() + 1;
+		else
+			yPos = ((itemHeight - fm.height()) / 2) + fm.ascent();
 
 		painter->drawText(pm.width() + 5, yPos, text());
 
 		if (bold)
 			painter->setFont(oldFont);
 
-		if (!description().isEmpty() && config_file.readBoolEntry("Look", "ShowDesc")) {
+//		kdebug("KaduListBoxPixmap::paint(): isOurUin = %d, own_description = %s\n",
+//			isOurUin, (const char *)unicode2latin(own_description));
+		if (config_file.readBoolEntry("Look", "ShowDesc") && (!description().isEmpty()
+			|| (!own_description.isEmpty() && isOurUin))) {
 			yPos += fm.height() - fm.descent();
 
 			QFont newFont = QFont(oldFont);
 			newFont.setPointSize(oldFont.pointSize() - 2);
 			painter->setFont(newFont);
 
-			painter->drawText(pm.width() + 5, yPos, description());
+			painter->drawText(pm.width() + 5, yPos, isOurUin ? own_description : description());
 
 			painter->setFont(oldFont);
 		}
@@ -281,7 +287,11 @@ void UserBox::refresh()
 	QStringList b_users;
 	for (i = 0; i < Users.count(); i++) {
 		UserListElement &user = userlist.byAltNick(Users[i]);
-		if (user.uin)
+		if (user.uin) {
+			if (user.uin == config_file.readNumEntry("General", "UIN")) {
+				user.status = getActualStatus() & (~GG_STATUS_FRIENDS_MASK);
+				user.description = own_description;
+				}
 			switch (user.status) {
 				case GG_STATUS_AVAIL:
 				case GG_STATUS_AVAIL_DESCR:
@@ -297,6 +307,7 @@ void UserBox::refresh()
 				default:
 					n_users.append(user.altnick);
 				}
+			}
 		else
 			b_users.append(user.altnick);
 		}

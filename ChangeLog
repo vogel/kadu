@@ -69,6 +69,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dodane pozostale trzy moduly joi'a do obslugi serwerow dzwieku:
   dsp_sound, esd_sound i nas_sound (adrian)
 * nie dzia³a wyszkukiwanie niewidocznych - kod w search.cpp zakomentowany (chilek)
+* gdy mamy siebie na li¶cie kontaktów kadu wy¶wietla nasz status i opis (chilek)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

@@ -563,20 +563,21 @@ void Kadu::popupMenu()
 	UserList users;
 	users = UserBox::getActiveUserBox()->getSelectedUsers();
 	UserListElement user = users.first();
+	bool isOurUin = (user.uin == config_file.readNumEntry("General", "UIN"));
 
-	if (!user.mobile.length() || (users.count() !=1))
-	    UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("Send SMS")), false);
+	if (!user.mobile.length() || users.count() != 1)
+		UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("Send SMS")), false);
 
-	int voicechat= UserBox::userboxmenu->getItem(tr("Voice chat"));
-	int sendfile= UserBox::userboxmenu->getItem(tr("Send file"));
+	int voicechat = UserBox::userboxmenu->getItem(tr("Voice chat"));
+	int sendfile = UserBox::userboxmenu->getItem(tr("Send file"));
 
-	if ((dccSocketClass::count >= 8) && (users.count() != 1)){
+	if (dccSocketClass::count >= 8 && users.count() != 1) {
 		UserBox::userboxmenu->setItemEnabled(sendfile, false);
 		UserBox::userboxmenu->setItemEnabled(voicechat, false);
 		}
-	if ((users.count() == 1)&& ((config_file.readBoolEntry("Network", "AllowDCC")) &&
+	if (users.count() == 1 && (config_file.readBoolEntry("Network", "AllowDCC") &&
 		(user.status == GG_STATUS_AVAIL || user.status == GG_STATUS_AVAIL_DESCR ||
-		user.status == GG_STATUS_BUSY || user.status == GG_STATUS_BUSY_DESCR))) {
+		user.status == GG_STATUS_BUSY || user.status == GG_STATUS_BUSY_DESCR)) && !isOurUin) {
 			UserBox::userboxmenu->setItemEnabled(sendfile, true);
 			UserBox::userboxmenu->setItemEnabled(voicechat, true);
 			}
@@ -586,7 +587,7 @@ void Kadu::popupMenu()
 			}
 
 #ifdef HAVE_OPENSSL
-	int sendkeyitem= UserBox::userboxmenu->getItem(tr("Send my public key"));
+	int sendkeyitem = UserBox::userboxmenu->getItem(tr("Send my public key"));
 	QString keyfile_path;
 
 	keyfile_path.append(ggPath("keys/"));
@@ -594,7 +595,7 @@ void Kadu::popupMenu()
 	keyfile_path.append(".pem");
 
 	QFileInfo keyfile(keyfile_path);
-	if ((keyfile.permission(QFileInfo::ReadUser) && user.uin) && (users.count() == 1))
+	if (keyfile.permission(QFileInfo::ReadUser) && user.uin && users.count() == 1 && !isOurUin)
 		UserBox::userboxmenu->setItemEnabled(sendkeyitem, true);
 	else
 		UserBox::userboxmenu->setItemEnabled(sendkeyitem, false);
@@ -606,7 +607,7 @@ void Kadu::popupMenu()
 	int notifyuseritem= UserBox::userboxmenu->getItem(tr("Notify about user"));
 	int offlinetouseritem= UserBox::userboxmenu->getItem(tr("Offline to user"));
 
-	if (!user.uin) {
+	if (!user.uin || isOurUin) {
 		UserBox::userboxmenu->setItemEnabled(ignoreuseritem, false);
 		UserBox::userboxmenu->setItemEnabled(blockuseritem, false);
 		UserBox::userboxmenu->setItemEnabled(notifyuseritem, false);
@@ -627,19 +628,19 @@ void Kadu::popupMenu()
 			UserBox::userboxmenu->setItemChecked(notifyuseritem, true);
 		}
 
-	int deletehistoryitem= UserBox::userboxmenu->getItem(tr("Clear history"));
-	int historyitem= UserBox::userboxmenu->getItem(tr("View history"));
-	int searchuser= UserBox::userboxmenu->getItem(tr("Lookup in directory"));
-	if ((!user.uin) ) {
+	int deletehistoryitem = UserBox::userboxmenu->getItem(tr("Clear history"));
+	int historyitem = UserBox::userboxmenu->getItem(tr("View history"));
+	int searchuser = UserBox::userboxmenu->getItem(tr("Lookup in directory"));
+	if (!user.uin || isOurUin) {
 		UserBox::userboxmenu->setItemEnabled(deletehistoryitem, false);
 		UserBox::userboxmenu->setItemEnabled(historyitem, false);
-
 		}
-		if ((users.count() != 1) || (!user.uin)) UserBox::userboxmenu->setItemEnabled(searchuser, false);
-		if (users.count() != 1)
-			UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("View/edit user info")), false);
-
-	if (!user.uin)	UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("Open chat window")), false);
+	if (users.count() != 1 || !user.uin)
+		UserBox::userboxmenu->setItemEnabled(searchuser, false);
+	if (users.count() != 1)
+		UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("View/edit user info")), false);
+	if (!user.uin || isOurUin)
+		UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("Open chat window")), false);
 }
 
 
@@ -1285,8 +1286,10 @@ void Kadu::setStatus(int status) {
 					status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General", "PrivateStatus")), (const char *)descr);
 			free(descr);
 			}
-		else
+		else {
 			gg_change_status(sess, status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General", "PrivateStatus")));
+			own_description = QString::null;
+			}
 		if (sess->check & GG_CHECK_WRITE)
 			kadusnw->setEnabled(true);
 
@@ -1299,6 +1302,7 @@ void Kadu::setStatus(int status) {
 		**/
 		if (status != GG_STATUS_NOT_AVAIL && status != GG_STATUS_NOT_AVAIL_DESCR)
 			loginparams.status = status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General", "PrivateStatus"));
+		UserBox::all_refresh();
 		return;
 		}
 
