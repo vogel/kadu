@@ -353,7 +353,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * usuniêty wyciek pamiêci z okna konfiguracji (joi)
 * api do obs³ugi nagrywania i odtwarzania próbek w module sound (adrian)
 * obs³uga nagrywania i odtwarzania próbek w module dsp_sound (adrian)
-* zaaplikowana ³atka Dorra do config_wizarda teraz okienka ju¿ pracuj± jak nale¿y i podgl±d dla tematów panela info jest prawid³owy
+* zaaplikowana ³atka Dorra do config_wizarda teraz okienka ju¿ pracuj± jak nale¿y i podgl±d dla tematów panela info jest prawid³owy (Ron_K)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
