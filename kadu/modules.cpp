@@ -98,26 +98,14 @@ ModulesDialog::ModulesDialog()
 	connect(UnloadButton,SIGNAL(clicked()),
 		this,SLOT(unloadSelectedItem()));
 
-	QRect def_rect(0, 0, 450, 400);
-	config_file.addVariable("General", "ModulesDialogGeometry", def_rect);
-
-	QRect geom=config_file.readRectEntry("General", "ModulesDialogGeometry");
-	resize(geom.width(),geom.height());
-	move(geom.x(),geom.y());
-
+	loadGeometry(this, "General", "ModulesDialogGeometry", 0, 0, 450, 400);
 	refreshLists();
 }
 
 ModulesDialog::~ModulesDialog()
 {
 	kdebugf();
-	QRect geom;
-	geom.setX(pos().x());
-	geom.setY(pos().y());
-	geom.setWidth(size().width());
-	geom.setHeight(size().height());
-	
-	config_file.writeEntry("General", "ModulesDialogGeometry",geom);
+	saveGeometry(this, "General", "ModulesDialogGeometry");
 }
 
 void ModulesDialog::loadItem(QListBoxItem* item)

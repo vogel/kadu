@@ -95,24 +95,13 @@ About::About() {
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 	// end close button
 
-	QRect def_rect(20, 20, 580, 400);
-	config_file.addVariable("General", "AboutGeometry", def_rect);
-
-	QRect geom=config_file.readRectEntry("General", "AboutGeometry");
-	resize(geom.width(),geom.height());
-	move(geom.x(),geom.y());
+	loadGeometry(this, "General", "AboutGeometry", 20, 20, 580, 400);
 }
 
 About::~About()
 {
 	kdebugf();
-	QRect geom;
-	geom.setX(pos().x());
-	geom.setY(pos().y());
-	geom.setWidth(size().width());
-	geom.setHeight(size().height());
-	
-	config_file.writeEntry("General", "AboutGeometry", geom);
+	saveGeometry(this, "General", "AboutGeometry");
 }
 
 QString About::loadFile(const QString &name)

@@ -122,6 +122,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * w dymku w tray-u pokazuje siê w³asny status i opis (michal)
 * poprawiony uk³ad komponentów w oknie "O programie"
   oraz zapamiêtywanie jego rozmiarów i po³o¿enia (joi)
+* dodane ogólne funkcje do zapamiêtywania rozmiarów okien (loadGeometry
+  i saveGeometry) (joi)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

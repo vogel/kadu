@@ -32,6 +32,27 @@
 QTextCodec *codec_cp1250 = QTextCodec::codecForName("CP1250");
 QTextCodec *codec_latin2 = QTextCodec::codecForName("ISO8859-2");
 
+void saveGeometry(QWidget *w, QString section, QString name)
+{
+	QRect geom;
+	geom.setX(w->pos().x());
+	geom.setY(w->pos().y());
+	geom.setWidth(w->size().width());
+	geom.setHeight(w->size().height());
+	
+	config_file.writeEntry(section, name, geom);
+}
+
+void loadGeometry(QWidget *w, QString section, QString name, int defaultX, int defaultY, int defaultWidth, int defaultHeight)
+{
+	QRect def_rect(defaultX, defaultY, defaultWidth, defaultHeight);
+	config_file.addVariable(section, name, def_rect);
+
+	QRect geom=config_file.readRectEntry(section, name);
+	w->resize(geom.width(),geom.height());
+	w->move(geom.x(),geom.y());
+}
+
 QString ggPath(const QString &subpath)
 {
 	static QString path=QString::null;
@@ -725,7 +746,7 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 					//pe.str=ule.description;
 				 	if (escape)
 			 			escapeSpecialCharacters(pe.str);
-					if(config_file.readBoolEntry("Look", "ShowMultilineDecs")) {
+					if(config_file.readBoolEntry("Look", "ShowMultilineDesc")) {
 						pe.str.replace(QRegExp("\n"), QString("<br/>"));
 						pe.str.replace(QRegExp("\\s\\s"), QString(" &nbsp;"));
 					}
@@ -1148,7 +1169,7 @@ HttpClient::HttpClient()
 	connect(&Socket,SIGNAL(connected()),this,SLOT(onConnected()));
 	connect(&Socket,SIGNAL(readyRead()),this,SLOT(onReadyRead()));
 	connect(&Socket,SIGNAL(connectionClosed()),this,SLOT(onConnectionClosed()));
-};
+}
 
 void HttpClient::onConnected()
 {

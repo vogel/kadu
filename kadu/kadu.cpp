@@ -298,8 +298,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	EventConfigSlots::initModule();
 
 	//zaladowanie wartosci domyslnych (pierwsze uruchomienie)
-	QRect def_rect(0, 0, 145, 465);
-	config_file.addVariable("General", "Geometry", def_rect);
 	config_file.addVariable("General", "UserBoxHeight", 300);
 	config_file.addVariable("General", "DescriptionHeight", 60);
 
@@ -326,12 +324,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	memset(&loginparams, 0, sizeof(loginparams));
 	loginparams.async = 1;
 
-	QRect geom=config_file.readRectEntry("General", "Geometry");
-	kdebug("Setting size: width=%d, height=%d and setting position: x=%d, y=%d\n",
-		geom.width(),geom.height(),
-		geom.x(), geom.y());
-	resize(geom.width(),geom.height());
-	move(geom.x(),geom.y());
+	loadGeometry(this, "General", "Geometry", 0, 0, 145, 465);
 
 	if (config_file.readBoolEntry("Hints", "Hints"))
 		hintmanager = new HintManager();
@@ -1527,13 +1520,7 @@ bool Kadu::close(bool quit) {
 			{
 				config_file.writeEntry("General", "UserBoxHeight", Userbox->size().height());
 			}
-			QRect geom;
-			geom.setX(pos().x());
-			geom.setY(pos().y());
-			geom.setWidth(size().width());
-			geom.setHeight(size().height());
-	
-			config_file.writeEntry("General", "Geometry",geom);
+			saveGeometry(this, "General", "Geometry");
 		}
 	
 		config_file.writeEntry("General", "DefaultDescription", defaultdescriptions.join("<-->"));

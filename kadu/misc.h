@@ -65,6 +65,9 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 QString parse(const QString &s, const UserListElement &ule, bool escape = true);
 void stringHeapSort(QStringList &c);
 
+void saveGeometry(QWidget *w, QString section, QString name);
+void loadGeometry(QWidget *w, QString section, QString name, int defaultX, int defaultY, int defaultWidth, int defaultHeight);
+
 class UinsList : public QValueList<UinType>
 {
 	public:
