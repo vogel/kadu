@@ -7,47 +7,48 @@ CLEANFILES = */*.so */*.a */*.o */*_moc.cpp */*.d
 
 all:
 	@for dir in $(static_modules) $(shared_modules); do \
-		MODULE_SOURCES=; \
-		MODULE_MOC_HEADERS=; \
-		MODULE_HEADERS=; \
-		MODULE_CXXFLAGS=; \
-		MODULE_LDFLAGS=; \
-		. ./$$dir/spec; \
-		MODULE_CXXFLAGS="$$MODULE_CXXFLAGS "`cat $$dir/cxxflags`; \
-		MODULE_LDFLAGS="$$MODULE_LDFLAGS "`cat $$dir/ldflags`; \
-		echo; \
-		echo -e "\033[32m>>>\033[0m Compiling $$dir module [LD=$$MODULE_LDFLAGS,CXX=$$MODULE_CXXFLAGS] ..."; \
-		echo; \
-		moc_cpp_files="" \
-		o_files=""; \
-		h_files=""; \
+		MODULE_SOURCES= && \
+		MODULE_MOC_HEADERS= && \
+		MODULE_HEADERS= && \
+		MODULE_CXXFLAGS= && \
+		MODULE_LDFLAGS= && \
+		. ./$$dir/spec && \
+		MODULE_CXXFLAGS="$$MODULE_CXXFLAGS "`cat $$dir/cxxflags` && \
+		MODULE_LDFLAGS="$$MODULE_LDFLAGS "`cat $$dir/ldflags` && \
+		echo && \
+		echo -e "\033[32m>>>\033[0m Compiling $$dir module [LD=$$MODULE_LDFLAGS,CXX=$$MODULE_CXXFLAGS] ..." && \
+		echo && \
+		moc_cpp_files="" && \
+		o_files="" && \
+		h_files="" && \
 		for src_file in $$MODULE_SOURCES; do \
-			o_file=`expr $$src_file : "\(.*\)\\.c.*"`.o; \
+			o_file=`expr $$src_file : "\(.*\)\\.c.*"`.o && \
 			o_files="$$o_files $$dir/$$o_file"; \
-		done; \
+		done && \
 		for moc_h_file in $$MODULE_MOC_HEADERS; do \
-			h_files="$$h_files $$dir/$$moc_h_file"; \
-			moc_cpp_file=`expr $$moc_h_file : "\(.*\).h"`_moc.cpp; \
-			moc_cpp_files="$$moc_cpp_files $$dir/$$moc_cpp_file"; \
-			o_file=`expr $$moc_h_file : "\(.*\).h"`_moc.o; \
+			h_files="$$h_files $$dir/$$moc_h_file" && \
+			moc_cpp_file=`expr $$moc_h_file : "\(.*\).h"`_moc.cpp && \
+			moc_cpp_files="$$moc_cpp_files $$dir/$$moc_cpp_file" && \
+			o_file=`expr $$moc_h_file : "\(.*\).h"`_moc.o && \
 			o_files="$$o_files $$dir/$$o_file"; \
-		done; \
+		done && \
 		for h_file in $$MODULE_HEADERS; do \
 			h_files="$$h_files $$dir/$$h_file"; \
-		done; \
-		file_name=$$dir.so; \
+		done && \
+		file_name=$$dir.so && \
 		if test -z `expr " $(shared_modules) " : ".* \($$dir\) "`; then \
 			file_name=$$dir.a; \
-		fi; \
+		fi && \
 		$(MAKE) "module_o_files=$$o_files" \
 			"module_h_files=$$h_files" \
 			"module_moc_cpp_files=$$moc_cpp_files" \
 			"module_cxxflags=$$MODULE_CXXFLAGS" \
 			"module_ldflags=$$MODULE_LDFLAGS" \
-			$$dir/$$file_name; \
-	done; \
-	echo; \
-	echo -e "\033[32m>>>\033[0m Modules successfully compiled."; \
+			$$dir/$$file_name || \
+		exit 1; \
+	done && \
+	echo && \
+	echo -e "\033[32m>>>\033[0m Modules successfully compiled." && \
 	echo
 
 module_d_files = $(addsuffix .d,$(basename $(module_o_files)))

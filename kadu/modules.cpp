@@ -20,6 +20,8 @@
 #include <qpushbutton.h>
 #include <qtextcodec.h>
 
+#include <dlfcn.h>
+
 #include "modules_static.cpp"
 
 Library::Library(const QString& file_name)
@@ -322,8 +324,9 @@ bool ModulesManager::loadModule(const QString& module_name)
 
 	kdebug(QString("loadModule %1\n").arg(module_name));
 	
-	if(Modules.contains(module_name)){
-		MessageBox::msg(tr("Module %1 is loaded").arg(module_name));
+	if(moduleIsActive(module_name))
+	{
+		MessageBox::msg(tr("Module %1 is already active").arg(module_name));
 		return false;
 	}
 
@@ -331,9 +334,9 @@ bool ModulesManager::loadModule(const QString& module_name)
 	{	
 		for (QStringList::Iterator it = modinfo.depends.begin(); it != modinfo.depends.end(); ++it)
 		{
-			if((*loadedModules().find(*it))==QString::null)
+			if(!moduleIsActive(*it))
 			{
-				if((*installedModules().find(*it))!=QString::null)
+				if(moduleIsInstalled(*it))
 				{
 					if(loadModule(*it))
 						Modules[*it].usage_counter++;
@@ -350,7 +353,7 @@ bool ModulesManager::loadModule(const QString& module_name)
 					return false;
 				}
 			}
-			else
+			else if(!moduleIsStatic(*it))
 				Modules[*it].usage_counter++;
 		}
 		m.info=modinfo;
@@ -393,7 +396,8 @@ bool ModulesManager::unloadModule(const QString& module_name, bool force)
 {
 	Module m=Modules[module_name];
 
-	if(m.usage_counter>0 && !force){
+	if(m.usage_counter>0 && !force)
+	{
 		MessageBox::msg(tr("Module %1 cannot be unloaded because it is used by another module").arg(module_name));
 		return false;
 	}
@@ -411,12 +415,24 @@ bool ModulesManager::unloadModule(const QString& module_name, bool force)
 	Modules.remove(module_name);
 }
 
-void* ModulesManager::moduleSymbol(const QString& module_name, const QString& symbol_name)
+bool ModulesManager::moduleIsStatic(const QString& module_name)
 {
-	if (!Modules.contains(module_name))
-		return NULL;
-	Module m=Modules[module_name];
-	return m.lib->resolve(symbol_name);
+	return staticModules().contains(module_name);
+}
+
+bool ModulesManager::moduleIsInstalled(const QString& module_name)
+{
+	return installedModules().contains(module_name);
+}
+
+bool ModulesManager::moduleIsLoaded(const QString& module_name)
+{
+	return Modules.contains(module_name);
+}
+
+bool ModulesManager::moduleIsActive(const QString& module_name)
+{
+	return (moduleIsStatic(module_name) || moduleIsLoaded(module_name));
 }
 
 void ModulesManager::saveLoadedModules()

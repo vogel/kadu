@@ -8,8 +8,6 @@
 #include <qlistbox.h>
 #include <qtranslator.h>
 
-#include <dlfcn.h>
-
 /**
 	Zastêpuje klasê QLibrary na specyficzne potrzeby Kadu
 **/
@@ -138,13 +136,32 @@ class ModulesManager : public QObject
 		**/		
 		bool unloadModule(const QString& module_name, bool force=false);
 		/**
-			Pobiera adres symbolu zaladowanego do pamieci modulu.
-			zwraca NULL gdy modul nie jest zaladowany lub symbol
-			nie istnieje.
+			Sprawdza czy podany modu³ jest wkompilowany statycznie.
 			@param module_name nazwa modulu
-			@param symbol_name nazwa symbolu
 		**/
-		void* moduleSymbol(const QString& module_name, const QString& symbol_name);
+		bool moduleIsStatic(const QString& module_name);
+		/**
+			Sprawdza czy podany modu³ jest zainstalowany
+			w katalogu z modu³ami zewnêtrznymi.
+			@param module_name nazwa modulu
+		**/
+		bool moduleIsInstalled(const QString& module_name);
+		/**
+			Sprawdza czy podany modu³ zewnêtrzny jest za³adowany
+			@param module_name nazwa modulu
+		**/		
+		bool moduleIsLoaded(const QString& module_name);
+		/**
+			Sprawdza czy podany modu³ jest aktywny.
+			Dzia³a dla modu³ów statycznych i za³adowanych
+			zewnêtrznych.
+			@param module_name nazwa modulu
+		**/
+		bool moduleIsActive(const QString& module_name);
+		/**
+			Zapisuje do pliku konfiguracyjnego listê za³adowanych
+			modu³ów.
+		**/
 		void saveLoadedModules();
 		
 	public slots:

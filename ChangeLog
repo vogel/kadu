@@ -201,6 +201,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   bledzie (michal)
 * usuniêty wyciek pamiêci z modu³u encryption, usuniêty wyciek przy wysy³aniu listy
   kontaktów, poprawiony b³±d wy¶wietlania w³asnego opisu dla kontaktów tylko z komórk± (joi)
+* przy sprawdzaniu zale¿no¶ci i blokady powtórnego uruchamiania modu³u
+  uwzglêdniane s± modu³y wkompilowane statycznie w kadu (adrian)
+* problem z kompilacj± modu³u powoduje przerwanie procesu budowania kadu (adrian)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
