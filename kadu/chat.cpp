@@ -251,11 +251,18 @@ void CustomInput::keyPressEvent(QKeyEvent * e) {
 
 /* convert special characters into emoticons, HTML into plain text and so forth */
 QString Chat::convertCharacters(QString edit) {
+
+	// escape'ujemy http:// zeby emotikony nie bruzdzily
+	edit.replace(QRegExp("http://"),"___dupabiskupa___");
+
 	if(config.emoticons)
 	{
 		body->mimeSourceFactory()->addFilePath(emoticons.themePath());
 		emoticons.expandEmoticons(edit);
 	};
+	
+	// przywracamy http://
+	edit.replace(QRegExp("___dupabiskupa___"),"http://");
 	
 	edit.replace( QRegExp("<"), "&lt;" );
 	edit.replace( QRegExp(">"), "&gt;" );
