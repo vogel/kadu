@@ -463,8 +463,8 @@ Hasło powinno w obu polach być takie same!</translation>
         <translation>Rejestruj</translation>
     </message>
     <message>
-        <source>This module play sounds using ALSA - Advanced Linux Sound Architecture driver.This is third-party module not supported by Kadu Team.</source>
-        <translation>Ten moduł używa sterownika dźwięku ALSA - Advanced Linux Sound Architecture).</translation>
+        <source>This module play sounds using ALSA - Advanced Linux Sound Architecture driver.</source>
+        <translation>Ten moduł używa sterownika dźwięku ALSA - Advanced Linux Sound Architecture.</translation>
     </message>
 </context>
 <context>

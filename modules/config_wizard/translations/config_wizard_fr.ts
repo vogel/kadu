@@ -462,7 +462,7 @@ Le mot de passe devrait être le même dans les deux champs!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>This module play sounds using ALSA - Advanced Linux Sound Architecture driver.This is third-party module not supported by Kadu Team.</source>
+        <source>This module play sounds using ALSA - Advanced Linux Sound Architecture driver.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
