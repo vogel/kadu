@@ -141,7 +141,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   ¶cie¿ek, nawet kilku, do wyszukiwania. wp³ywa równie¿ na wyszukiwanie
   bibliotek wymaganych przez modu³y (adrian)
 * drobna poprawka micha³a w configure do ./config.status --recheck (adrian)
-* Ikony NG by Arcisz
+* Ikony NG by Arcisz (Ron_K)
 * proxy: ostrze¿enie przy b³êdnym ustawieniu hosta i usuniêcie
   sprawdzania czy port >= 1024 (joi)
 * kadu nie próbuje siê zalogowaæ przy roz³±czaniu... (Vogel/joi)
