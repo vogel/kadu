@@ -83,36 +83,19 @@ static bool send_message(
 #define SYSTEM_TRAY_CANCEL_MESSAGE  2
 
 TrayIcon::TrayIcon(QWidget *parent, const char *name)
-	: QLabel(NULL,"TrayIcon", WMouseNoMask | WType_TopLevel | WStyle_Customize | WStyle_NoBorder | WStyle_StaysOnTop)
+	: QLabel(0,"TrayIcon", WMouseNoMask | WRepaintNoErase | WType_TopLevel | WStyle_Customize | WStyle_NoBorder | WStyle_StaysOnTop)
 {
 	if (!config.dock)
 		return;
 
-	icon = NULL;
 	QPixmap pix = *icons->loadIcon("offline");
-
+	setBackgroundMode(X11ParentRelative);
 	setMinimumSize(pix.size());
 	QLabel::setPixmap(pix);
-	setWFlags(WRepaintNoErase);
 	resize(pix.size());
-	update();
-	setBackgroundMode(X11ParentRelative);
 	setMouseTracking(true);
-
-//	icon = new QLabel(this);
-//	icon->setBackgroundMode(X11ParentRelative);
-//	icon->setAlignment(Qt::AlignVCenter);
-//	icon->setPixmap(pix);
-//	QToolTip::add(icon, i18n("Left click - hide/show window\nMiddle click or CTRL+any click- next message"));
 	QToolTip::add(this, i18n("Left click - hide/show window\nMiddle click or CTRL+any click- next message"));
-//	icon->show();
-
-	// Aby zapobiec pozostaj±cej "klepsydrze" pod KDE
-	// pokazujemy okno przed zadokowaniem, aby KDE wiedzia³o,
-	// ¿e aplikacja uruchomi³a siê prawid³owo
-	kdebug("TrayIcon::TrayIcon()\n");
-
-//	show();
+	update();
 
 	icon_timer = new QTimer(this);
 	blink = FALSE;
@@ -123,9 +106,16 @@ TrayIcon::TrayIcon(QWidget *parent, const char *name)
 	Display *dsp = x11Display();
 	WId win = winId();
 
+	// Okno potrzebne dla WindowMakera, ale przydaje
+	// siê te¿ w KDE 3.1, gdzie je¶li chocia¿ na chwilê
+	// nie poka¿emy okna g³ównego na ekranie wystêpuje
+	// "efekt klepsydry"
+	WMakerMasterWidget=new QWidget(0,"WMakerMasterWidget");
+	WMakerMasterWidget->setGeometry(-10,-10,0,0);
+
 	// SPOSÓB PIERWSZY
 	// System Tray Protocol Specification
-	// Dzia³a pod KDE 3.x (przynajmniej pod 3.1) i GNOME 2.x
+	// Dzia³a pod KDE 3.1 i GNOME 2.x
 	Screen *screen = XDefaultScreenOfDisplay(dsp);
 	int screen_id = XScreenNumberOfScreen(screen);
 	char buf[32];
@@ -139,55 +129,55 @@ TrayIcon::TrayIcon(QWidget *parent, const char *name)
 	XFlush(dsp);
 	if (manager_window != None)
 		send_message(dsp, manager_window, SYSTEM_TRAY_REQUEST_DOCK, win, 0, 0);
-
+	
 	// SPOSÓB DRUGI
-	// Dzia³a na KDE 3.x i pewnie na starszych
+	// Dzia³a na KDE 3.0.x i pewnie na starszych
 	// oraz pod GNOME 1.x
-	Atom xatom;
-	long data[1];
-	xatom = XInternAtom(dsp, "KWM_DOCKWINDOW", false);
-	data[0] = 1;
-//	kdebug("TrayIcon::TrayIcon(): XChangeProperty() result=%d\n", XChangeProperty(dsp, win, xatom, xatom,
-//		32, PropModeReplace,(unsigned char*)data, 1));
-	XChangeProperty(dsp, win, xatom, xatom,
-		32, PropModeReplace,(unsigned char*)data, 1);
-	xatom = XInternAtom(dsp, "_KDE_NET_WM_SYSTEM_TRAY_WINDOW_FOR", false);
-	data[0] = 0;
-//	kdebug("TrayIcon::TrayIcon(): XChangeProperty() result=%d\n", XChangeProperty(dsp, win, xatom, XA_WINDOW,
-//		32, PropModeReplace,(unsigned char*)data, 1));
-	XChangeProperty(dsp, win, xatom, XA_WINDOW,
-		32, PropModeReplace,(unsigned char*)data, 1);
-
+	int r;
+	int data = 1;
+	r = XInternAtom(dsp, "KWM_DOCKWINDOW", false);
+	int r1=XChangeProperty(dsp, win, r, r, 32, 0, (uchar *)&data, 1);
+	r = XInternAtom(dsp, "_KDE_NET_WM_SYSTEM_TRAY_WINDOW_FOR", false);
+	int r2=XChangeProperty(dsp, win, r, XA_WINDOW, 32, 0, (uchar *)&data, 1);
+			
 	// SPOSÓB TRZECI
 	// Dzia³a pod Window Maker'em
-/*	XWMHints *hints;
-	hints = XGetWMHints(dsp, win);
-	hints->initial_state = WithdrawnState;
-	hints->icon_window = icon->winId();
-	hints->window_group = win;
-	hints->flags = WindowGroupHint | IconWindowHint | StateHint;
-	XSetWMHints(dsp, win, hints);
-	XFree( hints );*/
+	WId w_id = WMakerMasterWidget->winId();
+	XWMHints *hints;
+	hints = XGetWMHints(dsp, w_id);
+	hints->icon_window = win;
+	hints->window_group = w_id;
+	hints->flags |= WindowGroupHint | IconWindowHint;
+	XSetWMHints(dsp, w_id, hints);
+	XFree( hints );
 };
 
 TrayIcon::~TrayIcon()
 {
-	if (icon)
-		delete icon;	
+	delete WMakerMasterWidget;
 	delete hint;
 	kdebug("TrayIcon::~TrayIcon()\n");
 }
 
 QPoint TrayIcon::trayPosition()
 {
-//	return icon->mapToGlobal(QPoint(0,0));
 	return mapToGlobal(QPoint(0,0));
+};
+
+void TrayIcon::show()
+{
+	QLabel::show();
+	WMakerMasterWidget->show();
+	// Je¶li WindowMaker nie jest aktywny okno
+	// nie powinno zostaæ widoczne
+	if(XInternAtom(x11Display(),"_WINDOWMAKER_WM_PROTOCOLS",true)==0)
+		WMakerMasterWidget->hide();
 };
 
 void TrayIcon::setPixmap(const QPixmap& pixmap)
 {
-//	icon->setPixmap(pixmap);
 	QLabel::setPixmap(pixmap);
+	WMakerMasterWidget->setIcon(pixmap);
 	repaint();
 };
 
@@ -236,7 +226,7 @@ void TrayIcon::resizeEvent(QResizeEvent* e)
 {
 //	if (icon)
 //		icon->resize(size());
-	resize(size());
+//	resize(size());
 };
 
 void TrayIcon::enterEvent(QEvent* e)

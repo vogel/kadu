@@ -21,7 +21,7 @@ class TrayIcon : public QLabel
 
 	private:
 		friend class TrayHint;
-		QLabel* icon;
+		QWidget* WMakerMasterWidget;
 		TrayHint *hint;
 		QTimer *icon_timer;
 		bool blink;
@@ -36,6 +36,7 @@ class TrayIcon : public QLabel
 		TrayIcon(QWidget *parent = 0, const char *name = 0);
 		~TrayIcon();
 		QPoint trayPosition();
+		void show();
 		void setType(QPixmap &pixmap);
 		void connectSignals();
 		void showHint(const QString&, const QString&, int index);
