@@ -1368,6 +1368,11 @@ void IconsManager::initModule()
 	config_file.addVariable("Look", "IconTheme", "default");
 
 	icons_manager.setPaths(QStringList::split(";", config_file.readEntry("Look", "IconsPaths")));
+
+	QStringList themes=icons_manager.themes();
+	if (!themes.contains(config_file.readEntry("Look","IconTheme")) && themes.count()>0)
+		config_file.writeEntry("Look", "IconTheme", themes[0]);
+
 	icons_manager.setTheme(config_file.readEntry("Look","IconTheme"));
 
 	ConfigDialog::addTab("General", "GeneralTab");

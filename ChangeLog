@@ -264,6 +264,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawka w od¶wierzaniu ikon po zmianie tematu (michal)
 * usuniêty segfault przy próbie nawi±zania po³±czenia DCC je¿eli nie mamy
   wywo³uj±cego na li¶cie kontaktów (joi)
+* w przypadku braku domy¶lnego zestawu ikon kadu prze³±cza siê nie pierwszy
+  dostêpny zestaw (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
