@@ -43,7 +43,7 @@ DesktopDockWindow::DesktopDockWindow()
 	QPixmap DesktopDockPixmap=docking_manager->defaultPixmap();	/*ustawia ikonke na starcie - nie uzywam bo moze byc jak z defaultToolTip()*/
 	QDesktopWidget *fullDesktop = QApplication::desktop();	/* ekran */
 
-	ConfigDialog::addTab("Desktop Dock");
+	ConfigDialog::addTab("Desktop Dock", "DesktopDockTab");
 	ConfigDialog::addVBox("Desktop Dock", "Desktop Dock", "MainDesktop");
 	ConfigDialog::addSpinBox("Desktop Dock", "MainDesktop", QT_TRANSLATE_NOOP("@default", "Horizontal position"), "PositionX", 0, fullDesktop->width()-DesktopDockPixmap.size().width(), 1, 0,
         QT_TRANSLATE_NOOP("@default", "Put the position in pixels"));
