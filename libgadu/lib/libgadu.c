@@ -1,4 +1,4 @@
-/* $Id: libgadu.c,v 1.25 2003/09/04 17:59:33 mast3r Exp $ */
+/* $Id: libgadu.c,v 1.26 2003/09/09 22:20:44 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -69,7 +69,7 @@ static char rcsid[]
 #ifdef __GNUC__
 __attribute__ ((unused))
 #endif
-= "$Id: libgadu.c,v 1.25 2003/09/04 17:59:33 mast3r Exp $";
+= "$Id: libgadu.c,v 1.26 2003/09/09 22:20:44 chilek Exp $";
 #endif 
 
 /*
