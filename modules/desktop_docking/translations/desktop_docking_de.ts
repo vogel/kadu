@@ -15,7 +15,7 @@
     </message>
     <message>
         <source>Put the position in pixels</source>
-        <translation type="unfinished"></translation>
+        <translation>Lege die Position in Pixel fest</translation>
     </message>
 </context>
 </TS>

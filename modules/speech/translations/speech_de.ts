@@ -83,7 +83,7 @@
     </message>
     <message>
         <source>Connection error:</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbindungsfehler:</translation>
     </message>
 </context>
 <context>
@@ -106,7 +106,7 @@
     </message>
     <message>
         <source>Connection error - %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbindungsfehler - %1</translation>
     </message>
 </context>
 </TS>

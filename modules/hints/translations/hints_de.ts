@@ -39,7 +39,7 @@
     </message>
     <message>
         <source>New chat / new message</source>
-        <translation type="unfinished"></translation>
+        <translation>Neues Chat / neue Nachricht</translation>
     </message>
     <message>
         <source>Number of quoted characters</source>
@@ -47,11 +47,11 @@
     </message>
     <message>
         <source>Status change</source>
-        <translation type="unfinished"></translation>
+        <translation>Zustandsänderung</translation>
     </message>
     <message>
         <source>New hints go</source>
-        <translation type="unfinished"></translation>
+        <translation>Neue Sprechblasen</translation>
     </message>
     <message>
         <source>Hints position</source>
@@ -59,15 +59,15 @@
     </message>
     <message>
         <source>Own hints position</source>
-        <translation type="unfinished"></translation>
+        <translation>Eigene Position der Sprechblasen</translation>
     </message>
     <message>
         <source>Parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Parameter</translation>
     </message>
     <message>
         <source>Set for all</source>
-        <translation type="unfinished"></translation>
+        <translation>Setze für alle</translation>
     </message>
     <message>
         <source>&lt;b&gt;Text&lt;/b&gt; preview</source>
@@ -75,7 +75,7 @@
     </message>
     <message>
         <source>Hint type</source>
-        <translation type="unfinished"></translation>
+        <translation>Sprechblasentyp</translation>
     </message>
     <message>
         <source>Change font color</source>
@@ -91,11 +91,11 @@
     </message>
     <message>
         <source>Corner</source>
-        <translation type="unfinished"></translation>
+        <translation>Ecke</translation>
     </message>
     <message>
         <source>Hint timeout</source>
-        <translation type="unfinished"></translation>
+        <translation>Sprechblasen erlichen nach</translation>
     </message>
 </context>
 <context>
@@ -122,11 +122,11 @@
     </message>
     <message>
         <source>On top</source>
-        <translation type="unfinished"></translation>
+        <translation>Oben</translation>
     </message>
     <message>
         <source>On bottom</source>
-        <translation type="unfinished"></translation>
+        <translation>Unten</translation>
     </message>
     <message>
         <source>Online</source>
@@ -134,7 +134,7 @@
     </message>
     <message>
         <source>Online (d.)</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreichbar</translation>
     </message>
     <message>
         <source>Busy</source>
@@ -142,7 +142,7 @@
     </message>
     <message>
         <source>Busy (d.)</source>
-        <translation type="unfinished"></translation>
+        <translation>Beschäftigt (Beschr.)</translation>
     </message>
     <message>
         <source>Invisible</source>
@@ -150,7 +150,7 @@
     </message>
     <message>
         <source>Invisible (d.)</source>
-        <translation type="unfinished"></translation>
+        <translation>Unsichtbat (Beschr.)</translation>
     </message>
     <message>
         <source>Offline</source>
@@ -158,7 +158,7 @@
     </message>
     <message>
         <source>Offline (d.)</source>
-        <translation type="unfinished"></translation>
+        <translation>Unerreichbat (Beschr.)</translation>
     </message>
     <message>
         <source>Blocking</source>
@@ -178,79 +178,79 @@
     </message>
     <message>
         <source>Chat with &lt;b&gt;%1&lt;/b&gt;&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Chat mit &lt;b&gt;%1&lt;/b&gt;&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</translation>
     </message>
     <message>
         <source>Chat with &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Chat mit &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
         <source>New message from &lt;b&gt;%1&lt;/b&gt;&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Neue Nachricht von &lt;b&gt;%1&lt;/b&gt;&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</translation>
     </message>
     <message>
         <source>New message from &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Neue Nachricht von &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;Error:&lt;/b&gt; %1</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Fehler:&lt;/b&gt; %1</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; changed status to &lt;i&gt;%2&lt;/i&gt;&lt;br/&gt; &lt;small&gt;%3&lt;/small&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; änderte Zustand auf &lt;i&gt;%2&lt;/i&gt;&lt;br/&gt; &lt;small&gt;%3&lt;/small&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; changed status to &lt;i&gt;%2&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; änderte Status auf &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; is available&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; ist erreichbar&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; is available</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; ist erreichbar</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; is busy&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; ist beschäftigt&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; is busy</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; ist beschäftigt</translation>
     </message>
     <message>
         <source>Other message</source>
-        <translation type="unfinished"></translation>
+        <translation>Andere Nachricht</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; is not available&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; ist unerreichbar&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; is not available</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; ist unerreichbar</translation>
     </message>
     <message>
         <source>From &lt;b&gt;%1&lt;/b&gt;: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Von &lt;b&gt;%1&lt;/b&gt;: %2</translation>
     </message>
     <message>
         <source>Top left</source>
-        <translation type="unfinished"></translation>
+        <translation>Links oben</translation>
     </message>
     <message>
         <source>Top right</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechts oben</translation>
     </message>
     <message>
         <source>Bottom left</source>
-        <translation type="unfinished"></translation>
+        <translation>Links unten</translation>
     </message>
     <message>
         <source>Bottom right</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechst unten</translation>
     </message>
 </context>
 <context>

@@ -19,11 +19,11 @@
     </message>
     <message>
         <source>Notify configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfiguration der Benachrichtigung</translation>
     </message>
     <message>
         <source>Connection error</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbindungsfehler</translation>
     </message>
     <message>
         <source>New chat</source>
@@ -31,36 +31,37 @@
     </message>
     <message>
         <source>New message</source>
-        <translation type="unfinished"></translation>
+        <translation>Neue Nachricht</translation>
     </message>
     <message>
         <source>User is changing status</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzer ändert Zustand</translation>
     </message>
     <message>
         <source>User changed status to &quot;Available&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzer änderte Zustand auf &quot;erreichbar&quot;</translation>
     </message>
     <message>
         <source>User changed status to &quot;Busy&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzer änderte Zustand auf &quot;beschäftigt&quot;</translation>
     </message>
     <message>
         <source>User changed status to &quot;Not available&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzer änderte Zustand auf &quot;unerreichbar&quot;</translation>
     </message>
     <message>
         <source>Other message</source>
-        <translation type="unfinished"></translation>
+        <translation>Andere Nachricht</translation>
     </message>
     <message>
         <source>Ignore changes on connection to server</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignoriere Änderungen beim Verbinden zum Server</translation>
     </message>
     <message>
         <source>This option will supersede tooltips with users&apos; status
  changes upon establishing connection to the server</source>
-        <translation type="unfinished"></translation>
+        <translation>Diese Option ersetzt Hinweis durch Benutzers 
+Zustandsänderungen während des Verbindens zum Server</translation>
     </message>
 </context>
 </TS>

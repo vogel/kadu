@@ -213,7 +213,7 @@ Das Passwort, das Sie angegeben haben, sollte in beiden Feldern (&quot;Neues Pas
     </message>
     <message>
         <source>This dialog box allows you to unregister your account. Be aware of using this option. &lt;font color=&quot;red&quot;&gt;&lt;b&gt;It will permanently delete your UIN and you will not be able to use it later!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Dieses Fenster erlaubt Ihnen das Löschen Ihrer GG-Zugangsdaten. Seien Sie vorsichtig bei der Nutzung dieser Möglichkeit.&lt;font color=&quot;red&quot;&gt;&lt;b&gt;Hiermit löschen Sie Ihre UIN und werden diese nie mehr nutzen können!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
 </context>
 </TS>

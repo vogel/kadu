@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Show tooltip in tray</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Sprechblase in Ablage</translation>
     </message>
 </context>
 <context>

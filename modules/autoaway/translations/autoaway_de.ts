@@ -19,54 +19,54 @@
     </message>
     <message>
         <source>Enable autoinvisible</source>
-        <translation type="unfinished"></translation>
+        <translation>Einschalten der automatischen Unsichtbarkeit</translation>
     </message>
     <message>
         <source>Enable autodisconnect</source>
-        <translation type="unfinished"></translation>
+        <translation>Einschalten der automatischen Trennung</translation>
     </message>
     <message>
         <source>Set status to invisible after </source>
-        <translation type="unfinished"></translation>
+        <translation>Werde unsichtbar nach </translation>
     </message>
     <message>
         <source>Disconnect after </source>
-        <translation type="unfinished"></translation>
+        <translation>Trenne nach</translation>
     </message>
     <message>
         <source>Enable AutoStatus</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatischen Zustand einchalten</translation>
     </message>
     <message>
         <source>Autorestore status</source>
-        <translation type="unfinished"></translation>
+        <translation>Zustand automatisch wiederherrstellen</translation>
     </message>
     <message>
         <source>Auto change status</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatisches Ändern des Zustands</translation>
     </message>
     <message>
         <source>AutoStatus Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Beschreibung für automatischen Zustand</translation>
     </message>
 </context>
 <context>
     <name>AutoAwaySlots</name>
     <message>
         <source>Don&apos;t change the description</source>
-        <translation type="unfinished"></translation>
+        <translation>Ändern Sie bitte die Beschreibung nicht</translation>
     </message>
     <message>
         <source>Change</source>
-        <translation type="unfinished"></translation>
+        <translation>Ändern</translation>
     </message>
     <message>
         <source>Add in front of description</source>
-        <translation type="unfinished"></translation>
+        <translation>Hinzufügen am Anfang der Beschreibung</translation>
     </message>
     <message>
         <source>Add at the back of description</source>
-        <translation type="unfinished"></translation>
+        <translation>Hinzufügen am Ende der Beschreibung</translation>
     </message>
 </context>
 </TS>

@@ -54,27 +54,27 @@
     </message>
     <message>
         <source>Sender: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Absender: %1</translation>
     </message>
     <message>
         <source>Receiver: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Empfänger: %1</translation>
     </message>
     <message>
         <source>Filename: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Dateiname: %1</translation>
     </message>
     <message>
         <source>File size: %1B</source>
-        <translation type="unfinished"></translation>
+        <translation>Dateigröße: %1</translation>
     </message>
     <message>
         <source>Speed: 0kB/s (not started)  </source>
-        <translation type="unfinished"></translation>
+        <translation>Geschwindigkeit: 0kB/s (nicht gestartet)</translation>
     </message>
     <message>
         <source>Speed: %1kB/s </source>
-        <translation type="unfinished"></translation>
+        <translation>Geschwindigkeit: %kB/s</translation>
     </message>
 </context>
 <context>
@@ -93,22 +93,24 @@ Direkte Verbindungen ausgeschaltet.</translation>
         <source>Direct connection timeout!
 The receiver doesn&apos;t support direct connections or
 both machines are behind routers with NAT.</source>
-        <translation type="unfinished"></translation>
+        <translation>Direkte Verbindung Abgelaufen!
+Empfänger unterstützt direkte Verbindungen nicht
+oder beide Computer sind hinter NAT.</translation>
     </message>
 </context>
 <context>
     <name>DccSocket</name>
     <message>
         <source>File has been transferred sucessfully.</source>
-        <translation type="unfinished">Transfer der Datei gelungen.</translation>
+        <translation>Übertragung der Datei gelungen.</translation>
     </message>
     <message>
         <source>File transfer error!</source>
-        <translation type="unfinished">Fehler beim Senden der Datei!</translation>
+        <translation>Fehler beim Übertragen der Datei!</translation>
     </message>
     <message>
         <source>Couldn&apos;t open file!</source>
-        <translation type="unfinished">Konnte die Datei nicht öffnen!</translation>
+        <translation>Konnte die Datei nicht öffnen!</translation>
     </message>
 </context>
 <context>
@@ -159,12 +161,13 @@ both machines are behind routers with NAT.</source>
     </message>
     <message>
         <source>This file is not readable</source>
-        <translation type="unfinished"></translation>
+        <translation>Diese Datei ist nicht lesbar</translation>
     </message>
     <message>
         <source>User %1 wants to send us a file %2
 of size %3kB. Accept transfer?</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzer %1 will Ihnen eine Datei senden %2
+von %3kB Größe. Übertragung Akzeptieren?</translation>
     </message>
 </context>
 </TS>
