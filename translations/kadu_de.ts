@@ -104,16 +104,8 @@ Was wollen sie nun tun?</translation>
         <translation>Verlauf</translation>
     </message>
     <message>
-        <source>Quoted phrases during chat open</source>
-        <translation>Zitieren der Phrasen beim Öffnen des Chats</translation>
-    </message>
-    <message>
         <source>Count:</source>
         <translation>Anzahl:</translation>
-    </message>
-    <message>
-        <source>Don&apos;t quote phrases older than:</source>
-        <translation>Zeige keine Phrasen, die älter sind als:</translation>
     </message>
     <message>
         <source>User data</source>
@@ -682,6 +674,18 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     <message>
         <source>Preview panel</source>
         <translation></translation>
+    </message>
+    <message>
+        <source>Message citation in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Don&apos;t cite messages older than:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show vertical scrollbar in information panel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2098,10 +2102,6 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
         <translation>Informationen zu %1</translation>
     </message>
     <message>
-        <source>Close</source>
-        <translation>Schliesse</translation>
-    </message>
-    <message>
         <source>Uin</source>
         <translation>Nummer GG (UIN)</translation>
     </message>
@@ -2240,6 +2240,14 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
     <message>
         <source>Altnick field cannot be empty.</source>
         <translation>Das Feld &quot;Alternativ-Nick&quot; kann nicht leer sein.</translation>
+    </message>
+    <message>
+        <source>This dialog box allows you to edit your informations about selected contact.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -104,16 +104,8 @@ Cosa vogliamo fare?</translation>
         <translation>Cronologia</translation>
     </message>
     <message>
-        <source>Quoted phrases during chat open</source>
-        <translation>Mostra vecchia conversazione in fase di apertura della finestra di chat</translation>
-    </message>
-    <message>
         <source>Count:</source>
         <translation>Quantità:</translation>
-    </message>
-    <message>
-        <source>Don&apos;t quote phrases older than:</source>
-        <translation>Non visualizza righe più vecchie di:</translation>
     </message>
     <message>
         <source>User data</source>
@@ -681,6 +673,18 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
     </message>
     <message>
         <source>Preview panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Message citation in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Don&apos;t cite messages older than:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show vertical scrollbar in information panel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2098,10 +2102,6 @@ Ora è possibile aggiungere i vostri amici alla lista dei contatti.</translation
         <translation>Info di %1</translation>
     </message>
     <message>
-        <source>Close</source>
-        <translation>Fine</translation>
-    </message>
-    <message>
         <source>Uin</source>
         <translation>Numero GG</translation>
     </message>
@@ -2240,6 +2240,14 @@ Ora è possibile aggiungere i vostri amici alla lista dei contatti.</translation
     <message>
         <source>Altnick field cannot be empty.</source>
         <translation>Il campo Nick Visualizzato non può essere vuoto.</translation>
+    </message>
+    <message>
+        <source>This dialog box allows you to edit your informations about selected contact.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Chiudi</translation>
     </message>
 </context>
 <context>

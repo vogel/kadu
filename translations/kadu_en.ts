@@ -330,15 +330,7 @@ If you leave blank, default settings will be used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Quoted phrases during chat open</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Count:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Don&apos;t quote phrases older than:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -676,6 +668,18 @@ What would you like to do?</source>
     </message>
     <message>
         <source>Preview panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Message citation in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Don&apos;t cite messages older than:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show vertical scrollbar in information panel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2097,10 +2101,6 @@ Now add your friends to the userlist.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Close</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Uin</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2226,6 +2226,14 @@ Now add your friends to the userlist.</source>
     </message>
     <message>
         <source>Bad UIN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This dialog box allows you to edit your informations about selected contact.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

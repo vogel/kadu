@@ -104,16 +104,8 @@ Wybierz jedną z poniższych opcji:</translation>
         <translation>Historia</translation>
     </message>
     <message>
-        <source>Quoted phrases during chat open</source>
-        <translation>Cytowanie fraz przy otwieraniu rozmowy</translation>
-    </message>
-    <message>
         <source>Count:</source>
         <translation>Ilość:</translation>
-    </message>
-    <message>
-        <source>Don&apos;t quote phrases older than:</source>
-        <translation>Nie wyświetlaj wierszy starszych niż:</translation>
     </message>
     <message>
         <source>Don&apos;t show status changes</source>
@@ -682,6 +674,18 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     <message>
         <source>Preview panel</source>
         <translation>Podgląd panela info.</translation>
+    </message>
+    <message>
+        <source>Message citation in chat window</source>
+        <translation>Cytowanie wiadomości w oknie rozmowy</translation>
+    </message>
+    <message>
+        <source>Don&apos;t cite messages older than:</source>
+        <translation>Nie cytuj wiadomości starszych niż:</translation>
+    </message>
+    <message>
+        <source>Show vertical scrollbar in information panel</source>
+        <translation>Pokaż pionowy pasek przewijania w panelu informacyjnym</translation>
     </message>
 </context>
 <context>
@@ -2100,10 +2104,6 @@ Teraz już nie masz numeru GG :(</translation>
         <translation>Informacje o %1</translation>
     </message>
     <message>
-        <source>Close</source>
-        <translation>Zamknij</translation>
-    </message>
-    <message>
         <source>Uin</source>
         <translation>Numer GG</translation>
     </message>
@@ -2242,6 +2242,14 @@ Teraz już nie masz numeru GG :(</translation>
     <message>
         <source>Altnick field cannot be empty.</source>
         <translation>Pole Wyświetl nie może być puste.</translation>
+    </message>
+    <message>
+        <source>This dialog box allows you to edit your informations about selected contact.</source>
+        <translation>To okno dialogowe pozwala redagować informacje o wybranym kontakcie.</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation>&amp;Zamknij</translation>
     </message>
 </context>
 <context>
