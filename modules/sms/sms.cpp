@@ -106,23 +106,27 @@ extern "C" void sms_close()
 	QObject::disconnect(UserBox::userboxmenu, SIGNAL(popup()), smsslots, SLOT(onPopupMenuCreate()));
 
 	delete smsslots;
+	smsslots=NULL;
 	kdebugf2();
 }
 
 /********** SmsImageDialog **********/
 
-SmsImageDialog::SmsImageDialog(QDialog* parent,const QByteArray& image)
+SmsImageDialog::SmsImageDialog(QDialog* parent, const QByteArray& image)
 	: QDialog (parent, "SmsImageDialog")
 {
 	kdebugf();
-	QGridLayout *grid = new QGridLayout(this, 2, 2, 10, 10);
+
 	ImageWidget *image_widget = new ImageWidget(this, image);
-	grid->addMultiCellWidget(image_widget, 0, 0, 0, 1);
-	QLabel* label=new QLabel(tr("Enter text from the picture:"),this);
-	grid->addWidget(label, 1, 0);
+	QLabel* label=new QLabel(tr("Enter text from the picture:"), this);
 	code_edit=new QLineEdit(this);
+
+	QGridLayout *grid = new QGridLayout(this, 2, 2, 10, 10);
+	grid->addMultiCellWidget(image_widget, 0, 0, 0, 1);
+	grid->addWidget(label, 1, 0);
 	grid->addWidget(code_edit, 1, 1);
-	connect(code_edit,SIGNAL(returnPressed()),this,SLOT(onReturnPressed()));
+
+	connect(code_edit, SIGNAL(returnPressed()), this, SLOT(onReturnPressed()));
 	kdebugf2();
 }
 
@@ -131,6 +135,7 @@ void SmsImageDialog::reject()
 	kdebugf();
 	emit codeEntered("");
 	QDialog::reject();
+	kdebugf2();
 }
 
 void SmsImageDialog::onReturnPressed()
@@ -138,6 +143,7 @@ void SmsImageDialog::onReturnPressed()
 	kdebugf();
 	accept();
 	emit codeEntered(code_edit->text());
+	kdebugf2();
 }
 
 /********** SmsGateway **********/
@@ -145,15 +151,15 @@ void SmsImageDialog::onReturnPressed()
 SmsGateway::SmsGateway(QObject* parent, const char *name)
 	: QObject(parent, name)
 {
-	QObject::connect(&Http,SIGNAL(finished()),this,SLOT(httpFinished()));
-	QObject::connect(&Http,SIGNAL(redirected(QString)),this,SLOT(httpRedirected(QString)));
-	QObject::connect(&Http,SIGNAL(error()),this,SLOT(httpError()));
+	QObject::connect(&Http, SIGNAL(finished()), this, SLOT(httpFinished()));
+	QObject::connect(&Http, SIGNAL(redirected(QString)), this, SLOT(httpRedirected(QString)));
+	QObject::connect(&Http, SIGNAL(error()), this, SLOT(httpError()));
 }
 
 void SmsGateway::httpError()
 {
 	kdebugf();
-	QMessageBox::critical((QDialog*)(parent()->parent()), "SMS",tr("Network error. Provider gateway page is probably unavailable"));
+	QMessageBox::critical((QDialog*)(parent()->parent()), "SMS", tr("Network error. Provider gateway page is probably unavailable"));
 	emit finished(false);
 	kdebugf2();
 }
@@ -170,7 +176,7 @@ SmsSender::~SmsSender()
 {
 	kdebugf();
 	emit finished(false);
-	if(Gateway)
+	if (Gateway)
 	{
 		QObject::disconnect(Gateway, SIGNAL(finished(bool)), this, SLOT(onFinished(bool)));
 		delete Gateway;
@@ -187,20 +193,22 @@ void SmsSender::send(const QString& number,const QString& message, const QString
 {
 	kdebugf();
 	QString Number=number;
-	if(Number.length()==12&&Number.left(3)=="+48")
+	if (Number.length()==12 && Number.left(3)=="+48")
 		Number=Number.right(9);
-	if(Number.length()!=9)
+	if (Number.length()!=9)
 	{
 		QMessageBox::critical((QWidget*)parent(), "SMS", tr("Mobile number is incorrect"));
 		emit finished(false);
+		kdebugf2();
 		return;
 	}
 	Gateway=smsslots->getGateway(Number);
 
-	if(Gateway==NULL)
+	if (Gateway==NULL)
 	{
-		QMessageBox::critical((QWidget*)parent(),"SMS",tr("Mobile number is incorrect or gateway is not available"));
+		QMessageBox::critical((QWidget*)parent(),"SMS", tr("Mobile number is incorrect or gateway is not available"));
 		emit finished(false);
+		kdebugf2();
 		return;
 	}
 
@@ -226,9 +234,9 @@ Sms::Sms(const QString& altnick, QDialog* parent, const char *name) : QDialog (p
 
 	recipient = new QLineEdit(this);
 	recipient->setMinimumWidth(140);
-	if(altnick!="")
+	if (!altnick.isEmpty())
 		recipient->setText(userlist.byAltNick(altnick).mobile());
-	QObject::connect(recipient,SIGNAL(textChanged(const QString&)),this,SLOT(updateList(const QString&)));
+	QObject::connect(recipient, SIGNAL(textChanged(const QString&)), this, SLOT(updateList(const QString&)));
 	grid->addWidget(recipient, 0, 1);
 
 	QStringList strlist;
@@ -243,10 +251,10 @@ Sms::Sms(const QString& altnick, QDialog* parent, const char *name) : QDialog (p
 	connect(list, SIGNAL(activated(const QString&)), this, SLOT(updateRecipient(const QString &)));
 	grid->addWidget(list, 0, 3);
 
-	QLabel *recilabel = new QLabel(tr("Recipient"),this);
+	QLabel *recilabel = new QLabel(tr("Recipient"), this);
 	grid->addWidget(recilabel, 0, 0);
 
-	smslen = new QLabel("0",this);
+	smslen = new QLabel("0", this);
 	grid->addWidget(smslen, 3, 0);
 
 	b_send = new QPushButton(this);
@@ -259,19 +267,19 @@ Sms::Sms(const QString& altnick, QDialog* parent, const char *name) : QDialog (p
 	e_contact= new QLineEdit(this);
 	grid->addWidget(e_contact, 4, 1);
 
-	l_signature= new QLabel(tr("Signature"),this);
+	l_signature= new QLabel(tr("Signature"), this);
 	grid->addWidget(l_signature, 5, 0);
 	e_signature= new QLineEdit(config_file.readEntry("General", "Nick"), this);
 	grid->addWidget(e_signature, 5, 1);
 
-	if (altnick == "")
+	if (altnick.isEmpty())
 		recipient->setFocus();
 
-	resize(400,250);
+	resize(400, 250);
 	setCaption(tr("Send SMS"));
 
 	connect(b_send, SIGNAL(clicked()), this, SLOT(sendSms()));
-	connect(&Sender,SIGNAL(finished(bool)),this,SLOT(onSmsSenderFinished(bool)));
+	connect(&Sender, SIGNAL(finished(bool)), this, SLOT(onSmsSenderFinished(bool)));
 
 	modules_manager->moduleIncUsageCount("sms");
 	kdebugf2();
@@ -285,12 +293,13 @@ Sms::~Sms()
 void Sms::updateRecipient(const QString &newtext)
 {
 	kdebugf();
-	if(newtext=="")
+	if (newtext.isEmpty())
 	{
 		recipient->setText("");
+		kdebugf2();
 		return;
 	}
-	if(userlist.containsAltNick(newtext))
+	if (userlist.containsAltNick(newtext))
 		recipient->setText(userlist.byAltNick(newtext).mobile());
 	kdebugf2();
 }
@@ -299,9 +308,10 @@ void Sms::updateList(const QString &newnumber)
 {
 	kdebugf();
 	for(UserList::ConstIterator i = userlist.begin(); i != userlist.end(); ++i)
-		if((*i).mobile() == newnumber)
+		if ((*i).mobile() == newnumber)
 		{
 			list->setCurrentText((*i).altNick());
+			kdebugf2();
 			return;
 		}
 	list->setCurrentText("");
@@ -361,7 +371,9 @@ void Sms::sendSms(void)
 	kdebugf2();
 }
 
-void Sms::smsSigHandler() {
+void Sms::smsSigHandler()
+{
+	kdebugf();
 	if (smsProcess->normalExit())
 		QMessageBox::information(this, tr("SMS sent"), tr("The process exited normally. The SMS should be on its way"));
 	else
@@ -374,15 +386,18 @@ void Sms::smsSigHandler() {
 	b_send->setEnabled(true);
 	body->setEnabled(true);
 	body->clear();
+	kdebugf2();
 }
 
-void Sms::updateCounter() {
+void Sms::updateCounter()
+{
 	smslen->setText(QString::number(body->text().length()));
 }
 
 void Sms::onSmsSenderFinished(bool success)
 {
-	if(success)
+	kdebugf();
+	if (success)
 	{
 		QMessageBox::information(this, tr("SMS sent"), tr("The SMS was sent and should be on its way"));
 		body->clear();
@@ -393,6 +408,7 @@ void Sms::onSmsSenderFinished(bool success)
 	l_contact->setEnabled(true);
 	e_signature->setEnabled(true);
 	l_signature->setEnabled(true);
+	kdebugf2();
 }
 
 SmsSlots::SmsSlots(QObject *parent, const char *name) : QObject(parent, name)
@@ -455,14 +471,13 @@ void SmsSlots::onCreateConfigDialog()
 	QMap<QString,isValidFunc*>::Iterator it;
 	QStringList priority=QStringList::split(";", config_file.readEntry("SMS", "Priority"));
 
-	for(QStringList::Iterator it=priority.begin(); it!=priority.end(); ++it)
-		if(gateways.contains(*it))
+	for(QStringList::ConstIterator it=priority.begin(); it!=priority.end(); ++it)
+		if (gateways.contains(*it))
 			lb_gws->insertItem(*it);
 
-	for(it = gateways.begin(); it != gateways.end(); ++it ){
-		if(lb_gws->index(lb_gws->findItem(it.key()))==-1)
+	for(it = gateways.begin(); it != gateways.end(); ++it)
+		if (lb_gws->index(lb_gws->findItem(it.key()))==-1)
 			lb_gws->insertItem(it.key());
-	}
 
 	modules_manager->moduleIncUsageCount("sms");
 	kdebugf2();
@@ -476,7 +491,8 @@ void SmsSlots::onApplyConfigDialog()
 	QStringList priority;
 	QListBoxItem* lbi_item=lb_gws->firstItem();
 
-	while(lbi_item!=0){
+	while (lbi_item!=0)
+	{
 		priority+=lbi_item->text();
 		lbi_item=lbi_item->next();
 	}
@@ -497,7 +513,7 @@ void SmsSlots::newSms(QString nick)
 
 void SmsSlots::onUserClicked(int button, QListBoxItem* /*item*/, const QPoint& /*pos*/)
 {
-	if(button==4)
+	if (button==4)
 		onSendSmsToUser();
 }
 
@@ -539,7 +555,8 @@ void SmsSlots::registerGateway(QString name, isValidFunc* f)
 {
 	kdebugf();
 	QStringList priority=QStringList::split(";", config_file.readEntry("SMS", "Priority"));
-	if(!priority.contains(name)){
+	if (!priority.contains(name))
+	{
 		priority+=name;
 		config_file.writeEntry("SMS", "Priority", priority.join(";"));
 	}
@@ -557,16 +574,15 @@ void SmsSlots::unregisterGateway(QString name)
 SmsGateway* SmsSlots::getGateway(const QString& number)
 {
 	kdebugf();
-	QMap<QString,isValidFunc*>::Iterator it;
-	isValidFunc* f;
-	SmsGateway* Gateway;
 	QStringList priority=QStringList::split(";", config_file.readEntry("SMS", "Priority"));
 
-	for(QStringList::Iterator it=priority.begin(); it != priority.end(); ++it) {
-		if(gateways.contains(*it)){
-			f=gateways[*it];
-			Gateway=f(number, this);
-			if(Gateway)
+	for (QStringList::Iterator it=priority.begin(); it != priority.end(); ++it)
+	{
+		if (gateways.contains(*it))
+		{
+			isValidFunc *f=gateways[*it];
+			SmsGateway *Gateway=f(number, this);
+			if (Gateway)
 			{
 				kdebugf2();
 				return Gateway;
@@ -574,7 +590,7 @@ SmsGateway* SmsSlots::getGateway(const QString& number)
 		}
 	}
 
-	kdebugmf(KDEBUG_INFO, "return NULL\n");
+	kdebugmf(KDEBUG_INFO|KDEBUG_FUNCTION_END, "return NULL\n");
 	return NULL;
 }
 
@@ -583,7 +599,7 @@ void SmsSlots::onUpButton()
 	kdebugf();
 	QListBox* list=ConfigDialog::getListBox("SMS", "gateways");
 	int index=list->currentItem();
-	if(index==0)
+	if (index==0)
 		return;
 	QString text=list->text(index);
 	list->removeItem(index);
@@ -597,7 +613,7 @@ void SmsSlots::onDownButton()
 	kdebugf();
 	QListBox* list=ConfigDialog::getListBox("SMS", "gateways");
 	unsigned int index=list->currentItem();
-	if(index==list->count())
+	if (index==list->count())
 		return;
 	QString text=list->text(index);
 	list->removeItem(index);

@@ -78,18 +78,18 @@ void SmsIdeaGateway::httpFinished()
 {
 	kdebugf();
 	QDialog* p=(QDialog*)(parent()->parent());
-	if(State==SMS_LOADING_PAGE)
+	if (State==SMS_LOADING_PAGE)
 	{
 		QString Page=Http.data();
 		kdebugm(KDEBUG_INFO, "SMS Provider Page:\n%s\n",Page.local8Bit().data());
 		QRegExp pic_regexp("rotate_token\\.aspx\\?token=([^\"]+)");
 		int pic_pos=pic_regexp.search(Page);
-		if(pic_pos<0)
+		if (pic_pos<0)
 		{
 			QMessageBox::critical(p,"SMS",tr("Provider gateway page looks strange. It's probably temporary disabled\nor has beed changed too much to parse it correctly."));
 			emit finished(false);
 			return;
-		};
+		}
 		QString pic_path=Page.mid(pic_pos,pic_regexp.matchedLength());
 		Token=pic_regexp.cap(1);
 		kdebugm(KDEBUG_INFO, "SMS Idea Token: %s\n",Token.local8Bit().data());
@@ -97,36 +97,36 @@ void SmsIdeaGateway::httpFinished()
 		State=SMS_LOADING_PICTURE;
 		Http.get(pic_path);
 	}
-	else if(State==SMS_LOADING_PICTURE)
+	else if (State==SMS_LOADING_PICTURE)
 	{
 		kdebugm(KDEBUG_INFO, "SMS Idea Picture Loaded: %i bytes\n",Http.data().size());
 		SmsImageDialog* d=new SmsImageDialog(p,Http.data());
 		connect(d,SIGNAL(codeEntered(const QString&)),this,SLOT(onCodeEntered(const QString&)));
 		d->show();
 	}
-	else if(State==SMS_LOADING_RESULTS)
+	else if (State==SMS_LOADING_RESULTS)
 	{
 		QString Page=Http.data();
 		kdebugm(KDEBUG_INFO, "SMS Provider Results Page:\n%s\n",Page.local8Bit().data());	
-		if(Page.find("wyczerpany")>=0)
+		if (Page.find("wyczerpany")>=0)
 		{
 			kdebugm(KDEBUG_INFO, "You exceeded your daily limit\n");
 			QMessageBox::critical(p,"SMS",tr("You exceeded your daily limit"));
 			emit finished(false);
 		}
-		else if(Page.find("Podano b³êdne has³o")>=0)
+		else if (Page.find("Podano b³êdne has³o")>=0)
 		{
 			kdebugm(KDEBUG_INFO, "Text from the picture is incorrect\n");
 			QMessageBox::critical(p,"SMS",tr("Text from the picture is incorrect"));
 			emit finished(false);				
 		}
-		else if(Page.find("Odbiorca nie ma aktywnej uslugi")>=0)
+		else if (Page.find("Odbiorca nie ma aktywnej uslugi")>=0)
 		{
 			kdebugm(KDEBUG_INFO, "The receiver has to enable SMS STANDARD service\n");
 			QMessageBox::critical(p,"SMS",tr("The receiver has to enable SMS STANDARD service"));
 			emit finished(false);				
 		}			
-		else if(Page.find("Twój SMS zosta³ wys³any")>=0)
+		else if (Page.find("Twój SMS zosta³ wys³any")>=0)
 		{
 			kdebugm(KDEBUG_INFO, "SMS was sent succesfully\n");
 			emit finished(true);
@@ -136,7 +136,7 @@ void SmsIdeaGateway::httpFinished()
 			kdebugm(KDEBUG_INFO, "Provider gateway results page looks strange. SMS was probably NOT sent.\n");
 			QMessageBox::critical(p,"SMS",tr("Provider gateway results page looks strange. SMS was probably NOT sent."));
 			emit finished(false);
-		};
+		}
 	}
 	else
 		kdebugm(KDEBUG_PANIC, "SMS Panic! Unknown state\n");
@@ -146,7 +146,7 @@ void SmsIdeaGateway::httpFinished()
 void SmsIdeaGateway::onCodeEntered(const QString& code)
 {
 	kdebugf();
-	if(code=="")
+	if (code.isEmpty())
 	{
 		emit finished(false);
 		return;
@@ -196,22 +196,24 @@ void SmsPlusGateway::httpFinished()
 {
 	kdebugf();
 	QWidget* p=(QWidget*)(parent()->parent());
-	if(State==SMS_LOADING_PAGE)
+	if (State==SMS_LOADING_PAGE)
 	{
 		QString Page=Http.data();
 		kdebugm(KDEBUG_INFO, "SMS Provider Page:\n%s\n",Page.local8Bit().data());
 		QRegExp code_regexp("name=\\\"kod\\\" value=\\\"(\\d+)\\\"");
 		QRegExp code_regexp2("name=\\\"Kod(\\d+)\\\" value=\\\"(\\d+)\\\"");
-		if(code_regexp.search(Page) < 0) {
+		if (code_regexp.search(Page) < 0)
+		{
 			QMessageBox::critical(p,"SMS",tr("Provider gateway page looks strange. It's probably temporary disabled\nor has beed changed too much to parse it correctly."));
 			emit finished(false);
 			return;
 		}
-		if(code_regexp2.search(Page) < 0) {
+		if (code_regexp2.search(Page) < 0)
+		{
 			QMessageBox::critical(p,"SMS",tr("Provider gateway page looks strange. It's probably temporary disabled\nor has beed changed too much to parse it correctly."));
 			emit finished(false);
 			return;
-			}
+		}
 		QString code = code_regexp.cap(1);
 		QString num = code_regexp2.cap(1);
 		QString code2 = code_regexp2.cap(2);
@@ -219,19 +221,14 @@ void SmsPlusGateway::httpFinished()
 		QString post_data = "bookopen=&numer="+Number+"&ksiazka=ksi%B1%BFka+telefoniczna&message="+Http.encode(Message)+"&podpis="+config_file.readEntry("General","Nick")+"&kontakt=&Send=++tak-nada%E6++&Kod"+num+"="+code2+"&kod="+code;
 		Http.post("sms/sendsms.asp", post_data);
 	}
-	else if(State==SMS_LOADING_RESULTS)
+	else if (State==SMS_LOADING_RESULTS)
 	{
 		QString Page=Http.data();
 		kdebugm(KDEBUG_INFO, "SMS Provider Results Page:\n%s\n",Page.local8Bit().data());	
-		if(Page.find("SMS zosta³ wys³any")>=0)
-		{
-			emit finished(true);
-		}
-		else
-		{
+		bool success=(Page.find("SMS zosta³ wys³any")>=0);
+		if (!success)
 			QMessageBox::critical(p,"SMS",tr("Provider gateway results page looks strange. SMS was probably NOT sent."));
-			emit finished(false);
-		};				
+		emit finished(success);
 	}
 	else
 		kdebugm(KDEBUG_PANIC, "SMS Panic! Unknown state\n");	
@@ -270,15 +267,15 @@ void SmsEraGateway::send(const QString& number,const QString& message, const QSt
 	    
 	QString gateway= config_file.readEntry("SMS", "EraGateway");
 
-	if ( gateway == "Basic")
+	if (gateway == "Basic")
 	{
 	    path= "sms/do/extern/tinker/free/send";
 	    post_data.replace(post_data.find("&numbers="),9, "&number=48");
 	}
 	else if (gateway == "Charge")
-		    path= "sms/do/extern/tinker/super/send";
+		path= "sms/do/extern/tinker/super/send";
 	else if (gateway == "Omnix")
-		    path= "sms/do/extern/tinker/multi/send";
+		path= "sms/do/extern/tinker/multi/send";
 	else 
 	{
 		emit finished(false);
@@ -301,37 +298,30 @@ void SmsEraGateway::httpRedirected(QString link)
 {
 	kdebugf();
 	QWidget* p=(QWidget*)(parent()->parent());
-	if(link.find("ok.html")> 0)
+	if (link.find("ok.html")> 0)
 		emit finished(true);
-	else if(link.find("blad.html")> 0)
+	else if (link.find("blad.html")> 0)
 	{
-		QMessageBox::critical(p,"SMS",tr("Error: ")+ SmsEraGateway::errorNumber(link.replace(link.find("http://moj.serwer.pl/blad.html?X-ERA-error="),43, "").toInt()));
+		QMessageBox::critical(p, "SMS", tr("Error: ")+ SmsEraGateway::errorNumber(link.replace(link.find("http://moj.serwer.pl/blad.html?X-ERA-error="),43, "").toInt()));
 		emit finished(false);
 	}		
 	else 
-		QMessageBox::critical(p,"SMS",tr("Provider gateway results page looks strange. SMS was probably NOT sent."));
+		QMessageBox::critical(p, "SMS", tr("Provider gateway results page looks strange. SMS was probably NOT sent."));
 	kdebugf2();
 }
 
 QString SmsEraGateway::errorNumber(int nr)
 {
-    switch(nr){
-	case 0: return tr("No error");
-		break;
-	case 1: return tr("System failure");
-		break;
-	case 2: return tr("Unauthorised user");
-		break;
-	case 3: return tr("Access forbidden");
-		break;
-	case 5: return tr("Syntax error");
-		break;
-	case 7: return tr("Limit of the sms run-down");
-		break;
-	case 8: return tr("Wrong receiver adress");
-		break;
-	case 9: return tr("Message too long");
-		break;
+	switch(nr)
+	{
+		case 0: return tr("No error");
+		case 1: return tr("System failure");
+		case 2: return tr("Unauthorised user");
+		case 3: return tr("Access forbidden");
+		case 5: return tr("Syntax error");
+		case 7: return tr("Limit of the sms run-down");
+		case 8: return tr("Wrong receiver adress");
+		case 9: return tr("Message too long");
 	}
 	return tr("Unknown error");
 }
@@ -456,6 +446,5 @@ SmsGateway* SmsGatewaySlots::isValidEra(const QString& number, QObject* parent)
 	else
 		return NULL;
 }
-
 
 SmsGatewaySlots* sms_gateway_slots;
