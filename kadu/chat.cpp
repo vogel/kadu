@@ -117,6 +117,10 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	QToolTip::add(edt, i18n("This is where you type in the text to be sent"));
 
 	buttontray = new QHBox(edtbuttontray);
+
+	QPushButton *boldbtn = new QPushButton("B", buttontray);
+	boldbtn->setToggleButton(true);
+
 	autosend = new QPushButton(buttontray);
 	autosend->setPixmap(loadIcon("key_enter.png"));
 	autosend->setToggleButton(true);
@@ -217,6 +221,8 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 
 	body->setMimeSourceFactory(bodyformat);
 	body->setTextFormat(Qt::RichText);
+//	edit->setMimeSourceFactory(bodyformat);
+//	edit->setTextFormat(Qt::RichText);
 
 	connect(autosend, SIGNAL(clicked()), this, SLOT(regAutosend()));
 	connect(history, SIGNAL(clicked()), this, SLOT(HistoryBox()));
@@ -224,6 +230,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	connect(whois, SIGNAL(clicked()), this, SLOT(userWhois()));
 	connect(clearchat, SIGNAL(clicked()), this, SLOT(clearChatWindow()));
 	connect(cancelbtn, SIGNAL(clicked()), this, SLOT(cancelMessage()));
+	connect(boldbtn, SIGNAL(toggle(bool)), this, SLOT(toggleBold(bool)));
 
 	totaloccurences = 0;
 
@@ -254,6 +261,10 @@ Chat::~Chat() {
 		delete userbox;
 		
 	kdebug("Chat::~Chat: chat destroyed: index %d\n", index);
+}
+
+void Chat::toggleBold(bool on) {
+	edit->setBold(on);
 }
 
 void Chat::setupEncryptButton(bool enabled) {

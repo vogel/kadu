@@ -83,6 +83,7 @@ class Chat : public QWidget {
 		void writeMyMessage(void);
 		void changeTitle(void);
 		void hyperlinkClicked(const QString &link);
+		void toggleBold(bool on);
 
 	protected:
 		void closeEvent(QCloseEvent *);
