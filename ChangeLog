@@ -170,6 +170,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * zapis informacji o grupach zgodny z gg (chilek)
 * lista modu³ów statycznych w menad¿erze modu³ów (adrian)
 * obs³uga funkcji init i close modu³ów statycznych (adrian)
+* konfiguracja timera w autoaway'u (joi)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

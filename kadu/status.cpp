@@ -85,7 +85,7 @@ AutoAwayTimer::AutoAwayTimer(QObject* parent) : QTimer(parent,"AutoAwayTimer"), 
 	autoawayed = false;
 	qApp->installEventFilter(this);
 	connect(this, SIGNAL(timeout()), SLOT(checkIdleTime()));
-	start(1000, TRUE);
+	start(config_file.readNumEntry("General", "AutoAwayCheckTime")*1000, TRUE);
 }
 
 // jesli wciskamy klawisze lub poruszamy myszka w obrebie programu to zerujemy czas nieaktywnosci
@@ -96,7 +96,7 @@ bool AutoAwayTimer::eventFilter(QObject *o,QEvent *e)
 	return QObject::eventFilter(o, e);
 }
 
-//metoda wywolywana co sekunde w celu sprawdzenia czy mamy stac sie "zajeci"
+//metoda wywo³ywana co sekundê(mo¿liwa zmiana w konfiguracji) w celu sprawdzenia czy mamy staæ siê "zajêci"
 void AutoAwayTimer::checkIdleTime()
 {
 	static int kbdirqs = 0;
@@ -149,7 +149,7 @@ void AutoAwayTimer::checkIdleTime()
 		}
 	
 	if(inactive)
-		idletime++;
+		idletime+=config_file.readNumEntry("General", "AutoAwayCheckTime");
 
 //	czy mamy stac sie "zajeci" po config.autoawaytime sekund nieaktywnosci
 	if (idletime >= config_file.readNumEntry("General","AutoAwayTime") && !autoawayed) {
@@ -165,7 +165,7 @@ void AutoAwayTimer::checkIdleTime()
 				autoawayed = true;
 				break;
 			default:
-				start(1000, TRUE);
+				start(config_file.readNumEntry("General", "AutoAwayCheckTime")*1000, TRUE);
 				return;
 			}
 		kdebug("AutoAwayTimer::checkIdleTime(): I am away!\n");
@@ -179,7 +179,7 @@ void AutoAwayTimer::checkIdleTime()
 			}
 
 //potrzebne na wypadek zerwania polaczenia i ponownego polaczenia sie z statusem innym niz busy*
-	start(1000, TRUE);
+	start(config_file.readNumEntry("General", "AutoAwayCheckTime")*1000, TRUE);
 }
 
 void AutoAwayTimer::on() {
@@ -199,7 +199,7 @@ void AutoAwayTimer::initModule()
 	QT_TRANSLATE_NOOP("@default", "General");
 	QT_TRANSLATE_NOOP("@default", "Enable autoaway");
 	QT_TRANSLATE_NOOP("@default", "Set status to away after ");
-	QT_TRANSLATE_NOOP("@default", " seconds");
+	QT_TRANSLATE_NOOP("@default", "Check idle every ");
 	QT_TRANSLATE_NOOP("@default", "Default status");
 	QT_TRANSLATE_NOOP("@default", "On shutdown, set description:");
 	QT_TRANSLATE_NOOP("@default", "Enable dock icon");
@@ -214,8 +214,8 @@ void AutoAwayTimer::initModule()
 	ConfigDialog::addVGroupBox("General", "General", "Status");
 	ConfigDialog::addCheckBox("General", "Status", "Enable autoaway", "AutoAway", false);
 	ConfigDialog::addHBox("General", "Status", "--");
-	ConfigDialog::addLineEdit("General", "--", "Set status to away after ", "AutoAwayTime", "300");
-	ConfigDialog::addLabel("General", "--", " seconds");
+	ConfigDialog::addSpinBox("General", "--", "Set status to away after ", "AutoAwayTime", 1, 10000, 1, 300);
+	ConfigDialog::addSpinBox("General", "--", "Check idle every ", "AutoAwayCheckTime", 1, 10000, 1, 1);
 	ConfigDialog::addComboBox("General", "Status", "Default status", "", "cb_defstatus");
 	ConfigDialog::addHBox("General", "Status", "discstatus");
 	ConfigDialog::addCheckBox("General", "discstatus", "On shutdown, set description:", "DisconnectWithDescription", false);
@@ -229,7 +229,7 @@ void AutoAwayTimer::initModule()
 	ConfigDialog::addCheckBox("General", "grid", "Start docked", "RunDocked", false);
 	ConfigDialog::addCheckBox("General", "grid", "Private status", "PrivateStatus", false);
 	ConfigDialog::addCheckBox("General", "grid", "Check for updates", "CheckUpdates", true);
-};
+}
 
 void AutoAwaySlots::onCreateConfigDialog()
 {
@@ -255,7 +255,8 @@ void AutoAwaySlots::onCreateConfigDialog()
 	while (i<7 && statusnr !=gg_statuses[i])
 		i++;
 	cb_defstatus->setCurrentItem(i);
-	
+	ConfigDialog::getSpinBox("General", "Set status to away after ")->setSuffix(" s");
+	ConfigDialog::getSpinBox("General", "Check idle every ")->setSuffix(" s");
 }
 
 void AutoAwaySlots::onDestroyConfigDialog()
@@ -265,20 +266,18 @@ void AutoAwaySlots::onDestroyConfigDialog()
 	config_file.writeEntry("General", "DefaultStatus", gg_statuses[cb_defstatus->currentItem()]);
 
 	if (config_file.readBoolEntry("General", "AutoAway"))
-	        AutoAwayTimer::on();
+		AutoAwayTimer::on();
 	else
-                AutoAwayTimer::off();
+		AutoAwayTimer::off();
 
 	int status = getActualStatus();
 
 	if (status != GG_STATUS_NOT_AVAIL)
 	if ((!(status & GG_STATUS_FRIENDS_MASK)&& 
-	    config_file.readBoolEntry("General", "PrivateStatus"))
-	|| ((status & GG_STATUS_FRIENDS_MASK) &&  
-	    !config_file.readBoolEntry("General", "PrivateStatus")))
-	    kadu->setStatus(status & (~GG_STATUS_FRIENDS_MASK));
-	
+		config_file.readBoolEntry("General", "PrivateStatus"))
+		|| ((status & GG_STATUS_FRIENDS_MASK) &&  
+		!config_file.readBoolEntry("General", "PrivateStatus")))
+		kadu->setStatus(status & (~GG_STATUS_FRIENDS_MASK));
+
 	statusppm->setItemChecked(8, config_file.readBoolEntry("General", "PrivateStatus"));
-
-};
-
+}
