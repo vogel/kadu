@@ -9,7 +9,6 @@ config_file.cpp config_file.h \
 dcc.cpp dcc.h dcc_moc.cpp \
 debug.cpp debug.h \
 emoticons.cpp emoticons.h emoticons_moc.cpp \
-events.cpp events.h events_moc.cpp \
 expimp.cpp expimp.h expimp_moc.cpp \
 gadu.cpp gadu.h gadu_moc.cpp \
 hints.cpp hints.h hints_moc.cpp \

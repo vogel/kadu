@@ -31,7 +31,6 @@
 #include "config_dialog.h"
 #include "config_file.h"
 #include "kadu.h"
-#include "events.h"
 #include "chat.h"
 #include "search.h"
 #include "history.h"

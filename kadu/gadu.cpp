@@ -10,7 +10,6 @@
 #include "gadu.h"
 #include "userlist.h"
 #include "debug.h"
-#include "events.h"
 #include "kadu.h"
 #include "chat.h"
 #include "ignore.h"

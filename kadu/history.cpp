@@ -25,7 +25,6 @@
 #include "kadu.h"
 #include "config_file.h"
 #include "config_dialog.h"
-#include "events.h"
 #include "debug.h"
 #include "history.h"
 #include "status.h"
