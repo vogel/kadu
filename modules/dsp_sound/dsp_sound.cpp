@@ -6,16 +6,20 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <errno.h>
+#include <string.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <errno.h>
+
+#include <sys/types.h>
+#include <sys/stat.h>
 #include <sys/soundcard.h>
 #include <sys/ioctl.h>
 
-#include "dsp_sound.h"
+#include "../sound/sound_file.h"
 #include "debug.h"
+#include "dsp_sound.h"
 #include "config_dialog.h"
-#include "sound_desc.h"
 
 extern "C" int dsp_sound_init()
 {
@@ -30,6 +34,7 @@ extern "C" int dsp_sound_init()
 	kdebugf2();
 	return 0;
 }
+
 extern "C" void dsp_sound_close()
 {
 	kdebugf();
@@ -41,11 +46,64 @@ extern "C" void dsp_sound_close()
 	kdebugf2();
 }
 
-struct DspSoundDevice
+struct OSSSoundDevice
 {
 	int fd;
 	int max_buf_size;
 };
+
+int OSSPlayThread::write_all(int fd, const char *data, int length, int chunksize)
+{
+	int res = 0, written = 0;
+	
+	while (written < length) {
+		int towrite = (chunksize < length - written) ? chunksize : length - written;
+		res = write(fd, data + written, towrite);
+		if (res == -1) {
+			if (errno == EAGAIN)
+				continue;
+			else
+				break;
+		} else {
+			written += towrite;
+			res = written;
+		}
+	}
+	return res;
+}
+
+bool OSSPlayThread::play(const char *path, const char *device, bool volumeControl, float volume)
+{
+	bool ret=false;
+	SoundFile *sound=new SoundFile(path);
+	
+	if (!sound->isOk())
+	{
+		kdebugmf(KDEBUG_ERROR, "sound is not ok?\n");
+		delete sound;
+		return false;
+	}
+
+	kdebugm(KDEBUG_INFO, "\n");
+	kdebugm(KDEBUG_INFO, "length:   %d\n", sound->length);
+	kdebugm(KDEBUG_INFO, "speed:    %d\n", sound->speed);
+	kdebugm(KDEBUG_INFO, "channels: %d\n", sound->channels);
+
+	if (volumeControl)
+		sound->setVolume(volume);
+
+	SoundDevice dev;
+	oss_player_slots->openDevice(sound->speed, sound->channels, dev);
+
+	if (((OSSSoundDevice*)dev)->fd>0)
+		oss_player_slots->playSample(dev, sound->data, sound->length*sizeof(sound->data[0]), ret);
+	
+	oss_player_slots->closeDevice(dev);
+	
+	delete sound;
+	return ret;
+}
+
 
 OSSPlayerSlots::OSSPlayerSlots(QObject *parent, const char *name) : QObject(parent, name), thread(NULL)
 {
@@ -110,8 +168,7 @@ void OSSPlayerSlots::play(const QString &s, bool volCntrl, double vol, const QSt
 
 	if (thread->mutex.tryLock())
 	{
-		thread->list.push_back(s);
-		thread->list.push_back(t);
+		thread->list.push_back(SndParams(s,t,volCntrl,vol));
 		thread->mutex.unlock();
 		(*(thread->semaphore))--;
 	}
@@ -136,53 +193,47 @@ void OSSPlayerSlots::openDevice(int sample_rate, int channels, SoundDevice& devi
 	kdebugf();
 	device = NULL;
 
-	kdebugm(KDEBUG_INFO, "Opening /dev/dsp\n");
-	int fd = open("/dev/dsp", O_RDWR);
-	if(fd<0)
+	QString sdev=config_file.readEntry("Sounds","OutputDevice", "/dev/dsp");
+	kdebugm(KDEBUG_INFO, "Opening %s\n", sdev.local8Bit().data());
+
+	int fd = open(sdev.local8Bit().data(), O_RDWR);
+	if (fd<0)
 	{
-		kdebugm(KDEBUG_ERROR, "Error opening /dev/dsp\n");
+		kdebugm(KDEBUG_ERROR, "Error opening device\n");
 		return;
 	}
 
+	kdebugm(KDEBUG_INFO, "Resetting\n");
 	if (ioctl(fd, SNDCTL_DSP_RESET)<0)
 	{
-		kdebugm(KDEBUG_ERROR, "Error resetting /dev/dsp\n");
+		kdebugm(KDEBUG_ERROR, "Error resetting\n");
 		close(fd);
 		return;
 	}
 
-	kdebugm(KDEBUG_INFO, "Setting speed for /dev/dsp\n");
+	kdebugm(KDEBUG_INFO, "Setting speed\n");
 	int value = sample_rate;
 	if(ioctl(fd, SNDCTL_DSP_SPEED, &value)<0)
 	{
-		kdebugm(KDEBUG_ERROR, "Error setting speed for /dev/dsp\n");
+		kdebugm(KDEBUG_ERROR, "Error setting speed\n");
 		close(fd);
 		return;
 	}
 
-	kdebugm(KDEBUG_INFO, "Setting sample size for /dev/dsp\n");
-	value = 16;
-	if(ioctl(fd, SNDCTL_DSP_SAMPLESIZE, &value)<0)
-	{
-		kdebugm(KDEBUG_ERROR, "Error setting sample size for /dev/dsp\n");
-		close(fd);
-		return;
-	}
-
-	kdebugm(KDEBUG_INFO, "Setting channels for /dev/dsp\n");
+	kdebugm(KDEBUG_INFO, "Setting channels\n");
 	value = channels;
 	if(ioctl(fd, SNDCTL_DSP_CHANNELS, &value)<0)
 	{
-		kdebugm(KDEBUG_ERROR, "Error setting channels for /dev/dsp\n");
+		kdebugm(KDEBUG_ERROR, "Error setting channels\n");
 		close(fd);
 		return;
 	}
 
-	kdebugm(KDEBUG_INFO, "Setting ftm for /dev/dsp\n");
+	kdebugm(KDEBUG_INFO, "Setting format\n");
 	value = AFMT_S16_LE;
 	if(ioctl(fd, SNDCTL_DSP_SETFMT, &value)<0)
 	{
-		kdebugm(KDEBUG_ERROR, "Error setting ftm for /dev/dsp\n");
+		kdebugm(KDEBUG_ERROR, "Error setting format\n");
 		close(fd);
 		return;
 	}
@@ -190,24 +241,25 @@ void OSSPlayerSlots::openDevice(int sample_rate, int channels, SoundDevice& devi
 	int maxbufsize;
 	if (ioctl(fd, SNDCTL_DSP_GETBLKSIZE, &maxbufsize)<0)
 	{
-		kdebugm(KDEBUG_ERROR, "Error getting max buffer size for /dev/dsp\n");
+		kdebugm(KDEBUG_ERROR, "Error getting max buffer size\n");
 		close(fd);
 		return;
 	}
 
 	kdebugm(KDEBUG_FUNCTION_END, "Setup successful, fd=%d\n", fd);
-	DspSoundDevice* dev = new DspSoundDevice;
+	OSSSoundDevice* dev = new OSSSoundDevice;
 	dev->fd = fd;
 	dev->max_buf_size = maxbufsize;
-	device = dev;
+	device = (SoundDevice) dev;
 }
 
 void OSSPlayerSlots::closeDevice(SoundDevice device)
 {
 	kdebugf();
-	DspSoundDevice* dev = (DspSoundDevice*)device;			
+	OSSSoundDevice* dev = (OSSSoundDevice*)device;			
 	close(dev->fd);
 	delete dev;
+	device = NULL;
 	kdebugf2();
 }
 
@@ -215,7 +267,7 @@ void OSSPlayerSlots::playSample(SoundDevice device, const int16_t* data, int len
 {
 	kdebugf();
 	result = true;
-	DspSoundDevice* dev = (DspSoundDevice*)device;			
+	OSSSoundDevice* dev = (OSSSoundDevice*)device;
 	int c = 0;
 	while (c < length)
 	{
@@ -233,11 +285,9 @@ void OSSPlayerSlots::playSample(SoundDevice device, const int16_t* data, int len
 void OSSPlayerSlots::recordSample(SoundDevice device, int16_t* data, int length, bool& result)
 {
 	kdebugf();
-	result = (read(((DspSoundDevice*)device)->fd, data, length) == length);
+	result = (read(((OSSSoundDevice*)device)->fd, data, length) == length);
 	kdebugf2();
 }
-
-
 
 OSSPlayThread::OSSPlayThread()
 {
@@ -253,7 +303,6 @@ OSSPlayThread::~OSSPlayThread()
 void OSSPlayThread::run()
 {
 	kdebugf();
-	QString path,device;
 	end=false;
 	while (!end)
 	{
@@ -265,80 +314,29 @@ void OSSPlayThread::run()
 			mutex.unlock();
 			break;
 		}
-		path=list.first();		list.pop_front();
-		device=list.first();	list.pop_front();
-
-		sound_desc *sound=new sound_desc(path.ascii());
-		if (sound->isOk())
-		{
-			int stereo;
-			int fd=open(device.ascii(), O_WRONLY);
-			if (fd<0)
-			{
-				qWarning("open: %s", strerror(errno));
-				mutex.unlock();
-				continue;
-			}
-			
-			if (ioctl(fd, SNDCTL_DSP_RESET)<0)
-			{
-				qWarning("ioctl: %s", strerror(errno));
-				close(fd);
-				mutex.unlock();
-				continue;
-			}
-
-			stereo=(sound->channels==2);
-
-			if (ioctl(fd, SNDCTL_DSP_STEREO, &stereo)<0)
-			{
-				qWarning("ioctl: %s", strerror(errno));
-				close(fd);
-				mutex.unlock();
-				continue;
-			}
-
-			if (ioctl(fd, SNDCTL_DSP_SPEED, &(sound->speed))<0)
-			{
-				qWarning("ioctl: %s", strerror(errno));
-				close(fd);
-				mutex.unlock();
-				continue;
-			}
-			
-			int unit=sound->unit;
-			if (ioctl(fd, SNDCTL_DSP_SAMPLESIZE, &unit)<0)
-			{
-				qWarning("ioctl: %s", strerror(errno));
-				close(fd);
-				mutex.unlock();
-				continue;
-			}
-
-			int maxbufsize;
-			if (ioctl(fd, SNDCTL_DSP_GETBLKSIZE, &maxbufsize)<0)
-			{
-				qWarning("ioctl: %s", strerror(errno));
-				close(fd);
-				mutex.unlock();
-				continue;
-			}
-			
-			int c=0;
-			int len=sound->length;
-			while (c<len)
-			{
-				write(fd, sound->data+c, (maxbufsize<len-c)?maxbufsize:len-c);
-				c+=maxbufsize;
-			}
-			close(fd);
-		}//end if (sound->isOk())
+		SndParams params=list.first();
+		list.pop_front();
+		
+		play(params.filename.local8Bit().data(), params.device.local8Bit().data(),
+				params.volumeControl, params.volume);
 		mutex.unlock();
 		kdebugm(KDEBUG_INFO, "unlocked\n");
-		delete sound;
 	}//end while(!end)
 	kdebugf2();
 }
 
-OSSPlayerSlots *oss_player_slots;
+SndParams::SndParams(QString fm, QString dev, bool volCntrl, float vol) :
+			filename(fm), device(dev), volumeControl(volCntrl), volume(vol)
+{
+}
 
+SndParams::SndParams(const SndParams &p) : filename(p.filename), device(p.device),
+									volumeControl(p.volumeControl), volume(p.volume)
+{
+}
+
+SndParams::SndParams()
+{
+}
+
+OSSPlayerSlots *oss_player_slots;

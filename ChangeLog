@@ -372,6 +372,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dcc: gdy druga strona, mimo posiadania publicznego ip, nie chce z nami nawi±zaæ
   po³±czenia, to prosimy j± o po³±czenie zwrotne (joi)
 * dcc: zrobiony ³adny interfejs do przesy³ania plików (np. dla dcopexport) (joi)
+* dsp_sound: odtwarzanie ró¿nych formatów d¼wiêków oraz regulacja g³o¶no¶ci
+  uwaga: od dzisiaj do kompilacji modu³u sound wymagana jest biblioteka libsndfile (joi)
+* dodany do autodownloadu modu³ alsa_sound (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,

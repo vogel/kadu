@@ -1,2 +1,4 @@
-MODULE_SOURCES=sound.cpp
-MODULE_MOC_HEADERS=sound.h
+MODULE_SOURCES="sound.cpp sound_file.cpp"
+MODULE_MOC_HEADERS="sound.h"
+MODULE_INCLUDES="sndfile.h"
+MODULE_LIBS=sndfile
