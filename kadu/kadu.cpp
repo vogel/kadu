@@ -427,9 +427,10 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	GroupBar->setFont(QFont(config_file.readFontEntry("Look", "UserboxFont").family(), config_file.readFontEntry("Look", "UserboxFont").pointSize(),75));
 	connect(GroupBar, SIGNAL(selected(int)), this, SLOT(groupTabSelected(int)));
 
-	/* connect userlist modified signal */
+	/* connect userlist signals */
 	connect(&userlist, SIGNAL(modified()), this, SLOT(userListModified()));
 	connect(&userlist, SIGNAL(statusModified(UserListElement *)), this, SLOT(userListStatusModified(UserListElement *)));
+	connect(&userlist, SIGNAL(userAdded(const UserListElement&)),this,SLOT(userListUserAdded(const UserListElement&)));
 
 	/* initialize and configure userbox */
 	Userbox = new UserBox(hbox1, "userbox");
@@ -1202,47 +1203,20 @@ void Kadu::prepareDcc(void) {
 	QObject::connect(dccsnw, SIGNAL(activated(int)), kadu, SLOT(dccSent()));
 }
 
-// code for addUser has been moved from adduser.cpp
-// for sharing with search.cpp
-void Kadu::addUser(UserListElement &ule)
+void Kadu::userListUserAdded(const UserListElement& user)
 {
-	UserListElement e;
-	e.first_name = ule.first_name;
-	e.last_name = ule.last_name;
-	e.nickname = ule.nickname;
-	e.altnick = ule.altnick;
-	e.mobile = ule.mobile;
-	e.uin = ule.uin;
-	e.setGroup(ule.group());
-	e.email = ule.email;
-	if (!userlist.containsUin(ule.uin) || (!ule.uin && !userlist.containsAltNick(ule.altnick))) {
-		e.status = ule.status;
-		e.image_size = ule.image_size;
-		e.description = ule.description;
-		e.anonymous = ule.anonymous;
-		userlist.addUser(e);
-		}
-	else {
-		UserListElement &oldule = userlist.byUin(ule.uin);
-		kdebug("Kadu::addUser(): uin = %d\n", ule.uin);
-		if (!ule.uin)
-			oldule = userlist.byAltNick(ule.altnick);
-		e.status = oldule.status;
-		e.image_size = oldule.image_size;
-		e.blocking = oldule.blocking;
-		e.offline_to_user = oldule.offline_to_user;
-		e.notify = oldule.notify;
-		userlist.changeUserInfo(oldule.altnick, e);
-		}
+	if (user.anonymous || config_file.readBoolEntry("General", "UseDocking"))
+		return;
+
 	userlist.writeToFile();
 
-	Userbox->addUser(ule.altnick);
+	Userbox->addUser(user.altnick);
 	UserBox::all_refresh();
 
 	refreshGroupTabBar();
 
-	if (!ule.anonymous && ule.uin)
-		gg_add_notify(sess, ule.uin);
+	if (user.uin)
+		gg_add_notify(sess, user.uin);
 };
 
 /* changes the active group */

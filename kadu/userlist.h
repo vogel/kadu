@@ -76,34 +76,39 @@ class UserList : public QObject, public QValueList<UserListElement>
 {
 	Q_OBJECT
 
-	public:
-		UserList();
-		~UserList();
-		UserList::UserList(UserList &source);
-		UserListElement& byUin(uin_t uin);
-		UserListElement& byNick(const QString& nickname);
-		UserListElement& byAltNick(const QString& altnick);
-		UserListElement byUinValue(uin_t uin);
-		bool containsUin(uin_t uin);
-		bool containsAltNick(const QString& altnick);
-		void addUser(UserListElement &ule);
-		void changeUserInfo(const QString &oldaltnick, UserListElement &ule);
-		void changeUserStatus(const uin_t uin, const unsigned int status);
-		void removeUser(const QString &altnick);
-		bool writeToFile(QString filename = "");
-		bool readFromFile();
-		UserList &operator=(const UserList& userlist);
-		void setDnsName(uin_t uin, const QString &name);
-		void addDnsLookup(uin_t uin, const QHostAddress &ip);
-		void merge(UserList &userlist);
-
 	protected:
 		DnsLookups dnslookups;
 		friend class UserListElement;
 
+	public:
+		UserList();
+		UserList(const UserList& source);
+		~UserList();
+		UserList& operator=(const UserList& userlist);
+
+		UserListElement& byUin(uin_t uin);
+		UserListElement& byNick(const QString& nickname);
+		UserListElement& byAltNick(const QString& altnick);
+		UserListElement byUinValue(uin_t uin);
+
+		bool containsUin(uin_t uin);
+		bool containsAltNick(const QString& altnick);
+
+		void addUser(UserListElement &ule);
+		void addAnonymous(uin_t uin);
+		void removeUser(const QString &altnick);
+		void changeUserInfo(const QString &oldaltnick, UserListElement &ule);
+		void changeUserStatus(const uin_t uin, const unsigned int status);
+		bool writeToFile(QString filename = "");
+		bool readFromFile();
+		void setDnsName(uin_t uin, const QString &name);
+		void addDnsLookup(uin_t uin, const QHostAddress &ip);
+		void merge(UserList &userlist);
+
 	signals:
 		void modified();
 		void statusModified(UserListElement *);
+		void userAdded(const UserListElement& user);
 		void dnsNameReady(uin_t);
 };
 

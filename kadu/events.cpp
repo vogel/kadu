@@ -325,33 +325,8 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 
 	mesg = formatGGMessage(mesg, formats_length, formats);
 
-/*
-	Sprawdzamy czy uin znajduje sie na naszej userliscie, jezeli nie to w zalezno¶ci czy
-	mamy w³±czon± ikonke w trayu to dodajemy tylko do userlisty(ale chyba nie zapisujemy)
-	lub dodajemy automatycznie do naszej userlisty.
-*/
 	if(!userlist.containsUin(senders[0]))
-	{
-		bool ok;
-		UserListElement e;
-		UserListElement ule = userlist.byUinValue(senders[0]);
-		e.first_name = "";
-		e.last_name = "";
-		e.nickname = ule.altnick;
-		e.altnick = ule.altnick;
-		e.uin = ule.altnick.toUInt(&ok);
-		if (!ok)
-			e.uin = 0;
-		e.mobile = "";
-		e.setGroup("");
-		e.description = "";
-		e.email = "";
-		e.anonymous = true;
-		if (config_file.readBoolEntry("General", "UseDocking"))
-			userlist.addUser(e);
-		else
-			kadu->addUser(e);
-	}
+		userlist.addAnonymous(senders[0]);
 
 	kdebug("eventRecvMsg(): Got message from %d saying \"%s\"\n",
 			senders[0], (const char *)mesg.local8Bit());

@@ -51,6 +51,7 @@ class Kadu : public QMainWindow
 		void userListModified();
 		void userListStatusModified(UserListElement *);
 		void openChat();
+		void userListUserAdded(const UserListElement& user);
 
 	protected:
 		bool event(QEvent *e);
@@ -68,7 +69,6 @@ class Kadu : public QMainWindow
 		void changeAppearance();
 		~Kadu();
 		bool userInActiveGroup(uin_t uin);
-		void addUser(UserListElement &ule);
 		void removeUser(QStringList &, bool);
 		void refreshGroupTabBar();
 		/**

@@ -134,24 +134,7 @@ int ChatManager::openPendingMsg(int index,QString& to_add)
 	// go tam jako anonymous
 	for (int j = 0; j < p.uins.count(); j++)
 		if (!userlist.containsUin(p.uins[j]))
-		{
-			QString tmp = QString::number(p.uins[j]);
-			UserListElement e;
-			e.first_name = "";
-			e.last_name = "";
-			e.nickname = tmp;
-			e.altnick = tmp;
-			e.mobile = "";
-			e.uin = p.uins[j];
-			e.setGroup("");
-			e.description = "";
-			e.email = "";
-			e.anonymous = true;
-			if (config_file.readBoolEntry("General", "UseDocking"))
-				userlist.addUser(e);
-			else
-				kadu->addUser(e);
-		}
+			userlist.addAnonymous(p.uins[j]);
 	// otwieramy chat (jesli nie istnieje)
 	int k = openChat(p.uins,p.time);
 	// dopisujemy nowa wiadomosc do to_add

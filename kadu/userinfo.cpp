@@ -261,7 +261,7 @@ void UserInfo::updateUserlist() {
 				tr("User is already in userlist"), QMessageBox::Ok);
 			return;
 			}
-		kadu->addUser(e);
+		userlist.addUser(e);
 		close(true);
 		}
 	else {

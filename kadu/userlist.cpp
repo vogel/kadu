@@ -94,13 +94,11 @@ void UserListElement::setGroup(const QString& group)
 		emit Parent->modified();
 };
 
-UserList::UserList(UserList &source)
+UserList::UserList(const UserList& source)
 {
-	for(iterator i=source.begin(); i!=source.end(); i++)
+	for(const_iterator i=source.begin(); i!=source.end(); i++)
 		append(*i);
-
 };
-
 
 UserList::UserList() : QObject(), QValueList<UserListElement>()
 {
@@ -207,7 +205,7 @@ bool UserList::containsAltNick(const QString &altnick) {
 	return false;
 }
 
-void UserList::addUser(UserListElement &ule)
+void UserList::addUser(UserListElement& ule)
 {
 	UserListElement e(this);
 	e.first_name = ule.first_name;
@@ -231,7 +229,25 @@ void UserList::addUser(UserListElement &ule)
 	e.ip = ule.ip;
 	e.port = ule.port;
 	append(e);
+	emit userAdded(e);
 	emit modified();
+}
+
+void UserList::addAnonymous(uin_t uin)
+{
+	QString tmp = QString::number(uin);
+	UserListElement e;
+	e.first_name = "";
+	e.last_name = "";
+	e.nickname = tmp;
+	e.altnick = tmp;
+	e.mobile = "";
+	e.uin = uin;
+	e.setGroup("");
+	e.description = "";
+	e.email = "";
+	e.anonymous = true;
+	addUser(e);
 }
 
 void UserList::changeUserInfo(const QString &oldaltnick, UserListElement &ule)
