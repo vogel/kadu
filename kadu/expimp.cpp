@@ -109,7 +109,7 @@ void UserlistImport::updateUserlist() {
 	fprintf(stderr, "KK UserlistImport::updateUserlist()\n");
 	
 	userlist = importedUserlist;
-	importedUserlist.clear();
+//	importedUserlist.clear();
 	
 	kadu->userbox->clear();
 	kadu->userbox->clearUins();
@@ -195,6 +195,7 @@ void UserlistImport::socketEvent() {
 		int i, j;
 		QStringList::Iterator it, it2;
 
+		results->clear();
 		importedUserlist.clear();
 		for ((it = strlist.begin()), (i = 1); it != strlist.end(), i < strlist.count(); ++it, i++ ) {
 			fieldlist = QStringList::split(";",*it,true);
