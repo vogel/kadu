@@ -479,7 +479,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	connect(gadu, SIGNAL(connecting()), this, SLOT(connecting()));
 	connect(gadu, SIGNAL(connected()), this, SLOT(connected()));
 	connect(gadu, SIGNAL(disconnected()), this, SLOT(disconnected()));
-	connect(gadu, SIGNAL(connectionError(const QString &)), this, SLOT(connectionError(const QString &)));//do wywalenia po 0.4
+	connect(gadu, SIGNAL(connectionError(const QString &)), this, SIGNAL(connectionError(const QString &)));//do wywalenia po 0.4
 	connect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
 		this, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
 	connect(gadu, SIGNAL(needTokenValue(QPixmap, QString &)),
