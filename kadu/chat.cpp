@@ -124,7 +124,7 @@ Chat::Chat(UinsList uins, QDialog *parent) : QDialog (parent), uins(uins) {
 
 	QGridLayout *grid = new QGridLayout (this, 5, 4, 3, 3);
 	QHBoxLayout *subgrid = new QHBoxLayout(grid);
-	subgrid->addWidget(body, 2);
+	subgrid->addWidget(body, 3);
 	if (userbox)
 		subgrid->addWidget(userbox, 1);
 	grid->addMultiCellLayout(subgrid, 0, 0, 0, 3);
