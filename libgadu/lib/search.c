@@ -1,4 +1,4 @@
-/* $Id: search.c,v 1.2 2002/07/21 11:17:54 chilek Exp $ */
+/* $Id: search.c,v 1.3 2002/08/17 20:24:56 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -33,14 +33,14 @@
  * gg_search()
  *
  * rozpoczyna szukanie u¿ytkowników. informacje o tym, czego dok³adnie szukamy
- * s± zawarte w strukturze `gg_search_request'. ze wzglêdu na specyfikê ich
+ * s± zawarte w struct gg_search_request. ze wzglêdu na specyfikê ich
  * przeszukiwarki, niektórych pól nie mo¿na mieszaæ. s± oznaczone w libgadu.h
- * jako osobne mode'y.
+ * jako osobne tryby
  *
- *  - r - informacja o tym, czego szukamy,
- *  - async - ma byæ asynchronicznie?
+ *  - r - informacja o tym, czego szukamy
+ *  - async - po³±czenie asynchroniczne
  *
- * zaalokowana struktura `gg_http', któr± po¼niej nale¿y zwolniæ
+ * zaalokowana struct gg_http, któr± po¼niej nale¿y zwolniæ
  * funkcj± gg_free_search(), albo NULL je¶li wyst±pi³ b³±d.
  */
 struct gg_http *gg_search(struct gg_search_request *r, int async)
@@ -187,9 +187,9 @@ struct gg_http *gg_search(struct gg_search_request *r, int async)
  * gg_search_watch_fd()
  *
  * przy asynchronicznym wyszukiwaniu nale¿y wywo³aæ t± funkcjê przy
- * zmianach na gg_search->fd.
+ * zmianach na obserwowanym deskryptorze.
  *
- *  - f - struktura zwrócona przez gg_search()
+ *  - h - struktura opisuj±ca po³±czenie
  *
  * je¶li wszystko posz³o dobrze to 0, inaczej -1. przeszukiwanie bêdzie
  * zakoñczone, je¶li f->state == GG_STATE_DONE. je¶li wyst±pi jaki¶
@@ -274,15 +274,13 @@ int gg_search_watch_fd(struct gg_http *h)
 }
 
 /*
- * gg_free_search()
+ * gg_search_free()
  *
- * zwalnia pamiêæ po efektach szukania userów.
+ * zwalnia pamiêæ po wyszukiwaniu.
  *
- *  - f - zwalniana struktura.
- *
- * brak.
+ *  - h - zwalniana struktura
  */
-void gg_free_search(struct gg_http *h)
+void gg_search_free(struct gg_http *h)
 {
 	struct gg_search *s;
 	int i;
@@ -300,7 +298,7 @@ void gg_free_search(struct gg_http *h)
 		free(s);
 	}
 
-	gg_free_http(h);
+	gg_http_free(h);
 }
 
 /*
@@ -309,7 +307,18 @@ void gg_free_search(struct gg_http *h)
  * funkcje pozwalaj±ce w wygodny sposób tworzyæ struktury zawieraj±ce
  * kryteria wyszukiwania.
  *
- *  - parametrów bez liku.
+ *  - nickname - pseudonim
+ *  - first_name - imiê
+ *  - last_name - nazwisko
+ *  - city - miasto
+ *  - gender - p³eæ (GG_GENDER_UNKNOWN, GG_GENDER_MALE, GG_GENDER_FEMALE)
+ *  - min_birth - minimalna data urodzenia
+ *  - max_birth - maksymalna data urodzenia
+ *  - email - adres e-mail
+ *  - phone - numer telefonu
+ *  - uin - numer
+ *  - active - szukaj tylko aktywnych
+ *  - start - zacznij od podanego wyniku
  *
  * wszystkie zwracaj± adres statycznego bufora, który mo¿na wykorzystaæ
  * do nakarmienia funkcji gg_search().

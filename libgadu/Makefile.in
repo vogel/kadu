@@ -1,17 +1,19 @@
-# $Id: Makefile.in,v 1.2 2002/07/13 08:37:24 chilek Exp $
+# $Id: Makefile.in,v 1.3 2002/08/17 20:24:55 chilek Exp $
 
-prefix = $(DESTDIR)@prefix@
+prefix = @prefix@
 datadir = @datadir@
 mandir = @mandir@
 exec_prefix = @exec_prefix@
 bindir = @bindir@
+libdir = @libdir@
+includedir = @includedir@
 
 MAKE = @MAKE@
 INSTALL = @INSTALL@
 
 #
 
-all:	libgadu @ekg@
+all:	libgadu @ekg@ @make_ekgwap@
 
 libgadu:
 	cd lib && $(MAKE) all
@@ -19,12 +21,15 @@ libgadu:
 ekg:	
 	cd src && $(MAKE) all
 
+make-ekgwap:
+	cd ekgwap && $(MAKE) all
+
 examples:
 	cd examples && $(MAKE) all
 
 #
 
-install:	all install-libgadu @install_ekg@
+install:	all install-libgadu @install_ekg@ @install_ekgwap@
 
 install-libgadu:
 	cd lib && $(MAKE) install
@@ -33,18 +38,36 @@ install-ekg:	install-ekg-themes install-ekg-man install-ekgsearch
 	cd src && $(MAKE) install
 
 install-ekg-themes:
-	$(INSTALL) -d $(datadir)/ekg/themes
-	$(INSTALL) -m 644 themes/*.theme $(datadir)/ekg/themes
+	$(INSTALL) -d $(DESTDIR)$(datadir)/ekg/themes
+	$(INSTALL) -m 644 themes/*.theme $(DESTDIR)$(datadir)/ekg/themes
 
 install-ekg-man:
-	$(INSTALL) -d $(mandir)/man1
-	$(INSTALL) -m 644 docs/ekg.man.en $(mandir)/man1/ekg.1
-	$(INSTALL) -d $(mandir)/pl/man1
-	$(INSTALL) -m 644 docs/ekg.man.pl $(mandir)/pl/man1/ekg.1
+	$(INSTALL) -d $(DESTDIR)$(mandir)/man1
+	$(INSTALL) -m 644 docs/ekg.man.en $(DESTDIR)$(mandir)/man1/ekg.1
+	$(INSTALL) -m 644 docs/ekgsearch.man.en $(DESTDIR)$(mandir)/man1/ekgsearch.1
+	$(INSTALL) -d $(DESTDIR)$(mandir)/pl/man1
+	$(INSTALL) -m 644 docs/ekg.man.pl $(DESTDIR)$(mandir)/pl/man1/ekg.1
+	$(INSTALL) -m 644 docs/ekgsearch.man.pl $(DESTDIR)$(mandir)/pl/man1/ekgsearch.1
 
 install-ekgsearch:
-	$(INSTALL) -d $(bindir)
-	$(INSTALL) -m 755 contrib/ekgsearch $(bindir)
+	$(INSTALL) -d $(DESTDIR)$(bindir)
+	$(INSTALL) -m 755 contrib/ekgsearch $(DESTDIR)$(bindir)
+
+install-ekgwap:
+	$(INSTALL) -d $(DESTDIR)$(bindir)
+	$(INSTALL) -m 755 ekgwap/ekgwapd $(DESTDIR)$(bindir)
+
+#
+
+uninstall:	@uninstall_ekg@
+	rm -f $(DESTDIR)$(libdir)/libgadu.{a,so*}
+	rm -f $(DESTDIR)$(includedir)/libgadu.h
+
+uninstall-ekg:
+	rm -f $(DESTDIR)$(bindir)/{ekg,ekgsearch,ekgwapd}
+	rm -f $(DESTDIR)$(libexecdir)/ioctld
+	rm -rf $(DESTDIR)$(datadir)/ekg
+	rm -f $(DESTDIR)$(mandir){/pl,}/man1/ekg{,search}
 
 #
 

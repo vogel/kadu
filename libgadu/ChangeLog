@@ -5,6 +5,217 @@ pierwsz± liter± nicka jest ,,x'' (w - wojtekka, s - speedy, a - arekm,
 d - drg). ,,p/nick'' oznacza patch lub ¼ród³o podes³ane przez ,,nick'',
 ,,i/nick'' oznacza czyj¶ pomys³, ,,b/nick'' mówi, kto zg³osi³ b³±d.
 
+// 2002-08-15
+
+- poprawki wspó³pracy z ekgwap (serek/w)
+- porz±dki w theme'ach. b³êdy po³±czenia bêd± ju¿ zawsze pokazywane
+  po polsku i bêd± mówi³y co naprawdê siê sta³o. precz z errno! (w)
+- polecenie bind obs³uguje ju¿ klawisze z altem (w)
+
+// 2002-08-13
+
+- niedostêpni bêd± dope³niani tabem przy completion_notify=2 (Joshua/w)
+
+// 2002-08-12
+
+- lista funkcji w docs/api/ref.html (w)
+- dodanie informacji do help bind (Murphy/w)
+- poprawienie kilku themeów (w)
+- poprawki w okienkach (w)
+- poprawka segfaultu w status (FIG/w)
+- poprawka --enable-wap (serek/w)
+- nowa zmienna ,,tab_command'' (Murphy/w)
+- niedostêpni nie bêd± dope³niani tabem (Murphy/w)
+- poprawka NAPRAWDE IDIOTYCZNEGO b³êdu. powinienem sobie chyba
+  darowaæ to wszystko. wszystkie operacja na listach alokowa³y
+  za ma³o pamiêci. (w)
+
+// 2002-08-11
+
+- czas nadania wiadomo¶ci w UTC (alfapawel/w)
+- literówki (FIG/w)
+- przygotowanie kodu pod ekgwap. rozwój jest prowadzony gdzie indziej
+  (http://www.comm.pl/~serek/ekgwap/), ale po co za ka¿dym razem
+  dostosowywaæ patche do aktualnej wersji ekg? (w)
+
+// 2002-08-10
+
+- poprawka lib/http.c dla przypadku, gdy nag³ówek przychodzi osobno
+  z danymi (wojboj/w)
+
+// 2002-08-09
+
+- poprawka themeów kolejny raz (joshua/w)
+- uaktualnienie protocol.html (kdebski/w)
+
+// 2002-08-07
+
+- poprawka standardowego theme + nowy przelacznik (zaor/s)
+- poprawka bezpo¶redniego po³±czenia z serwerem dla synchronicznych (hao/w)
+- poprawka wywo³añ gg_free_event (w)
+- dodanie win32, szczegó³y w README (hao/w)
+- rozszerzenie komend /version i /status (FIG/w)
+- poprawka ^D w pagerze (FIG/w)
+- dodanie komentarzy i \$Id\$ w win32/*.h (speedy/w)
+- speedy mnie zabije za zepsucie /status. poprawione (w)
+- naprawienie odbioru dcc. nag³ówek chunka mo¿e byæ ju¿ podzielony na
+  dwa pakiety. po tylu latach. przepraszam. (Chilek/w)
+- Traalala.. mozecie bic, ale na bialym tle biale literki zle wygladaja ;>
+  zaor zwrocil uwage i stwierdzil ze pogrubione znaczy tluste jest lepsze (s)
+- rewrite du¿ej czê¶ci kodu okienek. ju¿ wolê posiedzieæ, zrozumieæ co
+  robi która funkcja, ni¿ czytaæ codziennie na ekg-users kolejne porcje
+  core'ów. przy okazji Ctrl-D w okienku zamyka je. (w)
+- informacja o ulotce jest ju¿ wy¶wietlana w /help (FIG/w)
+
+// 2002-08-06
+
+- poprawki libgadu pod k±tem kompilacji pod win32 (hao/w)
+- malutki porz±dek w ui-readline (w)
+- poprawka segfaulta w ui-readline przy usuwaniu okienek (goblin/w)
+- ignorowanie autom4te.cache z autoconfa 2.53 (w)
+- zapomniany patch na wrzucanie ioctld do libexecdir (porridge/w)
+- s/struct list \*/list_t / (w)
+- s/AUTHOR/AUTOR/ w docs/ekgsearch.man.pl (w)
+- sunowe libce chyba nie akceptuj± NULL w %s, naprawiono (speedy/w)
+- dodana zmienna ekg_segv_handler, która mówi funkcjom ui_deinit(),
+  ¿eby niczego nie zwalnia³y, bo mo¿e byæ jeszcze gorzej (w)
+- s/windows_sort/window_sort/ w ui-readline (w)
+- poprawienie potencjalnego b³êdu w ui-readline (w)
+- literówki w komentarzach (w)
+- docs/api z prostym skryptem generuj±cym dokumentacjê (w)
+- zamiana ,,unsigned long'' na ,,uint32_t'' i ,,unsigned short'' na
+  ,,uint16_t'' w libgadu (w)
+- podbicie wersji ABI. na maszynach, gdzie nie ma wyrównywania
+  do 4 bajtów mog± byæ problemy z okazji zmian rozmiarów zmiennych (w)
+- s/gg_free_event/gg_event_free/ plus #define dla kompatybilno¶ci wstecz (w)
+- s/gg_free_search/gg_search_free/ (w)
+
+// 2002-08-05
+
+- aliasy naprawione. s± ju¿ traktowane na równi z komendami, wiêc nie
+  powinno byæ sytuacji, gdy komendy dzia³aj±, aliasy nie (w)
+- poprawione formatowanie (rmrmg/w)
+- poprawiony b³±d w gg_saprintf() (hao/w)
+
+// 2002-08-04
+
+- s/ekg_execute/command_exec/ (w)
+- komendy s± ju¿ w li¶cie, nie w tablicy (w)
+- aliasy nie dzia³aj± (w)
+- zapomniane podbicie ABI (arekm/w)
+
+// 2002-08-03
+
+- poprawka opisów funkcji w ¼ród³ach. pora zabraæ siê za automagiczne
+  generowanie opisu api (w)
+- zamiana fix16 i fix32 na gg_fix16 i gg_fix32. nie mo¿e byæ tak, ¿e
+  libgadu.{so,a} eksportuje nazwy niepoprzedzone prefiksem gg_. dla
+  zachowania kompatybilno¶ci <libgadu.h> tworzy aliasy, ale zostan±
+  one usuniête w przysz³o¶ci. (w)
+- poprawka pubdir.c (hao/w)
+- zamiana arytmetyki (void*) na odpowiednie typy, poniewa¿ niektóre
+  kompilatory nie pozwalaj± dodawaæ (void*)'ów (hao/w)
+- przepisanie handle_status() od zera. mniej kodu, mniej b³êdów (w)
+- poprawka extract.pl (Arim/w)
+- poprawka gg_logout (hao/w)
+
+// 2002-08-02
+
+- valgrind jest *PRZEPIEKNY*, na dzisiaj dwa leaki usuniête (w)
+- naprawienie va_format_string() -- nie siêga w va_list g³êbiej
+  ni¿ jest to potrzebne. valgrind mniej ¶mieci (w)
+- zwalnianie wszystkiego, co nie jest potrzebne ekg. tak, trochê
+  siê to ró¿ni od dotychczasowej polityki (po co zwalniaæ, skoro
+  i tak exit() siê tym zajmie), ale w ten sposób znacznie ³atwiej
+  jest wykrywaæ leaki (w)
+- zwalnianie w ui-readline (w)
+- poprawka off-by-one w ui-readline z MAX_LINES_PER_SCREEN (w)
+
+// 2002-08-01
+
+- literówki w dokumentacji (Gophi/w)
+- brakuj±ce <limits.h> (DomBal/w)
+
+// 2002-07-27
+
+- mo¿liwo¶æ nieuruchamiania ./configure przez ./autogen.sh (porridge/w)
+- AC_PREREQ (porridge/w)
+- ekg mo¿e byæ linkowane dynamicznie z libgadu (porridge/w)
+- many dla ekgsearch (porridge/w)
+- literówki (porridge/w)
+- ioctld nie jest instalowany z suidem (w)
+- instalacja manów ekgsearch (w)
+- du¿o psucia autoconfów i Makefile'i (w)
+- dodanie ,,make uninstall'', które usuwa pozosta³o¶ci po ró¿nych
+  wersjach i konfiguracjach ekg (w)
+- wersja statyczna libgadu jest kompilowana bez -fPIC, dzielona z -fPIC,
+  przez co w najgorszym wypadku bêdzie kompilowana dwa razy (porridge/w)
+- konwersja cp->iso userlisty z serwera (a.latanski/w),
+- zamiana spacji na podkre¶lenia w userli¶cie z serwera (a.latanski/w),
+- ,,display_notify 2'', szczegó³y w docs/vars.txt (w),
+- dodanie prostych hashy themeów i zmiennych, ¿eby ltrace nie za¶mieca³o
+  konsoli przez 5 minut przy starcie programu. przy okazji ekg bêdzie
+  startowa³o oko³o 20us szybciej (w),
+- s/struct list */list_t /, s/struct string */string_t / (w)
+- drobne porz±dki w kodzie ekg (w)
+
+// 2002-07-25
+
+- je¶li wykryje <linux/kd.h>, robi --with-ioctld (w)
+
+// 2002-07-24
+
+- poprawki configure dla Murphy'ego (w)
+
+// 2002-07-23
+
+- dodanie obs³ugi znaków ¡±¦¶¬¼ w ekgsearch (wysek)
+- poprawka komunikatu przy segfaultach (w)
+
+// 2002-07-22
+
+- dodanie komendy ,,bind'' (d)
+- dopisywanie do konfiga bindowanych klawiszy (d)
+- drobne zmiany w ,,bind'' (d)
+- dalsze poprawki (d)
+- uaktualnienie ,,docs/FAQ'' (d)
+- lekkie poprawki obs³ugi eventów (w)
+- poprawka wykrywania ncurses (w)
+- poprawka gg_send_message_confer (Chilek/w)
+
+// 2002-07-21
+
+- poprawka komendy ,,alias'' (eileen/d)
+
+// 2002-07-20
+
+- porz±dki w poleceniu help (w)
+- dodanie komendy echo (w)
+- dodanie akcji zdarzeñ ,,exec'' (w)
+- poprawka zdarzeñ z wieloma akcjami (w)
+- dodanie %4 w zdarzeniach, które zawiera eskejpowan± tre¶æ wiadomo¶ci (w)
+- poprawki dokumentacji. dodanie gdb.txt, przenosny-kod.txt (w)
+
+// 2002-07-19
+
+- poprawki dokumentacji (tommy/w)
+- update arim.theme (arim/w)
+- poprawka DESTDIR (baseciq/w)
+- omijanie braku FIONBIO fcntlem (adwol/w)
+- poprawka pagera, o jedn± liniê za ma³o (neeo/w)
+- spacja nie wywo³uje aliasu (perry/w)
+- kod obs³ugi konferencji (Chilek/w)
+- podbicie libgadu.so.0.10 (w)
+
+// 2002-07-18
+
+- poprawienie wy¶wietlanie d³ugich promptów przy alt+? (arim/d)
+- ,,window refresh'' po ,,window clear'' (d)
+
+// 2002-07-15
+
+- wywalenie printfa (neeo/w)
+
 // 2002-07-12
 
 - przepisanie curses.m4 od zera unikaj±c wielokrotnego wywo³ywania makr.
@@ -14,6 +225,7 @@ d - drg). ,,p/nick'' oznacza patch lub ¼ród³o podes³ane przez ,,nick'',
 - przepisanie readline.m4 od zera. teraz siê zacznie narzekanie na mnie
   na ekg-users (w)
 - dodanie opcji --all i --debug, usuniêcie opcji --raw w ekgsearch (wysek)
+- poprawka do¶æ nieciekawego segfaulta (print() przed ui_init()) (baseciq/w)
 
 // 2002-07-11
 
@@ -1339,4 +1551,4 @@ i BUGS.
 - eleet niebieskie t³o mesgów (wiem, dalekie od idea³u).
 
 
-$Id: ChangeLog,v 1.2 2002/07/13 08:37:24 chilek Exp $
+$Id: ChangeLog,v 1.3 2002/08/17 20:24:55 chilek Exp $

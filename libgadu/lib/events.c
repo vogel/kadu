@@ -1,4 +1,4 @@
-/* $Id: events.c,v 1.2 2002/07/21 11:17:54 chilek Exp $ */
+/* $Id: events.c,v 1.3 2002/08/17 20:24:56 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>,
@@ -22,7 +22,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <stdio.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -40,15 +39,13 @@
 #include "libgadu.h"
 
 /*
- * gg_free_event()
+ * gg_event_free()
  *
  * zwalnia pamiêæ zajmowan± przez informacjê o zdarzeniu.
  *
- *  - event - wska¼nik do informacji o zdarzeniu
- *
- * brak.
+ *  - e - wska¼nik do informacji o zdarzeniu
  */
-void gg_free_event(struct gg_event *e)
+void gg_event_free(struct gg_event *e)
 {
 	if (!e)
 		return;
@@ -82,15 +79,15 @@ void gg_free_event(struct gg_event *e)
  * obs³uguje pakiet z przychodz±c± wiadomo¶ci±, rozbijaj±c go na dodatkowe
  * struktury (konferencje, kolorki) w razie potrzeby.
  *
- *  - h - nag³ówek pakietu,
- *  - e - opis zdarzenia.
+ *  - h - nag³ówek pakietu
+ *  - e - opis zdarzenia
  *
- * 0 dla sukcesu, -1 dla pora¿ki.
+ * 0, -1.
  */
 static int gg_handle_recv_msg(struct gg_header *h, struct gg_event *e)
 {
-	struct gg_recv_msg *r = (void*) h + sizeof(struct gg_header);
-	char *p, *packet_end = (void*) r + h->length;
+	struct gg_recv_msg *r = (struct gg_recv_msg*) ((char*) h + sizeof(struct gg_header));
+	char *p, *packet_end = (char*) r + h->length;
 
 	gg_debug(GG_DEBUG_MISC, "-- received a message\n");
 
@@ -101,7 +98,7 @@ static int gg_handle_recv_msg(struct gg_header *h, struct gg_event *e)
 	}
 	//printf("packet=%p\n", h);
 
-	for (p = (void*) r + sizeof(*r); *p; p++) {
+	for (p = (char*) r + sizeof(*r); *p; p++) {
 		if (*p == 0x02 && p == packet_end - 1) {
 			gg_debug(GG_DEBUG_MISC, "-- received ctcp packet\n");
 			break;
@@ -193,7 +190,7 @@ static int gg_handle_recv_msg(struct gg_header *h, struct gg_event *e)
 	e->event.msg.msgclass = fix32(r->msgclass);
 	e->event.msg.sender = fix32(r->sender);
 	e->event.msg.time = fix32(r->time);
-	e->event.msg.message = strdup((void*) r + sizeof(*r));
+	e->event.msg.message = strdup((char*) r + sizeof(*r));
 
 	return 0;
 	
@@ -206,12 +203,12 @@ fail:
 /*
  * gg_watch_fd_connected() // funkcja wewnêtrzna
  *
- * patrzy na socketa, odbiera pakiet i wype³nia strukturê zdarzenia.
+ * patrzy na gniazdo, odbiera pakiet i wype³nia strukturê zdarzenia.
  *
- *  - sess - struktura opisuj±ca sesjê,
- *  - e - opis zdarzenia.
+ *  - sess - struktura opisuj±ca sesjê
+ *  - e - opis zdarzenia
  *
- * je¶li b³±d -1, je¶li dobrze 0.
+ * 0, -1.
  */
 static int gg_watch_fd_connected(struct gg_session *sess, struct gg_event *e)
 {
@@ -230,7 +227,7 @@ static int gg_watch_fd_connected(struct gg_session *sess, struct gg_event *e)
 		goto fail;
 	}
 
-	p = (void*) h + sizeof(struct gg_header);
+	p = (char*) h + sizeof(struct gg_header);
 	
 	switch (h->type) {
 		case GG_RECV_MSG:
@@ -274,7 +271,7 @@ static int gg_watch_fd_connected(struct gg_session *sess, struct gg_event *e)
 					gg_debug(GG_DEBUG_MISC, "-- not enough memory\n");
 					goto fail;
 				}
-				memcpy(tmp, p + sizeof(*n), count);
+				memcpy(tmp, (char*) p + sizeof(*n), count);
 				tmp[count] = 0;
 				e->event.notify_descr.descr = tmp;
 				
@@ -315,7 +312,7 @@ static int gg_watch_fd_connected(struct gg_session *sess, struct gg_event *e)
 					int len = h->length - sizeof(*s);
 					char *buf = malloc(len + 1);
 					if (buf) {
-						memcpy(buf, p + sizeof(*s), len);
+						memcpy(buf, (char*) p + sizeof(*s), len);
 						buf[len] = 0;
 					}
 					e->event.status.descr = buf;
@@ -374,15 +371,15 @@ fail:
 /*
  * gg_watch_fd()
  *
- * funkcja wywo³ywana, gdy co¶ siê stanie na obserwowanym deskryptorze.
- * zwraca klientowi informacjê o tym, co siê dzieje.
+ * funkcja, któr± nale¿y wywo³aæ, gdy co¶ siê stanie z obserwowanym
+ * deskryptorem. zwraca klientowi informacjê o tym, co siê dzieje.
  *
- *  - sess - identyfikator sesji.
+ *  - sess - identyfikator sesji
  *
  * wska¼nik do struktury gg_event, któr± trzeba zwolniæ pó¼niej
  * za pomoc± gg_free_event(). jesli rodzaj zdarzenia jest równy
  * GG_EVENT_NONE, nale¿y je zignorowaæ. je¶li zwróci³o NULL,
- * sta³o siê co¶ niedobrego -- albo brak³o pamiêci albo zerwa³o
+ * sta³o siê co¶ niedobrego -- albo zabrak³o pamiêci albo zerwa³o
  * po³±czenie.
  */
 struct gg_event *gg_watch_fd(struct gg_session *sess)
@@ -510,7 +507,7 @@ struct gg_event *gg_watch_fd(struct gg_session *sess)
 			
 			gg_debug(GG_DEBUG_MISC, "-- connected to hub, sending query\n");
 
-			if (sess->proxy_addr && sess->proxy_port) {
+			if (!gg_proxy_http_only && sess->proxy_addr && sess->proxy_port) {
 				snprintf(buf, sizeof(buf) - 1,
 					"GET http://" GG_APPMSG_HOST "/appsvc/appmsg2.asp?fmnumber=%u&version=%s&lastmsg=%d HTTP/1.0\r\n"
 					"Host: " GG_APPMSG_HOST "\r\n"
@@ -647,7 +644,7 @@ struct gg_event *gg_watch_fd(struct gg_session *sess)
 			addr.s_addr = inet_addr(host);
 			sess->server_addr = addr.s_addr;
 
-			if (sess->proxy_addr && sess->proxy_port) {
+			if (!gg_proxy_http_only && sess->proxy_addr && sess->proxy_port) {
 				if ((sess->fd = gg_connect(&sess->proxy_addr, sess->proxy_port, sess->async)) == -1) {
 					gg_debug(GG_DEBUG_MISC, "-- connection to proxy failed (errno=%d, %s)\n", errno, strerror(errno));
 					goto fail_connecting;
@@ -700,6 +697,9 @@ struct gg_event *gg_watch_fd(struct gg_session *sess)
 
 			gg_debug(GG_DEBUG_MISC, "-- connected\n");
 			
+			if (gg_proxy_http_only)
+				sess->proxy_port = 0;
+
 			if (sess->proxy_addr && sess->proxy_port) {
 				char buf[100];
 
@@ -776,7 +776,7 @@ struct gg_event *gg_watch_fd(struct gg_session *sess)
 				break;
 			}
 	
-			w = (void*) h + sizeof(struct gg_header);
+			w = (struct gg_welcome*) ((char*) h + sizeof(struct gg_header));
 			w->key = fix32(w->key);
 
 			hash = gg_login_hash(password, w->key);

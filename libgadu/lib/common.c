@@ -1,4 +1,4 @@
-/* $Id: common.c,v 1.2 2002/07/21 11:17:54 chilek Exp $ */
+/* $Id: common.c,v 1.3 2002/08/17 20:24:55 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>,
@@ -22,7 +22,6 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <unistd.h>
-#include <stdio.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -35,7 +34,6 @@
 #  include <string.h>
 #endif
 #include <stdarg.h>
-#include <pwd.h>
 #include <time.h>
 #ifdef sun
   #include <sys/filio.h>
@@ -53,10 +51,8 @@ FILE *gg_debug_file = NULL;
  *
  * wy¶wietla komunikat o danym poziomie, o ile u¿ytkownik sobie tego ¿yczy.
  *
- *  - level - poziom wiadomo¶ci,
- *  - format... - tre¶æ wiadomo¶ci (printf-alike.)
- *
- * brak.
+ *  - level - poziom wiadomo¶ci
+ *  - format... - tre¶æ wiadomo¶ci (kompatybilna z printf())
  */
 void gg_debug(int level, const char *format, ...)
 {
@@ -78,7 +74,7 @@ void gg_debug(int level, const char *format, ...)
  * miejsce na dane. powinno dzia³aæ na tych maszynach, które maj± funkcjê
  * vsnprintf() zgodn± z C99, jak i na wcze¶niejszych.
  *
- *  - format, ... - parametry takie same jak w innych funkcjach *printf()
+ *  - format... - tre¶æ taka sama jak w funkcji printf()
  *
  * zaalokowany bufor, który nale¿y pó¼niej zwolniæ, lub NULL
  * je¶li nie uda³o siê wykonaæ zadania.
@@ -93,7 +89,7 @@ char *gg_saprintf(const char *format, ...)
 	start = format; 
         va_start(ap, format);
 
-        if ((size = vsnprintf(buf, 0, format, ap)) < 1) {
+	if ((size = vsnprintf(buf, 0, format, ap)) < 1) {
                 size = 128;
                 do {
                         size *= 2;
@@ -103,7 +99,7 @@ char *gg_saprintf(const char *format, ...)
                         }
                         buf = tmp;
                         res = vsnprintf(buf, size, format, ap);
-                } while (res == size - 1);
+                } while (res == size - 1 || res == -1);
         } else {
                 if (!(buf = malloc(size + 1)))
                         return NULL;
@@ -124,13 +120,13 @@ char *gg_saprintf(const char *format, ...)
 /*
  * gg_get_line() // funkcja pomocnicza
  * 
- * podaje kolejn± liniê z bufora tekstowego. psuje co bezpowrotnie, dziel±c
+ * podaje kolejn± liniê z bufora tekstowego. niszczy go bezpowrotnie, dziel±c
  * na kolejne stringi. zdarza siê, nie ma potrzeby pisania funkcji dubluj±cej
  * bufor ¿eby tylko mieæ nieruszone dane wej¶ciowe, skoro i tak nie bêd± nam
  * po¼niej potrzebne. obcina `\r\n'.
  * 
  *  - ptr - wska¼nik do zmiennej, która przechowuje aktualn± pozycjê
- *    w przemiatanym buforze.
+ *    w przemiatanym buforze
  * 
  * wska¼nik do kolejnej linii tekstu lub NULL, je¶li to ju¿ koniec bufora.
  */
@@ -162,11 +158,11 @@ char *gg_get_line(char **ptr)
  * musieæ niczego inkludowaæ w libgadu.h i nie psuæ jaki¶ g³upich zale¿no¶ci
  * na dziwnych systemach.
  *
- *  - addr - adres serwera (struct in_addr *),
- *  - port - port serwera,
- *  - async - ma byæ asynchroniczne po³±czenie?
+ *  - addr - adres serwera (struct in_addr *)
+ *  - port - port serwera
+ *  - async - asynchroniczne po³±czenie
  *
- * deskryptor socketa lub -1 w przypadku b³êdu (kod b³êdu w zmiennej errno).
+ * deskryptor gniazda lub -1 w przypadku b³êdu (kod b³êdu w zmiennej errno).
  */
 int gg_connect(void *addr, int port, int async)
 {
@@ -180,6 +176,10 @@ int gg_connect(void *addr, int port, int async)
 		gg_debug(GG_DEBUG_MISC, "-- socket() failed. errno = %d (%s)\n", errno, strerror(errno));
 		return -1;
 	}
+
+#ifdef ASSIGN_SOCKETS_TO_THREADS
+	gg_thread_socket(0, sock);
+#endif
 
 	if (async) {
 #ifdef FIONBIO
@@ -212,11 +212,11 @@ int gg_connect(void *addr, int port, int async)
 /*
  * gg_read_line() // funkcja pomocnicza
  *
- * czyta jedn± liniê tekstu z socketa.
+ * czyta jedn± liniê tekstu z gniazda
  *
- *  - sock - socket,
- *  - buf - wska¼nik bufora,
- *  - length - d³ugo¶æ bufora.
+ *  - sock - deskryptor gniazda
+ *  - buf - wska¼nik do bufora
+ *  - length - d³ugo¶æ bufora
  *
  * je¶li trafi na b³±d odczytu, zwraca NULL. inaczej zwraca buf.
  */
@@ -248,9 +248,7 @@ char *gg_read_line(int sock, char *buf, int length)
  *
  * ucina "\r\n" lub "\n" z koñca linii.
  *
- *  - line - ofiara operacji plastycznej.
- *
- * brak.
+ *  - line - linia do przyciêcia
  */
 void gg_chomp(char *line)
 {
@@ -268,9 +266,9 @@ void gg_chomp(char *line)
  * gg_urlencode() // funkcja wewnêtrzna
  *
  * zamienia podany tekst na ci±g znaków do formularza http. przydaje siê
- * przy szukaniu userów z dziwnymi znaczkami.
+ * przy ró¿nych us³ugach katalogu publicznego.
  *
- *  - str - ci±g znaków do poprawki.
+ *  - str - ci±g znaków do zakodowania
  *
  * zaalokowany bufor, który nale¿y pó¼niej zwolniæ albo NULL
  * w przypadku b³êdu.
@@ -310,14 +308,13 @@ char *gg_urlencode(const char *str)
 /*
  * gg_http_hash() // funkcja wewnêtrzna
  *
- * funkcja, która liczy hash dla adresu e-mail, has³a i paru innych.
+ * funkcja licz±ca hash dla adresu e-mail, has³a i paru innych.
  *
- *  - format - format kolejnych parametrów ('s' je¶li dany parametr jest
- *             ci±giem znaków lub 'u' je¶li numerem GG).
- *  - ... - kolejne parametry.
+ *  - format... - format kolejnych parametrów ('s' je¶li dany parametr jest
+ *                ci±giem znaków lub 'u' je¶li numerem GG)
  *
- * hash wykorzystywany przy rejestracji i wszelkich
- * manipulacjach w³asnego wpisu w katalogu publicznym.
+ * hash wykorzystywany przy rejestracji i wszelkich manipulacjach w³asnego
+ * wpisu w katalogu publicznym.
  */
 int gg_http_hash(const char *format, ...)
 {
@@ -355,9 +352,9 @@ int gg_http_hash(const char *format, ...)
  * gg_gethostbyname() // funkcja pomocnicza
  *
  * odpowiednik gethostbyname() u¿ywaj±cy gethostbyname_r(), gdy potrzebna
- * jest wielobie¿no¶æ.
+ * jest wielobie¿no¶æ. chwilowo korzysta ze zwyk³ego gethostbyname().
  *
- *  - hostname - nazwa serwera.
+ *  - hostname - nazwa serwera
  *
  * zaalokowany bufor, który nale¿y zwolniæ lub NULL w przypadku b³êdu.
  */
@@ -377,6 +374,69 @@ struct hostent *gg_gethostbyname(const char *hostname)
 
 	return hp2;
 }
+
+#ifdef ASSIGN_SOCKETS_TO_THREADS
+
+typedef struct gg_thread {
+	int id;
+	int socket;
+	struct gg_thread * next;
+} gg_thread;
+
+struct gg_thread * gg_threads = 0;
+
+/*
+ * gg_thread_socket() // funkcja pomocnicza, tylko dla win32
+ *
+ * zwraca deskryptor gniazda, które by³o ostatnio tworzone dla w±tku
+ * o podanym identyfikatorze.
+ *
+ * je¶li na win32 przy po³±czeniach synchronicznych zapamiêtamy w jakim
+ * w±tku uruchomili¶my funkcjê, która siê z czymkolwiek ³±czy, to z osobnego
+ * w±tku mo¿emy anulowaæ po³±czenie poprzez gg_thread_socket(watek,-1);
+ * 
+ * - thread_id - id w±tku. je¶li jest równe 0, brany jest aktualny w±tek,
+ *               je¶li równe -1, usuwa wpis o podanym sockecie.
+ * - socket - deskryptor gniazda. je¶li równe 0, zwraca deskryptor gniazda
+ *            dla podanego w±tku, je¶li równe -1, usuwa wpis, je¶li co¶
+ *            innego, ustawia dla podanego w±tku dany numer deskryptora.
+ *
+ * je¶li socket jest równe 0, zwraca deskryptor gniazda dla podanego w±tku.
+ */
+int gg_thread_socket(int thread_id, int socket)
+{
+	char close = thread_id==-1||socket==-1;
+        gg_thread * wsk = gg_threads;
+        gg_thread ** p_wsk = &gg_threads;
+
+        if (!thread_id) thread_id = GetCurrentThreadId();
+        while (wsk) {
+        	if ((thread_id==-1 && wsk->socket==socket)
+        	  || wsk->id==thread_id) {
+       			if (close) {
+                        	closesocket(wsk->socket);
+         			*p_wsk=wsk->next;
+         			free(wsk);       // socket zostaje usuniety
+         			return 1;
+                        } else if (!socket) {return wsk->socket; // Socket zostaje zwrocony
+                        } else {wsk->socket=socket; return socket;} // Socket zostaje ustawiony
+               }
+               p_wsk = &(wsk->next);
+               wsk = wsk->next;
+        }
+        if (close && socket!=-1) {closesocket(socket);}
+        if (close || !socket) return 0;
+        // Dodaje nowy element
+        wsk = malloc(sizeof(gg_thread));
+        wsk->id = thread_id;
+        wsk->socket = socket;
+        wsk->next = 0;
+        *p_wsk = wsk;
+        return socket;
+}
+
+#endif /* ASSIGN_SOCKETS_TO_THREADS */
+
 
 /*
  * Local variables:

@@ -1,4 +1,4 @@
-/* $Id: libgadu.h,v 1.3 2002/07/21 11:17:54 chilek Exp $ */
+/* $Id: libgadu.h,v 1.4 2002/08/17 20:24:56 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>,
@@ -24,6 +24,9 @@
 #define __GG_LIBGADU_H
 
 #ifdef __cplusplus
+#ifdef _WIN32
+#pragma pack(push, 1)
+#endif
 extern "C" {
 #endif
 
@@ -65,17 +68,17 @@ struct gg_session {
 
 	struct gg_event *event;	/* zdarzenie po ->callback() */
 
-	unsigned long proxy_addr;	/* adres proxy, keszowany */
-	int proxy_port;			/* port proxy */
+	uint32_t proxy_addr;	/* adres proxy, keszowany */
+	uint16_t proxy_port;	/* port proxy */
 
-	unsigned long hub_addr;		/* adres huba po resolvniêciu */
-	unsigned long server_addr;	/* adres serwera, od huba */
+	uint32_t hub_addr;	/* adres huba po resolvniêciu */
+	uint32_t server_addr;	/* adres serwera, od huba */
 
-	unsigned long client_addr;	/* adres klienta */
-	int client_port;		/* port, na którym klient s³ucha */
+	uint32_t client_addr;	/* adres klienta */
+	uint16_t client_port;	/* port, na którym klient s³ucha */
 
-	unsigned long external_addr;	/* adres zewnetrzny klienta */
-	int external_port;		/* port zewnetrzny klienta */
+	uint32_t external_addr;	/* adres zewnetrzny klienta */
+	uint16_t external_port;	/* port zewnetrzny klienta */
 	
 	uin_t uin;		/* numerek klienta */
 	char *password;		/* i jego has³o. zwalniane automagicznie */
@@ -152,6 +155,7 @@ struct gg_dcc {
 	int established;	/* po³±czenie ustanowione */
 	char *voice_buf;	/* bufor na pakiet po³±czenia g³osowego */
 	int incoming;		/* po³±czenie przychodz±ce */
+	char *chunk_buf;	/* bufor na kawa³ek danych */
 };
 
 /*
@@ -261,16 +265,16 @@ struct gg_login_params {
 	int async;			/* asynchroniczne sockety? */
 	int status;			/* pocz±tkowy status klienta */
 	char *status_descr;		/* opis statusu XXX */
-	unsigned long server_addr;	/* adres serwera gg */
-	unsigned short server_port;	/* port serwera gg */
-	unsigned long client_addr;	/* adres dcc klienta */
-	unsigned short client_port;	/* port dcc klienta */
+	uint32_t server_addr;		/* adres serwera gg */
+	uint16_t server_port;		/* port serwera gg */
+	uint32_t client_addr;		/* adres dcc klienta */
+	uint16_t client_port;		/* port dcc klienta */
 	int protocol_version;		/* wersja protoko³u */
 	char *client_version;		/* wersja klienta */
 	int has_audio;			/* czy ma d¼wiêk? */
 	int last_sysmsg;		/* ostatnia wiadomo¶æ systemowa */
-	unsigned long external_addr;	/* adres widziany na zewnatrz */
-	unsigned short external_port;	/* port widziany na zewnatrz */
+	uint32_t external_addr;		/* adres widziany na zewnatrz */
+	uint16_t external_port;		/* port widziany na zewnatrz */
 };
 
 struct gg_session *gg_login(const struct gg_login_params *p);
@@ -365,7 +369,7 @@ struct gg_event {
 		} notify_descr;
                 struct {
 			uin_t uin;
-			unsigned long status;
+			uint32_t status;
 			char *descr;
 		} status;
                 struct {
@@ -386,7 +390,8 @@ struct gg_event {
 };
 
 struct gg_event *gg_watch_fd(struct gg_session *sess);
-void gg_free_event(struct gg_event *e);
+void gg_event_free(struct gg_event *e);
+#define gg_free_event gg_event_free
 
 /*
  * funkcje obs³ugi listy kontaktów.
@@ -462,6 +467,7 @@ struct gg_search_result {
 struct gg_http *gg_search(struct gg_search_request *r, int async);
 int gg_search_watch_fd(struct gg_http *f);
 void gg_free_search(struct gg_http *f);
+#define gg_search_free gg_free_search
 
 struct gg_search_request *gg_search_request_mode_0(char *nickname, char *first_name, char *last_name, char *city, int gender, int min_birth, int max_birth, int active, int start);
 struct gg_search_request *gg_search_request_mode_1(char *email, int active, int start);
@@ -536,16 +542,16 @@ extern unsigned long gg_dcc_ip;
 
 int gg_dcc_request(struct gg_session *sess, uin_t uin);
 
-struct gg_dcc *gg_dcc_send_file(unsigned long ip, unsigned short port, uin_t my_uin, uin_t peer_uin);
-struct gg_dcc *gg_dcc_get_file(unsigned long ip, unsigned short port, uin_t my_uin, uin_t peer_uin);
-struct gg_dcc *gg_dcc_voice_chat(unsigned long ip, unsigned short port, uin_t my_uin, uin_t peer_uin);
+struct gg_dcc *gg_dcc_send_file(uint32_t ip, uint16_t port, uin_t my_uin, uin_t peer_uin);
+struct gg_dcc *gg_dcc_get_file(uint32_t ip, uint16_t port, uin_t my_uin, uin_t peer_uin);
+struct gg_dcc *gg_dcc_voice_chat(uint32_t ip, uint16_t port, uin_t my_uin, uin_t peer_uin);
 void gg_dcc_set_type(struct gg_dcc *d, int type);
 int gg_dcc_fill_file_info(struct gg_dcc *d, const char *filename);
 int gg_dcc_voice_send(struct gg_dcc *d, char *buf, int length);
 
 #define GG_DCC_VOICE_FRAME_LENGTH 195
 
-struct gg_dcc *gg_dcc_socket_create(uin_t uin, unsigned int port);
+struct gg_dcc *gg_dcc_socket_create(uin_t uin, uint16_t port);
 #define gg_dcc_socket_free gg_free_dcc
 #define gg_dcc_socket_watch_fd gg_dcc_watch_fd
 
@@ -580,6 +586,7 @@ void gg_debug(int level, const char *format, ...);
 extern int gg_proxy_enabled;
 extern char *gg_proxy_host;
 extern int gg_proxy_port;
+extern int gg_proxy_http_only;
 
 /*
  * -------------------------------------------------------------------------
@@ -594,6 +601,9 @@ int gg_resolve(int *fd, int *pid, const char *hostname);
 char *gg_saprintf(const char *format, ...);
 #define gg_alloc_sprintf gg_saprintf
 char *gg_get_line(char **ptr);
+#ifdef _WIN32
+int gg_thread_socket(int thread_id, int socket);
+#endif
 int gg_connect(void *addr, int port, int async);
 struct hostent *gg_gethostbyname(const char *hostname);
 char *gg_read_line(int sock, char *buf, int length);
@@ -603,8 +613,10 @@ int gg_http_hash(const char *format, ...);
 void *gg_recv_packet(struct gg_session *sess);
 int gg_send_packet(int sock, int type, ...);
 unsigned int gg_login_hash(const unsigned char *password, unsigned int seed);
-unsigned long fix32(unsigned long x);
-unsigned short fix16(unsigned short x);
+uint32_t gg_fix32(uint32_t x);
+uint16_t gg_fix16(uint16_t x);
+#define fix32 gg_fix32
+#define fix16 gg_fix16
 
 #define GG_APPMSG_HOST "appmsg.gadu-gadu.pl"
 #define GG_APPMSG_PORT 80
@@ -683,6 +695,15 @@ struct gg_login_ext {
 #define GG_STATUS_INVISIBLE_DESCR 0x0016	/* niewidoczny z opisem (4.9) */
 
 #define GG_STATUS_FRIENDS_MASK 0x8000		/* tylko dla znajomych (4.6) */
+
+/*
+ * makra do szybkiego sprawdzania stanu. ich znaczenie powinno byæ jasne.
+ */
+#define GG_S_A(x) ((x) == GG_STATUS_AVAIL || (x) == GG_STATUS_AVAIL_DESCR)
+#define GG_S_NA(x) ((x) == GG_STATUS_NOT_AVAIL || (x) == GG_STATUS_NOT_AVAIL_DESCR)
+#define GG_S_B(x) ((x) == GG_STATUS_BUSY || (x) == GG_STATUS_BUSY_DESCR)
+#define GG_S_I(x) ((x) == GG_STATUS_INVISIBLE || (x) == GG_STATUS_INVISIBLE_DESCR)
+#define GG_S_D(x) ((x) == GG_STATUS_NOT_AVAIL_DESCR || (x) == GG_STATUS_AVAIL_DESCR || (x) == GG_STATUS_BUSY_DESCR || (x) == GG_STATUS_INVISIBLE_DESCR)
 
 struct gg_new_status {
 	uint32_t status;			/* na jaki zmieniæ? */
@@ -829,6 +850,9 @@ struct gg_dcc_big_packet {
 
 #ifdef __cplusplus
 }
+#ifdef _WIN32
+#pragma pack(pop)
+#endif
 #endif
 
 #endif /* __GG_LIBGADU_H */

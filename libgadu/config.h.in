@@ -1,10 +1,9 @@
 /* Define if your processor stores words with the most significant
-   byte first (like Motorola and SPARC, unlike Intel and VAX).  */
+   byte first (like Motorola and SPARC, unlike Intel and VAX). */
 #undef WORDS_BIGENDIAN
 
 /* curses checks */
-#undef HAS_CURSES
-#undef USE_NCURSES
+#undef HAVE_CURSES
 
 /* readline checks */
 #undef HAVE_READLINE
@@ -12,6 +11,7 @@
 #undef HAVE_RL_FILENAME_COMPLETION_FUNCTION
 #undef HAVE_RL_GET_SCREEN_SIZE
 #undef HAVE_RL_SET_KEY
+#undef HAVE_RL_BIND_KEY_IN_MAP
 
 /* voice stuff */
 #undef HAVE_LINUX_SOUNDCARD_H
@@ -24,3 +24,8 @@
 #undef WITH_UI_READLINE
 #undef WITH_UI_NCURSES
 
+/* ioctld */
+#undef HAVE_LINUX_KD_H
+
+/* ekgwap */
+#undef WITH_WAP
