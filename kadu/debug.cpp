@@ -15,16 +15,26 @@ int debug_mask;
 */
 static QMutex debug_mutex;
 
-void _kdebug_with_mask(int mask, const char* file,const int line,const char* format,...)
+void _kdebug_with_mask(int mask, const char* file, const int line, const char* format,...)
 {
 	if (debug_mask & mask)
 	{
 		debug_mutex.lock();
-		fprintf(stderr,"KK <%s:%i>\t",file,line);
+		fprintf(stderr, "KK <%s:%i>\t", file, line);
+
+		if (mask & KDEBUG_WARNING)
+			fprintf(stderr, "\033[34m");//niebieski
+		else if (mask & KDEBUG_ERROR)
+			fprintf(stderr, "\033[33;1m");//¿ó³ty
+		else if (mask & KDEBUG_PANIC)
+			fprintf(stderr, "\033[31;1m");//jasny czerwony
+
 		va_list args;
-		va_start(args,format);
-		vfprintf(stderr,format,args);
+		va_start(args, format);
+		vfprintf(stderr, format, args);
 		va_end(args);
+		if (mask & (KDEBUG_PANIC|KDEBUG_ERROR|KDEBUG_WARNING))
+			fprintf(stderr, "\033[0m");
 		debug_mutex.unlock();
 	}
 }
