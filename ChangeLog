@@ -48,6 +48,7 @@
 * kompilowanie libgadu jako .so i linkowanie dynamiczne
 * dodane #define HAVE_PTHREAD 1 w libgadu.h - teraz kadu operuje na tej
   samej strukturze gg_search co libgadu.so
+* powiadamianie o update'ach u¿ywa sta³ej VERSION
 
 +++ wersja 0.3.2
 * dalsze porz±dki w kodzie

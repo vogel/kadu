@@ -13,7 +13,7 @@ class UpdatesThread : public QThread
 {
 
 	public:
-		UpdatesThread(uin_t uin, QString &actversion);
+		UpdatesThread(uin_t uin);
 		bool ifNewerVersion(QString &newestversion);
 
 		QUrlOperator *op;
@@ -23,7 +23,6 @@ class UpdatesThread : public QThread
 
 	private:
 		QString query;
-		QString actversion;
 };
 
 #endif

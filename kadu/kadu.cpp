@@ -161,7 +161,6 @@ QSocketNotifier *kadusnw = NULL;
 QSocketNotifier *dccsnr = NULL;
 QSocketNotifier *dccsnw = NULL;
 UpdatesThread *ut;
-QString actversion("0.3.3");
 
 char **gg_xpm[] = {gg_act_xpm, gg_actdescr_xpm, gg_busy_xpm, gg_busydescr_xpm,
 	gg_invi_xpm, gg_invidescr_xpm, gg_inact_xpm, gg_inactdescr_xpm, gg_stop_xpm};
@@ -517,7 +516,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
   if (config.addtodescription)
 		autostatus_timer->start(1000,TRUE);
 
-	ut = new UpdatesThread(config.uin, actversion);
+	ut = new UpdatesThread(config.uin);
 	if (config.checkupdates)
 		QObject::connect(ut->op, SIGNAL(data(const QByteArray &, QNetworkOperation *)),
 			this, SLOT(gotUpdatesInfo(const QByteArray &, QNetworkOperation *)));
