@@ -263,6 +263,7 @@ Chat::~Chat() {
 }
 
 void Chat::setupEncryptButton(bool enabled) {
+#ifdef HAVE_OPENSSL
 	encrypt_enabled = enabled;
 	QToolTip::remove(encryption);
 	if (enabled) {
@@ -273,6 +274,7 @@ void Chat::setupEncryptButton(bool enabled) {
 		QToolTip::add(encryption, i18n("Enable encryption for this conversation"));
 		encryption->setPixmap(loadIcon("decrypted.png"));
 		}
+#endif		
 }
 
 void Chat::pageUp() {
