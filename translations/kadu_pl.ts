@@ -1310,26 +1310,6 @@ Now add your friends to the userlist.</source>
 Zapisz go wraz z hasłem w bezpiecznym miejscu.
 Teraz możesz dodać znajomych do listy kontaktów.</translation>
     </message>
-    <message>
-        <source>Read this code ...</source>
-        <translation>Odczytaj kod...</translation>
-    </message>
-    <message>
-        <source>and type here</source>
-        <translation>i wpisz go tutaj</translation>
-    </message>
-    <message>
-        <source>Getting token</source>
-        <translation>Pobieranie Tokena</translation>
-    </message>
-    <message>
-        <source>token received</source>
-        <translation>Token odebrany</translation>
-    </message>
-    <message>
-        <source>Couldn&apos;t get token</source>
-        <translation>Nie można pobrać Tokena</translation>
-    </message>
 </context>
 <context>
     <name>SavePublicKey</name>
@@ -1605,6 +1585,25 @@ czasowo wyłączona lub zmieniła zasady dostępu.</translation>
     </message>
 </context>
 <context>
+    <name>TokenDialog</name>
+    <message>
+        <source>Read this code ...</source>
+        <translation>Odczytaj kod...</translation>
+    </message>
+    <message>
+        <source>and type here</source>
+        <translation>i wpisz go tutaj</translation>
+    </message>
+    <message>
+        <source>&amp;OK</source>
+        <translation>&amp;OK</translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation>&amp;Anuluj</translation>
+    </message>
+</context>
+<context>
     <name>TrayIcon</name>
     <message>
         <source>Left click - hide/show window
@@ -1623,10 +1622,6 @@ Prawy przycisk - Ustaw status</translation>
     <message>
         <source>Password</source>
         <translation>Hasło</translation>
-    </message>
-    <message>
-        <source>E-mail</source>
-        <translation>e-mail</translation>
     </message>
     <message>
         <source>Unregister</source>
@@ -2032,28 +2027,8 @@ zakończony niepowodzeniem.</translation>
         <translation>Błąd</translation>
     </message>
     <message>
-        <source>E-email</source>
-        <translation>e-mail</translation>
-    </message>
-    <message>
-        <source>Read this code ...</source>
-        <translation>Odczytaj kod...</translation>
-    </message>
-    <message>
-        <source>and type here</source>
-        <translation>i wpisz go tutaj</translation>
-    </message>
-    <message>
-        <source>Getting token</source>
-        <translation>Pobieranie Tokena</translation>
-    </message>
-    <message>
-        <source>token received</source>
-        <translation>Token odebrany</translation>
-    </message>
-    <message>
-        <source>Couldn&apos;t get token</source>
-        <translation>Nie można pobrać Tokena</translation>
+        <source>New email</source>
+        <translation>Nowy e-mail</translation>
     </message>
 </context>
 <context>

@@ -1309,26 +1309,6 @@ Now add your friends to the userlist.</source>
 Store it in a safe place along with the password.
 Now add your friends to the userlist.</translation>
     </message>
-    <message>
-        <source>Read this code ...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>and type here</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Getting token</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>token received</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Couldn&apos;t get token</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>SavePublicKey</name>
@@ -1608,6 +1588,25 @@ or has beed changed too much to parse it correctly.</translation>
     </message>
 </context>
 <context>
+    <name>TokenDialog</name>
+    <message>
+        <source>Read this code ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>and type here</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;OK</source>
+        <translation type="unfinished">&amp;OK</translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished">&amp;Cancel</translation>
+    </message>
+</context>
+<context>
     <name>TrayIcon</name>
     <message>
         <source>Left click - hide/show window
@@ -1625,10 +1624,6 @@ Middle click or Left click- next message</translation>
     <message>
         <source>Password</source>
         <translation>Password</translation>
-    </message>
-    <message>
-        <source>E-mail</source>
-        <translation>E-mail</translation>
     </message>
     <message>
         <source>Unregister</source>
@@ -2034,27 +2029,7 @@ The import was unsuccessful</translation>
         <translation>Error</translation>
     </message>
     <message>
-        <source>E-email</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Read this code ...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>and type here</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Getting token</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>token received</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Couldn&apos;t get token</source>
+        <source>New email</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
