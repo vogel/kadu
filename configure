@@ -4410,8 +4410,8 @@ fi
 
 PNG_LIBS="-lpng"
 
-	echo "$as_me:$LINENO: checking if libpng.so/dylib library is in system directories" >&5
-echo $ECHO_N "checking if libpng.so/dylib library is in system directories... $ECHO_C" >&6
+	echo "$as_me:$LINENO: checking if libpng is in system directories" >&5
+echo $ECHO_N "checking if libpng is in system directories... $ECHO_C" >&6
 	save_CFLAGS="$CFLAGS"
 	CFLAGS="$CFLAGS  -lpng"
 	cat >conftest.$ac_ext <<_ACEOF
@@ -4467,54 +4467,83 @@ sed 's/^/| /' conftest.$ac_ext >&5
 		echo "$as_me:$LINENO: result: no" >&5
 echo "${ECHO_T}no" >&6
 
-	echo "$as_me:$LINENO: checking for libpng.so in specified directiories" >&5
-echo $ECHO_N "checking for libpng.so in specified directiories... $ECHO_C" >&6
-	FILE_DIR=
-	for dir in $with_libs /usr/lib /usr/local/lib
-	do
-		if test -f $dir/libpng.so; then
-			FILE_DIR=$dir
-			echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
+		echo "$as_me:$LINENO: checking if libpng is in specified directories: $with_libs /usr/lib /usr/local/lib" >&5
+echo $ECHO_N "checking if libpng is in specified directories: $with_libs /usr/lib /usr/local/lib... $ECHO_C" >&6
+		FILE_DIR=
+		for dir in $with_libs /usr/lib /usr/local/lib
+		do
+			CFLAGS="$save_CFLAGS  -L $dir -lpng"
+			cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+				return 0;
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+
+				CFLAGS="$save_CFLAGS"
+				FILE_DIR=$dir
+				echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
 echo "${ECHO_T}found in $FILE_DIR" >&6
 
 	PNG_LIBS="$PNG_LIBS -L$FILE_DIR"
 
-			break
-		fi
-	done
-	if test -z "$FILE_DIR"; then
-		echo "$as_me:$LINENO: result: not found" >&5
+				break
+
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+
+				CFLAGS="$save_CFLAGS"
+
+fi
+rm -f conftest.err conftest.$ac_objext \
+      conftest$ac_exeext conftest.$ac_ext
+		done
+		if test -z "$FILE_DIR";
+		then
+			echo "$as_me:$LINENO: result: not found" >&5
 echo "${ECHO_T}not found" >&6
 
 
-
-	echo "$as_me:$LINENO: checking for libpng.dylib in specified directiories" >&5
-echo $ECHO_N "checking for libpng.dylib in specified directiories... $ECHO_C" >&6
-	FILE_DIR=
-	for dir in $with_libs /usr/lib /usr/local/lib
-	do
-		if test -f $dir/libpng.dylib; then
-			FILE_DIR=$dir
-			echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
-echo "${ECHO_T}found in $FILE_DIR" >&6
-
-	PNG_LIBS="$PNG_LIBS -L$FILE_DIR"
-
-			break
-		fi
-	done
-	if test -z "$FILE_DIR"; then
-		echo "$as_me:$LINENO: result: not found" >&5
-echo "${ECHO_T}not found" >&6
-		{ { echo "$as_me:$LINENO: error: libpng.dylib not found!" >&5
-echo "$as_me: error: libpng.dylib not found!" >&2;}
+	{ { echo "$as_me:$LINENO: error: libpng not found - please install libpng-devel" >&5
+echo "$as_me: error: libpng not found - please install libpng-devel" >&2;}
    { (exit 1); exit 1; }; }
 
-	fi
-
-
-	fi
-
+		fi
 
 fi
 rm -f conftest.err conftest.$ac_objext \
@@ -4600,8 +4629,10 @@ echo "${ECHO_T}found in $FILE_DIR" >&6
 	if test -z "$FILE_DIR"; then
 		echo "$as_me:$LINENO: result: not found" >&5
 echo "${ECHO_T}not found" >&6
-		{ { echo "$as_me:$LINENO: error: qwidget.h not found!" >&5
-echo "$as_me: error: qwidget.h not found!" >&2;}
+
+
+	{ { echo "$as_me:$LINENO: error: libqt-mt headers not found - please install libqt3-devel" >&5
+echo "$as_me: error: libqt-mt headers not found - please install libqt3-devel" >&2;}
    { (exit 1); exit 1; }; }
 
 	fi
@@ -4619,8 +4650,8 @@ rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
 
 QT_LIBS="-lqt-mt"
 
-	echo "$as_me:$LINENO: checking if libqt-mt.so/dylib library is in system directories" >&5
-echo $ECHO_N "checking if libqt-mt.so/dylib library is in system directories... $ECHO_C" >&6
+	echo "$as_me:$LINENO: checking if libqt-mt is in system directories" >&5
+echo $ECHO_N "checking if libqt-mt is in system directories... $ECHO_C" >&6
 	save_CFLAGS="$CFLAGS"
 	CFLAGS="$CFLAGS  -lqt-mt"
 	cat >conftest.$ac_ext <<_ACEOF
@@ -4676,54 +4707,83 @@ sed 's/^/| /' conftest.$ac_ext >&5
 		echo "$as_me:$LINENO: result: no" >&5
 echo "${ECHO_T}no" >&6
 
-	echo "$as_me:$LINENO: checking for libqt-mt.so in specified directiories" >&5
-echo $ECHO_N "checking for libqt-mt.so in specified directiories... $ECHO_C" >&6
-	FILE_DIR=
-	for dir in $with_libs $QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib /usr/lib/qt3/lib64 /sw/lib /usr/share/qt3/lib
-	do
-		if test -f $dir/libqt-mt.so; then
-			FILE_DIR=$dir
-			echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
+		echo "$as_me:$LINENO: checking if libqt-mt is in specified directories: $with_libs $QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib /usr/lib/qt3/lib64 /sw/lib /usr/share/qt3/lib" >&5
+echo $ECHO_N "checking if libqt-mt is in specified directories: $with_libs $QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib /usr/lib/qt3/lib64 /sw/lib /usr/share/qt3/lib... $ECHO_C" >&6
+		FILE_DIR=
+		for dir in $with_libs $QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib /usr/lib/qt3/lib64 /sw/lib /usr/share/qt3/lib
+		do
+			CFLAGS="$save_CFLAGS  -L $dir -lqt-mt"
+			cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+				return 0;
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+
+				CFLAGS="$save_CFLAGS"
+				FILE_DIR=$dir
+				echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
 echo "${ECHO_T}found in $FILE_DIR" >&6
 
 	QT_LIBS="$QT_LIBS -L$FILE_DIR"
 
-			break
-		fi
-	done
-	if test -z "$FILE_DIR"; then
-		echo "$as_me:$LINENO: result: not found" >&5
+				break
+
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+
+				CFLAGS="$save_CFLAGS"
+
+fi
+rm -f conftest.err conftest.$ac_objext \
+      conftest$ac_exeext conftest.$ac_ext
+		done
+		if test -z "$FILE_DIR";
+		then
+			echo "$as_me:$LINENO: result: not found" >&5
 echo "${ECHO_T}not found" >&6
 
 
-
-	echo "$as_me:$LINENO: checking for libqt-mt.dylib in specified directiories" >&5
-echo $ECHO_N "checking for libqt-mt.dylib in specified directiories... $ECHO_C" >&6
-	FILE_DIR=
-	for dir in $with_libs $QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib /usr/lib/qt3/lib64 /sw/lib /usr/share/qt3/lib
-	do
-		if test -f $dir/libqt-mt.dylib; then
-			FILE_DIR=$dir
-			echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
-echo "${ECHO_T}found in $FILE_DIR" >&6
-
-	QT_LIBS="$QT_LIBS -L$FILE_DIR"
-
-			break
-		fi
-	done
-	if test -z "$FILE_DIR"; then
-		echo "$as_me:$LINENO: result: not found" >&5
-echo "${ECHO_T}not found" >&6
-		{ { echo "$as_me:$LINENO: error: libqt-mt.dylib not found!" >&5
-echo "$as_me: error: libqt-mt.dylib not found!" >&2;}
+	{ { echo "$as_me:$LINENO: error: libqt-mt not found - please install libqt3" >&5
+echo "$as_me: error: libqt-mt not found - please install libqt3" >&2;}
    { (exit 1); exit 1; }; }
 
-	fi
-
-
-	fi
-
+		fi
 
 fi
 rm -f conftest.err conftest.$ac_objext \
@@ -6262,8 +6322,8 @@ rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
 
 	GADU_LIBS=-lgadu
 
-	echo "$as_me:$LINENO: checking if libgadu.so/dylib library is in system directories" >&5
-echo $ECHO_N "checking if libgadu.so/dylib library is in system directories... $ECHO_C" >&6
+	echo "$as_me:$LINENO: checking if libgadu is in system directories" >&5
+echo $ECHO_N "checking if libgadu is in system directories... $ECHO_C" >&6
 	save_CFLAGS="$CFLAGS"
 	CFLAGS="$CFLAGS  -lgadu"
 	cat >conftest.$ac_ext <<_ACEOF
@@ -6319,54 +6379,81 @@ sed 's/^/| /' conftest.$ac_ext >&5
 		echo "$as_me:$LINENO: result: no" >&5
 echo "${ECHO_T}no" >&6
 
-	echo "$as_me:$LINENO: checking for libgadu.so in specified directiories" >&5
-echo $ECHO_N "checking for libgadu.so in specified directiories... $ECHO_C" >&6
-	FILE_DIR=
-	for dir in $with_libs $with_existing_libgadu $with_existing_libgadu/lib
-	do
-		if test -f $dir/libgadu.so; then
-			FILE_DIR=$dir
-			echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
+		echo "$as_me:$LINENO: checking if libgadu is in specified directories: $with_libs $with_existing_libgadu $with_existing_libgadu/lib" >&5
+echo $ECHO_N "checking if libgadu is in specified directories: $with_libs $with_existing_libgadu $with_existing_libgadu/lib... $ECHO_C" >&6
+		FILE_DIR=
+		for dir in $with_libs $with_existing_libgadu $with_existing_libgadu/lib
+		do
+			CFLAGS="$save_CFLAGS  -L $dir -lgadu"
+			cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+				return 0;
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+
+				CFLAGS="$save_CFLAGS"
+				FILE_DIR=$dir
+				echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
 echo "${ECHO_T}found in $FILE_DIR" >&6
 
 		GADU_LIBS="$GADU_LIBS -L$FILE_DIR"
 
-			break
-		fi
-	done
-	if test -z "$FILE_DIR"; then
-		echo "$as_me:$LINENO: result: not found" >&5
+				break
+
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+
+				CFLAGS="$save_CFLAGS"
+
+fi
+rm -f conftest.err conftest.$ac_objext \
+      conftest$ac_exeext conftest.$ac_ext
+		done
+		if test -z "$FILE_DIR";
+		then
+			echo "$as_me:$LINENO: result: not found" >&5
 echo "${ECHO_T}not found" >&6
-
-
-
-	echo "$as_me:$LINENO: checking for libgadu.dylib in specified directiories" >&5
-echo $ECHO_N "checking for libgadu.dylib in specified directiories... $ECHO_C" >&6
-	FILE_DIR=
-	for dir in $with_libs $with_existing_libgadu $with_existing_libgadu/lib
-	do
-		if test -f $dir/libgadu.dylib; then
-			FILE_DIR=$dir
-			echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
-echo "${ECHO_T}found in $FILE_DIR" >&6
-
-		GADU_LIBS="$GADU_LIBS -L$FILE_DIR"
-
-			break
-		fi
-	done
-	if test -z "$FILE_DIR"; then
-		echo "$as_me:$LINENO: result: not found" >&5
-echo "${ECHO_T}not found" >&6
-		{ { echo "$as_me:$LINENO: error: libgadu.dylib not found!" >&5
-echo "$as_me: error: libgadu.dylib not found!" >&2;}
+			{ { echo "$as_me:$LINENO: error: libgadu not found!" >&5
+echo "$as_me: error: libgadu not found!" >&2;}
    { (exit 1); exit 1; }; }
 
-	fi
-
-
-	fi
-
+		fi
 
 fi
 rm -f conftest.err conftest.$ac_objext \
@@ -6556,8 +6643,8 @@ echo "$as_me: error: $mod download failed!" >&2;}
 			echo "MODULE_CONFIGURE_CMD:  $MODULE_CONFIGURE_CMD" && \
 			for lib in $MODULE_LIBS; do \
 
-	echo "$as_me:$LINENO: checking if lib$lib.so/dylib library is in system directories" >&5
-echo $ECHO_N "checking if lib$lib.so/dylib library is in system directories... $ECHO_C" >&6
+	echo "$as_me:$LINENO: checking if lib$lib is in system directories" >&5
+echo $ECHO_N "checking if lib$lib is in system directories... $ECHO_C" >&6
 	save_CFLAGS="$CFLAGS"
 	CFLAGS="$CFLAGS $MODULE_LDFLAGS -l$lib"
 	cat >conftest.$ac_ext <<_ACEOF
@@ -6613,54 +6700,81 @@ sed 's/^/| /' conftest.$ac_ext >&5
 		echo "$as_me:$LINENO: result: no" >&5
 echo "${ECHO_T}no" >&6
 
-	echo "$as_me:$LINENO: checking for lib$lib.so in specified directiories" >&5
-echo $ECHO_N "checking for lib$lib.so in specified directiories... $ECHO_C" >&6
-	FILE_DIR=
-	for dir in $with_libs $MODULE_LIBS_PATH
-	do
-		if test -f $dir/lib$lib.so; then
-			FILE_DIR=$dir
-			echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
+		echo "$as_me:$LINENO: checking if lib$lib is in specified directories: $with_libs $MODULE_LIBS_PATH" >&5
+echo $ECHO_N "checking if lib$lib is in specified directories: $with_libs $MODULE_LIBS_PATH... $ECHO_C" >&6
+		FILE_DIR=
+		for dir in $with_libs $MODULE_LIBS_PATH
+		do
+			CFLAGS="$save_CFLAGS $MODULE_LDFLAGS -L $dir -l$lib"
+			cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+				return 0;
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+
+				CFLAGS="$save_CFLAGS"
+				FILE_DIR=$dir
+				echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
 echo "${ECHO_T}found in $FILE_DIR" >&6
 
 					MODULE_LDFLAGS="$MODULE_LDFLAGS -L$FILE_DIR"
 
-			break
-		fi
-	done
-	if test -z "$FILE_DIR"; then
-		echo "$as_me:$LINENO: result: not found" >&5
+				break
+
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+
+				CFLAGS="$save_CFLAGS"
+
+fi
+rm -f conftest.err conftest.$ac_objext \
+      conftest$ac_exeext conftest.$ac_ext
+		done
+		if test -z "$FILE_DIR";
+		then
+			echo "$as_me:$LINENO: result: not found" >&5
 echo "${ECHO_T}not found" >&6
-
-
-
-	echo "$as_me:$LINENO: checking for lib$lib.dylib in specified directiories" >&5
-echo $ECHO_N "checking for lib$lib.dylib in specified directiories... $ECHO_C" >&6
-	FILE_DIR=
-	for dir in $with_libs $MODULE_LIBS_PATH
-	do
-		if test -f $dir/lib$lib.dylib; then
-			FILE_DIR=$dir
-			echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
-echo "${ECHO_T}found in $FILE_DIR" >&6
-
-					MODULE_LDFLAGS="$MODULE_LDFLAGS -L$FILE_DIR"
-
-			break
-		fi
-	done
-	if test -z "$FILE_DIR"; then
-		echo "$as_me:$LINENO: result: not found" >&5
-echo "${ECHO_T}not found" >&6
-		{ { echo "$as_me:$LINENO: error: lib$lib.dylib not found!" >&5
-echo "$as_me: error: lib$lib.dylib not found!" >&2;}
+			{ { echo "$as_me:$LINENO: error: lib$lib not found!" >&5
+echo "$as_me: error: lib$lib not found!" >&2;}
    { (exit 1); exit 1; }; }
 
-	fi
-
-
-	fi
-
+		fi
 
 fi
 rm -f conftest.err conftest.$ac_objext \

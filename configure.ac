@@ -101,7 +101,7 @@ AC_DEFUN(FIND_HEADER,[
 # $4 - action if not found (default is error message)
 # $5 - additional flags
 AC_DEFUN(FIND_LIBRARY,[
-	AC_MSG_CHECKING([if lib$1.so/dylib library is in system directories])
+	AC_MSG_CHECKING([if lib$1 is in system directories])
 	save_CFLAGS="$CFLAGS"
 	CFLAGS="$CFLAGS $5 -l$1"
 	AC_TRY_LINK([],
@@ -113,10 +113,31 @@ AC_DEFUN(FIND_LIBRARY,[
 	],[
 		CFLAGS="$save_CFLAGS"
 		AC_MSG_RESULT([no])
-		FIND_FILE([lib$1.so],[$with_libs $2],[$3],
-		[
-			FIND_FILE([lib$1.dylib],[$with_libs $2],[$3],[$4])
-		])
+
+		AC_MSG_CHECKING([if lib$1 is in specified directories: $with_libs $2])
+		FILE_DIR=
+		for dir in $with_libs $2
+		do
+			CFLAGS="$save_CFLAGS $5 -L $dir -l$1"
+			AC_TRY_LINK([],
+			[
+				return 0;
+			],[
+				CFLAGS="$save_CFLAGS"
+				FILE_DIR=$dir
+				AC_MSG_RESULT([found in $FILE_DIR])
+				$3
+				break
+			],[
+				CFLAGS="$save_CFLAGS"
+			])
+		done
+		if test -z "$FILE_DIR";
+		then
+			AC_MSG_RESULT([not found])
+			m4_if($4,,AC_MSG_ERROR([lib$1 not found!]))
+			$4
+		fi
 	])
 ])
 
@@ -400,6 +421,8 @@ PNG_LIBS="-lpng"
 FIND_LIBRARY([png],[/usr/lib /usr/local/lib],
 [
 	PNG_LIBS="$PNG_LIBS -L$FILE_DIR"
+],[
+	AC_MSG_ERROR([libpng not found - please install libpng-devel])
 ])
 AC_SUBST(PNG_LIBS)
 
@@ -410,6 +433,8 @@ AC_SUBST(PNG_LIBS)
 FIND_HEADER([qwidget.h],[$QTDIR/include /usr/lib/qt/include /usr/lib/qt3/include /usr/local/qt/include /usr/include /usr/include/qt /usr/include/qt3 /usr/local/include /usr/X11R6/include /usr/X11R6/include/qt /usr/X11R6/include/qt3 /sw/include/qt /usr/share/qt3/include],
 [
 	QT_INCLUDES="-I$FILE_DIR"
+],[
+	AC_MSG_ERROR([libqt-mt headers not found - please install libqt3-devel])
 ])
 AC_SUBST(QT_INCLUDES)
 
@@ -422,6 +447,8 @@ QT_LIBS="-lqt-mt"
 FIND_LIBRARY([qt-mt],[$QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib /usr/lib/qt3/lib64 /sw/lib /usr/share/qt3/lib],
 [
 	QT_LIBS="$QT_LIBS -L$FILE_DIR"
+],[
+	AC_MSG_ERROR([libqt-mt not found - please install libqt3])
 ])
 AC_SUBST(QT_LIBS)
 
