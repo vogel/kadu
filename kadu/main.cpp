@@ -15,6 +15,10 @@
 //
 #include "kadu.h"
 #include "pixmaps.h"
+#include "../config.h"
+#ifdef HAVE_OPENSSL
+#include "sim.h"
+#endif
 //
 
 Kadu *kadu;
@@ -59,6 +63,10 @@ int main(int argc, char *argv[])
 		own_description = config.defaultdescription;
 		kadu->setStatus(config.defaultstatus);	
 		}
+#ifdef HAVE_OPENSSL
+		SIM_KC_Init();
+		sprintf((char *)&SIM_Key_Path, ggPath("keys/").local8Bit());
+#endif
 
 	QObject::connect(a, SIGNAL(aboutToQuit()), kadu, SLOT(cleanUp()));
 	return a->exec();

@@ -15,10 +15,12 @@
 #include <qtextbrowser.h>
 #include <qhbox.h>
 #include <qmultilineedit.h>
+#include <qpushbutton.h>
 #include <qarray.h>
 #include <qtoolbutton.h>
 #include "misc.h"
 #include "userbox.h"
+#include "../config.h"
 
 class IconSelector;
 
@@ -43,6 +45,9 @@ class Chat : public QWidget {
 		QPushButton *cancelbtn;
 		UserBox *userbox;
 		QString myLastMessage;
+#ifdef HAVE_OPENSSL
+		QPushButton *encryption;
+#endif
 
 		void pruneWindow(void);
 
@@ -60,6 +65,9 @@ class Chat : public QWidget {
 		CustomInput *edit;
 		QHBox *buttontray;
 		bool autosend_enabled;
+#ifdef HAVE_OPENSSL
+		bool encrypt_enabled;
+#endif
     
 	public slots:
 		void HistoryBox(void);
@@ -78,6 +86,7 @@ class Chat : public QWidget {
 	private slots:
 		void userWhois(void);
 		void insertEmoticon(void);
+		void regEncryptSend(void);
 		void regAutosend(void);
 		void addMyMessageToHistory(void);
 		void clearChatWindow(void);

@@ -22,6 +22,7 @@
 #include <qpixmap.h>
 #include <qlineedit.h>
 #include <qpopupmenu.h>
+#include <qtextstream.h>
 #include <qpoint.h>
 #include <qlayout.h>
 #include <qslider.h>
@@ -36,6 +37,7 @@
 #include <ktextbrowser.h>
 #include <qtooltip.h>
 #include <qfile.h>
+#include <qfileinfo.h>
 #include <qhbox.h>
 #include <qvbox.h>
 #include <qfont.h>
@@ -115,6 +117,9 @@
 #include "pending_msgs.h"
 #include "dock_widget.h"
 #include "updates.h"
+#ifdef HAVE_OPENSSL
+#include "sim.h"
+#endif
 //
 
 #define GG_USER_OFFLINE	0x01
@@ -193,7 +198,13 @@ enum {
 	KADU_CMD_IMPORT_USERLIST,
 	KADU_CMD_HIDE,
 	KADU_CMD_SEND_FILE,
+#ifdef HAVE_OPENSSL
+	KADU_CMD_PERSONAL_INFO,
+	KADU_CMD_SEND_KEY
+#else
 	KADU_CMD_PERSONAL_INFO
+#endif
+		     
 };
 
 /* our own description container */
@@ -767,7 +778,10 @@ void Kadu::commandParser (int command) {
 	UinsList uins;
 	UserListElement user;
 	QString tmp;
-		
+	QString keyfile_path;
+	QString mykey;
+	QFile keyfile;
+
 	switch (command) {
 		case KADU_CMD_SEND_MESSAGE:
 			Message *msg;
@@ -872,6 +886,9 @@ void Kadu::commandParser (int command) {
 			pending.writeToFile();
 			close_permitted = true;
 			disconnectNetwork();
+#ifdef HAVE_OPENSSL
+			SIM_KC_Finish();
+#endif		       
 			close(true);
 			break;
 		case KADU_CMD_SEARCH_USER:
@@ -927,6 +944,26 @@ void Kadu::commandParser (int command) {
 			pid = new PersonalInfoDialog();
 			pid->show();
 			break;
+#ifdef HAVE_OPENSSL
+		case KADU_CMD_SEND_KEY:
+			user = userlist.byAltNick(userbox->currentText());
+
+			keyfile_path.append(ggPath("keys/"));
+			keyfile_path.append(QString::number(config.uin));
+			keyfile_path.append(".pem");
+
+			keyfile.setName(keyfile_path);
+
+			if(keyfile.open(IO_ReadOnly)) {
+				QTextStream t(&keyfile);
+				mykey = t.read();
+				keyfile.close();
+				QCString tmp(mykey.local8Bit());
+				gg_send_message(sess, GG_CLASS_MSG, user.uin, (unsigned char *)tmp.data());
+			}
+
+			break;
+#endif
 		}
 }
 
@@ -966,6 +1003,22 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 		pm->setItemEnabled(KADU_CMD_SEND_FILE, true);
 	else
 		pm->setItemEnabled(KADU_CMD_SEND_FILE, false);
+
+#ifdef HAVE_OPENSSL
+	pm->insertItem(loader->loadIcon("encrypted", KIcon::Small), i18n("Send my public key"), KADU_CMD_SEND_KEY);
+	QString keyfile_path;
+
+	keyfile_path.append(ggPath("keys/"));
+	keyfile_path.append(QString::number(config.uin));
+	keyfile_path.append(".pem");
+
+	QFileInfo keyfile(keyfile_path);
+	if (keyfile.permission(QFileInfo::ReadUser)) {
+		pm->setItemEnabled(KADU_CMD_SEND_KEY, true);
+	} else {
+		pm->setItemEnabled(KADU_CMD_SEND_KEY, false);
+	}
+#endif
 
 	pm->insertSeparator();
 	

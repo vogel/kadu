@@ -17,6 +17,7 @@
 #include <qslider.h>
 #include <qvgroupbox.h>
 #include <qhbox.h>
+#include "../config.h"
 
 void loadKaduConfig(void);
 void saveKaduConfig(void);
@@ -126,7 +127,14 @@ class ConfigDialog : public QTabDialog	{
 		QComboBox *cb_chatfontsize;
 		QComboBox *cb_userboxfont;
 		QComboBox *cb_userboxfontsize;
-    
+
+#ifdef HAVE_OPENSSL
+		QCheckBox *b_encryption;
+		QCheckBox *b_encryptmsg;
+		QComboBox *cb_keyslen;
+		QPushButton *pb_encryption;
+#endif
+
 	protected slots:
 		void _Left();
 		void _Right();
@@ -136,6 +144,7 @@ class ConfigDialog : public QTabDialog	{
 		void choosePlayerFile();
 		void chooseNotifyFile();
 		void chooseEmoticonsPath();
+                void generateMyKeys();
 		void chooseChatMyBgColorGet();
 		void chooseChatUsrBgColorGet();
 		void chooseChatMyFontColorGet();

@@ -19,11 +19,13 @@
 #include <kicontheme.h>
 #include <kiconloader.h>
 #include <qmessagebox.h>
+#include <qfileinfo.h>
 #include <qtimer.h>
 #include <qgrid.h>
 #include <klocale.h>
 #include <kconfig.h>
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -35,6 +37,9 @@
 #include "emoticons.h"
 #include "config.h"
 #include "dock_widget.h"
+#ifdef HAVE_OPENSSL
+#include "sim.h"
+#endif
 //
 
 void loadKaduConfig(void) {  	
@@ -107,6 +112,10 @@ void loadKaduConfig(void) {
 	config.msgacks = konf->readBoolEntry("MessageAcks", true);
 	config.blinkchattitle = konf->readBoolEntry("BlinkChatTitle", true);
 	config.ignoreanonusers = konf->readBoolEntry("IgnoreAnonymousUsers", false);
+#ifdef HAVE_OPENSSL
+	config.encryption = konf->readBoolEntry("Encryption", false);
+	config.keyslen = konf->readNumEntry("KeysLength", 512);
+#endif
 
 	konf->setGroup("Notify");
 	config.soundnotify = strdup(konf->readEntry("NotifySound", ""));
@@ -202,6 +211,10 @@ void saveKaduConfig(void) {
 	konf->writeEntry("MessageAcks", config.msgacks);
 	konf->writeEntry("BlinkChatTitle", config.blinkchattitle);
 	konf->writeEntry("IgnoreAnonymousUsers", config.ignoreanonusers);
+#ifdef HAVE_OPENSSL
+        konf->writeEntry("Encryption", config.encryption);
+        konf->writeEntry("KeysLength", config.keyslen);
+#endif
 
 	konf->setGroup("Proxy");
 	konf->writeEntry("UseProxy",config.useproxy);
@@ -568,6 +581,34 @@ void ConfigDialog::setupTab3(void) {
 		prunebox->setEnabled(false);
 
 	QObject::connect(b_chatprune, SIGNAL(toggled(bool)), prunebox, SLOT(setEnabled(bool)));
+
+#ifdef HAVE_OPENSSL
+	const char* keyslens[] = { "128", "256", "512", "768", "1024", 0 };
+
+	b_encryption = new QCheckBox(box3);
+	b_encryption->setText(i18n("Use encryption"));
+
+	QHGroupBox *encryptbox = new QHGroupBox(box3);
+	encryptbox->setTitle(i18n("Encryption properties"));
+	QLabel *l_lenencrypt = new QLabel(encryptbox);
+	l_lenencrypt->setText(i18n("Keys length"));
+
+	cb_keyslen = new QComboBox(encryptbox);
+	cb_keyslen->insertStrList(keyslens);
+	cb_keyslen->setCurrentText(QString::number(config.keyslen));
+
+	QPushButton *pb_genkeys = new QPushButton(encryptbox);
+	pb_genkeys->setText(i18n("Generate keys"));
+
+        if (config.encryption) {
+		b_encryption->setChecked(true);
+	} else {
+		encryptbox->setEnabled(false);
+	}
+
+	QObject::connect(b_encryption, SIGNAL(toggled(bool)), encryptbox, SLOT(setEnabled(bool)));
+	QObject::connect(pb_genkeys, SIGNAL(clicked()), this, SLOT(generateMyKeys()));
+#endif
 
 	b_scrolldown = new QCheckBox(box3);
 	b_scrolldown->setText(i18n("Scroll chat window downward, not upward"));
@@ -963,6 +1004,7 @@ void ConfigDialog::setupTab6(void) {
 	addTab(box6, i18n("Look"));
 };
 
+
 void ConfigDialog::onSmsBuildInCheckToogle(bool toggled)
 {
 	smshbox1->setEnabled(!toggled);
@@ -1141,6 +1183,59 @@ void ConfigDialog::chooseChatTest(void) {
 	playSound(config.soundchat);
 }
 
+void ConfigDialog::generateMyKeys(void) {
+#ifdef HAVE_OPENSSL
+	QString keyfile_path;
+	
+	keyfile_path.append(ggPath("keys/"));
+	keyfile_path.append(QString::number(config.uin));
+	keyfile_path.append(".pem");
+	
+	QFileInfo keyfile(keyfile_path);
+	
+	if (keyfile.permission(QFileInfo::WriteUser)) {
+		switch(QMessageBox::warning(this, "Kadu", i18n("Keys exist. Do you want to overwrite them ?"), i18n("Yes"), i18n("No"), QString::null, 0, 1)) {
+			case 1: // No
+				return;
+		}
+	}
+	
+	RSA *key;
+	char fname[PATH_MAX];
+
+	key = SIM_RSA_GenKey(atoi(cb_keyslen->currentText()));
+	fprintf(stderr,"KK Generating my keys, len: %d\n", atoi(cb_keyslen->currentText()));
+
+	if (!key) {
+		QMessageBox::critical(this, "Kadu", i18n("B..d przy generowaniu klucza"), i18n("OK"), QString::null, 0);
+		return;
+	}
+
+	QCString tmp;
+
+	tmp = ggPath("keys").local8Bit();
+	mkdir(tmp.data(), 0700);
+
+	tmp = ggPath("keys/private.pem").local8Bit();
+	memset(fname, 0, sizeof(fname));
+	sprintf(fname, tmp.data());
+
+	SIM_RSA_WriteKey(key, fname, PRIVATE);
+
+	chmod(fname, 0400);
+
+	tmp = ggPath("keys/").local8Bit();
+	memset(fname, 0, sizeof(fname));
+	sprintf(fname, "%s%d.pem", tmp.data(), config.uin);
+
+	SIM_RSA_WriteKey(key, fname, PUBLIC);
+
+	QMessageBox::information(this, "Kadu", i18n("Keys have been generated and written"), i18n("OK"), QString::null, 0);
+
+	return;
+#endif
+}
+
 void ConfigDialog::updateConfig(void) {
 	QString tmp;
 	int i, j;
@@ -1209,6 +1304,10 @@ void ConfigDialog::updateConfig(void) {
 	config.ignoreanonusers = b_ignoreanonusers->isChecked();
 	config.defaultwebbrowser = b_defwebbrowser->isChecked();
 	config.webbrowser = e_webbrowser->text();
+#ifdef HAVE_OPENSSL
+	config.encryption = b_encryption->isChecked();
+	config.keyslen = atoi(cb_keyslen->currentText());
+#endif
 
 	config.colors.chatMyBgColor = e_chatmybgcolor->text();
 	config.colors.chatUsrBgColor = e_chatusrbgcolor->text();

@@ -17,6 +17,7 @@
 #include <qpixmap.h>
 #include <qcombobox.h>
 #include <qstring.h>
+#include <qfile.h>
 #include <qarray.h>
 #include <iostream>
 #include <klocale.h>
@@ -31,6 +32,7 @@
 #include <unistd.h>
 #include <pwd.h>
 
+//
 #include "kadu.h"
 #include "pixmaps.h"
 #include "chat.h"
@@ -40,6 +42,10 @@
 #include "vuser.h"
 #include "pending_msgs.h"
 #include "dock_widget.h"
+#include "../config.h"
+#ifdef HAVE_OPENSSL
+#include "sim.h"
+#endif
 
 void sigchldHndl (int whatever) {
 	while ((wait3(NULL, WNOHANG, NULL)) > 0);
@@ -47,6 +53,17 @@ void sigchldHndl (int whatever) {
 
 void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t time,int formats_count=0,struct gg_msg_format * formats=NULL) {
 	QString tmp;
+#ifdef HAVE_OPENSSL
+	int declen = 0;
+	char decoded[2048];
+
+	if(msg != NULL) {
+		int msglen = strlen((const char *)msg);
+		memset(decoded, 0, 2048);
+		declen = SIM_Message_Decrypt((unsigned char *)msg, (unsigned char *)decoded, msglen, senders[0]);
+		fprintf(stderr, "DECLEN=%d\n", declen);
+	}
+#endif
 
 	fprintf(stderr, "KK eventRecvMsg()\n");
 
@@ -63,7 +80,12 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 		fprintf(stderr, "KK System message index %d\n", msgclass);
 		senders[0] = config.uin;
 		} else if (msg != NULL)
-			cp_to_iso(msg);	
+#ifdef HAVE_OPENSSL
+                       if (declen > 0)
+                               cp_to_iso((unsigned char *)decoded);
+                       else
+#endif
+                               cp_to_iso(msg);
 
 	QString nick;
 	if (userlist.containsUin(senders[0])) {
@@ -82,7 +104,12 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 				false, false, true, "", "", true);
 			}
 	if (config.logmessages && senders[0] != config.uin)
-		appendHistory(senders, senders[0], msg, FALSE, time);
+#ifdef HAVE_OPENSSL
+               if (declen > 0)
+                       appendHistory(senders, senders[0], (unsigned char *)decoded, FALSE, time);
+               else
+#endif
+                       appendHistory(senders, senders[0], msg, FALSE, time);
 
 	//script.eventMsg(senders[0],msgclass,(char*)msg);
 
@@ -91,9 +118,50 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 	while (i < chats.count() && !chats[i].uins.equals(senders))
 		i++;
 
+#ifdef HAVE_OPENSSL
+	if (config.encryption) {
+		if (!strncmp((char *)msg, "-----BEGIN RSA PUBLIC KEY-----", 20)) {
+			QFile keyfile;
+			QString keyfile_path;
+			QString key_data;
+			switch(QMessageBox::information(kadu, "Kadu", i18n("User") +  (const char *) + i18n("is sending you public key. Do you want to save them ?"), i18n("Yes"), i18n("No"), QString::null, 0, 1)) {
+				case 0: // Yes ? ;)
+					keyfile_path.append(ggPath("keys/"));
+					keyfile_path.append(QString::number(senders[0]));
+					keyfile_path.append(".pem");
+
+					keyfile.setName(keyfile_path);
+
+					if(!(keyfile.open(IO_WriteOnly))) {
+						QMessageBox::critical(kadu, "Kadu", i18n("Nie mozna zapisa. klucza"), i18n("OK"), QString::null, 0);
+						fprintf(stderr, "eventRecvMsg(): Error opening key file %s\n", (const char *)keyfile_path.local8Bit());					
+						return;
+					}
+
+					key_data.append(__c2q((const char *)msg));
+
+					keyfile.writeBlock(key_data.local8Bit(), key_data.length());
+
+					keyfile.close();
+
+					SIM_KC_Free(SIM_KC_Find(senders[0]));
+
+					return;
+				case 1: // No ? ;)
+					return;
+			}
+		}
+	}
+#endif
 	if ((msgclass == GG_CLASS_CHAT || msgclass == GG_CLASS_MSG) && i < chats.count()) {
 		QString toadd;
-		tmp = __c2q((const char *)msg);
+#ifdef HAVE_OPENSSL
+		if (declen > 0)
+			tmp = __c2q((const char *)decoded);
+		else
+#endif
+                        tmp = __c2q((const char *)msg);
+
 		chats[i].ptr->checkPresence(senders, tmp, time, toadd);
 		chats[i].ptr->alertNewMessage();
 
@@ -105,12 +173,23 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 //	fprintf(stderr, "KK eventRecvMsg(): New buffer size: %d\n",pending.size());
 
 	if (senders[0] != config.uin)
-		pending.addMsg(senders, __c2q((const char*)msg), msgclass, time);
+#ifdef HAVE_OPENSSL
+		if (declen > 0)
+			pending.addMsg(senders, __c2q((const char*)decoded), msgclass, time);
+		else
+#endif
+			pending.addMsg(senders, __c2q((const char*)msg), msgclass, time);
 
 	fprintf(stderr, "KK eventRecvMsg(): Message allocated to slot %d\n", i);
-	fprintf(stderr, "KK eventRecvMsg(): Got message from %d (%s) saying \"%s\"\n",
-		senders[0], (const char *)nick.local8Bit(), msg);
-
+#ifdef HAVE_OPENSSL
+	if (declen > 0)
+		fprintf(stderr, "KK eventRecvMsg(): Got encoded message from %d (%s) saying \"%s\"\n",
+		         senders[0], (const char *)nick.local8Bit(), decoded);
+        else
+#endif
+		fprintf(stderr, "KK eventRecvMsg(): Got message from %d (%s) saying \"%s\"\n",
+			senders[0], (const char *)nick.local8Bit(), msg);
+											  
 	UserBox::all_refresh();
 	dw->changeIcon();
 

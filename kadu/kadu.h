@@ -31,6 +31,7 @@
 #include "pending_msgs.h"
 #include "misc.h"
 #include "status.h"
+#include "../config.h"
 
 struct colors {
 	QString userboxBgColor;
@@ -118,6 +119,10 @@ struct config {
 
 	struct colors colors;
 	struct fonts fonts;
+#ifdef HAVE_OPENSSL
+	bool encryption;
+	int keyslen;
+#endif
 };
 
 struct groups {

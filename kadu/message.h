@@ -13,9 +13,11 @@
 #include <qdialog.h>
 #include <qmultilineedit.h>
 #include <qlabel.h>
+#include <qcheckbox.h>
 #include <qradiobutton.h>
 #include "libgadu.h"
 #include "misc.h"
+#include "../config.h"
 
 class Message : public QDialog {
 	Q_OBJECT
@@ -26,6 +28,9 @@ class Message : public QDialog {
 		QLabel *nicknamelab;
 		QDialog *sendmessage;
 		QRadioButton *b_chat;
+#ifdef HAVE_OPENSSL
+                QCheckBox *b_encryptmsg;
+#endif
 
 	public:
     		Message(const QString &, bool tchat=false, QWidget *parent=0, const char *name=0);

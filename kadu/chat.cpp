@@ -17,6 +17,7 @@
 #include <qcursor.h>
 #include <qprocess.h>
 #include <qmessagebox.h>
+#include <qfileinfo.h>
 #include <math.h>
 
 //
@@ -27,6 +28,9 @@
 #include "history.h"
 #include "misc.h"
 #include "emoticons.h"
+#ifdef HAVE_OPENSSL
+#include "sim.h"
+#endif
 //
 
 KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
@@ -115,6 +119,32 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 		autosend_enabled = true;
 		}
 
+#ifdef HAVE_OPENSSL
+	QString keyfile_path;
+	encryption = new QPushButton(buttontray);
+	if(config.encryption) {
+		QToolTip::add(encryption, i18n("Click to disable encoding this conversation"));
+		encryption->setPixmap(loader->loadIcon("encrypted", KIcon::Small));
+		encrypt_enabled = true;
+	} else {
+		QToolTip::add(encryption, i18n("Click to enable encoding this conversation"));
+		encryption->setPixmap(loader->loadIcon("encrypted", KIcon::Small));
+		encrypt_enabled = false;
+	}
+	keyfile_path.append(ggPath("keys/"));
+	keyfile_path.append(QString::number(uins[0]));
+	keyfile_path.append(".pem");
+	QFileInfo keyfile(keyfile_path);
+	
+	if(!keyfile.permission(QFileInfo::ReadUser)) {
+	    encryption->setEnabled(false);
+	}
+	
+	connect(encryption, SIGNAL(clicked()), this, SLOT(regEncryptSend()));
+	
+	encrypt_enabled=false;
+#endif
+	
 	QPushButton *clearchat= new QPushButton(buttontray);
 	clearchat->setPixmap(loader->loadIcon("eraser", KIcon::Small));
 	QToolTip::add(clearchat, i18n("Clear messages in chat window"));
@@ -255,6 +285,19 @@ void Chat::keyPressEvent(QKeyEvent *e) {
 		clearChatWindow();
 	}
 	QWidget::keyPressEvent(e);
+}
+
+void Chat::regEncryptSend(void) {
+#ifdef HAVE_OPENSSL
+	KIconLoader *loader = KGlobal::iconLoader();
+	if (encrypt_enabled) {
+		encryption->setPixmap(loader->loadIcon("decrypted", KIcon::Small));
+		encrypt_enabled = false;
+	} else {
+		encryption->setPixmap(loader->loadIcon("encrypted", KIcon::Small));
+		encrypt_enabled = true;
+	}
+#endif
 }
 
 /* register/unregister sending with Return key */
@@ -479,6 +522,11 @@ void Chat::cancelMessage(void) {
 void Chat::sendMessage(void) {
 	int i,j;
 	uin_t *users;
+#ifdef HAVE_OPENSSL
+	int enclen;
+	char encoded[4096];
+	memset(encoded, 0, sizeof(encoded));
+#endif
 
 	if (!QString::compare(edit->text().local8Bit(),""))
 		return;
@@ -516,9 +564,22 @@ void Chat::sendMessage(void) {
 			acks[i].ack = uins.count();
 			}
 		else {
-			acks[i].seq = gg_send_message(sess, GG_CLASS_CHAT, uins[0], (unsigned char *)utmp);
-			acks[i].ack = 1;
+#ifdef HAVE_OPENSSL
+			if (encrypt_enabled) {
+				enclen = SIM_Message_Encrypt((unsigned char *)utmp, (unsigned char *)encoded, strlen((char *)utmp), uins[0]);
+				if (enclen > 0) {
+					acks[i].seq = gg_send_message(sess, GG_CLASS_CHAT, uins[0], (unsigned char *)encoded);
+					acks[i].ack = 1;
+				}
+			} else {
+#endif
+				acks[i].seq = gg_send_message(sess, GG_CLASS_CHAT, uins[0], (unsigned char *)utmp);
+				acks[i].ack = 1;
+#ifdef HAVE_OPENSSL
 			}
+#endif
+		}
+
 		acks[i].type = 2;
 		acks[i].ptr = this;
 		}
@@ -529,10 +590,23 @@ void Chat::sendMessage(void) {
 			gg_send_message_confer(sess, GG_CLASS_CHAT,
 				uins.count(), users, (unsigned char *)utmp);    
 			}
-		else
-			gg_send_message(sess, GG_CLASS_CHAT, uins[0], (unsigned char *)utmp);
+		else {
+#ifdef HAVE_OPENSSL
+			if (encrypt_enabled) {
+				enclen = SIM_Message_Encrypt((unsigned char *)utmp, (unsigned char *)encoded, strlen((char *)utmp), uins[0]);
+				if (enclen > 0) {
+					gg_send_message(sess, GG_CLASS_CHAT, uins[0], (unsigned char *)encoded);
+				}
+			} else {
+#endif
+				gg_send_message(sess, GG_CLASS_CHAT, uins[0], (unsigned char *)utmp);
+#ifdef HAVE_OPENSSL
+			}
+#endif
+
 		writeMyMessage();	
 		}
+	}
 	delete users;
 
 	if (sess->check & GG_CHECK_WRITE)
