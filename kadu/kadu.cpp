@@ -250,9 +250,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	config_file.addVariable("General","CheckUpdates",config_file.readEntry("Global","CheckUpdates"));
 	config_file.addVariable("General","DisplayGroupTabs",config_file.readEntry("Global","DisplayGroupTabs"));
 	config_file.addVariable("General","AddToDescription",config_file.readEntry("Global","AddToDescription"));
-	config_file.addVariable("General","TrayHint",config_file.readEntry("Global","TrayHint"));
-	config_file.addVariable("General","HintError",config_file.readEntry("Global","HintError"));
-	config_file.addVariable("General","TimeoutHint",config_file.readEntry("Global","TimeoutHint"));
 	config_file.addVariable("General","ShowDesc",config_file.readEntry("Global","ShowDesc"));
 	config_file.addVariable("General","MultiColumnUserbox",config_file.readEntry("Global","MultiColumnUserbox"));
 	config_file.addVariable("Network","UseProxy",config_file.readEntry("Proxy","UseProxy"));
@@ -270,9 +267,16 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	config_file.addVariable("Network","UseTLS",config_file.readEntry("Global","UseTLS"));
 	config_file.addVariable("Network","DefaultPort",config_file.readEntry("Global","DefaultPort"));
 	config_file.addVariable("History","ChatHistoryQuotationTime",-config_file.readNumEntry("Other","ChatHistoryQuotationTime"));
-	config_file.addVariable("History","ChatHistoryQuotation",config_file.readEntry("Other","ChatHistoryQuotation",
-	config_file.readEntry("Other","ChatHistoryCitation")));
-
+	config_file.addVariable("History","ChatHistoryQuotation",config_file.readEntry("Other","ChatHistoryQuotation"));
+	config_file.addVariable("Chat","ChatPrune",config_file.readEntry("Other","ChatPrune"));
+	config_file.addVariable("Chat","ChatPruneLen",config_file.readEntry("Other","ChatPruneLen"));
+	config_file.addVariable("Chat","EmoticonsStyle",config_file.readEntry("Other","ChatEmoticonsStyle"));
+	config_file.addVariable("Chat","EmoticonsTheme",config_file.readEntry("Other","ChatEmoticonsTheme"));
+	config_file.addVariable("Chat","ScrollDown",config_file.readEntry("Other","ScrollDown"));
+	config_file.addVariable("Chat","IgnoreAnonymousUser",config_file.readEntry("Other","IgnoreAnonymousUser"));
+	config_file.addVariable("Chat","Encryption",config_file.readEntry("Other","Encryption"));
+	config_file.addVariable("Chat","MessageAcks",config_file.readEntry("Other","MessageAcks"));
+	config_file.addVariable("Chat","BlinkChatTitle",config_file.readEntry("Other","BlinkChatTitle"));
 
 	config_file.addVariable("Look", "UserboxBgColor", 
 	config_file.readEntry("Colors", "UserboxBgColor"));
@@ -298,12 +302,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	config_file.addVariable("Look", "UserboxDescTextColor",
 	config_file.readEntry("Colors", "UserboxDescTextColor"));
 
-	config_file.addVariable("Look", "TrayHintBgColor",
-	config_file.readEntry("Colors", "TrayHintBgColor"));
-
-	config_file.addVariable("Look", "TrayHintTextColor",
-	config_file.readEntry("Colors", "TrayHintTextColor"));
-
 	config_file.addVariable("Look", "UserboxFont",
 	config_file.readEntry("Fonts",  "UserboxFont"));
 
@@ -312,12 +310,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	config_file.addVariable("Look", "UserboxDescFont",
 	config_file.readEntry("Fonts",  "UserboxDescFont"));
-
-	config_file.addVariable("Look", "TrayHintFont",
-	config_file.readEntry("Fonts",  "TrayHintFont"));
 	
-	config_file.addVariable("Chat", "EmoticonsStyle", config_file.readEntry("Other", "EmoticonsStyle"));
-	config_file.addVariable("Chat", "EmoticonsTheme", config_file.readEntry("Other", "EmoticonsTheme"));
 	//koniec wstecznej kompatybilnosci
 
 
@@ -445,14 +438,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	temp=config_file.readEntry("Look","UserboxDescTextColor");
 	if (temp=="")
 	config_file.writeEntry("Look","UserboxDescTextColor",def_color);
-	def_color.setNamedColor("#F0F0F0");
-	temp=config_file.readEntry("Look","TrayHintBgColor");
-	if (temp=="")
-	config_file.writeEntry("Look","TrayHintBgColor",def_color);
-	def_color.setNamedColor("#000000");
-	temp=config_file.readEntry("Look","TrayHintTextColor");
-	if (temp=="")
-	config_file.writeEntry("Look","TrayHintTextColor",def_color);
 
 //
 	QFontInfo info(a->font());
@@ -466,9 +451,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	temp=config_file.readEntry("Look","UserboxDescFont");
 	if (temp=="")
 	config_file.writeEntry("Look","UserboxDescFont", def_font);
-	temp=config_file.readEntry("Look","TrayHintFont");
-	if (temp=="")
-	config_file.writeEntry("Look","TrayHintFont", def_font);
 
 	
 

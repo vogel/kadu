@@ -13,6 +13,7 @@
 #include <qlabel.h>
 #include <qstring.h>
 #include <qfile.h>
+#include <qfiledialog.h>
 #include <qlayout.h>
 #include <qmessagebox.h>
 #include <qregexp.h>
@@ -416,6 +417,9 @@ void EventManager::chatReceivedSlot(UinsList senders,const QString& msg,time_t t
 
 void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)
 {
+	if (!config_file.readBoolEntry("Notify","NotifyStatusChange"))
+			return;
+
 	if (userlist.containsUin(uin)) {
 		UserListElement ule = userlist.byUin(uin);
 		if (!ule.notify && !config_file.readBoolEntry("Notify","NotifyAboutAll"))
@@ -789,7 +793,7 @@ void EventConfigSlots::initModule()
 
 // zakladka "powiadom"
 	ConfigDialog::registerTab("Notify");
-	ConfigDialog::addCheckBox("Notify", "Notify", "Notify when users become available", "NotifyStatuschange", false);
+	ConfigDialog::addCheckBox("Notify", "Notify", "Notify when users become available", "NotifyStatusChange", false);
 	ConfigDialog::addCheckBox("Notify", "Notify", "Notify about all users", "NotifyAboutAll", false);
 	ConfigDialog::addGrid("Notify", "Notify" ,"listboxy",3);
 	
@@ -814,7 +818,6 @@ void EventConfigSlots::initModule()
 	ConfigDialog::addPushButton("Notify", "Notify sound", "Test");
 	ConfigDialog::addCheckBox("Notify", "Notify options", "Notify by dialog box", "NotifyWithDialogBox", false);
 	
-
 
 //zakladka "siec"
 	//potrzebne do translacji
@@ -901,6 +904,12 @@ void EventConfigSlots::initModule()
 		server_nr = 0;
 
 
+	ConfigDialog::connectSlot("Notify", "", SIGNAL(clicked()), eventconfigslots, SLOT(_Right()), "forward");
+	ConfigDialog::connectSlot("Notify", "", SIGNAL(clicked()), eventconfigslots, SLOT(_Left()), "back");
+	ConfigDialog::connectSlot("Notify", "available", SIGNAL(doubleClicked(QListBoxItem *)), eventconfigslots, SLOT(_Right2(QListBoxItem *)));
+	ConfigDialog::connectSlot("Notify", "track", SIGNAL(doubleClicked(QListBoxItem *)), eventconfigslots, SLOT(_Left2(QListBoxItem *)));
+	ConfigDialog::connectSlot("Notify", "", SIGNAL(clicked()), eventconfigslots, SLOT(chooseNotifyFile()));
+	ConfigDialog::connectSlot("Notify", "Test", SIGNAL(clicked()), eventconfigslots, SLOT(chooseNotifyTest()));
 }
 
 void EventConfigSlots::onCreateConfigDialog()
@@ -939,7 +948,52 @@ void EventConfigSlots::onCreateConfigDialog()
 	
 	connect(b_dccfwd, SIGNAL(toggled(bool)), g_fwdprop, SLOT(setEnabled(bool)));
         connect(b_useproxy, SIGNAL(toggled(bool)), g_proxy, SLOT(setEnabled(bool)));
-	
+
+// notify
+
+	QListBox *e_availusers= ConfigDialog::getListBox("Notify", "available");
+	QListBox *e_notifies= ConfigDialog::getListBox("Notify", "track");
+	int i;
+	i = 0;
+	while (i < userlist.count()) {
+		if (userlist[i].uin)
+			if (!userlist[i].notify)
+				e_availusers->insertItem(userlist[i].altnick);
+			else
+				e_notifies->insertItem(userlist[i].altnick);
+		i++;
+		}
+
+	e_availusers->sort();
+	e_notifies->sort();
+
+	QCheckBox *b_notifyglobal= ConfigDialog::getCheckBox("Notify", "Notify when users become available");
+	QCheckBox *b_notifyall= ConfigDialog::getCheckBox("Notify", "Notify about all users");
+	QVGroupBox *notifybox= ConfigDialog::getVGroupBox("Notify", "Notify options");
+	QGrid *panebox = ConfigDialog::getGrid("Notify","listboxy");	
+	QHGroupBox *soundbox= ConfigDialog::getHGroupBox("Notify", "Notify sound");
+	QCheckBox *b_notifydialog= ConfigDialog::getCheckBox("Notify", "Notify by dialog box");
+	QCheckBox *b_notifysound= ConfigDialog::getCheckBox("Notify", "Notify by sound");
+
+	if (config_file.readBoolEntry("Notify", "NotifyAboutAll")) 
+		panebox->setEnabled(false);
+
+	if (!config_file.readBoolEntry("Notify", "NotifyWithSound"))
+		soundbox->setEnabled(false);
+
+	if (!config_file.readBoolEntry("Notify", "NotifyStatusChange"))
+		{	
+		b_notifyall->setEnabled(false);
+		panebox->setEnabled(false);
+		notifybox->setEnabled(false);
+		soundbox->setEnabled(false);
+
+		}
+
+	QObject::connect(b_notifysound, SIGNAL(toggled(bool)), soundbox, SLOT(setEnabled(bool)));
+	QObject::connect(b_notifyall, SIGNAL(toggled(bool)), this, SLOT(ifNotifyAll(bool)));
+	QObject::connect(b_notifyglobal, SIGNAL(toggled(bool)), this, SLOT(ifNotifyGlobal(bool)));
+
 }
 
 void EventConfigSlots::onDestroyConfigDialog()
@@ -992,12 +1046,92 @@ void EventConfigSlots::onDestroyConfigDialog()
 	    config_file.writeEntry("Network","ProxyPort",0);
 
 
+	//notify
+	QListBox *e_availusers= ConfigDialog::getListBox("Notify", "available");
+	QListBox *e_notifies= ConfigDialog::getListBox("Notify", "track");
+
+	QString tmp;
+    	for (i = 0; i < e_notifies->count(); i++) {
+		tmp = e_notifies->text(i);
+		userlist.byAltNick(tmp).notify = true;
+		}
+	for (i = 0; i < e_availusers->count(); i++) {
+		tmp = e_availusers->text(i);
+		userlist.byAltNick(tmp).notify = false;
+		}
+
 	/* and now, save it */
 	userlist.writeToFile();	
 	//
 
 
 };
+
+
+void EventConfigSlots::ifNotifyGlobal(bool toggled) {
+	QCheckBox *b_notifyall= ConfigDialog::getCheckBox("Notify", "Notify about all users");
+	QVGroupBox *notifybox= ConfigDialog::getVGroupBox("Notify", "Notify options");
+	QGrid *panebox = ConfigDialog::getGrid("Notify","listboxy");
+
+	b_notifyall->setEnabled(toggled);
+	panebox->setEnabled(toggled && !b_notifyall->isChecked());
+	notifybox->setEnabled(toggled);
+}
+
+void EventConfigSlots::ifNotifyAll(bool toggled) {
+	QGrid *panebox = ConfigDialog::getGrid("Notify","listboxy");
+	panebox->setEnabled(!toggled);
+}
+
+void EventConfigSlots::_Left2( QListBoxItem *item) {
+    _Left();
+}
+
+void EventConfigSlots::_Right2( QListBoxItem *item) {
+    _Right();
+}
+
+
+void EventConfigSlots::_Left(void) {
+	kdebug("EventConfigSlots::_Left()\n");
+	QListBox *e_availusers= ConfigDialog::getListBox("Notify", "available");
+	QListBox *e_notifies= ConfigDialog::getListBox("Notify", "track");
+
+	if (e_notifies->currentItem() != -1) {
+		e_availusers->insertItem(e_notifies->text(e_notifies->currentItem()));
+		e_notifies->removeItem(e_notifies->currentItem());
+		e_availusers->sort();
+		}
+}
+
+void EventConfigSlots::_Right(void) {
+	kdebug("EventConfigSlots::_Right()\n");
+	QListBox *e_availusers= ConfigDialog::getListBox("Notify", "available");
+	QListBox *e_notifies= ConfigDialog::getListBox("Notify", "track");
+
+	if (e_availusers->currentItem() != -1) {
+		e_notifies->insertItem(e_availusers->text(e_availusers->currentItem()));
+		e_availusers->removeItem(e_availusers->currentItem());
+		e_notifies->sort();
+		}
+}
+
+
+void EventConfigSlots::chooseNotifyFile(void) {
+
+	QLineEdit *e_soundnotify= ConfigDialog::getLineEdit("Notify", "Path:");
+	QString s(QFileDialog::getOpenFileName( QString::null, "Audio Files (*.wav *.au *.raw)"));
+	if (s.length())
+		e_soundnotify->setText(s);
+}
+
+
+void EventConfigSlots::chooseNotifyTest(void) {
+	QLineEdit *e_soundnotify= ConfigDialog::getLineEdit("Notify", "Path:");
+	playSound(e_soundnotify->text(), config_file.readEntry("Sounds", "SoundPlayer"));
+	
+}
+
 
 void EventConfigSlots::ifDccEnabled(bool value)
 {

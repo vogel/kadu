@@ -1261,7 +1261,7 @@ void ChatSlots::generateMyKeys(void) {
 	QFileInfo keyfile(keyfile_path);
 	
 	if (keyfile.permission(QFileInfo::WriteUser))
-		if(QMessageBox::warning((QWidget*)this, "Kadu",
+		if(QMessageBox::warning(0, "Kadu",
 			tr("Keys exist. Do you want to overwrite them?"),
 			tr("Yes"), tr("No"),QString::null, 0, 1)==1)
 				return;
@@ -1270,11 +1270,11 @@ void ChatSlots::generateMyKeys(void) {
 	mkdir(tmp.data(), 0700);
 
 	if (sim_key_generate(config_file.readNumEntry("General","UIN")) < 0) {
-		QMessageBox::critical((QWidget*)this, "Kadu", tr("Error generating keys"), tr("OK"), QString::null, 0);
+		QMessageBox::critical(0, "Kadu", tr("Error generating keys"), tr("OK"), QString::null, 0);
 		return;
 	}
 
-	QMessageBox::information((QWidget*)this, "Kadu", tr("Keys have been generated and written"), tr("OK"), QString::null, 0);
+	QMessageBox::information(0, "Kadu", tr("Keys have been generated and written"), tr("OK"), QString::null, 0);
 #endif
 }
 

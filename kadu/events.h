@@ -4,6 +4,7 @@
 #include <qdialog.h>
 #include <qstring.h>
 #include <qtimer.h>
+#include <qlistbox.h>
 
 #include "libgadu.h"
 #include "misc.h"
@@ -137,6 +138,15 @@ class EventConfigSlots : public QObject
 	    void ifDccIpEnabled(bool value);
 	    void ifDefServerEnabled(bool value);
 	    void useTlsEnabled(bool value);
+	    void _Left();
+	    void _Right();
+	    void _Left2(QListBoxItem *item);
+	    void _Right2(QListBoxItem *item);
+
+	    void ifNotifyGlobal(bool toggled);
+	    void ifNotifyAll(bool toggled);
+	    void chooseNotifyFile();
+	    void chooseNotifyTest();
 };
 
 #endif

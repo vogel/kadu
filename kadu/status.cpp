@@ -280,17 +280,11 @@ void AutoAwaySlots::ifDockEnabled(bool value)
 
 	kdebug("AutoAwaySlots::ifDockEnabled() \n");
 	
-	QCheckBox *b_trayhint= ConfigDialog::getCheckBox("General", "Enable tray hints");
-	QCheckBox *b_hinterror= ConfigDialog::getCheckBox("General", "Show connection errors in tray hints");
 	if (!value) {
-		b_trayhint->setChecked(false);
-		b_hinterror->setChecked(false);
 //		b_notifyhint->setChecked(false);
 //		b_notifyhint->setEnabled(false);
-		b_trayhint->setEnabled(false);
 		}
-	else
-		b_trayhint->setEnabled(true);
+//	else
 //		b_notifyhint->setEnabled(true);
 
 
