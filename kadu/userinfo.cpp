@@ -19,11 +19,8 @@
 //
 #include "kadu.h"
 #include "userinfo.h"
+#include "chat.h"
 //
-
-#define	GG_USER_OFFLINE	0x01
-#define	GG_USER_NORMAL	0x03
-#define GG_USER_BLOCKED	0x04
 
 UserInfo::UserInfo (const QString &name, QDialog *parent , const QString &altnick)
 : QTabDialog(parent, name) {
@@ -51,47 +48,38 @@ void UserInfo::setupTab1() {
 	QVBox *box = new QVBox(this);
 	box->setMargin(10);
 
-//	QHBox *hbox1 = new QHBox(box);
 	QLabel *l_uin = new QLabel(box);
 	l_uin->setText(i18n("Uin"));
 	e_uin = new QLineEdit(box);
 
-//	QHBox *hbox2 = new QHBox(box);
 	QLabel *l_status = new QLabel(box);
 	l_status->setText(i18n("Status"));
 	QLineEdit *e_status = new QLineEdit(box);
 
-//	QHBox *hbox3 = new QHBox(box);
 	QLabel *l_nickname = new QLabel(box);
 	l_nickname->setText(i18n("Nickname"));
 	e_nickname = new QLineEdit(box);
 
-//	QHBox *hbox4 = new QHBox(box);
 	QLabel *l_firstname = new QLabel(box);
 	l_firstname->setText(i18n("First name"));
 	e_firstname = new QLineEdit(box);
 
-//	QHBox *hbox5 = new QHBox(box);
 	QLabel *l_lastname = new QLabel(box);
 	l_lastname->setText(i18n("Surname"));
 	e_lastname = new QLineEdit(box);
 
-//	QHBox *hbox6 = new QHBox(box);
 	QLabel *l_altnick = new QLabel(box);
 	l_altnick->setText(i18n("AltNick"));
 	e_altnick = new QLineEdit(box);
 
-//	QHBox *hbox7 = new QHBox(box);
 	QLabel *l_mobile = new QLabel(box);
 	l_mobile->setText(i18n("Mobile"));
 	e_mobile = new QLineEdit(box);
 
-//	QHBox *hbox8 = new QHBox(box);
 	QLabel *l_group = new QLabel(box);
 	l_group->setText(i18n("Group"));
 	e_group = new QLineEdit(box);
 
-//	QHBox *hbox9 = new QHBox(box);
 	QLabel *l_addr = new QLabel(box);
 	l_addr->setText(i18n("Address"));
 	e_addr = new QLineEdit(box);
@@ -141,27 +129,6 @@ void UserInfo::setupTab1() {
 	if (userlist[this_index].uin)
 		e_uin->setText(QString::number(userlist[this_index].uin));
 	e_uin->setReadOnly(true);
-
-/*	QGridLayout * grid = new QGridLayout(box, 10, 2, 10, 3);
-	grid->addColSpacing(0,80);
-	grid->addWidget(l_uin,0,0);
-	grid->addWidget(e_uin,0,1);
-	grid->addWidget(l_status,1,0);
-	grid->addWidget(e_status,1,1);
-	grid->addWidget(l_nickname,2,0);
-	grid->addWidget(e_nickname,2,1);
-	grid->addWidget(l_firstname,3,0);
-	grid->addWidget(e_firstname,3,1);
-	grid->addWidget(l_lastname,4,0);
-	grid->addWidget(e_lastname,4,1);
-	grid->addWidget(l_altnick,5,0);
-	grid->addWidget(e_altnick,5,1);
-	grid->addWidget(l_mobile,6,0);
-	grid->addWidget(e_mobile,6,1);
-	grid->addWidget(l_group,7,0);
-	grid->addWidget(e_group,7,1);
-	grid->addWidget(l_addr,8,0);
-	grid->addWidget(e_addr,8,1);*/
 
 	addTab(box, i18n("General"));
 }
@@ -218,6 +185,9 @@ void UserInfo::writeUserlist() {
 				c_offtouser->isChecked(), c_notify->isChecked(), e_group->text());
 			userlist[this_index].anonymous = false;
 			userlist.writeToFile();
+			for (int i = 0; i < chats.count(); i++)
+				if (chats[i].uins.contains(userlist[this_index].uin))
+					chats[i].ptr->setTitle();
 			close();
 			break;
 		case 1:

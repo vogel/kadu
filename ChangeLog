@@ -13,6 +13,8 @@
 * mo¿liwo¶æ w³±czenia/wy³±czenia TrayIcon w trakcie dzia³ania programu
 * obs³uga dokowania (TrayIcon) bez po¶rednictwa KDE. Powinno dzia³aæ
   miêdzy innymi pod GNOME
+* okno informacji o u¿ytkowniku: zmiana pola "Wy¶wietl" aktualizuje
+  okna rozmów które maj± w tytule star± nazwê u¿ytkownika
 
 +++ wersja 0.3.3-pre5
 * wszystkie? wiadomo¶ci od u¿ytkowników powinny wpadaæ do okna rozmowy
