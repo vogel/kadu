@@ -80,7 +80,7 @@ void loadKaduConfig(void) {
 	config.dccip = strdup(konf->readEntry("DccIP", "0.0.0.0"));
 	config.extip = strdup(konf->readEntry("ExternalIP", "0.0.0.0"));
 	config.extport = konf->readNumEntry("ExternalPort", 0);
-	config.servers = QStringList::split(";", konf->readEntry("Server", "0.0.0.0"));
+	config.servers = QStringList::split(";", konf->readEntry("Server", ""));
 	server_nr = 0;
 	config.dock = konf->readBoolEntry("UseDocking",true);
 	config.raise = konf->readBoolEntry("AutoRaise",false);
@@ -719,7 +719,7 @@ void ConfigDialog::setupTab5(void) {
 		e_extip->setText(config.extip);
 		e_extport->setText(QString::number(config.extport));	
 		}
-	g_server->setEnabled(inet_addr(config.servers[0].latin1()));
+	g_server->setEnabled(config.servers.count() && inet_addr(config.servers[0].latin1()));
 	if (!g_server->isEnabled())
 		b_defserver->setChecked(true);
 	else
@@ -1160,7 +1160,7 @@ void ConfigDialog::updateConfig(void) {
 	if (!b_defserver->isChecked() && i == tmpservers.count())
 		config.servers = QStringList::split(";", e_server->text());
 	else
-		config.servers = QStringList::split(";", "0.0.0.0");
+		config.servers = "";
 	server_nr = 0;
 
 	config.useproxy = b_useproxy->isChecked() && inet_addr(e_proxyserver->text().latin1()) != INADDR_NONE

@@ -1267,7 +1267,7 @@ void Kadu::setStatus(int status) {
 		loginparams.external_addr = 0;
 		loginparams.external_port = 0;
 		}	
-	if (inet_addr(config.servers[server_nr].latin1()) != INADDR_NONE) {
+	if (config.servers.count() && inet_addr(config.servers[server_nr].latin1()) != INADDR_NONE) {
 		loginparams.server_addr = inet_addr(config.servers[server_nr].latin1());
 		loginparams.server_port = 8074;
 		server_nr++;
