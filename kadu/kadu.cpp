@@ -960,10 +960,14 @@ void Kadu::sendMessage(QListBoxItem *item) {
 	bool stop = false;
 	rMessage *rmsg;
 	Message *msg;
-
-	uin_t uin = userlist.byAltNick(item->text()).uin;
+	UinsList uins;
+	
+	for (i = 0; i < userbox->count(); i++)
+		if (userbox->isSelected(i))
+			uins.append(userlist.byAltNick(userbox->text(i)).uin);
+	
 	for (i = 0; i < pending.count(); i++)
-		if (pending[i].uins[0] == uin)
+		if (pending[i].uins.equals(uins))
 			if (pending[i].msgclass == GG_CLASS_CHAT) {
 				j = openChat(pending[i].uins);
 				chats[j].ptr->checkPresence(pending[i].uins, pending[i].msg, pending[i].time);	    
@@ -985,11 +989,8 @@ void Kadu::sendMessage(QListBoxItem *item) {
 		return;
 		}
 
-	if (GetStatusFromUserlist(uin) != GG_STATUS_NOT_AVAIL && GetStatusFromUserlist(uin) != GG_STATUS_NOT_AVAIL_DESCR) {
-		UinsList uins;
-		uins.append(uin);
+	if (GetStatusFromUserlist(uins[0]) != GG_STATUS_NOT_AVAIL && GetStatusFromUserlist(uins[0]) != GG_STATUS_NOT_AVAIL_DESCR)
 		openChat(uins);
-		}	
 	else {
 		msg = new Message(item->text());
 		msg->show();
@@ -1584,11 +1585,12 @@ void DockWidget::mousePressEvent(QMouseEvent * e) {
 	if (e->button() == MidButton) {
 		bool stop = false;
 	
-		uin_t uin = 0;
+		UinsList uins;
 		for (i = 0; i < pending.count(); i++) {
-			if (!uin || pending[i].uins[0] == uin)
+			if (!uins.count() || pending[i].uins.equals(uins))
 				if (pending[i].msgclass == GG_CLASS_CHAT) {
-					uin = pending[i].uins[0];
+					if (!uins.count())
+						uins = pending[i].uins;
 					j = kadu->openChat(pending[i].uins);
 					chats[j].ptr->checkPresence(pending[i].uins,
 						pending[i].msg, pending[i].time);	    
