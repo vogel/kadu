@@ -914,3 +914,60 @@ void token::socketEvent() {
                                 snw->setEnabled(true);
                 }
 }
+
+TokenDialog::TokenDialog(QDialog *parent, const char *name)
+	: QDialog(parent, name) {
+	QGridLayout *grid = new QGridLayout(this, 3, 2, 6, 5);
+
+	QLabel *l_tokenimage = new QLabel(tr("Read this code ..."), this);
+	tokenimage = new ImageWidget(this);
+
+	QLabel *l_tokenedit = new QLabel(tr("and type here"), this);
+	tokenedit = new QLineEdit(this);
+
+	QPushButton *b_ok = new QPushButton(tr("&OK"), this);
+	connect(b_ok, SIGNAL(clicked()), this, SLOT(accept()));
+	QPushButton *b_cancel = new QPushButton(tr("&Cancel"), this);
+	connect(b_cancel, SIGNAL(clicked()), this, SLOT(reject()));
+
+	grid->addWidget(l_tokenimage, 0, 0);
+	grid->addWidget(tokenimage, 0, 1);
+	grid->addWidget(l_tokenedit, 1, 0);
+	grid->addWidget(tokenedit, 1, 1);
+	grid->addWidget(b_ok, 2, 0);
+	grid->addWidget(b_cancel, 2, 1);
+
+	connect(&Token, SIGNAL(gotToken(struct gg_http *)), this, SLOT(gotTokenReceived(struct gg_http *)));
+	connect(&Token, SIGNAL(tokenError()), this, SLOT(tokenErrorReceived()));
+	Token.getToken();
+	show();
+	b_cancel->setDefault(false);
+	b_ok->setDefault(true);
+	setEnabled(false);
+}
+
+void TokenDialog::getToken(QString &Tokenid, QString &Tokenval) {
+	Tokenid = tokenid;
+	Tokenval = tokenedit->text();
+}
+
+void TokenDialog::gotTokenReceived(struct gg_http *h) {
+	kdebug("TokenDialog::gotTokenReceived()\n");
+	struct gg_token *t = (struct gg_token *)h->data;
+	tokenid = cp2unicode((unsigned char *)t->tokenid);
+
+	//nie optymalizowac!!!
+	QByteArray buf(h->body_size);
+	for (int i = 0; i < h->body_size; i++)
+		buf[i] = h->body[i];
+
+	tokenimage->setImage(buf);
+	setEnabled(true);
+	tokenedit->setFocus();
+}
+
+void TokenDialog::tokenErrorReceived() {
+	kdebug("TokenDialog::tokenErrorReceived()\n");
+	setEnabled(true);
+	done(-1);
+}

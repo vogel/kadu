@@ -186,4 +186,22 @@ class token : public QObject {
                 void tokenError();
 };
 
+class TokenDialog : public QDialog {
+	Q_OBJECT
+
+	public:
+		TokenDialog(QDialog *parent = 0, const char *name = 0);
+		void getToken(QString &Tokenid, QString &Tokenval);
+
+	private slots:
+		void gotTokenReceived(struct gg_http *h);
+		void tokenErrorReceived();
+
+	private:
+		token Token;
+		ImageWidget *tokenimage;
+		QLineEdit *tokenedit;
+		QString tokenid;
+};
+
 #endif

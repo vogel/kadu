@@ -7,8 +7,6 @@
 #include <qlineedit.h>
 #include <qdialog.h>
 
-#include "misc.h"
-
 class remindPassword : public QObject {
 	Q_OBJECT
 	public:
@@ -41,16 +39,12 @@ class changePassword : public QDialog {
 		changePassword(QDialog *parent = 0, const char *name = 0);
 
 	private:
-		void doGetToken();
 		void deleteSocketNotifiers();
 		void createSocketNotifiers();
 		void showMessage(QString &msg);
 
-		ImageWidget *tokenimage;
-		QLineEdit *emailedit, *newpwd, *newpwd2, *tokenedit;
+		QLineEdit *emailedit, *newpwd, *newpwd2;
 		QLabel *status;
-		QString token_id;
-		token token_handle;
 
 		struct gg_http *h;
 		struct gg_pubdir *p;
@@ -63,8 +57,6 @@ class changePassword : public QDialog {
 		void socketEvent();
 		void dataReceived();
 		void dataSent();
-		void gotTokenReceived(struct gg_http *h);
-		void tokenErrorReceived();
 
 	protected:
 		void closeEvent(QCloseEvent *e);

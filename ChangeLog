@@ -49,6 +49,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * usuniêty segfault przy imporcie pustej listy kontaktów (pawel_p/chilek)
 * dostosowanie importu listy kontaktów do nowego libgadu (chilek)
 * poprawka libgadu zwi±zana z eksportem du¿ej listy kontaktów (chilek)
+* wydzielenie dialogu pobrania tokena (chilek)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci

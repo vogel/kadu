@@ -123,9 +123,7 @@ changePassword::changePassword(QDialog *parent, const char *name) : QDialog(pare
 	snr = snw = NULL;
 	h = NULL;
 
-	QGridLayout *grid = new QGridLayout(this, 7, 2, 6, 5);
-	
-	tokenimage = new ImageWidget(this);
+	QGridLayout *grid = new QGridLayout(this, 4, 2, 6, 5);
 
 	QLabel *l_email = new QLabel(tr("New email"),this);
 	emailedit = new QLineEdit(this);
@@ -137,12 +135,6 @@ changePassword::changePassword(QDialog *parent, const char *name) : QDialog(pare
 	QLabel *l_newpwd2 = new QLabel(tr("Retype new password"),this);
 	newpwd2 = new QLineEdit(this);
 	newpwd2->setEchoMode(QLineEdit::Password);
-
-	QLabel *l_tokenimage = new QLabel(tr("Read this code ..."), this);
-	tokenimage = new ImageWidget(this);
-
-	QLabel *l_token = new QLabel(tr("and type here"), this);
-	tokenedit = new QLineEdit(this);
 
 	status = new QLabel(this);
 
@@ -156,50 +148,13 @@ changePassword::changePassword(QDialog *parent, const char *name) : QDialog(pare
 	grid->addWidget(newpwd, 1, 1);
 	grid->addWidget(l_newpwd2, 2, 0);
 	grid->addWidget(newpwd2, 2, 1);
-	grid->addWidget(l_tokenimage, 3, 0);
-	grid->addWidget(tokenimage, 3, 1);
-	grid->addWidget(l_token, 4, 0);
-	grid->addWidget(tokenedit, 4, 1);
-	grid->addWidget(status, 6, 0);
-	grid->addWidget(okbtn, 6, 1);
+	grid->addWidget(status, 3, 0);
+	grid->addWidget(okbtn, 3, 1);
 	grid->addRowSpacing(3, 20);
 
 	setCaption(tr("Change password"));
-	resize(300, 220);
-
-	doGetToken();
-}
-
-void changePassword::doGetToken() {
-	setEnabled(false);
-        status->setText(tr("Getting token"));
-        connect(&token_handle, SIGNAL(gotToken(struct gg_http *)),
-                this, SLOT(gotTokenReceived(struct gg_http *)));
-        connect(&token_handle, SIGNAL(tokenError()),
-                this, SLOT(tokenErrorReceived()));
-        token_handle.getToken();
-}
-
-void changePassword::gotTokenReceived(struct gg_http *h) {
-        kdebug("changePassword::gotTokenReceived()\n");
-        struct gg_token *t = (struct gg_token *)h->data;
-        token_id = cp2unicode((unsigned char *)t->tokenid);
-
-        // nie optymalizowac !!!
-        QByteArray buf(h->body_size);
-        for (int i = 0; i < h->body_size; i++)
-                buf[i] = h->body[i];
-
-        tokenimage->setImage(buf);
-        status->setText(tr("token received"));
-        setEnabled(true);
-        kdebug("changePassword::gotTokenReceived(): finished\n");
-}
-
-void changePassword::tokenErrorReceived() {
-        kdebug("changePassword::tokenErrorReceived()\n");
-        status->setText(tr("Couldn't get token"));
-        setEnabled(true);
+	resize(300, 120);
+	show();
 }
 
 void changePassword::closeEvent(QCloseEvent *e) {
@@ -219,6 +174,15 @@ void changePassword::start() {
 		status->setText(tr("Bad data"));
 		return;
 		}
+	TokenDialog *tokendialog = new TokenDialog();
+	if (tokendialog->exec() != QDialog::Accepted) {
+		delete tokendialog;
+		return;
+		}
+	QString Tokenid, Tokenval;
+	tokendialog->getToken(Tokenid, Tokenval);
+	delete tokendialog;
+
 	char *passwd, *newpasswd, *mail, *tokenid, *tokenval;
 	passwd = strdup(unicode2cp(pwHash(config_file.readEntry("General", "Password"))).data());
 	if (newpwd->text().length())
@@ -226,8 +190,8 @@ void changePassword::start() {
 	else
 		newpasswd = strdup(passwd);	
 	mail = strdup(unicode2cp(emailedit->text()).data());
-	tokenid = strdup(unicode2cp(token_id).data());
-	tokenval = strdup(unicode2cp(tokenedit->text()).data());
+	tokenid = strdup(unicode2cp(Tokenid).data());
+	tokenval = strdup(unicode2cp(Tokenval).data());
 	if (!(h = gg_change_passwd4(config_file.readNumEntry("General","UIN"), mail, passwd,
 		newpasswd, tokenid, tokenval, 1))) {
 		status->setText(tr("Error"));

@@ -1163,19 +1163,16 @@ void Kadu::remindPassword1()
 void Kadu::changePassword1()
 {
 	changePassword *cp = new changePassword();
-	cp->show();
 }
 
 void Kadu::registerUser()
 {
 	Register *reg = new Register;
-	reg->show();
 }
 
 void Kadu::unregisterUser()
 {
 	Unregister *ureg = new Unregister;
-	ureg->show();
 }
 
 void Kadu::quit()

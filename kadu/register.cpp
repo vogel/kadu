@@ -61,7 +61,7 @@ void createConfig() {
 Register::Register(QDialog *parent, const char *name) : QDialog (parent, name, FALSE, Qt::WDestructiveClose) {
 	kdebug("Register::Register()\n");
 
-	QGridLayout *grid = new QGridLayout(this, 7, 2, 6, 5);
+	QGridLayout *grid = new QGridLayout(this, 5, 2, 6, 5);
 
 	QLabel *l_pwd = new QLabel(tr("Password"),this);
 	pwd = new QLineEdit(this);
@@ -73,12 +73,6 @@ Register::Register(QDialog *parent, const char *name) : QDialog (parent, name, F
 
 	QLabel *l_mail = new QLabel(tr("E-mail"), this);
 	mailedit = new QLineEdit(this);
-
-	QLabel *l_tokenimage = new QLabel(tr("Read this code ..."), this);
-	tokenimage = new ImageWidget(this);
-
-	QLabel *l_token = new QLabel(tr("and type here"), this);
-	tokenedit = new QLineEdit(this);
 
 	QPushButton *snd = new QPushButton(this);
 	snd->setText(tr("Register"));
@@ -97,55 +91,19 @@ Register::Register(QDialog *parent, const char *name) : QDialog (parent, name, F
 	grid->addWidget(pwd2, 1, 1);
 	grid->addWidget(l_mail, 2, 0);
 	grid->addWidget(mailedit, 2, 1);
-	grid->addWidget(l_tokenimage, 3, 0);
-	grid->addWidget(tokenimage, 3, 1);
-	grid->addWidget(l_token, 4, 0);
-	grid->addWidget(tokenedit, 4, 1);
-	grid->addWidget(updateconfig, 5, 0, Qt::AlignRight);
-	grid->addWidget(l_updateconfig, 5, 1);
-	grid->addWidget(status, 6, 0);
-	grid->addWidget(snd, 6, 1);
+	grid->addWidget(updateconfig, 3, 0, Qt::AlignRight);
+	grid->addWidget(l_updateconfig, 3, 1);
+	grid->addWidget(status, 4, 0);
+	grid->addWidget(snd, 4, 1);
 	grid->addRowSpacing(3, 20);
 
 	setCaption(tr("Register user"));
-	resize(240, 200);
+	resize(240, 150);
 
 	snr = snw = NULL;
 	h = NULL;
 
-	doGetToken();
-}
-
-void Register::doGetToken() {
-	setEnabled(false);
-	status->setText(tr("Getting token"));
-	connect(&token_handle, SIGNAL(gotToken(struct gg_http *)),
-		this, SLOT(gotTokenReceived(struct gg_http *)));
-	connect(&token_handle, SIGNAL(tokenError()),
-		this, SLOT(tokenErrorReceived()));
-	token_handle.getToken();
-}
-
-void Register::gotTokenReceived(struct gg_http *h) {
-	kdebug("Register::gotTokenReceived()\n");
-	struct gg_token *t = (struct gg_token *)h->data;
-	tokenid = cp2unicode((unsigned char *)t->tokenid);
-
-	// nie optymalizowac !!!
-	QByteArray buf(h->body_size);
-	for (int i = 0; i < h->body_size; i++)
-		buf[i] = h->body[i];
-
-	tokenimage->setImage(buf);
-	status->setText(tr("token received"));
-	setEnabled(true);
-	kdebug("Register::gotTokenReceived(): finished\n");
-}
-
-void Register::tokenErrorReceived() {
-	kdebug("Register::tokenErrorReceived()\n");
-	status->setText(tr("Couldn't get token"));
-	setEnabled(true);
+	show();
 }
 
 void Register::doRegister() {
@@ -160,11 +118,20 @@ void Register::doRegister() {
 		return;
 		}
 
+	TokenDialog *tokendialog = new TokenDialog();
+	if (tokendialog->exec() != QDialog::Accepted) {
+		delete tokendialog;
+		return;
+		}
+	QString Tokenid, Tokenval;
+	tokendialog->getToken(Tokenid, Tokenval);
+	delete tokendialog;
+
 	char *passwd, *token_id, *token_value, *mail;
 	passwd = strdup(unicode2cp(pwd->text()).data());
 	mail = strdup(unicode2cp(mailedit->text()).data());
-	token_id = strdup(unicode2cp(tokenid).data());
-	token_value = strdup(unicode2cp(tokenedit->text()).data());
+	token_id = strdup(unicode2cp(Tokenid).data());
+	token_value = strdup(unicode2cp(Tokenval).data());
 	h = gg_register3(mail, passwd, token_id, token_value, 1);
 	free(passwd);
 	free(mail);
@@ -297,7 +264,7 @@ void Register::ask() {
 Unregister::Unregister(QDialog *parent, const char *name) : QDialog (parent, name, FALSE, Qt::WDestructiveClose) {
 	kdebug("Unregister::Unregister()\n");
 
-	QGridLayout *grid = new QGridLayout(this, 5, 2, 6, 5);
+	QGridLayout *grid = new QGridLayout(this, 3, 2, 6, 5);
 
 	QLabel *l_uin = new QLabel(tr("UIN"),this);
 	uin = new QLineEdit(this);
@@ -305,12 +272,6 @@ Unregister::Unregister(QDialog *parent, const char *name) : QDialog (parent, nam
 	QLabel *l_pwd = new QLabel(tr("Password"),this);
 	pwd = new QLineEdit(this);
 	pwd->setEchoMode(QLineEdit::Password);
-
-	QLabel *l_tokenimage = new QLabel(tr("Read this code ..."), this);
-	tokenimage = new ImageWidget(this);
-
-	QLabel *l_token = new QLabel(tr("and type here"), this);
-	tokenedit = new QLineEdit(this);
 
 	QPushButton *snd = new QPushButton(this);
 	snd->setText(tr("Unregister"));
@@ -322,53 +283,16 @@ Unregister::Unregister(QDialog *parent, const char *name) : QDialog (parent, nam
 	grid->addWidget(uin, 0, 1);
 	grid->addWidget(l_pwd, 1, 0);
 	grid->addWidget(pwd, 1, 1);
-	grid->addWidget(l_tokenimage, 2, 0);
-	grid->addWidget(tokenimage, 2, 1);
-	grid->addWidget(l_token, 3, 0);
-	grid->addWidget(tokenedit, 3, 1);
-	grid->addWidget(status, 4, 0);
-	grid->addWidget(snd, 4, 1);
+	grid->addWidget(status, 2, 0);
+	grid->addWidget(snd, 2, 1);
 	grid->addRowSpacing(3, 20);
 
 	setCaption(tr("Unregister user"));
-	resize(240, 150);
+	resize(240, 100);
 
 	snr = snw = NULL;
 	h = NULL;
-
-	doGetToken();
-}
-
-void Unregister::doGetToken() {
-	setEnabled(false);
-	status->setText(tr("Getting token"));
-	connect(&token_handle, SIGNAL(gotToken(struct gg_http *)),
-		this, SLOT(gotTokenReceived(struct gg_http *)));
-	connect(&token_handle, SIGNAL(tokenError()),
-		this, SLOT(tokenErrorReceived()));
-	token_handle.getToken();
-}
-
-void Unregister::gotTokenReceived(struct gg_http *h) {
-	kdebug("Unregister::gotTokenReceived()\n");
-	struct gg_token *t = (struct gg_token *)h->data;
-	tokenid = cp2unicode((unsigned char *)t->tokenid);
-
-	// nie optymalizowac !!!
-	QByteArray buf(h->body_size);
-	for (int i = 0; i < h->body_size; i++)
-		buf[i] = h->body[i];
-
-	tokenimage->setImage(buf);
-	status->setText(tr("token received"));
-	setEnabled(true);
-	kdebug("Unregister::gotTokenReceived(): finished\n");
-}
-
-void Unregister::tokenErrorReceived() {
-	kdebug("Unregister::tokenErrorReceived()\n");
-	status->setText(tr("Couldn't get token"));
-	setEnabled(true);
+	show();
 }
 
 void Unregister::doUnregister() {
@@ -379,10 +303,19 @@ void Unregister::doUnregister() {
 		return;
 		}
 
+	TokenDialog *tokendialog = new TokenDialog();
+	if (tokendialog->exec() != QDialog::Accepted) {
+		delete tokendialog;
+		return;
+		}
+	QString Tokenid, Tokenval;
+	tokendialog->getToken(Tokenid, Tokenval);
+	delete tokendialog;
+
 	char *passwd, *token_id, *token_val;
 	passwd = strdup(unicode2cp(pwd->text()).data());
-	token_id = strdup(unicode2cp(tokenid).data());
-	token_val = strdup(unicode2cp(tokenedit->text()).data());
+	token_id = strdup(unicode2cp(Tokenid).data());
+	token_val = strdup(unicode2cp(Tokenval).data());
 	h = gg_unregister3(uin->text().toUInt(), passwd, token_id, token_val, 1);
 	free(passwd);
 	free(token_id);

@@ -9,7 +9,6 @@
 #include <qsocketnotifier.h>
 
 #include "libgadu.h"
-#include "misc.h"
 
 /**
 	Dialog umo¿liwiaj±cy rejestracjê nowego u¿ytkownika
@@ -23,17 +22,13 @@ class Register : public QDialog {
 	private:
 		struct gg_http *h;
 		struct gg_pubdir *p;
-		ImageWidget *tokenimage;
-		QLineEdit *pwd, *pwd2, *mailedit, *tokenedit;
+		QLineEdit *pwd, *pwd2, *mailedit;
 		QLabel *status;
 		uin_t uin;
 		QCheckBox *updateconfig;
 		QSocketNotifier *snr;
 		QSocketNotifier *snw;
-		QString tokenid;
-		token token_handle;
 
-		void doGetToken();
 		void ask();	
 		void deleteSocketNotifiers();
 		void createSocketNotifiers();
@@ -43,8 +38,6 @@ class Register : public QDialog {
 		void socketEvent();
 		void dataReceived();
 		void dataSent();
-		void gotTokenReceived(struct gg_http *h);
-		void tokenErrorReceived();
 
 	protected:
 		void closeEvent(QCloseEvent *e);
@@ -59,16 +52,12 @@ class Unregister : public QDialog {
 	private:
 		struct gg_http *h;
 		struct gg_pubdir *p;
-		ImageWidget *tokenimage;
-		QLineEdit *uin, *pwd, *tokenedit;
+		QLineEdit *uin, *pwd;
 		QLabel *status;
 		QCheckBox *updateconfig;
 		QSocketNotifier *snr;
 		QSocketNotifier *snw;
-		QString tokenid;
-		token token_handle;
 
-		void doGetToken();
 		void deleteSocketNotifiers();
 		void createSocketNotifiers();
 		void deleteConfig();
@@ -78,8 +67,6 @@ class Unregister : public QDialog {
 		void socketEvent();
 		void dataReceived();
 		void dataSent();
-		void gotTokenReceived(struct gg_http *h);
-		void tokenErrorReceived();
 
 	protected:
 		void closeEvent(QCloseEvent *e);
