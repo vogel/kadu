@@ -1609,7 +1609,7 @@ void History::initModule()
 	config_file.addVariable("History", "Logging", config_file.readEntry("General", "Logging"));
 	//
 	
-	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "History"));
+	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "History"), "HistoryTab");
 	ConfigDialog::addVGroupBox("History", "History", QT_TRANSLATE_NOOP("@default","Message citation in chat window"));
 	ConfigDialog::addSpinBox("History", "Message citation in chat window", QT_TRANSLATE_NOOP("@default", "Count:"), "ChatHistoryCitation", 0, 200, 1, 10);
 	ConfigDialog::addLabel("History", "Message citation in chat window", QT_TRANSLATE_NOOP("@default", "Don't cite messages older than:"));

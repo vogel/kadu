@@ -40,7 +40,7 @@ HintManager::HintManager()
 	connect(hint_timer, SIGNAL(timeout()), this, SLOT(oneSecond()));
 
 /* Zak³adka konfiguracyjna */
-	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Hints"));
+	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Hints"), "HintsTab");
 	
 	ConfigDialog::addVGroupBox("Hints", "Hints", QT_TRANSLATE_NOOP("@default", "New chat / new message"));
 		ConfigDialog::addCheckBox("Hints", "New chat / new message", QT_TRANSLATE_NOOP("@default", "Show message content in hint"), "ShowContentMessage", false);
@@ -626,33 +626,47 @@ void HintManager::userChangedStatusToNotAvailable(const UserListElement &ule)
 	kdebugf2();
 }
 
-void HintManager::message(const QString &from, const QString &message, const QMap<QString, QVariant> *parameters, const UserListElement *ule)
+void HintManager::message(const QString &from, const QString &msg, const QMap<QString, QVariant> *parameters, const UserListElement *ule)
 {
 	kdebugf();
+	UinsList uinslist, *ulist=NULL;
 	if (ule!=NULL)
 	{
-		addHint("ule!=NULL jeszcze nie obs³ugiwane :)",
-			icons_manager.loadIcon("Message"),
-			config_file.readFontEntry("Hints", "HintMessage_font"),
-			config_file.readColorEntry("Hints", "HintMessage_fgcolor"),
-			config_file.readColorEntry("Hints", "HintMessage_bgcolor"),
-			config_file.readUnsignedNumEntry("Hints", "HintMessage_timeout"));
-		kdebugm(KDEBUG_WARNING, "not implemented\n");
+		uinslist.append(ule->uin);
+		ulist=&uinslist;
 	}
-	else if (from!="")
-		addHint(tr("From <b>%1</b>: %2").arg(from).arg(message),
-			icons_manager.loadIcon("Message"),
-			config_file.readFontEntry("Hints", "HintMessage_font"),
-			config_file.readColorEntry("Hints", "HintMessage_fgcolor"),
-			config_file.readColorEntry("Hints", "HintMessage_bgcolor"),
-			config_file.readUnsignedNumEntry("Hints", "HintMessage_timeout"));
+
+	QString msg2;
+	QPixmap pixmap;
+	QFont font;
+	QColor fgcolor,bgcolor;
+	unsigned int timeout=0;
+	bool ok;
+	if (parameters!=NULL)
+	{
+		pixmap=(*parameters)["Pixmap"].toPixmap();
+		font=(*parameters)["Font"].toFont();
+		fgcolor=(*parameters)["Foreground color"].toColor();
+		bgcolor=(*parameters)["Background color"].toColor();
+		timeout=(*parameters)["Timeout"].toUInt(&ok);
+	}
+	if (pixmap.isNull())
+		pixmap=icons_manager.loadIcon("Message");
+	if (font==qApp->font())
+		font=config_file.readFontEntry("Hints", "HintMessage_font");
+	if (!fgcolor.isValid())
+		fgcolor=config_file.readColorEntry("Hints", "HintMessage_fgcolor");
+	if (!bgcolor.isValid())
+		bgcolor=config_file.readColorEntry("Hints", "HintMessage_bgcolor");
+	if (timeout==0 || !ok)
+		timeout=config_file.readUnsignedNumEntry("Hints", "HintMessage_timeout");
+	if (from!="")
+		msg2=tr("From <b>%1</b>: %2").arg(from).arg(msg);
 	else
-		addHint(message,
-			icons_manager.loadIcon("Message"),
-			config_file.readFontEntry("Hints", "HintMessage_font"),
-			config_file.readColorEntry("Hints", "HintMessage_fgcolor"),
-			config_file.readColorEntry("Hints", "HintMessage_bgcolor"),
-			config_file.readUnsignedNumEntry("Hints", "HintMessage_timeout"));
+		msg2=msg;
+	
+	addHint(msg2, pixmap, font, fgcolor, bgcolor, timeout, ulist);
+
 	kdebugf2();
 }
 

@@ -115,7 +115,10 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * porz±dki i poprawiona kompatybilno¶æ z Qt < 3.2 (joi)
 * poprawa b³êdu powiadomieñ - funkcja dzia³a³a tylko przy w³±czonej
   opcji powiadamiania o wszystkich kontaktach (joi)
-* poprawa g³upiego b³êdu w hintach - domy¶lne warto¶ci ustalane by³y dla modulu window_notify (joi)
+* poprawa g³upiego b³êdu w hintach - domy¶lne warto¶ci ustalane by³y dla modu³u window_notify (joi)
+* zak³adki w konfiguracji mog± mieæ ikonki (o ile bêd± w zestawie) (joi)
+* poprawki w hintach dla modu³u tcl_scripting (joi)
+* w konfiguracji kolejny pseudo widget - "RadioGroup" (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,

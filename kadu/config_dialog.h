@@ -25,6 +25,7 @@
 #include <qvgroupbox.h>
 #include <qvbuttongroup.h>
 #include <qhbuttongroup.h>
+#include <qvariant.h>
 
 #include "config_file.h"
 /**
@@ -197,6 +198,7 @@ class ConfigDialog : public QVBox {
 			CONFIG_LISTBOX,
 			CONFIG_LISTVIEW,
 			CONFIG_PUSHBUTTON,
+			CONFIG_RADIOGROUP,
 			CONFIG_SELECTPATHS,
 			CONFIG_SLIDER,
 			CONFIG_SPINBOX,
@@ -232,10 +234,8 @@ class ConfigDialog : public QVBox {
 			QString defaultS;
 			QString tip;
 			
-			// opcje w ComboBoksie
-			QStringList options;
-			// warto¶ci w pliku konfiguracyjnym odpowiadaj±ce opcjom z "options"
-			QStringList values;
+			//dodatkowe dane
+			QValueList<QVariant> additionalParams;
 			
 			QWidget* widget;
 			int nrOfControls;
@@ -380,28 +380,6 @@ class ConfigDialog : public QVBox {
 				const QString& groupname, const QString& parent, const QString& caption,
 				const QString& name="");
 
-		/**
-		    Dodaje kontrolkê do zak³adki "groupname", 
-			Rodzicem kontrolki jest kontrolka "parent".
-			Ustawia text kontrolki na "caption".
-			
-			Warto¶æ kontrolki jest zapisana do pliku konfiguracyjnego "config" w postaci
-			-------------
-			[groupname]
-			entry= value {defaultS}
-			-------------
-			Lista opcji do wyboru to "options", którym w pliku konfiguracyjnym odpowiadaj± "values".
-			Podpowied¼ kontrolki ustawiona jest na "tip".
-			Nazwa kontrolki ustawiona jest na "name".
-		**/
-		static void addHRadioGroup(
-				const QString& groupname, const QString& parent, const QString& caption,
-				const QString &entry, const QStringList &options, const QStringList &values,
-				const QString &defaultS="", const QString& tip="", const QString& name="");
-		static void addHRadioGroup(ConfigFile* config,
-				const QString& groupname, const QString& parent, const QString& caption,
-				const QString &entry, const QStringList &options, const QStringList &values,
-				const QString &defaultS="", const QString& tip="", const QString& name="");
 			    
 		/**
 		    Dodaje kontrolkê do zak³adki "groupname", 
@@ -428,7 +406,29 @@ class ConfigDialog : public QVBox {
 			    const QString& entry, const QString& defaultS="", const QString& tip="",
 				const QString& name="");
 
-			    
+		/**
+		    Dodaje kontrolkê do zak³adki "groupname", 
+			Rodzicem kontrolki jest kontrolka "parent".
+			Ustawia text kontrolki na "caption".
+			
+			Warto¶æ kontrolki jest zapisana do pliku konfiguracyjnego "config" w postaci
+			-------------
+			[groupname]
+			entry= value {defaultS}
+			-------------
+			Lista opcji do wyboru to "options", którym w pliku konfiguracyjnym odpowiadaj± "values".
+			Podpowied¼ kontrolki ustawiona jest na "tip".
+			Nazwa kontrolki ustawiona jest na "name".
+		**/
+		static void addHRadioGroup(
+				const QString& groupname, const QString& parent, const QString& caption,
+				const QString &entry, const QStringList &options, const QStringList &values,
+				const QString &defaultS="", const QString& tip="", const QString& name="");
+		static void addHRadioGroup(ConfigFile* config,
+				const QString& groupname, const QString& parent, const QString& caption,
+				const QString &entry, const QStringList &options, const QStringList &values,
+				const QString &defaultS="", const QString& tip="", const QString& name="");
+
 		/**
 		    Dodaje kontrolkê do zak³adki "groupname", 
 			Rodzicem kontrolki jest kontrolka "parent".
@@ -541,6 +541,31 @@ class ConfigDialog : public QVBox {
 		static void addPushButton(
 				const QString& groupname, const QString& parent, const QString& caption,
 			    const QString& iconFileName="", const QString& tip="", const QString& name="");
+
+		/**
+		    Dodaje kontrolkê do zak³adki "groupname", 
+			Rodzicem kontrolki jest kontrolka "parent".
+			Ustawia text kontrolki na "caption".
+			
+			Warto¶æ kontrolki jest zapisana do pliku konfiguracyjnego "config" w postaci
+			-------------
+			[groupname]
+			entry= value {defaultS}
+			-------------
+			Lista opcji do wyboru to "options", którym w pliku konfiguracyjnym odpowiadaj± "values".
+			Podpowied¼ kontrolki ustawiona jest na "tip".
+			Nazwa kontrolki ustawiona jest na "name".
+		**/
+		static void addRadioGroup(
+				const QString& groupname, const QString& parent, const QString& caption,
+				const QString &entry, const QStringList &options, const QStringList &values,
+				int strips, Orientation orientation,
+				const QString &defaultS="", const QString& tip="", const QString& name="");
+		static void addRadioGroup(ConfigFile* config,
+				const QString& groupname, const QString& parent, const QString& caption,
+				const QString &entry, const QStringList &options, const QStringList &values,
+				int strips, Orientation orientation,
+				const QString &defaultS="", const QString& tip="", const QString& name="");
 
 		/**
 		    Dodaje kontrolkê do zak³adki "groupname", 
@@ -746,6 +771,10 @@ class ConfigDialog : public QVBox {
 		**/
 		static void removeTab(const QString& caption);
 
+		/**
+		    Pobiera wska¼nik do kontrolki ButtonGroup(groupname, caption, name)
+		**/
+		static QButtonGroup* getButtonGroup(const QString& groupname, const QString& caption, const QString& name="");
 		/**
 		    Pobiera wska¼nik do kontrolki CheckBox(groupname, caption, name)
 		**/

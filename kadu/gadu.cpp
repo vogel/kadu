@@ -761,7 +761,7 @@ void GaduProtocol::initModule()
 	//  Okno dialogowe - czê¶æ kodu przejdzie do klasy Protocol
 	// ---------------------------------------------------------
 //zakladka "siec"
-	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Network"));
+	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Network"), "NetworkTab");
 
 	ConfigDialog::addVGroupBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "Servers properties"));
 	ConfigDialog::addGrid("Network", "Servers properties", "servergrid", 2);

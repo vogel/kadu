@@ -429,7 +429,7 @@ void AutoAwaySlots::setTextLength(const QString &str)
 AutoAwaySlots::AutoAwaySlots() : QObject(NULL, "AutoAwaySlots")
 {
 	kdebugf();
-	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "General"));
+	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "General"), "GeneralTab");
 
 	ConfigDialog::addHGroupBox("General", "General", "AutoStatus");
 	ConfigDialog::addHBox("General", "AutoStatus", "autoStatus");

@@ -33,7 +33,7 @@ AutoResponder::AutoResponder() : QObject(NULL, "autoresponder")
 		this,SLOT(chatReceived(UinsList,const QString&,time_t)));
 	QObject::connect(chat_manager, SIGNAL(chatCreated(const UinsList&)), this, SLOT(chatOpened(const UinsList&)));
 
-	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Autoresponder"));
+	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Autoresponder"), "AutoresponderTab");
 	ConfigDialog::addVGroupBox( "Autoresponder", "Autoresponder", QT_TRANSLATE_NOOP( "@default", "Autoresponder options" ));
 	ConfigDialog::addLineEdit(config, "Autoresponder","Autoresponder options",
 		QT_TRANSLATE_NOOP("@default", "Autoanswer text:"),

@@ -1381,7 +1381,7 @@ void Chat::initModule()
 {
 	kdebugf();
 
-	ConfigDialog::addTab("ShortCuts");
+	ConfigDialog::addTab("ShortCuts", "ShortCutsTab");
 	ConfigDialog::addVGroupBox("ShortCuts", "ShortCuts", QT_TRANSLATE_NOOP("@default", "Define keys"));
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "New line / send message:"), "chat_newline", "Return");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Clear Chat:"), "chat_clear", "F9");
@@ -1390,7 +1390,7 @@ void Chat::initModule()
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Italic text:"), "chat_italic", "Ctrl+I");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Underline text:"), "chat_underline", "Ctrl+U");
 
-	ConfigDialog::addTab("Chat");
+	ConfigDialog::addTab("Chat","ChatTab");
 	ConfigDialog::addVGroupBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Emoticons"));
 	ConfigDialog::addComboBox("Chat", "Emoticons", QT_TRANSLATE_NOOP("@default", "Emoticons:"),
 			"EmoticonsStyle", toStringList(tr("None"), tr("Static"), tr("Animated")), toStringList("0", "1", "2"), "2");
@@ -1425,7 +1425,7 @@ void Chat::initModule()
 	QFont def_font(info.family(),info.pointSize());
 	config_file.addVariable("Look", "ChatFont", &def_font);
 
-	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Look"));
+	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Look"), "LookTab");
 
 	ConfigDialog::addGrid("Look", "Look", "varOpts", 2);
 		ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Show status button"), "ShowStatusButton", true);

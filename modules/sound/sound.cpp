@@ -46,7 +46,7 @@ SoundManager::SoundManager(const QString& name, const QString& configname)
 	mute = false;
 	lastsoundtime.start();
 
-	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default","Sounds"));
+	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default","Sounds"), "SoundsTab");
 	ConfigDialog::addCheckBox("Sounds", "Sounds",
 			QT_TRANSLATE_NOOP("@default","Play sounds"), "PlaySound", false);
 	
@@ -318,7 +318,7 @@ void SoundManager::userChangedStatusToNotAvailable(const UserListElement &ule)
 	kdebugf2();
 }
 
-void SoundManager::message(const QString &from, const QString &message, const QMap<QString, QVariant> *parameters, const UserListElement *ule)
+void SoundManager::message(const QString &, const QString &message, const QMap<QString, QVariant> *, const UserListElement *)
 {
 	kdebugf();
 	if (isMuted())

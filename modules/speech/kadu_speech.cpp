@@ -51,6 +51,10 @@ void SpeechSlots::useArts()
 	ConfigDialog::getCheckBox("Speech", "Use aRts", "usearts")->setChecked(true);
 	ConfigDialog::getCheckBox("Speech", "Use Esd", "useesd")->setChecked(false);
 	ConfigDialog::getCheckBox("Speech", "Use Dsp", "usedsp")->setChecked(false);
+	
+	ConfigDialog::getCheckBox("Speech", "Klatt synthesizer (requires dsp)")->setChecked(false);
+	ConfigDialog::getCheckBox("Speech", "Klatt synthesizer (requires dsp)")->setEnabled(false);
+	ConfigDialog::getLineEdit("Speech", "Dsp device:")->setEnabled(false);
 	kdebugf2();
 }
 
@@ -60,6 +64,10 @@ void SpeechSlots::useEsd()
 	ConfigDialog::getCheckBox("Speech", "Use aRts", "usearts")->setChecked(false);
 	ConfigDialog::getCheckBox("Speech", "Use Esd", "useesd")->setChecked(true);
 	ConfigDialog::getCheckBox("Speech", "Use Dsp", "usedsp")->setChecked(false);
+
+	ConfigDialog::getCheckBox("Speech", "Klatt synthesizer (requires dsp)")->setChecked(false);
+	ConfigDialog::getCheckBox("Speech", "Klatt synthesizer (requires dsp)")->setEnabled(false);
+	ConfigDialog::getLineEdit("Speech", "Dsp device:")->setEnabled(false);
 	kdebugf2();
 }
 
@@ -69,6 +77,9 @@ void SpeechSlots::useDsp()
 	ConfigDialog::getCheckBox("Speech", "Use aRts", "usearts")->setChecked(false);
 	ConfigDialog::getCheckBox("Speech", "Use Esd", "useesd")->setChecked(false);
 	ConfigDialog::getCheckBox("Speech", "Use Dsp", "usedsp")->setChecked(true);
+
+	ConfigDialog::getCheckBox("Speech", "Klatt synthesizer (requires dsp)")->setEnabled(true);
+	ConfigDialog::getLineEdit("Speech", "Dsp device:")->setEnabled(true);
 	kdebugf2();
 }
 
@@ -79,7 +90,7 @@ SpeechSlots::SpeechSlots()
 	srand(time(NULL));
 	lastSpeech.start();
 
-	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default","Speech"));
+	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default","Speech"), "SpeechTab");
 
 	ConfigDialog::addCheckBox("Speech", "Speech",
 			QT_TRANSLATE_NOOP("@default","Say only when chat window is not active"),
@@ -407,6 +418,12 @@ void SpeechSlots::message(const QString &from, const QString &message, const QMa
 void SpeechSlots::onCreateConfigDialog()
 {
 	kdebugf();
+	if (config_file.readBoolEntry("Speech", "UseArts"))
+		useArts();
+	else if (config_file.readBoolEntry("Speech", "UseEsd"))
+		useEsd();
+	else if (config_file.readBoolEntry("Speech", "UseDsp"))
+		useDsp();
 	kdebugf2();
 }
 

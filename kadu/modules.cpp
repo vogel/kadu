@@ -260,7 +260,7 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager")
 	if(!all_loaded)
 		saveLoadedModules();
 
-	ConfigDialog::addTab("ShortCuts");
+	ConfigDialog::addTab("ShortCuts", "ShortCutsTab");
 	ConfigDialog::addVGroupBox("ShortCuts", "ShortCuts", "Define keys");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QString("&Manage Modules").replace(QRegExp("&"), ""), "kadu_modulesmanager", "F4");
 	kdebugf2();

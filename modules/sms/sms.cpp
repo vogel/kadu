@@ -27,7 +27,7 @@ extern "C" int sms_init()
 {				
 	kdebugf();
 	
-	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "SMS"));
+	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "SMS"), "SMSTab");
 	ConfigDialog::addVGroupBox("SMS", "SMS",
 			QT_TRANSLATE_NOOP("@default", "SMS options"));
 	ConfigDialog::addCheckBox("SMS", "SMS options",

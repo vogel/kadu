@@ -270,6 +270,6 @@ HintProperties HintProperties::fromString(const QString &oldstring)
 	else
 		prop.timeout=10;
 
-	return prop;
 	kdebugf2();
+	return prop;
 }

@@ -1227,10 +1227,10 @@ void IconsManager::initModule()
 	icons_manager.setPaths(QStringList::split(";", config_file.readEntry("Look", "IconsPaths")));
 	icons_manager.setTheme(config_file.readEntry("Look","IconTheme"));
 
-	ConfigDialog::addTab("General");
-	ConfigDialog::addTab("ShortCuts");
-	ConfigDialog::addTab("Chat");
-	ConfigDialog::addTab("Look");
+	ConfigDialog::addTab("General", "GeneralTab");
+	ConfigDialog::addTab("ShortCuts", "ShortCutsTab");
+	ConfigDialog::addTab("Chat", "ChatTab");
+	ConfigDialog::addTab("Look", "LookTab");
 	ConfigDialog::addHBox("Look", "Look", "icon_theme");
 	ConfigDialog::addComboBox("Look", "icon_theme", QT_TRANSLATE_NOOP("@default","Icon theme"));
 	ConfigDialog::addSelectPaths("Look", "icon_theme", QT_TRANSLATE_NOOP("@default","Icon paths"));

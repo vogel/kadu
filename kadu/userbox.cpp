@@ -839,7 +839,7 @@ void UserBox::all_renameUser(const QString &oldaltnick, const QString &newaltnic
 void UserBox::initModule()
 {
 	kdebugf();
-	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "General"));
+	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "General"), "GeneralTab");
 	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show inactive contacts"), "ShowHideInactive", true, QT_TRANSLATE_NOOP("@default", "Display contacts who are offline"));
 	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show contacts with description"), "ShowOnlyDescriptionUsers", false, QT_TRANSLATE_NOOP("@default", "Display contacts who has a desciption"));
 	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show contacts who you are blocking"), "ShowBlocked", true);
@@ -858,7 +858,7 @@ void UserBox::initModule()
 
 	int defUserboxWidth=int(QFontMetrics(def_font).width("Imie i Nazwisko")*1.5);
 
-	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Look"));
+	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Look"), "LookTab");
 
 	ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Align icon next to contact name"), "AlignUserboxIconsTop", config_file.readBoolEntry("Look", "AlignUserboxIconsTop"));
 
