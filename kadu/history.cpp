@@ -318,7 +318,7 @@ void HistoryManager::convHist2ekgForm(UinsList uins) {
 	QBuffer bufin, bufout;
 	QStringList linelist;
 	uin_t uin;
-	int i, typeofline;
+	int i, j, typeofline;
 
 	fname = getFileNameByUinsList(uins);
 	
@@ -343,14 +343,13 @@ void HistoryManager::convHist2ekgForm(UinsList uins) {
 	bool our, foreign;
 	QString dzien, miesiac, rok, czas, sczas, text, temp, lineout;
 	QDateTime datetime, sdatetime;
-	QRegExp sep("\\s");
+	QRegExp sep("\\s"), sep2("::");
 	our = foreign = false;
 	while ((line = stream.readLine()) != QString::null) {
-		our = !line.find(QRegExp("^\\S+\\s::\\s\\d{2,2}\\s\\d{2,2}\\s\\d{4,4},\\s\\(\\d{2,2}:\\d{2,2}:\\d{2,2}\\)$"));
-		foreign = !line.find(QRegExp("^\\S+\\s::\\s\\d{2,2}\\s\\d{2,2}\\s\\d{4,4},\\s\\(\\d{2,2}:\\d{2,2}:\\d{2,2}\\s/\\sS\\s\\d{2,2}:\\d{2,2}:\\d{2,2}\\)$"));
-//		typeofline = typeOfLine(line);
-//		our = (typeofline == HISTORYMANAGER_HISTORY_OUR);
-//		foreign = (typeofline == HISTORYMANAGER_HISTORY_FOREIGN);
+//		our = !line.find(QRegExp("^\\S+\\s::\\s\\d{2,2}\\s\\d{2,2}\\s\\d{4,4},\\s\\(\\d{2,2}:\\d{2,2}:\\d{2,2}\\)$"));
+		our = !line.find(QRegExp("^(\\S|\\s)+\\s::\\s\\d{2,2}\\s\\d{2,2}\\s\\d{4,4},\\s\\(\\d{2,2}:\\d{2,2}:\\d{2,2}\\)$"));
+//		foreign = !line.find(QRegExp("^\\S+\\s::\\s\\d{2,2}\\s\\d{2,2}\\s\\d{4,4},\\s\\(\\d{2,2}:\\d{2,2}:\\d{2,2}\\s/\\sS\\s\\d{2,2}:\\d{2,2}:\\d{2,2}\\)$"));
+		foreign = !line.find(QRegExp("^(\\S|\\s)+\\s::\\s\\d{2,2}\\s\\d{2,2}\\s\\d{4,4},\\s\\(\\d{2,2}:\\d{2,2}:\\d{2,2}\\s/\\sS\\s\\d{2,2}:\\d{2,2}:\\d{2,2}\\)$"));
 		if (our || foreign) {
 			if (linelist.count()) {
 				text.truncate(text.length() - 1);
@@ -360,14 +359,16 @@ void HistoryManager::convHist2ekgForm(UinsList uins) {
 				}
 			linelist.clear();
 			text.truncate(0);
-			nick = line.section(sep, 0, 0);
-			dzien = line.section(sep, 2, 2);
-			miesiac = line.section(sep, 3, 3);
-			rok = line.section(sep, 4, 4);
+			nick = line.section(sep2, 0, 0);
+			nick.truncate(nick.length() - 1);
+			line = line.right(line.length() - nick.length() - 4);
+			dzien = line.section(sep, 0, 0);
+			miesiac = line.section(sep, 1, 1);
+			rok = line.section(sep, 2, 2);
 			rok.truncate(rok.length() - 1);
 			datetime.setDate(QDate(rok.toInt(), miesiac.toInt(), dzien.toInt()));
 			sdatetime = datetime;
-			czas = line.section(sep, 5, 5);
+			czas = line.section(sep, 3, 3);
 			czas.remove(0, 1);
 			if (our) {
 				czas.truncate(czas.length() - 1);
@@ -375,7 +376,7 @@ void HistoryManager::convHist2ekgForm(UinsList uins) {
 				}
 			datetime.setTime(QTime(czas.left(2).toInt(), czas.mid(3, 2).toInt(), czas.right(2).toInt()));
 			if (foreign) {
-				sczas = line.section(sep, 8, 8);
+				sczas = line.section(sep, 6, 6);
 				sczas.truncate(sczas.length() - 1);
 				sdatetime.setTime(QTime(sczas.left(2).toInt(), sczas.mid(3, 2).toInt(), sczas.right(2).toInt()));
 				linelist.append("chatrcv");
