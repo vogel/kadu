@@ -280,6 +280,9 @@ QPopupMenu *KaduTextBrowser::createPopupMenu(const QPoint &point) {
 }
 
 CustomInput::CustomInput(QWidget *parent, const char *name) : QMultiLineEdit(parent, name) {
+	QStyleSheet *style=styleSheet();
+	style->item("p")->setMargin(QStyleSheetItem::MarginVertical, 0);
+	setStyleSheet(style);
 }
 
 void CustomInput::keyPressEvent(QKeyEvent * e) {
