@@ -21,6 +21,7 @@
 #include <qarray.h>
 #include <qlayout.h>
 #include <qtextbrowser.h>
+#include <qdatetime.h>
 //#include <iostream>
 #include <klocale.h>
 #include <qmessagebox.h>
@@ -52,6 +53,8 @@ extern "C"
 #include "simlite.h"
 };
 #endif
+
+QTime oldtime(QTime::currentTime());;
 
 SavePublicKey::SavePublicKey(uin_t uin, QString keyData, QWidget *parent, const char *name) :
 	QDialog(parent, name, Qt::WDestructiveClose), uin(uin), keyData(keyData) {
@@ -329,9 +332,12 @@ void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)
 			QMessageBox::information(0, i18n("User notify"), msg);		
 			}
 
-		if (config.notifysound)
-	    		playSound((const char *)config.soundnotify);
-
+		if (config.notifysound) {
+			QTime acttime(QTime::currentTime());			
+			if (acttime.msecsTo(oldtime) <= -500)
+				playSound((const char *)config.soundnotify);
+			oldtime = acttime;
+			}
 		}
 }
 

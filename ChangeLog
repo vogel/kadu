@@ -16,9 +16,11 @@
 * szyfrowanie: odbierania klucza publicznego nie powoduje padów aplikacji, a ponadto
   zatwierdzenie jego zapisania powoduje uaktywnienie guzika "encryption" w rozmowie
   prowadzonej z osob±, która do nas przys³a³a swój klucz publiczny
-* sms: wysy³anie sms'ów (Idea) wewnêtrznym mechanizmem kadu (z wy¶wietlaniem
-  obrazka ze strony sms.idea.pl). Dwie pozosta³e sieci zostan± równie¿ w krótce
+* sms: wysy³anie smsów (Idea) wewnêtrznym mechanizmem kadu (z wy¶wietlaniem
+  obrazka ze strony sms.idea.pl). Dwie pozosta³e sieci zostan± równie¿ wkrótce
   zaimplementowane.
+* powiadamianie d¼wiêkiem o zmianie statusu kontaktów nastêpuje tylko wtedy, gdy
+  czas jaki min±³ od ostatniego takiego zdarzenia wynosi 500ms
 
 +++ wersja 0.3.3-pre4
 * przy imporcie listy u¿ytkowników ustawiamy domy¶lne atrybuty u¿ytkowników
