@@ -62,11 +62,14 @@ snd_pcm_t *ALSAPlayerSlots::alsa_open (const char *device, int channels, int sam
 	alsa_period_size = 50;//MUSI BYÆ MNIEJSZE NI¯ 160/3 (160 to liczba próbek, które s± czytane przy rozmowach g³osowych)
 	alsa_buffer_frames = 3 * alsa_period_size;
 
-	if ((err = snd_pcm_open (&alsa_dev, device, play?SND_PCM_STREAM_PLAYBACK:SND_PCM_STREAM_CAPTURE, 0)) < 0)
+	//tylko podczas otwierania urz±dzenia potrzebne jest nam zachowanie nieblokuj±ce
+	if ((err = snd_pcm_open (&alsa_dev, device, play?SND_PCM_STREAM_PLAYBACK:SND_PCM_STREAM_CAPTURE, SND_PCM_NONBLOCK)) < 0)
 	{
 		kdebugm(KDEBUG_WARNING, "cannot open audio device \"%s\" (%s)\n", device, snd_strerror (err));
 		return NULL;
 	}
+	//dlatego jak tylko uda siê otworzyæ urz±dzenie, natychmiast przestawiamy si³ w tryb blokuj±cy
+	snd_pcm_nonblock(alsa_dev, 0);
 	kdebugm(KDEBUG_INFO, "device opened\n");
 
 	if ((err = snd_pcm_hw_params_malloc (&hw_params)) < 0)
