@@ -592,10 +592,11 @@ void UserBox::initModule()
 	ConfigDialog::addCheckBox("General", "grid", "Show Inactive users", "ShowHideInactive", true);
 
 // dodanie wpisow do konfiga (pierwsze uruchomienie)
-	config_file.addVariable("Look", "UserboxDescBgColor", QColor("#C0C0C0"));
-	config_file.addVariable("Look", "UserboxDescTextColor", QColor("#000000"));
-	config_file.addVariable("Look", "UserboxBgColor", QColor("#FFFFFF"));
-	config_file.addVariable("Look", "UserboxFgColor", QColor("#000000"));
+	QWidget w;
+	config_file.addVariable("Look", "UserboxDescBgColor", w.paletteBackgroundColor());
+	config_file.addVariable("Look", "UserboxDescTextColor", w.paletteForegroundColor());
+	config_file.addVariable("Look", "UserboxBgColor", w.paletteBackgroundColor());
+	config_file.addVariable("Look", "UserboxFgColor", w.paletteForegroundColor());
 
 	QFontInfo info0(qApp->font());
 	QFont def_font0(info0.family(),info0.pointSize());
