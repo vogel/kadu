@@ -43,10 +43,11 @@ class UserList : public QValueList<UserListElement>
 		UserList();
 		UserListElement& byUin(uin_t uin);
 		UserListElement& byComment(QString comment);
-		void addUser(const QString& FirstName,const QString& LastName,
-			const QString& NickName,const QString& AltNick,
-			const QString& Mobile,const QString& Uin,const int Status,
-			const QString& Group,const QString& Description);
+		void addUser(const QString FirstName,const QString LastName,
+			const QString NickName,const QString AltNick,
+			const QString Mobile,const QString Uin,
+			const int Status=GG_STATUS_NOT_AVAIL,
+			const QString Group="",const QString Description="");
 		void removeUser(uin_t uin);
 		int writeToFile(char *filename = NULL);
 		int readFromFile();

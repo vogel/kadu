@@ -19,7 +19,7 @@
 #include "kadu.h"
 //#include <stdio.h>
 #include <qfile.h>
-#include <iostream.h>
+//#include <iostream.h>
 //#include <unistd.h>
 #include <stdlib.h>
 #include <sys/stat.h>
@@ -98,10 +98,10 @@ UserListElement& UserList::byComment(QString comment)
 //	return;
 };
 
-void UserList::addUser(const QString& FirstName,const QString& LastName,
-	const QString& NickName,const QString& AltNick,
-	const QString& Mobile,const QString& Uin,const int Status,
-	const QString& Group,const QString& Description)
+void UserList::addUser(const QString FirstName,const QString LastName,
+	const QString NickName,const QString AltNick,
+	const QString Mobile,const QString Uin,const int Status,
+	const QString Group,const QString Description)
 {
 	UserListElement e;
 	e.first_name = FirstName;
@@ -170,7 +170,7 @@ int UserList::writeToFile(char *filename)
 		s.append(QString(";"));
 		s.append(QString::number((*i).uin));
 		s.append(QString("\r\n"));
-		std::cout << s;
+		fprintf(stderr,s.local8Bit());
 		f.writeBlock(s.local8Bit(),s.length());
 	}	    
 	f.close();
@@ -179,7 +179,9 @@ int UserList::writeToFile(char *filename)
 
 int UserList::readFromFile()
 {
-/*    char * path;
+/*	clear();
+
+    char * path;
     struct passwd *pw;
 
     if (!(pw = getpwuid(getuid())))
@@ -227,18 +229,8 @@ int UserList::readFromFile()
 		continue;
 		}
 
-	    userlist.resize(userlist.size() + 1);
-	    i = userlist.size() - 1;
-	    userlist[i].uin = uin;
-	    userlist[i].first_name = NULL;
-	    userlist[i].last_name = NULL;
-	    userlist[i].nickname = NULL;
-	    userlist[i].anonymous = false;
-	    userlist[i].comment = strdup(++comment);
-	    userlist[i].mobile = NULL;
-	    userlist[i].ip = 0;
-	    userlist[i].port = 0;
-	    userlist[i].group = NULL;
+	void UserList::addUser("","","",const QString& AltNick,++comment,
+		"",uin,GG_STATUS_NOT_AVAIL,"","")
 	    }
 	else {
 	    char *first_name, *last_name, *nickname, *comment, *mobile, *group, *uin,
@@ -275,45 +267,35 @@ int UserList::readFromFile()
 
       } */
 
-/*	    
+	    /*
 	    if (!uin || !(uint = strtol(uin, NULL, 0))) {
 		free(buf);
 		continue;
 		}
 
-	    userlist.resize(userlist.size() + 1);
-	    userlist[i].uin = uint;
-	    userlist[i].first_name = strdup(first_name);
-	    cp_to_iso((unsigned char *)userlist[i].first_name);
-	    userlist[i].last_name = strdup(last_name);
+	    cp_to_iso((unsigned char *)first_name);
 	    cp_to_iso((unsigned char *)userlist[i].last_name);
-	    userlist[i].nickname = strdup(nickname);
 	    cp_to_iso((unsigned char *)userlist[i].nickname);
-	    userlist[i].comment = strdup(comment);
 	    cp_to_iso((unsigned char *)userlist[i].comment);
-	    userlist[i].mobile = strdup(mobile);
-	    userlist[i].group = strdup(group);
 	    cp_to_iso((unsigned char *)userlist[i].group);
 
 	    // if the nickname isn't defined explicitly, try to guess it 
-	    if (!QString::compare(userlist[i].nickname, ""))
-		if (!QString::compare(userlist[i].comment, ""))
-		    strcpy(userlist[i].nickname, userlist[i].first_name);
+	    if (!QString::compare(nickname, ""))
+		if (!QString::compare(comment, ""))
+		    strcpy(nickname, first_name);
 		else
-		    strcpy(userlist[i].nickname, userlist[i].comment);
+		    strcpy(nickname, comment);
 	    }
 
-	free(buf);
+	addUser(first_name,last_name,nickname,comment
+	mobile,uint,GG_STATUS_NOT_AVAIL,group,"")
 
-	userlist[i].status = GG_STATUS_NOT_AVAIL;
-	userlist[i].description = NULL;
+	free(buf);
 	
 	i++;
 	}
-    userlist_count = i;
 
-    fclose(f);
-*/
+    fclose(f);*/
     return 0;
 }
 
