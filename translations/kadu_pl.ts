@@ -689,6 +689,10 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <source>Type of gateway</source>
         <translation>Rodzaj bramki</translation>
     </message>
+    <message>
+        <source>German</source>
+        <translation>Niemiecki</translation>
+    </message>
 </context>
 <context>
     <name>About</name>

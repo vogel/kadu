@@ -689,6 +689,10 @@ Se lasciate lo spazio in bianco, le regolazioni di difetto saranno usate.</trans
         <source>Default status</source>
         <translation>Condizione di difetto</translation>
     </message>
+    <message>
+        <source>German</source>
+        <translation>Tedesco</translation>
+    </message>
 </context>
 <context>
     <name>About</name>

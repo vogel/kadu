@@ -350,10 +350,6 @@ nicht versteht. Gib hier die Argumente ein, getrennt mit Komma. %n=Tel.; %m=Nach
         <translation>Sekunden</translation>
     </message>
     <message>
-        <source>Default Status</source>
-        <translation>Standard-Status</translation>
-    </message>
-    <message>
         <source>On shutdown, set description:</source>
         <translation>Beim Ausschalten setze Beschreibung:</translation>
     </message>
@@ -684,6 +680,18 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     <message>
         <source>Volume</source>
         <translation>Verbinden der Sprechblasen</translation>
+    </message>
+    <message>
+        <source>German</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type of gateway</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default status</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1470,10 +1478,6 @@ Check your internet connection.</source>
         <translation>An &amp;Passwort erinnern</translation>
     </message>
     <message>
-        <source>&amp;Change password</source>
-        <translation>Passwort än&amp;dern</translation>
-    </message>
-    <message>
         <source>Register &amp;new user</source>
         <translation>&amp;Neuen Benutzer registrieren</translation>
     </message>
@@ -1528,6 +1532,10 @@ Check your internet connection.</source>
     <message>
         <source>Voice chat</source>
         <translation>Telephonat</translation>
+    </message>
+    <message>
+        <source>&amp;Change password/email</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1836,6 +1844,10 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
         <source>Select user first</source>
         <translation>Markiere zuerst Benutzer</translation>
     </message>
+    <message>
+        <source> </source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Sms</name>
@@ -1883,22 +1895,60 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
         <source>The SMS was sent and should be on its way</source>
         <translation>SMS wurde verschickt und ist unterwegs</translation>
     </message>
+    <message>
+        <source>Contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Signature</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SmsEraGateway</name>
     <message>
-        <source>Provider gateway page looks strange. It&apos;s probably temporary disabled
-or has beed changed too much to parse it correctly.</source>
-        <translation>SMS-Gateway ist unerreichbar. Wahrscheinlich ist sie momentan ausgeschaltet
-oder änderte die Zugangserlaubnis.</translation>
-    </message>
-    <message>
-        <source>Authorization error. Incorrect login or password.</source>
-        <translation>Zugangsfehler. Falscher Login oder Passwort.</translation>
-    </message>
-    <message>
         <source>Provider gateway results page looks strange. SMS was probably NOT sent.</source>
         <translation>Die Antwort des SMS-Gateways ist seltsam. SMS wurde wahrscheinlich nicht verschickt.</translation>
+    </message>
+    <message>
+        <source>Error: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>System failure</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unauthorised user</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Access forbidden</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Syntax error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Limit of the sms run-down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wrong receiver adress</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Message too long</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown error</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2410,10 +2460,6 @@ The import was unsuccessful</source>
         <translation>OK</translation>
     </message>
     <message>
-        <source>Change password</source>
-        <translation>Passwort ändern</translation>
-    </message>
-    <message>
         <source>Bad data</source>
         <translation>Falsche Daten</translation>
     </message>
@@ -2424,6 +2470,10 @@ The import was unsuccessful</source>
     <message>
         <source>New email</source>
         <translation>Neue Email</translation>
+    </message>
+    <message>
+        <source>Change password/email</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

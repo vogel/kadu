@@ -685,6 +685,10 @@ If you leave blank, default settings will be used.</source>
         <source>Default status</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>German</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
