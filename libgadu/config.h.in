@@ -3,6 +3,9 @@
 /* Define to 1 if you have the `gethostbyname_r' function. */
 #undef HAVE_GETHOSTBYNAME_R
 
+/* Define to 1 if you have the `inet_pton' function. */
+#undef HAVE_INET_PTON
+
 /* define if you have OpenSSL */
 #undef HAVE_OPENSSL
 

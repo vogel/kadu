@@ -1,4 +1,4 @@
-/* $Id: obsolete.c,v 1.7 2004/05/02 21:43:30 michal Exp $ */
+/* $Id: obsolete.c,v 1.8 2004/11/01 13:51:45 adrian Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -14,7 +14,8 @@
  *
  *  You should have received a copy of the GNU Lesser General Public
  *  License along with this program; if not, write to the Free Software
- *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307,
+ *  USA.
  */
 
 /*

@@ -4,6 +4,80 @@ oznacza, ¿e ,,nick'' jest pomys³odawc± lub podes³a³ patcha, a zrobi³
 to kto¶ oznaczony przez ,,x'' (w - wojtekka, s - speedy, a - arekm,
 d - drg, sz - szalik, del - deletek).
 
+// 2004-10-31
+
+- usuniêcie wycieku pamiêci przy korzystaniu z formatów contacts_header*
+  i contacts_footer* (weirdo/w)
+
+// 2004-10-29
+
+- poprawka wykrywania pthread (porridge/w)
+
+// 2004-10-28
+
+- libgadu: wspó³bie¿ny resolver tam gdzie jest gethostbyname_r (mslusarz/w)
+
+// 2004-10-12
+
+- libgadu: poprawka liczenia sumy kontrolnej obrazków (mslusarz/w)
+- libgadu: poprawka wysy³ania du¿ych pakietów (mslusarz/w)
+- nowa zmienna ,,dcc_port'' (adaml/w)
+
+// 2004-10-07
+
+- libgadu: poprawka pobierania tokenow (szalik/w)
+
+// 2004-10-06
+
+- libgadu: optymalizacja zwalniania zasobów (mslusarz/w)
+
+// 2004-10-05
+
+- libgadu: poprawka wycieku pamiêci w przypadku braku zasobów (mslusarz/w)
+
+// 2004-08-09
+
+- poprawka b³êdy zawieszenia programu zwi±zanego z dope³nieniem (tros/del)
+
+// 2004-08-10
+
+- poprawka powiadamiania o nowej poczcie (atler/sz)
+
+// 2004-07-14
+
+- libgadu: poprawki obs³ugi proxy (the_leech/w)
+- libgadu: poprawka z³ego zachowania po roz³±czeniu klienta (patryk/w)
+
+// 2004-07-06
+
+- poprawka dzia³ania /queue -u user -c (struthio/sz)
+
+// 2004-06-19
+
+- poprawka wycieku pamiêci (szalik/del)
+
+// 2004-06-13
+
+- poprawka dope³nienia tabem przy tekstach zawieraj±cych cudzys³ów (KKKas/del)
+
+// 2004-06-11
+
+- poprawka informacji o podszywaniu siê w dcc (perry/w)
+- poprawki dokumentacji protoko³u (Piotr Trzcionkowski/w)
+
+// 2004-05-27
+
+- zaleg³e uaktualnienie opisu protoko³u: dzielenie listy kontaktów
+  na pakiety przy imporcie i eksporcie (w)
+
+// 2004-05-22
+
+- poprawiony b³±d koñca wiersza przy exec --{b}msg (Reef/del)
+
+// 2004-05-03
+
+- poprawka ma³ego b³êdu zwi±zanego z alokacj± pamiêci (h3r0n/del)
+
 // 2004-05-02
 
 - libgadu: obs³uga list kontaktów wiêkszych ni¿ 409 wpisów (MAG,adrians/w)
@@ -607,4 +681,4 @@ d - drg, sz - szalik, del - deletek).
 - poprawka zachowania trybu wielolinijkowego (theKnight/w)
 
 
-$Id: ChangeLog,v 1.30 2004/05/02 21:43:30 michal Exp $
+$Id: ChangeLog,v 1.31 2004/11/01 13:51:44 adrian Exp $

@@ -1,4 +1,4 @@
-dnl $Id: configure.in,v 1.28 2004/01/10 12:57:27 chilek Exp $
+dnl $Id: configure.in,v 1.29 2004/11/01 13:51:44 adrian Exp $
 
 AC_INIT(lib/libgadu.h)
 AC_PREREQ(2.50)
@@ -8,6 +8,7 @@ AC_SUBST(CFLAGS_LIBGADU)
 AC_SUBST(LIBS_LIBGADU)
 AC_SUBST(OBJS)
 AC_SUBST(IOCTLD_OBJS)
+AC_SUBST(PC_REQUIRES)
 
 AC_SUBST(strip_ekg, "")
 AC_SUBST(strip_ioctld, "")
@@ -122,6 +123,9 @@ fi
 
 dnl threadsafe
 AC_CHECK_FUNCS([gethostbyname_r], [AC_LIBGADU_DEFINE([HAVE_GETHOSTBYNAME_R])])
+
+dnl inet_pton
+AC_CHECK_FUNCS(inet_pton)
 
 AC_MSG_CHECKING([for va_copy])
 AC_TRY_LINK([#include <stdarg.h>], [va_list a, b; va_copy(a, b);], 
@@ -277,6 +281,7 @@ if test "x$have_openssl" = "xyes"; then
 	LIBS_LIBGADU="$LIBS_LIBGADU $OPENSSL_LIBS"
 	CFLAGS="$CFLAGS $OPENSSL_INCLUDES"
 	CFLAGS_LIBGADU="$CFLAGS_LIBGADU $OPENSSL_INCLUDES"
+	PC_REQUIRES="$PC_REQUIRES openssl"
 	AC_LIBGADU_DEFINE([HAVE_OPENSSL])
 fi
 

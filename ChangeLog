@@ -299,6 +299,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   otwieranie okna historii gdy nie mamy zaznaczonych kontaktów [#342] (adrian)
 * poprawione znikanie dymków przy Qt 3.0.x (joi)
 * ustawienia kolorów tekstu w oknie chat równie¿ w historii [#340] (adrian)
+* upgrade libgadu: niektóre poprawki joi'a mieli¶my ju¿ wcze¶niej, ale
+  dodatkowo poprawki pobierania tokenów i obs³ugi proxy (adrian)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,

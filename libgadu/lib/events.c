@@ -1,4 +1,4 @@
-/* $Id: events.c,v 1.39 2004/07/24 17:47:47 joi Exp $ */
+/* $Id: events.c,v 1.40 2004/11/01 13:51:44 adrian Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -16,7 +16,8 @@
  *
  *  You should have received a copy of the GNU Lesser General Public
  *  License along with this program; if not, write to the Free Software
- *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307,
+ *  USA.
  */
 
 #include <sys/types.h>
@@ -59,47 +60,60 @@ void gg_event_free(struct gg_event *e)
 	if (!e)
 		return;
 	
-	if (e->type == GG_EVENT_MSG) {
-		free(e->event.msg.message);
-		free(e->event.msg.formats);
-		free(e->event.msg.recipients);
-	}
+	switch (e->type) {
+		case GG_EVENT_MSG:
+			free(e->event.msg.message);
+			free(e->event.msg.formats);
+			free(e->event.msg.recipients);
+			break;
 	
-	else if (e->type == GG_EVENT_NOTIFY)
-		free(e->event.notify);
+		case GG_EVENT_NOTIFY:
+			free(e->event.notify);
+			break;
 	
-	else if (e->type == GG_EVENT_NOTIFY60) {
-		int i;
+		case GG_EVENT_NOTIFY60:
+		{
+			int i;
 
-		for (i = 0; e->event.notify60[i].uin; i++)
-			free(e->event.notify60[i].descr);
+			for (i = 0; e->event.notify60[i].uin; i++)
+				free(e->event.notify60[i].descr);
 		
-		free(e->event.notify60);
-	}
+			free(e->event.notify60);
 
-	else if (e->type == GG_EVENT_STATUS60)
-		free(e->event.status60.descr);
+			break;
+		}
+
+		case GG_EVENT_STATUS60:
+			free(e->event.status60.descr);
+			break;
 	
-	else if (e->type == GG_EVENT_STATUS)
-		free(e->event.status.descr);
+		case GG_EVENT_STATUS:
+			free(e->event.status.descr);
+			break;
 
-	else if (e->type == GG_EVENT_NOTIFY_DESCR) {
-		free(e->event.notify_descr.notify);
-		free(e->event.notify_descr.descr);
-	}
+		case GG_EVENT_NOTIFY_DESCR:
+			free(e->event.notify_descr.notify);
+			free(e->event.notify_descr.descr);
+			break;
 
-	else if (e->type == GG_EVENT_DCC_VOICE_DATA)
-		free(e->event.dcc_voice_data.data);
+		case GG_EVENT_DCC_VOICE_DATA:
+			free(e->event.dcc_voice_data.data);
+			break;
 
-	else if (e->type == GG_EVENT_PUBDIR50_SEARCH_REPLY || e->type == GG_EVENT_PUBDIR50_READ || e->type == GG_EVENT_PUBDIR50_WRITE)
-		gg_pubdir50_free(e->event.pubdir50);
+		case GG_EVENT_PUBDIR50_SEARCH_REPLY:
+		case GG_EVENT_PUBDIR50_READ:
+		case GG_EVENT_PUBDIR50_WRITE:
+			gg_pubdir50_free(e->event.pubdir50);
+			break;
 
-	else if (e->type == GG_EVENT_USERLIST)
-		free(e->event.userlist.reply);
+		case GG_EVENT_USERLIST:
+			free(e->event.userlist.reply);
+			break;
 	
-	else if (e->type == GG_EVENT_IMAGE_REPLY) {
-		free(e->event.image_reply.filename);
-		free(e->event.image_reply.image);
+		case GG_EVENT_IMAGE_REPLY:
+			free(e->event.image_reply.filename);
+			free(e->event.image_reply.image);
+			break;
 	}
 
 	free(e);
@@ -837,7 +851,7 @@ struct gg_event *gg_watch_fd(struct gg_session *sess)
 
 		case GG_STATE_CONNECTING_HUB:
 		{
-			char buf[1024], *client;
+			char buf[1024], *client, *auth;
 			int res = 0, res_size = sizeof(res);
 			const char *host, *appmsg;
 
@@ -890,12 +904,18 @@ struct gg_event *gg_watch_fd(struct gg_session *sess)
 #endif
 				appmsg = "appmsg2.asp";
 
+			auth = gg_proxy_auth();
+
 			snprintf(buf, sizeof(buf) - 1,
 				"GET %s/appsvc/%s?fmnumber=%u&version=%s&lastmsg=%d HTTP/1.0\r\n"
 				"Host: " GG_APPMSG_HOST "\r\n"
 				"User-Agent: " GG_HTTP_USERAGENT "\r\n"
 				"Pragma: no-cache\r\n"
-				"\r\n", host, appmsg, sess->uin, client, sess->last_sysmsg);
+				"%s" 
+				"\r\n", host, appmsg, sess->uin, client, sess->last_sysmsg, (auth) ? auth : "");
+
+			if (auth)
+				free(auth);
 			
 			free(client);
 

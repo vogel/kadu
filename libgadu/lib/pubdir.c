@@ -1,4 +1,4 @@
-/* $Id: pubdir.c,v 1.29 2004/05/02 21:43:30 michal Exp $ */
+/* $Id: pubdir.c,v 1.30 2004/11/01 13:51:45 adrian Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -15,7 +15,8 @@
  *
  *  You should have received a copy of the GNU Lesser General Public
  *  License along with this program; if not, write to the Free Software
- *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307,
+ *  USA.
  */
 
 #include <ctype.h>
@@ -476,7 +477,7 @@ struct gg_http *gg_token(int async)
 		"Pragma: no-cache\r\n"
 		"\r\n";
 
-	if (!(h = gg_http_connect(GG_APPMSG_HOST, GG_APPMSG_PORT, async, "POST", "/appsvc/regtoken.asp", query))) {
+	if (!(h = gg_http_connect(GG_REGISTER_HOST, GG_REGISTER_PORT, async, "POST", "/appsvc/regtoken.asp", query))) {
 		gg_debug(GG_DEBUG_MISC, "=> token, gg_http_connect() failed mysteriously\n");
 		return NULL;
 	}
@@ -564,7 +565,7 @@ int gg_token_watch_fd(struct gg_http *h)
 
 		free(url);
 	
-		if (!(h2 = gg_http_connect(GG_APPMSG_HOST, GG_APPMSG_PORT, h->async, "GET", path, "Host: " GG_APPMSG_HOST "\r\nUser-Agent: " GG_HTTP_USERAGENT "\r\n\r\n"))) {
+		if (!(h2 = gg_http_connect(GG_REGISTER_HOST, GG_REGISTER_PORT, h->async, "GET", path, "Host: " GG_REGISTER_HOST "\r\nUser-Agent: " GG_HTTP_USERAGENT "\r\n\r\n"))) {
 			gg_debug(GG_DEBUG_MISC, "=> token, gg_http_connect() failed mysteriously\n");
 			free(path);
 			free(tokenid);

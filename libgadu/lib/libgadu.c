@@ -1,4 +1,4 @@
-/* $Id: libgadu.c,v 1.39 2004/10/15 15:07:52 joi Exp $ */
+/* $Id: libgadu.c,v 1.40 2004/11/01 13:51:44 adrian Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -17,7 +17,8 @@
  *
  *  You should have received a copy of the GNU Lesser General Public
  *  License along with this program; if not, write to the Free Software
- *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307,
+ *  USA.
  */
 
 #include <sys/types.h>
@@ -71,7 +72,7 @@ static char rcsid[]
 #ifdef __GNUC__
 __attribute__ ((unused))
 #endif
-= "$Id: libgadu.c,v 1.39 2004/10/15 15:07:52 joi Exp $";
+= "$Id: libgadu.c,v 1.40 2004/11/01 13:51:44 adrian Exp $";
 #endif 
 
 /*
@@ -197,8 +198,7 @@ int gg_resolve(int *fd, int *pid, const char *hostname)
 	if (pipe(pipes) == -1)
 		return -1;
 
-	if ((res = fork()) == -1)
-	{
+	if ((res = fork()) == -1) {
 		close(pipes[0]);
 		close(pipes[1]);
 		return -1;
@@ -206,13 +206,13 @@ int gg_resolve(int *fd, int *pid, const char *hostname)
 
 	if (!res) {
 		if ((a.s_addr = inet_addr(hostname)) == INADDR_NONE) {
-			struct hostent *he;
+			struct in_addr *hn;
 		
-			if (!(he = gg_gethostbyname(hostname)))
+			if (!(hn = gg_gethostbyname(hostname)))
 				a.s_addr = INADDR_NONE;
 			else {
-				memcpy((char*) &a, he->h_addr, sizeof(a));
-				free(he);
+				a.s_addr = hn->s_addr;
+				free(hn);
 			}
 		}
 
@@ -242,13 +242,13 @@ static void *gg_resolve_pthread_thread(void *arg)
 	struct in_addr a;
 
 	if ((a.s_addr = inet_addr(d->hostname)) == INADDR_NONE) {
-		struct hostent *he;
+		struct in_addr *hn;
 		
-		if (!(he = gg_gethostbyname(d->hostname)))
+		if (!(hn = gg_gethostbyname(d->hostname)))
 			a.s_addr = INADDR_NONE;
 		else {
-			memcpy((char*) &a, he->h_addr, sizeof(a));
-			free(he);
+			a.s_addr = hn->s_addr;
+			free(hn);
 		}
 	}
 
@@ -281,9 +281,9 @@ static void *gg_resolve_pthread_thread(void *arg)
  */
 int gg_resolve_pthread(int *fd, void **resolver, const char *hostname)
 {
-	struct gg_resolve_pthread_data *d;
+	struct gg_resolve_pthread_data *d = NULL;
 	pthread_t *tmp;
-	int pipes[2];
+	int pipes[2], new_errno;
 
 	gg_debug(GG_DEBUG_FUNCTION, "** gg_resolve_pthread(%p, %p, \"%s\");\n", fd, resolver, hostname);
 	
@@ -307,33 +307,24 @@ int gg_resolve_pthread(int *fd, void **resolver, const char *hostname)
 
 	if (!(d = malloc(sizeof(*d)))) {
 		gg_debug(GG_DEBUG_MISC, "// gg_resolve_pthread() out of memory\n");
-		close(pipes[0]);
-		close(pipes[1]);
-		free(tmp);
-		errno = ENOMEM;
-		return -1;
+		new_errno = ENOMEM;
+		goto cleanup;
 	}
 	
+	d->hostname = NULL;
+
 	if (!(d->hostname = strdup(hostname))) {
 		gg_debug(GG_DEBUG_MISC, "// gg_resolve_pthread() out of memory\n");
-		close(pipes[0]);
-		close(pipes[1]);
-		free(tmp);
-		free(d);
-		errno = ENOMEM;
-		return -1;
+		new_errno = ENOMEM;
+		goto cleanup;
 	}
-	
+
 	d->fd = pipes[1];
 
 	if (pthread_create(tmp, NULL, gg_resolve_pthread_thread, d)) {
 		gg_debug(GG_DEBUG_MISC, "// gg_resolve_phread() unable to create thread\n");
-		close(pipes[0]);
-		close(pipes[1]);
-		free(tmp);
-		free(d->hostname);
-		free(d);
-		return -1;
+		new_errno = errno;
+		goto cleanup;
 	}
 
 	gg_debug(GG_DEBUG_MISC, "// gg_resolve_pthread() %p\n", tmp);
@@ -343,6 +334,21 @@ int gg_resolve_pthread(int *fd, void **resolver, const char *hostname)
 	*fd = pipes[0];
 
 	return 0;
+
+cleanup:
+	if (d) {
+		free(d->hostname);
+		free(d);
+	}
+
+	close(pipes[0]);
+	close(pipes[1]);
+
+	free(tmp);
+
+	errno = new_errno;
+
+	return -1;
 }
 
 #endif
@@ -418,18 +424,18 @@ int gg_write(struct gg_session *sess, const char *buf, int length)
 #endif
 	{
 		int written = 0;
+		
+		while (written < length) {
+			res = write(sess->fd, buf + written, length - written);
 
-		while (written<length) {
-			res = write(sess->fd, buf+written, length-written);
-
-			if (res==-1) {
-				if (errno==EAGAIN)
+			if (res == -1) {
+				if (errno == EAGAIN)
 					continue;
 				else
 					break;
 			} else {
-				written+=res;
-				res=written;
+				written += res;
+				res = written;
 			}
 		}
 	}
@@ -475,6 +481,7 @@ void *gg_recv_packet(struct gg_session *sess)
 			gg_debug(GG_DEBUG_MISC, "// gg_recv_packet() header recv(%d,%p,%d) = %d\n", sess->fd, &h + sess->header_done, sizeof(h) - sess->header_done, ret);
 
 			if (!ret) {
+				errno = 0;
 				gg_debug(GG_DEBUG_MISC, "// gg_recv_packet() header recv() failed: connection broken\n");
 				return NULL;
 			}
@@ -739,11 +746,11 @@ struct gg_session *gg_login(const struct gg_login_params *p)
 	sess->check = GG_CHECK_READ;
 	sess->timeout = GG_DEFAULT_TIMEOUT;
 	sess->async = p->async;
-	sess->type = GG_SESSION_GG;
+        sess->type = GG_SESSION_GG;
 	sess->initial_status = p->status;
 	sess->callback = gg_session_callback;
 	sess->destroy = gg_free_session;
-	sess->port = (p->server_port) ? p->server_port : GG_DEFAULT_PORT;
+	sess->port = (p->server_port) ? p->server_port : ((gg_proxy_enabled) ? GG_HTTPS_PORT : GG_DEFAULT_PORT);
 	sess->server_addr = p->server_addr;
 	sess->external_port = p->external_port;
 	sess->external_addr = p->external_addr;
@@ -810,14 +817,14 @@ struct gg_session *gg_login(const struct gg_login_params *p)
 
 		if (!p->server_addr || !p->server_port) {
 			if ((a.s_addr = inet_addr(hostname)) == INADDR_NONE) {
-				struct hostent *he;
+				struct in_addr *hn;
 	
-				if (!(he = gg_gethostbyname(hostname))) {
+				if (!(hn = gg_gethostbyname(hostname))) {
 					gg_debug(GG_DEBUG_MISC, "// gg_login() host \"%s\" not found\n", hostname);
 					goto fail;
 				} else {
-					memcpy((char*) &a, he->h_addr, sizeof(a));
-					free(he);
+					a.s_addr = hn->s_addr;
+					free(hn);
 				}
 			}
 		} else {
@@ -826,6 +833,9 @@ struct gg_session *gg_login(const struct gg_login_params *p)
 		}
 
 		sess->hub_addr = a.s_addr;
+
+		if (gg_proxy_enabled)
+			sess->proxy_addr = a.s_addr;
 
 		if ((sess->fd = gg_connect(&a, port, 0)) == -1) {
 			gg_debug(GG_DEBUG_MISC, "// gg_login() connection failed (errno=%d, %s)\n", errno, strerror(errno));
@@ -1194,7 +1204,7 @@ int gg_image_reply(struct gg_session *sess, uin_t recipient, const char *filenam
 	}
 
 	/* wytnij ¶cie¿ki, zostaw tylko nazwê pliku */
-	while ((tmp = rindex(filename, '/')) || (tmp = rindex(filename, '\\')))
+	while ((tmp = strrchr(filename, '/')) || (tmp = strrchr(filename, '\\')))
 		filename = tmp + 1;
 
 	if (strlen(filename) < 1 || strlen(filename) > 1024) {
