@@ -592,20 +592,21 @@ void EventManager::eventHandler(gg_session* sess)
 		}
 
 	if (e->type == GG_EVENT_MSG) {
+		UinsList uins;
 		if (e->event.msg.msgclass == GG_CLASS_CTCP) {
-			if (config_file.readBoolEntry("Network", "AllowDCC"))
+			uins.append(e->event.msg.sender);
+			if (config_file.readBoolEntry("Network", "AllowDCC") && !isIgnored(uins))
 				emit dccConnectionReceived(userlist.byUin(e->event.msg.sender));
 			}
 		else {
-			UinsList uins;
 			kdebug("eventHandler(): %d\n", e->event.msg.recipients_count);
 			if ((e->event.msg.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT) {
-				uins.append(e->event.msg.sender);	
+				uins.append(e->event.msg.sender);
 				for (int i = 0; i < e->event.msg.recipients_count; i++)
 					uins.append(e->event.msg.recipients[i]);
 				}
 			else
-				uins.append(e->event.msg.sender);				
+				uins.append(e->event.msg.sender);
 			emit event_manager.messageReceived(e->event.msg.msgclass, uins, e->event.msg.message,
 				e->event.msg.time, e->event.msg.formats_length, e->event.msg.formats);
 			}

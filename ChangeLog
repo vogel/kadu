@@ -104,6 +104,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * historia rozmowy: hop na drzewko ;) (chilek)
 * je¶li mamy wy³±czone dcc to otrzymanie wiadomo¶ci klasy CTCP nie powoduje
   rozpoczêcia tranmisji dcc (chilek)
+* je¶li kto¶ kto jest ignorowany próbuje z nami komunikowaæ siê przez DCC
+  odrzucamy jego próby po³±czeñ (chilek)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
