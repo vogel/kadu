@@ -2,7 +2,6 @@ Kadu, klient Gadu-Gadu dla KDE, wersja 0.3.3 (lub nowsza)
 
 +++ WYMAGANIA
  * Qt-3.0.x (pisano na 3.0.4)
- * KDE-3.x (pisano na 3.0)
  * szczegó³y w pliku /doc/install.html
  
 +++ FICZERSY
@@ -27,7 +26,7 @@ Kadu, klient Gadu-Gadu dla KDE, wersja 0.3.3 (lub nowsza)
 GPL
 
 +++ AUTORZY
-"Kadu Team" szczegó³y w pliku AUTORS
+"Kadu Team" szczegó³y w pliku AUTHORS
 Wielkie dziêki dla Wojtka Kaniewskiego oraz
 ¿yczliwych ludzi z pl.comp.os.linux.programming
 i innych.
