@@ -166,13 +166,38 @@ QSocketNotifier *dccsnr = NULL;
 QSocketNotifier *dccsnw = NULL;
 
 char **gg_xpm[8] = {gg_act_xpm, gg_actdescr_xpm, gg_busy_xpm, gg_busydescr_xpm,
-    gg_invi_xpm, gg_invidescr_xpm, gg_inact_xpm, gg_inactdescr_xpm};
+	gg_invi_xpm, gg_invidescr_xpm, gg_inact_xpm, gg_inactdescr_xpm};
 int gg_statuses[8] = {GG_STATUS_AVAIL, GG_STATUS_AVAIL_DESCR, GG_STATUS_BUSY, GG_STATUS_BUSY_DESCR,
-    GG_STATUS_INVISIBLE, GG_STATUS_INVISIBLE_DESCR, GG_STATUS_NOT_AVAIL, GG_STATUS_NOT_AVAIL_DESCR};
+	GG_STATUS_INVISIBLE, GG_STATUS_INVISIBLE_DESCR, GG_STATUS_NOT_AVAIL, GG_STATUS_NOT_AVAIL_DESCR};
 const char *statustext[8] = {"Online", "Online (d.)",
-    "Busy", "Busy (d.)",
-    "Invisible", "Invisible (d.)",
-    "Offline", "Offline (d.)"};
+	"Busy", "Busy (d.)",
+	"Invisible", "Invisible (d.)",
+	"Offline", "Offline (d.)"};
+enum {
+	KADU_CMD_SEND_MESSAGE,
+	KADU_CMD_OPEN_CHAT,
+	KADU_CMD_REMOVE_USER,
+	KADU_CMD_DELETE_HISTORY,
+	KADU_CMD_SHOW_HISTORY,
+	KADU_CMD_USERINFO,
+	KADU_CMD_SEARCH,
+	KADU_CMD_MUTE,
+	KADU_CMD_ADD_USER,
+	KADU_CMD_MANAGE_IGNORED,
+	KADU_CMD_ABOUT,
+	KADU_CMD_SEND_USERLIST,
+	KADU_CMD_SMS,
+	KADU_CMD_REMIND_PASSWORD,
+	KADU_CMD_REGISTER_USER,
+	KADU_CMD_QUIT,
+	KADU_CMD_SEARCH_USER,
+	KADU_CMD_EXPORT_USERLIST,
+	KADU_CMD_CONFIG,
+	KADU_CMD_IMPORT_USERLIST,
+	KADU_CMD_HIDE,
+	KADU_CMD_SEND_FILE,
+	KADU_CMD_PERSONAL_INFO
+};
 
 /* our own description container */
 QString own_description;
@@ -743,112 +768,112 @@ void Kadu::commandParser (int command) {
 	QString tmp;
 		
 	switch (command) {
-		case 1:
+		case KADU_CMD_SEND_MESSAGE:
 			Message *msg;
 			msg = new Message(userbox->currentText());
 			msg->show();
 			break;
-		case 2:
+		case KADU_CMD_OPEN_CHAT:
 			for (i = 0; i < userbox->count(); i++)
 				if (userbox->isSelected(i))
 					uins.append(userlist.byAltNick(userbox->text(i)).uin);
 			openChat(uins);
 			break;
-		case 3:
+		case KADU_CMD_REMOVE_USER:
 			tmp = userbox->currentText();
 			removeUser(tmp);
 			break;
-		case 4:
+		case KADU_CMD_DELETE_HISTORY:
 			confirmHistoryDeletion(userbox->currentText().local8Bit());
 			break;
-		case 5:
+		case KADU_CMD_SHOW_HISTORY:
 			History *hb;
 			hb =new History(userlist.byAltNick(userbox->currentText()).uin);
 			hb->show();
 			break;
-		case 6:
+		case KADU_CMD_USERINFO:
 			UserInfo *ui;
 			ui = new UserInfo("user info", 0, userlist.byAltNick(userbox->currentText()).uin);
 			ui->show();
 			break;
-		case 7:
+		case KADU_CMD_SEARCH:
 			sd = new SearchDialog;
 			sd->show();
 			break;
-		case 8:
+		case KADU_CMD_MUTE:
 			mute = !mute;
 			if (mute) {
 				QPixmap snd_unmute((const char **)snd_mute_xpm);
 				QIconSet icon(snd_unmute);
-				mmb->changeItem(8, icon, i18n("Unmute sounds"));
+				mmb->changeItem(KADU_CMD_MUTE, icon, i18n("Unmute sounds"));
 				}
 			else {
 				QPixmap snd_mute((const char **)snd_unmute_xpm);
 				QIconSet icon(snd_mute);
-				mmb->changeItem(8, icon, i18n("Mute sounds"));		
+				mmb->changeItem(KADU_CMD_MUTE, icon, i18n("Mute sounds"));		
 				}
 			break;
-		case 9:
+		case KADU_CMD_ADD_USER:
 			Adduser *au;
 			au = new Adduser(0, "add_user");
 			au->show();
 			break;
-		case 10:
+		case KADU_CMD_MANAGE_IGNORED:
 			Ignored *ign;
 			ign = new Ignored(0, "ignored");
 			ign->show();
 			break;
-		case 11:
+		case KADU_CMD_ABOUT:
 			About *about;
 			about = new About;
 			about->show();
 			break;
-		case 12:
+		case KADU_CMD_SEND_USERLIST:
 			sendUserlist();
 			break;
-		case 13:
+		case KADU_CMD_SMS:
 			Sms *sms;
 			sms = new Sms(0, userbox->currentText(), 0);
 			sms->show();
 			break;
-		case 14:
+		case KADU_CMD_REMIND_PASSWORD:
 			remindPassword();
 			break;
-		case 15:
+		case KADU_CMD_REGISTER_USER:
 			Register *reg;
 			reg = new Register;
 			reg->show();
 			break;
-		case 16:
+		case KADU_CMD_QUIT:
 			close_permitted = true;
 			disconnectNetwork();
 			close(true);
 			break;
-		case 17:
+		case KADU_CMD_SEARCH_USER:
 			sd = new SearchDialog(0,i18n("User info"), userlist.byAltNick(userbox->currentText()).uin);
 			sd->show();
 			sd->doSearch();
 			break;
-		case 18:
+		case KADU_CMD_IMPORT_USERLIST:
 			UserlistImport *uli;
 			uli = new UserlistImport;
 			uli->show();
 			break;
-		case 19:
+		case KADU_CMD_CONFIG:
 			ConfigDialog *cd;
 			cd = new ConfigDialog;
 			cd->show();
 			break;
-		case 20:
+		case KADU_CMD_EXPORT_USERLIST:
 			UserlistExport *ule;
 			ule = new UserlistExport;
 			ule->show();
 			break;
-		case 21:
+		case KADU_CMD_HIDE:
 			close_permitted = false;
 			close(true);
 			break;
-		case 22:
+		case KADU_CMD_SEND_FILE:
 			struct gg_dcc *dcc_new;		
 			user = userlist.byAltNick(userbox->currentText());
 			
@@ -869,7 +894,7 @@ void Kadu::commandParser (int command) {
 				acks[i].ptr = NULL;
 				}
 			break;
-		case 23:
+		case KADU_CMD_PERSONAL_INFO:
 			PersonalInfoDialog *pid;
 			pid = new PersonalInfoDialog();
 			pid->show();
@@ -902,27 +927,27 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 	UserListElement user;
 	user = userlist.byAltNick(item->text());
 
-	pm->insertItem(msg, i18n("Send message"), 1);
-	pm->insertItem(i18n("Open chat window"), 2);
-	pm->insertItem(i18n("Send SMS"), 13);
-	pm->insertItem(loader->loadIcon("filesave", KIcon::Small), i18n("Send file"), 22);
+	pm->insertItem(msg, i18n("Send message"), KADU_CMD_SEND_MESSAGE);
+	pm->insertItem(i18n("Open chat window"), KADU_CMD_OPEN_CHAT);
+	pm->insertItem(i18n("Send SMS"), KADU_CMD_SMS);
+	pm->insertItem(loader->loadIcon("filesave", KIcon::Small), i18n("Send file"), KADU_CMD_SEND_FILE);
 	if (user.status == GG_STATUS_AVAIL || user.status == GG_STATUS_AVAIL_DESCR ||
 		user.status == GG_STATUS_BUSY || user.status == GG_STATUS_BUSY_DESCR)
-		pm->setItemEnabled(22, true);
+		pm->setItemEnabled(KADU_CMD_SEND_FILE, true);
 	else
-		pm->setItemEnabled(22, false);
+		pm->setItemEnabled(KADU_CMD_SEND_FILE, false);
     
 	pm->insertSeparator();
 	
-	pm->insertItem(loader->loadIcon("remove", KIcon::Small), i18n("Remove from userlist"), 3);
-	pm->insertItem(loader->loadIcon("eraser", KIcon::Small), i18n("Clear history"), 4);
+	pm->insertItem(loader->loadIcon("remove", KIcon::Small), i18n("Remove from userlist"), KADU_CMD_REMOVE_USER);
+	pm->insertItem(loader->loadIcon("eraser", KIcon::Small), i18n("Clear history"), KADU_CMD_DELETE_HISTORY);
 	QPixmap history;
 	history = loader->loadIcon("history", KIcon::Small);
-	pm->insertItem(history, i18n("View history"), 5);
-	pm->insertItem(loader->loadIcon("identity", KIcon::Small), i18n("View/edit user info"), 6);
-	pm->insertItem(loader->loadIcon("viewmag", KIcon::Small), i18n("Lookup in directory"), 17);
+	pm->insertItem(history, i18n("View history"), KADU_CMD_SHOW_HISTORY);
+	pm->insertItem(loader->loadIcon("identity", KIcon::Small), i18n("View/edit user info"), KADU_CMD_USERINFO);
+	pm->insertItem(loader->loadIcon("viewmag", KIcon::Small), i18n("Lookup in directory"), KADU_CMD_SEARCH_USER);
 	pm->insertSeparator();
-	pm->insertItem(i18n("About..."), 11);
+	pm->insertItem(i18n("About..."), KADU_CMD_ABOUT);
 
 	connect(pm, SIGNAL(activated(int)), this, SLOT(commandParser(int)));	
 	pm->exec(QCursor::pos());    	
@@ -1622,18 +1647,18 @@ void Kadu::createMenu() {
 	KIconLoader *loader = KGlobal::iconLoader();
 
 	QPopupMenu *ppm = new QPopupMenu(this);
-	ppm->insertItem(i18n("Manage &ignored"), 10);
-	ppm->insertItem(loader->loadIcon("configure", KIcon::Small), i18n("&Configuration"), 19);
-	ppm->insertItem(loader->loadIcon("reload", KIcon::Small), i18n("Resend &userlist"), 12);
+	ppm->insertItem(i18n("Manage &ignored"), KADU_CMD_MANAGE_IGNORED);
+	ppm->insertItem(loader->loadIcon("configure", KIcon::Small), i18n("&Configuration"), KADU_CMD_CONFIG);
+	ppm->insertItem(loader->loadIcon("reload", KIcon::Small), i18n("Resend &userlist"), KADU_CMD_SEND_USERLIST);
 	if (mute) {
 		QPixmap snd_unmute((const char **)snd_mute_xpm);
 		QIconSet icon(snd_unmute);
-		ppm->insertItem(icon, i18n("Unmute sounds"), 8);
+		ppm->insertItem(icon, i18n("Unmute sounds"), KADU_CMD_MUTE);
 		}
 	else {
 		QPixmap snd_mute((const char **)snd_unmute_xpm);
 		QIconSet icon(snd_mute);
-		ppm->insertItem(icon, i18n("Mute sounds"), 8);		
+		ppm->insertItem(icon, i18n("Mute sounds"), KADU_CMD_MUTE);		
 		}
 	ppm->insertSeparator();
 
@@ -1653,22 +1678,22 @@ QObject::connect(grpmenu, SIGNAL( activated(int) ), this, SLOT( changeGroup(int)
 ppm->insertSeparator();
 */
 
-	ppm->insertItem(i18n("Remind &password"), 14);
+	ppm->insertItem(i18n("Remind &password"), KADU_CMD_REMIND_PASSWORD);
 	QPixmap new__user((const char **)new_user);
-	ppm->insertItem(new__user,i18n("Register &new user"), 15);
-	ppm->insertItem(i18n("Personal information"), 23);
+	ppm->insertItem(new__user,i18n("Register &new user"), KADU_CMD_REGISTER_USER);
+	ppm->insertItem(i18n("Personal information"), KADU_CMD_PERSONAL_INFO);
 	ppm->insertSeparator();
 	QPixmap find;
 	find = loader->loadIcon("viewmag", KIcon::Small);
-	ppm->insertItem(find, i18n("&Search for users"), 7);
-	ppm->insertItem(i18n("I&mport userlist"), 18);
-	ppm->insertItem(i18n("E&xport userlist"), 20);
-	ppm->insertItem(QPixmap((const char **)gg_act_xpm),i18n("&Add user"), 9);
+	ppm->insertItem(find, i18n("&Search for users"), KADU_CMD_SEARCH);
+	ppm->insertItem(i18n("I&mport userlist"), KADU_CMD_IMPORT_USERLIST);
+	ppm->insertItem(i18n("E&xport userlist"), KADU_CMD_EXPORT_USERLIST);
+	ppm->insertItem(QPixmap((const char **)gg_act_xpm),i18n("&Add user"), KADU_CMD_ADD_USER);
 	ppm->insertSeparator();
-	ppm->insertItem(i18n("A&bout..."), 11);
+	ppm->insertItem(i18n("A&bout..."), KADU_CMD_ABOUT);
 	ppm->insertSeparator();
-	ppm->insertItem(i18n("&Hide Kadu"), 21);
-	ppm->insertItem(loader->loadIcon("exit", KIcon::Small), i18n("&Exit Kadu"), 16);
+	ppm->insertItem(i18n("&Hide Kadu"), KADU_CMD_HIDE);
+	ppm->insertItem(loader->loadIcon("exit", KIcon::Small), i18n("&Exit Kadu"), KADU_CMD_QUIT);
 
 	mmb = new KMenuBar(this);
 	mmb->insertItem(i18n("&Kadu"), ppm);
