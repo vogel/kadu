@@ -28,6 +28,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   ktora moze byc uzywana np. przez zewnetrzne moduly (adrian)
 * drobne porzadki w EventManagerze, przeniesienie czesci kodu do ChatManagera,
   HistoryManagera (adrian)
+* mozliwosc zaladowania kilku modulow rownoczesnie, okienko dialogowe
+  z dwoma listami: modulow dostepnych i zaladowanych i mozliwosc zaladowania/
+  wyladowania modulu za pomoca podwojnego klikniecia (adrian)
 
 +++ wersja 0.3.6 (22.11.2003)
 * je¶li klikniemy na jaki¶ kontakt w userboxie, od którego otrzymali¶my jak±¶
