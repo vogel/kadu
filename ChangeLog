@@ -40,7 +40,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   ucina spacje w oknie rozmowy - to samo tyczy sie panelu informacyjnego (mast3r)
 * obs³uga importu d³ugich list kontaktu (chilek)
 * pola w oknie informacji o kontakcie s± znowu tylko do odczytu, a nie disabled (mast3r)
-
+* nie s± eksportowani u¿ytkownicy "anonimowi" (chilek)
+* okno wysy³ania sms: posortowana lista odbiorców (chilek)
 
 +++ wersja 0.3.4-rc4
 * kadu nie pokazuje fa³szywych statusów ukrytych w userboksie (chilek)

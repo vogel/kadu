@@ -229,6 +229,11 @@ UserlistExport::UserlistExport(QWidget *parent, const char *name)
 
 	QGridLayout *grid = new QGridLayout(this,3,1,3,3);
 
+	int i = 0;
+	for (UserList::iterator it = userlist.begin(); it != userlist.end(); it++)
+		if (!(*it).anonymous)
+			i++;
+
 	QString message(i18n("%1 entries will be exported").arg(userlist.count()));
 
 	QLabel *clabel = new QLabel(message,this);
@@ -260,27 +265,28 @@ QString UserlistExport::saveContacts(){
 	QString contacts;
 	int i = 0;
 	contacts="";
-	while (i < userlist.count()) {
-		contacts += userlist[i].first_name;
-		contacts += ";";
-		contacts += userlist[i].last_name;
-		contacts += ";";
-		contacts += userlist[i].nickname;
-		contacts += ";";
-		contacts += userlist[i].altnick;
-		contacts += ";";
-		contacts += userlist[i].mobile;
-		contacts += ";";
-		contacts += userlist[i].group();
-		contacts += ";";
-		if (userlist[i].uin)
-			contacts += QString::number(userlist[i].uin);
-		contacts += ";";
-		contacts += userlist[i].email;
-		contacts += ";0;;0;";
-		contacts += "\r\n";
-		i++;
-		}
+	while (i < userlist.count())
+		if (!userlist[i].anonymous) {
+			contacts += userlist[i].first_name;
+			contacts += ";";
+			contacts += userlist[i].last_name;
+			contacts += ";";
+			contacts += userlist[i].nickname;
+			contacts += ";";
+			contacts += userlist[i].altnick;
+			contacts += ";";
+			contacts += userlist[i].mobile;
+			contacts += ";";
+			contacts += userlist[i].group();
+			contacts += ";";
+			if (userlist[i].uin)
+				contacts += QString::number(userlist[i].uin);
+			contacts += ";";
+			contacts += userlist[i].email;
+			contacts += ";0;;0;";
+			contacts += "\r\n";
+			i++;
+			}
 	contacts.replace(QRegExp("(null)"), "");
 	
 	return contacts;
