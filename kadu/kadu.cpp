@@ -1483,6 +1483,7 @@ void Kadu::disconnectNetwork() {
 
 	chat_manager->refreshTitles();
 
+	own_description = QString::null;
 	UserBox::all_refresh();
 
 	socket_active = false;
