@@ -55,6 +55,7 @@
 #include <qstringlist.h>
 #include <qsplitter.h>
 #include <qdatetime.h>
+#include <qevent.h>
 #include <arpa/inet.h>
 #include <libintl.h>
 #include <stdio.h>
@@ -469,7 +470,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	statuslabeltxt->setText(i18n("Offline"));
 	statuslabeltxt->setFrameStyle(QFrame::WinPanel | QFrame::Sunken);
 	statuslabeltxt->setFont(QFont("Verdana", 9));
-	statuslabeltxt->setMinimumWidth(width() - 45);
+	statuslabeltxt->setFixedWidth((width() - 45) > 50 ? width() - 45 : 50);
 
 	/* a bit darker than the rest */
 	statuslabeltxt->setPaletteBackgroundColor(QColor(
@@ -478,7 +479,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		qBlue(statuslabeltxt->paletteBackgroundColor().rgb()) - 20));
 
 	statuslabel = new MyLabel(centralFrame, "statuslabel");
-	statuslabel->setPixmap(QPixmap((const char**)gg_inact_xpm) );
+	statuslabel->setPixmap(QPixmap((const char**)gg_inact_xpm));
+	statuslabel->setFixedWidth(QPixmap((const char**)gg_inact_xpm).width());
 
 	/* guess what */
 	createMenu();
@@ -545,6 +547,10 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 				this, SLOT(gotUpdatesInfo(const QByteArray &, QNetworkOperation *)));
 		uc->run();
 		}
+}
+
+void Kadu::resizeEvent(QResizeEvent *e) {
+	statuslabeltxt->setFixedWidth((width() - 45) > 50 ? width() - 45 : 50);
 }
 
 void Kadu::changeAppearance() {

@@ -24,6 +24,7 @@
 #include <qnetworkprotocol.h>
 #include <qstringlist.h>
 #include <qstring.h>
+#include <qevent.h>
 
 #include "userlist.h"
 #include "userbox.h"
@@ -168,6 +169,8 @@ class Kadu : public QMainWindow
 		bool event(QEvent *e);
 		void watchDcc(void);
 		void keyPressEvent(QKeyEvent *e);
+		void resizeEvent(QResizeEvent *e);
+
 		struct gg_event *dcc_e;
 		int dcc_ret;
 
