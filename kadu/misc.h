@@ -18,6 +18,8 @@
 #include <qfiledialog.h>
 #include <qtextbrowser.h>
 #include <qtooltip.h>
+#include <qvaluelist.h>
+#include <qvariant.h>
 
 #include <inttypes.h>
 
@@ -437,5 +439,8 @@ class KaduTextBrowser : public QTextBrowser, QToolTip
 	public slots:
 		virtual void copy();
 };
+
+QValueList<int> toIntList(const QValueList<QVariant> &in);
+QValueList<QVariant> toVariantList(const QValueList<int> &in);
 
 #endif

@@ -135,8 +135,18 @@ void EncryptionManager::chatCreated(const UinsList& uins)
 	Chat* chat=chat_manager->findChatByUins(uins);
 	connect(chat,SIGNAL(messageFiltering(const UinsList&,QCString&,bool&)),this,SLOT(sendMessageFilter(const UinsList&,QCString&,bool&)));
 
-	QPushButton* encryption_btn=chat->button("encryption_button");	
-	setupEncryptButton(chat,config_file.readBoolEntry("Chat", "Encryption") && encryption_possible);	
+	QPushButton* encryption_btn=chat->button("encryption_button");
+	bool encrypt=false;
+	if (encryption_possible)
+	{
+		QVariant v=chat_manager->getChatProperty(uins, "EncryptionEnabled");
+		if (v.isValid())
+			encrypt=v.toBool();
+		else
+			encrypt=config_file.readBoolEntry("Chat", "Encryption");
+	}
+	
+	setupEncryptButton(chat, encrypt);
 	encryption_btn->setEnabled(encryption_possible);
 
 	EncryptionButtonChat[encryption_btn]=chat;
@@ -159,6 +169,7 @@ void EncryptionManager::setupEncryptButton(Chat* chat,bool enabled)
 		QToolTip::add(encryption_btn, tr("Enable encryption for this conversation"));
 		encryption_btn->setPixmap(icons_manager.loadIcon("DecryptedChat"));
 	}
+	chat_manager->setChatProperty(chat->uins(), "EncryptionEnabled", QVariant(enabled));
 	kdebugf2();
 }
 

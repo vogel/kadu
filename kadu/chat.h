@@ -11,6 +11,8 @@
 #include <qsplitter.h>
 #include <qrect.h>
 #include <qcolor.h>
+#include <qvariant.h>
+#include <qmap.h>
 
 #include "misc.h"
 #include "userbox.h"
@@ -63,12 +65,10 @@ class ChatManager : public QObject
 		struct ChatInfo
 		{
 			UinsList uins;
-			QRect geometry;
-			QValueList<int> vertSizes;
-			QValueList<int> horizSizes;
+			QMap<QString, QVariant> map;
 		};
-		QValueList<ChatInfo> sizes;
-		
+		QValueList<ChatInfo> addons;
+
 	public:	
 		ChatManager(QObject* parent=NULL, const char* name=NULL);
 		~ChatManager();
@@ -77,6 +77,7 @@ class ChatManager : public QObject
 		**/
 		const ChatList& chats();
 		Chat* findChatByUins(UinsList uins);
+		QVariant& getChatProperty(const UinsList &uins, const QString &name);
 		
 	public slots:
 		void chatMsgReceived(UinsList senders,const QString& msg,time_t time,bool& grab);
@@ -99,6 +100,11 @@ class ChatManager : public QObject
 		void refreshTitles();
 		void refreshTitlesForUin(UinType uin);
 		void changeAppearance();
+		/**
+			pozwala przypisaæ okre¶lonemu czatowi (nawet je¿eli on jeszcze nie istnieje)
+			pewne w³asno¶ci
+		**/
+		void setChatProperty(const UinsList &uins, const QString &name, const QVariant &value);
 		
 	signals:
 		void chatCreated(const UinsList& senders);

@@ -79,26 +79,10 @@ void ChatManager::unregisterChat(Chat* chat)
 	for(unsigned int i=0; i<Chats.count(); ++i)
 		if(Chats[i]==chat)
 		{
-			ChatInfo info;
-			info.uins=chat->uins();
-
-			info.geometry.setX(chat->pos().x());
-			info.geometry.setY(chat->pos().y());
-			info.geometry.setWidth(chat->size().width());
-			info.geometry.setHeight(chat->size().height());
-
-			for (QValueList<ChatInfo>::iterator j=sizes.begin(); j!=sizes.end(); ++j)
-				if ((*j).uins.equals(info.uins))
-				{
-					sizes.remove(j);
-					break;
-				}
-
-			info.vertSizes=chat->vertSplit->sizes();
+			setChatProperty(chat->uins(), "Geometry", QRect(chat->pos().x(), chat->pos().y(), chat->size().width(), chat->size().height()));
+			setChatProperty(chat->uins(), "VerticalSizes", toVariantList(chat->vertSplit->sizes()));
 			if (chat->horizSplit)
-				info.horizSizes=chat->horizSplit->sizes();
-
-			sizes.push_front(info);
+				setChatProperty(chat->uins(), "HorizontalSizes", toVariantList(chat->horizSplit->sizes()));
 
 			emit chatDestroying(chat->uins());
 			Chats.remove(Chats.at(i));
@@ -150,18 +134,8 @@ int ChatManager::openChat(UinsList senders,time_t time)
 	Chat* chat = new Chat(senders, 0, "chat");
 	chat->setTitle();
 
-	bool found=false;
-	for (QValueList<ChatInfo>::iterator j=sizes.begin(); j!=sizes.end(); ++j)
-		if ((*j).uins.equals(senders))
-		{
-			found=true;
-			chat->setGeometry((*j).geometry);
-			chat->vertSplit->setSizes((*j).vertSizes);
-			if (chat->horizSplit)
-				chat->horizSplit->setSizes((*j).horizSizes);
-			break;
-		}
-	if (!found)
+	QRect geometry=getChatProperty(senders, "Geometry").toRect();
+	if (geometry.isEmpty())
 	{
 		QPoint pos = QCursor::pos();
 		int x,y,width,height;
@@ -180,9 +154,24 @@ int ChatManager::openChat(UinsList senders,time_t time)
 			y=desk->height()-height-50;
 		if (x<50) x=50;
 		if (y<50) y=50;
-		chat->setGeometry(x,y,width,height);
+		geometry.setX(x);
+		geometry.setY(y);
+		geometry.setWidth(width);
+		geometry.setHeight(height);
 	}
+	chat->setGeometry(geometry);
 
+	QValueList<int> vertSizes=toIntList(getChatProperty(senders, "VerticalSizes").toList());
+	if (!vertSizes.empty())
+		chat->vertSplit->setSizes(vertSizes);
+	
+	if (chat->horizSplit)
+	{
+		QValueList<int> horizSizes=toIntList(getChatProperty(senders, "HorizontalSizes").toList());
+		if (!horizSizes.empty())
+			chat->horizSplit->setSizes(horizSizes);
+	}
+	
 	chat->show();
 	chat->writeMessagesFromHistory(senders, time);
 	emit chatCreated(senders);
@@ -341,6 +330,34 @@ void ChatManager::chatMsgReceived(UinsList senders, const QString& msg, time_t t
 		chat->alertNewMessage();
 		grab=true;
 	}
+}
+
+QVariant& ChatManager::getChatProperty(const UinsList &uins, const QString &name)
+{
+	for (QValueList<ChatInfo>::iterator it=addons.begin(); it!=addons.end(); it++)
+		if ((*it).uins.equals(uins))
+			return (*it).map[name];
+	ChatInfo info;
+	info.uins=uins;
+	info.map[name]=QVariant();
+	addons.push_front(info);
+	return addons[0].map[name];
+//	return addons[uins][name];
+}
+
+void ChatManager::setChatProperty(const UinsList &uins, const QString &name, const QVariant &value)
+{
+	for (QValueList<ChatInfo>::iterator it=addons.begin(); it!=addons.end(); it++)
+		if ((*it).uins.equals(uins))
+		{
+			(*it).map[name]=value;
+			return;
+		}
+	ChatInfo info;
+	info.uins=uins;
+	info.map[name]=value;
+	addons.push_front(info);
+//	addons[uins][name]=value;
 }
 
 ChatManager* chat_manager=NULL;

@@ -2327,3 +2327,19 @@ void KaduTextBrowser::copy()
 		return QTextBrowser::copy();
 	kdebugf2();
 }
+
+QValueList<int> toIntList(const QValueList<QVariant> &in)
+{
+	QValueList<int> out;
+	for (QValueList<QVariant>::const_iterator it=in.begin(); it!=in.end(); it++)
+		out.append((*it).toInt());
+	return out;
+}
+
+QValueList<QVariant> toVariantList(const QValueList<int> &in)
+{
+	QValueList<QVariant> out;
+	for (QValueList<int>::const_iterator it=in.begin(); it!=in.end(); it++)
+		out.append(QVariant(*it));
+	return out;
+}
