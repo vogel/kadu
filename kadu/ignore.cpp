@@ -171,3 +171,7 @@ int readIgnored() {
 
 	return 0;
 }
+
+void clearIgnored() {
+	ignored.clear();
+}

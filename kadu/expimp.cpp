@@ -21,6 +21,7 @@
 #include "debug.h"
 #include "events.h"
 #include "message_box.h"
+#include "ignore.h"
 #include "expimp.h"
 
 UserlistImport::UserlistImport(QWidget *parent, const char *name)
@@ -142,6 +143,7 @@ void UserlistImport::makeUserlist() {
 
 	userlist = importedUserlist;
 	
+	clearIgnored();
 	kadu->userbox->clear();
 	kadu->userbox->clearUsers();
 	for (i = 0; i < userlist.count(); i++)

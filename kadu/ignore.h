@@ -32,6 +32,7 @@ int writeIgnored(QString filename = QString::null);
 void addIgnored(UinsList uins);
 void delIgnored(UinsList uins);
 bool isIgnored(UinsList uins);
+void clearIgnored();
 
 // Ominiecie bledu w gcc 3.2
 static QValueList<UinsList> ignored_gcc32_bug;
