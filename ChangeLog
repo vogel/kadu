@@ -26,6 +26,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * domy¶lna kompilacja z flagami -Os -fno-exceptions -pipe i
   je¶li nie w³±czymy debuga to dodatkowo -s. Kadu jest
   teraz o po³owê mniejsze (mast3r/adrian)
+* wyrównane ikonki statusów (jz)
+* nowy "image" okna informacji o u¿ytkowniku (chilek)
 
 +++ wersja 0.3.4-pre2
 * graficzny instalator - instaluj.tcl (googie)
