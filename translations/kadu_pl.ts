@@ -1812,7 +1812,7 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     </message>
     <message>
         <source>You can&apos;t add so many groups at one stroke. Close this dialog and open one more time.</source>
-        <translation>Nie można dodawać tak wiele gup naraz. Zamknij to okno i otwórz jeszcze raz.</translation>
+        <translation>Nie można dodawać tak wielu grNie można dodawać takup naraz. Zamknij to okno i otwórz jeszcze raz.</translation>
     </message>
 </context>
 <context>
