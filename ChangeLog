@@ -357,6 +357,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   nale¿y i podgl±d dla tematów panela info jest prawid³owy (Ron_K)
 * libgadu: drobne wycieki w specyficznych warunkach (joi)
 * poprawione przesy³anie plików przy przekierowaniu portów (joi)
+* opcja testowania odtwarzania próbek przez nowe api w konfiguracji (adrian)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,

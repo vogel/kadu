@@ -32,6 +32,10 @@ class SoundSlots : public QObject
 		void testSoundFile();
 		void selectedPaths(const QStringList& paths);
 		void muteUnmuteSounds();
+		void testSamplePlaying();
+		void testSampleRecording();
+		void testFullDuplex();
+
 	public:
 		SoundSlots(QObject *parent=0, const char *name=0);
 		~SoundSlots();

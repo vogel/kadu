@@ -25,6 +25,7 @@
 #include "sound.h"
 #include "kadu.h"
 #include "misc.h"
+#include "message_box.h"
 #include "../notify/notify.h"
 
 SoundManager* sound_manager=NULL;
@@ -82,7 +83,12 @@ SoundManager::SoundManager(const QString& name, const QString& configname)
 	ConfigDialog::addPushButton("Sounds", "util_box", QT_TRANSLATE_NOOP("@default","Choose"));
 	ConfigDialog::addPushButton("Sounds", "util_box", QT_TRANSLATE_NOOP("@default","Clear"));
 	ConfigDialog::addPushButton("Sounds", "util_box", QT_TRANSLATE_NOOP("@default","Test"));
-	
+
+	ConfigDialog::addHGroupBox("Sounds", "Sounds", QT_TRANSLATE_NOOP("@default","Samples"));
+	ConfigDialog::addPushButton("Sounds", "Samples", QT_TRANSLATE_NOOP("@default","Test sample playing"));
+	ConfigDialog::addPushButton("Sounds", "Samples", QT_TRANSLATE_NOOP("@default","Test sample recording"));
+	ConfigDialog::addPushButton("Sounds", "Samples", QT_TRANSLATE_NOOP("@default","Test full duplex"));
+
 	sound_manager=this;
 	sound_slots= new SoundSlots(NULL, "sound_slots");
 
@@ -94,6 +100,9 @@ SoundManager::SoundManager(const QString& name, const QString& configname)
 	ConfigDialog::connectSlot("Sounds", "Test", SIGNAL(clicked()), sound_slots, SLOT(testSoundFile()));
 	ConfigDialog::connectSlot("Sounds", "Sound theme", SIGNAL(activated(const QString&)), sound_slots, SLOT(chooseSoundTheme(const QString&)));
 	ConfigDialog::connectSlot("Sounds", "Sound paths", SIGNAL(changed(const QStringList&)), sound_slots, SLOT(selectedPaths(const QStringList&)));
+	ConfigDialog::connectSlot("Sounds", "Test sample playing", SIGNAL(clicked()), sound_slots, SLOT(testSamplePlaying()));
+	ConfigDialog::connectSlot("Sounds", "Test sample recording", SIGNAL(clicked()), sound_slots, SLOT(testSampleRecording()));
+	ConfigDialog::connectSlot("Sounds", "Test full duplex", SIGNAL(clicked()), sound_slots, SLOT(testFullDuplex()));
 	
 	config_file.addVariable("Sounds", "SoundTheme", "default");
 	config_file.addVariable("Sounds", "SoundPaths","");
@@ -131,10 +140,17 @@ SoundManager::~SoundManager()
 	ConfigDialog::disconnectSlot("Sounds", "Test", SIGNAL(clicked()), sound_slots, SLOT(testSoundFile()));
 	ConfigDialog::disconnectSlot("Sounds", "Sound theme", SIGNAL(activated(const QString&)), sound_slots, SLOT(chooseSoundTheme(const QString&)));
 	ConfigDialog::disconnectSlot("Sounds", "Sound paths", SIGNAL(changed(const QStringList&)), sound_slots, SLOT(selectedPaths(const QStringList&)));
+	ConfigDialog::disconnectSlot("Sounds", "Test sample playing", SIGNAL(clicked()), sound_slots, SLOT(testSamplePlaying()));
+	ConfigDialog::disconnectSlot("Sounds", "Test sample recording", SIGNAL(clicked()), sound_slots, SLOT(testSampleRecording()));
+	ConfigDialog::disconnectSlot("Sounds", "Test full duplex", SIGNAL(clicked()), sound_slots, SLOT(testFullDuplex()));
 
 	delete sound_slots;
 	sound_slots=NULL;
 
+	ConfigDialog::removeControl("Sounds", "Test full duplex");
+	ConfigDialog::removeControl("Sounds", "Test sample recording");
+	ConfigDialog::removeControl("Sounds", "Test sample playing");
+	ConfigDialog::removeControl("Sounds", "Samples");
 	ConfigDialog::removeControl("Sounds", "Test");
 	ConfigDialog::removeControl("Sounds", "Clear");
 	ConfigDialog::removeControl("Sounds", "Choose");
@@ -730,4 +746,58 @@ void SoundSlots::onApplyConfigDialog()
 	config_file.writeEntry("Sounds", "SoundPaths", sound_manager->additionalPaths().join(";"));
 	config_file.writeEntry("Sounds", "SoundTheme", theme);
 	kdebugf2();
+}
+
+void SoundSlots::testSamplePlaying()
+{
+	QString chatsound;
+	if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
+		chatsound = config_file.readEntry("Sounds", "Chat_sound");
+	else 
+		chatsound = sound_manager->themePath(config_file.readEntry("Sounds", "SoundTheme")) + sound_manager->getThemeEntry("Chat");
+
+	QFile file(chatsound);
+	if (!file.open(IO_ReadOnly))
+	{
+		MessageBox::wrn(tr("Opening test sample file failed."));
+		return;
+	}
+	// alokujemy jeden int16_t wiêcej w razie gdyby file.size() nie
+	// by³o wielokrotno¶ci± sizeof(int16_t)
+	int16_t* buf = new int16_t[file.size() / sizeof(int16_t) + 1];
+	if (file.readBlock((char*)buf, file.size()) != file.size())
+	{
+		MessageBox::wrn(tr("Reading test sample file failed."));
+		file.close();
+		delete[] buf;
+		return;	
+	}
+	file.close();
+
+	SoundDevice device = sound_manager->openDevice(11025);
+	if (device == NULL)
+	{
+		MessageBox::wrn(tr("Opening test sample file failed."));
+		delete[] buf;
+		return;
+	}
+	if (!sound_manager->playSample(device, buf, file.size()))
+	{
+		MessageBox::wrn(tr("Playing test sample failed."));
+		sound_manager->closeDevice(device);
+		delete[] buf;
+		return;	
+	}
+	sound_manager->closeDevice(device);
+	delete[] buf;
+}
+
+void SoundSlots::testSampleRecording()
+{
+	MessageBox::msg("test sample recording");
+}
+
+void SoundSlots::testFullDuplex()
+{
+	MessageBox::msg("test full duplex");
 }

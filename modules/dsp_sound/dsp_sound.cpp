@@ -41,6 +41,12 @@ extern "C" void dsp_sound_close()
 	kdebugf2();
 }
 
+struct DspSoundDevice
+{
+	int fd;
+	int max_buf_size;
+};
+
 OSSPlayerSlots::OSSPlayerSlots(QObject *parent, const char *name) : QObject(parent, name), thread(NULL)
 {
 	kdebugf();
@@ -53,13 +59,13 @@ OSSPlayerSlots::OSSPlayerSlots(QObject *parent, const char *name) : QObject(pare
 
 	connect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
 		this, SLOT(playSound(const QString &, bool, double)));
-	connect(sound_manager, SIGNAL(openDevice(int, int, SoundDevice&)),
+	connect(sound_manager, SIGNAL(openDeviceImpl(int, int, SoundDevice&)),
 		this, SLOT(openDevice(int, int, SoundDevice&)));
-	connect(sound_manager, SIGNAL(closeDevice(SoundDevice)),
+	connect(sound_manager, SIGNAL(closeDeviceImpl(SoundDevice)),
 		this, SLOT(closeDevice(SoundDevice)));
-	connect(sound_manager, SIGNAL(playSample(SoundDevice, const int16_t*, int, bool&)),
+	connect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const int16_t*, int, bool&)),
 		this, SLOT(playSample(SoundDevice, const int16_t*, int, bool&)));
-	connect(sound_manager, SIGNAL(recordSample(SoundDevice, int16_t*, int, bool&)),
+	connect(sound_manager, SIGNAL(recordSampleImpl(SoundDevice, int16_t*, int, bool&)),
 		this, SLOT(recordSample(SoundDevice, int16_t*, int, bool&)));
 	kdebugf2();
 }
@@ -70,13 +76,13 @@ OSSPlayerSlots::~OSSPlayerSlots()
 
 	disconnect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
 			this, SLOT(playSound(const QString &, bool, double)));
-	disconnect(sound_manager, SIGNAL(openDevice(int, int, SoundDevice&)),
+	disconnect(sound_manager, SIGNAL(openDeviceImpl(int, int, SoundDevice&)),
 		this, SLOT(openDevice(int, int, SoundDevice&)));
-	disconnect(sound_manager, SIGNAL(closeDevice(SoundDevice)),
+	disconnect(sound_manager, SIGNAL(closeDeviceImpl(SoundDevice)),
 		this, SLOT(closeDevice(SoundDevice)));
-	disconnect(sound_manager, SIGNAL(playSample(SoundDevice, const int16_t*, int, bool&)),
+	disconnect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const int16_t*, int, bool&)),
 		this, SLOT(playSample(SoundDevice, const int16_t*, int, bool&)));
-	disconnect(sound_manager, SIGNAL(recordSample(SoundDevice, int16_t*, int, bool&)),
+	disconnect(sound_manager, SIGNAL(recordSampleImpl(SoundDevice, int16_t*, int, bool&)),
 		this, SLOT(recordSample(SoundDevice, int16_t*, int, bool&)));
 
 	if (thread)
@@ -138,11 +144,19 @@ void OSSPlayerSlots::openDevice(int sample_rate, int channels, SoundDevice& devi
 		return;
 	}
 
+	if (ioctl(fd, SNDCTL_DSP_RESET)<0)
+	{
+		kdebugm(KDEBUG_ERROR, "Error resetting /dev/dsp\n");
+		close(fd);
+		return;
+	}
+
 	kdebugm(KDEBUG_INFO, "Setting speed for /dev/dsp\n");
 	int value = sample_rate;
 	if(ioctl(fd, SNDCTL_DSP_SPEED, &value)<0)
 	{
 		kdebugm(KDEBUG_ERROR, "Error setting speed for /dev/dsp\n");
+		close(fd);
 		return;
 	}
 
@@ -151,6 +165,7 @@ void OSSPlayerSlots::openDevice(int sample_rate, int channels, SoundDevice& devi
 	if(ioctl(fd, SNDCTL_DSP_SAMPLESIZE, &value)<0)
 	{
 		kdebugm(KDEBUG_ERROR, "Error setting sample size for /dev/dsp\n");
+		close(fd);
 		return;
 	}
 
@@ -159,38 +174,66 @@ void OSSPlayerSlots::openDevice(int sample_rate, int channels, SoundDevice& devi
 	if(ioctl(fd, SNDCTL_DSP_CHANNELS, &value)<0)
 	{
 		kdebugm(KDEBUG_ERROR, "Error setting channels for /dev/dsp\n");
+		close(fd);
 		return;
 	}
-	
+
 	kdebugm(KDEBUG_INFO, "Setting ftm for /dev/dsp\n");
 	value = AFMT_S16_LE;
 	if(ioctl(fd, SNDCTL_DSP_SETFMT, &value)<0)
 	{
 		kdebugm(KDEBUG_ERROR, "Error setting ftm for /dev/dsp\n");
+		close(fd);
 		return;
 	}
+
+	int maxbufsize;
+	if (ioctl(fd, SNDCTL_DSP_GETBLKSIZE, &maxbufsize)<0)
+	{
+		kdebugm(KDEBUG_ERROR, "Error getting max buffer size for /dev/dsp\n");
+		close(fd);
+		return;
+	}
+
 	kdebugm(KDEBUG_FUNCTION_END, "Setup successful, fd=%d\n", fd);
-	device = (SoundDevice)fd;
+	DspSoundDevice* dev = new DspSoundDevice;
+	dev->fd = fd;
+	dev->max_buf_size = maxbufsize;
+	device = dev;
 }
 
 void OSSPlayerSlots::closeDevice(SoundDevice device)
 {
 	kdebugf();
-	close((int)device);
+	DspSoundDevice* dev = (DspSoundDevice*)device;			
+	close(dev->fd);
+	delete dev;
 	kdebugf2();
 }
 
 void OSSPlayerSlots::playSample(SoundDevice device, const int16_t* data, int length, bool& result)
 {
 	kdebugf();
-	result = (write((int)device, data, length) == length);
+	result = true;
+	DspSoundDevice* dev = (DspSoundDevice*)device;			
+	int c = 0;
+	while (c < length)
+	{
+		int l = (dev->max_buf_size < length - c) ? dev->max_buf_size : length - c;
+		if (write(dev->fd, ((char*)data)+c, l) != l)
+		{
+			result = false;
+			break;
+		}
+		c += dev->max_buf_size;
+	}
 	kdebugf2();
 }
 
 void OSSPlayerSlots::recordSample(SoundDevice device, int16_t* data, int length, bool& result)
 {
 	kdebugf();
-	result = (read((int)device, data, length) == length);
+	result = (read(((DspSoundDevice*)device)->fd, data, length) == length);
 	kdebugf2();
 }
 
