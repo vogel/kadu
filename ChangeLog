@@ -51,22 +51,22 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   narzedziowym i wyrejestrowaniem sie z paska narzedziowego oraz menu (adrian)
 * zaaplikowany patch Vogel-a wymieniajacy brzydki statusbar
   na ladny statusbutton i usuwajacy troche zbednych komponentow (adrian)
-* zaaplikowany patch joi'a zawierajacy kilka optymalizacji, przede wszystkim
+* zaaplikowany patch joia zawierajacy kilka optymalizacji, przede wszystkim
   szybszy heapsort na podstawie zrodel QT (adrian)
 * je¶li odebrane UINy przy DCC s± nieprawid³owe to zrywamy po³±czenie (chilek)
-* funkcja reserve z optymalizacji joi'a uzywana tylko dla QT >= 3.2 (adrian)
+* funkcja reserve z optymalizacji joia uzywana tylko dla QT >= 3.2 (adrian)
 * zaaplikowany patch michala rozbudowujacy menadzera modulow o pobieranie
   informacji o module oraz obsluge zaleznosci miedzy modulami. wprowadzony
   kod nie jest oryginalny - wprowadzilem w nim pewne zmiany (adrian)
 * funkcja ModulesManager::moduleSymbol() pobierajaca adres symbolu z
   zaladowanego modulu i funkcja inline "soundManager" w module sound
   wykorzystujaca ja zamiast laczenia extern (adrian)
-* zaaplikowany patch joi'a do modulu sound przerabiajacy go w ogolny modul
+* zaaplikowany patch joia do modulu sound przerabiajacy go w ogolny modul
   obslugi dzwieku + pierwszy z modulow "serwerowych" ext_sound obslugujacy
   odtwarzanie przez zewnetrzny program. wszystko dostosowane przeze mnie
   do nowych mozliwosci managera modulow (adrian)
-* dodany modul joi'a do obslugi serwera dzwieku arts + moje przerobki (adrian)
-* dodane pozostale trzy moduly joi'a do obslugi serwerow dzwieku:
+* dodany modul joia do obslugi serwera dzwieku arts + moje przerobki (adrian)
+* dodane pozostale trzy moduly joia do obslugi serwerow dzwieku:
   dsp_sound, esd_sound i nas_sound (adrian)
 * nie dzia³a wyszukiwanie niewidocznych - kod w search.cpp zakomentowany (chilek)
 * gdy mamy siebie na li¶cie kontaktów kadu wy¶wietla nasz status i opis (chilek)
@@ -76,25 +76,25 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * zaaplikowany patch michala umozliwiajacy ogladanie
   wielolinijkowych opisow (adrian)
 * zaaplikowany patch uto poprawiajacy wylaczanie wielolinijkowych opisow (adrian)
-* zaaplikowany patch joi'a na modul sound poprawiajacy zachowywanie
+* zaaplikowany patch joia na modul sound poprawiajacy zachowywanie
   minimalnych odstepow miedzy dzwiekami powiadamiajacymi (adrian)
 * zaaplikowany patch michala usuwajacy splitter przy guziku ze statusem
   w oknie kadu i poprawiajacy tym samym jego wyglad (adrian)
 * nie mo¿na rozpoczynaæ rozmów je¶li w sk³ad grupy rozmówców wchodzi nasz uin (chilek)
 * kadu ³±czy siê z predefiniowan± list± serwerów GG je¶li nie mo¿e po³±czyæ siê z
   hubem GG (chilek)
-* dodany modu³ speech joi-a wraz z moimi poprawkami (chilek)
+* dodany modu³ speech joia wraz z moimi poprawkami (chilek)
 * kompilacja modulow autoresponder, echo i speech domyslnie wylaczona (adrian)
 * poprawki kiemlo dla MacOS X (adrian)
-* zaaplikowany patch joi'a likwidujacy blad z obsluga popup menu
+* zaaplikowany patch joia likwidujacy blad z obsluga popup menu
   listy kontaktow (adrian)
 * poprawki w module encryption: zmiana umiejscowienia opcji "wyslij moj klucz"
   oraz wyszarzanie, gdy nie mozna wyslac klucza (adrian)
 * dodana mo¿liwo¶æ kopiowania hyperlinka w oknie rozmowy (chilek)
-* na³o¿ona ³ata joi-a pokazuj±ca w oknach rozmowy opisy emotikonek (chilek)
+* na³o¿ona ³ata joia pokazuj±ca w oknach rozmowy opisy emotikonek (chilek)
 * zaaplikowany patch michala rozbudowujacy autoaway o obsluge klawiatury
   i myszki PS/2 pod linuxem 2.6.x (adrian)
-* na³o¿ona ³ata joi-a przyspieszaj±ca parsera i dodaj±ca w nim mo¿liwo¶æ wstawiania
+* na³o¿ona ³ata joia przyspieszaj±ca parser i dodaj±ca w nim mo¿liwo¶æ wstawiania
   wyj¶cia zewnêtrznych poleceñ pow³oki (chilek)
 * w oknie historii pokazywane s± daty rozmów (chilek)
 * w oknie historii pokazywani s± rozmówcy (chilek)
@@ -106,7 +106,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   rozpoczêcia tranmisji dcc (chilek)
 * je¶li kto¶ kto jest ignorowany próbuje z nami komunikowaæ siê przez DCC
   odrzucamy jego próby po³±czeñ (chilek)
-* Na³o¿ona wielka ³atka - polaczenie patchy joi-a i michala:
+* na³o¿ona wielka ³atka - po³±czenie patchy joia i micha³a:
   - dodaje mo¿liwo¶æ kontroli g³o¶no¶ci w modu³ach ESD i aRts
   - poprawia b³±d przy braku d¼wiêków
   - poprawia wygl±d okna konfiguracji d¼wiêków
@@ -116,7 +116,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   - poprawia b³±d zmiany statusu "Tylko dla znajomych" w trakcie ³±czenia
     siê z serwerem
   - dodaje mo¿liwo¶æ usuwania kontrolek z okna konfiguracji
-    (g³ównie zmiany micha³a + kilka poprawek joi)
+    (g³ównie zmiany micha³a + kilka poprawek joia)
   - usuwanie kontrolek z konfiguracji dla modu³ów sound, dsp_sound, ext_sound,
     speech
   - poprawia zachowanie przycisku w³±czania/wy³±czania d¼wiêku na toolbarze
