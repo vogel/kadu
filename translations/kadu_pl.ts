@@ -443,7 +443,7 @@ Zaznacz i wpisz w to pole poprawny ciąg. Argumenty oddziel spacjami. Argument %
     </message>
     <message>
         <source>Notify of new message</source>
-        <translation type="unfinished">Powiadom o nowej wiadomości</translation>
+        <translation>Powiadom o nowej wiadomości</translation>
     </message>
 </context>
 <context>
@@ -633,7 +633,7 @@ wiadomości</translation>
     </message>
     <message>
         <source>is unavailable</source>
-        <translation>niedostępny</translation>
+        <translation>jest niedostępny</translation>
     </message>
 </context>
 <context>
