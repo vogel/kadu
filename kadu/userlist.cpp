@@ -373,7 +373,7 @@ void UserListElement::setNotify(const bool notify)
 void UserListElement::refreshDnsName()
 {
 	if (!(Ip == QHostAddress()))
-		DnsHandler *handler = new DnsHandler(*this);
+		new DnsHandler(*this);
 }
 
 void UserListElement::operator = (const UserListElement &copyMe)
