@@ -107,7 +107,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchU
 	connect(results, SIGNAL(doubleClicked(QListViewItem *)), this, SLOT(prepareMessage(QListViewItem *)));
 
 	QHButtonGroup * btngrp = new QHButtonGroup(this);
-	btngrp->setCaption(i18n("Search criteria"));
+	btngrp->setTitle(i18n("Search criteria"));
 	r_pers = new QRadioButton(btngrp);
 	r_pers->setText(i18n("&Personal data"));
 	r_pers->setChecked(true);
@@ -136,7 +136,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchU
 
 	grid->addMultiCellWidget(qgrp1, 3, 3, 0, 3);
 
-	grid->addMultiCellWidget(btngrp, 4, 4, 0, 7);
+	grid->addMultiCellWidget(btngrp, 3, 3, 4, 7);
 
 	grid->addMultiCellWidget(results, 5, 5, 0, 7);
 	grid->addMultiCell(CommandLayout,6,6,2,7);
@@ -146,14 +146,16 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchU
 	grid->addColSpacing(5, 10);
 	grid->addColSpacing(0, 10);
 
-	results->addColumn(i18n(" "));
+	results->addColumn(i18n("Status"));
 	results->addColumn(i18n("Uin"));
 	results->addColumn(i18n("Name"));
-//	results->addColumn(i18n("Surname"));
 	results->addColumn(i18n("City"));
 	results->addColumn(i18n("Nickname"));
 	results->addColumn(i18n("Birth year"));
 	results->setAllColumnsShowFocus(true);
+	results->setResizeMode(QListView::AllColumns);
+	for (int i = 1; i < 5; i++)
+		results->setColumnWidthMode(i, QListView::Maximum);
 
 	fromUin = 0;
 	if (_whoisSearchUin) {
