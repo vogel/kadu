@@ -832,6 +832,7 @@ int Kadu::openChat(UinsList senders) {
 		chat->show();
 		}
 	else {
+		chats[i].ptr->raise();
 		chats[i].ptr->setActiveWindow();
 		return i;
 		}
