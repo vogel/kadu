@@ -740,12 +740,17 @@ void AnimTextItem::draw(
 
 	EditSize = Edit->size();
 
-	QPoint u(x, y - cy);
+	if (y - cy > 0)
+		Label->move(x, y - cy + Edit->visibleHeight() - ch);
+	else
+		Label->move(x, y - cy);
+
+/*	QPoint u(x, y - cy);
 	if (u.y() > 0)
 		u += QPoint(0, Edit->visibleHeight() - ch);
 	
 //	Edit->moveChild(Label, u.x(), u.y());
-	Label->move(u);
+	Label->move(u);*/
 	Label->show();
 }
 
