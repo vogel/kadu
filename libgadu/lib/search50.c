@@ -1,4 +1,4 @@
-/* $Id: search50.c,v 1.2 2003/01/14 23:44:01 chilek Exp $ */
+/* $Id: search50.c,v 1.3 2003/01/15 02:16:52 chilek Exp $ */
 
 /*
  *  (C) Copyright 2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -143,10 +143,11 @@ void gg_search50_free(gg_search50_t s)
  *
  *  - sess - sesja,
  *  - req - zapytanie.
+ *  - type - rodzaj zapytania.
  *
  * numer sekwencyjny wyszukiwania lub 0 w przypadku b³êdu.
  */
-uint32_t gg_search50(struct gg_session *sess, gg_search50_t req)
+uint32_t gg_search50(struct gg_session *sess, gg_search50_t req, char type)
 {
 	int i, size = 5;
 	uint32_t res;
@@ -183,7 +184,7 @@ uint32_t gg_search50(struct gg_session *sess, gg_search50_t req)
 
 	r = (struct gg_search50_request*) buf;
 	res = time(NULL);
-	r->type = 0x03;
+	r->type = type;
 	r->seq = fix32(time(NULL));
 
 	for (i = 0, p = buf + 5; i < req->entries_count; i++) {

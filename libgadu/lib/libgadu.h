@@ -1,4 +1,4 @@
-/* $Id: libgadu.h,v 1.22 2003/01/14 23:44:00 chilek Exp $ */
+/* $Id: libgadu.h,v 1.23 2003/01/15 02:16:52 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -540,7 +540,7 @@ void gg_search_request_free(struct gg_search_request *r);
  *
  * NIE NALE¯Y SIÊ ODWO£YWAÆ DO PÓL gg_search50_t BEZPO¦REDNIO!
  */
-uint32_t gg_search50(struct gg_session *sess, gg_search50_t req);
+uint32_t gg_search50(struct gg_session *sess, gg_search50_t req, char type);
 gg_search50_t gg_search50_new();
 int gg_search50_add(gg_search50_t req, const char *field, const char *value);
 const char *gg_search50_get(gg_search50_t res, int num, const char *field);
