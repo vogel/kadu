@@ -1,10 +1,9 @@
 
 INCLUDES = -I../kadu $(XFREE_INCLUDES) $(QT_INCLUDES) $(OPENSSL_INCLUDES) $(GSM_INCLUDES) $(GADU_INCLUDES)
 
-AM_CPPFLAGS = $(PTHREAD_CPPFLAGS) -DQT_THREAD_SUPPORT -D_REENTRANT \
--DBINDIR="\"$(bindir)\"" -DDATADIR="\"$(datadir)\""
+AM_CPPFLAGS = $(PTHREAD_CPPFLAGS) -DQT_THREAD_SUPPORT -D_REENTRANT
 
-CLEANFILES = */*.so */*.a */*.o */*_moc.cpp */cxxflags */ldflags
+CLEANFILES = */*.so */*.a */*.o */*_moc.cpp
 
 all:
 	@for dir in $(static_modules) $(shared_modules); do \

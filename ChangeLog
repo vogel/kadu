@@ -123,6 +123,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
     i w konfiguracji
   - trochê porz±dków w config_dialog.cpp
   (ron_k)
+* zmiana nazwy config.h -> kadu-config.h (adrian)
+* definicje BINDIR i DATADIR w kadu-config.h zamiast w argumentach gcc (adrian)
+* make clean nie kasuje plikow cxxflags i ldflags w modulach (adrian)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

@@ -190,9 +190,12 @@ echo " ***************************************"
 
 AC_CONFIG_SRCDIR([kadu/kadu.cpp])
 AC_CONFIG_AUX_DIR([admin])
-AM_CONFIG_HEADER([config.h])
+AM_CONFIG_HEADER([kadu-config.h])
 AC_CANONICAL_SYSTEM
 AM_INIT_AUTOMAKE([kadu-$version],[$version])
+
+AC_DEFINE_UNQUOTED(BINDIR,"$prefix/bin",[Executable files prefix])
+AC_DEFINE_UNQUOTED(DATADIR,"$prefix/share",[Data files prefix])
 
 ########################################################################
 # check for programs, libraries and functions

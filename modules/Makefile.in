@@ -103,14 +103,12 @@ static_modules = @static_modules@
 
 INCLUDES = -I../kadu $(XFREE_INCLUDES) $(QT_INCLUDES) $(OPENSSL_INCLUDES) $(GSM_INCLUDES) $(GADU_INCLUDES)
 
-AM_CPPFLAGS = $(PTHREAD_CPPFLAGS) -DQT_THREAD_SUPPORT -D_REENTRANT \
--DBINDIR="\"$(bindir)\"" -DDATADIR="\"$(datadir)\""
+AM_CPPFLAGS = $(PTHREAD_CPPFLAGS) -DQT_THREAD_SUPPORT -D_REENTRANT
 
-
-CLEANFILES = */*.so */*.a */*.o */*_moc.cpp */cxxflags */ldflags
+CLEANFILES = */*.so */*.a */*.o */*_moc.cpp
 subdir = modules
 mkinstalldirs = $(SHELL) $(top_srcdir)/admin/mkinstalldirs
-CONFIG_HEADER = $(top_builddir)/config.h
+CONFIG_HEADER = $(top_builddir)/kadu-config.h
 CONFIG_CLEAN_FILES =
 CFLAGS = @CFLAGS@
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
