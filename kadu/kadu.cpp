@@ -211,6 +211,7 @@ void Kadu::gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op) {
 			QMessageBox::information(this, tr("Update information"),
 				tr("The newest Kadu version is %1").arg(newestversion), QMessageBox::Ok);
 	}
+	updateChecked=true;
 	delete uc;
 }
 
@@ -246,7 +247,7 @@ void Kadu::keyPressEvent(QKeyEvent *e) {
 }
 
 /* a monstrous constructor so Kadu would take longer to start up */
-Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
+Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name), updateChecked(false)
 {
 	//potrzebne do translacji
 	QT_TRANSLATE_NOOP("@default", "General");
@@ -533,13 +534,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	/* pokaz okno jesli RunDocked jest wylaczone lub dock wylaczone */
 	if ((!config_file.readBoolEntry("General", "RunDocked")) || (!config_file.readBoolEntry("General", "UseDocking")))
 		show();
-
-	if (myUin) {
-		uc = new UpdatesClass(myUin);
-		QObject::connect(uc->op, SIGNAL(data(const QByteArray &, QNetworkOperation *)),
-				this, SLOT(gotUpdatesInfo(const QByteArray &, QNetworkOperation *)));
-		uc->run();
-	}
 }
 
 void Kadu::createToolBar()
@@ -1132,7 +1126,22 @@ void Kadu::sendMessage(QListBoxItem *item)
 /* when we want to change the status */
 void Kadu::slotHandleState(int command) {
 	ChooseDescription *cd;
-
+	
+	if (!updateChecked)
+	{
+		if (command>=0 && command<=5)
+		{
+			int myUin=config_file.readNumEntry("General", "UIN");
+			if (myUin) {
+				uc = new UpdatesClass(myUin);
+				QObject::connect(uc->op, SIGNAL(data(const QByteArray &, QNetworkOperation *)),
+						this, SLOT(gotUpdatesInfo(const QByteArray &, QNetworkOperation *)));
+				uc->run();
+				updateChecked=true;
+			}
+		}
+	}
+	
 	switch (command) {
 		case 0:
 			autohammer = true;
@@ -1855,3 +1864,9 @@ void KaduSlots::onDestroyConfigDialog()
 	QComboBox *cb_language= ConfigDialog::getComboBox("General", "Set language:");
 	config_file.writeEntry("General", "Language", translateLanguage(qApp, cb_language->currentText(),false));
 }
+
+/*void Kadu::moveEvent(QMoveEvent *e)
+{
+//	kdebug("kadu::moveEvent: %d %d %d %d\n", x(), y(), width(), height());
+	QWidget::moveEvent(e);
+}*/

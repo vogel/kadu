@@ -71,7 +71,8 @@ class Kadu : public QMainWindow
 		UserBox* Userbox;
 
 		int commencing_startup;
-	
+		bool updateChecked;
+
 		void createMenu();
 		void createToolBar();
 		void createStatusPopupMenu();
@@ -88,6 +89,7 @@ class Kadu : public QMainWindow
 		bool event(QEvent *e);
 		void watchDcc(void);
 		void keyPressEvent(QKeyEvent *e);
+//		virtual void moveEvent(QMoveEvent *);
 
 		struct gg_event *dcc_e;
 		int dcc_ret;
