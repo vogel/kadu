@@ -282,7 +282,9 @@ void Chat::pageDown() {
 }
 
 void Chat::setEncryptionBtnEnabled(bool enabled) {
+#ifdef HAVE_OPENSSL
 	encryption->setEnabled(enabled && config.encryption);
+#endif
 }
 
 void Chat::changeAppearance() {
