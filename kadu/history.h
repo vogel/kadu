@@ -115,7 +115,10 @@ class HistorySearch : public QDialog {
 /**
 	Menad¿er historii
 **/
-class HistoryManager {
+class HistoryManager : public QObject
+{
+	Q_OBJECT
+	
 	public:
 		void appendMessage(UinsList receivers, uin_t sender, const QString &msg, bool own, time_t=0, bool chat=true);
 		void appendSms(const QString &mobile, const QString &msg);
@@ -137,6 +140,9 @@ class HistoryManager {
 		QString text2csv(const QString &text);
 		int getHistoryEntriesCountPrivate(const QString &filename);
 		void buildIndexPrivate(const QString &filename);
+		
+	public slots:
+		void chatMsgReceived(UinsList senders,const QString& msg,time_t time,bool& grab);
 };
 
 extern HistoryManager history;

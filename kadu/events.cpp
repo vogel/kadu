@@ -160,8 +160,8 @@ EventManager::EventManager()
 	connect(this,SIGNAL(userStatusChanged(struct gg_event*)),this,SLOT(userStatusChangedSlot(struct gg_event*)));
 	connect(this,SIGNAL(userlistReceived(struct gg_event*)),this,SLOT(userlistReceivedSlot(struct gg_event*)));
 	connect(this,SIGNAL(messageReceived(int,UinsList,unsigned char*,time_t, int, void *)),this,SLOT(messageReceivedSlot(int,UinsList,unsigned char*,time_t, int, void *)));
-	connect(this,SIGNAL(chatReceived(UinsList,const QString&,time_t)),
-		this,SLOT(chatReceivedSlot(UinsList,const QString&,time_t)));
+	connect(this,SIGNAL(chatMsgReceived2(UinsList,const QString&,time_t)),
+		this,SLOT(chatMsgReceived2Slot(UinsList,const QString&,time_t)));
 	connect(this,SIGNAL(ackReceived(int)),this,SLOT(ackReceivedSlot(int)));
 	connect(this,SIGNAL(dccConnectionReceived(const UserListElement&)),
 		this,SLOT(dccConnectionReceivedSlot(const UserListElement&)));
@@ -187,12 +187,6 @@ void EventManager::connectedSlot()
 	pingtimer = new QTimer;
 	QObject::connect(pingtimer, SIGNAL(timeout()), kadu, SLOT(pingNetwork()));
 	pingtimer->start(60000, TRUE);
-		
-/* Zauwazy³em ze to wogóle nic nie robi... wiêc co zakomentowa³em..
-	readevent = new QTimer;
-	QObject::connect(readevent, SIGNAL(timeout()), kadu, SLOT(checkConnection()));    
-	readevent->start(10000, TRUE);
-*/
 };
 
 void EventManager::connectionFailedSlot(int failure)
@@ -245,7 +239,6 @@ void EventManager::connectionBrokenSlot()
 {
 	kdebug("Connection broken unexpectedly!\nUnscheduled connection termination\n");
 	kadu->disconnectNetwork();
-//	kadu->setCurrentStatus(GG_STATUS_NOT_AVAIL);
 	if (kadu->autohammer)
 		AutoConnectionTimer::on();
 };
@@ -266,17 +259,11 @@ void EventManager::disconnectedSlot()
 	kadu->autohammer = false;
 	kadu->disconnectNetwork();
 	AutoConnectionTimer::off();
-// Wykomentowa³em, bo to zawsze jest prawdziwe!
-/*	if (e->type == GG_EVENT_DISCONNECT) */
 };
 
 void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned char* msg, time_t time,
 	int formats_length, void *formats)
 {
-
-/* Moim zdaniem t± ca³a funkcje trzeba przepisaæ od nowa,
-	a przynajmniej poprawiæ i rozbiæ na mniejsze.
-*/
 /*
 	sprawdzamy czy user jest na naszej liscie, jezeli nie to .anonymous zwroci true
 	i czy jest wlaczona opcja ignorowania nieznajomych
@@ -286,14 +273,6 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 		kdebug("EventManager::messageReceivedSlot(): Ignored anonymous. %d is ignored\n",senders[0]);
 		return;
 		}
-/*
-	w dalszej czêsci kodu wystêpuje ten warunek, po co ma sprawdzac po kilka razy, jak mozna raz,
-	podejrzewam ze to juz nie jest potrzebne(ale na wszelki wypadek zostawie), gdyz kiedys to
-	sluzylo co oznaczania wiadomosci systemowych,ktore obecnie sa ignorowane, w dalszej czesci kodu.
-*/
-	if (senders[0] == config_file.readNumEntry("General", "UIN")) {
-//		return;
-		}
 
 	// ignorujemy, jesli nick na liscie ignorowanych
 	// PYTANIE CZY IGNORUJEMY CALA KONFERENCJE
@@ -302,6 +281,7 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 		return;
 
 	// ignorujemy wiadomosci systemowe
+	// FIX ME!!!
 	if (senders[0] == config_file.readNumEntry("General","UIN")) {
 		if (msgclass <= config_file.readNumEntry("General", "SystemMsgIndex", 0)) {
 			kdebug("Already had this message, ignoring\n");
@@ -313,8 +293,6 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 		}
 
 	QString mesg = cp2unicode(msg);
-
-	int i;
 
 #ifdef HAVE_OPENSSL
 	if (config_file.readBoolEntry("Chat","Encryption")) {
@@ -347,17 +325,16 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 
 	mesg = formatGGMessage(mesg, formats_length, formats);
 
-	UserListElement ule = userlist.byUinValue(senders[0]);
 /*
 	Sprawdzamy czy uin znajduje sie na naszej userliscie, jezeli nie to w zalezno¶ci czy
 	mamy w³±czon± ikonke w trayu to dodajemy tylko do userlisty(ale chyba nie zapisujemy)
 	lub dodajemy automatycznie do naszej userlisty.
 */
- 
-	UserListElement e;
-	bool ok;
-
-	if(!userlist.containsUin(senders[0])) {
+	if(!userlist.containsUin(senders[0]))
+	{
+		bool ok;
+		UserListElement e;
+		UserListElement ule = userlist.byUinValue(senders[0]);
 		e.first_name = "";
 		e.last_name = "";
 		e.nickname = ule.altnick;
@@ -374,32 +351,25 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 			userlist.addUser(e);
 		else
 			kadu->addUser(e);
-		}
+	}
 
-	if (config_file.readBoolEntry("General","Logging"))	
-		history.appendMessage(senders, senders[0], mesg, FALSE, time);
+	kdebug("eventRecvMsg(): Got message from %d saying \"%s\"\n",
+			senders[0], (const char *)mesg.local8Bit());
 
-	Chat* chat=chat_manager->findChatByUins(senders);
+	bool grab=false;
+	emit chatMsgReceived1(senders,mesg,time,grab);
+	if(!grab)
+		emit chatMsgReceived2(senders,mesg,time);
+}
 
-	if (((msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT || (msgclass & GG_CLASS_MSG) == GG_CLASS_MSG
-		|| !msgclass) && chat!=NULL) {
-		QString toadd;
-
-		chat->checkPresence(senders, mesg, time, toadd);
-		chat->alertNewMessage();
-		if (!chat->isActiveWindow() && config_file.readBoolEntry("Hints","NotifyNewMessage"))
-			hintmanager->addHintNewMsg(ule.altnick, mesg);
-		return;
-		}
+void EventManager::chatMsgReceived2Slot(UinsList senders,const QString& msg,time_t time)
+{
+	UserListElement ule = userlist.byUinValue(senders[0]);
 
 	playSound(parse(config_file.readEntry("Sounds","Message_sound"),ule));
 
-	pending.addMsg(senders, mesg, msgclass, time);
+	pending.addMsg(senders, msg, GG_CLASS_CHAT, time);
 	
-	kdebug("eventRecvMsg(): Message allocated to slot %d\n", i);
-	kdebug("eventRecvMsg(): Got message from %d (%s) saying \"%s\"\n",
-			senders[0], (const char *)ule.altnick.local8Bit(), (const char *)mesg.local8Bit());
-
 	UserBox::all_refresh();
 	trayicon->changeIcon();
 
@@ -408,24 +378,8 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 		kadu->setFocus();
 		}
 
-	if ((msgclass == GG_CLASS_CHAT || msgclass == GG_CLASS_MSG))
-		hintmanager->addHintNewChat(ule.altnick, mesg);
+	hintmanager->addHintNewChat(ule.altnick, msg);
 
-	emit chatReceived(senders,mesg,time);
-
-/*	PendingMsgs::Element elem;
-
-	if (senders[0] == config.uin) {
-		rMessage *rmsg;
-		elem = pending[i];
-		rmsg = new rMessage("System", elem.msgclass, elem.uins, elem.msg);
-		rmsg->init();
-		rmsg->show();
-		}*/
-}
-
-void EventManager::chatReceivedSlot(UinsList senders,const QString& msg,time_t time)
-{
 	if(config_file.readBoolEntry("Chat","OpenChatOnMessage"))
 		pending.openMessages();
 };

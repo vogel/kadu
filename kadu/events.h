@@ -71,7 +71,7 @@ class EventManager : public QObject
 		void userlistReceivedSlot(struct gg_event *);
 		void messageReceivedSlot(int, UinsList,unsigned char *msg,time_t,
 			int formats_length, void *formats);
-		void chatReceivedSlot(UinsList senders,const QString& msg,time_t time);
+		void chatMsgReceived2Slot(UinsList senders,const QString& msg,time_t time);
 		void ackReceivedSlot(int seq);
 		void dccConnectionReceivedSlot(const UserListElement& sender);
 		void pubdirReplyReceivedSlot(gg_pubdir50_t res);
@@ -120,8 +120,11 @@ class EventManager : public QObject
 			Otrzymano wiadomo¶æ, któr± trzeba pokazaæ (klasa chat lub msg,
 			nadawca nie jest ignorowany, itp)
 			Tre¶æ zdeszyfrowana i zdekodowana do unicode.
+			Jesli ktorys ze slotow ustawi zmienna grab na true
+			to sygnal chatReceived2 nie zostanie wygenerowany.
 		**/
-		void chatReceived(UinsList senders,const QString& msg,time_t time);
+		void chatMsgReceived1(UinsList senders,const QString& msg,time_t time,bool& grab);
+		void chatMsgReceived2(UinsList senders,const QString& msg,time_t time);
 		/**
 			Otrzymano potwierdzenie wiadomo¶ci
 		**/

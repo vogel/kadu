@@ -24,6 +24,7 @@
 #include "kadu.h"
 #include "config_file.h"
 #include "config_dialog.h"
+#include "events.h"
 #include "debug.h"
 #include "history.h"
 
@@ -884,6 +885,12 @@ int HistoryManager::getHistoryEntryIndexByDate(UinsList uins, QDateTime &date, b
 	return start;
 }
 
+void HistoryManager::chatMsgReceived(UinsList senders,const QString& msg,time_t time,bool& grab)
+{
+	if (config_file.readBoolEntry("General","Logging"))	
+		history.appendMessage(senders, senders[0], msg, false, time);
+}
+
 History::History(UinsList uins): uins(uins), closeDemand(false), finding(false) {
 	int i;
 	
@@ -1213,6 +1220,9 @@ void History::initModule()
 	ConfigDialog::registerSlotOnCreate(historyslots, SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnDestroy(historyslots, SLOT(onDestroyConfigDialog()));
 	ConfigDialog::connectSlot("History", "historyslider", SIGNAL(valueChanged(int)), historyslots, SLOT(updateQuoteTimeLabel(int)));
+
+	connect(&event_manager,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
+		&history,SLOT(chatMsgReceived(UinsList,const QString&,time_t,bool&)));
 }
 
 HistorySearch::HistorySearch(QWidget *parent, UinsList uins) : QDialog(parent), uins(uins) {

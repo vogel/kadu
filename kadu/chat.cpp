@@ -39,6 +39,7 @@
 #include "debug.h"
 #include "sound.h"
 #include "gadu.h"
+#include "hints.h"
 #ifdef HAVE_OPENSSL
 extern "C"
 {
@@ -260,6 +261,19 @@ void ChatManager::sendMessage(uin_t uin,UinsList selected_uins)
 	}
 }
 
+void ChatManager::chatMsgReceived(UinsList senders,const QString& msg,time_t time,bool& grab)
+{
+	Chat* chat=findChatByUins(senders);
+	if(chat!=NULL)
+	{
+		QString toadd;
+		chat->checkPresence(senders, msg, time, toadd);
+		chat->alertNewMessage();
+		if (!chat->isActiveWindow() && config_file.readBoolEntry("Hints","NotifyNewMessage"))
+			hintmanager->addHintNewMsg(userlist.byUinValue(senders[0]).altnick, msg);
+		grab=true;
+	}
+}
 
 ChatManager* chat_manager=NULL;
 
@@ -867,7 +881,7 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time) {
 }
 
 /* invoked from outside when new message arrives, this is the window to the world */
-void Chat::checkPresence(UinsList senders, QString &msg, time_t time, QString &toadd) {
+void Chat::checkPresence(UinsList senders, const QString &msg, time_t time, QString &toadd) {
 	formatMessage(false, userlist.byUin(senders[0]).altnick, msg, timestamp(time), toadd);
 
 	scrollMessages(toadd);
@@ -1258,6 +1272,8 @@ void Chat::initModule()
 	ConfigDialog::connectSlot("Look", "", SIGNAL(activated(int)), chatslots, SLOT(chooseChatSelect(int)), "combobox1");
 	
 	chat_manager=new ChatManager();
+	connect(&event_manager,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
+		chat_manager,SLOT(chatMsgReceived(UinsList,const QString&,time_t,bool&)));
 };
 
 ColorSelectorButton::ColorSelectorButton(QWidget* parent, const QColor& qcolor) : QToolButton(parent)

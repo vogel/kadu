@@ -45,6 +45,9 @@ class ChatManager : public QObject
 		void openPendingMsgs(UinsList uins);
 		void openPendingMsgs();
 		void sendMessage(uin_t uin,UinsList selected_uins);
+		
+	public slots:
+		void chatMsgReceived(UinsList senders,const QString& msg,time_t time,bool& grab);
 };
 
 extern ChatManager* chat_manager;
@@ -119,7 +122,7 @@ class Chat : public QWidget {
 		void changeAppearance();
 		void setTitle(void);
 		void formatMessage(bool, const QString &, const QString &, const QString &, QString &);
-		void checkPresence(UinsList, QString &, time_t, QString &);
+		void checkPresence(UinsList, const QString &, time_t, QString &);
 		void writeMessagesFromHistory(UinsList, time_t);
 		void addEmoticon(QString);
 		void scrollMessages(QString &);

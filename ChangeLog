@@ -26,6 +26,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * drastyczne uproszczenie wysylania wiadomosci w Chat. mechanizm w wiekszosci
   przesuniety do klasy GaduProtocol w postaci wygodnej funkcji sendMessage,
   ktora moze byc uzywana np. przez zewnetrzne moduly (adrian)
+* drobne porzadki w EventManagerze, przeniesienie czesci kodu do ChatManagera,
+  HistoryManagera (adrian)
 
 +++ wersja 0.3.6 (22.11.2003)
 * je¶li klikniemy na jaki¶ kontakt w userboxie, od którego otrzymali¶my jak±¶
