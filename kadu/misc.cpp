@@ -101,8 +101,14 @@ QString pwHash(const QString tekst) {
 	return nowytekst;
 }
 
+void escapeSpecialCharacters(QString &msg) {
+	msg.replace(QRegExp("&"), "&amp;");
+	msg.replace(QRegExp("<"), "&lt;");
+	msg.replace(QRegExp(">"), "&gt;");				
+}
+
 QString formatGGMessage(const QString &msg, int formats_length, void *formats) {
-	QString mesg;
+	QString mesg, tmp;
 	bool bold, italic, underline, color;
 	char *cformats = (char *)formats;
 	struct gg_msg_richtext_format *actformat;
@@ -114,7 +120,9 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats) {
 		while (formats_length) {
 			actformat = (struct gg_msg_richtext_format *)cformats;
 			if (actformat->position > pos) {
-				mesg.append(msg.mid(pos, actformat->position - pos));
+				tmp = msg.mid(pos, actformat->position - pos);
+				escapeSpecialCharacters(tmp);
+				mesg.append(tmp);
 				pos += actformat->position;
 				}
 			else {
@@ -151,17 +159,34 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats) {
 						mesg.append("</U>");
 						underline = false;
 						}
+				if (actformat->font & GG_FONT_COLOR) {
+					actcolor = (struct gg_msg_richtext_color *)(cformats
+						+ sizeof(struct gg_msg_richtext_format));
+					mesg.append(QString("<FONT color=\"#%1%2%3\">").arg(actcolor->red, 0, 16)
+						.arg(actcolor->green, 0, 16).arg(actcolor->blue, 0, 16));
+					color = true;
+					}
+				else
+					if (color) {
+						mesg.append("</FONT>");
+						color = false;
+						}
 				cformats += sizeof(gg_msg_richtext_format);
 				formats_length -= sizeof(gg_msg_richtext_format);
 				cformats += sizeof(gg_msg_richtext_color) * (actformat->font & GG_FONT_COLOR);
 				formats_length -= sizeof(gg_msg_richtext_color) * (actformat->font & GG_FONT_COLOR);
 				}
 			}
-		if (pos < msg.length())
-			mesg.append(msg.mid(pos, msg.length() - pos));
+		if (pos < msg.length()) {
+			tmp = msg.mid(pos, msg.length() - pos);
+			escapeSpecialCharacters(tmp);
+			mesg.append(tmp);
+			}
 		}
-	else
+	else {
 		mesg = msg;
+		escapeSpecialCharacters(mesg);
+		}
 	return mesg;
 }
 

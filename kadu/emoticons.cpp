@@ -112,7 +112,9 @@ bool EmoticonsManager::loadGGEmoticonThemePart(QString subdir)
 		};
 		for(;;)
 		{
-			aliases.append(getQuoted(line,i));
+			QString tmp = getQuoted(line, i);
+			escapeSpecialCharacters(tmp);
+			aliases.append(tmp);
 			if((!multi)||line[i]==')')
 				break;
 			i++; // eat ','

@@ -32,6 +32,7 @@ QString timestamp(time_t = 0);
 QDateTime currentDateTime();
 QString pwHash(const QString tekst);
 void deleteSearchIdStruct(QDialog *ptr);
+void escapeSpecialCharacters(QString &msg);
 QString formatGGMessage(const QString &msg, int formats_length, void *formats);
 QString parse(QString s, UserListElement ule, bool escape = true);
 

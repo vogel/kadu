@@ -410,8 +410,8 @@ QString Chat::convertCharacters(QString edit, bool me) {
 	
 	// zmieniamy windowsowe \r\n na unixowe \n
 	edit.replace( QRegExp("\r\n"), "\n" );
-	edit.replace( QRegExp("<"), "&lt;" );
-	edit.replace( QRegExp(">"), "&gt;" );
+//	edit.replace( QRegExp("<"), "&lt;" );
+//	edit.replace( QRegExp(">"), "&gt;" );
 	edit.replace( QRegExp("__escaped_lt__"), "<");
 	edit.replace( QRegExp("__escaped_gt__"), ">");
 	edit.replace( QRegExp("  "), " &nbsp;" );
