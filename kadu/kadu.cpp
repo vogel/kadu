@@ -984,10 +984,13 @@ void Kadu::sendMessage(QListBoxItem *item) {
 	Message *msg;
 	UinsList uins;
 	PendingMsgs::Element elem;
+	uin_t uin;
 	
+	uin = userlist.byAltNick(item->text()).uin;
+
 	for (i = 0; i < pending.count(); i++) {
 		elem = pending[i];
-		if (!uins.count() || elem.uins.equals(uins))
+		if ((!uins.count() && elem.uins[0] == uin) || elem.uins.equals(uins))
 			if (elem.msgclass == GG_CLASS_CHAT) {
 				if (!uins.count())
 					uins = elem.uins;
