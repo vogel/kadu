@@ -1109,8 +1109,9 @@ void Kadu::sendMessage(QListBoxItem *item) {
 						addUser("", "", tmp, tmp, "", tmp, GG_STATUS_NOT_AVAIL, "", "", true);
 						}
 				k = openChat(elem.uins);
-				chats[k].ptr->setEnabledScrolling(false);
-				chats[k].ptr->checkPresence(elem.uins, elem.msg, elem.time, toadd);	    
+				chats[k].ptr->formatMessage(false,
+					userlist.byUin(elem.uins[0]).altnick, elem.msg,
+					timestamp(elem.time), toadd);	    
 				deletePendingMessage(i);
 				fprintf(stderr, "KK Kadu::sendMessage(): k=%d\n", k);
 				i--;
@@ -1127,13 +1128,13 @@ void Kadu::sendMessage(QListBoxItem *item) {
 					rmsg->show();
 					}
 				else
-					chats[k].ptr->setEnabledScrolling(true);
+					chats[k].ptr->scrollMessages(toadd);
 				return;
 				}
 		}
 
 	if (stop) {
-		chats[k].ptr->setEnabledScrolling(true);
+		chats[k].ptr->scrollMessages(toadd);
 		UserBox::all_refresh();
 		return;
 		}
@@ -1760,9 +1761,8 @@ void DockWidget::mousePressEvent(QMouseEvent * e) {
 							kadu->addUser("", "", tmp, tmp, "", tmp, GG_STATUS_NOT_AVAIL, "", "", true);
 							}
 					k = kadu->openChat(elem.uins);
-					chats[k].ptr->setEnabledScrolling(false);
-					chats[k].ptr->checkPresence(elem.uins,
-						elem.msg, elem.time, toadd);	    
+					chats[k].ptr->formatMessage(false, userlist.byUin(elem.uins[0]).altnick,
+						elem.msg, timestamp(elem.time), toadd);
 					deletePendingMessage(i);
 					stop = true;
 					}		
@@ -1777,13 +1777,13 @@ void DockWidget::mousePressEvent(QMouseEvent * e) {
 						rmsg->show();
 						}
 					else
-						chats[k].ptr->setEnabledScrolling(true);
+						chats[k].ptr->scrollMessages(toadd);
 
 					return;
 					}
 			}
 		if (stop) {
-			chats[k].ptr->setEnabledScrolling(true);
+			chats[k].ptr->scrollMessages(toadd);
 	    		UserBox::all_refresh();
 			return;
 			}

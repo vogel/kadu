@@ -359,8 +359,7 @@ void Chat::scrollMessages(QString &toadd) {
 		body->setText(toadd + body->text());
 	else {
 		body->setText(body->text() + toadd);
-		if (scrolling)
-			body->scrollToBottom();
+		body->scrollToBottom();
 		}
 }
 
@@ -371,12 +370,6 @@ void Chat::checkPresence(UinsList senders, QString &msg, time_t time, QString &t
 	formatMessage(false, userlist.byUin(senders[0]).altnick, msg, timestamp(time), toadd);
 
 	scrollMessages(toadd);
-}
-
-void Chat::setEnabledScrolling(bool enabled) {
-	scrolling = enabled;
-	if (scrolling && config.scrolldown)
-		body->scrollToBottom();
 }
 
 void Chat::playChatSound() {
