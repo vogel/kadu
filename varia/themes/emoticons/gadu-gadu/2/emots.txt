@@ -59,7 +59,6 @@
 "<jestem z g³upkiem>","glupek.gif"
 "<jupi>","jupi.gif","jupi_na.gif"
 *"<killer>","killer.gif"
-"<k³ótnia>","klotnia.gif","klotnia_na.gif"
 "<list>","list.gif","list_na.gif"
 "<nauka>","nauka.gif","nauka_na.gif"
 "<paker>","paker.gif","paker_na.gif"
