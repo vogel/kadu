@@ -212,8 +212,10 @@ class ConfigDialog : public QVBox {
 
 		struct ElementConnections
 		{
+			ElementConnections(QString signal, const QObject *receiver, QString slot);
+			ElementConnections();
 			QString signal;
-			QObject* receiver;
+			const QObject* receiver;
 			QString slot;
 			bool operator== (const ElementConnections& r) const;
 		};

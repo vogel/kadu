@@ -30,6 +30,16 @@ QValueList<ConfigDialog::ElementConnections> ConfigDialog::SlotsOnCreate;
 QValueList<ConfigDialog::ElementConnections> ConfigDialog::SlotsOnClose;
 QValueList<ConfigDialog::ElementConnections> ConfigDialog::SlotsOnApply;
 
+ConfigDialog::ElementConnections::ElementConnections()
+	: signal(QString::null), receiver(NULL), slot(QString::null)
+{
+}
+
+ConfigDialog::ElementConnections::ElementConnections(QString signal1, const QObject *receiver1, QString slot1)
+	: signal(signal1), receiver(receiver1), slot(slot1)
+{
+}
+
 bool ConfigDialog::ElementConnections::operator== (const ElementConnections& r) const
 {
 	return (signal==r.signal && receiver==r.receiver && slot==r.slot);
@@ -992,10 +1002,7 @@ void ConfigDialog::connectSlot(const QString& groupname, const QString& caption,
 	for(QValueList<RegisteredControl>::iterator j=RegisteredControls.begin(); j!=RegisteredControls.end(); ++j)
 		if(((*j).group == groupname) && ((*j).caption == caption) && ((*j).name == name) && (*j).type!=CONFIG_DELETED)
 		{
-			ElementConnections c;
-			c.signal=signal;
-			c.receiver=(QObject *)receiver;
-			c.slot=slot;
+			ElementConnections c(signal, receiver, slot);
 			(*j).ConnectedSlots.append(c);
 			kdebugm(KDEBUG_INFO, "Slot connected:: %s\n",slot);
 			break;
@@ -1009,10 +1016,7 @@ void ConfigDialog::disconnectSlot(const QString& groupname, const QString& capti
 	for(QValueList<RegisteredControl>::iterator j=RegisteredControls.begin(); j!=RegisteredControls.end(); ++j)
 		if(((*j).group == groupname) && ((*j).caption == caption) && ((*j).name == name) && (*j).type!=CONFIG_DELETED)
 		{
-			ElementConnections c;
-			c.signal=signal;
-			c.receiver=(QObject *)receiver;
-			c.slot=slot;
+			ElementConnections c(signal, receiver, slot);
 			(*j).ConnectedSlots.remove((*j).ConnectedSlots.find(c));
 			kdebugm(KDEBUG_INFO, "Slot disconnected:: %s\n",slot);
 			break;
@@ -1023,49 +1027,37 @@ void ConfigDialog::disconnectSlot(const QString& groupname, const QString& capti
 
 void ConfigDialog::registerSlotOnCreate(const QObject* receiver, const char* name)
 {
-	ElementConnections c;
-	c.receiver=(QObject *)receiver;
-	c.slot=name;
+	ElementConnections c(QString::null, receiver, name);
 	SlotsOnCreate.append(c);
 }
 
 void ConfigDialog::unregisterSlotOnCreate(const QObject* receiver, const char* name)
 {
-	ElementConnections c;
-	c.receiver=(QObject *)receiver;
-	c.slot=name;
+	ElementConnections c(QString::null, receiver, name);
 	SlotsOnCreate.remove(SlotsOnCreate.find(c));
 }
 
 void ConfigDialog::registerSlotOnClose(const QObject* receiver, const char* name)
 {
-	ElementConnections c;
-	c.receiver=(QObject *)receiver;
-	c.slot=name;
+	ElementConnections c(QString::null, receiver, name);
 	SlotsOnClose.append(c);
 }
 
 void ConfigDialog::unregisterSlotOnClose(const QObject* receiver, const char* name)
 {
-	ElementConnections c;
-	c.receiver=(QObject *)receiver;
-	c.slot=name;
+	ElementConnections c(QString::null, receiver, name);
 	SlotsOnClose.remove(SlotsOnClose.find(c));
 }
 
 void ConfigDialog::registerSlotOnApply(const QObject* receiver, const char* name)
 {
-	ElementConnections c;
-	c.receiver=(QObject *)receiver;
-	c.slot=name;
+	ElementConnections c(QString::null, receiver, name);
 	SlotsOnApply.append(c);
 }
 
 void ConfigDialog::unregisterSlotOnApply(const QObject* receiver, const char* name)
 {
-	ElementConnections c;
-	c.receiver=(QObject *)receiver;
-	c.slot=name;
+	ElementConnections c(QString::null, receiver, name);
 	SlotsOnApply.remove(SlotsOnApply.find(c));
 }
 
