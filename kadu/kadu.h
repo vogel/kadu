@@ -114,6 +114,7 @@ struct config {
 	bool notifyall;
 	bool notifydialog;
 	bool notifysound;
+	bool notifyhint;
 
 	bool useproxy;
 	QString proxyaddr;

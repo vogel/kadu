@@ -129,6 +129,7 @@ void loadKaduConfig(void) {
 	config.notifyall = konf->readBoolEntry("NotifyAboutAll", false);
 	config.notifydialog = konf->readBoolEntry("NotifyWithDialogBox", false);
 	config.notifysound = konf->readBoolEntry("NotifyWithSound", false);
+	config.notifyhint = konf->readBoolEntry("NotifyWithHint",true);
 //	config.notifies = konf->readListEntry("NotifyUsers");
 
 	konf->setGroup("Proxy");
@@ -262,6 +263,7 @@ void saveKaduConfig(void) {
 	konf->writeEntry("NotifyAboutAll", config.notifyall);
 	konf->writeEntry("NotifyWithDialogBox", config.notifydialog);
 	konf->writeEntry("NotifyWithSound", config.notifysound);
+	konf->writeEntry("NotifyWithHint", config.notifyhint);
 
 	konf->setGroup("Colors");
 	konf->writeEntry("UserboxBgColor", config.colors.userboxBg);
@@ -749,6 +751,9 @@ void ConfigDialog::setupTab4(void) {
 
 	b_notifydialog = new QCheckBox(notifybox);
 	b_notifydialog->setText(i18n("Notify by dialog box"));
+	
+	b_notifyhint = new QCheckBox(notifybox);
+	b_notifyhint->setText(i18n("Notify by hint"));
 
 	if (config.notifyglobal)
 		b_notifyglobal->setChecked(true);
@@ -765,7 +770,8 @@ void ConfigDialog::setupTab4(void) {
 
 	if (config.notifydialog)
 		b_notifydialog->setChecked(true);
-
+	if (config.notifyhint)
+		b_notifyhint->setChecked(true);
 	if (config.notifysound)
 		b_notifysound->setChecked(true);
 	else

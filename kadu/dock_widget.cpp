@@ -226,6 +226,8 @@ void TrayIcon::mousePressEvent(QMouseEvent * e)
 }
 
 void TrayIcon::showHint(const QString &str, const QString &nick, int index) {
+	if (!config.showhint)
+		return;
 	fprintf(stderr,"KK TrayIcon::showHint()\n");
 	hint->show_hint(str,nick,index);
 }
@@ -254,7 +256,7 @@ void TrayHint::set_hint(void) {
 	for (QStringList::Iterator points = hint_list.begin(); points != hint_list.end(); ++points)
 		text_hint.append(*points);
 	size_hint = QFontMetrics(config.fonts.userbox).size(Qt::ExpandTabs, text_hint);
-	size_hint = QSize(size_hint.width()+20,size_hint.height()+10);
+	size_hint = QSize(size_hint.width()+35,size_hint.height()+10);
 	resize(size_hint);
 	hint->resize(size_hint);
 	QSize size_desk = QApplication::desktop()->size();
@@ -272,31 +274,37 @@ void TrayHint::set_hint(void) {
 
 void TrayHint::show_hint(const QString &str, const QString &nick, int index) {
 	fprintf(stderr,"KK TrayHint::show_hint(%s,%s,%d)\n",str.latin1(),nick.latin1(),index);
-	
+	if (hint_list.last() == str+nick || hint_list.last() == "\n"+str+nick)
+		return;
 	QString text;
 	text.append("<FONT color=\"");
 	text.append(config.colors.mychatText.name());
 	text.append("\">");
 	text.append("<CENTER>");
-	if (index == 0) {
-		text.append(str);
-		text.append("<B>");
-		text.append(nick);
-		text.append("</B>");
-		}
-	else {
-		text.append("<B>");
-		text.append(nick);
-		text.append("</B>");
-		text.append(str);
-		}
+	switch(index) {
+		case 0:
+			text.append(str);
+			text.append("<B>");
+			text.append(nick);
+			text.append("</B>");
+			break;
+
+		case 1:
+			text.append("<B>");
+			text.append(nick);
+			text.append("</B>");
+			text.append(str);
+			break;
+	}
+
 	text.append("</CENTER></FONT>");
-	
+
 	if (hint->text()=="") {
 		hint->setText(text);
 		hint_list.append(str+nick);
 		}
 	else {
+		fprintf(stderr,"last=%s\n",hint_list.last().latin1());
 		hint->setText(hint->text()+"\n"+text);
 		hint_list.append("\n"+str+nick);
 		}

@@ -312,6 +312,9 @@ void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)
 				playSound(config.soundnotify);
 			lastsoundtime.restart();
 			}
+		
+		if (config.notifyhint)
+			trayicon->showHint(i18n(" is available"),userlist.byUin(uin).altnick,1);
 		}
 }
 

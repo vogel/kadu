@@ -92,6 +92,7 @@ class ConfigDialog : public QTabDialog	{
 		QCheckBox *b_notifyglobal;
 		QCheckBox *b_notifydialog;
 		QCheckBox *b_notifysound;
+		QCheckBox *b_notifyhint;
 		QLineEdit *e_soundnotify;
 
 		QCheckBox *b_dccenabled;

@@ -17,6 +17,8 @@
   zestaw emotów.
 * dockhint->trayhint(poprawki, ulepszczenia i przygotowania do dodania powiadomien
   o dostêpnych osobach i ew. b³êdach podczas ³±czenia siê z serwerem GG.
+* informacja o dostepnosci przez hinta w trayu i wysweitlanie niektorych
+  bledow podczas próby ³±czenia siê +poprawki
 
 +++ wersja 0.3.3-rc1
 * sms.cpp ma szansê kompilowaæ siê na Qt < 3.0.5
