@@ -22,8 +22,8 @@
 * mo¿liwo¶æ blokowania u¿ytkowników
 * mo¿liwo¶æ ukrycia siê przed u¿ytkownikami, których mamy na li¶cie przy statusie
   "tylko dla znajomych"
-* poprawione wysylanie sms-ow (przez bramka.org). znowu dziala idea.
-* wyswietlanie hint'ow przy ikonce w dock'u - experimental
+* poprawione wysy³anie smsów (przez bramka.org). znowu dzia³a idea.
+* wy¶wietlanie hintów przy ikonce w docku - experimental
 
 +++ wersja 0.3.3-pre1
 * automatyczna kompilacja programu sms
