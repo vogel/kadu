@@ -117,6 +117,7 @@
 #include "updates.h"
 //
 
+#define GG_USER_OFFLINE	0x01
 #define	GG_USER_NORMAL	0x03
 #define GG_USER_BLOCKED	0x04
 
@@ -324,10 +325,13 @@ void sendUserlist() {
 	for (i = 0, j = 0; i < userlist.count(); i++)
 		if (userlist[i].uin) {
 			uins[j] = userlist[i].uin;
-			if (userlist[i].blocking)
-				types[j] = GG_USER_BLOCKED;
+			if (userlist[i].offline_to_user)
+				types[j] = GG_USER_OFFLINE;
 			else
-				types[j] = GG_USER_NORMAL;
+				if (userlist[i].blocking)
+					types[j] = GG_USER_BLOCKED;
+				else
+					types[j] = GG_USER_NORMAL;
 			j++;
 			}
 

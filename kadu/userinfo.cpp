@@ -22,6 +22,7 @@
 #include "userinfo.h"
 //
 
+#define	GG_USER_OFFLINE	0x01
 #define	GG_USER_NORMAL	0x03
 #define GG_USER_BLOCKED	0x04
 
@@ -187,16 +188,27 @@ void UserInfo::writeUserlist() {
 	switch (QMessageBox::information(kadu, "Kadu", i18n("This will write current userlist"), i18n("OK"), i18n("Cancel"), QString::null, 0, 1)) {
 		case 0: // Yes?
 			fprintf(stderr, "KK UserInfo::writeUserlist(): this_index: %d\n", this_index);
-			if (sess && sess->status != GG_STATUS_NOT_AVAIL)
-				if (c_blocking->isChecked() && !userlist[this_index].blocking) {
+			if (sess && sess->status != GG_STATUS_NOT_AVAIL) {
+				if (c_offtouser->isChecked() && !userlist[this_index].offline_to_user) {
 					gg_remove_notify_ex(sess, userlist[this_index].uin, GG_USER_NORMAL);
-					gg_add_notify_ex(sess, userlist[this_index].uin, GG_USER_BLOCKED);
+					gg_add_notify_ex(sess, userlist[this_index].uin, GG_USER_OFFLINE);
 					}
 				else
-					if (!c_blocking->isChecked() && userlist[this_index].blocking) {
-						gg_remove_notify_ex(sess, userlist[this_index].uin, GG_USER_BLOCKED);
+					if (!c_offtouser->isChecked() && userlist[this_index].offline_to_user) {
+						gg_remove_notify_ex(sess, userlist[this_index].uin, GG_USER_OFFLINE);
 						gg_add_notify_ex(sess, userlist[this_index].uin, GG_USER_NORMAL);
 						}
+					else
+						if (c_blocking->isChecked() && !userlist[this_index].blocking) {
+							gg_remove_notify_ex(sess, userlist[this_index].uin, GG_USER_NORMAL);
+							gg_add_notify_ex(sess, userlist[this_index].uin, GG_USER_BLOCKED);
+							}
+						else
+							if (!c_blocking->isChecked() && userlist[this_index].blocking) {
+								gg_remove_notify_ex(sess, userlist[this_index].uin, GG_USER_BLOCKED);
+								gg_add_notify_ex(sess, userlist[this_index].uin, GG_USER_NORMAL);
+								}
+				}
 			userlist.changeUserInfo(userlist[this_index].altnick,
 				e_firstname->text(),e_lastname->text(),
 				e_nickname->text(),e_altnick->text(),

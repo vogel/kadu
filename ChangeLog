@@ -20,6 +20,8 @@
 * okno informacji o u¿ytkowniku: wydzielenie zak³adek z poszczególnymi opcjami
 * poprawiono wy¶wietlanie emotikonów
 * mo¿liwo¶æ blokowania u¿ytkowników
+* mo¿liwo¶æ ukrycia siê przed u¿ytkownikami, których mamy na li¶cie przy statusie
+  "tylko dla znajomych"
 
 +++ wersja 0.3.3-pre1
 * automatyczna kompilacja programu sms
