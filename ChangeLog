@@ -17,6 +17,7 @@
 * debug: ca³y kod kadu przerobiony na nowy sposób debugowania (adrian)
 * debug: kadu kompilowane tradycyjnie (bez --enable-debug) nie zawiera
   komunikatów debuguj±cych, dziêki czemu jest mniejsze i szybsze (adrian)
+* configure: poprawka wykrywania QT (adrian)
 
 +++ wersja 0.3.3-rc3
 * sensowne potwierdzenie usuniêcia kontaktu (adrian)

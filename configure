@@ -3278,7 +3278,7 @@ fi;
 	echo "$as_me:$LINENO: checking for QT moc" >&5
 echo $ECHO_N "checking for QT moc... $ECHO_C" >&6
 
-	for dir in $with_qt_moc $with_qt_dir $QTDIR /usr/lib/qt3 /usr/lib/qt2 /usr/local/qt /usr/lib/qt /usr/bin /bin /usr/local /usr/X11R6
+	for dir in $with_qt_moc $with_qt_dir $QTDIR /usr/lib/qt3 /usr/local/qt /usr/lib/qt /usr/bin /bin /usr/local /usr/X11R6
 	do
 		if test -f $dir/moc
 		then
@@ -3317,7 +3317,7 @@ echo $ECHO_N "checking for QT libraries... $ECHO_C" >&6
 		QTLIBS="qt2-mt qt-mt"
 	fi
 
-	for dir in $with_qt_libs $with_qt_dir $QTDIR /usr/lib/qt3 /usr/lib/qt2 /usr/local/qt /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib
+	for dir in $with_qt_libs $with_qt_dir $QTDIR /usr/lib/qt3 /usr/local/qt /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib
 	do
 		for i in $QTLIBS
 		do
@@ -3356,7 +3356,7 @@ fi
 	echo "$as_me:$LINENO: checking for QT include files" >&5
 echo $ECHO_N "checking for QT include files... $ECHO_C" >&6
 
-	for dir in $with_qt_includes $with_qt_dir $QTDIR /usr/lib/qt3 /usr/lib/qt2 /usr/local/qt /usr/lib/qt /usr/include /usr/include/qt /usr/local/include /usr/X11R6/include /usr/X11R6/include/qt2 /usr/X11R6/include/qt3
+	for dir in $with_qt_includes $with_qt_dir $QTDIR /usr/lib/qt3 /usr/local/qt /usr/lib/qt /usr/include /usr/include/qt /usr/include/qt3 /usr/local/include /usr/X11R6/include /usr/X11R6/include/qt3
 	do
 		if test -f $dir/qwidget.h
 		then

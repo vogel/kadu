@@ -233,7 +233,7 @@ AC_ARG_WITH(qt-moc,        [  --with-qt-moc=DIR       qt-moc in DIR])
 AC_ARG_WITH(qt-includes,   [  --with-qt-includes=DIR  qt-includes in DIR])
 AC_ARG_WITH(qt-libs,       [  --with-qt-libs=DIR      qt-libs in DIR])
 
-FIND_MOC($with_qt_moc $with_qt_dir $QTDIR /usr/lib/qt3 /usr/lib/qt2 /usr/local/qt /usr/lib/qt /usr/bin /bin /usr/local /usr/X11R6)
+FIND_MOC($with_qt_moc $with_qt_dir $QTDIR /usr/lib/qt3 /usr/local/qt /usr/lib/qt /usr/bin /bin /usr/local /usr/X11R6)
 if test "X$QTMOCDIR" = "X"
 then
 	echo ""
@@ -243,7 +243,7 @@ then
 	exit
 fi
 
-FIND_QT_LIBS($with_qt_libs $with_qt_dir $QTDIR /usr/lib/qt3 /usr/lib/qt2 /usr/local/qt /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib)
+FIND_QT_LIBS($with_qt_libs $with_qt_dir $QTDIR /usr/lib/qt3 /usr/local/qt /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib)
 if test "X$QTLIBDIR" = "X"
 then
 	echo ""
@@ -255,7 +255,7 @@ else
 	QTLIBDIR="-L$QTLIBDIR"
 fi
 
-FIND_QT_INCLUDES($with_qt_includes $with_qt_dir $QTDIR /usr/lib/qt3 /usr/lib/qt2 /usr/local/qt /usr/lib/qt /usr/include /usr/include/qt /usr/local/include /usr/X11R6/include /usr/X11R6/include/qt2 /usr/X11R6/include/qt3)
+FIND_QT_INCLUDES($with_qt_includes $with_qt_dir $QTDIR /usr/lib/qt3 /usr/local/qt /usr/lib/qt /usr/include /usr/include/qt /usr/include/qt3 /usr/local/include /usr/X11R6/include /usr/X11R6/include/qt3)
 if test "X$QTINCDIR" = "X"
 then
 	echo ""
