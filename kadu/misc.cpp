@@ -380,12 +380,15 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 			if (idx_end == -1)
 				idx_end = mesg.length() - 1;
 			QString file_name = mesg.mid(image_idx+7,idx_end-image_idx-7);
+			uint32_t size;
+			uint32_t crc32;
+			image_queue.addImage(file_name,size,crc32);
 			mesg.remove(image_idx,idx_end-image_idx+1);
 			actformant.format.position = image_idx;
 			actformant.format.font = GG_FONT_IMAGE;
 			actformant.image.unknown1 = 0x0109;
-			image_queue.addImage(
-				file_name,actformant.image.size,actformant.image.crc32);
+			actformant.image.size = size;
+			actformant.image.crc32 = crc32;
 			formants.append(actformant);
 			formats_length += sizeof(struct gg_msg_richtext_format)
 				+ sizeof(struct gg_msg_richtext_image);
