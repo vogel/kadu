@@ -492,8 +492,10 @@ void ConfigDialog::setupTab4(void) {
 	QStringList::Iterator it;
 	for (it = config.notifies.begin(); it != config.notifies.end(); ++it) {
 		QString nick;
-		nick = userlist.byUin(atoi((const char *)(*it).local8Bit())).altnick;
-		e_notifies->insertItem(nick);
+		if (userlist.containsUin(atoi((const char *)(*it).local8Bit()))) {
+			nick = userlist.byUin(atoi((const char *)(*it).local8Bit())).altnick;
+			e_notifies->insertItem(nick);
+			}
 		}
 	/* end two panes */
 
