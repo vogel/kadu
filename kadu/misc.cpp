@@ -445,9 +445,7 @@ void openWebBrowser(const QString &link)
 	if (!webBrowser.contains("%1"))
 		webBrowser.append(" \"%1\"");
 
-	QString linkNorm=unicode2latinUrl(link);
-	while (webBrowser.contains(QRegExp("%1[^0-9]")))
-		webBrowser=webBrowser.arg(linkNorm);
+	webBrowser.replace(QRegExp("%1"), unicode2latinUrl(link));
 	
 	args=toStringList("sh", "-c", webBrowser);
 
