@@ -1,26 +1,33 @@
-Kadu, klient Gadu-Gadu dla Qt, wersja 0.3.8 (lub nowsza)
+Kadu, klient Gadu-Gadu dla Qt, wersja 0.3.9
 
 +++ WYMAGANIA
- * Qt-3.0.x
- * szczegó³y w pomocy online http://kadu.net/install.html
+ * Qt 3.0
+ * szczegó³y w pomocy online http://www.kadu.net/install.html
  
 +++ FICZERSY
  * status: offline, online, away, invisible
- * wysy³anie wiadomo¶ci
- * odbieranie wiadomo¶ci
- * czat z (wstêpnym) formatowaniem tekstu
+ * wysy³anie/odbieranie wiadomo¶ci
+ * czat z formatowaniem tekstu
  * szukanie/dodawanie/usuwanie/edycja u¿ytkownika
- * import/eksport kontaktów
- * historia z timestampingiem
- * dokowanie do KDE 
+ * import/eksport listy kontaktów
+ * historia wiadomo¶ci
+ * dokowanie
  * graficzna reprezentacja statusu
  * obs³uga wiadomo¶ci od anonimów
- * odgrywanie d¼wiêków
+ * odgrywanie d¼wiêków przy pomocy popularnych serwerów d¼wiêku
  * wysy³anie SMSów
  * DCC: wysy³anie, odbieranie
  * rozmowy konferencyjne
  * szyfrowanie ssl
  * rozmowy g³osowe
+ * animowane emotikony
+ * formatowany htmlem panel informacyjny
+ * przesy³anie obrazków
+ * opisy na li¶cie kontaktów
+ * powiadomienia dymkami
+ * obs³uga syntezatora mowy
+ * mo¿liwo¶æ wybrania zestawu grafik
+ * zaawansowana konfiguracja
  * wiele innych...
 
 +++ LICENCJA
@@ -33,4 +40,4 @@ Wielkie dziêki dla Wojtka Kaniewskiego oraz
 i innych.
 
 +++ KONTAKT
-http://kadu.net/
+http://www.kadu.net/
