@@ -120,6 +120,20 @@ class HtmlDocument
 		**/
 		void addText(const QString &text);
 		/**
+			Wstawia podany tekst do listy elementów jako
+			tag html przed innym elementem.
+			@param pos indeks elementu przed ktorym wstawiamy
+			@param text tekst do dodania
+		**/		
+		void insertTag(const int pos,const QString &text);
+		/**
+			Wstawia podany tekst do listy elementów jako
+			zwykly tekst przed innym elementem.
+			@param pos indeks elementu przed ktorym wstawiamy
+			@param text tekst do dodania
+		**/				
+		void insertText(const int pos,const QString &text);
+		/**
 			Parsuje podany napis zgodny ze struktur± html
 			i otrzymane dane przypisuje do dokumentu.
 			@param html napis do skonwertowania

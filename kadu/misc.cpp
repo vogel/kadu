@@ -745,6 +745,23 @@ void HtmlDocument::addText(const QString &text)
 	Elements.append(e);
 }
 
+void HtmlDocument::insertTag(const int pos,const QString &text)
+{
+	Element e;
+	e.text = text;
+	e.tag = true;
+	Elements.insert(Elements.at(pos),e);
+}
+
+void HtmlDocument::insertText(const int pos,const QString &text)
+{
+	Element e;
+	e.text = text;
+	e.tag = false;
+	Elements.append(e);
+	Elements.insert(Elements.at(pos),e);
+}
+
 void HtmlDocument::parseHtml(const QString& html)
 {
 	Element e;
