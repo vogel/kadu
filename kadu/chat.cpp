@@ -164,10 +164,23 @@ int ChatManager::openChat(UinsList senders,time_t time)
 	if (!found)
 	{
 		QPoint pos = QCursor::pos();
+		int x,y,width,height;
+		QDesktopWidget *desk=qApp->desktop();
+		x=pos.x()+50;
+		y=pos.y()+50;
+		height=400;
+		
 		if (senders.count()>1)
-			chat->setGeometry((pos.x() + 550) / 2, (pos.y() + 400) / 2, 550, 400);
+			width=550;
 		else
-			chat->setGeometry((pos.x() + 400) / 2, (pos.y() + 400) / 2, 400, 400);
+			width=400;
+		if (x+width>desk->width())
+			x=desk->width()-width-50;
+		if (y+height>desk->height())
+			y=desk->height()-height-50;
+		if (x<50) x=50;
+		if (y<50) y=50;
+		chat->setGeometry(x,y,width,height);
 	}
 
 	chat->show();
