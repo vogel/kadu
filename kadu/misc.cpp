@@ -2670,7 +2670,7 @@ QString narg(const QString &s, const QString &arg1, const QString &arg2,
 
 QString narg(const QString &s, const QString &arg1, const QString &arg2, const QString &arg3, const QString &arg4)
 {
-#if QT_VERSION > 0x030200
+#if QT_VERSION < 0x030200
 //	kdebugm(KDEBUG_DUMP, "'%s'   '%s'  '%s'  '%s'  '%s'\n", s.local8Bit().data(), arg1.local8Bit().data(), arg2.local8Bit().data(), arg3.local8Bit().data(), arg4.local8Bit().data());
 	const QString *tab[4]={&arg1, &arg2, &arg3, &arg4};
 	return narg(s, tab, 4);
