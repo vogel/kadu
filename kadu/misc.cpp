@@ -385,6 +385,7 @@ QString parse_symbols(QString s, int i, UserListElement &ule, bool escape) {
 					d=ule.description;
 					d.replace(QRegExp("<"), "&lt;");
 					d.replace(QRegExp(">"), "&gt;");
+					d.replace(QRegExp(" "), "&nbsp;");
 					r+=d;
 				}
 				break;

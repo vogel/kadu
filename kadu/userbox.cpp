@@ -120,6 +120,7 @@ void UserBox::maybeTip(const QPoint &c)
 			s += i18n("<B>Description:</B><BR>");
 			desc.replace(QRegExp("<"), "&lt;");
 			desc.replace(QRegExp(">"), "&gt;");
+			desc.replace(QRegExp(" "), "&nbsp;");
 			s += desc;
 		};
 		tip(r, s);
