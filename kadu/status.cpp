@@ -62,7 +62,7 @@ int getCurrentStatus()
 // b³êdna nazwa funkcji, u¿yj getCurrentStatus()
 int getActualStatus()
 {
-	qWarning("getActualStatus() DEPRACATED - use getCurrentStatus");
+	qWarning("============================>>>>>>>>>>>>>>>>>>>> getActualStatus() DEPRACATED - use getCurrentStatus !!");
 	return getCurrentStatus();
 }
 
