@@ -113,6 +113,11 @@ X11TrayIcon::X11TrayIcon(QWidget *parent, const char *name)
 
 	Display *dsp = x11Display();
 	WId win = winId();
+
+	XClassHint classhint;
+	classhint.res_name  = (char*)"kadudock";
+	classhint.res_class = (char*)"Kadu";
+	XSetClassHint(dsp, win, &classhint);
 	
 	//unikamy efektu klepsydry w KDE
 	QWidget *w=new QWidget();
