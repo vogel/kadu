@@ -1,4 +1,4 @@
-/* $Id: userlist.c,v 1.20 2003/06/29 20:20:28 adrian Exp $ */
+/* $Id: userlist.c,v 1.21 2003/09/04 17:59:34 mast3r Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -176,7 +176,7 @@ void gg_userlist_get_free(struct gg_http *h)
  *  - async - ma byæ asynchronicznie
  *
  * zaalokowana struct gg_http, któr± po¼niej nale¿y zwolniæ
- * funkcj± gg_userlist_send(), albo NULL je¶li wyst±pi³ b³±d.
+ * funkcj± gg_userlist_put_free(), albo NULL je¶li wyst±pi³ b³±d.
  */
 struct gg_http *gg_userlist_put(uin_t uin, const char *passwd, const char *contacts, int async)
 {
@@ -314,7 +314,7 @@ void gg_userlist_put_free(struct gg_http *h)
  *  - async - ma byæ asynchronicznie
  *
  * zaalokowana struct gg_http, któr± po¼niej nale¿y zwolniæ
- * funkcj± gg_userlist_send(), albo NULL je¶li wyst±pi³ b³±d.
+ * funkcj± gg_userlist_put_free(), albo NULL je¶li wyst±pi³ b³±d.
  */
 struct gg_http *gg_userlist_remove(uin_t uin, const char *passwd, int async)
 {

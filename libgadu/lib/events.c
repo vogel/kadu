@@ -1,4 +1,4 @@
-/* $Id: events.c,v 1.24 2003/07/03 19:53:11 adrian Exp $ */
+/* $Id: events.c,v 1.25 2003/09/04 17:59:33 mast3r Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -118,8 +118,7 @@ static int gg_handle_recv_msg(struct gg_header *h, struct gg_event *e)
 		}
 		if (p >= packet_end) {
 			gg_debug(GG_DEBUG_MISC, "// gg_handle_recv_msg() malformed packet, message out of bounds\n");
-			errno = EINVAL;
-			goto fail;
+			goto malformed;
 		}
 	}
 	p++;
@@ -137,8 +136,7 @@ static int gg_handle_recv_msg(struct gg_header *h, struct gg_event *e)
 			
 			if (p > packet_end) {
 				gg_debug(GG_DEBUG_MISC, "// gg_handle_recv_msg() packet out of bounds (1)\n");
-				errno = EINVAL;
-				goto fail;
+				goto malformed;
 			}
 
 			count = gg_fix32(m->count);
@@ -165,8 +163,7 @@ static int gg_handle_recv_msg(struct gg_header *h, struct gg_event *e)
 			
 			if (p + 3 > packet_end) {
 				gg_debug(GG_DEBUG_MISC, "// gg_handle_recv_msg() packet out of bounds (2)\n");
-				errno = EINVAL;
-				goto fail;
+				goto malformed;
 			}
 
 			len = gg_fix16(*((unsigned short*) (p + 1)));
@@ -181,8 +178,7 @@ static int gg_handle_recv_msg(struct gg_header *h, struct gg_event *e)
 
 			if (p + len > packet_end) {
 				gg_debug(GG_DEBUG_MISC, "// gg_handle_recv_msg() packet out of bounds (3)\n");
-				errno = EINVAL;
-				goto fail;
+				goto malformed;
 			}
 				
 			memcpy(tmp, p, len);
@@ -205,7 +201,15 @@ static int gg_handle_recv_msg(struct gg_header *h, struct gg_event *e)
 	e->event.msg.message = strdup((char*) r + sizeof(*r));
 
 	return 0;
-	
+
+malformed:
+	e->type = GG_EVENT_NONE;
+
+	free(e->event.msg.recipients);
+	free(e->event.msg.formats);
+
+	return 0;
+
 fail:
 	free(e->event.msg.recipients);
 	free(e->event.msg.formats);

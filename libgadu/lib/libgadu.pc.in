@@ -4,7 +4,7 @@ libdir=@libdir@
 includedir=@includedir@
 
 Name: libgadu
-Version: 20030628
+Version: 20030903
 Description: libgadu
 Libs: -L${libdir} -lgadu @LIBS_LIBGADU@
 Cflags: -I${includedir} @CFLAGS_LIBGADU@

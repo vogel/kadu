@@ -1,4 +1,4 @@
-/* $Id: libgadu.c,v 1.24 2003/07/03 19:53:11 adrian Exp $ */
+/* $Id: libgadu.c,v 1.25 2003/09/04 17:59:33 mast3r Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -69,7 +69,7 @@ static char rcsid[]
 #ifdef __GNUC__
 __attribute__ ((unused))
 #endif
-= "$Id: libgadu.c,v 1.24 2003/07/03 19:53:11 adrian Exp $";
+= "$Id: libgadu.c,v 1.25 2003/09/04 17:59:33 mast3r Exp $";
 #endif 
 
 /*
@@ -894,6 +894,14 @@ void gg_free_session(struct gg_session *sess)
 
 	if (sess->ssl_ctx)
 		SSL_CTX_free(sess->ssl_ctx);
+#endif
+
+#ifdef __GG_LIBGADU_HAVE_PTHREAD
+	if (sess->resolver) {
+		pthread_cancel(*((pthread_t*) sess->resolver));
+		free(sess->resolver);
+		sess->resolver = NULL;
+	}
 #endif
 
 	free(sess);
