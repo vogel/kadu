@@ -8,8 +8,6 @@
  ***************************************************************************/
 
 #include <kcmdlineargs.h>
-#include <kaboutdata.h>
-#include <klocale.h>
 #include <kapplication.h>
 #include <qapplication.h>
 #include <qtextcodec.h>
@@ -30,19 +28,7 @@
 #endif
 //
 
-Kadu *kadu;
-
-static const char *description =
-	I18N_NOOP("Kadu");
-	// INSERT A DESCRIPTION FOR YOUR APPLICATION HERE
-	
-	
-static KCmdLineOptions options[] =
-{
-	{ 0, 0, 0 }
-	// INSERT YOUR COMMANDLINE OPTIONS HERE
-};
-
+Kadu *kadu;	
 KApplication * a;
 bool mute = false;
 
@@ -55,13 +41,7 @@ int main(int argc, char *argv[])
 //	bind_textdomain_codeset("kadu", "ISO-8859-2");
 	textdomain("kadu");
 
-	KAboutData aboutData( "kadu", I18N_NOOP("Kadu"),
-		"0.3.3", description, KAboutData::License_GPL,
-		"(c) 2001-2002, Kadu Team", 0, 0, "www.kadu.net");
-	aboutData.addAuthor("Kadu Team",0, "www.kadu.net");
-	KCmdLineArgs::init( argc, argv, &aboutData );
-	KCmdLineArgs::addCmdLineOptions( options ); // Add our own options.
-
+	KCmdLineArgs::init( argc, argv, "Kadu", "GG-Client for X-Win", VERSION);
 	a = new KApplication;
 //	a = new QApplication(argc, argv);
 	a->setDefaultCodec( QTextCodec::codecForName("ISO 8859-2"));
