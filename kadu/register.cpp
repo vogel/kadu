@@ -7,8 +7,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qlayout.h>
 #include <klocale.h>
+#include <kconfig.h>
+#include <qlayout.h>
 #include <qpushbutton.h>
 #include <qmessagebox.h>
 #include <unistd.h>
@@ -16,7 +17,6 @@
 #include <sys/stat.h>
 #include <pwd.h>
 #include <errno.h>
-#include <kconfig.h>
 #include <stdlib.h>
 #include <qfile.h>
 

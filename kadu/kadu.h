@@ -16,15 +16,14 @@
 #include <config.h>
 #endif
 
-#include <kmenubar.h>
+#include <kapp.h>
 #include <qprogressdialog.h>
 #include <qmultilineedit.h>
-#include <kapp.h>
 #include <qsocketnotifier.h>
 #include <qarray.h>
 #include <qmainwindow.h>
 #include <qtabbar.h>
-#include <kpopupmenu.h>
+#include <qpopupmenu.h>
 #include <qnetworkprotocol.h>
 #include <qstringlist.h>
 #include "userlist.h"
@@ -302,6 +301,6 @@ void playSound(const char *);
 void readConfig(void);
 QString pwHash(const QString);
 void confirmHistoryDeletion(const char *);
-extern KPopupMenu *dockppm;
+extern QPopupMenu *dockppm;
 
 #endif

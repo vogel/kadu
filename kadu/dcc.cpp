@@ -7,10 +7,10 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <klocale.h>
 #include <qfiledialog.h>
 #include <iostream>
 #include <fcntl.h>
-#include <klocale.h>
 #include <qmessagebox.h>
 #include <unistd.h>
 #include <qprocess.h>

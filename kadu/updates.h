@@ -6,6 +6,7 @@
 #include <qurloperator.h>
 #include <qnetworkprotocol.h>
 #include <qcstring.h>
+
 #include "misc.h"
 
 class UpdatesClass

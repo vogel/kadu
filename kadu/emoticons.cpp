@@ -7,11 +7,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "emoticons.h"
-
 #include <qfile.h>
 #include <qtextstream.h>
 #include <qdir.h>
+
+#include "emoticons.h"
 
 // dla config
 #include "kadu.h"

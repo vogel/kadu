@@ -13,6 +13,7 @@
 #include <qobject.h>
 #include <qvaluelist.h>
 #include <qtimer.h>
+
 #include "libgadu.h"
 
 struct UserListElement

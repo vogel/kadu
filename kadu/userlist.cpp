@@ -10,6 +10,7 @@
 #include <qfile.h>
 #include <stdlib.h>
 #include <sys/stat.h>
+
 #include "userlist.h"
 #include "misc.h"
 #include "kadu.h"

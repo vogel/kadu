@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <stdlib.h>
 #include <klocale.h>
+#include <stdlib.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include <qmessagebox.h>

@@ -1,4 +1,5 @@
 
+#include <klocale.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <pwd.h>
@@ -6,7 +7,6 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <time.h>
-#include <klocale.h>
 #include <qpushbutton.h>
 #include <qlayout.h>
 #include "misc.h"

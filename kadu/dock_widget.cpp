@@ -7,14 +7,14 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <klocale.h>
+#include <qcursor.h>
+
 #include "dock_widget.h"
 #include "misc.h"
 #include "pixmaps.h"
 #include "message.h"
 #include "chat.h"
-
-#include <klocale.h>
-#include <qcursor.h>
 
 //
 #include "kadu.h"

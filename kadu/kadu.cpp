@@ -9,6 +9,11 @@
 
 #include <kapp.h>
 #include <klocale.h>
+#include <kglobal.h>
+#include <kiconloader.h>
+#include <kconfig.h>
+#include <ksystemtray.h>
+#include <qradiobutton.h>
 #include <qevent.h>
 #include <qwidget.h>
 #include <qdialog.h>
@@ -26,13 +31,8 @@
 #include <qpoint.h>
 #include <qlayout.h>
 #include <qslider.h>
-#include <kiconloader.h>
-#include <kconfig.h>
 #include <qapplication.h>
 #include <qhbuttongroup.h>
-#include <kfiledialog.h>
-#include <qradiobutton.h>
-#include <ksystemtray.h>
 #include <qtextview.h>
 #include <qtooltip.h>
 #include <qfile.h>
@@ -51,18 +51,15 @@
 #include <qtabdialog.h>
 #include <qstrlist.h>
 #include <qgroupbox.h>
-#include <kmainwindow.h>
 #include <qcheckbox.h>
 #include <qtextcodec.h>
-#include <kglobal.h>
-#include <kiconloader.h>
 #include <qtimer.h>
 #include <qaccel.h>
 #include <qpainter.h>
 #include <qmenubar.h>
 #include <qnetworkprotocol.h>
 #include <qstringlist.h>
-
+#include <qsplitter.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
@@ -149,7 +146,7 @@ QTimer * blinktimer;
 QTimer * pingtimer;
 QTimer * readevent;
 QPopupMenu *statusppm;
-KPopupMenu *dockppm;
+QPopupMenu *dockppm;
 QLabel * statuslabel;
 QLabel * statuslabeltxt;
 QPopupMenu * grpmenu;
@@ -1862,7 +1859,7 @@ void Kadu::createStatusPopupMenu() {
 	QIconSet icon;
 
 	statusppm = new QPopupMenu(this, "statusppm");
-	dockppm = new KPopupMenu(this, "dockppm");
+	dockppm = new QPopupMenu(this, "dockppm");
 
 	for (int i=0; i<8; i++) {
 		pixmap = QPixmap((const char **)gg_xpm[i]);

@@ -7,6 +7,11 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <kicontheme.h>
+#include <kiconloader.h>
+#include <klocale.h>
+#include <kconfig.h>
+#include <kglobal.h>
 #include <qvaluelist.h>
 #include <qcolordialog.h>
 #include <qfontdatabase.h>
@@ -14,16 +19,11 @@
 #include <math.h>
 #include <qvbox.h>
 #include <qhgroupbox.h>
-#include <kglobal.h>
 #include <qpushbutton.h>
-#include <kicontheme.h>
-#include <kiconloader.h>
 #include <qmessagebox.h>
 #include <qfileinfo.h>
 #include <qtimer.h>
 #include <qgrid.h>
-#include <klocale.h>
-#include <kconfig.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/socket.h>

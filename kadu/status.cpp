@@ -7,10 +7,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "status.h"
-#include "kadu.h"
 #include <qfile.h>
 #include <qtextstream.h>
+
+#include "status.h"
+#include "kadu.h"
 
 AutoAwayTimer* AutoAwayTimer::autoaway_object=NULL;
 

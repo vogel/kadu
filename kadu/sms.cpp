@@ -7,9 +7,9 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <klocale.h>
 #include <qlayout.h>
 #include <qmessagebox.h>
-#include <klocale.h>
 #include <qregexp.h>
 #include <qpainter.h>
 #include <qurl.h>

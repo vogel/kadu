@@ -8,13 +8,13 @@
  ***************************************************************************/
 
 #include <klocale.h>
-#include <qlayout.h>
+#include <kicontheme.h>
+#include <kiconloader.h>
 #include <kglobal.h>
+#include <qlayout.h>
 #include <qpushbutton.h>
 #include <qstring.h>
 #include <qfiledialog.h>
-#include <kicontheme.h>
-#include <kiconloader.h>
 #include <qmessagebox.h>
 #include <qregexp.h>
 #include <stdlib.h>

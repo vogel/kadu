@@ -7,10 +7,10 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <klocale.h>
 #include <qbitmap.h>
 #include <qpainter.h>
 #include <qlayout.h>
-#include <klocale.h>
 #include "../config.h"
 
 //

@@ -2,6 +2,7 @@
 #include <qurloperator.h>
 #include <qnetworkprotocol.h>
 #include <qcstring.h>
+
 #include "../config.h"
 #include "updates.h"
 #include "misc.h"

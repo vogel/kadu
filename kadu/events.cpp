@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <klocale.h>
 #include <signal.h>
 #include <qwidget.h>
 #include <qdialog.h>
@@ -23,7 +24,6 @@
 #include <qtextbrowser.h>
 #include <qdatetime.h>
 //#include <iostream>
-#include <klocale.h>
 #include <qmessagebox.h>
 #define _USE_BSD
 #include <sys/types.h>

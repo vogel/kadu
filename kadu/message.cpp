@@ -8,16 +8,16 @@
  ***************************************************************************/
 
 #include <klocale.h>
+#include <kicontheme.h>
+#include <kiconloader.h>
 #include <qpushbutton.h>
 #include <qhbuttongroup.h>
 #include <qfileinfo.h>
 #include <qlayout.h>
 #include <qregexp.h>
 #include <qcstring.h>
-#include <kicontheme.h>
 #include <qaccel.h>
 #include <qmessagebox.h>
-#include <kiconloader.h>
 
 //
 #include "misc.h"
