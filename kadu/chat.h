@@ -124,6 +124,7 @@ class CustomInput : public QMultiLineEdit
 	protected:
 		bool autosend_enabled;
 		void keyPressEvent(QKeyEvent *e);
+		void keyReleaseEvent(QKeyEvent* e);
 
 	public:
 		enum
@@ -146,6 +147,11 @@ class CustomInput : public QMultiLineEdit
 			Przekazany zostaje tak¿e obiekt, który wywo³a³ akcjê - czyli this.
 		**/
 		void keyPressed(QKeyEvent* e, CustomInput* sender);
+		/**
+			Dowolny przycisk klawiatury zostal zwolniony.
+			Przekazany zostaje tak¿e obiekt, który wywo³a³ akcjê - czyli this.
+		**/
+		void keyReleased(QKeyEvent* e, CustomInput* sender);
 };
 
 class KaduSplitter : public QSplitter

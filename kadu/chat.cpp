@@ -419,6 +419,12 @@ void CustomInput::keyPressEvent(QKeyEvent* e)
 //	kdebugf2();
 }
 
+void CustomInput::keyReleaseEvent(QKeyEvent* e)
+{
+	emit keyReleased(e, this);
+	QWidget::keyReleaseEvent(e);
+}
+
 void CustomInput::setAutosend(bool on)
 {
 	autosend_enabled = on;
