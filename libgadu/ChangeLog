@@ -6,6 +6,17 @@ d - drg, sz - szalik). ,,p/nick'' oznacza patch lub ¼ród³o podes³ane
 przez ,,nick'', ,,i/nick'' oznacza czyj¶ pomys³, ,,b/nick'' mówi, kto
 zg³osi³ b³±d.
 
+// 2003-01-15
+
+- automatyczny away zachowuje ,,tylko dla przyjació³'' (pmb/sz)
+- kosmetyka themów dla /private (sz)
+- prawid³owe ustawianie stanu po ¶ci±gniêciu konfiguracji z serwera (sz)
+- poprawka ,,display_transparent'' (kotek/sz)
+- libgadu: dodanie nowego API do obs³ugi katalogu publicznego w stylu
+  GG 5.0. przyk³adowe API gg_search50*() zosta³o zachowanie, póki co,
+  i jest zgodne na poziomie ABI, ale bêdzie usuniête (Chilek/w)
+- update arim.theme (Arim/w)
+
 // 2003-01-14
 
 - poprawione zachowanie zmiennych ui-ncurses przy w³±czonym ui-readline
@@ -2653,4 +2664,4 @@ i BUGS.
 - eleet niebieskie t³o mesgów (wiem, dalekie od idea³u).
 
 
-$Id: ChangeLog,v 1.12 2003/01/14 23:44:00 chilek Exp $
+$Id: ChangeLog,v 1.13 2003/01/15 22:10:31 chilek Exp $

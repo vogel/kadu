@@ -1,4 +1,4 @@
-/* $Id: events.c,v 1.15 2003/01/12 22:56:42 chilek Exp $ */
+/* $Id: events.c,v 1.16 2003/01/15 22:10:32 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -361,11 +361,10 @@ static int gg_watch_fd_connected(struct gg_session *sess, struct gg_event *e)
 			break;
 		}
 
-		case GG_SEARCH50_REPLY:
+		case GG_PUBDIR50_REPLY:
 		{
-			gg_debug(GG_DEBUG_MISC, "// gg_watch_fd_connected() received search reply\n");
-			e->type = GG_EVENT_SEARCH50_REPLY;
-			if (gg_search50_handle_reply(e, p, h->length) == -1)
+			gg_debug(GG_DEBUG_MISC, "// gg_watch_fd_connected() received pubdir/search reply\n");
+			if (gg_pubdir50_handle_reply(e, p, h->length) == -1)
 				goto fail;
 			break;
 		}

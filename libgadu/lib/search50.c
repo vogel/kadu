@@ -1,4 +1,4 @@
-/* $Id: search50.c,v 1.3 2003/01/15 02:16:52 chilek Exp $ */
+/* $Id: search50.c,v 1.4 2003/01/15 22:10:32 chilek Exp $ */
 
 /*
  *  (C) Copyright 2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -35,7 +35,7 @@
  */
 gg_search50_t gg_search50_new()
 {
-	gg_search50_t res = malloc(sizeof(struct gg_search50_s));
+	gg_search50_t res = malloc(sizeof(struct gg_pubdir50_s));
 
 	gg_debug(GG_DEBUG_FUNCTION, "** gg_search50_new();\n");
 
@@ -44,7 +44,7 @@ gg_search50_t gg_search50_new()
 		return NULL;
 	}
 
-	memset(res, 0, sizeof(struct gg_search50_s));
+	memset(res, 0, sizeof(struct gg_pubdir50_s));
 
 	return res;
 }
@@ -63,7 +63,7 @@ gg_search50_t gg_search50_new()
  */
 int gg_search50_add_n(gg_search50_t req, int num, const char *field, const char *value)
 {
-	struct gg_search50_entry *tmp = NULL, *entry;
+	struct gg_pubdir50_entry *tmp = NULL, *entry;
 	char *dupfield, *dupvalue;
 
 	gg_debug(GG_DEBUG_FUNCTION, "** gg_search50_add_n(%p, %d, \"%s\", \"%s\");\n", req, num, field, value);
@@ -79,7 +79,7 @@ int gg_search50_add_n(gg_search50_t req, int num, const char *field, const char 
 		return -1;
 	}
 
-	if (!(tmp = realloc(req->entries, sizeof(struct gg_search50_entry) * (req->entries_count + 1)))) {
+	if (!(tmp = realloc(req->entries, sizeof(struct gg_pubdir50_entry) * (req->entries_count + 1)))) {
 		gg_debug(GG_DEBUG_MISC, "// gg_search50_add_n() out of memory\n");
 		free(dupfield);
 		free(dupvalue);
@@ -143,16 +143,15 @@ void gg_search50_free(gg_search50_t s)
  *
  *  - sess - sesja,
  *  - req - zapytanie.
- *  - type - rodzaj zapytania.
  *
  * numer sekwencyjny wyszukiwania lub 0 w przypadku b³êdu.
  */
-uint32_t gg_search50(struct gg_session *sess, gg_search50_t req, char type)
+uint32_t gg_search50(struct gg_session *sess, gg_search50_t req)
 {
 	int i, size = 5;
 	uint32_t res;
 	char *buf, *p;
-	struct gg_search50_request *r;
+	struct gg_pubdir50_request *r;
 
 	gg_debug(GG_DEBUG_FUNCTION, "** gg_search50(%p, %p);\n", sess, req);
 	
@@ -182,9 +181,9 @@ uint32_t gg_search50(struct gg_session *sess, gg_search50_t req, char type)
 		return 0;
 	}
 
-	r = (struct gg_search50_request*) buf;
+	r = (struct gg_pubdir50_request*) buf;
 	res = time(NULL);
-	r->type = type;
+	r->type = GG_PUBDIR50_SEARCH_REQUEST;
 	r->seq = fix32(time(NULL));
 
 	for (i = 0, p = buf + 5; i < req->entries_count; i++) {
@@ -198,7 +197,7 @@ uint32_t gg_search50(struct gg_session *sess, gg_search50_t req, char type)
 		p += strlen(p) + 1;
 	}
 
-	if (gg_send_packet(sess->fd, GG_SEARCH50_REQUEST, buf, size, NULL, 0) == -1)
+	if (gg_send_packet(sess->fd, GG_PUBDIR50_REQUEST, buf, size, NULL, 0) == -1)
 		res = 0;
 
 	free(buf);
@@ -221,7 +220,7 @@ uint32_t gg_search50(struct gg_session *sess, gg_search50_t req, char type)
 int gg_search50_handle_reply(struct gg_event *e, const char *packet, int length)
 {
 	const char *end = packet + length, *p;
-	struct gg_search50_reply *r;
+	struct gg_pubdir50_reply *r;
 	gg_search50_t res;
 	int num = 0;
 	
@@ -246,7 +245,7 @@ int gg_search50_handle_reply(struct gg_event *e, const char *packet, int length)
 
 	e->event.search50 = res;
 
-	r = (struct gg_search50_reply*) packet;
+	r = (struct gg_pubdir50_reply*) packet;
 	res->seq = fix32(r->seq);
 
 	/* pomiñ pocz±tek odpowiedzi */
