@@ -487,7 +487,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	autoaway->start(config.autoawaytime * 1000, TRUE);
 	connect(autoaway, SIGNAL( timeout() ), this, SLOT( autoAway() ));
 
-	connect(userbox, SIGNAL(doubleClicked(QListBoxItem *)), this, SLOT( sendMessage(QListBoxItem *) ) );
+	connect(userbox, SIGNAL(doubleClicked(QListBoxItem *)), this, SLOT(sendMessage(QListBoxItem *)));
+	connect(userbox, SIGNAL(returnPressed(QListBoxItem *)), this, SLOT(sendMessage(QListBoxItem *)));
 	connect(userbox, SIGNAL(rightButtonClicked(QListBoxItem *, const QPoint &)),
 		this, SLOT(listPopupMenu(QListBoxItem *)));
 
