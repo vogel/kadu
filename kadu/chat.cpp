@@ -70,6 +70,10 @@ void CustomInput::keyPressEvent(QKeyEvent * e) {
 			insert("-");
 			return;
 			}
+		if (e->text() == "*") {
+			insert("*");
+			return;
+			}
 		if (e->state() & ControlButton) {
 			if (e->key() == Key_B) {
 				emit specialKeyPressed(CustomInput::KEY_BOLD);
