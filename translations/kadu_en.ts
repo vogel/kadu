@@ -721,18 +721,6 @@ What would you like to do?</source>
 <context>
     <name>ChangePassword</name>
     <message>
-        <source>New email</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>New password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Retype new password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
@@ -741,11 +729,41 @@ What would you like to do?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Bad data</source>
+        <source>This dialog box allows you to change your current password or e-mail.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Error</source>
+        <source>Email</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New email:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New password:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Retype new password:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error data typed in required fields.
+
+Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new password&quot; should be the same!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -919,54 +937,6 @@ What would you like to do?</source>
     <name>EventConfigSlots</name>
     <message>
         <source>I am busy.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>EventManager</name>
-    <message>
-        <source>Unable to connect, server has not been found</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to connect</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Please change your email in &quot;Change password/email&quot; window. Leave new password field blank.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to connect, server has returned unknown data</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to connect, connection break during reading</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to connect, connection break during writing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to connect, incorrect password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Incorrect password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Connection will be stoped
-Your password is incorrect !!!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to connect, error of negotiation TLS</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Disconnection has occured</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1499,6 +1469,51 @@ Check your internet connection.</source>
     </message>
     <message>
         <source>I&amp;mport / Export userlist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to connect, server has not been found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to connect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please change your email in &quot;Change password/email&quot; window. Leave new password field blank.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to connect, server has returned unknown data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to connect, connection break during reading</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to connect, connection break during writing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to connect, incorrect password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Incorrect password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection will be stoped
+Your password is incorrect !!!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to connect, error of negotiation TLS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disconnection has occured</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

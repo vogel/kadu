@@ -726,18 +726,6 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
 <context>
     <name>ChangePassword</name>
     <message>
-        <source>New email</source>
-        <translation>Nowy e-mail</translation>
-    </message>
-    <message>
-        <source>New password</source>
-        <translation>Nowe hasło</translation>
-    </message>
-    <message>
-        <source>Retype new password</source>
-        <translation>Powtórz nowe hasło</translation>
-    </message>
-    <message>
         <source>OK</source>
         <translation>OK</translation>
     </message>
@@ -746,12 +734,43 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <translation>Zmień hasło/email</translation>
     </message>
     <message>
-        <source>Bad data</source>
-        <translation>Złe dane</translation>
+        <source>This dialog box allows you to change your current password or e-mail.</source>
+        <translation>To okno dialogowe pozwala zmienić bierzące hasło lub e-mail.</translation>
     </message>
     <message>
-        <source>Error</source>
-        <translation>Błąd</translation>
+        <source>Email</source>
+        <translation>e-mail</translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation>Hasło</translation>
+    </message>
+    <message>
+        <source>New email:</source>
+        <translation>Nowy e-mail:</translation>
+    </message>
+    <message>
+        <source>New password:</source>
+        <translation>Nowe hasło:</translation>
+    </message>
+    <message>
+        <source>Retype new password:</source>
+        <translation>Powtórz hasło:</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation>&amp;Zamknij</translation>
+    </message>
+    <message>
+        <source>Change password</source>
+        <translation>Zmień hasło</translation>
+    </message>
+    <message>
+        <source>Error data typed in required fields.
+
+Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new password&quot; should be the same!</source>
+        <translation>Błędne dane w  wymaganych polach.
+Hasła  muszą być identyczne w obu polach!</translation>
     </message>
 </context>
 <context>
@@ -925,55 +944,6 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     <message>
         <source>I am busy.</source>
         <translation>Jestem zajęty.</translation>
-    </message>
-</context>
-<context>
-    <name>EventManager</name>
-    <message>
-        <source>Unable to connect, server has not been found</source>
-        <translation>Połączenie niemożliwe, serwer  nie znaleziony</translation>
-    </message>
-    <message>
-        <source>Unable to connect</source>
-        <translation>Połączenie niemożliwe</translation>
-    </message>
-    <message>
-        <source>Unable to connect, server has returned unknown data</source>
-        <translation>Połączenie niemożliwe, serwer odpowiedział nieznane dane</translation>
-    </message>
-    <message>
-        <source>Unable to connect, connection break during reading</source>
-        <translation>Połączenie niemożliwe, połączenie przerwane w czasie odczytu</translation>
-    </message>
-    <message>
-        <source>Unable to connect, connection break during writing</source>
-        <translation>Połączenie niemożliwe, połączenie przerwane w czasie zapisu</translation>
-    </message>
-    <message>
-        <source>Unable to connect, incorrect password</source>
-        <translation>Połączenia niemożliwe, nieprawidłowe hasło</translation>
-    </message>
-    <message>
-        <source>Incorrect password</source>
-        <translation>Niepoprawne hasło</translation>
-    </message>
-    <message>
-        <source>Connection will be stoped
-Your password is incorrect !!!</source>
-        <translation>Połączenie zostało zatrzymane
-Twoje hasło jest nieprawidłowe!!!</translation>
-    </message>
-    <message>
-        <source>Unable to connect, error of negotiation TLS</source>
-        <translation>Połączenie niemożliwe, błąd negocjacji TLS</translation>
-    </message>
-    <message>
-        <source>Disconnection has occured</source>
-        <translation>Nastąpiło rozłączenie</translation>
-    </message>
-    <message>
-        <source>Please change your email in &quot;Change password/email&quot; window. Leave new password field blank.</source>
-        <translation>Zmień swój e-mail w oknie &quot;Zmień hasło/e-mail&quot;. Pole nowe hasło pozostaw puste.</translation>
     </message>
 </context>
 <context>
@@ -1509,6 +1479,52 @@ Sprawdź swoje połączenie internetowe.</translation>
     <message>
         <source>I&amp;mport / Export userlist</source>
         <translation>I&amp;mport / Eksport listy kontaktów</translation>
+    </message>
+    <message>
+        <source>Unable to connect, server has not been found</source>
+        <translation>Połączenie niemożliwe, serwer  nie znaleziony</translation>
+    </message>
+    <message>
+        <source>Unable to connect</source>
+        <translation>Połączenie niemożliwe</translation>
+    </message>
+    <message>
+        <source>Please change your email in &quot;Change password/email&quot; window. Leave new password field blank.</source>
+        <translation>Zmień swój e-mail w oknie &quot;Zmień hasło/e-mail&quot;. Pole nowe hasło pozostaw puste.</translation>
+    </message>
+    <message>
+        <source>Unable to connect, server has returned unknown data</source>
+        <translation>Połączenie niemożliwe, serwer odpowiedział nieznane dane</translation>
+    </message>
+    <message>
+        <source>Unable to connect, connection break during reading</source>
+        <translation>Połączenie niemożliwe, połączenie przerwane w czasie odczytu</translation>
+    </message>
+    <message>
+        <source>Unable to connect, connection break during writing</source>
+        <translation>Połączenie niemożliwe, połączenie przerwane w czasie zapisu</translation>
+    </message>
+    <message>
+        <source>Unable to connect, incorrect password</source>
+        <translation>Połączenia niemożliwe, nieprawidłowe hasło</translation>
+    </message>
+    <message>
+        <source>Incorrect password</source>
+        <translation>Niepoprawne hasło</translation>
+    </message>
+    <message>
+        <source>Connection will be stoped
+Your password is incorrect !!!</source>
+        <translation>Połączenie zostało zatrzymane
+Twoje hasło jest nieprawidłowe!!!</translation>
+    </message>
+    <message>
+        <source>Unable to connect, error of negotiation TLS</source>
+        <translation>Połączenie niemożliwe, błąd negocjacji TLS</translation>
+    </message>
+    <message>
+        <source>Disconnection has occured</source>
+        <translation>Nastąpiło rozłączenie</translation>
     </message>
 </context>
 <context>

@@ -726,18 +726,6 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
 <context>
     <name>ChangePassword</name>
     <message>
-        <source>New email</source>
-        <translation>Nuova E-mail</translation>
-    </message>
-    <message>
-        <source>New password</source>
-        <translation>Nuova password</translation>
-    </message>
-    <message>
-        <source>Retype new password</source>
-        <translation>Riscrivi la nuova password</translation>
-    </message>
-    <message>
         <source>OK</source>
         <translation>OK</translation>
     </message>
@@ -746,12 +734,42 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
         <translation>Cambia la password/email</translation>
     </message>
     <message>
-        <source>Bad data</source>
-        <translation>Dati non corretti</translation>
+        <source>This dialog box allows you to change your current password or e-mail.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Error</source>
-        <translation>Errore</translation>
+        <source>Email</source>
+        <translation type="unfinished">E-mail</translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation type="unfinished">Password</translation>
+    </message>
+    <message>
+        <source>New email:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New password:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Retype new password:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Chiudi</translation>
+    </message>
+    <message>
+        <source>Change password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error data typed in required fields.
+
+Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new password&quot; should be the same!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -925,55 +943,6 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
     <message>
         <source>I am busy.</source>
         <translation>Sono occupato.</translation>
-    </message>
-</context>
-<context>
-    <name>EventManager</name>
-    <message>
-        <source>Unable to connect, server has not been found</source>
-        <translation>Impossibile collegarsi, il server non è stato trovato</translation>
-    </message>
-    <message>
-        <source>Unable to connect</source>
-        <translation>Collegamento impossibile</translation>
-    </message>
-    <message>
-        <source>Unable to connect, server has returned unknown data</source>
-        <translation>Impossibile collegarsi, il server ha restituito i dati sconosciuti</translation>
-    </message>
-    <message>
-        <source>Unable to connect, connection break during reading</source>
-        <translation>Impossibile collegarsi, interruzzione del collegamento durante la lettura</translation>
-    </message>
-    <message>
-        <source>Unable to connect, connection break during writing</source>
-        <translation>Impossibile collegarsi, interruzione del collegamento durante la scrittura</translation>
-    </message>
-    <message>
-        <source>Unable to connect, incorrect password</source>
-        <translation>Impossibile collegarsi, password errata</translation>
-    </message>
-    <message>
-        <source>Incorrect password</source>
-        <translation>Password errata</translation>
-    </message>
-    <message>
-        <source>Connection will be stoped
-Your password is incorrect !!!</source>
-        <translation>La conessione sarà interrotta.
-La password è errata!!!</translation>
-    </message>
-    <message>
-        <source>Unable to connect, error of negotiation TLS</source>
-        <translation>Impossibile collegarsi, errore in fase di negoziazione TLS</translation>
-    </message>
-    <message>
-        <source>Disconnection has occured</source>
-        <translation>Disconessione</translation>
-    </message>
-    <message>
-        <source>Please change your email in &quot;Change password/email&quot; window. Leave new password field blank.</source>
-        <translation>Cambiare indirizzo e-mail in &quot;Cambia password/email&quot;. Lasciare vuoto il campo nuova password.</translation>
     </message>
 </context>
 <context>
@@ -1508,6 +1477,52 @@ Controllare connessione a Internet.</translation>
     <message>
         <source>I&amp;mport / Export userlist</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to connect, server has not been found</source>
+        <translation type="unfinished">Impossibile collegarsi, il server non è stato trovato</translation>
+    </message>
+    <message>
+        <source>Unable to connect</source>
+        <translation type="unfinished">Collegamento impossibile</translation>
+    </message>
+    <message>
+        <source>Please change your email in &quot;Change password/email&quot; window. Leave new password field blank.</source>
+        <translation type="unfinished">Cambiare indirizzo e-mail in &quot;Cambia password/email&quot;. Lasciare vuoto il campo nuova password.</translation>
+    </message>
+    <message>
+        <source>Unable to connect, server has returned unknown data</source>
+        <translation type="unfinished">Impossibile collegarsi, il server ha restituito i dati sconosciuti</translation>
+    </message>
+    <message>
+        <source>Unable to connect, connection break during reading</source>
+        <translation type="unfinished">Impossibile collegarsi, interruzzione del collegamento durante la lettura</translation>
+    </message>
+    <message>
+        <source>Unable to connect, connection break during writing</source>
+        <translation type="unfinished">Impossibile collegarsi, interruzione del collegamento durante la scrittura</translation>
+    </message>
+    <message>
+        <source>Unable to connect, incorrect password</source>
+        <translation type="unfinished">Impossibile collegarsi, password errata</translation>
+    </message>
+    <message>
+        <source>Incorrect password</source>
+        <translation type="unfinished">Password errata</translation>
+    </message>
+    <message>
+        <source>Connection will be stoped
+Your password is incorrect !!!</source>
+        <translation type="unfinished">La conessione sarà interrotta.
+La password è errata!!!</translation>
+    </message>
+    <message>
+        <source>Unable to connect, error of negotiation TLS</source>
+        <translation type="unfinished">Impossibile collegarsi, errore in fase di negoziazione TLS</translation>
+    </message>
+    <message>
+        <source>Disconnection has occured</source>
+        <translation type="unfinished">Disconessione</translation>
     </message>
 </context>
 <context>
