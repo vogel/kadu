@@ -452,7 +452,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	group_bar = new KaduTabBar(hbox1, "groupbar");
 	group_bar->setShape(QTabBar::RoundedBelow);
 	group_bar->addTab(new QTab(i18n("All")));
-	refreshGroupTabBar();
 	group_bar->setMinimumWidth(group_bar->sizeHint().width());
 	connect(group_bar, SIGNAL(selected(int)), this, SLOT(groupTabSelected(int)));
 
@@ -548,6 +547,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	grid->activate();
 
 	centralFrame->setMinimumSize(50, 100);
+
+	refreshGroupTabBar();
 
 	dccsock = NULL;
 	/* dirty workaround for multiple showEvents */
