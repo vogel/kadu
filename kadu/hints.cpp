@@ -270,14 +270,18 @@ void HintManager::addHint(const QString& text, const QPixmap& pixmap,  const QFo
 
 void HintManager::addHintError(const QString &error)
 {
-	if (hintmanager == NULL)
+	if (this == NULL)
 		return;
+
 	if (config_file.readBoolEntry("Hints","Errors"))
 		addHint("<b>"+tr("Error:")+"</b> "+error, *icons->loadIcon("blocking"), QFont(config[11][0], config[11][1].toInt()), QColor(config[11][2]), QColor(config[11][3]), config[11][4].toInt());
 }
 
 void HintManager::addHintNewMsg(const QString &nick, const QString &msg)
 {
+	if (this == NULL)
+		return;
+
 	if (config_file.readBoolEntry("Hints","ShowContentMessage"))
 	{
 		QString cite;
@@ -293,6 +297,9 @@ void HintManager::addHintNewMsg(const QString &nick, const QString &msg)
 
 void HintManager::addHintNewChat(const QString &nick, const QString &msg)
 {
+	if (this == NULL)
+		return;
+
 	if (config_file.readBoolEntry("Hints","ShowContentMessage"))
 	{
 		QString cite;
@@ -308,7 +315,8 @@ void HintManager::addHintNewChat(const QString &nick, const QString &msg)
 
 void HintManager::addHintStatus(const UserListElement &ule, unsigned int status, unsigned int oldstatus)
 {
-	kdebug("HintManager::addHintStatus\n");
+	if (this == NULL)
+		return;
 
 	bool availstatus = isAvailableStatus(status);
 	bool availoldstatus = isAvailableStatus(oldstatus);

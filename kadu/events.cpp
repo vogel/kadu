@@ -178,48 +178,41 @@ void EventManager::connectionFailedSlot(int failure)
 		case GG_FAILURE_RESOLVING:
 			kdebug("%s\n",
 				unicode2latin(QString(tr("Unable to connect, server has not been found"))).data());
-			if (hintmanager != NULL)
-				hintmanager->addHintError(tr("Unable to connect, server has not been found"));
+			hintmanager->addHintError(tr("Unable to connect, server has not been found"));
 			break;
 		case GG_FAILURE_CONNECTING:
 			kdebug("%s\n",
 				unicode2latin(QString(tr("Unable to connect"))).data());
-			if (hintmanager != NULL)
-				hintmanager->addHintError(tr("Unable to connect"));
+			hintmanager->addHintError(tr("Unable to connect"));
 			break;
 		case GG_FAILURE_INVALID:
 			kdebug("%s\n",
 				unicode2latin(QString(tr("Unable to connect, server has returned unknown data"))).data());;
-			if (hintmanager != NULL)
-				hintmanager->addHintError(tr("Unable to connect, server has returned unknown data"));
+			hintmanager->addHintError(tr("Unable to connect, server has returned unknown data"));
 			break;
 		case GG_FAILURE_READING:
 			kdebug("%s\n",
 				unicode2latin(QString(tr("Unable to connect, connection break during reading"))).data());
-			if (hintmanager != NULL)
-				hintmanager->addHintError(tr("Unable to connect, connection break during reading"));
+			hintmanager->addHintError(tr("Unable to connect, connection break during reading"));
 			break;
 		case GG_FAILURE_WRITING:
 			kdebug("%s\n",
 				unicode2latin(QString(tr("Unable to connect, connection break during writing"))).data());
-			if (hintmanager != NULL)
-				hintmanager->addHintError(tr("Unable to connect, connection break during writing"));
+			hintmanager->addHintError(tr("Unable to connect, connection break during writing"));
 			break;
 		case GG_FAILURE_PASSWORD:
 			kdebug("%s\n",
 				unicode2latin(QString(tr("Unable to connect, incorrect password"))).data());
 			kadu->autohammer = false; /* FIXME 2/2*/
 			AutoConnectionTimer::off();
-			if (hintmanager != NULL)
-				hintmanager->addHintError(tr("Unable to connect, incorrect password"));
+			hintmanager->addHintError(tr("Unable to connect, incorrect password"));
 			QMessageBox::critical(0, tr("Incorrect password"), tr("Connection will be stoped\nYour password is incorrect !!!"), QMessageBox::Ok, 0);
 			return;
 			break;
 		case GG_FAILURE_TLS:
 			kdebug("%s\n",
 				unicode2latin(QString(tr("Unable to connect, error of negotiation TLS"))).data());
-			if (hintmanager != NULL)
-				hintmanager->addHintError(tr("Unable to connect, error of negotiation TLS"));
+			hintmanager->addHintError(tr("Unable to connect, error of negotiation TLS"));
 			break;
 	}
 	kadu->disconnectNetwork();
@@ -372,7 +365,7 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 
 		chats[i].ptr->checkPresence(senders, mesg, time, toadd);
 		chats[i].ptr->alertNewMessage();
-		if (!chats[i].ptr->isActiveWindow() && config_file.readBoolEntry("Hints","NotifyNewMessage") && hintmanager != NULL)
+		if (!chats[i].ptr->isActiveWindow() && config_file.readBoolEntry("Hints","NotifyNewMessage"))
 			hintmanager->addHintNewMsg(ule.altnick, mesg);
 		return;
 		}
@@ -393,7 +386,7 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 		kadu->setFocus();
 		}
 
-	if ((msgclass == GG_CLASS_CHAT || msgclass == GG_CLASS_MSG) && hintmanager != NULL)
+	if ((msgclass == GG_CLASS_CHAT || msgclass == GG_CLASS_MSG))
 		hintmanager->addHintNewChat(ule.altnick, mesg);
 
 	emit chatReceived(senders,mesg,time);
@@ -429,7 +422,7 @@ void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)
 		if (!config_file.readBoolEntry("Notify","NotifyAboutAll"))
 			return;
 
-	if (config_file.readBoolEntry("Hints","NotifyHint") && hintmanager != NULL)
+	if (config_file.readBoolEntry("Hints","NotifyHint"))
 		hintmanager->addHintStatus(userlist.byUinValue(uin), status, oldstatus);
 
 	if (config_file.readBoolEntry("Notify","NotifyStatusChange") && (status == GG_STATUS_AVAIL ||
