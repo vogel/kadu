@@ -534,6 +534,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget (parent, name)
 
 	for (int i = 0; i < userlist.count(); i++)
 		userbox->addUin(userlist[i].uin);
+	userbox->refresh();
 	
 	/* start auto away. yes, even if it's disabled. this way enabling it will work at run-time */
 	autoaway = new QTimer(this);
