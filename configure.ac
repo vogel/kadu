@@ -33,6 +33,43 @@ AC_DEFUN(CHECK_PTHREAD,
 	])
 ])
 
+AC_DEFUN(FIND_FILE,[
+	AC_MSG_CHECKING([for $1 in specified directiories])
+	FILE_DIR=
+	for dir in $2
+	do
+		if test -f $dir/$1
+		then
+			FILE_DIR=$dir
+			AC_MSG_RESULT([found in $FILE_DIR])
+			break
+		fi
+	done
+	if test "X$FILE_DIR" = "X"
+	then
+		AC_MSG_ERROR([$1 not found!])
+	fi
+])
+
+# $1 - header name
+# $2 - directories
+# $3 - action if not in system include dirs
+AC_DEFUN(FIND_HEADER,[
+	AC_MSG_CHECKING([if $1 is in system include dirs])
+	AC_TRY_COMPILE(
+	[
+		#include <libintl.h>
+	],[
+		return 0;
+	],[
+		AC_MSG_RESULT([yes])
+	],[
+		AC_MSG_RESULT([no])
+		FIND_FILE([$1],[$2])
+		$3
+	])
+])
+
 AC_DEFUN(FIND_MOC,[
 	AC_MSG_CHECKING([for QT moc])
 
@@ -211,6 +248,12 @@ AC_FUNC_STRFTIME
 AC_FUNC_WAIT3
 AC_CHECK_FUNCS([floor inet_ntoa memset mkdir select strchr strdup strerror strtol])
 
+# gettext
+
+FIND_HEADER([libintl.h],[/usr/include /usr/local/include],
+[
+	CPPFLAGS="$CPPFLAGS -I$FILE_DIR"
+])
 AM_GNU_GETTEXT([external])
 
 ########################################################################
