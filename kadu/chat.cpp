@@ -51,8 +51,8 @@ void ChatManager::closeAllWindows()
 	kdebugf();
 	while (!Chats.empty())
 	{
-		Chat *chat=Chats.first();
-		delete chat;
+		delete Chats.front();
+		Chats.pop_front();
 	}
 	kdebugf2();
 }
@@ -60,6 +60,7 @@ void ChatManager::closeAllWindows()
 ChatManager::~ChatManager()
 {
 	kdebugf();
+	closeAllWindows();
 }
 
 const ChatList& ChatManager::chats()
