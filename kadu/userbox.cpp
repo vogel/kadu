@@ -29,11 +29,13 @@ int KaduListBoxPixmap::scrollWidth;
 
 void KaduListBoxPixmap::setFont(const QFont &f)
 {
+	kdebugf();
 	QFont newFont = QFont(f);
 	newFont.setPointSize(f.pointSize() - 2);
 	if (descriptionFontMetrics)
 		delete descriptionFontMetrics;
 	descriptionFontMetrics= new QFontMetrics(newFont);
+	kdebugf2();
 }
 
 void KaduListBoxPixmap::setVerticalScrollWidth(int w)
@@ -257,17 +259,21 @@ UserBox::UserBox(QWidget* parent,const char* name,WFlags f)
 	: QListBox(parent,name),QToolTip(viewport())
 
 {
+	kdebugf();
 	if (!userboxmenu)
 		userboxmenu= new UserBoxMenu(this);
 
 	UserBoxes.append(this);
 	setSelectionMode(QListBox::Extended);
 	KaduListBoxPixmap::setVerticalScrollWidth(verticalScrollBar()->sliderRect().width());
+	kdebugf2();
 }
 
 UserBox::~UserBox()
 {
+	kdebugf();
 	UserBoxes.remove(this);
+	kdebugf2();
 }
 
 void UserBox::maybeTip(const QPoint &c)
@@ -568,7 +574,7 @@ void UserBox::refresh()
 	for (i = 0; i < s_users.count(); i++)
 		setSelected(findItem(s_users[i]), true);
 	setCurrentItem(findItem(s_user));
-	kdebug("UserBox::refresh() exit\n");
+	kdebugf2();
 }
 
 void UserBox::addUser(const QString &altnick)
@@ -588,7 +594,7 @@ void UserBox::renameUser(const QString &oldaltnick, const QString &newaltnick)
 	if (it != Users.end())
 		(*it) = newaltnick;
 	else
-		kdebug("Userbox::renameUser(): userbox doesnt contain: %s\n", (const char *)oldaltnick.local8Bit());
+		kdebug_mask(KADU_DEBUG_WARNING, "Userbox::renameUser(): userbox doesnt contain: %s\n", (const char *)oldaltnick.local8Bit());
 }
 
 bool UserBox::containsAltNick(const QString &altnick)
@@ -596,15 +602,17 @@ bool UserBox::containsAltNick(const QString &altnick)
 	for (QStringList::iterator it = Users.begin(); it != Users.end(); it++)
 		if ((*it).lower() == altnick.lower())
 			return true;
-	kdebug("UserBox::containsAltNick(): userbox doesnt contain: %s\n", (const char *)altnick.lower().local8Bit());
+	kdebug_mask(KADU_DEBUG_INFO, "UserBox::containsAltNick(): userbox doesnt contain: %s\n", (const char *)altnick.lower().local8Bit());
 	return false;
 }
 
 void UserBox::changeAllToInactive()
 {
+	kdebugf();
 	QPixmap qp_inact = icons_manager.loadIcon("Offline");
 	for(unsigned int i=0; i<count(); i++)
 		changeItem(qp_inact,item(i)->text(),i);
+	kdebugf2();
 }
 
 void UserBox::showHideInactive()
@@ -615,6 +623,7 @@ void UserBox::showHideInactive()
 
 UinsList UserBox::getSelectedUins()
 {
+	kdebugf();
 	UinsList uins;
 	for (unsigned int i = 0; i < count(); i++)
 		if (isSelected(i))
@@ -623,36 +632,45 @@ UinsList UserBox::getSelectedUins()
 			if (user.uin)
 				uins.append(user.uin);
 		}
+	kdebugf2();
 	return uins;
 }
 
 UserList UserBox::getSelectedUsers()
 {
+	kdebugf();
 	UserList users;
 	for (unsigned int i=0; i< count(); i++)
 		if (isSelected(i))
 			users.addUser(userlist.byAltNick(text(i)));
+	kdebugf2();
 	return users;
 }
 
 UserBox* UserBox::getActiveUserBox()
 {
+	kdebugf();
 	for (unsigned int i=0; i<UserBoxes.size(); i++)
 	{
 		UserBox *box=UserBoxes[i];
 		if (box->isActiveWindow())
+		{
+			kdebugf2();
 			return box;
+		}
 	}
-	kdebug("return NULL!\n");
+	kdebug_mask(KADU_DEBUG_PANIC, "return NULL!\n");
 	return NULL;
 }
 
 QStringList UserBox::getSelectedAltNicks()
 {
+	kdebugf();
 	QStringList nicks;
 	for (unsigned int i=0; i< count(); i++)
 		if (isSelected(i))
 			nicks.append(text(i));
+	kdebugf2();
 	return nicks;
 }
 /////////////////////////////////////////////////////////
@@ -683,6 +701,7 @@ void UserBox::all_renameUser(const QString &oldaltnick, const QString &newaltnic
 
 void UserBox::initModule()
 {
+	kdebugf();
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "General"));
 	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show inactive users"), "ShowHideInactive", true);
 
@@ -727,6 +746,7 @@ void UserBox::initModule()
 	ConfigDialog::connectSlot("Look", "", SIGNAL(changed(const char *, const QColor&)), userboxslots, SLOT(chooseColor(const char *, const QColor&)), "userbox_font_color");
 
 	ConfigDialog::connectSlot("Look", "Font in userbox", SIGNAL(changed(const char *, const QFont&)), userboxslots, SLOT(chooseFont(const char *, const QFont&)), "userbox_font_box");
+	kdebugf2();
 }
 
 UserBoxMenu::UserBoxMenu(QWidget *parent, const char *name): QPopupMenu(parent, name)
@@ -798,7 +818,8 @@ void UserBoxSlots::chooseColor(const char *name, const QColor &color)
 	else if (QString(name)=="userbox_font_color")
 		preview->setPaletteBackgroundColor(color);
 	else
-		kdebug("chooseColor: ups!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! '%s'\n", name);
+		kdebug_mask(KADU_DEBUG_ERROR, "chooseColor: ups!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! '%s'\n", name);
+	kdebugf2();
 }
 
 void UserBoxSlots::chooseFont(const char *name, const QFont &font)
@@ -807,6 +828,7 @@ void UserBoxSlots::chooseFont(const char *name, const QFont &font)
 	QLabel *preview= ConfigDialog::getLabel("Look", "<b>Text</b> preview", "preview_userbox");
 	if (QString(name)=="userbox_font_box")
 		preview->setFont(font);
+	kdebugf2();
 }
 
 void UserBoxSlots::updatePreview()
@@ -817,6 +839,7 @@ void UserBoxSlots::updatePreview()
 	preview->setPaletteForegroundColor(config_file.readColorEntry("Look", "UserboxFgColor"));
 	preview->setPaletteBackgroundColor(config_file.readColorEntry("Look", "UserboxBgColor"));
 	preview->setAlignment(Qt::AlignLeft);
+	kdebugf2();
 }
 
 QValueList<UserBox *> UserBox::UserBoxes;

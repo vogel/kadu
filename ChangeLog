@@ -185,6 +185,10 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawione filtrowanie wychodz±cych wiadomo¶ci przez modu³y (Googie/joi)
 * ostrze¿enie gdy przesy³ana wiadomo¶æ jest za d³uga (joi)
 * poprawka powy¿szej poprawki ;) (joi)
+* usprawniony mechanizm debugowania - funkcja kdebug_mask zamiast kdebug, która
+  za 1. argument przyjmuje maskê bitow± z informacj± o typie wypisywanej
+  informacji, maskê ustawia siê jako zmienn± ¶rodowiskow± DEBUG_MASK,
+  na razie tylko kilka plików przerobionych na nowy mechanizm (joi)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

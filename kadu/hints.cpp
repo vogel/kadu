@@ -28,7 +28,7 @@
 
 Hint::Hint(QWidget *parent, const QString& text, const QPixmap& pixmap, unsigned int timeout) : QHBoxLayout(0, "Hint")
 {
-	kdebug("Hint::Hint\n");
+	kdebugf();
 
 	secs = timeout;
 	ident = 0;
@@ -74,7 +74,7 @@ void Hint::setShown(bool show)
 
 void Hint::set(const QFont &font, const QColor &color, const QColor &bgcolor, unsigned int id, bool show)
 {
-	kdebug("Hint::set()\n");
+	kdebugf();
 
 	ident = id;
 	label->setFont(font);

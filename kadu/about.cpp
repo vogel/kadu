@@ -101,12 +101,14 @@ About::About() {
 	// end close button
 
 	loadGeometry(this, "General", "AboutGeometry", 20, 20, 580, 400);
+	kdebugf2();
 }
 
 About::~About()
 {
 	kdebugf();
 	saveGeometry(this, "General", "AboutGeometry");
+	kdebugf2();
 }
 
 void About::keyPressEvent(QKeyEvent *ke_event)
@@ -117,13 +119,18 @@ void About::keyPressEvent(QKeyEvent *ke_event)
 
 QString About::loadFile(const QString &name)
 {
+	kdebugf();
 	QString data;
 	QFile file(dataPath("kadu/" + name));
 	if (!file.open(IO_ReadOnly))
+	{
+		kdebug_mask(KADU_DEBUG_ERROR, "About::loadFile(%s) cannot open file\n", name.local8Bit().data());
 		return QString::null;
+	}
 	QTextStream str(&file);
 	str.setCodec(QTextCodec::codecForName("ISO8859-2"));
 	data = str.read();
 	file.close();
+	kdebugf2();
 	return data;
 }

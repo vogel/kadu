@@ -21,13 +21,14 @@
 #include "debug.h"
 
 DnsHandler::DnsHandler(UinType uin) : uin(uin) {
+	kdebugf();
 	UserListElement &ule = userlist.byUin(uin);
 	completed = false;
 	connect(&dnsresolver, SIGNAL(resultsReady()), this, SLOT(resultsReady()));
 	dnsresolver.setRecordType(QDns::Ptr);
 	dnsresolver.setLabel(ule.ip);
 	counter++;
-	kdebug("DnsHandler::DnsHandler(): counter = %d\n", counter);
+	kdebug_mask(KADU_DEBUG_INFO, "DnsHandler::DnsHandler(): counter = %d\n", counter);
 }
 
 DnsHandler::~DnsHandler() {
@@ -38,11 +39,13 @@ DnsHandler::~DnsHandler() {
 }
 
 void DnsHandler::resultsReady() {
+	kdebugf();
 	if (dnsresolver.hostNames().count())
 		userlist.setDnsName(uin, dnsresolver.hostNames()[0]);
 	else
 		userlist.setDnsName(uin, QString::null);
 	completed = true;
+	kdebugf2();
 }
 
 int DnsHandler::counter = 0;
@@ -125,6 +128,7 @@ UserList::~UserList()
 }
 
 void UserList::addDnsLookup(UinType  uin, const QHostAddress &ip) {
+	kdebugf();
 	DnsHandler *dnshandler;
 	dnshandler = dnslookups.first();
 	while (dnshandler) {
@@ -140,6 +144,7 @@ void UserList::addDnsLookup(UinType  uin, const QHostAddress &ip) {
 	//UserListElement &ule = byUin(uin);
 	dnshandler = new DnsHandler(uin);
 	dnslookups.append(dnshandler);
+	kdebugf2();
 }
 
 void UserList::setDnsName(UinType  uin, const QString &name) {
@@ -148,9 +153,9 @@ void UserList::setDnsName(UinType  uin, const QString &name) {
 	UserListElement &ule = byUin(uin);
 	if (ule.dnsname != name) {
 		ule.dnsname = name;
-		kdebug("UserList::setDnsName(): dnsname for uin %d: %s\n", uin, name.latin1());
+		kdebug_mask(KADU_DEBUG_INFO, "UserList::setDnsName(): dnsname for uin %d: %s\n", uin, name.latin1());
 		emit dnsNameReady(uin);
-		}
+	}
 }
 
 UserListElement& UserList::byUin(UinType  uin)
@@ -158,7 +163,7 @@ UserListElement& UserList::byUin(UinType  uin)
 	for(iterator i=begin(); i!=end(); i++)
 		if((*i).uin==uin)
 			return (*i);
-	kdebug("UserList::byUin(): Panic!\n");
+	kdebug_mask(KADU_DEBUG_PANIC, "UserList::byUin(): Panic!\n");
 	return *((UserListElement*)NULL);
 }
 
@@ -167,7 +172,7 @@ UserListElement& UserList::byNick(const QString& nickname)
 	for (iterator i = begin(); i != end(); i++)
 		if ((*i).nickname.lower() == nickname.lower())
 			return (*i);
-	kdebug("UserList::byNick(): Panic! %s not exists\n",
+	kdebug_mask(KADU_DEBUG_PANIC, "UserList::byNick(): Panic! %s not exists\n",
 		(const char*)nickname.lower().local8Bit());
 	return *((UserListElement*)NULL);
 }
@@ -177,7 +182,7 @@ UserListElement& UserList::byAltNick(const QString& altnick)
 	for (iterator i = begin(); i != end(); i++)
 		if ((*i).altnick.lower() == altnick.lower())
 			return (*i);
-	kdebug("UserList::byAltNick(): Panic! %s not exists\n",
+	kdebug_mask(KADU_DEBUG_PANIC, "UserList::byAltNick(): Panic! %s not exists\n",
 		(const char*)altnick.lower().local8Bit());
 	return *((UserListElement*)NULL);
 }
@@ -200,7 +205,7 @@ bool UserList::containsUin(UinType  uin) const {
 	for (const_iterator i = begin(); i != end(); i++)
 		if ((*i).uin == uin)
 			return true;
-	kdebug("UserList::containsUin(): userlist doesn't contain %d\n", uin);
+	kdebug_mask(KADU_DEBUG_INFO, "UserList::containsUin(): userlist doesn't contain %d\n", uin);
 	return false;
 }
 
@@ -208,7 +213,7 @@ bool UserList::containsAltNick(const QString &altnick) const {
 	for (const_iterator i = begin(); i != end(); i++)
 		if ((*i).altnick.lower() == altnick.lower())
 			return true;
-	kdebug("UserList::containsAltNick(): userlist doesn't contain %s\n",
+	kdebug_mask(KADU_DEBUG_INFO, "UserList::containsAltNick(): userlist doesn't contain %s\n",
 		(const char *)altnick.lower().local8Bit());
 	return false;
 }
@@ -240,6 +245,7 @@ void UserList::addUser(UserListElement& ule)
 	append(e);
 	emit userAdded(e);
 	emit modified();
+	kdebugf2();
 }
 
 void UserList::addAnonymous(UinType uin)
@@ -258,6 +264,7 @@ void UserList::addAnonymous(UinType uin)
 	e.email = "";
 	e.anonymous = true;
 	addUser(e);
+	kdebugf2();
 }
 
 void UserList::changeUserInfo(const QString oldaltnick, UserListElement &ule)
@@ -285,17 +292,20 @@ void UserList::changeUserInfo(const QString oldaltnick, UserListElement &ule)
 	UserBox::all_refresh();
 
 	emit modified();
+	kdebugf2();
 }
 
 void UserList::changeUserStatus(const UinType uin, const unsigned int status)
 {
+	kdebugf();
 	UserListElement &e = byUin(uin);
 	if (status != e.status) {
 		emit changingStatus(uin, e.status, status);
 		e.status = status;
 //		UserBox::all_refresh();			
 		emit statusModified(&e);
-		}
+	}
+	kdebugf2();
 }
 
 void UserList::removeUser(const QString &altnick)
@@ -308,6 +318,7 @@ void UserList::removeUser(const QString &altnick)
 			emit modified();
 			break;
 		}
+	kdebugf2();
 }
 
 bool UserList::writeToFile(QString filename)
@@ -325,14 +336,14 @@ bool UserList::writeToFile(QString filename)
 
 	faname = ggPath("userattribs");
 
-	kdebug("UserList::writeToFile(): %s\n", (const char *)filename.local8Bit());
+	kdebug_mask(KADU_DEBUG_INFO, "UserList::writeToFile(): %s\n", (const char *)filename.local8Bit());
 
 	QFile f(filename);
 
 	if (!f.open(IO_WriteOnly)) {
-		kdebug("UserList::writeToFile(): Error opening file :(\n");
+		kdebug_mask(KADU_DEBUG_ERROR, "UserList::writeToFile(): Error opening file :(\n");
 		return false;
-		}
+	}
 
 	QString s;
 	QCString str;
@@ -369,9 +380,9 @@ bool UserList::writeToFile(QString filename)
 	QFile fa(faname);
 
 	if (!fa.open(IO_WriteOnly)) {
-		kdebug("UserList::writeToFile(): Error opening file :(\n");
+		kdebug_mask(KADU_DEBUG_ERROR, "UserList::writeToFile(): Error opening file :(\n");
 		return false;
-		}
+	}
 
 	for (Iterator i = begin(); i != end(); i++) {
 		s.truncate(0);
@@ -391,7 +402,8 @@ bool UserList::writeToFile(QString filename)
 			}
 		}
 	fa.close();
-		
+	
+	kdebugf2();
 	return true;
 }
 
@@ -407,12 +419,12 @@ bool UserList::readFromFile()
 	bool ok;
 
 	path = ggPath("userattribs");
-	kdebug("UserList::readFromFile(): Opening userattribs file: %s\n",
+	kdebug_mask(KADU_DEBUG_INFO, "UserList::readFromFile(): Opening userattribs file: %s\n",
 		(const char *)path.local8Bit());
 	QFile fa(path);
 	if (!fa.open(IO_ReadOnly)) {
-		kdebug("UserList::readFromFile(): Error opening userattribs file\n");
-		}
+		kdebug_mask(KADU_DEBUG_ERROR, "UserList::readFromFile(): Error opening userattribs file\n");
+	}
 	else {
 		QTextStream s(&fa);
 		while ((line = s.readLine()).length()) {
@@ -425,15 +437,15 @@ bool UserList::readFromFile()
 		}
 
 	path = ggPath("userlist");
-	kdebug("UserList::readFromFile(): Opening userlist file: %s\n",
+	kdebug_mask(KADU_DEBUG_INFO, "UserList::readFromFile(): Opening userlist file: %s\n",
 		(const char *)path.local8Bit());
 	QFile f(path);
 	if (!f.open(IO_ReadOnly)) {
-		kdebug("UserList::readFromFile(): Error opening userlist file");
+		kdebug_mask(KADU_DEBUG_ERROR, "UserList::readFromFile(): Error opening userlist file");
 		return false;
 		}
 
-	kdebug("UserList::readFromFile(): File opened successfuly\n");
+	kdebug_mask(KADU_DEBUG_INFO, "UserList::readFromFile(): File opened successfuly\n");
 
 	clear();
 
@@ -466,7 +478,7 @@ bool UserList::readFromFile()
 			}
 		else {
 			userattribs = QStringList::split(";", line, TRUE);
-			kdebug("UserList::readFromFile(): userattribs = %d\n", userattribs.count());
+			kdebug_mask(KADU_DEBUG_INFO, "UserList::readFromFile(): userattribs = %d\n", userattribs.count());
 			if (userattribs.count() >= 12)
 				groups = userattribs.count() - 11;
 			else
@@ -513,6 +525,7 @@ bool UserList::readFromFile()
 
 	f.close();
 	emit modified();
+	kdebugf2();
 	return true;
 }
 
@@ -526,6 +539,7 @@ UserList& UserList::operator=(const UserList& userlist)
 }
 
 void UserList::merge(UserList &userlist) {
+	kdebugf();
 	UserListElement e(this);
 
 	for (Iterator i = userlist.begin(); i != userlist.end(); i++) {
@@ -576,6 +590,7 @@ void UserList::merge(UserList &userlist) {
 			}
 		}
 	emit modified();
+	kdebugf2();
 }
 
 UserList userlist;

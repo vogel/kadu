@@ -85,6 +85,7 @@ UserInfo::UserInfo(const QString &name, QDialog *parent, const QString &altnick,
 	createNotifier.notify(this);
 	
 	loadGeometry(this, "General", "ManageUsersDialogGeometry", 0, 0, 450, 400);
+	kdebugf2();
 }
 
 void UserInfo::setUserInfo(UserListElement &ule) {
@@ -100,6 +101,7 @@ void UserInfo::setUserInfo(UserListElement &ule) {
 
 void UserInfo::setupTab1()
 {
+	kdebugf();
 	// our QVGroupBox
 	vgb_general = new QVGroupBox(tw_main);
 	vgb_general->setFrameStyle(QFrame::NoFrame);
@@ -293,10 +295,12 @@ void UserInfo::setupTab1()
 		dns->setRecordType(QDns::Ptr);
 		connect(dns, SIGNAL(resultsReady()), this, SLOT(resultsReady()));
 	}
+	kdebugf2();
 }
 
 void UserInfo::setupTab2()
 {
+	kdebugf();
 	// Misc options
 	QVGroupBox *vgb_others = new QVGroupBox(vgb_general);
 	vgb_others->setFrameStyle(QFrame::NoFrame);
@@ -315,13 +319,15 @@ void UserInfo::setupTab2()
 	else
 		c_notify->setChecked(true);
 	// end Misc options	
+	kdebugf2();
 }
 
 UserInfo::~UserInfo() 
 {
-	kdebug("UserInfo::~UserInfo()\n");
+	kdebugf();
 	saveGeometry(this, "General", "ManageUsersDialogGeometry");
 	delete dns;
+	kdebugf2();
 }
 
 void UserInfo::keyPressEvent(QKeyEvent *ke_event)
@@ -361,6 +367,7 @@ void UserInfo::addNewUser(UserListElement& e)
 	}
 	userlist.addUser(e);
 	close(true);
+	kdebugf2();
 }
 
 void UserInfo::changeUserData(UserListElement& e)
@@ -437,6 +444,7 @@ void UserInfo::changeUserData(UserListElement& e)
 	}
 	chat_manager->refreshTitlesForUin(puser->uin);
 	close(true);
+	kdebugf2();
 }
 
 void UserInfo::updateUserlist() {
@@ -462,4 +470,5 @@ void UserInfo::updateUserlist() {
 		addNewUser(e);
 	else
 		changeUserData(e);
+	kdebugf2();
 }

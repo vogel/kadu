@@ -219,7 +219,7 @@ void UserlistImportExport::updateUserlist() {
 
 void UserlistImportExport::userListImported(bool ok, UserList& userList)
 {
-	kdebug("UserlistImport::userListImported()\n");
+	kdebugf();
 
 	importedUserlist = userList;
 	lv_userlist->clear();

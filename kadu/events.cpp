@@ -61,7 +61,7 @@ void AutoConnectionTimer::off() {
 	if (autoconnection_object) {
 		delete autoconnection_object;
 		autoconnection_object = NULL;
-		}
+	}
 }
 
 ConnectionTimeoutTimer::ConnectionTimeoutTimer(QObject *parent) : QTimer(parent, "ConnectionTimeoutTimer") {
@@ -81,7 +81,7 @@ void ConnectionTimeoutTimer::off() {
 	if (connectiontimeout_object) {
 		delete connectiontimeout_object;
 		connectiontimeout_object = NULL;
-		}
+	}
 }
 
 EventManager::EventManager()
@@ -111,10 +111,8 @@ EventManager::EventManager()
 void EventManager::systemMessageReceivedSlot(QString &msg, QDateTime &time,
 	int formats_length, void *formats)
 {
-	QString mesg;
-	kdebug("EventManager::systemMessageReceivedSlot()\n");
-	mesg = time.toString("hh:mm:ss (dd.MM.yyyy): ") + msg;
-	MessageBox::msg(mesg);
+	kdebugf();
+	MessageBox::msg(time.toString("hh:mm:ss (dd.MM.yyyy): ") + msg);
 }
 
 void EventManager::messageReceivedSlot(int msgclass, UinsList senders,QCString& msg, time_t time,
@@ -439,7 +437,7 @@ void EventManager::userlistReplyReceivedSlot(char type, char *reply)
 }
 
 void EventManager::connectionTimeoutTimerSlot() {
-	kdebug("EventManager::connectionTimeoutTimerSlot()\n");
+	kdebugf();
 	ConnectionTimeoutTimer::off();
 	if (sess->state == GG_STATE_CONNECTING_GG && sess->port != GG_HTTPS_PORT) {
 		gg_event* e;
@@ -462,7 +460,7 @@ void EventManager::eventHandler(gg_session* sess)
 {
 	static int calls = 0;
 
-	kdebug("EventManager::eventHandler()\n");
+	kdebugf();
 	calls++;
 	if (calls > 1)
 		kdebug("************* EventManager::eventHandler(): Recursive eventHandler calls detected!\n");
@@ -615,7 +613,7 @@ void EventManager::eventHandler(gg_session* sess)
 
 void EventConfigSlots::initModule()
 {
-	kdebug("EventConfigSlots::initModule()\n");
+	kdebugf();
 	
 	EventConfigSlots *eventconfigslots = new EventConfigSlots();
 
@@ -711,7 +709,7 @@ void EventConfigSlots::initModule()
 
 void EventConfigSlots::onCreateConfigDialog()
 {
-	kdebug("EventConfigSlots::onCreateConfigDialog() \n");
+	kdebugf();
 	
 	QCheckBox *b_dccenabled = ConfigDialog::getCheckBox("Network", "DCC enabled");
 	QCheckBox *b_dccip= ConfigDialog::getCheckBox("Network", "DCC IP autodetection");
@@ -785,7 +783,7 @@ void EventConfigSlots::onCreateConfigDialog()
 
 void EventConfigSlots::onDestroyConfigDialog()
 {
-	kdebug("EventConfigSlots::onDestroyConfigDialog() \n");
+	kdebugf();
 
 #ifdef HAVE_OPENSSL
 	QComboBox *cb_portselect=ConfigDialog::getComboBox("Network", "Default port to connect to servers");
@@ -878,7 +876,7 @@ void EventConfigSlots::_Right2( QListBoxItem *item) {
 
 
 void EventConfigSlots::_Left(void) {
-	kdebug("EventConfigSlots::_Left()\n");
+	kdebugf();
 	QListBox *e_availusers= ConfigDialog::getListBox("Notify", "available");
 	QListBox *e_notifies= ConfigDialog::getListBox("Notify", "track");
 	QStringList tomove;
@@ -898,7 +896,7 @@ void EventConfigSlots::_Left(void) {
 }
 
 void EventConfigSlots::_Right(void) {
-	kdebug("EventConfigSlots::_Right()\n");
+	kdebugf();
 	QListBox *e_availusers= ConfigDialog::getListBox("Notify", "available");
 	QListBox *e_notifies= ConfigDialog::getListBox("Notify", "track");
 	QStringList tomove;
@@ -920,7 +918,7 @@ void EventConfigSlots::_Right(void) {
 
 void EventConfigSlots::ifDccEnabled(bool value)
 {
-	kdebug("EventConfigSlots::ifDccEnabled() \n");
+	kdebugf();
 
 	QCheckBox *b_dccip= ConfigDialog::getCheckBox("Network", "DCC IP autodetection");
 	QVGroupBox *g_dccip = ConfigDialog::getVGroupBox("Network", "DCC IP");
@@ -935,14 +933,14 @@ void EventConfigSlots::ifDccEnabled(bool value)
 
 void EventConfigSlots::ifDccIpEnabled(bool value)
 {
-	kdebug("EventConfigSlots::ifDccIpEnabled() \n");
+	kdebugf();
 	QVGroupBox *g_dccip = ConfigDialog::getVGroupBox("Network", "DCC IP");
 	g_dccip->setEnabled(!value);
 }
 
 void EventConfigSlots::ifDefServerEnabled(bool value)
 {
-	kdebug("EventConfigSlots::ifDefServerEnabled() \n");
+	kdebugf();
 	QHBox *serverbox=(QHBox*)(ConfigDialog::getLineEdit("Network", "IP addresses:","server")->parent());
 	serverbox->setEnabled(!value);	
 }
@@ -950,7 +948,7 @@ void EventConfigSlots::ifDefServerEnabled(bool value)
 void EventConfigSlots::useTlsEnabled(bool value)
 {
 #ifdef HAVE_OPENSSL
-	kdebug("EventConfigSlots::useTlsEnabled() \n");
+	kdebugf();
 	QHBox *box_portselect=(QHBox*)(ConfigDialog::getComboBox("Network", "Default port to connect to servers")->parent());
 	box_portselect->setEnabled(!value);
 #endif

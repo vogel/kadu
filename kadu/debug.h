@@ -3,6 +3,20 @@
 
 #include "kadu-config.h"
 
+#define KADU_DEBUG_FUNCTION_START (1<<8)
+#define KADU_DEBUG_FUNCTION_END   (1<<9)
+
+#define KADU_DEBUG_INFO           (1<<10)
+#define KADU_DEBUG_WARNING        (1<<11)
+#define KADU_DEBUG_ERROR          (1<<12)
+#define KADU_DEBUG_PANIC          (1<<13)
+
+#define KADU_DEBUG_DUMP           (1<<14)
+#define KADU_DEBUG_NETWORK        (1<<15)
+
+#define KADU_DEBUG_ALL 2147483647
+
+
 /*
 	<<< kdebug >>>
 	Wy¶wietla komunikat debuguj±cy na konsoli.
@@ -10,11 +24,15 @@
 */
 #ifdef DEBUG_ENABLED
 #define kdebug(format,args...) \
-	_kdebug(__FILE__,__LINE__,format,##args)
+	_kdebug_with_mask(KADU_DEBUG_ALL,__FILE__,__LINE__,format,##args)
+#define kdebug_mask(mask,format,args...) \
+	_kdebug_with_mask(mask,__FILE__,__LINE__,format,##args)
 #else
 #define kdebug(format,args...)
+#define kdebug_mask(mask,format,args...)
 #endif
-	
+
+
 /*
 	<<< kdebugf >>>
 	Wy¶wietla komunikat debuguj±cy zawieraj±cy
@@ -25,16 +43,17 @@
 	dzia³anie programu.
 */	
 #define kdebugf() \
-	kdebug("%s\n",__PRETTY_FUNCTION__)
+	kdebug_mask(KADU_DEBUG_FUNCTION_START, "%s\n",__PRETTY_FUNCTION__)
 
 #define kdebugf2() \
-	kdebug("%s end\n",__PRETTY_FUNCTION__)
+	kdebug_mask(KADU_DEBUG_FUNCTION_END, "%s end\n",__PRETTY_FUNCTION__)
 
 /*
 	Funkcja pomocnicza. Nie u¿ywaæ.
 */
 #ifdef DEBUG_ENABLED
-void _kdebug(const char* file,const int line,const char* format,...);
+void _kdebug_with_mask(int mask, const char* file,const int line,const char* format,...);
+extern int debug_mask;
 #endif
 
 #endif
