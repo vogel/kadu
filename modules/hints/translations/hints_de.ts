@@ -97,6 +97,10 @@
         <source>Hint timeout</source>
         <translation>Sprechblasen erlichen nach</translation>
     </message>
+    <message>
+        <source>Open chat on click</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>HintManager</name>
