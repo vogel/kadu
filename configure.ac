@@ -99,8 +99,6 @@ AM_CONFIG_HEADER([config.h])
 AC_CANONICAL_SYSTEM
 AM_INIT_AUTOMAKE([kadu-0.3.3-pre5],[0.3.3-pre5])
 
-#KDE_SET_PREFIX
-
 
 ########################################################################
 # check for programs, libraries and functions
@@ -179,6 +177,7 @@ AC_FUNC_STRFTIME
 AC_FUNC_WAIT3
 AC_CHECK_FUNCS([floor inet_ntoa memset mkdir select strchr strdup strerror strtol])
 
+AM_GNU_GETTEXT([external])
 
 ########################################################################
 # parse configuration options
@@ -283,8 +282,6 @@ fi
 ########################################################################
 # finalize configure
 ########################################################################
-
-#KDE_CREATE_SUBDIRSLIST
 
 AC_CONFIG_FILES([./Makefile kadu/Makefile po/Makefile varia/Makefile])
 if test "$enable_doc" = "yes"; then

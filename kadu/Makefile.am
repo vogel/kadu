@@ -44,7 +44,7 @@ endif
 #kadu_METASOURCES = AUTO
 
 INCLUDES = $(QTINCDIR)
-kadu_LDADD = $(SIM) -l$(QTMT) -lpng -lgadu
+kadu_LDADD = $(SIM) -l$(QTMT) $(LIBINTL) -lpng -lpthread -lgadu 
 kadu_LDFLAGS = $(QTLIBDIR)
 kadu_DEPENDENCIES = $(SIM)
 AM_CPPFLAGS = -DQT_THREAD_SUPPORT -D_REENTRANT -DBINDIR="\"$(bindir)\"" -DDATADIR="\"$(datadir)\""
