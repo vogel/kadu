@@ -457,6 +457,14 @@ Kennwörter in beiden Feldern (&quot;Kennwort&quot; und &quot;Kennwort erneut ei
         <source>French</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Register</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This module play sounds using ALSA - Advanced Linux Sound Architecture driver.This is third-party module not supported by Kadu Team.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>WizardStarter</name>

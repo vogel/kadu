@@ -510,10 +510,6 @@ Jest to wysoce ryzykowne!</translation>
         <translation>Pokaż tylko kontakty z opisem</translation>
     </message>
     <message>
-        <source>IP address: </source>
-        <translation>Adres IP: </translation>
-    </message>
-    <message>
         <source> Port: </source>
         <translation> Port: </translation>
     </message>
@@ -582,6 +578,10 @@ Jest to wysoce ryzykowne!</translation>
     <message>
         <source>Text edit background color</source>
         <translation>Kolor tła okna edycji rozmowy</translation>
+    </message>
+    <message>
+        <source>Host: </source>
+        <translation>Nazwa komputera:</translation>
     </message>
 </context>
 <context>
@@ -807,11 +807,6 @@ Wybrana ścieżka do przeglądarki nie istnieje w zmiennej $PATH. Musisz ją do 
     <message>
         <source>I am busy.</source>
         <translation>Jestem zajęty.</translation>
-    </message>
-    <message>
-        <source>Cannot set proxy IP address. Did you put hostname instead of IP address?</source>
-        <translation>Nie można ustawić adresu IP serwera proxy.
-Podałeś nazwę hosta zamiast adresu IP?</translation>
     </message>
 </context>
 <context>

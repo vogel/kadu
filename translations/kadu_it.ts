@@ -510,10 +510,6 @@ E un rischio per la sicurezza!</translation>
         <translation>Visualizza soltanto contatti con descrizione</translation>
     </message>
     <message>
-        <source>IP address: </source>
-        <translation>Adres IP:</translation>
-    </message>
-    <message>
         <source> Port: </source>
         <translation>Porta:</translation>
     </message>
@@ -578,6 +574,10 @@ E un rischio per la sicurezza!</translation>
     </message>
     <message>
         <source>Text edit background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Host: </source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -804,10 +804,6 @@ Il percorso per raggiungere browser non esiste in $PATH. Devi specificarlo.</tra
     <message>
         <source>I am busy.</source>
         <translation>Sono occupato.</translation>
-    </message>
-    <message>
-        <source>Cannot set proxy IP address. Did you put hostname instead of IP address?</source>
-        <translation>Impossibile individuare IP del proxy. Hai inserito il nome al posto del IP ?</translation>
     </message>
 </context>
 <context>

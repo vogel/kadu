@@ -511,10 +511,6 @@ Attention danger!
         <translation>Montre uniquement les contacts avec description</translation>
     </message>
     <message>
-        <source>IP address: </source>
-        <translation>Adresses IP: </translation>
-    </message>
-    <message>
         <source> Port: </source>
         <translation> Port: </translation>
     </message>
@@ -582,6 +578,10 @@ Attention danger!
     </message>
     <message>
         <source>French</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Host: </source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -808,11 +808,6 @@ Vous pouvez l&apos;ajouter dans $PATH ou indiquer l&apos;emplacement d&apos;une 
     <message>
         <source>I am busy.</source>
         <translation>Je suis occupé.</translation>
-    </message>
-    <message>
-        <source>Cannot set proxy IP address. Did you put hostname instead of IP address?</source>
-        <translation>Impossible de configurer l&apos;adresse IP du serveur proxy.
-Vous avez donné l&apos;adresse du hôte à la place de l&apos;adresse IP?</translation>
     </message>
 </context>
 <context>

@@ -508,10 +508,6 @@ It&apos;s a high security risk!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>IP address: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source> Port: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -576,6 +572,10 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>Text edit background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Host: </source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -799,10 +799,6 @@ You may add it to $PATH or specify location using Specify path option.</source>
     <name>GaduProtocol</name>
     <message>
         <source>I am busy.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cannot set proxy IP address. Did you put hostname instead of IP address?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

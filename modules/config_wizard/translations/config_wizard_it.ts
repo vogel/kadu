@@ -457,6 +457,14 @@ Password in entrambi campi deve essere la stessa!</translation>
         <source>French</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Register</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This module play sounds using ALSA - Advanced Linux Sound Architecture driver.This is third-party module not supported by Kadu Team.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>WizardStarter</name>

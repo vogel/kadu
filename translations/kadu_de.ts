@@ -510,10 +510,6 @@ Es ist ein sehr hohes Risiko!</translation>
         <translation>Zeige Kontakte mit Beschreibung</translation>
     </message>
     <message>
-        <source>IP address: </source>
-        <translation>IP-Adresse:</translation>
-    </message>
-    <message>
         <source> Port: </source>
         <translation>Port:</translation>
     </message>
@@ -578,6 +574,10 @@ Es ist ein sehr hohes Risiko!</translation>
     </message>
     <message>
         <source>Text edit background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Host: </source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -804,10 +804,6 @@ Sie sollten den Pfad zum Browser in $PATH eintragen oder in der kadu-Konfigurati
     <message>
         <source>I am busy.</source>
         <translation>Ich bin beschäftigt.</translation>
-    </message>
-    <message>
-        <source>Cannot set proxy IP address. Did you put hostname instead of IP address?</source>
-        <translation>Ich kann die IP für Proxy nicht setzen. Haben Sie für Proxy Namen statt IP-Adresse angegeben?</translation>
     </message>
 </context>
 <context>
