@@ -407,6 +407,7 @@ void UserInfo::addNewUser(UserListElement& e)
 		if (puser->isAnonymous())
 		{
 			changeUserData(e);
+			kdebugf2();
 			return;
 		}
 	}
@@ -414,12 +415,14 @@ void UserInfo::addNewUser(UserListElement& e)
 	{
 		QMessageBox::warning(this, tr("Add user problem"),
 			tr("Altnick field cannot be empty."));
+		kdebugf2();
 		return;
 	}
 	if (userlist.containsAltNick(e_altnick->text()) || uin_exist)
 	{
 		QMessageBox::information(this, "Kadu",
 			tr("User is already in userlist"), QMessageBox::Ok);
+		kdebugf2();
 		return;
 	}
 	userlist.addUser(e);
@@ -442,6 +445,7 @@ void UserInfo::changeUserData(UserListElement& e)
 	{
 		QMessageBox::information(this, "Kadu", tr("Bad UIN"), QMessageBox::Ok);
 		close();
+		kdebugf2();
 		return;
 	}
 
@@ -449,17 +453,25 @@ void UserInfo::changeUserData(UserListElement& e)
 	{
 		QMessageBox::warning(this, tr("Add user problem"), tr("Altnick field cannot be empty."));
 		close();
+		kdebugf2();
 		return;
 	}
 
-	if ((e.uin() && e.uin() != puser->uin() && userlist.containsUin(e.uin())) ||
+	if ((e.uin() && e.uin() != puser->uin() && userlist.containsUin(e.uin()) && !userlist.byUin(e.uin()).isAnonymous()) ||
 		(e.altNick().lower() != puser->altNick().lower() && userlist.containsAltNick(e.altNick())))
 	{
 		QMessageBox::information(this, "Kadu", tr("User is already in userlist"), QMessageBox::Ok);
 		close();
+		kdebugf2();
 		return;
 	}
 
+	if (e.uin() && e.uin() != puser->uin() && userlist.containsUin(e.uin()) && userlist.byUin(e.uin()).isAnonymous())
+	{
+		UserListElement &elem=userlist.byUin(e.uin());
+		e.status().setStatus(elem.status());
+		userlist.remove(elem.altNick());
+	}
 
 	if (e.uin() == puser->uin())
 		e.status().setStatus(puser->status());

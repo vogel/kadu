@@ -1011,7 +1011,7 @@ void GaduProtocol::userDataChanged(const UserListElement* const oldData, const U
 	// nowy kontakt
 	if (!oldData && newData)
 	{
-		if (newData->uin())
+		if (newData->uin() && !newData->isAnonymous())
 			gg_add_notify(Sess, newData->uin());
 		return;
 	}
