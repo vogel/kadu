@@ -20,7 +20,7 @@ class EncryptionManager : public QObject
 		void onUseEncryption(bool toggled);
 		void chatCreated(const UinsList& uins);
 		void encryptionButtonClicked();
-		void receivedMessageFilter(const UinsList& senders,char* msg);
+		void receivedMessageFilter(const UinsList& senders,QCString& msg,bool& stop);
 		void sendMessageFilter(const UinsList& uins,char*& msg);
 		void sendPublicKey();
 		void userBoxMenuPopup();

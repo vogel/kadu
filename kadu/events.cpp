@@ -93,7 +93,7 @@ EventManager::EventManager()
 	connect(this,SIGNAL(disconnected()),this,SLOT(disconnectedSlot()));
 	connect(this,SIGNAL(userStatusChanged(struct gg_event*)),this,SLOT(userStatusChangedSlot(struct gg_event*)));
 	connect(this,SIGNAL(userlistReceived(struct gg_event*)),this,SLOT(userlistReceivedSlot(struct gg_event*)));
-	connect(this,SIGNAL(messageReceived(int,UinsList,unsigned char*,time_t, int, void *)),this,SLOT(messageReceivedSlot(int,UinsList,unsigned char*,time_t, int, void *)));
+	connect(this,SIGNAL(messageReceived(int,UinsList,QCString&,time_t, int, void *)),this,SLOT(messageReceivedSlot(int,UinsList,QCString&,time_t, int, void *)));
 	connect(this,SIGNAL(systemMessageReceived(QString &, QDateTime &, int, void *)),
 		this, SLOT(systemMessageReceivedSlot(QString &, QDateTime &, int, void *)));
 	connect(this,SIGNAL(chatMsgReceived2(UinsList,const QString&,time_t)),
@@ -210,7 +210,7 @@ void EventManager::systemMessageReceivedSlot(QString &msg, QDateTime &time,
 	MessageBox::msg(mesg);
 }
 
-void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned char* msg, time_t time,
+void EventManager::messageReceivedSlot(int msgclass, UinsList senders,QCString& msg, time_t time,
 	int formats_length, void *formats)
 {
 /*
@@ -229,11 +229,13 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 	if (isIgnored(senders))
 		return;
 
-	emit messageFiltering(senders,(char*)msg);
-	if(strlen((const char*)msg)==0)
+	bool block = false;
+	emit messageFiltering(senders,msg,block);
+	if(block)
 		return;
 
-	QString mesg = cp2unicode(msg);
+	const char* msg_c = msg;
+	QString mesg = cp2unicode((const unsigned char*)msg_c);
 	QDateTime datetime;
 	datetime.setTime_t(time);
 
@@ -619,7 +621,8 @@ void EventManager::eventHandler(gg_session* sess)
 				}
 			else
 				uins.append(e->event.msg.sender);
-			emit event_manager.messageReceived(e->event.msg.msgclass, uins, e->event.msg.message,
+			QCString msg((char*)e->event.msg.message);
+			emit messageReceived(e->event.msg.msgclass, uins, msg,
 				e->event.msg.time, e->event.msg.formats_length, e->event.msg.formats);
 			}
 		}

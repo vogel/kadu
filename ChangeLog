@@ -44,6 +44,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * odbierane obrazki zapisywane s± w katalogu .gg/images pod nazw±
   uin_nadawcy-wielkosc-crc32-nazwa_pliku, podziekowania dla masieq
   za wsparcie z platformy win32 ;) (adrian)
+* lekka przebudowa odbierania i filtrowania wiadomo¶ci, teraz dopuszczamy
+  równie¿ wiadomo¶ci z pust± tre¶ci± - np same obrazki (adrian)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

@@ -43,7 +43,7 @@ EncryptionManager::EncryptionManager()
 	ConfigDialog::connectSlot("Chat", "Use encryption", SIGNAL(toggled(bool)), this, SLOT(onUseEncryption(bool)));
 
 	connect(chat_manager,SIGNAL(chatCreated(const UinsList&)),this,SLOT(chatCreated(const UinsList&)));
-	connect(&event_manager,SIGNAL(messageFiltering(const UinsList&,char*)),this,SLOT(receivedMessageFilter(const UinsList&,char*)));
+	connect(&event_manager,SIGNAL(messageFiltering(const UinsList&,QCString&,bool&)),this,SLOT(receivedMessageFilter(const UinsList&,QCString&,bool&)));
 	connect(UserBox::userboxmenu,SIGNAL(popup()),this,SLOT(userBoxMenuPopup()));
 	
 	Chat::registerButton("encryption_button",this,SLOT(encryptionButtonClicked()));
@@ -59,7 +59,7 @@ EncryptionManager::~EncryptionManager()
 	ConfigDialog::disconnectSlot("Chat", "Use encryption", SIGNAL(toggled(bool)), this, SLOT(onUseEncryption(bool)));
 
 	disconnect(chat_manager,SIGNAL(chatCreated(const UinsList&)),this,SLOT(chatCreated(const UinsList&)));
-	disconnect(&event_manager,SIGNAL(messageFiltering(const UinsList&,char*)),this,SLOT(receivedMessageFilter(const UinsList&,char*)));
+	disconnect(&event_manager,SIGNAL(messageFiltering(const UinsList&,QCString&,bool&)),this,SLOT(receivedMessageFilter(const UinsList&,QCString&,bool&)));
 	disconnect(UserBox::userboxmenu,SIGNAL(popup()),this,SLOT(userBoxMenuPopup()));
 
 	Chat::unregisterButton("encryption_button");
@@ -154,7 +154,7 @@ void EncryptionManager::encryptionButtonClicked()
 	setupEncryptButton(chat,!EncryptionEnabled[chat]);
 }
 
-void EncryptionManager::receivedMessageFilter(const UinsList& senders,char* msg)
+void EncryptionManager::receivedMessageFilter(const UinsList& senders,QCString& msg,bool& stop)
 {
 	if (config_file.readBoolEntry("Chat","Encryption"))
 	{
@@ -172,22 +172,20 @@ void EncryptionManager::receivedMessageFilter(const UinsList& senders,char* msg)
 
 			SavePublicKey *spk = new SavePublicKey(senders[0], msg, NULL);
 			spk->show();
-			msg[0]=0;
+			stop = true;
 			return;
 		}
 	}
 
-	if (msg != NULL)
+	kdebug("Decrypting encrypted message...\n");
+	const char* msg_c = msg;
+	char* decoded = sim_message_decrypt((const unsigned char*)msg_c, senders[0]);
+	kdebug("Decrypted message is: %s\n",decoded);
+	if (decoded != NULL)
 	{
-		kdebug("Decrypting encrypted message...\n");
-		char* decoded = sim_message_decrypt((unsigned char*)msg, senders[0]);
-		kdebug("Decrypted message is: %s\n",decoded);
-		if (decoded != NULL)
-		{
-			strcpy(msg,"[SSL]\n");
-			strcat(msg, decoded);
-			free(decoded);
-		}
+		msg="[SSL]\n";
+		msg+=decoded;
+		free(decoded);
 	}
 }
 

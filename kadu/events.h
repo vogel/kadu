@@ -57,7 +57,7 @@ class EventManager : public QObject
 		void disconnectedSlot();
 		void userStatusChangedSlot(struct gg_event*);
 		void userlistReceivedSlot(struct gg_event *);
-		void messageReceivedSlot(int, UinsList,unsigned char *msg,time_t,
+		void messageReceivedSlot(int, UinsList,QCString& msg,time_t,
 			int formats_length, void *formats);
 		void systemMessageReceivedSlot(QString &msg, QDateTime &time,
 			int formats_length, void *formats);
@@ -109,7 +109,7 @@ class EventManager : public QObject
 		/**
 			Otrzymano jak±¶ wiadomo¶æ od serwera GG
 		**/
-		void messageReceived(int,UinsList,unsigned char* msg,time_t,
+		void messageReceived(int,UinsList,QCString& msg,time_t,
 			int formats_length, void *formats);
 		/**
 			Sygnal daje mozliwosc operowania na wiadomoci
@@ -117,9 +117,9 @@ class EventManager : public QObject
 			formie przed konwersja na unicode i innymi zabiegami.
 			Tresc wiadomosci mozna zmienic grzebiac w buforze msg.
 			Mozna tez przerwac dalsza jej obrobke ustawiajac
-			jej dlugosc na 0 - np. msg[0]=0
+			stop na true.
 		**/
-		void messageFiltering(const UinsList& senders,char* msg);
+		void messageFiltering(const UinsList& senders,QCString& msg,bool& stop);
 		/**
 			Otrzymano wiadomo¶æ, któr± trzeba pokazaæ (klasa chat lub msg,
 			nadawca nie jest ignorowany, itp)
