@@ -154,6 +154,9 @@ prepare_modules_list()
 		
 	done; \
 	rm .temp
+	initial_static_modules_list=$static_modules_list
+	initial_shared_modules_list=$shared_modules_list
+	initial_disabled_modules_list=$disabled_modules_list
 }
 
 #Update information about modules - it's essential part for re-creating menus
@@ -328,9 +331,7 @@ display_help()
 	cd modules
 	for file in *.web; do \
 		dir=`basename $file .web`; \
-		if test ! -f $dir/spec; then \
 			echo "		- $dir" >> ../.temp
-		fi; \
 	done
 	cd ..
 	
@@ -417,6 +418,7 @@ step5()
 step6()
 {
 	prepare_modules_list
+	configfile_changed=false
 	stay_in_loop=1
 	while [[ $stay_in_loop == 1 ]]; do
 		menu_select_modules
@@ -426,7 +428,52 @@ step6()
 #7. Save new .config file
 step7()
 {
-save_module_list
+	for mod1 in $initial_static_modules_list; do
+		match_found=false
+		for mod2 in $static_modules_list; do
+			if [[ $match_found == false ]]; then
+				if [[ $mod1 == $mod2 ]]; then
+					match_found=true
+				fi;
+			fi;
+		done;
+		if [[ $match_found == false ]]; then
+			configfile_changed=true
+		fi;
+	done;
+	
+	for mod1 in $initial_shared_modules_list; do
+		match_found=false
+		for mod2 in $shared_modules_list; do
+			if [[ $match_found == false ]]; then
+				if [[ $mod1 == $mod2 ]]; then
+					match_found=true
+				fi;
+			fi;
+		done;
+		if [[ $match_found == false ]]; then
+			configfile_changed=true
+		fi;
+	done;
+	
+	for mod1 in $initial_disabled_modules_list; do
+		match_found=false
+		for mod2 in $disabled_modules_list; do
+			if [[ $match_found == false ]]; then
+				if [[ $mod1 == $mod2 ]]; then
+					match_found=true
+				fi;
+			fi;
+		done;
+		if [[ $match_found == false ]]; then
+			configfile_changed=true
+		fi;
+	done;
+	
+	
+	if [[ $configfile_changed != false ]]; then
+		save_module_list
+	fi;
 }
 
 #8. Prepare for installation
