@@ -1693,7 +1693,7 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     </message>
     <message>
         <source>&lt;nobr&gt;&lt;i&gt;%1&lt;/i&gt; &lt;b&gt;(d.)&lt;/b&gt;&lt;/nobr&gt;&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;%2</source>
-        <translation>&lt;nobr&gt;&lt;i&gt;%1&lt;/i&gt; &lt;b&gt;(d.)&lt;/b&gt;&lt;/nobr&gt;&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Opis:&lt;/b&gt;&lt;br/&gt;%2</translation>
+        <translation>&lt;nobr&gt;&lt;i&gt;%1&lt;/i&gt; &lt;b&gt;(z opisem)&lt;/b&gt;&lt;/nobr&gt;&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Opis:&lt;/b&gt;&lt;br/&gt;%2</translation>
     </message>
 </context>
 <context>
