@@ -264,7 +264,6 @@ void saveKaduConfig(void) {
 	}
 
 	QTextStream stream(&config.dockwindows, IO_WriteOnly);
-	stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
 	stream << *kadu;
 	config.dockwindows.replace(QRegExp("\\n"), "\\n");
 	konf->writeEntry("DockWindows", config.dockwindows);

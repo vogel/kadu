@@ -527,7 +527,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	if (config.dockwindows != QString::null) {
 		config.dockwindows.replace(QRegExp("\\\\n"), "\n");
 		QTextStream stream(&config.dockwindows, IO_ReadOnly);
-		stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
 		stream >> *this;
 		}
 
