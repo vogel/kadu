@@ -480,10 +480,6 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <translation>Pokaż / ukryj kontakty bez opisu</translation>
     </message>
     <message>
-        <source>Force use of paragraphs (VERY experimental)</source>
-        <translation>Wymuś użycie paragrafów (BARDZO EKSPERYMENTALNE)</translation>
-    </message>
-    <message>
         <source>Qt Theme</source>
         <translation>Style Qt</translation>
     </message>
@@ -558,6 +554,19 @@ Jest to wysoce ryzykowne!</translation>
 %f - imię, %r - nazwisko, %m - telefon, %u - nr GG, %g - grupa, 
 %o - zwraca spację jeżeli kontakt nie ma cię na liście, %v - DNS, 
 %p - port %e - email</translation>
+    </message>
+    <message>
+        <source>Use paragraphs instead of tables</source>
+        <translation>Użuj peragrafów zamiast tabelek</translation>
+    </message>
+    <message>
+        <source>If set: chat, history windows and information panel are rendered
+using HTML paragraphs instead of tables - this improves refresh
+speed and text copying but has a couple of display problems</source>
+        <translation>Gdy zaznaczone: Okna rozmowy, histori i panelu informacyjnego
+bedą renderowane z użyciem paragrafów HTML zamiast tabelek.
+Polepszy to prędkość odświerzania okien jak i kopiowanie z nich
+tekstu ale może sprawiać problemy z wyświetlaniem</translation>
     </message>
 </context>
 <context>
@@ -676,6 +685,18 @@ Jest to wysoce ryzykowne!</translation>
     <message>
         <source>Animated</source>
         <translation>Animowane</translation>
+    </message>
+    <message>
+        <source>Your message has been blocked by server. Message has not been delivered.</source>
+        <translation>Twoja wiadomość została zablokowana przez serwer. Wiadomość nie zostanie dostarczona.</translation>
+    </message>
+    <message>
+        <source>User&apos;s message box is full. Message has not been delivered.</source>
+        <translation>Skrzynka odbiorcza kontaktu jest pełna. Wiadomość nie zostanie dostarczona.</translation>
+    </message>
+    <message>
+        <source>Message has not been delivered.</source>
+        <translation>Wiadomość nie zostanie dostarczona.</translation>
     </message>
 </context>
 <context>

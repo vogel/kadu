@@ -471,10 +471,6 @@ If you leave blank, default settings will be used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Force use of paragraphs (VERY experimental)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Show / hide users without description</source>
         <translation type="unfinished"></translation>
     </message>
@@ -552,6 +548,16 @@ It&apos;s a high security risk!</source>
 %r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
 %v - revDNS, %p - port %e - email
 </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use paragraphs instead of tables</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If set: chat, history windows and information panel are rendered
+using HTML paragraphs instead of tables - this improves refresh
+speed and text copying but has a couple of display problems</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -670,6 +676,18 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>Animated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your message has been blocked by server. Message has not been delivered.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User&apos;s message box is full. Message has not been delivered.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Message has not been delivered.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
