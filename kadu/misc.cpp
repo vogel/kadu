@@ -2564,10 +2564,14 @@ void KaduTextBrowser::copy()
 
 //	kdebugm(KDEBUG_DUMP, "result: \n%s\n\n", txt.local8Bit().data());
 
+	QClipboard *clipboard=QApplication::clipboard();
 #if QT_VERSION < 0x030100
-	QApplication::clipboard()->setText(txt);
+	clipboard->setText(txt);
+	clipboard->setSelectionMode(!clipboard->selectionModeEnabled());
+	clipboard->setText(txt);
 #else
-	QApplication::clipboard()->setText(txt, QClipboard::Clipboard);
+	clipboard->setText(txt, QClipboard::Clipboard);
+	clipboard->setText(txt, QClipboard::Selection);
 #endif
 
 	kdebugf2();
