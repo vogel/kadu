@@ -183,7 +183,7 @@ SearchDialog::~SearchDialog() {
 void SearchDialog::selectionChanged(QListViewItem *item) {
 	uin_t uin;
 
-	fprintf(stderr, "KK SearchDialog::currentChanged()\n");
+	fprintf(stderr, "KK SearchDialog::selectionChanged()\n");
 
 	disconnect(b_addbtn, SIGNAL(clicked()), 0, 0);
 	if (item) {
@@ -445,7 +445,10 @@ void SearchDialog::socketEvent(void) {
 			qlv->setPixmap(0, *qpx);
 			}
 		r.start = res->results[res->count-1].uin;
-		selectionChanged(results->selectedItem());
+		if (!results->selectedItem())
+			results->setSelected(results->firstChild(), true);
+		else
+			selectionChanged(results->selectedItem());
 
 		deleteSocketNotifiers();
 		gg_free_search(foo);

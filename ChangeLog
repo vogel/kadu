@@ -5,6 +5,8 @@
   i zachowuje sie jak popup-menu
 * mo¿na anulowaæ wysy³anie wiadomo¶ci podczas oczekiwania na potwierdzenie
   jej wys³ania
+* wyszukiwanie u¿ytkowników: pierwszy znaleziony u¿ytkownik staje siê wybranym
+  - teraz nie mo¿na ju¿ dodaæ drugi raz tego samego u¿ytkownika
 
 +++ wersja 0.3.3-pre1
 * automatyczna kompilacja programu sms
