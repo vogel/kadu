@@ -62,7 +62,7 @@ class Kadu : public QMainWindow
 	Q_OBJECT
 
 	private:
-		QTextBrowser* descrtb;
+		KaduTextBrowser* descrtb;
 		QMenuBar* MenuBar;
 		QPopupMenu* MainMenu;
 		KaduTabBar* GroupBar;

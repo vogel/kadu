@@ -318,38 +318,40 @@ CustomInput::CustomInput(QWidget *parent, const char *name) : QMultiLineEdit(par
 void CustomInput::keyPressEvent(QKeyEvent * e) {
 	kdebugf();
 	emit keyPressed(e, this);
-	if (autosend_enabled && ((HotKey::shortCut(e,"ShortCuts", "chat_newline")) || e->key()==Key_Enter)&& !(e->state() & ShiftButton)) {
+	if (autosend_enabled && ((HotKey::shortCut(e,"ShortCuts", "chat_newline")) || e->key()==Key_Enter)&& !(e->state() & ShiftButton))
+	{
 		kdebug("CustomInput::keyPressEvent(): emit enterPressed()\n");
 		emit sendMessage();
-		}
-	else {
+	}
+	else
+	{
 		if (e->key() == Key_Minus) 
-			{
+		{
 			insert("-");
 			return;
-			}
+		}
 		if (e->text() == "*") 
-			{
+		{
 			insert("*");
 			return;
-			}
-		if (HotKey::shortCut(e,"ShortCuts", "chat_bold"))	
-			{
-				emit specialKeyPressed(CustomInput::KEY_BOLD);
-				return;
-			}
-		else if (HotKey::shortCut(e,"ShortCuts", "chat_italic"))
-			{
-				emit specialKeyPressed(CustomInput::KEY_ITALIC);
-				return;
-			}
-		else if (HotKey::shortCut(e,"ShortCuts", "chat_underline"))
-				emit specialKeyPressed(CustomInput::KEY_UNDERLINE);
-		QMultiLineEdit::keyPressEvent(e);
 		}
-		// przekazanie event'a do qwidget 
-		// aby obsluzyc skroty klawiszowe (definiowane sa dla okna chat)
-		QWidget::keyPressEvent(e);
+		if (HotKey::shortCut(e,"ShortCuts", "chat_bold"))	
+		{
+			emit specialKeyPressed(CustomInput::KEY_BOLD);
+			return;
+		}
+		else if (HotKey::shortCut(e,"ShortCuts", "chat_italic"))
+		{
+			emit specialKeyPressed(CustomInput::KEY_ITALIC);
+			return;
+		}
+		else if (HotKey::shortCut(e,"ShortCuts", "chat_underline"))
+			emit specialKeyPressed(CustomInput::KEY_UNDERLINE);
+		QMultiLineEdit::keyPressEvent(e);
+	}
+	// przekazanie event'a do qwidget 
+	// aby obsluzyc skroty klawiszowe (definiowane sa dla okna chat)
+	QWidget::keyPressEvent(e);
 }
 
 void CustomInput::setAutosend(bool on) {
@@ -430,7 +432,8 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 
 	QPoint pos = QCursor::pos();
 	
-	if (uins.count() > 1) {
+	if (uins.count() > 1)
+	{
 		userbox = new UserBox(horizSplit);
 		userbox->setMinimumSize(QSize(30,30));
 		userbox->setPaletteBackgroundColor(config_file.readColorEntry("Look","UserboxBgColor"));
@@ -447,10 +450,9 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 		sizes.append(3);
 		sizes.append(1);
 		horizSplit->setSizes(sizes);
-		}
-	else {
+	}
+	else
 		userbox = NULL;
-		}
 		
 	QVBox *downpart = new QVBox(vertSplit);
 	QHBox *edtbuttontray = new QHBox(downpart);
@@ -1148,7 +1150,8 @@ void Chat::colorSelectorAboutToClose() {
 	color_selector = NULL;
 }
 
-void Chat::colorChanged(const QColor& color) {
+void Chat::colorChanged(const QColor& color)
+{
 	color_selector = NULL;
 	QPixmap p(16, 16);
 	p.fill(color);
@@ -1158,14 +1161,15 @@ void Chat::colorChanged(const QColor& color) {
 }
 
 /* adds an emoticon code to the edit window */
-void Chat::addEmoticon(QString string) {
-
-	if (string.length()) {
+void Chat::addEmoticon(QString string)
+{
+	if (string.length())
+	{
 		string.replace(QRegExp("&lt;"), "<");
 		string.replace(QRegExp("&gt;"), ">");
 		edit->insert(string);
 		edit->setFocus();
-		}
+	}
 	emoticon_selector = NULL;
 }
 
@@ -1203,15 +1207,10 @@ void Chat::initModule()
 	
 
 // pierwsze uruchomienie kadu
-	QColor color;
-	color=QColor("#E0E0E0");
-	config_file.addVariable("Look", "ChatMyBgColor", color);
-	color=QColor("#F0F0F0");
-	config_file.addVariable("Look", "ChatUsrBgColor", color);
-	color=QColor("#000000");
-	config_file.addVariable("Look", "ChatMyFontColor", color);
-	color=QColor("#000000");
-	config_file.addVariable("Look", "ChatUsrFontColor", color);
+	config_file.addVariable("Look", "ChatMyBgColor", QColor("#E0E0E0"));
+	config_file.addVariable("Look", "ChatUsrBgColor", QColor("#F0F0F0"));
+	config_file.addVariable("Look", "ChatMyFontColor", QColor("#000000"));
+	config_file.addVariable("Look", "ChatUsrFontColor", QColor("#000000"));
 
 	QFontInfo info(qApp->font());
 	QFont def_font(info.family(),info.pointSize());

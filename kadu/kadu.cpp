@@ -428,7 +428,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	dockppm->insertSeparator();
 	dockppm->insertItem(icons_manager.loadIcon("Exit"), tr("&Exit Kadu"), 9);
 
-	descrtb = new QTextBrowser(split, "descrtb");
+	descrtb = new KaduTextBrowser(split, "descrtb");
 	descrtb->setFrameStyle(QFrame::NoFrame);
 	descrtb->setMinimumHeight(int(1.5 * QFontMetrics(descrtb->font()).height()));
 //	descrtb->resize(descrtb->size().width(), int(1.5 * QFontMetrics(descrtb->font()).height()));
@@ -805,7 +805,12 @@ void Kadu::currentChanged(QListBoxItem *item) {
 	kdebug("Kadu::currentChanged(): %s\n", (const char *)item->text().local8Bit());
 
 	if (config_file.readBoolEntry("Look", "ShowInfoPanel"))
-		descrtb->setText(parse(config_file.readEntry("Look", "PanelContents"),userlist.byAltNick(item->text())));
+	{
+		HtmlDocument doc;
+		doc.parseHtml(parse(config_file.readEntry("Look", "PanelContents"), userlist.byAltNick(item->text())));
+		doc.convertUrlsToHtml();
+		descrtb->setText(doc.generateHtml());
+	}
 }
 
 void Kadu::refreshGroupTabBar()
@@ -1653,7 +1658,12 @@ void Kadu::infopanelUpdate(UinType uin) {
 		return;
 	kdebug("Kadu::infopanelUpdate(%d)\n", uin);
 	if (Userbox->currentItem() != -1 && uin == userlist.byAltNick(Userbox->currentText()).uin)
-		descrtb->setText(parse(config_file.readEntry("Look", "PanelContents"),userlist.byUin(uin)));
+	{
+		HtmlDocument doc;
+		doc.parseHtml(parse(config_file.readEntry("Look", "PanelContents"), userlist.byUin(uin)));
+		doc.convertUrlsToHtml();
+		descrtb->setText(doc.generateHtml());
+	}
 }
 
 QMenuBar* Kadu::menuBar()
