@@ -12,6 +12,8 @@
 #include <qpen.h>
 #include <qregexp.h>
 #include <qfontdatabase.h>
+#include <qpopupmenu.h>
+#include <qcursor.h>
 
 #include "status.h"
 #include "userbox.h"
@@ -52,10 +54,15 @@ void KaduListBoxPixmap::paint(QPainter *painter) {
 	QListBoxPixmap::paint(painter);
 }
 
+UserBoxMenu *UserBox::userboxmenu = NULL;
+
 UserBox::UserBox(QWidget* parent,const char* name,WFlags f)
 	: QListBox(parent,name),QToolTip(viewport())
 
-{
+{	
+	if (!userboxmenu)
+	    userboxmenu= new UserBoxMenu(this);
+	
 	UserBoxes.append(this);
 	setSelectionMode(QListBox::Extended);
 }
@@ -406,6 +413,54 @@ void UserBox::showHideInactive()
 	refresh();
 }
 
+
+UinsList UserBox::getSelectedUins() {
+	UinsList uins;
+	UserListElement user;
+	int j;
+	for(j=0; j<UserBoxes.size(); j++)
+		if (UserBoxes[j]->isActiveWindow())
+		    break;
+
+	for (int i = 0; i < UserBoxes[j]->count(); i++)
+		if (UserBoxes[j]->isSelected(i)) {
+			user = userlist.byAltNick(UserBoxes[j]->text(i));
+
+			if (user.uin)
+				uins.append(user.uin);
+			}
+	return uins;
+}
+
+UserList UserBox::getSelectedUsers()
+{
+    UserList users;
+	int j;
+	for(j=0; j<UserBoxes.size(); j++)
+		if (UserBoxes[j]->isActiveWindow())
+		    break;
+
+	for (int i=0; i< UserBoxes[j]->count(); i++)
+		if (UserBoxes[j]->isSelected(i))
+			users.addUser(userlist.byAltNick(UserBoxes[j]->text(i)));
+	return users;
+
+}
+
+QStringList UserBox::getSelectedAltNicks()
+{
+    QStringList users;
+
+	int j;
+	for(j=0; j<UserBoxes.size(); j++)
+		if (UserBoxes[j]->isActiveWindow())
+		    break;
+
+	for (int i=0; i< UserBoxes[j]->count(); i++)
+		if (UserBoxes[j]->isSelected(i))
+		    users.append(UserBoxes[j]->text(i));
+	return users;
+}
 /////////////////////////////////////////////////////////
 
 void UserBox::all_refresh()
@@ -490,6 +545,53 @@ void UserBox::initModule()
 	ConfigDialog::connectSlot("Look", "", SIGNAL(textChanged(const QString&)), userboxslots, SLOT(chooseColorGet(const QString&)), "line0");
 	ConfigDialog::connectSlot("Look", "", SIGNAL(activated(int)), userboxslots, SLOT(chooseUserBoxSelect(int)), "combobox0");
 };
+
+
+UserBoxMenu::UserBoxMenu(QWidget *parent, const char *name): QPopupMenu(parent, name)
+{
+    connect(this, SIGNAL(aboutToHide()), this, SLOT(restoreLook()));
+}
+
+int UserBoxMenu::addItem(const QString &text, const QObject* receiver, const char* member, const QKeySequence accel, int id)
+{
+	insertItem(text, receiver, member, accel, id);
+}
+
+int UserBoxMenu::addItem(const QString &iconname, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel, int id)
+{
+	insertItem( QIconSet(QPixmap(QString(DATADIR)+ "/kadu/icons/"+iconname)) , text, receiver, member, accel, id);
+}
+
+
+int UserBoxMenu::getItem(const QString &caption)
+{
+    for (int i=0; i<=count(); i++)
+	if (!QString::localeAwareCompare(caption,text(idAt(i)).left(caption.length())))
+	{
+		return idAt(i);
+	}
+	return -1;	
+}
+
+void UserBoxMenu::restoreLook()
+{
+	for (int i=0; i<=count(); i++)
+	{
+		setItemEnabled(idAt(i),true);
+		setItemChecked(idAt(i),false);
+		setItemVisible(idAt(i),true);
+	}
+}
+
+void UserBoxMenu::show(QListBoxItem *item)
+{
+	if (item == NULL)
+	    return;
+	    
+	emit popup();
+	exec(QCursor::pos());
+
+}
 
 void UserBoxSlots::onCreateConfigDialog()
 {

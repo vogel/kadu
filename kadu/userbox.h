@@ -5,6 +5,9 @@
 #include <qtooltip.h>
 #include <qstringlist.h>
 #include <qpainter.h>
+#include <qpopupmenu.h>
+
+#include "misc.h"
 
 class KaduListBoxPixmap : public QListBoxPixmap {
         public:
@@ -13,6 +16,24 @@ class KaduListBoxPixmap : public QListBoxPixmap {
         protected:
                 void paint(QPainter *painter);
 };
+
+class UserBoxMenu : public QPopupMenu
+{
+    Q_OBJECT
+    public:
+	    UserBoxMenu(QWidget *parent=0, const char* name=0);
+	    int getItem(const QString &caption);
+	    int addItem(const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1);
+	    int addItem(const QString &iconname, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1);
+    private slots:
+	    void restoreLook();
+
+    public slots:
+	    void show(QListBoxItem *item);
+    signals:
+	    void popup();
+};
+
 
 /**
 	Klasa reprezentuj±ca listê kontaktów wraz z ikonkami stanów
@@ -32,7 +53,6 @@ class UserBox : public QListBox , QToolTip
 		static QPixmap* OfflineDescMobilePixmap;		
 		//
 		QStringList Users;
-
 		void sortUsersByAltNick(QStringList &);
 			
 	protected:
@@ -44,6 +64,7 @@ class UserBox : public QListBox , QToolTip
 	public:
 		UserBox(QWidget* parent=0,const char* name=0,WFlags f=0);
 		~UserBox();
+		static UserBoxMenu *userboxmenu;
 		virtual void clear() { QListBox::clear(); };
 		void clearUsers() { Users.clear(); };
 		void refresh();
@@ -57,8 +78,15 @@ class UserBox : public QListBox , QToolTip
 		static void all_changeAllToInactive();
 		static void all_renameUser(const QString &oldaltnick, const QString &newaltnick);		
 		static void initModule();
+		UinsList getSelectedUins();
+		UserList getSelectedUsers();
+		QStringList getSelectedAltNicks();
+
+	public slots:	
 		void showHideInactive();
+
 };
+
 
 class UserBoxSlots : public QObject
 {
