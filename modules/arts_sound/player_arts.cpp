@@ -183,7 +183,16 @@ void aRtsPlayerRecorder::openDevice(int sample_rate, int channels, SoundDevice& 
 //		kdebugm(KDEBUG_INFO, "connecting processExited() signal\n");
 		connect(dev->process, SIGNAL(processExited()), dev, SLOT(processExited()));
 		kdebugm(KDEBUG_INFO, "starting process\n");
-		dev->process->start();
+		if (!dev->process->start())
+		{
+			disconnect(dev->process, SIGNAL(processExited()), dev, SLOT(processExited()));
+			delete dev->process;
+			dev->mutex.unlock();
+			delete dev;
+			device = NULL;
+			kdebugf2();
+			return;
+		}
 		kdebugm(KDEBUG_INFO, "writing to stdin\n");
 		dev->process->writeToStdin(QString("%1 %2 %3\n").arg(config_file.readNumEntry("General", "UIN")).arg(pass).arg(num));
 		//UWAGA: writeToStdin dostarcza dane w pêtli zdarzeñ Qt
