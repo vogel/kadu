@@ -1,4 +1,4 @@
-/* $Id: pubdir50.c,v 1.5 2003/03/22 08:56:13 chilek Exp $ */
+/* $Id: pubdir50.c,v 1.6 2003/06/21 10:06:17 chilek Exp $ */
 
 /*
  *  (C) Copyright 2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -235,7 +235,7 @@ uint32_t gg_pubdir50(struct gg_session *sess, gg_pubdir50_t req)
 		p += strlen(p) + 1;
 	}
 
-	if (gg_send_packet(sess->fd, GG_PUBDIR50_REQUEST, buf, size, NULL, 0) == -1)
+	if (gg_send_packet(sess, GG_PUBDIR50_REQUEST, buf, size, NULL, 0) == -1)
 		res = 0;
 
 	free(buf);

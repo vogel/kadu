@@ -30,7 +30,6 @@ char *dirname(const char *path)
 
 	if (!path || !*path || !strchr(path, '/')) {
 		strncpy(buf, ".", sizeof(buf) - 1);
-		buf[sizeof(buf) - 1] = 0;
 		return buf;
 	}
 
@@ -53,12 +52,10 @@ char *dirname(const char *path)
 			return NULL;
 		}
 
-		strncat(buf, path, ptr - path + 1);
+		strncpy(buf, path, ptr - path + 1);
 
 	} else
-		strncat(buf, "/", sizeof(buf) - 1);
-
-	buf[sizeof(buf) - 1] = 0;
+		strncpy(buf, "/", sizeof(buf) - 1);
 
 	return buf;
 }

@@ -1,4 +1,4 @@
-/* $Id: dcc.c,v 1.20 2003/04/28 20:28:52 chilek Exp $ */
+/* $Id: dcc.c,v 1.21 2003/06/21 10:06:17 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -63,7 +63,7 @@ static void gg_dcc_debug_data(const char *prefix, int fd, const void *buf, int s
 	gg_debug(GG_DEBUG_MISC, "\n");
 }
 #else
-#define gg_dcc_debug_data(a,b,c,d) { }
+#define gg_dcc_debug_data(a,b,c,d) do { } while (0)
 #endif
 
 /*

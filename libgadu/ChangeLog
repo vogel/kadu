@@ -4,6 +4,156 @@ oznacza, ¿e ,,nick'' jest pomys³odawc± lub podes³a³ patcha, a zrobi³
 to kto¶ oznaczony przez ,,x'' (w - wojtekka, s - speedy, a - arekm,
 d - drg, sz - szalik).
 
+// 2003-06-20
+
+- lista kontaktów obs³uguje adres e-mail (a.latanski/w)
+
+// 2003-06-18
+
+- /list w oknie poka¿e informacje o rozmówcy (weirdo,FIG/w)
+- poprawka wyszukiwania z --all (lukzg/w)
+- poprawka zachowania back_reason przy uruchamianiu ekg (a.latanski/w)
+
+// 2003-06-17
+
+- usuniêcie opcji --disable-debug z configure. sprawia tylko problemy (w)
+- poprawka kompilacji z -DGG_DISABLE_DEBUG (theKnight/w)
+
+// 2003-06-16
+
+- poprawka ignore_unknown_sender (Kamil/sz)
+
+// 2003-06-11
+
+- poprawka /exec -B do osoby ze spacj± (Sydney/w)
+- /reload nie uaktualnia naszego stanu (FIG/w)
+
+// 2003-06-10
+
+- uaktualnienie irc.theme, dodanie tohver.theme (Tohver/w)
+
+// 2003-06-08
+
+- dodanie /python restart, które restartuje interpreter (rmrmg/w)
+- poprawka opcji --control-pipe (kosmoski/w)
+
+// 2003-06-02
+
+- ,,ignore_unknown_sender'' nie ignoruje wiadomo¶ci systemowych (sz)
+
+// 2003-05-30
+
+- testowa poprawa wydajno¶ci wy¶wietlania - nie od¶wie¿a w obrêbie
+  jednej komendy, widaæ to np. przy /help (w/sz)
+- w /last mo¿na po³±czyæ ze sob± wszystkie opcje i zrobiæ np.
+  ,,/last -u szalik -p 17:30-19:00 -n 3'' i dodaæ ,,-c'', aby te
+  wiadomo¶ci usun±æ (sz)
+- podobna kosmetyka j.w. dla /queue (sz)
+
+// 2003-05-29
+
+- Ctrl-W wrzuca do yankbuffera (w/sz)
+- automagiczne szukanie nieznajmoych, zmienna ,,auto_find'' (mateusza/sz)
+- zdarzenie ,,conference'' (pmb/sz)
+- zmienna ,,ignore_unknown_sender''. wrr. w /ignore by³oby za du¿o do
+  mieszania, ¿eby to osi±gnaæ. (sz)
+- nie trzeba usuwaæ u¿ytkownika z listy ignorowanych, aby dodaæ kolejny
+  poziom (sz)
+- status wykonanego polecenia /exec nie powinien siê ju¿ nigdy pojawiæ zanim
+  ca³y wynik polecenia nie zostanie wy¶wietlony (?/sz)
+- ekg pamiêta, z jakim opisem i adresem IP ostatnio kogo¶ widzia³ (joshua/sz)
+- zmienna ,,wap_enabled''. niezapisywanie do WAP w³asnych wiadomo¶ci,
+  niezale¿nie od ustawieñ ,,display_sent'' (serek/sz)
+- lekka zmiana zachowania /last, mo¿e teraz pokazaæ wiadomo¶ci z danego
+  przedzia³u czasu (sz)
+- informacja o obcieciu szyforwanej wiadomo¶ci (sz)
+
+// 2003-05-28
+
+- libgadu: poprawka w±tkowego resolvera przy po³±czeniach http (sz)
+- psuj±cy zabawê b³±d off-by-one w ioctld. przywracanie pocz±tkowego
+  stanu diod LED. niestety, nie mam jak sprawdziæ na Linuksie (sz)
+
+// 2003-05-21
+
+- poprawka /disconnect przy auto_reconnect != 0 (scooty/w)
+- libgadu: poprawka kompilacji z GG_DEBUG_DISABLE (pikov/sz)
+
+// 2003-05-20
+
+- poprawka segfaulta przy /set server "" (tiroy/w)
+
+// 2003-05-19
+
+- poprawka kompilacji z ioctld (Charvel/w)
+
+// 2003-05-18
+
+- drobne usterki w opisie protoko³u (scooty/w)
+- poprawka zawijania (FIG/w)
+
+// 2003-05-17
+
+- ,,sms_away'' mo¿e tak¿e dzia³aæ, gdy jeste¶my niewidoczni (sz)
+- zmienna ,,save_question'' (Tohver/sz)
+- logowanie wys³anych smsów (scooty/w)
+- przy ui-none zamyka terminal (fidor/w)
+
+// 2003-05-16
+
+- libgadu: gg_session->port jest prawid³owo wype³niane (w)
+- poprawka server_save dla po³±czeñ TLS (perry/w)
+- leak w aliasach (sz)
+- pozbycie siê strcat(), strcpy() i sprintf(). w OpenBSD s± brzydkie
+  warningi (sz)
+- poprawka dope³niania, aby dope³nia³o dobrze np. u¿ytkowników
+  ,,piotr_nowak'' oraz ,,piotr kowalski'' (sz)
+- informacja o szyfrowanym po³±czeniu w /status (scooty/w)
+
+// 2003-05-15
+
+- libgadu: obs³uga po³±czeñ szyfrowanych TLSv1. wystarczy podaæ konkretny
+  serwer i ustawiæ ,,gg_login_params->tls = 1''. oczywi¶cie wypada³oby mieæ
+  zainstalowan± bibliotekê OpenSSL w systemie. ABI i API s± zgodne poza
+  zmian± deklaracji wewnêtrznej funkcji gg_send_packet(). mo¿na sprawdziæ
+  istnienie sta³ej __GG_LIBGADU_HAVE_OPENSSL, ¿eby mieæ pewno¶æ, czy dana
+  wersja libgadu obs³uguje TLSv1 (w)
+- libgadu: podbicie wersji API (w)
+- obs³uga po³±czeñ szyfrowanych TLSv1. nale¿y podaæ adres serwera poprzedzony
+  tekstem ,,tls:'' (w)
+- usuniêcie leaka w obs³udze procesów potomnych (scooty/w)
+- korzystanie z hub do po³±czeñ TLS (,,/set server tls'') (w)
+- libgadu: podbicie wersji klienta do 5.7.0b116 i protoko³u do 0x1c (w)
+- uaktualnienie opisu protoko³u w kwestii po³±czeñ TLS (w)
+
+// 2003-05-14
+
+- poprawka helpa /dcc (jojo/w)
+- poprawka dope³niania nazw plików (jojo/w)
+
+// 2003-05-10
+
+- poprawka obs³ugi polskich liter w /find (FIG/sz)
+- poprawka wyboru opisów z plików *.reasons - lepiej losuje i nie
+  wywraca siê przy pustym pliku (sz)
+
+// 2003-05-05
+
+- niedostêpno¶æ osób nie bêdzie wy¶wietlana przez ,,events_delay'' sekund
+  od po³±czenia (lordzik/w)
+
+// 2003-05-01
+
+- po utracie terminala koñczy pracê (tokugawa/w)
+
+// 2003-04-30
+
+- opis instalacji w katalogu domowym dla nowej wersji autoconfa (w)
+
+// 2003-04-29
+
+- /list pokazuje, kiedy ostatnio widziano u¿ytkownika (qbq/w)
+
 // 2003-04-28
 
 - libgadu: obs³uga wznawianych transferów plików (Chilek/w)
@@ -17,3 +167,5 @@ d - drg, sz - szalik).
 
 - poprawka zachowania trybu wielolinijkowego (theKnight/w)
 
+
+$Id: ChangeLog,v 1.20 2003/06/21 10:06:17 chilek Exp $

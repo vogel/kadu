@@ -1,5 +1,5 @@
 dnl based on curses.m4 
-dnl $Id: openssl.m4,v 1.8 2003/03/22 08:56:13 chilek Exp $
+dnl $Id: openssl.m4,v 1.9 2003/06/21 10:06:17 chilek Exp $
 
 AC_DEFUN(AC_CHECK_OPENSSL,[
   AC_SUBST(OPENSSL_LIBS)
@@ -19,6 +19,7 @@ AC_DEFUN(AC_CHECK_OPENSSL,[
     for i in $with_arg \
     		/usr/include: \
 		/usr/local/include:"-L/usr/local/lib" \
+		/usr/local/ssl/include:"-L/usr/local/ssl/lib" \
 		/usr/pkg/include:"-L/usr/pkg/lib" \
 		/usr/contrib/include:"-L/usr/contrib/lib" \
 		/usr/freeware/include:"-L/usr/freeware/lib32" \
@@ -32,13 +33,13 @@ AC_DEFUN(AC_CHECK_OPENSSL,[
       if test -f $incl/openssl/ssl.h; then
         AC_MSG_RESULT($incl/openssl/ssl.h)
 	ldflags_old="$LDFLAGS"
-	LDFLAGS="$lib -lcrypto"
+	LDFLAGS="$lib -lssl -lcrypto"
 	save_LIBS="$LIBS"
-	LIBS="-lcrypto $LIBS"
+	LIBS="-lssl -lcrypto $LIBS"
 	AC_CHECK_LIB(ssl, RSA_new, [
 	  AC_DEFINE(HAVE_OPENSSL, 1, [define if you have OpenSSL])
 	  have_openssl=yes
-	  OPENSSL_LIBS="$lib -lcrypto"
+	  OPENSSL_LIBS="$lib -lssl -lcrypto"
 	  if test "x$incl" != "x/usr/include"; then
     	    OPENSSL_INCLUDES="-I$incl"
 	  fi
