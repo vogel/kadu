@@ -216,6 +216,7 @@ class Kadu : public QMainWindow
 		void showdesc(void);
 		void hidedesc(void);
 		void statusMenuAboutToHide(void);
+		void mouseButtonClicked(int, QListBoxItem *);
 
 	private:
 		QFrame *centralFrame;

@@ -481,6 +481,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	connect(userbox, SIGNAL(returnPressed(QListBoxItem *)), this, SLOT(sendMessage(QListBoxItem *)));
 	connect(userbox, SIGNAL(rightButtonClicked(QListBoxItem *, const QPoint &)),
 		this, SLOT(listPopupMenu(QListBoxItem *)));
+	connect(userbox, SIGNAL(mouseButtonClicked(int, QListBoxItem *, const QPoint &)),
+		this, SLOT(mouseButtonClicked(int, QListBoxItem *)));
 	connect(userbox, SIGNAL(currentChanged(QListBoxItem *)), this, SLOT(currentChanged(QListBoxItem *)));
 
 	statuslabeltxt = new MyLabel(centralFrame, "statuslabeltxt");
@@ -1116,6 +1118,16 @@ void Kadu::changeGroup(int group) {
 	kdebug("Kadu::changeGroup(): group = %d\n", group - 600);
 }
 
+void Kadu::mouseButtonClicked(int button, QListBoxItem *item) {
+	kdebug("Kadu::mouseButtonClicked(): button=%d\n", button);
+	if (button !=4 || !item)
+		return;
+	UserListElement user;
+	user = userlist.byAltNick(item->text());
+	if (user.mobile.length())	
+		commandParser(KADU_CMD_SMS);
+}
+
 /* the list that pops up if we right-click one someone */
 void Kadu::listPopupMenu(QListBoxItem *item) {
 	if (item == NULL)
@@ -1511,7 +1523,7 @@ void Kadu::setStatus(int status) {
 }
 
 void Kadu::checkConnection(void) {
-	// Since it doesn't work anymore...
+	/* Since it doesnt work anymore...*/
 	readevent->start(10000, TRUE);
 	return;	
 }
