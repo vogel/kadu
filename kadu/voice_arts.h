@@ -3,6 +3,10 @@
 
 #include <qobject.h>
 
+extern "C" {
+#include <kde/artsc/artsc.h>
+};
+
 class VoiceArts : public QObject
 {
 	Q_OBJECT
@@ -22,6 +26,6 @@ class VoiceArts : public QObject
 		arts_stream_t recstream;
 };
 
-extern VoiceArts *voice_dsp;
+extern VoiceArts *voice_arts;
 
 #endif

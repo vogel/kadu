@@ -7,11 +7,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <artsc.h>
-
 #include "debug.h"
 #include "voice.h"
-#include "voice_dsp.h"
+#include "voice_arts.h"
 
 VoiceArts::VoiceArts() {
 	kdebug("VoiceArts::VoiceArts()\n");
@@ -54,4 +52,4 @@ void VoiceArts::recordSample(char *data, int length) {
 	} while (len < length);
 }
 
-VoiceArts *voice_dsp;
+VoiceArts *voice_arts;
