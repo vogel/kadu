@@ -688,7 +688,7 @@ void Kadu::removeUser(QStringList &users, bool permanently = false)
 {
 	if(QMessageBox::warning(kadu, "Kadu",
 		i18n("Selected users will be deleted. Are you sure?"),
-		QMessageBox::Yes,QMessageBox::No)!=QMessageBox::Yes)
+		i18n("&Yes"),i18n("&No"))!=0)
 		return;
 
 	int i;
