@@ -43,6 +43,8 @@ UserInfo::UserInfo (const QString &name, QDialog *parent , const QString &altnic
 }
 
 void UserInfo::setupTab1() {
+	QString tmp;
+
 	QVBox *box = new QVBox(this);
 	box->setMargin(10);
 
@@ -82,9 +84,16 @@ void UserInfo::setupTab1() {
 	QLabel *l_group = new QLabel(i18n("Group"), vbox42);
 	e_group = new QLineEdit(puser->group(), vbox42);
 
-	QLabel *l_addr = new QLabel(i18n("Address IP and Port"), box);
-	e_addr = new QLineEdit(box);
+	QHBox *hbox5 = new QHBox(box);
+	hbox5->setSpacing(10);
+	QVBox *vbox51 = new QVBox(hbox5);
+	QLabel *l_addr = new QLabel(i18n("Address IP and Port"), vbox51);
+	e_addr = new QLineEdit(vbox51);
 	e_addr->setReadOnly(true);
+	QVBox *vbox52 = new QVBox(hbox5);
+	QLabel *l_ver = new QLabel(i18n("Client version"), vbox52);
+	e_ver = new QLineEdit(vbox52);
+	e_ver->setReadOnly(true);
 	
 	QLabel *l_dnsname = new QLabel(i18n("DNS name"), box);
 	e_dnsname = new QLineEdit(box);
@@ -98,6 +107,13 @@ void UserInfo::setupTab1() {
 		e_addr->setText(e_addr->text()+":"+QString::number(puser->port));
 	else
 		e_addr->setText(e_addr->text()+":"+i18n("(Unknown)"));
+
+	if (puser->version) {
+		tmp.sprintf("0x%02x", puser->version & 0x0000ffff);
+		e_ver->setText(tmp);
+		}
+	else
+		e_ver->setText(i18n("(Unknown)"));
 
 	switch (puser->status) {
 		case GG_STATUS_AVAIL:
@@ -136,6 +152,7 @@ void UserInfo::setupTab1() {
 
 UserInfo::~UserInfo() {
 	delete dns;
+	kdebug("UserInfo::~UserInfo()\n");
 }
 
 void UserInfo::resultsReady() {

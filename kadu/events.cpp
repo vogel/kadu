@@ -436,6 +436,7 @@ void EventManager::userlistReceivedSlot(struct gg_event *e) {
 		user.ip.setAddress(ntohl(n->remote_ip));
 		userlist.addDnsLookup(user.uin, user.ip);
 		user.port = n->remote_port;
+		user.version = n->version;
 
 		oldstatus = user.status;
 
@@ -528,6 +529,7 @@ void EventManager::userStatusChangedSlot(struct gg_event * e) {
 		user.ip.setAddress((unsigned int)0);
 		userlist.addDnsLookup(user.uin, user.ip);
 		user.port = 0;
+		user.version = 0;
 		}
 
 	history.appendStatus(user.uin, user.status, user.description.length() ? user.description : QString::null);

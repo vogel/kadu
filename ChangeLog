@@ -23,6 +23,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   bo to ponad 100KB, a nikt nie bêdzie i tak tego czyta³ (adrian)
 * configure: libgadu nie obs³uguje ju¿ --disable-debug. Po konsultacji
   z Wojtkiem rozwi±za³em w inny sposób wy³±czanie debugów libgadu (adrian)
+* w oknie informacji o u¿ytkowniku dodane pole z numerem wersji GG (chilek)
 
 +++ wersja 0.3.4-rc1
 * wiêkszo¶æ kodu dotycz±cego obs³ugi zdarzeñ sieciowych przeniesiona z
