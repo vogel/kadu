@@ -1,12 +1,3 @@
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
-
 #ifndef PERSONAL_INFO_H
 #define PERSONAL_INFO_H
 
@@ -16,6 +7,10 @@
 #include <qsocketnotifier.h>
 #include "libgadu.h"
 
+/**
+	Dialog umo¿liwiaj±cy zarz±dzanie w³asnymi danymi w katalogu
+	publicznym
+**/
 class PersonalInfoDialog : public QDialog
 {
 	Q_OBJECT

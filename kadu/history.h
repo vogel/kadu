@@ -1,12 +1,3 @@
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
-
 #ifndef HISTORY_H
 #define HISTORY_H
 
@@ -58,6 +49,9 @@ struct HistoryFindRec {
 	int actualrecord;
 };
 
+/**
+	Okno historii rozmowy
+**/
 class History : public QDialog {
 	Q_OBJECT
 	public:
@@ -118,6 +112,9 @@ class HistorySearch : public QDialog {
 		void resetToDate();
 };
 
+/**
+	Menad¿er historii
+**/
 class HistoryManager {
 	public:
 		void appendMessage(UinsList receivers, uin_t sender, const QString &msg, bool own, time_t=0, bool chat=true);

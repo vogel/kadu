@@ -1,12 +1,3 @@
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
-
 #ifndef USERBOX_H
 #define USERBOX_H
 
@@ -23,6 +14,9 @@ class KaduListBoxPixmap : public QListBoxPixmap {
                 void paint(QPainter *painter);
 };
 
+/**
+	Klasa reprezentuj±ca listê kontaktów wraz z ikonkami stanów
+**/
 class UserBox : public QListBox , QToolTip
 {    
 	Q_OBJECT

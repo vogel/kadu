@@ -1,12 +1,3 @@
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
-
 #ifndef SEARCH_H
 #define SEARCH_H
 
@@ -21,6 +12,9 @@
 #include <qvaluelist.h>
 #include "libgadu.h"
 
+/**
+	Dialog umo¿liwiaj±cy wyszukiwanie w katalogu publicznym
+**/
 class SearchDialog : public QDialog {
 	Q_OBJECT
 	public:

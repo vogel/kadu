@@ -1,12 +1,3 @@
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
-
 #ifndef SMS_H
 #define SMS_H
 
@@ -179,6 +170,9 @@ class SmsSender : public QObject
 		void finished(bool success);
 };
 
+/**
+	Dialog umo¿liwiaj±cy wysy³anie SMS'ów
+**/
 class Sms : public QDialog {
 	Q_OBJECT
 	
