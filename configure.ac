@@ -130,6 +130,30 @@ if test -z "$enable_dist_info"; then
 fi
 AC_DEFINE_UNQUOTED(DIST_TYPE,"$enable_dist_info",[Define distribution type of this copy of application])
 
+# OpenSSL support
+AC_ARG_ENABLE(openssl,[  --with-openssl          enable OpenSSL encryption support])
+if test -z "$with_openssl"; then
+	with_openssl=no
+fi
+if test "$with_openssl" = "yes"; then
+#	AC_CHECK_HEADER(openssl.h,[
+		AC_CHECK_LIB(crypto,RSA_public_encrypt,,[
+			AC_MSG_ERROR([libcrypto was not found!])
+		])
+#	],[
+#		AC_MSG_ERROR([existing libgadu was not found!])
+#	])
+#	AC_CHECK_HEADER(openssl.h,[
+		AC_CHECK_LIB(ssl,BIO_new,,[
+			AC_MSG_ERROR([libssl was not found!])
+		])
+#	],[
+#		AC_MSG_ERROR([existing libgadu was not found!])
+#	])
+	AC_DEFINE(HAVE_OPENSSL,1,[Define if we have OpenSSL encryption support])
+fi
+AM_CONDITIONAL(OPENSSL,[test "$with_openssl" = "yes"])
+
 AC_SUBST(MY_SUBDIRS)
 
 
@@ -177,6 +201,7 @@ echo "    Compile and install built-in sms application: $enable_sms"
 echo "    Use pthread resolving in libgadu:             $with_pthread"
 echo "    Compile with debug symbols:                   $enable_debug"
 echo "    Link with existing libgadu:                   $with_existing_libgadu"
+echo "    OpenSSL encryption support:                   $with_openssl"
 echo "    Distribution type information:                $enable_dist_info"
 echo
 echo " Run make now (gmake on FreeBSD) to compile Kadu."
