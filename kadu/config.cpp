@@ -111,7 +111,7 @@ void loadKaduConfig(void) {
 	config.notifyall = konf->readBoolEntry("NotifyAboutAll", false);
 	config.notifydialog = konf->readBoolEntry("NotifyWithDialogBox", false);
 	config.notifysound = konf->readBoolEntry("NotifyWithSound", false);
-	config.notifies = konf->readListEntry("NotifyUsers");
+//	config.notifies = konf->readListEntry("NotifyUsers");
 
 	konf->setGroup("Proxy");
 	config.useproxy = konf->readBoolEntry("UseProxy", false);
@@ -206,7 +206,7 @@ void saveKaduConfig(void) {
 	konf->writeEntry("ProxyPassword", pwHash(config.proxypassword));
 
 	konf->setGroup("Notify");
-	konf->writeEntry("NotifyUsers", config.notifies);
+//	konf->writeEntry("NotifyUsers", config.notifies);
 	konf->writeEntry("NotifySound", config.soundnotify);
 	konf->writeEntry("NotifyStatusChange", config.notifyglobal);
 	konf->writeEntry("NotifyAboutAll", config.notifyall);
@@ -601,12 +601,6 @@ void ConfigDialog::setupTab4(void) {
 	QLabel *_l1 = new QLabel(vbox1);
 	_l1->setText(i18n("Available"));
 	e_availusers = new QListBox(vbox1);
-	i = 0;
-	while (i < userlist.count()) {
-		if (!config.notifies.contains(QString::number(userlist[i].uin)))
-			e_availusers->insertItem(userlist[i].altnick);
-		i++;
-		}
 
 	QVBox *vbox2 = new QVBox(panebox);
 	QPushButton *_goRight = new QPushButton (vbox2);
@@ -615,26 +609,25 @@ void ConfigDialog::setupTab4(void) {
 	QPushButton *_goLeft = new QPushButton (vbox2);
 	_goLeft->setPixmap( loader->loadIcon("back", KIcon::Small));
 
-	QObject::connect(_goRight, SIGNAL(clicked()), this, SLOT(_Right()));
-	QObject::connect(_goLeft, SIGNAL(clicked()), this, SLOT(_Left()));
-
 	QVBox *vbox3 = new QVBox(panebox);
 	QLabel *_l2 = new QLabel(vbox3);
 	_l2->setText(i18n("Tracked"));
 	e_notifies = new QListBox(vbox3);
 
-	QStringList::Iterator it;
-	for (it = config.notifies.begin(); it != config.notifies.end(); ++it) {
-		QString nick;
-		uin = atoi((const char *)(*it).local8Bit());
-		if (userlist.containsUin(uin)) {
-			nick = userlist.byUin(uin).altnick;
-			e_notifies->insertItem(nick);
-			}
+	i = 0;
+	while (i < userlist.count()) {
+		if (!userlist[i].notify)
+			e_availusers->insertItem(userlist[i].altnick);
 		else
-			it = config.notifies.remove(it);
+			e_notifies->insertItem(userlist[i].altnick);
+		i++;
 		}
-	/* end two panes */
+
+
+	QObject::connect(_goRight, SIGNAL(clicked()), this, SLOT(_Right()));
+	QObject::connect(_goLeft, SIGNAL(clicked()), this, SLOT(_Left()));
+
+	// end of two panes
 
 	notifybox = new QVGroupBox(box4);
 	notifybox->setTitle(i18n("Notify options"));
@@ -1131,7 +1124,7 @@ void ConfigDialog::chooseChatTest(void) {
 
 void ConfigDialog::updateConfig(void) {
 	QString tmp;
-	int i;
+	int i, j;
 
 	config.uin = atoi(e_uin->text().latin1());
 	config.password = e_password->text();
@@ -1210,10 +1203,13 @@ void ConfigDialog::updateConfig(void) {
 	config.notifysound = b_notifysound->isChecked();
 	config.notifydialog = b_notifydialog->isChecked();
 
-	config.notifies.clear();
-	for (int i = 0; i < e_notifies->count(); i++) {
+	for (i = 0; i < e_notifies->count(); i++) {
 		tmp = e_notifies->text(i);
-		config.notifies.append(QString::number(userlist.byAltNick(tmp).uin));
+		userlist.byAltNick(tmp).notify = true;
+		}
+	for (i = 0; i < e_availusers->count(); i++) {
+		tmp = e_availusers->text(i);
+		userlist.byAltNick(tmp).notify = false;
 		}
 
 	delete config.dccip;
