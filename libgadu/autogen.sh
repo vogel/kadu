@@ -7,7 +7,7 @@ else
   fi
 fi
 aclocal -I m4
-autoheader-2.53
-autoconf-2.53
+autoheader
+autoconf
 echo "Running ./configure $ARGS"
 test x$NOCONFIGURE = x && ./configure $ARGS

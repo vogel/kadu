@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.9 2002/12/16 22:56:53 adrian Exp $
+# $Id: Makefile.in,v 1.10 2002/12/26 16:19:24 chilek Exp $
 
 prefix = @prefix@
 datadir = @datadir@
@@ -6,6 +6,7 @@ mandir = @mandir@
 exec_prefix = @exec_prefix@
 bindir = @bindir@
 libdir = @libdir@
+libexecdir = @libexecdir@
 includedir = @includedir@
 
 MAKE = @MAKE@

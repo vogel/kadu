@@ -6,6 +6,41 @@ d - drg, sz - szalik). ,,p/nick'' oznacza patch lub ¼ród³o podes³ane
 przez ,,nick'', ,,i/nick'' oznacza czyj¶ pomys³, ,,b/nick'' mówi, kto
 zg³osi³ b³±d.
 
+// 2002-12-26
+
+- ekg pokazuje ju¿, ¿e kto¶ nas ,,zablokowa³'' (w)
+- libgadu: poprawka wykrywania wersji vsnprintf(). searche, eksporty listy
+  itp. powinny ju¿ dzia³aæ poprawnie (Chilek/w)
+- libgadu: dodanie typów u¿ytkowników do libgadu.h, uaktualnienie
+  opisu protoko³u (Chilek/w)
+- dodanie komend /block i /unblock (w)
+- dodanie opcji --offline i --online do /list (w)
+
+// 2002-12-24
+
+- trochê ¶wi±tecznych, g³ównie kosmetycznych, porz±dków w kodzie,
+  m.in. pozbycie siê warning'ów przy execl, które nie by³o ,,64 bit
+  clean'' ;> (sz)
+
+// 2002-12-23
+
+- przywrócenie przezroczystego tla (w)
+
+// 2002-12-22
+
+- poprawka segfaulta przy dope³nianiu nieznanych numerów (perry/w)
+
+// 2002-12-17
+
+- skrypty z ~/.gg/scripts/autorun/ bêd± ³adowane automagicznie przy
+  starcie ekg (w)
+
+// 2002-12-16
+
+- poprawka przewijania okna (w)
+- poprawka ,,set -a...'' (sero/w)
+- zmiany w docs/FAQ - dosz³y nowe serwery gg (sz)
+
 // 2002-12-15
 
 - ekg pokazuje stderr normalnie ju¿, ¿eby widzieæ informacje o wyj±tkach
@@ -14,7 +49,7 @@ zg³osi³ b³±d.
 - pocz±tek obs³ugi zdarzeñ w skryptach pythonowych. szczegó³y
   w docs/python.txt (w)
 - poprawka /window clear (pmb/w)
-- poprawka /set ukrytej zmiennej (michal/w)
+- poprawka /set ukrytej zmiennej (sero/w)
 
 // 2002-12-14
 
@@ -2408,4 +2443,4 @@ i BUGS.
 - eleet niebieskie t³o mesgów (wiem, dalekie od idea³u).
 
 
-$Id: ChangeLog,v 1.9 2002/12/16 22:56:53 adrian Exp $
+$Id: ChangeLog,v 1.10 2002/12/26 16:19:24 chilek Exp $
