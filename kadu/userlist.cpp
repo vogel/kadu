@@ -83,7 +83,7 @@ UserListElement::UserListElement()
 QString UserListElement::group() const
 {
 	return Group;
-};
+}
 
 void UserListElement::setGroup(const QString& group)
 {
@@ -93,18 +93,18 @@ void UserListElement::setGroup(const QString& group)
 		Group=group;
 	if (Parent)
 		emit Parent->modified();
-};
+}
 
 UserList::UserList(const UserList& source)
 {
 	for(const_iterator i=source.begin(); i!=source.end(); i++)
 		append(*i);
-};
+}
 
 UserList::UserList() : QObject(), QValueList<UserListElement>()
 {
 	dnslookups.setAutoDelete(true);
-};
+}
 
 UserList::~UserList()
 {
@@ -197,7 +197,7 @@ bool UserList::containsUin(uin_t uin) const {
 	for (const_iterator i = begin(); i != end(); i++)
 		if ((*i).uin == uin)
 			return true;
-	kdebug("UserList::containsUin(): userlist doesnt contain %d\n", uin);
+	kdebug("UserList::containsUin(): userlist doesn't contain %d\n", uin);
 	return false;
 }
 
@@ -205,13 +205,14 @@ bool UserList::containsAltNick(const QString &altnick) const {
 	for (const_iterator i = begin(); i != end(); i++)
 		if ((*i).altnick.lower() == altnick.lower())
 			return true;
-	kdebug("UserList::containsAltNick(): userlist doesnt contain %s\n",
+	kdebug("UserList::containsAltNick(): userlist doesn't contain %s\n",
 		(const char *)altnick.lower().local8Bit());
 	return false;
 }
 
 void UserList::addUser(UserListElement& ule)
 {
+	kdebugf();
 	UserListElement e(this);
 	e.first_name = ule.first_name;
 	e.last_name = ule.last_name;
@@ -240,6 +241,7 @@ void UserList::addUser(UserListElement& ule)
 
 void UserList::addAnonymous(uin_t uin)
 {
+	kdebugf();
 	QString tmp = QString::number(uin);
 	UserListElement e;
 	e.first_name = "";
@@ -257,7 +259,9 @@ void UserList::addAnonymous(uin_t uin)
 
 void UserList::changeUserInfo(const QString oldaltnick, UserListElement &ule)
 {
+	kdebugf();
 	UserListElement &e = byAltNick(oldaltnick);
+
 	e.first_name = ule.first_name;
 	e.last_name = ule.last_name;
 	e.nickname = ule.nickname;
@@ -293,17 +297,19 @@ void UserList::changeUserStatus(const uin_t uin, const unsigned int status)
 
 void UserList::removeUser(const QString &altnick)
 {
+	kdebugf();
 	for (Iterator i = begin(); i != end(); i++)
 		if((*i).altnick == altnick)
 		{ 
 			remove(i);
 			emit modified();
 			break;
-		};
-};
+		}
+}
 
 bool UserList::writeToFile(QString filename)
 {
+	kdebugf();
 	QString faname;
 	QString tmp;
 
@@ -388,6 +394,7 @@ bool UserList::writeToFile(QString filename)
 
 bool UserList::readFromFile()
 {
+	kdebugf();
 	QString path;
 	QValueList<QStringList> ualist;
 	QStringList userattribs,groupnames;
@@ -503,7 +510,7 @@ bool UserList::readFromFile()
 
 	f.close();
 	emit modified();
-    	return true;
+	return true;
 }
 
 UserList& UserList::operator=(const UserList& userlist)

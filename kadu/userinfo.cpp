@@ -238,6 +238,7 @@ void UserInfo::accept() {
 
 void UserInfo::addNewUser(UserListElement& e)
 {
+	kdebugf();
 	bool uin_exist = e.uin && (userlist.containsUin(e.uin));
 	if (uin_exist)
 	{
@@ -266,88 +267,85 @@ void UserInfo::addNewUser(UserListElement& e)
 
 void UserInfo::changeUserData(UserListElement& e)
 {
-		if (e_uin->text().length() && !e.uin) {
-			QMessageBox::information(this, "Kadu",
-				tr("Bad UIN"), QMessageBox::Ok);
-			close();
-			return;
-			}
-		if (!e_altnick->text().length()) {
-			QMessageBox::warning(this, tr("Add user problem"),
-				tr("Altnick field cannot be empty."));
-			close();
-			return;
-			}
+	kdebugf();
+	if (e_uin->text().length() && !e.uin) {
+		QMessageBox::information(this, "Kadu", tr("Bad UIN"), QMessageBox::Ok);
+		close();
+		return;
+	}
 
-		if ((e.uin && e.uin != puser->uin && userlist.containsUin(e.uin)) || (e.altnick.lower() != puser->altnick.lower() && userlist.containsAltNick(e.altnick))) {
-			QMessageBox::information(this, "Kadu",
-				tr("User is already in userlist"), QMessageBox::Ok);
-			close();
-			return;
-			}
-		if (sess && sess->status != GG_STATUS_NOT_AVAIL) {
-			if (c_offtouser->isChecked() && !puser->offline_to_user) {
-				if (puser->uin)
-					gg_remove_notify_ex(sess, puser->uin, GG_USER_NORMAL);
-				if (e.uin)
-					gg_add_notify_ex(sess, e.uin, GG_USER_OFFLINE);
-				}
-			else
-				if (!c_offtouser->isChecked() && puser->offline_to_user) {
-					if (puser->uin)
-						gg_remove_notify_ex(sess, puser->uin, GG_USER_OFFLINE);
-					if (e.uin)
-						gg_add_notify_ex(sess, e.uin, GG_USER_NORMAL);
-					}
-				else
-					if (c_blocking->isChecked() && !puser->blocking) {
-						if (puser->uin)
-							gg_remove_notify_ex(sess, puser->uin, GG_USER_NORMAL);
-						if (e.uin)
-							gg_add_notify_ex(sess, e.uin, GG_USER_BLOCKED);
-						}
-					else
-						if (!c_blocking->isChecked() && puser->blocking) {
-							if (puser->uin)
-								gg_remove_notify_ex(sess, puser->uin, GG_USER_BLOCKED);
-							if (e.uin)
-								gg_add_notify_ex(sess, e.uin, GG_USER_NORMAL);
-							}
-						else
-							if (puser->anonymous) {
-								if (e.uin)
-									gg_add_notify(sess, e.uin);
-								}
-							else
-								if (e.uin != puser->uin) {
-									if (puser->uin)
-										gg_remove_notify(sess, puser->uin);
-									if (e.uin)
-										gg_add_notify(sess, e.uin);
-									}
-			}
-		if (e.uin == puser->uin)
-			e.status = puser->status;
-		e.image_size = puser->image_size;
-		e.blocking = c_blocking->isChecked();
-		e.offline_to_user = c_offtouser->isChecked();
-		e.notify = c_notify->isChecked();
-		userlist.changeUserInfo(puser->altnick, e);
-		userlist.writeToFile();
-		if (!kadu->userbox()->containsAltNick(e.altnick))
-		{
-			kadu->userbox()->addUser(e.altnick);
-			UserBox::all_refresh();
+	if (!e_altnick->text().length()) {
+		QMessageBox::warning(this, tr("Add user problem"), tr("Altnick field cannot be empty."));
+		close();
+		return;
+	}
+
+	if ((e.uin && e.uin != puser->uin && userlist.containsUin(e.uin)) ||
+		 (e.altnick.lower() != puser->altnick.lower() && userlist.containsAltNick(e.altnick))) {
+		QMessageBox::information(this, "Kadu", tr("User is already in userlist"), QMessageBox::Ok);
+		close();
+		return;
+	}
+	
+	if (sess && sess->status != GG_STATUS_NOT_AVAIL) {
+		if (c_offtouser->isChecked() && !puser->offline_to_user) {
+			if (puser->uin)
+				gg_remove_notify_ex(sess, puser->uin, GG_USER_NORMAL);
+			if (e.uin)
+				gg_add_notify_ex(sess, e.uin, GG_USER_OFFLINE);
 		}
-		chat_manager->refreshTitlesForUin(puser->uin);
-		close(true);
+		else if (!c_offtouser->isChecked() && puser->offline_to_user) {
+			if (puser->uin)
+				gg_remove_notify_ex(sess, puser->uin, GG_USER_OFFLINE);
+			if (e.uin)
+				gg_add_notify_ex(sess, e.uin, GG_USER_NORMAL);
+		}
+		else if (c_blocking->isChecked() && !puser->blocking) {
+			if (puser->uin)
+				gg_remove_notify_ex(sess, puser->uin, GG_USER_NORMAL);
+			if (e.uin)
+				gg_add_notify_ex(sess, e.uin, GG_USER_BLOCKED);
+		}
+		else if (!c_blocking->isChecked() && puser->blocking) {
+			if (puser->uin)
+				gg_remove_notify_ex(sess, puser->uin, GG_USER_BLOCKED);
+			if (e.uin)
+				gg_add_notify_ex(sess, e.uin, GG_USER_NORMAL);
+		}
+		else if (puser->anonymous) {
+			if (e.uin)
+				gg_add_notify(sess, e.uin);
+		}
+		else if (e.uin != puser->uin) {
+			if (puser->uin)
+				gg_remove_notify(sess, puser->uin);
+			if (e.uin)
+				gg_add_notify(sess, e.uin);
+		}
+	}
+
+	if (e.uin == puser->uin)
+		e.status = puser->status;
+	e.image_size = puser->image_size;
+	e.blocking = c_blocking->isChecked();
+	e.offline_to_user = c_offtouser->isChecked();
+	e.notify = c_notify->isChecked();
+	userlist.changeUserInfo(puser->altnick, e);
+	userlist.writeToFile();
+	if (!kadu->userbox()->containsAltNick(e.altnick))
+	{
+		kadu->userbox()->addUser(e.altnick);
+		UserBox::all_refresh();
+	}
+	chat_manager->refreshTitlesForUin(puser->uin);
+	close(true);
 }
 
 void UserInfo::updateUserlist() {
 	bool ok;
 	UserListElement e;
 
-	kdebug("UserInfo::updateUserlist() \n");
+	kdebugf();
 	e.first_name = e_firstname->text();
 	e.last_name = e_lastname->text();
 	e.nickname = e_nickname->text();
