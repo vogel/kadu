@@ -193,9 +193,9 @@ void SearchDialog::selectionChanged(QListViewItem *item) {
 
 	fprintf(stderr, "KK SearchDialog::currentChanged()\n");
 
+	disconnect(b_addbtn, SIGNAL(clicked()), 0, 0);
 	if (item) {
 		uin = item->text(1).toUInt();
-		disconnect(b_addbtn, SIGNAL(clicked()), 0, 0);
 		if (userlist.containsUin(uin)) {
 			b_addbtn->setText(i18n("&Update Info"));
 			connect(b_addbtn, SIGNAL(clicked()), this, SLOT(updateInfoClicked()));
@@ -459,6 +459,8 @@ void SearchDialog::personalDataTyped(void) {
 void SearchDialog::AddButtonClicked()
 {
 	QListViewItem *selected = results->selectedItem();
+	if (!selected && results->childCount() == 1)
+		selected = results->firstChild();
 	if (!selected) {
 		QMessageBox::information(this,i18n("Add User"),i18n("Select user first"));
 		return;
@@ -494,6 +496,8 @@ void SearchDialog::AddButtonClicked()
 void SearchDialog::updateInfoClicked()
 {
 	QListViewItem *selected = results->selectedItem();
+	if (!selected && results->childCount() == 1)
+		selected = results->firstChild();
 	if (!selected)
 		return;
 
