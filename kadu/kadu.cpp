@@ -2104,11 +2104,11 @@ void KaduSlots::onCreateConfigDialog()
 	QStringList files=locale.entryList();
 
 	  for ( QStringList::Iterator it = files.begin(); it != files.end(); ++it ) {
-	         *it=translateLanguage((*it).mid(5, (*it).length()-8), true);
+	         *it=qApp->translate("@default", translateLanguage((*it).mid(5, (*it).length()-8), true));
 		      }
 	cb_language->insertStringList(files);
-	cb_language->setCurrentText(translateLanguage(
-	       config_file.readEntry("General", "Language", QTextCodec::locale()),true));
+	cb_language->setCurrentText(qApp->translate("@default",translateLanguage(
+	       config_file.readEntry("General", "Language", QTextCodec::locale()),true)));
 }
 
 void KaduSlots::onDestroyConfigDialog()

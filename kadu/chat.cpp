@@ -1031,6 +1031,7 @@ void Chat::initModule()
 	QT_TRANSLATE_NOOP("@default", "Message acknowledgements (wait for delivery)");
 	QT_TRANSLATE_NOOP("@default", "Flash chat title on new message");
 	QT_TRANSLATE_NOOP("@default", "Ignore messages from anonymous users");
+	QT_TRANSLATE_NOOP("@default", "Syntax the same as in information panel.");
 
 
 	ConfigDialog::registerTab("ShortCuts");
