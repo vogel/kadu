@@ -1,5 +1,5 @@
 [Module]
 Description=DSP sound module
-Description[pl]=Modu³ obs³ugi d¼wieku przez DSP
+Description[pl]=Modu³ obs³ugi d¼wiêku przez DSP
 Author=Kadu Team
 Dependencies=sound

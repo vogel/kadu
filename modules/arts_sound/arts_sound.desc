@@ -1,5 +1,5 @@
 [Module]
-Description=Arts sound server support module
-Description[pl]=Modu³ do obs³ugi servera dziwiêku Arts
+Description=aRts sound server support module
+Description[pl]=Modu³ do obs³ugi serwera d¼wiêku aRts
 Author=Kadu Team
 Dependencies=sound
