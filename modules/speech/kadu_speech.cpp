@@ -310,7 +310,7 @@ void SpeechSlots::testSpeech()
 
 	kdebugm(KDEBUG_INFO, "%d %d %d %d\n", freq, tempo, basefreq, i);
 	
-	if (isFemale(ule.first_name))
+	if (isFemale(ule.firstName()))
 		say(parse(formatF, ule).arg("Test"), program, klatt, mel, arts, esd, dsp, device, freq, tempo, basefreq);
 	else
 		say(parse(formatM, ule).arg("Test"), program, klatt, mel, arts, esd, dsp, device, freq, tempo, basefreq);
@@ -331,7 +331,7 @@ void SpeechSlots::newChat(const UinsList &senders, const QString &msg, time_t ti
 		if (chatWin->isActiveWindow())
 			return;
 	UserListElement ule=userlist.byUin(senders.first());
-	if (isFemale(ule.first_name))
+	if (isFemale(ule.firstName()))
 		say(parse(config_file.readEntry("Speech", "ChatFormatFemale"), ule).arg(msg));
 	else
 		say(parse(config_file.readEntry("Speech", "ChatFormatMale"), ule).arg(msg));
@@ -349,7 +349,7 @@ void SpeechSlots::newMessage(const UinsList &senders, const QString &msg, time_t
 	}
 
 	UserListElement ule=userlist.byUin(senders.first());
-	if (isFemale(ule.first_name))
+	if (isFemale(ule.firstName()))
 		say(parse(config_file.readEntry("Speech", "MessageFormatFemale"), ule).arg(msg));
 	else
 		say(parse(config_file.readEntry("Speech", "MessageFormatMale"), ule).arg(msg));
@@ -381,7 +381,7 @@ void SpeechSlots::userChangedStatusToAvailable(const UserListElement &ule)
 	}
 
 	QString t;
-	if (isFemale(ule.first_name))
+	if (isFemale(ule.firstName()))
 		t=parse(config_file.readEntry("Speech", "NotifyFormatFemale"), ule);
 	else
 		t=parse(config_file.readEntry("Speech", "NotifyFormatMale"), ule);
