@@ -1055,6 +1055,8 @@ void Chat::sendMessage(void) {
 		return;
 	}
 
+	addMyMessageToHistory();
+
 	QCString msg = unicode2cp(mesg);
 	
 	bool stop=false;
@@ -1068,7 +1070,6 @@ void Chat::sendMessage(void) {
 		return;
 	}
 
-	addMyMessageToHistory();
 
 	if (config_file.readBoolEntry("Chat","MessageAcks")) {
 		edit->setReadOnly(true);	
