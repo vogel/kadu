@@ -1540,10 +1540,10 @@ void ConfigDialog::updateConfig(void) {
 	config.fonts.userboxDesc = vl_userboxfont[1];
 	config.fonts.trayhint = vl_otherfont[0];
 
-	config.panelcontents = e_panelcontents->text().latin1();
-	config.chatcontents = e_chatcontents->text().latin1();
-	config.conferencecontents = e_conferencecontents->text().latin1();
-	config.conferenceprefix = e_conferenceprefix->text().latin1();
+	config.panelcontents = e_panelcontents->text();
+	config.chatcontents = e_chatcontents->text();
+	config.conferencecontents = e_conferencecontents->text();
+	config.conferenceprefix = e_conferenceprefix->text();
 
 	free(config.soundnotify);
 	config.soundnotify = strdup(e_soundnotify->text().latin1());
