@@ -549,7 +549,7 @@ void Kadu::popupMenu()
 		UserBox::userboxmenu->setItemEnabled(offlinetouseritem, config_file.readBoolEntry("General", "PrivateStatus"));
 		if (user.offlineTo())
 			UserBox::userboxmenu->setItemChecked(offlinetouseritem, true);
-		UserBox::userboxmenu->setItemEnabled(notifyuseritem, config_file.readBoolEntry("Notify", "NotifyStatusChange") && !config_file.readBoolEntry("Notify", "NotifyAboutAll"));
+		UserBox::userboxmenu->setItemEnabled(notifyuseritem, !config_file.readBoolEntry("Notify", "NotifyAboutAll"));
 		if (user.notify())
 			UserBox::userboxmenu->setItemChecked(notifyuseritem, true);
 	}
