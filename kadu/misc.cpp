@@ -2211,7 +2211,10 @@ void CreateNotifier::notify(QObject* new_object)
 
 QString GaduImagesManager::imageHtml(const QString& file_name)
 {
-	return QString("<img src=\"%1\"/>").arg(file_name);
+	if (file_name.right(4).lower()==".gif")
+		return QString("<img animated=\"1\" src=\"%1\"/>").arg(file_name);
+	else
+		return QString("<img src=\"%1\"/>").arg(file_name);
 }
 
 QString GaduImagesManager::loadingImageHtml(UinType uin,uint32_t size,uint32_t crc32)
@@ -2320,9 +2323,16 @@ QString GaduImagesManager::replaceLoadingImages(const QString& text, UinType sen
 {
 	kdebugf();
 	QString loading_string = GaduImagesManager::loadingImageHtml(sender,size,crc32);
-	QString image_string = QString("<img src=\"%1\"/>").arg(getSavedImageFileName(size,crc32));
+	QString image_string;
 	QString new_text = text;
 	int pos;
+
+	QString file_name = getSavedImageFileName(size,crc32);
+	if (file_name.right(4).lower()==".gif")
+		image_string = QString("<img animated=\"1\" src=\"%1\"/>").arg(file_name);
+	else
+		image_string = QString("<img src=\"%1\"/>").arg(file_name);
+
 	while ((pos = new_text.find(loading_string)) != -1)
 	{
 		kdebugm(KDEBUG_INFO, "Found coresponding loading image at pos %i, replacing\n",pos);
