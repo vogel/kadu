@@ -18,8 +18,11 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 #!/bin/bash
-# $Id: Instaluj,v 1.29 2004/04/21 16:28:59 romek Exp $
+# $Id: Instaluj,v 1.30 2004/04/22 12:41:35 joi Exp $
 # KaduInstaller - Copyright (C) 2004 Sad Mephisto <sad@antisocial.com>
+
+export LC_ALL=pl_PL
+export LANG=pl_PL
 
 # ./configure, make, make install....  tylko ¿eby ³adnie wygl±da³o
 zainstaluj()
