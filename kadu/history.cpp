@@ -14,8 +14,6 @@
 #include <qpushbutton.h>
 #include <qlabel.h>
 #include <qlistbox.h>
-#include <qpixmap.h>
-#include <qcombobox.h>
 #include <qstring.h>
 #include <qcstring.h>
 #include <qfont.h>
@@ -37,9 +35,7 @@
 #include <qhgroupbox.h>
 #include <qradiobutton.h>
 #include <qvbuttongroup.h>
-#include <qlineedit.h>
 #include <qtooltip.h>
-#include <qevent.h>
 
 #include <time.h>
 //#include <sys/socket.h>

@@ -10,20 +10,13 @@
 //#include <signal.h>
 #include <qwidget.h>
 #include <qdialog.h>
-#include <qmultilineedit.h>
 #include <qpushbutton.h>
 #include <qlabel.h>
-#include <qlistbox.h>
-#include <qpixmap.h>
-#include <qcombobox.h>
 #include <qstring.h>
 #include <qfile.h>
-#include <qarray.h>
 #include <qlayout.h>
-#include <qtextbrowser.h>
 #include <qdatetime.h>
 #include <qmessagebox.h>
-#include <qprocess.h>
 
 #define _USE_BSD
 #include <sys/time.h>
@@ -43,7 +36,6 @@
 #include "ignore.h"
 #include "config_dialog.h"
 #include "events.h"
-#include "pixmaps.h"
 #include "chat.h"
 //#include "message.h"
 #include "history.h"

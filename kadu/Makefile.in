@@ -142,7 +142,6 @@ misc.cpp misc.h misc_moc.cpp\
 password.cpp password.h password_moc.cpp \
 pending_msgs.cpp pending_msgs.h pending_msgs_moc.cpp \
 personal_info.cpp personal_info.h personal_info_moc.cpp \
-pixmaps.h \
 register.cpp register.h register_moc.cpp \
 search.cpp search.h search_moc.cpp \
 sms.cpp sms.h sms_moc.cpp \

@@ -18,7 +18,6 @@
 //
 #include "userbox.h"
 #include "ignore.h"
-#include "pixmaps.h"
 #include "debug.h"
 #include "pending_msgs.h"
 

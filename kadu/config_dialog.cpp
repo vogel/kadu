@@ -7,7 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qapplication.h>
 #include <qvaluelist.h>
 #include <qcolordialog.h>
 #include <qfontdatabase.h>
@@ -21,7 +20,6 @@
 #include <qgrid.h>
 #include <qrect.h>
 #include <qtextstream.h>
-#include <qtextcodec.h>
 #include <qhostaddress.h>
 #include <qspinbox.h>
 #include <qslider.h>

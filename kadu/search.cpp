@@ -17,7 +17,6 @@
 
 //
 #include "kadu.h"
-#include "pixmaps.h"
 #include "search.h"
 //#include "message.h"
 #include "debug.h"

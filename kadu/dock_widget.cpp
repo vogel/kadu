@@ -10,14 +10,12 @@
 #include <qapplication.h>
 #include <qcursor.h>
 #include <qobject.h>
-#include <qpopupmenu.h>
-#include <qpixmap.h>
+//#include <qpopupmenu.h>
 #include <qtimer.h>
 
 #include "dock_widget.h"
 #include "config_dialog.h"
 #include "misc.h"
-#include "pixmaps.h"
 //#include "message.h"
 #include "chat.h"
 #include "debug.h"

@@ -14,6 +14,7 @@
 #include <qevent.h>
 #include <qframe.h>
 #include <qlayout.h>
+#include <qtoolbutton.h>
 
 #include "libgadu.h"
 #include "misc.h"
@@ -89,6 +90,7 @@ class Kadu : public QMainWindow
 		void showdesc(bool show = true);
 		void statusMenuAboutToHide(void);
 		void mouseButtonClicked(int, QListBoxItem *);
+		void muteUnmuteSounds();
 		void configure();
 		void viewHistory();
 		void lookupInDirectory();
@@ -103,6 +105,7 @@ class Kadu : public QMainWindow
 		QGridLayout *grid;
 		QMenuBar *mmb;
 		QTextBrowser *descrtb;
+		QToolButton *mutebtn;
 		int commencing_startup;
 
 		void createMenu();

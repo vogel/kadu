@@ -8,7 +8,6 @@
  ***************************************************************************/
 
 #include <qrect.h>
-#include <qaccel.h>
 #include <qbitmap.h>
 #include <qtoolbutton.h>
 #include <qtooltip.h>

@@ -16,7 +16,6 @@
 #include <libintl.h>
 
 #include "kadu.h"
-#include "pixmaps.h"
 #include "config_dialog.h"
 #include "register.h"
 #include "../config.h"

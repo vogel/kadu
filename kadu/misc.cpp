@@ -1,13 +1,11 @@
 #include <qpushbutton.h>
 #include <qlayout.h>
-#include <qpixmap.h>
 #include <qstring.h>
 #include <qtextcodec.h>
 #include <qcstring.h>
 #include <qdatetime.h>
 #include <qregexp.h>
 #include <qcolor.h>
-#include <qlineedit.h>
 #include <qaccel.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,7 +16,6 @@
 #include <string.h>
 
 #include "misc.h"
-#include "pixmaps.h"
 #include "config_dialog.h"
 #include "config_file.h"
 #include "kadu.h"

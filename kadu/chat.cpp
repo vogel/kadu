@@ -7,7 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qpixmap.h>
 #include <qpushbutton.h>
 #include <qregexp.h>
 #include <qlayout.h>
@@ -28,7 +27,6 @@
 //
 #include "config_dialog.h"
 #include "kadu.h"
-#include "pixmaps.h"
 #include "chat.h"
 #include "search.h"
 #include "history.h"
@@ -175,7 +173,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	QToolTip::add(autosend, i18n("Enter key sends message"));
 
 	lockscroll = new QPushButton(buttontray);
-	lockscroll->setPixmap(QPixmap((const char**)scroll_lock));
+	lockscroll->setPixmap(loadIcon("scroll_lock.png"));
 	lockscroll->setToggleButton(true);
 	QToolTip::add(lockscroll, i18n("Blocks scrolling"));
 
@@ -211,7 +209,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 		QToolTip::add(iconsel, i18n("Insert emoticon"));
 
 	QPushButton *history = new QPushButton(buttontray);
-	history->setPixmap(QPixmap((const char**)history_xpm));
+	history->setPixmap(loadIcon("history.png"));
 	QToolTip::add(history, i18n("Show history"));
 
 	QPushButton *whois = new QPushButton(buttontray);

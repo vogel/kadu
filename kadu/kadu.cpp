@@ -15,10 +15,7 @@
 #include <qpushbutton.h>
 #include <qlabel.h>
 #include <qlistbox.h>
-#include <qpixmap.h>
-#include <qcombobox.h>
 #include <qstring.h>
-#include <qlineedit.h>
 #include <qpopupmenu.h>
 #include <qtextstream.h>
 #include <qpoint.h>
@@ -47,7 +44,6 @@
 #include <qcheckbox.h>
 #include <qtextcodec.h>
 #include <qtimer.h>
-#include <qaccel.h>
 #include <qpainter.h>
 #include <qmenubar.h>
 #include <qnetworkprotocol.h>
@@ -56,7 +52,6 @@
 #include <qdatetime.h>
 #include <qframe.h>
 #include <qtoolbar.h>
-#include <qtoolbutton.h>
 
 #include <arpa/inet.h>
 #include <libintl.h>
@@ -89,7 +84,6 @@
 #include "config_dialog.h"
 #include "misc.h"
 #include "kadu.h"
-#include "pixmaps.h"
 #include "userbox.h"
 #include "events.h"
 #include "chat.h"
@@ -487,9 +481,17 @@ Po jakiego czorta to ?
 	setAppropriate(toolbar, true);
 	toolbar->setCloseMode(QDockWindow::Undocked);
 	toolbar->setLabel(i18n("Main toolbar"));
+	QIconSet *mu;
+	if (mute)
+	{mu= new QIconSet(loadIcon("mute.png"));}
+	else
+	{mu= new QIconSet(loadIcon("unmute.png"));}
+	mutebtn = new QToolButton((*mu), i18n("Mute sounds"),
+	QString::null, this, SLOT(muteUnmuteSounds()), toolbar, "mute");
 
 	QToolButton *configbtn = new QToolButton(loadIcon("configure.png"), i18n("Configuration"),
 		QString::null, this, SLOT(configure()), toolbar, "configure");
+		
 	toolbar->addSeparator();
 	QToolButton *viewhistorybtn = new QToolButton(loadIcon("history.png"), i18n("View history"),
 		QString::null, this, SLOT(viewHistory()), toolbar, "viewhistory");
@@ -557,7 +559,13 @@ Po jakiego czorta to ?
 		}
 }
 
+void Kadu::muteUnmuteSounds()
+{
+	commandParser(KADU_CMD_MUTE);
+}
+
 void Kadu::configure() {
+
 	commandParser(KADU_CMD_CONFIG);
 }
 
@@ -961,14 +969,12 @@ void Kadu::commandParser (int command) {
 		case KADU_CMD_MUTE: {
 			mute = !mute;
 			if (mute) {
-				QPixmap snd_unmute((const char **)snd_mute_xpm);
-				QIconSet icon(snd_unmute);
-				mmb->changeItem(KADU_CMD_MUTE, icon, i18n("Unmute sounds"));
+				mutebtn->setIconSet(loadIcon("mute.png"));
+				mmb->changeItem(KADU_CMD_MUTE, loadIcon("mute.png"), i18n("Unmute sounds"));
 				}
 			else {
-				QPixmap snd_mute((const char **)snd_unmute_xpm);
-				QIconSet icon(snd_mute);
-				mmb->changeItem(KADU_CMD_MUTE, icon, i18n("Mute sounds"));
+				mmb->changeItem(KADU_CMD_MUTE, loadIcon("unmute.png"), i18n("Mute sounds"));
+				mutebtn->setIconSet(loadIcon("unmute.png"));
 				}
 			break;
 		}
@@ -1852,14 +1858,10 @@ void Kadu::createMenu() {
 	ppm->insertItem(loadIcon("configure.png"), i18n("&Configuration"), KADU_CMD_CONFIG);
 	ppm->insertItem(loadIcon("reload.png"), i18n("Resend &userlist"), KADU_CMD_SEND_USERLIST);
 	if (mute) {
-		QPixmap snd_unmute((const char **)snd_mute_xpm);
-		QIconSet icon(snd_unmute);
-		ppm->insertItem(icon, i18n("Unmute sounds"), KADU_CMD_MUTE);
+		ppm->insertItem(loadIcon("mute.png"), i18n("Unmute sounds"), KADU_CMD_MUTE);
 		}
 	else {
-		QPixmap snd_mute((const char **)snd_unmute_xpm);
-		QIconSet icon(snd_mute);
-		ppm->insertItem(icon, i18n("Mute sounds"), KADU_CMD_MUTE);		
+		ppm->insertItem(loadIcon("unmute.png"), i18n("Mute sounds"), KADU_CMD_MUTE);		
 		}
 	ppm->insertSeparator();
 
@@ -1869,8 +1871,7 @@ void Kadu::createMenu() {
 
 	ppm->insertItem(i18n("Remind &password"), KADU_CMD_REMIND_PASSWORD);
 	ppm->insertItem(i18n("&Change password"), KADU_CMD_CHANGE_PASSWORD);
-	QPixmap new__user((const char **)new_user);
-	ppm->insertItem(new__user,i18n("Register &new user"), KADU_CMD_REGISTER_USER);
+	ppm->insertItem(loadIcon("newuser.png"),i18n("Register &new user"), KADU_CMD_REGISTER_USER);
 	ppm->insertItem(i18n("Unregister user"), KADU_CMD_UNREGISTER_USER);
 	ppm->insertItem(i18n("Personal information"), KADU_CMD_PERSONAL_INFO);
 	ppm->insertSeparator();
