@@ -345,12 +345,12 @@ void Kadu::gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op) {
 	fprintf(stderr, "KK Kadu::gotUpdatesInfo(): %s\n", buf);
 	
 	if (ut->ifNewerVersion(newestversion)) {
-		QMessageBox::information(this, "Update information",
-			QString("The newest Kadu version is %1").arg(newestversion), QMessageBox::Ok);
+		QMessageBox::information(this,(i18n("Update information")),
+			QString(i18n("The newest Kadu version is %1")).arg(newestversion), QMessageBox::Ok);
 		}
 	delete ut;
 }
-  
+
 /* a monstrous constructor so Kadu would take longer to start up */
 Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 {
