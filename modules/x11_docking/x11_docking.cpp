@@ -12,6 +12,7 @@
 #include <qapplication.h>
 #include <qtooltip.h>
 #include <qobject.h>
+#include <qtimer.h>
 
 #include "../docking/docking.h"
 #include "debug.h"
@@ -23,7 +24,7 @@
 #include <X11/Xutil.h>
 #include <X11/Xatom.h>
 
-#define DISABLE_HIDING
+//#define ENABLE_HIDING
 
 extern Time qt_x_time;
 
@@ -83,7 +84,7 @@ static bool send_message(
 extern "C" int x11_docking_init()
 {
 	x11_tray_icon = new X11TrayIcon();
-#ifndef DISABLE_HIDING
+#ifdef ENABLE_HIDING
 	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Remove from taskbar (experimental)"), "HideTaskbar", false);
 #endif
 	return 0;
@@ -91,7 +92,7 @@ extern "C" int x11_docking_init()
 
 extern "C" void x11_docking_close()
 {
-#ifndef DISABLE_HIDING
+#ifdef ENABLE_HIDING
 	ConfigDialog::removeControl("General", "Remove from taskbar (experimental)");
 #endif
 	delete x11_tray_icon;
@@ -147,7 +148,7 @@ X11TrayIcon::X11TrayIcon()
 	r = XInternAtom(dsp, "_KDE_NET_WM_SYSTEM_TRAY_WINDOW_FOR", false);
 	XChangeProperty(dsp, win, r, XA_WINDOW, 32, 0, (uchar *)&data, 1);
 	
-#ifndef DISABLE_HIDING
+#ifdef ENABLE_HIDING
 	//wy³±czamy pokazywanie Kadu na pasku zadañ
 	disableTaskbar();
 	connect(kadu, SIGNAL(shown()), this, SLOT(disableTaskbar()));
@@ -161,12 +162,16 @@ X11TrayIcon::X11TrayIcon()
 	docking_manager->setDocked(true);
 
 	show();
+	
+	//zapobiega pojawieniu siê 2 ikon jedna na drugiej (z kilkunastopikselowym przesuniêciem)
+	QTimer::singleShot(0, this, SLOT(repaint()));
+	
 	kdebugf2();
 }
 
 void X11TrayIcon::disableTaskbar()
 {
-#ifndef DISABLE_HIDING
+#ifdef ENABLE_HIDING
 	if (config_file.readBoolEntry("General", "HideTaskbar"))
 		enableTaskbar(false);
 #endif
@@ -174,7 +179,7 @@ void X11TrayIcon::disableTaskbar()
 
 void X11TrayIcon::enableTaskbar(bool enable)
 {
-#ifndef DISABLE_HIDING
+#ifdef ENABLE_HIDING
 	static Display *dsp = x11Display();
 	static XEvent e;
 	static bool set=false;
@@ -206,7 +211,7 @@ void X11TrayIcon::enableTaskbar(bool enable)
 X11TrayIcon::~X11TrayIcon()
 {
 	kdebugf();
-#ifndef DISABLE_HIDING
+#ifdef ENABLE_HIDING
 //	disconnect(kadu, SIGNAL(minimized()), kadu, SLOT(hide()));
 	disconnect(kadu, SIGNAL(shown()), this, SLOT(disableTaskbar()));
 	enableTaskbar();
