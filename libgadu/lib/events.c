@@ -1,4 +1,4 @@
-/* $Id: events.c,v 1.38 2004/05/02 21:43:30 michal Exp $ */
+/* $Id: events.c,v 1.39 2004/07/24 17:47:47 joi Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -65,10 +65,10 @@ void gg_event_free(struct gg_event *e)
 		free(e->event.msg.recipients);
 	}
 	
-	if (e->type == GG_EVENT_NOTIFY)
+	else if (e->type == GG_EVENT_NOTIFY)
 		free(e->event.notify);
 	
-	if (e->type == GG_EVENT_NOTIFY60) {
+	else if (e->type == GG_EVENT_NOTIFY60) {
 		int i;
 
 		for (i = 0; e->event.notify60[i].uin; i++)
@@ -77,27 +77,27 @@ void gg_event_free(struct gg_event *e)
 		free(e->event.notify60);
 	}
 
-	if (e->type == GG_EVENT_STATUS60)
+	else if (e->type == GG_EVENT_STATUS60)
 		free(e->event.status60.descr);
 	
-	if (e->type == GG_EVENT_STATUS)
+	else if (e->type == GG_EVENT_STATUS)
 		free(e->event.status.descr);
 
-	if (e->type == GG_EVENT_NOTIFY_DESCR) {
+	else if (e->type == GG_EVENT_NOTIFY_DESCR) {
 		free(e->event.notify_descr.notify);
 		free(e->event.notify_descr.descr);
 	}
 
-	if (e->type == GG_EVENT_DCC_VOICE_DATA)
+	else if (e->type == GG_EVENT_DCC_VOICE_DATA)
 		free(e->event.dcc_voice_data.data);
 
-	if (e->type == GG_EVENT_PUBDIR50_SEARCH_REPLY || e->type == GG_EVENT_PUBDIR50_READ || e->type == GG_EVENT_PUBDIR50_WRITE)
+	else if (e->type == GG_EVENT_PUBDIR50_SEARCH_REPLY || e->type == GG_EVENT_PUBDIR50_READ || e->type == GG_EVENT_PUBDIR50_WRITE)
 		gg_pubdir50_free(e->event.pubdir50);
 
-	if (e->type == GG_EVENT_USERLIST)
+	else if (e->type == GG_EVENT_USERLIST)
 		free(e->event.userlist.reply);
 	
-	if (e->type == GG_EVENT_IMAGE_REPLY) {
+	else if (e->type == GG_EVENT_IMAGE_REPLY) {
 		free(e->event.image_reply.filename);
 		free(e->event.image_reply.image);
 	}
