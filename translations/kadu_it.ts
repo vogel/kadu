@@ -422,10 +422,6 @@ Le discussioni dovrebbero essere separate con gli spazi. la discussione di %n è
         <translation>Informi circa nuova chiacchierata</translation>
     </message>
     <message>
-        <source>Show message contents in hint</source>
-        <translation>Mostri il soddisfare del messaggio nel suggerimento</translation>
-    </message>
-    <message>
         <source>Notify about user status change</source>
         <translation>Informi circa il cambiamento di condizione dell&apos;utente</translation>
     </message>
@@ -504,10 +500,6 @@ Le discussioni dovrebbero essere separate con gli spazi. la discussione di %n è
     <message>
         <source>&quot;Enter&quot; key in chat sends message by default</source>
         <translation>a chiave &quot;Enter&quot; nella chiacchierata trasmette il messaggio per difetto</translation>
-    </message>
-    <message>
-        <source>Message acknowledgements (wait for delivery</source>
-        <translation>Ringraziamenti del messaggio (aspett la consegna</translation>
     </message>
     <message>
         <source>Flash chat title on new message</source>
@@ -664,6 +656,14 @@ Se lasciate lo spazio in bianco, le regolazioni di difetto saranno usate.</trans
     <message>
         <source>Notify about user becoming unavailable</source>
         <translation>Informi circa l&apos;utente che diventa non disponibile</translation>
+    </message>
+    <message>
+        <source>Message acknowledgements (wait for delivery)</source>
+        <translation>Ringraziamenti del messaggio (aspett la consegna)</translation>
+    </message>
+    <message>
+        <source>Show message content in hint</source>
+        <translation>Mostri il soddisfare del messaggio nel suggerimento</translation>
     </message>
 </context>
 <context>

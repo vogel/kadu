@@ -422,10 +422,6 @@ Zaznacz i wpisz w to pole poprawny ciąg. Argumenty oddziel spacjami. Argument %
         <translation>Powiadom o nowej rozmowie</translation>
     </message>
     <message>
-        <source>Show message contents in hint</source>
-        <translation>Pokaż treść wiadomości w dymku</translation>
-    </message>
-    <message>
         <source>Notify about user status change</source>
         <translation>Powiadom kiedy kontakt zmieni status</translation>
     </message>
@@ -504,10 +500,6 @@ Zaznacz i wpisz w to pole poprawny ciąg. Argumenty oddziel spacjami. Argument %
     <message>
         <source>&quot;Enter&quot; key in chat sends message by default</source>
         <translation>Klawisz &quot;Enter&quot; domyślnie wysyła wiadomość</translation>
-    </message>
-    <message>
-        <source>Message acknowledgements (wait for delivery</source>
-        <translation>Czekaj na potwierdzenie odebrania wiadomości</translation>
     </message>
     <message>
         <source>Flash chat title on new message</source>
@@ -664,6 +656,14 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     <message>
         <source>Notify about user becoming unavailable</source>
         <translation>Powiadom kiedy kontakt stanie się nie dostępny</translation>
+    </message>
+    <message>
+        <source>Message acknowledgements (wait for delivery)</source>
+        <translation>Potwierdzenie wysłania wiadomości (czekaj na dostarczenie)</translation>
+    </message>
+    <message>
+        <source>Show message content in hint</source>
+        <translation>Pokaż zawartość wiadomości w dymku</translation>
     </message>
 </context>
 <context>
@@ -1783,10 +1783,6 @@ Teraz możesz dodać znajomych do listy kontaktów.</translation>
     <message>
         <source>Select user first</source>
         <translation>Zaznacz użytkownika</translation>
-    </message>
-    <message>
-        <source> </source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

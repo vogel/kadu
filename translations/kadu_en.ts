@@ -422,10 +422,6 @@ Arguments should be separated with spaces. %n argument is converted to number, %
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show message contents in hint</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Notify about user status change</source>
         <translation type="unfinished"></translation>
     </message>
@@ -503,10 +499,6 @@ Arguments should be separated with spaces. %n argument is converted to number, %
     </message>
     <message>
         <source>&quot;Enter&quot; key in chat sends message by default</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Message acknowledgements (wait for delivery</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -659,6 +651,14 @@ If you leave blank, default settings will be used.</source>
     </message>
     <message>
         <source>Notify about user becoming unavailable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Message acknowledgements (wait for delivery)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show message content in hint</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
