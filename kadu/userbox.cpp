@@ -49,10 +49,8 @@ void UserBox::maybeTip(const QPoint &c)
 				s = i18n("<I>Busy</I>");
 				break;
 			case GG_STATUS_NOT_AVAIL:
-				if (!userlist.byAltNick(item->text()).uin) {
+				if (!userlist.byAltNick(item->text()).uin)
 				    s = i18n("<nobr><I>Mobile:</I> <B>")+userlist.byAltNick(item->text()).mobile+"</B><br>";
-				    s += i18n("Press 3 mouse button to send sms");
-				    }
 				else
 				    s = i18n("<nobr><I>Not available</I></nobr>");
 				break;

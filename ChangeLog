@@ -22,6 +22,8 @@
 * wykluczenie mo¿liwo¶ci wys³ania swojego klucza do osoby
   nie maj±cej w userliscie uin'u (mast3r)
 * poprawka zamykania siê Kadu (mast3r)
+* malutkie przeoczenie, wywalilem info o 3 klawiszu z hinta
+  zapomnia³em o 2kliku lewym :) (mast3r)
 
 +++ wersja 0.3.3-final
 * ikonka wiadomo¶ci i ikon statusu "ukryty" z telefonikiem
