@@ -545,13 +545,6 @@ It&apos;s a high security risk!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
-%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
-%v - revDNS, %p - port %e - email
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Use paragraphs instead of tables</source>
         <translation type="unfinished"></translation>
     </message>
@@ -559,6 +552,17 @@ It&apos;s a high security risk!</source>
         <source>If set: chat, history windows and information panel are rendered
 using HTML paragraphs instead of tables - this improves refresh
 speed and text copying but has a couple of display problems</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
+%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
+%v - revDNS, %p - port %e - email %x - max image size
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Debugging mask</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

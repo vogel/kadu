@@ -546,16 +546,6 @@ Jest to wysoce ryzykowne!</translation>
         <translation>Opcje przeglądarki</translation>
     </message>
     <message>
-        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
-%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
-%v - revDNS, %p - port %e - email
-</source>
-        <translation>Składnia: %s - status, %d - opis, %i - IP, %n - nick, %a - wyświetl,
-%f - imię, %r - nazwisko, %m - telefon, %u - nr GG, %g - grupa, 
-%o - zwraca spację jeżeli kontakt nie ma cię na liście, %v - DNS, 
-%p - port %e - email</translation>
-    </message>
-    <message>
         <source>Use paragraphs instead of tables</source>
         <translation>Użyj paragrafów zamiast tabelek</translation>
     </message>
@@ -567,6 +557,20 @@ speed and text copying but has a couple of display problems</source>
 bedą renderowane z użyciem paragrafów HTML zamiast tabelek.
 Polepszy to prędkość odświerzania okien jak i kopiowanie z nich
 tekstu ale może sprawiać problemy z wyświetlaniem</translation>
+    </message>
+    <message>
+        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
+%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
+%v - revDNS, %p - port %e - email %x - max image size
+</source>
+        <translation>Składnia: %s - status, %d - opis, %i - IP, %n - nick, %a - wyświetl,
+%f - imię, %r - nazwisko, %m - telefon, %u - nr GG, %g - grupa, 
+%o - zwraca spację jeżeli kontakt nie ma cię na liście, %v - DNS, 
+%p - port %e - email, %x - max rozmiar obrazka</translation>
+    </message>
+    <message>
+        <source>Debugging mask</source>
+        <translation>Maska debugera</translation>
     </message>
 </context>
 <context>

@@ -19,11 +19,11 @@
     </message>
     <message>
         <source>Clear Chat:</source>
-        <translation>Leere das Fenster:</translation>
+        <translation>Leere das Chatfenster:</translation>
     </message>
     <message>
         <source>Close Chat:</source>
-        <translation>Schließe Fenster:</translation>
+        <translation>Schließe das Chatfenster:</translation>
     </message>
     <message>
         <source>Bold text:</source>
@@ -55,7 +55,7 @@
     </message>
     <message>
         <source>Password</source>
-        <translation>Passwort</translation>
+        <translation>Kennwort</translation>
     </message>
     <message>
         <source>Nick</source>
@@ -71,7 +71,7 @@
     </message>
     <message>
         <source>Check for updates</source>
-        <translation>Suche updates</translation>
+        <translation>Suche Updates</translation>
     </message>
     <message>
         <source>Network</source>
@@ -95,7 +95,7 @@
     </message>
     <message>
         <source>Use proxy server</source>
-        <translation>Benutze proxy</translation>
+        <translation>Benutze Proxy-Server</translation>
     </message>
     <message>
         <source>Proxy server</source>
@@ -103,11 +103,11 @@
     </message>
     <message>
         <source>IP addresses:</source>
-        <translation>IP-Adresse:</translation>
+        <translation>IP-Adressen:</translation>
     </message>
     <message>
         <source>ShortCuts</source>
-        <translation>Tasten</translation>
+        <translation>Tastaturbefehle</translation>
     </message>
     <message>
         <source>Remove from userlist</source>
@@ -151,27 +151,27 @@
     </message>
     <message>
         <source>Web browser was not specified. Visit the configuration section</source>
-        <translation>Browser WWW nicht vestgelegt. Setze einen im Konfigurationsfenster</translation>
+        <translation>Browser wurde nicht festgelegt. Schauen Sie ins Konfigurationsfenster nach</translation>
     </message>
     <message>
         <source>Could not spawn Web browser process. Check if the Web browser is functional</source>
-        <translation>Kann den Browser nicht öffnen. Überprüfe, ob dein Browser funktioniert</translation>
+        <translation>Ich kann den Browser nicht aufrufen. Überprüfen Sie, ob Ihr Browser funktioniert</translation>
     </message>
     <message>
         <source>Emoticons</source>
-        <translation>Emotikonen</translation>
+        <translation>Smilies</translation>
     </message>
     <message>
         <source>Emoticons:</source>
-        <translation>Emotikonen:</translation>
+        <translation>Smilies:</translation>
     </message>
     <message>
         <source>Emoticons theme</source>
-        <translation>Emotikonen-Thema</translation>
+        <translation>Smilies-Thema</translation>
     </message>
     <message>
         <source>WWW options</source>
-        <translation>WWW-Optionen</translation>
+        <translation>Konfiguration für WWW</translation>
     </message>
     <message>
         <source>Custom Web browser</source>
@@ -269,7 +269,7 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>%1 - Url clicked in chat window</source>
-        <translation>%1 - angeclickes URL im Chat-Fenster</translation>
+        <translation>%1 - angeklickte URL im Chat-Fenster</translation>
     </message>
     <message>
         <source>&lt;b&gt;Me&lt;/b&gt; 00:00:00</source>
@@ -277,7 +277,7 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>&lt;b&gt;Other party&lt;/b&gt; 00:00:02</source>
-        <translation>&lt;b&gt;Gesprächspartner&lt;/b&gt; 00:00:02</translation>
+        <translation>&lt;b&gt;Der andere&lt;/b&gt; 00:00:02</translation>
     </message>
     <message>
         <source>German</source>
@@ -297,35 +297,35 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>Icon theme</source>
-        <translation>Icon theme</translation>
+        <translation>Thema der Symbole</translation>
     </message>
     <message>
         <source>Icon paths</source>
-        <translation>Icon paths</translation>
+        <translation>Pfad zu Symbolen</translation>
     </message>
     <message>
         <source>Multiline description in userbox</source>
-        <translation>Multilinebeschreibung in userbox</translation>
+        <translation>Mehrzeilige Beschreibung in der Kontaktliste</translation>
     </message>
     <message>
         <source>Don&apos;t save status changes</source>
-        <translation>Statusänderungen nicht speichern</translation>
+        <translation>Zustandsänderungen nicht speichern</translation>
     </message>
     <message>
         <source>Lock file in profile directory exists. Another Kadu probably running.</source>
-        <translation>Loock datei im Profilverzeichnis bereits besteht. Ein anderes vermutlich laufendes Kadu.</translation>
+        <translation>Loockdatei im Profilverzeichnis besteht bereits. Vermutlich läuft Kadu schon.</translation>
     </message>
     <message>
         <source>Force running Kadu (not recommended).</source>
-        <translation>Force running Kadu (not recommended).</translation>
+        <translation>Trotzdem starten (nicht empfohlen).</translation>
     </message>
     <message>
         <source>Quit.</source>
-        <translation>Quit.</translation>
+        <translation>Beenden.</translation>
     </message>
     <message>
         <source>Show status button</source>
-        <translation>Zeige Statustaste</translation>
+        <translation>Zeige Zustandtaste</translation>
     </message>
     <message>
         <source>Max image size</source>
@@ -333,11 +333,11 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>Show emoticons in panel</source>
-        <translation>Zeige Emoticons in Panel</translation>
+        <translation>Zeige Smilies in Panel</translation>
     </message>
     <message>
         <source>Show emoticons in history</source>
-        <translation>Zeige Emoticons in der Geschichte</translation>
+        <translation>Zeige Smilies im Verlauf</translation>
     </message>
     <message>
         <source>Colors</source>
@@ -349,7 +349,7 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>Your background color</source>
-        <translation>Deine Hintergrundfarbe</translation>
+        <translation>Ihre Hintergrundfarbe</translation>
     </message>
     <message>
         <source>User background color</source>
@@ -357,7 +357,7 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>Your font color</source>
-        <translation>Deine Schriftfarbe</translation>
+        <translation>Ihre Schriftfarbe</translation>
     </message>
     <message>
         <source>User font color</source>
@@ -365,7 +365,7 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>Fonts</source>
-        <translation>Fonts</translation>
+        <translation>Schriftarten</translation>
     </message>
     <message>
         <source>Font in chat window</source>
@@ -377,7 +377,7 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>Chat preview</source>
-        <translation>Chat Vorschau</translation>
+        <translation>Vorschau für Chat</translation>
     </message>
     <message>
         <source>Main window</source>
@@ -385,11 +385,11 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>Panel background color</source>
-        <translation>Panel Hintergrundfarbe</translation>
+        <translation>Hintergrundfarbe für Panel</translation>
     </message>
     <message>
         <source>Panel font color</source>
-        <translation>Panel fontcolor</translation>
+        <translation>Schriftfarbe im Panel</translation>
     </message>
     <message>
         <source>Font in panel</source>
@@ -401,7 +401,7 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>Show information panel</source>
-        <translation>Zeige Panel Informationen</translation>
+        <translation>Zeige Informationspanel</translation>
     </message>
     <message>
         <source>Userbox background color</source>
@@ -409,11 +409,11 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>Userbox font color</source>
-        <translation>Schriftfarbe der Kontaktliste</translation>
+        <translation>Schriftfarbe in der Kontaktliste</translation>
     </message>
     <message>
         <source>Font in userbox</source>
-        <translation>Font in Kontaktliste</translation>
+        <translation>Schriftart in der Kontaktliste</translation>
     </message>
     <message>
         <source>Preview panel</source>
@@ -429,7 +429,7 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>Show vertical scrollbar in information panel</source>
-        <translation>Zeige waagerechte scrollleiste im Info-Panel</translation>
+        <translation>Zeige waagerechte Rollbalken im Info-Panel</translation>
     </message>
     <message>
         <source>Userbox width when multi column</source>
@@ -449,15 +449,15 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>Show available users in bold</source>
-        <translation>Zeige erreibare Benuter fett an</translation>
+        <translation>Zeige erreichbare Benutzer fett an</translation>
     </message>
     <message>
         <source>Displays users that are not offline using a bold font</source>
-        <translation>Zeige Benutzer, die nicht offline sind fett an</translation>
+        <translation>Zeige Benutzer, die nicht Unerreichbar sind fett an</translation>
     </message>
     <message>
         <source>Remember window size and position between startups</source>
-        <translation>Fenstergröße und Position merken nach dem restart</translation>
+        <translation>Fenstergröße und Position merken beim Neustart</translation>
     </message>
     <message>
         <source>Automatically checks whether a new version is available</source>
@@ -469,85 +469,86 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>Columns</source>
-        <translation>Zeilen</translation>
+        <translation>Spalten</translation>
     </message>
     <message>
         <source>Show / hide users without description</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige / verstecke Benutzer ohne Beschreibung</translation>
     </message>
     <message>
         <source>Qt Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Qt-Thema</translation>
     </message>
     <message>
         <source>Please do not run Kadu as a root!
 It&apos;s a high security risk!</source>
-        <translation type="unfinished"></translation>
+        <translation>Starten Sie bitte Kadu nicht als root
+Es ist ein sehr hohes Risiko!</translation>
     </message>
     <message>
         <source>Align icon next to contact name</source>
-        <translation type="unfinished"></translation>
+        <translation>Ordne Symbol dem Benutzer zu</translation>
     </message>
     <message>
         <source>Show tooltip on userbox</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Beschreibung in der Kontaktliste</translation>
     </message>
     <message>
         <source>Number of kept descriptions</source>
-        <translation type="unfinished"></translation>
+        <translation>Zahl der erhaltenen Beschreibungen</translation>
     </message>
     <message>
         <source>Show inactive contacts</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige unerreichbare Kontakte</translation>
     </message>
     <message>
         <source>Display contacts who are offline</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Kontakte, die offline sind</translation>
     </message>
     <message>
         <source>Show contacts with description</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Kontakte mit Beschreibung</translation>
     </message>
     <message>
         <source>IP address: </source>
-        <translation type="unfinished"></translation>
+        <translation>IP-Adresse:</translation>
     </message>
     <message>
         <source> Port: </source>
-        <translation type="unfinished"></translation>
+        <translation>Port:</translation>
     </message>
     <message>
         <source>Username: </source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzername:</translation>
     </message>
     <message>
         <source> Password: </source>
-        <translation type="unfinished"></translation>
+        <translation>Kennwort:</translation>
     </message>
     <message>
         <source>Display contacts that have a desciption</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Kontakte, die Beschreibung haben</translation>
     </message>
     <message>
         <source>Show contacts that you are blocking</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Kontakte, die ich blockiere</translation>
     </message>
     <message>
         <source>Show contacts that are blocking you</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Kontakte, die mich blockieren</translation>
     </message>
     <message>
         <source>Choose your browser</source>
-        <translation type="unfinished"></translation>
+        <translation>Wählen Sie Ihren Lieblingsbrowser</translation>
     </message>
     <message>
         <source>Browser options</source>
-        <translation type="unfinished"></translation>
+        <translation>Optionen des Browsers</translation>
     </message>
     <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
 %r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
-%v - revDNS, %p - port %e - email
+%v - revDNS, %p - port %e - email %x - max image size
 </source>
         <translation type="unfinished"></translation>
     </message>
@@ -559,6 +560,10 @@ It&apos;s a high security risk!</source>
         <source>If set: chat, history windows and information panel are rendered
 using HTML paragraphs instead of tables - this improves refresh
 speed and text copying but has a couple of display problems</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Debugging mask</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -601,11 +606,11 @@ speed and text copying but has a couple of display problems</source>
     </message>
     <message>
         <source>This is where you type in the text to be sent</source>
-        <translation>Hier schreibst du den Text, der versendet werden soll</translation>
+        <translation>Hier schreiben Sie den zu versendenden Text</translation>
     </message>
     <message>
         <source>Enter key sends message</source>
-        <translation>&quot;Enter&quot;-Taste versendet die Nachsricht</translation>
+        <translation>&quot;Enter&quot;-Taste versendet die Nachricht</translation>
     </message>
     <message>
         <source>Blocks scrolling</source>
@@ -613,15 +618,15 @@ speed and text copying but has a couple of display problems</source>
     </message>
     <message>
         <source>Clear messages in chat window</source>
-        <translation>Leere Nachrichtenverlauf</translation>
+        <translation>Leere Verlauf im Chatfenster</translation>
     </message>
     <message>
         <source>Insert emoticon - enable in configuration</source>
-        <translation>Emotikone einfügen - aktiviere in der Konfiguration</translation>
+        <translation>Smily einfügen - aktiviere in der Konfiguration</translation>
     </message>
     <message>
         <source>Insert emoticon</source>
-        <translation>Emotikone einfügen</translation>
+        <translation>Smily einfügen</translation>
     </message>
     <message>
         <source>Show history</source>
@@ -645,7 +650,7 @@ speed and text copying but has a couple of display problems</source>
     </message>
     <message>
         <source>Chat with </source>
-        <translation>Gespräch mit</translation>
+        <translation>Chat mit</translation>
     </message>
     <message>
         <source>Send message error</source>
@@ -653,7 +658,7 @@ speed and text copying but has a couple of display problems</source>
     </message>
     <message>
         <source>Application encountered network error.</source>
-        <translation>Netzfehler.</translation>
+        <translation>Netzwerkfehler.</translation>
     </message>
     <message>
         <source>Insert image</source>
@@ -669,15 +674,15 @@ speed and text copying but has a couple of display problems</source>
     </message>
     <message>
         <source>None</source>
-        <translation type="unfinished">Ohne Emotikonen</translation>
+        <translation>Ohne</translation>
     </message>
     <message>
         <source>Static</source>
-        <translation type="unfinished">Statische</translation>
+        <translation>Statisch</translation>
     </message>
     <message>
         <source>Animated</source>
-        <translation type="unfinished">animierte</translation>
+        <translation>Animiert</translation>
     </message>
     <message>
         <source>Your message has been blocked by server. Message has not been delivered.</source>
@@ -704,34 +709,35 @@ speed and text copying but has a couple of display problems</source>
     </message>
     <message>
         <source>URLs longer than this value will be shown truncated to this length</source>
-        <translation>URLs länger als dieser Wert wird beschnitten zu dieser Länge gezeigt</translation>
+        <translation>URLs länger als dieser Wert werden abgekürzt auf diese Länge angezeigt</translation>
     </message>
     <message>
         <source>This will show a long URL as http://www.start...end.com/
 to protect the chat window from a mess</source>
-        <translation>Dieses zeigt ein langes URL http://www.start... end.com/
-um das Chatfenster vor einer unordnung zu schützen</translation>
+        <translation>Dieses zeigt ein langes URL als http://www.start... end.com/,
+um das Chatfenster vor einer Unordnung zu schützen</translation>
     </message>
     <message>
         <source>Specify path</source>
-        <translation type="unfinished"></translation>
+        <translation>Pfad festlegen</translation>
     </message>
     <message>
         <source>Open in new window</source>
-        <translation type="unfinished"></translation>
+        <translation>Öffne in neuem Fenster</translation>
     </message>
     <message>
         <source>Open in new tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Öffne in neuem Unterfenster</translation>
     </message>
     <message>
         <source>Open in background tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Öffne in Unterfenster im Hintergrund</translation>
     </message>
     <message>
         <source>I didn&apos;t find the browser you selected! The path to it doesn&apos;t exists in $PATH variable. 
 You may add it to $PATH or specify location using Specify path option.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ich kann den Browser nicht finden. Pfad zu diesem ist nicht in $PATH-Umgebungsvariablen enthalten.
+Sie sollten den Pfad zum Browser in $PATH eintragen oder in der kadu-Konfiguration bestimmen.</translation>
     </message>
 </context>
 <context>
@@ -779,11 +785,11 @@ You may add it to $PATH or specify location using Specify path option.</source>
     <name>GaduProtocol</name>
     <message>
         <source>I am busy.</source>
-        <translation type="unfinished">Ich bin beschäftigt.</translation>
+        <translation>Ich bin beschäftigt.</translation>
     </message>
     <message>
         <source>Cannot set proxy IP address. Did you put hostname instead of IP address?</source>
-        <translation type="unfinished"></translation>
+        <translation>Ich kann die IP für Proxy nicht setzen. Haben Sie für Proxy Namen statt IP-Adresse angegeben?</translation>
     </message>
 </context>
 <context>
@@ -806,7 +812,7 @@ You may add it to $PATH or specify location using Specify path option.</source>
     </message>
     <message>
         <source>Online</source>
-        <translation>Online</translation>
+        <translation>Erreichbar</translation>
     </message>
     <message>
         <source>Busy</source>
@@ -818,11 +824,11 @@ You may add it to $PATH or specify location using Specify path option.</source>
     </message>
     <message>
         <source>Offline</source>
-        <translation>Offline</translation>
+        <translation>Unerreichbar</translation>
     </message>
     <message>
         <source>Uins</source>
-        <translation>Uins</translation>
+        <translation>Nummern GG</translation>
     </message>
 </context>
 <context>
@@ -872,7 +878,7 @@ You may add it to $PATH or specify location using Specify path option.</source>
     </message>
     <message>
         <source>&amp;To:</source>
-        <translation>&amp;An:</translation>
+        <translation>&amp;Bis:</translation>
     </message>
     <message>
         <source>Find Criteria</source>
@@ -884,7 +890,7 @@ You may add it to $PATH or specify location using Specify path option.</source>
     </message>
     <message>
         <source>&amp;Status</source>
-        <translation>&amp;Status</translation>
+        <translation>&amp;Zustand</translation>
     </message>
     <message>
         <source>Pattern</source>
@@ -892,7 +898,7 @@ You may add it to $PATH or specify location using Specify path option.</source>
     </message>
     <message>
         <source>Status</source>
-        <translation>Status</translation>
+        <translation>Zustand</translation>
     </message>
     <message>
         <source>&amp;Reverse find</source>
@@ -930,14 +936,14 @@ You may add it to $PATH or specify location using Specify path option.</source>
     </message>
     <message>
         <source>Please close all (except main) Kadu windows</source>
-        <translation type="unfinished"></translation>
+        <translation>Schließe alle (außer Haupt-) Kadu-Fenster</translation>
     </message>
 </context>
 <context>
     <name>Ignored</name>
     <message>
         <source>Manage ignored users</source>
-        <translation>Liste der Ignorierten</translation>
+        <translation>Verwalte Ignorierten</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -949,7 +955,7 @@ You may add it to $PATH or specify location using Specify path option.</source>
     </message>
     <message>
         <source>Uin</source>
-        <translation>Uin</translation>
+        <translation>Nummer-GG (UIN)</translation>
     </message>
     <message>
         <source>This dialog box allows you to manage your ignored contacts.</source>
@@ -961,7 +967,7 @@ You may add it to $PATH or specify location using Specify path option.</source>
     </message>
     <message>
         <source>Uin:</source>
-        <translation>UIN:</translation>
+        <translation>Nummer-GG (UIN):</translation>
     </message>
     <message>
         <source>&amp;Close</source>
@@ -972,7 +978,7 @@ You may add it to $PATH or specify location using Specify path option.</source>
     <name>ImageDialog</name>
     <message>
         <source>Images</source>
-        <translation>Images</translation>
+        <translation>Bilder</translation>
     </message>
 </context>
 <context>
@@ -987,7 +993,7 @@ You may add it to $PATH or specify location using Specify path option.</source>
     </message>
     <message>
         <source>View/edit user info</source>
-        <translation>Zeige/Editiere Kontakt-Informationen</translation>
+        <translation>Zeige/Editiere Kontaktinformationen</translation>
     </message>
     <message>
         <source>View history</source>
@@ -1079,11 +1085,11 @@ You may add it to $PATH or specify location using Specify path option.</source>
     </message>
     <message>
         <source>Personal information</source>
-        <translation>Eigene Daten</translation>
+        <translation>Persönliche Daten</translation>
     </message>
     <message>
         <source>&amp;Search for users</source>
-        <translation>S&amp;uche Kontakt</translation>
+        <translation>&amp;Suche Kontakt</translation>
     </message>
     <message>
         <source>&amp;Add user</source>
@@ -1169,7 +1175,7 @@ Was wollen sie nun tun?</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation></translation>
+        <translation>Abbrechen</translation>
     </message>
     <message>
         <source>Kadu: new user</source>
@@ -1177,12 +1183,13 @@ Was wollen sie nun tun?</translation>
     </message>
     <message>
         <source>Show / hide users without description</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige / verstecke Kontakte ohne Beschreibung</translation>
     </message>
     <message>
         <source>Connection will be stoped
 Your password is incorrect !</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbindung wird angehalten
+Ihr Passwort stimmt nicht!</translation>
     </message>
 </context>
 <context>
@@ -1193,7 +1200,7 @@ Your password is incorrect !</source>
     </message>
     <message>
         <source>Unknown</source>
-        <translation type="unfinished"></translation>
+        <translation>Unbekannt</translation>
     </message>
 </context>
 <context>
@@ -1211,7 +1218,7 @@ Your password is incorrect !</source>
     <name>KaduTextBrowser</name>
     <message>
         <source>Copy link &amp;location</source>
-        <translation>Copy link &amp;location</translation>
+        <translation>Kopiere &amp;Linkadresse</translation>
     </message>
 </context>
 <context>
@@ -1237,7 +1244,7 @@ Your password is incorrect !</source>
     <name>ModulesDialog</name>
     <message>
         <source>Manage Modules</source>
-        <translation>Manage Module</translation>
+        <translation>Verwalte Module</translation>
     </message>
     <message>
         <source>Info</source>
@@ -1245,7 +1252,7 @@ Your password is incorrect !</source>
     </message>
     <message>
         <source>Static</source>
-        <translation>Statische</translation>
+        <translation>Statisch</translation>
     </message>
     <message>
         <source>Loaded</source>
@@ -1253,7 +1260,7 @@ Your password is incorrect !</source>
     </message>
     <message>
         <source>This dialog box allows you to manage installed modules. Modules are responsible for numerous vital features like playing sounds or message encryption. You can load (or unload) them by double-clicking on their names.</source>
-        <translation>Dieses Dialogfeld erlaubt Ihnen, angebrachte Module zu handhaben.Module sind für zahlreiche lebenswichtige Eigenschaften wie das Spielen der Töne oder der Anzeige Verschlüsselung verantwortlich. Sie können (oder leeren) sie laden, indem Sie auf ihrem name doppeltklicken.</translation>
+        <translation>Dieses Dialogfeld erlaubt Ihnen, installierte Module zu verwalten. Module sind für zahlreiche Zusatzfunktionen wie das Abspielen der Töne oder die Verschlüsselung der Nachricht verantwortlich. Sie können sie laden (oder entladen), indem Sie ihren Name doppelklicken.</translation>
     </message>
     <message>
         <source>Module name</source>
@@ -1261,7 +1268,7 @@ Your password is incorrect !</source>
     </message>
     <message>
         <source>Module type</source>
-        <translation></translation>
+        <translation>Typ des Moduls</translation>
     </message>
     <message>
         <source>State</source>
@@ -1269,7 +1276,7 @@ Your password is incorrect !</source>
     </message>
     <message>
         <source>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Depends on:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Conflicts with:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Provides:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Erfordert:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Konflikt mit:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Provides:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Autor:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Beschreibung:&lt;/b&gt;</translation>
+        <translation>&lt;b&gt;Modul:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Erfordert:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Konflikt mit:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Bringt mit:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Autor:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Beschreibung:&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&amp;Close</source>
@@ -1285,7 +1292,7 @@ Your password is incorrect !</source>
     </message>
     <message>
         <source>&lt;b&gt;Module: &lt;/b&gt;</source>
-        <translation></translation>
+        <translation>&lt;b&gt;Modul: &lt;/b&gt;</translation>
     </message>
     <message>
         <source>&lt;br/&gt;&lt;b&gt;Depends on: &lt;/b&gt;</source>
@@ -1297,7 +1304,7 @@ Your password is incorrect !</source>
     </message>
     <message>
         <source>&lt;br/&gt;&lt;b&gt;Provides: &lt;/b&gt;</source>
-        <translation></translation>
+        <translation>&lt;br/&gt;&lt;b&gt;Bringt mit: &lt;/b&gt;</translation>
     </message>
     <message>
         <source>&lt;br/&gt;&lt;b&gt;Author: &lt;/b&gt;</source>
@@ -1312,7 +1319,7 @@ Your password is incorrect !</source>
     <name>ModulesManager</name>
     <message>
         <source>&amp;Manage Modules</source>
-        <translation>&amp;Manage Module</translation>
+        <translation>&amp;Verwalte Module</translation>
     </message>
     <message>
         <source>Required module %1 was not found</source>
@@ -1325,7 +1332,7 @@ Your password is incorrect !</source>
     <message>
         <source>Cannot load %1 module library.:
 %2</source>
-        <translation>Kann nicht die Bibliothek %1 mit Modulen laden
+        <translation>Kann nicht die Bibliothek %1 mit Modulen laden:
 %2</translation>
     </message>
     <message>
@@ -1334,23 +1341,24 @@ Your password is incorrect !</source>
     </message>
     <message>
         <source>Module %1 conflicts with: %2</source>
-        <translation>Modul %1 widerspricht mit: %2</translation>
+        <translation>Modul %1 kollidiert mit: %2</translation>
     </message>
     <message>
         <source>Cannot find required functions in module %1.
 Maybe it&apos;s not Kadu-compatible Module.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ich kann die verlangte Funktion im Modul %1 finden.
+Vielleicht ist das kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>Module initialization routine for %1 failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Initialisationroutigen für Modul %1 fehlgeschlagen.</translation>
     </message>
 </context>
 <context>
     <name>PersonalInfoDialog</name>
     <message>
         <source>Personal Information</source>
-        <translation>Einegen Daten</translation>
+        <translation>Persönliche Daten</translation>
     </message>
     <message>
         <source>Nickname</source>
@@ -1417,7 +1425,7 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     <name>PixmapPreview</name>
     <message>
         <source>This is not an image</source>
-        <translation>Dieses ist keine image datei</translation>
+        <translation>Dies ist kein Bild</translation>
     </message>
 </context>
 <context>
@@ -1500,7 +1508,7 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     </message>
     <message>
         <source>Status</source>
-        <translation>Status</translation>
+        <translation>Zustand</translation>
     </message>
     <message>
         <source>Birth year</source>
@@ -1512,7 +1520,7 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     </message>
     <message>
         <source>&amp;Update Info</source>
-        <translation>Akt&amp;ualisiere Info</translation>
+        <translation>Akt&amp;ualisiere Angaben</translation>
     </message>
     <message>
         <source>Searching...</source>
@@ -1544,11 +1552,11 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     </message>
     <message>
         <source>No results</source>
-        <translation>Keine Resultate</translation>
+        <translation>Keine Ergebnisse</translation>
     </message>
     <message>
         <source>There were no results of your search</source>
-        <translation>Es gab keine Resultate Ihrer Suche</translation>
+        <translation>Es gab keine Ergebnisse Ihrer Suche</translation>
     </message>
 </context>
 <context>
@@ -1562,7 +1570,7 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     <name>SelectPaths</name>
     <message>
         <source>Select paths</source>
-        <translation>Path wählen</translation>
+        <translation>Pfad wählen</translation>
     </message>
     <message>
         <source>Add</source>
@@ -1582,34 +1590,34 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     </message>
     <message>
         <source>This dialog box allows you to choose directories in which kadu will look for icons or sounds.</source>
-        <translation type="unfinished"></translation>
+        <translation>Diese Option ermöglicht Ihnen die Auswahl der Ordner, in welchen Kadu nach Symbolen und Klängen suchen soll.</translation>
     </message>
     <message>
         <source>Paths</source>
-        <translation type="unfinished"></translation>
+        <translation>Pfad</translation>
     </message>
     <message>
         <source>Path to add</source>
-        <translation type="unfinished"></translation>
+        <translation>Pfad zum Hinzufügen</translation>
     </message>
     <message>
         <source>Change</source>
-        <translation type="unfinished"></translation>
+        <translation>Ändern</translation>
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Abbrechen</translation>
     </message>
 </context>
 <context>
     <name>Themes</name>
     <message>
         <source>&lt;i&gt;%1&lt;/i&gt;&lt;br/&gt;does not contain any theme configuration file</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;%1&lt;/i&gt;&lt;br/&gt;enthält keine Datei mit Themen-Konfiguration</translation>
     </message>
 </context>
 <context>
@@ -1635,33 +1643,33 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     <name>ToolBar</name>
     <message>
         <source>Main toolbar</source>
-        <translation>Mein Toolbar</translation>
+        <translation>Werkzeugleiste</translation>
     </message>
 </context>
 <context>
     <name>Updates</name>
     <message>
         <source>Update information</source>
-        <translation type="unfinished">Informationnen über Akualisierungen</translation>
+        <translation>Angaben aktualisieren</translation>
     </message>
     <message>
         <source>The newest Kadu version is %1</source>
-        <translation type="unfinished">Die neuste Version von Kadu ist %1</translation>
+        <translation>Die neuste Version von Kadu ist %1</translation>
     </message>
 </context>
 <context>
     <name>UserBox</name>
     <message>
         <source>&lt;i&gt;Mobile:&lt;/i&gt; &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;Handy:&lt;/i&gt; &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&lt;nobr&gt;&lt;i&gt;%1&lt;/i&gt;&lt;/nobr&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;nobr&gt;&lt;i&gt;%1&lt;/i&gt;&lt;/nobr&gt;</translation>
     </message>
     <message>
         <source>&lt;nobr&gt;&lt;i&gt;%1&lt;/i&gt; &lt;b&gt;(d.)&lt;/b&gt;&lt;/nobr&gt;&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;%2</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;Handy:&lt;/i&gt; &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -1676,7 +1684,7 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     </message>
     <message>
         <source>Status</source>
-        <translation>Status</translation>
+        <translation>Zustand</translation>
     </message>
     <message>
         <source>Nickname</source>
@@ -1704,7 +1712,7 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     </message>
     <message>
         <source>Address IP and Port</source>
-        <translation>IP-Adress</translation>
+        <translation>IP-Adress und Port</translation>
     </message>
     <message>
         <source>Protocol version</source>
@@ -1736,7 +1744,7 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     </message>
     <message>
         <source>Notify about status changes</source>
-        <translation>Benachrichtige über Statusänderung</translation>
+        <translation>Benachrichtige über Zustandsänderung</translation>
     </message>
     <message>
         <source>Others</source>
@@ -1764,7 +1772,7 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     </message>
     <message>
         <source>Add user problem</source>
-        <translation>Problem mit hinzufügen des Kontakts</translation>
+        <translation>Problem beim Hinzufügen des Kontakts</translation>
     </message>
     <message>
         <source>Altnick field cannot be empty.</source>
@@ -1780,23 +1788,23 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     </message>
     <message>
         <source>Groups</source>
-        <translation type="unfinished"></translation>
+        <translation>Gruppen</translation>
     </message>
     <message>
         <source>Add new group</source>
-        <translation type="unfinished">Neue Gruppe hinzufügen</translation>
+        <translation>Neue Gruppe hinzufügen</translation>
     </message>
     <message>
         <source>&apos;%1&apos; is prohibited</source>
-        <translation type="unfinished"></translation>
+        <translation>&apos;%1&apos; ist nicht erlaubt</translation>
     </message>
     <message>
         <source>This group already exists!</source>
-        <translation type="unfinished"></translation>
+        <translation>Diese Gruppe existiert bereits!</translation>
     </message>
     <message>
         <source>You can&apos;t add so many groups at one stroke. Close this dialog and open one more time.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sie können nicht so viele Gruppen auf einmal anlegen. Schließen Sie dieses Fenster und starten es noch einmal.</translation>
     </message>
 </context>
 <context>
@@ -1817,46 +1825,46 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     <name>UserStatus</name>
     <message>
         <source>Online</source>
-        <translation type="unfinished">Online</translation>
+        <translation>Erreichbar</translation>
     </message>
     <message>
         <source>Online (d.)</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreichbar (Beschr.)</translation>
     </message>
     <message>
         <source>Busy</source>
-        <translation type="unfinished">Beschäftigt</translation>
+        <translation>Beschäftigt</translation>
     </message>
     <message>
         <source>Busy (d.)</source>
-        <translation type="unfinished"></translation>
+        <translation>Beschäftigt (Beschr.)</translation>
     </message>
     <message>
         <source>Invisible</source>
-        <translation type="unfinished">Versteckt</translation>
+        <translation>Versteckt</translation>
     </message>
     <message>
         <source>Invisible (d.)</source>
-        <translation type="unfinished"></translation>
+        <translation>Versteckt (Beschr.)</translation>
     </message>
     <message>
         <source>Offline</source>
-        <translation type="unfinished">Offline</translation>
+        <translation>Unerreichbar</translation>
     </message>
     <message>
         <source>Offline (d.)</source>
-        <translation type="unfinished"></translation>
+        <translation>Unerreichbar (Beschr.)</translation>
     </message>
     <message>
         <source>Blocking</source>
-        <translation type="unfinished">Blockt</translation>
+        <translation>Blockt</translation>
     </message>
 </context>
 <context>
     <name>UserlistImportExport</name>
     <message>
         <source>Import / export userlist</source>
-        <translation></translation>
+        <translation>Importiere / Exportiere Kontaktliste</translation>
     </message>
     <message>
         <source>This dialog box allows you to import and export your buddy list to a server or a file.</source>
@@ -1932,7 +1940,7 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     </message>
     <message>
         <source>&amp;Export to file</source>
-        <translation>&amp;Export in Datei</translation>
+        <translation>&amp;Exportiere in Datei</translation>
     </message>
     <message>
         <source>&amp;Close</source>
@@ -1963,29 +1971,29 @@ The export was unsuccessful</source>
     </message>
     <message>
         <source>Your userlist has been successfully deleted on server</source>
-        <translation>Ihr userlist ist erfolgreich von Server gelöscht worden</translation>
+        <translation>Ihre Kontaktliste ist erfolgreich von Server gelöscht worden</translation>
     </message>
     <message>
         <source>The application encountered an internal error
 The delete userlist on server was unsuccessful</source>
-        <translation>Das löschen der Kontaktliste vom Server ist nicht gelungen.
-Die Anwendung hat einen Fehler zurückgemeldet</translation>
+        <translation>Die Anwendung hat einen Fehler zurückgemeldet.
+Das Löschen der Kontaktliste vom Server ist mißlungen</translation>
     </message>
     <message>
         <source>Cannot import user list from server in offline mode</source>
-        <translation>Kann die Benutzerliste vom Server nicht importieren, wenn sie offline sind</translation>
+        <translation>Ich kann die Kontaktliste vom Server nicht importieren, wenn sie offline sind</translation>
     </message>
     <message>
         <source>This operation will delete your current user list. Are you sure you want this?</source>
-        <translation>Diese Aktion löscht Ihre jetzige Benutzerliste. Sind Sie sich sicher?</translation>
+        <translation>Diese Aktion löscht Ihre jetzige Kontaktliste. Sind Sie sich sicher?</translation>
     </message>
     <message>
         <source>Cannot export user list to server in offline mode</source>
-        <translation>Kann die Benutzerliste zum Server nicht exportieren, wenn sie offline sind</translation>
+        <translation>Ich kann die Kontaktliste zum Server nicht exportieren, wenn sie offline sind</translation>
     </message>
     <message>
         <source>Cannot clear user list on server in offline mode</source>
-        <translation>Kann die Benutzerliste auf dem Server nicht löschen, solange Sie offline sind</translation>
+        <translation>Ich kann die Kontaktliste auf dem Server nicht löschen, solange Sie offline sind</translation>
     </message>
 </context>
 </TS>
