@@ -137,7 +137,8 @@ int ChatManager::openChat(UinsList senders,time_t time)
 			Chats[i]->setActiveWindow();
 			return i;
 		}
-	Chat* chat = new Chat(senders, 0, "chat");
+	QStringList uins=senders.toStringList();	uins.sort();
+	Chat* chat = new Chat(senders, 0, QString("chat:%1").arg(uins.join(",")).local8Bit().data());
 	chat->setTitle();
 
 	QRect geometry=getChatProperty(senders, "Geometry").toRect();
@@ -513,23 +514,23 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 	emoticon_selector = NULL;
 	color_selector = NULL;
 
-	title_timer = new QTimer(this);
+	title_timer = new QTimer(this, "title_timer");
 	connect(title_timer,SIGNAL(timeout()),this,SLOT(changeTitle()));
 
 	/* register us in the chats registry... */
 	index=chat_manager->registerChat(this);
 
-	vertSplit = new KaduSplitter(Qt::Vertical, this);
+	vertSplit = new KaduSplitter(Qt::Vertical, this, "vertSplit");
 
 	if (uins.count() > 1)
 	{
-		horizSplit = new KaduSplitter(Qt::Horizontal, vertSplit);
-		body = new KaduTextBrowser(horizSplit);
+		horizSplit = new KaduSplitter(Qt::Horizontal, vertSplit, "horizSplit");
+		body = new KaduTextBrowser(horizSplit, "body");
 	}
 	else
 	{
 		horizSplit=NULL;
-		body = new KaduTextBrowser(vertSplit);
+		body = new KaduTextBrowser(vertSplit, "body");
 	}
 
 	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")==EMOTS_ANIMATED)
@@ -542,7 +543,7 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 
 	if (uins.count() > 1)
 	{
-		userbox = new UserBox(horizSplit);
+		userbox = new UserBox(horizSplit, "userbox");
 		userbox->setMinimumSize(QSize(30,30));
 		userbox->setPaletteBackgroundColor(config_file.readColorEntry("Look","UserboxBgColor"));
 		userbox->setPaletteForegroundColor(config_file.readColorEntry("Look","UserboxFgColor"));
@@ -562,20 +563,20 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 	else
 		userbox = NULL;
 
-	QVBox *downpart = new QVBox(vertSplit);
-	QHBox *edtbuttontray = new QHBox(downpart);
+	QVBox *downpart = new QVBox(vertSplit, "downpartBox");
+	QHBox *edtbuttontray = new QHBox(downpart, "edtbuttontrayBox");
 
-	QLabel *edt = new QLabel(tr("Edit window:"),edtbuttontray);
+	QLabel *edt = new QLabel(tr("Edit window:"), edtbuttontray, "editLabel");
 	QToolTip::add(edt, tr("This is where you type in the text to be sent"));
 
-	buttontray = new QHBox(edtbuttontray);
+	buttontray = new QHBox(edtbuttontray, "buttontrayBox");
 
-	autosend = new QPushButton(buttontray);
+	autosend = new QPushButton(buttontray, "autoSendButton");
 	autosend->setPixmap(icons_manager.loadIcon("AutoSendMessage"));
 	autosend->setToggleButton(true);
 	QToolTip::add(autosend, tr("Enter key sends message"));
 
-	lockscroll = new QPushButton(buttontray);
+	lockscroll = new QPushButton(buttontray, "lockScrollButton");
 	lockscroll->setPixmap(icons_manager.loadIcon("ScrollLock"));
 	lockscroll->setToggleButton(true);
 	QToolTip::add(lockscroll, tr("Blocks scrolling"));
@@ -588,11 +589,11 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 		Buttons.insert(b.name,btn);
 	}
 
-	QPushButton *clearchat= new QPushButton(buttontray);
+	QPushButton *clearchat= new QPushButton(buttontray, "clearChatButton");
 	clearchat->setPixmap(icons_manager.loadIcon("ClearChat"));
 	QToolTip::add(clearchat, tr("Clear messages in chat window"));
 
-	iconsel = new QPushButton(buttontray);
+	iconsel = new QPushButton(buttontray, "selectIconButton");
 	iconsel->setPixmap(icons_manager.loadIcon("ChooseEmoticon"));
 	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")==EMOTS_NONE)
 	{
@@ -602,22 +603,22 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 	else
 		QToolTip::add(iconsel, tr("Insert emoticon"));
 
-	QPushButton *history = new QPushButton(buttontray);
+	QPushButton *history = new QPushButton(buttontray, "showHistoryButton");
 	history->setPixmap(icons_manager.loadIcon("History"));
 	QToolTip::add(history, tr("Show history"));
 
-	QPushButton *whois = new QPushButton(buttontray);
+	QPushButton *whois = new QPushButton(buttontray, "whoisButton");
 	whois->setPixmap(icons_manager.loadIcon("LookupUserInfo"));
 	QToolTip::add(whois, tr("Lookup user info"));
 
-	QPushButton* insertimage = new QPushButton(buttontray);
+	QPushButton* insertimage = new QPushButton(buttontray, "insertImageButton");
 	insertimage->setPixmap(icons_manager.loadIcon("ChooseImage"));
 	QToolTip::add(insertimage, tr("Insert image"));
 
 	edtbuttontray->setStretchFactor(edt, 50);
 	edtbuttontray->setStretchFactor(buttontray, 1);
 
-	edit = new CustomInput(downpart);
+	edit = new CustomInput(downpart, "edit");
 	edit->setMinimumHeight(1);
 	edit->setWordWrap(QMultiLineEdit::WidgetWidth);
 	edit->setFont(config_file.readFontEntry("Look","ChatFont"));
@@ -627,49 +628,49 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 		autosend->setOn(true);
 	edit->setAutosend(config_file.readBoolEntry("Chat","AutoSend"));
 
-	QHBox *btnpart = new QHBox(downpart);
+	QHBox *btnpart = new QHBox(downpart, "buttonpartBox");
 
 	QFont afont = QApplication::font();
 	QSize s=QFontMetrics(afont).size(0, "B")*6;
 
-	boldbtn = new QPushButton("B", btnpart);
+	boldbtn = new QPushButton("B", btnpart, "boldButton");
 	boldbtn->setToggleButton(true);
 	afont.setBold(true);
 	boldbtn->setFont(afont);
 	boldbtn->setMaximumSize(s);
 
-	italicbtn = new QPushButton("I", btnpart);
+	italicbtn = new QPushButton("I", btnpart, "italicButton");
 	italicbtn->setToggleButton(true);
 	afont.setBold(false);
 	afont.setItalic(true);
 	italicbtn->setFont(afont);
 	italicbtn->setMaximumSize(s);
 
-	underlinebtn = new QPushButton("U", btnpart);
+	underlinebtn = new QPushButton("U", btnpart, "underlineButton");
 	underlinebtn->setToggleButton(true);
 	afont.setItalic(false);
 	afont.setUnderline(true);
 	underlinebtn->setFont(afont);
 	underlinebtn->setMaximumSize(s);
 
-	colorbtn = new QPushButton(btnpart);
+	colorbtn = new QPushButton(btnpart, "colorButton");
 //	colorbtn->setMinimumSize(boldbtn->width(), boldbtn->height());
 	QPixmap p(16, 16);
 	actcolor=edit->paletteForegroundColor();
 	p.fill(actcolor);
 	colorbtn->setPixmap(p);
 
-	(new QWidget(btnpart))->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
+	(new QWidget(btnpart, "spacer"))->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 
-	sendbtn = new QPushButton(QIconSet(icons_manager.loadIcon("SendMessage")),tr("&Send"),btnpart);
+	sendbtn = new QPushButton(QIconSet(icons_manager.loadIcon("SendMessage")),tr("&Send"),btnpart, "sendButton");
 	sendbtn->setFixedWidth(120);
 	connect(sendbtn, SIGNAL(clicked()), this, SLOT(sendMessage()));
-	QAccel *acc = new QAccel(this);
+	QAccel *acc = new QAccel(this, "returnAccel");
 	acc->connectItem(acc->insertItem(Key_Return + CTRL), this, SLOT(sendMessage()));
 
-	acc = new QAccel(this);
+	acc = new QAccel(this, "pageUpAccel");
 	acc->connectItem(acc->insertItem(Key_PageUp + SHIFT), this, SLOT(pageUp()));
-	acc = new QAccel(this);
+	acc = new QAccel(this, "pageDownAccel");
 	acc->connectItem(acc->insertItem(Key_PageDown + SHIFT), this, SLOT(pageDown()));
 
 	sizes.clear();
@@ -677,7 +678,7 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 	sizes.append(2);
 	vertSplit->setSizes(sizes);
 
-	QGridLayout *grid = new QGridLayout (this, 5, 4, 3, 3);
+	QGridLayout *grid = new QGridLayout (this, 5, 4, 3, 3, "main_grid_layout");
 	grid->addMultiCellWidget(vertSplit, 0, 4, 0, 3);
 	grid->addRowSpacing(1, 5);
 	grid->setRowStretch(0, 2);
@@ -1007,7 +1008,7 @@ void Chat::userWhois()
 			uin = Uins[0];
 		else
 			uin = userlist.byAltNick(userbox->currentText()).uin();
-	SearchDialog *sd = new SearchDialog(0, "User info", uin);
+	SearchDialog *sd = new SearchDialog(0, QString("SearchDialog:%1").arg(uin).local8Bit().data(), uin);
 	sd->show();
 	sd->firstSearch();
 	kdebugf2();
@@ -1376,7 +1377,7 @@ void Chat::emoticonSelectorClicked()
 	//emoticons_selector zawsze bêdzie NULLem gdy wchodzimy do tej funkcji
 	//bo EmoticonSelector ma ustawione flagi Qt::WDestructiveClose i Qt::WType_Popup
 	//akcj± na opuszczenie okna jest ustawienie zmiennej emoticons_selector w Chacie na NULL
-	emoticon_selector = new EmoticonSelector(NULL, "Emoticon selector", this);
+	emoticon_selector = new EmoticonSelector(NULL, "emoticon_selector", this);
 	emoticon_selector->alignTo(iconsel);
 	emoticon_selector->show();
 }
@@ -1567,13 +1568,13 @@ ColorSelector::ColorSelector(const QColor &defColor, QWidget* parent, const char
 
 	for(int i=0; i<selector_count; ++i)
 	{
-		ColorSelectorButton* btn = new ColorSelectorButton(this, qcolors[i], 1);
+		ColorSelectorButton* btn = new ColorSelectorButton(this, qcolors[i], 1, QString("color_selector:%1").arg(qcolors[i].name()).local8Bit().data());
 		grid->addWidget(btn, i/selector_width, i%selector_width);
 		connect(btn,SIGNAL(clicked(const QColor&)),this,SLOT(iconClicked(const QColor&)));
 	}
 	if (qcolors.contains(defColor)==0)
 	{
-		ColorSelectorButton* btn = new ColorSelectorButton(this, defColor, 4);
+		ColorSelectorButton* btn = new ColorSelectorButton(this, defColor, 4, QString("color_selector:%1").arg(defColor.name()).local8Bit().data());
 		grid->addMultiCellWidget(btn, 4, 4, 0, 3);
 		connect(btn,SIGNAL(clicked(const QColor&)),this,SLOT(iconClicked(const QColor&)));
 	}

@@ -51,6 +51,7 @@ class UinsList : public QValueList<UinType>
 		UinsList();
 		bool equals(const UinsList &uins) const;
 		void sort();
+		QStringList toStringList() const;
 };
 
 // ------------------------------------

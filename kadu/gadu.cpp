@@ -130,6 +130,14 @@ void UinsList::sort() {
 	qHeapSort(*this);
 }
 
+QStringList UinsList::toStringList() const
+{
+	QStringList list;
+	for (UinsList::const_iterator i = begin(); i != end(); ++i)
+		list.append(QString::number(*i));
+	return list;
+}
+
 SearchResult::SearchResult()
 {
 }

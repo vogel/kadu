@@ -241,6 +241,8 @@ class KaduSlots : public QObject
 {
 	Q_OBJECT
 
+	public:
+		KaduSlots(QObject *parent=0, const char *name=0);
 	public slots:
 		void onCreateConfigDialog();
 		void onDestroyConfigDialog();

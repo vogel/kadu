@@ -80,7 +80,7 @@ const QString Kadu::SyntaxText=QT_TRANSLATE_NOOP("@default", "Syntax: %s - statu
 QValueList<ToolBar::ToolButton> ToolBar::RegisteredToolButtons;
 ToolBar* ToolBar::instance=NULL;
 
-ToolBar::ToolBar(QMainWindow* parent) : QToolBar(parent, "main toolbar")
+ToolBar::ToolBar(QMainWindow* parent) : QToolBar(parent, "mainToolbar")
 {
 	kdebugf();
 	setCloseMode(QDockWindow::Undocked);
@@ -264,7 +264,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	Autohammer = false;
 	ShowMainWindowOnStart = true;
 
-	KaduSlots *kaduslots=new KaduSlots();
+	KaduSlots *kaduslots=new KaduSlots(this, "kaduslots");
 	UinType myUin=config_file.readNumEntry("General", "UIN");
 
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "General"), "GeneralTab");
@@ -336,10 +336,10 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	ConfigDialog::connectSlot("Look", "Font in panel", SIGNAL(changed(const char *, const QFont&)),kaduslots, SLOT(chooseFont(const char *, const QFont&)), "panel_font_box");
 
-	QVBox *vbox=new QVBox(this);
+	QVBox *vbox=new QVBox(this, "centralBox");
 	setCentralWidget(vbox);
-	QSplitter *split = new QSplitter(Qt::Vertical, vbox);
-	QHBox* hbox1 = new QHBox(split);
+	QSplitter *split = new QSplitter(Qt::Vertical, vbox, "splitter");
+	QHBox* hbox1 = new QHBox(split, "firstBox");
 
 	// groupbar
 	GroupBar = new KaduTabBar(hbox1, "groupbar");
@@ -414,15 +414,15 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	setActiveGroup("");
 
 	// dodanie przyciskow do paska narzedzi
-	ToolBar::registerButton("ShowHideInactiveUsers", tr("Show / hide inactive users"), Userbox, SLOT(showHideInactive()));
-	ToolBar::registerButton("ShowOnlyDescriptionUsers", tr("Show / hide users without description"), Userbox, SLOT(showHideDescriptions()));
-	ToolBar::registerButton("Configuration", tr("Configuration"), this, SLOT(configure()));
+	ToolBar::registerButton("ShowHideInactiveUsers", tr("Show / hide inactive users"), Userbox, SLOT(showHideInactive()), -1, "inactiveUsersButton");
+	ToolBar::registerButton("ShowOnlyDescriptionUsers", tr("Show / hide users without description"), Userbox, SLOT(showHideDescriptions()), -1, "withDescriptionUsersButton");
+	ToolBar::registerButton("Configuration", tr("Configuration"), this, SLOT(configure()), -1, "configurationButton");
 	ToolBar::registerSeparator();
-	ToolBar::registerButton("History", tr("View history"), this, SLOT(viewHistory()));
-	ToolBar::registerButton("EditUserInfo", tr("View/edit user info"), this, SLOT(showUserInfo()));
-	ToolBar::registerButton("LookupUserInfo", tr("Lookup in directory"), this, SLOT(lookupInDirectory()));
+	ToolBar::registerButton("History", tr("View history"), this, SLOT(viewHistory()), -1, "historyButton");
+	ToolBar::registerButton("EditUserInfo", tr("View/edit user info"), this, SLOT(showUserInfo()), -1, "editUserButton");
+	ToolBar::registerButton("LookupUserInfo", tr("Lookup in directory"), this, SLOT(lookupInDirectory()), -1, "lookupUserButton");
 	ToolBar::registerSeparator();
-	ToolBar::registerButton("AddUser", tr("Add user"), this, SLOT(addUserAction()));
+	ToolBar::registerButton("AddUser", tr("Add user"), this, SLOT(addUserAction()), -1, "addUserButton");
 
 	/* guess what */
 	createMenu();
@@ -450,7 +450,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		InfoPanel->QWidget::hide();
 	QObject::connect(&userlist, SIGNAL(dnsNameReady(UinType)), this, SLOT(infopanelUpdate(UinType)));
 
-	statusButton = new QPushButton(QIconSet(icons_manager.loadIcon("Offline")), tr("Offline"), vbox, "statusbutton");
+	statusButton = new QPushButton(QIconSet(icons_manager.loadIcon("Offline")), tr("Offline"), vbox, "statusButton");
 	statusButton->setPopup(statusMenu);
 
 	if (!config_file.readBoolEntry("Look", "ShowStatusButton"))
@@ -1153,7 +1153,7 @@ void Kadu::connecting()
 
 	if (!blinktimer)
 	{
-		blinktimer = new QTimer;
+		blinktimer = new QTimer(this, "blinktimer");
 		QObject::connect(blinktimer, SIGNAL(timeout()), kadu, SLOT(blink()));
 	}
 
@@ -1683,6 +1683,10 @@ void KaduSlots::updatePreview()
 	kdebugf2();
 }
 
+KaduSlots::KaduSlots(QObject *parent, const char *name) : QObject(parent, name)
+{
+}
+
 void Kadu::resizeEvent(QResizeEvent *)
 {
 //	Userbox->all_refresh();
@@ -1819,7 +1823,7 @@ void Kadu::showStatusOnMenu(int statusNr)
 
 void Kadu::readTokenValue(QPixmap tokenImage, QString &tokenValue)
 {
-	TokenDialog *td = new TokenDialog(tokenImage);
+	TokenDialog *td = new TokenDialog(tokenImage, 0, "token_dialog");
 
 	if (td->exec() == QDialog::Accepted)
 		td->getValue(tokenValue);
