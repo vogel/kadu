@@ -126,6 +126,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dodany nowy sygna³ EventManager::systemMessageReceived(); mo¿liwe, ¿e wiadomo¶ci
   systemowe pochodz±ce od serwerów GG bêd± pojawiaæ siê w oddzielnym oknie ;) (chilek)
 * poprawka libgadu zwiazana z GG_FAILURE_NEED_EMAIL (chilek)
+* je¶li pojawi siê informacja o konieczno¶ci zmiany emaila, kadu przestaje ³±czyæ
+  siê cyklicznie z serwerami GG (chilek)
 
 +++ wersja 0.3.6 (22.11.2003)
 * je¶li klikniemy na jaki¶ kontakt w userboxie, od którego otrzymali¶my jak±¶

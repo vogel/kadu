@@ -202,6 +202,9 @@ void EventManager::connectionFailedSlot(int failure)
 		case GG_FAILURE_NEED_EMAIL:
 			msg = QString(tr("Please change your email in \"Change password/email\" window. "
 				"Leave new password field blank."));
+			kadu->autohammer = false; /* FIXME 2/2*/
+			AutoConnectionTimer::off();
+			hintmanager->addHintError(msg);
 			MessageBox::msg(msg);
 			break;
 		case GG_FAILURE_INVALID:
