@@ -10,29 +10,27 @@
 
 #include "gadu.h"
 
+class UserList;
+class UserListElement;
+
 class DnsHandler : public QObject
 {
 	Q_OBJECT
 
+	UserListElement &Ule;
+
 	public:
-		DnsHandler(UinType uin);
+		DnsHandler(UserListElement &ule);
 		~DnsHandler();
-		bool isCompleted();
 
 		static int counter;
 
 	private:
-		QDns dnsresolver;
-		UinType uin;
-		bool completed;
+		QDns DnsResolver;
 
-	public slots:
+	private slots:
 		void resultsReady();
 };
-
-typedef QPtrList<DnsHandler> DnsLookups;
-
-class UserList;
 
 struct UserListElement
 {
@@ -64,6 +62,8 @@ struct UserListElement
 		UserListElement(const UserListElement &copyMe);
 		UserListElement();
 		virtual ~UserListElement();
+
+		void refreshDnsName();
 
 		void operator = (const UserListElement &copyMe);
 
@@ -131,7 +131,6 @@ class UserList : public QObject, public QMap<QString,UserListElement>
 	Q_OBJECT
 
 	protected:
-		DnsLookups dnslookups;
 		friend class UserListElement;
 
 	public:
@@ -155,8 +154,6 @@ class UserList : public QObject, public QMap<QString,UserListElement>
 		void changeUserInfo(const QString& old_altnick, const UserListElement& new_data);
 		bool writeToFile(QString filename = "");
 		bool readFromFile();
-		void setDnsName(UinType uin, const QString &name);
-		void addDnsLookup(UinType uin, const QHostAddress &ip);
 		void merge(UserList &userlist);
 
 	signals:

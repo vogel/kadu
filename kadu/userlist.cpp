@@ -19,45 +19,40 @@
 #include "userbox.h"
 #include "debug.h"
 
-DnsHandler::DnsHandler(UinType uin) : uin(uin)
+DnsHandler::DnsHandler(UserListElement &ule) : Ule(ule)
 {
 	kdebugf();
-	UserListElement &ule = userlist.byUin(uin);
-//	if (ule.ip.isNull()) //od Qt 3.2
+
 	if (ule.ip() == QHostAddress())
 		kdebugm(KDEBUG_WARNING, "DnsHandler::DnsHandler(): NULL ip address!\n");
-	completed = false;
-	connect(&dnsresolver, SIGNAL(resultsReady()), this, SLOT(resultsReady()));
-	dnsresolver.setRecordType(QDns::Ptr);
-	dnsresolver.setLabel(ule.ip());
+
+	connect(&DnsResolver, SIGNAL(resultsReady()), this, SLOT(resultsReady()));
+	DnsResolver.setRecordType(QDns::Ptr);
+	DnsResolver.setLabel(Ule.ip());
 	++counter;
+
 	kdebugm(KDEBUG_FUNCTION_END, "DnsHandler::DnsHandler(): counter = %d\n", counter);
 }
 
 DnsHandler::~DnsHandler()
 {
 	--counter;
-/* patrz ~Userlist()
-	kdebugm(KDEBUG_INFO, "DnsHandler::~DnsHandler(): counter = %d\n", counter);
-*/
 }
 
 void DnsHandler::resultsReady()
 {
 	kdebugf();
-	if (dnsresolver.hostNames().count())
-		userlist.setDnsName(uin, dnsresolver.hostNames()[0]);
+
+	if (DnsResolver.hostNames().count())
+		Ule.setDnsName(DnsResolver.hostNames()[0]);
 	else
-		userlist.setDnsName(uin, QString::null);
-	completed = true;
+		Ule.setDnsName(QString::null);
+
+	deleteLater();
 	kdebugf2();
 }
 
 int DnsHandler::counter = 0;
-
-bool DnsHandler::isCompleted() {
-	return completed;
-}
 
 UserListElement::UserListElement(UserList* parent)
 {
@@ -345,7 +340,7 @@ void UserListElement::setBlocking(const bool blocking)
 
 bool UserListElement::offlineTo() const
 {
-	return Anonymous;
+	return OfflineTo;
 }
 
 void UserListElement::setOfflineTo(const bool offlineTo)
@@ -373,6 +368,12 @@ void UserListElement::setNotify(const bool notify)
 	Notify = notify;
 	if (Parent)
 		emit Parent->userDataChanged(&old, this);
+}
+
+void UserListElement::refreshDnsName()
+{
+	if (!(Ip == QHostAddress()))
+		DnsHandler *handler = new DnsHandler(*this);
 }
 
 void UserListElement::operator = (const UserListElement &copyMe)
@@ -411,7 +412,6 @@ UserList::UserList(const UserList &source)
 
 UserList::UserList() : QObject(NULL, "userlist"), QMap<QString,UserListElement>()
 {
-	dnslookups.setAutoDelete(true);
 }
 
 UserList::~UserList()
@@ -435,48 +435,6 @@ UserList::~UserList()
 		jest wywo³ywany po wyj¶ciu z main(), a kdebug u¿ywa przecie¿ QMutexów,
 		które korzystaj± z QApplication, a jego obiektu ju¿ nie ma...
 	*/
-}
-
-void UserList::addDnsLookup(UinType  uin, const QHostAddress &ip)
-{
-	kdebugf();
-//	if (ip.isNull()) //od Qt 3.2
-	if (ip==QHostAddress())
-	{
-		kdebugm(KDEBUG_FUNCTION_END, "UserList::addDnsLookup: No IP\n");
-		return;
-	}
-	DnsHandler *dnshandler;
-	dnshandler = dnslookups.first();
-	while (dnshandler)
-	{
-		if (dnshandler->isCompleted())
-		{
-			dnslookups.remove();
-			dnshandler = dnslookups.current();
-		}
-		else
-			dnshandler = dnslookups.next();
-	}
-	if (!containsUin(uin))
-		return;
-	//UserListElement &ule = byUin(uin);
-	dnshandler = new DnsHandler(uin);
-	dnslookups.append(dnshandler);
-	kdebugf2();
-}
-
-void UserList::setDnsName(UinType  uin, const QString &name)
-{
-	if (!containsUin(uin))
-		return;
-	UserListElement &ule = byUin(uin);
-	if (ule.dnsName() != name)
-	{
-		ule.setDnsName(name);
-		kdebugm(KDEBUG_INFO, "UserList::setDnsName(): dnsname for uin %d: %s\n", uin, name.local8Bit().data());
-		emit dnsNameReady(uin);
-	}
 }
 
 UserListElement& UserList::byUin(UinType  uin)

@@ -803,6 +803,7 @@ void Kadu::notifyUser()
 	}
 	UserListElement &puser = userlist.byAltNick((*activeUserBox->getSelectedUsers().begin()).altNick());
 	puser.setNotify(!puser.notify());
+
 	userlist.writeToFile();
 	kdebugf2();
 }
@@ -818,8 +819,6 @@ void Kadu::offlineToUser()
 	}
 	UserListElement &puser = userlist.byAltNick((*activeUserBox->getSelectedUsers().begin()).altNick());
 	puser.setOfflineTo(!puser.offlineTo());
-
-	userlist.changeUserInfo((*activeUserBox->getSelectedUsers().begin()).altNick(), puser);
 
 	userlist.writeToFile();
 	kdebugf2();
