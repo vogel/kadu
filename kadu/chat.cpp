@@ -139,7 +139,11 @@ Chat::Chat(UinsList uins, QDialog *parent) : QDialog (parent), uins(uins) {
 
 Chat::~Chat() {
 	int i,j;
-	chats.remove(chats.at(index));
+
+	i = 0;
+	while (i < chats.count() && chats[i].ptr != this)
+		i++;
+	chats.remove(chats.at(i));
 
 	i = 0;
 	while (i < acks.size() && acks[i].ptr != this)
