@@ -1,28 +1,3 @@
-* TODO, stan na 1/09/2003.
+* TODO, stan na 02/08/2004.
 * TODO nie bêdzie ju¿ aktualizowane pod wzglêdem nowo¶ci
-  wszystkie propozycje bêda umieszczane w Mantis'ie - http://kadu.net/mantis/
-
-* Legenda
-
- - :: Dobrymi chêciami, to...
- + :: Powinno byæ
- ? :: Jeszcze siê zastanawiamy
- ! :: MUSI byæ
-
-* TODO dla wersji 0.3.8
-
- Patrz http://kadu.net/mantis/
-
-* TODO dla wersji 0.4.0
-
- Ogólne za³o¿enie:
- stabilny komunikator z kompletem opcji, wyrównanie poziomu mo¿liwo¶ci do orygina³u + nadliczbowe dodatki
- + dodaæ profile
- ? dodaæ wiêcej funkcji do dock menu (szukaj, dodaj, usuñ, odbierz)
- ? autostatus (zmiana z listy co jaki¶ czas)
-
-* TODO dla wersji pó¼niejszych
-
- + zrobiæ skórki (Licq) 
- - uskryptowienie kadu (python? perl? javascript?)
- ? przezroczysto¶æ
+  wszystkie propozycje bêda umieszczane w Mantis'ie - http://www.kadu.net/mantis/
