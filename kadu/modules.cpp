@@ -9,6 +9,7 @@
 
 #include "modules.h"
 #include "debug.h"
+#include "message_box.h"
 
 #include <qdir.h>
 #include <qlayout.h>
@@ -65,14 +66,14 @@ bool ModulesManager::loadModule(const QString& module_name)
 			init();
 		else
 		{
-			fprintf(stderr,"Cannot find init_module() or close_module() in loaded module\n");
+			MessageBox::msg(tr("Cannot find init_module() or close_module().\nMaybe it's not Kadu-compatible Module."));
 			return false;
 		}
 		Modules.insert(module_name,m);
 	}
 	else
 	{
-		fprintf(stderr,"Cannot load module\n");	
+		MessageBox::msg(tr("Cannot load module library.\nMaybe it's incorrecty compiled."));
 		return false;
 	}
 	return true;
