@@ -56,6 +56,7 @@ UserListElement::UserListElement(UserList* parent)
 	version = 0;
 	status = GG_STATUS_NOT_AVAIL;
 	image_size = 0;
+	port = 0;
 	blocking = false;
 	offline_to_user = false;
 	notify = true;
@@ -68,6 +69,7 @@ UserListElement::UserListElement()
 	version = 0;
 	status = GG_STATUS_NOT_AVAIL;
 	image_size = 0;
+	port = 0;
 	blocking = false;
 	offline_to_user = false;
 	notify = true;
