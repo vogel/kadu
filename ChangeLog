@@ -27,6 +27,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * "³apanie" w link te¿ znaku ';' (mast3r)
 * w oknie informacji o u¿ytkowniku dodane pole z numerem wersji GG (chilek)
 * wiadomo¶ci których klasa jest inna ni¿ msg lub chat póki co, s± ignorwane (mast3r)
+* poprawka zapamiêtywania i wczytywania polo¿enia Kadu(przy pierwszym uruchomieniu
+  Kadu troszke sie przesunie) (ReGIs/mast3r)
 
 +++ wersja 0.3.4-rc1
 * wiêkszo¶æ kodu dotycz±cego obs³ugi zdarzeñ sieciowych przeniesiona z

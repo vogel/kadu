@@ -339,10 +339,11 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	loadKaduConfig();
         
-	kdebug("Setting geometry to %d %d %d %d\n",
-			config.geometry.x(), config.geometry.y(),
-			config.geometry.width(), config.geometry.height());
-	setGeometry(config.geometry);
+	kdebug("Setting size: width=%d, height=%d and setting position: x=%d, y=%d\n",
+		config.geometry.width(),config.geometry.height(),
+		config.geometry.x(), config.geometry.y());
+	resize(config.geometry.width(),config.geometry.height());
+	move(config.geometry.x(),config.geometry.y());
 
 	if (config.dock) {
 		trayicon = new TrayIcon(this);
@@ -1787,7 +1788,10 @@ bool Kadu::close(bool quit) {
 	else {
 		config.splitsize.setWidth(userbox->size().height());
 		config.splitsize.setHeight(descrtb->size().height());
-		config.geometry = geometry();
+		config.geometry.setX(pos().x());
+		config.geometry.setY(pos().y());
+		config.geometry.setWidth(size().width());
+		config.geometry.setHeight(size().height());
 		saveKaduConfig();
 		pending.writeToFile();
 		writeIgnored();
