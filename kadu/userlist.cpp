@@ -15,6 +15,64 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "userlist.h"
+#include "kadu.h"
+//#include <stdio.h>
+#include <qfile.h>
+#include <iostream.h>
+//#include <unistd.h>
+#include <stdlib.h>
+
+static char *get_token(char **ptr, char sep)
+{
+	char *foo, *res;
+
+	if (!ptr || !sep || !*ptr)
+		return NULL;
+
+	res = *ptr;
+
+	if (!(foo = strchr(*ptr, sep)))
+		*ptr += strlen(*ptr);
+	else {
+		*ptr = foo + 1;
+		*foo = 0;
+	}
+
+	return res;
+}
+
+static char *read_file(FILE *f) {
+	char buf[1024], *nju, *res = NULL;
+
+	while (fgets(buf, sizeof(buf) - 1, f)) {
+		int new_size = ((res) ? strlen(res) : 0) + strlen(buf) + 1;
+
+		if (!((void *)nju = realloc(res, new_size))) {
+			/* jesli brakuje pamieci, pomijamy reszte linii */
+			if (strchr(buf, '\n'))
+				break;
+			else
+				continue;
+		}
+		if (!res)
+			*nju = 0;
+		res = nju;
+		strcpy(res + strlen(res), buf);
+
+		if (strchr(buf, '\n'))
+			break;
+	}
+
+	if (res && strlen(res) > 0 && res[strlen(res) - 1] == '\n')
+		res[strlen(res) - 1] = 0;
+	if (res && strlen(res) > 0 && res[strlen(res) - 1] == '\r')
+		res[strlen(res) - 1] = 0;
+
+
+	return res;
+}
+
 UserList::UserList() : QValueList<UserListElement>()
 {
 };
@@ -26,7 +84,7 @@ UserListElement& UserList::byUin(uin_t uin)
 			return operator[](i);
 	fprintf(stderr, "KK UserList::byUin(): Panic!\n");
 	// Kadu Panic :) What we should do here???
-	return NULL;
+//	return NULL;
 };
 
 UserListElement& UserList::byComment(QString comment)
@@ -36,7 +94,7 @@ UserListElement& UserList::byComment(QString comment)
 			return operator[](i);
 	fprintf(stderr, "KK UserList::byComment(): Panic!\n");
 	// Kadu Panic :) What we should do here???
-	return NULL;
+//	return;
 };
 
 void UserList::addUser(const QString& FirstName,const QString& LastName,
@@ -60,7 +118,7 @@ void UserList::addUser(const QString& FirstName,const QString& LastName,
 	append(e);
 };
 
-void UserBox::removeUser(uin_t uin)
+void UserList::removeUser(uin_t uin)
 {
 	for(Iterator i=begin(); i!=end(); i++)
 		if((*i).uin==uin)
@@ -70,9 +128,9 @@ void UserBox::removeUser(uin_t uin)
 		};
 };
 
-int UserBox::writeToFile(char *filename = NULL)
+int UserList::writeToFile(char *filename)
 {
-    char *tmp;
+/*    char *tmp;
     int i;
     
     if (!(tmp = preparePath("")))
@@ -91,7 +149,7 @@ int UserBox::writeToFile(char *filename = NULL)
 	return -2;
 	}
 
-/*  someone tell me how. */
+//  someone tell me how.
 //	fchmod(fileno(f), 0600);
 
     QString jakisstr;
@@ -118,13 +176,13 @@ int UserBox::writeToFile(char *filename = NULL)
 	f.writeBlock(jakisstr.local8Bit(), jakisstr.length());
 	}	    
     f.close();
-
+*/
     return 0;
 }
 
-int UserBox::readFromFile()
+int UserList::readFromFile()
 {
-    char * path;
+/*    char * path;
     struct passwd *pw;
 
     if (!(pw = getpwuid(getuid())))
@@ -192,13 +250,11 @@ int UserBox::readFromFile()
 	    
 	    first_name = get_token(&foo, ';');
 	    last_name = get_token(&foo, ';');
-/*		nickname = get_token(&foo, ';');
-		comment = get_token(&foo, ';'); */
 	    comment = get_token(&foo, ';');
 	    nickname = get_token(&foo, ';');
 	    mobile = get_token(&foo, ';');
 	    group = get_token(&foo, ';');
-	    uin = get_token(&foo, ';');
+	    uin = get_token(&foo, ';');*/
 
       /* load groups */
 /*
@@ -221,7 +277,8 @@ int UserBox::readFromFile()
         }
 
       } */
-	    
+
+/*	    
 	    if (!uin || !(uint = strtol(uin, NULL, 0))) {
 		free(buf);
 		continue;
@@ -241,7 +298,7 @@ int UserBox::readFromFile()
 	    userlist[i].group = strdup(group);
 	    cp_to_iso((unsigned char *)userlist[i].group);
 
-	    /* if the nickname isn't defined explicitly, try to guess it */
+	    // if the nickname isn't defined explicitly, try to guess it 
 	    if (!QString::compare(userlist[i].nickname, ""))
 		if (!QString::compare(userlist[i].comment, ""))
 		    strcpy(userlist[i].nickname, userlist[i].first_name);
@@ -259,8 +316,8 @@ int UserBox::readFromFile()
     userlist_count = i;
 
     fclose(f);
-
+*/
     return 0;
 }
 
-#include "userlist.moc"
+//#include "userlist.moc"

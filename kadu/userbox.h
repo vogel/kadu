@@ -45,12 +45,25 @@ class UserBox : public QListBox , QToolTip
 		void addUin(uin_t uin);
 		void removeUin(uin_t uin);
 		void removeUser(QString& username);
-		void changeUserStatus(
+//		void changeUserStatus(
 		void changeAllToInactive();
 		// Functions below works on all created userboxes
 		static void all_refresh();
 		static void all_removeUser(QString& username);		
 		static void all_changeAllToInactive();		
+};
+
+// The code below will be removed soon
+
+class MyListBox : public QListBox , QToolTip {
+    Q_OBJECT
+    public:
+        MyListBox ( QWidget * parent=0, const char * name=0, WFlags f=0 );
+        virtual void clear() { QListBox::clear(); };
+
+    protected:
+        virtual void maybeTip(const QPoint&);
+        int descriptionForUser(QListBoxItem *);
 };
 
 #endif

@@ -15,6 +15,10 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <qobject.h>
+#include <qvaluelist.h>
+#include "../libgadu/lib/libgadu.h"
+
 struct UserListElement
 {
 	QString first_name;
@@ -33,16 +37,17 @@ struct UserListElement
 
 class UserList : public QValueList<UserListElement>
 {
-	Q_OBJECT
+//	Q_OBJECT
+	
 	public:
 		UserList();
-		UserListElement& byUin();
-		UserListElement& byComment();
+		UserListElement& byUin(uin_t uin);
+		UserListElement& byComment(QString comment);
 		void addUser(const QString& FirstName,const QString& LastName,
 			const QString& NickName,const QString& AltNick,
 			const QString& Mobile,const QString& Uin,const int Status,
 			const QString& Group,const QString& Description);
 		void removeUser(uin_t uin);
 		int writeToFile(char *filename = NULL);
-		int readFromFile()
+		int readFromFile();
 };
