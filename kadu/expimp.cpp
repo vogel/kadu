@@ -145,7 +145,7 @@ void UserlistImportExport::fromfile()
 {
 	kdebugf();
 	QString fname = QFileDialog::getOpenFileName("/", QString::null, this);
-	if (fname.length())
+	if (!fname.isEmpty())
 	{
 		QFile file(fname);
  		if (file.open(IO_ReadOnly))
@@ -267,7 +267,7 @@ void UserlistImportExport::ExportToFile(void)
 	pb_tofile->setEnabled(false);
 
 	QString fname = QFileDialog::getSaveFileName("/", QString::null,this);
-	if (fname.length())
+	if (!fname.isEmpty())
 	{
 		contacts = gadu->userListToString(userlist);
 

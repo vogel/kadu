@@ -109,17 +109,16 @@ void Ignored::keyPressEvent(QKeyEvent *ke_event)
 void Ignored::add()
 {
 	kdebugf();
-	QStringList strlist;
-	strlist = QStringList::split(";", e_uin->text());
 	bool ok;
 	UinsList uins;
-	for (unsigned int i = 0; i < strlist.count(); ++i)
+	QStringList strlist = QStringList::split(";", e_uin->text());
+	CONST_FOREACH(strUin, strlist)
 	{
-		UinType uin = strlist[i].toUInt(&ok);
+		UinType uin = (*strUin).toUInt(&ok);
 		if (ok)
 			uins.append(uin);
 	}
-	if (uins.count())
+	if (!uins.empty())
 	{
 		addIgnored(uins);
 		e_uin->clear();
@@ -133,18 +132,15 @@ void Ignored::getList()
 {
 	kdebugf();
 	lb_list->clear();
-	for (unsigned int i = 0; i < ignored.count(); ++i)
+	CONST_FOREACH(ignoredList, ignored)
 	{
 		QStringList strlist;
-		for (unsigned int j = 0; j < ignored[i].count(); ++j)
+		CONST_FOREACH(uin, ignoredList)
 		{
-			if (userlist.containsUin(ignored[i][j]))
-			{
-				UserListElement& e = userlist.byUin(ignored[i][j]);
-				strlist.append(QString("%1 (%2)").arg(QString::number(e.uin())).arg(e.altNick()));
-			}
+			if (userlist.containsUin(*uin))
+				strlist.append(QString("%1 (%2)").arg(QString::number(*uin)).arg(userlist.byUin(*uin).altNick()));
 			else
-				strlist.append(QString("%1").arg(QString::number(ignored[i][j])));
+				strlist.append(QString("%1").arg(QString::number(*uin)));
 		}
 		lb_list->insertItem(icons_manager.loadIcon("Blocking"), strlist.join(";"));
 	}
@@ -156,11 +152,10 @@ void Ignored::remove()
 	kdebugf();
 	if (lb_list->currentItem() == -1)
 		return;
-	QStringList strlist;
-	strlist = QStringList::split(";", lb_list->currentText());
+	QStringList strlist = QStringList::split(";", lb_list->currentText());
 	UinsList uins;
-	for (unsigned int i = 0; i < strlist.count(); ++i)
-		uins.append(strlist[i].section(' ', 0, 0).toUInt());
+	CONST_FOREACH(str, strlist)
+		uins.append((*str).section(' ', 0, 0).toUInt());
 	delIgnored(uins);
 	getList();
 	writeIgnored();
@@ -210,16 +205,16 @@ int writeIgnored(QString filename)
 //	fchmod(fileno(f), 0600);
 
 	QString buf;
-	for (unsigned int i = 0; i < ignored.count(); ++i)
+	CONST_FOREACH(ignoreList, ignored)
 	{
 		QStringList list;
-		for (unsigned int j = 0; j < ignored[i].count(); ++j)
-			list.append(QString::number(ignored[i][j]));
+		CONST_FOREACH(uin, *ignoreList)
+			list.append(QString::number(*uin));
 		buf.append(list.join(";"));
 		buf.append('\n');
 	}
 
-	if (buf.length())
+	if (!buf.isEmpty())
 		file.writeBlock(buf, buf.length());
 	file.close();
 
@@ -245,10 +240,10 @@ int readIgnored()
 	QTextStream stream(&f);
 	while ((line = stream.readLine()) != QString::null)
 	{
-		list = QStringList::split(";", line);
 		UinsList uins;
-		for (unsigned int i = 0; i < list.count(); ++i)
-			uins.append(list[i].toUInt());
+		list = QStringList::split(";", line);
+		CONST_FOREACH(strUin, list)
+			uins.append((*strUin).toUInt());
 		ignored.append(uins);
 	}
 

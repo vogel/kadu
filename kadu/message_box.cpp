@@ -38,7 +38,7 @@ MessageBox::MessageBox(const QString& message1,int components,bool modal)
 	vbox->setMargin(20);
 	vbox->setSpacing(20);
 
-	if (message.length()>0)
+	if (!message.isEmpty())
 	{
 		QLabel* l=new QLabel(this);
 		l->setText(message);

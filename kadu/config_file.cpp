@@ -59,7 +59,7 @@ void ConfigFile::read()
 				QString value = line.right(line.length()-name.length()-1).replace("\\n", "\n");
 #endif
 				name = name.stripWhiteSpace();
-				if (line.contains('=') >= 1 && name.length() && value.length())
+				if (line.contains('=') >= 1 && !name.isEmpty() && !value.isEmpty())
 					(*activeGroup)[name]=value;
 			}
 		}

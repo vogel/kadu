@@ -296,7 +296,7 @@ void Wizard::setGaduAccount()
 			"should be the same!"));
 		isOk=false;
 	}
-	if (!l_ggNewPasssword->text().length())
+	if (l_ggNewPasssword->text().isEmpty())
 	{
 		MessageBox::wrn(tr("Please fill all fields"));
 		isOk=false;

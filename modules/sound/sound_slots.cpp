@@ -200,7 +200,7 @@ void SoundSlots::chooseSoundFile()
 		start=p;
 	
 	QString s(QFileDialog::getOpenFileName( start, "Audio Files (*.wav *.au *.raw)", ConfigDialog::configdialog));
-	if (s.length())
+	if (!s.isEmpty())
 		item->setText(1,s);
 	kdebugf2();
 }

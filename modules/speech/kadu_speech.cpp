@@ -479,7 +479,7 @@ void SpeechSlots::chooseSpeechProgram()
 	QLineEdit *e_speechprog= ConfigDialog::getLineEdit("Speech", "Speech program:");
 
 	QString s(QFileDialog::getOpenFileName( e_speechprog->text(), "All Files (*)", ConfigDialog::configdialog));
-	if (s.length())
+	if (!s.isEmpty())
 		e_speechprog->setText(s);
 	kdebugf2();
 }

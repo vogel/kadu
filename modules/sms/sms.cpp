@@ -247,7 +247,7 @@ Sms::Sms(const QString& altnick, QDialog* parent, const char *name) : QDialog (p
 	QStringList strlist;
 	list = new QComboBox(this);
 	CONST_FOREACH(user, userlist)
-		if ((*user).mobile().length())
+		if (!(*user).mobile().isEmpty())
 		 	strlist.append((*user).altNick());
 	strlist.sort();
 	strlist.insert(strlist.begin(), QString::null);
@@ -545,7 +545,7 @@ void SmsSlots::onSendSmsToUser()
 	users = activeUserBox->getSelectedUsers();
 	if (users.count() != 1)
 		return;
-	if ((*users.begin()).mobile().length())
+	if (!(*users.begin()).mobile().isEmpty())
 		newSms((*users.begin()).altNick());
 	kdebugf2();
 }
@@ -636,7 +636,7 @@ void SmsSlots::onPopupMenuCreate()
 	users = activeUserBox->getSelectedUsers();
 	UserListElement user = (*users.begin());
 
-	if (!user.mobile().length() || users.count() != 1)
+	if (user.mobile().isEmpty() || users.count() != 1)
 		UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("Send SMS")), false);
 	kdebugf2();
 }

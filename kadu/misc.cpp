@@ -405,18 +405,12 @@ QStringList toStringList(const QString &e1, const QString &e2, const QString &e3
 	return list;
 }
 
-QString pwHash(const QString &tekst)
+QString pwHash(const QString &text)
 {
-	QString nowytekst;
-	unsigned int ile;
-	unsigned short znak;
-	nowytekst = tekst;
-	for (ile = 0; ile < tekst.length(); ++ile)
-	{
-		znak = nowytekst[ile].unicode() ^ ile ^ 1;
-		nowytekst[ile] = QChar(znak);
-	}
-	return nowytekst;
+	QString newText = text;
+	for (unsigned int i = 0, textLength = text.length(); i < textLength; ++i)
+		newText[i] = QChar(text[i].unicode() ^ i ^ 1);
+	return newText;
 }
 
 QString translateLanguage(const QApplication *application, const QString &locale, const bool l2n)
@@ -1098,7 +1092,7 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 						file=pe.str;
 					else
 						file=pe.str.left(f);
-					if (file.length()>0)
+					if (!file.isEmpty())
 						if (file[0]=='~')
 						{
 							file=file.mid(1);
@@ -1827,55 +1821,48 @@ void HtmlDocument::insertText(const int pos,const QString &text)
 void HtmlDocument::parseHtml(const QString& html)
 {
 	Element e;
-	e.tag=false;
-	for(unsigned int i=0; i<html.length(); ++i)
+	e.tag = false;
+	for(unsigned int i = 0, htmllength = html.length(); i < htmllength; ++i)
 	{
-		QChar ch=html[i];
-		switch(ch)
+		const QChar &ch = html[i];
+		switch (ch)
 		{
 			case '<':
-				if(!e.tag)
+				if (!e.tag)
 				{
-					if(e.text!="")
+					if (!e.text.isEmpty())
 						addElement(e);
-					e.tag=true;
-					e.text="<";
+					e.tag = true;
+					e.text = ch;
 				}
 				break;
 			case '>':
-				if(e.tag)
+				if (e.tag)
 				{
-					e.text+='>';
+					e.text += ch;
 					addElement(e);
-					e.tag=false;
-					e.text="";
+					e.tag = false;
+					e.text.truncate(0);
 				}
 				break;
 			default:
-				e.text+=ch;
+				e.text += ch;
 		}
 	}
-	if(e.text!="")
+	if (!e.text.isEmpty())
 		addElement(e);
 }
 
 QString HtmlDocument::generateHtml() const
 {
 	QString html,tmp;
-	FOREACH(e, Elements)
+	CONST_FOREACH(e, Elements)
 	{
 		tmp = (*e).text;
-		if(!(*e).tag)
+		if (!(*e).tag)
 			escapeText(tmp);
 		html += tmp;
 	}
-/*	for(unsigned int i=0; i<Elements.size(); ++i)
-	{
-		Element e=Elements[i];
-		if(!e.tag)
-			escapeText(e.text);
-		html+=e.text;
-	}*/
 	return html;
 }
 

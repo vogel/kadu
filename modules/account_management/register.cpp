@@ -155,7 +155,7 @@ void Register::doRegister() {
 		return;
 	}
 
-	if (!pwd->text().length())
+	if (pwd->text().isEmpty())
 	{
 		QMessageBox::warning(this, "Kadu", tr("Please fill out all fields"), tr("OK"), 0, 0, 1);
 		return;

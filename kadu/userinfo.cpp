@@ -432,7 +432,7 @@ void UserInfo::addNewUser(UserListElement& e)
 			return;
 		}
 	}
-	if (!e_altnick->text().length())
+	if (e_altnick->text().isEmpty())
 	{
 		QMessageBox::warning(this, tr("Add user problem"),
 			tr("Altnick field cannot be empty."));
@@ -466,7 +466,7 @@ void UserInfo::addNewUser(UserListElement& e)
 void UserInfo::changeUserData(UserListElement& e)
 {
 	kdebugf();
-	if (e_uin->text().length() && !e.uin())
+	if (!e_uin->text().isEmpty() && !e.uin())
 	{
 		QMessageBox::information(this, "Kadu", tr("Bad UIN"), QMessageBox::Ok);
 		close();
@@ -474,7 +474,7 @@ void UserInfo::changeUserData(UserListElement& e)
 		return;
 	}
 
-	if (!e_altnick->text().length())
+	if (e_altnick->text().isEmpty())
 	{
 		QMessageBox::warning(this, tr("Add user problem"), tr("Altnick field cannot be empty."));
 		close();

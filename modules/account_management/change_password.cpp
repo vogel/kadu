@@ -112,7 +112,7 @@ void ChangePassword::start()
 
 	QString mail = emailedit->text();
 	QString password = QString(pwHash(config_file.readEntry("General", "Password")));
-	QString newpassword = (newpwd->text().length() ? newpwd->text() : password);
+	QString newpassword = (newpwd->text().isEmpty() ? password : newpwd->text());
 
 	setEnabled(false);
 	gadu->changePassword(config_file.readNumEntry("General", "UIN"), mail, password, newpassword);

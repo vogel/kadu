@@ -95,7 +95,7 @@ void Unregister::keyPressEvent(QKeyEvent *ke_event)
 void Unregister::doUnregister() {
 	kdebugf();
 
-	if (!uin->text().toUInt() || !pwd->text().length())
+	if (!uin->text().toUInt() || pwd->text().isEmpty())
 	{
 		QMessageBox::warning(this, "Kadu", tr("Please fill out all fields"), tr("OK"), 0, 0, 1);
 		return;

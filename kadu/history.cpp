@@ -1041,17 +1041,16 @@ QStringList HistoryManager::mySplit(const QChar &sep, const QString &str)
 	QStringList strlist;
 
 	QString token;
-	QChar letter;
-	unsigned int idx = 0, state = 0;
-	while (idx < str.length())
+	unsigned int idx = 0, state = 0, strlength = str.length();
+	while (idx < strlength)
 	{
-		letter = str[idx];
+		const QChar &letter = str[idx];
 		switch (state)
 		{
 			case 0:
 				if (letter == sep)
 				{
-					if (token.length())
+					if (!token.isEmpty())
 						token.truncate(0);
 					else
 						strlist.append(token);
@@ -1509,7 +1508,7 @@ void History::formatHistoryEntry(QString &text, const HistoryEntry &entry, QStri
 				text.append(tr("Offline"));
 				break;
 		}
-		if (entry.description.length())
+		if (!entry.description.isEmpty())
 			text.append(QString(" (") + entry.description + ")");
 		text.append(QString(" ip=") + entry.ip);
 	}

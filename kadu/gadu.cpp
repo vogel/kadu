@@ -1539,7 +1539,7 @@ void GaduProtocol::setupProxy()
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "gg_proxy_host = %s\n", gg_proxy_host);
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "gg_proxy_port = %d\n", gg_proxy_port);
 
-		if (config_file.readEntry("Network", "ProxyUser").length())
+		if (!config_file.readEntry("Network", "ProxyUser").isEmpty())
 		{
 			gg_proxy_username = strdup((char *)unicode2latin(config_file.readEntry("Network", "ProxyUser")).data());
 			gg_proxy_password = strdup((char *)unicode2latin(config_file.readEntry("Network", "ProxyPassword")).data());
@@ -1721,17 +1721,17 @@ void GaduProtocol::searchNextInPubdir(SearchRecord& searchRecord)
 
 	req = gg_pubdir50_new(GG_PUBDIR50_SEARCH);
 
-	if (searchRecord.Uin.length())
+	if (!searchRecord.Uin.isEmpty())
 		gg_pubdir50_add(req, GG_PUBDIR50_UIN, (const char *)unicode2cp(searchRecord.Uin).data());
-	if (searchRecord.FirstName.length())
+	if (!searchRecord.FirstName.isEmpty())
 		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)unicode2cp(searchRecord.FirstName).data());
-	if (searchRecord.LastName.length())
+	if (!searchRecord.LastName.isEmpty())
 		gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, (const char *)unicode2cp(searchRecord.LastName).data());
-	if (searchRecord.NickName.length())
+	if (!searchRecord.NickName.isEmpty())
 		gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)unicode2cp(searchRecord.NickName).data());
-	if (searchRecord.City.length())
+	if (!searchRecord.City.isEmpty())
 		gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)unicode2cp(searchRecord.City).data());
-	if (searchRecord.BirthYearFrom.length() && searchRecord.BirthYearTo.length())
+	if (!searchRecord.BirthYearFrom.isEmpty() && !searchRecord.BirthYearTo.isEmpty())
 	{
 		QString bufYear = searchRecord.BirthYearFrom + " " + searchRecord.BirthYearTo;
 		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)unicode2cp(bufYear).data());
@@ -1812,21 +1812,21 @@ void GaduProtocol::setPersonalInfo(SearchRecord& searchRecord, SearchResult& new
 	gg_pubdir50_t req;
 	req = gg_pubdir50_new(GG_PUBDIR50_WRITE);
 
-	if (newData.First.length())
+	if (!newData.First.isEmpty())
 		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)(unicode2cp(newData.First).data()));
-	if (newData.Last.length())
+	if (!newData.Last.isEmpty())
 		gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, (const char *)(unicode2cp(newData.Last).data()));
-	if (newData.Nick.length())
+	if (!newData.Nick.isEmpty())
 		gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)(unicode2cp(newData.Nick).data()));
-	if (newData.City.length())
+	if (!newData.City.isEmpty())
 		gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)(unicode2cp(newData.City).data()));
-	if (newData.Born.length())
+	if (!newData.Born.isEmpty())
 		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)(unicode2cp(newData.Born).data()));
 	if (newData.Gender)
 		gg_pubdir50_add(req, GG_PUBDIR50_GENDER, QString::number(newData.Gender).latin1());
-	if (newData.FamilyName.length())
+	if (!newData.FamilyName.isEmpty())
 		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYNAME, (const char *)(unicode2cp(newData.FamilyName).data()));
-	if (newData.FamilyCity.length())
+	if (!newData.FamilyCity.isEmpty())
 		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYCITY, (const char *)(unicode2cp(newData.FamilyCity).data()));
 
 	searchRecord.Seq = gg_pubdir50(Sess, req);

@@ -531,7 +531,7 @@ void UserBox::refresh()
 
 		if (!showOnlyDesc || user.status().hasDescription())
 		{
-			bool has_mobile = user.mobile().length();
+			bool has_mobile = !user.mobile().isEmpty();
 			bool bold = showBold ? (user.status().isOnline() || user.status().isBusy()) : false;
 			if (pending.pendingMsgs(user.uin()))
 				lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Message"), user.altNick(),
@@ -558,7 +558,7 @@ void UserBox::refresh()
 
 		if (!showOnlyDesc || user.status().hasDescription())
 		{
-			bool has_mobile = user.mobile().length();
+			bool has_mobile = !user.mobile().isEmpty();
 			if (pending.pendingMsgs(user.uin()))
 				lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Message"), user.altNick(),
 					user.status().description(), 0);
@@ -585,7 +585,7 @@ void UserBox::refresh()
 
 		if (!showOnlyDesc || user.status().hasDescription())
 		{
-			bool has_mobile = user.mobile().length();
+			bool has_mobile = !user.mobile().isEmpty();
 			if (pending.pendingMsgs(user.uin()))
 				lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Message"), user.altNick(),
 					user.status().description(), 0);

@@ -175,7 +175,7 @@ bool EmoticonsManager::loadGGEmoticonTheme()
 		int i = 0;
 		// put all emots into dictionary, to allow easy finding
 		// their occurrences in text
-		FOREACH( item, Aliases )
+		CONST_FOREACH( item, Aliases )
 			walker -> insertString( item -> alias.lower(), i++ );
 	}
 
@@ -192,6 +192,8 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc, const QColor& bgcolor,
 	kdebugf();
 
 	static bool emotsFound = false;
+	const static QString emotTemplate("<img emoticon=\"1\" title=\"%1\" src=\"%2\" bgcolor=\"%3\" animated=\"%4\"/>");
+
 	if (!emotsFound && getSubDirs(dataPath("kadu/themes/emoticons")).size()==0)
 	{
 		kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "end: NO EMOTICONS!\n");
@@ -211,7 +213,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc, const QColor& bgcolor,
 			continue;
 
 		// analyze text of this text part
-		QString text = doc.elementText(e_i);
+		QString text = doc.elementText(e_i).lower();
 		// variables storing position of last occurrence
 		// of emot matching current emots dictionary
 		unsigned int lastBegin = 10000;
@@ -219,11 +221,11 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc, const QColor& bgcolor,
 		// intitialize automata for checking occurrences
 		// of emots in text
 		walker -> initWalking();
-		for(unsigned int j = 0; j < text.length(); ++j)
+		for(unsigned int j = 0, textlength = text.length(); j < textlength; ++j)
 		{
 			// find out if there is some emot occurence when we
 			// add current character
-			int idx = walker -> checkEmotOccurrence( text[j].lower() );
+			int idx = walker -> checkEmotOccurrence( text[j] );
 			// when some emot from dictionary is ending at current character
 			if ( idx >= 0 )
 				// check if there already was some occurence, whose
@@ -232,14 +234,13 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc, const QColor& bgcolor,
 				{
 					// if so, then replace that previous occurrence
 					// with html tag
-					QString new_text="<img emoticon=\"1\" title=\""+Aliases[lastEmot].alias+"\" src=\"";
-					if( animated )
-						new_text += Aliases[lastEmot].anim;
+					QString new_text;
+					if (animated)
+						new_text = narg(emotTemplate, Aliases[lastEmot].alias, Aliases[lastEmot].anim, bgcolor.name(), QString::number(animated));
 					else
-						new_text += Aliases[lastEmot].stat;
-					new_text += QString("\" bgcolor=\"%1\" animated=\"%2\"/>").arg(bgcolor.name()).arg(animated);
-					doc.splitElement( e_i, lastBegin, 
-					Aliases[lastEmot].alias.length() );
+						new_text = narg(emotTemplate, Aliases[lastEmot].alias, Aliases[lastEmot].stat, bgcolor.name(), QString::number(animated));
+
+					doc.splitElement( e_i, lastBegin, Aliases[lastEmot].alias.length() );
 					doc.setElementValue( e_i, new_text, true );
 					// our analysis will begin directly after 
 					// occurrence of previous emot
@@ -256,14 +257,13 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc, const QColor& bgcolor,
 		// this is the case, when only one emot was found in current text part
 		if ( lastEmot >= 0 )
 		{
-			QString new_text="<img emoticon=\"1\" title=\""+Aliases[lastEmot].alias+"\" src=\"";
-			if( animated )
-				new_text += Aliases[lastEmot].anim;
+			QString new_text;
+			if (animated)
+				new_text = narg(emotTemplate, Aliases[lastEmot].alias, Aliases[lastEmot].anim, bgcolor.name(), QString::number(animated));
 			else
-				new_text += Aliases[lastEmot].stat;
-			new_text += QString("\" bgcolor=\"%1\" animated=\"%2\"/>").arg(bgcolor.name()).arg(animated);
-			doc.splitElement( e_i, lastBegin, 
-			Aliases[lastEmot].alias.length() );
+				new_text = narg(emotTemplate, Aliases[lastEmot].alias, Aliases[lastEmot].stat, bgcolor.name(), QString::number(animated));
+
+			doc.splitElement( e_i, lastBegin, Aliases[lastEmot].alias.length() );
 			doc.setElementValue( e_i, new_text, true );
 		}
 	}
@@ -858,7 +858,7 @@ PrefixNode* EmotsWalker::insertChild( PrefixNode* node, const QChar& c )
 /** recursively delete all childs of given node */
 void EmotsWalker::removeChilds( PrefixNode* node ) 
 {
-	FOREACH( ch, node -> childs ) {
+	CONST_FOREACH( ch, node -> childs ) {
 		removeChilds( ch -> second );
 		delete ch -> second;
 	}

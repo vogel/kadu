@@ -402,7 +402,7 @@ void SearchDialog::AddButtonClicked()
 	// Build altnick. Try user nick first.
 	QString altnick = nickname;
 	// If nick is empty, try firstname+lastname.
-	if (!altnick.length())
+	if (altnick.isEmpty())
 	{
 		altnick = firstname;
 //		if (firstname.length() && lastname.length())
@@ -410,7 +410,7 @@ void SearchDialog::AddButtonClicked()
 //		altnick += lastname;
 	}
 	// If nick is empty, use uin.
-	if (!altnick.length())
+	if (altnick.isEmpty())
 		altnick = uin;
 
 	UserInfo *ui = new UserInfo(QString::null, true, 0, "user info");
@@ -459,7 +459,7 @@ void SearchDialog::updateInfoClicked()
 	// Build altnick. Try user nick first.
 	QString altnick = nickname;
 	// If nick is empty, try firstname+lastname.
-	if (!altnick.length())
+	if (altnick.isEmpty())
 	{
 		altnick = firstname;
 //		if (firstname.length() && lastname.length())
@@ -467,7 +467,7 @@ void SearchDialog::updateInfoClicked()
 //		altnick += lastname;
 	}
 	// If nick is empty, use uin.
-	if (!altnick.length())
+	if (altnick.isEmpty())
 		altnick = uin;
 
 	UserListElement e;

@@ -660,7 +660,7 @@ bool UserList::writeToFile(QString filename)
 	tmp = ggPath("");
 	mkdir(tmp.local8Bit().data(), 0700);
 
-	if (!filename.length())
+	if (filename.isEmpty())
 		filename = ggPath("userlist");
 
 	faname = ggPath("userattribs");
@@ -729,7 +729,7 @@ bool UserList::readFromFile()
 	else
 	{
 		QTextStream s(&fa);
-		while ((line = s.readLine()).length())
+		while (!(line = s.readLine()).isEmpty())
 		{
 			QStringList slist;
 			slist = QStringList::split(';', line);
