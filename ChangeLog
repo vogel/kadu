@@ -232,6 +232,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   wyboru metody kompilacji modulow (Ron_K)
 * usuniêty b³±d dotycz±cy maksymalizacji okna chatu przy pewnych specyficznych
   warunkach (http://www.kadu.net/forum/viewtopic.php?t=2486) (joi)
+* poprawa wygl±du okna "Zarz±dcy modu³ów" oraz zapamiêtywanie jego rozmiarów (joi)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

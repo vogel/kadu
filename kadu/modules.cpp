@@ -16,6 +16,7 @@
 
 #include <qdir.h>
 #include <qlayout.h>
+#include <qvbox.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include <qtextcodec.h>
@@ -58,64 +59,62 @@ ModulesDialog::ModulesDialog()
 	: QDialog(NULL,NULL)
 {
 	setWFlags(Qt::WDestructiveClose);
-	resize(400,200);
 	setCaption(tr("Manage Modules"));
 	
 	QHBoxLayout* layout=new QHBoxLayout(this);
-	QVBoxLayout* static_layout=new QVBoxLayout(layout);
-	QVBoxLayout* installed_layout=new QVBoxLayout(layout);
-	QVBoxLayout* loaded_layout=new QVBoxLayout(layout);	
-	QVBoxLayout* buttons_layout=new QVBoxLayout(layout);
-
-	QLabel* StaticLabel = new QLabel(this);
-	StaticLabel->setText(QString("<b>")+tr("Static modules")+"</b>");
+	layout->setAutoAdd(true);
 	
-	QListBox* StaticListBox = new QListBox(this);
+	QVBox* static_box=new QVBox(this);
+	QVBox* installed_box=new QVBox(this);
+	QVBox* loaded_box=new QVBox(this);	
+
+	QLabel* StaticLabel = new QLabel(tr("Static"), static_box);
+	QListBox* StaticListBox = new QListBox(static_box);
 	StaticListBox->insertStringList(modules_manager->staticModules());
 
-	static_layout->addWidget(StaticLabel);
-	static_layout->addWidget(StaticListBox);
-		
-	QLabel* InstalledLabel = new QLabel(this);
-	InstalledLabel->setText(QString("<b>")+tr("Installed modules")+"</b>");
-	
-	InstalledListBox = new QListBox(this);
+	QLabel* InstalledLabel = new QLabel(tr("Installed"), installed_box);
+	InstalledListBox = new QListBox(installed_box);
 	connect(InstalledListBox,SIGNAL(doubleClicked(QListBoxItem*)),
 		this,SLOT(loadItem(QListBoxItem*)));
 	
-	QButton* LoadButton=new QPushButton(this);
-	LoadButton->setText(tr("Load"));
-	connect(LoadButton,SIGNAL(clicked()),
-		this,SLOT(loadSelectedItem()));
-
-	QButton* InfoButton=new QPushButton(this);
-	InfoButton->setText(tr("Info"));
-	connect(InfoButton, SIGNAL(clicked()),
-		this, SLOT(getInfo()));
-	
-	installed_layout->addWidget(InstalledLabel);
-	installed_layout->addWidget(InstalledListBox);
-
-	QLabel* LoadedLabel = new QLabel(this);
-	LoadedLabel->setText(QString("<b>")+tr("Loaded modules")+"</b>");
-
-	LoadedListBox = new QListBox(this);
+	QLabel* LoadedLabel = new QLabel(tr("Loaded"), loaded_box);
+	LoadedListBox = new QListBox(loaded_box);
 	connect(LoadedListBox,SIGNAL(doubleClicked(QListBoxItem*)),
 		this,SLOT(unloadItem(QListBoxItem*)));
 
-	QButton* UnloadButton=new QPushButton(this);
-	UnloadButton->setText(tr("Unload"));
+	QButton* InfoButton=new QPushButton(tr("Info"), static_box);
+	connect(InfoButton, SIGNAL(clicked()),
+		this, SLOT(getInfo()));
+
+	QButton* LoadButton=new QPushButton(tr("Load"), installed_box);
+	connect(LoadButton,SIGNAL(clicked()),
+		this,SLOT(loadSelectedItem()));
+
+
+	QButton* UnloadButton=new QPushButton(tr("Unload"), loaded_box);
 	connect(UnloadButton,SIGNAL(clicked()),
 		this,SLOT(unloadSelectedItem()));
 
-	loaded_layout->addWidget(LoadedLabel);
-	loaded_layout->addWidget(LoadedListBox);
+	QRect def_rect(0, 0, 450, 400);
+	config_file.addVariable("General", "ModulesDialogGeometry", def_rect);
 
-	buttons_layout->addWidget(LoadButton);
-	buttons_layout->addWidget(UnloadButton);
-	buttons_layout->addWidget(InfoButton);
+	QRect geom=config_file.readRectEntry("General", "ModulesDialogGeometry");
+	resize(geom.width(),geom.height());
+	move(geom.x(),geom.y());
 
 	refreshLists();
+}
+
+ModulesDialog::~ModulesDialog()
+{
+	kdebugf();
+	QRect geom;
+	geom.setX(pos().x());
+	geom.setY(pos().y());
+	geom.setWidth(size().width());
+	geom.setHeight(size().height());
+	
+	config_file.writeEntry("General", "ModulesDialogGeometry",geom);
 }
 
 void ModulesDialog::loadItem(QListBoxItem* item)
@@ -493,6 +492,7 @@ void ModulesManager::showDialog()
 
 void ModulesManager::dialogDestroyed()
 {
+	kdebugf();
 	Dialog=NULL;
 }
 

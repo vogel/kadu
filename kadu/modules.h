@@ -62,6 +62,7 @@ class ModulesDialog : public QDialog
 	
 	public:
 		ModulesDialog();
+		~ModulesDialog();
 };
 
 class ModulesManager : public QObject
