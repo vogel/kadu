@@ -182,6 +182,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   konfiguracjê, Kadu siê nie wywróci (joi)
 * nowe okna rejestracji/wyrejestrowania u¿ytkownika by KID (KID/michal)
 * modu³y u¿ywaj± prekompilowanych nag³ówków z kadu-core (adrian)
+* poprawione filtrowanie wychodz±cych wiadomo¶ci przez modu³y (Googie/joi)
+* ostrze¿enie gdy przesy³ana wiadomo¶æ jest za d³uga (joi)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

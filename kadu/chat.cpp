@@ -41,6 +41,7 @@
 #include "gadu.h"
 #include "hints.h"
 #include "status.h"
+#include "message_box.h"
 
 ChatManager::ChatManager() : QObject()
 {
@@ -1045,13 +1046,29 @@ void Chat::sendMessage(void) {
 	else
 		escapeSpecialCharacters(myLastMessage);
 	kdebug("Chat::sendMessage():\n%s\n", myLastMessage.latin1());
+	// zmieniamy unixowe \n na windowsowe \r\n
 	myLastMessage.replace(QRegExp("\r\n"), "\n");
 
 	if (mesg.length() >= 2000)
+	{
+		MessageBox::wrn(tr("Message too long (%1>=%2)").arg(mesg.length()).arg(2000));
+		return;
+	}
+
+	QCString msg = unicode2cp(mesg);
+	
+	bool stop=false;
+	emit messageFiltering(Uins,msg,stop);
+	if(stop)
 		return;
 
+	if (mesg.length() >= 2000)
+	{
+		MessageBox::wrn(tr("Filtered message too long (%1>=%2)").arg(mesg.length()).arg(2000));
+		return;
+	}
+
 	addMyMessageToHistory();
-	// zmieniamy unixowe \n na windowsowe \r\n
 
 	if (config_file.readBoolEntry("Chat","MessageAcks")) {
 		edit->setReadOnly(true);	
@@ -1060,14 +1077,7 @@ void Chat::sendMessage(void) {
 		connect(sendbtn, SIGNAL(clicked()), this, SLOT(cancelMessage()));
 		sendbtn->setIconSet(QIconSet(icons_manager.loadIcon("CancelMessage")));
 		sendbtn->setText(tr("&Cancel"));
-		}
-
-	QCString msg = unicode2cp(mesg);
-	
-	bool stop=false;
-	emit messageFiltering(Uins,msg,stop);
-	if(stop)
-		return;
+	}
 
 	if (myLastFormatsLength)
 		seq = gadu->sendMessageRichText(Uins, msg, (unsigned char *)myLastFormats, myLastFormatsLength);
