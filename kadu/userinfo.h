@@ -14,13 +14,15 @@
 #include <qlineedit.h>
 #include <qcheckbox.h>
 
+#include "userlist.h"
+
 class UserInfo : public QTabDialog {
 	Q_OBJECT
 	public:
 		UserInfo(const QString &, QDialog* parent, const QString &altnick);
 
 	private:
-		unsigned int this_index;
+		UserListElement *puser;
 		QLineEdit *e_firstname;
 		QLineEdit *e_lastname;
 		QLineEdit *e_nickname;

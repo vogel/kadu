@@ -31,7 +31,7 @@ UserInfo::UserInfo (const QString &name, QDialog *parent , const QString &altnic
 	int i = 0;
  	while (i < userlist.size() && userlist[i].altnick != altnick)
 		i++;
-	this_index = i;
+	puser = &userlist[i];
 
 	setupTab1();
 	setupTab2();
@@ -85,24 +85,24 @@ void UserInfo::setupTab1() {
 	e_addr = new QLineEdit(box);
 	e_addr->setReadOnly(true);
 
-	e_nickname->setText(userlist[this_index].nickname);
-	e_altnick->setText(userlist[this_index].altnick);
-	e_firstname->setText(userlist[this_index].first_name);
-	e_lastname->setText(userlist[this_index].last_name);
- 	e_mobile->setText(userlist[this_index].mobile);	
-	e_group->setText(userlist[this_index].group);
+	e_nickname->setText(puser->nickname);
+	e_altnick->setText(puser->altnick);
+	e_firstname->setText(puser->first_name);
+	e_lastname->setText(puser->last_name);
+ 	e_mobile->setText(puser->mobile);	
+	e_group->setText(puser->group);
 	
-	if (userlist[this_index].ip) {
+	if (puser->ip) {
 		struct in_addr in;
-		in.s_addr = userlist[this_index].ip;
+		in.s_addr = puser->ip;
 		char address[128];
-		snprintf(address, sizeof(address), "%s:%d", inet_ntoa(in), userlist[this_index].port);
+		snprintf(address, sizeof(address), "%s:%d", inet_ntoa(in), puser->port);
 		e_addr->setText(i18n(address));
 		}
 	else
 		e_addr->setText(i18n("(Unknown)"));
 
-	switch (userlist[this_index].status) {
+	switch (puser->status) {
 		case GG_STATUS_AVAIL:
 			e_status->setText(i18n("Online")); break;
 		case GG_STATUS_AVAIL_DESCR:
@@ -126,8 +126,8 @@ void UserInfo::setupTab1() {
 
 	e_status->setReadOnly(true);
 
-	if (userlist[this_index].uin)
-		e_uin->setText(QString::number(userlist[this_index].uin));
+	if (puser->uin)
+		e_uin->setText(QString::number(puser->uin));
 	e_uin->setReadOnly(true);
 
 	addTab(box, i18n("General"));
@@ -138,55 +138,55 @@ void UserInfo::setupTab2() {
 	box->setMargin(10);
 
 	c_blocking = new QCheckBox(i18n("Block user"), box);
-	c_blocking->setChecked(userlist[this_index].blocking);
+	c_blocking->setChecked(puser->blocking);
 
 	c_offtouser = new QCheckBox(i18n("Offline to user"), box);
-	c_offtouser->setChecked(userlist[this_index].offline_to_user);
+	c_offtouser->setChecked(puser->offline_to_user);
 
 	c_notify = new QCheckBox(i18n("Notify about status changes"), box);
-	c_notify->setChecked(userlist[this_index].notify);
+	c_notify->setChecked(puser->notify);
 
 	addTab(box, i18n("Others"));
 }
 
 void UserInfo::writeUserlist() {
 	bool yes = false;
-	switch (QMessageBox::information(kadu, "Kadu", i18n("This will write current userlist"), i18n("OK"), i18n("Cancel"), QString::null, 0, 1)) {
+	switch (QMessageBox::information(this, "Kadu", i18n("This will write current userlist"), i18n("OK"), i18n("Cancel"), QString::null, 0, 1)) {
 		case 0: // Yes?
-			fprintf(stderr, "KK UserInfo::writeUserlist(): this_index: %d\n", this_index);
+			fprintf(stderr, "KK UserInfo::writeUserlist() \n");
 			if (sess && sess->status != GG_STATUS_NOT_AVAIL) {
-				if (c_offtouser->isChecked() && !userlist[this_index].offline_to_user) {
-					gg_remove_notify_ex(sess, userlist[this_index].uin, GG_USER_NORMAL);
-					gg_add_notify_ex(sess, userlist[this_index].uin, GG_USER_OFFLINE);
+				if (c_offtouser->isChecked() && !puser->offline_to_user) {
+					gg_remove_notify_ex(sess, puser->uin, GG_USER_NORMAL);
+					gg_add_notify_ex(sess, puser->uin, GG_USER_OFFLINE);
 					}
 				else
-					if (!c_offtouser->isChecked() && userlist[this_index].offline_to_user) {
-						gg_remove_notify_ex(sess, userlist[this_index].uin, GG_USER_OFFLINE);
-						gg_add_notify_ex(sess, userlist[this_index].uin, GG_USER_NORMAL);
+					if (!c_offtouser->isChecked() && puser->offline_to_user) {
+						gg_remove_notify_ex(sess, puser->uin, GG_USER_OFFLINE);
+						gg_add_notify_ex(sess, puser->uin, GG_USER_NORMAL);
 						}
 					else
-						if (c_blocking->isChecked() && !userlist[this_index].blocking) {
-							gg_remove_notify_ex(sess, userlist[this_index].uin, GG_USER_NORMAL);
-							gg_add_notify_ex(sess, userlist[this_index].uin, GG_USER_BLOCKED);
+						if (c_blocking->isChecked() && !puser->blocking) {
+							gg_remove_notify_ex(sess, puser->uin, GG_USER_NORMAL);
+							gg_add_notify_ex(sess, puser->uin, GG_USER_BLOCKED);
 							}
 						else
-							if (!c_blocking->isChecked() && userlist[this_index].blocking) {
-								gg_remove_notify_ex(sess, userlist[this_index].uin, GG_USER_BLOCKED);
-								gg_add_notify_ex(sess, userlist[this_index].uin, GG_USER_NORMAL);
+							if (!c_blocking->isChecked() && puser->blocking) {
+								gg_remove_notify_ex(sess, puser->uin, GG_USER_BLOCKED);
+								gg_add_notify_ex(sess, puser->uin, GG_USER_NORMAL);
 								}
 							else
-								if (userlist[this_index].anonymous)
-									gg_add_notify(sess, userlist[this_index].uin);
+								if (puser->anonymous)
+									gg_add_notify(sess, puser->uin);
 				}
-			userlist.changeUserInfo(userlist[this_index].altnick,
+			userlist.changeUserInfo(puser->altnick,
 				e_firstname->text(),e_lastname->text(),
 				e_nickname->text(),e_altnick->text(),
 				e_mobile->text(), c_blocking->isChecked(),
 				c_offtouser->isChecked(), c_notify->isChecked(), e_group->text());
-			userlist[this_index].anonymous = false;
+			puser->anonymous = false;
 			userlist.writeToFile();
 			for (int i = 0; i < chats.count(); i++)
-				if (chats[i].uins.contains(userlist[this_index].uin))
+				if (chats[i].uins.contains(puser->uin))
 					chats[i].ptr->setTitle();
 			close();
 			break;
