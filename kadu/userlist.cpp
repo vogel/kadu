@@ -197,7 +197,7 @@ void UserList::addUser(const QString &FirstName,const QString &LastName,
 	e.blocking = Blocking;
 	e.offline_to_user = Offline_to_user;
 	e.notify = Notify;
-	if (Group != i18n("All");
+	if (Group != i18n("All"))
 		e.Group = Group;
 	else
 		e.Group = "";
@@ -233,7 +233,7 @@ void UserList::changeUserInfo(const QString &OldAltNick,
 	e.blocking = Blocking;
 	e.offline_to_user = Offline_to_user;
 	e.notify = Notify;
-	if (Group != i18n("All");
+	if (Group != i18n("All"))
 		e.Group = Group;
 	else
 		e.Group = "";
