@@ -551,6 +551,9 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 	body->setMargin(ParagraphSeparator);
 	body->setMinimumSize(QSize(100,100));
 	body->setFont(config_file.readFontEntry("Look","ChatFont"));
+	
+	// background color of chat
+	body->setPaper(QBrush(config_file.readColorEntry("Look","ChatBgColor")));
 
 //	QPoint pos = QCursor::pos();
 
@@ -637,6 +640,7 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 	edit->setMinimumHeight(1);
 	edit->setWordWrap(QMultiLineEdit::WidgetWidth);
 	edit->setFont(config_file.readFontEntry("Look","ChatFont"));
+	edit->setPaper(QBrush(config_file.readColorEntry("Look","ChatTextBgColor")));
 
 //	jednak czasami qt wydziwia i przez to prze³±czanie focusu nie dzia³a wycinanie tekstu
 //	connect(body, SIGNAL(mouseReleased(QMouseEvent *, KaduTextBrowser *)), edit, SLOT(setFocus()));
@@ -1599,7 +1603,9 @@ void Chat::initModule()
 
 
 // pierwsze uruchomienie kadu
+	config_file.addVariable("Look", "ChatBgColor", QColor("#ffffff"));
 	config_file.addVariable("Look", "ChatMyBgColor", QColor("#E0E0E0"));
+	config_file.addVariable("Look", "ChatTextBgColor", QColor("#ffffff"));
 	config_file.addVariable("Look", "ChatUsrBgColor", QColor("#F0F0F0"));
 	config_file.addVariable("Look", "ChatMyFontColor", QColor("#000000"));
 	config_file.addVariable("Look", "ChatUsrFontColor", QColor("#000000"));
@@ -1620,6 +1626,8 @@ void Chat::initModule()
 
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Colors"));
 		ConfigDialog::addVGroupBox("Look", "Colors", QT_TRANSLATE_NOOP("@default", "Chat window"));
+			ConfigDialog::addColorButton("Look", "Chat window", QT_TRANSLATE_NOOP("@default", "Chat window background color"), "ChatBgColor", config_file.readColorEntry("Look","ChatBgColor"), "", "bg_color");
+			ConfigDialog::addColorButton("Look", "Chat window", QT_TRANSLATE_NOOP("@default", "Text edit background color"), "ChatTextBgColor", config_file.readColorEntry("Look","ChatTextBgColor"), "", "text_bg_color");
 			ConfigDialog::addColorButton("Look", "Chat window", QT_TRANSLATE_NOOP("@default", "Your background color"), "ChatMyBgColor", config_file.readColorEntry("Look","ChatMyBgColor"), "", "own_bg_color");
 			ConfigDialog::addColorButton("Look", "Chat window", QT_TRANSLATE_NOOP("@default", "User background color"), "ChatUsrBgColor", config_file.readColorEntry("Look","ChatUsrBgColor"), "", "his_bg_color");
 			ConfigDialog::addColorButton("Look", "Chat window", QT_TRANSLATE_NOOP("@default", "Your font color"), "ChatMyFontColor", config_file.readColorEntry("Look","ChatMyFontColor"), "", "own_font_color");
