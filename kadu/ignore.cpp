@@ -78,7 +78,7 @@ void Ignored::getList() {
 			if (k < userlist.count())
 				strlist.append(QString("%1 (%2)").arg(QString::number(userlist[k].uin)).arg(userlist[k].altnick));
 			else
-				strlist.append(QString("%1 (?)").arg(QString::number(ignored[i][j])));
+				strlist.append(QString("%1").arg(QString::number(ignored[i][j])));
 			}
 		list->insertItem(strlist.join(";"));
 		}
@@ -90,8 +90,11 @@ void Ignored::remove() {
 	QStringList strlist;
 	strlist = QStringList::split(";", list->currentText());
 	UinsList uins;
-	for (int i = 0; i < strlist.count(); i++)
-		uins.append(strlist[i].toUInt());
+	for (int i = 0; i < strlist.count(); i++) {
+		QString str;
+		str = strlist[i].section(' ', 0, 0);
+		uins.append(str.toUInt());
+		}
 	delIgnored(uins);
 	getList();
 	writeIgnored();
