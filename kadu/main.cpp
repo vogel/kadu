@@ -53,7 +53,7 @@ void kadu_signal_handler(int s)
 	{
 		kdebug("Kadu crashed :(\n");
 		config_file.saveTo(ggPath(f.latin1()));
-		raise(SIGABRT);
+		abort();
 	}
 	else if (s==SIGINT || s==SIGTERM)
 		config_file.saveTo(ggPath(f.latin1()));
