@@ -380,8 +380,7 @@ void SoundManager::newMessage(const UinsList &senders, const QString& /*msg*/, t
 		return;
 	}
 
-	Chat* chat= chat_manager->findChatByUins(senders);
-	if (config_file.readBoolEntry("Sounds","PlaySoundChatInvisible") && chat->isActiveWindow())
+	if (config_file.readBoolEntry("Sounds", "PlaySoundChatInvisible") && chat_manager->findChatByUins(senders)->isActiveWindow())
 		return;
 	
 	UserListElement ule = userlist.byUinValue(senders[0]);
