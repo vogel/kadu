@@ -19,6 +19,7 @@ else
 	KADU_VERSION=`cat ../../../VERSION`
 fi
 
+KADU_VERSION=`echo $KADU_VERSION | sed s/-.*//`
 
 ITEM_WEBSITES=`cat $1.web`
 if test -z $ITEM_WEBSITES; then
