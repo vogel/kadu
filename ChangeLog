@@ -34,6 +34,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * gdy zrezygnujemy z transmisji pliku nie pojawia siê komunikat o b³êdzie
   transmisji (jz/chilek)
 * obs³uga dns-lookupów w klasie UserList (chilek)
+* pozby³em siê segfaulta przy zamykaniu kadu? (chilek)
 
 +++ wersja 0.3.4-pre2
 * graficzny instalator - instaluj.tcl (googie)

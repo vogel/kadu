@@ -1992,8 +1992,8 @@ void Kadu::cleanUp(void) {
 	config.splitsize.setHeight(descrtb->size().height());
 	config.geometry = geometry();
 	saveKaduConfig();
-	kdebug("cleanUp(): Saved config and ...\n");
 	writeIgnored();
+	kdebug("Kadu::cleanUp(): Saved config and ignored\n");
 }
 
 Kadu::~Kadu(void) {

@@ -61,6 +61,7 @@ UserList::UserList() : QObject(), QValueList<UserListElement>()
 
 UserList::~UserList()
 {
+	dnsresolver.clear();
 	invisibleTimer->stop();
 	delete invisibleTimer;
 }
