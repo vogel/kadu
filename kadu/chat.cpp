@@ -57,7 +57,7 @@ CustomInput::CustomInput(QWidget *parent, const char *name) : QMultiLineEdit(par
 
 void CustomInput::keyPressEvent(QKeyEvent * e) {
 	kdebug("CustomInput::keyPressEvent()\n");
-	if (e->key() == Key_Enter && !(e->state() & ShiftButton)) {
+	if (e->key() == Key_Return && !(e->state() & ShiftButton)) {
 		kdebug("CustomInput::keyPressEvent(): emit enterPressed()\n");
 		emit enterPressed();
 		}
@@ -735,20 +735,7 @@ void Chat::sendMessage(void) {
 		return;
 		}
 
-	if (!QString::compare(edit->text().local8Bit(),""))
-		return;
-
 	myLastMessage = edit->text();
-
-	if (edit->length() >= 2000)
-		return;
-
-	if (config.msgacks) {
-		edit->setReadOnly(true);	
-		edit->setEnabled(false);
-		sendbtn->setEnabled(false);
-		cancelbtn->show();
-		}
 
 	mesg = myLastMessage;
 	mesg.replace(QRegExp("\n"), "\r\n");
@@ -762,9 +749,19 @@ void Chat::sendMessage(void) {
 	kdebug("Chat::sendMessage():\n%s\n", myLastMessage.latin1());
 	myLastMessage.replace(QRegExp("\r\n"), "\n");
 
+	if (!mesg.length() || mesg.length() >= 2000)
+		return;
+
 	addMyMessageToHistory();
 	// zmieniamy unixowe \n na windowsowe \r\n
-			
+
+	if (config.msgacks) {
+		edit->setReadOnly(true);	
+		edit->setEnabled(false);
+		sendbtn->setEnabled(false);
+		cancelbtn->show();
+		}
+
 	unsigned char *utmp = (unsigned char *)strdup(unicode2cp(mesg).data());
 
 	users = new (uin_t)[uins.count()];
