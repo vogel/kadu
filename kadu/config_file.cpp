@@ -39,6 +39,9 @@ void ConfigFile::read()
 	kdebugmf(KDEBUG_FUNCTION_START, "%s\n", filename.local8Bit().data());
 	QFile file(filename);
 	QString line;
+#if QT_VERSION < 0x030100
+	QRegExp newLine("\\\\n");
+#endif
 
 	if (file.open(IO_ReadOnly))
 	{
@@ -60,7 +63,12 @@ void ConfigFile::read()
 			else if (activeGroupName.length())
 			{
 				QString name = line.section('=', 0, 0);
-				QString value=line.right(line.length()-name.length()-1).replace(QRegExp("\\\\n"), "\n");
+#if QT_VERSION < 0x030100
+				//kilka razy wolniejsze...
+				QString value = line.right(line.length()-name.length()-1).replace(newLine, "\n");
+#else
+				QString value = line.right(line.length()-name.length()-1).replace("\\n", "\n");
+#endif
 				name = name.stripWhiteSpace();
 				if (line.contains('=') >= 1 && name.length() && value.length())
 					(*activeGroup)[name]=value;
@@ -71,15 +79,28 @@ void ConfigFile::read()
 	kdebugf2();
 }
 
+//#include <sys/time.h>
 void ConfigFile::write(const QString &f) const
 {
 	kdebugf();
+
+/*	struct timeval t1,t2;
+	gettimeofday(&t1, NULL);
+	for(int j=0; j<100; ++j)
+	{*/
+
 	QFile file;
 	if (f==QString::null)
 		file.setName(filename);
 	else
 		file.setName(f);
 	QString line;
+	QStringList out;
+#if QT_VERSION < 0x030100
+	QRegExp newLine("\n");
+#endif
+	QString format1("[%1]\n");
+	QString format2("%1=%2\n");
 
 	if (file.open(IO_WriteOnly | IO_Truncate))
 	{
@@ -89,19 +110,30 @@ void ConfigFile::write(const QString &f) const
 		for(QMap<QString, QMap<QString, QString> >::const_iterator i=groups.begin(); i!=groups.end(); ++i)
 		{
 //			kdebugm(KDEBUG_DUMP, ">> %s\n", (const char*)i.key().local8Bit());
-			stream << '[' << i.key() << "]\n";
+			out.append(format1.arg(i.key()));
 			for(QMap<QString, QString>::const_iterator j=i.data().begin(); j!=i.data().end(); ++j)
 			{
 				QString q=j.data();
-				stream << j.key() << '=' << q.replace(QRegExp("\n"), "\\n") << '\n';
+#if QT_VERSION < 0x030100
+				//to jest kilka raz wolniejsze...
+				out.append(format2.arg(j.key()).arg(q.replace(newLine, "\\n")));
+#else
+				out.append(format2.arg(j.key()).arg(q.replace('\n', "\\n")));
+#endif
 //				kdebugm(KDEBUG_DUMP, ">>>>> %s %s\n", (const char*)j.key().local8Bit(), (const char*)q.local8Bit());
 			}
-			stream << '\n';
+			out.append("\n");
 		}
+		stream << out.join(QString::null);
 		file.close();
 	}
 	else
 		kdebugm(KDEBUG_ERROR, "can't open '%s'\n", (const char *)file.name().local8Bit());
+
+/*	}
+	gettimeofday(&t2, NULL);
+	kdebugm(KDEBUG_INFO, "czas: %ld\n", (t2.tv_usec-t1.tv_usec)+(t2.tv_sec*1000000)-(t1.tv_sec*1000000));
+*/
 	kdebugf2();
 }
 

@@ -1756,20 +1756,36 @@ QString HttpClient::encode(const QString& text)
 
 void HtmlDocument::escapeText(QString& text)
 {
+#if QT_VERSION < 0x030100
 	text.replace(QRegExp("&"), "&amp;");
 	text.replace(QRegExp("<"), "&lt;");
 	text.replace(QRegExp(">"), "&gt;");
 	text.replace(QRegExp("\""), "&quot;");
 	text.replace(QRegExp("  "), "&nbsp; ");
+#else
+	text.replace("&", "&amp;");
+	text.replace("<", "&lt;");
+	text.replace(">", "&gt;");
+	text.replace("\"", "&quot;");
+	text.replace("  ", "&nbsp; ");
+#endif
 }
 
 void HtmlDocument::unescapeText(QString& text)
 {
+#if QT_VERSION < 0x030100
 	text.replace(QRegExp("&nbsp;"), " ");
 	text.replace(QRegExp("&amp;"), "&");
 	text.replace(QRegExp("&lt;"), "<");
 	text.replace(QRegExp("&gt;"), ">");
 	text.replace(QRegExp("&quot;"), "\"");
+#else
+	text.replace("&nbsp;", " ");
+	text.replace("&amp;", "&");
+	text.replace("&lt;", "<");
+	text.replace("&gt;", ">");
+	text.replace("&quot;", "\"");
+#endif
 }
 
 void HtmlDocument::addElement(Element e)

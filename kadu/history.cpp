@@ -54,6 +54,7 @@ HistoryManager::HistoryManager(QObject *parent, const char *name) : QObject(pare
 QString HistoryManager::text2csv(const QString &text)
 {
 	QString csv = text;
+	//TODO: zrobiæ ifdefa na QT_VERSION<3.1, regexpy s± wolne
 	csv.replace(QRegExp("\\\\"), "\\\\");
 	csv.replace(QRegExp("\""), "\\\"");
 	csv.replace(QRegExp("\r\n"), "\\n");

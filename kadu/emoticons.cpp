@@ -191,11 +191,13 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc, const QColor& bgcolor,
 {
 	kdebugf();
 
-	if(getSubDirs(dataPath("kadu/themes/emoticons")).size()==0)
+	static bool emotsFound = false;
+	if (!emotsFound && getSubDirs(dataPath("kadu/themes/emoticons")).size()==0)
 	{
 		kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "end: NO EMOTICONS!\n");
 		return;
 	}
+	emotsFound = true;
 	
 	// check in config if user wants animated emots
 	bool animated = style == EMOTS_ANIMATED;

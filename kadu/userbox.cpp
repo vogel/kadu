@@ -172,8 +172,11 @@ void KaduListBoxPixmap::paint(QPainter *painter)
 			painter->setFont(newFont);
 
 			if (!ShowMultilineDesc)
+#if QT_VERSION < 0x030100
 				descr.replace(QRegExp("\n"), " ");
-
+#else
+				descr.replace("\n", " ");
+#endif
 			int h;
 			QStringList out;
 			calculateSize(descr, width(listBox())-5-pm.width(), out, h);
@@ -207,7 +210,11 @@ int KaduListBoxPixmap::height(const QListBox* lb) const
 	if (hasDescription && ShowDesc)
 	{
 		if (!ShowMultilineDesc)
+#if QT_VERSION < 0x030100
 			descr.replace(QRegExp("\n"), " ");
+#else
+			descr.replace("\n", " ");
+#endif
 		QStringList out;
 		int h;
 		calculateSize(descr, width(lb)-5-pm.width(), out, h);
