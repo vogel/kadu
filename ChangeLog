@@ -26,6 +26,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   przydzielaj±c usera do niej) (mast3r)
 * lewy klik na tray'u gdy jest koperta powoduje odebranie wiadomo¶ci, za¶
   gdy koperty nie ma pokazywanie/ukrywanie okna g³ównego (mast3r)
+* dodanie do detekcji adresów url ³apania w url znaków '!' i ',' (uto/mast3r)
+* CTRL + lewy klik na tray'u gdy jest wiadomo¶æ spowoduje pokazanie/ukrycie
+  okna g³ównego (mast3r)
 
 +++ wersja 0.3.4-rc2
 * porzadki: kod rejestrujacy opcje modulow Chat i Sms w oknie konfiguracji

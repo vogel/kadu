@@ -260,7 +260,7 @@ void TrayIcon::mousePressEvent(QMouseEvent * e) {
 
 	if (e->button() == LeftButton) {
 		emit mousePressLeftButton();
-		if (pending.pendingMsgs()) {
+		if (pending.pendingMsgs() && e->state() != ControlButton) {
 			pending.openMessages();
 			return;
 			}
