@@ -93,7 +93,7 @@ QString timestamp(time_t customtime)
 
 	if (customtime) {
 		date.setTime_t(customtime);
-		buf.append(QString(" / ") + printDateTime(date));
+		buf.append(QString(" / S ") + printDateTime(date));
 		}
 
 	return buf;
