@@ -26,8 +26,9 @@
 class UserlistImport : public QDialog {
 	Q_OBJECT
 	public:
-		UserlistImport(QDialog *parent=0, const char *name=0);
-
+		UserlistImport(QWidget *parent=0, const char *name=0);
+		void init(void);
+		
 	private:
 		struct gg_http *gg_http;
 		struct gg_event *e;
@@ -57,7 +58,8 @@ class UserlistImport : public QDialog {
 class UserlistExport : public QDialog {
 	Q_OBJECT
 	public:
-		UserlistExport(QDialog *parent=0, const char *name=0);
+		UserlistExport(QWidget *parent=0, const char *name=0);
+		void init(void);
 
 	private:
 		struct gg_http *gg_http;

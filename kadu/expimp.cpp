@@ -28,10 +28,8 @@
 #include "kadu.h"
 #include "expimp.h"
 
-UserlistImport::UserlistImport(QDialog *parent, const char *name) : QDialog (parent, name) {
-	resize(450, 330);
-	setCaption(i18n("Import userlist"));	
-	setWFlags(Qt::WDestructiveClose);
+UserlistImport::UserlistImport(QWidget *parent, const char *name)
+ : QDialog(parent, name, FALSE, Qt::WDestructiveClose) {
 
 	QGridLayout * grid = new QGridLayout(this, 2, 2, 3, 3);
 
@@ -66,15 +64,20 @@ UserlistImport::UserlistImport(QDialog *parent, const char *name) : QDialog (par
 	gg_http = NULL;
 }
 
+void UserlistImport::init() {
+	resize(450, 330);
+	setCaption(i18n("Import userlist"));	
+}
+
 void UserlistImport::deleteSocketNotifiers() {
 	if (snr) {
 		snr->setEnabled(false);
-		delete snr;
+		snr->deleteLater();
 		snr = NULL;
 		}
 	if (snw) {
 		snw->setEnabled(false);
-		delete snw;
+		snw->deleteLater();
 		snw = NULL;
 		}
 }
@@ -236,9 +239,8 @@ void UserlistImport::socketEvent() {
 		snw->setEnabled(true);
 }
 
-UserlistExport::UserlistExport(QDialog *parent, const char *name) : QDialog (parent, name) {
-	setCaption(i18n("Export userlist"));	
-	setWFlags(Qt::WDestructiveClose);
+UserlistExport::UserlistExport(QWidget *parent, const char *name)
+ : QDialog (parent, name, FALSE, Qt::WDestructiveClose) {
 
 	QGridLayout *grid = new QGridLayout(this,3,1,3,3);
 
@@ -269,15 +271,19 @@ UserlistExport::UserlistExport(QDialog *parent, const char *name) : QDialog (par
 	gg_http = NULL;
 }
 
+void UserlistExport::init() {
+	setCaption(i18n("Export userlist"));	
+}
+
 void UserlistExport::deleteSocketNotifiers() {
 	if (snr) {
 		snr->setEnabled(false);
-		delete snr;
+		snr->deleteLater();
 		snr = NULL;
 		}
 	if (snw) {
 		snw->setEnabled(false);
-		delete snw;
+		snw->deleteLater();
 		snw = NULL;
 		}
 }

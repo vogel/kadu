@@ -31,10 +31,8 @@
 #include "message.h"
 //
 
-SearchDialog::SearchDialog(QDialog *parent, const char *name, uin_t whoisSearchUin) : QDialog (parent, name) {
-	setWFlags(Qt::WDestructiveClose);
-	resize(450,330);
-	setCaption(i18n("Search in directory"));
+SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchUin)
+: QDialog (parent, name, FALSE, Qt::WDestructiveClose) {
 
 	_whoisSearchUin = whoisSearchUin;
 
@@ -52,35 +50,31 @@ SearchDialog::SearchDialog(QDialog *parent, const char *name, uin_t whoisSearchU
 	connect(b_sendbtn, SIGNAL(clicked()), this, SLOT(doSearchWithoutStart()));
 	b_sendbtn->setAccel(Key_Return);	
 
-	QPushButton *b_clrbtn;
-	b_clrbtn = new QPushButton(this);
-	b_clrbtn->setText(i18n("C&lear list"));
-
 	b_nextbtn = new QPushButton(this);
 	connect(b_nextbtn, SIGNAL(clicked()), this, SLOT(doSearch()));
 	b_nextbtn->setText(i18n("&Next results"));
 
-	QPushButton* AddButton=new QPushButton(this);
-	AddButton->setText(i18n("&Add User"));
-	connect(AddButton, SIGNAL(clicked()), this, SLOT(AddButtonClicked()));
+	QPushButton *b_clrbtn;
+	b_clrbtn = new QPushButton(this);
+	b_clrbtn->setText(i18n("C&lear list"));
+
+	QPushButton* b_addbtn=new QPushButton(this);
+	b_addbtn->setText(i18n("&Add User"));
+	connect(b_addbtn, SIGNAL(clicked()), this, SLOT(AddButtonClicked()));
 
 	QHBoxLayout* CommandLayout=new QHBoxLayout(5);
 	CommandLayout->addWidget(b_sendbtn);
 	CommandLayout->addWidget(b_nextbtn);
 	CommandLayout->addWidget(b_clrbtn);
-	CommandLayout->addWidget(AddButton);
-
-	l_name = new QLabel(this);
-	l_name->setText(i18n("Name"));
-	e_name = new QLineEdit(this);
+	CommandLayout->addWidget(b_addbtn);
 
 	l_nick = new QLabel(this);
 	l_nick->setText(i18n("Nickname"));
 	e_nick = new QLineEdit(this);
 
-	l_byr = new QLabel(this);
-	l_byr->setText(i18n("Birthyear"));
-	e_byr = new QLineEdit(this);
+	l_name = new QLabel(this);
+	l_name->setText(i18n("Name"));
+	e_name = new QLineEdit(this);
 
 	l_surname = new QLabel(this);
 	l_surname->setText(i18n("Surname"));
@@ -93,19 +87,23 @@ SearchDialog::SearchDialog(QDialog *parent, const char *name, uin_t whoisSearchU
 	c_gender->insertItem(i18n("Male"), 1);
 	c_gender->insertItem(i18n("Female"), 2);
 
+	l_byr = new QLabel(this);
+	l_byr->setText(i18n("Birthyear"));
+	e_byr = new QLineEdit(this);
+
 	l_city = new QLabel(this);
 	l_city->setText(i18n("City"));
 	e_city = new QLineEdit(this);
-
-	QGroupBox *qgrp2 = new QGroupBox(4, Qt::Horizontal, i18n("Phone number"), this);
-	l_phone = new QLabel(qgrp2);
-	l_phone->setText(i18n("Phone"));
-	e_phone = new QLineEdit(qgrp2);
 
 	QGroupBox * qgrp1 = new QGroupBox(2, Qt::Horizontal, i18n("Uin"), this);
 	l_uin = new QLabel(qgrp1);
 	l_uin->setText(i18n("Uin"));
 	e_uin = new QLineEdit(qgrp1);
+
+	QGroupBox *qgrp2 = new QGroupBox(4, Qt::Horizontal, i18n("Phone number"), this);
+	l_phone = new QLabel(qgrp2);
+	l_phone->setText(i18n("Phone"));
+	e_phone = new QLineEdit(qgrp2);
 
 	progress = new QLabel(this);
 
@@ -184,15 +182,20 @@ SearchDialog::~SearchDialog() {
 	fprintf(stderr, "KK SearchDialog::~SearchDialog()\n");
 }
 
+void SearchDialog::init() {
+	resize(450,330);
+	setCaption(i18n("Search in directory"));
+}
+
 void SearchDialog::deleteSocketNotifiers() {
 	if (snr) {
 		snr->setEnabled(false);
-		delete snr;
+		snr->deleteLater();
 		snr = NULL;
 		}
 	if (snw) {
 		snw->setEnabled(false);
-		delete snw;
+		snw->deleteLater();
 		snw = NULL;
 		}
 }
@@ -413,7 +416,7 @@ void SearchDialog::uinTyped(void) {
 
 void SearchDialog::AddButtonClicked()
 {
-	QListViewItem* selected=results->selectedItem();
+	QListViewItem* selected = results->selectedItem();
 	if (!selected) {
 		QMessageBox::information(this,i18n("Add User"),i18n("Select user first"));
 		return;
@@ -425,7 +428,7 @@ void SearchDialog::AddButtonClicked()
 	QString nickname = selected->text(5);
 
 	// Build altnick. Try user nick first.
-	QString altnick=nickname;
+	QString altnick = nickname;
 	// If nick is empty, try firstname+lastname.
 	if (altnick == "") {
 		altnick = firstname;
@@ -437,9 +440,9 @@ void SearchDialog::AddButtonClicked()
 	if (altnick == "")
 		altnick = uin;
 
-	if (QMessageBox::information(this,i18n("Add User"),
+	if (QMessageBox::information(this, i18n("Add User"),
 		i18n("Do you want to add user %1 to user list?").arg(altnick),
-		i18n("&Yes"),i18n("&No")) != 0)
+		i18n("&Yes"), i18n("&No")) != 0)
 		return;
 
 	kadu->addUser(firstname,lastname,nickname,altnick,"",uin,

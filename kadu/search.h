@@ -32,9 +32,10 @@
 class SearchDialog : public QDialog {
 	Q_OBJECT
 	public:
-		SearchDialog(QDialog* parent=0, const char *name=0, uin_t whoisSearchUin = 0);
+		SearchDialog(QWidget *parent=0, const char *name=0, uin_t whoisSearchUin = 0);
 		~SearchDialog(void);
-
+		void init(void);
+		
 	private:
 		struct gg_http *foo;
 		struct gg_search *res;

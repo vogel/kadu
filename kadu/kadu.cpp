@@ -423,28 +423,9 @@ void sendUserlist() {
 
 	free(uins);
 }
-
-void Kadu::removeUser(QString &username, bool permanently = false) {
-	int i = 0;
-
-	UserBox::all_removeUser(username);	
-	UserBox::all_refresh();
-	
-	UserListElement user = userlist.byAltNick(username);
-	gg_remove_notify(&sess, user.uin);
-    	userlist.removeUser(user.uin);
-
-	switch (QMessageBox::information(kadu, "Kadu", i18n("Save current userlist to file?"), i18n("Yes"), i18n("No"), QString::null, 0, 1) ) {
-		case 0: // Yes?
-			userlist.writeToFile();
-			break;
-		case 1:
-			break;
-		}
-}
   
 /* a monstrous constructor so Kadu would take longer to start up */
-Kadu::Kadu(QWidget *parent, const char *name) : QWidget (parent, name)
+Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 {
 	/* timers, cause event loops and QSocketNotifiers suck. */
 	pingtimer = blinktimer = readevent = NULL;
@@ -600,6 +581,25 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget (parent, name)
 	dccsock = NULL;
 	/* dirty workaround for multiple showEvents */
 	commencing_startup = true;
+}
+
+void Kadu::removeUser(QString &username, bool permanently = false) {
+	int i = 0;
+
+	UserBox::all_removeUser(username);	
+	UserBox::all_refresh();
+	
+	UserListElement user = userlist.byAltNick(username);
+	gg_remove_notify(&sess, user.uin);
+    	userlist.removeUser(user.uin);
+
+	switch (QMessageBox::information(kadu, "Kadu", i18n("Save current userlist to file?"), i18n("Yes"), i18n("No"), QString::null, 0, 1) ) {
+		case 0: // Yes?
+			userlist.writeToFile();
+			break;
+		case 1:
+			break;
+		}
 }
 
 void Kadu::blink() {
@@ -810,7 +810,8 @@ void Kadu::commandParser (int command) {
 			ui->show();
 			break;
 		case KADU_CMD_SEARCH:
-			sd = new SearchDialog;
+			sd = new SearchDialog();
+			sd->init();
 			sd->show();
 			break;
 		case KADU_CMD_MUTE:
@@ -863,13 +864,15 @@ void Kadu::commandParser (int command) {
 			close(true);
 			break;
 		case KADU_CMD_SEARCH_USER:
-			sd = new SearchDialog(0,i18n("User info"), userlist.byAltNick(userbox->currentText()).uin);
+			sd = new SearchDialog(0, i18n("User info"), userlist.byAltNick(userbox->currentText()).uin);
+			sd->init();
 			sd->show();
 			sd->doSearch();
 			break;
 		case KADU_CMD_IMPORT_USERLIST:
 			UserlistImport *uli;
-			uli = new UserlistImport;
+			uli = new UserlistImport();
+			uli->init();
 			uli->show();
 			break;
 		case KADU_CMD_CONFIG:
@@ -879,7 +882,8 @@ void Kadu::commandParser (int command) {
 			break;
 		case KADU_CMD_EXPORT_USERLIST:
 			UserlistExport *ule;
-			ule = new UserlistExport;
+			ule = new UserlistExport();
+			ule->init();
 			ule->show();
 			break;
 		case KADU_CMD_HIDE:

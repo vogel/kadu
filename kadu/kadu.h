@@ -33,6 +33,8 @@
 #include <kapp.h>
 #include <qsocketnotifier.h>
 #include <qarray.h>
+#include <qmainwindow.h>
+
 #include "userlist.h"
 #include "userbox.h"
 #include "misc.h"
@@ -125,7 +127,7 @@ struct groups {
 class dccSocketClass;
 class DockWidget;
 
-class Kadu : public QWidget
+class Kadu : public QMainWindow
 {
 	Q_OBJECT
 	 
