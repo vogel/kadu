@@ -41,7 +41,7 @@ class Notify : public QObject
 	void userStatusChanged(const UserListElement &, const UserStatus &oldStatus, bool onConnection);
 
 	/* pomocniczy slot */
-	void probablyNewChat(UinsList senders, const QString& msg, time_t time);
+	void newChatSlot(UinsList senders, const QString& msg, time_t time);
 	/* pomocniczy slot */
 	void probablyNewMessage(UinsList senders, const QString& msg, time_t time, bool &);
 

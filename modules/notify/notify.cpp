@@ -62,7 +62,7 @@ Notify::Notify()
 
 	connect(kadu, SIGNAL(connectionError(const QString &)), this, notifySignals["ConnError"]);
 	connect(gadu, SIGNAL(chatMsgReceived1(UinsList, const QString&, time_t,bool&)), this, SLOT(probablyNewMessage(UinsList, const QString&, time_t, bool&)));
-	connect(gadu, SIGNAL(chatMsgReceived2(UinsList, const QString&, time_t)), this, SLOT(probablyNewChat(UinsList, const QString&, time_t)));
+	connect(gadu, SIGNAL(chatMsgReceived2(UinsList, const QString&, time_t)), this, SLOT(newChatSlot(UinsList, const QString&, time_t)));
 	connect(gadu, SIGNAL(userStatusChanged(const UserListElement &, const UserStatus &, bool)),
 		this, SLOT(userStatusChanged(const UserListElement &, const UserStatus &, bool)));
 
@@ -135,7 +135,7 @@ Notify::~Notify()
 
 	disconnect(kadu, SIGNAL(connectionError(const QString &)), this, notifySignals["ConnError"]);
 	disconnect(gadu, SIGNAL(chatMsgReceived1(UinsList, const QString&, time_t,bool&)), this, SLOT(probablyNewMessage(UinsList, const QString&, time_t, bool&)));
-	disconnect(gadu, SIGNAL(chatMsgReceived2(UinsList, const QString&, time_t)), this, SLOT(probablyNewChat(UinsList, const QString&, time_t)));
+	disconnect(gadu, SIGNAL(chatMsgReceived2(UinsList, const QString&, time_t)), this, SLOT(newChatSlot(UinsList, const QString&, time_t)));
 	disconnect(gadu, SIGNAL(userStatusChanged(const UserListElement &, const UserStatus &, bool)),
 		this, SLOT(userStatusChanged(const UserListElement &, const UserStatus &, bool)));
 
@@ -198,12 +198,10 @@ void Notify::userStatusChanged(const UserListElement &ule, const UserStatus &old
 	kdebugf2();
 }
 
-void Notify::probablyNewChat(UinsList senders, const QString& msg, time_t time)
+void Notify::newChatSlot(UinsList senders, const QString& msg, time_t time)
 {
-	kdebugf();
-	Chat* chat=chat_manager->findChatByUins(senders);
-	if (chat==NULL)
-		emit newChat(senders, msg, time);
+	kdebugf();//sygnatury trochê siê ró¿ni±, wiêc ten slot musi byæ...
+	emit newChat(senders, msg, time);
 	kdebugf2();
 }
 
