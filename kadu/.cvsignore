@@ -1,4 +1,3 @@
-.cvsignore
 Makefile
 *_moc.cpp
 .deps
