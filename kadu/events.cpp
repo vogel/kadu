@@ -657,16 +657,23 @@ void EventManager::userlistReplyReceivedSlot(char type, char *reply)
 }
 
 void EventManager::connectionTimeoutSlot() {
+	kdebug("EventManager::connectionTimeoutSlot()\n");
 	ConnectionTimeoutTimer::off();
-	if (sess->state != GG_STATE_CONNECTING_GG || sess->port == GG_HTTPS_PORT)
-		return;
-	gg_event* e;
-	sess->timeout = 0;
-	if (!(e = gg_watch_fd(sess))) {
-		emit connectionBroken();
-		gg_free_event(e);
-		return;
+	if (sess->state == GG_STATE_CONNECTING_GG && sess->port != GG_HTTPS_PORT) {
+		gg_event* e;
+		sess->timeout = 0;
+		if (!(e = gg_watch_fd(sess))) {
+			emit connectionBroken();
+			gg_free_event(e);
+			return;
+			}
+		ConnectionTimeoutTimer::on();
+		ConnectionTimeoutTimer::connectTimeoutRoutine(this,
+			SLOT(connectionTimeoutSlot()));
 		}
+	else
+		if (sess->state == GG_STATE_READING_KEY)
+			emit connectionBroken();
 }
 
 void EventManager::eventHandler(gg_session* sess)
@@ -726,6 +733,7 @@ void EventManager::eventHandler(gg_session* sess)
 			break;
 		case GG_STATE_READING_REPLY:
 			kdebug("EventManager::eventHandler(): Sending key\n");
+			ConnectionTimeoutTimer::off();
 			break;
 		case GG_STATE_CONNECTED:
 			break;

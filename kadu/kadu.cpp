@@ -1680,14 +1680,14 @@ void Kadu::setStatus(int status) {
 			server_nr = 0;
 		}
 	else {
-		if (server_nr) {
-			loginparams.server_addr = htonl(gg_servers[server_nr - 1].ip4Addr());
-			loginparams.server_port = config_file.readNumEntry("Network", "DefaultPort");
-			}
-		else {
+//		if (server_nr) {
+//			loginparams.server_addr = htonl(gg_servers[server_nr - 1].ip4Addr());
+//			loginparams.server_port = config_file.readNumEntry("Network", "DefaultPort");
+//			}
+//		else {
 			loginparams.server_addr = 0;
 			loginparams.server_port = 0;
-			}
+//			}
 		server_nr++;
 		if (server_nr > 7)
 			server_nr = 0;

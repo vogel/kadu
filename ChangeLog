@@ -12,6 +12,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   siê z portem 443 (Ron_K/chilek)
 * zmiana wygladu okna konfiguracji "zakladke" wybiera sie po lewej stronie okna
   natomiast opcje wyswietlaja sie po prawej stronie okna (pawel_p)
+* w trakcie ³±czenia siê z sieci± gg po 3 sekundach nieaktywno¶ci próbujemy ³±czyæ siê
+  od nowa (chilek)
 
 +++ wersja 0.3.6 (22.11.2003)
 * je¶li klikniemy na jaki¶ kontakt w userboxie, od którego otrzymali¶my jak±¶
