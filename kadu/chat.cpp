@@ -20,6 +20,7 @@
 #include <qsplitter.h>
 #include <qhbox.h>
 #include <qvbox.h>
+#include <qvaluelist.h>
 #include <stdlib.h>
 
 //
@@ -40,6 +41,8 @@ extern "C"
 };
 #endif
 //
+
+QValueList<UinsList> wasFirstMsgs;
 
 KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
 	: QTextBrowser(parent, name) {
@@ -529,6 +532,15 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time) {
 	int i, from, end, count;
 	
 	kdebug("Chat::writeMessageFromHistory()\n");
+
+	QValueList<UinsList>::iterator uinsit = wasFirstMsgs.begin();
+	while (uinsit != wasFirstMsgs.end() && !senders.equals(*uinsit))
+		uinsit++;
+	if (uinsit != wasFirstMsgs.end())
+		return;
+	else
+		wasFirstMsgs.append(senders);
+
 	date.setTime_t(time);
 	count = history.getHistoryEntriesCount(senders);
 	end = count - 1;

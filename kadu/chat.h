@@ -17,9 +17,13 @@
 #include <qpushbutton.h>
 #include <qarray.h>
 #include <qtoolbutton.h>
+#include <qvaluelist.h>
+
 #include "misc.h"
 #include "userbox.h"
 #include "../config.h"
+
+extern QValueList<UinsList> wasFirstMsgs;
 
 class EmoticonSelector;
 

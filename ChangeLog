@@ -66,6 +66,8 @@
   niedostêpny i poprawka w menu z docku- domyslny status nie byl checkniêty (mast3r)
 * przy otwieraniu okna rozmowy wiadomo¶ci nie powinny siê ju¿ dublowaæ (chilek)
 * pocz±tki porz±dków z oknem historii (chilek)
+* je¶li z kim¶ ju¿ wcze¶niej "rozmawiali¶my" od w³±czenia kadu to nie s±
+  cytowane wypowiedzi (chilek)
 
 +++ wersja 0.3.3-final
 * ikonka wiadomo¶ci i ikon statusu "ukryty" z telefonikiem
