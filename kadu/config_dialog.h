@@ -26,46 +26,46 @@
 
 #include "config_file.h"
 /**
-    Kontrolka umozliwiajaca wybranie skrotu klawiszowego
+    Kontrolka umo¿liwiajaca wybranie skrótu klawiszowego
 **/
 class HotKey : public QLineEdit
 {
 	public:
 		HotKey::HotKey(QWidget *parent =0, const char* name =0);
 		/**
-		  Pobiera skrot klawiszowy
+		  Pobiera skrót klawiszowy
 		**/
 		QString getShortCutString();
 
 		/**
-		  Pobiera skrot klawiszowy
+		  Pobiera skrót klawiszowy
 		**/
 		QKeySequence getShortCut();
 
 		/**
-		  Ustawia skrot klawiszowy
+		  Ustawia skrót klawiszowy
 		**/
 		void setShortCut(const QString& shortcut);
 
 		/**
-		  Ustawia skrot klawiszowy
+		  Ustawia skrót klawiszowy
 		**/
 		void setShortCut(const QKeySequence& shortcut);
 
 		/**
-		 Zwraca skrot klawiszowy jaki zostal nacisniety przy zdarzeniu QKeyEvent
+		 Zwraca skrót klawiszowy jaki zosta³ naci¶niêty przy zdarzeniu QKeyEvent
 		**/
 		static QString keyEventToString(QKeyEvent *e);
 
 		/**
-		 Pobiera skrot klawiszowy, z pliku konfiguracyjnego 
+		 Pobiera skrót klawiszowy, z pliku konfiguracyjnego 
 		 z grupy "groupname", o polu "name"
 		**/
 		static QKeySequence shortCutFromFile(const QString& groupname, const QString &name);
 
 		/**
-		 Sprawdza czy skrot nacisniety przy zdarzeniu QKeyEvent zgadza sie 
-		 ze skrotem klawiszowym, z pliku konfiguracyjnego, o polu "name"
+		 Sprawdza czy skrót naci¶niêty przy zdarzeniu QKeyEvent zgadza siê
+		 ze skrótem klawiszowym, z pliku konfiguracyjnego, o polu "name"
 		**/
 		static bool shortCut(QKeyEvent *e, const QString& groupname, const QString &name);
 	protected:
@@ -83,8 +83,8 @@ class ColorButton : public QPushButton
 	       QColor actualcolor;
 	public:
 	    /**
-		Konstruktor obiektu w ktorym ustawia sie kolor "color",
-		ktory ma rodzica "parent" oraz nazywa sie "name"
+		Konstruktor obiektu w którym ustawia sie kolor "color",
+		który ma rodzica "parent" oraz nazywa sie "name"
 	    **/
 	       ColorButton(const QColor &color, QWidget *parent =0, const char* name =0);
 
@@ -101,7 +101,7 @@ class ColorButton : public QPushButton
 	       void onClick();
 	signals:
 	    /**
-		Sygnal jest emitowany przy zmianie koloru, przesyla on zmieniony kolor
+		Sygna³ jest emitowany przy zmianie koloru, przesy³a on zmieniony kolor
 	    **/
 		void changed(const QColor& color);
 
@@ -131,20 +131,20 @@ class SelectPaths : public QDialog
 		SelectPaths(QWidget *parent =0, const char* name =0);
 		~SelectPaths();
 		/**
-			Pobiera liste sciezek katalogow
+			Pobiera listê ¶cie¿ek katalogów
 		**/
 		QStringList getPathList();
 
 		/**
-			Ustawia sciezki z katalogami
+			Ustawia ¶cie¿ki z katalogami
 		**/
 		void setPathList(QStringList& list);
 
 	signals:
 
 		/**
-			Sygnal jest emitowany przy zamknieciu okna przez "ok",
-			przesyla on zmieniony zmieniona liste sciezek katalogow
+			Sygna³ jest emitowany przy zamkniêciu okna przez "ok",
+			przesy³a on zmienion± listê ¶cie¿ek katalogów
 	    **/
 		void changed(const QStringList& paths);
 };
@@ -219,11 +219,11 @@ class ConfigDialog : public QDialog	{
 		static QApplication* appHandle;
 		
 		/**
-		    Dodaje kontrolke do listy RegisteredControls 
+		    Dodaje kontrolkê do listy RegisteredControls 
 		**/
 		static int addControl(const QString& groupname,const RegisteredControl& control);
 		/**
-		    Uaktualnia liczbe kontrolek bedacych dziecmi kontrolki "parent"
+		    Uaktualnia liczbê kontrolek bêd±cych dzieæmi kontrolki "parent"
 		**/
 		static void increaseNrOfControls(const int startpos, const int endpos, const QString& parent);
 		static void decreaseNrOfControls(int control);
@@ -241,18 +241,18 @@ class ConfigDialog : public QDialog	{
 		static void showConfigDialog(QApplication* application);
 
 		/**
-		    Dodaje kontrolke do zakladki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname", 
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
-			Wartosc kontrolki jest zapisana do pliku konfiguracyjnego "config" w postaci
+			Warto¶æ kontrolki jest zapisana do pliku konfiguracyjnego "config" w postaci
 			-------------
 			[groupname]
 			entry= value {defaultS}
 			-------------
 			
-			Domyslna wartoscia kontrolki przy pierwszym uruchomieniu programu 
+			Domy¶ln± warto¶ci± kontrolki przy pierwszym uruchomieniu programu 
 			jest "defaultS".
-			Podpowiedz kontrolki ustawiona jest na "tip".
+			Podpowied¼ kontrolki ustawiona jest na "tip".
 			Nazwa kontrolki ustawiona jest na "name".
 		**/		
  		static void addCheckBox(const QString& groupname, 
@@ -265,11 +265,11 @@ class ConfigDialog : public QDialog	{
 		
 			    			    
 		/**
-		    Dodaje kontrolke do zakladki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname", 
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".		
 			Kolor przycisku jest ustawiony na "color"
-			Podpowiedz kontrolki ustawiona jest na "tip".
+			Podpowied¼ kontrolki ustawiona jest na "tip".
 			Nazwa kontrolki ustawiona jest na "name".
 		**/		
 			    
@@ -277,10 +277,10 @@ class ConfigDialog : public QDialog	{
 			    const QString& parent, const QString& caption,
 			    const QColor& color, const QString& tip="", const QString& name="");
 		/**
-		    Dodaje kontrolke do zakladki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname", 
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
-			Podpowiedz kontrolki ustawiona jest na "tip".
+			Podpowied¼ kontrolki ustawiona jest na "tip".
 			Nazwa kontrolki ustawiona jest na "name".
 		**/		
 			    
@@ -289,10 +289,10 @@ class ConfigDialog : public QDialog	{
 			    const QString& tip="", const QString& name="");
 
 		/**
-		    Dodaje kontrolke do zakladki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname", 
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
-			Ilosc kolumn w kontrolce ustwiona jest na nrColumns
+			Ilo¶æ kolumn w kontrolce ustwiona jest na nrColumns
 			Nazwa kontrolki ustawiona jest na "name".
 		**/		
 			    
@@ -300,7 +300,7 @@ class ConfigDialog : public QDialog	{
 			    const QString& parent, const QString& caption, const int nrColumns=3, const QString& name="");
 
 		/**
-		    Dodaje kontrolke do zakladki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname", 
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
 			Nazwa kontrolki ustawiona jest na "name".
@@ -310,7 +310,7 @@ class ConfigDialog : public QDialog	{
 			    const QString& parent, const QString& caption, const QString& name="");
 
 		/**
-		    Dodaje kontrolke do zakladki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname", 
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
 			Nazwa kontrolki ustawiona jest na "name".
@@ -320,18 +320,18 @@ class ConfigDialog : public QDialog	{
 			    const QString& parent, const QString& caption, const QString& name="");
 			    
 		/**
-		    Dodaje kontrolke do zakladki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname", 
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
-			Wartosc kontrolki jest zapisana do pliku konfiguracyjnego "config" w postaci
+			Warto¶æ kontrolki jest zapisana do pliku konfiguracyjnego "config" w postaci
 			-------------
 			[groupname]
 			entry= value {defaultS}
 			-------------
 			
-			Domyslna wartoscia kontrolki przy pierwszym uruchomieniu programu 
+			Domy¶ln± warto¶ci± kontrolki przy pierwszym uruchomieniu programu 
 			jest "defaultS".
-			Podpowiedz kontrolki ustawiona jest na "tip".
+			Podpowied¼ kontrolki ustawiona jest na "tip".
 			Nazwa kontrolki ustawiona jest na "name".
 		**/		
 
@@ -344,7 +344,7 @@ class ConfigDialog : public QDialog	{
 
 			    
 		/**
-		    Dodaje kontrolke do zakladki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname", 
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
 			Nazwa kontrolki ustawiona jest na "name".
@@ -354,18 +354,18 @@ class ConfigDialog : public QDialog	{
 			    const QString& parent, const QString& caption, const QString& name="");
 			    
 		/**
-		    Dodaje kontrolke do zakladki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname", 
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
-			Wartosc kontrolki jest zapisana do pliku konfiguracyjnego "config" w postaci
+			Warto¶æ kontrolki jest zapisana do pliku konfiguracyjnego "config" w postaci
 			-------------
 			[groupname]
 			entry= value {defaultS}
 			-------------
 			
-			Domyslna wartoscia kontrolki przy pierwszym uruchomieniu programu 
+			Domy¶ln± warto¶ci± kontrolki przy pierwszym uruchomieniu programu 
 			jest "defaultS".
-			Podpowiedz kontrolki ustawiona jest na "tip".
+			Podpowied¼ kontrolki ustawiona jest na "tip".
 			Nazwa kontrolki ustawiona jest na "name".
 		**/		
 
@@ -378,11 +378,11 @@ class ConfigDialog : public QDialog	{
 
 
 		/**
-		    Dodaje kontrolke do zakladki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname", 
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
-			Domyslna wartoscia kontrolki ustawion jest na "defaultS".
-			Podpowiedz kontrolki ustawiona jest na "tip".
+			Domy¶ln± warto¶ci± kontrolki ustawion jest na "defaultS".
+			Podpowied¼ kontrolki ustawiona jest na "tip".
 			Nazwa kontrolki ustawiona jest na "name".
 		**/		
 
@@ -391,18 +391,18 @@ class ConfigDialog : public QDialog	{
 			    const QString& defaultS="", const QString& tip="",const QString& name="");
 			    
 		/**
-		    Dodaje kontrolke do zakladki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname", 
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
-			Wartosc kontrolki jest zapisana do pliku konfiguracyjnego "config" w postaci
+			Warto¶æ kontrolki jest zapisana do pliku konfiguracyjnego "config" w postaci
 			-------------
 			[groupname]
 			entry= value {defaultS}
 			-------------
 			
-			Domyslna wartoscia kontrolki przy pierwszym uruchomieniu programu 
+			Domy¶ln± warto¶ci± kontrolki przy pierwszym uruchomieniu programu 
 			jest "defaultS".
-			Podpowiedz kontrolki ustawiona jest na "tip".
+			Podpowied¼ kontrolki ustawiona jest na "tip".
 			Nazwa kontrolki ustawiona jest na "name".
 		**/		
 
@@ -415,10 +415,10 @@ class ConfigDialog : public QDialog	{
 
 
 		/**
-		    Dodaje kontrolke do zakladki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname", 
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
-			Podpowiedz kontrolki ustawiona jest na "tip".
+			Podpowied¼ kontrolki ustawiona jest na "tip".
 			Nazwa kontrolki ustawiona jest na "name".
 		**/		
 
@@ -426,10 +426,10 @@ class ConfigDialog : public QDialog	{
 			    const QString& parent, const QString& caption, const QString& tip= "", const QString& name="");
 
 		/**
-		    Dodaje kontrolke do zakladki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname", 
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
-			Podpowiedz kontrolki ustawiona jest na "tip".
+			Podpowied¼ kontrolki ustawiona jest na "tip".
 			Nazwa kontrolki ustawiona jest na "name".
 		**/		
 
@@ -437,12 +437,12 @@ class ConfigDialog : public QDialog	{
 			    const QString& parent, const QString& caption, const QString& tip= "", const QString& name="");
 			    
 		/**
-		    Dodaje kontrolke do zakladki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname", 
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
-			Podpowiedz kontrolki ustawiona jest na "tip".
+			Podpowied¼ kontrolki ustawiona jest na "tip".
 			Nazwa kontrolki ustawiona jest na "name".
-			@param iconname nazwa ikony z zestawu lub sciezka do pliku
+			@param iconname nazwa ikony z zestawu lub ¶cie¿ka do pliku
 		**/		
 
 		static void addPushButton(const QString& groupname, 
@@ -450,7 +450,7 @@ class ConfigDialog : public QDialog	{
 			    const QString& iconFileName="", const QString& tip="", const QString& name="");
 
 		/**
-		    Dodaje kontrolke do zakladki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname", 
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
 			Nazwa kontrolki ustawiona jest na "name".
@@ -461,19 +461,19 @@ class ConfigDialog : public QDialog	{
 			    
 
 		/**
-		    Dodaje kontrolke do zakladki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname", 
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
-			Wartosc kontrolki jest zapisana do pliku konfiguracyjnego "config" w postaci
+			Warto¶æ kontrolki jest zapisana do pliku konfiguracyjnego "config" w postaci
 			-------------
 			[groupname]
 			entry= value {defaultS}
 			-------------
-			Minimalna wartosc kontrolki ustawiona jest na "minValue", maxymalna 
+			Minimalna warto¶æ kontrolki ustawiona jest na "minValue", maksymalna 
 			na "maxValue", krok jest ustawiony na "pageStep"
-			Domyslna wartoscia kontrolki przy pierwszym uruchomieniu programu 
+			Domy¶ln± warto¶ci± kontrolki przy pierwszym uruchomieniu programu 
 			jest "value"
-			Podpowiedz kontrolki ustawiona jest na "tip".
+			Podpowied¼ kontrolki ustawiona jest na "tip".
 			Nazwa kontrolki ustawiona jest na "name".
 		**/		
 
@@ -490,19 +490,19 @@ class ConfigDialog : public QDialog	{
 		
 
 		/**
-		    Dodaje kontrolke do zakladki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname", 
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
-			Wartosc kontrolki jest zapisana do pliku konfiguracyjnego "config" w postaci
+			Warto¶æ kontrolki jest zapisana do pliku konfiguracyjnego "config" w postaci
 			-------------
 			[groupname]
 			entry= value {defaultS}
 			-------------
-			Minimalna wartosc kontrolki ustawiona jest na "minValue", maxymalna 
+			Minimalna warto¶æ kontrolki ustawiona jest na "minValue", maksymalna 
 			na "maxValue", krok jest ustawiony na "step"
-			Domyslna wartoscia kontrolki przy pierwszym uruchomieniu programu 
+			Domy¶ln± warto¶ci± kontrolki przy pierwszym uruchomieniu programu 
 			jest "value"
-			Podpowiedz kontrolki ustawiona jest na "tip".
+			Podpowied¼ kontrolki ustawiona jest na "tip".
 			Nazwa kontrolki ustawiona jest na "name".
 		**/		
 
@@ -518,13 +518,13 @@ class ConfigDialog : public QDialog	{
 			    const int value=50, const QString& tip="", const QString& name="");
 
 		/**
-		    Dodaje zakladke o nazwie "caption"
-		    @param iconname nazwa ikony z zestawu lub sciezka do pliku
+		    Dodaje zak³adkê o nazwie "caption"
+		    @param iconname nazwa ikony z zestawu lub ¶cie¿ka do pliku
 		**/
 		static void addTab(const QString& caption, const QString& iconFileName="");
 		
 		/**
-		    Dodaje kontrolke do zakladki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname", 
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
 			Nazwa kontrolki ustawiona jest na "name".
@@ -534,7 +534,7 @@ class ConfigDialog : public QDialog	{
 			    const QString& parent, const QString& caption, const QString& name="");
 
 		/**
-		    Dodaje kontrolke do zakladki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname", 
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
 			Nazwa kontrolki ustawiona jest na "name".
@@ -544,166 +544,166 @@ class ConfigDialog : public QDialog	{
 			    const QString& parent, const QString& caption, const QString& name="");
 
 		/**
-			Podlacza slot "slot" obiektu "receiver"
-			pod sygnal "signal" kontrolki (groupname, caption, name) 
+			Pod³±cza slot "slot" obiektu "receiver"
+			pod sygna³ "signal" kontrolki (groupname, caption, name) 
 		**/
 		static void connectSlot(const QString& groupname, const QString& caption, const char* signal,
 			    const QObject* receiver, const char* slot,const QString& name="");
 
 		/**
-			Odlacza slot "slot" obiektu "receiver"
-			od sygnalu "signal" kontrolki (groupname, caption, name) 
+			Od³±cza slot "slot" obiektu "receiver"
+			od sygna³u "signal" kontrolki (groupname, caption, name) 
 		**/
 		static void disconnectSlot(const QString& groupname, const QString& caption, const char* signal,
 			    const QObject* receiver, const char* slot,const QString& name="");
 
 		/**
 			Rejestruje slot "slot" obiektu "receiver",
-			ktory jest wywolywany przy otwieraniu okna konfiguracji
+			który jest wywo³ywany przy otwieraniu okna konfiguracji
 		**/
 		static void registerSlotOnCreate(const QObject* receiver, const char* slot);
 
 		/**
 			Wyrejestrowuje slot "slot" obiektu "receiver",
-			ktory jest wywolywany przy otwieraniu okna konfiguracji
+			który jest wywo³ywany przy otwieraniu okna konfiguracji
 		**/
 		static void unregisterSlotOnCreate(const QObject* receiver, const char* slot);
 
 		/**
 			Rejestruje slot "slot" obiektu "receiver",
-			ktory jest wywolywany przy zamykaniu okna konfiguracji
+			który jest wywo³ywany przy zamykaniu okna konfiguracji
 		**/
 		static void registerSlotOnClose(const QObject* receiver, const char* slot);
 		
 		/**
 			Wyrejestrowuje slot "slot" obiektu "receiver",
-			ktory jest wywolywany przy zamykaniu okna konfiguracji
+			który jest wywo³ywany przy zamykaniu okna konfiguracji
 		**/
 		static void unregisterSlotOnClose(const QObject* receiver, const char* slot);
 
 		/**
 			Rejestruje slot "slot" obiektu "receiver",
-			ktory jest wywolywany przy zapisywaniu konfiguracji
+			który jest wywo³ywany przy zapisywaniu konfiguracji
 		**/
 		static void registerSlotOnApply(const QObject* receiver, const char* slot);
 		
 		/**
 			Wyrejestrowuje slot "slot" obiektu "receiver",
-			ktory jest wywolywany przy zapisywaniu konfiguracji
+			który jest wywo³ywany przy zapisywaniu konfiguracji
 		**/
 		static void unregisterSlotOnApply(const QObject* receiver, const char* slot);
 
 
 		/**
-		    Usuwa kontrolke z zakladki "groupname", o etykiecie "caption". i nazwie "name".
+		    Usuwa kontrolkê z zak³adki "groupname", o etykiecie "caption" i nazwie "name".
 		**/
 		static void removeControl(const QString& groupname, const QString& caption, const QString& name="");
 
 		/**
-		    Usuwa zak³adne o nazwie caption
+		    Usuwa zak³adkê o nazwie caption
 		**/
 		static void removeTab(const QString& caption);
 
 		/**
-		    Pobiera wskaznik do kontrolki CheckBox(groupname, caption, name)
+		    Pobiera wska¼nik do kontrolki CheckBox(groupname, caption, name)
 		**/
 		static QCheckBox*   getCheckBox(const QString& groupname, const QString& caption, const QString& name="");
 		/**
-		    Pobiera wskaznik do kontrolki ColorButton(groupname, caption, name)
+		    Pobiera wska¼nik do kontrolki ColorButton(groupname, caption, name)
 		**/
 		static ColorButton* getColorButton(const QString& groupname, const QString& caption, const QString& name="");
 		/**
-		    Pobiera wskaznik do kontrolki ComboBox(groupname, caption, name)
+		    Pobiera wska¼nik do kontrolki ComboBox(groupname, caption, name)
 		**/
 		static QComboBox*   getComboBox(const QString& groupname, const QString& caption, const QString& name="");
 		/**
-		    Pobiera wskaznik do kontrolki Grid(groupname, caption, name)
+		    Pobiera wska¼nik do kontrolki Grid(groupname, caption, name)
 		**/
 		static QGrid*       getGrid(const QString& groupname, const QString& caption, const QString& name="");
 		/**
-		    Pobiera wskaznik do kontrolki HBox(groupname, caption, name)
+		    Pobiera wska¼nik do kontrolki HBox(groupname, caption, name)
 		**/
 		static QHBox* 	    getHBox(const QString& groupname, const QString& caption, const QString& name="");
 		/**
-		    Pobiera wskaznik do kontrolki HGroupBox(groupname, caption, name)
+		    Pobiera wska¼nik do kontrolki HGroupBox(groupname, caption, name)
 		**/
 		static QHGroupBox*  getHGroupBox(const QString& groupname, const QString& caption, const QString& name="");
 		/**
-		    Pobiera wskaznik do kontrolki HotKeyEdit(groupname, caption, name)
+		    Pobiera wska¼nik do kontrolki HotKeyEdit(groupname, caption, name)
 		**/
 		static HotKey* 	    getHotKeyEdit(const QString& groupname, const QString& caption, const QString& name="");
 		/**
-		    Pobiera wskaznik do kontrolki LineEdit(groupname, caption, name)
+		    Pobiera wska¼nik do kontrolki LineEdit(groupname, caption, name)
 		**/
 		static QLineEdit*   getLineEdit(const QString& groupname, const QString& caption, const QString& name="");
 		/**
-		    Pobiera wskaznik do kontrolki TextEdit(groupname, caption, name)
+		    Pobiera wska¼nik do kontrolki TextEdit(groupname, caption, name)
 		**/
 		static QTextEdit*   getTextEdit(const QString& groupname, const QString& caption, const QString& name="");
 		/**
-		    Pobiera wskaznik do kontrolki Label(groupname, caption, name)
+		    Pobiera wska¼nik do kontrolki Label(groupname, caption, name)
 		**/
 		static QLabel*      getLabel(const QString& groupname, const QString& caption, const QString& name="");
 		/**
-		    Pobiera wskaznik do kontrolki ListBox(groupname, caption, name)
+		    Pobiera wska¼nik do kontrolki ListBox(groupname, caption, name)
 		**/
 		static QListBox*    getListBox(const QString& groupname, const QString& caption, const QString& name="");
 		/**
-		    Pobiera wskaznik do kontrolki ListView(groupname, caption, name)
+		    Pobiera wska¼nik do kontrolki ListView(groupname, caption, name)
 		**/
 		static QListView*   getListView(const QString& groupname, const QString& caption, const QString& name="");
 		/**
-		    Pobiera wskaznik do kontrolki PushButton(groupname, caption, name)
+		    Pobiera wska¼nik do kontrolki PushButton(groupname, caption, name)
 		**/
 		static QPushButton* getPushButton(const QString& groupname, const QString& caption, const QString& name="");
 		/**
-		    Pobiera wskaznik do kontrolki SelectPaths(groupname, caption, name)
+		    Pobiera wska¼nik do kontrolki SelectPaths(groupname, caption, name)
 		**/
 		static SelectPaths* getSelectPaths(const QString& groupname, const QString& caption, const QString& name="");
 		/**
-		    Pobiera wskaznik do kontrolki Slider(groupname, caption, name)
+		    Pobiera wska¼nik do kontrolki Slider(groupname, caption, name)
 		**/
 		static QSlider*     getSlider(const QString& groupname, const QString& caption, const QString& name="");
 		/**
-		    Pobiera wskaznik do kontrolki SpinBox(groupname, caption, name)
+		    Pobiera wska¼nik do kontrolki SpinBox(groupname, caption, name)
 		**/
 		static QSpinBox*    getSpinBox(const QString& groupname, const QString& caption, const QString& name="");
 		/**
-		    Pobiera wskaznik do kontrolki VBox(groupname, caption, name)
+		    Pobiera wska¼nik do kontrolki VBox(groupname, caption, name)
 		**/
 		static QVBox*  	    getVBox(const QString& groupname, const QString& caption, const QString& name="");
 		/**
-		    Pobiera wskaznik do kontrolki VGroupBox(groupname, caption, name)
+		    Pobiera wska¼nik do kontrolki VGroupBox(groupname, caption, name)
 		**/
 		static QVGroupBox*  getVGroupBox(const QString& groupname, const QString& caption, const QString& name="");
 		/**
-		    Pobiera wskaznik do kontrolki Widget(groupname, caption, name)
+		    Pobiera wska¼nik do kontrolki Widget(groupname, caption, name)
 		**/
 		static QWidget*     getWidget(const QString& groupname, const QString& caption, const QString& name="");
 		/**
-		    Zwraca pozycje kontrolki Widget(groupname, caption, name) w liscie RegisteredControls
-		    jesli nie istnieje taka kontrolka to zwracana jest wartosc -1
+		    Zwraca pozycjê kontrolki Widget(groupname, caption, name) w li¶cie RegisteredControls
+		    je¶li nie istnieje taka kontrolka to zwracana jest warto¶æ -1
 		**/
 		static int existControl(const QString& groupname, const QString& caption, const QString& name="");
 		/**
-		    Wyszukuje pozycje dowonlnej zakladki w liscie RegisteredControls 
-			poczynajac od pozycji "startpos"
+		    Wyszukuje pozycjê dowolnej zak³adki w li¶cie RegisteredControls 
+			poczynaj±c od pozycji "startpos"
 			
-		    Jesli nie znajdzie zakladki to zwraca wartosc "-1"
+		    Je¶li nie znajdzie zak³adki to zwraca warto¶æ "-1"
 		**/
 		static int findNextTab(int startpos);
 		/**
-		    Wyszukuje pozycje zakladki "groupname" w liscie RegisteredControls 
-			poczynajac od pozycji "startpos"
+		    Wyszukuje pozycjê zak³adki "groupname" w li¶cie RegisteredControls 
+			poczynaj±c od pozycji "startpos"
 
-		    Jesli nie znajdzie zakladki to zwraca wartosc "-1"
+		    Je¶li nie znajdzie zak³adki to zwraca warto¶æ "-1"
 		**/
 		static int findTab(const QString& groupname, int startpos=0);
 		/**
-		    Wyszukuje pozycje poprzedniej zakladki w liscie RegisteredControls 
-			poczynajac od pozycji "startpos"
+		    Wyszukuje pozycjê poprzedniej zak³adki w li¶cie RegisteredControls 
+			poczynaj±c od pozycji "startpos"
 
-		    Jesli nie znajdzie zakladki to zwraca wartosc "-1"
+		    Je¶li nie znajdzie zak³adki to zwraca warto¶æ "-1"
 		**/
 		static int findPreviousTab(int startpos);
 		static bool dialogOpened();
