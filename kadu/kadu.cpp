@@ -288,7 +288,10 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		"using HTML paragraphs instead of tables - this improves refresh\n"
 		"speed and text copying but has a couple of display problems"));
 	config_file.addVariable("General", "ParagraphSeparator", 4);
-	
+#ifdef DEBUG_ENABLED
+	ConfigDialog::addLineEdit("General", "General", QT_TRANSLATE_NOOP("@default", "Debugging mask"), "DEBUG_MASK");
+#endif
+
 	ConfigDialog::addVGroupBox("General", "General", "Status");
 	ConfigDialog::addComboBox("General", "Status", QT_TRANSLATE_NOOP("@default", "Default status"), "", "cb_defstatus");
 	ConfigDialog::addHBox("General", "Status", "discstatus");
@@ -1648,6 +1651,10 @@ void KaduSlots::onDestroyConfigDialog()
 		QApplication::setStyle(new_style);
 		config_file.writeEntry("Look", "QtStyle", new_style);
 	}
+#ifdef DEBUG_ENABLED
+	debug_mask=config_file.readNumEntry("General", "DEBUG_MASK");
+	gg_debug_level=debug_mask | ~255;
+#endif
 
 	kdebugf2();
 }

@@ -86,19 +86,24 @@ void kadu_signal_handler(int s)
 
 int main(int argc, char *argv[])
 {
-	gg_debug_level = 255;
-	debug_mask=KDEBUG_ALL & ~KDEBUG_FUNCTION_END;
+	config_file.addVariable("General", "DEBUG_MASK", KDEBUG_ALL & ~KDEBUG_FUNCTION_END);
+	debug_mask=config_file.readNumEntry("General", "DEBUG_MASK");
 	char *d = getenv("DEBUG_MASK");
 	if (d)
-	{
 		debug_mask=atol(d);
-		gg_debug_level=debug_mask | ~255;
-	}
+	gg_debug_level=debug_mask | ~255;
 
 #ifdef SIG_HANDLING_ENABLED
-	signal(SIGSEGV, kadu_signal_handler);
-	signal(SIGINT, kadu_signal_handler);
-	signal(SIGTERM, kadu_signal_handler);
+	bool sh_enabled=true;
+	d=getenv("SIGNAL_HANDLING");
+	if (d)
+		sh_enabled=(atoi(d)!=0);
+	if (sh_enabled)
+	{
+		signal(SIGSEGV, kadu_signal_handler);
+		signal(SIGINT, kadu_signal_handler);
+		signal(SIGTERM, kadu_signal_handler);
+	}
 #endif
 
 	dataPath("", argv[0]);
@@ -106,7 +111,7 @@ int main(int argc, char *argv[])
 
 	new QApplication(argc, argv);
 
-	// ladowanie tlumaczenia
+	// ³adowanie t³umaczenia
 	QTranslator qt_qm(0, "Translator_qt");
 	QString lang=config_file.readEntry("General", "Language", QTextCodec::locale());
 	qt_qm.load(dataPath(QString("kadu/translations/qt_") + lang), ".");
