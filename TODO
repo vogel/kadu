@@ -1,4 +1,4 @@
-/** TODO, stan na 26/12/2002. **/
+/** TODO, stan na 16/01/2003. **/
 (TODO mo¿e byæ nieaktualne... zapraszamy na kadu.net/forum)
 
 
@@ -22,7 +22,9 @@
  ! wyja¶niæ zapêtlenia siê przy utracie ³±czno¶ci z serwerem 
  ! przetestowaæ wysy³anie plików
  + dopracowaæ grupy
-
+ + mo¿liwo¶æ zmiany has³a powi±zanego z numerem GG
+ + mo¿liwo¶æ wyrejestrowania numeru GG
+ + skasowanie wyeksportowanej listy kontaktów na serwerze GG 
 
  TODO dla wersji 0.4.0
 -----------------------
