@@ -8,7 +8,7 @@
 #include <qprogressbar.h>
 #include <qlabel.h>
 
-class DccFileDialog : public QDialog
+class FileTransferDialog : public QDialog
 {
 	Q_OBJECT
 
@@ -18,22 +18,24 @@ class DccFileDialog : public QDialog
 			TRANSFER_TYPE_SEND
 		};
 
-	protected:
-		DccSocket* dccsocket;
-		QLabel *l_offset;
-		QProgressBar *p_progress;
+	private:
+		static QMap<DccSocket*, FileTransferDialog*> Dialogs;
+		DccSocket* Socket;
+		int Type;
+		QLabel* l_offset;
+		QProgressBar* p_progress;
 		QVBoxLayout* vlayout1;
 		long long int prevPercent;
-		QTime *time;
+		QTime* time;
 		int prevOffset;
-		int type;
-		void closeEvent(QCloseEvent *e);
 
 	public:
-		DccFileDialog(DccSocket* dccsocket, TransferType type, QDialog* parent=NULL, const char* name=NULL);
-		~DccFileDialog();
-		void printFileInfo(struct gg_dcc* dccsock);
-		void updateFileInfo(struct gg_dcc* dccsock);
+		FileTransferDialog(DccSocket* socket, TransferType type);
+		~FileTransferDialog();
+		void printFileInfo();
+		void updateFileInfo();
+		static FileTransferDialog* bySocket(DccSocket* socket);
+		static void destroyAll();
 
 		bool dccFinished;		
 };
@@ -51,7 +53,6 @@ class FileTransferManager : public QObject
 			jego numer uin jest zapamiêtywany.
 		**/
 		QMap<UinType, bool> Requests;
-		QMap<DccSocket*, DccFileDialog*> FileDialogs;
 		QString selectFile(DccSocket* socket);
 
 	private slots:

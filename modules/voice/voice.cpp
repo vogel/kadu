@@ -90,6 +90,64 @@ void RecordThread::run()
 	kdebugf2();
 }
 
+VoiceChatDialog::VoiceChatDialog(DccSocket* socket)
+	: QDialog (NULL, "voice_chat_dialog"), Socket(socket)
+{
+	kdebugf();
+	setWFlags(Qt::WDestructiveClose);
+	setCaption(tr("Voice chat"));
+	resize(200, 100);
+
+	QPushButton *b_stop = new QPushButton(tr("&Stop"), this);
+
+	QGridLayout *grid = new QGridLayout(this, 1, 1, 3, 3);
+	grid->addWidget(b_stop, 0, 0, Qt::AlignCenter);
+
+	connect(b_stop, SIGNAL(clicked()), this, SLOT(close()));
+	show();
+	
+	voice_manager->setup();
+	Dialogs.insert(socket, this);
+	kdebugf2();
+}
+
+VoiceChatDialog::~VoiceChatDialog()
+{
+	kdebugf();
+	Dialogs.remove(Socket);
+	voice_manager->free();
+	delete Socket;
+	kdebugf2();
+}
+
+VoiceChatDialog* VoiceChatDialog::bySocket(DccSocket* socket)
+{
+	if (Dialogs.contains(socket))
+		return Dialogs[socket];
+	else
+		return NULL;
+}
+
+void VoiceChatDialog::destroyAll()
+{
+	for (QMap<DccSocket*, VoiceChatDialog*>::const_iterator i = Dialogs.begin();
+		i != Dialogs.end(); i++)
+	{
+		delete i.data();
+	}
+}
+
+void VoiceChatDialog::sendDataToAll(char* data, int length)
+{
+	for (QMap<DccSocket*, VoiceChatDialog*>::const_iterator i = Dialogs.begin();
+		i != Dialogs.end(); i++)
+	{
+		gadu->dccVoiceSend(i.key()->ggDccStruct(), data, length);
+	}
+}
+
+QMap<DccSocket*, VoiceChatDialog*> VoiceChatDialog::Dialogs;
+
 VoiceManager::VoiceManager(QObject *parent, const char *name) : QObject(parent, name)
 {
 	kdebugf();
@@ -113,6 +171,8 @@ VoiceManager::VoiceManager(QObject *parent, const char *name) : QObject(parent, 
 		this, SLOT(callbackReceived(DccSocket*)));
 	connect(dcc_manager, SIGNAL(dccEvent(DccSocket*)),
 		this, SLOT(dccEvent(DccSocket*)));
+	connect(dcc_manager, SIGNAL(socketDestroying(DccSocket*)),
+		this, SLOT(socketDestroying(DccSocket*)));
 	kdebugf2();
 }
 
@@ -132,12 +192,9 @@ VoiceManager::~VoiceManager()
 		this, SLOT(callbackReceived(DccSocket*)));
 	disconnect(dcc_manager, SIGNAL(dccEvent(DccSocket*)),
 		this, SLOT(dccEvent(DccSocket*)));
-// FIXME: Segfaultuje gdy wcze¶niej zamkniemy okno rozm. g³os. rêcznie.
-/*	for (QMap<DccSocket*, DccVoiceDialog*>::const_iterator i = VoiceDialogs.begin();
-		i != VoiceDialogs.end(); i++)
-	{
-		i.data()->close();
-	}*/
+	disconnect(dcc_manager, SIGNAL(socketDestroying(DccSocket*)),
+		this, SLOT(socketDestroying(DccSocket*)));
+	VoiceChatDialog::destroyAll();
 	kdebugf2();
 }
 
@@ -262,28 +319,7 @@ void VoiceManager::recordSampleReceived(char *data, int length)
 		gsm_encode(voice_enc, input, (gsm_byte *) pos);
 		pos += 33;
 	}
-	for (QMap<DccSocket*, DccVoiceDialog*>::const_iterator i = VoiceDialogs.begin();
-		i != VoiceDialogs.end(); i++)
-	{
-		gadu->dccVoiceSend(i.key()->ggDccStruct(), data - 1, length + 1);
-	}
-	kdebugf2();
-}
-
-void VoiceManager::cancelVoiceChatReceived()
-{
-	kdebugf();
-	for (QMap<DccSocket*, DccVoiceDialog*>::const_iterator i = VoiceDialogs.begin();
-		i != VoiceDialogs.end(); i++)
-	{
-		if (i.data() == sender())
-		{
-			i.key()->deleteLater();
-			VoiceDialogs.remove(i.key());
-			break;
-		}
-	}
-	voice_manager->free();
+	VoiceChatDialog::sendDataToAll(data - 1, length + 1);
 	kdebugf2();
 }
 
@@ -351,9 +387,7 @@ void VoiceManager::askAcceptVoiceChat(DccSocket* socket)
 	{
 		case 0: // Yes?
 			kdebugmf(KDEBUG_INFO, "accepted\n");
-			VoiceDialogs.insert(socket, new DccVoiceDialog());
-			connect(VoiceDialogs[socket], SIGNAL(cancelVoiceChat()), this, SLOT(cancelVoiceChatReceived()));
-			voice_manager->setup();
+			new VoiceChatDialog(socket);
 			break;
 		case 1:
 			kdebugmf(KDEBUG_INFO, "discarded\n");
@@ -397,12 +431,8 @@ void VoiceManager::userBoxMenuPopup()
 void VoiceManager::connectionBroken(DccSocket* socket)
 {
 	kdebugf();
-	if (VoiceDialogs.contains(socket))
-	{
-		voice_manager->free();
-		disconnect(VoiceDialogs[socket], SIGNAL(cancelVoiceChat()), this, SLOT(cancelVoiceChatReceived()));
+	if (VoiceChatDialog::bySocket(socket) != NULL)
 		socket->setState(DCC_SOCKET_VOICECHAT_DISCARDED);
-	}
 	kdebugf2();
 }
 
@@ -420,12 +450,8 @@ void VoiceManager::callbackReceived(DccSocket* socket)
 void VoiceManager::dccError(DccSocket* socket)
 {
 	kdebugf();
-	if (VoiceDialogs.contains(socket))
-	{
-		voice_manager->free();
-		disconnect(VoiceDialogs[socket], SIGNAL(cancelVoiceChat()), this, SLOT(cancelVoiceChatReceived()));
+	if (VoiceChatDialog::bySocket(socket) != NULL)
 		socket->setState(DCC_SOCKET_VOICECHAT_DISCARDED);
-	}
 	kdebugf2();
 }
 
@@ -442,11 +468,7 @@ void VoiceManager::dccEvent(DccSocket* socket)
 		case GG_EVENT_DCC_ACK:
 			kdebugmf(KDEBUG_INFO, "GG_EVENT_DCC_ACK\n");
 			if (socket->ggDccStruct()->type == GG_SESSION_DCC_VOICE)
-			{	
-				VoiceDialogs.insert(socket, new DccVoiceDialog());
-				connect(VoiceDialogs[socket], SIGNAL(cancelVoiceChat()), this, SLOT(cancelVoiceChatReceived()));
-				setup();
-			}
+				new VoiceChatDialog(socket);
 			break;
 		case GG_EVENT_DCC_VOICE_DATA:
 			kdebugmf(KDEBUG_INFO, "GG_EVENT_DCC_VOICE_DATA\n");
@@ -459,29 +481,11 @@ void VoiceManager::dccEvent(DccSocket* socket)
 	}
 }
 
-
-DccVoiceDialog::DccVoiceDialog(QDialog *parent, const char *name)
-	: QDialog (parent, name, FALSE, Qt::WDestructiveClose)
+void VoiceManager::socketDestroying(DccSocket* socket)
 {
 	kdebugf();
-	setCaption(tr("Voice chat"));
-	resize(200, 100);
-
-	QPushButton *b_stop = new QPushButton(tr("&Stop"), this);
-
-	QGridLayout *grid = new QGridLayout(this, 1, 1, 3, 3);
-	grid->addWidget(b_stop, 0, 0, Qt::AlignCenter);
-
-	connect(b_stop, SIGNAL(clicked()), this, SLOT(close()));
-	show();
-	kdebugf2();
-}
-
-void DccVoiceDialog::closeEvent(QCloseEvent *e)
-{
-	kdebugf();
-	emit cancelVoiceChat();
-	QDialog::closeEvent(e);
+	if (VoiceChatDialog::bySocket(socket) != NULL)
+		delete VoiceChatDialog::bySocket(socket);
 	kdebugf2();
 }
 

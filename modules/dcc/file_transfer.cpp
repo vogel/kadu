@@ -26,8 +26,8 @@
 #include "debug.h"
 #include "message_box.h"
 
-DccFileDialog::DccFileDialog(DccSocket* dccsocket, TransferType type, QDialog* parent, const char* name)
-	: QDialog (parent, name), dccsocket(dccsocket), type(type)
+FileTransferDialog::FileTransferDialog(DccSocket* socket, TransferType type)
+	: QDialog (NULL, "file_transfer_dialog"), Socket(socket), Type(type)
 {
 	kdebugf();
 	vlayout1 = new QVBoxLayout(this);
@@ -36,27 +36,24 @@ DccFileDialog::DccFileDialog(DccSocket* dccsocket, TransferType type, QDialog* p
 	setWFlags(Qt::WDestructiveClose);
 	prevPercent = 0;
 	dccFinished = false;
+	Dialogs.insert(socket, this);
 	kdebugf2();
 }
 
-DccFileDialog::~DccFileDialog()
+FileTransferDialog::~FileTransferDialog()
 {
 	kdebugf();
+	Dialogs.remove(Socket);
 	delete time;
 	if (!dccFinished)
 	{
 		kdebugmf(KDEBUG_WARNING, "DCC transfer has not finished yet!\n");
-		delete dccsocket;
+		delete Socket;
 	}
 	kdebugf2();
 }
 
-void DccFileDialog::closeEvent(QCloseEvent* e)
-{
-	QDialog::closeEvent(e);
-}
-
-void DccFileDialog::printFileInfo(struct gg_dcc* dccsock)
+void FileTransferDialog::printFileInfo()
 {
 	kdebugf();
 	long long int percent;
@@ -64,15 +61,15 @@ void DccFileDialog::printFileInfo(struct gg_dcc* dccsock)
 
 	QString sender;
 
-	if (type == TRANSFER_TYPE_GET)
+	if (Type == TRANSFER_TYPE_GET)
 		sender=tr("Sender: %1");
 	else
 		sender=tr("Receiver: %1");
-	new QLabel(sender.arg(userlist.byUin(dccsock->peer_uin).altNick()), this);
+	new QLabel(sender.arg(userlist.byUin(Socket->ggDccStruct()->peer_uin).altNick()), this);
 
-	new QLabel(tr("Filename: %1").arg((char *)dccsock->file_info.filename), this);
+	new QLabel(tr("Filename: %1").arg((char *)Socket->ggDccStruct()->file_info.filename), this);
 
-	new QLabel(tr("File size: %1B").arg(QString::number(dccsock->file_info.size)), this);
+	new QLabel(tr("File size: %1B").arg(QString::number(Socket->ggDccStruct()->file_info.size)), this);
 
 	l_offset = new QLabel(tr("Speed: 0kB/s (not started)  "),this);
 
@@ -82,8 +79,8 @@ void DccFileDialog::printFileInfo(struct gg_dcc* dccsock)
 	time = new QTime();
 	time->start();
 
-	prevOffset = dccsock->offset;
-	fpercent = ((long double)dccsock->offset * 100.0) / (long double)dccsock->file_info.size;
+	prevOffset = Socket->ggDccStruct()->offset;
+	fpercent = ((long double)Socket->ggDccStruct()->offset * 100.0) / (long double)Socket->ggDccStruct()->file_info.size;
 	percent = (long long int) fpercent;
 	if (percent > prevPercent)
 	{
@@ -102,7 +99,7 @@ void DccFileDialog::printFileInfo(struct gg_dcc* dccsock)
 	kdebugf2();
 }
 
-void DccFileDialog::updateFileInfo(struct gg_dcc *dccsock)
+void FileTransferDialog::updateFileInfo()
 {
 	kdebugf();
 	long long int percent;
@@ -111,15 +108,15 @@ void DccFileDialog::updateFileInfo(struct gg_dcc *dccsock)
 
 	if ((diffTime = time->elapsed()) > 1000)
 	{
-		diffOffset = dccsock->offset - prevOffset;
-		prevOffset = dccsock->offset;
+		diffOffset = Socket->ggDccStruct()->offset - prevOffset;
+		prevOffset = Socket->ggDccStruct()->offset;
 		QString str=tr("Speed: %1kB/s ").arg(QString::number(diffOffset/1024));
 		if (!diffOffset)
 			str.append(tr("(stalled)"));
 		l_offset->setText(str);
 		time->restart();
 	}
-	fpercent = ((long double)dccsock->offset * 100.0) / (long double)dccsock->file_info.size;
+	fpercent = ((long double)Socket->ggDccStruct()->offset * 100.0) / (long double)Socket->ggDccStruct()->file_info.size;
 	percent = (long long int) fpercent;
 	if (percent > prevPercent)
 	{
@@ -129,6 +126,25 @@ void DccFileDialog::updateFileInfo(struct gg_dcc *dccsock)
 	setCaption(tr("File transfered %1%").arg((int)percent));
 	kdebugf2();
 }
+
+FileTransferDialog* FileTransferDialog::bySocket(DccSocket* socket)
+{
+	if (Dialogs.contains(socket))
+		return Dialogs[socket];
+	else
+		return NULL;
+}
+
+void FileTransferDialog::destroyAll()
+{
+	for (QMap<DccSocket*, FileTransferDialog*>::const_iterator i = Dialogs.begin();
+		i != Dialogs.end(); i++)
+	{
+		delete i.data();
+	}
+}
+
+QMap<DccSocket*, FileTransferDialog*> FileTransferDialog::Dialogs;
 
 FileTransferManager::FileTransferManager()
 {
@@ -182,15 +198,7 @@ FileTransferManager::~FileTransferManager()
 		this, SLOT(callbackReceived(DccSocket*)));
 	disconnect(dcc_manager, SIGNAL(setState(DccSocket*)),
 		this, SLOT(setState(DccSocket*)));
-// FIXME: Segfaultuje gdy wcze¶niej zamkniemy okno transferu rêcznie.
-/*	for (QMap<DccSocket*, DccFileDialog*>::const_iterator i = FileDialogs.begin();
-		i != FileDialogs.end(); i++)
-	{
-		if (i.data()->isVisible())
-			i.data()->close();
-		else
-			delete i.data();
-	}*/
+	FileTransferDialog::destroyAll();
 	kdebugf2();
 }
 
@@ -294,14 +302,14 @@ void FileTransferManager::kaduKeyPressed(QKeyEvent* e)
 void FileTransferManager::connectionBroken(DccSocket* socket)
 {
 	kdebugf();
-	socket->setState(FileDialogs.contains(socket) ? DCC_SOCKET_TRANSFER_ERROR : DCC_SOCKET_CONNECTION_BROKEN);
+	socket->setState(FileTransferDialog::bySocket(socket) != NULL ? DCC_SOCKET_TRANSFER_ERROR : DCC_SOCKET_CONNECTION_BROKEN);
 	kdebugf2();
 }
 
 void FileTransferManager::dccError(DccSocket* socket)
 {
 	kdebugf();
-	socket->setState(FileDialogs.contains(socket) ? DCC_SOCKET_TRANSFER_ERROR : DCC_SOCKET_CONNECTION_BROKEN);
+	socket->setState(FileTransferDialog::bySocket(socket) != NULL ? DCC_SOCKET_TRANSFER_ERROR : DCC_SOCKET_CONNECTION_BROKEN);
 	kdebugf2();
 }
 
@@ -316,9 +324,8 @@ void FileTransferManager::needFileInfo(DccSocket* socket)
 		return;
 	}
 	gadu->dccFillFileInfo(socket->ggDccStruct(), f);
-	DccFileDialog* filedialog = new DccFileDialog(socket, DccFileDialog::TRANSFER_TYPE_SEND, NULL, "dcc_file_dialog");
-	filedialog->printFileInfo(socket->ggDccStruct());
-	FileDialogs.insert(socket, filedialog);
+	FileTransferDialog* filedialog = new FileTransferDialog(socket, FileTransferDialog::TRANSFER_TYPE_SEND);
+	filedialog->printFileInfo();
 	kdebugf2();
 }
 
@@ -407,9 +414,8 @@ void FileTransferManager::needFileAccept(DccSocket* socket)
 				socket->ggDccStruct()->offset = 0;
 			}
 
-			FileDialogs.insert(socket,
-				new DccFileDialog(socket, DccFileDialog::TRANSFER_TYPE_GET, NULL, "dcc_file_dialog"));
-			FileDialogs[socket]->printFileInfo(socket->ggDccStruct());
+			new FileTransferDialog(socket, FileTransferDialog::TRANSFER_TYPE_GET);
+			FileTransferDialog::bySocket(socket)->printFileInfo();
 			break;
 		case 1:
 			kdebugmf(KDEBUG_INFO, "discarded\n");
@@ -422,16 +428,16 @@ void FileTransferManager::needFileAccept(DccSocket* socket)
 void FileTransferManager::noneEvent(DccSocket* socket)
 {
 	kdebugf();
-	if (FileDialogs.contains(socket) && FileDialogs[socket]->isVisible())
-		FileDialogs[socket]->updateFileInfo(socket->ggDccStruct());
+	if (FileTransferDialog::bySocket(socket) != NULL)
+		FileTransferDialog::bySocket(socket)->updateFileInfo();
 	kdebugf2();
 }
 
 void FileTransferManager::dccDone(DccSocket* socket)
 {
 	kdebugf();
-	if (FileDialogs.contains(socket) && FileDialogs[socket]->isVisible())
-		FileDialogs[socket]->updateFileInfo(socket->ggDccStruct());
+	if (FileTransferDialog::bySocket(socket) != NULL)
+		FileTransferDialog::bySocket(socket)->updateFileInfo();
 	kdebugf2();
 }
 
@@ -449,25 +455,16 @@ void FileTransferManager::callbackReceived(DccSocket* socket)
 void FileTransferManager::setState(DccSocket* socket)
 {
 	kdebugf();
-	if (FileDialogs.contains(socket))
-		FileDialogs[socket]->dccFinished = true;
+	if (FileTransferDialog::bySocket(socket) != NULL)
+		FileTransferDialog::bySocket(socket)->dccFinished = true;
 	kdebugf2();
 }
 
 void FileTransferManager::socketDestroying(DccSocket* socket)
 {
 	kdebugf();
-	if (FileDialogs.contains(socket))
-	{
-		if (FileDialogs[socket]->dccFinished)
-		{
-			if (FileDialogs[socket]->isVisible())
-				FileDialogs[socket]->close();
-			else
-				delete FileDialogs[socket];
-			FileDialogs.remove(socket);
-		}
-	}
+	if (FileTransferDialog::bySocket(socket) != NULL)
+		delete FileTransferDialog::bySocket(socket);
 	kdebugf2();
 }
 

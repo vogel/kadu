@@ -20,18 +20,20 @@ struct gsm_sample {
 	int length;
 };
 
-class DccVoiceDialog : public QDialog
+class VoiceChatDialog : public QDialog
 {
 	Q_OBJECT
 
+	private:
+		static QMap<DccSocket*, VoiceChatDialog*> Dialogs;
+		DccSocket* Socket;
+
 	public:
-		DccVoiceDialog(QDialog *parent = 0, const char *name = 0);
-
-	protected:
-		void closeEvent(QCloseEvent *e);
-
-	signals:
-		void cancelVoiceChat();
+		VoiceChatDialog(DccSocket* socket);
+		~VoiceChatDialog();
+		static VoiceChatDialog* bySocket(DccSocket* socket);
+		static void destroyAll();
+		static void sendDataToAll(char* data, int length);
 };
 
 class VoiceManager : public QObject
@@ -54,7 +56,6 @@ class VoiceManager : public QObject
 			zapamiêtywany.
 		**/
 		QMap<UinType, bool> Requests;
-		QMap<DccSocket*, DccVoiceDialog*> VoiceDialogs;
 
 		void resetCoder();
 		void resetDecoder();
@@ -63,7 +64,6 @@ class VoiceManager : public QObject
 	private slots:
 		void playGsmSampleReceived(char *data, int length);
 		void recordSampleReceived(char *data, int length);
-		void cancelVoiceChatReceived();
 		void mainDialogKeyPressed(QKeyEvent* e);
 		void userBoxMenuPopup();
 		void makeVoiceChat();
@@ -71,6 +71,7 @@ class VoiceManager : public QObject
 		void callbackReceived(DccSocket* socket);
 		void dccError(DccSocket* socket);
 		void dccEvent(DccSocket* socket);
+		void socketDestroying(DccSocket* socket);
 
 	public:
 		VoiceManager(QObject *parent=0, const char *name=0);

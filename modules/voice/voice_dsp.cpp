@@ -34,7 +34,8 @@ void VoiceDsp::setup() {
 	int value;
 	
 	kdebugm(KDEBUG_INFO, "Opening /dev/dsp\n");
-	fd = open("/dev/dsp", O_RDWR);
+//	fd = open("/dev/dsp", O_RDWR);
+	fd = open("/dev/null", O_RDWR);
 	if(fd<0)
 	{
 		kdebugm(KDEBUG_ERROR, "Error opening /dev/dsp\n");
