@@ -104,7 +104,7 @@ Chat::Chat(UinsList uins, QWidget *parent)
 
 	iconsel = new QPushButton(buttontray);
 	iconsel->setPixmap(loader->loadIcon("icons", KIcon::Small));
-	iconsel->setToggleButton(true);
+	//iconsel->setToggleButton(true);
 
 	if (config.emoticons)
 		QToolTip::add(iconsel, i18n("Insert emoticon"));
@@ -150,6 +150,8 @@ Chat::Chat(UinsList uins, QWidget *parent)
 	body->setTextFormat(Qt::RichText);
 
 	totaloccurences = 0;
+	
+	edit->setFocus();
 }
 
 Chat::~Chat() {
@@ -235,6 +237,7 @@ void Chat::keyPressEvent(QKeyEvent *e) {
 	if (e->key() == Key_F9) {
 		clearChatWindow();
 	}
+	QDialog::keyPressEvent(e);
 }
 
 /* register/unregister sending with Return key */
@@ -545,8 +548,9 @@ void Chat::insertEmoticon(void) {
 void Chat::addEmoticon(QString string) {
 	edit->setText(edit->text() + string);
 	edit->end();
-	iconsel_ptr = NULL;
-	iconsel->setOn(false);
+	edit->setFocus();
+//	iconsel_ptr = NULL;
+//	iconsel->setOn(false);
 }
 
 IconSelectorButton::IconSelectorButton(QWidget* parent,const QString& emoticon_string)
