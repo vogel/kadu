@@ -473,76 +473,77 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
     </message>
     <message>
         <source>Show / hide users without description</source>
-        <translation type="unfinished"></translation>
+        <translation>Visualizza/nascondi contatti senza descrizione</translation>
     </message>
     <message>
         <source>Qt Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Thema QT</translation>
     </message>
     <message>
         <source>Please do not run Kadu as a root!
 It&apos;s a high security risk!</source>
-        <translation type="unfinished"></translation>
+        <translation>Non lanciare kadu come root!
+E un rischio per la sicurezza!</translation>
     </message>
     <message>
         <source>Align icon next to contact name</source>
-        <translation type="unfinished"></translation>
+        <translation>prima asocia l&apos;icona al noem del contatto</translation>
     </message>
     <message>
         <source>Show tooltip on userbox</source>
-        <translation type="unfinished"></translation>
+        <translation>Visalizza fumetti nella lista contatti</translation>
     </message>
     <message>
         <source>Number of kept descriptions</source>
-        <translation type="unfinished"></translation>
+        <translation>Quatità delle descrizioni</translation>
     </message>
     <message>
         <source>Show inactive contacts</source>
-        <translation type="unfinished"></translation>
+        <translation>Visualizza contatti inattivi</translation>
     </message>
     <message>
         <source>Display contacts who are offline</source>
-        <translation type="unfinished"></translation>
+        <translation>Visualizza contatti non disponibili</translation>
     </message>
     <message>
         <source>Show contacts with description</source>
-        <translation type="unfinished"></translation>
+        <translation>Visualizza soltanto contatti con descrizione</translation>
     </message>
     <message>
         <source>IP address: </source>
-        <translation type="unfinished"></translation>
+        <translation>Adres IP:</translation>
     </message>
     <message>
         <source> Port: </source>
-        <translation type="unfinished"></translation>
+        <translation>Porta:</translation>
     </message>
     <message>
         <source>Username: </source>
-        <translation type="unfinished"></translation>
+        <translation>Utente:</translation>
     </message>
     <message>
         <source> Password: </source>
-        <translation type="unfinished"></translation>
+        <translation>Password:</translation>
     </message>
     <message>
         <source>Display contacts that have a desciption</source>
-        <translation type="unfinished"></translation>
+        <translation>Saranno visualizzato solamente contatti con descrizione</translation>
     </message>
     <message>
         <source>Show contacts that you are blocking</source>
-        <translation type="unfinished"></translation>
+        <translation>Visualizza contatti bloccati</translation>
     </message>
     <message>
         <source>Show contacts that are blocking you</source>
-        <translation type="unfinished"></translation>
+        <translation>Visualizza contatti che ti bloccano</translation>
     </message>
     <message>
         <source>Choose your browser</source>
-        <translation type="unfinished"></translation>
+        <translation>Scegli browser</translation>
     </message>
     <message>
         <source>Browser options</source>
-        <translation type="unfinished"></translation>
+        <translation>Opzioni del browser</translation>
     </message>
     <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
@@ -663,27 +664,27 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>None</source>
-        <translation type="unfinished">Nessuno</translation>
+        <translation>Senza emoticon</translation>
     </message>
     <message>
         <source>Static</source>
-        <translation type="unfinished">Statico</translation>
+        <translation>Senza animazione</translation>
     </message>
     <message>
         <source>Animated</source>
-        <translation type="unfinished">Animato</translation>
+        <translation>Animato</translation>
     </message>
     <message>
         <source>Your message has been blocked by server. Message has not been delivered.</source>
-        <translation type="unfinished"></translation>
+        <translation>Il tuo messagiio e stato bloccato dal server, non sarà consegnato.</translation>
     </message>
     <message>
         <source>User&apos;s message box is full. Message has not been delivered.</source>
-        <translation type="unfinished"></translation>
+        <translation>Box dei messaggi del contatto è pieno, il tuo messaggio no sarà consegnato.</translation>
     </message>
     <message>
         <source>Message has not been delivered.</source>
-        <translation type="unfinished"></translation>
+        <translation>Messaggio non sarà consegnato.</translation>
     </message>
     <message>
         <source>Chat window will be cleared. Continue?</source>
@@ -712,24 +713,25 @@ per salvare finestra di chat da disordine</translation>
     </message>
     <message>
         <source>Specify path</source>
-        <translation type="unfinished"></translation>
+        <translation>Specifica percorso</translation>
     </message>
     <message>
         <source>Open in new window</source>
-        <translation type="unfinished"></translation>
+        <translation>Apri in nuova finestra</translation>
     </message>
     <message>
         <source>Open in new tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Open in new tab</translation>
     </message>
     <message>
         <source>Open in background tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Open in background tab</translation>
     </message>
     <message>
         <source>I didn&apos;t find the browser you selected! The path to it doesn&apos;t exists in $PATH variable. 
 You may add it to $PATH or specify location using Specify path option.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;B&gt;&lt;CENTER&gt;Browser specificato non trovato&lt;/CENTER&gt;&lt;/B&gt;
+Il percorso per raggiungere browser non esiste in $PATH. Devi specificarlo.</translation>
     </message>
 </context>
 <context>
@@ -777,11 +779,11 @@ You may add it to $PATH or specify location using Specify path option.</source>
     <name>GaduProtocol</name>
     <message>
         <source>I am busy.</source>
-        <translation type="unfinished">Sono occupato.</translation>
+        <translation>Sono occupato.</translation>
     </message>
     <message>
         <source>Cannot set proxy IP address. Did you put hostname instead of IP address?</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile individuare IP del proxy. Hai inserito il nome al posto del IP ?</translation>
     </message>
 </context>
 <context>
@@ -928,7 +930,7 @@ You may add it to $PATH or specify location using Specify path option.</source>
     </message>
     <message>
         <source>Please close all (except main) Kadu windows</source>
-        <translation type="unfinished"></translation>
+        <translation>Chiudere prego tutte le finestre KADU meno la principale</translation>
     </message>
 </context>
 <context>
@@ -1175,12 +1177,13 @@ Cosa vogliamo fare?</translation>
     </message>
     <message>
         <source>Show / hide users without description</source>
-        <translation type="unfinished"></translation>
+        <translation>Visualizza/nascondi contatti senza desc</translation>
     </message>
     <message>
         <source>Connection will be stoped
 Your password is incorrect !</source>
-        <translation type="unfinished"></translation>
+        <translation>Connessione interrotta
+La tua password è sbagliata!</translation>
     </message>
 </context>
 <context>
@@ -1191,7 +1194,7 @@ Your password is incorrect !</source>
     </message>
     <message>
         <source>Unknown</source>
-        <translation type="unfinished"></translation>
+        <translation>Sconosciuto</translation>
     </message>
 </context>
 <context>
@@ -1337,11 +1340,12 @@ Your password is incorrect !</source>
     <message>
         <source>Cannot find required functions in module %1.
 Maybe it&apos;s not Kadu-compatible Module.</source>
-        <translation type="unfinished"></translation>
+        <translation>Modulo %1 non contiene funzioni richieste.
+Possibile incompatibilità con Kadu.</translation>
     </message>
     <message>
         <source>Module initialization routine for %1 failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Fallita inizializzazione del modulo %1.</translation>
     </message>
 </context>
 <context>
@@ -1580,34 +1584,34 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     </message>
     <message>
         <source>This dialog box allows you to choose directories in which kadu will look for icons or sounds.</source>
-        <translation type="unfinished"></translation>
+        <translation>Questa finestra del dialogo permette di scieglie percorsi per la ricerca icone e suoni.</translation>
     </message>
     <message>
         <source>Paths</source>
-        <translation type="unfinished"></translation>
+        <translation>Percorsi</translation>
     </message>
     <message>
         <source>Path to add</source>
-        <translation type="unfinished"></translation>
+        <translation>Aggiungi percorsi</translation>
     </message>
     <message>
         <source>Change</source>
-        <translation type="unfinished"></translation>
+        <translation>Cambia</translation>
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Annulla</translation>
+        <translation>&amp;Annulla</translation>
     </message>
 </context>
 <context>
     <name>Themes</name>
     <message>
         <source>&lt;i&gt;%1&lt;/i&gt;&lt;br/&gt;does not contain any theme configuration file</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;%1&lt;/i&gt;&lt;br/&gt;non contiene file di configurazione thema</translation>
     </message>
 </context>
 <context>
@@ -1640,26 +1644,26 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     <name>Updates</name>
     <message>
         <source>Update information</source>
-        <translation type="unfinished">Le informazioni su aggiornamenti</translation>
+        <translation>Le informazioni su aggiornamenti</translation>
     </message>
     <message>
         <source>The newest Kadu version is %1</source>
-        <translation type="unfinished">La versione più recente di Kadu è la %1</translation>
+        <translation>La versione più recente di Kadu è la %1</translation>
     </message>
 </context>
 <context>
     <name>UserBox</name>
     <message>
         <source>&lt;i&gt;Mobile:&lt;/i&gt; &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;Cell:&lt;/i&gt; &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&lt;nobr&gt;&lt;i&gt;%1&lt;/i&gt;&lt;/nobr&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;nobr&gt;&lt;i&gt;%1&lt;/i&gt;&lt;/nobr&gt;</translation>
     </message>
     <message>
         <source>&lt;nobr&gt;&lt;i&gt;%1&lt;/i&gt; &lt;b&gt;(d.)&lt;/b&gt;&lt;/nobr&gt;&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;%2</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;nobr&gt;&lt;i&gt;%1&lt;/i&gt; &lt;b&gt;(desc)&lt;/b&gt;&lt;/nobr&gt;&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Descrizione:&lt;/b&gt;&lt;br/&gt;%2</translation>
     </message>
 </context>
 <context>
@@ -1778,23 +1782,23 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     </message>
     <message>
         <source>Groups</source>
-        <translation type="unfinished"></translation>
+        <translation>Gruppi</translation>
     </message>
     <message>
         <source>Add new group</source>
-        <translation type="unfinished">Aggiungi nuovo gruppo</translation>
+        <translation>Aggiungi nuovo gruppo</translation>
     </message>
     <message>
         <source>&apos;%1&apos; is prohibited</source>
-        <translation type="unfinished"></translation>
+        <translation>&apos;%1&apos; è proibito</translation>
     </message>
     <message>
         <source>This group already exists!</source>
-        <translation type="unfinished"></translation>
+        <translation>Gruppo esiste già!</translation>
     </message>
     <message>
         <source>You can&apos;t add so many groups at one stroke. Close this dialog and open one more time.</source>
-        <translation type="unfinished"></translation>
+        <translation>Non puoi aggiungere troppi gruppi alla volta. Chiudi finestra e riapri.</translation>
     </message>
 </context>
 <context>
@@ -1815,39 +1819,39 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     <name>UserStatus</name>
     <message>
         <source>Online</source>
-        <translation type="unfinished">Accessibile</translation>
+        <translation>Accessibile</translation>
     </message>
     <message>
         <source>Online (d.)</source>
-        <translation type="unfinished"></translation>
+        <translation>AAccessibile(desc)</translation>
     </message>
     <message>
         <source>Busy</source>
-        <translation type="unfinished">Occupato</translation>
+        <translation>Occupato</translation>
     </message>
     <message>
         <source>Busy (d.)</source>
-        <translation type="unfinished">Occupato (desc.)</translation>
+        <translation>Occupato (desc.)</translation>
     </message>
     <message>
         <source>Invisible</source>
-        <translation type="unfinished">Invisibile</translation>
+        <translation>Invisibile</translation>
     </message>
     <message>
         <source>Invisible (d.)</source>
-        <translation type="unfinished"></translation>
+        <translation>Invisibile(desc.)</translation>
     </message>
     <message>
         <source>Offline</source>
-        <translation type="unfinished">Fuori linea</translation>
+        <translation>Fuori linea</translation>
     </message>
     <message>
         <source>Offline (d.)</source>
-        <translation type="unfinished"></translation>
+        <translation>Fuori linea(desc)</translation>
     </message>
     <message>
         <source>Blocking</source>
-        <translation type="unfinished">Bloccato</translation>
+        <translation>Bloccato</translation>
     </message>
 </context>
 <context>
