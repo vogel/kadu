@@ -74,8 +74,9 @@ additional_parameters()
 	rm -fr log_configureoptions
 	dialog --begin 19 48 --infobox "Naci¶nij CTRL+C aby wyj¶æ" 3 29 --and-widget --separate-output --nocancel --ok-label "OK" --checklist "Je¶li chcesz, to mo¿esz wybraæ dodatkowe opcje kompilacji:" 0 75 0 \
 	--enable-debug 	"W³±cza tryb debug" 0 \
-	--disable-modules	"Wy³±cza obs³ugê modu³ów" 0 \
+	--enable-pheaders "W³±cza obs³ugê prekompilowanych nag³ówków" 0 \
 	--with-existing-libgadu "Linkuje z istniej±cym libgadu" 0 \
+	--disable-sig-handling "Bez systemowej obs³ugi sygna³ów" 0 \
 	 2>log_configureoptions
 
 }
@@ -125,7 +126,7 @@ pathmenu()
 	PREF_BAK=$PREFIXPATH
 	PREFIXPATH=`dialog --begin 19 48 --infobox "Naci¶nij CTRL+C aby wyj¶æ" 3 29 --and-widget --stdout --nocancel --ok-label "OK" --backtitle "Instalator Kadu" --inputbox  "Podaj ¶cie¿kê instalacji Kadu" 7 50 "$PREFIXPATH"`
 	if [[ $PREFIXPATH != "" ]]; then
-		echo -e -n "--prefix=$PREFIXPATH" > log_prefix
+		echo -e -n " --prefix=$PREFIXPATH" > log_prefix
 	else
 	PREFIXPATH=$PREF_BAK
 	fi;
@@ -320,8 +321,7 @@ save_module_list()
 menu_select_modules()
 {
 	CONFIGMENUCHOICE=`dialog --begin 19 48 --infobox "Naci¶nij CTRL+C aby wyj¶æ" 3 29 --and-widget --stdout --no-cancel --backtitle "Instalator Kadu" --title "Wybór modu³ów" --menu "Wybierz modu³y do kompilacji. \
-	\nModu³y s± pewnego rodzaju pluginami do Kadu. Statyczne s± ca³y czas w³±czone, dynamiczne
-	mo¿esz wy³±czaæ. Je¶li nie wiesz co wybraæ, wybierz opcjê \"Dalej\". Zostan± wybrane modu³y domy¶lne" 12 75 3 \
+	\nWy³±cznanie statycznych modu³ów nie jest zalecane. Je¶li nie wiesz co wybraæ, wybierz opcjê \"Dalej\". Zostan± wybrane modu³y domy¶lne" 12 75 3 \
 	Statyczne	"Modu³y bêd± kompilowane statycznie" \
 	Dynamiczne	"Modu³y bêd± kompilowane dynamicznie" \
 	Dalej		"Rozpocznij proces instalacji" `
